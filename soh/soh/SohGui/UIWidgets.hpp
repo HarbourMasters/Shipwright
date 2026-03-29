@@ -36,7 +36,7 @@ std::string WrappedText(const char* text, unsigned int charactersPerLine = 80);
 std::string WrappedText(const std::string& text, unsigned int charactersPerLine = 80);
 void PaddedSeparator(bool padTop = true, bool padBottom = true, float extraVerticalTopPadding = 0.0f,
                      float extraVerticalBottomPadding = 0.0f);
-void Tooltip(const char* text);
+void Tooltip(std::string text);
 
 typedef enum ColorPickerModifiers {
     ColorPickerResetButton = 1,
@@ -106,11 +106,11 @@ enum ComponentAlignments {
 };
 
 struct WidgetOptions {
-    const char* tooltip = "";
+    std::string tooltip = "";
     bool disabled = false;
-    const char* disabledTooltip = "";
+    std::string disabledTooltip = "";
 
-    WidgetOptions& Tooltip(const char* tooltip_) {
+    WidgetOptions& Tooltip(std::string tooltip_) {
         tooltip = tooltip_;
         return *this;
     }
@@ -120,7 +120,7 @@ struct WidgetOptions {
         return *this;
     }
 
-    WidgetOptions& DisabledTooltip(const char* disabledTooltip_) {
+    WidgetOptions& DisabledTooltip(std::string disabledTooltip_) {
         disabledTooltip = disabledTooltip_;
         return *this;
     }
@@ -150,7 +150,7 @@ struct ButtonOptions : WidgetOptions {
         return *this;
     }
 
-    ButtonOptions& Tooltip(const char* tooltip_) {
+    ButtonOptions& Tooltip(std::string tooltip_) {
         WidgetOptions::tooltip = tooltip_;
         return *this;
     }
@@ -182,7 +182,7 @@ struct ColorPickerOptions : WidgetOptions {
         return *this;
     }
 
-    ColorPickerOptions& Tooltip(const char* tooltip_) {
+    ColorPickerOptions& Tooltip(std::string tooltip_) {
         WidgetOptions::tooltip = tooltip_;
         return *this;
     }
@@ -240,7 +240,7 @@ struct WindowButtonOptions : WidgetOptions {
         return *this;
     }
 
-    WindowButtonOptions& Tooltip(const char* tooltip_) {
+    WindowButtonOptions& Tooltip(std::string tooltip_) {
         WidgetOptions::tooltip = tooltip_;
         return *this;
     }
@@ -283,7 +283,7 @@ struct CheckboxOptions : WidgetOptions {
         return *this;
     }
 
-    CheckboxOptions& Tooltip(const char* tooltip_) {
+    CheckboxOptions& Tooltip(std::string tooltip_) {
         WidgetOptions::tooltip = tooltip_;
         return *this;
     }
@@ -293,7 +293,7 @@ struct CheckboxOptions : WidgetOptions {
         return *this;
     }
 
-    CheckboxOptions& DisabledTooltip(const char* disabledTooltip_) {
+    CheckboxOptions& DisabledTooltip(std::string disabledTooltip_) {
         WidgetOptions::disabledTooltip = disabledTooltip_;
         return *this;
     }
@@ -332,7 +332,7 @@ struct ComboboxOptions : WidgetOptions {
         return *this;
     }
 
-    ComboboxOptions& Tooltip(const char* tooltip_) {
+    ComboboxOptions& Tooltip(std::string tooltip_) {
         WidgetOptions::tooltip = tooltip_;
         return *this;
     }
@@ -397,7 +397,7 @@ struct IntSliderOptions : WidgetOptions {
         return *this;
     }
 
-    IntSliderOptions& Tooltip(const char* tooltip_) {
+    IntSliderOptions& Tooltip(std::string tooltip_) {
         WidgetOptions::tooltip = tooltip_;
         return *this;
     }
@@ -481,7 +481,7 @@ struct FloatSliderOptions : WidgetOptions {
         return *this;
     }
 
-    FloatSliderOptions& Tooltip(const char* tooltip_) {
+    FloatSliderOptions& Tooltip(std::string tooltip_) {
         WidgetOptions::tooltip = tooltip_;
         return *this;
     }
@@ -544,7 +544,7 @@ struct RadioButtonsOptions : WidgetOptions {
         return *this;
     }
 
-    RadioButtonsOptions& Tooltip(const char* tooltip_) {
+    RadioButtonsOptions& Tooltip(std::string tooltip_) {
         WidgetOptions::tooltip = tooltip_;
         return *this;
     }
@@ -571,9 +571,9 @@ struct InputOptions : WidgetOptions {
     bool secret = false;
     ImGuiInputFlags addedFlags = 0;
     bool hasError = false;
-    const char* errorText = "";
+    std::string errorText = "";
 
-    InputOptions& Tooltip(const char* tooltip_) {
+    InputOptions& Tooltip(std::string tooltip_) {
         WidgetOptions::tooltip = tooltip_;
         return *this;
     }
@@ -628,7 +628,7 @@ struct InputOptions : WidgetOptions {
         return *this;
     }
 
-    InputOptions& ErrorText(const char* errorText_) {
+    InputOptions& ErrorText(std::string errorText_) {
         errorText = errorText_;
         return *this;
     }
@@ -754,9 +754,9 @@ bool Combobox(std::string label, T* value, const std::map<T, const char*>& combo
     ImGui::EndDisabled();
     ImGui::EndGroup();
     if (options.disabled && ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) &&
-        !Ship_IsCStringEmpty(options.disabledTooltip)) {
+        !options.disabledTooltip.empty()) {
         ImGui::SetTooltip("%s", WrappedText(options.disabledTooltip).c_str());
-    } else if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && !Ship_IsCStringEmpty(options.tooltip)) {
+    } else if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && !options.tooltip.empty()) {
         ImGui::SetTooltip("%s", WrappedText(options.tooltip).c_str());
     }
     ImGui::PopID();
@@ -839,9 +839,9 @@ bool Combobox(std::string label, T* value, const std::vector<const char*>& combo
     ImGui::EndDisabled();
     ImGui::EndGroup();
     if (options.disabled && ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) &&
-        !Ship_IsCStringEmpty(options.disabledTooltip)) {
+        !options.disabledTooltip.empty()) {
         ImGui::SetTooltip("%s", WrappedText(options.disabledTooltip).c_str());
-    } else if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && !Ship_IsCStringEmpty(options.tooltip)) {
+    } else if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && !options.tooltip.empty()) {
         ImGui::SetTooltip("%s", WrappedText(options.tooltip).c_str());
     }
     ImGui::PopID();
@@ -925,9 +925,9 @@ bool Combobox(std::string label, T* value, const std::vector<std::string>& combo
     ImGui::EndDisabled();
     ImGui::EndGroup();
     if (options.disabled && ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) &&
-        !Ship_IsCStringEmpty(options.disabledTooltip)) {
+        !options.disabledTooltip.empty()) {
         ImGui::SetTooltip("%s", WrappedText(options.disabledTooltip).c_str());
-    } else if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && !Ship_IsCStringEmpty(options.tooltip)) {
+    } else if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && !options.tooltip.empty()) {
         ImGui::SetTooltip("%s", WrappedText(options.tooltip).c_str());
     }
     ImGui::PopID();
@@ -1011,9 +1011,9 @@ bool Combobox(std::string label, T* value, const char* (&comboArray)[N], const C
     ImGui::EndDisabled();
     ImGui::EndGroup();
     if (options.disabled && ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) &&
-        !Ship_IsCStringEmpty(options.disabledTooltip)) {
+        !options.disabledTooltip.empty()) {
         ImGui::SetTooltip("%s", WrappedText(options.disabledTooltip).c_str());
-    } else if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && !Ship_IsCStringEmpty(options.tooltip)) {
+    } else if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && !options.tooltip.empty()) {
         ImGui::SetTooltip("%s", WrappedText(options.tooltip).c_str());
     }
     ImGui::PopID();

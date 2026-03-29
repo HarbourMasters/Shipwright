@@ -1371,34 +1371,7 @@ void Settings::CreateOptions() {
 
     mExcludeLocationsOptionsAreas.reserve(RCAREA_INVALID);
 
-    // the following are glitches and are currently disabled
-    // OPT_TRICK(RT_ACUTE_ANGLE_CLIP, RCQUEST_BOTH, RA_NONE, {Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL,
-    // Tricks::Tag::GLITCH}, "Acute angle clip", "Enables locations requiring jumpslash clips through walls which meet
-    // at an acute angle."); OPT_TRICK(RT_ADVANCED_CLIPS, RCQUEST_BOTH, RA_NONE, {Tricks::Tag::ADVANCED,
-    // Tricks::Tag::EXPERIMENTAL, Tricks::Tag::GLITCH}, "Advanced clips", "Enables locations requiring clips through
-    // walls and objects requiring precise jumps or other tricks."); OPT_TRICK(RT_BLANK_A, RCQUEST_BOTH, RA_NONE,
-    // {Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL, Tricks::Tag::GLITCH}, "Blank A", "Enables locations requiring
-    // blank A button; NOTE: this requires the 'Quick Putaway' restoration."); OPT_TRICK(RT_DOOM_JUMP, RCQUEST_BOTH,
-    // RA_NONE, {Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL, Tricks::Tag::GLITCH}, "Doom Jump", "Enables locations
-    // requiring doom jumps."); OPT_TRICK(RT_EPG, RCQUEST_BOTH, RA_NONE, {Tricks::Tag::ADVANCED,
-    // Tricks::Tag::EXPERIMENTAL, Tricks::Tag::GLITCH}, "EPG", "Enables locations requiring use of the Entrance Point
-    // Glitch."); OPT_TRICK(RT_EQUIP_SWAP, RCQUEST_BOTH, RA_NONE, {Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL,
-    // Tricks::Tag::GLITCH}, "Equip Swap", "Enables locations requiring use of equip swap; NOTE: this may expect the
-    // 'Allow cursor to be over any slot' enhancement to be turned off."); OPT_TRICK(RT_EQUIP_SWAP_EXPECTS_DINS,
-    // RCQUEST_BOTH, RA_NONE, {Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL, Tricks::Tag::GLITCH}, "Equip Swap
-    // Require's Din's Fire", "Enables locations requiring use of equip swap once Din's Fire is found.");
-    // OPT_TRICK(RT_FLAME_STORAGE, RCQUEST_BOTH, RA_NONE, {Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL,
-    // Tricks::Tag::GLITCH}, "Flame Storage", "Enables locations requiring flame storage."); OPT_TRICK(RT_GROUND_CLIP,
-    // RCQUEST_BOTH, RA_NONE, {Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL, Tricks::Tag::GLITCH}, "Ground Clip",
-    // "Enables locations requiring ground clips."); OPT_TRICK(RT_HESS, RCQUEST_BOTH, RA_NONE, {Tricks::Tag::ADVANCED,
-    // Tricks::Tag::EXPERIMENTAL, Tricks::Tag::GLITCH}, "HESS", "Enables locations requiring a Hyper Extended Super
-    // Slide."); OPT_TRICK(RT_HOOKSHOT_CLIP, RCQUEST_BOTH, RA_NONE, {Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL,
-    // Tricks::Tag::GLITCH}, "Hookshot Clip", "Enables locations requiring Hookshot clips.");
-    // OPT_TRICK(RT_HOOKSHOT_JUMP, RCQUEST_BOTH, RA_NONE, {Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL,
-    // Tricks::Tag::GLITCH}, "Hookshot Jump", "Enables locations requiring Hookshot jumps."); OPT_TRICK(RT_ISG,
-    // RCQUEST_BOTH, RA_NONE, {Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL, Tricks::Tag::GLITCH}, "ISG", "Enables
-    // locations requiring use of the infinite sword glitch.");
-
+    // RANDOTODO sweep trick descriptions and make sure they match a post-refactor, post shuffles reality
     /* Common abbreviations in name tags
     - A: Adult
     - Blk: Block
@@ -1425,859 +1398,289 @@ void Settings::CreateOptions() {
     Try to keep Name Tags less than 8 chars.
     */
 
-    OPT_TRICK(RT_VISIBLE_COLLISION, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE }, "Ignore Visible Collision",
-              "VisCol",
-              "Allows ignoring visible barriers and objects that do not actually stop Link from walking, climbing or "
-              "hitting things, without clipping.\n\n"
-              "This notably allows for walking through Kak's gate backwards, climb into the back of Impa's house as "
-              "Adult from the coop,"
-              "and hitting Rusted Switches or boulders through Blocks, Ice and Walls.\n\n"
-              "This trick only applies to case where doing the thing is trivial, instances where it only works from "
-              "certain angles are not part of this trick,"
-              "niether are any form of clips, including clipping Link's hitbox inside boulders with jumpslash.");
-    OPT_TRICK(RT_GROTTOS_WITHOUT_AGONY, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE },
-              "Hidden Grottos without Stone of Agony", "NoSoA",
-              "Allows entering hidden grottos without the Stone of Agony.");
-    OPT_TRICK(
-        RT_FEWER_TUNIC_REQUIREMENTS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::INTERMEDIATE }, "Fewer Tunic Requirements",
-        "FTR",
-        "Normally the only hot area logic expects you to navigate without a Goron Tunic is Death Mountain Crater\n"
-        "and you are not expected to navigate underwater sections without a Zora Tunic.\n\n"
-        "With this trick you are expected to do any underwater area except Central Pillar,\n"
-        "any hot area except Volvagia and the Block lift room in Fire Temple\n"
-        "and the health needed to logically navigate Crater is decreased.");
-    OPT_TRICK(RT_UNINTUITIVE_JUMPS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE }, "Unintuitive Jumps", "UnJmp",
-              "Many ledges can be overcome with particular jumps which are simple to execute without items.\n"
-              "This includes jumping from heights to dive deeper without scales,\n"
-              "though this trick doesn't cover Water Temple's Dragon Room.");
-    OPT_TRICK(RT_FIRE_RINGS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::INTERMEDIATE }, "Fire Ring", "FlaChst",
-              "Fire Rings can be run into while Link is invincible from having taken damage,"
-              "letting you interact with some objects inside them such as large chests");
+    // the following are glitches and are currently disabled
+
+    // OPT_TRICK(RT_ACUTE_ANGLE_CLIP, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL,
+    // Tricks::Tag::GLITCH });
+
+    // OPT_TRICK(RT_ADVANCED_CLIPS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL,
+    // Tricks::Tag::GLITCH });
+
+    // OPT_TRICK(RT_BLANK_A, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL,
+    // Tricks::Tag::GLITCH });
+
+    // OPT_TRICK(RT_DOOM_JUMP, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL,
+    // Tricks::Tag::GLITCH });
+
+    // OPT_TRICK(RT_EPG, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL,
+    // Tricks::Tag::GLITCH});
+
+    // OPT_TRICK(RT_EQUIP_SWAP, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL,
+    // Tricks::Tag::GLITCH });
+
+    // OPT_TRICK(RT_EQUIP_SWAP_EXPECTS_DINS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL,
+    // Tricks::Tag::GLITCH });
+
+    // OPT_TRICK(RT_FLAME_STORAGE, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL,
+    // Tricks::Tag::GLITCH });
+
+    // OPT_TRICK(RT_GROUND_CLIP, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL,
+    // Tricks::Tag::GLITCH });
+
+    // OPT_TRICK(RT_HESS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL,
+    // Tricks::Tag::GLITCH});
+
+    // OPT_TRICK(RT_HOOKSHOT_CLIP, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL,
+    // Tricks::Tag::GLITCH });
+
+    // OPT_TRICK(RT_HOOKSHOT_JUMP, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL,
+    // Tricks::Tag::GLITCH });
+
+    // OPT_TRICK(RT_ISG, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL,
+    // Tricks::Tag::GLITCH});
+
+    OPT_TRICK(RT_VISIBLE_COLLISION, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE }, "VisCol");
+    OPT_TRICK(RT_GROTTOS_WITHOUT_AGONY, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE }, "NoSoA");
+    OPT_TRICK(RT_FEWER_TUNIC_REQUIREMENTS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::INTERMEDIATE }, "FTR");
+    OPT_TRICK(RT_UNINTUITIVE_JUMPS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE }, "UnJmp");
+    OPT_TRICK(RT_FIRE_RINGS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::INTERMEDIATE }, "FlaChst");
+
     // disabled for now, can't check for being able to use bunny hood & bunny hood speedup is currently completely
-    // decoupled from rando OPT_TRICK(RT_BUNNY_HOOD_JUMPS, RCQUEST_BOTH, RA_NONE, {Tricks::Tag::ADVANCED}, "Bunny Hood
-    // Jumps", "Allows reaching locations using Bunny Hood's extended jumps.");
+    // decoupled from rando
+
+    // OPT_TRICK(RT_BUNNY_HOOD_JUMPS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED });
+
     OPT_TRICK(RT_DAMAGE_BOOST_SIMPLE, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL },
-              "Simple damage boosts", "SDmgBoo",
-              "Allows damage boosts in order to reach further locations. Can be combined with \"Simple hover boosts\" "
-              "for reaching far distances.");
-    OPT_TRICK(RT_HOVER_BOOST_SIMPLE, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::GLITCH },
-              "Simple hover boosts", "SHovBoo",
-              "Allows equipping of hover boots when Link is moving at high speeds to extend distance covered, often "
-              "after recoil. Can be combined with \"Simple damage boosts\" for greater uses.");
-    OPT_TRICK(RT_BOMBCHU_BEEHIVES, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE }, "Bombchu Beehives", "ChuBee",
-              "Allows exploding beehives with Bombchus.");
-    OPT_TRICK(RT_HOOKSHOT_LADDERS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE }, "Hookshot Ladders", "HSLad",
-              "You can skip climb for hookshottable ladders can be skipped by hookshotting the top of the ladder from "
-              "the correct distance and angle.\n"
-              "This is more difficult for some ladders than others, and a few are not possible.\n"
-              "Hookshotting climbable walls in the same way is not a trick, as it is trivial to get an angle that "
-              "correctly ledge grabs.");
-    OPT_TRICK(RT_BLUE_FIRE_MUD_WALLS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE }, "Blue Fire Beyond Red Ice",
-              "BluFire",
-              "Use Blue Fire to break mud walls, detonate bomb flowers, and break floor to King Dodongo.\nDoes not "
-              "apply to MQ Dead Hand bomb flowers.\nUsing blue fire on bombflower to stop rolling goron also requires "
-              "\"Stop Link the Goron with Din's Fire\".\nUsing blue fire arrows to break floor in King Dodongo's "
-              "chamber also requires \"Dodongo\'s Cavern Smash the Boss Lobby Floor\".");
-    OPT_TRICK(RT_OPEN_UNDERWATER_CHEST, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH },
-              "Open Underwater Chests", "OpenUC",
-              "Underwater chests can be opened by wearing iron boots and hookshotting the chest.");
-    OPT_TRICK(RT_BOULDER_COLLISION, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH },
-              "Flawed Boulder Collision", "BolCol",
-              "From afar, boulder collision is disabled, allowing projectiles to pass through them.\n"
-              "Additionally, boulders do not have projectile collision from below, allow them to be shot into in some "
-              "cases.");
-    OPT_TRICK(RT_ITEM_EXTENSION, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::INTERMEDIATE }, "Item Extension", "HSExt",
-              "Slightly extends the range of projectiles such as Hookshot, Bow or Slingshot. Also allows clipping "
-              "projectile past collision. Used for:\n"
-              "- Crossing Gerudo Valley with Hookshot\n"
-              "- Retrieving DMT Gold Skulltula beside bomb flower\n"
-              "- Hitting switch through wall in Spirit Temple's big mirror room with Bow, Slingshot, or Hookshot\n"
-              "- Hitting switch through wall in Spirit Trial with Bow or Slingshot\n"
-              "- Hitting switch through gate in Shadow Temple MQ with Bow or Slingshot");
+              "SDmgBoo");
+    OPT_TRICK(RT_HOVER_BOOST_SIMPLE, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::GLITCH }, "SHovBoo");
+    OPT_TRICK(RT_BOMBCHU_BEEHIVES, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE }, "ChuBee");
+    OPT_TRICK(RT_HOOKSHOT_LADDERS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE }, "HSLad");
+    OPT_TRICK(RT_BLUE_FIRE_MUD_WALLS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE }, "BluFire");
+    OPT_TRICK(RT_OPEN_UNDERWATER_CHEST, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH }, "OpenUC");
+    OPT_TRICK(RT_BOULDER_COLLISION, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH }, "BolCol");
+    OPT_TRICK(RT_ITEM_EXTENSION, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::INTERMEDIATE }, "HSExt");
     OPT_TRICK(RT_BIG_SKULLTULA_PAUSE_LIFT, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH },
-              "Lift Big Skulltulas with Pausing", "SkulPaus",
-              "Pausing while a big skulltula is bobbing upwards slightly lifts it,\n"
-              "eventually allowing passage without any items.");
-    OPT_TRICK(RT_GROUND_JUMP, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH }, "Ground Jump",
-              "GrdJmp", "Enables requiring ground jumps.");
+              "SkulPaus");
+    OPT_TRICK(RT_GROUND_JUMP, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH }, "GrdJmp");
     OPT_TRICK(RT_GROUND_JUMP_HARD, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::INTERMEDIATE, Tricks::Tag::GLITCH },
-              "Hard Ground Jumps", "HGrdJmp",
-              "Enables ground jumps which require some precision outside of setting up jump,\n"
-              "such as needing extra height with jumpslash or jumping while running with hover boots.");
-    OPT_TRICK(RT_SLIDE_JUMP, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE }, "Sliding Jumps", "SldJmp",
-              "Running forward while sliding sideways on ice can be used to jump on platforms.");
-    OPT_TRICK(RT_KF_ADULT_GS, RCQUEST_BOTH, RA_KOKIRI_FOREST, { Tricks::Tag::NOVICE },
-              "Adult Kokiri Forest GS with Hover Boots", "KFGSHB",
-              "Can be obtained without Hookshot by using the Hover Boots off of one of the roots.");
-    OPT_TRICK(RT_LW_BRIDGE, RCQUEST_BOTH, RA_THE_LOST_WOODS, { Tricks::Tag::EXPERT },
-              "Jump onto the Lost Woods Bridge as Adult with Nothing", "LWBrgJmp",
-              "With very precise movement it's possible for adult to jump onto the bridge without needing Longshot, "
-              "Hover Boots, or Bean.");
-    OPT_TRICK(RT_LW_MIDO_BACKFLIP, RCQUEST_BOTH, RA_THE_LOST_WOODS, { Tricks::Tag::NOVICE },
-              "Backflip over Mido as Adult", "MidoSkip",
-              "With a specific position and angle, you can backflip over Mido.");
+              "HGrdJmp");
+    OPT_TRICK(RT_SLIDE_JUMP, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE }, "SldJmp");
+    OPT_TRICK(RT_KF_ADULT_GS, RCQUEST_BOTH, RA_KOKIRI_FOREST, { Tricks::Tag::NOVICE }, "KFGSHB");
+    OPT_TRICK(RT_LW_BRIDGE, RCQUEST_BOTH, RA_THE_LOST_WOODS, { Tricks::Tag::EXPERT }, "LWBrgJmp");
+    OPT_TRICK(RT_LW_MIDO_BACKFLIP, RCQUEST_BOTH, RA_THE_LOST_WOODS, { Tricks::Tag::NOVICE }, "MidoSkip");
     OPT_TRICK(RT_LOST_WOOD_NAVI_DIVE, RCQUEST_BOTH, RA_THE_LOST_WOODS, { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH },
-              "Lost Woods Navi dive", "LWNaviD",
-              "You need Deku Sticks or Kokiri Sword to dive with Navi for entering Zora's River.");
-    OPT_TRICK(RT_LW_GS_BEAN, RCQUEST_BOTH, RA_THE_LOST_WOODS, { Tricks::Tag::INTERMEDIATE },
-              "Lost Woods Adult GS without Bean", "LWGSHS",
-              "You can collect the token with a precise Hookshot use, as long as you can kill the Skulltula somehow "
-              "first. It can be killed using Longshot, Bow, Bombchus or Din's Fire.");
-    OPT_TRICK(RT_HC_STORMS_GS, RCQUEST_BOTH, RA_HYRULE_CASTLE, { Tricks::Tag::INTERMEDIATE },
-              "Hyrule Castle Storms Grotto GS with Just Boomerang", "HCGrGSRng",
-              "With precise throws, the Boomerang alone can kill the Skulltula and collect the token, without first "
-              "needing to blow up the wall.");
-    OPT_TRICK(RT_HF_BIG_POE_WITHOUT_EPONA, RCQUEST_BOTH, RA_HYRULE_FIELD, { Tricks::Tag::NOVICE },
-              "Big Poe without Epona", "PoeDiff",
-              "Big Poes have a chance of appearing without Epona, you can shoot them quickly with only bow.");
-    OPT_TRICK(RT_KAK_TOWER_GS, RCQUEST_BOTH, RA_KAKARIKO_VILLAGE, { Tricks::Tag::INTERMEDIATE },
-              "Kakariko Tower GS with Jumpslash", "KakGSJS",
-              "Climb the tower as high as you can without touching the Gold Skulltula, then let go and jumpslash "
-              "immediately. By jump-slashing from as low on the ladder as possible to still hit the Skulltula, this "
-              "trick can be done without taking fall damage.");
-    OPT_TRICK(RT_KAK_CHILD_WINDMILL_POH, RCQUEST_BOTH, RA_KAKARIKO_VILLAGE, { Tricks::Tag::EXTREME },
-              "Windmill PoH as Child with Precise Jumpslash", "WndCJS",
-              "Can jump up to the spinning platform from below as child with a precise jumpslash timed with the "
-              "platforms rotation.");
-    OPT_TRICK(
-        RT_KAK_ROOFTOP_GS, RCQUEST_BOTH, RA_KAKARIKO_VILLAGE, { Tricks::Tag::ADVANCED },
-        "Kakariko Rooftop GS with Hover Boots", "KakGSHB",
-        "Take the Hover Boots from the entrance to Impa's House over to the rooftop of Skulltula House. From there, a "
-        "precise Hover Boots backwalk with backflip can be used to get onto a hill above the side of the village. And "
-        "then from there you can Hover onto Impa's rooftop to kill the Skulltula and backflip into the token.");
-    OPT_TRICK(RT_GY_POH, RCQUEST_BOTH, RA_THE_GRAVEYARD, { Tricks::Tag::INTERMEDIATE },
-              "Graveyard Freestanding PoH with Boomerang", "GYPoHRng",
-              "Using a precise moving setup you can obtain the Piece of Heart by having the Boomerang interact with it "
-              "along the return path.");
-    OPT_TRICK(
-        RT_GY_CHILD_DAMPE_RACE_POH, RCQUEST_BOTH, RA_THE_GRAVEYARD, { Tricks::Tag::NOVICE },
-        "Second Dampe Race as Child", "CDmpRace",
-        "It is possible to complete the second dampe race as child in under a minute, but it is a strict time limit.");
-    OPT_TRICK(RT_GY_SHADOW_FIRE_ARROWS, RCQUEST_BOTH, RA_THE_GRAVEYARD, { Tricks::Tag::EXPERT },
-              "Shadow Temple Entry with Fire Arrows", "FAEntry",
-              "It is possible to light all of the torches to open the Shadow Temple entrance with just Fire Arrows, "
-              "but you must be very quick, precise, and strategic with how you take your shots.");
-    OPT_TRICK(RT_DMT_SHIELDLESS_CLIMB, RCQUEST_BOTH, RA_DEATH_MOUNTAIN_TRAIL, { Tricks::Tag::NOVICE },
-              "Death Mountain Trail Child Climb Without Shield", "DMTCWoS",
-              "Child can make it past the eruption to reach DMT Summit without a Hylian Shield or Nayru's Love"
-              "by backwalking or simply taking damage.");
-    OPT_TRICK(RT_DMT_SOIL_GS, RCQUEST_BOTH, RA_DEATH_MOUNTAIN_TRAIL, { Tricks::Tag::INTERMEDIATE },
-              "Death Mountain Trail Soil GS without Destroying Boulder", "DMTSoil",
-              "Bugs will go into the soft soil even while the boulder is still blocking the entrance. Then, using a "
-              "precise moving setup you can kill the Gold Skulltula and obtain the token by having the Boomerang "
-              "interact with it along the return path.");
-    OPT_TRICK(RT_DMT_BOMBABLE, RCQUEST_BOTH, RA_DEATH_MOUNTAIN_TRAIL, { Tricks::Tag::INTERMEDIATE },
-              "Death Mountain Trail Chest with Strength", "DMTSTR",
-              "Child Link can blow up the wall using a nearby bomb flower. You must backwalk with the flower and then "
-              "quickly throw it toward the wall.");
-    OPT_TRICK(RT_DMT_HOVERS_LOWER_GS, RCQUEST_BOTH, RA_DEATH_MOUNTAIN_TRAIL, { Tricks::Tag::ADVANCED },
-              "Death Mountain Trail Lower Red Rock GS with Hover Boots", "DMTGSHB",
-              "After killing the Skulltula, the token can be collected without needing to destroy the rock by "
-              "backflipping down onto it with the Hover Boots. First use the Hover Boots to stand on a nearby fence, "
-              "and go for the Skulltula Token from there.");
-    OPT_TRICK(RT_DMT_BEAN_LOWER_GS, RCQUEST_BOTH, RA_DEATH_MOUNTAIN_TRAIL, { Tricks::Tag::EXPERT },
-              "Death Mountain Trail Lower Red Rock GS with Magic Bean", "DMTGSMB",
-              "After killing the Skulltula, the token can be collected without needing to destroy the rock by jumping "
-              "down onto it from the bean plant, midflight, with precise timing and positioning.");
-    OPT_TRICK(RT_DMT_JS_LOWER_GS, RCQUEST_BOTH, RA_DEATH_MOUNTAIN_TRAIL, { Tricks::Tag::INTERMEDIATE },
-              "Death Mountain Trail Lower Red Rock GS with Jumpslash", "DMTGSJS",
-              "After killing the Skulltula, the token can be collected without needing to destroy the rock by jump "
-              "slashing from a precise angle.");
-    OPT_TRICK(RT_DMT_CLIMB_HOVERS, RCQUEST_BOTH, RA_DEATH_MOUNTAIN_TRAIL, { Tricks::Tag::ADVANCED },
-              "Death Mountain Trail Climb with Hover Boots", "DMTBouHB",
-              "It is possible to use the Hover Boots to bypass needing to destroy the boulders blocking the path to "
-              "the top of Death Mountain.");
-    OPT_TRICK(
-        RT_DMT_UPPER_GS, RCQUEST_BOTH, RA_DEATH_MOUNTAIN_TRAIL, { Tricks::Tag::NOVICE },
-        "Death Mountain Trail Upper Red Rock GS with Backflip", "DMTGSBF",
-        "After killing the Skulltula, the token can be collected by backflipping into the rock at the correct angle.");
+              "LWNaviD");
+    OPT_TRICK(RT_LW_GS_BEAN, RCQUEST_BOTH, RA_THE_LOST_WOODS, { Tricks::Tag::INTERMEDIATE }, "LWGSHS");
+    OPT_TRICK(RT_HC_STORMS_GS, RCQUEST_BOTH, RA_HYRULE_CASTLE, { Tricks::Tag::INTERMEDIATE }, "HCGrGSRng");
+    OPT_TRICK(RT_HF_BIG_POE_WITHOUT_EPONA, RCQUEST_BOTH, RA_HYRULE_FIELD, { Tricks::Tag::NOVICE }, "PoeDiff");
+    OPT_TRICK(RT_KAK_TOWER_GS, RCQUEST_BOTH, RA_KAKARIKO_VILLAGE, { Tricks::Tag::INTERMEDIATE }, "KakGSJS");
+    OPT_TRICK(RT_KAK_CHILD_WINDMILL_POH, RCQUEST_BOTH, RA_KAKARIKO_VILLAGE, { Tricks::Tag::EXTREME }, "WndCJS");
+    OPT_TRICK(RT_KAK_ROOFTOP_GS, RCQUEST_BOTH, RA_KAKARIKO_VILLAGE, { Tricks::Tag::ADVANCED }, "KakGSHB");
+    OPT_TRICK(RT_GY_POH, RCQUEST_BOTH, RA_THE_GRAVEYARD, { Tricks::Tag::INTERMEDIATE }, "GYPoHRng");
+    OPT_TRICK(RT_GY_CHILD_DAMPE_RACE_POH, RCQUEST_BOTH, RA_THE_GRAVEYARD, { Tricks::Tag::NOVICE }, "CDmpRace");
+    OPT_TRICK(RT_GY_SHADOW_FIRE_ARROWS, RCQUEST_BOTH, RA_THE_GRAVEYARD, { Tricks::Tag::EXPERT }, "FAEntry");
+    OPT_TRICK(RT_DMT_SHIELDLESS_CLIMB, RCQUEST_BOTH, RA_DEATH_MOUNTAIN_TRAIL, { Tricks::Tag::NOVICE }, "DMTCWoS");
+    OPT_TRICK(RT_DMT_SOIL_GS, RCQUEST_BOTH, RA_DEATH_MOUNTAIN_TRAIL, { Tricks::Tag::INTERMEDIATE }, "DMTSoil");
+    OPT_TRICK(RT_DMT_BOMBABLE, RCQUEST_BOTH, RA_DEATH_MOUNTAIN_TRAIL, { Tricks::Tag::INTERMEDIATE }, "DMTSTR");
+    OPT_TRICK(RT_DMT_HOVERS_LOWER_GS, RCQUEST_BOTH, RA_DEATH_MOUNTAIN_TRAIL, { Tricks::Tag::ADVANCED }, "DMTGSHB");
+    OPT_TRICK(RT_DMT_BEAN_LOWER_GS, RCQUEST_BOTH, RA_DEATH_MOUNTAIN_TRAIL, { Tricks::Tag::EXPERT }, "DMTGSMB");
+    OPT_TRICK(RT_DMT_JS_LOWER_GS, RCQUEST_BOTH, RA_DEATH_MOUNTAIN_TRAIL, { Tricks::Tag::INTERMEDIATE }, "DMTGSJS");
+    OPT_TRICK(RT_DMT_CLIMB_HOVERS, RCQUEST_BOTH, RA_DEATH_MOUNTAIN_TRAIL, { Tricks::Tag::ADVANCED }, "DMTBouHB");
+    OPT_TRICK(RT_DMT_UPPER_GS, RCQUEST_BOTH, RA_DEATH_MOUNTAIN_TRAIL, { Tricks::Tag::NOVICE }, "DMTGSBF");
+
     // disabled for now, only applies when trade quest is not shuffled so there's a timer (currently not considered in
-    // logic) OPT_TRICK(RT_DMT_BOLERO_BIGGORON, RCQUEST_BOTH, RA_DEATH_MOUNTAIN_TRAIL, {Tricks::Tag::INTERMEDIATE},
-    // "Deliver Eye Drops with Bolero of Fire", "Playing a warp song normally causes a trade item to spoil immediately,
-    // however, it is possible use Bolero to reach Biggoron and still deliver the Eye Drops before they spoil. If you do
-    // not wear the Goron Tunic, the heat timer inside the crater will override the trade item\'s timer. When you exit
-    // to Death Mountain Trail you will have one second to show the Eye Drops before they expire. You can get extra time
-    // to show the Eye Drops if you warp immediately upon receiving them. If you don't have many hearts, you may have to
-    // reset the heat timer by quickly dipping in and out of Darunia\'s chamber or quickly equipping and unequipping the
-    // Goron Tunic. This trick does not apply if \"Randomize Warp Song Destinations\" is enabled, or if the settings are
-    // such that trade items do not need to be delivered within a time limit.");
-    OPT_TRICK(RT_GC_POT, RCQUEST_BOTH, RA_GORON_CITY, { Tricks::Tag::ADVANCED },
-              "Goron City Spinning Pot PoH with Bombchu", "GorPotChu",
-              "A Bombchu can be used to stop the spinning pot, but it can be quite finicky to get it to work.");
-    OPT_TRICK(RT_GC_POT_STRENGTH, RCQUEST_BOTH, RA_GORON_CITY, { Tricks::Tag::INTERMEDIATE },
-              "Goron City Spinning Pot PoH with Strength", "GorPotStr",
-              "Allows for stopping the Goron City Spinning Pot using a Bomb Flower alone, requiring strength in lieu "
-              "of inventory explosives.");
-    OPT_TRICK(RT_GC_ROLLING_STRENGTH, RCQUEST_BOTH, RA_GORON_CITY, { Tricks::Tag::INTERMEDIATE },
-              "Rolling Goron (Hot Rodder Goron) as Child with Strength", "GorStrC",
-              "Use the Bomb Flower on the stairs or near Medigoron. Timing is tight, especially without backwalking.");
-    OPT_TRICK(RT_GC_LEFTMOST, RCQUEST_BOTH, RA_GORON_CITY, { Tricks::Tag::ADVANCED },
-              "Goron City Maze Left Chest with Hover Boots", "GCMazHB",
-              "A precise backwalk starting from on top of the crate and ending with a precisely-timed backflip can "
-              "reach this chest without needing either the Hammer or Silver Gauntlets.");
-    OPT_TRICK(RT_GC_GROTTO, RCQUEST_BOTH, RA_GORON_CITY, { Tricks::Tag::ADVANCED },
-              "Goron City Grotto with Hookshot While Taking Damage", "GorGroHS",
-              "It is possible to reach the Goron City Grotto by quickly using the Hookshot while in the midst of "
-              "taking damage from the lava floor.");
-    OPT_TRICK(RT_GC_LINK_GORON_DINS, RCQUEST_BOTH, RA_GORON_CITY, { Tricks::Tag::NOVICE },
-              "Stop Link the Goron with Din\'s Fire", "GorDinA", "The timing is quite awkward.");
-    OPT_TRICK(RT_DMC_HOVER_BEAN_POH, RCQUEST_BOTH, RA_DEATH_MOUNTAIN_CRATER, { Tricks::Tag::NOVICE },
-              "Crater\'s Bean PoH with Hover Boots", "DMCHB",
-              "Hover from the base of the bridge near Goron City and walk up the very steep slope.");
-    OPT_TRICK(RT_DMC_BOLERO_JUMP, RCQUEST_BOTH, RA_DEATH_MOUNTAIN_CRATER, { Tricks::Tag::EXTREME },
-              "Death Mountain Crater Jump to Bolero", "DMCBolJump",
-              "As Adult, using a shield to drop a pot while you have the perfect speed and position, the pot can push "
-              "you that little extra distance you need to jump across the gap in the bridge.");
-    OPT_TRICK(RT_DMC_BOULDER_JS, RCQUEST_BOTH, RA_DEATH_MOUNTAIN_CRATER, { Tricks::Tag::NOVICE },
-              "Death Mountain Crater Upper to Lower with Hammer", "DMCHam",
-              "With the Hammer, you can jumpslash the rock twice in the same jump in order to destroy it before you "
-              "fall into the lava.");
-    OPT_TRICK(RT_DMC_BOULDER_SKIP, RCQUEST_BOTH, RA_DEATH_MOUNTAIN_CRATER, { Tricks::Tag::INTERMEDIATE },
-              "Death Mountain Crater Upper to Lower Boulder Skip", "DMCULJmp",
-              "As adult, With careful positioning, you can jump to the ledge where the boulder is, then use repeated "
-              "ledge grabs to shimmy to a climbable ledge. This trick supersedes \"Death Mountain Crater Upper to "
-              "Lower with Hammer\".");
-    OPT_TRICK(RT_ZR_LOWER, RCQUEST_BOTH, RA_ZORAS_RIVER, { Tricks::Tag::INTERMEDIATE },
-              "Zora\'s River Lower Freestanding PoH as Adult with Nothing", "ZRLJmp",
-              "Adult can reach this PoH with a precise jump, no Hover Boots required.");
-    OPT_TRICK(RT_ZR_UPPER, RCQUEST_BOTH, RA_ZORAS_RIVER, { Tricks::Tag::INTERMEDIATE },
-              "Zora\'s River Upper Freestanding PoH as Adult with Nothing", "ZRUJmp",
-              "Adult can reach this PoH with a precise jump, no Hover Boots required.");
-    OPT_TRICK(RT_ZR_HOVERS, RCQUEST_BOTH, RA_ZORAS_RIVER, { Tricks::Tag::NOVICE },
-              "Zora\'s Domain Entry with Hover Boots", "ZRZDHB", "Can hover behind the waterfall as adult.");
-    OPT_TRICK(RT_ZR_CUCCO, RCQUEST_BOTH, RA_ZORAS_RIVER, { Tricks::Tag::NOVICE }, "Zora\'s Domain Entry with Cucco",
-              "ZRZDCuc", "You can fly behind the waterfall with a Cucco as child.");
-    OPT_TRICK(RT_ZD_KING_ZORA_SKIP, RCQUEST_BOTH, RA_ZORAS_DOMAIN, { Tricks::Tag::INTERMEDIATE },
-              "Skip King Zora as Adult with Nothing", "Mweep",
-              "With a precise jump as adult, it is possible to get on the fence next to King Zora from the front to "
-              "access Zora's Fountain.");
-    OPT_TRICK(RT_ZD_GS, RCQUEST_BOTH, RA_ZORAS_DOMAIN, { Tricks::Tag::INTERMEDIATE },
-              "Zora\'s Domain GS with No Additional Items", "ZDGS",
-              "A precise jumpslash can kill the Skulltula and recoil back onto the top of the frozen waterfall. To "
-              "kill it, the logic normally guarantees one of Hookshot, Bow, or Magic.");
+    // logic)
+
+    // OPT_TRICK(RT_DMT_BOLERO_BIGGORON, RCQUEST_BOTH, RA_DEATH_MOUNTAIN_TRAIL, { Tricks::Tag::INTERMEDIATE });
+
+    OPT_TRICK(RT_GC_POT, RCQUEST_BOTH, RA_GORON_CITY, { Tricks::Tag::ADVANCED }, "GorPotChu");
+    OPT_TRICK(RT_GC_POT_STRENGTH, RCQUEST_BOTH, RA_GORON_CITY, { Tricks::Tag::INTERMEDIATE }, "GorPotStr");
+    OPT_TRICK(RT_GC_ROLLING_STRENGTH, RCQUEST_BOTH, RA_GORON_CITY, { Tricks::Tag::INTERMEDIATE }, "GorStrC");
+    OPT_TRICK(RT_GC_LEFTMOST, RCQUEST_BOTH, RA_GORON_CITY, { Tricks::Tag::ADVANCED }, "GCMazHB");
+    OPT_TRICK(RT_GC_GROTTO, RCQUEST_BOTH, RA_GORON_CITY, { Tricks::Tag::ADVANCED }, "GorGroHS");
+    OPT_TRICK(RT_GC_LINK_GORON_DINS, RCQUEST_BOTH, RA_GORON_CITY, { Tricks::Tag::NOVICE }, "GorDinA");
+    OPT_TRICK(RT_DMC_HOVER_BEAN_POH, RCQUEST_BOTH, RA_DEATH_MOUNTAIN_CRATER, { Tricks::Tag::NOVICE }, "DMCHB");
+    OPT_TRICK(RT_DMC_BOLERO_JUMP, RCQUEST_BOTH, RA_DEATH_MOUNTAIN_CRATER, { Tricks::Tag::EXTREME }, "DMCBolJump");
+    OPT_TRICK(RT_DMC_BOULDER_JS, RCQUEST_BOTH, RA_DEATH_MOUNTAIN_CRATER, { Tricks::Tag::NOVICE }, "DMCHam");
+    OPT_TRICK(RT_DMC_BOULDER_SKIP, RCQUEST_BOTH, RA_DEATH_MOUNTAIN_CRATER, { Tricks::Tag::INTERMEDIATE }, "DMCULJmp");
+    OPT_TRICK(RT_ZR_LOWER, RCQUEST_BOTH, RA_ZORAS_RIVER, { Tricks::Tag::INTERMEDIATE }, "ZRLJmp");
+    OPT_TRICK(RT_ZR_UPPER, RCQUEST_BOTH, RA_ZORAS_RIVER, { Tricks::Tag::INTERMEDIATE }, "ZRUJmp");
+    OPT_TRICK(RT_ZR_HOVERS, RCQUEST_BOTH, RA_ZORAS_RIVER, { Tricks::Tag::NOVICE }, "ZRZDHB");
+    OPT_TRICK(RT_ZR_CUCCO, RCQUEST_BOTH, RA_ZORAS_RIVER, { Tricks::Tag::NOVICE }, "ZRZDCuc");
+    OPT_TRICK(RT_ZD_KING_ZORA_SKIP, RCQUEST_BOTH, RA_ZORAS_DOMAIN, { Tricks::Tag::INTERMEDIATE }, "Mweep");
+    OPT_TRICK(RT_ZD_GS, RCQUEST_BOTH, RA_ZORAS_DOMAIN, { Tricks::Tag::INTERMEDIATE }, "ZDGS");
     OPT_TRICK(RT_ZF_GREAT_FAIRY_WITHOUT_EXPLOSIVES, RCQUEST_BOTH, RA_ZORAS_FOUNTAIN, { Tricks::Tag::NOVICE },
-              "Zora\'s Fountain Great Fairy without Explosives", "ZFGFStr2",
-              "It's possible to use silver gauntlets to pick up the silver rock and hammer to break the rock below it, "
-              "allowing you to ledge grab the edge of the hole and get past the breakable wall (hammer can't break the "
-              "wall itself).");
-    OPT_TRICK(RT_LH_LAB_WALL_GS, RCQUEST_BOTH, RA_LAKE_HYLIA, { Tricks::Tag::NOVICE },
-              "Lake Hylia Lab Wall GS with Jumpslash", "LHGSJS",
-              "The jumpslash to actually collect the token is somewhat precise.");
-    OPT_TRICK(RT_LH_LAB_DIVING, RCQUEST_BOTH, RA_LAKE_HYLIA, { Tricks::Tag::NOVICE },
-              "Lake Hylia Lab Dive without Gold Scale", "LabHS",
-              "Remove the Iron Boots in the midst of Hookshotting the underwater crate.");
-    OPT_TRICK(RT_LH_WATER_HOOKSHOT, RCQUEST_BOTH, RA_LAKE_HYLIA, { Tricks::Tag::INTERMEDIATE },
-              "Water Temple Entry without Iron Boots using Hookshot", "WTEntHS",
-              "When entering Water Temple using Gold Scale instead of Iron Boots, the Longshot is usually used to be "
-              "able to hit the switch and open the gate. But, by standing in a particular spot, the switch can be hit "
-              "with only the reach of the Hookshot.");
-    OPT_TRICK(RT_GV_CRATE_HOVERS, RCQUEST_BOTH, RA_GERUDO_VALLEY, { Tricks::Tag::INTERMEDIATE },
-              "Gerudo Valley Crate PoH as Adult with Hover Boots", "GVPoHHB",
-              "From the far side of Gerudo Valley, a precise Hover Boots movement and jump-slash recoil can allow "
-              "adult to reach the ledge with the crate PoH without needing Longshot. You will take fall damage.");
-    OPT_TRICK(RT_GV_CHILD_TENT, RCQUEST_BOTH, RA_GERUDO_VALLEY, { Tricks::Tag::NOVICE },
-              "Gerudo Valley Enter Carpenter's Tent as Child", "GVTent",
-              "The loading zone for Carpenter's Tent is accessible to child.");
-    OPT_TRICK(RT_GV_CHILD_CUCCO_JUMP, RCQUEST_BOTH, RA_GERUDO_VALLEY, { Tricks::Tag::INTERMEDIATE },
-              "Gerudo Valley Jump Fence with Cucco", "GVCUC",
-              "Using cucco as child, it's possible to jumpslash over the gate.");
-    OPT_TRICK(RT_GV_HOOKSHOT_BRIDGE, RCQUEST_BOTH, RA_GERUDO_VALLEY, { Tricks::Tag::ADVANCED },
-              "Gerudo Valley Bridge with only Hookshot", "GVHSBrg",
-              "Using Hookshot Extension and a precise setup, you can cross the broken bridge in Gerudo Valley with "
-              "only a Hookshot.");
-    OPT_TRICK(RT_PASS_GUARDS_WITH_NOTHING, RCQUEST_BOTH, RA_GERUDO_FORTRESS, { Tricks::Tag::NOVICE },
-              "Sneak Past Moving Gerudo Guards with No Items", "Guards",
-              "The logic normally guarantees Bow or Hookshot to stun them from a distance,"
-              "but every moving guard can be passed with basic movement and AI manipulation");
-    OPT_TRICK(RT_GF_WASTELAND_GATE_SIDEHOP_SKIP, RCQUEST_BOTH, RA_GERUDO_FORTRESS, { Tricks::Tag::NOVICE },
-              "Gerudo\'s Fortress Gate Skip with Sidehop", "GFHWC",
-              "You can sidehop out of bounds from the tower, then sidehop again on the other side of the gate.\n\n"
-              "This is easiest and most useful for Child, but Adult can also do this to skip the Gerudo Jabber Nut.");
+              "ZFGFStr2");
+    OPT_TRICK(RT_LH_LAB_WALL_GS, RCQUEST_BOTH, RA_LAKE_HYLIA, { Tricks::Tag::NOVICE }, "LHGSJS");
+    OPT_TRICK(RT_LH_LAB_DIVING, RCQUEST_BOTH, RA_LAKE_HYLIA, { Tricks::Tag::NOVICE }, "LabHS");
+    OPT_TRICK(RT_LH_WATER_HOOKSHOT, RCQUEST_BOTH, RA_LAKE_HYLIA, { Tricks::Tag::INTERMEDIATE }, "WTEntHS");
+    OPT_TRICK(RT_GV_CRATE_HOVERS, RCQUEST_BOTH, RA_GERUDO_VALLEY, { Tricks::Tag::INTERMEDIATE }, "GVPoHHB");
+    OPT_TRICK(RT_GV_CHILD_TENT, RCQUEST_BOTH, RA_GERUDO_VALLEY, { Tricks::Tag::NOVICE }, "GVTent");
+    OPT_TRICK(RT_GV_CHILD_CUCCO_JUMP, RCQUEST_BOTH, RA_GERUDO_VALLEY, { Tricks::Tag::INTERMEDIATE }, "GVCUC");
+    OPT_TRICK(RT_GV_HOOKSHOT_BRIDGE, RCQUEST_BOTH, RA_GERUDO_VALLEY, { Tricks::Tag::ADVANCED }, "GVCUC");
+    OPT_TRICK(RT_PASS_GUARDS_WITH_NOTHING, RCQUEST_BOTH, RA_GERUDO_FORTRESS, { Tricks::Tag::NOVICE }, "Guards");
+    OPT_TRICK(RT_GF_WASTELAND_GATE_SIDEHOP_SKIP, RCQUEST_BOTH, RA_GERUDO_FORTRESS, { Tricks::Tag::NOVICE }, "GFHWC");
     OPT_TRICK(RT_GF_ADULT_SKIP_WASTELAND_GATE, RCQUEST_BOTH, RA_GERUDO_FORTRESS, { Tricks::Tag::INTERMEDIATE },
-              "Gerudo\'s Fortress Skip Wasteland Gate as Adult", "GFHWA",
-              "As adult a precise jumpslash out of bounds with hoverboots from above the jail can be used to get past "
-              "the gate.\n\n"
-              "This can also be used to reach the tower and lower the gate for child without climb.");
-    OPT_TRICK(RT_GF_WARRIOR_WITH_DIFFICULT_WEAPON, RCQUEST_BOTH, RA_GERUDO_FORTRESS, { Tricks::Tag::NOVICE },
-              "Gerudo\'s Fortress Warriors with Difficult Weapons", "GWDiff",
-              "Warriors can be defeated with Slingshot or Bombchus.");
+              "GFHWA");
+    OPT_TRICK(RT_GF_WARRIOR_WITH_DIFFICULT_WEAPON, RCQUEST_BOTH, RA_GERUDO_FORTRESS, { Tricks::Tag::NOVICE }, "GWDiff");
     OPT_TRICK(RT_GF_LEDGE_CLIP_INTO_GTG, RCQUEST_BOTH, RA_GERUDO_FORTRESS, { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH },
-              "Ledge Clip into Training Ground", "GTGLdgClp",
-              "Adult Link can use a ledge clip to enter Gerudo Training Ground without Gerudo Card.");
+              "GTGLdgClp");
+
     // disabled for now, can't check for being able to use bunny hood & bunny hood speedup is currently completely
-    // decoupled from rando OPT_TRICK(RT_HW_BUNNY_CROSSING, RCQUEST_BOTH, RA_HAUNTED_WASTELAND, {Tricks::Tag::NOVICE},
-    // "Wasteland Crossing with Bunny Hood", "You can beat the quicksand by using the increased speed of the Bunny Hood.
-    // Note that jumping to the carpet merchant as child typically requires a fairly precise jumpslash.");
-    OPT_TRICK(RT_HW_CROSSING, RCQUEST_BOTH, RA_HAUNTED_WASTELAND, { Tricks::Tag::INTERMEDIATE },
-              "Wasteland Crossing without Hover Boots or Longshot", "RvrSand",
-              "You can beat the quicksand by backwalking across it in a specific way. Note that jumping to the carpet "
-              "merchant as child typically requires a fairly precise jumpslash.");
-    OPT_TRICK(RT_LENS_HW, RCQUEST_BOTH, RA_HAUNTED_WASTELAND, { Tricks::Tag::INTERMEDIATE }, "Lensless Wasteland",
-              "HWNoLoT",
-              "By memorizing the path, you can travel through the Wasteland without using the Lens of Truth to see the "
-              "Poe. The equivalent trick for going in reverse through the Wasteland is \"Reverse Wasteland\".");
-    OPT_TRICK(
-        RT_HW_REVERSE, RCQUEST_BOTH, RA_HAUNTED_WASTELAND, { Tricks::Tag::INTERMEDIATE }, "Reverse Wasteland", "RevHW",
-        "By memorizing the path, you can travel through the Wasteland in reverse. Note that jumping to the carpet "
-        "merchant as child typically requires a fairly precise jumpslash. The equivalent trick for going forward "
-        "through the Wasteland is \"Lensless Wasteland\". To cross the river of sand with no additional items, be sure "
-        "to also enable \"Wasteland Crossing without Hover Boots or Longshot\". Unless all overworld entrances are "
-        "randomized, Child Link will not be expected to do anything at Gerudo's Fortress.");
-    OPT_TRICK(RT_COLOSSUS_GS, RCQUEST_BOTH, RA_DESERT_COLOSSUS, { Tricks::Tag::NOVICE },
-              "Colossus Hill GS with Hookshot", "ColGSHS",
-              "Somewhat precise. If you kill enough Leevers you can get enough of a break to take some time to aim "
-              "more carefully.");
-    OPT_TRICK(RT_DEKU_BASEMENT_GS, RCQUEST_VANILLA, RA_DEKU_TREE, { Tricks::Tag::NOVICE },
-              "Deku Tree Basement Vines GS with Jumpslash", "DTGSJS", "Can be defeated by doing a precise jumpslash.");
-    OPT_TRICK(RT_DEKU_B1_SKIP, RCQUEST_BOTH, RA_DEKU_TREE, { Tricks::Tag::INTERMEDIATE },
-              "Deku Tree Basement without Slingshot", "B1Skip",
-              "A precise jump can be used to skip needing to use the Slingshot to go around B1 of the Deku Tree. If "
-              "used with the \"Closed Forest\" setting, a Slingshot will not be guaranteed to exist somewhere inside "
-              "the Forest. This trick applies to both Vanilla and Master Quest.");
-    OPT_TRICK(RT_DEKU_B1_BOW_WEBS, RCQUEST_VANILLA, RA_DEKU_TREE, { Tricks::Tag::NOVICE },
-              "Deku Tree Basement Web to Gohma with Bow", "DTWebBow",
-              "All spider web walls in the Deku Tree basement can be burnt as adult with just a bow by shooting "
-              "through torches. This trick only applies to the circular web leading to Gohma; the two vertical webs "
-              "are always in logic. Backflip onto the chest near the torch at the bottom of the vine wall. With "
-              "precise positioning you can shoot through the torch to the right edge of the circular web. This allows "
-              "completion of adult Deku Tree with no fire source.");
-    OPT_TRICK(RT_DEKU_B1_BACKFLIP_OVER_SPIKED_LOG, RCQUEST_VANILLA, RA_DEKU_TREE, { Tricks::Tag::NOVICE },
-              "Deku Tree Basement Backflip over Spiked Log", "DTLogBF",
-              "Allows backflipping over the spiked log in the Deku Tree basement in Vanilla. Only relevant if "
-              "\"Shuffle Swim\" is enabled.");
-    OPT_TRICK(RT_DEKU_MQ_COMPASS_GS, RCQUEST_MQ, RA_DEKU_TREE, { Tricks::Tag::NOVICE },
-              "Deku Tree MQ Compass Room GS Boulders with Just Hammer", "DTGSHam",
-              "Climb to the top of the vines, then let go and jumpslash immediately to destroy the boulders using the "
-              "Hammer, without needing to spawn a Song of Time block.");
-    OPT_TRICK(RT_DEKU_MQ_LOG, RCQUEST_MQ, RA_DEKU_TREE, { Tricks::Tag::NOVICE },
-              "Deku Tree MQ Roll Under the Spiked Log", "DTLogRol",
-              "You can get past the spiked log by rolling to briefly shrink your hitbox. As adult, the timing is a bit "
-              "more precise.");
-    OPT_TRICK(RT_DC_SCARECROW_GS, RCQUEST_VANILLA, RA_DODONGOS_CAVERN, { Tricks::Tag::NOVICE },
-              "Dodongo\'s Cavern Scarecrow GS with Armos Statue", "DCArmos",
-              "You can jump off an Armos Statue to reach the alcove with the Gold Skulltula. It takes quite a long "
-              "time to pull the statue the entire way. The jump to the alcove can be a bit picky when done as child.");
-    OPT_TRICK(RT_DC_VINES_GS, RCQUEST_VANILLA, RA_DODONGOS_CAVERN, { Tricks::Tag::NOVICE },
-              "Dodongo\'s Cavern Vines GS from Below with Longshot", "DCGSLS",
-              "The vines upon which this Skulltula rests are one-sided collision. You can use the Longshot to get it "
-              "from below, by shooting it through the vines, bypassing the need to lower the staircase.");
-    OPT_TRICK(RT_DC_STAIRS_WITH_BOW, RCQUEST_VANILLA, RA_DODONGOS_CAVERN, { Tricks::Tag::NOVICE },
-              "Dodongo\'s Cavern Stairs with Bow", "DCStaBow",
-              "The Bow can be used to knock down the stairs with two well-timed shots.");
-    OPT_TRICK(RT_DC_SLINGSHOT_SKIP, RCQUEST_VANILLA, RA_DODONGOS_CAVERN, { Tricks::Tag::EXPERT },
-              "Dodongo\'s Cavern Child Slingshot Skips", "DCSliSkp",
-              "With precise platforming, child can cross the platforms while the flame circles are there. When "
-              "enabling this trick, it's recommended that you also enable the Adult variant: \"Dodongo's Cavern Spike "
-              "Trap Room Jump without Hover Boots\".");
-    OPT_TRICK(RT_DC_SCRUB_ROOM, RCQUEST_VANILLA, RA_DODONGOS_CAVERN, { Tricks::Tag::NOVICE },
-              "Dodongo\'s Cavern Two Scrub Room with Strength", "DCSrbStr",
-              "With help from a conveniently-positioned block, Adult can quickly carry a Bomb Flower over to destroy "
-              "the mud wall blocking the room with two Deku Scrubs.");
-    OPT_TRICK(RT_DC_HAMMER_FLOOR, RCQUEST_BOTH, RA_DODONGOS_CAVERN, { Tricks::Tag::NOVICE },
-              "Dodongo\'s Cavern Smash the Boss Lobby Floor", "KDHamFl",
-              "The bombable floor before King Dodongo can be destroyed with Hammer if hit in the very center. This is "
-              "only relevant with Shuffle Boss Entrances or if Dodongo's Cavern is MQ and either variant of "
-              "\"Dodongo's Cavern MQ Light the Eyes with Strength\" is on.");
-    OPT_TRICK(RT_DC_DODONGO_CHU, RCQUEST_BOTH, RA_DODONGOS_CAVERN, { Tricks::Tag::ADVANCED },
-              "Dodongo\'s Cavern Dodongo with Only Bombchus", "KDChu",
-              "With precise timing you can feed King Dodongo a bombchu during a backflip");
-    OPT_TRICK(RT_DC_MQ_STAIRS_WITH_ONLY_STRENGTH, RCQUEST_MQ, RA_DODONGOS_CAVERN, { Tricks::Tag::NOVICE },
-              "Dodongo\'s Cavern MQ Stairs With Only Strength", "DCStaStr",
-              "Taking a bomb from the back can be used to lower stairs without using stick to drop bomb from wall.");
-    OPT_TRICK(RT_DC_MQ_CHILD_BOMBS, RCQUEST_MQ, RA_DODONGOS_CAVERN, { Tricks::Tag::ADVANCED },
-              "Dodongo\'s Cavern MQ Early Bomb Bag Area as Child", "DCLobyJS",
-              "With a precise jumpslash from above, you can reach the Bomb Bag area as only child without needing a "
-              "Slingshot. You will take fall damage.");
-    OPT_TRICK(RT_DC_MQ_CHILD_EYES, RCQUEST_MQ, RA_DODONGOS_CAVERN, { Tricks::Tag::EXPERT },
-              "Dodongo\'s Cavern MQ Light the Eyes with Strength as Child", "DCEyeStrC",
-              "If you move very quickly, it is possible to use the bomb flower at the top of the room to light the "
-              "eyes. To perform this trick as child is significantly more difficult than adult. The player is also "
-              "expected to complete the DC back area without explosives, including getting past the Armos wall to the "
-              "switch for the boss door.");
-    OPT_TRICK(
-        RT_DC_MQ_ADULT_EYES, RCQUEST_MQ, RA_DODONGOS_CAVERN, { Tricks::Tag::ADVANCED },
-        "Dodongo\'s Cavern MQ Light the Eyes with Strength as Adult", "DCEyeStrA",
-        "If you move very quickly, it is possible to use the bomb flower at the top of the room to light the eyes.");
-    OPT_TRICK(
-        RT_DC_EYES_CHU, RCQUEST_BOTH, RA_DODONGOS_CAVERN, { Tricks::Tag::ADVANCED },
-        "Dodongo\'s Cavern Light the Eyes with Bombchus", "DCEyeChu",
-        "You can light the dodongo head's eyes with bombchus from the main room, allowing instant access to the end "
-        "of the dungeon.");
-    OPT_TRICK(RT_JABU_BOSS_HOVER, RCQUEST_VANILLA, RA_JABU_JABUS_BELLY, { Tricks::Tag::INTERMEDIATE },
-              "Jabu Near Boss Room with Hover Boots", "JbuBoxHB",
-              "A box for the blue switch can be carried over by backwalking with one while the elevator is at its "
-              "peak. Alternatively, you can skip transporting a box by quickly rolling from the switch and opening the "
-              "door before it closes. However, the timing for this is very tight.");
-    OPT_TRICK(
-        RT_JABU_NEAR_BOSS_RANGED, RCQUEST_BOTH, RA_JABU_JABUS_BELLY, { Tricks::Tag::NOVICE },
-        "Jabu Near Boss Ceiling Switch/GS without Boomerang or Explosives", "JbuBosPrj",
-        "Vanilla Jabu: From near the entrance into the room, you can hit the switch that opens the door to the boss "
-        "room using a precisely-aimed use of the Slingshot, Bow, or Longshot. As well, if you climb to the top of the "
-        "vines you can stand on the right edge of the platform and shoot around the glass. From this distance, even "
-        "the Hookshot can reach the switch. This trick is only relevant if \"Shuffle Boss Entrances\" is enabled. MQ "
-        "Jabu: A Gold Skulltula Token can be collected with Longshot using the same methods as hitting the switch in "
-        "Vanilla.");
+    // decoupled from rando
+
+    // OPT_TRICK(RT_HW_BUNNY_CROSSING, RCQUEST_BOTH, RA_HAUNTED_WASTELAND, { Tricks::Tag::NOVICE });
+
+    OPT_TRICK(RT_HW_CROSSING, RCQUEST_BOTH, RA_HAUNTED_WASTELAND, { Tricks::Tag::INTERMEDIATE }, "RvrSand");
+    OPT_TRICK(RT_LENS_HW, RCQUEST_BOTH, RA_HAUNTED_WASTELAND, { Tricks::Tag::INTERMEDIATE }, "HWNoLoT");
+    OPT_TRICK(RT_HW_REVERSE, RCQUEST_BOTH, RA_HAUNTED_WASTELAND, { Tricks::Tag::INTERMEDIATE }, "RevHW");
+    OPT_TRICK(RT_COLOSSUS_GS, RCQUEST_BOTH, RA_DESERT_COLOSSUS, { Tricks::Tag::NOVICE }, "ColGSHS");
+    OPT_TRICK(RT_DEKU_BASEMENT_GS, RCQUEST_VANILLA, RA_DEKU_TREE, { Tricks::Tag::NOVICE }, "DTGSJS");
+    OPT_TRICK(RT_DEKU_B1_SKIP, RCQUEST_BOTH, RA_DEKU_TREE, { Tricks::Tag::INTERMEDIATE }, "B1Skip");
+    OPT_TRICK(RT_DEKU_B1_BOW_WEBS, RCQUEST_VANILLA, RA_DEKU_TREE, { Tricks::Tag::NOVICE }, "DTWebBow");
+    OPT_TRICK(RT_DEKU_B1_BACKFLIP_OVER_SPIKED_LOG, RCQUEST_VANILLA, RA_DEKU_TREE, { Tricks::Tag::NOVICE }, "DTLogBF");
+    OPT_TRICK(RT_DEKU_MQ_COMPASS_GS, RCQUEST_MQ, RA_DEKU_TREE, { Tricks::Tag::NOVICE }, "DTGSHam");
+    OPT_TRICK(RT_DEKU_MQ_LOG, RCQUEST_MQ, RA_DEKU_TREE, { Tricks::Tag::NOVICE }, "DTLogRol");
+    OPT_TRICK(RT_DC_SCARECROW_GS, RCQUEST_VANILLA, RA_DODONGOS_CAVERN, { Tricks::Tag::NOVICE }, "DCArmos");
+    OPT_TRICK(RT_DC_VINES_GS, RCQUEST_VANILLA, RA_DODONGOS_CAVERN, { Tricks::Tag::NOVICE }, "DCGSLS");
+    OPT_TRICK(RT_DC_STAIRS_WITH_BOW, RCQUEST_VANILLA, RA_DODONGOS_CAVERN, { Tricks::Tag::NOVICE }, "DCStaBow");
+    OPT_TRICK(RT_DC_SLINGSHOT_SKIP, RCQUEST_VANILLA, RA_DODONGOS_CAVERN, { Tricks::Tag::EXPERT }, "DCSliSkp");
+    OPT_TRICK(RT_DC_SCRUB_ROOM, RCQUEST_VANILLA, RA_DODONGOS_CAVERN, { Tricks::Tag::NOVICE }, "DCSrbStr");
+    OPT_TRICK(RT_DC_HAMMER_FLOOR, RCQUEST_BOTH, RA_DODONGOS_CAVERN, { Tricks::Tag::NOVICE }, "KDHamFl");
+    OPT_TRICK(RT_DC_DODONGO_CHU, RCQUEST_BOTH, RA_DODONGOS_CAVERN, { Tricks::Tag::ADVANCED }, "KDChu");
+    OPT_TRICK(RT_DC_MQ_STAIRS_WITH_ONLY_STRENGTH, RCQUEST_MQ, RA_DODONGOS_CAVERN, { Tricks::Tag::NOVICE }, "DCStaStr");
+    OPT_TRICK(RT_DC_MQ_CHILD_BOMBS, RCQUEST_MQ, RA_DODONGOS_CAVERN, { Tricks::Tag::ADVANCED }, "DCLobyJS");
+    OPT_TRICK(RT_DC_MQ_CHILD_EYES, RCQUEST_MQ, RA_DODONGOS_CAVERN, { Tricks::Tag::EXPERT }, "DCEyeStrC");
+    OPT_TRICK(RT_DC_MQ_ADULT_EYES, RCQUEST_MQ, RA_DODONGOS_CAVERN, { Tricks::Tag::ADVANCED }, "DCEyeStrA");
+    OPT_TRICK(RT_DC_EYES_CHU, RCQUEST_BOTH, RA_DODONGOS_CAVERN, { Tricks::Tag::ADVANCED }, "DCEyeChu");
+    OPT_TRICK(RT_JABU_BOSS_HOVER, RCQUEST_VANILLA, RA_JABU_JABUS_BELLY, { Tricks::Tag::INTERMEDIATE }, "JbuBoxHB");
+    OPT_TRICK(RT_JABU_NEAR_BOSS_RANGED, RCQUEST_BOTH, RA_JABU_JABUS_BELLY, { Tricks::Tag::NOVICE }, "JbuBosPrj");
     OPT_TRICK(RT_JABU_NEAR_BOSS_EXPLOSIVES, RCQUEST_VANILLA, RA_JABU_JABUS_BELLY, { Tricks::Tag::INTERMEDIATE },
-              "Jabu Near Boss Ceiling Switch with Explosives", "JbuBosExp",
-              "You can hit the switch that opens the door to the boss room using a precisely-aimed Bombchu. Also, "
-              "using the Hover Boots, adult can throw a Bomb at the switch. This trick is only relevant if \"Shuffle "
-              "Boss Entrances\" is enabled.");
-    OPT_TRICK(RT_JABU_B1_CUBE_HOVER, RCQUEST_VANILLA, RA_JABU_JABUS_BELLY, { Tricks::Tag::NOVICE },
-              "Jabu B1 Pass Cube with Hover Boots", "JbuJigHB",
-              "It's possible reach pots past cube with only hover boots.");
-    OPT_TRICK(RT_LENS_JABU_MQ, RCQUEST_MQ, RA_JABU_JABUS_BELLY, { Tricks::Tag::NOVICE },
-              "Jabu MQ without Lens of Truth", "JbuLoT", "Removes the requirements for the Lens of Truth in Jabu MQ.");
-    OPT_TRICK(RT_JABU_MQ_RANG_JUMP, RCQUEST_MQ, RA_JABU_JABUS_BELLY, { Tricks::Tag::ADVANCED },
-              "Jabu MQ Compass Chest with Boomerang", "JbuSwtRng",
-              "Boomerang can reach the cow switch to spawn the chest by targeting the cow, jumping off of the ledge "
-              "where the chest spawns, and throwing the Boomerang in midair.");
-    OPT_TRICK(RT_JABU_MQ_SOT_GS, RCQUEST_MQ, RA_JABU_JABUS_BELLY, { Tricks::Tag::INTERMEDIATE },
-              "Jabu MQ Song of Time Block GS with Boomerang", "JbuSoTRng",
-              "Allow the Boomerang to return to you through the Song of Time block to grab the token.");
-    OPT_TRICK(RT_JABU_BARINADE_POTS, RCQUEST_BOTH, RA_JABU_JABUS_BELLY, { Tricks::Tag::ADVANCED },
-              "Jabu Barinade with Pots", "BariPot",
-              "Barinade can be damaged with pots, requiring only boomerang to defeat.");
-    OPT_TRICK(RT_LENS_BOTW, RCQUEST_VANILLA, RA_BOTTOM_OF_THE_WELL, { Tricks::Tag::NOVICE },
-              "Bottom of the Well without Lens of Truth", "BWLoT",
-              "Removes the requirements for the Lens of Truth in Bottom of the Well.");
+              "JbuBosExp");
+    OPT_TRICK(RT_JABU_B1_CUBE_HOVER, RCQUEST_VANILLA, RA_JABU_JABUS_BELLY, { Tricks::Tag::NOVICE }, "JbuJigHB");
+    OPT_TRICK(RT_LENS_JABU_MQ, RCQUEST_MQ, RA_JABU_JABUS_BELLY, { Tricks::Tag::NOVICE }, "JbuLoT");
+    OPT_TRICK(RT_JABU_MQ_RANG_JUMP, RCQUEST_MQ, RA_JABU_JABUS_BELLY, { Tricks::Tag::ADVANCED }, "JbuSwtRng");
+    OPT_TRICK(RT_JABU_MQ_SOT_GS, RCQUEST_MQ, RA_JABU_JABUS_BELLY, { Tricks::Tag::INTERMEDIATE }, "JbuSoTRng");
+    OPT_TRICK(RT_JABU_BARINADE_POTS, RCQUEST_BOTH, RA_JABU_JABUS_BELLY, { Tricks::Tag::ADVANCED }, "BariPot");
+    OPT_TRICK(RT_LENS_BOTW, RCQUEST_VANILLA, RA_BOTTOM_OF_THE_WELL, { Tricks::Tag::NOVICE }, "BWLoT");
     OPT_TRICK(RT_BOTTOM_OF_THE_WELL_NAVI_DIVE, RCQUEST_BOTH, RA_BOTTOM_OF_THE_WELL,
-              { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH }, "Bottom of the Well Navi dive", "KakNviD",
-              "You need Deku Sticks or Kokiri Sword to dive with Navi for entering Bottom of the Well.");
-    OPT_TRICK(RT_BOTW_CHILD_DEADHAND, RCQUEST_BOTH, RA_BOTTOM_OF_THE_WELL, { Tricks::Tag::NOVICE },
-              "Child Dead Hand without Kokiri Sword", "DHDiff", "Requires 9 sticks or 5 jumpslashes.");
-    OPT_TRICK(RT_BOTW_BASEMENT, RCQUEST_VANILLA, RA_BOTTOM_OF_THE_WELL, { Tricks::Tag::NOVICE },
-              "Bottom of the Well Map Chest with Strength & Sticks", "BWBmbFl",
-              "The chest in the basement can be reached with strength by doing a jumpslash with a lit stick to access "
-              "the Bomb Flowers.");
+              { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH }, "KakNviD");
+    OPT_TRICK(RT_BOTW_CHILD_DEADHAND, RCQUEST_BOTH, RA_BOTTOM_OF_THE_WELL, { Tricks::Tag::NOVICE }, "DHDiff");
+    OPT_TRICK(RT_BOTW_BASEMENT, RCQUEST_VANILLA, RA_BOTTOM_OF_THE_WELL, { Tricks::Tag::NOVICE }, "BWBmbFl");
     // RANDOTODO with doorsanity, this can be relevant in Vanilla
-    OPT_TRICK(RT_BOTW_PITS, RCQUEST_MQ, RA_BOTTOM_OF_THE_WELL, { Tricks::Tag::NOVICE },
-              "Bottom of the Well MQ Jump Over the Pits", "BWPitJmp",
-              "While the pits in Bottom of the Well don't allow you to jump just by running straight at them, you can "
-              "still get over them by side-hopping or backflipping across. With explosives, this allows you to access "
-              "the central areas without Zelda's Lullaby. With Zelda's Lullaby, it allows you to access the west inner "
-              "room without explosives.");
-    OPT_TRICK(RT_BOTW_MQ_DEADHAND_KEY, RCQUEST_MQ, RA_BOTTOM_OF_THE_WELL, { Tricks::Tag::NOVICE },
-              "Bottom of the Well MQ Dead Hand Freestanding Key with Boomerang", "BWKeyRng",
-              "Boomerang can fish the item out of the rubble without needing explosives to blow it up.");
-    OPT_TRICK(RT_FOREST_FIRST_GS, RCQUEST_VANILLA, RA_FOREST_TEMPLE, { Tricks::Tag::NOVICE },
-              "Forest Temple First Room GS with Difficult-to-Use Weapons", "FT1stGS",
-              "Allows killing this Skulltula with Sword or Sticks by jumpslashing it as you let go from the vines. "
-              "You can avoid taking fall damage by recoiling onto the tree. Also allows killing it as Child with a "
-              "Bomb throw. It's much more difficult to use a Bomb as child due to Child Link's shorter height.");
-    OPT_TRICK(RT_FOREST_COURTYARD_EAST_GS, RCQUEST_VANILLA, RA_FOREST_TEMPLE, { Tricks::Tag::NOVICE },
-              "Forest Temple East Courtyard GS with Boomerang", "FTGSRng",
-              "Precise Boomerang throws can allow child to kill the Skulltula and collect the token.");
-    OPT_TRICK(RT_FOREST_VINES, RCQUEST_BOTH, RA_FOREST_TEMPLE, { Tricks::Tag::NOVICE },
-              "Forest Temple East Courtyard Vines with Hookshot", "FTVineHS",
-              "The vines in Forest Temple leading to where the well drain switch is in the standard form can be barely "
-              "reached with just the Hookshot. Applies to MQ also.");
-    OPT_TRICK(RT_FOREST_COURTYARD_LEDGE, RCQUEST_BOTH, RA_FOREST_TEMPLE, { Tricks::Tag::NOVICE },
-              "Forest Temple NE Courtyard Ledge with Hover Boots", "FTLdgHB",
-              "With precise Hover Boots movement you can fall down to this ledge from upper balconies. If done "
-              "precisely enough, it is not necessary to take fall damage. In MQ, this skips a Longshot requirement. In "
-              "Vanilla, this can skip a Hookshot requirement in entrance randomizer.");
-    OPT_TRICK(RT_FOREST_DOORFRAME, RCQUEST_BOTH, RA_FOREST_TEMPLE, { Tricks::Tag::ADVANCED },
-              "Forest Temple East Courtyard Door Frame with Hover Boots", "FTDoorHB",
-              "A precise Hover Boots movement from the upper balconies in this courtyard can be used to get on top of "
-              "the door frame. Applies to both Vanilla and Master Quest. In Vanilla, from on top the door frame you "
-              "can summon Pierre, allowing you to access the falling ceiling room early. In Master Quest, this allows "
-              "you to obtain the GS on the door frame as adult without Hookshot or Song of Time.");
-    OPT_TRICK(RT_FOREST_OUTSIDE_BACKDOOR, RCQUEST_BOTH, RA_FOREST_TEMPLE, { Tricks::Tag::ADVANCED },
-              "Forest Temple Outside Backdoor with Jumpslash", "FTBlkJS",
-              "A jumpslash recoil can be used to reach the ledge in the block puzzle room that leads to the west "
-              "courtyard. This skips a potential Hover Boots requirement in Vanilla, and it can sometimes apply in MQ "
-              "as well. This trick can be performed as both ages.");
+    OPT_TRICK(RT_BOTW_PITS, RCQUEST_MQ, RA_BOTTOM_OF_THE_WELL, { Tricks::Tag::NOVICE }, "BWPitJmp");
+    OPT_TRICK(RT_BOTW_MQ_DEADHAND_KEY, RCQUEST_MQ, RA_BOTTOM_OF_THE_WELL, { Tricks::Tag::NOVICE }, "BWKeyRng");
+    OPT_TRICK(RT_FOREST_FIRST_GS, RCQUEST_VANILLA, RA_FOREST_TEMPLE, { Tricks::Tag::NOVICE }, "FT1stGS");
+    OPT_TRICK(RT_FOREST_COURTYARD_EAST_GS, RCQUEST_VANILLA, RA_FOREST_TEMPLE, { Tricks::Tag::NOVICE }, "FTGSRng");
+    OPT_TRICK(RT_FOREST_VINES, RCQUEST_BOTH, RA_FOREST_TEMPLE, { Tricks::Tag::NOVICE }, "FTVineHS");
+    OPT_TRICK(RT_FOREST_COURTYARD_LEDGE, RCQUEST_BOTH, RA_FOREST_TEMPLE, { Tricks::Tag::NOVICE }, "FTLdgHB");
+    OPT_TRICK(RT_FOREST_DOORFRAME, RCQUEST_BOTH, RA_FOREST_TEMPLE, { Tricks::Tag::ADVANCED }, "FTDoorHB");
+    OPT_TRICK(RT_FOREST_OUTSIDE_BACKDOOR, RCQUEST_BOTH, RA_FOREST_TEMPLE, { Tricks::Tag::ADVANCED }, "FTBlkJS");
     OPT_TRICK(RT_FOREST_COURTYARD_HEARTS_BOOMERANG, RCQUEST_BOTH, RA_FOREST_TEMPLE, { Tricks::Tag::NOVICE },
-              "Forest Temple Courtyard Hearts with Boomerang", "FTHrtRng",
-              "A well aimed boomerang from the water's edge can reach the hearts from ground level. If unable to swim, "
-              "you can back away from the water while the boomerang is returning so the hearts land on the ground.");
-    OPT_TRICK(RT_FOREST_WELL_SWIM, RCQUEST_BOTH, RA_FOREST_TEMPLE, { Tricks::Tag::NOVICE },
-              "Swim Through Forest Temple Well with Hookshot", "FTSwim",
-              "Shoot the vines in the well as low and as far to the right as possible, and then immediately swim under "
-              "the ceiling to the right. This is usually only useful in Master Quest.");
-    OPT_TRICK(RT_FOREST_MQ_BLOCK_PUZZLE, RCQUEST_MQ, RA_FOREST_TEMPLE, { Tricks::Tag::NOVICE },
-              "Skip Forest Temple MQ Block Puzzle with Bombchu", "FTBlkChu",
-              "Send the Bombchu straight up the center of the wall directly to the left upon entering the room.");
+              "FTHrtRng");
+    OPT_TRICK(RT_FOREST_WELL_SWIM, RCQUEST_MQ, RA_FOREST_TEMPLE, { Tricks::Tag::NOVICE }, "FTSwim");
+    OPT_TRICK(RT_FOREST_MQ_BLOCK_PUZZLE, RCQUEST_MQ, RA_FOREST_TEMPLE, { Tricks::Tag::NOVICE }, "FTBlkChu");
     // Child with hovers cannot do this from the lower floor, and must go to the upper floor which needs goron bracelet.
     // Adult can do this with hammer and KSword, But child cannot.
-    OPT_TRICK(RT_FOREST_MQ_JS_HALLWAY_SWITCH, RCQUEST_MQ, RA_FOREST_TEMPLE, { Tricks::Tag::NOVICE },
-              "Forest Temple MQ Twisted Hallway Switch with Jumpslash", "FTTwstJS",
-              "The switch to twist the hallway can be hit with a jumpslash through the glass block. To get in front "
-              "of the switch, either use the Hover Boots or hit the shortcut switch at the top of the room and jump "
-              "from the glass blocks that spawn. Sticks can be used as child, but the Kokiri Sword is too short to "
-              "reach through the glass.");
+    OPT_TRICK(RT_FOREST_MQ_JS_HALLWAY_SWITCH, RCQUEST_MQ, RA_FOREST_TEMPLE, { Tricks::Tag::NOVICE }, "FTTwstJS");
     OPT_TRICK(RT_FOREST_MQ_HOOKSHOT_HALLWAY_SWITCH, RCQUEST_MQ, RA_FOREST_TEMPLE, { Tricks::Tag::INTERMEDIATE },
-              "Forest Temple MQ Twisted Hallway Switch with Hookshot", "FTTwstHS",
-              "There's a very small gap between the glass block and the wall. Through that gap you can hookshot the "
-              "target on the ceiling.");
+              "FTTwstHS");
     OPT_TRICK(RT_FOREST_MQ_RANG_HALLWAY_SWITCH, RCQUEST_MQ, RA_FOREST_TEMPLE, { Tricks::Tag::INTERMEDIATE },
-              "Forest Temple MQ Twisted Hallway Switch with Boomerang", "FTTwstRng",
-              "The Boomerang can return to Link through walls, allowing child to hit the hallway switch. This can be "
-              "used to allow adult to pass through later, or in conjunction with \"Forest Temple Outside Backdoor with "
-              "Jumpslash\".");
-    OPT_TRICK(RT_FOREST_MQ_CHILD_DOORFRAME, RCQUEST_MQ, RA_FOREST_TEMPLE, { Tricks::Tag::NOVICE },
-              "Forest Temple MQ Doorframe GS as Child without Boomerang", "FTDoorC",
-              "If Adult burns the courtyard webbing with Fire Arrows (which is a permanent flag in Ship Rando) "
-              "then Child can climb up to the balconies and jump to the SoT block from the railing, "
-              "and from there either roll jump or jump against the wall to reach the doorframe.\n"
-              "From there, The GS can be killed with a crouchstab, explosives or other ranged weapon "
-              "and collected by climbing down.");
+              "FTTwstRng");
+    OPT_TRICK(RT_FOREST_MQ_CHILD_DOORFRAME, RCQUEST_MQ, RA_FOREST_TEMPLE, { Tricks::Tag::NOVICE }, "FTDoorC");
     // Is also used in MQ logic, but has no practical effect there as of now
-    OPT_TRICK(RT_FIRE_SOT, RCQUEST_VANILLA, RA_FIRE_TEMPLE, { Tricks::Tag::INTERMEDIATE },
-              "Fire Temple Song of Time Room GS without Song of Time", "FISoTSkp",
-              "A precise jump can be used to reach this room.");
-    OPT_TRICK(RT_FIRE_STRENGTH, RCQUEST_VANILLA, RA_FIRE_TEMPLE, { Tricks::Tag::INTERMEDIATE },
-              "Fire Temple Climb without Strength", "FIStrSkp",
-              "A precise jump can be used to skip pushing the block.");
-    OPT_TRICK(RT_FIRE_SCARECROW, RCQUEST_VANILLA, RA_FIRE_TEMPLE, { Tricks::Tag::EXPERT },
-              "Fire Temple East Tower without Scarecrow\'s Song", "PixelShot",
-              "Also known as \"Pixelshot\". The Longshot can reach the target on the elevator itself, allowing you to "
-              "skip needing to spawn the scarecrow.");
-    OPT_TRICK(RT_FIRE_SKIP_FLAME_WALLS, RCQUEST_BOTH, RA_FIRE_TEMPLE, { Tricks::Tag::INTERMEDIATE },
-              "Fire Temple Skip Flame Walls", "FIRWAL",
-              "If you move quickly you can sneak past the edge of a flame wall before rises up to block you. To "
-              "do it without taking damage is more precise. Allows progress without needing either a Small Key or "
-              "Hover Boots. In MQ if either \"Fire Temple MQ Lower to Upper Lizalfos Maze with Hover Boots\" or "
-              "\"with Precise Jump\" are enabled, this also allows progress deeper into the dungeon without Hookshot.\n"
-              "Child can sidehop past fire wall in MQ lobby.");
-    OPT_TRICK(RT_FIRE_MQ_NEAR_BOSS, RCQUEST_MQ, RA_FIRE_TEMPLE, { Tricks::Tag::NOVICE },
-              "Fire Temple MQ Chest Near Boss without Breaking Crate", "FICrtTor",
-              "The hitbox for the torch extends a bit outside of the crate. Shoot a flaming arrow at the side of the "
-              "crate to light the torch without needing to get over there and break the crate.");
-    OPT_TRICK(RT_FIRE_MQ_BLOCKED_CHEST, RCQUEST_MQ, RA_FIRE_TEMPLE, { Tricks::Tag::INTERMEDIATE },
-              "Fire Temple MQ Big Lava Room Blocked Door without Hookshot", "FIHSSkp",
-              "There is a gap between the hitboxes of the flame wall in the big lava room. If you know where this gap "
-              "is located, you can jump through it and skip needing to use the Hookshot. To do this without taking "
-              "damage is more precise.");
-    OPT_TRICK(
-        RT_FIRE_MQ_BK_CHEST, RCQUEST_MQ, RA_FIRE_TEMPLE, { Tricks::Tag::INTERMEDIATE },
-        "Fire Temple MQ Boss Key Chest without Bow", "FIBowSkp",
-        "It is possible to light both of the timed torches to unbar the door to the boss key chest's room with just "
-        "Din's Fire if you move very quickly between the two torches. It is also possible to unbar the door with just "
-        "Din's Fire by abusing an oversight in the way the game counts how many torches have been lit.");
-    OPT_TRICK(RT_FIRE_MQ_CLIMB, RCQUEST_MQ, RA_FIRE_TEMPLE, { Tricks::Tag::NOVICE },
-              "Fire Temple MQ Climb without Fire Source", "FIFirSkp",
-              "You can use the Hover Boots to hover around to the climbable wall, skipping the need to use a fire "
-              "source and spawn a Hookshot target.");
-    OPT_TRICK(RT_FIRE_MQ_MAZE_SIDE_ROOM, RCQUEST_MQ, RA_FIRE_TEMPLE, { Tricks::Tag::NOVICE },
-              "Fire Temple MQ Lizalfos Maze Side Room without Box", "FIBoxSkp",
-              "You can walk from the blue switch to the door and quickly open the door before the bars reclose. This "
-              "skips needing to reach the upper sections of the maze to get a box to place on the switch.");
-    OPT_TRICK(RT_FIRE_MQ_MAZE_HOVERS, RCQUEST_MQ, RA_FIRE_TEMPLE, { Tricks::Tag::NOVICE },
-              "Fire Temple MQ Lower to Upper Lizalfos Maze with Hover Boots", "FIMazHB",
-              "Use the Hover Boots off of a crate to climb to the upper maze without needing to spawn and use the "
-              "Hookshot targets.");
-    OPT_TRICK(RT_FIRE_MQ_MAZE_JUMP, RCQUEST_MQ, RA_FIRE_TEMPLE, { Tricks::Tag::INTERMEDIATE },
-              "Fire Temple MQ Lower to Upper Lizalfos Maze with Precise Jump", "FIMazJmp",
-              "A precise jump off of a crate can be used to climb to the upper maze without needing to spawn and use "
-              "the Hookshot targets. This trick supersedes both \"Fire Temple MQ Lower to Upper Lizalfos Maze with "
-              "Hover Boots\" and \"Fire Temple MQ Lizalfos Maze Side Room without Box\".");
-    OPT_TRICK(RT_FIRE_MQ_ABOVE_MAZE_GS, RCQUEST_MQ, RA_FIRE_TEMPLE, { Tricks::Tag::INTERMEDIATE },
-              "Fire Temple MQ Above Flame Wall Maze GS from Below with Longshot", "FIGSLS",
-              "The floor of the room that contains this Skulltula is only solid from above. From the maze below, the "
-              "Longshot can be shot through the ceiling to obtain the token with two fewer small keys than normal.");
-    OPT_TRICK(RT_WATER_LONGSHOT_TORCH, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::NOVICE },
-              "Water Temple Torch Longshot", "WTTorLS",
-              "Stand on the eastern side of the central pillar and longshot the torches on the bottom level. Swim "
-              "through the corridor and float up to the top level. This allows access to this area and lower water "
-              "levels without Iron Boots. The majority of the tricks that allow you to skip Iron Boots in the Water "
-              "Temple are not going to be relevant unless this trick is first enabled.");
-    OPT_TRICK(RT_WATER_CRACKED_WALL_HOVERS, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::NOVICE },
-              "Water Temple Cracked Wall with Hover Boots", "WTCrkHB",
-              "With a midair side-hop while wearing the Hover Boots, you can reach the cracked wall without needing to "
-              "raise the water up to the middle level.");
-    OPT_TRICK(RT_WATER_CRACKED_WALL, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::INTERMEDIATE },
-              "Water Temple Cracked Wall with No Additional Items", "WTCrkJmp",
-              "A precise jumpslash (among other methods) will get you to the cracked wall without needing the Hover "
-              "Boots or to raise the water to the middle level. This trick supersedes \"Water Temple Cracked Wall with "
-              "Hover Boots\".");
-    OPT_TRICK(RT_WATER_BK_REGION, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::INTERMEDIATE },
-              "Water Temple Boss Key Region with Hover Boots", "WTBKHB",
-              "With precise Hover Boots movement it is possible to reach the boss key chest's region without needing "
-              "the Longshot. It is not necessary to take damage from the spikes. The Gold Skulltula Token in the "
-              "following room can also be obtained with just the Hover Boots.");
+    OPT_TRICK(RT_FIRE_SOT, RCQUEST_VANILLA, RA_FIRE_TEMPLE, { Tricks::Tag::INTERMEDIATE }, "FISoTSkp");
+    OPT_TRICK(RT_FIRE_STRENGTH, RCQUEST_VANILLA, RA_FIRE_TEMPLE, { Tricks::Tag::INTERMEDIATE }, "FIStrSkp");
+    OPT_TRICK(RT_FIRE_SCARECROW, RCQUEST_VANILLA, RA_FIRE_TEMPLE, { Tricks::Tag::EXPERT }, "PixelShot");
+    OPT_TRICK(RT_FIRE_SKIP_FLAME_WALLS, RCQUEST_VANILLA, RA_FIRE_TEMPLE, { Tricks::Tag::INTERMEDIATE }, "FIRWAL");
+    OPT_TRICK(RT_FIRE_MQ_NEAR_BOSS, RCQUEST_MQ, RA_FIRE_TEMPLE, { Tricks::Tag::NOVICE }, "FICrtTor");
+    OPT_TRICK(RT_FIRE_MQ_BLOCKED_CHEST, RCQUEST_MQ, RA_FIRE_TEMPLE, { Tricks::Tag::INTERMEDIATE }, "FIHSSkp");
+    OPT_TRICK(RT_FIRE_MQ_BK_CHEST, RCQUEST_MQ, RA_FIRE_TEMPLE, { Tricks::Tag::INTERMEDIATE }, "FIBowSkp");
+    OPT_TRICK(RT_FIRE_MQ_CLIMB, RCQUEST_MQ, RA_FIRE_TEMPLE, { Tricks::Tag::NOVICE }, "FIFirSkp");
+    OPT_TRICK(RT_FIRE_MQ_MAZE_SIDE_ROOM, RCQUEST_MQ, RA_FIRE_TEMPLE, { Tricks::Tag::NOVICE }, "FIBoxSkp");
+    OPT_TRICK(RT_FIRE_MQ_MAZE_HOVERS, RCQUEST_MQ, RA_FIRE_TEMPLE, { Tricks::Tag::NOVICE }, "FIMazHB");
+    OPT_TRICK(RT_FIRE_MQ_MAZE_JUMP, RCQUEST_MQ, RA_FIRE_TEMPLE, { Tricks::Tag::INTERMEDIATE }, "FIMazJmp");
+    OPT_TRICK(RT_FIRE_MQ_ABOVE_MAZE_GS, RCQUEST_MQ, RA_FIRE_TEMPLE, { Tricks::Tag::INTERMEDIATE }, "FIGSLS");
+    OPT_TRICK(RT_WATER_LONGSHOT_TORCH, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::NOVICE }, "WTTorLS");
+    OPT_TRICK(RT_WATER_CRACKED_WALL_HOVERS, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::NOVICE }, "WTCrkHB");
+    OPT_TRICK(RT_WATER_CRACKED_WALL, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::INTERMEDIATE }, "WTCrkJmp");
+    OPT_TRICK(RT_WATER_BK_REGION, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::INTERMEDIATE }, "WTBKHB");
     OPT_TRICK(RT_WATER_NORTH_BASEMENT_LEDGE_JUMP, RCQUEST_BOTH, RA_WATER_TEMPLE, { Tricks::Tag::INTERMEDIATE },
-              "Water Temple North Basement Ledge with Precise Jump", "WTBolLdg",
-              "In the northern basement there's a ledge from where, in Vanilla Water Temple, boulders roll out into "
-              "the room. Normally to jump directly to this ledge logically requires the Hover Boots, but with precise "
-              "jump, it can be done without them. This trick applies to both Vanilla and Master Quest.");
+              "WTBolLdg");
     // Also used in MQ logic, but won't be relevent unless a way to enter tower without irons exists (likely a clip +
     // swim)
-    OPT_TRICK(RT_WATER_FW_CENTRAL_GS, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::NOVICE },
-              "Water Temple Central Pillar GS with Farore\'s Wind", "WTGSFW",
-              "If you set Farore's Wind inside the central pillar and then return to that warp point after raising the "
-              "water to the highest level, you can obtain this Skulltula Token with Hookshot or Boomerang.");
-    OPT_TRICK(
-        RT_WATER_IRONS_CENTRAL_GS, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::NOVICE },
-        "Water Temple Central Pillar GS with Iron Boots", "WTGSIB",
-        "After opening the middle water level door into the central pillar, the door will stay unbarred so long as you "
-        "do not leave the room, even if you were to raise the water up to the highest level. With the Iron Boots to go "
-        "through the door after the water has been raised, you can obtain the Skulltula Token with the Hookshot.");
-    OPT_TRICK(RT_WATER_CENTRAL_BOW, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::ADVANCED },
-              "Water Temple Central Bow Target without Longshot or Hover Boots", "WTBowJmp",
-              "A very precise Bow shot can hit the eye switch from the floor above. Then, you can jump down into the "
-              "hallway and make through it before the gate closes. It can also be done as child, using the Slingshot "
-              "instead of the Bow.");
-    OPT_TRICK(
-        RT_WATER_HOOKSHOT_FALLING_PLATFORM_GS, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::NOVICE },
-        "Water Temple Falling Platform Room GS with Hookshot", "WTWfalHS",
-        "If you stand on the very edge of the platform, this Gold Skulltula can be obtained with only the Hookshot.");
-    OPT_TRICK(
-        RT_WATER_RANG_FALLING_PLATFORM_GS, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::INTERMEDIATE },
-        "Water Temple Falling Platform Room GS with Boomerang", "WTWfalRng",
-        "If you stand on the very edge of the platform, this Gold Skulltula can be obtained with only the Boomerang.");
-    OPT_TRICK(RT_WATER_RIVER_GS, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::INTERMEDIATE },
-              "Water Temple River GS without Iron Boots", "WTRvrLS",
-              "Standing on the exposed ground toward the end of the river, a precise Longshot use can obtain the "
-              "token. The Longshot cannot normally reach far enough to kill the Skulltula, however. You'll first have "
-              "to find some other way of killing it.");
-    OPT_TRICK(RT_WATER_DRAGON_JUMP_DIVE, RCQUEST_BOTH, RA_WATER_TEMPLE, { Tricks::Tag::NOVICE },
-              "Water Temple Dragon Statue Jump Dive", "WTDrgJmp",
-              "If you come into the dragon statue room from the serpent river, you can sidehop down from above and get "
-              "into the tunnel without needing either Iron Boots or a Scale. This trick applies to both Vanilla and "
-              "Master Quest. In Vanilla, you must shoot the switch from above with the Bow, and then quickly get "
-              "through the tunnel before the gate closes.");
-    OPT_TRICK(RT_WATER_ADULT_DRAGON, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::NOVICE },
-              "Water Temple Dragon Statue Switch from Above the Water as Adult", "WTDrgA",
-              "Normally you need both Hookshot and Iron Boots to hit the switch and swim through the tunnel to get to "
-              "the chest. But by hitting the switch from dry land, using one of Bombchus, Hookshot, or Bow, it is "
-              "possible to skip one or both of those requirements. After the gate has been opened, besides just using "
-              "the Iron Boots, a well-timed dive with at least the Silver Scale could be used to swim through the "
-              "tunnel. If coming from the serpent river, a jump dive can also be used to get into the tunnel.");
-    OPT_TRICK(RT_WATER_CHILD_DRAGON, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::ADVANCED },
-              "Water Temple Dragon Statue Switch from Above the Water as Child", "WTDrgC",
-              "It is possible for child to hit the switch from dry land using one of Bombchus, Slingshot or Boomerang. "
-              "Then, to get to the chest, child can dive through the tunnel using at least the Silver Scale. The "
-              "timing and positioning of this dive needs to be perfect to actually make it under the gate, and it all "
-              "needs to be done very quickly to be able to get through before the gate closes. Be sure to enable "
-              "\"Water Temple Dragon Statue Switch from Above the Water as Adult\" for adult's variant of this trick.");
-    OPT_TRICK(RT_WATER_MQ_CENTRAL_PILLAR, RCQUEST_MQ, RA_WATER_TEMPLE, { Tricks::Tag::NOVICE },
-              "Water Temple MQ Central Pillar with Fire Arrows", "WTCntFA",
-              "Slanted torches have misleading hitboxes. Whenever you see a slanted torch jutting out of the wall, you "
-              "can expect most or all of its hitbox is actually on the other side that wall. This can make slanted "
-              "torches very finicky to light when using arrows. The torches in the central pillar of MQ Water Temple "
-              "are a particularly egregious example. Logic normally expects Din's Fire and Song of Time.");
-    OPT_TRICK(
-        RT_WATER_IRON_BOOTS_LEDGE_GRAB, RCQUEST_BOTH, RA_WATER_TEMPLE, { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH },
-        "Water Temple Ledge Grab While Surfacing with Iron Boots", "IBSrfLG",
-        "Diving in front of ledge tapping B to swim up faster, then equipping iron boots while surfacing allows you to "
-        "ledge grab to the higher ground. This can be used to reach ledge to boss door and vanilla compass chest, or "
-        "MQ storage room");
-    OPT_TRICK(RT_WATER_INVISIBLE_HOOKSHOT_TARGET, RCQUEST_BOTH, RA_WATER_TEMPLE, { Tricks::Tag::NOVICE },
-              "Water Temple Invisible Hookshot Target", "WTTarg",
-              "Invisible hookshot geometry can be used in MQ to get over the gate that blocks you from going to this "
-              "Skulltula early, skipping a small key as well as needing Hovers or Scarecrow to reach the locked door.\n"
-              "In vanilla this can be used to get past without bronze scale.");
-    OPT_TRICK(RT_WATER_MORPHA_WITHOUT_HOOKSHOT, RCQUEST_BOTH, RA_WATER_TEMPLE, { Tricks::Tag::EXTREME },
-              "Water Temple Morpha without Hookshot", "MorphDiff",
-              "It is possible to slash at Morpha without hookshot.");
-    OPT_TRICK(RT_LENS_SHADOW, RCQUEST_VANILLA, RA_SHADOW_TEMPLE, { Tricks::Tag::NOVICE },
-              "Shadow Temple Stationary Objects without Lens of Truth", "STStLoT",
-              "Removes the requirements for the Lens of Truth in Shadow Temple for most areas in the dungeon except "
-              "for crossing the moving platform in the huge pit room and for fighting Bongo Bongo.");
-    OPT_TRICK(RT_LENS_SHADOW_PLATFORM, RCQUEST_VANILLA, RA_SHADOW_TEMPLE, { Tricks::Tag::NOVICE },
-              "Shadow Temple Invisible Moving Platform without Lens of Truth", "STMvLot",
-              "Removes the requirements for the Lens of Truth in Shadow Temple to cross the invisible moving platform "
-              "in the huge pit room in either direction.");
-    OPT_TRICK(RT_LENS_BONGO, RCQUEST_BOTH, RA_SHADOW_TEMPLE, { Tricks::Tag::NOVICE },
-              "Shadow Temple Bongo Bongo without Lens of Truth", "BNGLoT",
-              "Bongo Bongo can be defeated without the use of Lens of Truth, as the hands give a pretty good idea of "
-              "where the eye is.");
-    OPT_TRICK(RT_SHADOW_UMBRELLA_HOVER, RCQUEST_BOTH, RA_SHADOW_TEMPLE, { Tricks::Tag::EXPERT },
-              "Shadow Temple Stone Umbrella Skip", "STUmbSkp",
-              "A very precise Hover Boots movement from off of the lower chest can get you on top of the falling "
-              "spikes without needing to pull the block. Applies to both Vanilla and Master Quest.");
+    OPT_TRICK(RT_WATER_FW_CENTRAL_GS, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::NOVICE }, "WTGSFW");
+    OPT_TRICK(RT_WATER_IRONS_CENTRAL_GS, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::NOVICE }, "WTGSIB");
+    OPT_TRICK(RT_WATER_CENTRAL_BOW, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::ADVANCED }, "WTBowJmp");
+    OPT_TRICK(RT_WATER_HOOKSHOT_FALLING_PLATFORM_GS, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::NOVICE },
+              "WTWfalHS");
+    OPT_TRICK(RT_WATER_RANG_FALLING_PLATFORM_GS, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::INTERMEDIATE },
+              "WTWfalRng");
+    OPT_TRICK(RT_WATER_RIVER_GS, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::INTERMEDIATE }, "WTRvrLS");
+    OPT_TRICK(RT_WATER_DRAGON_JUMP_DIVE, RCQUEST_BOTH, RA_WATER_TEMPLE, { Tricks::Tag::NOVICE }, "WTDrgJmp");
+    OPT_TRICK(RT_WATER_ADULT_DRAGON, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::NOVICE }, "WTDrgA");
+    OPT_TRICK(RT_WATER_CHILD_DRAGON, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::ADVANCED }, "WTDrgC");
+    OPT_TRICK(RT_WATER_MQ_CENTRAL_PILLAR, RCQUEST_MQ, RA_WATER_TEMPLE, { Tricks::Tag::NOVICE }, "WTCntFA");
+    OPT_TRICK(RT_WATER_IRON_BOOTS_LEDGE_GRAB, RCQUEST_BOTH, RA_WATER_TEMPLE,
+              { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH }, "IBSrfLG");
+    OPT_TRICK(RT_WATER_INVISIBLE_HOOKSHOT_TARGET, RCQUEST_BOTH, RA_WATER_TEMPLE, { Tricks::Tag::NOVICE }, "WTTarg");
+    OPT_TRICK(RT_WATER_MORPHA_WITHOUT_HOOKSHOT, RCQUEST_BOTH, RA_WATER_TEMPLE, { Tricks::Tag::EXTREME }, "MorphDiff");
+    OPT_TRICK(RT_LENS_SHADOW, RCQUEST_VANILLA, RA_SHADOW_TEMPLE, { Tricks::Tag::NOVICE }, "STStLoT");
+    OPT_TRICK(RT_LENS_SHADOW_PLATFORM, RCQUEST_VANILLA, RA_SHADOW_TEMPLE, { Tricks::Tag::NOVICE }, "STMvLot");
+    OPT_TRICK(RT_LENS_BONGO, RCQUEST_BOTH, RA_SHADOW_TEMPLE, { Tricks::Tag::NOVICE }, "BNGLoT");
+    OPT_TRICK(RT_SHADOW_UMBRELLA_HOVER, RCQUEST_BOTH, RA_SHADOW_TEMPLE, { Tricks::Tag::EXPERT }, "STUmbSkp");
     OPT_TRICK(RT_SHADOW_UMBRELLA_CLIP, RCQUEST_BOTH, RA_SHADOW_TEMPLE, { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH },
-              "Shadow Temple Stone Umbrella Clip", "STUmbClp",
-              "Backflipping as the falling spikes fall clips above without needing any other requirements. "
-              "Applies to both Vanilla and Master Quest.");
-    OPT_TRICK(RT_SHADOW_UMBRELLA_GS, RCQUEST_BOTH, RA_SHADOW_TEMPLE, { Tricks::Tag::EXPERT },
-              "Shadow Temple Falling Spikes GS with Hover Boots", "STUmbHB",
-              "After killing the Skulltula, a very precise Hover Boots movement from off of the lower chest can get "
-              "you on top of the falling spikes without needing to pull the block. From there, another very precise "
-              "Hover Boots movement can be used to obtain the token without needing the Hookshot. Applies to both "
-              "Vanilla and Master Quest.");
-    OPT_TRICK(RT_SHADOW_FREESTANDING_KEY, RCQUEST_VANILLA, RA_SHADOW_TEMPLE, { Tricks::Tag::NOVICE },
-              "Shadow Temple Freestanding Key with Bombchu", "STPotChu",
-              "Release the Bombchu with good timing so that it explodes near the bottom of the pot.");
-    OPT_TRICK(RT_SHADOW_STATUE, RCQUEST_BOTH, RA_SHADOW_TEMPLE, { Tricks::Tag::INTERMEDIATE },
-              "Shadow Temple River Statue with Bombchu", "STStaChu",
-              "By sending a Bombchu around the edge of the gorge, you can knock down the statue without needing a Bow. "
-              "Applies in both Vanilla and MQ Shadow.");
-    OPT_TRICK(RT_SHADOW_BONGO, RCQUEST_BOTH, RA_SHADOW_TEMPLE, { Tricks::Tag::INTERMEDIATE },
-              "Shadow Temple Bongo Bongo without projectiles", "BngNoPrg",
-              "Using precise sword slashes, Bongo Bongo can be defeated without using projectiles. This is only "
-              "relevant in conjunction with Shadow Temple dungeon shortcuts or shuffled boss entrances.");
-    OPT_TRICK(RT_LENS_SHADOW_MQ, RCQUEST_MQ, RA_SHADOW_TEMPLE, { Tricks::Tag::NOVICE },
-              "Shadow Temple MQ Stationary Objects without Lens of Truth", "STMQStLoT",
-              "Removes the requirements for the Lens of Truth in Shadow Temple MQ for most areas in the dungeon. See "
-              "\"Shadow Temple MQ Invisible Moving Platform without Lens of Truth\", \"Shadow Temple MQ Invisible "
-              "Blades Silver Rupees without Lens of Truth\", \"Shadow Temple MQ 2nd Dead Hand without Lens of Truth\", "
-              "and \"Shadow Temple Bongo Bongo without Lens of Truth\" for exceptions.");
-    OPT_TRICK(RT_LENS_SHADOW_MQ_INVISIBLE_BLADES, RCQUEST_MQ, RA_SHADOW_TEMPLE, { Tricks::Tag::NOVICE },
-              "Shadow Temple MQ Invisible Blades Silver Rupees without Lens of Truth", "STBldLoT",
-              "Removes the requirement for the Lens of Truth or Nayru's Love in Shadow Temple MQ for the Invisible "
-              "Blades room Silver Rupee collection.");
-    OPT_TRICK(RT_LENS_SHADOW_MQ_PLATFORM, RCQUEST_MQ, RA_SHADOW_TEMPLE, { Tricks::Tag::NOVICE },
-              "Shadow Temple MQ Invisible Moving Platform without Lens of Truth", "STMQMvLot",
-              "Removes the requirements for the Lens of Truth in Shadow Temple MQ to cross the invisible moving "
-              "platform in the huge pit room in either direction.");
-    OPT_TRICK(RT_LENS_SHADOW_MQ_DEADHAND, RCQUEST_MQ, RA_SHADOW_TEMPLE, { Tricks::Tag::NOVICE },
-              "Shadow Temple MQ 2nd Dead Hand without Lens of Truth", "STDHLoT",
-              "Dead Hand spawns in a random spot within the room. Having Lens removes the hassle of having to comb the "
-              "room looking for his spawn location.");
-    OPT_TRICK(RT_SHADOW_MQ_GAP, RCQUEST_MQ, RA_SHADOW_TEMPLE, { Tricks::Tag::INTERMEDIATE },
-              "Shadow Temple MQ Truth Spinner Gap with Longshot", "STTSLS",
-              "You can Longshot a torch and jump-slash recoil onto the tongue. It works best if you Longshot the right "
-              "torch from the left side of the room.");
-    OPT_TRICK(
-        RT_SHADOW_MQ_INVISIBLE_BLADES, RCQUEST_MQ, RA_SHADOW_TEMPLE, { Tricks::Tag::INTERMEDIATE },
-        "Shadow Temple MQ Invisible Blades without Song of Time", "STSoTSkp",
-        "The Like Like can be used to boost you into the Silver Rupee or Recovery Hearts that normally require Song of "
-        "Time. This cannot be performed on OHKO since the Like Like does not boost you high enough if you die.");
-    OPT_TRICK(RT_SHADOW_MQ_HUGE_PIT, RCQUEST_MQ, RA_SHADOW_TEMPLE, { Tricks::Tag::INTERMEDIATE },
-              "Shadow Temple MQ Lower Huge Pit without Fire Source", "STPitJmp",
-              "Normally a frozen eye switch spawns some platforms that you can use to climb down, but there's actually "
-              "a small piece of ground that you can stand on that you can just jump down to.");
-    OPT_TRICK(
-        RT_SHADOW_MQ_WINDY_WALKWAY, RCQUEST_MQ, RA_SHADOW_TEMPLE, { Tricks::Tag::INTERMEDIATE },
-        "Shadow Temple MQ Windy Walkway Reverse without Hover Boots", "STWindSkp",
-        "It is possible to jump from the alcove in the windy hallway to the middle platform. There are two methods: "
-        "wait out the fan opposite the door and hold forward, or jump to the right to be pushed by the fan there "
-        "towards the platform ledge. Note that jumps of this distance are inconsistent, but still possible.");
-    OPT_TRICK(RT_LENS_SPIRIT, RCQUEST_VANILLA, RA_SPIRIT_TEMPLE, { Tricks::Tag::NOVICE },
-              "Spirit Temple without Lens of Truth", "SPLoT",
-              "Removes the requirements for the Lens of Truth in Spirit Temple.");
-    OPT_TRICK(RT_SPIRIT_CHILD_CHU, RCQUEST_VANILLA, RA_SPIRIT_TEMPLE, { Tricks::Tag::NOVICE },
-              "Spirit Temple Child Side Bridge with Bombchu", "SPBrgChu",
-              "A carefully-timed Bombchu can hit the switch.");
-    OPT_TRICK(RT_SPIRIT_WEST_LEDGE, RCQUEST_BOTH, RA_SPIRIT_TEMPLE, { Tricks::Tag::NOVICE },
-              "Spirit Temple Statue Room West Ledge Checks with Boomerang", "SPWeRng",
-              "By carefully walking onto the upper arm of the statue, it's possible to get a good angle on the "
-              "Gold Skulltula (In Vanilla) and the farthest pot (In MQ) to collect the checks with Boomerang. "
-              "The nearest pot in MQ can be reached from the forearm and is always in logic.");
-    OPT_TRICK(RT_SPIRIT_LOWER_ADULT_SWITCH, RCQUEST_VANILLA, RA_SPIRIT_TEMPLE, { Tricks::Tag::ADVANCED },
-              "Spirit Temple Lower Adult Switch with Bombs", "SPSwtBmb",
-              "A bomb can be used to hit the switch on the ceiling, but it must be thrown from a particular distance "
-              "away and with precise timing.");
-    OPT_TRICK(
-        RT_SPIRIT_STATUE_JUMP, RCQUEST_BOTH, RA_SPIRIT_TEMPLE, { Tricks::Tag::INTERMEDIATE },
-        "Spirit Temple Statue Room Jump from Hands to Upper Ledges", "SPHndJmp",
-        "A precise jump to obtain the following as adult without needing one of Hover Boots, or Hookshot (in Vanilla) "
-        "or Song of Time (in MQ): - Spirit Temple Statue Room Northeast Chest - Spirit Temple GS Lobby - Spirit Temple "
-        "MQ Central Chamber Top Left Pot (Left) - Spirit Temple MQ Central Chamber Top Left Pot (Right)");
+              "STUmbClp");
+    OPT_TRICK(RT_SHADOW_UMBRELLA_GS, RCQUEST_BOTH, RA_SHADOW_TEMPLE, { Tricks::Tag::EXPERT }, "STUmbHB");
+    OPT_TRICK(RT_SHADOW_FREESTANDING_KEY, RCQUEST_VANILLA, RA_SHADOW_TEMPLE, { Tricks::Tag::NOVICE }, "STPotChu");
+    OPT_TRICK(RT_SHADOW_STATUE, RCQUEST_BOTH, RA_SHADOW_TEMPLE, { Tricks::Tag::INTERMEDIATE }, "STStaChu");
+    OPT_TRICK(RT_SHADOW_BONGO, RCQUEST_BOTH, RA_SHADOW_TEMPLE, { Tricks::Tag::INTERMEDIATE }, "BngNoPrg");
+    OPT_TRICK(RT_LENS_SHADOW_MQ, RCQUEST_MQ, RA_SHADOW_TEMPLE, { Tricks::Tag::NOVICE }, "STMQStLoT");
+    OPT_TRICK(RT_LENS_SHADOW_MQ_INVISIBLE_BLADES, RCQUEST_MQ, RA_SHADOW_TEMPLE, { Tricks::Tag::NOVICE }, "STBldLoT");
+    OPT_TRICK(RT_LENS_SHADOW_MQ_PLATFORM, RCQUEST_MQ, RA_SHADOW_TEMPLE, { Tricks::Tag::NOVICE }, "STMQMvLot");
+    OPT_TRICK(RT_LENS_SHADOW_MQ_DEADHAND, RCQUEST_MQ, RA_SHADOW_TEMPLE, { Tricks::Tag::NOVICE }, "STDHLoT");
+    OPT_TRICK(RT_SHADOW_MQ_GAP, RCQUEST_MQ, RA_SHADOW_TEMPLE, { Tricks::Tag::INTERMEDIATE }, "STTSLS");
+    OPT_TRICK(RT_SHADOW_MQ_INVISIBLE_BLADES, RCQUEST_MQ, RA_SHADOW_TEMPLE, { Tricks::Tag::INTERMEDIATE }, "STSoTSkp");
+    OPT_TRICK(RT_SHADOW_MQ_HUGE_PIT, RCQUEST_MQ, RA_SHADOW_TEMPLE, { Tricks::Tag::INTERMEDIATE }, "STPitJmp");
+    OPT_TRICK(RT_SHADOW_MQ_WINDY_WALKWAY, RCQUEST_MQ, RA_SHADOW_TEMPLE, { Tricks::Tag::INTERMEDIATE }, "STWindSkp");
+    OPT_TRICK(RT_LENS_SPIRIT, RCQUEST_VANILLA, RA_SPIRIT_TEMPLE, { Tricks::Tag::NOVICE }, "SPLoT");
+    OPT_TRICK(RT_SPIRIT_CHILD_CHU, RCQUEST_VANILLA, RA_SPIRIT_TEMPLE, { Tricks::Tag::NOVICE }, "SPBrgChu");
+    OPT_TRICK(RT_SPIRIT_WEST_LEDGE, RCQUEST_BOTH, RA_SPIRIT_TEMPLE, { Tricks::Tag::NOVICE }, "SPWeRng");
+    OPT_TRICK(RT_SPIRIT_LOWER_ADULT_SWITCH, RCQUEST_VANILLA, RA_SPIRIT_TEMPLE, { Tricks::Tag::ADVANCED }, "SPSwtBmb");
+    OPT_TRICK(RT_SPIRIT_STATUE_JUMP, RCQUEST_BOTH, RA_SPIRIT_TEMPLE, { Tricks::Tag::INTERMEDIATE }, "SPHndJmp");
+
     // disabled since "Spirit Temple boss shortcuts" (pre-lowers the platform where you break the statues face) isn't a
-    // setting in ship OPT_TRICK(RT_SPIRIT_PLATFORM_HOOKSHOT, RCQUEST_VANILLA, RA_SPIRIT_TEMPLE,
-    // {Tricks::Tag::INTERMEDIATE}, "Spirit Temple Main Room Hookshot to Boss Platform", "Precise hookshot aiming at the
-    // platform chains can be used to reach the boss platform from the middle landings. Using a jumpslash immediately
-    // after reaching a chain makes aiming more lenient. Relevant only when Spirit Temple boss shortcuts are on.");
-    OPT_TRICK(RT_SPIRIT_MAP_CHEST, RCQUEST_VANILLA, RA_SPIRIT_TEMPLE, { Tricks::Tag::NOVICE },
-              "Spirit Temple Map Chest with Bow", "SPMapBow",
-              "To get a line of sight from the upper torch to the map chest torches, you must pull an Armos statue all "
-              "the way up the stairs.");
-    OPT_TRICK(RT_SPIRIT_SUN_CHEST, RCQUEST_VANILLA, RA_SPIRIT_TEMPLE, { Tricks::Tag::ADVANCED },
-              "Spirit Temple Sun Block Room Chest with Bow", "SPSUNBOW",
-              "Using the blocks in the room as platforms you can get lines of sight to all three torches. The timer on "
-              "the torches is quite short so you must move quickly in order to light all three.\n"
-              "A backflip can be used instead to light torches without pushing blocks.");
-    OPT_TRICK(
-        RT_SPIRIT_WALL, RCQUEST_VANILLA, RA_SPIRIT_TEMPLE, { Tricks::Tag::INTERMEDIATE },
-        "Spirit Temple Shifting Wall with No Additional Items", "SPWall",
-        "Logic normally guarantees a way of dealing with both the Beamos and the Walltula before climbing the wall.");
-    OPT_TRICK(RT_LENS_SPIRIT_MQ, RCQUEST_MQ, RA_SPIRIT_TEMPLE, { Tricks::Tag::NOVICE },
-              "Spirit Temple MQ without Lens of Truth", "SPMQLoT",
-              "Removes the requirements for the Lens of Truth in Spirit Temple MQ.");
-    OPT_TRICK(RT_SPIRIT_MQ_SUN_BLOCK_SOT, RCQUEST_MQ, RA_SPIRIT_TEMPLE, { Tricks::Tag::INTERMEDIATE },
-              "Spirit Temple MQ Sun Block Room as Child without Song of Time", "SPBluSkp",
-              "While adult can easily jump directly to the switch that unbars the door to the sun block room, child "
-              "Link cannot make the jump without spawning a Song of Time block to jump from. You can skip this by "
-              "throwing the crate down onto the switch from above, which does unbar the door, however the crate "
-              "immediately breaks, so you must move quickly to get through the door before it closes back up.");
-    OPT_TRICK(RT_SPIRIT_MQ_SUN_BLOCK_GS, RCQUEST_MQ, RA_SPIRIT_TEMPLE, { Tricks::Tag::INTERMEDIATE },
-              "Spirit Temple MQ Sun Block Room GS with Boomerang", "SPBlkGS",
-              "Throw the Boomerang in such a way that it curves through the side of the glass block to hit the Gold "
-              "Skulltula.");
-    OPT_TRICK(RT_SPIRIT_MQ_LOWER_ADULT, RCQUEST_MQ, RA_SPIRIT_TEMPLE, { Tricks::Tag::INTERMEDIATE },
-              "Spirit Temple MQ Lower Adult without Fire Arrows", "SPTorDin",
-              "By standing in a precise position it is possible to light two of the torches with a single use of "
-              "Din\'s Fire. This saves enough time to be able to light all three torches with only Din\'s Fire.");
-    OPT_TRICK(RT_SPIRIT_MQ_FROZEN_EYE, RCQUEST_MQ, RA_SPIRIT_TEMPLE, { Tricks::Tag::NOVICE },
-              "Spirit Temple MQ Frozen Eye Switch without Fire", "SPFEBow",
-              "You can melt the ice by shooting an arrow through a torch. The only way to find a line of sight for "
-              "this shot is to first spawn a Song of Time block, and then stand on the very edge of it.");
-    OPT_TRICK(RT_ICE_STALAGMITE_CLIP, RCQUEST_BOTH, RA_ICE_CAVERN, { Tricks::Tag::NOVICE },
-              "Ice Cavern Stalagmite Clips", "StalClp",
-              "Most stalagmites blocking path in Ice Cavern can be clipped past with basic movement. Also applies to "
-              "Water Trial.");
-    OPT_TRICK(RT_ICE_STALAGMITE_HOOKSHOT, RCQUEST_BOTH, RA_ICE_CAVERN, { Tricks::Tag::NOVICE },
-              "Ice Cavern Stalagmites with Hookshot", "StalHS",
-              "Shooting stalagmites with hookshot in the right way also breaks them. Also applies to Water Trial.");
-    // RANDOTO sweep trick descriptions and make sure they match a post-refactor, post shuffles reality
-    OPT_TRICK(RT_ICE_BLOCK_GS, RCQUEST_VANILLA, RA_ICE_CAVERN, { Tricks::Tag::INTERMEDIATE },
-              "Ice Cavern Block Room GS with Hover Boots", "ICBlkHB",
-              "The Hover Boots can be used to get in front of the Skulltula to kill it with a jumpslash. Then, the "
-              "Hover Boots can again be used to obtain the Token, all without Hookshot or Boomerang.");
-    OPT_TRICK(RT_ICE_MQ_RED_ICE_GS, RCQUEST_MQ, RA_ICE_CAVERN, { Tricks::Tag::INTERMEDIATE },
-              "Ice Cavern MQ Red Ice GS without Song of Time", "ICNoSoT",
-              "If you side-hop into the perfect position, you can briefly stand on the platform with the red ice just "
-              "long enough to dump some blue fire.");
-    OPT_TRICK(RT_LENS_GTG, RCQUEST_VANILLA, RA_GERUDO_TRAINING_GROUND, { Tricks::Tag::NOVICE },
-              "Gerudo Training Ground without Lens of Truth", "GTGLoT",
-              "Removes the requirements for the Lens of Truth in Gerudo Training Ground.");
+    // setting in ship
+
+    // OPT_TRICK(RT_SPIRIT_PLATFORM_HOOKSHOT, RCQUEST_VANILLA, RA_SPIRIT_TEMPLE, { Tricks::Tag::INTERMEDIATE });
+
+    OPT_TRICK(RT_SPIRIT_MAP_CHEST, RCQUEST_VANILLA, RA_SPIRIT_TEMPLE, { Tricks::Tag::NOVICE }, "SPMapBow");
+    OPT_TRICK(RT_SPIRIT_SUN_CHEST, RCQUEST_VANILLA, RA_SPIRIT_TEMPLE, { Tricks::Tag::ADVANCED }, "SPSUNBOW");
+    OPT_TRICK(RT_SPIRIT_WALL, RCQUEST_VANILLA, RA_SPIRIT_TEMPLE, { Tricks::Tag::INTERMEDIATE }, "SPWall");
+    OPT_TRICK(RT_LENS_SPIRIT_MQ, RCQUEST_MQ, RA_SPIRIT_TEMPLE, { Tricks::Tag::NOVICE }, "SPMQLoT");
+    OPT_TRICK(RT_SPIRIT_MQ_SUN_BLOCK_SOT, RCQUEST_MQ, RA_SPIRIT_TEMPLE, { Tricks::Tag::INTERMEDIATE }, "SPBluSkp");
+    OPT_TRICK(RT_SPIRIT_MQ_SUN_BLOCK_GS, RCQUEST_MQ, RA_SPIRIT_TEMPLE, { Tricks::Tag::INTERMEDIATE }, "SPBlkGS");
+    OPT_TRICK(RT_SPIRIT_MQ_LOWER_ADULT, RCQUEST_MQ, RA_SPIRIT_TEMPLE, { Tricks::Tag::INTERMEDIATE }, "SPTorDin");
+    OPT_TRICK(RT_SPIRIT_MQ_FROZEN_EYE, RCQUEST_MQ, RA_SPIRIT_TEMPLE, { Tricks::Tag::NOVICE }, "SPFEBow");
+    OPT_TRICK(RT_ICE_STALAGMITE_CLIP, RCQUEST_BOTH, RA_ICE_CAVERN, { Tricks::Tag::NOVICE }, "StalClp");
+    OPT_TRICK(RT_ICE_STALAGMITE_HOOKSHOT, RCQUEST_BOTH, RA_ICE_CAVERN, { Tricks::Tag::NOVICE }, "StalHS");
+    OPT_TRICK(RT_ICE_BLOCK_GS, RCQUEST_VANILLA, RA_ICE_CAVERN, { Tricks::Tag::INTERMEDIATE }, "ICBlkHB");
+    OPT_TRICK(RT_ICE_MQ_RED_ICE_GS, RCQUEST_MQ, RA_ICE_CAVERN, { Tricks::Tag::INTERMEDIATE }, "ICNoSoT");
+    OPT_TRICK(RT_LENS_GTG, RCQUEST_VANILLA, RA_GERUDO_TRAINING_GROUND, { Tricks::Tag::NOVICE }, "GTGLoT");
     OPT_TRICK(RT_GTG_WITHOUT_HOOKSHOT, RCQUEST_VANILLA, RA_GERUDO_TRAINING_GROUND, { Tricks::Tag::INTERMEDIATE },
-              "Gerudo Training Ground Left Side Silver Rupees without Hookshot", "GTGNoHS",
-              "After collecting the rest of the Silver Rupees in the room, you can reach the final Silver Rupee on the "
-              "ceiling by being pulled up into it after getting grabbed by the Wallmaster. Then, you must also reach "
-              "the exit of the room without the use of the Hookshot. If you move quickly you can sneak past the edge "
-              "of a flame wall before it can rise up to block you. To do so without taking damage is more precise.");
-    OPT_TRICK(RT_GTG_FAKE_WALL, RCQUEST_BOTH, RA_GERUDO_TRAINING_GROUND, { Tricks::Tag::NOVICE },
-              "Reach Gerudo Training Ground Fake Wall Ledge with Hover Boots", "GTGWallHB",
-              "A precise Hover Boots use from the top of the chest can allow you to grab the ledge without needing the "
-              "usual requirements. In Master Quest, this always skips a Song of Time requirement. In Vanilla, this "
-              "skips a Hookshot requirement, but is only relevant if \"Gerudo Training Ground Left Side Silver Rupees "
-              "without Hookshot\" is enabled.");
-    OPT_TRICK(RT_GTG_LAVA_JUMP, RCQUEST_BOTH, RA_GERUDO_TRAINING_GROUND, { Tricks::Tag::INTERMEDIATE },
-              "Gerudo Training Grounds Itemless Lava Room Jump", "GTGLavaJmp",
-              "A precise rolling jump can be used to jump between all but the furthest platforms in the lava room.");
-    OPT_TRICK(RT_LENS_GTG_MQ, RCQUEST_MQ, RA_GERUDO_TRAINING_GROUND, { Tricks::Tag::NOVICE },
-              "Gerudo Training Ground MQ without Lens of Truth", "GTGMQLoT",
-              "Removes the requirements for the Lens of Truth in Gerudo Training Ground MQ.");
-    OPT_TRICK(RT_GTG_MQ_WITH_HOOKSHOT, RCQUEST_MQ, RA_GERUDO_TRAINING_GROUND, { Tricks::Tag::NOVICE },
-              "Gerudo Training Ground MQ Left Side Silver Rupees with Hookshot", "GTGMQHS",
-              "The highest Silver Rupee can be obtained by hookshooting the target and then immediately jumpslashing "
-              "toward the Rupee.");
+              "GTGNoHS");
+    OPT_TRICK(RT_GTG_FAKE_WALL, RCQUEST_BOTH, RA_GERUDO_TRAINING_GROUND, { Tricks::Tag::NOVICE }, "GTGWallHB");
+    OPT_TRICK(RT_GTG_LAVA_JUMP, RCQUEST_BOTH, RA_GERUDO_TRAINING_GROUND, { Tricks::Tag::INTERMEDIATE }, "GTGLavaJmp");
+    OPT_TRICK(RT_LENS_GTG_MQ, RCQUEST_MQ, RA_GERUDO_TRAINING_GROUND, { Tricks::Tag::NOVICE }, "GTGMQLoT");
+    OPT_TRICK(RT_GTG_MQ_WITH_HOOKSHOT, RCQUEST_MQ, RA_GERUDO_TRAINING_GROUND, { Tricks::Tag::NOVICE }, "GTGMQHS");
     OPT_TRICK(RT_GTG_MQ_WITHOUT_HOOKSHOT, RCQUEST_MQ, RA_GERUDO_TRAINING_GROUND, { Tricks::Tag::INTERMEDIATE },
-              "Gerudo Training Ground MQ Left Side Silver Rupees without Hookshot", "GTGMQNoHS",
-              "After collecting the rest of the Silver Rupees in the room, you can reach the final Silver Rupee on the "
-              "ceiling by being pulled up into it after getting grabbed by the Wallmaster. The Wallmaster will not "
-              "track you to directly underneath the rupee. You should take the last step to be under the rupee after "
-              "the Wallmaster has begun its attempt to grab you. Also included with this trick is that fact that the "
-              "switch that unbars the door to the final chest of GTG can be hit without a projectile, using a precise "
-              "jumpslash. This trick supersedes \"Gerudo Training Ground MQ Left Side Silver Rupees with Hookshot\".");
-    OPT_TRICK(RT_LENS_GANON, RCQUEST_VANILLA, RA_GANONS_CASTLE, { Tricks::Tag::NOVICE },
-              "Ganon\'s Castle without Lens of Truth", "GCLoT",
-              "Removes the requirements for the Lens of Truth in Ganon's Castle.");
-    OPT_TRICK(RT_GANON_SPIRIT_TRIAL_HOOKSHOT, RCQUEST_VANILLA, RA_GANONS_CASTLE, { Tricks::Tag::NOVICE },
-              "Spirit Trial without Hookshot", "GCNoHS",
-              "The highest rupee can be obtained as adult by performing a precise jump and a well-timed jumpslash "
-              "off of an Armos.");
-    OPT_TRICK(RT_LENS_GANON_MQ, RCQUEST_MQ, RA_GANONS_CASTLE, { Tricks::Tag::NOVICE },
-              "Ganon\'s Castle MQ without Lens of Truth", "GCMQLoT",
-              "Removes the requirements for the Lens of Truth in Ganon's Castle MQ.");
-    OPT_TRICK(RT_GANON_MQ_FIRE_TRIAL, RCQUEST_MQ, RA_GANONS_CASTLE, { Tricks::Tag::ADVANCED },
-              "Fire Trial MQ with Hookshot", "GCFTHS",
-              "It's possible to hook the target at the end of fire trial with just Hookshot, but it requires precise "
-              "aim and perfect positioning. The main difficulty comes from getting on the very corner of the obelisk "
-              "without falling into the lava.");
-    OPT_TRICK(RT_GANON_MQ_SHADOW_TRIAL, RCQUEST_MQ, RA_GANONS_CASTLE, { Tricks::Tag::NOVICE },
-              "Shadow Trial MQ Torch with Bow", "GCSTBow",
-              "You can light the torch in this room without a fire source by shooting an arrow through the lit torch "
-              "at the beginning of the room. Because the room is so dark and the unlit torch is so far away, it can be "
-              "difficult to aim the shot correctly.");
-    OPT_TRICK(RT_GANON_MQ_LIGHT_TRIAL, RCQUEST_MQ, RA_GANONS_CASTLE, { Tricks::Tag::INTERMEDIATE },
-              "Light Trial MQ without Hookshot", "GCFirWal",
-              "If you move quickly you can sneak past the edge of a flame wall before it can rise up to block you. In "
-              "this case to do it without taking damage is especially precise.");
+              "GTGMQNoHS");
+    OPT_TRICK(RT_LENS_GANON, RCQUEST_VANILLA, RA_GANONS_CASTLE, { Tricks::Tag::NOVICE }, "GCLoT");
+    OPT_TRICK(RT_GANON_SPIRIT_TRIAL_HOOKSHOT, RCQUEST_VANILLA, RA_GANONS_CASTLE, { Tricks::Tag::NOVICE }, "GCNoHS");
+    OPT_TRICK(RT_LENS_GANON_MQ, RCQUEST_MQ, RA_GANONS_CASTLE, { Tricks::Tag::NOVICE }, "GCMQLoT");
+    OPT_TRICK(RT_GANON_MQ_FIRE_TRIAL, RCQUEST_MQ, RA_GANONS_CASTLE, { Tricks::Tag::ADVANCED }, "GCFTHS");
+    OPT_TRICK(RT_GANON_MQ_SHADOW_TRIAL, RCQUEST_MQ, RA_GANONS_CASTLE, { Tricks::Tag::NOVICE }, "GCSTBow");
+    OPT_TRICK(RT_GANON_MQ_LIGHT_TRIAL, RCQUEST_MQ, RA_GANONS_CASTLE, { Tricks::Tag::INTERMEDIATE }, "GCFirWal");
 
     for (auto trick : mTrickSettings) {
         if (trick.GetNameTag() != "") {
