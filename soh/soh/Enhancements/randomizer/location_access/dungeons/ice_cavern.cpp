@@ -50,10 +50,9 @@ void RegionTable_Init_IceCavern() {
     }, {
         //Locations
         LOCATION(RC_ICE_CAVERN_MAP_CHEST,             logic->BlueFire() && logic->HasItem(RG_OPEN_CHEST)),
-        // very easy to break pot through ice with most weapons
-        // Bow extesnion is possible, but very precise: X = 403, Z = 2062-3, Rot = -11475, needs a setup and is its own trick
+        // Bow extension is possible, but very precise: X = 403, Z = 2062-3, Rot = -11475, needs a setup and is its own trick
         LOCATION(RC_ICE_CAVERN_FROZEN_POT_1,          (logic->CanBreakPots() && logic->BlueFire()) || logic->HasExplosives() ||
-                                                      (ctx->GetTrickOption(RT_VISIBLE_COLLISION) && ((logic->CanStandingShield() && logic->CanUse(RG_KOKIRI_SWORD)) || logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD) || logic->CanUse(RG_MEGATON_HAMMER))) ||
+                                                      (ctx->GetTrickOption(RT_VISIBLE_COLLISION) && logic->CanJumpslash()) ||
                                                       (ctx->GetTrickOption(RT_ITEM_EXTENSION) && logic->CanUse(RG_HOOKSHOT))),
         LOCATION(RC_ICE_CAVERN_MAP_ROOM_LEFT_HEART,   true),
         LOCATION(RC_ICE_CAVERN_MAP_ROOM_MIDDLE_HEART, true),
