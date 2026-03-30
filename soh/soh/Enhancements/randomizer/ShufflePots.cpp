@@ -1,6 +1,7 @@
 #include "soh/OTRGlobals.h"
 #include "soh_assets.h"
 #include "static_data.h"
+#include "item_category_adj.h"
 #include "soh/ObjectExtension/ObjectExtension.h"
 
 extern "C" {
@@ -28,7 +29,7 @@ extern "C" void ObjTsubo_RandomizerDraw(Actor* thisx, PlayState* play) {
         if (csmc && (!requiresStoneAgony || (requiresStoneAgony && CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY)))) {
             auto itemEntry =
                 Rando::Context::GetInstance()->GetFinalGIEntry(potIdentity->randomizerCheck, true, GI_NONE);
-            GetItemCategory getItemCategory = itemEntry.getItemCategory;
+            GetItemCategory getItemCategory = Randomizer_AdjustItemCategory(itemEntry);
 
             switch (getItemCategory) {
                 case ITEM_CATEGORY_LESSER:

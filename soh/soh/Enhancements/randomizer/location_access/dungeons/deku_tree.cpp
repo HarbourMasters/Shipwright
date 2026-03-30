@@ -244,7 +244,7 @@ void RegionTable_Init_DekuTree() {
     }, {
         //Locations
         LOCATION(RC_DEKU_TREE_MQ_MAP_CHEST,     logic->HasItem(RG_OPEN_CHEST)),
-        LOCATION(RC_DEKU_TREE_MQ_GS_LOBBY,      logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA)),
+        LOCATION(RC_DEKU_TREE_MQ_GS_LOBBY,      (logic->CanBreakCrates() || ctx->GetTrickOption(RT_VISIBLE_COLLISION)) && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA)),
         LOCATION(RC_DEKU_TREE_MQ_LOBBY_HEART,   true),
         LOCATION(RC_DEKU_TREE_MQ_2F_GRASS_1,    logic->CanCutShrubs()),
         LOCATION(RC_DEKU_TREE_MQ_2F_GRASS_2,    logic->CanCutShrubs()),

@@ -2,6 +2,7 @@
 #include "soh_assets.h"
 #include "static_data.h"
 #include "soh/ObjectExtension/ObjectExtension.h"
+#include "item_category_adj.h"
 
 extern "C" {
 #include "variables.h"
@@ -60,24 +61,7 @@ extern "C" void EnWood02_RandomizerDraw(Actor* thisx, PlayState* play) {
         getItemCategory = ITEM_CATEGORY_JUNK;
     } else {
         treeItem = Rando::Context::GetInstance()->GetFinalGIEntry(treeIdentity->randomizerCheck, true, GI_NONE);
-        getItemCategory = treeItem.getItemCategory;
-
-        // If they have bombchus, don't consider the bombchu item major
-        if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU &&
-            ((treeItem.modIndex == MOD_RANDOMIZER && treeItem.getItemId == RG_PROGRESSIVE_BOMBCHU_BAG) ||
-             (treeItem.modIndex == MOD_NONE &&
-              (treeItem.getItemId == GI_BOMBCHUS_5 || treeItem.getItemId == GI_BOMBCHUS_10 ||
-               treeItem.getItemId == GI_BOMBCHUS_20)))) {
-            getItemCategory = ITEM_CATEGORY_JUNK;
-            // If it's a bottle and they already have one, consider the item lesser
-        } else if ((treeItem.modIndex == MOD_RANDOMIZER && treeItem.getItemId >= RG_BOTTLE_WITH_RED_POTION &&
-                    treeItem.getItemId <= RG_BOTTLE_WITH_POE) ||
-                   (treeItem.modIndex == MOD_NONE &&
-                    (treeItem.getItemId == GI_BOTTLE || treeItem.getItemId == GI_MILK_BOTTLE))) {
-            if (gSaveContext.inventory.items[SLOT_BOTTLE_1] != ITEM_NONE) {
-                getItemCategory = ITEM_CATEGORY_LESSER;
-            }
-        }
+        getItemCategory = Randomizer_AdjustItemCategory(treeItem);
     }
 
     GraphicsContext* gfxCtx = play->state.gfxCtx;
