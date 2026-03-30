@@ -244,11 +244,6 @@ void Settings::CreateOptions() {
     OPT_U8(RSK_RAINBOW_BRIDGE_REWARD_COUNT, "Bridge Reward Count", {NumOpts(0, 10)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("RewardCount"), "", WIDGET_CVAR_SLIDER_INT, 9, true);
     OPT_U8(RSK_RAINBOW_BRIDGE_DUNGEON_COUNT, "Bridge Dungeon Count", {NumOpts(0, 9)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("DungeonCount"), "", WIDGET_CVAR_SLIDER_INT, 8, true);
     OPT_U8(RSK_RAINBOW_BRIDGE_TOKEN_COUNT, "Bridge Token Count", {NumOpts(0, 100)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("TokenCount"), "", WIDGET_CVAR_SLIDER_INT, 100, true);
-    OPT_U8(RSK_RAINBOW_BRIDGE_STONE_COUNT, "Bridge Stone Count", {NumOpts(0, 4)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("StoneCount"), "", WIDGET_CVAR_SLIDER_INT, 3, true);
-    OPT_U8(RSK_RAINBOW_BRIDGE_MEDALLION_COUNT, "Bridge Medallion Count", {NumOpts(0, 7)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("MedallionCount"), "", WIDGET_CVAR_SLIDER_INT, 6, true);
-    OPT_U8(RSK_RAINBOW_BRIDGE_REWARD_COUNT, "Bridge Reward Count", {NumOpts(0, 10)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("RewardCount"), "", WIDGET_CVAR_SLIDER_INT, 9, true);
-    OPT_U8(RSK_RAINBOW_BRIDGE_DUNGEON_COUNT, "Bridge Dungeon Count", {NumOpts(0, 9)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("DungeonCount"), "", WIDGET_CVAR_SLIDER_INT, 8, true);
-    OPT_U8(RSK_RAINBOW_BRIDGE_TOKEN_COUNT, "Bridge Token Count", {NumOpts(0, 100)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("TokenCount"), "", WIDGET_CVAR_SLIDER_INT, 100, true);
     OPT_U8(RSK_BRIDGE_OPTIONS, "Bridge Reward Options", {"Standard Rewards", "Greg as Reward", "Greg as Wildcard"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("BridgeRewardOptions"), mOptionDescriptions[RSK_BRIDGE_OPTIONS], WIDGET_CVAR_COMBOBOX, RO_BRIDGE_STANDARD_REWARD, false, nullptr, IMFLAG_NONE);
     OPT_CALLBACK(RSK_BRIDGE_OPTIONS, {
         const uint8_t bridgeOpt = CVarGetInteger(CVAR_RANDOMIZER_SETTING("BridgeRewardOptions"), RO_BRIDGE_STANDARD_REWARD);

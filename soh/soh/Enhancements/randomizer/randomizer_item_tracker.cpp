@@ -537,11 +537,24 @@ ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
                                                                                                                : 500;
             result.currentAmmo = gSaveContext.rupees;
             break;
-        case ITEM_BOMBCHU:
-            result.currentCapacity = INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU ? 50 : 0;
+        case ITEM_BOMBCHU: {
+            auto bombchuBag = RAND_GET_OPTION(RSK_BOMBCHU_BAG);
+
+            uint8_t capacity = 0;
+
+            if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU) {
+                if (bombchuBag.Is(RO_BOMBCHU_BAG_PROGRESSIVE)) {
+                    capacity = OTRGlobals::Instance->gRandoContext->GetBombchuCapacity();
+                } else {
+                    capacity = 50;
+                }
+            }
+
+            result.currentCapacity = capacity;
             result.maxCapacity = 50;
             result.currentAmmo = AMMO(ITEM_BOMBCHU);
             break;
+        }
         case ITEM_BEAN:
             result.currentCapacity = INV_CONTENT(ITEM_BEAN) == ITEM_BEAN ? 10 : 0;
             result.maxCapacity = 10;
@@ -702,7 +715,7 @@ void DrawItemCount(ItemTrackerItem item, bool hideMax) {
         bool shouldDisplayAmmo = trackerNumberDisplayMode == ITEM_TRACKER_NUMBER_AMMO ||
                                  trackerNumberDisplayMode == ITEM_TRACKER_NUMBER_CURRENT_AMMO_ONLY ||
                                  // These items have a static capacity, so display ammo instead
-                                 item.id == ITEM_BOMBCHU || item.id == ITEM_BEAN || item.id == QUEST_SKULL_TOKEN ||
+                                 item.id == ITEM_BEAN || item.id == QUEST_SKULL_TOKEN ||
                                  item.id == ITEM_HEART_CONTAINER || item.id == ITEM_HEART_PIECE;
 
         bool shouldDisplayMax = !(trackerNumberDisplayMode == ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY ||

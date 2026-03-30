@@ -1373,6 +1373,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnMs`
+    VB_MAGIC_BEAN_SALESMAN_TAKE_MONEY,
+
+    // #### `result`
+    // ```c
     // CHECK_QUEST_ITEM(QUEST_SONG_EPONA)
     // ```
     // #### `args`
