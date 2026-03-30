@@ -646,3 +646,11 @@ Rando::Location Rando::Location::Grass(RandomizerCheck rc, RandomizerCheckQuest 
              scene_, actorParams_,   std::move(shortName_), hintKey, vanillaItem,
              false,  collectionCheck };
 }
+
+Rando::Location Rando::Location::Sign(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_,
+                                      SceneID scene_, int32_t actorParams_, std::string&& shortName_,
+                                      RandomizerHintTextKey hintKey, ActorID actorId,
+                                      SpoilerCollectionCheck collectionCheck) {
+    return { rc,      quest_,  RCTYPE_SIGN, area_,          actorId, scene_, actorParams_, std::move(shortName_),
+             hintKey, RG_NONE, false,       collectionCheck };
+}

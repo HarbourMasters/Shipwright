@@ -125,6 +125,7 @@ void RegionTable_Init_LostWoods() {
         //Locations
         LOCATION(RC_DEKU_THEATER_SKULL_MASK,    logic->CanUse(RG_SKULL_MASK)),
         LOCATION(RC_DEKU_THEATER_MASK_OF_TRUTH, logic->CanUse(RG_MASK_OF_TRUTH) && logic->HasItem(RG_SPEAK_DEKU)),
+        LOCATION(RC_LW_THEATER_RECTANGLE_SIGN,  logic->CanRead()),
     }, {
         //Exits
         ENTRANCE(RR_LW_BEYOND_MIDO, true),

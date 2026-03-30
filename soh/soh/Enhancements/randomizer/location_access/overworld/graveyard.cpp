@@ -33,6 +33,11 @@ void RegionTable_Init_Graveyard() {
         LOCATION(RC_GY_GRASS_12,                       logic->CanCutShrubs()),
         LOCATION(RC_GRAVEYARD_CRATE,                   ((logic->IsAdult && CanPlantBean(RR_THE_GRAVEYARD, RG_GRAVEYARD_BEAN_SOUL)) || logic->CanUse(RG_LONGSHOT)) && logic->CanBreakCrates()),
         LOCATION(RC_GY_NEAR_HUT_GRAVE_BUTTERFLY_FAIRY, logic->IsChild && logic->AtDay && logic->CanUse(RG_STICKS)),
+        LOCATION(RC_GY_ENTRANCE_RECTANGLE_SIGN,        logic->CanRead()),
+        LOCATION(RC_GY_ENTRANCE_PLINTH,                logic->CanRead()),
+        LOCATION(RC_GY_RIGHT_OF_ROYAL_TOMB_GRAVE,      logic->CanRead()),
+        LOCATION(RC_GY_LEFT_OF_ROYAL_TOMB_GRAVE,       logic->CanRead()),
+        LOCATION(RC_GY_ROYAL_TOMB_GRAVE,               logic->CanRead() || logic->CanUse(RG_ZELDAS_LULLABY)),
     }, {
         //Exits
         ENTRANCE(RR_GRAVEYARD_SHIELD_GRAVE,       (logic->IsAdult || logic->AtNight) && logic->HasItem(RG_POWER_BRACELET)),

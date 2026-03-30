@@ -35,6 +35,11 @@ void RegionTable_Init_ZorasDomain() {
         LOCATION(RC_ZD_NEAR_SHOP_POT_3,                     logic->CanBreakPots()),
         LOCATION(RC_ZD_NEAR_SHOP_POT_4,                     logic->CanBreakPots()),
         LOCATION(RC_ZD_NEAR_SHOP_POT_5,                     logic->CanBreakPots()),
+        LOCATION(RC_ZD_SHOP_RECTANGLE_SIGN,                 logic->CanRead()),
+        LOCATION(RC_ZD_ENTRANCE_RECTANGLE_SIGN,             logic->CanRead()),
+        LOCATION(RC_ZD_KING_ZORA_PATH_ARROW_SIGN,           logic->CanRead()),
+        LOCATION(RC_ZD_NEAR_KING_ZORA_RECTANGLE_SIGN,       logic->CanRead()),
+        LOCATION(RC_ZD_NEAR_KING_ZORA_ARROW_SIGN,           logic->CanRead()),
     }, {
         //Exits
         ENTRANCE(RR_ZR_BEHIND_WATERFALL, true),

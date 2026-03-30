@@ -312,6 +312,17 @@ void Settings::CreateOptionDescriptions() {
         "only shuffle with No Logic.";
     mOptionDescriptions[RSK_SHUFFLE_BUSHES] =
         "Bushes in Hyrule Field & Zora's Fountain will contain randomized items when first walked through.";
+    mOptionDescriptions[RSK_SHUFFLE_SIGNS] = "Signs and readable pedestals, plinths, altars, and graves will grant a "
+                                             "randomized item the first time they are read. "
+                                             "Signs will have a particle effect when they hold a randomized item.\n"
+                                             "\n"
+                                             "Off - Signs will not be shuffled.\n"
+                                             "\n"
+                                             "Dungeons - Only shuffle signs that are within dungeons.\n"
+                                             "\n"
+                                             "Overworld - Only shuffle signs that are outside of dungeons.\n"
+                                             "\n"
+                                             "All Signs - Shuffle all signs.";
     mOptionDescriptions[RSK_SHUFFLE_FISHING_POLE] = "Shuffles the fishing pole into the item pool.\n"
                                                     "\n"
                                                     "The fishing pole is required to play the fishing pond minigame.";
