@@ -55,8 +55,8 @@ const ActorInit En_Wonder_Item_InitVars = {
     NULL,
 };
 
-static Vec3f sTagPointsFree[9];
-static Vec3f sTagPointsOrdered[9];
+Vec3f sTagPointsFree[9];    // SOH [Randomizer] remove static to use in ShuffleWonderItems
+Vec3f sTagPointsOrdered[9]; // SOH [Randomizer] remove static to use in ShuffleWonderItems
 
 void EnWonderItem_Destroy(Actor* thisx, PlayState* play) {
     s32 pad;
@@ -128,8 +128,7 @@ void EnWonderItem_Init(Actor* thisx, PlayState* play) {
         this->switchFlag = -1;
     }
     this->actor.targetMode = 1;
-    if (GameInteractor_Should(VB_WONDER_SPAWN, (this->switchFlag >= 0) && Flags_GetSwitch(play, this->switchFlag),
-                              this)) {
+    if (GameInteractor_Should(VB_WONDER_SPAWN, (this->switchFlag >= 0) && Flags_GetSwitch(play, this->switchFlag))) {
         osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ Ｙｏｕ ａｒｅ Ｓｈｏｃｋ！  ☆☆☆☆☆ %d\n" VT_RST, this->switchFlag);
         Actor_Kill(&this->actor);
         return;

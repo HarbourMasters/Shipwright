@@ -2452,7 +2452,7 @@ typedef enum {
     // (this->switchFlag >= 0) && Flags_GetSwitch(play, this->switchFlag)
     // ```
     // #### `args`
-    // - `*EnWonderItem`
+    // - `None`
     VB_WONDER_SPAWN,
 
     // #### `result`

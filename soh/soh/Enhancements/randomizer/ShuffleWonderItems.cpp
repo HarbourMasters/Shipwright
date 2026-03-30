@@ -4,26 +4,17 @@
 #include "soh/ObjectExtension/ObjectExtension.h"
 #include "soh/ObjectExtension/ActorListIndex.h"
 #include "item_category_adj.h"
+#include "particle_cmc.h"
 
 extern "C" {
 #include "overlays/actors/ovl_En_Wonder_Item/z_en_wonder_item.h"
 #include "overlays/actors/ovl_En_Heishi1/z_en_heishi1.h"
 extern PlayState* gPlayState;
+extern Vec3f sTagPointsFree[9];
+extern Vec3f sTagPointsOrdered[9];
 }
 
 extern void EnItem00_DrawRandomizedItem(EnItem00* enItem00, PlayState* play);
-static Vec3f sMyTagPointsOrdered[9];
-static Vec3f sMyFreePointsOrdered[9];
-
-typedef enum {
-    PARTICLE_MAJOR,
-    PARTICLE_SKULLTULA_TOKEN,
-    PARTICLE_SMALL_KEY,
-    PARTICLE_BOSS_KEY,
-    PARTICLE_HEALTH,
-    PARTICLE_LESSER,
-    PARTICLE_JUNK,
-} WonderItemCMCColors;
 
 // Many wonder items spawn on top of each other, offset position to make them all distinct
 static std::unordered_map<RandomizerCheck, Vec3f> sStackedWonderOffsets = {
@@ -147,9 +138,9 @@ static void EnWonderItem_RandomizerDraw(EnWonderItem* wonderActor, Color_RGBA8* 
     if (wonderActor->wonderMode == WONDERITEM_MULTITAG_ORDERED) {
         for (s32 i = 0, mask = 1; i < wonderActor->numTagPoints; i++, mask <<= 1) {
             if (!(wonderActor->tagFlags & mask)) {
-                pos.x = Rand_CenteredFloat(1.0f) + sMyTagPointsOrdered[i].x;
-                pos.y = (Rand_ZeroOne() * 25.0f) + sMyTagPointsOrdered[i].y + 10;
-                pos.z = Rand_CenteredFloat(1.0f) + sMyTagPointsOrdered[i].z;
+                pos.x = Rand_CenteredFloat(1.0f) + sTagPointsOrdered[i].x;
+                pos.y = (Rand_ZeroOne() * 25.0f) + sTagPointsOrdered[i].y + 10;
+                pos.z = Rand_CenteredFloat(1.0f) + sTagPointsOrdered[i].z;
                 EffectSsKiraKira_SpawnFocused(gPlayState, &pos, &velocity, &accel, secColor, envColor, 2000, 100);
                 EffectSsKiraKira_SpawnFocused(gPlayState, &pos, &velocity, &accel, primColor, envColor, 2000, 100);
             }
@@ -157,9 +148,9 @@ static void EnWonderItem_RandomizerDraw(EnWonderItem* wonderActor, Color_RGBA8* 
     } else if (wonderActor->wonderMode == WONDERITEM_MULTITAG_FREE) {
         for (s32 i = 0, mask = 1; i < wonderActor->numTagPoints; i++, mask <<= 1) {
             if (!(wonderActor->tagFlags & mask)) {
-                pos.x = Rand_CenteredFloat(1.0f) + sMyFreePointsOrdered[i].x;
-                pos.y = (Rand_ZeroOne() * 25.0f) + sMyFreePointsOrdered[i].y + 10;
-                pos.z = Rand_CenteredFloat(1.0f) + sMyFreePointsOrdered[i].z;
+                pos.x = Rand_CenteredFloat(1.0f) + sTagPointsFree[i].x;
+                pos.y = (Rand_ZeroOne() * 25.0f) + sTagPointsFree[i].y + 10;
+                pos.z = Rand_CenteredFloat(1.0f) + sTagPointsFree[i].z;
                 EffectSsKiraKira_SpawnFocused(gPlayState, &pos, &velocity, &accel, secColor, envColor, 2000, 100);
                 EffectSsKiraKira_SpawnFocused(gPlayState, &pos, &velocity, &accel, primColor, envColor, 2000, 100);
             }
@@ -178,7 +169,8 @@ void EnWonderItem_RandomizerDrawSetup(void* refActor) {
     GetItemCategory getItemCategory;
     EnWonderItem* wonderActor = static_cast<EnWonderItem*>(refActor);
 
-    // If not a randomized item or too far, don't draw
+    // If not a randomized item or too far, don't draw.
+    // If item is unshuffled or collected, kill wonder actor if switch flag is set.
     if (!EnWonderItem_RandomizerHoldsItem(wonderActor, gPlayState)) {
         if ((wonderActor->switchFlag >= 0) && Flags_GetSwitch(gPlayState, wonderActor->switchFlag)) {
             Actor_Kill(&wonderActor->actor);
@@ -193,40 +185,7 @@ void EnWonderItem_RandomizerDrawSetup(void* refActor) {
 
     int isNotCMC = !cmc || (requiresStoneAgony && !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY));
 
-    // Color of the circle for the particles
-    static Color_RGBA8 mainColors[7][3] = {
-        { 250, 185, 40 },  // Major
-        { 0, 0, 0 },       // Skulltula Token
-        { 180, 180, 180 }, // Small Key
-        { 255, 255, 0 },   // Boss Key
-        { 250, 0, 0 },     // Health
-        { 170, 50, 0 },    // Lesser
-        { 255, 255, 255 }  // Junk
-    };
-
-    // Secondary color of the circle for the particles
-    static Color_RGBA8 secColors[7][3] = {
-        { 255, 220, 135 }, // Major
-        { 255, 250, 190 }, // Skulltula Token
-        { 130, 130, 130 }, // Small Key
-        { 0, 200, 255 },   // Boss Key
-        { 0, 0, 255 },     // Health
-        { 250, 75, 0 },    // Lesser
-        { 255, 255, 255 }  // Junk
-    };
-
-    // Color of the faded flares stretching off the particles
-    static Color_RGBA8 flareColors[7][3] = {
-        { 250, 220, 180 }, // Major
-        { 255, 255, 255 }, // Skulltula Token
-        { 100, 100, 100 }, // Small Key
-        { 0, 200, 255 },   // Boss Key
-        { 255, 125, 125 }, // Health
-        { 255, 160, 100 }, // Lesser
-        { 135, 135, 135 }  // Junk
-    };
-
-    s16 colorIndex;
+    ParticleCMCColor colorIndex;
     Color_RGBA8 primColor;
     Color_RGBA8 secColor;
     Color_RGBA8 envColor;
@@ -242,41 +201,36 @@ void EnWonderItem_RandomizerDrawSetup(void* refActor) {
 
     if (isNotCMC) {
         colorIndex = PARTICLE_MAJOR;
-        Color_RGBA8_Copy(&primColor, mainColors[colorIndex]);
-        Color_RGBA8_Copy(&secColor, secColors[colorIndex]);
-        Color_RGBA8_Copy(&envColor, flareColors[colorIndex]);
-        EnWonderItem_RandomizerDraw(wonderActor, &primColor, &secColor, &envColor, wonderIdentity);
-        return;
+    } else {
+        // Change particle color for CMC
+        switch (getItemCategory) {
+            case ITEM_CATEGORY_MAJOR:
+                colorIndex = PARTICLE_MAJOR;
+                break;
+            case ITEM_CATEGORY_SKULLTULA_TOKEN:
+                colorIndex = PARTICLE_SKULLTULA_TOKEN;
+                break;
+            case ITEM_CATEGORY_SMALL_KEY:
+                colorIndex = PARTICLE_SMALL_KEY;
+                break;
+            case ITEM_CATEGORY_BOSS_KEY:
+                colorIndex = PARTICLE_BOSS_KEY;
+                break;
+            case ITEM_CATEGORY_HEALTH:
+                colorIndex = PARTICLE_HEALTH;
+                break;
+            case ITEM_CATEGORY_LESSER:
+                colorIndex = PARTICLE_LESSER;
+                break;
+            case ITEM_CATEGORY_JUNK:
+            default:
+                colorIndex = PARTICLE_JUNK;
+                break;
+        }
     }
-
-    // Change particle color for CMC
-    switch (getItemCategory) {
-        case ITEM_CATEGORY_MAJOR:
-            colorIndex = PARTICLE_MAJOR;
-            break;
-        case ITEM_CATEGORY_SKULLTULA_TOKEN:
-            colorIndex = PARTICLE_SKULLTULA_TOKEN;
-            break;
-        case ITEM_CATEGORY_SMALL_KEY:
-            colorIndex = PARTICLE_SMALL_KEY;
-            break;
-        case ITEM_CATEGORY_BOSS_KEY:
-            colorIndex = PARTICLE_BOSS_KEY;
-            break;
-        case ITEM_CATEGORY_HEALTH:
-            colorIndex = PARTICLE_HEALTH;
-            break;
-        case ITEM_CATEGORY_LESSER:
-            colorIndex = PARTICLE_LESSER;
-            break;
-        case ITEM_CATEGORY_JUNK:
-        default:
-            colorIndex = PARTICLE_JUNK;
-            break;
-    }
-    Color_RGBA8_Copy(&primColor, mainColors[colorIndex]);
-    Color_RGBA8_Copy(&secColor, secColors[colorIndex]);
-    Color_RGBA8_Copy(&envColor, flareColors[colorIndex]);
+    primColor = Randomizer_GetParticleCMCColor(colorIndex, COLOR_PRIMARY);
+    secColor = Randomizer_GetParticleCMCColor(colorIndex, COLOR_SECONDARY);
+    envColor = Randomizer_GetParticleCMCColor(colorIndex, COLOR_FLARE);
     EnWonderItem_RandomizerDraw(wonderActor, &primColor, &secColor, &envColor, wonderIdentity);
 }
 
@@ -285,6 +239,7 @@ void EnWonderItem_RandomizerSpawnCollectible(EnWonderItem* wonderActor, PlayStat
     EnItem00* item00;
     Player* player = GET_PLAYER(gPlayState);
 
+    // Hyrule courtyard left window handled separately to replace the bomb the guard throws
     if (wonderIdentity == nullptr || wonderIdentity->randomizerCheck == RC_HC_WONDER_COURTYARD_LEFT_WINDOW) {
         return;
     }
@@ -339,17 +294,9 @@ void RegisterShuffleWonderItems() {
     COND_ID_HOOK(OnActorInit, ACTOR_EN_WONDER_ITEM, shouldRegister, [](void* actorRef) {
         Actor* actor = static_cast<Actor*>(actorRef);
         EnWonderItem* wonderActor = static_cast<EnWonderItem*>(actorRef);
-        // Capture the tag points for wonder items if they exist
-        if (wonderActor->wonderMode == WONDERITEM_TAG_POINT_ORDERED) {
-            s16 tagIndex = actor->world.rot.z & 0xFF;
-            sMyTagPointsOrdered[tagIndex] = actor->world.pos;
-        } else if (wonderActor->wonderMode == WONDERITEM_TAG_POINT_FREE) {
-            s16 tagIndex = actor->world.rot.z & 0xFF;
-            sMyFreePointsOrdered[tagIndex] = actor->world.pos;
-        }
         // Fix vanilla bug for Water Temple MQ Torches Wonder Item
         if (gPlayState->sceneNum == SCENE_WATER_TEMPLE && wonderActor->actor.params == 6911) {
-            wonderActor->collider.info.bumper.dmgFlags = 128;
+            wonderActor->collider.info.bumper.dmgFlags = DMG_HOOKSHOT;
         }
     });
 
@@ -359,11 +306,8 @@ void RegisterShuffleWonderItems() {
     // Spawn missing wonder items for NTSC 1.0
     COND_HOOK(OnSceneSpawnActors, shouldRegisterNTSC10, SpawnNTSC10WonderItem);
 
-    // Prevent actor kill in case item isn't yet collected
-    COND_VB_SHOULD(VB_WONDER_SPAWN, shouldRegister, {
-        EnWonderItem* wonderActor = va_arg(args, EnWonderItem*);
-        *should = false;
-    });
+    // Prevent or delay actor kill until EnWonderItem_RandomizerDrawSetup in case item isn't yet collected
+    COND_VB_SHOULD(VB_WONDER_SPAWN, shouldRegister, { *should = false; });
 
     // Do not spawn vanilla wonder item, instead spawn the randomized item
     COND_VB_SHOULD(VB_WONDER_DROP_ITEM, shouldRegister, {
@@ -390,11 +334,7 @@ void RegisterShuffleWonderItems() {
         EnHeishi1* guardActor = va_arg(args, EnHeishi1*);
         if (!Flags_GetRandomizerInf(RAND_INF_HC_WONDER_COURTYARD_LEFT_WINDOW) ||
             !Flags_GetRandomizerInf(RAND_INF_HC_WONDER_COURTYARD_RIGHT_WINDOW)) {
-            if (guardActor->type != 5) {
-                *should = true;
-            } else {
-                *should = false;
-            }
+            *should = guardActor->type != 5;
         }
     });
 }
