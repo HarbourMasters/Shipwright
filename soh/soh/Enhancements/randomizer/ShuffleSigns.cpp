@@ -1,5 +1,6 @@
 #include <soh/OTRGlobals.h>
 #include "soh/ObjectExtension/ObjectExtension.h"
+#include "item_category_adj.h"
 extern "C" {
 extern PlayState* gPlayState;
 #include "overlays/actors/ovl_En_Kanban/z_en_kanban.h"
@@ -113,7 +114,7 @@ void Sign_RandomizerDrawSetup(void* actor) {
 
     GetItemEntry signItem =
         Rando::Context::GetInstance()->GetFinalGIEntry(signIdentity->randomizerCheck, true, GI_NONE);
-    getItemCategory = signItem.getItemCategory;
+    getItemCategory = Randomizer_AdjustItemCategory(signItem);
 
     if (isNotCMC) {
         colorIndex = PARTICLE_MAJOR;
