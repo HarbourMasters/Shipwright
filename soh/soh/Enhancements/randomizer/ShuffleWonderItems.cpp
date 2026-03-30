@@ -3,6 +3,7 @@
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/ObjectExtension/ObjectExtension.h"
 #include "soh/ObjectExtension/ActorListIndex.h"
+#include "item_category_adj.h"
 
 extern "C" {
 #include "overlays/actors/ovl_En_Wonder_Item/z_en_wonder_item.h"
@@ -237,7 +238,7 @@ void EnWonderItem_RandomizerDrawSetup(void* refActor) {
 
     GetItemEntry wonderItem =
         Rando::Context::GetInstance()->GetFinalGIEntry(wonderIdentity->randomizerCheck, true, GI_NONE);
-    getItemCategory = wonderItem.getItemCategory;
+    getItemCategory = Randomizer_AdjustItemCategory(wonderItem);
 
     if (isNotCMC) {
         colorIndex = PARTICLE_MAJOR;
