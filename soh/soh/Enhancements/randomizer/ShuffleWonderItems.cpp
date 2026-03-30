@@ -291,15 +291,6 @@ void RegisterShuffleWonderItems() {
                                    RAND_GET_OPTION(RSK_SHUFFLE_WONDER_ITEMS).Is(RO_SHUFFLE_WONDER_ITEMS_OVERWORLD);
     bool shouldRegisterNTSC10 = shouldRegister && isNtscUs10 && shouldRegisterOverworld;
 
-    COND_ID_HOOK(OnActorInit, ACTOR_EN_WONDER_ITEM, shouldRegister, [](void* actorRef) {
-        Actor* actor = static_cast<Actor*>(actorRef);
-        EnWonderItem* wonderActor = static_cast<EnWonderItem*>(actorRef);
-        // Fix vanilla bug for Water Temple MQ Torches Wonder Item
-        if (gPlayState->sceneNum == SCENE_WATER_TEMPLE && wonderActor->actor.params == 6911) {
-            wonderActor->collider.info.bumper.dmgFlags = DMG_HOOKSHOT;
-        }
-    });
-
     // Draw particle effect in wonder item spot to indicate a randomized item
     COND_ID_HOOK(OnActorUpdate, ACTOR_EN_WONDER_ITEM, shouldRegister, EnWonderItem_RandomizerDrawSetup);
 
