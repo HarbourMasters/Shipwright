@@ -105,6 +105,7 @@ class Logic {
     bool CanBreakCrates();
     bool CanBreakSmallCrates();
     bool CanBonkTrees();
+    bool CanRead();
     bool HasFireSource();
     bool HasFireSourceWithTorch();
     bool SunlightArrows();

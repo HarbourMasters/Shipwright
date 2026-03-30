@@ -68,6 +68,7 @@ void RegionTable_Init_CastleGrounds() {
         LOCATION(RC_HC_NEAR_STAIRS_BUTTERFLY_FAIRY,       logic->CanUse(RG_STICKS)),
         LOCATION(RC_HC_NEAR_BOULDER_PATH_BUTTERFLY_FAIRY, logic->CanUse(RG_STICKS)),
         LOCATION(RC_HC_NEAR_ARCHWAY_BUTTERFLY_FAIRY,      logic->CanUse(RG_STICKS)),
+		LOCATION(RC_HC_DEAD_END_RECTANGLE_SIGN, 		  logic->CanRead()),
     }, {
         //Exits
         ENTRANCE(RR_HC_GATE,                  true),

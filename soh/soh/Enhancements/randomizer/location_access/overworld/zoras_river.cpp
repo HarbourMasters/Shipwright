@@ -62,6 +62,7 @@ void RegionTable_Init_ZoraRiver() {
         LOCATION(RC_ZR_NEAR_FREESTANDING_POH_GRASS,          logic->CanUse(RG_BOOMERANG)),
         LOCATION(RC_ZR_NEAR_ROCK_CIRCLE_BUTTERFLY_FAIRY,     logic->IsChild && logic->CanUse(RG_STICKS)),
         LOCATION(RC_ZR_WATERFALL_BUTTERFLY_FAIRY,            logic->IsChild && logic->CanUse(RG_STICKS)),
+        LOCATION(RC_ZR_SLEEPLESS_WATERFALL_PLAQUE,           logic->CanRead()),
         LOCATION(RC_ZR_WONDER_NEAR_DOMAIN_1,                 logic->IsChild && logic->HasItem(RG_BRONZE_SCALE)),
         LOCATION(RC_ZR_WONDER_NEAR_DOMAIN_2,                 logic->IsChild && logic->HasItem(RG_BRONZE_SCALE)),
         LOCATION(RC_ZR_WONDER_NEAR_DOMAIN_3,                 logic->IsChild && logic->HasItem(RG_BRONZE_SCALE)),

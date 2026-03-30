@@ -10,7 +10,9 @@ void RegionTable_Init_GerudoValley() {
         EVENT_ACCESS(LOGIC_BUG_ACCESS, logic->IsChild && logic->HasItem(RG_POWER_BRACELET)),
     }, {
         //Locations
-        LOCATION(RC_GV_GS_SMALL_BRIDGE,            logic->IsChild && logic->HookshotOrBoomerang() && logic->CanGetNightTimeGS()),
+        LOCATION(RC_GV_GS_SMALL_BRIDGE,       logic->IsChild && logic->HookshotOrBoomerang() && logic->CanGetNightTimeGS()),
+        LOCATION(RC_GV_BRIDGE_RECTANGLE_SIGN, logic->CanRead()),
+        LOCATION(RC_GV_EAST_EXIT_ARROW_SIGN,  logic->CanRead()),
     }, {
         //Exits
         ENTRANCE(RR_HYRULE_FIELD,          true),

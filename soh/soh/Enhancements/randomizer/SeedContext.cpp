@@ -216,6 +216,7 @@ void Context::GenerateLocationPool() {
             (location.GetRCType() == RCTYPE_NLTREE &&
              (!mOptions[RSK_SHUFFLE_TREES] || mOptions[RSK_LOGIC_RULES].IsNot(RO_LOGIC_NO_LOGIC))) ||
             (location.GetRCType() == RCTYPE_BUSH && !mOptions[RSK_SHUFFLE_BUSHES]) ||
+            (location.GetRCType() == RCTYPE_SIGN && mOptions[RSK_SHUFFLE_SIGNS].Is(RO_SHUFFLE_SIGNS_OFF)) ||
             (location.GetRCType() == RCTYPE_WONDER_ITEM &&
              mOptions[RSK_SHUFFLE_WONDER_ITEMS].Is(RO_SHUFFLE_WONDER_ITEMS_OFF)) ||
             (location.GetRCType() == RCTYPE_FREESTANDING &&
@@ -237,7 +238,8 @@ void Context::GenerateLocationPool() {
                  mOptions[RSK_SHUFFLE_CRATES].Is(RO_SHUFFLE_CRATES_DUNGEONS) &&
                  mOptions[RSK_LOGIC_RULES].Is(RO_LOGIC_NO_LOGIC)) ||
                 (location.GetRCType() == RCTYPE_SMALL_CRATE &&
-                 mOptions[RSK_SHUFFLE_CRATES].Is(RO_SHUFFLE_CRATES_DUNGEONS))) {
+                 mOptions[RSK_SHUFFLE_CRATES].Is(RO_SHUFFLE_CRATES_DUNGEONS)) ||
+                (location.GetRCType() == RCTYPE_SIGN && mOptions[RSK_SHUFFLE_SIGNS].Is(RO_SHUFFLE_SIGNS_DUNGEONS))) {
                 continue;
             }
             // If we've gotten past all the conditions where an overworld location should not be
@@ -260,7 +262,9 @@ void Context::GenerateLocationPool() {
                      mOptions[RSK_SHUFFLE_CRATES].Is(RO_SHUFFLE_CRATES_OVERWORLD) &&
                      mOptions[RSK_LOGIC_RULES].Is(RO_LOGIC_NO_LOGIC)) ||
                     (location.GetRCType() == RCTYPE_SMALL_CRATE &&
-                     mOptions[RSK_SHUFFLE_CRATES].Is(RO_SHUFFLE_CRATES_OVERWORLD))) {
+                     mOptions[RSK_SHUFFLE_CRATES].Is(RO_SHUFFLE_CRATES_OVERWORLD)) ||
+                    (location.GetRCType() == RCTYPE_SIGN &&
+                     mOptions[RSK_SHUFFLE_SIGNS].Is(RO_SHUFFLE_SIGNS_OVERWORLD))) {
                     continue;
                 }
                 // also add to that dungeon's location list.
