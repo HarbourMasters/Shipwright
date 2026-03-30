@@ -60,7 +60,6 @@ void Sign_RandomizerDrawSetup(void* actor) {
 
     int isNotCMC = !cmc || (requiresStoneAgony && !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY));
 
-    ParticleCMCColor colorIndex;
     Color_RGBA8 primColor;
     Color_RGBA8 secColor;
     Color_RGBA8 envColor;
@@ -75,37 +74,11 @@ void Sign_RandomizerDrawSetup(void* actor) {
     getItemCategory = Randomizer_AdjustItemCategory(signItem);
 
     if (isNotCMC) {
-        colorIndex = PARTICLE_MAJOR;
-    } else {
-        // Change particle color for CMC
-        switch (getItemCategory) {
-            case ITEM_CATEGORY_MAJOR:
-                colorIndex = PARTICLE_MAJOR;
-                break;
-            case ITEM_CATEGORY_SKULLTULA_TOKEN:
-                colorIndex = PARTICLE_SKULLTULA_TOKEN;
-                break;
-            case ITEM_CATEGORY_SMALL_KEY:
-                colorIndex = PARTICLE_SMALL_KEY;
-                break;
-            case ITEM_CATEGORY_BOSS_KEY:
-                colorIndex = PARTICLE_BOSS_KEY;
-                break;
-            case ITEM_CATEGORY_HEALTH:
-                colorIndex = PARTICLE_HEALTH;
-                break;
-            case ITEM_CATEGORY_LESSER:
-                colorIndex = PARTICLE_LESSER;
-                break;
-            case ITEM_CATEGORY_JUNK:
-            default:
-                colorIndex = PARTICLE_JUNK;
-                break;
-        }
+        getItemCategory = ITEM_CATEGORY_MAJOR;
     }
-    primColor = Randomizer_GetParticleCMCColor(colorIndex, COLOR_PRIMARY);
-    secColor = Randomizer_GetParticleCMCColor(colorIndex, COLOR_SECONDARY);
-    envColor = Randomizer_GetParticleCMCColor(colorIndex, COLOR_FLARE);
+    primColor = Randomizer_GetParticleCMCColor(getItemCategory, COLOR_PRIMARY);
+    secColor = Randomizer_GetParticleCMCColor(getItemCategory, COLOR_SECONDARY);
+    envColor = Randomizer_GetParticleCMCColor(getItemCategory, COLOR_FLARE);
     Sign_RandomizerDraw(signActor, &primColor, &secColor, &envColor);
 }
 
