@@ -234,7 +234,8 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
                  RO_DUNGEON_ITEM_LOC_VANILLA) &&
             (location.GetRCType() != RCTYPE_GANON_BOSS_KEY ||
              CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleGanonBossKey"), RO_GANON_BOSS_KEY_VANILLA) !=
-                 RO_GANON_BOSS_KEY_VANILLA) && // vanilla ganon boss key
+                 RO_GANON_BOSS_KEY_VANILLA ||
+             CVarGetInteger(CVAR_RANDOMIZER_SETTING("TriforceHunt"), 0)) &&
             (location.GetRandomizerCheck() != RC_TOT_LIGHT_ARROWS_CUTSCENE ||
              (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleGanonBossKey"), RO_GANON_BOSS_KEY_VANILLA) !=
                   RO_GANON_BOSS_KEY_LACS_DUNGEONS &&
