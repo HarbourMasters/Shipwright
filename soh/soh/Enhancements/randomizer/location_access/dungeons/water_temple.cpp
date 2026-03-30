@@ -1283,7 +1283,8 @@ void RegionTable_Init_WaterTemple() {
         LOCATION(RC_WATER_TEMPLE_MQ_TRIPLE_TORCH_ROOM_GATE_CRATE_3, logic->CanBreakCrates()),
         LOCATION(RC_WATER_TEMPLE_MQ_TRIPLE_TORCH_ROOM_GATE_CRATE_1, logic->CanBreakCrates()),
         LOCATION(RC_WATER_TEMPLE_MQ_TRIPLE_TORCH_ROOM_GATE_CRATE_2, logic->CanBreakCrates()),
-        LOCATION(RC_WATER_TEMPLE_MQ_WONDER_TRIPLE_TORCHES,          logic->CanUse(RG_HOOKSHOT)),
+        // A vanilla bug causes a glitched damage value on hardware and undefined behavior in SOH. Matching the resulting damage triggers with an additional array entry.
+        LOCATION(RC_WATER_TEMPLE_MQ_WONDER_TRIPLE_TORCHES,          logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_FAIRY_BOW)),
     }, {});
 
     areaTable[RR_WATER_TEMPLE_MQ_SPIKE_MOAT] = Region("Water Temple MQ Spike Moat", SCENE_WATER_TEMPLE, {}, {}, {
