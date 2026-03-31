@@ -26,7 +26,7 @@ uint8_t EnHy_RandomizerHoldsItem(int32_t textId) {
 }
 
 void BuildEnHyMessage_BlueFire(uint16_t* textId, bool* loadFromMessageTable) {
-    if (!EnHy_RandomizerHoldsItem(0x70F0)) {
+    if (!EnHy_RandomizerHoldsItem(TEXT_BEGGAR_BUY_BLUE_FIRE)) {
         return;
     }
 
@@ -43,7 +43,7 @@ void BuildEnHyMessage_BlueFire(uint16_t* textId, bool* loadFromMessageTable) {
 }
 
 void BuildEnHyMessage_Fish(uint16_t* textId, bool* loadFromMessageTable) {
-    if (!EnHy_RandomizerHoldsItem(0x70F1)) {
+    if (!EnHy_RandomizerHoldsItem(TEXT_BEGGAR_BUY_FISH)) {
         return;
     }
     CustomMessage msg = CustomMessage(
@@ -59,7 +59,7 @@ void BuildEnHyMessage_Fish(uint16_t* textId, bool* loadFromMessageTable) {
 }
 
 void BuildEnHyMessage_Bug(uint16_t* textId, bool* loadFromMessageTable) {
-    if (!EnHy_RandomizerHoldsItem(0x70F2)) {
+    if (!EnHy_RandomizerHoldsItem(TEXT_BEGGAR_BUY_BUGS)) {
         return;
     }
     CustomMessage msg =
@@ -110,7 +110,6 @@ void Rando::StaticData::RegisterBeggarLocations() {
     locationTable[RC_KAK_BEGGAR_BUGS]       = Location::Base(RC_KAK_BEGGAR_BUGS,        RCQUEST_BOTH,    RCTYPE_BEGGAR,     RCAREA_KAKARIKO_VILLAGE,    ACTOR_EN_HY,    SCENE_KAKARIKO_VILLAGE,     0x70F2,     "Beggar Bugs",          RHT_BEGGAR_KAKARIKO_VILLAGE,    RG_PURPLE_RUPEE,    SpoilerCollectionCheck::RandomizerInf(RAND_INF_KAK_BEGGAR_BUGS));
     locationTable[RC_KAK_BEGGAR_FISH]       = Location::Base(RC_KAK_BEGGAR_FISH,        RCQUEST_BOTH,    RCTYPE_BEGGAR,     RCAREA_KAKARIKO_VILLAGE,    ACTOR_EN_HY,    SCENE_KAKARIKO_VILLAGE,     0x70F1,     "Beggar Fish",          RHT_BEGGAR_KAKARIKO_VILLAGE,    RG_PURPLE_RUPEE,    SpoilerCollectionCheck::RandomizerInf(RAND_INF_KAK_BEGGAR_FISH));
     locationTable[RC_KAK_BEGGAR_BLUE_FIRE]  = Location::Base(RC_KAK_BEGGAR_BLUE_FIRE,   RCQUEST_BOTH,    RCTYPE_BEGGAR,     RCAREA_KAKARIKO_VILLAGE,    ACTOR_EN_HY,    SCENE_KAKARIKO_VILLAGE,     0x70F0,     "Beggar Blue Fire",     RHT_BEGGAR_KAKARIKO_VILLAGE,    RG_HUGE_RUPEE,      SpoilerCollectionCheck::RandomizerInf(RAND_INF_KAK_BEGGAR_BLUE_FIRE));
-
     // clang-format on
 }
 
