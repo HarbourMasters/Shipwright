@@ -64,6 +64,9 @@ void RegionTable_Init_Kakariko() {
         LOCATION(RC_KAK_WELL_RECTANGLE_SIGN,               logic->IsChild && logic->CanRead()),
         LOCATION(RC_KAK_SOUTHEAST_EXIT_ARROW_SIGN,         logic->CanRead()),
         LOCATION(RC_KAK_FRONT_GATE_ARROW_SIGN,             logic->CanRead()),
+        LOCATION(RC_KAK_BEGGAR_BUGS,                       logic->IsAdult && logic->CanUse(RG_BOTTLE_WITH_BUGS)),
+        LOCATION(RC_KAK_BEGGAR_FISH,                       logic->IsAdult && logic->CanUse(RG_BOTTLE_WITH_FISH)),
+        LOCATION(RC_KAK_BEGGAR_BLUE_FIRE,                  logic->IsAdult && logic->CanUse(RG_BOTTLE_WITH_BLUE_FIRE)),
     }, {
         //Exits
         ENTRANCE(RR_HYRULE_FIELD,             true),

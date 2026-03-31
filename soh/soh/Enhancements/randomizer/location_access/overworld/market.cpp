@@ -28,6 +28,9 @@ void RegionTable_Init_Market() {
         LOCATION(RC_MK_SHOOTING_GALLERY_CRATE_1, logic->IsChild /*&& logic->CanRoll()*/),
         LOCATION(RC_MK_SHOOTING_GALLERY_CRATE_2, logic->IsChild /*&& logic->CanRoll()*/),
         LOCATION(RC_MARKET_TREE,                 logic->IsChild && logic->CanBonkTrees()),
+        LOCATION(RC_MK_BEGGAR_BUGS,              logic->IsChild && logic->CanUse(RG_BOTTLE_WITH_BUGS)),
+        LOCATION(RC_MK_BEGGAR_FISH,              logic->IsChild && logic->CanUse(RG_BOTTLE_WITH_FISH)),
+        LOCATION(RC_MK_BEGGAR_BLUE_FIRE,         logic->IsChild && logic->CanUse(RG_BOTTLE_WITH_BLUE_FIRE)),
     }, {
         //Exits
         ENTRANCE(RR_MARKET_ENTRANCE,            true),

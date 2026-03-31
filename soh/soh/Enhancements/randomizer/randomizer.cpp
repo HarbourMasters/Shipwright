@@ -3054,6 +3054,12 @@ std::map<RandomizerCheck, RandomizerInf> rcToRandomizerInf = {
     { RC_DODONGOS_CAVERN_TOP_FLOOR_PEDESTAL, RAND_INF_DODONGOS_CAVERN_TOP_FLOOR_PEDESTAL },
     { RC_SHADOW_TEMPLE_TRUTHSPINNER_RECTANGLE_SIGN, RAND_INF_SHADOW_TEMPLE_TRUTHSPINNER_RECTANGLE_SIGN },
     { RC_SHADOW_TEMPLE_MQ_LOWER_PIT_RECTANGLE_SIGN, RAND_INF_SHADOW_TEMPLE_MQ_LOWER_PIT_RECTANGLE_SIGN },
+    { RC_MK_BEGGAR_BUGS, RAND_INF_MK_BEGGAR_BUGS },
+    { RC_MK_BEGGAR_FISH, RAND_INF_MK_BEGGAR_FISH },
+    { RC_MK_BEGGAR_BLUE_FIRE, RAND_INF_MK_BEGGAR_BLUE_FIRE },
+    { RC_KAK_BEGGAR_BUGS, RAND_INF_KAK_BEGGAR_BUGS },
+    { RC_KAK_BEGGAR_FISH, RAND_INF_KAK_BEGGAR_FISH },
+    { RC_KAK_BEGGAR_BLUE_FIRE, RAND_INF_KAK_BEGGAR_BLUE_FIRE },
 };
 
 CheckIdentity Randomizer::IdentifyBeehive(s32 sceneNum, s16 xPosition, s32 respawnData) {
@@ -3567,13 +3573,13 @@ CheckIdentity Randomizer::IdentifySign(s32 sceneNum, s32 posX, s32 posZ, s32 id)
     return signIdentity;
 }
 
-CheckIdentity Randomizer::IdentifyBeggar(s32 sceneNum, s32 exchangeItemId) {
+CheckIdentity Randomizer::IdentifyBeggar(s32 sceneNum, s32 textId) {
     CheckIdentity beggarIdentity;
     beggarIdentity.randomizerInf = RAND_INF_MAX;
     beggarIdentity.randomizerCheck = RC_UNKNOWN_CHECK;
     Rando::Location* location = nullptr;
 
-    location = GetCheckObjectFromActor(ACTOR_EN_HY, sceneNum, exchangeItemId);
+    location = GetCheckObjectFromActor(ACTOR_EN_HY, sceneNum, textId);
     if (location->GetRandomizerCheck() == RC_UNKNOWN_CHECK) {
         LUSLOG_WARN("IdentifyBeggar did not receive a valid RC value (%d).", location->GetRandomizerCheck());
     } else {
