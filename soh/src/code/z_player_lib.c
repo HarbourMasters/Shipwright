@@ -526,7 +526,8 @@ s32 Player_CheckHostileLockOn(Player* this) {
 }
 
 s32 Player_IsChildWithHylianShield(Player* this) {
-    return gSaveContext.linkAge != 0 && (this->currentShield == PLAYER_SHIELD_HYLIAN);
+    return GameInteractor_Should(VB_BE_CHILD_WITH_HYLIAN_SHIELD,
+                                 ((gSaveContext.linkAge != 0) && (this->currentShield == PLAYER_SHIELD_HYLIAN)), this);
 }
 
 s32 Player_ActionToModelGroup(Player* this, s32 actionParam) {
@@ -547,8 +548,11 @@ void Player_SetModelsForHoldingShield(Player* this) {
              !Player_HoldsTwoHandedWeapon(this)) &&
             !Player_IsChildWithHylianShield(this)) {
             this->rightHandType = PLAYER_MODELTYPE_RH_SHIELD;
-            if (LINK_IS_CHILD && (CVarGetInteger(CVAR_ENHANCEMENT("EquipmentAlwaysVisible"), 0)) &&
-                (this->currentShield == PLAYER_SHIELD_MIRROR)) {
+            if (LINK_IS_CHILD && CVarGetInteger(CVAR_CHEAT("ChildHoldsHylianShield"), 0) &&
+                this->currentShield == PLAYER_SHIELD_HYLIAN) {
+                this->rightHandDLists = &sPlayerDListGroups[PLAYER_MODELTYPE_RH_SHIELD][LINK_AGE_ADULT];
+            } else if (LINK_IS_CHILD && (CVarGetInteger(CVAR_ENHANCEMENT("EquipmentAlwaysVisible"), 0)) &&
+                       (this->currentShield == PLAYER_SHIELD_MIRROR)) {
                 this->rightHandDLists = &sPlayerDListGroups[PLAYER_MODELTYPE_RH_SHIELD][0];
             } else if (LINK_IS_ADULT && (CVarGetInteger(CVAR_ENHANCEMENT("EquipmentAlwaysVisible"), 0)) &&
                        (this->currentShield == PLAYER_SHIELD_DEKU)) {
@@ -599,8 +603,10 @@ void Player_SetModels(Player* this, s32 modelGroup) {
     this->rightHandType = gPlayerModelTypes[modelGroup][PLAYER_MODELGROUPENTRY_RIGHT_HAND];
     this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][gSaveContext.linkAge];
 
-    this->rightHandType = gPlayerModelTypes[modelGroup][PLAYER_MODELGROUPENTRY_RIGHT_HAND];
-    this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][gSaveContext.linkAge];
+    if (LINK_IS_CHILD && CVarGetInteger(CVAR_CHEAT("ChildHoldsHylianShield"), 0) &&
+        this->rightHandType == PLAYER_MODELTYPE_RH_SHIELD && this->currentShield == PLAYER_SHIELD_HYLIAN) {
+        this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][LINK_AGE_ADULT];
+    }
 
     if (CVarGetInteger(CVAR_ENHANCEMENT("EquipmentAlwaysVisible"), 0)) {
         if (LINK_IS_CHILD &&
@@ -623,6 +629,16 @@ void Player_SetModels(Player* this, s32 modelGroup) {
     this->sheathType = gPlayerModelTypes[modelGroup][PLAYER_MODELGROUPENTRY_SHEATH];
     this->sheathDLists = &sPlayerDListGroups[this->sheathType][gSaveContext.linkAge];
 
+    if (CVarGetInteger(CVAR_ENHANCEMENT("ScaleAdultEquipmentAsChild"), 0) &&
+        !CVarGetInteger(CVAR_CHEAT("ChildHoldsHylianShield"), 0)) {
+        if (LINK_IS_CHILD && this->sheathType == PLAYER_MODELTYPE_SHEATH_18 &&
+            this->currentShield == PLAYER_SHIELD_HYLIAN &&
+            (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_MASTER &&
+             gSaveContext.equips.buttonItems[0] != ITEM_SWORD_BGS)) {
+            this->sheathDLists = &sPlayerDListGroups[this->sheathType][LINK_AGE_ADULT];
+        }
+    }
+
     if (CVarGetInteger(CVAR_ENHANCEMENT("EquipmentAlwaysVisible"), 0)) {
         if (LINK_IS_CHILD && (this->currentShield == PLAYER_SHIELD_HYLIAN &&
                                   ((gSaveContext.equips.buttonItems[0] == ITEM_SWORD_MASTER) ||
@@ -637,7 +653,9 @@ void Player_SetModels(Player* this, s32 modelGroup) {
         } else if (LINK_IS_ADULT && (this->currentShield == PLAYER_SHIELD_DEKU &&
                                      gSaveContext.equips.buttonItems[0] != ITEM_SWORD_MASTER) ||
                    (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_MASTER &&
-                    this->sheathType == PLAYER_MODELTYPE_SHEATH_18 && this->currentShield == PLAYER_SHIELD_DEKU)) {
+                    this->sheathType == PLAYER_MODELTYPE_SHEATH_18 && this->currentShield == PLAYER_SHIELD_DEKU) ||
+                   (this->sheathType == PLAYER_MODELTYPE_SHEATH_17 &&
+                    gSaveContext.equips.buttonItems[0] == ITEM_SWORD_KOKIRI)) {
             this->sheathDLists = &sPlayerDListGroups[this->sheathType][1];
         } else if (LINK_IS_CHILD && this->sheathType == PLAYER_MODELTYPE_SHEATH_17 &&
                    ((gSaveContext.equips.buttonItems[0] == ITEM_SWORD_MASTER) ||
@@ -1262,6 +1280,10 @@ s32 Player_OverrideLimbDrawGameplayCommon(PlayState* play, s32 limbIndex, Gfx** 
             if ((this->currentShield == PLAYER_SHIELD_MIRROR && sRightHandType == PLAYER_MODELTYPE_RH_SHIELD) ||
                 sRightHandType == PLAYER_MODELTYPE_RH_HOOKSHOT ||
                 (sRightHandType == PLAYER_MODELTYPE_RH_BOW_SLINGSHOT && Player_HoldsBow(this))) {
+                Matrix_Scale(0.8, 0.8, 0.8, MTXMODE_APPLY);
+            }
+            if (CVarGetInteger(CVAR_CHEAT("ChildHoldsHylianShield"), 0) &&
+                this->currentShield == PLAYER_SHIELD_HYLIAN && sRightHandType == PLAYER_MODELTYPE_RH_SHIELD) {
                 Matrix_Scale(0.8, 0.8, 0.8, MTXMODE_APPLY);
             }
         }

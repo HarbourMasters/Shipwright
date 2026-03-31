@@ -12,6 +12,7 @@
 #include "objects/object_shopnuts/object_shopnuts.h"
 #include "objects/object_dns/object_dns.h"
 #include "objects/object_dnk/object_dnk.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
@@ -122,8 +123,10 @@ void func_80ABBBA8(EnNutsball* this, PlayState* play) {
         (this->collider.base.acFlags & AC_HIT) || (this->collider.base.ocFlags1 & OC1_HIT)) {
         // Checking if the player is using a shield that reflects projectiles
         // And if so, reflects the projectile on impact
-        if ((player->currentShield == PLAYER_SHIELD_DEKU) ||
-            ((player->currentShield == PLAYER_SHIELD_HYLIAN) && LINK_IS_ADULT)) {
+        if (GameInteractor_Should(VB_REFLECT_NUTSBALL,
+                                  (player->currentShield == PLAYER_SHIELD_DEKU) ||
+                                      ((player->currentShield == PLAYER_SHIELD_HYLIAN) && LINK_IS_ADULT),
+                                  this)) {
             if ((this->collider.base.atFlags & AT_HIT) && (this->collider.base.atFlags & AT_TYPE_ENEMY) &&
                 (this->collider.base.atFlags & AT_BOUNCED)) {
                 this->collider.base.atFlags &= ~AT_TYPE_ENEMY & ~AT_BOUNCED & ~AT_HIT;

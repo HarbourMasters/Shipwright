@@ -62,6 +62,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // ((gSaveContext.linkAge != 0) && (this->currentShield == PLAYER_SHIELD_HYLIAN))
+    // ```
+    // #### `args`
+    // - `*Player`
+    VB_BE_CHILD_WITH_HYLIAN_SHIELD,
+
+    // #### `result`
+    // ```c
     // this->currentReward == 3
     // ```
     // #### `args`
@@ -1934,6 +1942,24 @@ typedef enum {
     // #### `args`
     // - `*EnRd`
     VB_REDEAD_GIBDO_FREEZE_LINK,
+
+    // #### `result`
+    // ```c
+    // (player->currentShield == PLAYER_SHIELD_DEKU) || ((player->currentShield == PLAYER_SHIELD_HYLIAN) &&
+    // LINK_IS_ADULT)
+    // ```
+    // #### `args`
+    // - `*EnNutsball`
+    VB_REFLECT_NUTSBALL,
+
+    // #### `result`
+    // ```c
+    // (player->currentShield == PLAYER_SHIELD_DEKU) || ((player->currentShield == PLAYER_SHIELD_HYLIAN) &&
+    // LINK_IS_ADULT)
+    // ```
+    // #### `args`
+    // - `*EnOkuta`
+    VB_REFLECT_OCTOROK_PROJECTILE,
 
     // #### `result`
     // #### `result`
