@@ -3567,6 +3567,23 @@ CheckIdentity Randomizer::IdentifySign(s32 sceneNum, s32 posX, s32 posZ, s32 id)
     return signIdentity;
 }
 
+CheckIdentity Randomizer::IdentifyBeggar(s32 sceneNum, s32 exchangeItemId) {
+    CheckIdentity beggarIdentity;
+    beggarIdentity.randomizerInf = RAND_INF_MAX;
+    beggarIdentity.randomizerCheck = RC_UNKNOWN_CHECK;
+    Rando::Location* location = nullptr;
+
+    location = GetCheckObjectFromActor(ACTOR_EN_HY, sceneNum, exchangeItemId);
+    if (location->GetRandomizerCheck() == RC_UNKNOWN_CHECK) {
+        LUSLOG_WARN("IdentifyBeggar did not receive a valid RC value (%d).", location->GetRandomizerCheck());
+    } else {
+        beggarIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
+        beggarIdentity.randomizerCheck = location->GetRandomizerCheck();
+    }
+
+    return beggarIdentity;
+}
+
 u8 Randomizer::GetRandoSettingValue(RandomizerSettingKey randoSettingKey) {
     return Rando::Context::GetInstance()->GetOption(randoSettingKey).Get();
 }

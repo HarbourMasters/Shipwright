@@ -196,6 +196,7 @@ void Context::GenerateLocationPool() {
              !(location.GetRandomizerCheck() == RC_LW_DEKU_SCRUB_GROTTO_FRONT ||
                location.GetRandomizerCheck() == RC_LW_DEKU_SCRUB_NEAR_BRIDGE ||
                location.GetRandomizerCheck() == RC_HF_DEKU_SCRUB_GROTTO)) ||
+            (location.GetRCType() == RCTYPE_BEGGAR && mOptions[RSK_SHUFFLE_BEGGAR].Is(RO_GENERIC_OFF)) ||
             (location.GetRCType() == RCTYPE_ADULT_TRADE && mOptions[RSK_SHUFFLE_ADULT_TRADE].Is(RO_GENERIC_OFF)) ||
             (location.GetRCType() == RCTYPE_COW && mOptions[RSK_SHUFFLE_COWS].Is(RO_GENERIC_OFF)) ||
             (location.GetRandomizerCheck() == RC_LH_HYRULE_LOACH &&

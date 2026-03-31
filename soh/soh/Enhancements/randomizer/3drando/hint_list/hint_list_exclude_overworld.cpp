@@ -2247,6 +2247,14 @@ void StaticData::HintTable_Init_Exclude_Overworld() {
     hintTextTable[RHT_SIGN_HAUNTED_WASTELAND] = HintText(CustomMessage("They say that #reading a sign in Haunted Wasteland# reveals #[[1]]#.",
                                                         /*german*/ "Man erzählt sich, daß das #Lesen eines Schildes in der Gespensterwüste# #[[1]]# enthülle.",
                                                         /*french*/ "Selon moi, #lire un panneau dans le Désert Hanté# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_BEGGAR_MARKET] = HintText(CustomMessage("They say that #trading with a beggar in the market# gives #[[1]]#.",
+                                                        /*german*/ "Man erzählt sich, daß das #Handeln mit einem Bettler auf dem Markt# #[[1]]# gäbe.",
+                                                        /*french*/ "Selon moi, #échanger avec un mendiant sur le marché# donne #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_BEGGAR_MARKET] = HintText(CustomMessage("They say that #trading with a beggar in Kakariko Village# gives #[[1]]#.",
+                                                        /*german*/ "Man erzählt sich, daß das #Handeln mit einem Bettler in Kakariko# #[[1]]# gäbe.",
+                                                        /*french*/ "Selon moi, #échanger avec un mendiant dans le Village de Cocorico# donne #[[1]]#.", {QM_RED, QM_GREEN}));
     // clang-format on
 }
 } // namespace Rando
