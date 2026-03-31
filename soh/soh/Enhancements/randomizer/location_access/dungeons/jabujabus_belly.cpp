@@ -325,6 +325,7 @@ void RegionTable_Init_JabuJabusBelly() {
         //Locations
         LOCATION(RC_JABU_JABUS_BELLY_MQ_PIT_GRASS_1, logic->CanCutShrubs() && logic->HasExplosives()),
         LOCATION(RC_JABU_JABUS_BELLY_MQ_PIT_GRASS_2, logic->CanCutShrubs() && logic->HasExplosives()),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_HOLES_COW,   (logic->HasExplosives() || ctx->GetTrickOption(RT_BOULDER_COLLISION)) && logic->CanUse(RG_FAIRY_SLINGSHOT)),
     }, {
         //Exits
         ENTRANCE(RR_JABU_JABUS_BELLY_MQ_LIFT_ROOM,              true),

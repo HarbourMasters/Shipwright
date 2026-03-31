@@ -1188,6 +1188,8 @@ void RegionTable_Init_WaterTemple() {
         //Locations
         LOCATION(RC_WATER_TEMPLE_MQ_DRAGON_ROOM_DOOR_CRATE_1, logic->CanBreakCrates()),
         LOCATION(RC_WATER_TEMPLE_MQ_DRAGON_ROOM_DOOR_CRATE_2, logic->CanBreakCrates()),
+        LOCATION(RC_WATER_TEMPLE_MQ_WONDER_DRAGON_ROOM_LEFT_EYE,   logic->CanUse(RG_HOOKSHOT) && logic->WaterTimer() >= 8),
+        LOCATION(RC_WATER_TEMPLE_MQ_WONDER_DRAGON_ROOM_RIGHT_EYE,  logic->CanUse(RG_HOOKSHOT) && logic->WaterTimer() >= 8),
     }, {
         //Exits
         ENTRANCE(RR_WATER_TEMPLE_MQ_RIVER_POTS,            logic->CanUse(RG_LONGSHOT)),
@@ -1333,9 +1335,9 @@ void RegionTable_Init_WaterTemple() {
 
     areaTable[RR_WATER_TEMPLE_MQ_CANAL_ALCOVE] = Region("Water Temple MQ Canal Alcove", SCENE_WATER_TEMPLE, {}, {}, {
         //Exits
-        ENTRANCE(RR_WATER_TEMPLE_MQ_3_JETS_ROOM,       logic->SmallKeys(SCENE_WATER_TEMPLE, 2)),
-        ENTRANCE(RR_WATER_TEMPLE_MQ_SCARECROW_CANAL,   logic->IsAdult || logic->HasItem(RG_BRONZE_SCALE) || (logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 8)),
-        ENTRANCE(RR_WATER_TEMPLE_MQ_BEHIND_CANAL,      logic->IsAdult && ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) && logic->HasItem(RG_BRONZE_SCALE)),
+        ENTRANCE(RR_WATER_TEMPLE_MQ_3_JETS_ROOM_SWITCH_SIDE, logic->SmallKeys(SCENE_WATER_TEMPLE, 2)),
+        ENTRANCE(RR_WATER_TEMPLE_MQ_SCARECROW_CANAL,         logic->IsAdult || logic->HasItem(RG_BRONZE_SCALE) || (logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 8)),
+        ENTRANCE(RR_WATER_TEMPLE_MQ_BEHIND_CANAL,            logic->IsAdult && ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) && logic->HasItem(RG_BRONZE_SCALE)),
     });
 
     areaTable[RR_WATER_TEMPLE_MQ_BEHIND_CANAL] = Region("Water Temple MQ Behind Canal", SCENE_WATER_TEMPLE, {}, {}, {
@@ -1360,14 +1362,24 @@ void RegionTable_Init_WaterTemple() {
         ENTRANCE(RR_WATER_TEMPLE_MQ_BEHIND_CANAL, AnyAgeTime([]{return logic->CanKillEnemy(RE_STALFOS);})),
     });
 
-    areaTable[RR_WATER_TEMPLE_MQ_3_JETS_ROOM] = Region("Water Temple MQ 3 Jets Room", SCENE_WATER_TEMPLE, {}, {
+    areaTable[RR_WATER_TEMPLE_MQ_3_JETS_ROOM_SWITCH_SIDE] = Region("Water Temple MQ 3 Jets Room Switch Side", SCENE_WATER_TEMPLE, {}, {
         //Locations
         LOCATION(RC_WATER_TEMPLE_MQ_WONDER_WATER_SPROUTS_1, true),
-        LOCATION(RC_WATER_TEMPLE_MQ_WONDER_WATER_SPROUTS_2, true),
+        LOCATION(RC_WATER_TEMPLE_MQ_WONDER_WATER_SPROUTS_2, logic->CanHitSwitch()),
     }, {
         //Exits
-        ENTRANCE(RR_WATER_TEMPLE_MQ_CANAL_ALCOVE,      logic->SmallKeys(SCENE_WATER_TEMPLE, 2) && logic->CanHitSwitch(ED_BOOMERANG)),
-        ENTRANCE(RR_WATER_TEMPLE_MQ_DODONGO_ROOM,      logic->CanHitSwitch() && logic->HasFireSource()),
+        ENTRANCE(RR_WATER_TEMPLE_MQ_CANAL_ALCOVE,               logic->SmallKeys(SCENE_WATER_TEMPLE, 2)),
+        ENTRANCE(RR_WATER_TEMPLE_MQ_3_JETS_ROOM_NO_SWITCH_SIDE, logic->CanHitSwitch()),
+        // No Switch Side requires CanHitSwitch(ED_BOOMERANG) to get to this entrance. This is covered by No Switch -> Switch entrance.
+        ENTRANCE(RR_WATER_TEMPLE_MQ_DODONGO_ROOM,               logic->CanHitSwitch(ED_BOOMERANG) && logic->HasFireSource()),
+    });
+
+    areaTable[RR_WATER_TEMPLE_MQ_3_JETS_ROOM_NO_SWITCH_SIDE] = Region("Water Temple MQ 3 Jets Room No Switch Side", SCENE_WATER_TEMPLE, {}, {
+        //Locations
+        LOCATION(RC_WATER_TEMPLE_MQ_WONDER_WATER_SPROUTS_2, logic->IsAdult),
+    }, {
+        //Exits
+        ENTRANCE(RR_WATER_TEMPLE_MQ_3_JETS_ROOM_SWITCH_SIDE, logic->CanHitSwitch(ED_BOOMERANG) || (ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && logic->CanHammerRecoilHover())),
     });
 
     areaTable[RR_WATER_TEMPLE_MQ_DODONGO_ROOM] = Region("Water Temple MQ Dodongo Room", SCENE_WATER_TEMPLE, {}, {
@@ -1381,8 +1393,8 @@ void RegionTable_Init_WaterTemple() {
         LOCATION(RC_WATER_TEMPLE_MQ_DODONGO_ROOM_LOWER_CRATE_3, logic->CanBreakCrates()),
     }, {
         //Exits
-        ENTRANCE(RR_WATER_TEMPLE_MQ_3_JETS_ROOM,       (logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS)) && AnyAgeTime([]{return logic->CanKillEnemy(RE_DODONGO, ED_CLOSE, true, 5);})),
-        ENTRANCE(RR_WATER_TEMPLE_MQ_CRATE_VORTEX_CAGE, (logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS)) && AnyAgeTime([]{return logic->CanKillEnemy(RE_DODONGO, ED_CLOSE, true, 5);})),
+        ENTRANCE(RR_WATER_TEMPLE_MQ_3_JETS_ROOM_NO_SWITCH_SIDE, (logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS)) && AnyAgeTime([]{return logic->CanKillEnemy(RE_DODONGO, ED_CLOSE, true, 5);})),
+        ENTRANCE(RR_WATER_TEMPLE_MQ_CRATE_VORTEX_CAGE,          (logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS)) && AnyAgeTime([]{return logic->CanKillEnemy(RE_DODONGO, ED_CLOSE, true, 5);})),
     });
 
     areaTable[RR_WATER_TEMPLE_MQ_CRATE_VORTEX_CAGE] = Region("Water Temple MQ Crate Vortex Cage", SCENE_WATER_TEMPLE, {}, {
