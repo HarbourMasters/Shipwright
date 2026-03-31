@@ -1048,7 +1048,15 @@ void RegionTable_Init_WaterTemple() {
         ENTRANCE(RR_WATER_TEMPLE_MQ_WATERFALL_TOP,     logic->CanUse(RG_LONGSHOT)),
     });
 
-    areaTable[RR_WATER_TEMPLE_MQ_WATERFALL_TOP] = Region("Water Temple Waterfall Top", SCENE_WATER_TEMPLE, {}, {}, {
+    areaTable[RR_WATER_TEMPLE_MQ_WATERFALL_TOP] = Region("Water Temple Waterfall Top", SCENE_WATER_TEMPLE, {}, {
+        //Locations
+        LOCATION(RC_WATER_TEMPLE_MQ_WONDER_HOOKSHOT_STAIRCASE_RIGHT_1, logic->CanUse(RG_HOOKSHOT)),
+        LOCATION(RC_WATER_TEMPLE_MQ_WONDER_HOOKSHOT_STAIRCASE_RIGHT_2, logic->CanUse(RG_HOOKSHOT)),
+        LOCATION(RC_WATER_TEMPLE_MQ_WONDER_HOOKSHOT_STAIRCASE_RIGHT_3, logic->CanUse(RG_HOOKSHOT)),
+        LOCATION(RC_WATER_TEMPLE_MQ_WONDER_HOOKSHOT_STAIRCASE_LEFT_1,  logic->CanUse(RG_HOOKSHOT)),
+        LOCATION(RC_WATER_TEMPLE_MQ_WONDER_HOOKSHOT_STAIRCASE_LEFT_2,  logic->CanUse(RG_HOOKSHOT)),
+        LOCATION(RC_WATER_TEMPLE_MQ_WONDER_HOOKSHOT_STAIRCASE_LEFT_3,  logic->CanUse(RG_HOOKSHOT)),   
+    }, {
         //Exits
         ENTRANCE(RR_WATER_TEMPLE_MQ_WATERFALL,   logic->CanUse(RG_LONGSHOT) && logic->CanHitSwitch(ED_FAR)),
         ENTRANCE(RR_WATER_TEMPLE_MQ_STALFOS_PIT, true),
@@ -1186,10 +1194,10 @@ void RegionTable_Init_WaterTemple() {
     areaTable[RR_WATER_TEMPLE_MQ_DRAGON_ROOM_DOOR] = Region("Water Temple MQ Dragon Room Door", SCENE_WATER_TEMPLE, {},
     {
         //Locations
-        LOCATION(RC_WATER_TEMPLE_MQ_DRAGON_ROOM_DOOR_CRATE_1, logic->CanBreakCrates()),
-        LOCATION(RC_WATER_TEMPLE_MQ_DRAGON_ROOM_DOOR_CRATE_2, logic->CanBreakCrates()),
-        LOCATION(RC_WATER_TEMPLE_MQ_WONDER_DRAGON_ROOM_LEFT_EYE,   logic->CanUse(RG_HOOKSHOT) && logic->WaterTimer() >= 8),
-        LOCATION(RC_WATER_TEMPLE_MQ_WONDER_DRAGON_ROOM_RIGHT_EYE,  logic->CanUse(RG_HOOKSHOT) && logic->WaterTimer() >= 8),
+        LOCATION(RC_WATER_TEMPLE_MQ_DRAGON_ROOM_DOOR_CRATE_1,     logic->CanBreakCrates()),
+        LOCATION(RC_WATER_TEMPLE_MQ_DRAGON_ROOM_DOOR_CRATE_2,     logic->CanBreakCrates()),
+        LOCATION(RC_WATER_TEMPLE_MQ_WONDER_DRAGON_ROOM_LEFT_EYE,  logic->CanUse(RG_HOOKSHOT) && logic->WaterTimer() >= 8),
+        LOCATION(RC_WATER_TEMPLE_MQ_WONDER_DRAGON_ROOM_RIGHT_EYE, logic->CanUse(RG_HOOKSHOT) && logic->WaterTimer() >= 8),
     }, {
         //Exits
         ENTRANCE(RR_WATER_TEMPLE_MQ_RIVER_POTS,            logic->CanUse(RG_LONGSHOT)),

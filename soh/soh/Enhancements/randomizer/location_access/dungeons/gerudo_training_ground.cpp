@@ -109,7 +109,7 @@ void RegionTable_Init_GerudoTrainingGround() {
 
     areaTable[RR_GERUDO_TRAINING_GROUND_EYE_STATUE_UPPER] = Region("Gerudo Training Ground Eye Statue Upper", SCENE_GERUDO_TRAINING_GROUND, {}, {
         //Locations
-        LOCATION(RC_GERUDO_TRAINING_GROUND_WONDER_EYE_STATUE_ROOM, logic->CanUse(RG_HOVER_BOOTS)),
+        LOCATION(RC_GERUDO_TRAINING_GROUND_WONDER_EYE_STATUE_ROOM, logic->CanUse(RG_HOVER_BOOTS)), //RANDOTODO: add trick for jump+jumpslash and jump only to pillar
     }, {
         //Exits
         ENTRANCE(RR_GERUDO_TRAINING_GROUND_EYE_STATUE_LOWER,       true),

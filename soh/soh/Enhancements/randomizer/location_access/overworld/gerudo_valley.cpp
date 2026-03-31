@@ -40,7 +40,7 @@ void RegionTable_Init_GerudoValley() {
         LOCATION(RC_GV_GOSSIP_STONE_FAIRY_BIG, logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_GV_GOSSIP_STONE,           true),
         LOCATION(RC_GV_NEAR_COW_CRATE,         logic->IsChild && logic->CanBreakCrates()),
-        LOCATION(RC_GV_WONDER_LOWER_WATERFALL, true),
+        LOCATION(RC_GV_WONDER_LOWER_WATERFALL, logic->IsAdult),
         LOCATION(RC_GV_WONDER_UPPER_WATERFALL, logic->IsAdult && CanPlantBean(RR_GV_UPPER_STREAM, RG_GERUDO_VALLEY_BEAN_SOUL)),
     }, {
         //Exits

@@ -105,8 +105,8 @@ void RegionTable_Init_ThievesHideout() {
         LOCATION(RC_TH_KITCHEN_POT_2,        logic->CanBreakPots() && logic->CanPassEnemy(RE_GERUDO_GUARD)),
         LOCATION(RC_TH_KITCHEN_CRATE,        logic->CanBreakCrates() && logic->CanPassEnemy(RE_GERUDO_GUARD)),
         LOCATION(RC_TH_KITCHEN_SUN_FAIRY,    logic->CanPassEnemy(RE_GERUDO_GUARD) && logic->CanUse(RG_SUNS_SONG)),
-        LOCATION(RC_TH_WONDER_KITCHEN_SKULL, logic->CanUse(RG_FAIRY_BOW) && logic->CanPassEnemy(RE_GERUDO_GUARD)),
-        LOCATION(RC_TH_WONDER_KITCHEN_SOUP,  logic->CanPassEnemy(RE_GERUDO_GUARD)),
+        LOCATION(RC_TH_WONDER_KITCHEN_SKULL, logic->CanUse(RG_FAIRY_BOW)),
+        LOCATION(RC_TH_WONDER_KITCHEN_SOUP,  (logic->TakeDamage() || logic->IsAdult || logic->CanUse(RG_GORON_TUNIC)) && logic->CanPassEnemy(RE_GERUDO_GUARD)),
     }, {
         //Exits
         ENTRANCE(RR_TH_KITCHEN_CORRIDOR,          logic->CanPassEnemy(RE_GERUDO_GUARD)),

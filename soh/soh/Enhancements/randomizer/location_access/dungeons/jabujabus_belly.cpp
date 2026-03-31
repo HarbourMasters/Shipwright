@@ -291,7 +291,7 @@ void RegionTable_Init_JabuJabusBelly() {
         LOCATION(RC_JABU_JABUS_BELLY_MQ_LIFT_RUPEE_1,            logic->CanUse(RG_IRON_BOOTS)),
         LOCATION(RC_JABU_JABUS_BELLY_MQ_LIFT_RUPEE_2,            logic->CanUse(RG_IRON_BOOTS)),
         LOCATION(RC_JABU_JABUS_BELLY_MQ_LIFT_RUPEE_3,            logic->CanUse(RG_IRON_BOOTS)),
-        LOCATION(RC_JABU_JABUS_BELLY_MQ_WONDER_ELEVATOR_COW,     logic->CanUse(RG_FAIRY_SLINGSHOT) && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_WONDER_ELEVATOR_COW,     logic->CanUse(RG_FAIRY_SLINGSHOT) && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG))),
     }, {
         //Exits
         ENTRANCE(RR_JABU_JABUS_BELLY_MQ_BEGINNING,                     true),
@@ -524,7 +524,7 @@ void RegionTable_Init_JabuJabusBelly() {
         LOCATION(RC_JABU_JABUS_BELLY_MQ_JIGGLIES_GRASS,         logic->CanCutShrubs()),
         LOCATION(RC_JABU_JABUS_BELLY_MQ_JIGGLIES_SMALL_CRATE_1, logic->CanUse(RG_FAIRY_SLINGSHOT) && logic->CanBreakSmallCrates()),
         LOCATION(RC_JABU_JABUS_BELLY_MQ_JIGGLIES_SMALL_CRATE_2, logic->CanUse(RG_FAIRY_SLINGSHOT) && logic->CanBreakSmallCrates()),
-        LOCATION(RC_JABU_JABUS_BELLY_MQ_WONDER_PLATFORMS_COW,   logic->CanUse(RG_FAIRY_SLINGSHOT)),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_WONDER_JIGGLIES_COW,    logic->CanUse(RG_FAIRY_SLINGSHOT)),
     }, {
         //Exits
         ENTRANCE(RR_JABU_JABUS_BELLY_MQ_ABOVE_BIGOCTO,  true),

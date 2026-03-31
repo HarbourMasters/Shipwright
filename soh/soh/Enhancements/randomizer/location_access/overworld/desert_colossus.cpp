@@ -19,12 +19,12 @@ void RegionTable_Init_DesertColossus() {
         LOCATION(RC_COLOSSUS_BEAN_SPROUT_FAIRY_3,     logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_DESERT_COLOSSUS_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_COLOSSUS_GOSSIP_STONE_FAIRY,      logic->CallGossipFairy()),
         LOCATION(RC_COLOSSUS_GOSSIP_STONE_FAIRY_BIG,  logic->CanUse(RG_SONG_OF_STORMS)),
-        LOCATION(RC_COLOSSUS_GOSSIP_STONE,            logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_FAIRY_SLINGSHOT)),
-        LOCATION(RC_COLOSSUS_WONDER_OASIS_TREE_1,     logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_FAIRY_SLINGSHOT)),
-        LOCATION(RC_COLOSSUS_WONDER_OASIS_TREE_2,     logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_FAIRY_SLINGSHOT)),
+        LOCATION(RC_COLOSSUS_GOSSIP_STONE,            true),
+        LOCATION(RC_COLOSSUS_WONDER_OASIS_TREE_1,     (logic->IsAdult && logic->CanUse(RG_FAIRY_BOW)) || (logic->IsChild && logic->CanUse(RG_FAIRY_SLINGSHOT))),
+        LOCATION(RC_COLOSSUS_WONDER_OASIS_TREE_2,     (logic->IsAdult && logic->CanUse(RG_FAIRY_BOW)) || (logic->IsChild && logic->CanUse(RG_FAIRY_SLINGSHOT))),
         LOCATION(RC_COLOSSUS_WONDER_OASIS_CHILD_TREE, logic->IsChild && logic->CanUse(RG_FAIRY_SLINGSHOT)),
-        LOCATION(RC_COLOSSUS_WONDER_GF_TREE_1,        logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_FAIRY_SLINGSHOT)),
-        LOCATION(RC_COLOSSUS_WONDER_GF_TREE_2,        logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_FAIRY_SLINGSHOT)),
+        LOCATION(RC_COLOSSUS_WONDER_GF_TREE_1,        (logic->IsAdult && logic->CanUse(RG_FAIRY_BOW)) || (logic->IsChild && logic->CanUse(RG_FAIRY_SLINGSHOT))),
+        LOCATION(RC_COLOSSUS_WONDER_GF_TREE_2,        (logic->IsAdult && logic->CanUse(RG_FAIRY_BOW)) || (logic->IsChild && logic->CanUse(RG_FAIRY_SLINGSHOT))),
     }, {
         //Exits
         //You can kinda get the fairies without entering the water, but it relies on them cooperating and leevers are jerks. should be a trick
