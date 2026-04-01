@@ -17,7 +17,6 @@
 #include "soh/Enhancements/enhancementTypes.h"
 
 extern "C" {
-#include "z64.h"
 #include "macros.h"
 #include "soh/cvar_prefixes.h"
 }
