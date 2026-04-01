@@ -60,6 +60,10 @@ void CosmeticsEditor_RandomizeGroup(CosmeticGroup group);
 void CosmeticsEditor_ResetAll();
 void CosmeticsEditor_ResetGroup(CosmeticGroup group);
 void ApplyOrResetCustomGfxPatches(bool manualChange = true);
+void ScanCustomCosmetics();
+void DrawCustomCosmetics();
+void ApplyCustomCosmetics();
+void UpdateCustomCosmeticsRainbow(int hue, float rainbowSpeed, int& index);
 
 class CosmeticsEditorWindow final : public Ship::GuiWindow {
   public:
