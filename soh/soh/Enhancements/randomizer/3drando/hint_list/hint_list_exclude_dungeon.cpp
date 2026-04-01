@@ -131,6 +131,10 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
                                                      /*german*/ "Man erzählt sich, daß eine #Kiste im Deku-Baum# #[[1]]# enthielte.",
                                                      /*french*/ "Selon moi, une #caisse dans l'Arbre Mojo# contient #[[1]]#.", {QM_RED, QM_GREEN}));
 
+    hintTextTable[RHT_WONDER_ITEM_DEKU_TREE] = HintText(CustomMessage("They say that a #wonder item in the Deku Tree# hides #[[1]]#.",
+                                                     /*german*/ "Man erzählt sich, daß sich ein #Wunder-Gegenstand im Deku-Baum# #[[1]]# verstecke.",
+                                                     /*french*/ "Selon moi, un #objet merveilleux dans l'Arbre Mojo# cache #[[1]]#.", {QM_RED, QM_GREEN}));
+
   /*--------------------------
   |     DODONGOS CAVERN      |
   ---------------------------*/
@@ -483,6 +487,10 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
     hintTextTable[RHT_CRATE_JABU_JABU] = HintText(CustomMessage("They say that a #crate in Jabu Jabu's Belly# contains #[[1]]#.",
                                                      /*german*/ "Man erzählt sich, daß eine #Kiste in Jabu-Jabus Bauch# #[[1]]# enthielte.",
                                                      /*french*/ "Selon moi, une #caisse dans le Ventre de Jabu-Jabu# contient #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_WONDER_ITEM_JABU_JABU] = HintText(CustomMessage("They say that a #wonder item in Jabu Jabu's Belly# hides #[[1]]#.",
+                                                     /*german*/ "Man erzählt sich, daß sich ein #Wunder-Gegenstand in Jabu-Jabus Bauch# #[[1]]# verstecke.",
+                                                     /*french*/ "Selon moi, un #objet merveilleux dans le Ventre de Jabu-Jabu# cache #[[1]]#.", {QM_RED, QM_GREEN}));
 
   /*--------------------------
   |      FOREST TEMPLE       |
@@ -926,6 +934,10 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
                                                      /*german*/ "Man erzählt sich, daß eine #Kiste im Feuertempel# #[[1]]# enthielte.",
                                                      /*french*/ "Selon moi, une #caisse dans le Temple du Feu# contient #[[1]]#.", {QM_RED, QM_GREEN}));
 
+    hintTextTable[RHT_WONDER_ITEM_FIRE_TEMPLE] = HintText(CustomMessage("They say that a #wonder item in Fire Temple# hides #[[1]]#.",
+                                                     /*german*/ "Man erzählt sich, daß sich ein #Wunder-Gegenstand im Feuertempel# #[[1]]# verstecke.",
+                                                     /*french*/ "Selon moi, un #objet merveilleux dans le Temple du Feu# cache #[[1]]#.", {QM_RED, QM_GREEN}));
+
   /*--------------------------
   |       WATER TEMPLE       |
   ---------------------------*/
@@ -1076,6 +1088,10 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
     hintTextTable[RHT_CRATE_WATER_TEMPLE] = HintText(CustomMessage("They say that a #crate in Water Temple# contains #[[1]]#.",
                                                      /*german*/ "Man erzählt sich, daß eine #Kiste im Wassertempel# #[[1]]# enthielte.",
                                                      /*french*/ "Selon moi, une #caisse dans le Temple de l'Eau# contient #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_WONDER_ITEM_WATER_TEMPLE] = HintText(CustomMessage("They say that a #wonder item in Water Temple# hides #[[1]]#.",
+                                                     /*german*/ "Man erzählt sich, daß sich ein #Wunder-Gegenstand im Wassertempel# #[[1]]# verstecke.",
+                                                     /*french*/ "Selon moi, un #objet merveilleux dans le Temple de l'Eau# cache #[[1]]#.", {QM_RED, QM_GREEN}));
 
   /*--------------------------
   |      SPIRIT TEMPLE       |
@@ -1325,6 +1341,10 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
     hintTextTable[RHT_CRATE_SPIRIT_TEMPLE] = HintText(CustomMessage("They say that a #crate in Spirit Temple# contains #[[1]]#.",
                                                      /*german*/ "Man erzählt sich, daß eine #Kiste im Geistertempel# #[[1]]# enthielte.",
                                                      /*french*/ "Selon moi, une #caisse dans le Temple de l'Esprit# contient #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_WONDER_ITEM_SPIRIT_TEMPLE] = HintText(CustomMessage("They say that a #wonder item in Spirit Temple# hides #[[1]]#.",
+                                                     /*german*/ "Man erzählt sich, daß sich ein #Wunder-Gegenstand im Geistertempel# #[[1]]# verstecke.",
+                                                     /*french*/ "Selon moi, un #objet merveilleux dans le Temple de l'Esprit# cache #[[1]]#.", {QM_RED, QM_GREEN}));
 
   /*--------------------------
   |      SHADOW TEMPLE       |
@@ -1597,6 +1617,10 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
                                                      /*german*/ "Man erzählt sich, daß das #Lesen eines Schildes im Schattentempel# #[[1]]# enthülle.",
                                                      /*french*/ "Selon moi, #lire un panneau dans le Temple de l'Ombre# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
 
+    hintTextTable[RHT_WONDER_ITEM_SHADOW_TEMPLE] = HintText(CustomMessage("They say that a #wonder item in Shadow Temple# hides #[[1]]#.",
+                                                     /*german*/ "Man erzählt sich, daß sich ein #Wunder-Gegenstand im Schattentempel# #[[1]]# verstecke.",
+                                                     /*french*/ "Selon moi, un #objet merveilleux dans le Temple de l'Ombre# cache #[[1]]#.", {QM_RED, QM_GREEN}));
+
   /*--------------------------
   |    BOTTOM OF THE WELL    |
   ---------------------------*/
@@ -1743,6 +1767,9 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
                                                      /*german*/ "Man erzählt sich, daß etwas #Gras auf dem Grund des Brunnens# #[[1]]# verstecke.",
                                                      /*french*/ "Selon moi, de l'#herbe dans le Puits# cache #[[1]]#.", {QM_RED, QM_GREEN}));
 
+    hintTextTable[RHT_BOTTOM_OF_THE_WELL_WONDER_ITEM] = HintText(CustomMessage("They say that a #wonder item in the Bottom of the Well# hides #[[1]]#.",
+                                                     /*german*/ "Man erzählt sich, daß sich ein #Wunder-Gegenstand auf dem Grund des Brunnens# #[[1]]# verstecke.",
+                                                     /*french*/ "Selon moi, un #objet merveilleux dans le Puits# cache #[[1]]#.", {QM_RED, QM_GREEN}));
 
   /*--------------------------
   |        ICE CAVERN        |
@@ -2024,6 +2051,10 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
                                                      /*german*/ "Man erzählt sich, daß eine #Kiste in der Gerudo-Trainingsarena# #[[1]]# enthielte.",
                                                      /*french*/ "Selon moi, une #caisse dans le Gymnase Gerudo# contient #[[1]]#.", {QM_RED, QM_GREEN}));
 
+    hintTextTable[RHT_WONDER_ITEM_GERUDO_TRAINING_GROUND] = HintText(CustomMessage("They say that a #wonder item in Gerudo Training Ground# hides #[[1]]#.",
+                                                     /*german*/ "Man erzählt sich, daß sich ein #Wunder-Gegenstand in der Gerudo-Trainingsarena# #[[1]]# verstecke.",
+                                                     /*french*/ "Selon moi, un #objet merveilleux dans le Gymnase Gerudo# cache #[[1]]#.", {QM_RED, QM_GREEN}));
+
   /*--------------------------
   |      GANONS CASTLE       |
   ---------------------------*/
@@ -2232,6 +2263,10 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
     hintTextTable[RHT_GANONS_CASTLE_HEART] = HintText(CustomMessage("They say that a #heart in Ganon's Castle# hides #[[1]]#.",
                                                          /*german*/ "Man erzählt sich, daß ein #Herz in Ganons Schloß# #[[1]]# verstecke.",
                                                          /*french*/ "Selon moi, un #coeur dans le Château de Ganon# cache #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_GANONS_CASTLE_WONDER_ITEM] = HintText(CustomMessage("They say that a #wonder item in Ganon's Castle# hides #[[1]]#.",
+                                                     /*german*/ "Man erzählt sich, daß sich ein #Wunder-Gegenstand in Ganons Schloß# #[[1]]# verstecke.",
+                                                     /*french*/ "Selon moi, un #objet merveilleux dans le Château de Ganon# cache #[[1]]#.", {QM_RED, QM_GREEN}));
 
     // clang-format on
 }

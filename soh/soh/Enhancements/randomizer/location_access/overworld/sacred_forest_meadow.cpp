@@ -5,7 +5,10 @@ using namespace Rando;
 
 void RegionTable_Init_SacredForestMeadow() {
     // clang-format off
-    areaTable[RR_SFM_ENTRYWAY] = Region("SFM Entryway", SCENE_SACRED_FOREST_MEADOW, {}, {}, {
+    areaTable[RR_SFM_ENTRYWAY] = Region("SFM Entryway", SCENE_SACRED_FOREST_MEADOW, {}, {
+        //Locations
+        LOCATION(RC_SFM_WONDER_ENTRANCE,    true),
+    }, {
         //Exits
         ENTRANCE(RR_LW_BEYOND_MIDO,       true),
         ENTRANCE(RR_SACRED_FOREST_MEADOW, logic->IsAdult || logic->CanKillEnemy(RE_WOLFOS)),
@@ -41,6 +44,11 @@ void RegionTable_Init_SacredForestMeadow() {
         LOCATION(RC_SFM_SARIA_GOSSIP_STONE_FAIRY,     logic->CallGossipFairyExceptSuns()),
         LOCATION(RC_SFM_SARIA_GOSSIP_STONE_FAIRY_BIG, logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_SFM_SARIA_GOSSIP_STONE,           true),
+        LOCATION(RC_SFM_WONDER_MAZE_1,                true),
+        LOCATION(RC_SFM_WONDER_MAZE_2,                true),
+        LOCATION(RC_SFM_WONDER_MAZE_3,                true),
+        LOCATION(RC_SFM_WONDER_MAZE_4,                true),
+        LOCATION(RC_SFM_WONDER_MAZE_5,                true),
     }, {
         //Exits
         ENTRANCE(RR_FOREST_TEMPLE_ENTRYWAY, logic->CanUse(RG_HOOKSHOT)),

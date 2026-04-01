@@ -12,6 +12,7 @@ void RegionTable_Init_GerudoFortress() {
         LOCATION(RC_GF_OUTSKIRTS_NE_CRATE,   (logic->IsChild || logic->CanPassEnemy(RE_GERUDO_GUARD)) && logic->CanBreakCrates()),
         LOCATION(RC_GF_OUTSKIRTS_NW_CRATE,   (logic->IsChild || logic->CanPassEnemy(RE_GERUDO_GUARD)) && logic->CanBreakCrates()),
         LOCATION(RC_GF_EAST_EXIT_ARROW_SIGN, logic->CanRead()),
+        LOCATION(RC_GF_WONDER_ENTRANCE_SIGN, logic->CanUse(RG_HOOKSHOT)),
     }, {
         //Exits
         ENTRANCE(RR_GV_FORTRESS_SIDE, true),
@@ -207,13 +208,13 @@ void RegionTable_Init_GerudoFortress() {
         //there's a trick to reach RR_GF_LONG_ROOF
         //For some reason, you take fall damage if you backflip onto the fortress but not onto the sand
         //It's unintuitive to avoid being caught on landing, but that sends you to the same place anyway...
-        ENTRANCE(RR_GF_OUTSKIRTS,           true),
-        ENTRANCE(RR_GF_NEAR_CHEST,          logic->CanUse(RG_LONGSHOT)),
-        ENTRANCE(RR_GF_BELOW_CHEST,         logic->TakeDamage()),
-        ENTRANCE(RR_GF_JAIL_WINDOW,         logic->CanUse(RG_HOOKSHOT)),
-        ENTRANCE(RR_TH_BREAK_ROOM_CORRIDOR, true),
-        ENTRANCE(RR_GF_TOWER,               ctx->GetTrickOption(RT_GF_ADULT_SKIP_WASTELAND_GATE) && logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS) && logic->CanJumpslash() && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD)),
-        ENTRANCE(RR_GF_OUTSIDE_GATE,        ctx->GetTrickOption(RT_GF_ADULT_SKIP_WASTELAND_GATE) && logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS) && logic->CanJumpslash()),
+        ENTRANCE(RR_GF_OUTSKIRTS,           	  ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) || logic->TakeDamage()),
+        ENTRANCE(RR_GF_NEAR_CHEST,          	  logic->CanUse(RG_LONGSHOT)),
+        ENTRANCE(RR_GF_BELOW_CHEST,         	  logic->TakeDamage()),
+        ENTRANCE(RR_GF_JAIL_WINDOW,         	  logic->CanUse(RG_HOOKSHOT)),
+        ENTRANCE(RR_TH_BREAK_ROOM_UPPER_CORRIDOR, true),
+        ENTRANCE(RR_GF_TOWER,               	  ctx->GetTrickOption(RT_GF_ADULT_SKIP_WASTELAND_GATE) && logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS) && logic->CanJumpslash() && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD)),
+        ENTRANCE(RR_GF_OUTSIDE_GATE,        	  ctx->GetTrickOption(RT_GF_ADULT_SKIP_WASTELAND_GATE) && logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS) && logic->CanJumpslash()),
     });
 
     areaTable[RR_GF_JAIL_WINDOW] = Region("GF Jail Window", SCENE_GERUDOS_FORTRESS, {}, {}, {
@@ -245,6 +246,7 @@ void RegionTable_Init_GerudoFortress() {
         LOCATION(RC_GF_SOUTH_TARGET_EAST_CRATE,  logic->CanBreakCrates()),
         LOCATION(RC_GF_SOUTH_TARGET_WEST_CRATE,  logic->CanBreakCrates()),
         LOCATION(RC_GF_HBA_RECTANGLE_SIGN,       logic->IsAdult && logic->CanRead()),
+        LOCATION(RC_GF_WONDER_ARCHERY_SIGN,      logic->CanUse(RG_HOOKSHOT)),
     }, {
         //Exits
         ENTRANCE(RR_GF_OUTSIDE_GTG, logic->IsChild || logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD)),

@@ -7,20 +7,25 @@ void RegionTable_Init_ZoraRiver() {
     // clang-format off
     areaTable[RR_ZR_FRONT] = Region("ZR Front", SCENE_ZORAS_RIVER, {}, {
         //Locations
-        LOCATION(RC_ZR_GS_TREE,  logic->IsChild && logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_CLOSE) && logic->CanBonkTrees()),
-        LOCATION(RC_ZR_GRASS_1,  logic->CanCutShrubs()),
-        LOCATION(RC_ZR_GRASS_2,  logic->CanCutShrubs()),
-        LOCATION(RC_ZR_GRASS_3,  logic->CanCutShrubs()),
-        LOCATION(RC_ZR_GRASS_4,  logic->CanCutShrubs()),
-        LOCATION(RC_ZR_GRASS_5,  logic->CanCutShrubs()),
-        LOCATION(RC_ZR_GRASS_6,  logic->CanCutShrubs()),
-        LOCATION(RC_ZR_GRASS_7,  logic->CanCutShrubs()),
-        LOCATION(RC_ZR_GRASS_8,  logic->CanCutShrubs()),
-        LOCATION(RC_ZR_GRASS_9,  logic->CanCutShrubs()),
-        LOCATION(RC_ZR_GRASS_10, logic->CanCutShrubs()),
-        LOCATION(RC_ZR_GRASS_11, logic->CanCutShrubs()),
-        LOCATION(RC_ZR_GRASS_12, logic->CanCutShrubs()),
-        LOCATION(RC_ZR_TREE,     logic->IsChild && logic->CanBonkTrees()),
+        LOCATION(RC_ZR_GS_TREE,              logic->IsChild && logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_CLOSE) && logic->CanBonkTrees()),
+        LOCATION(RC_ZR_GRASS_1,              logic->CanCutShrubs()),
+        LOCATION(RC_ZR_GRASS_2,              logic->CanCutShrubs()),
+        LOCATION(RC_ZR_GRASS_3,              logic->CanCutShrubs()),
+        LOCATION(RC_ZR_GRASS_4,              logic->CanCutShrubs()),
+        LOCATION(RC_ZR_GRASS_5,              logic->CanCutShrubs()),
+        LOCATION(RC_ZR_GRASS_6,              logic->CanCutShrubs()),
+        LOCATION(RC_ZR_GRASS_7,              logic->CanCutShrubs()),
+        LOCATION(RC_ZR_GRASS_8,              logic->CanCutShrubs()),
+        LOCATION(RC_ZR_GRASS_9,              logic->CanCutShrubs()),
+        LOCATION(RC_ZR_GRASS_10,             logic->CanCutShrubs()),
+        LOCATION(RC_ZR_GRASS_11,             logic->CanCutShrubs()),
+        LOCATION(RC_ZR_GRASS_12,             logic->CanCutShrubs()),
+        LOCATION(RC_ZR_TREE,                 logic->IsChild && logic->CanBonkTrees()),
+        // Require backflip with Iron Boots
+        LOCATION(RC_ZR_WONDER_LOWER_RIVER_1, logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
+        LOCATION(RC_ZR_WONDER_LOWER_RIVER_2, logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
+        LOCATION(RC_ZR_WONDER_LOWER_RIVER_3, logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
+        LOCATION(RC_ZR_WONDER_LOWER_RIVER_4, logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
     }, {
         //Exits
         ENTRANCE(RR_ZORAS_RIVER,  logic->IsAdult || logic->BlastOrSmash() || logic->CanUse(RG_HOVER_BOOTS)),
@@ -59,6 +64,33 @@ void RegionTable_Init_ZoraRiver() {
         LOCATION(RC_ZR_NEAR_ROCK_CIRCLE_BUTTERFLY_FAIRY,     logic->IsChild && logic->CanUse(RG_STICKS)),
         LOCATION(RC_ZR_WATERFALL_BUTTERFLY_FAIRY,            logic->IsChild && logic->CanUse(RG_STICKS)),
         LOCATION(RC_ZR_SLEEPLESS_WATERFALL_PLAQUE,           logic->CanRead()),
+        LOCATION(RC_ZR_WONDER_NEAR_DOMAIN_1,                 logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS))), // RANDOTODO: Add trick for swimless
+        LOCATION(RC_ZR_WONDER_NEAR_DOMAIN_2,                 logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
+        LOCATION(RC_ZR_WONDER_NEAR_DOMAIN_3,                 logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
+        LOCATION(RC_ZR_WONDER_NEAR_DOMAIN_4,                 logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
+        LOCATION(RC_ZR_WONDER_BEFORE_LADDER_1,               logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
+        LOCATION(RC_ZR_WONDER_BEFORE_LADDER_2,               logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
+        LOCATION(RC_ZR_WONDER_BEFORE_LADDER_3,               logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
+        LOCATION(RC_ZR_WONDER_BEFORE_LADDER_4,               logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
+        LOCATION(RC_ZR_WONDER_BEFORE_LADDER_5,               logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
+        LOCATION(RC_ZR_WONDER_BEFORE_LADDER_6,               logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
+        LOCATION(RC_ZR_WONDER_AFTER_LADDER_1,                logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
+        LOCATION(RC_ZR_WONDER_AFTER_LADDER_2,                logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
+        LOCATION(RC_ZR_WONDER_AFTER_LADDER_3,                logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
+        LOCATION(RC_ZR_WONDER_FROG_BRIDGE_1,                 logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
+        LOCATION(RC_ZR_WONDER_FROG_BRIDGE_2,                 logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
+        LOCATION(RC_ZR_WONDER_FROG_BRIDGE_3,                 logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
+        LOCATION(RC_ZR_WONDER_PILLARS_1,                     logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
+        LOCATION(RC_ZR_WONDER_PILLARS_2,                     logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
+        LOCATION(RC_ZR_WONDER_PILLARS_3,                     logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
+        LOCATION(RC_ZR_WONDER_PILLARS_4,                     logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
+        LOCATION(RC_ZR_WONDER_LOWER_LAND_BRIDGE_1,           logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS))), // Requires backflip with Iron Boots
+        LOCATION(RC_ZR_WONDER_LOWER_LAND_BRIDGE_2,           logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
+        LOCATION(RC_ZR_WONDER_LOWER_LAND_BRIDGE_3,           logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
+        LOCATION(RC_ZR_WONDER_LOWER_LAND_BRIDGE_4,           logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
+        LOCATION(RC_ZR_WONDER_NEAR_CUCCO_1,                  logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS))), // Requires backflip with Iron Boots
+        LOCATION(RC_ZR_WONDER_NEAR_CUCCO_2,                  logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS))), // Requires backflip with Iron Boots
+        LOCATION(RC_ZR_WONDER_NEAR_CUCCO_3,                  logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
     }, {
         //Exits
         ENTRANCE(RR_ZR_FRONT,            logic->IsAdult || logic->HasItem(RG_BRONZE_SCALE) || logic->HasItem(RG_POWER_BRACELET) || logic->BlastOrSmash() || logic->HasItem(RG_HOVER_BOOTS)),

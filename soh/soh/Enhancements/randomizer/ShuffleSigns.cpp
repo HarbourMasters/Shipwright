@@ -1,6 +1,7 @@
 #include <soh/OTRGlobals.h>
 #include "soh/ObjectExtension/ObjectExtension.h"
 #include "item_category_adj.h"
+#include "particle_cmc.h"
 extern "C" {
 extern PlayState* gPlayState;
 #include "overlays/actors/ovl_En_Kanban/z_en_kanban.h"
@@ -8,16 +9,6 @@ extern PlayState* gPlayState;
 #include "overlays/actors/ovl_En_Wonder_Talk/z_en_wonder_talk.h"
 #include "overlays/actors/ovl_En_Wonder_Talk2/z_en_wonder_talk2.h"
 }
-
-typedef enum {
-    PARTICLE_MAJOR,
-    PARTICLE_SKULLTULA_TOKEN,
-    PARTICLE_SMALL_KEY,
-    PARTICLE_BOSS_KEY,
-    PARTICLE_HEALTH,
-    PARTICLE_LESSER,
-    PARTICLE_JUNK,
-} SignCMCColors;
 
 uint8_t Sign_RandomizerHoldsItem(Actor* actor, PlayState* play) {
     const auto signIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(actor);
@@ -69,40 +60,6 @@ void Sign_RandomizerDrawSetup(void* actor) {
 
     int isNotCMC = !cmc || (requiresStoneAgony && !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY));
 
-    // Color of the circle for the particles
-    static Color_RGBA8 mainColors[7][3] = {
-        { 250, 185, 40 },  // Major
-        { 0, 0, 0 },       // Skulltula Token
-        { 180, 180, 180 }, // Small Key
-        { 255, 255, 0 },   // Boss Key
-        { 250, 0, 0 },     // Health
-        { 170, 50, 0 },    // Lesser
-        { 255, 255, 255 }  // Junk
-    };
-
-    // Secondary color of the circle for the particles
-    static Color_RGBA8 secColors[7][3] = {
-        { 255, 220, 135 }, // Major
-        { 255, 250, 190 }, // Skulltula Token
-        { 130, 130, 130 }, // Small Key
-        { 0, 200, 255 },   // Boss Key
-        { 0, 0, 255 },     // Health
-        { 250, 75, 0 },    // Lesser
-        { 255, 255, 255 }  // Junk
-    };
-
-    // Color of the faded flares stretching off the particles
-    static Color_RGBA8 flareColors[7][3] = {
-        { 250, 220, 180 }, // Major
-        { 255, 255, 255 }, // Skulltula Token
-        { 100, 100, 100 }, // Small Key
-        { 0, 200, 255 },   // Boss Key
-        { 255, 125, 125 }, // Health
-        { 255, 160, 100 }, // Lesser
-        { 135, 135, 135 }  // Junk
-    };
-
-    s16 colorIndex;
     Color_RGBA8 primColor;
     Color_RGBA8 secColor;
     Color_RGBA8 envColor;
@@ -117,42 +74,11 @@ void Sign_RandomizerDrawSetup(void* actor) {
     getItemCategory = Randomizer_AdjustItemCategory(signItem);
 
     if (isNotCMC) {
-        colorIndex = PARTICLE_MAJOR;
-        Color_RGBA8_Copy(&primColor, mainColors[colorIndex]);
-        Color_RGBA8_Copy(&secColor, secColors[colorIndex]);
-        Color_RGBA8_Copy(&envColor, flareColors[colorIndex]);
-        Sign_RandomizerDraw(signActor, &primColor, &secColor, &envColor);
-        return;
+        getItemCategory = ITEM_CATEGORY_MAJOR;
     }
-
-    // Change particle color for CMC
-    switch (getItemCategory) {
-        case ITEM_CATEGORY_MAJOR:
-            colorIndex = PARTICLE_MAJOR;
-            break;
-        case ITEM_CATEGORY_SKULLTULA_TOKEN:
-            colorIndex = PARTICLE_SKULLTULA_TOKEN;
-            break;
-        case ITEM_CATEGORY_SMALL_KEY:
-            colorIndex = PARTICLE_SMALL_KEY;
-            break;
-        case ITEM_CATEGORY_BOSS_KEY:
-            colorIndex = PARTICLE_BOSS_KEY;
-            break;
-        case ITEM_CATEGORY_HEALTH:
-            colorIndex = PARTICLE_HEALTH;
-            break;
-        case ITEM_CATEGORY_LESSER:
-            colorIndex = PARTICLE_LESSER;
-            break;
-        case ITEM_CATEGORY_JUNK:
-        default:
-            colorIndex = PARTICLE_JUNK;
-            break;
-    }
-    Color_RGBA8_Copy(&primColor, mainColors[colorIndex]);
-    Color_RGBA8_Copy(&secColor, secColors[colorIndex]);
-    Color_RGBA8_Copy(&envColor, flareColors[colorIndex]);
+    primColor = Randomizer_GetParticleCMCColor(getItemCategory, COLOR_PRIMARY);
+    secColor = Randomizer_GetParticleCMCColor(getItemCategory, COLOR_SECONDARY);
+    envColor = Randomizer_GetParticleCMCColor(getItemCategory, COLOR_FLARE);
     Sign_RandomizerDraw(signActor, &primColor, &secColor, &envColor);
 }
 

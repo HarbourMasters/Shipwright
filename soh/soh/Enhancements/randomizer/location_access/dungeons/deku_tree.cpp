@@ -421,6 +421,10 @@ void RegionTable_Init_DekuTree() {
         LOCATION(RC_DEKU_TREE_MQ_BASEMENT_GRAVES_GRASS_3, logic->CanCutShrubs()),
         LOCATION(RC_DEKU_TREE_MQ_BASEMENT_GRAVES_GRASS_4, logic->CanCutShrubs()),
         LOCATION(RC_DEKU_TREE_MQ_BASEMENT_GRAVES_GRASS_5, logic->CanCutShrubs()),
+        LOCATION(RC_DEKU_TREE_MQ_WONDER_BASEMENT_GRAVE_1, logic->CanJumpslashExceptHammer()),
+        LOCATION(RC_DEKU_TREE_MQ_WONDER_BASEMENT_GRAVE_2, logic->CanJumpslashExceptHammer()),
+        LOCATION(RC_DEKU_TREE_MQ_WONDER_BASEMENT_GRAVE_3, logic->CanJumpslashExceptHammer()),
+        LOCATION(RC_DEKU_TREE_MQ_WONDER_BASEMENT_GRAVE_4, logic->CanJumpslashExceptHammer()),
     }, {
         //Exits
         ENTRANCE(RR_DEKU_TREE_MQ_BASEMENT_LEDGE,          logic->CanUse(RG_CRAWL) && AnyAgeTime([]{return logic->HasFireSourceWithTorch() || logic->CanUse(RG_FAIRY_BOW);})),

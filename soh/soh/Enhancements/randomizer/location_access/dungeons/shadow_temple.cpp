@@ -344,6 +344,7 @@ void RegionTable_Init_ShadowTemple() {
     areaTable[RR_SHADOW_TEMPLE_THREE_SKULL_JARS] = Region("Shadow Temple Three Skull Jars", SCENE_SHADOW_TEMPLE, {}, {
         //Locations
         LOCATION(RC_SHADOW_TEMPLE_GS_TRIPLE_GIANT_POT, logic->HasItem(RG_GORONS_BRACELET) || logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_SHORT_JUMPSLASH)),
+        LOCATION(RC_SHADOW_TEMPLE_WONDER_THREE_POTS,   logic->CanUse(RG_FAIRY_BOW)),
     }, {
         //Exits
         ENTRANCE(RR_SHADOW_TEMPLE_MAZE, true),
@@ -740,7 +741,8 @@ void RegionTable_Init_ShadowTemple() {
 
     areaTable[RR_SHADOW_TEMPLE_MQ_THREE_SKULL_JARS] = Region("Shadow Temple MQ Three Skull Jars", SCENE_SHADOW_TEMPLE, {}, {
         //Locations
-        LOCATION(RC_SHADOW_TEMPLE_MQ_FREESTANDING_KEY, true),
+        LOCATION(RC_SHADOW_TEMPLE_MQ_FREESTANDING_KEY,  true),
+        LOCATION(RC_SHADOW_TEMPLE_MQ_WONDER_THREE_POTS, logic->CanUse(RG_FAIRY_BOW)),
     }, {
         //Exits
         ENTRANCE(RR_SHADOW_TEMPLE_MQ_INVISIBLE_MAZE, true),

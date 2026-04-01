@@ -303,19 +303,22 @@ void RegionTable_Init_DeathMountainCrater() {
         EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS)),
     }, {
         //Locations
-        LOCATION(RC_SHEIK_IN_CRATER,                  logic->IsAdult),
-        LOCATION(RC_DMC_GS_BEAN_PATCH,                logic->CanSpawnSoilSkull(RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL) && logic->CanKillEnemy(RE_GOLD_SKULLTULA)),
-        LOCATION(RC_DMC_NEAR_PLATFORM_RED_RUPEE,      logic->IsChild),
-        LOCATION(RC_DMC_MIDDLE_PLATFORM_RED_RUPEE,    logic->IsChild),
-        LOCATION(RC_DMC_MIDDLE_PLATFORM_BLUE_RUPEE_1, logic->IsChild),
-        LOCATION(RC_DMC_MIDDLE_PLATFORM_BLUE_RUPEE_2, logic->IsChild),
-        LOCATION(RC_DMC_MIDDLE_PLATFORM_BLUE_RUPEE_3, logic->IsChild),
-        LOCATION(RC_DMC_MIDDLE_PLATFORM_BLUE_RUPEE_4, logic->IsChild),
-        LOCATION(RC_DMC_MIDDLE_PLATFORM_BLUE_RUPEE_5, logic->IsChild),
-        LOCATION(RC_DMC_MIDDLE_PLATFORM_BLUE_RUPEE_6, logic->IsChild),
-        LOCATION(RC_DMC_BEAN_SPROUT_FAIRY_1,          logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS)),
-        LOCATION(RC_DMC_BEAN_SPROUT_FAIRY_2,          logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS)),
-        LOCATION(RC_DMC_BEAN_SPROUT_FAIRY_3,          logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION(RC_SHEIK_IN_CRATER,                    logic->IsAdult),
+        LOCATION(RC_DMC_GS_BEAN_PATCH,                  logic->CanSpawnSoilSkull(RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL) && logic->CanKillEnemy(RE_GOLD_SKULLTULA)),
+        LOCATION(RC_DMC_NEAR_PLATFORM_RED_RUPEE,        logic->IsChild),
+        LOCATION(RC_DMC_MIDDLE_PLATFORM_RED_RUPEE,      logic->IsChild),
+        LOCATION(RC_DMC_MIDDLE_PLATFORM_BLUE_RUPEE_1,   logic->IsChild),
+        LOCATION(RC_DMC_MIDDLE_PLATFORM_BLUE_RUPEE_2,   logic->IsChild),
+        LOCATION(RC_DMC_MIDDLE_PLATFORM_BLUE_RUPEE_3,   logic->IsChild),
+        LOCATION(RC_DMC_MIDDLE_PLATFORM_BLUE_RUPEE_4,   logic->IsChild),
+        LOCATION(RC_DMC_MIDDLE_PLATFORM_BLUE_RUPEE_5,   logic->IsChild),
+        LOCATION(RC_DMC_MIDDLE_PLATFORM_BLUE_RUPEE_6,   logic->IsChild),
+        LOCATION(RC_DMC_BEAN_SPROUT_FAIRY_1,            logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION(RC_DMC_BEAN_SPROUT_FAIRY_2,            logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION(RC_DMC_BEAN_SPROUT_FAIRY_3,            logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS)),
+        // RANDOTODO: A number of tricks to reach this: sidehop jumpslash or hookshot + jumpslash from bridge platform, chu+shield damage boost
+        LOCATION(RC_DMC_WONDER_BENEATH_BRIDGE_PLATFORM, logic->IsAdult && (logic->CanUse(RG_LONGSHOT) || logic->CanUse(RG_HOVER_BOOTS))),
+
     }, {});
 
 

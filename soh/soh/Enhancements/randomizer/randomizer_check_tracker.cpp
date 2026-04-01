@@ -81,6 +81,8 @@ bool showTrees;
 bool showBushes;
 bool showOverworldSigns;
 bool showDungeonSigns;
+bool showOverworldWonderItems;
+bool showDungeonWonderItems;
 bool showBeggar;
 bool showFrogSongRupees;
 bool showFountainFairies;
@@ -1492,6 +1494,25 @@ void LoadSettings() {
         }
         showTrees = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_TREES);
         showBushes = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_BUSHES);
+
+        switch (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_WONDER_ITEMS)) {
+            case RO_SHUFFLE_WONDER_ITEMS_ALL:
+                showOverworldWonderItems = true;
+                showDungeonWonderItems = true;
+                break;
+            case RO_SHUFFLE_WONDER_ITEMS_OVERWORLD:
+                showOverworldWonderItems = true;
+                showDungeonWonderItems = false;
+                break;
+            case RO_SHUFFLE_WONDER_ITEMS_DUNGEONS:
+                showOverworldWonderItems = false;
+                showDungeonWonderItems = true;
+                break;
+            default:
+                showOverworldWonderItems = false;
+                showDungeonWonderItems = false;
+                break;
+        }
         showBeggar = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_BEGGAR);
     } else { // Vanilla
         showOverworldTokens = true;
@@ -1506,6 +1527,8 @@ void LoadSettings() {
         showDungeonSigns = false;
         showTrees = false;
         showBushes = false;
+        showOverworldWonderItems = false;
+        showDungeonWonderItems = false;
         showBeggar = false;
     }
 
@@ -1628,6 +1651,9 @@ bool IsCheckShuffled(RandomizerCheck rc) {
                (loc->GetRCType() != RCTYPE_SIGN ||
                 (showOverworldSigns && RandomizerCheckObjects::AreaIsOverworld(loc->GetArea())) ||
                 (showDungeonSigns && RandomizerCheckObjects::AreaIsDungeon(loc->GetArea()))) &&
+               (loc->GetRCType() != RCTYPE_WONDER_ITEM ||
+                (showOverworldWonderItems && RandomizerCheckObjects::AreaIsOverworld(loc->GetArea())) ||
+                (showDungeonWonderItems && RandomizerCheckObjects::AreaIsDungeon(loc->GetArea()))) &&
                (loc->GetRCType() != RCTYPE_FISH ||
                 OTRGlobals::Instance->gRandoContext->GetFishsanity()->GetFishLocationIncluded(loc)) &&
                (loc->GetRCType() != RCTYPE_FREESTANDING ||

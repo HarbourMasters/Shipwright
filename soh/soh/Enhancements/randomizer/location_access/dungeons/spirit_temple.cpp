@@ -984,6 +984,8 @@ void RegionTable_Init_SpiritTemple() {
         //Locations
         LOCATION(RC_SPIRIT_TEMPLE_MQ_CHEST_SWITCH_CHEST,      logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_SPIRIT_TEMPLE_MQ_DINALFOS_ROOM_SUN_FAIRY, logic->CanUse(RG_SUNS_SONG)),
+        LOCATION(RC_SPIRIT_TEMPLE_MQ_WONDER_CHEST_HAMMER,     logic->CanUse(RG_MEGATON_HAMMER)),
+        LOCATION(RC_SPIRIT_TEMPLE_MQ_WONDER_CHEST_SLASH,      logic->CanJumpslashExceptHammer()),
     }, {
         //Exits
         ENTRANCE(RR_SPIRIT_TEMPLE_MQ_BEAMOS_PITS,        true),
