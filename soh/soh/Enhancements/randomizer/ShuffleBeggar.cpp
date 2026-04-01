@@ -3,13 +3,11 @@
 extern "C" {
 #include "overlays/actors/ovl_En_Hy/z_en_hy.h"
 extern PlayState* gPlayState;
-extern SaveContext gSaveContext;
 }
 
 CheckIdentity ShuffleBeggar_GetBeggarIdentity(int32_t textId) {
     CheckIdentity beggarIdentity;
     s16 sceneNum = gPlayState->sceneNum;
-    beggarIdentity.randomizerInf = RAND_INF_MAX;
 
     beggarIdentity = OTRGlobals::Instance->gRandomizer->IdentifyBeggar(sceneNum, textId);
 
