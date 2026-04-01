@@ -266,12 +266,14 @@ void RegionTable_Init_JabuJabusBelly() {
         EVENT_ACCESS(LOGIC_NUT_ACCESS, logic->CanBreakPots()),
     }, {
         //Locations
-        LOCATION(RC_JABU_JABUS_BELLY_MQ_MAP_CHEST,             logic->BlastOrSmash() && logic->HasItem(RG_OPEN_CHEST)),
-        LOCATION(RC_JABU_JABUS_BELLY_MQ_FIRST_ROOM_SIDE_CHEST, logic->CanUse(RG_FAIRY_SLINGSHOT) && logic->HasItem(RG_OPEN_CHEST)),
-        LOCATION(RC_JABU_JABUS_BELLY_MQ_ENTRANCE_POT_1,        logic->CanBreakPots()),
-        LOCATION(RC_JABU_JABUS_BELLY_MQ_ENTRANCE_POT_2,        logic->CanBreakPots()),
-        LOCATION(RC_JABU_JABUS_BELLY_MQ_FIRST_GRASS_1,         logic->CanCutShrubs()),
-        LOCATION(RC_JABU_JABUS_BELLY_MQ_FIRST_GRASS_2,         logic->CanCutShrubs()),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_MAP_CHEST,                 logic->BlastOrSmash() && logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_FIRST_ROOM_SIDE_CHEST,     logic->CanUse(RG_FAIRY_SLINGSHOT) && logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_ENTRANCE_POT_1,            logic->CanBreakPots()),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_ENTRANCE_POT_2,            logic->CanBreakPots()),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_FIRST_GRASS_1,             logic->CanCutShrubs()),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_FIRST_GRASS_2,             logic->CanCutShrubs()),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_WONDER_ENTRANCE_LEFT_COW,  logic->CanUse(RG_FAIRY_SLINGSHOT)),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_WONDER_ENTRANCE_RIGHT_COW, logic->CanUse(RG_FAIRY_SLINGSHOT)),
     }, {
         //Exits
         ENTRANCE(RR_JABU_JABUS_BELLY_ENTRYWAY,     true),
@@ -283,12 +285,13 @@ void RegionTable_Init_JabuJabusBelly() {
         EVENT_ACCESS(LOGIC_JABU_MQ_LIFT_ROOM_COW, logic->CanUse(RG_FAIRY_SLINGSHOT)),
     }, {
         //Locations
-        LOCATION(RC_JABU_JABUS_BELLY_MQ_SECOND_ROOM_LOWER_CHEST,  logic->HasItem(RG_OPEN_CHEST)),
-        LOCATION(RC_JABU_JABUS_BELLY_MQ_LIFT_HEART_1,             true),
-        LOCATION(RC_JABU_JABUS_BELLY_MQ_LIFT_HEART_2,             true),
-        LOCATION(RC_JABU_JABUS_BELLY_MQ_LIFT_RUPEE_1,             logic->CanUse(RG_IRON_BOOTS)),
-        LOCATION(RC_JABU_JABUS_BELLY_MQ_LIFT_RUPEE_2,             logic->CanUse(RG_IRON_BOOTS)),
-        LOCATION(RC_JABU_JABUS_BELLY_MQ_LIFT_RUPEE_3,             logic->CanUse(RG_IRON_BOOTS)),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_SECOND_ROOM_LOWER_CHEST, logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_LIFT_HEART_1,            true),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_LIFT_HEART_2,            true),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_LIFT_RUPEE_1,            logic->CanUse(RG_IRON_BOOTS)),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_LIFT_RUPEE_2,            logic->CanUse(RG_IRON_BOOTS)),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_LIFT_RUPEE_3,            logic->CanUse(RG_IRON_BOOTS)),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_WONDER_ELEVATOR_COW,     logic->CanUse(RG_FAIRY_SLINGSHOT) && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG))),
     }, {
         //Exits
         ENTRANCE(RR_JABU_JABUS_BELLY_MQ_BEGINNING,                     true),
@@ -322,6 +325,7 @@ void RegionTable_Init_JabuJabusBelly() {
         //Locations
         LOCATION(RC_JABU_JABUS_BELLY_MQ_PIT_GRASS_1, logic->CanCutShrubs() && logic->HasExplosives()),
         LOCATION(RC_JABU_JABUS_BELLY_MQ_PIT_GRASS_2, logic->CanCutShrubs() && logic->HasExplosives()),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_HOLES_COW,   (logic->HasExplosives() || ctx->GetTrickOption(RT_BOULDER_COLLISION)) && logic->CanUse(RG_FAIRY_SLINGSHOT)),
     }, {
         //Exits
         ENTRANCE(RR_JABU_JABUS_BELLY_MQ_LIFT_ROOM,              true),
@@ -345,6 +349,12 @@ void RegionTable_Init_JabuJabusBelly() {
         LOCATION(RC_JABU_JABUS_BELLY_MQ_BASEMENT_GRASS_1,             logic->CanCutShrubs()),
         LOCATION(RC_JABU_JABUS_BELLY_MQ_BASEMENT_GRASS_2,             logic->CanCutShrubs()),
         LOCATION(RC_JABU_JABUS_BELLY_MQ_BASEMENT_GRASS_3,             logic->CanCutShrubs()),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_WONDER_BASEMENT_RIGHT_COW_1,  logic->CanUse(RG_FAIRY_SLINGSHOT)),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_WONDER_BASEMENT_RIGHT_COW_2,  logic->CanUse(RG_FAIRY_SLINGSHOT)),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_WONDER_BASEMENT_RIGHT_COW_3,  logic->CanUse(RG_FAIRY_SLINGSHOT)),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_WONDER_BASEMENT_LEFT_COW_1,   logic->CanUse(RG_FAIRY_SLINGSHOT)),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_WONDER_BASEMENT_LEFT_COW_2,   logic->CanUse(RG_FAIRY_SLINGSHOT)),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_WONDER_BASEMENT_LEFT_COW_3,   logic->CanUse(RG_FAIRY_SLINGSHOT)),
     }, {
         //Exits
         ENTRANCE(RR_JABU_JABUS_BELLY_MQ_HOLES_ROOM,           logic->HasItem(RG_CLIMB)),
@@ -435,12 +445,21 @@ void RegionTable_Init_JabuJabusBelly() {
     areaTable[RR_JABU_JABUS_BELLY_MQ_FORK_NORTH_EAST] = Region("Jabu Jabus Belly MQ Fork North East", SCENE_JABU_JABU, {}, {
         //Locations
         //Implies CanKillEnemy(RE_LIKE_LIKE)
-        LOCATION(RC_JABU_JABUS_BELLY_MQ_FALLING_LIKE_LIKE_ROOM_CHEST, logic->CanUse(RG_FAIRY_SLINGSHOT) && logic->HasItem(RG_OPEN_CHEST)),
-        LOCATION(RC_JABU_JABUS_BELLY_MQ_LIKE_LIKES_POT_1,             logic->CanBreakPots()),
-        LOCATION(RC_JABU_JABUS_BELLY_MQ_LIKE_LIKES_POT_2,             logic->CanBreakPots()),
-        LOCATION(RC_JABU_JABUS_BELLY_MQ_FALLING_LIKE_LIKE_GRASS,      logic->CanCutShrubs()),
-        LOCATION(RC_JABU_JABUS_BELLY_MQ_TRIPLE_HALLWAY_SMALL_CRATE_1, logic->CanBreakSmallCrates()),
-        LOCATION(RC_JABU_JABUS_BELLY_MQ_TRIPLE_HALLWAY_SMALL_CRATE_2, logic->CanBreakSmallCrates()),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_FALLING_LIKE_LIKE_ROOM_CHEST,          logic->CanUse(RG_FAIRY_SLINGSHOT) && logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_LIKE_LIKES_POT_1,                      logic->CanBreakPots()),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_LIKE_LIKES_POT_2,                      logic->CanBreakPots()),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_FALLING_LIKE_LIKE_GRASS,               logic->CanCutShrubs()),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_TRIPLE_HALLWAY_SMALL_CRATE_1,          logic->CanBreakSmallCrates()),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_TRIPLE_HALLWAY_SMALL_CRATE_2,          logic->CanBreakSmallCrates()),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_WONDER_FALLING_LIKE_LIKES_COW_RIGHT_1, logic->CanUse(RG_FAIRY_SLINGSHOT)),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_WONDER_FALLING_LIKE_LIKES_COW_RIGHT_2, logic->CanUse(RG_FAIRY_SLINGSHOT)),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_WONDER_FALLING_LIKE_LIKES_COW_RIGHT_3, logic->CanUse(RG_FAIRY_SLINGSHOT)),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_WONDER_FALLING_LIKE_LIKES_COW_LEFT_1,  logic->CanUse(RG_FAIRY_SLINGSHOT)),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_WONDER_FALLING_LIKE_LIKES_COW_LEFT_2,  logic->CanUse(RG_FAIRY_SLINGSHOT)),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_WONDER_FALLING_LIKE_LIKES_COW_LEFT_3,  logic->CanUse(RG_FAIRY_SLINGSHOT)),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_WONDER_FALLING_LIKE_LIKES_EXPLOSION_1, logic->HasExplosives()),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_WONDER_FALLING_LIKE_LIKES_EXPLOSION_2, logic->HasExplosives()),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_WONDER_FALLING_LIKE_LIKES_EXPLOSION_3, logic->HasExplosives()),
     }, {
         //Exits
         ENTRANCE(RR_JABU_JABUS_BELLY_MQ_FORKED_CORRIDOR, true),
@@ -492,6 +511,7 @@ void RegionTable_Init_JabuJabusBelly() {
         //Locations
         LOCATION(RC_JABU_JABUS_BELLY_MQ_AFTER_BIG_OCTO_GRASS_1, logic->CanCutShrubs()),
         LOCATION(RC_JABU_JABUS_BELLY_MQ_AFTER_BIG_OCTO_GRASS_2, logic->CanCutShrubs()),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_WONDER_AFTER_BIG_OCTO,  logic->CanUse(RG_FAIRY_SLINGSHOT)),
     }, {
         //Exits
         ENTRANCE(RR_JABU_JABUS_BELLY_MQ_JIGGLIES_ROOM, true),
@@ -504,6 +524,7 @@ void RegionTable_Init_JabuJabusBelly() {
         LOCATION(RC_JABU_JABUS_BELLY_MQ_JIGGLIES_GRASS,         logic->CanCutShrubs()),
         LOCATION(RC_JABU_JABUS_BELLY_MQ_JIGGLIES_SMALL_CRATE_1, logic->CanUse(RG_FAIRY_SLINGSHOT) && logic->CanBreakSmallCrates()),
         LOCATION(RC_JABU_JABUS_BELLY_MQ_JIGGLIES_SMALL_CRATE_2, logic->CanUse(RG_FAIRY_SLINGSHOT) && logic->CanBreakSmallCrates()),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_WONDER_JIGGLIES_COW,    logic->CanUse(RG_FAIRY_SLINGSHOT)),
     }, {
         //Exits
         ENTRANCE(RR_JABU_JABUS_BELLY_MQ_ABOVE_BIGOCTO,  true),
@@ -541,11 +562,14 @@ void RegionTable_Init_JabuJabusBelly() {
         EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->CanBreakPots()),
     }, {
         //Locations
-        LOCATION(RC_JABU_JABUS_BELLY_MQ_NEAR_BOSS_CHEST,     logic->CanUse(RG_FAIRY_SLINGSHOT)),
-        LOCATION(RC_JABU_JABUS_BELLY_MQ_GS_NEAR_BOSS,        (logic->HasItem(RG_CLIMB) && (logic->CanUse(RG_BOOMERANG) || (ctx->GetTrickOption(RT_JABU_NEAR_BOSS_RANGED) && logic->CanUse(RG_HOOKSHOT)))) || (ctx->GetTrickOption(RT_JABU_NEAR_BOSS_RANGED) && logic->CanUse(RG_LONGSHOT))),
-        LOCATION(RC_JABU_JABUS_BELLY_MQ_BEFORE_BOSS_POT_1,   logic->CanBreakPots()),
-        LOCATION(RC_JABU_JABUS_BELLY_MQ_BEFORE_BOSS_GRASS_1, logic->CanCutShrubs()),
-        LOCATION(RC_JABU_JABUS_BELLY_MQ_BEFORE_BOSS_GRASS_2, logic->CanCutShrubs()),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_NEAR_BOSS_CHEST,                logic->CanUse(RG_FAIRY_SLINGSHOT)),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_GS_NEAR_BOSS,                   (logic->HasItem(RG_CLIMB) && (logic->CanUse(RG_BOOMERANG) || (ctx->GetTrickOption(RT_JABU_NEAR_BOSS_RANGED) && logic->CanUse(RG_HOOKSHOT)))) || (ctx->GetTrickOption(RT_JABU_NEAR_BOSS_RANGED) && logic->CanUse(RG_LONGSHOT))),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_BEFORE_BOSS_POT_1,              logic->CanBreakPots()),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_BEFORE_BOSS_GRASS_1,            logic->CanCutShrubs()),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_BEFORE_BOSS_GRASS_2,            logic->CanCutShrubs()),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_WONDER_BEFORE_BOSS_LEFT_COW,    logic->CanUse(RG_FAIRY_SLINGSHOT)),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_WONDER_BEFORE_BOSS_RIGHT_COW_1, logic->CanUse(RG_FAIRY_SLINGSHOT)),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_WONDER_BEFORE_BOSS_RIGHT_COW_2, logic->CanUse(RG_FAIRY_SLINGSHOT)),
     }, {
         //Exits
         ENTRANCE(RR_JABU_JABUS_BELLY_MQ_TO_NEAR_BOSS_ROOM, true),

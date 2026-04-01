@@ -48,6 +48,9 @@ void RegionTable_Init_LostWoods() {
         LOCATION(RC_LW_GRASS_1,                         logic->CanCutShrubs()),
         LOCATION(RC_LW_GRASS_2,                         logic->CanCutShrubs()),
         LOCATION(RC_LW_GRASS_3,                         logic->CanCutShrubs()),
+        LOCATION(RC_LW_WONDER_BACK_SKULL_KIDS_GRASS_1,  logic->IsChild),
+        LOCATION(RC_LW_WONDER_BACK_SKULL_KIDS_GRASS_2,  logic->IsChild),
+        LOCATION(RC_LW_WONDER_FRONT_SKULL_KIDS_GRASS,   logic->IsChild),
     }, {
         //Exits
         ENTRANCE(RR_LW_FOREST_EXIT,           true),

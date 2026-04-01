@@ -2247,6 +2247,74 @@ void StaticData::HintTable_Init_Exclude_Overworld() {
     hintTextTable[RHT_SIGN_HAUNTED_WASTELAND] = HintText(CustomMessage("They say that #reading a sign in Haunted Wasteland# reveals #[[1]]#.",
                                                         /*german*/ "Man erzählt sich, daß das #Lesen eines Schildes in der Gespensterwüste# #[[1]]# enthülle.",
                                                         /*french*/ "Selon moi, #lire un panneau dans le Désert Hanté# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_WONDER_ITEM_KOKIRI_FOREST] = HintText(CustomMessage("They say that a #wonder item in Kokiri Forest# hides #[[1]]#.",
+                                                     /*german*/ "Man erzählt sich, daß sich ein #Wunder-Gegenstand im Kokiri-Wald# #[[1]]# verstecke.",
+                                                     /*french*/ "Selon moi, un #objet merveilleux dans la Fôret Kokiri# cache #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_WONDER_ITEM_HYRULE_FIELD] = HintText(CustomMessage("They say that a #wonder item in Hyrule Field# hides #[[1]]#.",
+                                                     /*german*/ "Man erzählt sich, daß sich ein #Wunder-Gegenstand in der Ebene von Hyrule# #[[1]]# verstecke.",
+                                                     /*french*/ "Selon moi, un #objet merveilleux dans la Plaine d'Hyrule# cache #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_WONDER_ITEM_MARKET] = HintText(CustomMessage("They say that a #wonder item in the Market# hides #[[1]]#.",
+                                                     /*german*/ "Man erzählt sich, daß sich ein #Wunder-Gegenstand auf dem Markt# #[[1]]# verstecke.",
+                                                     /*french*/ "Selon moi, un #objet merveilleux dans la Place du Marché# cache #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_WONDER_ITEM_LON_LON_RANCH] = HintText(CustomMessage("They say that a #wonder item in Lon Lon Ranch# hides #[[1]]#.",
+                                                     /*german*/ "Man erzählt sich, daß sich ein #Wunder-Gegenstand auf der Lon Lon-Farm# #[[1]]# verstecke.",
+                                                     /*french*/ "Selon moi, un #objet merveilleux dans le Ranch Lon Lon# cache #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_WONDER_ITEM_HYRULE_CASTLE] = HintText(CustomMessage("They say that a #wonder item in Hyrule Castle# hides #[[1]]#.",
+                                                     /*german*/ "Man erzählt sich, daß sich ein #Wunder-Gegenstand im Schloss von Hyrule# #[[1]]# verstecke.",
+                                                     /*french*/ "Selon moi, un #objet merveilleux au Château d'Hyrule# cache #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_WONDER_ITEM_CASTLE_COURTYARD_ZELDA] = HintText(CustomMessage("They say that #shooting a window in a castle# reveals #[[1]]#.",
+                                                     /*german*/ "Man erzählt sich, daß das #Schießen auf ein Fenster in einem Schloss# #[[1]]# enthülle.",
+                                                     /*french*/ "Selon moi, #tirer sur une fenêtre dans un château# donne #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_WONDER_ITEM_LOST_WOODS] = HintText(CustomMessage("They say that a #wonder item in the woods# hides #[[1]]#.",
+                                                     /*german*/ "Man erzählt sich, daß sich ein #Wunder-Gegenstand in den Wäldern# #[[1]]# verstecke.",
+                                                     /*french*/ "Selon moi, un #objet merveilleux dans des bois# cache #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_WONDER_ITEM_SACRED_FOREST_MEADOW] = HintText(CustomMessage("They say that a #wonder item in a forest meadow# hides #[[1]]#.",
+                                                     /*german*/ "Man erzählt sich, daß sich ein #Wunder-Gegenstand auf einer Waldlichtung# #[[1]]# verstecke.",
+                                                     /*french*/ "Selon moi, un #objet merveilleux dans le sanctuaire des bois# cache #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_WONDER_ITEM_KAKARIKO_VILLAGE] = HintText(CustomMessage("They say that a #wonder item in Kakariko Village# hides #[[1]]#.",
+                                                     /*german*/ "Man erzählt sich, daß sich ein #Wunder-Gegenstand in Kakariko# #[[1]]# verstecke.",
+                                                     /*french*/ "Selon moi, un #objet merveilleux dans le Village de Cocorico# cache #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_WONDER_ITEM_DAMPES_GRAVE] = HintText(CustomMessage("They say that a #wonder item in a gravekeeper's tomb# hides #[[1]]#.",
+                                                     /*german*/ "Man erzählt sich, daß sich ein #Wunder-Gegenstand im Grab des Totengräbers# #[[1]]# verstecke.",
+                                                     /*french*/ "Selon moi, un #objet merveilleux dans la tombe du fossoyeur# cache #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_WONDER_ITEM_DEATH_MOUNTAIN_CRATER] = HintText(CustomMessage("They say that a #wonder item in Death Mountain's Crater# hides #[[1]]#.",
+                                                     /*german*/ "Man erzählt sich, daß sich ein #Wunder-Gegenstand im Todeskrater# #[[1]]# verstecke.",
+                                                     /*french*/ "Selon moi, un #objet merveilleux sur le Mont du Péril# cache #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_WONDER_ITEM_ZORAS_RIVER] = HintText(CustomMessage("They say that a #wonder item in a river# hides #[[1]]#.",
+                                                     /*german*/ "Man erzählt sich, daß sich ein #Wunder-Gegenstand in einem Fluss# #[[1]]# verstecke.",
+                                                     /*french*/ "Selon moi, un #objet merveilleux dans une rivière# cache #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_WONDER_ITEM_ZORAS_RIVER] = HintText(CustomMessage("They say that a #wonder item in Zora's Fountain# hides #[[1]]#.",
+                                                     /*german*/ "Man erzählt sich, daß sich ein #Wunder-Gegenstand in Zoras Quelle# #[[1]]# verstecke.",
+                                                     /*french*/ "Selon moi, un #objet merveilleux dans la Fontaine Zora# cache #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_WONDER_ITEM_GERUDO_VALLEY] = HintText(CustomMessage("They say that a #wonder item in Gerudo Valley# hides #[[1]]#.",
+                                                     /*german*/ "Man erzählt sich, daß sich ein #Wunder-Gegenstand im Gerudotal# #[[1]]# verstecke.",
+                                                     /*french*/ "Selon moi, un #objet merveilleux dans une vallée# cache #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_WONDER_ITEM_GERUDOS_FORTRESS] = HintText(CustomMessage("They say that a #wonder item in Gerudo Fortress# hides #[[1]]#.",
+                                                     /*german*/ "Man erzählt sich, daß sich ein #Wunder-Gegenstand in der Gerudo-Festung# #[[1]]# verstecke.",
+                                                     /*french*/ "Selon moi, un #objet merveilleux dans la Forteresse Gerudo# cache #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_WONDER_ITEM_THIEVES_HIDEOUT] = HintText(CustomMessage("They say that a #wonder item in Thieve's Hideout# hides #[[1]]#.",
+                                                     /*german*/ "Man erzählt sich, daß sich ein #Wunder-Gegenstand im Versteck der Diebe# #[[1]]# verstecke.",
+                                                     /*french*/ "Selon moi, un #objet merveilleux dans a Cachette des Voleurs# cache #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_WONDER_ITEM_DESERT_COLOSSUS] = HintText(CustomMessage("They say that a #wonder item near the temple of the sand# hides #[[1]]#.",
+                                                     /*german*/ "Man erzählt sich, daß sich ein #Wunder-Gegenstand nahe des Tempels des Sandes# #[[1]]# verstecke.",
+                                                     /*french*/ "Selon moi, un #objet merveilleux près du temple du sable# cache #[[1]]#.", {QM_RED, QM_GREEN}));
     // clang-format on
 }
 } // namespace Rando

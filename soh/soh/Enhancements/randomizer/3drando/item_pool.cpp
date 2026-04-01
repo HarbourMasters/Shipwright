@@ -447,6 +447,13 @@ void GenerateItemPool() {
     bool bushesActive = (bool)ctx->GetOption(RSK_SHUFFLE_BUSHES);
     PlaceItemsForType(RCTYPE_BUSH, bushesActive, false);
 
+    // Shuffle Wonder Items
+    bool overworldWonderItemsActive = ctx->GetOption(RSK_SHUFFLE_WONDER_ITEMS).Is(RO_SHUFFLE_WONDER_ITEMS_OVERWORLD) ||
+                               ctx->GetOption(RSK_SHUFFLE_WONDER_ITEMS).Is(RO_SHUFFLE_WONDER_ITEMS_ALL);
+    bool dungeonWonderItemsActive = ctx->GetOption(RSK_SHUFFLE_WONDER_ITEMS).Is(RO_SHUFFLE_WONDER_ITEMS_DUNGEONS) ||
+                             ctx->GetOption(RSK_SHUFFLE_WONDER_ITEMS).Is(RO_SHUFFLE_WONDER_ITEMS_ALL);
+    PlaceItemsForType(RCTYPE_WONDER_ITEM, overworldWonderItemsActive, dungeonWonderItemsActive);
+
     // Shuffle Crates
     bool overworldCratesActive = ctx->GetOption(RSK_SHUFFLE_CRATES).Is(RO_SHUFFLE_CRATES_OVERWORLD) ||
                                  ctx->GetOption(RSK_SHUFFLE_CRATES).Is(RO_SHUFFLE_CRATES_ALL);

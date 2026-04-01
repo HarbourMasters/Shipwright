@@ -32,6 +32,7 @@ void RegionTable_Init_ZorasFountain() {
         LOCATION(RC_ZF_LOG_BUTTERFLY_FAIRY,          	  logic->IsChild && logic->AtDay && logic->CanUse(RG_STICKS)),
         LOCATION(RC_ZF_JABU_JABU_PLATFORM_RECTANGLE_SIGN, logic->IsChild && logic->CanRead()),
         LOCATION(RC_ZF_ENTRANCE_ARROW_SIGN,               logic->CanRead()),
+        LOCATION(RC_ZF_WONDER_ROCK,                  	  logic->IsAdult && logic->ReachScarecrow()),
     }, {
         //Exits
         ENTRANCE(RR_ZD_BEHIND_KING_ZORA,       true),
