@@ -296,7 +296,7 @@ void RegionTable_Init_WaterTemple() {
 
     areaTable[RR_WATER_TEMPLE_BOULDER_CANAL] = Region("Water Temple Boulder Canal", SCENE_WATER_TEMPLE, {}, {
         //Locations
-        LOCATION(RC_WATER_TEMPLE_GS_NEAR_BOSS_KEY_CHEST, (logic->IsAdult && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG)) || (logic->CanUse(RG_IRON_BOOTS) && logic->CanUse(RG_HOOKSHOT))),
+        LOCATION(RC_WATER_TEMPLE_GS_NEAR_BOSS_KEY_CHEST, (logic->IsAdult && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG)) || (logic->CanUse(RG_IRON_BOOTS) && logic->CanUse(RG_HOOKSHOT)) || (((logic->IsAdult && logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_BOMB_THROW)) || (logic->IsChild && logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_BOOMERANG))) && ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanUse(RG_HOVER_BOOTS))),
     }, {
         //Exits
         //making the jump as adult without jumpslash is possible, but hard enough to be a trick

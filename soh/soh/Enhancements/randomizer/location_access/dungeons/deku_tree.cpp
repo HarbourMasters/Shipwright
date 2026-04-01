@@ -200,9 +200,10 @@ void RegionTable_Init_DekuTree() {
 
     areaTable[RR_DEKU_TREE_OUTSIDE_BOSS_ROOM] = Region("Deku Tree Outside Boss Room", SCENE_DEKU_TREE, {}, {
         //Locations
-        LOCATION(RC_DEKU_TREE_BEFORE_BOSS_LEFT_HEART,   logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG)),
-        LOCATION(RC_DEKU_TREE_BEFORE_BOSS_MIDDLE_HEART, logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG)),
-        LOCATION(RC_DEKU_TREE_BEFORE_BOSS_RIGHT_HEART,  logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG)),
+        LOCATION(RC_DEKU_TREE_BEFORE_BOSS_LEFT_HEART,   logic->IsAdult || (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
+        // Can be grabbed by jumping to it from above, might deserve its own trick
+        LOCATION(RC_DEKU_TREE_BEFORE_BOSS_MIDDLE_HEART, logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION)),
+        LOCATION(RC_DEKU_TREE_BEFORE_BOSS_RIGHT_HEART,  logic->IsAdult || (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
         LOCATION(RC_DEKU_TREE_BEFORE_BOSS_GRASS_1,      logic->CanCutShrubs() && logic->HasFireSourceWithTorch()),
         LOCATION(RC_DEKU_TREE_BEFORE_BOSS_GRASS_2,      logic->CanCutShrubs() && logic->HasFireSourceWithTorch()),
         LOCATION(RC_DEKU_TREE_BEFORE_BOSS_GRASS_3,      logic->CanCutShrubs() && logic->HasFireSourceWithTorch()),
@@ -465,9 +466,9 @@ void RegionTable_Init_DekuTree() {
 
     areaTable[RR_DEKU_TREE_MQ_OUTSIDE_BOSS_ROOM] = Region("Deku Tree MQ Outside Boss Room", SCENE_DEKU_TREE, {}, {
         //Locations
-        LOCATION(RC_DEKU_TREE_MQ_BEFORE_BOSS_LEFT_HEART,   logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG)),
-        LOCATION(RC_DEKU_TREE_MQ_BEFORE_BOSS_MIDDLE_HEART, logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG)),
-        LOCATION(RC_DEKU_TREE_MQ_BEFORE_BOSS_RIGHT_HEART,  logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG)),
+        LOCATION(RC_DEKU_TREE_MQ_BEFORE_BOSS_LEFT_HEART,   logic->IsAdult || (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
+        LOCATION(RC_DEKU_TREE_MQ_BEFORE_BOSS_MIDDLE_HEART, logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION)),
+        LOCATION(RC_DEKU_TREE_MQ_BEFORE_BOSS_RIGHT_HEART,  logic->IsAdult || (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
         LOCATION(RC_DEKU_TREE_MQ_BEFORE_BOSS_GRASS_1,      logic->CanCutShrubs()),
         LOCATION(RC_DEKU_TREE_MQ_BEFORE_BOSS_GRASS_2,      logic->CanCutShrubs()),
         LOCATION(RC_DEKU_TREE_MQ_BEFORE_BOSS_GRASS_3,      logic->CanCutShrubs()),
