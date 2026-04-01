@@ -114,6 +114,7 @@ void RegionTable_Init_KokiriForest() {
         LOCATION(RC_KF_CHILD_GRASS_MAZE_2,              logic->IsChild && logic->CanCutShrubs()),
         LOCATION(RC_KF_CHILD_GRASS_MAZE_3,              logic->IsChild && logic->CanCutShrubs()),
         LOCATION(RC_KF_AFTER_CRAWLSPACE_RECTANGLE_SIGN, logic->IsChild && logic->CanRead()),
+        LOCATION(RC_KF_BOULDER_MAZE_RECTANGLE_SIGN,     logic->IsChild && logic->CanRead()),
         LOCATION(RC_KF_WONDER_CRAWL_GRASS_1, 			logic->IsChild),
         LOCATION(RC_KF_WONDER_CRAWL_GRASS_2, 			logic->IsChild),
     }, {
