@@ -187,13 +187,13 @@
 				"name": "Voidout Collection",
 				"description": [
 					"Some items can be collected by jumping to them, even if it results in voiding out. Used for:\n",
-					"- OGC Gold Skulltula",
-					"- HC wonder items without swim"
-					"- ZR wonder items without swim"
-					"- ZR Waterfall freestanding rupees without swim"
-					"- GV wonder items without swim"
-					"- Deku Tree freestanding hearts before boss",
-					"- Water Temple near boss key chest Gold Skulltula"
+					"- OGC Gold Skulltula\n",
+					"- HC wonder items without swim\n",
+					"- ZR wonder items without swim\n",
+					"- ZR Waterfall freestanding rupees without swim\n",
+					"- GV wonder items without swim\n",
+					"- Deku Tree freestanding hearts before boss\n",
+					"- Water Temple near boss key chest Gold Skulltula\n",
 					"- Shadow MQ after boat and before boss Gold Skulltulas"
 				]
 			},			
