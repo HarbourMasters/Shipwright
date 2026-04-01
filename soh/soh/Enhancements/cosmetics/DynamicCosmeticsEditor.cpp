@@ -14,7 +14,6 @@
 #include "soh/SohGui/UIWidgets.hpp"
 #include "soh/SohGui/SohGui.hpp"
 #include "soh/OTRGlobals.h"
-#include "soh/Enhancements/enhancementTypes.h"
 
 extern "C" {
 #include "macros.h"
