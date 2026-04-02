@@ -392,9 +392,11 @@ uint8_t GetRandomizedEnemy(PlayState* play, int16_t* actorId, s16* posX, s16* po
     // This should probably be handled on OTR generation in the future when object dependency is fully removed.
     // Remove bats and Skulltulas from graveyard.
     // Remove Octorok in Lost Woods.
+    // Remove signs in Gerudo Fortress as child
     if (((*actorId == ACTOR_EN_FIREFLY || (*actorId == ACTOR_EN_SW && *params == 0)) &&
          play->sceneNum == SCENE_GRAVEYARD) ||
-        (*actorId == ACTOR_EN_OKUTA && play->sceneNum == SCENE_LOST_WOODS)) {
+        (*actorId == ACTOR_EN_OKUTA && play->sceneNum == SCENE_LOST_WOODS) ||
+        (*actorId == ACTOR_EN_KANBAN && play->sceneNum == SCENE_GERUDOS_FORTRESS && LINK_IS_CHILD)) {
         return 0;
     }
 
