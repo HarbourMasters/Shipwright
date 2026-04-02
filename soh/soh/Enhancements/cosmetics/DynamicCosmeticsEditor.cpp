@@ -65,23 +65,18 @@ static int GetCustomMaterialSortOrder(const std::string& materialPath) {
     return 2;
 }
 
-static std::string SanitizeCustomKey(const std::string& value) {
-    std::string sanitized;
-    sanitized.reserve(value.size());
-
-    for (unsigned char ch : value) {
-        if (std::isalnum(ch)) {
-            sanitized.push_back(static_cast<char>(ch));
-        } else if (!sanitized.empty() && sanitized.back() != '_') {
-            sanitized.push_back('_');
+static void SanitizeCustomKey(std::string& value) {
+    for (auto it = value.begin(); it != value.end();) {
+        if (!std::isalnum(static_cast<unsigned char>(*it))) {
+            it = value.erase(it);
+        } else {
+            ++it;
         }
     }
 
-    while (!sanitized.empty() && sanitized.back() == '_') {
-        sanitized.pop_back();
+    if (value.empty()) {
+        value = "Entry";
     }
-
-    return sanitized.empty() ? "Entry" : sanitized;
 }
 
 static bool TryLoadCustomDisplayListXml(Ship::ArchiveManager* archiveManager, Ship::ResourceManager* resourceManager,
@@ -244,7 +239,8 @@ void ScanCustomCosmetics() {
                 continue;
             }
 
-            std::string key = SanitizeCustomKey(cosmeticEntry);
+            std::string key = cosmeticEntry;
+            SanitizeCustomKey(key);
             Gfx expectedInstruction;
             if (isPrimColor) {
                 expectedInstruction =
