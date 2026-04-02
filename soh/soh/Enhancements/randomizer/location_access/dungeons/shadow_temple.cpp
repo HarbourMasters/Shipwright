@@ -151,11 +151,12 @@ void RegionTable_Init_ShadowTemple() {
     // See MQ for comments
     areaTable[RR_SHADOW_TEMPLE_STONE_UMBRELLA] = Region("Shadow Temple Stone Umbrella", SCENE_SHADOW_TEMPLE, {}, {
         //Locations
-        LOCATION(RC_SHADOW_TEMPLE_FALLING_SPIKES_LOWER_CHEST, logic->HasItem(RG_OPEN_CHEST)),
-        LOCATION(RC_SHADOW_TEMPLE_GS_FALLING_SPIKES_ROOM,     logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG) || (logic->IsAdult && logic->CanGroundJumpslash())),
-        LOCATION(RC_SHADOW_TEMPLE_FALLING_SPIKES_POT_1,       logic->CanBreakPots()),
-        LOCATION(RC_SHADOW_TEMPLE_FALLING_SPIKES_POT_2,       logic->CanBreakPots()),
-        LOCATION(RC_SHADOW_TEMPLE_FALLING_SPIKES_POT_3,       logic->CanUse(RG_BOOMERANG)),
+        LOCATION(RC_SHADOW_TEMPLE_FALLING_SPIKES_LOWER_CHEST,    logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_SHADOW_TEMPLE_GS_FALLING_SPIKES_ROOM,        logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG) || (logic->IsAdult && logic->CanGroundJumpslash())),
+        LOCATION(RC_SHADOW_TEMPLE_FALLING_SPIKES_POT_1,          logic->CanBreakPots()),
+        LOCATION(RC_SHADOW_TEMPLE_FALLING_SPIKES_POT_2,          logic->CanBreakPots()),
+        LOCATION(RC_SHADOW_TEMPLE_FALLING_SPIKES_POT_3,          logic->CanUse(RG_BOOMERANG)),
+        LOCATION(RC_SHADOW_TEMPLE_FALLING_SPIKES_RECTANGLE_SIGN, logic->CanRead()),
     }, {
         //Exits
         ENTRANCE(RR_SHADOW_TEMPLE_LOWER_HUGE_PIT,       !!ctx->GetTrickOption(RT_VISIBLE_COLLISION)),
@@ -567,6 +568,7 @@ void RegionTable_Init_ShadowTemple() {
         LOCATION(RC_SHADOW_TEMPLE_MQ_GS_FALLING_SPIKES_ROOM,      ctx->GetTrickOption(RT_SHADOW_UMBRELLA_GS) && logic->CanUse(RG_HOVER_BOOTS) && logic->CanStandingShield() && logic->CanUse(RG_MASTER_SWORD)),
         LOCATION(RC_SHADOW_TEMPLE_MQ_UPPER_UMBRELLA_NORTH_POT,    logic->CanBreakPots()),
         LOCATION(RC_SHADOW_TEMPLE_MQ_UPPER_UMBRELLA_SOUTH_POT,    logic->CanBreakPots()),
+        LOCATION(RC_SHADOW_TEMPLE_FALLING_SPIKES_RECTANGLE_SIGN,  logic->CanRead()),
     }, {
         //Exits
         ENTRANCE(RR_SHADOW_TEMPLE_MQ_STONE_UMBRELLA_ROOM, true),
