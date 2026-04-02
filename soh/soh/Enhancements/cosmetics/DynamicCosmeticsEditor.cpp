@@ -73,10 +73,6 @@ static void SanitizeCustomKey(std::string& value) {
             ++it;
         }
     }
-
-    if (value.empty()) {
-        value = "Entry";
-    }
 }
 
 static bool TryLoadCustomDisplayListXml(Ship::ArchiveManager* archiveManager, Ship::ResourceManager* resourceManager,
@@ -241,6 +237,9 @@ void ScanCustomCosmetics() {
 
             std::string key = cosmeticEntry;
             SanitizeCustomKey(key);
+            if (key.empty()) {
+                continue;
+            }
             Gfx expectedInstruction;
             if (isPrimColor) {
                 expectedInstruction =
