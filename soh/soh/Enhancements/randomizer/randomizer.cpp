@@ -3272,6 +3272,13 @@ std::map<RandomizerCheck, RandomizerInf> rcToRandomizerInf = {
     { RC_GERUDO_TRAINING_GROUND_MQ_WONDER_DINOLFOS_ROOM, RAND_INF_GERUDO_TRAINING_GROUND_MQ_WONDER_DINOLFOS_ROOM },
     { RC_GERUDO_TRAINING_GROUND_MQ_WONDER_EYE_STATUE, RAND_INF_GERUDO_TRAINING_GROUND_MQ_WONDER_EYE_STATUE },
     { RC_GANONS_CASTLE_MQ_WONDER_SHADOW_TRIAL, RAND_INF_GANONS_CASTLE_MQ_WONDER_SHADOW_TRIAL },
+    // Beggar
+    { RC_MK_BEGGAR_BUGS, RAND_INF_MK_BEGGAR_BUGS },
+    { RC_MK_BEGGAR_FISH, RAND_INF_MK_BEGGAR_FISH },
+    { RC_MK_BEGGAR_BLUE_FIRE, RAND_INF_MK_BEGGAR_BLUE_FIRE },
+    { RC_KAK_BEGGAR_BUGS, RAND_INF_KAK_BEGGAR_BUGS },
+    { RC_KAK_BEGGAR_FISH, RAND_INF_KAK_BEGGAR_FISH },
+    { RC_KAK_BEGGAR_BLUE_FIRE, RAND_INF_KAK_BEGGAR_BLUE_FIRE },
 };
 
 CheckIdentity Randomizer::IdentifyBeehive(s32 sceneNum, s16 xPosition, s32 respawnData) {
@@ -3815,6 +3822,22 @@ CheckIdentity Randomizer::IdentifyWonderItem(s32 sceneNum, s32 par1, s32 par2) {
     }
 
     return wonderIdentity;
+}
+
+CheckIdentity Randomizer::IdentifyBeggar(s32 sceneNum, s32 textId) {
+    CheckIdentity beggarIdentity;
+    beggarIdentity.randomizerInf = RAND_INF_MAX;
+    beggarIdentity.randomizerCheck = RC_UNKNOWN_CHECK;
+
+    Rando::Location* location = GetCheckObjectFromActor(ACTOR_EN_HY, sceneNum, textId);
+    if (location->GetRandomizerCheck() == RC_UNKNOWN_CHECK) {
+        LUSLOG_WARN("IdentifyBeggar did not receive a valid RC value (%d).", location->GetRandomizerCheck());
+    } else {
+        beggarIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
+        beggarIdentity.randomizerCheck = location->GetRandomizerCheck();
+    }
+
+    return beggarIdentity;
 }
 
 u8 Randomizer::GetRandoSettingValue(RandomizerSettingKey randoSettingKey) {

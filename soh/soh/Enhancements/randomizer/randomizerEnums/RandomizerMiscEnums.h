@@ -132,6 +132,7 @@ RANDO_ENUM_ITEM(RCTYPE_SONG_FAIRY)                 // Fairies from Songs
 RANDO_ENUM_ITEM(RCTYPE_BUTTERFLY_FAIRY)            // Fairies from Butterflies
 RANDO_ENUM_ITEM(RCTYPE_GRASS)                      // Grass
 RANDO_ENUM_ITEM(RCTYPE_SIGN)                       // Signs
+RANDO_ENUM_ITEM(RCTYPE_BEGGAR)                     // Beggar
 RANDO_ENUM_END(RandomizerCheckType)
 
 RANDO_ENUM_BEGIN(RandomizerCheckQuest)

@@ -495,6 +495,9 @@ void Settings::CreateOptionDescriptions() {
                                                         "\n"
                                                         "This setting does not effect the item earned from playing\n"
                                                         "the Song of Storms and the frog song minigame.";
+    mOptionDescriptions[RSK_SHUFFLE_BEGGAR] =
+        "Shuffle the rewards the Beggar gives for selling bugs, fish, and Blue Fire.\n"
+        "The Beggar will give separate rewards to child and adult.";
     mOptionDescriptions[RSK_SHUFFLE_ADULT_TRADE] =
         "Adds all of the adult trade quest items into the pool, each of which "
         "can be traded for a unique reward.\n"

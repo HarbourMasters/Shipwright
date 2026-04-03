@@ -497,6 +497,10 @@ void GenerateItemPool() {
         ctx->PlaceItemInLocation(RC_WASTELAND_BOMBCHU_SALESMAN, RG_BOMBCHU_10, false, true);
     }
 
+    // Shuffle Beggar
+    bool beggarActive = (bool)ctx->GetOption(RSK_SHUFFLE_BEGGAR);
+    PlaceItemsForType(RCTYPE_BEGGAR, beggarActive, false);
+
     if (ctx->GetOption(RSK_SHUFFLE_FROG_SONG_RUPEES)) {
         AddFixedItemToPool(RG_PURPLE_RUPEE, 5);
     } else {

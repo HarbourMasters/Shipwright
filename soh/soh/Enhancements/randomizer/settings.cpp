@@ -1009,6 +1009,7 @@ void Settings::CreateOptions() {
     OPT_U8(RSK_MERCHANT_PRICES_GIANT_WALLET_WEIGHT, "Merchant Giant Wallet Weight", {NumOpts(0, 100)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("MerchantGiantWalletWeight"), mOptionDescriptions[RSK_MERCHANT_PRICES_GIANT_WALLET_WEIGHT], WIDGET_CVAR_SLIDER_INT, 10, true, nullptr, IMFLAG_NONE);
     OPT_U8(RSK_MERCHANT_PRICES_TYCOON_WALLET_WEIGHT, "Merchant Tycoon Wallet Weight", {NumOpts(0, 100)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("MerchantTycoonWalletWeight"), mOptionDescriptions[RSK_MERCHANT_PRICES_TYCOON_WALLET_WEIGHT], WIDGET_CVAR_SLIDER_INT, 10, true, nullptr, IMFLAG_NONE);
     OPT_BOOL(RSK_MERCHANT_PRICES_AFFORDABLE, "Merchant Affordable Prices", CVAR_RANDOMIZER_SETTING("MerchantPricesAffordable"), mOptionDescriptions[RSK_MERCHANT_PRICES_AFFORDABLE]);
+    OPT_BOOL(RSK_SHUFFLE_BEGGAR, "Shuffle Beggar", CVAR_RANDOMIZER_SETTING("ShuffleBeggar"), mOptionDescriptions[RSK_SHUFFLE_BEGGAR]);
     OPT_BOOL(RSK_SHUFFLE_FROG_SONG_RUPEES, "Shuffle Frog Song Rupees", CVAR_RANDOMIZER_SETTING("ShuffleFrogSongRupees"), mOptionDescriptions[RSK_SHUFFLE_FROG_SONG_RUPEES]);
     OPT_BOOL(RSK_SHUFFLE_ADULT_TRADE, "Shuffle Adult Trade", CVAR_RANDOMIZER_SETTING("ShuffleAdultTrade"), mOptionDescriptions[RSK_SHUFFLE_ADULT_TRADE]);
     OPT_U8(RSK_SHUFFLE_CHEST_MINIGAME, "Shuffle Chest Minigame", {"Off", "On (Separate)", "On (Pack)"});
@@ -1909,6 +1910,7 @@ void Settings::CreateOptions() {
                                   &mOptions[RSK_MERCHANT_PRICES_GIANT_WALLET_WEIGHT],
                                   &mOptions[RSK_MERCHANT_PRICES_TYCOON_WALLET_WEIGHT],
                                   &mOptions[RSK_MERCHANT_PRICES_AFFORDABLE],
+                                  &mOptions[RSK_SHUFFLE_BEGGAR],
                               },
                               WidgetContainerType::SECTION);
     mOptionGroups[RSG_MENU_COLUMN_SHOP_SHUFFLES] =
@@ -2164,6 +2166,7 @@ void Settings::CreateOptions() {
                                             &mOptions[RSK_MERCHANT_PRICES_GIANT_WALLET_WEIGHT],
                                             &mOptions[RSK_MERCHANT_PRICES_TYCOON_WALLET_WEIGHT],
                                             &mOptions[RSK_MERCHANT_PRICES_AFFORDABLE],
+                                            &mOptions[RSK_SHUFFLE_BEGGAR],
                                             &mOptions[RSK_SHUFFLE_FROG_SONG_RUPEES],
                                             &mOptions[RSK_SHUFFLE_ADULT_TRADE],
                                             &mOptions[RSK_SHUFFLE_CHEST_MINIGAME],
