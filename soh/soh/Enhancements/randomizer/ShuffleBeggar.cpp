@@ -111,5 +111,5 @@ void Rando::StaticData::RegisterBeggarLocations() {
     // clang-format on
 }
 
-static RegisterShipInitFunc initFunc(RegisterShuffleBeggar, { "IS_RANDO" });
-static RegisterShipInitFunc registerSignLocations(Rando::StaticData::RegisterBeggarLocations);
+static RegisterShipInitFunc registerShuffleBeggar(RegisterShuffleBeggar, { "IS_RANDO" });
+static RegisterShipInitFunc registerBeggarLocations(Rando::StaticData::RegisterBeggarLocations);
