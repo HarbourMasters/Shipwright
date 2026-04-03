@@ -1342,6 +1342,10 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
                                                      /*german*/ "Man erzählt sich, daß eine #Kiste im Geistertempel# #[[1]]# enthielte.",
                                                      /*french*/ "Selon moi, une #caisse dans le Temple de l'Esprit# contient #[[1]]#.", {QM_RED, QM_GREEN}));
 
+    hintTextTable[RHT_SIGN_SPIRIT_TEMPLE] = HintText(CustomMessage("They say that #reading a statue in Spirit Temple# reveals #[[1]]#.",
+                                                     /*german*/ "Man erzählt sich, daß das #Lesen einer Statue im Geistertempel# #[[1]]# enthülle.",
+                                                     /*french*/ "Selon moi, #lire une statue dans le Temple de l'Esprit# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
+
     hintTextTable[RHT_WONDER_ITEM_SPIRIT_TEMPLE] = HintText(CustomMessage("They say that a #wonder item in Spirit Temple# hides #[[1]]#.",
                                                      /*german*/ "Man erzählt sich, daß sich ein #Wunder-Gegenstand im Geistertempel# #[[1]]# verstecke.",
                                                      /*french*/ "Selon moi, un #objet merveilleux dans le Temple de l'Esprit# cache #[[1]]#.", {QM_RED, QM_GREEN}));
