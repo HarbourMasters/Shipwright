@@ -1,6 +1,7 @@
 #include "CosmeticsEditor.h"
 
 #include <string>
+#include <functional>
 #include <algorithm>
 #include <unordered_map>
 #include <vector>
@@ -129,6 +130,8 @@ static std::string GetCustomCosmeticLockedCvar(const CustomCosmeticEntry& entry)
     return GetCustomCosmeticCvar(entry) + ".Locked";
 }
 
+static void ClearCustomCosmeticValueCvars(const char* valuesCvar);
+
 void ApplyCustomCosmetics() {
     auto resourceManager = Ship::Context::GetInstance()->GetResourceManager();
     auto archiveManager = resourceManager->GetArchiveManager();
@@ -171,21 +174,14 @@ static void SetCustomCosmeticColor(const CustomCosmeticEntry& entry, Color_RGBA8
 }
 
 static void ResetCustomCosmeticColor(const CustomCosmeticEntry& entry) {
-    std::string cvar = GetCustomCosmeticCvar(entry);
     std::string rainbowCvar = GetCustomCosmeticRainbowCvar(entry);
     std::string lockedCvar = GetCustomCosmeticLockedCvar(entry);
 
     CVarClear(entry.changedCvar.c_str());
     CVarClear(rainbowCvar.c_str());
     CVarClear(lockedCvar.c_str());
-    CVarClear(entry.colorCvar.c_str());
-    CVarClear((std::string(entry.colorCvar.c_str()) + ".R").c_str());
-    CVarClear((std::string(entry.colorCvar.c_str()) + ".G").c_str());
-    CVarClear((std::string(entry.colorCvar.c_str()) + ".B").c_str());
-    CVarClear((std::string(entry.colorCvar.c_str()) + ".A").c_str());
-    CVarClear((std::string(entry.colorCvar.c_str()) + ".Type").c_str());
+    ClearCustomCosmeticValueCvars(entry.colorCvar.c_str());
 
-    ShipInit::Init(cvar.c_str());
     ShipInit::Init(entry.colorCvar.c_str());
     ShipInit::Init(rainbowCvar.c_str());
     ShipInit::Init(lockedCvar.c_str());
@@ -198,6 +194,51 @@ static void RandomizeCustomCosmeticColor(const CustomCosmeticEntry& entry) {
     Color_RGBA8 color = { static_cast<uint8_t>(rand() % 256), static_cast<uint8_t>(rand() % 256),
                           static_cast<uint8_t>(rand() % 256), 255 };
     SetCustomCosmeticColor(entry, color);
+}
+
+static void ClearCustomCosmeticValueCvars(const char* valuesCvar) {
+    CVarClear(valuesCvar);
+    CVarClear((std::string(valuesCvar) + ".R").c_str());
+    CVarClear((std::string(valuesCvar) + ".G").c_str());
+    CVarClear((std::string(valuesCvar) + ".B").c_str());
+    CVarClear((std::string(valuesCvar) + ".A").c_str());
+    CVarClear((std::string(valuesCvar) + ".Type").c_str());
+}
+
+static void DrawCustomCosmeticColorRow(const char* label, const char* cvar, Color_RGBA8 defaultColor,
+                                       const char* rainbowCvar, const char* lockedCvar, const char* changedCvar,
+                                       const std::function<void()>& onColorChanged,
+                                       const std::function<void()>& onRandomize,
+                                       const std::function<void()>& onRainbowToggle,
+                                       const std::function<void()>& onReset) {
+    if (UIWidgets::CVarColorPicker(label, cvar, defaultColor, false, 0, THEME_COLOR)) {
+        onColorChanged();
+    }
+
+    ImGui::SameLine((ImGui::CalcTextSize("Message Light Blue (None No Shadow)").x * 1.0f) + 60.0f);
+    if (UIWidgets::Button(
+            ("Random##" + std::string(label)).c_str(),
+            UIWidgets::ButtonOptions().Size(ImVec2(80, 31)).Padding(ImVec2(2.0f, 0.0f)).Color(THEME_COLOR))) {
+        onRandomize();
+    }
+
+    ImGui::SameLine();
+    if (UIWidgets::CVarCheckbox(("Rainbow##" + std::string(label)).c_str(), rainbowCvar,
+                                UIWidgets::CheckboxOptions().Color(THEME_COLOR))) {
+        onRainbowToggle();
+    }
+
+    ImGui::SameLine();
+    UIWidgets::CVarCheckbox(("Locked##" + std::string(label)).c_str(), lockedCvar,
+                            UIWidgets::CheckboxOptions().Color(THEME_COLOR));
+
+    if (CVarGetInteger(changedCvar, 0)) {
+        ImGui::SameLine();
+        if (UIWidgets::Button(("Reset##" + std::string(label)).c_str(),
+                              UIWidgets::ButtonOptions().Size(ImVec2(80, 31)).Padding(ImVec2(2.0f, 0.0f)))) {
+            onReset();
+        }
+    }
 }
 
 void ScanCustomCosmetics() {
@@ -321,43 +362,25 @@ static void DrawCustomCosmeticRow(const CustomCosmeticEntry& entry) {
     std::string rainbowCvar = GetCustomCosmeticRainbowCvar(entry);
     std::string lockedCvar = GetCustomCosmeticLockedCvar(entry);
 
-    if (UIWidgets::CVarColorPicker(entry.displayName.c_str(), cvar.c_str(), entry.defaultColor, false, 0,
-                                   THEME_COLOR)) {
-        CVarSetInteger(rainbowCvar.c_str(), 0);
-        CVarSetInteger(entry.changedCvar.c_str(), 1);
-        ShipInit::Init(rainbowCvar.c_str());
-        ShipInit::Init(entry.changedCvar.c_str());
-        ApplyCustomCosmetics();
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-    }
-
-    ImGui::SameLine((ImGui::CalcTextSize("Message Light Blue (None No Shadow)").x * 1.0f) + 60.0f);
-    if (UIWidgets::Button(
-            ("Random##" + entry.displayName).c_str(),
-            UIWidgets::ButtonOptions().Size(ImVec2(80, 31)).Padding(ImVec2(2.0f, 0.0f)).Color(THEME_COLOR))) {
-        RandomizeCustomCosmeticColor(entry);
-    }
-
-    ImGui::SameLine();
-    if (UIWidgets::CVarCheckbox(("Rainbow##" + entry.displayName).c_str(), rainbowCvar.c_str(),
-                                UIWidgets::CheckboxOptions().Color(THEME_COLOR))) {
-        CVarSetInteger(entry.changedCvar.c_str(), 1);
-        ShipInit::Init(entry.changedCvar.c_str());
-        ApplyCustomCosmetics();
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-    }
-
-    ImGui::SameLine();
-    UIWidgets::CVarCheckbox(("Locked##" + entry.displayName).c_str(), lockedCvar.c_str(),
-                            UIWidgets::CheckboxOptions().Color(THEME_COLOR));
-
-    if (CVarGetInteger(entry.changedCvar.c_str(), 0)) {
-        ImGui::SameLine();
-        if (UIWidgets::Button(("Reset##" + entry.displayName).c_str(),
-                              UIWidgets::ButtonOptions().Size(ImVec2(80, 31)).Padding(ImVec2(2.0f, 0.0f)))) {
-            ResetCustomCosmeticColor(entry);
-        }
-    }
+    DrawCustomCosmeticColorRow(
+        entry.displayName.c_str(), cvar.c_str(), entry.defaultColor, rainbowCvar.c_str(), lockedCvar.c_str(),
+        entry.changedCvar.c_str(),
+        [&entry, &rainbowCvar]() {
+            CVarSetInteger(rainbowCvar.c_str(), 0);
+            CVarSetInteger(entry.changedCvar.c_str(), 1);
+            ShipInit::Init(rainbowCvar.c_str());
+            ShipInit::Init(entry.changedCvar.c_str());
+            ApplyCustomCosmetics();
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        },
+        [&entry]() { RandomizeCustomCosmeticColor(entry); },
+        [&entry]() {
+            CVarSetInteger(entry.changedCvar.c_str(), 1);
+            ShipInit::Init(entry.changedCvar.c_str());
+            ApplyCustomCosmetics();
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        },
+        [&entry]() { ResetCustomCosmeticColor(entry); });
 }
 
 void DrawCustomCosmetics() {
