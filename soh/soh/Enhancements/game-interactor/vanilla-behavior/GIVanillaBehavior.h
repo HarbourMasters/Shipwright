@@ -1261,6 +1261,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*BgIceTurara`
+    VB_ICICLE_SETUP_DRAW,
+
+    // #### `result`
+    // ```c
     // (respawnFlag == 1) || (respawnFlag == -1)
     // ```
     // #### `args`
@@ -2254,6 +2262,22 @@ typedef enum {
     // #### `args`
     // - None
     VB_SPEAK,
+
+    // #### `result`
+    // ```c
+    // this->dyna.actor.params == TURARA_STALACTITE_REGROW
+    // ```
+    // #### `args`
+    // - `*BgIceTurara`
+    VB_STALACTITE_DROP_ITEM,
+
+    // #### `result`
+    // ```c
+    // this->collider.base.acFlags & AC_HIT
+    // ```
+    // #### `args`
+    // - `*BgIceTurara`
+    VB_STALAGMITE_DROP_ITEM,
 
     // #### `result`
     // ```c

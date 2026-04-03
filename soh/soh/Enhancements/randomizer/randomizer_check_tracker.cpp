@@ -83,6 +83,7 @@ bool showOverworldSigns;
 bool showDungeonSigns;
 bool showOverworldWonderItems;
 bool showDungeonWonderItems;
+bool showIcicles;
 bool showFrogSongRupees;
 bool showFountainFairies;
 bool showStoneFairies;
@@ -1512,6 +1513,7 @@ void LoadSettings() {
                 showDungeonWonderItems = false;
                 break;
         }
+        showIcicles = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_ICICLES);
     } else { // Vanilla
         showOverworldTokens = true;
         showDungeonTokens = true;
@@ -1527,6 +1529,7 @@ void LoadSettings() {
         showBushes = false;
         showOverworldWonderItems = false;
         showDungeonWonderItems = false;
+        showIcicles = false;
     }
 
     fortressFast = false;
@@ -1650,6 +1653,7 @@ bool IsCheckShuffled(RandomizerCheck rc) {
                (loc->GetRCType() != RCTYPE_WONDER_ITEM ||
                 (showOverworldWonderItems && RandomizerCheckObjects::AreaIsOverworld(loc->GetArea())) ||
                 (showDungeonWonderItems && RandomizerCheckObjects::AreaIsDungeon(loc->GetArea()))) &&
+               (loc->GetRCType() != RCTYPE_ICICLE || showIcicles) &&
                (loc->GetRCType() != RCTYPE_FISH ||
                 OTRGlobals::Instance->gRandoContext->GetFishsanity()->GetFishLocationIncluded(loc)) &&
                (loc->GetRCType() != RCTYPE_FREESTANDING ||

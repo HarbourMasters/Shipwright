@@ -18,8 +18,17 @@ void RegionTable_Init_IceCavern() {
 
     areaTable[RR_ICE_CAVERN_BEGINNING] = Region("Ice Cavern Beginning", SCENE_ICE_CAVERN, {}, {
         //Locations
-        LOCATION(RC_ICE_CAVERN_ENTRANCE_STORMS_FAIRY, logic->CanUse(RG_SONG_OF_STORMS)),
-        LOCATION(RC_ICE_CAVERN_LOBBY_RUPEE,           logic->BlueFire()), // can get with rang trick
+        LOCATION(RC_ICE_CAVERN_ENTRANCE_STORMS_FAIRY,      logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION(RC_ICE_CAVERN_LOBBY_RUPEE,                logic->BlueFire()), // can get with rang trick
+        LOCATION(RC_ICE_CAVERN_ENTRANCE_LEFT_STALAGMITE,   logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_ENTRANCE_MIDDLE_STALAGMITE, logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_ENTRANCE_RIGHT_STALAGMITE,  logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_ENTRANCE_STALACTITE_1,      true),
+        LOCATION(RC_ICE_CAVERN_ENTRANCE_STALACTITE_2,      true),
+        LOCATION(RC_ICE_CAVERN_LOBBY_STALACTITE,           true),
+        LOCATION(RC_ICE_CAVERN_LOBBY_LEFT_STALAGMITE,      logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_LOBBY_MIDDLE_STALAGMITE,    logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_LOBBY_RIGHT_STALAGMITE,     logic->CanClearStalagmite()),
     }, {
         //Exits
         ENTRANCE(RR_ICE_CAVERN_ENTRYWAY,        true),
@@ -29,12 +38,20 @@ void RegionTable_Init_IceCavern() {
 
     areaTable[RR_ICE_CAVERN_HUB] = Region("Ice Cavern Hub", SCENE_ICE_CAVERN, {}, {
         //Locations
-        LOCATION(RC_ICE_CAVERN_GS_SPINNING_SCYTHE_ROOM, logic->HookshotOrBoomerang()),
-        LOCATION(RC_ICE_CAVERN_HALL_POT_1,              logic->CanBreakPots()),
-        LOCATION(RC_ICE_CAVERN_HALL_POT_2,              logic->CanBreakPots()),
-        LOCATION(RC_ICE_CAVERN_SPINNING_BLADE_POT_1,    logic->CanBreakPots()),
-        LOCATION(RC_ICE_CAVERN_SPINNING_BLADE_POT_2,    logic->CanBreakPots()),
-        LOCATION(RC_ICE_CAVERN_SPINNING_BLADE_POT_3,    logic->CanBreakPots()),
+        LOCATION(RC_ICE_CAVERN_GS_SPINNING_SCYTHE_ROOM,             logic->HookshotOrBoomerang()),
+        LOCATION(RC_ICE_CAVERN_HALL_POT_1,                          logic->CanBreakPots()),
+        LOCATION(RC_ICE_CAVERN_HALL_POT_2,                          logic->CanBreakPots()),
+        LOCATION(RC_ICE_CAVERN_SPINNING_BLADE_POT_1,                logic->CanBreakPots()),
+        LOCATION(RC_ICE_CAVERN_SPINNING_BLADE_POT_2,                logic->CanBreakPots()),
+        LOCATION(RC_ICE_CAVERN_SPINNING_BLADE_POT_3,                logic->CanBreakPots()),
+        LOCATION(RC_ICE_CAVERN_AFTER_LOBBY_STALACTITE,              true),
+        LOCATION(RC_ICE_CAVERN_AFTER_LOBBY_LEFT_STALAGMITE,         logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_AFTER_LOBBY_CENTER_LEFT_STALAGMITE,  logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_AFTER_LOBBY_CENTER_RIGHT_STALAGMITE, logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_AFTER_LOBBY_RIGHT_STALAGMITE,        logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_SPINNING_BLADE_LEFT_STALAGMITE,      logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_SPINNING_BLADE_MIDDLE_STALAGMITE,    logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_SPINNING_BLADE_RIGHT_STALAGMITE,     logic->CanClearStalagmite()),
     }, {
         //Exits
         ENTRANCE(RR_ICE_CAVERN_BEGINNING,    true),
@@ -49,14 +66,23 @@ void RegionTable_Init_IceCavern() {
         EVENT_ACCESS(LOGIC_BLUE_FIRE_ACCESS, true),
     }, {
         //Locations
-        LOCATION(RC_ICE_CAVERN_MAP_CHEST,             logic->BlueFire() && logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_ICE_CAVERN_MAP_CHEST,                        logic->BlueFire() && logic->HasItem(RG_OPEN_CHEST)),
         // Bow extension is possible, but very precise: X = 403, Z = 2062-3, Rot = -11475, needs a setup and is its own trick
-        LOCATION(RC_ICE_CAVERN_FROZEN_POT_1,          (logic->CanBreakPots() && logic->BlueFire()) || logic->HasExplosives() ||
-                                                      (ctx->GetTrickOption(RT_VISIBLE_COLLISION) && logic->CanJumpslash()) ||
-                                                      (ctx->GetTrickOption(RT_ITEM_EXTENSION) && logic->CanUse(RG_HOOKSHOT))),
-        LOCATION(RC_ICE_CAVERN_MAP_ROOM_LEFT_HEART,   true),
-        LOCATION(RC_ICE_CAVERN_MAP_ROOM_MIDDLE_HEART, true),
-        LOCATION(RC_ICE_CAVERN_MAP_ROOM_RIGHT_HEART,  true),
+        LOCATION(RC_ICE_CAVERN_FROZEN_POT_1,                     (logic->CanBreakPots() && logic->BlueFire()) || logic->HasExplosives() ||
+                                                                 (ctx->GetTrickOption(RT_VISIBLE_COLLISION) && logic->CanJumpslash()) ||
+                                                                 (ctx->GetTrickOption(RT_ITEM_EXTENSION) && logic->CanUse(RG_HOOKSHOT))),
+        LOCATION(RC_ICE_CAVERN_MAP_ROOM_LEFT_HEART,           true),
+        LOCATION(RC_ICE_CAVERN_MAP_ROOM_MIDDLE_HEART,         true),
+        LOCATION(RC_ICE_CAVERN_MAP_ROOM_RIGHT_HEART,          true),
+        LOCATION(RC_ICE_CAVERN_MAP_HALLWAY_STALACTITE_1,      true),
+        LOCATION(RC_ICE_CAVERN_MAP_HALLWAY_STALACTITE_2,      true),
+        LOCATION(RC_ICE_CAVERN_MAP_HALLWAY_STALACTITE_3,      true),
+        LOCATION(RC_ICE_CAVERN_MAP_HALLWAY_STALACTITE_4,      true),
+        LOCATION(RC_ICE_CAVERN_MAP_HALLWAY_STALACTITE_5,      true),
+        // Implied CanClearStalagmite
+        LOCATION(RC_ICE_CAVERN_MAP_HALLWAY_LEFT_STALAGMITE,   logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_MAP_HALLWAY_MIDDLE_STALAGMITE, logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_MAP_HALLWAY_RIGHT_STALAGMITE,  logic->CanClearStalagmite()),
     }, {
         //Exits
         ENTRANCE(RR_ICE_CAVERN_HUB, true),
@@ -67,9 +93,29 @@ void RegionTable_Init_IceCavern() {
         EVENT_ACCESS(LOGIC_BLUE_FIRE_ACCESS, true),
     }, {
         //Locations
-        LOCATION(RC_ICE_CAVERN_COMPASS_CHEST,       (logic->IsChild || logic->CanClearStalagmite() || ctx->GetTrickOption(RT_ICE_STALAGMITE_CLIP)) && logic->BlueFire() && logic->HasItem(RG_OPEN_CHEST)),
-        LOCATION(RC_ICE_CAVERN_FREESTANDING_POH,    (logic->CanClearStalagmite() || ctx->GetTrickOption(RT_ICE_STALAGMITE_CLIP)) && logic->BlueFire()), // can skip blue fire with rang trick
-        LOCATION(RC_ICE_CAVERN_GS_HEART_PIECE_ROOM, logic->HookshotOrBoomerang()),
+        LOCATION(RC_ICE_CAVERN_COMPASS_CHEST,                        (logic->IsChild || logic->CanClearStalagmite() || ctx->GetTrickOption(RT_ICE_STALAGMITE_CLIP)) && logic->BlueFire() && logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_ICE_CAVERN_FREESTANDING_POH,                     (logic->CanClearStalagmite() || ctx->GetTrickOption(RT_ICE_STALAGMITE_CLIP)) && logic->BlueFire()), // can skip blue fire with rang trick
+        LOCATION(RC_ICE_CAVERN_GS_HEART_PIECE_ROOM,                  logic->HookshotOrBoomerang()),
+        LOCATION(RC_ICE_CAVERN_HEART_PIECE_ROOM_CENTER_STALACTITE_1, true),
+        LOCATION(RC_ICE_CAVERN_HEART_PIECE_ROOM_CENTER_STALACTITE_2, true),
+        LOCATION(RC_ICE_CAVERN_HEART_PIECE_ROOM_CENTER_STALACTITE_3, true),
+        LOCATION(RC_ICE_CAVERN_HEART_PIECE_ROOM_CENTER_STALACTITE_4, true),
+        LOCATION(RC_ICE_CAVERN_HEART_PIECE_ROOM_CENTER_STALACTITE_5, true),
+        LOCATION(RC_ICE_CAVERN_HEART_PIECE_ROOM_LEFT_STALACTITE_1,   logic->CanClearStalagmite() || ctx->GetTrickOption(RT_ICE_STALAGMITE_CLIP)),
+        LOCATION(RC_ICE_CAVERN_HEART_PIECE_ROOM_LEFT_STALACTITE_2,   logic->CanClearStalagmite() || ctx->GetTrickOption(RT_ICE_STALAGMITE_CLIP)),
+        LOCATION(RC_ICE_CAVERN_HEART_PIECE_ROOM_CENTER_STALAGMITE_1, logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_HEART_PIECE_ROOM_CENTER_STALAGMITE_2, logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_HEART_PIECE_ROOM_CENTER_STALAGMITE_3, logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_HEART_PIECE_ROOM_CENTER_STALAGMITE_4, logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_HEART_PIECE_ROOM_CENTER_STALAGMITE_5, logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_HEART_PIECE_ROOM_CENTER_STALAGMITE_6, logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_HEART_PIECE_ROOM_LEFT_STALAGMITE_1,   logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_HEART_PIECE_ROOM_LEFT_STALAGMITE_2,   logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_HEART_PIECE_ROOM_LEFT_STALAGMITE_3,   logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_HEART_PIECE_ROOM_RIGHT_STALAGMITE_1,  logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_HEART_PIECE_ROOM_RIGHT_STALAGMITE_2,  logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_HEART_PIECE_ROOM_RIGHT_STALAGMITE_3,  logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_HEART_PIECE_ROOM_RIGHT_STALAGMITE_4,  logic->CanClearStalagmite()),
     }, {
         //Exits
         ENTRANCE(RR_ICE_CAVERN_HUB, true),
@@ -78,10 +124,31 @@ void RegionTable_Init_IceCavern() {
     areaTable[RR_ICE_CAVERN_BLOCK_ROOM] = Region("Ice Cavern Block Room", SCENE_ICE_CAVERN, {}, {
         //Locations
         // trick involves backflip, could be merged into general trick
-        LOCATION(RC_ICE_CAVERN_GS_PUSH_BLOCK_ROOM,    logic->HookshotOrBoomerang() || (ctx->GetTrickOption(RT_ICE_BLOCK_GS) && logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS) && logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_SHORT_JUMPSLASH))),
-        LOCATION(RC_ICE_CAVERN_SLIDING_BLOCK_RUPEE_1, logic->CanUse(RG_BOOMERANG)),
-        LOCATION(RC_ICE_CAVERN_SLIDING_BLOCK_RUPEE_2, logic->CanUse(RG_BOOMERANG)),
-        LOCATION(RC_ICE_CAVERN_SLIDING_BLOCK_RUPEE_3, logic->CanUse(RG_BOOMERANG)),
+        LOCATION(RC_ICE_CAVERN_GS_PUSH_BLOCK_ROOM,                      logic->HookshotOrBoomerang() || (ctx->GetTrickOption(RT_ICE_BLOCK_GS) && logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS) && logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_SHORT_JUMPSLASH))),
+        LOCATION(RC_ICE_CAVERN_SLIDING_BLOCK_RUPEE_1,                   logic->CanUse(RG_BOOMERANG)),
+        LOCATION(RC_ICE_CAVERN_SLIDING_BLOCK_RUPEE_2,                   logic->CanUse(RG_BOOMERANG)),
+        LOCATION(RC_ICE_CAVERN_SLIDING_BLOCK_RUPEE_3,                   logic->CanUse(RG_BOOMERANG)),
+        LOCATION(RC_ICE_CAVERN_PUSH_BLOCK_HALL_LEFT_STALAGMITE,         logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_PUSH_BLOCK_HALL_CENTER_LEFT_STALAGMITE,  logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_PUSH_BLOCK_HALL_CENTER_STALAGMITE,       logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_PUSH_BLOCK_HALL_CENTER_RIGHT_STALAGMITE, logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_PUSH_BLOCK_HALL_RIGHT_STALAGMITE,        logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_PUSH_BLOCK_HALL_STALACTITE_1,            true),
+        LOCATION(RC_ICE_CAVERN_PUSH_BLOCK_HALL_STALACTITE_2,            true),
+        LOCATION(RC_ICE_CAVERN_PUSH_BLOCK_HALL_STALACTITE_3,            true),
+        LOCATION(RC_ICE_CAVERN_NEAR_END_STALACTITE_1,                   logic->HasItem(RG_POWER_BRACELET) || (logic->IsAdult && (logic->CanGroundJump() || ctx->GetTrickOption(RT_SLIDE_JUMP)))),
+        LOCATION(RC_ICE_CAVERN_NEAR_END_STALACTITE_2,                   logic->HasItem(RG_POWER_BRACELET) || (logic->IsAdult && (logic->CanGroundJump() || ctx->GetTrickOption(RT_SLIDE_JUMP)))),
+        LOCATION(RC_ICE_CAVERN_NEAR_END_STALACTITE_3,                   logic->HasItem(RG_POWER_BRACELET) || (logic->IsAdult && (logic->CanGroundJump() || ctx->GetTrickOption(RT_SLIDE_JUMP)))),
+        LOCATION(RC_ICE_CAVERN_NEAR_END_STALACTITE_4,                   logic->HasItem(RG_POWER_BRACELET) || (logic->IsAdult && (logic->CanGroundJump() || ctx->GetTrickOption(RT_SLIDE_JUMP)))),
+        LOCATION(RC_ICE_CAVERN_NEAR_END_STALAGMITE_1,                   (logic->HasItem(RG_POWER_BRACELET) || (logic->IsAdult && (logic->CanGroundJump() || ctx->GetTrickOption(RT_SLIDE_JUMP)))) && logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_NEAR_END_STALAGMITE_2,                   (logic->HasItem(RG_POWER_BRACELET) || (logic->IsAdult && (logic->CanGroundJump() || ctx->GetTrickOption(RT_SLIDE_JUMP)))) && logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_NEAR_END_STALAGMITE_3,                   (logic->HasItem(RG_POWER_BRACELET) || (logic->IsAdult && (logic->CanGroundJump() || ctx->GetTrickOption(RT_SLIDE_JUMP)))) && logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_NEAR_END_STALAGMITE_4,                   (logic->HasItem(RG_POWER_BRACELET) || (logic->IsAdult && (logic->CanGroundJump() || ctx->GetTrickOption(RT_SLIDE_JUMP)))) && logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_NEAR_END_STALAGMITE_5,                   (logic->HasItem(RG_POWER_BRACELET) || (logic->IsAdult && (logic->CanGroundJump() || ctx->GetTrickOption(RT_SLIDE_JUMP)))) && logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_NEAR_END_STALAGMITE_6,                   (logic->HasItem(RG_POWER_BRACELET) || (logic->IsAdult && (logic->CanGroundJump() || ctx->GetTrickOption(RT_SLIDE_JUMP)))) && logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_NEAR_END_STALAGMITE_7,                   (logic->HasItem(RG_POWER_BRACELET) || (logic->IsAdult && (logic->CanGroundJump() || ctx->GetTrickOption(RT_SLIDE_JUMP)))) && logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_NEAR_END_STALAGMITE_8,                   (logic->HasItem(RG_POWER_BRACELET) || (logic->IsAdult && (logic->CanGroundJump() || ctx->GetTrickOption(RT_SLIDE_JUMP)))) && logic->CanClearStalagmite()),
+
     }, {
         //Exits
         ENTRANCE(RR_ICE_CAVERN_HUB,                  logic->CanClearStalagmite() || ctx->GetTrickOption(RT_ICE_STALAGMITE_CLIP)),
@@ -106,9 +173,21 @@ void RegionTable_Init_IceCavern() {
     areaTable[RR_ICE_CAVERN_BEFORE_FINAL_ROOM] = Region("Ice Cavern Before Final Room", SCENE_ICE_CAVERN, {}, {
         //Locations
         //Assumes RR_ICE_CAVERN_BLOCK_ROOM access
-        LOCATION(RC_ICE_CAVERN_GS_PUSH_BLOCK_ROOM, ctx->GetTrickOption(RT_ICE_BLOCK_GS) && logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS) && logic->BlueFire() && logic->HasItem(RG_POWER_BRACELET)),
-        LOCATION(RC_ICE_CAVERN_NEAR_END_POT_1,     logic->CanBreakPots() && logic->BlueFire()),
-        LOCATION(RC_ICE_CAVERN_NEAR_END_POT_2,     logic->CanBreakPots() && logic->BlueFire()),
+        LOCATION(RC_ICE_CAVERN_GS_PUSH_BLOCK_ROOM,    ctx->GetTrickOption(RT_ICE_BLOCK_GS) && logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS) && logic->BlueFire() && logic->HasItem(RG_POWER_BRACELET)),
+        LOCATION(RC_ICE_CAVERN_NEAR_END_POT_1,        logic->CanBreakPots() && logic->BlueFire()),
+        LOCATION(RC_ICE_CAVERN_NEAR_END_POT_2,        logic->CanBreakPots() && logic->BlueFire()),
+        LOCATION(RC_ICE_CAVERN_NEAR_END_STALACTITE_1, logic->BlueFire()),
+        LOCATION(RC_ICE_CAVERN_NEAR_END_STALACTITE_2, logic->BlueFire()),
+        LOCATION(RC_ICE_CAVERN_NEAR_END_STALACTITE_3, logic->BlueFire()),
+        LOCATION(RC_ICE_CAVERN_NEAR_END_STALACTITE_4, logic->BlueFire()),
+        LOCATION(RC_ICE_CAVERN_NEAR_END_STALAGMITE_1, logic->CanClearStalagmite() && logic->BlueFire()),
+        LOCATION(RC_ICE_CAVERN_NEAR_END_STALAGMITE_2, logic->CanClearStalagmite() && logic->BlueFire()),
+        LOCATION(RC_ICE_CAVERN_NEAR_END_STALAGMITE_3, logic->CanClearStalagmite() && logic->BlueFire()),
+        LOCATION(RC_ICE_CAVERN_NEAR_END_STALAGMITE_4, logic->CanClearStalagmite() && logic->BlueFire()),
+        LOCATION(RC_ICE_CAVERN_NEAR_END_STALAGMITE_5, logic->CanClearStalagmite() && logic->BlueFire()),
+        LOCATION(RC_ICE_CAVERN_NEAR_END_STALAGMITE_6, logic->CanClearStalagmite() && logic->BlueFire()),
+        LOCATION(RC_ICE_CAVERN_NEAR_END_STALAGMITE_7, logic->CanClearStalagmite() && logic->BlueFire()),
+        LOCATION(RC_ICE_CAVERN_NEAR_END_STALAGMITE_8, logic->CanClearStalagmite() && logic->BlueFire()),
     }, {
         //Exits
         ENTRANCE(RR_ICE_CAVERN_BLOCK_ROOM, AnyAgeTime([]{return logic->BlueFire();})),
@@ -142,7 +221,11 @@ void RegionTable_Init_IceCavern() {
 
     areaTable[RR_ICE_CAVERN_MQ_BEGINNING] = Region("Ice Cavern MQ Beginning", SCENE_ICE_CAVERN, {}, {
         //Locations
-        LOCATION(RC_ICE_CAVERN_MQ_ENTRANCE_POT, logic->CanBreakPots()),
+        LOCATION(RC_ICE_CAVERN_MQ_ENTRANCE_POT,          logic->CanBreakPots()),
+        LOCATION(RC_ICE_CAVERN_MQ_ENTRANCE_STALAGMITE_1, logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_MQ_ENTRANCE_STALAGMITE_2, logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_MQ_LOBBY_STALACTITE_1,    true),
+        LOCATION(RC_ICE_CAVERN_MQ_LOBBY_STALACTITE_2,    true),
     }, {
         //Exits
         ENTRANCE(RR_ICE_CAVERN_ENTRYWAY,           true),
@@ -156,12 +239,22 @@ void RegionTable_Init_IceCavern() {
         EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->CanBreakPots()),
     }, {
         //Locations
-        LOCATION(RC_ICE_CAVERN_MQ_FIRST_CRYSTAL_POT_1, logic->CanBreakPots()),
-        LOCATION(RC_ICE_CAVERN_MQ_FIRST_CRYSTAL_POT_2, logic->CanBreakPots()),
-        LOCATION(RC_ICE_CAVERN_MQ_EARLY_WOLFOS_POT_1,  logic->CanBreakPots()),
-        LOCATION(RC_ICE_CAVERN_MQ_EARLY_WOLFOS_POT_2,  logic->CanBreakPots()),
-        LOCATION(RC_ICE_CAVERN_MQ_EARLY_WOLFOS_POT_3,  logic->CanBreakPots()),
-        LOCATION(RC_ICE_CAVERN_MQ_EARLY_WOLFOS_POT_4,  logic->CanBreakPots()),
+        LOCATION(RC_ICE_CAVERN_MQ_FIRST_CRYSTAL_POT_1,      logic->CanBreakPots()),
+        LOCATION(RC_ICE_CAVERN_MQ_FIRST_CRYSTAL_POT_2,      logic->CanBreakPots()),
+        LOCATION(RC_ICE_CAVERN_MQ_EARLY_WOLFOS_POT_1,       logic->CanBreakPots()),
+        LOCATION(RC_ICE_CAVERN_MQ_EARLY_WOLFOS_POT_2,       logic->CanBreakPots()),
+        LOCATION(RC_ICE_CAVERN_MQ_EARLY_WOLFOS_POT_3,       logic->CanBreakPots()),
+        LOCATION(RC_ICE_CAVERN_MQ_EARLY_WOLFOS_POT_4,       logic->CanBreakPots()),
+        LOCATION(RC_ICE_CAVERN_MQ_AFTER_LOBBY_STALAGMITE_1, logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_MQ_AFTER_LOBBY_STALAGMITE_2, logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_MQ_AFTER_LOBBY_STALAGMITE_3, logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_MQ_AFTER_LOBBY_STALAGMITE_4, logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_MQ_AFTER_LOBBY_STALAGMITE_5, logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_MQ_HUB_STALAGMITE_1,         logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_MQ_HUB_STALAGMITE_2,         logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_MQ_HUB_STALAGMITE_3,         logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_MQ_HUB_STALAGMITE_4,         logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_MQ_HUB_STALAGMITE_5,         logic->CanClearStalagmite()),
     }, {
         //Exits
         ENTRANCE(RR_ICE_CAVERN_MQ_MAP_ROOM,       AnyAgeTime([]{return logic->CanKillEnemy(RE_WHITE_WOLFOS) && logic->CanKillEnemy(RE_FREEZARD);})),
@@ -176,7 +269,16 @@ void RegionTable_Init_IceCavern() {
         EVENT_ACCESS(LOGIC_BLUE_FIRE_ACCESS, logic->IsChild || logic->CanClearStalagmite() || ctx->GetTrickOption(RT_ICE_STALAGMITE_CLIP)),
     }, {
         //Locations
-        LOCATION(RC_ICE_CAVERN_MQ_MAP_CHEST, logic->BlueFire() && AnyAgeTime([]{return logic->CanHitSwitch();}) && logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_ICE_CAVERN_MQ_MAP_CHEST,                    logic->BlueFire() && AnyAgeTime([]{return logic->CanHitSwitch();}) && logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_ICE_CAVERN_MQ_MAP_ROOM_LEFT_STALAGMITE_1,   logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_MQ_MAP_ROOM_LEFT_STALAGMITE_2,   logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_MQ_MAP_ROOM_CENTER_STALAGMITE_1, logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_MQ_MAP_ROOM_CENTER_STALAGMITE_2, logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_MQ_MAP_ROOM_CENTER_STALAGMITE_3, logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_MQ_MAP_ROOM_CENTER_STALAGMITE_4, logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_MQ_MAP_ROOM_CENTER_STALAGMITE_5, logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_MQ_MAP_ROOM_CENTER_STALAGMITE_6, logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_MQ_MAP_ROOM_CENTER_STALAGMITE_7, logic->CanClearStalagmite()),
     }, {});
 
     areaTable[RR_ICE_CAVERN_MQ_SCARECROW_ROOM] = Region("Ice Cavern MQ Scarecrow Room", SCENE_ICE_CAVERN, {
@@ -185,8 +287,10 @@ void RegionTable_Init_IceCavern() {
     }, {
         //Locations
         //Implies being able to kill the skull if you hit the switch
-        LOCATION(RC_ICE_CAVERN_MQ_GS_ICE_BLOCK, (logic->BlueFire() && logic->HasItem(RG_POWER_BRACELET) && logic->CanKillEnemy(RE_GOLD_SKULLTULA)) || logic->CanHitSwitch(logic->IsAdult ? ED_LONG_JUMPSLASH : ED_BOMB_THROW)),
-        LOCATION(RC_ICE_CAVERN_MQ_GS_SCARECROW, logic->ReachScarecrow() || (logic->IsAdult && (logic->CanUse(RG_LONGSHOT) || logic->CanGroundJump() || ctx->GetTrickOption(RT_SLIDE_JUMP)))),
+        LOCATION(RC_ICE_CAVERN_MQ_GS_ICE_BLOCK,                (logic->BlueFire() && logic->HasItem(RG_POWER_BRACELET) && logic->CanKillEnemy(RE_GOLD_SKULLTULA)) || logic->CanHitSwitch(logic->IsAdult ? ED_LONG_JUMPSLASH : ED_BOMB_THROW)),
+        LOCATION(RC_ICE_CAVERN_MQ_GS_SCARECROW,                logic->ReachScarecrow() || (logic->IsAdult && (logic->CanUse(RG_LONGSHOT) || logic->CanGroundJump() || ctx->GetTrickOption(RT_SLIDE_JUMP)))),
+        LOCATION(RC_ICE_CAVERN_MQ_BEFORE_SCARECROW_STALAGMITE, logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_MQ_SCARECROW_ROOM_STALACTITE,   true),
     }, {
         //Exits
         ENTRANCE(RR_ICE_CAVERN_MQ_HUB,           logic->BlueFire()),
@@ -196,8 +300,11 @@ void RegionTable_Init_IceCavern() {
 
     areaTable[RR_ICE_CAVERN_MQ_WEST_CORRIDOR] = Region("Ice Cavern MQ West Corridor", SCENE_ICE_CAVERN, {}, {
         //Locations
-        LOCATION(RC_ICE_CAVERN_MQ_PUSH_BLOCK_POT_1, logic->CanBreakPots()),
-        LOCATION(RC_ICE_CAVERN_MQ_PUSH_BLOCK_POT_2, logic->CanBreakPots()),
+        LOCATION(RC_ICE_CAVERN_MQ_PUSH_BLOCK_POT_1,           logic->CanBreakPots()),
+        LOCATION(RC_ICE_CAVERN_MQ_PUSH_BLOCK_POT_2,           logic->CanBreakPots()),
+        LOCATION(RC_ICE_CAVERN_MQ_WEST_CORRIDOR_STALACTITE_1, true),
+        LOCATION(RC_ICE_CAVERN_MQ_WEST_CORRIDOR_STALACTITE_2, true),
+        LOCATION(RC_ICE_CAVERN_MQ_WEST_CORRIDOR_STALACTITE_3, true),
     }, {
         //Exits
         ENTRANCE(RR_ICE_CAVERN_MQ_SCARECROW_ROOM, logic->BlueFire()),
