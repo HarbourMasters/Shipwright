@@ -81,7 +81,7 @@ void RegisterShuffleBeggar() {
         EnHy* enHy = va_arg(args, EnHy*);
         int32_t beggarTextId = enHy->actor.textId;
 
-        if (beggarTextId != 0x70F3) {
+        if (beggarTextId != TEXT_BEGGAR_BUY_FAIRY) {
             if (EnHy_RandomizerHoldsItem(beggarTextId)) {
                 CheckIdentity beggarIdentity = ShuffleBeggar_GetBeggarIdentity(beggarTextId);
                 Flags_SetRandomizerInf(beggarIdentity.randomizerInf);
