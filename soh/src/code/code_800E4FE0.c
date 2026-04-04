@@ -408,13 +408,13 @@ void Audio_QueueCmdS32(u32 opArgs, s32 data) {
 }
 
 void Audio_QueueCmdS8(u32 opArgs, s8 data) {
-    u32 uData = data << 0x18;
+    u32 uData = (u32)data << 0x18;
 
     Audio_QueueCmd(opArgs, uData);
 }
 
 void Audio_QueueCmdU16(u32 opArgs, u16 data) {
-    u32 uData = data << 0x10;
+    u32 uData = (u32)data << 0x10;
 
     Audio_QueueCmd(opArgs, uData);
 }

@@ -206,19 +206,19 @@ void aADPCMdecImpl(uint8_t flags, ADPCM_STATE state) {
             int j, k;
             if (flags & 4) {
                 for (j = 0; j < 2; j++) {
-                    ins[j * 4] = (((*in >> 6) << 30) >> 30) << shift;
-                    ins[j * 4 + 1] = ((((*in >> 4) & 0x3) << 30) >> 30) << shift;
-                    ins[j * 4 + 2] = ((((*in >> 2) & 0x3) << 30) >> 30) << shift;
-                    ins[j * 4 + 3] = (((*in++ & 0x3) << 30) >> 30) << shift;
+                    ins[j * 4] = (int16_t)(((int32_t)((uint32_t)(*in >> 6) << 30) >> 30) * (1 << shift));
+                    ins[j * 4 + 1] = (int16_t)(((int32_t)((uint32_t)(*in >> 4 & 0x3) << 30) >> 30) * (1 << shift));
+                    ins[j * 4 + 2] = (int16_t)(((int32_t)((uint32_t)(*in >> 2 & 0x3) << 30) >> 30) * (1 << shift));
+                    ins[j * 4 + 3] = (int16_t)(((int32_t)((uint32_t)(*in++ & 0x3) << 30) >> 30) * (1 << shift));
                 }
             } else {
                 for (j = 0; j < 4; j++) {
-                    ins[j * 2] = (((*in >> 4) << 28) >> 28) << shift;
-                    ins[j * 2 + 1] = (((*in++ & 0xf) << 28) >> 28) << shift;
+                    ins[j * 2] = (int16_t)(((int32_t)((uint32_t)(*in >> 4) << 28) >> 28) * (1 << shift));
+                    ins[j * 2 + 1] = (int16_t)(((int32_t)((uint32_t)(*in++ & 0xf) << 28) >> 28) * (1 << shift));
                 }
             }
             for (j = 0; j < 8; j++) {
-                int32_t acc = tbl[0][j] * prev2 + tbl[1][j] * prev1 + (ins[j] << 11);
+                int32_t acc = tbl[0][j] * prev2 + tbl[1][j] * prev1 + (ins[j] * (1 << 11));
                 for (k = 0; k < j; k++) {
                     acc += tbl[1][((j - k) - 1)] * ins[k];
                 }
