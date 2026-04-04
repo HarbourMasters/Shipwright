@@ -191,7 +191,9 @@ void RegionTable_Init_DekuTree() {
         EVENT_ACCESS(LOGIC_DEKU_TREE_B1_BROKE_WEB,          logic->HasFireSource()),
     }, {
         //Locations
-        LOCATION(RC_DEKU_TREE_BEFORE_BOSS_MIDDLE_HEART,     (true && ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
+        LOCATION(RC_DEKU_TREE_BEFORE_BOSS_LEFT_HEART,   !!ctx->GetTrickOption(RT_VOIDOUT_COLLECTION)),
+        LOCATION(RC_DEKU_TREE_BEFORE_BOSS_MIDDLE_HEART, !!ctx->GetTrickOption(RT_VOIDOUT_COLLECTION)),
+        LOCATION(RC_DEKU_TREE_BEFORE_BOSS_RIGHT_HEART,  !!ctx->GetTrickOption(RT_VOIDOUT_COLLECTION)),
     }, {
         //Exits
         ENTRANCE(RR_DEKU_TREE_BASEMENT_LOWER,      true),
@@ -205,7 +207,7 @@ void RegionTable_Init_DekuTree() {
         //Locations
         LOCATION(RC_DEKU_TREE_BEFORE_BOSS_LEFT_HEART,   logic->IsAdult || (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
         // Can be grabbed by jumping to it from above, might deserve its own trick
-        LOCATION(RC_DEKU_TREE_BEFORE_BOSS_MIDDLE_HEART, logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG) || (logic->CanUse(RG_HOVER_BOOTS) && ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
+        LOCATION(RC_DEKU_TREE_BEFORE_BOSS_MIDDLE_HEART, logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG) || ((logic->CanUse(RG_HOVER_BOOTS) || logic->IsAdult) && ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
         LOCATION(RC_DEKU_TREE_BEFORE_BOSS_RIGHT_HEART,  logic->IsAdult || (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
         LOCATION(RC_DEKU_TREE_BEFORE_BOSS_GRASS_1,      logic->CanCutShrubs() && logic->HasFireSourceWithTorch()),
         LOCATION(RC_DEKU_TREE_BEFORE_BOSS_GRASS_2,      logic->CanCutShrubs() && logic->HasFireSourceWithTorch()),
