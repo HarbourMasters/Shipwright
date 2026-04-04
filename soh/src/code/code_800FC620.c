@@ -11,7 +11,7 @@ typedef struct InitFunc {
 } InitFunc;
 
 // .data
-void* sInitFuncs = NULL;
+void* sInitFuncs[2] = { NULL, NULL };
 
 char sNew[] = { 'n', 'e', 'w' };
 
@@ -190,7 +190,7 @@ void func_800FCB34(void) {
         prev = initFunc;
     }
 
-    sInitFuncs = prev;
+    sInitFuncs[0] = prev;
 }
 
 void SystemHeap_Init(void* start, size_t size) {
