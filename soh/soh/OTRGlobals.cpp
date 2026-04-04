@@ -891,8 +891,8 @@ void OTRGlobals::Initialize() {
     Lang::LoadLangs();
 
     gSaveStateMgr = std::make_shared<SaveStateMgr>();
-    gRandoContext->InitStaticData();
     gRandoContext = Rando::Context::CreateInstance();
+    gRandoContext->InitStaticData();
     Rando::Settings::GetInstance()->AssignContext(gRandoContext);
     Rando::StaticData::InitItemTable(); // RANDOTODO make this not rely on context's logic so it can be initialised in
                                         // InitStaticData
