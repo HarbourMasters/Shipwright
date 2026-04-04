@@ -698,7 +698,7 @@ typedef struct PendingFlag {
 #define PLAYER_STATE1_IN_ITEM_CS (1 << 28)
 #define PLAYER_STATE1_IN_CUTSCENE (1 << 29)
 #define PLAYER_STATE1_LOCK_ON_FORCED_TO_RELEASE (1 << 30) // Lock-on was released automatically, for example by leaving the lock-on leash range
-#define PLAYER_STATE1_FLOOR_DISABLED (1 << 31) //Used for grottos
+#define PLAYER_STATE1_FLOOR_DISABLED (1U << 31) //Used for grottos
 
 #define PLAYER_STATE2_DO_ACTION_GRAB (1 << 0)
 #define PLAYER_STATE2_CAN_ACCEPT_TALK_OFFER (1 << 1) // Can accept a talk offer. "Speak" or "Check" is shown on the A button.

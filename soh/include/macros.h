@@ -31,7 +31,7 @@
 #define ARRAY_COUNT_2D(arr) (s32)(sizeof(arr) / sizeof(arr[0][0]))
 
 #define PHYSICAL_TO_VIRTUAL(addr) (void*)((uintptr_t)(addr) + 0x80000000)
-#define VIRTUAL_TO_PHYSICAL(addr) (uintptr_t)((u8*)(addr) - 0x80000000)
+#define VIRTUAL_TO_PHYSICAL(addr) ((addr) != NULL ? (uintptr_t)((u8*)(addr) - 0x80000000) : 0)
 // Upstream TODO: Document reasoning for change
 //#define SEGMENTED_TO_VIRTUAL(addr) PHYSICAL_TO_VIRTUAL(gSegments[SEGMENT_NUMBER(addr)] + SEGMENT_OFFSET(addr))
 #define SEGMENTED_TO_VIRTUAL(addr) addr
@@ -47,7 +47,8 @@
 #define CLAMP_MAX(x, max) ((x) > (max) ? (max) : (x))
 #define CLAMP_MIN(x, min) ((x) < (min) ? (min) : (x))
 
-#define RGBA8(r, g, b, a) ((((r) & 0xFF) << 24) | (((g) & 0xFF) << 16) | (((b) & 0xFF) << 8) | (((a) & 0xFF) << 0))
+#define RGBA8(r, g, b, a) \
+    ((((u32)(r) & 0xFF) << 24) | (((u32)(g) & 0xFF) << 16) | (((u32)(b) & 0xFF) << 8) | (((u32)(a) & 0xFF) << 0))
 
 #define GET_PLAYER(play) ((Player*)(play)->actorCtx.actorLists[ACTORCAT_PLAYER].head)
 
@@ -91,8 +92,7 @@
 
 #define GET_GS_FLAGS(index) \
     ((gSaveContext.gsFlags[(index) >> 2] & gGsFlagsMasks[(index) & 3]) >> gGsFlagsShifts[(index) & 3])
-#define SET_GS_FLAGS(index, value) \
-    (gSaveContext.gsFlags[(index) >> 2] |= (value) << gGsFlagsShifts[(index) & 3])
+#define SET_GS_FLAGS(index, value) (gSaveContext.gsFlags[(index) >> 2] |= (value) << gGsFlagsShifts[(index) & 3])
 
 #define HIGH_SCORE(score) (gSaveContext.highScores[score])
 
@@ -112,14 +112,13 @@
 #define SET_EVENTINF(flag) (gSaveContext.eventInf[(flag) >> 4] |= (1 << ((flag) & 0xF)))
 #define CLEAR_EVENTINF(flag) (gSaveContext.eventInf[(flag) >> 4] &= ~(1 << ((flag) & 0xF)))
 
-#define B_BTN_ITEM ((gSaveContext.buttonStatus[0] == ITEM_NONE)                    \
-                        ? ITEM_NONE                                                \
-                        : (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_KNIFE) \
-                            ? ITEM_SWORD_BGS                                       \
+#define B_BTN_ITEM                                                               \
+    ((gSaveContext.buttonStatus[0] == ITEM_NONE)                ? ITEM_NONE      \
+     : (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_KNIFE) ? ITEM_SWORD_BGS \
                             : gSaveContext.equips.buttonItems[0])
 
-#define C_BTN_ITEM(button) ((gSaveContext.buttonStatus[(button) + 1] != BTN_DISABLED) \
-                                ? gSaveContext.equips.buttonItems[(button) + 1]       \
+#define C_BTN_ITEM(button)                                                                                     \
+    ((gSaveContext.buttonStatus[(button) + 1] != BTN_DISABLED) ? gSaveContext.equips.buttonItems[(button) + 1] \
                                 : ITEM_NONE)
 
 #define CHECK_BTN_ALL(state, combo) (~((state) | ~(combo)) == 0)
@@ -173,7 +172,6 @@
 #endif
 // #endregion
 
-
 #define SET_NEXT_GAMESTATE(curState, newInit, newStruct) \
     do {                                                 \
         (curState)->init = newInit;                      \
@@ -224,15 +222,19 @@ extern GraphicsContext* __gfxCtx;
 
 #ifndef NDEBUG
 #define CLOSE_DISPS(gfxCtx) \
-    {void FrameInterpolation_RecordCloseChild(void); \
-    FrameInterpolation_RecordCloseChild();} \
+    {                                                       \
+        void FrameInterpolation_RecordCloseChild(void);     \
+        FrameInterpolation_RecordCloseChild();              \
+    }                                                       \
     Graph_CloseDisps(dispRefs, gfxCtx, __FILE__, __LINE__); \
     } \
     (void)0
 #else
 #define CLOSE_DISPS(gfxCtx) \
-    {void FrameInterpolation_RecordCloseChild(void); \
-    FrameInterpolation_RecordCloseChild();} \
+    {                                                   \
+        void FrameInterpolation_RecordCloseChild(void); \
+        FrameInterpolation_RecordCloseChild();          \
+    }                                                   \
     (void)0; \
     } \
     (void)0
@@ -310,8 +312,8 @@ extern GraphicsContext* __gfxCtx;
 #define SYSTEM_ARENA_FREE(ptr, file, line) SystemArena_FreeDebug(ptr, __FILE__, __LINE__)
 // #endregion
 
-#define DPAD_ITEM(button) ((gSaveContext.buttonStatus[(button) + 5] != BTN_DISABLED) \
-                                ? gSaveContext.equips.buttonItems[(button) + 4]       \
+#define DPAD_ITEM(button)                                                                                      \
+    ((gSaveContext.buttonStatus[(button) + 5] != BTN_DISABLED) ? gSaveContext.equips.buttonItems[(button) + 4] \
                                 : ITEM_NONE)
 // #endregion
 

@@ -12,7 +12,7 @@ void guMtxF2L(float mf[4][4], Mtx* m) {
             tmp1 = mf[r][2 * c] * 65536.0f;
             tmp2 = mf[r][2 * c + 1] * 65536.0f;
             *m1++ = (tmp1 & 0xffff0000) | ((tmp2 >> 0x10) & 0xffff);
-            *m2++ = ((tmp1 << 0x10) & 0xffff0000) | (tmp2 & 0xffff);
+            *m2++ = ((u32)tmp1 << 0x10) | (tmp2 & 0xffff);
         }
     }
 }
