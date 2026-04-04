@@ -854,9 +854,9 @@ void Minimap_Draw(PlayState* play) {
                             sValue = 96 << 5;
                         }
 
-                        gSPWideTextureRectangle(OVERLAY_DISP++, dgnMiniMapX << 2, dgnMiniMapY << 2,
-                                                (dgnMiniMapX + 96) << 2, (dgnMiniMapY + 85) << 2, G_TX_RENDERTILE,
-                                                sValue, 0, 1 << 10, 1 << 10);
+                        gSPWideTextureRectangle(OVERLAY_DISP++, dgnMiniMapX * 4, dgnMiniMapY * 4,
+                                                (dgnMiniMapX + 96) * 4, (dgnMiniMapY + 85) * 4, G_TX_RENDERTILE, sValue,
+                                                0, 1 << 10, 1 << 10);
                     }
 
                     if (CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, mapIndex)) {
@@ -942,9 +942,9 @@ void Minimap_Draw(PlayState* play) {
                         sValue = gMapData->owMinimapWidth[mapIndex] << 5;
                     }
 
-                    gSPWideTextureRectangle(OVERLAY_DISP++, oWMiniMapX << 2, oWMiniMapY << 2,
-                                            (oWMiniMapX + gMapData->owMinimapWidth[mapIndex]) << 2,
-                                            (oWMiniMapY + gMapData->owMinimapHeight[mapIndex]) << 2, G_TX_RENDERTILE,
+                    gSPWideTextureRectangle(OVERLAY_DISP++, oWMiniMapX * 4, oWMiniMapY * 4,
+                                            (oWMiniMapX + gMapData->owMinimapWidth[mapIndex]) * 4,
+                                            (oWMiniMapY + gMapData->owMinimapHeight[mapIndex]) * 4, G_TX_RENDERTILE,
                                             sValue, 0, 1 << 10, 1 << 10);
 
                     gDPSetPrimColor(OVERLAY_DISP++, 0, 0, minimapColor.r, minimapColor.g, minimapColor.b,
@@ -1015,8 +1015,8 @@ void Minimap_Draw(PlayState* play) {
                                                 iconSize, iconSize, 0, G_TX_NOMIRROR | G_TX_WRAP,
                                                 G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                                                 G_TX_NOLOD);
-                            gSPWideTextureRectangle(OVERLAY_DISP++, entranceX << 2, entranceY << 2,
-                                                    (entranceX + iconSize) << 2, (entranceY + iconSize) << 2,
+                            gSPWideTextureRectangle(OVERLAY_DISP++, entranceX * 4, entranceY * 4,
+                                                    (entranceX + iconSize) * 4, (entranceY + iconSize) * 4,
                                                     G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
                         }
                     }
@@ -1051,9 +1051,9 @@ void Minimap_Draw(PlayState* play) {
                         gDPLoadTextureBlock(OVERLAY_DISP++, gMapDungeonEntranceIconTex, G_IM_FMT_RGBA, G_IM_SIZ_16b,
                                             iconSize, iconSize, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
                                             G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-                        gSPWideTextureRectangle(OVERLAY_DISP++, entranceX << 2, entranceY << 2,
-                                                (entranceX + iconSize) << 2, (entranceY + iconSize) << 2,
-                                                G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+                        gSPWideTextureRectangle(OVERLAY_DISP++, entranceX * 4, entranceY * 4,
+                                                (entranceX + iconSize) * 4, (entranceY + iconSize) * 4, G_TX_RENDERTILE,
+                                                0, 0, 1 << 10, 1 << 10);
                     }
 
                     Minimap_DrawCompassIcons(play); // Draw icons for the player spawn and current position
