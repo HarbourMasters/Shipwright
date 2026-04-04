@@ -256,9 +256,8 @@ void ObjSwitch_SetOn(ObjSwitch* this, PlayState* play) {
             } else {
                 OnePointCutscene_AttentionSetSfx(play, &this->dyna.actor, NA_SE_SY_TRE_BOX_APPEAR);
             }
+            this->cooldownOn = true;
         }
-
-        this->cooldownOn = true;
     }
 }
 
@@ -271,8 +270,8 @@ void ObjSwitch_SetOff(ObjSwitch* this, PlayState* play) {
         if ((this->dyna.actor.params >> 4 & 7) == 1) {
             if (GameInteractor_Should(VB_PLAY_ONEPOINT_ACTOR_CS, true, this)) {
                 OnePointCutscene_AttentionSetSfx(play, &this->dyna.actor, NA_SE_SY_TRE_BOX_APPEAR);
+                this->cooldownOn = true;
             }
-            this->cooldownOn = true;
         }
     }
 }

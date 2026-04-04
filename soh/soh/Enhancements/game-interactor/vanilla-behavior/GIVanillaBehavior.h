@@ -205,6 +205,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // this->timer > 0 && this->timer <= 100
+    // ```
+    // #### `args`
+    // - `*BgSpot06Objects`
+    VB_BG_SPOT06_OBJECTS_GATE_SKIP,
+
+    // #### `result`
+    // ```c
     // gSaveContext.bgsFlag
     // ```
     // #### `args`

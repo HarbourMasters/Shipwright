@@ -7,6 +7,7 @@
 #include "z_bg_spot06_objects.h"
 #include "objects/object_spot06_objects/object_spot06_objects.h"
 #include "soh/Enhancements/custom-message/CustomMessageTypes.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS ACTOR_FLAG_HOOKSHOT_PULLS_ACTOR
 
@@ -266,7 +267,7 @@ void BgSpot06Objects_GateWaitForSwitch(BgSpot06Objects* this, PlayState* play) {
  * This is where the gate waits a few frames before rising after the switch is set.
  */
 void BgSpot06Objects_GateWaitToOpen(BgSpot06Objects* this, PlayState* play) {
-    if (this->timer != 0) {
+    if (GameInteractor_Should(VB_BG_SPOT06_OBJECTS_GATE_SKIP, this->timer != 0, this)) {
         this->timer--;
     }
 
