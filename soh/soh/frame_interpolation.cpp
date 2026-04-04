@@ -269,7 +269,7 @@ struct InterpolateCtx {
             if (diff < -0x4000 || diff > 0x4000) {
                 return ns;
             }
-            res = (u16)(w * o + step * n);
+            res = (u16)(s32)(w * o + step * n);
         } else {
             if (o < n) {
                 o += 0x10000;
@@ -280,7 +280,7 @@ struct InterpolateCtx {
             if (diff < -0x4000 || diff > 0x4000) {
                 return ns;
             }
-            res = (u16)(w * o + step * n);
+            res = (u16)(s32)(w * o + step * n);
         }
         if (os / 327 == ns / 327 && (s16)res / 327 != os / 327) {
             int bp = 0;

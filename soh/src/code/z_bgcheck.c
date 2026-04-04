@@ -1302,9 +1302,9 @@ s32 BgCheck_PolyIntersectsSubdivision(Vec3f* min, Vec3f* max, CollisionPoly* pol
         return false;
     }
 
-    flags[0] |= Math3D_PointRelativeToCubeVertices(&va, min, max) << 0x18;
-    flags[1] |= Math3D_PointRelativeToCubeVertices(&vb, min, max) << 0x18;
-    flags[2] |= Math3D_PointRelativeToCubeVertices(&vc, min, max) << 0x18;
+    flags[0] |= (u32)Math3D_PointRelativeToCubeVertices(&va, min, max) << 0x18;
+    flags[1] |= (u32)Math3D_PointRelativeToCubeVertices(&vb, min, max) << 0x18;
+    flags[2] |= (u32)Math3D_PointRelativeToCubeVertices(&vc, min, max) << 0x18;
     if (flags[0] & flags[1] & flags[2]) {
         return false;
     }

@@ -78,15 +78,17 @@ static u16 sATan2Tbl[] = {
 };
 
 u16 Math_GetAtan2Tbl(f32 x, f32 y) {
-    s32 tblIdx = ((x / y) * 1024.0f) + 0.5f;
     u16 ret;
 
     if (y == 0.0f) {
         ret = sATan2Tbl[0];
-    } else if (tblIdx >= ARRAY_COUNT(sATan2Tbl)) {
-        ret = sATan2Tbl[0];
     } else {
-        ret = sATan2Tbl[tblIdx];
+        s32 tblIdx = ((x / y) * 1024.0f) + 0.5f;
+        if (tblIdx >= ARRAY_COUNT(sATan2Tbl)) {
+            ret = sATan2Tbl[0];
+        } else {
+            ret = sATan2Tbl[tblIdx];
+        }
     }
     return ret;
 }

@@ -672,8 +672,8 @@ s32 Math3D_LineVsCube(Vec3f* min, Vec3f* max, Vec3f* a, Vec3f* b) {
         return false;
     }
 
-    flags[0] |= (Math3D_PointRelativeToCubeVertices(a, min, max) << 0x18);
-    flags[1] |= (Math3D_PointRelativeToCubeVertices(b, min, max) << 0x18);
+    flags[0] |= ((u32)Math3D_PointRelativeToCubeVertices(a, min, max) << 0x18);
+    flags[1] |= ((u32)Math3D_PointRelativeToCubeVertices(b, min, max) << 0x18);
     if (flags[0] & flags[1]) {
         return false;
     }
