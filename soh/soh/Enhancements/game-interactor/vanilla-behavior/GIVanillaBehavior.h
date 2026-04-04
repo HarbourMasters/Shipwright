@@ -1944,6 +1944,14 @@ typedef enum {
     VB_REDEAD_GIBDO_FREEZE_LINK,
 
     // #### `result`
+    // ```c
+    // this->alpha <= 0
+    // ```
+    // #### `args`
+    // - `*BgIceShelter`
+    VB_RED_ICE_DROP_ITEM,
+
+    // #### `result`
     // #### `result`
     // ```c
     // true

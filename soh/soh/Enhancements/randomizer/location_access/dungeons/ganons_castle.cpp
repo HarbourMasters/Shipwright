@@ -181,6 +181,7 @@ void RegionTable_Init_GanonsCastle() {
         LOCATION(RC_GANONS_CASTLE_WATER_TRIAL_STALACTITE_9,       true),
         LOCATION(RC_GANONS_CASTLE_WATER_TRIAL_STALACTITE_10,      true),
         LOCATION(RC_GANONS_CASTLE_WATER_TRIAL_STALACTITE_11,      true),
+        LOCATION(RC_GANONS_CASTLE_WATER_TRIAL_DOOR_RED_ICE,       logic->BlueFire()),
     }, {
         //Exits
         ENTRANCE(RR_GANONS_CASTLE_MAIN,                   true),
@@ -195,7 +196,8 @@ void RegionTable_Init_GanonsCastle() {
                                                       logic->CanUse(RG_MEGATON_HAMMER)),
     }, {
         //Locations
-        LOCATION(RC_GANONS_CASTLE_WATER_TRIAL_POT_3, logic->CanBreakPots()),
+        LOCATION(RC_GANONS_CASTLE_WATER_TRIAL_POT_3,                 logic->CanBreakPots()),
+        LOCATION(RC_GANONS_CASTLE_WATER_TRIAL_RUSTED_SWITCH_RED_ICE, (logic->IsAdult && (logic->HasItem(RG_POWER_BRACELET) || logic->CanMiddairGroundJump()) && logic->CanUse(RG_BOTTLE_WITH_BLUE_FIRE)) || (ctx->GetOption(RSK_BLUE_FIRE_ARROWS) && logic->CanUse(RG_ICE_ARROWS))),
     }, {
         //Exits
         ENTRANCE(RR_GANONS_CASTLE_WATER_TRIAL_BLUE_FIRE_ROOM, true),
@@ -527,22 +529,29 @@ void RegionTable_Init_GanonsCastle() {
         EVENT_ACCESS(LOGIC_BLUE_FIRE_ACCESS,  logic->CanJumpslash() || logic->HasExplosives()), // bow can also hit at right angle
     }, {
         //Locations
-        LOCATION(RC_GANONS_CASTLE_MQ_WATER_TRIAL_CHEST,              logic->BlueFire() && logic->HasItem(RG_OPEN_CHEST)),
-        LOCATION(RC_GANONS_CASTLE_MQ_WATER_TRIAL_HEART,              logic->BlueFire()),
-        LOCATION(RC_GANONS_CASTLE_MQ_WATER_TRIAL_LEFT_STALACTITE_1,  true),
-        LOCATION(RC_GANONS_CASTLE_MQ_WATER_TRIAL_LEFT_STALACTITE_2,  true),
-        LOCATION(RC_GANONS_CASTLE_MQ_WATER_TRIAL_LEFT_STALACTITE_3,  true),
-        LOCATION(RC_GANONS_CASTLE_MQ_WATER_TRIAL_RIGHT_STALACTITE_1, true),
-        LOCATION(RC_GANONS_CASTLE_MQ_WATER_TRIAL_RIGHT_STALACTITE_2, true),
-        LOCATION(RC_GANONS_CASTLE_MQ_WATER_TRIAL_RIGHT_STALACTITE_3, true),
-        LOCATION(RC_GANONS_CASTLE_MQ_WATER_TRIAL_LEFT_STALAGMITE_1,  logic->CanClearStalagmite()),
-        LOCATION(RC_GANONS_CASTLE_MQ_WATER_TRIAL_LEFT_STALAGMITE_2,  logic->CanClearStalagmite()),
-        LOCATION(RC_GANONS_CASTLE_MQ_WATER_TRIAL_LEFT_STALAGMITE_3,  logic->CanClearStalagmite()),
-        LOCATION(RC_GANONS_CASTLE_MQ_WATER_TRIAL_LEFT_STALAGMITE_4,  logic->CanClearStalagmite()),
-        LOCATION(RC_GANONS_CASTLE_MQ_WATER_TRIAL_RIGHT_STALAGMITE_1, logic->CanClearStalagmite()),
-        LOCATION(RC_GANONS_CASTLE_MQ_WATER_TRIAL_RIGHT_STALAGMITE_2, logic->CanClearStalagmite()),
-        LOCATION(RC_GANONS_CASTLE_MQ_WATER_TRIAL_RIGHT_STALAGMITE_3, logic->CanClearStalagmite()),
-        LOCATION(RC_GANONS_CASTLE_MQ_WATER_TRIAL_RIGHT_STALAGMITE_4, logic->CanClearStalagmite()),
+        LOCATION(RC_GANONS_CASTLE_MQ_WATER_TRIAL_CHEST,                        logic->BlueFire() && logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_GANONS_CASTLE_MQ_WATER_TRIAL_HEART,                        logic->BlueFire()),
+        LOCATION(RC_GANONS_CASTLE_MQ_WATER_TRIAL_LEFT_STALACTITE_1,            true),
+        LOCATION(RC_GANONS_CASTLE_MQ_WATER_TRIAL_LEFT_STALACTITE_2,            true),
+        LOCATION(RC_GANONS_CASTLE_MQ_WATER_TRIAL_LEFT_STALACTITE_3,            true),
+        LOCATION(RC_GANONS_CASTLE_MQ_WATER_TRIAL_RIGHT_STALACTITE_1,           true),
+        LOCATION(RC_GANONS_CASTLE_MQ_WATER_TRIAL_RIGHT_STALACTITE_2,           true),
+        LOCATION(RC_GANONS_CASTLE_MQ_WATER_TRIAL_RIGHT_STALACTITE_3,           true),
+        LOCATION(RC_GANONS_CASTLE_MQ_WATER_TRIAL_LEFT_STALAGMITE_1,            logic->CanClearStalagmite()),
+        LOCATION(RC_GANONS_CASTLE_MQ_WATER_TRIAL_LEFT_STALAGMITE_2,            logic->CanClearStalagmite()),
+        LOCATION(RC_GANONS_CASTLE_MQ_WATER_TRIAL_LEFT_STALAGMITE_3,            logic->CanClearStalagmite()),
+        LOCATION(RC_GANONS_CASTLE_MQ_WATER_TRIAL_LEFT_STALAGMITE_4,            logic->CanClearStalagmite()),
+        LOCATION(RC_GANONS_CASTLE_MQ_WATER_TRIAL_RIGHT_STALAGMITE_1,           logic->CanClearStalagmite()),
+        LOCATION(RC_GANONS_CASTLE_MQ_WATER_TRIAL_RIGHT_STALAGMITE_2,           logic->CanClearStalagmite()),
+        LOCATION(RC_GANONS_CASTLE_MQ_WATER_TRIAL_RIGHT_STALAGMITE_3,           logic->CanClearStalagmite()),
+        LOCATION(RC_GANONS_CASTLE_MQ_WATER_TRIAL_RIGHT_STALAGMITE_4,           logic->CanClearStalagmite()),
+        LOCATION(RC_GANONS_CASTLE_MQ_WATER_TRIAL_FIRST_ROOM_LEFT_RED_ICE,      logic->BlueFire()),
+        LOCATION(RC_GANONS_CASTLE_MQ_WATER_TRIAL_FIRST_ROOM_RIGHT_RED_ICE,     logic->BlueFire()),
+        LOCATION(RC_GANONS_CASTLE_MQ_WATER_TRIAL_FIRST_ROOM_BACK_LEFT_RED_ICE, logic->BlueFire()),
+        LOCATION(RC_GANONS_CASTLE_MQ_WATER_TRIAL_FIRST_ROOM_DOOR_RED_ICE_1,    logic->BlueFire()),
+        LOCATION(RC_GANONS_CASTLE_MQ_WATER_TRIAL_FIRST_ROOM_DOOR_RED_ICE_2,    logic->BlueFire()),
+        LOCATION(RC_GANONS_CASTLE_MQ_WATER_TRIAL_FIRST_ROOM_DOOR_RED_ICE_3,    logic->BlueFire()),
+        LOCATION(RC_GANONS_CASTLE_MQ_WATER_TRIAL_FIRST_ROOM_DOOR_RED_ICE_4,    logic->BlueFire()),
     }, {
         //Exits
         ENTRANCE(RR_GANONS_CASTLE_MQ_MAIN,                   true),
@@ -553,7 +562,15 @@ void RegionTable_Init_GanonsCastle() {
         //Events
         EVENT_ACCESS(LOGIC_WATER_TRIAL_MQ_SILVER_RUPEES,             logic->IsAdult && (logic->HasItem(RG_POWER_BRACELET) || logic->CanMiddairGroundJump()) && logic->BlueFire()),
         EVENT_ACCESS(LOGIC_WATER_TRIAL_MQ_MELTED_FINAL_DOOR_RED_ICE, (ctx->GetOption(RSK_BLUE_FIRE_ARROWS) && logic->CanUse(RG_ICE_ARROWS)) || (logic->IsAdult || logic->CanUse(RG_HOVER_BOOTS)) && logic->HasItem(RG_POWER_BRACELET) && logic->CanUse(RG_BOTTLE_WITH_BLUE_FIRE)),
-    }, {}, {
+    }, {
+        //Locations
+        LOCATION(RC_GANONS_CASTLE_MQ_WATER_TRIAL_SILVER_RUPEE_RED_ICE,  logic->IsAdult && (logic->HasItem(RG_POWER_BRACELET) || logic->CanMiddairGroundJump()) && logic->BlueFire()),
+        LOCATION(RC_GANONS_CASTLE_MQ_WATER_TRIAL_SECOND_DOOR_RED_ICE_1, logic->Get(LOGIC_WATER_TRIAL_MQ_MELTED_FINAL_DOOR_RED_ICE)),
+        LOCATION(RC_GANONS_CASTLE_MQ_WATER_TRIAL_SECOND_DOOR_RED_ICE_2, logic->Get(LOGIC_WATER_TRIAL_MQ_MELTED_FINAL_DOOR_RED_ICE)),
+        LOCATION(RC_GANONS_CASTLE_MQ_WATER_TRIAL_SECOND_DOOR_RED_ICE_3, logic->Get(LOGIC_WATER_TRIAL_MQ_MELTED_FINAL_DOOR_RED_ICE)),
+        LOCATION(RC_GANONS_CASTLE_MQ_WATER_TRIAL_SECOND_DOOR_RED_ICE_4, logic->Get(LOGIC_WATER_TRIAL_MQ_MELTED_FINAL_DOOR_RED_ICE)),
+        LOCATION(RC_GANONS_CASTLE_MQ_WATER_TRIAL_SECOND_DOOR_RED_ICE_5, logic->Get(LOGIC_WATER_TRIAL_MQ_MELTED_FINAL_DOOR_RED_ICE)),
+    }, {
         //Exits
         ENTRANCE(RR_GANONS_CASTLE_MQ_WATER_TRIAL_GEYSER_ROOM,    logic->SmallKeys(SCENE_INSIDE_GANONS_CASTLE, 3)),
         ENTRANCE(RR_GANONS_CASTLE_MQ_WATER_TRIAL_BLOCK_ROOM_END, logic->Get(LOGIC_WATER_TRIAL_MQ_MELTED_FINAL_DOOR_RED_ICE) && (logic->IsAdult || (logic->CanUse(RG_HOVER_BOOTS) && logic->HasItem(RG_POWER_BRACELET)) || logic->CanGroundJump() || ctx->GetTrickOption(RT_SLIDE_JUMP))),
@@ -561,7 +578,14 @@ void RegionTable_Init_GanonsCastle() {
 
     areaTable[RR_GANONS_CASTLE_MQ_WATER_TRIAL_BLOCK_ROOM_END] = Region("Ganon's Castle MQ Water Trial Block Room End", SCENE_INSIDE_GANONS_CASTLE, {
         EVENT_ACCESS(LOGIC_WATER_TRIAL_MQ_MELTED_FINAL_DOOR_RED_ICE, logic->BlueFire()),
-    }, {}, {
+    }, {
+        //Locations
+        LOCATION(RC_GANONS_CASTLE_MQ_WATER_TRIAL_SECOND_DOOR_RED_ICE_1, logic->BlueFire()),
+        LOCATION(RC_GANONS_CASTLE_MQ_WATER_TRIAL_SECOND_DOOR_RED_ICE_2, logic->BlueFire()),
+        LOCATION(RC_GANONS_CASTLE_MQ_WATER_TRIAL_SECOND_DOOR_RED_ICE_3, logic->BlueFire()),
+        LOCATION(RC_GANONS_CASTLE_MQ_WATER_TRIAL_SECOND_DOOR_RED_ICE_4, logic->BlueFire()),
+        LOCATION(RC_GANONS_CASTLE_MQ_WATER_TRIAL_SECOND_DOOR_RED_ICE_5, logic->BlueFire()),
+    }, {
         ENTRANCE(RR_GANONS_CASTLE_MQ_WATER_TRIAL_BLOCK_ROOM, logic->Get(LOGIC_WATER_TRIAL_MQ_MELTED_FINAL_DOOR_RED_ICE)),
         ENTRANCE(RR_GANONS_CASTLE_MQ_WATER_TRIAL_FINAL_ROOM, logic->Get(LOGIC_WATER_TRIAL_MQ_SILVER_RUPEES)),
     });
