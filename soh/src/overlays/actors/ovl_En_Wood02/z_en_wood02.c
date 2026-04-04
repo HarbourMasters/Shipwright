@@ -284,7 +284,7 @@ void EnWood02_Init(Actor* thisx, PlayState* play2) {
         }
 
         if (spawnType == WOOD_SPAWN_SPAWNER) {
-            this->drawType |= this->unk_14C << 4;
+            this->drawType |= (u16)this->unk_14C << 4;
             EnWood02_SpawnOffspring(this, play);
             sSpawnCos = Math_CosS(sSpawnAngle[5] + this->actor.world.rot.y + extraRot);
             sSpawnSin = Math_SinS(sSpawnAngle[5] + this->actor.world.rot.y + extraRot);

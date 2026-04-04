@@ -113,7 +113,7 @@ extern "C" void CustomLogoTitle_Draw(TitleContext* titleContext, uint8_t logoToD
 
     Environment_FillScreen(titleContext->state.gfxCtx, 0, 0, 0, (s16)titleContext->coverAlpha, FILL_SCREEN_XLU);
 
-    sTitleRotY += (300 * CVarGetFloat(CVAR_COSMETIC("N64Logo.SpinSpeed"), 1.0f));
+    sTitleRotY = (s16)(sTitleRotY + (s16)(300 * CVarGetFloat(CVAR_COSMETIC("N64Logo.SpinSpeed"), 1.0f)));
 
     CLOSE_DISPS(titleContext->state.gfxCtx);
 }

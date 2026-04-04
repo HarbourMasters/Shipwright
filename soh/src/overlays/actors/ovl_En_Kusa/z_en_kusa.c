@@ -248,7 +248,7 @@ void EnKusa_Init(Actor* thisx, PlayState* play) {
     CollisionCheck_SetInfo(&this->actor.colChkInfo, NULL, &sColChkInfoInit);
 
     if (this->actor.shape.rot.y == 0) {
-        s16 rand = Rand_ZeroFloat(0x10000);
+        s16 rand = (s16)(u16)Rand_ZeroFloat(0x10000);
 
         this->actor.world.rot.y = rand;
         this->actor.home.rot.y = rand;

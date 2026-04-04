@@ -117,7 +117,7 @@ void Title_Draw(TitleContext* this) {
 
     Environment_FillScreen(this->state.gfxCtx, 0, 0, 0, (s16)this->coverAlpha, FILL_SCREEN_XLU);
 
-    sTitleRotY += 300;
+    sTitleRotY = (s16)(sTitleRotY + 300);
 
     CLOSE_DISPS(this->state.gfxCtx);
 }
