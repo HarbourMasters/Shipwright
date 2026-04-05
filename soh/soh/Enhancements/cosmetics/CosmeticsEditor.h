@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 #include <libultraship/libultraship.h>
 
 // Not to be confused with tabs, groups are 1:1 with the boxes shown in the UI, grouping them allows us to
@@ -37,6 +38,21 @@ Color_RGBA8 CosmeticsEditor_GetDefaultValue(const char* id);
 
 #ifdef __cplusplus
 }
+
+typedef struct {
+    const char* cvar;
+    const char* valuesCvar;
+    const char* rainbowCvar;
+    const char* lockedCvar;
+    const char* changedCvar;
+    std::string label;
+    CosmeticGroup group;
+    ImVec4 currentColor;
+    Color_RGBA8 defaultColor;
+    bool supportsAlpha;
+    bool supportsRainbow;
+    bool advancedOption;
+} CosmeticOption;
 
 typedef struct {
     const std::string Name;

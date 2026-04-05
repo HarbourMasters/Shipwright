@@ -34,11 +34,13 @@ struct CustomCosmeticBinding {
 };
 
 struct CustomCosmeticEntry {
-    std::string displayName;
-    std::string category;
-    std::string colorCvar;
+    CosmeticOption option;
+    std::string baseCvar;
+    std::string valuesCvar;
+    std::string rainbowCvar;
+    std::string lockedCvar;
     std::string changedCvar;
-    Color_RGBA8 defaultColor = { 255, 255, 255, 255 };
+    std::string category;
     std::vector<CustomCosmeticBinding> bindings;
 };
 
@@ -110,24 +112,20 @@ static size_t FindDisplayListInstructionIndex(const Fast::DisplayList& displayLi
     return SIZE_MAX;
 }
 
+static void RefreshCustomCosmeticOption(CustomCosmeticEntry& entry) {
+    entry.option.cvar = entry.baseCvar.c_str();
+    entry.option.valuesCvar = entry.valuesCvar.c_str();
+    entry.option.rainbowCvar = entry.rainbowCvar.c_str();
+    entry.option.lockedCvar = entry.lockedCvar.c_str();
+    entry.option.changedCvar = entry.changedCvar.c_str();
+}
+
 static Color_RGBA8 GetCustomCosmeticColor(const CustomCosmeticEntry& entry) {
-    if (CVarGetInteger(entry.changedCvar.c_str(), 0)) {
-        return CVarGetColor(entry.colorCvar.c_str(), entry.defaultColor);
+    if (CVarGetInteger(entry.option.changedCvar, 0)) {
+        return CVarGetColor(entry.option.valuesCvar, entry.option.defaultColor);
     }
 
-    return entry.defaultColor;
-}
-
-static std::string GetCustomCosmeticCvar(const CustomCosmeticEntry& entry) {
-    return entry.colorCvar.substr(0, entry.colorCvar.size() - std::string(".Value").size());
-}
-
-static std::string GetCustomCosmeticRainbowCvar(const CustomCosmeticEntry& entry) {
-    return GetCustomCosmeticCvar(entry) + ".Rainbow";
-}
-
-static std::string GetCustomCosmeticLockedCvar(const CustomCosmeticEntry& entry) {
-    return GetCustomCosmeticCvar(entry) + ".Locked";
+    return entry.option.defaultColor;
 }
 
 static void ClearCustomCosmeticValueCvars(const char* valuesCvar);
@@ -162,30 +160,30 @@ void ApplyCustomCosmetics() {
 }
 
 static void SetCustomCosmeticColor(const CustomCosmeticEntry& entry, Color_RGBA8 color) {
-    std::string rainbowCvar = GetCustomCosmeticRainbowCvar(entry);
-    CVarSetColor(entry.colorCvar.c_str(), color);
-    CVarSetInteger(rainbowCvar.c_str(), 0);
-    CVarSetInteger(entry.changedCvar.c_str(), 1);
-    ShipInit::Init(entry.colorCvar.c_str());
-    ShipInit::Init(rainbowCvar.c_str());
-    ShipInit::Init(entry.changedCvar.c_str());
+    const char* rainbowCvar = entry.option.rainbowCvar;
+    CVarSetColor(entry.option.valuesCvar, color);
+    CVarSetInteger(rainbowCvar, 0);
+    CVarSetInteger(entry.option.changedCvar, 1);
+    ShipInit::Init(entry.option.valuesCvar);
+    ShipInit::Init(rainbowCvar);
+    ShipInit::Init(entry.option.changedCvar);
     ApplyCustomCosmetics();
     Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
 }
 
 static void ResetCustomCosmeticColor(const CustomCosmeticEntry& entry) {
-    std::string rainbowCvar = GetCustomCosmeticRainbowCvar(entry);
-    std::string lockedCvar = GetCustomCosmeticLockedCvar(entry);
+    const char* rainbowCvar = entry.option.rainbowCvar;
+    const char* lockedCvar = entry.option.lockedCvar;
 
-    CVarClear(entry.changedCvar.c_str());
-    CVarClear(rainbowCvar.c_str());
-    CVarClear(lockedCvar.c_str());
-    ClearCustomCosmeticValueCvars(entry.colorCvar.c_str());
+    CVarClear(entry.option.changedCvar);
+    CVarClear(rainbowCvar);
+    CVarClear(lockedCvar);
+    ClearCustomCosmeticValueCvars(entry.option.valuesCvar);
 
-    ShipInit::Init(entry.colorCvar.c_str());
-    ShipInit::Init(rainbowCvar.c_str());
-    ShipInit::Init(lockedCvar.c_str());
-    ShipInit::Init(entry.changedCvar.c_str());
+    ShipInit::Init(entry.option.valuesCvar);
+    ShipInit::Init(rainbowCvar);
+    ShipInit::Init(lockedCvar);
+    ShipInit::Init(entry.option.changedCvar);
     ApplyCustomCosmetics();
     Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
 }
@@ -305,14 +303,25 @@ void ScanCustomCosmetics() {
                 entryIndicesByKey[key] = entryIndex;
 
                 CustomCosmeticEntry entry;
-                entry.displayName = cosmeticEntry;
+                entry.option.label = cosmeticEntry;
                 entry.category = (cosmeticCategory != nullptr) ? cosmeticCategory : "";
-                entry.colorCvar = std::string(CUSTOM_CVAR_PREFIX) + key + ".Value";
-                entry.changedCvar = std::string(CUSTOM_CVAR_PREFIX) + key + ".Changed";
-                entry.defaultColor = { static_cast<uint8_t>(child->IntAttribute("R")),
-                                       static_cast<uint8_t>(child->IntAttribute("G")),
-                                       static_cast<uint8_t>(child->IntAttribute("B")),
-                                       static_cast<uint8_t>(child->IntAttribute("A")) };
+                entry.baseCvar = std::string(CUSTOM_CVAR_PREFIX) + key;
+                entry.valuesCvar = entry.baseCvar + ".Value";
+                entry.rainbowCvar = entry.baseCvar + ".Rainbow";
+                entry.lockedCvar = entry.baseCvar + ".Locked";
+                entry.changedCvar = entry.baseCvar + ".Changed";
+                entry.option.group = COSMETICS_GROUP_MAX;
+                entry.option.currentColor =
+                    ImVec4(child->IntAttribute("R") / 255.0f, child->IntAttribute("G") / 255.0f,
+                           child->IntAttribute("B") / 255.0f, child->IntAttribute("A") / 255.0f);
+                entry.option.defaultColor = { static_cast<uint8_t>(child->IntAttribute("R")),
+                                              static_cast<uint8_t>(child->IntAttribute("G")),
+                                              static_cast<uint8_t>(child->IntAttribute("B")),
+                                              static_cast<uint8_t>(child->IntAttribute("A")) };
+                entry.option.supportsAlpha = false;
+                entry.option.supportsRainbow = true;
+                entry.option.advancedOption = false;
+                RefreshCustomCosmeticOption(entry);
                 customCosmeticEntries.push_back(std::move(entry));
             }
 
@@ -351,32 +360,35 @@ void ScanCustomCosmetics() {
                              return lhs.category < rhs.category;
                          }
 
-                         return lhs.displayName < rhs.displayName;
+                         return lhs.option.label < rhs.option.label;
                      });
+
+    for (auto& entry : customCosmeticEntries) {
+        RefreshCustomCosmeticOption(entry);
+    }
 
     ApplyCustomCosmetics();
 }
 
 static void DrawCustomCosmeticRow(const CustomCosmeticEntry& entry) {
-    std::string cvar = GetCustomCosmeticCvar(entry);
-    std::string rainbowCvar = GetCustomCosmeticRainbowCvar(entry);
-    std::string lockedCvar = GetCustomCosmeticLockedCvar(entry);
+    const char* cvar = entry.option.cvar;
+    const char* rainbowCvar = entry.option.rainbowCvar;
+    const char* lockedCvar = entry.option.lockedCvar;
 
     DrawCustomCosmeticColorRow(
-        entry.displayName.c_str(), cvar.c_str(), entry.defaultColor, rainbowCvar.c_str(), lockedCvar.c_str(),
-        entry.changedCvar.c_str(),
+        entry.option.label.c_str(), cvar, entry.option.defaultColor, rainbowCvar, lockedCvar, entry.option.changedCvar,
         [&entry, &rainbowCvar]() {
-            CVarSetInteger(rainbowCvar.c_str(), 0);
-            CVarSetInteger(entry.changedCvar.c_str(), 1);
-            ShipInit::Init(rainbowCvar.c_str());
-            ShipInit::Init(entry.changedCvar.c_str());
+            CVarSetInteger(rainbowCvar, 0);
+            CVarSetInteger(entry.option.changedCvar, 1);
+            ShipInit::Init(rainbowCvar);
+            ShipInit::Init(entry.option.changedCvar);
             ApplyCustomCosmetics();
             Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         },
         [&entry]() { RandomizeCustomCosmeticColor(entry); },
         [&entry]() {
-            CVarSetInteger(entry.changedCvar.c_str(), 1);
-            ShipInit::Init(entry.changedCvar.c_str());
+            CVarSetInteger(entry.option.changedCvar, 1);
+            ShipInit::Init(entry.option.changedCvar);
             ApplyCustomCosmetics();
             Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         },
@@ -445,14 +457,14 @@ void DrawCustomCosmetics() {
 
 void UpdateCustomCosmeticsRainbow(int hue, float rainbowSpeed, int& index) {
     for (const auto& entry : customCosmeticEntries) {
-        if (CVarGetInteger(GetCustomCosmeticRainbowCvar(entry).c_str(), 0)) {
+        if (CVarGetInteger(entry.option.rainbowCvar, 0)) {
             double frequency = 2 * M_PI / (360 * rainbowSpeed);
             Color_RGBA8 newColor;
             newColor.r = static_cast<uint8_t>(sin(frequency * (hue + index) + 0) * 127) + 128;
             newColor.g = static_cast<uint8_t>(sin(frequency * (hue + index) + (2 * M_PI / 3)) * 127) + 128;
             newColor.b = static_cast<uint8_t>(sin(frequency * (hue + index) + (4 * M_PI / 3)) * 127) + 128;
             newColor.a = 255;
-            CVarSetColor(entry.colorCvar.c_str(), newColor);
+            CVarSetColor(entry.option.valuesCvar, newColor);
         }
         if (!CVarGetInteger(CVAR_COSMETIC("RainbowSync"), 0)) {
             index += static_cast<int>(60 * rainbowSpeed);

@@ -107,21 +107,6 @@ static const std::map<int32_t, const char*> cosmeticsRandomizerModes = {
     { RANDOMIZE_ON_FILE_LOAD_SEEDED, "On File Load (Seeded)" },
 };
 
-typedef struct {
-    const char* cvar;
-    const char* valuesCvar;
-    const char* rainbowCvar;
-    const char* lockedCvar;
-    const char* changedCvar;
-    std::string label;
-    CosmeticGroup group;
-    ImVec4 currentColor;
-    Color_RGBA8 defaultColor;
-    bool supportsAlpha;
-    bool supportsRainbow;
-    bool advancedOption;
-} CosmeticOption;
-
 Color_RGBA8 ColorRGBA8(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
     Color_RGBA8 color = { r, g, b, a };
     return color;
