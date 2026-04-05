@@ -291,5 +291,5 @@ void Rando::StaticData::RegisterIcicleLocations() {
     // clang-format on
 }
 
-static RegisterShipInitFunc registerShuffleIcicles(RegisterShuffleIcicles, { "IS_RANDO" });
+static RegisterShipInitFunc initFunc_ShuffleIcicles(RegisterShuffleIcicles, { "IS_RANDO" });
 static RegisterShipInitFunc registerIcicleLocations(Rando::StaticData::RegisterIcicleLocations);

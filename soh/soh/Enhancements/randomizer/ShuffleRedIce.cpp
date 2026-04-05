@@ -164,5 +164,5 @@ void Rando::StaticData::RegisterRedIceLocations() {
     // clang-format on
 }
 
-static RegisterShipInitFunc registerShuffleRedIce(RegisterShuffleRedIce, { "IS_RANDO" });
+static RegisterShipInitFunc initFunc_ShuffleRedIce(RegisterShuffleRedIce, { "IS_RANDO" });
 static RegisterShipInitFunc registerRedIceLocations(Rando::StaticData::RegisterRedIceLocations);
