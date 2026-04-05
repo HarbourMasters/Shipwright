@@ -140,6 +140,8 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
             (location.GetRCType() != RCTYPE_MERCHANT ||
              CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleMerchants"), RO_SHUFFLE_MERCHANTS_OFF) !=
                  RO_SHUFFLE_MERCHANTS_OFF) &&
+            (location.GetRCType() != RCTYPE_BEGGAR ||
+             CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleBeggar"), RO_GENERIC_NO)) &&
             (location.GetRCType() != RCTYPE_SONG_LOCATION ||
              (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleSongs"), RO_SONG_SHUFFLE_SONG_LOCATIONS) !=
                   RO_SONG_SHUFFLE_SONG_LOCATIONS &&

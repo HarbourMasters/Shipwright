@@ -35,6 +35,9 @@ void RegionTable_Init_Market() {
         LOCATION(RC_MKT_WONDER_DAY_5,            logic->IsChild && logic->AtDay),
         LOCATION(RC_MKT_WONDER_NIGHT_1,          logic->IsChild && logic->AtNight),
         LOCATION(RC_MKT_WONDER_NIGHT_2,          logic->IsChild && logic->AtNight),
+        LOCATION(RC_MK_BEGGAR_BUGS,              logic->IsChild && logic->AtDay && logic->CanUse(RG_BOTTLE_WITH_BUGS)),
+        LOCATION(RC_MK_BEGGAR_FISH,              logic->IsChild && logic->AtDay && logic->CanUse(RG_BOTTLE_WITH_FISH)),
+        LOCATION(RC_MK_BEGGAR_BLUE_FIRE,         logic->IsChild && logic->AtDay && logic->CanUse(RG_BOTTLE_WITH_BLUE_FIRE)),
     }, {
         //Exits
         ENTRANCE(RR_MARKET_ENTRANCE,            true),

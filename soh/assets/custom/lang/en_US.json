@@ -183,6 +183,22 @@
 				"name": "Sliding Jumps",
 				"description": "Running forward while sliding sideways on ice can be used to jump on platforms."
 			},
+			"voidout_collection": {
+				"name": "Voidout Collection",
+				"description": [
+					"Some items can be collected by jumping to them, even if it results in voiding out. Used for:\n",
+					"- OGC Gold Skulltula\n",
+					"- HC wonder items without swim\n",
+					"- ZR wonder items without swim\n",
+					"- ZR Waterfall freestanding rupees without swim\n",
+					"- GV wonder items without swim\n",
+					"- GV Octorok grotto rupees without swim\n",
+					"- Colossus oasis fairies\n",
+					"- Deku Tree freestanding hearts before boss\n",
+					"- Water Temple near boss key chest Gold Skulltula\n",
+					"- Shadow MQ after boat and before boss Gold Skulltulas"
+				]
+			},			
 			"kf_adult_gs": {
 				"name": "Adult Kokiri Forest GS with Hover Boots",
 				"description": "Can be obtained without Hookshot by using the Hover Boots off of one of the roots."

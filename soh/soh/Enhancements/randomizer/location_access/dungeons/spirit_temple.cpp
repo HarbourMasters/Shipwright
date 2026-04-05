@@ -23,8 +23,10 @@ void RegionTable_Init_SpiritTemple() {
         EVENT_ACCESS(LOGIC_FORWARDS_SPIRIT_ADULT, logic->IsAdult),
     }, {
         //Locations
-        LOCATION(RC_SPIRIT_TEMPLE_LOBBY_POT_1, logic->CanBreakPots()),
-        LOCATION(RC_SPIRIT_TEMPLE_LOBBY_POT_2, logic->CanBreakPots()),
+        LOCATION(RC_SPIRIT_TEMPLE_LOBBY_POT_1,        logic->CanBreakPots()),
+        LOCATION(RC_SPIRIT_TEMPLE_LOBBY_POT_2,        logic->CanBreakPots()),
+        LOCATION(RC_SPIRIT_TEMPLE_LEFT_SNAKE_STATUE,  logic->CanRead()),
+        LOCATION(RC_SPIRIT_TEMPLE_RIGHT_SNAKE_STATUE, logic->CanRead()),
     }, {
         //Exits
         ENTRANCE(RR_SPIRIT_TEMPLE_ENTRYWAY,        true),
@@ -564,6 +566,8 @@ void RegionTable_Init_SpiritTemple() {
         LOCATION(RC_SPIRIT_TEMPLE_MQ_ENTRANCE_POT_2,             logic->CanBreakPots()),
         LOCATION(RC_SPIRIT_TEMPLE_MQ_ENTRANCE_POT_3,             logic->CanBreakPots()),
         LOCATION(RC_SPIRIT_TEMPLE_MQ_ENTRANCE_POT_4,             logic->CanBreakPots()),
+        LOCATION(RC_SPIRIT_TEMPLE_LEFT_SNAKE_STATUE,             logic->CanRead()),
+        LOCATION(RC_SPIRIT_TEMPLE_RIGHT_SNAKE_STATUE,            logic->CanRead()),
     }, {
         //Exits
         ENTRANCE(RR_SPIRIT_TEMPLE_ENTRYWAY,           true),

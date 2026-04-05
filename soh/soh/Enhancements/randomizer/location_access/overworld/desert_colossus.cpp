@@ -28,7 +28,7 @@ void RegionTable_Init_DesertColossus() {
     }, {
         //Exits
         //You can kinda get the fairies without entering the water, but it relies on them cooperating and leevers are jerks. should be a trick
-        ENTRANCE(RR_DESERT_COLOSSUS_OASIS,         logic->CanUse(RG_SONG_OF_STORMS) && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->HasBottle())),
+        ENTRANCE(RR_DESERT_COLOSSUS_OASIS,         logic->CanUse(RG_SONG_OF_STORMS) && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->HasBottle() || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
         ENTRANCE(RR_COLOSSUS_GREAT_FAIRY_FOUNTAIN, logic->HasExplosives()),
         ENTRANCE(RR_SPIRIT_TEMPLE_ENTRYWAY,        true),
         ENTRANCE(RR_WASTELAND_NEAR_COLOSSUS,       true),
