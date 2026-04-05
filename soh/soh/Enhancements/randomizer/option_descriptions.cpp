@@ -313,7 +313,11 @@ void Settings::CreateOptionDescriptions() {
     mOptionDescriptions[RSK_SHUFFLE_BUSHES] =
         "Bushes in Hyrule Field & Zora's Fountain will contain randomized items when first walked through.";
     mOptionDescriptions[RSK_SHUFFLE_ICICLES] =
-        "Stalagmites and stalactites in Ice Cavern and Ganon's Castle will contain randomized items when broken.";
+        "Stalagmites and stalactites in Ice Cavern and Ganon's Castle will contain randomized items when broken.\n"
+        "Icicles will have a halo around them when carrying randomized items.";
+    mOptionDescriptions[RSK_SHUFFLE_RED_ICE] =
+        "Red Ice will give randomized items when melted.\n"
+        "Red Ice will have a particle effect inside when it hold a randomized item";
     mOptionDescriptions[RSK_SHUFFLE_SIGNS] = "Signs and readable pedestals, plinths, altars, and graves will grant a "
                                              "randomized item the first time they are read. "
                                              "Signs will have a particle effect when they hold a randomized item.\n"
