@@ -10,9 +10,6 @@ extern "C" {
 extern PlayState* gPlayState;
 }
 
-
-extern void EnItem00_DrawRandomizedItem(EnItem00* enItem00, PlayState* play);
-
 uint8_t BgIceShelter_RandomizerHoldsItem(Actor* actor) {
     const auto redIceIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(actor);
     if (redIceIdentity == nullptr) {
@@ -33,15 +30,21 @@ uint8_t BgIceShelter_RandomizerHoldsItem(Actor* actor) {
 static void BgIceShelter_RandomizerDraw(Actor* actor, Color_RGBA8* primColor, Color_RGBA8* secColor,
                                         Color_RGBA8* envColor) {
     Vec3f pos;
+    s32 type = (actor->params >> 8) & 7;
     static Vec3f velocity = { 0.0f, 0.0f, 0.0f };
     static Vec3f accel = { 0.0f, 0.0f, 0.0f };
 
     velocity.y = -0.05f;
     accel.y = -0.025f;
 
-    pos.x = Rand_CenteredFloat(10.0f) + actor->world.pos.x;
-    pos.y = (Rand_ZeroOne() * 10.0f) + actor->world.pos.y;
-    pos.z = Rand_CenteredFloat(10.0f) + actor->world.pos.z;
+    // align for King Zora's much bigger red ice
+    f32 xzScale = (type == RED_ICE_KING_ZORA) ? 30.0f : 15.0f;
+    f32 yOffset = (type == RED_ICE_KING_ZORA) ? 200.0f : 0.0f;
+    f32 zOffset = (type == RED_ICE_KING_ZORA) ? 50.0f : 0.0f;
+
+    pos.x = Rand_CenteredFloat(xzScale) + actor->world.pos.x;
+    pos.y = (Rand_ZeroOne() * 15.0f) + actor->world.pos.y + yOffset;
+    pos.z = Rand_CenteredFloat(xzScale) + actor->world.pos.z + zOffset;
     EffectSsKiraKira_SpawnFocused(gPlayState, &pos, &velocity, &accel, secColor, envColor, 2000, 100);
     EffectSsKiraKira_SpawnFocused(gPlayState, &pos, &velocity, &accel, primColor, envColor, 2000, 100);
 }
@@ -82,56 +85,29 @@ void BgIceShelter_RandomizerDrawSetup(void* actor) {
     BgIceShelter_RandomizerDraw(redIceActor, &primColor, &secColor, &envColor);
 }
 
-void BgIceShelter_RandomizerSpawnCollectible(void* actor) {
-    BgIceShelter* redIceActor = (BgIceShelter*)actor;
-    const auto redIceIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(&redIceActor->dyna.actor);
-
-    if (redIceActor->dyna.actor.params == RED_ICE_WALL || redIceActor->dyna.actor.params == RED_ICE_KING_ZORA) {
-        Flags_SetRandomizerInf(redIceIdentity->randomizerInf);
-    } else {
-        EnItem00* item00 =
-            (EnItem00*)Item_DropCollectible(gPlayState, &redIceActor->dyna.actor.world.pos, ITEM00_SOH_DUMMY);
-        item00->randoInf = redIceIdentity->randomizerInf;
-        item00->itemEntry =
-            Rando::Context::GetInstance()->GetFinalGIEntry(redIceIdentity->randomizerCheck, true, GI_NONE);
-        item00->actor.draw = (ActorFunc)EnItem00_DrawRandomizedItem;
-        item00->actor.velocity.y = 8.0f;
-        item00->actor.speedXZ = 2.0f;
-        item00->actor.world.rot.y = static_cast<int16_t>(Rand_CenteredFloat(65536.0f));
-    }
-}
-
 void RegisterShuffleRedIce() {
     bool shouldRegister = IS_RANDO && Rando::Context::GetInstance()->GetOption(RSK_SHUFFLE_RED_ICE).Get();
 
     COND_ID_HOOK(OnActorInit, ACTOR_BG_ICE_SHELTER, shouldRegister, [](void* actorRef) {
         Actor* actor = static_cast<Actor*>(actorRef);
 
-        auto redIceIdentity = OTRGlobals::Instance->gRandomizer->IdentifyRedIce(gPlayState->sceneNum, (s16)actor->world.pos.x,
-                                                                          (s16)actor->world.pos.z);
+        auto redIceIdentity = OTRGlobals::Instance->gRandomizer->IdentifyRedIce(
+            gPlayState->sceneNum, (s16)actor->world.pos.x, (s16)actor->world.pos.z);
         ObjectExtension::GetInstance().Set<CheckIdentity>(actor, std::move(redIceIdentity));
     });
 
     // Draw particle effect to indicate a randomized item
     COND_ID_HOOK(OnActorUpdate, ACTOR_BG_ICE_SHELTER, shouldRegister, BgIceShelter_RandomizerDrawSetup);
 
-    //// Draw custom model for pot to indicate it holding a randomized item.
-    //COND_VB_SHOULD(VB_RED_ICE_SETUP_DRAW, shouldRegister, {
-    //    BgIceShelter* redIceActor = va_arg(args, BgIceShelter*);
-    //    if (BgIceTurara_RandomizerHoldsItem(&redIceActor->dyna.actor) &&
-    //        !ObjectExtension::GetInstance().Has<StalactiteDropped>(&redIceActor->dyna.actor)) {
-    //        redIceActor->dyna.actor.draw = (ActorFunc)BgIceTurara_RandomizerDraw;
-    //        *should = false;
-    //    }
-    //});
-
-    // Give item for melting red ice
-    COND_VB_SHOULD(VB_RED_ICE_DROP_ITEM, shouldRegister, {
+    // Collect item for melting red ice
+    COND_VB_SHOULD(VB_RED_ICE_COLLECT_ITEM, shouldRegister, {
         BgIceShelter* redIceActor = va_arg(args, BgIceShelter*);
 
         if (*should) {
             if (BgIceShelter_RandomizerHoldsItem(&redIceActor->dyna.actor)) {
-                BgIceShelter_RandomizerSpawnCollectible(&redIceActor->dyna.actor);
+                const auto redIceIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(&redIceActor->dyna.actor);
+                // Clearing red ice is often irreverisble/enables progression, autocollect
+                Flags_SetRandomizerInf(redIceIdentity->randomizerInf);
             }
         }
     });
@@ -144,8 +120,8 @@ void Rando::StaticData::RegisterRedIceLocations() {
     registered = true;
     // clang-format off
     //            Randomizer Check                                                  Randomizer Check                                                                     Quest                Area                      Scene ID                        Params                              Short Name                                        Hint Text Key                 Spoiler Collection Check
-    locationTable[RC_ZD_KING_ZORA_RED_ICE]                                          = Location::RedIce(RC_ZD_KING_ZORA_RED_ICE,                                          RCQUEST_VANILLA,     RCAREA_ZORAS_DOMAIN,      SCENE_ZORAS_DOMAIN,             TWO_ACTOR_PARAMS(628, -1818),       "King Zora Red Ice",                            RHT_RED_ICE_ZORAS_DOMAIN,      SpoilerCollectionCheck::RandomizerInf(RAND_INF_ZD_KING_ZORA_RED_ICE));
-    locationTable[RC_ZD_ZORA_SHOP_RED_ICE]                                          = Location::RedIce(RC_ZD_ZORA_SHOP_RED_ICE,                                          RCQUEST_VANILLA,     RCAREA_ZORAS_DOMAIN,      SCENE_ZORAS_DOMAIN,             TWO_ACTOR_PARAMS(483, 214),         "Zora Shop Red Ice",                            RHT_RED_ICE_ZORAS_DOMAIN,      SpoilerCollectionCheck::RandomizerInf(RAND_INF_ZD_ZORA_SHOP_RED_ICE));
+    locationTable[RC_ZD_KING_ZORA_RED_ICE]                                          = Location::RedIce(RC_ZD_KING_ZORA_RED_ICE,                                          RCQUEST_BOTH,        RCAREA_ZORAS_DOMAIN,      SCENE_ZORAS_DOMAIN,             TWO_ACTOR_PARAMS(628, -1818),       "King Zora Red Ice",                            RHT_RED_ICE_ZORAS_DOMAIN,      SpoilerCollectionCheck::RandomizerInf(RAND_INF_ZD_KING_ZORA_RED_ICE));
+    locationTable[RC_ZD_ZORA_SHOP_RED_ICE]                                          = Location::RedIce(RC_ZD_ZORA_SHOP_RED_ICE,                                          RCQUEST_BOTH,        RCAREA_ZORAS_DOMAIN,      SCENE_ZORAS_DOMAIN,             TWO_ACTOR_PARAMS(483, 214),         "Zora Shop Red Ice",                            RHT_RED_ICE_ZORAS_DOMAIN,      SpoilerCollectionCheck::RandomizerInf(RAND_INF_ZD_ZORA_SHOP_RED_ICE));
     locationTable[RC_ICE_CAVERN_ENTRANCE_RED_ICE]                                   = Location::RedIce(RC_ICE_CAVERN_ENTRANCE_RED_ICE,                                   RCQUEST_VANILLA,     RCAREA_ICE_CAVERN,        SCENE_ICE_CAVERN,               TWO_ACTOR_PARAMS(411, 2332),        "Entrance Red Ice",                             RHT_ICE_CAVERN_RED_ICE,        SpoilerCollectionCheck::RandomizerInf(RAND_INF_ICE_CAVERN_ENTRANCE_RED_ICE));
     locationTable[RC_ICE_CAVERN_LOBBY_LEFT_RED_ICE]                                 = Location::RedIce(RC_ICE_CAVERN_LOBBY_LEFT_RED_ICE,                                 RCQUEST_VANILLA,     RCAREA_ICE_CAVERN,        SCENE_ICE_CAVERN,               TWO_ACTOR_PARAMS(-105, 854),        "Lobby Left Red Ice",                           RHT_ICE_CAVERN_RED_ICE,        SpoilerCollectionCheck::RandomizerInf(RAND_INF_ICE_CAVERN_LOBBY_LEFT_RED_ICE));
     locationTable[RC_ICE_CAVERN_LOBBY_RIGHT_RED_ICE]                                = Location::RedIce(RC_ICE_CAVERN_LOBBY_RIGHT_RED_ICE,                                RCQUEST_VANILLA,     RCAREA_ICE_CAVERN,        SCENE_ICE_CAVERN,               TWO_ACTOR_PARAMS(119, 856),         "Lobby Right Red Ice",                          RHT_ICE_CAVERN_RED_ICE,        SpoilerCollectionCheck::RandomizerInf(RAND_INF_ICE_CAVERN_LOBBY_RIGHT_RED_ICE));

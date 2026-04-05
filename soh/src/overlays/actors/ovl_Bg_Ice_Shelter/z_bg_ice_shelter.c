@@ -414,7 +414,7 @@ void BgIceShelter_Melt(BgIceShelter* this, PlayState* play) {
 
     sSteamSpawnFuncs[type](this, play, particleSpawningChance, sSteamEffectScales[type]);
 
-    if (GameInteractor_Should(VB_RED_ICE_DROP_ITEM, this->alpha <= 0, this)) {
+    if (GameInteractor_Should(VB_RED_ICE_COLLECT_ITEM, this->alpha <= 0, this)) {
         if (!((this->dyna.actor.params >> 6) & 1)) {
             Flags_SetSwitch(play, this->dyna.actor.params & 0x3F);
         }

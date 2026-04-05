@@ -198,9 +198,6 @@ void BgIceTurara_Update(Actor* thisx, PlayState* play) {
 }
 
 void BgIceTurara_Draw(Actor* thisx, PlayState* play) {
-    if (!GameInteractor_Should(VB_ICICLE_SETUP_DRAW, true, thisx)) {
-        return;
-    }    
-    
     Gfx_DrawDListOpa(play, object_ice_objects_DL_0023D0);
+    if (GameInteractor_Should(VB_ICICLE_SETUP_DRAW, true, thisx)) {}
 }

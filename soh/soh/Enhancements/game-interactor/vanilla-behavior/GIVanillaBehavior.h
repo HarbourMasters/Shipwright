@@ -1949,7 +1949,7 @@ typedef enum {
     // ```
     // #### `args`
     // - `*BgIceShelter`
-    VB_RED_ICE_DROP_ITEM,
+    VB_RED_ICE_COLLECT_ITEM,
 
     // #### `result`
     // #### `result`

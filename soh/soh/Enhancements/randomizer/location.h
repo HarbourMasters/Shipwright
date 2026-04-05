@@ -267,8 +267,8 @@ class Location {
                                SpoilerCollectionCheck collectionCheck);
 
     static Location Icicle(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_, SceneID scene_,
-                         int32_t actorParams_, std::string&& shortName_, RandomizerHintTextKey hintKey,
-                         SpoilerCollectionCheck collectionCheck);
+                           int32_t actorParams_, std::string&& shortName_, RandomizerHintTextKey hintKey,
+                           SpoilerCollectionCheck collectionCheck);
 
     static Location RedIce(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_, SceneID scene_,
                            int32_t actorParams_, std::string&& shortName_, RandomizerHintTextKey hintKey,

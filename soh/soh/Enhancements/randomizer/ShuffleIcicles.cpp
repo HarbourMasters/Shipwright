@@ -7,6 +7,7 @@ extern "C" {
 #include "functions.h"
 #include "overlays/actors/ovl_Bg_Ice_Turara/z_bg_ice_turara.h"
 #include "objects/object_ice_objects/object_ice_objects.h"
+#include "objects/object_tk/object_tk.h"
 extern PlayState* gPlayState;
 }
 
@@ -14,13 +15,10 @@ struct StalactiteDropped {};
 static ObjectExtension::Register<StalactiteDropped> StalactiteDroppedRegister;
 
 extern void EnItem00_DrawRandomizedItem(EnItem00* enItem00, PlayState* play);
-extern "C" void BgIceTurara_Draw(Actor* thisx, PlayState* play);
 
-extern "C" void BgIceTurara_RandomizerDraw(Actor* icicleActor, PlayState* play) {
-    // If the regrowing stalactite has already dropped, return to vanilla draw
+extern "C" void DrawItemHalo(Actor* icicleActor) {
+    // If the regrowing stalactite has already dropped, return
     if (ObjectExtension::GetInstance().Has<StalactiteDropped>(icicleActor)) {
-        icicleActor->draw = (ActorFunc)BgIceTurara_Draw;
-        Gfx_DrawDListOpa(play, (Gfx*)object_ice_objects_DL_0023D0);
         return;
     }
 
@@ -38,41 +36,27 @@ extern "C" void BgIceTurara_RandomizerDraw(Actor* icicleActor, PlayState* play) 
         getItemCategory = ITEM_CATEGORY_MAJOR;
     }
     Color_RGBA8 primColor = Randomizer_GetParticleCMCColor(getItemCategory, COLOR_PRIMARY);
-    Color_RGBA8 secColor = Randomizer_GetParticleCMCColor(getItemCategory, COLOR_SECONDARY);
-    f32 peak;
 
-    // Adjust transparency for extremely bright colors
-    switch (getItemCategory) { 
-        case ITEM_CATEGORY_HEALTH:
-        case ITEM_CATEGORY_BOSS_KEY:
-        case ITEM_CATEGORY_SKULLTULA_TOKEN:
-            peak = 0.75f;
-            break;
-        case ITEM_CATEGORY_MAJOR:
-        case ITEM_CATEGORY_LESSER:
-        case ITEM_CATEGORY_SMALL_KEY:
-        case ITEM_CATEGORY_JUNK:
-        default:
-            peak = 1.0f;
-            break;
-    }
+    // Align halo to center of icicles
+    // Ice Cavern HP room is slightly different for stalactites
+    f32 yOffset = (icicleActor->params == 0) ? 135.0f : 45.0f;
+    f32 xOffset = -23.0f;
+    f32 zOffset = (icicleActor->params == 0)                                                            ? 5.0f
+                  : (gPlayState->sceneNum == SCENE_ICE_CAVERN && gPlayState->roomCtx.curRoom.num == 11) ? 4.0f
+                                                                                                        : 2.0f;
 
-    // Transition between primary and secondary colors, with emphasis on primary
-    f32 t = (Math_SinS(play->gameplayFrames * 0x400) + 1.0f) * 0.5f;
-    t = t * t;
-    u8 r = (primColor.r + (secColor.r - primColor.r) * t) * peak;
-    u8 g = (primColor.g + (secColor.g - primColor.g) * t) * peak;
-    u8 b = (primColor.b + (secColor.b - primColor.b) * t) * peak;
-
-    // Recolor shuffled icicles
-    OPEN_DISPS(play->state.gfxCtx);
-    Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
-    gDPSetGrayscaleColor(POLY_OPA_DISP++, r, g, b, 200);
+    // Rotate and draw halo with CMC colors
+    Matrix_Translate(icicleActor->world.pos.x + xOffset, icicleActor->world.pos.y + yOffset,
+                     icicleActor->world.pos.z + zOffset, MTXMODE_NEW);
+    Matrix_RotateZ(-M_PI / 2, MTXMODE_APPLY);
+    Matrix_Scale(0.01f, 0.01f, 0.01f, MTXMODE_APPLY);
+    OPEN_DISPS(gPlayState->state.gfxCtx);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(gPlayState->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gDPSetGrayscaleColor(POLY_OPA_DISP++, primColor.r, primColor.g, primColor.b, 175);
     gSPGrayscale(POLY_OPA_DISP++, true);
-    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)object_ice_objects_DL_0023D0);
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gDampeHaloDL);
     gSPGrayscale(POLY_OPA_DISP++, false);
-    CLOSE_DISPS(play->state.gfxCtx);
+    CLOSE_DISPS(gPlayState->state.gfxCtx);
 }
 
 uint8_t BgIceTurara_RandomizerHoldsItem(Actor* actor) {
@@ -96,7 +80,8 @@ void BgIceTurara_RandomizerSpawnCollectible(void* actor) {
     BgIceTurara* icicleActor = (BgIceTurara*)actor;
     const auto icicleIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(&icicleActor->dyna.actor);
 
-    EnItem00* item00 = (EnItem00*)Item_DropCollectible(gPlayState, &icicleActor->dyna.actor.world.pos, ITEM00_SOH_DUMMY);
+    EnItem00* item00 =
+        (EnItem00*)Item_DropCollectible(gPlayState, &icicleActor->dyna.actor.world.pos, ITEM00_SOH_DUMMY);
     item00->randoInf = icicleIdentity->randomizerInf;
     item00->itemEntry = Rando::Context::GetInstance()->GetFinalGIEntry(icicleIdentity->randomizerCheck, true, GI_NONE);
     item00->actor.draw = (ActorFunc)EnItem00_DrawRandomizedItem;
@@ -108,41 +93,39 @@ void BgIceTurara_RandomizerSpawnCollectible(void* actor) {
 void RegisterShuffleIcicles() {
     bool shouldRegister = IS_RANDO && Rando::Context::GetInstance()->GetOption(RSK_SHUFFLE_ICICLES).Get();
 
-    // 
     COND_ID_HOOK(OnActorInit, ACTOR_BG_ICE_TURARA, shouldRegister, [](void* actorRef) {
         Actor* actor = static_cast<Actor*>(actorRef);
         BgIceTurara* icicleActor = static_cast<BgIceTurara*>(actorRef);
 
-        auto icicleIdentity = OTRGlobals::Instance->gRandomizer->IdentifyIcicle(gPlayState->sceneNum, (s16)actor->world.pos.x,
-                                                                          (s16)actor->world.pos.z);
+        auto icicleIdentity = OTRGlobals::Instance->gRandomizer->IdentifyIcicle(
+            gPlayState->sceneNum, (s16)actor->world.pos.x, (s16)actor->world.pos.z);
         ObjectExtension::GetInstance().Set<CheckIdentity>(actor, std::move(icicleIdentity));
     });
 
-    // Draw custom model for pot to indicate it holding a randomized item.
+    // Draw halo around icicles
     COND_VB_SHOULD(VB_ICICLE_SETUP_DRAW, shouldRegister, {
         BgIceTurara* icicleActor = va_arg(args, BgIceTurara*);
         if (BgIceTurara_RandomizerHoldsItem(&icicleActor->dyna.actor) &&
             !ObjectExtension::GetInstance().Has<StalactiteDropped>(&icicleActor->dyna.actor)) {
-            icicleActor->dyna.actor.draw = (ActorFunc)BgIceTurara_RandomizerDraw;
-            *should = false;
+            DrawItemHalo(&icicleActor->dyna.actor);
         }
     });
 
-    // Give item for stalagmites
+    // Drop item for stalagmites
     COND_VB_SHOULD(VB_STALAGMITE_DROP_ITEM, shouldRegister, {
         BgIceTurara* icicleActor = va_arg(args, BgIceTurara*);
-        
+
         if (*should) {
             if (BgIceTurara_RandomizerHoldsItem(&icicleActor->dyna.actor)) {
                 BgIceTurara_RandomizerSpawnCollectible(&icicleActor->dyna.actor);
             }
         }
     });
-    
-    // Give item for stalactites
+
+    // Drop item for stalactites
     COND_VB_SHOULD(VB_STALACTITE_DROP_ITEM, shouldRegister, {
         BgIceTurara* icicleActor = va_arg(args, BgIceTurara*);
-        
+
         if (BgIceTurara_RandomizerHoldsItem(&icicleActor->dyna.actor)) {
             // Set and check if regrowing stalactite has already dropped
             if (*should) {
@@ -282,6 +265,10 @@ void Rando::StaticData::RegisterIcicleLocations() {
     locationTable[RC_ICE_CAVERN_MQ_MAP_ROOM_CENTER_STALAGMITE_5]             = Location::Icicle(RC_ICE_CAVERN_MQ_MAP_ROOM_CENTER_STALAGMITE_5,             RCQUEST_MQ,          RCAREA_ICE_CAVERN,        SCENE_ICE_CAVERN,               TWO_ACTOR_PARAMS(1344, 332),       "Map Room Center Stalagmite 5",                RHT_ICE_CAVERN_ICICLE,        SpoilerCollectionCheck::RandomizerInf(RAND_INF_ICE_CAVERN_MQ_MAP_ROOM_CENTER_STALAGMITE_5));
     locationTable[RC_ICE_CAVERN_MQ_MAP_ROOM_CENTER_STALAGMITE_6]             = Location::Icicle(RC_ICE_CAVERN_MQ_MAP_ROOM_CENTER_STALAGMITE_6,             RCQUEST_MQ,          RCAREA_ICE_CAVERN,        SCENE_ICE_CAVERN,               TWO_ACTOR_PARAMS(1375, 291),       "Map Room Center Stalagmite 6",                RHT_ICE_CAVERN_ICICLE,        SpoilerCollectionCheck::RandomizerInf(RAND_INF_ICE_CAVERN_MQ_MAP_ROOM_CENTER_STALAGMITE_6));
     locationTable[RC_ICE_CAVERN_MQ_MAP_ROOM_CENTER_STALAGMITE_7]             = Location::Icicle(RC_ICE_CAVERN_MQ_MAP_ROOM_CENTER_STALAGMITE_7,             RCQUEST_MQ,          RCAREA_ICE_CAVERN,        SCENE_ICE_CAVERN,               TWO_ACTOR_PARAMS(1345, 260),       "Map Room Center Stalagmite 7",                RHT_ICE_CAVERN_ICICLE,        SpoilerCollectionCheck::RandomizerInf(RAND_INF_ICE_CAVERN_MQ_MAP_ROOM_CENTER_STALAGMITE_7));
+    locationTable[RC_ICE_CAVERN_MQ_COMPASS_LEFT_STALAGMITE_1]                = Location::Icicle(RC_ICE_CAVERN_MQ_COMPASS_LEFT_STALAGMITE_1,                RCQUEST_MQ,          RCAREA_ICE_CAVERN,        SCENE_ICE_CAVERN,               TWO_ACTOR_PARAMS(742, -2464),      "Compass Left Stalagmite 1",                   RHT_ICE_CAVERN_ICICLE,        SpoilerCollectionCheck::RandomizerInf(RAND_INF_ICE_CAVERN_MQ_COMPASS_LEFT_STALAGMITE_1));
+    locationTable[RC_ICE_CAVERN_MQ_COMPASS_LEFT_STALAGMITE_2]                = Location::Icicle(RC_ICE_CAVERN_MQ_COMPASS_LEFT_STALAGMITE_2,                RCQUEST_MQ,          RCAREA_ICE_CAVERN,        SCENE_ICE_CAVERN,               TWO_ACTOR_PARAMS(783, -2453),      "Compass Left Stalagmite 2",                   RHT_ICE_CAVERN_ICICLE,        SpoilerCollectionCheck::RandomizerInf(RAND_INF_ICE_CAVERN_MQ_COMPASS_LEFT_STALAGMITE_2));
+    locationTable[RC_ICE_CAVERN_MQ_COMPASS_RIGHT_STALAGMITE_1]               = Location::Icicle(RC_ICE_CAVERN_MQ_COMPASS_RIGHT_STALAGMITE_1,               RCQUEST_MQ,          RCAREA_ICE_CAVERN,        SCENE_ICE_CAVERN,               TWO_ACTOR_PARAMS(903, -2353),      "Compass Right Stalagmite 1",                  RHT_ICE_CAVERN_ICICLE,        SpoilerCollectionCheck::RandomizerInf(RAND_INF_ICE_CAVERN_MQ_COMPASS_RIGHT_STALAGMITE_1));
+    locationTable[RC_ICE_CAVERN_MQ_COMPASS_RIGHT_STALAGMITE_2]               = Location::Icicle(RC_ICE_CAVERN_MQ_COMPASS_RIGHT_STALAGMITE_2,               RCQUEST_MQ,          RCAREA_ICE_CAVERN,        SCENE_ICE_CAVERN,               TWO_ACTOR_PARAMS(929, -2303),      "Compass Right Stalagmite 2",                  RHT_ICE_CAVERN_ICICLE,        SpoilerCollectionCheck::RandomizerInf(RAND_INF_ICE_CAVERN_MQ_COMPASS_RIGHT_STALAGMITE_2));
     locationTable[RC_ICE_CAVERN_MQ_BEFORE_SCARECROW_STALAGMITE]              = Location::Icicle(RC_ICE_CAVERN_MQ_BEFORE_SCARECROW_STALAGMITE,              RCQUEST_MQ,          RCAREA_ICE_CAVERN,        SCENE_ICE_CAVERN,               TWO_ACTOR_PARAMS(-261, -840),      "Before Scarecrow Stalagmite",                 RHT_ICE_CAVERN_ICICLE,        SpoilerCollectionCheck::RandomizerInf(RAND_INF_ICE_CAVERN_MQ_BEFORE_SCARECROW_STALAGMITE));
     locationTable[RC_ICE_CAVERN_MQ_SCARECROW_ROOM_STALACTITE]                = Location::Icicle(RC_ICE_CAVERN_MQ_SCARECROW_ROOM_STALACTITE,                RCQUEST_MQ,          RCAREA_ICE_CAVERN,        SCENE_ICE_CAVERN,               TWO_ACTOR_PARAMS(-763, -896),      "Scarecrow Room Stalactite",                   RHT_ICE_CAVERN_ICICLE,        SpoilerCollectionCheck::RandomizerInf(RAND_INF_ICE_CAVERN_MQ_SCARECROW_ROOM_STALACTITE));
     locationTable[RC_ICE_CAVERN_MQ_WEST_CORRIDOR_STALACTITE_1]               = Location::Icicle(RC_ICE_CAVERN_MQ_WEST_CORRIDOR_STALACTITE_1,               RCQUEST_MQ,          RCAREA_ICE_CAVERN,        SCENE_ICE_CAVERN,               TWO_ACTOR_PARAMS(-1524, 326),      "West Corridor Stalactite 1",                  RHT_ICE_CAVERN_ICICLE,        SpoilerCollectionCheck::RandomizerInf(RAND_INF_ICE_CAVERN_MQ_WEST_CORRIDOR_STALACTITE_1));
