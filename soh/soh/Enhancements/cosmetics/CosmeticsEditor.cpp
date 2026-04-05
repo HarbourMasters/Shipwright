@@ -2499,12 +2499,19 @@ void CosmeticsEditorWindow::DrawElement() {
             UIWidgets::Separator(true, true, 2.0f, 2.0f);
 
             DrawCosmeticGroup(COSMETICS_GROUP_LINK);
-            DrawCustomCosmetics();
             DrawCosmeticGroup(COSMETICS_GROUP_GLOVES);
             DrawCosmeticGroup(COSMETICS_GROUP_MIRRORSHIELD);
             DrawCosmeticGroup(COSMETICS_GROUP_EQUIPMENT);
             DrawCosmeticGroup(COSMETICS_GROUP_SWORDS);
             DrawCosmeticGroup(COSMETICS_GROUP_CONSUMABLE);
+            ImGui::EndTabItem();
+        }
+
+        if (HasCustomCosmetics() && ImGui::BeginTabItem("Mods")) {
+
+            UIWidgets::Separator(true, true, 2.0f, 2.0f);
+
+            DrawCustomCosmetics();
             ImGui::EndTabItem();
         }
 

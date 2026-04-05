@@ -383,41 +383,64 @@ static void DrawCustomCosmeticRow(const CustomCosmeticEntry& entry) {
         [&entry]() { ResetCustomCosmeticColor(entry); });
 }
 
+static void DrawCustomCosmeticCategory(const char* label, const std::vector<const CustomCosmeticEntry*>& entries) {
+    ImGui::Text("%s", label);
+    ImGui::SameLine((ImGui::CalcTextSize("Message Light Blue (None No Shadow)").x * 1.0f) + 60.0f);
+    if (UIWidgets::Button(
+            ("Random##" + std::string(label)).c_str(),
+            UIWidgets::ButtonOptions().Size(ImVec2(80, 31)).Padding(ImVec2(2.0f, 0.0f)).Color(THEME_COLOR))) {
+        for (const auto* entry : entries) {
+            RandomizeCustomCosmeticColor(*entry);
+        }
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        ApplyCustomCosmetics();
+    }
+    ImGui::SameLine();
+    if (UIWidgets::Button(("Reset##" + std::string(label)).c_str(),
+                          UIWidgets::ButtonOptions().Size(ImVec2(80, 31)).Padding(ImVec2(2.0f, 0.0f)))) {
+        for (const auto* entry : entries) {
+            ResetCustomCosmeticColor(*entry);
+        }
+        ApplyCustomCosmetics();
+    }
+    UIWidgets::Spacer();
+    for (const auto* entry : entries) {
+        DrawCustomCosmeticRow(*entry);
+    }
+    UIWidgets::Separator(true, true, 2.0f, 2.0f);
+}
+
+bool HasCustomCosmetics() {
+    return !customCosmeticEntries.empty();
+}
+
 void DrawCustomCosmetics() {
     if (customCosmeticEntries.empty()) {
         return;
     }
 
-    ImGui::Text("%s", CUSTOM_COSMETIC_GROUP);
-    ImGui::SameLine((ImGui::CalcTextSize("Message Light Blue (None No Shadow)").x * 1.0f) + 60.0f);
-    if (UIWidgets::Button(
-            ("Random##" + std::string(CUSTOM_COSMETIC_GROUP)).c_str(),
-            UIWidgets::ButtonOptions().Size(ImVec2(80, 31)).Padding(ImVec2(2.0f, 0.0f)).Color(THEME_COLOR))) {
-        for (const auto& entry : customCosmeticEntries) {
-            RandomizeCustomCosmeticColor(entry);
-        }
-    }
-    ImGui::SameLine();
-    if (UIWidgets::Button(("Reset##" + std::string(CUSTOM_COSMETIC_GROUP)).c_str(),
-                          UIWidgets::ButtonOptions().Size(ImVec2(80, 31)).Padding(ImVec2(2.0f, 0.0f)))) {
-        for (const auto& entry : customCosmeticEntries) {
-            ResetCustomCosmeticColor(entry);
-        }
-    }
-
-    UIWidgets::Spacer();
+    std::vector<const CustomCosmeticEntry*> currentEntries;
     std::string currentCategory;
+
+    auto flushCategory = [&]() {
+        if (currentEntries.empty()) {
+            return;
+        }
+
+        const char* label = currentCategory.empty() ? CUSTOM_COSMETIC_GROUP : currentCategory.c_str();
+        DrawCustomCosmeticCategory(label, currentEntries);
+        currentEntries.clear();
+    };
+
     for (const auto& entry : customCosmeticEntries) {
         if (entry.category != currentCategory) {
+            flushCategory();
             currentCategory = entry.category;
-            if (!currentCategory.empty()) {
-                ImGui::Text("%s", currentCategory.c_str());
-                UIWidgets::Spacer();
-            }
         }
-        DrawCustomCosmeticRow(entry);
+        currentEntries.push_back(&entry);
     }
-    UIWidgets::Separator(true, true, 2.0f, 2.0f);
+
+    flushCategory();
 }
 
 void UpdateCustomCosmeticsRainbow(int hue, float rainbowSpeed, int& index) {

@@ -61,6 +61,7 @@ void CosmeticsEditor_ResetAll();
 void CosmeticsEditor_ResetGroup(CosmeticGroup group);
 void ApplyOrResetCustomGfxPatches(bool manualChange = true);
 void ScanCustomCosmetics();
+bool HasCustomCosmetics();
 void DrawCustomCosmetics();
 void ApplyCustomCosmetics();
 void UpdateCustomCosmeticsRainbow(int hue, float rainbowSpeed, int& index);
