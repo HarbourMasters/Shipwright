@@ -63,7 +63,7 @@ void RegionTable_Init_ZorasDomain() {
     }, {
         //Locations
         LOCATION(RC_ZD_BEHIND_KING_ZORA_BEEHIVE, logic->IsChild && logic->CanBreakUpperBeehives()),
-        //LOCATION(RC_ZD_KING_ZORA_RED_ICE,        logic->BlueFire()),
+        LOCATION(RC_ZD_KING_ZORA_RED_ICE,        logic->IsAdult && logic->Get(LOGIC_KING_ZORA_THAWED)),
     }, {
         //Exits
         ENTRANCE(RR_ZORAS_DOMAIN,   logic->Get(LOGIC_DELIVER_RUTOS_LETTER) || ctx->GetOption(RSK_ZORAS_FOUNTAIN).Is(RO_ZF_OPEN) || (ctx->GetOption(RSK_ZORAS_FOUNTAIN).Is(RO_ZF_CLOSED_CHILD) && logic->IsAdult)),
