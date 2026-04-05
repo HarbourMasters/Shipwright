@@ -67,14 +67,14 @@ void BgIceShelter_RandomizerDrawSetup(void* actor) {
     Color_RGBA8 secColor;
     Color_RGBA8 envColor;
 
-    const auto signIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(redIceActor);
-    if (signIdentity == nullptr) {
+    const auto redIceIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(redIceActor);
+    if (redIceIdentity == nullptr) {
         return;
     }
 
-    GetItemEntry signItem =
-        Rando::Context::GetInstance()->GetFinalGIEntry(signIdentity->randomizerCheck, true, GI_NONE);
-    getItemCategory = Randomizer_AdjustItemCategory(signItem);
+    GetItemEntry redIceItem =
+        Rando::Context::GetInstance()->GetFinalGIEntry(redIceIdentity->randomizerCheck, true, GI_NONE);
+    getItemCategory = Randomizer_AdjustItemCategory(redIceItem);
 
     if (isNotCMC) {
         getItemCategory = ITEM_CATEGORY_MAJOR;
