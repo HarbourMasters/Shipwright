@@ -42,7 +42,8 @@ void SkipZeldaFleeingCastle_OnActorInit(IEvent* event) {
 
     if (actor->params == 3) {
         framesSinceSpawn = 0;
-        itemOcarinaUpdateHook = REGISTER_LISTENER(OnActorUpdate, EVENT_PRIORITY_LOW, SkipZeldaFleeingCastle_OnActorUpdate);
+        itemOcarinaUpdateHook =
+            REGISTER_LISTENER(OnActorUpdate, EVENT_PRIORITY_LOW, SkipZeldaFleeingCastle_OnActorUpdate);
         sceneInitHook = REGISTER_LISTENER(OnSceneInit, EVENT_PRIORITY_LOW, [](IEvent* event) {
             UNREGISTER_LISTENER(OnActorUpdate, itemOcarinaUpdateHook);
             UNREGISTER_LISTENER(OnSceneInit, sceneInitHook);

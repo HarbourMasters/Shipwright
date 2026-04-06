@@ -806,7 +806,5 @@ void ColViewerWindow::InitElement() {
     CreateCylinderData();
     CreateSphereData();
 
-    REGISTER_LISTENER(OnPlayDrawEnd, EVENT_PRIORITY_LOW, [](IEvent* event){
-        DrawColViewer();
-    });
+    REGISTER_LISTENER(OnPlayDrawEnd, EVENT_PRIORITY_LOW, [](IEvent* event) { DrawColViewer(); });
 }

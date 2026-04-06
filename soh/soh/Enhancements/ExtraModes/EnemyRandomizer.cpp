@@ -497,7 +497,7 @@ uint8_t GetRandomizedEnemy(PlayState* play, int16_t* actorId, s16* posX, s16* po
 
 void FixClubMoblinScale(IEvent* event) {
     OnActorInit* ev = reinterpret_cast<OnActorInit*>(event);
-    Actor* actor = (Actor*) ev->actor;
+    Actor* actor = (Actor*)ev->actor;
     if (actor->params == -1) {
         Actor_SetScale(actor, 0.014f);
     }

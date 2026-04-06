@@ -578,8 +578,7 @@ void TimeSaverOnVanillaBehaviorHandler(IEvent* event) {
                     OnActorUpdate* ev = reinterpret_cast<OnActorUpdate*>(event);
                     Actor* actor = static_cast<Actor*>(ev->actor);
                     if (actor->id == ACTOR_DEMO_IM &&
-                        (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.LearnSong"), IS_RANDO) ||
-                         IS_RANDO)) {
+                        (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.LearnSong"), IS_RANDO) || IS_RANDO)) {
                         DemoIm* demoIm = static_cast<DemoIm*>(ev->actor);
                         Player* player = GET_PLAYER(gPlayState);
                         player->stateFlags1 |= PLAYER_STATE1_IN_CUTSCENE;
@@ -892,36 +891,34 @@ void TimeSaverOnActorInitHandler(IEvent* event) {
     Actor* actor = static_cast<Actor*>(ev->actor);
 
     if (actor->id == ACTOR_EN_MA1 && gPlayState->sceneNum == SCENE_LON_LON_RANCH) {
-        enMa1UpdateHook =
-            REGISTER_LISTENER(OnActorUpdate, EVENT_PRIORITY_LOW, [](IEvent* event) {
-                OnActorUpdate* ev = reinterpret_cast<OnActorUpdate*>(event);
-                void* innerActorRef = ev->actor;
-                Actor* innerActor = static_cast<Actor*>(innerActorRef);
-                if (innerActor->id == ACTOR_EN_MA1 &&
-                    (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.LearnSong"), IS_RANDO) || IS_RANDO)) {
-                    EnMa1* enMa1 = static_cast<EnMa1*>(innerActorRef);
-                    if (enMa1->actionFunc == func_80AA106C) {
-                        enMa1->actionFunc = EnMa1_EndTeachSong;
-                        UNREGISTER_LISTENER(OnActorUpdate, enMa1UpdateHook);
-                        UNREGISTER_LISTENER(OnSceneInit, enMa1KillHook);
-                        enMa1UpdateHook = -1;
-                        enMa1KillHook = -1;
-                        // They've already learned the song
-                    } else if (enMa1->actionFunc == func_80AA0D88) {
-                        UNREGISTER_LISTENER(OnActorUpdate, enMa1UpdateHook);
-                        UNREGISTER_LISTENER(OnSceneInit, enMa1KillHook);
-                        enMa1UpdateHook = -1;
-                        enMa1KillHook = -1;
-                    }
+        enMa1UpdateHook = REGISTER_LISTENER(OnActorUpdate, EVENT_PRIORITY_LOW, [](IEvent* event) {
+            OnActorUpdate* ev = reinterpret_cast<OnActorUpdate*>(event);
+            void* innerActorRef = ev->actor;
+            Actor* innerActor = static_cast<Actor*>(innerActorRef);
+            if (innerActor->id == ACTOR_EN_MA1 &&
+                (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.LearnSong"), IS_RANDO) || IS_RANDO)) {
+                EnMa1* enMa1 = static_cast<EnMa1*>(innerActorRef);
+                if (enMa1->actionFunc == func_80AA106C) {
+                    enMa1->actionFunc = EnMa1_EndTeachSong;
+                    UNREGISTER_LISTENER(OnActorUpdate, enMa1UpdateHook);
+                    UNREGISTER_LISTENER(OnSceneInit, enMa1KillHook);
+                    enMa1UpdateHook = -1;
+                    enMa1KillHook = -1;
+                    // They've already learned the song
+                } else if (enMa1->actionFunc == func_80AA0D88) {
+                    UNREGISTER_LISTENER(OnActorUpdate, enMa1UpdateHook);
+                    UNREGISTER_LISTENER(OnSceneInit, enMa1KillHook);
+                    enMa1UpdateHook = -1;
+                    enMa1KillHook = -1;
                 }
-            });
-        enMa1KillHook =
-            REGISTER_LISTENER(OnSceneInit, EVENT_PRIORITY_LOW, [](IEvent* event) {
-                UNREGISTER_LISTENER(OnActorUpdate, enMa1UpdateHook);
-                UNREGISTER_LISTENER(OnSceneInit, enMa1KillHook);
-                enMa1UpdateHook = 0;
-                enMa1KillHook = 0;
-            });
+            }
+        });
+        enMa1KillHook = REGISTER_LISTENER(OnSceneInit, EVENT_PRIORITY_LOW, [](IEvent* event) {
+            UNREGISTER_LISTENER(OnActorUpdate, enMa1UpdateHook);
+            UNREGISTER_LISTENER(OnSceneInit, enMa1KillHook);
+            enMa1UpdateHook = 0;
+            enMa1KillHook = 0;
+        });
     }
 
     if (actor->id == ACTOR_EN_FU) {
@@ -974,13 +971,12 @@ void TimeSaverOnActorInitHandler(IEvent* event) {
                 enJjKillHook = -1;
             }
         });
-        enJjKillHook =
-            REGISTER_LISTENER(OnSceneInit, EVENT_PRIORITY_LOW, [](IEvent* event) {
-                UNREGISTER_LISTENER(OnActorUpdate, enJjUpdateHook);
-                UNREGISTER_LISTENER(OnSceneInit, enJjKillHook);
-                enJjUpdateHook = -1;
-                enJjKillHook = -1;
-            });
+        enJjKillHook = REGISTER_LISTENER(OnSceneInit, EVENT_PRIORITY_LOW, [](IEvent* event) {
+            UNREGISTER_LISTENER(OnActorUpdate, enJjUpdateHook);
+            UNREGISTER_LISTENER(OnSceneInit, enJjKillHook);
+            enJjUpdateHook = -1;
+            enJjKillHook = -1;
+        });
     }
 
     if (actor->id == ACTOR_EN_OWL && gPlayState->sceneNum == SCENE_ZORAS_RIVER &&
@@ -989,79 +985,75 @@ void TimeSaverOnActorInitHandler(IEvent* event) {
     }
 
     if (actor->id == ACTOR_BG_SPOT02_OBJECTS && actor->params == 2) {
-        bgSpot02UpdateHook =
-            REGISTER_LISTENER(OnActorUpdate, EVENT_PRIORITY_LOW, [](IEvent* event) {
-                OnActorUpdate* ev = reinterpret_cast<OnActorUpdate*>(event);
-                void* innerActorRef = ev->actor;
-                Actor* innerActor = static_cast<Actor*>(innerActorRef);
-                if (innerActor->id == ACTOR_BG_SPOT02_OBJECTS && innerActor->params == 2 &&
-                    (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), IS_RANDO))) {
-                    BgSpot02Objects* bgSpot02 = static_cast<BgSpot02Objects*>(innerActorRef);
-                    if (bgSpot02->actionFunc == func_808ACC34) {
-                        bgSpot02->actionFunc = func_808AC908;
-                        UNREGISTER_LISTENER(OnActorUpdate, bgSpot02UpdateHook);
-                        UNREGISTER_LISTENER(OnSceneInit, bgSpot02KillHook);
-                        bgSpot02UpdateHook = -1;
-                        bgSpot02KillHook = -1;
-                    }
+        bgSpot02UpdateHook = REGISTER_LISTENER(OnActorUpdate, EVENT_PRIORITY_LOW, [](IEvent* event) {
+            OnActorUpdate* ev = reinterpret_cast<OnActorUpdate*>(event);
+            void* innerActorRef = ev->actor;
+            Actor* innerActor = static_cast<Actor*>(innerActorRef);
+            if (innerActor->id == ACTOR_BG_SPOT02_OBJECTS && innerActor->params == 2 &&
+                (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), IS_RANDO))) {
+                BgSpot02Objects* bgSpot02 = static_cast<BgSpot02Objects*>(innerActorRef);
+                if (bgSpot02->actionFunc == func_808ACC34) {
+                    bgSpot02->actionFunc = func_808AC908;
+                    UNREGISTER_LISTENER(OnActorUpdate, bgSpot02UpdateHook);
+                    UNREGISTER_LISTENER(OnSceneInit, bgSpot02KillHook);
+                    bgSpot02UpdateHook = -1;
+                    bgSpot02KillHook = -1;
                 }
-            });
-        bgSpot02KillHook =
-            REGISTER_LISTENER(OnSceneInit, EVENT_PRIORITY_LOW, [](IEvent* event) {
-                UNREGISTER_LISTENER(OnActorUpdate, bgSpot02UpdateHook);
-                UNREGISTER_LISTENER(OnSceneInit, bgSpot02KillHook);
-                bgSpot02UpdateHook = -1;
-                bgSpot02KillHook = -1;
-            });
+            }
+        });
+        bgSpot02KillHook = REGISTER_LISTENER(OnSceneInit, EVENT_PRIORITY_LOW, [](IEvent* event) {
+            UNREGISTER_LISTENER(OnActorUpdate, bgSpot02UpdateHook);
+            UNREGISTER_LISTENER(OnSceneInit, bgSpot02KillHook);
+            bgSpot02UpdateHook = -1;
+            bgSpot02KillHook = -1;
+        });
     }
 
     if (actor->id == ACTOR_BG_SPOT03_TAKI) {
-        bgSpot03UpdateHook =
-            REGISTER_LISTENER(OnActorUpdate, EVENT_PRIORITY_LOW, [](IEvent* event) {
-                OnActorUpdate* ev = reinterpret_cast<OnActorUpdate*>(event);
-                void* innerActorRef = ev->actor;
-                Actor* innerActor = static_cast<Actor*>(innerActorRef);
+        bgSpot03UpdateHook = REGISTER_LISTENER(OnActorUpdate, EVENT_PRIORITY_LOW, [](IEvent* event) {
+            OnActorUpdate* ev = reinterpret_cast<OnActorUpdate*>(event);
+            void* innerActorRef = ev->actor;
+            Actor* innerActor = static_cast<Actor*>(innerActorRef);
 
-                if (innerActor->id != ACTOR_BG_SPOT03_TAKI) {
-                    return;
-                }
+            if (innerActor->id != ACTOR_BG_SPOT03_TAKI) {
+                return;
+            }
 
-                bool shouldKeepOpen = RAND_GET_OPTION(RSK_SLEEPING_WATERFALL) && IS_RANDO;
-                if (!shouldKeepOpen) {
-                    int enhancement = CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SleepingWaterfall"), 0);
-                    shouldKeepOpen =
-                        (enhancement == 2 &&
-                         ((CHECK_QUEST_ITEM(QUEST_SONG_LULLABY) && (INV_CONTENT(ITEM_OCARINA_TIME) != ITEM_NONE)))) ||
-                        (enhancement == 1 && Flags_GetEventChkInf(EVENTCHKINF_OPENED_ZORAS_DOMAIN));
-                }
+            bool shouldKeepOpen = RAND_GET_OPTION(RSK_SLEEPING_WATERFALL) && IS_RANDO;
+            if (!shouldKeepOpen) {
+                int enhancement = CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SleepingWaterfall"), 0);
+                shouldKeepOpen =
+                    (enhancement == 2 &&
+                     ((CHECK_QUEST_ITEM(QUEST_SONG_LULLABY) && (INV_CONTENT(ITEM_OCARINA_TIME) != ITEM_NONE)))) ||
+                    (enhancement == 1 && Flags_GetEventChkInf(EVENTCHKINF_OPENED_ZORAS_DOMAIN));
+            }
 
-                if (!shouldKeepOpen) {
-                    return;
-                }
+            if (!shouldKeepOpen) {
+                return;
+            }
 
-                BgSpot03Taki* bgSpot03 = static_cast<BgSpot03Taki*>(innerActorRef);
-                if (bgSpot03->actionFunc == BgSpot03Taki_HandleWaterfallState) {
-                    bgSpot03->actionFunc = BgSpot03Taki_KeepOpen;
-                    bgSpot03->state = WATERFALL_OPENED;
-                    bgSpot03->openingAlpha = 0.0f;
-                    Flags_SetSwitch(gPlayState, bgSpot03->switchFlag);
-                    func_8003EBF8(gPlayState, &gPlayState->colCtx.dyna, bgSpot03->dyna.bgId);
-                    BgSpot03Taki_ApplyOpeningAlpha(bgSpot03, 0);
-                    BgSpot03Taki_ApplyOpeningAlpha(bgSpot03, 1);
+            BgSpot03Taki* bgSpot03 = static_cast<BgSpot03Taki*>(innerActorRef);
+            if (bgSpot03->actionFunc == BgSpot03Taki_HandleWaterfallState) {
+                bgSpot03->actionFunc = BgSpot03Taki_KeepOpen;
+                bgSpot03->state = WATERFALL_OPENED;
+                bgSpot03->openingAlpha = 0.0f;
+                Flags_SetSwitch(gPlayState, bgSpot03->switchFlag);
+                func_8003EBF8(gPlayState, &gPlayState->colCtx.dyna, bgSpot03->dyna.bgId);
+                BgSpot03Taki_ApplyOpeningAlpha(bgSpot03, 0);
+                BgSpot03Taki_ApplyOpeningAlpha(bgSpot03, 1);
 
-                    UNREGISTER_LISTENER(OnActorUpdate, bgSpot03UpdateHook);
-                    UNREGISTER_LISTENER(OnSceneInit, bgSpot03KillHook);
-                    bgSpot03UpdateHook = -1;
-                    bgSpot03KillHook = -1;
-                }
-            });
-        bgSpot03KillHook =
-            REGISTER_LISTENER(OnSceneInit, EVENT_PRIORITY_LOW, [](IEvent* event) {
                 UNREGISTER_LISTENER(OnActorUpdate, bgSpot03UpdateHook);
                 UNREGISTER_LISTENER(OnSceneInit, bgSpot03KillHook);
                 bgSpot03UpdateHook = -1;
                 bgSpot03KillHook = -1;
-            });
+            }
+        });
+        bgSpot03KillHook = REGISTER_LISTENER(OnSceneInit, EVENT_PRIORITY_LOW, [](IEvent* event) {
+            UNREGISTER_LISTENER(OnActorUpdate, bgSpot03UpdateHook);
+            UNREGISTER_LISTENER(OnSceneInit, bgSpot03KillHook);
+            bgSpot03UpdateHook = -1;
+            bgSpot03KillHook = -1;
+        });
     }
 
     if (actor->id == ACTOR_EN_DNT_DEMO &&
@@ -1084,25 +1076,24 @@ void TimeSaverOnActorInitHandler(IEvent* event) {
 
     // Forest Temple purple poe fight speedup
     if (actor->id == ACTOR_EN_PO_SISTERS && actor->params == 28) {
-        enPoSistersUpdateHook =
-            REGISTER_LISTENER(OnActorUpdate, EVENT_PRIORITY_LOW, [](IEvent* event) {
-                OnActorUpdate* ev = reinterpret_cast<OnActorUpdate*>(event);
-                void* innerActorRef = ev->actor;
-                Actor* innerActor = static_cast<Actor*>(innerActorRef);
-                if (innerActor->id == ACTOR_EN_PO_SISTERS && innerActor->params == 28 &&
-                    (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), IS_RANDO))) {
-                    EnPoSisters* enPoSisters = static_cast<EnPoSisters*>(innerActorRef);
-                    if (enPoSisters->actionFunc == func_80ADB338) {
-                        enPoSisters->unk_19C = 0;
-                    }
+        enPoSistersUpdateHook = REGISTER_LISTENER(OnActorUpdate, EVENT_PRIORITY_LOW, [](IEvent* event) {
+            OnActorUpdate* ev = reinterpret_cast<OnActorUpdate*>(event);
+            void* innerActorRef = ev->actor;
+            Actor* innerActor = static_cast<Actor*>(innerActorRef);
+            if (innerActor->id == ACTOR_EN_PO_SISTERS && innerActor->params == 28 &&
+                (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), IS_RANDO))) {
+                EnPoSisters* enPoSisters = static_cast<EnPoSisters*>(innerActorRef);
+                if (enPoSisters->actionFunc == func_80ADB338) {
+                    enPoSisters->unk_19C = 0;
                 }
-            });
+            }
+        });
         enPoSistersKillHook = REGISTER_LISTENER(OnSceneInit, EVENT_PRIORITY_LOW, [](IEvent* event) mutable {
-                UNREGISTER_LISTENER(OnActorUpdate, enPoSistersUpdateHook);
-                UNREGISTER_LISTENER(OnSceneInit, enPoSistersKillHook);
-                enPoSistersUpdateHook = -1;
-                enPoSistersKillHook = -1;
-            });
+            UNREGISTER_LISTENER(OnActorUpdate, enPoSistersUpdateHook);
+            UNREGISTER_LISTENER(OnSceneInit, enPoSistersKillHook);
+            enPoSistersUpdateHook = -1;
+            enPoSistersKillHook = -1;
+        });
     }
 
     // Fire Temple Darunia cutscene

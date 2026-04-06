@@ -1014,14 +1014,14 @@ void TimeSplitWindow::InitElement() {
         }
     });
 
-    REGISTER_LISTENER(OnPlayerBottleUpdate, EVENT_PRIORITY_LOW, [](IEvent* event){
+    REGISTER_LISTENER(OnPlayerBottleUpdate, EVENT_PRIORITY_LOW, [](IEvent* event) {
         OnPlayerBottleUpdate* ev = reinterpret_cast<OnPlayerBottleUpdate*>(event);
         TimeSplitsItemSplitEvent(SPLIT_TYPE_UPGRADE, ev->contents);
     });
 
     REGISTER_LISTENER(OnBossDefeat, EVENT_PRIORITY_LOW, [](IEvent* event) {
         OnBossDefeat* ev = reinterpret_cast<OnBossDefeat*>(event);
-        Actor* bossActor = (Actor*) ev->actor;
+        Actor* bossActor = (Actor*)ev->actor;
         TimeSplitsItemSplitEvent(SPLIT_TYPE_BOSS, bossActor->id);
     });
 

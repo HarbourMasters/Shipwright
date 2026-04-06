@@ -176,8 +176,8 @@ void BuildShopMessage(IEvent* event) {
                           "\x08[[color]][[1]]%w  %y[[2]]_Rubine%w&Sonderangebot! %rNUR NOCH EINES VERFÜGBAR%w!\x0A\x02",
                           "\x08[[color]][[1]]%w  %y[[2]]_Rubis%w&Offre spéciale! %rDERNIER EN STOCK%w!\x0A\x02");
     } else if (*ev->textId >= TEXT_SHOP_ITEM_RANDOM_CONFIRM && *ev->textId <= TEXT_SHOP_ITEM_RANDOM_CONFIRM_END) {
-        rc = OTRGlobals::Instance->gRandomizer->GetCheckFromRandomizerInf(
-            static_cast<RandomizerInf>((*ev->textId - TEXT_SHOP_ITEM_RANDOM_CONFIRM) + RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1));
+        rc = OTRGlobals::Instance->gRandomizer->GetCheckFromRandomizerInf(static_cast<RandomizerInf>(
+            (*ev->textId - TEXT_SHOP_ITEM_RANDOM_CONFIRM) + RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1));
         msg = CustomMessage("\x08[[color]][[1]]%w  %y[[2]]_Rupees%w\x09\x1B%gBuy&Don't buy%w\x09\x02",
                             "\x08[[color]][[1]]%w  %y[[2]]_Rubine%w\x09\x1B%gKaufen&Nicht kaufen%w\x09\x02",
                             "\x08[[color]][[1]]%w  %y[[2]]_Rubis%w\x09\x1B%gAcheter&Ne pas acheter%w\x09\x02");

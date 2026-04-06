@@ -22,8 +22,9 @@ static void IncrementEnemyDefeatCount(GameplayStatCount countType) {
     gSaveContext.ship.stats.count[countType]++;
 }
 
-#define ENEMY_DEFEAT_COUNT(actorID, func) \
-    COND_ID_HOOK(OnEnemyDefeat, actorID, true, [](IEvent* ev) { func(static_cast<Actor*>(reinterpret_cast<OnEnemyDefeat*>(ev)->actor)); });
+#define ENEMY_DEFEAT_COUNT(actorID, func)      \
+    COND_ID_HOOK(OnEnemyDefeat, actorID, true, \
+                 [](IEvent* ev) { func(static_cast<Actor*>(reinterpret_cast<OnEnemyDefeat*>(ev)->actor)); });
 
 #define ENEMY_DEFEAT_COUNT_UNIQUE(actorID, countType) \
     COND_ID_HOOK(OnEnemyDefeat, actorID, true, [](IEvent* ev) { IncrementEnemyDefeatCount(countType); });

@@ -1211,7 +1211,9 @@ void ActorViewerWindow::InitElement() {
         // If the actor belongs to the selected category, we need to manually remove it, as it has not been removed from
         // the global actor array yet
         if (SohGui::mActorViewerWindow->category == actor->category) {
-            SohGui::mActorViewerWindow->list.erase(std::remove(SohGui::mActorViewerWindow->list.begin(), SohGui::mActorViewerWindow->list.end(), actor), SohGui::mActorViewerWindow->list.end());
+            SohGui::mActorViewerWindow->list.erase(
+                std::remove(SohGui::mActorViewerWindow->list.begin(), SohGui::mActorViewerWindow->list.end(), actor),
+                SohGui::mActorViewerWindow->list.end());
         }
         if (SohGui::mActorViewerWindow->display == actor) {
             SohGui::mActorViewerWindow->display = nullptr;

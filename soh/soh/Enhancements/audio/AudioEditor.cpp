@@ -498,7 +498,7 @@ void DrawTypeChip(SeqType type, std::string sequenceName) {
 }
 
 void AudioEditorRegisterOnSceneInitHook() {
-    REGISTER_LISTENER(OnSceneInit, EVENT_PRIORITY_LOW, [](IEvent* event){
+    REGISTER_LISTENER(OnSceneInit, EVENT_PRIORITY_LOW, [](IEvent* event) {
         if (gSaveContext.gameMode != GAMEMODE_END_CREDITS &&
             CVarGetInteger(CVAR_AUDIO("RandomizeAudioGenModes"), 0) == RANDOMIZE_ON_NEW_SCENE) {
 
@@ -508,7 +508,7 @@ void AudioEditorRegisterOnSceneInitHook() {
 }
 
 void AudioEditorRegisterOnGenerationCompletionHook() {
-    REGISTER_LISTENER(OnGenerationCompletion, EVENT_PRIORITY_LOW, [](IEvent* event){
+    REGISTER_LISTENER(OnGenerationCompletion, EVENT_PRIORITY_LOW, [](IEvent* event) {
         if (CVarGetInteger(CVAR_AUDIO("RandomizeAudioGenModes"), 0) == RANDOMIZE_ON_RANDO_GEN_ONLY) {
             AudioEditor_AutoRandomizeAll();
         }

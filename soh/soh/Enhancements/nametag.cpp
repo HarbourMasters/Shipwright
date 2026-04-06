@@ -343,17 +343,19 @@ void NameTag_RegisterHooks() {
     sRegisteredHooks = true;
 
     // Reorder tags every frame to mimic depth rendering
-    gameStatUpdateHookID = REGISTER_LISTENER(OnGameFrameUpdate, EVENT_PRIORITY_LOW, [](IEvent* event) { UpdateNameTags(); });
+    gameStatUpdateHookID =
+        REGISTER_LISTENER(OnGameFrameUpdate, EVENT_PRIORITY_LOW, [](IEvent* event) { UpdateNameTags(); });
 
     // Render name tags at the end of the Play World drawing
     drawHookID = REGISTER_LISTENER(OnPlayDrawEnd, EVENT_PRIORITY_LOW, [](IEvent* event) { DrawNameTags(); });
 
     // Remove all name tags on play state destroy as all actors are removed anyways
-    playDestroyHookID = REGISTER_LISTENER(OnPlayDestroy, EVENT_PRIORITY_LOW, [](IEvent* event) { RemoveAllNameTags(); });
+    playDestroyHookID =
+        REGISTER_LISTENER(OnPlayDestroy, EVENT_PRIORITY_LOW, [](IEvent* event) { RemoveAllNameTags(); });
 
     // Remove all name tags for actor on destroy
     actorDestroyHookID = REGISTER_LISTENER(OnActorDestroy, EVENT_PRIORITY_LOW, [](IEvent* event) {
         OnActorDestroy* ev = reinterpret_cast<OnActorDestroy*>(event);
-        NameTag_RemoveAllForActor((Actor*) ev->actor);
+        NameTag_RemoveAllForActor((Actor*)ev->actor);
     });
 }

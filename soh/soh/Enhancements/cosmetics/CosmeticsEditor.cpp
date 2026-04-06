@@ -2602,9 +2602,7 @@ void CosmeticsEditorWindow::DrawElement() {
 }
 
 void RegisterOnGameFrameUpdateHook() {
-    REGISTER_LISTENER(OnGameFrameUpdate, EVENT_PRIORITY_LOW, [](IEvent* event) {
-        CosmeticsUpdateTick();
-    })
+    REGISTER_LISTENER(OnGameFrameUpdate, EVENT_PRIORITY_LOW, [](IEvent* event) { CosmeticsUpdateTick(); })
 }
 
 void CosmeticsEditorWindow::InitElement() {

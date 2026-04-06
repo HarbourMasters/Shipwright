@@ -51,7 +51,7 @@ static void Sign_RandomizerDraw(Actor* actor, Color_RGBA8* primColor, Color_RGBA
 void Sign_RandomizerDrawSetup(IEvent* event) {
     OnActorUpdate* ev = reinterpret_cast<OnActorUpdate*>(event);
     GetItemCategory getItemCategory;
-    Actor* signActor = (Actor*) ev->actor;
+    Actor* signActor = (Actor*)ev->actor;
 
     // If not a randomized item or too far, don't draw
     if (!Sign_RandomizerHoldsItem(signActor, gPlayState) || signActor->xzDistToPlayer > 1000.0f) {

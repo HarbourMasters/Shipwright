@@ -463,7 +463,7 @@ void RandomizerOnItemReceiveHandler(IEvent* event) {
     if (loc->GetRandomizerCheck() == RC_SPIRIT_TEMPLE_SILVER_GAUNTLETS_CHEST &&
         !CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO)) {
         static ListenerID updateHook;
-        updateHook = REGISTER_LISTENER(OnPlayerUpdate, EVENT_PRIORITY_LOW, [](IEvent *event) {
+        updateHook = REGISTER_LISTENER(OnPlayerUpdate, EVENT_PRIORITY_LOW, [](IEvent* event) {
             Player* player = GET_PLAYER(gPlayState);
             if (player == NULL || Player_InBlockingCsMode(gPlayState, player) ||
                 player->stateFlags1 & PLAYER_STATE1_IN_ITEM_CS || player->stateFlags1 & PLAYER_STATE1_GETTING_ITEM ||
@@ -943,7 +943,7 @@ void RandomizerOnVanillaBehaviorHandler(IEvent* event) {
             break;
         case VB_MALON_RETURN_FROM_CASTLE:
             *ev->result = Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE) &&
-                      Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_POCKET_EGG);
+                          Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_POCKET_EGG);
             break;
         case VB_SEND_MALON_HOME:
             *ev->result = Flags_GetRandomizerInf(RAND_INF_TALON_SENT_MALON_HOME);
@@ -956,21 +956,21 @@ void RandomizerOnVanillaBehaviorHandler(IEvent* event) {
             break;
         case VB_OPEN_KOKIRI_FOREST:
             *ev->result = Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_KOKIRI_EMERALD_DEKU_TREE_DEAD) ||
-                      RAND_GET_OPTION(RSK_FOREST).IsNot(RO_CLOSED_FOREST_ON);
+                          RAND_GET_OPTION(RSK_FOREST).IsNot(RO_CLOSED_FOREST_ON);
             break;
         case VB_BE_ELIGIBLE_FOR_DARUNIAS_JOY_REWARD:
             *ev->result = !Flags_GetRandomizerInf(RAND_INF_DARUNIAS_JOY);
             break;
         case VB_BE_ELIGIBLE_FOR_LIGHT_ARROWS:
             *ev->result = LINK_IS_ADULT && (gEntranceTable[gSaveContext.entranceIndex].scene == SCENE_TEMPLE_OF_TIME) &&
-                      !Flags_GetEventChkInf(EVENTCHKINF_RETURNED_TO_TEMPLE_OF_TIME_WITH_ALL_MEDALLIONS) &&
-                      MeetsLACSRequirements();
+                          !Flags_GetEventChkInf(EVENTCHKINF_RETURNED_TO_TEMPLE_OF_TIME_WITH_ALL_MEDALLIONS) &&
+                          MeetsLACSRequirements();
             break;
         case VB_BE_ELIGIBLE_FOR_NOCTURNE_OF_SHADOW:
             *ev->result = !Flags_GetEventChkInf(EVENTCHKINF_BONGO_BONGO_ESCAPED_FROM_WELL) && LINK_IS_ADULT &&
-                      gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_KAKARIKO_VILLAGE &&
-                      CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST) && CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE) &&
-                      CHECK_QUEST_ITEM(QUEST_MEDALLION_WATER) && gSaveContext.cutsceneIndex < 0xFFF0;
+                          gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_KAKARIKO_VILLAGE &&
+                          CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST) && CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE) &&
+                          CHECK_QUEST_ITEM(QUEST_MEDALLION_WATER) && gSaveContext.cutsceneIndex < 0xFFF0;
             break;
         case VB_BE_ELIGIBLE_FOR_CHILD_ROLLING_GORON_REWARD: {
             // Don't require a bomb bag to get prize in rando
@@ -980,8 +980,9 @@ void RandomizerOnVanillaBehaviorHandler(IEvent* event) {
         case VB_BE_ELIGIBLE_FOR_MAGIC_BEANS_PURCHASE: {
             if (RAND_GET_OPTION(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_BEANS_ONLY) ||
                 RAND_GET_OPTION(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ALL)) {
-                *ev->result = gSaveContext.rupees >=
-                          OTRGlobals::Instance->gRandoContext->GetItemLocation(RC_ZR_MAGIC_BEAN_SALESMAN)->GetPrice();
+                *ev->result =
+                    gSaveContext.rupees >=
+                    OTRGlobals::Instance->gRandoContext->GetItemLocation(RC_ZR_MAGIC_BEAN_SALESMAN)->GetPrice();
             } else if (RAND_GET_OPTION(RSK_SKIP_PLANTING_BEANS)) {
                 *ev->result = gSaveContext.rupees >= 60;
             } else if (BEANS_BOUGHT == 9) {
@@ -1280,7 +1281,7 @@ void RandomizerOnVanillaBehaviorHandler(IEvent* event) {
         case VB_CHECK_RANDO_PRICE_OF_MEDIGORON: {
             if (EnGm_RandoCanGetMedigoronItem()) {
                 *ev->result = gSaveContext.rupees <
-                          OTRGlobals::Instance->gRandoContext->GetItemLocation(RC_GC_MEDIGORON)->GetPrice();
+                              OTRGlobals::Instance->gRandoContext->GetItemLocation(RC_GC_MEDIGORON)->GetPrice();
             }
             break;
         }
@@ -1487,7 +1488,7 @@ void RandomizerOnVanillaBehaviorHandler(IEvent* event) {
         }
         case VB_OFFER_BLUE_POTION: {
             *ev->result |= RAND_GET_OPTION(RSK_SHUFFLE_ADULT_TRADE).Is(RO_GENERIC_OFF) &&
-                       INV_CONTENT(ITEM_CLAIM_CHECK) == ITEM_CLAIM_CHECK;
+                           INV_CONTENT(ITEM_CLAIM_CHECK) == ITEM_CLAIM_CHECK;
             break;
         }
         case VB_OKARINA_TAG_COMPLETE: {
@@ -1517,7 +1518,7 @@ void RandomizerOnVanillaBehaviorHandler(IEvent* event) {
         case VB_GRANNY_SAY_INSUFFICIENT_RUPEES: {
             if (EnDs_RandoCanGetGrannyItem()) {
                 *ev->result = gSaveContext.rupees <
-                          OTRGlobals::Instance->gRandoContext->GetItemLocation(RC_KAK_GRANNYS_SHOP)->GetPrice();
+                              OTRGlobals::Instance->gRandoContext->GetItemLocation(RC_KAK_GRANNYS_SHOP)->GetPrice();
             }
             break;
         }
@@ -2120,12 +2121,12 @@ void RandomizerOnActorInitHandler(IEvent* event) {
         if (scrubIdentity.identity.randomizerCheck != RC_UNKNOWN_CHECK) {
             // DNS uses pointers so we're creating our own entry instead of modifying the original
             ObjectExtension::GetInstance().Set<DnsItemEntry>(actor, std::move(DnsItemEntry{
-                                                                           enDns->dnsItemEntry->itemPrice,
-                                                                           1,
-                                                                           scrubIdentity.getItemId,
-                                                                           EnDns_RandomizerPurchaseableCheck,
-                                                                           EnDns_RandomizerPurchase,
-                                                                       }));
+                                                                        enDns->dnsItemEntry->itemPrice,
+                                                                        1,
+                                                                        scrubIdentity.getItemId,
+                                                                        EnDns_RandomizerPurchaseableCheck,
+                                                                        EnDns_RandomizerPurchase,
+                                                                    }));
             enDns->dnsItemEntry = ObjectExtension::GetInstance().Get<DnsItemEntry>(actor);
 
             if (scrubIdentity.itemPrice != -1) {
@@ -2138,23 +2139,21 @@ void RandomizerOnActorInitHandler(IEvent* event) {
             static ListenerID enDnsUpdateHook = -1;
             static ListenerID enDnsKillHook = -1;
             if (enDnsUpdateHook == -1) {
-                enDnsUpdateHook =
-                    REGISTER_LISTENER(OnActorUpdate, EVENT_PRIORITY_LOW, [](IEvent* event) {
-                        OnActorUpdate* ev = reinterpret_cast<OnActorUpdate*>(event);
-                        Actor* innerActor = static_cast<Actor*>(ev->actor);
-                        if (innerActor->id == ACTOR_EN_DNS) {
-                            if (ObjectExtension::GetInstance().Has<ScrubIdentity>(innerActor)) {
-                                innerActor->textId = TEXT_SCRUB_RANDOM;
-                            }
+                enDnsUpdateHook = REGISTER_LISTENER(OnActorUpdate, EVENT_PRIORITY_LOW, [](IEvent* event) {
+                    OnActorUpdate* ev = reinterpret_cast<OnActorUpdate*>(event);
+                    Actor* innerActor = static_cast<Actor*>(ev->actor);
+                    if (innerActor->id == ACTOR_EN_DNS) {
+                        if (ObjectExtension::GetInstance().Has<ScrubIdentity>(innerActor)) {
+                            innerActor->textId = TEXT_SCRUB_RANDOM;
                         }
-                    });
-                enDnsKillHook =
-                    REGISTER_LISTENER(OnSceneInit, EVENT_PRIORITY_LOW, [](IEvent* event) {
-                        UNREGISTER_LISTENER(OnActorUpdate, enDnsUpdateHook);
-                        UNREGISTER_LISTENER(OnSceneInit, enDnsKillHook);
-                        enDnsUpdateHook = -1;
-                        enDnsKillHook = -1;
-                    });
+                    }
+                });
+                enDnsKillHook = REGISTER_LISTENER(OnSceneInit, EVENT_PRIORITY_LOW, [](IEvent* event) {
+                    UNREGISTER_LISTENER(OnActorUpdate, enDnsUpdateHook);
+                    UNREGISTER_LISTENER(OnSceneInit, enDnsKillHook);
+                    enDnsUpdateHook = -1;
+                    enDnsKillHook = -1;
+                });
             }
         }
     }
@@ -2756,39 +2755,36 @@ static void RandomizerRegisterHooks() {
             Entrance_SetSavewarpEntrance();
         }
 
-        onFlagSetHook =
-            REGISTER_LISTENER(OnFlagSet, EVENT_PRIORITY_LOW, RandomizerOnFlagSetHandler);
-        onSceneFlagSetHook =
-            REGISTER_LISTENER(OnSceneFlagSet, EVENT_PRIORITY_LOW, RandomizerOnSceneFlagSetHandler);
-        onPlayerUpdateForRCQueueHook = REGISTER_LISTENER(OnPlayerUpdate, EVENT_PRIORITY_LOW, [](IEvent* event){ RandomizerOnPlayerUpdateForRCQueueHandler(); });
-        onPlayerUpdateForItemQueueHook = REGISTER_LISTENER(OnPlayerUpdate, EVENT_PRIORITY_LOW,  
-            [](IEvent* event){ RandomizerOnPlayerUpdateForItemQueueHandler(); });
-        onItemReceiveHook =
-            REGISTER_LISTENER(OnItemReceive, EVENT_PRIORITY_LOW, RandomizerOnItemReceiveHandler);
-        onDialogMessageHook = REGISTER_LISTENER(OnDialogMessage, EVENT_PRIORITY_LOW,  
-            [](IEvent* event){ RandomizerOnDialogMessageHandler(); });
-        onVanillaBehaviorHook = REGISTER_LISTENER(OnVanillaBehavior, EVENT_PRIORITY_LOW, RandomizerOnVanillaBehaviorHandler);
-        onSceneInitHook =
-            REGISTER_LISTENER(OnSceneInit, EVENT_PRIORITY_LOW, RandomizerOnSceneInitHandler);
-        afterSceneCommandsHook = REGISTER_LISTENER(AfterSceneCommands, EVENT_PRIORITY_LOW, RandomizerAfterSceneCommandsHandler);
-        onActorInitHook =
-            REGISTER_LISTENER(OnActorInit, EVENT_PRIORITY_LOW, RandomizerOnActorInitHandler);
-        onActorUpdateHook =
-            REGISTER_LISTENER(OnActorUpdate, EVENT_PRIORITY_LOW, RandomizerOnActorUpdateHandler);
-        onPlayerUpdateHook =
-            REGISTER_LISTENER(OnPlayerUpdate, EVENT_PRIORITY_LOW, [](IEvent* event){ RandomizerOnPlayerUpdateHandler(); });
-        onGameFrameUpdateHook = REGISTER_LISTENER(OnGameFrameUpdate, EVENT_PRIORITY_LOW,  
-            [](IEvent* event){ RandomizerOnGameFrameUpdateHandler(); });
-        onSceneSpawnActorsHook = REGISTER_LISTENER(OnSceneSpawnActors, EVENT_PRIORITY_LOW,  
-            [](IEvent* event){ RandomizerOnSceneSpawnActorsHandler(); });
-        onPlayDestroyHook =
-            REGISTER_LISTENER(OnPlayDestroy, EVENT_PRIORITY_LOW, [](IEvent* event){ RandomizerOnPlayDestroyHandler(); });
+        onFlagSetHook = REGISTER_LISTENER(OnFlagSet, EVENT_PRIORITY_LOW, RandomizerOnFlagSetHandler);
+        onSceneFlagSetHook = REGISTER_LISTENER(OnSceneFlagSet, EVENT_PRIORITY_LOW, RandomizerOnSceneFlagSetHandler);
+        onPlayerUpdateForRCQueueHook = REGISTER_LISTENER(
+            OnPlayerUpdate, EVENT_PRIORITY_LOW, [](IEvent* event) { RandomizerOnPlayerUpdateForRCQueueHandler(); });
+        onPlayerUpdateForItemQueueHook = REGISTER_LISTENER(
+            OnPlayerUpdate, EVENT_PRIORITY_LOW, [](IEvent* event) { RandomizerOnPlayerUpdateForItemQueueHandler(); });
+        onItemReceiveHook = REGISTER_LISTENER(OnItemReceive, EVENT_PRIORITY_LOW, RandomizerOnItemReceiveHandler);
+        onDialogMessageHook = REGISTER_LISTENER(OnDialogMessage, EVENT_PRIORITY_LOW,
+                                                [](IEvent* event) { RandomizerOnDialogMessageHandler(); });
+        onVanillaBehaviorHook =
+            REGISTER_LISTENER(OnVanillaBehavior, EVENT_PRIORITY_LOW, RandomizerOnVanillaBehaviorHandler);
+        onSceneInitHook = REGISTER_LISTENER(OnSceneInit, EVENT_PRIORITY_LOW, RandomizerOnSceneInitHandler);
+        afterSceneCommandsHook =
+            REGISTER_LISTENER(AfterSceneCommands, EVENT_PRIORITY_LOW, RandomizerAfterSceneCommandsHandler);
+        onActorInitHook = REGISTER_LISTENER(OnActorInit, EVENT_PRIORITY_LOW, RandomizerOnActorInitHandler);
+        onActorUpdateHook = REGISTER_LISTENER(OnActorUpdate, EVENT_PRIORITY_LOW, RandomizerOnActorUpdateHandler);
+        onPlayerUpdateHook = REGISTER_LISTENER(OnPlayerUpdate, EVENT_PRIORITY_LOW,
+                                               [](IEvent* event) { RandomizerOnPlayerUpdateHandler(); });
+        onGameFrameUpdateHook = REGISTER_LISTENER(OnGameFrameUpdate, EVENT_PRIORITY_LOW,
+                                                  [](IEvent* event) { RandomizerOnGameFrameUpdateHandler(); });
+        onSceneSpawnActorsHook = REGISTER_LISTENER(OnSceneSpawnActors, EVENT_PRIORITY_LOW,
+                                                   [](IEvent* event) { RandomizerOnSceneSpawnActorsHandler(); });
+        onPlayDestroyHook = REGISTER_LISTENER(OnPlayDestroy, EVENT_PRIORITY_LOW,
+                                              [](IEvent* event) { RandomizerOnPlayDestroyHandler(); });
         onExitGameHook =
-            REGISTER_LISTENER(OnExitGame, EVENT_PRIORITY_LOW, [](IEvent* event){ RandomizerOnExitGameHandler(); });
-        onKaleidoUpdateHook = REGISTER_LISTENER(OnKaleidoscopeUpdate, EVENT_PRIORITY_LOW, [](IEvent* event){
-            RandomizerOnKaleidoscopeUpdateHandler(); });
-        onCuccoOrChickenHatchHook = REGISTER_LISTENER(OnCuccoOrChickenHatch, EVENT_PRIORITY_LOW, [](IEvent* event){
-            RandomizerOnCuccoOrChickenHatch(); });
+            REGISTER_LISTENER(OnExitGame, EVENT_PRIORITY_LOW, [](IEvent* event) { RandomizerOnExitGameHandler(); });
+        onKaleidoUpdateHook = REGISTER_LISTENER(OnKaleidoscopeUpdate, EVENT_PRIORITY_LOW,
+                                                [](IEvent* event) { RandomizerOnKaleidoscopeUpdateHandler(); });
+        onCuccoOrChickenHatchHook = REGISTER_LISTENER(OnCuccoOrChickenHatch, EVENT_PRIORITY_LOW,
+                                                      [](IEvent* event) { RandomizerOnCuccoOrChickenHatch(); });
 
         if (RAND_GET_OPTION(RSK_FISHSANITY).IsNot(RO_FISHSANITY_OFF)) {
             OTRGlobals::Instance->gRandoContext->GetFishsanity()->InitializeFromSave();

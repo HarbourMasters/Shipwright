@@ -200,8 +200,7 @@ void OnKaleidoUpdateImpl(IEvent* event) {
         if (pauseCtx->unk_1EC == 1) {
             // prompt
             if (prevPromptChoice != pauseCtx->promptChoice) {
-                auto prompt =
-                    GetParameritizedText(pauseCtx->promptChoice == 0 ? "yes" : "no", TEXT_BANK_MISC, nullptr);
+                auto prompt = GetParameritizedText(pauseCtx->promptChoice == 0 ? "yes" : "no", TEXT_BANK_MISC, nullptr);
                 if (prevPromptChoice == -1) {
                     auto translation = GetParameritizedText("save_prompt", TEXT_BANK_KALEIDO, nullptr);
                     SpeechSynthesizer::Instance->Speak((translation + " - " + prompt).c_str(), GetLanguageCode());
@@ -245,8 +244,7 @@ void OnKaleidoUpdateImpl(IEvent* event) {
                         GetParameritizedText(pauseCtx->promptChoice == 0 ? "yes" : "no", TEXT_BANK_MISC, nullptr);
                     if (prevPromptChoice == -1) {
                         auto translation = GetParameritizedText("save_prompt", TEXT_BANK_KALEIDO, nullptr);
-                        SpeechSynthesizer::Instance->Speak((translation + " - " + prompt).c_str(),
-                                                           GetLanguageCode());
+                        SpeechSynthesizer::Instance->Speak((translation + " - " + prompt).c_str(), GetLanguageCode());
                     } else {
                         SpeechSynthesizer::Instance->Speak(prompt.c_str(), GetLanguageCode());
                     }
@@ -271,8 +269,7 @@ void OnKaleidoUpdateImpl(IEvent* event) {
                         GetParameritizedText(pauseCtx->promptChoice == 0 ? "yes" : "no", TEXT_BANK_MISC, nullptr);
                     if (prevPromptChoice == -1) {
                         auto translation = GetParameritizedText("continue_game", TEXT_BANK_KALEIDO, nullptr);
-                        SpeechSynthesizer::Instance->Speak((translation + " - " + prompt).c_str(),
-                                                           GetLanguageCode());
+                        SpeechSynthesizer::Instance->Speak((translation + " - " + prompt).c_str(), GetLanguageCode());
                     } else {
                         SpeechSynthesizer::Instance->Speak(prompt.c_str(), GetLanguageCode());
                     }
@@ -408,8 +405,7 @@ void OnKaleidoUpdateImpl(IEvent* event) {
                     arg[0] = '\0';
             }
 
-            if (pauseCtx->cursorItem[PAUSE_ITEM] == PAUSE_ITEM_NONE ||
-                pauseCtx->cursorItem[PAUSE_ITEM] == ITEM_NONE) {
+            if (pauseCtx->cursorItem[PAUSE_ITEM] == PAUSE_ITEM_NONE || pauseCtx->cursorItem[PAUSE_ITEM] == ITEM_NONE) {
                 prevCursorIndex = -1;
                 return;
             }
@@ -428,8 +424,7 @@ void OnKaleidoUpdateImpl(IEvent* event) {
             if (assignedTo != -1) {
                 auto button = GetParameritizedText(buttonNames[assignedTo], TEXT_BANK_MISC, nullptr);
                 auto translation = GetParameritizedText("assigned_to", TEXT_BANK_KALEIDO, button.c_str());
-                SpeechSynthesizer::Instance->Speak((itemTranslation + " - " + translation).c_str(),
-                                                   GetLanguageCode());
+                SpeechSynthesizer::Instance->Speak((itemTranslation + " - " + translation).c_str(), GetLanguageCode());
             } else {
                 SpeechSynthesizer::Instance->Speak(itemTranslation.c_str(), GetLanguageCode());
             }
@@ -449,8 +444,7 @@ void OnKaleidoUpdateImpl(IEvent* event) {
 
                     // Cursor is on a dungeon floor position
                     if (cursorPoint >= 3 && cursorPoint < 11) {
-                        int floorID =
-                            gMapData->floorID[gPlayState->interfaceCtx.unk_25A][pauseCtx->dungeonMapSlot - 3];
+                        int floorID = gMapData->floorID[gPlayState->interfaceCtx.unk_25A][pauseCtx->dungeonMapSlot - 3];
                         // Normalize so F1 == 0, and negative numbers are basement levels
                         int normalizedFloor = (floorID * -1) + 8;
                         if (normalizedFloor >= 0) {
@@ -529,8 +523,7 @@ void OnKaleidoUpdateImpl(IEvent* event) {
             if (assignedTo != -1) {
                 auto button = GetParameritizedText(buttonNames[assignedTo], TEXT_BANK_MISC, nullptr);
                 auto translation = GetParameritizedText("assigned_to", TEXT_BANK_KALEIDO, button.c_str());
-                SpeechSynthesizer::Instance->Speak((itemTranslation + " - " + translation).c_str(),
-                                                   GetLanguageCode());
+                SpeechSynthesizer::Instance->Speak((itemTranslation + " - " + translation).c_str(), GetLanguageCode());
             } else {
                 SpeechSynthesizer::Instance->Speak(itemTranslation.c_str(), GetLanguageCode());
             }
@@ -600,24 +593,24 @@ void RegisterOnUpdateMainMenuSelection() {
 
     REGISTER_LISTENER(OnUpdateFileSelectConfirmationSelection, EVENT_PRIORITY_LOW, [](IEvent* event) {
         OnUpdateFileSelectConfirmationSelection* ev = reinterpret_cast<OnUpdateFileSelectConfirmationSelection*>(event);
-            if (!CVarGetInteger(CVAR_SETTING("A11yTTS"), 0))
-                return;
+        if (!CVarGetInteger(CVAR_SETTING("A11yTTS"), 0))
+            return;
 
-            switch (ev->optionIndex) {
-                case FS_BTN_CONFIRM_YES: {
-                    auto translation = GetParameritizedText("confirm", TEXT_BANK_FILECHOOSE, nullptr);
-                    SpeechSynthesizer::Instance->Speak(translation.c_str(), GetLanguageCode());
-                    break;
-                }
-                case FS_BTN_CONFIRM_QUIT: {
-                    auto translation = GetParameritizedText("quit", TEXT_BANK_FILECHOOSE, nullptr);
-                    SpeechSynthesizer::Instance->Speak(translation.c_str(), GetLanguageCode());
-                    break;
-                }
-                default:
-                    break;
+        switch (ev->optionIndex) {
+            case FS_BTN_CONFIRM_YES: {
+                auto translation = GetParameritizedText("confirm", TEXT_BANK_FILECHOOSE, nullptr);
+                SpeechSynthesizer::Instance->Speak(translation.c_str(), GetLanguageCode());
+                break;
             }
-        });
+            case FS_BTN_CONFIRM_QUIT: {
+                auto translation = GetParameritizedText("quit", TEXT_BANK_FILECHOOSE, nullptr);
+                SpeechSynthesizer::Instance->Speak(translation.c_str(), GetLanguageCode());
+                break;
+            }
+            default:
+                break;
+        }
+    });
 
     REGISTER_LISTENER(OnUpdateFileCopySelection, EVENT_PRIORITY_LOW, [](IEvent* event) {
         OnUpdateFileCopySelection* ev = reinterpret_cast<OnUpdateFileCopySelection*>(event);
@@ -652,7 +645,7 @@ void RegisterOnUpdateMainMenuSelection() {
     });
 
     REGISTER_LISTENER(OnUpdateFileCopyConfirmationSelection, EVENT_PRIORITY_LOW, [](IEvent* event) {
-    OnUpdateFileCopySelection* ev = reinterpret_cast<OnUpdateFileCopySelection*>(event);
+        OnUpdateFileCopySelection* ev = reinterpret_cast<OnUpdateFileCopySelection*>(event);
         if (!CVarGetInteger(CVAR_SETTING("A11yTTS"), 0))
             return;
 
