@@ -103,7 +103,7 @@ set(PROJECT_NAME soh)
 # Sources
 ################################################################################
 configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/src/boot/build.c.in ${CMAKE_CURRENT_SOURCE_DIR}/src/boot/build.c @ONLY)
-configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/properties.h.in ${CMAKE_CURRENT_SOURCE_DIR}/properties.h @ONLY)
+ configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/properties.h.in ${CMAKE_CURRENT_SOURCE_DIR}/properties.h @ONLY)
 
 set(Header_Files "resource.h")
 source_group("headers" FILES ${Header_Files})
@@ -637,7 +637,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
     link_libraries(OpusFile::opusfile CONFIG REQUIRED)
     if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
         set(ADDITIONAL_LIBRARY_DEPENDENCIES
-            "libultraship;"
+            "$<LINK_LIBRARY:WHOLE_ARCHIVE,libultraship>;"
             "ZAPDLib;"
             "glu32;"
             "SDL2::SDL2;"
@@ -657,7 +657,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
         )
     elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
         set(ADDITIONAL_LIBRARY_DEPENDENCIES
-            "libultraship;"
+            "$<LINK_LIBRARY:WHOLE_ARCHIVE,libultraship>;"
             "ZAPDLib;"
             "glu32;"
             "SDL2::SDL2;"
@@ -674,7 +674,7 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "NintendoSwitch")
     set(THREADS_PREFER_PTHREAD_FLAG ON)
     find_package(Threads REQUIRED)
     set(ADDITIONAL_LIBRARY_DEPENDENCIES
-        "libultraship;"
+        "$<LINK_LIBRARY:WHOLE_ARCHIVE,libultraship>;"
         SDL2::SDL2
         -lglad
         Threads::Threads
@@ -682,7 +682,7 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "NintendoSwitch")
 elseif(CMAKE_SYSTEM_NAME STREQUAL "CafeOS")
     find_package(SDL2 REQUIRED)
     set(ADDITIONAL_LIBRARY_DEPENDENCIES
-        "libultraship;"
+        "$<LINK_LIBRARY:WHOLE_ARCHIVE,libultraship>;"
         SDL2::SDL2-static
 
         "$<$<CONFIG:Debug>:-Wl,--wrap=abort>"
@@ -699,7 +699,7 @@ else()
     find_package(Opus REQUIRED)
     find_package(OpusFile REQUIRED)
      set(ADDITIONAL_LIBRARY_DEPENDENCIES
-    "libultraship;"
+        "$<LINK_LIBRARY:WHOLE_ARCHIVE,libultraship>;"
         "ZAPDLib;"
         SDL2::SDL2
         "Ogg::ogg"

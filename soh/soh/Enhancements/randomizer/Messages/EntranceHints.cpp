@@ -1,6 +1,7 @@
 #include "soh/Enhancements/randomizer/entrance.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance_tracker.h"
 #include <soh/OTRGlobals.h>
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 extern "C" {
 #include <variables.h>
@@ -15,10 +16,11 @@ extern PlayState* gPlayState;
     (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("EntrancesOnSigns"), 0) == 1)
 // clang-format on
 
-void BuildEntranceHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
+void BuildEntranceHintMessage(IEvent* event) {
+    OnOpenText* ev = reinterpret_cast<OnOpenText*>(event);
     auto ctx = OTRGlobals::Instance->gRandoContext;
     s16 entrance = -1;
-    switch (*textId) {
+    switch (*ev->textId) {
         case TEXT_WATERFALL:
             entrance = ENTR_ZORAS_DOMAIN_ENTRANCE;
             break;
@@ -148,7 +150,7 @@ void BuildEntranceHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
         auto entranceCtx = ctx->GetEntranceShuffler();
         for (size_t i = 0; i < ENTRANCE_OVERRIDES_MAX_COUNT; i++) {
             if (Entrance_EntranceIsNull(&entranceCtx->entranceOverrides[i])) {
-                *loadFromMessageTable = true;
+                *ev->loadFromMessageTable = true;
                 return;
             }
             if (entranceCtx->entranceOverrides[i].index == entrance) {
@@ -159,7 +161,7 @@ void BuildEntranceHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
                 msg.Replace("[[name]]", data->destination);
                 msg.SetTextBoxType(TEXTBOX_TYPE_WOODEN);
                 msg.SetTextBoxPosition(TEXTBOX_POS_BOTTOM);
-                *loadFromMessageTable = false;
+                *ev->loadFromMessageTable = false;
                 msg.AutoFormat();
                 msg.LoadIntoFont();
                 return;

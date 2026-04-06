@@ -4,7 +4,9 @@
 #define GameInteractor_h
 
 #include "libultraship/libultraship.h"
+#include <libultraship/bridge.h>
 #include "vanilla-behavior/GIVanillaBehavior.h"
+#include "EventSystem_List.h"
 #include <z64.h>
 
 typedef enum {
@@ -151,42 +153,42 @@ struct HookInfo {
 #define GET_CURRENT_REGISTERING_INFO(type) (HookRegisteringInfo{})
 #endif
 
-#define REGISTER_VB_SHOULD(flag, body)                                                  \
-    GameInteractor::Instance->RegisterGameHookForID<GameInteractor::OnVanillaBehavior>( \
-        flag, [](GIVanillaBehavior _, bool* should, va_list _originalArgs) {            \
-            va_list args;                                                               \
-            va_copy(args, _originalArgs);                                               \
-            body;                                                                       \
-            va_end(args);                                                               \
-        })
+#define REGISTER_VB_SHOULD(flagToCheck, body)                                    \
+    REGISTER_LISTENER(OnVanillaBehavior, EVENT_PRIORITY_LOW, [](IEvent* event) { \
+        auto* vbEvent = reinterpret_cast<OnVanillaBehavior*>(event);             \
+        if (vbEvent->flag == flagToCheck) {                                      \
+            GIVanillaBehavior _ = vbEvent->flag;                                 \
+            bool* should = vbEvent->result;                                      \
+            va_list args;                                                        \
+            va_copy(args, vbEvent->originalArgs);                                \
+            body;                                                                \
+            va_end(args);                                                        \
+        }                                                                        \
+    })
 
-#define COND_HOOK(hookType, condition, body)                                                     \
-    {                                                                                            \
-        static HOOK_ID hookId = 0;                                                               \
-        GameInteractor::Instance->UnregisterGameHook<GameInteractor::hookType>(hookId);          \
-        hookId = 0;                                                                              \
-        if (condition) {                                                                         \
-            hookId = GameInteractor::Instance->RegisterGameHook<GameInteractor::hookType>(body); \
-        }                                                                                        \
+#define COND_HOOK(eventId, condition, body)                                    \
+    {                                                                          \
+        static ListenerID listenerId = 0;                                      \
+        if (listenerId != 0) {                                                 \
+            UNREGISTER_LISTENER(eventId, listenerId);                          \
+            listenerId = 0;                                                    \
+        }                                                                      \
+        if (condition) {                                                       \
+            listenerId = REGISTER_LISTENER(eventId, EVENT_PRIORITY_LOW, body); \
+        }                                                                      \
     }
-#define COND_ID_HOOK(hookType, id, condition, body)                                                       \
-    {                                                                                                     \
-        static HOOK_ID hookId = 0;                                                                        \
-        GameInteractor::Instance->UnregisterGameHookForID<GameInteractor::hookType>(hookId);              \
-        hookId = 0;                                                                                       \
-        if (condition) {                                                                                  \
-            hookId = GameInteractor::Instance->RegisterGameHookForID<GameInteractor::hookType>(id, body); \
-        }                                                                                                 \
+#define COND_ID_HOOK(eventId, id, condition, body)     \
+    {                                                  \
+        static ListenerID listenerId = 0;              \
+        if (listenerId != 0) {                         \
+            UNREGISTER_LISTENER(eventId, listenerId);  \
+            listenerId = 0;                            \
+        }                                              \
+        if (condition) {                               \
+            listenerId = REGISTER_VB_SHOULD(id, body); \
+        }                                              \
     }
-#define COND_VB_SHOULD(id, condition, body)                                                           \
-    {                                                                                                 \
-        static HOOK_ID hookId = 0;                                                                    \
-        GameInteractor::Instance->UnregisterGameHookForID<GameInteractor::OnVanillaBehavior>(hookId); \
-        hookId = 0;                                                                                   \
-        if (condition) {                                                                              \
-            hookId = REGISTER_VB_SHOULD(id, body);                                                    \
-        }                                                                                             \
-    }
+#define COND_VB_SHOULD(flag, condition, body) COND_ID_HOOK(OnVanillaBehavior, flag, condition, body)
 
 class GameInteractor {
   public:
@@ -581,6 +583,8 @@ class GameInteractor {
                                                            std::string nameTag = "");
     };
 };
+
+void EventSystem_Register();
 
 #undef GET_CURRENT_REGISTERING_INFO
 

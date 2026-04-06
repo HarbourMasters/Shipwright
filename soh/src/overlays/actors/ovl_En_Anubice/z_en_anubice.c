@@ -316,7 +316,7 @@ void EnAnubice_SetupDie(EnAnubice* this, PlayState* play) {
     }
 
     this->actionFunc = EnAnubice_Die;
-    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+    CALL_EVENT(OnEnemyDefeat, &this->actor);
 }
 
 void EnAnubice_Die(EnAnubice* this, PlayState* play) {

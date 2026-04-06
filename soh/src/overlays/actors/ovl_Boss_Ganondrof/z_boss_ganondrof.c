@@ -1226,7 +1226,7 @@ void BossGanondrof_CollisionCheck(BossGanondrof* this, PlayState* play) {
                         if ((s8)this->actor.colChkInfo.health <= 0) {
                             BossGanondrof_SetupDeath(this, play);
                             Enemy_StartFinishingBlow(play, &this->actor);
-                            GameInteractor_ExecuteOnBossDefeat(&this->actor);
+                            CALL_EVENT(OnBossDefeat, &this->actor);
                             return;
                         }
                     }

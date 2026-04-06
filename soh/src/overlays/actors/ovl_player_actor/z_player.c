@@ -2079,7 +2079,7 @@ void Player_ProcessControlStick(PlayState* play, Player* this) {
         direction = (u16)((s16)(sControlStickWorldYaw - this->actor.shape.rot.y) + 0x2000) >> 14;
     }
 
-    GameInteractor_ExecuteOnPlayerProcessStick();
+    CALL_EVENT(OnPlayerProcessStick);
 
     this->controlStickSpinAngles[this->controlStickDataIndex] = spinAngle;
     this->controlStickDirections[this->controlStickDataIndex] = direction;
@@ -6481,7 +6481,7 @@ s32 Player_ActionHandler_11(Player* this, PlayState* play) {
         Player_DetachHeldActor(play, this);
 
         if (Player_SetupAction(play, this, Player_Action_80843188, 0)) {
-            GameInteractor_ExecuteOnPlayerHoldUpShield();
+            CALL_EVENT(OnPlayerHoldUpShield);
 
             this->stateFlags1 |= PLAYER_STATE1_SHIELDING;
 
@@ -9296,7 +9296,7 @@ void Player_Action_80843188(Player* this, PlayState* play) {
         sp50 = sControlInput->rel.stick_x * (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0) ? 120 : -120) *
                (CVarGetInteger(CVAR_SETTING("Controls.InvertShieldAimingXAxis"), 0) ? -1 : 1);
         sp4E = this->actor.shape.rot.y - Camera_GetInputDirYaw(GET_ACTIVE_CAM(play));
-        GameInteractor_ExecuteOnPlayerShieldControl(&sp50, &sp54);
+        CALL_EVENT(OnPlayerShieldControl, &sp50, &sp54);
 
         sp40 = Math_CosS(sp4E);
         sp4C = (Math_SinS(sp4E) * sp50) + (sp54 * sp40);
@@ -9845,7 +9845,7 @@ void Player_Action_Roll(Player* this, PlayState* play) {
                     this->av2.bonked = 1;
 
                     gSaveContext.ship.stats.count[COUNT_BONKS]++;
-                    GameInteractor_ExecuteOnPlayerBonk();
+                    CALL_EVENT(OnPlayerBonk);
 
                     return;
                 }
@@ -12389,7 +12389,7 @@ void Player_Update(Actor* thisx, PlayState* play) {
         // func_8002F974(&player->actor, NA_SE_EV_WIND_TRAP - SFX_FLAG);
     }
 
-    GameInteractor_ExecuteOnPlayerUpdate();
+    CALL_EVENT(OnPlayerUpdate();
 }
 
 typedef struct BunnyEarKinematics {
@@ -12651,7 +12651,7 @@ s16 func_8084ABD8(PlayState* play, Player* this, s32 arg2, s16 arg3) {
     f32 xAxisMulti = CVarGetFloat(CVAR_SETTING("FirstPersonCameraSensitivity.X"), 1.0f);
     f32 yAxisMulti = CVarGetFloat(CVAR_SETTING("FirstPersonCameraSensitivity.Y"), 1.0f);
 
-    GameInteractor_ExecuteOnPlayerFirstPersonControl(this);
+    CALL_EVENT(OnPlayerFirstPersonControl, this);
 
     if (!func_8002DD78(this) && !func_808334B4(this) && (arg2 == 0)) { // First person without weapon
         // Y Axis
@@ -14581,7 +14581,7 @@ void Player_Action_SwingBottle(Player* this, PlayState* play) {
                     Message_StartTextbox(play, sBottleCatchInfo[this->av1.bottleCatchType - 1].textId, &this->actor);
                 }
                 Audio_PlayFanfare(NA_BGM_ITEM_GET | 0x900);
-                GameInteractor_ExecuteOnPlayerBottleUpdate((sBottleCatchInfo[this->av1.bottleCatchType - 1].itemId));
+                CALL_EVENT(OnPlayerBottleUpdate, (sBottleCatchInfo[this->av1.bottleCatchType - 1].itemId));
                 this->av2.startedTextbox = true;
             } else if (Message_GetState(&play->msgCtx) == TEXT_STATE_CLOSING) {
                 this->av1.bottleCatchType = BOTTLE_CATCH_NONE;

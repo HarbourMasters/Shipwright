@@ -669,7 +669,7 @@ void EnDodongo_SetupDeath(EnDodongo* this, PlayState* play) {
     this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     this->actor.speedXZ = 0.0f;
     EnDodongo_SetupAction(this, EnDodongo_Death);
-    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+    CALL_EVENT(OnEnemyDefeat, &this->actor);
 }
 
 void EnDodongo_Death(EnDodongo* this, PlayState* play) {

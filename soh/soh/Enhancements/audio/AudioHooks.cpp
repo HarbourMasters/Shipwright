@@ -14,7 +14,11 @@ extern PlayState* gPlayState;
 #define CVAR_SEQOVERLAY_DEFAULT 0
 #define CVAR_SEQOVERLAY_VALUE CVarGetInteger(CVAR_SEQOVERLAY_NAME, CVAR_SEQOVERLAY_DEFAULT)
 
-void NotifySequenceName(int32_t playerIdx, int32_t seqId) {
+void NotifySequenceName(IEvent* event) {
+    const OnSeqPlayerInit* ev = reinterpret_cast<OnSeqPlayerInit*>(event);
+    const int32_t playerIdx = ev->playerIdx;
+    const int32_t seqId = ev->seqId;
+
     // Keep track of the previous sequence/scene so we don't repeat notifications
     static uint16_t previousSeqId = UINT16_MAX;
     static int16_t previousSceneNum = INT16_MAX;

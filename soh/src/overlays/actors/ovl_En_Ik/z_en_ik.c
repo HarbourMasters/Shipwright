@@ -648,7 +648,7 @@ void func_80A7598C(EnIk* this) {
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_IRONNACK_DEAD);
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_NUTS_CUTBODY);
     EnIk_SetupAction(this, func_80A75A38);
-    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+    CALL_EVENT(OnEnemyDefeat, &this->actor);
 }
 
 void func_80A75A38(EnIk* this, PlayState* play) {
@@ -1442,7 +1442,7 @@ void func_80A781CC(Actor* thisx, PlayState* play) {
         }
         Flags_SetEventChkInf(EVENTCHKINF_FINISHED_NABOORU_BATTLE);
         func_80A7735C(this, play);
-        GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+        CALL_EVENT(OnEnemyDefeat, &this->actor);
     }
 }
 

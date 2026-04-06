@@ -61,21 +61,24 @@ void Anchor::RegisterHooks() {
 
     // #region Hooks that are required for basic Anchor functionality
 
-    COND_HOOK(OnSceneSpawnActors, isConnected, [&]() {
-        SendPacket_UpdateClientState();
+    COND_HOOK(OnSceneSpawnActors, isConnected, [](IEvent* event) {
+        Anchor* anchor = Anchor::Instance;
+        anchor->SendPacket_UpdateClientState();
 
-        if (IsSaveLoaded()) {
-            RefreshClientActors();
+        if (anchor->IsSaveLoaded()) {
+            anchor->RefreshClientActors();
         }
     });
 
-    COND_HOOK(OnPresentFileSelect, isConnected, [&]() { SendPacket_UpdateClientState(); });
+    COND_HOOK(OnPresentFileSelect, isConnected, [](IEvent* event) { Anchor::Instance->SendPacket_UpdateClientState(); });
 
-    COND_ID_HOOK(ShouldActorInit, ACTOR_PLAYER, isConnected, [&](void* actorRef, bool* should) {
-        Actor* actor = (Actor*)actorRef;
+    COND_ID_HOOK(ShouldActorInit, ACTOR_PLAYER, isConnected, [](IEvent* event) {
+        Anchor* anchor = Anchor::Instance;
+        ShouldActorInit* ev = reinterpret_cast<ShouldActorInit*>(event);
+        Actor* actor = (Actor*)ev->actor;
 
-        if (spawningDummyPlayerForClientId != 0) {
-            SetDummyPlayerClientId(actor, spawningDummyPlayerForClientId);
+        if (anchor->spawningDummyPlayerForClientId != 0) {
+            anchor->SetDummyPlayerClientId(actor, anchor->spawningDummyPlayerForClientId);
 
             // By the time we get here, the actor was already added to the ACTORCAT_PLAYER list, so we need to move it
             Actor_ChangeCategory(gPlayState, &gPlayState->actorCtx, actor, ACTORCAT_NPC);
@@ -88,77 +91,97 @@ void Anchor::RegisterHooks() {
         }
     });
 
-    COND_HOOK(OnPlayerUpdate, isConnected, [&]() {
-        if (justLoadedSave) {
-            justLoadedSave = false;
-            SendPacket_RequestTeamState();
+    COND_HOOK(OnPlayerUpdate, isConnected, [](IEvent* event) {
+        Anchor* anchor = Anchor::Instance;
+        if (anchor->justLoadedSave) {
+            anchor->justLoadedSave = false;
+            anchor->SendPacket_RequestTeamState();
         }
 
-        if (shouldRefreshActors) {
-            shouldRefreshActors = false;
-            RefreshClientActors();
+        if (anchor->shouldRefreshActors) {
+            anchor->shouldRefreshActors = false;
+            anchor->RefreshClientActors();
         }
 
-        SendPacket_PlayerUpdate();
+        anchor->SendPacket_PlayerUpdate();
     });
 
-    COND_HOOK(OnGameFrameUpdate, isConnected, [&]() { ProcessIncomingPacketQueue(); });
+    COND_HOOK(OnGameFrameUpdate, isConnected, [](IEvent* event) { Anchor::Instance->ProcessIncomingPacketQueue(); });
 
-    COND_HOOK(OnPlayerSfx, isConnected, [&](u16 sfxId) { SendPacket_PlayerSfx(sfxId); });
-    COND_HOOK(OnOcarinaNote, isConnected,
-              [&](uint8_t note, float modulator, int8_t bend) { SendPacket_OcarinaSfx(note, modulator, bend); });
-
-    COND_HOOK(OnLoadGame, isConnected, [&](s16 fileNum) { justLoadedSave = true; });
-
-    COND_HOOK(OnSaveFile, isConnected, [&](s16 fileNum, int sectionID) {
-        if (sectionID == 0) {
-            SendPacket_UpdateTeamState();
-        }
+    COND_HOOK(OnPlayerSfx, isConnected, [](IEvent* event){
+        OnPlayerSfx* ev = reinterpret_cast<OnPlayerSfx*>(event);
+        Anchor::Instance->SendPacket_PlayerSfx(ev->sfxId);
+    });
+    COND_HOOK(OnOcarinaNote, isConnected, [](IEvent* event){
+        OnOcarinaNote* ev = reinterpret_cast<OnOcarinaNote*>(event);
+        Anchor::Instance->SendPacket_OcarinaSfx(ev->note, ev->modulator, ev->bend);
     });
 
-    COND_HOOK(OnFlagSet, isConnected,
-              [&](s16 flagType, s16 flag) { SendPacket_SetFlag(SCENE_ID_MAX, flagType, flag); });
+    COND_HOOK(OnLoadGame, isConnected, [](IEvent* event) { Anchor::Instance->justLoadedSave = true; });
 
-    COND_HOOK(OnFlagUnset, isConnected,
-              [&](s16 flagType, s16 flag) { SendPacket_UnsetFlag(SCENE_ID_MAX, flagType, flag); });
-
-    COND_HOOK(OnSceneFlagSet, isConnected,
-              [&](s16 sceneNum, s16 flagType, s16 flag) { SendPacket_SetFlag(sceneNum, flagType, flag); });
-
-    COND_HOOK(OnSceneFlagUnset, isConnected,
-              [&](s16 sceneNum, s16 flagType, s16 flag) { SendPacket_UnsetFlag(sceneNum, flagType, flag); });
-
-    COND_HOOK(OnRandoSetCheckStatus, isConnected, [&](RandomizerCheck rc, RandomizerCheckStatus status) {
-        if (!isHandlingUpdateTeamState) {
-            SendPacket_SetCheckStatus(rc);
+    COND_HOOK(OnSaveFile, isConnected, [](IEvent* event) {
+        OnSaveFile* ev = reinterpret_cast<OnSaveFile*>(event);
+        if (ev->sectionID == 0) {
+            Anchor::Instance->SendPacket_UpdateTeamState();
         }
     });
 
-    COND_HOOK(OnRandoSetIsSkipped, isConnected, [&](RandomizerCheck rc, bool isSkipped) {
-        if (!isHandlingUpdateTeamState) {
-            SendPacket_SetCheckStatus(rc);
+    COND_HOOK(OnFlagSet, isConnected, [](IEvent* event){
+        OnFlagSet* ev = reinterpret_cast<OnFlagSet*>(event);
+        Anchor::Instance->SendPacket_SetFlag(SCENE_ID_MAX, ev->flagType, ev->flag);
+    });
+
+    COND_HOOK(OnFlagUnset, isConnected, [](IEvent* event) {
+        OnFlagUnset* ev = reinterpret_cast<OnFlagUnset*>(event);
+        Anchor::Instance->SendPacket_UnsetFlag(SCENE_ID_MAX, ev->flagType, ev->flag);
+    });
+
+    COND_HOOK(OnSceneFlagSet, isConnected, [](IEvent* event){
+        OnSceneFlagSet* ev = reinterpret_cast<OnSceneFlagSet*>(event);
+        Anchor::Instance->SendPacket_SetFlag(ev->sceneNum, ev->flagType, ev->flag);
+    });
+
+    COND_HOOK(OnSceneFlagUnset, isConnected, [](IEvent* event) {
+        OnSceneFlagUnset* ev = reinterpret_cast<OnSceneFlagUnset*>(event);
+        Anchor::Instance->SendPacket_UnsetFlag(ev->sceneNum, ev->flagType, ev->flag);
+    });
+
+    COND_HOOK(OnRandoSetCheckStatus, isConnected, [](IEvent* event) {
+        OnRandoSetCheckStatus* ev = reinterpret_cast<OnRandoSetCheckStatus*>(event);
+        if (!Anchor::Instance->isHandlingUpdateTeamState) {
+            Anchor::Instance->SendPacket_SetCheckStatus(ev->rc);
         }
     });
 
-    COND_HOOK(OnRandoEntranceDiscovered, isConnected,
-              [&](u16 entranceIndex, u8 isReversedEntrance) { SendPacket_EntranceDiscovered(entranceIndex); });
+    COND_HOOK(OnRandoSetIsSkipped, isConnected, [](IEvent* event) {
+        OnRandoSetIsSkipped* ev = reinterpret_cast<OnRandoSetIsSkipped*>(event);
+        if (!Anchor::Instance->isHandlingUpdateTeamState) {
+            Anchor::Instance->SendPacket_SetCheckStatus(ev->rc);
+        }
+    });
 
-    COND_ID_HOOK(OnBossDefeat, ACTOR_BOSS_GANON2, isConnected, [&](void* refActor) { SendPacket_GameComplete(); });
+    COND_HOOK(OnRandoEntranceDiscovered, isConnected, [](IEvent* event){
+        OnRandoEntranceDiscovered* ev = reinterpret_cast<OnRandoEntranceDiscovered*>(event);
+        Anchor::Instance->SendPacket_EntranceDiscovered(ev->entranceIndex);
+    });
 
-    COND_HOOK(OnItemReceive, isConnected, [&](GetItemEntry itemEntry) {
+    COND_ID_HOOK(OnBossDefeat, ACTOR_BOSS_GANON2, isConnected, [](IEvent* event) { Anchor::Instance->SendPacket_GameComplete(); });
+
+    COND_HOOK(OnItemReceive, isConnected, [](IEvent* event) {
+        OnItemReceive* ev = reinterpret_cast<OnItemReceive*>(event);
         // Handle vanilla dungeon items a bit differently
-        if (itemEntry.modIndex == MOD_NONE &&
-            (itemEntry.itemId >= ITEM_KEY_BOSS && itemEntry.itemId <= ITEM_KEY_SMALL)) {
-            SendPacket_UpdateDungeonItems();
+        if (ev->itemEntry.modIndex == MOD_NONE &&
+            (ev->itemEntry.itemId >= ITEM_KEY_BOSS && ev->itemEntry.itemId <= ITEM_KEY_SMALL)) {
+            Anchor::Instance->SendPacket_UpdateDungeonItems();
             return;
         }
 
-        SendPacket_GiveItem(itemEntry.tableId, itemEntry.getItemId);
+        Anchor::Instance->SendPacket_GiveItem(ev->itemEntry.tableId, ev->itemEntry.getItemId);
     });
 
-    COND_HOOK(OnDungeonKeyUsed, isConnected, [&](uint16_t mapIndex) {
+    COND_HOOK(OnDungeonKeyUsed, isConnected, [](IEvent* event) {
         // Handle vanilla dungeon items a bit differently
-        SendPacket_UpdateDungeonItems();
+        Anchor::Instance->SendPacket_UpdateDungeonItems();
     });
 
     COND_VB_SHOULD(VB_APPLY_TUNIC_COLOR, isConnected, {
@@ -410,7 +433,7 @@ void Anchor::RegisterHooks() {
         Color_RGB8 color;
     };
 
-    COND_HOOK(OnMinimapDrawCompassIcons, isConnected, [&]() {
+    COND_HOOK(OnMinimapDrawCompassIcons, isConnected, [](IEvent* event) {
         if (!CVarGetInteger(CVAR_REMOTE_ANCHOR("ShowOtherPlayersOnMinimap"), 1) ||
             Anchor::Instance->roomState.showLocationsMode == 0) {
             return;

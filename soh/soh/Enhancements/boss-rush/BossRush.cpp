@@ -273,7 +273,7 @@ void FileChoose_UpdateBossRushMenu(GameState* gameState) {
 
     if (sLastBossRushOptionIndex != fileChooseContext->bossRushIndex ||
         sLastBossRushOptionValue != gSaveContext.ship.quest.data.bossRush.options[fileChooseContext->bossRushIndex]) {
-        GameInteractor_ExecuteOnUpdateFileBossRushOptionSelection(
+        CALL_EVENT(OnUpdateFileBossRushOptionSelection,
             fileChooseContext->bossRushIndex,
             gSaveContext.ship.quest.data.bossRush.options[fileChooseContext->bossRushIndex]);
         sLastBossRushOptionIndex = fileChooseContext->bossRushIndex;
@@ -739,9 +739,12 @@ static void* sSavePromptNoChoiceTexs[] = {
     (void*)gPauseNoFRATex,
 };
 
-void BossRush_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_list originalArgs) {
+void BossRush_OnVanillaBehaviorHandler(IEvent* event) {
+    OnVanillaBehavior* ev = reinterpret_cast<OnVanillaBehavior*>(event);
+    GIVanillaBehavior id = ev->flag;
+    bool* should = ev->result;
     va_list args;
-    va_copy(args, originalArgs);
+    va_copy(args, ev->originalArgs);
 
     switch (id) {
         // Allow not healing before ganon
@@ -893,19 +896,21 @@ void BossRush_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
     va_end(args);
 }
 
-void BossRush_OnSceneInitHandler(s16 sceneNum) {
+void BossRush_OnSceneInitHandler(IEvent* event) {
+    OnSceneInit* ev = reinterpret_cast<OnSceneInit*>(event);
     // Unpause the timer when the scene loaded isn't the Chamber of Sages.
-    if (sceneNum != SCENE_CHAMBER_OF_THE_SAGES) {
+    if (ev->sceneNum != SCENE_CHAMBER_OF_THE_SAGES) {
         gSaveContext.ship.quest.data.bossRush.isPaused = false;
     }
 }
 
-void BossRush_OnBossDefeatHandler(void* refActor) {
+void BossRush_OnBossDefeatHandler(IEvent* event) {
     BossRush_HandleCompleteBoss(gPlayState);
 }
 
-void BossRush_OnBlueWarpUpdate(void* actor) {
-    DoorWarp1* blueWarp = static_cast<DoorWarp1*>(actor);
+void BossRush_OnBlueWarpUpdate(IEvent* event) {
+    OnActorUpdate* ev = reinterpret_cast<OnActorUpdate*>(event);
+    DoorWarp1* blueWarp = static_cast<DoorWarp1*>(ev->actor);
 
     if (blueWarp->warpTimer > 160) {
         BossRush_HandleBlueWarp(gPlayState, blueWarp->actor.world.pos.x, blueWarp->actor.world.pos.z);
@@ -913,22 +918,24 @@ void BossRush_OnBlueWarpUpdate(void* actor) {
 }
 
 void RegisterBossRush() {
-    COND_HOOK(OnLoadGame, true, [](int32_t fileNum) {
-        COND_ID_HOOK(OnActorInit, ACTOR_DEMO_SA, IS_BOSS_RUSH, [](void* actorPtr) {
+    COND_HOOK(OnLoadGame, true, [](IEvent* event) {
+
+        COND_ID_HOOK(OnActorInit, ACTOR_DEMO_SA, IS_BOSS_RUSH, [](IEvent* event) {
+            OnActorInit* ev = reinterpret_cast<OnActorInit*>(event);
             BossRush_SpawnBlueWarps(gPlayState);
-            Actor_Kill((Actor*)actorPtr);
+            Actor_Kill((Actor*) ev->actor);
             GET_PLAYER(gPlayState)->actor.world.rot.y = 27306;
             GET_PLAYER(gPlayState)->actor.shape.rot.y = 27306;
         });
 
         // Remove bushes, used in Gohma's arena
-        COND_ID_HOOK(OnActorInit, ACTOR_EN_KUSA, IS_BOSS_RUSH, [](void* actorPtr) { Actor_Kill((Actor*)actorPtr); });
+        COND_ID_HOOK(OnActorInit, ACTOR_EN_KUSA, IS_BOSS_RUSH, [](IEvent* event) { Actor_Kill((Actor*)reinterpret_cast<OnActorInit*>(event)->actor); });
 
         // Remove pots, used in Barinade's and Ganondorf's arenas
-        COND_ID_HOOK(OnActorInit, ACTOR_OBJ_TSUBO, IS_BOSS_RUSH, [](void* actorPtr) { Actor_Kill((Actor*)actorPtr); });
+        COND_ID_HOOK(OnActorInit, ACTOR_OBJ_TSUBO, IS_BOSS_RUSH, [](IEvent* event) { Actor_Kill((Actor*)reinterpret_cast<OnActorInit*>(event)->actor); });
 
         // Remove chests, mainly for the chest in King Dodongo's boss room
-        COND_ID_HOOK(OnActorInit, ACTOR_EN_BOX, IS_BOSS_RUSH, [](void* actorPtr) { Actor_Kill((Actor*)actorPtr); });
+        COND_ID_HOOK(OnActorInit, ACTOR_EN_BOX, IS_BOSS_RUSH, [](IEvent* event) { Actor_Kill((Actor*)reinterpret_cast<OnActorInit*>(event)->actor); });
 
         COND_HOOK(OnVanillaBehavior, IS_BOSS_RUSH, BossRush_OnVanillaBehaviorHandler);
 

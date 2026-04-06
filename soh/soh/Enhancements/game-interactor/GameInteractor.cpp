@@ -12,6 +12,9 @@ GameInteractor functions can be called directly.
 #include "GameInteractor.h"
 #include <libultraship/bridge.h>
 
+#define INIT_EVENT_IDS
+#include "EventSystem_List.h"
+
 extern "C" {
 #include "variables.h"
 #include "macros.h"
@@ -102,4 +105,116 @@ bool GameInteractor::CanAddOrTakeAmmo(int16_t amount, int16_t item) {
         }
         return true;
     }
+}
+
+void EventSystem_Register() {
+    // MARK: - Gameplay
+    REGISTER_EVENT(OnZTitleInit);
+    REGISTER_EVENT(OnZTitleUpdate);
+    REGISTER_EVENT(OnLoadGame);
+    REGISTER_EVENT(OnExitGame);
+    REGISTER_EVENT(OnGameStateMainStart);
+    REGISTER_EVENT(OnGameFrameUpdate);
+    REGISTER_EVENT(OnCameraState);
+    REGISTER_EVENT(OnItemReceive);
+    REGISTER_EVENT(OnEquipmentDelete);
+    REGISTER_EVENT(OnSaleEnd);
+    REGISTER_EVENT(OnTransitionEnd);
+    REGISTER_EVENT(OnSceneInit);
+    REGISTER_EVENT(AfterSceneCommands);
+    REGISTER_EVENT(OnSceneFlagSet);
+    REGISTER_EVENT(OnSceneFlagUnset);
+    REGISTER_EVENT(OnFlagSet);
+    REGISTER_EVENT(OnFlagUnset);
+    REGISTER_EVENT(OnSceneSpawnActors);
+    REGISTER_EVENT(OnLinkSkeletonInit);
+    REGISTER_EVENT(OnLinkEquipmentChange);
+    REGISTER_EVENT(OnPlayerUpdate);
+    REGISTER_EVENT(OnSetDoAction);
+    REGISTER_EVENT(OnPlayerSfx);
+    REGISTER_EVENT(OnOcarinaSongAction);
+    REGISTER_EVENT(OnOcarinaNote);
+    REGISTER_EVENT(OnCuccoOrChickenHatch);
+    REGISTER_EVENT(OnShopSlotChange);
+    REGISTER_EVENT(OnDungeonKeyUsed);
+
+    // MARK: - Actors & Entities
+    REGISTER_EVENT(ShouldActorInit);
+    REGISTER_EVENT(OnActorInit);
+    REGISTER_EVENT(OnActorSpawn);
+    REGISTER_EVENT(ShouldActorUpdate);
+    REGISTER_EVENT(OnActorUpdate);
+    REGISTER_EVENT(OnActorKill);
+    REGISTER_EVENT(OnActorDestroy);
+    REGISTER_EVENT(OnEnemyDefeat);
+    REGISTER_EVENT(OnBossDefeat);
+
+    // MARK: - Player specifics
+    REGISTER_EVENT(OnTimestamp);
+    REGISTER_EVENT(OnPlayerBonk);
+    REGISTER_EVENT(OnPlayerSetModels);
+    REGISTER_EVENT(OnPlayerHealthChange);
+    REGISTER_EVENT(OnPlayerBottleUpdate);
+    REGISTER_EVENT(OnPlayerHoldUpShield);
+    REGISTER_EVENT(OnPlayerFirstPersonControl);
+    REGISTER_EVENT(OnPlayerProcessStick);
+    REGISTER_EVENT(OnPlayerShieldControl);
+
+    // MARK: - Play State
+    REGISTER_EVENT(OnPlayDestroy);
+    REGISTER_EVENT(OnPlayDrawBegin);
+    REGISTER_EVENT(OnPlayDrawEnd);
+
+    // MARK: - Vanilla Behavior
+    REGISTER_EVENT(OnVanillaBehavior);
+
+    // MARK: - Save Files
+    REGISTER_EVENT(OnSaveFile);
+    REGISTER_EVENT(OnLoadFile);
+    REGISTER_EVENT(OnDeleteFile);
+
+    // MARK: - Dialog & UI
+    REGISTER_EVENT(OnDialogMessage);
+    REGISTER_EVENT(OnPresentTitleCard);
+    REGISTER_EVENT(OnInterfaceUpdate);
+    REGISTER_EVENT(OnKaleidoscopeUpdate);
+    REGISTER_EVENT(OnMinimapDrawCompassIcons);
+
+    // MARK: - Main Menu
+    REGISTER_EVENT(OnPresentFileSelect);
+    REGISTER_EVENT(OnUpdateFileSelectSelection);
+    REGISTER_EVENT(OnUpdateFileSelectConfirmationSelection);
+    REGISTER_EVENT(OnUpdateFileCopySelection);
+    REGISTER_EVENT(OnUpdateFileCopyConfirmationSelection);
+    REGISTER_EVENT(OnUpdateFileEraseSelection);
+    REGISTER_EVENT(OnUpdateFileEraseConfirmationSelection);
+    REGISTER_EVENT(OnUpdateFileAudioSelection);
+    REGISTER_EVENT(OnUpdateFileTargetSelection);
+    REGISTER_EVENT(OnUpdateFileLanguageSelection);
+    REGISTER_EVENT(OnUpdateFileQuestSelection);
+    REGISTER_EVENT(OnUpdateFileBossRushOptionSelection);
+    REGISTER_EVENT(OnUpdateFileRandomizerOptionSelection);
+    REGISTER_EVENT(OnUpdateFileNameSelection);
+    REGISTER_EVENT(OnFileChooseMain);
+    REGISTER_EVENT(OnGenerationCompletion);
+
+    // MARK: - Game
+    REGISTER_EVENT(OnSetGameLanguage);
+
+    // MARK: - System
+    REGISTER_EVENT(OnAssetAltChange);
+
+    // MARK: - Pause Menu
+    REGISTER_EVENT(OnKaleidoUpdate);
+
+    // MARK: - Messages
+    REGISTER_EVENT(OnOpenText);
+
+    // MARK: - Audio
+    REGISTER_EVENT(OnSeqPlayerInit);
+
+    // MARK: - Randomizer
+    REGISTER_EVENT(OnRandoSetCheckStatus);
+    REGISTER_EVENT(OnRandoSetIsSkipped);
+    REGISTER_EVENT(OnRandoEntranceDiscovered);
 }

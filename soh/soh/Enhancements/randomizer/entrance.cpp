@@ -7,7 +7,7 @@
 #include "soh/Enhancements/gameconsole.h"
 #include "z64camera.h"
 #include "z64scene.h"
-
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include <spdlog/spdlog.h>
 
 extern "C" {
@@ -1759,7 +1759,7 @@ void RegisterEntranceShuffleHooks() {
     });
 
     COND_HOOK(OnLoadGame, IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_ENTRANCES),
-              [](int32_t) { backedUpScene = (SceneID)0xFF; });
+              [](IEvent* event) { backedUpScene = (SceneID)0xFF; });
 }
 
 static RegisterShipInitFunc initFunc(RegisterEntranceShuffleHooks, { "IS_RANDO" });

@@ -445,7 +445,7 @@ void EnDh_SetupDeath(EnDh* this) {
     this->actor.params = ENDH_DEATH;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_DEADHAND_DEAD);
     EnDh_SetupAction(this, EnDh_Death);
-    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+    CALL_EVENT(OnEnemyDefeat, &this->actor);
 }
 
 void EnDh_Death(EnDh* this, PlayState* play) {

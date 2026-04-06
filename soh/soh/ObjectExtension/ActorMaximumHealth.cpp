@@ -18,8 +18,9 @@ void SetActorMaximumHealth(const Actor* actor, u8 maximumHealth) {
 }
 
 static void ActorMaximumHealth_Register() {
-    COND_HOOK(OnActorInit, true, [](void* ptr) {
-        Actor* actor = static_cast<Actor*>(ptr);
+    COND_HOOK(OnActorInit, true, [](IEvent* event) {
+        OnActorInit* ev = reinterpret_cast<OnActorInit*>(event);
+        Actor* actor = static_cast<Actor*>(ev->actor);
         if (actor->category == ACTORCAT_ENEMY) {
             SetActorMaximumHealth(actor, actor->colChkInfo.health);
         }

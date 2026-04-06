@@ -370,7 +370,7 @@ void EnVm_SetupDie(EnVm* this) {
     this->actor.speedXZ = Rand_ZeroOne() + 1.0f;
     this->actor.world.rot.y = Rand_CenteredFloat(65535.0f);
     EnVm_SetupAction(this, EnVm_Die);
-    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+    CALL_EVENT(OnEnemyDefeat, &this->actor);
 }
 
 void EnVm_Die(EnVm* this, PlayState* play) {

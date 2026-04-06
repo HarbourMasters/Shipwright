@@ -272,7 +272,7 @@ void DoorKiller_Die(DoorKiller* this, PlayState* play) {
         Flags_SetSwitch(play, switchFlag);
     }
     Actor_Kill(&this->actor);
-    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+    CALL_EVENT(OnEnemyDefeat, &this->actor);
 }
 
 /**

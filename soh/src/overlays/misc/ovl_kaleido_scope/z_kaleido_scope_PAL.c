@@ -4794,7 +4794,7 @@ void KaleidoScope_Update(PlayState* play) {
                     } else {
                         play->state.running = 0;
                         SET_NEXT_GAMESTATE(&play->state, Opening_Init, OpeningContext);
-                        GameInteractor_ExecuteOnExitGame(gSaveContext.fileNum);
+                        CALL_EVENT(OnExitGame, gSaveContext.fileNum);
                     }
                 }
             }
@@ -4879,5 +4879,5 @@ void KaleidoScope_Update(PlayState* play) {
             break;
     }
 
-    GameInteractor_ExecuteOnKaleidoscopeUpdate(sInDungeonScene);
+    CALL_EVENT(OnKaleidoscopeUpdate, (sInDungeonScene);
 }

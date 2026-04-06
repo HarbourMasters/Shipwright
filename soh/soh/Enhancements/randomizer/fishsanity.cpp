@@ -5,6 +5,7 @@
 #include "variables.h"
 #include "functions.h"
 #include "macros.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include <libultraship/bridge/consolevariablebridge.h>
 
 extern "C" {
@@ -546,15 +547,22 @@ void Fishsanity_CloseGreyscaleColor(PlayState* play) {
 
 void RegisterShuffleFish() {
     bool shouldRegister = IS_RANDO && RAND_GET_OPTION(RSK_FISHSANITY).IsNot(RO_FISHSANITY_OFF);
-    COND_HOOK(OnSceneInit, shouldRegister, [](int16_t sceneNum) {
-        if (sceneNum == SCENE_ZORAS_DOMAIN) {
+    COND_HOOK(OnSceneInit, shouldRegister, [](IEvent* event) {
+        OnSceneInit* ev = reinterpret_cast<OnSceneInit*>(event);
+        if (ev->sceneNum == SCENE_ZORAS_DOMAIN) {
             fishGroupCounter = 0;
         }
     });
 
-    COND_HOOK(OnActorInit, shouldRegister, Rando::Fishsanity::OnActorInitHandler);
-    COND_HOOK(OnActorUpdate, shouldRegister, Rando::Fishsanity::OnActorUpdateHandler);
-    COND_HOOK(OnItemReceive, shouldRegister, [](GetItemEntry itemEntry) {
+    COND_HOOK(OnActorInit, shouldRegister, [](IEvent* event){
+        OnActorInit* ev = reinterpret_cast<OnActorInit*>(event);
+        Rando::Fishsanity::OnActorInitHandler(ev->actor);
+    });
+    COND_HOOK(OnActorUpdate, shouldRegister, [](IEvent* event){
+        OnActorUpdate* ev = reinterpret_cast<OnActorUpdate*>(event);
+        Rando::Fishsanity::OnActorUpdateHandler(ev->actor);
+    });
+    COND_HOOK(OnItemReceive, shouldRegister, [](IEvent* event) {
         if (enableAdvance) {
             enableAdvance = false;
             OTRGlobals::Instance->gRandoContext->GetFishsanity()->AdvancePond();

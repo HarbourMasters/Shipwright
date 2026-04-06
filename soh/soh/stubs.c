@@ -4,7 +4,7 @@
 #include <string.h>
 #include "z64.h"
 #include "OTRGlobals.h"
-//#include <math.h>
+// #include <math.h>
 
 u32 osResetType;
 u32 osTvType = OS_TV_NTSC;
@@ -43,9 +43,6 @@ OSPri osGetThreadPri(OSThread* thread) {
 }
 
 void osSetThreadPri(OSThread* thread, OSPri pri) {
-}
-
-void osCreatePiManager(OSPri pri, OSMesgQueue* cmdQ, OSMesg* cmdBuf, s32 cmdMsgCnt) {
 }
 
 s32 osPfsFreeBlocks(OSPfs* pfs, s32* leftoverBytes) {
@@ -103,12 +100,6 @@ void osStopThread(OSThread* thread) {
 }
 
 void osDestroyThread(OSThread* thread) {
-}
-
-void osWritebackDCache(void* vaddr, s32 nbytes) {
-}
-
-void osInvalICache(void* vaddr, s32 nbytes) {
 }
 
 s32 osContStartQuery(OSMesgQueue* mq) {
@@ -186,12 +177,6 @@ s32 osAiSetFrequency(u32 freq) {
     // which evaluates to 32006
 
     return 32006;
-}
-
-void osInvalDCache(void* vaddr, s32 nbytes) {
-}
-
-void osWritebackDCacheAll(void) {
 }
 
 void Audio_SetBGM(u32 bgmId) {

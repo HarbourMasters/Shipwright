@@ -16,7 +16,7 @@ static constexpr s8 ROOM_GREEN_POE = 16;
 static constexpr s8 ROOM_BLUE_POE = 13;
 static constexpr s8 ROOM_RED_POE = 12;
 
-static void OnPlayerUpdateShadowTag() {
+static void OnPlayerUpdateShadowTag(IEvent* event) {
     if (gPlayState->sceneNum == SCENE_FOREST_TEMPLE) {
         switch (gPlayState->roomCtx.curRoom.num) {
             case ROOM_GREEN_POE:
@@ -43,8 +43,8 @@ static void ResetShadowTagSpawnTimer() {
 
 static void RegisterShadowTag() {
     COND_HOOK(OnPlayerUpdate, CVAR_SHADOW_TAG_VALUE, OnPlayerUpdateShadowTag);
-    COND_HOOK(OnSceneSpawnActors, true, []() { ResetShadowTagSpawnTimer(); });
-    COND_HOOK(OnSceneInit, true, [](int16_t) { ResetShadowTagSpawnTimer(); });
+    COND_HOOK(OnSceneSpawnActors, true, [](IEvent* event) { ResetShadowTagSpawnTimer(); });
+    COND_HOOK(OnSceneInit, true, [](IEvent* event) { ResetShadowTagSpawnTimer(); });
 }
 
 static RegisterShipInitFunc initFunc(RegisterShadowTag, { CVAR_SHADOW_TAG_NAME });

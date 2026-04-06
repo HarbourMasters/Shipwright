@@ -13,7 +13,7 @@ extern PlayState* gPlayState;
 
 static RegisterShipInitFunc initFunc(
     []() {
-        COND_HOOK(OnPlayerUpdate, CVAR_BOUNCE_OFF_WALLS_VALUE, []() {
+        COND_HOOK(OnPlayerUpdate, CVAR_BOUNCE_OFF_WALLS_VALUE, [](IEvent* event) {
             Player* player = GET_PLAYER(gPlayState);
             if (player->actor.bgCheckFlags & 0x08 && ABS(player->linearVelocity) > 15.0f) {
                 player->yaw = ((player->actor.wallYaw - player->yaw) + player->actor.wallYaw) - 0x8000;

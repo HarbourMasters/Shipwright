@@ -9,7 +9,7 @@ extern "C" SaveContext gSaveContext;
 #define CVAR_INFINITE_HEALTH_DEFAULT 0
 #define CVAR_INFINITE_HEALTH_VALUE CVarGetInteger(CVAR_INFINITE_HEALTH_NAME, CVAR_INFINITE_HEALTH_DEFAULT)
 
-void OnGameFrameUpdateInfiniteHealth() {
+void OnGameFrameUpdateInfiniteHealth(IEvent* event) {
     if (!GameInteractor::IsSaveLoaded(true)) {
         return;
     }

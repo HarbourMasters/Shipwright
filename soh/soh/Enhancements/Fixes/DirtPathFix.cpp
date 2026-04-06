@@ -8,8 +8,9 @@ static constexpr ZFightingFixType CVAR_DIRT_PATH_DEFAULT = ZFIGHT_FIX_DISABLED;
 #define CVAR_DIRT_PATH_NAME CVAR_ENHANCEMENT("SceneSpecificDirtPathFix")
 #define CVAR_DIRT_PATH_VALUE CVarGetInteger(CVAR_DIRT_PATH_NAME, CVAR_DIRT_PATH_DEFAULT)
 
-static void DirtPathFix_UpdateZFightingMode(int32_t sceneNum) {
-    switch (sceneNum) {
+static void DirtPathFix_UpdateZFightingMode(IEvent* event) {
+    OnTransitionEnd* ev = reinterpret_cast<OnTransitionEnd*>(event);
+    switch (ev->sceneNum) {
         case SCENE_HYRULE_FIELD:
         case SCENE_KOKIRI_FOREST:
         case SCENE_HYRULE_CASTLE:
@@ -21,8 +22,9 @@ static void DirtPathFix_UpdateZFightingMode(int32_t sceneNum) {
 }
 
 static void RegisterDirtPathFix() {
-    if (gPlayState != NULL) {
-        DirtPathFix_UpdateZFightingMode(gPlayState->sceneNum);
+    if (gPlayState != nullptr) {
+        OnTransitionEnd ev = { .sceneNum = gPlayState->sceneNum };
+        DirtPathFix_UpdateZFightingMode(reinterpret_cast<IEvent*>(&ev));
     }
 
     COND_HOOK(OnTransitionEnd, CVAR_DIRT_PATH_VALUE, DirtPathFix_UpdateZFightingMode);

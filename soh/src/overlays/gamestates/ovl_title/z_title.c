@@ -169,5 +169,5 @@ void Title_Init(GameState* thisx) {
     this->addAlpha = -3;
     this->visibleDuration = 0x3C;
 
-    GameInteractor_ExecuteOnZTitleInit(this);
+    CALL_EVENT(OnZTitleInit, this);
 }

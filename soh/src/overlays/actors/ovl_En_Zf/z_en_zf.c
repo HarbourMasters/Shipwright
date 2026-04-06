@@ -1926,7 +1926,7 @@ void EnZf_SetupDie(EnZf* this) {
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_RIZA_DEAD);
     EnZf_SetupAction(this, EnZf_Die);
 
-    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+    CALL_EVENT(OnEnemyDefeat, &this->actor);
 }
 
 void EnZf_Die(EnZf* this, PlayState* play) {

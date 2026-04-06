@@ -433,7 +433,7 @@ void EnHintnuts_Leave(EnHintnuts* this, PlayState* play) {
             Actor_ChangeCategory(play, &play->actorCtx, this->actor.child, ACTORCAT_PROP);
         }
         Actor_Kill(&this->actor);
-        GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+        CALL_EVENT(OnEnemyDefeat, &this->actor);
     }
 }
 

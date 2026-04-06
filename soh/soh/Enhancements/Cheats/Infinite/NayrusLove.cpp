@@ -10,7 +10,7 @@ extern "C" SaveContext gSaveContext;
 #define CVAR_INFINITE_NAYRUS_LOVE_VALUE \
     CVarGetInteger(CVAR_INFINITE_NAYRUS_LOVE_NAME, CVAR_INFINITE_NAYRUS_LOVE_DEFAULT)
 
-void OnGameFrameUpdateInfiniteNayrusLove() {
+void OnGameFrameUpdateInfiniteNayrusLove(IEvent* event) {
     if (!GameInteractor::IsSaveLoaded(true)) {
         return;
     }

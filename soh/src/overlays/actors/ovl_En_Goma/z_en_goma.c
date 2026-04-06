@@ -402,7 +402,7 @@ void EnGoma_SetupDead(EnGoma* this) {
                      Animation_GetLastFrame(&gObjectGolDeadTwitchingAnim), ANIMMODE_LOOP, -2.0f);
     this->actionFunc = EnGoma_Dead;
     this->actionTimer = 3;
-    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+    CALL_EVENT(OnEnemyDefeat, &this->actor);
 }
 
 void EnGoma_Dead(EnGoma* this, PlayState* play) {
@@ -674,7 +674,7 @@ void EnGoma_UpdateHit(EnGoma* this, PlayState* play) {
 
                 EnGoma_SpawnHatchDebris(this, play);
                 Actor_Kill(&this->actor);
-                GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+                CALL_EVENT(OnEnemyDefeat, &this->actor);
             }
         }
     }

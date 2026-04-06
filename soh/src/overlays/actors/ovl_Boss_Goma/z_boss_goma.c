@@ -1846,7 +1846,7 @@ void BossGoma_UpdateHit(BossGoma* this, PlayState* play) {
                 } else {
                     BossGoma_SetupDefeated(this, play);
                     Enemy_StartFinishingBlow(play, &this->actor);
-                    GameInteractor_ExecuteOnBossDefeat(&this->actor);
+                    CALL_EVENT(OnBossDefeat, &this->actor);
                 }
 
                 this->invincibilityFrames = 10;

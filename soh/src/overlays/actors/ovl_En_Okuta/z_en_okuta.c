@@ -259,7 +259,7 @@ void EnOkuta_SetupDie(EnOkuta* this) {
     Animation_MorphToPlayOnce(&this->skelAnime, &gOctorokDieAnim, -3.0f);
     this->timer = 0;
     this->actionFunc = EnOkuta_Die;
-    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+    CALL_EVENT(OnEnemyDefeat, &this->actor);
 }
 
 void EnOkuta_SetupFreeze(EnOkuta* this) {

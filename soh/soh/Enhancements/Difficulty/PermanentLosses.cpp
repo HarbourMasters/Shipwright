@@ -42,7 +42,7 @@ static void UpdatePermanentHeartLossState() {
     hasAffectedHealth = false;
 }
 
-static void UpdateHealthCapacity() {
+static void UpdateHealthCapacity(IEvent* event) {
     // Applies permanent losses of Heart Containers to Link's health. Only applies when a saved game is playing.
     if (!GameInteractor::IsSaveLoaded()) {
         return;
@@ -55,7 +55,7 @@ static void UpdateHealthCapacity() {
     }
 }
 
-static void DeleteFileOnDeath() {
+static void DeleteFileOnDeath(IEvent* event) {
     if (!GameInteractor::IsSaveLoaded() || gPlayState == NULL) {
         return;
     }
@@ -79,7 +79,7 @@ static void RegisterDeleteFileOnDeath() {
 }
 
 static void RegisterResetAffectedHealthOnLoad() {
-    COND_HOOK(OnLoadGame, true, [](int16_t) { hasAffectedHealth = false; });
+    COND_HOOK(OnLoadGame, true, [](IEvent* event) { hasAffectedHealth = false; });
 }
 
 static RegisterShipInitFunc initFunc_PermanentHeartLoss(RegisterPermanentHeartLoss, { CVAR_PERM_HEART_LOSS_NAME });

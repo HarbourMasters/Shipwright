@@ -771,7 +771,7 @@ void EnTite_FallApart(EnTite* this, PlayState* play) {
         } else {
             Item_DropCollectibleRandom(play, &this->actor, &this->actor.world.pos, 0x40);
         }
-        GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+        CALL_EVENT(OnEnemyDefeat, &this->actor);
         Actor_Kill(&this->actor);
     }
 }

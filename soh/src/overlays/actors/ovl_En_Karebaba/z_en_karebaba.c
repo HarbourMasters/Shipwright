@@ -184,7 +184,7 @@ void EnKarebaba_SetupDying(EnKarebaba* this) {
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_DEKU_JR_DEAD);
     this->actor.flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED;
     this->actionFunc = EnKarebaba_Dying;
-    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+    CALL_EVENT(OnEnemyDefeat, &this->actor);
 }
 
 void EnKarebaba_SetupDeadItemDrop(EnKarebaba* this, PlayState* play) {

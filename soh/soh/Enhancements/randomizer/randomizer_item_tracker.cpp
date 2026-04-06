@@ -17,7 +17,6 @@
 #include "soh/SohGui/SohGui.hpp"
 #include "soh/SohGui/SohMenu.h"
 #include "soh/SohGui/UIWidgets.hpp"
-#include "soh/util.h"
 
 extern "C" {
 #include <z64.h>
@@ -2403,7 +2402,7 @@ void RegisterItemTrackerWidgets() {
 }
 
 void RegisterItemTracker() {
-    COND_HOOK(OnLoadFile, true, [](int32_t fileNum) { shouldUpdateVectors = true; });
+    COND_HOOK(OnLoadFile, true, [](IEvent* event) { shouldUpdateVectors = true; });
 }
 
 static RegisterShipInitFunc registerItemTracker(RegisterItemTracker);

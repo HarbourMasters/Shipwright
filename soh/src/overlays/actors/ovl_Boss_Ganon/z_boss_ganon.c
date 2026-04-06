@@ -2807,7 +2807,7 @@ void BossGanon_UpdateDamage(BossGanon* this, PlayState* play) {
                     Sfx_PlaySfxAtPos(&sZeroVec, NA_SE_EN_LAST_DAMAGE);
                     Audio_QueueSeqCmd(0x100100FF);
                     this->screenFlashTimer = 4;
-                    GameInteractor_ExecuteOnBossDefeat(&this->actor);
+                    CALL_EVENT(OnBossDefeat, &this->actor);
                 } else {
                     Audio_PlayActorSound2(&this->actor, NA_SE_EN_GANON_DAMAGE2);
                     Audio_PlayActorSound2(&this->actor, NA_SE_EN_GANON_CUTBODY);

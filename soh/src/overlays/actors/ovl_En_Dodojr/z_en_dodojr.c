@@ -187,7 +187,7 @@ void func_809F6A20(EnDodojr* this) {
         this->counter = 3;
         this->actor.velocity.y = 10.0f;
     }
-    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+    CALL_EVENT(OnEnemyDefeat, &this->actor);
 }
 
 void func_809F6AC4(EnDodojr* this) {

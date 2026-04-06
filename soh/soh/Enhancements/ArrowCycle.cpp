@@ -1,3 +1,4 @@
+#include "game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ShipInit.hpp"
 
@@ -250,7 +251,7 @@ void ArrowCycleMain() {
 }
 
 void RegisterArrowCycle() {
-    COND_ID_HOOK(OnActorUpdate, ACTOR_PLAYER, CVAR_ARROW_CYCLE_VALUE, [](void* actor) { ArrowCycleMain(); });
+    COND_ID_HOOK(OnActorUpdate, ACTOR_PLAYER, CVAR_ARROW_CYCLE_VALUE, [](IEvent* actor) { ArrowCycleMain(); });
 
     // suppress shield input when R is held while aiming to allow arrow cycling
     COND_VB_SHOULD(VB_EXECUTE_PLAYER_ACTION_FUNC, CVAR_ARROW_CYCLE_VALUE, {

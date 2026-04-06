@@ -39,7 +39,7 @@ static bool Autosave_CanSave() {
     return true;
 }
 
-static void Autosave_PerformSave() {
+static void Autosave_PerformSave(IEvent* event) {
     Play_PerformSave(gPlayState);
 
     // Send notification
@@ -50,7 +50,7 @@ static void Autosave_PerformSave() {
     }
 }
 
-static void Autosave_IntervalSave() {
+static void Autosave_IntervalSave(IEvent* event) {
     // Check if the interval has passed in minutes.
     uint64_t currentTimestamp = GetUnixTimestamp();
     if ((currentTimestamp - lastSaveTimestamp) < THREE_MINUTES_IN_UNIX) {
@@ -65,21 +65,21 @@ static void Autosave_IntervalSave() {
         // Reset timestamp, set icon timer to show autosave icon for 5 seconds (100 frames)
         lastSaveTimestamp = currentTimestamp;
 
-        Autosave_PerformSave();
+        Autosave_PerformSave(nullptr);
     }
 }
 
 static void Autosave_SoftResetSave() {
     if (Autosave_CanSave()) {
-        Autosave_PerformSave();
+        Autosave_PerformSave(nullptr);
     }
 }
 
 static void RegisterAutosave() {
-    COND_HOOK(GameInteractor::OnLoadGame, CVAR_AUTOSAVE_VALUE,
-              [](uint32_t fileNme) { lastSaveTimestamp = GetUnixTimestamp(); });
-    COND_HOOK(GameInteractor::OnGameFrameUpdate, CVAR_AUTOSAVE_VALUE, Autosave_IntervalSave);
-    COND_HOOK(GameInteractor::OnExitGame, CVAR_AUTOSAVE_VALUE, [](int32_t fileNum) { Autosave_SoftResetSave(); });
+    COND_HOOK(OnLoadGame, CVAR_AUTOSAVE_VALUE,
+              [](IEvent* event) { lastSaveTimestamp = GetUnixTimestamp(); });
+    COND_HOOK(OnGameFrameUpdate, CVAR_AUTOSAVE_VALUE, Autosave_IntervalSave);
+    COND_HOOK(OnExitGame, CVAR_AUTOSAVE_VALUE, [](IEvent* event) { Autosave_SoftResetSave(); });
 }
 
 static RegisterShipInitFunc initFunc(RegisterAutosave, { CVAR_AUTOSAVE_NAME });

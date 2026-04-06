@@ -407,8 +407,7 @@ void EnDaiku_InitEscape(EnDaiku* this, PlayState* play) {
 
     gSaveContext.eventChkInf[EVENTCHKINF_CARPENTERS_FREE_INDEX] |=
         EVENTCHKINF_CARPENTERS_FREE_MASK(this->actor.params & 3);
-    GameInteractor_ExecuteOnFlagSet(FLAG_EVENT_CHECK_INF,
-                                    (EVENTCHKINF_CARPENTERS_FREE_INDEX << 4) + (this->actor.params & 3));
+    CALL_EVENT(OnFlagSet, FLAG_EVENT_CHECK_INF, (EVENTCHKINF_CARPENTERS_FREE_INDEX << 4) + (this->actor.params & 3));
 
     this->actor.gravity = -1.0f;
     this->escapeSubCamTimer = sEscapeSubCamParams[this->actor.params & 3].maxFramesActive;

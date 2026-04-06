@@ -14,7 +14,7 @@ extern SaveContext gSaveContext;
 #define CVAR_INFINITE_AMMO_DEFAULT 0
 #define CVAR_INFINITE_AMMO_VALUE CVarGetInteger(CVAR_INFINITE_AMMO_NAME, CVAR_INFINITE_AMMO_DEFAULT)
 
-void OnGameFrameUpdateInfiniteAmmo() {
+void OnGameFrameUpdateInfiniteAmmo(IEvent* event) {
     if (!GameInteractor::IsSaveLoaded(true)) {
         return;
     }

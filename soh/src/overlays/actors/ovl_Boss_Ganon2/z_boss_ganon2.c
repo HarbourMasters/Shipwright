@@ -1691,7 +1691,7 @@ void func_8090120C(BossGanon2* this, PlayState* play) {
             if ((ABS(temp_a0_2) < 0x2000) && (sqrtf(SQ(temp_f14) + SQ(temp_f12)) < 70.0f) &&
                 (player->meleeWeaponState != 0) && (player->heldItemAction == PLAYER_IA_SWORD_MASTER)) {
                 func_80064520(play, &play->csCtx);
-                GameInteractor_ExecuteOnBossDefeat(&this->actor);
+                CALL_EVENT(OnBossDefeat, &this->actor);
                 this->subCamId = Play_CreateSubCamera(play);
                 Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
                 Play_ChangeCameraStatus(play, this->subCamId, CAM_STAT_ACTIVE);

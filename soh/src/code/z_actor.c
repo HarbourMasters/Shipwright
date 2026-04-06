@@ -681,7 +681,7 @@ void Flags_SetSwitch(PlayState* play, s32 flag) {
     }
     if (previouslyOff) {
         LUSLOG_INFO("Switch Flag Set - %#x", flag);
-        GameInteractor_ExecuteOnSceneFlagSet(play->sceneNum, FLAG_SCENE_SWITCH, flag);
+        CALL_EVENT(OnSceneFlagSet, play->sceneNum, FLAG_SCENE_SWITCH, flag);
     }
 }
 
@@ -697,7 +697,7 @@ void Flags_UnsetSwitch(PlayState* play, s32 flag) {
     }
     if (previouslyOn) {
         LUSLOG_INFO("Switch Flag Unset - %#x", flag);
-        GameInteractor_ExecuteOnSceneFlagUnset(play->sceneNum, FLAG_SCENE_SWITCH, flag);
+        CALL_EVENT(OnSceneFlagUnset, play->sceneNum, FLAG_SCENE_SWITCH, flag);
     }
 }
 
@@ -749,7 +749,7 @@ void Flags_SetTreasure(PlayState* play, s32 flag) {
     play->actorCtx.flags.chest |= (1 << flag);
     if (previouslyOff) {
         LUSLOG_INFO("Treasure Flag Set - %#x", flag);
-        GameInteractor_ExecuteOnSceneFlagSet(play->sceneNum, FLAG_SCENE_TREASURE, flag);
+        CALL_EVENT(OnSceneFlagSet, play->sceneNum, FLAG_SCENE_TREASURE, flag);
     }
 }
 
@@ -768,7 +768,7 @@ void Flags_SetClear(PlayState* play, s32 flag) {
     play->actorCtx.flags.clear |= (1 << flag);
     if (previouslyOff) {
         LUSLOG_INFO("Clear Flag Set - %#x", flag);
-        GameInteractor_ExecuteOnSceneFlagSet(play->sceneNum, FLAG_SCENE_CLEAR, flag);
+        CALL_EVENT(OnSceneFlagSet, play->sceneNum, FLAG_SCENE_CLEAR, flag);
     }
 }
 
@@ -780,7 +780,7 @@ void Flags_UnsetClear(PlayState* play, s32 flag) {
     play->actorCtx.flags.clear &= ~(1 << flag);
     if (previouslyOn) {
         LUSLOG_INFO("Clear Flag Unset - %#x", flag);
-        GameInteractor_ExecuteOnSceneFlagUnset(play->sceneNum, FLAG_SCENE_CLEAR, flag);
+        CALL_EVENT(OnSceneFlagUnset, play->sceneNum, FLAG_SCENE_CLEAR, flag);
     }
 }
 
@@ -830,7 +830,7 @@ void Flags_SetCollectible(PlayState* play, s32 flag) {
     }
     if (previouslyOff) {
         LUSLOG_INFO("Collectible Flag Set - %#x", flag);
-        GameInteractor_ExecuteOnSceneFlagSet(play->sceneNum, FLAG_SCENE_COLLECTIBLE, flag);
+        CALL_EVENT(OnSceneFlagSet, play->sceneNum, FLAG_SCENE_COLLECTIBLE, flag);
     }
 }
 
@@ -1106,7 +1106,7 @@ void TitleCard_Update(PlayState* play, TitleCardContext* titleCtx) {
 
     if (DECR(titleCtx->delayTimer) == 0) {
         if (titleCtx->durationTimer == 80) {
-            GameInteractor_ExecuteOnPresentTitleCard();
+            CALL_EVENT(OnPresentTitleCard();
         }
 
         if (DECR(titleCtx->durationTimer) == 0) {
@@ -1199,7 +1199,7 @@ s32 func_8002D53C(PlayState* play, TitleCardContext* titleCtx) {
 }
 
 void Actor_Kill(Actor* actor) {
-    GameInteractor_ExecuteOnActorKill(actor);
+    CALL_EVENT(OnActorKill, actor);
     actor->draw = NULL;
     actor->update = NULL;
     actor->flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
@@ -1254,13 +1254,16 @@ void Actor_Init(Actor* actor, PlayState* play) {
     actor->floorBgId = BGCHECK_SCENE;
     ActorShape_Init(&actor->shape, 0.0f, NULL, 0.0f);
     if (Object_IsLoaded(&play->objectCtx, actor->objBankIndex)) {
+        bool result = true;
         Actor_SetObjectDependency(play, actor);
 
-        if (GameInteractor_ShouldActorInit(actor)) {
+        CALL_EVENT(ShouldActorInit, actor, &result);
+
+        if (result) {
             actor->init(actor, play);
             actor->init = NULL;
 
-            GameInteractor_ExecuteOnActorInit(actor);
+            CALL_EVENT(OnActorInit, actor);
         } else {
             actor->init = NULL;
             Actor_Kill(actor);
@@ -2251,7 +2254,7 @@ void Player_PlaySfx(Actor* actor, u16 sfxId) {
     }
 
     if (actor->id == ACTOR_PLAYER) {
-        GameInteractor_ExecuteOnPlayerSfx(sfxId);
+        CALL_EVENT(OnPlayerSfx, (sfxId);
     }
 }
 
@@ -2595,7 +2598,7 @@ void Actor_UpdateAll(PlayState* play, ActorContext* actorCtx) {
             // #endregion
         }
         play->numSetupActors = 0;
-        GameInteractor_ExecuteOnSceneSpawnActors();
+        CALL_EVENT(OnSceneSpawnActors);
     }
 
     if (actorCtx->unk_02 != 0) {
@@ -2632,13 +2635,16 @@ void Actor_UpdateAll(PlayState* play, ActorContext* actorCtx) {
 
             if (actor->init != NULL) {
                 if (Object_IsLoaded(&play->objectCtx, actor->objBankIndex)) {
+                    bool result = true;
                     Actor_SetObjectDependency(play, actor);
 
-                    if (GameInteractor_ShouldActorInit(actor)) {
+                    CALL_EVENT(ShouldActorInit, actor, &result);
+
+                    if (result) {
                         actor->init(actor, play);
                         actor->init = NULL;
 
-                        GameInteractor_ExecuteOnActorInit(actor);
+                        CALL_EVENT(OnActorInit, actor);
                     } else {
                         actor->init = NULL;
                         Actor_Kill(actor);
@@ -2685,9 +2691,11 @@ void Actor_UpdateAll(PlayState* play, ActorContext* actorCtx) {
                     if (actor->colorFilterTimer != 0) {
                         actor->colorFilterTimer--;
                     }
-                    if (GameInteractor_ShouldActorUpdate(actor)) {
+                    bool result = true;
+                    CALL_EVENT(ShouldActorUpdate, actor, &result);
+                    if (result) {
                         actor->update(actor, play);
-                        GameInteractor_ExecuteOnActorUpdate(actor);
+                        CALL_EVENT(OnActorUpdate, actor);
                     }
                     func_8003F8EC(play, &play->colCtx.dyna, actor);
                 }
@@ -3406,7 +3414,7 @@ Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 pos
     Actor_Init(actor, play);
     gSegments[6] = temp;
 
-    GameInteractor_ExecuteOnActorSpawn(actor);
+    CALL_EVENT(OnActorSpawn, actor);
 
     return actor;
 }
@@ -3489,7 +3497,7 @@ Actor* Actor_Delete(ActorContext* actorCtx, Actor* actor, PlayState* play) {
     player = GET_PLAYER(play);
 
     // Execute before actor memory is freed
-    GameInteractor_ExecuteOnActorDestroy(actor);
+    CALL_EVENT(OnActorDestroy, actor);
 
     if ((player != NULL) && (actor == player->focusActor)) {
         Player_ReleaseLockOn(player);
@@ -4931,7 +4939,7 @@ void Flags_SetEventChkInf(s32 flag) {
     gSaveContext.eventChkInf[flag >> 4] |= (1 << (flag & 0xF));
     if (previouslyOff) {
         LUSLOG_INFO("EventChkInf Flag Set - %#x", flag);
-        GameInteractor_ExecuteOnFlagSet(FLAG_EVENT_CHECK_INF, flag);
+        CALL_EVENT(OnFlagSet, FLAG_EVENT_CHECK_INF, flag);
     }
 }
 
@@ -4943,7 +4951,7 @@ void Flags_UnsetEventChkInf(s32 flag) {
     gSaveContext.eventChkInf[flag >> 4] &= ~(1 << (flag & 0xF));
     if (previouslyOn) {
         LUSLOG_INFO("EventChkInf Flag Unset - %#x", flag);
-        GameInteractor_ExecuteOnFlagUnset(FLAG_EVENT_CHECK_INF, flag);
+        CALL_EVENT(OnFlagUnset, FLAG_EVENT_CHECK_INF, flag);
     }
 }
 
@@ -4962,7 +4970,7 @@ void Flags_SetItemGetInf(s32 flag) {
     gSaveContext.itemGetInf[flag >> 4] |= (1 << (flag & 0xF));
     if (previouslyOff) {
         LUSLOG_INFO("ItemGetInf Flag Set - %#x", flag);
-        GameInteractor_ExecuteOnFlagSet(FLAG_ITEM_GET_INF, flag);
+        CALL_EVENT(OnFlagSet, FLAG_ITEM_GET_INF, flag);
     }
 }
 
@@ -4974,7 +4982,7 @@ void Flags_UnsetItemGetInf(s32 flag) {
     gSaveContext.itemGetInf[flag >> 4] &= ~(1 << (flag & 0xF));
     if (previouslyOn) {
         LUSLOG_INFO("ItemGetInf Flag Unset - %#x", flag);
-        GameInteractor_ExecuteOnFlagUnset(FLAG_ITEM_GET_INF, flag);
+        CALL_EVENT(OnFlagUnset, FLAG_ITEM_GET_INF, flag);
     }
 }
 
@@ -4993,7 +5001,7 @@ void Flags_SetInfTable(s32 flag) {
     gSaveContext.infTable[flag >> 4] |= (1 << (flag & 0xF));
     if (previouslyOff) {
         LUSLOG_INFO("InfTable Flag Set - %#x", flag);
-        GameInteractor_ExecuteOnFlagSet(FLAG_INF_TABLE, flag);
+        CALL_EVENT(OnFlagSet, FLAG_INF_TABLE, flag);
     }
 }
 
@@ -5005,7 +5013,7 @@ void Flags_UnsetInfTable(s32 flag) {
     gSaveContext.infTable[flag >> 4] &= ~(1 << (flag & 0xF));
     if (previouslyOn) {
         LUSLOG_INFO("InfTable Flag Unset - %#x", flag);
-        GameInteractor_ExecuteOnFlagUnset(FLAG_INF_TABLE, flag);
+        CALL_EVENT(OnFlagUnset, FLAG_INF_TABLE, flag);
     }
 }
 
@@ -5024,7 +5032,7 @@ void Flags_SetEventInf(s32 flag) {
     gSaveContext.eventInf[flag >> 4] |= (1 << (flag & 0xF));
     if (previouslyOff) {
         LUSLOG_INFO("EventInf Flag Set - %#x", flag);
-        GameInteractor_ExecuteOnFlagSet(FLAG_EVENT_INF, flag);
+        CALL_EVENT(OnFlagSet, FLAG_EVENT_INF, flag);
     }
 }
 
@@ -5036,7 +5044,7 @@ void Flags_UnsetEventInf(s32 flag) {
     gSaveContext.eventInf[flag >> 4] &= ~(1 << (flag & 0xF));
     if (previouslyOn) {
         LUSLOG_INFO("EventInf Flag Unset - %#x", flag);
-        GameInteractor_ExecuteOnFlagUnset(FLAG_EVENT_INF, flag);
+        CALL_EVENT(OnFlagUnset, FLAG_EVENT_INF, flag);
     }
 }
 
@@ -5073,7 +5081,7 @@ void Flags_SetRandomizerInf(RandomizerInf flag) {
     if (previouslyOff) {
         gSaveContext.ship.randomizerInf[flag >> 4] |= (1 << (flag & 0xF));
         LUSLOG_INFO("RandomizerInf Flag Set - %#x", flag);
-        GameInteractor_ExecuteOnFlagSet(FLAG_RANDOMIZER_INF, flag);
+        CALL_EVENT(OnFlagSet, FLAG_RANDOMIZER_INF, flag);
     }
 }
 
@@ -5094,7 +5102,7 @@ void Flags_UnsetRandomizerInf(RandomizerInf flag) {
     if (previouslyOn) {
         gSaveContext.ship.randomizerInf[flag >> 4] &= ~(1 << (flag & 0xF));
         LUSLOG_INFO("RandomizerInf Flag Unset - %#x", flag);
-        GameInteractor_ExecuteOnFlagUnset(FLAG_RANDOMIZER_INF, flag);
+        CALL_EVENT(OnFlagUnset, FLAG_RANDOMIZER_INF, flag);
     }
 }
 

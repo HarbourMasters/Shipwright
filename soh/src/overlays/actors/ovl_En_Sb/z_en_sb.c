@@ -457,7 +457,7 @@ void EnSb_Update(Actor* thisx, PlayState* play) {
             } else {
                 Item_DropCollectible(play, &this->actor.world.pos, 8);
             }
-            GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+            CALL_EVENT(OnEnemyDefeat, &this->actor);
             Actor_Kill(&this->actor);
         }
     } else {

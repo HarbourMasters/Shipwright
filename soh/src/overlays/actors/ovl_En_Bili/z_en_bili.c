@@ -236,7 +236,7 @@ void EnBili_SetupDie(EnBili* this) {
     this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     this->actionFunc = EnBili_Die;
     this->actor.speedXZ = 0.0f;
-    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+    CALL_EVENT(OnEnemyDefeat, &this->actor);
 }
 
 /**

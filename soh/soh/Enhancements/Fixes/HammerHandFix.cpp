@@ -32,7 +32,7 @@ static void RegisterHammerHandFix() {
         ResetHammerHand();
     }
 
-    COND_HOOK(OnSceneInit, CVAR_HAMMER_HAND_VALUE, [](int32_t) { FixHammerHand(); });
+    COND_HOOK(OnSceneInit, CVAR_HAMMER_HAND_VALUE, [](IEvent* event) { FixHammerHand(); });
 }
 
 static RegisterShipInitFunc initFunc(RegisterHammerHandFix, { CVAR_HAMMER_HAND_NAME });

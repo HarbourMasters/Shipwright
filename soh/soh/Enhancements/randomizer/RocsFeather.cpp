@@ -21,7 +21,7 @@ static f32 effectsScale = 1.0f;
 void RegisterRocsFeather() {
     bool shouldRegister = IS_RANDO && RAND_GET_OPTION(RSK_ROCS_FEATHER);
 
-    COND_HOOK(OnPlayerUpdate, shouldRegister, []() {
+    COND_HOOK(OnPlayerUpdate, shouldRegister, [](IEvent* event) {
         Player* player = GET_PLAYER(gPlayState);
 
         // Reset Rocs count when touching the ground for 3+ frames

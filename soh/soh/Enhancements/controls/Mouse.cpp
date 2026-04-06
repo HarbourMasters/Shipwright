@@ -3,6 +3,7 @@
 #include "z64player.h"
 #include "global.h"
 #include <ship/window/Window.h>
+#include <libultraship/bridge.h>
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ShipInit.hpp"
 
@@ -18,28 +19,27 @@ std::shared_ptr<Ship::Window> GetWindow() {
     return OTRGlobals::Instance->context->GetWindow();
 }
 
-extern "C" {
-void Mouse_UpdatePos() {
+extern "C" void Mouse_UpdatePos() {
     mouseCoord = GetWindow()->GetMousePos();
 }
 
-void Mouse_UpdatePosRel() {
+extern "C" void Mouse_UpdatePosRel() {
     mouseCoordRel = GetWindow()->GetMouseDelta();
 }
 
-void Mouse_UpdateAll() {
+extern "C" void Mouse_UpdateAll() {
     Mouse_UpdatePos();
     Mouse_UpdatePosRel();
 }
 
-void Mouse_HandleThirdPerson(f32* newCamX, f32* newCamY) {
+extern "C" void Mouse_HandleThirdPerson(f32* newCamX, f32* newCamY) {
     if (MOUSE_ENABLED) {
         *newCamX -= mouseCoordRel.x * 40.0f;
         *newCamY -= mouseCoordRel.y * 40.0f;
     }
 }
 
-void Mouse_HandleFirstPerson(Player* player) {
+extern"C" void Mouse_HandleFirstPerson(Player* player) {
     f32 xAxisMulti = CVarGetFloat(CVAR_SETTING("FirstPersonCameraSensitivity.X"), 1.0f);
     f32 yAxisMulti = CVarGetFloat(CVAR_SETTING("FirstPersonCameraSensitivity.Y"), 1.0f);
     s8 invertXAxisMulti = ((CVarGetInteger(CVAR_SETTING("Controls.InvertAimingXAxis"), 0) &&
@@ -55,7 +55,7 @@ void Mouse_HandleFirstPerson(Player* player) {
     }
 }
 
-void Mouse_RecenterCursor() {
+extern "C" void Mouse_RecenterCursor() {
     u32 width = GetWindow()->GetWidth();
     u32 height = GetWindow()->GetHeight();
     if (MOUSE_ENABLED) {
@@ -63,7 +63,7 @@ void Mouse_RecenterCursor() {
     }
 }
 
-void Mouse_HandleShield(f32* sp50, f32* sp54) {
+extern "C" void Mouse_HandleShield(f32* sp50, f32* sp54) {
     if (MOUSE_ENABLED) {
         s32 width = GetWindow()->GetWidth();
         s32 height = GetWindow()->GetHeight();
@@ -82,7 +82,7 @@ static s32 mouseQuickspinX[5] = {};
 static s32 mouseQuickspinY[5] = {};
 static u8 quickspinCount = 0;
 
-void Mouse_UpdateQuickspinCount() {
+extern "C" void Mouse_UpdateQuickspinCount() {
     if (MOUSE_ENABLED) {
         quickspinCount = (quickspinCount + 1) % 5;
         mouseQuickspinX[quickspinCount] = mouseCoord.x;
@@ -92,7 +92,7 @@ void Mouse_UpdateQuickspinCount() {
     }
 }
 
-bool Mouse_HandleQuickspin(bool* should, s8* iter2, s8* sp3C) {
+extern "C" bool Mouse_HandleQuickspin(bool* should, s8* iter2, s8* sp3C) {
     s8 temp1;
     s8 temp2;
     s32 i;
@@ -129,19 +129,29 @@ bool Mouse_HandleQuickspin(bool* should, s8* iter2, s8* sp3C) {
 // Hook handlers
 
 void Mouse_RegisterRecenterCursorOnShield() {
-    COND_HOOK(OnPlayerHoldUpShield, true, Mouse_RecenterCursor);
+    COND_HOOK(OnPlayerHoldUpShield, true, [](IEvent* event){
+        Mouse_RecenterCursor();
+    });
 }
 
 void Mouse_RegisterHandleFirstPerson() {
-    COND_HOOK(OnPlayerFirstPersonControl, true, Mouse_HandleFirstPerson);
+    COND_HOOK(OnPlayerFirstPersonControl, true, [](IEvent* event){
+        OnPlayerFirstPersonControl* ev = reinterpret_cast<OnPlayerFirstPersonControl*>(event);
+        Mouse_HandleFirstPerson(ev->player);
+    });
 }
 
 void Mouse_RegisterHandleShield() {
-    COND_HOOK(OnPlayerShieldControl, true, Mouse_HandleShield);
+    COND_HOOK(OnPlayerShieldControl, true, [](IEvent* event){
+        OnPlayerShieldControl* ev = reinterpret_cast<OnPlayerShieldControl*>(event);
+        Mouse_HandleShield(ev->sp50, ev->sp54);
+    });
 }
 
 void Mouse_RegisterUpdateQuickspinCount() {
-    COND_HOOK(OnPlayerProcessStick, true, Mouse_UpdateQuickspinCount);
+    COND_HOOK(OnPlayerProcessStick, true, [](IEvent* event){
+        Mouse_UpdateQuickspinCount();
+    });
 }
 
 void Mouse_RegisterHandleQuickspin() {
@@ -153,4 +163,3 @@ static RegisterShipInitFunc registerFirstPerson(Mouse_RegisterHandleFirstPerson,
 static RegisterShipInitFunc registerQuickspinCount(Mouse_RegisterUpdateQuickspinCount, { CVAR_ENABLE_MOUSE_NAME });
 static RegisterShipInitFunc registerQuickspin(Mouse_RegisterHandleQuickspin, { CVAR_ENABLE_MOUSE_NAME });
 static RegisterShipInitFunc registerShieldMove(Mouse_RegisterHandleShield, { CVAR_ENABLE_MOUSE_NAME });
-} // extern "C"

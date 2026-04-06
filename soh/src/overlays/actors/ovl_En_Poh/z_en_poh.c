@@ -639,7 +639,7 @@ void func_80ADF15C(EnPoh* this, PlayState* play) {
                              255, 1, 9, 1);
         if (this->unk_198 == 1) {
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_EXTINCT);
-            GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+            CALL_EVENT(OnEnemyDefeat, &this->actor);
         }
     } else if (this->unk_198 == 28) {
         EnPoh_SetupDeath(this, play);

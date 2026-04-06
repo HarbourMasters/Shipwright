@@ -76,7 +76,7 @@ void Warp(WarpPoint& warpPoint) {
         gWeatherMode = 0;
         gGameState->running = false;
         SET_NEXT_GAMESTATE(gGameState, Play_Init, PlayState);
-        GameInteractor_ExecuteOnLoadGame(gSaveContext.fileNum);
+        CALL_EVENT(OnLoadGame, gSaveContext.fileNum);
     } else {
         gPlayState->nextEntranceIndex = warpPoint.entranceId;
         gPlayState->transitionTrigger = TRANS_TRIGGER_START;
@@ -183,8 +183,9 @@ void RegisterWarping() {
         loadedConfig = true;
     }
 
-    COND_HOOK(OnZTitleUpdate, CVAR_BOOTSEQUENCE_VALUE == BOOTSEQUENCE_DEBUGWARPSCREEN, [](void* gameState) {
-        TitleContext* titleContext = (TitleContext*)gameState;
+    COND_HOOK(OnZTitleUpdate, CVAR_BOOTSEQUENCE_VALUE == BOOTSEQUENCE_DEBUGWARPSCREEN, [](IEvent* event) {
+        OnZTitleUpdate* ev = reinterpret_cast<OnZTitleUpdate*>(event);
+        TitleContext* titleContext = (TitleContext*) ev->gameState;
 
         gSaveContext.seqId = (u8)NA_BGM_DISABLED;
         gSaveContext.natureAmbienceId = 0xFF;
@@ -193,7 +194,8 @@ void RegisterWarping() {
         SET_NEXT_GAMESTATE(&titleContext->state, Select_Init, SelectContext);
     });
 
-    COND_HOOK(OnZTitleUpdate, CVAR_BOOTSEQUENCE_VALUE == BOOTSEQUENCE_WARPPOINT, [](void* gameState) {
+    COND_HOOK(OnZTitleUpdate, CVAR_BOOTSEQUENCE_VALUE == BOOTSEQUENCE_WARPPOINT, [](IEvent* event) {
+        OnZTitleUpdate* ev = reinterpret_cast<OnZTitleUpdate*>(event);
         for (auto& wp : warpPoints) {
             if (wp.second.bootToPoint) {
                 Warp(wp.second);
@@ -202,7 +204,7 @@ void RegisterWarping() {
         }
 
         // Fallback to Debug Warp Screen if no warp point is set to boot to
-        TitleContext* titleContext = (TitleContext*)gameState;
+        TitleContext* titleContext = (TitleContext*)ev->gameState;
 
         gSaveContext.seqId = (u8)NA_BGM_DISABLED;
         gSaveContext.natureAmbienceId = 0xFF;

@@ -5,6 +5,7 @@
 #include "soh/ObjectExtension/ActorListIndex.h"
 #include "item_category_adj.h"
 #include "particle_cmc.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 extern "C" {
 #include "overlays/actors/ovl_En_Wonder_Item/z_en_wonder_item.h"
@@ -86,7 +87,7 @@ static Vec3f GetStackOffset(RandomizerCheck rc) {
     return it != sStackedWonderOffsets.end() ? it->second : Vec3f{ 0.0f, 0.0f, 0.0f };
 }
 
-void SpawnNTSC10WonderItem() {
+void SpawnNTSC10WonderItem(IEvent* event) {
     if (LINK_IS_ADULT && gPlayState->sceneNum == SCENE_ZORAS_FOUNTAIN) {
         Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_WONDER_ITEM, -667, 320, 1053, 0, 0, 1, 4799);
     } else if (LINK_IS_ADULT && gPlayState->sceneNum == SCENE_DEATH_MOUNTAIN_CRATER) {

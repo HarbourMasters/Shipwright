@@ -13,7 +13,7 @@ static constexpr int32_t CVAR_RESET_BTN_MASK_DEFAULT = BTN_CUSTOM_MODIFIER2;
 #define CVAR_RESET_BTN_MASK_NAME "gSettings.ResetBtn"
 #define CVAR_RESET_BTN_MASK_VALUE CVarGetInteger(CVAR_RESET_BTN_MASK_NAME, CVAR_RESET_BTN_MASK_DEFAULT)
 
-static void OnGameStateMainStartResetHotkey() {
+static void OnGameStateMainStartResetHotkey(IEvent* event) {
     const int32_t packed = CVarGetInteger("gSettings.ResetBtn", BTN_CUSTOM_MODIFIER2);
 
     const uint16_t mask = static_cast<uint16_t>(packed & 0xFFFF);

@@ -11,7 +11,7 @@ extern PlayState* gPlayState;
 #define CVAR_EASY_QPA_DEFAULT 0
 #define CVAR_EASY_QPA_VALUE CVarGetInteger(CVAR_EASY_QPA_NAME, CVAR_EASY_QPA_DEFAULT)
 
-void OnGameFrameUpdateEasyQPA() {
+void OnGameFrameUpdateEasyQPA(IEvent* event) {
     if (!GameInteractor::IsSaveLoaded(true)) {
         return;
     }

@@ -33,7 +33,7 @@ void Select_LoadGame(SelectContext* this, s32 entranceIndex) {
         gSaveContext.magic = 0;
         gSaveContext.magicCapacity = 0;
         gSaveContext.magicLevel = gSaveContext.magic;
-        GameInteractor_ExecuteOnLoadGame(gSaveContext.fileNum);
+        CALL_EVENT(OnLoadGame, gSaveContext.fileNum);
     }
     for (int buttonIndex = 0; buttonIndex < ARRAY_COUNT(gSaveContext.buttonStatus); buttonIndex++) {
         gSaveContext.buttonStatus[buttonIndex] = BTN_ENABLED;

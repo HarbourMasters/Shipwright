@@ -804,7 +804,7 @@ void Entrance_SetEntranceDiscovered(u16 entranceIndex, u8 isReversedEntrance) {
         return;
     }
 
-    GameInteractor_ExecuteOnRandoEntranceDiscovered(entranceIndex, isReversedEntrance);
+    CALL_EVENT(OnRandoEntranceDiscovered, entranceIndex, isReversedEntrance);
 
     u16 bitsPerIndex = sizeof(u32) * 8;
     u32 idx = entranceIndex / bitsPerIndex;

@@ -16,7 +16,7 @@ static int frameAdvanceTimer = 0;
 #define PAUSE_STATE_UNPAUSE_CLOSE 19
 
 void RegisterEasyFrameAdvance() {
-    COND_HOOK(OnGameStateMainStart, CVAR_FRAME_ADVANCE_VALUE, []() {
+    COND_HOOK(OnGameStateMainStart, CVAR_FRAME_ADVANCE_VALUE, [](IEvent* event) {
         if (gPlayState == NULL) {
             return;
         }

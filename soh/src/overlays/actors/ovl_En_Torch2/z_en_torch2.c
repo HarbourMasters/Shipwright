@@ -564,7 +564,7 @@ void EnTorch2_Update(Actor* thisx, PlayState* play2) {
         case ENTORCH2_DEATH:
             if (sAlpha - 13 <= 0) {
                 sAlpha = 0;
-                GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+                CALL_EVENT(OnEnemyDefeat, &this->actor);
                 Actor_Kill(&this->actor);
                 return;
             }

@@ -742,7 +742,7 @@ void EnSkj_SariasSongKidIdle(EnSkj* this, PlayState* play) {
 void EnSkj_SetupDie(EnSkj* this) {
     EnSkj_ChangeAnim(this, SKJ_ANIM_DIE);
     EnSkj_SetupAction(this, SKJ_ACTION_WAIT_FOR_DEATH_ANIM);
-    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+    CALL_EVENT(OnEnemyDefeat, &this->actor);
 }
 
 void EnSkj_WaitForDeathAnim(EnSkj* this, PlayState* play) {

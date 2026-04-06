@@ -21,7 +21,7 @@ struct DayTimeGoldSkulltulas {
 
 using DayTimeGoldSkulltulasList = std::vector<DayTimeGoldSkulltulas>;
 
-static void OnSpawnNighttimeGoldSkulltula() {
+static void OnSpawnNighttimeGoldSkulltula(IEvent* event) {
     // Gold Skulltulas that are not part of the scene actor list during the day
     // Actor values copied from the night time scene actor list
     static const DayTimeGoldSkulltulasList dayTimeGoldSkulltulas = {

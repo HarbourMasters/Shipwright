@@ -11,7 +11,7 @@ extern SaveContext gSaveContext;
 }
 
 void RegisterFasterRupeeAccumulator() {
-    COND_HOOK(OnInterfaceUpdate, CVarGetInteger(CVAR_ENHANCEMENT("FasterRupeeAccumulator"), 0), []() {
+    COND_HOOK(OnInterfaceUpdate, CVarGetInteger(CVAR_ENHANCEMENT("FasterRupeeAccumulator"), 0), [](IEvent* event) {
         if (gSaveContext.rupeeAccumulator == 0) {
             return;
         }

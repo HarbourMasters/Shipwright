@@ -894,7 +894,7 @@ void EnAm_Update(Actor* thisx, PlayState* play) {
                     dustPosScale += 60.0f;
                 }
 
-                GameInteractor_ExecuteOnEnemyDefeat(thisx);
+                CALL_EVENT(OnEnemyDefeat, thisx);
 
                 Actor_Kill(&this->dyna.actor);
                 return;

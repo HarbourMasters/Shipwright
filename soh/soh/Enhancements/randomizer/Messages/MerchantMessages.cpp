@@ -153,7 +153,10 @@ void BuildScrubMessage(uint16_t* textId, bool* loadFromMessageTable) {
     *loadFromMessageTable = false;
 }
 
-void BuildShopMessage(uint16_t* textId, bool* loadFromMessageTable) {
+void BuildShopMessage(IEvent* event) {
+    OnOpenText* ev = reinterpret_cast<OnOpenText*>(event);
+    uint16_t* textId = ev->textId;
+    bool* loadFromMessageTable = ev->loadFromMessageTable;
     CustomMessage msg;
     RandomizerCheck rc;
     // Shop items each have two message entries, second one offset by NUM_SHOP_ITEMS

@@ -448,7 +448,7 @@ void EnNy_SetupDie(EnNy* this, PlayState* play) {
         }
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_NYU_DEAD);
         this->actionFunc = EnNy_Die;
-        GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+        CALL_EVENT(OnEnemyDefeat, &this->actor);
     }
 }
 

@@ -6,7 +6,7 @@ extern "C" {
 #include "variables.h"
 }
 
-void ResetGameplayFramesOnSoftReset() {
+void ResetGameplayFramesOnSoftReset(IEvent* event) {
     PlayState* play = (PlayState*)gGameState;
 
     if (gGameState->init == TitleSetup_Init) {
@@ -14,7 +14,7 @@ void ResetGameplayFramesOnSoftReset() {
     }
 }
 
-void ResetGameplayFramesOnTitleScreenExit() {
+void ResetGameplayFramesOnTitleScreenExit(IEvent* event) {
     PlayState* play = (PlayState*)gGameState;
 
     if (gSaveContext.fileNum == 0xFF) {

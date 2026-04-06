@@ -411,7 +411,7 @@ void EnDekubaba_SetupPrunedSomersault(EnDekubaba* this) {
     this->actor.flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED;
     this->actionFunc = EnDekubaba_PrunedSomersault;
 
-    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+    CALL_EVENT(OnEnemyDefeat, &this->actor);
 }
 
 void EnDekubaba_SetupShrinkDie(EnDekubaba* this) {
@@ -420,7 +420,7 @@ void EnDekubaba_SetupShrinkDie(EnDekubaba* this) {
     this->collider.base.acFlags &= ~AC_ON;
     this->actionFunc = EnDekubaba_ShrinkDie;
 
-    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+    CALL_EVENT(OnEnemyDefeat, &this->actor);
 }
 
 void EnDekubaba_SetupStunnedVertical(EnDekubaba* this) {

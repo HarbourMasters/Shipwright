@@ -469,7 +469,7 @@ s32 EnSt_CheckHitBackside(EnSt* this, PlayState* play) {
     this->deathTimer = 20;
     this->actor.gravity = -1.0f;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_STALWALL_DEAD);
-    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+    CALL_EVENT(OnEnemyDefeat, &this->actor);
 
     if (flags & 0x1F820) {
         // arrow, fire arrow, ice arrow, light arrow,

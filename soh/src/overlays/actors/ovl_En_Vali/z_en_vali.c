@@ -260,7 +260,7 @@ void EnVali_SetupDivideAndDie(EnVali* this, PlayState* play) {
     this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     this->actor.draw = NULL;
     this->actionFunc = EnVali_DivideAndDie;
-    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+    CALL_EVENT(OnEnemyDefeat, &this->actor);
 }
 
 void EnVali_SetupStunned(EnVali* this) {

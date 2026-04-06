@@ -58,7 +58,7 @@ extern "C" void OTRPlay_SpawnScene(PlayState* play, s32 sceneId, s32 spawn) {
 
     osSyncPrintf("ROOM SIZE=%fK\n", roomSize / 1024.0f);
 
-    GameInteractor_ExecuteOnSceneInit(play->sceneNum);
+    CALL_EVENT(OnSceneInit, play->sceneNum);
     SPDLOG_INFO("Scene Init - sceneNum: {0:#x}, entranceIndex: {1:#x}", play->sceneNum, gSaveContext.entranceIndex);
 }
 
@@ -79,7 +79,7 @@ void OTRPlay_InitScene(PlayState* play, s32 spawn) {
     gSaveContext.worldMapArea = 0;
     OTRScene_ExecuteCommands(play, (SOH::Scene*)play->sceneSegment);
 
-    GameInteractor_ExecuteAfterSceneCommands(play->sceneNum);
+    CALL_EVENT(AfterSceneCommands, play->sceneNum);
     Play_InitEnvironment(play, play->skyboxId);
     /* auto data = static_cast<LUS::Vertex*>(Ship::Context::GetInstance()
                                                ->GetResourceManager()

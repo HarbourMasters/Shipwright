@@ -385,7 +385,7 @@ void EnRr_SetupDeath(EnRr* this) {
     this->actionFunc = EnRr_Death;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_LIKE_DEAD);
     this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
-    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+    CALL_EVENT(OnEnemyDefeat, &this->actor);
 }
 
 void EnRr_SetupStunned(EnRr* this) {

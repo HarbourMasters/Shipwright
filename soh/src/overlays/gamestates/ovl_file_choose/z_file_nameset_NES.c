@@ -952,13 +952,13 @@ void FileChoose_UpdateKeyboardCursorNES(GameState* thisx) {
 
                 if (sLastKbdX != this->kbdX) {
                     // NTSC TODO: Figure out japanese TTS
-                    // GameInteractor_ExecuteOnUpdateFileNameSelection(0xF0 + this->kbdX);
+                    // CALL_EVENT(OnUpdateFileNameSelection, (0xF0 + this->kbdX);
                     sLastKbdX = this->kbdX;
                     sLastCharIndex = -1;
                 }
             } else if (sLastCharIndex != this->charIndex && this->charIndex < 65) {
                 // NTSC TODO: Figure out japanese TTS
-                // GameInteractor_ExecuteOnUpdateFileNameSelection(D_808123F0[this->charIndex]);
+                // CALL_EVENT(OnUpdateFileNameSelection, (D_808123F0[this->charIndex]);
                 sLastCharIndex = this->charIndex;
                 sLastKbdX = -1;
             }
@@ -1064,14 +1064,14 @@ void FileChoose_UpdateOptionsMenuNES(GameState* thisx) {
 
     if (sSelectedSetting == FS_SETTING_AUDIO) {
         if (sLastOptionButtonIndex != gSaveContext.audioSetting) {
-            GameInteractor_ExecuteOnUpdateFileAudioSelection(gSaveContext.audioSetting);
+            CALL_EVENT(OnUpdateFileAudioSelection, (gSaveContext.audioSetting);
             sLastOptionButtonIndex = gSaveContext.audioSetting;
         }
     } else if (sSelectedSetting == FS_SETTING_TARGET) {
         // offset to detect switching between modes
         u8 optionOffset = gSaveContext.zTargetSetting + FS_AUDIO_SURROUND + FS_SETTING_TARGET;
         if (sLastOptionButtonIndex != optionOffset) {
-            GameInteractor_ExecuteOnUpdateFileTargetSelection(gSaveContext.zTargetSetting);
+            CALL_EVENT(OnUpdateFileTargetSelection, (gSaveContext.zTargetSetting);
             sLastOptionButtonIndex = optionOffset;
         }
     }

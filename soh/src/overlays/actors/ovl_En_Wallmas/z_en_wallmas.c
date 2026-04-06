@@ -260,7 +260,7 @@ void EnWallmas_SetupDie(EnWallmas* this, PlayState* play) {
 
     Item_DropCollectibleRandom(play, &this->actor, &this->actor.world.pos, 0xC0);
     this->actionFunc = EnWallmas_Die;
-    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+    CALL_EVENT(OnEnemyDefeat, &this->actor);
 }
 
 void EnWallmas_SetupTakePlayer(EnWallmas* this, PlayState* play) {

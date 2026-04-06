@@ -228,7 +228,7 @@ void EnFirefly_SetupDie(EnFirefly* this) {
     this->actor.speedXZ = 0.0f;
     this->actionFunc = EnFirefly_Die;
 
-    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+    CALL_EVENT(OnEnemyDefeat, &this->actor);
 }
 
 void EnFirefly_SetupRebound(EnFirefly* this) {

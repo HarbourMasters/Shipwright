@@ -1200,7 +1200,7 @@ void EnWf_SetupDie(EnWf* this) {
     this->actionTimer = this->skelAnime.animLength;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_WOLFOS_DEAD);
     EnWf_SetupAction(this, EnWf_Die);
-    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+    CALL_EVENT(OnEnemyDefeat, &this->actor);
 }
 
 void EnWf_Die(EnWf* this, PlayState* play) {

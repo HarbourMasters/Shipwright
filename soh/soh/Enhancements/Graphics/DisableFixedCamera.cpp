@@ -90,8 +90,10 @@ static bool IsFixedCameraType(s16 type) {
 static void RegisterDisableFixedCamera() {
     const bool disableFixedCamEnabled = CVAR_DISABLE_FIXED_CAMERA_VALUE != 0;
 
-    COND_HOOK(OnCameraState, disableFixedCamEnabled,
-              [](PlayState* play) { DisableFixedCamera_CheckCameraState(play); });
+    COND_HOOK(OnCameraState, disableFixedCamEnabled, [](IEvent* event) {
+        OnCameraState* ev = reinterpret_cast<OnCameraState*>(event);
+        DisableFixedCamera_CheckCameraState(ev->play);
+    });
 
     if (!disableFixedCamEnabled) {
         DisableFixedCamera_RestoreAllCameraData();

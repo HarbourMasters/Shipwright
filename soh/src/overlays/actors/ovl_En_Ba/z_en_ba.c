@@ -456,7 +456,7 @@ void EnBa_Update(Actor* thisx, PlayState* play) {
         this->actor.colChkInfo.health--;
         if (this->actor.colChkInfo.health == 0) {
             func_809B75A0(this, play);
-            GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+            CALL_EVENT(OnEnemyDefeat, &this->actor);
         } else {
             func_809B7174(this);
         }

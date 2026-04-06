@@ -651,7 +651,7 @@ void EnFd_WaitForCore(EnFd* this, PlayState* play) {
     } else if (this->actor.params & FLG_COREDEAD) {
         this->actor.params = 0;
         this->spinTimer = 30;
-        GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+        CALL_EVENT(OnEnemyDefeat, &this->actor);
     }
 }
 

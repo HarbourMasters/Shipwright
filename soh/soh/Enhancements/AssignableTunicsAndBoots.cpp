@@ -61,7 +61,7 @@ static void UseTunicBoots(Player* player, PlayState* play, Input* input) {
     }
 }
 
-static void ClearAssignedTunicsBoots(int32_t unused = 0) {
+static void ClearAssignedTunicsBoots(IEvent* event = nullptr) {
     for (int32_t buttonIndex = 0; buttonIndex < 8; buttonIndex++) {
         int32_t item = gSaveContext.equips.buttonItems[buttonIndex];
 
@@ -71,7 +71,11 @@ static void ClearAssignedTunicsBoots(int32_t unused = 0) {
     }
 }
 
-static void ClearDeletedAssignedEquipment(int16_t equipmentType, uint16_t equipValue) {
+static void ClearDeletedAssignedEquipment(IEvent* ev) {
+    auto event = reinterpret_cast<OnEquipmentDelete*>(ev);
+
+    int16_t equipmentType = event->equipmentType;
+    uint16_t equipValue = event->equipValue;
     ItemID itemToRemove = ITEM_NONE;
 
     if (equipmentType == EQUIP_TYPE_TUNIC) {

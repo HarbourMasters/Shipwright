@@ -108,7 +108,7 @@ static void RollRandomTrap(uint64_t seed) {
     }
 }
 
-static void OnPlayerUpdate() {
+static void OnPlayerUpdateImpl(IEvent* event) {
     Player* player = GET_PLAYER(gPlayState);
     if (statusTimer == 0) {
         GameInteractor::State::MovementSpeedMultiplier = 1.0f;
@@ -176,7 +176,7 @@ static void OnPlayerUpdate() {
 }
 
 void RegisterExtraTraps() {
-    COND_HOOK(OnPlayerUpdate, CVAR_EXTRA_TRAPS_VALUE, OnPlayerUpdate);
+    COND_HOOK(OnPlayerUpdate, CVAR_EXTRA_TRAPS_VALUE, OnPlayerUpdateImpl);
 
     COND_VB_SHOULD(VB_SHORT_CIRCUIT_GIVE_ITEM_PROCESS, true, {
         if (!gSaveContext.ship.pendingIceTrapCount) {
@@ -188,7 +188,12 @@ void RegisterExtraTraps() {
         *should = true;
         gSaveContext.ship.pendingIceTrapCount--;
         gSaveContext.ship.stats.count[COUNT_ICE_TRAPS]++;
-        GameInteractor_ExecuteOnItemReceiveHooks(ItemTable_RetrieveEntry(MOD_RANDOMIZER, RG_ICE_TRAP));
+
+        // @port: The preprocessor fail if we use the CALL_EVENT macro here
+        OnItemReceive ev;
+        ev.itemEntry = ItemTable_RetrieveEntry(MOD_RANDOMIZER, RG_ICE_TRAP);
+        EventSystemCallEvent(OnItemReceiveID, &ev, __FILE__, __LINE__, FILE_AND_LINE);
+
         if (CVAR_EXTRA_TRAPS_VALUE) {
             RollRandomTrap(gPlayState->sceneNum + player->getItemEntry.drawItemId);
         } else {

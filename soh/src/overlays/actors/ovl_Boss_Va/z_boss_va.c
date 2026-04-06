@@ -1408,7 +1408,7 @@ void BossVa_BodyPhase4(BossVa* this, PlayState* play) {
                         if (sFightPhase >= PHASE_DEATH) {
                             BossVa_SetupBodyDeath(this, play);
                             Enemy_StartFinishingBlow(play, &this->actor);
-                            GameInteractor_ExecuteOnBossDefeat(&this->actor);
+                            CALL_EVENT(OnBossDefeat, &this->actor);
                             return;
                         }
                         this->actor.speedXZ = -10.0f;

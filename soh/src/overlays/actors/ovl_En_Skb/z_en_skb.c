@@ -420,7 +420,7 @@ void func_80AFD7B4(EnSkb* this, PlayState* play) {
     this->breakFlags |= 4;
     EffectSsDeadSound_SpawnStationary(play, &this->actor.projectedPos, NA_SE_EN_STALKID_DEAD, 1, 1, 0x28);
     EnSkb_SetupAction(this, func_80AFD880);
-    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+    CALL_EVENT(OnEnemyDefeat, &this->actor);
 }
 
 void func_80AFD880(EnSkb* this, PlayState* play) {

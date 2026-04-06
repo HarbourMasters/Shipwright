@@ -466,7 +466,7 @@ void EnDns_PostBurrow(EnDns* this, PlayState* play) {
             }
         }
         Actor_Kill(&this->actor);
-        GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+        CALL_EVENT(OnEnemyDefeat, &this->actor);
     }
 }
 

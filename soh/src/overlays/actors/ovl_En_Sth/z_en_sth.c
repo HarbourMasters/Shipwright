@@ -279,8 +279,8 @@ void EnSth_GiveReward(EnSth* this, PlayState* play) {
         EnSth_SetupAction(this, EnSth_RewardObtainedTalk);
         gSaveContext.eventChkInf[EVENTCHKINF_SKULLTULA_REWARD_INDEX] |= this->eventFlag;
         if (this->eventFlag != 0) {
-            GameInteractor_ExecuteOnFlagSet(FLAG_EVENT_CHECK_INF, (EVENTCHKINF_SKULLTULA_REWARD_INDEX << 4) +
-                                                                      sEventFlagsShift[this->actor.params]);
+            CALL_EVENT(OnFlagSet, FLAG_EVENT_CHECK_INF,
+                       (EVENTCHKINF_SKULLTULA_REWARD_INDEX << 4) + sEventFlagsShift[this->actor.params]);
         }
     } else if (GameInteractor_Should(VB_GIVE_ITEM_FROM_SKULLTULA_REWARD, true, this)) {
         EnSth_GivePlayerItem(this, play);
