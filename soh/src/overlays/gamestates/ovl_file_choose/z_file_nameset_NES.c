@@ -1064,14 +1064,14 @@ void FileChoose_UpdateOptionsMenuNES(GameState* thisx) {
 
     if (sSelectedSetting == FS_SETTING_AUDIO) {
         if (sLastOptionButtonIndex != gSaveContext.audioSetting) {
-            CALL_EVENT(OnUpdateFileAudioSelection, (gSaveContext.audioSetting);
+            CALL_EVENT(OnUpdateFileAudioSelection, gSaveContext.audioSetting);
             sLastOptionButtonIndex = gSaveContext.audioSetting;
         }
     } else if (sSelectedSetting == FS_SETTING_TARGET) {
         // offset to detect switching between modes
         u8 optionOffset = gSaveContext.zTargetSetting + FS_AUDIO_SURROUND + FS_SETTING_TARGET;
         if (sLastOptionButtonIndex != optionOffset) {
-            CALL_EVENT(OnUpdateFileTargetSelection, (gSaveContext.zTargetSetting);
+            CALL_EVENT(OnUpdateFileTargetSelection, gSaveContext.zTargetSetting);
             sLastOptionButtonIndex = optionOffset;
         }
     }

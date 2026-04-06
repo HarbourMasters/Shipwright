@@ -2796,7 +2796,7 @@ void Interface_SetDoAction(PlayState* play, u16 action) {
     PauseContext* pauseCtx = &play->pauseCtx;
 
     if (interfaceCtx->unk_1F0 != action) {
-        CALL_EVENT(OnSetDoAction, (action);
+        CALL_EVENT(OnSetDoAction, action);
         interfaceCtx->unk_1F0 = action;
         interfaceCtx->unk_1EC = 1;
         interfaceCtx->unk_1F4 = 0.0f;
@@ -6506,7 +6506,7 @@ void Interface_Update(PlayState* play) {
     Right_HUD_Margin = CVarGetInteger(CVAR_COSMETIC("HUD.Margin.R"), 0);
     Bottom_HUD_Margin = CVarGetInteger(CVAR_COSMETIC("HUD.Margin.B"), 0);
 
-    CALL_EVENT(OnInterfaceUpdate();
+    CALL_EVENT(OnInterfaceUpdate);
 
     bool isPal = ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL;
 

@@ -1678,7 +1678,7 @@ void func_800ED458(s32 arg0) {
         } else if ((sPrevOcarinaNoteVal != 0xFF) && (sCurOcarinaBtnVal == 0xFF)) {
             Audio_StopSfxById(NA_SE_OC_OCARINA);
         }
-        CALL_EVENT(OnOcarinaNote, (sCurOcarinaBtnVal, D_80130F24, D_80130F10);
+        CALL_EVENT(OnOcarinaNote, sCurOcarinaBtnVal, D_80130F24, D_80130F10);
     }
 }
 

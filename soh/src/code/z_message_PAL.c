@@ -2722,7 +2722,7 @@ void Message_OpenText(PlayState* play, u16 textId) {
     s16 textBoxType;
 
     bool loadFromMessageTable = true;
-    CALL_EVENT(OnOpenText, (&textId, &loadFromMessageTable);
+    CALL_EVENT(OnOpenText, &textId, &loadFromMessageTable);
 
     sDisplayNextMessageAsEnglish = false;
 
@@ -3820,7 +3820,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                         osSyncPrintf(VT_RST);
                         osSyncPrintf("→  OCARINA_MODE=%d\n", play->msgCtx.ocarinaMode);
                     }
-                    CALL_EVENT(OnOcarinaSongAction();
+                    CALL_EVENT(OnOcarinaSongAction);
                 }
                 break;
             case MSGMODE_DISPLAY_SONG_PLAYED:

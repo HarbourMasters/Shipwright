@@ -12389,7 +12389,7 @@ void Player_Update(Actor* thisx, PlayState* play) {
         // func_8002F974(&player->actor, NA_SE_EV_WIND_TRAP - SFX_FLAG);
     }
 
-    CALL_EVENT(OnPlayerUpdate();
+    CALL_EVENT(OnPlayerUpdate);
 }
 
 typedef struct BunnyEarKinematics {

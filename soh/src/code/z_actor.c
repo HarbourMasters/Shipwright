@@ -1106,7 +1106,7 @@ void TitleCard_Update(PlayState* play, TitleCardContext* titleCtx) {
 
     if (DECR(titleCtx->delayTimer) == 0) {
         if (titleCtx->durationTimer == 80) {
-            CALL_EVENT(OnPresentTitleCard();
+            CALL_EVENT(OnPresentTitleCard);
         }
 
         if (DECR(titleCtx->durationTimer) == 0) {
@@ -2254,7 +2254,7 @@ void Player_PlaySfx(Actor* actor, u16 sfxId) {
     }
 
     if (actor->id == ACTOR_PLAYER) {
-        CALL_EVENT(OnPlayerSfx, (sfxId);
+        CALL_EVENT(OnPlayerSfx, sfxId);
     }
 }
 

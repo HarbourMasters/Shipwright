@@ -518,7 +518,7 @@ void Play_Init(GameState* thisx) {
             gSaveContext.dogIsLost = true;
 
             if (Inventory_ReplaceItem(play, ITEM_WEIRD_EGG, ITEM_CHICKEN) || Inventory_HatchPocketCucco(play)) {
-                CALL_EVENT(OnCuccoOrChickenHatch();
+                CALL_EVENT(OnCuccoOrChickenHatch);
                 Message_StartTextbox(play, 0x3066, NULL);
             }
 

@@ -219,7 +219,7 @@ void Inventory_ChangeEquipment(s16 equipment, u16 value) {
     gSaveContext.equips.equipment &= gEquipNegMasks[equipment];
     gSaveContext.equips.equipment |= value << gEquipShifts[equipment];
 
-    CALL_EVENT(OnLinkEquipmentChange();
+    CALL_EVENT(OnLinkEquipmentChange);
 }
 
 u8 Inventory_DeleteEquipment(PlayState* play, s16 equipment) {

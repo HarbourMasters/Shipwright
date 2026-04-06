@@ -3760,7 +3760,7 @@ void KaleidoScope_LoadDungeonMap(PlayState* play) {
 
 static uint8_t registeredDungeonMapTextureHook = false;
 
-void KaleidoScope_RegisterUpdatedDungeonMapTexture() {
+void KaleidoScope_RegisterUpdatedDungeonMapTexture(IEvent* event) {
     if (gPlayState == NULL) {
         return;
     }
@@ -3823,7 +3823,7 @@ void KaleidoScope_UpdateDungeonMap(PlayState* play) {
     // Register alt listener to update the blended dungeon map textures on alt toggle
     if (!registeredDungeonMapTextureHook) {
         registeredDungeonMapTextureHook = true;
-        GameInteractor_RegisterOnAssetAltChange(KaleidoScope_RegisterUpdatedDungeonMapTexture);
+        REGISTER_LISTENER(OnAssetAltChange, EVENT_PRIORITY_LOW, KaleidoScope_RegisterUpdatedDungeonMapTexture);
     }
 }
 
@@ -4879,5 +4879,5 @@ void KaleidoScope_Update(PlayState* play) {
             break;
     }
 
-    CALL_EVENT(OnKaleidoscopeUpdate, (sInDungeonScene);
+    CALL_EVENT(OnKaleidoscopeUpdate, sInDungeonScene);
 }

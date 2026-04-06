@@ -2096,7 +2096,7 @@ void func_80075B44(PlayState* play) {
                 Sfx_PlaySfxCentered(NA_SE_EV_CHICKEN_CRY_M);
                 if ((Inventory_ReplaceItem(play, ITEM_WEIRD_EGG, ITEM_CHICKEN) || Inventory_HatchPocketCucco(play)) &&
                     play->csCtx.state == 0 && !Player_InCsMode(play)) {
-                    CALL_EVENT(OnCuccoOrChickenHatch();
+                    CALL_EVENT(OnCuccoOrChickenHatch);
                     Message_StartTextbox(play, 0x3066, NULL);
                 }
                 play->envCtx.unk_E0++;

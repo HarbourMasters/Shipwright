@@ -764,7 +764,7 @@ void Minimap_DrawCompassIcons(PlayState* play) {
     CLOSE_DISPS(play->state.gfxCtx);
 
     if (play->interfaceCtx.minimapAlpha >= 0xAA) {
-        CALL_EVENT(OnMinimapDrawCompassIcons();
+        CALL_EVENT(OnMinimapDrawCompassIcons);
     }
 }
 

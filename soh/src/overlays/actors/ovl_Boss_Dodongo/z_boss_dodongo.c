@@ -84,7 +84,7 @@ static InitChainEntry sInitChain[] = {
     ICHAIN_F32(targetArrowOffset, 8200.0f, ICHAIN_STOP),
 };
 
-void BossDodongo_RegisterBlendedLavaTextureUpdate() {
+void BossDodongo_RegisterBlendedLavaTextureUpdate(IEvent* event) {
     // Not in scene so there is nothing to do
     if (gPlayState == NULL || gPlayState->sceneNum != SCENE_DODONGOS_CAVERN_BOSS) {
         return;
@@ -391,11 +391,11 @@ void BossDodongo_Init(Actor* thisx, PlayState* play) {
     Gfx_TextureCacheDelete(sMaskTex16x32);
     Gfx_TextureCacheDelete(sMaskTex32x16);
 
-    BossDodongo_RegisterBlendedLavaTextureUpdate();
+    BossDodongo_RegisterBlendedLavaTextureUpdate(NULL);
 
     // Register alt listener to update the blended lava for the replacement texture based on alt path
     if (!hasRegisteredBlendedHook) {
-        GameInteractor_RegisterOnAssetAltChange(BossDodongo_RegisterBlendedLavaTextureUpdate);
+        REGISTER_LISTENER(OnAssetAltChange, EVENT_PRIORITY_LOW, BossDodongo_RegisterBlendedLavaTextureUpdate);
         hasRegisteredBlendedHook = 1;
     }
     // #endregion

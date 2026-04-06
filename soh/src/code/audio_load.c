@@ -631,7 +631,7 @@ s32 AudioLoad_SyncInitSeqPlayerInternal(s32 playerIdx, s32 seqId, s32 arg2) {
     AudioSeq_SkipForwardSequence(seqPlayer);
     //! @bug missing return (but the return value is not used so it's not UB)
 
-    CALL_EVENT(OnSeqPlayerInit, (playerIdx, seqId);
+    CALL_EVENT(OnSeqPlayerInit, playerIdx, seqId);
 }
 
 u8* AudioLoad_SyncLoadSeq(s32 seqId) {

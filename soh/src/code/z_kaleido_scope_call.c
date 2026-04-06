@@ -57,7 +57,7 @@ void KaleidoScopeCall_Update(PlayState* play) {
     KaleidoMgrOverlay* kaleidoScopeOvl = &gKaleidoMgrOverlayTable[KALEIDO_OVL_KALEIDO_SCOPE];
     PauseContext* pauseCtx = &play->pauseCtx;
 
-    CALL_EVENT(OnKaleidoUpdate();
+    CALL_EVENT(OnKaleidoUpdate);
 
     if (!gSaveContext.ship.stats.gameComplete && (!IS_BOSS_RUSH || !gSaveContext.ship.quest.data.bossRush.isPaused)) {
         gSaveContext.ship.stats.pauseTimer++;
