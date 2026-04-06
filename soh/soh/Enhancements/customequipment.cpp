@@ -61,7 +61,8 @@ static void UpdateCustomEquipmentSetModel(IEvent* event) {
     OnPlayerSetModels* ev = reinterpret_cast<OnPlayerSetModels*>(event);
     (void)ev->modelGroup;
 
-    if (ev->player == nullptr || gPlayState == nullptr || ev->player != GET_PLAYER(gPlayState) || IsDummyPlayer(ev->player)) {
+    if (ev->player == nullptr || gPlayState == nullptr || ev->player != GET_PLAYER(gPlayState) ||
+        IsDummyPlayer(ev->player)) {
         return;
     }
 

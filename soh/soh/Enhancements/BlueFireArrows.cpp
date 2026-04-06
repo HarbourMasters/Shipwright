@@ -9,13 +9,15 @@ extern "C" {
 extern PlayState* gPlayState;
 }
 
-static void UpdateBlueFireCollidersBgBreakwall(void* actorPtr) {
-    BgBreakwall* thisx = (BgBreakwall*)actorPtr;
+static void UpdateBlueFireCollidersBgBreakwall(IEvent* event) {
+    OnActorInit* ev = reinterpret_cast<OnActorInit*>(event);
+    BgBreakwall* thisx = (BgBreakwall*) ev->actor;
     thisx->collider.info.bumper.dmgFlags |= DMG_ARROW_ICE;
 }
 
-static void UpdateBlueFireCollidersBgIceShelter(void* actorPtr) {
-    BgIceShelter* thisx = (BgIceShelter*)actorPtr;
+static void UpdateBlueFireCollidersBgIceShelter(IEvent* event) {
+    OnActorInit* ev = reinterpret_cast<OnActorInit*>(event);
+    BgIceShelter* thisx = (BgIceShelter*) ev->actor;
     thisx->cylinder1.base.acFlags |= AC_TYPE_PLAYER;
     thisx->cylinder1.info.bumper.dmgFlags |= DMG_ARROW_ICE;
     thisx->cylinder2.base.acFlags |= AC_TYPE_PLAYER;

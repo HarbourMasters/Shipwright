@@ -738,9 +738,9 @@ void TimeSaverOnVanillaBehaviorHandler(IEvent* event) {
             // Animation Count should be no more than 1 to guarantee putaway is complete after giving the saw
             // As this is vanilla behavior, it only applies with the Fix toggle or Skip Text enabled.
             *ev->result = (CVarGetInteger(CVAR_ENHANCEMENT("FixSawSoftlock"), 0) != 0 ||
-                       CVarGetInteger(CVAR_ENHANCEMENT("SkipText"), 0) != 0)
-                          ? gPlayState->animationCtx.animationCount > 1
-                          : *ev->result;
+                           CVarGetInteger(CVAR_ENHANCEMENT("SkipText"), 0) != 0)
+                              ? gPlayState->animationCtx.animationCount > 1
+                              : *ev->result;
             break;
         case VB_BIGGORON_CONSIDER_SWORD_FORGED:
             *ev->result = Environment_GetBgsDayCount() >= CVarGetInteger(CVAR_ENHANCEMENT("ForgeTime"), 3);
@@ -1408,7 +1408,8 @@ static void TimeSaverRegisterHooks() {
     {
         static ListenerID listenerId = -1;
         if (listenerId != -1) {
-            EventSystemUnregisterListener(OnLoadGameID, listenerId);;
+            EventSystemUnregisterListener(OnLoadGameID, listenerId);
+            ;
             listenerId = -1;
         }
         if (!IS_RANDO) {

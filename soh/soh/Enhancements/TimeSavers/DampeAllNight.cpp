@@ -19,8 +19,9 @@ static bool DampeIsResting() {
     return LINK_IS_ADULT || gPlayState->sceneNum != SCENE_GRAVEYARD;
 }
 
-static void OpenDampeHutDoor(void* refActor) {
-    EnDoor* enDoor = static_cast<EnDoor*>(refActor);
+static void OpenDampeHutDoor(IEvent* event) {
+    OnActorInit* ev = reinterpret_cast<OnActorInit*>(event);
+    EnDoor* enDoor = static_cast<EnDoor*>(ev->actor);
     s16* params = &enDoor->actor.params;
 
     if (*params == DAMPE_HUT_DOOR_CLOSED && !DampeIsResting()) {

@@ -176,14 +176,14 @@ extern "C" void CustomLogoTitle_Main(TitleContext* titleContext) {
 
 void OnZTitleInitReplaceTitleMainWithCustom(IEvent* event) {
     OnZTitleInit* ev = reinterpret_cast<OnZTitleInit*>(event);
-    TitleContext* titleContext = (TitleContext*) ev->gameState;
+    TitleContext* titleContext = (TitleContext*)ev->gameState;
     titleContext->state.main = (GameStateFunc)CustomLogoTitle_Main;
 }
 
 // Allows pressing A to skip the boot logo and go to the next state (opening or file select)
 void OnZTitleUpdatePressButtonToSkip(IEvent* event) {
     OnZTitleUpdate* ev = reinterpret_cast<OnZTitleUpdate*>(event);
-    TitleContext* titleContext = (TitleContext*) ev->gameState;
+    TitleContext* titleContext = (TitleContext*)ev->gameState;
 
     if (CHECK_BTN_ANY(titleContext->state.input->press.button, BTN_A | BTN_B | BTN_START)) {
         // Force the title state to start fading to black and to last roughly 5 frames based on current fade in/out

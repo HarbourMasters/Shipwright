@@ -1224,8 +1224,9 @@ void ActorViewerWindow::InitElement() {
 }
 
 void ActorViewer_RegisterNameTagHooks() {
-    COND_HOOK(OnActorInit, CVAR_ACTOR_NAME_TAGS_ENABLED,
-              [](void* actor) { ActorViewer_AddTagForActor(static_cast<Actor*>(actor)); });
+    COND_HOOK(OnActorInit, CVAR_ACTOR_NAME_TAGS_ENABLED, [](IEvent* event) {
+        ActorViewer_AddTagForActor(static_cast<Actor*>(reinterpret_cast<OnActorInit*>(event)->actor));
+    });
 }
 
 static RegisterShipInitFunc initFunc(ActorViewer_RegisterNameTagHooks, { CVAR_ACTOR_NAME_TAGS_ENABLED_NAME });

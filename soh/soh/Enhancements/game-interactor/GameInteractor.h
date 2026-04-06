@@ -168,27 +168,37 @@ struct HookInfo {
 
 #define COND_HOOK(eventId, condition, body)                                    \
     {                                                                          \
-        static ListenerID listenerId = 0;                                      \
-        if (listenerId != 0) {                                                 \
+        static ListenerID listenerId = -1;                                     \
+        if (listenerId != -1) {                                                \
             UNREGISTER_LISTENER(eventId, listenerId);                          \
-            listenerId = 0;                                                    \
+            listenerId = -1;                                                   \
         }                                                                      \
         if (condition) {                                                       \
             listenerId = REGISTER_LISTENER(eventId, EVENT_PRIORITY_LOW, body); \
         }                                                                      \
     }
-#define COND_ID_HOOK(eventId, id, condition, body)     \
-    {                                                  \
-        static ListenerID listenerId = 0;              \
-        if (listenerId != 0) {                         \
-            UNREGISTER_LISTENER(eventId, listenerId);  \
-            listenerId = 0;                            \
-        }                                              \
-        if (condition) {                               \
-            listenerId = REGISTER_VB_SHOULD(id, body); \
-        }                                              \
+#define COND_ID_HOOK(eventId, id, condition, body)                             \
+    {                                                                          \
+        static ListenerID listenerId = -1;                                     \
+        if (listenerId != -1) {                                                \
+            UNREGISTER_LISTENER(eventId, listenerId);                          \
+            listenerId = -1;                                                   \
+        }                                                                      \
+        if (condition) {                                                       \
+            listenerId = REGISTER_LISTENER(eventId, EVENT_PRIORITY_LOW, body); \
+        }                                                                      \
     }
-#define COND_VB_SHOULD(flag, condition, body) COND_ID_HOOK(OnVanillaBehavior, flag, condition, body)
+#define COND_VB_SHOULD(id, condition, body)                     \
+    {                                                           \
+        static ListenerID listenerId = -1;                      \
+        if (listenerId != -1) {                                 \
+            UNREGISTER_LISTENER(OnVanillaBehavior, listenerId); \
+            listenerId = -1;                                    \
+        }                                                       \
+        if (condition) {                                        \
+            listenerId = REGISTER_VB_SHOULD(id, body);          \
+        }                                                       \
+    }
 
 class GameInteractor {
   public:

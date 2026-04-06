@@ -554,11 +554,11 @@ void RegisterShuffleFish() {
         }
     });
 
-    COND_HOOK(OnActorInit, shouldRegister, [](IEvent* event){
+    COND_HOOK(OnActorInit, shouldRegister, [](IEvent* event) {
         OnActorInit* ev = reinterpret_cast<OnActorInit*>(event);
         Rando::Fishsanity::OnActorInitHandler(ev->actor);
     });
-    COND_HOOK(OnActorUpdate, shouldRegister, [](IEvent* event){
+    COND_HOOK(OnActorUpdate, shouldRegister, [](IEvent* event) {
         OnActorUpdate* ev = reinterpret_cast<OnActorUpdate*>(event);
         Rando::Fishsanity::OnActorUpdateHandler(ev->actor);
     });

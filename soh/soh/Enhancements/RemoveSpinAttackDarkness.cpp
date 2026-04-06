@@ -26,8 +26,9 @@ void Custom_EnMThunder_Update(Actor* thisx, PlayState* play) {
                               (s32)(blueRadius * 800.0f));
 }
 
-void OnEnMThunderInitReplaceUpdateWithCustom(void* thunder) {
-    EnMThunder* enMThunder = (EnMThunder*)thunder;
+void OnEnMThunderInitReplaceUpdateWithCustom(IEvent* event) {
+    OnActorInit* ev = reinterpret_cast<OnActorInit*>(event);
+    EnMThunder* enMThunder = (EnMThunder*)ev->actor;
     enMThunder->actor.update = Custom_EnMThunder_Update;
 }
 

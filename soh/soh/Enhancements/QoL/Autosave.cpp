@@ -76,8 +76,7 @@ static void Autosave_SoftResetSave() {
 }
 
 static void RegisterAutosave() {
-    COND_HOOK(OnLoadGame, CVAR_AUTOSAVE_VALUE,
-              [](IEvent* event) { lastSaveTimestamp = GetUnixTimestamp(); });
+    COND_HOOK(OnLoadGame, CVAR_AUTOSAVE_VALUE, [](IEvent* event) { lastSaveTimestamp = GetUnixTimestamp(); });
     COND_HOOK(OnGameFrameUpdate, CVAR_AUTOSAVE_VALUE, Autosave_IntervalSave);
     COND_HOOK(OnExitGame, CVAR_AUTOSAVE_VALUE, [](IEvent* event) { Autosave_SoftResetSave(); });
 }

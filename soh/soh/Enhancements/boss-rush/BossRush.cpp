@@ -273,9 +273,8 @@ void FileChoose_UpdateBossRushMenu(GameState* gameState) {
 
     if (sLastBossRushOptionIndex != fileChooseContext->bossRushIndex ||
         sLastBossRushOptionValue != gSaveContext.ship.quest.data.bossRush.options[fileChooseContext->bossRushIndex]) {
-        CALL_EVENT(OnUpdateFileBossRushOptionSelection,
-            fileChooseContext->bossRushIndex,
-            gSaveContext.ship.quest.data.bossRush.options[fileChooseContext->bossRushIndex]);
+        CALL_EVENT(OnUpdateFileBossRushOptionSelection, fileChooseContext->bossRushIndex,
+                   gSaveContext.ship.quest.data.bossRush.options[fileChooseContext->bossRushIndex]);
         sLastBossRushOptionIndex = fileChooseContext->bossRushIndex;
         sLastBossRushOptionValue = gSaveContext.ship.quest.data.bossRush.options[fileChooseContext->bossRushIndex];
     }
@@ -919,23 +918,25 @@ void BossRush_OnBlueWarpUpdate(IEvent* event) {
 
 void RegisterBossRush() {
     COND_HOOK(OnLoadGame, true, [](IEvent* event) {
-
         COND_ID_HOOK(OnActorInit, ACTOR_DEMO_SA, IS_BOSS_RUSH, [](IEvent* event) {
             OnActorInit* ev = reinterpret_cast<OnActorInit*>(event);
             BossRush_SpawnBlueWarps(gPlayState);
-            Actor_Kill((Actor*) ev->actor);
+            Actor_Kill((Actor*)ev->actor);
             GET_PLAYER(gPlayState)->actor.world.rot.y = 27306;
             GET_PLAYER(gPlayState)->actor.shape.rot.y = 27306;
         });
 
         // Remove bushes, used in Gohma's arena
-        COND_ID_HOOK(OnActorInit, ACTOR_EN_KUSA, IS_BOSS_RUSH, [](IEvent* event) { Actor_Kill((Actor*)reinterpret_cast<OnActorInit*>(event)->actor); });
+        COND_ID_HOOK(OnActorInit, ACTOR_EN_KUSA, IS_BOSS_RUSH,
+                     [](IEvent* event) { Actor_Kill((Actor*)reinterpret_cast<OnActorInit*>(event)->actor); });
 
         // Remove pots, used in Barinade's and Ganondorf's arenas
-        COND_ID_HOOK(OnActorInit, ACTOR_OBJ_TSUBO, IS_BOSS_RUSH, [](IEvent* event) { Actor_Kill((Actor*)reinterpret_cast<OnActorInit*>(event)->actor); });
+        COND_ID_HOOK(OnActorInit, ACTOR_OBJ_TSUBO, IS_BOSS_RUSH,
+                     [](IEvent* event) { Actor_Kill((Actor*)reinterpret_cast<OnActorInit*>(event)->actor); });
 
         // Remove chests, mainly for the chest in King Dodongo's boss room
-        COND_ID_HOOK(OnActorInit, ACTOR_EN_BOX, IS_BOSS_RUSH, [](IEvent* event) { Actor_Kill((Actor*)reinterpret_cast<OnActorInit*>(event)->actor); });
+        COND_ID_HOOK(OnActorInit, ACTOR_EN_BOX, IS_BOSS_RUSH,
+                     [](IEvent* event) { Actor_Kill((Actor*)reinterpret_cast<OnActorInit*>(event)->actor); });
 
         COND_HOOK(OnVanillaBehavior, IS_BOSS_RUSH, BossRush_OnVanillaBehaviorHandler);
 

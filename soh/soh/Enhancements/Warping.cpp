@@ -185,7 +185,7 @@ void RegisterWarping() {
 
     COND_HOOK(OnZTitleUpdate, CVAR_BOOTSEQUENCE_VALUE == BOOTSEQUENCE_DEBUGWARPSCREEN, [](IEvent* event) {
         OnZTitleUpdate* ev = reinterpret_cast<OnZTitleUpdate*>(event);
-        TitleContext* titleContext = (TitleContext*) ev->gameState;
+        TitleContext* titleContext = (TitleContext*)ev->gameState;
 
         gSaveContext.seqId = (u8)NA_BGM_DISABLED;
         gSaveContext.natureAmbienceId = 0xFF;

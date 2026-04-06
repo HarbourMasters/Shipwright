@@ -39,7 +39,7 @@ extern "C" void Mouse_HandleThirdPerson(f32* newCamX, f32* newCamY) {
     }
 }
 
-extern"C" void Mouse_HandleFirstPerson(Player* player) {
+extern "C" void Mouse_HandleFirstPerson(Player* player) {
     f32 xAxisMulti = CVarGetFloat(CVAR_SETTING("FirstPersonCameraSensitivity.X"), 1.0f);
     f32 yAxisMulti = CVarGetFloat(CVAR_SETTING("FirstPersonCameraSensitivity.Y"), 1.0f);
     s8 invertXAxisMulti = ((CVarGetInteger(CVAR_SETTING("Controls.InvertAimingXAxis"), 0) &&
@@ -129,29 +129,25 @@ extern "C" bool Mouse_HandleQuickspin(bool* should, s8* iter2, s8* sp3C) {
 // Hook handlers
 
 void Mouse_RegisterRecenterCursorOnShield() {
-    COND_HOOK(OnPlayerHoldUpShield, true, [](IEvent* event){
-        Mouse_RecenterCursor();
-    });
+    COND_HOOK(OnPlayerHoldUpShield, true, [](IEvent* event) { Mouse_RecenterCursor(); });
 }
 
 void Mouse_RegisterHandleFirstPerson() {
-    COND_HOOK(OnPlayerFirstPersonControl, true, [](IEvent* event){
+    COND_HOOK(OnPlayerFirstPersonControl, true, [](IEvent* event) {
         OnPlayerFirstPersonControl* ev = reinterpret_cast<OnPlayerFirstPersonControl*>(event);
         Mouse_HandleFirstPerson(ev->player);
     });
 }
 
 void Mouse_RegisterHandleShield() {
-    COND_HOOK(OnPlayerShieldControl, true, [](IEvent* event){
+    COND_HOOK(OnPlayerShieldControl, true, [](IEvent* event) {
         OnPlayerShieldControl* ev = reinterpret_cast<OnPlayerShieldControl*>(event);
         Mouse_HandleShield(ev->sp50, ev->sp54);
     });
 }
 
 void Mouse_RegisterUpdateQuickspinCount() {
-    COND_HOOK(OnPlayerProcessStick, true, [](IEvent* event){
-        Mouse_UpdateQuickspinCount();
-    });
+    COND_HOOK(OnPlayerProcessStick, true, [](IEvent* event) { Mouse_UpdateQuickspinCount(); });
 }
 
 void Mouse_RegisterHandleQuickspin() {

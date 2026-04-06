@@ -12,7 +12,7 @@ static constexpr int32_t CVAR_GC_DOOR_FIX_DEFAULT = 0;
 #define CVAR_GC_DOOR_FIX_NAME CVAR_ENHANCEMENT("GCDoorsAfterFireFix")
 #define CVAR_GC_DOOR_FIX_VALUE CVarGetInteger(CVAR_GC_DOOR_FIX_NAME, CVAR_GC_DOOR_FIX_DEFAULT)
 
-static void OnInitGCDoor(void* refActor) {
+static void OnInitGCDoor(IEvent* event) {
     // In the off chance that Fire Temple is completed before stopping Goron Link and getting
     // Goron Tunic / opening the city doors, open them the next time Link goes to Goron City.
     if (GameInteractor_Should(VB_GORONS_CONSIDER_FIRE_TEMPLE_FINISHED, CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) &&

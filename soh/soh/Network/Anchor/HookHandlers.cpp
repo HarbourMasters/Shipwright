@@ -70,7 +70,8 @@ void Anchor::RegisterHooks() {
         }
     });
 
-    COND_HOOK(OnPresentFileSelect, isConnected, [](IEvent* event) { Anchor::Instance->SendPacket_UpdateClientState(); });
+    COND_HOOK(OnPresentFileSelect, isConnected,
+              [](IEvent* event) { Anchor::Instance->SendPacket_UpdateClientState(); });
 
     COND_ID_HOOK(ShouldActorInit, ACTOR_PLAYER, isConnected, [](IEvent* event) {
         Anchor* anchor = Anchor::Instance;
@@ -108,11 +109,11 @@ void Anchor::RegisterHooks() {
 
     COND_HOOK(OnGameFrameUpdate, isConnected, [](IEvent* event) { Anchor::Instance->ProcessIncomingPacketQueue(); });
 
-    COND_HOOK(OnPlayerSfx, isConnected, [](IEvent* event){
+    COND_HOOK(OnPlayerSfx, isConnected, [](IEvent* event) {
         OnPlayerSfx* ev = reinterpret_cast<OnPlayerSfx*>(event);
         Anchor::Instance->SendPacket_PlayerSfx(ev->sfxId);
     });
-    COND_HOOK(OnOcarinaNote, isConnected, [](IEvent* event){
+    COND_HOOK(OnOcarinaNote, isConnected, [](IEvent* event) {
         OnOcarinaNote* ev = reinterpret_cast<OnOcarinaNote*>(event);
         Anchor::Instance->SendPacket_OcarinaSfx(ev->note, ev->modulator, ev->bend);
     });
@@ -126,7 +127,7 @@ void Anchor::RegisterHooks() {
         }
     });
 
-    COND_HOOK(OnFlagSet, isConnected, [](IEvent* event){
+    COND_HOOK(OnFlagSet, isConnected, [](IEvent* event) {
         OnFlagSet* ev = reinterpret_cast<OnFlagSet*>(event);
         Anchor::Instance->SendPacket_SetFlag(SCENE_ID_MAX, ev->flagType, ev->flag);
     });
@@ -136,7 +137,7 @@ void Anchor::RegisterHooks() {
         Anchor::Instance->SendPacket_UnsetFlag(SCENE_ID_MAX, ev->flagType, ev->flag);
     });
 
-    COND_HOOK(OnSceneFlagSet, isConnected, [](IEvent* event){
+    COND_HOOK(OnSceneFlagSet, isConnected, [](IEvent* event) {
         OnSceneFlagSet* ev = reinterpret_cast<OnSceneFlagSet*>(event);
         Anchor::Instance->SendPacket_SetFlag(ev->sceneNum, ev->flagType, ev->flag);
     });
@@ -160,12 +161,13 @@ void Anchor::RegisterHooks() {
         }
     });
 
-    COND_HOOK(OnRandoEntranceDiscovered, isConnected, [](IEvent* event){
+    COND_HOOK(OnRandoEntranceDiscovered, isConnected, [](IEvent* event) {
         OnRandoEntranceDiscovered* ev = reinterpret_cast<OnRandoEntranceDiscovered*>(event);
         Anchor::Instance->SendPacket_EntranceDiscovered(ev->entranceIndex);
     });
 
-    COND_ID_HOOK(OnBossDefeat, ACTOR_BOSS_GANON2, isConnected, [](IEvent* event) { Anchor::Instance->SendPacket_GameComplete(); });
+    COND_ID_HOOK(OnBossDefeat, ACTOR_BOSS_GANON2, isConnected,
+                 [](IEvent* event) { Anchor::Instance->SendPacket_GameComplete(); });
 
     COND_HOOK(OnItemReceive, isConnected, [](IEvent* event) {
         OnItemReceive* ev = reinterpret_cast<OnItemReceive*>(event);
