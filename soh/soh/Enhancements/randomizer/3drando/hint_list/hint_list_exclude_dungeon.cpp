@@ -2067,6 +2067,14 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
                                                      /*german*/ "Man erzählt sich, daß sich ein #Wunder-Gegenstand in der Gerudo-Trainingsarena# #[[1]]# verstecke.",
                                                      /*french*/ "Selon moi, un #objet merveilleux dans le Gymnase Gerudo# cache #[[1]]#.", {QM_RED, QM_GREEN}));
 
+    hintTextTable[RHT_GERUDO_TRAINING_GROUND_ICICLE] = HintText(CustomMessage("They say that #breaking an icicle in in Gerudo Training Ground# reveals #[[1]]#.",
+                                                              /*german*/ "Man erzählt sich, daß das #Zerschlagen eines Eiszapfens in der Gerudo-Trainingsarena# #[[1]]# enthülle.",
+                                                              /*french*/ "Selon moi, #briser un stalactite de glace dans le Gymnase Gerudo# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_GERUDO_TRAINING_GROUND_RED_ICE] = HintText(CustomMessage("They say that #melting red ice in Gerudo Training Ground# gives #[[1]]#.",
+                                                        /*german*/ "Man erzählt sich, daß das #Schmelzen von rotem Eis in der Gerudo-Trainingsarena# #[[1]]# gäbe.",
+                                                        /*french*/ "Selon moi, #faire fondre la glace rouge dans le Gymnase Gerudo# donne #[[1]]#.", {QM_RED, QM_GREEN}));
+
   /*--------------------------
   |      GANONS CASTLE       |
   ---------------------------*/

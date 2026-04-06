@@ -84,10 +84,9 @@ void RegionTable_Init_IceCavern() {
         LOCATION(RC_ICE_CAVERN_MAP_HALLWAY_STALACTITE_3,      true),
         LOCATION(RC_ICE_CAVERN_MAP_HALLWAY_STALACTITE_4,      true),
         LOCATION(RC_ICE_CAVERN_MAP_HALLWAY_STALACTITE_5,      true),
-        // Implied CanClearStalagmite
-        LOCATION(RC_ICE_CAVERN_MAP_HALLWAY_LEFT_STALAGMITE,   true),
-        LOCATION(RC_ICE_CAVERN_MAP_HALLWAY_MIDDLE_STALAGMITE, true),
-        LOCATION(RC_ICE_CAVERN_MAP_HALLWAY_RIGHT_STALAGMITE,  true),
+        LOCATION(RC_ICE_CAVERN_MAP_HALLWAY_LEFT_STALAGMITE,   logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_MAP_HALLWAY_MIDDLE_STALAGMITE, logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_MAP_HALLWAY_RIGHT_STALAGMITE,  logic->CanClearStalagmite()),
         LOCATION(RC_ICE_CAVERN_MAP_ROOM_POT_RED_ICE,          logic->BlueFire()),
         LOCATION(RC_ICE_CAVERN_MAP_ROOM_CHEST_RED_ICE,        logic->BlueFire()),
     }, {
@@ -123,8 +122,8 @@ void RegionTable_Init_IceCavern() {
         LOCATION(RC_ICE_CAVERN_HEART_PIECE_ROOM_RIGHT_STALAGMITE_2,   logic->CanClearStalagmite()),
         LOCATION(RC_ICE_CAVERN_HEART_PIECE_ROOM_RIGHT_STALAGMITE_3,   logic->CanClearStalagmite()),
         LOCATION(RC_ICE_CAVERN_HEART_PIECE_ROOM_RIGHT_STALAGMITE_4,   logic->CanClearStalagmite()),
-        LOCATION(RC_ICE_CAVERN_HEART_PIECE_ROOM_FREESTANDING_RED_ICE, ((logic->CanClearStalagmite() || ctx->GetTrickOption(RT_ICE_STALAGMITE_CLIP)) && logic->CanUse(RG_BOTTLE_WITH_BLUE_FIRE)) || (ctx->GetOption(RSK_BLUE_FIRE_ARROWS) && logic->CanUse(RG_ICE_ARROWS))),
-        LOCATION(RC_ICE_CAVERN_HEART_PIECE_ROOM_CHEST_RED_ICE,        ((logic->IsChild || logic->CanClearStalagmite() || ctx->GetTrickOption(RT_ICE_STALAGMITE_CLIP)) && logic->CanUse(RG_BOTTLE_WITH_BLUE_FIRE)) || (ctx->GetOption(RSK_BLUE_FIRE_ARROWS) && logic->CanUse(RG_ICE_ARROWS))),
+        LOCATION(RC_ICE_CAVERN_HEART_PIECE_ROOM_FREESTANDING_RED_ICE, (logic->CanClearStalagmite() || ctx->GetTrickOption(RT_ICE_STALAGMITE_CLIP)) && logic->BlueFire()),
+        LOCATION(RC_ICE_CAVERN_HEART_PIECE_ROOM_CHEST_RED_ICE,        (logic->IsChild || logic->CanClearStalagmite() || ctx->GetTrickOption(RT_ICE_STALAGMITE_CLIP)) && logic->BlueFire()),
     }, {
         //Exits
         ENTRANCE(RR_ICE_CAVERN_HUB, true),
@@ -145,27 +144,12 @@ void RegionTable_Init_IceCavern() {
         LOCATION(RC_ICE_CAVERN_PUSH_BLOCK_HALL_STALACTITE_1,            true),
         LOCATION(RC_ICE_CAVERN_PUSH_BLOCK_HALL_STALACTITE_2,            true),
         LOCATION(RC_ICE_CAVERN_PUSH_BLOCK_HALL_STALACTITE_3,            true),
-        LOCATION(RC_ICE_CAVERN_NEAR_END_STALACTITE_1,                   logic->HasItem(RG_POWER_BRACELET) || (logic->IsAdult && (logic->CanGroundJump() || ctx->GetTrickOption(RT_SLIDE_JUMP)))),
-        LOCATION(RC_ICE_CAVERN_NEAR_END_STALACTITE_2,                   logic->HasItem(RG_POWER_BRACELET) || (logic->IsAdult && (logic->CanGroundJump() || ctx->GetTrickOption(RT_SLIDE_JUMP)))),
-        LOCATION(RC_ICE_CAVERN_NEAR_END_STALACTITE_3,                   logic->HasItem(RG_POWER_BRACELET) || (logic->IsAdult && (logic->CanGroundJump() || ctx->GetTrickOption(RT_SLIDE_JUMP)))),
-        LOCATION(RC_ICE_CAVERN_NEAR_END_STALACTITE_4,                   logic->HasItem(RG_POWER_BRACELET) || (logic->IsAdult && (logic->CanGroundJump() || ctx->GetTrickOption(RT_SLIDE_JUMP)))),
-        LOCATION(RC_ICE_CAVERN_NEAR_END_STALAGMITE_1,                   (logic->HasItem(RG_POWER_BRACELET) || (logic->IsAdult && (logic->CanGroundJump() || ctx->GetTrickOption(RT_SLIDE_JUMP)))) && logic->CanClearStalagmite()),
-        LOCATION(RC_ICE_CAVERN_NEAR_END_STALAGMITE_2,                   (logic->HasItem(RG_POWER_BRACELET) || (logic->IsAdult && (logic->CanGroundJump() || ctx->GetTrickOption(RT_SLIDE_JUMP)))) && logic->CanClearStalagmite()),
-        LOCATION(RC_ICE_CAVERN_NEAR_END_STALAGMITE_3,                   (logic->HasItem(RG_POWER_BRACELET) || (logic->IsAdult && (logic->CanGroundJump() || ctx->GetTrickOption(RT_SLIDE_JUMP)))) && logic->CanClearStalagmite()),
-        LOCATION(RC_ICE_CAVERN_NEAR_END_STALAGMITE_4,                   (logic->HasItem(RG_POWER_BRACELET) || (logic->IsAdult && (logic->CanGroundJump() || ctx->GetTrickOption(RT_SLIDE_JUMP)))) && logic->CanClearStalagmite()),
-        LOCATION(RC_ICE_CAVERN_NEAR_END_STALAGMITE_5,                   (logic->HasItem(RG_POWER_BRACELET) || (logic->IsAdult && (logic->CanGroundJump() || ctx->GetTrickOption(RT_SLIDE_JUMP)))) && logic->CanClearStalagmite()),
-        LOCATION(RC_ICE_CAVERN_NEAR_END_STALAGMITE_6,                   (logic->HasItem(RG_POWER_BRACELET) || (logic->IsAdult && (logic->CanGroundJump() || ctx->GetTrickOption(RT_SLIDE_JUMP)))) && logic->CanClearStalagmite()),
-        LOCATION(RC_ICE_CAVERN_NEAR_END_STALAGMITE_7,                   (logic->HasItem(RG_POWER_BRACELET) || (logic->IsAdult && (logic->CanGroundJump() || ctx->GetTrickOption(RT_SLIDE_JUMP)))) && logic->CanClearStalagmite()),
-        LOCATION(RC_ICE_CAVERN_NEAR_END_STALAGMITE_8,                   (logic->HasItem(RG_POWER_BRACELET) || (logic->IsAdult && (logic->CanGroundJump() || ctx->GetTrickOption(RT_SLIDE_JUMP)))) && logic->CanClearStalagmite()),
-        LOCATION(RC_ICE_CAVERN_SILVER_RUPEE_RED_ICE,                    ((logic->HasItem(RG_POWER_BRACELET) || (logic->IsAdult && (logic->CanGroundJump() || ctx->GetTrickOption(RT_SLIDE_JUMP)))) && logic->CanUse(RG_BOTTLE_WITH_BLUE_FIRE)) || (ctx->GetOption(RSK_BLUE_FIRE_ARROWS) && logic->CanUse(RG_ICE_ARROWS))),
-        LOCATION(RC_ICE_CAVERN_NEAR_END_LEFT_RED_ICE,                   (logic->HasItem(RG_POWER_BRACELET) || (logic->IsAdult && (logic->CanGroundJump() || ctx->GetTrickOption(RT_SLIDE_JUMP)))) && logic->BlueFire()),
-        LOCATION(RC_ICE_CAVERN_NEAR_END_MIDDLE_RED_ICE,                 (logic->HasItem(RG_POWER_BRACELET) || (logic->IsAdult && (logic->CanGroundJump() || ctx->GetTrickOption(RT_SLIDE_JUMP)))) && logic->BlueFire()),
-        LOCATION(RC_ICE_CAVERN_NEAR_END_RIGHT_RED_ICE,                  (logic->HasItem(RG_POWER_BRACELET) || (logic->IsAdult && (logic->CanGroundJump() || ctx->GetTrickOption(RT_SLIDE_JUMP)))) && logic->BlueFire()),
+        LOCATION(RC_ICE_CAVERN_SILVER_RUPEE_RED_ICE,                    (logic->HasItem(RG_POWER_BRACELET) || (logic->IsAdult && (logic->CanGroundJump() || ctx->GetTrickOption(RT_SLIDE_JUMP)))) && logic->BlueFire()),
     }, {
         //Exits
         ENTRANCE(RR_ICE_CAVERN_HUB,                  logic->CanClearStalagmite() || ctx->GetTrickOption(RT_ICE_STALAGMITE_CLIP)),
         ENTRANCE(RR_ICE_CAVERN_BLOCK_ROOM_BLUE_FIRE, logic->HasItem(RG_POWER_BRACELET) || (logic->IsAdult && (logic->CanGroundJump() || ctx->GetTrickOption(RT_SLIDE_JUMP)))),
-        ENTRANCE(RR_ICE_CAVERN_BEFORE_FINAL_ROOM,    (logic->HasItem(RG_POWER_BRACELET) || (logic->IsAdult && (logic->CanGroundJump() || ctx->GetTrickOption(RT_SLIDE_JUMP)))) && AnyAgeTime([]{return logic->BlueFire();})),
+        ENTRANCE(RR_ICE_CAVERN_AFTER_BLOCK_ROOM,     (logic->HasItem(RG_POWER_BRACELET) || (logic->IsAdult && (logic->CanGroundJump() || ctx->GetTrickOption(RT_SLIDE_JUMP)))) && AnyAgeTime([]{return logic->BlueFire();})),
     });
 
     areaTable[RR_ICE_CAVERN_BLOCK_ROOM_BLUE_FIRE] = Region("Ice Cavern Block Room Blue Fire", SCENE_ICE_CAVERN, {
@@ -181,31 +165,38 @@ void RegionTable_Init_IceCavern() {
         ENTRANCE(RR_ICE_CAVERN_BLOCK_ROOM, true),
     });
 
+    areaTable[RR_ICE_CAVERN_AFTER_BLOCK_ROOM] = Region("Ice Cavern After Block Room", SCENE_ICE_CAVERN, {}, {
+        //Locations
+        LOCATION(RC_ICE_CAVERN_GS_PUSH_BLOCK_ROOM,    ctx->GetTrickOption(RT_ICE_BLOCK_GS) && logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS) && logic->BlueFire() && logic->HasItem(RG_POWER_BRACELET)),
+        LOCATION(RC_ICE_CAVERN_NEAR_END_STALACTITE_1, true),
+        LOCATION(RC_ICE_CAVERN_NEAR_END_STALACTITE_2, true),
+        LOCATION(RC_ICE_CAVERN_NEAR_END_STALACTITE_3, true),
+        LOCATION(RC_ICE_CAVERN_NEAR_END_STALACTITE_4, true),
+        LOCATION(RC_ICE_CAVERN_NEAR_END_STALAGMITE_1, logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_NEAR_END_STALAGMITE_2, logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_NEAR_END_STALAGMITE_3, logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_NEAR_END_STALAGMITE_4, logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_NEAR_END_STALAGMITE_5, logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_NEAR_END_STALAGMITE_6, logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_NEAR_END_STALAGMITE_7, logic->CanClearStalagmite()),
+        LOCATION(RC_ICE_CAVERN_NEAR_END_STALAGMITE_8, logic->CanClearStalagmite()),
+    }, {
+        //Exits
+        ENTRANCE(RR_ICE_CAVERN_BLOCK_ROOM,        true),
+        ENTRANCE(RR_ICE_CAVERN_BEFORE_FINAL_ROOM, AnyAgeTime([]{return logic->BlueFire();})),
+    });
+
     // this represents being past the red ice barricade, not just past the silver rupee door
     areaTable[RR_ICE_CAVERN_BEFORE_FINAL_ROOM] = Region("Ice Cavern Before Final Room", SCENE_ICE_CAVERN, {}, {
         //Locations
-        //Assumes RR_ICE_CAVERN_BLOCK_ROOM access
-        LOCATION(RC_ICE_CAVERN_GS_PUSH_BLOCK_ROOM,      ctx->GetTrickOption(RT_ICE_BLOCK_GS) && logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS) && logic->BlueFire() && logic->HasItem(RG_POWER_BRACELET)),
         LOCATION(RC_ICE_CAVERN_NEAR_END_POT_1,          logic->CanBreakPots() && logic->BlueFire()),
         LOCATION(RC_ICE_CAVERN_NEAR_END_POT_2,          logic->CanBreakPots() && logic->BlueFire()),
-        LOCATION(RC_ICE_CAVERN_NEAR_END_STALACTITE_1,   logic->BlueFire()),
-        LOCATION(RC_ICE_CAVERN_NEAR_END_STALACTITE_2,   logic->BlueFire()),
-        LOCATION(RC_ICE_CAVERN_NEAR_END_STALACTITE_3,   logic->BlueFire()),
-        LOCATION(RC_ICE_CAVERN_NEAR_END_STALACTITE_4,   logic->BlueFire()),
-        LOCATION(RC_ICE_CAVERN_NEAR_END_STALAGMITE_1,   logic->CanClearStalagmite() && logic->BlueFire()),
-        LOCATION(RC_ICE_CAVERN_NEAR_END_STALAGMITE_2,   logic->CanClearStalagmite() && logic->BlueFire()),
-        LOCATION(RC_ICE_CAVERN_NEAR_END_STALAGMITE_3,   logic->CanClearStalagmite() && logic->BlueFire()),
-        LOCATION(RC_ICE_CAVERN_NEAR_END_STALAGMITE_4,   logic->CanClearStalagmite() && logic->BlueFire()),
-        LOCATION(RC_ICE_CAVERN_NEAR_END_STALAGMITE_5,   logic->CanClearStalagmite() && logic->BlueFire()),
-        LOCATION(RC_ICE_CAVERN_NEAR_END_STALAGMITE_6,   logic->CanClearStalagmite() && logic->BlueFire()),
-        LOCATION(RC_ICE_CAVERN_NEAR_END_STALAGMITE_7,   logic->CanClearStalagmite() && logic->BlueFire()),
-        LOCATION(RC_ICE_CAVERN_NEAR_END_STALAGMITE_8,   logic->CanClearStalagmite() && logic->BlueFire()),
         LOCATION(RC_ICE_CAVERN_NEAR_END_LEFT_RED_ICE,   logic->BlueFire()),
         LOCATION(RC_ICE_CAVERN_NEAR_END_MIDDLE_RED_ICE, logic->BlueFire()),
         LOCATION(RC_ICE_CAVERN_NEAR_END_RIGHT_RED_ICE,  logic->BlueFire()),
     }, {
         //Exits
-        ENTRANCE(RR_ICE_CAVERN_BLOCK_ROOM, AnyAgeTime([]{return logic->BlueFire();})),
+        ENTRANCE(RR_ICE_CAVERN_AFTER_BLOCK_ROOM, AnyAgeTime([]{return logic->BlueFire();})),
         ENTRANCE(RR_ICE_CAVERN_FINAL_ROOM, true),
     });
 
@@ -273,9 +264,9 @@ void RegionTable_Init_IceCavern() {
         LOCATION(RC_ICE_CAVERN_MQ_HUB_WEST_LEFT_RED_ICE,    logic->BlueFire()),
         LOCATION(RC_ICE_CAVERN_MQ_HUB_WEST_MIDDLE_RED_ICE,  logic->BlueFire()),
         LOCATION(RC_ICE_CAVERN_MQ_HUB_WEST_RIGHT_RED_ICE,   logic->BlueFire()),
-        LOCATION(RC_ICE_CAVERN_MQ_HUB_LEDGE_LEFT_RED_ICE,   ((logic->IsAdult /*|| logic->CanGroundJump()*/) && logic->CanUse(RG_BOTTLE_WITH_BLUE_FIRE)) || (ctx->GetOption(RSK_BLUE_FIRE_ARROWS) && logic->CanUse(RG_ICE_ARROWS))),
-        LOCATION(RC_ICE_CAVERN_MQ_HUB_LEDGE_MIDDLE_RED_ICE, ((logic->IsAdult /*|| logic->CanGroundJump()*/) && logic->CanUse(RG_BOTTLE_WITH_BLUE_FIRE)) || (ctx->GetOption(RSK_BLUE_FIRE_ARROWS) && logic->CanUse(RG_ICE_ARROWS))),
-        LOCATION(RC_ICE_CAVERN_MQ_HUB_LEDGE_RIGHT_RED_ICE,  ((logic->IsAdult /*|| logic->CanGroundJump()*/) && logic->CanUse(RG_BOTTLE_WITH_BLUE_FIRE)) || (ctx->GetOption(RSK_BLUE_FIRE_ARROWS) && logic->CanUse(RG_ICE_ARROWS))),
+        LOCATION(RC_ICE_CAVERN_MQ_HUB_LEDGE_LEFT_RED_ICE,   (logic->IsAdult /*|| logic->CanGroundJump()*/) && logic->BlueFire()),
+        LOCATION(RC_ICE_CAVERN_MQ_HUB_LEDGE_MIDDLE_RED_ICE, (logic->IsAdult /*|| logic->CanGroundJump()*/) && logic->BlueFire()),
+        LOCATION(RC_ICE_CAVERN_MQ_HUB_LEDGE_RIGHT_RED_ICE,  (logic->IsAdult /*|| logic->CanGroundJump()*/) && logic->BlueFire()),
     }, {
         //Exits
         ENTRANCE(RR_ICE_CAVERN_MQ_MAP_ROOM,       AnyAgeTime([]{return logic->CanKillEnemy(RE_WHITE_WOLFOS) && logic->CanKillEnemy(RE_FREEZARD);})),
@@ -313,9 +304,9 @@ void RegionTable_Init_IceCavern() {
         LOCATION(RC_ICE_CAVERN_MQ_GS_SCARECROW,                logic->ReachScarecrow() || (logic->IsAdult && (logic->CanUse(RG_LONGSHOT) || logic->CanGroundJump() || ctx->GetTrickOption(RT_SLIDE_JUMP)))),
         LOCATION(RC_ICE_CAVERN_MQ_BEFORE_SCARECROW_STALAGMITE, logic->CanClearStalagmite()),
         LOCATION(RC_ICE_CAVERN_MQ_SCARECROW_ROOM_STALACTITE,   true),
-        LOCATION(RC_ICE_CAVERN_MQ_SCARECROW_LEFT_RED_ICE,      (logic->IsAdult && logic->BlueFire()) || (logic->IsChild && (ctx->GetOption(RSK_BLUE_FIRE_ARROWS) && logic->CanUse(RG_ICE_ARROWS)))),
-        LOCATION(RC_ICE_CAVERN_MQ_SCARECROW_MIDDLE_RED_ICE,    (logic->IsAdult && logic->BlueFire()) || (logic->IsChild && (ctx->GetOption(RSK_BLUE_FIRE_ARROWS) && logic->CanUse(RG_ICE_ARROWS)))),
-        LOCATION(RC_ICE_CAVERN_MQ_SCARECROW_RIGHT_RED_ICE,     (logic->IsAdult && logic->BlueFire()) || (logic->IsChild && (ctx->GetOption(RSK_BLUE_FIRE_ARROWS) && logic->CanUse(RG_ICE_ARROWS)))),
+        LOCATION(RC_ICE_CAVERN_MQ_SCARECROW_LEFT_RED_ICE,      logic->IsAdult && logic->BlueFire()),
+        LOCATION(RC_ICE_CAVERN_MQ_SCARECROW_MIDDLE_RED_ICE,    logic->IsAdult && logic->BlueFire()),
+        LOCATION(RC_ICE_CAVERN_MQ_SCARECROW_RIGHT_RED_ICE,     logic->IsAdult && logic->BlueFire()),
     }, {
         //Exits
         ENTRANCE(RR_ICE_CAVERN_MQ_HUB,           logic->BlueFire()),
@@ -356,7 +347,8 @@ void RegionTable_Init_IceCavern() {
         LOCATION(RC_ICE_CAVERN_MQ_COMPASS_LEFT_STALAGMITE_2,  logic->CanClearStalagmite()),
         LOCATION(RC_ICE_CAVERN_MQ_COMPASS_RIGHT_STALAGMITE_1, logic->CanClearStalagmite()),
         LOCATION(RC_ICE_CAVERN_MQ_COMPASS_RIGHT_STALAGMITE_2, logic->CanClearStalagmite()),
-        LOCATION(RC_ICE_CAVERN_MQ_COMPASS_RED_ICE,            logic->BlueFire()),
+        LOCATION(RC_ICE_CAVERN_MQ_COMPASS_RED_ICE,            (logic->CanUse(RG_BOTTLE_WITH_BLUE_FIRE) && (logic->CanUse(RG_SONG_OF_TIME) || (logic->IsAdult && ctx->GetTrickOption(RT_ICE_MQ_RED_ICE_GS))) && (logic->CanKillEnemy(RE_GOLD_SKULLTULA) || logic->TakeDamage())) ||
+                                                              (ctx->GetOption(RSK_BLUE_FIRE_ARROWS) && logic->CanUse(RG_ICE_ARROWS))),
     }, {});
 
     areaTable[RR_ICE_CAVERN_MQ_STALFOS_ROOM] = Region("Ice Cavern MQ Stalfos Room", SCENE_ICE_CAVERN, {}, {

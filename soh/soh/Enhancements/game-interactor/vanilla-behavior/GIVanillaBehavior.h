@@ -1953,11 +1953,19 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // !((this->dyna.actor.params >> 6) & 1) && (Flags_GetSwitch(play, this->dyna.actor.params & 0x3F))
+    // ```
+    // #### `args`
+    // - `*BgIceShelter`
+    VB_RED_ICE_INIT,
+
+    // #### `result`
+    // ```c
     // this->alpha <= 0
     // ```
     // #### `args`
     // - `*BgIceShelter`
-    VB_RED_ICE_COLLECT_ITEM,
+    VB_RED_ICE_DROP_ITEM,
 
     // #### `result`
     // #### `result`
