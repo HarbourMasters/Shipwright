@@ -572,53 +572,50 @@ void TimeSaverOnVanillaBehaviorHandler(IEvent* event) {
                 player->stateFlags1 |= PLAYER_STATE1_GETTING_ITEM;
                 func_80986794(demoIm);
 
-                static uint32_t demoImUpdateHook = 0;
-                static uint32_t demoImKillHook = 0;
-                demoImUpdateHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>(
-                    [](void* actorRef) mutable {
-                        Actor* actor = static_cast<Actor*>(actorRef);
-                        if (actor->id == ACTOR_DEMO_IM &&
-                            (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.LearnSong"), IS_RANDO) ||
-                             IS_RANDO)) {
-                            DemoIm* demoIm = static_cast<DemoIm*>(actorRef);
-                            Player* player = GET_PLAYER(gPlayState);
-                            player->stateFlags1 |= PLAYER_STATE1_IN_CUTSCENE;
-                            player->stateFlags1 |= PLAYER_STATE1_GETTING_ITEM;
+                static ListenerID demoImUpdateHook = -1;
+                static ListenerID demoImKillHook = -1;
+                demoImUpdateHook = REGISTER_LISTENER(OnActorUpdate, EVENT_PRIORITY_LOW, [](IEvent* event) {
+                    OnActorUpdate* ev = reinterpret_cast<OnActorUpdate*>(event);
+                    Actor* actor = static_cast<Actor*>(ev->actor);
+                    if (actor->id == ACTOR_DEMO_IM &&
+                        (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.LearnSong"), IS_RANDO) ||
+                         IS_RANDO)) {
+                        DemoIm* demoIm = static_cast<DemoIm*>(ev->actor);
+                        Player* player = GET_PLAYER(gPlayState);
+                        player->stateFlags1 |= PLAYER_STATE1_IN_CUTSCENE;
+                        player->stateFlags1 |= PLAYER_STATE1_GETTING_ITEM;
 
-                            if (Animation_OnFrame(&demoIm->skelAnime, 25.0f)) {
-                                Audio_PlaySoundGeneral(NA_SE_IT_DEKU, &demoIm->actor.projectedPos, 4,
-                                                       &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
-                                                       &gSfxDefaultReverb);
-                                GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(
-                                    demoImUpdateHook);
-                                GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(
-                                    demoImKillHook);
-                                demoImUpdateHook = 0;
-                                demoImKillHook = 0;
-                            } else if (Animation_OnFrame(&demoIm->skelAnime, 15.0f)) {
-                                Player* player = GET_PLAYER(gPlayState);
-                                // SOH [Randomizer] In entrance rando have impa bring link back to the front of castle
-                                // grounds
-                                if (IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) {
-                                    gPlayState->nextEntranceIndex = ENTR_CASTLE_GROUNDS_SOUTH_EXIT;
-                                } else {
-                                    gPlayState->nextEntranceIndex = ENTR_HYRULE_FIELD_17;
-                                }
-                                gSaveContext.dayTime = gSaveContext.skyboxTime = 0x8000;
-                                gPlayState->transitionType = TRANS_TYPE_FADE_WHITE;
-                                gPlayState->transitionTrigger = TRANS_TRIGGER_START;
-                                gSaveContext.nextTransitionType = 2;
-                                Player_SetCsActionWithHaltedActors(gPlayState, &player->actor, 8);
+                        if (Animation_OnFrame(&demoIm->skelAnime, 25.0f)) {
+                            Audio_PlaySoundGeneral(NA_SE_IT_DEKU, &demoIm->actor.projectedPos, 4,
+                                                   &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                                                   &gSfxDefaultReverb);
+                            UNREGISTER_LISTENER(OnActorUpdate, demoImUpdateHook);
+                            UNREGISTER_LISTENER(OnSceneInit, demoImKillHook);
+                            demoImUpdateHook = -1;
+                            demoImKillHook = -1;
+                        } else if (Animation_OnFrame(&demoIm->skelAnime, 15.0f)) {
+                            Player* player = GET_PLAYER(gPlayState);
+                            // SOH [Randomizer] In entrance rando have impa bring link back to the front of castle
+                            // grounds
+                            if (IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) {
+                                gPlayState->nextEntranceIndex = ENTR_CASTLE_GROUNDS_SOUTH_EXIT;
+                            } else {
+                                gPlayState->nextEntranceIndex = ENTR_HYRULE_FIELD_17;
                             }
+                            gSaveContext.dayTime = gSaveContext.skyboxTime = 0x8000;
+                            gPlayState->transitionType = TRANS_TYPE_FADE_WHITE;
+                            gPlayState->transitionTrigger = TRANS_TRIGGER_START;
+                            gSaveContext.nextTransitionType = 2;
+                            Player_SetCsActionWithHaltedActors(gPlayState, &player->actor, 8);
                         }
-                    });
-                demoImKillHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>(
-                    [](int16_t sceneNum) mutable {
-                        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(demoImUpdateHook);
-                        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(demoImKillHook);
-                        demoImUpdateHook = 0;
-                        demoImKillHook = 0;
-                    });
+                    }
+                });
+                demoImKillHook = REGISTER_LISTENER(OnSceneInit, EVENT_PRIORITY_LOW, [](IEvent* event) {
+                    UNREGISTER_LISTENER(OnActorUpdate, demoImUpdateHook);
+                    UNREGISTER_LISTENER(OnSceneInit, demoImKillHook);
+                    demoImUpdateHook = -1;
+                    demoImKillHook = -1;
+                });
                 *ev->result = false;
             }
             break;
@@ -878,108 +875,111 @@ void TimeSaverOnVanillaBehaviorHandler(IEvent* event) {
     va_end(args);
 }
 
-static uint32_t enMa1UpdateHook = 0;
-static uint32_t enMa1KillHook = 0;
-static uint32_t enFuUpdateHook = 0;
-static uint32_t enFuKillHook = 0;
-static uint32_t enJjUpdateHook = 0;
-static uint32_t enJjKillHook = 0;
-static uint32_t bgSpot02UpdateHook = 0;
-static uint32_t bgSpot02KillHook = 0;
-static uint32_t bgSpot03UpdateHook = 0;
-static uint32_t bgSpot03KillHook = 0;
-static uint32_t enPoSistersUpdateHook = 0;
-static uint32_t enPoSistersKillHook = 0;
+static ListenerID enMa1UpdateHook = -1;
+static ListenerID enMa1KillHook = -1;
+static ListenerID enFuUpdateHook = -1;
+static ListenerID enFuKillHook = -1;
+static ListenerID enJjUpdateHook = -1;
+static ListenerID enJjKillHook = -1;
+static ListenerID bgSpot02UpdateHook = -1;
+static ListenerID bgSpot02KillHook = -1;
+static ListenerID bgSpot03UpdateHook = -1;
+static ListenerID bgSpot03KillHook = -1;
+static ListenerID enPoSistersUpdateHook = -1;
+static ListenerID enPoSistersKillHook = -1;
 void TimeSaverOnActorInitHandler(IEvent* event) {
     OnActorInit* ev = reinterpret_cast<OnActorInit*>(event);
     Actor* actor = static_cast<Actor*>(ev->actor);
 
     if (actor->id == ACTOR_EN_MA1 && gPlayState->sceneNum == SCENE_LON_LON_RANCH) {
         enMa1UpdateHook =
-            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* innerActorRef) mutable {
+            REGISTER_LISTENER(OnActorUpdate, EVENT_PRIORITY_LOW, [](IEvent* event) {
+                OnActorUpdate* ev = reinterpret_cast<OnActorUpdate*>(event);
+                void* innerActorRef = ev->actor;
                 Actor* innerActor = static_cast<Actor*>(innerActorRef);
                 if (innerActor->id == ACTOR_EN_MA1 &&
                     (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.LearnSong"), IS_RANDO) || IS_RANDO)) {
                     EnMa1* enMa1 = static_cast<EnMa1*>(innerActorRef);
                     if (enMa1->actionFunc == func_80AA106C) {
                         enMa1->actionFunc = EnMa1_EndTeachSong;
-                        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(enMa1UpdateHook);
-                        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(enMa1KillHook);
-                        enMa1UpdateHook = 0;
-                        enMa1KillHook = 0;
+                        UNREGISTER_LISTENER(OnActorUpdate, enMa1UpdateHook);
+                        UNREGISTER_LISTENER(OnSceneInit, enMa1KillHook);
+                        enMa1UpdateHook = -1;
+                        enMa1KillHook = -1;
                         // They've already learned the song
                     } else if (enMa1->actionFunc == func_80AA0D88) {
-                        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(enMa1UpdateHook);
-                        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(enMa1KillHook);
-                        enMa1UpdateHook = 0;
-                        enMa1KillHook = 0;
+                        UNREGISTER_LISTENER(OnActorUpdate, enMa1UpdateHook);
+                        UNREGISTER_LISTENER(OnSceneInit, enMa1KillHook);
+                        enMa1UpdateHook = -1;
+                        enMa1KillHook = -1;
                     }
                 }
             });
         enMa1KillHook =
-            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) mutable {
-                GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(enMa1UpdateHook);
-                GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(enMa1KillHook);
+            REGISTER_LISTENER(OnSceneInit, EVENT_PRIORITY_LOW, [](IEvent* event) {
+                UNREGISTER_LISTENER(OnActorUpdate, enMa1UpdateHook);
+                UNREGISTER_LISTENER(OnSceneInit, enMa1KillHook);
                 enMa1UpdateHook = 0;
                 enMa1KillHook = 0;
             });
     }
 
     if (actor->id == ACTOR_EN_FU) {
-        enFuUpdateHook =
-            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* innerActorRef) mutable {
-                Actor* innerActor = static_cast<Actor*>(innerActorRef);
-                if (innerActor->id == ACTOR_EN_FU &&
-                    (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.LearnSong"), IS_RANDO) || IS_RANDO)) {
-                    EnFu* enFu = static_cast<EnFu*>(innerActorRef);
-                    if (enFu->actionFunc == EnFu_TeachSong) {
-                        enFu->actionFunc = EnFu_EndTeachSong;
-                        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(enFuUpdateHook);
-                        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(enFuKillHook);
-                        enFuUpdateHook = 0;
-                        enFuKillHook = 0;
-                    }
+        enFuUpdateHook = REGISTER_LISTENER(OnActorUpdate, EVENT_PRIORITY_LOW, [](IEvent* event) {
+            OnActorUpdate* ev = reinterpret_cast<OnActorUpdate*>(event);
+            void* innerActorRef = ev->actor;
+            Actor* innerActor = static_cast<Actor*>(innerActorRef);
+            if (innerActor->id == ACTOR_EN_FU &&
+                (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.LearnSong"), IS_RANDO) || IS_RANDO)) {
+                EnFu* enFu = static_cast<EnFu*>(innerActorRef);
+                if (enFu->actionFunc == EnFu_TeachSong) {
+                    enFu->actionFunc = EnFu_EndTeachSong;
+                    UNREGISTER_LISTENER(OnActorUpdate, enFuUpdateHook);
+                    UNREGISTER_LISTENER(OnSceneInit, enFuKillHook);
+                    enFuUpdateHook = -1;
+                    enFuKillHook = -1;
                 }
-            });
-        enFuKillHook =
-            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) mutable {
-                GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(enFuUpdateHook);
-                GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(enFuKillHook);
-                enFuUpdateHook = 0;
-                enFuKillHook = 0;
-            });
+            }
+        });
+        enFuKillHook = REGISTER_LISTENER(OnSceneInit, EVENT_PRIORITY_LOW, [](IEvent* event) {
+            UNREGISTER_LISTENER(OnActorUpdate, enFuUpdateHook);
+            UNREGISTER_LISTENER(OnSceneInit, enFuKillHook);
+            enFuUpdateHook = -1;
+            enFuKillHook = -1;
+        });
     }
 
     if (actor->id == ACTOR_EN_JJ) {
-        enJjUpdateHook =
-            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* innerActorRef) mutable {
-                Actor* innerActor = static_cast<Actor*>(innerActorRef);
+        enJjUpdateHook = REGISTER_LISTENER(OnActorUpdate, EVENT_PRIORITY_LOW, [](IEvent* event) {
+            OnActorUpdate* ev = reinterpret_cast<OnActorUpdate*>(event);
+            void* innerActorRef = ev->actor;
+            Actor* innerActor = static_cast<Actor*>(innerActorRef);
 
-                if (innerActor->id != ACTOR_EN_JJ || Flags_GetEventChkInf(EVENTCHKINF_OFFERED_FISH_TO_JABU_JABU)) {
-                    return;
-                }
+            if (innerActor->id != ACTOR_EN_JJ || Flags_GetEventChkInf(EVENTCHKINF_OFFERED_FISH_TO_JABU_JABU)) {
+                return;
+            }
 
-                bool shouldOpen = IS_RANDO ? RAND_GET_OPTION(RSK_JABU_OPEN).Get()
-                                           : CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipJabuJabuFish"), 0);
-                if (!shouldOpen) {
-                    return;
-                }
+            bool shouldOpen = IS_RANDO ? RAND_GET_OPTION(RSK_JABU_OPEN).Get()
+                                       : CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipJabuJabuFish"), 0);
+            if (!shouldOpen) {
+                return;
+            }
 
-                EnJj* enJj = static_cast<EnJj*>(innerActorRef);
-                if (enJj->actionFunc == EnJj_WaitForFish) {
-                    EnJj_SetupAction(enJj, EnJj_WaitToOpenMouth);
-                    GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(enJjUpdateHook);
-                    GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(enJjKillHook);
-                    enJjUpdateHook = 0;
-                    enJjKillHook = 0;
-                }
-            });
+            EnJj* enJj = static_cast<EnJj*>(innerActorRef);
+            if (enJj->actionFunc == EnJj_WaitForFish) {
+                EnJj_SetupAction(enJj, EnJj_WaitToOpenMouth);
+                UNREGISTER_LISTENER(OnActorUpdate, enJjUpdateHook);
+                UNREGISTER_LISTENER(OnSceneInit, enJjKillHook);
+                enJjUpdateHook = -1;
+                enJjKillHook = -1;
+            }
+        });
         enJjKillHook =
-            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) mutable {
-                GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(enJjUpdateHook);
-                GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(enJjKillHook);
-                enJjUpdateHook = 0;
-                enJjKillHook = 0;
+            REGISTER_LISTENER(OnSceneInit, EVENT_PRIORITY_LOW, [](IEvent* event) {
+                UNREGISTER_LISTENER(OnActorUpdate, enJjUpdateHook);
+                UNREGISTER_LISTENER(OnSceneInit, enJjKillHook);
+                enJjUpdateHook = -1;
+                enJjKillHook = -1;
             });
     }
 
@@ -990,32 +990,36 @@ void TimeSaverOnActorInitHandler(IEvent* event) {
 
     if (actor->id == ACTOR_BG_SPOT02_OBJECTS && actor->params == 2) {
         bgSpot02UpdateHook =
-            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* innerActorRef) mutable {
+            REGISTER_LISTENER(OnActorUpdate, EVENT_PRIORITY_LOW, [](IEvent* event) {
+                OnActorUpdate* ev = reinterpret_cast<OnActorUpdate*>(event);
+                void* innerActorRef = ev->actor;
                 Actor* innerActor = static_cast<Actor*>(innerActorRef);
                 if (innerActor->id == ACTOR_BG_SPOT02_OBJECTS && innerActor->params == 2 &&
                     (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), IS_RANDO))) {
                     BgSpot02Objects* bgSpot02 = static_cast<BgSpot02Objects*>(innerActorRef);
                     if (bgSpot02->actionFunc == func_808ACC34) {
                         bgSpot02->actionFunc = func_808AC908;
-                        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(bgSpot02UpdateHook);
-                        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(bgSpot02KillHook);
-                        bgSpot02UpdateHook = 0;
-                        bgSpot02KillHook = 0;
+                        UNREGISTER_LISTENER(OnActorUpdate, bgSpot02UpdateHook);
+                        UNREGISTER_LISTENER(OnSceneInit, bgSpot02KillHook);
+                        bgSpot02UpdateHook = -1;
+                        bgSpot02KillHook = -1;
                     }
                 }
             });
         bgSpot02KillHook =
-            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) mutable {
-                GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(bgSpot02UpdateHook);
-                GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(bgSpot02KillHook);
-                bgSpot02UpdateHook = 0;
-                bgSpot02KillHook = 0;
+            REGISTER_LISTENER(OnSceneInit, EVENT_PRIORITY_LOW, [](IEvent* event) {
+                UNREGISTER_LISTENER(OnActorUpdate, bgSpot02UpdateHook);
+                UNREGISTER_LISTENER(OnSceneInit, bgSpot02KillHook);
+                bgSpot02UpdateHook = -1;
+                bgSpot02KillHook = -1;
             });
     }
 
     if (actor->id == ACTOR_BG_SPOT03_TAKI) {
         bgSpot03UpdateHook =
-            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* innerActorRef) mutable {
+            REGISTER_LISTENER(OnActorUpdate, EVENT_PRIORITY_LOW, [](IEvent* event) {
+                OnActorUpdate* ev = reinterpret_cast<OnActorUpdate*>(event);
+                void* innerActorRef = ev->actor;
                 Actor* innerActor = static_cast<Actor*>(innerActorRef);
 
                 if (innerActor->id != ACTOR_BG_SPOT03_TAKI) {
@@ -1045,18 +1049,18 @@ void TimeSaverOnActorInitHandler(IEvent* event) {
                     BgSpot03Taki_ApplyOpeningAlpha(bgSpot03, 0);
                     BgSpot03Taki_ApplyOpeningAlpha(bgSpot03, 1);
 
-                    GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(bgSpot03UpdateHook);
-                    GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(bgSpot03KillHook);
-                    bgSpot03UpdateHook = 0;
-                    bgSpot03KillHook = 0;
+                    UNREGISTER_LISTENER(OnActorUpdate, bgSpot03UpdateHook);
+                    UNREGISTER_LISTENER(OnSceneInit, bgSpot03KillHook);
+                    bgSpot03UpdateHook = -1;
+                    bgSpot03KillHook = -1;
                 }
             });
         bgSpot03KillHook =
-            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) mutable {
-                GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(bgSpot03UpdateHook);
-                GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(bgSpot03KillHook);
-                bgSpot03UpdateHook = 0;
-                bgSpot03KillHook = 0;
+            REGISTER_LISTENER(OnSceneInit, EVENT_PRIORITY_LOW, [](IEvent* event) {
+                UNREGISTER_LISTENER(OnActorUpdate, bgSpot03UpdateHook);
+                UNREGISTER_LISTENER(OnSceneInit, bgSpot03KillHook);
+                bgSpot03UpdateHook = -1;
+                bgSpot03KillHook = -1;
             });
     }
 
@@ -1081,7 +1085,9 @@ void TimeSaverOnActorInitHandler(IEvent* event) {
     // Forest Temple purple poe fight speedup
     if (actor->id == ACTOR_EN_PO_SISTERS && actor->params == 28) {
         enPoSistersUpdateHook =
-            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* innerActorRef) mutable {
+            REGISTER_LISTENER(OnActorUpdate, EVENT_PRIORITY_LOW, [](IEvent* event) {
+                OnActorUpdate* ev = reinterpret_cast<OnActorUpdate*>(event);
+                void* innerActorRef = ev->actor;
                 Actor* innerActor = static_cast<Actor*>(innerActorRef);
                 if (innerActor->id == ACTOR_EN_PO_SISTERS && innerActor->params == 28 &&
                     (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), IS_RANDO))) {
@@ -1091,12 +1097,11 @@ void TimeSaverOnActorInitHandler(IEvent* event) {
                     }
                 }
             });
-        enPoSistersKillHook =
-            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) mutable {
-                GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(enPoSistersUpdateHook);
-                GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(enPoSistersKillHook);
-                enPoSistersUpdateHook = 0;
-                enPoSistersKillHook = 0;
+        enPoSistersKillHook = REGISTER_LISTENER(OnSceneInit, EVENT_PRIORITY_LOW, [](IEvent* event) mutable {
+                UNREGISTER_LISTENER(OnActorUpdate, enPoSistersUpdateHook);
+                UNREGISTER_LISTENER(OnSceneInit, enPoSistersKillHook);
+                enPoSistersUpdateHook = -1;
+                enPoSistersKillHook = -1;
             });
     }
 

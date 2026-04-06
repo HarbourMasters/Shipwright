@@ -165,7 +165,7 @@ extern "C" void CustomLogoTitle_Main(TitleContext* titleContext) {
         }
     }
 
-    CALL_EVENT(OnZTitleUpdate);
+    CALL_EVENT(OnZTitleUpdate, titleContext);
 
     CLOSE_DISPS(titleContext->state.gfxCtx);
 }

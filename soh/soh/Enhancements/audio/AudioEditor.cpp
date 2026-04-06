@@ -498,7 +498,7 @@ void DrawTypeChip(SeqType type, std::string sequenceName) {
 }
 
 void AudioEditorRegisterOnSceneInitHook() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) {
+    REGISTER_LISTENER(OnSceneInit, EVENT_PRIORITY_LOW, [](IEvent* event){
         if (gSaveContext.gameMode != GAMEMODE_END_CREDITS &&
             CVarGetInteger(CVAR_AUDIO("RandomizeAudioGenModes"), 0) == RANDOMIZE_ON_NEW_SCENE) {
 
@@ -508,16 +508,15 @@ void AudioEditorRegisterOnSceneInitHook() {
 }
 
 void AudioEditorRegisterOnGenerationCompletionHook() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGenerationCompletion>([]() {
+    REGISTER_LISTENER(OnGenerationCompletion, EVENT_PRIORITY_LOW, [](IEvent* event){
         if (CVarGetInteger(CVAR_AUDIO("RandomizeAudioGenModes"), 0) == RANDOMIZE_ON_RANDO_GEN_ONLY) {
-
             AudioEditor_AutoRandomizeAll();
         }
     });
 }
 
 void AudioEditorRegisterOnLoadGameHook() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int32_t fileNum) {
+    REGISTER_LISTENER(OnLoadGame, EVENT_PRIORITY_LOW, [](IEvent* event) {
         if (CVarGetInteger(CVAR_AUDIO("RandomizeAudioGenModes"), 0) == RANDOMIZE_ON_FILE_LOAD ||
             CVarGetInteger(CVAR_AUDIO("RandomizeAudioGenModes"), 0) == RANDOMIZE_ON_FILE_LOAD_SEEDED) {
 

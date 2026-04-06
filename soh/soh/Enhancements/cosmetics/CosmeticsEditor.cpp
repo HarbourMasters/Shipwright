@@ -2602,7 +2602,9 @@ void CosmeticsEditorWindow::DrawElement() {
 }
 
 void RegisterOnGameFrameUpdateHook() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() { CosmeticsUpdateTick(); });
+    REGISTER_LISTENER(OnGameFrameUpdate, EVENT_PRIORITY_LOW, [](IEvent* event) {
+        CosmeticsUpdateTick();
+    })
 }
 
 void CosmeticsEditorWindow::InitElement() {

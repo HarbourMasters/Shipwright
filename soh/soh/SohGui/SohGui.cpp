@@ -74,7 +74,7 @@ std::shared_ptr<CosmeticsEditorWindow> mCosmeticsEditorWindow;
 std::shared_ptr<ActorViewerWindow> mActorViewerWindow;
 std::shared_ptr<ColViewerWindow> mColViewerWindow;
 std::shared_ptr<SaveEditorWindow> mSaveEditorWindow;
-std::shared_ptr<HookDebuggerWindow> mHookDebuggerWindow;
+std::shared_ptr<Ship::EventDebuggerWindow> mEventDebuggerWindow;
 std::shared_ptr<DLViewerWindow> mDLViewerWindow;
 std::shared_ptr<ValueViewerWindow> mValueViewerWindow;
 std::shared_ptr<MessageViewer> mMessageViewerWindow;
@@ -152,9 +152,8 @@ void SetupGuiElements() {
     gui->AddGuiWindow(mColViewerWindow);
     mSaveEditorWindow = std::make_shared<SaveEditorWindow>(CVAR_WINDOW("SaveEditor"), "Save Editor", ImVec2(520, 600));
     gui->AddGuiWindow(mSaveEditorWindow);
-    mHookDebuggerWindow =
-        std::make_shared<HookDebuggerWindow>(CVAR_WINDOW("HookDebugger"), "Hook Debugger", ImVec2(1250, 850));
-    gui->AddGuiWindow(mHookDebuggerWindow);
+    mEventDebuggerWindow = std::make_shared<Ship::EventDebuggerWindow>(CVAR_WINDOW("EventDebugger"), "Event Debugger");
+    gui->AddGuiWindow(mEventDebuggerWindow);
     mDLViewerWindow =
         std::make_shared<DLViewerWindow>(CVAR_WINDOW("DisplayListViewer"), "Display List Viewer", ImVec2(520, 600));
     gui->AddGuiWindow(mDLViewerWindow);
@@ -216,7 +215,7 @@ void Destroy() {
     mValueViewerWindow = nullptr;
     mMessageViewerWindow = nullptr;
     mSaveEditorWindow = nullptr;
-    mHookDebuggerWindow = nullptr;
+    mEventDebuggerWindow = nullptr;
     mColViewerWindow = nullptr;
     mActorViewerWindow = nullptr;
     mCosmeticsEditorWindow = nullptr;

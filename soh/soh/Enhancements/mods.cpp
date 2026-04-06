@@ -58,16 +58,16 @@ void SwitchAge() {
         Entrance_SetEntranceDiscovered(ENTR_LINKS_HOUSE_CHILD_SPAWN, false);
     }
 
-    static HOOK_ID hookId = 0;
+    static ListenerID hookId = -1;
     hookId = REGISTER_VB_SHOULD(VB_INFLICT_VOID_DAMAGE, {
         *should = false;
-        GameInteractor::Instance->UnregisterGameHookForID<GameInteractor::OnVanillaBehavior>(hookId);
+        UNREGISTER_LISTENER(OnVanillaBehavior, hookId);
     });
 }
 
 /// Switches Link's age and respawns him at the last entrance he entered.
 void RegisterOcarinaTimeTravel() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnOcarinaSongAction>([]() {
+    REGISTER_LISTENER(OnOcarinaSongAction, EVENT_PRIORITY_LOW, [](IEvent* event) {
         if (!GameInteractor::IsSaveLoaded(true) || !CVarGetInteger(CVAR_ENHANCEMENT("TimeTravel"), 0)) {
             return;
         }
@@ -117,19 +117,19 @@ bool IsHyperBossesActive() {
 }
 
 void UpdateHyperBossesState() {
-    static uint32_t actorUpdateHookId = 0;
-    if (actorUpdateHookId != 0) {
-        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(actorUpdateHookId);
-        actorUpdateHookId = 0;
+    static ListenerID actorUpdateHookId = -1;
+    if (actorUpdateHookId != -1) {
+        UNREGISTER_LISTENER(OnActorUpdate, actorUpdateHookId);
+        actorUpdateHookId = -1;
     }
 
     if (IsHyperBossesActive()) {
-        actorUpdateHookId =
-            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* refActor) {
+        actorUpdateHookId = REGISTER_LISTENER(OnActorUpdate, EVENT_PRIORITY_LOW, [](IEvent* event) {
                 // Run the update function a second time to make bosses move and act twice as fast.
 
+                OnActorUpdate* ev = reinterpret_cast<OnActorUpdate*>(event);
                 Player* player = GET_PLAYER(gPlayState);
-                Actor* actor = static_cast<Actor*>(refActor);
+                Actor* actor = static_cast<Actor*>(ev->actor);
 
                 uint8_t isBossActor = actor->id == ACTOR_BOSS_GOMA ||      // Gohma
                                       actor->id == ACTOR_BOSS_DODONGO ||   // King Dodongo
@@ -169,8 +169,8 @@ void UpdateHyperBossesState() {
 
 void RegisterHyperBosses() {
     UpdateHyperBossesState();
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>(
-        [](int16_t fileNum) { UpdateHyperBossesState(); });
+    REGISTER_LISTENER(OnLoadGame, EVENT_PRIORITY_LOW,
+        [](IEvent* event) { UpdateHyperBossesState(); });
 }
 
 void InitMods() {

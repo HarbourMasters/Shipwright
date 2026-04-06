@@ -167,13 +167,13 @@ void SohMenu::AddMenuDevTools() {
         .Options(WindowButtonOptions().Tooltip("Enables the separate Save Editor Window."));
 
     // Hook Debugger
-    path.sidebarName = "Hook Debugger";
+    path.sidebarName = "Event Debugger";
     AddSidebarEntry("Dev Tools", path.sidebarName, 1);
-    AddWidget(path, "Popout Hook Debugger", WIDGET_WINDOW_BUTTON)
-        .CVar(CVAR_WINDOW("HookDebugger"))
-        .WindowName("Hook Debugger")
+    AddWidget(path, "Popout Event Debugger", WIDGET_WINDOW_BUTTON)
+        .CVar(CVAR_WINDOW("EventDebugger"))
+        .WindowName("Event Debugger")
         .HideInSearch(true)
-        .Options(WindowButtonOptions().Tooltip("Enables the separate Hook Debugger Window."));
+        .Options(WindowButtonOptions().Tooltip("Enables the separate Event Debugger Window."));
 
     // Collision Viewer
     path.sidebarName = "Collision Viewer";

@@ -89,10 +89,10 @@ void Warp(WarpPoint& warpPoint) {
     gSaveContext.respawn[RESPAWN_MODE_DOWN].playerParams = 0xDFF;
     gSaveContext.nextTransitionType = TRANS_TYPE_FADE_BLACK_FAST;
     gSaveContext.respawnFlag = 1;
-    static HOOK_ID hookId = 0;
+    static ListenerID hookId = -1;
     hookId = REGISTER_VB_SHOULD(VB_INFLICT_VOID_DAMAGE, {
         *should = false;
-        GameInteractor::Instance->UnregisterGameHookForID<GameInteractor::OnVanillaBehavior>(hookId);
+        UNREGISTER_LISTENER(OnVanillaBehavior, hookId);
     });
 }
 

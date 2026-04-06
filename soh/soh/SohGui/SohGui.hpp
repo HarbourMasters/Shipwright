@@ -16,7 +16,6 @@
 #include "soh/Enhancements/debugger/actorViewer.h"
 #include "soh/Enhancements/debugger/colViewer.h"
 #include "soh/Enhancements/debugger/debugSaveEditor.h"
-#include "soh/Enhancements/debugger/hookDebugger.h"
 #include "soh/Enhancements/debugger/dlViewer.h"
 #include "soh/Enhancements/debugger/SohConsoleWindow.h"
 #include "soh/Enhancements/debugger/SohGfxDebuggerWindow.h"
@@ -28,6 +27,7 @@
 #include "soh/Enhancements/randomizer/randomizer_item_tracker.h"
 #include "soh/Enhancements/timesplits/TimeSplits.h"
 #include "soh/Enhancements/randomizer/Plandomizer.h"
+#include <ship/window/gui/EventDebuggerWindow.h>
 #include "SohModals.h"
 
 namespace SohGui {
@@ -45,6 +45,8 @@ void ShowRandomizerSettingsMenu();
 void ShowEscMenu();
 UIWidgets::Colors GetMenuThemeColor();
 std::shared_ptr<SohMenu> GetSohMenu();
+
+extern std::shared_ptr<ActorViewerWindow> mActorViewerWindow;
 } // namespace SohGui
 
 #define THEME_COLOR SohGui::GetMenuThemeColor()
