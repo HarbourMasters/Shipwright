@@ -2673,24 +2673,24 @@ void RandomizerOnCuccoOrChickenHatch() {
 }
 
 static void RandomizerRegisterHooks() {
-    static uint32_t onFlagSetHook = 0;
-    static uint32_t onSceneFlagSetHook = 0;
-    static uint32_t onPlayerUpdateForRCQueueHook = 0;
-    static uint32_t onPlayerUpdateForItemQueueHook = 0;
-    static uint32_t onItemReceiveHook = 0;
-    static uint32_t onDialogMessageHook = 0;
-    static uint32_t onVanillaBehaviorHook = 0;
-    static uint32_t onSceneInitHook = 0;
-    static uint32_t afterSceneCommandsHook = 0;
-    static uint32_t onActorInitHook = 0;
-    static uint32_t onActorUpdateHook = 0;
-    static uint32_t onPlayerUpdateHook = 0;
-    static uint32_t onGameFrameUpdateHook = 0;
-    static uint32_t onSceneSpawnActorsHook = 0;
-    static uint32_t onPlayDestroyHook = 0;
-    static uint32_t onExitGameHook = 0;
-    static uint32_t onKaleidoUpdateHook = 0;
-    static uint32_t onCuccoOrChickenHatchHook = 0;
+    static ListenerID onFlagSetHook = -1;
+    static ListenerID onSceneFlagSetHook = -1;
+    static ListenerID onPlayerUpdateForRCQueueHook = -1;
+    static ListenerID onPlayerUpdateForItemQueueHook = -1;
+    static ListenerID onItemReceiveHook = -1;
+    static ListenerID onDialogMessageHook = -1;
+    static ListenerID onVanillaBehaviorHook = -1;
+    static ListenerID onSceneInitHook = -1;
+    static ListenerID afterSceneCommandsHook = -1;
+    static ListenerID onActorInitHook = -1;
+    static ListenerID onActorUpdateHook = -1;
+    static ListenerID onPlayerUpdateHook = -1;
+    static ListenerID onGameFrameUpdateHook = -1;
+    static ListenerID onSceneSpawnActorsHook = -1;
+    static ListenerID onPlayDestroyHook = -1;
+    static ListenerID onExitGameHook = -1;
+    static ListenerID onKaleidoUpdateHook = -1;
+    static ListenerID onCuccoOrChickenHatchHook = -1;
 
     // register this outside OnLoadGame as VB is invoked before OnLoadGame
     COND_VB_SHOULD(VB_REVERT_SPOILING_ITEMS, true, {
