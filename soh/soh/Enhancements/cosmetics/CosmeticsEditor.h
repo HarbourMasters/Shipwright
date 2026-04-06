@@ -1,5 +1,4 @@
 #pragma once
-#include <string>
 #include <libultraship/libultraship.h>
 
 // Not to be confused with tabs, groups are 1:1 with the boxes shown in the UI, grouping them allows us to
@@ -31,6 +30,7 @@ typedef enum {
 } CosmeticGroup;
 
 #ifdef __cplusplus
+#include <string>
 extern "C" {
 #endif //__cplusplus
 
