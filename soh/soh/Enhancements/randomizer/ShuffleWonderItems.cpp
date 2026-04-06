@@ -166,9 +166,10 @@ static void EnWonderItem_RandomizerDraw(EnWonderItem* wonderActor, Color_RGBA8* 
     }
 }
 
-void EnWonderItem_RandomizerDrawSetup(void* refActor) {
+void EnWonderItem_RandomizerDrawSetup(IEvent* event) {
+    OnActorUpdate* ev = reinterpret_cast<OnActorUpdate*>(event);
     GetItemCategory getItemCategory;
-    EnWonderItem* wonderActor = static_cast<EnWonderItem*>(refActor);
+    EnWonderItem* wonderActor = static_cast<EnWonderItem*>(ev->actor);
 
     // If not a randomized item or too far, don't draw.
     // If item is unshuffled or collected, kill wonder actor if switch flag is set.
@@ -190,7 +191,7 @@ void EnWonderItem_RandomizerDrawSetup(void* refActor) {
     Color_RGBA8 secColor;
     Color_RGBA8 envColor;
 
-    const auto wonderIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(refActor);
+    const auto wonderIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(ev->actor);
     if (wonderIdentity == nullptr) {
         return;
     }

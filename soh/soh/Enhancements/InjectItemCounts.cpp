@@ -4,7 +4,8 @@ extern "C" {
 #include "variables.h"
 }
 
-void BuildSkulltulaMessage(uint16_t* textId, bool* loadFromMessageTable) {
+void BuildSkulltulaMessage(IEvent* event) {
+    OnOpenText* ev = reinterpret_cast<OnOpenText*>(event);
     CustomMessage msg =
         CustomMessage("You got a %rGold Skulltula Token%w!&You've collected %r[[gsCount]]%w tokens&in total!",
                       "Ein %rGoldenes Skulltula-Symbol%w!&Du hast nun insgesamt %r[[gsCount]]&%wGoldene "
@@ -28,10 +29,11 @@ void BuildSkulltulaMessage(uint16_t* textId, bool* loadFromMessageTable) {
     msg.Replace("[[gsCount]]", std::to_string(gsCount));
     msg.AutoFormat(ITEM_SKULL_TOKEN);
     msg.LoadIntoFont();
-    *loadFromMessageTable = false;
+    *ev->loadFromMessageTable = false;
 }
 
-void BuildHeartContainerMessage(uint16_t* textId, bool* loadFromMessageTable) {
+void BuildHeartContainerMessage(IEvent* event) {
+    OnOpenText* ev = reinterpret_cast<OnOpenText*>(event);
     CustomMessage msg = CustomMessage(
         "You got a %rHeart Container%w!&You've collected %r[[heartContainerCount]]%w containers&in total!",
         "Ein %rHerzcontainer%w!&Du hast nun insgesamt %r[[heartContainerCount]]%w&Herzcontainer gesammelt!",
@@ -39,10 +41,11 @@ void BuildHeartContainerMessage(uint16_t* textId, bool* loadFromMessageTable) {
     msg.Replace("[[heartContainerCount]]", std::to_string(gSaveContext.ship.stats.heartContainers + 1));
     msg.AutoFormat(ITEM_HEART_CONTAINER);
     msg.LoadIntoFont();
-    *loadFromMessageTable = false;
+    *ev->loadFromMessageTable = false;
 }
 
-void BuildHeartPieceMessage(uint16_t* textId, bool* loadFromMessageTable) {
+void BuildHeartPieceMessage(IEvent* event) {
+    OnOpenText* ev = reinterpret_cast<OnOpenText*>(event);
     CustomMessage msg =
         CustomMessage("You got a %rHeart Piece%w!&You've collected %r[[heartPieceCount]]%w pieces&in total!",
                       "Ein %rHerzteil%w!&Du hast nun insgesamt %r[[heartPieceCount]]%w&Herzteile gesammelt!",
@@ -51,7 +54,7 @@ void BuildHeartPieceMessage(uint16_t* textId, bool* loadFromMessageTable) {
     msg.Replace("[[heartPieceCount]]", std::to_string(gSaveContext.ship.stats.heartPieces + 1));
     msg.AutoFormat(ITEM_HEART_PIECE);
     msg.LoadIntoFont();
-    *loadFromMessageTable = false;
+    *ev->loadFromMessageTable = false;
 }
 
 void InjectSkulltulaCounts_Register() {

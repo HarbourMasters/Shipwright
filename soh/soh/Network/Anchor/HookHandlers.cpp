@@ -215,56 +215,63 @@ void Anchor::RegisterHooks() {
 
     // #region Hooks that are purely to sync actor states across the clients, not super essential
 
-    COND_ID_HOOK(OnActorUpdate, ACTOR_EN_ITEM00, isConnected, [&](void* refActor) {
-        EnItem00* actor = static_cast<EnItem00*>(refActor);
+    COND_ID_HOOK(OnActorUpdate, ACTOR_EN_ITEM00, isConnected, [](IEvent* event) {
+        OnActorUpdate* ev = reinterpret_cast<OnActorUpdate*>(event);
+        EnItem00* actor = static_cast<EnItem00*>(ev->actor);
 
         if (Flags_GetCollectible(gPlayState, actor->collectibleFlag)) {
             Actor_Kill(&actor->actor);
         }
     });
 
-    COND_ID_HOOK(ShouldActorUpdate, ACTOR_BG_BOMBWALL, isConnected, [&](void* refActor, bool* should) {
-        BgBombwall* actor = static_cast<BgBombwall*>(refActor);
+    COND_ID_HOOK(ShouldActorUpdate, ACTOR_BG_BOMBWALL, isConnected, [](IEvent* event) {
+        ShouldActorUpdate* ev = reinterpret_cast<ShouldActorUpdate*>(event);
+        BgBombwall* actor = static_cast<BgBombwall*>(ev->actor);
 
         if (actor->actionFunc == func_8086ED70 && Flags_GetSwitch(gPlayState, actor->dyna.actor.params & 0x3F)) {
             actor->collider.base.acFlags |= AC_HIT;
         }
     });
 
-    COND_ID_HOOK(ShouldActorUpdate, ACTOR_BG_BREAKWALL, isConnected, [&](void* refActor, bool* should) {
-        BgBreakwall* actor = static_cast<BgBreakwall*>(refActor);
+    COND_ID_HOOK(ShouldActorUpdate, ACTOR_BG_BREAKWALL, isConnected, [](IEvent* event) {
+        ShouldActorUpdate* ev = reinterpret_cast<ShouldActorUpdate*>(event);
+        BgBreakwall* actor = static_cast<BgBreakwall*>(ev->actor);
 
         if (actor->actionFunc == BgBreakwall_Wait && Flags_GetSwitch(gPlayState, actor->dyna.actor.params & 0x3F)) {
             actor->collider.base.acFlags |= AC_HIT;
         }
     });
 
-    COND_ID_HOOK(ShouldActorUpdate, ACTOR_BG_HAKA_ZOU, isConnected, [&](void* refActor, bool* should) {
-        BgHakaZou* actor = static_cast<BgHakaZou*>(refActor);
+    COND_ID_HOOK(ShouldActorUpdate, ACTOR_BG_HAKA_ZOU, isConnected, [](IEvent* event) {
+        ShouldActorUpdate* ev = reinterpret_cast<ShouldActorUpdate*>(event);
+        BgHakaZou* actor = static_cast<BgHakaZou*>(ev->actor);
 
         if (actor->actionFunc == func_80883000 && Flags_GetSwitch(gPlayState, actor->switchFlag)) {
             actor->collider.base.acFlags |= AC_HIT;
         }
     });
 
-    COND_ID_HOOK(ShouldActorUpdate, ACTOR_BG_HIDAN_HAMSTEP, isConnected, [&](void* refActor, bool* should) {
-        BgHidanHamstep* actor = static_cast<BgHidanHamstep*>(refActor);
+    COND_ID_HOOK(ShouldActorUpdate, ACTOR_BG_HIDAN_HAMSTEP, isConnected, [](IEvent* event) {
+        ShouldActorUpdate* ev = reinterpret_cast<ShouldActorUpdate*>(event);
+        BgHidanHamstep* actor = static_cast<BgHidanHamstep*>(ev->actor);
 
         if (actor->actionFunc == func_808887C4 && Flags_GetSwitch(gPlayState, (actor->dyna.actor.params >> 8) & 0xFF)) {
             actor->collider.base.acFlags |= AC_HIT;
         }
     });
 
-    COND_ID_HOOK(ShouldActorUpdate, ACTOR_BG_HIDAN_HROCK, isConnected, [&](void* refActor, bool* should) {
-        BgHidanHrock* actor = static_cast<BgHidanHrock*>(refActor);
+    COND_ID_HOOK(ShouldActorUpdate, ACTOR_BG_HIDAN_HROCK, isConnected, [](IEvent* event) {
+        ShouldActorUpdate* ev = reinterpret_cast<ShouldActorUpdate*>(event);
+        BgHidanHrock* actor = static_cast<BgHidanHrock*>(ev->actor);
 
         if (actor->actionFunc == func_808896B8 && Flags_GetSwitch(gPlayState, actor->unk_16A)) {
             actor->collider.base.acFlags |= AC_HIT;
         }
     });
 
-    COND_ID_HOOK(ShouldActorUpdate, ACTOR_BG_ICE_SHELTER, isConnected, [&](void* refActor, bool* should) {
-        BgIceShelter* actor = static_cast<BgIceShelter*>(refActor);
+    COND_ID_HOOK(ShouldActorUpdate, ACTOR_BG_ICE_SHELTER, isConnected, [](IEvent* event) {
+        ShouldActorUpdate* ev = reinterpret_cast<ShouldActorUpdate*>(event);
+        BgIceShelter* actor = static_cast<BgIceShelter*>(ev->actor);
 
         if (actor->actionFunc == BgIceShelter_Idle && Flags_GetSwitch(gPlayState, actor->dyna.actor.params & 0x3F)) {
             BgIceShelter_SetupMelt(actor);
@@ -272,8 +279,9 @@ void Anchor::RegisterHooks() {
         }
     });
 
-    COND_ID_HOOK(ShouldActorUpdate, ACTOR_BG_JYA_BOMBCHUIWA, isConnected, [&](void* refActor, bool* should) {
-        BgJyaBombchuiwa* actor = static_cast<BgJyaBombchuiwa*>(refActor);
+    COND_ID_HOOK(ShouldActorUpdate, ACTOR_BG_JYA_BOMBCHUIWA, isConnected, [](IEvent* event) {
+        ShouldActorUpdate* ev = reinterpret_cast<ShouldActorUpdate*>(event);
+        BgJyaBombchuiwa* actor = static_cast<BgJyaBombchuiwa*>(ev->actor);
 
         if (actor->actionFunc == BgJyaBombchuiwa_WaitForExplosion &&
             Flags_GetSwitch(gPlayState, actor->actor.params & 0x3F)) {
@@ -281,16 +289,18 @@ void Anchor::RegisterHooks() {
         }
     });
 
-    COND_ID_HOOK(ShouldActorUpdate, ACTOR_BG_JYA_BOMBIWA, isConnected, [&](void* refActor, bool* should) {
-        BgJyaBombiwa* actor = static_cast<BgJyaBombiwa*>(refActor);
+    COND_ID_HOOK(ShouldActorUpdate, ACTOR_BG_JYA_BOMBIWA, isConnected, [](IEvent* event) {
+        ShouldActorUpdate* ev = reinterpret_cast<ShouldActorUpdate*>(event);
+        BgJyaBombiwa* actor = static_cast<BgJyaBombiwa*>(ev->actor);
 
         if (Flags_GetSwitch(gPlayState, actor->dyna.actor.params & 0x3F)) {
             actor->collider.base.acFlags |= AC_HIT;
         }
     });
 
-    COND_ID_HOOK(ShouldActorUpdate, ACTOR_BG_MIZU_BWALL, isConnected, [&](void* refActor, bool* should) {
-        BgMizuBwall* actor = static_cast<BgMizuBwall*>(refActor);
+    COND_ID_HOOK(ShouldActorUpdate, ACTOR_BG_MIZU_BWALL, isConnected, [](IEvent* event) {
+        ShouldActorUpdate* ev = reinterpret_cast<ShouldActorUpdate*>(event);
+        BgMizuBwall* actor = static_cast<BgMizuBwall*>(ev->actor);
 
         if (actor->actionFunc == BgMizuBwall_Idle &&
             Flags_GetSwitch(gPlayState, ((u16)actor->dyna.actor.params >> 8) & 0x3F)) {
@@ -298,44 +308,49 @@ void Anchor::RegisterHooks() {
         }
     });
 
-    COND_ID_HOOK(ShouldActorUpdate, ACTOR_BG_SPOT08_BAKUDANKABE, isConnected, [&](void* refActor, bool* should) {
-        BgSpot08Bakudankabe* actor = static_cast<BgSpot08Bakudankabe*>(refActor);
+    COND_ID_HOOK(ShouldActorUpdate, ACTOR_BG_SPOT08_BAKUDANKABE, isConnected, [](IEvent* event) {
+        ShouldActorUpdate* ev = reinterpret_cast<ShouldActorUpdate*>(event);
+        BgSpot08Bakudankabe* actor = static_cast<BgSpot08Bakudankabe*>(ev->actor);
 
         if (Flags_GetSwitch(gPlayState, (actor->dyna.actor.params & 0x3F))) {
             actor->collider.base.acFlags |= AC_HIT;
         }
     });
 
-    COND_ID_HOOK(ShouldActorUpdate, ACTOR_BG_SPOT11_BAKUDANKABE, isConnected, [&](void* refActor, bool* should) {
-        BgSpot11Bakudankabe* actor = static_cast<BgSpot11Bakudankabe*>(refActor);
+    COND_ID_HOOK(ShouldActorUpdate, ACTOR_BG_SPOT11_BAKUDANKABE, isConnected, [](IEvent* event) {
+        ShouldActorUpdate* ev = reinterpret_cast<ShouldActorUpdate*>(event);
+        BgSpot11Bakudankabe* actor = static_cast<BgSpot11Bakudankabe*>(ev->actor);
 
         if (Flags_GetSwitch(gPlayState, (actor->dyna.actor.params & 0x3F))) {
             actor->collider.base.acFlags |= AC_HIT;
         }
     });
 
-    COND_ID_HOOK(ShouldActorUpdate, ACTOR_BG_SPOT17_BAKUDANKABE, isConnected, [&](void* refActor, bool* should) {
-        BgSpot17Bakudankabe* actor = static_cast<BgSpot17Bakudankabe*>(refActor);
+    COND_ID_HOOK(ShouldActorUpdate, ACTOR_BG_SPOT17_BAKUDANKABE, isConnected, [](IEvent* event) {
+        ShouldActorUpdate* ev = reinterpret_cast<ShouldActorUpdate*>(event);
+        BgSpot17Bakudankabe* actor = static_cast<BgSpot17Bakudankabe*>(ev->actor);
 
         if (Flags_GetSwitch(gPlayState, (actor->dyna.actor.params & 0x3F))) {
             func_808B6BC0(actor, gPlayState);
             SoundSource_PlaySfxAtFixedWorldPos(gPlayState, &actor->dyna.actor.world.pos, 40, NA_SE_EV_WALL_BROKEN);
             Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
             Actor_Kill(&actor->dyna.actor);
-            *should = false;
+            *ev->result = false;
         }
     });
 
-    COND_ID_HOOK(ShouldActorUpdate, ACTOR_BG_YDAN_MARUTA, isConnected, [&](void* refActor, bool* should) {
-        BgYdanMaruta* actor = static_cast<BgYdanMaruta*>(refActor);
+    COND_ID_HOOK(ShouldActorUpdate, ACTOR_BG_YDAN_MARUTA, isConnected, [](IEvent* event) {
+        ShouldActorUpdate* ev = reinterpret_cast<ShouldActorUpdate*>(event);
+        BgYdanMaruta* actor = static_cast<BgYdanMaruta*>(ev->actor);
 
         if (actor->actionFunc == func_808BF078 && Flags_GetSwitch(gPlayState, actor->switchFlag)) {
             actor->collider.base.acFlags |= AC_HIT;
         }
     });
 
-    COND_ID_HOOK(ShouldActorUpdate, ACTOR_BG_YDAN_SP, isConnected, [&](void* refActor, bool* should) {
-        BgYdanSp* actor = static_cast<BgYdanSp*>(refActor);
+    COND_ID_HOOK(ShouldActorUpdate, ACTOR_BG_YDAN_SP, isConnected, [](IEvent* event) {
+        ShouldActorUpdate* ev = reinterpret_cast<ShouldActorUpdate*>(event);
+        BgYdanSp* actor = static_cast<BgYdanSp*>(ev->actor);
 
         if ((actor->actionFunc == BgYdanSp_FloorWebIdle || actor->actionFunc == BgYdanSp_WallWebIdle) &&
             Flags_GetSwitch(gPlayState, actor->isDestroyedSwitchFlag)) {
@@ -343,68 +358,75 @@ void Anchor::RegisterHooks() {
         }
     });
 
-    COND_ID_HOOK(ShouldActorUpdate, ACTOR_DOOR_SHUTTER, isConnected, [&](void* refActor, bool* should) {
-        DoorShutter* actor = static_cast<DoorShutter*>(refActor);
+    COND_ID_HOOK(ShouldActorUpdate, ACTOR_DOOR_SHUTTER, isConnected, [](IEvent* event) {
+        ShouldActorUpdate* ev = reinterpret_cast<ShouldActorUpdate*>(event);
+        DoorShutter* actor = static_cast<DoorShutter*>(ev->actor);
 
         if (Flags_GetSwitch(gPlayState, actor->dyna.actor.params & 0x3F)) {
             DECR(actor->unlockTimer);
         }
     });
 
-    COND_ID_HOOK(ShouldActorUpdate, ACTOR_EN_DOOR, isConnected, [&](void* refActor, bool* should) {
-        EnDoor* actor = static_cast<EnDoor*>(refActor);
+    COND_ID_HOOK(ShouldActorUpdate, ACTOR_EN_DOOR, isConnected, [](IEvent* event) {
+        ShouldActorUpdate* ev = reinterpret_cast<ShouldActorUpdate*>(event);
+        EnDoor* actor = static_cast<EnDoor*>(ev->actor);
 
         if (actor->actionFunc == EnDoor_Idle && Flags_GetSwitch(gPlayState, actor->actor.params & 0x3F)) {
             DECR(actor->lockTimer);
         }
     });
 
-    COND_ID_HOOK(ShouldActorUpdate, ACTOR_EN_SI, isConnected, [&](void* refActor, bool* should) {
-        EnSi* actor = static_cast<EnSi*>(refActor);
+    COND_ID_HOOK(ShouldActorUpdate, ACTOR_EN_SI, isConnected, [](IEvent* event) {
+        ShouldActorUpdate* ev = reinterpret_cast<ShouldActorUpdate*>(event);
+        EnSi* actor = static_cast<EnSi*>(ev->actor);
 
         if (GET_GS_FLAGS((actor->actor.params & 0x1F00) >> 8) & (actor->actor.params & 0xFF)) {
             Actor_Kill(&actor->actor);
-            *should = false;
+            *ev->result = false;
         }
     });
 
-    COND_ID_HOOK(ShouldActorUpdate, ACTOR_EN_SW, isConnected, [&](void* refActor, bool* should) {
-        EnSw* actor = static_cast<EnSw*>(refActor);
+    COND_ID_HOOK(ShouldActorUpdate, ACTOR_EN_SW, isConnected, [](IEvent* event) {
+        ShouldActorUpdate* ev = reinterpret_cast<ShouldActorUpdate*>(event);
+        EnSw* actor = static_cast<EnSw*>(ev->actor);
 
         if (GET_GS_FLAGS((actor->actor.params & 0x1F00) >> 8) & (actor->actor.params & 0xFF)) {
             Actor_Kill(&actor->actor);
-            *should = false;
+            *ev->result = false;
         }
     });
 
-    COND_ID_HOOK(ShouldActorUpdate, ACTOR_ITEM_B_HEART, isConnected, [&](void* refActor, bool* should) {
-        ItemBHeart* actor = static_cast<ItemBHeart*>(refActor);
+    COND_ID_HOOK(ShouldActorUpdate, ACTOR_ITEM_B_HEART, isConnected, [](IEvent* event) {
+        ShouldActorUpdate* ev = reinterpret_cast<ShouldActorUpdate*>(event);
+        ItemBHeart* actor = static_cast<ItemBHeart*>(ev->actor);
 
         if (Flags_GetCollectible(gPlayState, 0x1F)) {
             Actor_Kill(&actor->actor);
-            *should = false;
+            *ev->result = false;
         }
     });
 
-    COND_ID_HOOK(ShouldActorUpdate, ACTOR_OBJ_BOMBIWA, isConnected, [&](void* refActor, bool* should) {
-        ObjBombiwa* actor = static_cast<ObjBombiwa*>(refActor);
+    COND_ID_HOOK(ShouldActorUpdate, ACTOR_OBJ_BOMBIWA, isConnected, [](IEvent* event) {
+        ShouldActorUpdate* ev = reinterpret_cast<ShouldActorUpdate*>(event);
+        ObjBombiwa* actor = static_cast<ObjBombiwa*>(ev->actor);
 
         if (Flags_GetSwitch(gPlayState, actor->actor.params & 0x3F)) {
             ObjBombiwa_Break(actor, gPlayState);
             SoundSource_PlaySfxAtFixedWorldPos(gPlayState, &actor->actor.world.pos, 80, NA_SE_EV_WALL_BROKEN);
             Actor_Kill(&actor->actor);
-            *should = false;
+            *ev->result = false;
         }
     });
 
-    COND_ID_HOOK(ShouldActorUpdate, ACTOR_OBJ_HAMISHI, isConnected, [&](void* refActor, bool* should) {
-        ObjHamishi* actor = static_cast<ObjHamishi*>(refActor);
+    COND_ID_HOOK(ShouldActorUpdate, ACTOR_OBJ_HAMISHI, isConnected, [](IEvent* event) {
+        ShouldActorUpdate* ev = reinterpret_cast<ShouldActorUpdate*>(event);
+        ObjHamishi* actor = static_cast<ObjHamishi*>(ev->actor);
 
         if (Flags_GetSwitch(gPlayState, actor->actor.params & 0x3F)) {
             ObjHamishi_Break(actor, gPlayState);
             SoundSource_PlaySfxAtFixedWorldPos(gPlayState, &actor->actor.world.pos, 40, NA_SE_EV_WALL_BROKEN);
             Actor_Kill(&actor->actor);
-            *should = false;
+            *ev->result = false;
         }
     });
 

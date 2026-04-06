@@ -13,26 +13,29 @@ extern PlayState* gPlayState;
 
 static void RegisterSkipTimerDelay() {
     // Skip Water Temple gate delay
-    COND_ID_HOOK(OnActorUpdate, ACTOR_BG_SPOT06_OBJECTS, SKIP_MISC_INTERACTIONS_VALUE, [](void* actor) {
-        auto spot06 = static_cast<BgSpot06Objects*>(actor);
+    COND_ID_HOOK(OnActorUpdate, ACTOR_BG_SPOT06_OBJECTS, SKIP_MISC_INTERACTIONS_VALUE, [](IEvent* event) {
+        OnActorUpdate* ev = reinterpret_cast<OnActorUpdate*>(event);
+        auto spot06 = static_cast<BgSpot06Objects*>(ev->actor);
         if (spot06->dyna.actor.params == 0) {
             spot06->timer = 0;
         }
     });
 
     // Skip Spirit Sun on Floor activation delay
-    COND_ID_HOOK(OnActorUpdate, ACTOR_BG_JYA_BOMBCHUIWA, SKIP_MISC_INTERACTIONS_VALUE, [](void* actor) {
-        auto jya = static_cast<BgJyaBombchuiwa*>(actor);
+    COND_ID_HOOK(OnActorUpdate, ACTOR_BG_JYA_BOMBCHUIWA, SKIP_MISC_INTERACTIONS_VALUE, [](IEvent* event) {
+        OnActorUpdate* ev = reinterpret_cast<OnActorUpdate*>(event);
+        auto jya = static_cast<BgJyaBombchuiwa*>(ev->actor);
         if (!(jya->drawFlags & 4) && jya->timer > 0 && jya->timer < 9) {
             jya->timer = 9;
         }
     });
 
     // Skip Spirit Sun on Floor & Sun on Block activation delay
-    COND_ID_HOOK(OnActorUpdate, ACTOR_OBJ_LIGHTSWITCH, SKIP_MISC_INTERACTIONS_VALUE, [](void* actor) {
+    COND_ID_HOOK(OnActorUpdate, ACTOR_OBJ_LIGHTSWITCH, SKIP_MISC_INTERACTIONS_VALUE, [](IEvent* event) {
+        OnActorUpdate* ev = reinterpret_cast<OnActorUpdate*>(event);
         if (gPlayState->sceneNum == SCENE_SPIRIT_TEMPLE &&
             (gPlayState->roomCtx.curRoom.num == 4 || gPlayState->roomCtx.curRoom.num == 8)) {
-            auto sun = static_cast<ObjLightswitch*>(actor);
+            auto sun = static_cast<ObjLightswitch*>(ev->actor);
             sun->toggleDelay = 0;
         }
     });

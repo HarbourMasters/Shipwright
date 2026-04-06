@@ -43,14 +43,16 @@ void RegisterSunlightArrowsHooks() {
     bool shouldRegister =
         CVarGetInteger(CVAR_ENHANCEMENT("SunlightArrows"), 0) || (IS_RANDO && RAND_GET_OPTION(RSK_SUNLIGHT_ARROWS));
 
-    COND_ID_HOOK(OnActorInit, ACTOR_OBJ_LIGHTSWITCH, shouldRegister, [](void* actor) {
-        auto* thisx = (ObjLightswitch*)actor;
+    COND_ID_HOOK(OnActorInit, ACTOR_OBJ_LIGHTSWITCH, shouldRegister, [](IEvent* event) {
+        OnActorInit* ev = reinterpret_cast<OnActorInit*>(event);
+        auto* thisx = (ObjLightswitch*)ev->actor;
         Collider_SetJntSph(gPlayState, &thisx->collider, &thisx->actor, &sColliderLightArrowInit, thisx->colliderItems);
         Collider_UpdateSpheres(0, &thisx->collider);
     });
 
-    COND_ID_HOOK(OnActorDestroy, ACTOR_OBJ_LIGHTSWITCH, shouldRegister, [](void* actor) {
-        auto* thisx = (ObjLightswitch*)actor;
+    COND_ID_HOOK(OnActorDestroy, ACTOR_OBJ_LIGHTSWITCH, shouldRegister, [](IEvent* event) {
+        OnActorDestroy* ev = reinterpret_cast<OnActorDestroy*>(event);
+        auto* thisx = (ObjLightswitch*)ev->actor;
 
         auto sunData = ObjectExtension::GetInstance().Get<SunlightArrowData>(&thisx->actor);
         if (sunData != nullptr && sunData->activatedByLightArrow) {
@@ -80,8 +82,9 @@ void RegisterSunlightArrowsHooks() {
         }
     });
 
-    COND_ID_HOOK(ShouldActorUpdate, ACTOR_OBJ_LIGHTSWITCH, shouldRegister, [](void* actorPtr, bool* result) {
-        ObjLightswitch* thisx = (ObjLightswitch*)actorPtr;
+    COND_ID_HOOK(ShouldActorUpdate, ACTOR_OBJ_LIGHTSWITCH, shouldRegister, [](IEvent* event) {
+        ShouldActorUpdate* ev = reinterpret_cast<ShouldActorUpdate*>(event);
+        ObjLightswitch* thisx = (ObjLightswitch*)ev->actor;
         if ((thisx->collider.base.acFlags & AC_HIT) && thisx->collider.base.ac != nullptr) {
             auto sunData = ObjectExtension::GetInstance().Get<SunlightArrowData>(&thisx->actor);
             if (sunData == nullptr) {

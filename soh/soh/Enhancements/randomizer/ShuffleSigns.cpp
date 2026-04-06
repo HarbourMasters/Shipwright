@@ -48,9 +48,10 @@ static void Sign_RandomizerDraw(Actor* actor, Color_RGBA8* primColor, Color_RGBA
     EffectSsKiraKira_SpawnFocused(gPlayState, &pos, &velocity, &accel, primColor, envColor, 2000, 100);
 }
 
-void Sign_RandomizerDrawSetup(void* actor) {
+void Sign_RandomizerDrawSetup(IEvent* event) {
+    OnActorUpdate* ev = reinterpret_cast<OnActorUpdate*>(event);
     GetItemCategory getItemCategory;
-    Actor* signActor = (Actor*)actor;
+    Actor* signActor = (Actor*) ev->actor;
 
     // If not a randomized item or too far, don't draw
     if (!Sign_RandomizerHoldsItem(signActor, gPlayState) || signActor->xzDistToPlayer > 1000.0f) {
@@ -103,36 +104,40 @@ void Sign_RoyalTombSpawnCollectible(IEvent* event) {
 void RegisterShuffleSigns() {
     bool shouldRegister = IS_RANDO && Rando::Context::GetInstance()->GetOption(RSK_SHUFFLE_SIGNS).Get();
 
-    COND_ID_HOOK(OnActorInit, ACTOR_EN_KANBAN, shouldRegister, [](void* actorRef) {
-        Actor* actor = static_cast<Actor*>(actorRef);
-        EnKanban* signActor = static_cast<EnKanban*>(actorRef);
+    COND_ID_HOOK(OnActorInit, ACTOR_EN_KANBAN, shouldRegister, [](IEvent* event) {
+        OnActorInit* ev = reinterpret_cast<OnActorInit*>(event);
+        Actor* actor = static_cast<Actor*>(ev->actor);
+        EnKanban* signActor = static_cast<EnKanban*>(ev->actor);
 
         auto signIdentity = OTRGlobals::Instance->gRandomizer->IdentifySign(
             gPlayState->sceneNum, (s16)actor->world.pos.x, (s16)actor->world.pos.z, actor->id);
         ObjectExtension::GetInstance().Set<CheckIdentity>(actor, std::move(signIdentity));
     });
 
-    COND_ID_HOOK(OnActorInit, ACTOR_EN_A_OBJ, shouldRegister, [](void* actorRef) {
-        Actor* actor = static_cast<Actor*>(actorRef);
-        EnAObj* signActor = static_cast<EnAObj*>(actorRef);
+    COND_ID_HOOK(OnActorInit, ACTOR_EN_A_OBJ, shouldRegister, [](IEvent* event) {
+        OnActorInit* ev = reinterpret_cast<OnActorInit*>(event);
+        Actor* actor = static_cast<Actor*>(ev->actor);
+        EnAObj* signActor = static_cast<EnAObj*>(ev->actor);
 
         auto signIdentity = OTRGlobals::Instance->gRandomizer->IdentifySign(
             gPlayState->sceneNum, (s16)actor->world.pos.x, (s16)actor->world.pos.z, actor->id);
         ObjectExtension::GetInstance().Set<CheckIdentity>(actor, std::move(signIdentity));
     });
 
-    COND_ID_HOOK(OnActorInit, ACTOR_EN_WONDER_TALK, shouldRegister, [](void* actorRef) {
-        Actor* actor = static_cast<Actor*>(actorRef);
-        EnWonderTalk* signActor = static_cast<EnWonderTalk*>(actorRef);
+    COND_ID_HOOK(OnActorInit, ACTOR_EN_WONDER_TALK, shouldRegister, [](IEvent* event) {
+        OnActorInit* ev = reinterpret_cast<OnActorInit*>(event);
+        Actor* actor = static_cast<Actor*>(ev->actor);
+        EnWonderTalk* signActor = static_cast<EnWonderTalk*>(ev->actor);
 
         auto signIdentity = OTRGlobals::Instance->gRandomizer->IdentifySign(
             gPlayState->sceneNum, (s16)actor->world.pos.x, (s16)actor->world.pos.z, actor->id);
         ObjectExtension::GetInstance().Set<CheckIdentity>(actor, std::move(signIdentity));
     });
 
-    COND_ID_HOOK(OnActorInit, ACTOR_EN_WONDER_TALK2, shouldRegister, [](void* actorRef) {
-        Actor* actor = static_cast<Actor*>(actorRef);
-        EnWonderTalk2* signActor = static_cast<EnWonderTalk2*>(actorRef);
+    COND_ID_HOOK(OnActorInit, ACTOR_EN_WONDER_TALK2, shouldRegister, [](IEvent* event) {
+        OnActorInit* ev = reinterpret_cast<OnActorInit*>(event);
+        Actor* actor = static_cast<Actor*>(ev->actor);
+        EnWonderTalk2* signActor = static_cast<EnWonderTalk2*>(ev->actor);
 
         auto signIdentity = OTRGlobals::Instance->gRandomizer->IdentifySign(
             gPlayState->sceneNum, (s16)actor->world.pos.x, (s16)actor->world.pos.z, actor->id);

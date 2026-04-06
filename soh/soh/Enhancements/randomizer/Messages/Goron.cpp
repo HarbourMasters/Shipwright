@@ -82,13 +82,14 @@ static CustomMessage FireTempleGoronMessages[] = {
     },
 };
 
-void BuildGoronMessage(uint16_t* textId, bool* loadFromMessageTable) {
+void BuildGoronMessage(IEvent* event) {
+    OnOpenText* ev = reinterpret_cast<OnOpenText*>(event);
     CustomMessage msg = ShipUtils::RandomElement(FireTempleGoronMessages);
     msg.Replace("[[days]]", std::to_string(gSaveContext.totalDays));
     msg.Replace("[[a_btn]]", std::to_string(gSaveContext.ship.stats.count[COUNT_BUTTON_PRESSES_A]));
     msg.Format();
     msg.LoadIntoFont();
-    *loadFromMessageTable = false;
+    *ev->loadFromMessageTable = false;
 }
 
 void RegisterGoronMessages() {

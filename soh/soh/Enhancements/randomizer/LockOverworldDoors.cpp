@@ -63,8 +63,9 @@ std::map<SceneDoorParamsPair, RandomizerInf> lookupTable = {
     // clang-format on
 };
 
-static void OnDoorInit(void* actorRef) {
-    EnDoor* enDoor = static_cast<EnDoor*>(actorRef);
+static void OnDoorInit(IEvent* event) {
+    OnActorInit* ev = reinterpret_cast<OnActorInit*>(event);
+    EnDoor* enDoor = static_cast<EnDoor*>(ev->actor);
     enDoor->randomizerInf = RAND_INF_MAX;
 
     auto it = lookupTable.find({ gPlayState->sceneNum, enDoor->actor.params });

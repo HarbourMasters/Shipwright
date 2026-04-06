@@ -35,8 +35,9 @@ void EnKo_MoveWhenReady(EnKo* enKo, PlayState* play) {
     }
 }
 
-void SkipBlueWarp_OnActorUpdate(void* actorPtr) {
-    EnKo* enKo = static_cast<EnKo*>(actorPtr);
+void SkipBlueWarp_OnActorUpdate(IEvent* event) {
+    OnActorUpdate* ev = reinterpret_cast<OnActorUpdate*>(event);
+    EnKo* enKo = static_cast<EnKo*>(ev->actor);
 
     if ((enKo->actor.params & 0xFF) == ENKO_TYPE_CHILD_3 && enKo->actionFunc == func_80A995CC) {
         enKo->actionFunc = EnKo_MoveWhenReady;

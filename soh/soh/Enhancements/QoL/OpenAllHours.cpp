@@ -23,8 +23,9 @@ static constexpr int32_t DOOR_NIGHT_KAK_BAZAAR = 6801;
 static constexpr int32_t DOOR_NIGHT_KAK_POTION_SHOP = 7822;
 static constexpr int32_t DOOR_NIGHT_KAK_POTION_SHOP_BACK = 8846;
 
-static void OpenAllHours(void* refActor) {
-    EnDoor* enDoor = static_cast<EnDoor*>(refActor);
+static void OpenAllHours(IEvent* event) {
+    OnActorInit* ev = reinterpret_cast<OnActorInit*>(event);
+    EnDoor* enDoor = static_cast<EnDoor*>(ev->actor);
     s16* params = &enDoor->actor.params;
 
     switch (*params) {

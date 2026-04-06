@@ -12,35 +12,38 @@ extern "C" {
 extern PlayState* gPlayState;
 }
 
-void BuildWaterSwitchMessage(uint16_t* textId, bool* loadFromMessageTable) {
+void BuildWaterSwitchMessage(IEvent* event) {
+    OnOpenText* ev = reinterpret_cast<OnOpenText*>(event);
     CustomMessage msg;
-    if (*textId == TEXT_LAKE_HYLIA_WATER_SWITCH_NAVI) {
+    if (*ev->textId == TEXT_LAKE_HYLIA_WATER_SWITCH_NAVI) {
         msg = CustomMessage("%cThis switch is rustier than you think.^%cSomething must be wrong with the pipe system "
                             "in the %bWater Temple%c.",
                             "%cDieser Schalter scheint rostiger zu sein als er aussieht.^%cEtwas muss mit dem "
                             "Leitungssystem im %bWassertempel%c nicht stimmen.",
                             "%cCet interrupteur est très rouillé.^%cIl doit y avoir un problème avec la tuyauterie du "
                             "%bTemple de l'Eau%c.");
-    } else if (*textId == TEXT_LAKE_HYLIA_WATER_SWITCH_SIGN) {
+    } else if (*ev->textId == TEXT_LAKE_HYLIA_WATER_SWITCH_SIGN) {
         msg = CustomMessage("Water level control system.&Keep away!", "Wasserstand Kontrollsystem&Finger weg!",
                             "Système de contrôle du niveau&d'eau.&Ne pas toucher!");
     }
     msg.AutoFormat();
     msg.LoadIntoFont();
-    *loadFromMessageTable = false;
+    *ev->loadFromMessageTable = false;
 }
 
-void BuildShootingGalleryNoBowMessage(uint16_t* textId, bool* loadFromMessageTable) {
+void BuildShootingGalleryNoBowMessage(IEvent* event) {
+    OnOpenText* ev = reinterpret_cast<OnOpenText*>(event);
     CustomMessage msg =
         CustomMessage("Come back when you have your own bow and you'll get a %rdifferent prize%w!",
                       "Komm wieder sobald Du Deinen eigenen Bogen hast, um einen %rspeziellen Preis%w zu erhalten!",
                       "J'aurai %rune autre récompense%w pour toi lorsque tu auras ton propre arc.");
     msg.AutoFormat();
     msg.LoadIntoFont();
-    *loadFromMessageTable = false;
+    *ev->loadFromMessageTable = false;
 }
 
-void BuildFixedMallonAtCastleMessage(uint16_t* textId, bool* loadFromMessageTable) {
+void BuildFixedMallonAtCastleMessage(IEvent* event) {
+    OnOpenText* ev = reinterpret_cast<OnOpenText*>(event);
     if (gPlayState->sceneNum == SCENE_HYRULE_CASTLE) {
         CustomMessage msg = CustomMessage(
             "Looks like my dad already went back to the %rranch%w. You should come visit sometime!",
@@ -48,7 +51,7 @@ void BuildFixedMallonAtCastleMessage(uint16_t* textId, bool* loadFromMessageTabl
             "On dirait que père est déjà rentré au %rranch%w. Tu devrais nous rendre visite à l'occasion!");
         msg.AutoFormat();
         msg.LoadIntoFont();
-        *loadFromMessageTable = false;
+        *ev->loadFromMessageTable = false;
     }
 }
 

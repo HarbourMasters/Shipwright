@@ -141,7 +141,8 @@ void DrawCustomItemIcon(Gfx** p) {
     *p = gfx;
 }
 
-void BuildItemMessage(u16* textId, bool* loadFromMessageTable) {
+void BuildItemMessage(IEvent* event) {
+    OnOpenText* ev = reinterpret_cast<OnOpenText*>(event);
     Player* player = GET_PLAYER(gPlayState);
     CustomMessage msg;
 
@@ -152,11 +153,12 @@ void BuildItemMessage(u16* textId, bool* loadFromMessageTable) {
     } else {
         BuildCustomItemMessage(player, msg);
     }
-    *loadFromMessageTable = false;
+    *ev->loadFromMessageTable = false;
     msg.LoadIntoFont();
 }
 
-void BuildMapMessage(uint16_t* textId, bool* loadFromMessageTable) {
+void BuildMapMessage(IEvent* event) {
+    OnOpenText* ev = reinterpret_cast<OnOpenText*>(event);
     GetItemEntry itemEntry = GET_PLAYER(gPlayState)->getItemEntry;
     auto ctx = OTRGlobals::Instance->gRandoContext;
     CustomMessage msg =
@@ -207,12 +209,13 @@ void BuildMapMessage(uint16_t* textId, bool* loadFromMessageTable) {
     } else {
         msg.Replace("[[typeHint]]", Rando::StaticData::hintTextTable[RHT_DUNGEON_ORDINARY].GetHintMessage());
     }
-    *loadFromMessageTable = false;
+    *ev->loadFromMessageTable = false;
     msg.AutoFormat(ITEM_DUNGEON_MAP);
     msg.LoadIntoFont();
 }
 
-void BuildBossKeyMessage(uint16_t* textId, bool* loadFromMessageTable) {
+void BuildBossKeyMessage(IEvent* event) {
+    OnOpenText* ev = reinterpret_cast<OnOpenText*>(event);
     Player* player = GET_PLAYER(gPlayState);
     if (player->getItemEntry.getItemId == RG_GANONS_CASTLE_BOSS_KEY &&
         !DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_GANONS_BOSS_KEY)) {
@@ -224,11 +227,12 @@ void BuildBossKeyMessage(uint16_t* textId, bool* loadFromMessageTable) {
     }
     CustomMessage msg;
     BuildCustomItemMessage(player, msg);
-    *loadFromMessageTable = false;
+    *ev->loadFromMessageTable = false;
     msg.LoadIntoFont();
 }
 
-void BuildSmallKeyMessage(uint16_t* textId, bool* loadFromMessageTable) {
+void BuildSmallKeyMessage(IEvent* event) {
+    OnOpenText* ev = reinterpret_cast<OnOpenText*>(event);
     Player* player = GET_PLAYER(gPlayState);
     if (player->getItemEntry.getItemId == RG_GERUDO_FORTRESS_SMALL_KEY &&
         OTRGlobals::Instance->gRandoContext->GetOption(RSK_GERUDO_KEYS).Is(RO_GERUDO_KEYS_VANILLA)) {
@@ -240,7 +244,7 @@ void BuildSmallKeyMessage(uint16_t* textId, bool* loadFromMessageTable) {
     }
     CustomMessage msg;
     BuildCustomItemMessage(player, msg);
-    *loadFromMessageTable = false;
+    *ev->loadFromMessageTable = false;
     msg.LoadIntoFont();
 }
 

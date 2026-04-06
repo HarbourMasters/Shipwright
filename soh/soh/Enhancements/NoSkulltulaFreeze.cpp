@@ -4,12 +4,13 @@ extern "C" {
 #include "variables.h"
 }
 
-void AutoDismissSkulltulaMessage(uint16_t* textId, bool* loadFromMessageTable) {
+void AutoDismissSkulltulaMessage(IEvent* event) {
+    OnOpenText* ev = reinterpret_cast<OnOpenText*>(event);
     if (IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_TOKENS)) {
-        *loadFromMessageTable = true;
+        *ev->loadFromMessageTable = true;
         return;
     }
-    *loadFromMessageTable = false;
+    *ev->loadFromMessageTable = false;
     CustomMessage msg = CustomMessage::LoadVanillaMessageTableEntry(TEXT_GS_FREEZE);
     msg.Replace(CustomMessage::MESSAGE_END(), "\x0E\x3C");
     msg += CustomMessage::MESSAGE_END();

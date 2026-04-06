@@ -6,7 +6,8 @@ extern "C" {
 
 // RANDOTODO: Port the rest of the behavior associated with this option here.
 
-void BuildShopDescMessage(uint16_t* textId, bool* loadFromMessageTable) {
+void BuildShopDescMessage(IEvent* event) {
+    OnOpenText* ev = reinterpret_cast<OnOpenText*>(event);
     CustomMessage msg =
         CustomMessage("\x08%rBombchu  10 pieces  99 Rupees&%wThis looks like a toy mouse, but&it's actually a "
                       "self-propelled time&bomb!\x09\x0A",
@@ -16,16 +17,17 @@ void BuildShopDescMessage(uint16_t* textId, bool* loadFromMessageTable) {
                       "&destructrice!!!\x09\x0A");
     msg.AutoFormat();
     msg.LoadIntoFont();
-    *loadFromMessageTable = false;
+    *ev->loadFromMessageTable = false;
 }
 
-void BuildShopPromptMessage(uint16_t* textId, bool* loadFromMessageTable) {
+void BuildShopPromptMessage(IEvent* event) {
+    OnOpenText* ev = reinterpret_cast<OnOpenText*>(event);
     CustomMessage msg = CustomMessage("\010Bombchu  10 pieces   99 Rupees\x09&&\x1B%gBuy&Don't buy%w",
                                       "\010Krabbelmine  10 Stück  99 Rubine\x09&&\x1B%gKaufen!&Nicht kaufen!%w",
                                       "\010Missiles  10 unités   99 Rubis\x09&&\x1B%gAcheter&Ne pas acheter%w");
     msg.AutoFormat();
     msg.LoadIntoFont();
-    *loadFromMessageTable = false;
+    *ev->loadFromMessageTable = false;
 }
 
 void BetterBombchuShopping_Register() {

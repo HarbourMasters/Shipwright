@@ -185,8 +185,9 @@ void ObjKibako_RandomizerSpawnCollectible(ObjKibako* smallCrateActor, PlayState*
     item00->actor.world.rot.y = static_cast<int16_t>(Rand_CenteredFloat(65536.0f));
 }
 
-void ObjKibako2_RandomizerInit(void* actorRef) {
-    Actor* actor = static_cast<Actor*>(actorRef);
+void ObjKibako2_RandomizerInit(IEvent* event) {
+    OnActorInit* ev = reinterpret_cast<OnActorInit*>(event);
+    Actor* actor = static_cast<Actor*>(ev->actor);
     auto logicSetting = RAND_GET_OPTION(RSK_LOGIC_RULES);
 
     // don't shuffle two OOB crates in GF and don't shuffle child GV/GF crates when not in no logic
@@ -208,20 +209,21 @@ void ObjKibako2_RandomizerInit(void* actorRef) {
            (s16)actor->world.pos.z == -90))))
         return;
 
-    ObjKibako2* crateActor = static_cast<ObjKibako2*>(actorRef);
+    ObjKibako2* crateActor = static_cast<ObjKibako2*>(ev->actor);
 
     auto crateIdentity = OTRGlobals::Instance->gRandomizer->IdentifyCrate(gPlayState->sceneNum, (s16)actor->world.pos.x,
                                                                           (s16)actor->world.pos.z);
     ObjectExtension::GetInstance().Set<CheckIdentity>(actor, std::move(crateIdentity));
 }
 
-void ObjKibako_RandomizerInit(void* actorRef) {
-    Actor* actor = static_cast<Actor*>(actorRef);
+void ObjKibako_RandomizerInit(IEvent* event) {
+    OnActorInit* ev = reinterpret_cast<OnActorInit*>(event);
+    Actor* actor = static_cast<Actor*>(ev->actor);
 
     if (actor->id != ACTOR_OBJ_KIBAKO)
         return;
 
-    ObjKibako* smallCrateActor = static_cast<ObjKibako*>(actorRef);
+    ObjKibako* smallCrateActor = static_cast<ObjKibako*>(ev->actor);
 
     auto crateIdentity = OTRGlobals::Instance->gRandomizer->IdentifySmallCrate(
         gPlayState->sceneNum, (s16)actor->home.pos.x, (s16)actor->home.pos.z);

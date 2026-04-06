@@ -328,7 +328,8 @@ static const char* frenchRupeeNames[] = {
     "Pièces",   "Plastyks",    "Pokédollars", "Pokémon", "Radis",      "Rubis",    "Zennies",
 };
 
-void BuildRupeeMessage(uint16_t* textId, bool* loadFromMessageTable) {
+void BuildRupeeMessage(IEvent* event) {
+    OnOpenText* ev = reinterpret_cast<OnOpenText*>(event);
     CustomMessage msg =
         CustomMessage("You found [[color]][[amount]] [[rupee]]%w!", "Du hast [[color]][[amount]] [[rupee]]%w gefunden!",
                       "Vous obtenez [[color]][[amount]] [[rupee]]%w!");
@@ -337,7 +338,7 @@ void BuildRupeeMessage(uint16_t* textId, bool* loadFromMessageTable) {
     CustomMessage rupee =
         CustomMessage(ShipUtils::RandomElement(englishRupeeNames), ShipUtils::RandomElement(germanRupeeNames),
                       ShipUtils::RandomElement(frenchRupeeNames));
-    switch (*textId) {
+    switch (*ev->textId) {
         case TEXT_BLUE_RUPEE:
             color = "%b";
             amount = "5";
@@ -363,7 +364,7 @@ void BuildRupeeMessage(uint16_t* textId, bool* loadFromMessageTable) {
     msg.Replace("[[rupee]]", rupee);
     msg.AutoFormat();
     msg.LoadIntoFont();
-    *loadFromMessageTable = false;
+    *ev->loadFromMessageTable = false;
 }
 
 void RegisterRandomRupeeNames() {

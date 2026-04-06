@@ -7,7 +7,8 @@ extern PlayState* gPlayState;
 
 // RANDOTODO: Port the rest of the behavior for this enhancement here.
 
-void BuildNightGuardMessage(uint16_t* textId, bool* loadFromMessageTable) {
+void BuildNightGuardMessage(IEvent* event) {
+    OnOpenText* ev = reinterpret_cast<OnOpenText*>(event);
     // Other guards should not have their text overridden
     if (gPlayState->sceneNum != SCENE_MARKET_ENTRANCE_NIGHT) {
         return;
@@ -18,7 +19,7 @@ void BuildNightGuardMessage(uint16_t* textId, bool* loadFromMessageTable) {
                                       "Tu as l'air de t'ennuyer. Tu veux aller faire un tour?\x1B%gOui&Non%w");
     msg.AutoFormat();
     msg.LoadIntoFont();
-    *loadFromMessageTable = false;
+    *ev->loadFromMessageTable = false;
 }
 
 void MarketSneak_Register() {

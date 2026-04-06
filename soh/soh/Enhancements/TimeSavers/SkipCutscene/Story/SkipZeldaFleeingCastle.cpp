@@ -30,13 +30,14 @@ void SkipZeldaFleeingCastle_OnActorUpdate(void* actorPtr) {
     }
 }
 
-void SkipZeldaFleeingCastle_OnActorInit(void* actorPtr) {
-    Actor* actor = static_cast<Actor*>(actorPtr);
+void SkipZeldaFleeingCastle_OnActorInit(IEvent* event) {
+    OnActorInit* ev = reinterpret_cast<OnActorInit*>(event);
+    Actor* actor = static_cast<Actor*>(ev->actor);
 
     if (actor->params == 3) {
         framesSinceSpawn = 0;
         itemOcarinaUpdateHook = GameInteractor::Instance->RegisterGameHookForPtr<GameInteractor::OnActorUpdate>(
-            (uintptr_t)actorPtr, SkipZeldaFleeingCastle_OnActorUpdate);
+            (uintptr_t)ev->actor, SkipZeldaFleeingCastle_OnActorUpdate);
         sceneInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) {
             GameInteractor::Instance->UnregisterGameHookForPtr<GameInteractor::OnActorUpdate>(itemOcarinaUpdateHook);
             GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(sceneInitHook);

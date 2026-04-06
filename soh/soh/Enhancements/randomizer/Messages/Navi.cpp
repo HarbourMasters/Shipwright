@@ -111,11 +111,12 @@ static CustomMessage NaviMessages[] = {
       "Ils&sont efficaces contre tes ennemis!" }
 };
 
-void BuildNaviMessage(uint16_t* textId, bool* loadFromMessageTable) {
+void BuildNaviMessage(IEvent* event) {
+    OnOpenText* ev = reinterpret_cast<OnOpenText*>(event);
     CustomMessage msg = ShipUtils::RandomElement(NaviMessages);
     msg.AutoFormat();
     msg.LoadIntoFont();
-    *loadFromMessageTable = false;
+    *ev->loadFromMessageTable = false;
 }
 
 void RegisterNaviMessages() {
