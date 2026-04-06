@@ -18,7 +18,7 @@ extern PlayState* gPlayState;
 void DummyPlayer_Update(Actor* actor, PlayState* play);
 
 static void UpdatePatchCustomEquipmentDlists();
-static void RefreshCustomEquipment();
+static void RefreshCustomEquipment(IEvent* event = nullptr);
 static u8 GetEquippedSwordItem();
 static bool IsDummyPlayer(const Player* player);
 

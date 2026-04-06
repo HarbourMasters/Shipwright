@@ -9,11 +9,9 @@ If these checks need to happen wherever GameInteractor functions are needed, the
 GameInteractor functions can be called directly.
 */
 
+#define INIT_EVENT_IDS
 #include "GameInteractor.h"
 #include <libultraship/bridge.h>
-
-#define INIT_EVENT_IDS
-#include "EventSystem_List.h"
 
 extern "C" {
 #include "variables.h"
