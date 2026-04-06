@@ -446,7 +446,7 @@ void RandomizerOnItemReceiveHandler(GetItemEntry receivedItemEntry) {
         randomizerQueuedItemEntry = GET_ITEM_NONE;
     }
 
-    if (receivedItemEntry.modIndex == 1 && receivedItemEntry.getItemId == RG_MAGIC_BEAN_PACK) {
+    if (receivedItemEntry.modIndex == MOD_RANDOMIZER && receivedItemEntry.getItemId == RG_MAGIC_BEAN_PACK) {
         if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SKIP_PLANTING_BEANS)) {
             gSaveContext.sceneFlags[SCENE_DEATH_MOUNTAIN_CRATER].swch |= (1 << 3);
             if (gPlayState->sceneNum == SCENE_DEATH_MOUNTAIN_CRATER) {
