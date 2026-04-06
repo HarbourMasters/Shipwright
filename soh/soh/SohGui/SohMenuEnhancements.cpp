@@ -1801,7 +1801,7 @@ void SohMenu::AddMenuEnhancements() {
         .CVar(CVAR_CHEAT("SpeedModifier.DoesntChangeJump"));
     AddWidget(path, "Multiplier:", WIDGET_CVAR_SLIDER_FLOAT)
         .CVar(CVAR_CHEAT("SpeedModifier.Value"))
-        .Options(FloatSliderOptions().IsPercentage().Min(1.0f).Max(5.0f).DefaultValue(1.0f).ShowButtons(true).Format(
+        .Options(FloatSliderOptions().IsPercentage().Min(0.01f).Max(5.0f).DefaultValue(1.0f).ShowButtons(true).Format(
             "%.0f%%"));
     AddWidget(path, "Button Combination:", WIDGET_CVAR_BTN_SELECTOR)
         .CVar(CVAR_CHEAT("SpeedModifier.Btn"))
