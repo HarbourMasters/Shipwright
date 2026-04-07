@@ -1,10 +1,8 @@
 #pragma once
 
-#include <libultraship/libultraship.h>
 #include "vanilla-behavior/GIVanillaBehavior.h"
 #include "GameInteractor.h"
 #include <stdarg.h>
-#include <stdint.h>
 
 #ifdef __cplusplus
 extern "C" {

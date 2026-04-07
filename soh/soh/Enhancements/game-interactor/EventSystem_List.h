@@ -1,16 +1,9 @@
 #pragma once
 
-#include <libultraship/bridge.h>
 #include "z64.h"
+#include <stdarg.h>
+#include <libultraship/bridge.h>
 #include "vanilla-behavior/GIVanillaBehavior.h"
-
-/**
- * Hook Table
- *
- * DEFINE_HOOK arguments:
- *    - Argument 1: Name of the hook
- *    - Argument 2: Function type that the hook uses
- */
 
 DEFINE_EVENT(OnZTitleInit, void* gameState;);
 
