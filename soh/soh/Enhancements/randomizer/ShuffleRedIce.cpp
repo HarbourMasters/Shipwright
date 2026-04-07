@@ -89,19 +89,31 @@ void BgIceShelter_RandomizerDrawSetup(void* actor) {
 
 void BgIceShelter_RandomizerSpawnCollectible(Actor* actor) {
     const auto redIceIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(actor);
+    Player* player = GET_PLAYER(gPlayState);
 
-    // Autocollect King Zora thaw
+    // If King Zora, autocollect to avoid spawning issues
     if (redIceIdentity->randomizerCheck == RC_ZD_KING_ZORA_RED_ICE) {
         Flags_SetRandomizerInf(redIceIdentity->randomizerInf);
     } else {
-        EnItem00* item00 = (EnItem00*)Item_DropCollectible(gPlayState, &actor->world.pos, ITEM00_SOH_DUMMY);
+        EnItem00* item00 = (EnItem00*)Item_DropCollectible2(gPlayState, &actor->world.pos, ITEM00_SOH_DUMMY);
         item00->randoInf = redIceIdentity->randomizerInf;
         item00->itemEntry =
             Rando::Context::GetInstance()->GetFinalGIEntry(redIceIdentity->randomizerCheck, true, GI_NONE);
         item00->actor.draw = (ActorFunc)EnItem00_DrawRandomizedItem;
         item00->actor.velocity.y = 8.0f;
-        item00->actor.speedXZ = 0.0f;
-        item00->actor.world.rot.y = static_cast<int16_t>(Rand_CenteredFloat(65536.0f));
+        // In general, spawn in place, but for checks with objects blocking, spawn out toward player
+        if ((redIceIdentity->randomizerCheck >= RC_ICE_CAVERN_HEART_PIECE_ROOM_FREESTANDING_RED_ICE &&
+             redIceIdentity->randomizerCheck <= RC_ICE_CAVERN_NEAR_END_RIGHT_RED_ICE) ||
+            redIceIdentity->randomizerCheck == RC_GANONS_CASTLE_MQ_WATER_TRIAL_FIRST_ROOM_LEFT_RED_ICE ||
+            redIceIdentity->randomizerCheck == RC_GANONS_CASTLE_MQ_WATER_TRIAL_FIRST_ROOM_RIGHT_RED_ICE ||
+            redIceIdentity->randomizerCheck == RC_GANONS_CASTLE_MQ_WATER_TRIAL_SILVER_RUPEE_RED_ICE) {
+            item00->actor.speedXZ = 2.0f;
+            item00->actor.world.rot.y =
+                Math_Vec3f_Yaw(&item00->actor.world.pos, &player->actor.world.pos) + (s16)Rand_CenteredFloat(16384.0f);
+        } else {
+            item00->actor.speedXZ = 0.0f;
+            item00->actor.world.rot.y = static_cast<int16_t>(Rand_CenteredFloat(65536.0f));
+        }
     }
 }
 

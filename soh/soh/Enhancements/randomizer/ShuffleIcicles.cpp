@@ -81,7 +81,7 @@ void BgIceTurara_RandomizerSpawnCollectible(void* actor) {
     const auto icicleIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(&icicleActor->dyna.actor);
 
     EnItem00* item00 =
-        (EnItem00*)Item_DropCollectible(gPlayState, &icicleActor->dyna.actor.world.pos, ITEM00_SOH_DUMMY);
+        (EnItem00*)Item_DropCollectible2(gPlayState, &icicleActor->dyna.actor.world.pos, ITEM00_SOH_DUMMY);
     item00->randoInf = icicleIdentity->randomizerInf;
     item00->itemEntry = Rando::Context::GetInstance()->GetFinalGIEntry(icicleIdentity->randomizerCheck, true, GI_NONE);
     item00->actor.draw = (ActorFunc)EnItem00_DrawRandomizedItem;

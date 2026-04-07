@@ -304,9 +304,9 @@ void RegionTable_Init_IceCavern() {
         LOCATION(RC_ICE_CAVERN_MQ_GS_SCARECROW,                logic->ReachScarecrow() || (logic->IsAdult && (logic->CanUse(RG_LONGSHOT) || logic->CanGroundJump() || ctx->GetTrickOption(RT_SLIDE_JUMP)))),
         LOCATION(RC_ICE_CAVERN_MQ_BEFORE_SCARECROW_STALAGMITE, logic->CanClearStalagmite()),
         LOCATION(RC_ICE_CAVERN_MQ_SCARECROW_ROOM_STALACTITE,   true),
-        LOCATION(RC_ICE_CAVERN_MQ_SCARECROW_LEFT_RED_ICE,      logic->IsAdult && logic->BlueFire()),
-        LOCATION(RC_ICE_CAVERN_MQ_SCARECROW_MIDDLE_RED_ICE,    logic->IsAdult && logic->BlueFire()),
-        LOCATION(RC_ICE_CAVERN_MQ_SCARECROW_RIGHT_RED_ICE,     logic->IsAdult && logic->BlueFire()),
+        LOCATION(RC_ICE_CAVERN_MQ_SCARECROW_LEFT_RED_ICE,      logic->IsChild && ctx->GetOption(RSK_BLUE_FIRE_ARROWS) && logic->CanUse(RG_ICE_ARROWS) && logic->CanUse(RG_BOOMERANG)),
+        LOCATION(RC_ICE_CAVERN_MQ_SCARECROW_MIDDLE_RED_ICE,    logic->IsChild && ctx->GetOption(RSK_BLUE_FIRE_ARROWS) && logic->CanUse(RG_ICE_ARROWS) && logic->CanUse(RG_BOOMERANG)),
+        LOCATION(RC_ICE_CAVERN_MQ_SCARECROW_RIGHT_RED_ICE,     logic->IsChild && ctx->GetOption(RSK_BLUE_FIRE_ARROWS) && logic->CanUse(RG_ICE_ARROWS) && logic->CanUse(RG_BOOMERANG)),
     }, {
         //Exits
         ENTRANCE(RR_ICE_CAVERN_MQ_HUB,           logic->BlueFire()),
