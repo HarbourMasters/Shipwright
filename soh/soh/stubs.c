@@ -4,7 +4,6 @@
 #include <string.h>
 #include "z64.h"
 #include "OTRGlobals.h"
-// #include <math.h>
 
 u32 osResetType;
 u32 osTvType = OS_TV_NTSC;
