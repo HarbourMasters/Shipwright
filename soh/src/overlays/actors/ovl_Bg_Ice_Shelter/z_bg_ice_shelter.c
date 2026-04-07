@@ -171,7 +171,7 @@ void BgIceShelter_Init(Actor* thisx, PlayState* play) {
     this->dyna.actor.colChkInfo.mass = MASS_IMMOVABLE;
 
     if (GameInteractor_Should(
-            VB_RED_ICE_INIT,
+            VB_RED_ICE_MELTED_FLAG,
             !((this->dyna.actor.params >> 6) & 1) && (Flags_GetSwitch(play, this->dyna.actor.params & 0x3F)), this)) {
         Actor_Kill(&this->dyna.actor);
         return;

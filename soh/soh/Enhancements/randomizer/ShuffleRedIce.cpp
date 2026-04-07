@@ -120,7 +120,7 @@ void BgIceShelter_RandomizerSpawnCollectible(Actor* actor) {
 void RegisterShuffleRedIce() {
     bool shouldRegister = IS_RANDO && Rando::Context::GetInstance()->GetOption(RSK_SHUFFLE_RED_ICE).Get();
 
-    COND_VB_SHOULD(VB_RED_ICE_INIT, shouldRegister, {
+    COND_VB_SHOULD(VB_RED_ICE_MELTED_FLAG, shouldRegister, {
         BgIceShelter* redIceActor = va_arg(args, BgIceShelter*);
         Actor* actor = (Actor*)redIceActor;
 
