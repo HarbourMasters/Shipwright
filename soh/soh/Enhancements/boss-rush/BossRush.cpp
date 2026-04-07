@@ -743,7 +743,7 @@ void BossRush_OnVanillaBehaviorHandler(IEvent* event) {
     GIVanillaBehavior id = ev->flag;
     bool* should = ev->result;
     va_list args;
-    va_copy(args, ev->originalArgs);
+    va_copy(args, *ev->originalArgs);
 
     switch (id) {
         // Allow not healing before ganon

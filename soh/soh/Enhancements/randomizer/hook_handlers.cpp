@@ -859,7 +859,7 @@ extern "C" void func_80A5475C(EnHeishi2* CastleGuard, PlayState* play);
 void RandomizerOnVanillaBehaviorHandler(IEvent* event) {
     OnVanillaBehavior* ev = reinterpret_cast<OnVanillaBehavior*>(event);
     va_list args;
-    va_copy(args, ev->originalArgs);
+    va_copy(args, *ev->originalArgs);
 
     switch (ev->flag) {
         case VB_CLIMB:

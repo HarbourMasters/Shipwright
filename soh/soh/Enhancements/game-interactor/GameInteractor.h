@@ -88,6 +88,7 @@ uint8_t GameInteractor_GetSlipperyFloorActive();
 uint8_t GameInteractor_SecondCollisionUpdate();
 void GameInteractor_SetTriforceHuntPieceGiven(uint8_t state);
 void GameInteractor_SetTriforceHuntCreditsWarpActive(uint8_t state);
+bool GameInteractor_Should(GIVanillaBehavior flag, uint32_t result, ...);
 #ifdef __cplusplus
 }
 #endif
@@ -158,7 +159,7 @@ struct HookInfo {
             GIVanillaBehavior _ = vbEvent->flag;                                 \
             bool* should = vbEvent->result;                                      \
             va_list args;                                                        \
-            va_copy(args, vbEvent->originalArgs);                                \
+            va_copy(args, *vbEvent->originalArgs);                               \
             body;                                                                \
             va_end(args);                                                        \
         }                                                                        \
@@ -233,16 +234,6 @@ class GameInteractor {
     static GameInteractionEffectQueryResult CanApplyEffect(GameInteractionEffectBase& effect);
     static GameInteractionEffectQueryResult ApplyEffect(GameInteractionEffectBase& effect);
     static GameInteractionEffectQueryResult RemoveEffect(RemovableGameInteractionEffect& effect);
-
-#define DEFINE_HOOK(name, args)                  \
-    struct name {                                \
-        typedef std::function<void args> fn;     \
-        typedef std::function<bool args> filter; \
-    }
-
-#include "GameInteractor_HookTable.h"
-
-#undef DEFINE_HOOK
 
     // Helpers
     static bool IsSaveLoaded(bool allowDbgSave = false);

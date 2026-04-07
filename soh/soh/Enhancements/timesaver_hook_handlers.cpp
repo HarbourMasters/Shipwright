@@ -129,7 +129,7 @@ bool ForcedDialogIsDisabled(ForcedDialogMode type) {
 void TimeSaverOnVanillaBehaviorHandler(IEvent* event) {
     OnVanillaBehavior* ev = reinterpret_cast<OnVanillaBehavior*>(event);
     va_list args;
-    va_copy(args, ev->originalArgs);
+    va_copy(args, *ev->originalArgs);
 
     switch (ev->flag) {
         case VB_PLAY_TRANSITION_CS: {

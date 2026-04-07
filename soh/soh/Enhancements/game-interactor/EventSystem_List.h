@@ -103,7 +103,7 @@ DEFINE_EVENT(OnPlayDrawBegin);
 
 DEFINE_EVENT(OnPlayDrawEnd);
 
-DEFINE_EVENT(OnVanillaBehavior, GIVanillaBehavior flag; bool* result; va_list originalArgs;);
+DEFINE_EVENT(OnVanillaBehavior, GIVanillaBehavior flag; bool* result; va_list* originalArgs;);
 
 DEFINE_EVENT(OnSaveFile, int32_t fileNum; int32_t sectionID;);
 
