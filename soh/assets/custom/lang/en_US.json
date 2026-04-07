@@ -981,6 +981,10 @@
 				"name": "Gerudo Training Grounds Itemless Lava Room Jump",
 				"description": "A precise rolling jump can be used to jump between all but the furthest platforms in the lava room."
 			},
+			"gtg_statue_jump": {
+				"name": "Gerudo Training Grounds Statue Room Jump",
+				"description": "A precise rolling jump or a jump and jumpslash can be used to jump from the upper ledge to one of the pillars in the eye statue room."
+			},			
 			"lens_gtg_mq": {
 				"name": "Gerudo Training Ground MQ without Lens of Truth",
 				"description": "Removes the requirements for the Lens of Truth in Gerudo Training Ground MQ."
