@@ -12,7 +12,7 @@
 #include <soh/GameVersions.h>
 #include <soh/SaveManager.h>
 #include "soh/ResourceManagerHelpers.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include <string.h>
 
 #include "time.h"

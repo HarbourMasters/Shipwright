@@ -7,7 +7,7 @@
 #include "z_bg_heavy_block.h"
 #include "objects/object_heavy_object/object_heavy_object.h"
 #include "vt.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 #define FLAGS 0
 

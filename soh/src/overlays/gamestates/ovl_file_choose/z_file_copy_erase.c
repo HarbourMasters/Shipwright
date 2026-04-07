@@ -1,5 +1,5 @@
 #include "file_choose.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/SaveManager.h"
 
 // when choosing a file to copy or erase, the 6 main menu buttons are placed at these offsets

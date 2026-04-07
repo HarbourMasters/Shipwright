@@ -7,7 +7,7 @@
 #include "z_en_sb.h"
 #include "vt.h"
 #include "objects/object_sb/object_sb.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE)
 

@@ -17,7 +17,7 @@
 #include "soh_assets.h"
 #include "soh/Enhancements/boss-rush/BossRush.h"
 #include "soh/Enhancements/FileSelectEnhancements.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include <assert.h>
 #include "z64save.h"
 #include "soh/SaveManager.h"

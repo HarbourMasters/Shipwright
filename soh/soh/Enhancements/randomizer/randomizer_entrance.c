@@ -16,7 +16,7 @@
 
 #include "global.h"
 #include "entrance.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 extern PlayState* gPlayState;
 

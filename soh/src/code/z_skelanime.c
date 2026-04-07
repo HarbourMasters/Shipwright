@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <assert.h>
 #include "soh/ResourceManagerHelpers.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 #define ANIM_INTERP 1
 

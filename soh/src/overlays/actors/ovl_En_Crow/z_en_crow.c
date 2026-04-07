@@ -1,6 +1,6 @@
 #include "z_en_crow.h"
 #include "objects/object_crow/object_crow.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS \

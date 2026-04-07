@@ -1,6 +1,6 @@
 #include "z_en_dh.h"
 #include "objects/object_dh/object_dh.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS                                                                                 \

@@ -6,7 +6,7 @@
 
 #include "z_en_vali.h"
 #include "objects/object_vali/object_vali.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include <stdlib.h>
 #include "soh/ResourceManagerHelpers.h"
 

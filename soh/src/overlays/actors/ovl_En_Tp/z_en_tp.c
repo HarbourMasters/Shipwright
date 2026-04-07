@@ -6,7 +6,7 @@
 
 #include "z_en_tp.h"
 #include "objects/object_tp/object_tp.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 #define FLAGS 0
 

@@ -7,7 +7,7 @@
 #include "z_elf_msg.h"
 #include "vt.h"
 #include "overlays/actors/ovl_En_Elf/z_en_elf.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
