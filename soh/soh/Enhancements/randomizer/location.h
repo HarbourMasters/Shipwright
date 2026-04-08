@@ -266,6 +266,14 @@ class Location {
                                RandomizerHintTextKey hintKey, RandomizerGet vanillaItem,
                                SpoilerCollectionCheck collectionCheck);
 
+    static Location Icicle(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_, SceneID scene_,
+                           int32_t actorParams_, std::string&& shortName_, RandomizerHintTextKey hintKey,
+                           SpoilerCollectionCheck collectionCheck);
+
+    static Location RedIce(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_, SceneID scene_,
+                           int32_t actorParams_, std::string&& shortName_, RandomizerHintTextKey hintKey,
+                           SpoilerCollectionCheck collectionCheck);
+
     static Location OtherHint(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_,
                               ActorID actorId_, SceneID scene_, std::string&& shortName_, std::string&& spoilerName_);
 

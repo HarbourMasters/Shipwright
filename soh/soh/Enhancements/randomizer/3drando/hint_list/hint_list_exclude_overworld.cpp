@@ -2323,6 +2323,11 @@ void StaticData::HintTable_Init_Exclude_Overworld() {
     hintTextTable[RHT_BEGGAR_KAKARIKO_VILLAGE] = HintText(CustomMessage("They say that #trading with a beggar in Kakariko Village# gives #[[1]]#.",
                                                         /*german*/ "Man erzählt sich, daß das #Handeln mit einem Bettler in Kakariko# #[[1]]# gäbe.",
                                                         /*french*/ "Selon moi, #échanger avec un mendiant dans le Village de Cocorico# donne #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_RED_ICE_ZORAS_DOMAIN] = HintText(CustomMessage("They say that #melting red ice in Zora's Domain# gives #[[1]]#.",
+                                                        /*german*/ "Man erzählt sich, daß das #Schmelzen von rotem Eis in Zoras Reich# #[[1]]# gäbe.",
+                                                        /*french*/ "Selon moi, #faire fondre la glace rouge dans le Domaine Zora# donne #[[1]]#.", {QM_RED, QM_GREEN}));
+
     // clang-format on
 }
 } // namespace Rando

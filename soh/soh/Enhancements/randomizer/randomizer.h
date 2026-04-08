@@ -46,6 +46,8 @@ class Randomizer {
     CheckIdentity IdentifySign(s32 sceneNum, s32 posX, s32 posZ, s32 id);
     CheckIdentity IdentifyWonderItem(s32 sceneNum, s32 par1, s32 par2);
     CheckIdentity IdentifyBeggar(s32 sceneNum, s32 textId);
+    CheckIdentity IdentifyIcicle(s32 sceneNum, s32 posX, s32 posZ);
+    CheckIdentity IdentifyRedIce(s32 sceneNum, s32 posX, s32 posZ);
     GetItemEntry GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogItemId,
                                        bool checkObtainability = true);
     GetItemEntry GetItemFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogItemId,
