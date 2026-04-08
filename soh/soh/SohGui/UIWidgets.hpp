@@ -1105,7 +1105,7 @@ struct CardLayoutOptions {
 };
 
 void BeginCardLayout(const CardLayoutOptions& options = {});
-void BeginCard(const char* id, int32_t forceColumn = -1);  // -1 = auto (shortest column), 0+ = force to column
+void BeginCard(const char* id, int32_t forceColumn = -1); // -1 = auto (shortest column), 0+ = force to column
 void EndCard();
 void EndCardLayout();
 

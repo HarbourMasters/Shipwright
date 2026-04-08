@@ -59,7 +59,8 @@ std::vector<const char*> gsMapping = {
 const char* MAGIC_LEVEL_NAMES[3] = { "No Magic", "Single Magic", "Double Magic" };
 constexpr int8_t MAGIC_LEVEL_MAX = 2;
 
-const char* WALLET_LEVEL_NAMES[5] = { "Child Wallet (99)", "Adult Wallet (200)", "Giant Wallet (500)", "Tycoon Wallet (999)", "Wallet (999)" };
+const char* WALLET_LEVEL_NAMES[5] = { "Child Wallet (99)", "Adult Wallet (200)", "Giant Wallet (500)",
+                                      "Tycoon Wallet (999)", "Wallet (999)" };
 constexpr int8_t WALLET_LEVEL_MAX = 4;
 
 extern "C" u8 gAreaGsFlags[];
@@ -73,19 +74,19 @@ static const ImU32 INPUT_ONE = 1;
 
 // Fishing high score bit positions (gSaveContext.highScores[2])
 namespace FishingBits {
-    constexpr uint32_t CHILD_SIZE_MASK        = 0x0000007F;
-    constexpr uint32_t CHILD_CHEATED_MASK     = 0x00000080;
-    constexpr uint32_t CHILD_PLAYED_MASK      = 0x00000100;
-    constexpr uint32_t ADULT_PLAYED_MASK      = 0x00000200;
-    constexpr uint32_t CHILD_PRIZE_MASK       = 0x00000400;
-    constexpr uint32_t ADULT_PRIZE_MASK       = 0x00000800;
-    constexpr uint32_t STOLE_HAT_MASK         = 0x00001000;
-    constexpr uint32_t TIMES_PLAYED_SHIFT     = 16;
-    constexpr uint32_t TIMES_PLAYED_MASK      = 0x00FF0000;
-    constexpr uint32_t ADULT_SIZE_SHIFT       = 24;
-    constexpr uint32_t ADULT_SIZE_MASK        = 0x7F000000;
-    constexpr uint32_t ADULT_CHEATED_MASK     = 0x80000000;
-}
+constexpr uint32_t CHILD_SIZE_MASK = 0x0000007F;
+constexpr uint32_t CHILD_CHEATED_MASK = 0x00000080;
+constexpr uint32_t CHILD_PLAYED_MASK = 0x00000100;
+constexpr uint32_t ADULT_PLAYED_MASK = 0x00000200;
+constexpr uint32_t CHILD_PRIZE_MASK = 0x00000400;
+constexpr uint32_t ADULT_PRIZE_MASK = 0x00000800;
+constexpr uint32_t STOLE_HAT_MASK = 0x00001000;
+constexpr uint32_t TIMES_PLAYED_SHIFT = 16;
+constexpr uint32_t TIMES_PLAYED_MASK = 0x00FF0000;
+constexpr uint32_t ADULT_SIZE_SHIFT = 24;
+constexpr uint32_t ADULT_SIZE_MASK = 0x7F000000;
+constexpr uint32_t ADULT_CHEATED_MASK = 0x80000000;
+} // namespace FishingBits
 
 using namespace UIWidgets;
 
@@ -239,7 +240,8 @@ void DrawGeneralTab() {
     ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(8.0f, 8.0f));
     ImGui::BeginChild("generalTab", ImVec2(0, 0), true);
 
-    UIWidgets::BeginCardLayout({ .columnsPerRow = 2, .minColumnWidth = 350.0f, .fixedColumnWidths = { 450.0f, 450.0f } });
+    UIWidgets::BeginCardLayout(
+        { .columnsPerRow = 2, .minColumnWidth = 350.0f, .fixedColumnWidths = { 450.0f, 450.0f } });
 
     UIWidgets::BeginCard("identityCard");
 
@@ -256,8 +258,8 @@ void DrawGeneralTab() {
         canEditName = false;
     } else {
         // Show file number as text when in game
-        const char* fileName = (gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2) ?
-                               fileNumMap[gSaveContext.fileNum] : "Debug";
+        const char* fileName =
+            (gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2) ? fileNumMap[gSaveContext.fileNum] : "Debug";
         ImGui::Text("File: %s", fileName);
     }
 
@@ -280,7 +282,8 @@ void DrawGeneralTab() {
                     playerNameInput[i] = z2ASCII(gSaveContext.playerName[i]);
                 } else {
                     const std::string decoded = decodeNTSCPlayerNameChar(gSaveContext.playerName[i]);
-                    playerNameInput[i] = (decoded.length() == 1 && decoded[0] >= 32 && decoded[0] <= 126) ? decoded[0] : ' ';
+                    playerNameInput[i] =
+                        (decoded.length() == 1 && decoded[0] >= 32 && decoded[0] <= 126) ? decoded[0] : ' ';
                 }
             }
             playerNameInput[8] = '\0';
@@ -329,7 +332,8 @@ void DrawGeneralTab() {
     ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "Health");
     ImGui::Spacing();
 
-    if (Button("Max Health", ButtonOptions().Size(ImVec2(0, 0)).Color(Colors::Red).Tooltip("Set max health and double defense"))) {
+    if (Button("Max Health",
+               ButtonOptions().Size(ImVec2(0, 0)).Color(Colors::Red).Tooltip("Set max health and double defense"))) {
         gSaveContext.isDoubleDefenseAcquired = 1;
         gSaveContext.inventory.defenseHearts = 20;
         gSaveContext.healthCapacity = gSaveContext.health = 20 * 16;
@@ -352,8 +356,8 @@ void DrawGeneralTab() {
     static const int16_t HEART_COUNT_MAX = 20;
     static const int16_t S16_ZERO = 0;
     int16_t heartCount = (int16_t)gSaveContext.healthCapacity / 16;
-    if (ImGui::SliderScalar("##heartCountSlider", ImGuiDataType_S16, &heartCount,
-                            &HEART_COUNT_MIN, &HEART_COUNT_MAX, "Max Hearts: %d")) {
+    if (ImGui::SliderScalar("##heartCountSlider", ImGuiDataType_S16, &heartCount, &HEART_COUNT_MIN, &HEART_COUNT_MAX,
+                            "Max Hearts: %d")) {
         gSaveContext.healthCapacity = heartCount * 16;
         if (gSaveContext.health > gSaveContext.healthCapacity) {
             gSaveContext.health = gSaveContext.healthCapacity;
@@ -400,8 +404,7 @@ void DrawGeneralTab() {
     static const int8_t S8_ZERO = 0;
     static const int8_t MAGIC_LEVEL_MAX_VAR = MAGIC_LEVEL_MAX;
     int8_t magicLevel = gSaveContext.magicLevel;
-    if (ImGui::SliderScalar("##magicLevelSlider", ImGuiDataType_S8, &magicLevel,
-                            &S8_ZERO, &MAGIC_LEVEL_MAX_VAR,
+    if (ImGui::SliderScalar("##magicLevelSlider", ImGuiDataType_S8, &magicLevel, &S8_ZERO, &MAGIC_LEVEL_MAX_VAR,
                             MAGIC_LEVEL_NAMES[gSaveContext.magicLevel])) {
         gSaveContext.magicLevel = magicLevel;
         gSaveContext.isMagicAcquired = gSaveContext.magicLevel > 0;
@@ -425,7 +428,8 @@ void DrawGeneralTab() {
     ImGui::Spacing();
 
     int8_t walletLevelMax = (IS_RANDO) ? WALLET_LEVEL_MAX : WALLET_LEVEL_MAX - 1;
-    if (Button("Max Rupees", ButtonOptions().Size(ImVec2(0, 0)).Color(Colors::Green).Tooltip("Set max rupees and wallet"))) {
+    if (Button("Max Rupees",
+               ButtonOptions().Size(ImVec2(0, 0)).Color(Colors::Green).Tooltip("Set max rupees and wallet"))) {
         Inventory_ChangeUpgrade(UPG_WALLET, walletLevelMax);
         gSaveContext.rupees = CUR_CAPACITY(UPG_WALLET);
     }
@@ -439,8 +443,7 @@ void DrawGeneralTab() {
     static const int8_t U8_ZERO = 0;
     int8_t walletLevelLocalMax = walletLevelMax;
     int8_t walletLevel = CUR_UPG_VALUE(UPG_WALLET);
-    if (ImGui::SliderScalar("##walletLevelSlider", ImGuiDataType_S8, &walletLevel,
-                            &U8_ZERO, &walletLevelLocalMax,
+    if (ImGui::SliderScalar("##walletLevelSlider", ImGuiDataType_S8, &walletLevel, &U8_ZERO, &walletLevelLocalMax,
                             WALLET_LEVEL_NAMES[walletLevel])) {
         Inventory_ChangeUpgrade(UPG_WALLET, walletLevel);
         int16_t maxRupees = CUR_CAPACITY(UPG_WALLET);
@@ -461,7 +464,8 @@ void DrawGeneralTab() {
     ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "Time");
     ImGui::Spacing();
 
-    SliderInt("Time of Day", (int32_t*)&gSaveContext.dayTime, IntSliderOptions().Min(0).Max(0xFFFF).Format("%d").Tooltip("Time of day"));
+    SliderInt("Time of Day", (int32_t*)&gSaveContext.dayTime,
+              IntSliderOptions().Min(0).Max(0xFFFF).Format("%d").Tooltip("Time of day"));
 
     if (Button("Dawn", ButtonOptions().Size(ImVec2(0, 0)).Color(THEME_COLOR))) {
         gSaveContext.dayTime = 0x4000;
@@ -624,7 +628,8 @@ void DrawGeneralTab() {
                 PushStyleInput(THEME_COLOR);
                 if (ImGui::InputScalar("##AdultSize", ImGuiDataType_U8, &fishSize)) {
                     gSaveContext.highScores[i] &= ~FishingBits::ADULT_SIZE_MASK;
-                    gSaveContext.highScores[i] |= (fishSize & FishingBits::CHILD_SIZE_MASK) << FishingBits::ADULT_SIZE_SHIFT;
+                    gSaveContext.highScores[i] |= (fishSize & FishingBits::CHILD_SIZE_MASK)
+                                                  << FishingBits::ADULT_SIZE_SHIFT;
                 }
                 std::snprintf(fishMsg, 64, "Weight: %2.0f lbs", ((SQ(fishSize) * .0036) + .5));
                 Tooltip(fishMsg);
@@ -649,25 +654,23 @@ void DrawGeneralTab() {
                     gSaveContext.highScores[i] |= (FishingBits::ADULT_PLAYED_MASK * FishBool);
                 }
                 FishBool = gSaveContext.highScores[i] & FishingBits::CHILD_PRIZE_MASK;
-                if (Checkbox("Got Prize (Child)", &FishBool,
-                             CheckboxOptions().Color(THEME_COLOR))) {
+                if (Checkbox("Got Prize (Child)", &FishBool, CheckboxOptions().Color(THEME_COLOR))) {
                     gSaveContext.highScores[i] &= ~FishingBits::CHILD_PRIZE_MASK;
                     gSaveContext.highScores[i] |= (FishingBits::CHILD_PRIZE_MASK * FishBool);
                 }
                 FishBool = gSaveContext.highScores[i] & FishingBits::ADULT_PRIZE_MASK;
-                if (Checkbox("Got Prize (Adult)", &FishBool,
-                             CheckboxOptions().Color(THEME_COLOR))) {
+                if (Checkbox("Got Prize (Adult)", &FishBool, CheckboxOptions().Color(THEME_COLOR))) {
                     gSaveContext.highScores[i] &= ~FishingBits::ADULT_PRIZE_MASK;
                     gSaveContext.highScores[i] |= (FishingBits::ADULT_PRIZE_MASK * FishBool);
                 }
                 FishBool = gSaveContext.highScores[i] & FishingBits::STOLE_HAT_MASK;
-                if (Checkbox("Stole Owner's Hat", &FishBool,
-                             CheckboxOptions().Color(THEME_COLOR))) {
+                if (Checkbox("Stole Owner's Hat", &FishBool, CheckboxOptions().Color(THEME_COLOR))) {
                     gSaveContext.highScores[i] &= ~FishingBits::STOLE_HAT_MASK;
                     gSaveContext.highScores[i] |= (FishingBits::STOLE_HAT_MASK * FishBool);
                 }
                 ImGui::Text("Times Played");
-                fishSize = (gSaveContext.highScores[i] & FishingBits::TIMES_PLAYED_MASK) >> FishingBits::TIMES_PLAYED_SHIFT;
+                fishSize =
+                    (gSaveContext.highScores[i] & FishingBits::TIMES_PLAYED_MASK) >> FishingBits::TIMES_PLAYED_SHIFT;
                 PushStyleInput(THEME_COLOR);
                 if (ImGui::InputScalar("##TimesPlayed", ImGuiDataType_U8, &fishSize)) {
                     gSaveContext.highScores[i] &= ~FishingBits::TIMES_PLAYED_MASK;
@@ -706,7 +709,8 @@ void DrawInventoryTab() {
     ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(8.0f, 8.0f));
     ImGui::BeginChild("inventoryTab", ImVec2(0, 0), true);
 
-    UIWidgets::BeginCardLayout({ .columnsPerRow = 2, .minColumnWidth = 350.0f, .fixedColumnWidths = { 450.0f, 450.0f } });
+    UIWidgets::BeginCardLayout(
+        { .columnsPerRow = 2, .minColumnWidth = 350.0f, .fixedColumnWidths = { 450.0f, 450.0f } });
 
     // Items grid card
     UIWidgets::BeginCard("inventoryGridCard");
@@ -747,11 +751,10 @@ void DrawInventoryTab() {
             // White border for equipped items - draw a background rect first
             if (isEquipped) {
                 ImVec2 p = ImGui::GetCursorScreenPos();
-                ImGui::GetWindowDrawList()->AddRect(
-                    ImVec2(p.x - 2, p.y - 2),
-                    ImVec2(p.x + IMAGE_SIZE + ImGui::GetStyle().FramePadding.x * 2 + 2,
-                           p.y + IMAGE_SIZE + ImGui::GetStyle().FramePadding.y * 2 + 3),
-                    IM_COL32(255, 255, 255, 255), 0.0f, 0, 2.0f);
+                ImGui::GetWindowDrawList()->AddRect(ImVec2(p.x - 2, p.y - 2),
+                                                    ImVec2(p.x + IMAGE_SIZE + ImGui::GetStyle().FramePadding.x * 2 + 2,
+                                                           p.y + IMAGE_SIZE + ImGui::GetStyle().FramePadding.y * 2 + 3),
+                                                    IM_COL32(255, 255, 255, 255), 0.0f, 0, 2.0f);
             }
 
             PushStyleButton(Colors::DarkGray);
@@ -768,7 +771,8 @@ void DrawInventoryTab() {
                     Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(slotEntry.name),
                     ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1));
             } else {
-                wasClicked = ImGui::Button("##itemNone", ImVec2(IMAGE_SIZE, IMAGE_SIZE) + ImGui::GetStyle().FramePadding * 2);
+                wasClicked =
+                    ImGui::Button("##itemNone", ImVec2(IMAGE_SIZE, IMAGE_SIZE) + ImGui::GetStyle().FramePadding * 2);
             }
             PopStyleButton();
 
@@ -885,7 +889,9 @@ void DrawInventoryTab() {
     ImGui::Spacing();
 
     Checkbox("Restrict to valid items", &restrictToValid,
-             CheckboxOptions().Color(THEME_COLOR).Tooltip("Restricts items and ammo to only what is possible to legally acquire in-game"));
+             CheckboxOptions()
+                 .Color(THEME_COLOR)
+                 .Tooltip("Restricts items and ammo to only what is possible to legally acquire in-game"));
     ImGui::Spacing();
 
     if (Button("Give All", ButtonOptions().Color(Colors::Green).Tooltip("Give all valid items for each slot"))) {
@@ -966,13 +972,17 @@ void DrawInventoryTab() {
         ImGui::Spacing();
         ImGui::PushItemWidth(ImGui::GetFontSize() * 10);
         PushStyleInput(THEME_COLOR);
-        ImGui::InputScalar("D-pad Up##dpadItems", ImGuiDataType_U8, &gSaveContext.equips.buttonItems[4], &INPUT_ONE, NULL);
+        ImGui::InputScalar("D-pad Up##dpadItems", ImGuiDataType_U8, &gSaveContext.equips.buttonItems[4], &INPUT_ONE,
+                           NULL);
         Tooltip("D-pad Up item");
-        ImGui::InputScalar("D-pad Down##dpadItems", ImGuiDataType_U8, &gSaveContext.equips.buttonItems[5], &INPUT_ONE, NULL);
+        ImGui::InputScalar("D-pad Down##dpadItems", ImGuiDataType_U8, &gSaveContext.equips.buttonItems[5], &INPUT_ONE,
+                           NULL);
         Tooltip("D-pad Down item");
-        ImGui::InputScalar("D-pad Left##dpadItems", ImGuiDataType_U8, &gSaveContext.equips.buttonItems[6], &INPUT_ONE, NULL);
+        ImGui::InputScalar("D-pad Left##dpadItems", ImGuiDataType_U8, &gSaveContext.equips.buttonItems[6], &INPUT_ONE,
+                           NULL);
         Tooltip("D-pad Left item");
-        ImGui::InputScalar("D-pad Right##dpadItems", ImGuiDataType_U8, &gSaveContext.equips.buttonItems[7], &INPUT_ONE, NULL);
+        ImGui::InputScalar("D-pad Right##dpadItems", ImGuiDataType_U8, &gSaveContext.equips.buttonItems[7], &INPUT_ONE,
+                           NULL);
         Tooltip("D-pad Right item");
         PopStyleInput();
         ImGui::PopItemWidth();
@@ -1094,12 +1104,14 @@ void DrawActiveStates(const std::string& label, uint32_t states, const std::vect
     bool hasAny = false;
     for (size_t i = 0; i < names.size() && i < 32; i++) {
         if ((states >> i) & 1) {
-            if (hasAny) active += ", ";
+            if (hasAny)
+                active += ", ";
             active += names[i];
             hasAny = true;
         }
     }
-    if (!hasAny) active += "None";
+    if (!hasAny)
+        active += "None";
     ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.6f, 0.6f, 0.6f, 1.0f));
     ImGui::Text("%s", active.c_str());
     ImGui::PopStyleColor();
@@ -1288,7 +1300,8 @@ void DrawFlagsTab() {
     UIWidgets::EndCardLayout();
 
     // ========== OTHER CARDS LAST ==========
-    UIWidgets::BeginCardLayout({ .columnsPerRow = 2, .minColumnWidth = 350.0f, .fixedColumnWidths = { 450.0f, 450.0f } });
+    UIWidgets::BeginCardLayout(
+        { .columnsPerRow = 2, .minColumnWidth = 350.0f, .fixedColumnWidths = { 450.0f, 450.0f } });
 
     // Current Scene Section
     UIWidgets::BeginCard("currentSceneCard");
@@ -1334,34 +1347,35 @@ void DrawFlagsTab() {
         ImGui::Spacing();
         ImGui::BeginGroup();
 
-            if (Button("Reload Flags", ButtonOptions().Size(ImVec2(0, 0)).Color(THEME_COLOR).Tooltip(
-                                           "Load flags from saved scene flags"))) {
-                act->flags.swch = gSaveContext.sceneFlags[gPlayState->sceneNum].swch;
-                act->flags.clear = gSaveContext.sceneFlags[gPlayState->sceneNum].clear;
-                act->flags.collect = gSaveContext.sceneFlags[gPlayState->sceneNum].collect;
-                act->flags.chest = gSaveContext.sceneFlags[gPlayState->sceneNum].chest;
-            }
-
-            if (Button("Save Flags",
-                       ButtonOptions().Size(ImVec2(0, 0)).Color(THEME_COLOR).Tooltip("Save current scene flags"))) {
-                gSaveContext.sceneFlags[gPlayState->sceneNum].swch = act->flags.swch;
-                gSaveContext.sceneFlags[gPlayState->sceneNum].clear = act->flags.clear;
-                gSaveContext.sceneFlags[gPlayState->sceneNum].collect = act->flags.collect;
-                gSaveContext.sceneFlags[gPlayState->sceneNum].chest = act->flags.chest;
-            }
-
-            if (Button("Clear Flags",
-                       ButtonOptions().Size(ImVec2(0, 0)).Color(Colors::Red).Tooltip("Clear current scene flags"))) {
-                act->flags.swch = 0;
-                act->flags.clear = 0;
-                act->flags.collect = 0;
-                act->flags.chest = 0;
-            }
-
-            ImGui::EndGroup();
-        } else {
-            ImGui::Text("Current game state does not have an active scene");
+        if (Button(
+                "Reload Flags",
+                ButtonOptions().Size(ImVec2(0, 0)).Color(THEME_COLOR).Tooltip("Load flags from saved scene flags"))) {
+            act->flags.swch = gSaveContext.sceneFlags[gPlayState->sceneNum].swch;
+            act->flags.clear = gSaveContext.sceneFlags[gPlayState->sceneNum].clear;
+            act->flags.collect = gSaveContext.sceneFlags[gPlayState->sceneNum].collect;
+            act->flags.chest = gSaveContext.sceneFlags[gPlayState->sceneNum].chest;
         }
+
+        if (Button("Save Flags",
+                   ButtonOptions().Size(ImVec2(0, 0)).Color(THEME_COLOR).Tooltip("Save current scene flags"))) {
+            gSaveContext.sceneFlags[gPlayState->sceneNum].swch = act->flags.swch;
+            gSaveContext.sceneFlags[gPlayState->sceneNum].clear = act->flags.clear;
+            gSaveContext.sceneFlags[gPlayState->sceneNum].collect = act->flags.collect;
+            gSaveContext.sceneFlags[gPlayState->sceneNum].chest = act->flags.chest;
+        }
+
+        if (Button("Clear Flags",
+                   ButtonOptions().Size(ImVec2(0, 0)).Color(Colors::Red).Tooltip("Clear current scene flags"))) {
+            act->flags.swch = 0;
+            act->flags.clear = 0;
+            act->flags.collect = 0;
+            act->flags.chest = 0;
+        }
+
+        ImGui::EndGroup();
+    } else {
+        ImGui::Text("Current game state does not have an active scene");
+    }
     UIWidgets::EndCard();
 
     // Saved Scene Flags Card
@@ -1390,7 +1404,8 @@ void DrawFlagsTab() {
     // Don't show current scene button if there is no current scene
     if (gPlayState != nullptr) {
         ImGui::SameLine();
-        if (Button("Current", ButtonOptions().Size(ImVec2(0, 0)).Color(THEME_COLOR).Tooltip("Open flags for current scene"))) {
+        if (Button("Current",
+                   ButtonOptions().Size(ImVec2(0, 0)).Color(THEME_COLOR).Tooltip("Open flags for current scene"))) {
             if (gPlayState->sceneNum < SCENE_ID_MAX) {
                 selectedSceneFlagMap = gPlayState->sceneNum;
             }
@@ -1480,8 +1495,9 @@ void DrawFlagsTab() {
           OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_TOKENS) != RO_TOKENSANITY_OFF)) {
         static bool keepGsCountUpdated = true;
         Checkbox("Keep GS Count Updated", &keepGsCountUpdated,
-                 CheckboxOptions().Color(THEME_COLOR).Tooltip(
-                     "Automatically adjust the number of gold skulltula tokens acquired based on set flags."));
+                 CheckboxOptions()
+                     .Color(THEME_COLOR)
+                     .Tooltip("Automatically adjust the number of gold skulltula tokens acquired based on set flags."));
         int32_t gsCount = 0;
         if (keepGsCountUpdated) {
             for (int32_t gsFlagIndex = 0; gsFlagIndex < 6; gsFlagIndex++) {
@@ -1585,9 +1601,10 @@ void DrawEquipmentTab() {
 
     static const int8_t U8_ZERO = 0;
 
-    UIWidgets::BeginCardLayout({ .columnsPerRow = 2, .minColumnWidth = 350.0f, .fixedColumnWidths = { 450.0f, 450.0f } });
+    UIWidgets::BeginCardLayout(
+        { .columnsPerRow = 2, .minColumnWidth = 350.0f, .fixedColumnWidths = { 450.0f, 450.0f } });
 
-    UIWidgets::BeginCard("equipmentCard", 0);  // Force to column 0
+    UIWidgets::BeginCard("equipmentCard", 0); // Force to column 0
     ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "Equipment");
     ImGui::Spacing();
 
@@ -1636,11 +1653,10 @@ void DrawEquipmentTab() {
         // White border for equipped items
         if (isEquipped) {
             ImVec2 p = ImGui::GetCursorScreenPos();
-            ImGui::GetWindowDrawList()->AddRect(
-                ImVec2(p.x - 2, p.y - 2),
-                ImVec2(p.x + IMAGE_SIZE + ImGui::GetStyle().FramePadding.x * 2 + 2,
-                       p.y + IMAGE_SIZE + ImGui::GetStyle().FramePadding.y * 2 + 3),
-                IM_COL32(255, 255, 255, 255), 0.0f, 0, 2.0f);
+            ImGui::GetWindowDrawList()->AddRect(ImVec2(p.x - 2, p.y - 2),
+                                                ImVec2(p.x + IMAGE_SIZE + ImGui::GetStyle().FramePadding.x * 2 + 2,
+                                                       p.y + IMAGE_SIZE + ImGui::GetStyle().FramePadding.y * 2 + 3),
+                                                IM_COL32(255, 255, 255, 255), 0.0f, 0, 2.0f);
         }
 
         PushStyleButton(Colors::DarkGray);
@@ -1663,7 +1679,7 @@ void DrawEquipmentTab() {
 
     UIWidgets::EndCard();
 
-    UIWidgets::BeginCard("upgradesCard", 0);  // Force to column 0 (under Equipment)
+    UIWidgets::BeginCard("upgradesCard", 0); // Force to column 0 (under Equipment)
     ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "Upgrades");
     ImGui::Spacing();
 
@@ -1730,8 +1746,7 @@ void DrawEquipmentTab() {
     ImGui::Text("Deku Stick Capacity");
     PushStyleSlider(THEME_COLOR);
     static const int8_t STICK_LEVEL_MAX_VAR = STICK_LEVEL_MAX;
-    if (ImGui::SliderScalar("##stickLevelSlider", ImGuiDataType_S8, &stickLevel,
-                            &U8_ZERO, &STICK_LEVEL_MAX_VAR,
+    if (ImGui::SliderScalar("##stickLevelSlider", ImGuiDataType_S8, &stickLevel, &U8_ZERO, &STICK_LEVEL_MAX_VAR,
                             STICK_LEVEL_NAMES[stickLevel])) {
         Inventory_ChangeUpgrade(UPG_STICKS, stickLevel);
     }
@@ -1744,8 +1759,7 @@ void DrawEquipmentTab() {
     ImGui::Text("Deku Nut Capacity");
     PushStyleSlider(THEME_COLOR);
     static const int8_t NUT_LEVEL_MAX_VAR = NUT_LEVEL_MAX;
-    if (ImGui::SliderScalar("##nutLevelSlider", ImGuiDataType_S8, &nutLevel,
-                            &U8_ZERO, &NUT_LEVEL_MAX_VAR,
+    if (ImGui::SliderScalar("##nutLevelSlider", ImGuiDataType_S8, &nutLevel, &U8_ZERO, &NUT_LEVEL_MAX_VAR,
                             NUT_LEVEL_NAMES[nutLevel])) {
         Inventory_ChangeUpgrade(UPG_NUTS, nutLevel);
     }
@@ -1840,7 +1854,8 @@ void DrawQuestStatusTab() {
     ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(8.0f, 8.0f));
     ImGui::BeginChild("questStatusTab", ImVec2(0, 0), true);
 
-    UIWidgets::BeginCardLayout({ .columnsPerRow = 2, .minColumnWidth = 350.0f, .fixedColumnWidths = { 450.0f, 450.0f } });
+    UIWidgets::BeginCardLayout(
+        { .columnsPerRow = 2, .minColumnWidth = 350.0f, .fixedColumnWidths = { 450.0f, 450.0f } });
 
     UIWidgets::BeginCard("medallionsStonesCard");
     ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "Medallions & Stones");
@@ -1959,7 +1974,8 @@ void DrawDungeonItemsTab() {
     ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(8.0f, 8.0f));
     ImGui::BeginChild("dungeonItemsTab", ImVec2(0, 0), true);
 
-    UIWidgets::BeginCardLayout({ .columnsPerRow = 2, .minColumnWidth = 350.0f, .fixedColumnWidths = { 450.0f, 450.0f } });
+    UIWidgets::BeginCardLayout(
+        { .columnsPerRow = 2, .minColumnWidth = 350.0f, .fixedColumnWidths = { 450.0f, 450.0f } });
 
     // All dungeons from Deku Tree to Ganon's Tower (skip boss scenes as they don't have boss keys)
     for (int32_t dungeonIndex = SCENE_DEKU_TREE; dungeonIndex < SCENE_GANONS_TOWER + 1; dungeonIndex++) {
@@ -1987,15 +2003,13 @@ void DrawDungeonItemsTab() {
         if (dungeonIndex != SCENE_JABU_JABU && dungeonIndex != SCENE_GANONS_TOWER) {
             ImGui::Spacing();
             float lineHeight = ImGui::GetTextLineHeightWithSpacing();
-            ImGui::Image(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
-                             itemMapping[ITEM_KEY_SMALL].name),
-                         ImVec2(lineHeight, lineHeight));
+            ImGui::Image(
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(itemMapping[ITEM_KEY_SMALL].name),
+                ImVec2(lineHeight, lineHeight));
             ImGui::SameLine();
             PushStyleInput(THEME_COLOR);
-            if (ImGui::InputScalar("##Keys", ImGuiDataType_S8,
-                                   gSaveContext.inventory.dungeonKeys + dungeonIndex)) {
-                gSaveContext.ship.stats.dungeonKeys[dungeonIndex] =
-                    gSaveContext.inventory.dungeonKeys[dungeonIndex];
+            if (ImGui::InputScalar("##Keys", ImGuiDataType_S8, gSaveContext.inventory.dungeonKeys + dungeonIndex)) {
+                gSaveContext.ship.stats.dungeonKeys[dungeonIndex] = gSaveContext.inventory.dungeonKeys[dungeonIndex];
             }
             PopStyleInput();
         } else if (dungeonIndex == SCENE_GANONS_TOWER) {
@@ -2017,7 +2031,8 @@ void DrawPlayerTab() {
     ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(8.0f, 8.0f));
     ImGui::BeginChild("playerTab", ImVec2(0, 0), true);
 
-    UIWidgets::BeginCardLayout({ .columnsPerRow = 2, .minColumnWidth = 350.0f, .fixedColumnWidths = { 450.0f, 450.0f } });
+    UIWidgets::BeginCardLayout(
+        { .columnsPerRow = 2, .minColumnWidth = 350.0f, .fixedColumnWidths = { 450.0f, 450.0f } });
 
     if (gPlayState != nullptr) {
         Player* player = GET_PLAYER(gPlayState);
@@ -2174,19 +2189,36 @@ void DrawPlayerTab() {
         PushStyleCombobox(THEME_COLOR);
         const char* currentSword = "None";
         switch (player->meleeWeaponState) {
-            case 0: currentSword = "None"; break;
-            case 1: currentSword = "Kokiri Sword"; break;
-            case 2: currentSword = "Master Sword"; break;
-            case 3: currentSword = "Biggoron's Sword"; break;
-            case 4: currentSword = "Broken Giant's Knife"; break;
-            default: currentSword = fmt::format("Unknown ({})", player->meleeWeaponState).c_str(); break;
+            case 0:
+                currentSword = "None";
+                break;
+            case 1:
+                currentSword = "Kokiri Sword";
+                break;
+            case 2:
+                currentSword = "Master Sword";
+                break;
+            case 3:
+                currentSword = "Biggoron's Sword";
+                break;
+            case 4:
+                currentSword = "Broken Giant's Knife";
+                break;
+            default:
+                currentSword = fmt::format("Unknown ({})", player->meleeWeaponState).c_str();
+                break;
         }
         if (ImGui::BeginCombo("##SwordState", currentSword)) {
-            if (ImGui::Selectable("None")) player->meleeWeaponState = 0;
-            if (ImGui::Selectable("Kokiri Sword")) player->meleeWeaponState = 1;
-            if (ImGui::Selectable("Master Sword")) player->meleeWeaponState = 2;
-            if (ImGui::Selectable("Biggoron's Sword")) player->meleeWeaponState = 3;
-            if (ImGui::Selectable("Broken Giant's Knife")) player->meleeWeaponState = 4;
+            if (ImGui::Selectable("None"))
+                player->meleeWeaponState = 0;
+            if (ImGui::Selectable("Kokiri Sword"))
+                player->meleeWeaponState = 1;
+            if (ImGui::Selectable("Master Sword"))
+                player->meleeWeaponState = 2;
+            if (ImGui::Selectable("Biggoron's Sword"))
+                player->meleeWeaponState = 3;
+            if (ImGui::Selectable("Broken Giant's Knife"))
+                player->meleeWeaponState = 4;
             ImGui::EndCombo();
         }
         PopStyleCombobox();
