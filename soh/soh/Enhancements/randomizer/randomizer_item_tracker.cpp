@@ -895,6 +895,14 @@ void DrawItem(ItemTrackerItem item) {
         case ITEM_NAYRUS_LOVE:
             if (IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_ROCS_FEATHER)) {
                 hasItem = Flags_GetRandomizerInf(RAND_INF_OBTAINED_NAYRUS_LOVE);
+            } else if (!IS_RANDO) {
+                // In non-rando, check if player has Roc's Feather in inventory
+                for (int i = 0; i < 24; i++) {
+                    if (gSaveContext.inventory.items[i] == ITEM_ROCS_FEATHER) {
+                        hasItem = true;
+                        break;
+                    }
+                }
             }
             break;
         case RG_ROCS_FEATHER:

@@ -1085,6 +1085,30 @@ void DrawFlagArray8Mask(const std::string& name, uint8_t& flags, Colors color = 
 bool BtnSelector(const char* label, int32_t* value, const BtnSelectorOptions& options);
 bool CVarBtnSelector(const char* label, const char* cvarName, const BtnSelectorOptions& options);
 
+// Card Layout System - creates a responsive grid of card containers
+// Example usage:
+//   BeginCardLayout({ .columnsPerRow = 2 });
+//   BeginCard("cardId");
+//     // ... card content ...
+//   EndCard();
+//   EndCardLayout();
+struct CardLayoutOptions {
+    int32_t columnsPerRow = 2;
+    float spacing = 8.0f;
+    float minColumnWidth = 0.0f;
+    bool autoItemWidth = true;
+    ImGuiChildFlags childFlags = ImGuiChildFlags_Border | ImGuiChildFlags_AutoResizeY;
+    bool syncLastColumnToMax = false; // Keep last column height synced to max of others (keeps it empty)
+    // Per-column fixed widths (0 = auto-size). Example: { 400.0f, 0.0f, 300.0f }
+    // means column 0 is 400px, column 1 auto-sizes, column 2 is 300px
+    std::vector<float> fixedColumnWidths;
+};
+
+void BeginCardLayout(const CardLayoutOptions& options = {});
+void BeginCard(const char* id, int32_t forceColumn = -1);  // -1 = auto (shortest column), 0+ = force to column
+void EndCard();
+void EndCardLayout();
+
 void InsertHelpHoverText(const std::string& text);
 void InsertHelpHoverText(const char* text);
 } // namespace UIWidgets
