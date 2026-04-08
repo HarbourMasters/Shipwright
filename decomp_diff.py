@@ -53,7 +53,7 @@ def main():
     local_path = os.path.abspath(local_path)
     new_lines = read_file(local_path)
 
-    repo_path = os.path.join(os.path.dirname(__file__), "oot")
+    repo_path = os.path.join(os.path.dirname(__file__), "soh")
     relative_path = os.path.relpath(local_path, repo_path)
 
     if len(sys.argv) > 2:
