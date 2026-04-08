@@ -33,8 +33,8 @@ void BuildEnHyMessage_BlueFire(uint16_t* textId, bool* loadFromMessageTable) {
         "special inventory %bevery 7 years or so%w...",
         "%cBlaues Feuer%w! Ich tausche es gegen %retwas Besonderes%w. Und nicht feilschen, okay! Ich bekomme neue "
         "besondere Ware %balle 7 Jahre oder so%w...",
-        "%cFeu bleu%w ! Je l'échange contre %rquelque chose de spécial%w. Pas de retour ! Je reçois de nouveaux "
-        "articles spéciaux %btous les 7 ans environ%w...");
+        "%cFeu bleu%w ! Je l'Ã©change contre %rquelque chose de spÃ©cial%w. Pas de retour ! Je reÃ§ois de nouveaux "
+        "articles spÃ©ciaux %btous les 7 ans environ%w...");
     msg.AutoFormat();
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
@@ -49,8 +49,8 @@ void BuildEnHyMessage_Fish(uint16_t* textId, bool* loadFromMessageTable) {
         "special inventory %bevery 7 years or so%w...",
         "Ein %pFisch%w! Ich tausche ihn gegen %retwas Besonderes%w. Und nicht feilschen, okay! Ich bekomme neue "
         "besondere Ware %balle 7 Jahre oder so%w...",
-        "Un %ppoisson%w ! Je l'échange contre %rquelque chose de spécial%w. Pas de retour ! Je reçois de nouveaux "
-        "articles spéciaux %btous les 7 ans environ%w...");
+        "Un %ppoisson%w ! Je l'Ã©change contre %rquelque chose de spÃ©cial%w. Pas de retour ! Je reÃ§ois de nouveaux "
+        "articles spÃ©ciaux %btous les 7 ans environ%w...");
     msg.AutoFormat();
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
@@ -63,12 +63,12 @@ void BuildEnHyMessage_Bug(uint16_t* textId, bool* loadFromMessageTable) {
     CustomMessage msg =
         CustomMessage("A tiny %gbug%w! I'll trade you %rsomething special%w for it. No returns! I get new "
                       "special inventory %bevery 7 years or so%w...",
-                      "Ein kleiner %gKäfer%w! Ich tausche ihn gegen %retwas Besonderes%w. Und nicht feilschen, okay! "
+                      "Ein kleiner %gKÃ¤fer%w! Ich tausche ihn gegen %retwas Besonderes%w. Und nicht feilschen, okay! "
                       "Ich bekomme neue "
                       "besondere Ware %balle 7 Jahre oder so%w...",
-                      "Un petit %ginsecte%w ! Je l'échange contre %rquelque chose de spécial%w. Pas de retour ! Je "
-                      "reçois de nouveaux "
-                      "articles spéciaux %btous les 7 ans environ%w...");
+                      "Un petit %ginsecte%w ! Je l'Ã©change contre %rquelque chose de spÃ©cial%w. Pas de retour ! Je "
+                      "reÃ§ois de nouveaux "
+                      "articles spÃ©ciaux %btous les 7 ans environ%w...");
     msg.AutoFormat();
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
