@@ -6063,7 +6063,9 @@ s32 Player_ActionHandler_13(Player* this, PlayState* play) {
                                 Inventory_ChangeAmmo(ITEM_BEAN, -1);
                                 Player_SetupActionPreserveItemAction(play, this, Player_Action_8084279C, 0);
                                 this->stateFlags1 |= PLAYER_STATE1_IN_CUTSCENE;
-                                this->av2.actionVar2 = 0x50;
+                                if (GameInteractor_Should(VB_PLAY_BEAN_PLANTING_CS, true)) {
+                                    this->av2.actionVar2 = 0x50;
+                                }
                                 this->av1.actionVar1 = -1;
                             }
                             talkActor->flags |= ACTOR_FLAG_TALK;

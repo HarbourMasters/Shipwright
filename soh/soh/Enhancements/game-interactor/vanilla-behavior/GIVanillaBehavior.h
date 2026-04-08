@@ -1535,6 +1535,14 @@ typedef enum {
     VB_PHANTOM_GANON_DEATH_SCENE,
 
     // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
+    VB_PLAY_BEAN_PLANTING_CS,
+
+    // #### `result`
     // ##### In `DoorWarp1_ChildWarpOut` - `SCENE_DODONGOS_CAVERN_BOSS`
     // ```c
     // !Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP)

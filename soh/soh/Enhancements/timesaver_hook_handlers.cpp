@@ -572,6 +572,7 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
             }
             break;
         }
+        case VB_PLAY_BEAN_PLANTING_CS:
         case VB_PLAY_EYEDROP_CREATION_ANIM:
         case VB_PLAY_EYEDROPS_CS:
         case VB_PLAY_DROP_FISH_FOR_JABU_CS:
