@@ -100,4 +100,4 @@ void RegisterRocsFeather() {
     });
 }
 
-static RegisterShipInitFunc registerRocsFeather(RegisterRocsFeather, {});
+static RegisterShipInitFunc registerRocsFeather(RegisterRocsFeather);
