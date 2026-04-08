@@ -156,7 +156,6 @@ struct HookInfo {
     REGISTER_LISTENER(OnVanillaBehavior, EVENT_PRIORITY_LOW, [](IEvent* event) { \
         auto* vbEvent = reinterpret_cast<OnVanillaBehavior*>(event);             \
         if (vbEvent->flag == flagToCheck) {                                      \
-            GIVanillaBehavior _ = vbEvent->flag;                                 \
             bool* should = vbEvent->result;                                      \
             va_list args;                                                        \
             va_copy(args, *vbEvent->originalArgs);                               \
