@@ -2054,6 +2054,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
+    VB_SET_DIVING_GAME_TIME_LIMIT,
+
+    // #### `result`
+    // ```c
     // SurfaceType_GetSlope(&play->colCtx, poly, bgId) == 2
     // ```
     // #### `args`
