@@ -516,8 +516,7 @@ const HintText Hint::GetItemHintText(uint8_t slot, bool mysterious) const {
     CustomMessage msg;
     if (mysterious) {
         return StaticData::hintTextTable[RHT_MYSTERIOUS_ITEM];
-    } else if (!ctx->GetOption(RSK_HINT_CLARITY).Is(RO_HINT_CLARITY_AMBIGUOUS) &&
-               targetRG == RG_ICE_TRAP) { // RANDOTODO store in item hint instead of item
+    } else if (targetRG == RG_ICE_TRAP) { // RANDOTODO store in item hint instead of item
         msg = CustomMessage({ ctx->overrides[hintedCheck].GetTrickName() });
     } else {
         const Rando::Item& item = ctx->GetItemLocation(hintedCheck)->GetPlacedItem();
