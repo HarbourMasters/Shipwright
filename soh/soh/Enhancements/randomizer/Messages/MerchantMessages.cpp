@@ -36,7 +36,8 @@ void BuildMerchantMessage(CustomMessage& msg, RandomizerCheck rc, bool mysteriou
         itemName = CustomMessage(RAND_GET_OVERRIDE(rc).GetTrickName());
         color = "%g";
     } else {
-        itemName = CustomMessage(Rando::StaticData::RetrieveItem(rgid).GetName());
+        const Rando::Item& item = Rando::StaticData::RetrieveItem(rgid);
+        itemName = item.GetHint().GetHintMessage().GetForCurrentLanguage();
     }
     msg.Replace("[[color]]", color);
     msg.InsertNames({ itemName, CustomMessage(std::to_string(price)) });

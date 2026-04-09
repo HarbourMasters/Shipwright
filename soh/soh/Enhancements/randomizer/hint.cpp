@@ -520,7 +520,8 @@ const HintText Hint::GetItemHintText(uint8_t slot, bool mysterious) const {
                targetRG == RG_ICE_TRAP) { // RANDOTODO store in item hint instead of item
         msg = CustomMessage({ ctx->overrides[hintedCheck].GetTrickName() });
     } else {
-        msg = ctx->GetItemLocation(hintedCheck)->GetPlacedItem().GetName();
+        const Rando::Item& item = ctx->GetItemLocation(hintedCheck)->GetPlacedItem();
+        msg = item.GetHint().GetHintMessage().GetForCurrentLanguage();
     }
     msg = CustomMessage(ctx->GetItemLocation(hintedCheck)->GetPlacedItem().GetArticle()) + msg;
     return HintText(msg);
