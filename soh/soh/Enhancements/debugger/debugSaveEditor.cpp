@@ -59,8 +59,8 @@ std::vector<const char*> gsMapping = {
 const char* MAGIC_LEVEL_NAMES[3] = { "No Magic", "Single Magic", "Double Magic" };
 constexpr int8_t MAGIC_LEVEL_MAX = 2;
 
-const char* WALLET_LEVEL_NAMES[5] = { "Child Wallet (99)", "Adult Wallet (200)", "Giant Wallet (500)",
-                                      "Tycoon Wallet (999)", "Wallet (999)" };
+const char* WALLET_LEVEL_NAMES[4] = { "Child Wallet (99)", "Adult Wallet (200)", "Giant Wallet (500)",
+                                      "Tycoon Wallet (999)" };
 constexpr int8_t WALLET_LEVEL_MAX = 4;
 
 extern "C" u8 gAreaGsFlags[];
