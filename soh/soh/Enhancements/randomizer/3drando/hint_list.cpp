@@ -2328,12 +2328,12 @@ void StaticData::HintTable_Init() {
                                                                         {QM_RED, QM_BLUE, QM_GREEN}));
 
     hintTextTable[RHT_MALON_HINT_OBSTICLE_COURSE] = HintText(CustomMessage("How about trying the #Obstacle Course?# If you beat my time I'll let you keep my favourite #cow# Elsie and her toy #[[1]]#!^"
-                                                                           "Challenge the #Obstacle Course?#&\x1B&#Let's go&No thanks#",
+                                                                           "Challenge the #Obstacle Course?#\x1B#Let's go&No thanks#",
                                                                 /*german*/ "Warum versuchst Du Dich nicht mit Epona an dem #Hindernisparcours#?^"
                                                                            "Gelingt es Dir den Rekord zu brechen, bekommst Du meine #Lieblingskuh# Elsie^und ihr Lieblingsspielzeug, #[[1]]#!^"
-                                                                           "Wie sieht's aus?&Möchtest Du es versuchen?\x1B&#Ja!&Nein!#",
+                                                                           "Wie sieht's aus?&Möchtest Du es versuchen?\x1B#Ja!&Nein!#",
                                                                 /*french*/ "Que dirais-tu d'essayer le #Parcours d'Obstacles#? Si tu bats mon temps, je te donnerai ma vache préférée, Elsie, et son jouet #[[1]]#!^"
-                                                                           "Tenter le #Parcours d'Obstacles#?&\x1B&#Allons-y&Non merci#",
+                                                                           "Tenter le #Parcours d'Obstacles#?\x1B#Allons-y&Non merci#",
                                                                            {QM_RED, QM_BLUE, QM_GREEN, QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_MALON_HINT_TURNING_EVIL] = HintText(CustomMessage("@? Is that you? ^If I ran the ranch, I'd build an #Obstacle Course#, and whoever gets the best time would win a #cow#!^"
