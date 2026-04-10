@@ -25,7 +25,6 @@
 #include "item_location.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "z64item.h"
-#include "fishsanity.h"
 
 extern "C" {
 #include "variables.h"
@@ -475,14 +474,9 @@ RandomizerCheckArea GetCheckArea() {
     return area;
 }
 
-bool vector_contains_scene(std::vector<SceneID> vec, const int16_t scene) {
-    return std::any_of(vec.begin(), vec.end(), [&](const auto& x) { return x == scene; });
-}
-
-std::vector<SceneID> skipScenes = {
+std::array<SceneID, 4> skipScenes = {
     SCENE_GANON_BOSS,
     SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR,
-    SCENE_GANON_BOSS,
     SCENE_INSIDE_GANONS_CASTLE_COLLAPSE,
     SCENE_GANONS_TOWER_COLLAPSE_INTERIOR,
 };
@@ -659,7 +653,8 @@ void CheckTrackerTransition(uint32_t sceneNum) {
 }
 
 void CheckTrackerItemReceive(GetItemEntry giEntry) {
-    if (!GameInteractor::IsSaveLoaded() || vector_contains_scene(skipScenes, gPlayState->sceneNum)) {
+    if (!GameInteractor::IsSaveLoaded() || std::find(std::begin(skipScenes), std::end(skipScenes),
+                                                     (SceneID)gPlayState->sceneNum) != std::end(skipScenes)) {
         return;
     }
     auto scene = static_cast<SceneID>(gPlayState->sceneNum);
