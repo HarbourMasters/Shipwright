@@ -144,7 +144,7 @@ void EnEncount1_SpawnLeevers(EnEncount1* this, PlayState* play) {
 
                 if (leever != NULL) {
                     this->curNumSpawn++;
-                    leever->unk_280 = this->leeverIndex++;
+                    leever->aimType = this->leeverIndex++;
                     if (this->leeverIndex >= 5) {
                         this->leeverIndex = 0;
                     }

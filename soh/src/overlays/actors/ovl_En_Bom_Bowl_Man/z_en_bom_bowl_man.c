@@ -86,7 +86,7 @@ void EnBomBowlMan_Init(Actor* thisx, PlayState* play2) {
                                            cuccoSpawnPos[i].y, cuccoSpawnPos[i].z, 0, 0, 0, 1);
 
         if (cucco != NULL) {
-            cucco->unk_2F4 = cuccoScales[i];
+            cucco->scale = cuccoScales[i];
             cucco->collider.dim.radius = (s16)cuccoColliderDims[i][0];
             cucco->collider.dim.height = (s16)cuccoColliderDims[i][1];
         }

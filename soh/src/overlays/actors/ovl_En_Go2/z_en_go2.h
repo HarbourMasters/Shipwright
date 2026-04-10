@@ -53,7 +53,7 @@ typedef struct {
     f32 shape_unk_10;
     f32 scale;
     s8 actor_unk_1F;
-    f32 unk_218;
+    f32 interactRange;
 } EnGo2DataStruct2; // size = 0x10
 
 typedef struct {
@@ -86,12 +86,12 @@ typedef struct EnGo2 {
     /* 0x0214 */ u8 eyeTexIndex; 
     /* 0x0215 */ u8 mouthTexIndex; 
     /* 0x0216 */ u8 unk_216; // Set to z rotation, checked by waypoint
-    /* 0x0218 */ f32 unk_218;
+    /* 0x0218 */ f32 interactRange;
     /* 0x021C */ char unk_21C[0x04];
     /* 0x0220 */ f32 alpha; // Set to 0, used by func_80A45360, smoothed to this->actor.shape.unk_14 from either 0 or 255.0f
     /* 0x0224 */ s16 blinkTimer; 
-    /* 0x0226 */ s16 unk_226[18]; // Remains unknown
-    /* 0x024A */ s16 unk_24A[18]; // Remains unknown
+    /* 0x0226 */ s16 fidgetTableY[18]; // Remains unknown
+    /* 0x024A */ s16 fidgetTableZ[18]; // Remains unknown
     /* 0x026E */ u16 trackingMode;
     /* 0x0270 */ EnGoEffect dustEffects[10];
     /* 0x04A0 */ Vec3f eye;

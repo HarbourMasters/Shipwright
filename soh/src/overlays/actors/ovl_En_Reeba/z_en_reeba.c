@@ -131,7 +131,7 @@ void EnReeba_Init(Actor* thisx, PlayState* play) {
         Actor_ChangeCategory(play, &play->actorCtx, &this->actor, ACTORCAT_ENEMY);
     }
 
-    this->actor.shape.yOffset = this->unk_284 = this->scale * -27500.0f;
+    this->actor.shape.yOffset = this->yOffsetTarget = this->scale * -27500.0f;
     ActorShape_Init(&this->actor.shape, this->actor.shape.yOffset, ActorShadow_DrawCircle, 0.0f);
     this->actor.colChkInfo.damageTable = &sDamageTable;
     Actor_UpdateBgCheckInfo(play, &this->actor, 35.0f, 60.0f, 60.0f, 0x1D);
@@ -177,12 +177,12 @@ void func_80AE4F40(EnReeba* this, PlayState* play) {
     Animation_Change(&this->skelanime, &object_reeba_Anim_0001E4, 2.0f, 0.0f, frames, ANIMMODE_LOOP, -10.0f);
 
     playerSpeed = fabsf(player->linearVelocity);
-    this->unk_278 = 20 - playerSpeed * 2;
-    if (this->unk_278 < 0) {
-        this->unk_278 = 2;
+    this->waitTimer = 20 - playerSpeed * 2;
+    if (this->waitTimer < 0) {
+        this->waitTimer = 2;
     }
-    if (this->unk_278 > 20) {
-        this->unk_278 = 20;
+    if (this->waitTimer > 20) {
+        this->waitTimer = 20;
     }
 
     this->actor.flags &= ~ACTOR_FLAG_LOCK_ON_DISABLED;
@@ -208,17 +208,17 @@ void func_80AE5054(EnReeba* this, PlayState* play) {
                                  500, 10, true);
     }
 
-    if (this->unk_278 == 0) {
+    if (this->waitTimer == 0) {
         Math_ApproachF(&this->actor.shape.shadowScale, 12.0f, 1.0f, 1.0f);
         if (this->actor.shape.yOffset < 0.0f) {
-            Math_ApproachZeroF(&this->actor.shape.yOffset, 1.0f, this->unk_288);
-            Math_ApproachF(&this->unk_288, 300.0f, 1.0f, 5.0f);
+            Math_ApproachZeroF(&this->actor.shape.yOffset, 1.0f, this->yOffsetStep);
+            Math_ApproachF(&this->yOffsetStep, 300.0f, 1.0f, 5.0f);
         } else {
-            this->unk_288 = 0.0f;
+            this->yOffsetStep = 0.0f;
             this->actor.shape.yOffset = 0.0f;
             playerLinearVel = player->linearVelocity;
 
-            switch (this->unk_280) {
+            switch (this->aimType) {
                 case 0:
                     this->actor.world.rot.y = this->actor.yawTowardsPlayer;
                     break;
@@ -239,7 +239,7 @@ void func_80AE5054(EnReeba* this, PlayState* play) {
             if (this->isBig) {
                 this->actionfunc = func_80AE538C;
             } else {
-                this->unk_272 = 130;
+                this->moveTimer = 130;
                 this->actor.speedXZ = Rand_ZeroFloat(4.0f) + 6.0f;
                 this->actionfunc = func_80AE5270;
             }
@@ -261,12 +261,12 @@ void func_80AE5270(EnReeba* this, PlayState* play) {
     if ((surfaceType != 4) && (surfaceType != 7)) {
         this->actor.speedXZ = 0.0f;
         this->actionfunc = func_80AE5688;
-    } else if ((this->unk_272 == 0) || (this->actor.xzDistToPlayer < 30.0f) || (this->actor.xzDistToPlayer > 400.0f) ||
-               (this->actor.bgCheckFlags & 8)) {
+    } else if ((this->moveTimer == 0) || (this->actor.xzDistToPlayer < 30.0f) ||
+               (this->actor.xzDistToPlayer > 400.0f) || (this->actor.bgCheckFlags & 8)) {
         this->actionfunc = func_80AE5688;
-    } else if (this->unk_274 == 0) {
+    } else if (this->sfxTimer == 0) {
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_RIVA_MOVE);
-        this->unk_274 = 10;
+        this->sfxTimer = 10;
     }
 }
 
@@ -293,8 +293,8 @@ void func_80AE53AC(EnReeba* this, PlayState* play) {
         (this->actor.bgCheckFlags & 8)) {
         this->actionfunc = func_80AE5688;
     } else {
-        if ((this->actor.xzDistToPlayer < 70.0f) && (this->unk_270 == 0)) {
-            this->unk_270 = 30;
+        if ((this->actor.xzDistToPlayer < 70.0f) && (this->bigLeeverTimer == 0)) {
+            this->bigLeeverTimer = 30;
         }
 
         speed = (this->actor.xzDistToPlayer - 20.0f) / ((Rand_ZeroOne() * 50.0f) + 150.0f);
@@ -306,14 +306,14 @@ void func_80AE53AC(EnReeba* this, PlayState* play) {
             this->actor.speedXZ = -3.0f;
         }
 
-        yawDiff = (this->unk_270 == 0) ? this->actor.yawTowardsPlayer : -this->actor.yawTowardsPlayer;
+        yawDiff = (this->bigLeeverTimer == 0) ? this->actor.yawTowardsPlayer : -this->actor.yawTowardsPlayer;
         yawDiff -= this->actor.world.rot.y;
         yaw = (yawDiff > 0) ? ((yawDiff / 31.0f) + 10.0f) : ((yawDiff / 31.0f) - 10.0f);
         this->actor.world.rot.y += yaw * 2.0f;
 
-        if (this->unk_274 == 0) {
+        if (this->sfxTimer == 0) {
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_RIVA_MOVE);
-            this->unk_274 = 20;
+            this->sfxTimer = 20;
         }
     }
 }
@@ -321,7 +321,7 @@ void func_80AE53AC(EnReeba* this, PlayState* play) {
 void func_80AE561C(EnReeba* this, PlayState* play) {
     Math_ApproachZeroF(&this->actor.speedXZ, 1.0f, 0.3f);
 
-    if (this->unk_272 == 0) {
+    if (this->moveTimer == 0) {
         if (this->isBig) {
             this->actionfunc = func_80AE538C;
         } else {
@@ -331,7 +331,7 @@ void func_80AE561C(EnReeba* this, PlayState* play) {
 }
 
 void func_80AE5688(EnReeba* this, PlayState* play) {
-    this->unk_27E = 0;
+    this->stunType = 0;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_AKINDONUTS_HIDE);
     this->actor.flags |= ACTOR_FLAG_LOCK_ON_DISABLED;
     this->actor.flags &= ~(ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE);
@@ -343,21 +343,21 @@ void func_80AE56E0(EnReeba* this, PlayState* play) {
     Math_ApproachZeroF(&this->actor.speedXZ, 0.1f, 0.3f);
     SkelAnime_Update(&this->skelanime);
 
-    if ((this->unk_284 + 10.0f) <= this->actor.shape.yOffset) {
+    if ((this->yOffsetTarget + 10.0f) <= this->actor.shape.yOffset) {
         if ((play->gameplayFrames % 4) == 0) {
             Actor_SpawnFloorDustRing(play, &this->actor, &this->actor.world.pos, this->actor.shape.shadowScale, 1, 8.0f,
                                      500, 10, true);
         }
 
-        Math_ApproachF(&this->actor.shape.yOffset, this->unk_284, 1.0f, this->unk_288);
-        Math_ApproachF(&this->unk_288, 300.0f, 1.0f, 5.0f);
+        Math_ApproachF(&this->actor.shape.yOffset, this->yOffsetTarget, 1.0f, this->yOffsetStep);
+        Math_ApproachF(&this->yOffsetStep, 300.0f, 1.0f, 5.0f);
     } else {
         Actor_Kill(&this->actor);
     }
 }
 
 void func_80AE57F0(EnReeba* this, PlayState* play) {
-    this->unk_276 = 14;
+    this->damagedTimer = 14;
     this->actor.speedXZ = -8.0f;
     this->actor.world.rot.y = this->actor.yawTowardsPlayer;
     Actor_SetColorFilter(&this->actor, 0x4000, 0xFF, 0, 8);
@@ -371,9 +371,9 @@ void func_80AE5854(EnReeba* this, PlayState* play) {
         this->actor.speedXZ += 1.0f;
     }
 
-    if (this->unk_276 == 0) {
+    if (this->damagedTimer == 0) {
         if (this->isBig) {
-            this->unk_270 = 30;
+            this->bigLeeverTimer = 30;
             this->actionfunc = func_80AE538C;
         } else {
             this->actionfunc = func_80AE5688;
@@ -382,7 +382,7 @@ void func_80AE5854(EnReeba* this, PlayState* play) {
 }
 
 void func_80AE58EC(EnReeba* this, PlayState* play) {
-    this->unk_278 = 14;
+    this->waitTimer = 14;
     this->actor.world.rot.y = this->actor.yawTowardsPlayer;
     this->actor.speedXZ = -8.0f;
     this->actor.flags |= ACTOR_FLAG_LOCK_ON_DISABLED;
@@ -394,15 +394,15 @@ void func_80AE5938(EnReeba* this, PlayState* play) {
     Vec3f pos;
     f32 scale;
 
-    if (this->unk_278 != 0) {
+    if (this->waitTimer != 0) {
         if (this->actor.speedXZ < 0.0f) {
             this->actor.speedXZ += 1.0f;
         }
     } else {
         this->actor.speedXZ = 0.0f;
 
-        if ((this->unk_27E == 4) || (this->actor.colChkInfo.health != 0)) {
-            if (this->unk_27E == 2) {
+        if ((this->stunType == 4) || (this->actor.colChkInfo.health != 0)) {
+            if (this->stunType == 2) {
                 pos.x = this->actor.world.pos.x + Rand_CenteredFloat(20.0f);
                 pos.y = this->actor.world.pos.y + Rand_CenteredFloat(20.0f);
                 pos.z = this->actor.world.pos.z + Rand_CenteredFloat(20.0f);
@@ -415,10 +415,10 @@ void func_80AE5938(EnReeba* this, PlayState* play) {
                 EffectSsEnIce_SpawnFlyingVec3f(play, &this->actor, &pos, 150, 150, 150, 250, 235, 245, 255, scale);
             }
 
-            this->unk_278 = 66;
+            this->waitTimer = 66;
             this->actionfunc = func_80AE5E48;
         } else {
-            this->unk_278 = 30;
+            this->waitTimer = 30;
             this->actionfunc = func_80AE5A9C;
         }
     }
@@ -428,8 +428,8 @@ void func_80AE5A9C(EnReeba* this, PlayState* play) {
     Vec3f pos;
     f32 scale;
 
-    if (this->unk_278 != 0) {
-        if ((this->unk_27E == 2) && ((this->unk_278 & 0xF) == 0)) {
+    if (this->waitTimer != 0) {
+        if ((this->stunType == 2) && ((this->waitTimer & 0xF) == 0)) {
             pos.x = this->actor.world.pos.x + Rand_CenteredFloat(20.0f);
             pos.y = this->actor.world.pos.y + Rand_CenteredFloat(20.0f);
             pos.z = this->actor.world.pos.z + Rand_CenteredFloat(20.0f);
@@ -453,7 +453,7 @@ void func_80AE5BC4(EnReeba* this, PlayState* play) {
     this->actor.speedXZ = -8.0f;
     this->actor.world.rot.y = this->actor.yawTowardsPlayer;
     Actor_SetColorFilter(&this->actor, 0x4000, 0xFF, 0, 8);
-    this->unk_278 = 14;
+    this->waitTimer = 14;
     this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     this->actionfunc = func_80AE5C38;
 }
@@ -463,7 +463,7 @@ void func_80AE5C38(EnReeba* this, PlayState* play) {
     Vec3f accel = { 0.0f, 0.0f, 0.0f };
     Vec3f velocity = { 0.0f, 0.0f, 0.0f };
 
-    if (this->unk_278 != 0) {
+    if (this->waitTimer != 0) {
         if (this->actor.speedXZ < 0.0f) {
             this->actor.speedXZ += 1.0f;
         }
@@ -507,11 +507,11 @@ void func_80AE5C38(EnReeba* this, PlayState* play) {
 }
 
 void func_80AE5E48(EnReeba* this, PlayState* play) {
-    if (this->unk_278 < 37) {
+    if (this->waitTimer < 37) {
         this->actor.shape.rot.x = Rand_CenteredFloat(3000.0f);
         this->actor.shape.rot.z = Rand_CenteredFloat(3000.0f);
 
-        if (this->unk_278 == 0) {
+        if (this->waitTimer == 0) {
             if (this->isBig) {
                 this->actionfunc = func_80AE538C;
             } else {
@@ -527,28 +527,28 @@ void func_80AE5EDC(EnReeba* this, PlayState* play) {
 
         if ((this->actionfunc != func_80AE5C38) && (this->actionfunc != func_80AE5854)) {
             this->actor.shape.rot.x = this->actor.shape.rot.z = 0;
-            this->unk_27E = 0;
+            this->stunType = 0;
 
             switch (this->actor.colChkInfo.damageEffect) {
                 case 11: // none
                 case 12: // boomerang
-                    if ((this->actor.colChkInfo.health > 1) && (this->unk_27E != 4)) {
-                        this->unk_27E = 4;
+                    if ((this->actor.colChkInfo.health > 1) && (this->stunType != 4)) {
+                        this->stunType = 4;
                         Audio_PlayActorSound2(&this->actor, NA_SE_EN_GOMA_JR_FREEZE);
                         Actor_SetColorFilter(&this->actor, 0, 0xFF, 0, 0x50);
                         this->actionfunc = func_80AE58EC;
                         break;
                     }
                 case 13: // hookshot/longshot
-                    if ((this->actor.colChkInfo.health > 2) && (this->unk_27E != 4)) {
-                        this->unk_27E = 4;
+                    if ((this->actor.colChkInfo.health > 2) && (this->stunType != 4)) {
+                        this->stunType = 4;
                         Actor_SetColorFilter(&this->actor, 0, 0xFF, 0, 0x50);
                         Audio_PlayActorSound2(&this->actor, NA_SE_EN_GOMA_JR_FREEZE);
                         this->actionfunc = func_80AE58EC;
                         break;
                     }
                 case 14:
-                    this->unk_27C = 6;
+                    this->unkDamageField = 6;
                     Actor_ApplyDamage(&this->actor);
                     if (this->actor.colChkInfo.health == 0) {
                         Audio_PlayActorSound2(&this->actor, NA_SE_EN_RIVA_DEAD);
@@ -564,14 +564,14 @@ void func_80AE5EDC(EnReeba* this, PlayState* play) {
                     break;
                 case 3: // ice arrows/ice magic
                     Actor_ApplyDamage(&this->actor);
-                    this->unk_27C = 2;
-                    this->unk_27E = 2;
+                    this->unkDamageField = 2;
+                    this->stunType = 2;
                     Actor_SetColorFilter(&this->actor, 0, 0xFF, 0, 80);
                     this->actionfunc = func_80AE58EC;
                     break;
                 case 1: // unknown
-                    if (this->unk_27E != 4) {
-                        this->unk_27E = 4;
+                    if (this->stunType != 4) {
+                        this->stunType = 4;
                         Actor_SetColorFilter(&this->actor, 0, 0xFF, 0, 80);
                         this->actionfunc = func_80AE58EC;
                     }
@@ -590,24 +590,24 @@ void EnReeba_Update(Actor* thisx, PlayState* play2) {
     this->actionfunc(this, play);
     Actor_SetScale(&this->actor, this->scale);
 
-    if (this->unk_270 != 0) {
-        this->unk_270--;
+    if (this->bigLeeverTimer != 0) {
+        this->bigLeeverTimer--;
     }
 
-    if (this->unk_272 != 0) {
-        this->unk_272--;
+    if (this->moveTimer != 0) {
+        this->moveTimer--;
     }
 
-    if (this->unk_278 != 0) {
-        this->unk_278--;
+    if (this->waitTimer != 0) {
+        this->waitTimer--;
     }
 
-    if (this->unk_274 != 0) {
-        this->unk_274--;
+    if (this->sfxTimer != 0) {
+        this->sfxTimer--;
     }
 
-    if (this->unk_276 != 0) {
-        this->unk_276--;
+    if (this->damagedTimer != 0) {
+        this->damagedTimer--;
     }
 
     Actor_MoveXZGravity(&this->actor);
@@ -619,7 +619,7 @@ void EnReeba_Update(Actor* thisx, PlayState* play2) {
         if ((this->actionfunc == func_80AE5270) || (this->actionfunc == func_80AE53AC)) {
             this->actor.speedXZ = 8.0f;
             this->actor.world.rot.y *= -1.0f;
-            this->unk_272 = 14;
+            this->moveTimer = 14;
             this->actionfunc = func_80AE561C;
             return;
         }

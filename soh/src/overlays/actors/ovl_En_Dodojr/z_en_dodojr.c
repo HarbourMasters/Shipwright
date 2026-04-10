@@ -145,7 +145,7 @@ s32 func_809F68B0(EnDodojr* this, PlayState* play) {
         return 0;
     }
 
-    if (this->unk_1FC == 0) {
+    if (this->counter == 0) {
         return 0;
     }
 
@@ -153,10 +153,10 @@ s32 func_809F68B0(EnDodojr* this, PlayState* play) {
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_DODO_M_GND);
         this->dustPos = this->actor.world.pos;
         func_809F6510(this, play, 10);
-        this->actor.velocity.y = 10.0f / (4 - this->unk_1FC);
-        this->unk_1FC--;
+        this->actor.velocity.y = 10.0f / (4 - this->counter);
+        this->counter--;
 
-        if (this->unk_1FC == 0) {
+        if (this->counter == 0) {
             this->actor.velocity.y = 0.0f;
             return 1;
         }
@@ -183,8 +183,8 @@ void func_809F6A20(EnDodojr* this) {
     this->actor.velocity.z = 0.0f;
     this->actor.gravity = -0.8f;
 
-    if (this->unk_1FC == 0) {
-        this->unk_1FC = 3;
+    if (this->counter == 0) {
+        this->counter = 3;
         this->actor.velocity.y = 10.0f;
     }
     GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
@@ -203,7 +203,7 @@ void func_809F6B38(EnDodojr* this) {
 
     Animation_Change(&this->skelAnime, &object_dodojr_Anim_000724, 1.0f, 0.0f, lastFrame, ANIMMODE_LOOP, -10.0f);
     this->actor.gravity = -0.8f;
-    this->unk_1FC = 3;
+    this->counter = 3;
     this->actor.velocity.y = 10.0f;
 }
 
@@ -474,7 +474,7 @@ void func_809F768C(EnDodojr* this, PlayState* play) {
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_DODO_K_DRINK);
         Actor_Kill(this->bomb);
         this->timer3 = 24;
-        this->unk_1FC = 0;
+        this->counter = 0;
         this->actionFunc = func_809F773C;
     }
 }
@@ -496,7 +496,7 @@ void func_809F77AC(EnDodojr* this, PlayState* play) {
     if (func_809F68B0(this, play) != 0) {
         this->timer3 = 60;
         func_809F6AC4(this);
-        this->unk_1FC = 7;
+        this->counter = 7;
         this->actionFunc = func_809F784C;
     }
 }
@@ -570,7 +570,7 @@ void func_809F7AB8(EnDodojr* this, PlayState* play) {
     if (func_809F68B0(this, play) != 0) {
         this->timer3 = 60;
         func_809F6AC4(this);
-        this->unk_1FC = 7;
+        this->counter = 7;
         this->actionFunc = func_809F7B3C;
     }
 }
@@ -578,10 +578,10 @@ void func_809F7AB8(EnDodojr* this, PlayState* play) {
 void func_809F7B3C(EnDodojr* this, PlayState* play) {
     EnBom* bomb;
 
-    if (this->unk_1FC != 0) {
+    if (this->counter != 0) {
         if (this->actor.colorFilterTimer == 0) {
-            Actor_SetColorFilter(&this->actor, 0x4000, 200, 0, this->unk_1FC);
-            this->unk_1FC--;
+            Actor_SetColorFilter(&this->actor, 0x4000, 200, 0, this->counter);
+            this->counter--;
         }
     } else {
         bomb = (EnBom*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOM, this->actor.world.pos.x,

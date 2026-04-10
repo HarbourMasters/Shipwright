@@ -129,8 +129,8 @@ void EnCow_Init(Actor* thisx, PlayState* play) {
 
             Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_COW, this->actor.world.pos.x,
                                this->actor.world.pos.y, this->actor.world.pos.z, 0, this->actor.shape.rot.y, 0, 1);
-            this->unk_278 = Rand_ZeroFloat(1000.0f) + 40.0f;
-            this->unk_27A = 0;
+            this->animationTimer = Rand_ZeroFloat(1000.0f) + 40.0f;
+            this->breathTimer = 0;
             this->actor.targetMode = 6;
             DREG(53) = 0;
             break;
@@ -142,12 +142,12 @@ void EnCow_Init(Actor* thisx, PlayState* play) {
             this->actionFunc = func_809DFA84;
             func_809DEF94(this);
             this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
-            this->unk_278 = ((u32)(Rand_ZeroFloat(1000.0f)) & 0xFFFF) + 40.0f;
+            this->animationTimer = ((u32)(Rand_ZeroFloat(1000.0f)) & 0xFFFF) + 40.0f;
             break;
     }
     this->actor.colChkInfo.mass = MASS_IMMOVABLE;
     Actor_SetScale(&this->actor, 0.01f);
-    this->unk_276 = 0;
+    this->cowFlags = 0;
 }
 
 void EnCow_Destroy(Actor* thisx, PlayState* play) {
@@ -162,35 +162,35 @@ void EnCow_Destroy(Actor* thisx, PlayState* play) {
 }
 
 void func_809DF494(EnCow* this, PlayState* play) {
-    if (this->unk_278 > 0) {
-        this->unk_278 -= 1;
+    if (this->animationTimer > 0) {
+        this->animationTimer -= 1;
     } else {
-        this->unk_278 = Rand_ZeroFloat(500.0f) + 40.0f;
+        this->animationTimer = Rand_ZeroFloat(500.0f) + 40.0f;
         Animation_Change(&this->skelAnime, &gCowBodyChewAnim, 1.0f, this->skelAnime.curFrame,
                          Animation_GetLastFrame(&gCowBodyChewAnim), ANIMMODE_ONCE, 1.0f);
     }
 
-    if ((this->actor.xzDistToPlayer < 150.0f) && (!(this->unk_276 & 2))) {
-        this->unk_276 |= 2;
+    if ((this->actor.xzDistToPlayer < 150.0f) && (!(this->cowFlags & 2))) {
+        this->cowFlags |= 2;
         if (this->skelAnime.animation == &gCowBodyChewAnim) {
-            this->unk_278 = 0;
+            this->animationTimer = 0;
         }
     }
 
-    this->unk_27A += 1;
-    if (this->unk_27A >= 0x31) {
-        this->unk_27A = 0;
+    this->breathTimer += 1;
+    if (this->breathTimer >= 0x31) {
+        this->breathTimer = 0;
     }
 
     // (1.0f / 100.0f) instead of 0.01f below is necessary so 0.01f doesn't get reused mistakenly
-    if (this->unk_27A < 0x20) {
-        this->actor.scale.x = ((Math_SinS(this->unk_27A << 0xA) * (1.0f / 100.0f)) + 1.0f) * 0.01f;
+    if (this->breathTimer < 0x20) {
+        this->actor.scale.x = ((Math_SinS(this->breathTimer << 0xA) * (1.0f / 100.0f)) + 1.0f) * 0.01f;
     } else {
         this->actor.scale.x = 0.01f;
     }
 
-    if (this->unk_27A >= 0x11) {
-        this->actor.scale.y = ((Math_SinS((this->unk_27A << 0xA) - 0x4000) * (1.0f / 100.0f)) + 1.0f) * 0.01f;
+    if (this->breathTimer >= 0x11) {
+        this->actor.scale.y = ((Math_SinS((this->breathTimer << 0xA) - 0x4000) * (1.0f / 100.0f)) + 1.0f) * 0.01f;
     } else {
         this->actor.scale.y = 0.01f;
     }
@@ -255,8 +255,8 @@ void func_809DF8FC(EnCow* this, PlayState* play) {
 void func_809DF96C(EnCow* this, PlayState* play) {
     if ((play->msgCtx.ocarinaMode == OCARINA_MODE_00) || (play->msgCtx.ocarinaMode == OCARINA_MODE_04)) {
         if (DREG(53) != 0) {
-            if (this->unk_276 & 4) {
-                this->unk_276 &= ~0x4;
+            if (this->cowFlags & 4) {
+                this->cowFlags &= ~0x4;
                 DREG(53) = 0;
             } else {
                 if ((this->actor.xzDistToPlayer < 150.0f) &&
@@ -271,30 +271,30 @@ void func_809DF96C(EnCow* this, PlayState* play) {
                         return;
                     }
                 } else {
-                    this->unk_276 |= 4;
+                    this->cowFlags |= 4;
                 }
             }
         } else {
-            this->unk_276 &= ~0x4;
+            this->cowFlags &= ~0x4;
         }
     }
     func_809DF494(this, play);
 }
 
 void func_809DFA84(EnCow* this, PlayState* play) {
-    if (this->unk_278 > 0) {
-        this->unk_278--;
+    if (this->animationTimer > 0) {
+        this->animationTimer--;
     } else {
-        this->unk_278 = Rand_ZeroFloat(200.0f) + 40.0f;
+        this->animationTimer = Rand_ZeroFloat(200.0f) + 40.0f;
         Animation_Change(&this->skelAnime, &gCowTailIdleAnim, 1.0f, this->skelAnime.curFrame,
                          Animation_GetLastFrame(&gCowTailIdleAnim), ANIMMODE_ONCE, 1.0f);
     }
 
     if ((this->actor.xzDistToPlayer < 150.0f) &&
-        (ABS((s16)(this->actor.yawTowardsPlayer - this->actor.shape.rot.y)) >= 0x61A9) && (!(this->unk_276 & 2))) {
-        this->unk_276 |= 2;
+        (ABS((s16)(this->actor.yawTowardsPlayer - this->actor.shape.rot.y)) >= 0x61A9) && (!(this->cowFlags & 2))) {
+        this->cowFlags |= 2;
         if (this->skelAnime.animation == &gCowTailIdleAnim) {
-            this->unk_278 = 0;
+            this->animationTimer = 0;
         }
     }
 }

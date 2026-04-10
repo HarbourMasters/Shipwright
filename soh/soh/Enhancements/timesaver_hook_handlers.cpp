@@ -59,7 +59,7 @@ void EnMa1_EndTeachSong(EnMa1* enMa1, PlayState* play) {
         enMa1->actor.flags &= ~ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
         play->msgCtx.ocarinaMode = OCARINA_MODE_04;
         enMa1->actionFunc = func_80AA0D88;
-        enMa1->unk_1E0 = 1;
+        enMa1->singingDisabled = 1;
         enMa1->interactInfo.talkState = NPC_TALK_STATE_IDLE;
         return;
     }

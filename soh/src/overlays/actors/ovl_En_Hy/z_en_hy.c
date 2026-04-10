@@ -432,14 +432,14 @@ u16 func_80A6F810(PlayState* play, Actor* thisx) {
     switch (this->actor.params & 0x7F) {
         case ENHY_TYPE_AOB:
             if (play->sceneNum == SCENE_KAKARIKO_CENTER_GUEST_HOUSE) {
-                return (this->unk_330 & 0x800) ? 0x508D : ((Flags_GetInfTable(INFTABLE_CB)) ? 0x508C : 0x508B);
+                return (this->talonEventChkInf & 0x800) ? 0x508D : ((Flags_GetInfTable(INFTABLE_CB)) ? 0x508C : 0x508B);
             } else if (play->sceneNum == SCENE_MARKET_DAY) {
                 return (gSaveContext.eventInf[3] & 1) ? 0x709B : 0x709C;
             } else if (gSaveContext.dogIsLost) {
                 s16 followingDog = (gSaveContext.dogParams & 0xF00) >> 8;
 
                 if (followingDog != 0) {
-                    this->unk_215 = false;
+                    this->playedSfx = false;
                     return ((followingDog == 1) || (CVarGetInteger(CVAR_ENHANCEMENT("AllDogsRichard"), 0))) ? 0x709F
                                                                                                             : 0x709E;
                 } else {
@@ -557,7 +557,8 @@ u16 func_80A6F810(PlayState* play, Actor* thisx) {
                            ? 0x505F
                            : ((Flags_GetInfTable(INFTABLE_163)) ? 0x505E : 0x505D);
             } else {
-                return (this->unk_330 & 0x800) ? 0x5062 : ((Flags_GetInfTable(INFTABLE_164)) ? 0x5061 : 0x5060);
+                return (this->talonEventChkInf & 0x800) ? 0x5062
+                                                        : ((Flags_GetInfTable(INFTABLE_164)) ? 0x5061 : 0x5060);
             }
         case ENHY_TYPE_BJI_19:
             return 0x7120;
@@ -586,11 +587,11 @@ s16 func_80A70058(PlayState* play, Actor* thisx) {
             switch (this->actor.textId) {
                 case 0x709E:
                 case 0x709F:
-                    if (!this->unk_215) {
+                    if (!this->playedSfx) {
                         Audio_PlaySoundGeneral(this->actor.textId == 0x709F ? NA_SE_SY_CORRECT_CHIME : NA_SE_SY_ERROR,
                                                &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
                                                &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
-                        this->unk_215 = true;
+                        this->playedSfx = true;
                     }
                     break;
                 case 0x70F0:
@@ -941,7 +942,7 @@ void EnHy_InitImpl(EnHy* this, PlayState* play) {
         }
 
         if (play->sceneNum == SCENE_KAKARIKO_CENTER_GUEST_HOUSE) {
-            this->unk_330 = gSaveContext.eventChkInf[6];
+            this->talonEventChkInf = gSaveContext.eventChkInf[6];
         }
 
         EnHy_InitSetProperties(this);
@@ -1024,7 +1025,7 @@ void func_80A711B4(EnHy* this, PlayState* play) {
 }
 
 void func_80A7127C(EnHy* this, PlayState* play) {
-    func_80034F54(play, this->unk_21C, this->unk_23C, 16);
+    func_80034F54(play, this->fidgetTableY, this->fidgetTableZ, 16);
 }
 
 void EnHy_DoNothing(EnHy* this, PlayState* play) {
@@ -1037,7 +1038,7 @@ void func_80A712C0(EnHy* this, PlayState* play) {
         this->actionFunc = func_80A7134C;
     }
 
-    func_80034F54(play, this->unk_21C, this->unk_23C, 16);
+    func_80034F54(play, this->fidgetTableY, this->fidgetTableZ, 16);
 }
 
 void func_80A7134C(EnHy* this, PlayState* play) {
@@ -1160,8 +1161,8 @@ s32 EnHy_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* po
     }
 
     if ((limbIndex == 8) || (limbIndex == 9) || (limbIndex == 12)) {
-        rot->y += Math_SinS(this->unk_21C[limbIndex]) * 200.0f;
-        rot->z += Math_CosS(this->unk_23C[limbIndex]) * 200.0f;
+        rot->y += Math_SinS(this->fidgetTableY[limbIndex]) * 200.0f;
+        rot->z += Math_CosS(this->fidgetTableZ[limbIndex]) * 200.0f;
     }
 
     CLOSE_DISPS(play->state.gfxCtx);

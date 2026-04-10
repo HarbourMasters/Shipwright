@@ -47,18 +47,18 @@ typedef struct EnHy {
     /* 0x01E8 */ NpcInteractInfo interactInfo;
     /* 0x0210 */ Path* path;
     /* 0x0214 */ s8 waypoint;
-    /* 0x0215 */ s8 unk_215;
+    /* 0x0215 */ s8 playedSfx;
     /* 0x0216 */ char unk_216[2]; // unused
     /* 0x0218 */ s16 curEyeIndex;
     /* 0x021A */ s16 nextEyeIndexTimer;
-    /* 0x021C */ s16 unk_21C[16]; // bodyWiggleY ?
-    /* 0x023C */ s16 unk_23C[16]; // bodyWiggleZ ?
+    /* 0x021C */ s16 fidgetTableY[16]; // bodyWiggleY ?
+    /* 0x023C */ s16 fidgetTableZ[16]; // bodyWiggleZ ?
     /* 0x025C */ f32 unkRange;
     /* 0x0260 */ s32 unkGetItemId;
     /* 0x0264 */ Vec3f modelOffset;
     /* 0x0270 */ Vec3s jointTable[16];
     /* 0x02D0 */ Vec3s morphTable[16];
-    /* 0x0330 */ u16 unk_330;
+    /* 0x0330 */ u16 talonEventChkInf;
     /*        */ GetItemEntry getItemEntry;
 } EnHy; // size = 0x0334
 

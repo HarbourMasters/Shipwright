@@ -771,21 +771,21 @@ void func_80A7AA40(EnIn* this, PlayState* play) {
     Play_ChangeCameraStatus(play, this->activeCamId, CAM_STAT_WAIT);
     Play_ChangeCameraStatus(play, this->camId, CAM_STAT_ACTIVE);
 
-    this->unk_2F0 = 0.0f;
+    this->subCamAtOffset = 0.0f;
     this->unk_2F4 = 50.0f;
     this->unk_2F8 = 0.0f;
-    this->unk_2FC = 0.0f;
+    this->subCamEyeOffset = 0.0f;
     this->unk_300 = 50.0f;
     this->unk_304 = 50.0f;
 
     sp30 = this->actor.world.pos;
     sp24 = this->actor.world.pos;
 
-    sp30.x += this->unk_2F0;
+    sp30.x += this->subCamAtOffset;
     sp30.y += this->unk_2F4;
     sp30.z += this->unk_2F8;
 
-    sp24.x += this->unk_2FC;
+    sp24.x += this->subCamEyeOffset;
     sp24.y += this->unk_300;
     sp24.z += this->unk_304;
 
@@ -837,20 +837,20 @@ void func_80A7ABD4(EnIn* this, PlayState* play) {
         if (play->csCtx.frames == 44) {
             Audio_PlayActorSound2(&this->actor, NA_SE_EV_RONRON_DOOR_CLOSE);
         }
-        Math_SmoothStepToF(&this->unk_2F0, 0.0f, 0.06f, 10000.0f, 0.0f);
+        Math_SmoothStepToF(&this->subCamAtOffset, 0.0f, 0.06f, 10000.0f, 0.0f);
         Math_SmoothStepToF(&this->unk_2F4, 50.0f, 0.06f, 10000.0f, 0.0f);
         Math_SmoothStepToF(&this->unk_2F8, 0.0f, 0.06f, 10000.0f, 0.0f);
-        Math_SmoothStepToF(&this->unk_2FC, 0.0f, 0.06f, 10000.0f, 0.0f);
+        Math_SmoothStepToF(&this->subCamEyeOffset, 0.0f, 0.06f, 10000.0f, 0.0f);
         Math_SmoothStepToF(&this->unk_300, 150.0f, 0.06f, 10000.0f, 0.0f);
         Math_SmoothStepToF(&this->unk_304, 300.0f, 0.06f, 10000.0f, 0.0f);
 
         sp48 = this->actor.world.pos;
         sp3C = this->actor.world.pos;
 
-        sp48.x += this->unk_2F0;
+        sp48.x += this->subCamAtOffset;
         sp48.y += this->unk_2F4;
         sp48.z += this->unk_2F8;
-        sp3C.x += this->unk_2FC;
+        sp3C.x += this->subCamEyeOffset;
         sp3C.y += this->unk_300;
         sp3C.z += this->unk_304;
         Play_CameraSetAtEye(play, this->camId, &sp48, &sp3C);

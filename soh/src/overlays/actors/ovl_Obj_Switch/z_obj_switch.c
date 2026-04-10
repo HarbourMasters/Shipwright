@@ -396,7 +396,7 @@ void ObjSwitch_FloorUp(ObjSwitch* this, PlayState* play) {
                 break;
             case OBJSWITCH_SUBTYPE_FLOOR_1:
                 if ((this->dyna.interactFlags & DYNA_INTERACT_PLAYER_ON_TOP) &&
-                    !(this->unk_17F & DYNA_INTERACT_PLAYER_ON_TOP)) {
+                    !(this->prevColFlags & DYNA_INTERACT_PLAYER_ON_TOP)) {
                     ObjSwitch_FloorPressInit(this);
                     ObjSwitch_SetOn(this, play);
                 }
@@ -449,7 +449,7 @@ void ObjSwitch_FloorDown(ObjSwitch* this, PlayState* play) {
             break;
         case OBJSWITCH_SUBTYPE_FLOOR_1:
             if ((this->dyna.interactFlags & DYNA_INTERACT_PLAYER_ON_TOP) &&
-                !(this->unk_17F & DYNA_INTERACT_PLAYER_ON_TOP)) {
+                !(this->prevColFlags & DYNA_INTERACT_PLAYER_ON_TOP)) {
                 ObjSwitch_FloorReleaseInit(this);
                 ObjSwitch_SetOff(this, play);
             }
@@ -497,7 +497,7 @@ s32 ObjSwitch_EyeIsHit(ObjSwitch* this) {
     Actor* collidingActor;
     s16 yawDiff;
 
-    if ((this->tris.col.base.acFlags & AC_HIT) && !(this->unk_17F & 2)) {
+    if ((this->tris.col.base.acFlags & AC_HIT) && !(this->prevColFlags & 2)) {
         collidingActor = this->tris.col.base.ac;
         if (collidingActor != NULL) {
             yawDiff = collidingActor->world.rot.y - this->dyna.actor.shape.rot.y;
@@ -614,7 +614,7 @@ void ObjSwitch_CrystalOff(ObjSwitch* this, PlayState* play) {
             }
             break;
         case OBJSWITCH_SUBTYPE_CRYSTAL_1:
-            if ((this->jntSph.col.base.acFlags & AC_HIT) && !(this->unk_17F & 2) && this->disableAcTimer <= 0) {
+            if ((this->jntSph.col.base.acFlags & AC_HIT) && !(this->prevColFlags & 2) && this->disableAcTimer <= 0) {
                 this->disableAcTimer = 10;
                 ObjSwitch_SetOn(this, play);
                 ObjSwitch_CrystalTurnOnInit(this);
@@ -656,7 +656,7 @@ void ObjSwitch_CrystalOn(ObjSwitch* this, PlayState* play) {
             }
             break;
         case OBJSWITCH_SUBTYPE_CRYSTAL_1:
-            if ((this->jntSph.col.base.acFlags & AC_HIT) && !(this->unk_17F & 2) && this->disableAcTimer <= 0) {
+            if ((this->jntSph.col.base.acFlags & AC_HIT) && !(this->prevColFlags & 2) && this->disableAcTimer <= 0) {
                 this->disableAcTimer = 10;
                 play = play;
                 ObjSwitch_CrystalTurnOffInit(this);
@@ -696,10 +696,10 @@ void ObjSwitch_Update(Actor* thisx, PlayState* play) {
     switch ((this->dyna.actor.params & 7)) {
         case OBJSWITCH_TYPE_FLOOR:
         case OBJSWITCH_TYPE_FLOOR_RUSTY:
-            this->unk_17F = this->dyna.interactFlags;
+            this->prevColFlags = this->dyna.interactFlags;
             break;
         case OBJSWITCH_TYPE_EYE:
-            this->unk_17F = this->tris.col.base.acFlags;
+            this->prevColFlags = this->tris.col.base.acFlags;
             this->tris.col.base.acFlags &= ~AC_HIT;
             CollisionCheck_SetAC(play, &play->colChkCtx, &this->tris.col.base);
             break;
@@ -708,7 +708,7 @@ void ObjSwitch_Update(Actor* thisx, PlayState* play) {
             if (!Player_InCsMode(play) && this->disableAcTimer > 0) {
                 this->disableAcTimer--;
             }
-            this->unk_17F = this->jntSph.col.base.acFlags;
+            this->prevColFlags = this->jntSph.col.base.acFlags;
             this->jntSph.col.base.acFlags &= ~AC_HIT;
             if (this->disableAcTimer <= 0) {
                 CollisionCheck_SetAC(play, &play->colChkCtx, &this->jntSph.col.base);

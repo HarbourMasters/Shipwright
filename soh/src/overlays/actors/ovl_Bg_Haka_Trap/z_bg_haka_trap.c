@@ -200,7 +200,7 @@ void BgHakaTrap_Destroy(Actor* thisx, PlayState* play) {
         Collider_DestroyCylinder(play, &this->colliderCylinder);
     }
 
-    Audio_StopSfxByPos(&this->unk_16C);
+    Audio_StopSfxByPos(&this->chainLiftSfxPos);
 }
 
 void func_8087FFC0(BgHakaTrap* this, PlayState* play) {
@@ -406,9 +406,10 @@ void func_808808F4(BgHakaTrap* this, PlayState* play) {
     }
 
     if (this->timer > 20) {
-        this->unk_169 = Math_StepToF(&this->dyna.actor.world.pos.y, this->unk_16A, 15.0f);
+        this->isSpikedCrusherStationary = Math_StepToF(&this->dyna.actor.world.pos.y, this->unk_16A, 15.0f);
     } else {
-        this->unk_169 = Math_StepToF(&this->dyna.actor.world.pos.y, this->dyna.actor.home.pos.y, 20.0f);
+        this->isSpikedCrusherStationary =
+            Math_StepToF(&this->dyna.actor.world.pos.y, this->dyna.actor.home.pos.y, 20.0f);
     }
 
     if (this->timer == 0) {
@@ -539,13 +540,13 @@ void BgHakaTrap_Draw(Actor* thisx, PlayState* play) {
         func_80026608(play);
     }
 
-    if ((this->actionFunc == func_808808F4) && !this->unk_169) {
+    if ((this->actionFunc == func_808808F4) && !this->isSpikedCrusherStationary) {
         sp2C.x = this->dyna.actor.world.pos.x;
         sp2C.z = this->dyna.actor.world.pos.z;
         sp2C.y = this->dyna.actor.world.pos.y + 110.0f;
 
-        SkinMatrix_Vec3fMtxFMultXYZ(&play->viewProjectionMtxF, &sp2C, &this->unk_16C);
-        Sfx_PlaySfxAtPos(&this->unk_16C, NA_SE_EV_BRIDGE_CLOSE - SFX_FLAG);
+        SkinMatrix_Vec3fMtxFMultXYZ(&play->viewProjectionMtxF, &sp2C, &this->chainLiftSfxPos);
+        Sfx_PlaySfxAtPos(&this->chainLiftSfxPos, NA_SE_EV_BRIDGE_CLOSE - SFX_FLAG);
     }
 }
 

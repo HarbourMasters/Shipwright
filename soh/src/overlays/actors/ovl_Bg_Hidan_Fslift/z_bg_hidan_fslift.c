@@ -127,15 +127,15 @@ void BgHidanFslift_Update(Actor* thisx, PlayState* play) {
 
     this->actionFunc(this, play);
     if (DynaPolyActor_IsPlayerOnTop(&this->dyna)) {
-        if (this->unk_16A == 0) {
-            this->unk_16A = 3;
+        if (this->cameraSetting == 0) {
+            this->cameraSetting = 3;
         }
         Camera_ChangeSetting(play->cameraPtrs[MAIN_CAM], CAM_SET_FIRE_PLATFORM);
     } else if (!DynaPolyActor_IsPlayerOnTop(&this->dyna)) {
-        if (this->unk_16A != 0) {
+        if (this->cameraSetting != 0) {
             Camera_ChangeSetting(play->cameraPtrs[MAIN_CAM], CAM_SET_DUNGEON0);
         }
-        this->unk_16A = 0;
+        this->cameraSetting = 0;
     }
 }
 

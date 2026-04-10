@@ -124,42 +124,42 @@ void EnWeiyer_Destroy(Actor* thisx, PlayState* play) {
 }
 
 void func_80B32384(EnWeiyer* this) {
-    this->unk_196 = this->actor.shape.rot.y;
-    this->unk_27C = (cosf(-M_PI / 8) * 3.0f) + this->actor.world.pos.y;
+    this->targetYaw = this->actor.shape.rot.y;
+    this->swimHeight = (cosf(-M_PI / 8) * 3.0f) + this->actor.world.pos.y;
     Animation_MorphToLoop(&this->skelAnime, &gStingerHitAnim, -5.0f);
-    this->unk_194 = 30;
+    this->timer = 30;
     this->actor.speedXZ = CLAMP_MAX(this->actor.speedXZ, 2.5f);
     this->collider.base.atFlags &= ~AT_ON;
-    this->unk_280 = this->actor.floorHeight;
+    this->targetSwimHeight = this->actor.floorHeight;
     this->actionFunc = func_80B328E8;
 }
 
 void func_80B32434(EnWeiyer* this) {
     Animation_MorphToLoop(&this->skelAnime, &gStingerHitAnim, -5.0f);
     this->collider.base.atFlags |= AT_ON;
-    this->unk_194 = 0;
+    this->timer = 0;
     this->actor.speedXZ = 5.0f;
     this->actionFunc = func_80B32C2C;
 }
 
 void func_80B32494(EnWeiyer* this) {
     Animation_Change(&this->skelAnime, &gStingerPopOutAnim, 2.0f, 0.0f, 0.0f, ANIMMODE_LOOP, -8.0f);
-    this->unk_194 = 40;
+    this->timer = 40;
     this->collider.base.atFlags |= AT_ON;
     this->actionFunc = func_80B32D30;
 }
 
 void func_80B32508(EnWeiyer* this) {
-    this->unk_194 = 200;
+    this->timer = 200;
     this->collider.base.atFlags |= AT_ON;
     this->skelAnime.playSpeed = 3.0f;
     this->actionFunc = func_80B32E34;
 }
 
 void func_80B32538(EnWeiyer* this) {
-    this->unk_194 = 200;
-    this->unk_196 = this->actor.yawTowardsPlayer + 0x8000;
-    this->unk_27C = this->actor.world.pos.y;
+    this->timer = 200;
+    this->targetYaw = this->actor.yawTowardsPlayer + 0x8000;
+    this->swimHeight = this->actor.world.pos.y;
     this->actor.speedXZ = CLAMP_MAX(this->actor.speedXZ, 4.0f);
     this->collider.base.atFlags &= ~AT_ON;
     this->skelAnime.playSpeed = 1.0f;
@@ -168,7 +168,7 @@ void func_80B32538(EnWeiyer* this) {
 
 void func_80B325A0(EnWeiyer* this) {
     Animation_Change(&this->skelAnime, &gStingerHitAnim, 2.0f, 0.0f, 0.0f, ANIMMODE_LOOP, -3.0f);
-    this->unk_194 = 40;
+    this->timer = 40;
     this->collider.base.atFlags &= ~AT_ON;
     this->collider.base.acFlags &= ~AC_ON;
     this->actor.gravity = 0.0f;
@@ -181,7 +181,7 @@ void func_80B325A0(EnWeiyer* this) {
 
 void func_80B32660(EnWeiyer* this) {
     Animation_Change(&this->skelAnime, &gStingerPopOutAnim, 2.0f, 0.0f, 0.0f, ANIMMODE_LOOP, -8.0f);
-    this->unk_194 = 80;
+    this->timer = 80;
     this->actor.speedXZ = 0.0f;
     this->actor.velocity.y = 0.0f;
     this->actor.gravity = -1.0f;
@@ -194,7 +194,7 @@ void func_80B32660(EnWeiyer* this) {
 
 void func_80B32724(EnWeiyer* this) {
     Animation_MorphToLoop(&this->skelAnime, &gStingerHitAnim, -5.0f);
-    this->unk_194 = 20;
+    this->timer = 20;
     Actor_SetColorFilter(&this->actor, 0x4000, 0xC8, 0, 0x28);
     this->collider.base.atFlags &= ~AT_ON;
     this->collider.base.acFlags &= ~AC_ON;
@@ -211,7 +211,7 @@ void func_80B327B0(EnWeiyer* this) {
 
 void func_80B327D8(EnWeiyer* this) {
     this->actor.shape.rot.x = -0x2000;
-    this->unk_194 = -1;
+    this->timer = -1;
     this->actor.speedXZ = 5.0f;
     this->actionFunc = func_80B3349C;
 }
@@ -243,8 +243,8 @@ void func_80B328E8(EnWeiyer* this, PlayState* play) {
     Math_ScaledStepToS(&this->actor.shape.rot.x, 0, 0x800);
     sp34 = Animation_OnFrame(&this->skelAnime, 0.0f);
     curFrame = this->skelAnime.curFrame;
-    Math_StepToF(&this->unk_27C, this->unk_280, 0.5f);
-    this->actor.world.pos.y = this->unk_27C - cosf((curFrame - 5.0f) * (M_PI / 40)) * 3.0f;
+    Math_StepToF(&this->swimHeight, this->targetSwimHeight, 0.5f);
+    this->actor.world.pos.y = this->swimHeight - cosf((curFrame - 5.0f) * (M_PI / 40)) * 3.0f;
 
     if (curFrame <= 45.0f) {
         Math_StepToF(&this->actor.speedXZ, 1.0f, 0.03f);
@@ -253,19 +253,19 @@ void func_80B328E8(EnWeiyer* this, PlayState* play) {
     }
 
     if (this->actor.bgCheckFlags & 8) {
-        this->unk_196 = this->actor.wallYaw;
-        this->unk_194 = 30;
+        this->targetYaw = this->actor.wallYaw;
+        this->timer = 30;
     }
 
-    if (Math_ScaledStepToS(&this->actor.shape.rot.y, this->unk_196, 182)) {
-        if (this->unk_194 != 0) {
-            this->unk_194--;
+    if (Math_ScaledStepToS(&this->actor.shape.rot.y, this->targetYaw, 182)) {
+        if (this->timer != 0) {
+            this->timer--;
         }
 
-        if (this->unk_194 == 0) {
-            this->unk_196 =
+        if (this->timer == 0) {
+            this->targetYaw =
                 Rand_S16Offset(0x2000, 0x2000) * ((Rand_ZeroOne() < 0.5f) ? -1 : 1) + this->actor.shape.rot.y;
-            this->unk_194 = 30;
+            this->timer = 30;
 
             if (Rand_ZeroOne() < 0.3333f) {
                 Audio_PlayActorSound2(&this->actor, NA_SE_EN_EIER_CRY);
@@ -278,17 +278,17 @@ void func_80B328E8(EnWeiyer* this, PlayState* play) {
             func_80B32434(this);
         } else {
             this->actor.world.pos.y = this->actor.home.pos.y;
-            this->unk_280 =
+            this->targetSwimHeight =
                 Rand_ZeroOne() * ((this->actor.home.pos.y - this->actor.floorHeight) / 2.0f) + this->actor.floorHeight;
         }
     } else {
         Player* player = GET_PLAYER(play);
 
         if (this->actor.bgCheckFlags & 1) {
-            this->unk_280 =
+            this->targetSwimHeight =
                 this->actor.home.pos.y - Rand_ZeroOne() * ((this->actor.home.pos.y - this->actor.floorHeight) / 2.0f);
         } else if (sp34 && (Rand_ZeroOne() < 0.1f)) {
-            this->unk_280 =
+            this->targetSwimHeight =
                 Rand_ZeroOne() * (this->actor.home.pos.y - this->actor.floorHeight) + this->actor.floorHeight;
         }
 
@@ -302,11 +302,11 @@ void func_80B328E8(EnWeiyer* this, PlayState* play) {
 void func_80B32C2C(EnWeiyer* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
 
-    if (this->unk_194 == 0) {
+    if (this->timer == 0) {
         if (Math_ScaledStepToS(&this->actor.shape.rot.x, -0x4000, 0x800)) {
             this->actor.shape.rot.z = 0;
             this->actor.shape.rot.y += 0x8000;
-            this->unk_194 = 1;
+            this->timer = 1;
         } else {
             this->actor.shape.rot.z = this->actor.shape.rot.x * 2;
         }
@@ -336,11 +336,11 @@ void func_80B32D30(EnWeiyer* this, PlayState* play) {
     Math_ScaledStepToS(&this->actor.shape.rot.x, 0, 0x800);
     Math_StepToF(&this->actor.speedXZ, 0.0f, 1.0f);
 
-    if (this->unk_194 != 0) {
-        this->unk_194--;
+    if (this->timer != 0) {
+        this->timer--;
     }
 
-    if (this->unk_194 == 0) {
+    if (this->timer == 0) {
         func_80B32434(this);
     } else if (this->actor.world.pos.y < this->actor.home.pos.y) {
         func_80B32384(this);
@@ -363,11 +363,11 @@ void func_80B32E34(EnWeiyer* this, PlayState* play) {
 
     SkelAnime_Update(&this->skelAnime);
 
-    if (this->unk_194 != 0) {
-        this->unk_194--;
+    if (this->timer != 0) {
+        this->timer--;
     }
 
-    if ((this->unk_194 == 0) || ((this->actor.home.pos.y + 20.0f) <= player->actor.world.pos.y) ||
+    if ((this->timer == 0) || ((this->actor.home.pos.y + 20.0f) <= player->actor.world.pos.y) ||
         (this->collider.base.atFlags & AT_HIT)) {
         func_80B32538(this);
     } else {
@@ -405,9 +405,9 @@ void func_80B33018(EnWeiyer* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
     Math_ScaledStepToS(&this->actor.shape.rot.x, 0, 0x800);
     curFrame = this->skelAnime.curFrame;
-    Math_StepToF(&this->unk_27C, (this->actor.home.pos.y - this->actor.floorHeight) / 4.0f + this->actor.floorHeight,
+    Math_StepToF(&this->swimHeight, (this->actor.home.pos.y - this->actor.floorHeight) / 4.0f + this->actor.floorHeight,
                  1.0f);
-    this->actor.world.pos.y = this->unk_27C - cosf((curFrame - 5.0f) * (M_PI / 40)) * 3.0f;
+    this->actor.world.pos.y = this->swimHeight - cosf((curFrame - 5.0f) * (M_PI / 40)) * 3.0f;
 
     if (curFrame <= 45.0f) {
         Math_StepToF(&this->actor.speedXZ, 1.0f, 0.03f);
@@ -415,16 +415,16 @@ void func_80B33018(EnWeiyer* this, PlayState* play) {
         Math_StepToF(&this->actor.speedXZ, 1.3f, 0.03f);
     }
 
-    if (this->unk_194 != 0) {
-        this->unk_194--;
+    if (this->timer != 0) {
+        this->timer--;
     }
 
     if (this->actor.bgCheckFlags & 8) {
-        this->unk_196 = this->actor.wallYaw;
+        this->targetYaw = this->actor.wallYaw;
     }
 
-    if (Math_SmoothStepToS(&this->actor.shape.rot.y, this->unk_196, 2, 0x200, 0x80) == 0) {
-        this->unk_196 = this->actor.yawTowardsPlayer + 0x8000;
+    if (Math_SmoothStepToS(&this->actor.shape.rot.y, this->targetYaw, 2, 0x200, 0x80) == 0) {
+        this->targetYaw = this->actor.yawTowardsPlayer + 0x8000;
     }
 
     if (this->actor.home.pos.y < this->actor.world.pos.y) {
@@ -435,7 +435,7 @@ void func_80B33018(EnWeiyer* this, PlayState* play) {
         }
     }
 
-    if (this->unk_194 == 0) {
+    if (this->timer == 0) {
         func_80B32384(this);
     }
 }
@@ -443,21 +443,21 @@ void func_80B33018(EnWeiyer* this, PlayState* play) {
 void func_80B331CC(EnWeiyer* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
 
-    if (this->unk_194 != 0) {
-        this->unk_194--;
+    if (this->timer != 0) {
+        this->timer--;
     }
 
     if (this->actor.bgCheckFlags & 8) {
-        this->unk_196 = this->actor.wallYaw;
+        this->targetYaw = this->actor.wallYaw;
     } else {
-        this->unk_196 = this->actor.yawTowardsPlayer + 0x8000;
+        this->targetYaw = this->actor.yawTowardsPlayer + 0x8000;
     }
 
-    Math_ScaledStepToS(&this->actor.world.rot.y, this->unk_196, 0x38E);
+    Math_ScaledStepToS(&this->actor.world.rot.y, this->targetYaw, 0x38E);
     Math_ScaledStepToS(&this->actor.shape.rot.x, 0, 0x200);
-    this->actor.shape.rot.z = sinf(this->unk_194 * (M_PI / 5)) * 5120.0f;
+    this->actor.shape.rot.z = sinf(this->timer * (M_PI / 5)) * 5120.0f;
 
-    if (this->unk_194 == 0) {
+    if (this->timer == 0) {
         this->actor.shape.rot.z = 0;
         this->collider.base.acFlags |= AC_ON;
         func_80B32384(this);
@@ -469,11 +469,11 @@ void func_80B332B4(EnWeiyer* this, PlayState* play) {
     Math_ScaledStepToS(&this->actor.shape.rot.x, -0x4000, 0x400);
     this->actor.shape.rot.z += 0x1000;
 
-    if (this->unk_194 != 0) {
-        this->unk_194--;
+    if (this->timer != 0) {
+        this->timer--;
     }
 
-    if ((this->unk_194 == 0) || (this->actor.bgCheckFlags & 0x10)) {
+    if ((this->timer == 0) || (this->actor.bgCheckFlags & 0x10)) {
         func_80B327B0(this);
     }
 }
@@ -489,8 +489,8 @@ void func_80B33338(EnWeiyer* this, PlayState* play) {
 }
 
 void func_80B333B8(EnWeiyer* this, PlayState* play) {
-    if (this->unk_194 != 0) {
-        this->unk_194--;
+    if (this->timer != 0) {
+        this->timer--;
     }
 
     Math_ScaledStepToS(&this->actor.shape.rot.x, 0, 0x200);
@@ -507,7 +507,7 @@ void func_80B333B8(EnWeiyer* this, PlayState* play) {
         }
     }
 
-    if (this->unk_194 == 0) {
+    if (this->timer == 0) {
         this->actor.gravity = 0.0f;
         this->actor.velocity.y = 0.0f;
         this->collider.dim.height = sCylinderInit.dim.height;
@@ -524,22 +524,22 @@ void func_80B3349C(EnWeiyer* this, PlayState* play) {
 
     phi_a0 = ((this->actor.home.pos.y + 20.0f) <= player->actor.world.pos.y);
 
-    if (this->unk_194 == -1) {
+    if (this->timer == -1) {
         if (phi_a0 || (this->collider.base.atFlags & AT_HIT)) {
             func_80B32538(this);
         } else if (this->actor.yDistToWater < 0.0f) {
-            this->unk_194 = 10;
+            this->timer = 10;
             EffectSsGSplash_Spawn(play, &this->actor.world.pos, NULL, NULL, 1, 400);
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_OCTAROCK_JUMP);
         }
     } else {
         if (phi_a0 || (this->collider.base.atFlags & AT_HIT)) {
-            this->unk_194 = 0;
-        } else if (this->unk_194 != 0) {
-            this->unk_194--;
+            this->timer = 0;
+        } else if (this->timer != 0) {
+            this->timer--;
         }
 
-        if (this->unk_194 == 0) {
+        if (this->timer == 0) {
             phi_a1 = 0x1800;
         } else {
             phi_a1 = func_80B32DEC(this, play);

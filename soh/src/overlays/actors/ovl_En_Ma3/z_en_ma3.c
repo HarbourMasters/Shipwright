@@ -297,13 +297,13 @@ void EnMa3_Update(Actor* thisx, PlayState* play) {
     Npc_UpdateTalking(play, &this->actor, &this->interactInfo.talkState, (f32)this->collider.dim.radius + 150.0f,
                       func_80AA2AA0, func_80AA2BD4);
     if (this->interactInfo.talkState == NPC_TALK_STATE_IDLE) {
-        if (this->unk_20A != 0) {
+        if (this->isNotSinging != 0) {
             func_800F6584(0);
-            this->unk_20A = 0;
+            this->isNotSinging = 0;
         }
-    } else if (this->unk_20A == 0) {
+    } else if (this->isNotSinging == 0) {
         func_800F6584(1);
-        this->unk_20A = 1;
+        this->isNotSinging = 1;
     }
 }
 

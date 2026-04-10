@@ -15,9 +15,9 @@ typedef struct EnCow {
     /* 0x0228 */ Vec3s jointTable[6];
     /* 0x024C */ Vec3s morphTable[6];
     /* 0x0270 */ Vec3s someRot;
-    /* 0x0276 */ u16 unk_276;
-    /* 0x0278 */ u16 unk_278;
-    /* 0x027A */ u16 unk_27A;
+    /* 0x0276 */ u16 cowFlags;
+    /* 0x0278 */ u16 animationTimer;
+    /* 0x027A */ u16 breathTimer;
     /* 0x027C */ EnCowActionFunc actionFunc;
 } EnCow; // size = 0x0280
 

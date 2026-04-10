@@ -322,7 +322,7 @@ void Anchor::RegisterHooks() {
         DoorShutter* actor = static_cast<DoorShutter*>(refActor);
 
         if (Flags_GetSwitch(gPlayState, actor->dyna.actor.params & 0x3F)) {
-            DECR(actor->unk_16E);
+            DECR(actor->unlockTimer);
         }
     });
 

@@ -116,11 +116,11 @@ void func_80A6D918(EnHorseZelda* this, PlayState* play) {
     Vec3f sp28;
     s16 yawDiff;
 
-    func_80A6D8D0(D_80A6E240, this->unk_1EC, &sp28);
+    func_80A6D8D0(D_80A6E240, this->fieldPosIndex, &sp28);
     if (Math3D_Vec3f_DistXYZ(&sp28, &this->actor.world.pos) <= 400.0f) {
-        this->unk_1EC++;
-        if (this->unk_1EC >= 14) {
-            this->unk_1EC = 0;
+        this->fieldPosIndex++;
+        if (this->fieldPosIndex >= 14) {
+            this->fieldPosIndex = 0;
             func_80A6D8D0(D_80A6E240, 0, &sp28);
         }
     }
@@ -140,7 +140,7 @@ void func_80A6D918(EnHorseZelda* this, PlayState* play) {
         } else {
             this->actor.speedXZ -= 1.0f;
         }
-    } else if (this->actor.speedXZ < D_80A6E240[this->unk_1EC].unk_6) {
+    } else if (this->actor.speedXZ < D_80A6E240[this->fieldPosIndex].unk_6) {
         this->actor.speedXZ += 0.5f;
     } else {
         this->actor.speedXZ -= 0.5f;
@@ -224,8 +224,8 @@ void func_80A6DE38(EnHorseZelda* this, PlayState* play) {
     pos.x = (Math_SinS(this->actor.shape.rot.y) * 30.0f) + this->actor.world.pos.x;
     pos.y = this->actor.world.pos.y + 60.0f;
     pos.z = (Math_CosS(this->actor.shape.rot.y) * 30.0f) + this->actor.world.pos.z;
-    this->unk_1F4 = BgCheck_EntityRaycastFloor3(&play->colCtx, &poly, &bgId, &pos);
-    this->actor.shape.rot.x = Math_FAtan2F(this->actor.world.pos.y - this->unk_1F4, 30.0f) * (0x8000 / M_PI);
+    this->floorYForwards = BgCheck_EntityRaycastFloor3(&play->colCtx, &poly, &bgId, &pos);
+    this->actor.shape.rot.x = Math_FAtan2F(this->actor.world.pos.y - this->floorYForwards, 30.0f) * (0x8000 / M_PI);
 }
 
 void EnHorseZelda_Update(Actor* thisx, PlayState* play) {

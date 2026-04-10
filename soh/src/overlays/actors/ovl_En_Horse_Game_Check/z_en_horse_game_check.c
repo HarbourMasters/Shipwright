@@ -231,7 +231,7 @@ s32 EnHorseGameCheck_InitGerudoArchery(EnHorseGameCheckBase* base, PlayState* pl
     EnHorseGameCheckGerudoArchery* this = (EnHorseGameCheckGerudoArchery*)base;
 
     this->base.type = HORSEGAME_GERUDO_ARCHERY;
-    this->unk_150 = 0;
+    this->startFlags = 0;
     this->startTimer = 0;
     return true;
 }
@@ -261,7 +261,7 @@ s32 EnHorseGameCheck_InitType3(EnHorseGameCheckBase* base, PlayState* play) {
     EnHorseGameCheck3* this = (EnHorseGameCheck3*)base;
 
     this->base.type = HORSEGAME_TYPE3;
-    this->unk_150 = 0;
+    this->startFlags = 0;
     return true;
 }
 

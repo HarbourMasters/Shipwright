@@ -199,14 +199,14 @@ void EnMa2_ChangeAnim(EnMa2* this, s32 index) {
 void func_80AA1DB4(EnMa2* this, PlayState* play) {
     if (this->skelAnime.animation == &gMalonAdultSingAnim) {
         if (this->interactInfo.talkState == NPC_TALK_STATE_IDLE) {
-            if (this->unk_20A != 0) {
+            if (this->singingDisabled != 0) {
                 func_800F6584(0);
-                this->unk_20A = 0;
+                this->singingDisabled = 0;
             }
         } else {
-            if (this->unk_20A == 0) {
+            if (this->singingDisabled == 0) {
                 func_800F6584(1);
-                this->unk_20A = 1;
+                this->singingDisabled = 1;
             }
         }
     }
@@ -286,7 +286,7 @@ void func_80AA20E4(EnMa2* this, PlayState* play) {
     } else if (play->msgCtx.ocarinaMode == OCARINA_MODE_03) {
         Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
                                &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
-        this->unk_208 = 0x1E;
+        this->timer = 0x1E;
         Flags_SetInfTable(INFTABLE_8E);
         this->actionFunc = func_80AA21C8;
         play->msgCtx.ocarinaMode = OCARINA_MODE_04;
@@ -298,7 +298,7 @@ void func_80AA20E4(EnMa2* this, PlayState* play) {
 void func_80AA21C8(EnMa2* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
-    if (DECR(this->unk_208)) {
+    if (DECR(this->timer)) {
         player->stateFlags2 |= PLAYER_STATE2_NEAR_OCARINA_ACTOR;
     } else {
         if (this->interactInfo.talkState == NPC_TALK_STATE_IDLE) {
@@ -349,8 +349,8 @@ s32 EnMa2_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* p
     }
     if ((limbIndex == MALON_ADULT_CHEST_AND_NECK_LIMB) || (limbIndex == MALON_ADULT_LEFT_SHOULDER_LIMB) ||
         (limbIndex == MALON_ADULT_RIGHT_SHOULDER_LIMB)) {
-        rot->y += Math_SinS(this->unk_212[limbIndex].y) * 200.0f;
-        rot->z += Math_CosS(this->unk_212[limbIndex].z) * 200.0f;
+        rot->y += Math_SinS(this->upperBodyRot[limbIndex].y) * 200.0f;
+        rot->z += Math_CosS(this->upperBodyRot[limbIndex].z) * 200.0f;
     }
     return false;
 }

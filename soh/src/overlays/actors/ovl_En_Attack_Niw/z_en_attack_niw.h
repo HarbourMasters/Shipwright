@@ -30,7 +30,7 @@ typedef struct EnAttackNiw {
     /* 0x027C */ f32 unk_27C;
     /* 0x0280 */ f32 unk_280;
     /* 0x0284 */ f32 unk_284;
-    /* 0x0284 */ f32 unk_288;
+    /* 0x0288 */ f32 unk_288;
     /* 0x028C */ s16 unk_28C;
     /* 0x028E */ s16 unk_28E;
     /* 0x0290 */ char unk_290[0x2];

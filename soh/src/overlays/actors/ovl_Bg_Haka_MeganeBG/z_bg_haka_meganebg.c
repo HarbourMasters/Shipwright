@@ -60,7 +60,7 @@ void BgHakaMeganeBG_Init(Actor* thisx, PlayState* play) {
     CollisionHeader* colHeader = NULL;
 
     Actor_ProcessInitChain(&this->dyna.actor, sInitChain);
-    this->unk_168 = (thisx->params >> 8) & 0xFF;
+    this->switchFlag = (thisx->params >> 8) & 0xFF;
     thisx->params &= 0xFF;
 
     if (thisx->params == 2) {
@@ -74,13 +74,13 @@ void BgHakaMeganeBG_Init(Actor* thisx, PlayState* play) {
         if (thisx->params == 0) {
             CollisionHeader_GetVirtual(&object_haka_objects_Col_009168, &colHeader);
             thisx->flags |= ACTOR_FLAG_REACT_TO_LENS;
-            this->unk_16A = 20;
+            this->timer = 20;
             this->actionFunc = func_8087DFF8;
         } else if (thisx->params == 3) {
             CollisionHeader_GetVirtual(&object_haka_objects_Col_000118, &colHeader);
             thisx->home.pos.y += 100.0f;
 
-            if (Flags_GetSwitch(play, this->unk_168)) {
+            if (Flags_GetSwitch(play, this->switchFlag)) {
                 this->actionFunc = func_8087E34C;
                 thisx->world.pos.y = thisx->home.pos.y;
             } else {
@@ -89,7 +89,7 @@ void BgHakaMeganeBG_Init(Actor* thisx, PlayState* play) {
             }
         } else {
             CollisionHeader_GetVirtual(&object_haka_objects_Col_00A7F4, &colHeader);
-            this->unk_16A = 80;
+            this->timer = 80;
             this->actionFunc = func_8087E10C;
             thisx->uncullZoneScale = 3000.0f;
             thisx->uncullZoneDownward = 3000.0f;
@@ -106,12 +106,12 @@ void BgHakaMeganeBG_Destroy(Actor* thisx, PlayState* play) {
 }
 
 void func_8087DFF8(BgHakaMeganeBG* this, PlayState* play) {
-    if (this->unk_16A != 0) {
-        this->unk_16A--;
+    if (this->timer != 0) {
+        this->timer--;
     }
 
-    if (this->unk_16A == 0) {
-        this->unk_16A = 40;
+    if (this->timer == 0) {
+        this->timer = 40;
         this->dyna.actor.world.rot.y += 0x8000;
         this->actionFunc = func_8087E040;
     }
@@ -120,11 +120,11 @@ void func_8087DFF8(BgHakaMeganeBG* this, PlayState* play) {
 void func_8087E040(BgHakaMeganeBG* this, PlayState* play) {
     f32 xSub;
 
-    if (this->unk_16A != 0) {
-        this->unk_16A--;
+    if (this->timer != 0) {
+        this->timer--;
     }
 
-    xSub = (sinf(((this->unk_16A * 0.025f) + 0.5f) * M_PI) + 1.0f) * 160.0f;
+    xSub = (sinf(((this->timer * 0.025f) + 0.5f) * M_PI) + 1.0f) * 160.0f;
 
     if (this->dyna.actor.world.rot.y != this->dyna.actor.shape.rot.y) {
         xSub = 320.0f - xSub;
@@ -132,8 +132,8 @@ void func_8087E040(BgHakaMeganeBG* this, PlayState* play) {
 
     this->dyna.actor.world.pos.x = this->dyna.actor.home.pos.x - xSub;
 
-    if (this->unk_16A == 0) {
-        this->unk_16A = 20;
+    if (this->timer == 0) {
+        this->timer = 20;
         this->actionFunc = func_8087DFF8;
     }
 }
@@ -147,8 +147,8 @@ void func_8087E10C(BgHakaMeganeBG* this, PlayState* play) {
         this->dyna.actor.velocity.y = this->dyna.actor.velocity.y;
     }
 
-    if (this->unk_16A != 0) {
-        this->unk_16A--;
+    if (this->timer != 0) {
+        this->timer--;
     }
 
     if (!Math_StepToF(&this->dyna.actor.world.pos.y, this->dyna.actor.home.pos.y - 640.0f,
@@ -156,8 +156,8 @@ void func_8087E10C(BgHakaMeganeBG* this, PlayState* play) {
         func_8002F974(&this->dyna.actor, NA_SE_EV_CHINETRAP_DOWN - SFX_FLAG);
     }
 
-    if (this->unk_16A == 0) {
-        this->unk_16A = 120;
+    if (this->timer == 0) {
+        this->timer = 120;
         this->actionFunc = func_8087E1E0;
         this->dyna.actor.velocity.y = 0.0f;
     }
@@ -167,12 +167,12 @@ void func_8087E1E0(BgHakaMeganeBG* this, PlayState* play) {
     Math_StepToF(&this->dyna.actor.world.pos.y, this->dyna.actor.home.pos.y, 16.0f / 3.0f);
     func_8002F974(&this->dyna.actor, NA_SE_EV_BRIDGE_CLOSE - SFX_FLAG);
 
-    if (this->unk_16A != 0) {
-        this->unk_16A--;
+    if (this->timer != 0) {
+        this->timer--;
     }
 
-    if (this->unk_16A == 0) {
-        this->unk_16A = 80;
+    if (this->timer == 0) {
+        this->timer = 80;
         this->actionFunc = func_8087E10C;
     }
 }
@@ -183,7 +183,7 @@ void func_8087E258(BgHakaMeganeBG* this, PlayState* play) {
 }
 
 void func_8087E288(BgHakaMeganeBG* this, PlayState* play) {
-    if (Flags_GetSwitch(play, this->unk_168)) {
+    if (Flags_GetSwitch(play, this->switchFlag)) {
         OnePointCutscene_Attention(play, &this->dyna.actor);
         this->actionFunc = func_8087E2D8;
     }

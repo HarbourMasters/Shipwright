@@ -241,8 +241,8 @@ s32 func_80B205CC(EnToryo* this, PlayState* play) {
 u32 func_80B20634(EnToryo* this, PlayState* play) {
     u32 ret;
 
-    if (this->unk_1E0 != 0) {
-        if (this->unk_1E0 == 10) {
+    if (this->exchangeItemId != 0) {
+        if (this->exchangeItemId == 10) {
             Sfx_PlaySfxCentered(NA_SE_SY_TRE_BOX_APPEAR);
             if (Flags_GetInfTable(INFTABLE_171)) {
                 ret = 0x606E;
@@ -291,30 +291,30 @@ void func_80B20768(EnToryo* this, PlayState* play) {
     s16 sp32;
     s16 sp30;
 
-    if (this->unk_1E4 == 3 && !GameInteractor_Should(VB_FIX_SAW_SOFTLOCK, false)) {
+    if (this->messageState == 3 && !GameInteractor_Should(VB_FIX_SAW_SOFTLOCK, false)) {
         Actor_ProcessTalkRequest(&this->actor, play);
         Message_ContinueTextbox(play, this->actor.textId);
-        this->unk_1E4 = 1;
+        this->messageState = 1;
     }
 
-    if (this->unk_1E4 == 1) {
-        this->unk_1E4 = func_80B203D8(this, play);
+    if (this->messageState == 1) {
+        this->messageState = func_80B203D8(this, play);
     }
 
-    if (this->unk_1E4 == 5) {
-        this->unk_1E4 = func_80B205CC(this, play);
+    if (this->messageState == 5) {
+        this->messageState = func_80B205CC(this, play);
         return;
     }
 
-    if (this->unk_1E4 == 2) {
+    if (this->messageState == 2) {
         Message_ContinueTextbox(play, this->actor.textId);
-        this->unk_1E4 = 1;
+        this->messageState = 1;
     }
 
-    if (this->unk_1E4 == 4) {
+    if (this->messageState == 4) {
         if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(VB_TRADE_SAW, true, this)) {
             this->actor.parent = NULL;
-            this->unk_1E4 = 5;
+            this->messageState = 5;
             Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_GV_TRADE_SAW);
         } else {
             Actor_OfferGetItem(&this->actor, play, GI_SWORD_BROKEN, 100.0f, 10.0f);
@@ -322,14 +322,14 @@ void func_80B20768(EnToryo* this, PlayState* play) {
         return;
     }
 
-    if (this->unk_1E4 == 0) {
+    if (this->messageState == 0) {
         if (Actor_ProcessTalkRequest(&this->actor, play)) {
-            this->unk_1E0 = func_8002F368(play);
-            if (this->unk_1E0 != 0) {
+            this->exchangeItemId = func_8002F368(play);
+            if (this->exchangeItemId != 0) {
                 player->actor.textId = func_80B20634(this, play);
                 this->actor.textId = player->actor.textId;
             }
-            this->unk_1E4 = 1;
+            this->messageState = 1;
             return;
         }
 
@@ -344,7 +344,7 @@ void func_80B20768(EnToryo* this, PlayState* play) {
 void func_80B20914(EnToryo* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
     func_80B20768(this, play);
-    if (this->unk_1E4 != 0) {
+    if (this->messageState != 0) {
         this->stateFlags |= 0x10;
     } else {
         this->stateFlags &= ~0x10;

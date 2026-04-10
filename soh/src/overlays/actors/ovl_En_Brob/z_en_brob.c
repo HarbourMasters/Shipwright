@@ -110,27 +110,27 @@ void EnBrob_Destroy(Actor* thisx, PlayState* play) {
 void func_809CADDC(EnBrob* this, PlayState* play) {
     func_8003EC50(play, &play->colCtx.dyna, this->dyna.bgId);
     this->timer = this->actionFunc == func_809CB2B8 ? 200 : 0;
-    this->unk_1AE = 0;
+    this->modelOffsetY = 0;
     this->actionFunc = func_809CB054;
 }
 
 void func_809CAE44(EnBrob* this, PlayState* play) {
     Animation_PlayOnce(&this->skelAnime, &object_brob_Anim_001750);
     func_8003EBF8(play, &play->colCtx.dyna, this->dyna.bgId);
-    this->unk_1AE = 1000;
+    this->modelOffsetY = 1000;
     this->actionFunc = func_809CB114;
 }
 
 void func_809CAEA0(EnBrob* this) {
     Animation_MorphToLoop(&this->skelAnime, &object_brob_Anim_001958, -5.0f);
-    this->unk_1AE = 8000;
+    this->modelOffsetY = 8000;
     this->timer = 1200;
     this->actionFunc = func_809CB218;
 }
 
 void func_809CAEF4(EnBrob* this) {
     Animation_MorphToPlayOnce(&this->skelAnime, &object_brob_Anim_000290, -5.0f);
-    this->unk_1AE -= 125.0f;
+    this->modelOffsetY -= 125.0f;
     Actor_SetColorFilter(&this->dyna.actor, 0, 0xFF, 0, 0x50);
     Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EN_GOMA_JR_FREEZE);
     this->actionFunc = func_809CB2B8;
@@ -139,7 +139,7 @@ void func_809CAEF4(EnBrob* this) {
 void func_809CAF88(EnBrob* this) {
     Animation_Change(&this->skelAnime, &object_brob_Anim_001750, -1.0f,
                      Animation_GetLastFrame(&object_brob_Anim_001750), 0.0f, ANIMMODE_ONCE, -5.0f);
-    this->unk_1AE = 8250;
+    this->modelOffsetY = 8250;
     this->actionFunc = func_809CB354;
 }
 
@@ -173,11 +173,11 @@ void func_809CB114(EnBrob* this, PlayState* play) {
     } else {
         curFrame = this->skelAnime.curFrame;
         if (curFrame < 8.0f) {
-            this->unk_1AE += 1000.0f;
+            this->modelOffsetY += 1000.0f;
         } else if (curFrame < 12.0f) {
-            this->unk_1AE += 250.0f;
+            this->modelOffsetY += 250.0f;
         } else {
-            this->unk_1AE -= 250.0f;
+            this->modelOffsetY -= 250.0f;
         }
     }
 }
@@ -199,7 +199,7 @@ void func_809CB2B8(EnBrob* this, PlayState* play) {
     if (SkelAnime_Update(&this->skelAnime)) {
         func_809CADDC(this, play);
     } else if (this->skelAnime.curFrame < 8.0f) {
-        this->unk_1AE -= 1250.0f;
+        this->modelOffsetY -= 1250.0f;
     }
     this->dyna.actor.colorFilterTimer = 0x50;
 }
@@ -212,11 +212,11 @@ void func_809CB354(EnBrob* this, PlayState* play) {
     } else {
         curFrame = this->skelAnime.curFrame;
         if (curFrame < 8.0f) {
-            this->unk_1AE -= 1000.0f;
+            this->modelOffsetY -= 1000.0f;
         } else if (curFrame < 12.0f) {
-            this->unk_1AE -= 250.0f;
+            this->modelOffsetY -= 250.0f;
         } else {
-            this->unk_1AE += 250.0f;
+            this->modelOffsetY += 250.0f;
         }
     }
 }
@@ -326,6 +326,6 @@ void EnBrob_Draw(Actor* thisx, PlayState* play) {
     EnBrob* this = (EnBrob*)thisx;
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    Matrix_Translate(0.0f, this->unk_1AE, 0.0f, MTXMODE_APPLY);
+    Matrix_Translate(0.0f, this->modelOffsetY, 0.0f, MTXMODE_APPLY);
     SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, NULL, EnBrob_PostLimbDraw, this);
 }
