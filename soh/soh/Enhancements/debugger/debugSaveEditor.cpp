@@ -95,7 +95,17 @@ static const char* GetItemDisplayName(int32_t item) {
     if (item == ITEM_ROCS_FEATHER) {
         return "Roc's Feather";
     }
-    return SohUtils::GetItemName(item).c_str();
+    if (item == ITEM_NONE) {
+        return "None";
+    }
+    // Check if item exists in itemMapping to avoid assertion on unknown items
+    if (itemMapping.find(item) != itemMapping.end()) {
+        return SohUtils::GetItemName(item).c_str();
+    }
+    // Fallback for unknown items
+    static char unknownName[32];
+    snprintf(unknownName, sizeof(unknownName), "Unknown (0x%02X)", item);
+    return unknownName;
 }
 
 IntSliderOptions intSliderOptionsBase;
@@ -129,19 +139,32 @@ template <typename T> void DrawGroupWithBorder(T&& drawFunc, std::string section
 // Get the maximum small keys obtainable in vanilla for each dungeon
 static int8_t GetMaxKeysForDungeon(int32_t dungeonIndex) {
     switch (dungeonIndex) {
-        case SCENE_DEKU_TREE: return 5;
-        case SCENE_DODONGOS_CAVERN: return 5;
-        case SCENE_JABU_JABU: return 0; // No keys
-        case SCENE_FOREST_TEMPLE: return 6;
-        case SCENE_FIRE_TEMPLE: return 8;
-        case SCENE_WATER_TEMPLE: return 2;
-        case SCENE_SPIRIT_TEMPLE: return 5;
-        case SCENE_SHADOW_TEMPLE: return 5;
-        case SCENE_BOTTOM_OF_THE_WELL: return 3;
-        case SCENE_GERUDO_TRAINING_GROUND: return 9;
-        case SCENE_GANONS_TOWER: return 0; // No keys
-        case SCENE_INSIDE_GANONS_CASTLE: return 3;
-        default: return 8; // Default debug value
+        case SCENE_DEKU_TREE:
+            return 5;
+        case SCENE_DODONGOS_CAVERN:
+            return 5;
+        case SCENE_JABU_JABU:
+            return 0; // No keys
+        case SCENE_FOREST_TEMPLE:
+            return 6;
+        case SCENE_FIRE_TEMPLE:
+            return 8;
+        case SCENE_WATER_TEMPLE:
+            return 2;
+        case SCENE_SPIRIT_TEMPLE:
+            return 5;
+        case SCENE_SHADOW_TEMPLE:
+            return 5;
+        case SCENE_BOTTOM_OF_THE_WELL:
+            return 3;
+        case SCENE_GERUDO_TRAINING_GROUND:
+            return 9;
+        case SCENE_GANONS_TOWER:
+            return 0; // No keys
+        case SCENE_INSIDE_GANONS_CASTLE:
+            return 3;
+        default:
+            return 8; // Default debug value
     }
 }
 
@@ -149,32 +172,39 @@ static int8_t GetMaxKeysForDungeon(int32_t dungeonIndex) {
 // buttonIndex: index into buttonItems array (0=B, 1=C-Left, 2=C-Down, 3=C-Right, 4-7=D-pad)
 // isBButton: true for B button (allows swords only), false for C/D-pad (button-usable items)
 // restrictToValid: pointer to shared restrict flag (nullptr = use internal static)
-static void DrawButtonItemSelector(const char* label, int buttonIndex, UIWidgets::Colors color, bool isBButton = false, const bool* restrictToValidPtr = nullptr) {
+static void DrawButtonItemSelector(const char* label, int buttonIndex, UIWidgets::Colors color, bool isBButton = false,
+                                   const bool* restrictToValidPtr = nullptr) {
     // Use provided restrictToValid or default to true (restricted mode)
     bool useRestriction = restrictToValidPtr ? *restrictToValidPtr : true;
     uint8_t* buttonItem = &gSaveContext.equips.buttonItems[buttonIndex];
 
     // Helper to check if item is a sword (for B button)
     auto isSword = [](int32_t item) -> bool {
-        return item == ITEM_SWORD_KOKIRI || item == ITEM_SWORD_MASTER ||
-               item == ITEM_SWORD_BGS || item == ITEM_SWORD_KNIFE;
+        return item == ITEM_SWORD_KOKIRI || item == ITEM_SWORD_MASTER || item == ITEM_SWORD_BGS ||
+               item == ITEM_SWORD_KNIFE;
     };
 
     // Helper to check if item is button-usable (for C/D-pad buttons)
     // Restricted to items from Stick (0x00) to Bow Arrow Light (0x3A)
     auto isButtonUsable = [](int32_t item) -> bool {
-        if (item == ITEM_ROCS_FEATHER) return true;
+        if (item == ITEM_ROCS_FEATHER)
+            return true;
         // All button-usable items: ITEM_STICK (0x00) to ITEM_BOW_ARROW_LIGHT (0x3A)
-        if (item >= ITEM_STICK && item <= ITEM_BOW_ARROW_LIGHT) return true;
+        if (item >= ITEM_STICK && item <= ITEM_BOW_ARROW_LIGHT)
+            return true;
         return false;
     };
 
     // Helper to check if an item should be shown in the picker based on mode and button type
     auto shouldShowItem = [&](int32_t item) -> bool {
-        if (item == ITEM_NONE) return false;
-        if (item == ITEM_ROCS_FEATHER) return !isBButton; // Roc's Feather on C/D-pad only
-        if (!useRestriction) return true; // Unrestricted: show everything
-        if (isBButton) return isSword(item); // B button restricted: swords only
+        if (item == ITEM_NONE)
+            return false;
+        if (item == ITEM_ROCS_FEATHER)
+            return !isBButton; // Roc's Feather on C/D-pad only
+        if (!useRestriction)
+            return true; // Unrestricted: show everything
+        if (isBButton)
+            return isSword(item);    // B button restricted: swords only
         return isButtonUsable(item); // C/D-pad restricted: button-usable items only
     };
 
@@ -189,8 +219,8 @@ static void DrawButtonItemSelector(const char* label, int buttonIndex, UIWidgets
     if (item == ITEM_ROCS_FEATHER) {
         std::string rocId = std::string("RG_ROCS_FEATHER_btn_") + label;
         if (ImGui::ImageButton(rocId.c_str(),
-                              Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("RG_ROCS_FEATHER"),
-                              ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1))) {
+                               Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("RG_ROCS_FEATHER"),
+                               ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1))) {
             ImGui::OpenPopup(label);
         }
     } else if (item != ITEM_NONE) {
@@ -198,8 +228,8 @@ static void DrawButtonItemSelector(const char* label, int buttonIndex, UIWidgets
         // Use label-based ID to avoid conflicts when same item is on multiple buttons
         std::string itemId = std::string("item_btn_") + label + "_" + slotEntry.name;
         if (ImGui::ImageButton(itemId.c_str(),
-                              Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(slotEntry.name),
-                              ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1))) {
+                               Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(slotEntry.name),
+                               ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1))) {
             ImGui::OpenPopup(label);
         }
     } else {
@@ -213,7 +243,7 @@ static void DrawButtonItemSelector(const char* label, int buttonIndex, UIWidgets
 
     // Tooltip with current item name
     if (item != ITEM_NONE) {
-        Tooltip(SohUtils::GetItemName(item).c_str());
+        Tooltip(GetItemDisplayName(item));
     } else {
         Tooltip("Empty");
     }
@@ -287,17 +317,26 @@ static void DrawButtonItemSelector(const char* label, int buttonIndex, UIWidgets
                             if (slotEntry.id >= ITEM_SWORD_KOKIRI && slotEntry.id <= ITEM_SWORD_BROKEN) {
                                 player->currentSwordItemId = slotEntry.id;
                             } else if (slotEntry.id >= ITEM_SHIELD_DEKU && slotEntry.id <= ITEM_SHIELD_MIRROR) {
-                                if (slotEntry.id == ITEM_SHIELD_DEKU) player->currentShield = PLAYER_SHIELD_DEKU;
-                                else if (slotEntry.id == ITEM_SHIELD_HYLIAN) player->currentShield = PLAYER_SHIELD_HYLIAN;
-                                else if (slotEntry.id == ITEM_SHIELD_MIRROR) player->currentShield = PLAYER_SHIELD_MIRROR;
+                                if (slotEntry.id == ITEM_SHIELD_DEKU)
+                                    player->currentShield = PLAYER_SHIELD_DEKU;
+                                else if (slotEntry.id == ITEM_SHIELD_HYLIAN)
+                                    player->currentShield = PLAYER_SHIELD_HYLIAN;
+                                else if (slotEntry.id == ITEM_SHIELD_MIRROR)
+                                    player->currentShield = PLAYER_SHIELD_MIRROR;
                             } else if (slotEntry.id >= ITEM_TUNIC_KOKIRI && slotEntry.id <= ITEM_TUNIC_ZORA) {
-                                if (slotEntry.id == ITEM_TUNIC_KOKIRI) player->currentTunic = PLAYER_TUNIC_KOKIRI;
-                                else if (slotEntry.id == ITEM_TUNIC_GORON) player->currentTunic = PLAYER_TUNIC_GORON;
-                                else if (slotEntry.id == ITEM_TUNIC_ZORA) player->currentTunic = PLAYER_TUNIC_ZORA;
+                                if (slotEntry.id == ITEM_TUNIC_KOKIRI)
+                                    player->currentTunic = PLAYER_TUNIC_KOKIRI;
+                                else if (slotEntry.id == ITEM_TUNIC_GORON)
+                                    player->currentTunic = PLAYER_TUNIC_GORON;
+                                else if (slotEntry.id == ITEM_TUNIC_ZORA)
+                                    player->currentTunic = PLAYER_TUNIC_ZORA;
                             } else if (slotEntry.id >= ITEM_BOOTS_KOKIRI && slotEntry.id <= ITEM_BOOTS_HOVER) {
-                                if (slotEntry.id == ITEM_BOOTS_KOKIRI) player->currentBoots = PLAYER_BOOTS_KOKIRI;
-                                else if (slotEntry.id == ITEM_BOOTS_IRON) player->currentBoots = PLAYER_BOOTS_IRON;
-                                else if (slotEntry.id == ITEM_BOOTS_HOVER) player->currentBoots = PLAYER_BOOTS_HOVER;
+                                if (slotEntry.id == ITEM_BOOTS_KOKIRI)
+                                    player->currentBoots = PLAYER_BOOTS_KOKIRI;
+                                else if (slotEntry.id == ITEM_BOOTS_IRON)
+                                    player->currentBoots = PLAYER_BOOTS_IRON;
+                                else if (slotEntry.id == ITEM_BOOTS_HOVER)
+                                    player->currentBoots = PLAYER_BOOTS_HOVER;
                             }
                         }
                     }
@@ -1020,14 +1059,11 @@ void DrawInventoryTab() {
             // Draw square border around button only (not ammo)
             if (drawBorder) {
                 ImVec2 buttonMin = buttonPos;
-                ImVec2 buttonMax = ImVec2(
-                    buttonPos.x + IMAGE_SIZE + ImGui::GetStyle().FramePadding.x * 2,
-                    buttonPos.y + IMAGE_SIZE + ImGui::GetStyle().FramePadding.y * 2
-                );
-                ImGui::GetWindowDrawList()->AddRect(
-                    ImVec2(buttonMin.x - 2, buttonMin.y - 2),
-                    ImVec2(buttonMax.x + 2, buttonMax.y + 2),
-                    borderColor, 0.0f, 0, 2.0f);
+                ImVec2 buttonMax = ImVec2(buttonPos.x + IMAGE_SIZE + ImGui::GetStyle().FramePadding.x * 2,
+                                          buttonPos.y + IMAGE_SIZE + ImGui::GetStyle().FramePadding.y * 2);
+                ImGui::GetWindowDrawList()->AddRect(ImVec2(buttonMin.x - 2, buttonMin.y - 2),
+                                                    ImVec2(buttonMax.x + 2, buttonMax.y + 2), borderColor, 0.0f, 0,
+                                                    2.0f);
             }
 
             if (wasClicked) {
@@ -1954,10 +1990,9 @@ void DrawEquipmentTab() {
         if (isEquipped) {
             ImVec2 itemMin = ImGui::GetItemRectMin();
             ImVec2 itemMax = ImGui::GetItemRectMax();
-            ImGui::GetWindowDrawList()->AddRect(
-                ImVec2(itemMin.x - 2, itemMin.y - 2),
-                ImVec2(itemMax.x + 2, itemMax.y + 2),
-                IM_COL32(255, 255, 255, 255), 0.0f, 0, 2.0f);
+            ImGui::GetWindowDrawList()->AddRect(ImVec2(itemMin.x - 2, itemMin.y - 2),
+                                                ImVec2(itemMax.x + 2, itemMax.y + 2), IM_COL32(255, 255, 255, 255),
+                                                0.0f, 0, 2.0f);
         }
 
         ImGui::PopID();
@@ -2290,15 +2325,17 @@ void DrawDungeonItemsTab() {
             std::string keyPopupId = fmt::format("##SmallKeyPopup_{}", dungeonIndex);
             std::string keySliderId = fmt::format("##KeySlider_{}", dungeonIndex);
             PushStyleButton(Colors::DarkGray);
+            // keyCount is uint8_t, so -1 becomes 255. Check for both 0 and 255 (which is -1)
+            bool hasKeys = (keyCount > 0 && keyCount != 255);
             if (ImGui::ImageButton(
                     itemMapping[ITEM_KEY_SMALL].name.c_str(),
                     Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
-                        keyCount > 0 ? itemMapping[ITEM_KEY_SMALL].name : itemMapping[ITEM_KEY_SMALL].nameFaded),
+                        hasKeys ? itemMapping[ITEM_KEY_SMALL].name : itemMapping[ITEM_KEY_SMALL].nameFaded),
                     ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1))) {
                 ImGui::OpenPopup(keyPopupId.c_str());
             }
             PopStyleButton();
-            Tooltip(fmt::format("Keys: {}", keyCount).c_str());
+            Tooltip(fmt::format("Keys: {}", keyCount == 255 ? -1 : keyCount).c_str());
 
             // Small key popup
             if (ImGui::BeginPopup(keyPopupId.c_str())) {
