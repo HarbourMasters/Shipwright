@@ -185,7 +185,7 @@ static bool DungeonHasBossKey(int32_t dungeonIndex) {
         case SCENE_WATER_TEMPLE:
         case SCENE_SPIRIT_TEMPLE:
         case SCENE_SHADOW_TEMPLE:
-        case SCENE_GANONS_TOWER:  // Boss key opens door to Ganondorf
+        case SCENE_GANONS_TOWER: // Boss key opens door to Ganondorf
             return true;
         case SCENE_BOTTOM_OF_THE_WELL:
         case SCENE_ICE_CAVERN:
