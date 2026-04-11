@@ -2356,19 +2356,21 @@ void DrawDungeonItemsTab() {
             std::string keyPopupId = fmt::format("##SmallKeyPopup_{}", dungeonIndex);
             std::string keySliderId = fmt::format("##KeySlider_{}", dungeonIndex);
             PushStyleButton(Colors::DarkGray);
-            // keyCount is uint8_t, so -1 becomes 255. Check for both 0 and 255 (which is -1)
-            bool hasKeys = (keyCount > 0 && keyCount != 255);
+            // keyCount is uint8_t, so -1 becomes 255. Only gray out when exactly 255 (-1)
+            bool showNormal = (keyCount != 255);
+            // Show count label for any value except 255 (-1)
+            bool showCount = (keyCount != 255);
             if (ImGui::ImageButton(
                     itemMapping[ITEM_KEY_SMALL].name.c_str(),
                     Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
-                        hasKeys ? itemMapping[ITEM_KEY_SMALL].name : itemMapping[ITEM_KEY_SMALL].nameFaded),
+                        showNormal ? itemMapping[ITEM_KEY_SMALL].name : itemMapping[ITEM_KEY_SMALL].nameFaded),
                     ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1))) {
                 ImGui::OpenPopup(keyPopupId.c_str());
             }
             PopStyleButton();
 
             // Display key count label at bottom right of the button rectangle
-            if (hasKeys) {
+            if (showCount) {
                 ImVec2 buttonMax = ImGui::GetItemRectMax();
                 ImVec2 framePadding = ImGui::GetStyle().FramePadding;
                 ImVec2 textSize = ImGui::CalcTextSize(fmt::format("{}", keyCount).c_str());
