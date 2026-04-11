@@ -67,7 +67,7 @@ static std::vector<std::string> contributors = {
     "ProxySaw", // "Garrett Cox", manual replacement
     "Christopher Leggett",
     "Pepper0ni",
-    "Archez",   // "Adam Bird", dupe
+    "Archez", // "Adam Bird", dupe
     "aMannus",
     "Kenix3",
     "Pepe20129",
