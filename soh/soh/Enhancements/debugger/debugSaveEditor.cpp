@@ -6,6 +6,7 @@
 #include "soh/SohGui/UIWidgets.hpp"
 #include "soh/SohGui/SohGui.hpp"
 #include "soh/SaveManager.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #include <spdlog/fmt/fmt.h>
 #include <array>
@@ -136,35 +137,62 @@ template <typename T> void DrawGroupWithBorder(T&& drawFunc, std::string section
     ImGui::EndChild();
 }
 
-// Get the maximum small keys obtainable in vanilla for each dungeon
+// Get the maximum small keys obtainable for each dungeon (Vanilla or MQ based on save)
 static int8_t GetMaxKeysForDungeon(int32_t dungeonIndex) {
+    // Check if this specific dungeon is MQ (handles both vanilla/MQ saves and randomizer per-dungeon MQ)
+    bool isMQ = ResourceMgr_IsSceneMasterQuest(dungeonIndex);
+
     switch (dungeonIndex) {
         case SCENE_DEKU_TREE:
             return 5;
         case SCENE_DODONGOS_CAVERN:
             return 5;
         case SCENE_JABU_JABU:
-            return 0; // No keys
+            return 255; // No keys
         case SCENE_FOREST_TEMPLE:
-            return 6;
+            return isMQ ? 6 : 5;
         case SCENE_FIRE_TEMPLE:
-            return 8;
+            return isMQ ? 5 : 8;
         case SCENE_WATER_TEMPLE:
-            return 2;
+            return isMQ ? 2 : 6;
         case SCENE_SPIRIT_TEMPLE:
-            return 5;
+            return isMQ ? 7 : 5;
         case SCENE_SHADOW_TEMPLE:
-            return 5;
+            return isMQ ? 6 : 5;
         case SCENE_BOTTOM_OF_THE_WELL:
-            return 3;
-        case SCENE_GERUDO_TRAINING_GROUND:
-            return 9;
+            return isMQ ? 2 : 3;
+        case SCENE_ICE_CAVERN:
+            return 255; // No keys
         case SCENE_GANONS_TOWER:
-            return 0; // No keys
+            return 255; // No keys
+        case SCENE_GERUDO_TRAINING_GROUND:
+            return isMQ ? 3 : 9;
         case SCENE_INSIDE_GANONS_CASTLE:
-            return 3;
+            return isMQ ? 3 : 2;
         default:
-            return 8; // Default debug value
+            return 255; // No keys by default
+    }
+}
+
+// Check if a dungeon has a boss key
+static bool DungeonHasBossKey(int32_t dungeonIndex) {
+    switch (dungeonIndex) {
+        case SCENE_DEKU_TREE:
+        case SCENE_DODONGOS_CAVERN:
+        case SCENE_JABU_JABU:
+        case SCENE_FOREST_TEMPLE:
+        case SCENE_FIRE_TEMPLE:
+        case SCENE_WATER_TEMPLE:
+        case SCENE_SPIRIT_TEMPLE:
+        case SCENE_SHADOW_TEMPLE:
+        case SCENE_GANONS_TOWER:  // Boss key opens door to Ganondorf
+            return true;
+        case SCENE_BOTTOM_OF_THE_WELL:
+        case SCENE_ICE_CAVERN:
+        case SCENE_GERUDO_TRAINING_GROUND:
+        case SCENE_INSIDE_GANONS_CASTLE:
+        default:
+            return false;
     }
 }
 
@@ -2298,20 +2326,20 @@ void DrawDungeonItemsTab() {
     UIWidgets::BeginCardLayout(
         { .columnsPerRow = 2, .minColumnWidth = 250.0f, .fixedColumnWidths = { 280.0f, 280.0f } });
 
-    // All dungeons from Deku Tree to Ganon's Tower (skip boss scenes as they don't have boss keys)
-    for (int32_t dungeonIndex = SCENE_DEKU_TREE; dungeonIndex < SCENE_GANONS_TOWER + 1; dungeonIndex++) {
-        // Skip boss scenes - they don't have boss keys, maps, or compasses
+    // All dungeons from Deku Tree to Ganon's Castle (skip boss scenes)
+    for (int32_t dungeonIndex = SCENE_DEKU_TREE; dungeonIndex <= SCENE_INSIDE_GANONS_CASTLE; dungeonIndex++) {
+        // Skip boss scenes and invalid scene IDs (0x0C doesn't exist)
+        // Note: Ice Cavern has map/compass, just no boss key
         if (dungeonIndex == SCENE_DEKU_TREE_BOSS || dungeonIndex == SCENE_DODONGOS_CAVERN_BOSS ||
             dungeonIndex == SCENE_JABU_JABU_BOSS || dungeonIndex == SCENE_FOREST_TEMPLE_BOSS ||
             dungeonIndex == SCENE_FIRE_TEMPLE_BOSS || dungeonIndex == SCENE_WATER_TEMPLE_BOSS ||
             dungeonIndex == SCENE_SPIRIT_TEMPLE_BOSS || dungeonIndex == SCENE_SHADOW_TEMPLE_BOSS ||
-            dungeonIndex == SCENE_GANONDORF_BOSS || dungeonIndex == SCENE_GANON_BOSS) {
+            dungeonIndex == SCENE_GANONDORF_BOSS || dungeonIndex == SCENE_GANON_BOSS || dungeonIndex == 0x0C) {
             continue;
         }
 
         UIWidgets::BeginCard(SohUtils::GetSceneName(dungeonIndex).c_str());
         ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), SohUtils::GetSceneName(dungeonIndex).c_str());
-        ImGui::Spacing();
 
         // Map, Compass, Small Key, Boss Key (new order)
         DrawDungeonItemButton(ITEM_DUNGEON_MAP, dungeonIndex);
@@ -2321,6 +2349,9 @@ void DrawDungeonItemsTab() {
 
         // Small keys - clickable button with popup (only for dungeons that have keys)
         if (GetMaxKeysForDungeon(dungeonIndex) > 0) {
+            // Save cursor position before small key button to restore for boss key alignment
+            ImVec2 smallKeyCursor = ImGui::GetCursorScreenPos();
+
             uint8_t keyCount = gSaveContext.inventory.dungeonKeys[dungeonIndex];
             std::string keyPopupId = fmt::format("##SmallKeyPopup_{}", dungeonIndex);
             std::string keySliderId = fmt::format("##KeySlider_{}", dungeonIndex);
@@ -2335,6 +2366,20 @@ void DrawDungeonItemsTab() {
                 ImGui::OpenPopup(keyPopupId.c_str());
             }
             PopStyleButton();
+
+            // Display key count label at bottom right of the button rectangle
+            if (hasKeys) {
+                ImVec2 buttonMax = ImGui::GetItemRectMax();
+                ImVec2 framePadding = ImGui::GetStyle().FramePadding;
+                ImVec2 textSize = ImGui::CalcTextSize(fmt::format("{}", keyCount).c_str());
+                // Position text inside the button, accounting for frame padding
+                float textX = buttonMax.x - textSize.x - framePadding.x;
+                float textY = buttonMax.y - textSize.y - framePadding.y;
+                // Draw text directly without affecting cursor position
+                ImGui::GetForegroundDrawList()->AddText(ImVec2(textX, textY), IM_COL32(255, 255, 255, 255),
+                                                        fmt::format("{}", keyCount).c_str());
+            }
+
             Tooltip(fmt::format("Keys: {}", keyCount == 255 ? -1 : keyCount).c_str());
 
             // Small key popup
@@ -2353,10 +2398,16 @@ void DrawDungeonItemsTab() {
                 ImGui::PopItemWidth();
                 ImGui::EndPopup();
             }
+
+            // Restore cursor position to align boss key with original grid
+            ImGui::SetCursorScreenPos(smallKeyCursor);
             ImGui::SameLine();
         }
 
-        DrawDungeonItemButton(ITEM_KEY_BOSS, dungeonIndex);
+        // Only show boss key button for dungeons that have one
+        if (DungeonHasBossKey(dungeonIndex)) {
+            DrawDungeonItemButton(ITEM_KEY_BOSS, dungeonIndex);
+        }
 
         UIWidgets::EndCard();
     }
