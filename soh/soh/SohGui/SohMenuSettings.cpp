@@ -6,6 +6,7 @@
 #include <soh/GameVersions.h>
 #include "soh/ResourceManagerHelpers.h"
 #include "UIWidgets.hpp"
+#include "textures/icon_item_24_static/icon_item_24_static.h"
 #include <spdlog/fmt/fmt.h>
 
 extern "C" {
@@ -57,6 +58,194 @@ static const std::map<int32_t, const char*> bootSequenceLabels = {
     { BOOTSEQUENCE_DEFAULT, "Default" },        { BOOTSEQUENCE_AUTHENTIC, "Authentic" },
     { BOOTSEQUENCE_FILESELECT, "File Select" }, { BOOTSEQUENCE_DEBUGWARPSCREEN, "Debug Warp Screen" },
     { BOOTSEQUENCE_WARPPOINT, "Warp Point" },
+};
+
+static std::vector<std::string> contributors = {
+    // HarbourMasters staff (sorted by contribution count)
+    "briaguya",
+    "Malkierian",
+    "ProxySaw", // "Garrett Cox", manual replacement
+    "Christopher Leggett",
+    "Pepper0ni",
+    "Archez",   // "Adam Bird", dupe
+    "aMannus",
+    "Kenix3",
+    "Pepe20129",
+    "Nicholas Estelami",
+    "PurpleHato",
+    "Baoulettes",
+    "inspectredc",
+    "Josh Bodner",
+    "KiritoDev",
+    "GaryOderNichts",
+    "Ada",
+    "Sirius902",
+    "ItsHeckinPat", // "Patrick12115", dupe
+    "Rozelette",
+    "MegaMech",
+    "MelonSpeedruns",
+    "qurious-pixel",
+    "Caladius",
+    "Emill",
+    "louist103",
+    "mckinlee",
+    "OtherBlue",
+    "Eblo",
+    "Random06457",
+    "pancake-byte",
+    "balloondude2",
+    "Philip Dubé",
+    "Jordan Longstaff",
+    "David Chavez",
+    "Ralphie Morell",
+    "Eric Hoey",
+    "Kevin Alexis Contreras",
+    "vaguerant",
+    "xxAtrain223",
+    "Extloga",
+    "rozlette",
+    "Amaro Martínez",
+    "A Green Spoon",
+    "nclok1405",
+    "sholdee",
+    "lilDavid",
+    "th-2021",
+    "AltoXorg",
+    "Sarge-117",
+    "RaelCappra",
+    "earthcrafterman",
+    "Ted Newman",
+    "M4xw",
+    "Emil Lenngren",
+    "Jeffrey Crowell",
+    "InfoManiac742",
+    "Chris",
+    "mergify[bot]",
+    "Shishu the Dragon",
+    "Tina H. (sheepytina)",
+    "Spodi",
+    "Reppan",
+    "Oliver Schall",
+    "Andrew Van Caem",
+    "sonoftunk",
+    "frizzle101101",
+    "anthony-barricelli",
+    "MoriyaFaith",
+    "MaikelChan",
+    "LuigiXHero",
+    "Jordan Gilbreath",
+    "DeusVexus",
+    "Alto1772",
+    "Vague Rant",
+    "TheLynk",
+    "Taw",
+    "Sean Latham",
+    "Paul Schwabauer",
+    "Miles Acquaviva",
+    "Lywx",
+    "Jameriquiah", // "Jordyn Hardyman", dupe
+    "Glought",
+    "Cardboy777",
+    "Bytenex",
+    "Angelo Bulfone",
+    "louis",
+    "getBrainError",
+    "Yomitht",
+    "William Casarin",
+    "TheLegendOfLame",
+    "Random",
+    "Nickelbawker",
+    "Kenix",
+    "Jordyn Hardyman",
+    "Jerom Venneker",
+    "ItsHeckinPat",
+    "GreenSwede",
+    "Fredrik Andreasson",
+    "Fabien Romano",
+    "Evgenii Babinets",
+    "Dakota Brown",
+    "Bigs",
+    "tortugaveloz",
+    "tcpowell",
+    "splemb",
+    "skyyoshi86",
+    "skrawpie",
+    "shinra-electric",
+    "red",
+    "quellen-sol",
+    "pirate486743186",
+    "nianjiilical",
+    "modestposer",
+    "mightypanders",
+    "mattman107",
+    "m4xw",
+    "lilacLunatic",
+    "lemonslut",
+    "krm01",
+    "kev4cards",
+    "iheemskerk",
+    "enzu.ru",
+    "coavins",
+    "chartergirl64",
+    "blackgamma7",
+    "amekusa",
+    "ajanhallinta",
+    "agamache",
+    "Zion",
+    "Zaxus125",
+    "Xeokn",
+    "Varuuna",
+    "UltraHDR",
+    "Torphedo",
+    "Thomas Achatz",
+    "Sparkling.Shampoo",
+    "Sparkling Shampoo",
+    "Schicksal88",
+    "Salt",
+    "Revo",
+    "Reuben D'Souza",
+    "Renzo Martin Poggio",
+    "Proloe",
+    "ProjectRevoTPP",
+    "PoorPockets McNewHold",
+    "Pierre-Alain BESSERO",
+    "Pierre Wendling",
+    "PhysicBerry",
+    "PBillodeau",
+    "Olivia!!",
+    "Nycz",
+    "Nivomi",
+    "Nick Michael",
+    "Mike",
+    "Matt Wiens",
+    "Matt Jakubowski",
+    "Martin Molina",
+    "Marcelo20XX",
+    "Lutzx",
+    "Lord Jabu Jabu",
+    "Lexi Rose",
+    "KennyT",
+    "Jérémy Lugand",
+    "Julien Lemay",
+    "Julian Garritano",
+    "Jeff Manian",
+    "Jason",
+    "Jamie Klassen",
+    "Jake Edvenson",
+    "Ian Drake",
+    "IShallRiseAgain",
+    "Hunter Marshall",
+    "Giantblargg",
+    "Esras",
+    "Dog",
+    "Demur Rumed",
+    "Dan Lilja",
+    "ChristopherJTrent",
+    "Cameron",
+    "BountyChocolate123456",
+    "Andrew Piper",
+    "Ali",
+    "Alejandro Asenjo Nitti",
 };
 
 const char* GetGameVersionString(uint32_t index) {
@@ -277,6 +466,47 @@ void SohMenu::AddMenuSettings() {
     for (uint32_t i = 0; i < ResourceMgr_GetNumGameVersions(); i++) {
         AddWidget(path, GetGameVersionString(i), WIDGET_TEXT);
     }
+
+    // Contributors section
+    AddWidget(path, "contributors", WIDGET_CUSTOM).CustomFunction([](WidgetInfo& info) {
+        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 0.5f, 0.5f, 1.0f));
+        ImGui::SeparatorText("Thank You");
+        ImGui::PopStyleColor();
+        ImGui::SameLine();
+        ImTextureID heartTextureId = Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
+            (const char*)gQuestIconHeartContainerTex);
+        ImGui::Image(heartTextureId, ImVec2(25.0f, 25.0f));
+        ImGui::TextWrapped("Special thanks to our contributors, playtesters, artists, moderators, helpers, and "
+                           "everyone in the larger decomp & N64 communities who make this project possible.\n\n");
+
+        // Draw auto scrolling list of contributors in columns
+        ImGui::SetNextWindowSize(ImVec2(0.0f, ImGui::GetMainViewport()->WorkSize.y / 3));
+        ImGui::BeginChild("contributors", ImVec2(0, 0), 0,
+                          ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
+        static double scrollSpeed = 1.5f * (ImGui::GetFontSize() / 1000.0f);
+        static int numColumns = 2;
+
+        float lineHeight = ImGui::GetTextLineHeightWithSpacing();
+        float singleListHeight =
+            (contributors.size() / numColumns + (contributors.size() % numColumns != 0 ? 1 : 0)) * lineHeight;
+
+        double scrollPosition = fmod((GetUnixTimestamp() % 18446744000000000000) * scrollSpeed, singleListHeight);
+        ImGui::SetScrollY(scrollPosition);
+
+        // Render twice for infinite scroll
+        for (int iteration = 0; iteration < 2; iteration++) {
+            for (int column = 0; column < numColumns; column++) {
+                if (column > 0)
+                    ImGui::SameLine();
+                ImGui::BeginGroup();
+                for (size_t i = column; i < contributors.size(); i += numColumns) {
+                    ImGui::Text("%s", contributors.at(i).c_str());
+                }
+                ImGui::EndGroup();
+            }
+        }
+        ImGui::EndChild();
+    });
 
     // Audio Settings
     path.sidebarName = "Audio";
