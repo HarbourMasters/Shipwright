@@ -126,6 +126,223 @@ template <typename T> void DrawGroupWithBorder(T&& drawFunc, std::string section
     ImGui::EndChild();
 }
 
+// Get the maximum small keys obtainable in vanilla for each dungeon
+static int8_t GetMaxKeysForDungeon(int32_t dungeonIndex) {
+    switch (dungeonIndex) {
+        case SCENE_DEKU_TREE: return 5;
+        case SCENE_DODONGOS_CAVERN: return 5;
+        case SCENE_JABU_JABU: return 0; // No keys
+        case SCENE_FOREST_TEMPLE: return 6;
+        case SCENE_FIRE_TEMPLE: return 8;
+        case SCENE_WATER_TEMPLE: return 2;
+        case SCENE_SPIRIT_TEMPLE: return 5;
+        case SCENE_SHADOW_TEMPLE: return 5;
+        case SCENE_BOTTOM_OF_THE_WELL: return 3;
+        case SCENE_GERUDO_TRAINING_GROUND: return 9;
+        case SCENE_GANONS_TOWER: return 0; // No keys
+        case SCENE_INSIDE_GANONS_CASTLE: return 3;
+        default: return 8; // Default debug value
+    }
+}
+
+// Helper to draw a button item selector box (exact same pattern as inventory picker)
+// buttonIndex: index into buttonItems array (0=B, 1=C-Left, 2=C-Down, 3=C-Right, 4-7=D-pad)
+// isBButton: true for B button (allows swords only), false for C/D-pad (button-usable items)
+// restrictToValid: pointer to shared restrict flag (nullptr = use internal static)
+static void DrawButtonItemSelector(const char* label, int buttonIndex, UIWidgets::Colors color, bool isBButton = false, const bool* restrictToValidPtr = nullptr) {
+    // Use provided restrictToValid or default to true (restricted mode)
+    bool useRestriction = restrictToValidPtr ? *restrictToValidPtr : true;
+    uint8_t* buttonItem = &gSaveContext.equips.buttonItems[buttonIndex];
+
+    // Helper to check if item is a sword (for B button)
+    auto isSword = [](int32_t item) -> bool {
+        return item == ITEM_SWORD_KOKIRI || item == ITEM_SWORD_MASTER ||
+               item == ITEM_SWORD_BGS || item == ITEM_SWORD_KNIFE;
+    };
+
+    // Helper to check if item is button-usable (for C/D-pad buttons)
+    // Restricted to items from Stick (0x00) to Bow Arrow Light (0x3A)
+    auto isButtonUsable = [](int32_t item) -> bool {
+        if (item == ITEM_ROCS_FEATHER) return true;
+        // All button-usable items: ITEM_STICK (0x00) to ITEM_BOW_ARROW_LIGHT (0x3A)
+        if (item >= ITEM_STICK && item <= ITEM_BOW_ARROW_LIGHT) return true;
+        return false;
+    };
+
+    // Helper to check if an item should be shown in the picker based on mode and button type
+    auto shouldShowItem = [&](int32_t item) -> bool {
+        if (item == ITEM_NONE) return false;
+        if (item == ITEM_ROCS_FEATHER) return !isBButton; // Roc's Feather on C/D-pad only
+        if (!useRestriction) return true; // Unrestricted: show everything
+        if (isBButton) return isSword(item); // B button restricted: swords only
+        return isButtonUsable(item); // C/D-pad restricted: button-usable items only
+    };
+
+    uint8_t item = *buttonItem;
+    // Use DarkGray for empty buttons, otherwise use the provided color
+    if (item != ITEM_NONE) {
+        PushStyleButton(color);
+    } else {
+        PushStyleButton(Colors::DarkGray);
+    }
+
+    if (item == ITEM_ROCS_FEATHER) {
+        std::string rocId = std::string("RG_ROCS_FEATHER_btn_") + label;
+        if (ImGui::ImageButton(rocId.c_str(),
+                              Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("RG_ROCS_FEATHER"),
+                              ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1))) {
+            ImGui::OpenPopup(label);
+        }
+    } else if (item != ITEM_NONE) {
+        const ItemMapEntry& slotEntry = itemMapping.find(item)->second;
+        // Use label-based ID to avoid conflicts when same item is on multiple buttons
+        std::string itemId = std::string("item_btn_") + label + "_" + slotEntry.name;
+        if (ImGui::ImageButton(itemId.c_str(),
+                              Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(slotEntry.name),
+                              ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1))) {
+            ImGui::OpenPopup(label);
+        }
+    } else {
+        // Use label-based ID for empty buttons to avoid conflicts
+        std::string emptyId = std::string("##btnEmpty_") + label;
+        if (ImGui::Button(emptyId.c_str(), ImVec2(IMAGE_SIZE, IMAGE_SIZE) + ImGui::GetStyle().FramePadding * 2)) {
+            ImGui::OpenPopup(label);
+        }
+    }
+    PopStyleButton();
+
+    // Tooltip with current item name
+    if (item != ITEM_NONE) {
+        Tooltip(SohUtils::GetItemName(item).c_str());
+    } else {
+        Tooltip("Empty");
+    }
+
+    // Popup selector (exact same pattern as inventory picker)
+    if (ImGui::BeginPopup(label)) {
+        ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
+        PushStyleButton(Colors::DarkGray);
+        std::string noneId = std::string("##btnNonePicker_") + label;
+        if (ImGui::Button(noneId.c_str(), ImVec2(IMAGE_SIZE, IMAGE_SIZE) + ImGui::GetStyle().FramePadding * 2)) {
+            *buttonItem = ITEM_NONE;
+            // Update cButtonSlots for C buttons
+            if (buttonIndex >= 1 && buttonIndex <= 3) {
+                gSaveContext.equips.cButtonSlots[buttonIndex - 1] = SLOT_NONE;
+            }
+            // Refresh HUD, pause menu, and player actor
+            if (gPlayState != nullptr) {
+                Interface_LoadItemIcon1(gPlayState, buttonIndex);
+                // Update player actor equipment when B button changes
+                if (buttonIndex == 0) {
+                    Player* player = GET_PLAYER(gPlayState);
+                    if (player != nullptr) {
+                        player->currentSwordItemId = ITEM_NONE;
+                    }
+                }
+                // Refresh pause menu if open
+                if (gPlayState->pauseCtx.state != 0) {
+                    KaleidoScope_InitVertices(gPlayState, gPlayState->state.gfxCtx);
+                }
+            }
+            ImGui::CloseCurrentPopup();
+        }
+        PopStyleButton();
+        UIWidgets::Tooltip("None");
+
+        std::vector<ItemMapEntry> possibleItems;
+        // Use shouldShowItem helper to filter items based on mode and button type
+        for (const auto& [itemId, entry] : itemMapping) {
+            if (shouldShowItem(itemId)) {
+                possibleItems.push_back(entry);
+            }
+        }
+
+        for (size_t pickerIndex = 0; pickerIndex < possibleItems.size(); pickerIndex++) {
+            if (((pickerIndex + 1) % 8) != 0) {
+                ImGui::SameLine();
+            }
+
+            const ItemMapEntry& slotEntry = possibleItems[pickerIndex];
+            PushStyleButton(Colors::DarkGray);
+            std::string pickerItemId = std::string("item_picker_") + label + "_" + slotEntry.name;
+            auto ret = ImGui::ImageButton(
+                pickerItemId.c_str(),
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(slotEntry.name),
+                ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1));
+            PopStyleButton();
+            if (ret) {
+                *buttonItem = slotEntry.id;
+                // Update cButtonSlots for C buttons to point to the correct inventory slot
+                if (buttonIndex >= 1 && buttonIndex <= 3) {
+                    gSaveContext.equips.cButtonSlots[buttonIndex - 1] = SLOT(slotEntry.id);
+                }
+                // Refresh HUD, pause menu, and player actor
+                if (gPlayState != nullptr) {
+                    Interface_LoadItemIcon1(gPlayState, buttonIndex);
+                    // Update player actor equipment when B button changes
+                    if (buttonIndex == 0) {
+                        Player* player = GET_PLAYER(gPlayState);
+                        if (player != nullptr) {
+                            // Check item type and update corresponding equipment
+                            if (slotEntry.id >= ITEM_SWORD_KOKIRI && slotEntry.id <= ITEM_SWORD_BROKEN) {
+                                player->currentSwordItemId = slotEntry.id;
+                            } else if (slotEntry.id >= ITEM_SHIELD_DEKU && slotEntry.id <= ITEM_SHIELD_MIRROR) {
+                                if (slotEntry.id == ITEM_SHIELD_DEKU) player->currentShield = PLAYER_SHIELD_DEKU;
+                                else if (slotEntry.id == ITEM_SHIELD_HYLIAN) player->currentShield = PLAYER_SHIELD_HYLIAN;
+                                else if (slotEntry.id == ITEM_SHIELD_MIRROR) player->currentShield = PLAYER_SHIELD_MIRROR;
+                            } else if (slotEntry.id >= ITEM_TUNIC_KOKIRI && slotEntry.id <= ITEM_TUNIC_ZORA) {
+                                if (slotEntry.id == ITEM_TUNIC_KOKIRI) player->currentTunic = PLAYER_TUNIC_KOKIRI;
+                                else if (slotEntry.id == ITEM_TUNIC_GORON) player->currentTunic = PLAYER_TUNIC_GORON;
+                                else if (slotEntry.id == ITEM_TUNIC_ZORA) player->currentTunic = PLAYER_TUNIC_ZORA;
+                            } else if (slotEntry.id >= ITEM_BOOTS_KOKIRI && slotEntry.id <= ITEM_BOOTS_HOVER) {
+                                if (slotEntry.id == ITEM_BOOTS_KOKIRI) player->currentBoots = PLAYER_BOOTS_KOKIRI;
+                                else if (slotEntry.id == ITEM_BOOTS_IRON) player->currentBoots = PLAYER_BOOTS_IRON;
+                                else if (slotEntry.id == ITEM_BOOTS_HOVER) player->currentBoots = PLAYER_BOOTS_HOVER;
+                            }
+                        }
+                    }
+                    if (gPlayState->pauseCtx.state != 0) {
+                        KaleidoScope_InitVertices(gPlayState, gPlayState->state.gfxCtx);
+                    }
+                }
+                ImGui::CloseCurrentPopup();
+            }
+            UIWidgets::Tooltip(GetItemDisplayName(slotEntry.id));
+        }
+
+        // Add Roc's Feather at the end for C/D-pad buttons in restricted mode
+        if (shouldShowItem(ITEM_ROCS_FEATHER)) {
+            ImGui::SameLine();
+            PushStyleButton(Colors::DarkGray);
+            std::string rocPickerId = std::string("RG_ROCS_FEATHER_picker_") + label;
+            auto retRoc = ImGui::ImageButton(
+                rocPickerId.c_str(),
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("RG_ROCS_FEATHER"),
+                ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1));
+            PopStyleButton();
+            if (retRoc) {
+                *buttonItem = ITEM_ROCS_FEATHER;
+                // Update cButtonSlots for C buttons (Roc's Feather uses Nayru's Love slot)
+                if (buttonIndex >= 1 && buttonIndex <= 3) {
+                    gSaveContext.equips.cButtonSlots[buttonIndex - 1] = SLOT_NAYRUS_LOVE;
+                }
+                // Refresh button icon on HUD and pause menu
+                if (gPlayState != nullptr) {
+                    Interface_LoadItemIcon1(gPlayState, buttonIndex);
+                    if (gPlayState->pauseCtx.state != 0) {
+                        KaleidoScope_InitVertices(gPlayState, gPlayState->state.gfxCtx);
+                    }
+                }
+                ImGui::CloseCurrentPopup();
+            }
+            UIWidgets::Tooltip("Roc's Feather");
+        }
+
+        ImGui::PopStyleVar();
+        ImGui::EndPopup();
+    }
+}
+
 char z2ASCII(int code) {
     int ret;
     if (code < 10) { // Digits
@@ -712,14 +929,17 @@ void DrawInventoryTab() {
     UIWidgets::BeginCardLayout(
         { .columnsPerRow = 2, .minColumnWidth = 350.0f, .fixedColumnWidths = { 450.0f, 450.0f } });
 
-    // Items grid card
-    UIWidgets::BeginCard("inventoryGridCard");
+    // Items grid card (force to column 0)
+    UIWidgets::BeginCard("inventoryGridCard", 0);
     ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "Items");
     ImGui::Spacing();
 
     static int32_t selectedIndex = -1;
     static const char* itemPopupPicker = "itemPopupPicker";
     static bool restrictToValid = true;
+
+    // Check if D-pad is enabled for border coloring
+    bool dpadEnabled = CVarGetInteger(CVAR_ENHANCEMENT("DpadEquips"), 0);
 
     for (int32_t y = 0; y < 4; y++) {
         for (int32_t x = 0; x < 6; x++) {
@@ -733,29 +953,50 @@ void DrawInventoryTab() {
 
             uint8_t item = gSaveContext.inventory.items[index];
 
-            // Check if this item is equipped by checking slot assignments
-            bool isEquipped = false;
-            // Check C button slots (direct slot index mapping)
+            // Check if this item is equipped and which slot for colored border
+            enum EquippedSlot { None, BButton, CButton, DPad };
+            EquippedSlot equippedSlot = EquippedSlot::None;
+
+            // Check C button slots (cButtonSlots maps to inventory slot indices)
             for (int cBtn = 0; cBtn < 4; cBtn++) {
                 if (gSaveContext.equips.cButtonSlots[cBtn] == index) {
-                    isEquipped = true;
+                    equippedSlot = EquippedSlot::CButton;
                     break;
                 }
             }
-            // For B button, check if this slot contains the B button item
-            if (!isEquipped && gSaveContext.equips.buttonItems[0] == item) {
-                isEquipped = true;
+            // Check D-pad slots (buttonItems[4-7] - need to match the item, not slot)
+            if (equippedSlot == EquippedSlot::None && dpadEnabled) {
+                for (int dpadBtn = 4; dpadBtn <= 7; dpadBtn++) {
+                    if (gSaveContext.equips.buttonItems[dpadBtn] == item) {
+                        equippedSlot = EquippedSlot::DPad;
+                        break;
+                    }
+                }
+            }
+            // For B button (buttonItems[0])
+            if (equippedSlot == EquippedSlot::None && gSaveContext.equips.buttonItems[0] == item) {
+                equippedSlot = EquippedSlot::BButton;
+            }
+
+            // Determine border color (needed before group for proper rendering)
+            ImU32 borderColor = 0;
+            bool drawBorder = equippedSlot != EquippedSlot::None;
+            if (drawBorder) {
+                if (equippedSlot == EquippedSlot::CButton) {
+                    borderColor = IM_COL32(255, 165, 0, 255); // Orange for C-button
+                } else if (equippedSlot == EquippedSlot::DPad) {
+                    borderColor = IM_COL32(180, 180, 180, 255); // Light grey for D-pad
+                } else {
+                    // B button color (green for N64, red for GC)
+                    bool isGcScheme = CVarGetInteger(CVAR_COSMETIC("DefaultColorScheme"), 0) == 1;
+                    borderColor = isGcScheme ? IM_COL32(255, 0, 0, 255) : IM_COL32(0, 255, 0, 255);
+                }
             }
 
             ImGui::BeginGroup();
-            // White border for equipped items - draw a background rect first
-            if (isEquipped) {
-                ImVec2 p = ImGui::GetCursorScreenPos();
-                ImGui::GetWindowDrawList()->AddRect(ImVec2(p.x - 2, p.y - 2),
-                                                    ImVec2(p.x + IMAGE_SIZE + ImGui::GetStyle().FramePadding.x * 2 + 2,
-                                                           p.y + IMAGE_SIZE + ImGui::GetStyle().FramePadding.y * 2 + 3),
-                                                    IM_COL32(255, 255, 255, 255), 0.0f, 0, 2.0f);
-            }
+
+            // Save cursor position for square border (around button only, not ammo)
+            ImVec2 buttonPos = ImGui::GetCursorScreenPos();
 
             PushStyleButton(Colors::DarkGray);
             bool wasClicked = false;
@@ -776,9 +1017,27 @@ void DrawInventoryTab() {
             }
             PopStyleButton();
 
+            // Draw square border around button only (not ammo)
+            if (drawBorder) {
+                ImVec2 buttonMin = buttonPos;
+                ImVec2 buttonMax = ImVec2(
+                    buttonPos.x + IMAGE_SIZE + ImGui::GetStyle().FramePadding.x * 2,
+                    buttonPos.y + IMAGE_SIZE + ImGui::GetStyle().FramePadding.y * 2
+                );
+                ImGui::GetWindowDrawList()->AddRect(
+                    ImVec2(buttonMin.x - 2, buttonMin.y - 2),
+                    ImVec2(buttonMax.x + 2, buttonMax.y + 2),
+                    borderColor, 0.0f, 0, 2.0f);
+            }
+
             if (wasClicked) {
                 selectedIndex = index;
                 ImGui::OpenPopup(itemPopupPicker);
+            }
+
+            // Tooltip (after button, before popup)
+            if (item != ITEM_NONE) {
+                Tooltip(SohUtils::GetItemName(item).c_str());
             }
 
             // Show ammo input below items that have ammo
@@ -883,8 +1142,8 @@ void DrawInventoryTab() {
 
     UIWidgets::EndCard();
 
-    // Action buttons card
-    UIWidgets::BeginCard("inventoryActionsCard");
+    // Action buttons card (force to column 0)
+    UIWidgets::BeginCard("inventoryActionsCard", 0);
     ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "Actions");
     ImGui::Spacing();
 
@@ -933,59 +1192,84 @@ void DrawInventoryTab() {
 
     UIWidgets::EndCard();
 
-    // Button Items card (N64 C button layout)
-    UIWidgets::BeginCard("buttonItemsCard");
-    ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "Button Items (C-Buttons)");
+    // Button Items card (N64 C button layout - force to column 1)
+    UIWidgets::BeginCard("buttonItemsCard", 1);
+    ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "Button Items");
     ImGui::Spacing();
-
-    ImGui::PushItemWidth(ImGui::GetFontSize() * 10);
 
     // Determine button colors based on color scheme
     bool isGcScheme = CVarGetInteger(CVAR_COSMETIC("DefaultColorScheme"), 0) == 1;
     Colors bButtonColor = isGcScheme ? Colors::Red : Colors::Green;
     Colors cButtonsColor = Colors::Orange; // Yellow-orange for C buttons
 
-    // B Button - Green (N64) or Red (GC)
-    PushStyleInput(bButtonColor);
-    ImGui::InputScalar("B Button##btnItems", ImGuiDataType_U8, &gSaveContext.equips.buttonItems[0], &INPUT_ONE, NULL);
-    Tooltip("B button item");
-    PopStyleInput();
+    // Note: "Restrict to valid items" checkbox is in the Actions card and affects all buttons here
 
-    // C Buttons - Yellow-orange, arranged in N64 C button layout
-    // C-Left, C-Down, C-Right (bottom row)
-    PushStyleInput(cButtonsColor);
-    ImGui::InputScalar("C Left##btnItems", ImGuiDataType_U8, &gSaveContext.equips.buttonItems[1], &INPUT_ONE, NULL);
-    Tooltip("C Left button item");
-    ImGui::InputScalar("C Down##btnItems", ImGuiDataType_U8, &gSaveContext.equips.buttonItems[2], &INPUT_ONE, NULL);
-    Tooltip("C Down button item");
-    ImGui::InputScalar("C Right##btnItems", ImGuiDataType_U8, &gSaveContext.equips.buttonItems[3], &INPUT_ONE, NULL);
-    Tooltip("C Right button item");
-    PopStyleInput();
+    // Static counter for unique placeholder IDs
+    static int placeholderCounter = 0;
 
-    ImGui::PopItemWidth();
+    // Helper to draw invisible placeholder (for C-buttons)
+    auto DrawPlaceholder = [&]() {
+        ImGui::PushID(placeholderCounter++);
+        ImGui::InvisibleButton("##placeholder", ImVec2(IMAGE_SIZE, IMAGE_SIZE) + ImGui::GetStyle().FramePadding * 2);
+        ImGui::PopID();
+    };
+
+    // Helper to draw grey placeholder (for D-pad) - NOW INVISIBLE
+    auto DrawGreyPlaceholder = [&]() {
+        ImGui::PushID(placeholderCounter++);
+        ImGui::InvisibleButton("##placeholder", ImVec2(IMAGE_SIZE, IMAGE_SIZE) + ImGui::GetStyle().FramePadding * 2);
+        ImGui::PopID();
+    };
+
+    placeholderCounter = 0; // Reset counter each frame
+
+    // C-button diamond layout:
+    // Row 1: B, C-Left, [placeholder], C-Right
+    DrawButtonItemSelector("B Button##btnItems", 0, bButtonColor, true, &restrictToValid);
+    ImGui::SameLine();
+    DrawButtonItemSelector("C Left##btnItems", 1, cButtonsColor, false, &restrictToValid);
+    ImGui::SameLine();
+    DrawPlaceholder();
+    ImGui::SameLine();
+    DrawButtonItemSelector("C Right##btnItems", 3, cButtonsColor, false, &restrictToValid);
+
+    // Row 2: [placeholder], [placeholder], C-Down
+    DrawPlaceholder();
+    ImGui::SameLine();
+    DrawPlaceholder();
+    ImGui::SameLine();
+    DrawButtonItemSelector("C Down##btnItems", 2, cButtonsColor, false, &restrictToValid);
+
     UIWidgets::EndCard();
 
-    // D-Pad Items card (D-Pad layout)
+    // D-Pad Items card (D-Pad layout - force to column 1)
     if (CVarGetInteger(CVAR_ENHANCEMENT("DpadEquips"), 0)) {
-        UIWidgets::BeginCard("dpadItemsCard");
+        UIWidgets::BeginCard("dpadItemsCard", 1);
         ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "D-Pad Items");
         ImGui::Spacing();
-        ImGui::PushItemWidth(ImGui::GetFontSize() * 10);
-        PushStyleInput(THEME_COLOR);
-        ImGui::InputScalar("D-pad Up##dpadItems", ImGuiDataType_U8, &gSaveContext.equips.buttonItems[4], &INPUT_ONE,
-                           NULL);
-        Tooltip("D-pad Up item");
-        ImGui::InputScalar("D-pad Down##dpadItems", ImGuiDataType_U8, &gSaveContext.equips.buttonItems[5], &INPUT_ONE,
-                           NULL);
-        Tooltip("D-pad Down item");
-        ImGui::InputScalar("D-pad Left##dpadItems", ImGuiDataType_U8, &gSaveContext.equips.buttonItems[6], &INPUT_ONE,
-                           NULL);
-        Tooltip("D-pad Left item");
-        ImGui::InputScalar("D-pad Right##dpadItems", ImGuiDataType_U8, &gSaveContext.equips.buttonItems[7], &INPUT_ONE,
-                           NULL);
-        Tooltip("D-pad Right item");
-        PopStyleInput();
-        ImGui::PopItemWidth();
+
+        Colors dpadColor = Colors::LightGray; // Light grey for D-pad buttons (not placeholders)
+
+        // D-pad cross layout:
+        // Row 1: [invisible placeholder], D-Pad Up, [invisible placeholder]
+        DrawGreyPlaceholder();
+        ImGui::SameLine();
+        DrawButtonItemSelector("D-pad Up##dpadItems", 4, dpadColor, false, &restrictToValid);
+        ImGui::SameLine();
+        DrawGreyPlaceholder();
+
+        // Row 2: D-Pad Left, [invisible placeholder], D-Pad Right
+        DrawButtonItemSelector("D-pad Left##dpadItems", 6, dpadColor, false, &restrictToValid);
+        ImGui::SameLine();
+        DrawGreyPlaceholder();
+        ImGui::SameLine();
+        DrawButtonItemSelector("D-pad Right##dpadItems", 7, dpadColor, false, &restrictToValid);
+
+        // Row 3: [invisible placeholder], D-Pad Down
+        DrawGreyPlaceholder();
+        ImGui::SameLine();
+        DrawButtonItemSelector("D-pad Down##dpadItems", 5, dpadColor, false, &restrictToValid);
+
         UIWidgets::EndCard();
     }
 
@@ -1203,8 +1487,8 @@ void DrawFlagsTab() {
     ImGui::BeginChild("flagsTab", ImVec2(0, 0), true);
 
     // ========== COLLAPSIBLE FLAG TABLES FIRST ==========
-    // Flag tables - use a separate 1-column layout for these
-    UIWidgets::BeginCardLayout({ .columnsPerRow = 1, .minColumnWidth = 400.0f });
+    // Flag tables - use 2-column layout to leave space for other cards
+    UIWidgets::BeginCardLayout({ .columnsPerRow = 2, .minColumnWidth = 450.0f });
 
     // Render tables in reverse order - last 4 (Event Check Inf, Inf, Event Inf, Randomizer Inf) first
     for (int i = (int)flagTables.size() - 1; i >= 0; i--) {
@@ -1650,15 +1934,6 @@ void DrawEquipmentTab() {
             isEquipped = (currentBoots == (PLAYER_BOOTS_KOKIRI + (i - 12)));
         }
 
-        // White border for equipped items
-        if (isEquipped) {
-            ImVec2 p = ImGui::GetCursorScreenPos();
-            ImGui::GetWindowDrawList()->AddRect(ImVec2(p.x - 2, p.y - 2),
-                                                ImVec2(p.x + IMAGE_SIZE + ImGui::GetStyle().FramePadding.x * 2 + 2,
-                                                       p.y + IMAGE_SIZE + ImGui::GetStyle().FramePadding.y * 2 + 3),
-                                                IM_COL32(255, 255, 255, 255), 0.0f, 0, 2.0f);
-        }
-
         PushStyleButton(Colors::DarkGray);
         auto ret = ImGui::ImageButton(entry.name.c_str(),
                                       Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
@@ -1674,6 +1949,17 @@ void DrawEquipmentTab() {
         PopStyleButton();
 
         Tooltip(GetItemDisplayName(entry.id));
+
+        // Draw border AFTER button (using actual rendered size)
+        if (isEquipped) {
+            ImVec2 itemMin = ImGui::GetItemRectMin();
+            ImVec2 itemMax = ImGui::GetItemRectMax();
+            ImGui::GetWindowDrawList()->AddRect(
+                ImVec2(itemMin.x - 2, itemMin.y - 2),
+                ImVec2(itemMax.x + 2, itemMax.y + 2),
+                IM_COL32(255, 255, 255, 255), 0.0f, 0, 2.0f);
+        }
+
         ImGui::PopID();
     }
 
@@ -1837,7 +2123,7 @@ void DrawDungeonItemButton(uint32_t item, uint32_t scene) {
     auto ret = ImGui::ImageButton(
         entry.name.c_str(),
         Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(hasItem ? entry.name : entry.nameFaded),
-        ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1));
+        ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1));
     if (ret) {
         if (hasItem) {
             gSaveContext.inventory.dungeonItems[scene] &= ~bitMask;
@@ -1901,7 +2187,7 @@ void DrawQuestStatusTab() {
         auto ret = ImGui::ImageButton(entry.name.c_str(),
                                       Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
                                           hasQuestItem ? entry.name : entry.nameFaded),
-                                      ImVec2(32.0f, 48.0f), ImVec2(0, 0), ImVec2(1, 1));
+                                      ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1));
         if (ret) {
             if (hasQuestItem) {
                 gSaveContext.inventory.questItems &= ~bitMask;
@@ -1975,7 +2261,7 @@ void DrawDungeonItemsTab() {
     ImGui::BeginChild("dungeonItemsTab", ImVec2(0, 0), true);
 
     UIWidgets::BeginCardLayout(
-        { .columnsPerRow = 2, .minColumnWidth = 350.0f, .fixedColumnWidths = { 450.0f, 450.0f } });
+        { .columnsPerRow = 2, .minColumnWidth = 250.0f, .fixedColumnWidths = { 280.0f, 280.0f } });
 
     // All dungeons from Deku Tree to Ganon's Tower (skip boss scenes as they don't have boss keys)
     for (int32_t dungeonIndex = SCENE_DEKU_TREE; dungeonIndex < SCENE_GANONS_TOWER + 1; dungeonIndex++) {
@@ -1992,30 +2278,48 @@ void DrawDungeonItemsTab() {
         ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), SohUtils::GetSceneName(dungeonIndex).c_str());
         ImGui::Spacing();
 
-        // Boss Key, Compass, Map buttons
-        DrawDungeonItemButton(ITEM_KEY_BOSS, dungeonIndex);
+        // Map, Compass, Small Key, Boss Key (new order)
+        DrawDungeonItemButton(ITEM_DUNGEON_MAP, dungeonIndex);
         ImGui::SameLine();
         DrawDungeonItemButton(ITEM_COMPASS, dungeonIndex);
         ImGui::SameLine();
-        DrawDungeonItemButton(ITEM_DUNGEON_MAP, dungeonIndex);
 
-        // Small keys (not for boss rooms or Ganon's Tower)
-        if (dungeonIndex != SCENE_JABU_JABU && dungeonIndex != SCENE_GANONS_TOWER) {
-            ImGui::Spacing();
-            float lineHeight = ImGui::GetTextLineHeightWithSpacing();
-            ImGui::Image(
-                Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(itemMapping[ITEM_KEY_SMALL].name),
-                ImVec2(lineHeight, lineHeight));
-            ImGui::SameLine();
-            PushStyleInput(THEME_COLOR);
-            if (ImGui::InputScalar("##Keys", ImGuiDataType_S8, gSaveContext.inventory.dungeonKeys + dungeonIndex)) {
-                gSaveContext.ship.stats.dungeonKeys[dungeonIndex] = gSaveContext.inventory.dungeonKeys[dungeonIndex];
+        // Small keys - clickable button with popup (only for dungeons that have keys)
+        if (GetMaxKeysForDungeon(dungeonIndex) > 0) {
+            uint8_t keyCount = gSaveContext.inventory.dungeonKeys[dungeonIndex];
+            std::string keyPopupId = fmt::format("##SmallKeyPopup_{}", dungeonIndex);
+            std::string keySliderId = fmt::format("##KeySlider_{}", dungeonIndex);
+            PushStyleButton(Colors::DarkGray);
+            if (ImGui::ImageButton(
+                    itemMapping[ITEM_KEY_SMALL].name.c_str(),
+                    Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
+                        keyCount > 0 ? itemMapping[ITEM_KEY_SMALL].name : itemMapping[ITEM_KEY_SMALL].nameFaded),
+                    ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1))) {
+                ImGui::OpenPopup(keyPopupId.c_str());
             }
-            PopStyleInput();
-        } else if (dungeonIndex == SCENE_GANONS_TOWER) {
-            ImGui::Spacing();
-            ImGui::TextColored(ImVec4(0.5f, 0.5f, 0.5f, 1.0f), "No small keys");
+            PopStyleButton();
+            Tooltip(fmt::format("Keys: {}", keyCount).c_str());
+
+            // Small key popup
+            if (ImGui::BeginPopup(keyPopupId.c_str())) {
+                int8_t keys = keyCount;
+                int8_t maxKeys = GetMaxKeysForDungeon(dungeonIndex);
+                int8_t negOne = -1;
+                ImGui::Text("Small Keys");
+                ImGui::PushItemWidth(150.0f);
+                PushStyleInput(THEME_COLOR);
+                if (ImGui::SliderScalar(keySliderId.c_str(), ImGuiDataType_S8, &keys, &negOne, &maxKeys, "Count: %d")) {
+                    gSaveContext.inventory.dungeonKeys[dungeonIndex] = keys;
+                    gSaveContext.ship.stats.dungeonKeys[dungeonIndex] = keys;
+                }
+                PopStyleInput();
+                ImGui::PopItemWidth();
+                ImGui::EndPopup();
+            }
+            ImGui::SameLine();
         }
+
+        DrawDungeonItemButton(ITEM_KEY_BOSS, dungeonIndex);
 
         UIWidgets::EndCard();
     }
