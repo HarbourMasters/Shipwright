@@ -93,9 +93,10 @@ void BgIceTurara_RandomizerSpawnCollectible(void* actor) {
 void RegisterShuffleIcicles() {
     bool shouldRegister = IS_RANDO && Rando::Context::GetInstance()->GetOption(RSK_SHUFFLE_ICICLES).Get();
 
-    COND_ID_HOOK(OnActorInit, ACTOR_BG_ICE_TURARA, shouldRegister, [](void* actorRef) {
-        Actor* actor = static_cast<Actor*>(actorRef);
-        BgIceTurara* icicleActor = static_cast<BgIceTurara*>(actorRef);
+    COND_ID_HOOK(OnActorInit, ACTOR_BG_ICE_TURARA, shouldRegister, [](IEvent* event) {
+        OnActorInit* ev = (OnActorInit*)event;
+        Actor* actor = static_cast<Actor*>(ev->actor);
+        BgIceTurara* icicleActor = static_cast<BgIceTurara*>(ev->actor);
 
         auto icicleIdentity = OTRGlobals::Instance->gRandomizer->IdentifyIcicle(
             gPlayState->sceneNum, (s16)actor->world.pos.x, (s16)actor->world.pos.z);
@@ -141,8 +142,9 @@ void RegisterShuffleIcicles() {
     });
 
     // Remove the drop indicator when the actor is destroyed
-    COND_ID_HOOK(OnActorDestroy, ACTOR_BG_ICE_TURARA, shouldRegister,
-                 [](void* actor) { ObjectExtension::GetInstance().Remove<StalactiteDropped>(actor); });
+    COND_ID_HOOK(OnActorDestroy, ACTOR_BG_ICE_TURARA, shouldRegister, [](IEvent* event) {
+        ObjectExtension::GetInstance().Remove<StalactiteDropped>(reinterpret_cast<OnActorDestroy*>(event)->actor);
+    });
 }
 
 void Rando::StaticData::RegisterIcicleLocations() {
