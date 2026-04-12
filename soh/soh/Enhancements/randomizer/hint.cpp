@@ -513,19 +513,13 @@ const HintText Hint::GetItemHintText(uint8_t slot, bool mysterious) const {
     auto ctx = Rando::Context::GetInstance();
     RandomizerCheck hintedCheck = locations[slot];
     RandomizerGet targetRG = ctx->GetItemLocation(hintedCheck)->GetPlacedRandomizerGet();
-    CustomMessage msg;
     if (mysterious) {
         return StaticData::hintTextTable[RHT_MYSTERIOUS_ITEM];
     } else if (targetRG == RG_ICE_TRAP) { // RANDOTODO store in item hint instead of item
-        msg = CustomMessage({ ctx->overrides[hintedCheck].GetTrickName() });
+        return HintText(CustomMessage({ ctx->overrides[hintedCheck].GetTrickName() }));
     } else {
-        const Rando::Item& item = ctx->GetItemLocation(hintedCheck)->GetPlacedItem();
-        msg = item.GetHint().GetHintMessage().GetForCurrentLanguage(MF_RAW);
-        if (ctx->GetOption(RSK_HINT_CLARITY).Is(RO_HINT_CLARITY_CLEAR)) {
-            msg = CustomMessage(ctx->GetItemLocation(hintedCheck)->GetPlacedItem().GetArticle()) + msg;
-        }
+        return ctx->GetItemLocation(hintedCheck)->GetPlacedItem().GetHint();
     }
-    return HintText(msg);
 }
 
 const HintText Hint::GetAreaHintText(uint8_t slot) const {
