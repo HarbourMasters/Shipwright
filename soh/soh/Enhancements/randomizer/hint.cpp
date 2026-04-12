@@ -520,9 +520,11 @@ const HintText Hint::GetItemHintText(uint8_t slot, bool mysterious) const {
         msg = CustomMessage({ ctx->overrides[hintedCheck].GetTrickName() });
     } else {
         const Rando::Item& item = ctx->GetItemLocation(hintedCheck)->GetPlacedItem();
-        msg = item.GetHint().GetHintMessage().GetForCurrentLanguage();
+        msg = item.GetHint().GetHintMessage().GetForCurrentLanguage(MF_RAW);
+        if (ctx->GetOption(RSK_HINT_CLARITY).Is(RO_HINT_CLARITY_CLEAR)) {
+            msg = CustomMessage(ctx->GetItemLocation(hintedCheck)->GetPlacedItem().GetArticle()) + msg;
+        }
     }
-    msg = CustomMessage(ctx->GetItemLocation(hintedCheck)->GetPlacedItem().GetArticle()) + msg;
     return HintText(msg);
 }
 
