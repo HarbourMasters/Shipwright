@@ -321,8 +321,7 @@ static s32 EnTest_HasLivingNearby(PlayState* play, Actor* refActor) {
     Actor* actor = play->actorCtx.actorLists[ACTORCAT_ENEMY].head;
 
     while (actor != NULL) {
-        if (actor != refActor && actor->id == ACTOR_EN_TEST &&
-            actor->update != NULL &&
+        if (actor != refActor && actor->id == ACTOR_EN_TEST && actor->update != NULL &&
             Actor_WorldDistXYZToActor(refActor, actor) <= 8000.0f) {
             return true;
         }
@@ -334,8 +333,7 @@ static s32 EnTest_HasLivingNearby(PlayState* play, Actor* refActor) {
 void EnTest_Destroy(Actor* thisx, PlayState* play) {
     EnTest* this = (EnTest*)thisx;
 
-    if ((this->actor.params != STALFOS_TYPE_2) &&
-        !EnTest_HasLivingNearby(play, &this->actor)) {
+    if ((this->actor.params != STALFOS_TYPE_2) && !EnTest_HasLivingNearby(play, &this->actor)) {
         func_800F5B58();
     }
 
