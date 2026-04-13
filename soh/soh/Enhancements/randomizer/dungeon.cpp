@@ -10,7 +10,7 @@ DungeonInfo::DungeonInfo(std::string name_, const RandomizerHintTextKey hintKey_
                          const RandomizerGet bossKey_, RandomizerGet reward_, RandomizerArea area_, const uint8_t vanillaKeyCount_,
                          const uint8_t mqKeyCount_, const RandomizerSettingKey mqSetting_)
     : name(std::move(name_)), hintKey(hintKey_), map(map_), compass(compass_), smallKey(smallKey_), keyRing(keyRing_),
-      bossKey(bossKey_), reward(reward_) area(area_), vanillaKeyCount(vanillaKeyCount_), mqKeyCount(mqKeyCount_),
+      bossKey(bossKey_), reward(reward_), area(area_), vanillaKeyCount(vanillaKeyCount_), mqKeyCount(mqKeyCount_),
       mqSetting(mqSetting_) {
 }
 DungeonInfo::DungeonInfo()
@@ -163,10 +163,10 @@ Dungeons::Dungeons() {
         RG_FOREST_TEMPLE_KEY_RING, RG_FOREST_TEMPLE_BOSS_KEY, RG_FOREST_MEDALLION, RA_FOREST_TEMPLE, 5, 6, RSK_MQ_FOREST_TEMPLE);
     dungeonList[FIRE_TEMPLE] = DungeonInfo("Fire Temple", RHT_FIRE_TEMPLE, RG_FIRE_TEMPLE_MAP, RG_FIRE_TEMPLE_COMPASS,
                                            RG_FIRE_TEMPLE_SMALL_KEY, RG_FIRE_TEMPLE_KEY_RING, RG_FIRE_TEMPLE_BOSS_KEY,
-                                           RA_FIRE_TEMPLE, 8, 5, RSK_MQ_FIRE_TEMPLE);
+                                           RG_FIRE_MEDALLION, RA_FIRE_TEMPLE, 8, 5, RSK_MQ_FIRE_TEMPLE);
     dungeonList[WATER_TEMPLE] = DungeonInfo(
         "Water Temple", RHT_WATER_TEMPLE, RG_WATER_TEMPLE_MAP, RG_WATER_TEMPLE_COMPASS, RG_WATER_TEMPLE_SMALL_KEY,
-        RG_WATER_TEMPLE_KEY_RING, RG_WATER_TEMPLE_BOSS_KEY, RG_FIRE_MEDALLION, RA_WATER_TEMPLE, 6, 2, RSK_MQ_WATER_TEMPLE);
+        RG_WATER_TEMPLE_KEY_RING, RG_WATER_TEMPLE_BOSS_KEY, RG_WATER_MEDALLION, RA_WATER_TEMPLE, 6, 2, RSK_MQ_WATER_TEMPLE);
     dungeonList[SPIRIT_TEMPLE] = DungeonInfo(
         "Spirit Temple", RHT_SPIRIT_TEMPLE, RG_SPIRIT_TEMPLE_MAP, RG_SPIRIT_TEMPLE_COMPASS, RG_SPIRIT_TEMPLE_SMALL_KEY,
         RG_SPIRIT_TEMPLE_KEY_RING, RG_SPIRIT_TEMPLE_BOSS_KEY, RG_SPIRIT_MEDALLION, RA_SPIRIT_TEMPLE, 5, 7, RSK_MQ_SPIRIT_TEMPLE);
