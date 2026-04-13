@@ -1078,6 +1078,13 @@ static void RandomizeOwnDungeon(const Rando::DungeonInfo* dungeon) {
             });
         AddElementsToPool(dungeonItems, dungeonSmallKeys);
     }
+    if (ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_ITEM_LOC_OWN_DUNGEON) && dungeon->GetReward() != RG_NONE) {
+         std::vector<RandomizerGet> dungeonReward =
+            FilterAndEraseFromPool(itemPool, [dungeon](const RandomizerGet i) {
+                return (i == dungeon->GetReward());
+            });
+        AddElementsToPool(dungeonItems, dungeonReward);
+    }
 
     if ((ctx->GetOption(RSK_BOSS_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_OWN_DUNGEON) &&
          dungeon->GetBossKey() != RG_GANONS_CASTLE_BOSS_KEY) ||
@@ -1088,7 +1095,7 @@ static void RandomizeOwnDungeon(const Rando::DungeonInfo* dungeon) {
         AddElementsToPool(dungeonItems, dungeonBossKey);
     }
 
-    // randomize boss key and small keys together for even distribution
+    // randomize boss key, small keys, and rewards together for even distribution
     AssumedFill(dungeonItems, dungeonLocations);
 
     // randomize map and compass separately since they're not progressive
