@@ -939,8 +939,7 @@ static void RandomizeDungeonRewards() {
     auto ctx = Rando::Context::GetInstance();
 
     // End of Dungeons includes Link's Pocket
-    if (ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON) ||
-        ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_VANILLA)) {
+    if (ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON)) {
         // make temporary pools of stones and medallions, get rewards
         std::vector<RandomizerGet> stones = FilterFromPool(itemPool, [](const auto i) {
             return Rando::StaticData::RetrieveItem(i).GetItemType() == ITEMTYPE_DUNGEONREWARD &&
@@ -955,66 +954,83 @@ static void RandomizeDungeonRewards() {
         std::vector<RandomizerGet> rewards = FilterAndEraseFromPool(itemPool, [](const auto i) {
             return Rando::StaticData::RetrieveItem(i).GetItemType() == ITEMTYPE_DUNGEONREWARD;
         });
-
-        if (ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS)
-                .Is(RO_DUNGEON_REWARDS_VANILLA)) { // Place dungeon rewards in vanilla locations
-            for (RandomizerCheck loc : Rando::StaticData::dungeonRewardLocations) {
-                ctx->GetItemLocation(loc)->PlaceVanillaItem();
-            }
-            ctx->GetItemLocation(RC_GIFT_FROM_RAURU)->PlaceVanillaItem();
-        } else { // Randomize dungeon rewards with assumed fill
-            std::vector rewardLocations(Rando::StaticData::dungeonRewardLocations);
-            // If there are less than 9 dungeon rewards, prioritize actual dungeons for placement
-            if (rewards.size() < 9) {
-                ctx->PlaceItemInLocation(RC_LINKS_POCKET, RG_GREEN_RUPEE);
-            } else {
-                if (ctx->GetOption(RSK_LINKS_POCKET_REWARD).IsNot(RO_LINKS_POCKET_REWARD)) {
-                    if (ctx->GetOption(RSK_LINKS_POCKET_REWARD).Is(RO_LINKS_POCKET_STONE)) {
-                        // get one stone
-                        RandomizerGet startingStone = RandomElement(stones, true);
-                        // erase from rewards so remaining are placed
-                        erase_if(rewards, [&](RandomizerGet r) { return r == startingStone; });
-                        ctx->PlaceItemInLocation(RC_LINKS_POCKET, startingStone);
-                    } else {
-                        // get one medallion
-                        RandomizerGet startingMedallion = RandomElement(medallions, true);
-                        // erase from rewards so remaining are placed
-                        erase_if(rewards, [&](RandomizerGet r) { return r == startingMedallion; });
-                        ctx->PlaceItemInLocation(RC_LINKS_POCKET, startingMedallion);
-                    }
+        // Randomize dungeon rewards with assumed fill
+        std::vector rewardLocations(Rando::StaticData::dungeonRewardLocations);
+        // If there are less than 9 dungeon rewards, prioritize actual dungeons for placement
+        if (rewards.size() < 9) {
+            ctx->PlaceItemInLocation(RC_LINKS_POCKET, RG_GREEN_RUPEE);
+        } else {
+            if (ctx->GetOption(RSK_LINKS_POCKET_REWARD).IsNot(RO_LINKS_POCKET_REWARD)) {
+                if (ctx->GetOption(RSK_LINKS_POCKET_REWARD).Is(RO_LINKS_POCKET_STONE)) {
+                    // get one stone
+                    RandomizerGet startingStone = RandomElement(stones, true);
+                    // erase from rewards so remaining are placed
+                    erase_if(rewards, [&](RandomizerGet r) { return r == startingStone; });
+                    ctx->PlaceItemInLocation(RC_LINKS_POCKET, startingStone);
                 } else {
-                    rewardLocations.push_back(RC_LINKS_POCKET);
+                    // get one medallion
+                    RandomizerGet startingMedallion = RandomElement(medallions, true);
+                    // erase from rewards so remaining are placed
+                    erase_if(rewards, [&](RandomizerGet r) { return r == startingMedallion; });
+                    ctx->PlaceItemInLocation(RC_LINKS_POCKET, startingMedallion);
                 }
+            } else {
+                rewardLocations.push_back(RC_LINKS_POCKET);
             }
             AssumedFill(rewards, rewardLocations);
         }
-    } else if (ctx->GetOption(RSK_LINKS_POCKET).Is(RO_LINKS_POCKET_DUNGEON_REWARD)) {
-        // make temporary pools of stones, medallions, and rewards
-        std::vector<RandomizerGet> stones = FilterFromPool(itemPool, [](const auto i) {
-            return Rando::StaticData::RetrieveItem(i).GetItemType() == ITEMTYPE_DUNGEONREWARD &&
-                   Rando::StaticData::RetrieveItem(i).GetRandomizerGet() >= RG_KOKIRI_EMERALD &&
-                   Rando::StaticData::RetrieveItem(i).GetRandomizerGet() <= RG_ZORA_SAPPHIRE;
-        });
-        std::vector<RandomizerGet> medallions = FilterFromPool(itemPool, [](const auto i) {
-            return Rando::StaticData::RetrieveItem(i).GetItemType() == ITEMTYPE_DUNGEONREWARD &&
-                   Rando::StaticData::RetrieveItem(i).GetRandomizerGet() >= RG_FOREST_MEDALLION &&
-                   Rando::StaticData::RetrieveItem(i).GetRandomizerGet() <= RG_LIGHT_MEDALLION;
-        });
-        std::vector<RandomizerGet> rewards = FilterFromPool(itemPool, [](const auto i) {
-            return Rando::StaticData::RetrieveItem(i).GetItemType() == ITEMTYPE_DUNGEONREWARD;
-        });
-        // If there are no remaining stones/medallions, then Link's pocket won't get one
-        if (rewards.empty()) {
-            ctx->PlaceItemInLocation(RC_LINKS_POCKET, RG_GREEN_RUPEE);
-            return;
+    } else if (ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_VANILLA)) {
+        for (RandomizerCheck loc : Rando::StaticData::dungeonRewardLocations) {
+            ctx->GetItemLocation(loc)->PlaceVanillaItem();
         }
+        if (ctx->GetOption(RSK_LINKS_POCKET).Is(RO_LINKS_POCKET_DUNGEON_REWARD)) {
+            ctx->PlaceItemInLocation(RC_LINKS_POCKET, RG_LIGHT_MEDALLION);
+        } else {
+            ctx->GetItemLocation(RC_GIFT_FROM_RAURU)->PlaceVanillaItem();
+        }
+    } else if (ctx->GetOption(RSK_LINKS_POCKET).Is(RO_LINKS_POCKET_DUNGEON_REWARD)) {
         if (ctx->GetOption(RSK_LINKS_POCKET_REWARD).Is(RO_LINKS_POCKET_STONE)) {
+            // make temporary pools of stones
+            std::vector<RandomizerGet> stones = FilterFromPool(itemPool, [](const auto i) {
+                return Rando::StaticData::RetrieveItem(i).GetItemType() == ITEMTYPE_DUNGEONREWARD &&
+                       Rando::StaticData::RetrieveItem(i).GetRandomizerGet() >= RG_KOKIRI_EMERALD &&
+                       Rando::StaticData::RetrieveItem(i).GetRandomizerGet() <= RG_ZORA_SAPPHIRE;
+            });
+            // If there are no remaining stones, then Link's pocket won't get one
+            if (stones.empty()) {
+                ctx->PlaceItemInLocation(RC_LINKS_POCKET, RG_GREEN_RUPEE);
+                return;
+            }
             // get one stone
             RandomizerGet startingStone = RandomElement(stones, true);
             ctx->PlaceItemInLocation(RC_LINKS_POCKET, startingStone);
             // erase stone from item pool
             FilterAndEraseFromPool(itemPool, [startingStone](const RandomizerGet i) { return i == startingStone; });
-        } else if (ctx->GetOption(RSK_LINKS_POCKET_REWARD).Is(RO_LINKS_POCKET_MEDALLION)) {
+        } else if (ctx->GetOption(RSK_LINKS_POCKET_REWARD).Is(RO_LINKS_POCKET_LIGHT_MEDALLION)) {
+            // make temporary pools of medallions
+            std::vector<RandomizerGet> lightMedallion = FilterFromPool(itemPool, [](const auto i) {
+                return Rando::StaticData::RetrieveItem(i).GetRandomizerGet() == RG_LIGHT_MEDALLION;
+            });
+            // If there are no light med, then Link's pocket won't get one
+            if (lightMedallion.empty()) {
+                ctx->PlaceItemInLocation(RC_LINKS_POCKET, RG_GREEN_RUPEE);
+                return;
+            }
+            ctx->PlaceItemInLocation(RC_LINKS_POCKET, RG_LIGHT_MEDALLION);
+            // erase medallion from item pool
+            FilterAndEraseFromPool(itemPool, [](const RandomizerGet i) { return i == RG_LIGHT_MEDALLION; });
+        } else if (ctx->GetOption(RSK_LINKS_POCKET_REWARD).Is(RO_LINKS_POCKET_ANY_MEDALLION)) {
+            // make temporary pools of medallions
+            std::vector<RandomizerGet> medallions = FilterFromPool(itemPool, [](const auto i) {
+                return Rando::StaticData::RetrieveItem(i).GetItemType() == ITEMTYPE_DUNGEONREWARD &&
+                       Rando::StaticData::RetrieveItem(i).GetRandomizerGet() >= RG_FOREST_MEDALLION &&
+                       Rando::StaticData::RetrieveItem(i).GetRandomizerGet() <= RG_LIGHT_MEDALLION;
+            });
+            // If there are no remaining medallions, then Link's pocket won't get one
+            if (medallions.empty()) {
+                ctx->PlaceItemInLocation(RC_LINKS_POCKET, RG_GREEN_RUPEE);
+                return;
+            }
             // get one medallion
             RandomizerGet startingMedallion = RandomElement(medallions, true);
             ctx->PlaceItemInLocation(RC_LINKS_POCKET, startingMedallion);
@@ -1022,6 +1038,14 @@ static void RandomizeDungeonRewards() {
             FilterAndEraseFromPool(itemPool,
                                    [startingMedallion](const RandomizerGet i) { return i == startingMedallion; });
         } else {
+            std::vector<RandomizerGet> rewards = FilterFromPool(itemPool, [](const auto i) {
+                return Rando::StaticData::RetrieveItem(i).GetItemType() == ITEMTYPE_DUNGEONREWARD;
+            });
+            // If there are no remaining stones/medallions, then Link's pocket won't get one
+            if (rewards.empty()) {
+                ctx->PlaceItemInLocation(RC_LINKS_POCKET, RG_GREEN_RUPEE);
+                return;
+            }
             // get one reward
             RandomizerGet startingReward = RandomElement(rewards, true);
 
@@ -1078,11 +1102,10 @@ static void RandomizeOwnDungeon(const Rando::DungeonInfo* dungeon) {
             });
         AddElementsToPool(dungeonItems, dungeonSmallKeys);
     }
-    if (ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_ITEM_LOC_OWN_DUNGEON) && dungeon->GetReward() != RG_NONE) {
-         std::vector<RandomizerGet> dungeonReward =
-            FilterAndEraseFromPool(itemPool, [dungeon](const RandomizerGet i) {
-                return (i == dungeon->GetReward());
-            });
+    if (ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_ITEM_LOC_OWN_DUNGEON) &&
+        dungeon->GetReward() != RG_NONE) {
+        std::vector<RandomizerGet> dungeonReward =
+            FilterAndEraseFromPool(itemPool, [dungeon](const RandomizerGet i) { return (i == dungeon->GetReward()); });
         AddElementsToPool(dungeonItems, dungeonReward);
     }
 

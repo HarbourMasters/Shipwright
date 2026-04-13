@@ -804,6 +804,16 @@ void Settings::CreateOptionDescriptions() {
         "of 20. The second one will upgrade this capacity to 30, and the final one will upgrade the capacity to the "
         "usual 50.\n\n"
         "Bombchu Bowling is opened by obtaining the first Bombchu bag.";
+    mOptionDescriptions[RSK_LINKS_POCKET] =
+        "Dungeon Reward - Link will start with a Spiritual Stone or Medallion, and specific options will open up\n\n"
+        "Advancement - Link will start with a useful item.\n\n"
+        "Anything - Link will start with a random item.\n\n"
+        "Nothing - Link will not start with a bonus item.";
+    mOptionDescriptions[RSK_LINKS_POCKET_REWARD] =
+        "Any Reward - Link starts with a random Spiritual Stone or Medallion\n\n"
+        "Stone - Link starts with a random Spiritual Stone.\n\n"
+        "Any Medallion - Link starts with a random Medallion.\n\n"
+        "Light Medallion - Link starts with the Light Medallion.";
     mOptionDescriptions[RSK_ENABLE_BOMBCHU_DROPS] = "Once you obtain a Bombchu Bag, refills will sometimes replace "
                                                     "Bomb drops that would spawn."
                                                     "\n"
