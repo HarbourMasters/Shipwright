@@ -171,15 +171,7 @@ static void SetCustomCosmeticColor(const CustomCosmeticEntry& entry, Color_RGBA8
 }
 
 static void ResetCustomCosmeticColor(const CustomCosmeticEntry& entry) {
-    CVarClear(entry.option.changedCvar);
-    CVarClear(entry.option.rainbowCvar);
-    CVarClear(entry.option.lockedCvar);
-    ClearCustomCosmeticValueCvars(entry.option.valuesCvar);
-
-    ShipInit::Init(entry.option.valuesCvar);
-    ShipInit::Init(entry.option.rainbowCvar);
-    ShipInit::Init(entry.option.lockedCvar);
-    ShipInit::Init(entry.option.changedCvar);
+    ResetColor(const_cast<CosmeticOption&>(entry.option));
     ApplyCustomCosmetics();
     Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
 }
@@ -309,10 +301,10 @@ void ScanCustomCosmetics() {
                                                    static_cast<uint8_t>(child->IntAttribute("G")),
                                                    static_cast<uint8_t>(child->IntAttribute("B")),
                                                    static_cast<uint8_t>(child->IntAttribute("A")) };
-                entry.option = MakeCosmeticOption(entry.baseCvar.c_str(), entry.valuesCvar.c_str(),
-                                                  entry.rainbowCvar.c_str(), entry.lockedCvar.c_str(),
-                                                  entry.changedCvar.c_str(), cosmeticEntry, COSMETICS_GROUP_MAX,
-                                                  defaultColor, false, true, false);
+                entry.option =
+                    MakeCosmeticOption(entry.baseCvar.c_str(), entry.valuesCvar.c_str(), entry.rainbowCvar.c_str(),
+                                       entry.lockedCvar.c_str(), entry.changedCvar.c_str(), cosmeticEntry,
+                                       COSMETICS_GROUP_MAX, defaultColor, false, true, false);
                 customCosmeticEntries.push_back(std::move(entry));
             }
 
@@ -365,7 +357,8 @@ static void DrawCustomCosmeticRow(const CustomCosmeticEntry& entry) {
     const char* cvar = entry.option.cvar;
 
     DrawCustomCosmeticColorRow(
-        entry.option.label.c_str(), cvar, entry.option.defaultColor, entry.option.rainbowCvar, entry.option.lockedCvar, entry.option.changedCvar,
+        entry.option.label.c_str(), cvar, entry.option.defaultColor, entry.option.rainbowCvar, entry.option.lockedCvar,
+        entry.option.changedCvar,
         [&entry]() {
             CVarSetInteger(entry.option.changedCvar, 1);
             ShipInit::Init(entry.option.changedCvar);

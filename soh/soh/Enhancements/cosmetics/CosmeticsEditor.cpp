@@ -186,7 +186,7 @@ Color_RGBA8 ColorRGBA8(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
     in the moon cosmetic, where for the gDPSetEnvColor color we are halving the RGB values, to make them a bit darker similar to how the original
     colors were darker than the gDPSetPrimColor. You will see many more examples of this below in the `ApplyOrResetCustomGfxPatches` method
 */
-static std::map<std::string, CosmeticOption> cosmeticOptions = {
+std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("Link.KokiriTunic",             "Kokiri Tunic",             COSMETICS_GROUP_LINK,         ColorRGBA8( 30, 105,  27, 255), false, true, false),
     COSMETIC_OPTION("Link.GoronTunic",              "Goron Tunic",              COSMETICS_GROUP_LINK,         ColorRGBA8(100,  20,   0, 255), false, true, false),
     COSMETIC_OPTION("Link.ZoraTunic",               "Zora Tunic",               COSMETICS_GROUP_LINK,         ColorRGBA8(  0,  60, 100, 255), false, true, false),
@@ -2118,68 +2118,6 @@ void RandomizeColor(CosmeticOption& cosmeticOption, bool manual = true) {
     CVarSetInteger(cosmeticOption.rainbowCvar, 0);
     CVarSetInteger(cosmeticOption.changedCvar, 1);
     ApplySideEffects(cosmeticOption);
-}
-
-void ResetColor(CosmeticOption& cosmeticOption) {
-    Color_RGBA8 defaultColor = { cosmeticOption.defaultColor.r, cosmeticOption.defaultColor.g,
-                                 cosmeticOption.defaultColor.b, cosmeticOption.defaultColor.a };
-    cosmeticOption.currentColor.x = defaultColor.r / 255.0f;
-    cosmeticOption.currentColor.y = defaultColor.g / 255.0f;
-    cosmeticOption.currentColor.z = defaultColor.b / 255.0f;
-    cosmeticOption.currentColor.w = defaultColor.a / 255.0f;
-
-    CVarClear(cosmeticOption.changedCvar);
-    CVarClear(cosmeticOption.rainbowCvar);
-    CVarClear(cosmeticOption.lockedCvar);
-    CVarClear(cosmeticOption.valuesCvar);
-    CVarClear((std::string(cosmeticOption.valuesCvar) + ".R").c_str());
-    CVarClear((std::string(cosmeticOption.valuesCvar) + ".G").c_str());
-    CVarClear((std::string(cosmeticOption.valuesCvar) + ".B").c_str());
-    CVarClear((std::string(cosmeticOption.valuesCvar) + ".A").c_str());
-    CVarClear((std::string(cosmeticOption.valuesCvar) + ".Type").c_str());
-
-    // This portion should match 1:1 the multiplied colors in `ApplySideEffect()`
-    if (cosmeticOption.label == "Bow Body") {
-        ResetColor(cosmeticOptions.at("Equipment.BowTips"));
-        ResetColor(cosmeticOptions.at("Equipment.BowHandle"));
-    } else if (cosmeticOption.label == "Idle Primary") {
-        ResetColor(cosmeticOptions.at("Navi.IdleSecondary"));
-    } else if (cosmeticOption.label == "Enemy Primary") {
-        ResetColor(cosmeticOptions.at("Navi.EnemySecondary"));
-    } else if (cosmeticOption.label == "NPC Primary") {
-        ResetColor(cosmeticOptions.at("Navi.NPCSecondary"));
-    } else if (cosmeticOption.label == "Props Primary") {
-        ResetColor(cosmeticOptions.at("Navi.PropsSecondary"));
-    } else if (cosmeticOption.label == "Level 1 Secondary") {
-        ResetColor(cosmeticOptions.at("SpinAttack.Level1Primary"));
-    } else if (cosmeticOption.label == "Level 2 Secondary") {
-        ResetColor(cosmeticOptions.at("SpinAttack.Level2Primary"));
-    } else if (cosmeticOption.label == "Item Select Color") {
-        ResetColor(cosmeticOptions.at("Kaleido.ItemSelB"));
-        ResetColor(cosmeticOptions.at("Kaleido.ItemSelC"));
-        ResetColor(cosmeticOptions.at("Kaleido.ItemSelD"));
-    } else if (cosmeticOption.label == "Equip Select Color") {
-        ResetColor(cosmeticOptions.at("Kaleido.EquipSelB"));
-        ResetColor(cosmeticOptions.at("Kaleido.EquipSelC"));
-        ResetColor(cosmeticOptions.at("Kaleido.EquipSelD"));
-    } else if (cosmeticOption.label == "Map Dungeon Color") {
-        ResetColor(cosmeticOptions.at("Kaleido.MapSelDunB"));
-        ResetColor(cosmeticOptions.at("Kaleido.MapSelDunC"));
-        ResetColor(cosmeticOptions.at("Kaleido.MapSelDunD"));
-    } else if (cosmeticOption.label == "Quest Status Color") {
-        ResetColor(cosmeticOptions.at("Kaleido.QuestStatusB"));
-        ResetColor(cosmeticOptions.at("Kaleido.QuestStatusC"));
-        ResetColor(cosmeticOptions.at("Kaleido.QuestStatusD"));
-    } else if (cosmeticOption.label == "Map Color") {
-        ResetColor(cosmeticOptions.at("Kaleido.MapSelectB"));
-        ResetColor(cosmeticOptions.at("Kaleido.MapSelectC"));
-        ResetColor(cosmeticOptions.at("Kaleido.MapSelectD"));
-    } else if (cosmeticOption.label == "Save Color") {
-        ResetColor(cosmeticOptions.at("Kaleido.SaveB"));
-        ResetColor(cosmeticOptions.at("Kaleido.SaveC"));
-        ResetColor(cosmeticOptions.at("Kaleido.SaveD"));
-    }
-    ShipInit::Init(cosmeticOption.valuesCvar);
 }
 
 void DrawCosmeticRow(CosmeticOption& cosmeticOption) {
