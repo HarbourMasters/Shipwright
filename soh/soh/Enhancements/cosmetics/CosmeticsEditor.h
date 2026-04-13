@@ -39,6 +39,17 @@ Color_RGBA8 CosmeticsEditor_GetDefaultValue(const char* id);
 #ifdef __cplusplus
 }
 
+#define COSMETIC_OPTION(id, label, group, defaultColor, supportsAlpha, supportsRainbow, advancedOption)               \
+    {                                                                                                                 \
+        id, {                                                                                                         \
+            CVAR_COSMETIC(id), CVAR_COSMETIC(id ".Value"), CVAR_COSMETIC(id ".Rainbow"), CVAR_COSMETIC(id ".Locked"), \
+                CVAR_COSMETIC(id ".Changed"), label, group,                                                         \
+                ImVec4(defaultColor.r / 255.0f, defaultColor.g / 255.0f, defaultColor.b / 255.0f,                   \
+                       defaultColor.a / 255.0f),                                                                      \
+                defaultColor, supportsAlpha, supportsRainbow, advancedOption                                          \
+        }                                                                                                             \
+    }
+
 typedef struct {
     const char* cvar;
     const char* valuesCvar;
@@ -53,6 +64,25 @@ typedef struct {
     bool supportsRainbow;
     bool advancedOption;
 } CosmeticOption;
+
+inline CosmeticOption MakeCosmeticOption(const char* cvar, const char* valuesCvar, const char* rainbowCvar,
+                                         const char* lockedCvar, const char* changedCvar, const char* label,
+                                         CosmeticGroup group, Color_RGBA8 defaultColor, bool supportsAlpha,
+                                         bool supportsRainbow, bool advancedOption) {
+    return CosmeticOption{ cvar,
+                           valuesCvar,
+                           rainbowCvar,
+                           lockedCvar,
+                           changedCvar,
+                           label,
+                           group,
+                           ImVec4(defaultColor.r / 255.0f, defaultColor.g / 255.0f, defaultColor.b / 255.0f,
+                                  defaultColor.a / 255.0f),
+                           defaultColor,
+                           supportsAlpha,
+                           supportsRainbow,
+                           advancedOption };
+}
 
 typedef struct {
     const std::string Name;

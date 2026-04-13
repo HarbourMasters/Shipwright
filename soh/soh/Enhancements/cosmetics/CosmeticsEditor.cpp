@@ -112,17 +112,6 @@ Color_RGBA8 ColorRGBA8(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
     return color;
 }
 
-#define COSMETIC_OPTION(id, label, group, defaultColor, supportsAlpha, supportsRainbow, advancedOption)               \
-    {                                                                                                                 \
-        id, {                                                                                                         \
-            CVAR_COSMETIC(id), CVAR_COSMETIC(id ".Value"), CVAR_COSMETIC(id ".Rainbow"), CVAR_COSMETIC(id ".Locked"), \
-                CVAR_COSMETIC(id ".Changed"), label, group,                                                           \
-                ImVec4(defaultColor.r / 255.0f, defaultColor.g / 255.0f, defaultColor.b / 255.0f,                     \
-                       defaultColor.a / 255.0f),                                                                      \
-                defaultColor, supportsAlpha, supportsRainbow, advancedOption                                          \
-        }                                                                                                             \
-    }
-
 // clang-format off
 /*
     So, you would like to add a new cosmetic option? BUCKLE UP
