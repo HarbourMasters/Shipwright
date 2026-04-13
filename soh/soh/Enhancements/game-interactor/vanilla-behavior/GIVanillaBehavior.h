@@ -628,6 +628,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // ((this->unk_2A8 != 8) && !(this->fairyFlags & 8))
+    // ```
+    // #### `args`
+    // - `*EnElf`
+    VB_FAIRY_DRAW,
+
+    // #### `result`
+    // ```c
     // true
     // ```
     // #### `args`
@@ -649,6 +657,47 @@ typedef enum {
     // #### `args`
     // - `*EnElf`
     VB_FAIRY_HEAL,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnElf`
+    // - `int32_t` (sparkleLife)
+    VB_FAIRY_SPAWN_SPARKLES,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnElf`
+    VB_FAIRY_PLAY_C_UP_TALK_SOUND,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnElf`
+    VB_FAIRY_PLAY_DASH_SOUND,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnElf`
+    VB_FAIRY_PLAY_VANISH_SOUND,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnElf`
+    VB_FAIRY_UPDATE_LIGHTS,
 
     // #### `result`
     // ```c
@@ -1733,6 +1782,14 @@ typedef enum {
     // true
     // ```
     // #### `args`
+    // - `*ObjectKankyo`
+    VB_PLAY_INTRO_NAVI_SOUNDS,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
     // - None
     VB_PLAY_MINUET_OF_FOREST_CS,
 
@@ -1751,6 +1808,14 @@ typedef enum {
     // #### `args`
     // - None
     VB_PLAY_NABOORU_CAPTURED_CS,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `int32_t` (naviCallState) (promoted from `uint16_t` by va_arg)
+    VB_PLAY_NAVI_CALL_SOUND,
 
     // #### `result`
     // ```c

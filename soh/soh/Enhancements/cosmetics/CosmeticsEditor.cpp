@@ -1889,6 +1889,10 @@ void DrawSillyTab() {
 
     UIWidgets::Separator(true, true, 2.0f, 2.0f);
 
+    UIWidgets::CVarCheckbox(
+        "Invisible Navi", CVAR_COSMETIC("InvisibleNavi"),
+        UIWidgets::CheckboxOptions().Color(THEME_COLOR).Tooltip("Makes Navi invisible and disables her sounds."));
+
     UIWidgets::CVarCheckbox("Let It Snow", CVAR_GENERAL("LetItSnow"),
                             UIWidgets::CheckboxOptions()
                                 .Color(THEME_COLOR)

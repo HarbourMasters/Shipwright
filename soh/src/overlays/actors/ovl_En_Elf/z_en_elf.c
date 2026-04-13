@@ -817,28 +817,30 @@ void EnElf_UpdateLights(EnElf* this, PlayState* play) {
     s16 glowLightRadius;
     Player* player;
 
-    glowLightRadius = 100;
+    if (GameInteractor_Should(VB_FAIRY_UPDATE_LIGHTS, true, this)) {
+        glowLightRadius = 100;
 
-    if (this->unk_2A8 == 8) {
-        glowLightRadius = 0;
+        if (this->unk_2A8 == 8) {
+            glowLightRadius = 0;
+        }
+
+        if (this->fairyFlags & 0x20) {
+            player = GET_PLAYER(play);
+            Lights_PointNoGlowSetInfo(&this->lightInfoNoGlow, player->actor.world.pos.x,
+                                      (s16)(player->actor.world.pos.y) + 60.0f, player->actor.world.pos.z, 255, 255,
+                                      255, 200);
+        } else {
+            Lights_PointNoGlowSetInfo(&this->lightInfoNoGlow, this->actor.world.pos.x, this->actor.world.pos.y,
+                                      this->actor.world.pos.z, 255, 255, 255, -1);
+        }
+
+        Lights_PointGlowSetInfo(&this->lightInfoGlow, this->actor.world.pos.x, this->actor.world.pos.y,
+                                this->actor.world.pos.z, 255, 255, 255, glowLightRadius);
+
+        this->unk_2BC = Math_Atan2S(this->actor.velocity.z, this->actor.velocity.x);
+
+        Actor_SetScale(&this->actor, this->actor.scale.x);
     }
-
-    if (this->fairyFlags & 0x20) {
-        player = GET_PLAYER(play);
-        Lights_PointNoGlowSetInfo(&this->lightInfoNoGlow, player->actor.world.pos.x,
-                                  (s16)(player->actor.world.pos.y) + 60.0f, player->actor.world.pos.z, 255, 255, 255,
-                                  200);
-    } else {
-        Lights_PointNoGlowSetInfo(&this->lightInfoNoGlow, this->actor.world.pos.x, this->actor.world.pos.y,
-                                  this->actor.world.pos.z, 255, 255, 255, -1);
-    }
-
-    Lights_PointGlowSetInfo(&this->lightInfoGlow, this->actor.world.pos.x, this->actor.world.pos.y,
-                            this->actor.world.pos.z, 255, 255, 255, glowLightRadius);
-
-    this->unk_2BC = Math_Atan2S(this->actor.velocity.z, this->actor.velocity.x);
-
-    Actor_SetScale(&this->actor, this->actor.scale.x);
 }
 
 void func_80A03CF8(EnElf* this, PlayState* play) {
@@ -872,7 +874,9 @@ void func_80A03CF8(EnElf* this, PlayState* play) {
         if ((play->sceneNum == SCENE_LINKS_HOUSE) && (gSaveContext.sceneSetupIndex == 4)) {
             // play dash sound as Navi enters Links house in the intro
             if (play->csCtx.frames == 55) {
-                Audio_PlayActorSound2(&this->actor, NA_SE_EV_FAIRY_DASH);
+                if (GameInteractor_Should(VB_FAIRY_PLAY_DASH_SOUND, true, this)) {
+                    Audio_PlayActorSound2(&this->actor, NA_SE_EV_FAIRY_DASH);
+                }
             }
 
             // play dash sound in intervals as Navi is waking up Link in the intro
@@ -884,7 +888,9 @@ void func_80A03CF8(EnElf* this, PlayState* play) {
                 } else {
                     if (this->actor.world.pos.y < prevPos.y) {
                         this->fairyFlags |= 0x40;
-                        Audio_PlayActorSound2(&this->actor, NA_SE_EV_FAIRY_DASH);
+                        if (GameInteractor_Should(VB_FAIRY_PLAY_DASH_SOUND, true, this)) {
+                            Audio_PlayActorSound2(&this->actor, NA_SE_EV_FAIRY_DASH);
+                        }
                     }
                 }
             }
@@ -967,7 +973,9 @@ void func_80A03CF8(EnElf* this, PlayState* play) {
                             this->fairyFlags |= 2;
 
                             if (this->unk_2C7 == 0) {
-                                Audio_PlayActorSound2(&this->actor, NA_SE_EV_FAIRY_DASH);
+                                if (GameInteractor_Should(VB_FAIRY_PLAY_DASH_SOUND, true, this)) {
+                                    Audio_PlayActorSound2(&this->actor, NA_SE_EV_FAIRY_DASH);
+                                }
                             }
 
                             this->unk_2C0 = 0x64;
@@ -1015,7 +1023,9 @@ void func_80A04414(EnElf* this, PlayState* play) {
         this->unk_29C = 1.0f;
 
         if (this->unk_2C7 == 0) {
-            Audio_PlayActorSound2(&this->actor, NA_SE_EV_FAIRY_DASH);
+            if (GameInteractor_Should(VB_FAIRY_PLAY_DASH_SOUND, true, this)) {
+                Audio_PlayActorSound2(&this->actor, NA_SE_EV_FAIRY_DASH);
+            }
         }
 
     } else {
@@ -1105,7 +1115,9 @@ void func_80A0461C(EnElf* this, PlayState* play) {
                             temp = 0;
                         } else {
                             if (this->unk_2C7 == 0) {
-                                Audio_PlayActorSound2(&this->actor, NA_SE_EV_NAVY_VANISH);
+                                if (GameInteractor_Should(VB_FAIRY_PLAY_VANISH_SOUND, true, this)) {
+                                    Audio_PlayActorSound2(&this->actor, NA_SE_EV_NAVY_VANISH);
+                                }
                             }
                             temp = 7;
                         }
@@ -1149,7 +1161,9 @@ void func_80A0461C(EnElf* this, PlayState* play) {
                 if (!(player->stateFlags2 & PLAYER_STATE2_NAVI_ACTIVE)) {
                     temp = 7;
                     if (this->unk_2C7 == 0) {
-                        Audio_PlayActorSound2(&this->actor, NA_SE_EV_NAVY_VANISH);
+                        if (GameInteractor_Should(VB_FAIRY_PLAY_VANISH_SOUND, true, this)) {
+                            Audio_PlayActorSound2(&this->actor, NA_SE_EV_NAVY_VANISH);
+                        }
                     }
                 }
                 break;
@@ -1159,7 +1173,9 @@ void func_80A0461C(EnElf* this, PlayState* play) {
                     this->unk_2C0 = 42;
                     temp = 11;
                     if (this->unk_2C7 == 0) {
-                        Audio_PlayActorSound2(&this->actor, NA_SE_EV_FAIRY_DASH);
+                        if (GameInteractor_Should(VB_FAIRY_PLAY_DASH_SOUND, true, this)) {
+                            Audio_PlayActorSound2(&this->actor, NA_SE_EV_FAIRY_DASH);
+                        }
                     }
                 }
                 break;
@@ -1190,20 +1206,22 @@ void EnElf_SpawnSparkles(EnElf* this, PlayState* play, s32 sparkleLife) {
     Color_RGBA8 primColor;
     Color_RGBA8 envColor;
 
-    sparklePos.x = Rand_CenteredFloat(6.0f) + this->actor.world.pos.x;
-    sparklePos.y = (Rand_ZeroOne() * 6.0f) + this->actor.world.pos.y;
-    sparklePos.z = Rand_CenteredFloat(6.0f) + this->actor.world.pos.z;
+    if (GameInteractor_Should(VB_FAIRY_SPAWN_SPARKLES, true, this, sparkleLife)) {
+        sparklePos.x = Rand_CenteredFloat(6.0f) + this->actor.world.pos.x;
+        sparklePos.y = (Rand_ZeroOne() * 6.0f) + this->actor.world.pos.y;
+        sparklePos.z = Rand_CenteredFloat(6.0f) + this->actor.world.pos.z;
 
-    primColor.r = this->innerColor.r;
-    primColor.g = this->innerColor.g;
-    primColor.b = this->innerColor.b;
+        primColor.r = this->innerColor.r;
+        primColor.g = this->innerColor.g;
+        primColor.b = this->innerColor.b;
 
-    envColor.r = this->outerColor.r;
-    envColor.g = this->outerColor.g;
-    envColor.b = this->outerColor.b;
+        envColor.r = this->outerColor.r;
+        envColor.g = this->outerColor.g;
+        envColor.b = this->outerColor.b;
 
-    EffectSsKiraKira_SpawnDispersed(play, &sparklePos, &sparkleVelocity, &sparkleAccel, &primColor, &envColor, 1000,
-                                    sparkleLife);
+        EffectSsKiraKira_SpawnDispersed(play, &sparklePos, &sparkleVelocity, &sparkleAccel, &primColor, &envColor, 1000,
+                                        sparkleLife);
+    }
 }
 
 void func_80A04D90(EnElf* this, PlayState* play) {
@@ -1392,7 +1410,9 @@ void func_80A053F0(Actor* thisx, PlayState* play) {
     }
 
     if (Actor_ProcessTalkRequest(thisx, play)) {
-        func_800F4524(&gSfxDefaultPos, NA_SE_VO_SK_LAUGH, 0x20);
+        if (GameInteractor_Should(VB_FAIRY_PLAY_C_UP_TALK_SOUND, true, this)) {
+            func_800F4524(&gSfxDefaultPos, NA_SE_VO_SK_LAUGH, 0x20);
+        }
         thisx->focus.pos = thisx->world.pos;
 
         if (thisx->textId == ElfMessage_GetCUpText(play)) {
@@ -1506,7 +1526,7 @@ void EnElf_Draw(Actor* thisx, PlayState* play) {
     Gfx* dListHead;
     Player* player = GET_PLAYER(play);
 
-    if ((this->unk_2A8 != 8) && !(this->fairyFlags & 8)) {
+    if (GameInteractor_Should(VB_FAIRY_DRAW, ((this->unk_2A8 != 8) && !(this->fairyFlags & 8)), this)) {
         if (!(player->stateFlags1 & PLAYER_STATE1_FIRST_PERSON) || (kREG(90) < this->actor.projectedPos.z)) {
             dListHead = Graph_Alloc(play->state.gfxCtx, sizeof(Gfx) * 4);
 
