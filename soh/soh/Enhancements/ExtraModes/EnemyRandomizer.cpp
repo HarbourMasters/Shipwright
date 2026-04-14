@@ -521,11 +521,23 @@ static u8 GetRandomizedEnemy(PlayState* play, s16* actorId, s16* posX, s16* posY
         pos.x = *posX;
         pos.y = *posY + 50;
         pos.z = *posZ;
-        raycastResult = BgCheck_AnyRaycastFloor1(&play->colCtx, &poly, &pos);
 
-        // If ground is found below actor, move actor to that height.
-        if (raycastResult > BGCHECK_Y_MIN) {
-            *posY = raycastResult;
+        // the forest temple second twisted hallway spawns after the enemies so we need to "find the floor" manually
+        if (play->sceneNum == SCENE_FOREST_TEMPLE && play->roomCtx.curRoom.num == 20 && *posZ > -3000) {
+            // when hallway is twisted (play->actorCtx.flags.tempSwch & 1), one spawn has the floor at 1235.165 &
+            // the other at 1239.094 but that changes based on the player position
+            // when not twisted, the whole floor is at 1228
+
+            // somehow enemies still spawn slightly off the ground?
+            pos.y = 1228.0;
+        } else {
+            raycastResult = BgCheck_AnyRaycastFloor1(&play->colCtx, &poly, &pos);
+
+            // If ground is found below actor, move actor to that height.
+            if (raycastResult > BGCHECK_Y_MIN) {
+                *posY = raycastResult;
+            }
+
         }
 
         // Get randomized enemy ID and parameter.
