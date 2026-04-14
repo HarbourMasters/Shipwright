@@ -572,19 +572,27 @@ void Settings::CreateOptions() {
             mOptions[RSK_LINKS_POCKET].Disable(
                 "This option is disabled because \"Dungeon Rewards\" are shuffled to \"End of Dungeons\".");
             mOptions[RSK_LINKS_POCKET_REWARD].Enable();
-        } else if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleDungeonReward"), RO_DUNGEON_REWARDS_END_OF_DUNGEON) ==
-            RO_DUNGEON_REWARDS_OWN_DUNGEON) {
-            mOptions[RSK_LINKS_POCKET].Enable();
-            mOptions[RSK_LINKS_POCKET_REWARD].Disable(
-                "As \"Link's Pocket\" is set to \"Dungeon Reward\" while \"Dungeon Rewards\" is set to \"Own Dungeon\", Link's Pocket will always have the Light Medallion");
-        }else if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleDungeonReward"), RO_DUNGEON_REWARDS_END_OF_DUNGEON) ==
-            RO_DUNGEON_REWARDS_VANILLA) {
-            mOptions[RSK_LINKS_POCKET].Enable();
-            mOptions[RSK_LINKS_POCKET_REWARD].Disable(
-                "As \"Link's Pocket\" is set to \"Dungeon Reward\" while \"Dungeon Rewards\" is set to \"Vanilla\", Link's Pocket will always have the Light Medallion");
+            mOptions[RSK_LINKS_POCKET_REWARD].Unhide();
         } else {
-            mOptions[RSK_LINKS_POCKET].Enable();
-            mOptions[RSK_LINKS_POCKET_REWARD].Enable();
+            if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleDungeonReward"), RO_DUNGEON_REWARDS_END_OF_DUNGEON) ==
+                RO_DUNGEON_REWARDS_OWN_DUNGEON) {
+                mOptions[RSK_LINKS_POCKET].Enable();
+                mOptions[RSK_LINKS_POCKET_REWARD].Disable(
+                    "As \"Link's Pocket\" is set to \"Dungeon Reward\" while \"Dungeon Rewards\" is set to \"Own Dungeon\", Link's Pocket will always have the Light Medallion");
+            }else if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleDungeonReward"), RO_DUNGEON_REWARDS_END_OF_DUNGEON) ==
+                RO_DUNGEON_REWARDS_VANILLA) {
+                mOptions[RSK_LINKS_POCKET].Enable();
+                mOptions[RSK_LINKS_POCKET_REWARD].Disable(
+                    "As \"Link's Pocket\" is set to \"Dungeon Reward\" while \"Dungeon Rewards\" is set to \"Vanilla\", Link's Pocket will always have the Light Medallion");
+            } else {
+                mOptions[RSK_LINKS_POCKET].Enable();
+                mOptions[RSK_LINKS_POCKET_REWARD].Enable();
+            }
+            if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("LinksPocket"), RO_LINKS_POCKET_DUNGEON_REWARD) == RO_LINKS_POCKET_DUNGEON_REWARD) {
+                mOptions[RSK_LINKS_POCKET_REWARD].Unhide();
+            } else {
+                mOptions[RSK_LINKS_POCKET_REWARD].Hide();
+            }  
         }
     });
     OPT_U8(RSK_LINKS_POCKET, "Link's Pocket", {"Dungeon Reward", "Advancement", "Anything", "Nothing"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("LinksPocket"), mOptionDescriptions[RSK_LINKS_POCKET], WIDGET_CVAR_COMBOBOX, RO_LINKS_POCKET_DUNGEON_REWARD);
@@ -597,7 +605,7 @@ void Settings::CreateOptions() {
             mOptions[RSK_LINKS_POCKET_REWARD].Hide();
         }
     });
-    OPT_U8(RSK_LINKS_POCKET_REWARD, "Link's Pocket Reward Type", {"Any Reward", "Stone", "Any Medallion", "Light Medallion"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("LinksPocketReward"), mOptionDescriptions[RSK_LINKS_POCKET_REWARD], WIDGET_CVAR_COMBOBOX, RO_LINKS_POCKET_REWARD);
+    OPT_U8(RSK_LINKS_POCKET_REWARD, "Link's Pocket Reward Type", {"Any Reward", "Any Stone", "Any Medallion", "Light Medallion"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("LinksPocketReward"), mOptionDescriptions[RSK_LINKS_POCKET_REWARD], WIDGET_CVAR_COMBOBOX, RO_LINKS_POCKET_ANY_REWARD);
     OPT_U8(RSK_SHUFFLE_SONGS, "Shuffle Songs", {"Off", "Song Locations", "Dungeon Rewards", "Anywhere"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleSongs"), mOptionDescriptions[RSK_SHUFFLE_SONGS], WIDGET_CVAR_COMBOBOX, RO_SONG_SHUFFLE_SONG_LOCATIONS);
     OPT_U8(RSK_SHOPSANITY, "Shop Shuffle", {"Off", "Specific Count", "Random"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("Shopsanity"), mOptionDescriptions[RSK_SHOPSANITY], WIDGET_CVAR_COMBOBOX, RO_SHOPSANITY_OFF);
     OPT_CALLBACK(RSK_SHOPSANITY, {
@@ -2524,7 +2532,7 @@ void Context::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocation
     }
 
     if (mOptions[RSK_LINKS_POCKET].IsNot(RO_LINKS_POCKET_DUNGEON_REWARD)) {
-        mOptions[RSK_LINKS_POCKET_REWARD].Set(RO_LINKS_POCKET_REWARD);
+        mOptions[RSK_LINKS_POCKET_REWARD].Set(RO_LINKS_POCKET_ANY_REWARD);
     }
 
     for (const auto locationKey : this->everyPossibleLocation) {

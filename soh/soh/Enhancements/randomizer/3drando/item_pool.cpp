@@ -303,7 +303,7 @@ void GenerateItemPool() {
         ctx->PlaceItemInLocation(RC_SONG_FROM_WINDMILL, RG_SONG_OF_STORMS, false, true);
     }
 
-    bool rewardIceTraps = ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Get() >= RO_DUNGEON_REWARDS_ANY_DUNGEON;
+    bool rewardIceTraps = ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Get() >= RO_DUNGEON_REWARDS_OWN_DUNGEON;
     AddFixedItemToPool(RG_KOKIRI_EMERALD, 1, rewardIceTraps);
     AddFixedItemToPool(RG_GORON_RUBY, 1, rewardIceTraps);
     AddFixedItemToPool(RG_ZORA_SAPPHIRE, 1, rewardIceTraps);
