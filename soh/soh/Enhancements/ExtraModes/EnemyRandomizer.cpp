@@ -38,8 +38,8 @@ extern std::shared_ptr<SohMenu> mSohMenu;
 typedef struct EnemyEntry {
     const char* cvar;
     const char* name;
-    int16_t id;
-    int16_t params;
+    s16 id;
+    s16 params;
 } EnemyEntry;
 
 // clang-format off
@@ -333,7 +333,7 @@ static bool IsEnemyAllowedToSpawn(s16 sceneNum, s8 roomNum, EnemyEntry enemy) {
 
 static std::vector<EnemyEntry> selectedEnemyList;
 
-void GetSelectedEnemies() {
+static void GetSelectedEnemies() {
     selectedEnemyList.clear();
     for (int i = 0; i < ARRAY_COUNT(randomizedEnemySpawnTable); i++) {
         if (CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemyList.All"), 0)) {
@@ -347,7 +347,7 @@ void GetSelectedEnemies() {
     }
 }
 
-EnemyEntry GetRandomizedEnemyEntry(uint32_t seed, PlayState* play) {
+static EnemyEntry GetRandomizedEnemyEntry(u32 seed, PlayState* play) {
     std::vector<EnemyEntry> filteredEnemyList = {};
     if (selectedEnemyList.size() == 0) {
         GetSelectedEnemies();
@@ -360,21 +360,20 @@ EnemyEntry GetRandomizedEnemyEntry(uint32_t seed, PlayState* play) {
     if (filteredEnemyList.size() == 0) {
         filteredEnemyList = selectedEnemyList;
     }
+
     if (CVAR_ENEMY_RANDOMIZER_VALUE == ENEMY_RANDOMIZER_RANDOM_SEEDED) {
-        uint32_t finalSeed =
-            seed + (IS_RANDO ? Rando::Context::GetInstance()->GetSeed() : gSaveContext.ship.stats.fileCreatedAt);
+        u32 finalSeed = seed + (IS_RANDO ? Rando::Context::GetInstance()->GetSeed() : gSaveContext.ship.stats.fileCreatedAt);
         Random_Init(finalSeed);
-        uint32_t randomNumber = Random(0, filteredEnemyList.size());
+        u32 randomNumber = Random(0, filteredEnemyList.size());
         return filteredEnemyList[randomNumber];
     } else {
-        uint32_t randomSelectedEnemy = Random(0, filteredEnemyList.size());
+        u32 randomSelectedEnemy = Random(0, filteredEnemyList.size());
         return filteredEnemyList[randomSelectedEnemy];
     }
 }
 
-bool IsEnemyFoundToRandomize(int16_t sceneNum, int8_t roomNum, int16_t actorId, int16_t params, float posX) {
-
-    uint32_t isMQ = ResourceMgr_IsSceneMasterQuest(sceneNum);
+static bool IsEnemyFoundToRandomize(s16 sceneNum, s8 roomNum, s16 actorId, s16 params, f32 posX) {
+    u32 isMQ = ResourceMgr_IsSceneMasterQuest(sceneNum);
 
     for (int i = 0; i < ARRAY_COUNT(enemiesToRandomize); i++) {
         if (actorId == enemiesToRandomize[i]) {
@@ -431,19 +430,17 @@ bool IsEnemyFoundToRandomize(int16_t sceneNum, int8_t roomNum, int16_t actorId, 
                 case ACTOR_EN_SKJ:
                     return !(sceneNum == SCENE_LOST_WOODS && LINK_IS_CHILD);
                 default:
-                    return 1;
+                    return true;
             }
         }
     }
 
     // If no enemy is found, don't randomize the actor.
-    return 0;
+    return false;
 }
 
-uint8_t GetRandomizedEnemy(PlayState* play, int16_t* actorId, s16* posX, s16* posY, s16* posZ, int16_t* rotX,
-                           int16_t* rotY, int16_t* rotZ, int16_t* params, int16_t offset = 0) {
-
-    uint32_t isMQ = ResourceMgr_IsSceneMasterQuest(play->sceneNum);
+static u8 GetRandomizedEnemy(PlayState* play, s16* actorId, s16* posX, s16* posY, s16* posZ, s16* rotX, s16* rotY, s16* rotZ, s16* params, s16 offset = 0) {
+    u32 isMQ = ResourceMgr_IsSceneMasterQuest(play->sceneNum);
 
     // Hack to remove enemies that wrongfully spawn because of bypassing object dependency with enemy randomizer on.
     // This should probably be handled on OTR generation in the future when object dependency is fully removed.
@@ -469,7 +466,6 @@ uint8_t GetRandomizedEnemy(PlayState* play, int16_t* actorId, s16* posX, s16* po
     }
 
     if (IsEnemyFoundToRandomize(play->sceneNum, play->roomCtx.curRoom.num, *actorId, *params, *posX)) {
-
         // When replacing Iron Knuckles in Spirit Temple, move them away from the throne because
         // some enemies can get stuck on the throne.
         if (*actorId == ACTOR_EN_IK && play->sceneNum == SCENE_SPIRIT_TEMPLE) {
@@ -508,8 +504,7 @@ uint8_t GetRandomizedEnemy(PlayState* play, int16_t* actorId, s16* posX, s16* po
         }
 
         // Get randomized enemy ID and parameter.
-        uint32_t seed =
-            play->sceneNum + *actorId + (int)*posX + (int)*posY + (int)*posZ + *rotX + *rotY + *rotZ + *params + offset;
+        u32 seed = play->sceneNum + *actorId + (int)*posX + (int)*posY + (int)*posZ + *rotX + *rotY + *rotZ + *params + offset;
         EnemyEntry randomEnemy = GetRandomizedEnemyEntry(seed, play);
 
         *actorId = randomEnemy.id;
@@ -1032,7 +1027,7 @@ void RegisterEnemyRandomizer() {
     });
 }
 
-static const std::map<int32_t, const char*> enemyRandomizerModes = {
+static const std::map<s32, const char*> enemyRandomizerModes = {
     { ENEMY_RANDOMIZER_OFF, "Disabled" },
     { ENEMY_RANDOMIZER_RANDOM, "Random" },
     { ENEMY_RANDOMIZER_RANDOM_SEEDED, "Random (Seeded)" },
