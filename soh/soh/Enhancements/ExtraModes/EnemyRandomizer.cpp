@@ -352,11 +352,13 @@ static EnemyEntry GetRandomizedEnemyEntry(u32 seed, PlayState* play) {
     if (selectedEnemyList.size() == 0) {
         GetSelectedEnemies();
     }
+
     for (EnemyEntry enemy : selectedEnemyList) {
         if (IsEnemyAllowedToSpawn(play->sceneNum, play->roomCtx.curRoom.num, enemy)) {
             filteredEnemyList.push_back(enemy);
         }
     }
+
     if (filteredEnemyList.size() == 0) {
         filteredEnemyList = selectedEnemyList;
     }
@@ -364,12 +366,10 @@ static EnemyEntry GetRandomizedEnemyEntry(u32 seed, PlayState* play) {
     if (CVAR_ENEMY_RANDOMIZER_VALUE == ENEMY_RANDOMIZER_RANDOM_SEEDED) {
         u32 finalSeed = seed + (IS_RANDO ? Rando::Context::GetInstance()->GetSeed() : gSaveContext.ship.stats.fileCreatedAt);
         Random_Init(finalSeed);
-        u32 randomNumber = Random(0, filteredEnemyList.size());
-        return filteredEnemyList[randomNumber];
-    } else {
-        u32 randomSelectedEnemy = Random(0, filteredEnemyList.size());
-        return filteredEnemyList[randomSelectedEnemy];
     }
+
+    u32 randomSelectedEnemy = Random(0, filteredEnemyList.size());
+    return filteredEnemyList[randomSelectedEnemy];
 }
 
 static bool IsEnemyFoundToRandomize(s16 sceneNum, s8 roomNum, s16 actorId, s16 params, f32 posX) {
