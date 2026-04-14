@@ -19,6 +19,7 @@ extern "C" {
 #include "src/overlays/actors/ovl_En_Blkobj/z_en_blkobj.h"
 #include "src/overlays/actors/ovl_En_Encount1/z_en_encount1.h"
 #include "src/overlays/actors/ovl_En_GeldB/z_en_geldb.h"
+#include "src/overlays/actors/ovl_En_Peehat/z_en_peehat.h"
 #include "src/overlays/actors/ovl_En_Rr/z_en_rr.h"
 #include "src/overlays/actors/ovl_En_Vali/z_en_vali.h"
 
@@ -528,6 +529,26 @@ void CustomStalfosPairFightDestroy(Actor* thisx, PlayState* play) {
     ObjectExtension::GetInstance().Remove<CustomStalfosPairFightData>(thisx);
 }
 
+struct CustomPeehatLarvaData {
+    EnPeehat* peehat = nullptr;
+    ActorFunc originalDestroy = nullptr;
+};
+
+static ObjectExtension::Register<CustomPeehatLarvaData> CustomPeehatLarvaDataRegister;
+
+void CustomPeehatLarvaDestroy(Actor* thisx, PlayState* play) {
+    assert(ObjectExtension::GetInstance().Has<CustomPeehatLarvaData>(thisx));
+
+    CustomPeehatLarvaData* customPeehatLarvaData =
+        ObjectExtension::GetInstance().Get<CustomPeehatLarvaData>(thisx);
+
+    customPeehatLarvaData->peehat->unk_2FA -= 1;
+
+    customPeehatLarvaData->originalDestroy(thisx, play);
+
+    ObjectExtension::GetInstance().Remove<CustomPeehatLarvaData>(thisx);
+}
+
 void RegisterEnemyRandomizer() {
     COND_ID_HOOK(OnActorInit, ACTOR_EN_MB, ENEMY_RANDOMIZER_ENABLED, FixClubMoblinScale);
 
@@ -921,6 +942,37 @@ void RegisterEnemyRandomizer() {
         Actor_Spawn(&play->actorCtx, play, actorId, posX, posY, posZ, rotX, rotY, rotZ, params);
 
         *should = false;
+    });
+
+    COND_VB_SHOULD(VB_PEEHAT_SPAWN_LARVAS, ENEMY_RANDOMIZER_ENABLED, {
+        EnPeehat* peehat = va_arg(args, EnPeehat*);
+        PlayState* play = va_arg(args, PlayState*);
+
+        s16 actorId = ACTOR_EN_PEEHAT;
+        s16 homePosX = peehat->actor.home.pos.x;
+        s16 homePosY = peehat->actor.home.pos.y + 50.0f;
+        s16 homePosZ = peehat->actor.home.pos.z;
+        s16 rotX = 0;
+        s16 rotY = 0;
+        s16 rotZ = 0;
+        s16 params = PEAHAT_TYPE_LARVA;
+
+        // 3 is MAX_LARVA
+        for (s32 i = 3 - peehat->unk_2FA; i > 0; i--) {
+            if (!GetRandomizedEnemy(play, &actorId, &homePosX, &homePosY, &homePosZ, &rotX, &rotY, &rotZ, &params, i * 1000)) {
+                assert(false);
+            }
+
+            Actor* enemy = Actor_Spawn(&play->actorCtx, play, actorId, homePosX, homePosY, homePosZ, rotX, rotY, rotZ, params);
+
+            if (enemy == NULL) {
+                assert(false);
+            } else {
+                peehat->unk_2FA++;
+                ObjectExtension::GetInstance().Set<CustomPeehatLarvaData>(enemy, CustomPeehatLarvaData{ .peehat = peehat, .originalDestroy = enemy->destroy });
+                enemy->destroy = CustomPeehatLarvaDestroy;
+            }
+        }
     });
 }
 
