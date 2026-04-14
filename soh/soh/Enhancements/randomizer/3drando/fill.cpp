@@ -1072,7 +1072,7 @@ static void RandomizeOwnDungeon(const Rando::DungeonInfo* dungeon) {
             });
         AddElementsToPool(dungeonItems, dungeonSmallKeys);
     }
-    if (ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_ITEM_LOC_OWN_DUNGEON) &&
+    if (ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_OWN_DUNGEON) &&
         dungeon->GetReward() != RG_NONE) {
         std::vector<RandomizerGet> dungeonReward =
             FilterAndEraseFromPool(itemPool, [dungeon](const RandomizerGet i) { return (i == dungeon->GetReward()); });
