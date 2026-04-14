@@ -384,7 +384,7 @@ bool IsEnemyFoundToRandomize(int16_t sceneNum, int8_t roomNum, int16_t actorId, 
 }
 
 uint8_t GetRandomizedEnemy(PlayState* play, int16_t* actorId, s16* posX, s16* posY, s16* posZ, int16_t* rotX,
-                           int16_t* rotY, int16_t* rotZ, int16_t* params) {
+                           int16_t* rotY, int16_t* rotZ, int16_t* params, int16_t offset = 0) {
 
     uint32_t isMQ = ResourceMgr_IsSceneMasterQuest(play->sceneNum);
 
@@ -452,7 +452,7 @@ uint8_t GetRandomizedEnemy(PlayState* play, int16_t* actorId, s16* posX, s16* po
 
         // Get randomized enemy ID and parameter.
         uint32_t seed =
-            play->sceneNum + *actorId + (int)*posX + (int)*posY + (int)*posZ + *rotX + *rotY + *rotZ + *params;
+            play->sceneNum + *actorId + (int)*posX + (int)*posY + (int)*posZ + *rotX + *rotY + *rotZ + *params + offset;
         EnemyEntry randomEnemy = GetRandomizedEnemyEntry(seed, play);
 
         *actorId = randomEnemy.id;
@@ -756,14 +756,17 @@ void RegisterEnemyRandomizer() {
         s16 rotZ = 0;
         s16 params = 0;
 
-        for (s32 i = 0; i < 3; i++) {
-            // Offset small jellyfish with Enemy Randomizer, otherwise it gets
-            // stuck in a loop spawning more big jellyfish with seeded spawns.
-            if (CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0)) {
-                rotY += rand() % 50;
-            }
+        s16 homePosX = vali->actor.home.pos.x;
+        s16 homePosY = vali->actor.home.pos.y;
+        s16 homePosZ = vali->actor.home.pos.z;
 
-            if (!GetRandomizedEnemy(play, &actorId, &posX, &posY, &posZ, &rotX, &rotY, &rotZ, &params)) {
+        s16 homeRotX = vali->actor.home.rot.x;
+        s16 homeRotY = vali->actor.home.rot.y;
+        s16 homeRotZ = vali->actor.home.rot.z;
+
+        for (s32 i = 0; i < 3; i++) {
+            // use the home pos & rot to make it consistent
+            if (!GetRandomizedEnemy(play, &actorId, &homePosX, &homePosY, &homePosZ, &homeRotX, &homeRotY, &homeRotZ, &params, i * 1000)) {
                 assert(false);
             }
 
