@@ -294,7 +294,7 @@ static bool IsTimedRoom(bool mq, s16 sceneNum, s8 roomNum) {
     }
 }
 
-static bool IsEnemyAllowedToSpawn(s16 sceneNum, s8 roomNum, EnemyEntry enemy) {
+static bool IsEnemyAllowedToSpawn(s16 sceneNum, s8 roomNum, EnemyEntry enemy, s16 posY) {
     bool mq = ResourceMgr_IsSceneMasterQuest(sceneNum);
 
     if (IsExcludedFromClearRooms(enemy.id, enemy.params) && IsClearRoom(mq, sceneNum, roomNum)) {
@@ -328,6 +328,25 @@ static bool IsEnemyAllowedToSpawn(s16 sceneNum, s8 roomNum, EnemyEntry enemy) {
         return false;
     }
 
+    // Don't allow the following enemies in the first spawn of the first room in MQ Fire Temple loop as when spawned and they get stuck in the room above
+    // - Lizalfos/Dinolfos, Bari: they drop in
+    // - Skulltulla: they appear above
+    // - Flying Peehat: they rise above the ceiling
+    if (
+        mq &&
+        sceneNum == SCENE_FIRE_TEMPLE &&
+        roomNum == 15 &&
+        posY == 64 &&
+        (
+            enemy.id == ACTOR_EN_ZF ||
+            enemy.id == ACTOR_EN_VALI ||
+            enemy.id == ACTOR_EN_ST ||
+            enemy.id == ACTOR_EN_PEEHAT
+        )
+    ) {
+        return false;
+    }
+
     return false;
 }
 
@@ -349,7 +368,7 @@ static void UpdateSelectedEnemies() {
     }
 }
 
-static EnemyEntry GetRandomizedEnemyEntry(u32 seed, PlayState* play) {
+static EnemyEntry GetRandomizedEnemyEntry(u32 seed, PlayState* play, s16 posY) {
     std::vector<EnemyEntry> filteredEnemyList = {};
 
     if (selectedEnemyList.size() == 0) {
@@ -357,7 +376,7 @@ static EnemyEntry GetRandomizedEnemyEntry(u32 seed, PlayState* play) {
     }
 
     for (EnemyEntry enemy : selectedEnemyList) {
-        if (IsEnemyAllowedToSpawn(play->sceneNum, play->roomCtx.curRoom.num, enemy)) {
+        if (IsEnemyAllowedToSpawn(play->sceneNum, play->roomCtx.curRoom.num, enemy, posY)) {
             filteredEnemyList.push_back(enemy);
         }
     }
@@ -511,7 +530,7 @@ static u8 GetRandomizedEnemy(PlayState* play, s16* actorId, s16* posX, s16* posY
 
         // Get randomized enemy ID and parameter.
         u32 seed = play->sceneNum + *actorId + (int)*posX + (int)*posY + (int)*posZ + *rotX + *rotY + *rotZ + *params + offset;
-        EnemyEntry randomEnemy = GetRandomizedEnemyEntry(seed, play);
+        EnemyEntry randomEnemy = GetRandomizedEnemyEntry(seed, play, *posY);
 
         *actorId = randomEnemy.id;
         *params = randomEnemy.params;
