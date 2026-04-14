@@ -160,119 +160,175 @@ static int enemiesToRandomize[] = {
     // ACTOR_EN_REEBA,      // Leever (reliant on spawner (z_en_encount1.c))
 };
 
-bool IsEnemyAllowedToSpawn(int16_t sceneNum, int8_t roomNum, EnemyEntry enemy) {
-    uint32_t isMQ = ResourceMgr_IsSceneMasterQuest(sceneNum);
-
-    // Freezard - Child Link can only kill this with Deku Stick jumpslash or other equipment like bombs.
-    // Beamos - Needs bombs.
-    // Anubis - Needs fire.
-    // Shell Blade & Spike - Child Link can't kill these with sword or Deku Stick.
-    // Flare dancer, Arwing & Dark Link - Both go out of bounds way too easily, softlocking the player.
-    // Wallmaster - Not easily visible, often makes players think they're softlocked and that there's no enemies left.
-    // Club Moblin - Many issues with them falling or placing out of bounds. Maybe fixable in the future?
-    bool enemiesToExcludeClearRooms =
-        enemy.id == ACTOR_EN_FZ || enemy.id == ACTOR_EN_VM || enemy.id == ACTOR_EN_SB || enemy.id == ACTOR_EN_NY ||
-        enemy.id == ACTOR_EN_CLEAR_TAG || enemy.id == ACTOR_EN_WALLMAS || enemy.id == ACTOR_EN_TORCH2 ||
-        (enemy.id == ACTOR_EN_MB && enemy.params == 0) || enemy.id == ACTOR_EN_FD || enemy.id == ACTOR_EN_ANUBICE_TAG;
-
-    // Bari - Spawns 3 more enemies, potentially extremely difficult in timed rooms.
-    bool enemiesToExcludeTimedRooms = enemiesToExcludeClearRooms || enemy.id == ACTOR_EN_VALI;
-
-    switch (sceneNum) {
-        // Deku Tree
-        case SCENE_DEKU_TREE:
-            return (!(!isMQ && enemiesToExcludeClearRooms && (roomNum == 1 || roomNum == 9)) &&
-                    !(isMQ && enemiesToExcludeClearRooms &&
-                      (roomNum == 4 || roomNum == 6 || roomNum == 9 || roomNum == 10)));
-        // Dodongo's Cavern
-        case SCENE_DODONGOS_CAVERN:
-            return (!(!isMQ && enemiesToExcludeClearRooms && roomNum == 15) &&
-                    !(isMQ && enemiesToExcludeClearRooms && (roomNum == 5 || roomNum == 13 || roomNum == 14)));
-        // Jabu Jabu
-        case SCENE_JABU_JABU:
-            return (!(!isMQ && enemiesToExcludeClearRooms && (roomNum == 8 || roomNum == 9)) &&
-                    !(!isMQ && enemiesToExcludeTimedRooms && roomNum == 12) &&
-                    !(isMQ && enemiesToExcludeClearRooms && (roomNum == 11 || roomNum == 14)));
-        // Forest Temple
-        case SCENE_FOREST_TEMPLE:
-            return (!(!isMQ && enemiesToExcludeClearRooms &&
-                      (roomNum == 6 || roomNum == 10 || roomNum == 18 || roomNum == 21)) &&
-                    !(isMQ && enemiesToExcludeClearRooms &&
-                      (roomNum == 5 || roomNum == 6 || roomNum == 18 || roomNum == 21)));
-        // Fire Temple
-        case SCENE_FIRE_TEMPLE:
-            return (!(!isMQ && enemiesToExcludeClearRooms && roomNum == 15) &&
-                    !(isMQ && enemiesToExcludeClearRooms && (roomNum == 15 || roomNum == 17 || roomNum == 18)));
-        // Water Temple
-        case SCENE_WATER_TEMPLE:
-            return (!(!isMQ && enemiesToExcludeClearRooms && (roomNum == 13 || roomNum == 18 || roomNum == 19)) &&
-                    !(isMQ && enemiesToExcludeClearRooms && (roomNum == 13 || roomNum == 18)));
-        // Spirit Temple
-        case SCENE_SPIRIT_TEMPLE:
-            return (!(!isMQ && enemiesToExcludeClearRooms &&
-                      (roomNum == 1 || roomNum == 10 || roomNum == 17 || roomNum == 20)) &&
-                    !(isMQ && enemiesToExcludeClearRooms &&
-                      (roomNum == 1 || roomNum == 2 || roomNum == 4 || roomNum == 10 || roomNum == 15 ||
-                       roomNum == 19 || roomNum == 20)));
-        // Shadow Temple
-        case SCENE_SHADOW_TEMPLE:
-            return (
-                !(!isMQ && enemiesToExcludeClearRooms &&
-                  (roomNum == 1 || roomNum == 7 || roomNum == 11 || roomNum == 14 || roomNum == 16 || roomNum == 17 ||
-                   roomNum == 19 || roomNum == 20)) &&
-                !(isMQ && enemiesToExcludeClearRooms &&
-                  (roomNum == 1 || roomNum == 6 || roomNum == 7 || roomNum == 11 || roomNum == 14 || roomNum == 20)));
-        // Ganon's Castle Trials
-        case SCENE_INSIDE_GANONS_CASTLE:
-            return (!(!isMQ && enemiesToExcludeClearRooms && (roomNum == 2 || roomNum == 5 || roomNum == 9)) &&
-                    !(isMQ && enemiesToExcludeClearRooms &&
-                      (roomNum == 0 || roomNum == 2 || roomNum == 5 || roomNum == 9)));
-        // Ice Caverns
-        case SCENE_ICE_CAVERN:
-            return (!(!isMQ && enemiesToExcludeClearRooms && (roomNum == 1 || roomNum == 7)) &&
-                    !(isMQ && enemiesToExcludeClearRooms && (roomNum == 3 || roomNum == 7)));
-        // Bottom of the Well
-        // Exclude Dark Link from room with holes in the floor because it can pull you in a like-like making the player
-        // fall down.
-        case SCENE_BOTTOM_OF_THE_WELL:
-            return (!(!isMQ && enemy.id == ACTOR_EN_TORCH2 && roomNum == 3));
-        // Don't allow Dark Link in areas with lava void out zones as it voids out the player as well.
-        // Gerudo Training Ground.
-        case SCENE_GERUDO_TRAINING_GROUND:
-            return (!(enemy.id == ACTOR_EN_TORCH2 && roomNum == 6) &&
-                    !(!isMQ && enemiesToExcludeTimedRooms && (roomNum == 1 || roomNum == 7)) &&
-                    !(!isMQ && enemiesToExcludeClearRooms && (roomNum == 3 || roomNum == 5 || roomNum == 10)) &&
-                    !(isMQ && enemiesToExcludeTimedRooms &&
-                      (roomNum == 1 || roomNum == 3 || roomNum == 5 || roomNum == 7)) &&
-                    !(isMQ && enemiesToExcludeClearRooms && roomNum == 10));
-        // Don't allow certain enemies in Ganon's Tower because they would spawn up on the ceiling,
-        // becoming impossible to kill.
-        // Ganon's Tower.
-        case SCENE_GANONS_TOWER:
-            return (!(enemiesToExcludeClearRooms || enemy.id == ACTOR_EN_VALI ||
-                      (enemy.id == ACTOR_EN_ZF && enemy.params == -1)));
-        // Ganon's Tower Escape.
-        case SCENE_GANONS_TOWER_COLLAPSE_INTERIOR:
-            return (!((enemiesToExcludeTimedRooms || (enemy.id == ACTOR_EN_ZF && enemy.params == -1)) && roomNum == 1));
-        // Don't allow big Stalchildren, big Peahats and the large Bari (jellyfish) during the Gohma fight because they
-        // can clip into Gohma and it crashes the game. Likely because Gohma on the ceiling can't handle collision with
-        // other enemies.
-        case SCENE_DEKU_TREE_BOSS:
-            return (!enemiesToExcludeTimedRooms && !(enemy.id == ACTOR_EN_SKB && enemy.params == 20) &&
-                    !(enemy.id == ACTOR_EN_PEEHAT && enemy.params == -1));
-        // Grottos.
-        case SCENE_GROTTOS:
-            return (!(enemiesToExcludeClearRooms && (roomNum == 2 || roomNum == 7)));
-        // Royal Grave.
-        case SCENE_ROYAL_FAMILYS_TOMB:
-            return (!(enemiesToExcludeClearRooms && roomNum == 0));
-        // Don't allow Dark Link in areas with lava void out zones as it voids out the player as well.
-        // Death Mountain Crater.
-        case SCENE_DEATH_MOUNTAIN_CRATER:
-            return (enemy.id != ACTOR_EN_TORCH2);
+static bool IsExcludedFromClearRooms(s16 enemyId, s16 enemyParams) {
+    switch (enemyId) {
+        // Freezard - Child Link can only kill this with Deku Stick jumpslash or other equipment like bombs
+        case ACTOR_EN_FZ:
+        // Beamos - Needs bombs
+        case ACTOR_EN_VM:
+        // Shell Blade - Child Link can't kill these with sword or Deku Stick
+        case ACTOR_EN_SB:
+        // Spike - Child Link can't kill these with sword or Deku Stick
+        case ACTOR_EN_NY:
+        // Arwing - Goes out of bounds way too easily, softlocking the player
+        case ACTOR_EN_CLEAR_TAG:
+        // Wallmaster - Not easily visible, often makes players think they're softlocked and that there's no enemies left
+        case ACTOR_EN_WALLMAS:
+        // Dark Link - Goes out of bounds way too easily, softlocking the player
+        case ACTOR_EN_TORCH2:
+        // Flare dancer - Goes out of bounds way too easily, softlocking the player
+        case ACTOR_EN_FD:
+        // Anubis - Needs fire
+        case ACTOR_EN_ANUBICE_TAG:
+            return true;
+        case ACTOR_EN_MB:
+            return enemyParams == 0;
         default:
-            return 1;
+            return false;
     }
+}
+
+static bool IsExcludedFromTimedRooms(s16 enemyId, s16 enemyParams) {
+    switch (enemyId) {
+        // Bari - Spawns 3 more enemies, potentially extremely difficult in timed rooms
+        case ACTOR_EN_VALI:
+            return true;
+        default:
+            return IsExcludedFromClearRooms(enemyId, enemyParams);
+    }
+}
+
+static bool IsClearRoom(bool mq, s16 sceneNum, s8 roomNum) {
+    switch (sceneNum) {
+        case SCENE_DEKU_TREE:
+            if (mq) {
+                return roomNum == 4 || roomNum == 6 || roomNum == 9 || roomNum == 10;
+            } else {
+                return roomNum == 1 || roomNum == 9;
+            }
+        case SCENE_DODONGOS_CAVERN:
+            if (mq) {
+                return roomNum == 5 || roomNum == 13 || roomNum == 14;
+            } else {
+                return roomNum == 15;
+            }
+        case SCENE_JABU_JABU:
+            if (mq) {
+                return roomNum == 11 || roomNum == 14;
+            } else {
+                return roomNum == 8 || roomNum == 9;
+            }
+        case SCENE_FOREST_TEMPLE:
+            if (mq) {
+                return roomNum == 5 || roomNum == 6 || roomNum == 18 || roomNum == 21;
+            } else {
+                return roomNum == 6 || roomNum == 10 || roomNum == 18 || roomNum == 21;
+            }
+        case SCENE_FIRE_TEMPLE:
+            if (mq) {
+                return roomNum == 15 || roomNum == 17 || roomNum == 18;
+            } else {
+                return roomNum == 15;
+            }
+        case SCENE_WATER_TEMPLE:
+            if (mq) {
+                return roomNum == 13 || roomNum == 18;
+            } else {
+                return roomNum == 13 || roomNum == 18 || roomNum == 19;
+            }
+        case SCENE_SPIRIT_TEMPLE:
+            if (mq) {
+                return roomNum == 1 || roomNum == 2 || roomNum == 4 || roomNum == 10 || roomNum == 15 || roomNum == 19 || roomNum == 20;
+            } else {
+                return roomNum == 1 || roomNum == 10 || roomNum == 17 || roomNum == 20;
+            }
+        case SCENE_SHADOW_TEMPLE:
+            if (mq) {
+                return roomNum == 1 || roomNum == 6 || roomNum == 7 || roomNum == 11 || roomNum == 14 || roomNum == 20;
+            } else {
+                return roomNum == 1 || roomNum == 7 || roomNum == 11 || roomNum == 14 || roomNum == 16 || roomNum == 17 || roomNum == 19 || roomNum == 20;
+            }
+        case SCENE_INSIDE_GANONS_CASTLE:
+            if (mq) {
+                return roomNum == 0 || roomNum == 2 || roomNum == 5 || roomNum == 9;
+            } else {
+                return roomNum == 2 || roomNum == 5 || roomNum == 9;
+            }
+        case SCENE_ICE_CAVERN:
+            if (mq) {
+                return roomNum == 3 || roomNum == 7;
+            } else {
+                return roomNum == 1 || roomNum == 7;
+            }
+        case SCENE_GERUDO_TRAINING_GROUND:
+            if (mq) {
+                return roomNum == 10;
+            } else {
+                return roomNum == 3 || roomNum == 5 || roomNum == 10;
+            }
+        case SCENE_GANONS_TOWER:
+            return true;
+        case SCENE_GROTTOS:
+            return roomNum == 2 || roomNum == 7;
+        case SCENE_ROYAL_FAMILYS_TOMB:
+            return roomNum == 0;
+        default:
+            return false;
+    }
+}
+
+static bool IsTimedRoom(bool mq, s16 sceneNum, s8 roomNum) {
+    switch (sceneNum) {
+        case SCENE_JABU_JABU:
+            return !mq && roomNum == 12;
+        case SCENE_GERUDO_TRAINING_GROUND:
+            if (mq) {
+                return roomNum == 1 || roomNum == 3 || roomNum == 5 || roomNum == 7;
+            } else {
+                return roomNum == 1 || roomNum == 7;
+            }
+        case SCENE_GANONS_TOWER_COLLAPSE_INTERIOR:
+            return roomNum == 1;
+        default:
+            return false;
+    }
+}
+
+static bool IsEnemyAllowedToSpawn(s16 sceneNum, s8 roomNum, EnemyEntry enemy) {
+    bool mq = ResourceMgr_IsSceneMasterQuest(sceneNum);
+
+    if (IsExcludedFromClearRooms(enemy.id, enemy.params) && IsClearRoom(mq, sceneNum, roomNum)) {
+        return false;
+    }
+
+    if (IsExcludedFromTimedRooms(enemy.id, enemy.params) && IsTimedRoom(mq, sceneNum, roomNum)) {
+        return false;
+    }
+
+    // Don't allow Lizalfos or Baris in Ganon's Tower because they would spawn up on the ceiling, becoming impossible to kill.
+    if (sceneNum == SCENE_GANONS_TOWER && (enemy.id == ACTOR_EN_VALI || (enemy.id == ACTOR_EN_ZF && enemy.params == -1))) {
+        return false;
+    }
+
+    // Don't allow Lizalfos in the first room of the interior of the castle collapse
+    if (sceneNum == SCENE_GANONS_TOWER_COLLAPSE_INTERIOR && roomNum == 1 && enemy.id == ACTOR_EN_ZF && enemy.params == -1) {
+        return false;
+    }
+
+    // Don't allow big Stalchildren, big Peahats and Baris (big jellyfish) during the Gohma fight because they can clip
+    // into Gohma and it crashes the game. Likely because Gohma on the ceiling can't handle collision with other enemies.
+    if (
+        sceneNum == SCENE_DEKU_TREE_BOSS &&
+            (
+                (enemy.id == ACTOR_EN_SKB && enemy.params == 20) ||
+                (enemy.id == ACTOR_EN_PEEHAT && enemy.params == -1) ||
+                (enemy.id == ACTOR_EN_VALI)
+            )
+    ) {
+        return false;
+    }
+
+    return false;
 }
 
 static std::vector<EnemyEntry> selectedEnemyList;
