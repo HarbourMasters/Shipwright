@@ -333,7 +333,7 @@ static bool IsEnemyAllowedToSpawn(s16 sceneNum, s8 roomNum, EnemyEntry enemy) {
 
 static std::vector<EnemyEntry> selectedEnemyList;
 
-static void GetSelectedEnemies() {
+static void UpdateSelectedEnemies() {
     selectedEnemyList.clear();
     for (int i = 0; i < ARRAY_COUNT(randomizedEnemySpawnTable); i++) {
         if (CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemyList.All"), 0)) {
@@ -350,7 +350,7 @@ static void GetSelectedEnemies() {
 static EnemyEntry GetRandomizedEnemyEntry(u32 seed, PlayState* play) {
     std::vector<EnemyEntry> filteredEnemyList = {};
     if (selectedEnemyList.size() == 0) {
-        GetSelectedEnemies();
+        UpdateSelectedEnemies();
     }
 
     for (EnemyEntry enemy : selectedEnemyList) {
@@ -1038,7 +1038,7 @@ void RegisterEnemyRandomizerWidgets() {
 
     SohGui::mSohMenu->AddWidget(path, "Enemy Randomizer", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_ENHANCEMENT("RandomizedEnemies"))
-        .Callback([](WidgetInfo& info) { GetSelectedEnemies(); })
+        .Callback([](WidgetInfo& info) { UpdateSelectedEnemies(); })
         .Options(
             UIWidgets::ComboboxOptions()
                 .DefaultIndex(ENEMY_RANDOMIZER_OFF)
@@ -1069,7 +1069,7 @@ void RegisterEnemyRandomizerWidgets() {
     SohGui::mSohMenu->AddWidget(path, "Select all Enemies", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("RandomizedEnemyList.All"))
         .PreFunc([](WidgetInfo& info) { info.isHidden = !CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0); })
-        .Callback([](WidgetInfo& info) { GetSelectedEnemies(); });
+        .Callback([](WidgetInfo& info) { UpdateSelectedEnemies(); });
 
     SohGui::mSohMenu->AddWidget(path, "Enemy List", WIDGET_SEPARATOR).PreFunc([](WidgetInfo& info) {
         info.isHidden = !CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0);
@@ -1084,7 +1084,7 @@ void RegisterEnemyRandomizerWidgets() {
                 info.options->disabled = CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemyList.All"), 0);
                 info.options->disabledTooltip = "These options are disabled because \"Select All Enemies\" is enabled.";
             })
-            .Callback([](WidgetInfo& info) { GetSelectedEnemies(); });
+            .Callback([](WidgetInfo& info) { UpdateSelectedEnemies(); });
     }
 }
 
