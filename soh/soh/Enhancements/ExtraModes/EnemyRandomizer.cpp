@@ -528,8 +528,7 @@ static u8 GetRandomizedEnemy(PlayState* play, s16* actorId, s16* posX, s16* posY
             // the other at 1239.094 but that changes based on the player position
             // when not twisted, the whole floor is at 1228
 
-            // somehow enemies still spawn slightly off the ground?
-            pos.y = 1228.0;
+            *posY = 1228.0;
         } else {
             raycastResult = BgCheck_AnyRaycastFloor1(&play->colCtx, &poly, &pos);
 
