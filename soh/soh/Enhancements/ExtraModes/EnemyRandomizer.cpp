@@ -172,7 +172,8 @@ static bool IsExcludedFromClearRooms(s16 enemyId, s16 enemyParams) {
         case ACTOR_EN_NY:
         // Arwing - Goes out of bounds way too easily, softlocking the player
         case ACTOR_EN_CLEAR_TAG:
-        // Wallmaster - Not easily visible, often makes players think they're softlocked and that there's no enemies left
+        // Wallmaster - Not easily visible, often makes players think they're softlocked and that there's no enemies
+        // left
         case ACTOR_EN_WALLMAS:
         // Dark Link - Goes out of bounds way too easily, softlocking the player
         case ACTOR_EN_TORCH2:
@@ -238,7 +239,8 @@ static bool IsClearRoom(bool mq, s16 sceneNum, s8 roomNum) {
             }
         case SCENE_SPIRIT_TEMPLE:
             if (mq) {
-                return roomNum == 1 || roomNum == 2 || roomNum == 4 || roomNum == 10 || roomNum == 15 || roomNum == 19 || roomNum == 20;
+                return roomNum == 1 || roomNum == 2 || roomNum == 4 || roomNum == 10 || roomNum == 15 ||
+                       roomNum == 19 || roomNum == 20;
             } else {
                 return roomNum == 1 || roomNum == 10 || roomNum == 17 || roomNum == 20;
             }
@@ -246,7 +248,8 @@ static bool IsClearRoom(bool mq, s16 sceneNum, s8 roomNum) {
             if (mq) {
                 return roomNum == 1 || roomNum == 6 || roomNum == 7 || roomNum == 11 || roomNum == 14 || roomNum == 20;
             } else {
-                return roomNum == 1 || roomNum == 7 || roomNum == 11 || roomNum == 14 || roomNum == 16 || roomNum == 17 || roomNum == 19 || roomNum == 20;
+                return roomNum == 1 || roomNum == 7 || roomNum == 11 || roomNum == 14 || roomNum == 16 ||
+                       roomNum == 17 || roomNum == 19 || roomNum == 20;
             }
         case SCENE_INSIDE_GANONS_CASTLE:
             if (mq) {
@@ -305,45 +308,36 @@ static bool IsEnemyAllowedToSpawn(s16 sceneNum, s8 roomNum, EnemyEntry enemy, s1
         return false;
     }
 
-    // Don't allow Lizalfos or Baris in Ganon's Tower because they would spawn up on the ceiling, becoming impossible to kill.
-    if (sceneNum == SCENE_GANONS_TOWER && (enemy.id == ACTOR_EN_VALI || (enemy.id == ACTOR_EN_ZF && enemy.params == -1))) {
+    // Don't allow Lizalfos or Baris in Ganon's Tower because they would spawn up on the ceiling, becoming impossible to
+    // kill.
+    if (sceneNum == SCENE_GANONS_TOWER &&
+        (enemy.id == ACTOR_EN_VALI || (enemy.id == ACTOR_EN_ZF && enemy.params == -1))) {
         return false;
     }
 
     // Don't allow Lizalfos in the first room of the interior of the castle collapse
-    if (sceneNum == SCENE_GANONS_TOWER_COLLAPSE_INTERIOR && roomNum == 1 && enemy.id == ACTOR_EN_ZF && enemy.params == -1) {
+    if (sceneNum == SCENE_GANONS_TOWER_COLLAPSE_INTERIOR && roomNum == 1 && enemy.id == ACTOR_EN_ZF &&
+        enemy.params == -1) {
         return false;
     }
 
     // Don't allow big Stalchildren, big Peahats and Baris (big jellyfish) during the Gohma fight because they can clip
-    // into Gohma and it crashes the game. Likely because Gohma on the ceiling can't handle collision with other enemies.
-    if (
-        sceneNum == SCENE_DEKU_TREE_BOSS &&
-            (
-                (enemy.id == ACTOR_EN_SKB && enemy.params == 20) ||
-                (enemy.id == ACTOR_EN_PEEHAT && enemy.params == -1) ||
-                (enemy.id == ACTOR_EN_VALI)
-            )
-    ) {
+    // into Gohma and it crashes the game. Likely because Gohma on the ceiling can't handle collision with other
+    // enemies.
+    if (sceneNum == SCENE_DEKU_TREE_BOSS &&
+        ((enemy.id == ACTOR_EN_SKB && enemy.params == 20) || (enemy.id == ACTOR_EN_PEEHAT && enemy.params == -1) ||
+         (enemy.id == ACTOR_EN_VALI))) {
         return false;
     }
 
-    // Don't allow the following enemies in the first spawn of the first room in MQ Fire Temple loop as when spawned and they get stuck in the room above
+    // Don't allow the following enemies in the first spawn of the first room in MQ Fire Temple loop as when spawned and
+    // they get stuck in the room above
     // - Lizalfos/Dinolfos, Bari: they drop in
     // - Skulltulla: they appear above
     // - Flying Peehat: they rise above the ceiling
-    if (
-        mq &&
-        sceneNum == SCENE_FIRE_TEMPLE &&
-        roomNum == 15 &&
-        posY == 64 &&
-        (
-            enemy.id == ACTOR_EN_ZF ||
-            enemy.id == ACTOR_EN_VALI ||
-            enemy.id == ACTOR_EN_ST ||
-            enemy.id == ACTOR_EN_PEEHAT
-        )
-    ) {
+    if (mq && sceneNum == SCENE_FIRE_TEMPLE && roomNum == 15 && posY == 64 &&
+        (enemy.id == ACTOR_EN_ZF || enemy.id == ACTOR_EN_VALI || enemy.id == ACTOR_EN_ST ||
+         enemy.id == ACTOR_EN_PEEHAT)) {
         return false;
     }
 
@@ -386,7 +380,8 @@ static EnemyEntry GetRandomizedEnemyEntry(u32 seed, PlayState* play, s16 posY) {
     }
 
     if (CVAR_ENEMY_RANDOMIZER_VALUE == ENEMY_RANDOMIZER_RANDOM_SEEDED) {
-        u32 finalSeed = seed + (IS_RANDO ? Rando::Context::GetInstance()->GetSeed() : gSaveContext.ship.stats.fileCreatedAt);
+        u32 finalSeed =
+            seed + (IS_RANDO ? Rando::Context::GetInstance()->GetSeed() : gSaveContext.ship.stats.fileCreatedAt);
         Random_Init(finalSeed);
     }
 
@@ -464,7 +459,8 @@ static bool IsEnemyFoundToRandomize(s16 sceneNum, s8 roomNum, s16 actorId, s16 p
     return false;
 }
 
-static u8 GetRandomizedEnemy(PlayState* play, s16* actorId, s16* posX, s16* posY, s16* posZ, s16* rotX, s16* rotY, s16* rotZ, s16* params, s16 offset = 0) {
+static u8 GetRandomizedEnemy(PlayState* play, s16* actorId, s16* posX, s16* posY, s16* posZ, s16* rotX, s16* rotY,
+                             s16* rotZ, s16* params, s16 offset = 0) {
     u32 isMQ = ResourceMgr_IsSceneMasterQuest(play->sceneNum);
 
     // Hack to remove enemies that wrongfully spawn because of bypassing object dependency with enemy randomizer on.
@@ -536,11 +532,11 @@ static u8 GetRandomizedEnemy(PlayState* play, s16* actorId, s16* posX, s16* posY
             if (raycastResult > BGCHECK_Y_MIN) {
                 *posY = raycastResult;
             }
-
         }
 
         // Get randomized enemy ID and parameter.
-        u32 seed = play->sceneNum + *actorId + (int)*posX + (int)*posY + (int)*posZ + *rotX + *rotY + *rotZ + *params + offset;
+        u32 seed =
+            play->sceneNum + *actorId + (int)*posX + (int)*posY + (int)*posZ + *rotX + *rotY + *rotZ + *params + offset;
         EnemyEntry randomEnemy = GetRandomizedEnemyEntry(seed, play, *posY);
 
         *actorId = randomEnemy.id;
@@ -626,8 +622,7 @@ static ObjectExtension::Register<CustomPeehatLarvaData> CustomPeehatLarvaDataReg
 void CustomPeehatLarvaDestroy(Actor* thisx, PlayState* play) {
     assert(ObjectExtension::GetInstance().Has<CustomPeehatLarvaData>(thisx));
 
-    CustomPeehatLarvaData* customPeehatLarvaData =
-        ObjectExtension::GetInstance().Get<CustomPeehatLarvaData>(thisx);
+    CustomPeehatLarvaData* customPeehatLarvaData = ObjectExtension::GetInstance().Get<CustomPeehatLarvaData>(thisx);
 
     customPeehatLarvaData->peehat->unk_2FA -= 1;
 
@@ -874,7 +869,8 @@ void RegisterEnemyRandomizer() {
 
         for (s32 i = 0; i < 3; i++) {
             // use the home pos & rot to make it consistent
-            if (!GetRandomizedEnemy(play, &actorId, &homePosX, &homePosY, &homePosZ, &homeRotX, &homeRotY, &homeRotZ, &params, i * 1000)) {
+            if (!GetRandomizedEnemy(play, &actorId, &homePosX, &homePosY, &homePosZ, &homeRotX, &homeRotY, &homeRotZ,
+                                    &params, i * 1000)) {
                 assert(false);
             }
 
@@ -1046,17 +1042,20 @@ void RegisterEnemyRandomizer() {
 
         // 3 is MAX_LARVA
         for (s32 i = 3 - peehat->unk_2FA; i > 0; i--) {
-            if (!GetRandomizedEnemy(play, &actorId, &homePosX, &homePosY, &homePosZ, &rotX, &rotY, &rotZ, &params, i * 1000)) {
+            if (!GetRandomizedEnemy(play, &actorId, &homePosX, &homePosY, &homePosZ, &rotX, &rotY, &rotZ, &params,
+                                    i * 1000)) {
                 assert(false);
             }
 
-            Actor* enemy = Actor_Spawn(&play->actorCtx, play, actorId, homePosX, homePosY, homePosZ, rotX, rotY, rotZ, params);
+            Actor* enemy =
+                Actor_Spawn(&play->actorCtx, play, actorId, homePosX, homePosY, homePosZ, rotX, rotY, rotZ, params);
 
             if (enemy == NULL) {
                 assert(false);
             } else {
                 peehat->unk_2FA++;
-                ObjectExtension::GetInstance().Set<CustomPeehatLarvaData>(enemy, CustomPeehatLarvaData{ .peehat = peehat, .originalDestroy = enemy->destroy });
+                ObjectExtension::GetInstance().Set<CustomPeehatLarvaData>(
+                    enemy, CustomPeehatLarvaData{ .peehat = peehat, .originalDestroy = enemy->destroy });
                 enemy->destroy = CustomPeehatLarvaDestroy;
             }
         }
