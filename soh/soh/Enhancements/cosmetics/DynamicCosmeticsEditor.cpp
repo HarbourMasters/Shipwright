@@ -112,14 +112,6 @@ static size_t FindDisplayListInstructionIndex(const Fast::DisplayList& displayLi
     return SIZE_MAX;
 }
 
-static void RefreshCustomCosmeticOption(CustomCosmeticEntry& entry) {
-    entry.option.cvar = entry.baseCvar.c_str();
-    entry.option.valuesCvar = entry.valuesCvar.c_str();
-    entry.option.rainbowCvar = entry.rainbowCvar.c_str();
-    entry.option.lockedCvar = entry.lockedCvar.c_str();
-    entry.option.changedCvar = entry.changedCvar.c_str();
-}
-
 static Color_RGBA8 GetCustomCosmeticColor(const CustomCosmeticEntry& entry) {
     if (CVarGetInteger(entry.option.changedCvar, 0)) {
         return CVarGetColor(entry.option.valuesCvar, entry.option.defaultColor);
@@ -345,10 +337,6 @@ void ScanCustomCosmetics() {
 
                          return lhs.option.label < rhs.option.label;
                      });
-
-    for (auto& entry : customCosmeticEntries) {
-        RefreshCustomCosmeticOption(entry);
-    }
 
     ApplyCustomCosmetics();
 }
