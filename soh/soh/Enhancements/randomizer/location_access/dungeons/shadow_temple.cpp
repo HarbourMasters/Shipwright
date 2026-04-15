@@ -363,8 +363,8 @@ void RegionTable_Init_ShadowTemple() {
 
     areaTable[RR_SHADOW_TEMPLE_PRE_BOSS_ROOM] = Region("Shadow Temple Pre Boss Room", SCENE_SHADOW_TEMPLE, {}, {}, {
         //Exits
-        ENTRANCE(RR_SHADOW_TEMPLE_BEYOND_BOAT, logic->SmallKeys(SCENE_SHADOW_TEMPLE, 5)),
-        ENTRANCE(RR_SHADOW_TEMPLE_BOSS_DOOR,   (ctx->GetTrickOption(RT_LENS_SHADOW) || logic->CanUse(RG_LENS_OF_TRUTH)) && logic->CanUse(RG_HOVER_BOOTS)),
+        ENTRANCE(RR_SHADOW_TEMPLE_ACROSS_CHASM, logic->SmallKeys(SCENE_SHADOW_TEMPLE, 5)),
+        ENTRANCE(RR_SHADOW_TEMPLE_BOSS_DOOR,    (ctx->GetTrickOption(RT_LENS_SHADOW) || logic->CanUse(RG_LENS_OF_TRUTH)) && logic->CanUse(RG_HOVER_BOOTS)),
     });
 
     areaTable[RR_SHADOW_TEMPLE_BOSS_DOOR] = Region("Shadow Temple Boss Door", SCENE_SHADOW_TEMPLE, {}, {}, {

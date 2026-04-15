@@ -138,15 +138,15 @@ void RegionTable_Init_SpiritTemple() {
                                                                         RR_SPIRIT_TEMPLE_SUN_ON_FLOOR_1F, []{return logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG);})),
     }, {
         //Exits
-        ENTRANCE(RR_SPIRIT_TEMPLE_SUN_ON_FLOOR_1F, true),
-        ENTRANCE(RR_SPIRIT_TEMPLE_STATUE_ROOM,     logic->HasExplosives() || (ctx->GetOption(RSK_SUNLIGHT_ARROWS) && logic->CanUse(RG_LIGHT_ARROWS))),
+        ENTRANCE(RR_SPIRIT_TEMPLE_SUN_ON_FLOOR_1F,   true),
+        ENTRANCE(RR_SPIRIT_TEMPLE_STATUE_ROOM_CHILD, logic->HasExplosives() || (ctx->GetOption(RSK_SUNLIGHT_ARROWS) && logic->CanUse(RG_LIGHT_ARROWS))),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_ADULT_SIDE_HUB] = Region("Spirit Temple Adult Side Hub", SCENE_SPIRIT_TEMPLE, {}, {}, {
         //Exits
         ENTRANCE(RR_SPIRIT_TEMPLE_FOYER,          true),
         ENTRANCE(RR_SPIRIT_TEMPLE_SAND_PIT,       AnyAgeTime([]{return logic->CanHitSwitch(logic->IsAdult && ctx->GetTrickOption(RT_SPIRIT_LOWER_ADULT_SWITCH) ? ED_BOMB_THROW : ED_BOOMERANG);})),
-        ENTRANCE(RR_SPIRIT_TEMPLE_BOULDERS,       AnyAgeTime([]{return logic->CanHitSwitch(logic->IsAdult && ctx->GetTrickOption(RT_SPIRIT_LOWER_ADULT_SWITCH) ? ED_BOMB_THROW : ED_BOOMERANG);})),
+        ENTRANCE(RR_SPIRIT_TEMPLE_ABOVE_BOULDERS, AnyAgeTime([]{return logic->CanHitSwitch(logic->IsAdult && ctx->GetTrickOption(RT_SPIRIT_LOWER_ADULT_SWITCH) ? ED_BOMB_THROW : ED_BOOMERANG);})),
         ENTRANCE(RR_SPIRIT_TEMPLE_1F_MIRROR_ROOM, logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 1)),
     });
 
@@ -204,7 +204,7 @@ void RegionTable_Init_SpiritTemple() {
         ENTRANCE(RR_SPIRIT_TEMPLE_STATUE_ROOM_ADULT, logic->HasItem(RG_POWER_BRACELET) || logic->SunlightArrows()),
     });
 
-    areaTable[RR_SPIRIT_TEMPLE_STATUE_ROOM_CHILD] = Region("Spirit Temple Statue Rooom Child", SCENE_SPIRIT_TEMPLE, {}, {
+    areaTable[RR_SPIRIT_TEMPLE_STATUE_ROOM_CHILD] = Region("Spirit Temple Statue Room Child", SCENE_SPIRIT_TEMPLE, {}, {
         //Locations
         //Assumes RR_SPIRIT_TEMPLE_STATUE_ROOM access
         LOCATION(RC_SPIRIT_TEMPLE_MAP_CHEST, SpiritShared(RR_SPIRIT_TEMPLE_STATUE_ROOM_CHILD, []{return logic->HasFireSourceWithTorch() || (ctx->GetTrickOption(RT_SPIRIT_MAP_CHEST) && logic->CanUse(RG_FAIRY_BOW));}, false,
@@ -214,13 +214,14 @@ void RegionTable_Init_SpiritTemple() {
                                                           RR_SPIRIT_TEMPLE_GS_LEDGE,          []{return logic->CanKillEnemy(RE_GOLD_SKULLTULA);})),
     }, {
         //Exits
-        ENTRANCE(RR_SPIRIT_TEMPLE_SUN_ON_FLOOR_2F,  true),
-        ENTRANCE(RR_SPIRIT_TEMPLE_INNER_WEST_HAND,  true),
+        ENTRANCE(RR_SPIRIT_TEMPLE_STATUE_ROOM,     true),
+        ENTRANCE(RR_SPIRIT_TEMPLE_SUN_ON_FLOOR_2F, true),
+        ENTRANCE(RR_SPIRIT_TEMPLE_INNER_WEST_HAND, true),
         ENTRANCE(RR_SPIRIT_TEMPLE_GS_LEDGE,         logic->CanUse(RG_HOVER_BOOTS) || logic->ReachScarecrow()),
         // RT_SPIRIT_PLATFORM_HOOKSHOT is currently disabled
-        ENTRANCE(RR_SPIRIT_TEMPLE_PLATFORM,         logic->Get(LOGIC_SPIRIT_PLATFORM_LOWERED) && 
-                                                    (logic->CanUse(RG_LONGSHOT) || (ctx->GetTrickOption(RT_SPIRIT_PLATFORM_HOOKSHOT) && logic->CanUse(RG_HOOKSHOT)))),
-        ENTRANCE(RR_SPIRIT_TEMPLE_EMPTY_STAIRS,     logic->HasItem(RG_POWER_BRACELET)),
+        ENTRANCE(RR_SPIRIT_TEMPLE_PLATFORM,        logic->Get(LOGIC_SPIRIT_PLATFORM_LOWERED) && 
+                                                   (logic->CanUse(RG_LONGSHOT) || (ctx->GetTrickOption(RT_SPIRIT_PLATFORM_HOOKSHOT) && logic->CanUse(RG_HOOKSHOT)))),
+        ENTRANCE(RR_SPIRIT_TEMPLE_EMPTY_STAIRS,    logic->HasItem(RG_POWER_BRACELET)),
         //!QUANTUM LOGIC!
         //When child enters spirit in reverse, has 4 keys, and dungeon entrance shuffle is off, 
         //Child cannot lock themselves out of desert colossus access as if they save the west hand lock for last
@@ -243,8 +244,8 @@ void RegionTable_Init_SpiritTemple() {
 
     areaTable[RR_SPIRIT_TEMPLE_GS_LEDGE] = Region("Spirit Temple GS ledge", SCENE_SPIRIT_TEMPLE, {}, {
         //Locations
-        LOCATION(RC_SPIRIT_TEMPLE_GS_LOBBY, SpiritShared(RR_SPIRIT_TEMPLE_GS_LEDGE,         []{return logic->CanKillEnemy(RE_GOLD_SKULLTULA);}, false,
-                                                         RR_SPIRIT_TEMPLE_INNER_WEST_HAND,  []{return logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ctx->GetTrickOption(RT_SPIRIT_WEST_LEDGE) ? ED_BOOMERANG : ED_HOOKSHOT);},
+        LOCATION(RC_SPIRIT_TEMPLE_GS_LOBBY, SpiritShared(RR_SPIRIT_TEMPLE_GS_LEDGE,          []{return logic->CanKillEnemy(RE_GOLD_SKULLTULA);}, false,
+                                                         RR_SPIRIT_TEMPLE_INNER_WEST_HAND,   []{return logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ctx->GetTrickOption(RT_SPIRIT_WEST_LEDGE) ? ED_BOOMERANG : ED_HOOKSHOT);},
                                                          RR_SPIRIT_TEMPLE_STATUE_ROOM_CHILD, []{return logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_LONGSHOT);})),
     }, {
         //Exits
@@ -284,8 +285,8 @@ void RegionTable_Init_SpiritTemple() {
 
     areaTable[RR_SPIRIT_TEMPLE_EMPTY_STAIRS] = Region("Spirit Temple Empty Stairs", SCENE_SPIRIT_TEMPLE, {}, {}, {
         //Exits
-        ENTRANCE(RR_SPIRIT_TEMPLE_STATUE_ROOM,    true),
-        ENTRANCE(RR_SPIRIT_TEMPLE_SUN_BLOCK_ROOM, true),
+        ENTRANCE(RR_SPIRIT_TEMPLE_STATUE_ROOM_CHILD, true),
+        ENTRANCE(RR_SPIRIT_TEMPLE_SUN_BLOCK_ROOM,    true),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_SUN_BLOCK_ROOM] = Region("Spirit Temple Sun Block Room", SCENE_SPIRIT_TEMPLE, {}, {}, {
@@ -331,7 +332,7 @@ void RegionTable_Init_SpiritTemple() {
 
     areaTable[RR_SPIRIT_TEMPLE_RIGHT_HAND_EXIT] = Region("Spirit Temple Right Hand Exit", SCENE_SPIRIT_TEMPLE, {}, {}, {
         //Exits
-        ENTRANCE(RR_SPIRIT_TEMPLE_CHILD_THRONE,    true),
+        ENTRANCE(RR_SPIRIT_TEMPLE_CHILD_THRONE,     true),
         ENTRANCE(RR_SPIRIT_TEMPLE_OUTER_RIGHT_HAND, true),
     });
 

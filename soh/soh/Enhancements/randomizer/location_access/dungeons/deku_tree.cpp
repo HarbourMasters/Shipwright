@@ -63,7 +63,7 @@ void RegionTable_Init_DekuTree() {
 
     areaTable[RR_DEKU_TREE_2F_MIDDLE_ROOM] = Region("Deku Tree 2F Middle Room", SCENE_DEKU_TREE, {}, {}, {
         //Exits
-        ENTRANCE(RR_DEKU_TREE_LOBBY,          AnyAgeTime([]{return logic->CanReflectNuts() || logic->CanUse(RG_MEGATON_HAMMER);})),
+        ENTRANCE(RR_DEKU_TREE_LOBBY_2F,       AnyAgeTime([]{return logic->CanReflectNuts() || logic->CanUse(RG_MEGATON_HAMMER);})),
         ENTRANCE(RR_DEKU_TREE_SLINGSHOT_ROOM, AnyAgeTime([]{return logic->CanReflectNuts() || logic->CanUse(RG_MEGATON_HAMMER);})),
     });
 
@@ -93,7 +93,7 @@ void RegionTable_Init_DekuTree() {
         LOCATION(RC_DEKU_TREE_COMPASS_GRASS_2,         logic->CanCutShrubs()),
     }, {
         //Exits
-        ENTRANCE(RR_DEKU_TREE_LOBBY,         logic->HasFireSourceWithTorch() || logic->CanUse(RG_FAIRY_BOW)),
+        ENTRANCE(RR_DEKU_TREE_LOBBY_3F,      logic->HasFireSourceWithTorch() || logic->CanUse(RG_FAIRY_BOW)),
         ENTRANCE(RR_DEKU_TREE_BOSS_ENTRYWAY, false),
     });
 

@@ -60,7 +60,7 @@ void RegionTable_Init_JabuJabusBelly() {
         ENTRANCE(RR_JABU_JABUS_BELLY_WATER_SWITCH_ROOM_NORTH, true),
     });
 
-    areaTable[RR_JABU_JABUS_BELLY_B1_JIGGLY] = Region("Jabu Jabus Belly B1 Cube", SCENE_JABU_JABU, {
+    areaTable[RR_JABU_JABUS_BELLY_B1_JIGGLY] = Region("Jabu Jabus Belly B1 Jiggly", SCENE_JABU_JABU, {
         //Events
         EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->CanUse(RG_BOOMERANG) || (logic->CanBreakPots() && ctx->GetTrickOption(RT_JABU_B1_CUBE_HOVER) && logic->CanUse(RG_HOVER_BOOTS))),
     }, {
@@ -86,7 +86,7 @@ void RegionTable_Init_JabuJabusBelly() {
         //there's tricks for getting here with bunny-jumps or just side-hops
         ENTRANCE(RR_JABU_JABUS_BELLY_WATER_SWITCH_ROOM_LEDGE, (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_HOVER_BOOTS)) && logic->HasItem(RG_CLIMB)),
         ENTRANCE(RR_JABU_JABUS_BELLY_WATER_SWITCH_ROOM_SOUTH, logic->IsAdult || logic->HasItem(RG_BRONZE_SCALE)),
-        ENTRANCE(RR_JABU_JABUS_BELLY_HOLES_BASEMENT,          true),
+        ENTRANCE(RR_JABU_JABUS_BELLY_HOLES_LOWER_DOOR_LEDGE,  true),
     });
 
     areaTable[RR_JABU_JABUS_BELLY_WATER_SWITCH_ROOM_SOUTH] = Region("Jabu Jabus Belly Water Switch Room South", SCENE_JABU_JABU, {}, {
@@ -518,7 +518,7 @@ void RegionTable_Init_JabuJabusBelly() {
         ENTRANCE(RR_JABU_JABUS_BELLY_MQ_BIGOCTO,       logic->TakeDamage() && AnyAgeTime([]{return logic->CanKillEnemy(RE_BIG_OCTO);})),
     });
 
-    areaTable[RR_JABU_JABUS_BELLY_MQ_JIGGLIES_ROOM] = Region("Jabu Jabus Belly MQ Cubes Room", SCENE_JABU_JABU, {}, {
+    areaTable[RR_JABU_JABUS_BELLY_MQ_JIGGLIES_ROOM] = Region("Jabu Jabus Belly MQ Jigglies Room", SCENE_JABU_JABU, {}, {
         //Locations
         LOCATION(RC_JABU_JABUS_BELLY_MQ_COW,                    logic->CanUse(RG_EPONAS_SONG) && logic->CanUse(RG_FAIRY_SLINGSHOT)),
         LOCATION(RC_JABU_JABUS_BELLY_MQ_JIGGLIES_GRASS,         logic->CanCutShrubs()),
