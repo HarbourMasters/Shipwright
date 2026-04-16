@@ -433,7 +433,8 @@ static bool IsEnemyFoundToRandomize(s16 sceneNum, s8 roomNum, s16 actorId, s16 p
             // Don't randomize Lizalfos in Dodongo's Cavern because the gates won't work correctly otherwise.
             case ACTOR_EN_ZF:
                 return params != 1280 && params != 1281 && params != 1536 && params != 1537;
-            // Don't randomize the right baby dodongo on the first tunnel in Dodongo's Cavern as in vanilla you use them isntead of bombs to blow up a wall
+            // Don't randomize the right baby dodongo on the first tunnel in Dodongo's Cavern as in vanilla you use them
+            // isntead of bombs to blow up a wall
             case ACTOR_EN_DODOJR:
                 return !(sceneNum == SCENE_DODONGOS_CAVERN && roomNum == 1 && posX == 1972);
             // Don't randomize the Wolfos in SFM because it's needed to open the gate.
