@@ -166,7 +166,7 @@ static bool IsExcludedFromClearRooms(s16 enemyId, s16 enemyParams) {
         case ACTOR_EN_FZ:
         // Beamos - Needs bombs
         case ACTOR_EN_VM:
-        // Shell Blade - Child Link can't kill these with sword or Deku Stick
+        // Shell Blade - It's annoying to kill these as Child Link with sword or Deku Stick
         case ACTOR_EN_SB:
         // Spike - Child Link can't kill these with sword or Deku Stick
         case ACTOR_EN_NY:
@@ -372,6 +372,8 @@ static void UpdateSelectedEnemies() {
     }
 }
 
+u64 randomState = 0;
+
 static EnemyEntry GetRandomizedEnemyEntry(u32 seed, PlayState* play, s16 posY, bool fromBari) {
     std::vector<EnemyEntry> filteredEnemyList = {};
 
@@ -390,13 +392,12 @@ static EnemyEntry GetRandomizedEnemyEntry(u32 seed, PlayState* play, s16 posY, b
     }
 
     if (CVAR_ENEMY_RANDOMIZER_VALUE == ENEMY_RANDOMIZER_RANDOM_SEEDED) {
-        u32 finalSeed =
-            seed + (IS_RANDO ? Rando::Context::GetInstance()->GetSeed() : gSaveContext.ship.stats.fileCreatedAt);
-        Random_Init(finalSeed);
+        ShipUtils::RandInit(
+            seed + (IS_RANDO ? Rando::Context::GetInstance()->GetSeed() : gSaveContext.ship.stats.fileCreatedAt),
+            &randomState);
     }
 
-    u32 randomSelectedEnemy = Random(0, filteredEnemyList.size());
-    return filteredEnemyList[randomSelectedEnemy];
+    return ShipUtils::RandomElement(filteredEnemyList, false, &randomState);
 }
 
 static bool IsEnemyFoundToRandomize(s16 sceneNum, s8 roomNum, s16 actorId, s16 params, f32 posX) {
