@@ -1415,12 +1415,10 @@ static void TimeSaverRegisterHooks() {
               TimeSaverOnSceneInitHandler);
     COND_HOOK(OnVanillaBehavior, true, TimeSaverOnVanillaBehaviorHandler);
     COND_HOOK(OnActorInit, true, TimeSaverOnActorInitHandler);
+    COND_HOOK(OnSceneInit, true, [](int16_t sceneNum) { successChimeCooldown = 0; });
 
     // item queue for use outside rando, rando has its own queue
-    COND_HOOK(OnLoadGame, !IS_RANDO, [](int32_t fileNum) {
-        vanillaQueuedItemEntry = GET_ITEM_NONE;
-        successChimeCooldown = 0;
-    });
+    COND_HOOK(OnLoadGame, !IS_RANDO, [](int32_t fileNum) { vanillaQueuedItemEntry = GET_ITEM_NONE; });
     COND_HOOK(OnItemReceive, !IS_RANDO, TimeSaverOnItemReceiveHandler);
     COND_HOOK(OnPlayerUpdate, !IS_RANDO, TimeSaverOnPlayerUpdateHandler);
     COND_HOOK(OnFlagSet,
