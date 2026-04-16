@@ -16,6 +16,8 @@ extern SaveContext gSaveContext;
 #define CVAR_BOOMERANG_RETICLE_DEFAULT 0
 #define CVAR_BOOMERANG_RETICLE_VALUE CVarGetInteger(CVAR_BOOMERANG_RETICLE_NAME, CVAR_BOOMERANG_RETICLE_DEFAULT)
 
+Vec3f D_80126184 = { 100.0f, 1500.0f, 0.0f };
+
 // OTRTODO: Figure out why this value works/what this value should be
 // This was originally obtained by working down from FLT_MAX until the math
 // started working out properly
@@ -36,7 +38,7 @@ void RegisterAdditionalReticles() {
     bool shouldRegister = CVAR_BOW_RETICLE_VALUE || CVAR_BOOMERANG_RETICLE_VALUE;
 
     COND_VB_SHOULD(VB_DRAW_ADDITIONAL_RETICLES, shouldRegister, {
-        Player* player = GET_PLAYER(gPlayState);
+        Player* player = va_arg(args, Player*);
         Actor* heldActor = player->heldActor;
         if (CVAR_BOW_RETICLE_VALUE &&
             ((player->heldItemAction >= PLAYER_IA_BOW && player->heldItemAction <= PLAYER_IA_BOW_LIGHT) ||

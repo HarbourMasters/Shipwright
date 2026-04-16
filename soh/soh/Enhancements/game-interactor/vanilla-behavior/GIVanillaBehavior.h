@@ -540,10 +540,11 @@ typedef enum {
 
     // #### `result`
     // ```c
-    // true
+    // (this->heldItemAction == PLAYER_IA_HOOKSHOT) ||
+    // (this->heldItemAction == PLAYER_IA_LONGSHOT)
     // ```
     // #### `args`
-    // - None
+    // - '*Player'
     VB_DRAW_ADDITIONAL_RETICLES,
 
     // #### `result`
