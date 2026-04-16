@@ -16,8 +16,6 @@ extern SaveContext gSaveContext;
 #define CVAR_BOOMERANG_RETICLE_DEFAULT 0
 #define CVAR_BOOMERANG_RETICLE_VALUE CVarGetInteger(CVAR_BOOMERANG_RETICLE_NAME, CVAR_BOOMERANG_RETICLE_DEFAULT)
 
-Vec3f D_80126184 = { 100.0f, 1500.0f, 0.0f };
-
 // OTRTODO: Figure out why this value works/what this value should be
 // This was originally obtained by working down from FLT_MAX until the math
 // started working out properly
