@@ -1447,11 +1447,11 @@ void SohMenu::AddMenuEnhancements() {
         .PreFunc(hbaDisabledFunc)
         .Options(CheckboxOptions().Tooltip(
             "Every arrow that hits a target scores 100 points (inner ring) regardless of where it lands."));
-    AddWidget(path, "Arrow Count: %d arrows", WIDGET_CVAR_SLIDER_INT)
+    AddWidget(path, "Arrow Count", WIDGET_CVAR_SLIDER_INT)
         .CVar(CVAR_ENHANCEMENT("HorsebackArcheryAmmo"))
         .PreFunc(hbaDisabledFunc)
         .Options(IntSliderOptions()
-                     .Min(1)
+                     .Min(15)
                      .Max(40)
                      .DefaultValue(20)
                      .Format("%d arrows")
