@@ -61,7 +61,7 @@ static EnemyEntry randomizedEnemySpawnTable[] = {
     { CVAR_ENHANCEMENT("RandomizedEnemyList.Dinolfos"),         "Dinolfos",              ACTOR_EN_ZF,              -2 }, // Dinolfos
     { CVAR_ENHANCEMENT("RandomizedEnemyList.Dodongo"),          "Dodongo",               ACTOR_EN_DODONGO,         -1 }, // Dodongo
     { CVAR_ENHANCEMENT("RandomizedEnemyList.FireKeese"),        "Fire Keese",            ACTOR_EN_FIREFLY,          1 }, // Fire Keese
-    // { CVAR_ENHANCEMENT("RandomizedEnemyList.FlareDancer"),   "Flare Dancer",             ACTOR_EN_FD,               0 }, // Flare Dancer (possible cause of crashes because of spawning flame actors on sloped ground)
+    // { CVAR_ENHANCEMENT("RandomizedEnemyList.FlareDancer"),      "Flare Dancer",          ACTOR_EN_FD,               0 }, // Flare Dancer (possible cause of crashes because of spawning flame actors on sloped ground or overloading)
     { CVAR_ENHANCEMENT("RandomizedEnemyList.FloorTile"),        "Floor Tile",            ACTOR_EN_YUKABYUN,         0 }, // Flying Floor Tile
     { CVAR_ENHANCEMENT("RandomizedEnemyList.Floormaster"),      "Floormaster",           ACTOR_EN_FLOORMAS,         0 }, // Floormaster
     { CVAR_ENHANCEMENT("RandomizedEnemyList.FlyingPeahat"),     "Flying Peahat",         ACTOR_EN_PEEHAT,          -1 }, // Flying Peahat (big grounded, doesn't spawn larva)
@@ -81,16 +81,16 @@ static EnemyEntry randomizedEnemySpawnTable[] = {
     { CVAR_ENHANCEMENT("RandomizedEnemyList.InvisStalfos"),     "Invisible Stalfos",     ACTOR_EN_TEST,             0 }, // Stalfos (invisible)
     { CVAR_ENHANCEMENT("RandomizedEnemyList.Keese"),            "Keese",                 ACTOR_EN_FIREFLY,          2 }, // Regular Keese
     { CVAR_ENHANCEMENT("RandomizedEnemyList.LargeBaba"),        "Large Deku Baba",       ACTOR_EN_DEKUBABA,         1 }, // Deku Baba (large)
-    // { CVAR_ENHANCEMENT("RandomizedEnemyList.Leever"),        "Leever",                   ACTOR_EN_REEBA,            0 }, // Leever       Doesn't work (reliant on surface, without a spawner it kills itself too quickly)
+    // { CVAR_ENHANCEMENT("RandomizedEnemyList.Leever"),           "Leever",                ACTOR_EN_REEBA,            0 }, // Leever       Doesn't work (reliant on surface, without a spawner it kills itself too quickly)
     { CVAR_ENHANCEMENT("RandomizedEnemyList.LikeLike"),         "Like-Like",             ACTOR_EN_RR,               0 }, // Like-Like
     { CVAR_ENHANCEMENT("RandomizedEnemyList.Lizalfos"),         "Lizalfos",              ACTOR_EN_ZF,              -1 }, // Lizalfos
     { CVAR_ENHANCEMENT("RandomizedEnemyList.MadScrub"),         "Mad Scrub",             ACTOR_EN_DEKUNUTS,       768 }, // Mad Scrub (triple attack) (projectiles don't work)
     { CVAR_ENHANCEMENT("RandomizedEnemyList.NormalWolfos"),     "Wolfos (Normal)",       ACTOR_EN_WF,               0 }, // Wolfos (normal)
-    // { CVAR_ENHANCEMENT("RandomizedEnemyList.Octorok"),       "Octorok",                  ACTOR_EN_OKUTA,            0 }, // Octorok                 Doesn't work (actor directly uses water box collision to handle hiding/popping up)
+    // { CVAR_ENHANCEMENT("RandomizedEnemyList.Octorok"),          "Octorok",               ACTOR_EN_OKUTA,            0 }, // Octorok                 Doesn't work (actor directly uses water box collision to handle hiding/popping up)
     { CVAR_ENHANCEMENT("RandomizedEnemyList.PeahatLarva"),      "Peahat Larva",          ACTOR_EN_PEEHAT,           1 }, // Flying Peahat Larva
-    // { CVAR_ENHANCEMENT("RandomizedEnemyList.Poe"),           "Poe",                      ACTOR_EN_POH,              0 }, // Poe                         Doesn't work (Seems to rely on other objects?)
-    // { CVAR_ENHANCEMENT("RandomizedEnemyList.Poe"),           "Poe",                      ACTOR_EN_POH,              2 }, // Poe (composer Sharp)        Doesn't work (Seems to rely on other objects?)
-    // { CVAR_ENHANCEMENT("RandomizedEnemyList.Poe"),           "Poe",                      ACTOR_EN_POH,              3 }, // Poe (composer Flat)         Doesn't work (Seems to rely on other objects?)
+    // { CVAR_ENHANCEMENT("RandomizedEnemyList.Poe"),              "Poe",                   ACTOR_EN_POH,              0 }, // Poe                         Doesn't work (Seems to rely on other objects?)
+    // { CVAR_ENHANCEMENT("RandomizedEnemyList.Poe.Sharp"),        "Poe (Sharp)",           ACTOR_EN_POH,              2 }, // Poe (composer Sharp)        Doesn't work (Seems to rely on other objects?)
+    // { CVAR_ENHANCEMENT("RandomizedEnemyList.Poe.Flat"),         "Poe (Flat)",            ACTOR_EN_POH,              3 }, // Poe (composer Flat)         Doesn't work (Seems to rely on other objects?)
     { CVAR_ENHANCEMENT("RandomizedEnemyList.Redead"),           "Redead",                ACTOR_EN_RD,               1 }, // Redead (standing)
     { CVAR_ENHANCEMENT("RandomizedEnemyList.RedTektite"),       "Red Tektite",           ACTOR_EN_TITE,            -1 }, // Tektite (red)
     { CVAR_ENHANCEMENT("RandomizedEnemyList.Shabom"),           "Shabom",                ACTOR_EN_BUBBLE,           0 }, // Shabom (bubble)
@@ -209,13 +209,13 @@ static bool IsClearRoom(bool mq, s16 sceneNum, s8 roomNum) {
             }
         case SCENE_DODONGOS_CAVERN:
             if (mq) {
-                return roomNum == 5 || roomNum == 13 || roomNum == 14;
+                return roomNum == 5 || roomNum == 6 || roomNum == 13 || roomNum == 14;
             } else {
                 return roomNum == 15;
             }
         case SCENE_JABU_JABU:
             if (mq) {
-                return roomNum == 11 || roomNum == 14;
+                return roomNum == 11 || roomNum == 13 || roomNum == 14;
             } else {
                 return roomNum == 8 || roomNum == 9;
             }
@@ -242,7 +242,7 @@ static bool IsClearRoom(bool mq, s16 sceneNum, s8 roomNum) {
                 return roomNum == 1 || roomNum == 2 || roomNum == 4 || roomNum == 10 || roomNum == 15 ||
                        roomNum == 19 || roomNum == 20;
             } else {
-                return roomNum == 1 || roomNum == 10 || roomNum == 17 || roomNum == 20;
+                return roomNum == 1 || roomNum == 10 || roomNum == 17 || roomNum == 20 || roomNum == 27;
             }
         case SCENE_SHADOW_TEMPLE:
             if (mq) {
@@ -341,6 +341,11 @@ static bool IsEnemyAllowedToSpawn(s16 sceneNum, s8 roomNum, EnemyEntry enemy, s1
         return false;
     }
 
+    // Don't allow Stalfos in the child spirit clear room as they jump out of bounds frequently
+    if (sceneNum == SCENE_SPIRIT_TEMPLE && roomNum == 1 && enemy.id == ACTOR_EN_TEST) {
+        return false;
+    }
+
     return false;
 }
 
@@ -428,6 +433,9 @@ static bool IsEnemyFoundToRandomize(s16 sceneNum, s8 roomNum, s16 actorId, s16 p
             // Don't randomize Lizalfos in Dodongo's Cavern because the gates won't work correctly otherwise.
             case ACTOR_EN_ZF:
                 return params != 1280 && params != 1281 && params != 1536 && params != 1537;
+            // Don't randomize the right baby dodongo on the first tunnel in Dodongo's Cavern as in vanilla you use them isntead of bombs to blow up a wall
+            case ACTOR_EN_DODOJR:
+                return !(sceneNum == SCENE_DODONGOS_CAVERN && roomNum == 1 && posX == 1972);
             // Don't randomize the Wolfos in SFM because it's needed to open the gate.
             case ACTOR_EN_WF:
                 return params != 7936;
