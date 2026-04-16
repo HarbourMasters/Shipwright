@@ -297,7 +297,7 @@ static bool IsTimedRoom(bool mq, s16 sceneNum, s8 roomNum) {
     }
 }
 
-static bool IsEnemyAllowedToSpawn(s16 sceneNum, s8 roomNum, EnemyEntry enemy, s16 posY) {
+static bool IsEnemyAllowedToSpawn(s16 sceneNum, s8 roomNum, EnemyEntry enemy, s16 posY, bool fromBari) {
     bool mq = ResourceMgr_IsSceneMasterQuest(sceneNum);
 
     if (IsExcludedFromClearRooms(enemy.id, enemy.params) && IsClearRoom(mq, sceneNum, roomNum)) {
@@ -346,7 +346,12 @@ static bool IsEnemyAllowedToSpawn(s16 sceneNum, s8 roomNum, EnemyEntry enemy, s1
         return false;
     }
 
-    return false;
+    // Don't allow baris to spawn another bari
+    if (fromBari && enemy.id == ACTOR_EN_VALI) {
+        return false;
+    }
+
+    return true;
 }
 
 static std::vector<EnemyEntry> selectedEnemyList;
@@ -367,7 +372,7 @@ static void UpdateSelectedEnemies() {
     }
 }
 
-static EnemyEntry GetRandomizedEnemyEntry(u32 seed, PlayState* play, s16 posY) {
+static EnemyEntry GetRandomizedEnemyEntry(u32 seed, PlayState* play, s16 posY, bool fromBari) {
     std::vector<EnemyEntry> filteredEnemyList = {};
 
     if (selectedEnemyList.size() == 0) {
@@ -375,7 +380,7 @@ static EnemyEntry GetRandomizedEnemyEntry(u32 seed, PlayState* play, s16 posY) {
     }
 
     for (EnemyEntry enemy : selectedEnemyList) {
-        if (IsEnemyAllowedToSpawn(play->sceneNum, play->roomCtx.curRoom.num, enemy, posY)) {
+        if (IsEnemyAllowedToSpawn(play->sceneNum, play->roomCtx.curRoom.num, enemy, posY, fromBari)) {
             filteredEnemyList.push_back(enemy);
         }
     }
@@ -469,7 +474,7 @@ static bool IsEnemyFoundToRandomize(s16 sceneNum, s8 roomNum, s16 actorId, s16 p
 }
 
 static u8 GetRandomizedEnemy(PlayState* play, s16* actorId, s16* posX, s16* posY, s16* posZ, s16* rotX, s16* rotY,
-                             s16* rotZ, s16* params, s16 offset = 0) {
+                             s16* rotZ, s16* params, s16 offset = 0, bool fromBari = false) {
     u32 isMQ = ResourceMgr_IsSceneMasterQuest(play->sceneNum);
 
     // Hack to remove enemies that wrongfully spawn because of bypassing object dependency with enemy randomizer on.
@@ -546,7 +551,7 @@ static u8 GetRandomizedEnemy(PlayState* play, s16* actorId, s16* posX, s16* posY
         // Get randomized enemy ID and parameter.
         u32 seed =
             play->sceneNum + *actorId + (int)*posX + (int)*posY + (int)*posZ + *rotX + *rotY + *rotZ + *params + offset;
-        EnemyEntry randomEnemy = GetRandomizedEnemyEntry(seed, play, *posY);
+        EnemyEntry randomEnemy = GetRandomizedEnemyEntry(seed, play, *posY, fromBari);
 
         *actorId = randomEnemy.id;
         *params = randomEnemy.params;
@@ -879,7 +884,7 @@ void RegisterEnemyRandomizer() {
         for (s32 i = 0; i < 3; i++) {
             // use the home pos & rot to make it consistent
             if (!GetRandomizedEnemy(play, &actorId, &homePosX, &homePosY, &homePosZ, &homeRotX, &homeRotY, &homeRotZ,
-                                    &params, i * 1000)) {
+                                    &params, i * 1000, true)) {
                 assert(false);
             }
 
