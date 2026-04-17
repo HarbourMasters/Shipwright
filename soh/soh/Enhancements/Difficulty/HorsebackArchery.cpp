@@ -9,7 +9,7 @@ extern SaveContext gSaveContext;
 extern void EnGe1_TalkAfterGame_Archery(EnGe1* enGe1, PlayState* play);
 }
 
-static void RegisterHorsebackArcheryInstantWin() {
+static void RegisterHorsebackArcheryEnhancements() {
     COND_VB_SHOULD(VB_PLAY_HORSEBACK_ARCHERY,
                    CVarGetInteger(CVAR_ENHANCEMENT("CustomizeHorsebackArchery"), 0) &&
                        CVarGetInteger(CVAR_ENHANCEMENT("InstantHorsebackArcheryWin"), 0),
@@ -23,9 +23,7 @@ static void RegisterHorsebackArcheryInstantWin() {
                        enGe1->actionFunc = EnGe1_TalkAfterGame_Archery;
                        *should = false;
                    });
-}
 
-static void RegisterHorsebackArcheryAlwaysScore() {
     COND_VB_SHOULD(VB_SCORE_HORSEBACK_ARCHERY_TARGET,
                    CVarGetInteger(CVAR_ENHANCEMENT("CustomizeHorsebackArchery"), 0) &&
                        CVarGetInteger(CVAR_ENHANCEMENT("HorsebackArcheryAlwaysScore"), 0),
@@ -33,20 +31,12 @@ static void RegisterHorsebackArcheryAlwaysScore() {
                        s32* scoreIndex = va_arg(args, s32*);
                        *scoreIndex = 2; // inner ring = 100 points
                    });
-}
 
-static void RegisterHorsebackArcheryAmmo() {
     COND_VB_SHOULD(VB_SET_HORSEBACK_ARCHERY_AMMO, CVarGetInteger(CVAR_ENHANCEMENT("CustomizeHorsebackArchery"), 0), {
         InterfaceContext* interfaceCtx = va_arg(args, InterfaceContext*);
         interfaceCtx->hbaAmmo = CVarGetInteger(CVAR_ENHANCEMENT("HorsebackArcheryAmmo"), 20);
         *should = false;
     });
-}
-
-static void RegisterHorsebackArcheryEnhancements() {
-    RegisterHorsebackArcheryInstantWin();
-    RegisterHorsebackArcheryAlwaysScore();
-    RegisterHorsebackArcheryAmmo();
 }
 
 static RegisterShipInitFunc
