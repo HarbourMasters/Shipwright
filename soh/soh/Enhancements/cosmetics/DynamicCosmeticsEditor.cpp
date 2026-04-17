@@ -120,8 +120,6 @@ static Color_RGBA8 GetCustomCosmeticColor(const CustomCosmeticEntry& entry) {
     return entry.option.defaultColor;
 }
 
-static void ClearCustomCosmeticValueCvars(const char* valuesCvar);
-
 void ApplyCustomCosmetics() {
     auto resourceManager = Ship::Context::GetInstance()->GetResourceManager();
     auto archiveManager = resourceManager->GetArchiveManager();
@@ -172,10 +170,6 @@ static void RandomizeCustomCosmeticColor(const CustomCosmeticEntry& entry) {
     Color_RGBA8 color = { static_cast<uint8_t>(rand() % 256), static_cast<uint8_t>(rand() % 256),
                           static_cast<uint8_t>(rand() % 256), 255 };
     SetCustomCosmeticColor(entry, color);
-}
-
-static void ClearCustomCosmeticValueCvars(const char* valuesCvar) {
-    CVarClearBlock(valuesCvar);
 }
 
 static void DrawCustomCosmeticColorRow(const char* label, const char* cvar, Color_RGBA8 defaultColor,
