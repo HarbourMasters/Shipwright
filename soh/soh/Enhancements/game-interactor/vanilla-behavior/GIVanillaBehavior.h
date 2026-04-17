@@ -1302,6 +1302,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // this->unk_15A > 0
+    // ```
+    // #### `args`
+    // - `*EnItem00`
+    VB_ITEM00_TIMER_TICK,
+
+    // #### `result`
+    // ```c
     // true
     // ```
     // #### `args`
@@ -2659,14 +2667,6 @@ typedef enum {
 
     // #### `result`
     // ```c
-    // Actor_GetCollidedExplosive(play, &this->collider.base) != NULL
-    // ```
-    // #### `args`
-    // - `*BgHidanKowarerukabe`
-    VB_FIRE_TEMPLE_BOMBABLE_WALL_BREAK,
-
-    // #### `result`
-    // ```c
     // true
     // ```
     // #### `args`
@@ -2698,6 +2698,22 @@ typedef enum {
     // #### `args`
     // - `*FileChooseContext`
     VB_FILE_SELECT_DRAW_FILE_INFO_BOX,
+
+    // #### `result`
+    // ```c
+    // Actor_GetCollidedExplosive(play, &this->collider.base) != NULL
+    // ```
+    // #### `args`
+    // - `*BgHidanKowarerukabe`
+    VB_FIRE_TEMPLE_BOMBABLE_WALL_BREAK,
+
+    // #### `result`
+    // ```c
+    // this->timer > 0
+    // ```
+    // #### `args`
+    // - None
+    VB_FISH_TIMER_TICK,
 
     // #### `result`
     // ```c
