@@ -94,7 +94,7 @@ static std::vector<std::string> contributors = {
     "Random06457",
     "pancake-byte",
     "balloondude2",
-    "Philip Dubé",
+    "serprex",
     "Jordan Longstaff",
     "David Chavez",
     "Ralphie Morell",
