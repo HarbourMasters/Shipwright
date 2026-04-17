@@ -599,7 +599,7 @@ void EnGe1_BeginGame_Archery(EnGe1* this, PlayState* play) {
                 if (gSaveContext.rupees < 20) {
                     Message_ContinueTextbox(play, 0x85);
                     this->actionFunc = EnGe1_TalkTooPoor_Archery;
-                } else {
+                } else if (GameInteractor_Should(VB_PLAY_HORSEBACK_ARCHERY, true, this, play)) {
                     Rupees_ChangeBy(-20);
                     play->nextEntranceIndex = ENTR_GERUDOS_FORTRESS_EAST_EXIT;
                     gSaveContext.nextCutsceneIndex = 0xFFF0;
