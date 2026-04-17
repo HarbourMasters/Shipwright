@@ -175,12 +175,7 @@ static void RandomizeCustomCosmeticColor(const CustomCosmeticEntry& entry) {
 }
 
 static void ClearCustomCosmeticValueCvars(const char* valuesCvar) {
-    CVarClear(valuesCvar);
-    CVarClear((std::string(valuesCvar) + ".R").c_str());
-    CVarClear((std::string(valuesCvar) + ".G").c_str());
-    CVarClear((std::string(valuesCvar) + ".B").c_str());
-    CVarClear((std::string(valuesCvar) + ".A").c_str());
-    CVarClear((std::string(valuesCvar) + ".Type").c_str());
+    CVarClearBlock(valuesCvar);
 }
 
 static void DrawCustomCosmeticColorRow(const char* label, const char* cvar, Color_RGBA8 defaultColor,
