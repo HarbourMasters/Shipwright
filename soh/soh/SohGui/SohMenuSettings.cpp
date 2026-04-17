@@ -120,7 +120,6 @@ static std::vector<std::string> contributors = {
     "Jeffrey Crowell",
     "InfoManiac742",
     "Chris",
-    "mergify[bot]",
     "Shishu the Dragon",
     "Tina H. (sheepytina)",
     "Spodi",
