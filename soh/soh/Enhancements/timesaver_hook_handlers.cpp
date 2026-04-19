@@ -58,7 +58,7 @@ void EnMa1_EndTeachSong(EnMa1* enMa1, PlayState* play) {
         Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
         enMa1->actor.flags &= ~ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
         play->msgCtx.ocarinaMode = OCARINA_MODE_04;
-        enMa1->actionFunc = func_80AA0D88;
+        enMa1->actionFunc = EnMa1_Idle;
         enMa1->singingDisabled = 1;
         enMa1->interactInfo.talkState = NPC_TALK_STATE_IDLE;
         return;
@@ -916,14 +916,14 @@ void TimeSaverOnActorInitHandler(void* actorRef) {
                 if (innerActor->id == ACTOR_EN_MA1 &&
                     (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.LearnSong"), IS_RANDO) || IS_RANDO)) {
                     EnMa1* enMa1 = static_cast<EnMa1*>(innerActorRef);
-                    if (enMa1->actionFunc == func_80AA106C) {
+                    if (enMa1->actionFunc == EnMa1_StartTeachSong) {
                         enMa1->actionFunc = EnMa1_EndTeachSong;
                         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(enMa1UpdateHook);
                         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(enMa1KillHook);
                         enMa1UpdateHook = 0;
                         enMa1KillHook = 0;
                         // They've already learned the song
-                    } else if (enMa1->actionFunc == func_80AA0D88) {
+                    } else if (enMa1->actionFunc == EnMa1_Idle) {
                         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(enMa1UpdateHook);
                         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(enMa1KillHook);
                         enMa1UpdateHook = 0;

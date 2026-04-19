@@ -17,21 +17,21 @@ void EnInsect_Update(Actor* thisx, PlayState* play);
 void EnInsect_Draw(Actor* thisx, PlayState* play);
 void EnInsect_Reset(void);
 
-void func_80A7C3A0(EnInsect* this);
-void func_80A7C3F4(EnInsect* this, PlayState* play);
-void func_80A7C598(EnInsect* this);
-void func_80A7C5EC(EnInsect* this, PlayState* play);
-void func_80A7C818(EnInsect* this);
-void func_80A7C86C(EnInsect* this, PlayState* play);
-void func_80A7CAD0(EnInsect* this, PlayState* play);
-void func_80A7CBC8(EnInsect* this);
-void func_80A7CC3C(EnInsect* this, PlayState* play);
-void func_80A7CE60(EnInsect* this);
-void func_80A7CEC0(EnInsect* this, PlayState* play);
-void func_80A7D1F4(EnInsect* this);
-void func_80A7D26C(EnInsect* this, PlayState* play);
-void func_80A7D39C(EnInsect* this);
-void func_80A7D460(EnInsect* this, PlayState* play);
+void EnInsect_SetupSlowDown(EnInsect* this);
+void EnInsect_SlowDown(EnInsect* this, PlayState* play);
+void EnInsect_SetupCrawl(EnInsect* this);
+void EnInsect_Crawl(EnInsect* this, PlayState* play);
+void EnInsect_SetupRunFromPlayer(EnInsect* this);
+void EnInsect_RunFromPlayer(EnInsect* this, PlayState* play);
+void EnInsect_Caught(EnInsect* this, PlayState* play);
+void EnInsect_SetupDig(EnInsect* this);
+void EnInsect_Dig(EnInsect* this, PlayState* play);
+void EnInsect_SetupWalkOnWater(EnInsect* this);
+void EnInsect_WalkOnWater(EnInsect* this, PlayState* play);
+void EnInsect_SetupDrown(EnInsect* this);
+void EnInsect_Drown(EnInsect* this, PlayState* play);
+void EnInsect_SetupDropped(EnInsect* this);
+void EnInsect_Dropped(EnInsect* this, PlayState* play);
 
 f32 D_80A7DEB0 = 0.0f;
 s16 D_80A7DEB4 = 0;
@@ -86,7 +86,7 @@ static InitChainEntry sInitChain[] = {
     ICHAIN_F32(uncullZoneDownward, 600, ICHAIN_STOP),
 };
 
-void func_80A7BE20(EnInsect* this) {
+void EnInsect_InitFlags(EnInsect* this) {
     this->insectFlags = D_80A7DF10[this->actor.params & 3];
 }
 
@@ -115,7 +115,7 @@ s32 EnInsect_InBottleRange(EnInsect* this, PlayState* play) {
     return false;
 }
 
-void func_80A7BF58(EnInsect* this) {
+void EnInsect_SetCrawlAnim(EnInsect* this) {
     Animation_Change(&this->skelAnime, &gBugCrawlAnim, 1.0f, 0.0f, 0.0f, ANIMMODE_LOOP_INTERP, 0.0f);
 }
 
@@ -151,7 +151,7 @@ s32 EnInsect_FoundNearbySoil(EnInsect* this, PlayState* play) {
     return ret;
 }
 
-void func_80A7C058(EnInsect* this) {
+void EnInsect_UpdateCrawlSfx(EnInsect* this) {
     if (this->crawlSoundDelay > 0) {
         this->crawlSoundDelay--;
         return;
@@ -173,7 +173,7 @@ void EnInsect_Init(Actor* thisx, PlayState* play2) {
     s32 count;
 
     Actor_ProcessInitChain(&this->actor, sInitChain);
-    func_80A7BE20(this);
+    EnInsect_InitFlags(this);
 
     temp_s2 = this->actor.params & 3;
 
@@ -210,18 +210,18 @@ void EnInsect_Init(Actor* thisx, PlayState* play2) {
             }
         }
 
-        func_80A7D39C(this);
+        EnInsect_SetupDropped(this);
 
         D_80A7DEB8++;
     } else {
         rand = Rand_ZeroOne();
 
         if (rand < 0.3f) {
-            func_80A7C3A0(this);
+            EnInsect_SetupSlowDown(this);
         } else if (rand < 0.4f) {
-            func_80A7C598(this);
+            EnInsect_SetupCrawl(this);
         } else {
-            func_80A7C818(this);
+            EnInsect_SetupRunFromPlayer(this);
         }
     }
 }
@@ -239,14 +239,14 @@ void EnInsect_Destroy(Actor* thisx, PlayState* play) {
     ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
-void func_80A7C3A0(EnInsect* this) {
+void EnInsect_SetupSlowDown(EnInsect* this) {
     this->actionTimer = Rand_S16Offset(5, 35);
-    func_80A7BF58(this);
-    this->actionFunc = func_80A7C3F4;
+    EnInsect_SetCrawlAnim(this);
+    this->actionFunc = EnInsect_SlowDown;
     this->insectFlags |= 0x100;
 }
 
-void func_80A7C3F4(EnInsect* this, PlayState* play) {
+void EnInsect_SlowDown(EnInsect* this, PlayState* play) {
     s32 pad[2];
     s16 sp2E;
     f32 playSpeed;
@@ -261,27 +261,27 @@ void func_80A7C3F4(EnInsect* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
     this->actor.shape.rot.y = this->actor.world.rot.y;
     if (this->actionTimer <= 0) {
-        func_80A7C598(this);
+        EnInsect_SetupCrawl(this);
     }
 
     if (((this->insectFlags & 4) && this->lifeTimer <= 0) ||
         ((sp2E == 2 || sp2E == 3) && (this->insectFlags & 1) && (this->actor.bgCheckFlags & 1) && D_80A7DEB8 >= 4)) {
-        func_80A7CBC8(this);
+        EnInsect_SetupDig(this);
     } else if ((this->insectFlags & 1) && (this->actor.bgCheckFlags & 0x40)) {
-        func_80A7CE60(this);
+        EnInsect_SetupWalkOnWater(this);
     } else if (this->actor.xzDistToPlayer < 40.0f) {
-        func_80A7C818(this);
+        EnInsect_SetupRunFromPlayer(this);
     }
 }
 
-void func_80A7C598(EnInsect* this) {
+void EnInsect_SetupCrawl(EnInsect* this) {
     this->actionTimer = Rand_S16Offset(10, 45);
-    func_80A7BF58(this);
-    this->actionFunc = func_80A7C5EC;
+    EnInsect_SetCrawlAnim(this);
+    this->actionFunc = EnInsect_Crawl;
     this->insectFlags |= 0x100;
 }
 
-void func_80A7C5EC(EnInsect* this, PlayState* play) {
+void EnInsect_Crawl(EnInsect* this, PlayState* play) {
     s32 pad1;
     s32 pad2;
     s16 yaw;
@@ -304,27 +304,27 @@ void func_80A7C5EC(EnInsect* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
 
     if (this->actionTimer <= 0) {
-        func_80A7C3A0(this);
+        EnInsect_SetupSlowDown(this);
     }
 
     if (((this->insectFlags & 4) && this->lifeTimer <= 0) ||
         ((sp34 == 2 || sp34 == 3) && (this->insectFlags & 1) && (this->actor.bgCheckFlags & 1) && D_80A7DEB8 >= 4)) {
-        func_80A7CBC8(this);
+        EnInsect_SetupDig(this);
     } else if ((this->insectFlags & 1) && (this->actor.bgCheckFlags & 0x40)) {
-        func_80A7CE60(this);
+        EnInsect_SetupWalkOnWater(this);
     } else if (this->actor.xzDistToPlayer < 40.0f) {
-        func_80A7C818(this);
+        EnInsect_SetupRunFromPlayer(this);
     }
 }
 
-void func_80A7C818(EnInsect* this) {
+void EnInsect_SetupRunFromPlayer(EnInsect* this) {
     this->actionTimer = Rand_S16Offset(10, 40);
-    func_80A7BF58(this);
-    this->actionFunc = func_80A7C86C;
+    EnInsect_SetCrawlAnim(this);
+    this->actionFunc = EnInsect_RunFromPlayer;
     this->insectFlags |= 0x100;
 }
 
-void func_80A7C86C(EnInsect* this, PlayState* play) {
+void EnInsect_RunFromPlayer(EnInsect* this, PlayState* play) {
     s32 pad1;
     s32 pad2;
     s16 pad3;
@@ -358,13 +358,13 @@ void func_80A7C86C(EnInsect* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
 
     if (this->actionTimer <= 0 || !sp38) {
-        func_80A7C3A0(this);
+        EnInsect_SetupSlowDown(this);
     } else if ((this->insectFlags & 1) && (this->actor.bgCheckFlags & 0x40)) {
-        func_80A7CE60(this);
+        EnInsect_SetupWalkOnWater(this);
     }
 }
 
-void func_80A7CA64(EnInsect* this) {
+void EnInsect_SetupCaught(EnInsect* this) {
     this->actionTimer = 200;
 
     Actor_SetScale(&this->actor, 0.001f);
@@ -372,14 +372,14 @@ void func_80A7CA64(EnInsect* this) {
     this->actor.draw = NULL;
     this->actor.speedXZ = 0.0f;
 
-    func_80A7BF58(this);
+    EnInsect_SetCrawlAnim(this);
 
     this->skelAnime.playSpeed = 0.3f;
-    this->actionFunc = func_80A7CAD0;
+    this->actionFunc = EnInsect_Caught;
     this->insectFlags &= ~0x100;
 }
 
-void func_80A7CAD0(EnInsect* this, PlayState* play) {
+void EnInsect_Caught(EnInsect* this, PlayState* play) {
     if (this->actionTimer == 20 && !(this->insectFlags & 4)) {
         this->actor.draw = EnInsect_Draw;
     } else if (this->actionTimer == 0) {
@@ -387,7 +387,7 @@ void func_80A7CAD0(EnInsect* this, PlayState* play) {
             Actor_Kill(&this->actor);
         } else {
             Actor_SetScale(&this->actor, 0.01f);
-            func_80A7C3A0(this);
+            EnInsect_SetupSlowDown(this);
         }
     } else if (this->actionTimer < 20) {
         Actor_SetScale(&this->actor, CLAMP_MAX(this->actor.scale.x + 0.001f, 0.01f));
@@ -395,18 +395,18 @@ void func_80A7CAD0(EnInsect* this, PlayState* play) {
     }
 }
 
-void func_80A7CBC8(EnInsect* this) {
+void EnInsect_SetupDig(EnInsect* this) {
     this->actionTimer = 60;
-    func_80A7BF58(this);
+    EnInsect_SetCrawlAnim(this);
     this->skelAnime.playSpeed = 1.9f;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_MUSI_SINK);
     Math_Vec3f_Copy(&this->actor.home.pos, &this->actor.world.pos);
-    this->actionFunc = func_80A7CC3C;
+    this->actionFunc = EnInsect_Dig;
     this->insectFlags &= ~0x100;
     this->insectFlags |= 0x8;
 }
 
-void func_80A7CC3C(EnInsect* this, PlayState* play) {
+void EnInsect_Dig(EnInsect* this, PlayState* play) {
     static Vec3f accel = { 0.0f, 0.0f, 0.0f };
     static Vec3f unused = { 0.0f, 0.0f, 0.0f };
     s32 pad[2];
@@ -440,15 +440,15 @@ void func_80A7CC3C(EnInsect* this, PlayState* play) {
     }
 }
 
-void func_80A7CE60(EnInsect* this) {
+void EnInsect_SetupWalkOnWater(EnInsect* this) {
     this->actionTimer = Rand_S16Offset(120, 50);
-    func_80A7BF58(this);
+    EnInsect_SetCrawlAnim(this);
     this->unk_316 = this->unk_318 = 0;
-    this->actionFunc = func_80A7CEC0;
+    this->actionFunc = EnInsect_WalkOnWater;
     this->insectFlags &= ~0x100;
 }
 
-void func_80A7CEC0(EnInsect* this, PlayState* play) {
+void EnInsect_WalkOnWater(EnInsect* this, PlayState* play) {
     f32 temp_f0;
     s16 temp_v1;
     s16 pad;
@@ -515,30 +515,30 @@ void func_80A7CEC0(EnInsect* this, PlayState* play) {
 
     if (this->actionTimer <= 0 || ((this->insectFlags & 4) && this->lifeTimer <= 0) ||
         ((sp4E == 2 || sp4E == 3) && (this->insectFlags & 1) && D_80A7DEB8 >= 4)) {
-        func_80A7D1F4(this);
+        EnInsect_SetupDrown(this);
     } else if (!(this->actor.bgCheckFlags & 0x40)) {
         if (this->insectFlags & 0x10) {
-            func_80A7D39C(this);
+            EnInsect_SetupDropped(this);
         } else {
-            func_80A7C3A0(this);
+            EnInsect_SetupSlowDown(this);
         }
     }
 }
 
-void func_80A7D1F4(EnInsect* this) {
+void EnInsect_SetupDrown(EnInsect* this) {
     this->actionTimer = 100;
-    func_80A7BF58(this);
+    EnInsect_SetCrawlAnim(this);
     this->actor.velocity.y = 0.0f;
     this->actor.speedXZ = 0.0f;
     this->actor.minVelocityY = -0.8f;
     this->actor.gravity = -0.04f;
     this->insectFlags &= ~0x3;
-    this->actionFunc = func_80A7D26C;
+    this->actionFunc = EnInsect_Drown;
     this->insectFlags &= ~0x100;
     this->insectFlags |= 8;
 }
 
-void func_80A7D26C(EnInsect* this, PlayState* play) {
+void EnInsect_Drown(EnInsect* this, PlayState* play) {
     this->actor.shape.rot.x -= 500;
     this->actor.shape.rot.y += 200;
     Actor_SetScale(&this->actor, CLAMP_MIN(this->actor.scale.x - 0.00005f, 0.001f));
@@ -552,19 +552,19 @@ void func_80A7D26C(EnInsect* this, PlayState* play) {
     }
 }
 
-void func_80A7D39C(EnInsect* this) {
-    func_80A7BF58(this);
+void EnInsect_SetupDropped(EnInsect* this) {
+    EnInsect_SetCrawlAnim(this);
     this->actionTimer = 100;
     this->unk_324 = 1.5f;
     this->unk_328 = Rand_ZeroOne() * (0xFFFF + 0.5f);
     this->unk_316 = (Rand_ZeroOne() - 0.5f) * 1500.0f;
     this->actor.world.rot.y = Rand_ZeroOne() * (0xFFFF + 0.5f);
     Actor_SetScale(&this->actor, 0.003f);
-    this->actionFunc = func_80A7D460;
+    this->actionFunc = EnInsect_Dropped;
     this->insectFlags |= 0x100;
 }
 
-void func_80A7D460(EnInsect* this, PlayState* play) {
+void EnInsect_Dropped(EnInsect* this, PlayState* play) {
     s32 temp_a0;
     s32 sp50;
     f32 phi_f0;
@@ -688,14 +688,14 @@ void func_80A7D460(EnInsect* this, PlayState* play) {
     }
 
     if ((this->insectFlags & 1) && (this->actor.bgCheckFlags & 0x40)) {
-        func_80A7CE60(this);
+        EnInsect_SetupWalkOnWater(this);
     } else if (this->insectFlags & 0x10) {
         if (sp40 < 9.0f) {
-            func_80A7CBC8(this);
+            EnInsect_SetupDig(this);
         } else if (this->actionTimer <= 0 || this->lifeTimer <= 0 ||
                    ((this->insectFlags & 1) && (this->actor.bgCheckFlags & 1) && D_80A7DEB8 >= 4 &&
                     (sp3A == 2 || sp3A == 3))) {
-            func_80A7CBC8(this);
+            EnInsect_SetupDig(this);
         } else {
             if (sp40 < 900.0f) {
                 this->lifeTimer++;
@@ -705,7 +705,7 @@ void func_80A7D460(EnInsect* this, PlayState* play) {
             }
         }
     } else if (sp50 != 0) {
-        func_80A7C3A0(this);
+        EnInsect_SetupSlowDown(this);
     } else if ((sp3A == 2 || sp3A == 3) && (this->insectFlags & 1) && this->lifeTimer <= 0 && this->actionTimer <= 0 &&
                this->actor.floorHeight < BGCHECK_Y_MIN + 10.0f) {
         osSyncPrintf(VT_COL(YELLOW, BLACK));
@@ -743,10 +743,10 @@ void EnInsect_Update(Actor* thisx, PlayState* play) {
         if (this->insectFlags & 0x100) {
             if (this->insectFlags & 1) {
                 if (this->actor.bgCheckFlags & 1) {
-                    func_80A7C058(this);
+                    EnInsect_UpdateCrawlSfx(this);
                 }
             } else {
-                func_80A7C058(this);
+                EnInsect_UpdateCrawlSfx(this);
             }
         }
 
@@ -772,9 +772,9 @@ void EnInsect_Update(Actor* thisx, PlayState* play) {
             if (phi_v0 == 2 || phi_v0 == 3) {
                 Actor_Kill(&this->actor);
             } else {
-                func_80A7CA64(this);
+                EnInsect_SetupCaught(this);
             }
-        } else if (this->actor.xzDistToPlayer < 50.0f && this->actionFunc != func_80A7CAD0) {
+        } else if (this->actor.xzDistToPlayer < 50.0f && this->actionFunc != EnInsect_Caught) {
             if (!(this->insectFlags & 0x20) && this->lifeTimer < 180) {
                 CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider.base);
             }

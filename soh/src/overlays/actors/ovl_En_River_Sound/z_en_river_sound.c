@@ -58,7 +58,7 @@ void EnRiverSound_Destroy(Actor* thisx, PlayState* play) {
     }
 }
 
-s32 func_80AE6A54(Vec3f* arg0, Vec3f* arg1, Vec3f* arg2, Vec3f* arg3) {
+s32 EnRiverSound_FindClosestPointOnLineSegment(Vec3f* arg0, Vec3f* arg1, Vec3f* arg2, Vec3f* arg3) {
     Vec3f vec[3];
     f32 temp;
 
@@ -132,18 +132,18 @@ s32 EnRiverSound_GetSoundPos(Vec3s* points, s32 numPoints, Vec3f* hearPos, Vec3f
         vec.x = point[-1].x;
         vec.y = point[-1].y;
         vec.z = point[-1].z;
-        sp78[0] = func_80AE6A54(&vec, &pointLoc, hearPos, &sp54);
+        sp78[0] = EnRiverSound_FindClosestPointOnLineSegment(&vec, &pointLoc, hearPos, &sp54);
     }
 
     if (pointIdx + 1 != numPoints) {
         vec.x = point[1].x;
         vec.y = point[1].y;
         vec.z = point[1].z;
-        sp78[1] = func_80AE6A54(&pointLoc, &vec, hearPos, &sp60);
+        sp78[1] = EnRiverSound_FindClosestPointOnLineSegment(&pointLoc, &vec, hearPos, &sp60);
     }
 
     if (sp78[0] && sp78[1]) {
-        if (!func_80AE6A54(&sp54, &sp60, hearPos, soundPos)) {
+        if (!EnRiverSound_FindClosestPointOnLineSegment(&sp54, &sp60, hearPos, soundPos)) {
             soundPos->x = (sp54.x + sp60.x) * 0.5f;
             soundPos->y = (sp54.y + sp60.y) * 0.5f;
             soundPos->z = (sp54.z + sp60.z) * 0.5f;

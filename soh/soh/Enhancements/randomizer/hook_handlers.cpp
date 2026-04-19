@@ -1658,7 +1658,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             Flags_SetInfTable(INFTABLE_191);
             gSaveContext.dogParams = 0;
             gSaveContext.dogIsLost = false;
-            enHy->actionFunc = func_80A7127C;
+            enHy->actionFunc = EnHy_Fidget;
             *should = false;
             break;
         }

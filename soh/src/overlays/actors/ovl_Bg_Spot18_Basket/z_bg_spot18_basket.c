@@ -11,18 +11,18 @@ void BgSpot18Basket_Update(Actor* thisx, PlayState* play);
 void BgSpot18Basket_Draw(Actor* thisx, PlayState* play);
 void BgSpot18Basket_Reset(void);
 
-void func_808B7BCC(BgSpot18Basket* this, PlayState* play);
-void func_808B7AEC(BgSpot18Basket* this);
-void func_808B7B58(BgSpot18Basket* this);
-void func_808B7BB0(BgSpot18Basket* this);
-void func_808B7D38(BgSpot18Basket* this);
-void func_808B7F74(BgSpot18Basket* this);
-void func_808B818C(BgSpot18Basket* this);
-void func_808B7AFC(BgSpot18Basket* this, PlayState* play);
-void func_808B7B6C(BgSpot18Basket* this, PlayState* play);
-void func_808B7D50(BgSpot18Basket* this, PlayState* play);
-void func_808B7FC0(BgSpot18Basket* this, PlayState* play);
-void func_808B81A0(BgSpot18Basket* this, PlayState* play);
+void BgSpot18Basket_Spinning(BgSpot18Basket* this, PlayState* play);
+void BgSpot18Basket_SetupInactive(BgSpot18Basket* this);
+void BgSpot18Basket_SetupActivation(BgSpot18Basket* this);
+void BgSpot18Basket_SetupSpinning(BgSpot18Basket* this);
+void BgSpot18Basket_SetupExplosionCs(BgSpot18Basket* this);
+void BgSpot18Basket_SetupStopping(BgSpot18Basket* this);
+void BgSpot18Basket_SetupGivingPrize(BgSpot18Basket* this);
+void BgSpot18Basket_Inactive(BgSpot18Basket* this, PlayState* play);
+void BgSpot18Basket_Activation(BgSpot18Basket* this, PlayState* play);
+void BgSpot18Basket_ExplosionCs(BgSpot18Basket* this, PlayState* play);
+void BgSpot18Basket_Stopping(BgSpot18Basket* this, PlayState* play);
+void BgSpot18Basket_GivingPrize(BgSpot18Basket* this, PlayState* play);
 
 const ActorInit Bg_Spot18_Basket_InitVars = {
     ACTOR_BG_SPOT18_BASKET,
@@ -77,7 +77,7 @@ static ColliderJntSphInit sJntSphInit = {
 
 static s16 D_808B85C8[] = { 0x8000, 0x2AAA, 0xD555, 0x0000 };
 
-void func_808B7710(Actor* thisx, PlayState* play) {
+void BgSpot18Basket_InitColliderJntSph(Actor* thisx, PlayState* play) {
     BgSpot18Basket* this = (BgSpot18Basket*)thisx;
 
     Collider_InitJntSph(play, &this->colliderJntSph);
@@ -86,7 +86,7 @@ void func_808B7710(Actor* thisx, PlayState* play) {
 }
 
 s16 D_808B85D0 = 0;
-void func_808B7770(BgSpot18Basket* this, PlayState* play, f32 arg2) {
+void BgSpot18Basket_SpawnDustClouds(BgSpot18Basket* this, PlayState* play, f32 arg2) {
     Vec3f acceleration;
     Vec3f velocity;
     Vec3f position;
@@ -137,7 +137,7 @@ void BgSpot18Basket_Init(Actor* thisx, PlayState* play) {
     CollisionHeader* colHeader = NULL;
 
     DynaPolyActor_Init(&this->dyna, DPM_UNK3);
-    func_808B7710(&this->dyna.actor, play);
+    BgSpot18Basket_InitColliderJntSph(&this->dyna.actor, play);
     CollisionHeader_GetVirtual(&gGoronCityVaseCol, &colHeader);
 
     this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, &this->dyna.actor, colHeader);
@@ -148,11 +148,11 @@ void BgSpot18Basket_Init(Actor* thisx, PlayState* play) {
     this->dyna.actor.world.pos.y = this->dyna.actor.home.pos.y;
 
     if (Flags_GetSwitch(play, (this->dyna.actor.params >> 8) & 0x3F)) {
-        func_808B7BB0(this);
+        BgSpot18Basket_SetupSpinning(this);
         return;
     }
 
-    func_808B7AEC(this);
+    BgSpot18Basket_SetupInactive(this);
     Actor_SpawnAsChild(&play->actorCtx, &this->dyna.actor, play, ACTOR_BG_SPOT18_FUTA, this->dyna.actor.world.pos.x,
                        this->dyna.actor.world.pos.y, this->dyna.actor.world.pos.z, this->dyna.actor.shape.rot.x,
                        this->dyna.actor.shape.rot.y + 0x1555, this->dyna.actor.shape.rot.z, -1);
@@ -172,36 +172,36 @@ void BgSpot18Basket_Destroy(Actor* thisx, PlayState* play) {
     Collider_DestroyJntSph(play, &this->colliderJntSph);
 }
 
-void func_808B7AEC(BgSpot18Basket* this) {
-    this->actionFunc = func_808B7AFC;
+void BgSpot18Basket_SetupInactive(BgSpot18Basket* this) {
+    this->actionFunc = BgSpot18Basket_Inactive;
 }
 
-void func_808B7AFC(BgSpot18Basket* this, PlayState* play) {
+void BgSpot18Basket_Inactive(BgSpot18Basket* this, PlayState* play) {
     if (Flags_GetSwitch(play, (this->dyna.actor.params >> 8) & 0x3F)) {
         OnePointCutscene_Init(play, 4220, 80, &this->dyna.actor, MAIN_CAM);
-        func_808B7B58(this);
+        BgSpot18Basket_SetupActivation(this);
     }
 }
 
-void func_808B7B58(BgSpot18Basket* this) {
-    this->actionFunc = func_808B7B6C;
+void BgSpot18Basket_SetupActivation(BgSpot18Basket* this) {
+    this->actionFunc = BgSpot18Basket_Activation;
     this->timer = 0;
 }
 
-void func_808B7B6C(BgSpot18Basket* this, PlayState* play) {
+void BgSpot18Basket_Activation(BgSpot18Basket* this, PlayState* play) {
     if (this->timer > 20) {
-        func_808B7BB0(this);
+        BgSpot18Basket_SetupSpinning(this);
         this->dyna.actor.child->parent = NULL;
         this->dyna.actor.child = NULL;
     }
 }
 
-void func_808B7BB0(BgSpot18Basket* this) {
-    this->actionFunc = func_808B7BCC;
+void BgSpot18Basket_SetupSpinning(BgSpot18Basket* this) {
+    this->actionFunc = BgSpot18Basket_Spinning;
     this->spinRate = this->circleRate = 0;
 }
 
-void func_808B7BCC(BgSpot18Basket* this, PlayState* play) {
+void BgSpot18Basket_Spinning(BgSpot18Basket* this, PlayState* play) {
     f32 positionDiff;
     Actor* colliderBaseAc;
 
@@ -229,7 +229,7 @@ void func_808B7BCC(BgSpot18Basket* this, PlayState* play) {
                 if (Math3D_Dist2DSq(colliderBaseAc->world.pos.z, this->colliderJntSph.base.ac->world.pos.x,
                                     this->dyna.actor.world.pos.z, this->dyna.actor.world.pos.x) < SQ(32.0f)) {
                     OnePointCutscene_Init(play, 4210, 240, &this->dyna.actor, MAIN_CAM);
-                    func_808B7D38(this);
+                    BgSpot18Basket_SetupExplosionCs(this);
                     func_8003EBF8(play, &play->colCtx.dyna, this->dyna.bgId);
                 }
             }
@@ -238,13 +238,13 @@ void func_808B7BCC(BgSpot18Basket* this, PlayState* play) {
     func_8002F974(&this->dyna.actor, NA_SE_EV_ELEVATOR_MOVE - SFX_FLAG);
 }
 
-void func_808B7D38(BgSpot18Basket* this) {
-    this->actionFunc = func_808B7D50;
+void BgSpot18Basket_SetupExplosionCs(BgSpot18Basket* this) {
+    this->actionFunc = BgSpot18Basket_ExplosionCs;
     this->timer = 0;
     this->pivotAltitude = 0;
 }
 
-void func_808B7D50(BgSpot18Basket* this, PlayState* play) {
+void BgSpot18Basket_ExplosionCs(BgSpot18Basket* this, PlayState* play) {
     f32 tempValue2;
     f32 tempValue;
 
@@ -279,13 +279,13 @@ void func_808B7D50(BgSpot18Basket* this, PlayState* play) {
     this->dyna.actor.shape.rot.z = -Math_SinS(this->pivotAzimuth) * this->pivotAltitude;
 
     if (this->timer > 140) {
-        func_808B7F74(this);
+        BgSpot18Basket_SetupStopping(this);
     }
 
     if (this->timer < 80) {
-        func_808B7770(this, play, 1.0f);
+        BgSpot18Basket_SpawnDustClouds(this, play, 1.0f);
     } else {
-        func_808B7770(this, play, 0.8f);
+        BgSpot18Basket_SpawnDustClouds(this, play, 0.8f);
     }
 
     tempValue2 = (this->spinRate - 500) * 0.0006f;
@@ -295,11 +295,11 @@ void func_808B7D50(BgSpot18Basket* this, PlayState* play) {
     func_800F436C(&this->dyna.actor.projectedPos, NA_SE_EV_WALL_MOVE_SP - SFX_FLAG, tempValue);
 }
 
-void func_808B7F74(BgSpot18Basket* this) {
+void BgSpot18Basket_SetupStopping(BgSpot18Basket* this) {
     s16 shapeRotY;
 
     shapeRotY = this->dyna.actor.shape.rot.y;
-    this->actionFunc = func_808B7FC0;
+    this->actionFunc = BgSpot18Basket_Stopping;
 
     if (GameInteractor_Should(VB_WIN_GORON_POT, (shapeRotY < -0x2E93) || (shapeRotY >= 0x7C19))) {
         this->prize = 2;
@@ -312,7 +312,7 @@ void func_808B7F74(BgSpot18Basket* this) {
     this->timer = 0;
 }
 
-void func_808B7FC0(BgSpot18Basket* this, PlayState* play) {
+void BgSpot18Basket_Stopping(BgSpot18Basket* this, PlayState* play) {
     s32 pad;
     s32 tempUnk214;
     f32 tempUnk210;
@@ -339,15 +339,15 @@ void func_808B7FC0(BgSpot18Basket* this, PlayState* play) {
         if ((s16)(this->dyna.actor.shape.rot.y - arrayValue) >= 0) {
             this->dyna.actor.shape.rot.y = arrayValue;
 
-            func_808B818C(this);
+            BgSpot18Basket_SetupGivingPrize(this);
             func_8003EC50(play, &play->colCtx.dyna, this->dyna.bgId);
         }
     }
 
     if (this->timer < 30) {
-        func_808B7770(this, play, 0.5f);
+        BgSpot18Basket_SpawnDustClouds(this, play, 0.5f);
     } else {
-        func_808B7770(this, play, 0.3f);
+        BgSpot18Basket_SpawnDustClouds(this, play, 0.3f);
     }
 
     tempUnk210 = (this->spinRate - 500) * 0.0006f;
@@ -357,14 +357,14 @@ void func_808B7FC0(BgSpot18Basket* this, PlayState* play) {
     func_800F436C(&this->dyna.actor.projectedPos, NA_SE_EV_WALL_MOVE_SP - SFX_FLAG, clampedTempUnk210);
 }
 
-void func_808B818C(BgSpot18Basket* this) {
-    this->actionFunc = func_808B81A0;
+void BgSpot18Basket_SetupGivingPrize(BgSpot18Basket* this) {
+    this->actionFunc = BgSpot18Basket_GivingPrize;
     this->timer = 0;
 }
 
 static s16 D_808B85E4[] = { -0x0FA0, 0x0320, 0x0FA0 };
 
-void func_808B81A0(BgSpot18Basket* this, PlayState* play) {
+void BgSpot18Basket_GivingPrize(BgSpot18Basket* this, PlayState* play) {
     s32 i;
     Actor* actor = &this->dyna.actor;
     Vec3f tempVector;
@@ -427,7 +427,7 @@ void func_808B81A0(BgSpot18Basket* this, PlayState* play) {
             Sfx_PlaySfxCentered(NA_SE_SY_TRE_BOX_APPEAR);
         }
     } else if (this->timer == 200) {
-        func_808B7BB0(this);
+        BgSpot18Basket_SetupSpinning(this);
     }
 }
 
@@ -440,9 +440,9 @@ void BgSpot18Basket_Update(Actor* thisx, PlayState* play) {
     this->actionFunc(this, play);
     this->dyna.actor.floorHeight = BgCheck_EntityRaycastFloor4(&play->colCtx, &this->dyna.actor.floorPoly, &bgId,
                                                                &this->dyna.actor, &this->dyna.actor.world.pos);
-    if (this->actionFunc != func_808B7AFC) {
+    if (this->actionFunc != BgSpot18Basket_Inactive) {
         CollisionCheck_SetOC(play, &play->colChkCtx, &this->colliderJntSph.base);
-        if (this->actionFunc != func_808B7B6C) {
+        if (this->actionFunc != BgSpot18Basket_Activation) {
             this->colliderJntSph.base.acFlags &= ~AC_HIT;
             CollisionCheck_SetAC(play, &play->colChkCtx, &this->colliderJntSph.base);
         }

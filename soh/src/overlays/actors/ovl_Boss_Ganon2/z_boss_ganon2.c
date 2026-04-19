@@ -36,8 +36,8 @@ void func_80900580(BossGanon2* this, PlayState* play);
 void func_80900650(BossGanon2* this, PlayState* play);
 void func_80900890(BossGanon2* this, PlayState* play);
 void func_8090120C(BossGanon2* this, PlayState* play);
-void func_80905DA8(BossGanon2* this, PlayState* play);
-void func_809060E8(PlayState* play);
+void BossGanon2_UpdateEffects(BossGanon2* this, PlayState* play);
+void BossGanon2_DrawEffects(PlayState* play);
 void BossGanon2_GenShadowTexture(void* shadowTexture, BossGanon2* this, PlayState* play);
 void BossGanon2_DrawShadowTexture(void* shadowTexture, BossGanon2* this, PlayState* play);
 
@@ -1930,7 +1930,7 @@ void func_80902348(BossGanon2* this, PlayState* play) {
     }
 }
 
-void func_80902524(BossGanon2* this, PlayState* play) {
+void BossGanon2_CollisionCheck(BossGanon2* this, PlayState* play) {
     s8 temp_v0_4;
     ColliderInfo* acHitInfo;
     s16 i;
@@ -2117,7 +2117,7 @@ void BossGanon2_Update(Actor* thisx, PlayState* play) {
     func_80902348(this, play);
     CollisionCheck_SetOC(play, &play->colChkCtx, &this->unk_424.base);
     if (this->actionFunc != func_8090120C) {
-        func_80902524(this, play);
+        BossGanon2_CollisionCheck(this, play);
         CollisionCheck_SetAC(play, &play->colChkCtx, &this->unk_424.base);
         CollisionCheck_SetOC(play, &play->colChkCtx, &this->unk_444.base);
         CollisionCheck_SetAC(play, &play->colChkCtx, &this->unk_444.base);
@@ -2241,7 +2241,7 @@ void BossGanon2_Update(Actor* thisx, PlayState* play) {
         }
     }
     this->unk_388 += 0.15f;
-    func_80905DA8(this, play);
+    BossGanon2_UpdateEffects(this, play);
 }
 
 void func_809034E4(Vec3f* arg0, Vec3f* arg1) {
@@ -2869,10 +2869,10 @@ void BossGanon2_Draw(Actor* thisx, PlayState* play) {
 
     CLOSE_DISPS(play->state.gfxCtx);
 
-    func_809060E8(play);
+    BossGanon2_DrawEffects(play);
 }
 
-void func_80905DA8(BossGanon2* this, PlayState* play) {
+void BossGanon2_UpdateEffects(BossGanon2* this, PlayState* play) {
     s32 pad[5];
     Player* player = GET_PLAYER(play);
     BossGanon2Effect* effect = play->specialEffects;
@@ -2939,7 +2939,7 @@ void func_80905DA8(BossGanon2* this, PlayState* play) {
     }
 }
 
-void func_809060E8(PlayState* play) {
+void BossGanon2_DrawEffects(PlayState* play) {
     s16 alpha;
     u8 usingObjectGEff = false;
     BossGanon2Effect* effect;

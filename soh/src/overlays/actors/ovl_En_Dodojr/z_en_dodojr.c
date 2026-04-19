@@ -17,21 +17,21 @@ void EnDodojr_Destroy(Actor* thisx, PlayState* play);
 void EnDodojr_Update(Actor* thisx, PlayState* play);
 void EnDodojr_Draw(Actor* thisx, PlayState* play);
 
-void func_809F73AC(EnDodojr* this, PlayState* play);
-void func_809F7BE4(EnDodojr* this, PlayState* play);
-void func_809F74C4(EnDodojr* this, PlayState* play);
-void func_809F758C(EnDodojr* this, PlayState* play);
-void func_809F786C(EnDodojr* this, PlayState* play);
-void func_809F799C(EnDodojr* this, PlayState* play);
-void func_809F78EC(EnDodojr* this, PlayState* play);
-void func_809F773C(EnDodojr* this, PlayState* play);
-void func_809F77AC(EnDodojr* this, PlayState* play);
-void func_809F784C(EnDodojr* this, PlayState* play);
-void func_809F7AB8(EnDodojr* this, PlayState* play);
-void func_809F7A00(EnDodojr* this, PlayState* play);
-void func_809F7B3C(EnDodojr* this, PlayState* play);
-void func_809F7C48(EnDodojr* this, PlayState* play);
-void func_809F768C(EnDodojr* this, PlayState* play);
+void EnDodojr_WaitUnderground(EnDodojr* this, PlayState* play);
+void EnDodojr_DropItem(EnDodojr* this, PlayState* play);
+void EnDodojr_EmergeFromGround(EnDodojr* this, PlayState* play);
+void EnDodojr_CrawlTowardsTarget(EnDodojr* this, PlayState* play);
+void EnDodojr_StunnedBounce(EnDodojr* this, PlayState* play);
+void EnDodojr_JumpAttackBounce(EnDodojr* this, PlayState* play);
+void EnDodojr_Stunned(EnDodojr* this, PlayState* play);
+void EnDodojr_SwallowBomb(EnDodojr* this, PlayState* play);
+void EnDodojr_SwallowedBombDeathBounce(EnDodojr* this, PlayState* play);
+void EnDodojr_SwallowedBombDeathSequence(EnDodojr* this, PlayState* play);
+void EnDodojr_StandardDeathBounce(EnDodojr* this, PlayState* play);
+void EnDodojr_Despawn(EnDodojr* this, PlayState* play);
+void EnDodojr_DeathSequence(EnDodojr* this, PlayState* play);
+void EnDodojr_WaitFreezeFrames(EnDodojr* this, PlayState* play);
+void EnDodojr_EatBomb(EnDodojr* this, PlayState* play);
 
 const ActorInit En_Dodojr_InitVars = {
     ACTOR_EN_DODOJR,
@@ -83,7 +83,7 @@ void EnDodojr_Init(Actor* thisx, PlayState* play) {
 
     Actor_SetScale(&this->actor, 0.02f);
 
-    this->actionFunc = func_809F73AC;
+    this->actionFunc = EnDodojr_WaitUnderground;
 }
 
 void EnDodojr_Destroy(Actor* thisx, PlayState* play) {
@@ -94,12 +94,12 @@ void EnDodojr_Destroy(Actor* thisx, PlayState* play) {
     ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
-void func_809F64D0(EnDodojr* this) {
+void EnDodojr_DoSwallowedBombEffects(EnDodojr* this) {
     Audio_PlayActorSound2(&this->actor, NA_SE_IT_BOMB_EXPLOSION);
     Actor_SetColorFilter(&this->actor, 0x4000, 200, 0, 8);
 }
 
-void func_809F6510(EnDodojr* this, PlayState* play, s32 count) {
+void EnDodojr_SpawnLargeDust(EnDodojr* this, PlayState* play, s32 count) {
     Color_RGBA8 prim = { 170, 130, 90, 255 };
     Color_RGBA8 env = { 100, 60, 20, 0 };
     Vec3f velocity = { 0.0f, 0.0f, 0.0f };
@@ -121,7 +121,7 @@ void func_809F6510(EnDodojr* this, PlayState* play, s32 count) {
     }
 }
 
-void func_809F6730(EnDodojr* this, PlayState* play, Vec3f* arg2) {
+void EnDodojr_SpawnSmallDust(EnDodojr* this, PlayState* play, Vec3f* arg2) {
     Color_RGBA8 prim = { 170, 130, 90, 255 };
     Color_RGBA8 env = { 100, 60, 20, 0 };
     Vec3f velocity = { 0.0f, 0.0f, 0.0f };
@@ -140,7 +140,7 @@ void func_809F6730(EnDodojr* this, PlayState* play, Vec3f* arg2) {
     func_8002836C(play, &pos, &velocity, &accel, &prim, &env, 100, 60, 8);
 }
 
-s32 func_809F68B0(EnDodojr* this, PlayState* play) {
+s32 EnDodojr_UpdateBounces(EnDodojr* this, PlayState* play) {
     if (this->actor.velocity.y >= 0.0f) {
         return 0;
     }
@@ -152,7 +152,7 @@ s32 func_809F68B0(EnDodojr* this, PlayState* play) {
     if (this->actor.bgCheckFlags & 1) {
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_DODO_M_GND);
         this->dustPos = this->actor.world.pos;
-        func_809F6510(this, play, 10);
+        EnDodojr_SpawnLargeDust(this, play, 10);
         this->actor.velocity.y = 10.0f / (4 - this->counter);
         this->counter--;
 
@@ -165,7 +165,7 @@ s32 func_809F68B0(EnDodojr* this, PlayState* play) {
     return 0;
 }
 
-void func_809F6994(EnDodojr* this) {
+void EnDodojr_SetupCrawlTowardsTarget(EnDodojr* this) {
     f32 lastFrame = Animation_GetLastFrame(&object_dodojr_Anim_000860);
 
     Animation_Change(&this->skelAnime, &object_dodojr_Anim_000860, 1.8f, 0.0f, lastFrame, ANIMMODE_LOOP_INTERP, -10.0f);
@@ -174,7 +174,7 @@ void func_809F6994(EnDodojr* this) {
     this->actor.gravity = -0.8f;
 }
 
-void func_809F6A20(EnDodojr* this) {
+void EnDodojr_SetupFlipBounce(EnDodojr* this) {
     f32 lastFrame = Animation_GetLastFrame(&object_dodojr_Anim_0004A0);
 
     Animation_Change(&this->skelAnime, &object_dodojr_Anim_0004A0, 1.0f, 0.0f, lastFrame, ANIMMODE_ONCE, -10.0f);
@@ -190,7 +190,7 @@ void func_809F6A20(EnDodojr* this) {
     GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
 }
 
-void func_809F6AC4(EnDodojr* this) {
+void EnDodojr_SetupSwallowedBombDeathSequence(EnDodojr* this) {
     f32 lastFrame = Animation_GetLastFrame(&object_dodojr_Anim_0005F0);
 
     Animation_Change(&this->skelAnime, &object_dodojr_Anim_0005F0, 1.0f, 0.0f, lastFrame, ANIMMODE_LOOP, 0.0f);
@@ -198,7 +198,7 @@ void func_809F6AC4(EnDodojr* this) {
     this->actor.gravity = -0.8f;
 }
 
-void func_809F6B38(EnDodojr* this) {
+void EnDodojr_SetupJumpAttackBounce(EnDodojr* this) {
     f32 lastFrame = Animation_GetLastFrame(&object_dodojr_Anim_000724);
 
     Animation_Change(&this->skelAnime, &object_dodojr_Anim_000724, 1.0f, 0.0f, lastFrame, ANIMMODE_LOOP, -10.0f);
@@ -207,7 +207,7 @@ void func_809F6B38(EnDodojr* this) {
     this->actor.velocity.y = 10.0f;
 }
 
-void func_809F6BBC(EnDodojr* this) {
+void EnDodojr_SetupDespawn(EnDodojr* this) {
     this->actor.shape.shadowDraw = NULL;
     this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     this->actor.home.pos = this->actor.world.pos;
@@ -217,7 +217,7 @@ void func_809F6BBC(EnDodojr* this) {
     this->dustPos = this->actor.world.pos;
 }
 
-void func_809F6C24(EnDodojr* this) {
+void EnDodojr_SetupEatBomb(EnDodojr* this) {
     Animation_Change(&this->skelAnime, &object_dodojr_Anim_000724, 1.0f, 8.0f, 12.0f, ANIMMODE_ONCE, 0.0f);
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_DODO_M_EAT);
     this->actor.speedXZ = 0.0f;
@@ -226,7 +226,7 @@ void func_809F6C24(EnDodojr* this) {
     this->actor.gravity = -0.8f;
 }
 
-s32 func_809F6CA4(EnDodojr* this, PlayState* play) {
+s32 EnDodojr_CheckNearbyBombs(EnDodojr* this, PlayState* play) {
     Actor* bomb;
     Vec3f unkVec = { 99999.0f, 99999.0f, 99999.0f };
     s32 retVar = 0;
@@ -267,7 +267,7 @@ s32 func_809F6CA4(EnDodojr* this, PlayState* play) {
     return retVar;
 }
 
-s32 func_809F6DD0(EnDodojr* this) {
+s32 EnDodojr_TryEatBomb(EnDodojr* this) {
     if (this->bomb == NULL) {
         return 0;
     } else if (this->bomb->parent != NULL) {
@@ -280,7 +280,7 @@ s32 func_809F6DD0(EnDodojr* this) {
     }
 }
 
-void func_809F6E54(EnDodojr* this, PlayState* play) {
+void EnDodojr_UpdateCrawl(EnDodojr* this, PlayState* play) {
     f32 angles[] = { 0.0f, 210.0f, 60.0f, 270.0f, 120.0f, 330.0f, 180.0f, 30.0f, 240.0f, 90.0f, 300.0f, 150.0f };
     s32 pad;
     Player* player = GET_PLAYER(play);
@@ -289,7 +289,7 @@ void func_809F6E54(EnDodojr* this, PlayState* play) {
 
     if ((this->bomb == NULL) || (this->bomb->update == NULL) ||
         ((this->bomb != NULL) && (this->bomb->parent != NULL))) {
-        func_809F6CA4(this, play);
+        EnDodojr_CheckNearbyBombs(this, play);
     }
 
     if (this->bomb != NULL) {
@@ -311,7 +311,7 @@ void func_809F6E54(EnDodojr* this, PlayState* play) {
     this->actor.shape.rot.y = this->actor.world.rot.y;
 }
 
-s32 func_809F706C(EnDodojr* this) {
+s32 EnDodojr_IsPlayerWithinAttackRange(EnDodojr* this) {
     if (this->actor.xzDistToPlayer > 40.0f) {
         return 0;
     } else {
@@ -319,28 +319,28 @@ s32 func_809F706C(EnDodojr* this) {
     }
 }
 
-void func_809F709C(EnDodojr* this) {
+void EnDodojr_SetupStandardDeathBounce(EnDodojr* this) {
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_DODO_M_DEAD);
     this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
-    func_809F6A20(this);
-    this->actionFunc = func_809F7AB8;
+    EnDodojr_SetupFlipBounce(this);
+    this->actionFunc = EnDodojr_StandardDeathBounce;
 }
 
-s32 func_809F70E8(EnDodojr* this, PlayState* play) {
-    if ((this->actionFunc == func_809F773C) || (this->actionFunc == func_809F77AC) ||
-        (this->actionFunc == func_809F784C) || (this->actionFunc == func_809F7A00) ||
-        (this->actionFunc == func_809F7AB8) || (this->actionFunc == func_809F7B3C) ||
-        (this->actionFunc == func_809F7BE4)) {
+s32 EnDodojr_CheckDamaged(EnDodojr* this, PlayState* play) {
+    if ((this->actionFunc == EnDodojr_SwallowBomb) || (this->actionFunc == EnDodojr_SwallowedBombDeathBounce) ||
+        (this->actionFunc == EnDodojr_SwallowedBombDeathSequence) || (this->actionFunc == EnDodojr_Despawn) ||
+        (this->actionFunc == EnDodojr_StandardDeathBounce) || (this->actionFunc == EnDodojr_DeathSequence) ||
+        (this->actionFunc == EnDodojr_DropItem)) {
         return 0;
     }
 
     if (play->actorCtx.unk_02 != 0) {
-        if (this->actionFunc != func_809F73AC) {
-            if (this->actionFunc == func_809F74C4) {
+        if (this->actionFunc != EnDodojr_WaitUnderground) {
+            if (this->actionFunc == EnDodojr_EmergeFromGround) {
                 this->actor.shape.shadowDraw = ActorShadow_DrawCircle;
             }
 
-            func_809F709C(this);
+            EnDodojr_SetupStandardDeathBounce(this);
         }
         return 0;
     }
@@ -350,42 +350,42 @@ s32 func_809F70E8(EnDodojr* this, PlayState* play) {
     } else {
         this->collider.base.acFlags &= ~2;
 
-        if ((this->actionFunc == func_809F73AC) || (this->actionFunc == func_809F74C4)) {
+        if ((this->actionFunc == EnDodojr_WaitUnderground) || (this->actionFunc == EnDodojr_EmergeFromGround)) {
             this->actor.shape.shadowDraw = ActorShadow_DrawCircle;
         }
 
         if ((this->actor.colChkInfo.damageEffect == 0) && (this->actor.colChkInfo.damage != 0)) {
             Enemy_StartFinishingBlow(play, &this->actor);
             this->timer2 = 2;
-            this->actionFunc = func_809F7C48;
+            this->actionFunc = EnDodojr_WaitFreezeFrames;
             return 1;
         }
 
-        if ((this->actor.colChkInfo.damageEffect == 1) && (this->actionFunc != func_809F78EC) &&
-            (this->actionFunc != func_809F786C)) {
+        if ((this->actor.colChkInfo.damageEffect == 1) && (this->actionFunc != EnDodojr_Stunned) &&
+            (this->actionFunc != EnDodojr_StunnedBounce)) {
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_GOMA_JR_FREEZE);
             this->timer1 = 120;
             Actor_SetColorFilter(&this->actor, 0, 200, 0, 120);
-            func_809F6A20(this);
-            this->actionFunc = func_809F786C;
+            EnDodojr_SetupFlipBounce(this);
+            this->actionFunc = EnDodojr_StunnedBounce;
         }
 
         return 0;
     }
 }
 
-void func_809F72A4(EnDodojr* this, PlayState* play) {
+void EnDodojr_UpdateCollider(EnDodojr* this, PlayState* play) {
     Collider_UpdateCylinder(&this->actor, &this->collider);
 
-    if ((this->actionFunc != func_809F73AC) && (this->actionFunc != func_809F7BE4)) {
-        if ((this->actionFunc == func_809F74C4) || (this->actionFunc == func_809F758C) ||
-            (this->actionFunc == func_809F799C)) {
+    if ((this->actionFunc != EnDodojr_WaitUnderground) && (this->actionFunc != EnDodojr_DropItem)) {
+        if ((this->actionFunc == EnDodojr_EmergeFromGround) || (this->actionFunc == EnDodojr_CrawlTowardsTarget) ||
+            (this->actionFunc == EnDodojr_JumpAttackBounce)) {
             CollisionCheck_SetAT(play, &play->colChkCtx, &this->collider.base);
         }
 
-        if ((this->actionFunc == func_809F74C4) || (this->actionFunc == func_809F758C) ||
-            (this->actionFunc == func_809F786C) || (this->actionFunc == func_809F78EC) ||
-            (this->actionFunc == func_809F799C)) {
+        if ((this->actionFunc == EnDodojr_EmergeFromGround) || (this->actionFunc == EnDodojr_CrawlTowardsTarget) ||
+            (this->actionFunc == EnDodojr_StunnedBounce) || (this->actionFunc == EnDodojr_Stunned) ||
+            (this->actionFunc == EnDodojr_JumpAttackBounce)) {
             CollisionCheck_SetAC(play, &play->colChkCtx, &this->collider.base);
         }
 
@@ -393,7 +393,7 @@ void func_809F72A4(EnDodojr* this, PlayState* play) {
     }
 }
 
-void func_809F73AC(EnDodojr* this, PlayState* play) {
+void EnDodojr_WaitUnderground(EnDodojr* this, PlayState* play) {
     f32 lastFrame = Animation_GetLastFrame(&object_dodojr_Anim_000860);
     Player* player = GET_PLAYER(play);
     f32 dist;
@@ -411,59 +411,59 @@ void func_809F73AC(EnDodojr* this, PlayState* play) {
             this->actor.shape.rot.x = this->actor.world.rot.x;
             this->dustPos = this->actor.world.pos;
             this->dustPos.y = this->actor.floorHeight;
-            this->actionFunc = func_809F74C4;
+            this->actionFunc = EnDodojr_EmergeFromGround;
         }
     }
 }
 
-void func_809F74C4(EnDodojr* this, PlayState* play) {
+void EnDodojr_EmergeFromGround(EnDodojr* this, PlayState* play) {
     f32 sp2C;
 
     Math_SmoothStepToS(&this->actor.shape.rot.x, 0, 4, 0x3E8, 0x64);
     sp2C = this->actor.shape.rot.x;
     sp2C /= 16384.0f;
     this->actor.world.pos.y = this->actor.home.pos.y + (60.0f * sp2C);
-    func_809F6510(this, play, 3);
+    EnDodojr_SpawnLargeDust(this, play, 3);
 
     if (sp2C == 0.0f) {
         this->actor.shape.shadowDraw = ActorShadow_DrawCircle;
         this->actor.world.rot.x = this->actor.shape.rot.x;
         this->actor.speedXZ = 2.6f;
-        this->actionFunc = func_809F758C;
+        this->actionFunc = EnDodojr_CrawlTowardsTarget;
     }
 }
 
-void func_809F758C(EnDodojr* this, PlayState* play) {
+void EnDodojr_CrawlTowardsTarget(EnDodojr* this, PlayState* play) {
     Actor_UpdateVelocityXZGravity(&this->actor);
-    func_809F6730(this, play, &this->actor.world.pos);
+    EnDodojr_SpawnSmallDust(this, play, &this->actor.world.pos);
 
     if (DECR(this->timer4) == 0) {
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_DODO_M_MOVE);
         this->timer4 = 5;
     }
 
-    if (func_809F6DD0(this) != 0) {
-        func_809F6C24(this);
-        this->actionFunc = func_809F768C;
+    if (EnDodojr_TryEatBomb(this) != 0) {
+        EnDodojr_SetupEatBomb(this);
+        this->actionFunc = EnDodojr_EatBomb;
         return;
     }
 
-    func_809F6E54(this, play);
+    EnDodojr_UpdateCrawl(this, play);
 
-    if (func_809F706C(this) != 0) {
+    if (EnDodojr_IsPlayerWithinAttackRange(this) != 0) {
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_DODO_M_CRY);
-        func_809F6B38(this);
-        this->actionFunc = func_809F799C;
+        EnDodojr_SetupJumpAttackBounce(this);
+        this->actionFunc = EnDodojr_JumpAttackBounce;
     }
 
     if (this->actor.bgCheckFlags & 8) {
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_DODO_M_DOWN);
-        func_809F6BBC(this);
-        this->actionFunc = func_809F7A00;
+        EnDodojr_SetupDespawn(this);
+        this->actionFunc = EnDodojr_Despawn;
     }
 }
 
-void func_809F768C(EnDodojr* this, PlayState* play) {
+void EnDodojr_EatBomb(EnDodojr* this, PlayState* play) {
     EnBom* bomb;
 
     if (((s16)this->skelAnime.curFrame - 8) < 4) {
@@ -475,42 +475,42 @@ void func_809F768C(EnDodojr* this, PlayState* play) {
         Actor_Kill(this->bomb);
         this->timer3 = 24;
         this->counter = 0;
-        this->actionFunc = func_809F773C;
+        this->actionFunc = EnDodojr_SwallowBomb;
     }
 }
 
-void func_809F773C(EnDodojr* this, PlayState* play) {
+void EnDodojr_SwallowBomb(EnDodojr* this, PlayState* play) {
     if (DECR(this->timer3) == 0) {
-        func_809F64D0(this);
+        EnDodojr_DoSwallowedBombEffects(this);
         this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
-        func_809F6A20(this);
-        this->actionFunc = func_809F77AC;
+        EnDodojr_SetupFlipBounce(this);
+        this->actionFunc = EnDodojr_SwallowedBombDeathBounce;
     }
 }
 
-void func_809F77AC(EnDodojr* this, PlayState* play) {
+void EnDodojr_SwallowedBombDeathBounce(EnDodojr* this, PlayState* play) {
     this->rootScale = 1.2f;
     this->rootScale *= ((f32)this->actor.colorFilterTimer / 8);
     Actor_UpdateVelocityXZGravity(&this->actor);
 
-    if (func_809F68B0(this, play) != 0) {
+    if (EnDodojr_UpdateBounces(this, play) != 0) {
         this->timer3 = 60;
-        func_809F6AC4(this);
+        EnDodojr_SetupSwallowedBombDeathSequence(this);
         this->counter = 7;
-        this->actionFunc = func_809F784C;
+        this->actionFunc = EnDodojr_SwallowedBombDeathSequence;
     }
 }
 
-void func_809F784C(EnDodojr* this, PlayState* play) {
-    func_809F7B3C(this, play);
+void EnDodojr_SwallowedBombDeathSequence(EnDodojr* this, PlayState* play) {
+    EnDodojr_DeathSequence(this, play);
 }
 
-void func_809F786C(EnDodojr* this, PlayState* play) {
+void EnDodojr_StunnedBounce(EnDodojr* this, PlayState* play) {
     Actor_UpdateVelocityXZGravity(&this->actor);
 
-    if (func_809F68B0(this, play) != 0) {
-        func_809F6AC4(this);
-        this->actionFunc = func_809F78EC;
+    if (EnDodojr_UpdateBounces(this, play) != 0) {
+        EnDodojr_SetupSwallowedBombDeathSequence(this);
+        this->actionFunc = EnDodojr_Stunned;
     }
 
     Math_SmoothStepToS(&this->actor.shape.rot.y, 0, 4, 1000, 10);
@@ -518,7 +518,7 @@ void func_809F786C(EnDodojr* this, PlayState* play) {
     this->actor.colorFilterTimer = this->timer1;
 }
 
-void func_809F78EC(EnDodojr* this, PlayState* play) {
+void EnDodojr_Stunned(EnDodojr* this, PlayState* play) {
     if (DECR(this->timer1) != 0) {
         if (this->timer1 < 30) {
             if ((this->timer1 & 1) != 0) {
@@ -532,22 +532,22 @@ void func_809F78EC(EnDodojr* this, PlayState* play) {
             return;
         }
     } else {
-        func_809F6994(this);
-        this->actionFunc = func_809F758C;
+        EnDodojr_SetupCrawlTowardsTarget(this);
+        this->actionFunc = EnDodojr_CrawlTowardsTarget;
     }
 }
 
-void func_809F799C(EnDodojr* this, PlayState* play) {
+void EnDodojr_JumpAttackBounce(EnDodojr* this, PlayState* play) {
     this->actor.flags |= ACTOR_FLAG_SFX_FOR_PLAYER_BODY_HIT;
     Actor_UpdateVelocityXZGravity(&this->actor);
 
-    if (func_809F68B0(this, play) != 0) {
-        func_809F6994(this);
-        this->actionFunc = func_809F758C;
+    if (EnDodojr_UpdateBounces(this, play) != 0) {
+        EnDodojr_SetupCrawlTowardsTarget(this);
+        this->actionFunc = EnDodojr_CrawlTowardsTarget;
     }
 }
 
-void func_809F7A00(EnDodojr* this, PlayState* play) {
+void EnDodojr_Despawn(EnDodojr* this, PlayState* play) {
     f32 tmp;
 
     Math_SmoothStepToS(&this->actor.shape.rot.x, 0x4000, 4, 1000, 100);
@@ -559,23 +559,23 @@ void func_809F7A00(EnDodojr* this, PlayState* play) {
         Actor_Kill(&this->actor);
     }
 
-    func_809F6510(this, play, 3);
+    EnDodojr_SpawnLargeDust(this, play, 3);
 }
 
-void func_809F7AB8(EnDodojr* this, PlayState* play) {
+void EnDodojr_StandardDeathBounce(EnDodojr* this, PlayState* play) {
     Actor_UpdateVelocityXZGravity(&this->actor);
     Math_SmoothStepToS(&this->actor.shape.rot.y, 0, 4, 1000, 10);
     this->actor.world.rot.x = this->actor.shape.rot.x;
 
-    if (func_809F68B0(this, play) != 0) {
+    if (EnDodojr_UpdateBounces(this, play) != 0) {
         this->timer3 = 60;
-        func_809F6AC4(this);
+        EnDodojr_SetupSwallowedBombDeathSequence(this);
         this->counter = 7;
-        this->actionFunc = func_809F7B3C;
+        this->actionFunc = EnDodojr_DeathSequence;
     }
 }
 
-void func_809F7B3C(EnDodojr* this, PlayState* play) {
+void EnDodojr_DeathSequence(EnDodojr* this, PlayState* play) {
     EnBom* bomb;
 
     if (this->counter != 0) {
@@ -592,20 +592,20 @@ void func_809F7B3C(EnDodojr* this, PlayState* play) {
         }
 
         this->timer3 = 8;
-        this->actionFunc = func_809F7BE4;
+        this->actionFunc = EnDodojr_DropItem;
     }
 }
 
-void func_809F7BE4(EnDodojr* this, PlayState* play) {
+void EnDodojr_DropItem(EnDodojr* this, PlayState* play) {
     if (DECR(this->timer3) == 0) {
         Item_DropCollectibleRandom(play, NULL, &this->actor.world.pos, 0x40);
         Actor_Kill(&this->actor);
     }
 }
 
-void func_809F7C48(EnDodojr* this, PlayState* play) {
+void EnDodojr_WaitFreezeFrames(EnDodojr* this, PlayState* play) {
     if (DECR(this->timer2) == 0) {
-        func_809F709C(this);
+        EnDodojr_SetupStandardDeathBounce(this);
     }
 }
 
@@ -614,18 +614,18 @@ void EnDodojr_Update(Actor* thisx, PlayState* play) {
 
     SkelAnime_Update(&this->skelAnime);
     Actor_MoveXZGravity(&this->actor);
-    func_809F70E8(this, play);
+    EnDodojr_CheckDamaged(this, play);
 
-    if (this->actionFunc != func_809F73AC) {
+    if (this->actionFunc != EnDodojr_WaitUnderground) {
         Actor_UpdateBgCheckInfo(play, &this->actor, this->collider.dim.radius, this->collider.dim.height, 0.0f, 5);
     }
 
     this->actionFunc(this, play);
     Actor_SetFocus(&this->actor, 10.0f);
-    func_809F72A4(this, play);
+    EnDodojr_UpdateCollider(this, play);
 }
 
-s32 func_809F7D50(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
+s32 EnDodojr_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     EnDodojr* this = (EnDodojr*)thisx;
     Vec3f D_809F7F64 = { 480.0f, 620.0f, 0.0f };
 
@@ -641,14 +641,15 @@ s32 func_809F7D50(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s
     return false;
 }
 
-void func_809F7DFC(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
+void EnDodojr_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
 }
 
 void EnDodojr_Draw(Actor* thisx, PlayState* play) {
     EnDodojr* this = (EnDodojr*)thisx;
 
-    if ((this->actionFunc != func_809F73AC) && (this->actionFunc != func_809F7BE4)) {
+    if ((this->actionFunc != EnDodojr_WaitUnderground) && (this->actionFunc != EnDodojr_DropItem)) {
         Gfx_SetupDL_25Opa(play->state.gfxCtx);
-        SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, func_809F7D50, func_809F7DFC, &this->actor);
+        SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnDodojr_OverrideLimbDraw, EnDodojr_PostLimbDraw,
+                                  &this->actor);
     }
 }

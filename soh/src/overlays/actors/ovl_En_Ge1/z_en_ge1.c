@@ -234,7 +234,7 @@ void EnGe1_KickPlayer(EnGe1* this, PlayState* play) {
     if (this->cutsceneTimer > 0) {
         this->cutsceneTimer--;
     } else {
-        func_8006D074(play);
+        Horse_ResetHorseData(play);
 
         if ((INV_CONTENT(ITEM_HOOKSHOT) == ITEM_NONE) || (INV_CONTENT(ITEM_LONGSHOT) == ITEM_NONE)) {
             play->nextEntranceIndex = ENTR_GERUDO_VALLEY_1;
