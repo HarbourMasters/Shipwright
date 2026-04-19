@@ -43,11 +43,11 @@ static bool HasArrowType(PlayerItemAction itemAction) {
         case PLAYER_IA_BOW:
             return true;
         case PLAYER_IA_BOW_FIRE:
-            return INV_CONTENT(ITEM_ARROW_FIRE) == ITEM_ARROW_FIRE;
+            return INV_CONTENT(ITEM_ARROW_FIRE) == ITEM_ARROW_FIRE && gSaveContext.magic >= sMagicArrowCosts[0];
         case PLAYER_IA_BOW_ICE:
-            return INV_CONTENT(ITEM_ARROW_ICE) == ITEM_ARROW_ICE;
+            return INV_CONTENT(ITEM_ARROW_ICE) == ITEM_ARROW_ICE && gSaveContext.magic >= sMagicArrowCosts[1];
         case PLAYER_IA_BOW_LIGHT:
-            return INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT;
+            return INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT && gSaveContext.magic >= sMagicArrowCosts[2];
         default:
             return false;
     }
