@@ -2135,6 +2135,199 @@ void StaticData::HintTable_Init_Exclude_Overworld() {
         HintText(CustomMessage("They say that a #bush in Zora's Fountain# contains #[[1]]#.",
                                /*german*/ "",
                                /*french*/ "Selon moi, un #buisson à la Fontaine Zora# cache #[[1]]#.", { QM_RED, QM_GREEN }));
+
+    hintTextTable[RHT_BUTTERFLY_FAIRY_HYRULE_CASTLE] = HintText(CustomMessage("They say that a #butterfly near the castle# reveals #[[1]]#.",
+                                            /*german*/ "Man erzählt sich, daß ein #Schmetterling in der Nähe des Schlosses# #[[1]]# enthülle.",
+                                            /*french*/ "Selon moi, une #un papillon près du château# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_BUTTERFLY_FAIRY_LOST_WOODS] = HintText(CustomMessage("They say that a #butterfly in the woods# reveals #[[1]]#.",
+                                            /*german*/ "Man erzählt sich, daß ein #Schmetterling im Wald# #[[1]]# enthülle.",
+                                            /*french*/ "Selon moi, une #un papillon dans les bois# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_BUTTERFLY_FAIRY_GRAVEYARD] = HintText(CustomMessage("They say that a #butterfly in the graveyard# reveals #[[1]]#.",
+                                            /*german*/ "Man erzählt sich, daß ein #Schmetterling auf dem Friedhof# #[[1]]# enthülle.",
+                                            /*french*/ "Selon moi, une #un papillon dans le cimetière# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_BUTTERFLY_FAIRY_ZORAS_RIVER] = HintText(CustomMessage("They say that a #butterfly near a river# reveals #[[1]]#.",
+                                            /*german*/ "Man erzählt sich, daß ein #Schmetterling in der Nähe eines Flusses# #[[1]]# enthülle.",
+                                            /*french*/ "Selon moi, une #un papillon près d'une rivière# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_BUTTERFLY_FAIRY_ZORAS_FOUNTAIN] = HintText(CustomMessage("They say that a #butterfly on a log# reveals #[[1]]#.",
+                                            /*german*/ "Man erzählt sich, daß ein #Schmetterling auf einem Baumstamm# #[[1]]# enthülle.",
+                                            /*french*/ "Selon moi, une #un papillon sur une bûche# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_BUTTERFLY_FAIRY_LAKE_HYLIA] = HintText(CustomMessage("They say that a #butterfly near a lake# reveals #[[1]]#.",
+                                            /*german*/ "Man erzählt sich, daß ein #Schmetterling in der Nähe eines Sees# #[[1]]# enthülle.",
+                                            /*french*/ "Selon moi, une #un papillon près d'un lac# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_SIGN_KOKIRI_FOREST] = HintText(CustomMessage("They say that #reading a sign in a forest# reveals #[[1]]#.",
+                                                        /*german*/ "Man erzählt sich, daß das #Lesen eines Schildes in einem Wald# #[[1]]# enthülle.",
+                                                        /*french*/ "Selon moi, #lire un panneau dans un fôret# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_SIGN_LINKS_HOUSE] = HintText(CustomMessage("They say that #reading a sign in Link's House# reveals #[[1]]#.",
+                                                        /*german*/ "Man erzählt sich, daß das #Lesen eines Schildes in Links Haus# #[[1]]# enthülle.",
+                                                        /*french*/ "Selon moi, #lire un panneau dans la Maison de Link# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_SIGN_DEKU_THEATER] = HintText(CustomMessage("They say that #reading a sign in an underground theater# reveals #[[1]]#.",
+                                                        /*german*/ "Man erzählt sich, daß das #Lesen eines Schildes in einem unterirdischen Theater# #[[1]]# enthülle.",
+                                                        /*french*/ "Selon moi, #lire un panneau dans un théâtre souterrain# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_SIGN_HYRULE_FIELD] = HintText(CustomMessage("They say that #reading a sign in an underground theater# reveals #[[1]]#.",
+                                                        /*german*/ "Man erzählt sich, daß das #Lesen eines Schildes in der Ebene von Hyrule# #[[1]]# enthülle.",
+                                                        /*french*/ "Selon moi, #lire un panneau dans la Plaine d'Hyrule# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_SIGN_MK_SHOOTING_GALLERY] = HintText(CustomMessage("They say that #reading before shooting in youth# reveals #[[1]]#.",
+                                                        /*german*/ "Man erzählt sich, daß das #Lesen vor dem Schießen in der Jugend# #[[1]]# enthülle.",
+                                                        /*french*/ "Selon moi, #lire avant de tirer dans sa jeunesse# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_SIGN_KAK_SHOOTING_GALLERY] = HintText(CustomMessage("They say that #reading before shooting in maturity# reveals #[[1]]#.",
+                                                        /*german*/ "Man erzählt sich, daß das #Lesen vor dem Schießen im Erwachsenenalter# #[[1]]# enthülle.",
+                                                        /*french*/ "Selon moi, #lire avant de tirer dans sa maturité# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_SIGN_HAPPY_MASK_SHOP] = HintText(CustomMessage("They say that #reading a sign in a mask shop# reveals #[[1]]#.",
+                                                        /*german*/ "Man erzählt sich, daß das #Lesen eines Schildes in einem Maskenladen# #[[1]]# enthülle.",
+                                                        /*french*/ "Selon moi, #lire un panneau dans un magasin de masques# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_SIGN_TEMPLE_OF_TIME] = HintText(CustomMessage("They say that #reading a sign in a mask shop# reveals #[[1]]#.",
+                                                        /*german*/ "Man erzählt sich, daß das #Lesen eines Altars im Tempel der Zeit# #[[1]]# enthülle.",
+                                                        /*french*/ "Selon moi, #lire un autel dans le Temple du Temps# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_SIGN_HYRULE_CASTLE] = HintText(CustomMessage("They say that #reading a sign near the castle# reveals #[[1]]#.",
+                                                        /*german*/ "Man erzählt sich, daß das #Lesen eines Schildes in der Nähe des Schloßes# #[[1]]# enthülle.",
+                                                        /*french*/ "Selon moi, #lire un panneau rès du château# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_SIGN_KAKARIKO_VILLAGE] = HintText(CustomMessage("They say that #reading a sign in Kakariko Village# reveals #[[1]]#.",
+                                                        /*german*/ "Man erzählt sich, daß das #Lesen eines Schildes in Kakariko# #[[1]]# enthülle.",
+                                                        /*french*/ "Selon moi, #lire un panneau dans le Village de Cocorico# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_SIGN_GRAVEYARD] = HintText(CustomMessage("They say that #reading in the graveyard# reveals #[[1]]#.",
+                                                        /*german*/ "Man erzählt sich, daß das #Lesen auf dem Friedhof# #[[1]]# enthülle.",
+                                                        /*french*/ "Selon moi, #lire dans le cimetière# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_SIGN_DEATH_MOUNTAIN_TRAIL] = HintText(CustomMessage("They say that #reading a sign on Death Mountain Trail# reveals #[[1]]#.",
+                                                        /*german*/ "Man erzählt sich, daß das #Lesen eines Schildes auf dem Todesberggipfel-Pfad# #[[1]]# enthülle.",
+                                                        /*french*/ "Selon moi, #lire un panneau sur le sentier de la Montagne de la Mort# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_SIGN_GORON_CITY] = HintText(CustomMessage("They say that #reading a sign in Goron City# reveals #[[1]]#.",
+                                                        /*german*/ "Man erzählt sich, daß das #Lesen eines Schildes in Goronia# #[[1]]# enthülle.",
+                                                        /*french*/ "Selon moi, #lire un panneau dans le Village Goron# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_SIGN_DEATH_MOUNTAIN_CRATER] = HintText(CustomMessage("They say that #reading a sign in Death Mountain Crater# reveals #[[1]]#.",
+                                                        /*german*/ "Man erzählt sich, daß das #Lesen eines Schildes im Todeskrater# #[[1]]# enthülle.",
+                                                        /*french*/ "Selon moi, #lire un panneau sur le Mont du Péril# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_SIGN_ZORAS_RIVER] = HintText(CustomMessage("They say that #reading a sign near a river# reveals #[[1]]#.",
+                                                        /*german*/ "Man erzählt sich, daß das #Lesen eines Schildes in der Nähe eines Flusses# #[[1]]# enthülle.",
+                                                        /*french*/ "Selon moi, #lire un panneau près d'une rivière# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_SIGN_ZORAS_DOMAIN] = HintText(CustomMessage("They say that #reading a sign in Zora's Domain# reveals #[[1]]#.",
+                                                        /*german*/ "Man erzählt sich, daß das #Lesen eines Schildes in Zoras Reich# #[[1]]# enthülle.",
+                                                        /*french*/ "Selon moi, #lire un panneau dans le Domaine Zora# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_SIGN_ZORAS_FOUNTAIN] = HintText(CustomMessage("They say that #reading a sign in Zora's Fountain# reveals #[[1]]#.",
+                                                        /*german*/ "Man erzählt sich, daß das #Lesen eines Schildes in Zoras Quelle# #[[1]]# enthülle.",
+                                                        /*french*/ "Selon moi, #lire un panneau dans la Fontaine Zora# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_SIGN_LAKE_HYLIA] = HintText(CustomMessage("They say that #reading near a lake# reveals #[[1]]#.",
+                                                        /*german*/ "Man erzählt sich, daß das #Lesen in der Nähe eines Sees# #[[1]]# enthülle.",
+                                                        /*french*/ "Selon moi, #lire près d'un lac# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_SIGN_FISHING_POND] = HintText(CustomMessage("They say that #reading a sign in a fishing pond# reveals #[[1]]#.",
+                                                        /*german*/ "Man erzählt sich, daß das #Lesen eines Schildes in einem Fischteich# #[[1]]# enthülle.",
+                                                        /*french*/ "Selon moi, #lire un panneau dans un étang de pêche# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_SIGN_GERUDO_VALLEY] = HintText(CustomMessage("They say that #reading a sign in Gerudo Valley# reveals #[[1]]#.",
+                                                        /*german*/ "Man erzählt sich, daß das #Lesen eines Schildes im Gerudotalh# #[[1]]# enthülle.",
+                                                        /*french*/ "Selon moi, #lire un panneau dans une vallée# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_SIGN_GERUDO_FORTRESS] = HintText(CustomMessage("They say that #reading a sign in Gerudo Fortress# reveals #[[1]]#.",
+                                                        /*german*/ "Man erzählt sich, daß das #Lesen eines Schildes in der Gerudo-Festung# #[[1]]# enthülle.",
+                                                        /*french*/ "Selon moi, #lire un panneau dans la Forteresse Gerudo# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_SIGN_HAUNTED_WASTELAND] = HintText(CustomMessage("They say that #reading a sign in Haunted Wasteland# reveals #[[1]]#.",
+                                                        /*german*/ "Man erzählt sich, daß das #Lesen eines Schildes in der Gespensterwüste# #[[1]]# enthülle.",
+                                                        /*french*/ "Selon moi, #lire un panneau dans le Désert Hanté# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_WONDER_ITEM_KOKIRI_FOREST] = HintText(CustomMessage("They say that a #wonder item in Kokiri Forest# hides #[[1]]#.",
+                                                     /*german*/ "Man erzählt sich, daß sich ein #Wunder-Gegenstand im Kokiri-Wald# #[[1]]# verstecke.",
+                                                     /*french*/ "Selon moi, un #objet merveilleux dans la Fôret Kokiri# cache #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_WONDER_ITEM_HYRULE_FIELD] = HintText(CustomMessage("They say that a #wonder item in Hyrule Field# hides #[[1]]#.",
+                                                     /*german*/ "Man erzählt sich, daß sich ein #Wunder-Gegenstand in der Ebene von Hyrule# #[[1]]# verstecke.",
+                                                     /*french*/ "Selon moi, un #objet merveilleux dans la Plaine d'Hyrule# cache #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_WONDER_ITEM_MARKET] = HintText(CustomMessage("They say that a #wonder item in the Market# hides #[[1]]#.",
+                                                     /*german*/ "Man erzählt sich, daß sich ein #Wunder-Gegenstand auf dem Markt# #[[1]]# verstecke.",
+                                                     /*french*/ "Selon moi, un #objet merveilleux dans la Place du Marché# cache #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_WONDER_ITEM_LON_LON_RANCH] = HintText(CustomMessage("They say that a #wonder item in Lon Lon Ranch# hides #[[1]]#.",
+                                                     /*german*/ "Man erzählt sich, daß sich ein #Wunder-Gegenstand auf der Lon Lon-Farm# #[[1]]# verstecke.",
+                                                     /*french*/ "Selon moi, un #objet merveilleux dans le Ranch Lon Lon# cache #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_WONDER_ITEM_HYRULE_CASTLE] = HintText(CustomMessage("They say that a #wonder item in Hyrule Castle# hides #[[1]]#.",
+                                                     /*german*/ "Man erzählt sich, daß sich ein #Wunder-Gegenstand im Schloss von Hyrule# #[[1]]# verstecke.",
+                                                     /*french*/ "Selon moi, un #objet merveilleux au Château d'Hyrule# cache #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_WONDER_ITEM_CASTLE_COURTYARD_ZELDA] = HintText(CustomMessage("They say that #shooting a window in a castle# reveals #[[1]]#.",
+                                                     /*german*/ "Man erzählt sich, daß das #Schießen auf ein Fenster in einem Schloss# #[[1]]# enthülle.",
+                                                     /*french*/ "Selon moi, #tirer sur une fenêtre dans un château# donne #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_WONDER_ITEM_LOST_WOODS] = HintText(CustomMessage("They say that a #wonder item in the woods# hides #[[1]]#.",
+                                                     /*german*/ "Man erzählt sich, daß sich ein #Wunder-Gegenstand in den Wäldern# #[[1]]# verstecke.",
+                                                     /*french*/ "Selon moi, un #objet merveilleux dans des bois# cache #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_WONDER_ITEM_SACRED_FOREST_MEADOW] = HintText(CustomMessage("They say that a #wonder item in a forest meadow# hides #[[1]]#.",
+                                                     /*german*/ "Man erzählt sich, daß sich ein #Wunder-Gegenstand auf einer Waldlichtung# #[[1]]# verstecke.",
+                                                     /*french*/ "Selon moi, un #objet merveilleux dans le sanctuaire des bois# cache #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_WONDER_ITEM_KAKARIKO_VILLAGE] = HintText(CustomMessage("They say that a #wonder item in Kakariko Village# hides #[[1]]#.",
+                                                     /*german*/ "Man erzählt sich, daß sich ein #Wunder-Gegenstand in Kakariko# #[[1]]# verstecke.",
+                                                     /*french*/ "Selon moi, un #objet merveilleux dans le Village de Cocorico# cache #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_WONDER_ITEM_DAMPES_GRAVE] = HintText(CustomMessage("They say that a #wonder item in a gravekeeper's tomb# hides #[[1]]#.",
+                                                     /*german*/ "Man erzählt sich, daß sich ein #Wunder-Gegenstand im Grab des Totengräbers# #[[1]]# verstecke.",
+                                                     /*french*/ "Selon moi, un #objet merveilleux dans la tombe du fossoyeur# cache #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_WONDER_ITEM_DEATH_MOUNTAIN_CRATER] = HintText(CustomMessage("They say that a #wonder item in Death Mountain's Crater# hides #[[1]]#.",
+                                                     /*german*/ "Man erzählt sich, daß sich ein #Wunder-Gegenstand im Todeskrater# #[[1]]# verstecke.",
+                                                     /*french*/ "Selon moi, un #objet merveilleux sur le Mont du Péril# cache #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_WONDER_ITEM_ZORAS_RIVER] = HintText(CustomMessage("They say that a #wonder item in a river# hides #[[1]]#.",
+                                                     /*german*/ "Man erzählt sich, daß sich ein #Wunder-Gegenstand in einem Fluss# #[[1]]# verstecke.",
+                                                     /*french*/ "Selon moi, un #objet merveilleux dans une rivière# cache #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_WONDER_ITEM_ZORAS_RIVER] = HintText(CustomMessage("They say that a #wonder item in Zora's Fountain# hides #[[1]]#.",
+                                                     /*german*/ "Man erzählt sich, daß sich ein #Wunder-Gegenstand in Zoras Quelle# #[[1]]# verstecke.",
+                                                     /*french*/ "Selon moi, un #objet merveilleux dans la Fontaine Zora# cache #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_WONDER_ITEM_GERUDO_VALLEY] = HintText(CustomMessage("They say that a #wonder item in Gerudo Valley# hides #[[1]]#.",
+                                                     /*german*/ "Man erzählt sich, daß sich ein #Wunder-Gegenstand im Gerudotal# #[[1]]# verstecke.",
+                                                     /*french*/ "Selon moi, un #objet merveilleux dans une vallée# cache #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_WONDER_ITEM_GERUDOS_FORTRESS] = HintText(CustomMessage("They say that a #wonder item in Gerudo Fortress# hides #[[1]]#.",
+                                                     /*german*/ "Man erzählt sich, daß sich ein #Wunder-Gegenstand in der Gerudo-Festung# #[[1]]# verstecke.",
+                                                     /*french*/ "Selon moi, un #objet merveilleux dans la Forteresse Gerudo# cache #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_WONDER_ITEM_THIEVES_HIDEOUT] = HintText(CustomMessage("They say that a #wonder item in Thieve's Hideout# hides #[[1]]#.",
+                                                     /*german*/ "Man erzählt sich, daß sich ein #Wunder-Gegenstand im Versteck der Diebe# #[[1]]# verstecke.",
+                                                     /*french*/ "Selon moi, un #objet merveilleux dans a Cachette des Voleurs# cache #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_WONDER_ITEM_DESERT_COLOSSUS] = HintText(CustomMessage("They say that a #wonder item near the temple of the sand# hides #[[1]]#.",
+                                                     /*german*/ "Man erzählt sich, daß sich ein #Wunder-Gegenstand nahe des Tempels des Sandes# #[[1]]# verstecke.",
+                                                     /*french*/ "Selon moi, un #objet merveilleux près du temple du sable# cache #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_BEGGAR_MARKET] = HintText(CustomMessage("They say that #trading with a beggar in the market# gives #[[1]]#.",
+                                                        /*german*/ "Man erzählt sich, daß das #Handeln mit einem Bettler auf dem Markt# #[[1]]# gäbe.",
+                                                        /*french*/ "Selon moi, #échanger avec un mendiant sur le marché# donne #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_BEGGAR_KAKARIKO_VILLAGE] = HintText(CustomMessage("They say that #trading with a beggar in Kakariko Village# gives #[[1]]#.",
+                                                        /*german*/ "Man erzählt sich, daß das #Handeln mit einem Bettler in Kakariko# #[[1]]# gäbe.",
+                                                        /*french*/ "Selon moi, #échanger avec un mendiant dans le Village de Cocorico# donne #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_RED_ICE_ZORAS_DOMAIN] = HintText(CustomMessage("They say that #melting red ice in Zora's Domain# gives #[[1]]#.",
+                                                        /*german*/ "Man erzählt sich, daß das #Schmelzen von rotem Eis in Zoras Reich# #[[1]]# gäbe.",
+                                                        /*french*/ "Selon moi, #faire fondre la glace rouge dans le Domaine Zora# donne #[[1]]#.", {QM_RED, QM_GREEN}));
+
     // clang-format on
 }
 } // namespace Rando

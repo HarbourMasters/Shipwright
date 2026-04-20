@@ -15,7 +15,7 @@ jobs:
       with:
         submodules: true
     - name: Configure ccache
-      uses: hendrikmuhs/ccache-action@v1.2
+      uses: hendrikmuhs/ccache-action@v1.2.22
       with:
         save: ${{ github.ref_name == github.event.repository.default_branch }}
         key: ${{ runner.os }}-otr-ccache-${{ github.ref }}-${{ github.sha }}
@@ -83,7 +83,7 @@ jobs:
       with:
         submodules: true
     - name: Configure ccache
-      uses: hendrikmuhs/ccache-action@v1.2
+      uses: hendrikmuhs/ccache-action@v1.2.22
       with:
         create-symlink: true
         save: ${{ github.ref_name == github.event.repository.default_branch }}
@@ -163,7 +163,7 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y $(cat .github/workflows/apt-deps.txt)
     - name: Configure ccache
-      uses: hendrikmuhs/ccache-action@v1.2
+      uses: hendrikmuhs/ccache-action@v1.2.22
       with:
         save: ${{ github.ref_name == github.event.repository.default_branch }}
         key: ${{ runner.os }}-ccache-${{ github.ref }}-${{ github.sha }}
@@ -277,7 +277,7 @@ jobs:
       with:
         submodules: true
     - name: Configure sccache
-      uses: hendrikmuhs/ccache-action@v1.2
+      uses: hendrikmuhs/ccache-action@v1.2.22
       with:
         variant: sccache
         max-size: "2G"

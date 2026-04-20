@@ -149,6 +149,7 @@ static void PlaceItemsForType(RandomizerCheckType rctype, bool overworldActive =
 void GenerateItemPool() {
     // RANDOTODO proper removal of items not in pool or logically relevant instead of dummy checks.
     auto ctx = Rando::Context::GetInstance();
+    ctx->possibleIceTrapModels.clear();
     itemPool.clear();
     junkPool.clear();
     plentifulPool.clear();
@@ -302,7 +303,7 @@ void GenerateItemPool() {
         ctx->PlaceItemInLocation(RC_SONG_FROM_WINDMILL, RG_SONG_OF_STORMS, false, true);
     }
 
-    bool rewardIceTraps = ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Get() >= RO_DUNGEON_REWARDS_ANY_DUNGEON;
+    bool rewardIceTraps = ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Get() >= RO_DUNGEON_REWARDS_OWN_DUNGEON;
     AddFixedItemToPool(RG_KOKIRI_EMERALD, 1, rewardIceTraps);
     AddFixedItemToPool(RG_GORON_RUBY, 1, rewardIceTraps);
     AddFixedItemToPool(RG_ZORA_SAPPHIRE, 1, rewardIceTraps);
@@ -446,6 +447,13 @@ void GenerateItemPool() {
     bool bushesActive = (bool)ctx->GetOption(RSK_SHUFFLE_BUSHES);
     PlaceItemsForType(RCTYPE_BUSH, bushesActive, false);
 
+    // Shuffle Wonder Items
+    bool overworldWonderItemsActive = ctx->GetOption(RSK_SHUFFLE_WONDER_ITEMS).Is(RO_SHUFFLE_WONDER_ITEMS_OVERWORLD) ||
+                               ctx->GetOption(RSK_SHUFFLE_WONDER_ITEMS).Is(RO_SHUFFLE_WONDER_ITEMS_ALL);
+    bool dungeonWonderItemsActive = ctx->GetOption(RSK_SHUFFLE_WONDER_ITEMS).Is(RO_SHUFFLE_WONDER_ITEMS_DUNGEONS) ||
+                             ctx->GetOption(RSK_SHUFFLE_WONDER_ITEMS).Is(RO_SHUFFLE_WONDER_ITEMS_ALL);
+    PlaceItemsForType(RCTYPE_WONDER_ITEM, overworldWonderItemsActive, dungeonWonderItemsActive);
+
     // Shuffle Crates
     bool overworldCratesActive = ctx->GetOption(RSK_SHUFFLE_CRATES).Is(RO_SHUFFLE_CRATES_OVERWORLD) ||
                                  ctx->GetOption(RSK_SHUFFLE_CRATES).Is(RO_SHUFFLE_CRATES_ALL);
@@ -488,6 +496,10 @@ void GenerateItemPool() {
         ctx->PlaceItemInLocation(RC_GC_MEDIGORON, RG_GIANTS_KNIFE, false, true);
         ctx->PlaceItemInLocation(RC_WASTELAND_BOMBCHU_SALESMAN, RG_BOMBCHU_10, false, true);
     }
+
+    // Shuffle Beggar
+    bool beggarActive = (bool)ctx->GetOption(RSK_SHUFFLE_BEGGAR);
+    PlaceItemsForType(RCTYPE_BEGGAR, beggarActive, false);
 
     if (ctx->GetOption(RSK_SHUFFLE_FROG_SONG_RUPEES)) {
         AddFixedItemToPool(RG_PURPLE_RUPEE, 5);

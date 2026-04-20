@@ -119,6 +119,7 @@ RANDO_ENUM_ITEM(RCTYPE_SMALL_CRATE)                // Small crates
 RANDO_ENUM_ITEM(RCTYPE_TREE)                       // Trees
 RANDO_ENUM_ITEM(RCTYPE_NLTREE)                     // NL Trees
 RANDO_ENUM_ITEM(RCTYPE_BUSH)                       // Bushes
+RANDO_ENUM_ITEM(RCTYPE_WONDER_ITEM)                // Wonder Items
 RANDO_ENUM_ITEM(RCTYPE_DUNGEON_REWARD)             // Dungeon rewards (blue warps)
 RANDO_ENUM_ITEM(RCTYPE_OCARINA)                    // Ocarina locations
 RANDO_ENUM_ITEM(RCTYPE_BEEHIVE)                    // Beehives
@@ -128,7 +129,12 @@ RANDO_ENUM_ITEM(RCTYPE_FOUNTAIN_FAIRY)             // Fairies in Fountains
 RANDO_ENUM_ITEM(RCTYPE_STONE_FAIRY)                // Fairies from Gossip Stones
 RANDO_ENUM_ITEM(RCTYPE_BEAN_FAIRY)                 // Fairies from Beans
 RANDO_ENUM_ITEM(RCTYPE_SONG_FAIRY)                 // Fairies from Songs
+RANDO_ENUM_ITEM(RCTYPE_BUTTERFLY_FAIRY)            // Fairies from Butterflies
 RANDO_ENUM_ITEM(RCTYPE_GRASS)                      // Grass
+RANDO_ENUM_ITEM(RCTYPE_SIGN)                       // Signs
+RANDO_ENUM_ITEM(RCTYPE_BEGGAR)                     // Beggar
+RANDO_ENUM_ITEM(RCTYPE_ICICLE)                     // Icicles
+RANDO_ENUM_ITEM(RCTYPE_RED_ICE)                    // Red Ice
 RANDO_ENUM_END(RandomizerCheckType)
 
 RANDO_ENUM_BEGIN(RandomizerCheckQuest)

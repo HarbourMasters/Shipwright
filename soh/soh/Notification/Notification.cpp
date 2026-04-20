@@ -131,7 +131,7 @@ void Emit(Options notification) {
         notification.remainingTime = CVarGetFloat(CVAR_SETTING("Notifications.Duration"), 10.0f);
     }
     notifications.push_back(notification);
-    if (!notification.mute) {
+    if (!notification.mute && !CVarGetInteger(CVAR_SETTING("Notifications.Mute"), 0)) {
         Audio_PlaySoundGeneral(NA_SE_SY_METRONOME, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
                                &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     }

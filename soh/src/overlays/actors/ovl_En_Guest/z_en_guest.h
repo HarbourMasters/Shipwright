@@ -18,8 +18,8 @@ typedef struct EnGuest {
     /* 0x02A0 */ NpcInteractInfo interactInfo;
     /* 0x02C8 */ s16 unk_2C8;
     /* 0x02CA */ s16 unk_2CA;
-    /* 0x02CC */ s16 unk_2CC[16];
-    /* 0x02EC */ s16 unk_2EC[16];
+    /* 0x02CC */ s16 fidgetTableY[16];
+    /* 0x02EC */ s16 fidgetTableZ[16];
     /* 0x030C */ s8 osAnimeBankIndex;
     /* 0x030D */ u8 unk_30D;
     /* 0x030E */ u8 unk_30E;

@@ -38,7 +38,7 @@
         <Animation Name="gPhantomHorseFenceJumpAnim" Offset="0xC180"/>
         
         <!-- Boss title card -->
-        <Texture Name="gPhantomGanonTitleCardTex" OutName="phantom_ganon_title_card" Format="i8" Width="128" Height="120" Offset="0x59A0"/>
+        <Texture Name="gPhantomGanonTitleCardTex" OutName="phantom_ganon_title_card" Format="ia8" Width="128" Height="120" Offset="0x59A0"/>
     
         <!-- Energy attack DLists -->
         <DList Name="gPhantomWarpDL" Offset="0xFAA0"/>

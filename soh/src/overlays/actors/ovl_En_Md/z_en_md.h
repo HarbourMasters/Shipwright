@@ -22,8 +22,8 @@ typedef struct EnMd {
     /* 0x020E */ s16 eyeIdx;
     /* 0x0210 */ s16 alpha;
     /* 0x0212 */ s16 waypoint;
-    /* 0x0214 */ s16 unk_214[17];
-    /* 0x0236 */ s16 unk_236[17];
+    /* 0x0214 */ s16 fidgetTableY[17];
+    /* 0x0236 */ s16 fidgetTableZ[17];
     /* 0x0258 */ Vec3s jointTable[17];
     /* 0x02BE */ Vec3s morphTable[17];
 } EnMd; // size = 0x0324

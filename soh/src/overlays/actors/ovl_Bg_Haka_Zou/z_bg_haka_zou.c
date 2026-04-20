@@ -23,13 +23,13 @@ void BgHakaZou_Update(Actor* thisx, PlayState* play);
 void BgHakaZou_Draw(Actor* thisx, PlayState* play);
 
 void BgHakaZou_Wait(BgHakaZou* this, PlayState* play);
-void func_80882BDC(BgHakaZou* this, PlayState* play);
-void func_80883000(BgHakaZou* this, PlayState* play);
-void func_80883104(BgHakaZou* this, PlayState* play);
-void func_80883144(BgHakaZou* this, PlayState* play);
-void func_80883254(BgHakaZou* this, PlayState* play);
-void func_80883328(BgHakaZou* this, PlayState* play);
-void func_808834D8(BgHakaZou* this, PlayState* play);
+void BgHakaZou_CrumbleSkullWall(BgHakaZou* this, PlayState* play);
+void BgHakaZou_WaitForHit(BgHakaZou* this, PlayState* play);
+void BgHakaZou_IdleKill(BgHakaZou* this, PlayState* play);
+void BgHakaZou_BirdStatueAnim_Explode(BgHakaZou* this, PlayState* play);
+void BgHakaZou_BirdStatueAnim_Shear(BgHakaZou* this, PlayState* play);
+void BgHakaZou_BirdStatueAnim_Topple(BgHakaZou* this, PlayState* play);
+void BgHakaZou_BirdStatueAnim_Settle(BgHakaZou* this, PlayState* play);
 void BgHakaZou_DoNothing(BgHakaZou* this, PlayState* play);
 
 static ColliderCylinderInit sCylinderInit = {
@@ -164,7 +164,7 @@ void BgHakaZou_Wait(BgHakaZou* this, PlayState* play) {
         this->dyna.actor.draw = BgHakaZou_Draw;
 
         if (this->dyna.actor.params == STA_UNKNOWN) {
-            this->actionFunc = func_80882BDC;
+            this->actionFunc = BgHakaZou_CrumbleSkullWall;
         } else {
             Actor_SetObjectDependency(play, &this->dyna.actor);
 
@@ -192,12 +192,12 @@ void BgHakaZou_Wait(BgHakaZou* this, PlayState* play) {
             if ((this->dyna.actor.params == STA_GIANT_BIRD_STATUE) && Flags_GetSwitch(play, this->switchFlag)) {
                 this->actionFunc = BgHakaZou_DoNothing;
             } else {
-                this->actionFunc = func_80883000;
+                this->actionFunc = BgHakaZou_WaitForHit;
             }
         }
     }
 }
-void func_80882BDC(BgHakaZou* this, PlayState* play) {
+void BgHakaZou_CrumbleSkullWall(BgHakaZou* this, PlayState* play) {
     if (this->timer != 0) {
         this->timer--;
     }
@@ -221,7 +221,7 @@ void func_80882BDC(BgHakaZou* this, PlayState* play) {
     }
 }
 
-void func_80882CC4(BgHakaZou* this, PlayState* play) {
+void BgHakaZou_SpawnSkullWallRubble(BgHakaZou* this, PlayState* play) {
     s32 i;
     s32 j;
     Vec3f actorSpawnPos;
@@ -245,7 +245,7 @@ void func_80882CC4(BgHakaZou* this, PlayState* play) {
     }
 }
 
-void func_80882E54(BgHakaZou* this, PlayState* play) {
+void BgHakaZou_SpawnRubbleParticles(BgHakaZou* this, PlayState* play) {
     Vec3f fragmentPos;
     s32 i;
     s32 j;
@@ -267,32 +267,32 @@ void func_80882E54(BgHakaZou* this, PlayState* play) {
     }
 }
 
-void func_80883000(BgHakaZou* this, PlayState* play) {
+void BgHakaZou_WaitForHit(BgHakaZou* this, PlayState* play) {
     if (this->collider.base.acFlags & AC_HIT) {
         Flags_SetSwitch(play, this->switchFlag);
 
         if (this->dyna.actor.params == STA_GIANT_BIRD_STATUE) {
             this->timer = 20;
-            this->actionFunc = func_80883144;
+            this->actionFunc = BgHakaZou_BirdStatueAnim_Explode;
             OnePointCutscene_Init(play, 3400, 999, &this->dyna.actor, MAIN_CAM);
         } else if (this->dyna.actor.params == 2) {
-            func_80882E54(this, play);
+            BgHakaZou_SpawnRubbleParticles(this, play);
             this->dyna.actor.draw = NULL;
             this->timer = 1;
             Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_EXPLOSION);
-            this->actionFunc = func_80883104;
+            this->actionFunc = BgHakaZou_IdleKill;
         } else {
-            func_80882CC4(this, play);
+            BgHakaZou_SpawnSkullWallRubble(this, play);
             this->timer = 1;
             Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_WALL_BROKEN);
-            this->actionFunc = func_80883104;
+            this->actionFunc = BgHakaZou_IdleKill;
         }
     } else {
         CollisionCheck_SetAC(play, &play->colChkCtx, &this->collider.base);
     }
 }
 
-void func_80883104(BgHakaZou* this, PlayState* play) {
+void BgHakaZou_IdleKill(BgHakaZou* this, PlayState* play) {
     if (this->timer != 0) {
         this->timer--;
     }
@@ -302,7 +302,7 @@ void func_80883104(BgHakaZou* this, PlayState* play) {
     }
 }
 
-void func_80883144(BgHakaZou* this, PlayState* play) {
+void BgHakaZou_BirdStatueAnim_Explode(BgHakaZou* this, PlayState* play) {
     Vec3f explosionPos;
 
     if (this->timer != 0) {
@@ -320,11 +320,11 @@ void func_80883144(BgHakaZou* this, PlayState* play) {
 
     if (this->timer == 0) {
         this->timer = 20;
-        this->actionFunc = func_80883254;
+        this->actionFunc = BgHakaZou_BirdStatueAnim_Shear;
     }
 }
 
-void func_80883254(BgHakaZou* this, PlayState* play) {
+void BgHakaZou_BirdStatueAnim_Shear(BgHakaZou* this, PlayState* play) {
     f32 moveDist = (Rand_ZeroOne() * 0.5f) + 0.5f;
 
     Math_StepToF(&this->dyna.actor.world.pos.z, this->dyna.actor.home.pos.z - 80.0f, 2.0f * moveDist);
@@ -337,14 +337,14 @@ void func_80883254(BgHakaZou* this, PlayState* play) {
         if (this->timer == 0) {
             this->timer = 60;
             this->dyna.actor.world.rot.x = 8;
-            this->actionFunc = func_80883328;
+            this->actionFunc = BgHakaZou_BirdStatueAnim_Topple;
         }
     } else {
         func_808828F4(this, play);
     }
 }
 
-void func_80883328(BgHakaZou* this, PlayState* play) {
+void BgHakaZou_BirdStatueAnim_Topple(BgHakaZou* this, PlayState* play) {
     Vec3f effectPos;
     s32 i;
     s32 j;
@@ -368,11 +368,11 @@ void func_80883328(BgHakaZou* this, PlayState* play) {
 
         Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_STONE_BOUND);
         this->timer = 25;
-        this->actionFunc = func_808834D8;
+        this->actionFunc = BgHakaZou_BirdStatueAnim_Settle;
     }
 }
 
-void func_808834D8(BgHakaZou* this, PlayState* play) {
+void BgHakaZou_BirdStatueAnim_Settle(BgHakaZou* this, PlayState* play) {
     f32 moveDist;
 
     if (this->timer != 0) {

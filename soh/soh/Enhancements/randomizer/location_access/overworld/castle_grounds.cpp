@@ -56,14 +56,19 @@ void RegionTable_Init_CastleGrounds() {
         EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->CanUse(RG_STICKS)),
     }, {
         //Locations
-        LOCATION(RC_HC_NEAR_GUARDS_TREE_1, logic->CanBonkTrees()),
-        LOCATION(RC_HC_NEAR_GUARDS_TREE_2, logic->CanBonkTrees()),
-        LOCATION(RC_HC_NEAR_GUARDS_TREE_3, logic->CanBonkTrees()),
-        LOCATION(RC_HC_NEAR_GUARDS_TREE_4, logic->CanBonkTrees()),
-        LOCATION(RC_HC_NEAR_GUARDS_TREE_5, logic->CanBonkTrees()),
-        LOCATION(RC_HC_NEAR_GUARDS_TREE_6, logic->CanBonkTrees()),
-        LOCATION(RC_HC_NL_TREE_1,          false),
-        LOCATION(RC_HC_NL_TREE_2,          false),
+        LOCATION(RC_HC_NEAR_GUARDS_TREE_1,                logic->CanBonkTrees()),
+        LOCATION(RC_HC_NEAR_GUARDS_TREE_2,                logic->CanBonkTrees()),
+        LOCATION(RC_HC_NEAR_GUARDS_TREE_3,                logic->CanBonkTrees()),
+        LOCATION(RC_HC_NEAR_GUARDS_TREE_4,                logic->CanBonkTrees()),
+        LOCATION(RC_HC_NEAR_GUARDS_TREE_5,                logic->CanBonkTrees()),
+        LOCATION(RC_HC_NEAR_GUARDS_TREE_6,                logic->CanBonkTrees()),
+        LOCATION(RC_HC_NL_TREE_1,                         false),
+        LOCATION(RC_HC_NL_TREE_2,                         false),
+        LOCATION(RC_HC_NEAR_WALL_BUTTERFLY_FAIRY,         logic->CanUse(RG_STICKS)),
+        LOCATION(RC_HC_NEAR_STAIRS_BUTTERFLY_FAIRY,       logic->CanUse(RG_STICKS)),
+        LOCATION(RC_HC_NEAR_BOULDER_PATH_BUTTERFLY_FAIRY, logic->CanUse(RG_STICKS)),
+        LOCATION(RC_HC_NEAR_ARCHWAY_BUTTERFLY_FAIRY,      logic->CanUse(RG_STICKS)),
+		LOCATION(RC_HC_DEAD_END_RECTANGLE_SIGN, 		  logic->CanRead()),
     }, {
         //Exits
         ENTRANCE(RR_HC_GATE,                  true),
@@ -88,14 +93,26 @@ void RegionTable_Init_CastleGrounds() {
 
     areaTable[RR_HC_MOAT] = Region("Hyrule Castle Grounds", SCENE_HYRULE_CASTLE, {}, {
         //Locations
-        LOCATION(RC_HC_GRASS_1,     logic->CanCutShrubs()),
-        LOCATION(RC_HC_GRASS_2,     logic->CanCutShrubs()),
-        LOCATION(RC_HC_GROTTO_TREE, logic->CanBonkTrees()),
+        LOCATION(RC_HC_GRASS_1,             logic->CanCutShrubs()),
+        LOCATION(RC_HC_GRASS_2,             logic->CanCutShrubs()),
+        LOCATION(RC_HC_GROTTO_TREE,         logic->CanBonkTrees()),
+        LOCATION(RC_HC_WONDER_LEFT_TORCH,   logic->CanUse(RG_FAIRY_SLINGSHOT) && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_BOOMERANG) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
+        LOCATION(RC_HC_WONDER_RIGHT_TORCH,  logic->CanUse(RG_FAIRY_SLINGSHOT) && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_BOOMERANG) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
+        LOCATION(RC_HC_WONDER_MOAT_1,       logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION)),
+        LOCATION(RC_HC_WONDER_MOAT_2,       logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION)), // Requires backflip with Iron Boots
+        LOCATION(RC_HC_WONDER_MOAT_3,       logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION)), // Requires backflip with Iron Boots
+        LOCATION(RC_HC_WONDER_MOAT_4,       logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION)),
+        LOCATION(RC_HC_WONDER_MOAT_5,       logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION)), // Requires backflip with Iron Boots
+        LOCATION(RC_HC_WONDER_MOAT_6,       logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION)), // Requires backflip with Iron Boots
+        LOCATION(RC_HC_WONDER_MOAT_7,       logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION)), // Requires backflip with Iron Boots
+        LOCATION(RC_HC_WONDER_MOAT_8,       logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION)), // Requires backflip with Iron Boots
+        LOCATION(RC_HC_WONDER_MOAT_9,       logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION)), // Requires backflip with Iron Boots
+        LOCATION(RC_HC_WONDER_MOAT_10,      logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION)), // Requires backflip with Iron Boots
     }, {
         //Exits
         ENTRANCE(RR_HC_GATE,          true),
         ENTRANCE(RR_HC_STORMS_GROTTO, logic->CanOpenStormsGrotto()),
-        ENTRANCE(RR_HC_GARDEN,        (logic->CanUse(RG_WEIRD_EGG) && logic->HasItem(RG_POWER_BRACELET) && logic->HasItem(RG_SPEAK_HYLIAN)) || 
+        ENTRANCE(RR_HC_DRAIN_LEDGE,   (logic->CanUse(RG_WEIRD_EGG) && logic->HasItem(RG_POWER_BRACELET) && logic->HasItem(RG_SPEAK_HYLIAN)) || 
                                       (ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->TakeDamage() && logic->HasExplosives() && logic->CanJumpslash())),
     });
 
@@ -107,8 +124,10 @@ void RegionTable_Init_CastleGrounds() {
 
     areaTable[RR_HC_GARDEN] = Region("HC Garden", SCENE_CASTLE_COURTYARD_ZELDA, {}, {
         //Locations
-        LOCATION(RC_HC_ZELDAS_LETTER, logic->HasItem(RG_SPEAK_HYLIAN)),
-        LOCATION(RC_SONG_FROM_IMPA,   logic->HasItem(RG_SPEAK_HYLIAN)),
+        LOCATION(RC_HC_ZELDAS_LETTER,                 logic->HasItem(RG_SPEAK_HYLIAN)),
+        LOCATION(RC_SONG_FROM_IMPA,                   logic->HasItem(RG_SPEAK_HYLIAN)),
+        LOCATION(RC_HC_WONDER_COURTYARD_RIGHT_WINDOW, logic->CanUse(RG_FAIRY_SLINGSHOT)),
+        LOCATION(RC_HC_WONDER_COURTYARD_LEFT_WINDOW,  logic->CanUse(RG_FAIRY_SLINGSHOT)),
     }, {
         //Exits
         ENTRANCE(RR_HC_DRAIN_LEDGE, true), // if this ever gets shuffled leaving garden area should come out crawlspace
@@ -161,7 +180,7 @@ void RegionTable_Init_CastleGrounds() {
         EVENT_ACCESS(LOGIC_BUILD_RAINBOW_BRIDGE, logic->CanBuildRainbowBridge()),
     }, {
         //Locations
-        LOCATION(RC_OGC_GS, logic->CanJumpslashExceptHammer() || logic->CanUseProjectile() || (logic->CanShield() && logic->CanUse(RG_MEGATON_HAMMER)) || logic->CanUse(RG_DINS_FIRE)),
+        LOCATION(RC_OGC_GS, logic->HookshotOrBoomerang() || ((logic->CanJumpslashExceptHammer() || logic->CanUseProjectile() || (logic->CanShield() && logic->CanUse(RG_MEGATON_HAMMER)) || logic->CanUse(RG_DINS_FIRE)) && ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))) ,
     }, {
         //Exits
         ENTRANCE(RR_CASTLE_GROUNDS,           logic->AtNight),

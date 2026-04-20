@@ -60,6 +60,14 @@ void RegionTable_Init_Kakariko() {
         LOCATION(RC_KAK_NEAR_BOARDING_HOUSE_CHILD_CRATE,   logic->IsChild && logic->CanBreakCrates()),
         LOCATION(RC_KAK_NEAR_BAZAAR_CHILD_CRATE,           logic->IsChild && logic->CanBreakCrates()),
         LOCATION(RC_KAK_TREE,                              logic->CanBonkTrees()),
+        LOCATION(RC_KAK_GUARD_GATE_RECTANGLE_SIGN,         logic->IsChild && logic->CanRead()),
+        LOCATION(RC_KAK_WELL_RECTANGLE_SIGN,               logic->IsChild && logic->CanRead()),
+        LOCATION(RC_KAK_SOUTHEAST_EXIT_ARROW_SIGN,         logic->CanRead()),
+        LOCATION(RC_KAK_FRONT_GATE_ARROW_SIGN,             logic->CanRead()),
+        LOCATION(RC_KAK_WONDER_UNDER_CONSTRUCTION,         logic->IsChild),
+        LOCATION(RC_KAK_BEGGAR_BUGS,                       logic->IsAdult && logic->CanUse(RG_BOTTLE_WITH_BUGS)),
+        LOCATION(RC_KAK_BEGGAR_FISH,                       logic->IsAdult && logic->CanUse(RG_BOTTLE_WITH_FISH)),
+        LOCATION(RC_KAK_BEGGAR_BLUE_FIRE,                  logic->IsAdult && logic->CanUse(RG_BOTTLE_WITH_BLUE_FIRE)),
     }, {
         //Exits
         ENTRANCE(RR_HYRULE_FIELD,             true),
@@ -162,7 +170,8 @@ void RegionTable_Init_Kakariko() {
 
     areaTable[RR_KAK_IMPAS_HOUSE] = Region("Kak Impas House", SCENE_IMPAS_HOUSE, {}, {
         //Locations
-        LOCATION(RC_KAK_IMPAS_HOUSE_COW, logic->CanUse(RG_EPONAS_SONG)),
+        LOCATION(RC_KAK_IMPAS_HOUSE_COW,  logic->CanUse(RG_EPONAS_SONG)),
+        LOCATION(RC_KAK_WONDER_ABOVE_COW, true),
     }, {
         //Exits
         ENTRANCE(RR_KAKARIKO_VILLAGE, true),
@@ -215,7 +224,8 @@ void RegionTable_Init_Kakariko() {
 
     areaTable[RR_KAK_SHOOTING_GALLERY] = Region("Kak Shooting Gallery", SCENE_SHOOTING_GALLERY, {}, {
         //Locations
-        LOCATION(RC_KAK_SHOOTING_GALLERY_REWARD, logic->IsAdult && logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->CanUse(RG_FAIRY_BOW)),
+        LOCATION(RC_KAK_SHOOTING_GALLERY_REWARD,         logic->IsAdult && logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->CanUse(RG_FAIRY_BOW)),
+        LOCATION(RC_KAK_SHOOTING_GALLERY_RECTANGLE_SIGN, logic->IsAdult && logic->CanRead()),
     }, {
         //Exits
         ENTRANCE(RR_KAKARIKO_VILLAGE, true),
@@ -243,7 +253,8 @@ void RegionTable_Init_Kakariko() {
     }, {
         //Locations
         LOCATION(RC_KAK_TRADE_ODD_MUSHROOM, logic->IsAdult && logic->CanUse(RG_ODD_MUSHROOM)),
-        LOCATION(RC_KAK_GRANNYS_SHOP,       logic->IsAdult && logic->HasItem(RG_SPEAK_HYLIAN) && (logic->CanUse(RG_ODD_MUSHROOM) || logic->TradeQuestStep(RG_ODD_MUSHROOM))),
+        LOCATION(RC_KAK_GRANNYS_SHOP,       logic->IsAdult && logic->HasItem(RG_SPEAK_HYLIAN) && 
+                                            (logic->CanUse(RG_ODD_MUSHROOM) || logic->TradeQuestStep(RG_ODD_MUSHROOM)) && GetCheckPrice() <= GetWalletCapacity()),
     }, {
         // Exits
         ENTRANCE(RR_KAK_BACKYARD, true),

@@ -2,7 +2,7 @@
 #include "soh/Enhancements/randomizer/SeedContext.h"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "soh/Enhancements/randomizer/static_data.h"
-#include "soh/Enhancements/randomizer/3drando/random.hpp"
+#include "soh/ShipUtils.h"
 
 #include <vector>
 
@@ -1431,19 +1431,19 @@ Text Rando::Traps::GetTrapName(uint16_t id) {
     }
 
     // Randomly get the easy, medium, or hard name for the given item id
-    return RandomElement(trickNameTable[id]);
+    return ShipUtils::RandomElement(trickNameTable[id]);
 }
 
 RandomizerGet Rando::Traps::GetTrapTrickModel() {
     auto ctx = Rando::Context::GetInstance();
-    RandomizerGet trickModel = RandomElementFromSet(ctx->possibleIceTrapModels);
+    RandomizerGet trickModel = ShipUtils::RandomElementFromSet(ctx->possibleIceTrapModels);
 
     if (trickModel == RG_EMPTY_BOTTLE) {
-        trickModel = RandomElement(Rando::StaticData::normalBottles);
+        trickModel = ShipUtils::RandomElement(Rando::StaticData::normalBottles);
     } else if (trickModel == RG_GUARD_HOUSE_KEY) {
-        trickModel = RandomElement(Rando::StaticData::overworldKeys);
+        trickModel = ShipUtils::RandomElement(Rando::StaticData::overworldKeys);
     } else if (trickModel == RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL) {
-        trickModel = RandomElement(Rando::StaticData::beanSouls);
+        trickModel = ShipUtils::RandomElement(Rando::StaticData::beanSouls);
     }
 
     return trickModel;
@@ -1456,7 +1456,8 @@ bool Rando::Traps::ShouldJunkItemBeTrap() {
         return false;
     }
 
-    if (ctx->GetOption(RSK_ICE_TRAP_PERCENT).Is(100) || Random(0, 100) < ctx->GetOption(RSK_ICE_TRAP_PERCENT).Get()) {
+    if (ctx->GetOption(RSK_ICE_TRAP_PERCENT).Is(100) ||
+        ShipUtils::Random(0, 100) < ctx->GetOption(RSK_ICE_TRAP_PERCENT).Get()) {
         return true;
     }
 

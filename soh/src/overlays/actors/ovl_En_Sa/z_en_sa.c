@@ -144,7 +144,7 @@ s16 func_80AF5560(EnSa* this, PlayState* play) {
     return textState;
 }
 
-u16 func_80AF55E0(PlayState* play, Actor* thisx) {
+u16 EnSa_GetTextId(PlayState* play, Actor* thisx) {
     EnSa* this = (EnSa*)thisx;
     u16 reaction = Text_GetFaceReaction(play, 0x10);
 
@@ -187,7 +187,7 @@ u16 func_80AF55E0(PlayState* play, Actor* thisx) {
     return 0x1001;
 }
 
-s16 func_80AF56F4(PlayState* play, Actor* thisx) {
+s16 EnSa_UpdateTalkState(PlayState* play, Actor* thisx) {
     s16 ret = NPC_TALK_STATE_TALKING;
     EnSa* this = (EnSa*)thisx;
 
@@ -230,7 +230,7 @@ void func_80AF57D8(EnSa* this, PlayState* play) {
         ABS((s16)(this->actor.yawTowardsPlayer - this->actor.shape.rot.y)) < 0x1555 ||
         this->interactInfo.talkState != NPC_TALK_STATE_IDLE) {
         Npc_UpdateTalking(play, &this->actor, &this->interactInfo.talkState, this->collider.dim.radius + 30.0f,
-                          func_80AF55E0, func_80AF56F4);
+                          EnSa_GetTextId, EnSa_UpdateTalkState);
     }
 }
 

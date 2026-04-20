@@ -5,8 +5,7 @@
 #include <nlohmann/json.hpp>
 #include <spdlog/spdlog.h>
 #include <spdlog/fmt/fmt.h>
-#include <regex>
-#include "soh/OTRGlobals.h"
+#include "soh/ShipInit.hpp"
 
 extern "C" {
 #include <z64.h>
@@ -625,37 +624,37 @@ CrowdControl::Effect* CrowdControl::ParseMessage(nlohmann::json dataReceived) {
         case kEffectTpLinksHouse:
             effect->giEffect = std::make_unique<GameInteractionEffect::TeleportPlayer>();
             dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[0] =
-                GI_TP_DEST_LINKSHOUSE;
+                ENTR_LINKS_HOUSE_CHILD_SPAWN;
             break;
         case kEffectTpMinuet:
             effect->giEffect = std::make_unique<GameInteractionEffect::TeleportPlayer>();
             dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[0] =
-                GI_TP_DEST_MINUET;
+                ENTR_SACRED_FOREST_MEADOW_WARP_PAD;
             break;
         case kEffectTpBolero:
             effect->giEffect = std::make_unique<GameInteractionEffect::TeleportPlayer>();
             dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[0] =
-                GI_TP_DEST_BOLERO;
+                ENTR_DEATH_MOUNTAIN_CRATER_WARP_PAD;
             break;
         case kEffectTpSerenade:
             effect->giEffect = std::make_unique<GameInteractionEffect::TeleportPlayer>();
             dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[0] =
-                GI_TP_DEST_SERENADE;
+                ENTR_LAKE_HYLIA_WARP_PAD;
             break;
         case kEffectTpRequiem:
             effect->giEffect = std::make_unique<GameInteractionEffect::TeleportPlayer>();
             dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[0] =
-                GI_TP_DEST_REQUIEM;
+                ENTR_DESERT_COLOSSUS_WARP_PAD;
             break;
         case kEffectTpNocturne:
             effect->giEffect = std::make_unique<GameInteractionEffect::TeleportPlayer>();
             dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[0] =
-                GI_TP_DEST_NOCTURNE;
+                ENTR_GRAVEYARD_WARP_PAD;
             break;
         case kEffectTpPrelude:
             effect->giEffect = std::make_unique<GameInteractionEffect::TeleportPlayer>();
             dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[0] =
-                GI_TP_DEST_PRELUDE;
+                ENTR_TEMPLE_OF_TIME_WARP_PAD;
             break;
 
         default:

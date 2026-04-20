@@ -1,16 +1,14 @@
 #include "functions.h"
 #include "macros.h"
-#include "soh/Enhancements/randomizer/3drando/random.hpp"
+#include "soh/ShipUtils.h"
 #include "soh/Enhancements/randomizer/SeedContext.h"
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/ObjectExtension/ObjectExtension.h"
 #include "variables.h"
-#include "soh/OTRGlobals.h"
 #include "soh/cvar_prefixes.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/SohGui/MenuTypes.h"
 #include "soh/SohGui/SohMenu.h"
-#include "soh/SohGui/SohGui.hpp"
 
 extern "C" {
 #include <z64.h>
@@ -164,7 +162,7 @@ static int enemiesToRandomize[] = {
 bool IsEnemyAllowedToSpawn(int16_t sceneNum, int8_t roomNum, EnemyEntry enemy) {
     uint32_t isMQ = ResourceMgr_IsSceneMasterQuest(sceneNum);
 
-    // Freezard - Child Link can only kill this with jump slash Deku Sticks or other equipment like bombs.
+    // Freezard - Child Link can only kill this with Deku Stick jumpslash or other equipment like bombs.
     // Beamos - Needs bombs.
     // Anubis - Needs fire.
     // Shell Blade & Spike - Child Link can't kill these with sword or Deku Stick.
@@ -306,15 +304,16 @@ EnemyEntry GetRandomizedEnemyEntry(uint32_t seed, PlayState* play) {
         filteredEnemyList = selectedEnemyList;
     }
     if (CVAR_ENEMY_RANDOMIZER_VALUE == ENEMY_RANDOMIZER_RANDOM_SEEDED) {
-        uint32_t finalSeed =
-            seed + (IS_RANDO ? Rando::Context::GetInstance()->GetSeed() : gSaveContext.ship.stats.fileCreatedAt);
-        Random_Init(finalSeed);
-        uint32_t randomNumber = Random(0, filteredEnemyList.size());
-        return filteredEnemyList[randomNumber];
-    } else {
-        uint32_t randomSelectedEnemy = Random(0, filteredEnemyList.size());
-        return filteredEnemyList[randomSelectedEnemy];
+        uint64_t randomState = 0;
+
+        ShipUtils::RandInit(
+            seed + (IS_RANDO ? Rando::Context::GetInstance()->GetSeed() : gSaveContext.ship.stats.fileCreatedAt),
+            &randomState);
+
+        return ShipUtils::RandomElement(filteredEnemyList, false, &randomState);
     }
+
+    return ShipUtils::RandomElement(filteredEnemyList, false);
 }
 
 bool IsEnemyFoundToRandomize(int16_t sceneNum, int8_t roomNum, int16_t actorId, int16_t params, float posX) {
@@ -394,9 +393,11 @@ uint8_t GetRandomizedEnemy(PlayState* play, int16_t* actorId, s16* posX, s16* po
     // This should probably be handled on OTR generation in the future when object dependency is fully removed.
     // Remove bats and Skulltulas from graveyard.
     // Remove Octorok in Lost Woods.
+    // Remove signs in Gerudo Fortress as child
     if (((*actorId == ACTOR_EN_FIREFLY || (*actorId == ACTOR_EN_SW && *params == 0)) &&
          play->sceneNum == SCENE_GRAVEYARD) ||
-        (*actorId == ACTOR_EN_OKUTA && play->sceneNum == SCENE_LOST_WOODS)) {
+        (*actorId == ACTOR_EN_OKUTA && play->sceneNum == SCENE_LOST_WOODS) ||
+        (*actorId == ACTOR_EN_KANBAN && play->sceneNum == SCENE_GERUDOS_FORTRESS && LINK_IS_CHILD)) {
         return 0;
     }
 
@@ -627,11 +628,20 @@ void RegisterEnemyRandomizer() {
         ActorContext* actorCtx = va_arg(args, ActorContext*);
         ActorEntry* actorEntry = va_arg(args, ActorEntry*);
         PlayState* play = va_arg(args, PlayState*);
-        Actor* actor = va_arg(args, Actor*);
+        Actor** actor = va_arg(args, Actor**);
 
-        if (!GetRandomizedEnemy(play, &actorEntry->id, &actorEntry->pos.x, &actorEntry->pos.y, &actorEntry->pos.z,
-                                &actorEntry->rot.x, &actorEntry->rot.y, &actorEntry->rot.z, &actorEntry->params)) {
-            *should = false;
+        s16 actorId = actorEntry->id;
+        s16 posX = actorEntry->pos.x;
+        s16 posY = actorEntry->pos.y;
+        s16 posZ = actorEntry->pos.z;
+        s16 rotX = actorEntry->rot.x;
+        s16 rotY = actorEntry->rot.y;
+        s16 rotZ = actorEntry->rot.z;
+        s16 params = actorEntry->params;
+
+        *should = false;
+        if (GetRandomizedEnemy(play, &actorId, &posX, &posY, &posZ, &rotX, &rotY, &rotZ, &params)) {
+            *actor = Actor_Spawn(actorCtx, play, actorId, posX, posY, posZ, rotX, rotY, rotZ, params);
         }
     });
 

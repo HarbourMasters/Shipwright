@@ -397,8 +397,8 @@ void SetAllEntrancesData() {
           { EntranceType::ThievesHideout, RR_TH_KITCHEN_OPPOSITE_CORRIDOR, RR_GF_NEAR_GS,                   ENTR_GERUDOS_FORTRESS_10 } },
         { { EntranceType::ThievesHideout, RR_GF_BELOW_CHEST,               RR_TH_BREAK_ROOM,                ENTR_THIEVES_HIDEOUT_10 },
           { EntranceType::ThievesHideout, RR_TH_BREAK_ROOM,                RR_GF_BELOW_CHEST,               ENTR_GERUDOS_FORTRESS_11 } },
-        { { EntranceType::ThievesHideout, RR_GF_ABOVE_JAIL,                RR_TH_BREAK_ROOM_CORRIDOR,       ENTR_THIEVES_HIDEOUT_11 },
-          { EntranceType::ThievesHideout, RR_TH_BREAK_ROOM_CORRIDOR,       RR_GF_ABOVE_JAIL,                ENTR_GERUDOS_FORTRESS_12 } },
+        { { EntranceType::ThievesHideout, RR_GF_ABOVE_JAIL,                RR_TH_BREAK_ROOM_UPPER_CORRIDOR, ENTR_THIEVES_HIDEOUT_11 },
+          { EntranceType::ThievesHideout, RR_TH_BREAK_ROOM_UPPER_CORRIDOR, RR_GF_ABOVE_JAIL,                ENTR_GERUDOS_FORTRESS_12 } },
         { { EntranceType::ThievesHideout, RR_GF_BELOW_GS,                  RR_TH_DEAD_END_CELL,             ENTR_THIEVES_HIDEOUT_12 },
           { EntranceType::ThievesHideout, RR_TH_DEAD_END_CELL,             RR_GF_BELOW_GS,                  ENTR_GERUDOS_FORTRESS_13 } },
 
