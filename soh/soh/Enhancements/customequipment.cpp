@@ -139,15 +139,12 @@ void PatchOrUnpatch(const char* resource, const char* gfx, const char* dlist1, c
         if (dlist3 != NULL) {
             ResourceMgr_UnpatchGfxByName(resource, dlist3);
         }
-        // Only unload on a state transition (alt assets just turned off) so the vanilla
-        // DL reloads clean. Unloading every frame wipes cosmetics patches unnecessarily.
         if (altAssetsChanged) {
             ResourceMgr_UnloadResource(resource);
         }
         return;
     }
 
-    // Alt assets just turned on: unload the cached vanilla DL so the custom version loads.
     if (altAssetsChanged) {
         ResourceMgr_UnloadResource(resource);
     }
