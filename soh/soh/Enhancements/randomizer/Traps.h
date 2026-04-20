@@ -6,7 +6,7 @@
 
 #include "soh/Enhancements/custom-message/CustomMessageManager.h"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
-#include "soh/Enhancements/randomizer/3drando/text.hpp"
+#include "soh/Enhancements/custom-message/text.h"
 #include "libultraship/libultra/types.h"
 
 namespace Rando {

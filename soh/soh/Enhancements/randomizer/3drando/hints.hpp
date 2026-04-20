@@ -4,7 +4,7 @@
 #include <vector>
 #include <variant>
 
-#include "text.hpp"
+#include "soh/Enhancements/custom-message/text.h"
 #include "random.hpp"
 #include <functional>
 #include "../randomizerTypes.h"

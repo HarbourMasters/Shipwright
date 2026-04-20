@@ -8,7 +8,7 @@
 #include "../../../include/z64item.h"
 #include "../../../include/z64.h"
 #include "../../../include/message_data_textbox_types.h"
-#include "../randomizer/3drando/text.hpp"
+#include "text.h"
 
 #undef MESSAGE_END
 

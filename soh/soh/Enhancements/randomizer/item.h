@@ -3,7 +3,7 @@
 #include <string>
 #include <memory>
 
-#include "3drando/text.hpp"
+#include "soh/Enhancements/custom-message/text.h"
 #include "randomizerTypes.h"
 #include "soh/Enhancements/item-tables/ItemTableTypes.h"
 #include "3drando/hints.hpp"
