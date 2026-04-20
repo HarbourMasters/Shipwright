@@ -137,7 +137,9 @@ void PatchOrUnpatch(const char* resource, const char* gfx, const char* dlist1, c
             ResourceMgr_UnpatchGfxByName(resource, dlist3);
         }
         // Drop any cached version of the resource so it reloads clean (unpatched) next use.
-        ResourceMgr_UnloadResource(resource);
+        if (ResourceGetIsCustomByName(resource)) {
+            ResourceMgr_UnloadResource(resource);
+        }
         return;
     }
 
