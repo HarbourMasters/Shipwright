@@ -1,10 +1,7 @@
-#include "custom_messages.hpp"
-
 #include "../randomizerTypes.h"
 #include "../SeedContext.h"
 #include "../static_data.h"
 
-using namespace CustomMessages;
 using namespace std::literals::string_literals;
 
 // Big thanks to Lioncache, Gabyelnuevo, Danius88, and Charade for their translations!
@@ -2280,9 +2277,9 @@ void StaticData::HintTable_Init() {
     |    Static Entrance Hint   |
     ---------------------------*/
 
-    hintTextTable[RHT_WARP_SONG] = HintText(CustomMessage("Warp to&#[[1]]#?&" + TWO_WAY_CHOICE() + "#OK&No#",
-                                               /*german*/ "Das Ziel liegt&#[[1]]#!&" + TWO_WAY_CHOICE() + "#Ja!&Nein!#",
-                                               /*french*/ "Se téléporter vers&#[[1]]#?&" + TWO_WAY_CHOICE() + "#OK!&Non#",
+    hintTextTable[RHT_WARP_SONG] = HintText(CustomMessage("Warp to&#[[1]]#?&" + CustomMessage::TWO_WAY_CHOICE() + "#OK&No#",
+                                               /*german*/ "Das Ziel liegt&#[[1]]#!&" + CustomMessage::TWO_WAY_CHOICE() + "#Ja!&Nein!#",
+                                               /*french*/ "Se téléporter vers&#[[1]]#?&" + CustomMessage::TWO_WAY_CHOICE() + "#OK!&Non#",
                                                           {QM_RED, QM_GREEN}));
 
    /*--------------------------
