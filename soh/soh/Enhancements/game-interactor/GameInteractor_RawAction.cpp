@@ -1,6 +1,6 @@
 #include "GameInteractor.h"
 #include <libultraship/bridge.h>
-#include "soh/Enhancements/randomizer/3drando/random.hpp"
+#include "soh/ShipUtils.h"
 #include <math.h>
 #include "soh/Enhancements/debugger/colViewer.h"
 #include "soh/Enhancements/nametag.h"
@@ -498,7 +498,7 @@ GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnEnemyWithOffset
     }
 
     // Generate point in random angle with a radius.
-    float angle = static_cast<float>(RandomDouble() * 2 * M_PI);
+    float angle = static_cast<float>(ShipUtils::RandomDouble() * 2 * M_PI);
     float radius = 150;
     float posXOffset = radius * cos(angle);
     float posZOffset = radius * sin(angle);

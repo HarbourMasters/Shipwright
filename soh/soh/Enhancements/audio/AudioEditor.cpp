@@ -6,7 +6,7 @@
 #include <string>
 #include <libultraship/libultraship.h>
 #include <functions.h>
-#include "../randomizer/3drando/random.hpp"
+#include "soh/ShipUtils.h"
 #include "soh/OTRGlobals.h"
 #include "soh/cvar_prefixes.h"
 #include <ship/utils/StringHelper.h>
