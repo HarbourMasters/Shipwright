@@ -2707,6 +2707,7 @@ void RegisterCosmeticHooks() {
               [](s16 sceneNum) { CosmeticsEditor_AutoRandomizeAll(); });
 
     COND_HOOK(OnGameFrameUpdate, true, CosmeticsUpdateTick);
+    COND_HOOK(OnAssetAltChange, true, []() { ApplyOrResetCustomGfxPatches(true); });
 }
 
 void RegisterCosmeticWidgets() {
