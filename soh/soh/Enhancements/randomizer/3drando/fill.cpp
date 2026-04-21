@@ -5,6 +5,7 @@
 #include "item_pool.hpp"
 #include "starting_inventory.hpp"
 #include "hints.hpp"
+#include "random.hpp"
 #include "shops.hpp"
 #include "pool_functions.hpp"
 #include "soh/Enhancements/randomizer/static_data.h"

@@ -4,6 +4,7 @@
 #include "SeedContext.h"
 #include <spdlog/spdlog.h>
 #include "static_data.h"
+#include "3drando/random.hpp"
 
 namespace Rando {
 Hint::Hint() {
