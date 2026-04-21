@@ -3,7 +3,6 @@
 #include "../dungeon.h"
 #include "../SeedContext.h"
 #include "item_pool.hpp"
-#include "random.hpp"
 #include "starting_inventory.hpp"
 #include "hints.hpp"
 #include "shops.hpp"
@@ -545,7 +544,7 @@ std::vector<RandomizerCheck> ReachabilitySearch(const std::vector<RandomizerChec
             ProcessRegion(RegionTable(gals.regionPool[i]), gals, ignore);
         }
     } while (gals.logicUpdated);
-    erase_if(gals.accessibleLocations, [&targetLocations, ctx, calculatingAvailableChecks](RandomizerCheck loc) {
+    std::erase_if(gals.accessibleLocations, [&targetLocations, ctx, calculatingAvailableChecks](RandomizerCheck loc) {
         if (ctx->GetItemLocation(loc)->GetPlacedRandomizerGet() != RG_NONE && !calculatingAvailableChecks) {
             return false;
         }
@@ -988,9 +987,9 @@ static void RandomizeDungeonRewards() {
             pocketItem = RandomElement(pocketPossibilities);
         }
         // erase from rewards so remaining are placed
-        erase_if(rewards, [&](RandomizerGet r) { return r == pocketItem; });
+        std::erase_if(rewards, [&](RandomizerGet r) { return r == pocketItem; });
         // and from the item pool so it's not placed twice
-        FilterAndEraseFromPool(itemPool, [pocketItem](const RandomizerGet i) { return i == pocketItem; });
+        std::erase_if(itemPool, [pocketItem](const RandomizerGet i) { return i == pocketItem; });
         // and add to the pocket
         ctx->PlaceItemInLocation(RC_LINKS_POCKET, pocketItem);
     }
@@ -1003,16 +1002,16 @@ static void RandomizeDungeonRewards() {
         // place it on Gift From Rauru
         ctx->GetItemLocation(RC_GIFT_FROM_RAURU)->PlaceVanillaItem();
         // then erase from rewards so remaining are placed
-        erase_if(rewards, [&](RandomizerGet r) { return r == RG_LIGHT_MEDALLION; });
+        std::erase_if(rewards, [&](RandomizerGet r) { return r == RG_LIGHT_MEDALLION; });
         // and from the item pool so it's not placed twice
-        FilterAndEraseFromPool(itemPool, [](const RandomizerGet i) { return i == RG_LIGHT_MEDALLION; });
+        std::erase_if(itemPool, [](const RandomizerGet i) { return i == RG_LIGHT_MEDALLION; });
     }
 
     if (ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON)) {
         // Randomize dungeon rewards with assumed fill
         AssumedFill(rewards, Rando::StaticData::dungeonRewardLocations);
         // Then remove them from the item pool
-        FilterAndEraseFromPool(itemPool, [](const auto i) {
+        std::erase_if(itemPool, [](const auto i) {
             return Rando::StaticData::RetrieveItem(i).GetItemType() == ITEMTYPE_DUNGEONREWARD;
         });
     } else if (ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_VANILLA)) {
@@ -1020,7 +1019,7 @@ static void RandomizeDungeonRewards() {
             ctx->GetItemLocation(loc)->PlaceVanillaItem();
         }
         // Then remove rewards from the item pool
-        FilterAndEraseFromPool(itemPool, [](const auto i) {
+        std::erase_if(itemPool, [](const auto i) {
             return Rando::StaticData::RetrieveItem(i).GetItemType() == ITEMTYPE_DUNGEONREWARD;
         });
     }
@@ -1279,7 +1278,7 @@ int Fill() {
         }
         SetAreas();
         // erase temporary shop items
-        FilterAndEraseFromPool(itemPool, [](const auto item) {
+        std::erase_if(itemPool, [](const auto item) {
             return Rando::StaticData::RetrieveItem(item).GetItemType() == ITEMTYPE_SHOP;
         });
         StopPerformanceTimer(PT_ENTRANCE_SHUFFLE);
@@ -1431,8 +1430,7 @@ int Fill() {
         StartPerformanceTimer(PT_REMAINING_ITEMS);
         // Fast fill for the rest of the pool
         SPDLOG_INFO("Shuffling Remaining Items");
-        std::vector<RandomizerGet> remainingPool = FilterAndEraseFromPool(itemPool, [](const auto i) { return true; });
-        FastFill(remainingPool, GetAllEmptyLocations(), false);
+        FastFill(std::move(itemPool), GetAllEmptyLocations(), false);
         StopPerformanceTimer(PT_REMAINING_ITEMS);
 
         StartPerformanceTimer(PT_PLAYTHROUGH_GENERATION);

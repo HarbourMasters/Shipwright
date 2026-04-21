@@ -655,7 +655,7 @@ BuildOneWayTargets(std::vector<EntranceType> typesToInclude,
         AddElementsToPool(oneWayEntrances, GetShuffleableEntrances(poolType, false));
     }
     // Filter out any that are passed in the exclusion list
-    FilterAndEraseFromPool(oneWayEntrances, [&exclude](Entrance* entrance) {
+    std::erase_if(oneWayEntrances, [&exclude](Entrance* entrance) {
         std::pair<RandomizerRegion, RandomizerRegion> entranceBeingChecked(entrance->GetParentRegionKey(),
                                                                            entrance->GetConnectedRegionKey());
         return ElementInContainer(entranceBeingChecked, exclude);
@@ -1333,7 +1333,7 @@ int EntranceShuffler::ShuffleAllEntrances() {
             GetShuffleableEntrances(EntranceType::Overworld, excludeOverworldReverse);
         // Only shuffle GV Lower Stream -> Lake Hylia if decoupled entrances are on
         if (!ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
-            FilterAndEraseFromPool(entrancePools[EntranceType::Overworld], [](const Entrance* entrance) {
+            std::erase_if(entrancePools[EntranceType::Overworld], [](const Entrance* entrance) {
                 return entrance->GetParentRegionKey() == RR_GV_LOWER_STREAM &&
                        entrance->GetConnectedRegionKey() == RR_LAKE_HYLIA;
             });

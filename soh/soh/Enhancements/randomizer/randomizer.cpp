@@ -8,7 +8,7 @@
 #include <libultraship/libultraship.h>
 #include <textures/icon_item_static/icon_item_static.h>
 #include <textures/icon_item_24_static/icon_item_24_static.h>
-#include "3drando/rando_main.hpp"
+#include "3drando/menu.hpp"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/SohGui/SohGui.hpp"
 #include <imgui.h>
@@ -4181,8 +4181,7 @@ void GenerateRandomizerImgui(std::string seed = "") {
         }
     }
 
-    RandoMain::GenerateRando(excludedLocations, enabledTricks, seed);
-
+    Rando::Context::GetInstance()->SetSeedGenerated(GenerateRandomizer(excludedLocations, enabledTricks, seedString));
     CVarSetInteger(CVAR_GENERAL("RandoGenerating"), 0);
     Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
 
@@ -4198,7 +4197,6 @@ bool GenerateRandomizer(std::string seed /*= ""*/) {
     }
     if (CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0) == 0) {
         randoThread = std::thread(&GenerateRandomizerImgui, seed);
-
         return true;
     }
     return false;
