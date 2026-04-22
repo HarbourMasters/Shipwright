@@ -1,12 +1,11 @@
-#include "soh/OTRGlobals.h"
 #include "soh/ObjectExtension/ObjectExtension.h"
 #include "item_category_adj.h"
 #include "particle_cmc.h"
+#include "soh/frame_interpolation.h"
 
 extern "C" {
 #include "functions.h"
 #include "overlays/actors/ovl_Bg_Ice_Turara/z_bg_ice_turara.h"
-#include "objects/object_ice_objects/object_ice_objects.h"
 #include "objects/object_tk/object_tk.h"
 extern PlayState* gPlayState;
 }

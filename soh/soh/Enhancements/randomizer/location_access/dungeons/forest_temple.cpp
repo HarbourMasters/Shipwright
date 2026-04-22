@@ -21,7 +21,9 @@ void RegionTable_Init_ForestTemple() {
     areaTable[RR_FOREST_TEMPLE_TREES] = Region("Forest Temple Trees", SCENE_FOREST_TEMPLE, {}, {
         //Locations
         LOCATION(RC_FOREST_TEMPLE_FIRST_ROOM_CHEST, (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_LONGSHOT)) && logic->HasItem(RG_OPEN_CHEST)),
-        LOCATION(RC_FOREST_TEMPLE_GS_FIRST_ROOM,    (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_LONGSHOT)) && ((logic->IsAdult && logic->CanUse(RG_BOMB_BAG)) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_BOOMERANG) || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_BOMBCHU_5) || logic->CanUse(RG_DINS_FIRE) || (ctx->GetTrickOption(RT_FOREST_FIRST_GS) && (logic->CanJumpslashExceptHammer() || (logic->IsChild && logic->CanUse(RG_BOMB_BAG)))))),
+        LOCATION(RC_FOREST_TEMPLE_GS_FIRST_ROOM,    (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_LONGSHOT)) && 
+                                                    (logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_BOOMERANG) || ((logic->IsAdult || ctx->GetTrickOption(RT_BOMB_DETONATION)) && logic->CanUse(RG_BOMB_BAG)) ||
+                                                     (ctx->GetTrickOption(RT_FOREST_FIRST_GS) && logic->CanJumpslashExceptHammer()))),
     }, {
         //Exits
         ENTRANCE(RR_FOREST_TEMPLE_ENTRYWAY,                true),

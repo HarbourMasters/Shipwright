@@ -550,6 +550,8 @@ void Settings::CreateOptionDescriptions() {
         "Overworld - Only shuffle grass that are outside of dungeons.\n"
         "\n"
         "All Grass - Shuffle all grass.";
+    mOptionDescriptions[RSK_SHUFFLE_ROCKS] = "Shuffle rock locations.";
+    mOptionDescriptions[RSK_SHUFFLE_BOULDERS] = "Shuffle boulder locations.";
     mOptionDescriptions[RSK_SHUFFLE_DUNGEON_REWARDS] =
         "Shuffles the location of Spiritual Stones and medallions.\n"
         "Vanilla - Spiritual Stones and medallions will be given from their respective boss.\n"
