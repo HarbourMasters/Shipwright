@@ -48,7 +48,6 @@ std::set<RandomizerCheck> excludedLocations;
 std::set<RandomizerCheck> spoilerExcludedLocations;
 
 u8 generated;
-char* seedString;
 
 bool Rando_HandleSpoilerDrop(char* filePath) {
     if (SohUtils::IsStringEmpty(filePath)) {
@@ -4181,7 +4180,7 @@ void GenerateRandomizerImgui(std::string seed = "") {
         }
     }
 
-    Rando::Context::GetInstance()->SetSeedGenerated(GenerateRandomizer(excludedLocations, enabledTricks, seedString));
+    Rando::Context::GetInstance()->SetSeedGenerated(GenerateRandomizer(excludedLocations, enabledTricks, seed));
     CVarSetInteger(CVAR_GENERAL("RandoGenerating"), 0);
     Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
 
