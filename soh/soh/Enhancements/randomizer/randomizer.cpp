@@ -47,7 +47,7 @@ std::unordered_map<std::string, HintType> SpoilerfileHintTypeNameToEnum;
 std::set<RandomizerCheck> excludedLocations;
 std::set<RandomizerCheck> spoilerExcludedLocations;
 
-u8 generated;
+bool generated;
 
 bool Rando_HandleSpoilerDrop(char* filePath) {
     if (SohUtils::IsStringEmpty(filePath)) {
@@ -4184,14 +4184,14 @@ void GenerateRandomizerImgui(std::string seed = "") {
     CVarSetInteger(CVAR_GENERAL("RandoGenerating"), 0);
     Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
 
-    generated = 1;
+    generated = true;
 
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnGenerationCompletion>();
 }
 
 bool GenerateRandomizer(std::string seed /*= ""*/) {
     if (generated) {
-        generated = 0;
+        generated = false;
         randoThread.join();
     }
     if (CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0) == 0) {
@@ -4206,7 +4206,7 @@ static bool tricksTabOpen = false;
 
 void JoinRandoGenerationThread() {
     if (generated) {
-        generated = 0;
+        generated = false;
         randoThread.join();
     }
 }
