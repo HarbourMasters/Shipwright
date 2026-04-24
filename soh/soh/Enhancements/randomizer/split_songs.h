@@ -1,5 +1,5 @@
 // split_songs.h — Split Ocarina Songs (randomizer)
-// Copyright (c) 2026 Raccooncloud. All rights reserved. Created by Raccooncloud.
+// Created by RaccoonCloud.
 
 #pragma once
 
