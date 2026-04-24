@@ -2,6 +2,7 @@
 #include "item_location.h"
 
 #include "SeedContext.h"
+#include "split_songs.h"
 #include "logic.h"
 #include "3drando/item_pool.hpp"
 #include "z64item.h"
@@ -51,6 +52,8 @@ void Item::ApplyEffect() const {
     auto logic = ctx->GetLogic();
     if (!logic->CalculatingAvailableChecks) {
         logic->ApplyItemEffect(StaticData::RetrieveItem(randomizerGet), true);
+    } else if (SplitSongs::IsSongPart(randomizerGet)) {
+        SplitSongs::ApplyPartEffectToLogicScratch(logic.get(), randomizerGet, true);
     }
     logic->Set(logicVal, true);
 }
@@ -60,6 +63,8 @@ void Item::UndoEffect() const {
     auto logic = ctx->GetLogic();
     if (!logic->CalculatingAvailableChecks) {
         logic->ApplyItemEffect(StaticData::RetrieveItem(randomizerGet), false);
+    } else if (SplitSongs::IsSongPart(randomizerGet)) {
+        SplitSongs::ApplyPartEffectToLogicScratch(logic.get(), randomizerGet, false);
     }
     logic->Set(logicVal, false);
 }

@@ -12,6 +12,8 @@
 #include "soh/Enhancements/cosmetics/CosmeticsEditor.h"
 #include "soh/Enhancements/audio/AudioEditor.h"
 #include "soh/Enhancements/randomizer/logic.h"
+#include "soh/Enhancements/randomizer/static_data.h"
+#include "soh/Enhancements/randomizer/split_songs.h"
 
 #define Path _Path
 #define PATH_HACK
@@ -400,6 +402,20 @@ static bool GiveItemHandler(std::shared_ptr<Ship::Console> Console, const std::v
 
     GiveItemEntryWithoutActor(gPlayState, getItemEntry);
 
+    return 0;
+}
+
+static bool RandoGiveAllSplitSongPartsHandler(std::shared_ptr<Ship::Console> Console,
+                                              const std::vector<std::string> args, std::string* output) {
+    if (gPlayState == nullptr) {
+        ERROR_MESSAGE("No active game; load into gameplay first.");
+        return 1;
+    }
+    if (!IS_RANDO) {
+        ERROR_MESSAGE("Only works in Randomizer (load a rando save).");
+        return 1;
+    }
+    Rando::SplitSongs::DebugGiveAllSongParts(gPlayState);
     return 0;
 }
 
@@ -1604,6 +1620,12 @@ void DebugConsole_Init(void) {
                                     { "vanilla|randomizer", Ship::ArgumentType::TEXT },
                                     { "giveItemID", Ship::ArgumentType::NUMBER },
                                 } });
+
+    CMD_REGISTER("rando_give_all_split_song_parts",
+                  { RandoGiveAllSplitSongPartsHandler,
+                    "Randomizer: grants all 12 ocarina songs via both split parts (tests Randomizer_Item_Give + "
+                    "completion). Rando save only.",
+                    {} });
 
     CMD_REGISTER("item", { ItemHandler,
                            "Sets item ID in arg 1 into slot arg 2. No boundary checks. Use with caution.",

@@ -2,6 +2,7 @@
 #include "soh/Enhancements/randomizer/SeedContext.h"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "soh/Enhancements/randomizer/static_data.h"
+#include "soh/Enhancements/randomizer/split_songs.h"
 #include "soh/Enhancements/randomizer/3drando/random.hpp"
 
 #include <vector>
@@ -1423,6 +1424,11 @@ Text Rando::Traps::GetTrapName(uint16_t id) {
     if (!initTrickNames) {
         InitTrickNames();
         initTrickNames = true;
+    }
+
+    RandomizerGet rg = static_cast<RandomizerGet>(id);
+    if (const Rando::SplitSongDef* splitDef = Rando::SplitSongs::GetSongDefFromPart(rg)) {
+        id = static_cast<uint16_t>(splitDef->fullSong);
     }
 
     if (trickNameTable[id].empty()) {

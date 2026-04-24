@@ -603,6 +603,22 @@ void Settings::CreateOptions() {
     });
     OPT_U8(RSK_LINKS_POCKET_REWARD, "Link's Pocket Reward Type", {"Dungeon Reward", "Stone", "Medallion"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("LinksPocketReward"), "", WIDGET_CVAR_COMBOBOX, RO_LINKS_POCKET_REWARD);
     OPT_U8(RSK_SHUFFLE_SONGS, "Shuffle Songs", {"Off", "Song Locations", "Dungeon Rewards", "Anywhere"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleSongs"), mOptionDescriptions[RSK_SHUFFLE_SONGS], WIDGET_CVAR_COMBOBOX, RO_SONG_SHUFFLE_SONG_LOCATIONS);
+    OPT_CALLBACK(RSK_SHUFFLE_SONGS, {
+        const int shuffleSongs =
+            CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleSongs"), RO_SONG_SHUFFLE_SONG_LOCATIONS);
+        if (shuffleSongs == RO_SONG_SHUFFLE_ANYWHERE) {
+            mOptions[RSK_SPLIT_OCARINA_SONGS].Enable();
+        } else if (shuffleSongs != RO_SONG_SHUFFLE_OFF) {
+            mOptions[RSK_SPLIT_OCARINA_SONGS].Disable(
+                "Split Ocarina Songs is only supported when Shuffle Songs is \"Anywhere\" (other modes keep 12 song "
+                "checks, not 24 parts).");
+        } else {
+            mOptions[RSK_SPLIT_OCARINA_SONGS].Disable(
+                "Turn on Shuffle Songs to use Split Ocarina Songs (then set Shuffle Songs to \"Anywhere\").");
+        }
+    });
+    OPT_BOOL(RSK_SPLIT_OCARINA_SONGS, "Split Ocarina Songs", CVAR_RANDOMIZER_SETTING("SplitOcarinaSongs"),
+             mOptionDescriptions[RSK_SPLIT_OCARINA_SONGS]);
     OPT_U8(RSK_SHOPSANITY, "Shop Shuffle", {"Off", "Specific Count", "Random"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("Shopsanity"), mOptionDescriptions[RSK_SHOPSANITY], WIDGET_CVAR_COMBOBOX, RO_SHOPSANITY_OFF);
     OPT_CALLBACK(RSK_SHOPSANITY, {
         // Hide shopsanity prices if shopsanity is off or zero
@@ -2432,6 +2448,7 @@ void Settings::CreateOptions() {
         OptionGroup::SubGroup("Shuffle Items",
                               {
                                   &mOptions[RSK_SHUFFLE_SONGS],
+                                  &mOptions[RSK_SPLIT_OCARINA_SONGS],
                                   &mOptions[RSK_SHUFFLE_TOKENS],
                                   &mOptions[RSK_SHUFFLE_KOKIRI_SWORD],
                                   &mOptions[RSK_SHUFFLE_MASTER_SWORD],
@@ -2694,6 +2711,7 @@ void Settings::CreateOptions() {
                                             &mOptions[RSK_SHUFFLE_DUNGEON_REWARDS],
                                             &mOptions[RSK_LINKS_POCKET],
                                             &mOptions[RSK_SHUFFLE_SONGS],
+                                            &mOptions[RSK_SPLIT_OCARINA_SONGS],
                                             &mOptions[RSK_SHOPSANITY],
                                             &mOptions[RSK_SHOPSANITY_COUNT],
                                             &mOptions[RSK_SHOPSANITY_PRICES],

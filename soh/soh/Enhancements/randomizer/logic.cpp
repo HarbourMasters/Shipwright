@@ -7,6 +7,7 @@
 #include "soh/OTRGlobals.h"
 #include "dungeon.h"
 #include "SeedContext.h"
+#include "split_songs.h"
 #include "macros.h"
 #include "variables.h"
 #include <spdlog/spdlog.h>
@@ -92,7 +93,7 @@ bool Logic::HasItem(RandomizerGet itemName) {
             return CurrentUpgrade(UPG_BOMB_BAG);
         case RG_MAGIC_SINGLE:
             return GetSaveContext()->magicLevel >= 1 || GetSaveContext()->isMagicAcquired;
-            // Songs
+            // Songs (split + Anywhere: logical ownership is two parts on the logic scratch before quest is granted)
         case RG_ZELDAS_LULLABY:
         case RG_EPONAS_SONG:
         case RG_SARIAS_SONG:
@@ -104,7 +105,24 @@ bool Logic::HasItem(RandomizerGet itemName) {
         case RG_SERENADE_OF_WATER:
         case RG_REQUIEM_OF_SPIRIT:
         case RG_NOCTURNE_OF_SHADOW:
-        case RG_PRELUDE_OF_LIGHT:
+        case RG_PRELUDE_OF_LIGHT: {
+            const bool splitAnywhere = ctx->GetOption(RSK_SPLIT_OCARINA_SONGS) &&
+                                       ctx->GetOption(RSK_SHUFFLE_SONGS).Is(RO_SONG_SHUFFLE_ANYWHERE);
+            const auto qiIt = RandoGetToQuestItem.find(itemName);
+            if (qiIt == RandoGetToQuestItem.end()) {
+                SPDLOG_ERROR("HasItem: song RandomizerGet {} missing from RandoGetToQuestItem",
+                             static_cast<uint32_t>(itemName));
+                assert(false);
+                return false;
+            }
+            if (splitAnywhere) {
+                const SplitSongDef* sdef = SplitSongs::GetSongDefFromFullSong(itemName);
+                if (sdef != nullptr && SplitSongs::HasBothParts(sdef->id)) {
+                    return true;
+                }
+            }
+            return CheckQuestItem(qiIt->second);
+        }
             // Dungeon Rewards
         case RG_KOKIRI_EMERALD:
         case RG_GORON_RUBY:
@@ -292,6 +310,22 @@ bool Logic::HasItem(RandomizerGet itemName) {
             return HasBottle();
         default:
             break;
+    }
+    if (SplitSongs::IsSongPart(itemName)) {
+        const SplitSongDef* def = SplitSongs::GetSongDefFromPart(itemName);
+        if (def == nullptr) {
+            return false;
+        }
+        if (HasItem(def->fullSong)) {
+            return true;
+        }
+        if (itemName == def->part1) {
+            return SplitSongs::HasPart1(def->id);
+        }
+        if (itemName == def->part2) {
+            return SplitSongs::HasPart2(def->id);
+        }
+        return false;
     }
     SPDLOG_ERROR("HasItem reached `return false;`. Missing case for RandomizerGet of {}",
                  static_cast<uint32_t>(itemName));
@@ -2079,9 +2113,17 @@ void Logic::ApplyItemEffect(Item& item, bool state) {
             }
         } break;
         case ITEMTYPE_DUNGEONREWARD:
-        case ITEMTYPE_SONG:
-            SetQuestItem(RandoGetToQuestItem.find(item.GetRandomizerGet())->second, state);
-            break;
+        case ITEMTYPE_SONG: {
+            RandomizerGet rg = item.GetRandomizerGet();
+            if (SplitSongs::IsSongPart(rg)) {
+                SplitSongs::ApplyPartEffectToLogicScratch(this, rg, state);
+                break;
+            }
+            auto qi = RandoGetToQuestItem.find(rg);
+            if (qi != RandoGetToQuestItem.end()) {
+                SetQuestItem(qi->second, state);
+            }
+        } break;
         case ITEMTYPE_MAP:
             SetDungeonItem(DUNGEON_MAP, RandoGetToDungeonScene.find(item.GetRandomizerGet())->second, state);
             break;

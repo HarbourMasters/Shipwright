@@ -5,6 +5,8 @@
  * etc.
  */
 #include <soh/OTRGlobals.h>
+#include "soh/Enhancements/randomizer/split_songs.h"
+#include "soh/Enhancements/randomizer/static_data.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/custom-message/CustomMessageTypes.h"
@@ -19,8 +21,44 @@ extern "C" {
 #include <variables.h>
 #include <macros.h>
 #include "z64item.h"
+#include "z64player.h"
 extern PlayState* gPlayState;
 }
+
+namespace {
+
+ItemID VanillaItemIdForFullSong(RandomizerGet fullSongRg) {
+    switch (fullSongRg) {
+        case RG_ZELDAS_LULLABY:
+            return ITEM_SONG_LULLABY;
+        case RG_EPONAS_SONG:
+            return ITEM_SONG_EPONA;
+        case RG_SARIAS_SONG:
+            return ITEM_SONG_SARIA;
+        case RG_SUNS_SONG:
+            return ITEM_SONG_SUN;
+        case RG_SONG_OF_TIME:
+            return ITEM_SONG_TIME;
+        case RG_SONG_OF_STORMS:
+            return ITEM_SONG_STORMS;
+        case RG_MINUET_OF_FOREST:
+            return ITEM_SONG_MINUET;
+        case RG_BOLERO_OF_FIRE:
+            return ITEM_SONG_BOLERO;
+        case RG_SERENADE_OF_WATER:
+            return ITEM_SONG_SERENADE;
+        case RG_REQUIEM_OF_SPIRIT:
+            return ITEM_SONG_REQUIEM;
+        case RG_NOCTURNE_OF_SHADOW:
+            return ITEM_SONG_NOCTURNE;
+        case RG_PRELUDE_OF_LIGHT:
+            return ITEM_SONG_PRELUDE;
+        default:
+            return ITEM_NONE;
+    }
+}
+
+} // namespace
 
 void BuildTriforcePieceMessage(CustomMessage& msg) {
     uint8_t current = gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected + 1;
@@ -72,10 +110,27 @@ void BuildCustomItemMessage(Player* player, CustomMessage& msg) {
     msg = CustomMessage("You found [[article]][[color]][[name]]%w!",
                         "Du erhältst [[article]][[color]][[name]]%w gefunden!",
                         "Vous avez trouvé [[article]][[color]][[name]]%w!", TEXTBOX_TYPE_BLUE);
-    if (player->getItemEntry.objectId != OBJECT_INVALID) {
+    if (player->getItemEntry.modIndex == MOD_RANDOMIZER) {
+        rgid = player->getItemEntry.getItemId;
+    } else if (player->getItemEntry.objectId != OBJECT_INVALID) {
         rgid = player->getItemEntry.getItemId;
     } else {
         rgid = player->getItemId;
+    }
+    if (player->getItemEntry.modIndex == MOD_RANDOMIZER && rgid < 0) {
+        rgid = (s16)-rgid;
+    }
+    if (IS_RANDO && Rando::SplitSongs::IsSongPart(static_cast<RandomizerGet>(rgid))) {
+        const RandomizerGet partRg = static_cast<RandomizerGet>(rgid);
+        const auto& songPartItem = Rando::StaticData::RetrieveItem(partRg);
+        const auto* splitDef = Rando::SplitSongs::GetSongDefFromPart(partRg);
+        const ItemID iconItemId =
+            splitDef != nullptr ? VanillaItemIdForFullSong(splitDef->fullSong) : ITEM_NONE;
+        const auto& nm = songPartItem.GetName();
+        CustomMessage getItemText(nm.GetEnglish(), nm.GetGerman(), nm.GetFrench(), TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM);
+        getItemText.Format(iconItemId);
+        msg = getItemText;
+        return;
     }
     CustomMessage name =
         CustomMessage(Rando::StaticData::RetrieveItem(static_cast<RandomizerGet>(rgid)).GetName(), TEXTBOX_TYPE_BLUE);
