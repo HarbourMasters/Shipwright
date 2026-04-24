@@ -682,7 +682,7 @@ void EnMd_Destroy(Actor* thisx, PlayState* play) {
 
 void EnMd_Idle(EnMd* this, PlayState* play) {
     if (this->skelAnime.animation == &gMidoHandsOnHipsIdleAnim) {
-        func_80034F54(play, this->unk_214, this->unk_236, 17);
+        func_80034F54(play, this->fidgetTableY, this->fidgetTableZ, 17);
     } else if ((this->interactInfo.talkState == NPC_TALK_STATE_IDLE) && (this->animSequence != 7)) {
         EnMd_SetAnimSequence(this, 7);
     }
@@ -692,7 +692,7 @@ void EnMd_Idle(EnMd* this, PlayState* play) {
 
 void EnMd_Watch(EnMd* this, PlayState* play) {
     if (this->skelAnime.animation == &gMidoHandsOnHipsIdleAnim) {
-        func_80034F54(play, this->unk_214, this->unk_236, 17);
+        func_80034F54(play, this->fidgetTableY, this->fidgetTableZ, 17);
     }
     EnMd_UpdateAnimSequence(this);
 }
@@ -748,7 +748,7 @@ void EnMd_BlockPath(EnMd* this, PlayState* play) {
     }
 
     if (this->skelAnime.animation == &gMidoHandsOnHipsIdleAnim) {
-        func_80034F54(play, this->unk_214, this->unk_236, 17);
+        func_80034F54(play, this->fidgetTableY, this->fidgetTableZ, 17);
     }
 
     if ((this->interactInfo.talkState == NPC_TALK_STATE_IDLE) && (play->sceneNum == SCENE_LOST_WOODS)) {
@@ -786,7 +786,7 @@ void EnMd_ListenToOcarina(EnMd* this, PlayState* play) {
 }
 
 void EnMd_Walk(EnMd* this, PlayState* play) {
-    func_80034F54(play, this->unk_214, this->unk_236, 17);
+    func_80034F54(play, this->fidgetTableY, this->fidgetTableZ, 17);
     EnMd_UpdateAnimSequence(this);
 
     if (!(EnMd_FollowPath(this, play)) || (this->waypoint != 0)) {
@@ -844,8 +844,8 @@ s32 EnMd_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* po
     }
 
     if (((limbIndex == 9) || (limbIndex == 10)) || (limbIndex == 13)) {
-        rot->y += Math_SinS(this->unk_214[limbIndex]) * 200.0f;
-        rot->z += Math_CosS(this->unk_236[limbIndex]) * 200.0f;
+        rot->y += Math_SinS(this->fidgetTableY[limbIndex]) * 200.0f;
+        rot->z += Math_CosS(this->fidgetTableZ[limbIndex]) * 200.0f;
     }
 
     return false;

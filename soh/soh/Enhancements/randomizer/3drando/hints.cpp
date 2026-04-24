@@ -211,116 +211,86 @@ const std::array<HintSetting, 4> hintSettingTable{{
   },
 }};
 
-uint8_t StonesRequiredBySettings() {
-    auto ctx = Rando::Context::GetInstance();
-    uint8_t stones = 0;
-    if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_STONES)) {
-        stones = ctx->GetOption(RSK_RAINBOW_BRIDGE_STONE_COUNT).Get();
-    } else if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_DUNGEON_REWARDS)) {
-        stones = ctx->GetOption(RSK_RAINBOW_BRIDGE_REWARD_COUNT).Get() - 6;
-    } else if ((ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_DUNGEONS)) &&
-               (ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON))) {
-        stones = ctx->GetOption(RSK_RAINBOW_BRIDGE_DUNGEON_COUNT).Get() - 6;
-    }
-    if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_STONES)) {
-        stones = std::max<uint8_t>({ stones, ctx->GetOption(RSK_LACS_STONE_COUNT).Get() });
-    } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_REWARDS)) {
-        stones = std::max<uint8_t>({ stones, (uint8_t)(ctx->GetOption(RSK_LACS_REWARD_COUNT).Get() - 6) });
-    } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_DUNGEONS) &&
-               ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON)) {
-        stones = std::max<uint8_t>({ stones, (uint8_t)(ctx->GetOption(RSK_LACS_DUNGEON_COUNT).Get() - 6) });
-    }
-    return stones;
-}
+struct BridgeReqConfig {
+    RandomizerSettingKey bridgeDirectKey;
+    RandomizerSettingKey lacsDirectKey;
+    RandoOptionRainbowBridge bridgeEnum;
+    RandoOptionGanonsBossKey lacsEnum;
+    uint8_t offset;
+};
 
-uint8_t MedallionsRequiredBySettings() {
+static constexpr BridgeReqConfig StonesConfig{ RSK_RAINBOW_BRIDGE_STONE_COUNT, RSK_LACS_STONE_COUNT, RO_BRIDGE_STONES,
+                                               RO_GANON_BOSS_KEY_LACS_STONES, 6 };
+static constexpr BridgeReqConfig MedallionsConfig{ RSK_RAINBOW_BRIDGE_MEDALLION_COUNT, RSK_LACS_MEDALLION_COUNT,
+                                                   RO_BRIDGE_MEDALLIONS, RO_GANON_BOSS_KEY_LACS_MEDALLIONS, 3 };
+static constexpr BridgeReqConfig TokensConfig{ RSK_RAINBOW_BRIDGE_TOKEN_COUNT, RSK_LACS_TOKEN_COUNT, RO_BRIDGE_TOKENS,
+                                               RO_GANON_BOSS_KEY_LACS_TOKENS, 0 };
+
+static uint8_t RequiredBySettings(const BridgeReqConfig& cfg) {
     auto ctx = Rando::Context::GetInstance();
-    uint8_t medallions = 0;
-    if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_MEDALLIONS)) {
-        medallions = ctx->GetOption(RSK_RAINBOW_BRIDGE_MEDALLION_COUNT).Get();
+    uint8_t count = 0;
+    if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(cfg.bridgeEnum)) {
+        count = ctx->GetOption(cfg.bridgeDirectKey).Get();
     } else if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_DUNGEON_REWARDS)) {
-        medallions = ctx->GetOption(RSK_RAINBOW_BRIDGE_REWARD_COUNT).Get() - 3;
+        count = ctx->GetOption(RSK_RAINBOW_BRIDGE_REWARD_COUNT).Get() - cfg.offset;
     } else if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_DUNGEONS) &&
                ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON)) {
-        medallions = ctx->GetOption(RSK_RAINBOW_BRIDGE_DUNGEON_COUNT).Get() - 3;
+        count = ctx->GetOption(RSK_RAINBOW_BRIDGE_DUNGEON_COUNT).Get() - cfg.offset;
     }
-    if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_MEDALLIONS)) {
-        medallions = std::max(medallions, ctx->GetOption(RSK_LACS_MEDALLION_COUNT).Get());
+    if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(cfg.lacsEnum)) {
+        count = std::max<uint8_t>(count, ctx->GetOption(cfg.lacsDirectKey).Get());
     } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_REWARDS)) {
-        medallions = std::max(medallions, (uint8_t)(ctx->GetOption(RSK_LACS_REWARD_COUNT).Get() - 3));
+        count = std::max<uint8_t>(count, (uint8_t)(ctx->GetOption(RSK_LACS_REWARD_COUNT).Get() - cfg.offset));
     } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_DUNGEONS) &&
                ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON)) {
-        medallions = std::max(medallions, (uint8_t)(ctx->GetOption(RSK_LACS_DUNGEON_COUNT).Get() - 3));
+        count = std::max<uint8_t>(count, (uint8_t)(ctx->GetOption(RSK_LACS_DUNGEON_COUNT).Get() - cfg.offset));
     }
-    return medallions;
+    return count;
 }
 
-uint8_t TokensRequiredBySettings() {
-    auto ctx = Rando::Context::GetInstance();
-    uint8_t tokens = 0;
-    if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_TOKENS)) {
-        tokens = ctx->GetOption(RSK_RAINBOW_BRIDGE_TOKEN_COUNT).Get();
-    }
-    if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_TOKENS)) {
-        tokens = std::max<uint8_t>(tokens, ctx->GetOption(RSK_LACS_TOKEN_COUNT).Get());
-    }
-    return tokens;
+static uint8_t StonesRequiredBySettings() {
+    return RequiredBySettings(StonesConfig);
+}
+static uint8_t MedallionsRequiredBySettings() {
+    return RequiredBySettings(MedallionsConfig);
+}
+static uint8_t TokensRequiredBySettings() {
+    return RequiredBySettings(TokensConfig);
 }
 
-std::vector<std::pair<RandomizerCheck, std::function<bool()>>> conditionalAlwaysHints = {
-    std::make_pair(RC_MARKET_10_BIG_POES,
-                   []() {
-                       auto ctx = Rando::Context::GetInstance();
-                       return ctx->GetOption(RSK_BIG_POE_COUNT).Get() > 3 && !ctx->GetOption(RSK_BIG_POES_HINT);
-                   }),
-    std::make_pair(RC_DEKU_THEATER_MASK_OF_TRUTH,
-                   []() {
-                       auto ctx = Rando::Context::GetInstance();
-                       return !ctx->GetOption(RSK_MASK_SHOP_HINT) && !ctx->GetOption(RSK_MASK_QUEST);
-                   }),
-    std::make_pair(RC_SONG_FROM_OCARINA_OF_TIME,
-                   []() {
-                       auto ctx = Rando::Context::GetInstance();
-                       return StonesRequiredBySettings() < 2 && !ctx->GetOption(RSK_OOT_HINT);
-                   }),
-    std::make_pair(RC_HF_OCARINA_OF_TIME_ITEM, []() { return StonesRequiredBySettings() < 2; }),
-    std::make_pair(RC_SHEIK_IN_KAKARIKO, []() { return MedallionsRequiredBySettings() < 5; }),
-    std::make_pair(RC_DMT_TRADE_CLAIM_CHECK,
-                   []() {
-                       auto ctx = Rando::Context::GetInstance();
-                       return !ctx->GetOption(RSK_BIGGORON_HINT);
-                   }),
-    std::make_pair(RC_KAK_30_GOLD_SKULLTULA_REWARD,
-                   []() {
-                       auto ctx = Rando::Context::GetInstance();
-                       return !ctx->GetOption(RSK_KAK_30_SKULLS_HINT) && TokensRequiredBySettings() < 30;
-                   }),
-    std::make_pair(RC_KAK_40_GOLD_SKULLTULA_REWARD,
-                   []() {
-                       auto ctx = Rando::Context::GetInstance();
-                       return !ctx->GetOption(RSK_KAK_40_SKULLS_HINT) && TokensRequiredBySettings() < 40;
-                   }),
-    std::make_pair(RC_KAK_50_GOLD_SKULLTULA_REWARD,
-                   []() {
-                       auto ctx = Rando::Context::GetInstance();
-                       return !ctx->GetOption(RSK_KAK_50_SKULLS_HINT) && TokensRequiredBySettings() < 50;
-                   }),
-    std::make_pair(RC_ZR_FROGS_OCARINA_GAME,
-                   []() {
-                       auto ctx = Rando::Context::GetInstance();
-                       return !ctx->GetOption(RSK_FROGS_HINT);
-                   }),
-    std::make_pair(RC_KF_LINKS_HOUSE_COW,
-                   []() {
-                       auto ctx = Rando::Context::GetInstance();
-                       return !ctx->GetOption(RSK_MALON_HINT);
-                   }),
-    std::make_pair(RC_KAK_100_GOLD_SKULLTULA_REWARD,
-                   []() {
-                       auto ctx = Rando::Context::GetInstance();
-                       return !ctx->GetOption(RSK_KAK_100_SKULLS_HINT) && TokensRequiredBySettings() < 100;
-                   }),
+// An 'always' hint that only applies under certain settings. Suppressed when the user
+// has enabled `dedicatedHint` (since a dedicated hint renders the gossip-stone hint redundant),
+// or when `extra` is present and returns false. RSK_NONE in `dedicatedHint` means no suppression.
+struct ConditionalAlwaysHint {
+    RandomizerCheck loc;
+    RandomizerSettingKey dedicatedHint;
+    std::function<bool()> extra;
 };
+
+std::vector<ConditionalAlwaysHint> conditionalAlwaysHints = {
+    // clang-format off
+    { RC_MARKET_10_BIG_POES,            RSK_BIG_POES_HINT,       []() { return Rando::Context::GetInstance()->GetOption(RSK_BIG_POE_COUNT).Get() > 3; } },
+    { RC_DEKU_THEATER_MASK_OF_TRUTH,    RSK_MASK_SHOP_HINT,      []() { return !Rando::Context::GetInstance()->GetOption(RSK_MASK_QUEST); } },
+    { RC_SONG_FROM_OCARINA_OF_TIME,     RSK_OOT_HINT,            []() { return StonesRequiredBySettings() < 2; } },
+    { RC_HF_OCARINA_OF_TIME_ITEM,       RSK_OOT_HINT,            []() { return StonesRequiredBySettings() < 2; } },
+    { RC_SHEIK_IN_KAKARIKO,             RSK_NONE,                []() { return MedallionsRequiredBySettings() < 5; } },
+    { RC_DMT_TRADE_CLAIM_CHECK,         RSK_BIGGORON_HINT,       nullptr },
+    { RC_KAK_30_GOLD_SKULLTULA_REWARD,  RSK_KAK_30_SKULLS_HINT,  []() { return TokensRequiredBySettings() < 30; } },
+    { RC_KAK_40_GOLD_SKULLTULA_REWARD,  RSK_KAK_40_SKULLS_HINT,  []() { return TokensRequiredBySettings() < 40; } },
+    { RC_KAK_50_GOLD_SKULLTULA_REWARD,  RSK_KAK_50_SKULLS_HINT,  []() { return TokensRequiredBySettings() < 50; } },
+    { RC_ZR_FROGS_OCARINA_GAME,         RSK_FROGS_HINT,          nullptr },
+    { RC_KF_LINKS_HOUSE_COW,            RSK_MALON_HINT,          nullptr },
+    { RC_KAK_100_GOLD_SKULLTULA_REWARD, RSK_KAK_100_SKULLS_HINT, []() { return TokensRequiredBySettings() < 100; } },
+    // clang-format on
+};
+
+static bool ConditionalAlwaysHintApplies(const ConditionalAlwaysHint& h) {
+    auto ctx = Rando::Context::GetInstance();
+    if (h.dedicatedHint != RSK_NONE && ctx->GetOption(h.dedicatedHint)) {
+        return false;
+    }
+    return !h.extra || h.extra();
+}
 
 static std::vector<RandomizerCheck> GetEmptyGossipStones() {
     auto emptyGossipStones = GetEmptyLocations(Rando::StaticData::GetGossipStoneLocations());
@@ -466,13 +436,6 @@ static std::vector<RandomizerCheck> FilterHintability(std::vector<RandomizerChec
     });
 }
 
-static void CreateJunkHints(uint8_t numHints) {
-    for (uint8_t c = 0; c < numHints; c++) {
-        // duplicate junk hints are possible for now
-        AddGossipStoneHintCopies(1, HINT_TYPE_HINT_KEY, "Junk", { GetRandomJunkHint() });
-    }
-}
-
 static void CreateTrialHints(uint8_t copies) {
     if (copies > 0) {
         auto ctx = Rando::Context::GetInstance();
@@ -534,101 +497,106 @@ void CreateWarpSongTexts() {
     }
 }
 
-int32_t getRandomWeight(int32_t totalWeight) {
-    if (totalWeight <= 1) {
-        return 1;
-    }
-    return Random(1, totalWeight);
+static int32_t getRandomWeight(uint32_t totalWeight) {
+    return totalWeight <= 1 ? 1 : Random(1, totalWeight);
 }
 
-static void DistributeHints(std::vector<uint8_t>& selected, size_t stoneCount,
-                            std::vector<HintDistributionSetting> distTable, uint8_t junkWieght, bool addFixed = true) {
-    int32_t totalWeight = junkWieght; // Start with our Junk Weight, the natural chance of a junk hint
-
-    for (size_t c = 0; c < distTable.size();
-         c++) { // Gather the weights of each distribution and, if it's the first pass, apply fixed hints
-        totalWeight += distTable[c].weight; // Note that PlaceHints will set weights of distributions to zero if it
-                                            // can't place anything from them
-        if (addFixed) {
-            selected[c] += distTable[c].fixed;
-            stoneCount -= distTable[c].fixed * distTable[c].copies;
-        }
-    }
-    int32_t currentWeight = getRandomWeight(totalWeight); // Initialise with the first random weight from 1 to the
-                                                          // total.
-    while (stoneCount > 0 &&
-           totalWeight >
-               0) { // Loop until we run out of stones or have no TotalWeight. 0 totalWeight means junkWeight is 0
-                    // and that all weights have been 0'd out for another reason, and skips to placing all junk hints
-        for (size_t distribution = 0; distribution < distTable.size(); distribution++) {
-            currentWeight -=
-                distTable[distribution]
-                    .weight; // go over each distribution, subtracting the weight each time. Once we reach zero or less,
-            if (currentWeight <= 0) { // tell the system to make 1 of that hint, unless not enough stones remain
-                if (stoneCount >= distTable[distribution].copies && distTable[distribution].copies > 0) {
-                    selected[distribution] += 1; // if we have enough stones, and copies are not zero, assign 1 to this
-                                                 // hint type, remove the stones, and break
-                    stoneCount -= distTable[distribution].copies;
-                    break; // This leaves the whole for loop
-                } else { // If we don't have the stones, or copies is 0 despite there being the wieght to trigger a hit,
-                         // temporerally set wieght to zero
-                    totalWeight -=
-                        distTable[distribution]
-                            .weight; // Unlike PlaceHint, distTable is passed by value here, making this temporary
-                    distTable[distribution].weight =
-                        0; // this is so we can still roll this hint type if more stones free up later
-                    break;
-                }
-            }
-        }
-        // if there's still weight then it's junk, as the leftover weight is junkWeight
-        if (currentWeight >
-            0) { // zero TotalWeight breaks the while loop and hits the fallback, so skipping this is fine in that case
-            selected[selected.size() - 1] += 1;
-            stoneCount -= 1;
-        }
-        currentWeight = getRandomWeight(totalWeight);
-    }
-    // if stones are left, assign junk to every remaining stone as a fallback.
-    if (stoneCount > 0) {
-        selected[static_cast<uint8_t>(selected.size()) - 1] += static_cast<uint8_t>(stoneCount);
-    }
-}
-
-uint8_t PlaceHints(std::vector<uint8_t>& selectedHints, std::vector<HintDistributionSetting>& distTable) {
+static void DistributeAndPlaceHints(std::vector<HintDistributionSetting>& distTable, size_t totalStones) {
     auto ctx = Rando::Context::GetInstance();
-    uint8_t curSlot = 0;
-    for (HintDistributionSetting distribution : distTable) {
-        std::vector<RandomizerCheck> hintTypePool = FilterHintability(ctx->allLocations, distribution.filter);
-        for (uint8_t numHint = 0; numHint < selectedHints[curSlot]; numHint++) {
-            hintTypePool = FilterHintability(hintTypePool);
-            SPDLOG_DEBUG("Attempting to make hint of type: {}",
-                         StaticData::hintTypeNames[distribution.type].GetEnglish(MF_CLEAN));
-            RandomizerCheck hintedLocation = RC_UNKNOWN_CHECK;
+    const uint8_t junkIdx = distTable.size();
 
-            hintedLocation = CreateRandomHint(hintTypePool, distribution.copies, distribution.type, distribution.name);
-
-            if (hintedLocation == RC_UNKNOWN_CHECK) { // if hint failed to place, remove all wieght and copies then
-                                                      // return the number of stones to redistribute
-                uint8_t hintsToRemove = (selectedHints[curSlot] - numHint) * distribution.copies;
-                selectedHints[curSlot] = 0; // as distTable is passed by refernce here, these changes stick for the rest
-                                            // of this seed generation
-                distTable[curSlot].copies = 0; // and prevent future distribution from choosing this slot
-                distTable[curSlot].weight = 0;
-                return hintsToRemove;
+    // Apply fixed hints upfront (they don't participate in weighted selection)
+    for (size_t i = 0; i < distTable.size(); i++) {
+        if (distTable[i].fixed == 0) {
+            continue;
+        }
+        uint8_t placed = 0;
+        for (uint8_t c = 0; c < distTable[i].fixed; c++) {
+            std::vector<RandomizerCheck> hintPool = FilterHintability(ctx->allLocations, distTable[i].filter);
+            SPDLOG_DEBUG("Attempting fixed hint of type: {}",
+                         StaticData::hintTypeNames[distTable[i].type].GetEnglish(MF_CLEAN));
+            RandomizerCheck fixedLoc =
+                CreateRandomHint(hintPool, distTable[i].copies, distTable[i].type, distTable[i].name);
+            if (fixedLoc == RC_UNKNOWN_CHECK) {
+                distTable[i].weight = 0;
+                distTable[i].copies = 0;
+                break;
             }
-            if (Rando::StaticData::GetLocation(hintedLocation)->IsDungeon()) {
-                distribution.dungeonLimit -= 1;
-                if (distribution.dungeonLimit == 0) {
-                    FilterFromPool(hintTypePool, FilterOverworldLocations);
+            placed++;
+            if (Rando::StaticData::GetLocation(fixedLoc)->IsDungeon()) {
+                distTable[i].dungeonLimit -= 1;
+                if (distTable[i].dungeonLimit == 0) {
+                    hintPool = FilterFromPool(hintPool, FilterOverworldLocations);
                 }
             }
         }
-        selectedHints[curSlot] = 0;
-        curSlot += 1;
+        totalStones -= placed * distTable[i].copies;
     }
-    CreateJunkHints(selectedHints[selectedHints.size() - 1]);
-    return 0;
+
+    while (totalStones > 0) {
+        // Pick a weighted distribution type (junk included)
+        uint32_t totalWeight = 0;
+        for (size_t i = 0; i < distTable.size(); i++) {
+            totalWeight += distTable[i].weight;
+        }
+
+        // No weighted types left, fill remaining with junk
+        if (totalWeight == 0) {
+            for (size_t c = 0; c < totalStones; c++) {
+                // duplicate junk hints are possible for now
+                AddGossipStoneHintCopies(1, HINT_TYPE_HINT_KEY, "Junk", { GetRandomJunkHint() });
+            }
+            return;
+        }
+
+        uint32_t roll = getRandomWeight(totalWeight);
+        uint32_t cursor = 0;
+        uint8_t chosenType = junkIdx;
+        for (size_t i = 0; i < distTable.size(); i++) {
+            cursor += distTable[i].weight;
+            if (roll <= cursor) {
+                chosenType = static_cast<uint8_t>(i);
+                break;
+            }
+        }
+
+        if (chosenType == junkIdx) {
+            AddGossipStoneHintCopies(1, HINT_TYPE_HINT_KEY, "Junk", { GetRandomJunkHint() });
+            totalStones -= 1;
+            continue;
+        }
+
+        auto& dist = distTable[chosenType];
+
+        // Need at least `copies` stones to place one instance of this type
+        if (dist.copies == 0 || totalStones < dist.copies) {
+            dist.weight = 0;
+            dist.copies = 0;
+            continue;
+        }
+
+        // Build hint pool and attempt placement
+        std::vector<RandomizerCheck> hintPool = FilterHintability(ctx->allLocations, dist.filter);
+        SPDLOG_DEBUG("Attempting to make hint of type: {}", StaticData::hintTypeNames[dist.type].GetEnglish(MF_CLEAN));
+
+        RandomizerCheck hintedLocation = CreateRandomHint(hintPool, dist.copies, dist.type, dist.name);
+        if (hintedLocation == RC_UNKNOWN_CHECK) {
+            // Placement failed, disable this type entirely
+            dist.weight = 0;
+            dist.copies = 0;
+            continue;
+        }
+
+        // Track dungeon limit
+        if (Rando::StaticData::GetLocation(hintedLocation)->IsDungeon()) {
+            dist.dungeonLimit -= 1;
+            if (dist.dungeonLimit == 0) {
+                hintPool = FilterFromPool(hintPool, FilterOverworldLocations);
+            }
+        }
+
+        totalStones -= dist.copies;
+    }
 }
 
 void CreateStoneHints() {
@@ -661,10 +629,9 @@ void CreateStoneHints() {
             }
         }
 
-        for (auto& hint : conditionalAlwaysHints) {
-            RandomizerCheck loc = hint.first;
-            if (hint.second() && ctx->GetItemLocation(loc)->IsHintable()) {
-                alwaysHintLocations.push_back(loc);
+        for (const auto& hint : conditionalAlwaysHints) {
+            if (ConditionalAlwaysHintApplies(hint) && ctx->GetItemLocation(hint.loc)->IsHintable()) {
+                alwaysHintLocations.push_back(hint.loc);
             }
         }
 
@@ -679,16 +646,8 @@ void CreateStoneHints() {
     }
 
     size_t totalStones = GetEmptyGossipStones().size();
-    std::vector<uint8_t> selectedHints;
-    selectedHints.resize(distTable.size() + 1);
-    DistributeHints(selectedHints, totalStones, distTable, hintSetting.junkWeight);
-
-    while (totalStones != 0) {
-        totalStones = PlaceHints(selectedHints, distTable);
-        if (totalStones != 0) {
-            DistributeHints(selectedHints, totalStones, distTable, hintSetting.junkWeight, false);
-        }
-    }
+    distTable.push_back({ "Junk", HINT_TYPE_HINT_KEY, hintSetting.junkWeight, 0, 1, NoFilter });
+    DistributeAndPlaceHints(distTable, totalStones);
 
     // Getting gossip stone locations temporarily sets one location to not be reachable.
     // Call the function one last time to get rid of false positives on locations not
@@ -719,55 +678,40 @@ std::vector<RandomizerCheck> FindItemsAndMarkHinted(std::vector<RandomizerGet> i
     return locations;
 }
 
-void CreateChildAltarHint() {
+static void CreateAltarHint(RandomizerHint hintKey, HintType hintType, std::vector<RandomizerGet> rewards,
+                            RandomizerCheck altarCheck) {
     auto ctx = Rando::Context::GetInstance();
-    if (!ctx->GetHint(RH_ALTAR_CHILD)->IsEnabled()) {
-        std::vector<RandomizerCheck> stoneLocs = {};
-        std::vector<RandomizerArea> stoneAreas = {};
-        if (ctx->GetOption(RSK_TOT_ALTAR_HINT)) {
-            // force marking the rewards as hinted if they are at the end of dungeons as they can be inferred
-            if (ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON) ||
-                ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_VANILLA)) {
-                stoneLocs = FindItemsAndMarkHinted({ RG_KOKIRI_EMERALD, RG_GORON_RUBY, RG_ZORA_SAPPHIRE }, {});
-            } else {
-                stoneLocs = FindItemsAndMarkHinted({ RG_KOKIRI_EMERALD, RG_GORON_RUBY, RG_ZORA_SAPPHIRE },
-                                                   { RC_ALTAR_HINT_CHILD });
-            }
-            for (auto loc : stoneLocs) {
-                if (loc != RC_UNKNOWN_CHECK) {
-                    stoneAreas.push_back(ctx->GetItemLocation(loc)->GetRandomArea());
-                }
+    if (ctx->GetHint(hintKey)->IsEnabled()) {
+        return;
+    }
+    std::vector<RandomizerCheck> locs = {};
+    std::vector<RandomizerArea> areas = {};
+    if (ctx->GetOption(RSK_TOT_ALTAR_HINT)) {
+        // force marking the rewards as hinted if they are at the end of dungeons as they can be inferred
+        const bool rewardsInferrable =
+            ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON) ||
+            ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_VANILLA);
+        locs = FindItemsAndMarkHinted(rewards, rewardsInferrable ? std::vector<RandomizerCheck>{}
+                                                                 : std::vector<RandomizerCheck>{ altarCheck });
+        for (auto loc : locs) {
+            if (loc != RC_UNKNOWN_CHECK) {
+                areas.push_back(ctx->GetItemLocation(loc)->GetRandomArea());
             }
         }
-        ctx->AddHint(RH_ALTAR_CHILD, Hint(RH_ALTAR_CHILD, HINT_TYPE_ALTAR_CHILD, {}, stoneLocs, stoneAreas));
     }
+    ctx->AddHint(hintKey, Hint(hintKey, hintType, {}, locs, areas));
+}
+
+void CreateChildAltarHint() {
+    CreateAltarHint(RH_ALTAR_CHILD, HINT_TYPE_ALTAR_CHILD, { RG_KOKIRI_EMERALD, RG_GORON_RUBY, RG_ZORA_SAPPHIRE },
+                    RC_ALTAR_HINT_CHILD);
 }
 
 void CreateAdultAltarHint() {
-    auto ctx = Rando::Context::GetInstance();
-    if (!ctx->GetHint(RH_ALTAR_ADULT)->IsEnabled()) {
-        std::vector<RandomizerCheck> medallionLocs = {};
-        std::vector<RandomizerArea> medallionAreas = {};
-        if (ctx->GetOption(RSK_TOT_ALTAR_HINT)) {
-            // force marking the rewards as hinted if they are at the end of dungeons as they can be inferred
-            if (ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON) ||
-                ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_VANILLA)) {
-                medallionLocs = FindItemsAndMarkHinted({ RG_LIGHT_MEDALLION, RG_FOREST_MEDALLION, RG_FIRE_MEDALLION,
-                                                         RG_WATER_MEDALLION, RG_SPIRIT_MEDALLION, RG_SHADOW_MEDALLION },
-                                                       {});
-            } else {
-                medallionLocs = FindItemsAndMarkHinted({ RG_LIGHT_MEDALLION, RG_FOREST_MEDALLION, RG_FIRE_MEDALLION,
-                                                         RG_WATER_MEDALLION, RG_SPIRIT_MEDALLION, RG_SHADOW_MEDALLION },
-                                                       { RC_ALTAR_HINT_ADULT });
-            }
-            for (auto loc : medallionLocs) {
-                if (loc != RC_UNKNOWN_CHECK) {
-                    medallionAreas.push_back(ctx->GetItemLocation(loc)->GetRandomArea());
-                }
-            }
-        }
-        ctx->AddHint(RH_ALTAR_ADULT, Hint(RH_ALTAR_ADULT, HINT_TYPE_ALTAR_ADULT, {}, medallionLocs, medallionAreas));
-    }
+    CreateAltarHint(RH_ALTAR_ADULT, HINT_TYPE_ALTAR_ADULT,
+                    { RG_LIGHT_MEDALLION, RG_FOREST_MEDALLION, RG_FIRE_MEDALLION, RG_WATER_MEDALLION,
+                      RG_SPIRIT_MEDALLION, RG_SHADOW_MEDALLION },
+                    RC_ALTAR_HINT_ADULT);
 }
 
 void CreateStaticHintFromData(RandomizerHint hint, StaticHintInfo staticData) {

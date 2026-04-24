@@ -203,7 +203,7 @@ void func_80A74398(Actor* thisx, PlayState* play) {
 
     thisx->colChkInfo.damageTable = &sDamageTable;
     thisx->colChkInfo.mass = MASS_HEAVY;
-    this->unk_2FC = 0;
+    this->isBreakingProp = 0;
     thisx->colChkInfo.health = 30;
     thisx->gravity = -1.0f;
     this->switchFlags = (thisx->params >> 8) & 0xFF;
@@ -252,7 +252,7 @@ void func_80A74398(Actor* thisx, PlayState* play) {
 }
 
 s32 func_80A745E4(EnIk* this, PlayState* play) {
-    if (((this->unk_2FB != 0) || (this->actor.params == 0)) &&
+    if (((this->armorStatusFlag != 0) || (this->actor.params == 0)) &&
         (func_800354B4(play, &this->actor, 100.0f, 0x2710, 0x4000, this->actor.shape.rot.y) != 0) &&
         (play->gameplayFrames & 1)) {
         func_80A755F0(this);
@@ -330,7 +330,7 @@ void func_80A7489C(EnIk* this) {
 }
 
 void func_80A7492C(EnIk* this, PlayState* play) {
-    s32 phi_a0 = (this->unk_2FB == 0) ? 0xAAA : 0x3FFC;
+    s32 phi_a0 = (this->armorStatusFlag == 0) ? 0xAAA : 0x3FFC;
     s16 yawDiff = this->actor.yawTowardsPlayer - this->actor.shape.rot.y;
 
     if ((ABS(yawDiff) <= phi_a0) && (this->actor.xzDistToPlayer < 100.0f) &&
@@ -351,7 +351,7 @@ void func_80A7492C(EnIk* this, PlayState* play) {
 
 void func_80A74AAC(EnIk* this) {
     this->unk_2F8 = 5;
-    if (this->unk_2FB == 0) {
+    if (this->armorStatusFlag == 0) {
         Animation_Change(&this->skelAnime, &gIronKnuckleWalkAnim, 1.0f, 0.0f,
                          Animation_GetLastFrame(&gIronKnuckleWalkAnim), ANIMMODE_LOOP, -4.0f);
         this->actor.speedXZ = 0.9f;
@@ -373,7 +373,7 @@ void func_80A74BA4(EnIk* this, PlayState* play) {
     s16 sp2E;
     s16 phi_a3;
 
-    if (this->unk_2FB == 0) {
+    if (this->armorStatusFlag == 0) {
         temp_t0 = 0xAAA;
         phi_a3 = 0x320;
         sp30 = 0;
@@ -404,7 +404,7 @@ void func_80A74BA4(EnIk* this, PlayState* play) {
     }
     if (func_80A74674(play, &this->actor) != NULL) {
         func_80A751C8(this);
-        this->unk_2FC = 1;
+        this->isBreakingProp = 1;
     } else {
         temp_t0 = this->actor.yawTowardsPlayer - this->actor.shape.rot.y;
         if (ABS(temp_t0) > 0x4000) {
@@ -451,7 +451,7 @@ void func_80A74EBC(EnIk* this, PlayState* play) {
     if ((this->skelAnime.curFrame > 17.0f) && (this->skelAnime.curFrame < 23.0f)) {
         this->unk_2FE = 1;
     } else {
-        if ((this->unk_2FB != 0) && (this->skelAnime.curFrame < 10.0f)) {
+        if ((this->armorStatusFlag != 0) && (this->skelAnime.curFrame < 10.0f)) {
             Math_SmoothStepToS(&this->actor.world.rot.y, this->actor.yawTowardsPlayer, 1, 0x5DC, 0);
             this->actor.shape.rot.y = this->actor.world.rot.y;
         }
@@ -467,7 +467,7 @@ void func_80A7506C(EnIk* this) {
     f32 frames = Animation_GetLastFrame(&gIronKnuckleAxeStuckAnim);
 
     this->unk_2FE = 0;
-    this->unk_2F9 = (s8)frames;
+    this->animationTimer = (s8)frames;
     this->unk_2F8 = 7;
     this->unk_2FF = this->unk_2FE;
     Animation_Change(&this->skelAnime, &gIronKnuckleAxeStuckAnim, 1.0f, 0.0f, frames, ANIMMODE_LOOP, -4.0f);
@@ -478,7 +478,7 @@ void func_80A7506C(EnIk* this) {
 void func_80A7510C(EnIk* this, PlayState* play) {
     f32 frames;
 
-    if (SkelAnime_Update(&this->skelAnime) || (--this->unk_2F9 == 0)) {
+    if (SkelAnime_Update(&this->skelAnime) || (--this->animationTimer == 0)) {
         if (this->unk_2F8 == 8) {
             func_80A7489C(this);
         } else {
@@ -499,7 +499,7 @@ void func_80A751C8(EnIk* this) {
     this->actor.speedXZ = 0.0f;
     Animation_Change(&this->skelAnime, &gIronKnuckleHorizontalAttackAnim, 0.0f, 0.0f, frames, ANIMMODE_ONCE_INTERP,
                      -6.0f);
-    this->unk_2FC = 0;
+    this->isBreakingProp = 0;
     EnIk_SetupAction(this, func_80A75260);
 }
 
@@ -515,7 +515,7 @@ void func_80A75260(EnIk* this, PlayState* play) {
     }
     if (((this->skelAnime.curFrame > 1.0f) && (this->skelAnime.curFrame < 9.0f)) ||
         ((this->skelAnime.curFrame > 13.0f) && (this->skelAnime.curFrame < 18.0f))) {
-        if ((this->unk_2FC == 0) && (this->unk_2FB != 0) && (this->skelAnime.curFrame < 10.0f)) {
+        if ((this->isBreakingProp == 0) && (this->armorStatusFlag != 0) && (this->skelAnime.curFrame < 10.0f)) {
             Math_SmoothStepToS(&this->actor.world.rot.y, this->actor.yawTowardsPlayer, 1, 0x5DC, 0);
             this->actor.shape.rot.y = this->actor.world.rot.y;
         }
@@ -644,7 +644,7 @@ void func_80A7598C(EnIk* this) {
     this->unk_2F8 = 2;
     this->actor.speedXZ = 0.0f;
     Animation_Change(&this->skelAnime, &gIronKnuckleDeathAnim, 1.0f, 0.0f, frames, ANIMMODE_ONCE, -4.0f);
-    this->unk_2F9 = 0x18;
+    this->animationTimer = 0x18;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_IRONNACK_DEAD);
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_NUTS_CUTBODY);
     EnIk_SetupAction(this, func_80A75A38);
@@ -653,20 +653,20 @@ void func_80A7598C(EnIk* this) {
 
 void func_80A75A38(EnIk* this, PlayState* play) {
     if (SkelAnime_Update(&this->skelAnime)) {
-        if ((this->actor.colChkInfo.health == 0) && (this->unk_2F9 != 0)) {
+        if ((this->actor.colChkInfo.health == 0) && (this->animationTimer != 0)) {
             s32 i;
             Vec3f pos;
             Vec3f sp7C = { 0.0f, 0.5f, 0.0f };
 
-            this->unk_2F9--;
+            this->animationTimer--;
 
-            for (i = 0xC - (this->unk_2F9 >> 1); i >= 0; i--) {
+            for (i = 0xC - (this->animationTimer >> 1); i >= 0; i--) {
                 pos.x = this->actor.world.pos.x + Rand_CenteredFloat(120.0f);
                 pos.z = this->actor.world.pos.z + Rand_CenteredFloat(120.0f);
                 pos.y = this->actor.world.pos.y + 20.0f + Rand_CenteredFloat(50.0f);
                 EffectSsDeadDb_Spawn(play, &pos, &sp7C, &sp7C, 100, 0, 255, 255, 255, 255, 0, 0, 255, 1, 9, true);
             }
-            if (this->unk_2F9 == 0) {
+            if (this->animationTimer == 0) {
                 Item_DropCollectibleRandom(play, &this->actor, &this->actor.world.pos, 0xB0);
                 // Don't set flag when Enemy Rando or CrowdControl are on.
                 // Instead Iron Knuckles rely on the "clear room" flag.
@@ -709,11 +709,12 @@ void func_80A75C38(EnIk* this, PlayState* play) {
     sp38.y += 50.0f;
     Actor_SetDropFlag(&this->actor, &this->bodyCollider.info, 1);
     temp_v0_3 = this->actor.colChkInfo.damageEffect;
-    this->unk_2FD = temp_v0_3 & 0xFF;
+    this->damageReaction = temp_v0_3 & 0xFF;
     this->bodyCollider.base.acFlags &= ~AC_HIT;
 
-    if ((this->unk_2FD == 0) || (this->unk_2FD == 0xD) || ((this->unk_2FB == 0) && (this->unk_2FD == 0xE))) {
-        if (this->unk_2FD != 0) {
+    if ((this->damageReaction == 0) || (this->damageReaction == 0xD) ||
+        ((this->armorStatusFlag == 0) && (this->damageReaction == 0xE))) {
+        if (this->damageReaction != 0) {
             CollisionCheck_SpawnShieldParticlesMetal(play, &sp38);
         }
         return;
@@ -723,7 +724,7 @@ void func_80A75C38(EnIk* this, PlayState* play) {
     Actor_ApplyDamage(&this->actor);
     if (this->actor.params != 0) {
         if ((prevHealth > 10) && (this->actor.colChkInfo.health <= 10)) {
-            this->unk_2FB = 1;
+            this->armorStatusFlag = 1;
             BodyBreak_Alloc(&this->bodyBreak, 3, play);
         }
     } else if (this->actor.colChkInfo.health <= 10) {
@@ -748,7 +749,7 @@ void func_80A75C38(EnIk* this, PlayState* play) {
             func_80A754A0(this);
         }
     }
-    if ((this->actor.params != 0) && (this->unk_2FB != 0)) {
+    if ((this->actor.params != 0) && (this->armorStatusFlag != 0)) {
         if ((prevHealth > 10) && (this->actor.colChkInfo.health <= 10)) {
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_IRONNACK_ARMOR_OFF_DEMO);
         } else {
@@ -769,7 +770,7 @@ void func_80A75FA0(Actor* thisx, PlayState* play) {
     Player* player = GET_PLAYER(play);
     u8 prevInvincibilityTimer;
 
-    this->unk_2FA = this->unk_2FB;
+    this->drawArmorFlag = this->armorStatusFlag;
     func_80A75C38(this, play);
     if ((this->actor.params == 0) && (this->actor.colChkInfo.health <= 10)) {
         func_80A781CC(&this->actor, play);
@@ -842,11 +843,11 @@ s32 EnIk_OverrideLimbDraw3(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* p
             *dList = gIronKnuckleGerudoHeadDL;
         }
     } else if ((limbIndex == 26) || (limbIndex == 27)) {
-        if ((this->unk_2FA & 1)) {
+        if ((this->drawArmorFlag & 1)) {
             *dList = NULL;
         }
     } else if ((limbIndex == 28) || (limbIndex == 29)) {
-        if (!(this->unk_2FA & 1)) {
+        if (!(this->drawArmorFlag & 1)) {
             *dList = NULL;
         }
     }
@@ -882,7 +883,7 @@ void EnIk_PostLimbDraw3(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot,
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    if (this->unk_2FB & 1) {
+    if (this->armorStatusFlag & 1) {
         BodyBreak_SetInfo(&this->bodyBreak, limbIndex, 26, 27, 28, dList, BODYBREAK_OBJECT_DEFAULT);
     }
     if (limbIndex == 12) {
@@ -932,14 +933,14 @@ void EnIk_PostLimbDraw3(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot,
             gSPDisplayList(POLY_XLU_DISP++, object_ik_DL_016EE8);
             break;
         case 26:
-            if (!(this->unk_2FA & 1)) {
+            if (!(this->drawArmorFlag & 1)) {
                 gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 gSPDisplayList(POLY_XLU_DISP++, gIronKnuckleArmorRivetAndSymbolDL);
             }
             break;
         case 27:
-            if (!(this->unk_2FA & 1)) {
+            if (!(this->drawArmorFlag & 1)) {
                 gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 gSPDisplayList(POLY_XLU_DISP++, object_ik_DL_016CD8);
@@ -1022,7 +1023,7 @@ void func_80A76E2C(EnIk* this, PlayState* play, Vec3f* pos) {
         { 900.0, -800.0, 2700.0 },    { 720.0f, 900.0f, 2500.0f },
     };
 
-    if (this->unk_4D4 == 0) {
+    if (this->isAxeSummoned == 0) {
         s32 pad;
         Vec3f effectVelocity = { 0.0f, 0.0f, 0.0f };
         Vec3f effectAccel = { 0.0f, 0.3f, 0.0f };
@@ -1046,7 +1047,7 @@ void func_80A76E2C(EnIk* this, PlayState* play, Vec3f* pos) {
                           (Rand_ZeroOne() * 60.0f) + 300.0f, 0);
         }
 
-        this->unk_4D4 = 1;
+        this->isAxeSummoned = 1;
         func_80A76DDC(this, play, pos);
     }
 }
@@ -1104,7 +1105,7 @@ void func_80A771E4(EnIk* this) {
                      Animation_GetLastFrame(&gIronKnuckleNabooruSummonAxeAnim), ANIMMODE_ONCE, 0.0f);
     this->action = 2;
     this->drawMode = 1;
-    this->unk_4D4 = 0;
+    this->isAxeSummoned = 0;
     this->actor.shape.shadowAlpha = 0xFF;
 }
 

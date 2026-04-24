@@ -356,14 +356,11 @@ class TrickSetting : public Option {
      * @param quest_ MQ, Vanilla, or Both.
      * @param area_ The area the trick is relevant for.
      * @param tags_ The set of RandomizerTrickTags for this trick.
-     * @param name_ The name of the trick. Appears in the menus and spoiler
-     * @param nameTag_ The 3-8 long name tag of the trick. Appears in the settings and presets file.
-     * @param description_ A brief description of the trick.
+     * @param nameTag_ The 3-8 character long name tag of the trick. Appears in the settings and presets file.
      * @return Option
      */
     static TrickSetting LogicTrick(RandomizerTrick key_, RandomizerCheckQuest quest_, RandomizerArea area_,
-                                   std::set<Tricks::Tag> tags_, const std::string& name_, const std::string nameTag_,
-                                   std::string description_);
+                                   std::set<Tricks::Tag> tags_, const std::string nameTag_);
 
     RandomizerTrick GetKey() const;
 
@@ -400,7 +397,7 @@ class TrickSetting : public Option {
 
   private:
     TrickSetting(RandomizerTrick key_, RandomizerCheckQuest quest_, RandomizerArea area_, std::set<Tricks::Tag> tags_,
-                 const std::string& name_, const std::string nameTag_, std::string description_);
+                 const std::string nameTag_);
     RandomizerCheckQuest mQuest;
     RandomizerArea mArea;
     std::string mNameTag;

@@ -16,7 +16,7 @@ typedef struct EnWonderTalk {
     /* 0x0154 */ s16 switchFlag;
     /* 0x0156 */ s16 unk_156;
     /* 0x0158 */ s16 unk_158;
-    /* 0x0160 */ s16 unk_15A;
+    /* 0x015A */ s16 unk_15A;
     /* 0x015C */ f32 unk_15C;
     /* 0x0160 */ f32 height;
     /* 0x0164 */ u8  unk_164;

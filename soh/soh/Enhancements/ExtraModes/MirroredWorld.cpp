@@ -1,6 +1,6 @@
 #include "soh/Enhancements/cosmetics/authenticGfxPatches.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/Enhancements/randomizer/3drando/random.hpp"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/ShipUtils.h"
 #include "soh/Enhancements/randomizer/SeedContext.h"
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/ResourceManagerHelpers.h"
@@ -25,20 +25,22 @@ static bool MirroredWorld_IsInDungeon(int32_t sceneNum) {
            (sceneNum == SCENE_GANON_BOSS);
 }
 
-static void MirroredWorld_InitRandomSeed(int32_t sceneNum) {
+static void MirroredWorld_InitRandomSeed(int32_t sceneNum, uint64_t* randState) {
     uint32_t seed =
         sceneNum + (IS_RANDO ? Rando::Context::GetInstance()->GetSeed() : gSaveContext.ship.stats.fileCreatedAt);
-    Random_Init(seed);
+    ShipUtils::RandInit(seed, randState);
 }
 
 static bool MirroredWorld_ShouldApply(int32_t sceneNum) {
+    uint64_t randState = 0;
     switch (CVAR_MIRRORED_WORLD_MODE_VALUE) {
         case MIRRORED_WORLD_ALWAYS:
             return true;
         case MIRRORED_WORLD_RANDOM_SEEDED:
-            MirroredWorld_InitRandomSeed(sceneNum);
+            MirroredWorld_InitRandomSeed(sceneNum, &randState);
+            return ShipUtils::Random(0, 2, &randState) == 0;
         case MIRRORED_WORLD_RANDOM:
-            return Random(0, 2) == 1;
+            return ShipUtils::Random(0, 2) == 0;
         case MIRRORED_WORLD_DUNGEONS_ALL:
             return MirroredWorld_IsInDungeon(sceneNum);
         case MIRRORED_WORLD_DUNGEONS_VANILLA:
@@ -46,9 +48,10 @@ static bool MirroredWorld_ShouldApply(int32_t sceneNum) {
         case MIRRORED_WORLD_DUNGEONS_MQ:
             return MirroredWorld_IsInDungeon(sceneNum) && ResourceMgr_IsSceneMasterQuest(sceneNum);
         case MIRRORED_WORLD_DUNGEONS_RANDOM_SEEDED:
-            MirroredWorld_InitRandomSeed(sceneNum);
+            MirroredWorld_InitRandomSeed(sceneNum, &randState);
+            return MirroredWorld_IsInDungeon(sceneNum) && ShipUtils::Random(0, 2, &randState) == 0;
         case MIRRORED_WORLD_DUNGEONS_RANDOM:
-            return MirroredWorld_IsInDungeon(sceneNum) && (Random(0, 2) == 1);
+            return MirroredWorld_IsInDungeon(sceneNum) && ShipUtils::Random(0, 2) == 0;
         default:
             return false;
     }

@@ -120,19 +120,20 @@ You can use a `flake.nix` file to instantly setup a development environment usin
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    pinned.url = "github:NixOS/nixpkgs/e6f23dc08d3624daab7094b701aa3954923c6bbb";
     flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { self, nixpkgs, flake-utils }:
+  outputs = { self, nixpkgs, pinned, flake-utils }:
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
+        pinned-pkgs = pinned.legacyPackages.${system};
       in
       {
         devShells.default = pkgs.mkShell {
           buildInputs = with pkgs; [
             # Build tools
-            clang
             git
             cmake
             ninja
@@ -143,6 +144,10 @@ You can use a `flake.nix` file to instantly setup a development environment usin
             SDL2
             SDL2.dev
             SDL2_net
+
+            # Assets pipeline
+            python3
+            imagemagick
 
             # Other libraries
             libpng
@@ -155,7 +160,7 @@ You can use a `flake.nix` file to instantly setup a development environment usin
             bzip2
 
             # X11 libraries
-            xorg.libX11
+            libx11
 
             # Audio libraries
             libogg
@@ -166,10 +171,16 @@ You can use a `flake.nix` file to instantly setup a development environment usin
             libopus.dev
             opusfile
             opusfile.dev
+
+            # Runtime dependencies
+            zenity
+          ] ++ [
+            # Version of clang-format used by decomp
+            pinned-pkgs.clang_14
           ];
           shellHook = ''
             echo "Shipwright development environment loaded"
-            echo "Available tools: clang, git, cmake, ninja"
+            echo "Available tools: clang, git, cmake, ninja, python3"
           '';
         };
       });

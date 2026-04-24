@@ -28,6 +28,16 @@ void RegionTable_Init_Market() {
         LOCATION(RC_MK_SHOOTING_GALLERY_CRATE_1, logic->IsChild /*&& logic->CanRoll()*/),
         LOCATION(RC_MK_SHOOTING_GALLERY_CRATE_2, logic->IsChild /*&& logic->CanRoll()*/),
         LOCATION(RC_MARKET_TREE,                 logic->IsChild && logic->CanBonkTrees()),
+        LOCATION(RC_MKT_WONDER_DAY_1,            logic->IsChild && logic->AtDay),
+        LOCATION(RC_MKT_WONDER_DAY_2,            logic->IsChild && logic->AtDay),
+        LOCATION(RC_MKT_WONDER_DAY_3,            logic->IsChild && logic->AtDay),
+        LOCATION(RC_MKT_WONDER_DAY_4,            logic->IsChild && logic->AtDay),
+        LOCATION(RC_MKT_WONDER_DAY_5,            logic->IsChild && logic->AtDay),
+        LOCATION(RC_MKT_WONDER_NIGHT_1,          logic->IsChild && logic->AtNight),
+        LOCATION(RC_MKT_WONDER_NIGHT_2,          logic->IsChild && logic->AtNight),
+        LOCATION(RC_MK_BEGGAR_BUGS,              logic->IsChild && logic->AtDay && logic->CanUse(RG_BOTTLE_WITH_BUGS)),
+        LOCATION(RC_MK_BEGGAR_FISH,              logic->IsChild && logic->AtDay && logic->CanUse(RG_BOTTLE_WITH_FISH)),
+        LOCATION(RC_MK_BEGGAR_BLUE_FIRE,         logic->IsChild && logic->AtDay && logic->CanUse(RG_BOTTLE_WITH_BLUE_FIRE)),
     }, {
         //Exits
         ENTRANCE(RR_MARKET_ENTRANCE,            true),
@@ -149,7 +159,8 @@ void RegionTable_Init_Market() {
         EVENT_ACCESS(LOGIC_BORROW_RIGHT_MASKS, ctx->GetOption(RSK_MASK_QUEST).Is(RO_MASK_QUEST_COMPLETED) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->Get(LOGIC_CAN_BORROW_MASKS)),
     }, {
         //Locations
-        LOCATION(RC_MASK_SHOP_HINT, true),
+        LOCATION(RC_MASK_SHOP_HINT,    true),
+        LOCATION(RC_MK_MASK_SHOP_SIGN, logic->CanRead()),
     }, {
         //Exits
         ENTRANCE(RR_THE_MARKET, true),
@@ -157,7 +168,8 @@ void RegionTable_Init_Market() {
 
     areaTable[RR_MARKET_SHOOTING_GALLERY] = Region("Market Shooting Gallery", SCENE_SHOOTING_GALLERY, {}, {
         //Locations
-        LOCATION(RC_MARKET_SHOOTING_GALLERY_REWARD, logic->IsChild && logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_SPEAK_HYLIAN)),
+        LOCATION(RC_MARKET_SHOOTING_GALLERY_REWARD,     logic->IsChild && logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_SPEAK_HYLIAN)),
+        LOCATION(RC_MK_SHOOTING_GALLERY_RECTANGLE_SIGN, logic->IsChild && logic->CanRead()),
     }, {
         //Exits
         ENTRANCE(RR_THE_MARKET, true),

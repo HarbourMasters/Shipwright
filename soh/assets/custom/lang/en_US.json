@@ -1,0 +1,1038 @@
+{
+	"language_name": "English (US)",
+	"randomizer": {
+		"tricks": {
+			"acute_angle_clip": {
+				"name": "Acute angle clip",
+				"description": "Enables locations requiring jumpslash clips through walls which meet at an acute angle."
+			},
+			"advanced_clips": {
+				"name": "Advanced clips",
+				"description": "Enables locations requiring clips through walls and objects requiring precise jumps or other tricks."
+			},
+			"blank_a": {
+				"name": "Blank A",
+				"description": "Enables locations requiring blank A button; NOTE: this requires the 'Quick Putaway' restoration."
+			},
+			"doom_jump": {
+				"name": "Doom Jump",
+				"description": "Enables locations requiring doom jumps."
+			},
+			"epg": {
+				"name": "Entrance Point Glitch",
+				"description": "Enables locations requiring use of the Entrance Point Glitch."
+			},
+			"equip_swap": {
+				"name": "Equip Swap",
+				"description": "Enables locations requiring use of equip swap; NOTE: this may expect the 'Allow cursor to be over any slot' enhancement to be turned off."
+			},
+			"equip_swap_expects_dins": {
+				"name": "Equip Swap Requires Din's Fire",
+				"description": "Enables locations requiring use of equip swap once Din's Fire is found."
+			},
+			"flame_storage": {
+				"name": "Flame Storage",
+				"description": "Enables locations requiring flame storage."
+			},
+			"ground_clip": {
+				"name": "Ground Clip",
+				"description": "Enables locations requiring ground clips."
+			},
+			"hess": {
+				"name": "HESS",
+				"description": "Enables locations requiring a Hyper Extended Super Slide."
+			},
+			"hookshot_clip": {
+				"name": "Hookshot Clip",
+				"description": "Enables locations requiring Hookshot clips."
+			},
+			"hookshot_jump": {
+				"name": "Hookshot Jump",
+				"description": "Enables locations requiring Hookshot jumps."
+			},
+			"isg": {
+				"name": "ISG",
+				"description": "Enables locations requiring use of the infinite sword glitch."
+			},
+			"visible_collision": {
+				"name": "Ignore Visible Collision",
+				"description": [
+					"Allows ignoring visible barriers and objects that do not actually stop Link from walking, climbing or ",
+					"hitting things, without clipping.\n\n",
+					"This notably allows for walking through Kak's gate backwards, climb into the back of Impa's house as ",
+					"Adult from the coop,",
+					"and hitting Rusted Switches or boulders through Blocks, Ice and Walls.\n\n",
+					"This trick only applies to case where doing the thing is trivial, instances where it only works from ",
+					"certain angles are not part of this trick,",
+					"neither are any form of clips, including clipping Link's hitbox inside boulders with a jumpslash."
+				]
+			},
+			"hookshot_ladders": {
+				"name": "Hookshot Ladders",
+				"description": [
+					"You can skip climb for hookshottable ladders can be skipped by hookshotting the top of the ladder from ",
+					"the correct distance and angle.\n",
+					"This is more difficult for some ladders than others, and a few are not possible.\n",
+					"Hookshotting climbable walls in the same way is not a trick, as it is trivial to get an angle that ",
+					"correctly ledge grabs."
+				]
+			},
+			"grottos_without_agony": {
+				"name": "Hidden Grottos without Stone of Agony",
+				"description": "Allows entering hidden grottos without the Stone of Agony."
+			},
+			"fewer_tunic_requirements": {
+				"name": "Fewer Tunic Requirements",
+				"description": [
+					"Normally the only hot area logic expects you to navigate without a Goron Tunic is Death Mountain Crater\n",
+					"and you are not expected to navigate underwater sections without a Zora Tunic.\n\n",
+					"With this trick you are expected to do any underwater area except Central Pillar,\n",
+					"any hot area except Volvagia and the Block lift room in Fire Temple\n",
+					"and the health needed to logically navigate Crater is decreased."
+				]
+			},
+			"unintuitive_jumps": {
+				"name": "Unintuitive Jumps",
+				"description": [
+					"Many ledges can be overcome with particular jumps which are simple to execute without items.\n",
+					"This includes jumping from heights to dive deeper without scales,\n",
+					"though this trick doesn't cover Water Temple's Dragon Room."
+				]
+			},
+			"rusted_switches": {
+				"name": "Hammer Rusted Switches Through Walls",
+				"description": [
+					"Applies to:\n",
+					"- Hitting Fire Temple Highest Goron Chest's Rusted Switch in the SoT Block without Song of Time.\n",
+					"- Hitting the rusted switch in Water Trial through the Ice.",
+					"- Hitting MQ Fire Temple Lizalfos Maze's Rusted Switch in the wall.\n",
+					"- Having Adult hammer the rock in the west side crawlspace of MQ Spirit so child can get through without bombchus.",
+					"- MQ Spirit Trial's Rusted Switch between the thrones without hitting the eye target to drop an Iron Knuckle."
+				]
+			},
+			"fire_rings": {
+				"name": "Fire Ring",
+				"description": [
+					"Fire Rings can be run into while Link is invincible from having taken damage, ",
+					"letting you interact with some objects inside them such as large chests"
+				]
+			},
+			"bunny_hood_jumps": {
+				"name": "Bunny Hood Jumps",
+				"description": "Allows reaching locations using Bunny Hood's extended jumps."
+			},
+			"damage_boost_simple": {
+				"name": "Simple damage boosts",
+				"description": "Allows damage boosts in order to reach further locations. Can be combined with \"Simple hover boosts\" for reaching far distances."
+			},
+			"hover_boost_simple": {
+				"name": "Simple hover boosts",
+				"description": "Allows equipping of hover boots when Link is moving at high speeds to extend distance covered, often after recoil. Can be combined with \"Simple damage boosts\" for greater uses."
+			},
+			"bombchu_beehives": {
+				"name": "Bombchu Beehives",
+				"description": "Allows exploding beehives with Bombchus."
+			},
+			"blue_fire_mud_walls": {
+				"name": "Blue Fire Beyond Red Ice",
+				"description": [
+					"Use Blue Fire to break mud walls, detonate bomb flowers, and break floor to King Dodongo.\n",
+					"Does not apply to MQ Dead Hand bomb flowers.\n",
+					"Using blue fire on bombflower to stop rolling goron also requires \"Stop Link the Goron with Din's Fire\".\n",
+					"Using blue fire arrows to break floor in King Dodongo's chamber also requires \"Dodongo's Cavern Smash the Boss Lobby Floor\"."
+				]
+			},
+			"open_underwater_chest": {
+				"name": "Open Underwater Chests",
+				"description": "Underwater chests can be opened by wearing iron boots and hookshotting the chest."
+			},
+			"boulder_collision": {
+				"name": "Flawed Boulder Collision",
+				"description": [
+					"From afar, boulder collision is disabled, allowing projectiles to pass through them.\n",
+					"Additionally, boulders do not have projectile collision from below, allow them to be shot into in some cases."
+				]
+			},
+			"item_extension": {
+				"name": "Item Extension",
+				"description": [
+					"Slightly extends the range of projectiles such as Hookshot, Bow or Slingshot. Also allows clipping ",
+					"projectile past collision. Used for:\n",
+					"- Retrieving DMT Gold Skulltula beside bomb flower\n",
+					"- Hitting switch through wall in Spirit Temple's big mirror room with Bow, Slingshot, or Hookshot\n",
+					"- Hitting switch through wall in Spirit Trial with Bow or Slingshot\n",
+					"- Hitting switch through gate in Shadow Temple MQ with Bow or Slingshot"
+				]
+			},
+			"big_skulltula_pause_lift": {
+				"name": "Big Skulltula Pause Lift",
+				"description": "Pausing while a big skulltula is bobbing upwards slightly lifts it, eventually allowing passage without any items."
+			},
+			"ground_jump": {
+				"name": "Ground Jump",
+				"description": "Enables requiring ground jumps."
+			},
+			"ground_jump_hard": {
+				"name": "Hard Ground Jumps",
+				"description": [
+					"Enables ground jumps which require some precision outside of setting up jump,\n",
+					"such as needing extra height with jumpslash or jumping while running with hover boots."
+				]
+			},
+			"slide_jump": {
+				"name": "Sliding Jumps",
+				"description": "Running forward while sliding sideways on ice can be used to jump on platforms."
+			},
+			"voidout_collection": {
+				"name": "Voidout Collection",
+				"description": [
+					"Some items can be collected by jumping to them, even if it results in voiding out. Used for:\n",
+					"- OGC Gold Skulltula\n",
+					"- HC wonder items without swim\n",
+					"- ZR wonder items without swim\n",
+					"- ZR Waterfall freestanding rupees without swim\n",
+					"- GV wonder items without swim\n",
+					"- GV Octorok grotto rupees without swim\n",
+					"- Colossus oasis fairies\n",
+					"- Deku Tree freestanding hearts before boss\n",
+					"- Water Temple near boss key chest Gold Skulltula\n",
+					"- Shadow MQ after boat and before boss Gold Skulltulas"
+				]
+			},		
+			"bomb_detonation": {
+				"name": "Precise Bomb Detonation",
+				"description": [
+					"This trick enables methods that rely on precisely timing the detonation of bombs, ",
+					"such as detonating bombs on the surface of the water to destroy underwater rocks ",
+					"or getting the Gold Skulltula in the first room of forest temple as Child."
+				]
+			},			
+			"kf_adult_gs": {
+				"name": "Adult Kokiri Forest GS with Hover Boots",
+				"description": "Can be obtained without Hookshot by using the Hover Boots off of one of the roots."
+			},
+			"lw_bridge": {
+				"name": "Jump onto the Lost Woods Bridge as Adult with Nothing",
+				"description": "With very precise movement it's possible for adult to jump onto the bridge without needing Longshot, Hover Boots, or Bean."
+			},
+			"lw_mido_backflip": {
+				"name": "Backflip over Mido as Adult",
+				"description": "With a specific position and angle, you can backflip over Mido."
+			},
+			"lost_wood_navi_dive": {
+				"name": "Lost Woods Navi dive",
+				"description": "You need Deku Sticks or Kokiri Sword to dive with Navi for entering Zora's River."
+			},
+			"lw_gs_bean": {
+				"name": "Lost Woods Adult GS without Bean",
+				"description": "You can collect the token with a precise Hookshot use, as long as you can kill the Skulltula somehow first. It can be killed using Longshot, Bow, Bombchus or Din's Fire."
+			},
+			"hc_storms_gs": {
+				"name": "Hyrule Castle Storms Grotto GS with Just Boomerang",
+				"description": "With precise throws, the Boomerang alone can kill the Skulltula and collect the token, without first needing to blow up the wall."
+			},
+			"hf_big_poe_without_epona": {
+				"name": "Big Poe without Epona",
+				"description": "Big Poes have a chance of appearing without Epona, you can shoot them quickly with only bow."
+			},
+			"kak_tower_gs": {
+				"name": "Kakariko Tower GS with Jumpslash",
+				"description": "Climb the tower as high as you can without touching the Gold Skulltula, then let go and jumpslash immediately. By jump-slashing from as low on the ladder as possible to still hit the Skulltula, this trick can be done without taking fall damage."
+			},
+			"kak_child_windmill_poh": {
+				"name": "Windmill PoH as Child with Precise Jumpslash",
+				"description": "Can jump up to the spinning platform from below as child with a precise jumpslash timed with the platforms rotation."
+			},
+			"kak_rooftop_gs": {
+				"name": "Kakariko Rooftop GS with Hover Boots",
+				"description": [
+					"Take the Hover Boots from the entrance to Impa's House over to the rooftop of Skulltula House. \n",
+					"From there, a precise Hover Boots backwalk with backflip can be used to get onto a hill above the side of the village.\n",
+					"And then from there you can Hover onto Impa's rooftop to kill the Skulltula and backflip into the token."
+				]
+			},
+			"gy_poh": {
+				"name": "Graveyard Freestanding PoH with Boomerang",
+				"description": "Using a precise moving setup you can obtain the Piece of Heart by having the Boomerang interact with it along the return path."
+			},
+			"gy_child_dampe_race_poh": {
+				"name": "Second Dampe Race as Child",
+				"description": "It is possible to complete the second dampe race as child in under a minute, but it is a strict time limit."
+			},
+			"gy_shadow_fire_arrows": {
+				"name": "Shadow Temple Entry with Fire Arrows",
+				"description": "It is possible to light all of the torches to open the Shadow Temple entrance with just Fire Arrows, but you must be very quick, precise, and strategic with how you take your shots."
+			},
+			"dmt_shieldless_climb": {
+				"name": "Death Mountain Trail Child Climb Without Shield",
+				"description": [
+					"Child can make it past the eruption to reach DMT Summit without a Hylian Shield or Nayru's Love",
+					"by backwalking or simply taking damage."
+				]
+			},
+			"dmt_soil_gs": {
+				"name": "Death Mountain Trail Soil GS without Destroying Boulder",
+				"description": "Bugs will go into the soft soil even while the boulder is still blocking the entrance. Then, using a precise moving setup you can kill the Gold Skulltula and obtain the token by having the Boomerang interact with it along the return path."
+			},
+			"dmt_bombable": {
+				"name": "Death Mountain Trail Chest with Strength",
+				"description": "Child Link can blow up the wall using a nearby bomb flower. You must backwalk with the flower and then quickly throw it toward the wall."
+			},
+			"dmt_hovers_lower_gs": {
+				"name": "Death Mountain Trail Lower Red Rock GS with Hover Boots",
+				"description": "After killing the Skulltula, the token can be collected without needing to destroy the rock by backflipping down onto it with the Hover Boots. First use the Hover Boots to stand on a nearby fence, and go for the Skulltula Token from there."
+			},
+			"dmt_bean_lower_gs": {
+				"name": "Death Mountain Trail Lower Red Rock GS with Magic Bean",
+				"description": "After killing the Skulltula, the token can be collected without needing to destroy the rock by jumping down onto it from the bean plant, midflight, with precise timing and positioning."
+			},
+			"dmt_js_lower_gs": {
+				"name": "Death Mountain Trail Lower Red Rock GS with Jumpslash",
+				"description": "After killing the Skulltula, the token can be collected without needing to destroy the rock by jumpslashing from a precise angle."
+			},
+			"dmt_climb_hovers": {
+				"name": "Death Mountain Trail Climb with Hover Boots",
+				"description": "It is possible to use the Hover Boots to bypass needing to destroy the boulders blocking the path to the top of Death Mountain."
+			},
+			"dmt_upper_gs": {
+				"name": "Death Mountain Trail Upper Red Rock GS with Backflip",
+				"description": "After killing the Skulltula, the token can be collected by backflipping into the rock at the correct angle."
+			},
+			"dmt_bolero_biggoron": {
+				"name": "Deliver Eye Drops with Bolero of Fire",
+				"description": [
+					"Playing a warp song normally causes a trade item to spoil immediately, however, it is possible use Bolero to reach Biggoron and still deliver the Eye Drops before they spoil. If you do not wear the Goron Tunic, the heat timer inside the crater will override the trade item's timer.\n",
+					"When you exit to Death Mountain Trail you will have one second to show the Eye Drops before they expire. You can get extra time to show the Eye Drops if you warp immediately upon receiving them.\n",
+					"If you don't have many hearts, you may have to reset the heat timer by quickly dipping in and out of Darunia's chamber or quickly equipping and unequipping the Goron Tunic.\n",
+					"This trick does not apply if \"Randomize Warp Song Destinations\" is enabled, or if the settings are such that trade items do not need to be delivered within a time limit."
+				]
+			},
+			"gc_pot": {
+				"name": "Goron City Spinning Pot PoH with Bombchu",
+				"description": "A Bombchu can be used to stop the spinning pot, but it can be quite finicky to get it to work."
+			},
+			"gc_pot_strength": {
+				"name": "Goron City Spinning Pot PoH with Strength",
+				"description": "Allows for stopping the Goron City Spinning Pot using a Bomb Flower alone, requiring strength in lieu of inventory explosives."
+			},
+			"gc_rolling_strength": {
+				"name": "Rolling Goron (Hot Rodder Goron) as Child with Strength",
+				"description": "Use the Bomb Flower on the stairs or near Medigoron. Timing is tight, especially without backwalking."
+			},
+			"gc_leftmost": {
+				"name": "Goron City Maze Left Chest with Hover Boots",
+				"description": "A precise backwalk starting from on top of the crate and ending with a precisely-timed backflip can reach this chest without needing either the Hammer or Silver Gauntlets."
+			},
+			"gc_grotto": {
+				"name": "Goron City Grotto with Hookshot While Taking Damage",
+				"description": "It is possible to reach the Goron City Grotto by quickly using the Hookshot while in the midst of taking damage from the lava floor."
+			},
+			"gc_link_goron_dins": {
+				"name": "Stop Link the Goron with Din's Fire",
+				"description": "The timing is quite awkward."
+			},
+			"dmc_hover_bean_poh": {
+				"name": "Crater's Bean PoH with Hover Boots",
+				"description": "Hover from the base of the bridge near Goron City and walk up the very steep slope."
+			},
+			"dmc_bolero_jump": {
+				"name": "Death Mountain Crater Jump to Bolero",
+				"description": "As Adult, using a shield to drop a pot while you have the perfect speed and position, the pot can push you that little extra distance you need to jump across the gap in the bridge."
+			},
+			"dmc_boulder_js": {
+				"name": "Death Mountain Crater Upper to Lower with Hammer",
+				"description": "With the Hammer, you can jumpslash the rock twice in the same jump in order to destroy it before you fall into the lava."
+			},
+			"dmc_boulder_skip": {
+				"name": "Death Mountain Crater Upper to Lower Boulder Skip",
+				"description": "As adult, With careful positioning, you can jump to the ledge where the boulder is, then use repeated ledge grabs to shimmy to a climbable ledge. This trick supersedes \"Death Mountain Crater Upper to Lower with Hammer\"."
+			},
+			"zr_lower": {
+				"name": "Zora's River Lower Freestanding PoH as Adult with Nothing",
+				"description": "Adult can reach this PoH with a precise jump, no Hover Boots required."
+			},
+			"zr_upper": {
+				"name": "Zora's River Upper Freestanding PoH as Adult with Nothing",
+				"description": "Adult can reach this PoH with a precise jump, no Hover Boots required."
+			},
+			"zr_hovers": {
+				"name": "Zora's Domain Entry with Hover Boots",
+				"description": "Can hover behind the waterfall as adult."
+			},
+			"zr_cucco": {
+				"name": "Zora's Domain Entry with Cucco",
+				"description": "You can fly behind the waterfall with a Cucco as child."
+			},
+			"zd_king_zora_skip": {
+				"name": "Skip King Zora as Adult with Nothing",
+				"description": "With a precise jump as adult, it is possible to get on the fence next to King Zora from the front to access Zora's Fountain."
+			},
+			"zd_gs": {
+				"name": "Zora's Domain GS with No Additional Items",
+				"description": "A precise jumpslash can kill the Skulltula and recoil back onto the top of the frozen waterfall. To kill it, the logic normally guarantees one of Hookshot, Bow, or Magic."
+			},
+			"zf_great_fairy_without_explosives": {
+				"name": "Zora's Fountain Great Fairy without Explosives",
+				"description": "It's possible to use silver gauntlets to pick up the silver rock and hammer to break the rock below it, allowing you to ledge grab the edge of the hole and get past the breakable wall (hammer can't break the wall itself)."
+			},
+			"lh_lab_wall_gs": {
+				"name": "Lake Hylia Lab Wall GS with Jumpslash",
+				"description": "The jumpslash to actually collect the token is somewhat precise."
+			},
+			"lh_lab_diving": {
+				"name": "Lake Hylia Lab Dive without Gold Scale",
+				"description": "Remove the Iron Boots in the midst of Hookshotting the underwater crate."
+			},
+			"lh_water_hookshot": {
+				"name": "Water Temple Entry without Iron Boots using Hookshot",
+				"description": "When entering Water Temple using Gold Scale instead of Iron Boots, the Longshot is usually used to be able to hit the switch and open the gate. But, by standing in a particular spot, the switch can be hit with only the reach of the Hookshot."
+			},
+			"gv_crate_hovers": {
+				"name": "Gerudo Valley Crate PoH as Adult with Hover Boots",
+				"description": "From the far side of Gerudo Valley, a precise Hover Boots movement and jump-slash recoil can allow adult to reach the ledge with the crate PoH without needing Longshot. You will take fall damage."
+			},
+			"gv_child_cucco_jump": {
+				"name": "Gerudo Valley Jump Fence with Cucco",
+				"description": "Using cucco as child, it's possible to jumpslash over the gate."
+			},
+			"gv_hookshot_bridge": {
+				"name": "Gerudo Valley Bridge with only Hookshot",
+				"description": "Using Hookshot Extension and a precise setup, you can cross the broken bridge in Gerudo Valley with only a Hookshot."
+			},
+			"gv_child_tent": {
+				"name": "Gerudo Valley Enter Carpenter's Tent as Child",
+				"description": "The loading zone for Carpenter's Tent is accessible to child."
+			},
+			"pass_guards_with_nothing": {
+				"name": "Sneak Past Moving Gerudo Guards with No Items",
+				"description": "The logic normally guarantees Bow or Hookshot to stun them from a distance, but every moving guard can be passed with basic movement and AI manipulation"
+			},
+			"gf_wasteland_gate_sidehop_skip": {
+				"name": "Gerudo's Fortress Gate Skip with Sidehop",
+				"description": [
+					"You can sidehop out of bounds from the tower, then sidehop again on the other side of the gate.\n\n",
+					"This is easiest and most useful for Child, but Adult can also do this to skip the Gerudo Jabber Nut."
+				]
+			},
+			"gf_adult_skip_wasteland_gate": {
+				"name": "Gerudo's Fortress Skip Wasteland Gate as Adult",
+				"description": [
+					"As adult a precise jumpslash out of bounds with hoverboots from above the jail can be used to get past the gate.\n\n",
+					"This can also be used to reach the tower and lower the gate for child without climb."
+				]
+			},
+			"gf_warrior_with_difficult_weapon": {
+				"name": "Gerudo's Fortress Warriors with Difficult Weapons",
+				"description": "Warriors can be defeated with Slingshot or Bombchus."
+			},
+			"gf_ledge_clip_into_gtg": {
+				"name": "Ledge Clip into Training Ground",
+				"description": "Adult Link can use a ledge clip to enter Gerudo Training Ground without Gerudo Card."
+			},
+			"hw_bunny_crossing": {
+				"name": "Wasteland Crossing with Bunny Hood",
+				"description": "You can beat the quicksand by using the increased speed of the Bunny Hood. Note that jumping to the carpet merchant as child typically requires a fairly precise jumpslash."
+			},
+			"hw_crossing": {
+				"name": "Wasteland Crossing without Hover Boots or Longshot",
+				"description": "You can beat the quicksand by backwalking across it in a specific way. Note that jumping to the carpet merchant as child typically requires a fairly precise jumpslash."
+			},
+			"lens_hw": {
+				"name": "Lensless Wasteland",
+				"description": "By memorizing the path, you can travel through the Wasteland without using the Lens of Truth to see the Poe. The equivalent trick for going in reverse through the Wasteland is \"Reverse Wasteland\"."
+			},
+			"hw_reverse": {
+				"name": "Reverse Wasteland",
+				"description": [
+					"By memorizing the path, you can travel through the Wasteland in reverse. Note that jumping to the carpet merchant as child typically requires a fairly precise jumpslash.\n",
+					"The equivalent trick for going forward through the Wasteland is \"Lensless Wasteland\".\n",
+					"To cross the river of sand with no additional items, be sure to also enable \"Wasteland Crossing without Hover Boots or Longshot\".\n",
+					"Unless all overworld entrances are randomized, Child Link will not be expected to do anything at Gerudo's Fortress."
+				]
+			},
+			"colossus_gs": {
+				"name": "Colossus Hill GS with Hookshot",
+				"description": "Somewhat precise. If you kill enough Leevers you can get enough of a break to take some time to aim more carefully."
+			},
+			"deku_basement_gs": {
+				"name": "Deku Tree Basement Vines GS with Jumpslash",
+				"description": "Can be defeated by doing a precise jumpslash."
+			},
+			"deku_b1_skip": {
+				"name": "Deku Tree Basement without Slingshot",
+				"description": "A precise jump can be used to skip needing to use the Slingshot to go around B1 of the Deku Tree. If used with the \"Closed Forest\" setting, a Slingshot will not be guaranteed to exist somewhere inside the Forest. This trick applies to both Vanilla and Master Quest."
+			},
+			"deku_b1_bow_webs": {
+				"name": "Deku Tree Basement Web to Gohma with Bow",
+				"description": [
+					"All spider web walls in the Deku Tree basement can be burnt as adult with just a bow by shooting through torches. ",
+					"This trick only applies to the circular web leading to Gohma; the two vertical webs are always in logic. Backflip onto the chest near the torch at the bottom of the vine wall. ",
+					"With precise positioning you can shoot through the torch to the right edge of the circular web. This allows completion of adult Deku Tree with no fire source."
+				]
+			},
+			"deku_b1_backflip_over_spiked_log": {
+				"name": "Deku Tree Basement Backflip over Spiked Log",
+				"description": "Allows backflipping over the spiked log in the Deku Tree basement in Vanilla. Only relevant if \"Shuffle Swim\" is enabled."
+			},
+			"deku_mq_compass_gs": {
+				"name": "Deku Tree MQ Compass Room GS Boulders with Just Hammer",
+				"description": "Climb to the top of the vines, then let go and jumpslash immediately to destroy the boulders using the Hammer, without needing to spawn a Song of Time block."
+			},
+			"deku_mq_log": {
+				"name": "Deku Tree MQ Roll Under the Spiked Log",
+				"description": "You can get past the spiked log by rolling to briefly shrink your hitbox. As adult, the timing is a bit more precise."
+			},
+			"dc_scarecrow_gs": {
+				"name": "Dodongo's Cavern Scarecrow GS with Armos Statue",
+				"description": "You can jump off an Armos Statue to reach the alcove with the Gold Skulltula. It takes quite a long time to pull the statue the entire way. The jump to the alcove can be a bit picky when done as child."
+			},
+			"dc_vines_gs": {
+				"name": "Dodongo's Cavern Vines GS from Below with Longshot",
+				"description": "The vines upon which this Skulltula rests are one-sided collision. You can use the Longshot to get it from below, by shooting it through the vines, bypassing the need to lower the staircase."
+			},
+			"dc_stairs_with_bow": {
+				"name": "Dodongo's Cavern Stairs with Bow",
+				"description": "The Bow can be used to knock down the stairs with two well-timed shots."
+			},
+			"dc_slingshot_skip": {
+				"name": "Dodongo's Cavern Child Slingshot Skips",
+				"description": "With precise platforming, child can cross the platforms while the flame circles are there. When enabling this trick, it's recommended that you also enable the Adult variant: \"Dodongo's Cavern Spike Trap Room Jump without Hover Boots\"."
+			},
+			"dc_scrub_room": {
+				"name": "Dodongo's Cavern Two Scrub Room with Strength",
+				"description": "With help from a conveniently-positioned block, Adult can quickly carry a Bomb Flower over to destroy the mud wall blocking the room with two Deku Scrubs."
+			},
+			"dc_jump": {
+				"name": "Dodongo's Cavern Spike Trap Room Jump without Hover Boots",
+				"description": "The jump is Adult Link only. Applies to both Vanilla and MQ."
+			},
+			"dc_hammer_floor": {
+				"name": "Dodongo's Cavern Smash the Boss Lobby Floor",
+				"description": "The bombable floor before King Dodongo can be destroyed with Hammer if hit in the very center. This is only relevant with Shuffle Boss Entrances or if Dodongo's Cavern is MQ and either variant of \"Dodongo's Cavern MQ Light the Eyes with Strength\" is on."
+			},
+			"dc_dodongo_chu": {
+				"name": "Dodongo's Cavern Dodongo with Only Bombchus",
+				"description": "With precise timing you can feed King Dodongo a bombchu during a backflip"
+			},
+			"dc_mq_stairs_with_only_strength": {
+				"name": "Dodongo's Cavern MQ Stairs With Only Strength",
+				"description": "Taking a bomb from the back can be used to lower stairs without using stick to drop bomb from wall."
+			},
+			"dc_mq_child_bombs": {
+				"name": "Dodongo's Cavern MQ Early Bomb Bag Area as Child",
+				"description": "With a precise jumpslash from above, you can reach the Bomb Bag area as only child without needing a Slingshot. You will take fall damage."
+			},
+			"dc_mq_child_eyes": {
+				"name": "Dodongo's Cavern MQ Light the Eyes with Strength as Child",
+				"description": [
+					"If you move very quickly, it is possible to use the bomb flower at the top of the room to light the eyes.\n",
+					"To perform this trick as child is significantly more difficult than adult.\n",
+					"The player is also expected to complete the DC back area without explosives, including getting past the Armos wall to the switch for the boss door."
+				]
+			},
+			"dc_mq_adult_eyes": {
+				"name": "Dodongo's Cavern MQ Light the Eyes with Strength as Adult",
+				"description": "If you move very quickly, it is possible to use the bomb flower at the top of the room to light the eyes."
+			},
+			"dc_eyes_chu": {
+				"name": "Dodongo's Cavern Light the Eyes with Bombchus",
+				"description": "You can light the dodongo head's eyes with bombchus from the main room, allowing instant access to the end of the dungeon."
+			},
+			"jabu_alcove_jump_dive": {
+				"name": "Jabu Underwater Alcove as Adult with Jump Dive",
+				"description": "Standing above the underwater tunnel leading to the scrub, jump down and swim through the tunnel. This allows adult to access the alcove with no Scale or Iron Boots. In Vanilla Jabu, this alcove has a business scrub. In MQ Jabu, it has the compass chest and a door switch for the main floor."
+			},
+			"jabu_boss_hover": {
+				"name": "Jabu Near Boss Room with Hover Boots",
+				"description": "A box for the blue switch can be carried over by backwalking with one while the elevator is at its peak. Alternatively, you can skip transporting a box by quickly rolling from the switch and opening the door before it closes. However, the timing for this is very tight."
+			},
+			"jabu_near_boss_ranged": {
+				"name": "Jabu Near Boss Ceiling Switch/GS without Boomerang or Explosives",
+				"description": [
+					"Vanilla Jabu: From near the entrance into the room, you can hit the switch that opens the door to the boss room using a precisely-aimed use of the Slingshot, Bow, or Longshot. ",
+					"As well, if you climb to the top of the vines you can stand on the right edge of the platform and shoot around the glass. From this distance, even the Hookshot can reach the switch. ",
+					"This trick is only relevant if \"Shuffle Boss Entrances\" is enabled.\n",
+					"MQ Jabu: A Gold Skulltula Token can be collected with Longshot using the same methods as hitting the switch in Vanilla."
+				]
+			},
+			"jabu_near_boss_explosives": {
+				"name": "Jabu Near Boss Ceiling Switch with Explosives",
+				"description": "You can hit the switch that opens the door to the boss room using a precisely-aimed Bombchu. Also, using the Hover Boots, adult can throw a Bomb at the switch. This trick is only relevant if \"Shuffle Boss Entrances\" is enabled."
+			},
+			"jabu_b1_cube_hover": {
+				"name": "Jabu B1 Pass Cube with Hover Boots",
+				"description": "It's possible reach pots past cube with only hover boots."
+			},
+			"lens_jabu_mq": {
+				"name": "Jabu MQ without Lens of Truth",
+				"description": "Removes the requirements for the Lens of Truth in Jabu MQ."
+			},
+			"jabu_mq_rang_jump": {
+				"name": "Jabu MQ Compass Chest with Boomerang",
+				"description": "Boomerang can reach the cow switch to spawn the chest by targeting the cow, jumping off of the ledge where the chest spawns, and throwing the Boomerang in midair."
+			},
+			"jabu_mq_sot_gs": {
+				"name": "Jabu MQ Song of Time Block GS with Boomerang",
+				"description": "Allow the Boomerang to return to you through the Song of Time block to grab the token."
+			},
+			"jabu_barinade_pots": {
+				"name": "Jabu Barinade with Pots",
+				"description": "Barinade can be damaged with pots, requiring only boomerang to defeat."
+			},
+			"lens_botw": {
+				"name": "Bottom of the Well without Lens of Truth",
+				"description": "Removes the requirements for the Lens of Truth in Bottom of the Well."
+			},
+			"bottom_of_the_well_navi_dive": {
+				"name": "Bottom of the Well Navi dive",
+				"description": "You need Deku Sticks or Kokiri Sword to dive with Navi for entering Bottom of the Well."
+			},
+			"botw_child_deadhand": {
+				"name": "Child Dead Hand without Kokiri Sword",
+				"description": "Requires 9 sticks or 5 jumpslashes."
+			},
+			"botw_basement": {
+				"name": "Bottom of the Well Map Chest with Strength & Sticks",
+				"description": "The chest in the basement can be reached with strength by doing a jumpslash with a lit stick to access the Bomb Flowers."
+			},
+			"botw_pits": {
+				"name": "Bottom of the Well MQ Jump Over the Pits",
+				"description": "While the pits in Bottom of the Well don't allow you to jump just by running straight at them, you can still get over them by side-hopping or backflipping across. With explosives, this allows you to access the central areas without Zelda's Lullaby. With Zelda's Lullaby, it allows you to access the west inner room without explosives."
+			},
+			"botw_mq_deadhand_key": {
+				"name": "Bottom of the Well MQ Dead Hand Freestanding Key with Boomerang",
+				"description": "Boomerang can fish the item out of the rubble without needing explosives to blow it up."
+			},
+			"forest_first_gs": {
+				"name": "Forest Temple First Room GS with Melee Weapons",
+				"description": "Allows killing this Skulltula with Sword or Sticks by jumpslashing it as you let go from the vines."
+			},
+			"forest_courtyard_east_gs": {
+				"name": "Forest Temple East Courtyard GS with Boomerang",
+				"description": "Precise Boomerang throws can allow child to kill the Skulltula and collect the token."
+			},
+			"forest_vines": {
+				"name": "Forest Temple East Courtyard Vines with Hookshot",
+				"description": "The vines in Forest Temple leading to where the well drain switch is in the standard form can be barely reached with just the Hookshot. Applies to MQ also."
+			},
+			"forest_courtyard_ledge": {
+				"name": "Forest Temple NE Courtyard Ledge with Hover Boots",
+				"description": "With precise Hover Boots movement you can fall down to this ledge from upper balconies. If done precisely enough, it is not necessary to take fall damage. In MQ, this skips a Longshot requirement. In Vanilla, this can skip a Hookshot requirement in entrance randomizer."
+			},
+			"forest_doorframe": {
+				"name": "Forest Temple East Courtyard Door Frame with Hover Boots",
+				"description": [
+					"A precise Hover Boots movement from the upper balconies in this courtyard can be used to get on top of the door frame. Applies to both Vanilla and Master Quest.\n",
+					"In Vanilla, from on top the door frame you can summon Pierre, allowing you to access the falling ceiling room early.\n",
+					"In Master Quest, this allows you to obtain the GS on the door frame as adult without Hookshot or Song of Time."
+				]
+			},
+			"forest_outside_backdoor": {
+				"name": "Forest Temple Outside Backdoor with Jumpslash",
+				"description": "A jumpslash recoil can be used to reach the ledge in the block puzzle room that leads to the west courtyard. This skips a potential Hover Boots requirement in Vanilla, and it can sometimes apply in MQ as well. This trick can be performed as both ages."
+			},
+			"forest_courtyard_hearts_boomerang": {
+				"name": "Forest Temple Courtyard Hearts with Boomerang",
+				"description": "A well aimed boomerang from the water's edge can reach the hearts from ground level. If unable to swim, you can back away from the water while the boomerang is returning so the hearts land on the ground."
+			},
+			"forest_well_swim": {
+				"name": "Swim Through Forest Temple Well with Hookshot",
+				"description": "Shoot the vines in the well as low and as far to the right as possible, and then immediately swim under the ceiling to the right. This is usually only useful in Master Quest."
+			},
+			"forest_mq_block_puzzle": {
+				"name": "Skip Forest Temple MQ Block Puzzle with Bombchu",
+				"description": "Send the Bombchu straight up the center of the wall directly to the left upon entering the room."
+			},
+			"forest_mq_js_hallway_switch": {
+				"name": "Forest Temple MQ Twisted Hallway Switch with Jumpslash",
+				"description": "The switch to twist the hallway can be hit with a jumpslash through the glass block. To get in front of the switch, either use the Hover Boots or hit the shortcut switch at the top of the room and jump from the glass blocks that spawn. Sticks can be used as child, but the Kokiri Sword is too short to reach through the glass."
+			},
+			"forest_mq_hookshot_hallway_switch": {
+				"name": "Forest Temple MQ Twisted Hallway Switch with Hookshot",
+				"description": "There's a very small gap between the glass block and the wall. Through that gap you can hookshot the target on the ceiling."
+			},
+			"forest_mq_rang_hallway_switch": {
+				"name": "Forest Temple MQ Twisted Hallway Switch with Boomerang",
+				"description": "The Boomerang can return to Link through walls, allowing child to hit the hallway switch. This can be used to allow adult to pass through later, or in conjunction with \"Forest Temple Outside Backdoor with Jumpslash\"."
+			},
+			"forest_mq_child_doorframe": {
+				"name": "Forest Temple MQ Doorframe GS as Child without Boomerang",
+				"description": [
+					"If Adult burns the courtyard webbing with Fire Arrows (which is a permanent flag in Ship Rando) ",
+					"then Child can climb up to the balconies and jump to the SoT block from the railing, ",
+					"and from there either roll jump or jump against the wall to reach the doorframe.\n",
+					"From there, The GS can be killed with a crouchstab, explosives or other ranged weapon and collected by climbing down."
+				]
+			},
+			"fire_sot": {
+				"name": "Fire Temple Song of Time Room GS without Song of Time",
+				"description": "A precise jump can be used to reach this room."
+			},
+			"fire_strength": {
+				"name": "Fire Temple Climb without Strength",
+				"description": "A precise jump can be used to skip pushing the block."
+			},
+			"fire_scarecrow": {
+				"name": "Fire Temple East Tower without Scarecrow's Song",
+				"description": "Also known as \"Pixelshot\". The Longshot can reach the target on the elevator itself, allowing you to skip needing to spawn the scarecrow."
+			},
+			"fire_skip_flame_walls": {
+				"name": "Fire Temple Skip Flame Walls",
+				"description": [
+					"If you move quickly you can sneak past the edge of a flame wall before rises up to block you. To ",
+					"do it without taking damage is more precise. Allows progress without needing either a Small Key or ",
+					"Hover Boots. In MQ if either \"Fire Temple MQ Lower to Upper Lizalfos Maze with Hover Boots\" or ",
+					"\"with Precise Jump\" are enabled, this also allows progress deeper into the dungeon without Hookshot.\n",
+					"Child can sidehop past fire wall in MQ lobby."
+				]
+			},
+			"fire_mq_near_boss": {
+				"name": "Fire Temple MQ Chest Near Boss without Breaking Crate",
+				"description": "The hitbox for the torch extends a bit outside of the crate. Shoot a flaming arrow at the side of the crate to light the torch without needing to get over there and break the crate."
+			},
+			"fire_mq_blocked_chest": {
+				"name": "Fire Temple MQ Big Lava Room Blocked Door without Hookshot",
+				"description": "There is a gap between the hitboxes of the flame wall in the big lava room. If you know where this gap is located, you can jump through it and skip needing to use the Hookshot. To do this without taking damage is more precise."
+			},
+			"fire_mq_bk_chest": {
+				"name": "Fire Temple MQ Boss Key Chest without Bow",
+				"description": "It is possible to light both of the timed torches to unbar the door to the boss key chest's room with just Din's Fire if you move very quickly between the two torches. It is also possible to unbar the door with just Din's Fire by abusing an oversight in the way the game counts how many torches have been lit."
+			},
+			"fire_mq_climb": {
+				"name": "Fire Temple MQ Climb without Fire Source",
+				"description": "You can use the Hover Boots to hover around to the climbable wall, skipping the need to use a fire source and spawn a Hookshot target."
+			},
+			"fire_mq_maze_side_room": {
+				"name": "Fire Temple MQ Lizalfos Maze Side Room without Box",
+				"description": "You can walk from the blue switch to the door and quickly open the door before the bars reclose. This skips needing to reach the upper sections of the maze to get a box to place on the switch."
+			},
+			"fire_mq_maze_hovers": {
+				"name": "Fire Temple MQ Lower to Upper Lizalfos Maze with Hover Boots",
+				"description": "Use the Hover Boots off of a crate to climb to the upper maze without needing to spawn and use the Hookshot targets."
+			},
+			"fire_mq_maze_jump": {
+				"name": "Fire Temple MQ Lower to Upper Lizalfos Maze with Precise Jump",
+				"description": "A precise jump off of a crate can be used to climb to the upper maze without needing to spawn and use the Hookshot targets. This trick supersedes both \"Fire Temple MQ Lower to Upper Lizalfos Maze with Hover Boots\" and \"Fire Temple MQ Lizalfos Maze Side Room without Box\"."
+			},
+			"fire_mq_above_maze_gs": {
+				"name": "Fire Temple MQ Above Flame Wall Maze GS from Below with Longshot",
+				"description": "The floor of the room that contains this Skulltula is only solid from above. From the maze below, the Longshot can be shot through the ceiling to obtain the token with two fewer small keys than normal."
+			},
+			"water_longshot_torch": {
+				"name": "Water Temple Torch Longshot",
+				"description": [
+					"Stand on the eastern side of the central pillar and longshot the torches on the bottom level. Swim through the corridor and float up to the top level. This allows access to this area and lower water levels without Iron Boots.\n",
+					"The majority of the tricks that allow you to skip Iron Boots in the Water Temple are not going to be relevant unless this trick is first enabled."
+				]
+			},
+			"water_cracked_wall_hovers": {
+				"name": "Water Temple Cracked Wall with Hover Boots",
+				"description": "With a midair side-hop while wearing the Hover Boots, you can reach the cracked wall without needing to raise the water up to the middle level."
+			},
+			"water_cracked_wall": {
+				"name": "Water Temple Cracked Wall with No Additional Items",
+				"description": "A precise jumpslash (among other methods) will get you to the cracked wall without needing the Hover Boots or to raise the water to the middle level. This trick supersedes \"Water Temple Cracked Wall with Hover Boots\"."
+			},
+			"water_bk_region": {
+				"name": "Water Temple Boss Key Region with Hover Boots",
+				"description": "With precise Hover Boots movement it is possible to reach the boss key chest's region without needing the Longshot. It is not necessary to take damage from the spikes. The Gold Skulltula Token in the following room can also be obtained with just the Hover Boots."
+			},
+			"water_north_basement_ledge_jump": {
+				"name": "Water Temple North Basement Ledge with Precise Jump",
+				"description": "In the northern basement there's a ledge from where, in Vanilla Water Temple, boulders roll out into the room. Normally to jump directly to this ledge logically requires the Hover Boots, but with precise jump, it can be done without them. This trick applies to both Vanilla and Master Quest."
+			},
+			"water_fw_central_gs": {
+				"name": "Water Temple Central Pillar GS with Farore's Wind",
+				"description": "If you set Farore's Wind inside the central pillar and then return to that warp point after raising the water to the highest level, you can obtain this Skulltula Token with Hookshot or Boomerang."
+			},
+			"water_irons_central_gs": {
+				"name": "Water Temple Central Pillar GS with Iron Boots",
+				"description": "After opening the middle water level door into the central pillar, the door will stay unbarred so long as you do not leave the room, even if you were to raise the water up to the highest level. With the Iron Boots to go through the door after the water has been raised, you can obtain the Skulltula Token with the Hookshot."
+			},
+			"water_central_bow": {
+				"name": "Water Temple Central Bow Target without Longshot or Hover Boots",
+				"description": "A very precise Bow shot can hit the eye switch from the floor above. Then, you can jump down into the hallway and make through it before the gate closes. It can also be done as child, using the Slingshot instead of the Bow."
+			},
+			"water_hookshot_falling_platform_gs": {
+				"name": "Water Temple Falling Platform Room GS with Hookshot",
+				"description": "If you stand on the very edge of the platform, this Gold Skulltula can be obtained with only the Hookshot."
+			},
+			"water_rang_falling_platform_gs": {
+				"name": "Water Temple Falling Platform Room GS with Boomerang",
+				"description": "If you stand on the very edge of the platform, this Gold Skulltula can be obtained with only the Boomerang."
+			},
+			"water_river_gs": {
+				"name": "Water Temple River GS without Iron Boots",
+				"description": "Standing on the exposed ground toward the end of the river, a precise Longshot use can obtain the token. The Longshot cannot normally reach far enough to kill the Skulltula, however. You'll first have to find some other way of killing it."
+			},
+			"water_dragon_jump_dive": {
+				"name": "Water Temple Dragon Statue Jump Dive",
+				"description": "If you come into the dragon statue room from the serpent river, you can sidehop down from above and get into the tunnel without needing either Iron Boots or a Scale. This trick applies to both Vanilla and Master Quest. In Vanilla, you must shoot the switch from above with the Bow, and then quickly get through the tunnel before the gate closes."
+			},
+			"water_adult_dragon": {
+				"name": "Water Temple Dragon Statue Switch from Above the Water as Adult",
+				"description": [
+					"Normally you need both Hookshot and Iron Boots to hit the switch and swim through the tunnel to get to the chest. But by hitting the switch from dry land, using one of Bombchus, Hookshot, or Bow, it is possible to skip one or both of those requirements.\n",
+					"After the gate has been opened, besides just using the Iron Boots, a well-timed dive with at least the Silver Scale could be used to swim through the tunnel. If coming from the serpent river, a jump dive can also be used to get into the tunnel."
+				]
+			},
+			"water_child_dragon": {
+				"name": "Water Temple Dragon Statue Switch from Above the Water as Child",
+				"description": [
+					"It is possible for child to hit the switch from dry land using one of Bombchus, Slingshot or Boomerang. Then, to get to the chest, child can dive through the tunnel using at least the Silver Scale. ",
+					"The timing and positioning of this dive needs to be perfect to actually make it under the gate, and it all needs to be done very quickly to be able to get through before the gate closes.\n",
+					"Be sure to enable \"Water Temple Dragon Statue Switch from Above the Water as Adult\" for adult's variant of this trick."
+				]
+			},
+			"water_mq_central_pillar": {
+				"name": "Water Temple MQ Central Pillar with Fire Arrows",
+				"description": [
+					"Slanted torches have misleading hitboxes. Whenever you see a slanted torch jutting out of the wall, you can expect most or all of its hitbox is actually on the other side that wall. ",
+					"This can make slanted torches very finicky to light when using arrows. ",
+					"The torches in the central pillar of MQ Water Temple are a particularly egregious example. Logic normally expects Din's Fire and Song of Time."
+				]
+			},
+			"water_iron_boots_ledge_grab": {
+				"name": "Water Temple Ledge Grab While Surfacing with Iron Boots",
+				"description": [
+					"Diving in front of ledge tapping B to swim up faster, then equipping iron boots while surfacing allows you to ",
+					"ledge grab to the higher ground. This can be used to reach ledge to boss door and vanilla compass chest, or ",
+					"MQ storage room"
+				]
+			},
+			"water_invisible_hookshot_target": {
+				"name": "Water Temple Invisible Hookshot Target",
+				"description": [
+					"Invisible hookshot geometry can be used in MQ to get over the gate that blocks you from going to this ",
+					"Skulltula early, skipping a small key as well as needing Hovers or Scarecrow to reach the locked door.\n",
+					"In vanilla this can be used to get past without bronze scale."
+				]
+			},
+			"water_morpha_without_hookshot": {
+				"name": "Water Temple Morpha without Hookshot",
+				"description": "It is possible to slash at Morpha without hookshot."
+			},
+			"lens_shadow": {
+				"name": "Shadow Temple Stationary Objects without Lens of Truth",
+				"description": "Removes the requirements for the Lens of Truth in Shadow Temple for most areas in the dungeon except for crossing the moving platform in the huge pit room and for fighting Bongo Bongo."
+			},
+			"lens_shadow_platform": {
+				"name": "Shadow Temple Invisible Moving Platform without Lens of Truth",
+				"description": "Removes the requirements for the Lens of Truth in Shadow Temple to cross the invisible moving platform in the huge pit room in either direction."
+			},
+			"lens_bongo": {
+				"name": "Shadow Temple Bongo Bongo without Lens of Truth",
+				"description": "Bongo Bongo can be defeated without the use of Lens of Truth, as the hands give a pretty good idea of where the eye is."
+			},
+			"shadow_umbrella_hover": {
+				"name": "Shadow Temple Stone Umbrella Skip",
+				"description": "A very precise Hover Boots movement from off of the lower chest can get you on top of the falling spikes without needing to pull the block. Applies to both Vanilla and Master Quest."
+			},
+			"shadow_umbrella_clip": {
+				"name": "Shadow Temple Stone Umbrella Clip",
+				"description": "Backflipping as the falling spikes fall clips above without needing any other requirements. Applies to both Vanilla and Master Quest."
+			},
+			"shadow_umbrella_gs": {
+				"name": "Shadow Temple Falling Spikes GS with Hover Boots",
+				"description": "After killing the Skulltula, a very precise Hover Boots movement from off of the lower chest can get you on top of the falling spikes without needing to pull the block. From there, another very precise Hover Boots movement can be used to obtain the token without needing the Hookshot. Applies to both Vanilla and Master Quest."
+			},
+			"shadow_freestanding_key": {
+				"name": "Shadow Temple Freestanding Key with Bombchu",
+				"description": "Release the Bombchu with good timing so that it explodes near the bottom of the pot."
+			},
+			"shadow_statue": {
+				"name": "Shadow Temple River Statue with Bombchu",
+				"description": "By sending a Bombchu around the edge of the gorge, you can knock down the statue without needing a Bow. Applies in both Vanilla and MQ Shadow."
+			},
+			"shadow_bongo": {
+				"name": "Shadow Temple Bongo Bongo without projectiles",
+				"description": "Using precise sword slashes, Bongo Bongo can be defeated without using projectiles. This is only relevant in conjunction with Shadow Temple dungeon shortcuts or shuffled boss entrances."
+			},
+			"lens_shadow_mq": {
+				"name": "Shadow Temple MQ Stationary Objects without Lens of Truth",
+				"description": [
+					"Removes the requirements for the Lens of Truth in Shadow Temple MQ for most areas in the dungeon.\n",
+					"See \"Shadow Temple MQ Invisible Moving Platform without Lens of Truth\", \"Shadow Temple MQ Invisible Blades Silver Rupees without Lens of Truth\", \"Shadow Temple MQ 2nd Dead Hand without Lens of Truth\", and \"Shadow Temple Bongo Bongo without Lens of Truth\" for exceptions."
+				]
+			},
+			"lens_shadow_mq_invisible_blades": {
+				"name": "Shadow Temple MQ Invisible Blades Silver Rupees without Lens of Truth",
+				"description": "Removes the requirement for the Lens of Truth or Nayru's Love in Shadow Temple MQ for the Invisible Blades room Silver Rupee collection."
+			},
+			"lens_shadow_mq_platform": {
+				"name": "Shadow Temple MQ Invisible Moving Platform without Lens of Truth",
+				"description": "Removes the requirements for the Lens of Truth in Shadow Temple MQ to cross the invisible moving platform in the huge pit room in either direction."
+			},
+			"lens_shadow_mq_deadhand": {
+				"name": "Shadow Temple MQ 2nd Dead Hand without Lens of Truth",
+				"description": "Dead Hand spawns in a random spot within the room. Having Lens removes the hassle of having to comb the room looking for his spawn location."
+			},
+			"shadow_mq_gap": {
+				"name": "Shadow Temple MQ Truth Spinner Gap with Longshot",
+				"description": "You can Longshot a torch and jump-slash recoil onto the tongue. It works best if you Longshot the right torch from the left side of the room."
+			},
+			"shadow_mq_invisible_blades": {
+				"name": "Shadow Temple MQ Invisible Blades without Song of Time",
+				"description": "The Like Like can be used to boost you into the Silver Rupee or Recovery Hearts that normally require Song of Time. This cannot be performed on OHKO since the Like Like does not boost you high enough if you die."
+			},
+			"shadow_mq_huge_pit": {
+				"name": "Shadow Temple MQ Lower Huge Pit without Fire Source",
+				"description": "Normally a frozen eye switch spawns some platforms that you can use to climb down, but there's actually a small piece of ground that you can stand on that you can just jump down to."
+			},
+			"shadow_mq_windy_walkway": {
+				"name": "Shadow Temple MQ Windy Walkway Reverse without Hover Boots",
+				"description": "It is possible to jump from the alcove in the windy hallway to the middle platform. There are two methods: wait out the fan opposite the door and hold forward, or jump to the right to be pushed by the fan there towards the platform ledge. Note that jumps of this distance are inconsistent, but still possible."
+			},
+			"lens_spirit": {
+				"name": "Spirit Temple without Lens of Truth",
+				"description": "Removes the requirements for the Lens of Truth in Spirit Temple."
+			},
+			"spirit_child_chu": {
+				"name": "Spirit Temple Child Side Bridge with Bombchu",
+				"description": "A carefully-timed Bombchu can hit the switch."
+			},
+			"spirit_west_ledge": {
+				"name": "Spirit Temple Statue Room West Ledge Checks with Boomerang",
+				"description": [
+					"By carefully walking onto the upper arm of the statue, it's possible to get a good angle on the ",
+					"Gold Skulltula (In Vanilla) and the farthest pot (In MQ) to collect the checks with Boomerang. ",
+					"The nearest pot in MQ can be reached from the forearm and is always in logic."
+				]
+			},
+			"spirit_lower_adult_switch": {
+				"name": "Spirit Temple Lower Adult Switch with Bombs",
+				"description": "A bomb can be used to hit the switch on the ceiling, but it must be thrown from a particular distance away and with precise timing."
+			},
+			"spirit_statue_jump": {
+				"name": "Spirit Temple Statue Room Jump from Hands to Upper Ledges",
+				"description": "A precise jump to obtain the following as adult without needing one of Hover Boots, or Hookshot (in Vanilla) or Song of Time (in MQ): - Spirit Temple Statue Room Northeast Chest - Spirit Temple GS Lobby - Spirit Temple MQ Central Chamber Top Left Pot (Left) - Spirit Temple MQ Central Chamber Top Left Pot (Right)"
+			},
+			"spirit_platform_hookshot": {
+				"name": "Spirit Temple Main Room Hookshot to Boss Platform",
+				"description": "Precise hookshot aiming at the platform chains can be used to reach the boss platform from the middle landings. Using a jumpslash immediately after reaching a chain makes aiming more lenient. Relevant only when Spirit Temple boss shortcuts are on."
+			},
+			"spirit_map_chest": {
+				"name": "Spirit Temple Map Chest with Bow",
+				"description": "To get a line of sight from the upper torch to the map chest torches, you must pull an Armos statue all the way up the stairs."
+			},
+			"spirit_sun_chest": {
+				"name": "Spirit Temple Sun Block Room Chest with Bow",
+				"description": [
+					"Using the blocks in the room as platforms you can get lines of sight to all three torches. ",
+					"The timer on the torches is quite short so you must move quickly in order to light all three.\n",
+					"A backflip can be used instead to light torches without pushing blocks."
+				]
+			},
+			"spirit_wall": {
+				"name": "Spirit Temple Shifting Wall with No Additional Items",
+				"description": "Logic normally guarantees a way of dealing with both the Beamos and the Walltula before climbing the wall."
+			},
+			"lens_spirit_mq": {
+				"name": "Spirit Temple MQ without Lens of Truth",
+				"description": "Removes the requirements for the Lens of Truth in Spirit Temple MQ."
+			},
+			"spirit_mq_sun_block_sot": {
+				"name": "Spirit Temple MQ Sun Block Room as Child without Song of Time",
+				"description": [
+					"While adult can easily jump directly to the switch that unbars the door to the sun block room, child Link cannot make the jump without spawning a Song of Time block to jump from. ",
+					"You can skip this by throwing the crate down onto the switch from above, which does unbar the door, however the crate immediately breaks, so you must move quickly to get through the door before it closes back up."
+				]
+			},
+			"spirit_mq_sun_block_gs": {
+				"name": "Spirit Temple MQ Sun Block Room GS with Boomerang",
+				"description": "Throw the Boomerang in such a way that it curves through the side of the glass block to hit the Gold Skulltula."
+			},
+			"spirit_mq_lower_adult": {
+				"name": "Spirit Temple MQ Lower Adult without Fire Arrows",
+				"description": "By standing in a precise position it is possible to light two of the torches with a single use of Din's Fire. This saves enough time to be able to light all three torches with only Din's Fire."
+			},
+			"spirit_mq_frozen_eye": {
+				"name": "Spirit Temple MQ Frozen Eye Switch without Fire",
+				"description": "You can melt the ice by shooting an arrow through a torch. The only way to find a line of sight for this shot is to first spawn a Song of Time block, and then stand on the very edge of it."
+			},
+			"ice_stalagmite_clip": {
+				"name": "Ice Cavern Stalagmite Clips",
+				"description": "Most stalagmites blocking path in Ice Cavern can be clipped past with basic movement. Also applies to Water Trial."
+			},
+			"ice_stalagmite_hookshot": {
+				"name": "Ice Cavern Stalagmites with Hookshot",
+				"description": "Shooting stalagmites with hookshot in the right way also breaks them. Also applies to Water Trial."
+			},
+			"ice_block_gs": {
+				"name": "Ice Cavern Block Room GS with Hover Boots",
+				"description": "The Hover Boots can be used to get in front of the Skulltula to kill it with a jumpslash. Then, the Hover Boots can again be used to obtain the Token, all without Hookshot or Boomerang."
+			},
+			"ice_mq_red_ice_gs": {
+				"name": "Ice Cavern MQ Red Ice GS without Song of Time",
+				"description": "If you side-hop into the perfect position, you can briefly stand on the platform with the red ice just long enough to dump some blue fire."
+			},
+			"ice_mq_scarecrow": {
+				"name": "Ice Cavern MQ Scarecrow GS with No Additional Items",
+				"description": "As adult a precise jump can be used to reach this alcove."
+			},
+			"lens_gtg": {
+				"name": "Gerudo Training Ground without Lens of Truth",
+				"description": "Removes the requirements for the Lens of Truth in Gerudo Training Ground."
+			},
+			"gtg_without_hookshot": {
+				"name": "Gerudo Training Ground Left Side Silver Rupees without Hookshot",
+				"description": [
+					"After collecting the rest of the Silver Rupees in the room, you can reach the final Silver Rupee on the ceiling by being pulled up into it after getting grabbed by the Wallmaster. Then, you must also reach the exit of the room without the use of the Hookshot.\n",
+					"If you move quickly you can sneak past the edge of a flame wall before it can rise up to block you. To do so without taking damage is more precise."
+				]
+			},
+			"gtg_fake_wall": {
+				"name": "Reach Gerudo Training Ground Fake Wall Ledge with Hover Boots",
+				"description": "A precise Hover Boots use from the top of the chest can allow you to grab the ledge without needing the usual requirements. In Master Quest, this always skips a Song of Time requirement. In Vanilla, this skips a Hookshot requirement, but is only relevant if \"Gerudo Training Ground Left Side Silver Rupees without Hookshot\" is enabled."
+			},
+			"gtg_lava_jump": {
+				"name": "Gerudo Training Grounds Itemless Lava Room Jump",
+				"description": "A precise rolling jump can be used to jump between all but the furthest platforms in the lava room."
+			},
+			"gtg_statue_jump": {
+				"name": "Gerudo Training Grounds Statue Room Jump",
+				"description": "A precise rolling jump or a jump and jumpslash can be used to jump from the upper ledge to one of the pillars in the eye statue room."
+			},			
+			"lens_gtg_mq": {
+				"name": "Gerudo Training Ground MQ without Lens of Truth",
+				"description": "Removes the requirements for the Lens of Truth in Gerudo Training Ground MQ."
+			},
+			"gtg_mq_with_hookshot": {
+				"name": "Gerudo Training Ground MQ Left Side Silver Rupees with Hookshot",
+				"description": "The highest Silver Rupee can be obtained by hookshooting the target and then immediately jumpslashing toward the Rupee."
+			},
+			"gtg_mq_without_hookshot": {
+				"name": "Gerudo Training Ground MQ Left Side Silver Rupees without Hookshot",
+				"description": [
+					"After collecting the rest of the Silver Rupees in the room, you can reach the final Silver Rupee on the ceiling by being pulled up into it after getting grabbed by the Wallmaster. The Wallmaster will not track you to directly underneath the rupee. You should take the last step to be under the rupee after the Wallmaster has begun its attempt to grab you.\n",
+					"Also included with this trick is that fact that the switch that unbars the door to the final chest of GTG can be hit without a projectile, using a precise jumpslash.\n",
+					"This trick supersedes \"Gerudo Training Ground MQ Left Side Silver Rupees with Hookshot\"."
+				]
+			},
+			"lens_ganon": {
+				"name": "Ganon's Castle without Lens of Truth",
+				"description": "Removes the requirements for the Lens of Truth in Ganon's Castle."
+			},
+			"ganon_spirit_trial_hookshot": {
+				"name": "Spirit Trial without Hookshot",
+				"description": "The highest rupee can be obtained as adult by performing a precise jump and a well-timed jumpslash off of an Armos."
+			},
+			"lens_ganon_mq": {
+				"name": "Ganon's Castle MQ without Lens of Truth",
+				"description": "Removes the requirements for the Lens of Truth in Ganon's Castle MQ."
+			},
+			"ganon_mq_fire_trial": {
+				"name": "Fire Trial MQ with Hookshot",
+				"description": "It's possible to hook the target at the end of fire trial with just Hookshot, but it requires precise aim and perfect positioning. The main difficulty comes from getting on the very corner of the obelisk without falling into the lava."
+			},
+			"ganon_mq_shadow_trial": {
+				"name": "Shadow Trial MQ Torch with Bow",
+				"description": "You can light the torch in this room without a fire source by shooting an arrow through the lit torch at the beginning of the room. Because the room is so dark and the unlit torch is so far away, it can be difficult to aim the shot correctly."
+			},
+			"ganon_mq_light_trial": {
+				"name": "Light Trial MQ without Hookshot",
+				"description": "If you move quickly you can sneak past the edge of a flame wall before it can rise up to block you. In this case to do it without taking damage is especially precise."
+			}
+		}
+	}
+}

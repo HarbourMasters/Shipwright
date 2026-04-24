@@ -37,9 +37,9 @@ void Anchor::HandlePacket_UnsetFlag(nlohmann::json payload) {
         return;
     }
 
-    s16 sceneNum = payload["sceneNum"].get<s16>();
-    s16 flagType = payload["flagType"].get<s16>();
-    s16 flag = payload["flag"].get<s16>();
+    s16 sceneNum = payload.at("sceneNum").get<s16>();
+    s16 flagType = payload.at("flagType").get<s16>();
+    s16 flag = payload.at("flag").get<s16>();
 
     if (sceneNum == SCENE_ID_MAX) {
         auto effect = new GameInteractionEffect::UnsetFlag();

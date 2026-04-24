@@ -21,7 +21,7 @@ void Demo6K_Destroy(Actor* thisx, PlayState* play);
 void Demo6K_Update(Actor* thisx, PlayState* play);
 void Demo6K_Reset(void);
 
-void func_80966DB0(Demo6K* this, PlayState* play);
+void Demo6K_WaitForObject(Demo6K* this, PlayState* play);
 void func_80966E04(Demo6K* this, PlayState* play);
 void func_80966E98(Demo6K* this, PlayState* play);
 void func_80966F84(Demo6K* this, PlayState* play);
@@ -93,7 +93,7 @@ void Demo6K_Init(Actor* thisx, PlayState* play) {
         this->objBankIndex = objBankIndex;
     }
 
-    Demo6K_SetupAction(this, func_80966DB0);
+    Demo6K_SetupAction(this, Demo6K_WaitForObject);
     this->timer1 = 0;
     this->flags = 0;
     this->timer2 = 0;
@@ -202,7 +202,7 @@ void Demo6K_Destroy(Actor* thisx, PlayState* play) {
     LightContext_RemoveLight(play, &play->lightCtx, this->lightNode);
 }
 
-void func_80966DB0(Demo6K* this, PlayState* play) {
+void Demo6K_WaitForObject(Demo6K* this, PlayState* play) {
     if (Object_IsLoaded(&play->objectCtx, this->objBankIndex)) {
         this->actor.objBankIndex = this->objBankIndex;
         this->actor.draw = this->drawFunc;

@@ -32,6 +32,7 @@ typedef enum {
 static AltTrapType roll = ADD_TRAP_MAX;
 static int statusTimer = -1;
 static int eventTimer = -1;
+static EntranceIndex teleportRoll = ENTR_MAX;
 
 const char* altTrapTypeCvars[] = {
     CVAR_ENHANCEMENT("ExtraTraps.Ice"),   CVAR_ENHANCEMENT("ExtraTraps.Burn"),
@@ -39,6 +40,12 @@ const char* altTrapTypeCvars[] = {
     CVAR_ENHANCEMENT("ExtraTraps.Speed"), CVAR_ENHANCEMENT("ExtraTraps.Bomb"),
     CVAR_ENHANCEMENT("ExtraTraps.Void"),  CVAR_ENHANCEMENT("ExtraTraps.Ammo"),
     CVAR_ENHANCEMENT("ExtraTraps.Kill"),  CVAR_ENHANCEMENT("ExtraTraps.Teleport"),
+};
+
+const std::array<EntranceIndex, 7> teleportDestinations = {
+    ENTR_LINKS_HOUSE_CHILD_SPAWN, ENTR_SACRED_FOREST_MEADOW_WARP_PAD, ENTR_DEATH_MOUNTAIN_CRATER_WARP_PAD,
+    ENTR_LAKE_HYLIA_WARP_PAD,     ENTR_DESERT_COLOSSUS_WARP_PAD,      ENTR_GRAVEYARD_WARP_PAD,
+    ENTR_TEMPLE_OF_TIME_WARP_PAD,
 };
 
 std::vector<AltTrapType> getEnabledAddTraps() {
@@ -102,6 +109,7 @@ static void RollRandomTrap(uint64_t seed) {
             break;
         case ADD_TELEPORT_TRAP:
             eventTimer = 3;
+            teleportRoll = ShipUtils::RandomElement(teleportDestinations, &state);
             break;
         default:
             break;
@@ -135,32 +143,7 @@ static void OnPlayerUpdate() {
                                        &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 break;
             case ADD_TELEPORT_TRAP: {
-                int entrance;
-                int index = Random(0, 7);
-                switch (index) {
-                    case 0:
-                        entrance = GI_TP_DEST_SERENADE;
-                        break;
-                    case 1:
-                        entrance = GI_TP_DEST_REQUIEM;
-                        break;
-                    case 2:
-                        entrance = GI_TP_DEST_BOLERO;
-                        break;
-                    case 3:
-                        entrance = GI_TP_DEST_MINUET;
-                        break;
-                    case 4:
-                        entrance = GI_TP_DEST_NOCTURNE;
-                        break;
-                    case 5:
-                        entrance = GI_TP_DEST_PRELUDE;
-                        break;
-                    default:
-                        entrance = GI_TP_DEST_LINKSHOUSE;
-                        break;
-                }
-                GameInteractor::RawAction::TeleportPlayer(entrance);
+                GameInteractor::RawAction::TeleportPlayer(teleportRoll);
                 break;
             }
             default:

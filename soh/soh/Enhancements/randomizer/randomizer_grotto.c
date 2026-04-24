@@ -94,7 +94,7 @@ static s16 grottoExitList[NUM_GROTTOS] = { 0 };
 static s16 grottoLoadList[NUM_GROTTOS] = { 0 };
 static s8 grottoId = 0xFF;
 static s8 lastEntranceType = NOT_GROTTO;
-static u8 overridingNextEntrance = false;
+static bool overridingNextEntrance = false;
 
 // Initialize both lists so that each index refers to itself. An index referring
 // to itself means that the entrance is not shuffled. Indices will be overwritten

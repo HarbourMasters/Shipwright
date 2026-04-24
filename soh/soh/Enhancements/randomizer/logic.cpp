@@ -1364,7 +1364,15 @@ bool Logic::CanBreakSmallCrates() {
     return CanJumpslash() || HasExplosives() || HasItem(RG_POWER_BRACELET);
 }
 
+bool Logic::CanBreakRocks() {
+    return BlastOrSmash() || HasItem(RG_POWER_BRACELET);
+}
+
 bool Logic::CanBonkTrees() {
+    return true;
+}
+
+bool Logic::CanRead() {
     return true;
 }
 
@@ -1430,9 +1438,20 @@ uint8_t Logic::Hearts() {
 }
 
 uint8_t Logic::DungeonCount() {
-    return Get(LOGIC_DEKU_TREE_CLEAR) + Get(LOGIC_DODONGOS_CAVERN_CLEAR) + Get(LOGIC_JABU_JABUS_BELLY_CLEAR) +
-           Get(LOGIC_FOREST_TEMPLE_CLEAR) + Get(LOGIC_FIRE_TEMPLE_CLEAR) + Get(LOGIC_WATER_TEMPLE_CLEAR) +
-           Get(LOGIC_SPIRIT_TEMPLE_CLEAR) + Get(LOGIC_SHADOW_TEMPLE_CLEAR);
+    if (CalculatingAvailableChecks) {
+        return CheckEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP) +
+               CheckEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP) +
+               CheckEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP) +
+               CheckEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP) +
+               CheckEventChkInf(EVENTCHKINF_USED_FIRE_TEMPLE_BLUE_WARP) +
+               CheckEventChkInf(EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP) +
+               CheckRandoInf(RAND_INF_DUNGEONS_DONE_SPIRIT_TEMPLE) +
+               CheckRandoInf(RAND_INF_DUNGEONS_DONE_SHADOW_TEMPLE);
+    } else {
+        return Get(LOGIC_DEKU_TREE_CLEAR) + Get(LOGIC_DODONGOS_CAVERN_CLEAR) + Get(LOGIC_JABU_JABUS_BELLY_CLEAR) +
+               Get(LOGIC_FOREST_TEMPLE_CLEAR) + Get(LOGIC_FIRE_TEMPLE_CLEAR) + Get(LOGIC_WATER_TEMPLE_CLEAR) +
+               Get(LOGIC_SPIRIT_TEMPLE_CLEAR) + Get(LOGIC_SHADOW_TEMPLE_CLEAR);
+    }
 }
 
 uint8_t Logic::StoneCount() {

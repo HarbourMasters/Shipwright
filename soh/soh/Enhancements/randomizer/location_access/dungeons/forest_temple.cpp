@@ -21,7 +21,9 @@ void RegionTable_Init_ForestTemple() {
     areaTable[RR_FOREST_TEMPLE_TREES] = Region("Forest Temple Trees", SCENE_FOREST_TEMPLE, {}, {
         //Locations
         LOCATION(RC_FOREST_TEMPLE_FIRST_ROOM_CHEST, (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_LONGSHOT)) && logic->HasItem(RG_OPEN_CHEST)),
-        LOCATION(RC_FOREST_TEMPLE_GS_FIRST_ROOM,    (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_LONGSHOT)) && ((logic->IsAdult && logic->CanUse(RG_BOMB_BAG)) || logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_BOOMERANG) || logic->CanUse(RG_FAIRY_SLINGSHOT) || logic->CanUse(RG_BOMBCHU_5) || logic->CanUse(RG_DINS_FIRE) || (ctx->GetTrickOption(RT_FOREST_FIRST_GS) && (logic->CanJumpslashExceptHammer() || (logic->IsChild && logic->CanUse(RG_BOMB_BAG)))))),
+        LOCATION(RC_FOREST_TEMPLE_GS_FIRST_ROOM,    (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_LONGSHOT)) && 
+                                                    (logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_BOOMERANG) || ((logic->IsAdult || ctx->GetTrickOption(RT_BOMB_DETONATION)) && logic->CanUse(RG_BOMB_BAG)) ||
+                                                     (ctx->GetTrickOption(RT_FOREST_FIRST_GS) && logic->CanJumpslashExceptHammer()))),
     }, {
         //Exits
         ENTRANCE(RR_FOREST_TEMPLE_ENTRYWAY,                true),
@@ -192,8 +194,8 @@ void RegionTable_Init_ForestTemple() {
         LOCATION(RC_FOREST_TEMPLE_MAP_CHEST, logic->CanKillEnemy(RE_BLUE_BUBBLE) && logic->HasItem(RG_OPEN_CHEST)),
     }, {
         //Exits
-        ENTRANCE(RR_FOREST_TEMPLE_NW_COURTYARD_LOWER, AnyAgeTime([]{return logic->CanKillEnemy(RE_BLUE_BUBBLE);})),
-        ENTRANCE(RR_FOREST_TEMPLE_NE_COURTYARD_UPPER, AnyAgeTime([]{return logic->CanKillEnemy(RE_BLUE_BUBBLE);})),
+        ENTRANCE(RR_FOREST_TEMPLE_NW_COURTYARD_UPPER_ALCOVE, AnyAgeTime([]{return logic->CanKillEnemy(RE_BLUE_BUBBLE);})),
+        ENTRANCE(RR_FOREST_TEMPLE_NE_COURTYARD_UPPER,        AnyAgeTime([]{return logic->CanKillEnemy(RE_BLUE_BUBBLE);})),
     });
 
     areaTable[RR_FOREST_TEMPLE_SEWER] = Region("Forest Temple Sewer", SCENE_FOREST_TEMPLE, {}, {
@@ -207,7 +209,7 @@ void RegionTable_Init_ForestTemple() {
         ENTRANCE(RR_FOREST_TEMPLE_NE_COURTYARD_LOWER, logic->HasItem(RG_BRONZE_SCALE)),
     });
 
-    areaTable[RR_FOREST_TEMPLE_DRAINED_SEWER] = Region("Forest Temple Drained Well", SCENE_FOREST_TEMPLE, {}, {
+    areaTable[RR_FOREST_TEMPLE_DRAINED_SEWER] = Region("Forest Temple Drained Sewer", SCENE_FOREST_TEMPLE, {}, {
         //Locations
         LOCATION(RC_FOREST_TEMPLE_WELL_CHEST,      logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_FOREST_TEMPLE_WELL_WEST_HEART, true),
