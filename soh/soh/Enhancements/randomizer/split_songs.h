@@ -69,7 +69,8 @@ class SplitSongs {
     /** In-world obtainability for RG_*_PART1/PART2 (duplicate parts / song already complete). */
     static ItemObtainability GetPartObtainability(RandomizerGet partRg);
 
-    /** Dev/testing: grant every song via Part 1 + Part 2 through the same path as chests/NPCs (Randomizer_Item_Give). */
+    /** Dev/testing: grant every song via Part 1 + Part 2 through the same path as chests/NPCs (Randomizer_Item_Give).
+     */
     static void DebugGiveAllSongParts(PlayState* play);
 
     /**

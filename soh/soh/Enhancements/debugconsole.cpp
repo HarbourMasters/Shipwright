@@ -1622,10 +1622,10 @@ void DebugConsole_Init(void) {
                                 } });
 
     CMD_REGISTER("rando_give_all_split_song_parts",
-                  { RandoGiveAllSplitSongPartsHandler,
-                    "Randomizer: grants all 12 ocarina songs via both split parts (tests Randomizer_Item_Give + "
-                    "completion). Rando save only.",
-                    {} });
+                 { RandoGiveAllSplitSongPartsHandler,
+                   "Randomizer: grants all 12 ocarina songs via both split parts (tests Randomizer_Item_Give + "
+                   "completion). Rando save only.",
+                   {} });
 
     CMD_REGISTER("item", { ItemHandler,
                            "Sets item ID in arg 1 into slot arg 2. No boundary checks. Use with caution.",

@@ -124,10 +124,10 @@ void BuildCustomItemMessage(Player* player, CustomMessage& msg) {
         const RandomizerGet partRg = static_cast<RandomizerGet>(rgid);
         const auto& songPartItem = Rando::StaticData::RetrieveItem(partRg);
         const auto* splitDef = Rando::SplitSongs::GetSongDefFromPart(partRg);
-        const ItemID iconItemId =
-            splitDef != nullptr ? VanillaItemIdForFullSong(splitDef->fullSong) : ITEM_NONE;
+        const ItemID iconItemId = splitDef != nullptr ? VanillaItemIdForFullSong(splitDef->fullSong) : ITEM_NONE;
         const auto& nm = songPartItem.GetName();
-        CustomMessage getItemText(nm.GetEnglish(), nm.GetGerman(), nm.GetFrench(), TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM);
+        CustomMessage getItemText(nm.GetEnglish(), nm.GetGerman(), nm.GetFrench(), TEXTBOX_TYPE_BLUE,
+                                  TEXTBOX_POS_BOTTOM);
         getItemText.Format(iconItemId);
         msg = getItemText;
         return;

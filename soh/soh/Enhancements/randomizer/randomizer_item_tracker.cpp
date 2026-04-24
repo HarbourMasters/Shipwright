@@ -1495,8 +1495,7 @@ void DrawSplitSongProgress(ItemTrackerItem item) {
 
     const RandomizerCheckArea area = static_cast<RandomizerCheckArea>(item.data);
     ImU32 labelColor = IM_COL32(255, 255, 255, 255);
-    if (area != RCAREA_INVALID && GameInteractor::IsSaveLoaded() && IS_RANDO &&
-        CheckTracker::IsAreaSpoiled(area)) {
+    if (area != RCAREA_INVALID && GameInteractor::IsSaveLoaded() && IS_RANDO && CheckTracker::IsAreaSpoiled(area)) {
         labelColor = IM_COL32(255, 255, 160, 255);
     }
 
@@ -1760,8 +1759,8 @@ void UpdateVectors() {
         for (auto& it : songPartItems) {
             const RandomizerGet rg = static_cast<RandomizerGet>(it.id);
             const auto found = partAreas.find(rg);
-            it.data = found != partAreas.end() ? static_cast<uint32_t>(found->second)
-                                                 : static_cast<uint32_t>(RCAREA_INVALID);
+            it.data =
+                found != partAreas.end() ? static_cast<uint32_t>(found->second) : static_cast<uint32_t>(RCAREA_INVALID);
         }
     }
 
