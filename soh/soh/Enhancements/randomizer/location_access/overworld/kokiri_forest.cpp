@@ -100,6 +100,8 @@ void RegionTable_Init_KokiriForest() {
         LOCATION(RC_KF_WONDER_SIGN,             			  logic->IsChild && logic->CanJumpslashExceptHammer()),
         LOCATION(RC_KF_WONDER_PLATFORMS_1,      			  logic->IsChild),
         LOCATION(RC_KF_WONDER_PLATFORMS_2,      			  logic->IsChild),
+        //Technically bad logic, because we can move Mido out of logic, but then we already have KSword...
+        LOCATION(RC_MIDO_HINT,      			              !ctx->GetOption(RSK_FOREST).Is(RO_CLOSED_FOREST_OFF) && logic->IsChild && logic->CanUse(RG_SPEAK_KOKIRI)),
     }, {
         //Exits
         ENTRANCE(RR_KF_BOULDER_LOOP,       logic->CanUse(RG_CRAWL)),
@@ -111,7 +113,7 @@ void RegionTable_Init_KokiriForest() {
         ENTRANCE(RR_KF_HOUSE_OF_TWINS,     true),
         ENTRANCE(RR_KF_KNOW_IT_ALL_HOUSE,  true),
         ENTRANCE(RR_KF_KOKIRI_SHOP,        true),
-        ENTRANCE(RR_KF_OUTSIDE_DEKU_TREE,  (logic->IsAdult && (logic->CanPassEnemy(RE_BIG_SKULLTULA) || logic->Get(LOGIC_FOREST_TEMPLE_CLEAR))) || ctx->GetOption(RSK_FOREST).Is(RO_CLOSED_FOREST_OFF) || logic->Get(LOGIC_SHOWED_MIDO_SWORD_AND_SHIELD)),
+        ENTRANCE(RR_KF_OUTSIDE_DEKU_TREE,  (logic->IsAdult && (logic->CanPassEnemy(RE_BIG_SKULLTULA) || logic->Get(LOGIC_FOREST_TEMPLE_CLEAR))) || logic->Get(LOGIC_SHOWED_MIDO_SWORD_AND_SHIELD)),
         ENTRANCE(RR_KF_OUTSIDE_LOST_WOODS, logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT) || (logic->IsAdult && (CanPlantBean(RR_KOKIRI_FOREST, RG_KOKIRI_FOREST_BEAN_SOUL) || ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS)))),
         ENTRANCE(RR_KF_RUPEE_ALCOVE,       logic->IsAdult && CanPlantBean(RR_KOKIRI_FOREST, RG_KOKIRI_FOREST_BEAN_SOUL)),
         ENTRANCE(RR_LW_BRIDGE_FROM_FOREST, logic->IsAdult || ctx->GetOption(RSK_FOREST).IsNot(RO_CLOSED_FOREST_ON) || logic->Get(LOGIC_DEKU_TREE_CLEAR)),
@@ -175,6 +177,7 @@ void RegionTable_Init_KokiriForest() {
         LOCATION(RC_KF_MIDOS_TOP_RIGHT_CHEST,    logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_KF_MIDOS_BOTTOM_LEFT_CHEST,  logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_KF_MIDOS_BOTTOM_RIGHT_CHEST, logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_MIDO_HINT,      			 logic->Get(LOGIC_SHOWED_MIDO_SWORD_AND_SHIELD) && logic->IsChild && logic->CanUse(RG_SPEAK_KOKIRI)),
     }, {
         //Exits
         ENTRANCE(RR_KOKIRI_FOREST, true),

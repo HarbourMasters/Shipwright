@@ -632,7 +632,10 @@ void RegionTable_Init_WaterTemple() {
         ENTRANCE(RR_WATER_TEMPLE_TRAPPED_SLOPE, true),
     });
 
-    areaTable[RR_WATER_TEMPLE_TRAPPED_SLOPE] = Region("Water Temple Trapped Slope", SCENE_WATER_TEMPLE, {}, {}, {
+    areaTable[RR_WATER_TEMPLE_TRAPPED_SLOPE] = Region("Water Temple Trapped Slope", SCENE_WATER_TEMPLE, {}, {
+        //Locations
+        LOCATION(RC_WATER_BOSS_KEY_HINT, true),
+    }, {
         ENTRANCE(RR_WATER_TEMPLE_RISING_TARGET_LEDGE, true),
         ENTRANCE(RR_WATER_TEMPLE_BOSS_ENTRYWAY,       true),
     });
@@ -772,7 +775,10 @@ void RegionTable_Init_WaterTemple() {
         ENTRANCE(RR_WATER_TEMPLE_MQ_BOSS_DOOR,           logic->CanUse(RG_LONGSHOT) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_ICE_ARROWS) || logic->CanUse(RG_NAYRUS_LOVE)),
     });
 
-    areaTable[RR_WATER_TEMPLE_MQ_BOSS_DOOR] = Region("Water Temple MQ Boss Door", SCENE_WATER_TEMPLE, {}, {}, {
+    areaTable[RR_WATER_TEMPLE_MQ_BOSS_DOOR] = Region("Water Temple MQ Boss Door", SCENE_WATER_TEMPLE, {}, {
+        //Locations
+        LOCATION(RC_WATER_BOSS_KEY_HINT, true),
+    }, {
         //Exits
         ENTRANCE(RR_WATER_TEMPLE_MQ_BOSS_DOOR_RAMP, logic->CanUse(RG_ICE_ARROWS) || logic->TakeDamage()),
         ENTRANCE(RR_WATER_TEMPLE_BOSS_ENTRYWAY,     true),
