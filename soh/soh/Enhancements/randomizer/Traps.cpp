@@ -820,6 +820,12 @@ static void InitTrickNames() {
         Text{ "Ike the Indigo Ice Trap", "Ike the Indigo Ice Trap", "Ike the Indigo Ice Trap" },
     };
 
+    trickNameTable[RG_TREASURE_GAME_HEART] = {
+        Text{ "Piece of Heart (LOSER!)", "Piece of Heart (LOSER!)", "Piece of Heart (LOSER!)" },
+        Text{ "Peace of Heart (WINNER!)", "Peace of Heart (WINNER!)", "Peace of Heart (WINNER!)" },
+        Text{ "Winning Heart Piece", "Winning Heart Piece", "Winning Heart Piece" },
+    };
+
     trickNameTable[RG_FOREST_TEMPLE_SMALL_KEY] = {
         // TODO_TRANSALTE
         Text{ "Wind Temple Smol Key", "Wind Temple Smol Key", "Wind Temple Smol Key" },

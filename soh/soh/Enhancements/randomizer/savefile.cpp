@@ -109,6 +109,81 @@ void GiveLinkDekuNuts(int howManyNuts) {
     }
 }
 
+void GiveLinkBombchus(int howManyBombchus) {
+    // Not sure how to implement the progressive chu bag levels into this, so max count will just be 20, regardless of it being enabled or not. Doesn't really matter outside of Mysteries.
+    int maxBombchuCount = 20;
+    INV_CONTENT(ITEM_BOMBCHU) = ITEM_BOMBCHU;
+    if ((AMMO(ITEM_BOMBCHU) + howManyBombchus) > maxBombchuCount) {
+        AMMO(ITEM_BOMBCHU) = maxBombchuCount;
+    } else {
+        AMMO(ITEM_BOMBCHU) += howManyBombchus;
+    }
+}
+
+// For some reason ITEM_BOMB is handled uniquely, so Item_Give doesn't work. Instead, we use the below function, copied from sticks, to give Bomb Bag
+void GiveLinkBombs(int howManyBombs) {
+    int maxBombCount = 0;
+    if (CUR_UPG_VALUE(UPG_BOMB_BAG) == 0) {
+        INV_CONTENT(ITEM_BOMB) = ITEM_BOMB;
+        Inventory_ChangeUpgrade(UPG_BOMB_BAG, 1);
+        maxBombCount = 20;
+    } else if (CUR_UPG_VALUE(UPG_BOMB_BAG) == 1) {
+        maxBombCount = 20;
+    } else if (CUR_UPG_VALUE(UPG_BOMB_BAG) == 2) {
+        maxBombCount = 30;
+    } else if (CUR_UPG_VALUE(UPG_BOMB_BAG) == 3) {
+        maxBombCount = 40;
+    }
+
+    if ((AMMO(ITEM_BOMB) + howManyBombs) > maxBombCount) {
+        AMMO(ITEM_BOMB) = maxBombCount;
+    } else {
+        AMMO(ITEM_BOMB) += howManyBombs;
+    }
+}
+
+void GiveLinkArrows(int howManyArrows) {
+    int maxArrowCount = 0;
+    if (CUR_UPG_VALUE(UPG_QUIVER) == 0) {
+        INV_CONTENT(ITEM_BOW) = ITEM_BOW;
+        Inventory_ChangeUpgrade(UPG_QUIVER, 1);
+        maxArrowCount = 30;
+    } else if (CUR_UPG_VALUE(UPG_QUIVER) == 1) {
+        maxArrowCount = 30;
+    } else if (CUR_UPG_VALUE(UPG_QUIVER) == 2) {
+        maxArrowCount = 40;
+    } else if (CUR_UPG_VALUE(UPG_QUIVER) == 3) {
+        maxArrowCount = 50;
+    }
+
+    if ((AMMO(ITEM_BOW) + howManyArrows) > maxArrowCount) {
+        AMMO(ITEM_BOW) = maxArrowCount;
+    } else {
+        AMMO(ITEM_BOW) += howManyArrows;
+    }
+}
+
+void GiveLinkSeeds(int howManySeeds) {
+    int maxSeedCount = 0;
+    if (CUR_UPG_VALUE(UPG_BULLET_BAG) == 0) {
+        INV_CONTENT(ITEM_SLINGSHOT) = ITEM_SLINGSHOT;
+        Inventory_ChangeUpgrade(UPG_BULLET_BAG, 1);
+        maxSeedCount = 30;
+    } else if (CUR_UPG_VALUE(UPG_BULLET_BAG) == 1) {
+        maxSeedCount = 30;
+    } else if (CUR_UPG_VALUE(UPG_BULLET_BAG) == 2) {
+        maxSeedCount = 40;
+    } else if (CUR_UPG_VALUE(UPG_BULLET_BAG) == 3) {
+        maxSeedCount = 50;
+    }
+
+    if ((AMMO(ITEM_SLINGSHOT) + howManySeeds) > maxSeedCount) {
+        AMMO(ITEM_SLINGSHOT) = maxSeedCount;
+    } else {
+        AMMO(ITEM_SLINGSHOT) += howManySeeds;
+    }
+}
+
 void GiveLinksPocketItem() {
     if (Randomizer_GetSettingValue(RSK_LINKS_POCKET) != RO_LINKS_POCKET_NOTHING) {
         GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LINKS_POCKET, (GetItemID)RG_NONE);
@@ -120,10 +195,69 @@ void GiveLinksPocketItem() {
 
 void SetStartingItems() {
     int startingAge = OTRGlobals::Instance->gRandoContext->GetOption(RSK_SELECTED_STARTING_AGE).Get();
+
+    // Equipment
     if (Randomizer_GetSettingValue(RSK_STARTING_KOKIRI_SWORD))
         Item_Give(NULL, ITEM_SWORD_KOKIRI);
+    if (Randomizer_GetSettingValue(RSK_STARTING_MASTER_SWORD)) {
+        if (startingAge == RO_AGE_ADULT) {
+            Item_Give(NULL, ITEM_SWORD_MASTER);
+        } else {
+            gSaveContext.inventory.equipment |= 1 << 1;
+        }
+    }
+    if (Randomizer_GetSettingValue(RSK_STARTING_BGS_SWORD))
+        Item_Give(NULL, ITEM_SWORD_BGS);
     if (Randomizer_GetSettingValue(RSK_STARTING_DEKU_SHIELD))
         Item_Give(NULL, ITEM_SHIELD_DEKU);
+    if (Randomizer_GetSettingValue(RSK_STARTING_HYLIAN_SHIELD))
+        Item_Give(NULL, ITEM_SHIELD_HYLIAN);
+    if (Randomizer_GetSettingValue(RSK_STARTING_MIRROR_SHIELD))
+        Item_Give(NULL, ITEM_SHIELD_MIRROR);
+    if (Randomizer_GetSettingValue(RSK_STARTING_IRON_BOOTS))
+        Item_Give(NULL, ITEM_BOOTS_IRON);
+    if (Randomizer_GetSettingValue(RSK_STARTING_HOVER_BOOTS))
+        Item_Give(NULL, ITEM_BOOTS_HOVER);
+    if (Randomizer_GetSettingValue(RSK_STARTING_GORON_TUNIC))
+        Item_Give(NULL, ITEM_TUNIC_GORON);
+    if (Randomizer_GetSettingValue(RSK_STARTING_ZORA_TUNIC))
+        Item_Give(NULL, ITEM_TUNIC_ZORA);
+
+    // Magic Items
+    if (Randomizer_GetSettingValue(RSK_STARTING_DINS))
+        Item_Give(NULL, ITEM_DINS_FIRE);
+    if (Randomizer_GetSettingValue(RSK_STARTING_FARORES))
+        Item_Give(NULL, ITEM_FARORES_WIND);
+    if (Randomizer_GetSettingValue(RSK_STARTING_NAYRUS))
+        Item_Give(NULL, ITEM_NAYRUS_LOVE);
+    if (Randomizer_GetSettingValue(RSK_STARTING_FIRE_ARROWS))
+        Item_Give(NULL, ITEM_ARROW_FIRE);
+    if (Randomizer_GetSettingValue(RSK_STARTING_ICE_ARROWS))
+        Item_Give(NULL, ITEM_ARROW_ICE);
+    if (Randomizer_GetSettingValue(RSK_STARTING_LIGHT_ARROWS))
+        Item_Give(NULL, ITEM_ARROW_LIGHT);
+
+    // Inventory Items
+    if (Randomizer_GetSettingValue(RSK_STARTING_BOMB_BAG)) {
+        GiveLinkBombs(20);
+    }
+    if (Randomizer_GetSettingValue(RSK_STARTING_FAIRY_BOW)) {
+        GiveLinkArrows(30);
+    }
+    if (Randomizer_GetSettingValue(RSK_STARTING_SLINGSHOT)) {
+        GiveLinkSeeds(30);
+    }
+    if (Randomizer_GetSettingValue(RSK_STARTING_BOMBCHU_BAG)) {
+        GiveLinkBombchus(50);
+    }
+    if (Randomizer_GetSettingValue(RSK_STARTING_BOOMERANG))
+        Item_Give(NULL, ITEM_BOOMERANG);
+    if (Randomizer_GetSettingValue(RSK_STARTING_LENS))
+        Item_Give(NULL, ITEM_LENS);
+    if (Randomizer_GetSettingValue(RSK_STARTING_HAMMER))
+        Item_Give(NULL, ITEM_HAMMER);
+    if (Randomizer_GetSettingValue(RSK_STARTING_BOTTLE))
+        Item_Give(NULL, ITEM_BOTTLE);
 
     // Songs
     if (Randomizer_GetSettingValue(RSK_STARTING_ZELDAS_LULLABY))
@@ -167,18 +301,17 @@ void SetStartingItems() {
                                               : ITEM_OCARINA_TIME;
     }
 
+    if (Randomizer_GetSettingValue(RSK_STARTING_HOOKSHOT)) {
+        INV_CONTENT(ITEM_HOOKSHOT) = Randomizer_GetSettingValue(RSK_STARTING_HOOKSHOT) == RO_STARTING_HOOKSHOT_HOOKSHOT
+                                              ? ITEM_HOOKSHOT
+                                              : ITEM_LONGSHOT;
+    }
+
     if (Randomizer_GetSettingValue(RSK_STARTING_STICKS) && !Randomizer_GetSettingValue(RSK_SHUFFLE_DEKU_STICK_BAG)) {
         GiveLinkDekuSticks(10);
     }
     if (Randomizer_GetSettingValue(RSK_STARTING_NUTS) && !Randomizer_GetSettingValue(RSK_SHUFFLE_DEKU_NUT_BAG)) {
         GiveLinkDekuNuts(20);
-    }
-    if (Randomizer_GetSettingValue(RSK_STARTING_MASTER_SWORD)) {
-        if (startingAge == RO_AGE_ADULT) {
-            Item_Give(NULL, ITEM_SWORD_MASTER);
-        } else {
-            gSaveContext.inventory.equipment |= 1 << 1;
-        }
     }
 
     if (Randomizer_GetSettingValue(RSK_FULL_WALLETS)) {

@@ -113,6 +113,30 @@ void GenerateStartingInventory() {
     //  }
     //  AddItemToInventory(RG_RUTOS_LETTER,              StartingRutoBottle.Value<uint8_t>());
     AddItemToInventory(RG_PROGRESSIVE_OCARINA, ctx->GetOption(RSK_STARTING_OCARINA).Get());
+    AddItemToInventory(RG_PROGRESSIVE_HOOKSHOT, ctx->GetOption(RSK_STARTING_HOOKSHOT).Get());
+    // Magic Items
+    AddItemToInventory(RG_DINS_FIRE, ctx->GetOption(RSK_STARTING_DINS) ? 1 : 0);
+    AddItemToInventory(RG_FARORES_WIND, ctx->GetOption(RSK_STARTING_FARORES) ? 1 : 0);
+    AddItemToInventory(RG_NAYRUS_LOVE, ctx->GetOption(RSK_STARTING_NAYRUS) ? 1 : 0);
+    AddItemToInventory(RG_FIRE_ARROWS, ctx->GetOption(RSK_STARTING_FIRE_ARROWS) ? 1 : 0);
+    AddItemToInventory(RG_ICE_ARROWS, ctx->GetOption(RSK_STARTING_ICE_ARROWS) ? 1 : 0);
+    AddItemToInventory(RG_LIGHT_ARROWS, ctx->GetOption(RSK_STARTING_LIGHT_ARROWS) ? 1 : 0);
+    //Inventory Items
+    AddItemToInventory(RG_PROGRESSIVE_BOMB_BAG, ctx->GetOption(RSK_STARTING_BOMB_BAG) ? 1 : 0);
+    AddItemToInventory(RG_PROGRESSIVE_BOW, ctx->GetOption(RSK_STARTING_FAIRY_BOW) ? 1 : 0);
+    AddItemToInventory(RG_PROGRESSIVE_SLINGSHOT, ctx->GetOption(RSK_STARTING_SLINGSHOT) ? 1 : 0);
+    AddItemToInventory(RG_PROGRESSIVE_BOMBCHU_BAG, ctx->GetOption(RSK_STARTING_BOMBCHU_BAG) ? 1 : 0);
+    AddItemToInventory(RG_BOOMERANG, ctx->GetOption(RSK_STARTING_BOOMERANG) ? 1 : 0);
+    AddItemToInventory(RG_LENS_OF_TRUTH, ctx->GetOption(RSK_STARTING_LENS) ? 1 : 0);
+    AddItemToInventory(RG_MEGATON_HAMMER, ctx->GetOption(RSK_STARTING_HAMMER) ? 1 : 0);
+    AddItemToInventory(RG_EMPTY_BOTTLE, ctx->GetOption(RSK_STARTING_BOTTLE) ? 1 : 0);
+    // Equipment Items
+    AddItemToInventory(RG_HYLIAN_SHIELD, ctx->GetOption(RSK_STARTING_HYLIAN_SHIELD) ? 1 : 0);
+    AddItemToInventory(RG_MIRROR_SHIELD, ctx->GetOption(RSK_STARTING_MIRROR_SHIELD) ? 1 : 0);
+    AddItemToInventory(RG_IRON_BOOTS, ctx->GetOption(RSK_STARTING_IRON_BOOTS) ? 1 : 0);
+    AddItemToInventory(RG_HOVER_BOOTS, ctx->GetOption(RSK_STARTING_HOVER_BOOTS) ? 1 : 0);
+    AddItemToInventory(RG_BIGGORON_SWORD, ctx->GetOption(RSK_STARTING_BGS_SWORD) ? 1 : 0);
+    // Songs
     AddItemToInventory(RG_ZELDAS_LULLABY, ctx->GetOption(RSK_STARTING_ZELDAS_LULLABY) ? 1 : 0);
     AddItemToInventory(RG_EPONAS_SONG, ctx->GetOption(RSK_STARTING_EPONAS_SONG) ? 1 : 0);
     AddItemToInventory(RG_SARIAS_SONG, ctx->GetOption(RSK_STARTING_SARIAS_SONG) ? 1 : 0);
@@ -163,7 +187,7 @@ bool StartingInventoryHasBottle() {
 
 void ApplyStartingInventory() {
     for (RandomizerGet item : StartingInventory) {
-        if (item == RG_PIECE_OF_HEART || item == RG_HEART_CONTAINER || item == RG_TREASURE_GAME_HEART)
+        if (item == RG_PIECE_OF_HEART || item == RG_HEART_CONTAINER)
             continue;
 
         Rando::StaticData::RetrieveItem(item).ApplyEffect();

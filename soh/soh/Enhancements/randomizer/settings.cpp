@@ -1296,6 +1296,17 @@ void Settings::CreateOptions() {
     OPT_BOOL(RSK_KAK_50_SKULLS_HINT, "50 GS Hint", CVAR_RANDOMIZER_SETTING("50GSHint"), mOptionDescriptions[RSK_KAK_50_SKULLS_HINT], IMFLAG_NONE);
     OPT_BOOL(RSK_KAK_100_SKULLS_HINT, "100 GS Hint", CVAR_RANDOMIZER_SETTING("100GSHint"), mOptionDescriptions[RSK_KAK_100_SKULLS_HINT], IMFLAG_NONE);
     OPT_BOOL(RSK_MASK_SHOP_HINT, "Mask Shop Hint", CVAR_RANDOMIZER_SETTING("MaskShopHint"), mOptionDescriptions[RSK_MASK_SHOP_HINT]);
+    // Custom static hints for items
+    OPT_BOOL(RSK_BOOMERANG_HINT, "Boomerang Hint", CVAR_RANDOMIZER_SETTING("BoomerangHint"), mOptionDescriptions[RSK_BOOMERANG_HINT], IMFLAG_NONE);
+    OPT_BOOL(RSK_HAMMER_HINT, "Megaton Hammer Hint", CVAR_RANDOMIZER_SETTING("HammerHint"), mOptionDescriptions[RSK_HAMMER_HINT], IMFLAG_NONE);
+    OPT_BOOL(RSK_MIRROR_HINT, "Mirror Shield Hint", CVAR_RANDOMIZER_SETTING("MirrorHint"), mOptionDescriptions[RSK_MIRROR_HINT], IMFLAG_NONE);
+    OPT_BOOL(RSK_HOVERS_HINT, "Hover Boots Hint", CVAR_RANDOMIZER_SETTING("HoversHint"), mOptionDescriptions[RSK_HOVERS_HINT], IMFLAG_NONE);
+    OPT_BOOL(RSK_STRENGTH_HINT, "Darunia Hint", CVAR_RANDOMIZER_SETTING("DaruniaHint"), mOptionDescriptions[RSK_STRENGTH_HINT], IMFLAG_NONE);
+    OPT_BOOL(RSK_OCARINA_HINT, "Ocarina Hint", CVAR_RANDOMIZER_SETTING("OcarinaHint"), mOptionDescriptions[RSK_OCARINA_HINT], IMFLAG_NONE);
+    OPT_BOOL(RSK_SCALE_HINT, "Scale Hint", CVAR_RANDOMIZER_SETTING("ScaleHint"), mOptionDescriptions[RSK_SCALE_HINT], IMFLAG_NONE);
+    OPT_BOOL(RSK_LULLABY_HINT, "Zelda's Lullaby Hint", CVAR_RANDOMIZER_SETTING("LullabyHint"), mOptionDescriptions[RSK_LULLABY_HINT], IMFLAG_NONE);
+    OPT_BOOL(RSK_STORMS_HINT, "Song of Storms Hint", CVAR_RANDOMIZER_SETTING("StormsHint"), mOptionDescriptions[RSK_STORMS_HINT], IMFLAG_NONE);
+    OPT_BOOL(RSK_EPONAS_HINT, "Epona's Song Hint", CVAR_RANDOMIZER_SETTING("EponasHint"), mOptionDescriptions[RSK_EPONAS_HINT], IMFLAG_NONE);
     // TODO: Compasses show rewards/woth, maps show dungeon mode
     OPT_BOOL(RSK_BLUE_FIRE_ARROWS, "Blue Fire Arrows", CVAR_RANDOMIZER_SETTING("BlueFireArrows"), mOptionDescriptions[RSK_BLUE_FIRE_ARROWS]);
     OPT_BOOL(RSK_SUNLIGHT_ARROWS, "Sunlight Arrows", CVAR_RANDOMIZER_SETTING("SunlightArrows"), mOptionDescriptions[RSK_SUNLIGHT_ARROWS]);
@@ -1309,6 +1320,30 @@ void Settings::CreateOptions() {
     OPT_U8(RSK_ICE_TRAP_PERCENT, "Ice Trap Percent", {NumOpts(0, 100)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("IceTrapPercent"), mOptionDescriptions[RSK_ICE_TRAP_PERCENT], WIDGET_CVAR_SLIDER_INT, 0);
     // TODO: Remove Double Defense, Progressive Goron Sword
     OPT_U8(RSK_STARTING_OCARINA, "Start with Ocarina", {"Off", "Fairy Ocarina", "Ocarina of Time"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("StartingOcarina"), "", WIDGET_CVAR_COMBOBOX, RO_STARTING_OCARINA_OFF);
+    OPT_U8(RSK_STARTING_HOOKSHOT, "Start with Hookshot or Longshot", {"Off", "Hookshot", "Longshot"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("StartingHookshot")), "", WIDGET_CVAR_COMBOBOX, RO_STARTING_HOOKSHOT_OFF;
+    // Custom Starting Items
+    OPT_BOOL(RSK_STARTING_DINS, "Start with Din's Fire", CVAR_RANDOMIZER_SETTING("StartingDins"));
+    OPT_BOOL(RSK_STARTING_FARORES, "Start with Farore's Wind", CVAR_RANDOMIZER_SETTING("StartingFarores"));
+    OPT_BOOL(RSK_STARTING_NAYRUS, "Start with Nayru's Love", CVAR_RANDOMIZER_SETTING("StartingNayrus"));
+    OPT_BOOL(RSK_STARTING_FIRE_ARROWS, "Start with Fire Arrows", CVAR_RANDOMIZER_SETTING("StartingFireArrows"));
+    OPT_BOOL(RSK_STARTING_ICE_ARROWS, "Start with Ice Arrows", CVAR_RANDOMIZER_SETTING("StartingIceArrows"));
+    OPT_BOOL(RSK_STARTING_LIGHT_ARROWS, "Start with Light Arrows", CVAR_RANDOMIZER_SETTING("StartingLightArrows"));
+    OPT_BOOL(RSK_STARTING_BOMB_BAG, "Start with a Bomb Bag", CVAR_RANDOMIZER_SETTING("StartingBombBag"));
+    OPT_BOOL(RSK_STARTING_FAIRY_BOW, "Start with a Fairy Bow", CVAR_RANDOMIZER_SETTING("StartingFairyBow"));
+    OPT_BOOL(RSK_STARTING_SLINGSHOT, "Start with a Slingshot", CVAR_RANDOMIZER_SETTING("StartingSlingshot"));
+    OPT_BOOL(RSK_STARTING_BOMBCHU_BAG, "Start with a Bombchu Bag", CVAR_RANDOMIZER_SETTING("StartingBombchuBag"));
+    OPT_BOOL(RSK_STARTING_BOOMERANG, "Start with Boomerang", CVAR_RANDOMIZER_SETTING("StartingBoomerang"));
+    OPT_BOOL(RSK_STARTING_LENS, "Start with Lens of Truth", CVAR_RANDOMIZER_SETTING("StartingLens"));
+    OPT_BOOL(RSK_STARTING_HAMMER, "Start with the Megaton Hammer", CVAR_RANDOMIZER_SETTING("StartingHammer"));
+    OPT_BOOL(RSK_STARTING_BOTTLE, "Start with an Empty Bottle", CVAR_RANDOMIZER_SETTING("StartingBottle"));
+    OPT_BOOL(RSK_STARTING_HYLIAN_SHIELD, "Start with the Hylian Shield", CVAR_RANDOMIZER_SETTING("StartingHylianShield"));
+    OPT_BOOL(RSK_STARTING_MIRROR_SHIELD, "Start with the Mirror Shield", CVAR_RANDOMIZER_SETTING("StartingMirrorShield"));
+    OPT_BOOL(RSK_STARTING_IRON_BOOTS, "Start with the Iron Boots", CVAR_RANDOMIZER_SETTING("StartingIronBoots"));
+    OPT_BOOL(RSK_STARTING_HOVER_BOOTS, "Start with the Hover Boots", CVAR_RANDOMIZER_SETTING("StartingHoverBoots"));
+    OPT_BOOL(RSK_STARTING_BGS_SWORD, "Start with the Biggoron Sword", CVAR_RANDOMIZER_SETTING("StartingBGS"));
+    OPT_BOOL(RSK_STARTING_GORON_TUNIC, "Start with the Goron Tunic", CVAR_RANDOMIZER_SETTING("StartingGoronTunic"));
+    OPT_BOOL(RSK_STARTING_ZORA_TUNIC, "Start with the Zora Tunic", CVAR_RANDOMIZER_SETTING("StartingZoraTunic"));
+    // End
     OPT_BOOL(RSK_STARTING_DEKU_SHIELD, "Start with Deku Shield", CVAR_RANDOMIZER_SETTING("StartingDekuShield"));
     OPT_BOOL(RSK_STARTING_KOKIRI_SWORD, "Start with Kokiri Sword", CVAR_RANDOMIZER_SETTING("StartingKokiriSword"));
     OPT_BOOL(RSK_STARTING_MASTER_SWORD, "Start with Master Sword", CVAR_RANDOMIZER_SETTING("StartingMasterSword"));
@@ -1977,24 +2012,31 @@ void Settings::CreateOptions() {
     mOptionGroups[RSG_MENU_COLUMN_HINTS_TRAPS] =
         OptionGroup::SubGroup("",
                               std::initializer_list<OptionGroup*>{ &mOptionGroups[RSG_MENU_SECTION_HINTS],
-                                                                   &mOptionGroups[RSG_MENU_SECTION_TRAPS] },
+                                                                   &mOptionGroups[RSG_MENU_SECTION_TRAPS],},
                               WidgetContainerType::COLUMN);
-    mOptionGroups[RSG_MENU_SECTION_STATIC_HINTS] = OptionGroup::SubGroup(
-        "Static Hints", { &mOptions[RSK_TOT_ALTAR_HINT],     &mOptions[RSK_GANONDORF_HINT],
-                          &mOptions[RSK_SHEIK_LA_HINT],      &mOptions[RSK_BOSS_KEY_HINT],
-                          &mOptions[RSK_DAMPES_DIARY_HINT],  &mOptions[RSK_GREG_HINT],
-                          &mOptions[RSK_LOACH_HINT],         &mOptions[RSK_SARIA_HINT],
-                          &mOptions[RSK_MIDO_HINT],          &mOptions[RSK_FROGS_HINT],
-                          &mOptions[RSK_OOT_HINT],           &mOptions[RSK_BIGGORON_HINT],
-                          &mOptions[RSK_BIG_POES_HINT],      &mOptions[RSK_CHICKENS_HINT],
-                          &mOptions[RSK_MALON_HINT],         &mOptions[RSK_HBA_HINT],
-                          &mOptions[RSK_FISHING_POLE_HINT],  &mOptions[RSK_WARP_SONG_HINTS],
-                          &mOptions[RSK_SCRUB_TEXT_HINT],    &mOptions[RSK_MERCHANT_TEXT_HINT],
-                          &mOptions[RSK_KAK_10_SKULLS_HINT], &mOptions[RSK_KAK_20_SKULLS_HINT],
-                          &mOptions[RSK_KAK_30_SKULLS_HINT], &mOptions[RSK_KAK_40_SKULLS_HINT],
-                          &mOptions[RSK_KAK_50_SKULLS_HINT], &mOptions[RSK_KAK_100_SKULLS_HINT],
-                          &mOptions[RSK_MASK_SHOP_HINT] },
-        WidgetContainerType::SECTION, "This setting adds some hints at locations other than Gossip Stones.");
+    mOptionGroups[RSG_MENU_SECTION_STATIC_HINTS] = OptionGroup::SubGroup("Static Hints",
+                              {
+                                  &mOptions[RSK_TOT_ALTAR_HINT],     &mOptions[RSK_GANONDORF_HINT],
+                                  &mOptions[RSK_SHEIK_LA_HINT],      &mOptions[RSK_BOSS_KEY_HINT],
+                                  &mOptions[RSK_DAMPES_DIARY_HINT],  &mOptions[RSK_GREG_HINT],
+                                  &mOptions[RSK_LOACH_HINT],         &mOptions[RSK_SARIA_HINT],
+                                  &mOptions[RSK_MIDO_HINT],          &mOptions[RSK_FROGS_HINT],
+                                  &mOptions[RSK_OOT_HINT],           &mOptions[RSK_BIGGORON_HINT],
+                                  &mOptions[RSK_BIG_POES_HINT],      &mOptions[RSK_CHICKENS_HINT],
+                                  &mOptions[RSK_MALON_HINT],         &mOptions[RSK_HBA_HINT],
+                                  &mOptions[RSK_FISHING_POLE_HINT],  &mOptions[RSK_WARP_SONG_HINTS],
+                                  &mOptions[RSK_SCRUB_TEXT_HINT],    &mOptions[RSK_MERCHANT_TEXT_HINT],
+                                  &mOptions[RSK_KAK_10_SKULLS_HINT], &mOptions[RSK_KAK_20_SKULLS_HINT],
+                                  &mOptions[RSK_KAK_30_SKULLS_HINT], &mOptions[RSK_KAK_40_SKULLS_HINT],
+                                  &mOptions[RSK_KAK_50_SKULLS_HINT], &mOptions[RSK_KAK_100_SKULLS_HINT],
+                                  &mOptions[RSK_MASK_SHOP_HINT],     &mOptions[RSK_STRENGTH_HINT],
+                                  &mOptions[RSK_HOVERS_HINT],        &mOptions[RSK_OCARINA_HINT],
+                                  &mOptions[RSK_SCALE_HINT],         &mOptions[RSK_LULLABY_HINT],
+                                  &mOptions[RSK_STORMS_HINT],        &mOptions[RSK_EPONAS_HINT],
+                                  &mOptions[RSK_BOOMERANG_HINT],     &mOptions[RSK_HAMMER_HINT],
+                                  &mOptions[RSK_MIRROR_HINT],
+                              },
+                              WidgetContainerType::SECTION, "This setting adds some hints at locations other than Gossip Stones.");
     mOptionGroups[RSG_MENU_COLUMN_STATIC_HINTS] =
         OptionGroup::SubGroup("", { &mOptionGroups[RSG_MENU_SECTION_STATIC_HINTS] }, WidgetContainerType::COLUMN);
     mOptionGroups[RSG_MENU_SIDEBAR_HINTS_TRAPS] =
@@ -2006,15 +2048,39 @@ void Settings::CreateOptions() {
                               WidgetContainerType::TABLE);
     mOptionGroups[RSG_MENU_SECTION_STARTING_EQUIPS] = OptionGroup::SubGroup(
         "Equips",
-        { &mOptions[RSK_LINKS_POCKET], &mOptions[RSK_LINKS_POCKET_REWARD], &mOptions[RSK_STARTING_KOKIRI_SWORD],
-          &mOptions[RSK_STARTING_MASTER_SWORD], &mOptions[RSK_STARTING_DEKU_SHIELD] },
+        { &mOptions[RSK_LINKS_POCKET], &mOptions[RSK_LINKS_POCKET_REWARD],
+          &mOptions[RSK_STARTING_KOKIRI_SWORD],
+          &mOptions[RSK_STARTING_MASTER_SWORD],
+          &mOptions[RSK_STARTING_BGS_SWORD],
+          &mOptions[RSK_STARTING_DEKU_SHIELD],
+          &mOptions[RSK_STARTING_HYLIAN_SHIELD],
+          &mOptions[RSK_STARTING_MIRROR_SHIELD],
+          &mOptions[RSK_STARTING_IRON_BOOTS],
+          &mOptions[RSK_STARTING_HOVER_BOOTS],
+          &mOptions[RSK_STARTING_GORON_TUNIC],
+          &mOptions[RSK_STARTING_ZORA_TUNIC], },
         WidgetContainerType::SECTION);
     mOptionGroups[RSG_MENU_SECTION_STARTING_ITEMS] = OptionGroup::SubGroup("Items",
                                                                            {
+                                                                               &mOptions[RSK_STARTING_DINS],
+                                                                               &mOptions[RSK_STARTING_FARORES],
+                                                                               &mOptions[RSK_STARTING_NAYRUS],
+                                                                               &mOptions[RSK_STARTING_FIRE_ARROWS],
+                                                                               &mOptions[RSK_STARTING_ICE_ARROWS],
+                                                                               &mOptions[RSK_STARTING_LIGHT_ARROWS],
                                                                                &mOptions[RSK_STARTING_OCARINA],
+                                                                               &mOptions[RSK_STARTING_HOOKSHOT],
                                                                                &mOptions[RSK_STARTING_STICKS],
                                                                                &mOptions[RSK_STARTING_NUTS],
+                                                                               &mOptions[RSK_STARTING_BOMB_BAG],
+                                                                               &mOptions[RSK_STARTING_FAIRY_BOW],
+                                                                               &mOptions[RSK_STARTING_SLINGSHOT],
+                                                                               &mOptions[RSK_STARTING_BOMBCHU_BAG],
+                                                                               &mOptions[RSK_STARTING_BOOMERANG],
+                                                                               &mOptions[RSK_STARTING_LENS],
                                                                                &mOptions[RSK_STARTING_BEANS],
+                                                                               &mOptions[RSK_STARTING_HAMMER],
+                                                                               &mOptions[RSK_STARTING_BOTTLE],
                                                                                &mOptions[RSK_STARTING_SKULLTULA_TOKEN],
                                                                                &mOptions[RSK_STARTING_HEARTS],
                                                                            },
@@ -2060,6 +2126,8 @@ void Settings::CreateOptions() {
                                   &mOptionGroups[RSG_MENU_COLUMN_STARTING_SONGS],
                               },
                               WidgetContainerType::TABLE);
+
+    // I'm pretty sure everything below is left over from the old design. Will have to confirm later.
     mOptionGroups[RSG_OPEN] = OptionGroup("Open Settings", {
                                                                &mOptions[RSK_FOREST],
                                                                &mOptions[RSK_KAK_GATE],
@@ -2226,7 +2294,7 @@ void Settings::CreateOptions() {
                                              });
     mOptionGroups[RSG_STARTING_ITEMS] =
         OptionGroup::SubGroup("Items", { &mOptions[RSK_STARTING_OCARINA], &mOptions[RSK_STARTING_KOKIRI_SWORD],
-                                         &mOptions[RSK_STARTING_DEKU_SHIELD] });
+                                         &mOptions[RSK_STARTING_DEKU_SHIELD]});
     mOptionGroups[RSG_STARTING_SONGS] =
         OptionGroup::SubGroup("Ocarina Songs", {
                                                    &mOptions[RSK_STARTING_ZELDAS_LULLABY],

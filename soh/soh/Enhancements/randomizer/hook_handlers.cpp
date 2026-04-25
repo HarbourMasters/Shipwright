@@ -392,9 +392,9 @@ void RandomizerOnPlayerUpdateForRCQueueHandler() {
             (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("TimeSavers.SkipGetItemAnimation"), SGIA_JUNK) == SGIA_ALL ||
              (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("TimeSavers.SkipGetItemAnimation"), SGIA_JUNK) == SGIA_JUNK &&
               (
-                  // crude fix to ensure map hints are readable. Ideally replace with better hint tracking.
-                  !(getItemEntry.getItemId >= RG_DEKU_TREE_MAP && getItemEntry.getItemId <= RG_ICE_CAVERN_MAP &&
-                    getItemEntry.modIndex == MOD_RANDOMIZER) &&
+                  // crude fix to ensure map hints are readable. Ideally replace with better hint tracking. // Additionally, for Bingo purposes, we do not care about maps except for squares; their hint isn't used. Skip the GI animation by commenting out the RG_MAP condition.
+                  // !(getItemEntry.getItemId >= RG_DEKU_TREE_MAP && getItemEntry.getItemId <= RG_ICE_CAVERN_MAP &&
+                  //  getItemEntry.modIndex == MOD_RANDOMIZER) &&
                   (getItemCategory == ITEM_CATEGORY_JUNK || getItemCategory == ITEM_CATEGORY_SKULLTULA_TOKEN ||
                    getItemCategory == ITEM_CATEGORY_HEALTH || getItemCategory == ITEM_CATEGORY_LESSER))))) {
             Item_DropCollectible(gPlayState, &spawnPos, static_cast<int16_t>(ITEM00_SOH_GIVE_ITEM_ENTRY | 0x8000));

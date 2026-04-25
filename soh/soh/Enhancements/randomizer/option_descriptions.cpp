@@ -791,6 +791,28 @@ void Settings::CreateOptionDescriptions() {
         "Talking to the Cursed Resident in the Skulltula House who is saved after 100 tokens will tell you the reward.";
     mOptionDescriptions[RSK_MASK_SHOP_HINT] =
         "Reading the mask shop sign will tell you rewards from showing masks at the Deku Theatre.";
+    // Custom Hint Options
+    mOptionDescriptions[RSK_HOVERS_HINT] =
+        "Reading the sign in the Shadow Temple Truthspinner Room will reveal the location of the Hover Boots.";
+    mOptionDescriptions[RSK_BOOMERANG_HINT] =
+        "Navi will tell you where to find the Boomerang when prompted from targeting Barinade.";
+    mOptionDescriptions[RSK_HAMMER_HINT] =
+        "Navi will tell you where to find the Megaton Hammer when prompted from targeting Volvagia.";
+    mOptionDescriptions[RSK_MIRROR_HINT] =
+        "Navi will tell you where to find the Mirror Shield when prompted from targeting either Koume or Kotake.";
+    mOptionDescriptions[RSK_STRENGTH_HINT] =
+        "Talking to Darunia as Child Link will reveal the location of a Progressive Strength upgrade.";
+    mOptionDescriptions[RSK_OCARINA_HINT] =
+        "Talking to the Lost Woods Gossip Stone will reveal the location of a Progressive Ocarina.";
+    mOptionDescriptions[RSK_SCALE_HINT] =
+        "Talking to the Zora atop the waterfall after starting the Diving Minigame will tell you the location of a Progressive Scale.";
+    mOptionDescriptions[RSK_LULLABY_HINT] =
+        "Talking to Zelda as a child will tell you the location of Zelda's Lullaby.";
+    mOptionDescriptions[RSK_STORMS_HINT] =
+        "Talking to the man in the Windmill as an adult will tell you the location of the Song of Storms.";
+    mOptionDescriptions[RSK_EPONAS_HINT] =
+        "Talking to Malon as a child after showing her the Ocarina will tell you the location of Epona's Song.";
+    // end
     mOptionDescriptions[RSK_FULL_WALLETS] = "Start with a full wallet. All wallet upgrades come filled with rupees.";
     mOptionDescriptions[RSK_BOMBCHU_BAG] =
         "None - Bombchus have vanilla behavior, any Bombchu requirement is filled by Bomb Bag + a renewable source of "

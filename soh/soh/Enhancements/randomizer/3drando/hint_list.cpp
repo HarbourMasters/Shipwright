@@ -2275,6 +2275,37 @@ void StaticData::HintTable_Init() {
 	                                                    /*german*/ "Wenn ich mich recht erinnere,&habe ich sie irgendwo&#[[1]]#&verloren...&Sag mir Bescheid, wenn Du sie findest!",
 													    /*french*/ "Si je me souviens bien, il me&semble que je l'ai perdue&quelque part dans&#[[1]]#...^Fais-moi signe si jamais&tu la trouves!",
                                                                    {QM_RED}));
+    // Custom Hints
+    hintTextTable[RHT_STRENGTH_HINT] = HintText(CustomMessage("Brother! Have ya gotten the %gProgressive Strength Upgrade %win %r[[1]] %wyet?",
+                                                              TODO_TRANSLATE,
+                                                              TODO_TRANSLATE));
+    hintTextTable[RHT_HOVERS_HINT] = HintText(CustomMessage("Only one who has acquired the %gHover Boots %wfrom %r[[1]] %wcan cross the valley of the dead.",
+                                                            TODO_TRANSLATE,
+                                                            TODO_TRANSLATE));
+    hintTextTable[RHT_OCARINA_HINT] = HintText(CustomMessage("They say that a %gProgressive Ocarina %wcan be found in %r[[1]]%w.",
+                                                            TODO_TRANSLATE,
+                                                            TODO_TRANSLATE));
+    hintTextTable[RHT_SCALE_HINT] = HintText(CustomMessage("By the way, you can find a %gProgressive Scale %win %r[[1]]%w.",
+                                                            TODO_TRANSLATE,
+                                                            TODO_TRANSLATE));
+    hintTextTable[RHT_BOOMERANG_HINT] = HintText(CustomMessage("%c@! You need the %gBoomerang %cfrom %r[[1]]%c to defeat this boss!",
+                                                               TODO_TRANSLATE,
+                                                               TODO_TRANSLATE));
+    hintTextTable[RHT_HAMMER_HINT] = HintText(CustomMessage("%c@! You need the %gMegaton Hammer %cfrom %r[[1]]%c to defeat this boss!",
+                                                               TODO_TRANSLATE,
+                                                               TODO_TRANSLATE));
+    hintTextTable[RHT_MIRROR_HINT] = HintText(CustomMessage("%c@! You need the %gMirror Shield %cfrom %r[[1]]%c to defeat this boss!",
+                                                               TODO_TRANSLATE,
+                                                               TODO_TRANSLATE));
+    hintTextTable[RHT_LULLABY_HINT] = HintText(CustomMessage("Hiya @! Have you learned %gmy Lullaby %wfrom %r[[1]] %wyet?",
+                                                               TODO_TRANSLATE,
+                                                               TODO_TRANSLATE));
+    hintTextTable[RHT_STORMS_HINT] = HintText(CustomMessage("I'm mad and also angry for some reason!!! You can learn the %gSong of Storms %wat %r[[1]]%w! GRRR!!",
+                                                               TODO_TRANSLATE,
+                                                               TODO_TRANSLATE));
+    hintTextTable[RHT_EPONAS_HINT] = HintText(CustomMessage("Epona is really fond of you! She might let you ride her around if you learn %gher song %win %r[[1]]%w!",
+                                                               TODO_TRANSLATE,
+                                                               TODO_TRANSLATE));
 
     /*--------------------------
     |    Static Entrance Hint   |

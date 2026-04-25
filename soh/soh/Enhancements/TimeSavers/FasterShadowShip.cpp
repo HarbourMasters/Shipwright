@@ -11,14 +11,16 @@ void RegisterFasterShadowShip() {
         BgHakaShip* ship = va_arg(args, BgHakaShip*);
         PlayState* play = va_arg(args, PlayState*);
         if (!Play_InCsMode(play)) {
-            if (Actor_FindNearby(play, &ship->dyna.actor, ACTOR_EN_TEST, ACTORCAT_ENEMY, 800.0) == NULL &&
-                Actor_FindNearby(play, &ship->dyna.actor, ACTOR_PLAYER, ACTORCAT_PLAYER, 450.0) != NULL) {
+            // We want the ship to actually go fast, please.
+            // 
+            //if (Actor_FindNearby(play, &ship->dyna.actor, ACTOR_EN_TEST, ACTORCAT_ENEMY, 800.0) == NULL &&
+            //    Actor_FindNearby(play, &ship->dyna.actor, ACTOR_PLAYER, ACTORCAT_PLAYER, 450.0) != NULL) {
                 *should = false;
                 ship->dyna.actor.speedXZ = 25.0f;
-            } else if (ship->dyna.actor.speedXZ > 4.0f) {
-                *should = false;
-                ship->dyna.actor.speedXZ = 4.0f;
-            }
+            //} else if (ship->dyna.actor.speedXZ > 4.0f) {
+            //   *should = false;
+            //    ship->dyna.actor.speedXZ = 4.0f;
+            //}
         }
     });
 }

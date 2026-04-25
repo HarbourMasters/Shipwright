@@ -196,8 +196,8 @@ const std::array<HintSetting, 4> hintSettingTable{{
   },
   // Very strong hints
   {
-    .alwaysCopies = 2,
-    .trialCopies = 1,
+    .alwaysCopies = 1,
+    .trialCopies = 0,
     .junkWeight = 0,
     .distTable = {
       {"WotH",       HINT_TYPE_WOTH,      15, 0, 2, FilterWotHLocations},
@@ -206,7 +206,7 @@ const std::array<HintSetting, 4> hintSettingTable{{
       {"Song",       HINT_TYPE_ITEM,      2,  0, 1, FilterSongLocations},
       {"Overworld",  HINT_TYPE_ITEM,      7,  0, 1, FilterOverworldLocations},
       {"Dungeon",    HINT_TYPE_ITEM,      7,  0, 1, FilterDungeonLocations},
-      {"Named Item", HINT_TYPE_ITEM_AREA, 5,  0, 1, FilterGoodItems},
+      {"Named Item", HINT_TYPE_ITEM_AREA, 15,  0, 1, FilterGoodItems},
     },
   },
 }};
@@ -268,43 +268,43 @@ uint8_t TokensRequiredBySettings() {
 }
 
 std::vector<std::pair<RandomizerCheck, std::function<bool()>>> conditionalAlwaysHints = {
-    std::make_pair(RC_MARKET_10_BIG_POES,
-                   []() {
-                       auto ctx = Rando::Context::GetInstance();
-                       return ctx->GetOption(RSK_BIG_POE_COUNT).Get() > 3 && !ctx->GetOption(RSK_BIG_POES_HINT);
-                   }),
-    std::make_pair(RC_DEKU_THEATER_MASK_OF_TRUTH,
-                   []() {
-                       auto ctx = Rando::Context::GetInstance();
-                       return !ctx->GetOption(RSK_MASK_SHOP_HINT) && !ctx->GetOption(RSK_MASK_QUEST);
-                   }),
-    std::make_pair(RC_SONG_FROM_OCARINA_OF_TIME,
-                   []() {
-                       auto ctx = Rando::Context::GetInstance();
-                       return StonesRequiredBySettings() < 2 && !ctx->GetOption(RSK_OOT_HINT);
-                   }),
-    std::make_pair(RC_HF_OCARINA_OF_TIME_ITEM, []() { return StonesRequiredBySettings() < 2; }),
+    // std::make_pair(RC_MARKET_10_BIG_POES,
+    //                []() {
+    //                    auto ctx = Rando::Context::GetInstance();
+    //                    return ctx->GetOption(RSK_BIG_POE_COUNT).Get() > 3 && !ctx->GetOption(RSK_BIG_POES_HINT);
+    //                }),
+    // std::make_pair(RC_DEKU_THEATER_MASK_OF_TRUTH,
+    //                []() {
+    //                    auto ctx = Rando::Context::GetInstance();
+    //                    return !ctx->GetOption(RSK_MASK_SHOP_HINT) && !ctx->GetOption(RSK_MASK_QUEST);
+    //                }),
+    // std::make_pair(RC_SONG_FROM_OCARINA_OF_TIME,
+    //                []() {
+    //                    auto ctx = Rando::Context::GetInstance();
+    //                    return StonesRequiredBySettings() < 2 && !ctx->GetOption(RSK_OOT_HINT);
+    //                }),
+    // std::make_pair(RC_HF_OCARINA_OF_TIME_ITEM, []() { return StonesRequiredBySettings() < 2; }),
     std::make_pair(RC_SHEIK_IN_KAKARIKO, []() { return MedallionsRequiredBySettings() < 5; }),
-    std::make_pair(RC_DMT_TRADE_CLAIM_CHECK,
-                   []() {
-                       auto ctx = Rando::Context::GetInstance();
-                       return !ctx->GetOption(RSK_BIGGORON_HINT);
-                   }),
-    std::make_pair(RC_KAK_30_GOLD_SKULLTULA_REWARD,
-                   []() {
-                       auto ctx = Rando::Context::GetInstance();
-                       return !ctx->GetOption(RSK_KAK_30_SKULLS_HINT) && TokensRequiredBySettings() < 30;
-                   }),
-    std::make_pair(RC_KAK_40_GOLD_SKULLTULA_REWARD,
-                   []() {
-                       auto ctx = Rando::Context::GetInstance();
-                       return !ctx->GetOption(RSK_KAK_40_SKULLS_HINT) && TokensRequiredBySettings() < 40;
-                   }),
-    std::make_pair(RC_KAK_50_GOLD_SKULLTULA_REWARD,
-                   []() {
-                       auto ctx = Rando::Context::GetInstance();
-                       return !ctx->GetOption(RSK_KAK_50_SKULLS_HINT) && TokensRequiredBySettings() < 50;
-                   }),
+    // std::make_pair(RC_DMT_TRADE_CLAIM_CHECK,
+    //                []() {
+    //                    auto ctx = Rando::Context::GetInstance();
+    //                    return !ctx->GetOption(RSK_BIGGORON_HINT);
+    //                }),
+    // std::make_pair(RC_KAK_30_GOLD_SKULLTULA_REWARD,
+    //                []() {
+    //                    auto ctx = Rando::Context::GetInstance();
+    //                    return !ctx->GetOption(RSK_KAK_30_SKULLS_HINT) && TokensRequiredBySettings() < 30;
+    //                }),
+    // std::make_pair(RC_KAK_40_GOLD_SKULLTULA_REWARD,
+    //                []() {
+    //                    auto ctx = Rando::Context::GetInstance();
+    //                    return !ctx->GetOption(RSK_KAK_40_SKULLS_HINT) && TokensRequiredBySettings() < 40;
+    //                }),
+    // std::make_pair(RC_KAK_50_GOLD_SKULLTULA_REWARD,
+    //                []() {
+    //                    auto ctx = Rando::Context::GetInstance();
+    //                    return !ctx->GetOption(RSK_KAK_50_SKULLS_HINT) && TokensRequiredBySettings() < 50;
+    //                }),
     std::make_pair(RC_ZR_FROGS_OCARINA_GAME,
                    []() {
                        auto ctx = Rando::Context::GetInstance();
@@ -648,18 +648,20 @@ void CreateStoneHints() {
     // Add 'always' location hints
     std::vector<RandomizerCheck> alwaysHintLocations = {};
     if (hintSetting.alwaysCopies > 0) {
-        if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_GREG)) {
+        // Ship guy is definitely correct, why the Hell are we adding Greg hints to the pool with the static hint?
+        // 
+        // if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_GREG)) {
             // If we have Rainbow Bridge set to Greg and the greg hint isn't useful, add a hint for where Greg is
             // Do we really need this with the greg hint?
-            auto gregLocations = FilterFromPool(ctx->allLocations, [ctx](const RandomizerCheck loc) {
-                return ((ctx->GetItemLocation(loc)->GetPlacedRandomizerGet() == RG_GREG_RUPEE)) &&
-                       ctx->GetItemLocation(loc)->IsHintable() &&
-                       !(ctx->GetOption(RSK_GREG_HINT) && IsReachableWithout({ RC_GREG_HINT }, loc, true));
-            });
-            if (gregLocations.size() > 0) {
-                alwaysHintLocations.push_back(gregLocations[0]);
-            }
-        }
+        //     auto gregLocations = FilterFromPool(ctx->allLocations, [ctx](const RandomizerCheck loc) {
+        //         return ((ctx->GetItemLocation(loc)->GetPlacedRandomizerGet() == RG_GREG_RUPEE)) &&
+        //                ctx->GetItemLocation(loc)->IsHintable() &&
+        //                !(ctx->GetOption(RSK_GREG_HINT) && IsReachableWithout({ RC_GREG_HINT }, loc, true));
+        //     });
+        //     if (gregLocations.size() > 0) {
+        //         alwaysHintLocations.push_back(gregLocations[0]);
+        //     }
+        // }
 
         for (auto& hint : conditionalAlwaysHints) {
             RandomizerCheck loc = hint.first;
@@ -672,11 +674,12 @@ void CreateStoneHints() {
             CreateHint(location, hintSetting.alwaysCopies, HINT_TYPE_ITEM, "Always");
         }
     }
-
+    // We do not want trial hints, so keep below commented
+    // 
     // Add 'trial' location hints
-    if (ctx->GetOption(RSK_GANONS_TRIALS).IsNot(RO_GANONS_TRIALS_SKIP)) {
-        CreateTrialHints(hintSetting.trialCopies);
-    }
+    // if (ctx->GetOption(RSK_GANONS_TRIALS).IsNot(RO_GANONS_TRIALS_SKIP)) {
+    //     CreateTrialHints(hintSetting.trialCopies);
+    // }
 
     size_t totalStones = GetEmptyGossipStones().size();
     std::vector<uint8_t> selectedHints;

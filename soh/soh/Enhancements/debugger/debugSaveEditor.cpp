@@ -1424,7 +1424,7 @@ void DrawEquipmentTab() {
         }
         PopStyleCombobox();
         ImGui::PopID();
-        UIWidgets::Tooltip("Bombchu Bag Capapcity");
+        UIWidgets::Tooltip("Bombchu Bag Capacity");
     }
 }
 

@@ -548,6 +548,7 @@ void SaveManager::StartupCheckAndInitMeta(int fileNum) {
     fileMetaInfo[fileNum].gsTokens = baseBlock["inventory"]["gsTokens"];
     fileMetaInfo[fileNum].isDoubleDefenseAcquired = baseBlock["isDoubleDefenseAcquired"];
     fileMetaInfo[fileNum].gregFound = false;
+    fileMetaInfo[fileNum].winnerFound = false;
     fileMetaInfo[fileNum].filenameLanguage = baseBlock.value("filenameLanguage", 0);
     fileMetaInfo[fileNum].hasWallet = !isRando;
     fileMetaInfo[fileNum].defense = baseBlock["inventory"]["defenseHearts"];
@@ -565,6 +566,8 @@ void SaveManager::StartupCheckAndInitMeta(int fileNum) {
         }
         fileMetaInfo[fileNum].gregFound =
             (int16_t)baseBlock["randomizerInf"][RAND_INF_GREG_FOUND >> 4] & (1 << (RAND_INF_GREG_FOUND & 0xF));
+        fileMetaInfo[fileNum].winnerFound =
+            (int16_t)baseBlock["randomizerInf"][RAND_INF_WINNER_FOUND >> 4] & (1 << (RAND_INF_WINNER_FOUND & 0xF));
         fileMetaInfo[fileNum].hasWallet =
             (int16_t)baseBlock["randomizerInf"][RAND_INF_HAS_WALLET >> 4] & (1 << (RAND_INF_HAS_WALLET & 0xF));
         fileMetaInfo[fileNum].requiresMasterQuest = randoBlock["masterQuestDungeonCount"] > 0;
@@ -600,6 +603,7 @@ void SaveManager::InitMeta(int fileNum) {
     fileMetaInfo[fileNum].gsTokens = gSaveContext.inventory.gsTokens;
     fileMetaInfo[fileNum].isDoubleDefenseAcquired = gSaveContext.isDoubleDefenseAcquired;
     fileMetaInfo[fileNum].gregFound = Flags_GetRandomizerInf(RAND_INF_GREG_FOUND);
+    fileMetaInfo[fileNum].winnerFound = Flags_GetRandomizerInf(RAND_INF_WINNER_FOUND);
     fileMetaInfo[fileNum].filenameLanguage = gSaveContext.ship.filenameLanguage;
     fileMetaInfo[fileNum].hasWallet = Flags_GetRandomizerInf(RAND_INF_HAS_WALLET) || !IS_RANDO;
     fileMetaInfo[fileNum].triforcePieces =

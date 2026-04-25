@@ -178,6 +178,79 @@ void BuildGregHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
     }
 }
 
+// Custom Static Hints
+void BuildDaruniaHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
+    if (gPlayState->sceneNum == SCENE_GORON_CITY) {
+        CustomMessage msg = RAND_GET_HINT(RH_STRENGTH_HINT)->GetHintMessage(MF_AUTO_FORMAT);
+        msg.LoadIntoFont();
+        *loadFromMessageTable = false;
+    }
+}
+
+void BuildShadowSignMessage(uint16_t* textId, bool* loadFromMessageTable) {
+    if (gPlayState->sceneNum == SCENE_SHADOW_TEMPLE) {
+        CustomMessage msg = RAND_GET_HINT(RH_HOVERS_HINT)->GetHintMessage(MF_AUTO_FORMAT);
+        msg.LoadIntoFont();
+        *loadFromMessageTable = false;
+    }
+}
+
+void BuildDivingGameMessage(uint16_t* textId, bool* loadFromMessageTable) {
+    if (gPlayState->sceneNum == SCENE_ZORAS_DOMAIN) {
+        CustomMessage msg = RAND_GET_HINT(RH_SCALE_HINT)->GetHintMessage(MF_AUTO_FORMAT);
+        msg.LoadIntoFont();
+        *loadFromMessageTable = false;
+    }
+}
+
+void BuildZeldaHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
+    if (gPlayState->sceneNum == SCENE_CASTLE_COURTYARD_ZELDA) {
+        CustomMessage msg = RAND_GET_HINT(RH_LULLABY_HINT)->GetHintMessage(MF_AUTO_FORMAT);
+        msg.LoadIntoFont();
+        *loadFromMessageTable = false;
+    }
+}
+
+void BuildWindmillGuyMessage(uint16_t* textId, bool* loadFromMessageTable) {
+    if (gPlayState->sceneNum == SCENE_WINDMILL_AND_DAMPES_GRAVE) {
+        CustomMessage msg = RAND_GET_HINT(RH_STORMS_HINT)->GetHintMessage(MF_AUTO_FORMAT);
+        msg.LoadIntoFont();
+        *loadFromMessageTable = false;
+    }
+}
+
+void BuildChildMalonMessage(uint16_t* textId, bool* loadFromMessageTable) {
+    if (gPlayState->sceneNum == SCENE_LON_LON_RANCH) {
+        CustomMessage msg = RAND_GET_HINT(RH_EPONAS_HINT)->GetHintMessage(MF_AUTO_FORMAT);
+        msg.LoadIntoFont();
+        *loadFromMessageTable = false;
+    }
+}
+
+void BuildBoomerangHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
+    if (gPlayState->sceneNum == SCENE_JABU_JABU_BOSS) {
+        CustomMessage msg = RAND_GET_HINT(RH_BOOMERANG_HINT)->GetHintMessage(MF_AUTO_FORMAT);
+        msg.LoadIntoFont();
+        *loadFromMessageTable = false;
+    }
+}
+
+void BuildHammerHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
+    if (gPlayState->sceneNum == SCENE_FIRE_TEMPLE_BOSS) {
+        CustomMessage msg = RAND_GET_HINT(RH_HAMMER_HINT)->GetHintMessage(MF_AUTO_FORMAT);
+        msg.LoadIntoFont();
+        *loadFromMessageTable = false;
+    }
+}
+
+void BuildMirrorHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
+    if (gPlayState->sceneNum == SCENE_SPIRIT_TEMPLE_BOSS) {
+        CustomMessage msg = RAND_GET_HINT(RH_MIRROR_HINT)->GetHintMessage(MF_AUTO_FORMAT);
+        msg.LoadIntoFont();
+        *loadFromMessageTable = false;
+    }
+}
+
 void BuildMysteriousWarpMessage() {
     CustomMessage msg = CustomMessage(
         "Warp to&%ra mysterious place?%w&" + CustomMessage::TWO_WAY_CHOICE() + "%gOK&No%w",
@@ -506,6 +579,28 @@ void RegisterStaticHints() {
     COND_ID_HOOK(OnOpenText, TEXT_MASK_SHOP_SIGN, RAND_GET_OPTION(RSK_MASK_SHOP_HINT), BuildMaskShopSignMessage);
     // Boss Key Hints
     COND_ID_HOOK(OnOpenText, TEXT_NEED_SPECIAL_KEY, RAND_GET_OPTION(RSK_BOSS_KEY_HINT), BuildBossKeyHintMessage);
+    // Darunia
+    COND_ID_HOOK(OnOpenText, TEXT_DARUNIA_WHAT_THE_HECK, RAND_GET_OPTION(RSK_STRENGTH_HINT), BuildDaruniaHintMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_DARUNIA_GORON_PROBLEM, RAND_GET_OPTION(RSK_STRENGTH_HINT), BuildDaruniaHintMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_DARUNIA_DESTROY_MONSTERS, RAND_GET_OPTION(RSK_STRENGTH_HINT), BuildDaruniaHintMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_DARUNIA_PLAY_THAT_TUNE, RAND_GET_OPTION(RSK_STRENGTH_HINT), BuildDaruniaHintMessage);
+    // Shadow Temple Pit Sign
+    COND_ID_HOOK(OnOpenText, TEXT_SHADOW_TEMPLE_TRUTHSPINNER_SIGN, RAND_GET_OPTION(RSK_HOVERS_HINT), BuildShadowSignMessage);
+    // Diving Minigame Zora
+    COND_ID_HOOK(OnOpenText, TEXT_DIVING_MINIGAME_SHORTCUT, RAND_GET_OPTION(RSK_SCALE_HINT), BuildDivingGameMessage);
+    // Child Zelda
+    COND_ID_HOOK(OnOpenText, TEXT_ZELDA_ATTENDANT, RAND_GET_OPTION(RSK_LULLABY_HINT), BuildZeldaHintMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_ZELDA_FOUND_IT, RAND_GET_OPTION(RSK_LULLABY_HINT), BuildZeldaHintMessage);
+    // Windmill Guy
+    COND_ID_HOOK(OnOpenText, TEXT_WINDMILL_GUY_GRRR, RAND_GET_OPTION(RSK_STORMS_HINT), BuildWindmillGuyMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_WINDMILL_GUY_GRRR_2, RAND_GET_OPTION(RSK_STORMS_HINT), BuildWindmillGuyMessage);
+    // Child Malon
+    COND_ID_HOOK(OnOpenText, TEXT_MALON_EPONA_FOND, RAND_GET_OPTION(RSK_EPONAS_HINT), BuildChildMalonMessage);
+    // Boss C-Up Text
+    COND_ID_HOOK(OnOpenText, TEXT_BARINADE_INFO, RAND_GET_OPTION(RSK_BOOMERANG_HINT), BuildBoomerangHintMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_VOLVAGIA_INFO, RAND_GET_OPTION(RSK_HAMMER_HINT), BuildHammerHintMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_TWINROVA_KOUME_INFO, RAND_GET_OPTION(RSK_MIRROR_HINT), BuildMirrorHintMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_TWINROVA_KOTAKE_INFO, RAND_GET_OPTION(RSK_MIRROR_HINT), BuildMirrorHintMessage);
 }
 
 static RegisterShipInitFunc initFunc(RegisterStaticHints, { "IS_RANDO" });

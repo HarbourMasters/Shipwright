@@ -39,6 +39,10 @@ void BuildHintStoneMessage(uint16_t* textId, bool* loadFromMessageTable) {
     }
     if (stoneHint == RH_NONE) {
         msg = CustomMessage("INVALID STONE. PARAMS: " + std::to_string(hintParams));
+    } else if (hintParams == 0x1D && (RAND_GET_OPTION(RSK_OCARINA_HINT))) {
+        msg = OTRGlobals::Instance->gRandoContext->GetHint(RH_OCARINA_HINT)->GetHintMessage(MF_AUTO_FORMAT);
+        msg.LoadIntoFont();
+        *loadFromMessageTable = false;
     } else {
         msg = OTRGlobals::Instance->gRandoContext->GetHint(stoneHint)->GetHintMessage(MF_AUTO_FORMAT);
     }

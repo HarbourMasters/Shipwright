@@ -94,6 +94,17 @@ std::unordered_map<uint32_t, CustomMessage> StaticData::hintNames = {
     { RH_FROGS_HINT, CustomMessage("Final Frogs in River Hint") },
     { RH_OOT_HINT, CustomMessage("Sheik in Temple of Time Hint") },
     { RH_MASK_SHOP_HINT, CustomMessage("Mask Shop Hint") },
+    // Custom Static Hints
+    { RH_MIRROR_HINT, CustomMessage("Mirror Shield Hint") },
+    { RH_HAMMER_HINT, CustomMessage("Megaton Hammer Hint") },
+    { RH_BOOMERANG_HINT, CustomMessage("Boomerang Hint") },
+    { RH_STRENGTH_HINT, CustomMessage("Darunia Hint") },
+    { RH_OCARINA_HINT, CustomMessage("LW Gossip Stone Ocarina Hint") },
+    { RH_SCALE_HINT, CustomMessage("Zora Scale Hint") },
+    { RH_LULLABY_HINT, CustomMessage("Child Zelda Hint") },
+    { RH_HOVERS_HINT, CustomMessage("Truthspinner Sign Hint") },
+    { RH_STORMS_HINT, CustomMessage("Windmill Gui Hint") },
+    { RH_EPONAS_HINT, CustomMessage("Child Malon Hint") },
 };
 
 std::unordered_map<RandomizerCheck, RandomizerHint> StaticData::gossipStoneCheckToHint{
@@ -212,7 +223,20 @@ std::unordered_map<RandomizerHint, StaticHintInfo> StaticData::staticHintInfoMap
   {RH_FROGS_HINT,           StaticHintInfo(HINT_TYPE_ITEM,     {RHT_FROGS_HINT},                    RSK_FROGS_HINT,          true, {RC_ZR_FROGS_OCARINA_GAME})},
   {RH_OOT_HINT,             StaticHintInfo(HINT_TYPE_ITEM,     {RHT_OOT_HINT},                      RSK_OOT_HINT,            true, {RC_HF_OCARINA_OF_TIME_ITEM, RC_SONG_FROM_OCARINA_OF_TIME},  {}, {RC_TOT_SHEIK_HINT})},
   {RH_MASK_SHOP_HINT,       StaticHintInfo(HINT_TYPE_ITEM,     {RHT_MASK_SHOP_HINT},                RSK_MASK_SHOP_HINT,      true, {RC_DEKU_THEATER_SKULL_MASK, RC_DEKU_THEATER_MASK_OF_TRUTH}, {}, {RC_MASK_SHOP_HINT})},
-    // clang-format on
+  
+  // Custom static hints
+  {RH_STRENGTH_HINT,        StaticHintInfo(HINT_TYPE_AREA,     {RHT_STRENGTH_HINT},                 RSK_STRENGTH_HINT,       true, {}, {RG_PROGRESSIVE_STRENGTH},    {RC_STRENGTH_HINT})},
+  {RH_HOVERS_HINT,          StaticHintInfo(HINT_TYPE_AREA,     {RHT_HOVERS_HINT},                   RSK_HOVERS_HINT,         true, {}, {RG_HOVER_BOOTS},             {RC_HOVERS_HINT})},
+  {RH_OCARINA_HINT,         StaticHintInfo(HINT_TYPE_AREA,     {RHT_OCARINA_HINT},                  RSK_OCARINA_HINT,        true, {}, {RG_PROGRESSIVE_OCARINA},     {RC_OCARINA_HINT})},
+  {RH_SCALE_HINT,           StaticHintInfo(HINT_TYPE_AREA,     {RHT_SCALE_HINT},                    RSK_SCALE_HINT,          true, {}, {RG_PROGRESSIVE_SCALE},       {RC_SCALE_HINT})},
+  {RH_LULLABY_HINT,         StaticHintInfo(HINT_TYPE_AREA,     {RHT_LULLABY_HINT},                  RSK_LULLABY_HINT,        true, {}, {RG_ZELDAS_LULLABY},          {RC_LULLABY_HINT})},
+  {RH_STORMS_HINT,          StaticHintInfo(HINT_TYPE_AREA,     {RHT_STORMS_HINT},                   RSK_STORMS_HINT,         true, {}, {RG_SONG_OF_STORMS},          {RC_STORMS_HINT})},
+  {RH_EPONAS_HINT,          StaticHintInfo(HINT_TYPE_AREA,     {RHT_EPONAS_HINT},                   RSK_EPONAS_HINT,         true, {}, {RG_EPONAS_SONG},             {RC_EPONAS_HINT})},
+  // Static hints for hard-required items on the boss C-Up text
+  {RH_BOOMERANG_HINT,       StaticHintInfo(HINT_TYPE_AREA,     {RHT_BOOMERANG_HINT},                RSK_BOOMERANG_HINT,      true, {}, {RG_BOOMERANG},               {RC_BOOMERANG_HINT})},
+  {RH_HAMMER_HINT,          StaticHintInfo(HINT_TYPE_AREA,     {RHT_HAMMER_HINT},                   RSK_HAMMER_HINT,         true, {}, {RG_MEGATON_HAMMER},          {RC_HAMMER_HINT})},
+  {RH_MIRROR_HINT,          StaticHintInfo(HINT_TYPE_AREA,     {RHT_MIRROR_HINT},                   RSK_MIRROR_HINT,         true, {}, {RG_MIRROR_SHIELD},           {RC_MIRROR_HINT})},
+   // clang-format on
 };
 
 std::unordered_map<std::string, uint32_t>

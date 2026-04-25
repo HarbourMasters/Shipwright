@@ -4579,6 +4579,10 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
             Flags_SetRandomizerInf(RAND_INF_GREG_FOUND);
             gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_FOUND_GREG] = static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
             break;
+        case RG_TREASURE_GAME_HEART:
+            Flags_SetRandomizerInf(RAND_INF_WINNER_FOUND);
+            gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_FOUND_WINNER] = static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
+            break;
         case RG_TRIFORCE_PIECE:
             gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected++;
             GameInteractor_SetTriforceHuntPieceGiven(true);

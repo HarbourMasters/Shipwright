@@ -447,9 +447,9 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Faster Heavy Block Lift", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("FasterHeavyBlockLift"))
         .Options(CheckboxOptions().Tooltip("Speeds up lifting Silver Rocks and Obelisks."));
-    AddWidget(path, "Faster Shadow Ship", WIDGET_CVAR_CHECKBOX)
+    AddWidget(path, "Fasterer(TM) Shadow Ship", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("FasterShadowShip"))
-        .Options(CheckboxOptions().Tooltip("Speeds up ship in Shadow Temple."));
+        .Options(CheckboxOptions().Tooltip("Buckle up buttercup. This ship stops for NO-ONE!"));
     AddWidget(path, "Fast Chests", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("FastChests"))
         .Options(CheckboxOptions().Tooltip("Makes Link always kick the chest to open it, instead of doing the longer "

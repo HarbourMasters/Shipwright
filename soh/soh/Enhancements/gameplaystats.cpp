@@ -825,6 +825,7 @@ void SetupDisplayNames() {
     strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_GANON],         "Ganon Defeated:     ");
     strcpy(itemTimestampDisplayName[TIMESTAMP_BOSSRUSH_FINISH],      "Boss Rush Finished: ");
     strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_GREG],           "Greg Found:         ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_WINNER],         "WINNER Found:       ");
     strcpy(itemTimestampDisplayName[TIMESTAMP_TRIFORCE_COMPLETED],   "Triforce Completed: ");
     // clang-format on
 }
@@ -840,6 +841,9 @@ void SetupDisplayColors() {
             case TIMESTAMP_DEFEAT_PHANTOM_GANON:
             case TIMESTAMP_FOUND_GREG:
                 itemTimestampDisplayColor[i] = COLOR_GREEN;
+                break;
+            case TIMESTAMP_FOUND_WINNER:
+                itemTimestampDisplayColor[i] = COLOR_RED;
                 break;
             case ITEM_SONG_BOLERO:
             case ITEM_GORON_RUBY:

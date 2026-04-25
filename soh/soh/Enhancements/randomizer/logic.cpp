@@ -1626,6 +1626,7 @@ std::map<RandomizerGet, uint32_t> Logic::RandoGetToRandInf = {
     { RG_MASK_OF_TRUTH, RAND_INF_CHILD_TRADES_HAS_MASK_TRUTH },
     { RG_SKELETON_KEY, RAND_INF_HAS_SKELETON_KEY },
     { RG_GREG_RUPEE, RAND_INF_GREG_FOUND },
+    { RG_TREASURE_GAME_HEART, RAND_INF_WINNER_FOUND },
     { RG_SPEAK_DEKU, RAND_INF_CAN_SPEAK_DEKU },
     { RG_SPEAK_GERUDO, RAND_INF_CAN_SPEAK_GERUDO },
     { RG_SPEAK_GORON, RAND_INF_CAN_SPEAK_GORON },
@@ -2030,6 +2031,7 @@ void Logic::ApplyItemEffect(Item& item, bool state) {
                 case RG_GERUDO_MASK:
                 case RG_MASK_OF_TRUTH:
                 case RG_GREG_RUPEE:
+                case RG_TREASURE_GAME_HEART:
                 case RG_SPEAK_DEKU:
                 case RG_SPEAK_GERUDO:
                 case RG_SPEAK_GORON:

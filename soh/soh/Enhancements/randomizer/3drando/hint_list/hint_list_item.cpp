@@ -1936,10 +1936,10 @@ void StaticData::HintTable_Init_Item() {
                                                CustomMessage("a breakable branch", /*german*/"ein brüchiger Zweig", /*french*/"un bout de bois")});
                                                 // /*spanish*/un pequeño báculo
 
-    hintTextTable[RHT_TREASURE_GAME_HEART] = HintText(CustomMessage("a Piece of Heart", /*german*/"ein Herzteil", /*french*/"un Quart de Coeur"),
+    hintTextTable[RHT_TREASURE_GAME_HEART] = HintText(CustomMessage("a WINNER's Heart Piece", /*german*/"ein Herzteil", /*french*/"un Quart de Coeur"),
                                                       // /*spanish*/el amor de la victoria
                                                       {
-                                                      CustomMessage("something heart-shaped", /*german*/"etwas Herzförmiges", /*french*/"une chose en forme de coeur")
+                                                      CustomMessage("something winner-flavored", /*german*/"etwas Herzförmiges", /*french*/"une chose en forme de coeur")
                                                        // /*spanish*/algo con forma de corazón
                                                       }, {
                                                       CustomMessage("a victory valentine", /*german*/"ein siegreicher Valentin", /*french*/"un amour gagnant")});
