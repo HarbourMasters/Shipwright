@@ -20,10 +20,9 @@ static void EnSa_ResetAnimation(EnSa* enSa) {
         sAnimationStarted = true;
     }
 
-    if (sAnimationStarted &&
-        Animation_OnFrame(&enSa->skelAnime, enSa->skelAnime.endFrame)) {
-            EnSa_ChangeAnim(enSa, 4);
-            sAnimationStarted = false;
+    if (sAnimationStarted && Animation_OnFrame(&enSa->skelAnime, enSa->skelAnime.endFrame)) {
+        EnSa_ChangeAnim(enSa, 4);
+        sAnimationStarted = false;
     }
 }
 
