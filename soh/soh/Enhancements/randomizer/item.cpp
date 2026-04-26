@@ -52,6 +52,8 @@ void Item::ApplyEffect() const {
     auto logic = ctx->GetLogic();
     if (!logic->CalculatingAvailableChecks) {
         logic->ApplyItemEffect(StaticData::RetrieveItem(randomizerGet), true);
+    } else if (SplitSongs::IsProgressiveSong(randomizerGet)) {
+        SplitSongs::ApplyProgressiveEffectToLogicScratch(logic.get(), randomizerGet, true);
     } else if (SplitSongs::IsSongPart(randomizerGet)) {
         SplitSongs::ApplyPartEffectToLogicScratch(logic.get(), randomizerGet, true);
     }
@@ -63,6 +65,8 @@ void Item::UndoEffect() const {
     auto logic = ctx->GetLogic();
     if (!logic->CalculatingAvailableChecks) {
         logic->ApplyItemEffect(StaticData::RetrieveItem(randomizerGet), false);
+    } else if (SplitSongs::IsProgressiveSong(randomizerGet)) {
+        SplitSongs::ApplyProgressiveEffectToLogicScratch(logic.get(), randomizerGet, false);
     } else if (SplitSongs::IsSongPart(randomizerGet)) {
         SplitSongs::ApplyPartEffectToLogicScratch(logic.get(), randomizerGet, false);
     }
@@ -371,6 +375,20 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
             break;
         case RG_PROGRESSIVE_GORONSWORD: // todo progressive?
             actual = RG_BIGGORON_SWORD;
+            break;
+        case RG_PROGRESSIVE_ZELDAS_LULLABY:
+        case RG_PROGRESSIVE_EPONAS_SONG:
+        case RG_PROGRESSIVE_SARIAS_SONG:
+        case RG_PROGRESSIVE_SUNS_SONG:
+        case RG_PROGRESSIVE_SONG_OF_TIME:
+        case RG_PROGRESSIVE_SONG_OF_STORMS:
+        case RG_PROGRESSIVE_MINUET_OF_FOREST:
+        case RG_PROGRESSIVE_BOLERO_OF_FIRE:
+        case RG_PROGRESSIVE_SERENADE_OF_WATER:
+        case RG_PROGRESSIVE_REQUIEM_OF_SPIRIT:
+        case RG_PROGRESSIVE_NOCTURNE_OF_SHADOW:
+        case RG_PROGRESSIVE_PRELUDE_OF_LIGHT:
+            actual = SplitSongs::ResolveProgressiveSongStage(randomizerGet);
             break;
         case RG_PROGRESSIVE_BOMBCHU_BAG:
             if (OTRGlobals::Instance->gRandoContext->GetOption(RSK_BOMBCHU_BAG).Is(RO_BOMBCHU_BAG_SINGLE)) {

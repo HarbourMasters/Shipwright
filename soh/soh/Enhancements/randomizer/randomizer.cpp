@@ -296,6 +296,9 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerCheck(Randomizer
 }
 
 ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGet randoGet) {
+    if (Rando::SplitSongs::IsProgressiveSong(randoGet)) {
+        return Rando::SplitSongs::GetProgressiveSongObtainability(randoGet);
+    }
     if (Rando::SplitSongs::IsSongPart(randoGet)) {
         return Rando::SplitSongs::GetPartObtainability(randoGet);
     }
@@ -4640,6 +4643,10 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
 
     if (Rando::SplitSongs::IsSongPart(item)) {
         Rando::SplitSongs::OnItemReceived(item);
+        return Return_Item_Entry(giEntry, RG_NONE);
+    }
+    if (Rando::SplitSongs::IsProgressiveSong(item)) {
+        Rando::SplitSongs::OnProgressiveSongReceived(item);
         return Return_Item_Entry(giEntry, RG_NONE);
     }
 

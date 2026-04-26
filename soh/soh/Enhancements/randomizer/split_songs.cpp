@@ -32,18 +32,27 @@ static constexpr uint32_t kSplitSongPart2Flags[SPLIT_SONG_MAX] = {
 };
 
 static constexpr SplitSongDef kSplitSongs[SPLIT_SONG_MAX] = {
-    { SPLIT_SONG_ZELDAS_LULLABY, RG_ZELDAS_LULLABY_PART1, RG_ZELDAS_LULLABY_PART2, RG_ZELDAS_LULLABY },
-    { SPLIT_SONG_EPONAS_SONG, RG_EPONAS_SONG_PART1, RG_EPONAS_SONG_PART2, RG_EPONAS_SONG },
-    { SPLIT_SONG_SARIAS_SONG, RG_SARIAS_SONG_PART1, RG_SARIAS_SONG_PART2, RG_SARIAS_SONG },
-    { SPLIT_SONG_SUNS_SONG, RG_SUNS_SONG_PART1, RG_SUNS_SONG_PART2, RG_SUNS_SONG },
-    { SPLIT_SONG_SONG_OF_TIME, RG_SONG_OF_TIME_PART1, RG_SONG_OF_TIME_PART2, RG_SONG_OF_TIME },
-    { SPLIT_SONG_SONG_OF_STORMS, RG_SONG_OF_STORMS_PART1, RG_SONG_OF_STORMS_PART2, RG_SONG_OF_STORMS },
-    { SPLIT_SONG_MINUET_OF_FOREST, RG_MINUET_OF_FOREST_PART1, RG_MINUET_OF_FOREST_PART2, RG_MINUET_OF_FOREST },
-    { SPLIT_SONG_BOLERO_OF_FIRE, RG_BOLERO_OF_FIRE_PART1, RG_BOLERO_OF_FIRE_PART2, RG_BOLERO_OF_FIRE },
-    { SPLIT_SONG_SERENADE_OF_WATER, RG_SERENADE_OF_WATER_PART1, RG_SERENADE_OF_WATER_PART2, RG_SERENADE_OF_WATER },
-    { SPLIT_SONG_REQUIEM_OF_SPIRIT, RG_REQUIEM_OF_SPIRIT_PART1, RG_REQUIEM_OF_SPIRIT_PART2, RG_REQUIEM_OF_SPIRIT },
-    { SPLIT_SONG_NOCTURNE_OF_SHADOW, RG_NOCTURNE_OF_SHADOW_PART1, RG_NOCTURNE_OF_SHADOW_PART2, RG_NOCTURNE_OF_SHADOW },
-    { SPLIT_SONG_PRELUDE_OF_LIGHT, RG_PRELUDE_OF_LIGHT_PART1, RG_PRELUDE_OF_LIGHT_PART2, RG_PRELUDE_OF_LIGHT },
+    { SPLIT_SONG_ZELDAS_LULLABY, RG_PROGRESSIVE_ZELDAS_LULLABY, RG_ZELDAS_LULLABY_PART1, RG_ZELDAS_LULLABY_PART2,
+      RG_ZELDAS_LULLABY },
+    { SPLIT_SONG_EPONAS_SONG, RG_PROGRESSIVE_EPONAS_SONG, RG_EPONAS_SONG_PART1, RG_EPONAS_SONG_PART2, RG_EPONAS_SONG },
+    { SPLIT_SONG_SARIAS_SONG, RG_PROGRESSIVE_SARIAS_SONG, RG_SARIAS_SONG_PART1, RG_SARIAS_SONG_PART2, RG_SARIAS_SONG },
+    { SPLIT_SONG_SUNS_SONG, RG_PROGRESSIVE_SUNS_SONG, RG_SUNS_SONG_PART1, RG_SUNS_SONG_PART2, RG_SUNS_SONG },
+    { SPLIT_SONG_SONG_OF_TIME, RG_PROGRESSIVE_SONG_OF_TIME, RG_SONG_OF_TIME_PART1, RG_SONG_OF_TIME_PART2,
+      RG_SONG_OF_TIME },
+    { SPLIT_SONG_SONG_OF_STORMS, RG_PROGRESSIVE_SONG_OF_STORMS, RG_SONG_OF_STORMS_PART1, RG_SONG_OF_STORMS_PART2,
+      RG_SONG_OF_STORMS },
+    { SPLIT_SONG_MINUET_OF_FOREST, RG_PROGRESSIVE_MINUET_OF_FOREST, RG_MINUET_OF_FOREST_PART1,
+      RG_MINUET_OF_FOREST_PART2, RG_MINUET_OF_FOREST },
+    { SPLIT_SONG_BOLERO_OF_FIRE, RG_PROGRESSIVE_BOLERO_OF_FIRE, RG_BOLERO_OF_FIRE_PART1, RG_BOLERO_OF_FIRE_PART2,
+      RG_BOLERO_OF_FIRE },
+    { SPLIT_SONG_SERENADE_OF_WATER, RG_PROGRESSIVE_SERENADE_OF_WATER, RG_SERENADE_OF_WATER_PART1,
+      RG_SERENADE_OF_WATER_PART2, RG_SERENADE_OF_WATER },
+    { SPLIT_SONG_REQUIEM_OF_SPIRIT, RG_PROGRESSIVE_REQUIEM_OF_SPIRIT, RG_REQUIEM_OF_SPIRIT_PART1,
+      RG_REQUIEM_OF_SPIRIT_PART2, RG_REQUIEM_OF_SPIRIT },
+    { SPLIT_SONG_NOCTURNE_OF_SHADOW, RG_PROGRESSIVE_NOCTURNE_OF_SHADOW, RG_NOCTURNE_OF_SHADOW_PART1,
+      RG_NOCTURNE_OF_SHADOW_PART2, RG_NOCTURNE_OF_SHADOW },
+    { SPLIT_SONG_PRELUDE_OF_LIGHT, RG_PROGRESSIVE_PRELUDE_OF_LIGHT, RG_PRELUDE_OF_LIGHT_PART1,
+      RG_PRELUDE_OF_LIGHT_PART2, RG_PRELUDE_OF_LIGHT },
 };
 
 static bool IsValidSplitSongId(SplitSongId id) {
@@ -91,6 +100,15 @@ const SplitSongDef* SplitSongs::GetSongDefFromPart(RandomizerGet rg) {
     return nullptr;
 }
 
+const SplitSongDef* SplitSongs::GetSongDefFromProgressive(RandomizerGet rg) {
+    for (const auto& def : kSplitSongs) {
+        if (def.progressive == rg) {
+            return &def;
+        }
+    }
+    return nullptr;
+}
+
 const SplitSongDef* SplitSongs::GetSongDefFromFullSong(RandomizerGet fullSongRg) {
     for (const auto& def : kSplitSongs) {
         if (def.fullSong == fullSongRg) {
@@ -98,6 +116,10 @@ const SplitSongDef* SplitSongs::GetSongDefFromFullSong(RandomizerGet fullSongRg)
         }
     }
     return nullptr;
+}
+
+bool SplitSongs::IsProgressiveSong(RandomizerGet rg) {
+    return GetSongDefFromProgressive(rg) != nullptr;
 }
 
 static bool UsingLogicSimulationBuffer(Logic* logic) {
@@ -253,6 +275,19 @@ void SplitSongs::OnItemReceived(RandomizerGet rg) {
     TryCompleteSong(def->id);
 }
 
+void SplitSongs::OnProgressiveSongReceived(RandomizerGet rg) {
+    const SplitSongDef* def = GetSongDefFromProgressive(rg);
+    if (def == nullptr || HasFullSong(def->id)) {
+        return;
+    }
+    if (!HasPart1(def->id)) {
+        SetPart1(def->id, true);
+    } else if (!HasPart2(def->id)) {
+        SetPart2(def->id, true);
+    }
+    TryCompleteSong(def->id);
+}
+
 ItemObtainability SplitSongs::GetPartObtainability(RandomizerGet partRg) {
     const SplitSongDef* def = GetSongDefFromPart(partRg);
     if (def == nullptr) {
@@ -271,11 +306,19 @@ ItemObtainability SplitSongs::GetPartObtainability(RandomizerGet partRg) {
     return CAN_OBTAIN;
 }
 
+ItemObtainability SplitSongs::GetProgressiveSongObtainability(RandomizerGet progressiveRg) {
+    const SplitSongDef* def = GetSongDefFromProgressive(progressiveRg);
+    if (def == nullptr) {
+        return CAN_OBTAIN;
+    }
+    return HasBothParts(def->id) || HasFullSong(def->id) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN;
+}
+
 void SplitSongs::AppendShuffledSongPoolItems(std::vector<RandomizerGet>& pool, bool split) {
     for (const auto& def : kSplitSongs) {
         if (split) {
-            pool.push_back(def.part1);
-            pool.push_back(def.part2);
+            pool.push_back(def.progressive);
+            pool.push_back(def.progressive);
         } else {
             pool.push_back(def.fullSong);
         }
@@ -306,6 +349,47 @@ void SplitSongs::ApplyPartEffectToLogicScratch(Logic* logic, RandomizerGet rg, b
     }
     const uint32_t flag = (rg == def->part1) ? kSplitSongPart1Flags[def->id] : kSplitSongPart2Flags[def->id];
     logic->SetRandoInf(flag, state);
+}
+
+void SplitSongs::ApplyProgressiveEffectToLogicScratch(Logic* logic, RandomizerGet rg, bool state) {
+    if (!UsingLogicSimulationBuffer(logic)) {
+        return;
+    }
+    const SplitSongDef* def = GetSongDefFromProgressive(rg);
+    if (def == nullptr) {
+        return;
+    }
+
+    const uint32_t part1Flag = kSplitSongPart1Flags[def->id];
+    const uint32_t part2Flag = kSplitSongPart2Flags[def->id];
+    const bool hasPart1 = logic->CheckRandoInf(static_cast<RandomizerInf>(part1Flag));
+    const bool hasPart2 = logic->CheckRandoInf(static_cast<RandomizerInf>(part2Flag));
+
+    if (state) {
+        if (!hasPart1) {
+            logic->SetRandoInf(part1Flag, true);
+        } else if (!hasPart2) {
+            logic->SetRandoInf(part2Flag, true);
+        }
+    } else if (hasPart2) {
+        logic->SetRandoInf(part2Flag, false);
+    } else if (hasPart1) {
+        logic->SetRandoInf(part1Flag, false);
+    }
+}
+
+RandomizerGet SplitSongs::ResolveProgressiveSongStage(RandomizerGet rg) {
+    const SplitSongDef* def = GetSongDefFromProgressive(rg);
+    if (def == nullptr) {
+        return RG_NONE;
+    }
+    if (!HasPart1(def->id)) {
+        return def->part1;
+    }
+    if (!HasPart2(def->id)) {
+        return def->part2;
+    }
+    return def->fullSong;
 }
 
 } // namespace Rando

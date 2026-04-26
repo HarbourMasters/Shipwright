@@ -20,6 +20,11 @@
 namespace Rando {
 
 bool Logic::HasItem(RandomizerGet itemName) {
+    if (SplitSongs::IsProgressiveSong(itemName)) {
+        const SplitSongDef* def = SplitSongs::GetSongDefFromProgressive(itemName);
+        return def != nullptr && SplitSongs::HasBothParts(def->id);
+    }
+
     switch (itemName) {
         case RG_FAIRY_OCARINA:
             return CheckInventory(ITEM_OCARINA_FAIRY, false);
@@ -2134,6 +2139,10 @@ void Logic::ApplyItemEffect(Item& item, bool state) {
         case ITEMTYPE_DUNGEONREWARD:
         case ITEMTYPE_SONG: {
             RandomizerGet rg = item.GetRandomizerGet();
+            if (SplitSongs::IsProgressiveSong(rg)) {
+                SplitSongs::ApplyProgressiveEffectToLogicScratch(this, rg, state);
+                break;
+            }
             if (SplitSongs::IsSongPart(rg)) {
                 SplitSongs::ApplyPartEffectToLogicScratch(this, rg, state);
                 break;
