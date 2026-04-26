@@ -6,11 +6,11 @@ extern "C" {
 
 void BuildSkulltulaMessage(uint16_t* textId, bool* loadFromMessageTable) {
     CustomMessage msg =
-        CustomMessage("You got a %rGold Skulltula Token%w!&You've collected %r[[gsCount]]%w tokens&in total!",
-                      "Ein %rGoldenes Skulltula-Symbol%w!&Du hast nun insgesamt %r[[gsCount]]&%wGoldene "
-                      "Skulltula-Symbole&gesammelt!",
-                      "Vous obtenez un %rSymbole de&Skulltula d'or%w! Vous avez&collecté %r[[gsCount]]%w symboles en "
-                      "tout!",
+        CustomMessage("You got a %rGold Skulltula Token%w!&You've collected %r[[d]]%w |token|tokens|&in total!",
+                      "Ein %rGoldenes Skulltula-Symbol%w!&Du hast nun insgesamt %r[[d]]&%w|Goldenes "
+                      "Skulltula-Symbol|Goldene Skulltula-Symbole|&gesammelt!",
+                      "Vous obtenez un %rSymbole de&Skulltula d'or%w! Vous avez&collecté %r[[d]]%w |symbole|symboles| "
+                      "en tout!",
                       TEXTBOX_TYPE_BLUE);
     // The freeze text cannot be manually dismissed and must be auto-dismissed.
     // This is fine and even wanted when skull tokens are not shuffled, but when
@@ -25,7 +25,7 @@ void BuildSkulltulaMessage(uint16_t* textId, bool* loadFromMessageTable) {
         msg = msg + "\x0E\x3C";
     }
     int16_t gsCount = gSaveContext.inventory.gsTokens;
-    msg.Replace("[[gsCount]]", std::to_string(gsCount));
+    msg.InsertNumber(gsCount);
     msg.AutoFormat(ITEM_SKULL_TOKEN);
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
