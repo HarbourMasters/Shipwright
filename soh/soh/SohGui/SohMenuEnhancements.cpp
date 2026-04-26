@@ -628,6 +628,12 @@ void SohMenu::AddMenuEnhancements() {
         .Options(CheckboxOptions().Tooltip(
             "When Medallions are collected, the Medallion imprints around the Master Sword Pedestal in the Temple "
             "of Time will become colored-in."));
+    AddWidget(path, "Saria Gestures in Her House", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("SariaGestureFriendsForever"))
+        .RaceDisable(false)
+        .Options(CheckboxOptions().Tooltip(
+            "Saria has an unused animation that goes with her line, \"Saria and Link will be friends forever.\" "
+            "This line is spoken when talking to her in her house. This option enables that animation."));
 
     path.column = SECTION_COLUMN_2;
     AddWidget(path, "UI", WIDGET_SEPARATOR_TEXT);

@@ -926,6 +926,19 @@ typedef enum {
     VB_PLAY_HORSEBACK_ARCHERY,
 
     // #### `result`
+    // ##### In `func_80AF6448`
+    // ```c
+    // play->sceneNum == SCENE_KOKIRI_FOREST
+    // ```
+    // ##### Also in `func_80AF6448`
+    // ```c
+    // false
+    // ```
+    // #### `args`
+    // - None
+    VB_SARIA_GESTURE,
+
+    // #### `result`
     // ```c
     // true
     // ```
