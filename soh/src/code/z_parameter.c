@@ -980,11 +980,15 @@ void func_80083108(PlayState* play) {
                             gSaveContext.buttonStatus[BUTTON_STATUS_INDEX(i)] = BTN_ENABLED;
                         }
                     } else {
-                        if (gSaveContext.buttonStatus[BUTTON_STATUS_INDEX(i)] == BTN_ENABLED) {
-                            sp28 = 1;
-                        }
+                        if (GameInteractor_Should(VB_DISABLE_ROCS_FEATHER_WHILE_SWIMMING, true,
+                                                  gSaveContext.equips.buttonItems[i],
+                                                  &gSaveContext.buttonStatus[BUTTON_STATUS_INDEX(i)], &sp28)) {
+                            if (gSaveContext.buttonStatus[BUTTON_STATUS_INDEX(i)] == BTN_ENABLED) {
+                                sp28 = 1;
+                            }
 
-                        gSaveContext.buttonStatus[BUTTON_STATUS_INDEX(i)] = BTN_DISABLED;
+                            gSaveContext.buttonStatus[BUTTON_STATUS_INDEX(i)] = BTN_DISABLED;
+                        }
                     }
                 }
 

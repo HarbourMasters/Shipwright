@@ -1508,6 +1508,23 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             }
             break;
         }
+        case VB_DISABLE_ROCS_FEATHER_WHILE_SWIMMING: {
+            s32 item = va_arg(args, s32);
+            u8* buttonStatus = va_arg(args, u8*);
+            s16* statusChanged = va_arg(args, s16*);
+            if (RAND_GET_OPTION(RSK_ROCS_FEATHER) && item == ITEM_ROCS_FEATHER) {
+                Player* player = GET_PLAYER(gPlayState);
+                if (!(player->stateFlags2 & PLAYER_STATE2_UNDERWATER) &&
+                    !(player->stateFlags2 & PLAYER_STATE2_DIVING)) {
+                    *should = false;
+                    if (*buttonStatus == BTN_DISABLED) {
+                        *statusChanged = 1;
+                    }
+                    *buttonStatus = BTN_ENABLED;
+                }
+            }
+            break;
+        }
         case VB_SPAWN_LW_FADO: {
             if (!RAND_GET_OPTION(RSK_SHUFFLE_ADULT_TRADE)) {
                 break;
