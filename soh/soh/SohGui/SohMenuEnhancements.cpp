@@ -628,12 +628,6 @@ void SohMenu::AddMenuEnhancements() {
         .Options(CheckboxOptions().Tooltip(
             "When Medallions are collected, the Medallion imprints around the Master Sword Pedestal in the Temple "
             "of Time will become colored-in."));
-    AddWidget(path, "Saria Gestures in Her House", WIDGET_CVAR_CHECKBOX)
-        .CVar(CVAR_ENHANCEMENT("SariaGestureFriendsForever"))
-        .RaceDisable(false)
-        .Options(CheckboxOptions().Tooltip(
-            "Saria has an unused animation that goes with her line, \"Saria and Link will be friends forever.\" "
-            "This line is spoken when talking to her in her house. This option enables that animation."));
 
     path.column = SECTION_COLUMN_2;
     AddWidget(path, "UI", WIDGET_SEPARATOR_TEXT);
@@ -1190,6 +1184,11 @@ void SohMenu::AddMenuEnhancements() {
         .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip(
             "Restores an unfinished feature to pulsate the boss room icon when you are in the boss room."));
+    AddWidget(path, "Saria's Friends Forever Gesture", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("SariaGestureFriendsForever"))
+        .RaceDisable(false)
+        .Options(CheckboxOptions().Tooltip(
+            "Restores an unused animation of Saria when she says, \"Saria and Link will be friends forever.\""));
 
     AddWidget(path, "Glitch Restorations", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Fish while Hovering", WIDGET_CVAR_CHECKBOX)
