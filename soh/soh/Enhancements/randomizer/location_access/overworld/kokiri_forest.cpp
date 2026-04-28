@@ -89,7 +89,6 @@ void RegionTable_Init_KokiriForest() {
         LOCATION(RC_KF_HOUSE_OF_TWINS_ARROW_SIGN,             logic->CanRead()),
         LOCATION(RC_KF_SHOP_ARROW_SIGN,                       logic->CanRead()),
         LOCATION(RC_KF_SARIAS_HOUSE_ARROW_SIGN,               logic->CanRead()),
-        LOCATION(RC_KF_LOST_WOODS_ARROW_SIGN,                 logic->IsChild && logic->CanRead()),
         LOCATION(RC_KF_MIDOS_HOUSE_ARROW_SIGN,                logic->CanRead()),
         LOCATION(RC_KF_TRAINING_CENTER_ENTRANCE_ARROW_SIGN,   logic->IsChild && logic->CanRead()),
         LOCATION(RC_KF_INNER_TRAINING_CENTER_ARROW_SIGN,      logic->IsChild && logic->CanRead()),
@@ -117,6 +116,40 @@ void RegionTable_Init_KokiriForest() {
         ENTRANCE(RR_KF_OUTSIDE_LOST_WOODS, logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT) || (logic->IsAdult && (CanPlantBean(RR_KOKIRI_FOREST, RG_KOKIRI_FOREST_BEAN_SOUL) || ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS)))),
         ENTRANCE(RR_KF_RUPEE_ALCOVE,       logic->IsAdult && CanPlantBean(RR_KOKIRI_FOREST, RG_KOKIRI_FOREST_BEAN_SOUL)),
         ENTRANCE(RR_LW_BRIDGE_FROM_FOREST, logic->IsAdult || ctx->GetOption(RSK_FOREST).IsNot(RO_CLOSED_FOREST_ON) || logic->Get(LOGIC_DEKU_TREE_CLEAR)),
+    });
+
+    areaTable[RR_KF_OUTSIDE_LOST_WOODS] = Region("KF Outside Lost Woods", SCENE_KOKIRI_FOREST, {}, {
+        //Locations
+        LOCATION(RC_KF_BEAN_RUPEE_1,           logic->IsAdult && logic->CanUse(RG_BOOMERANG)),
+        LOCATION(RC_KF_BEAN_RUPEE_2,           logic->IsAdult && logic->CanUse(RG_BOOMERANG)),
+        LOCATION(RC_KF_BEAN_RUPEE_3,           logic->IsAdult && logic->CanUse(RG_BOOMERANG)),
+        LOCATION(RC_KF_BEAN_RUPEE_4,           logic->IsAdult && logic->CanUse(RG_BOOMERANG)),
+        LOCATION(RC_KF_BEAN_RUPEE_5,           logic->IsAdult && logic->CanUse(RG_BOOMERANG)),
+        LOCATION(RC_KF_BEAN_RUPEE_6,           logic->IsAdult && logic->CanUse(RG_BOOMERANG)),
+        LOCATION(RC_KF_BEAN_RED_RUPEE,         logic->IsAdult && logic->CanUse(RG_BOOMERANG)),
+        LOCATION(RC_KF_LOST_WOODS_ARROW_SIGN,  logic->IsChild && logic->CanRead()),
+        LOCATION(RC_KF_GOSSIP_STONE_FAIRY,     logic->CallGossipFairyExceptSuns()),
+        LOCATION(RC_KF_GOSSIP_STONE_FAIRY_BIG, logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION(RC_KF_GOSSIP_STONE,           true),
+    }, {
+        //Exits
+        ENTRANCE(RR_KOKIRI_FOREST,         true),
+        ENTRANCE(RR_THE_LOST_WOODS,        true),
+        ENTRANCE(RR_KF_RUPEE_ALCOVE,       logic->IsAdult && (CanPlantBean(RR_KOKIRI_FOREST, RG_KOKIRI_FOREST_BEAN_SOUL) || logic->CanUse(RG_HOVER_BOOTS))),
+        ENTRANCE(RR_KF_STORMS_GROTTO,      logic->CanOpenStormsGrotto()),
+    });
+
+    areaTable[RR_KF_RUPEE_ALCOVE] = Region("KF Alcove", SCENE_KOKIRI_FOREST, {}, {
+        //Locations
+        LOCATION(RC_KF_BEAN_RUPEE_1,   logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS)),
+        LOCATION(RC_KF_BEAN_RUPEE_2,   logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS)),
+        LOCATION(RC_KF_BEAN_RUPEE_3,   logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS)),
+        LOCATION(RC_KF_BEAN_RUPEE_4,   logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS)),
+        LOCATION(RC_KF_BEAN_RUPEE_5,   logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS)),
+        LOCATION(RC_KF_BEAN_RUPEE_6,   logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS)),
+        LOCATION(RC_KF_BEAN_RED_RUPEE, logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS)),
+    }, {
+        ENTRANCE(RR_KOKIRI_FOREST, true),
     });
 
     areaTable[RR_KF_BOULDER_LOOP] = Region("KF Boulder Loop", SCENE_KOKIRI_FOREST, {}, {
@@ -225,39 +258,6 @@ void RegionTable_Init_KokiriForest() {
         LOCATION(RC_KF_WONDER_SHOP, true),
     }, {
         //Exits
-        ENTRANCE(RR_KOKIRI_FOREST, true),
-    });
-
-    areaTable[RR_KF_OUTSIDE_LOST_WOODS] = Region("KF Outside Lost Woods", SCENE_KOKIRI_FOREST, {}, {
-        //Locations
-        LOCATION(RC_KF_BEAN_RUPEE_1,           logic->IsAdult && logic->CanUse(RG_BOOMERANG)),
-        LOCATION(RC_KF_BEAN_RUPEE_2,           logic->IsAdult && logic->CanUse(RG_BOOMERANG)),
-        LOCATION(RC_KF_BEAN_RUPEE_3,           logic->IsAdult && logic->CanUse(RG_BOOMERANG)),
-        LOCATION(RC_KF_BEAN_RUPEE_4,           logic->IsAdult && logic->CanUse(RG_BOOMERANG)),
-        LOCATION(RC_KF_BEAN_RUPEE_5,           logic->IsAdult && logic->CanUse(RG_BOOMERANG)),
-        LOCATION(RC_KF_BEAN_RUPEE_6,           logic->IsAdult && logic->CanUse(RG_BOOMERANG)),
-        LOCATION(RC_KF_BEAN_RED_RUPEE,         logic->IsAdult && logic->CanUse(RG_BOOMERANG)),
-        LOCATION(RC_KF_GOSSIP_STONE_FAIRY,     logic->CallGossipFairyExceptSuns()),
-        LOCATION(RC_KF_GOSSIP_STONE_FAIRY_BIG, logic->CanUse(RG_SONG_OF_STORMS)),
-        LOCATION(RC_KF_GOSSIP_STONE,           true),
-    }, {
-        //Exits
-        ENTRANCE(RR_KOKIRI_FOREST,         true),
-        ENTRANCE(RR_THE_LOST_WOODS,        true),
-        ENTRANCE(RR_KF_RUPEE_ALCOVE,       logic->IsAdult && (CanPlantBean(RR_KOKIRI_FOREST, RG_KOKIRI_FOREST_BEAN_SOUL) || logic->CanUse(RG_HOVER_BOOTS))),
-        ENTRANCE(RR_KF_STORMS_GROTTO,      logic->CanOpenStormsGrotto()),
-    });
-
-    areaTable[RR_KF_RUPEE_ALCOVE] = Region("KF Alcove", SCENE_KOKIRI_FOREST, {}, {
-        //Locations
-        LOCATION(RC_KF_BEAN_RUPEE_1,   logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS)),
-        LOCATION(RC_KF_BEAN_RUPEE_2,   logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS)),
-        LOCATION(RC_KF_BEAN_RUPEE_3,   logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS)),
-        LOCATION(RC_KF_BEAN_RUPEE_4,   logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS)),
-        LOCATION(RC_KF_BEAN_RUPEE_5,   logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS)),
-        LOCATION(RC_KF_BEAN_RUPEE_6,   logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS)),
-        LOCATION(RC_KF_BEAN_RED_RUPEE, logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS)),
-    }, {
         ENTRANCE(RR_KOKIRI_FOREST, true),
     });
 
