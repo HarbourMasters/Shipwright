@@ -155,7 +155,6 @@ class Logic {
     static std::map<uint32_t, uint32_t> RandoGetToQuestItem;
     static std::map<uint32_t, uint32_t> RandoGetToDungeonScene;
     static std::map<RandomizerGet, uint32_t> RandoGetToEquipFlag;
-    static std::map<RandomizerGet, uint32_t> RandoGetToRandInf;
     bool IsReverseAccessPossible();
     bool DMCUpperToPots();
     bool DMCPotsToPad();

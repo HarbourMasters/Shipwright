@@ -93,6 +93,7 @@ class StaticData {
     static std::vector<RandomizerGet> normalBottles;
     static std::vector<RandomizerGet> beanSouls;
     static std::vector<RandomizerGet> overworldKeys;
+    static std::map<RandomizerGet, uint32_t> RandoGetToRandInf;
 
     StaticData();
     ~StaticData();

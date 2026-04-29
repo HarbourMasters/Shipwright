@@ -2249,7 +2249,7 @@ void StaticData::HintTable_Init_Exclude_Overworld() {
                                /*french*/ "Selon moi, un #arbre au Ranch Lon Lon# cache #[[1]]#.", { QM_RED, QM_GREEN }));
 
     hintTextTable[RHT_BUSH_HYRULE_FIELD] =
-        HintText(CustomMessage("They say that a #bush in Hyrle Field# contains #[[1]]#.",
+        HintText(CustomMessage("They say that a #bush in Hyrule Field# contains #[[1]]#.",
                                /*german*/ TODO_TRANSLATE,
                                /*french*/ "Selon moi, un #buisson dans la Plaine d'Hyrule# cache #[[1]]#.", { QM_RED, QM_GREEN }));
     hintTextTable[RHT_BUSH_ZORAS_FOUNTAIN] =

@@ -79,8 +79,6 @@ bool Logic::HasItem(RandomizerGet itemName) {
             return CheckEquipment(RandoGetToEquipFlag.at(itemName)) || Get(LOGIC_MEDIGORON);
         case RG_BIGGORON_SWORD:
             return CheckEquipment(RandoGetToEquipFlag.at(itemName)) && mSaveContext->bgsFlag;
-        case RG_POWER_BRACELET:
-            return CheckRandoInf(RAND_INF_CAN_GRAB);
         case RG_GORONS_BRACELET:
             return CurrentUpgrade(UPG_STRENGTH);
         case RG_SILVER_GAUNTLETS:
@@ -146,10 +144,27 @@ bool Logic::HasItem(RandomizerGet itemName) {
                     assert(false);
                     return false;
             }
+        case RG_POWER_BRACELET:
+        case RG_CHILD_WALLET:
         case RG_FISHING_POLE:
+        case RG_BRONZE_SCALE:
+        case RG_CLIMB:
+        case RG_CRAWL:
+        case RG_OPEN_CHEST:
         case RG_ZELDAS_LETTER:
         case RG_WEIRD_EGG:
         case RG_GREG_RUPEE:
+            // Adult Trade
+        case RG_COJIRO:
+        case RG_ODD_MUSHROOM:
+        case RG_ODD_POTION:
+        case RG_POACHERS_SAW:
+        case RG_BROKEN_SWORD:
+        case RG_PRESCRIPTION:
+        case RG_EYEBALL_FROG:
+        case RG_EYEDROPS:
+        case RG_CLAIM_CHECK:
+            // Jabber Nuts
         case RG_SPEAK_DEKU:
         case RG_SPEAK_GERUDO:
         case RG_SPEAK_GORON:
@@ -210,7 +225,7 @@ bool Logic::HasItem(RandomizerGet itemName) {
         case RG_HYLIA_LAB_KEY:
         case RG_FISHING_HOLE_KEY:
         case RG_RUTOS_LETTER:
-            return CheckRandoInf(RandoGetToRandInf.at(itemName));
+            return CheckRandoInf(StaticData::RandoGetToRandInf.at(itemName));
             // Boss Keys
         case RG_FOREST_TEMPLE_BOSS_KEY:
         case RG_FIRE_TEMPLE_BOSS_KEY:
@@ -244,8 +259,6 @@ bool Logic::HasItem(RandomizerGet itemName) {
         case RG_ICE_CAVERN_COMPASS:
             return CheckDungeonItem(DUNGEON_COMPASS, RandoGetToDungeonScene.at(itemName));
             // Wallets
-        case RG_CHILD_WALLET:
-            return CheckRandoInf(RAND_INF_HAS_WALLET);
         case RG_ADULT_WALLET:
             return CurrentUpgrade(UPG_WALLET) >= 1;
         case RG_GIANT_WALLET:
@@ -253,31 +266,13 @@ bool Logic::HasItem(RandomizerGet itemName) {
         case RG_TYCOON_WALLET:
             return CurrentUpgrade(UPG_WALLET) >= 3;
             // Scales
-        case RG_BRONZE_SCALE:
-            return CheckRandoInf(RAND_INF_CAN_SWIM);
         case RG_SILVER_SCALE:
             return CurrentUpgrade(UPG_SCALE) >= 1;
         case RG_GOLDEN_SCALE:
             return CurrentUpgrade(UPG_SCALE) >= 2;
-        case RG_CLIMB:
-            return CheckRandoInf(RAND_INF_CAN_CLIMB);
-        case RG_CRAWL:
-            return CheckRandoInf(RAND_INF_CAN_CRAWL);
-        case RG_OPEN_CHEST:
-            return CheckRandoInf(RAND_INF_CAN_OPEN_CHEST);
         case RG_POCKET_EGG:
             return CheckRandoInf(RAND_INF_ADULT_TRADES_HAS_POCKET_EGG) ||
                    CheckRandoInf(RAND_INF_ADULT_TRADES_HAS_POCKET_CUCCO);
-        case RG_COJIRO:
-        case RG_ODD_MUSHROOM:
-        case RG_ODD_POTION:
-        case RG_POACHERS_SAW:
-        case RG_BROKEN_SWORD:
-        case RG_PRESCRIPTION:
-        case RG_EYEBALL_FROG:
-        case RG_EYEDROPS:
-        case RG_CLAIM_CHECK:
-            return CheckRandoInf(itemName - RG_COJIRO + RAND_INF_ADULT_TRADES_HAS_COJIRO);
         case RG_BOTTLE_WITH_BIG_POE:
         case RG_BOTTLE_WITH_BLUE_FIRE:
         case RG_BOTTLE_WITH_BLUE_POTION:
@@ -1592,9 +1587,32 @@ std::map<RandomizerGet, uint32_t> Logic::RandoGetToEquipFlag = {
     { RG_HOVER_BOOTS, EQUIP_FLAG_BOOTS_HOVER }
 };
 
-std::map<RandomizerGet, uint32_t> Logic::RandoGetToRandInf = {
+std::map<RandomizerGet, uint32_t> StaticData::RandoGetToRandInf = {
+    { RG_BRONZE_SCALE, RAND_INF_CAN_SWIM },
+    { RG_POWER_BRACELET, RAND_INF_CAN_GRAB },
     { RG_ZELDAS_LETTER, RAND_INF_ZELDAS_LETTER },
+    { RG_CLIMB, RAND_INF_CAN_CLIMB },
+    { RG_CRAWL, RAND_INF_CAN_CRAWL },
+    { RG_OPEN_CHEST, RAND_INF_CAN_OPEN_CHEST },
+    { RG_CHILD_WALLET, RAND_INF_HAS_WALLET },
+    { RG_QUIVER_INF, RAND_INF_HAS_INFINITE_QUIVER },
+    { RG_BOMB_BAG_INF, RAND_INF_HAS_INFINITE_BOMB_BAG },
+    { RG_BULLET_BAG_INF, RAND_INF_HAS_INFINITE_BULLET_BAG },
+    { RG_STICK_UPGRADE_INF, RAND_INF_HAS_INFINITE_STICK_UPGRADE },
+    { RG_NUT_UPGRADE_INF, RAND_INF_HAS_INFINITE_NUT_UPGRADE },
+    { RG_MAGIC_INF, RAND_INF_HAS_INFINITE_MAGIC_METER },
+    { RG_BOMBCHU_INF, RAND_INF_HAS_INFINITE_BOMBCHUS },
+    { RG_WALLET_INF, RAND_INF_HAS_INFINITE_MONEY },
     { RG_WEIRD_EGG, RAND_INF_WEIRD_EGG },
+    { RG_COJIRO, RAND_INF_ADULT_TRADES_HAS_COJIRO },
+    { RG_ODD_MUSHROOM, RAND_INF_ADULT_TRADES_HAS_ODD_MUSHROOM },
+    { RG_ODD_POTION, RAND_INF_ADULT_TRADES_HAS_ODD_POTION },
+    { RG_POACHERS_SAW, RAND_INF_ADULT_TRADES_HAS_SAW },
+    { RG_BROKEN_SWORD, RAND_INF_ADULT_TRADES_HAS_SWORD_BROKEN },
+    { RG_PRESCRIPTION, RAND_INF_ADULT_TRADES_HAS_PRESCRIPTION },
+    { RG_EYEBALL_FROG, RAND_INF_ADULT_TRADES_HAS_FROG },
+    { RG_EYEDROPS, RAND_INF_ADULT_TRADES_HAS_EYEDROPS },
+    { RG_CLAIM_CHECK, RAND_INF_ADULT_TRADES_HAS_CLAIM_CHECK },
     { RG_RUTOS_LETTER, RAND_INF_OBTAINED_RUTOS_LETTER },
     { RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL, RAND_INF_DEATH_MOUNTAIN_CRATER_BEAN_SOUL },
     { RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL, RAND_INF_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL },
@@ -2065,7 +2083,7 @@ void Logic::ApplyItemEffect(Item& item, bool state) {
                 case RG_BACK_TOWER_KEY:
                 case RG_HYLIA_LAB_KEY:
                 case RG_FISHING_HOLE_KEY:
-                    SetRandoInf(RandoGetToRandInf.at(randoGet), state);
+                    SetRandoInf(StaticData::RandoGetToRandInf.at(randoGet), state);
                     break;
                 case RG_TRIFORCE_PIECE:
                     mSaveContext->ship.quest.data.randomizer.triforcePiecesCollected += (!state ? -1 : 1);

@@ -326,7 +326,7 @@ extern GraphicsContext* __gfxCtx;
 #define SHADOW_TEMPLE_SMALL_KEY_MAX (ResourceMgr_IsSceneMasterQuest(SCENE_SHADOW_TEMPLE) ? 6 : 5)
 #define BOTTOM_OF_THE_WELL_SMALL_KEY_MAX (ResourceMgr_IsSceneMasterQuest(SCENE_BOTTOM_OF_THE_WELL) ? 2 : 3)
 #define GERUDO_TRAINING_GROUND_SMALL_KEY_MAX (ResourceMgr_IsSceneMasterQuest(SCENE_GERUDO_TRAINING_GROUND) ? 3 : 9)
-#define GERUDO_FORTRESS_SMALL_KEY_MAX 4
+#define GERUDO_FORTRESS_SMALL_KEY_MAX (OTRGlobals::Instance->gRandoContext->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FAST) ? 1 : OTRGlobals::Instance->gRandoContext->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) ? 0 : 4)
 #define GANONS_CASTLE_SMALL_KEY_MAX (ResourceMgr_IsSceneMasterQuest(SCENE_INSIDE_GANONS_CASTLE) ? 3 : 2)
 #define TREASURE_GAME_SMALL_KEY_MAX 6
 
