@@ -2388,7 +2388,7 @@ const std::vector<uint8_t>& GetDungeonSmallKeyDoors(const SceneID sceneId) {
     static const std::unordered_map<SceneID, SmallKeyDoorSets> dungeonSmallKeyDoors{
         { SCENE_FOREST_TEMPLE, { { 0, 1, 2, 3, 4 }, { 0, 1, 2, 3, 4, 6 } } },
         { SCENE_FIRE_TEMPLE, { { 23, 24, 25, 26, 27, 29, 30, 31 }, { 23, 24, 26, 27, 30 } } },
-        { SCENE_WATER_TEMPLE, { { 1, 2, 5, 6, 9, 21 }, { 4, 21 } } },
+        { SCENE_WATER_TEMPLE, { { 1, 2, 5, 6, 9 }, { 4, 21 } } },
         { SCENE_SPIRIT_TEMPLE, { { 13, 21, 27, 28, 30 }, { 1, 3, 18, 21, 27, 28, 30 } } },
         { SCENE_SHADOW_TEMPLE, { { 21, 22, 23, 24, 25 }, { 21, 22, 23, 24, 25, 27 } } },
         { SCENE_BOTTOM_OF_THE_WELL, { { 27, 28, 29 }, { 20, 21 } } },
