@@ -18,6 +18,8 @@ enum class GlitchType {
     EquipSwap,
 };
 
+const std::vector<uint8_t>& GetDungeonSmallKeyDoors(const SceneID sceneId);
+
 class Logic {
   public:
     uint8_t Bottles = 0;

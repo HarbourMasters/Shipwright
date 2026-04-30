@@ -2376,88 +2376,51 @@ void Logic::SetQuestItem(uint32_t item, bool state) {
     }
 }
 
-const std::vector<uint8_t>& GetThievesHideoutSmallKeyDoors() {
-    // Retrieved from scenes/shared/gerudoway_scene/gerudoway_room_%d
-    // SOH::SceneCommandID::SetActorList, actor.id == ACTOR_DOOR_GERUDO, actor.params & 0x3F
+// Get the swch bit positions for the dungeon
+const std::vector<uint8_t>& GetDungeonSmallKeyDoors(const SceneID sceneId) {
+    static const std::vector<uint8_t> emptyVector;
+
     static const std::vector<uint8_t> normalSmallKeyDoors{ 1, 2, 3, 4 };
     static const std::vector<uint8_t> fastSmallKeyDoors{ 1 };
     static const std::vector<uint8_t> freeSmallKeyDoors{};
 
-    if (RAND_GET_OPTION(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_NORMAL)) {
-        return normalSmallKeyDoors;
-    } else if (RAND_GET_OPTION(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FAST)) {
-        return fastSmallKeyDoors;
-    }
-    return freeSmallKeyDoors;
-}
+    using SmallKeyDoorSets = std::pair<std::vector<uint8_t>, std::vector<uint8_t>>; // first = vanilla, second = MQ
+    static const std::unordered_map<SceneID, SmallKeyDoorSets> dungeonSmallKeyDoors{
+        { SCENE_FOREST_TEMPLE, { { 0, 1, 2, 3, 4 }, { 0, 1, 2, 3, 4, 6 } } },
+        { SCENE_FIRE_TEMPLE, { { 23, 24, 25, 26, 27, 29, 30, 31 }, { 23, 24, 26, 27, 30 } } },
+        { SCENE_WATER_TEMPLE, { { 1, 2, 5, 6, 9, 21 }, { 4, 21 } } },
+        { SCENE_SPIRIT_TEMPLE, { { 13, 21, 27, 28, 30 }, { 1, 3, 18, 21, 27, 28, 30 } } },
+        { SCENE_SHADOW_TEMPLE, { { 21, 22, 23, 24, 25 }, { 21, 22, 23, 24, 25, 27 } } },
+        { SCENE_BOTTOM_OF_THE_WELL, { { 27, 28, 29 }, { 20, 21 } } },
+        { SCENE_GERUDO_TRAINING_GROUND, { { 1, 3, 4, 5, 6, 7, 9, 10, 23 }, { 20, 23, 29 } } },
+        { SCENE_INSIDE_GANONS_CASTLE, { { 29, 30 }, { 20, 21, 22 } } },
+    };
 
-// Get the swch bit positions for the dungeon
-const std::vector<uint8_t>& GetDungeonSmallKeyDoors(SceneID sceneId) {
-    static const std::vector<uint8_t> emptyVector;
+    if (sceneId == SCENE_THIEVES_HIDEOUT) {
+        if (RAND_GET_OPTION(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_NORMAL)) {
+            return normalSmallKeyDoors;
+        }
+        if (RAND_GET_OPTION(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FAST)) {
+            return fastSmallKeyDoors;
+        }
+        return freeSmallKeyDoors;
+    }
 
     auto dungeonInfo = Rando::Context::GetInstance()->GetDungeons()->GetDungeonFromScene(sceneId);
     if (dungeonInfo == nullptr) {
         return emptyVector;
     }
 
-    bool masterQuest = dungeonInfo->IsMQ();
-
-    // Create a unique key for the dungeon and master quest
-    uint8_t key = sceneId | (masterQuest << 7);
-
-    static std::unordered_map<uint8_t, std::vector<uint8_t>> dungeonSmallKeyDoors;
-    auto foundEntry = dungeonSmallKeyDoors.find(key);
-    if (foundEntry != dungeonSmallKeyDoors.end()) {
-        return foundEntry->second;
-    }
-    dungeonSmallKeyDoors[key] = {};
-
-    // Get the scene path
-    SceneTableEntry* sceneTableEntry = &gSceneTable[sceneId];
-    std::string scenePath =
-        StringHelper::Sprintf("scenes/%s/%s/%s", masterQuest ? "mq" : "nonmq", sceneTableEntry->sceneFile.fileName,
-                              sceneTableEntry->sceneFile.fileName);
-
-    // Load the scene
-    std::shared_ptr<SOH::Scene> scene = std::dynamic_pointer_cast<SOH::Scene>(
-        Ship::Context::GetInstance()->GetResourceManager()->LoadResource(scenePath));
-    if (scene == nullptr) {
+    auto it = dungeonSmallKeyDoors.find(sceneId);
+    if (it == dungeonSmallKeyDoors.end()) {
         return emptyVector;
     }
 
-    // Find the SetTransitionActorList command
-    std::shared_ptr<SOH::SetTransitionActorList> transitionActorListCommand = nullptr;
-    for (auto& command : scene->commands) {
-        if (command->cmdId == SOH::SceneCommandID::SetTransitionActorList) {
-            transitionActorListCommand = std::dynamic_pointer_cast<SOH::SetTransitionActorList>(command);
-            break;
-        }
-    }
-    if (transitionActorListCommand == nullptr) {
-        return emptyVector;
-    }
-
-    // Find the bit position for the small key doors
-    for (auto& transitionActor : transitionActorListCommand->transitionActorList) {
-        if (transitionActor.id == ACTOR_EN_DOOR) {
-            uint8_t doorType = (transitionActor.params >> 7) & 7;
-            if (doorType == DOOR_LOCKED) {
-                dungeonSmallKeyDoors[key].emplace_back(transitionActor.params & 0x3F);
-            }
-        } else if (transitionActor.id == ACTOR_DOOR_SHUTTER) {
-            uint8_t doorType = (transitionActor.params >> 6) & 15;
-            if (doorType == SHUTTER_KEY_LOCKED) {
-                dungeonSmallKeyDoors[key].emplace_back(transitionActor.params & 0x3F);
-            }
-        }
-    }
-
-    return dungeonSmallKeyDoors[key];
+    return dungeonInfo->IsMQ() ? it->second.second : it->second.first;
 }
 
 int8_t Logic::GetUsedSmallKeyCount(SceneID sceneId) {
-    const auto& smallKeyDoors =
-        (sceneId == SCENE_THIEVES_HIDEOUT) ? GetThievesHideoutSmallKeyDoors() : GetDungeonSmallKeyDoors(sceneId);
+    const auto& smallKeyDoors = GetDungeonSmallKeyDoors(sceneId);
 
     // Get the swch value for the scene
     uint32_t swch;
