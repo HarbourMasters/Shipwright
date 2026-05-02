@@ -1371,6 +1371,14 @@ typedef enum {
     // ```
     // #### `args`
     // - None
+    VB_HOT_ROOM_DISTORTION,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
     VB_KALEIDO_UNPAUSE_CLOSE,
 
     // #### `result`

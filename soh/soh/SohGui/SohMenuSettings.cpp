@@ -251,6 +251,10 @@ void SohMenu::AddMenuSettings() {
         .CVar(CVAR_SETTING("A11yNoJabuWobble"))
         .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip("Disable the geometry wobble and camera distortion inside Jabu."));
+    AddWidget(path, "Disable Heat Haze", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_SETTING("A11yNoHeatHaze"))
+        .RaceDisable(false)
+        .Options(CheckboxOptions().Tooltip("Disable the heat haze distortion effect in Death Mountain / Fire Temple."));
     AddWidget(path, "EXPERIMENTAL", WIDGET_SEPARATOR_TEXT).Options(TextOptions().Color(Colors::Orange));
     AddWidget(path, "ImGui Menu Scaling", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_SETTING("ImGuiScale"))
