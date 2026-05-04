@@ -1,4 +1,5 @@
 #include "debugSaveEditor.h"
+#include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "soh/util.h"
 #include "soh/SohGui/ImGuiUtils.h"
 #include "soh/OTRGlobals.h"
@@ -1204,7 +1205,9 @@ void DrawUpgrade(const std::string& categoryName, int32_t categoryId, const std:
     ImGui::PushID(categoryName.c_str());
     PushStyleCombobox(THEME_COLOR);
     ImGui::AlignTextToFramePadding();
-    if (ImGui::BeginCombo("##upgrade", names[CUR_UPG_VALUE(categoryId)].c_str())) {
+    auto value = (size_t)CUR_UPG_VALUE(categoryId);
+    auto name = value < names.size() ? names[value].c_str() : "Glitched";
+    if (ImGui::BeginCombo("##upgrade", name)) {
         for (size_t i = 0; i < names.size(); i++) {
             if (ImGui::Selectable(names[i].c_str())) {
                 Inventory_ChangeUpgrade(categoryId, i);
@@ -1225,7 +1228,8 @@ void DrawUpgradeIcon(const std::string& categoryName, int32_t categoryId, const 
     ImGui::PushID(categoryName.c_str());
 
     PushStyleButton(Colors::DarkGray);
-    uint8_t item = items[CUR_UPG_VALUE(categoryId)];
+    auto value = (size_t)CUR_UPG_VALUE(categoryId);
+    uint8_t item = value < items.size() ? items[value] : ITEM_NONE;
     if (item != ITEM_NONE) {
         const ItemMapEntry& slotEntry = itemMapping[item];
         if (ImGui::ImageButton(slotEntry.name.c_str(),
@@ -1389,6 +1393,39 @@ void DrawEquipmentTab() {
         "40",
     };
     DrawUpgrade("Deku Nut Capacity", UPG_NUTS, nutNames);
+
+    if (IS_RANDO &&
+        OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_BOMBCHU_BAG) == RO_BOMBCHU_BAG_PROGRESSIVE) {
+        const std::vector<std::string> bombchuNames = {
+            "None",
+            "20",
+            "30",
+            "50",
+        };
+        ImGui::Text("%s", "Bombchu Bag Capacity");
+        ImGui::SameLine();
+        ImGui::PushID("Bombchu Bag Capacity");
+        PushStyleCombobox(THEME_COLOR);
+        ImGui::AlignTextToFramePadding();
+        auto value = gSaveContext.ship.quest.data.randomizer.bombchuUpgradeLevel;
+        auto name = value < bombchuNames.size() ? bombchuNames[value].c_str() : "Glitched";
+        if (ImGui::BeginCombo("##upgrade", name)) {
+            for (size_t i = 0; i < bombchuNames.size(); i++) {
+                if (ImGui::Selectable(bombchuNames[i].c_str())) {
+                    gSaveContext.ship.quest.data.randomizer.bombchuUpgradeLevel = i;
+                    if (i > 0) {
+                        INV_CONTENT(ITEM_BOMBCHU) = ITEM_BOMBCHU;
+                    } else {
+                        INV_CONTENT(ITEM_BOMBCHU) = ITEM_NONE;
+                    }
+                }
+            }
+            ImGui::EndCombo();
+        }
+        PopStyleCombobox();
+        ImGui::PopID();
+        UIWidgets::Tooltip("Bombchu Bag Capapcity");
+    }
 }
 
 // Draws a toggleable icon for a quest item that is faded when disabled

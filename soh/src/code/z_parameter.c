@@ -4,9 +4,7 @@
 #include "textures/do_action_static/do_action_static.h"
 #include "textures/icon_item_static/icon_item_static.h"
 #include "soh_assets.h"
-#include "soh/Enhancements/randomizer/randomizer_entrance.h"
 
-#include "libultraship/bridge.h"
 #include "soh/Enhancements/gameplaystats.h"
 #include "soh/Enhancements/custom-message/CustomMessageInterfaceAddon.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
@@ -1713,7 +1711,9 @@ void Interface_InitHorsebackArchery(PlayState* play) {
     gSaveContext.minigameState = 1;
     interfaceCtx->unk_23C = interfaceCtx->unk_240 = interfaceCtx->unk_242 = 0;
     gSaveContext.minigameScore = sHBAScoreTier = 0;
-    interfaceCtx->hbaAmmo = 20;
+    if (GameInteractor_Should(VB_SET_HORSEBACK_ARCHERY_AMMO, true, interfaceCtx)) {
+        interfaceCtx->hbaAmmo = 20;
+    }
 }
 
 void func_800849EC(PlayState* play) {
@@ -1912,7 +1912,7 @@ u8 Item_Give(PlayState* play, u8 item) {
         osSyncPrintf(VT_RST);
 
         if (item == ITEM_MEDALLION_WATER) {
-            func_8006D0AC(play);
+            Horse_FixLakeHyliaPosition(play);
         }
 
         return Return_Item(item, MOD_NONE, ITEM_NONE);
@@ -5339,15 +5339,17 @@ void Interface_Draw(PlayState* play) {
                                 interfaceCtx->counterDigits[3] -= 10;
                             }
 
+                            svar3 = 16;
                             if (interfaceCtx->counterDigits[2] != 0) {
                                 OVERLAY_DISP = Gfx_TextureI8(
                                     OVERLAY_DISP, ((u8*)((u8*)digitTextures[interfaceCtx->counterDigits[2]])), 8, 16,
-                                    PosX_SKC + 8, PosY_SKC, 8, 16, 1 << 10, 1 << 10);
+                                    PosX_SKC + 16, PosY_SKC, 8, 16, 1 << 10, 1 << 10);
+                                svar3 = 24;
                             }
 
                             OVERLAY_DISP =
                                 Gfx_TextureI8(OVERLAY_DISP, ((u8*)digitTextures[interfaceCtx->counterDigits[3]]), 8, 16,
-                                              PosX_SKC + 16, PosY_SKC, 8, 16, 1 << 10, 1 << 10);
+                                              PosX_SKC + svar3, PosY_SKC, 8, 16, 1 << 10, 1 << 10);
                         }
                         break;
                     default:

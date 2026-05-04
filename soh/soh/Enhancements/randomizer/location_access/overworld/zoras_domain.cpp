@@ -27,7 +27,6 @@ void RegionTable_Init_ZorasDomain() {
         LOCATION(RC_ZD_FISH_5,                              logic->IsChild && logic->HasBottle()),
         LOCATION(RC_ZD_GOSSIP_STONE_FAIRY,                  logic->CallGossipFairyExceptSuns()),
         LOCATION(RC_ZD_GOSSIP_STONE_FAIRY_BIG,              logic->CanUse(RG_SONG_OF_STORMS)),
-        LOCATION(RC_ZD_GOSSIP_STONE,                        true),
         LOCATION(RC_ZD_IN_FRONT_OF_KING_ZORA_BEEHIVE_LEFT,  logic->IsChild && logic->CanBreakUpperBeehives()),
         LOCATION(RC_ZD_IN_FRONT_OF_KING_ZORA_BEEHIVE_RIGHT, logic->IsChild && logic->CanBreakUpperBeehives()),
         LOCATION(RC_ZD_NEAR_SHOP_POT_1,                     logic->CanBreakPots()),
@@ -35,6 +34,22 @@ void RegionTable_Init_ZorasDomain() {
         LOCATION(RC_ZD_NEAR_SHOP_POT_3,                     logic->CanBreakPots()),
         LOCATION(RC_ZD_NEAR_SHOP_POT_4,                     logic->CanBreakPots()),
         LOCATION(RC_ZD_NEAR_SHOP_POT_5,                     logic->CanBreakPots()),
+        LOCATION(RC_ZD_CIRCLE_ROCK_1,                       logic->CanBreakRocks()),
+        LOCATION(RC_ZD_CIRCLE_ROCK_2,                       logic->CanBreakRocks()),
+        LOCATION(RC_ZD_CIRCLE_ROCK_3,                       logic->CanBreakRocks()),
+        LOCATION(RC_ZD_CIRCLE_ROCK_4,                       logic->CanBreakRocks()),
+        LOCATION(RC_ZD_CIRCLE_ROCK_5,                       logic->CanBreakRocks()),
+        LOCATION(RC_ZD_CIRCLE_ROCK_6,                       logic->CanBreakRocks()),
+        LOCATION(RC_ZD_CIRCLE_ROCK_7,                       logic->CanBreakRocks()),
+        LOCATION(RC_ZD_CIRCLE_ROCK_8,                       logic->CanBreakRocks()),
+        LOCATION(RC_ZD_SHOP_RECTANGLE_SIGN,                 logic->CanRead()),
+        LOCATION(RC_ZD_ENTRANCE_RECTANGLE_SIGN,             logic->CanRead()),
+        LOCATION(RC_ZD_KING_ZORA_PATH_ARROW_SIGN,           logic->CanRead()),
+        LOCATION(RC_ZD_NEAR_KING_ZORA_RECTANGLE_SIGN,       logic->CanRead()),
+        LOCATION(RC_ZD_NEAR_KING_ZORA_ARROW_SIGN,           logic->CanRead()),
+        LOCATION(RC_ZD_KING_ZORA_RED_ICE,                   logic->IsAdult && logic->Get(LOGIC_KING_ZORA_THAWED)),
+        LOCATION(RC_ZD_ZORA_SHOP_RED_ICE,                   logic->IsAdult && logic->BlueFire()),
+        LOCATION(RC_ZD_GOSSIP_STONE,                        true),
     }, {
         //Exits
         ENTRANCE(RR_ZR_BEHIND_WATERFALL, true),
@@ -56,6 +71,7 @@ void RegionTable_Init_ZorasDomain() {
     }, {
         //Locations
         LOCATION(RC_ZD_BEHIND_KING_ZORA_BEEHIVE, logic->IsChild && logic->CanBreakUpperBeehives()),
+        LOCATION(RC_ZD_KING_ZORA_RED_ICE,        logic->IsAdult && logic->Get(LOGIC_KING_ZORA_THAWED)),
     }, {
         //Exits
         ENTRANCE(RR_ZORAS_DOMAIN,   logic->Get(LOGIC_DELIVER_RUTOS_LETTER) || ctx->GetOption(RSK_ZORAS_FOUNTAIN).Is(RO_ZF_OPEN) || (ctx->GetOption(RSK_ZORAS_FOUNTAIN).Is(RO_ZF_CLOSED_CHILD) && logic->IsAdult)),

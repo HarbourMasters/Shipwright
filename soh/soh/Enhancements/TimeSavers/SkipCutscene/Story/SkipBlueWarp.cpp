@@ -140,6 +140,7 @@ void RegisterShouldPlayBlueWarp() {
                        gSaveContext.chamberCutsceneNum == CHAMBER_CS_WATER) {
                 // Normally set in the blue warp cutscene
                 gSaveContext.dayTime = gSaveContext.skyboxTime = 0x4800;
+                gSaveContext.nightFlag = 0;
                 Flags_SetEventChkInf(EVENTCHKINF_RAISED_LAKE_HYLIA_WATER);
 
                 gSaveContext.entranceIndex = ENTR_LAKE_HYLIA_WATER_TEMPLE_BLUE_WARP;
@@ -160,6 +161,7 @@ void RegisterShouldPlayBlueWarp() {
                 if (gSaveContext.entranceIndex != ENTR_LAKE_HYLIA_WATER_TEMPLE_BLUE_WARP) {
                     // Normally set in the blue warp cutscene
                     gSaveContext.dayTime = gSaveContext.skyboxTime = 0x8000;
+                    gSaveContext.nightFlag = 0;
                 }
 
                 *should = false;

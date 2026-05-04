@@ -491,7 +491,7 @@ void func_80031A28(PlayState* play, ActorContext* actorCtx);
 void func_80031B14(PlayState* play, ActorContext* actorCtx);
 void func_80031C3C(ActorContext* actorCtx, PlayState* play);
 Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 posX, f32 posY, f32 posZ,
-                   s16 rotX, s16 rotY, s16 rotZ, s16 params, s16 canRandomize);
+                   s16 rotX, s16 rotY, s16 rotZ, s16 params);
 Actor* Actor_SpawnAsChild(ActorContext* actorCtx, Actor* parent, PlayState* play, s16 actorId, f32 posX,
                           f32 posY, f32 posZ, s16 rotX, s16 rotY, s16 rotZ, s16 params);
 void Actor_SpawnTransitionActors(PlayState* play, ActorContext* actorCtx);
@@ -890,13 +890,13 @@ void SkelCurve_SetAnim(SkelAnimeCurve* skelCurve, TransformUpdateIndex* transUpd
 s32 SkelCurve_Update(PlayState* play, SkelAnimeCurve* skelCurve);
 void SkelCurve_Draw(Actor* actor, PlayState* play, SkelAnimeCurve* skelCurve,
                     OverrideCurveLimbDraw overrideLimbDraw, PostCurveLimbDraw postLimbDraw, s32 lod, void* data);
-s32 func_8006CFC0(s32 scene);
-void func_8006D074(PlayState* play);
-void func_8006D0AC(PlayState* play);
-void func_8006D0EC(PlayState* play, Player* player);
-void func_8006D684(PlayState* play, Player* player);
-void func_8006DC68(PlayState* play, Player* player);
-void func_8006DD9C(Actor* actor, Vec3f* arg1, s16 arg2);
+s32 Horse_CanSpawn(s32 scene);
+void Horse_ResetHorseData(PlayState* play);
+void Horse_FixLakeHyliaPosition(PlayState* play);
+void Horse_SetupInGameplay(PlayState* play, Player* player);
+void Horse_SetupInCutscene(PlayState* play, Player* player);
+void Horse_InitPlayerHorse(PlayState* play, Player* player);
+void Horse_RotateToPoint(Actor* actor, Vec3f* arg1, s16 arg2);
 s32 Jpeg_Decode(void* data, void* zbuffer, void* workBuff, u32 workSize);
 void KaleidoSetup_Update(PlayState* play);
 void KaleidoSetup_Init(PlayState* play);

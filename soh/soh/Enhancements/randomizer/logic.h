@@ -45,7 +45,7 @@ class Logic {
     bool CanOpenOverworldDoor(RandomizerGet itemName);
     bool SmallKeys(s16 scene, uint8_t requiredAmount);
     bool CanGroundJump(bool hasBombflower = false);
-    bool CanGroundJumpJumpSlash(bool hasBombflower = false);
+    bool CanGroundJumpslash(bool hasBombflower = false);
     bool CanMiddairGroundJump(bool hasBombflower = false);
     bool CanOpenUnderwaterChest();
     bool CanDoGlitch(GlitchType glitch);
@@ -104,7 +104,9 @@ class Logic {
     bool CanBreakPots(EnemyDistance distance = ED_CLOSE, bool wallOrFloor = true, bool inWater = false);
     bool CanBreakCrates();
     bool CanBreakSmallCrates();
+    bool CanBreakRocks();
     bool CanBonkTrees();
+    bool CanRead();
     bool HasFireSource();
     bool HasFireSourceWithTorch();
     bool SunlightArrows();

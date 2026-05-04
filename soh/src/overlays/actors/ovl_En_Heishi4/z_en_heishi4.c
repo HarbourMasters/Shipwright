@@ -268,7 +268,7 @@ void func_80A56900(EnHeishi4* this, PlayState* play) {
 
 void func_80A56994(EnHeishi4* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
-    func_80038290(play, &this->actor, &this->unk_260, &this->unk_266, this->actor.focus.pos);
+    func_80038290(play, &this->actor, &this->headRot, &this->torsoRot, this->actor.focus.pos);
     if ((this->unk_282 == Message_GetState(&play->msgCtx)) && Message_ShouldAdvance(play)) {
         Message_CloseTextbox(play);
         Flags_SetInfTable(INFTABLE_6C);
@@ -393,8 +393,8 @@ void EnHeishi4_Update(Actor* thisx, PlayState* play) {
             this->interactInfo.trackPos.y = player->actor.world.pos.y - 10.0f;
         }
         Npc_TrackPoint(thisx, &this->interactInfo, 2, NPC_TRACKING_FULL_BODY);
-        this->unk_260 = this->interactInfo.headRot;
-        this->unk_266 = this->interactInfo.torsoRot;
+        this->headRot = this->interactInfo.headRot;
+        this->torsoRot = this->interactInfo.torsoRot;
     }
     this->unk_27E += 1;
     this->actionFunc(this, play);
@@ -408,11 +408,11 @@ s32 EnHeishi_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f
     EnHeishi4* this = (EnHeishi4*)thisx;
 
     if (limbIndex == 9) {
-        rot->x += this->unk_266.y;
+        rot->x += this->torsoRot.y;
     }
     if (limbIndex == 16) {
-        rot->x += this->unk_260.y;
-        rot->z += this->unk_260.z;
+        rot->x += this->headRot.y;
+        rot->z += this->headRot.z;
     }
     return false;
 }

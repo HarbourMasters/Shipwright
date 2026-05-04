@@ -6,7 +6,7 @@
 #include <string>
 #include <libultraship/libultraship.h>
 #include <functions.h>
-#include "../randomizer/3drando/random.hpp"
+#include "soh/ShipUtils.h"
 #include "soh/OTRGlobals.h"
 #include "soh/cvar_prefixes.h"
 #include <ship/utils/StringHelper.h>
@@ -109,19 +109,22 @@ void UpdateCurrentBGM(u16 seqKey, SeqType seqType) {
     }
 }
 
-static uint64_t seeded_audio_state = 0;
-
 void RandomizeGroup(SeqType type, bool manual = true) {
     std::vector<u16> values;
 
+    uint64_t localRngState = 0;
+    uint64_t* shuffleState = nullptr;
+
     if (!manual) {
-        if (CVarGetInteger(CVAR_AUDIO("RandomizeAudioGenModes"), 0) == RANDOMIZE_ON_FILE_LOAD_SEEDED ||
-            CVarGetInteger(CVAR_AUDIO("RandomizeAudioGenModes"), 0) == RANDOMIZE_ON_RANDO_GEN_ONLY) {
+        int randomizeMode = CVarGetInteger(CVAR_AUDIO("RandomizeAudioGenModes"), 0);
+        if (randomizeMode == RANDOMIZE_ON_FILE_LOAD_SEEDED || randomizeMode == RANDOMIZE_ON_RANDO_GEN_ONLY) {
 
             uint32_t finalSeed = type + (IS_RANDO ? Rando::Context::GetInstance()->GetSeed()
                                                   : static_cast<uint32_t>(gSaveContext.ship.stats.fileCreatedAt));
-            ShipUtils::RandInit(finalSeed, &seeded_audio_state);
+            ShipUtils::RandInit(finalSeed, &localRngState);
+            shuffleState = &localRngState;
         }
+        // For RANDOMIZE_ON_NEW_SCENE, shuffleState remains nullptr, which uses the global RNG
     }
 
     // An empty IncludedSequences set means that the AudioEditor window has never been drawn
@@ -141,7 +144,7 @@ void RandomizeGroup(SeqType type, bool manual = true) {
         if (!values.size())
             return;
     }
-    ShipUtils::Shuffle(values, &seeded_audio_state);
+    ShipUtils::Shuffle(values, shuffleState);
     for (const auto& [seqId, seqData] : AudioCollection::Instance->GetAllSequences()) {
         const std::string cvarKey = AudioCollection::Instance->GetCvarKey(seqData.sfxKey);
         const std::string cvarLockKey = AudioCollection::Instance->GetCvarLockKey(seqData.sfxKey);

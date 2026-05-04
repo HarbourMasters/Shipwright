@@ -81,7 +81,7 @@ void func_80AE744C(EnRl* this, PlayState* play) {
     Actor_UpdateBgCheckInfo(play, &this->actor, 75.0f, 30.0f, 30.0f, 5);
 }
 
-s32 func_80AE7494(EnRl* this) {
+s32 EnRl_UpdateSkelAnime(EnRl* this) {
     return SkelAnime_Update(&this->skelAnime);
 }
 
@@ -126,7 +126,7 @@ void func_80AE7590(EnRl* this, PlayState* play) {
         pos.x = player->actor.world.pos.x;
         pos.y = player->actor.world.pos.y + 80.0f;
         pos.z = player->actor.world.pos.z;
-        Actor_Spawn(&play->actorCtx, play, ACTOR_DEMO_EFFECT, pos.x, pos.y, pos.z, 0, 0, 0, 0xE, true);
+        Actor_Spawn(&play->actorCtx, play, ACTOR_DEMO_EFFECT, pos.x, pos.y, pos.z, 0, 0, 0, 0xE);
         if (GameInteractor_Should(VB_GIVE_ITEM_LIGHT_MEDALLION, true)) {
             Item_Give(play, ITEM_MEDALLION_LIGHT);
         }
@@ -169,7 +169,7 @@ void func_80AE7798(EnRl* this, PlayState* play) {
 
 void func_80AE77B8(EnRl* this, PlayState* play) {
     func_80AE744C(this, play);
-    func_80AE7494(this);
+    EnRl_UpdateSkelAnime(this);
     func_80AE72D0(this);
     func_80AE7698(this, play);
 }
@@ -178,14 +178,14 @@ void func_80AE77F8(EnRl* this, PlayState* play) {
     s32 temp;
 
     func_80AE744C(this, play);
-    temp = func_80AE7494(this);
+    temp = EnRl_UpdateSkelAnime(this);
     func_80AE72D0(this);
     func_80AE772C(this, temp);
 }
 
 void func_80AE7838(EnRl* this, PlayState* play) {
     func_80AE744C(this, play);
-    func_80AE7494(this);
+    EnRl_UpdateSkelAnime(this);
     func_80AE72D0(this);
     func_80AE7590(this, play);
 }
@@ -274,7 +274,7 @@ void func_80AE7C64(EnRl* this, PlayState* play) {
 
 void func_80AE7C94(EnRl* this, PlayState* play) {
     func_80AE744C(this, play);
-    func_80AE7494(this);
+    EnRl_UpdateSkelAnime(this);
     func_80AE72D0(this);
     func_80AE79A4(this, play);
     func_80AE73D8(this, play);
@@ -284,7 +284,7 @@ void func_80AE7CE8(EnRl* this, PlayState* play) {
     s32 temp;
 
     func_80AE744C(this, play);
-    temp = func_80AE7494(this);
+    temp = EnRl_UpdateSkelAnime(this);
     func_80AE72D0(this);
     func_80AE7BF8(this, temp);
     func_80AE73D8(this, play);
@@ -292,7 +292,7 @@ void func_80AE7CE8(EnRl* this, PlayState* play) {
 
 void func_80AE7D40(EnRl* this, PlayState* play) {
     func_80AE744C(this, play);
-    func_80AE7494(this);
+    EnRl_UpdateSkelAnime(this);
     func_80AE72D0(this);
     func_80AE7AF8(this, play);
     func_80AE73D8(this, play);

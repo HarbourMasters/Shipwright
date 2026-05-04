@@ -15,17 +15,17 @@ void EnCow_Init(Actor* thisx, PlayState* play);
 void EnCow_Destroy(Actor* thisx, PlayState* play);
 void EnCow_Update(Actor* thisx, PlayState* play);
 void EnCow_Draw(Actor* thisx, PlayState* play);
-void func_809DFE98(Actor* thisx, PlayState* play);
-void func_809E0070(Actor* thisx, PlayState* play);
+void EnCow_UpdateTail(Actor* thisx, PlayState* play);
+void EnCow_DrawTail(Actor* thisx, PlayState* play);
 
-void func_809DF494(EnCow* this, PlayState* play);
-void func_809DF6BC(EnCow* this, PlayState* play);
-void func_809DF778(EnCow* this, PlayState* play);
-void func_809DF7D8(EnCow* this, PlayState* play);
-void func_809DF870(EnCow* this, PlayState* play);
-void func_809DF8FC(EnCow* this, PlayState* play);
-void func_809DF96C(EnCow* this, PlayState* play);
-void func_809DFA84(EnCow* this, PlayState* play);
+void EnCow_UpdateAnimation(EnCow* this, PlayState* play);
+void EnCow_TalkEnd(EnCow* this, PlayState* play);
+void EnCow_GiveMilkWait(EnCow* this, PlayState* play);
+void EnCow_GiveMilk(EnCow* this, PlayState* play);
+void EnCow_CheckForEmptyBottle(EnCow* this, PlayState* play);
+void EnCow_Talk(EnCow* this, PlayState* play);
+void EnCow_Idle(EnCow* this, PlayState* play);
+void EnCow_IdleTail(EnCow* this, PlayState* play);
 
 const ActorInit En_Cow_InitVars = {
     ACTOR_EN_COW,
@@ -62,7 +62,7 @@ static ColliderCylinderInit sCylinderInit = {
 
 static Vec3f D_809E010C = { 0.0f, -1300.0f, 1100.0f };
 
-void func_809DEE00(Vec3f* vec, s16 rotY) {
+void EnCow_RotateY(Vec3f* vec, s16 rotY) {
     f32 xCalc;
     f32 rotCalcTemp;
 
@@ -73,13 +73,13 @@ void func_809DEE00(Vec3f* vec, s16 rotY) {
     vec->x = xCalc;
 }
 
-void func_809DEE9C(EnCow* this) {
+void EnCow_SetColliderPos(EnCow* this) {
     Vec3f vec;
 
     vec.y = 0.0f;
     vec.x = 0.0f;
     vec.z = 30.0f;
-    func_809DEE00(&vec, this->actor.shape.rot.y);
+    EnCow_RotateY(&vec, this->actor.shape.rot.y);
     this->colliders[0].dim.pos.x = this->actor.world.pos.x + vec.x;
     this->colliders[0].dim.pos.y = this->actor.world.pos.y;
     this->colliders[0].dim.pos.z = this->actor.world.pos.z + vec.z;
@@ -87,18 +87,18 @@ void func_809DEE9C(EnCow* this) {
     vec.x = 0.0f;
     vec.y = 0.0f;
     vec.z = -20.0f;
-    func_809DEE00(&vec, this->actor.shape.rot.y);
+    EnCow_RotateY(&vec, this->actor.shape.rot.y);
     this->colliders[1].dim.pos.x = this->actor.world.pos.x + vec.x;
     this->colliders[1].dim.pos.y = this->actor.world.pos.y;
     this->colliders[1].dim.pos.z = this->actor.world.pos.z + vec.z;
 }
 
-void func_809DEF94(EnCow* this) {
+void EnCow_SetTailPos(EnCow* this) {
     Vec3f vec;
 
     VEC_SET(vec, 0.0f, 57.0f, -36.0f);
 
-    func_809DEE00(&vec, this->actor.shape.rot.y);
+    EnCow_RotateY(&vec, this->actor.shape.rot.y);
     this->actor.world.pos.x += vec.x;
     this->actor.world.pos.y += vec.y;
     this->actor.world.pos.z += vec.z;
@@ -117,8 +117,8 @@ void EnCow_Init(Actor* thisx, PlayState* play) {
             Collider_SetCylinder(play, &this->colliders[0], &this->actor, &sCylinderInit);
             Collider_InitCylinder(play, &this->colliders[1]);
             Collider_SetCylinder(play, &this->colliders[1], &this->actor, &sCylinderInit);
-            func_809DEE9C(this);
-            this->actionFunc = func_809DF96C;
+            EnCow_SetColliderPos(this);
+            this->actionFunc = EnCow_Idle;
             if (GameInteractor_Should(VB_DESPAWN_HORSE_RACE_COW,
                                       (play->sceneNum == SCENE_LINKS_HOUSE &&
                                        (!LINK_IS_ADULT || !Flags_GetEventChkInf(EVENTCHKINF_WON_COW_IN_MALONS_RACE))),
@@ -129,25 +129,25 @@ void EnCow_Init(Actor* thisx, PlayState* play) {
 
             Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_COW, this->actor.world.pos.x,
                                this->actor.world.pos.y, this->actor.world.pos.z, 0, this->actor.shape.rot.y, 0, 1);
-            this->unk_278 = Rand_ZeroFloat(1000.0f) + 40.0f;
-            this->unk_27A = 0;
+            this->animationTimer = Rand_ZeroFloat(1000.0f) + 40.0f;
+            this->breathTimer = 0;
             this->actor.targetMode = 6;
             DREG(53) = 0;
             break;
         case 1:
             SkelAnime_InitFlex(play, &this->skelAnime, &gCowTailSkel, NULL, this->jointTable, this->morphTable, 6);
             Animation_PlayLoop(&this->skelAnime, &gCowTailIdleAnim);
-            this->actor.update = func_809DFE98;
-            this->actor.draw = func_809E0070;
-            this->actionFunc = func_809DFA84;
-            func_809DEF94(this);
+            this->actor.update = EnCow_UpdateTail;
+            this->actor.draw = EnCow_DrawTail;
+            this->actionFunc = EnCow_IdleTail;
+            EnCow_SetTailPos(this);
             this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
-            this->unk_278 = ((u32)(Rand_ZeroFloat(1000.0f)) & 0xFFFF) + 40.0f;
+            this->animationTimer = ((u32)(Rand_ZeroFloat(1000.0f)) & 0xFFFF) + 40.0f;
             break;
     }
     this->actor.colChkInfo.mass = MASS_IMMOVABLE;
     Actor_SetScale(&this->actor, 0.01f);
-    this->unk_276 = 0;
+    this->cowFlags = 0;
 }
 
 void EnCow_Destroy(Actor* thisx, PlayState* play) {
@@ -161,109 +161,109 @@ void EnCow_Destroy(Actor* thisx, PlayState* play) {
     ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
-void func_809DF494(EnCow* this, PlayState* play) {
-    if (this->unk_278 > 0) {
-        this->unk_278 -= 1;
+void EnCow_UpdateAnimation(EnCow* this, PlayState* play) {
+    if (this->animationTimer > 0) {
+        this->animationTimer -= 1;
     } else {
-        this->unk_278 = Rand_ZeroFloat(500.0f) + 40.0f;
+        this->animationTimer = Rand_ZeroFloat(500.0f) + 40.0f;
         Animation_Change(&this->skelAnime, &gCowBodyChewAnim, 1.0f, this->skelAnime.curFrame,
                          Animation_GetLastFrame(&gCowBodyChewAnim), ANIMMODE_ONCE, 1.0f);
     }
 
-    if ((this->actor.xzDistToPlayer < 150.0f) && (!(this->unk_276 & 2))) {
-        this->unk_276 |= 2;
+    if ((this->actor.xzDistToPlayer < 150.0f) && (!(this->cowFlags & 2))) {
+        this->cowFlags |= 2;
         if (this->skelAnime.animation == &gCowBodyChewAnim) {
-            this->unk_278 = 0;
+            this->animationTimer = 0;
         }
     }
 
-    this->unk_27A += 1;
-    if (this->unk_27A >= 0x31) {
-        this->unk_27A = 0;
+    this->breathTimer += 1;
+    if (this->breathTimer >= 0x31) {
+        this->breathTimer = 0;
     }
 
     // (1.0f / 100.0f) instead of 0.01f below is necessary so 0.01f doesn't get reused mistakenly
-    if (this->unk_27A < 0x20) {
-        this->actor.scale.x = ((Math_SinS(this->unk_27A << 0xA) * (1.0f / 100.0f)) + 1.0f) * 0.01f;
+    if (this->breathTimer < 0x20) {
+        this->actor.scale.x = ((Math_SinS(this->breathTimer << 0xA) * (1.0f / 100.0f)) + 1.0f) * 0.01f;
     } else {
         this->actor.scale.x = 0.01f;
     }
 
-    if (this->unk_27A >= 0x11) {
-        this->actor.scale.y = ((Math_SinS((this->unk_27A << 0xA) - 0x4000) * (1.0f / 100.0f)) + 1.0f) * 0.01f;
+    if (this->breathTimer >= 0x11) {
+        this->actor.scale.y = ((Math_SinS((this->breathTimer << 0xA) - 0x4000) * (1.0f / 100.0f)) + 1.0f) * 0.01f;
     } else {
         this->actor.scale.y = 0.01f;
     }
 }
 
-void func_809DF6BC(EnCow* this, PlayState* play) {
+void EnCow_TalkEnd(EnCow* this, PlayState* play) {
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(play)) {
         this->actor.flags &= ~ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
         Message_CloseTextbox(play);
-        this->actionFunc = func_809DF96C;
+        this->actionFunc = EnCow_Idle;
     }
 }
 
-void func_809DF730(EnCow* this, PlayState* play) {
+void EnCow_GiveMilkEnd(EnCow* this, PlayState* play) {
     if (Actor_TextboxIsClosing(&this->actor, play)) {
         this->actor.flags &= ~ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
-        this->actionFunc = func_809DF96C;
+        this->actionFunc = EnCow_Idle;
     }
 }
 
-void func_809DF778(EnCow* this, PlayState* play) {
+void EnCow_GiveMilkWait(EnCow* this, PlayState* play) {
     if (Actor_HasParent(&this->actor, play)) {
         this->actor.parent = NULL;
-        this->actionFunc = func_809DF730;
+        this->actionFunc = EnCow_GiveMilkEnd;
     } else {
         Actor_OfferGetItem(&this->actor, play, GI_MILK, 10000.0f, 100.0f);
     }
 }
 
-void func_809DF7D8(EnCow* this, PlayState* play) {
+void EnCow_GiveMilk(EnCow* this, PlayState* play) {
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(play)) {
         this->actor.flags &= ~ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
         Message_CloseTextbox(play);
-        this->actionFunc = func_809DF778;
+        this->actionFunc = EnCow_GiveMilkWait;
         Actor_OfferGetItem(&this->actor, play, GI_MILK, 10000.0f, 100.0f);
     }
 }
 
-void func_809DF870(EnCow* this, PlayState* play) {
+void EnCow_CheckForEmptyBottle(EnCow* this, PlayState* play) {
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(play)) {
         if (Inventory_HasEmptyBottle()) {
             Message_ContinueTextbox(play, 0x2007);
-            this->actionFunc = func_809DF7D8;
+            this->actionFunc = EnCow_GiveMilk;
         } else {
             Message_ContinueTextbox(play, 0x2013);
-            this->actionFunc = func_809DF6BC;
+            this->actionFunc = EnCow_TalkEnd;
         }
     }
 }
 
-void func_809DF8FC(EnCow* this, PlayState* play) {
+void EnCow_Talk(EnCow* this, PlayState* play) {
     if (Actor_ProcessTalkRequest(&this->actor, play)) {
-        this->actionFunc = func_809DF870;
+        this->actionFunc = EnCow_CheckForEmptyBottle;
     } else {
         this->actor.flags |= ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
         func_8002F2CC(&this->actor, play, 170.0f);
         this->actor.textId = 0x2006;
     }
-    func_809DF494(this, play);
+    EnCow_UpdateAnimation(this, play);
 }
 
-void func_809DF96C(EnCow* this, PlayState* play) {
+void EnCow_Idle(EnCow* this, PlayState* play) {
     if ((play->msgCtx.ocarinaMode == OCARINA_MODE_00) || (play->msgCtx.ocarinaMode == OCARINA_MODE_04)) {
         if (DREG(53) != 0) {
-            if (this->unk_276 & 4) {
-                this->unk_276 &= ~0x4;
+            if (this->cowFlags & 4) {
+                this->cowFlags &= ~0x4;
                 DREG(53) = 0;
             } else {
                 if ((this->actor.xzDistToPlayer < 150.0f) &&
                     (ABS((s16)(this->actor.yawTowardsPlayer - this->actor.shape.rot.y)) < 0x61A8)) {
                     DREG(53) = 0;
                     if (GameInteractor_Should(VB_GIVE_ITEM_FROM_COW, true, this)) {
-                        this->actionFunc = func_809DF8FC;
+                        this->actionFunc = EnCow_Talk;
                         this->actor.flags |= ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
                         func_8002F2CC(&this->actor, play, 170.0f);
                         this->actor.textId = 0x2006;
@@ -271,30 +271,30 @@ void func_809DF96C(EnCow* this, PlayState* play) {
                         return;
                     }
                 } else {
-                    this->unk_276 |= 4;
+                    this->cowFlags |= 4;
                 }
             }
         } else {
-            this->unk_276 &= ~0x4;
+            this->cowFlags &= ~0x4;
         }
     }
-    func_809DF494(this, play);
+    EnCow_UpdateAnimation(this, play);
 }
 
-void func_809DFA84(EnCow* this, PlayState* play) {
-    if (this->unk_278 > 0) {
-        this->unk_278--;
+void EnCow_IdleTail(EnCow* this, PlayState* play) {
+    if (this->animationTimer > 0) {
+        this->animationTimer--;
     } else {
-        this->unk_278 = Rand_ZeroFloat(200.0f) + 40.0f;
+        this->animationTimer = Rand_ZeroFloat(200.0f) + 40.0f;
         Animation_Change(&this->skelAnime, &gCowTailIdleAnim, 1.0f, this->skelAnime.curFrame,
                          Animation_GetLastFrame(&gCowTailIdleAnim), ANIMMODE_ONCE, 1.0f);
     }
 
     if ((this->actor.xzDistToPlayer < 150.0f) &&
-        (ABS((s16)(this->actor.yawTowardsPlayer - this->actor.shape.rot.y)) >= 0x61A9) && (!(this->unk_276 & 2))) {
-        this->unk_276 |= 2;
+        (ABS((s16)(this->actor.yawTowardsPlayer - this->actor.shape.rot.y)) >= 0x61A9) && (!(this->cowFlags & 2))) {
+        this->cowFlags |= 2;
         if (this->skelAnime.animation == &gCowTailIdleAnim) {
-            this->unk_278 = 0;
+            this->animationTimer = 0;
         }
     }
 }
@@ -346,7 +346,7 @@ void EnCow_Update(Actor* thisx, PlayState* play2) {
     Math_SmoothStepToS(&this->someRot.y, targetY, 0xA, 0xC8, 0xA);
 }
 
-void func_809DFE98(Actor* thisx, PlayState* play) {
+void EnCow_UpdateTail(Actor* thisx, PlayState* play) {
     EnCow* this = (EnCow*)thisx;
     s32 pad;
 
@@ -390,7 +390,7 @@ void EnCow_Draw(Actor* thisx, PlayState* play) {
     SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnCow_OverrideLimbDraw, EnCow_PostLimbDraw, this);
 }
 
-void func_809E0070(Actor* thisx, PlayState* play) {
+void EnCow_DrawTail(Actor* thisx, PlayState* play) {
     EnCow* this = (EnCow*)thisx;
 
     Gfx_SetupDL_37Opa(play->state.gfxCtx);

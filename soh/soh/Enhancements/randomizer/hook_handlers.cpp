@@ -13,6 +13,7 @@
 #include "soh/SaveManager.h"
 #include "soh/ShipInit.hpp"
 #include "soh/ObjectExtension/ObjectExtension.h"
+#include "item_category_adj.h"
 
 extern "C" {
 #include "macros.h"
@@ -54,7 +55,6 @@ extern "C" {
 #include "src/overlays/actors/ovl_Door_Gerudo/z_door_gerudo.h"
 #include "src/overlays/actors/ovl_En_Xc/z_en_xc.h"
 #include "src/overlays/actors/ovl_Fishing/z_fishing.h"
-#include "src/overlays/actors/ovl_En_Mk/z_en_mk.h"
 #include "src/overlays/actors/ovl_Obj_Bean/z_obj_bean.h"
 #include "src/overlays/actors/ovl_En_Heishi2/z_en_heishi2.h"
 #include "draw.h"
@@ -371,6 +371,7 @@ void RandomizerOnPlayerUpdateForRCQueueHandler() {
     GetItemID vanillaItem = (GetItemID)Rando::StaticData::RetrieveItem(vanillaRandomizerGet).GetItemID();
     GetItemEntry getItemEntry =
         Rando::Context::GetInstance()->GetFinalGIEntry(rc, true, (GetItemID)vanillaRandomizerGet);
+    GetItemCategory getItemCategory = Randomizer_AdjustItemCategory(getItemEntry);
 
     if (loc->HasObtained()) {
         SPDLOG_INFO("RC {} already obtained, skipping", static_cast<uint32_t>(rc));
@@ -394,13 +395,8 @@ void RandomizerOnPlayerUpdateForRCQueueHandler() {
                   // crude fix to ensure map hints are readable. Ideally replace with better hint tracking.
                   !(getItemEntry.getItemId >= RG_DEKU_TREE_MAP && getItemEntry.getItemId <= RG_ICE_CAVERN_MAP &&
                     getItemEntry.modIndex == MOD_RANDOMIZER) &&
-                  (getItemEntry.getItemCategory == ITEM_CATEGORY_JUNK ||
-                   getItemEntry.getItemCategory == ITEM_CATEGORY_SKULLTULA_TOKEN ||
-                   getItemEntry.getItemCategory == ITEM_CATEGORY_HEALTH ||
-                   getItemEntry.getItemCategory == ITEM_CATEGORY_LESSER ||
-                   // Treat small keys as junk if Skeleton Key is obtained.
-                   (getItemEntry.getItemCategory == ITEM_CATEGORY_SMALL_KEY &&
-                    Flags_GetRandomizerInf(RAND_INF_HAS_SKELETON_KEY))))))) {
+                  (getItemCategory == ITEM_CATEGORY_JUNK || getItemCategory == ITEM_CATEGORY_SKULLTULA_TOKEN ||
+                   getItemCategory == ITEM_CATEGORY_HEALTH || getItemCategory == ITEM_CATEGORY_LESSER))))) {
             Item_DropCollectible(gPlayState, &spawnPos, static_cast<int16_t>(ITEM00_SOH_GIVE_ITEM_ENTRY | 0x8000));
         }
     }
@@ -445,6 +441,54 @@ void RandomizerOnItemReceiveHandler(GetItemEntry receivedItemEntry) {
         SaveManager::Instance->SaveSection(gSaveContext.fileNum, SECTION_ID_TRACKER_DATA, true);
         randomizerQueuedCheck = RC_UNKNOWN_CHECK;
         randomizerQueuedItemEntry = GET_ITEM_NONE;
+    }
+
+    if (receivedItemEntry.modIndex == MOD_RANDOMIZER && receivedItemEntry.getItemId == RG_MAGIC_BEAN_PACK) {
+        if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SKIP_PLANTING_BEANS)) {
+            gSaveContext.sceneFlags[SCENE_DEATH_MOUNTAIN_CRATER].swch |= (1 << 3);
+            if (gPlayState->sceneNum == SCENE_DEATH_MOUNTAIN_CRATER) {
+                Flags_SetSwitch(gPlayState, 3);
+            }
+            gSaveContext.sceneFlags[SCENE_DEATH_MOUNTAIN_TRAIL].swch |= (1 << 6);
+            if (gPlayState->sceneNum == SCENE_DEATH_MOUNTAIN_TRAIL) {
+                Flags_SetSwitch(gPlayState, 6);
+            }
+            gSaveContext.sceneFlags[SCENE_DESERT_COLOSSUS].swch |= (1 << 24);
+            if (gPlayState->sceneNum == SCENE_DESERT_COLOSSUS) {
+                Flags_SetSwitch(gPlayState, 24);
+            }
+            gSaveContext.sceneFlags[SCENE_GERUDO_VALLEY].swch |= (1 << 3);
+            if (gPlayState->sceneNum == SCENE_GERUDO_VALLEY) {
+                Flags_SetSwitch(gPlayState, 3);
+            }
+            gSaveContext.sceneFlags[SCENE_GRAVEYARD].swch |= (1 << 3);
+            if (gPlayState->sceneNum == SCENE_GRAVEYARD) {
+                Flags_SetSwitch(gPlayState, 3);
+            }
+            gSaveContext.sceneFlags[SCENE_KOKIRI_FOREST].swch |= (1 << 9);
+            if (gPlayState->sceneNum == SCENE_KOKIRI_FOREST) {
+                Flags_SetSwitch(gPlayState, 9);
+            }
+            gSaveContext.sceneFlags[SCENE_LAKE_HYLIA].swch |= (1 << 1);
+            if (gPlayState->sceneNum == SCENE_LAKE_HYLIA) {
+                Flags_SetSwitch(gPlayState, 1);
+            }
+            gSaveContext.sceneFlags[SCENE_LOST_WOODS].swch |= (1 << 4) | (1 << 18);
+            if (gPlayState->sceneNum == SCENE_LOST_WOODS) {
+                Flags_SetSwitch(gPlayState, 4);
+                Flags_SetSwitch(gPlayState, 18);
+            }
+            gSaveContext.sceneFlags[SCENE_ZORAS_RIVER].swch |= (1 << 3);
+            if (gPlayState->sceneNum == SCENE_ZORAS_RIVER) {
+                Flags_SetSwitch(gPlayState, 3);
+            }
+            ObjBean* bean = (ObjBean*)Actor_Find(&gPlayState->actorCtx, ACTOR_OBJ_BEAN, ACTORCAT_BG);
+            if (bean != nullptr) {
+                Flags_SetSwitch(gPlayState, bean->dyna.actor.params & 0x3F);
+                func_80B8FE00(bean);
+            }
+            AMMO(ITEM_BEAN) = 0;
+        }
     }
 
     if (receivedItemEntry.modIndex == MOD_NONE &&
@@ -981,6 +1025,15 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
                           OTRGlobals::Instance->gRandoContext->GetItemLocation(RC_ZR_MAGIC_BEAN_SALESMAN)->GetPrice();
             } else if (RAND_GET_OPTION(RSK_SKIP_PLANTING_BEANS)) {
                 *should = gSaveContext.rupees >= 60;
+            } else if (BEANS_BOUGHT == 9) {
+                *should = gSaveContext.rupees >= 99;
+            }
+            break;
+        }
+        case VB_MAGIC_BEAN_SALESMAN_TAKE_MONEY: {
+            if (BEANS_BOUGHT == 9) {
+                Rupees_ChangeBy(-99);
+                *should = false;
             }
             break;
         }
@@ -1474,8 +1527,8 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             break;
         }
         case VB_OFFER_BLUE_POTION: {
-            // Always offer blue potion when adult trade is off
-            *should |= RAND_GET_OPTION(RSK_SHUFFLE_ADULT_TRADE).Is(RO_GENERIC_OFF);
+            *should |= RAND_GET_OPTION(RSK_SHUFFLE_ADULT_TRADE).Is(RO_GENERIC_OFF) &&
+                       INV_CONTENT(ITEM_CLAIM_CHECK) == ITEM_CLAIM_CHECK;
             break;
         }
         case VB_OKARINA_TAG_COMPLETE: {
@@ -1605,7 +1658,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             Flags_SetInfTable(INFTABLE_191);
             gSaveContext.dogParams = 0;
             gSaveContext.dogIsLost = false;
-            enHy->actionFunc = func_80A7127C;
+            enHy->actionFunc = EnHy_Fidget;
             *should = false;
             break;
         }
@@ -1721,12 +1774,6 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
         }
         case VB_RENDER_RUPEE_COUNTER: {
             if (!Flags_GetRandomizerInf(RAND_INF_HAS_WALLET) || Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_MONEY)) {
-                *should = false;
-            }
-            break;
-        }
-        case VB_REVERT_SPOILING_ITEMS: {
-            if (RAND_GET_OPTION(RSK_SHUFFLE_ADULT_TRADE)) {
                 *should = false;
             }
             break;
@@ -2222,7 +2269,7 @@ void RandomizerOnActorInitHandler(void* actorRef) {
         } else if (ge1Type == GE1_TYPE_GATE_OPERATOR && enGe1->actor.world.pos.x != -1358.0f) {
             // When spawning the gate operator, also spawn an extra gate operator on the wasteland side
             Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_GE1, -1358.0f, 88.0f, -3018.0f, 0, 0x95B0, 0,
-                        0x0300 | GE1_TYPE_GATE_OPERATOR, true);
+                        0x0300 | GE1_TYPE_GATE_OPERATOR);
         }
     }
 
@@ -2488,7 +2535,7 @@ void RandomizerOnActorUpdateHandler(void* refActor) {
         } else if (actor->id == ACTOR_DOOR_SHUTTER) {
             DoorShutter* shutterDoor = reinterpret_cast<DoorShutter*>(actor);
             if (shutterDoor->doorType == SHUTTER_KEY_LOCKED) {
-                shutterDoor->unk_16E = 0;
+                shutterDoor->unlockTimer = 0;
             }
         } else if (actor->id == ACTOR_DOOR_GERUDO) {
             DoorGerudo* gerudoDoor = reinterpret_cast<DoorGerudo*>(actor);
@@ -2521,7 +2568,7 @@ typedef struct {
 } SpecialRespawnInfo; // size = 0x10
 
 // special respawns used when voided out without swim to prevent infinite loops
-std::map<s32, SpecialRespawnInfo> swimSpecialRespawnInfo = {
+std::unordered_map<s32, SpecialRespawnInfo> swimSpecialRespawnInfo = {
     { ENTR_ZORAS_RIVER_3, // hf to zr in water
       { { -1455.443f, -20.0f, 1384.826f }, 28761 } },
     { ENTR_HYRULE_FIELD_14, // zr to hf in water
@@ -2558,12 +2605,15 @@ void RandomizerOnPlayerUpdateHandler() {
             GameInteractor::RawAction::TeleportPlayer(
                 Entrance_OverrideNextIndex(ENTR_LAKE_HYLIA_OUTSIDE_TEMPLE)); // lake hylia from water temple
         } else {
-            if (swimSpecialRespawnInfo.find(gSaveContext.entranceIndex) != swimSpecialRespawnInfo.end()) {
-                SpecialRespawnInfo* respawnInfo = &swimSpecialRespawnInfo.at(gSaveContext.entranceIndex);
-
+            auto respawn = swimSpecialRespawnInfo.find(gSaveContext.entranceIndex);
+            if (respawn != swimSpecialRespawnInfo.end()) {
                 Play_SetupRespawnPoint(gPlayState, RESPAWN_MODE_DOWN, 0xDFF);
-                gSaveContext.respawn[RESPAWN_MODE_DOWN].pos = respawnInfo->pos;
-                gSaveContext.respawn[RESPAWN_MODE_DOWN].yaw = respawnInfo->yaw;
+                if (gPlayState->sceneNum == gEntranceTable[gSaveContext.entranceIndex].scene) {
+                    gSaveContext.respawn[RESPAWN_MODE_DOWN].roomIndex =
+                        gPlayState->setupEntranceList[gEntranceTable[gSaveContext.entranceIndex].spawn].room;
+                }
+                gSaveContext.respawn[RESPAWN_MODE_DOWN].pos = respawn->second.pos;
+                gSaveContext.respawn[RESPAWN_MODE_DOWN].yaw = respawn->second.yaw;
             }
 
             Play_TriggerVoidOut(gPlayState);
@@ -2606,13 +2656,13 @@ void RandomizerOnSceneSpawnActorsHandler() {
             case SCENE_TEMPLE_OF_TIME:
                 if (gPlayState->roomCtx.curRoom.num == 1) {
                     Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_XC, -104, -40, 2382, 0,
-                                static_cast<int16_t>(0x8000), 0, SHEIK_TYPE_RANDO, false);
+                                static_cast<int16_t>(0x8000), 0, SHEIK_TYPE_RANDO);
                 }
                 break;
             case SCENE_INSIDE_GANONS_CASTLE:
                 if (gPlayState->roomCtx.curRoom.num == 1) {
                     Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_XC, 101, 150, 137, 0, 0, 0,
-                                SHEIK_TYPE_RANDO, false);
+                                SHEIK_TYPE_RANDO);
                 }
                 break;
             default:
@@ -2678,6 +2728,13 @@ static void RandomizerRegisterHooks() {
     static uint32_t onExitGameHook = 0;
     static uint32_t onKaleidoUpdateHook = 0;
     static uint32_t onCuccoOrChickenHatchHook = 0;
+
+    // register this outside OnLoadGame as VB is invoked before OnLoadGame
+    COND_VB_SHOULD(VB_REVERT_SPOILING_ITEMS, true, {
+        if (IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_ADULT_TRADE)) {
+            *should = false;
+        }
+    });
 
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int32_t fileNum) {
         ShipInit::Init("IS_RANDO");

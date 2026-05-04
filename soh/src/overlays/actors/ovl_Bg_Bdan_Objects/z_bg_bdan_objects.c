@@ -14,22 +14,22 @@ void BgBdanObjects_Destroy(Actor* thisx, PlayState* play);
 void BgBdanObjects_Update(Actor* thisx, PlayState* play);
 void BgBdanObjects_Draw(Actor* thisx, PlayState* play);
 
-void func_8086C054(BgBdanObjects* this, PlayState* play);
-void func_8086C1A0(BgBdanObjects* this, PlayState* play);
-void func_8086C29C(BgBdanObjects* this, PlayState* play);
-void func_8086C55C(BgBdanObjects* this, PlayState* play);
-void func_8086C5BC(BgBdanObjects* this, PlayState* play);
-void func_8086C618(BgBdanObjects* this, PlayState* play);
-void func_8086C6EC(BgBdanObjects* this, PlayState* play);
-void func_8086C76C(BgBdanObjects* this, PlayState* play);
-void func_8086C7D0(BgBdanObjects* this, PlayState* play);
+void BgBdanObjects_OctoPlatform_WaitForRutoToStartCutscene(BgBdanObjects* this, PlayState* play);
+void BgBdanObjects_OctoPlatform_RaiseToUpperPosition(BgBdanObjects* this, PlayState* play);
+void BgBdanObjects_OctoPlatform_WaitForRutoToAdvanceCutscene(BgBdanObjects* this, PlayState* play);
+void BgBdanObjects_OctoPlatform_PauseBeforeDescending(BgBdanObjects* this, PlayState* play);
+void BgBdanObjects_OctoPlatform_WaitForBigOctoToStartBattle(BgBdanObjects* this, PlayState* play);
+void BgBdanObjects_OctoPlatform_BattleInProgress(BgBdanObjects* this, PlayState* play);
+void BgBdanObjects_SinkToFloorHeight(BgBdanObjects* this, PlayState* play);
+void BgBdanObjects_WaitForPlayerInRange(BgBdanObjects* this, PlayState* play);
+void BgBdanObjects_RaiseToUpperPosition(BgBdanObjects* this, PlayState* play);
 void BgBdanObjects_DoNothing(BgBdanObjects* this, PlayState* play);
-void func_8086C874(BgBdanObjects* this, PlayState* play);
-void func_8086C9A8(BgBdanObjects* this, PlayState* play);
-void func_8086C9F0(BgBdanObjects* this, PlayState* play);
-void func_8086CABC(BgBdanObjects* this, PlayState* play);
-void func_8086CB10(BgBdanObjects* this, PlayState* play);
-void func_8086CB8C(BgBdanObjects* this, PlayState* play);
+void BgBdanObjects_ElevatorOscillate(BgBdanObjects* this, PlayState* play);
+void BgBdanObjects_WaitForSwitch(BgBdanObjects* this, PlayState* play);
+void BgBdanObjects_ChangeWaterBoxLevel(BgBdanObjects* this, PlayState* play);
+void BgBdanObjects_WaitForTimerExpired(BgBdanObjects* this, PlayState* play);
+void BgBdanObjects_WaitForPlayerOnTop(BgBdanObjects* this, PlayState* play);
+void BgBdanObjects_FallToLowerPos(BgBdanObjects* this, PlayState* play);
 
 const ActorInit Bg_Bdan_Objects_InitVars = {
     ACTOR_BG_BDAN_OBJECTS,
@@ -117,7 +117,7 @@ void BgBdanObjects_Init(Actor* thisx, PlayState* play) {
     if (thisx->params == 2) {
         thisx->flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED;
         play->colCtx.colHeader->waterBoxes[7].ySurface = thisx->world.pos.y;
-        this->actionFunc = func_8086C9A8;
+        this->actionFunc = BgBdanObjects_WaitForSwitch;
         return;
     }
     if (thisx->params == 0) {
@@ -127,7 +127,7 @@ void BgBdanObjects_Init(Actor* thisx, PlayState* play) {
         thisx->world.pos.y += -79.0f;
         if (Flags_GetClear(play, thisx->room)) {
             Flags_SetSwitch(play, this->switchFlag);
-            this->actionFunc = func_8086C6EC;
+            this->actionFunc = BgBdanObjects_SinkToFloorHeight;
         } else {
             if (BgBdanObjects_GetContactRu1(this, 4)) {
                 if (Actor_SpawnAsChild(&play->actorCtx, &this->dyna.actor, play, ACTOR_EN_BIGOKUTA, thisx->home.pos.x,
@@ -136,12 +136,12 @@ void BgBdanObjects_Init(Actor* thisx, PlayState* play) {
                     thisx->child->world.pos.z = thisx->child->home.pos.z + 263.0f;
                 }
                 thisx->world.rot.y = 0;
-                this->actionFunc = func_8086C618;
+                this->actionFunc = BgBdanObjects_OctoPlatform_BattleInProgress;
                 thisx->world.pos.y = thisx->home.pos.y + -70.0f;
             } else {
                 Flags_SetSwitch(play, this->switchFlag);
                 this->timer = 0;
-                this->actionFunc = func_8086C054;
+                this->actionFunc = BgBdanObjects_OctoPlatform_WaitForRutoToStartCutscene;
             }
         }
     } else {
@@ -149,14 +149,14 @@ void BgBdanObjects_Init(Actor* thisx, PlayState* play) {
             CollisionHeader_GetVirtual(&gJabuElevatorCol, &colHeader);
             this->timer = 512;
             this->switchFlag = 0;
-            this->actionFunc = func_8086C874;
+            this->actionFunc = BgBdanObjects_ElevatorOscillate;
         } else {
             CollisionHeader_GetVirtual(&gJabuLoweringPlatformCol, &colHeader);
             if (Flags_GetSwitch(play, this->switchFlag)) {
                 this->actionFunc = BgBdanObjects_DoNothing;
                 thisx->world.pos.y = thisx->home.pos.y - 400.0f;
             } else {
-                this->actionFunc = func_8086CB10;
+                this->actionFunc = BgBdanObjects_WaitForPlayerOnTop;
             }
         }
     }
@@ -172,7 +172,7 @@ void BgBdanObjects_Destroy(Actor* thisx, PlayState* play) {
     }
 }
 
-void func_8086C054(BgBdanObjects* this, PlayState* play) {
+void BgBdanObjects_OctoPlatform_WaitForRutoToStartCutscene(BgBdanObjects* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
     if (BgBdanObjects_GetContactRu1(this, 0)) {
@@ -190,7 +190,7 @@ void func_8086C054(BgBdanObjects* this, PlayState* play) {
             this->timer--;
         }
         if (this->timer == 0) {
-            this->actionFunc = func_8086C1A0;
+            this->actionFunc = BgBdanObjects_OctoPlatform_RaiseToUpperPosition;
         }
     }
 
@@ -201,11 +201,11 @@ void func_8086C054(BgBdanObjects* this, PlayState* play) {
     }
 }
 
-void func_8086C1A0(BgBdanObjects* this, PlayState* play) {
+void BgBdanObjects_OctoPlatform_RaiseToUpperPosition(BgBdanObjects* this, PlayState* play) {
     if (Math_SmoothStepToF(&this->dyna.actor.world.pos.y, this->dyna.actor.home.pos.y + 500.0f, 0.5f, 7.5f, 1.0f) <
         0.1f) {
         Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_BUYOSTAND_STOP_A);
-        this->actionFunc = func_8086C29C;
+        this->actionFunc = BgBdanObjects_OctoPlatform_WaitForRutoToAdvanceCutscene;
         this->timer = 30;
         BgBdanObjects_SetContactRu1(this, 2);
         func_800AA000(0.0f, 0xFF, 0x14, 0x96);
@@ -221,7 +221,7 @@ void func_8086C1A0(BgBdanObjects* this, PlayState* play) {
     }
 }
 
-void func_8086C29C(BgBdanObjects* this, PlayState* play) {
+void BgBdanObjects_OctoPlatform_WaitForRutoToAdvanceCutscene(BgBdanObjects* this, PlayState* play) {
     s32 temp;
 
     if (this->timer != 0) {
@@ -240,12 +240,12 @@ void func_8086C29C(BgBdanObjects* this, PlayState* play) {
                            this->dyna.actor.shape.rot.y + 0x8000, 0, 0);
         BgBdanObjects_SetContactRu1(this, 4);
         this->timer = 10;
-        this->actionFunc = func_8086C55C;
+        this->actionFunc = BgBdanObjects_OctoPlatform_PauseBeforeDescending;
         func_8005B1A4(GET_ACTIVE_CAM(play));
     }
 }
 
-void func_8086C3D8(BgBdanObjects* this, PlayState* play) {
+void BgBdanObjects_OctoPlatform_DescendWithBigOcto(BgBdanObjects* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
     this->dyna.actor.velocity.y += 0.5f;
@@ -255,7 +255,7 @@ void func_8086C3D8(BgBdanObjects* this, PlayState* play) {
         this->timer = 60;
         Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_BUYOSTAND_STOP_U);
         this->dyna.actor.child->world.pos.y = this->dyna.actor.world.pos.y + 140.0f;
-        this->actionFunc = func_8086C5BC;
+        this->actionFunc = BgBdanObjects_OctoPlatform_WaitForBigOctoToStartBattle;
         OnePointCutscene_Init(play, 3080, -99, this->dyna.actor.child, MAIN_CAM);
         player->actor.world.pos.x = -1130.0f;
         player->actor.world.pos.y = -1025.0f;
@@ -278,63 +278,63 @@ void func_8086C3D8(BgBdanObjects* this, PlayState* play) {
     }
 }
 
-void func_8086C55C(BgBdanObjects* this, PlayState* play) {
+void BgBdanObjects_OctoPlatform_PauseBeforeDescending(BgBdanObjects* this, PlayState* play) {
     this->timer--;
 
     if (this->timer == 0) {
         Flags_UnsetSwitch(play, this->switchFlag);
     } else if (this->timer == -40) {
         this->timer = 0;
-        this->actionFunc = func_8086C3D8;
+        this->actionFunc = BgBdanObjects_OctoPlatform_DescendWithBigOcto;
     }
 }
 
-void func_8086C5BC(BgBdanObjects* this, PlayState* play) {
+void BgBdanObjects_OctoPlatform_WaitForBigOctoToStartBattle(BgBdanObjects* this, PlayState* play) {
     if (this->timer != 0) {
         this->timer--;
     }
     if ((this->timer == 0) && (this->dyna.actor.child != NULL)) {
         if (this->dyna.actor.child->params == 2) {
-            this->actionFunc = func_8086C618;
+            this->actionFunc = BgBdanObjects_OctoPlatform_BattleInProgress;
         } else if (this->dyna.actor.child->params == 0) {
             this->dyna.actor.child->params = 1;
         }
     }
 }
 
-void func_8086C618(BgBdanObjects* this, PlayState* play) {
+void BgBdanObjects_OctoPlatform_BattleInProgress(BgBdanObjects* this, PlayState* play) {
     Collider_UpdateCylinder(&this->dyna.actor, &this->collider);
     CollisionCheck_SetAT(play, &play->colChkCtx, &this->collider.base);
     if (Flags_GetClear(play, this->dyna.actor.room)) {
         Flags_SetSwitch(play, this->switchFlag);
         this->dyna.actor.home.rot.y = (s16)(this->dyna.actor.shape.rot.y + 0x2000) & 0xC000;
-        this->actionFunc = func_8086C6EC;
+        this->actionFunc = BgBdanObjects_SinkToFloorHeight;
     } else {
         this->dyna.actor.shape.rot.y += this->dyna.actor.world.rot.y;
         func_800F436C(&this->dyna.actor.projectedPos, 0x2063, ABS(this->dyna.actor.world.rot.y) / 512.0f);
     }
 }
 
-void func_8086C6EC(BgBdanObjects* this, PlayState* play) {
+void BgBdanObjects_SinkToFloorHeight(BgBdanObjects* this, PlayState* play) {
     s32 cond = Math_ScaledStepToS(&this->dyna.actor.shape.rot.y, this->dyna.actor.home.rot.y, 0x200);
 
     if (Math_StepToF(&this->dyna.actor.world.pos.y, this->dyna.actor.home.pos.y + -125.0f, 3.0f)) {
         if (cond) {
-            this->actionFunc = func_8086C76C;
+            this->actionFunc = BgBdanObjects_WaitForPlayerInRange;
         }
     }
 }
 
-void func_8086C76C(BgBdanObjects* this, PlayState* play) {
+void BgBdanObjects_WaitForPlayerInRange(BgBdanObjects* this, PlayState* play) {
     if (DynaPolyActor_IsPlayerOnTop(&this->dyna)) {
         if (this->dyna.actor.xzDistToPlayer < 120.0f) {
-            this->actionFunc = func_8086C7D0;
+            this->actionFunc = BgBdanObjects_RaiseToUpperPosition;
             OnePointCutscene_Init(play, 3090, -99, &this->dyna.actor, MAIN_CAM);
         }
     }
 }
 
-void func_8086C7D0(BgBdanObjects* this, PlayState* play) {
+void BgBdanObjects_RaiseToUpperPosition(BgBdanObjects* this, PlayState* play) {
     if (Math_SmoothStepToF(&this->dyna.actor.world.pos.y, this->dyna.actor.home.pos.y + 965.0f, 0.5f, 15.0f, 0.2f) <
         0.01f) {
         Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_BUYOSTAND_STOP_A);
@@ -347,7 +347,7 @@ void func_8086C7D0(BgBdanObjects* this, PlayState* play) {
 void BgBdanObjects_DoNothing(BgBdanObjects* this, PlayState* play) {
 }
 
-void func_8086C874(BgBdanObjects* this, PlayState* play) {
+void BgBdanObjects_ElevatorOscillate(BgBdanObjects* this, PlayState* play) {
     if (this->timer != 0) {
         this->timer--;
     }
@@ -377,50 +377,50 @@ void func_8086C874(BgBdanObjects* this, PlayState* play) {
     }
 }
 
-void func_8086C9A8(BgBdanObjects* this, PlayState* play) {
+void BgBdanObjects_WaitForSwitch(BgBdanObjects* this, PlayState* play) {
     if (Flags_GetSwitch(play, this->switchFlag)) {
         this->timer = 100;
-        this->actionFunc = func_8086C9F0;
+        this->actionFunc = BgBdanObjects_ChangeWaterBoxLevel;
     }
 }
 
-void func_8086C9F0(BgBdanObjects* this, PlayState* play) {
+void BgBdanObjects_ChangeWaterBoxLevel(BgBdanObjects* this, PlayState* play) {
     if (this->timer == 0) {
         if (Math_StepToF(&this->dyna.actor.world.pos.y, this->dyna.actor.home.pos.y, 0.5f)) {
             Flags_UnsetSwitch(play, this->switchFlag);
-            this->actionFunc = func_8086C9A8;
+            this->actionFunc = BgBdanObjects_WaitForSwitch;
         }
         func_8002F948(&this->dyna.actor, NA_SE_EV_WATER_LEVEL_DOWN - SFX_FLAG);
     } else {
         if (Math_StepToF(&this->dyna.actor.world.pos.y, this->dyna.actor.home.pos.y + 75.0f, 0.5f)) {
-            this->actionFunc = func_8086CABC;
+            this->actionFunc = BgBdanObjects_WaitForTimerExpired;
         }
         func_8002F948(&this->dyna.actor, NA_SE_EV_WATER_LEVEL_DOWN - SFX_FLAG);
     }
     play->colCtx.colHeader->waterBoxes[7].ySurface = this->dyna.actor.world.pos.y;
 }
 
-void func_8086CABC(BgBdanObjects* this, PlayState* play) {
+void BgBdanObjects_WaitForTimerExpired(BgBdanObjects* this, PlayState* play) {
     if (this->timer != 0) {
         this->timer--;
     }
     func_8002F994(&this->dyna.actor, this->timer);
     if (this->timer == 0) {
-        this->actionFunc = func_8086C9F0;
+        this->actionFunc = BgBdanObjects_ChangeWaterBoxLevel;
     }
 }
 
-void func_8086CB10(BgBdanObjects* this, PlayState* play) {
+void BgBdanObjects_WaitForPlayerOnTop(BgBdanObjects* this, PlayState* play) {
     if (DynaPolyActor_IsPlayerOnTop(&this->dyna)) {
         Flags_SetSwitch(play, this->switchFlag);
         this->timer = 50;
-        this->actionFunc = func_8086CB8C;
+        this->actionFunc = BgBdanObjects_FallToLowerPos;
         this->dyna.actor.home.pos.y -= 200.0f;
         OnePointCutscene_Init(play, 3100, 51, &this->dyna.actor, MAIN_CAM);
     }
 }
 
-void func_8086CB8C(BgBdanObjects* this, PlayState* play) {
+void BgBdanObjects_FallToLowerPos(BgBdanObjects* this, PlayState* play) {
     if (this->timer != 0) {
         this->timer--;
     }
@@ -447,7 +447,7 @@ void BgBdanObjects_Draw(Actor* thisx, PlayState* play) {
     BgBdanObjects* this = (BgBdanObjects*)thisx;
 
     if (thisx->params == 0) {
-        if (this->actionFunc == func_8086C054) {
+        if (this->actionFunc == BgBdanObjects_OctoPlatform_WaitForRutoToStartCutscene) {
             if (((thisx->home.pos.y + -79.0f) - 5.0f) < thisx->world.pos.y) {
                 Matrix_Translate(0.0f, -50.0f, 0.0f, MTXMODE_APPLY);
             }

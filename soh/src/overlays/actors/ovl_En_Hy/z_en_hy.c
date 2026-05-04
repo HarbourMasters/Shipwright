@@ -25,14 +25,14 @@ void EnHy_Update(Actor* thisx, PlayState* play);
 void EnHy_Draw(Actor* thisx, PlayState* play);
 
 void EnHy_InitImpl(EnHy* this, PlayState* play);
-void func_80A7134C(EnHy* this, PlayState* play);
-void func_80A71530(EnHy* this, PlayState* play);
-void func_80A711B4(EnHy* this, PlayState* play);
-void func_80A712C0(EnHy* this, PlayState* play);
-void func_80A710F8(EnHy* this, PlayState* play);
-void func_80A7127C(EnHy* this, PlayState* play);
+void EnHy_Pace(EnHy* this, PlayState* play);
+void EnHy_FinishGivingDogFoundReward(EnHy* this, PlayState* play);
+void EnHy_Walk(EnHy* this, PlayState* play);
+void EnHy_SetupPace(EnHy* this, PlayState* play);
+void EnHy_WatchDog(EnHy* this, PlayState* play);
+void EnHy_Fidget(EnHy* this, PlayState* play);
 void EnHy_DoNothing(EnHy* this, PlayState* play);
-void func_80A714C4(EnHy* this, PlayState* play);
+void EnHy_WaitDogFoundRewardGiven(EnHy* this, PlayState* play);
 
 const ActorInit En_Hy_InitVars = {
     ACTOR_EN_HY,
@@ -411,13 +411,13 @@ s32 EnHy_IsOsAnimeObjectLoaded(EnHy* this, PlayState* play) {
     return true;
 }
 
-void func_80A6F7CC(EnHy* this, PlayState* play, s32 getItemId) {
+void EnHy_GiveItem(EnHy* this, PlayState* play, s32 getItemId) {
     this->unkGetItemId = getItemId;
     Actor_OfferGetItem(&this->actor, play, getItemId, this->actor.xzDistToPlayer + 1.0f,
                        fabsf(this->actor.yDistToPlayer) + 1.0f);
 }
 
-u16 func_80A6F810(PlayState* play, Actor* thisx) {
+u16 EnHy_GetTextId(PlayState* play, Actor* thisx) {
     Player* player = GET_PLAYER(play);
     EnHy* this = (EnHy*)thisx;
     u16 textId = Text_GetFaceReaction(play, (this->actor.params & 0x7F) + 37);
@@ -432,14 +432,14 @@ u16 func_80A6F810(PlayState* play, Actor* thisx) {
     switch (this->actor.params & 0x7F) {
         case ENHY_TYPE_AOB:
             if (play->sceneNum == SCENE_KAKARIKO_CENTER_GUEST_HOUSE) {
-                return (this->unk_330 & 0x800) ? 0x508D : ((Flags_GetInfTable(INFTABLE_CB)) ? 0x508C : 0x508B);
+                return (this->talonEventChkInf & 0x800) ? 0x508D : ((Flags_GetInfTable(INFTABLE_CB)) ? 0x508C : 0x508B);
             } else if (play->sceneNum == SCENE_MARKET_DAY) {
                 return (gSaveContext.eventInf[3] & 1) ? 0x709B : 0x709C;
             } else if (gSaveContext.dogIsLost) {
                 s16 followingDog = (gSaveContext.dogParams & 0xF00) >> 8;
 
                 if (followingDog != 0) {
-                    this->unk_215 = false;
+                    this->playedSfx = false;
                     return ((followingDog == 1) || (CVarGetInteger(CVAR_ENHANCEMENT("AllDogsRichard"), 0))) ? 0x709F
                                                                                                             : 0x709E;
                 } else {
@@ -557,7 +557,8 @@ u16 func_80A6F810(PlayState* play, Actor* thisx) {
                            ? 0x505F
                            : ((Flags_GetInfTable(INFTABLE_163)) ? 0x505E : 0x505D);
             } else {
-                return (this->unk_330 & 0x800) ? 0x5062 : ((Flags_GetInfTable(INFTABLE_164)) ? 0x5061 : 0x5060);
+                return (this->talonEventChkInf & 0x800) ? 0x5062
+                                                        : ((Flags_GetInfTable(INFTABLE_164)) ? 0x5061 : 0x5060);
             }
         case ENHY_TYPE_BJI_19:
             return 0x7120;
@@ -568,7 +569,7 @@ u16 func_80A6F810(PlayState* play, Actor* thisx) {
     }
 }
 
-s16 func_80A70058(PlayState* play, Actor* thisx) {
+s16 EnHy_UpdateTalkState(PlayState* play, Actor* thisx) {
     EnHy* this = (EnHy*)thisx;
     s16 beggarItems[] = { ITEM_BLUE_FIRE, ITEM_FISH, ITEM_BUG, ITEM_FAIRY };
     s16 beggarRewards[] = { 150, 100, 50, 25 };
@@ -586,11 +587,11 @@ s16 func_80A70058(PlayState* play, Actor* thisx) {
             switch (this->actor.textId) {
                 case 0x709E:
                 case 0x709F:
-                    if (!this->unk_215) {
+                    if (!this->playedSfx) {
                         Audio_PlaySoundGeneral(this->actor.textId == 0x709F ? NA_SE_SY_CORRECT_CHIME : NA_SE_SY_ERROR,
                                                &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
                                                &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
-                        this->unk_215 = true;
+                        this->playedSfx = true;
                     }
                     break;
                 case 0x70F0:
@@ -610,7 +611,9 @@ s16 func_80A70058(PlayState* play, Actor* thisx) {
                 case 0x70F1:
                 case 0x70F2:
                 case 0x70F3:
-                    Rupees_ChangeBy(beggarRewards[this->actor.textId - 0x70F0]);
+                    if (GameInteractor_Should(VB_BEGGAR_GIVE_ITEM, true, this)) {
+                        Rupees_ChangeBy(beggarRewards[this->actor.textId - 0x70F0]);
+                    }
                     Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ENHY_ANIM_17);
                     Player_UpdateBottleHeld(play, GET_PLAYER(play), ITEM_BOTTLE, PLAYER_IA_BOTTLE);
                     break;
@@ -676,8 +679,8 @@ s16 func_80A70058(PlayState* play, Actor* thisx) {
                     break;
                 case 0x709F:
                     if (GameInteractor_Should(VB_GIVE_ITEM_FROM_LOST_DOG, true, this)) {
-                        func_80A6F7CC(this, play, Flags_GetInfTable(INFTABLE_191) ? GI_RUPEE_BLUE : GI_HEART_PIECE);
-                        this->actionFunc = func_80A714C4;
+                        EnHy_GiveItem(this, play, Flags_GetInfTable(INFTABLE_191) ? GI_RUPEE_BLUE : GI_HEART_PIECE);
+                        this->actionFunc = EnHy_WaitDogFoundRewardGiven;
                     }
                     break;
             }
@@ -737,7 +740,7 @@ void EnHy_UpdateCollider(EnHy* this, PlayState* play) {
     CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider.base);
 }
 
-void func_80A70834(EnHy* this, PlayState* play) {
+void EnHy_OfferBuyBottledItem(EnHy* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
     if ((this->actor.params & 0x7F) == ENHY_TYPE_BOJ_5) {
@@ -778,7 +781,7 @@ void func_80A70834(EnHy* this, PlayState* play) {
     }
 }
 
-void func_80A70978(EnHy* this, PlayState* play) {
+void EnHy_UpdateNPC(EnHy* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
     s16 trackingMode;
 
@@ -818,9 +821,9 @@ void func_80A70978(EnHy* this, PlayState* play) {
     Npc_TrackPoint(&this->actor, &this->interactInfo, sInit1Info[this->actor.params & 0x7F].unkPresetIndex,
                    trackingMode);
 
-    if (Npc_UpdateTalking(play, &this->actor, &this->interactInfo.talkState, this->unkRange, func_80A6F810,
-                          func_80A70058)) {
-        func_80A70834(this, play);
+    if (Npc_UpdateTalking(play, &this->actor, &this->interactInfo.talkState, this->unkRange, EnHy_GetTextId,
+                          EnHy_UpdateTalkState)) {
+        EnHy_OfferBuyBottledItem(this, play);
     }
 }
 
@@ -939,7 +942,7 @@ void EnHy_InitImpl(EnHy* this, PlayState* play) {
         }
 
         if (play->sceneNum == SCENE_KAKARIKO_CENTER_GUEST_HOUSE) {
-            this->unk_330 = gSaveContext.eventChkInf[6];
+            this->talonEventChkInf = gSaveContext.eventChkInf[6];
         }
 
         EnHy_InitSetProperties(this);
@@ -950,15 +953,15 @@ void EnHy_InitImpl(EnHy* this, PlayState* play) {
                 if (this->path != NULL) {
                     this->actor.speedXZ = 3.0f;
                 }
-                this->actionFunc = func_80A711B4;
+                this->actionFunc = EnHy_Walk;
                 break;
             case ENHY_TYPE_BJI_7:
                 this->pathReverse = false;
-                this->actionFunc = func_80A712C0;
+                this->actionFunc = EnHy_SetupPace;
                 break;
             case ENHY_TYPE_AOB:
                 if (play->sceneNum == SCENE_MARKET_DAY) {
-                    this->actionFunc = func_80A710F8;
+                    this->actionFunc = EnHy_WatchDog;
                     break;
                 }
                 // fall-through
@@ -975,7 +978,7 @@ void EnHy_InitImpl(EnHy* this, PlayState* play) {
             case ENHY_TYPE_BOB_18:
             case ENHY_TYPE_BJI_19:
             case ENHY_TYPE_AHG_20:
-                this->actionFunc = func_80A7127C;
+                this->actionFunc = EnHy_Fidget;
                 break;
             case ENHY_TYPE_BOJ_5:
             case ENHY_TYPE_BOJ_9:
@@ -991,7 +994,7 @@ void EnHy_InitImpl(EnHy* this, PlayState* play) {
     }
 }
 
-void func_80A710F8(EnHy* this, PlayState* play) {
+void EnHy_WatchDog(EnHy* this, PlayState* play) {
     if (this->interactInfo.talkState != NPC_TALK_STATE_IDLE) {
         if (this->skelAnime.animation != &gObjOsAnim_0BFC) {
             Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ENHY_ANIM_26);
@@ -1005,7 +1008,7 @@ void func_80A710F8(EnHy* this, PlayState* play) {
     }
 }
 
-void func_80A711B4(EnHy* this, PlayState* play) {
+void EnHy_Walk(EnHy* this, PlayState* play) {
     s16 yaw;
     f32 distSq;
 
@@ -1021,24 +1024,24 @@ void func_80A711B4(EnHy* this, PlayState* play) {
     }
 }
 
-void func_80A7127C(EnHy* this, PlayState* play) {
-    func_80034F54(play, this->unk_21C, this->unk_23C, 16);
+void EnHy_Fidget(EnHy* this, PlayState* play) {
+    func_80034F54(play, this->fidgetTableY, this->fidgetTableZ, 16);
 }
 
 void EnHy_DoNothing(EnHy* this, PlayState* play) {
 }
 
-void func_80A712C0(EnHy* this, PlayState* play) {
+void EnHy_SetupPace(EnHy* this, PlayState* play) {
     if ((this->actor.xzDistToPlayer <= 100.0f) && (this->path != NULL)) {
         Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ENHY_ANIM_7);
         this->actor.speedXZ = 0.4f;
-        this->actionFunc = func_80A7134C;
+        this->actionFunc = EnHy_Pace;
     }
 
-    func_80034F54(play, this->unk_21C, this->unk_23C, 16);
+    func_80034F54(play, this->fidgetTableY, this->fidgetTableZ, 16);
 }
 
-void func_80A7134C(EnHy* this, PlayState* play) {
+void EnHy_Pace(EnHy* this, PlayState* play) {
     s16 yaw;
     f32 distSq;
 
@@ -1072,16 +1075,16 @@ void func_80A7134C(EnHy* this, PlayState* play) {
     }
 }
 
-void func_80A714C4(EnHy* this, PlayState* play) {
+void EnHy_WaitDogFoundRewardGiven(EnHy* this, PlayState* play) {
     if (Actor_HasParent(&this->actor, play)) {
-        this->actionFunc = func_80A71530;
+        this->actionFunc = EnHy_FinishGivingDogFoundReward;
     } else {
         Actor_OfferGetItem(&this->actor, play, this->unkGetItemId, this->actor.xzDistToPlayer + 1.0f,
                            fabsf(this->actor.yDistToPlayer) + 1.0f);
     }
 }
 
-void func_80A71530(EnHy* this, PlayState* play) {
+void EnHy_FinishGivingDogFoundReward(EnHy* this, PlayState* play) {
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play)) {
         switch (this->unkGetItemId) {
             case GI_HEART_PIECE:
@@ -1096,7 +1099,7 @@ void func_80A71530(EnHy* this, PlayState* play) {
                 break;
         }
 
-        this->actionFunc = func_80A7127C;
+        this->actionFunc = EnHy_Fidget;
     }
 }
 
@@ -1116,7 +1119,7 @@ void EnHy_Update(Actor* thisx, PlayState* play) {
     }
 
     this->actionFunc(this, play);
-    func_80A70978(this, play);
+    EnHy_UpdateNPC(this, play);
     EnHy_UpdateCollider(this, play);
 }
 
@@ -1158,8 +1161,8 @@ s32 EnHy_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* po
     }
 
     if ((limbIndex == 8) || (limbIndex == 9) || (limbIndex == 12)) {
-        rot->y += Math_SinS(this->unk_21C[limbIndex]) * 200.0f;
-        rot->z += Math_CosS(this->unk_23C[limbIndex]) * 200.0f;
+        rot->y += Math_SinS(this->fidgetTableY[limbIndex]) * 200.0f;
+        rot->z += Math_CosS(this->fidgetTableZ[limbIndex]) * 200.0f;
     }
 
     CLOSE_DISPS(play->state.gfxCtx);
