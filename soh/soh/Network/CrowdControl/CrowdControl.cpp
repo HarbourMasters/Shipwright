@@ -268,6 +268,9 @@ CrowdControl::Effect* CrowdControl::ParseMessage(nlohmann::json dataReceived) {
             break;
         case kEffectSpawnWolfos:
             effect->spawnParams[0] = ACTOR_EN_WF;
+            // Match EnEncount1 wolfos spawner (0xFF00): high byte must be 0xFF so EnWf_Init does not treat
+            // switchFlag 0; Flags_GetSwitch(play, 0) is true in many scenes and would instantly kill the actor.
+            effect->spawnParams[1] = (0xFF << 8) | 0x00; // normal Wolfos; high byte 0xFF = no switch (vanilla encount)
             effect->category = kEffectCatSpawnEnemy;
             break;
         case kEffectSpawnWallmaster:
