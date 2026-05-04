@@ -806,7 +806,14 @@ void OTRGlobals::Initialize() {
                                               CVarGetInteger(CVAR_SETTING("AutoCaptureMouse"), 1));
     context->GetWindow()->SetForceCursorVisibility(CVarGetInteger(CVAR_SETTING("CursorVisibility"), 0));
 
-    context->InitAudio({ .SampleRate = 32000, .SampleLength = 1024, .DesiredBuffered = 1680 });
+    // DesiredBuffered is the steady-state reservoir the audio producer aims for.
+    // The producer fires once per video frame (~20 Hz on the original update rate)
+    // and pushes a single ~1680-sample burst, so a value of 1680 leaves no room
+    // for any frame jitter -- one missed video update empties the device buffer
+    // and produces an audible click. 4096 (~128 ms at 32 kHz) gives the producer
+    // enough headroom to cover a few slow frames without underflowing,
+    // particularly over HDMI where the consumer pace is set by the sink clock.
+    context->InitAudio({ .SampleRate = 32000, .SampleLength = 1024, .DesiredBuffered = 4096 });
 
     SPDLOG_INFO("Starting Ship of Harkinian version {} (Branch: {} | Commit: {})", (char*)gBuildVersion,
                 (char*)gGitBranch, (char*)gGitCommitHash);
@@ -1031,18 +1038,31 @@ void OTRAudio_Thread() {
 #define AUDIO_FRAMES_PER_UPDATE (R_UPDATE_RATE > 0 ? R_UPDATE_RATE : 1)
 #define NUM_AUDIO_CHANNELS 2
 
-        int samples_left = AudioPlayer_Buffered();
-        u32 num_audio_samples = samples_left < AudioPlayer_GetDesiredBuffered() ? SAMPLES_HIGH : SAMPLES_LOW;
-
         // 3 is the maximum authentic frame divisor.
         s16 audio_buffer[SAMPLES_HIGH * NUM_AUDIO_CHANNELS * 3];
-        for (int i = 0; i < AUDIO_FRAMES_PER_UPDATE; i++) {
-            AudioMgr_CreateNextAudioBuffer(audio_buffer + i * (num_audio_samples * NUM_AUDIO_CHANNELS),
-                                           num_audio_samples);
-        }
 
-        AudioPlayer_Play((u8*)audio_buffer,
-                         num_audio_samples * (sizeof(int16_t) * NUM_AUDIO_CHANNELS * AUDIO_FRAMES_PER_UPDATE));
+        // The producer is woken once per Graph_ProcessGfxCommands call, whose
+        // rate depends on the user's display-rate setting and the current
+        // R_UPDATE_RATE (1, 2, or 3). When the producer's call rate falls
+        // below sampleRate / (AUDIO_FRAMES_PER_UPDATE * num_audio_samples),
+        // a single tick per call underproduces and the device underruns --
+        // most visibly on the file-select screen at low display rates,
+        // where R_UPDATE_RATE = 1 expects ~60 wakes/s. To compensate, run
+        // additional audio engine ticks within the same outer call until
+        // the reservoir is back at the desired level. Each tick advances
+        // internal audio time by num_samples / sample_rate, and the consumer
+        // drains them at the same rate, so audio still plays at normal speed.
+        int max_iters = 6;
+        do {
+            int samples_left = AudioPlayer_Buffered();
+            u32 num_audio_samples = samples_left < AudioPlayer_GetDesiredBuffered() ? SAMPLES_HIGH : SAMPLES_LOW;
+            for (int i = 0; i < AUDIO_FRAMES_PER_UPDATE; i++) {
+                AudioMgr_CreateNextAudioBuffer(audio_buffer + i * (num_audio_samples * NUM_AUDIO_CHANNELS),
+                                               num_audio_samples);
+            }
+            AudioPlayer_Play((u8*)audio_buffer,
+                             num_audio_samples * (sizeof(int16_t) * NUM_AUDIO_CHANNELS * AUDIO_FRAMES_PER_UPDATE));
+        } while (AudioPlayer_Buffered() < AudioPlayer_GetDesiredBuffered() && --max_iters > 0);
 
         audio.processing = false;
         audio.cv_from_thread.notify_one();
