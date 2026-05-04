@@ -1588,16 +1588,32 @@ void DrawPositionSlider(const std::string CvarName, int MinY, int MaxY, int MinX
 }
 
 void DrawScaleSlider(const std::string CvarName, float DefaultValue) {
-    std::string InvisibleLabel = "##" + CvarName;
     std::string CvarLabel = CvarName + ".Scale";
-    // Disabled for now. feature not done and several fixes needed to be merged.
-    // UIWidgets::EnhancementSliderFloat("Scale : %dx", InvisibleLabel.c_str(), CvarLabel.c_str(),
-    // 0.1f, 3.0f,"",DefaultValue,true);
+    float scale = CVarGetFloat(CvarLabel.c_str(), DefaultValue);
+
+    ImGui::PushID(CvarLabel.c_str());
+    ImGui::Text("Scale: %.2fx", scale);
+    UIWidgets::CVarSliderFloat("", CvarLabel.c_str(),
+                               UIWidgets::FloatSliderOptions()
+                                   .Min(0.25f)
+                                   .Max(4.0f)
+                                   .DefaultValue(DefaultValue)
+                                   .Format("%.2fx")
+                                   .LabelPosition(UIWidgets::LabelPositions::Near)
+                                   .Size(ImVec2(250.0f, 0.0f))
+                                   .Color(THEME_COLOR));
+    ImGui::SameLine();
+    if (UIWidgets::Button("Reset", UIWidgets::ButtonOptions().Size(ImVec2(60.0f, 0.0f)).Color(THEME_COLOR))) {
+        CVarClear(CvarLabel.c_str());
+        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        ShipInit::Init(CvarLabel.c_str());
+    }
+    ImGui::PopID();
 }
 
 void Draw_Table_Dropdown(const char* Header_Title, const char* Table_ID, const char* Column_Title,
                          const char* Slider_Title, const char* Slider_ID, int MinY, int MaxY, int MinX, int MaxX,
-                         float Default_Value) {
+                         float Default_Value, bool DrawScale = true) {
     UIWidgets::PushStyleHeader(THEME_COLOR);
     if (ImGui::CollapsingHeader(Header_Title)) {
         if (ImGui::BeginTable(Table_ID, 1, FlagsTable)) {
@@ -1606,7 +1622,9 @@ void Draw_Table_Dropdown(const char* Header_Title, const char* Table_ID, const c
             DrawUseMarginsSlider(Slider_Title, Slider_ID);
             DrawPositionsRadioBoxes(Slider_ID);
             DrawPositionSlider(Slider_ID, MinY, MaxY, MinX, MaxX);
-            DrawScaleSlider(Slider_ID, Default_Value);
+            if (DrawScale) {
+                DrawScaleSlider(Slider_ID, Default_Value);
+            }
             ImGui::EndTable();
         }
     }
@@ -1794,7 +1812,7 @@ void Draw_Placements() {
                         CVAR_COSMETIC("HUD.Minimap"), static_cast<int>(ImGui::GetWindowViewport()->Size.y / 3) * -1,
                         static_cast<int>(ImGui::GetWindowViewport()->Size.y / 3),
                         static_cast<int>(ImGui::GetWindowViewport()->Size.x) * -1,
-                        static_cast<int>(ImGui::GetWindowViewport()->Size.x / 2), 1.0f);
+                        static_cast<int>(ImGui::GetWindowViewport()->Size.x / 2), 1.0f, false);
     Draw_Table_Dropdown("Small Keys counter position", "tablesmolekeys", "Small Keys counter settings",
                         "Small Keys counter", CVAR_COSMETIC("HUD.SmallKey"), 0,
                         static_cast<int>(ImGui::GetWindowViewport()->Size.y / 3), -1,

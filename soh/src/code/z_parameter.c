@@ -3537,24 +3537,34 @@ void Interface_DrawMagicBar(PlayState* play) {
             PosX_MidEnd = PosX_MidEnd_original;
             rMagicFillX = rMagicFillX_original;
         }
+        f32 magicBarScale = MAX(CVarGetFloat(CVAR_COSMETIC("HUD.MagicBar.Scale"), 1.0f), 0.25f);
+        s16 magicTexStep = (1 << 10) / magicBarScale;
+        s16 magicEndWidth = 8 * magicBarScale;
+        s16 magicBarHeight = 16 * magicBarScale;
+        s16 magicFillOffsetY = 3 * magicBarScale;
+        s16 magicFillHeight = 7 * magicBarScale;
+        s16 magicCapacityWidth = gSaveContext.magicCapacity * magicBarScale;
+        s16 magicEndRight = 16 * magicBarScale;
+        PosX_MidEnd = PosX_Start + magicEndWidth;
+        rMagicFillX = rMagicBarX + magicEndWidth;
 
         Gfx_SetupDL_39Overlay(play->state.gfxCtx);
 
         gDPSetPrimColor(OVERLAY_DISP++, 0, 0, sMagicBorder.r, sMagicBorder.g, sMagicBorder.b, interfaceCtx->magicAlpha);
         gDPSetEnvColor(OVERLAY_DISP++, 100, 50, 50, 255);
 
-        OVERLAY_DISP =
-            Gfx_TextureIA8(OVERLAY_DISP, gMagicMeterEndTex, 8, 16, PosX_Start, magicBarY, 8, 16, 1 << 10, 1 << 10);
+        OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, gMagicMeterEndTex, 8, 16, PosX_Start, magicBarY, magicEndWidth,
+                                      magicBarHeight, magicTexStep, magicTexStep);
 
         OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, gMagicMeterMidTex, 24, 16, PosX_MidEnd, magicBarY,
-                                      gSaveContext.magicCapacity, 16, 1 << 10, 1 << 10);
+                                      magicCapacityWidth, magicBarHeight, magicTexStep, magicTexStep);
 
         gDPLoadTextureBlock(OVERLAY_DISP++, gMagicMeterEndTex, G_IM_FMT_IA, G_IM_SIZ_8b, 8, 16, 0,
                             G_TX_MIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 3, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-        gSPWideTextureRectangle(OVERLAY_DISP++, ((rMagicBarX + gSaveContext.magicCapacity) + 8) << 2, magicBarY << 2,
-                                ((rMagicBarX + gSaveContext.magicCapacity) + 16) << 2, (magicBarY + 16) << 2,
-                                G_TX_RENDERTILE, 256, 0, 1 << 10, 1 << 10);
+        gSPWideTextureRectangle(OVERLAY_DISP++, (rMagicBarX + magicCapacityWidth + magicEndWidth) << 2, magicBarY << 2,
+                                (rMagicBarX + magicCapacityWidth + magicEndRight) << 2,
+                                (magicBarY + magicBarHeight) << 2, G_TX_RENDERTILE, 256, 0, magicTexStep, magicTexStep);
 
         gDPPipeSync(OVERLAY_DISP++);
         gDPSetCombineLERP(OVERLAY_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, 0, 0, 0, PRIMITIVE, PRIMITIVE,
@@ -3570,9 +3580,10 @@ void Interface_DrawMagicBar(PlayState* play) {
                                  G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
                                  G_TX_NOLOD, G_TX_NOLOD);
 
-            gSPWideTextureRectangle(OVERLAY_DISP++, rMagicFillX << 2, (magicBarY + 3) << 2,
-                                    (rMagicFillX + gSaveContext.magic) << 2, (magicBarY + 10) << 2, G_TX_RENDERTILE, 0,
-                                    0, 1 << 10, 1 << 10);
+            gSPWideTextureRectangle(OVERLAY_DISP++, rMagicFillX << 2, (magicBarY + magicFillOffsetY) << 2,
+                                    (rMagicFillX + (s16)(gSaveContext.magic * magicBarScale)) << 2,
+                                    (magicBarY + magicFillOffsetY + magicFillHeight) << 2, G_TX_RENDERTILE, 0, 0,
+                                    magicTexStep, magicTexStep);
 
             // Fill the rest of the bar with the normal magic color
             gDPPipeSync(OVERLAY_DISP++);
@@ -3586,9 +3597,10 @@ void Interface_DrawMagicBar(PlayState* play) {
                                 interfaceCtx->magicAlpha);
             }
 
-            gSPWideTextureRectangle(OVERLAY_DISP++, rMagicFillX << 2, (magicBarY + 3) << 2,
-                                    (rMagicFillX + gSaveContext.magicTarget) << 2, (magicBarY + 10) << 2,
-                                    G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+            gSPWideTextureRectangle(OVERLAY_DISP++, rMagicFillX << 2, (magicBarY + magicFillOffsetY) << 2,
+                                    (rMagicFillX + (s16)(gSaveContext.magicTarget * magicBarScale)) << 2,
+                                    (magicBarY + magicFillOffsetY + magicFillHeight) << 2, G_TX_RENDERTILE, 0, 0,
+                                    magicTexStep, magicTexStep);
         } else {
             // Fill the whole bar with the normal magic color
             if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_MAGIC_METER)) {
@@ -3605,9 +3617,10 @@ void Interface_DrawMagicBar(PlayState* play) {
                                  G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
                                  G_TX_NOLOD, G_TX_NOLOD);
 
-            gSPWideTextureRectangle(OVERLAY_DISP++, rMagicFillX << 2, (magicBarY + 3) << 2,
-                                    (rMagicFillX + gSaveContext.magic) << 2, (magicBarY + 10) << 2, G_TX_RENDERTILE, 0,
-                                    0, 1 << 10, 1 << 10);
+            gSPWideTextureRectangle(OVERLAY_DISP++, rMagicFillX << 2, (magicBarY + magicFillOffsetY) << 2,
+                                    (rMagicFillX + (s16)(gSaveContext.magic * magicBarScale)) << 2,
+                                    (magicBarY + magicFillOffsetY + magicFillHeight) << 2, G_TX_RENDERTILE, 0, 0,
+                                    magicTexStep, magicTexStep);
         }
     }
 
@@ -4016,11 +4029,8 @@ void Interface_DrawItemButtons(PlayState* play) {
     s16 C_Down_BTN_Pos[2];
     // C button Left
     s16 C_Left_BTN_Size = 32;
-    float CLeftScale = CVarGetFloat(CVAR_COSMETIC("HUD.CLeftButton.Scale"), 0.87f);
-    int CLeftScaled = C_Left_BTN_Size * 0.87f;
-    if (CVarGetInteger(CVAR_COSMETIC("HUD.CLeftButton.PosType"), 0) != ORIGINAL_LOCATION) {
-        CLeftScaled = C_Left_BTN_Size * CLeftScale;
-    }
+    float CLeftScale = MAX(CVarGetFloat(CVAR_COSMETIC("HUD.CLeftButton.Scale"), 0.87f), 0.25f);
+    int CLeftScaled = C_Left_BTN_Size * CLeftScale;
     int CLeft_factor = (1 << 10) * C_Left_BTN_Size / CLeftScaled;
     if (CVarGetInteger(CVAR_COSMETIC("HUD.CLeftButton.PosType"), 0) != ORIGINAL_LOCATION) {
         C_Left_BTN_Pos[1] = CVarGetInteger(CVAR_COSMETIC("HUD.CLeftButton.PosY"), 0) + Y_Margins_CL;
@@ -4047,11 +4057,8 @@ void Interface_DrawItemButtons(PlayState* play) {
     }
     // C button Right
     s16 C_Right_BTN_Size = 32;
-    float CRightScale = CVarGetFloat(CVAR_COSMETIC("HUD.CRightButton.Scale"), 0.87f);
-    int CRightScaled = C_Right_BTN_Size * 0.87f;
-    if (CVarGetInteger(CVAR_COSMETIC("HUD.CRightButton.PosType"), 0) != ORIGINAL_LOCATION) {
-        CRightScaled = C_Right_BTN_Size * CRightScale;
-    }
+    float CRightScale = MAX(CVarGetFloat(CVAR_COSMETIC("HUD.CRightButton.Scale"), 0.87f), 0.25f);
+    int CRightScaled = C_Right_BTN_Size * CRightScale;
     int CRight_factor = (1 << 10) * C_Right_BTN_Size / CRightScaled;
     if (CVarGetInteger(CVAR_COSMETIC("HUD.CRightButton.PosType"), 0) != ORIGINAL_LOCATION) {
         C_Right_BTN_Pos[1] = CVarGetInteger(CVAR_COSMETIC("HUD.CRightButton.PosY"), 0) + Y_Margins_CR;
@@ -4078,11 +4085,8 @@ void Interface_DrawItemButtons(PlayState* play) {
     }
     // C Button Up
     s16 C_Up_BTN_Size = 32;
-    int CUpScaled = C_Up_BTN_Size * 0.5f;
-    float CUpScale = CVarGetFloat(CVAR_COSMETIC("HUD.CUpButton.Scale"), 0.5f);
-    if (CVarGetInteger(CVAR_COSMETIC("HUD.CUpButton.PosType"), 0) != ORIGINAL_LOCATION) {
-        CUpScaled = C_Up_BTN_Size * CUpScale;
-    }
+    float CUpScale = MAX(CVarGetFloat(CVAR_COSMETIC("HUD.CUpButton.Scale"), 0.5f), 0.25f);
+    int CUpScaled = C_Up_BTN_Size * CUpScale;
     int CUp_factor = (1 << 10) * C_Up_BTN_Size / CUpScaled;
     if (CVarGetInteger(CVAR_COSMETIC("HUD.CUpButton.PosType"), 0) != ORIGINAL_LOCATION) {
         C_Up_BTN_Pos[1] = CVarGetInteger(CVAR_COSMETIC("HUD.CUpButton.PosY"), 0) + Y_Margins_CU;
@@ -4109,13 +4113,9 @@ void Interface_DrawItemButtons(PlayState* play) {
     }
     // C Button down
     s16 C_Down_BTN_Size = 32;
-    float CDownScale = CVarGetFloat(CVAR_COSMETIC("HUD.CDownButton.Scale"), 0.87f);
-    if (CVarGetInteger(CVAR_COSMETIC("HUD.CDownButton.PosType"), 0) == ORIGINAL_LOCATION) {
-        CDownScale = 0.87f;
-    }
+    float CDownScale = MAX(CVarGetFloat(CVAR_COSMETIC("HUD.CDownButton.Scale"), 0.87f), 0.25f);
     int CDownScaled = C_Down_BTN_Size * CDownScale;
     int CDown_factor = (1 << 10) * C_Down_BTN_Size / CDownScaled;
-    int PositionAdjustment = CDownScaled / 2;
     if (CVarGetInteger(CVAR_COSMETIC("HUD.CDownButton.PosType"), 0) != ORIGINAL_LOCATION) {
         C_Down_BTN_Pos[1] = CVarGetInteger(CVAR_COSMETIC("HUD.CDownButton.PosY"), 0) + Y_Margins_CD;
         if (CVarGetInteger(CVAR_COSMETIC("HUD.CDownButton.PosType"), 0) == ANCHOR_LEFT) {
@@ -4157,25 +4157,22 @@ void Interface_DrawItemButtons(PlayState* play) {
     gDPSetPrimColor(OVERLAY_DISP++, 0, 0, cLeftButtonColor.r, cLeftButtonColor.g, cLeftButtonColor.b,
                     interfaceCtx->cLeftAlpha);
     gSPWideTextureRectangle(OVERLAY_DISP++, C_Left_BTN_Pos[0] << 2, C_Left_BTN_Pos[1] << 2,
-                            (C_Left_BTN_Pos[0] + R_ITEM_BTN_WIDTH(1)) << 2,
-                            (C_Left_BTN_Pos[1] + R_ITEM_BTN_WIDTH(1)) << 2, G_TX_RENDERTILE, 0, 0,
-                            R_ITEM_BTN_DD(1) << 1, R_ITEM_BTN_DD(1) << 1);
+                            (C_Left_BTN_Pos[0] + CLeftScaled) << 2, (C_Left_BTN_Pos[1] + CLeftScaled) << 2,
+                            G_TX_RENDERTILE, 0, 0, CLeft_factor, CLeft_factor);
 
     // C-Down Button Color & Texture
     gDPSetPrimColor(OVERLAY_DISP++, 0, 0, cDownButtonColor.r, cDownButtonColor.g, cDownButtonColor.b,
                     interfaceCtx->cDownAlpha);
     gSPWideTextureRectangle(OVERLAY_DISP++, C_Down_BTN_Pos[0] << 2, C_Down_BTN_Pos[1] << 2,
-                            (C_Down_BTN_Pos[0] + R_ITEM_BTN_WIDTH(2)) << 2,
-                            (C_Down_BTN_Pos[1] + R_ITEM_BTN_WIDTH(2)) << 2, G_TX_RENDERTILE, 0, 0,
-                            R_ITEM_BTN_DD(2) << 1, R_ITEM_BTN_DD(2) << 1);
+                            (C_Down_BTN_Pos[0] + CDownScaled) << 2, (C_Down_BTN_Pos[1] + CDownScaled) << 2,
+                            G_TX_RENDERTILE, 0, 0, CDown_factor, CDown_factor);
 
     // C-Right Button Color & Texture
     gDPSetPrimColor(OVERLAY_DISP++, 0, 0, cRightButtonColor.r, cRightButtonColor.g, cRightButtonColor.b,
                     interfaceCtx->cRightAlpha);
     gSPWideTextureRectangle(OVERLAY_DISP++, C_Right_BTN_Pos[0] << 2, C_Right_BTN_Pos[1] << 2,
-                            (C_Right_BTN_Pos[0] + R_ITEM_BTN_WIDTH(3)) << 2,
-                            (C_Right_BTN_Pos[1] + R_ITEM_BTN_WIDTH(3)) << 2, G_TX_RENDERTILE, 0, 0,
-                            R_ITEM_BTN_DD(3) << 1, R_ITEM_BTN_DD(3) << 1);
+                            (C_Right_BTN_Pos[0] + CRightScaled) << 2, (C_Right_BTN_Pos[1] + CRightScaled) << 2,
+                            G_TX_RENDERTILE, 0, 0, CRight_factor, CRight_factor);
 
     if ((pauseCtx->state < 8) || (pauseCtx->state >= 18)) {
         if ((play->pauseCtx.state != 0) || (play->pauseCtx.debugState != 0)) {
@@ -4233,8 +4230,8 @@ void Interface_DrawItemButtons(PlayState* play) {
             gDPSetPrimColor(OVERLAY_DISP++, 0, 0, cUpButtonColor.r, cUpButtonColor.g, cUpButtonColor.b, temp);
             gDPSetCombineMode(OVERLAY_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
             gSPWideTextureRectangle(OVERLAY_DISP++, C_Up_BTN_Pos[0] << 2, C_Up_BTN_Pos[1] << 2,
-                                    (C_Up_BTN_Pos[0] + 16) << 2, (C_Up_BTN_Pos[1] + 16) << 2, G_TX_RENDERTILE, 0, 0,
-                                    2 << 10, 2 << 10);
+                                    (C_Up_BTN_Pos[0] + CUpScaled) << 2, (C_Up_BTN_Pos[1] + CUpScaled) << 2,
+                                    G_TX_RENDERTILE, 0, 0, CUp_factor, CUp_factor);
             gDPPipeSync(OVERLAY_DISP++);
             gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, temp);
             gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 0, 0);
@@ -4410,6 +4407,13 @@ void Interface_DrawItemButtons(PlayState* play) {
 
 int16_t gItemIconWidth[] = { 30, 24, 24, 24, 16, 16, 16, 16 };
 int16_t gItemIconDD[] = { 550, 680, 680, 680, 1024, 1024, 1024, 1024 };
+static const char* gItemIconScaleCvars[] = {
+    CVAR_COSMETIC("HUD.BButton.Scale"),     CVAR_COSMETIC("HUD.CLeftButton.Scale"),
+    CVAR_COSMETIC("HUD.CDownButton.Scale"), CVAR_COSMETIC("HUD.CRightButton.Scale"),
+    CVAR_COSMETIC("HUD.Dpad.Scale"),        CVAR_COSMETIC("HUD.Dpad.Scale"),
+    CVAR_COSMETIC("HUD.Dpad.Scale"),        CVAR_COSMETIC("HUD.Dpad.Scale")
+};
+static const f32 gItemIconDefaultScales[] = { 0.95f, 0.87f, 0.87f, 0.87f, 1.0f, 1.0f, 1.0f, 1.0f };
 
 void Interface_DrawItemIconTexture(PlayState* play, void* texture, s16 button) {
     OPEN_DISPS(play->state.gfxCtx);
@@ -4482,51 +4486,64 @@ void Interface_DrawItemIconTexture(PlayState* play, void* texture, s16 button) {
                                interfaceCtx->cDownAlpha,    interfaceCtx->dpadUpAlpha,   interfaceCtx->dpadDownAlpha,
                                interfaceCtx->dpadLeftAlpha, interfaceCtx->dpadRightAlpha };
     s16 DPad_ItemsOffset[4][2] = {
-        { 7, -8 },         // Up
-        { 7, 24 },         // Down
-        { -9, 8 },         // Left
-        { 23, 8 },         // Right
-    };                     //(X,Y) Used with custom position to place it properly.
+        { 7, -8 }, // Up
+        { 7, 24 }, // Down
+        { -9, 8 }, // Left
+        { 23, 8 }, // Right
+    };             //(X,Y) Used with custom position to place it properly.
+    f32 dpadScale = MAX(CVarGetFloat(CVAR_COSMETIC("HUD.Dpad.Scale"), 1.0f), 0.25f);
     s16 ItemIconPos[8][2]; //(X,Y)
     // DPadItems
     if (CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosType"), 0) != ORIGINAL_LOCATION) {
-        ItemIconPos[4][1] =
-            CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosY"), 0) + Y_Margins_DPad_Items + DPad_ItemsOffset[0][1]; // Up
-        ItemIconPos[5][1] =
-            CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosY"), 0) + Y_Margins_DPad_Items + DPad_ItemsOffset[1][1]; // Down
-        ItemIconPos[6][1] =
-            CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosY"), 0) + Y_Margins_DPad_Items + DPad_ItemsOffset[2][1]; // Left
-        ItemIconPos[7][1] =
-            CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosY"), 0) + Y_Margins_DPad_Items + DPad_ItemsOffset[3][1]; // Right
+        ItemIconPos[4][1] = CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosY"), 0) + Y_Margins_DPad_Items +
+                            (DPad_ItemsOffset[0][1] * dpadScale); // Up
+        ItemIconPos[5][1] = CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosY"), 0) + Y_Margins_DPad_Items +
+                            (DPad_ItemsOffset[1][1] * dpadScale); // Down
+        ItemIconPos[6][1] = CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosY"), 0) + Y_Margins_DPad_Items +
+                            (DPad_ItemsOffset[2][1] * dpadScale); // Left
+        ItemIconPos[7][1] = CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosY"), 0) + Y_Margins_DPad_Items +
+                            (DPad_ItemsOffset[3][1] * dpadScale); // Right
         if (CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosType"), 0) == ANCHOR_LEFT) {
             if (CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.UseMargins"), 0) != 0) {
                 X_Margins_DPad_Items = Left_HUD_Margin;
             };
-            ItemIconPos[4][0] = OTRGetDimensionFromLeftEdge(CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosX"), 0) +
-                                                            X_Margins_DPad_Items + DPad_ItemsOffset[0][0]);
-            ItemIconPos[5][0] = OTRGetDimensionFromLeftEdge(CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosX"), 0) +
-                                                            X_Margins_DPad_Items + DPad_ItemsOffset[1][0]);
-            ItemIconPos[6][0] = OTRGetDimensionFromLeftEdge(CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosX"), 0) +
-                                                            X_Margins_DPad_Items + DPad_ItemsOffset[2][0]);
-            ItemIconPos[7][0] = OTRGetDimensionFromLeftEdge(CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosX"), 0) +
-                                                            X_Margins_DPad_Items + DPad_ItemsOffset[3][0]);
+            ItemIconPos[4][0] =
+                OTRGetDimensionFromLeftEdge(CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosX"), 0) + X_Margins_DPad_Items +
+                                            (DPad_ItemsOffset[0][0] * dpadScale));
+            ItemIconPos[5][0] =
+                OTRGetDimensionFromLeftEdge(CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosX"), 0) + X_Margins_DPad_Items +
+                                            (DPad_ItemsOffset[1][0] * dpadScale));
+            ItemIconPos[6][0] =
+                OTRGetDimensionFromLeftEdge(CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosX"), 0) + X_Margins_DPad_Items +
+                                            (DPad_ItemsOffset[2][0] * dpadScale));
+            ItemIconPos[7][0] =
+                OTRGetDimensionFromLeftEdge(CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosX"), 0) + X_Margins_DPad_Items +
+                                            (DPad_ItemsOffset[3][0] * dpadScale));
         } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosType"), 0) == ANCHOR_RIGHT) {
             if (CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.UseMargins"), 0) != 0) {
                 X_Margins_DPad_Items = Right_HUD_Margin;
             };
-            ItemIconPos[4][0] = OTRGetDimensionFromRightEdge(CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosX"), 0) +
-                                                             X_Margins_DPad_Items + DPad_ItemsOffset[0][0]);
-            ItemIconPos[5][0] = OTRGetDimensionFromRightEdge(CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosX"), 0) +
-                                                             X_Margins_DPad_Items + DPad_ItemsOffset[1][0]);
-            ItemIconPos[6][0] = OTRGetDimensionFromRightEdge(CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosX"), 0) +
-                                                             X_Margins_DPad_Items + DPad_ItemsOffset[2][0]);
-            ItemIconPos[7][0] = OTRGetDimensionFromRightEdge(CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosX"), 0) +
-                                                             X_Margins_DPad_Items + DPad_ItemsOffset[3][0]);
+            ItemIconPos[4][0] =
+                OTRGetDimensionFromRightEdge(CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosX"), 0) + X_Margins_DPad_Items +
+                                             (DPad_ItemsOffset[0][0] * dpadScale));
+            ItemIconPos[5][0] =
+                OTRGetDimensionFromRightEdge(CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosX"), 0) + X_Margins_DPad_Items +
+                                             (DPad_ItemsOffset[1][0] * dpadScale));
+            ItemIconPos[6][0] =
+                OTRGetDimensionFromRightEdge(CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosX"), 0) + X_Margins_DPad_Items +
+                                             (DPad_ItemsOffset[2][0] * dpadScale));
+            ItemIconPos[7][0] =
+                OTRGetDimensionFromRightEdge(CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosX"), 0) + X_Margins_DPad_Items +
+                                             (DPad_ItemsOffset[3][0] * dpadScale));
         } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosType"), 0) == ANCHOR_NONE) {
-            ItemIconPos[4][0] = CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosX"), 0) + DPad_ItemsOffset[0][0];
-            ItemIconPos[5][0] = CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosX"), 0) + DPad_ItemsOffset[1][0];
-            ItemIconPos[6][0] = CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosX"), 0) + DPad_ItemsOffset[2][0];
-            ItemIconPos[7][0] = CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosX"), 0) + DPad_ItemsOffset[3][0];
+            ItemIconPos[4][0] =
+                CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosX"), 0) + (DPad_ItemsOffset[0][0] * dpadScale);
+            ItemIconPos[5][0] =
+                CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosX"), 0) + (DPad_ItemsOffset[1][0] * dpadScale);
+            ItemIconPos[6][0] =
+                CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosX"), 0) + (DPad_ItemsOffset[2][0] * dpadScale);
+            ItemIconPos[7][0] =
+                CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosX"), 0) + (DPad_ItemsOffset[3][0] * dpadScale);
         } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosType"), 0) == HIDDEN) {
             ItemIconPos[4][0] = -9999;
             ItemIconPos[5][0] = -9999;
@@ -4534,14 +4551,18 @@ void Interface_DrawItemIconTexture(PlayState* play, void* texture, s16 button) {
             ItemIconPos[7][0] = -9999;
         }
     } else {
-        ItemIconPos[4][0] = OTRGetDimensionFromRightEdge(ItemIconPos_ori[4][0]);
-        ItemIconPos[5][0] = OTRGetDimensionFromRightEdge(ItemIconPos_ori[5][0]);
-        ItemIconPos[6][0] = OTRGetDimensionFromRightEdge(ItemIconPos_ori[6][0]);
-        ItemIconPos[7][0] = OTRGetDimensionFromRightEdge(ItemIconPos_ori[7][0]);
-        ItemIconPos[4][1] = ItemIconPos_ori[4][1];
-        ItemIconPos[5][1] = ItemIconPos_ori[5][1];
-        ItemIconPos[6][1] = ItemIconPos_ori[6][1];
-        ItemIconPos[7][1] = ItemIconPos_ori[7][1];
+        ItemIconPos[4][0] =
+            OTRGetDimensionFromRightEdge(DPAD_X + X_Margins_DPad_Items + ((DPAD_UP_X - DPAD_X) * dpadScale));
+        ItemIconPos[5][0] =
+            OTRGetDimensionFromRightEdge(DPAD_X + X_Margins_DPad_Items + ((DPAD_DOWN_X - DPAD_X) * dpadScale));
+        ItemIconPos[6][0] =
+            OTRGetDimensionFromRightEdge(DPAD_X + X_Margins_DPad_Items + ((DPAD_LEFT_X - DPAD_X) * dpadScale));
+        ItemIconPos[7][0] =
+            OTRGetDimensionFromRightEdge(DPAD_X + X_Margins_DPad_Items + ((DPAD_RIGHT_X - DPAD_X) * dpadScale));
+        ItemIconPos[4][1] = DPAD_Y + Y_Margins_DPad_Items + ((DPAD_UP_Y - DPAD_Y) * dpadScale);
+        ItemIconPos[5][1] = DPAD_Y + Y_Margins_DPad_Items + ((DPAD_DOWN_Y - DPAD_Y) * dpadScale);
+        ItemIconPos[6][1] = DPAD_Y + Y_Margins_DPad_Items + ((DPAD_LEFT_Y - DPAD_Y) * dpadScale);
+        ItemIconPos[7][1] = DPAD_Y + Y_Margins_DPad_Items + ((DPAD_RIGHT_Y - DPAD_Y) * dpadScale);
     }
     // B Button
     if (CVarGetInteger(CVAR_COSMETIC("HUD.BButton.PosType"), 0) != ORIGINAL_LOCATION) {
@@ -4643,10 +4664,16 @@ void Interface_DrawItemIconTexture(PlayState* play, void* texture, s16 button) {
     gDPLoadTextureBlock(OVERLAY_DISP++, texture, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
+    f32 scaleRatio =
+        MAX(CVarGetFloat(gItemIconScaleCvars[button], gItemIconDefaultScales[button]) / gItemIconDefaultScales[button],
+            0.25f);
+    s16 itemIconWidth = gItemIconWidth[button] * scaleRatio;
+    s16 itemIconDD = gItemIconDD[button] / scaleRatio;
+
     gSPWideTextureRectangle(OVERLAY_DISP++, ItemIconPos[button][0] << 2, ItemIconPos[button][1] << 2,
-                            (ItemIconPos[button][0] + gItemIconWidth[button]) << 2,
-                            (ItemIconPos[button][1] + gItemIconWidth[button]) << 2, G_TX_RENDERTILE, 0, 0,
-                            gItemIconDD[button] << 1, gItemIconDD[button] << 1);
+                            (ItemIconPos[button][0] + itemIconWidth) << 2,
+                            (ItemIconPos[button][1] + itemIconWidth) << 2, G_TX_RENDERTILE, 0, 0, itemIconDD << 1,
+                            itemIconDD << 1);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
@@ -4718,16 +4745,6 @@ void Interface_DrawAmmoCount(PlayState* play, s16 button, s16 alpha) {
         X_Margins_DPad_Items = 0;
         Y_Margins_DPad_Items = 0;
     }
-    const s16 ItemIconPos_ori[8][2] = {
-        { R_ITEM_AMMO_X(0) + X_Margins_BtnB, R_ITEM_AMMO_Y(0) + Y_Margins_BtnB }, // Bow on Epona?
-        { R_ITEM_AMMO_X(1) + X_Margins_CL, R_ITEM_AMMO_Y(1) + Y_Margins_CL },
-        { R_ITEM_AMMO_X(2) + X_Margins_CD, R_ITEM_AMMO_Y(2) + Y_Margins_CD },
-        { R_ITEM_AMMO_X(3) + X_Margins_CR, R_ITEM_AMMO_Y(3) + Y_Margins_CR },
-        { DPAD_UP_X + X_Margins_DPad_Items, DPAD_UP_Y + 11 + Y_Margins_DPad_Items },
-        { DPAD_DOWN_X + X_Margins_DPad_Items, DPAD_DOWN_Y + 11 + Y_Margins_DPad_Items },
-        { DPAD_LEFT_X + X_Margins_DPad_Items, DPAD_LEFT_Y + 11 + Y_Margins_DPad_Items },
-        { DPAD_RIGHT_X + X_Margins_DPad_Items, DPAD_RIGHT_Y + 11 + Y_Margins_DPad_Items }
-    };
     s16 ItemIconPos[8][2]; //(X,Y)
     s16 DPad_ItemsOffset[4][2] = {
         { 7, 3 },   // Up
@@ -4735,45 +4752,58 @@ void Interface_DrawAmmoCount(PlayState* play, s16 button, s16 alpha) {
         { -9, 19 }, // Left
         { 23, 19 }, // Right
     };              //(X,Y) Used with custom position to place it properly.
+    f32 dpadScale = MAX(CVarGetFloat(CVAR_COSMETIC("HUD.Dpad.Scale"), 1.0f), 0.25f);
     // DPadItems
     if (CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosType"), 0) != ORIGINAL_LOCATION) {
-        ItemIconPos[4][1] =
-            CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosY"), 0) + Y_Margins_DPad_Items + DPad_ItemsOffset[0][1]; // Up
-        ItemIconPos[5][1] =
-            CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosY"), 0) + Y_Margins_DPad_Items + DPad_ItemsOffset[1][1]; // Down
-        ItemIconPos[6][1] =
-            CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosY"), 0) + Y_Margins_DPad_Items + DPad_ItemsOffset[2][1]; // Left
-        ItemIconPos[7][1] =
-            CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosY"), 0) + Y_Margins_DPad_Items + DPad_ItemsOffset[3][1]; // Right
+        ItemIconPos[4][1] = CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosY"), 0) + Y_Margins_DPad_Items +
+                            (DPad_ItemsOffset[0][1] * dpadScale); // Up
+        ItemIconPos[5][1] = CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosY"), 0) + Y_Margins_DPad_Items +
+                            (DPad_ItemsOffset[1][1] * dpadScale); // Down
+        ItemIconPos[6][1] = CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosY"), 0) + Y_Margins_DPad_Items +
+                            (DPad_ItemsOffset[2][1] * dpadScale); // Left
+        ItemIconPos[7][1] = CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosY"), 0) + Y_Margins_DPad_Items +
+                            (DPad_ItemsOffset[3][1] * dpadScale); // Right
         if (CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosType"), 0) == ANCHOR_LEFT) {
             if (CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.UseMargins"), 0) != 0) {
                 X_Margins_DPad_Items = Left_HUD_Margin;
             };
-            ItemIconPos[4][0] = OTRGetDimensionFromLeftEdge(CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosX"), 0) +
-                                                            X_Margins_DPad_Items + DPad_ItemsOffset[0][0]);
-            ItemIconPos[5][0] = OTRGetDimensionFromLeftEdge(CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosX"), 0) +
-                                                            X_Margins_DPad_Items + DPad_ItemsOffset[1][0]);
-            ItemIconPos[6][0] = OTRGetDimensionFromLeftEdge(CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosX"), 0) +
-                                                            X_Margins_DPad_Items + DPad_ItemsOffset[2][0]);
-            ItemIconPos[7][0] = OTRGetDimensionFromLeftEdge(CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosX"), 0) +
-                                                            X_Margins_DPad_Items + DPad_ItemsOffset[3][0]);
+            ItemIconPos[4][0] =
+                OTRGetDimensionFromLeftEdge(CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosX"), 0) + X_Margins_DPad_Items +
+                                            (DPad_ItemsOffset[0][0] * dpadScale));
+            ItemIconPos[5][0] =
+                OTRGetDimensionFromLeftEdge(CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosX"), 0) + X_Margins_DPad_Items +
+                                            (DPad_ItemsOffset[1][0] * dpadScale));
+            ItemIconPos[6][0] =
+                OTRGetDimensionFromLeftEdge(CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosX"), 0) + X_Margins_DPad_Items +
+                                            (DPad_ItemsOffset[2][0] * dpadScale));
+            ItemIconPos[7][0] =
+                OTRGetDimensionFromLeftEdge(CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosX"), 0) + X_Margins_DPad_Items +
+                                            (DPad_ItemsOffset[3][0] * dpadScale));
         } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosType"), 0) == ANCHOR_RIGHT) {
             if (CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.UseMargins"), 0) != 0) {
                 X_Margins_DPad_Items = Right_HUD_Margin;
             };
-            ItemIconPos[4][0] = OTRGetDimensionFromRightEdge(CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosX"), 0) +
-                                                             X_Margins_DPad_Items + DPad_ItemsOffset[0][0]);
-            ItemIconPos[5][0] = OTRGetDimensionFromRightEdge(CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosX"), 0) +
-                                                             X_Margins_DPad_Items + DPad_ItemsOffset[1][0]);
-            ItemIconPos[6][0] = OTRGetDimensionFromRightEdge(CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosX"), 0) +
-                                                             X_Margins_DPad_Items + DPad_ItemsOffset[2][0]);
-            ItemIconPos[7][0] = OTRGetDimensionFromRightEdge(CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosX"), 0) +
-                                                             X_Margins_DPad_Items + DPad_ItemsOffset[3][0]);
+            ItemIconPos[4][0] =
+                OTRGetDimensionFromRightEdge(CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosX"), 0) + X_Margins_DPad_Items +
+                                             (DPad_ItemsOffset[0][0] * dpadScale));
+            ItemIconPos[5][0] =
+                OTRGetDimensionFromRightEdge(CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosX"), 0) + X_Margins_DPad_Items +
+                                             (DPad_ItemsOffset[1][0] * dpadScale));
+            ItemIconPos[6][0] =
+                OTRGetDimensionFromRightEdge(CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosX"), 0) + X_Margins_DPad_Items +
+                                             (DPad_ItemsOffset[2][0] * dpadScale));
+            ItemIconPos[7][0] =
+                OTRGetDimensionFromRightEdge(CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosX"), 0) + X_Margins_DPad_Items +
+                                             (DPad_ItemsOffset[3][0] * dpadScale));
         } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosType"), 0) == ANCHOR_NONE) {
-            ItemIconPos[4][0] = CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosX"), 0) + DPad_ItemsOffset[0][0];
-            ItemIconPos[5][0] = CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosX"), 0) + DPad_ItemsOffset[1][0];
-            ItemIconPos[6][0] = CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosX"), 0) + DPad_ItemsOffset[2][0];
-            ItemIconPos[7][0] = CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosX"), 0) + DPad_ItemsOffset[3][0];
+            ItemIconPos[4][0] =
+                CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosX"), 0) + (DPad_ItemsOffset[0][0] * dpadScale);
+            ItemIconPos[5][0] =
+                CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosX"), 0) + (DPad_ItemsOffset[1][0] * dpadScale);
+            ItemIconPos[6][0] =
+                CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosX"), 0) + (DPad_ItemsOffset[2][0] * dpadScale);
+            ItemIconPos[7][0] =
+                CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosX"), 0) + (DPad_ItemsOffset[3][0] * dpadScale);
         } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Dpad.PosType"), 0) == HIDDEN) {
             ItemIconPos[4][0] = -9999;
             ItemIconPos[5][0] = -9999;
@@ -4781,112 +4811,136 @@ void Interface_DrawAmmoCount(PlayState* play, s16 button, s16 alpha) {
             ItemIconPos[7][0] = -9999;
         }
     } else {
-        ItemIconPos[4][0] = OTRGetDimensionFromRightEdge(ItemIconPos_ori[4][0]);
-        ItemIconPos[5][0] = OTRGetDimensionFromRightEdge(ItemIconPos_ori[5][0]);
-        ItemIconPos[6][0] = OTRGetDimensionFromRightEdge(ItemIconPos_ori[6][0]);
-        ItemIconPos[7][0] = OTRGetDimensionFromRightEdge(ItemIconPos_ori[7][0]);
-        ItemIconPos[4][1] = ItemIconPos_ori[4][1];
-        ItemIconPos[5][1] = ItemIconPos_ori[5][1];
-        ItemIconPos[6][1] = ItemIconPos_ori[6][1];
-        ItemIconPos[7][1] = ItemIconPos_ori[7][1];
+        ItemIconPos[4][0] =
+            OTRGetDimensionFromRightEdge(DPAD_X + X_Margins_DPad_Items + ((DPAD_UP_X - DPAD_X) * dpadScale));
+        ItemIconPos[5][0] =
+            OTRGetDimensionFromRightEdge(DPAD_X + X_Margins_DPad_Items + ((DPAD_DOWN_X - DPAD_X) * dpadScale));
+        ItemIconPos[6][0] =
+            OTRGetDimensionFromRightEdge(DPAD_X + X_Margins_DPad_Items + ((DPAD_LEFT_X - DPAD_X) * dpadScale));
+        ItemIconPos[7][0] =
+            OTRGetDimensionFromRightEdge(DPAD_X + X_Margins_DPad_Items + ((DPAD_RIGHT_X - DPAD_X) * dpadScale));
+        ItemIconPos[4][1] = DPAD_Y + 11 + Y_Margins_DPad_Items + ((DPAD_UP_Y - DPAD_Y) * dpadScale);
+        ItemIconPos[5][1] = DPAD_Y + 11 + Y_Margins_DPad_Items + ((DPAD_DOWN_Y - DPAD_Y) * dpadScale);
+        ItemIconPos[6][1] = DPAD_Y + 11 + Y_Margins_DPad_Items + ((DPAD_LEFT_Y - DPAD_Y) * dpadScale);
+        ItemIconPos[7][1] = DPAD_Y + 11 + Y_Margins_DPad_Items + ((DPAD_RIGHT_Y - DPAD_Y) * dpadScale);
     }
     // B Button
     s16 PosX_adjust = 1;
     s16 PosY_adjust = 17;
+    f32 bButtonScaleRatio = MAX(CVarGetFloat(CVAR_COSMETIC("HUD.BButton.Scale"), 0.95f) / 0.95f, 0.25f);
+    f32 cLeftButtonScaleRatio = MAX(CVarGetFloat(CVAR_COSMETIC("HUD.CLeftButton.Scale"), 0.87f) / 0.87f, 0.25f);
+    f32 cDownButtonScaleRatio = MAX(CVarGetFloat(CVAR_COSMETIC("HUD.CDownButton.Scale"), 0.87f) / 0.87f, 0.25f);
+    f32 cRightButtonScaleRatio = MAX(CVarGetFloat(CVAR_COSMETIC("HUD.CRightButton.Scale"), 0.87f) / 0.87f, 0.25f);
     if (CVarGetInteger(CVAR_COSMETIC("HUD.BButton.PosType"), 0) != ORIGINAL_LOCATION) {
-        ItemIconPos[0][1] = CVarGetInteger(CVAR_COSMETIC("HUD.BButton.PosY"), 0) + Y_Margins_BtnB + PosY_adjust;
+        ItemIconPos[0][1] =
+            CVarGetInteger(CVAR_COSMETIC("HUD.BButton.PosY"), 0) + Y_Margins_BtnB + (PosY_adjust * bButtonScaleRatio);
         if (CVarGetInteger(CVAR_COSMETIC("HUD.BButton.PosType"), 0) == ANCHOR_LEFT) {
             if (CVarGetInteger(CVAR_COSMETIC("HUD.BButton.UseMargins"), 0) != 0) {
                 X_Margins_BtnB = Left_HUD_Margin;
             };
             ItemIconPos[0][0] = OTRGetDimensionFromLeftEdge(CVarGetInteger(CVAR_COSMETIC("HUD.BButton.PosX"), 0) +
-                                                            X_Margins_BtnB + PosX_adjust);
+                                                            X_Margins_BtnB + (PosX_adjust * bButtonScaleRatio));
         } else if (CVarGetInteger(CVAR_COSMETIC("HUD.BButton.PosType"), 0) == ANCHOR_RIGHT) {
             if (CVarGetInteger(CVAR_COSMETIC("HUD.BButton.UseMargins"), 0) != 0) {
                 X_Margins_BtnB = Right_HUD_Margin;
             };
             ItemIconPos[0][0] = OTRGetDimensionFromRightEdge(CVarGetInteger(CVAR_COSMETIC("HUD.BButton.PosX"), 0) +
-                                                             X_Margins_BtnB + PosX_adjust);
+                                                             X_Margins_BtnB + (PosX_adjust * bButtonScaleRatio));
         } else if (CVarGetInteger(CVAR_COSMETIC("HUD.BButton.PosType"), 0) == ANCHOR_NONE) {
-            ItemIconPos[0][0] = CVarGetInteger(CVAR_COSMETIC("HUD.BButton.PosX"), 0) + PosX_adjust;
+            ItemIconPos[0][0] =
+                CVarGetInteger(CVAR_COSMETIC("HUD.BButton.PosX"), 0) + (PosX_adjust * bButtonScaleRatio);
         } else if (CVarGetInteger(CVAR_COSMETIC("HUD.BButton.PosType"), 0) == HIDDEN) {
             ItemIconPos[0][0] = -9999;
         }
     } else {
-        ItemIconPos[0][0] = OTRGetRectDimensionFromRightEdge(ItemIconPos_ori[0][0]);
-        ItemIconPos[0][1] = ItemIconPos_ori[0][1];
+        ItemIconPos[0][0] = OTRGetRectDimensionFromRightEdge(
+            R_ITEM_BTN_X(0) + X_Margins_BtnB + ((R_ITEM_AMMO_X(0) - R_ITEM_BTN_X(0)) * bButtonScaleRatio));
+        ItemIconPos[0][1] =
+            R_ITEM_BTN_Y(0) + Y_Margins_BtnB + ((R_ITEM_AMMO_Y(0) - R_ITEM_BTN_Y(0)) * bButtonScaleRatio);
     }
     // C button Left
     if (CVarGetInteger(CVAR_COSMETIC("HUD.CLeftButton.PosType"), 0) != ORIGINAL_LOCATION) {
-        ItemIconPos[1][1] = CVarGetInteger(CVAR_COSMETIC("HUD.CLeftButton.PosY"), 0) + Y_Margins_CL + PosY_adjust;
+        ItemIconPos[1][1] = CVarGetInteger(CVAR_COSMETIC("HUD.CLeftButton.PosY"), 0) + Y_Margins_CL +
+                            (PosY_adjust * cLeftButtonScaleRatio);
         if (CVarGetInteger(CVAR_COSMETIC("HUD.CLeftButton.PosType"), 0) == ANCHOR_LEFT) {
             if (CVarGetInteger(CVAR_COSMETIC("HUD.CLeftButton.UseMargins"), 0) != 0) {
                 X_Margins_CL = Left_HUD_Margin;
             };
             ItemIconPos[1][0] = OTRGetDimensionFromLeftEdge(CVarGetInteger(CVAR_COSMETIC("HUD.CLeftButton.PosX"), 0) +
-                                                            X_Margins_CL + PosX_adjust);
+                                                            X_Margins_CL + (PosX_adjust * cLeftButtonScaleRatio));
         } else if (CVarGetInteger(CVAR_COSMETIC("HUD.CLeftButton.PosType"), 0) == ANCHOR_RIGHT) {
             if (CVarGetInteger(CVAR_COSMETIC("HUD.CLeftButton.UseMargins"), 0) != 0) {
                 X_Margins_CL = Right_HUD_Margin;
             };
             ItemIconPos[1][0] = OTRGetDimensionFromRightEdge(CVarGetInteger(CVAR_COSMETIC("HUD.CLeftButton.PosX"), 0) +
-                                                             X_Margins_CL + PosX_adjust);
+                                                             X_Margins_CL + (PosX_adjust * cLeftButtonScaleRatio));
         } else if (CVarGetInteger(CVAR_COSMETIC("HUD.CLeftButton.PosType"), 0) == ANCHOR_NONE) {
-            ItemIconPos[1][0] = CVarGetInteger(CVAR_COSMETIC("HUD.CLeftButton.PosX"), 0) + PosX_adjust;
+            ItemIconPos[1][0] =
+                CVarGetInteger(CVAR_COSMETIC("HUD.CLeftButton.PosX"), 0) + (PosX_adjust * cLeftButtonScaleRatio);
         } else if (CVarGetInteger(CVAR_COSMETIC("HUD.CLeftButton.PosType"), 0) == HIDDEN) {
             ItemIconPos[1][0] = -9999;
         }
     } else {
-        ItemIconPos[1][0] = OTRGetRectDimensionFromRightEdge(ItemIconPos_ori[1][0]);
-        ItemIconPos[1][1] = ItemIconPos_ori[1][1];
+        ItemIconPos[1][0] = OTRGetRectDimensionFromRightEdge(
+            R_ITEM_BTN_X(1) + X_Margins_CL + ((R_ITEM_AMMO_X(1) - R_ITEM_BTN_X(1)) * cLeftButtonScaleRatio));
+        ItemIconPos[1][1] =
+            R_ITEM_BTN_Y(1) + Y_Margins_CL + ((R_ITEM_AMMO_Y(1) - R_ITEM_BTN_Y(1)) * cLeftButtonScaleRatio);
     }
     // C Button down
     if (CVarGetInteger(CVAR_COSMETIC("HUD.CDownButton.PosType"), 0) != ORIGINAL_LOCATION) {
-        ItemIconPos[2][1] = CVarGetInteger(CVAR_COSMETIC("HUD.CDownButton.PosY"), 0) + Y_Margins_CD + PosY_adjust;
+        ItemIconPos[2][1] = CVarGetInteger(CVAR_COSMETIC("HUD.CDownButton.PosY"), 0) + Y_Margins_CD +
+                            (PosY_adjust * cDownButtonScaleRatio);
         if (CVarGetInteger(CVAR_COSMETIC("HUD.CDownButton.PosType"), 0) == ANCHOR_LEFT) {
             if (CVarGetInteger(CVAR_COSMETIC("HUD.CDownButton.UseMargins"), 0) != 0) {
                 X_Margins_CD = Left_HUD_Margin;
             };
             ItemIconPos[2][0] = OTRGetDimensionFromLeftEdge(CVarGetInteger(CVAR_COSMETIC("HUD.CDownButton.PosX"), 0) +
-                                                            X_Margins_CD + PosX_adjust);
+                                                            X_Margins_CD + (PosX_adjust * cDownButtonScaleRatio));
         } else if (CVarGetInteger(CVAR_COSMETIC("HUD.CDownButton.PosType"), 0) == ANCHOR_RIGHT) {
             if (CVarGetInteger(CVAR_COSMETIC("HUD.CDownButton.UseMargins"), 0) != 0) {
                 X_Margins_CD = Right_HUD_Margin;
             };
             ItemIconPos[2][0] = OTRGetDimensionFromRightEdge(CVarGetInteger(CVAR_COSMETIC("HUD.CDownButton.PosX"), 0) +
-                                                             X_Margins_CD + PosX_adjust);
+                                                             X_Margins_CD + (PosX_adjust * cDownButtonScaleRatio));
         } else if (CVarGetInteger(CVAR_COSMETIC("HUD.CDownButton.PosType"), 0) == ANCHOR_NONE) {
-            ItemIconPos[2][0] = CVarGetInteger(CVAR_COSMETIC("HUD.CDownButton.PosX"), 0) + PosX_adjust;
+            ItemIconPos[2][0] =
+                CVarGetInteger(CVAR_COSMETIC("HUD.CDownButton.PosX"), 0) + (PosX_adjust * cDownButtonScaleRatio);
         } else if (CVarGetInteger(CVAR_COSMETIC("HUD.CDownButton.PosType"), 0) == HIDDEN) {
             ItemIconPos[2][0] = -9999;
         }
     } else {
-        ItemIconPos[2][0] = OTRGetRectDimensionFromRightEdge(ItemIconPos_ori[2][0]);
-        ItemIconPos[2][1] = ItemIconPos_ori[2][1];
+        ItemIconPos[2][0] = OTRGetRectDimensionFromRightEdge(
+            R_ITEM_BTN_X(2) + X_Margins_CD + ((R_ITEM_AMMO_X(2) - R_ITEM_BTN_X(2)) * cDownButtonScaleRatio));
+        ItemIconPos[2][1] =
+            R_ITEM_BTN_Y(2) + Y_Margins_CD + ((R_ITEM_AMMO_Y(2) - R_ITEM_BTN_Y(2)) * cDownButtonScaleRatio);
     }
     // C button Right
     if (CVarGetInteger(CVAR_COSMETIC("HUD.CRightButton.PosType"), 0) != ORIGINAL_LOCATION) {
-        ItemIconPos[3][1] = CVarGetInteger(CVAR_COSMETIC("HUD.CRightButton.PosY"), 0) + Y_Margins_CR + PosY_adjust;
+        ItemIconPos[3][1] = CVarGetInteger(CVAR_COSMETIC("HUD.CRightButton.PosY"), 0) + Y_Margins_CR +
+                            (PosY_adjust * cRightButtonScaleRatio);
         if (CVarGetInteger(CVAR_COSMETIC("HUD.CRightButton.PosType"), 0) == ANCHOR_LEFT) {
             if (CVarGetInteger(CVAR_COSMETIC("HUD.CRightButton.UseMargins"), 0) != 0) {
                 X_Margins_CR = Left_HUD_Margin;
             };
             ItemIconPos[3][0] = OTRGetDimensionFromLeftEdge(CVarGetInteger(CVAR_COSMETIC("HUD.CRightButton.PosX"), 0) +
-                                                            X_Margins_CR + PosX_adjust);
+                                                            X_Margins_CR + (PosX_adjust * cRightButtonScaleRatio));
         } else if (CVarGetInteger(CVAR_COSMETIC("HUD.CRightButton.PosType"), 0) == ANCHOR_RIGHT) {
             if (CVarGetInteger(CVAR_COSMETIC("HUD.CRightButton.UseMargins"), 0) != 0) {
                 X_Margins_CR = Right_HUD_Margin;
             };
             ItemIconPos[3][0] = OTRGetDimensionFromRightEdge(CVarGetInteger(CVAR_COSMETIC("HUD.CRightButton.PosX"), 0) +
-                                                             X_Margins_CR + PosX_adjust);
+                                                             X_Margins_CR + (PosX_adjust * cRightButtonScaleRatio));
         } else if (CVarGetInteger(CVAR_COSMETIC("HUD.CRightButton.PosType"), 0) == ANCHOR_NONE) {
-            ItemIconPos[3][0] = CVarGetInteger(CVAR_COSMETIC("HUD.CRightButton.PosX"), 0) + PosX_adjust;
+            ItemIconPos[3][0] =
+                CVarGetInteger(CVAR_COSMETIC("HUD.CRightButton.PosX"), 0) + (PosX_adjust * cRightButtonScaleRatio);
         } else if (CVarGetInteger(CVAR_COSMETIC("HUD.CRightButton.PosType"), 0) == HIDDEN) {
             ItemIconPos[3][0] = -9999;
         }
     } else {
-        ItemIconPos[3][0] = OTRGetRectDimensionFromRightEdge(ItemIconPos_ori[3][0]);
-        ItemIconPos[3][1] = ItemIconPos_ori[3][1];
+        ItemIconPos[3][0] = OTRGetRectDimensionFromRightEdge(
+            R_ITEM_BTN_X(3) + X_Margins_CR + ((R_ITEM_AMMO_X(3) - R_ITEM_BTN_X(3)) * cRightButtonScaleRatio));
+        ItemIconPos[3][1] =
+            R_ITEM_BTN_Y(3) + Y_Margins_CR + ((R_ITEM_AMMO_Y(3) - R_ITEM_BTN_Y(3)) * cRightButtonScaleRatio);
     }
 
     OPEN_DISPS(play->state.gfxCtx);
@@ -4931,26 +4985,34 @@ void Interface_DrawAmmoCount(PlayState* play, s16 button, s16 alpha) {
         for (i = 0; ammo >= 10; i++) {
             ammo -= 10;
         }
+        f32 scaleRatio = MAX(CVarGetFloat(gItemIconScaleCvars[button], gItemIconDefaultScales[button]) /
+                                 gItemIconDefaultScales[button],
+                             0.25f);
+        s16 ammoDigitSize = 8 * scaleRatio;
+        s16 ammoDigitSpacing = 6 * scaleRatio;
+        s16 ammoDigitDD = (1 << 10) / scaleRatio;
 
         if (i != 0) {
-            OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, (u8*)_gAmmoDigit0Tex[i], 8, 8, ItemIconPos[button][0],
-                                          ItemIconPos[button][1], 8, 8, 1 << 10, 1 << 10);
+            OVERLAY_DISP =
+                Gfx_TextureIA8(OVERLAY_DISP, (u8*)_gAmmoDigit0Tex[i], 8, 8, ItemIconPos[button][0],
+                               ItemIconPos[button][1], ammoDigitSize, ammoDigitSize, ammoDigitDD, ammoDigitDD);
         }
 
-        OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, (u8*)_gAmmoDigit0Tex[ammo], 8, 8, ItemIconPos[button][0] + 6,
-                                      ItemIconPos[button][1], 8, 8, 1 << 10, 1 << 10);
+        OVERLAY_DISP =
+            Gfx_TextureIA8(OVERLAY_DISP, (u8*)_gAmmoDigit0Tex[ammo], 8, 8, ItemIconPos[button][0] + ammoDigitSpacing,
+                           ItemIconPos[button][1], ammoDigitSize, ammoDigitSize, ammoDigitDD, ammoDigitDD);
     }
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
-void Interface_DrawActionButton(PlayState* play, f32 x, f32 y) {
+void Interface_DrawActionButton(PlayState* play, f32 x, f32 y, f32 scale) {
     InterfaceContext* interfaceCtx = &play->interfaceCtx;
 
     OPEN_DISPS(play->state.gfxCtx);
 
     Matrix_Translate(-137.0f + x, 97.0f - y, XREG(18) / 10.0f, MTXMODE_NEW);
-    Matrix_Scale(1.0f, 1.0f, 1.0f, MTXMODE_APPLY);
+    Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
     Matrix_RotateX(interfaceCtx->unk_1F4 / 10000.0f, MTXMODE_APPLY);
 
     gSPMatrix(OVERLAY_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
@@ -5173,6 +5235,11 @@ void Interface_Draw(PlayState* play) {
         if (fullUi) {
             s16 PosX_RC;
             s16 PosY_RC;
+            f32 rupeeScale = MAX(CVarGetFloat(CVAR_COSMETIC("HUD.Rupees.Scale"), 1.0f), 0.25f);
+            s16 rupeeIconSize = 16 * rupeeScale;
+            s16 rupeeDigitWidth = 8 * rupeeScale;
+            s16 rupeeDigitHeight = 16 * rupeeScale;
+            s16 rupeeTexStep = (1 << 10) / rupeeScale;
             if (GameInteractor_Should(VB_RENDER_RUPEE_COUNTER, true)) {
                 // Rupee Icon
                 if (CVarGetInteger(CVAR_ENHANCEMENT("DynamicWalletIcon"), 0)) {
@@ -5256,8 +5323,8 @@ void Interface_Draw(PlayState* play) {
                     PosX_RC = PosX_RC_ori;
                 }
                 gDPSetPrimColor(OVERLAY_DISP++, 0, 0, rColor.r, rColor.g, rColor.b, interfaceCtx->magicAlpha);
-                OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, gRupeeCounterIconTex, 16, 16, PosX_RC, PosY_RC, 16, 16,
-                                              1 << 10, 1 << 10);
+                OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, gRupeeCounterIconTex, 16, 16, PosX_RC, PosY_RC,
+                                              rupeeIconSize, rupeeIconSize, rupeeTexStep, rupeeTexStep);
             }
 
             if (GameInteractor_Should(VB_RENDER_KEY_COUNTER, true)) {
@@ -5315,6 +5382,11 @@ void Interface_Draw(PlayState* play) {
                                 PosY_SKC = PosY_SKC_ori;
                                 PosX_SKC = PosX_SKC_ori;
                             }
+                            f32 smallKeyScale = MAX(CVarGetFloat(CVAR_COSMETIC("HUD.SmallKey.Scale"), 1.0f), 0.25f);
+                            s16 smallKeyIconSize = 16 * smallKeyScale;
+                            s16 smallKeyDigitWidth = 8 * smallKeyScale;
+                            s16 smallKeyDigitHeight = 16 * smallKeyScale;
+                            s16 smallKeyTexStep = (1 << 10) / smallKeyScale;
                             // Small Key Icon
                             gDPPipeSync(OVERLAY_DISP++);
 
@@ -5322,8 +5394,9 @@ void Interface_Draw(PlayState* play) {
                                             interfaceCtx->magicAlpha);
                             gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 20,
                                            255); // We reset this here so it match user color :)
-                            OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, gSmallKeyCounterIconTex, 16, 16, PosX_SKC,
-                                                          PosY_SKC, 16, 16, 1 << 10, 1 << 10);
+                            OVERLAY_DISP =
+                                Gfx_TextureIA8(OVERLAY_DISP, gSmallKeyCounterIconTex, 16, 16, PosX_SKC, PosY_SKC,
+                                               smallKeyIconSize, smallKeyIconSize, smallKeyTexStep, smallKeyTexStep);
 
                             // Small Key Counter
                             gDPPipeSync(OVERLAY_DISP++);
@@ -5343,13 +5416,15 @@ void Interface_Draw(PlayState* play) {
                             if (interfaceCtx->counterDigits[2] != 0) {
                                 OVERLAY_DISP = Gfx_TextureI8(
                                     OVERLAY_DISP, ((u8*)((u8*)digitTextures[interfaceCtx->counterDigits[2]])), 8, 16,
-                                    PosX_SKC + 16, PosY_SKC, 8, 16, 1 << 10, 1 << 10);
+                                    PosX_SKC + (16 * smallKeyScale), PosY_SKC, smallKeyDigitWidth, smallKeyDigitHeight,
+                                    smallKeyTexStep, smallKeyTexStep);
                                 svar3 = 24;
                             }
 
                             OVERLAY_DISP =
                                 Gfx_TextureI8(OVERLAY_DISP, ((u8*)digitTextures[interfaceCtx->counterDigits[3]]), 8, 16,
-                                              PosX_SKC + svar3, PosY_SKC, 8, 16, 1 << 10, 1 << 10);
+                                              PosX_SKC + (svar3 * smallKeyScale), PosY_SKC, smallKeyDigitWidth,
+                                              smallKeyDigitHeight, smallKeyTexStep, smallKeyTexStep);
                         }
                         break;
                     default:
@@ -5394,7 +5469,8 @@ void Interface_Draw(PlayState* play) {
 
                 for (svar1 = 0, svar3 = 16; svar1 < svar5; svar1++, svar2++, svar3 += 8) {
                     OVERLAY_DISP = Gfx_TextureI8(OVERLAY_DISP, ((u8*)digitTextures[interfaceCtx->counterDigits[svar2]]),
-                                                 8, 16, PosX_RC + svar3, PosY_RC, 8, 16, 1 << 10, 1 << 10);
+                                                 8, 16, PosX_RC + (svar3 * rupeeScale), PosY_RC, rupeeDigitWidth,
+                                                 rupeeDigitHeight, rupeeTexStep, rupeeTexStep);
                 }
             }
         } else {
@@ -5608,6 +5684,9 @@ void Interface_Draw(PlayState* play) {
                 DpadPosX = OTRGetRectDimensionFromRightEdge(DPAD_X + X_Margins_Dpad);
                 DpadPosY = DPAD_Y + Y_Margins_Dpad;
             }
+            f32 dpadScale = MAX(CVarGetFloat(CVAR_COSMETIC("HUD.Dpad.Scale"), 1.0f), 0.25f);
+            s16 dpadSize = 32 * dpadScale;
+            s16 dpadDD = (1 << 10) / dpadScale;
 
             gDPSetCombineMode(OVERLAY_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
 
@@ -5616,8 +5695,8 @@ void Interface_Draw(PlayState* play) {
                 gDPLoadTextureBlock(OVERLAY_DISP++, gDPadTex, G_IM_FMT_IA, G_IM_SIZ_16b, 32, 32, 0,
                                     G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
                                     G_TX_NOLOD, G_TX_NOLOD);
-                gSPWideTextureRectangle(OVERLAY_DISP++, DpadPosX << 2, DpadPosY << 2, (DpadPosX + 32) << 2,
-                                        (DpadPosY + 32) << 2, G_TX_RENDERTILE, 0, 0, (1 << 10), (1 << 10));
+                gSPWideTextureRectangle(OVERLAY_DISP++, DpadPosX << 2, DpadPosY << 2, (DpadPosX + dpadSize) << 2,
+                                        (DpadPosY + dpadSize) << 2, G_TX_RENDERTILE, 0, 0, dpadDD, dpadDD);
             }
 
             // DPad-Up Button Icon & Ammo Count
@@ -5684,6 +5763,7 @@ void Interface_Draw(PlayState* play) {
         s16 PosY_BtnA;
         s16 rAIconX;
         s16 rAIconY;
+        f32 aButtonScale = MAX(CVarGetFloat(CVAR_COSMETIC("HUD.AButton.Scale"), 1.0f), 0.25f);
         if (CVarGetInteger(CVAR_COSMETIC("HUD.AButton.PosType"), 0) != ORIGINAL_LOCATION) {
             PosY_BtnA = CVarGetInteger(CVAR_COSMETIC("HUD.AButton.PosY"), 0) + Y_Margins_BtnA;
             rAIconY = 98.0f - PosY_BtnA;
@@ -5720,7 +5800,7 @@ void Interface_Draw(PlayState* play) {
         gDPSetCombineMode(OVERLAY_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
         gDPSetPrimColor(OVERLAY_DISP++, 0, 0, aButtonColor.r, aButtonColor.g, aButtonColor.b, interfaceCtx->aAlpha);
         if (fullUi) {
-            Interface_DrawActionButton(play, PosX_BtnA, PosY_BtnA);
+            Interface_DrawActionButton(play, PosX_BtnA, PosY_BtnA, aButtonScale);
         }
         gDPPipeSync(OVERLAY_DISP++);
         gSPSetGeometryMode(OVERLAY_DISP++, G_CULL_BACK);
@@ -5729,7 +5809,7 @@ void Interface_Draw(PlayState* play) {
         gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, interfaceCtx->aAlpha);
         gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 0, 0);
         Matrix_Translate(-138.0f + rAIconX, rAIconY, WREG(46 + languageOffset) / 10.0f, MTXMODE_NEW);
-        Matrix_Scale(1.0f, 1.0f, 1.0f, MTXMODE_APPLY);
+        Matrix_Scale(aButtonScale, aButtonScale, aButtonScale, MTXMODE_APPLY);
         Matrix_RotateX(interfaceCtx->unk_1F4 / 10000.0f, MTXMODE_APPLY);
         gSPMatrix(OVERLAY_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
         gSPVertex(OVERLAY_DISP++, &interfaceCtx->actionVtx[4], 4, 0);
@@ -5809,6 +5889,9 @@ void Interface_Draw(PlayState* play) {
                     s16 CarrotsPosX = ZREG(14);
                     s16 CarrotsPosY = ZREG(15);
                     s16 CarrotsMargins_X = 0;
+                    f32 carrotsScale = MAX(CVarGetFloat(CVAR_COSMETIC("HUD.Carrots.Scale"), 1.0f), 0.25f);
+                    s16 carrotSize = 16 * carrotsScale;
+                    s16 carrotTexStep = (1 << 10) / carrotsScale;
                     if (CVarGetInteger(CVAR_COSMETIC("HUD.Carrots.PosType"), 0) != ORIGINAL_LOCATION) {
                         CarrotsPosY = CVarGetInteger(CVAR_COSMETIC("HUD.Carrots.PosY"), 0);
                         if (CVarGetInteger(CVAR_COSMETIC("HUD.Carrots.PosType"), 0) == ANCHOR_LEFT) {
@@ -5829,7 +5912,7 @@ void Interface_Draw(PlayState* play) {
                             CarrotsPosX = -9999;
                         }
                     }
-                    for (svar1 = 1, svar5 = CarrotsPosX; svar1 < 7; svar1++, svar5 += 16) {
+                    for (svar1 = 1, svar5 = CarrotsPosX; svar1 < 7; svar1++, svar5 += carrotSize) {
                         // Carrot Color (based on availability)
                         if ((interfaceCtx->numHorseBoosts == 0) || (interfaceCtx->numHorseBoosts < svar1)) {
                             gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 0, 150, 255, interfaceCtx->aAlpha);
@@ -5837,8 +5920,9 @@ void Interface_Draw(PlayState* play) {
                             gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, interfaceCtx->aAlpha);
                         }
 
-                        gSPWideTextureRectangle(OVERLAY_DISP++, svar5 << 2, CarrotsPosY << 2, (svar5 + 16) << 2,
-                                                (CarrotsPosY + 16) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+                        gSPWideTextureRectangle(OVERLAY_DISP++, svar5 << 2, CarrotsPosY << 2, (svar5 + carrotSize) << 2,
+                                                (CarrotsPosY + carrotSize) << 2, G_TX_RENDERTILE, 0, 0, carrotTexStep,
+                                                carrotTexStep);
                     }
                 }
             } else {
@@ -5853,6 +5937,12 @@ void Interface_Draw(PlayState* play) {
                 }
                 s16 ArcheryPos_Y = ZREG(15);
                 s16 ArcheryPos_X = OTRGetRectDimensionFromRightEdge(WREG(32) + X_Margins_Archery);
+                f32 archeryScale = MAX(CVarGetFloat(CVAR_COSMETIC("HUD.ArcheryScore.Scale"), 1.0f), 0.25f);
+                s16 archeryIconWidth = 24 * archeryScale;
+                s16 archeryIconHeight = 16 * archeryScale;
+                s16 archeryDigitHeight = VREG(42) * archeryScale;
+                s16 archeryTexStep = VREG(43) / archeryScale;
+                s16 archeryIconOffsetX = 28 * archeryScale;
 
                 if (CVarGetInteger(CVAR_COSMETIC("HUD.ArcheryScore.PosType"), 0) != ORIGINAL_LOCATION) {
                     ArcheryPos_Y = CVarGetInteger(CVAR_COSMETIC("HUD.ArcheryScore.PosY"), 0);
@@ -5883,23 +5973,25 @@ void Interface_Draw(PlayState* play) {
                                     G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
                                     G_TX_NOLOD, G_TX_NOLOD);
 
-                gSPWideTextureRectangle(OVERLAY_DISP++, (ArcheryPos_X + 28) << 2, ArcheryPos_Y << 2,
-                                        (ArcheryPos_X + 52) << 2, (ArcheryPos_Y + 16) << 2, G_TX_RENDERTILE, 0, 0,
-                                        1 << 10, 1 << 10);
+                gSPWideTextureRectangle(OVERLAY_DISP++, (ArcheryPos_X + archeryIconOffsetX) << 2, ArcheryPos_Y << 2,
+                                        (ArcheryPos_X + archeryIconOffsetX + archeryIconWidth) << 2,
+                                        (ArcheryPos_Y + archeryIconHeight) << 2, G_TX_RENDERTILE, 0, 0,
+                                        (s16)((1 << 10) / archeryScale), (s16)((1 << 10) / archeryScale));
 
                 // Score Counter
                 gDPPipeSync(OVERLAY_DISP++);
                 gDPSetCombineLERP(OVERLAY_DISP++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE,
                                   TEXEL0, 0, PRIMITIVE, 0);
 
-                ArcheryPos_X = ArcheryPos_X + 6 * 9;
+                ArcheryPos_X = ArcheryPos_X + (6 * 9 * archeryScale);
 
                 for (svar1 = svar2 = 0; svar1 < 4; svar1++) {
                     if (sHBAScoreDigits[svar1] != 0 || (svar2 != 0) || (svar1 >= 3)) {
                         OVERLAY_DISP =
                             Gfx_TextureI8(OVERLAY_DISP, digitTextures[sHBAScoreDigits[svar1]], 8, 16, ArcheryPos_X,
-                                          (ArcheryPos_Y - 2), digitWidth[0], VREG(42), VREG(43) << 1, VREG(43) << 1);
-                        ArcheryPos_X += 9;
+                                          ArcheryPos_Y - (2 * archeryScale), digitWidth[0] * archeryScale,
+                                          archeryDigitHeight, archeryTexStep << 1, archeryTexStep << 1);
+                        ArcheryPos_X += 9 * archeryScale;
                         svar2++;
                     }
                 }
@@ -6314,6 +6406,10 @@ void Interface_Draw(PlayState* play) {
                 }
                 svar5 = OTRGetRectDimensionFromLeftEdge(gSaveContext.timerX[timerId] + X_Margins_Timer);
                 svar2 = gSaveContext.timerY[timerId];
+                f32 timerScale = MAX(CVarGetFloat(CVAR_COSMETIC("HUD.Timers.Scale"), 1.0f), 0.25f);
+                s16 timerIconSize = 16 * timerScale;
+                s16 timerDigitHeight = VREG(42) * timerScale;
+                s16 timerTexStep = VREG(43) / timerScale;
                 if (CVarGetInteger(CVAR_COSMETIC("HUD.Timers.PosType"), 0) != ORIGINAL_LOCATION) {
                     svar2 = (CVarGetInteger(CVAR_COSMETIC("HUD.Timers.PosY"), 0));
                     if (CVarGetInteger(CVAR_COSMETIC("HUD.Timers.PosType"), 0) == ANCHOR_LEFT) {
@@ -6336,7 +6432,8 @@ void Interface_Draw(PlayState* play) {
                 }
 
                 OVERLAY_DISP =
-                    Gfx_TextureIA8(OVERLAY_DISP, gClockIconTex, 16, 16, svar5, svar2 + 2, 16, 16, 1 << 10, 1 << 10);
+                    Gfx_TextureIA8(OVERLAY_DISP, gClockIconTex, 16, 16, svar5, svar2 + (2 * timerScale), timerIconSize,
+                                   timerIconSize, (1 << 10) / timerScale, (1 << 10) / timerScale);
 
                 // Timer Counter
                 gDPPipeSync(OVERLAY_DISP++);
@@ -6362,9 +6459,9 @@ void Interface_Draw(PlayState* play) {
                     //svar5 = svar5 + 8;
                     //svar5 = OTRGetRectDimensionFromLeftEdge(gSaveContext.timerX[timerId]);
                     OVERLAY_DISP = Gfx_TextureI8(OVERLAY_DISP, digitTextures[timerDigits[svar1]], 8, 16,
-                                      svar5 + timerDigitLeftPos[svar1],
-                                      svar2, digitWidth[svar1], VREG(42), VREG(43) << 1,
-                                      VREG(43) << 1);
+                                      svar5 + (timerDigitLeftPos[svar1] * timerScale),
+                                      svar2, digitWidth[svar1] * timerScale, timerDigitHeight, timerTexStep << 1,
+                                      timerTexStep << 1);
                     // clang-format on
                 }
             }
@@ -6425,6 +6522,10 @@ void Interface_DrawTotalGameplayTimer(PlayState* play) {
         s32 rectWidth = 8;
         s32 rectHeightOri = 16;
         s32 rectHeight;
+        f32 igtScale = MAX(CVarGetFloat(CVAR_COSMETIC("HUD.IGT.Scale"), 1.0f), 0.25f);
+        s32 rectWidthScaled = rectWidth * igtScale;
+        s32 rectHeightScaled = rectHeightOri * igtScale;
+        s32 rectTexStep = (1 << 10) / igtScale;
 
         OPEN_DISPS(play->state.gfxCtx);
 
@@ -6447,27 +6548,27 @@ void Interface_DrawTotalGameplayTimer(PlayState* play) {
                 textureIndex = totalTimeText[i] - 48;
             }
 
-            rectLeft = rectLeftOri + (i * 8);
+            rectLeft = rectLeftOri + (i * rectWidthScaled);
             rectTop = rectTopOri;
-            rectHeight = rectHeightOri;
+            rectHeight = rectHeightScaled;
 
             // Load correct digit (or : symbol)
             gDPLoadTextureBlock(OVERLAY_DISP++, ((u8*)digitTextures[textureIndex]), G_IM_FMT_I, G_IM_SIZ_8b, rectWidth,
-                                rectHeight, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
+                                rectHeightOri, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
                                 G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
             // Create dot image from the colon image.
             if (totalTimeText[i] == '.') {
                 rectHeight = rectHeight / 2;
-                rectTop += 5;
-                rectLeft -= 1;
+                rectTop += 5 * igtScale;
+                rectLeft -= 1 * igtScale;
             }
 
             // Draw text shadow
             gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 0, 0, 0, 255);
             gDPSetEnvColor(OVERLAY_DISP++, 255, 255, 255, 255);
-            gSPWideTextureRectangle(OVERLAY_DISP++, rectLeft << 2, rectTop << 2, (rectLeft + rectWidth) << 2,
-                                    (rectTop + rectHeight) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+            gSPWideTextureRectangle(OVERLAY_DISP++, rectLeft << 2, rectTop << 2, (rectLeft + rectWidthScaled) << 2,
+                                    (rectTop + rectHeight) << 2, G_TX_RENDERTILE, 0, 0, rectTexStep, rectTexStep);
 
             // Draw regular text. Change color based on if the timer is paused, running or the game is completed.
             if (gSaveContext.ship.stats.gameComplete) {
@@ -6480,11 +6581,11 @@ void Interface_DrawTotalGameplayTimer(PlayState* play) {
             }
 
             // Offset text so underlaying shadow is to the bottom right of the text.
-            rectLeft -= 1;
-            rectTop -= 1;
+            rectLeft -= 1 * igtScale;
+            rectTop -= 1 * igtScale;
 
-            gSPWideTextureRectangle(OVERLAY_DISP++, rectLeft << 2, rectTop << 2, (rectLeft + rectWidth) << 2,
-                                    (rectTop + rectHeight) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+            gSPWideTextureRectangle(OVERLAY_DISP++, rectLeft << 2, rectTop << 2, (rectLeft + rectWidthScaled) << 2,
+                                    (rectTop + rectHeight) << 2, G_TX_RENDERTILE, 0, 0, rectTexStep, rectTexStep);
         }
         free(totalTimeText);
 

@@ -401,10 +401,8 @@ void HealthMeter_Draw(PlayState* play) {
     s32 curCombineModeSet = 0;
     u8* curBgImgLoaded = NULL;
     s32 ddHeartCountMinusOne = gSaveContext.isDoubleDefenseAcquired ? totalHeartCount - 1 : -1;
-    f32 HeartsScale = 0.7f;
-    if (CVarGetInteger(CVAR_COSMETIC("HUD.HeartsCount.PosType"), 0) != ORIGINAL_LOCATION) {
-        HeartsScale = CVarGetFloat(CVAR_COSMETIC("HUD.HeartsCount.Scale"), 0.7f);
-    }
+    f32 HeartsScale = MAX(CVarGetFloat(CVAR_COSMETIC("HUD.HeartsCount.Scale"), 0.7f), 0.25f);
+    f32 heartsScaleRatio = HeartsScale / 0.7f;
     static u32 epoch = 0;
     epoch++;
 
@@ -630,11 +628,11 @@ void HealthMeter_Draw(PlayState* play) {
             }
         }
 
-        offsetX += 10.0f;
+        offsetX += 10.0f * heartsScaleRatio;
         s32 lineLength = CVarGetInteger(CVAR_COSMETIC("HUD.Hearts.LineLength"), 10);
         if (lineLength != 0 && (i + 1) % lineLength == 0) {
             offsetX = PosX_anchor;
-            offsetY += 10.0f;
+            offsetY += 10.0f * heartsScaleRatio;
         }
 
         FrameInterpolation_RecordCloseChild();

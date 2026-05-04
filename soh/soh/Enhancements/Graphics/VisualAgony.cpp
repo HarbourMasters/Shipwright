@@ -80,9 +80,11 @@ void DrawVisualAgony(Player* player, double temp) {
 
     int rectLeft = PosX_VSOA; // Left X Pos
     int rectTop = PosY_VSOA;  // Top Y Pos
-    int rectWidth = 24;       // Texture Width
-    int rectHeight = 24;      // Texture Heigh
-    int DefaultIconA = 50;    // Default icon alpha (55 on 255)
+    f32 visualSoAScale = MAX(CVarGetFloat(CVAR_COSMETIC("HUD.VisualSoA.Scale"), 1.0f), 0.25f);
+    int rectWidth = 24 * visualSoAScale;  // Texture Width
+    int rectHeight = 24 * visualSoAScale; // Texture Height
+    int texStep = (1 << 10) / visualSoAScale;
+    int DefaultIconA = 50; // Default icon alpha (55 on 255)
 
     OPEN_DISPS(gPlayState->state.gfxCtx);
     gDPPipeSync(OVERLAY_DISP++);
@@ -117,7 +119,7 @@ void DrawVisualAgony(Player* player, double temp) {
                         G_TD_CLAMP | G_TP_NONE | G_CYC_1CYCLE | G_PM_NPRIMITIVE,
                     G_AC_NONE | G_ZS_PRIM | G_RM_XLU_SURF | G_RM_XLU_SURF2);
     gSPWideTextureRectangle(OVERLAY_DISP++, rectLeft << 2, rectTop << 2, (rectLeft + rectWidth) << 2,
-                            (rectTop + rectHeight) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+                            (rectTop + rectHeight) << 2, G_TX_RENDERTILE, 0, 0, texStep, texStep);
     CLOSE_DISPS(gPlayState->state.gfxCtx);
 }
 
