@@ -1037,6 +1037,7 @@ void OTRAudio_Thread() {
 
 #define AUDIO_FRAMES_PER_UPDATE (R_UPDATE_RATE > 0 ? R_UPDATE_RATE : 1)
 #define NUM_AUDIO_CHANNELS 2
+#define AUDIO_BUFFER_CAPACITY_FRAMES 6000
 
         // 3 is the maximum authentic frame divisor.
         s16 audio_buffer[SAMPLES_HIGH * NUM_AUDIO_CHANNELS * 3];
@@ -1053,16 +1054,20 @@ void OTRAudio_Thread() {
         // internal audio time by num_samples / sample_rate, and the consumer
         // drains them at the same rate, so audio still plays at normal speed.
         int max_iters = 6;
-        do {
-            int samples_left = AudioPlayer_Buffered();
-            u32 num_audio_samples = samples_left < AudioPlayer_GetDesiredBuffered() ? SAMPLES_HIGH : SAMPLES_LOW;
-            for (int i = 0; i < AUDIO_FRAMES_PER_UPDATE; i++) {
-                AudioMgr_CreateNextAudioBuffer(audio_buffer + i * (num_audio_samples * NUM_AUDIO_CHANNELS),
-                                               num_audio_samples);
-            }
-            AudioPlayer_Play((u8*)audio_buffer,
-                             num_audio_samples * (sizeof(int16_t) * NUM_AUDIO_CHANNELS * AUDIO_FRAMES_PER_UPDATE));
-        } while (AudioPlayer_Buffered() < AudioPlayer_GetDesiredBuffered() && --max_iters > 0);
+        // Skip before generating audio if the backend cannot accept even the
+        // smallest next burst, otherwise CoreAudio truncates already-produced PCM.
+        if (AudioPlayer_Buffered() + (SAMPLES_LOW * AUDIO_FRAMES_PER_UPDATE) < AUDIO_BUFFER_CAPACITY_FRAMES) {
+            do {
+                int samples_left = AudioPlayer_Buffered();
+                u32 num_audio_samples = samples_left < AudioPlayer_GetDesiredBuffered() ? SAMPLES_HIGH : SAMPLES_LOW;
+                for (int i = 0; i < AUDIO_FRAMES_PER_UPDATE; i++) {
+                    AudioMgr_CreateNextAudioBuffer(audio_buffer + i * (num_audio_samples * NUM_AUDIO_CHANNELS),
+                                                   num_audio_samples);
+                }
+                AudioPlayer_Play((u8*)audio_buffer,
+                                 num_audio_samples * (sizeof(int16_t) * NUM_AUDIO_CHANNELS * AUDIO_FRAMES_PER_UPDATE));
+            } while (AudioPlayer_Buffered() < AudioPlayer_GetDesiredBuffered() && --max_iters > 0);
+        }
 
         audio.processing = false;
         audio.cv_from_thread.notify_one();
