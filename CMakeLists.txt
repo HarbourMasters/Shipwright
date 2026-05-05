@@ -121,6 +121,10 @@ set(CMAKE_C_FLAGS_RELEASE "-O2 -DNDEBUG")
 set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DNDEBUG")
 set(CMAKE_OBJCXX_FLAGS_RELEASE "-O2 -DNDEBUG")
 endif()
+# IEEE 754 compliant floating-point rounding on arm64 macOS
+if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+    add_compile_options(-Xarch_arm64 -ffp-contract=off)
+endif()
 
 if(NOT CMAKE_BUILD_TYPE )
     set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Choose the type of build." FORCE)
