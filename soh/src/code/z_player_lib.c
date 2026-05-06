@@ -1595,21 +1595,26 @@ void Player_DrawGetItemIceTrap(PlayState* play, Player* this, Vec3f* refPos, s32
         } else if (iceTrapScale < 0.8f) {
             iceTrapScale += 0.2f;
         }
-        gSPSegment(POLY_XLU_DISP++, 0x08,
-                   Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 0, (0 - play->gameplayFrames) % 128, 32, 32, 1, 0,
-                                      (play->gameplayFrames * -2) % 128, 32, 32, 0, -1, 0, -2));
 
-        Matrix_Translate(0.0f, -40.0f, 0.0f, MTXMODE_APPLY);
-        Matrix_Scale(iceTrapScale, iceTrapScale, iceTrapScale, MTXMODE_APPLY);
-        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        gDPSetEnvColor(POLY_XLU_DISP++, 0, 50, 100, 255);
-        gSPDisplayList(POLY_XLU_DISP++, gEffIceFragment3DL);
+        // Draw the ice only after a bit so it doesn't spoil the fact that it's a trap
+        if (iceTrapScale >= 0.01) {
+            gSPSegment(POLY_XLU_DISP++, 0x08,
+                       Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 0, (0 - play->gameplayFrames) % 128, 32, 32, 1, 0,
+                                          (play->gameplayFrames * -2) % 128, 32, 32, 0, -1, 0, -2));
 
-        // Reset matrix for the fake item model because we're animating the size of the ice block around it before this.
-        Matrix_Translate(refPos->x + (3.3f * Math_SinS(this->actor.shape.rot.y)), refPos->y + height,
-                         refPos->z + ((3.3f + (IREG(90) / 10.0f)) * Math_CosS(this->actor.shape.rot.y)), MTXMODE_NEW);
-        Matrix_RotateZYX(0, play->gameplayFrames * 1000, 0, MTXMODE_APPLY);
-        Matrix_Scale(0.2f, 0.2f, 0.2f, MTXMODE_APPLY);
+            Matrix_Translate(0.0f, -40.0f, 0.0f, MTXMODE_APPLY);
+            Matrix_Scale(iceTrapScale, iceTrapScale, iceTrapScale, MTXMODE_APPLY);
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gDPSetEnvColor(POLY_XLU_DISP++, 0, 50, 100, 255);
+            gSPDisplayList(POLY_XLU_DISP++, gEffIceFragment3DL);
+
+            // Reset matrix for the fake item model because we're animating the size of the ice block around it before this.
+            Matrix_Translate(refPos->x + (3.3f * Math_SinS(this->actor.shape.rot.y)), refPos->y + height,
+                             refPos->z + ((3.3f + (IREG(90) / 10.0f)) * Math_CosS(this->actor.shape.rot.y)), MTXMODE_NEW);
+            Matrix_RotateZYX(0, play->gameplayFrames * 1000, 0, MTXMODE_APPLY);
+            Matrix_Scale(0.2f, 0.2f, 0.2f, MTXMODE_APPLY);
+        }
+
         // Draw fake item model.
         if (this->getItemEntry.drawFunc != NULL) {
             this->getItemEntry.drawFunc(play, &this->getItemEntry);
