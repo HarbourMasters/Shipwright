@@ -2223,7 +2223,6 @@ void Settings::CreateOptions() {
                                             &mOptions[RSK_SHUFFLE_BEAN_FAIRIES],
                                             &mOptions[RSK_SHUFFLE_SONG_FAIRIES],
                                             &mOptions[RSK_SHUFFLE_BUTTERFLY_FAIRIES],
-                                            &mOptions[RSK_SHUFFLE_FAIRIES],
                                             &mOptions[RSK_SHUFFLE_ISG],
                                             &mOptions[RSK_SHUFFLE_OI],
                                             &mOptions[RSK_SHUFFLE_QPA],

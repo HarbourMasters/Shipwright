@@ -2965,7 +2965,7 @@ typedef enum {
     // ```
     // #### `args`
     // - `*int32_t (camId)`
-    VB_SHOULD_LOAD_BG_IMAGE
+    VB_SHOULD_LOAD_BG_IMAGE,
 
     // #### `result`
     // ```c
