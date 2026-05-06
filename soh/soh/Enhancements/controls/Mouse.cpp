@@ -2,7 +2,7 @@
 #include "soh/OTRGlobals.h"
 #include "z64player.h"
 #include "global.h"
-#include <Window.h>
+#include <ship/window/Window.h>
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ShipInit.hpp"
 
@@ -35,7 +35,7 @@ void Mouse_UpdateAll() {
 void Mouse_HandleThirdPerson(f32* newCamX, f32* newCamY) {
     if (MOUSE_ENABLED) {
         *newCamX -= mouseCoordRel.x * 40.0f;
-        *newCamY += mouseCoordRel.y * 40.0f;
+        *newCamY -= mouseCoordRel.y * 40.0f;
     }
 }
 
@@ -48,7 +48,7 @@ void Mouse_HandleFirstPerson(Player* player) {
                             CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0)))
                               ? -1
                               : 1;
-    s8 invertYAxisMulti = CVarGetInteger(CVAR_SETTING("Controls.InvertAimingYAxis"), 1) ? 1 : -1;
+    s8 invertYAxisMulti = CVarGetInteger(CVAR_SETTING("Controls.InvertAimingYAxis"), 1) ? -1 : 1;
     if (MOUSE_ENABLED) {
         player->actor.focus.rot.y -= static_cast<int16_t>(mouseCoordRel.x * 6.0f * xAxisMulti * invertXAxisMulti);
         player->actor.focus.rot.x += static_cast<int16_t>(mouseCoordRel.y * 6.0f * yAxisMulti * invertYAxisMulti);
@@ -148,9 +148,9 @@ void Mouse_RegisterHandleQuickspin() {
     REGISTER_VB_SHOULD(VB_SHOULD_QUICKSPIN, { Mouse_HandleQuickspin(should, va_arg(args, s8*), va_arg(args, s8*)); });
 }
 
-static RegisterShipInitFunc initFunc_shieldRecenter(Mouse_RegisterRecenterCursorOnShield, { CVAR_ENABLE_MOUSE_NAME });
-static RegisterShipInitFunc initFunc_firstPerson(Mouse_RegisterHandleFirstPerson, { CVAR_ENABLE_MOUSE_NAME });
-static RegisterShipInitFunc initFunc_quickspinCount(Mouse_RegisterUpdateQuickspinCount, { CVAR_ENABLE_MOUSE_NAME });
-static RegisterShipInitFunc initFunc_quickspin(Mouse_RegisterHandleQuickspin, { CVAR_ENABLE_MOUSE_NAME });
-static RegisterShipInitFunc initFunc_shieldMove(Mouse_RegisterHandleShield, { CVAR_ENABLE_MOUSE_NAME });
+static RegisterShipInitFunc registerShieldRecenter(Mouse_RegisterRecenterCursorOnShield, { CVAR_ENABLE_MOUSE_NAME });
+static RegisterShipInitFunc registerFirstPerson(Mouse_RegisterHandleFirstPerson, { CVAR_ENABLE_MOUSE_NAME });
+static RegisterShipInitFunc registerQuickspinCount(Mouse_RegisterUpdateQuickspinCount, { CVAR_ENABLE_MOUSE_NAME });
+static RegisterShipInitFunc registerQuickspin(Mouse_RegisterHandleQuickspin, { CVAR_ENABLE_MOUSE_NAME });
+static RegisterShipInitFunc registerShieldMove(Mouse_RegisterHandleShield, { CVAR_ENABLE_MOUSE_NAME });
 } // extern "C"

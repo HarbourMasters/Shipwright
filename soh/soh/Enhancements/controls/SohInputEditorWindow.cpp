@@ -1,12 +1,13 @@
 #include "SohInputEditorWindow.h"
-#include <utils/StringHelper.h>
+#include <ship/utils/StringHelper.h>
+#include <fast/Fast3dWindow.h>
 #include "soh/OTRGlobals.h"
 #include "soh/SohGui/SohMenu.h"
 #include "soh/SohGui/SohGui.hpp"
 #include "z64.h"
 #include "soh/cvar_prefixes.h"
 #ifndef __WIIU__
-#include "controller/controldevice/controller/mapping/sdl/SDLAxisDirectionToButtonMapping.h"
+#include <ship/controller/controldevice/controller/mapping/sdl/SDLAxisDirectionToButtonMapping.h>
 #endif
 
 #define SCALE_IMGUI_SIZE(value) ((value / 13.0f) * ImGui::GetFontSize())
@@ -15,6 +16,7 @@ using namespace UIWidgets;
 
 static WidgetInfo freeLook;
 static WidgetInfo mouseControl;
+static WidgetInfo mouseAutoCapture;
 static WidgetInfo rightStickOcarina;
 static WidgetInfo dpadOcarina;
 static WidgetInfo dpadPause;
@@ -344,7 +346,7 @@ void SohInputEditorWindow::DrawButtonLineEditMappingButton(uint8_t port, N64Butt
         if (ImGui::BeginPopup(popupId.c_str())) {
             mInputEditorPopupOpen = true;
             ImGui::Text("Axis Threshold\n\nThe extent to which the joystick\nmust be moved or the trigger\npressed to "
-                        "initiate the assigned\nbutton action.\n\n");
+                        "initiate the assigned\nbutton action.");
 
             auto globalSettings = Ship::Context::GetInstance()->GetControlDeck()->GetGlobalSDLDeviceSettings();
 
@@ -1366,18 +1368,20 @@ void SohInputEditorWindow::DrawCameraControlPanel() {
     ImVec2 cursor = ImGui::GetCursorPos();
     ImGui::SetCursorPos(ImVec2(cursor.x + 5, cursor.y + 5));
     SohGui::mSohMenu->MenuDrawItem(mouseControl, ImGui::GetContentRegionAvail().x, THEME_COLOR);
+    cursor = ImGui::GetCursorPos();
+    ImGui::SetCursorPos(ImVec2(cursor.x + 5, cursor.y + 5));
+    SohGui::mSohMenu->MenuDrawItem(mouseAutoCapture, ImGui::GetContentRegionAvail().x, THEME_COLOR);
 
     Ship::GuiWindow::BeginGroupPanel("Aiming/First-Person Camera", ImGui::GetContentRegionAvail());
     CVarCheckbox("Right Stick Aiming", CVAR_SETTING("Controls.RightStickAim"),
                  CheckboxOptions()
                      .Color(THEME_COLOR)
                      .Tooltip("Allows for aiming with the right stick in:\n-First-Person/C-Up view\n-Weapon Aiming"));
-    if (CVarGetInteger(CVAR_SETTING("Controls.RightStickAim"), 0)) {
-        CVarCheckbox("Allow moving while in first-person mode", CVAR_SETTING("MoveInFirstPerson"),
-                     CheckboxOptions()
-                         .Color(THEME_COLOR)
-                         .Tooltip("Changes the left stick to move the player while in first-person mode"));
-    }
+    CVarCheckbox("Allow moving while in first-person mode", CVAR_SETTING("MoveInFirstPerson"),
+                 CheckboxOptions({ { .disabled = !CVarGetInteger(CVAR_SETTING("Controls.RightStickAim"), 0),
+                                     .disabledTooltip = "Forced off because Right Stick Aiming is disabled." } })
+                     .Color(THEME_COLOR)
+                     .Tooltip("Changes the left stick to move the player while in first-person mode"));
     CVarCheckbox("Invert Aiming X Axis", CVAR_SETTING("Controls.InvertAimingXAxis"),
                  CheckboxOptions()
                      .Color(THEME_COLOR)
@@ -1597,58 +1601,6 @@ void SohInputEditorWindow::DrawLinkTab() {
         if (ImGui::CollapsingHeader("Modifier Buttons")) {
             DrawButtonLine("M1", portIndex, BTN_CUSTOM_MODIFIER1);
             DrawButtonLine("M2", portIndex, BTN_CUSTOM_MODIFIER2);
-
-            ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
-            CVarCheckbox("Enable speed modifiers", CVAR_SETTING("WalkModifier.Enabled"),
-                         CheckboxOptions()
-                             .Color(THEME_COLOR)
-                             .Tooltip("Hold the assigned button to change the maximum walking or swimming speed"));
-            if (CVarGetInteger(CVAR_SETTING("WalkModifier.Enabled"), 0)) {
-                UIWidgets::Spacer(5);
-                Ship::GuiWindow::BeginGroupPanel("Speed Modifier", ImGui::GetContentRegionAvail());
-                CVarCheckbox("Toggle modifier instead of holding", CVAR_SETTING("WalkModifier.SpeedToggle"),
-                             CheckboxOptions().Color(THEME_COLOR));
-                Ship::GuiWindow::BeginGroupPanel("Walk Modifier", ImGui::GetContentRegionAvail());
-                CVarCheckbox("Don't affect jump distance/velocity", CVAR_SETTING("WalkModifier.DoesntChangeJump"),
-                             CheckboxOptions().Color(THEME_COLOR));
-                CVarSliderFloat("Walk Modifier 1: %.0f %%", CVAR_SETTING("WalkModifier.Mapping1"),
-                                FloatSliderOptions()
-                                    .Color(THEME_COLOR)
-                                    .IsPercentage()
-                                    .Min(0.0f)
-                                    .Max(5.0f)
-                                    .DefaultValue(1.0f)
-                                    .ShowButtons(true));
-                CVarSliderFloat("Walk Modifier 2: %.0f %%", CVAR_SETTING("WalkModifier.Mapping2"),
-                                FloatSliderOptions()
-                                    .Color(THEME_COLOR)
-                                    .IsPercentage()
-                                    .Min(0.0f)
-                                    .Max(5.0f)
-                                    .DefaultValue(1.0f)
-                                    .ShowButtons(true));
-                Ship::GuiWindow::EndGroupPanel(0);
-                Ship::GuiWindow::BeginGroupPanel("Swim Modifier", ImGui::GetContentRegionAvail());
-                CVarSliderFloat("Swim Modifier 1: %.0f %%", CVAR_SETTING("WalkModifier.SwimMapping1"),
-                                FloatSliderOptions()
-                                    .Color(THEME_COLOR)
-                                    .IsPercentage()
-                                    .Min(0.0f)
-                                    .Max(5.0f)
-                                    .DefaultValue(1.0f)
-                                    .ShowButtons(true));
-                CVarSliderFloat("Swim Modifier 2: %.0f %%", CVAR_SETTING("WalkModifier.SwimMapping2"),
-                                FloatSliderOptions()
-                                    .Color(THEME_COLOR)
-                                    .IsPercentage()
-                                    .Min(0.0f)
-                                    .Max(5.0f)
-                                    .DefaultValue(1.0f)
-                                    .ShowButtons(true));
-                Ship::GuiWindow::EndGroupPanel(0);
-                Ship::GuiWindow::EndGroupPanel(0);
-            }
-            ImGui::EndDisabled();
         }
 
         if (ImGui::CollapsingHeader("Ocarina Controls")) {
@@ -1914,12 +1866,34 @@ void RegisterInputEditorWidgets() {
 
     mouseControl = { .name = "Enable Mouse Controls", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
     mouseControl.CVar(CVAR_SETTING("EnableMouse"))
+        .Callback([](WidgetInfo& info) {
+            bool enabled =
+                CVarGetInteger(CVAR_SETTING("EnableMouse"), 0) && CVarGetInteger(CVAR_SETTING("AutoCaptureMouse"), 1);
+            auto wnd = std::dynamic_pointer_cast<Fast::Fast3dWindow>(Ship::Context::GetInstance()->GetWindow());
+            wnd->SetAutoCaptureMouse(enabled);
+        })
         .Options(
             CheckboxOptions()
                 .Color(THEME_COLOR)
                 .Tooltip("Allows for using the mouse to control the camera (must enable Free Look), "
-                         "aim with the shield, and perform quickspin attacks (quickly rotate the mouse then press B)"));
+                         "aim with the shield, and perform quickspin attacks (quickly rotate the mouse then press B)\n"
+                         "Press F2 to toggle mouse capture manually."));
     SohGui::mSohMenu->AddSearchWidget({ mouseControl, "Settings", "Controls", "Camera Controls" });
+
+    mouseAutoCapture = { .name = "Auto Capture Mouse Input", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
+    mouseAutoCapture.CVar(CVAR_SETTING("AutoCaptureMouse"))
+        .Callback([](WidgetInfo& info) {
+            bool enabled =
+                CVarGetInteger(CVAR_SETTING("EnableMouse"), 0) && CVarGetInteger(CVAR_SETTING("AutoCaptureMouse"), 1);
+            auto wnd = std::dynamic_pointer_cast<Fast::Fast3dWindow>(Ship::Context::GetInstance()->GetWindow());
+            wnd->SetAutoCaptureMouse(enabled);
+        })
+        .Options(CheckboxOptions()
+                     .Color(THEME_COLOR)
+                     .Tooltip("When Mouse Controls are enabled, this toggles whether the program will automatically "
+                              "hide the cursor "
+                              "and capture mouse input when closing the menu."));
+    SohGui::mSohMenu->AddSearchWidget({ mouseAutoCapture, "Settings", "Controls", "Camera Controls" });
 
     rightStickOcarina = { .name = "Right Stick Ocarina Playback", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
     rightStickOcarina.CVar(CVAR_SETTING("CustomOcarina.RightStick")).Options(CheckboxOptions().Color(THEME_COLOR));
@@ -1942,4 +1916,4 @@ void RegisterInputEditorWidgets() {
     SohGui::mSohMenu->AddSearchWidget({ dpadText, "Settings", "Controls", "Dpad Controls" });
 }
 
-static RegisterMenuInitFunc initInputWidgets(RegisterInputEditorWidgets);
+static RegisterMenuInitFunc menuInitFunc(RegisterInputEditorWidgets);

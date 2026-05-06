@@ -6,8 +6,8 @@
 #include "random.hpp"
 #include "spoiler_log.hpp"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
+#include "soh/Enhancements/randomizer/settings.h"
 #include "variables.h"
-#include "soh/OTRGlobals.h"
 #include "soh/cvar_prefixes.h"
 #include "../option.h"
 #include "soh/Enhancements/debugger/performanceTimer.h"
@@ -16,7 +16,7 @@ namespace Playthrough {
 
 int Playthrough_Init(uint32_t seed, std::set<RandomizerCheck> excludedLocations,
                      std::set<RandomizerTrick> enabledTricks) {
-    // initialize the RNG with just the seed incase any settings need to be
+    // initialize the RNG with just the seed in case any settings need to be
     // resolved to something random
     Random_Init(seed);
 
@@ -47,7 +47,7 @@ int Playthrough_Init(uint32_t seed, std::set<RandomizerCheck> excludedLocations,
                         auto locationOption = static_cast<Rando::LocationOption*>(option);
                         settingsStr += option->GetOptionText(ctx->GetLocationOption(locationOption->GetKey()).Get());
                     } else if (i == RSG_TRICKS) {
-                        auto trickOption = static_cast<Rando::TrickOption*>(option);
+                        auto trickOption = static_cast<Rando::TrickSetting*>(option);
                         settingsStr += option->GetOptionText(ctx->GetTrickOption(trickOption->GetKey()).Get());
                     } else {
                         settingsStr += option->GetOptionText(ctx->GetOption(option->GetKey()).Get());
@@ -65,29 +65,20 @@ int Playthrough_Init(uint32_t seed, std::set<RandomizerCheck> excludedLocations,
     Random_Init(finalHash);
     ctx->SetHash(std::to_string(finalHash));
 
-    if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_VANILLA)) {
-        VanillaFill(); // Just place items in their vanilla locations
-    } else {           // Fill locations with logic
-        int ret = Fill();
-        if (ret < 0) {
-            return ret;
-        }
+    int ret = Fill();
+    if (ret < 0) {
+        return ret;
     }
 
     GenerateHash();
 
     if (true) {
-        // TODO: Handle different types of file output (i.e. Spoiler Log, Plando Template, Patch Files, Race Files,
-        // etc.)
-        //  write logs
+        // TODO: Handle different types of file output (Spoiler Log, Plando Template, Patch Files, Race Files, etc.)
         SPDLOG_INFO("Writing Spoiler Log...");
         StartPerformanceTimer(PT_SPOILER_LOG);
-        if (SpoilerLog_Write()) {
-            SPDLOG_INFO("Writing Spoiler Log Done");
-        } else {
-            SPDLOG_ERROR("Writing Spoiler Log Failed");
-        }
+        SpoilerLog_Write();
         StopPerformanceTimer(PT_SPOILER_LOG);
+        SPDLOG_INFO("Writing Spoiler Log Done");
     }
 
     ctx->playthroughLocations.clear();

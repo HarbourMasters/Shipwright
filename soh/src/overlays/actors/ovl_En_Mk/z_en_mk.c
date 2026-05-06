@@ -6,7 +6,6 @@
 
 #include "z_en_mk.h"
 #include "objects/object_mk/object_mk.h"
-#include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
@@ -99,7 +98,7 @@ void func_80AACA94(EnMk* this, PlayState* play) {
         this->actor.parent = NULL;
         if (GameInteractor_Should(VB_TRADE_TIMER_EYEDROPS, true, this)) {
             this->actionFunc = func_80AACA40;
-            func_80088AA0(240);
+            Interface_SetSubTimer(240);
             gSaveContext.eventInf[1] &= ~1;
         }
     } else {
@@ -266,7 +265,7 @@ void EnMk_Wait(EnMk* this, PlayState* play) {
                         Animation_Change(&this->skelAnime, &object_mk_Anim_000368, 1.0f, 0.0f,
                                          Animation_GetLastFrame(&object_mk_Anim_000368), ANIMMODE_ONCE, -4.0f);
                         this->flags &= ~2;
-                        gSaveContext.subTimerState = 0;
+                        gSaveContext.subTimerState = SUBTIMER_STATE_OFF;
                         Sfx_PlaySfxCentered(NA_SE_SY_TRE_BOX_APPEAR);
                         break;
                     default:

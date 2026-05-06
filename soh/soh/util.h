@@ -1,6 +1,9 @@
 #pragma once
 #include <string>
+#include <vector>
 #include <stdint.h>
+
+typedef enum FileType { FILE_TYPE_SAVE_VANILLA, FILE_TYPE_SAVE_RANDO, FILE_TYPE_PRESET, FILE_TYPE_SPOILER } FileType;
 
 namespace SohUtils {
 const std::string& GetSceneName(int32_t scene);
@@ -23,4 +26,6 @@ size_t CopyStringToCharBuffer(char* buffer, const std::string& source, size_t ma
 
 bool IsStringEmpty(std::string str);
 uint32_t Hash(std::string str);
+
+std::vector<std::string> StringSplit(const std::string& str, const std::string& delimiter);
 } // namespace SohUtils

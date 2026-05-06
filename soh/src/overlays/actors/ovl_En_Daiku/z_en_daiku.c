@@ -513,9 +513,8 @@ void EnDaiku_EscapeSuccess(EnDaiku* this, PlayState* play) {
     if (GET_EVENTCHKINF_CARPENTERS_FREE_ALL()) {
         Matrix_RotateY(this->initRot.y * (M_PI / 0x8000), MTXMODE_NEW);
         Matrix_MultVec3f(&D_809E4148, &vec);
-        gerudoGuard =
-            Actor_Spawn(&play->actorCtx, play, ACTOR_EN_GE3, this->initPos.x + vec.x, this->initPos.y + vec.y,
-                        this->initPos.z + vec.z, 0, Math_FAtan2F(-vec.x, -vec.z) * (0x8000 / M_PI), 0, 2, true);
+        gerudoGuard = Actor_Spawn(&play->actorCtx, play, ACTOR_EN_GE3, this->initPos.x + vec.x, this->initPos.y + vec.y,
+                                  this->initPos.z + vec.z, 0, Math_FAtan2F(-vec.x, -vec.z) * (0x8000 / M_PI), 0, 2);
 
         if (gerudoGuard == NULL) {
             Actor_Kill(&this->actor);

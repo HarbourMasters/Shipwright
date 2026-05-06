@@ -163,7 +163,7 @@ void func_80A505CC(Actor* thisx, PlayState* play) {
     }
     Npc_TrackPoint(&this->actor, &this->interactInfo, 6, NPC_TRACKING_HEAD_AND_TORSO);
 
-    func_80034F54(play, this->unk_2CC, this->unk_2EC, 16);
+    func_80034F54(play, this->fidgetTableY, this->fidgetTableZ, 16);
 
     gSegments[6] = VIRTUAL_TO_PHYSICAL(play->objectCtx.status[this->osAnimeBankIndex].segment);
 
@@ -206,8 +206,8 @@ s32 EnGuest_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f*
     }
 
     if (limbIndex == 8 || limbIndex == 9 || limbIndex == 12) {
-        rot->y += Math_SinS(this->unk_2CC[limbIndex]) * 200.0f;
-        rot->z += Math_CosS(this->unk_2EC[limbIndex]) * 200.0f;
+        rot->y += Math_SinS(this->fidgetTableY[limbIndex]) * 200.0f;
+        rot->z += Math_CosS(this->fidgetTableZ[limbIndex]) * 200.0f;
     }
 
     CLOSE_DISPS(play->state.gfxCtx);

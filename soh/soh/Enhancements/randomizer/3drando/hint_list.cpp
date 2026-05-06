@@ -1,10 +1,7 @@
-#include "custom_messages.hpp"
-
 #include "../randomizerTypes.h"
-#include "../context.h"
+#include "../SeedContext.h"
 #include "../static_data.h"
 
-using namespace CustomMessages;
 using namespace std::literals::string_literals;
 
 // Big thanks to Lioncache, Gabyelnuevo, Danius88, and Charade for their translations!
@@ -2237,6 +2234,10 @@ void StaticData::HintTable_Init() {
                                                         /*french*/ "J'ai entendu dire que Ganondorf aurait caché les #Flèches de Lumière# dans #[[1]]#.",
                                                                    {QM_YELLOW, QM_RED}));
 
+    hintTextTable[RHT_BOSS_KEY_HINT] = HintText(CustomMessage("%c@! I can hear Rauru's guidance! He's saying the %ykey for this door%c is in %w[[1]]%c!",
+                                                   /*german*/ TODO_TRANSLATE,
+                                                   /*french*/ TODO_TRANSLATE));
+
     hintTextTable[RHT_DAMPE_DIARY] = HintText(CustomMessage("Whoever reads this, please enter #[[1]]#. I will let you have my #stretching, shrinking keepsake#.^I'm waiting for you.&--Dampé",
                                                  /*german*/ "Wer immer dies liest, der möge #[[1]]# nach meinem #langen, kurzen Schatz# suchen.^Ich warte!&Boris",
                                                  /*french*/ "Toi qui lit ce journal, rends-toi dans #[[1]]#. Et peut-être auras-tu droit à mon précieux #trésor#.^Je t'attends...&--Igor",
@@ -2250,12 +2251,17 @@ void StaticData::HintTable_Init() {
     hintTextTable[RHT_SARIA_TALK_HINT] = HintText(CustomMessage("Did you feel the #surge of magic# recently? A mysterious bird told me it came from #[[1]]#.^You should check that place out, @!",
                                                      /*german*/ "Hast Du kürzlich den #Magieschub# gespürt? Ein geheimnisvoller Vogel meinte, daß er #[[1]]# am stärksten zu spüren war.^Du solltest Dir diesen Ort mal ansehen, @!",
                                                      /*french*/ "As-tu récemment ressenti une vague de #puissance magique#? Un mystérieux hibou m'a dit qu'elle provenait du #[[1]]#.^Tu devrais aller y jeter un coup d'oeil, @!",
-                                                               {QM_GREEN, QM_RED}));
+                                                                {QM_GREEN, QM_RED}));
 
     hintTextTable[RHT_SARIA_SONG_HINT] = HintText(CustomMessage("Did you feel the #surge of magic# recently? A mysterious bird told me it came from #[[1]]#.^You should check that place out, @!\x0B",
                                                      /*german*/ "Hast Du kürzlich den #Magieschub# gespürt? Ein geheimnisvoller Vogel meinte, daß er #[[1]]# am stärksten zu spüren war.^Du solltest Dir diesen Ort mal ansehen, @!\x0B",
                                                      /*french*/ "As-tu récemment ressenti une vague de #puissance magique#? Un mystérieux hibou m'a dit qu'elle provenait du #[[1]]#.^Tu devrais aller y jeter un coup d'oeil, @!\x0B",
                                                                 {QM_GREEN, QM_RED}, {}, TEXTBOX_TYPE_BLUE));
+
+    hintTextTable[RHT_MIDO_HINT] = HintText(CustomMessage("You'll never find the #Kokiri Sword# I hid in #[[1]]#!",
+                                               /*german*/ "Du wirst nie das #Kokiri-Schwert# finden, das ich in #[[1]]# versteckt habe!",
+                                               /*french*/ "Pfeuuh! Tu n'trouveras jamais l'#Epée Kokiri# que j'ai cachée dans #[[1]]#!",
+                                                          {QM_GREEN, QM_RED}));
 
     hintTextTable[RHT_LOACH_HINT] = HintText(CustomMessage("What?^You wanna know about the&%rHyrule Loach%w?^It's a big fish, but it's so rare that I'll give my %g[[1]]%w to anyone who catches it. Seriously!",
 	                                            /*german*/ "Was?^Du willst etwas über die&%rhylianische Forelle%w wissen?&Es ist ein riesiger Fisch,&der unfassbar selten ist!^Wenn Du mir eine bringst, |springt|springen| für Dich&%g[[1]]%w dabei raus.&Ganz im Ernst!",
@@ -2265,15 +2271,15 @@ void StaticData::HintTable_Init() {
     hintTextTable[RHT_FISHING_POLE_HINT] = HintText(CustomMessage("^If I remember correctly, I lost it somewhere in #[[1]]#...&Let me know if you find it!",
 	                                                    /*german*/ "Wenn ich mich recht erinnere,&habe ich sie irgendwo&#[[1]]#&verloren...&Sag mir Bescheid, wenn Du sie findest!",
 													    /*french*/ "Si je me souviens bien, il me&semble que je l'ai perdue&quelque part dans&#[[1]]#...^Fais-moi signe si jamais&tu la trouves!",
-                                                                  {QM_RED}));
+                                                                   {QM_RED}));
 
     /*--------------------------
     |    Static Entrance Hint   |
     ---------------------------*/
 
-    hintTextTable[RHT_WARP_SONG] = HintText(CustomMessage("Warp to&#[[1]]#?&" + TWO_WAY_CHOICE() + "#OK&No#",
-                                               /*german*/ "Das Ziel liegt&#[[1]]#!&" + TWO_WAY_CHOICE() + "#Ja!&Nein!#",
-                                               /*french*/ "Se téléporter vers&#[[1]]#?&" + TWO_WAY_CHOICE() + "#OK!&Non#",
+    hintTextTable[RHT_WARP_SONG] = HintText(CustomMessage("Warp to&#[[1]]#?&" + CustomMessage::TWO_WAY_CHOICE() + "#OK&No#",
+                                               /*german*/ "Das Ziel liegt&#[[1]]#!&" + CustomMessage::TWO_WAY_CHOICE() + "#Ja!&Nein!#",
+                                               /*french*/ "Se téléporter vers&#[[1]]#?&" + CustomMessage::TWO_WAY_CHOICE() + "#OK!&Non#",
                                                           {QM_RED, QM_GREEN}));
 
    /*--------------------------
@@ -2318,12 +2324,12 @@ void StaticData::HintTable_Init() {
                                                                         {QM_RED, QM_BLUE, QM_GREEN}));
 
     hintTextTable[RHT_MALON_HINT_OBSTICLE_COURSE] = HintText(CustomMessage("How about trying the #Obstacle Course?# If you beat my time I'll let you keep my favourite #cow# Elsie and her toy #[[1]]#!^"
-                                                                           "Challenge the #Obstacle Course?#&\x1B&#Let's go&No thanks#",
+                                                                           "Challenge the #Obstacle Course?#\x1B#Let's go&No thanks#",
                                                                 /*german*/ "Warum versuchst Du Dich nicht mit Epona an dem #Hindernisparcours#?^"
                                                                            "Gelingt es Dir den Rekord zu brechen, bekommst Du meine #Lieblingskuh# Elsie^und ihr Lieblingsspielzeug, #[[1]]#!^"
-                                                                           "Wie sieht's aus?&Möchtest Du es versuchen?\x1B&#Ja!&Nein!#",
+                                                                           "Wie sieht's aus?&Möchtest Du es versuchen?\x1B#Ja!&Nein!#",
                                                                 /*french*/ "Que dirais-tu d'essayer le #Parcours d'Obstacles#? Si tu bats mon temps, je te donnerai ma vache préférée, Elsie, et son jouet #[[1]]#!^"
-                                                                           "Tenter le #Parcours d'Obstacles#?&\x1B&#Allons-y&Non merci#",
+                                                                           "Tenter le #Parcours d'Obstacles#?\x1B#Allons-y&Non merci#",
                                                                            {QM_RED, QM_BLUE, QM_GREEN, QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_MALON_HINT_TURNING_EVIL] = HintText(CustomMessage("@? Is that you? ^If I ran the ranch, I'd build an #Obstacle Course#, and whoever gets the best time would win a #cow#!^"
@@ -2368,11 +2374,6 @@ void StaticData::HintTable_Init() {
                                                          "Prinzessin Zelda erhältst und #[[2]]# lernst, um Hyrule vor dem Untergang zu bewahren!",
                                               /*french*/ "Amène les #Pierres Spirituelles# dans le passé et Zelda te donnera #[[1]]# et t'apprendra #[[2]]# !",
                                                          {QM_BLUE, QM_GREEN, QM_GREEN}));
-
-    hintTextTable[RHT_SKULLS_HINT] = HintText(CustomMessage("Yeaaarrgh! I'm cursed!!^Please save me by destroying #[[d]] Spiders of the Curse# and I will give you my #[[1]]#!",
-                                                 /*german*/ "Aarrrgh! Ich bin verflucht!^Bitte rette mich, indem Du&#[[d]] Skulltulas# zerstörst und ich&werde Dir dafür #[[1]]# geben!",
-                                                 /*french*/ "Yeaaarrgh! Je suis maudit!^Détruit encore #[[d]] Araignées de la Malédiction# et j'aurai quelque chose à te donner! #([[1]])#",
-                                                            {QM_YELLOW, QM_GREEN}));
 
     hintTextTable[RHT_MASK_SHOP_HINT] = HintText(CustomMessage("Some young scrubs in the #Deku Theatre# love seeing Masks!^"
                                                                "They'll give you #[[1]]# if you show them the #Skull Mask#, and #[[2]]# if you show them the #Mask of Truth#!",

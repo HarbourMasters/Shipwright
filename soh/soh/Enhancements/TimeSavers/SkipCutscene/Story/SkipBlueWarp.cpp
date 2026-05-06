@@ -1,8 +1,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/Enhancements/randomizer/context.h"
+#include "soh/Enhancements/randomizer/SeedContext.h"
 #include "soh/ShipInit.hpp"
-#include "soh/Enhancements/timesaver_hook_handlers.h"
 
 extern "C" {
 #include "macros.h"
@@ -11,10 +10,11 @@ extern "C" {
 #include "functions.h"
 #include "variables.h"
 }
-#define RAND_GET_OPTION(option) Rando::Context::GetInstance()->GetOption(option).Get()
 
 extern "C" PlayState* gPlayState;
 static bool sEnteredBlueWarp = false;
+
+extern void TimeSaverQueueItem(RandomizerGet randoGet);
 
 // Todo: Move item queueing here
 
@@ -92,8 +92,7 @@ void RegisterShouldPlayBlueWarp() {
         }
 
         bool overrideBlueWarpDestinations =
-            IS_RANDO && (RAND_GET_OPTION(RSK_SHUFFLE_DUNGEON_ENTRANCES) != RO_DUNGEON_ENTRANCE_SHUFFLE_OFF ||
-                         RAND_GET_OPTION(RSK_SHUFFLE_BOSS_ENTRANCES) != RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF);
+            IS_RANDO && (RAND_GET_OPTION(RSK_SHUFFLE_DUNGEON_ENTRANCES) || RAND_GET_OPTION(RSK_SHUFFLE_BOSS_ENTRANCES));
 
         // Force blue warp skip on when ER needs to place Link somewhere else.
         // This is preferred over having story cutscenes play in the overworld and then reloading Link somewhere else
@@ -141,6 +140,7 @@ void RegisterShouldPlayBlueWarp() {
                        gSaveContext.chamberCutsceneNum == CHAMBER_CS_WATER) {
                 // Normally set in the blue warp cutscene
                 gSaveContext.dayTime = gSaveContext.skyboxTime = 0x4800;
+                gSaveContext.nightFlag = 0;
                 Flags_SetEventChkInf(EVENTCHKINF_RAISED_LAKE_HYLIA_WATER);
 
                 gSaveContext.entranceIndex = ENTR_LAKE_HYLIA_WATER_TEMPLE_BLUE_WARP;
@@ -161,6 +161,7 @@ void RegisterShouldPlayBlueWarp() {
                 if (gSaveContext.entranceIndex != ENTR_LAKE_HYLIA_WATER_TEMPLE_BLUE_WARP) {
                     // Normally set in the blue warp cutscene
                     gSaveContext.dayTime = gSaveContext.skyboxTime = 0x8000;
+                    gSaveContext.nightFlag = 0;
                 }
 
                 *should = false;
@@ -168,7 +169,7 @@ void RegisterShouldPlayBlueWarp() {
             }
 
             // This is outside the above condition because we want to handle both first and following visits to the blue
-            // warp
+            // warp. Jabu's blue warp doesn't call VB_PLAY_BLUE_WARP_CS without Ruto
             if (sEnteredBlueWarp && overrideBlueWarpDestinations) {
                 Entrance_OverrideBlueWarp();
             }

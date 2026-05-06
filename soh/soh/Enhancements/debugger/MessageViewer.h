@@ -3,7 +3,7 @@
 #include "z64.h"
 
 #ifdef __cplusplus
-#include "GuiWindow.h"
+#include <ship/window/gui/GuiWindow.h>
 #include <unordered_map>
 extern "C" {
 #endif
@@ -34,7 +34,7 @@ class MessageViewer final : public Ship::GuiWindow {
     void DrawElement() override;
     void UpdateElement() override;
 
-    virtual ~MessageViewer() = default;
+    ~MessageViewer() override;
 
   private:
     void DisplayExistingMessage() const;

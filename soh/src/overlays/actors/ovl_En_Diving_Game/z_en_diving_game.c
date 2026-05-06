@@ -8,7 +8,6 @@
 #include "overlays/actors/ovl_En_Ex_Ruppy/z_en_ex_ruppy.h"
 #include "objects/object_zo/object_zo.h"
 #include "vt.h"
-#include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
@@ -108,7 +107,7 @@ void EnDivingGame_Destroy(Actor* thisx, PlayState* play) {
 
     if (this->unk_31F == 0) {
         sHasSpawned = false;
-        gSaveContext.timerState = 0;
+        gSaveContext.timerState = TIMER_STATE_OFF;
     }
     Collider_DestroyCylinder(play, &this->collider);
 
@@ -132,9 +131,9 @@ void EnDivingGame_SpawnRuppy(EnDivingGame* this, PlayState* play) {
 }
 
 s32 EnDivingGame_HasMinigameFinished(EnDivingGame* this, PlayState* play) {
-    if (gSaveContext.timerState == 10 && !Play_InCsMode(play)) {
+    if (gSaveContext.timerState == TIMER_STATE_STOP && !Play_InCsMode(play)) {
         // Failed.
-        gSaveContext.timerState = 0;
+        gSaveContext.timerState = TIMER_STATE_OFF;
         func_800F5B58();
         Sfx_PlaySfxCentered(NA_SE_SY_FOUND);
         this->actor.textId = 0x71AD;
@@ -152,7 +151,7 @@ s32 EnDivingGame_HasMinigameFinished(EnDivingGame* this, PlayState* play) {
         }
         if (this->grabbedRupeesCounter >= rupeesNeeded) {
             // Won.
-            gSaveContext.timerState = 0;
+            gSaveContext.timerState = TIMER_STATE_OFF;
             this->allRupeesThrown = this->state = this->phase = this->unk_2A2 = this->grabbedRupeesCounter = 0;
             if (!Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_SILVER_SCALE)) {
                 this->actor.textId = 0x4055;
@@ -309,35 +308,36 @@ void EnDivingGame_SetupRupeeThrow(EnDivingGame* this, PlayState* play) {
     Play_ChangeCameraStatus(play, 0, CAM_STAT_WAIT);
     Play_ChangeCameraStatus(play, this->subCamId, CAM_STAT_ACTIVE);
     this->spawnRuppyTimer = 10;
-    this->unk_2F4.x = -210.0f;
-    this->unk_2F4.y = -80.0f;
-    this->unk_2F4.z = -1020.0f;
-    this->unk_2D0.x = -280.0f;
-    this->unk_2D0.y = -20.0f;
-    this->unk_2D0.z = -240.0f;
+    this->subCamAtNext.x = -210.0f;
+    this->subCamAtNext.y = -80.0f;
+    this->subCamAtNext.z = -1020.0f;
+    this->subCamEyeNext.x = -280.0f;
+    this->subCamEyeNext.y = -20.0f;
+    this->subCamEyeNext.z = -240.0f;
     if (!Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_SILVER_SCALE)) {
         this->rupeesLeftToThrow = 5;
     } else {
         this->rupeesLeftToThrow = 10;
     }
-    this->unk_2DC.x = this->unk_2DC.y = this->unk_2DC.z = this->unk_300.x = this->unk_300.y = this->unk_300.z = 0.1f;
+    this->subCamEyeMaxVelFrac.x = this->subCamEyeMaxVelFrac.y = this->subCamEyeMaxVelFrac.z =
+        this->subCamAtMaxVelFrac.x = this->subCamAtMaxVelFrac.y = this->subCamAtMaxVelFrac.z = 0.1f;
     this->camLookAt.x = play->view.lookAt.x;
     this->camLookAt.y = play->view.lookAt.y;
     this->camLookAt.z = play->view.lookAt.z;
     this->camEye.x = play->view.eye.x;
     this->camEye.y = play->view.eye.y + 80.0f;
     this->camEye.z = play->view.eye.z + 250.0f;
-    this->unk_2E8.x = fabsf(this->camEye.x - this->unk_2D0.x) * 0.04f;
-    this->unk_2E8.y = fabsf(this->camEye.y - this->unk_2D0.y) * 0.04f;
-    this->unk_2E8.z = fabsf(this->camEye.z - this->unk_2D0.z) * 0.04f;
-    this->unk_30C.x = fabsf(this->camLookAt.x - this->unk_2F4.x) * 0.04f;
-    this->unk_30C.y = fabsf(this->camLookAt.y - this->unk_2F4.y) * 0.04f;
-    this->unk_30C.z = fabsf(this->camLookAt.z - this->unk_2F4.z) * 0.04f;
+    this->subCamEyeVel.x = fabsf(this->camEye.x - this->subCamEyeNext.x) * 0.04f;
+    this->subCamEyeVel.y = fabsf(this->camEye.y - this->subCamEyeNext.y) * 0.04f;
+    this->subCamEyeVel.z = fabsf(this->camEye.z - this->subCamEyeNext.z) * 0.04f;
+    this->subCamAtVel.x = fabsf(this->camLookAt.x - this->subCamAtNext.x) * 0.04f;
+    this->subCamAtVel.y = fabsf(this->camLookAt.y - this->subCamAtNext.y) * 0.04f;
+    this->subCamAtVel.z = fabsf(this->camLookAt.z - this->subCamAtNext.z) * 0.04f;
     Play_CameraSetAtEye(play, this->subCamId, &this->camLookAt, &this->camEye);
     Play_CameraSetFov(play, this->subCamId, play->mainCamera.fov);
     this->csCameraTimer = 60;
     this->actionFunc = EnDivingGame_RupeeThrow;
-    this->unk_318 = 0.0f;
+    this->subCamVelFactor = 0.0f;
 }
 
 // Throws rupee when this->spawnRuppyTimer == 0
@@ -347,12 +347,17 @@ void EnDivingGame_RupeeThrow(EnDivingGame* this, PlayState* play) {
         Audio_SetExtraFilter(0);
     }
     if (this->subCamId != 0) {
-        Math_ApproachF(&this->camEye.x, this->unk_2D0.x, this->unk_2DC.x, this->unk_2E8.x * this->unk_318);
-        Math_ApproachF(&this->camEye.z, this->unk_2D0.z, this->unk_2DC.z, this->unk_2E8.z * this->unk_318);
-        Math_ApproachF(&this->camLookAt.x, this->unk_2F4.x, this->unk_300.x, this->unk_30C.x * this->unk_318);
-        Math_ApproachF(&this->camLookAt.y, this->unk_2F4.y, this->unk_300.y, this->unk_30C.y * this->unk_318);
-        Math_ApproachF(&this->camLookAt.z, this->unk_2F4.z, this->unk_300.z, this->unk_30C.z * this->unk_318);
-        Math_ApproachF(&this->unk_318, 1.0f, 1.0f, 0.02f);
+        Math_ApproachF(&this->camEye.x, this->subCamEyeNext.x, this->subCamEyeMaxVelFrac.x,
+                       this->subCamEyeVel.x * this->subCamVelFactor);
+        Math_ApproachF(&this->camEye.z, this->subCamEyeNext.z, this->subCamEyeMaxVelFrac.z,
+                       this->subCamEyeVel.z * this->subCamVelFactor);
+        Math_ApproachF(&this->camLookAt.x, this->subCamAtNext.x, this->subCamAtMaxVelFrac.x,
+                       this->subCamAtVel.x * this->subCamVelFactor);
+        Math_ApproachF(&this->camLookAt.y, this->subCamAtNext.y, this->subCamAtMaxVelFrac.y,
+                       this->subCamAtVel.y * this->subCamVelFactor);
+        Math_ApproachF(&this->camLookAt.z, this->subCamAtNext.z, this->subCamAtMaxVelFrac.z,
+                       this->subCamAtVel.z * this->subCamVelFactor);
+        Math_ApproachF(&this->subCamVelFactor, 1.0f, 1.0f, 0.02f);
     }
     Play_CameraSetAtEye(play, this->subCamId, &this->camLookAt, &this->camEye);
     if (!this->allRupeesThrown && this->spawnRuppyTimer == 0) {
@@ -369,10 +374,12 @@ void EnDivingGame_RupeeThrow(EnDivingGame* this, PlayState* play) {
             this->allRupeesThrown = true;
         }
     }
-    if (this->csCameraTimer == 0 ||
-        ((fabsf(this->camEye.x - this->unk_2D0.x) < 2.0f) && (fabsf(this->camEye.y - this->unk_2D0.y) < 2.0f) &&
-         (fabsf(this->camEye.z - this->unk_2D0.z) < 2.0f) && (fabsf(this->camLookAt.x - this->unk_2F4.x) < 2.0f) &&
-         (fabsf(this->camLookAt.y - this->unk_2F4.y) < 2.0f) && (fabsf(this->camLookAt.z - this->unk_2F4.z) < 2.0f))) {
+    if (this->csCameraTimer == 0 || ((fabsf(this->camEye.x - this->subCamEyeNext.x) < 2.0f) &&
+                                     (fabsf(this->camEye.y - this->subCamEyeNext.y) < 2.0f) &&
+                                     (fabsf(this->camEye.z - this->subCamEyeNext.z) < 2.0f) &&
+                                     (fabsf(this->camLookAt.x - this->subCamAtNext.x) < 2.0f) &&
+                                     (fabsf(this->camLookAt.y - this->subCamAtNext.y) < 2.0f) &&
+                                     (fabsf(this->camLookAt.z - this->subCamAtNext.z) < 2.0f))) {
         if (this->unk_2A2 != 0) {
             this->csCameraTimer = 70;
             this->unk_2A2 = 2;
@@ -390,12 +397,12 @@ void EnDivingGame_SetupUnderwaterViewCs(EnDivingGame* this, PlayState* play) {
         this->unk_2A2 = 1;
         this->csCameraTimer = 100;
         this->actionFunc = EnDivingGame_RupeeThrow;
-        this->camLookAt.x = this->unk_2F4.x = -210.0f;
-        this->camLookAt.y = this->unk_2F4.y = -80.0f;
-        this->camLookAt.z = this->unk_2F4.z = -1020.0f;
-        this->camEye.x = this->unk_2D0.x = -280.0f;
-        this->camEye.y = this->unk_2D0.y = -20.0f;
-        this->camEye.z = this->unk_2D0.z = -240.0f;
+        this->camLookAt.x = this->subCamAtNext.x = -210.0f;
+        this->camLookAt.y = this->subCamAtNext.y = -80.0f;
+        this->camLookAt.z = this->subCamAtNext.z = -1020.0f;
+        this->camEye.x = this->subCamEyeNext.x = -280.0f;
+        this->camEye.y = this->subCamEyeNext.y = -20.0f;
+        this->camEye.z = this->subCamEyeNext.z = -240.0f;
     }
 }
 
@@ -417,10 +424,12 @@ void func_809EE800(EnDivingGame* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
     if (this->unk_292 == Message_GetState(&play->msgCtx) && Message_ShouldAdvance(play)) {
         Message_CloseTextbox(play);
-        if (!Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_SILVER_SCALE)) {
-            func_80088B34(BREG(2) + 50);
-        } else {
-            func_80088B34(BREG(2) + 50);
+        if (GameInteractor_Should(VB_SET_DIVING_GAME_TIME_LIMIT, true)) {
+            if (!Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_SILVER_SCALE)) {
+                Interface_SetTimer(BREG(2) + 50);
+            } else {
+                Interface_SetTimer(BREG(2) + 50);
+            }
         }
         func_800F5ACC(NA_BGM_TIMED_MINI_GAME);
         Player_SetCsActionWithHaltedActors(play, NULL, 7);

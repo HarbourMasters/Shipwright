@@ -348,7 +348,7 @@ void BossGoma_Init(Actor* thisx, PlayState* play) {
                                WARP_DUNGEON_CHILD);
         }
         if (GameInteractor_Should(VB_SPAWN_HEART_CONTAINER, true)) {
-            Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, 141.0f, -640.0f, -84.0f, 0, 0, 0, 0, true);
+            Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, 141.0f, -640.0f, -84.0f, 0, 0, 0, 0);
         }
     }
 
@@ -1126,7 +1126,7 @@ void BossGoma_Defeated(BossGoma* this, PlayState* play) {
                 this->subCameraFollowSpeed = 0.0f;
                 if (GameInteractor_Should(VB_SPAWN_HEART_CONTAINER, true)) {
                     Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, this->actor.world.pos.x,
-                                this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0, true);
+                                this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0);
                 }
             }
             break;

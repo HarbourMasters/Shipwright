@@ -30,8 +30,8 @@ typedef struct EnKo {
     /* 0x0220 */ f32 modelAlpha;
     /* 0x0224 */ Vec3s jointTable[16];
     /* 0x0284 */ Vec3s morphTable[16];
-    /* 0x02E4 */ s16 unk_2E4[16];
-    /* 0x0304 */ s16 unk_304[16];
+    /* 0x02E4 */ s16 fidgetTableY[16];
+    /* 0x0304 */ s16 fidgetTableZ[16];
 } EnKo; // size = 0x0324
 
 typedef enum {

@@ -12,6 +12,7 @@
 #include "objects/object_zl2/object_zl2.h"
 #include "objects/object_zl2_anime2/object_zl2_anime2.h"
 #include "soh/ResourceManagerHelpers.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
@@ -141,7 +142,7 @@ void func_80B5357C(EnZl3* this, PlayState* play) {
 }
 
 void func_80B53614(EnZl3* this, PlayState* play) {
-    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_RIVER_SOUND, -442.0f, 4102.0f, -371.0f, 0, 0, 0, 0x12, true);
+    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_RIVER_SOUND, -442.0f, 4102.0f, -371.0f, 0, 0, 0, 0x12);
 }
 
 void func_80B5366C(EnZl3* this, PlayState* play) {
@@ -743,7 +744,7 @@ s32 func_80B54DD4(EnZl3* this) {
 }
 
 void func_80B54DE0(EnZl3* this, PlayState* play) {
-    s32 idx = this->unk_318;
+    s32 idx = this->zl2Anime2ObjectSlot;
 
     gSegments[6] = VIRTUAL_TO_PHYSICAL(play->objectCtx.status[idx].segment);
 }
@@ -772,7 +773,7 @@ void func_80B54EA4(EnZl3* this, PlayState* play) {
     f32 posY = this->actor.world.pos.y;
     f32 posZ = this->actor.world.pos.z;
 
-    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_EG, posX, posY, posZ, 0, 0, 0, 0, true);
+    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_EG, posX, posY, posZ, 0, 0, 0, 0);
 }
 
 void func_80B54EF4(EnZl3* this) {
@@ -1812,7 +1813,7 @@ void func_80B5772C(EnZl3* this, PlayState* play) {
 void func_80B57754(EnZl3* this, PlayState* play) {
     if (gSaveContext.magicState == MAGIC_STATE_IDLE) {
         Actor_Spawn(&play->actorCtx, play, ACTOR_OCEFF_WIPE4, this->actor.world.pos.x, this->actor.world.pos.y,
-                    this->actor.world.pos.z, 0, 0, 0, 1, true);
+                    this->actor.world.pos.z, 0, 0, 0, 1);
         func_80B56DA4(this);
     }
 }
@@ -1825,8 +1826,10 @@ void func_80B577BC(PlayState* play, Vec3f* vec) {
     f32 posY = vec->y;
     f32 posZ = vec->z;
 
-    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_TEST, posX, posY, posZ, 0,
-                (Math_FAtan2F(playerPos->x - posX, playerPos->z - posZ) * (0x8000 / M_PI)), 0, 5, true);
+    if (GameInteractor_Should(VB_ADULT_ZELDA_SPAWN_STALFOS_IN_COLLAPSE, true, play, playerPos, posX, posY, posZ)) {
+        Actor_Spawn(&play->actorCtx, play, ACTOR_EN_TEST, posX, posY, posZ, 0,
+                    (Math_FAtan2F(playerPos->x - posX, playerPos->z - posZ) * (0x8000 / M_PI)), 0, 5);
+    }
 }
 
 void func_80B57858(PlayState* play) {
@@ -2492,7 +2495,7 @@ s32 func_80B59698(EnZl3* this, PlayState* play) {
         u8 curSpawn = play->curSpawn;
 
         if ((func_80B54DB4(this) == 0x20) && (curSpawn == 0) &&
-            ((gSaveContext.subTimerSeconds <= 0) || (gSaveContext.subTimerState == 0))) {
+            ((gSaveContext.subTimerSeconds <= 0) || (gSaveContext.subTimerState == SUBTIMER_STATE_OFF))) {
             return 1;
         }
     }
@@ -2535,13 +2538,13 @@ void func_80B59828(EnZl3* this, PlayState* play) {
     }
 
     if (func_80B59698(this, play) != 0) {
-        func_80088AA0(180);
+        Interface_SetSubTimer(180);
         func_80B53468();
         gSaveContext.healthAccumulator = 320;
         Magic_Fill(play);
         if (Flags_GetSwitch(play, 0x20)) {
             Flags_UnsetSwitch(play, 0x20);
-            Actor_Spawn(&play->actorCtx, play, ACTOR_BG_ZG, -144.0f, 3544.0f, -43.0f, 0, 0x2000, 0, 0x2000, true);
+            Actor_Spawn(&play->actorCtx, play, ACTOR_BG_ZG, -144.0f, 3544.0f, -43.0f, 0, 0x2000, 0, 0x2000);
         }
         Flags_UnsetSwitch(play, 0x21);
         Flags_UnsetSwitch(play, 0x22);
@@ -2581,7 +2584,7 @@ void func_80B59AD0(EnZl3* this, PlayState* play) {
     Actor* thisx = &this->actor; // unused, necessary to use 'this' first to fix regalloc
 
     Flags_SetSwitch(play, 0x36);
-    func_80088AA0(180);
+    Interface_SetSubTimer(180);
     func_80B54EA4(this, play);
     func_80B53614(this, play);
     Flags_UnsetEventChkInf(EVENTCHKINF_WATCHED_GANONS_CASTLE_COLLAPSE_CAUGHT_BY_GERUDO);
@@ -2631,7 +2634,7 @@ void func_80B59DB8(EnZl3* this, PlayState* play) {
     }
 
     if (Object_IsLoaded(objCtx, objIndex)) {
-        this->unk_318 = objIndex;
+        this->zl2Anime2ObjectSlot = objIndex;
         func_80B54DE0(this, play);
         func_80B59B6C(this, play);
     }
@@ -2669,7 +2672,7 @@ void EnZl3_Init(Actor* thisx, PlayState* play) {
 
     switch (func_80B54DD4(this)) {
         case 1:
-            gSaveContext.subTimerState = 0;
+            gSaveContext.subTimerState = SUBTIMER_STATE_OFF;
             break;
         case 3:
             func_80B59A80(this, play);

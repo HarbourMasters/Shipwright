@@ -1,6 +1,5 @@
 #pragma once
 
-#include <array>
 #include <map>
 #include <string>
 #include <vector>
@@ -22,8 +21,6 @@ typedef struct {
     uint32_t size;
     std::map<uint16_t, const char*> flagDescriptions;
 } FlagTable;
-
-#define DEFINE_RAND_INF(rand_inf) { rand_inf, #rand_inf },
 
 // Reference https://tcrf.net/Proto:The_Legend_of_Zelda:_Ocarina_of_Time_Master_Quest/Event_Editor
 // The source was last referenced on 2022-09-03 and had a last updated value of 2020-05-02
@@ -366,11 +363,11 @@ const std::vector<FlagTable> flagTables = {
       RANDOMIZER_INF,
       (RAND_INF_MAX + 15) / 16,
       {
-#include "soh/Enhancements/randomizer/randomizer_inf.h"
+#define RANDO_ENUM_ITEM(rand_inf) { rand_inf, #rand_inf },
+#include "soh/Enhancements/randomizer/randomizerEnums/RandomizerInf.h"
+#undef RANDO_ENUM_ITEM
       } },
 };
-
-#undef DEFINE_RAND_INF
 
 const std::vector<std::string> state1 = {
     "Loading",

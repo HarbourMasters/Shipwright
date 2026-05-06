@@ -7,69 +7,123 @@ void RegionTable_Init_GoronCity() {
     // clang-format off
     areaTable[RR_GORON_CITY] = Region("Goron City", SCENE_GORON_CITY, {
         //Events
-        EventAccess(&logic->GossipStoneFairy,          []{return logic->CallGossipFairyExceptSuns();}),
-        EventAccess(&logic->StickPot,                  []{return logic->IsChild;}),
-        EventAccess(&logic->BugRock,                   []{return logic->BlastOrSmash() || logic->CanUse(RG_SILVER_GAUNTLETS);}),
-        EventAccess(&logic->GoronCityChildFire,        []{return logic->IsChild && logic->CanUse(RG_DINS_FIRE);}),
-        EventAccess(&logic->GCWoodsWarpOpen,           []{return logic->CanDetonateUprightBombFlower() || logic->CanUse(RG_MEGATON_HAMMER) || logic->GoronCityChildFire;}),
-        EventAccess(&logic->GCDaruniasDoorOpenChild,   []{return logic->IsChild && logic->CanUse(RG_ZELDAS_LULLABY);}),
+        EVENT_ACCESS(LOGIC_FAIRY_ACCESS,                           logic->CallGossipFairyExceptSuns()),
+        EVENT_ACCESS(LOGIC_STICK_ACCESS,                           logic->IsChild && logic->CanBreakPots()),
+        EVENT_ACCESS(LOGIC_BUG_ACCESS,                             (logic->BlastOrSmash() && logic->HasItem(RG_POWER_BRACELET)) || logic->CanUse(RG_SILVER_GAUNTLETS)),
+        EVENT_ACCESS(LOGIC_GORON_CITY_CHILD_FIRE,                  logic->IsChild && logic->CanUse(RG_DINS_FIRE)),
+        EVENT_ACCESS(LOGIC_GORON_CITY_WOODS_WARP_OPEN,             logic->CanDetonateUprightBombFlower() || logic->CanUse(RG_MEGATON_HAMMER) || logic->Get(LOGIC_GORON_CITY_CHILD_FIRE)),
+        EVENT_ACCESS(LOGIC_GORON_CITY_DARUNIAS_DOOR_OPEN_CHILD,    logic->IsChild && logic->CanUse(RG_ZELDAS_LULLABY)),
         // bottle animation causes similar complications as stopping goron with Din's Fire, only put in logic when both din's & blue fire tricks enabled
-        EventAccess(&logic->StopGCRollingGoronAsAdult, []{return logic->IsAdult && (logic->HasItem(RG_GORONS_BRACELET) || logic->HasExplosives() || logic->CanUse(RG_FAIRY_BOW) ||
-                                                                                   (ctx->GetTrickOption(RT_GC_LINK_GORON_DINS) && (logic->CanUse(RG_DINS_FIRE) || (ctx->GetTrickOption(RT_BLUE_FIRE_MUD_WALLS) && logic->CanUse(RG_BOTTLE_WITH_BLUE_FIRE)))));}),
+        EVENT_ACCESS(LOGIC_GORON_CITY_STOP_ROLLING_GORON_AS_ADULT, logic->IsAdult && logic->HasItem(RG_SPEAK_GORON) && (logic->HasItem(RG_GORONS_BRACELET) || logic->HasExplosives() || logic->CanUse(RG_FAIRY_BOW) ||
+                                                                                   (ctx->GetTrickOption(RT_GC_LINK_GORON_DINS) && (logic->CanUse(RG_DINS_FIRE) || (ctx->GetTrickOption(RT_BLUE_FIRE_MUD_WALLS) && logic->CanUse(RG_BOTTLE_WITH_BLUE_FIRE)))))),
     }, {
         //Locations
-        LOCATION(RC_GC_MAZE_LEFT_CHEST,             logic->CanUse(RG_MEGATON_HAMMER) || logic->CanUse(RG_SILVER_GAUNTLETS) || (ctx->GetTrickOption(RT_GC_LEFTMOST) && logic->HasExplosives() && logic->CanUse(RG_HOVER_BOOTS))),
-        LOCATION(RC_GC_MAZE_CENTER_CHEST,           logic->BlastOrSmash()  || logic->CanUse(RG_SILVER_GAUNTLETS)),
-        LOCATION(RC_GC_MAZE_RIGHT_CHEST,            logic->BlastOrSmash()  || logic->CanUse(RG_SILVER_GAUNTLETS)),
-        LOCATION(RC_GC_POT_FREESTANDING_POH,        logic->IsChild && logic->GoronCityChildFire && (logic->CanUse(RG_BOMB_BAG) || (logic->HasItem(RG_GORONS_BRACELET) && ctx->GetTrickOption(RT_GC_POT_STRENGTH)) || (logic->CanUse(RG_BOMBCHU_5) && ctx->GetTrickOption(RT_GC_POT)))),
-        LOCATION(RC_GC_ROLLING_GORON_AS_CHILD,      logic->IsChild && (logic->HasExplosives() || (logic->HasItem(RG_GORONS_BRACELET) && ctx->GetTrickOption(RT_GC_ROLLING_STRENGTH)))),
-        LOCATION(RC_GC_ROLLING_GORON_AS_ADULT,      logic->StopGCRollingGoronAsAdult),
-        LOCATION(RC_GC_GS_BOULDER_MAZE,             logic->IsChild && logic->BlastOrSmash()),
-        LOCATION(RC_GC_GS_CENTER_PLATFORM,          logic->IsAdult && logic->CanAttack()),
-        LOCATION(RC_GC_MEDIGORON,                   logic->IsAdult && (logic->CanBreakMudWalls() || logic->HasItem(RG_GORONS_BRACELET))),
-        LOCATION(RC_GC_MAZE_GOSSIP_STONE_FAIRY,     (logic->BlastOrSmash() || logic->CanUse(RG_SILVER_GAUNTLETS)) && logic->CallGossipFairyExceptSuns()),
-        LOCATION(RC_GC_MAZE_GOSSIP_STONE_FAIRY_BIG, (logic->BlastOrSmash() || logic->CanUse(RG_SILVER_GAUNTLETS)) && logic->CanUse(RG_SONG_OF_STORMS)),
-        LOCATION(RC_GC_MAZE_GOSSIP_STONE,           logic->BlastOrSmash() || logic->CanUse(RG_SILVER_GAUNTLETS)),
-        LOCATION(RC_GC_LOWER_STAIRCASE_POT_1,       logic->CanBreakPots()),
-        LOCATION(RC_GC_LOWER_STAIRCASE_POT_2,       logic->CanBreakPots()),
-        LOCATION(RC_GC_UPPER_STAIRCASE_POT_1,       logic->CanBreakPots()),
-        LOCATION(RC_GC_UPPER_STAIRCASE_POT_2,       logic->CanBreakPots()),
-        LOCATION(RC_GC_UPPER_STAIRCASE_POT_3,       logic->CanBreakPots()),
-        LOCATION(RC_GC_MAZE_CRATE,                  logic->BlastOrSmash()  || (logic->CanUse(RG_SILVER_GAUNTLETS) && logic->CanBreakCrates())),
-
+        LOCATION(RC_GC_MAZE_LEFT_CHEST,                    (logic->CanUse(RG_MEGATON_HAMMER) || logic->CanUse(RG_SILVER_GAUNTLETS) || (ctx->GetTrickOption(RT_GC_LEFTMOST) && logic->HasExplosives() && logic->CanUse(RG_HOVER_BOOTS))) && logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_GC_MAZE_CENTER_CHEST,                  (logic->BlastOrSmash() || logic->CanUse(RG_SILVER_GAUNTLETS)) && logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_GC_MAZE_RIGHT_CHEST,                   (logic->BlastOrSmash() || logic->CanUse(RG_SILVER_GAUNTLETS)) && logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_GC_POT_FREESTANDING_POH,               logic->IsChild && logic->Get(LOGIC_GORON_CITY_CHILD_FIRE) && (logic->CanUse(RG_BOMB_BAG) || (logic->HasItem(RG_GORONS_BRACELET) && ctx->GetTrickOption(RT_GC_POT_STRENGTH)) || (logic->CanUse(RG_BOMBCHU_5) && ctx->GetTrickOption(RT_GC_POT)))),
+        LOCATION(RC_GC_ROLLING_GORON_AS_CHILD,             logic->IsChild && logic->HasItem(RG_SPEAK_GORON) && (logic->HasExplosives() || (logic->HasItem(RG_GORONS_BRACELET) && ctx->GetTrickOption(RT_GC_ROLLING_STRENGTH)))),
+        LOCATION(RC_GC_ROLLING_GORON_AS_ADULT,             logic->Get(LOGIC_GORON_CITY_STOP_ROLLING_GORON_AS_ADULT)),
+        LOCATION(RC_GC_GS_BOULDER_MAZE,                    logic->IsChild && logic->BlastOrSmash()),
+        LOCATION(RC_GC_GS_CENTER_PLATFORM,                 logic->IsAdult && logic->CanAttack()),
+        LOCATION(RC_GC_MAZE_GOSSIP_STONE_FAIRY,            (logic->BlastOrSmash() || logic->CanUse(RG_SILVER_GAUNTLETS)) && logic->CallGossipFairyExceptSuns()),
+        LOCATION(RC_GC_MAZE_GOSSIP_STONE_FAIRY_BIG,        (logic->BlastOrSmash() || logic->CanUse(RG_SILVER_GAUNTLETS)) && logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION(RC_GC_MAZE_GOSSIP_STONE,                  logic->BlastOrSmash() || logic->CanUse(RG_SILVER_GAUNTLETS)),
+        LOCATION(RC_GC_LOWER_STAIRCASE_POT_1,              logic->CanBreakPots()),
+        LOCATION(RC_GC_LOWER_STAIRCASE_POT_2,              logic->CanBreakPots()),
+        LOCATION(RC_GC_UPPER_STAIRCASE_POT_1,              logic->CanBreakPots()),
+        LOCATION(RC_GC_UPPER_STAIRCASE_POT_2,              logic->CanBreakPots()),
+        LOCATION(RC_GC_UPPER_STAIRCASE_POT_3,              logic->CanBreakPots()),
+        LOCATION(RC_GC_MAZE_CRATE,                         logic->BlastOrSmash()  || (logic->CanUse(RG_SILVER_GAUNTLETS) && logic->CanBreakCrates())),
+        LOCATION(RC_GC_ENTRANCE_BOULDER_1,                 logic->BlastOrSmash()),
+        LOCATION(RC_GC_ENTRANCE_BOULDER_2,                 logic->BlastOrSmash()),
+        LOCATION(RC_GC_ENTRANCE_BOULDER_3,                 logic->BlastOrSmash()),
+        LOCATION(RC_GC_LW_BOULDER_1,                       logic->Get(LOGIC_GORON_CITY_WOODS_WARP_OPEN)),
+        LOCATION(RC_GC_LW_BOULDER_2,                       logic->Get(LOGIC_GORON_CITY_WOODS_WARP_OPEN)),
+        LOCATION(RC_GC_LW_BOULDER_3,                       logic->Get(LOGIC_GORON_CITY_WOODS_WARP_OPEN)),
+        LOCATION(RC_GC_MAZE_SILVER_BOULDER_1,              logic->CanUse(RG_SILVER_GAUNTLETS)),
+        LOCATION(RC_GC_MAZE_SILVER_BOULDER_2,              logic->CanUse(RG_SILVER_GAUNTLETS)),
+        LOCATION(RC_GC_MAZE_SILVER_BOULDER_3,              logic->CanUse(RG_SILVER_GAUNTLETS)),
+        LOCATION(RC_GC_MAZE_SILVER_BOULDER_4,              logic->CanUse(RG_SILVER_GAUNTLETS)),
+        LOCATION(RC_GC_MAZE_SILVER_BOULDER_5,              logic->CanUse(RG_SILVER_GAUNTLETS)),
+        LOCATION(RC_GC_MAZE_SILVER_BOULDER_6,              logic->CanUse(RG_SILVER_GAUNTLETS)),
+        LOCATION(RC_GC_MAZE_SILVER_BOULDER_7,              logic->CanUse(RG_SILVER_GAUNTLETS)),
+        LOCATION(RC_GC_MAZE_SILVER_BOULDER_8,              logic->CanUse(RG_SILVER_GAUNTLETS)),
+        LOCATION(RC_GC_MAZE_SILVER_BOULDER_9,              logic->CanUse(RG_SILVER_GAUNTLETS)),
+        LOCATION(RC_GC_MAZE_SILVER_BOULDER_10,             logic->CanUse(RG_SILVER_GAUNTLETS)),
+        LOCATION(RC_GC_MAZE_SILVER_BOULDER_11,             logic->CanUse(RG_SILVER_GAUNTLETS)),
+        LOCATION(RC_GC_MAZE_SILVER_BOULDER_12,             logic->CanUse(RG_SILVER_GAUNTLETS)),
+        LOCATION(RC_GC_MAZE_SILVER_BOULDER_13,             logic->CanUse(RG_SILVER_GAUNTLETS)),
+        LOCATION(RC_GC_MAZE_SILVER_BOULDER_14,             logic->CanUse(RG_SILVER_GAUNTLETS)),
+        LOCATION(RC_GC_MAZE_SILVER_BOULDER_15,             logic->CanUse(RG_SILVER_GAUNTLETS)),
+        LOCATION(RC_GC_MAZE_SILVER_BOULDER_16,             logic->CanUse(RG_SILVER_GAUNTLETS)),
+        LOCATION(RC_GC_MAZE_SILVER_BOULDER_17,             logic->CanUse(RG_SILVER_GAUNTLETS)),
+        LOCATION(RC_GC_MAZE_SILVER_BOULDER_18,             logic->CanUse(RG_SILVER_GAUNTLETS)),
+        LOCATION(RC_GC_MAZE_SILVER_BOULDER_19,             logic->CanUse(RG_SILVER_GAUNTLETS)),
+        LOCATION(RC_GC_MAZE_SILVER_BOULDER_20,             logic->CanUse(RG_SILVER_GAUNTLETS)),
+        LOCATION(RC_GC_MAZE_SILVER_BOULDER_21,             logic->CanUse(RG_SILVER_GAUNTLETS)),
+        LOCATION(RC_GC_MAZE_SILVER_BOULDER_22,             logic->CanUse(RG_SILVER_GAUNTLETS)),
+        LOCATION(RC_GC_MAZE_SILVER_BOULDER_23,             logic->CanUse(RG_SILVER_GAUNTLETS)),
+        LOCATION(RC_GC_MAZE_SILVER_BOULDER_24,             logic->CanUse(RG_SILVER_GAUNTLETS)),
+        LOCATION(RC_GC_MAZE_SILVER_BOULDER_25,             logic->CanUse(RG_SILVER_GAUNTLETS)),
+        LOCATION(RC_GC_MAZE_SILVER_BOULDER_26,             logic->CanUse(RG_SILVER_GAUNTLETS)),
+        LOCATION(RC_GC_MAZE_SILVER_BOULDER_27,             logic->CanUse(RG_SILVER_GAUNTLETS)),
+        LOCATION(RC_GC_MAZE_SILVER_BOULDER_28,             logic->CanUse(RG_SILVER_GAUNTLETS)),
+        LOCATION(RC_GC_MAZE_SILVER_BOULDER_29,             logic->CanUse(RG_SILVER_GAUNTLETS)),
+        LOCATION(RC_GC_MAZE_BOULDER_1,                     logic->BlastOrSmash()),
+        LOCATION(RC_GC_MAZE_BOULDER_2,                     logic->BlastOrSmash()),
+        LOCATION(RC_GC_MAZE_BOULDER_3,                     logic->BlastOrSmash()),
+        LOCATION(RC_GC_MAZE_BOULDER_4,                     logic->BlastOrSmash()),
+        LOCATION(RC_GC_MAZE_BOULDER_5,                     logic->BlastOrSmash()),
+        LOCATION(RC_GC_MAZE_BOULDER_6,                     logic->BlastOrSmash()),
+        LOCATION(RC_GC_MAZE_BOULDER_7,                     logic->BlastOrSmash()),
+        LOCATION(RC_GC_MAZE_BOULDER_8,                     logic->BlastOrSmash()),
+        LOCATION(RC_GC_MAZE_BOULDER_9,                     logic->BlastOrSmash()),
+        LOCATION(RC_GC_MAZE_BOULDER_10,                    logic->BlastOrSmash()),
+        LOCATION(RC_GC_MAZE_BRONZE_BOULDER_1,              logic->CanUse(RG_MEGATON_HAMMER)),
+        LOCATION(RC_GC_MAZE_BRONZE_BOULDER_2,              logic->CanUse(RG_MEGATON_HAMMER)),
+        LOCATION(RC_GC_MAZE_BRONZE_BOULDER_3,              logic->CanUse(RG_MEGATON_HAMMER)),
+        LOCATION(RC_GC_MAZE_BRONZE_BOULDER_4,              logic->CanUse(RG_MEGATON_HAMMER)),
+        LOCATION(RC_GC_MAZE_BRONZE_BOULDER_5,              logic->CanUse(RG_MEGATON_HAMMER)),
+        LOCATION(RC_GC_MAZE_ROCK,                          logic->BlastOrSmash() || logic->CanUse(RG_SILVER_GAUNTLETS)),
+        LOCATION(RC_GC_CHILD_ROLLING_GORON_RECTANGLE_SIGN, logic->IsChild && logic->CanRead()),
     }, {
         //Exits
-        Entrance(RR_DEATH_MOUNTAIN_TRAIL, []{return true;}),
-        Entrance(RR_GC_MEDIGORON,         []{return logic->CanBreakMudWalls() || logic->HasItem(RG_GORONS_BRACELET);}),
-        Entrance(RR_GC_WOODS_WARP,        []{return logic->GCWoodsWarpOpen;}),
-        Entrance(RR_GC_SHOP,              []{return (logic->IsAdult && logic->StopGCRollingGoronAsAdult) || (logic->IsChild && (logic->BlastOrSmash() || logic->HasItem(RG_GORONS_BRACELET) || logic->GoronCityChildFire || logic->CanUse(RG_FAIRY_BOW)));}),
-        Entrance(RR_GC_DARUNIAS_CHAMBER,  []{return (logic->IsAdult && logic->StopGCRollingGoronAsAdult) || (logic->IsChild && logic->GCDaruniasDoorOpenChild);}),
-        Entrance(RR_GC_GROTTO_PLATFORM,   []{return logic->IsAdult && ((logic->CanUse(RG_SONG_OF_TIME) && ((logic->EffectiveHealth() > 2) || logic->CanUse(RG_GORON_TUNIC) || logic->CanUse(RG_LONGSHOT) || logic->CanUse(RG_NAYRUS_LOVE))) || (logic->EffectiveHealth() > 1 && logic->CanUse(RG_GORON_TUNIC) && logic->CanUse(RG_HOOKSHOT)) || (logic->CanUse(RG_NAYRUS_LOVE) && logic->CanUse(RG_HOOKSHOT)) || (logic->EffectiveHealth() > 2 && logic->CanUse(RG_HOOKSHOT) && ctx->GetTrickOption(RT_GC_GROTTO)));}),
+        ENTRANCE(RR_DEATH_MOUNTAIN_TRAIL, true),
+        ENTRANCE(RR_GC_MEDIGORON,         logic->CanBreakMudWalls() || logic->HasItem(RG_GORONS_BRACELET)),
+        ENTRANCE(RR_GC_WOODS_WARP,        logic->Get(LOGIC_GORON_CITY_WOODS_WARP_OPEN)),
+        ENTRANCE(RR_GC_SHOP,              (logic->IsAdult && logic->Get(LOGIC_GORON_CITY_STOP_ROLLING_GORON_AS_ADULT)) || (logic->IsChild && (logic->BlastOrSmash() || logic->HasItem(RG_GORONS_BRACELET) || logic->Get(LOGIC_GORON_CITY_CHILD_FIRE) || logic->CanUse(RG_FAIRY_BOW)))),
+        ENTRANCE(RR_GC_DARUNIAS_CHAMBER,  (logic->IsAdult && logic->Get(LOGIC_GORON_CITY_STOP_ROLLING_GORON_AS_ADULT)) || (logic->IsChild && logic->Get(LOGIC_GORON_CITY_DARUNIAS_DOOR_OPEN_CHILD))),
+        ENTRANCE(RR_GC_GROTTO_PLATFORM,   logic->IsAdult && ((logic->CanUse(RG_SONG_OF_TIME) && ((logic->EffectiveHealth() > 2) || logic->CanUse(RG_GORON_TUNIC) || logic->CanUse(RG_LONGSHOT) || logic->CanUse(RG_NAYRUS_LOVE))) || (logic->EffectiveHealth() > 1 && logic->CanUse(RG_GORON_TUNIC) && logic->CanUse(RG_HOOKSHOT)) || (logic->CanUse(RG_NAYRUS_LOVE) && logic->CanUse(RG_HOOKSHOT)) || (logic->EffectiveHealth() > 2 && logic->CanUse(RG_HOOKSHOT) && ctx->GetTrickOption(RT_GC_GROTTO)))),
     });
 
-    areaTable[RR_GC_MEDIGORON] = Region("GC Medigoron", SCENE_GORON_CITY, {}, {
+    areaTable[RR_GC_MEDIGORON] = Region("GC Medigoron", SCENE_GORON_CITY, {
+        //Events
+        EVENT_ACCESS(LOGIC_MEDIGORON, logic->IsAdult && logic->HasItem(RG_ADULT_WALLET) && GetCheckPrice(RC_GC_MEDIGORON) <= GetWalletCapacity() && logic->HasItem(RG_SPEAK_GORON)),
+    }, {
         //Locations
+        LOCATION(RC_GC_MEDIGORON,                        logic->IsAdult && logic->HasItem(RG_SPEAK_GORON) && GetCheckPrice() <= GetWalletCapacity()),
         LOCATION(RC_GC_MEDIGORON_GOSSIP_STONE_FAIRY,     logic->CallGossipFairyExceptSuns()),
         LOCATION(RC_GC_MEDIGORON_GOSSIP_STONE_FAIRY_BIG, logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_GC_MEDIGORON_GOSSIP_STONE,           true),
         LOCATION(RC_GC_MEDIGORON_POT_1,                  logic->CanBreakPots()),
     }, {
         //Exits
-        Entrance(RR_GORON_CITY, []{return true;}),
+        ENTRANCE(RR_GORON_CITY, true),
     });
 
     areaTable[RR_GC_WOODS_WARP] = Region("GC Woods Warp", SCENE_GORON_CITY, {
         //Events
-        EventAccess(&logic->GCWoodsWarpOpen, []{return logic->BlastOrSmash() || logic->CanUse(RG_DINS_FIRE);}),
+        EVENT_ACCESS(LOGIC_GORON_CITY_WOODS_WARP_OPEN, logic->BlastOrSmash() || logic->CanUse(RG_DINS_FIRE)),
     }, {}, {
         //Exits
-        Entrance(RR_GORON_CITY,     []{return logic->GCWoodsWarpOpen;}),
-        Entrance(RR_THE_LOST_WOODS, []{return true;}),
+        ENTRANCE(RR_GORON_CITY,     logic->Get(LOGIC_GORON_CITY_WOODS_WARP_OPEN)),
+        ENTRANCE(RR_THE_LOST_WOODS, true),
     });
 
     areaTable[RR_GC_DARUNIAS_CHAMBER] = Region("GC Darunias Chamber", SCENE_GORON_CITY, {
         //Events
-        EventAccess(&logic->GoronCityChildFire, []{return logic->IsChild && logic->CanUse(RG_STICKS);}),
+        EVENT_ACCESS(LOGIC_GORON_CITY_CHILD_FIRE, logic->IsChild && logic->CanUse(RG_STICKS)),
     }, {
         //Locations
         LOCATION(RC_GC_DARUNIAS_JOY,  logic->IsChild && logic->CanUse(RG_SARIAS_SONG)),
@@ -78,40 +132,40 @@ void RegionTable_Init_GoronCity() {
         LOCATION(RC_GC_DARUNIA_POT_3, logic->CanBreakPots()),
     }, {
         //Exits
-        Entrance(RR_GORON_CITY,      []{return true;}),
-        Entrance(RR_DMC_LOWER_LOCAL, []{return logic->IsAdult;}),
+        ENTRANCE(RR_GORON_CITY,      true),
+        ENTRANCE(RR_DMC_POTS_ENTRY,  logic->IsAdult && logic->HasItem(RG_POWER_BRACELET)),
     });
 
     areaTable[RR_GC_GROTTO_PLATFORM] = Region("GC Grotto Platform", SCENE_GORON_CITY, {}, {}, {
         //Exits
-        Entrance(RR_GC_GROTTO,  []{return true;}),
-        Entrance(RR_GORON_CITY, []{return logic->EffectiveHealth() > 2 || logic->CanUse(RG_GORON_TUNIC) || logic->CanUse(RG_NAYRUS_LOVE) || ((logic->IsChild || logic->CanUse(RG_SONG_OF_TIME)) && logic->CanUse(RG_LONGSHOT));}),
+        ENTRANCE(RR_GC_GROTTO,  true),
+        ENTRANCE(RR_GORON_CITY, logic->EffectiveHealth() > 2 || logic->CanUse(RG_GORON_TUNIC) || logic->CanUse(RG_NAYRUS_LOVE) || ((logic->IsChild || logic->CanUse(RG_SONG_OF_TIME)) && logic->CanUse(RG_LONGSHOT))),
     });
 
     areaTable[RR_GC_SHOP] = Region("GC Shop", SCENE_GORON_SHOP, {}, {
         //Locations
-        LOCATION(RC_GC_SHOP_ITEM_1, true),
-        LOCATION(RC_GC_SHOP_ITEM_2, true),
-        LOCATION(RC_GC_SHOP_ITEM_3, true),
-        LOCATION(RC_GC_SHOP_ITEM_4, true),
-        LOCATION(RC_GC_SHOP_ITEM_5, true),
-        LOCATION(RC_GC_SHOP_ITEM_6, true),
-        LOCATION(RC_GC_SHOP_ITEM_7, true),
-        LOCATION(RC_GC_SHOP_ITEM_8, true),
+        LOCATION(RC_GC_SHOP_ITEM_1, logic->HasItem(RG_SPEAK_GORON) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_GC_SHOP_ITEM_2, logic->HasItem(RG_SPEAK_GORON) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_GC_SHOP_ITEM_3, logic->HasItem(RG_SPEAK_GORON) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_GC_SHOP_ITEM_4, logic->HasItem(RG_SPEAK_GORON) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_GC_SHOP_ITEM_5, logic->HasItem(RG_SPEAK_GORON) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_GC_SHOP_ITEM_6, logic->HasItem(RG_SPEAK_GORON) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_GC_SHOP_ITEM_7, logic->HasItem(RG_SPEAK_GORON) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_GC_SHOP_ITEM_8, logic->HasItem(RG_SPEAK_GORON) && GetCheckPrice() <= GetWalletCapacity()),
     }, {
         //Exits
-        Entrance(RR_GORON_CITY, []{return true;}),
+        ENTRANCE(RR_GORON_CITY, true),
     });
 
     areaTable[RR_GC_GROTTO] = Region("GC Grotto", SCENE_GROTTOS, {}, {
         //Locations
-        LOCATION(RC_GC_DEKU_SCRUB_GROTTO_LEFT,   logic->CanStunDeku()),
-        LOCATION(RC_GC_DEKU_SCRUB_GROTTO_RIGHT,  logic->CanStunDeku()),
-        LOCATION(RC_GC_DEKU_SCRUB_GROTTO_CENTER, logic->CanStunDeku()),
+        LOCATION(RC_GC_DEKU_SCRUB_GROTTO_LEFT,   logic->CanStunDeku() && logic->HasItem(RG_SPEAK_DEKU) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_GC_DEKU_SCRUB_GROTTO_RIGHT,  logic->CanStunDeku() && logic->HasItem(RG_SPEAK_DEKU) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_GC_DEKU_SCRUB_GROTTO_CENTER, logic->CanStunDeku() && logic->HasItem(RG_SPEAK_DEKU) && GetCheckPrice() <= GetWalletCapacity()),
         LOCATION(RC_GC_GROTTO_BEEHIVE,           logic->CanBreakUpperBeehives()),
     }, {
         //Exits
-        Entrance(RR_GC_GROTTO_PLATFORM, []{return true;}),
+        ENTRANCE(RR_GC_GROTTO_PLATFORM, true),
     });
 
     // clang-format on

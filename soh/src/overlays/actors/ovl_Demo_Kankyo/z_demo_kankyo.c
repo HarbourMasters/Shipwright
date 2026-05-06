@@ -5,7 +5,6 @@
 #include "objects/object_toki_objects/object_toki_objects.h"
 #include "soh/frame_interpolation.h"
 #include <assert.h>
-#include "soh/OTRGlobals.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
@@ -720,7 +719,8 @@ void DemoKankyo_DrawLightPlane(Actor* thisx, PlayState* play) {
     if (play->csCtx.state == CS_STATE_IDLE || gSaveContext.sceneSetupIndex >= 4) {
         Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
-        gSPSegment(POLY_XLU_DISP++, 0x08, Gfx_TexScroll(play->state.gfxCtx, 0, play->state.frames & 0x7F, 64, 32));
+        gSPSegment(POLY_XLU_DISP++, 0x08,
+                   Gfx_TexScrollEx(play->state.gfxCtx, 0, play->state.frames & 0x7F, 64, 32, 0, 1));
         gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, object_toki_objects_DL_008390);
     }
@@ -833,7 +833,7 @@ void DemoKankyo_DrawWarpSparkles(Actor* thisx, PlayState* play) {
                         this->unk_150[i].unk_22++;
                     }
                 } else if (i + 1 == this->sparkleCounter && play->csCtx.state == CS_STATE_IDLE) {
-                    func_80088AF0(play);
+                    Interface_SetSubTimerToFinalSecond(play);
                     Actor_Kill(&this->actor);
                 }
                 break;

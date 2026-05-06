@@ -1,5 +1,5 @@
 #include "Array.h"
-#include "graphic/Fast3D/lus_gbi.h"
+#include <fast/lus_gbi.h>
 namespace SOH {
 Array::Array() : Resource(std::shared_ptr<Ship::ResourceInitData>()) {
 }

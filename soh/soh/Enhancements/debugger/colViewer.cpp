@@ -1,12 +1,10 @@
 #include "colViewer.h"
-#include "../../frame_interpolation.h"
 #include "soh/SohGui/UIWidgets.hpp"
 #include "soh/SohGui/SohGui.hpp"
 
 #include <vector>
 #include <string>
 #include <cmath>
-#include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 extern "C" {
@@ -15,12 +13,13 @@ extern "C" {
 #include "functions.h"
 #include "macros.h"
 #include "soh/cvar_prefixes.h"
+#include "overlays/actors/ovl_En_Kakasi2/z_en_kakasi2.h"
 extern PlayState* gPlayState;
 }
 
 enum ColRenderSetting { ColRenderDisabled, ColRenderSolid, ColRenderTransparent };
 
-static std::unordered_map<int32_t, const char*> ColRenderSettingNames = {
+static std::map<int32_t, const char*> ColRenderSettingNames = {
     { ColRenderDisabled, "Disabled" },
     { ColRenderSolid, "Solid" },
     { ColRenderTransparent, "Transparent" },
@@ -39,6 +38,7 @@ ImVec4 ac_col;
 ImVec4 at_col;
 
 ImVec4 waterbox_col;
+ImVec4 scarecrow_col;
 
 static std::vector<Gfx> opaDl;
 static std::vector<Gfx> xluDl;
@@ -65,6 +65,7 @@ void ColViewerWindow::DrawElement() {
     CVarCombobox("Bg Actors", CVAR_DEVELOPER_TOOLS("ColViewer.BGActors"), ColRenderSettingNames, comboOpt);
     CVarCombobox("Col Check", CVAR_DEVELOPER_TOOLS("ColViewer.ColCheck"), ColRenderSettingNames, comboOpt);
     CVarCombobox("Waterbox", CVAR_DEVELOPER_TOOLS("ColViewer.Waterbox"), ColRenderSettingNames, comboOpt);
+    CVarCombobox("Scarecrow Spawn", CVAR_DEVELOPER_TOOLS("ColViewer.ScarecrowSpawn"), ColRenderSettingNames, comboOpt);
 
     CVarCheckbox("Apply as decal", CVAR_DEVELOPER_TOOLS("ColViewer.Decal"),
                  checkOpt.DefaultValue(true).Tooltip(
@@ -131,6 +132,11 @@ void ColViewerWindow::DrawElement() {
                             ColorPickerResetButton | ColorPickerRandomButton, THEME_COLOR)) {
             waterbox_col =
                 VecFromRGBA8(CVarGetColor(CVAR_DEVELOPER_TOOLS("ColViewer.ColorWaterbox"), { 0, 0, 255, 255 }));
+        }
+        if (CVarColorPicker("Scarecrow Spawn", CVAR_DEVELOPER_TOOLS("ColViewer.ColorScarecrow"), { 255, 128, 0, 200 },
+                            false, ColorPickerResetButton | ColorPickerRandomButton, THEME_COLOR)) {
+            scarecrow_col =
+                VecFromRGBA8(CVarGetColor(CVAR_DEVELOPER_TOOLS("ColViewer.ColorScarecrow"), { 255, 128, 0, 200 }));
         }
 
         ImGui::TreePop();
@@ -314,7 +320,7 @@ void CreateSphereData() {
 
     size_t vtxStartIndex = sphereVtx.size();
     sphereVtx.reserve(sphereVtx.size() + faces.size() * 3);
-    for (int32_t faceIndex = 0; faceIndex < faces.size(); faceIndex++) {
+    for (size_t faceIndex = 0; faceIndex < faces.size(); faceIndex++) {
         sphereVtx.push_back(sphereVtx[std::get<0>(faces[faceIndex])]);
         sphereVtx.push_back(sphereVtx[std::get<1>(faces[faceIndex])]);
         sphereVtx.push_back(sphereVtx[std::get<2>(faces[faceIndex])]);
@@ -491,6 +497,63 @@ void DrawBgActorCollision() {
             DrawDynapoly(dl, bg.colHeader, bgIndex);
 
             dl.push_back(gsSPPopMatrix(G_MTX_MODELVIEW));
+        }
+    }
+}
+
+void DrawScarecrowSpawn(std::vector<Gfx>& dl, EnKakasi2* scarecrow) {
+    if (scarecrow == nullptr) {
+        return;
+    }
+
+    f32 radius = scarecrow->maxSpawnDistance.x;
+    f32 height = scarecrow->maxSpawnDistance.y * 2.0f;
+
+    if (radius <= 0.0f || height <= 0.0f) {
+        return;
+    }
+
+    Mtx m;
+    MtxF mt;
+    MtxF ms;
+    MtxF dest;
+
+    f32 halfHeight = height * 0.5f;
+    Vec3f* pos = &scarecrow->actor.world.pos;
+
+    SkinMatrix_SetTranslate(&mt, pos->x, pos->y - halfHeight, pos->z);
+    SkinMatrix_SetScale(&ms, radius / 128.0f, height / 128.0f, radius / 128.0f);
+    SkinMatrix_MtxFMtxFMult(&mt, &ms, &dest);
+    guMtxF2L(dest.mf, &m);
+    mtxDl.push_back(m);
+
+    dl.push_back(gsSPMatrix(&mtxDl.back(), G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_PUSH));
+    dl.push_back(gsSPDisplayList(cylinderGfx.data()));
+    dl.push_back(gsSPPopMatrix(G_MTX_MODELVIEW));
+}
+
+void DrawScarecrowSpawns() {
+    ColRenderSetting showScarecrowSetting =
+        (ColRenderSetting)CVarGetInteger(CVAR_DEVELOPER_TOOLS("ColViewer.ScarecrowSpawn"), COLVIEW_DISABLED);
+
+    if (showScarecrowSetting == ColRenderDisabled || !CVarGetInteger(CVAR_DEVELOPER_TOOLS("ColViewer.Enabled"), 0) ||
+        gPlayState == nullptr) {
+        return;
+    }
+
+    std::vector<Gfx>& dl = (showScarecrowSetting == ColRenderTransparent) ? xluDl : opaDl;
+    InitGfx(dl, showScarecrowSetting);
+    dl.push_back(gsSPMatrix(&gMtxClear, G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_NOPUSH));
+
+    Color_RGBA8 color = CVarGetColor(CVAR_DEVELOPER_TOOLS("ColViewer.ColorScarecrow.Value"), { 255, 128, 0, 200 });
+    dl.push_back(gsDPSetPrimColor(0, 0, color.r, color.g, color.b, color.a));
+
+    ActorContext* actorCtx = &gPlayState->actorCtx;
+    for (int32_t listIndex = 0; listIndex < ARRAY_COUNT(actorCtx->actorLists); listIndex++) {
+        for (Actor* actor = actorCtx->actorLists[listIndex].head; actor != nullptr; actor = actor->next) {
+            if (actor->id == ACTOR_EN_KAKASI2) {
+                DrawScarecrowSpawn(dl, reinterpret_cast<EnKakasi2*>(actor));
+            }
         }
     }
 }
@@ -691,6 +754,7 @@ extern "C" void DrawColViewer() {
 
     DrawSceneCollision();
     DrawBgActorCollision();
+    DrawScarecrowSpawns();
     DrawColCheckCollision();
     DrawWaterboxList();
 
@@ -711,7 +775,7 @@ extern "C" void DrawColViewer() {
 
     if ((vtxDl.size() > vtxDlCapacity) || (mtxDl.size() > mtxDlCapacity)) {
         // If the sizes somehow changed between the two draws, we can't continue because we may be using invalid data
-        printf("Error drawing collision, vertex/matrix sizes didn't settle.\n");
+        SPDLOG_WARN("Error drawing collision, vertex/matrix sizes didn't settle.");
         return;
     }
 

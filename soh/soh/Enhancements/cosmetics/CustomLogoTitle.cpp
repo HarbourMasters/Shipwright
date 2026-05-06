@@ -100,8 +100,8 @@ extern "C" void CustomLogoTitle_Draw(TitleContext* titleContext, uint8_t logoToD
         f32 scale = 0.4f;
 
         gSPSegment(POLY_OPA_DISP++, 0x08,
-                   (uintptr_t)Gfx_TwoTexScroll(titleContext->state.gfxCtx, 0, 0, (0 - 1) % 128, 32, 32, 1, 0,
-                                               (1 * -2) % 128, 32, 32));
+                   (uintptr_t)Gfx_TwoTexScrollEx(titleContext->state.gfxCtx, 0, 0, (0 - 1) % 128, 32, 32, 1, 0,
+                                                 (1 * -2) % 128, 32, 32, 0, 0, 0, 0));
 
         Matrix_Translate(0.0f, -10.0f, 0.0f, MTXMODE_APPLY);
         Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
@@ -195,7 +195,7 @@ void RegisterCustomLogoTitle() {
     COND_HOOK(OnZTitleUpdate, true, OnZTitleUpdatePressButtonToSkip);
 }
 
-static RegisterShipInitFunc initFuncAlways(RegisterCustomLogoTitle);
+static RegisterShipInitFunc registerCustomLogo(RegisterCustomLogoTitle);
 
 // // // // // //
 // Bootsequence
@@ -216,7 +216,7 @@ void RegisterCustomLogoTitleBootsequence() {
     COND_HOOK(OnZTitleUpdate, CVAR_BOOTSEQUENCE_VALUE == BOOTSEQUENCE_FILESELECT, OnZTitleUpdateSkipToFileSelect);
 }
 
-static RegisterShipInitFunc initFuncBootsequence(RegisterCustomLogoTitleBootsequence, { CVAR_BOOTSEQUENCE_NAME });
+static RegisterShipInitFunc registerTitleBootSequence(RegisterCustomLogoTitleBootsequence, { CVAR_BOOTSEQUENCE_NAME });
 
 // // // // // //
 // Let it Snow
@@ -230,4 +230,4 @@ void RegisterCustomLogoTitleLetItSnow() {
     shouldDrawIceOnSpinningLogo = CVAR_LETITSNOW_VALUE != CVAR_LETITSNOW_DEFAULT;
 }
 
-static RegisterShipInitFunc initFuncLetItSnow(RegisterCustomLogoTitleLetItSnow, { CVAR_LETITSNOW_NAME });
+static RegisterShipInitFunc registerLetItSnow(RegisterCustomLogoTitleLetItSnow, { CVAR_LETITSNOW_NAME });

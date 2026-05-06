@@ -110,12 +110,14 @@ void DemoShd_Draw(Actor* thisx, PlayState* play) {
     gSPDisplayList(POLY_XLU_DISP++, D_809932D0);
 
     if (this->unk_14C & 1) {
-        gSPDisplayList(POLY_XLU_DISP++, Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0x3FF - ((unk_14E * 5) & 0x3FF), 16,
-                                                         256, 1, 0, 255 - ((unk_14E * 5) & 255), 32, 32));
+        gSPDisplayList(POLY_XLU_DISP++,
+                       Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 0, 0x3FF - ((unk_14E * 5) & 0x3FF), 16, 256, 1, 0,
+                                          255 - ((unk_14E * 5) & 255), 32, 32, 0, -5, 0, -5));
         gSPDisplayList(POLY_XLU_DISP++, D_80993390);
     } else if (this->unk_14C & 2) {
-        gSPDisplayList(POLY_XLU_DISP++, Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0x3FF - ((unk_14E * 5) & 0x3FF), 16,
-                                                         256, 1, 0, 255 - ((unk_14E * 5) & 255), 32, 32));
+        gSPDisplayList(POLY_XLU_DISP++,
+                       Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 0, 0x3FF - ((unk_14E * 5) & 0x3FF), 16, 256, 1, 0,
+                                          255 - ((unk_14E * 5) & 255), 32, 32, 0, -5, 0, -5));
         gSPDisplayList(POLY_XLU_DISP++, D_809934B8);
     }
 

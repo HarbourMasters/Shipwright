@@ -52,10 +52,10 @@ typedef struct EnIn {
     /* 0x01FC */ s16 unk_1FC;
     /* 0x01FE */ Vec3s jointTable[INGO_LIMB_MAX];
     /* 0x0276 */ Vec3s morphTable[INGO_LIMB_MAX];
-    /* 0x02F0 */ f32 unk_2F0;
+    /* 0x02F0 */ f32 subCamAtOffset;
     /* 0x02F4 */ f32 unk_2F4;
     /* 0x02F8 */ f32 unk_2F8;
-    /* 0x02FC */ f32 unk_2FC;
+    /* 0x02FC */ f32 subCamEyeOffset;
     /* 0x0300 */ f32 unk_300;
     /* 0x0304 */ f32 unk_304;
     /* 0x0308 */ NpcInteractInfo interactInfo;

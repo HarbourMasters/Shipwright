@@ -6,7 +6,6 @@
 
 #include "z_en_kz.h"
 #include "objects/object_kz/object_kz.h"
-#include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
@@ -417,7 +416,7 @@ void EnKz_PreMweepWait(EnKz* this, PlayState* play) {
         this->interactInfo.talkState = NPC_TALK_STATE_IDLE;
         this->actionFunc = EnKz_SetupMweep;
     } else {
-        func_80034F54(play, this->unk_2A6, this->unk_2BE, 12);
+        func_80034F54(play, this->fidgetTableY, this->fidgetTableZ, 12);
     }
 }
 
@@ -490,7 +489,7 @@ void EnKz_Wait(EnKz* this, PlayState* play) {
         this->actionFunc = EnKz_SetupGetItem;
         EnKz_SetupGetItem(this, play);
     } else {
-        func_80034F54(play, this->unk_2A6, this->unk_2BE, 12);
+        func_80034F54(play, this->fidgetTableY, this->fidgetTableZ, 12);
     }
 }
 
@@ -519,7 +518,7 @@ void EnKz_SetupGetItem(EnKz* this, PlayState* play) {
 void EnKz_StartTimer(EnKz* this, PlayState* play) {
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play)) {
         if (GameInteractor_Should(VB_TRADE_TIMER_FROG, INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_FROG)) {
-            func_80088AA0(180); // start timer2 with 3 minutes
+            Interface_SetSubTimer(180); // start timer2 with 3 minutes
             gSaveContext.eventInf[1] &= ~1;
         }
         this->interactInfo.talkState = NPC_TALK_STATE_IDLE;
@@ -549,8 +548,8 @@ s32 EnKz_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* po
     EnKz* this = (EnKz*)thisx;
 
     if (limbIndex == 8 || limbIndex == 9 || limbIndex == 10) {
-        rot->y += Math_SinS(this->unk_2A6[limbIndex]) * 200.0f;
-        rot->z += Math_CosS(this->unk_2BE[limbIndex]) * 200.0f;
+        rot->y += Math_SinS(this->fidgetTableY[limbIndex]) * 200.0f;
+        rot->z += Math_CosS(this->fidgetTableZ[limbIndex]) * 200.0f;
     }
     if (limbIndex) {}
     return false;

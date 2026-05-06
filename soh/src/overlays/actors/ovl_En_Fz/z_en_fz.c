@@ -2,7 +2,6 @@
 #include "objects/object_fz/object_fz.h"
 #include "soh/frame_interpolation.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/ObjectExtension/ActorMaximumHealth.h"
 
 #define FLAGS                                                                                 \
     (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED | \
@@ -725,11 +724,7 @@ void EnFz_Draw(Actor* thisx, PlayState* play) {
     // SOH [Enhancement] - With enemy health scaling, the Freezards health could cause an index out of bounds for the
     // displayLists, so we need to recompute the index based on the scaled health (using the maximum health value) and
     // clamp the final result for safety.
-    if (CVarGetInteger(CVAR_ENHANCEMENT("EnemySizeScalesHealth"), 0)) {
-        u8 scaledHealth = (u8)(((f32)this->actor.colChkInfo.health / GetActorMaximumHealth(this)) * 6);
-        index = (6 - scaledHealth) >> 1;
-        index = CLAMP(index, 0, 2);
-    }
+    GameInteractor_Should(VB_FREEZARD_SCALE_HEALTH_WITH_SIZE, false, this, &index);
 
     OPEN_DISPS(play->state.gfxCtx);
 
@@ -741,8 +736,8 @@ void EnFz_Draw(Actor* thisx, PlayState* play) {
         func_8002ED80(&this->actor, play, 0);
         Gfx_SetupDL_25Xlu(play->state.gfxCtx);
         gSPSegment(POLY_XLU_DISP++, 0x08,
-                   Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, play->state.frames & 0x7F, 32, 32, 1, 0,
-                                    (2 * play->state.frames) & 0x7F, 32, 32));
+                   Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 0, play->state.frames & 0x7F, 32, 32, 1, 0,
+                                      (2 * play->state.frames) & 0x7F, 32, 32, 0, 1, 0, 2));
         gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gDPSetCombineLERP(POLY_XLU_DISP++, TEXEL1, PRIMITIVE, PRIM_LOD_FRAC, TEXEL0, TEXEL1, TEXEL0, PRIMITIVE, TEXEL0,
                           PRIMITIVE, ENVIRONMENT, COMBINED, ENVIRONMENT, COMBINED, 0, ENVIRONMENT, 0);

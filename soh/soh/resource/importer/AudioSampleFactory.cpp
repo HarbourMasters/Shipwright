@@ -4,9 +4,9 @@
 #include "spdlog/spdlog.h"
 #include "z64.h"
 #include "z64audio.h"
-#include "Context.h"
-#include "resource/archive/Archive.h"
-#include "resource/ResourceManager.h"
+#include <ship/Context.h>
+#include <ship/resource/archive/Archive.h>
+#include <ship/resource/ResourceManager.h>
 #define DR_WAV_IMPLEMENTATION
 #include <dr_wav.h>
 

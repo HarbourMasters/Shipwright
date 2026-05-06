@@ -20,4 +20,4 @@ void RegisterNoKeeseGuayTarget() {
     COND_VB_SHOULD(VB_GUAY_FORCE_FLY_AWAY, CVAR_NOKEESEGUAYTARGET_VALUE, { *should = true; });
 }
 
-static RegisterShipInitFunc initFunc_NoKeeseGuayTarget(RegisterNoKeeseGuayTarget, { CVAR_NOKEESEGUAYTARGET_NAME });
+static RegisterShipInitFunc initFunc(RegisterNoKeeseGuayTarget, { CVAR_NOKEESEGUAYTARGET_NAME });

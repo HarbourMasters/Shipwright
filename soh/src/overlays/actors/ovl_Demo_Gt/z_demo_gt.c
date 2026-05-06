@@ -72,7 +72,7 @@ void func_8097D7D8(PlayState* play, Vec3f* pos, Vec3f* velOffset, f32 scale, s32
 }
 
 Actor* DemoGt_SpawnCloudRing(PlayState* play, Vec3f* pos, s16 params) {
-    return Actor_Spawn(&play->actorCtx, play, ACTOR_BG_SPOT16_DOUGHNUT, pos->x, pos->y, pos->z, 0, 0, 0, params, true);
+    return Actor_Spawn(&play->actorCtx, play, ACTOR_BG_SPOT16_DOUGHNUT, pos->x, pos->y, pos->z, 0, 0, 0, params);
 }
 
 void DemoGt_SpawnExplosionWithSound(PlayState* play, Vec3f* pos, f32 scale) {
@@ -287,7 +287,7 @@ void func_8097E454(PlayState* play, Vec3f* spawnerPos, Vec3f* velocity, Vec3f* a
     }
 }
 
-u8 func_8097E69C(PlayState* play) {
+u8 DemoGt_IsCutsceneIdle(PlayState* play) {
     if (play->csCtx.state == CS_STATE_IDLE) {
         return true;
     } else {
@@ -299,7 +299,7 @@ CsCmdActorCue* DemoGt_GetNpcAction(PlayState* play, u32 actionIdx) {
     s32 pad[2];
     CsCmdActorCue* ret = NULL;
 
-    if (!func_8097E69C(play)) {
+    if (!DemoGt_IsCutsceneIdle(play)) {
         ret = play->csCtx.npcActions[actionIdx];
     }
 
@@ -433,7 +433,7 @@ void func_8097ED64(DemoGt* this, PlayState* play, s32 actionIdx) {
     func_8097E824(this, actionIdx);
 }
 
-u8 func_8097ED94() {
+u8 DemoGt_IsCutsceneLayer() {
     if (kREG(2) != 0) {
         return true;
     } else if (gSaveContext.sceneSetupIndex < 4) {
@@ -462,7 +462,7 @@ void func_8097EDD8(DemoGt* this, PlayState* play, CollisionHeader* collision) {
 
 u8 func_8097EE44(DemoGt* this, PlayState* play, s32 updateMode, s32 drawConfig, CollisionHeader* colHeader) {
 
-    if (func_8097ED94()) {
+    if (DemoGt_IsCutsceneLayer()) {
         this->updateMode = updateMode;
         this->drawConfig = drawConfig;
         func_8097EDD8(this, play, colHeader);
@@ -669,18 +669,20 @@ void DemoGt_Draw1(DemoGt* this, PlayState* play) {
     Gfx_SetupDL_25Opa(gfxCtx);
 
     gSPSegment(POLY_OPA_DISP++, 0x08,
-               Gfx_TwoTexScrollEnvColor(gfxCtx, 0, 0, unk198[0], 0x20, 0x40, 1, 0, unk198[1], 0x20, 0x40, unk178[0],
-                                        unk178[1], unk178[2], 0x80));
+               Gfx_TwoTexScrollEnvColorEx(gfxCtx, 0, 0, unk198[0], 0x20, 0x40, 1, 0, unk198[1], 0x20, 0x40, unk178[0],
+                                          unk178[1], unk178[2], 0x80, 0, unk198[0] < 0 ? -1 : 1, 0,
+                                          unk198[1] < 0 ? -1 : 1));
     gSPSegment(POLY_OPA_DISP++, 0x0A,
-               Gfx_TwoTexScrollEnvColor(gfxCtx, 0, 0, unk198[0], 0x20, 0x40, 1, 0, unk198[1], 0x20, 0x40, unk188[0],
-                                        unk188[1], unk188[2], 0x80));
+               Gfx_TwoTexScrollEnvColorEx(gfxCtx, 0, 0, unk198[0], 0x20, 0x40, 1, 0, unk198[1], 0x20, 0x40, unk188[0],
+                                          unk188[1], unk188[2], 0x80, 0, unk198[0] < 0 ? -1 : 1, 0,
+                                          unk198[1] < 0 ? -1 : 1));
     gSPMatrix(POLY_OPA_DISP++, spB4, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gTowerCollapseCsExteriorStructureDL);
     Gfx_SetupDL_25Xlu(gfxCtx);
     gDPSetEnvColor(POLY_XLU_DISP++, 128, 128, 128, 128);
-    gSPSegment(
-        POLY_XLU_DISP++, 0x09,
-        Gfx_TwoTexScroll(gfxCtx, 0, 0, gameplayFrames * 0x14, 0x10, 0x200, 1, 0, gameplayFrames * 0x1E, 0x10, 0x200));
+    gSPSegment(POLY_XLU_DISP++, 0x09,
+               Gfx_TwoTexScrollEx(gfxCtx, 0, 0, gameplayFrames * 0x14, 0x10, 0x200, 1, 0, gameplayFrames * 0x1E, 0x10,
+                                  0x200, 0, 0x14, 0, 0x1E));
     gSPMatrix(POLY_XLU_DISP++, spB4, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, gTowerCollapseCsFlameSmokeDL);
 
@@ -855,8 +857,9 @@ void DemoGt_Draw2(DemoGt* this, PlayState* play) {
     unk198 = this->unk_198;
     unk178 = this->unk_178;
     gSPSegment(POLY_OPA_DISP++, 0x08,
-               Gfx_TwoTexScrollEnvColor(gfxCtx, 0, 0, unk198[0], 0x20, 0x40, 1, 0, unk198[1], 0x20, 0x40, unk178[0],
-                                        unk178[1], unk178[2], 128));
+               Gfx_TwoTexScrollEnvColorEx(gfxCtx, 0, 0, unk198[0], 0x20, 0x40, 1, 0, unk198[1], 0x20, 0x40, unk178[0],
+                                          unk178[1], unk178[2], 128, 0, unk198[0] < 0 ? -1 : 1, 0,
+                                          unk198[1] < 0 ? -1 : 1));
     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(gfxCtx), G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gTowerCollapseCsCollapsedStructureInnerDL);
     gSPPopMatrix(POLY_OPA_DISP++, G_MTX_MODELVIEW);

@@ -15,17 +15,17 @@ typedef struct EnReeba {
     /* 0x01FC */ Vec3s morphTable[18];
     /* 0x0268 */ char unk_268[0x4];
     /* 0x026C */ EnReebaActionFunc actionfunc;
-    /* 0x0270 */ s16 unk_270;
-    /* 0x0272 */ s16 unk_272;
-    /* 0x0274 */ s16 unk_274;
-    /* 0x0276 */ s16 unk_276;
-    /* 0x0278 */ s16 unk_278;
+    /* 0x0270 */ s16 bigLeeverTimer;
+    /* 0x0272 */ s16 moveTimer;
+    /* 0x0274 */ s16 sfxTimer;
+    /* 0x0276 */ s16 damagedTimer;
+    /* 0x0278 */ s16 waitTimer;
     /* 0x027A */ s16 isBig;
-    /* 0x027C */ s16 unk_27C;
-    /* 0x027E */ s16 unk_27E;
-    /* 0x0280 */ s16 unk_280;
-    /* 0x0284 */ f32 unk_284;
-    /* 0x0288 */ f32 unk_288;
+    /* 0x027C */ s16 unkDamageField;
+    /* 0x027E */ s16 stunType;
+    /* 0x0280 */ s16 aimType;
+    /* 0x0284 */ f32 yOffsetTarget;
+    /* 0x0288 */ f32 yOffsetStep;
     /* 0x028C */ f32 scale;
     /* 0x0290 */ ColliderCylinder collider;
 } EnReeba; // size = 0x02DC

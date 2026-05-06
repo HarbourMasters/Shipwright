@@ -1,6 +1,6 @@
 #include "GameInteractor.h"
 #include <libultraship/bridge.h>
-#include "soh/Enhancements/randomizer/3drando/random.hpp"
+#include "soh/ShipUtils.h"
 #include <math.h>
 #include "soh/Enhancements/debugger/colViewer.h"
 #include "soh/Enhancements/nametag.h"
@@ -17,7 +17,7 @@ extern PlayState* gPlayState;
 #include "overlays/actors/ovl_En_Bom/z_en_bom.h"
 
 void GameInteractor::RawAction::AddOrRemoveHealthContainers(int16_t amount) {
-    gSaveContext.healthCapacity += amount * 0x10;
+    gSaveContext.healthCapacity += amount * FULL_HEART_HEALTH;
 }
 
 void GameInteractor::RawAction::AddOrRemoveMagic(int8_t amount) {
@@ -46,17 +46,17 @@ void GameInteractor::RawAction::AddOrRemoveMagic(int8_t amount) {
 
 void GameInteractor::RawAction::HealOrDamagePlayer(int16_t hearts) {
     if (hearts > 0) {
-        Health_ChangeBy(gPlayState, hearts * 0x10);
+        Health_ChangeBy(gPlayState, hearts * FULL_HEART_HEALTH);
     } else if (hearts < 0) {
         Player* player = GET_PLAYER(gPlayState);
-        Health_ChangeBy(gPlayState, hearts * 0x10);
+        Health_ChangeBy(gPlayState, hearts * FULL_HEART_HEALTH);
         func_80837C0C(gPlayState, player, 0, 0, 0, 0, 0);
         player->invincibilityTimer = 28;
     }
 }
 
 void GameInteractor::RawAction::SetPlayerHealth(int16_t hearts) {
-    gSaveContext.health = hearts * 0x10;
+    gSaveContext.health = hearts * FULL_HEART_HEALTH;
 }
 
 void GameInteractor::RawAction::SetLinkInvisibility(bool active) {
@@ -498,7 +498,7 @@ GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnEnemyWithOffset
     }
 
     // Generate point in random angle with a radius.
-    float angle = static_cast<float>(RandomDouble() * 2 * M_PI);
+    float angle = static_cast<float>(ShipUtils::RandomDouble() * 2 * M_PI);
     float radius = 150;
     float posXOffset = radius * cos(angle);
     float posZOffset = radius * sin(angle);
@@ -533,7 +533,7 @@ GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnEnemyWithOffset
             pos.y += 10;
             pos.z += 10;
             Actor* actor =
-                Actor_Spawn(&gPlayState->actorCtx, gPlayState, enemyId, pos.x, pos.y, pos.z, 0, 0, 0, enemyParams, 0);
+                Actor_Spawn(&gPlayState->actorCtx, gPlayState, enemyId, pos.x, pos.y, pos.z, 0, 0, 0, enemyParams);
             if (actor == NULL) {
                 return GameInteractionEffectQueryResult::TemporarilyNotPossible;
             }
@@ -547,7 +547,7 @@ GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnEnemyWithOffset
         return GameInteractionEffectQueryResult::Possible;
     } else {
         Actor* actor =
-            Actor_Spawn(&gPlayState->actorCtx, gPlayState, enemyId, pos.x, pos.y, pos.z, 0, 0, 0, enemyParams, 0);
+            Actor_Spawn(&gPlayState->actorCtx, gPlayState, enemyId, pos.x, pos.y, pos.z, 0, 0, 0, enemyParams);
         if (actor != NULL) {
             if (nameTag != "" && CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("EnemyNameTags"), 0)) {
                 NameTag_RegisterForActor(actor, nameTag.c_str());
@@ -575,7 +575,7 @@ GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnActor(uint32_t 
         // Spawn Cucco and make it angry
         EnNiw* cucco =
             (EnNiw*)Actor_Spawn(&gPlayState->actorCtx, gPlayState, actorId, player->actor.world.pos.x,
-                                player->actor.world.pos.y + 2200, player->actor.world.pos.z, 0, 0, 0, actorParams, 0);
+                                player->actor.world.pos.y + 2200, player->actor.world.pos.z, 0, 0, 0, actorParams);
         if (cucco == NULL) {
             return GameInteractionEffectQueryResult::TemporarilyNotPossible;
         }
@@ -589,7 +589,7 @@ GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnActor(uint32_t 
         // Spawn a bomb, make it explode instantly when params is set to 1 to emulate spawning an explosion
         EnBom* bomb =
             (EnBom*)Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_BOM, player->actor.world.pos.x,
-                                player->actor.world.pos.y + 30, player->actor.world.pos.z, 0, 0, 0, BOMB_BODY, true);
+                                player->actor.world.pos.y + 30, player->actor.world.pos.z, 0, 0, 0, BOMB_BODY);
 
         if (bomb == NULL) {
             return GameInteractionEffectQueryResult::TemporarilyNotPossible;
@@ -603,7 +603,7 @@ GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnActor(uint32_t 
     } else {
         // Generic spawn an actor at Link's position
         Actor* actor = Actor_Spawn(&gPlayState->actorCtx, gPlayState, actorId, player->actor.world.pos.x,
-                                   player->actor.world.pos.y, player->actor.world.pos.z, 0, 0, 0, actorParams, 0);
+                                   player->actor.world.pos.y, player->actor.world.pos.z, 0, 0, 0, actorParams);
         if (actor != NULL) {
             if (nameTag != "" && CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("EnemyNameTags"), 0)) {
                 NameTag_RegisterForActor((Actor*)actor, nameTag.c_str());

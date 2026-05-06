@@ -18,8 +18,8 @@ void Custom_EnMThunder_Update(Actor* thisx, PlayState* play) {
 
     enMThunder->actionFunc(enMThunder, play);
     // don't call this part, it's what makes the spin attack darkness happen
-    // func_80A9F314(play, this->unk_1BC);
-    blueRadius = enMThunder->unk_1AC;
+    // func_80A9F314(play, this->dimmingIntensity);
+    blueRadius = enMThunder->spinAttackTimer;
     redGreen = (u32)(blueRadius * 255.0f) & 0xFF;
     Lights_PointNoGlowSetInfo(&enMThunder->lightInfo, enMThunder->actor.world.pos.x, enMThunder->actor.world.pos.y,
                               enMThunder->actor.world.pos.z, redGreen, redGreen, (u32)(blueRadius * 100.0f),

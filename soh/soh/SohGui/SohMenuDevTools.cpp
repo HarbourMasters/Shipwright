@@ -1,17 +1,30 @@
 #include "SohMenu.h"
+#include "SohGui.hpp"
+
+extern "C" {
+extern PlayState* gPlayState;
+}
+
+void WarpPointsWidget(WidgetInfo& info);
 
 namespace SohGui {
 
 extern std::shared_ptr<SohMenu> mSohMenu;
 using namespace UIWidgets;
 
-static const std::unordered_map<int32_t, const char*> logLevels = {
+static const std::map<int32_t, const char*> logLevels = {
     { DEBUG_LOG_TRACE, "Trace" }, { DEBUG_LOG_DEBUG, "Debug" }, { DEBUG_LOG_INFO, "Info" },
     { DEBUG_LOG_WARN, "Warn" },   { DEBUG_LOG_ERROR, "Error" }, { DEBUG_LOG_CRITICAL, "Critical" },
     { DEBUG_LOG_OFF, "Off" },
 };
 
-static const std::unordered_map<int32_t, const char*> debugSaveFileModes = {
+#ifdef _DEBUG
+DebugLogOption defaultLogLevel = DEBUG_LOG_TRACE;
+#else
+DebugLogOption defaultLogLevel = DEBUG_LOG_INFO;
+#endif
+
+static const std::map<int32_t, const char*> debugSaveFileModes = {
     { 0, "Off" },
     { 1, "Vanilla" },
     { 2, "Maxed" },
@@ -33,12 +46,14 @@ void SohMenu::AddMenuDevTools() {
         .Options(
             CheckboxOptions().Tooltip("Enables Debug Mode, allowing you to select maps with L + R + Z, noclip "
                                       "with L + D-pad Right, and open the debug menu with L on the pause screen."));
-    AddWidget(path, "Boot To Debug Warp Screen", WIDGET_CVAR_CHECKBOX)
-        .CVar(CVAR_DEVELOPER_TOOLS("BootToDebugWarpScreen"))
+    AddWidget(path, "Map Select Button Combination:", WIDGET_CVAR_BTN_SELECTOR)
+        .CVar("gDeveloperTools.MapSelectBtn")
+        .Options(BtnSelectorOptions().DefaultValue(BTN_R | BTN_L | BTN_Z))
+        .PreFunc([](WidgetInfo& info) { info.isHidden = !CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0); });
+    AddWidget(path, "No Clip Button Combination:", WIDGET_CVAR_BTN_SELECTOR)
+        .CVar("gDeveloperTools.NoClipBtn")
         .PreFunc([](WidgetInfo& info) { info.isHidden = !CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0); })
-        .Options(
-            CheckboxOptions().Tooltip("Automatically shows Debug Warp Screen when starting or resetting the game.\n"
-                                      "This option takes precedence over \"Boot Sequence\" option."));
+        .Options(BtnSelectorOptions().DefaultValue(BTN_L | BTN_DRIGHT));
     AddWidget(path, "OoT Registry Editor", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_DEVELOPER_TOOLS("RegEditEnabled"))
         .PreFunc([](WidgetInfo& info) { info.isHidden = !CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0); })
@@ -52,22 +67,14 @@ void SohMenu::AddMenuDevTools() {
                               "- Off: The debug save file will be a normal savefile.\n"
                               "- Vanilla: The debug save file will be the debug save file from the original game.\n"
                               "- Maxed: The debug save file will be a save file with all of the items & upgrades.")
-                     .ComboMap(debugSaveFileModes));
+                     .ComboMap(debugSaveFileModes)
+                     .DefaultIndex(1));
     AddWidget(path, "OoT Skulltula Debug", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_DEVELOPER_TOOLS("SkulltulaDebugEnabled"))
+        .PreFunc([](WidgetInfo& info) { info.isHidden = !CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0); })
         .Options(CheckboxOptions().Tooltip("Enables Skulltula Debug, when moving the cursor in the menu above various "
                                            "map icons (boss key, compass, map screen locations, etc.) will set the GS "
                                            "bits in that area.\nUSE WITH CAUTION AS IT DOES NOT UPDATE THE GS COUNT!"));
-    AddWidget(path, "Better Debug Warp Screen", WIDGET_CVAR_CHECKBOX)
-        .CVar(CVAR_DEVELOPER_TOOLS("BetterDebugWarpScreen"))
-        .Options(CheckboxOptions()
-                     .Tooltip("Optimized Debug Warp Screen, with the added ability to chose entrances and time of day.")
-                     .DefaultValue(true));
-    AddWidget(path, "Debug Warp Screen Translation", WIDGET_CVAR_CHECKBOX)
-        .CVar(CVAR_DEVELOPER_TOOLS("DebugWarpScreenTranslation"))
-        .Options(CheckboxOptions()
-                     .Tooltip("Translate the Debug Warp Screen based on the game language.")
-                     .DefaultValue(true));
     AddWidget(path, "Resource logging", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_DEVELOPER_TOOLS("ResourceLogging"))
         .Options(CheckboxOptions().Tooltip("Logs some resources as XML when they're loaded in binary format."));
@@ -110,12 +117,26 @@ void SohMenu::AddMenuDevTools() {
         .Options(ComboboxOptions()
                      .Tooltip("The log level determines which messages are printed to the console."
                               " This does not affect the log file output")
-                     .ComboMap(logLevels))
+                     .ComboMap(logLevels)
+                     .DefaultIndex(defaultLogLevel))
         .Callback([](WidgetInfo& info) {
             Ship::Context::GetInstance()->GetLogger()->set_level(
-                (spdlog::level::level_enum)CVarGetInteger(CVAR_DEVELOPER_TOOLS("LogLevel"), DEBUG_LOG_DEBUG));
-        })
-        .PreFunc([](WidgetInfo& info) { info.isHidden = mSohMenu->disabledMap.at(DISABLE_FOR_DEBUG_MODE_OFF).active; });
+                (spdlog::level::level_enum)CVarGetInteger(CVAR_DEVELOPER_TOOLS("LogLevel"), defaultLogLevel));
+        });
+
+    path.column = SECTION_COLUMN_2;
+    AddWidget(path, "Warping", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Better Debug Warp Screen", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_DEVELOPER_TOOLS("BetterDebugWarpScreen"))
+        .Options(CheckboxOptions()
+                     .Tooltip("Optimized Debug Warp Screen, with the added ability to chose entrances and time of day.")
+                     .DefaultValue(true));
+    AddWidget(path, "Debug Warp Screen Translation", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_DEVELOPER_TOOLS("DebugWarpScreenTranslation"))
+        .Options(CheckboxOptions()
+                     .Tooltip("Translate the Debug Warp Screen based on the game language.")
+                     .DefaultValue(true));
+    AddWidget(path, "Warp Points", WIDGET_CUSTOM).CustomFunction(WarpPointsWidget).HideInSearch(true);
 
     // Stats
     path.sidebarName = "Stats";

@@ -434,10 +434,10 @@ void EnOssan_SpawnItemsOnShelves(EnOssan* this, PlayState* play, ShopItem* shopI
             itemParams = sShopItemReplaceFunc[shopItems->shopItemIndex](shopItems->shopItemIndex);
             if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHOPSANITY) != RO_SHOPSANITY_OFF) {
                 ShopItemIdentity shopItemIdentity = Randomizer_IdentifyShopItem(play->sceneNum, i + 1);
-                if (shopItemIdentity.randomizerCheck != RC_UNKNOWN_CHECK) {
+                if (shopItemIdentity.identity.randomizerCheck != RC_UNKNOWN_CHECK) {
                     itemParams = shopItemIdentity.enGirlAShopItem;
 
-                    if (Flags_GetRandomizerInf(shopItemIdentity.randomizerInf)) {
+                    if (Flags_GetRandomizerInf(shopItemIdentity.identity.randomizerInf)) {
                         itemParams = SI_SOLD_OUT;
                     }
                 }
@@ -451,7 +451,7 @@ void EnOssan_SpawnItemsOnShelves(EnOssan* this, PlayState* play, ShopItem* shopI
                     &play->actorCtx, play, ACTOR_EN_GIRLA, shelves->actor.world.pos.x + shopItems->xOffset,
                     shelves->actor.world.pos.y + shopItems->yOffset, shelves->actor.world.pos.z + shopItems->zOffset,
                     shelves->actor.shape.rot.x, shelves->actor.shape.rot.y + sItemShelfRot[i],
-                    shelves->actor.shape.rot.z, itemParams, true);
+                    shelves->actor.shape.rot.z, itemParams);
                 if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHOPSANITY) != RO_SHOPSANITY_OFF) {
                     this->shelfSlots[i]->randoSlotIndex = i + 1;
                 }
@@ -477,8 +477,7 @@ void EnOssan_UpdateShopOfferings(EnOssan* this, PlayState* play) {
                         &play->actorCtx, play, ACTOR_EN_GIRLA, this->shelves->actor.world.pos.x + shopItem->xOffset,
                         this->shelves->actor.world.pos.y + shopItem->yOffset,
                         this->shelves->actor.world.pos.z + shopItem->zOffset, this->shelves->actor.shape.rot.x,
-                        this->shelves->actor.shape.rot.y + sItemShelfRot[i], this->shelves->actor.shape.rot.z, params,
-                        true);
+                        this->shelves->actor.shape.rot.y + sItemShelfRot[i], this->shelves->actor.shape.rot.z, params);
                 }
             }
         }
@@ -2128,7 +2127,8 @@ u16 EnOssan_SetupHelloDialog(EnOssan* this) {
     this->happyMaskShopState = OSSAN_HAPPY_STATE_NONE;
     // mask shop messages
     if (this->actor.params == OSSAN_TYPE_MASK) {
-        if (INV_CONTENT(ITEM_TRADE_CHILD) == ITEM_SOLD_OUT) {
+        if (GameInteractor_Should(VB_HAPPY_MASK_SHOP_CHECK_SOLD_OUT, INV_CONTENT(ITEM_TRADE_CHILD) == ITEM_SOLD_OUT,
+                                  this)) {
             if (Flags_GetItemGetInf(ITEMGETINF_3B)) {
                 if (!Flags_GetEventChkInf(EVENTCHKINF_PAID_BACK_BUNNY_HOOD_FEE)) {
                     // Pay back Bunny Hood

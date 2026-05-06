@@ -16,7 +16,7 @@ static constexpr s8 ROOM_GREEN_POE = 16;
 static constexpr s8 ROOM_BLUE_POE = 13;
 static constexpr s8 ROOM_RED_POE = 12;
 
-void OnPlayerUpdateShadowTag() {
+static void OnPlayerUpdateShadowTag() {
     if (gPlayState->sceneNum == SCENE_FOREST_TEMPLE) {
         switch (gPlayState->roomCtx.curRoom.num) {
             case ROOM_GREEN_POE:
@@ -29,22 +29,22 @@ void OnPlayerUpdateShadowTag() {
     }
 
     if (shouldSpawn && (delayTimer <= 0)) {
-        Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_WALLMAS, 0, 0, 0, 0, 0, 0, 3, false);
+        Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_WALLMAS, 0, 0, 0, 0, 0, 0, 3);
         shouldSpawn = false;
     } else {
         delayTimer--;
     }
 }
 
-void ResetShadowTagSpawnTimer() {
+static void ResetShadowTagSpawnTimer() {
     shouldSpawn = true;
     delayTimer = 60;
 }
 
-void RegisterShadowTag() {
+static void RegisterShadowTag() {
     COND_HOOK(OnPlayerUpdate, CVAR_SHADOW_TAG_VALUE, OnPlayerUpdateShadowTag);
     COND_HOOK(OnSceneSpawnActors, true, []() { ResetShadowTagSpawnTimer(); });
     COND_HOOK(OnSceneInit, true, [](int16_t) { ResetShadowTagSpawnTimer(); });
 }
 
-static RegisterShipInitFunc initFunc_ShadowTag(RegisterShadowTag, { CVAR_SHADOW_TAG_NAME });
+static RegisterShipInitFunc initFunc(RegisterShadowTag, { CVAR_SHADOW_TAG_NAME });

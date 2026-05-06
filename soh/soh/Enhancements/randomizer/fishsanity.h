@@ -35,7 +35,7 @@ class Fishsanity {
     Fishsanity();
     ~Fishsanity();
 
-    static const FishIdentity defaultIdentity;
+    static const CheckIdentity defaultIdentity;
 
     /**
      * @brief Gets the type of a fishsanity check
@@ -45,10 +45,10 @@ class Fishsanity {
     static FishsanityCheckType GetCheckType(RandomizerCheck rc);
 
     /**
-     * @brief Returns true if the given FishIdentity represents an actual fish
+     * @brief Returns true if the given CheckIdentity represents an actual fish
      * @param fish The fish to check
      */
-    static bool IsFish(FishIdentity* fish);
+    static bool IsFish(CheckIdentity* fish);
 
     /**
      * @brief Returns true if the given fish location is active
@@ -80,11 +80,11 @@ class Fishsanity {
 
     /**
      * @brief Returns the identity for a caught pond fish given its params.
-     * Not for use externally from rando, use Randomizer::IdentifyFish or Randomizer_IdentifyFish for that
+     * Not for use externally from rando, use Randomizer::IdentifyFish
      *
      * @param fishParams Actor parameters for the fish to identify
      */
-    FishIdentity IdentifyPondFish(u8 fishParams);
+    CheckIdentity IdentifyPondFish(u8 fishParams);
 
     /**
      * @brief Get fishsanity fishing pond options from the requested source
@@ -128,9 +128,9 @@ class Fishsanity {
 
     /**
      * @brief Advances current fishing pond check; no effect if every fish is shuffled
-     * @return The new FishIdentity for the current pond, or default identity if every fish is shuffled
+     * @return The new CheckIdentity for the current pond, or default identity if every fish is shuffled
      */
-    FishIdentity AdvancePond();
+    CheckIdentity AdvancePond();
 
     /**
      * @brief ActorInit hook handler for fishsanity
@@ -138,26 +138,9 @@ class Fishsanity {
     static void OnActorInitHandler(void* refActor);
 
     /**
-     * @brief PlayerUpdate hook handler for fishsanity
-     */
-    static void OnPlayerUpdateHandler();
-
-    /**
      * @brief ActorUpdate hook handler for fishsanity
      */
     static void OnActorUpdateHandler(void* refActor);
-
-    /**
-     * @brief SceneInit hook handler for fishsanity
-     */
-    static void OnSceneInitHandler(int16_t sceneNum);
-
-    /**
-     * @brief VB hook handler for fishsanity
-     */
-    static void OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_list originalArgs);
-
-    static void OnItemReceiveHandler(GetItemEntry itemEntry);
 
   private:
     /**
@@ -166,26 +149,23 @@ class Fishsanity {
     void InitializeHelpers();
 
     /**
-     * @brief Resolves a pond fish's FishIdentity directly from params & pond age
+     * @brief Resolves a pond fish's CheckIdentity directly from params & pond age
      *
      * @param params Params for Fishing actor
      * @param adultPond Whether to resolve this fish as an adult check
-     * @return The FishIdentity for the described fish
+     * @return The CheckIdentity for the described fish
      */
-    static FishIdentity GetPondFish(s16 params, bool adultPond);
+    static CheckIdentity GetPondFish(s16 params, bool adultPond);
 
     /**
      * @brief Current pond fish when all pond fish are not randomized
      */
-    std::pair<FishIdentity, FishIdentity> mCurrPondFish;
+    std::pair<CheckIdentity, CheckIdentity> mCurrPondFish;
 
     /**
      * @brief True if fishsanity helpers have been initialized
      */
     static bool fishsanityHelpersInit;
-
-    static s16 fishGroupCounter;
-    static bool enableAdvance;
 
     /////////////////////////////////////////////////////////
     //// Helper data structures derived from static data ////

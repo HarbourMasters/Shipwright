@@ -94,9 +94,11 @@ void func_808BA018(BgTokiHikari* this, PlayState* play) {
     } else {
         gSPDisplayList(POLY_OPA_DISP++, object_toki_objects_DL_007E20);
         Gfx_SetupDL_25Xlu(play->state.gfxCtx);
-        gSPSegment(POLY_XLU_DISP++, 8, Gfx_TexScroll(play->state.gfxCtx, 0, play->gameplayFrames % 128, 64, 32));
+        gSPSegment(POLY_XLU_DISP++, 8,
+                   Gfx_TexScrollEx(play->state.gfxCtx, 0, play->gameplayFrames % 128, 64, 32, 0, 1));
 
-        gSPSegment(POLY_XLU_DISP++, 9, Gfx_TexScroll(play->state.gfxCtx, 0, play->gameplayFrames % 128, 64, 32));
+        gSPSegment(POLY_XLU_DISP++, 9,
+                   Gfx_TexScrollEx(play->state.gfxCtx, 0, play->gameplayFrames % 128, 64, 32, 0, 1));
 
         gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
@@ -147,8 +149,8 @@ void func_808BA2CC(BgTokiHikari* this, PlayState* play) {
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gSPSegment(POLY_XLU_DISP++, 0x08,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, -2 * (play->gameplayFrames & 0x7F), 0, 0x20, 0x40, 1,
-                                (play->gameplayFrames & 0x7F) * 4, 0, 0x20, 0x40));
+               Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, -2 * (play->gameplayFrames & 0x7F), 0, 0x20, 0x40, 1,
+                                  (play->gameplayFrames & 0x7F) * 4, 0, 0x20, 0x40, -2, 0, 4, 0));
 
     gSPDisplayList(POLY_XLU_DISP++, object_toki_objects_DL_000880);
     Matrix_Pop();

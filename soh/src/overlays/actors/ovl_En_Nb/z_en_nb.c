@@ -739,7 +739,7 @@ void EnNb_PlayLookLeftSFX(EnNb* this) {
 
 void EnNb_InitDemo6KInConfrontation(EnNb* this, PlayState* play) {
     Actor_Spawn(&play->actorCtx, play, ACTOR_DEMO_6K, this->actor.world.pos.x,
-                kREG(21) + 22.0f + this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0xB, true);
+                kREG(21) + 22.0f + this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0xB);
 }
 
 void func_80AB2688(EnNb* this, PlayState* play) {
@@ -1104,7 +1104,7 @@ void EnNb_LookUp(EnNb* this, PlayState* play) {
 }
 
 void EnNb_CrawlspaceSpawnCheck(EnNb* this, PlayState* play) {
-    if (!IS_RANDO && !Flags_GetEventChkInf(EVENTCHKINF_NABOORU_CAPTURED_BY_TWINROVA) && LINK_IS_CHILD) {
+    if (!Flags_GetEventChkInf(EVENTCHKINF_NABOORU_CAPTURED_BY_TWINROVA) && LINK_IS_CHILD) {
         EnNb_UpdatePath(this, play);
 
         // looking into crawlspace

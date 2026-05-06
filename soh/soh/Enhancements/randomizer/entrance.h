@@ -1,4 +1,5 @@
 #pragma once
+
 #ifdef __cplusplus
 
 #include "randomizerTypes.h"
@@ -25,9 +26,12 @@ enum class EntranceType {
     ChildBossReverse,
     AdultBoss,
     AdultBossReverse,
+    GanonTower,
     Interior,
     InteriorReverse,
     SpecialInterior,
+    ThievesHideout,
+    ThievesHideoutReverse,
     GrottoGrave,
     GrottoGraveReverse,
     Overworld,
@@ -36,9 +40,14 @@ enum class EntranceType {
     All,
 };
 
+#define ENTRANCE(check, condition, ...) \
+    Entrance(                           \
+        RandomizerRegion::check, [] { return condition; }, CleanConditionString(#condition), ##__VA_ARGS__)
+
 class Entrance {
   public:
-    Entrance(RandomizerRegion connectedRegion_, ConditionFn condition_function_, bool spreadsAreasWithPriority_ = true);
+    Entrance(RandomizerRegion connectedRegion_, ConditionFn condition_function_, std::string condition_str_,
+             bool spreadsAreasWithPriority_ = true);
     void SetCondition(ConditionFn newCondition);
     bool GetConditionsMet() const;
     std::string to_string() const;
@@ -46,7 +55,6 @@ class Entrance {
     std::string GetName() const;
     void printAgeTimeAccess();
     bool ConditionsMet(bool allAgeTimes = false) const;
-    uint32_t Getuint32_t() const;
     bool CheckConditionAtAgeTime(bool& age, bool& time, bool passAnyway = false) const;
     RandomizerRegion GetConnectedRegionKey() const;
     RandomizerRegion GetOriginalConnectedRegionKey() const;
@@ -78,6 +86,7 @@ class Entrance {
     Entrance* GetNewTarget();
     Entrance* AssumeReachable();
     bool DoesSpreadAreas();
+    const std::string& GetConditionStr() const;
 
   private:
     RandomizerRegion parentRegion;
@@ -86,7 +95,6 @@ class Entrance {
     ConditionFn condition_function;
 
     EntranceType type = EntranceType::None;
-    Entrance* target = nullptr;
     Entrance* reverse = nullptr;
     Entrance* assumed = nullptr;
     Entrance* replacement = nullptr;
@@ -96,6 +104,7 @@ class Entrance {
     bool addedToPool = false;
     bool decoupled = false;
     std::string name = "";
+    std::string condition_str = "";
     // If this is false, areas only spread to interiors through this entrance if there is no other choice
     // Set to false for owl drops, the windmill path between dampe's grave and windmill and blue warps
     bool spreadsAreasWithPriority = true;
@@ -129,6 +138,8 @@ class EntranceShuffler {
     void UnshuffleAllEntrances();
     void ParseJson(nlohmann::json spoilerFileJson);
     void ApplyEntranceOverrides();
+
+    static const Entrance* GetEntranceByIndex(int16_t index);
 
   private:
     std::vector<Entrance*> AssumeEntrancePool(std::vector<Entrance*>& entrancePool);

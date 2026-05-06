@@ -559,7 +559,7 @@ void EnZl2_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot,
 }
 
 void func_80B4FCCC(EnZl2* this, PlayState* play) {
-    s32 unk_274 = this->unk_274;
+    s32 unk_274 = this->zl2Anime1ObjectSlot;
 
     gSegments[6] = VIRTUAL_TO_PHYSICAL(play->objectCtx.status[unk_274].segment);
 }
@@ -631,7 +631,7 @@ void EnZl2_GiveLightArrows(EnZl2* this, PlayState* play) {
         posX = player->actor.world.pos.x;
         posY = player->actor.world.pos.y + 80.0f;
         posZ = player->actor.world.pos.z;
-        Actor_Spawn(&play->actorCtx, play, ACTOR_DEMO_EFFECT, posX, posY, posZ, 0, 0, 0, 0x17, true);
+        Actor_Spawn(&play->actorCtx, play, ACTOR_DEMO_EFFECT, posX, posY, posZ, 0, 0, 0, 0x17);
         if (GameInteractor_Should(VB_GIVE_ITEM_LIGHT_ARROW, true)) {
             Item_Give(play, ITEM_ARROW_LIGHT);
         }
@@ -649,7 +649,7 @@ void func_80B4FF84(EnZl2* this, PlayState* play) {
         posY = this->actor.world.pos.y;
         posZ = this->actor.world.pos.z;
 
-        Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, posX, posY, posZ, 0, 0, 0, WARP_YELLOW, true);
+        Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, posX, posY, posZ, 0, 0, 0, WARP_YELLOW);
         this->unk_250 = 1;
     }
 }
@@ -921,7 +921,7 @@ void func_80B50A04(EnZl2* this, PlayState* play) {
 
     if (npcAction != NULL) {
         newAction = npcAction->action;
-        unk_240 = this->unk_240;
+        unk_240 = this->cueId;
         if (newAction != unk_240) {
             switch (newAction) {
                 case 1:
@@ -972,7 +972,7 @@ void func_80B50A04(EnZl2* this, PlayState* play) {
                 default:
                     osSyncPrintf("En_Zl2_inAgain_Check_DemoMode:そんな動作は無い!!!!!!!!\n");
             }
-            this->unk_240 = newAction;
+            this->cueId = newAction;
         }
     }
 }
@@ -1184,7 +1184,7 @@ void func_80B513A8(EnZl2* this, PlayState* play) {
         posX = player->actor.world.pos.x;
         posY = player->actor.world.pos.y;
         posZ = player->actor.world.pos.z;
-        Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, posX, posY, posZ, 0, 0, 0, WARP_UNK_7, true);
+        Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, posX, posY, posZ, 0, 0, 0, WARP_UNK_7);
         this->unk_250 = 1;
     }
 }
@@ -1332,7 +1332,7 @@ void func_80B51948(EnZl2* this, PlayState* play) {
 
     if (npcAction != NULL) {
         newAction = npcAction->action;
-        unk_240 = this->unk_240;
+        unk_240 = this->cueId;
         if (newAction != unk_240) {
             switch (newAction) {
                 case 1:
@@ -1362,7 +1362,7 @@ void func_80B51948(EnZl2* this, PlayState* play) {
                 default:
                     osSyncPrintf("En_Zl2_inEnding_Check_DemoMode:そんな動作は無い!!!!!!!!\n");
             }
-            this->unk_240 = newAction;
+            this->cueId = newAction;
         }
     }
 }
@@ -1511,7 +1511,7 @@ void func_80B51FA8(EnZl2* this, PlayState* play) {
 
     if (npcAction != NULL) {
         action = npcAction->action;
-        unk_240 = this->unk_240;
+        unk_240 = this->cueId;
         if (action != unk_240) {
             switch (action) {
                 case 1:
@@ -1527,7 +1527,7 @@ void func_80B51FA8(EnZl2* this, PlayState* play) {
                     osSyncPrintf("En_Zl2_inRunning_Check_DemoMode:そんな動作は無い!!!!!!!!\n");
                     break;
             }
-            this->unk_240 = action;
+            this->cueId = action;
         }
     }
 }
@@ -1579,7 +1579,7 @@ void func_80B521A0(EnZl2* this, PlayState* play) {
     }
 
     if (Object_IsLoaded(objectCtx, bankIndex)) {
-        this->unk_274 = bankIndex;
+        this->zl2Anime1ObjectSlot = bankIndex;
         func_80B4FCCC(this, play);
         this->unk_278 = Animation_GetLastFrame(&gZelda2Anime1Anim_0022D0);
         func_80B52114(this, play);
@@ -1610,7 +1610,7 @@ void EnZl2_Init(Actor* thisx, PlayState* play) {
             Audio_SetSoundBanksMute(0x6F);
             break;
         case 4:
-            gSaveContext.subTimerState = 0;
+            gSaveContext.subTimerState = SUBTIMER_STATE_OFF;
             break;
     }
 }

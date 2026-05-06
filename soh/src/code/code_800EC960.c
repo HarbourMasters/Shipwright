@@ -1,4 +1,5 @@
 #include <libultraship/libultra.h>
+#include <libultraship/bridge/audiobridge.h>
 #include "global.h"
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/audio/AudioEditor.h"
@@ -237,7 +238,7 @@ u8 sSeqFlags[0x6F] = {
     0x1,  // NA_BGM_SHADOW_TEMPLE
     0x1,  // NA_BGM_WATER_TEMPLE
     0x2,  // NA_BGM_BRIDGE_TO_GANONS
-    0,    // NA_BGM_OCARINA_OF_TIME
+    0,    // NA_BGM_SEAL_OF_SAGES
     0x11, // NA_BGM_GERUDO_VALLEY
     0,    // NA_BGM_POTION_SHOP
     0,    // NA_BGM_KOTAKE_KOUME
@@ -245,7 +246,7 @@ u8 sSeqFlags[0x6F] = {
     0,    // NA_BGM_UNDERGROUND
     0x80, // NA_BGM_GANON_BATTLE_1
     0x80, // NA_BGM_GANON_BATTLE_2
-    0,    // NA_BGM_END_DEMO
+    0,    // NA_BGM_OCARINA_OF_TIME
     0,    // NA_BGM_STAFF_1
     0,    // NA_BGM_STAFF_2
     0,    // NA_BGM_STAFF_3
@@ -1677,6 +1678,7 @@ void func_800ED458(s32 arg0) {
         } else if ((sPrevOcarinaNoteVal != 0xFF) && (sCurOcarinaBtnVal == 0xFF)) {
             Audio_StopSfxById(NA_SE_OC_OCARINA);
         }
+        GameInteractor_ExecuteOnOcarinaNote(sCurOcarinaBtnVal, D_80130F24, D_80130F10);
     }
 }
 
@@ -4969,18 +4971,26 @@ void func_800F6700(s8 arg0) {
         case 0:
             sp1F = 0;
             D_80130604 = 0;
+            // SOH [Port] Inform LUS of audio setting change
+            SetAudioChannels(audioStereo);
             break;
         case 1:
             sp1F = 3;
             D_80130604 = 3;
+            // SOH [Port] Inform LUS of audio setting change
+            SetAudioChannels(audioStereo);
             break;
         case 2:
             sp1F = 1;
             D_80130604 = 1;
+            // SOH [Port] Inform LUS of audio setting change
+            SetAudioChannels(audioStereo);
             break;
         case 3:
             sp1F = 0;
             D_80130604 = 2;
+            // SOH [Port] Inform LUS of audio setting change
+            SetAudioChannels(audioMatrix51);
             break;
     }
 

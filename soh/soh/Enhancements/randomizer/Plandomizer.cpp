@@ -15,6 +15,7 @@
 #include "soh/Enhancements/randomizer/logic.h"
 #include "soh/Enhancements/randomizer/randomizer_check_objects.h"
 #include "soh/Enhancements/randomizer/rando_hash.h"
+#include "soh/Enhancements/randomizer/Traps.h"
 #include "soh/Enhancements/randomizer/3drando/shops.hpp"
 
 extern "C" {
@@ -135,7 +136,7 @@ std::unordered_map<RandomizerGet, std::string> itemImageMap = {
     { RG_PROGRESSIVE_SCALE, "ITEM_SCALE_SILVER" },
     { RG_PROGRESSIVE_NUT_UPGRADE, "ITEM_NUT" },
     { RG_PROGRESSIVE_STICK_UPGRADE, "ITEM_STICK" },
-    { RG_PROGRESSIVE_BOMBCHUS, "ITEM_BOMBCHU" },
+    { RG_PROGRESSIVE_BOMBCHU_BAG, "ITEM_BOMBCHU" },
     { RG_PROGRESSIVE_MAGIC_METER, "ITEM_MAGIC_SMALL" },
     { RG_MAGIC_SINGLE, "ITEM_MAGIC_SMALL" },
     { RG_MAGIC_DOUBLE, "ITEM_MAGIC_LARGE" },
@@ -875,9 +876,10 @@ void PlandomizerDrawIceTrapSetup(uint32_t index) {
                                                            .Color(THEME_COLOR)
                                                            .Size(UIWidgets::Sizes::Inline)
                                                            .Padding(ImVec2(10.f, 6.f)))) {
-            plandoLogData[index].iceTrapName = GetIceTrapName(plandoLogData[index].iceTrapModel.GetRandomizerGet())
-                                                   .GetForLanguage(CVarGetInteger(CVAR_SETTING("Languages"), 0))
-                                                   .c_str();
+            plandoLogData[index].iceTrapName =
+                Rando::Traps::GetTrapName(plandoLogData[index].iceTrapModel.GetRandomizerGet())
+                    .GetForLanguage(CVarGetInteger(CVAR_SETTING("Languages"), 0))
+                    .c_str();
         }
         ImGui::SameLine();
     }
@@ -894,7 +896,7 @@ void PlandomizerDrawIceTrapSetup(uint32_t index) {
 
     ImGui::PopID();
 }
-static std::unordered_map<RandomizerCheckArea, const char*> rcAreaNameMap = {
+static std::map<RandomizerCheckArea, const char*> rcAreaNameMap = {
     { RCAREA_KOKIRI_FOREST, "Kokiri Forest" },
     { RCAREA_LOST_WOODS, "Lost Woods" },
     { RCAREA_SACRED_FOREST_MEADOW, "Sacred Forest Meadow" },

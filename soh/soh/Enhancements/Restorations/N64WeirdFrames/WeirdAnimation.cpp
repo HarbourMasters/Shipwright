@@ -1,7 +1,7 @@
 #include "WeirdAnimation.h"
 
-#include "resource/ResourceManager.h"
-#include "Context.h"
+#include <ship/resource/ResourceManager.h>
+#include <ship/Context.h>
 
 #include <cassert>
 #include <cstring>

@@ -9,6 +9,7 @@
 #include "vt.h"
 
 #include "soh/Enhancements/enhancementTypes.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include "soh/Enhancements/randomizer/randomizer_grotto.h"
 #include "soh/OTRGlobals.h"
@@ -32,6 +33,7 @@ void Select_LoadGame(SelectContext* this, s32 entranceIndex) {
         gSaveContext.magic = 0;
         gSaveContext.magicCapacity = 0;
         gSaveContext.magicLevel = gSaveContext.magic;
+        GameInteractor_ExecuteOnLoadGame(gSaveContext.fileNum);
     }
     for (int buttonIndex = 0; buttonIndex < ARRAY_COUNT(gSaveContext.buttonStatus); buttonIndex++) {
         gSaveContext.buttonStatus[buttonIndex] = BTN_ENABLED;
@@ -50,6 +52,8 @@ void Select_LoadGame(SelectContext* this, s32 entranceIndex) {
         CVarSetInteger(CVAR_GENERAL("BetterDebugWarpScreenCurrentScene"), this->currentScene);
         CVarSetInteger(CVAR_GENERAL("BetterDebugWarpScreenTopDisplayedScene"), this->topDisplayedScene);
         CVarSetInteger(CVAR_GENERAL("BetterDebugWarpScreenPageDownIndex"), this->pageDownIndex);
+        CVarSetInteger(CVAR_GENERAL("BetterDebugWarpScreenLinkAge"), gSaveContext.linkAge);
+        CVarSetInteger(CVAR_GENERAL("BetterDebugWarpScreenNightFlag"), gSaveContext.nightFlag);
         CVarSave();
 
         if (ResourceMgr_GameHasMasterQuest() && ResourceMgr_GameHasOriginal()) {
@@ -118,6 +122,8 @@ void Select_Grotto_LoadGame(SelectContext* this, s32 grottoIndex) {
         CVarSetInteger(CVAR_GENERAL("BetterDebugWarpScreenCurrentScene"), this->currentScene);
         CVarSetInteger(CVAR_GENERAL("BetterDebugWarpScreenTopDisplayedScene"), this->topDisplayedScene);
         CVarSetInteger(CVAR_GENERAL("BetterDebugWarpScreenPageDownIndex"), this->pageDownIndex);
+        CVarSetInteger(CVAR_GENERAL("BetterDebugWarpScreenLinkAge"), gSaveContext.linkAge);
+        CVarSetInteger(CVAR_GENERAL("BetterDebugWarpScreenNightFlag"), gSaveContext.nightFlag);
         CVarSave();
     }
 
@@ -1833,6 +1839,10 @@ void Select_SwitchBetterWarpMode(SelectContext* this, u8 isBetterWarpMode) {
                 this->opt = 1;
             }
         }
+
+        gSaveContext.linkAge = CVarGetInteger(CVAR_GENERAL("BetterDebugWarpScreenLinkAge"), 1);
+        gSaveContext.nightFlag = CVarGetInteger(CVAR_GENERAL("BetterDebugWarpScreenNightFlag"), 0);
+        gSaveContext.dayTime = gSaveContext.nightFlag ? 0x0000 : 0x8000;
     } else {
         this->count = ARRAY_COUNT(sScenes);
 

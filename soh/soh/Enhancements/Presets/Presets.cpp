@@ -1,17 +1,15 @@
 #include "Presets.h"
-#include <variant>
 #include <string>
 #include <fstream>
-#include <config/Config.h>
+#include <ship/config/Config.h>
 #include <libultraship/classes.h>
 #include <nlohmann/json.hpp>
 #include <libultraship/libultraship.h>
-#include <Json.h>
+#include <ship/resource/type/Json.h>
 #include "soh/OTRGlobals.h"
 #include "soh/SohGui/MenuTypes.h"
 #include "soh/SohGui/SohMenu.h"
 #include "soh/SohGui/SohGui.hpp"
-#include "soh/Enhancements/randomizer/randomizer_settings_window.h"
 #include "soh/Enhancements/randomizer/randomizer_check_tracker.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance_tracker.h"
 #include "soh/Enhancements/randomizer/randomizer_item_tracker.h"
@@ -20,7 +18,6 @@ namespace fs = std::filesystem;
 
 namespace SohGui {
 extern std::shared_ptr<SohMenu> mSohMenu;
-extern std::shared_ptr<RandomizerSettingsWindow> mRandomizerSettingsWindow;
 } // namespace SohGui
 
 struct PresetInfo {
@@ -61,7 +58,9 @@ void PresetCheckboxStyle(const ImVec4& color) {
 }
 
 static BlockInfo blockInfo[PRESET_SECTION_MAX] = {
-    { { CVAR_PREFIX_SETTING, CVAR_PREFIX_WINDOW }, ICON_FA_COG, { "Settings", "settings" } },
+    { { CVAR_PREFIX_SETTING, CVAR_PREFIX_WINDOW, CVAR_PREFIX_GAMEPLAY_STATS },
+      ICON_FA_COG,
+      { "Settings", "settings" } },
     { { CVAR_PREFIX_ENHANCEMENT, CVAR_PREFIX_RANDOMIZER_ENHANCEMENT, CVAR_PREFIX_CHEAT },
       ICON_FA_PLUS_CIRCLE,
       { "Enhancements", "enhancements" } },
@@ -87,30 +86,49 @@ void applyPreset(std::string presetName, std::vector<PresetSection> includeSecti
             if (i == PRESET_SECTION_TRACKERS) {
                 ItemTracker_LoadFromPreset(info.presetValues["blocks"][blockInfo[i].names[1]]["windows"]);
                 if (info.presetValues["blocks"][blockInfo[i].names[1]]["windows"].contains("Check Tracker")) {
-                    CheckTracker::CheckTracker_LoadFromPreset(
+                    CheckTracker::LoadFromPreset(
                         info.presetValues["blocks"][blockInfo[i].names[1]]["windows"]["Check Tracker"]);
                 }
                 if (info.presetValues["blocks"][blockInfo[i].names[1]]["windows"].contains("Entrance Tracker")) {
-                    EntranceTracker_LoadFromPreset(
+                    EntranceTracker::LoadFromPreset(
                         info.presetValues["blocks"][blockInfo[i].names[1]]["windows"]["Entrance Tracker"]);
                 }
             }
             auto section = info.presetValues["blocks"][blockInfo[i].names[1]];
+            std::string sectionStrategy = "overwrite";
+            if (info.presetValues.contains("blockStrategy") &&
+                info.presetValues["blockStrategy"].contains(blockInfo[i].names[1])) {
+                sectionStrategy = info.presetValues["blockStrategy"][blockInfo[i].names[1]];
+            }
+
             for (auto& item : section.items()) {
                 if (section[item.key()].is_null()) {
                     CVarClearBlock(item.key().c_str());
                 } else {
+                    auto block = item.value();
+                    if (sectionStrategy == "merge") {
+                        auto currentJson = Ship::Context::GetInstance()->GetConfig()->GetNestedJson();
+                        if (currentJson.contains("CVars") && currentJson["CVars"].contains(item.key())) {
+                            block = currentJson["CVars"][item.key()];
+                            // Recursively merge the two json objects
+                            block.update(item.value(), true);
+                        }
+                    }
+
                     Ship::Context::GetInstance()->GetConfig()->SetBlock(fmt::format("{}.{}", "CVars", item.key()),
-                                                                        item.value());
+                                                                        block);
                     Ship::Context::GetInstance()->GetConsoleVariables()->Load();
                 }
             }
             if (i == PRESET_SECTION_RANDOMIZER) {
-                SohGui::mRandomizerSettingsWindow->SetNeedsUpdate();
+                Rando::Settings::GetInstance()->UpdateAllOptions();
+                SohGui::UpdateMenuTricks();
+                SohGui::UpdateMenuLocations();
             }
         }
     }
     ShipInit::InitAll();
+    OTRGlobals::Instance->ScaleImGui();
 }
 
 void DrawPresetSelector(std::vector<PresetSection> includeSections, std::string presetLoc, bool disabled) {
@@ -233,6 +251,7 @@ void SavePreset(std::string& presetName) {
         fs::create_directory(presetFolder);
     }
     presets[presetName].presetValues["presetName"] = presetName;
+    presets[presetName].presetValues["fileType"] = FILE_TYPE_PRESET;
     std::ofstream file(
         fmt::format("{}/{}.json", Ship::Context::GetInstance()->LocateFileAcrossAppDirs("presets"), presetName));
     file << presets[presetName].presetValues.dump(4);
@@ -277,7 +296,7 @@ void DrawNewPresetPopup() {
         auto config = Ship::Context::GetInstance()->GetConfig()->GetNestedJson();
         for (int i = PRESET_SECTION_SETTINGS; i < PRESET_SECTION_MAX; i++) {
             if (saveSection[i]) {
-                for (int j = 0; j < blockInfo[i].sections.size(); j++) {
+                for (size_t j = 0; j < blockInfo[i].sections.size(); j++) {
                     presets[newPresetName].presetValues["blocks"][blockInfo[i].names[1]][blockInfo[i].sections[j]] =
                         config["CVars"][blockInfo[i].sections[j]];
                 }
@@ -341,7 +360,7 @@ void DrawNewPresetPopup() {
 }
 
 void PresetsCustomWidget(WidgetInfo& info) {
-    ImGui::PushFont(OTRGlobals::Instance->fontMonoLargest);
+    ImGui::PushFont(OTRGlobals::Instance->fontMonoLarger);
     if (UIWidgets::Button("New Preset", UIWidgets::ButtonOptions(
                                             { { .disabled = (CVarGetInteger(CVAR_SETTING("DisableChanges"), 0) != 0),
                                                 .disabledTooltip = "Disabled because of race lockout" } })
@@ -360,7 +379,7 @@ void PresetsCustomWidget(WidgetInfo& info) {
     bool hideBuiltIn = CVarGetInteger(CVAR_GENERAL("HideBuiltInPresets"), 0);
     UIWidgets::PushStyleTabs(THEME_COLOR);
     if (ImGui::BeginTable("PresetWidgetTable", PRESET_SECTION_MAX + 3)) {
-        ImGui::TableSetupColumn("Name", ImGuiTableColumnFlags_WidthFixed, 250);
+        ImGui::TableSetupColumn("Name", ImGuiTableColumnFlags_WidthFixed, 400);
         for (int i = PRESET_SECTION_SETTINGS; i < PRESET_SECTION_MAX; i++) {
             ImGui::TableSetupColumn(blockInfo[i].names[0].c_str());
         }
@@ -445,4 +464,4 @@ void RegisterPresetsWidgets() {
     LoadPresets();
 }
 
-static RegisterMenuInitFunc initFunc(RegisterPresetsWidgets);
+static RegisterMenuInitFunc menuInitFunc(RegisterPresetsWidgets);

@@ -452,7 +452,7 @@ unordered_map<Mtx*, MtxF> FrameInterpolation_Interpolate(float step) {
 }
 
 void FrameInterpolation_StartRecord(void) {
-    previous_recording = move(current_recording);
+    previous_recording = std::move(current_recording);
     current_recording = {};
     current_path.clear();
     current_path.push_back(&current_recording.root_path);

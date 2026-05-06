@@ -1,5 +1,5 @@
 #pragma once
-#include "../context.h"
+#include "../SeedContext.h"
 
 #include <vector>
 #include <array>
@@ -27,4 +27,3 @@ extern std::vector<RandomizerGet> GetMinVanillaShopItems(int total_replaced);
 extern uint16_t GetRandomPrice(Rando::Location* loc, PriceSettingsStruct priceSettings);
 extern uint16_t GetCheapBalancedPrice();
 extern int GetShopsanityReplaceAmount();
-extern Text GetIceTrapName(uint8_t id);
