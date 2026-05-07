@@ -7,9 +7,9 @@ extern "C" {
 #endif
 
 // Reset state and cache CVar. Call after arena reinitialization.
-void N64HeapFrag_Reset(void);
+void N64Mem_Reset(void);
 
-s32 N64HeapFrag_IsActive(void);
+s32 N64Mem_IsActive(void);
 
 #ifdef __cplusplus
 }

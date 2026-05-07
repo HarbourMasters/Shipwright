@@ -1212,10 +1212,12 @@ void SohMenu::AddMenuEnhancements() {
         .CVar(CVAR_ENHANCEMENT("N64WeirdFrames"))
         .Options(CheckboxOptions().Tooltip(
             "Restores N64 Weird Frames allowing weirdshots and weirdslides to behave the same as N64."));
-    AddWidget(path, "N64 Heap Fragmentation", WIDGET_CVAR_CHECKBOX)
-        .CVar(CVAR_ENHANCEMENT("N64HeapFragmentation"))
+    AddWidget(path, "Authentic N64 Memory", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("N64MemoryModel"))
         .Options(CheckboxOptions().Tooltip(
-            "Restores N64 heap fragmentation."));
+            "Simulates N64 memory constraints using a shadow arena with the original allocator and struct sizes."
+            "Enabled memory-dependent behaviors such as actor spawn failures from heap fragmentation during repeated"
+            "room transitions."));
 
     AddWidget(path, "Misc Restorations", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Fix L&Z Page Switch in Pause Menu", WIDGET_CVAR_CHECKBOX)
