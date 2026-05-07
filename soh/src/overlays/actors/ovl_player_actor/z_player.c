@@ -29,6 +29,7 @@
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/randomizer/randomizer_grotto.h"
+#include "soh/Enhancements/Restorations/N64MemoryModel/N64MemoryModel.hpp"
 #include "soh/frame_interpolation.h"
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
@@ -36,6 +37,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <assert.h>
+
 
 // Some player animations are played at this reduced speed, for reasons yet unclear.
 // This is called "adjusted" for now.
@@ -10844,7 +10846,14 @@ void Player_Init(Actor* thisx, PlayState* play2) {
     // `giObjectSegment` is used for both "get item" objects and title cards. The maximum size for
     // get item objects is 0x2000 (see the assert in func_8083AE40), and the maximum size for
     // title cards is 0x1000 * LANGUAGE_MAX since each title card image includes all languages.
-    this->giObjectSegment = (void*)(((uintptr_t)ZELDA_ARENA_MALLOC_DEBUG(0x3008) + 8) & ~0xF);
+
+    // #region SOH [Enhancement] - N64 Memory Model
+    {
+        void* giRaw = ZELDA_ARENA_MALLOC_DEBUG(0x3008);
+        N64Mem_AllocSubsidiary(giRaw, N64_SIZEOF_GI_OBJECT_SEGMENT);
+        this->giObjectSegment = (void*)((uintptr_t)giRaw + 8 & ~0xF);
+    }
+    // #endregion
 
     respawnFlag = gSaveContext.respawnFlag;
 

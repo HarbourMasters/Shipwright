@@ -9,6 +9,7 @@
 #include <overlays/misc/ovl_kaleido_scope/z_kaleido_scope.h>
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/Restorations/N64MemoryModel/N64MemoryModel.hpp"
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/SaveManager.h"
@@ -18,6 +19,7 @@
 
 #include <time.h>
 #include <assert.h>
+
 
 TransitionUnk sTrnsnUnk;
 s32 gTrnsnUnkState;
@@ -574,6 +576,10 @@ void Play_Init(GameState* thisx) {
     // "Zelda Heap"
     osSyncPrintf("ゼルダヒープ %08x-%08x\n", zAllocAligned,
                  (u8*)zAllocAligned + zAllocSize - (s32)(zAllocAligned - zAlloc));
+
+    // #region SOH [Enhancement] - N64 Memory Model
+    N64Mem_Reset();
+    // #endregion
 
     Fault_AddClient(&D_801614B8, ZeldaArena_Display, NULL, NULL);
 

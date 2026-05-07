@@ -2,6 +2,7 @@
 #include "overlays/actors/ovl_En_fHG/z_en_fhg.h"
 #include <assert.h>
 #include "soh/ResourceManagerHelpers.h"
+#include "soh/Enhancements/Restorations/N64MemoryModel/N64MemoryModel.hpp"
 
 /**
  * Initialises the Vtx buffers used for limb at index `limbIndex`
@@ -57,6 +58,10 @@ void Skin_Init(PlayState* play, Skin* skin, SkeletonHeader* skeletonHeader, Anim
 
     assert(skin->vtxTable != NULL);
 
+    // #region SOH [Enhancement] - N64 Memory Model
+    N64Mem_AllocSubsidiary(skin->vtxTable, limbCount * N64_SIZEOF_SKIN_LIMB_VTX);
+    // #endregion
+
     for (i = 0; i < limbCount; i++) {
         SkinLimbVtx* vtxEntry = &skin->vtxTable[i];
         SkinLimb* limb = SEGMENTED_TO_VIRTUAL(skeleton[i]);
@@ -74,8 +79,16 @@ void Skin_Init(PlayState* play, Skin* skin, SkeletonHeader* skeletonHeader, Anim
             vtxEntry->buf[0] = ZELDA_ARENA_MALLOC_DEBUG(animatedLimbData->totalVtxCount * sizeof(Vtx));
             assert(vtxEntry->buf[0] != NULL);
 
+            // #region SOH [Enhancement] - N64 Memory Model
+            N64Mem_AllocSubsidiary(vtxEntry->buf[0], animatedLimbData->totalVtxCount * sizeof(Vtx));
+            // #endregion
+
             vtxEntry->buf[1] = ZELDA_ARENA_MALLOC_DEBUG(animatedLimbData->totalVtxCount * sizeof(Vtx));
             assert(vtxEntry->buf[1] != NULL);
+
+            // #region SOH [Enhancement] - N64 Memory Model
+            N64Mem_AllocSubsidiary(vtxEntry->buf[1], animatedLimbData->totalVtxCount * sizeof(Vtx));
+            // #endregion
 
             Skin_InitAnimatedLimb(play, skin, i);
         }
@@ -93,16 +106,28 @@ void Skin_Free(PlayState* play, Skin* skin) {
 
         for (i = 0; i < skin->limbCount; i++) {
             if (skin->vtxTable[i].buf[0] != NULL) {
+                // #region SOH [Enhancement] - N64 Memory Model
+                N64Mem_FreeSubsidiary(skin->vtxTable[i].buf[0]);
+                // #endregion
+
                 ZELDA_ARENA_FREE_DEBUG(skin->vtxTable[i].buf[0]);
                 skin->vtxTable[i].buf[0] = NULL;
             }
             if (skin->vtxTable[i].buf[1] != NULL) {
+                // #region SOH [Enhancement] - N64 Memory Model
+                N64Mem_FreeSubsidiary(skin->vtxTable[i].buf[1]);
+                // #endregion
+
                 ZELDA_ARENA_FREE_DEBUG(skin->vtxTable[i].buf[1]);
                 skin->vtxTable[i].buf[1] = NULL;
             }
         }
 
         if (skin->vtxTable != NULL) {
+            // #region SOH [Enhancement] - N64 Memory Model
+            N64Mem_FreeSubsidiary(skin->vtxTable);
+            // #endregion
+
             ZELDA_ARENA_FREE_DEBUG(skin->vtxTable);
         }
 
