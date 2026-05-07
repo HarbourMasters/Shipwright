@@ -404,10 +404,17 @@ void Play_Init(GameState* thisx) {
 
     SystemArena_Display();
 
-    // OTRTODO allocate double the normal amount of memory
-    // This is to avoid some parts of the game, like loading actors, causing OoM
-    // This is potionally unavoidable due to struct size differences, but is x2 the right amount?
-    GameState_Realloc(&play->state, 0x1D4790 * 2);
+    // #region SOH [Enhancement] - N64 Memory Model
+    if (CVarGetInteger(CVAR_ENHANCEMENT("N64MemoryModel"), 0)) {
+        GameState_Realloc(&play->state, 0x1D4790);
+    } else {
+        // OTRTODO allocate double the normal amount of memory
+        // This is to avoid some parts of the game, like loading actors, causing OoM
+        // This is potionally unavoidable due to struct size differences, but is x2 the right amount?
+        GameState_Realloc(&play->state, 0x1D4790 * 2);
+    }
+    // #endregion
+
     KaleidoManager_Init(play);
     View_Init(&play->view, gfxCtx);
     Audio_SetExtraFilter(0);
@@ -570,6 +577,11 @@ void Play_Init(GameState* thisx) {
 
     osSyncPrintf("ZELDA ALLOC SIZE=%x\n", THA_GetSize(&play->state.tha));
     zAllocSize = THA_GetSize(&play->state.tha);
+
+    // #region SOH [Enhancement] - N64 Memory Model
+    N64Mem_StoreThaRemainder(zAllocSize);
+    // #endregion
+
     zAlloc = (uintptr_t)GAMESTATE_ALLOC_MC(&play->state, zAllocSize);
     zAllocAligned = (zAlloc + 8) & ~0xF;
     ZeldaArena_Init((void*)zAllocAligned, zAllocSize - (zAllocAligned - zAlloc));
@@ -578,7 +590,7 @@ void Play_Init(GameState* thisx) {
                  (u8*)zAllocAligned + zAllocSize - (s32)(zAllocAligned - zAlloc));
 
     // #region SOH [Enhancement] - N64 Memory Model
-    N64Mem_Reset();
+    N64Mem_Reset(play);
     // #endregion
 
     Fault_AddClient(&D_801614B8, ZeldaArena_Display, NULL, NULL);

@@ -15,16 +15,13 @@ extern "C" {
 #define CVAR_DEFAULT 0
 #define CVAR_VALUE CVarGetInteger(CVAR_NAME, CVAR_DEFAULT)
 
-// N64 ZeldaArena size: THA remainder on retail NTSC 1.2.  Measured via IS-Viewer on decomp build with ISV ungated,
-// debug features off.
-#define N64_ZELDA_ARENA_SIZE 0x3D550
-
 // --------------------------------------------------------------------------------------------------------------------
 // State
 // --------------------------------------------------------------------------------------------------------------------
 
 static s32 sIsActive = 0;
 static ShadowArena sShadow;
+static u32 sSohThaRemainder = 0;
 
 // Shadow offsets for actor overlays, keyed by actor ID.  SHADOW_NULL means no shadow allocation exists for that type.
 static u32 sOverlayShadows[ACTOR_ID_MAX];
@@ -57,7 +54,12 @@ static void LogShadowState(const char* context)
 // Lifecycle
 // --------------------------------------------------------------------------------------------------------------------
 
-void N64Mem_Reset()
+void N64Mem_StoreThaRemainder(u32 sohRemainder)
+{
+    sSohThaRemainder = sohRemainder;
+}
+
+void N64Mem_Reset(PlayState* play)
 {
     // Log shadow state before teardown for per-scene diagnostics.
     if (sIsActive && sShadow.buffer)
@@ -88,9 +90,16 @@ void N64Mem_Reset()
     }
 
     sIsActive = CVAR_VALUE;
-    if (sIsActive)
+    if (sIsActive && play != nullptr)
     {
-        ShadowArena_Init(&sShadow, N64_ZELDA_ARENA_SIZE);
+        // Compute N64-equivalent arena size: SoH's THA remainder minus THA consumers that SoH bypasses, but N64
+        // performs.
+        u32 n64SceneFileSize = play->loadedScene->sceneFile.vromEnd - play->loadedScene->sceneFile.vromStart;
+        u32 shadowArenaSize = sSohThaRemainder - n64SceneFileSize;
+
+        SPDLOG_INFO("[N64MemoryModel] SoH THA remainder=0x{:X}, scene file size=0x{:X}, shadow arena=0x{:X}",
+                    sSohThaRemainder, n64SceneFileSize, shadowArenaSize);
+        ShadowArena_Init(&sShadow, shadowArenaSize);
     }
 }
 

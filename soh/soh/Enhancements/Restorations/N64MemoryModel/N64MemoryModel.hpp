@@ -17,9 +17,14 @@ extern "C" {
 // Lifecycle
 // --------------------------------------------------------------------------------------------------------------------
 
-// Reset shadow state and reread CVar. Call from Play_Init after ZeldaArena reinitialization -- the shadow arena
-// reinitializes in lockstep with the real one.
-void N64Mem_Reset(void);
+// Store SoH's THA remainder before ZeldaArena_Init consumes it.  Call from Play_Init immediately after
+// THA_GetRemaining.
+void N64Mem_StoreThaRemainder(u32 sohRemainder);
+
+// Reset shadow state, compute N64-equivalent arena size from stored THA remainder minus N64-specific consumers
+// (room buffers, etc.), and reread CVar.  Call from Play_Init after ZeldaArena_Init.
+struct PlayState;
+void N64Mem_Reset(PlayState* play);
 
 // Returns whether the N64 memory model is currently active.
 s32 N64Mem_IsActive(void);

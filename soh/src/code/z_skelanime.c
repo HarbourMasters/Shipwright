@@ -5,6 +5,7 @@
 #include <assert.h>
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/Restorations/N64MemoryModel/N64MemoryModel.hpp"
 
 #define ANIM_INTERP 1
 
@@ -1128,7 +1129,16 @@ void SkelAnime_InitLink(PlayState* play, SkelAnime* skelAnime, FlexSkeletonHeade
 
     if (jointTable == NULL) {
         skelAnime->jointTable = ZELDA_ARENA_MALLOC_DEBUG(allocSize);
+
+        // #region SOH [Enhancement] - N64 Memory Model
+        N64Mem_AllocSubsidiary(skelAnime->jointTable, allocSize);
+        // #endregion
+
         skelAnime->morphTable = ZELDA_ARENA_MALLOC_DEBUG(allocSize);
+
+        // #region SOH [Enhancement] - N64 Memory Model
+        N64Mem_AllocSubsidiary(skelAnime->morphTable, allocSize);
+        // #endregion
     } else {
         assert(limbBufCount == limbCount);
 
@@ -1457,7 +1467,16 @@ s32 SkelAnime_Init(PlayState* play, SkelAnime* skelAnime, SkeletonHeader* skelet
     skelAnime->skeleton = SEGMENTED_TO_VIRTUAL(skeletonHeader->segment);
     if (jointTable == NULL) {
         skelAnime->jointTable = ZELDA_ARENA_MALLOC_DEBUG(skelAnime->limbCount * sizeof(*skelAnime->jointTable));
+
+        // #region SOH [Enhancement] - N64 Memory Model
+        N64Mem_AllocSubsidiary(skelAnime->jointTable, skelAnime->limbCount * sizeof(*skelAnime->jointTable));
+        // #endregion
+
         skelAnime->morphTable = ZELDA_ARENA_MALLOC_DEBUG(skelAnime->limbCount * sizeof(*skelAnime->morphTable));
+
+        // #region SOH [Enhancement] - N64 Memory Model
+        N64Mem_AllocSubsidiary(skelAnime->morphTable, skelAnime->limbCount * sizeof(*skelAnime->morphTable));
+        // #endregion
     } else {
         assert(limbCount == skelAnime->limbCount);
         skelAnime->jointTable = jointTable;
@@ -1492,7 +1511,15 @@ s32 SkelAnime_InitFlex(PlayState* play, SkelAnime* skelAnime, FlexSkeletonHeader
     if (jointTable == NULL) {
         skelAnime->jointTable = ZELDA_ARENA_MALLOC_DEBUG(skelAnime->limbCount * sizeof(*skelAnime->jointTable));
 
+        // #region SOH [Enhancement] - N64 Memory Model
+        N64Mem_AllocSubsidiary(skelAnime->jointTable, skelAnime->limbCount * sizeof(*skelAnime->jointTable));
+        // #endregion
+
         skelAnime->morphTable = ZELDA_ARENA_MALLOC_DEBUG(skelAnime->limbCount * sizeof(*skelAnime->morphTable));
+
+        // #region SOH [Enhancement] - N64 Memory Model
+        N64Mem_AllocSubsidiary(skelAnime->morphTable, skelAnime->limbCount * sizeof(*skelAnime->morphTable));
+        // #endregion
     } else {
         assert(limbCount == skelAnime->limbCount);
         skelAnime->jointTable = jointTable;
@@ -1524,7 +1551,17 @@ s32 SkelAnime_InitSkin(PlayState* play, SkelAnime* skelAnime, SkeletonHeader* sk
     skelAnime->limbCount = skeletonHeader->limbCount + 1;
     skelAnime->skeleton = SEGMENTED_TO_VIRTUAL(skeletonHeader->segment);
     skelAnime->jointTable = ZELDA_ARENA_MALLOC_DEBUG(skelAnime->limbCount * sizeof(*skelAnime->jointTable));
+
+    // #region SOH [Enhancement] - N64 Memory Model
+    N64Mem_AllocSubsidiary(skelAnime->jointTable, skelAnime->limbCount * sizeof(*skelAnime->jointTable));
+    // #endregion
+
     skelAnime->morphTable = ZELDA_ARENA_MALLOC_DEBUG(skelAnime->limbCount * sizeof(*skelAnime->morphTable));
+
+    // #region SOH [Enhancement] - N64 Memory Model
+    N64Mem_AllocSubsidiary(skelAnime->morphTable, skelAnime->limbCount * sizeof(*skelAnime->morphTable));
+    // #endregion
+
     if ((skelAnime->jointTable == NULL) || (skelAnime->morphTable == NULL)) {
         osSyncPrintf(VT_FGCOL(RED));
         // "Memory allocation error"
@@ -1927,12 +1964,20 @@ s32 Animation_OnFrame(SkelAnime* skelAnime, f32 frame) {
  */
 void SkelAnime_Free(SkelAnime* skelAnime, PlayState* play) {
     if (skelAnime->jointTable != NULL) {
+        // #region SOH [Enhancement] - N64 Memory Model
+        N64Mem_FreeSubsidiary(skelAnime->jointTable);
+        // #endregion
+
         ZELDA_ARENA_FREE_DEBUG(skelAnime->jointTable);
     } else {
         osSyncPrintf("now_joint あきまへん！！\n"); // "now_joint is freed! !"
     }
 
     if (skelAnime->morphTable != NULL) {
+        // #region SOH [Enhancement] - N64 Memory Model
+        N64Mem_FreeSubsidiary(skelAnime->morphTable);
+        // #endregion
+
         ZELDA_ARENA_FREE_DEBUG(skelAnime->morphTable);
     } else {
         osSyncPrintf("morf_joint あきまへん！！\n"); // "morf_joint is freed !!"
