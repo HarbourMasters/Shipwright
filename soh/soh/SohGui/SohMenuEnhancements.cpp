@@ -1212,7 +1212,7 @@ void SohMenu::AddMenuEnhancements() {
         .CVar(CVAR_ENHANCEMENT("N64WeirdFrames"))
         .Options(CheckboxOptions().Tooltip(
             "Restores N64 Weird Frames allowing weirdshots and weirdslides to behave the same as N64."));
-    AddWidget(path, "Authentic N64 Memory", WIDGET_CVAR_CHECKBOX)
+    AddWidget(path, "N64 Memory Model", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("N64MemoryModel"))
         .Options(CheckboxOptions().Tooltip(
             "Simulates N64 memory constraints using a shadow arena with the original allocator and struct sizes."

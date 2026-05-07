@@ -27,8 +27,8 @@ s32 N64Mem_IsActive(void);
 // Call FreeOverlay when numLoaded transitions 1 -> 0.
 // --------------------------------------------------------------------------------------------------------------------
 
-s32 N64Mem_AllocOverlay(ActorID actorId, AllocType allocType);
-void N64Mem_FreeOverlay(ActorID actorId, AllocType allocType);
+s32 N64Mem_AllocOverlay(s16 actorId, u16 allocType);
+void N64Mem_FreeOverlay(s16 actorId, u16 allocType);
 
 // --------------------------------------------------------------------------------------------------------------------
 // Actor instances: Paired with real ZeldaArena allocations.
@@ -39,7 +39,7 @@ void N64Mem_FreeOverlay(ActorID actorId, AllocType allocType);
 // Call FreeInstance when the actor is deleted.
 // --------------------------------------------------------------------------------------------------------------------
 
-s32 N64Mem_AllocInstance(ActorID actorId, void* realPtr);
+s32 N64Mem_AllocInstance(s16 actorId, void* realPtr);
 void N64Mem_FreeInstance(void* realPtr);
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -57,7 +57,7 @@ void N64Mem_FreeSubsidiary(void* realPtr);
 // On N64, effect overlays load via MallocR on first spawn and are never freed until the GameState is torn down.
 // --------------------------------------------------------------------------------------------------------------------
 
-s32 N64Mem_AllocEffectOverlay(EffectSsType type);
+s32 N64Mem_AllocEffectOverlay(s32 type);
 
 #ifdef __cplusplus
 }

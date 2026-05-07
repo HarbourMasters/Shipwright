@@ -14,6 +14,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/nametag.h"
+#include "soh/Enhancements/Restorations/N64MemoryModel/N64MemoryModel.hpp"
 
 #include "soh/ActorDB.h"
 #include "soh/OTRGlobals.h"
@@ -3353,6 +3354,17 @@ Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 pos
         return NULL;
     }
 
+    // #region SOH [Enhancement] - N64 Memory Model
+    if (dbEntry->numLoaded == 0)
+    {
+        if (!N64Mem_AllocOverlay(actorId, dbEntry->allocType))
+        {
+            Actor_FreeOverlay(dbEntry);
+            return NULL;
+        }
+    }
+    // #endregion
+
     actor = ZELDA_ARENA_MALLOC_DEBUG(dbEntry->instanceSize);
 
     if (actor == NULL) {
@@ -3362,6 +3374,15 @@ Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 pos
         Actor_FreeOverlay(dbEntry);
         return NULL;
     }
+
+    // #region SOH [Enhancement] - N64 Memory Model
+    if (!N64Mem_AllocInstance(actorId, actor))
+    {
+        ZELDA_ARENA_FREE_DEBUG(actor);
+        Actor_FreeOverlay(dbEntry);
+        return NULL;
+    }
+    // #endregion
 
     // #region SOH [ObjectExtension]
     SetActorListIndex(actor, -1);
@@ -3523,9 +3544,21 @@ Actor* Actor_Delete(ActorContext* actorCtx, Actor* actor, PlayState* play) {
     ObjectExtension_Free(actor);
     // #endregion
 
+    // #region SOH [Enhancement] - N64 Memory Model
+    N64Mem_FreeInstance(actor);
+    // #endregion
+
     ZELDA_ARENA_FREE_DEBUG(actor);
 
     dbEntry->numLoaded--;
+
+    // #region SOH [Enhancement] - N64 Memory Model
+    if (dbEntry->numLoaded == 0)
+    {
+        N64Mem_FreeOverlay(actor->id, dbEntry->allocType);
+    }
+    // #endregion
+
     Actor_FreeOverlay(dbEntry);
 
     return newHead;

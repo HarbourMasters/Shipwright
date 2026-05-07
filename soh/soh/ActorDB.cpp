@@ -17,10 +17,15 @@ ActorDB* ActorDB::Instance;
 struct AddPair {
     const char* name;
     ActorInit& init;
+    // #region SOH [Enhancement] - N64 Memory Model
+    AllocType allocType;
+    // #endregion
 };
 
-#define DEFINE_ACTOR_INTERNAL(name, _1, allocType) { #name, name##_InitVars },
-#define DEFINE_ACTOR(name, _1, allocType) { #name, name##_InitVars },
+// #region [SOH] Enhancement - N64 Memory Model
+#define DEFINE_ACTOR_INTERNAL(name, _1, allocType) { #name, name##_InitVars, allocType },
+#define DEFINE_ACTOR(name, _1, allocType) { #name, name##_InitVars, allocType },
+// #endregion
 #define DEFINE_ACTOR_UNSET(_0)
 
 static constexpr AddPair initialActorTable[] = {
@@ -470,6 +475,9 @@ ActorDB::ActorDB() {
     db.reserve(ACTOR_NUMBER_MAX); // reserve size for all initial entries so we don't do it for each
     for (const AddPair& pair : initialActorTable) {
         Entry& entry = AddEntry(pair.name, actorDescriptions[pair.init.id], pair.init);
+        // #region SOH [Enhancement] - N64 Memory Model
+        entry.entry.allocType = pair.allocType;
+        // #endregion
     }
 }
 

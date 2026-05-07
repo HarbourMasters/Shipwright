@@ -76,7 +76,7 @@ s32 N64Mem_IsActive()
 // Actor overlays
 // --------------------------------------------------------------------------------------------------------------------
 
-s32 N64Mem_AllocOverlay(ActorID actorId, AllocType allocType)
+s32 N64Mem_AllocOverlay(s16 actorId, u16 allocType)
 {
     if (!sIsActive)
     {
@@ -138,7 +138,7 @@ s32 N64Mem_AllocOverlay(ActorID actorId, AllocType allocType)
     return 1;
 }
 
-void N64Mem_FreeOverlay(ActorID actorId, AllocType allocType)
+void N64Mem_FreeOverlay(s16 actorId, u16 allocType)
 {
     if (!sIsActive)
     {
@@ -164,7 +164,7 @@ void N64Mem_FreeOverlay(ActorID actorId, AllocType allocType)
 // Actor instances
 // --------------------------------------------------------------------------------------------------------------------
 
-s32 N64Mem_AllocInstance(ActorID actorId, void* realPtr)
+s32 N64Mem_AllocInstance(s16 actorId, void* realPtr)
 {
     if (!sIsActive)
     {
@@ -185,8 +185,7 @@ s32 N64Mem_AllocInstance(ActorID actorId, void* realPtr)
     const u32 shadow = ShadowArena_Malloc(&sShadow, instanceSize);
     if (shadow == SHADOW_NULL)
     {
-        SPDLOG_ERROR("[N64MemoryModel] Shadow instance failed for actor 0x{:04X} (need 0x{:X})",
-                     static_cast<s32>(actorId), instanceSize);
+        SPDLOG_ERROR("[N64MemoryModel] Shadow instance failed for actor 0x{:04X} (need 0x{:X})", actorId, instanceSize);
         return 0;
     }
 
@@ -255,7 +254,7 @@ void N64Mem_FreeSubsidiary(void* realPtr)
 // Effect overlays
 // --------------------------------------------------------------------------------------------------------------------
 
-s32 N64Mem_AllocEffectOverlay(EffectSsType type)
+s32 N64Mem_AllocEffectOverlay(s32 type)
 {
     if (!sIsActive)
     {
@@ -281,8 +280,8 @@ s32 N64Mem_AllocEffectOverlay(EffectSsType type)
     const u32 shadow = ShadowArena_MallocR(&sShadow, overlaySize);
     if (shadow == SHADOW_NULL)
     {
-        SPDLOG_ERROR("[N64MemoryModel] Shadow effect overlay failed for type 0x{:02X} (need 0x{:X})",
-                     static_cast<s32>(type), overlaySize);
+        SPDLOG_ERROR("[N64MemoryModel] Shadow effect overlay failed for type 0x{:02X} (need 0x{:X})", type,
+                     overlaySize);
         return 0;
     }
 

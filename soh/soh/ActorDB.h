@@ -16,6 +16,9 @@ typedef struct {
     ActorFunc draw;
     ActorResetFunc reset;
     s32 numLoaded;
+    // #region SOH [Enhancement] - N64 Memory Model
+    AllocType allocType;
+    // #endregion
 } ActorDBEntry;
 
 #ifdef __cplusplus
