@@ -5,25 +5,295 @@
 
 extern "C" {
 #include "N64MemoryModel.hpp"
-
-#include "global.h"
+#include "ShadowArena/shadow_arena.h"
+#include "ShadowArena/actor_overlay_sizes.h"
+#include "ShadowArena/effect_overlay_sizes.h"
+#include "ShadowArena/instance_sizes.h"
 }
 
 #define CVAR_NAME CVAR_ENHANCEMENT("N64MemoryModel")
 #define CVAR_DEFAULT 0
 #define CVAR_VALUE CVarGetInteger(CVAR_NAME, CVAR_DEFAULT)
 
+// N64 ZeldaArena size: THA remainder on retail NTSC 1.2.  Measured via IS-Viewer on decomp build with ISV ungated,
+// debug features off.
+#define N64_ZELDA_ARENA_SIZE 0x3D550
+
+// --------------------------------------------------------------------------------------------------------------------
+// State
+// --------------------------------------------------------------------------------------------------------------------
+
 static s32 sIsActive = 0;
+static ShadowArena sShadow;
+
+// Shadow offsets for actor overlays, keyed by actor ID.  SHADOW_NULL means no shadow allocation exists for that type.
+static u32 sOverlayShadows[ACTOR_ID_MAX];
+
+// Shadow offsets for effect overlays, keyed by effect type.
+static u32 sEffectOverlayShadows[EFFECT_SS_TYPE_MAX];
+
+// Shadow offset for the shared absolute-space overlay buffer.
+static u32 sAbsoluteSpaceShadow = SHADOW_NULL;
+
+// Maps real pointers (instances and subsidiaries) to their shadow offsets.
+static std::unordered_map<void*, u32> sShadowMap;
+
+// --------------------------------------------------------------------------------------------------------------------
+// Lifecycle
+// --------------------------------------------------------------------------------------------------------------------
 
 void N64Mem_Reset()
 {
+    // Tear down previous shadow state unconditionally -- the real ZeldaArena has already been reinitialized by
+    // Play_Init.
+    ShadowArena_Destroy(&sShadow);
+    sShadowMap.clear();
+    sAbsoluteSpaceShadow = SHADOW_NULL;
+
+    for (std::size_t i = 0; i < ACTOR_ID_MAX; ++i)
+    {
+        sOverlayShadows[i] = SHADOW_NULL;
+    }
+
+    for (std::size_t i = 0; i < EFFECT_SS_TYPE_MAX; ++i)
+    {
+        sEffectOverlayShadows[i] = SHADOW_NULL;
+    }
+
     sIsActive = CVAR_VALUE;
+    if (sIsActive)
+    {
+        ShadowArena_Init(&sShadow, N64_ZELDA_ARENA_SIZE);
+    }
 }
 
 s32 N64Mem_IsActive()
 {
     return sIsActive;
 }
+
+// --------------------------------------------------------------------------------------------------------------------
+// Actor overlays
+// --------------------------------------------------------------------------------------------------------------------
+
+s32 N64Mem_AllocOverlay(ActorID actorId, AllocType allocType)
+{
+    if (!sIsActive)
+    {
+        return 1;
+    }
+
+    if (actorId < 0 || actorId >= ACTOR_ID_MAX)
+    {
+        return 1;
+    }
+
+    const u32 overlaySize = gN64ActorOverlaySizes[actorId];
+    if (overlaySize == 0)
+    {
+        return 1;
+    }
+
+
+    // ABSOLUTE: Shared fixed-size buffer, allocated once via MallocR.
+    if (allocType & ALLOCTYPE_ABSOLUTE)
+    {
+        if (sAbsoluteSpaceShadow == SHADOW_NULL)
+        {
+            sAbsoluteSpaceShadow = ShadowArena_MallocR(&sShadow, AM_FIELD_SIZE);
+            if (sAbsoluteSpaceShadow == SHADOW_NULL)
+            {
+                SPDLOG_ERROR("[N64MemoryModel] Shadow absolute space failed (need 0x{:X})", AM_FIELD_SIZE);
+                return 0;
+            }
+        }
+
+        return 1;
+    }
+
+    // Already shadowed for this type.
+    if (sOverlayShadows[actorId] != SHADOW_NULL)
+    {
+        return 1;
+    }
+
+    u32 shadow = SHADOW_NULL;
+    if (allocType & ALLOCTYPE_PERMANENT)
+    {
+        shadow = ShadowArena_MallocR(&sShadow, overlaySize);
+    }
+    else
+    {
+        shadow = ShadowArena_Malloc(&sShadow, overlaySize);
+    }
+
+    if (shadow == SHADOW_NULL)
+    {
+        SPDLOG_ERROR("[N64MemoryModel] Shadow overlay failed for actor 0x{:04X} (need 0x{:X})",
+                     static_cast<s32>(actorId), overlaySize);
+        return 0;
+    }
+
+    sOverlayShadows[actorId] = shadow;
+    return 1;
+}
+
+void N64Mem_FreeOverlay(ActorID actorId, AllocType allocType)
+{
+    if (!sIsActive)
+    {
+        return;
+    }
+
+    if (actorId < 0 || actorId >= ACTOR_ID_MAX)
+    {
+        return;
+    }
+
+    // PERMANENT: Overlays that are never freed.
+    if (allocType & ALLOCTYPE_PERMANENT)
+    {
+        return;
+    }
+
+    ShadowArena_Free(&sShadow, sOverlayShadows[actorId]);
+    sOverlayShadows[actorId] = SHADOW_NULL;
+}
+
+// --------------------------------------------------------------------------------------------------------------------
+// Actor instances
+// --------------------------------------------------------------------------------------------------------------------
+
+s32 N64Mem_AllocInstance(ActorID actorId, void* realPtr)
+{
+    if (!sIsActive)
+    {
+        return 1;
+    }
+
+    if (actorId < 0 || actorId >= ACTOR_ID_MAX)
+    {
+        return 1;
+    }
+
+    const u32 instanceSize = gN64InstanceSizes[actorId];
+    if (instanceSize == 0)
+    {
+        return 1;
+    }
+
+    const u32 shadow = ShadowArena_Malloc(&sShadow, instanceSize);
+    if (shadow == SHADOW_NULL)
+    {
+        SPDLOG_ERROR("[N64MemoryModel] Shadow instance failed for actor 0x{:04X} (need 0x{:X})",
+                     static_cast<s32>(actorId), instanceSize);
+        return 0;
+    }
+
+    sShadowMap[realPtr] = shadow;
+    return 1;
+}
+
+void N64Mem_FreeInstance(void* realPtr)
+{
+    if (!sIsActive || !realPtr)
+    {
+        return;
+    }
+
+    const auto i = sShadowMap.find(realPtr);
+    if (i == sShadowMap.end())
+    {
+        return;
+    }
+
+    ShadowArena_Free(&sShadow, i->second);
+    sShadowMap.erase(i);
+}
+
+// --------------------------------------------------------------------------------------------------------------------
+// Subsidiaries
+// --------------------------------------------------------------------------------------------------------------------
+
+s32 N64Mem_AllocSubsidiary(void* realPtr, u32 n64Size)
+{
+    if (!sIsActive)
+    {
+        return 1;
+    }
+
+    const u32 shadow = ShadowArena_Malloc(&sShadow, n64Size);
+    if (shadow == SHADOW_NULL)
+    {
+        SPDLOG_ERROR("[N64MemoryModel] Shadow subsidiary failed (need 0x{:X})", n64Size);
+        return 0;
+    }
+
+    sShadowMap[realPtr] = shadow;
+    return 1;
+}
+
+void N64Mem_FreeSubsidiary(void* realPtr)
+{
+    if (!sIsActive || !realPtr)
+    {
+        return;
+    }
+
+    const auto i = sShadowMap.find(realPtr);
+    if (i == sShadowMap.end())
+    {
+        return;
+    }
+
+    ShadowArena_Free(&sShadow, i->second);
+    sShadowMap.erase(i);
+}
+
+
+// --------------------------------------------------------------------------------------------------------------------
+// Effect overlays
+// --------------------------------------------------------------------------------------------------------------------
+
+s32 N64Mem_AllocEffectOverlay(EffectSsType type)
+{
+    if (!sIsActive)
+    {
+        return 1;
+    }
+
+    if (type < 0 || type >= EFFECT_SS_TYPE_MAX)
+    {
+        return 1;
+    }
+
+    if (sEffectOverlayShadows[type] != SHADOW_NULL)
+    {
+        return 1;
+    }
+
+    u32 overlaySize = gN64EffectOverlaySizes[type];
+    if (overlaySize == 0)
+    {
+        return 1;
+    }
+
+    const u32 shadow = ShadowArena_MallocR(&sShadow, overlaySize);
+    if (shadow == SHADOW_NULL)
+    {
+        SPDLOG_ERROR("[N64MemoryModel] Shadow effect overlay failed for type 0x{:02X} (need 0x{:X})",
+                     static_cast<s32>(type), overlaySize);
+        return 0;
+    }
+
+    sEffectOverlayShadows[type] = shadow;
+    return 1;
+}
+
+
+// --------------------------------------------------------------------------------------------------------------------
+// Registration
+// --------------------------------------------------------------------------------------------------------------------
 
 void RegisterN64MemoryModel()
 {

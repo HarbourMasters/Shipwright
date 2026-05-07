@@ -6,10 +6,58 @@
 extern "C" {
 #endif
 
-// Reset state and cache CVar. Call after arena reinitialization.
+// --------------------------------------------------------------------------------------------------------------------
+// Lifecycle
+// --------------------------------------------------------------------------------------------------------------------
+
+// Reset shadow state and reread CVar. Call from Play_Init after ZeldaArena reinitialization -- the shadow arena
+// reinitializes in lockstep with the real one.
 void N64Mem_Reset(void);
 
+// Returns whether the N64 memory model is currently active.
 s32 N64Mem_IsActive(void);
+
+// --------------------------------------------------------------------------------------------------------------------
+// Actor overlays: Keyed by actor ID, shadow-only allocations.
+//
+// On N64, overlays load into ZeldaArena from ROM on first spawn and free when no instances remain. SoH compiles them
+// into the binary, so they never touch ZeldaArena.  The shadow restores this pressure.
+//
+// Call AllocOverlay when numLoaded transitions 0 -> 1.
+// Call FreeOverlay when numLoaded transitions 1 -> 0.
+// --------------------------------------------------------------------------------------------------------------------
+
+s32 N64Mem_AllocOverlay(ActorID actorId, AllocType allocType);
+void N64Mem_FreeOverlay(ActorID actorId, AllocType allocType);
+
+// --------------------------------------------------------------------------------------------------------------------
+// Actor instances: Paired with real ZeldaArena allocations.
+//
+// Call AllocInstance after the real allocation succeeds.  If the shadow cannot satisfy the N64-sized allocation,
+// returns 0 and the caller should treat the spawn as failed.
+//
+// Call FreeInstance when the actor is deleted.
+// --------------------------------------------------------------------------------------------------------------------
+
+s32 N64Mem_AllocInstance(ActorID actorId, void* realPtr);
+void N64Mem_FreeInstance(void* realPtr);
+
+// --------------------------------------------------------------------------------------------------------------------
+// Subsidiaries (colliders, camera, skin, etc.): Paired.
+//
+// Same pattern as instances -- shadow-alloc at N64 size, gate on failure, free when the real allocation is freed.
+// --------------------------------------------------------------------------------------------------------------------
+
+s32 N64Mem_AllocSubsidiary(void* realPtr, u32 n64Size);
+void N64Mem_FreeSubsidiary(void* realPtr);
+
+// --------------------------------------------------------------------------------------------------------------------
+// Effect overlays: Shadow-only, persist for scene lifetime.
+//
+// On N64, effect overlays load via MallocR on first spawn and are never freed until the GameState is torn down.
+// --------------------------------------------------------------------------------------------------------------------
+
+s32 N64Mem_AllocEffectOverlay(EffectSsType type);
 
 #ifdef __cplusplus
 }
