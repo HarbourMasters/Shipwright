@@ -294,6 +294,7 @@ static const Migration version3Migrations[] = {
     { "gGameplayStats.ShowIngameTimer", "gGameplayStats.ShowInGameTimer" },
     { "gGameplayStats.TimestampsReverse", "gGameplayStats.ReverseTimestamps" },
     { "gMirroredWorld", "gEnhancements.MirroredWorld" },
+    { "gN64HeapFragmentation", "gEnhancements.N64HeapFragmentation" },
     { "gBetaQuestWorld", "gCheats.BetaQuestWorld" },
     { "gBombTimerMultiplier", "gCheats.BombTimerMultiplier" },
     { "gCheatEasyInputBufferingEnabled", "gCheats.EasyInputBuffer" },
