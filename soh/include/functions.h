@@ -1023,6 +1023,10 @@ void ZeldaArena_FreeDebug(void* ptr, const char* file, s32 line);
 void* ZeldaArena_Calloc(size_t num, size_t size);
 void ZeldaArena_Display();
 void ZeldaArena_GetSizes(u32* outMaxFree, u32* outFree, u32* outAlloc);
+
+// [SOH] Enhancement - Heap Viewer
+ArenaNode* ZeldaArena_GetHead(void);
+
 void ZeldaArena_Check();
 void ZeldaArena_Init(void* start, size_t size);
 void ZeldaArena_Cleanup();

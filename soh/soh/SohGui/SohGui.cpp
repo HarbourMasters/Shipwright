@@ -26,6 +26,7 @@
 #include "soh/Enhancements/TimeDisplay/TimeDisplay.h"
 #include "soh/Enhancements/mod_menu.h"
 #include "soh/Network/Anchor/Anchor.h"
+#include "soh/Enhancements/debugger/HeapViewerWindow.hpp"
 
 namespace SohGui {
 
@@ -78,6 +79,7 @@ std::shared_ptr<HookDebuggerWindow> mHookDebuggerWindow;
 std::shared_ptr<DLViewerWindow> mDLViewerWindow;
 std::shared_ptr<ValueViewerWindow> mValueViewerWindow;
 std::shared_ptr<MessageViewer> mMessageViewerWindow;
+std::shared_ptr<HeapViewerWindow> mHeapViewerWindow;
 std::shared_ptr<GameplayStatsWindow> mGameplayStatsWindow;
 std::shared_ptr<CheckTracker::CheckTrackerSettingsWindow> mCheckTrackerSettingsWindow;
 std::shared_ptr<CheckTracker::CheckTrackerWindow> mCheckTrackerWindow;
@@ -166,7 +168,9 @@ void SetupGuiElements() {
     gui->AddGuiWindow(mMessageViewerWindow);
     mGameplayStatsWindow =
         std::make_shared<GameplayStatsWindow>(CVAR_WINDOW("GameplayStats"), "Gameplay Stats", ImVec2(480, 550));
-    gui->AddGuiWindow(mGameplayStatsWindow);
+    mHeapViewerWindow =
+        std::make_shared<HeapViewerWindow>(CVAR_WINDOW("HeapViewer"), "Heap Viewer", ImVec2(520, 600));
+    gui->AddGuiWindow(mHeapViewerWindow);
     mCheckTrackerWindow = std::make_shared<CheckTracker::CheckTrackerWindow>(CVAR_WINDOW("CheckTracker"),
                                                                              "Check Tracker", ImVec2(400, 540));
     gui->AddGuiWindow(mCheckTrackerWindow);
@@ -211,6 +215,7 @@ void Destroy() {
     mEntranceTrackerSettingsWindow = nullptr;
     mCheckTrackerWindow = nullptr;
     mCheckTrackerSettingsWindow = nullptr;
+    mHeapViewerWindow = nullptr;
     mGameplayStatsWindow = nullptr;
     mDLViewerWindow = nullptr;
     mValueViewerWindow = nullptr;

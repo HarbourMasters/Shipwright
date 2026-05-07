@@ -91,6 +91,12 @@ void ZeldaArena_GetSizes(u32* outMaxFree, u32* outFree, u32* outAlloc) {
     ArenaImpl_GetSizes(&sZeldaArena, outMaxFree, outFree, outAlloc);
 }
 
+// SOH [Enhancement] - Heap Viewer
+ArenaNode* ZeldaArena_GetHead()
+{
+    return sZeldaArena.head;
+}
+
 void ZeldaArena_Check() {
     __osCheckArena(&sZeldaArena);
 }

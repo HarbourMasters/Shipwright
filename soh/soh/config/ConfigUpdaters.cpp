@@ -49,6 +49,7 @@ static const Migration version3Migrations[] = {
     { "gControllerReorderingWindowEnabled", "gOpenWindows.ControllerReorderingWindow" },
     { "gGfxDebuggerEnabled", "gOpenWindows.GfxDebugger" },
     { "gStatsEnabled", "gOpenWindows.Stats" },
+    { "gHeapViewerEnabled", "gOpenWindows.HeapViewer" },
     { "gDisableChangingSettings", "gSettings.DisableChanges" },
     { "gExtraLatencyThreshold", "gSettings.ExtraLatencyThreshold" },
     { "gImGuiScale", "gSettings.ImGuiScale" },

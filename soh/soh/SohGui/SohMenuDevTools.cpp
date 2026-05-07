@@ -175,6 +175,15 @@ void SohMenu::AddMenuDevTools() {
         .HideInSearch(true)
         .Options(WindowButtonOptions().Tooltip("Enables the separate Hook Debugger Window."));
 
+    // Gfx Debugger
+    path.sidebarName = "Gfx Debugger";
+    AddSidebarEntry("Dev Tools", path.sidebarName, 1);
+    AddWidget(path, "Popout Gfx Debugger", WIDGET_WINDOW_BUTTON)
+        .CVar(CVAR_WINDOW("SohGfxDebugger"))
+        .WindowName("GfxDebugger##SoH")
+        .HideInSearch(true)
+        .Options(WindowButtonOptions().Tooltip("Enables the separate Gfx Debugger Window."));
+
     // Collision Viewer
     path.sidebarName = "Collision Viewer";
     AddSidebarEntry("Dev Tools", path.sidebarName, 2);
@@ -220,14 +229,14 @@ void SohMenu::AddMenuDevTools() {
         .HideInSearch(true)
         .Options(WindowButtonOptions().Tooltip("Enables the separate Message Viewer Window."));
 
-    // Gfx Debugger
-    path.sidebarName = "Gfx Debugger";
+    // Heap Viewer
+    path.sidebarName = "Heap Viewer";
     AddSidebarEntry("Dev Tools", path.sidebarName, 1);
-    AddWidget(path, "Popout Gfx Debugger", WIDGET_WINDOW_BUTTON)
-        .CVar(CVAR_WINDOW("SohGfxDebugger"))
-        .WindowName("GfxDebugger##SoH")
+    AddWidget(path, "Popout Heap Viewer", WIDGET_WINDOW_BUTTON)
+        .CVar(CVAR_WINDOW("HeapViewer"))
+        .WindowName("Heap Viewer")
         .HideInSearch(true)
-        .Options(WindowButtonOptions().Tooltip("Enables the separate Gfx Debugger Window."));
+        .Options(WindowButtonOptions().Tooltip("Enables the separate Heap Viewer Window."));
 }
 
 } // namespace SohGui
