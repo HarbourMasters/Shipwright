@@ -2,6 +2,7 @@
 #include "vt.h"
 #include "overlays/effects/ovl_Effect_Ss_HitMark/z_eff_ss_hitmark.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/Restorations/N64MemoryModel/N64MemoryModel.hpp"
 #include <assert.h>
 
 typedef s32 (*ColChkResetFunc)(PlayState*, Collider*);
@@ -337,6 +338,10 @@ s32 Collider_FreeJntSph(PlayState* play, ColliderJntSph* collider) {
 
     collider->count = 0;
     if (collider->elements != NULL) {
+        // #region SOH [Enhancement] - N64 Memory Model
+        N64Mem_FreeSubsidiary(collider->elements);
+        // #endregion
+
         ZELDA_ARENA_FREE_DEBUG(collider->elements);
     }
     collider->elements = NULL;
@@ -378,6 +383,16 @@ s32 Collider_SetJntSphToActor(PlayState* play, ColliderJntSph* dest, ColliderJnt
         return 0;
     }
 
+    // #region SOH [Enhancement] - N64 Memory Model
+    if (!N64Mem_AllocSubsidiary(dest->elements, src->count * N64_SIZEOF_COLLIDER_JNT_SPH_ELEM))
+    {
+        ZELDA_ARENA_FREE_DEBUG(dest->elements);
+        dest->elements = NULL;
+        dest->count = 0;
+        return 0;
+    }
+    // #endregion
+
     for (destElem = dest->elements, srcElem = src->elements; destElem < dest->elements + dest->count;
          destElem++, srcElem++) {
         Collider_InitJntSphElement(play, destElem);
@@ -406,6 +421,16 @@ s32 Collider_SetJntSphAllocType1(PlayState* play, ColliderJntSph* dest, Actor* a
         return 0;
     }
 
+    // #region SOH [Enhancement] - N64 Memory Model
+    if (!N64Mem_AllocSubsidiary(dest->elements, src->count * N64_SIZEOF_COLLIDER_JNT_SPH_ELEM))
+    {
+        ZELDA_ARENA_FREE_DEBUG(dest->elements);
+        dest->elements = NULL;
+        dest->count = 0;
+        return 0;
+    }
+    // #endregion
+
     for (destElem = dest->elements, srcElem = src->elements; destElem < dest->elements + dest->count;
          destElem++, srcElem++) {
         Collider_InitJntSphElement(play, destElem);
@@ -433,6 +458,17 @@ s32 Collider_SetJntSphAlloc(PlayState* play, ColliderJntSph* dest, Actor* actor,
         osSyncPrintf(VT_RST);
         return 0;
     }
+
+    // #region SOH [Enhancement] - N64 Memory Model
+    if (!N64Mem_AllocSubsidiary(dest->elements, src->count * N64_SIZEOF_COLLIDER_JNT_SPH_ELEM))
+    {
+        ZELDA_ARENA_FREE_DEBUG(dest->elements);
+        dest->elements = NULL;
+        dest->count = 0;
+        return 0;
+    }
+    // #endregion
+
     for (destElem = dest->elements, srcElem = src->elements; destElem < dest->elements + dest->count;
          destElem++, srcElem++) {
         Collider_InitJntSphElement(play, destElem);
@@ -700,6 +736,10 @@ s32 Collider_FreeTris(PlayState* play, ColliderTris* tris) {
 
     tris->count = 0;
     if (tris->elements != NULL) {
+        // #region SOH [Enhancement] - N64 Memory Model
+        N64Mem_FreeSubsidiary(tris->elements);
+        // #endregion
+
         ZELDA_ARENA_FREE_DEBUG(tris->elements);
     }
     tris->elements = NULL;
@@ -740,6 +780,17 @@ s32 Collider_SetTrisAllocType1(PlayState* play, ColliderTris* dest, Actor* actor
         osSyncPrintf(VT_RST);
         return 0;
     }
+
+    // #region SOH [Enhancement] - N64 Memory Model
+    if (!N64Mem_AllocSubsidiary(dest->elements, src->count * N64_SIZEOF_COLLIDER_TRIS_ELEM))
+    {
+        ZELDA_ARENA_FREE_DEBUG(dest->elements);
+        dest->elements = NULL;
+        dest->count = 0;
+        return 0;
+    }
+    // #endregion
+
     for (destElem = dest->elements, srcElem = src->elements; destElem < dest->elements + dest->count;
          destElem++, srcElem++) {
         Collider_InitTrisElement(play, destElem);
@@ -767,6 +818,16 @@ s32 Collider_SetTrisAlloc(PlayState* play, ColliderTris* dest, Actor* actor, Col
         dest->count = 0;
         return 0;
     }
+
+    // #region SOH [Enhancement] - N64 Memory Model
+    if (!N64Mem_AllocSubsidiary(dest->elements, src->count * N64_SIZEOF_COLLIDER_TRIS_ELEM))
+    {
+        ZELDA_ARENA_FREE_DEBUG(dest->elements);
+        dest->elements = NULL;
+        dest->count = 0;
+        return 0;
+    }
+    // #endregion
 
     for (destElem = dest->elements, srcElem = src->elements; destElem < dest->elements + dest->count;
          destElem++, srcElem++) {

@@ -2,6 +2,7 @@
 #include "vt.h"
 
 #include "soh/frame_interpolation.h"
+#include "soh/Enhancements/Restorations/N64MemoryModel/N64MemoryModel.hpp"
 #include <assert.h>
 
 EffectSsInfo sEffectSsInfo = { 0 }; // "EffectSS2Info"
@@ -182,6 +183,13 @@ void EffectSs_Spawn(PlayState* play, s32 type, s32 priority, void* initParams) {
         // Abort because we couldn't find a suitable slot to add this effect in
         return;
     }
+
+    // #region SOH [Enhancement] - N64 Memory Model
+    if (!N64Mem_AllocEffectOverlay(type))
+    {
+        return;
+    }
+    // #endregion
 
     sEffectSsInfo.searchStartIndex = index + 1;
     overlaySize = (uintptr_t)overlayEntry->vramEnd - (uintptr_t)overlayEntry->vramStart;

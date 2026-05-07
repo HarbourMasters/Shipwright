@@ -1215,8 +1215,8 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "N64 Memory Model", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("N64MemoryModel"))
         .Options(CheckboxOptions().Tooltip(
-            "Simulates N64 memory constraints using a shadow arena with the original allocator and struct sizes."
-            "Enabled memory-dependent behaviors such as actor spawn failures from heap fragmentation during repeated"
+            "Simulates N64 memory constraints using a shadow arena with the original allocator and struct sizes. "
+            "Enables memory-dependent behaviors such as actor spawn failures from heap fragmentation during repeated "
             "room transitions."));
 
     AddWidget(path, "Misc Restorations", WIDGET_SEPARATOR_TEXT);

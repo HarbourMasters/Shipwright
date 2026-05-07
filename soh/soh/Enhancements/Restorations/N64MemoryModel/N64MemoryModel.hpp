@@ -6,6 +6,10 @@
 extern "C" {
 #endif
 
+// N64 subsidiary struct sizes (32-bit, from decomp build artifacts).
+#define N64_SIZEOF_COLLIDER_JNT_SPH_ELEM 0x40
+#define N64_SIZEOF_COLLIDER_TRIS_ELEM 0x5C
+
 // --------------------------------------------------------------------------------------------------------------------
 // Lifecycle
 // --------------------------------------------------------------------------------------------------------------------
