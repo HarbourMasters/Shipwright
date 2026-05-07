@@ -39,11 +39,38 @@ static u32 sAbsoluteSpaceShadow = SHADOW_NULL;
 static std::unordered_map<void*, u32> sShadowMap;
 
 // --------------------------------------------------------------------------------------------------------------------
+// Diagnostics
+// --------------------------------------------------------------------------------------------------------------------
+
+static void LogShadowState(const char* context)
+{
+    u32 maxFree = 0;
+    u32 totalFree = 0;
+    u32 totalAlloc = 0;
+
+    ShadowArena_GetSizes(&sShadow, &maxFree, &totalFree, &totalAlloc);
+    SPDLOG_INFO("[N64MemoryModel] ({}): alloc=0x{:X}, free=0x{:X}, largest=0x{:X}", context, totalAlloc, totalFree,
+                maxFree);
+}
+
+// --------------------------------------------------------------------------------------------------------------------
 // Lifecycle
 // --------------------------------------------------------------------------------------------------------------------
 
 void N64Mem_Reset()
 {
+    // Log shadow state before teardown for per-scene diagnostics.
+    if (sIsActive && sShadow.buffer)
+    {
+        u32 maxFree = 0;
+        u32 totalFree = 0;
+        u32 totalAlloc = 0;
+
+        ShadowArena_GetSizes(&sShadow, &maxFree, &totalFree, &totalAlloc);
+        SPDLOG_INFO("[N64MemoryModel] Teardown: alloc=0x{:X}, free=0x{:X}, largest=0x{:X}, ptrs={}", totalAlloc,
+                    totalFree, maxFree, sShadowMap.size());
+    }
+
     // Tear down previous shadow state unconditionally -- the real ZeldaArena has already been reinitialized by
     // Play_Init.
     ShadowArena_Destroy(&sShadow);
@@ -70,6 +97,11 @@ void N64Mem_Reset()
 s32 N64Mem_IsActive()
 {
     return sIsActive;
+}
+
+ShadowArena* N64Mem_GetShadowArena()
+{
+    return &sShadow;
 }
 
 // --------------------------------------------------------------------------------------------------------------------

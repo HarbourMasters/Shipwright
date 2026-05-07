@@ -24,6 +24,9 @@ void N64Mem_Reset(void);
 // Returns whether the N64 memory model is currently active.
 s32 N64Mem_IsActive(void);
 
+// Returns the shadow arena pointer for debug visualization.  Only valid when N64Mem_IsActive() is true.
+struct ShadowArena* N64Mem_GetShadowArena(void);
+
 // --------------------------------------------------------------------------------------------------------------------
 // Actor overlays: Keyed by actor ID, shadow-only allocations.
 //

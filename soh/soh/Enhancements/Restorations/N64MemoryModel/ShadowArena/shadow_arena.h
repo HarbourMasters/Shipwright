@@ -4,6 +4,7 @@
 
 #ifdef __cplusplus
 extern "C" {
+
 #endif
 
 
@@ -13,7 +14,7 @@ extern "C" {
 // Matches N64 retail ArenaNode: 0x10 bookkeeping + 0x20 debug fields.
 #define SHADOW_NODE_SIZE 0x30
 
-typedef struct shadow_arena
+typedef struct ShadowArena
 {
     u8* buffer;
     u32 head; // Offset to first node
@@ -40,6 +41,13 @@ void ShadowArena_GetSizes(ShadowArena* arena, u32* outMaxFree, u32* outFree, u32
 
 // Get the head node offset for external traversal (e.g., heap viewer).
 u32 ShadowArena_GetHead(ShadowArena* arena);
+
+// Query a node's info by offset.  Returns 1 on success, 0 if invalid.  Used by the heap viewer to walk the shadow
+// without exposing internals.
+s32 ShadowArena_GetNodeInfo(ShadowArena* arena, u32 offset, s32* outIsFree, u32* outSize, u32* outNext);
+
+// Get the total buffer size.
+u32 ShadowArena_GetBufferSize(ShadowArena* arena);
 
 #ifdef __cplusplus
 }

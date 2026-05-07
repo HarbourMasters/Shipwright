@@ -344,3 +344,27 @@ u32 ShadowArena_GetHead(ShadowArena* arena)
 {
     return arena->head;
 }
+
+s32 ShadowArena_GetNodeInfo(ShadowArena* arena, u32 offset, s32* outIsFree, u32* outSize, u32* outNext)
+{
+    if (offset == SHADOW_NULL || offset + SHADOW_NODE_SIZE > arena->bufferSize)
+    {
+        return 0;
+    }
+
+    ShadowNode* node = NodeAt(arena, offset);
+    if (node->magic != NODE_MAGIC)
+    {
+        return 0;
+    }
+
+    *outIsFree = node->isFree;
+    *outSize = node->size;
+    *outNext = node->next != SHADOW_NULL && NodeIsValid(arena, node->next) ? node->next : SHADOW_NULL;
+    return 1;
+}
+
+u32 ShadowArena_GetBufferSize(ShadowArena* arena)
+{
+    return arena->bufferSize;
+}
