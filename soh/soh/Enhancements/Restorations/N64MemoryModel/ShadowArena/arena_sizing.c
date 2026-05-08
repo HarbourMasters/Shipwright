@@ -1,4 +1,5 @@
 #include "arena_sizing.h"
+#include "DmaSizes.hpp"
 
 #include "global.h"
 
@@ -271,9 +272,7 @@ u32 ArenaSizing_ComputeN64ArenaSize(PlayState* play, const VersionConstants* vc)
     // Scene-dependent consumers
     {
         const u32 objBank = GetObjectBankSize(play);
-        // HACK: vromStart/vromEnd are zeroed in SoH's scene table (OTR filenames replace ROM addresses).
-        // Hardcoded for graveyard validation only.  ZAPDTR exporter replaces this.
-        const u32 sceneFile = play->sceneNum == SCENE_GRAVEYARD ? 0xBC80 : 0;
+        const u32 sceneFile = DmaSizes_GetFileSize(play->loadedScene->sceneFile.fileName);
         const u32 roomBuf = GetMaxRoomSize(play);
         total += objBank;
         total += sceneFile;
@@ -315,5 +314,5 @@ u32 ArenaSizing_ComputeN64ArenaSize(PlayState* play, const VersionConstants* vc)
         return 0;
     }
 
-    return N64_THA_BUDGET - total - 0x1000;
+    return N64_THA_BUDGET - total - 0x2000;
 }

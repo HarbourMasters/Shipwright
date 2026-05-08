@@ -80,14 +80,14 @@ void N64Mem_Reset(PlayState* play)
     sShadowMap.clear();
     sAbsoluteSpaceShadow = SHADOW_NULL;
 
-    for (std::size_t i = 0; i < ACTOR_ID_MAX; ++i)
+    for (u32& sOverlayShadow : sOverlayShadows)
     {
-        sOverlayShadows[i] = SHADOW_NULL;
+        sOverlayShadow = SHADOW_NULL;
     }
 
-    for (std::size_t i = 0; i < EFFECT_SS_TYPE_MAX; ++i)
+    for (u32& sEffectOverlayShadow : sEffectOverlayShadows)
     {
-        sEffectOverlayShadows[i] = SHADOW_NULL;
+        sEffectOverlayShadow = SHADOW_NULL;
     }
 
     sIsActive = CVAR_VALUE;
