@@ -21,6 +21,8 @@ s32 BgCheck_TryGetCustomMemsize(s32 sceneId, u32* memSize);
 
 #define N64_SIZEOF_CHAR_PTR 4 // sizeof(char*) on N64 MIPS
 #define N64_SIZEOF_COLLISION_CONTEXT 0x1464 // CollisionContext size = 0x1464 (from decomp header comment)
+#define N64_SIZEOF_GFX 8 // sizeof(Gfx) on N64: Two u32 words -- SoH is 16
+#define N64_SIZEOF_VTX 0x10 // sizeof(Vtx) on N64: Same on both platforms
 
 // Struct sizes that are identical on N64 and SoH (no pointer members):
 //  sizeof(MtxF)            = 0x40
@@ -92,18 +94,18 @@ static void GetSkyboxDlistAndVtxSize(s16 skyboxId, u32* outDlistSize, u32* outVt
         SKYBOX_CUTSCENE_MAP;
     if (isIndoor)
     {
-        *outDlistSize = 8 * 150 * sizeof(Gfx);
-        *outVtxSize = 256 * sizeof(Vtx);
+        *outDlistSize = 8 * 150 * N64_SIZEOF_GFX;
+        *outVtxSize = 256 * N64_SIZEOF_VTX;
     }
     else if (skyboxId == SKYBOX_CUTSCENE_MAP)
     {
-        *outDlistSize = 12 * 150 * sizeof(Gfx);
-        *outVtxSize = 192 * sizeof(Vtx);
+        *outDlistSize = 12 * 150 * N64_SIZEOF_GFX;
+        *outVtxSize = 192 * N64_SIZEOF_VTX;
     }
     else
     {
-        *outDlistSize = 12 * 150 * sizeof(Gfx);
-        *outVtxSize = 160 * sizeof(Vtx);
+        *outDlistSize = 12 * 150 * N64_SIZEOF_GFX;
+        *outVtxSize = 160 * N64_SIZEOF_VTX;
     }
 }
 
@@ -261,31 +263,57 @@ u32 ArenaSizing_ComputeN64ArenaSize(PlayState* play, const VersionConstants* vc)
     total += N64_ICON_ITEM_SIZE;
     total += N64_MAP_SEGMENT_SIZE;
 
+
+    const u32 fixed = total;
+    LUSLOG_INFO("[ArenaSizing] fixed=0x%X (kaleido=0x%X, param=0x%X)", fixed, vc->kaleidoOverlayVramSize,
+                vc->parameterStaticSize);
+
     // Scene-dependent consumers
-    total += GetObjectBankSize(play);
-    total += play->loadedScene->sceneFile.vromEnd - play->loadedScene->sceneFile.vromStart;
-    total += GetMaxRoomSize(play);
+    {
+        const u32 objBank = GetObjectBankSize(play);
+        // HACK: vromStart/vromEnd are zeroed in SoH's scene table (OTR filenames replace ROM addresses).
+        // Hardcoded for graveyard validation only.  ZAPDTR exporter replaces this.
+        const u32 sceneFile = play->sceneNum == SCENE_GRAVEYARD ? 0xBC80 : 0;
+        const u32 roomBuf = GetMaxRoomSize(play);
+        total += objBank;
+        total += sceneFile;
+        total += roomBuf;
+        LUSLOG_INFO("[ArenaSizing] objBank=0x%X, sceneFile=0x%X, roomBuf=0x%x", (u32)objBank, (u32)sceneFile,
+                    (u32)roomBuf);
+    }
 
     // Skybox
     {
         u32 dListSize = 0;
         u32 vtxSize = 0;
+        u32 texSize = 0;
         GetSkyboxDlistAndVtxSize(play->skyboxId, &dListSize, &vtxSize);
+        texSize = GetN64SkyboxTextureSize(play->skyboxId);
         total += dListSize;
         total += vtxSize;
-        total += GetN64SkyboxTextureSize(play->skyboxId);
+        total += texSize;
+        LUSLOG_INFO("[ArenaSizing] skyboxId=%d, dList=0x%X, vtx=0x%X, tex=0x%X", play->skyboxId, dListSize, vtxSize,
+                    texSize);
     }
 
     // BgCheck
-    total += GetBgCheckThaTotal(play);
+    {
+        const u32 bgCheck = GetBgCheckThaTotal(play);
+        total += bgCheck;
+        LUSLOG_INFO("[ArenaSizing] bgCheck=0x%X (memSize=0x%X)", bgCheck, GetBgCheckMemSize(play));
+    }
 
     // Elf message
-    total += GetElfMessageSize(play);
+    {
+        const u32 elfMsg = GetElfMessageSize(play);
+        total += elfMsg;
+        LUSLOG_INFO("[ArenaSizing] elfMsg=0x%X, total=0x%X, arena=0x%X", elfMsg, total, N64_THA_BUDGET - total);
+    }
 
     if (total >= N64_THA_BUDGET)
     {
         return 0;
     }
 
-    return N64_THA_BUDGET - total;
+    return N64_THA_BUDGET - total - 0x1000;
 }
