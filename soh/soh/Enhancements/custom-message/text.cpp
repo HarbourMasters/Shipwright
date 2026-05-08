@@ -87,7 +87,7 @@ void Text::Replace(const std::string& oldStr, const std::string& newStr) {
     replaceAll(english, oldStr, newStr);
     replaceAll(french, oldStr, newStr);
     replaceAll(german, oldStr, newStr);
-    replaceAll(spanish, oldStr,newStr);
+    replaceAll(spanish, oldStr, newStr);
 }
 
 void Text::Replace(const std::string& oldStr, const Text& newText) {

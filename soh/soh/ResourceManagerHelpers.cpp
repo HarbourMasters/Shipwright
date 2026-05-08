@@ -17,7 +17,6 @@
 
 #include <stb_image.h>
 
-
 extern "C" PlayState* gPlayState;
 
 extern "C" uint32_t ResourceMgr_GetNumGameVersions() {
