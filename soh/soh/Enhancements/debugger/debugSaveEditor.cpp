@@ -16,6 +16,8 @@
 #include <libultraship/libultraship.h>
 #include <soh_assets.h>
 
+#include <fast/Fast3dGui.h>
+
 extern "C" {
 #include <z64.h>
 #include "variables.h"
@@ -518,7 +520,7 @@ void DrawInfoTab() {
 
 void DrawBGSItemFlag(uint8_t itemID) {
     const ItemMapEntry& slotEntry = itemMapping[itemID];
-    ImGui::Image(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(slotEntry.name),
+    ImGui::Image(std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetInstance()->GetWindow()->GetGui())->GetTextureByName(slotEntry.name),
                  ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1));
 }
 
@@ -546,7 +548,7 @@ void DrawInventoryTab() {
             if (item == ITEM_ROCS_FEATHER) {
                 auto ret = ImGui::ImageButton(
                     "ROCS_FEATHER",
-                    Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("ROCS_FEATHER"),
+                    std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetInstance()->GetWindow()->GetGui())->GetTextureByName("ROCS_FEATHER"),
                     ImVec2(48.0f, 48.0f), ImVec2(0, 0), ImVec2(1, 1));
                 if (ret) {
                     selectedIndex = index;
@@ -556,7 +558,7 @@ void DrawInventoryTab() {
                 const ItemMapEntry& slotEntry = itemMapping.find(item)->second;
                 auto ret = ImGui::ImageButton(
                     slotEntry.name.c_str(),
-                    Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(slotEntry.name),
+                    std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetInstance()->GetWindow()->GetGui())->GetTextureByName(slotEntry.name),
                     ImVec2(48.0f, 48.0f), ImVec2(0, 0), ImVec2(1, 1));
                 if (ret) {
                     selectedIndex = index;
@@ -607,7 +609,7 @@ void DrawInventoryTab() {
                     PushStyleButton(Colors::DarkGray);
                     auto ret = ImGui::ImageButton(
                         slotEntry.name.c_str(),
-                        Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(slotEntry.name),
+                        std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetInstance()->GetWindow()->GetGui())->GetTextureByName(slotEntry.name),
                         ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1));
                     PopStyleButton();
                     if (ret) {
@@ -640,7 +642,7 @@ void DrawInventoryTab() {
             ImGui::PushItemWidth(IMAGE_SIZE);
             ImGui::BeginGroup();
 
-            ImGui::Image(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(itemMapping[item].name),
+            ImGui::Image(std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetInstance()->GetWindow()->GetGui())->GetTextureByName(itemMapping[item].name),
                          ImVec2(IMAGE_SIZE, IMAGE_SIZE));
             PushStyleInput(THEME_COLOR);
             ImGui::InputScalar("##ammoInput", ImGuiDataType_S8, &AMMO(item));
@@ -1233,7 +1235,7 @@ void DrawUpgradeIcon(const std::string& categoryName, int32_t categoryId, const 
     if (item != ITEM_NONE) {
         const ItemMapEntry& slotEntry = itemMapping[item];
         if (ImGui::ImageButton(slotEntry.name.c_str(),
-                               Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(slotEntry.name),
+                               std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetInstance()->GetWindow()->GetGui())->GetTextureByName(slotEntry.name),
                                ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1))) {
             ImGui::OpenPopup(upgradePopupPicker);
         }
@@ -1263,7 +1265,7 @@ void DrawUpgradeIcon(const std::string& categoryName, int32_t categoryId, const 
                 const ItemMapEntry& slotEntry = itemMapping[items[pickerIndex]];
                 auto ret = ImGui::ImageButton(
                     slotEntry.name.c_str(),
-                    Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(slotEntry.name),
+                    std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetInstance()->GetWindow()->GetGui())->GetTextureByName(slotEntry.name),
                     ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1));
                 if (ret) {
                     Inventory_ChangeUpgrade(categoryId, pickerIndex);
@@ -1300,7 +1302,7 @@ void DrawEquipmentTab() {
         const ItemMapEntry& entry = itemMapping[equipmentValues[i]];
         PushStyleButton(Colors::DarkGray);
         auto ret = ImGui::ImageButton(entry.name.c_str(),
-                                      Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
+                                      std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetInstance()->GetWindow()->GetGui())->GetTextureByName(
                                           hasEquip ? entry.name : entry.nameFaded),
                                       ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1));
         if (ret) {
@@ -1435,7 +1437,7 @@ void DrawQuestItemButton(uint32_t item) {
     bool hasQuestItem = (bitMask & gSaveContext.inventory.questItems) != 0;
     PushStyleButton(Colors::DarkGray);
     auto ret = ImGui::ImageButton(entry.name.c_str(),
-                                  Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
+                                  std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetInstance()->GetWindow()->GetGui())->GetTextureByName(
                                       hasQuestItem ? entry.name : entry.nameFaded),
                                   ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1));
     if (ret) {
@@ -1457,7 +1459,7 @@ void DrawDungeonItemButton(uint32_t item, uint32_t scene) {
     PushStyleButton(Colors::DarkGray);
     auto ret = ImGui::ImageButton(
         entry.name.c_str(),
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(hasItem ? entry.name : entry.nameFaded),
+        std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetInstance()->GetWindow()->GetGui())->GetTextureByName(hasItem ? entry.name : entry.nameFaded),
         ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1));
     if (ret) {
         if (hasItem) {
@@ -1504,7 +1506,7 @@ void DrawQuestStatusTab() {
         bool hasQuestItem = (bitMask & gSaveContext.inventory.questItems) != 0;
         PushStyleButton(Colors::DarkGray);
         auto ret = ImGui::ImageButton(entry.name.c_str(),
-                                      Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
+                                      std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetInstance()->GetWindow()->GetGui())->GetTextureByName(
                                           hasQuestItem ? entry.name : entry.nameFaded),
                                       ImVec2(32.0f, 48.0f), ImVec2(0, 0), ImVec2(1, 1));
         if (ret) {
@@ -1583,7 +1585,7 @@ void DrawQuestStatusTab() {
 
             if (dungeonItemsScene != SCENE_JABU_JABU_BOSS) {
                 float lineHeight = ImGui::GetTextLineHeightWithSpacing();
-                ImGui::Image(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
+                ImGui::Image(std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetInstance()->GetWindow()->GetGui())->GetTextureByName(
                                  itemMapping[ITEM_KEY_SMALL].name),
                              ImVec2(lineHeight, lineHeight));
                 ImGui::SameLine();
@@ -1974,6 +1976,6 @@ void SaveEditorWindow::DrawElement() {
 }
 
 void SaveEditorWindow::InitElement() {
-    Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture("ROCS_FEATHER", gRocsFeatherTex,
+    std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetInstance()->GetWindow()->GetGui())->LoadGuiTexture("ROCS_FEATHER", gRocsFeatherTex,
                                                                         ImVec4(1, 1, 1, 1));
 }
