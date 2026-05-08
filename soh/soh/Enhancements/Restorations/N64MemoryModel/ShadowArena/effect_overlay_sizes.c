@@ -1,5 +1,7 @@
 #include "effect_overlay_sizes.h"
 
+#include "global.h"
+
 const u32 gN64EffectOverlaySizes[EFFECT_SS_TYPE_MAX] = {
     [EFFECT_SS_DUST] = 0x830,
     [EFFECT_SS_KIRAKIRA] = 0x670,

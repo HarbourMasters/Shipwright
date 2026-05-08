@@ -6,6 +6,7 @@
 extern "C" {
 #include "N64MemoryModel.hpp"
 #include "ShadowArena/shadow_arena.h"
+#include "ShadowArena/arena_sizing.h"
 #include "ShadowArena/actor_overlay_sizes.h"
 #include "ShadowArena/effect_overlay_sizes.h"
 #include "ShadowArena/instance_sizes.h"
@@ -92,13 +93,17 @@ void N64Mem_Reset(PlayState* play)
     sIsActive = CVAR_VALUE;
     if (sIsActive && play != nullptr)
     {
-        // Compute N64-equivalent arena size: SoH's THA remainder minus THA consumers that SoH bypasses, but N64
-        // performs.
-        u32 n64SceneFileSize = play->loadedScene->sceneFile.vromEnd - play->loadedScene->sceneFile.vromStart;
-        u32 shadowArenaSize = sSohThaRemainder - n64SceneFileSize;
+        // Compute N64-equivalent arena size from first principles.
+        // #TODO: Select version constants based on detected ROM version.
+        u32 shadowArenaSize = ArenaSizing_ComputeN64ArenaSize(play, &gVersionConstantsNtsc12);
+        if (shadowArenaSize == 0)
+        {
+            SPDLOG_ERROR("[N64MemoryModel] Arena sizing returned 0 -- THA budget exceeded, disabling.");
+            sIsActive = 0;
+            return;
+        }
 
-        SPDLOG_INFO("[N64MemoryModel] SoH THA remainder=0x{:X}, scene file size=0x{:X}, shadow arena=0x{:X}",
-                    sSohThaRemainder, n64SceneFileSize, shadowArenaSize);
+        SPDLOG_INFO("[N64MemoryModel] Shadow arena size=0x{:X} for scene 0x{:X}", shadowArenaSize, play->sceneNum);
         ShadowArena_Init(&sShadow, shadowArenaSize);
     }
 }
@@ -170,8 +175,7 @@ s32 N64Mem_AllocOverlay(s16 actorId, u16 allocType)
 
     if (shadow == SHADOW_NULL)
     {
-        SPDLOG_ERROR("[N64MemoryModel] Shadow overlay failed for actor 0x{:04X} (need 0x{:X})",
-                     static_cast<s32>(actorId), overlaySize);
+        SPDLOG_ERROR("[N64MemoryModel] Shadow overlay failed for actor 0x{:04X} (need 0x{:X})", actorId, overlaySize);
         return 0;
     }
 

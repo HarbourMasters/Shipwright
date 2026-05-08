@@ -1,5 +1,7 @@
 #include "actor_overlay_sizes.h"
 
+#include "global.h"
+
 const u32 gN64ActorOverlaySizes[ACTOR_ID_MAX] = {
     [ACTOR_EN_TEST] = 0x58B0,
     [ACTOR_EN_GIRLA] = 0x2920,

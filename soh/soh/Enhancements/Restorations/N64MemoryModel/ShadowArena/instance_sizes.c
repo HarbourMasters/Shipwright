@@ -1,5 +1,7 @@
 #include "instance_sizes.h"
 
+#include "global.h"
+
 const u32 gN64InstanceSizes[ACTOR_ID_MAX] = {
     [ACTOR_PLAYER] = 0xA94,
     [ACTOR_EN_TEST] = 0x0928,
