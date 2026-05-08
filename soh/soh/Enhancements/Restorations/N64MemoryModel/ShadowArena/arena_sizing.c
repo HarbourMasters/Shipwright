@@ -20,7 +20,6 @@ s32 BgCheck_TryGetCustomMemsize(s32 sceneId, u32* memSize);
 // N64 struct sizes (32-bit, from decomp headers and linker map)
 // --------------------------------------------------------------------------------------------------------------------
 
-#define N64_SIZEOF_CHAR_PTR 4 // sizeof(char*) on N64 MIPS
 #define N64_SIZEOF_COLLISION_CONTEXT 0x1464 // CollisionContext size = 0x1464 (from decomp header comment)
 #define N64_SIZEOF_GFX 8 // sizeof(Gfx) on N64: Two u32 words -- SoH is 16
 #define N64_SIZEOF_VTX 0x10 // sizeof(Vtx) on N64: Same on both platforms
@@ -40,9 +39,9 @@ s32 BgCheck_TryGetCustomMemsize(s32 sceneId, u32* memSize);
 
 #define N64_MATRIX_STACK_SIZE (20 * 0x40) // sys_matrix.c: 20 * sizeof(MtxF)
 #define N64_TEXT_BOX_SIZE 0x2200 // Message_Init: Constant
-#define N64_DO_ACTION_SIZE (3 * N64_SIZEOF_CHAR_PTR) // z_construct.c: 3 * sizeof(char*)
-#define N64_ICON_ITEM_SIZE (0x1000 * 4) // z_construct.c: 0x1000 * 4 (buttonItems on N64)
-#define N64_MAP_SEGMENT_SIZE (2 * N64_SIZEOF_CHAR_PTR) // z_map_exp.c: 2 * sizeof(char*)
+#define N64_DO_ACTION_SIZE 0x480 // z_construct.c: 3 * DO_ACTION_TEX_SIZE (48x16 IA4 = 0x180 each)
+#define N64_ICON_ITEM_SIZE (0x1000 * 4) // z_construct.c: 4 * ITEM_ICON_SIZE (32x32 RGBA32)
+#define N64_MAP_SEGMENT_SIZE 0x1000 // z_map_exp.c: DMA target buffer for minimap textures
 
 // --------------------------------------------------------------------------------------------------------------------
 // Skybox N64-unique THA consumers
