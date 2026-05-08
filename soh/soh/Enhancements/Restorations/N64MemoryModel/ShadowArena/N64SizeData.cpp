@@ -124,6 +124,48 @@ static void LoadEffectOverlaySizes()
 }
 
 // --------------------------------------------------------------------------------------------------------------------
+// Actor instance sizes (misc/actor_instance_sizes)
+//
+// Format: u32 entryCount, then entryCount consecutive u32 values indexed by actor ID
+// Each value is the N64 sizeof the actor's instance struct, read from ActorProfile.instanceSize.
+// --------------------------------------------------------------------------------------------------------------------
+
+static std::vector<u32> sActorInstanceSizes;
+static bool sIsActorInstanceLoaded = false;
+
+static void LoadActorInstanceSizes()
+{
+    if (sIsActorInstanceLoaded)
+    {
+        return;
+    }
+
+    sIsActorInstanceLoaded = true;
+
+    const auto file =
+        Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->LoadFile("misc/actor_instance_sizes");
+    if (!file || !file->IsLoaded)
+    {
+        SPDLOG_ERROR("[N64SizeData] Failed to load misc/actor_instance_sizes from OTR.");
+        return;
+    }
+
+    auto stream = std::make_shared<Ship::MemoryStream>(file->Buffer->data(), file->Buffer->size());
+    const auto reader = std::make_shared<Ship::BinaryReader>(stream);
+    reader->SetEndianness(Ship::Endianness::Big);
+
+    const u32 entryCount = reader->ReadUInt32();
+    sActorInstanceSizes.resize(entryCount);
+
+    for (std::size_t i = 0; i < entryCount; ++i)
+    {
+        sActorInstanceSizes.at(i) = reader->ReadUInt32();
+    }
+
+    SPDLOG_INFO("[N64SizeData] Loaded {} actor instance sizes.", sActorInstanceSizes.size());
+}
+
+// --------------------------------------------------------------------------------------------------------------------
 // API
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -159,6 +201,18 @@ extern "C" u32 N64SizeData_GetEffectOverlaySize(u16 effectType)
     if (effectType < sEffectOverlaySizes.size())
     {
         return sEffectOverlaySizes.at(effectType);
+    }
+
+    return 0;
+}
+
+extern "C" u32 N64SizeData_GetActorInstanceSize(u16 actorId)
+{
+    LoadActorInstanceSizes();
+
+    if (actorId < sActorInstanceSizes.size())
+    {
+        return sActorInstanceSizes.at(actorId);
     }
 
     return 0;

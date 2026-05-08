@@ -8,7 +8,6 @@ extern "C" {
 #include "ShadowArena/N64SizeData.hpp"
 #include "ShadowArena/shadow_arena.h"
 #include "ShadowArena/arena_sizing.h"
-#include "ShadowArena/instance_sizes.h"
 }
 
 #define CVAR_NAME CVAR_ENHANCEMENT("N64MemoryModel")
@@ -220,7 +219,7 @@ s32 N64Mem_AllocInstance(s16 actorId, void* realPtr)
         return 1;
     }
 
-    const u32 instanceSize = gN64InstanceSizes[actorId];
+    const u32 instanceSize = N64SizeData_GetActorInstanceSize(actorId);
     if (instanceSize == 0)
     {
         return 1;
