@@ -5,10 +5,9 @@
 
 extern "C" {
 #include "N64MemoryModel.hpp"
+#include "ShadowArena/N64SizeData.hpp"
 #include "ShadowArena/shadow_arena.h"
 #include "ShadowArena/arena_sizing.h"
-#include "ShadowArena/actor_overlay_sizes.h"
-#include "ShadowArena/effect_overlay_sizes.h"
 #include "ShadowArena/instance_sizes.h"
 }
 
@@ -134,7 +133,7 @@ s32 N64Mem_AllocOverlay(s16 actorId, u16 allocType)
         return 1;
     }
 
-    const u32 overlaySize = gN64ActorOverlaySizes[actorId];
+    const u32 overlaySize = N64SizeData_GetActorOverlaySize(actorId);
     if (overlaySize == 0)
     {
         return 1;
@@ -316,7 +315,7 @@ s32 N64Mem_AllocEffectOverlay(s32 type)
         return 1;
     }
 
-    u32 overlaySize = gN64EffectOverlaySizes[type];
+    u32 overlaySize = N64SizeData_GetEffectOverlaySize(type);
     if (overlaySize == 0)
     {
         return 1;

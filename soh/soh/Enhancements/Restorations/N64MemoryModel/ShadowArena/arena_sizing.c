@@ -1,5 +1,5 @@
 #include "arena_sizing.h"
-#include "DmaSizes.hpp"
+#include "N64SizeData.hpp"
 
 #include "global.h"
 
@@ -272,7 +272,7 @@ u32 ArenaSizing_ComputeN64ArenaSize(PlayState* play, const VersionConstants* vc)
     // Scene-dependent consumers
     {
         const u32 objBank = GetObjectBankSize(play);
-        const u32 sceneFile = DmaSizes_GetFileSize(play->loadedScene->sceneFile.fileName);
+        const u32 sceneFile = N64SizeData_GetDmaFileSize(play->loadedScene->sceneFile.fileName);
         const u32 roomBuf = GetMaxRoomSize(play);
         total += objBank;
         total += sceneFile;
@@ -314,5 +314,5 @@ u32 ArenaSizing_ComputeN64ArenaSize(PlayState* play, const VersionConstants* vc)
         return 0;
     }
 
-    return N64_THA_BUDGET - total - 0x2000;
+    return N64_THA_BUDGET - total;
 }
