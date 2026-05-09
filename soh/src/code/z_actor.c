@@ -2597,7 +2597,6 @@ void Actor_UpdateAll(PlayState* play, ActorContext* actorCtx) {
         }
         play->numSetupActors = 0;
         GameInteractor_ExecuteOnSceneSpawnActors();
-        N64Mem_LogState("room actors spawned");
     }
 
     if (actorCtx->unk_02 != 0) {
@@ -2656,7 +2655,9 @@ void Actor_UpdateAll(PlayState* play, ActorContext* actorCtx) {
                 CollisionCheck_ResetDamage(&actor->colChkInfo);
                 actor = actor->next;
             } else if (actor->update == NULL) {
-                if (!actor->isDrawn) {
+                // #region SOH [Enhancement] - N64 Memory Model
+                if (N64Mem_IsActive() || !actor->isDrawn) {
+                // #endregion
                     actor = Actor_Delete(&play->actorCtx, actor, play);
                 } else {
                     Actor_Destroy(actor, play);
@@ -3195,7 +3196,16 @@ void func_80031B14(PlayState* play, ActorContext* actorCtx) {
         while (actor != NULL) {
             if ((actor->room >= 0) && (actor->room != play->roomCtx.curRoom.num) &&
                 (actor->room != play->roomCtx.prevRoom.num)) {
-                if (!actor->isDrawn) {
+                // #region [SOH] Enhancement - N64 Memory Model
+                //
+                // On N64, most departing-room actors are off-screen (isDrawn = false) during the transition frame, so
+                // they take the immediate Actor_Delete path.  SoH's extended draw distance (Ship_CalcShouldDrawAndUpdate)
+                // keeps more actors "drawn," pushing them into the deferred Actor_Kill path instead.  This changes the
+                // free ordering seen by the heap, producing different fragmentation geometry.
+                //
+                // When the N64 Memory Model is active, force the immediate path to match N64's free ordering.
+                if (N64Mem_IsActive() || !actor->isDrawn) {
+                // #endregion
                     actor = Actor_Delete(actorCtx, actor, play);
                 } else {
                     Actor_Kill(actor);
