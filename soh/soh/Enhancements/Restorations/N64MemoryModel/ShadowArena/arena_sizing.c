@@ -5,7 +5,7 @@
 #include "global.h"
 
 // Declared in z_bgcheck.c but not exposed via header.
-s32 BgCheck_IsSpotScene(PlayState * play);
+s32 BgCheck_IsSpotScene(PlayState* play);
 s32 BgCheck_TryGetCustomMemsize(s32 sceneId, u32* memSize);
 
 // --------------------------------------------------------------------------------------------------------------------

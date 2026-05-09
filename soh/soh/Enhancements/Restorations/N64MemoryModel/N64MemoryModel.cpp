@@ -122,8 +122,8 @@ void N64Mem_Reset(PlayState* play)
     sIsActive = CVAR_VALUE;
     if (sIsActive && play != nullptr)
     {
-        // Compute N64-equivalent arena size from first principles.  All per-version constants are
-        // derived from the OTR blob, which was extracted from the user's specific ROM version.
+        // Compute N64-equivalent arena size from first principles.  All per-version constants are derived from the OTR
+        // blob, which was extracted from the user's specific ROM version.
         u32 shadowArenaSize = ArenaSizing_ComputeN64ArenaSize(play);
         if (shadowArenaSize == 0)
         {
@@ -202,16 +202,9 @@ s32 N64Mem_AllocOverlay(s16 actorId, u16 allocType)
         return 1;
     }
 
-    u32 shadow = SHADOW_NULL;
-    if (allocType & ALLOCTYPE_PERMANENT)
-    {
-        shadow = ShadowArena_MallocR(&sShadow, overlaySize);
-    }
-    else
-    {
-        shadow = ShadowArena_Malloc(&sShadow, overlaySize);
-    }
-
+    // N64 allocates ALL actor overlays via ZeldaArena_MallocR (from the arena top).  Using Malloc (bottom-up) placed
+    // overlays interleaved with instances at the bottom, preventing proper coalescing when overlays are freed.
+    const u32 shadow = ShadowArena_MallocR(&sShadow, overlaySize);
     if (shadow == SHADOW_NULL)
     {
         SPDLOG_ERROR("[N64MemoryModel] Shadow overlay failed for actor 0x{:04X} (need 0x{:X})", actorId, overlaySize);
@@ -295,7 +288,7 @@ void N64Mem_FreeInstance(void* realPtr)
 
     if (sTraceEnabled)
     {
-        Actor* actor = (Actor*)realPtr;
+        const auto* actor = static_cast<Actor*>(realPtr);
         TraceFree("inst", actor->id);
     }
 
