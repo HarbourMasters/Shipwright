@@ -21,6 +21,13 @@ extern "C" {
 // THA_GetRemaining.
 void N64Mem_StoreThaRemainder(u32 sohRemainder);
 
+// Store which elf message file was loaded by Scene_CommandSpecialFiles (1 = elf_message_field, 2 = elf_message_ydan,
+// 0 = none).  Called from z_scene.c during scene command processing.
+void N64Mem_StoreElfMsgNum(u8 num);
+
+// Returns the elf message number stored by N64Mem_StoreElfMsgNum.
+u8 N64Mem_GetElfMsgNum(void);
+
 // Reset shadow state, compute N64-equivalent arena size from stored THA remainder minus N64-specific consumers
 // (room buffers, etc.), and reread CVar.  Call from Play_Init after ZeldaArena_Init.
 struct PlayState;

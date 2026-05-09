@@ -22,6 +22,7 @@ extern "C" {
 static s32 sIsActive = 0;
 static ShadowArena sShadow;
 static u32 sSohThaRemainder = 0;
+static u8 sElfMsgNum = 0;
 
 // Shadow offsets for actor overlays, keyed by actor ID.  SHADOW_NULL means no shadow allocation exists for that type.
 static u32 sOverlayShadows[ACTOR_ID_MAX];
@@ -56,7 +57,7 @@ static void TraceAlloc(const char* tag, u32 id, u32 size)
 {
     if (sTraceEnabled)
     {
-        u32 consumed = ((size + 0xF) & ~0xF) + SHADOW_NODE_SIZE;
+        u32 consumed = (size + 0xF & ~0xF) + SHADOW_NODE_SIZE;
         SPDLOG_INFO("[N64Trace] +{} id=0x{:X} sz=0x{:X} cost=0x{:X}", tag, id, size, consumed);
     }
 }
@@ -76,6 +77,16 @@ static void TraceFree(const char* tag, u32 id)
 void N64Mem_StoreThaRemainder(u32 sohRemainder)
 {
     sSohThaRemainder = sohRemainder;
+}
+
+void N64Mem_StoreElfMsgNum(u8 num)
+{
+    sElfMsgNum = num;
+}
+
+u8 N64Mem_GetElfMsgNum()
+{
+    return sElfMsgNum;
 }
 
 void N64Mem_Reset(PlayState* play)

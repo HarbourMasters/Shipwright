@@ -1,5 +1,6 @@
 #include "arena_sizing.h"
 #include "N64SizeData.hpp"
+#include "soh/Enhancements/Restorations/N64MemoryModel/N64MemoryModel.hpp"
 
 #include "global.h"
 
@@ -203,19 +204,29 @@ static u32 GetObjectBankSize(PlayState* play)
 // Elf message size
 //
 // On N64, loaded via Play_LoadFile into THA.  SoH loads from OTR via ResourceManager.  Only present if the scene's
-// SpecialFiles command has cUpElfMsgNum != 0.
+// SpecialFiles command has cUpElfMsgNum != 0.  The file name is determined by cUpElfMsgNum (1-indexed).
 // --------------------------------------------------------------------------------------------------------------------
+
+static const char* sElfMsgDmaNames[] = {
+    "elf_message_field",
+    "elf_message_ydan",
+};
 
 static u32 GetElfMessageSize(PlayState* play)
 {
-    if (play->cUpElfMsgs != NULL)
+    if (play->cUpElfMsgs == NULL)
     {
-        // elf_message_field is 0x70, elf_message_ydan is 0x10 on NTSC 1.2.
-        // #TODO: Per-version data.
-        return 0x80;
+        return 0;
     }
 
-    return 0;
+    const u8 elfMsgNum = N64Mem_GetElfMsgNum();
+    if (elfMsgNum == 0 || elfMsgNum > ARRAY_COUNT(sElfMsgDmaNames))
+    {
+        LUSLOG_WARN("[ArenaSizing] elfMsg: cUpElfMsgs non-NULL but elfMsgNum=%d out of range", elfMsgNum);
+        return 0;
+    }
+
+    return N64SizeData_GetDmaFileSize(sElfMsgDmaNames[elfMsgNum - 1]);
 }
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -356,9 +367,10 @@ u32 ArenaSizing_ComputeN64ArenaSize(PlayState* play, const VersionConstants* vc)
     {
         const u32 mapMarkData = GetMapMarkDataOverlaySize(play);
         total += ALIGN16(mapMarkData);
-        LUSLOG_INFO("[ArenaSizing] mapMarkData=0x%X, total=0x%X, arena=0x%X", mapMarkData, total,
-                    N64_THA_BUDGET - total);
     }
+
+    LUSLOG_INFO("[ArenaSizing] total=0x%X, arena=0x%X (budget=0x%X)", total, N64_THA_BUDGET - total,
+                (u32)N64_THA_BUDGET);
 
     if (total >= N64_THA_BUDGET)
     {

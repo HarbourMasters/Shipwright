@@ -1,4 +1,5 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "Enhancements/Restorations/N64MemoryModel/N64MemoryModel.hpp"
 #include "ResourceManagerHelpers.h"
 #include <libultraship/libultraship.h>
 #include "soh/resource/type/Scene.h"
@@ -104,6 +105,10 @@ bool Scene_CommandSpecialFiles(PlayState* play, SOH::ISceneCommand* cmd) {
     if (specialCmd->specialObjects.globalObject != 0) {
         play->objectCtx.subKeepIndex = Object_Spawn(&play->objectCtx, specialCmd->specialObjects.globalObject);
     }
+
+    // #region SOH [Enhancement] - N64 Memory Model
+    N64Mem_StoreElfMsgNum(specialCmd->specialObjects.elfMessage);
+    // #endregion
 
     if (specialCmd->specialObjects.elfMessage != 0) {
         auto res =
