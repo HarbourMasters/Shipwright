@@ -24,6 +24,7 @@ s32 BgCheck_TryGetCustomMemsize(s32 sceneId, u32* memSize);
 #define N64_SIZEOF_COLLISION_CONTEXT 0x1464 // CollisionContext size = 0x1464 (from decomp header comment)
 #define N64_SIZEOF_GFX 8 // sizeof(Gfx) on N64: Two u32 words -- SoH is 16
 #define N64_SIZEOF_VTX 0x10 // sizeof(Vtx) on N64: Same on both platforms
+#define N64_SIZEOF_EFFECT_SS 0x60 // sizeof(EffectSs) on N64: No pointer members, constant across all N64 versions
 
 // Struct sizes that are identical on N64 and SoH (no pointer members):
 //  sizeof(MtxF)            = 0x40
@@ -49,9 +50,9 @@ s32 BgCheck_TryGetCustomMemsize(s32 sceneId, u32* memSize);
 //
 // On N64, the map mark data overlay (chest/boss/dungeon icons on the pause map) is loaded into THA
 // via GAME_STATE_ALLOC in MapMark_Init.  SoH compiles this data in directly.
-// VRAM size from decomp linker map: 0x8085D460 - 0x80856900 = 0x6B60.
-// Constant across OoT versions (dungeon map mark positions don't change).
-// Only loaded for the 10 main dungeons (Deku Tree through Ice Cavern) and their boss rooms.
+// VRAM size from decomp linker map: 0x8085D460 - 0x80856900 = 0x6B60.  Constant across OoT versions
+// (dungeon map mark positions don't change).  Only loaded for the 10 main dungeons (Deku Tree through Ice Cavern) and
+// their boss rooms.
 // --------------------------------------------------------------------------------------------------------------------
 
 #define N64_MAP_MARK_DATA_VRAM_SIZE 0x6B60
@@ -59,8 +60,8 @@ s32 BgCheck_TryGetCustomMemsize(s32 sceneId, u32* memSize);
 static u32 GetMapMarkDataOverlaySize(PlayState* play)
 {
     // Mirrors the condition in z_map_exp.c Map_Init: the dungeon case block's inner guard.
-    // Main dungeons: SCENE_DEKU_TREE (0x00) through SCENE_ICE_CAVERN (0x09)
-    // Boss rooms:    SCENE_DEKU_TREE_BOSS (0x11) through SCENE_SHADOW_TEMPLE_BOSS (0x18)
+    //  Main dungeons: SCENE_DEKU_TREE (0x00) through SCENE_ICE_CAVERN (0x09)
+    //  Boss rooms:    SCENE_DEKU_TREE_BOSS (0x11) through SCENE_SHADOW_TEMPLE_BOSS (0x18)
     if (play->sceneNum <= SCENE_ICE_CAVERN ||
         (play->sceneNum >= SCENE_DEKU_TREE_BOSS && play->sceneNum <= SCENE_SHADOW_TEMPLE_BOSS))
     {
@@ -280,8 +281,6 @@ static u32 GetMaxRoomSize(PlayState* play)
 
 const VersionConstants gVersionConstantsNtsc12 = {
     0x26740, // kaleidoOverlayVramSize: max(kaleido_scope = 0x1CA00, player_actor = 0x26740)
-    0x3B00, // parameterStaticSize
-    0x60, // effectSsSize: N64 sizeof(EffectSs)
 };
 
 u32 ArenaSizing_ComputeN64ArenaSize(PlayState* play, const VersionConstants* vc)
@@ -294,13 +293,16 @@ u32 ArenaSizing_ComputeN64ArenaSize(PlayState* play, const VersionConstants* vc)
 
     u32 total = 0;
 
-    // Per-version constants (N64-unique THA consumers SoH skips)
+    // Per-version constant (N64-unique THA consumer SoH skips)
     total += ALIGN16(vc->kaleidoOverlayVramSize);
-    total += ALIGN16(vc->parameterStaticSize);
+
+    // parameter_static: DMA file size, version-specific but available in the OTR blob.
+    const u32 parameterStaticSize = N64SizeData_GetDmaFileSize("parameter_static");
+    total += ALIGN16(parameterStaticSize);
 
     // Fixed consumers
     total += ALIGN16(N64_MATRIX_STACK_SIZE);
-    total += ALIGN16(0x55 * vc->effectSsSize);
+    total += ALIGN16(0x55 * N64_SIZEOF_EFFECT_SS);
     total += ALIGN16(N64_TEXT_BOX_SIZE);
     total += ALIGN16(N64_DO_ACTION_SIZE);
     total += ALIGN16(N64_ICON_ITEM_SIZE);
@@ -308,7 +310,7 @@ u32 ArenaSizing_ComputeN64ArenaSize(PlayState* play, const VersionConstants* vc)
 
     const u32 fixed = total;
     LUSLOG_INFO("[ArenaSizing] fixed=0x%X (kaleido=0x%X, param=0x%X)", fixed, vc->kaleidoOverlayVramSize,
-                vc->parameterStaticSize);
+                parameterStaticSize);
 
     // Scene-dependent consumers
     {

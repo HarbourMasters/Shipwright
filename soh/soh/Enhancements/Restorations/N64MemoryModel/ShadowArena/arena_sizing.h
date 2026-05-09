@@ -4,23 +4,25 @@
 
 #ifdef __cplusplus
 extern "C" {
+
+
+
 #endif
 
 // --------------------------------------------------------------------------------------------------------------------
-// Per version constants that cannot be derived at SoH runtime.
+// Per-version constants that cannot be derived from existing OTR blobs at runtime.
 //
-// These come from the decomp linker map or DMA table for a given ROM version.  SoH zeroes out or bypasses the code
-// paths that would expose them (e.g, kaleido overlays compiled in, skybox textures loaded from OTR, scene files loaded
-// via ResourceManager instead of THA, etc.)
+// kaleidoOverlayVramSize requires the kaleido overlay table from the code segment (VRAM spans, not DMA sizes).
+// Other former members have been replaced:
+//   parameterStaticSize -> N64SizeData_GetDmaFileSize("parameter_static")
+//   effectSsSize        -> N64_SIZEOF_EFFECT_SS (constant 0x60 across all N64 versions)
 //
-// #TODO: For multi-version support, generate one of these per supported ROM version.
+// #TODO: Extract kaleidoOverlayVramSize from the OTR exporter per ROM version.
 // --------------------------------------------------------------------------------------------------------------------
 
 typedef struct
 {
     u32 kaleidoOverlayVramSize; // max(ovl_kaleido_scope VRAM, ovl_player_actor VRAM)
-    u32 parameterStaticSize; // _parameter_staticSegmentRomEnd - RomStart
-    u32 effectSsSize; // N64 sizeof(EffectSs) -- 0x60 on N64, larger on SoH
 } VersionConstants;
 
 
