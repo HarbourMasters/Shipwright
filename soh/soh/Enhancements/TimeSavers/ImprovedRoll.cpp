@@ -2,10 +2,6 @@
 #include "soh/ShipInit.hpp"
 #include "global.h"
 
-extern "C" {
-extern PlayState* gPlayState;
-}
-
 #define CVAR_ROLL_CHAIN_NAME CVAR_ENHANCEMENT("ImprovedRoll")
 #define CVAR_ROLL_CHAIN_VALUE CVarGetInteger(CVAR_ROLL_CHAIN_NAME, 0)
 
