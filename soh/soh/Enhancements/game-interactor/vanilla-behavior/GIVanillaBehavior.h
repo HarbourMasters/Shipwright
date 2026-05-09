@@ -1963,6 +1963,25 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // false
+    // ```
+    // #### `args`
+    // - `*Player`
+    // - `*PlayState`
+    VB_PLAYER_ROLL_CHAIN,
+
+    // #### `result`
+    // ```c
+    // false
+    // ```
+    // #### `args`
+    // - `*Player`
+    // - `*PlayState`
+    // - `s16 yawTarget` (stick world-space yaw, promoted to int in va_list)
+    VB_PLAYER_ROLL_STEER,
+
+    // #### `result`
+    // ```c
     // item == ITEM_SAW
     // ```
     // #### `args`
@@ -2965,26 +2984,7 @@ typedef enum {
     // ```
     // #### `args`
     // - `*int32_t (camId)`
-    VB_SHOULD_LOAD_BG_IMAGE,
-
-    // #### `result`
-    // ```c
-    // false
-    // ```
-    // #### `args`
-    // - `*Player`
-    // - `*PlayState`
-    VB_PLAYER_ROLL_CHAIN,
-
-    // #### `result`
-    // ```c
-    // false
-    // ```
-    // #### `args`
-    // - `*Player`
-    // - `*PlayState`
-    // - `s16 yawTarget` (stick world-space yaw, promoted to int in va_list)
-    VB_PLAYER_ROLL_STEER
+    VB_SHOULD_LOAD_BG_IMAGE
 } GIVanillaBehavior;
 
 #endif
