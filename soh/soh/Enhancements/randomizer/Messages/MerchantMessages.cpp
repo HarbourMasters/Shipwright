@@ -110,6 +110,8 @@ void BuildCarpetGuyMessage(uint16_t* textId, bool* loadFromMessageTable) {
         BuildMerchantMessage(msg, RC_WASTELAND_BOMBCHU_SALESMAN,
                              !RAND_GET_OPTION(RSK_MERCHANT_TEXT_HINT) ||
                                  CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0));
+    } else {
+        return;
     }
     msg.AutoFormat();
     msg.LoadIntoFont();
