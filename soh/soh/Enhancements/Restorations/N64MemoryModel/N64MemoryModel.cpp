@@ -8,6 +8,7 @@ extern "C" {
 #include "ShadowArena/N64SizeData.hpp"
 #include "ShadowArena/shadow_arena.h"
 #include "ShadowArena/arena_sizing.h"
+#include "global.h"
 }
 
 #define CVAR_NAME CVAR_ENHANCEMENT("N64MemoryModel")
@@ -38,6 +39,8 @@ static std::unordered_map<void*, u32> sShadowMap;
 // Diagnostics
 // --------------------------------------------------------------------------------------------------------------------
 
+static s32 sTraceEnabled = 0;
+
 static void LogShadowState(const char* context)
 {
     u32 maxFree = 0;
@@ -47,6 +50,23 @@ static void LogShadowState(const char* context)
     ShadowArena_GetSizes(&sShadow, &maxFree, &totalFree, &totalAlloc);
     SPDLOG_INFO("[N64MemoryModel] ({}): alloc=0x{:X}, free=0x{:X}, largest=0x{:X}", context, totalAlloc, totalFree,
                 maxFree);
+}
+
+static void TraceAlloc(const char* tag, u32 id, u32 size)
+{
+    if (sTraceEnabled)
+    {
+        u32 consumed = ((size + 0xF) & ~0xF) + SHADOW_NODE_SIZE;
+        SPDLOG_INFO("[N64Trace] +{} id=0x{:X} sz=0x{:X} cost=0x{:X}", tag, id, size, consumed);
+    }
+}
+
+static void TraceFree(const char* tag, u32 id)
+{
+    if (sTraceEnabled)
+    {
+        SPDLOG_INFO("[N64Trace] -{} id=0x{:X}", tag, id);
+    }
 }
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -103,6 +123,8 @@ void N64Mem_Reset(PlayState* play)
 
         SPDLOG_INFO("[N64MemoryModel] Shadow arena size=0x{:X} for scene 0x{:X}", shadowArenaSize, play->sceneNum);
         ShadowArena_Init(&sShadow, shadowArenaSize);
+
+        sTraceEnabled = (play->sceneNum == SCENE_GRAVEYARD);
     }
 }
 
@@ -114,6 +136,14 @@ s32 N64Mem_IsActive()
 ShadowArena* N64Mem_GetShadowArena()
 {
     return &sShadow;
+}
+
+void N64Mem_LogState(const char* context)
+{
+    if (sIsActive)
+    {
+        LogShadowState(context);
+    }
 }
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -178,6 +208,7 @@ s32 N64Mem_AllocOverlay(s16 actorId, u16 allocType)
     }
 
     sOverlayShadows[actorId] = shadow;
+    TraceAlloc("ovl", actorId, overlaySize);
     return 1;
 }
 
@@ -201,6 +232,7 @@ void N64Mem_FreeOverlay(s16 actorId, u16 allocType)
 
     ShadowArena_Free(&sShadow, sOverlayShadows[actorId]);
     sOverlayShadows[actorId] = SHADOW_NULL;
+    TraceFree("ovl", actorId);
 }
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -233,6 +265,7 @@ s32 N64Mem_AllocInstance(s16 actorId, void* realPtr)
     }
 
     sShadowMap[realPtr] = shadow;
+    TraceAlloc("inst", actorId, instanceSize);
     return 1;
 }
 
@@ -247,6 +280,12 @@ void N64Mem_FreeInstance(void* realPtr)
     if (i == sShadowMap.end())
     {
         return;
+    }
+
+    if (sTraceEnabled)
+    {
+        Actor* actor = (Actor*)realPtr;
+        TraceFree("inst", actor->id);
     }
 
     ShadowArena_Free(&sShadow, i->second);
@@ -272,6 +311,7 @@ s32 N64Mem_AllocSubsidiary(void* realPtr, u32 n64Size)
     }
 
     sShadowMap[realPtr] = shadow;
+    TraceAlloc("sub", 0, n64Size);
     return 1;
 }
 
@@ -329,6 +369,7 @@ s32 N64Mem_AllocEffectOverlay(s32 type)
     }
 
     sEffectOverlayShadows[type] = shadow;
+    TraceAlloc("efx", type, overlaySize);
     return 1;
 }
 

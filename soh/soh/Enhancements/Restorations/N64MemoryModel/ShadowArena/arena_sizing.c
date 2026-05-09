@@ -275,20 +275,25 @@ const VersionConstants gVersionConstantsNtsc12 = {
 
 u32 ArenaSizing_ComputeN64ArenaSize(PlayState* play, const VersionConstants* vc)
 {
+    // Each THA consumer is allocated via GAME_STATE_ALLOC -> THA_AllocTailAlign16, which consumes ALIGN16(size) bytes.
+    // We must align each consumer individually before summing; aligning the sum would under-count when individual
+    // sizes are not 16-byte aligned (common for DMA file sizes).  BgCheck is the exception -- its internal allocations
+    // use mixed alignment, but the tblMax computation absorbs the internal waste, so the simplified total
+    // (memSize - sizeof(CollisionContext)) is used as-is.
+
     u32 total = 0;
 
     // Per-version constants (N64-unique THA consumers SoH skips)
-    total += vc->kaleidoOverlayVramSize;
-    total += vc->parameterStaticSize;
+    total += ALIGN16(vc->kaleidoOverlayVramSize);
+    total += ALIGN16(vc->parameterStaticSize);
 
     // Fixed consumers
-    total += N64_MATRIX_STACK_SIZE;
-    total += 0x55 * vc->effectSsSize;
-    total += N64_TEXT_BOX_SIZE;
-    total += N64_DO_ACTION_SIZE;
-    total += N64_ICON_ITEM_SIZE;
-    total += N64_MAP_SEGMENT_SIZE;
-
+    total += ALIGN16(N64_MATRIX_STACK_SIZE);
+    total += ALIGN16(0x55 * vc->effectSsSize);
+    total += ALIGN16(N64_TEXT_BOX_SIZE);
+    total += ALIGN16(N64_DO_ACTION_SIZE);
+    total += ALIGN16(N64_ICON_ITEM_SIZE);
+    total += ALIGN16(N64_MAP_SEGMENT_SIZE);
 
     const u32 fixed = total;
     LUSLOG_INFO("[ArenaSizing] fixed=0x%X (kaleido=0x%X, param=0x%X)", fixed, vc->kaleidoOverlayVramSize,
@@ -299,28 +304,41 @@ u32 ArenaSizing_ComputeN64ArenaSize(PlayState* play, const VersionConstants* vc)
         const u32 objBank = GetObjectBankSize(play);
         const u32 sceneFile = N64SizeData_GetDmaFileSize(play->loadedScene->sceneFile.fileName);
         const u32 roomBuf = GetMaxRoomSize(play);
-        total += objBank;
-        total += sceneFile;
-        total += roomBuf;
+        total += ALIGN16(objBank);
+        total += ALIGN16(sceneFile);
+        total += ALIGN16(roomBuf);
         LUSLOG_INFO("[ArenaSizing] objBank=0x%X, sceneFile=0x%X, roomBuf=0x%x", (u32)objBank, (u32)sceneFile,
                     (u32)roomBuf);
     }
 
+    // ----------------------------------------------------------------------------------------------------------------
     // Skybox
+    //
+    // On N64 these are 3-5 separate GAME_STATE_ALLOC calls (tex0, tex1, palette, dList, vtx), each independently
+    // aligned.  GetN64SkyboxTextureSize returns the combined raw size of the texture + palette allocations.
+    // For NORMAL_SKY this is 2×0xC000 + 2×0x100, all already 16-aligned, so ALIGN16 is a no-op here.  The dList and
+    // vtx are separate allocations.
+    // ----------------------------------------------------------------------------------------------------------------
     {
         u32 dListSize = 0;
         u32 vtxSize = 0;
         u32 texSize = 0;
         GetSkyboxDlistAndVtxSize(play->skyboxId, &dListSize, &vtxSize);
         texSize = GetN64SkyboxTextureSize(play->skyboxId);
-        total += dListSize;
-        total += vtxSize;
-        total += texSize;
+        total += ALIGN16(dListSize);
+        total += ALIGN16(vtxSize);
+        total += ALIGN16(texSize);
         LUSLOG_INFO("[ArenaSizing] skyboxId=%d, dList=0x%X, vtx=0x%X, tex=0x%X", play->skyboxId, dListSize, vtxSize,
                     texSize);
     }
 
+    // ----------------------------------------------------------------------------------------------------------------
     // BgCheck
+    //
+    // Uses the algebraic simplification (memSize - sizeof(CollisionContext)).  BgCheck's internal allocations use
+    // THA_AllocTailAlign with 2-byte alignment, and the tblMax formula absorbs internal alignment waste.  No separate
+    // ALIGN16 needed here.
+    // ----------------------------------------------------------------------------------------------------------------
     {
         const u32 bgCheck = GetBgCheckThaTotal(play);
         total += bgCheck;
@@ -330,14 +348,14 @@ u32 ArenaSizing_ComputeN64ArenaSize(PlayState* play, const VersionConstants* vc)
     // Elf message
     {
         const u32 elfMsg = GetElfMessageSize(play);
-        total += elfMsg;
+        total += ALIGN16(elfMsg);
         LUSLOG_INFO("[ArenaSizing] elfMsg=0x%X", elfMsg);
     }
 
     // Map mark data overlay (dungeons only)
     {
         const u32 mapMarkData = GetMapMarkDataOverlaySize(play);
-        total += mapMarkData;
+        total += ALIGN16(mapMarkData);
         LUSLOG_INFO("[ArenaSizing] mapMarkData=0x%X, total=0x%X, arena=0x%X", mapMarkData, total,
                     N64_THA_BUDGET - total);
     }

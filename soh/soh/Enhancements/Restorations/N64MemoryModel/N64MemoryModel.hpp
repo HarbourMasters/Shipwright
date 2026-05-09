@@ -32,6 +32,9 @@ s32 N64Mem_IsActive(void);
 // Returns the shadow arena pointer for debug visualization.  Only valid when N64Mem_IsActive() is true.
 struct ShadowArena* N64Mem_GetShadowArena(void);
 
+// Log the current shadow arena state (alloc/free/largest) with the given context label.
+void N64Mem_LogState(const char* context);
+
 // --------------------------------------------------------------------------------------------------------------------
 // Actor overlays: Keyed by actor ID, shadow-only allocations.
 //

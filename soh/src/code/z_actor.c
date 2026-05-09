@@ -2597,6 +2597,7 @@ void Actor_UpdateAll(PlayState* play, ActorContext* actorCtx) {
         }
         play->numSetupActors = 0;
         GameInteractor_ExecuteOnSceneSpawnActors();
+        N64Mem_LogState("room actors spawned");
     }
 
     if (actorCtx->unk_02 != 0) {
