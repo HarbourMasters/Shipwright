@@ -77,34 +77,100 @@ static u32 GetMapMarkDataOverlaySize(PlayState* play)
 // On N64, skybox textures and palettes are DMA'd into THA-allocated staticSegment buffers.  SoH loads from OTR via the
 // ResourceManager, never touching THA.
 //
-//  SKYBOX_NORMAL_SKY:  2 texture banks * 0xC000 * 2 palettes * 0x100
-//  Indoor skyboxes:    Varying sizes per skybox type
-//  SKYBOX_NONE:        0
+// The allocation pattern depends on the skybox type:
+//   SKYBOX_NORMAL_SKY / OVERCAST_SUNSET:   2 texture banks + 2 palettes (all banks are 0xC000/0x100)
+//   SKYBOX_CUTSCENE_MAP:                   2 different tex files + 2 palettes
+//   Indoor skyboxes:                       1 tex file + 1 palette file (sizes vary per skybox)
+//   SKYBOX_NONE:                           Nothing
 //
-// #TODO: Other skybox types need the same treatment from decomp map's vr_*_static segments.
+// The dList/vtx buffer pattern depends on drawType:
+//   SKYBOX_DRAW_128  (outdoor):                dList=12×150×Gfx, vtx=5×32×Vtx (6×32 for CUTSCENE_MAP)
+//   SKYBOX_DRAW_256  (indoor, 3- or 4-face):   dList=8×150×Gfx, vtx=8×32×Vtx
 // --------------------------------------------------------------------------------------------------------------------
+
+// DMA file name for a single-file indoor skybox (1 tex + 1 pal).
+typedef struct
+{
+    const char* texName;
+    const char* palName;
+} SkyboxDmaEntry;
+
+// Indexed by skybox ID.  NULL texName means the ID isn't a single-file indoor skybox (handled separately).
+static const SkyboxDmaEntry sSkyboxDmaTable[] = {
+    [SKYBOX_NONE] = {NULL, NULL},
+    [SKYBOX_NORMAL_SKY] = {NULL, NULL}, // gNormalSkyFiles, hardcoded
+    [SKYBOX_BAZAAR] = {"vr_SP1a_static", "vr_SP1a_pal_static"},
+    [SKYBOX_OVERCAST_SUNSET] = {NULL, NULL}, // same as NORMAL_SKY
+    [SKYBOX_MARKET_ADULT] = {"vr_RUVR_static", "vr_RUVR_pal_static"},
+    [SKYBOX_CUTSCENE_MAP] = {NULL, NULL}, // Two tex files, handled separately
+    [SKYBOX_HOUSE_LINK] = {"vr_LHVR_static", "vr_LHVR_pal_static"},
+    [SKYBOX_MARKET_CHILD_DAY] = {"vr_MDVR_static", "vr_MDVR_pal_static"},
+    [SKYBOX_MARKET_CHILD_NIGHT] = {"vr_MNVR_static", "vr_MNVR_pal_static"},
+    [SKYBOX_HAPPY_MASK_SHOP] = {"vr_FCVR_static", "vr_FCVR_pal_static"},
+    [SKYBOX_HOUSE_KNOW_IT_ALL_BROTHERS] = {"vr_KHVR_static", "vr_KHVR_pal_static"},
+    [SKYBOX_HOUSE_OF_TWINS] = {"vr_K3VR_static", "vr_K3VR_pal_static"},
+    [SKYBOX_STABLES] = {"vr_MLVR_static", "vr_MLVR_pal_static"},
+    [SKYBOX_HOUSE_KAKARIKO] = {"vr_KKRVR_static", "vr_KKRVR_pal_static"},
+    [SKYBOX_KOKIRI_SHOP] = {"vr_KSVR_static", "vr_KSVR_pal_static"},
+    [SKYBOX_GORON_SHOP] = {"vr_GLVR_static", "vr_GLVR_pal_static"},
+    [SKYBOX_ZORA_SHOP] = {"vr_ZRVR_static", "vr_ZRVR_pal_static"},
+    [SKYBOX_POTION_SHOP_KAKARIKO] = {"vr_DGVR_static", "vr_DGVR_pal_static"},
+    [SKYBOX_POTION_SHOP_MARKET] = {"vr_ALVR_static", "vr_ALVR_pal_static"},
+    [SKYBOX_BOMBCHU_SHOP] = {"vr_NSVR_static", "vr_NSVR_pal_static"},
+    [SKYBOX_HOUSE_RICHARD] = {"vr_IPVR_static", "vr_IPVR_pal_static"},
+    [SKYBOX_HOUSE_IMPA] = {"vr_LBVR_static", "vr_LBVR_pal_static"},
+    [SKYBOX_TENT] = {"vr_TTVR_static", "vr_TTVR_pal_static"},
+    [SKYBOX_HOUSE_MIDO] = {"vr_K4VR_static", "vr_K4VR_pal_static"},
+    [SKYBOX_HOUSE_SARIA] = {"vr_K5VR_static", "vr_K5VR_pal_static"},
+    [SKYBOX_HOUSE_ALLEY] = {"vr_KR3VR_static", "vr_KR3VR_pal_static"},
+};
 
 static u32 GetN64SkyboxTextureSize(s16 skyboxId)
 {
-    switch (skyboxId)
+    if (skyboxId == SKYBOX_NONE)
     {
-    case SKYBOX_NORMAL_SKY:
-    // Fall-through
-    case SKYBOX_OVERCAST_SUNSET:
-        return 2 * 0xC000 + 2 * 0x100;
-
-    case SKYBOX_NONE:
         return 0;
-
-    default:
-        // Indoor skyboxes: Conservative estimate.
-        // #TODO: Populate exact sizes per skybox ID from decomp map.
-        return 3 * 0x8000 + 3 * 0x200;
     }
+
+    // NORMAL_SKY and OVERCAST_SUNSET both load 2 texture banks + 2 palettes from the vr_fine/vr_cloud files.
+    // All 16 banks are exactly 0xC000 and all 16 palettes are exactly 0x100, so the total is constant.
+    if (skyboxId == SKYBOX_NORMAL_SKY || skyboxId == SKYBOX_OVERCAST_SUNSET)
+    {
+        return 2 * 0xC000 + 2 * 0x100;
+    }
+
+    // CUTSCENE_MAP loads two different texture files + 2 palette copies.
+    if (skyboxId == SKYBOX_CUTSCENE_MAP)
+    {
+        const u32 tex0 = N64SizeData_GetDmaFileSize("vr_holy0_static");
+        const u32 tex1 = N64SizeData_GetDmaFileSize("vr_holy1_static");
+        const u32 pal = N64SizeData_GetDmaFileSize("vr_holy0_pal_static");
+        return tex0 + tex1 + pal * 2;
+    }
+
+    // Indoor skyboxes: 1 texture + 1 palette, looked up from the DMA blob.
+    if (skyboxId >= 0 && skyboxId < (s16)ARRAY_COUNT(sSkyboxDmaTable))
+    {
+        const SkyboxDmaEntry* entry = &sSkyboxDmaTable[skyboxId];
+        if (entry->texName != NULL)
+        {
+            const u32 tex = N64SizeData_GetDmaFileSize(entry->texName);
+            const u32 pal = N64SizeData_GetDmaFileSize(entry->palName);
+            return tex + pal;
+        }
+    }
+
+    return 0;
 }
 
 // --------------------------------------------------------------------------------------------------------------------
-// Skybox dListBuf and roomVtx (shared -- same size on N64 and SoH, no pointer members)
+// Skybox dListBuf and roomVtx
+//
+// Allocation sizes depend on the drawType, which is determined by the skybox ID:
+//   SKYBOX_DRAW_128  (NORMAL_SKY, OVERCAST_SUNSET, CUTSCENE_MAP): 12-face dList, 5- or 6-face vtx
+//   SKYBOX_DRAW_256  (all indoor skyboxes):                       8-face dList, 8-face vtx
+
+// Gfx is 8 bytes on N64, Vtx is 0x10.
 // --------------------------------------------------------------------------------------------------------------------
 
 static void GetSkyboxDlistAndVtxSize(s16 skyboxId, u32* outDlistSize, u32* outVtxSize)
@@ -116,24 +182,21 @@ static void GetSkyboxDlistAndVtxSize(s16 skyboxId, u32* outDlistSize, u32* outVt
         return;
     }
 
-    // unk_140 != 0 means indoor/single-room skybox.
-    // #TODO: Determine unk_140 from ID more precisely.
-    const bool isIndoor = skyboxId != SKYBOX_NORMAL_SKY && skyboxId != SKYBOX_OVERCAST_SUNSET && skyboxId !=
-        SKYBOX_CUTSCENE_MAP;
-    if (isIndoor)
+    if (skyboxId == SKYBOX_NORMAL_SKY || skyboxId == SKYBOX_OVERCAST_SUNSET)
     {
-        *outDlistSize = 8 * 150 * N64_SIZEOF_GFX;
-        *outVtxSize = 256 * N64_SIZEOF_VTX;
+        *outDlistSize = 12 * 150 * N64_SIZEOF_GFX;
+        *outVtxSize = 5 * 32 * N64_SIZEOF_VTX;
     }
     else if (skyboxId == SKYBOX_CUTSCENE_MAP)
     {
         *outDlistSize = 12 * 150 * N64_SIZEOF_GFX;
-        *outVtxSize = 192 * N64_SIZEOF_VTX;
+        *outVtxSize = 6 * 32 * N64_SIZEOF_VTX;
     }
     else
     {
-        *outDlistSize = 12 * 150 * N64_SIZEOF_GFX;
-        *outVtxSize = 160 * N64_SIZEOF_VTX;
+        // Indoor skyboxes: SKYBOX_DRAW_256_4FACE or SKYBOX_DRAW_256_3FACE, both use the same allocation.
+        *outDlistSize = 8 * 150 * N64_SIZEOF_GFX;
+        *outVtxSize = 8 * 32 * N64_SIZEOF_VTX;
     }
 }
 
