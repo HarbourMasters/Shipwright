@@ -1215,9 +1215,9 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "N64 Memory Model", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("N64MemoryModel"))
         .Options(CheckboxOptions().Tooltip(
-            "Simulates N64 memory constraints using a shadow arena with the original allocator and struct sizes. "
-            "Enables memory-dependent behaviors such as actor spawn failures from heap fragmentation during repeated "
-            "room transitions."));
+            "Simulates N64 hardware memory limits.  Repeated room transitions will eventually prevent new actors "
+            "from spawning, matching original N64 behavior.\n"
+            "Required for authentic SRM and heap manipulation techniques."));
 
     AddWidget(path, "Misc Restorations", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Fix L&Z Page Switch in Pause Menu", WIDGET_CVAR_CHECKBOX)

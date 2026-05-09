@@ -5,9 +5,9 @@
 
 extern "C" {
 #include "N64MemoryModel.hpp"
-#include "ShadowArena/N64SizeData.hpp"
-#include "ShadowArena/shadow_arena.h"
-#include "ShadowArena/arena_sizing.h"
+#include "N64SizeData.hpp"
+#include "n64_shadow_arena.h"
+#include "n64_arena_sizing.h"
 #include "global.h"
 }
 
@@ -42,8 +42,7 @@ static std::unordered_map<void*, u32> sShadowMap;
 
 static s32 sTraceEnabled = 0;
 
-static void LogShadowState(const char* context)
-{
+static void LogShadowState(const char* context) {
     u32 maxFree = 0;
     u32 totalFree = 0;
     u32 totalAlloc = 0;
@@ -53,20 +52,16 @@ static void LogShadowState(const char* context)
                 maxFree);
 }
 
-static void TraceAlloc(const char* tag, u32 id, u32 size)
-{
-    if (sTraceEnabled)
-    {
+static void TraceAlloc(const char* tag, u32 id, u32 size) {
+    if (sTraceEnabled) {
         u32 consumed = (size + 0xF & ~0xF) + SHADOW_NODE_SIZE;
-        SPDLOG_INFO("[N64Trace] +{} id=0x{:X} sz=0x{:X} cost=0x{:X}", tag, id, size, consumed);
+        SPDLOG_TRACE("[N64Trace] +{} id=0x{:X} sz=0x{:X} cost=0x{:X}", tag, id, size, consumed);
     }
 }
 
-static void TraceFree(const char* tag, u32 id)
-{
-    if (sTraceEnabled)
-    {
-        SPDLOG_INFO("[N64Trace] -{} id=0x{:X}", tag, id);
+static void TraceFree(const char* tag, u32 id) {
+    if (sTraceEnabled) {
+        SPDLOG_TRACE("[N64Trace] -{} id=0x{:X}", tag, id);
     }
 }
 
@@ -76,10 +71,8 @@ static void TraceFree(const char* tag, u32 id)
 
 static s32 sGraveyardTransitionCount = 0;
 
-void N64Mem_BenchmarkTransition(PlayState* play)
-{
-    if (!sIsActive || play->sceneNum != SCENE_GRAVEYARD)
-    {
+void N64Mem_BenchmarkTransition(PlayState* play) {
+    if (!sIsActive || play->sceneNum != SCENE_GRAVEYARD) {
         return;
     }
 
@@ -98,26 +91,21 @@ void N64Mem_BenchmarkTransition(PlayState* play)
 // Lifecycle
 // --------------------------------------------------------------------------------------------------------------------
 
-void N64Mem_StoreThaRemainder(u32 sohRemainder)
-{
+void N64Mem_StoreThaRemainder(u32 sohRemainder) {
     sSohThaRemainder = sohRemainder;
 }
 
-void N64Mem_StoreElfMsgNum(u8 num)
-{
+void N64Mem_StoreElfMsgNum(u8 num) {
     sElfMsgNum = num;
 }
 
-u8 N64Mem_GetElfMsgNum()
-{
+u8 N64Mem_GetElfMsgNum() {
     return sElfMsgNum;
 }
 
-void N64Mem_Reset(PlayState* play)
-{
+void N64Mem_Reset(PlayState* play) {
     // Log shadow state before teardown for per-scene diagnostics.
-    if (sIsActive && sShadow.buffer)
-    {
+    if (sIsActive && sShadow.buffer) {
         u32 maxFree = 0;
         u32 totalFree = 0;
         u32 totalAlloc = 0;
@@ -126,8 +114,7 @@ void N64Mem_Reset(PlayState* play)
         SPDLOG_INFO("[N64MemoryModel] Teardown: alloc=0x{:X}, free=0x{:X}, largest=0x{:X}, ptrs={}", totalAlloc,
                     totalFree, maxFree, sShadowMap.size());
 
-        if (sGraveyardTransitionCount > 0)
-        {
+        if (sGraveyardTransitionCount > 0) {
             SPDLOG_INFO("[N64Benchmark] RESULT transitions={}", sGraveyardTransitionCount);
         }
     }
@@ -140,24 +127,20 @@ void N64Mem_Reset(PlayState* play)
     sShadowMap.clear();
     sAbsoluteSpaceShadow = SHADOW_NULL;
 
-    for (u32& sOverlayShadow : sOverlayShadows)
-    {
+    for (u32& sOverlayShadow : sOverlayShadows) {
         sOverlayShadow = SHADOW_NULL;
     }
 
-    for (u32& sEffectOverlayShadow : sEffectOverlayShadows)
-    {
+    for (u32& sEffectOverlayShadow : sEffectOverlayShadows) {
         sEffectOverlayShadow = SHADOW_NULL;
     }
 
     sIsActive = CVAR_VALUE;
-    if (sIsActive && play != nullptr)
-    {
+    if (sIsActive && play != nullptr) {
         // Compute N64-equivalent arena size from first principles.  All per-version constants are derived from the OTR
         // blob, which was extracted from the user's specific ROM version.
         u32 shadowArenaSize = ArenaSizing_ComputeN64ArenaSize(play);
-        if (shadowArenaSize == 0)
-        {
+        if (shadowArenaSize == 0) {
             SPDLOG_ERROR("[N64MemoryModel] Arena sizing returned 0 -- THA budget exceeded, disabling.");
             sIsActive = 0;
             return;
@@ -169,8 +152,7 @@ void N64Mem_Reset(PlayState* play)
         // (~0x1680 each) without shrinking the main free block.  The model's clean coalescing has no such gaps, so
         // leaked instances eat the main block directly.  This correction accounts for the gap-structure mismatch
         // until the upstream scene-data divergences are resolved.
-        if (constexpr u32 instanceGapCorrection = 0x1680; shadowArenaSize > instanceGapCorrection)
-        {
+        if (constexpr u32 instanceGapCorrection = 0x1680; shadowArenaSize > instanceGapCorrection) {
             shadowArenaSize -= instanceGapCorrection;
         }
 
@@ -181,20 +163,16 @@ void N64Mem_Reset(PlayState* play)
     }
 }
 
-s32 N64Mem_IsActive()
-{
+s32 N64Mem_IsActive() {
     return sIsActive;
 }
 
-ShadowArena* N64Mem_GetShadowArena()
-{
+ShadowArena* N64Mem_GetShadowArena() {
     return &sShadow;
 }
 
-void N64Mem_LogState(const char* context)
-{
-    if (sIsActive)
-    {
+void N64Mem_LogState(const char* context) {
+    if (sIsActive) {
         LogShadowState(context);
     }
 }
@@ -203,33 +181,25 @@ void N64Mem_LogState(const char* context)
 // Actor overlays
 // --------------------------------------------------------------------------------------------------------------------
 
-s32 N64Mem_AllocOverlay(s16 actorId, u16 allocType)
-{
-    if (!sIsActive)
-    {
+s32 N64Mem_AllocOverlay(s16 actorId, u16 allocType) {
+    if (!sIsActive) {
         return 1;
     }
 
-    if (actorId < 0 || actorId >= ACTOR_ID_MAX)
-    {
+    if (actorId < 0 || actorId >= ACTOR_ID_MAX) {
         return 1;
     }
 
     const u32 overlaySize = N64SizeData_GetActorOverlaySize(actorId);
-    if (overlaySize == 0)
-    {
+    if (overlaySize == 0) {
         return 1;
     }
 
-
     // ABSOLUTE: Shared fixed-size buffer, allocated once via MallocR.
-    if (allocType & ALLOCTYPE_ABSOLUTE)
-    {
-        if (sAbsoluteSpaceShadow == SHADOW_NULL)
-        {
+    if (allocType & ALLOCTYPE_ABSOLUTE) {
+        if (sAbsoluteSpaceShadow == SHADOW_NULL) {
             sAbsoluteSpaceShadow = ShadowArena_MallocR(&sShadow, AM_FIELD_SIZE);
-            if (sAbsoluteSpaceShadow == SHADOW_NULL)
-            {
+            if (sAbsoluteSpaceShadow == SHADOW_NULL) {
                 SPDLOG_ERROR("[N64MemoryModel] Shadow absolute space failed (need 0x{:X})", AM_FIELD_SIZE);
                 return 0;
             }
@@ -239,16 +209,14 @@ s32 N64Mem_AllocOverlay(s16 actorId, u16 allocType)
     }
 
     // Already shadowed for this type.
-    if (sOverlayShadows[actorId] != SHADOW_NULL)
-    {
+    if (sOverlayShadows[actorId] != SHADOW_NULL) {
         return 1;
     }
 
     // N64 allocates ALL actor overlays via ZeldaArena_MallocR (from the arena top).  Using Malloc (bottom-up) placed
     // overlays interleaved with instances at the bottom, preventing proper coalescing when overlays are freed.
     const u32 shadow = ShadowArena_MallocR(&sShadow, overlaySize);
-    if (shadow == SHADOW_NULL)
-    {
+    if (shadow == SHADOW_NULL) {
         SPDLOG_ERROR("[N64MemoryModel] Shadow overlay failed for actor 0x{:04X} (need 0x{:X})", actorId, overlaySize);
         return 0;
     }
@@ -258,21 +226,17 @@ s32 N64Mem_AllocOverlay(s16 actorId, u16 allocType)
     return 1;
 }
 
-void N64Mem_FreeOverlay(s16 actorId, u16 allocType)
-{
-    if (!sIsActive)
-    {
+void N64Mem_FreeOverlay(s16 actorId, u16 allocType) {
+    if (!sIsActive) {
         return;
     }
 
-    if (actorId < 0 || actorId >= ACTOR_ID_MAX)
-    {
+    if (actorId < 0 || actorId >= ACTOR_ID_MAX) {
         return;
     }
 
     // PERMANENT: Overlays that are never freed.
-    if (allocType & ALLOCTYPE_PERMANENT)
-    {
+    if (allocType & ALLOCTYPE_PERMANENT) {
         return;
     }
 
@@ -285,27 +249,22 @@ void N64Mem_FreeOverlay(s16 actorId, u16 allocType)
 // Actor instances
 // --------------------------------------------------------------------------------------------------------------------
 
-s32 N64Mem_AllocInstance(s16 actorId, void* realPtr)
-{
-    if (!sIsActive)
-    {
+s32 N64Mem_AllocInstance(s16 actorId, void* realPtr) {
+    if (!sIsActive) {
         return 1;
     }
 
-    if (actorId < 0 || actorId >= ACTOR_ID_MAX)
-    {
+    if (actorId < 0 || actorId >= ACTOR_ID_MAX) {
         return 1;
     }
 
     const u32 instanceSize = N64SizeData_GetActorInstanceSize(actorId);
-    if (instanceSize == 0)
-    {
+    if (instanceSize == 0) {
         return 1;
     }
 
     const u32 shadow = ShadowArena_Malloc(&sShadow, instanceSize);
-    if (shadow == SHADOW_NULL)
-    {
+    if (shadow == SHADOW_NULL) {
         SPDLOG_ERROR("[N64MemoryModel] Shadow instance failed for actor 0x{:04X} (need 0x{:X})", actorId, instanceSize);
         return 0;
     }
@@ -315,21 +274,17 @@ s32 N64Mem_AllocInstance(s16 actorId, void* realPtr)
     return 1;
 }
 
-void N64Mem_FreeInstance(void* realPtr)
-{
-    if (!sIsActive || !realPtr)
-    {
+void N64Mem_FreeInstance(void* realPtr) {
+    if (!sIsActive || !realPtr) {
         return;
     }
 
     const auto i = sShadowMap.find(realPtr);
-    if (i == sShadowMap.end())
-    {
+    if (i == sShadowMap.end()) {
         return;
     }
 
-    if (sTraceEnabled)
-    {
+    if (sTraceEnabled) {
         const auto* actor = static_cast<Actor*>(realPtr);
         TraceFree("inst", actor->id);
     }
@@ -342,16 +297,13 @@ void N64Mem_FreeInstance(void* realPtr)
 // Subsidiaries
 // --------------------------------------------------------------------------------------------------------------------
 
-s32 N64Mem_AllocSubsidiary(void* realPtr, u32 n64Size)
-{
-    if (!sIsActive)
-    {
+s32 N64Mem_AllocSubsidiary(void* realPtr, u32 n64Size) {
+    if (!sIsActive) {
         return 1;
     }
 
     const u32 shadow = ShadowArena_Malloc(&sShadow, n64Size);
-    if (shadow == SHADOW_NULL)
-    {
+    if (shadow == SHADOW_NULL) {
         SPDLOG_ERROR("[N64MemoryModel] Shadow subsidiary failed (need 0x{:X})", n64Size);
         return 0;
     }
@@ -361,16 +313,13 @@ s32 N64Mem_AllocSubsidiary(void* realPtr, u32 n64Size)
     return 1;
 }
 
-void N64Mem_FreeSubsidiary(void* realPtr)
-{
-    if (!sIsActive || !realPtr)
-    {
+void N64Mem_FreeSubsidiary(void* realPtr) {
+    if (!sIsActive || !realPtr) {
         return;
     }
 
     const auto i = sShadowMap.find(realPtr);
-    if (i == sShadowMap.end())
-    {
+    if (i == sShadowMap.end()) {
         return;
     }
 
@@ -383,32 +332,26 @@ void N64Mem_FreeSubsidiary(void* realPtr)
 // Effect overlays
 // --------------------------------------------------------------------------------------------------------------------
 
-s32 N64Mem_AllocEffectOverlay(s32 type)
-{
-    if (!sIsActive)
-    {
+s32 N64Mem_AllocEffectOverlay(s32 type) {
+    if (!sIsActive) {
         return 1;
     }
 
-    if (type < 0 || type >= EFFECT_SS_TYPE_MAX)
-    {
+    if (type < 0 || type >= EFFECT_SS_TYPE_MAX) {
         return 1;
     }
 
-    if (sEffectOverlayShadows[type] != SHADOW_NULL)
-    {
+    if (sEffectOverlayShadows[type] != SHADOW_NULL) {
         return 1;
     }
 
     u32 overlaySize = N64SizeData_GetEffectOverlaySize(type);
-    if (overlaySize == 0)
-    {
+    if (overlaySize == 0) {
         return 1;
     }
 
     const u32 shadow = ShadowArena_MallocR(&sShadow, overlaySize);
-    if (shadow == SHADOW_NULL)
-    {
+    if (shadow == SHADOW_NULL) {
         SPDLOG_ERROR("[N64MemoryModel] Shadow effect overlay failed for type 0x{:02X} (need 0x{:X})", type,
                      overlaySize);
         return 0;
@@ -424,9 +367,8 @@ s32 N64Mem_AllocEffectOverlay(s32 type)
 // Registration
 // --------------------------------------------------------------------------------------------------------------------
 
-void RegisterN64MemoryModel()
-{
+void RegisterN64MemoryModel() {
     // #TODO: Shadow arena initialization
 }
 
-static RegisterShipInitFunc initFunc(RegisterN64MemoryModel, {CVAR_NAME});
+static RegisterShipInitFunc initFunc(RegisterN64MemoryModel, { CVAR_NAME });

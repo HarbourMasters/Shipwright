@@ -4,8 +4,8 @@
 
 #ifdef __cplusplus
 extern "C" {
-#endif
 
+#endif
 
 // Sentinel value for null offsets (no valid node can live at 0xFFFFFFFF in a buffer that's only ~245KB).
 #define SHADOW_NULL 0xFFFFFFFF
@@ -13,8 +13,7 @@ extern "C" {
 // Matches N64 retail ArenaNode: 0x10 bookkeeping + 0x20 debug fields.
 #define SHADOW_NODE_SIZE 0x30
 
-typedef struct ShadowArena
-{
+typedef struct ShadowArena {
     u8* buffer;
     u32 head; // Offset to first node
     u32 bufferSize;
@@ -36,7 +35,7 @@ u32 ShadowArena_MallocR(ShadowArena* arena, u32 size);
 void ShadowArena_Free(ShadowArena* arena, u32 dataOffset);
 
 // Query arena statistics.
-void ShadowArena_GetSizes(ShadowArena * arena, u32 * outMaxFree, u32 * outFree, u32 * outAlloc);
+void ShadowArena_GetSizes(ShadowArena* arena, u32* outMaxFree, u32* outFree, u32* outAlloc);
 
 // Get the head node offset for external traversal (e.g., heap viewer).
 u32 ShadowArena_GetHead(ShadowArena* arena);

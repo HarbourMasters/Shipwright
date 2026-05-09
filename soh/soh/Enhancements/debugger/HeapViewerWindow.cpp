@@ -12,13 +12,10 @@ extern "C" {
 #include "functions.h"
 
 #include "soh/Enhancements/Restorations/N64MemoryModel/N64MemoryModel.hpp"
-#include "soh/Enhancements/Restorations/N64MemoryModel/ShadowArena/shadow_arena.h"
-
-extern ArenaNode* ZeldaArena_GetHead();
+#include "soh/Enhancements/Restorations/N64MemoryModel/n64_shadow_arena.h"
 }
 
-struct BlockInfo
-{
+struct BlockInfo {
     u32 offset; // For shadow: offset into buffer. For ZeldaArena: not used.
     std::uintptr_t address;
     std::size_t size;
@@ -46,8 +43,7 @@ static u32 sShadowPreviousAlloc = 0;
 static u32 sShadowCycleCount = 0;
 static s32 sShadowLastDelta = 0;
 
-static void CollectBlocks()
-{
+static void CollectBlocks() {
     sBlocks.clear();
     sAllocTotal = 0;
     sFreeTotal = 0;
@@ -56,13 +52,11 @@ static void CollectBlocks()
     sArenaSize = 0;
 
     ArenaNode* node = ZeldaArena_GetHead();
-    if (!node)
-    {
+    if (!node) {
         return;
     }
 
-    while (node)
-    {
+    while (node) {
         BlockInfo block;
         block.address = reinterpret_cast<uintptr_t>(node) + sizeof(ArenaNode);
         block.size = node->size;
@@ -72,32 +66,26 @@ static void CollectBlocks()
         sArenaSize += sizeof(ArenaNode) + node->size;
         sNodeCount++;
 
-        if (node->isFree)
-        {
+        if (node->isFree) {
             sFreeTotal += node->size;
-            if (node->size > sLargestFree)
-            {
+            if (node->size > sLargestFree) {
                 sLargestFree = node->size;
             }
-        }
-        else
-        {
+        } else {
             sAllocTotal += node->size;
         }
 
         node = node->next;
     }
 
-    if (sPreviousAlloc != 0 && sAllocTotal != sPreviousAlloc)
-    {
+    if (sPreviousAlloc != 0 && sAllocTotal != sPreviousAlloc) {
         sLastDelta = static_cast<s32>(sAllocTotal) - static_cast<s32>(sPreviousAlloc);
         ++sCycleCount;
     }
     sPreviousAlloc = sAllocTotal;
 }
 
-static void CollectShadowBlocks()
-{
+static void CollectShadowBlocks() {
     sShadowBlocks.clear();
     sShadowAllocTotal = 0;
     sShadowFreeTotal = 0;
@@ -105,8 +93,7 @@ static void CollectShadowBlocks()
     sShadowNodeCount = 0;
 
     ShadowArena* shadow = N64Mem_GetShadowArena();
-    if (!shadow)
-    {
+    if (!shadow) {
         sShadowArenaSize = 0;
         return;
     }
@@ -114,14 +101,12 @@ static void CollectShadowBlocks()
     sShadowArenaSize = ShadowArena_GetBufferSize(shadow);
     u32 offset = ShadowArena_GetHead(shadow);
 
-    while (offset != SHADOW_NULL)
-    {
+    while (offset != SHADOW_NULL) {
         s32 isFree = 0;
         u32 size = 0;
         u32 next = SHADOW_NULL;
 
-        if (!ShadowArena_GetNodeInfo(shadow, offset, &isFree, &size, &next))
-        {
+        if (!ShadowArena_GetNodeInfo(shadow, offset, &isFree, &size, &next)) {
             break;
         }
 
@@ -134,56 +119,45 @@ static void CollectShadowBlocks()
         sShadowBlocks.push_back(block);
         sShadowNodeCount++;
 
-        if (isFree)
-        {
+        if (isFree) {
             sShadowFreeTotal += size;
-            if (size > sShadowLargestFree)
-            {
+            if (size > sShadowLargestFree) {
                 sShadowLargestFree = size;
             }
-        }
-        else
-        {
+        } else {
             sShadowAllocTotal += size;
         }
 
         offset = next;
     }
 
-    if (sShadowPreviousAlloc != 0 && sShadowAllocTotal != sShadowPreviousAlloc)
-    {
+    if (sShadowPreviousAlloc != 0 && sShadowAllocTotal != sShadowPreviousAlloc) {
         sShadowLastDelta = static_cast<s32>(sShadowAllocTotal) - static_cast<s32>(sShadowPreviousAlloc);
         ++sShadowCycleCount;
     }
     sShadowPreviousAlloc = sShadowAllocTotal;
 }
 
-static ImU32 ColorAlloc()
-{
+static ImU32 ColorAlloc() {
     return IM_COL32(200, 60, 60, 255);
 }
 
-static ImU32 ColorFree()
-{
+static ImU32 ColorFree() {
     return IM_COL32(60, 180, 80, 255);
 }
 
-static ImU32 ColorNode()
-{
+static ImU32 ColorNode() {
     return IM_COL32(80, 80, 80, 255);
 }
 
-static ImU32 ColorBorder()
-{
+static ImU32 ColorBorder() {
     return IM_COL32(40, 40, 40, 255);
 }
 
 static void DrawArenaView(const std::vector<BlockInfo>& blocks, u32 arenaSize, u32 allocTotal,
                           u32 freeTotal, u32 largestFree, u32 nodeCount, u32 cycleCount,
-                          s32 lastDelta, u32 nodeSize, const char* id)
-{
-    if (blocks.empty())
-    {
+                          s32 lastDelta, u32 nodeSize, const char* id) {
+    if (blocks.empty()) {
         ImGui::Text("Arena is not initialized.");
         return;
     }
@@ -229,18 +203,15 @@ static void DrawArenaView(const std::vector<BlockInfo>& blocks, u32 arenaSize, u
     f32 xCursor = 0.0f;
     s32 hoveredBlock = -1;
 
-    for (std::size_t i = 0; i < blocks.size(); ++i)
-    {
+    for (std::size_t i = 0; i < blocks.size(); ++i) {
         f32 nodeWidth = static_cast<f32>(nodeSize) / static_cast<f32>(arenaSize) * availWidth;
         f32 blockWidth = static_cast<f32>(blocks[i].size) / static_cast<f32>(arenaSize) * availWidth;
 
-        if (nodeWidth < 1.0f)
-        {
+        if (nodeWidth < 1.0f) {
             nodeWidth = 1.0f;
         }
 
-        if (blockWidth < 1.0f && blocks[i].size > 0)
-        {
+        if (blockWidth < 1.0f && blocks[i].size > 0) {
             blockWidth = 1.0f;
         }
 
@@ -256,16 +227,14 @@ static void DrawArenaView(const std::vector<BlockInfo>& blocks, u32 arenaSize, u
 
         const f32 fullX0 = mapPos.x + xCursor - nodeWidth;
         ImVec2 blockMin(fullX0, mapPos.y);
-        if (ImVec2 blockMax(x1, mapPos.y + mapHeight); ImGui::IsMouseHoveringRect(blockMin, blockMax))
-        {
+        if (ImVec2 blockMax(x1, mapPos.y + mapHeight); ImGui::IsMouseHoveringRect(blockMin, blockMax)) {
             hoveredBlock = static_cast<s32>(i);
         }
 
         xCursor += blockWidth;
     }
 
-    if (hoveredBlock >= 0)
-    {
+    if (hoveredBlock >= 0) {
         const auto& [offset, address, size, isFree] = blocks[hoveredBlock];
         ImGui::BeginTooltip();
         ImGui::Text("Block %d: %s", hoveredBlock, isFree ? "FREE" : "ALLOCATED");
@@ -285,8 +254,7 @@ static void DrawArenaView(const std::vector<BlockInfo>& blocks, u32 arenaSize, u
     if (ImGui::BeginTable(tableId.c_str(), 4,
                           ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg |
                           ImGuiTableFlags_ScrollY | ImGuiTableFlags_Resizable,
-                          ImVec2(0, ImGui::GetContentRegionAvail().y)))
-    {
+                          ImVec2(0, ImGui::GetContentRegionAvail().y))) {
         ImGui::TableSetupColumn("#", ImGuiTableColumnFlags_WidthFixed, 40.0f);
         ImGui::TableSetupColumn("Status", ImGuiTableColumnFlags_WidthFixed, 80.0f);
         ImGui::TableSetupColumn("Offset", ImGuiTableColumnFlags_WidthFixed, 140.0f);
@@ -294,8 +262,7 @@ static void DrawArenaView(const std::vector<BlockInfo>& blocks, u32 arenaSize, u
         ImGui::TableSetupScrollFreeze(0, 1);
         ImGui::TableHeadersRow();
 
-        for (std::size_t i = 0; i < blocks.size(); ++i)
-        {
+        for (std::size_t i = 0; i < blocks.size(); ++i) {
             const auto& [offset, address, size, isFree] = blocks[i];
             ImGui::TableNextRow();
 
@@ -303,12 +270,9 @@ static void DrawArenaView(const std::vector<BlockInfo>& blocks, u32 arenaSize, u
             ImGui::Text("%zu", i);
 
             ImGui::TableNextColumn();
-            if (isFree)
-            {
+            if (isFree) {
                 ImGui::TextColored(ImVec4(0.2f, 0.8f, 0.3f, 1.0f), "FREE");
-            }
-            else
-            {
+            } else {
                 ImGui::TextColored(ImVec4(0.8f, 0.25f, 0.25f, 1.0f), "ALLOC");
             }
 
@@ -323,12 +287,9 @@ static void DrawArenaView(const std::vector<BlockInfo>& blocks, u32 arenaSize, u
     }
 }
 
-void HeapViewerWindow::DrawElement()
-{
-    if (ImGui::BeginTabBar("##heap_tabs"))
-    {
-        if (ImGui::BeginTabItem("ZeldaArena"))
-        {
+void HeapViewerWindow::DrawElement() {
+    if (ImGui::BeginTabBar("##heap_tabs")) {
+        if (ImGui::BeginTabItem("ZeldaArena")) {
             CollectBlocks();
             DrawArenaView(sBlocks, sArenaSize, sAllocTotal, sFreeTotal, sLargestFree,
                           sNodeCount, sCycleCount, sLastDelta,
@@ -336,14 +297,11 @@ void HeapViewerWindow::DrawElement()
             ImGui::EndTabItem();
         }
 
-        if (N64Mem_IsActive())
-        {
-            if (ImGui::BeginTabItem("ShadowArena (N64)"))
-            {
+        if (N64Mem_IsActive()) {
+            if (ImGui::BeginTabItem("ShadowArena (N64)")) {
                 CollectShadowBlocks();
 
-                if (ImGui::Button("Reset Tracking"))
-                {
+                if (ImGui::Button("Reset Tracking")) {
                     sShadowPreviousAlloc = 0;
                     sShadowCycleCount = 0;
                     sShadowLastDelta = 0;
