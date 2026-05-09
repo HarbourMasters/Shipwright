@@ -42,6 +42,9 @@ struct ShadowArena* N64Mem_GetShadowArena(void);
 // Log the current shadow arena state (alloc/free/largest) with the given context label.
 void N64Mem_LogState(const char* context);
 
+// Log Graveyard benchmark data (transition count, largest_free, total_free).  Call after room actors are spawned.
+void N64Mem_BenchmarkTransition(PlayState* play);
+
 // --------------------------------------------------------------------------------------------------------------------
 // Actor overlays: Keyed by actor ID, shadow-only allocations.
 //

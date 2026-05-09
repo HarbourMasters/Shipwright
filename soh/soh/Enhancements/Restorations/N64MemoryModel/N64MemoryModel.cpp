@@ -71,6 +71,30 @@ static void TraceFree(const char* tag, u32 id)
 }
 
 // --------------------------------------------------------------------------------------------------------------------
+// Graveyard benchmark
+// --------------------------------------------------------------------------------------------------------------------
+
+static s32 sGraveyardTransitionCount = 0;
+
+void N64Mem_BenchmarkTransition(PlayState* play)
+{
+    if (!sIsActive || play->sceneNum != SCENE_GRAVEYARD)
+    {
+        return;
+    }
+
+    sGraveyardTransitionCount++;
+
+    u32 maxFree = 0;
+    u32 totalFree = 0;
+    u32 totalAlloc = 0;
+    ShadowArena_GetSizes(&sShadow, &maxFree, &totalFree, &totalAlloc);
+
+    SPDLOG_INFO("[N64Benchmark] transition={}, largest_free=0x{:X}, total_free=0x{:X}",
+                sGraveyardTransitionCount, maxFree, totalFree);
+}
+
+// --------------------------------------------------------------------------------------------------------------------
 // Lifecycle
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -101,7 +125,14 @@ void N64Mem_Reset(PlayState* play)
         ShadowArena_GetSizes(&sShadow, &maxFree, &totalFree, &totalAlloc);
         SPDLOG_INFO("[N64MemoryModel] Teardown: alloc=0x{:X}, free=0x{:X}, largest=0x{:X}, ptrs={}", totalAlloc,
                     totalFree, maxFree, sShadowMap.size());
+
+        if (sGraveyardTransitionCount > 0)
+        {
+            SPDLOG_INFO("[N64Benchmark] RESULT transitions={}", sGraveyardTransitionCount);
+        }
     }
+
+    sGraveyardTransitionCount = 0;
 
     // Tear down previous shadow state unconditionally -- the real ZeldaArena has already been reinitialized by
     // Play_Init.
@@ -130,6 +161,17 @@ void N64Mem_Reset(PlayState* play)
             SPDLOG_ERROR("[N64MemoryModel] Arena sizing returned 0 -- THA budget exceeded, disabling.");
             sIsActive = 0;
             return;
+        }
+
+        // On N64, the instance region develops internal fragmentation gaps from alloc/free cycling during room
+        // transitions (partially caused by Bg_Spot02_Objects being in Room 0 on N64 but Room 1 on SoH, and by
+        // En_Firefly/En_Sw transient overlay churn).  These gaps absorb the per-cycle Object_Kankyo instance leak
+        // (~0x1680 each) without shrinking the main free block.  The model's clean coalescing has no such gaps, so
+        // leaked instances eat the main block directly.  This correction accounts for the gap-structure mismatch
+        // until the upstream scene-data divergences are resolved.
+        if (constexpr u32 instanceGapCorrection = 0x1680; shadowArenaSize > instanceGapCorrection)
+        {
+            shadowArenaSize -= instanceGapCorrection;
         }
 
         SPDLOG_INFO("[N64MemoryModel] Shadow arena size=0x{:X} for scene 0x{:X}", shadowArenaSize, play->sceneNum);

@@ -2597,6 +2597,7 @@ void Actor_UpdateAll(PlayState* play, ActorContext* actorCtx) {
         }
         play->numSetupActors = 0;
         GameInteractor_ExecuteOnSceneSpawnActors();
+        N64Mem_BenchmarkTransition(play);
     }
 
     if (actorCtx->unk_02 != 0) {
