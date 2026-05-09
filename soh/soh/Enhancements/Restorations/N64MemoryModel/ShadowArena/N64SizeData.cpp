@@ -217,3 +217,44 @@ extern "C" u32 N64SizeData_GetActorInstanceSize(u16 actorId)
 
     return 0;
 }
+
+// --------------------------------------------------------------------------------------------------------------------
+// Kaleido overlay max VRAM size (misc/kaleido_vram_size)
+//
+// Format: single u32 — max(ovl_kaleido_scope VRAM, ovl_player_actor VRAM)
+// --------------------------------------------------------------------------------------------------------------------
+
+static u32 sKaleidoVramSize = 0;
+static bool sIsKaleidoLoaded = false;
+
+static void LoadKaleidoVramSize()
+{
+    if (sIsKaleidoLoaded)
+    {
+        return;
+    }
+
+    sIsKaleidoLoaded = true;
+
+    const auto file =
+        Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->LoadFile("misc/kaleido_vram_size");
+    if (!file || !file->IsLoaded)
+    {
+        SPDLOG_ERROR("[N64SizeData] Failed to load misc/kaleido_vram_size from OTR.");
+        return;
+    }
+
+    auto stream = std::make_shared<Ship::MemoryStream>(file->Buffer->data(), file->Buffer->size());
+    const auto reader = std::make_shared<Ship::BinaryReader>(stream);
+    reader->SetEndianness(Ship::Endianness::Big);
+
+    sKaleidoVramSize = reader->ReadUInt32();
+
+    SPDLOG_INFO("[N64SizeData] Kaleido max VRAM size: 0x{:X}.", sKaleidoVramSize);
+}
+
+extern "C" u32 N64SizeData_GetKaleidoVramSize()
+{
+    LoadKaleidoVramSize();
+    return sKaleidoVramSize;
+}

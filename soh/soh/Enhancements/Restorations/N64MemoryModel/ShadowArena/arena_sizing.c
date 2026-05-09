@@ -5,7 +5,7 @@
 #include "global.h"
 
 // Declared in z_bgcheck.c but not exposed via header.
-s32 BgCheck_IsSpotScene(PlayState* play);
+s32 BgCheck_IsSpotScene(PlayState * play);
 s32 BgCheck_TryGetCustomMemsize(s32 sceneId, u32* memSize);
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -342,11 +342,7 @@ static u32 GetMaxRoomSize(PlayState* play)
 // Main computation
 // --------------------------------------------------------------------------------------------------------------------
 
-const VersionConstants gVersionConstantsNtsc12 = {
-    0x26740, // kaleidoOverlayVramSize: max(kaleido_scope = 0x1CA00, player_actor = 0x26740)
-};
-
-u32 ArenaSizing_ComputeN64ArenaSize(PlayState* play, const VersionConstants* vc)
+u32 ArenaSizing_ComputeN64ArenaSize(PlayState* play)
 {
     // Each THA consumer is allocated via GAME_STATE_ALLOC -> THA_AllocTailAlign16, which consumes ALIGN16(size) bytes.
     // We must align each consumer individually before summing; aligning the sum would under-count when individual
@@ -356,8 +352,9 @@ u32 ArenaSizing_ComputeN64ArenaSize(PlayState* play, const VersionConstants* vc)
 
     u32 total = 0;
 
-    // Per-version constant (N64-unique THA consumer SoH skips)
-    total += ALIGN16(vc->kaleidoOverlayVramSize);
+    // Kaleido overlay buffer: max(ovl_kaleido_scope, ovl_player_actor) VRAM span, from OTR blob.
+    const u32 kaleidoVramSize = N64SizeData_GetKaleidoVramSize();
+    total += ALIGN16(kaleidoVramSize);
 
     // parameter_static: DMA file size, version-specific but available in the OTR blob.
     const u32 parameterStaticSize = N64SizeData_GetDmaFileSize("parameter_static");
@@ -372,7 +369,7 @@ u32 ArenaSizing_ComputeN64ArenaSize(PlayState* play, const VersionConstants* vc)
     total += ALIGN16(N64_MAP_SEGMENT_SIZE);
 
     const u32 fixed = total;
-    LUSLOG_INFO("[ArenaSizing] fixed=0x%X (kaleido=0x%X, param=0x%X)", fixed, vc->kaleidoOverlayVramSize,
+    LUSLOG_INFO("[ArenaSizing] fixed=0x%X (kaleido=0x%X, param=0x%X)", fixed, kaleidoVramSize,
                 parameterStaticSize);
 
     // Scene-dependent consumers

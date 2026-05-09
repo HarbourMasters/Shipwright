@@ -122,9 +122,9 @@ void N64Mem_Reset(PlayState* play)
     sIsActive = CVAR_VALUE;
     if (sIsActive && play != nullptr)
     {
-        // Compute N64-equivalent arena size from first principles.
-        // #TODO: Select version constants based on detected ROM version.
-        u32 shadowArenaSize = ArenaSizing_ComputeN64ArenaSize(play, &gVersionConstantsNtsc12);
+        // Compute N64-equivalent arena size from first principles.  All per-version constants are
+        // derived from the OTR blob, which was extracted from the user's specific ROM version.
+        u32 shadowArenaSize = ArenaSizing_ComputeN64ArenaSize(play);
         if (shadowArenaSize == 0)
         {
             SPDLOG_ERROR("[N64MemoryModel] Arena sizing returned 0 -- THA budget exceeded, disabling.");
@@ -135,7 +135,7 @@ void N64Mem_Reset(PlayState* play)
         SPDLOG_INFO("[N64MemoryModel] Shadow arena size=0x{:X} for scene 0x{:X}", shadowArenaSize, play->sceneNum);
         ShadowArena_Init(&sShadow, shadowArenaSize);
 
-        sTraceEnabled = (play->sceneNum == SCENE_GRAVEYARD);
+        sTraceEnabled = play->sceneNum == SCENE_GRAVEYARD;
     }
 }
 

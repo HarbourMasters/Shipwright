@@ -14,6 +14,7 @@ extern "C" {
 //  misc/actor_overlay_sizes    Actor overlay VRAM sizes indexed by actor ID
 //  misc/effect_overlay_sizes   Effect overlay VRAM sizes indexed by effect type
 //  misc/actor_instance_sizes   Actor instance struct sizes indexed by actor ID
+//  misc/kaleido_vram_size      max(ovl_kaleido_scope VRAM, ovl_player_actor VRAM)
 //
 // Each table is loaded lazily on first query and cached for the lifetime of the process.
 // --------------------------------------------------------------------------------------------------------------------
@@ -22,6 +23,7 @@ u32 N64SizeData_GetDmaFileSize(const char* name);
 u32 N64SizeData_GetActorOverlaySize(u16 actorId);
 u32 N64SizeData_GetEffectOverlaySize(u16 effectType);
 u32 N64SizeData_GetActorInstanceSize(u16 actorId);
+u32 N64SizeData_GetKaleidoVramSize(void);
 
 #ifdef __cplusplus
 }
