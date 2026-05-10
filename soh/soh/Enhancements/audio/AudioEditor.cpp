@@ -53,6 +53,7 @@ extern std::shared_ptr<SohMenu> mSohMenu;
 #define SEQ_COUNT_INSTRUMENT 6
 #define SEQ_COUNT_SFX 57
 #define SEQ_COUNT_VOICE 108
+#define SEQ_COUNT_ENDING 5
 
 size_t AuthenticCountBySequenceType(SeqType type) {
     switch (type) {
@@ -74,6 +75,8 @@ size_t AuthenticCountBySequenceType(SeqType type) {
             return SEQ_COUNT_INSTRUMENT;
         case SEQ_VOICE:
             return SEQ_COUNT_VOICE;
+        case SEQ_ENDING:
+            return SEQ_COUNT_ENDING;
         default:
             return 0;
     }
@@ -806,7 +809,8 @@ void AudioEditor::DrawElement() {
 }
 
 std::vector<SeqType> allTypes = {
-    SEQ_BGM_WORLD, SEQ_BGM_EVENT, SEQ_BGM_BATTLE, SEQ_OCARINA, SEQ_FANFARE, SEQ_INSTRUMENT, SEQ_SFX, SEQ_VOICE,
+    SEQ_BGM_WORLD,  SEQ_BGM_EVENT, SEQ_BGM_BATTLE, SEQ_OCARINA, SEQ_FANFARE,
+    SEQ_INSTRUMENT, SEQ_SFX,       SEQ_VOICE,      SEQ_ENDING,
 };
 
 void AudioEditor_RandomizeAll() {
