@@ -46,7 +46,7 @@ void N64Mem_LogState(const char* context);
 // Enemy randomizer compatibility
 //
 // When the enemy randomizer replaces an actor, the shadow arena should charge the ORIGINAL actor's N64 sizes (overlay
-// and instance) rather than the replacement's.  This preserves authentic N64 heap geometry — memory-dependent
+// and instance) rather than the replacement's.  This preserves authentic N64 heap geometry -- memory-dependent
 // behaviors (SRM, ACE, spawn failure thresholds) remain consistent regardless of which enemies are on screen.
 //
 // Call SetOriginalActorId with the scene's original actor ID before Actor_Spawn, and ClearOriginalActorId after
@@ -107,6 +107,23 @@ void N64Mem_FreeSubsidiary(void* realPtr);
 // --------------------------------------------------------------------------------------------------------------------
 
 s32 N64Mem_AllocEffectOverlay(s32 type);
+
+// --------------------------------------------------------------------------------------------------------------------
+// Heap viewer metadata
+//
+// Query block identity from the shadow arena.  Returns 1 if metadata exists for the given data offset, 0 if not.
+// Block type constants identify the allocation category; actorId is the original (pre-randomizer) actor ID for
+// instance/overlay blocks, or -1 for subsidiary/effect/absolute blocks.
+// --------------------------------------------------------------------------------------------------------------------
+
+#define N64MEM_BLOCK_FREE       0
+#define N64MEM_BLOCK_INSTANCE   1
+#define N64MEM_BLOCK_OVERLAY    2
+#define N64MEM_BLOCK_SUBSIDIARY 3
+#define N64MEM_BLOCK_EFFECT     4
+#define N64MEM_BLOCK_ABSOLUTE   5
+
+s32 N64Mem_GetBlockInfo(u32 dataOffset, u8* outType, s16* outActorId);
 
 #ifdef __cplusplus
 }

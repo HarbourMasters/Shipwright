@@ -197,7 +197,7 @@ extern "C" u32 N64SizeData_GetActorInstanceSize(u16 actorId) {
 // --------------------------------------------------------------------------------------------------------------------
 // Kaleido overlay max VRAM size (misc/kaleido_vram_size)
 //
-// Format: single u32 — max(ovl_kaleido_scope VRAM, ovl_player_actor VRAM)
+// Format: single u32 -- max(ovl_kaleido_scope VRAM, ovl_player_actor VRAM)
 // --------------------------------------------------------------------------------------------------------------------
 
 static u32 sKaleidoVramSize = 0;

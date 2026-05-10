@@ -41,6 +41,15 @@ static std::unordered_map<void*, u32> sShadowMap;
 // free the correct overlay shadow entry.  Only populated for randomized actors.
 static std::unordered_map<void*, s16> sActorOriginalIds;
 
+// Block metadata for the heap viewer.  Keyed by shadow DATA offset (node offset + SHADOW_NODE_SIZE).
+// Populated in each Alloc function, erased in each Free, cleared in N64Mem_Reset.
+struct BlockMeta {
+    u8 type;
+    s16 actorId;
+};
+
+static std::unordered_map<u32, BlockMeta> sBlockMetaMap;
+
 // When the enemy randomizer replaces an actor, this holds the ORIGINAL actor ID so that shadow allocations are charged
 // at the original N64 size rather than the replacement's size.  Set by N64Mem_SetOriginalActorId before Actor_Spawn,
 // cleared by N64Mem_ClearOriginalActorId after Actor_Spawn returns.  -1 means no override (use the passed actorId).
@@ -48,7 +57,7 @@ static s16 sOriginalActorId = -1;
 
 // Set when AllocInstance consumes a non-negative sOriginalActorId, cleared after Actor_Init returns.  While set, ALL
 // shadow allocations (overlay, instance, subsidiary) from child actors spawned during the replacement actor's init are
-// skipped — on N64 these children don't exist because the original actor never spawned them.
+// skipped -- on N64 these children don't exist because the original actor never spawned them.
 static s32 sInsideRandomizedInit = 0;
 
 // Returns the actor ID to use for size lookups.  If an original actor ID override is set (enemy randomizer active),
@@ -147,6 +156,7 @@ void N64Mem_Reset(PlayState* play) {
     ShadowArena_Destroy(&sShadow);
     sShadowMap.clear();
     sActorOriginalIds.clear();
+    sBlockMetaMap.clear();
     sAbsoluteSpaceShadow = SHADOW_NULL;
     sOriginalActorId = -1;
     sInsideRandomizedInit = 0;
@@ -226,7 +236,7 @@ s32 N64Mem_AllocOverlay(s16 actorId, u16 allocType) {
         return 1;
     }
 
-    // Child actors spawned during a randomized enemy's init don't exist on N64 — skip shadow tracking.
+    // Child actors spawned during a randomized enemy's init don't exist on N64 -- skip shadow tracking.
     if (sInsideRandomizedInit) {
         return 1;
     }
@@ -256,6 +266,7 @@ s32 N64Mem_AllocOverlay(s16 actorId, u16 allocType) {
                 SPDLOG_ERROR("[N64MemoryModel] Shadow absolute space failed (need 0x{:X})", AM_FIELD_SIZE);
                 return 0;
             }
+            sBlockMetaMap[sAbsoluteSpaceShadow] = { N64MEM_BLOCK_ABSOLUTE, -1 };
         }
 
         return 1;
@@ -279,6 +290,7 @@ s32 N64Mem_AllocOverlay(s16 actorId, u16 allocType) {
     }
 
     sOverlayShadows[overlayTrackId] = shadow;
+    sBlockMetaMap[shadow] = { N64MEM_BLOCK_OVERLAY, static_cast<s16>(overlayTrackId) };
     TraceAlloc("ovl", overlayTrackId, overlaySize);
     return 1;
 }
@@ -297,6 +309,7 @@ void N64Mem_FreeOverlay(s16 actorId, u16 allocType) {
         return;
     }
 
+    sBlockMetaMap.erase(sOverlayShadows[actorId]);
     ShadowArena_Free(&sShadow, sOverlayShadows[actorId]);
     sOverlayShadows[actorId] = SHADOW_NULL;
     TraceFree("ovl", actorId);
@@ -348,6 +361,7 @@ s32 N64Mem_AllocInstance(s16 actorId, void* realPtr) {
 
     sShadowMap[realPtr] = shadow;
     sActorOriginalIds[realPtr] = static_cast<s16>(sizeId);
+    sBlockMetaMap[shadow] = { N64MEM_BLOCK_INSTANCE, static_cast<s16>(sizeId) };
     TraceAlloc("inst", actorId, instanceSize);
     return 1;
 }
@@ -374,6 +388,7 @@ s16 N64Mem_FreeInstance(void* realPtr) {
         TraceFree("inst", actor->id);
     }
 
+    sBlockMetaMap.erase(i->second);
     ShadowArena_Free(&sShadow, i->second);
     sShadowMap.erase(i);
     return originalId;
@@ -390,7 +405,7 @@ s32 N64Mem_AllocSubsidiary(void* realPtr, u32 n64Size) {
 
     // When inside a randomized enemy's init, the replacement actor's subsidiaries (colliders, skeleton tables, skin
     // buffers) have different counts than the original's.  Rather than charge the wrong sizes, skip subsidiary
-    // tracking entirely — instance and overlay sizes from the original are already correct and dominate heap pressure.
+    // tracking entirely -- instance and overlay sizes from the original are already correct and dominate heap pressure.
     if (sInsideRandomizedInit) {
         return 1;
     }
@@ -402,6 +417,7 @@ s32 N64Mem_AllocSubsidiary(void* realPtr, u32 n64Size) {
     }
 
     sShadowMap[realPtr] = shadow;
+    sBlockMetaMap[shadow] = { N64MEM_BLOCK_SUBSIDIARY, -1 };
     TraceAlloc("sub", 0, n64Size);
     return 1;
 }
@@ -416,6 +432,7 @@ void N64Mem_FreeSubsidiary(void* realPtr) {
         return;
     }
 
+    sBlockMetaMap.erase(i->second);
     ShadowArena_Free(&sShadow, i->second);
     sShadowMap.erase(i);
 }
@@ -451,10 +468,30 @@ s32 N64Mem_AllocEffectOverlay(s32 type) {
     }
 
     sEffectOverlayShadows[type] = shadow;
+    sBlockMetaMap[shadow] = { N64MEM_BLOCK_EFFECT, static_cast<s16>(type) };
     TraceAlloc("efx", type, overlaySize);
     return 1;
 }
 
+
+// --------------------------------------------------------------------------------------------------------------------
+// Heap viewer metadata
+// --------------------------------------------------------------------------------------------------------------------
+
+s32 N64Mem_GetBlockInfo(u32 dataOffset, u8* outType, s16* outActorId) {
+    const auto it = sBlockMetaMap.find(dataOffset);
+    if (it == sBlockMetaMap.end()) {
+        return 0;
+    }
+
+    if (outType) {
+        *outType = it->second.type;
+    }
+    if (outActorId) {
+        *outActorId = it->second.actorId;
+    }
+    return 1;
+}
 
 // --------------------------------------------------------------------------------------------------------------------
 // Registration
