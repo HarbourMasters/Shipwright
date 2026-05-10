@@ -174,7 +174,7 @@ static void CollectShadowBlocks() {
         }
 
         BlockInfo block;
-        block.offset = offset + SHADOW_NODE_SIZE;
+        block.offset = offset + shadow->nodeSize;
         block.size = size;
         block.isFree = isFree != 0;
         block.type = N64MEM_BLOCK_FREE;
@@ -319,9 +319,9 @@ static ImU32 ColorBorder() {
 // -----------------------------------------------------------------------------------------------------------------
 
 void HeapViewerWindow::DrawElement() {
-    // Single arena view: Sshadow when active, ZeldaArena when not.
+    // Single arena view: Shadow when active, ZeldaArena when not.
     const bool isShadowArena = N64Mem_IsActive();
-    const u32 nodeHeaderSize = isShadowArena ? SHADOW_NODE_SIZE : sizeof(ArenaNode);
+    const u32 nodeHeaderSize = isShadowArena ? N64Mem_GetShadowArena()->nodeSize : sizeof(ArenaNode);
 
     if (isShadowArena) {
         CollectShadowBlocks();

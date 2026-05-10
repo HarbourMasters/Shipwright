@@ -5,7 +5,7 @@
 #include "global.h"
 
 // Declared in z_bgcheck.c but not exposed via header.
-s32 BgCheck_IsSpotScene(PlayState * play);
+s32 BgCheck_IsSpotScene(PlayState* play);
 s32 BgCheck_TryGetCustomMemsize(s32 sceneId, u32* memSize);
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -56,14 +56,12 @@ s32 BgCheck_TryGetCustomMemsize(s32 sceneId, u32* memSize);
 
 #define N64_MAP_MARK_DATA_VRAM_SIZE 0x6B60
 
-static u32 GetMapMarkDataOverlaySize(PlayState* play)
-{
+static u32 GetMapMarkDataOverlaySize(PlayState* play) {
     // Mirrors the condition in z_map_exp.c Map_Init: the dungeon case block's inner guard.
     //  Main dungeons: SCENE_DEKU_TREE (0x00) through SCENE_ICE_CAVERN (0x09)
     //  Boss rooms:    SCENE_DEKU_TREE_BOSS (0x11) through SCENE_SHADOW_TEMPLE_BOSS (0x18)
     if (play->sceneNum <= SCENE_ICE_CAVERN ||
-        (play->sceneNum >= SCENE_DEKU_TREE_BOSS && play->sceneNum <= SCENE_SHADOW_TEMPLE_BOSS))
-    {
+        (play->sceneNum >= SCENE_DEKU_TREE_BOSS && play->sceneNum <= SCENE_SHADOW_TEMPLE_BOSS)) {
         return N64_MAP_MARK_DATA_VRAM_SIZE;
     }
 
@@ -88,59 +86,54 @@ static u32 GetMapMarkDataOverlaySize(PlayState* play)
 // --------------------------------------------------------------------------------------------------------------------
 
 // DMA file name for a single-file indoor skybox (1 tex + 1 pal).
-typedef struct
-{
+typedef struct {
     const char* texName;
     const char* palName;
 } SkyboxDmaEntry;
 
 // Indexed by skybox ID.  NULL texName means the ID isn't a single-file indoor skybox (handled separately).
 static const SkyboxDmaEntry sSkyboxDmaTable[] = {
-    [SKYBOX_NONE] = {NULL, NULL},
-    [SKYBOX_NORMAL_SKY] = {NULL, NULL}, // gNormalSkyFiles, hardcoded
-    [SKYBOX_BAZAAR] = {"vr_SP1a_static", "vr_SP1a_pal_static"},
-    [SKYBOX_OVERCAST_SUNSET] = {NULL, NULL}, // same as NORMAL_SKY
-    [SKYBOX_MARKET_ADULT] = {"vr_RUVR_static", "vr_RUVR_pal_static"},
-    [SKYBOX_CUTSCENE_MAP] = {NULL, NULL}, // Two tex files, handled separately
-    [SKYBOX_HOUSE_LINK] = {"vr_LHVR_static", "vr_LHVR_pal_static"},
-    [SKYBOX_MARKET_CHILD_DAY] = {"vr_MDVR_static", "vr_MDVR_pal_static"},
-    [SKYBOX_MARKET_CHILD_NIGHT] = {"vr_MNVR_static", "vr_MNVR_pal_static"},
-    [SKYBOX_HAPPY_MASK_SHOP] = {"vr_FCVR_static", "vr_FCVR_pal_static"},
-    [SKYBOX_HOUSE_KNOW_IT_ALL_BROTHERS] = {"vr_KHVR_static", "vr_KHVR_pal_static"},
-    [SKYBOX_HOUSE_OF_TWINS] = {"vr_K3VR_static", "vr_K3VR_pal_static"},
-    [SKYBOX_STABLES] = {"vr_MLVR_static", "vr_MLVR_pal_static"},
-    [SKYBOX_HOUSE_KAKARIKO] = {"vr_KKRVR_static", "vr_KKRVR_pal_static"},
-    [SKYBOX_KOKIRI_SHOP] = {"vr_KSVR_static", "vr_KSVR_pal_static"},
-    [SKYBOX_GORON_SHOP] = {"vr_GLVR_static", "vr_GLVR_pal_static"},
-    [SKYBOX_ZORA_SHOP] = {"vr_ZRVR_static", "vr_ZRVR_pal_static"},
-    [SKYBOX_POTION_SHOP_KAKARIKO] = {"vr_DGVR_static", "vr_DGVR_pal_static"},
-    [SKYBOX_POTION_SHOP_MARKET] = {"vr_ALVR_static", "vr_ALVR_pal_static"},
-    [SKYBOX_BOMBCHU_SHOP] = {"vr_NSVR_static", "vr_NSVR_pal_static"},
-    [SKYBOX_HOUSE_RICHARD] = {"vr_IPVR_static", "vr_IPVR_pal_static"},
-    [SKYBOX_HOUSE_IMPA] = {"vr_LBVR_static", "vr_LBVR_pal_static"},
-    [SKYBOX_TENT] = {"vr_TTVR_static", "vr_TTVR_pal_static"},
-    [SKYBOX_HOUSE_MIDO] = {"vr_K4VR_static", "vr_K4VR_pal_static"},
-    [SKYBOX_HOUSE_SARIA] = {"vr_K5VR_static", "vr_K5VR_pal_static"},
-    [SKYBOX_HOUSE_ALLEY] = {"vr_KR3VR_static", "vr_KR3VR_pal_static"},
+    [SKYBOX_NONE] = { NULL, NULL },
+    [SKYBOX_NORMAL_SKY] = { NULL, NULL }, // gNormalSkyFiles, hardcoded
+    [SKYBOX_BAZAAR] = { "vr_SP1a_static", "vr_SP1a_pal_static" },
+    [SKYBOX_OVERCAST_SUNSET] = { NULL, NULL }, // same as NORMAL_SKY
+    [SKYBOX_MARKET_ADULT] = { "vr_RUVR_static", "vr_RUVR_pal_static" },
+    [SKYBOX_CUTSCENE_MAP] = { NULL, NULL }, // Two tex files, handled separately
+    [SKYBOX_HOUSE_LINK] = { "vr_LHVR_static", "vr_LHVR_pal_static" },
+    [SKYBOX_MARKET_CHILD_DAY] = { "vr_MDVR_static", "vr_MDVR_pal_static" },
+    [SKYBOX_MARKET_CHILD_NIGHT] = { "vr_MNVR_static", "vr_MNVR_pal_static" },
+    [SKYBOX_HAPPY_MASK_SHOP] = { "vr_FCVR_static", "vr_FCVR_pal_static" },
+    [SKYBOX_HOUSE_KNOW_IT_ALL_BROTHERS] = { "vr_KHVR_static", "vr_KHVR_pal_static" },
+    [SKYBOX_HOUSE_OF_TWINS] = { "vr_K3VR_static", "vr_K3VR_pal_static" },
+    [SKYBOX_STABLES] = { "vr_MLVR_static", "vr_MLVR_pal_static" },
+    [SKYBOX_HOUSE_KAKARIKO] = { "vr_KKRVR_static", "vr_KKRVR_pal_static" },
+    [SKYBOX_KOKIRI_SHOP] = { "vr_KSVR_static", "vr_KSVR_pal_static" },
+    [SKYBOX_GORON_SHOP] = { "vr_GLVR_static", "vr_GLVR_pal_static" },
+    [SKYBOX_ZORA_SHOP] = { "vr_ZRVR_static", "vr_ZRVR_pal_static" },
+    [SKYBOX_POTION_SHOP_KAKARIKO] = { "vr_DGVR_static", "vr_DGVR_pal_static" },
+    [SKYBOX_POTION_SHOP_MARKET] = { "vr_ALVR_static", "vr_ALVR_pal_static" },
+    [SKYBOX_BOMBCHU_SHOP] = { "vr_NSVR_static", "vr_NSVR_pal_static" },
+    [SKYBOX_HOUSE_RICHARD] = { "vr_IPVR_static", "vr_IPVR_pal_static" },
+    [SKYBOX_HOUSE_IMPA] = { "vr_LBVR_static", "vr_LBVR_pal_static" },
+    [SKYBOX_TENT] = { "vr_TTVR_static", "vr_TTVR_pal_static" },
+    [SKYBOX_HOUSE_MIDO] = { "vr_K4VR_static", "vr_K4VR_pal_static" },
+    [SKYBOX_HOUSE_SARIA] = { "vr_K5VR_static", "vr_K5VR_pal_static" },
+    [SKYBOX_HOUSE_ALLEY] = { "vr_KR3VR_static", "vr_KR3VR_pal_static" },
 };
 
-static u32 GetN64SkyboxTextureSize(s16 skyboxId)
-{
-    if (skyboxId == SKYBOX_NONE)
-    {
+static u32 GetN64SkyboxTextureSize(s16 skyboxId) {
+    if (skyboxId == SKYBOX_NONE) {
         return 0;
     }
 
     // NORMAL_SKY and OVERCAST_SUNSET both load 2 texture banks + 2 palettes from the vr_fine/vr_cloud files.
     // All 16 banks are exactly 0xC000 and all 16 palettes are exactly 0x100, so the total is constant.
-    if (skyboxId == SKYBOX_NORMAL_SKY || skyboxId == SKYBOX_OVERCAST_SUNSET)
-    {
+    if (skyboxId == SKYBOX_NORMAL_SKY || skyboxId == SKYBOX_OVERCAST_SUNSET) {
         return 2 * 0xC000 + 2 * 0x100;
     }
 
     // CUTSCENE_MAP loads two different texture files + 2 palette copies.
-    if (skyboxId == SKYBOX_CUTSCENE_MAP)
-    {
+    if (skyboxId == SKYBOX_CUTSCENE_MAP) {
         const u32 tex0 = N64SizeData_GetDmaFileSize("vr_holy0_static");
         const u32 tex1 = N64SizeData_GetDmaFileSize("vr_holy1_static");
         const u32 pal = N64SizeData_GetDmaFileSize("vr_holy0_pal_static");
@@ -148,11 +141,9 @@ static u32 GetN64SkyboxTextureSize(s16 skyboxId)
     }
 
     // Indoor skyboxes: 1 texture + 1 palette, looked up from the DMA blob.
-    if (skyboxId >= 0 && skyboxId < (s16)ARRAY_COUNT(sSkyboxDmaTable))
-    {
+    if (skyboxId >= 0 && skyboxId < (s16)ARRAY_COUNT(sSkyboxDmaTable)) {
         const SkyboxDmaEntry* entry = &sSkyboxDmaTable[skyboxId];
-        if (entry->texName != NULL)
-        {
+        if (entry->texName != NULL) {
             const u32 tex = N64SizeData_GetDmaFileSize(entry->texName);
             const u32 pal = N64SizeData_GetDmaFileSize(entry->palName);
             return tex + pal;
@@ -172,27 +163,20 @@ static u32 GetN64SkyboxTextureSize(s16 skyboxId)
 // Gfx is 8 bytes on N64, Vtx is 0x10.
 // --------------------------------------------------------------------------------------------------------------------
 
-static void GetSkyboxDlistAndVtxSize(s16 skyboxId, u32* outDlistSize, u32* outVtxSize)
-{
-    if (skyboxId == SKYBOX_NONE)
-    {
+static void GetSkyboxDlistAndVtxSize(s16 skyboxId, u32* outDlistSize, u32* outVtxSize) {
+    if (skyboxId == SKYBOX_NONE) {
         *outDlistSize = 0;
         *outVtxSize = 0;
         return;
     }
 
-    if (skyboxId == SKYBOX_NORMAL_SKY || skyboxId == SKYBOX_OVERCAST_SUNSET)
-    {
+    if (skyboxId == SKYBOX_NORMAL_SKY || skyboxId == SKYBOX_OVERCAST_SUNSET) {
         *outDlistSize = 12 * 150 * N64_SIZEOF_GFX;
         *outVtxSize = 5 * 32 * N64_SIZEOF_VTX;
-    }
-    else if (skyboxId == SKYBOX_CUTSCENE_MAP)
-    {
+    } else if (skyboxId == SKYBOX_CUTSCENE_MAP) {
         *outDlistSize = 12 * 150 * N64_SIZEOF_GFX;
         *outVtxSize = 6 * 32 * N64_SIZEOF_VTX;
-    }
-    else
-    {
+    } else {
         // Indoor skyboxes: SKYBOX_DRAW_256_4FACE or SKYBOX_DRAW_256_3FACE, both use the same allocation.
         *outDlistSize = 8 * 150 * N64_SIZEOF_GFX;
         *outVtxSize = 8 * 32 * N64_SIZEOF_VTX;
@@ -214,31 +198,26 @@ static void GetSkyboxDlistAndVtxSize(s16 skyboxId, u32* outDlistSize, u32* outVt
 // bgcheck_memSize and sizeof(CollisionContext).
 // --------------------------------------------------------------------------------------------------------------------
 
-static u32 GetBgCheckMemSize(PlayState* play)
-{
+static u32 GetBgCheckMemSize(PlayState* play) {
     const s16 sceneNum = play->sceneNum;
 
-    if (YREG(15) == 0x10 || YREG(15) == 0x20 || YREG(15) == 0x30 || YREG(15) == 0x40)
-    {
+    if (YREG(15) == 0x10 || YREG(15) == 0x20 || YREG(15) == 0x30 || YREG(15) == 0x40) {
         return sceneNum == SCENE_STABLE ? 0x3520 : 0x4E20;
     }
 
-    if (BgCheck_IsSpotScene(play))
-    {
+    if (BgCheck_IsSpotScene(play)) {
         return 0xF000;
     }
 
     u32 customMemSize = 0;
-    if (BgCheck_TryGetCustomMemsize(sceneNum, &customMemSize))
-    {
+    if (BgCheck_TryGetCustomMemsize(sceneNum, &customMemSize)) {
         return customMemSize;
     }
 
     return 0x1CC00;
 }
 
-static u32 GetBgCheckThaTotal(PlayState* play)
-{
+static u32 GetBgCheckThaTotal(PlayState* play) {
     return GetBgCheckMemSize(play) - N64_SIZEOF_COLLISION_CONTEXT;
 }
 
@@ -246,17 +225,14 @@ static u32 GetBgCheckThaTotal(PlayState* play)
 // Object bank size (mirrors z_scene.c Object_InitBlank)
 // --------------------------------------------------------------------------------------------------------------------
 
-static u32 GetObjectBankSize(PlayState* play)
-{
+static u32 GetObjectBankSize(PlayState* play) {
     const s16 sceneNum = play->sceneNum;
-    if (sceneNum == SCENE_GANON_BOSS && gSaveContext.sceneSetupIndex == 4)
-    {
+    if (sceneNum == SCENE_GANON_BOSS && gSaveContext.sceneSetupIndex == 4) {
         return 1177600;
     }
 
     if (sceneNum == SCENE_SPIRIT_TEMPLE_BOSS || sceneNum == SCENE_CHAMBER_OF_THE_SAGES ||
-        sceneNum == SCENE_GANONDORF_BOSS)
-    {
+        sceneNum == SCENE_GANONDORF_BOSS) {
         return 1075200;
     }
 
@@ -275,16 +251,13 @@ static const char* sElfMsgDmaNames[] = {
     "elf_message_ydan",
 };
 
-static u32 GetElfMessageSize(PlayState* play)
-{
-    if (play->cUpElfMsgs == NULL)
-    {
+static u32 GetElfMessageSize(PlayState* play) {
+    if (play->cUpElfMsgs == NULL) {
         return 0;
     }
 
     const u8 elfMsgNum = N64Mem_GetElfMsgNum();
-    if (elfMsgNum == 0 || elfMsgNum > ARRAY_COUNT(sElfMsgDmaNames))
-    {
+    if (elfMsgNum == 0 || elfMsgNum > ARRAY_COUNT(sElfMsgDmaNames)) {
         LUSLOG_WARN("[ArenaSizing] elfMsg: cUpElfMsgs non-NULL but elfMsgNum=%d out of range", elfMsgNum);
         return 0;
     }
@@ -296,37 +269,31 @@ static u32 GetElfMessageSize(PlayState* play)
 // Room buffer max size (mirrors func_80096FE8 logic)
 // --------------------------------------------------------------------------------------------------------------------
 
-static u32 GetMaxRoomSize(PlayState* play)
-{
+static u32 GetMaxRoomSize(PlayState* play) {
     u32 maxRoomSize = 0;
 
-    for (size_t i = 0; i < play->numRooms; ++i)
-    {
-        const u32 roomSize = play->roomList[i].vromEnd - play->roomList[i].vromStart;
-        if (roomSize > maxRoomSize)
-        {
+    for (size_t i = 0; i < play->numRooms; ++i) {
+        const uintptr_t roomSize = play->roomList[i].vromEnd - play->roomList[i].vromStart;
+        if (roomSize > maxRoomSize) {
             maxRoomSize = roomSize;
         }
     }
 
-    if (play->transiActorCtx.numActors != 0)
-    {
+    if (play->transiActorCtx.numActors != 0) {
         const TransitionActorEntry* transitionActor = &play->transiActorCtx.list[0];
 
-        for (size_t j = 0; j < play->transiActorCtx.numActors; ++j)
-        {
+        for (size_t j = 0; j < play->transiActorCtx.numActors; ++j) {
             const s8 frontRoom = transitionActor->sides[0].room;
             const s8 backRoom = transitionActor->sides[1].room;
-            const size_t frontSize = frontRoom < 0
-                                         ? 0
-                                         : play->roomList[frontRoom].vromEnd - play->roomList[frontRoom].vromStart;
-            const u32 backSize = backRoom < 0
-                                     ? 0
-                                     : play->roomList[backRoom].vromEnd - play->roomList[backRoom].vromStart;
+            const uintptr_t frontSize = frontRoom < 0
+                                            ? 0
+                                            : play->roomList[frontRoom].vromEnd - play->roomList[frontRoom].vromStart;
+            const uintptr_t backSize = backRoom < 0
+                                           ? 0
+                                           : play->roomList[backRoom].vromEnd - play->roomList[backRoom].vromStart;
 
-            const u32 cumulSize = frontRoom != backRoom ? frontSize + backSize : frontSize;
-            if (cumulSize > maxRoomSize)
-            {
+            const uintptr_t cumulSize = frontRoom != backRoom ? frontSize + backSize : frontSize;
+            if (cumulSize > maxRoomSize) {
                 maxRoomSize = cumulSize;
             }
 
@@ -341,8 +308,7 @@ static u32 GetMaxRoomSize(PlayState* play)
 // Main computation
 // --------------------------------------------------------------------------------------------------------------------
 
-u32 ArenaSizing_ComputeN64ArenaSize(PlayState* play)
-{
+u32 ArenaSizing_ComputeN64ArenaSize(PlayState* play) {
     // Each THA consumer is allocated via GAME_STATE_ALLOC -> THA_AllocTailAlign16, which consumes ALIGN16(size) bytes.
     // We must align each consumer individually before summing; aligning the sum would under-count when individual
     // sizes are not 16-byte aligned (common for DMA file sizes).  BgCheck is the exception -- its internal allocations
@@ -435,8 +401,7 @@ u32 ArenaSizing_ComputeN64ArenaSize(PlayState* play)
     LUSLOG_INFO("[ArenaSizing] total=0x%X, arena=0x%X (budget=0x%X)", total, N64_THA_BUDGET - total,
                 (u32)N64_THA_BUDGET);
 
-    if (total >= N64_THA_BUDGET)
-    {
+    if (total >= N64_THA_BUDGET) {
         return 0;
     }
 

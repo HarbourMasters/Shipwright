@@ -41,7 +41,7 @@ static std::unordered_map<void*, u32> sShadowMap;
 // free the correct overlay shadow entry.  Only populated for randomized actors.
 static std::unordered_map<void*, s16> sActorOriginalIds;
 
-// Block metadata for the heap viewer.  Keyed by shadow DATA offset (node offset + SHADOW_NODE_SIZE).
+// Block metadata for the heap viewer.  Keyed by shadow DATA offset (node offset + arena->nodeSize).
 // Populated in each Alloc function, erased in each Free, cleared in N64Mem_Reset.
 struct BlockMeta {
     u8 type;
@@ -84,7 +84,7 @@ static void LogShadowState(const char* context) {
 
 static void TraceAlloc(const char* tag, u32 id, u32 size) {
     if (sTraceEnabled) {
-        u32 consumed = (size + 0xF & ~0xF) + SHADOW_NODE_SIZE;
+        u32 consumed = (size + 0xF & ~0xF) + sShadow.nodeSize;
         SPDLOG_TRACE("[N64Trace] +{} id=0x{:X} sz=0x{:X} cost=0x{:X}", tag, id, size, consumed);
     }
 }
@@ -180,18 +180,8 @@ void N64Mem_Reset(PlayState* play) {
             return;
         }
 
-        // On N64, the instance region develops internal fragmentation gaps from alloc/free cycling during room
-        // transitions (partially caused by Bg_Spot02_Objects being in Room 0 on N64 but Room 1 on SoH, and by
-        // En_Firefly/En_Sw transient overlay churn).  These gaps absorb the per-cycle Object_Kankyo instance leak
-        // (~0x1680 each) without shrinking the main free block.  The model's clean coalescing has no such gaps, so
-        // leaked instances eat the main block directly.  This correction accounts for the gap-structure mismatch
-        // until the upstream scene-data divergences are resolved.
-        if (constexpr u32 instanceGapCorrection = 0x1680; shadowArenaSize > instanceGapCorrection) {
-            shadowArenaSize -= instanceGapCorrection;
-        }
-
         SPDLOG_INFO("[N64MemoryModel] Shadow arena size=0x{:X} for scene 0x{:X}", shadowArenaSize, play->sceneNum);
-        ShadowArena_Init(&sShadow, shadowArenaSize);
+        ShadowArena_Init(&sShadow, shadowArenaSize, N64SizeData_GetArenaNodeSize());
 
         sTraceEnabled = play->sceneNum == SCENE_GRAVEYARD;
     }
@@ -479,17 +469,19 @@ s32 N64Mem_AllocEffectOverlay(s32 type) {
 // --------------------------------------------------------------------------------------------------------------------
 
 s32 N64Mem_GetBlockInfo(u32 dataOffset, u8* outType, s16* outActorId) {
-    const auto it = sBlockMetaMap.find(dataOffset);
-    if (it == sBlockMetaMap.end()) {
+    const auto i = sBlockMetaMap.find(dataOffset);
+    if (i == sBlockMetaMap.end()) {
         return 0;
     }
 
     if (outType) {
-        *outType = it->second.type;
+        *outType = i->second.type;
     }
+
     if (outActorId) {
-        *outActorId = it->second.actorId;
+        *outActorId = i->second.actorId;
     }
+
     return 1;
 }
 

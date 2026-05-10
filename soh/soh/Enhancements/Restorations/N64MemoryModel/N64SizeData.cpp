@@ -230,3 +230,41 @@ extern "C" u32 N64SizeData_GetKaleidoVramSize() {
     LoadKaleidoVramSize();
     return sKaleidoVramSize;
 }
+
+// --------------------------------------------------------------------------------------------------------------------
+// Arena node size
+//
+// Format: single u32 -- ArenaNode size for this ROM version (0x10 retail, 0x30 debug)
+// --------------------------------------------------------------------------------------------------------------------
+
+static u32 sArenaNodeSize = 0x30; // Default to debug (safe fallback -- over-estimates node overhead)
+static bool sIsArenaNodeSizeLoaded = false;
+
+static void LoadArenaNodeSize() {
+    if (sIsArenaNodeSizeLoaded) {
+        return;
+    }
+
+    sIsArenaNodeSizeLoaded = true;
+
+    const auto file =
+        Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->LoadFile("misc/arena_node_size");
+    if (!file || !file->IsLoaded) {
+        SPDLOG_WARN("[N64SizeData] Failed to load misc/arena_node_size from OTR, defaulting to 0x{:X}.",
+                    sArenaNodeSize);
+        return;
+    }
+
+    auto stream = std::make_shared<Ship::MemoryStream>(file->Buffer->data(), file->Buffer->size());
+    const auto reader = std::make_shared<Ship::BinaryReader>(stream);
+    reader->SetEndianness(Ship::Endianness::Big);
+
+    sArenaNodeSize = reader->ReadUInt32();
+
+    SPDLOG_INFO("[N64SizeData] Arena node size: 0x{:X}.", sArenaNodeSize);
+}
+
+extern "C" u32 N64SizeData_GetArenaNodeSize() {
+    LoadArenaNodeSize();
+    return sArenaNodeSize;
+}

@@ -4,23 +4,30 @@
 
 #ifdef __cplusplus
 extern "C" {
+
+
+
 #endif
 
 // Sentinel value for null offsets (no valid node can live at 0xFFFFFFFF in a buffer that's only ~245KB).
 #define SHADOW_NULL 0xFFFFFFFF
 
-// Matches N64 retail ArenaNode: 0x10 bookkeeping + 0x20 debug fields.
-#define SHADOW_NODE_SIZE 0x30
+// Default node size for the shadow arena.  Overridden at init from OTR data.
+//   Retail N64 (no debug fields):  0x10
+//   GC Debug   (debug fields):     0x30
+#define SHADOW_NODE_SIZE_RETAIL 0x10
+#define SHADOW_NODE_SIZE_DEBUG  0x30
 
-typedef struct ShadowArena
-{
+typedef struct ShadowArena {
     u8* buffer;
     u32 head; // Offset to first node
     u32 bufferSize;
+    u32 nodeSize; // Per-version ArenaNode size (set at init from OTR data)
 } ShadowArena;
 
-// Allocate backing buffer and initialize with a single fee node. Size should be the N64 ZeldaArena size (0x3D550).
-void ShadowArena_Init(ShadowArena* arena, u32 size);
+// Allocate backing buffer and initialize with a single free node.  nodeSize is the N64 ArenaNode size for this ROM
+// version (0x10 for retail, 0x30 for debug).
+void ShadowArena_Init(ShadowArena* arena, u32 size, u32 nodeSize);
 
 // Free the backing buffer and zero the struct.
 void ShadowArena_Destroy(ShadowArena* arena);
@@ -35,7 +42,7 @@ u32 ShadowArena_MallocR(ShadowArena* arena, u32 size);
 void ShadowArena_Free(ShadowArena* arena, u32 dataOffset);
 
 // Query arena statistics.
-void ShadowArena_GetSizes(ShadowArena * arena, u32 * outMaxFree, u32 * outFree, u32 * outAlloc);
+void ShadowArena_GetSizes(ShadowArena* arena, u32* outMaxFree, u32* outFree, u32* outAlloc);
 
 // Get the head node offset for external traversal (e.g., heap viewer).
 u32 ShadowArena_GetHead(ShadowArena* arena);
