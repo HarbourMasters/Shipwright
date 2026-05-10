@@ -3566,8 +3566,8 @@ Actor* Actor_Delete(ActorContext* actorCtx, Actor* actor, PlayState* play) {
     // #endregion
 
     // #region SOH [Enhancement] - N64 Memory Model
-    N64Mem_FreeInstance(actor);
-    const s16 n64MemActorId = actor->id;
+    const s16 n64MemOriginalId = N64Mem_FreeInstance(actor);
+    const s16 n64MemActorId = n64MemOriginalId >= 0 ? n64MemOriginalId : actor->id;
     // #endregion
 
     ZELDA_ARENA_FREE_DEBUG(actor);

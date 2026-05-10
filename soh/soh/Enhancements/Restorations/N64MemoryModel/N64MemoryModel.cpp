@@ -37,6 +37,10 @@ static u32 sAbsoluteSpaceShadow = SHADOW_NULL;
 // Maps real pointers (instances and subsidiaries) to their shadow offsets.
 static std::unordered_map<void*, u32> sShadowMap;
 
+// Maps real actor pointers to their original actor ID (before enemy randomizer substitution).  Used by FreeOverlay to
+// free the correct overlay shadow entry.  Only populated for randomized actors.
+static std::unordered_map<void*, s16> sActorOriginalIds;
+
 // When the enemy randomizer replaces an actor, this holds the ORIGINAL actor ID so that shadow allocations are charged
 // at the original N64 size rather than the replacement's size.  Set by N64Mem_SetOriginalActorId before Actor_Spawn,
 // cleared by N64Mem_ClearOriginalActorId after Actor_Spawn returns.  -1 means no override (use the passed actorId).
@@ -142,6 +146,7 @@ void N64Mem_Reset(PlayState* play) {
     // Play_Init.
     ShadowArena_Destroy(&sShadow);
     sShadowMap.clear();
+    sActorOriginalIds.clear();
     sAbsoluteSpaceShadow = SHADOW_NULL;
     sOriginalActorId = -1;
     sInsideRandomizedInit = 0;
@@ -256,8 +261,12 @@ s32 N64Mem_AllocOverlay(s16 actorId, u16 allocType) {
         return 1;
     }
 
+    // Resolve the actor ID for overlay tracking.  When the enemy randomizer is active, overlays are tracked by
+    // the ORIGINAL actor ID so that multiple replacements of the same original type share one overlay shadow.
+    const u16 overlayTrackId = ResolveSizeActorId(actorId);
+
     // Already shadowed for this type.
-    if (sOverlayShadows[actorId] != SHADOW_NULL) {
+    if (sOverlayShadows[overlayTrackId] != SHADOW_NULL) {
         return 1;
     }
 
@@ -269,8 +278,8 @@ s32 N64Mem_AllocOverlay(s16 actorId, u16 allocType) {
         return 0;
     }
 
-    sOverlayShadows[actorId] = shadow;
-    TraceAlloc("ovl", actorId, overlaySize);
+    sOverlayShadows[overlayTrackId] = shadow;
+    TraceAlloc("ovl", overlayTrackId, overlaySize);
     return 1;
 }
 
@@ -338,18 +347,26 @@ s32 N64Mem_AllocInstance(s16 actorId, void* realPtr) {
     }
 
     sShadowMap[realPtr] = shadow;
+    sActorOriginalIds[realPtr] = static_cast<s16>(sizeId);
     TraceAlloc("inst", actorId, instanceSize);
     return 1;
 }
 
-void N64Mem_FreeInstance(void* realPtr) {
+s16 N64Mem_FreeInstance(void* realPtr) {
     if (!sIsActive || !realPtr) {
-        return;
+        return -1;
     }
 
     const auto i = sShadowMap.find(realPtr);
     if (i == sShadowMap.end()) {
-        return;
+        return -1;
+    }
+
+    // Retrieve the stored original actor ID before erasing.  Used by Actor_Delete to free the correct overlay shadow.
+    s16 originalId = -1;
+    if (const auto j = sActorOriginalIds.find(realPtr); j != sActorOriginalIds.end()) {
+        originalId = j->second;
+        sActorOriginalIds.erase(j);
     }
 
     if (sTraceEnabled) {
@@ -359,6 +376,7 @@ void N64Mem_FreeInstance(void* realPtr) {
 
     ShadowArena_Free(&sShadow, i->second);
     sShadowMap.erase(i);
+    return originalId;
 }
 
 // --------------------------------------------------------------------------------------------------------------------
