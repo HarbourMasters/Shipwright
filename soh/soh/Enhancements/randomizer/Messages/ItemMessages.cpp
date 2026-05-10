@@ -39,8 +39,7 @@ static GetItemEntry ResolveGiftGetItemEntry(const Player* player) {
     if (player == nullptr) {
         return GET_ITEM_NONE;
     }
-    if (player->getItemEntry.objectId == OBJECT_INVALID ||
-        player->getItemId != player->getItemEntry.getItemId) {
+    if (player->getItemEntry.objectId == OBJECT_INVALID || player->getItemId != player->getItemEntry.getItemId) {
         if (IS_RANDO && player->getItemId > RG_NONE && player->getItemId < RG_MAX) {
             return ItemTable_RetrieveEntry(MOD_RANDOMIZER, player->getItemId);
         }
