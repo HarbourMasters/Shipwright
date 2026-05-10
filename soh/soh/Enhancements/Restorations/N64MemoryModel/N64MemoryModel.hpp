@@ -57,6 +57,11 @@ void N64Mem_LogState(const char* context);
 void N64Mem_SetOriginalActorId(s16 actorId);
 void N64Mem_ClearOriginalActorId(void);
 
+// Save/restore for the randomized-init skip flag.  Actor_Spawn saves the current value at entry and restores it
+// after Actor_Init returns, so child spawns during a randomized actor's init don't clobber the parent's flag.
+s32 N64Mem_GetRandomizedInit(void);
+void N64Mem_SetRandomizedInit(s32 value);
+
 // Log Graveyard benchmark data (transition count, largest_free, total_free).  Call after room actors are spawned.
 void N64Mem_BenchmarkTransition(PlayState* play);
 

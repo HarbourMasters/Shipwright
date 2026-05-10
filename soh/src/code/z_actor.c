@@ -3339,6 +3339,10 @@ Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 pos
     s32 objBankIndex;
     u32 temp;
 
+    // #region SOH [Enhancement] - N64 Memory Model
+    const s32 n64MemSavedInit = N64Mem_GetRandomizedInit();
+    // #endregion
+
     ActorDBEntry* dbEntry = ActorDB_Retrieve(actorId);
 
     assert(dbEntry->valid);
@@ -3441,6 +3445,7 @@ Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 pos
 
     // #region SOH [Enhancement] - N64 Memory Model
     N64Mem_ClearOriginalActorId();
+    N64Mem_SetRandomizedInit(n64MemSavedInit);
     // #endregion
 
     GameInteractor_ExecuteOnActorSpawn(actor);

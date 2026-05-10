@@ -42,10 +42,15 @@ static std::unordered_map<void*, u32> sShadowMap;
 // cleared by N64Mem_ClearOriginalActorId after Actor_Spawn returns.  -1 means no override (use the passed actorId).
 static s16 sOriginalActorId = -1;
 
+// Set when AllocInstance consumes a non-negative sOriginalActorId, cleared after Actor_Init returns.  While set, ALL
+// shadow allocations (overlay, instance, subsidiary) from child actors spawned during the replacement actor's init are
+// skipped — on N64 these children don't exist because the original actor never spawned them.
+static s32 sInsideRandomizedInit = 0;
+
 // Returns the actor ID to use for size lookups.  If an original actor ID override is set (enemy randomizer active),
 // returns that; otherwise returns the passed actorId unchanged.
 static u16 ResolveSizeActorId(s16 actorId) {
-    return (sOriginalActorId >= 0) ? static_cast<u16>(sOriginalActorId) : static_cast<u16>(actorId);
+    return sOriginalActorId >= 0 ? static_cast<u16>(sOriginalActorId) : static_cast<u16>(actorId);
 }
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -138,6 +143,8 @@ void N64Mem_Reset(PlayState* play) {
     ShadowArena_Destroy(&sShadow);
     sShadowMap.clear();
     sAbsoluteSpaceShadow = SHADOW_NULL;
+    sOriginalActorId = -1;
+    sInsideRandomizedInit = 0;
 
     for (u32& sOverlayShadow : sOverlayShadows) {
         sOverlayShadow = SHADOW_NULL;
@@ -197,12 +204,25 @@ void N64Mem_ClearOriginalActorId() {
     sOriginalActorId = -1;
 }
 
+s32 N64Mem_GetRandomizedInit() {
+    return sInsideRandomizedInit;
+}
+
+void N64Mem_SetRandomizedInit(s32 value) {
+    sInsideRandomizedInit = value;
+}
+
 // --------------------------------------------------------------------------------------------------------------------
 // Actor overlays
 // --------------------------------------------------------------------------------------------------------------------
 
 s32 N64Mem_AllocOverlay(s16 actorId, u16 allocType) {
     if (!sIsActive) {
+        return 1;
+    }
+
+    // Child actors spawned during a randomized enemy's init don't exist on N64 — skip shadow tracking.
+    if (sInsideRandomizedInit) {
         return 1;
     }
 
@@ -279,10 +299,24 @@ void N64Mem_FreeOverlay(s16 actorId, u16 allocType) {
 
 s32 N64Mem_AllocInstance(s16 actorId, void* realPtr) {
     if (!sIsActive) {
+        sOriginalActorId = -1;
+        return 1;
+    }
+
+    // Child actors spawned during a randomized enemy's init don't exist on N64 -- skip shadow tracking.
+    if (sInsideRandomizedInit) {
         return 1;
     }
 
     const u16 sizeId = ResolveSizeActorId(actorId);
+
+    // Consume the override and enter the randomized-init phase.  Subsidiaries allocated during Actor_Init will be
+    // skipped (they belong to the replacement, not the original).  Child Actor_Spawn calls during init will also
+    // be skipped via the sInsideRandomizedInit check above.
+    if (sOriginalActorId >= 0) {
+        sOriginalActorId = -1;
+        sInsideRandomizedInit = 1;
+    }
 
     if (actorId < 0 || actorId >= ACTOR_ID_MAX) {
         return 1;
@@ -291,6 +325,10 @@ s32 N64Mem_AllocInstance(s16 actorId, void* realPtr) {
     const u32 instanceSize = N64SizeData_GetActorInstanceSize(sizeId);
     if (instanceSize == 0) {
         return 1;
+    }
+
+    if (instanceSize == 0x1A0) {
+        SPDLOG_INFO("[N64MemoryModel] 0x1A0 instance: actorId=0x{:X}", actorId);
     }
 
     const u32 shadow = ShadowArena_Malloc(&sShadow, instanceSize);
@@ -332,11 +370,10 @@ s32 N64Mem_AllocSubsidiary(void* realPtr, u32 n64Size) {
         return 1;
     }
 
-    // When the enemy randomizer is active, the replacement actor's subsidiaries (colliders, skeleton tables, skin
+    // When inside a randomized enemy's init, the replacement actor's subsidiaries (colliders, skeleton tables, skin
     // buffers) have different counts than the original's.  Rather than charge the wrong sizes, skip subsidiary
-    // tracking entirely for randomized actors -- instance and overlay sizes from the original are already correct
-    // and dominate heap pressure.
-    if (sOriginalActorId >= 0) {
+    // tracking entirely — instance and overlay sizes from the original are already correct and dominate heap pressure.
+    if (sInsideRandomizedInit) {
         return 1;
     }
 
