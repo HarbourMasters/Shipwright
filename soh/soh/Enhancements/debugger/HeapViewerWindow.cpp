@@ -4,6 +4,7 @@
 #include <imgui.h>
 
 #include <vector>
+#include <set>
 
 #include "soh/OTRGlobals.h"
 #include "soh/ActorDB.h"
@@ -27,9 +28,15 @@ struct BlockInfo {
     u8 type;     // N64MEM_BLOCK_* (shadow only)
     s16 actorId; // Original actor ID (shadow only), -1 if unknown
     const char* actorName;
+    bool isPinned;
+    bool isGhost;  // Pinned block that was freed -- shown as a grayed-out row
+    u32 heapIndex; // Original index in heap order (for block map cross-reference)
 };
 
 static std::vector<BlockInfo> sBlocks;
+static std::vector<std::size_t> sDisplayOrder; // Indices into sBlocks: pinned first, then unpinned
+static u32 sPinnedCount = 0;
+static std::set<std::pair<s16, u8>> sPinnedBlocks; // {actorId, blockType} pairs
 static u32 sAllocTotal = 0;
 static u32 sFreeTotal = 0;
 static u32 sLargestFree = 0;
@@ -81,7 +88,7 @@ static const char* sEffectNames[] = {
 };
 
 static const char* GetBlockDisplayName(const BlockInfo& block) {
-    if (block.isFree) {
+    if (block.isFree && !block.isGhost) {
         return nullptr;
     }
 
@@ -207,6 +214,64 @@ static void CollectShadowBlocks() {
     sPreviousAlloc = sAllocTotal;
 }
 
+// Build display order: assign heap indices, mark pinned blocks, add ghosts for freed pins, sort pinned to top.
+static void BuildDisplayOrder() {
+    sDisplayOrder.clear();
+    sPinnedCount = 0;
+
+    // Track which pin keys have a live block.
+    std::set<std::pair<s16, u8>> matchedPins;
+
+    for (std::size_t i = 0; i < sBlocks.size(); ++i) {
+        sBlocks[i].heapIndex = static_cast<u32>(i);
+        sBlocks[i].isGhost = false;
+        std::pair key = { sBlocks[i].actorId, sBlocks[i].type };
+        sBlocks[i].isPinned = !sBlocks[i].isFree && sPinnedBlocks.contains(key);
+        if (sBlocks[i].isPinned) {
+            matchedPins.insert(key);
+        }
+    }
+
+    // Add ghost entries for pinned blocks that no longer exist.
+    for (const auto& pin : sPinnedBlocks) {
+        if (!matchedPins.contains(pin)) {
+            BlockInfo ghost;
+            ghost.offset = 0;
+            ghost.size = 0;
+            ghost.isFree = true;
+            ghost.type = pin.second;
+            ghost.actorId = pin.first;
+            ghost.actorName = GetActorName(pin.first);
+            ghost.isPinned = true;
+            ghost.isGhost = true;
+            ghost.heapIndex = 0;
+            sBlocks.push_back(ghost);
+        }
+    }
+
+    // Pinned first (heap order preserved within group, ghosts at end of pinned section).
+    for (std::size_t i = 0; i < sBlocks.size(); ++i) {
+        if (sBlocks[i].isPinned && !sBlocks[i].isGhost) {
+            sDisplayOrder.push_back(i);
+            ++sPinnedCount;
+        }
+    }
+
+    for (std::size_t i = 0; i < sBlocks.size(); ++i) {
+        if (sBlocks[i].isGhost) {
+            sDisplayOrder.push_back(i);
+            ++sPinnedCount;
+        }
+    }
+
+    // Then unpinned.
+    for (std::size_t i = 0; i < sBlocks.size(); ++i) {
+        if (!sBlocks[i].isPinned) {
+            sDisplayOrder.push_back(i);
+        }
+    }
+}
+
 // -----------------------------------------------------------------------------------------------------------------
 // Colors
 // -----------------------------------------------------------------------------------------------------------------
@@ -264,11 +329,20 @@ void HeapViewerWindow::DrawElement() {
         CollectZeldaArenaBlocks();
     }
 
+    BuildDisplayOrder();
+
     if (isShadowArena) {
         if (ImGui::Button("Reset Tracking")) {
             sPreviousAlloc = 0;
             sCycleCount = 0;
             sLastDelta = 0;
+        }
+
+        if (!sPinnedBlocks.empty()) {
+            ImGui::SameLine();
+            if (ImGui::Button("Clear Pins")) {
+                sPinnedBlocks.clear();
+            }
         }
     }
 
@@ -340,6 +414,12 @@ void HeapViewerWindow::DrawElement() {
         x1 = x0 + blockWidth;
         drawList->AddRectFilled(ImVec2(x0, mapPos.y), ImVec2(x1, mapPos.y + mapHeight), BlockColor(sBlocks[i]));
 
+        // White outline for pinned blocks.
+        if (sBlocks[i].isPinned) {
+            drawList->AddRect(ImVec2(x0, mapPos.y), ImVec2(x1, mapPos.y + mapHeight),
+                              IM_COL32(255, 255, 255, 255), 0.0f, 0, 2.0f);
+        }
+
         const f32 fullX0 = mapPos.x + xCursor - nodeWidth;
         ImVec2 blockMin(fullX0, mapPos.y);
         if (ImVec2 blockMax(x1, mapPos.y + mapHeight); ImGui::IsMouseHoveringRect(blockMin, blockMax)) {
@@ -373,7 +453,8 @@ void HeapViewerWindow::DrawElement() {
     ImGui::Spacing();
 
     // --- Block list ---
-    ImGui::Text("Block List (%u blocks)", sNodeCount);
+    ImGui::Text("Block List (%u blocks%s)", sNodeCount,
+                sPinnedCount > 0 ? fmt::format(", {} pinned", sPinnedCount).c_str() : "");
 
     if (const s32 columnCount = sIsShadow ? 5 : 4; ImGui::BeginTable("##blocks", columnCount,
                                                                      ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg |
@@ -389,21 +470,49 @@ void HeapViewerWindow::DrawElement() {
         ImGui::TableSetupColumn("Type", ImGuiTableColumnFlags_WidthFixed, 60.0f);
         ImGui::TableSetupColumn("Size", ImGuiTableColumnFlags_WidthFixed, 140.0f);
         ImGui::TableSetupColumn("Offset", ImGuiTableColumnFlags_WidthFixed, 100.0f);
-        ImGui::TableSetupScrollFreeze(0, 1);
+        ImGui::TableSetupScrollFreeze(0, 1 + static_cast<s32>(sPinnedCount));
         ImGui::TableHeadersRow();
 
-        for (std::size_t i = 0; i < sBlocks.size(); ++i) {
-            const auto& block = sBlocks[i];
+        for (std::size_t di = 0; di < sDisplayOrder.size(); ++di) {
+            const std::size_t blockIdx = sDisplayOrder[di];
+            const auto& block = sBlocks[blockIdx];
             ImGui::TableNextRow();
 
-            // #
+            // Tint pinned rows.
+            if (block.isPinned) {
+                ImGui::TableSetBgColor(ImGuiTableBgTarget_RowBg1,
+                                       block.isGhost ? IM_COL32(255, 60, 60, 15) : IM_COL32(255, 255, 255, 20));
+            }
+
+            // # -- Click to pin/unpin (allocated shadow blocks and ghosts)
             ImGui::TableNextColumn();
-            ImGui::Text("%zu", i);
+
+            if (sIsShadow && ((!block.isFree && block.actorId >= 0) || block.isGhost)) {
+                ImGui::PushID(static_cast<int>(di));
+                if (ImGui::Selectable(fmt::format("{}{}", block.isPinned ? "\xF0\x9F\x93\x8C " : "",
+                                                  block.isGhost ? "--" : std::to_string(block.heapIndex)).c_str(),
+                                      block.isPinned,
+                                      ImGuiSelectableFlags_SpanAllColumns | ImGuiSelectableFlags_AllowOverlap)) {
+                    std::pair key = { block.actorId, block.type };
+
+                    if (block.isPinned) {
+                        sPinnedBlocks.erase(key);
+                    } else {
+                        sPinnedBlocks.insert(key);
+                    }
+                }
+                ImGui::PopID();
+            } else {
+                ImGui::Text("%u", block.heapIndex);
+            }
 
             // Actor (shadow only)
             if (sIsShadow) {
                 ImGui::TableNextColumn();
-                if (block.isFree) {
+                if (block.isGhost) {
+                    const char* displayName = GetBlockDisplayName(block);
+                    ImGui::TextDisabled("%s", displayName ? displayName : "???");
+                } else if (block.isFree) {
                     ImGui::TextDisabled("--");
                 } else if (const char* displayName = GetBlockDisplayName(block)) {
                     ImGui::Text("%s", displayName);
@@ -418,8 +527,9 @@ void HeapViewerWindow::DrawElement() {
 
             // Type
             ImGui::TableNextColumn();
-            
-            if (block.isFree) {
+            if (block.isGhost) {
+                ImGui::TextColored(ImVec4(0.6f, 0.2f, 0.2f, 1.0f), "freed");
+            } else if (block.isFree) {
                 ImGui::TextColored(ImVec4(0.2f, 0.8f, 0.3f, 1.0f), "free");
             } else if (sIsShadow) {
                 const ImU32 color = BlockColor(block);
@@ -431,11 +541,19 @@ void HeapViewerWindow::DrawElement() {
 
             // Size
             ImGui::TableNextColumn();
-            ImGui::Text("0x%X (%u)", block.size, block.size);
+            if (block.isGhost) {
+                ImGui::TextDisabled("--");
+            } else {
+                ImGui::Text("0x%X (%u)", block.size, block.size);
+            }
 
             // Offset
             ImGui::TableNextColumn();
-            ImGui::Text("0x%X", block.offset);
+            if (block.isGhost) {
+                ImGui::TextDisabled("--");
+            } else {
+                ImGui::Text("0x%X", block.offset);
+            }
         }
 
         ImGui::EndTable();
