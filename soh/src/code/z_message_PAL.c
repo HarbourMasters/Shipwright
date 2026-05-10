@@ -7,6 +7,7 @@
 #include "textures/parameter_static/parameter_static.h"
 #include "textures/message_static/message_static.h"
 #include "textures/message_texture_static/message_texture_static.h"
+#include "textures/icon_item_static/icon_item_static.h"
 #include "soh/Enhancements/cosmetics/CosmeticsEditor.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
@@ -14,6 +15,10 @@
 #include "soh/OTRGlobals.h"
 #include "soh/SaveManager.h"
 #include "soh/ResourceManagerHelpers.h"
+
+extern void Randomizer_Message_DecodeLoadItemIcon(PlayState* play, u16 iconToLoad, s32 displayAsEnglishAsInt);
+extern void Randomizer_Message_AppendSegmentIconGfx(Gfx** gfxp);
+extern void Randomizer_Message_RefreshCustomItemIconAtDraw(s32 displayAsEnglishAsInt);
 
 // #region SOH [NTSC] - Allows custom messages to work on japanese
 static bool sDisplayNextMessageAsEnglish = false;
@@ -837,6 +842,119 @@ f32 sFontWidths[144] = {
     14.0f, // ?
 };
 
+/**
+ * Copies the item's OTR icon path into the textbox segment and sets R_TEXTBOX_ICON_*.
+ * The segment slot is shared with other message data; re-applying at draw time avoids stale or
+ * clobbered bytes being interpreted as a texture (garbled icon) when decode and draw are far apart.
+ */
+static void Message_SetTextboxItemIconFromItemId(PlayState* play, u16 itemId, s16 y) {
+    static s16 sIconItem32XOffsets[] = { 74, 74, 74, 54 };
+    static s16 sIconItem24XOffsets[] = { 72, 72, 72, 50 };
+    MessageContext* msgCtx = &play->msgCtx;
+    InterfaceContext* interfaceCtx = &play->interfaceCtx;
+    u8 language = sDisplayNextMessageAsEnglish ? LANGUAGE_ENG : gSaveContext.language;
+    const void* iconEntry;
+    const char* texPath;
+    size_t pathLen;
+    u16 id = itemId;
+    bool isSongIcon;
+
+    if (id == ITEM_DUNGEON_MAP) {
+        interfaceCtx->mapPalette[30] = 0xFF;
+        interfaceCtx->mapPalette[31] = 0xFF;
+    }
+    if (id >= ARRAY_COUNT(gItemIcons)) {
+        id = ITEM_STICK;
+    }
+    isSongIcon = (id >= ITEM_SONG_MINUET) && (id <= ITEM_SONG_STORMS);
+    iconEntry = gItemIcons[id];
+    texPath = (const char*)iconEntry;
+    if (texPath == NULL || texPath[0] == '\0') {
+        texPath = (const char*)gItemIconDekuStickTex;
+    }
+    pathLen = strlen(texPath) + 1;
+    if ((id < ITEM_MEDALLION_FOREST) && !isSongIcon) {
+        R_TEXTBOX_ICON_XPOS = R_TEXT_INIT_XPOS - sIconItem32XOffsets[language];
+        R_TEXTBOX_ICON_YPOS = y + 6;
+        R_TEXTBOX_ICON_SIZE = 32;
+        memcpy((void*)((uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE), texPath, pathLen);
+        osSyncPrintf("アイテム32-0\n");
+    } else {
+        R_TEXTBOX_ICON_XPOS = R_TEXT_INIT_XPOS - sIconItem24XOffsets[language];
+        R_TEXTBOX_ICON_YPOS = y + 10;
+        R_TEXTBOX_ICON_SIZE = 24;
+        memcpy((void*)((uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE), texPath, pathLen);
+        osSyncPrintf("アイテム24＝%d (%d) {%d}\n", id, id - ITEM_KOKIRI_EMERALD, 84);
+    }
+}
+
+static bool Message_GetSongIconTint(u16 itemId, u8* r, u8* g, u8* b) {
+    switch (itemId) {
+        case ITEM_SONG_LULLABY:
+            *r = 224;
+            *g = 107;
+            *b = 255;
+            return true;
+        case ITEM_SONG_EPONA:
+            *r = 255;
+            *g = 195;
+            *b = 60;
+            return true;
+        case ITEM_SONG_SARIA:
+            *r = 127;
+            *g = 255;
+            *b = 137;
+            return true;
+        case ITEM_SONG_SUN:
+            *r = 255;
+            *g = 255;
+            *b = 60;
+            return true;
+        case ITEM_SONG_TIME:
+            *r = 119;
+            *g = 236;
+            *b = 255;
+            return true;
+        case ITEM_SONG_STORMS:
+            *r = 165;
+            *g = 165;
+            *b = 165;
+            return true;
+        case ITEM_SONG_MINUET:
+            *r = 150;
+            *g = 255;
+            *b = 100;
+            return true;
+        case ITEM_SONG_BOLERO:
+            *r = 255;
+            *g = 80;
+            *b = 40;
+            return true;
+        case ITEM_SONG_SERENADE:
+            *r = 100;
+            *g = 150;
+            *b = 255;
+            return true;
+        case ITEM_SONG_REQUIEM:
+            *r = 255;
+            *g = 160;
+            *b = 0;
+            return true;
+        case ITEM_SONG_NOCTURNE:
+            *r = 255;
+            *g = 100;
+            *b = 255;
+            return true;
+        case ITEM_SONG_PRELUDE:
+            *r = 255;
+            *g = 240;
+            *b = 100;
+            return true;
+        default:
+            return false;
+    }
+}
+
 u16 Message_DrawItemIcon(PlayState* play, u16 itemId, Gfx** p, u16 i) {
     s32 pad;
     Gfx* gfx = *p;
@@ -853,20 +971,52 @@ u16 Message_DrawItemIcon(PlayState* play, u16 itemId, Gfx** p, u16 i) {
     // Invalidate icon texture as it may have changed from the last time a text box had an icon
     gSPInvalidateTexCache(gfx++, (uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE);
 
-    if (GameInteractor_Should(VB_DRAW_ITEM_ICON, itemId < ITEM_CUSTOM, &gfx)) {
-        if (itemId >= ITEM_MEDALLION_FOREST) {
-            gDPLoadTextureBlock(gfx++, (uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE, G_IM_FMT_RGBA,
-                                G_IM_SIZ_32b, 24, 24, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
-                                G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+    s32 drawKind = -2;
+    s32 iconDrawWidth = R_TEXTBOX_ICON_SIZE;
+    s32 iconDrawHeight = R_TEXTBOX_ICON_SIZE;
+
+    if (itemId < ITEM_CUSTOM) {
+        if (GameInteractor_Should(VB_DRAW_ITEM_ICON, true, &gfx)) {
+            u16 iconIdClamped = itemId;
+            u8 songR;
+            u8 songG;
+            u8 songB;
+            if (iconIdClamped >= ARRAY_COUNT(gItemIcons)) {
+                iconIdClamped = ITEM_STICK;
+            }
+            Message_SetTextboxItemIconFromItemId(play, itemId, (s16)(R_TEXTBOX_Y + 10));
+            if (Message_GetSongIconTint(iconIdClamped, &songR, &songG, &songB)) {
+                gDPSetPrimColor(gfx++, 0, 0, songR, songG, songB, msgCtx->textColorAlpha);
+            }
+            if ((iconIdClamped >= ITEM_SONG_MINUET) && (iconIdClamped <= ITEM_SONG_STORMS)) {
+                gDPLoadTextureBlock(gfx++, (uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE, G_IM_FMT_IA,
+                                    G_IM_SIZ_8b, 16, 24, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
+                                    G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                drawKind = 16;
+                iconDrawWidth = 16;
+                iconDrawHeight = 24;
+            } else if (iconIdClamped >= ITEM_MEDALLION_FOREST) {
+                gDPLoadTextureBlock(gfx++, (uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE, G_IM_FMT_RGBA,
+                                    G_IM_SIZ_32b, 24, 24, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
+                                    G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                drawKind = 24;
+            } else {
+                gDPLoadTextureBlock(gfx++, (uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE, G_IM_FMT_RGBA,
+                                    G_IM_SIZ_32b, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
+                                    G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                drawKind = 32;
+            }
         } else {
-            gDPLoadTextureBlock(gfx++, (uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE, G_IM_FMT_RGBA,
-                                G_IM_SIZ_32b, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
-                                G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+            drawKind = -1;
         }
+    } else {
+        Randomizer_Message_RefreshCustomItemIconAtDraw(sDisplayNextMessageAsEnglish ? 1 : 0);
+        Randomizer_Message_AppendSegmentIconGfx(&gfx);
+        drawKind = 0;
     }
     gSPTextureRectangle(gfx++, (msgCtx->textPosX + R_TEXTBOX_ICON_XPOS) << 2, R_TEXTBOX_ICON_YPOS << 2,
-                        (msgCtx->textPosX + R_TEXTBOX_ICON_XPOS + R_TEXTBOX_ICON_SIZE) << 2,
-                        (R_TEXTBOX_ICON_YPOS + R_TEXTBOX_ICON_SIZE) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+                        (msgCtx->textPosX + R_TEXTBOX_ICON_XPOS + iconDrawWidth) << 2,
+                        (R_TEXTBOX_ICON_YPOS + iconDrawHeight) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
     gDPPipeSync(gfx++);
     gDPSetCombineLERP(gfx++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0);
 
@@ -1640,33 +1790,9 @@ void Message_DrawText(PlayState* play, Gfx** gfxP) {
 }
 
 void Message_LoadItemIcon(PlayState* play, u16 itemId, s16 y) {
-    static s16 sIconItem32XOffsets[] = { 74, 74, 74, 54 };
-    static s16 sIconItem24XOffsets[] = { 72, 72, 72, 50 };
     MessageContext* msgCtx = &play->msgCtx;
-    InterfaceContext* interfaceCtx = &play->interfaceCtx;
-    u8 language = sDisplayNextMessageAsEnglish ? LANGUAGE_ENG : gSaveContext.language;
 
-    if (itemId == ITEM_DUNGEON_MAP) {
-        interfaceCtx->mapPalette[30] = 0xFF;
-        interfaceCtx->mapPalette[31] = 0xFF;
-    }
-    if (itemId < ITEM_MEDALLION_FOREST) {
-        R_TEXTBOX_ICON_XPOS = R_TEXT_INIT_XPOS - sIconItem32XOffsets[language];
-        R_TEXTBOX_ICON_YPOS = y + 6;
-        R_TEXTBOX_ICON_SIZE = 32;
-        memcpy((uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE, gItemIcons[itemId],
-               strlen(gItemIcons[itemId]) + 1);
-        // "Item 32-0"
-        osSyncPrintf("アイテム32-0\n");
-    } else {
-        R_TEXTBOX_ICON_XPOS = R_TEXT_INIT_XPOS - sIconItem24XOffsets[language];
-        R_TEXTBOX_ICON_YPOS = y + 10;
-        R_TEXTBOX_ICON_SIZE = 24;
-        memcpy((uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE, gItemIcons[itemId],
-               strlen(gItemIcons[itemId]) + 1);
-        // "Item 24"
-        osSyncPrintf("アイテム24＝%d (%d) {%d}\n", itemId, itemId - ITEM_KOKIRI_EMERALD, 84);
-    }
+    Message_SetTextboxItemIconFromItemId(play, itemId, y);
     msgCtx->msgBufPos++;
     msgCtx->choiceNum = 1;
 }
@@ -1924,6 +2050,7 @@ void Message_DecodeJPN(PlayState* play) {
     s16 digits[4];
     u16 value;
     s16 decodedBufPos = 0;
+    s16 itemIconDecodedPos = -1;
     s16 i;
     s16 j;
     f32 timeInSeconds;
@@ -2223,10 +2350,22 @@ void Message_DecodeJPN(PlayState* play) {
                 }
             }
         } else if (curChar == MESSAGE_ITEM_ICON_JPN) {
-            msgCtx->msgBufDecodedWide[++decodedBufPos] = font->msgBufWide[msgCtx->msgBufPos + 1];
-            if (GameInteractor_Should(VB_LOAD_ITEM_ICON, (uint8_t)font->msgBuf[msgCtx->msgBufPos + 1] < ITEM_CUSTOM,
-                                      sDisplayNextMessageAsEnglish)) {
-                Message_LoadItemIcon(play, font->msgBufWide[msgCtx->msgBufPos + 1], R_TEXTBOX_Y + 10);
+            u16 messageItemIcon = font->msgBufWide[msgCtx->msgBufPos + 1];
+            u16 iconToLoad = messageItemIcon;
+            if (msgCtx->textId == 0xF8 && itemIconDecodedPos >= 0) {
+                msgCtx->msgBufDecodedWide[itemIconDecodedPos] = iconToLoad;
+            } else {
+                msgCtx->msgBufDecodedWide[++decodedBufPos] = iconToLoad;
+                itemIconDecodedPos = decodedBufPos;
+            }
+            if (iconToLoad < ITEM_CUSTOM) {
+                s32 loadPermitted =
+                    GameInteractor_Should(VB_LOAD_ITEM_ICON, true, sDisplayNextMessageAsEnglish) ? 1 : 0;
+                if (loadPermitted) {
+                    Message_LoadItemIcon(play, iconToLoad, R_TEXTBOX_Y + 10);
+                }
+            } else {
+                Randomizer_Message_DecodeLoadItemIcon(play, iconToLoad, sDisplayNextMessageAsEnglish ? 1 : 0);
             }
         } else if (curChar == MESSAGE_BACKGROUND_JPN) {
             msgCtx->textboxBackgroundIdx = font->msgBufWide[msgCtx->msgBufPos + 1] * 2;
@@ -2278,6 +2417,7 @@ void Message_Decode(PlayState* play) {
     s32 charTexIdx = 0;
     s16 playerNameLen;
     s16 decodedBufPos = 0;
+    s16 itemIconDecodedPos = -1;
     s16 numLines = 0;
     s16 i;
     s16 digits[4];
@@ -2654,12 +2794,23 @@ void Message_Decode(PlayState* play) {
             }
             decodedBufPos--;
         } else if (temp_s2 == MESSAGE_ITEM_ICON) {
-            msgCtx->msgBufDecoded[++decodedBufPos] = font->msgBuf[msgCtx->msgBufPos + 1];
-            osSyncPrintf("ITEM_NO=(%d) (%d)\n", msgCtx->msgBufDecoded[decodedBufPos],
-                         font->msgBuf[msgCtx->msgBufPos + 1]);
-            if (GameInteractor_Should(VB_LOAD_ITEM_ICON, (uint8_t)font->msgBuf[msgCtx->msgBufPos + 1] < ITEM_CUSTOM,
-                                      sDisplayNextMessageAsEnglish)) {
-                Message_LoadItemIcon(play, font->msgBuf[msgCtx->msgBufPos + 1], R_TEXTBOX_Y + 10);
+            u16 messageItemIcon = (uint8_t)font->msgBuf[msgCtx->msgBufPos + 1];
+            u16 iconToLoad = messageItemIcon;
+            if (msgCtx->textId == 0xF8 && itemIconDecodedPos >= 0) {
+                msgCtx->msgBufDecoded[itemIconDecodedPos] = iconToLoad;
+            } else {
+                msgCtx->msgBufDecoded[++decodedBufPos] = iconToLoad;
+                itemIconDecodedPos = decodedBufPos;
+            }
+            osSyncPrintf("ITEM_NO=(%d) (%d)\n", iconToLoad, iconToLoad);
+            if (iconToLoad < ITEM_CUSTOM) {
+                s32 loadPermitted =
+                    GameInteractor_Should(VB_LOAD_ITEM_ICON, true, sDisplayNextMessageAsEnglish) ? 1 : 0;
+                if (loadPermitted) {
+                    Message_LoadItemIcon(play, iconToLoad, R_TEXTBOX_Y + 10);
+                }
+            } else {
+                Randomizer_Message_DecodeLoadItemIcon(play, iconToLoad, sDisplayNextMessageAsEnglish ? 1 : 0);
             }
         } else if (temp_s2 == MESSAGE_BACKGROUND) {
             msgCtx->textboxBackgroundIdx = font->msgBuf[msgCtx->msgBufPos + 1] * 2;

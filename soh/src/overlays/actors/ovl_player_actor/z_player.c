@@ -14135,6 +14135,10 @@ s32 func_8084DFF4(PlayState* play, Player* this) {
         } else {
             giEntry = this->getItemEntry;
         }
+        // SOH [Randomizer]: Message_OpenText / custom text hooks read player->getItemEntry. Without syncing,
+        // that struct can lag behind the resolved giEntry used here (same mismatch path as ItemTable_Retrieve).
+        this->getItemEntry = giEntry;
+        this->getItemId = giEntry.getItemId;
         this->av1.actionVar1 = 1;
         equipItem = giEntry.itemId;
         equipNow = CVarGetInteger(CVAR_ENHANCEMENT("AskToEquip"), 0) && giEntry.modIndex == MOD_NONE &&

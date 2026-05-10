@@ -4646,7 +4646,18 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
         return Return_Item_Entry(giEntry, RG_NONE);
     }
     if (Rando::SplitSongs::IsProgressiveSong(item)) {
+        // Resolve display before applying progression so first pickup shows Part 1 and second shows Part 2.
+        RandomizerGet displayItem = Rando::SplitSongs::ResolveProgressiveSongStage(item);
+        if (displayItem == RG_NONE) {
+            const Rando::SplitSongDef* def = Rando::SplitSongs::GetSongDefFromProgressive(item);
+            if (def != nullptr) {
+                displayItem = def->part1;
+            }
+        }
         Rando::SplitSongs::OnProgressiveSongReceived(item);
+        if (displayItem != RG_NONE) {
+            return Return_Item_Entry(Rando::StaticData::RetrieveItem(displayItem).GetGIEntry_Copy(), RG_NONE);
+        }
         return Return_Item_Entry(giEntry, RG_NONE);
     }
 

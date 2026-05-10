@@ -8,6 +8,7 @@
 #include "settings.h"
 #include "rando_hash.h"
 #include "fishsanity.h"
+#include "split_songs.h"
 #include "macros.h"
 #include "3drando/hints.hpp"
 #include "soh/util.h"
@@ -401,6 +402,18 @@ GetItemEntry Context::GetFinalGIEntry(const RandomizerCheck rc, const bool check
         return ItemTableManager::Instance->RetrieveItemEntry(MOD_NONE, GI_RUPEE_BLUE);
     }
     GetItemEntry giEntry = itemLoc->GetPlacedItem().GetGIEntry_Copy();
+    if (SplitSongs::IsProgressiveSong(itemLoc->GetPlacedRandomizerGet())) {
+        RandomizerGet stage = SplitSongs::ResolveProgressiveSongStage(itemLoc->GetPlacedRandomizerGet());
+        if (stage == RG_NONE) {
+            const SplitSongDef* def = SplitSongs::GetSongDefFromProgressive(itemLoc->GetPlacedRandomizerGet());
+            if (def != nullptr) {
+                stage = def->part1;
+            }
+        }
+        if (stage != RG_NONE) {
+            giEntry = StaticData::RetrieveItem(stage).GetGIEntry_Copy();
+        }
+    }
     if (overrides.contains(rc)) {
         const auto fakeGiEntry = StaticData::RetrieveItem(overrides[rc].LooksLike()).GetGIEntry();
         giEntry.gid = fakeGiEntry->gid;
