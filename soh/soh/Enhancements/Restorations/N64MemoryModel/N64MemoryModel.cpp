@@ -2,6 +2,7 @@
 
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
+#include "soh/ActorDB.h"
 
 extern "C" {
 #include "N64MemoryModel.hpp"
@@ -44,7 +45,7 @@ static s16 sOriginalActorId = -1;
 // Returns the actor ID to use for size lookups.  If an original actor ID override is set (enemy randomizer active),
 // returns that; otherwise returns the passed actorId unchanged.
 static u16 ResolveSizeActorId(s16 actorId) {
-    return sOriginalActorId >= 0 ? static_cast<u16>(sOriginalActorId) : static_cast<u16>(actorId);
+    return (sOriginalActorId >= 0) ? static_cast<u16>(sOriginalActorId) : static_cast<u16>(actorId);
 }
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -212,6 +213,14 @@ s32 N64Mem_AllocOverlay(s16 actorId, u16 allocType) {
     const u32 overlaySize = N64SizeData_GetActorOverlaySize(ResolveSizeActorId(actorId));
     if (overlaySize == 0) {
         return 1;
+    }
+
+    // When the enemy randomizer is active, use the original actor's allocType so the shadow takes the same path
+    // N64 would have taken for the unsubstituted actor (i.e., a regular enemy replaced by an ABSOLUTE mini-boss
+    // should still shadow as ALLOCTYPE_NORMAL).
+    if (sOriginalActorId >= 0) {
+        const auto& entry = ActorDB::Instance->RetrieveEntry(sOriginalActorId);
+        allocType = entry.entry.allocType;
     }
 
     // ABSOLUTE: Shared fixed-size buffer, allocated once via MallocR.
