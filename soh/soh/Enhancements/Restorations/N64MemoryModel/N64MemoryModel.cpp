@@ -180,18 +180,18 @@ void N64Mem_Reset(PlayState* play) {
             return;
         }
 
+        // On N64, the instance region develops internal fragmentation gaps from alloc/free cycling during room
+        // transitions (partially caused by Bg_Spot02_Objects being in Room 0 on N64 but Room 1 on SoH, and by
+        // En_Firefly/En_Sw transient overlay churn).  These gaps absorb the per-cycle Object_Kankyo instance leak
+        // (~0x1680 each) without shrinking the main free block.  The model's clean coalescing has no such gaps, so
+        // leaked instances eat the main block directly.  This correction accounts for the gap-structure mismatch
+        // until the upstream scene-data divergences are resolved.
+        if (constexpr u32 instanceGapCorrection = 0x1680; shadowArenaSize > instanceGapCorrection) {
+            shadowArenaSize -= instanceGapCorrection;
+        }
+
         SPDLOG_INFO("[N64MemoryModel] Shadow arena size=0x{:X} for scene 0x{:X}", shadowArenaSize, play->sceneNum);
         ShadowArena_Init(&sShadow, shadowArenaSize);
-
-        // On N64, overlays that survive across scene transitions (ALLOCTYPE_PERMANENT, or any type with numLoaded > 0
-        // from a prior scene) remain in ZeldaArena.  The shadow was just destroyed and recreated, but numLoaded
-        // persists in the ActorDB.  Re-allocate overlay shadows for any actor type still loaded.
-        for (std::size_t id = 0; id < ACTOR_ID_MAX; id++) {
-            if (const auto& entry = ActorDB::Instance->RetrieveEntry(id);
-                entry.entry.valid && entry.entry.numLoaded > 0) {
-                N64Mem_AllocOverlay(static_cast<s16>(id), entry.entry.allocType);
-            }
-        }
 
         sTraceEnabled = play->sceneNum == SCENE_GRAVEYARD;
     }
