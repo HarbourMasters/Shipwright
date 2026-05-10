@@ -2597,7 +2597,10 @@ void Actor_UpdateAll(PlayState* play, ActorContext* actorCtx) {
         }
         play->numSetupActors = 0;
         GameInteractor_ExecuteOnSceneSpawnActors();
+
+        // #region SOH Enhancement - N64 Memory Model
         N64Mem_BenchmarkTransition(play);
+        // #endregion
     }
 
     if (actorCtx->unk_02 != 0) {
@@ -3367,10 +3370,8 @@ Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 pos
     }
 
     // #region SOH [Enhancement] - N64 Memory Model
-    if (dbEntry->numLoaded == 0)
-    {
-        if (!N64Mem_AllocOverlay(actorId, dbEntry->allocType))
-        {
+    if (dbEntry->numLoaded == 0) {
+        if (!N64Mem_AllocOverlay(actorId, dbEntry->allocType)) {
             Actor_FreeOverlay(dbEntry);
             return NULL;
         }
@@ -3388,8 +3389,7 @@ Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 pos
     }
 
     // #region SOH [Enhancement] - N64 Memory Model
-    if (!N64Mem_AllocInstance(actorId, actor))
-    {
+    if (!N64Mem_AllocInstance(actorId, actor)) {
         ZELDA_ARENA_FREE_DEBUG(actor);
         Actor_FreeOverlay(dbEntry);
         return NULL;
@@ -3438,6 +3438,10 @@ Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 pos
     temp = gSegments[6];
     Actor_Init(actor, play);
     gSegments[6] = temp;
+
+    // #region SOH [Enhancement] - N64 Memory Model
+    N64Mem_ClearOriginalActorId();
+    // #endregion
 
     GameInteractor_ExecuteOnActorSpawn(actor);
 

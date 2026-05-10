@@ -6945,8 +6945,7 @@ Camera* Camera_Create(View* view, CollisionContext* colCtx, PlayState* play) {
 
     if (newCamera != NULL) {
         // #region SOH [Enhancement] - N64 Memory Model
-        if (!N64Mem_AllocSubsidiary(newCamera, N64_SIZEOF_CAMERA))
-        {
+        if (!N64Mem_AllocSubsidiary(newCamera, N64_SIZEOF_CAMERA)) {
             ZELDA_ARENA_FREE_DEBUG(newCamera);
             return NULL;
         }

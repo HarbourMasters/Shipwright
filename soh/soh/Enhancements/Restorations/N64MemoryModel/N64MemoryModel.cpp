@@ -279,12 +279,10 @@ void N64Mem_FreeOverlay(s16 actorId, u16 allocType) {
 
 s32 N64Mem_AllocInstance(s16 actorId, void* realPtr) {
     if (!sIsActive) {
-        sOriginalActorId = -1;
         return 1;
     }
 
     const u16 sizeId = ResolveSizeActorId(actorId);
-    sOriginalActorId = -1;
 
     if (actorId < 0 || actorId >= ACTOR_ID_MAX) {
         return 1;
@@ -331,6 +329,14 @@ void N64Mem_FreeInstance(void* realPtr) {
 
 s32 N64Mem_AllocSubsidiary(void* realPtr, u32 n64Size) {
     if (!sIsActive) {
+        return 1;
+    }
+
+    // When the enemy randomizer is active, the replacement actor's subsidiaries (colliders, skeleton tables, skin
+    // buffers) have different counts than the original's.  Rather than charge the wrong sizes, skip subsidiary
+    // tracking entirely for randomized actors -- instance and overlay sizes from the original are already correct
+    // and dominate heap pressure.
+    if (sOriginalActorId >= 0) {
         return 1;
     }
 
