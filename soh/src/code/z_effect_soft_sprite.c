@@ -185,7 +185,8 @@ void EffectSs_Spawn(PlayState* play, s32 type, s32 priority, void* initParams) {
     }
 
     // #region SOH [Enhancement] - N64 Memory Model
-    if (!N64Mem_AllocEffectOverlay(type)) {
+    if (!N64Mem_AllocEffectOverlay(type))
+    {
         return;
     }
     // #endregion

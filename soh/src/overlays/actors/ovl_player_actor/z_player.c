@@ -10848,9 +10848,11 @@ void Player_Init(Actor* thisx, PlayState* play2) {
     // title cards is 0x1000 * LANGUAGE_MAX since each title card image includes all languages.
 
     // #region SOH [Enhancement] - N64 Memory Model
-    void* giRaw = ZELDA_ARENA_MALLOC_DEBUG(0x3008);
-    N64Mem_AllocSubsidiary(giRaw, N64_SIZEOF_GI_OBJECT_SEGMENT);
-    this->giObjectSegment = (void*)((uintptr_t)giRaw + 8 & ~0xF);
+    {
+        void* giRaw = ZELDA_ARENA_MALLOC_DEBUG(0x3008);
+        N64Mem_AllocSubsidiary(giRaw, N64_SIZEOF_GI_OBJECT_SEGMENT);
+        this->giObjectSegment = (void*)((uintptr_t)giRaw + 8 & ~0xF);
+    }
     // #endregion
 
     respawnFlag = gSaveContext.respawnFlag;

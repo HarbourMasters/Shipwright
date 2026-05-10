@@ -384,7 +384,8 @@ s32 Collider_SetJntSphToActor(PlayState* play, ColliderJntSph* dest, ColliderJnt
     }
 
     // #region SOH [Enhancement] - N64 Memory Model
-    if (!N64Mem_AllocSubsidiary(dest->elements, src->count * N64_SIZEOF_COLLIDER_JNT_SPH_ELEM)) {
+    if (!N64Mem_AllocSubsidiary(dest->elements, src->count * N64_SIZEOF_COLLIDER_JNT_SPH_ELEM))
+    {
         ZELDA_ARENA_FREE_DEBUG(dest->elements);
         dest->elements = NULL;
         dest->count = 0;
@@ -421,7 +422,8 @@ s32 Collider_SetJntSphAllocType1(PlayState* play, ColliderJntSph* dest, Actor* a
     }
 
     // #region SOH [Enhancement] - N64 Memory Model
-    if (!N64Mem_AllocSubsidiary(dest->elements, src->count * N64_SIZEOF_COLLIDER_JNT_SPH_ELEM)) {
+    if (!N64Mem_AllocSubsidiary(dest->elements, src->count * N64_SIZEOF_COLLIDER_JNT_SPH_ELEM))
+    {
         ZELDA_ARENA_FREE_DEBUG(dest->elements);
         dest->elements = NULL;
         dest->count = 0;
@@ -458,7 +460,8 @@ s32 Collider_SetJntSphAlloc(PlayState* play, ColliderJntSph* dest, Actor* actor,
     }
 
     // #region SOH [Enhancement] - N64 Memory Model
-    if (!N64Mem_AllocSubsidiary(dest->elements, src->count * N64_SIZEOF_COLLIDER_JNT_SPH_ELEM)) {
+    if (!N64Mem_AllocSubsidiary(dest->elements, src->count * N64_SIZEOF_COLLIDER_JNT_SPH_ELEM))
+    {
         ZELDA_ARENA_FREE_DEBUG(dest->elements);
         dest->elements = NULL;
         dest->count = 0;
@@ -779,7 +782,8 @@ s32 Collider_SetTrisAllocType1(PlayState* play, ColliderTris* dest, Actor* actor
     }
 
     // #region SOH [Enhancement] - N64 Memory Model
-    if (!N64Mem_AllocSubsidiary(dest->elements, src->count * N64_SIZEOF_COLLIDER_TRIS_ELEM)) {
+    if (!N64Mem_AllocSubsidiary(dest->elements, src->count * N64_SIZEOF_COLLIDER_TRIS_ELEM))
+    {
         ZELDA_ARENA_FREE_DEBUG(dest->elements);
         dest->elements = NULL;
         dest->count = 0;
@@ -816,7 +820,8 @@ s32 Collider_SetTrisAlloc(PlayState* play, ColliderTris* dest, Actor* actor, Col
     }
 
     // #region SOH [Enhancement] - N64 Memory Model
-    if (!N64Mem_AllocSubsidiary(dest->elements, src->count * N64_SIZEOF_COLLIDER_TRIS_ELEM)) {
+    if (!N64Mem_AllocSubsidiary(dest->elements, src->count * N64_SIZEOF_COLLIDER_TRIS_ELEM))
+    {
         ZELDA_ARENA_FREE_DEBUG(dest->elements);
         dest->elements = NULL;
         dest->count = 0;
