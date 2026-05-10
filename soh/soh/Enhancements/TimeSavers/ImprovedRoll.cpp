@@ -13,9 +13,11 @@ void ImprovedRoll_Register() {
 
     COND_VB_SHOULD(VB_PLAYER_ROLL_STEER, CVAR_ROLL_CHAIN_VALUE && CVAR_ROLL_STEER_VALUE, {
         Player* player = va_arg(args, Player*);
-        va_arg(args, PlayState*);
+        PlayState* play = va_arg(args, PlayState*);
         s16 yawTarget = (s16)va_arg(args, int);
-        Math_ScaledStepToS(&player->actor.shape.rot.y, yawTarget, 0x200);
+        if (!CHECK_BTN_ALL(play->state.input[0].cur.button, BTN_Z)) {
+            Math_ScaledStepToS(&player->actor.shape.rot.y, yawTarget, 0x200);
+        }
         *should = false;
     });
 }
