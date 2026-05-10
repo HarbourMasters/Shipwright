@@ -17,9 +17,9 @@ static void LoadDmaFileSizes() {
     sIsDmaLoaded = true;
 
     const auto file =
-        Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->LoadFile("misc/dma_sizes");
+        Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->LoadFile("misc/n64_memory/dma_sizes");
     if (!file || !file->IsLoaded) {
-        SPDLOG_ERROR("[N64SizeData] Failed to load misc/dma_sizes from OTR.");
+        SPDLOG_ERROR("[N64SizeData] Failed to load misc/n64_memory/dma_sizes from OTR.");
         return;
     }
 
@@ -54,9 +54,10 @@ static void LoadActorOverlaySizes() {
     sIsActorOverlayLoaded = true;
 
     const auto file =
-        Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->LoadFile("misc/actor_overlay_sizes");
+        Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->LoadFile(
+            "misc/n64_memory/actor_overlay_sizes");
     if (!file || !file->IsLoaded) {
-        SPDLOG_ERROR("[N64SizeData] Failed to load misc/actor_overlay_sizes from OTR.");
+        SPDLOG_ERROR("[N64SizeData] Failed to load misc/n64_memory/actor_overlay_sizes from OTR.");
         return;
     }
 
@@ -91,9 +92,10 @@ static void LoadEffectOverlaySizes() {
     sIsEffectOverlayLoaded = true;
 
     const auto file =
-        Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->LoadFile("misc/effect_overlay_sizes");
+        Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->LoadFile(
+            "misc/n64_memory/effect_overlay_sizes");
     if (!file || !file->IsLoaded) {
-        SPDLOG_ERROR("[N64SizeData] Failed to load misc/effect_overlay_sizes from OTR.");
+        SPDLOG_ERROR("[N64SizeData] Failed to load misc/n64_memory/effect_overlay_sizes from OTR.");
         return;
     }
 
@@ -129,9 +131,10 @@ static void LoadActorInstanceSizes() {
     sIsActorInstanceLoaded = true;
 
     const auto file =
-        Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->LoadFile("misc/actor_instance_sizes");
+        Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->LoadFile(
+            "misc/n64_memory/actor_instance_sizes");
     if (!file || !file->IsLoaded) {
-        SPDLOG_ERROR("[N64SizeData] Failed to load misc/actor_instance_sizes from OTR.");
+        SPDLOG_ERROR("[N64SizeData] Failed to load misc/n64_memory/actor_instance_sizes from OTR.");
         return;
     }
 
@@ -211,9 +214,10 @@ static void LoadKaleidoVramSize() {
     sIsKaleidoLoaded = true;
 
     const auto file =
-        Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->LoadFile("misc/kaleido_vram_size");
+        Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->LoadFile(
+            "misc/n64_memory/kaleido_vram_size");
     if (!file || !file->IsLoaded) {
-        SPDLOG_ERROR("[N64SizeData] Failed to load misc/kaleido_vram_size from OTR.");
+        SPDLOG_ERROR("[N64SizeData] Failed to load misc/n64_memory/kaleido_vram_size from OTR.");
         return;
     }
 
@@ -248,9 +252,10 @@ static void LoadArenaNodeSize() {
     sIsArenaNodeSizeLoaded = true;
 
     const auto file =
-        Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->LoadFile("misc/arena_node_size");
+        Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->LoadFile(
+            "misc/n64_memory/arena_node_size");
     if (!file || !file->IsLoaded) {
-        SPDLOG_WARN("[N64SizeData] Failed to load misc/arena_node_size from OTR, defaulting to 0x{:X}.",
+        SPDLOG_WARN("[N64SizeData] Failed to load misc/n64_memory/arena_node_size from OTR, defaulting to 0x{:X}.",
                     sArenaNodeSize);
         return;
     }
@@ -267,4 +272,48 @@ static void LoadArenaNodeSize() {
 extern "C" u32 N64SizeData_GetArenaNodeSize() {
     LoadArenaNodeSize();
     return sArenaNodeSize;
+}
+
+// --------------------------------------------------------------------------------------------------------------------
+// N64 LANGUAGE_MAX
+//
+// Format: single u32 -- LANGUAGE_MAX for this ROM version (2 for NTSC, 3 for PAL)
+// Used to compute the GI object segment size: 0x1000 * LANGUAGE_MAX + 8.
+// --------------------------------------------------------------------------------------------------------------------
+
+static u32 sLanguageMax = 2; // Default to NTSC
+static bool sIsLanguageMaxLoaded = false;
+
+static void LoadLanguageMax() {
+    if (sIsLanguageMaxLoaded) {
+        return;
+    }
+
+    sIsLanguageMaxLoaded = true;
+
+    const auto file =
+        Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->LoadFile(
+            "misc/n64_memory/language_max");
+    if (!file || !file->IsLoaded) {
+        SPDLOG_WARN("[N64SizeData] Failed to load misc/n64_memory/n64_language_max from OTR, defaulting to {}.",
+                    sLanguageMax);
+        return;
+    }
+
+    auto stream = std::make_shared<Ship::MemoryStream>(file->Buffer->data(), file->Buffer->size());
+    const auto reader = std::make_shared<Ship::BinaryReader>(stream);
+    reader->SetEndianness(Ship::Endianness::Big);
+
+    sLanguageMax = reader->ReadUInt32();
+
+    SPDLOG_INFO("[N64SizeData] N64 LANGUAGE_MAX: {}.", sLanguageMax);
+}
+
+extern "C" u32 N64SizeData_GetLanguageMax() {
+    LoadLanguageMax();
+    return sLanguageMax;
+}
+
+extern "C" u32 N64SizeData_GetGiObjectSegmentSize() {
+    return 0x1000 * N64SizeData_GetLanguageMax() + 8;
 }

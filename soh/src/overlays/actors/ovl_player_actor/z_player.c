@@ -30,6 +30,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/randomizer/randomizer_grotto.h"
 #include "soh/Enhancements/Restorations/N64MemoryModel/N64MemoryModel.hpp"
+#include "soh/Enhancements/Restorations/N64MemoryModel/N64SizeData.hpp"
 #include "soh/frame_interpolation.h"
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
@@ -10849,7 +10850,7 @@ void Player_Init(Actor* thisx, PlayState* play2) {
 
     // #region SOH [Enhancement] - N64 Memory Model
     void* giRaw = ZELDA_ARENA_MALLOC_DEBUG(0x3008);
-    N64Mem_AllocSubsidiary(giRaw, N64_SIZEOF_GI_OBJECT_SEGMENT);
+    N64Mem_AllocSubsidiary(giRaw, N64SizeData_GetGiObjectSegmentSize());
     this->giObjectSegment = (void*)((uintptr_t)giRaw + 8 & ~0xF);
     // #endregion
 
