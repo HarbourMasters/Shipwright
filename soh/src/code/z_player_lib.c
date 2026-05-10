@@ -1608,9 +1608,11 @@ void Player_DrawGetItemIceTrap(PlayState* play, Player* this, Vec3f* refPos, s32
             gDPSetEnvColor(POLY_XLU_DISP++, 0, 50, 100, 255);
             gSPDisplayList(POLY_XLU_DISP++, gEffIceFragment3DL);
 
-            // Reset matrix for the fake item model because we're animating the size of the ice block around it before this.
+            // Reset matrix for the fake item model because we're animating the size of the ice block around it before
+            // this.
             Matrix_Translate(refPos->x + (3.3f * Math_SinS(this->actor.shape.rot.y)), refPos->y + height,
-                             refPos->z + ((3.3f + (IREG(90) / 10.0f)) * Math_CosS(this->actor.shape.rot.y)), MTXMODE_NEW);
+                             refPos->z + ((3.3f + (IREG(90) / 10.0f)) * Math_CosS(this->actor.shape.rot.y)),
+                             MTXMODE_NEW);
             Matrix_RotateZYX(0, play->gameplayFrames * 1000, 0, MTXMODE_APPLY);
             Matrix_Scale(0.2f, 0.2f, 0.2f, MTXMODE_APPLY);
         }
