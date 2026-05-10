@@ -36,6 +36,17 @@ static u32 sAbsoluteSpaceShadow = SHADOW_NULL;
 // Maps real pointers (instances and subsidiaries) to their shadow offsets.
 static std::unordered_map<void*, u32> sShadowMap;
 
+// When the enemy randomizer replaces an actor, this holds the ORIGINAL actor ID so that shadow allocations are charged
+// at the original N64 size rather than the replacement's size.  Set by N64Mem_SetOriginalActorId before Actor_Spawn,
+// cleared by N64Mem_ClearOriginalActorId after Actor_Spawn returns.  -1 means no override (use the passed actorId).
+static s16 sOriginalActorId = -1;
+
+// Returns the actor ID to use for size lookups.  If an original actor ID override is set (enemy randomizer active),
+// returns that; otherwise returns the passed actorId unchanged.
+static u16 ResolveSizeActorId(s16 actorId) {
+    return sOriginalActorId >= 0 ? static_cast<u16>(sOriginalActorId) : static_cast<u16>(actorId);
+}
+
 // --------------------------------------------------------------------------------------------------------------------
 // Diagnostics
 // --------------------------------------------------------------------------------------------------------------------
@@ -177,6 +188,14 @@ void N64Mem_LogState(const char* context) {
     }
 }
 
+void N64Mem_SetOriginalActorId(s16 actorId) {
+    sOriginalActorId = actorId;
+}
+
+void N64Mem_ClearOriginalActorId() {
+    sOriginalActorId = -1;
+}
+
 // --------------------------------------------------------------------------------------------------------------------
 // Actor overlays
 // --------------------------------------------------------------------------------------------------------------------
@@ -190,7 +209,7 @@ s32 N64Mem_AllocOverlay(s16 actorId, u16 allocType) {
         return 1;
     }
 
-    const u32 overlaySize = N64SizeData_GetActorOverlaySize(actorId);
+    const u32 overlaySize = N64SizeData_GetActorOverlaySize(ResolveSizeActorId(actorId));
     if (overlaySize == 0) {
         return 1;
     }
@@ -251,14 +270,18 @@ void N64Mem_FreeOverlay(s16 actorId, u16 allocType) {
 
 s32 N64Mem_AllocInstance(s16 actorId, void* realPtr) {
     if (!sIsActive) {
+        sOriginalActorId = -1;
         return 1;
     }
+
+    const u16 sizeId = ResolveSizeActorId(actorId);
+    sOriginalActorId = -1;
 
     if (actorId < 0 || actorId >= ACTOR_ID_MAX) {
         return 1;
     }
 
-    const u32 instanceSize = N64SizeData_GetActorInstanceSize(actorId);
+    const u32 instanceSize = N64SizeData_GetActorInstanceSize(sizeId);
     if (instanceSize == 0) {
         return 1;
     }

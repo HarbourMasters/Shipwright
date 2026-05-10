@@ -42,6 +42,21 @@ struct ShadowArena* N64Mem_GetShadowArena(void);
 // Log the current shadow arena state (alloc/free/largest) with the given context label.
 void N64Mem_LogState(const char* context);
 
+// --------------------------------------------------------------------------------------------------------------------
+// Enemy randomizer compatibility
+//
+// When the enemy randomizer replaces an actor, the shadow arena should charge the ORIGINAL actor's N64 sizes (overlay
+// and instance) rather than the replacement's.  This preserves authentic N64 heap geometry — memory-dependent
+// behaviors (SRM, ACE, spawn failure thresholds) remain consistent regardless of which enemies are on screen.
+//
+// Call SetOriginalActorId with the scene's original actor ID before Actor_Spawn, and ClearOriginalActorId after
+// Actor_Spawn returns.  When set, overlay and instance size lookups use the original ID; all other tracking (overlay
+// ref counting, instance pointer mapping) uses the actual spawned actor ID.
+// --------------------------------------------------------------------------------------------------------------------
+
+void N64Mem_SetOriginalActorId(s16 actorId);
+void N64Mem_ClearOriginalActorId(void);
+
 // Log Graveyard benchmark data (transition count, largest_free, total_free).  Call after room actors are spawned.
 void N64Mem_BenchmarkTransition(PlayState* play);
 

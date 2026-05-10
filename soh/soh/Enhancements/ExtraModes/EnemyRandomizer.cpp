@@ -9,6 +9,7 @@
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/SohGui/MenuTypes.h"
 #include "soh/SohGui/SohMenu.h"
+#include "soh/Enhancements/Restorations/N64MemoryModel/N64MemoryModel.hpp"
 
 extern "C" {
 #include <z64.h>
@@ -458,8 +459,18 @@ uint8_t GetRandomizedEnemy(PlayState* play, int16_t* actorId, s16* posX, s16* po
             play->sceneNum + *actorId + (int)*posX + (int)*posY + (int)*posZ + *rotX + *rotY + *rotZ + *params;
         EnemyEntry randomEnemy = GetRandomizedEnemyEntry(seed, play);
 
+        // #region SOH [Enhancement] - N64 Memory Model
+        const s16 originalActorId = *actorId;
+        // #endregion
+
         *actorId = randomEnemy.id;
         *params = randomEnemy.params;
+
+        // #region SOH [Enhancement] - N64 Memory Model
+        // Tell the N64 memory model to charge the original actor's N64 sizes for this spawn, preserving authentic
+        // heap geometry regardless of which enemy the randomizer substitutes.
+        N64Mem_SetOriginalActorId(originalActorId);
+        // #endregion
 
         // Straighten out enemies so they aren't flipped on their sides when the original spawn is.
         *rotX = 0;
