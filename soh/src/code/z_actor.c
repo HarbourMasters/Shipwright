@@ -14,7 +14,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/nametag.h"
-#include "soh/Enhancements/Restorations/N64MemoryModel/N64MemoryModel.hpp"
+#include "soh/Enhancements/Restorations/HardwareMemoryLimits/HardwareMemoryLimits.hpp"
 
 #include "soh/ActorDB.h"
 #include "soh/OTRGlobals.h"
@@ -2598,7 +2598,8 @@ void Actor_UpdateAll(PlayState* play, ActorContext* actorCtx) {
         play->numSetupActors = 0;
         GameInteractor_ExecuteOnSceneSpawnActors();
 
-        // #region SOH Enhancement - N64 Memory Model
+        // #region SOH [Enhancement] - Hardware Memory Limits
+        // Log shadow heap stats after each room transition for hardware validation.
         N64Mem_BenchmarkTransition(play);
         // #endregion
     }
@@ -2659,21 +2660,10 @@ void Actor_UpdateAll(PlayState* play, ActorContext* actorCtx) {
                 CollisionCheck_ResetDamage(&actor->colChkInfo);
                 actor = actor->next;
             } else if (actor->update == NULL) {
-                // #region SOH [Enhancement] - N64 Memory Model
-                // Same-draw distance distinction as the room-change kill path: Use N64's culling check to determine
-                // whether this actor would have been drawn, matching the immediate vs. deferred free oredering that
-                // shapes N64's heap geometry.
-                if (N64Mem_IsActive()) {
-                    const s32 n64WouldDraw = actor->init == NULL && actor->draw != NULL && (
-                                                     actor->flags & ACTOR_FLAG_DRAW_CULLING_DISABLED || func_800314D4(
-                                                         play, actor, &actor->projectedPos, actor->projectedW));
-                    if (!n64WouldDraw) {
-                        actor = Actor_Delete(&play->actorCtx, actor, play);
-                    } else {
-                        Actor_Destroy(actor, play);
-                        actor = actor->next;
-                    }
-                } else if (!actor->isDrawn) {
+                // #region SOH [Enhancement] - Hardware Memory Limits
+                // Force the immediate Actor_Delete path for killed actors so the shadow arena's free ordering stays
+                // consistent with original hardware behavior.
+                if (N64Mem_IsActive() || !actor->isDrawn) {
                 // #endregion
                     actor = Actor_Delete(&play->actorCtx, actor, play);
                 } else {
@@ -3367,7 +3357,9 @@ Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 pos
     s32 objBankIndex;
     u32 temp;
 
-    // #region SOH [Enhancement] - N64 Memory Model
+    // #region SOH [Enhancement] - Hardware Memory Limits
+    // Save the randomizer state before spawn.  Enemy Randomizer may swap the actor ID, so the shadow needs to know
+    // both the original and randomized IDs to allocate the correct sizes.
     const s32 n64MemSavedInit = N64Mem_GetRandomizedInit();
     // #endregion
 
@@ -3401,7 +3393,8 @@ Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 pos
         return NULL;
     }
 
-    // #region SOH [Enhancement] - N64 Memory Model
+    // #region SOH [Enhancement] - Hardware Memory Limits
+    // Shadow-allocate the actor's overlay code.  If the shadow heap is full, block the spawn.
     if (dbEntry->numLoaded == 0) {
         if (!N64Mem_AllocOverlay(actorId, dbEntry->allocType)) {
             Actor_FreeOverlay(dbEntry);
@@ -3420,7 +3413,8 @@ Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 pos
         return NULL;
     }
 
-    // #region SOH [Enhancement] - N64 Memory Model
+    // #region SOH [Enhancement] - Hardware Memory Limits
+    // Shadow-allocate the actor's instance struct.  If the shadow heap is full, block the spawn.
     if (!N64Mem_AllocInstance(actorId, params, actor)) {
         ZELDA_ARENA_FREE_DEBUG(actor);
         Actor_FreeOverlay(dbEntry);
@@ -3471,7 +3465,8 @@ Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 pos
     Actor_Init(actor, play);
     gSegments[6] = temp;
 
-    // #region SOH [Enhancement] - N64 Memory Model
+    // #region SOH [Enhancement] - Hardware Memory Limits
+    // Restore randomizer state after the actor's Init has run.
     N64Mem_ClearOriginalActorId();
     N64Mem_SetRandomizedInit(n64MemSavedInit);
     // #endregion
@@ -3593,7 +3588,9 @@ Actor* Actor_Delete(ActorContext* actorCtx, Actor* actor, PlayState* play) {
     ObjectExtension_Free(actor);
     // #endregion
 
-    // #region SOH [Enhancement] - N64 Memory Model
+    // #region SOH [Enhancement] - Hardware Memory Limits
+    // Shadow-free the actor instance.  Returns the original (pre-randomizer) actor ID so the overlay free uses the
+    // correct ID even when Enemy Randomizer swapped it at spawn time.
     const s16 n64MemOriginalId = N64Mem_FreeInstance(actor);
     const s16 n64MemActorId = n64MemOriginalId >= 0 ? n64MemOriginalId : actor->id;
     // #endregion
@@ -3602,7 +3599,8 @@ Actor* Actor_Delete(ActorContext* actorCtx, Actor* actor, PlayState* play) {
 
     dbEntry->numLoaded--;
 
-    // #region SOH [Enhancement] - N64 Memory Model
+    // #region SOH [Enhancement] - Hardware Memory Limits
+    // Shadow-free the overlay code when the last instance using it is deleted.
     if (dbEntry->numLoaded == 0) {
         N64Mem_FreeOverlay(n64MemActorId, dbEntry->allocType);
     }

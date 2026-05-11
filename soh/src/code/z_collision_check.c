@@ -2,7 +2,7 @@
 #include "vt.h"
 #include "overlays/effects/ovl_Effect_Ss_HitMark/z_eff_ss_hitmark.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
-#include "soh/Enhancements/Restorations/N64MemoryModel/N64MemoryModel.hpp"
+#include "soh/Enhancements/Restorations/HardwareMemoryLimits/HardwareMemoryLimits.hpp"
 #include <assert.h>
 
 typedef s32 (*ColChkResetFunc)(PlayState*, Collider*);
@@ -338,7 +338,8 @@ s32 Collider_FreeJntSph(PlayState* play, ColliderJntSph* collider) {
 
     collider->count = 0;
     if (collider->elements != NULL) {
-        // #region SOH [Enhancement] - N64 Memory Model
+        // #region SOH [Enhancement] - Hardware Memory Limits
+        // Collider element arrays are ZeldaArena allocations.  Track frees in the shadow heap.
         N64Mem_FreeSubsidiary(collider->elements);
         // #endregion
 
@@ -383,7 +384,7 @@ s32 Collider_SetJntSphToActor(PlayState* play, ColliderJntSph* dest, ColliderJnt
         return 0;
     }
 
-    // #region SOH [Enhancement] - N64 Memory Model
+    // #region SOH [Enhancement] - Hardware Memory Limits
     if (!N64Mem_AllocSubsidiary(dest->elements, src->count * N64_SIZEOF_COLLIDER_JNT_SPH_ELEM)) {
         ZELDA_ARENA_FREE_DEBUG(dest->elements);
         dest->elements = NULL;
@@ -420,7 +421,7 @@ s32 Collider_SetJntSphAllocType1(PlayState* play, ColliderJntSph* dest, Actor* a
         return 0;
     }
 
-    // #region SOH [Enhancement] - N64 Memory Model
+    // #region SOH [Enhancement] - Hardware Memory Limits
     if (!N64Mem_AllocSubsidiary(dest->elements, src->count * N64_SIZEOF_COLLIDER_JNT_SPH_ELEM)) {
         ZELDA_ARENA_FREE_DEBUG(dest->elements);
         dest->elements = NULL;
@@ -457,7 +458,7 @@ s32 Collider_SetJntSphAlloc(PlayState* play, ColliderJntSph* dest, Actor* actor,
         return 0;
     }
 
-    // #region SOH [Enhancement] - N64 Memory Model
+    // #region SOH [Enhancement] - Hardware Memory Limits
     if (!N64Mem_AllocSubsidiary(dest->elements, src->count * N64_SIZEOF_COLLIDER_JNT_SPH_ELEM)) {
         ZELDA_ARENA_FREE_DEBUG(dest->elements);
         dest->elements = NULL;
@@ -733,7 +734,7 @@ s32 Collider_FreeTris(PlayState* play, ColliderTris* tris) {
 
     tris->count = 0;
     if (tris->elements != NULL) {
-        // #region SOH [Enhancement] - N64 Memory Model
+        // #region SOH [Enhancement] - Hardware Memory Limits
         N64Mem_FreeSubsidiary(tris->elements);
         // #endregion
 
@@ -778,7 +779,7 @@ s32 Collider_SetTrisAllocType1(PlayState* play, ColliderTris* dest, Actor* actor
         return 0;
     }
 
-    // #region SOH [Enhancement] - N64 Memory Model
+    // #region SOH [Enhancement] - Hardware Memory Limits
     if (!N64Mem_AllocSubsidiary(dest->elements, src->count * N64_SIZEOF_COLLIDER_TRIS_ELEM)) {
         ZELDA_ARENA_FREE_DEBUG(dest->elements);
         dest->elements = NULL;
@@ -815,7 +816,7 @@ s32 Collider_SetTrisAlloc(PlayState* play, ColliderTris* dest, Actor* actor, Col
         return 0;
     }
 
-    // #region SOH [Enhancement] - N64 Memory Model
+    // #region SOH [Enhancement] - Hardware Memory Limits
     if (!N64Mem_AllocSubsidiary(dest->elements, src->count * N64_SIZEOF_COLLIDER_TRIS_ELEM)) {
         ZELDA_ARENA_FREE_DEBUG(dest->elements);
         dest->elements = NULL;

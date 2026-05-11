@@ -16,7 +16,7 @@ typedef struct {
     ActorFunc draw;
     ActorResetFunc reset;
     s32 numLoaded;
-    // #region SOH [Enhancement] - N64 Memory Model
+    // #region SOH [Enhancement] - Hardware Memory Limits
     AllocType allocType;
     // #endregion
 } ActorDBEntry;

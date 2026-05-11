@@ -1190,6 +1190,10 @@ void SohMenu::AddMenuEnhancements() {
         .CVar(CVAR_ENHANCEMENT("HoverFishing"))
         .Options(CheckboxOptions().Tooltip(
             "Restore a bug from NTSC 1.0 that allows casting the Fishing Rod while using the Hover Boots."));
+    AddWidget(path, "N64 Weird Frames", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("N64WeirdFrames"))
+        .Options(CheckboxOptions().Tooltip(
+        "Restores N64 Weird Frames allowing weirdshots and weirdslides to behave the same as N64."));
     AddWidget(path, "Bombchus Out of Bounds", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("BombchusOOB"))
         .Options(
@@ -1208,16 +1212,11 @@ void SohMenu::AddMenuEnhancements() {
         .Options(CheckboxOptions().Tooltip(
             "Restores a bug from NTSC 1.0/1.1 that allows you to obtain the eyeball frog from King Zora "
             "instead of the Zora Tunic by Holding Shield."));
-    AddWidget(path, "N64 Weird Frames", WIDGET_CVAR_CHECKBOX)
-        .CVar(CVAR_ENHANCEMENT("N64WeirdFrames"))
+    AddWidget(path, "Hardware Memory Limits", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("HardwareMemoryLimits"))
         .Options(CheckboxOptions().Tooltip(
-            "Restores N64 Weird Frames allowing weirdshots and weirdslides to behave the same as N64."));
-    AddWidget(path, "N64 Memory Model", WIDGET_CVAR_CHECKBOX)
-        .CVar(CVAR_ENHANCEMENT("N64MemoryModel"))
-        .Options(CheckboxOptions().Tooltip(
-            "Simulates N64 hardware memory limits.  Repeated room transitions will eventually prevent new actors "
-            "from spawning, matching original N64 behavior.\n"
-            "Required for authentic SRM and heap manipulation techniques."));
+            "Restores the memory limits from original hardware.  Actors will fail to spawn after repeated room "
+            "transitions, allowing heap manipulation techniques."));
 
     AddWidget(path, "Misc Restorations", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Fix L&Z Page Switch in Pause Menu", WIDGET_CVAR_CHECKBOX)

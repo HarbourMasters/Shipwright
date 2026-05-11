@@ -17,7 +17,7 @@ ActorDB* ActorDB::Instance;
 struct AddPair {
     const char* name;
     ActorInit& init;
-    // #region SOH [Enhancement] - N64 Memory Model
+    // #region SOH [Enhancement] - Hardware Memory Limits
     AllocType allocType;
     // #endregion
 };
@@ -475,7 +475,7 @@ ActorDB::ActorDB() {
     db.reserve(ACTOR_NUMBER_MAX); // reserve size for all initial entries so we don't do it for each
     for (const AddPair& pair : initialActorTable) {
         Entry& entry = AddEntry(pair.name, actorDescriptions[pair.init.id], pair.init);
-        // #region SOH [Enhancement] - N64 Memory Model
+        // #region SOH [Enhancement] - Hardware Memory Limits
         entry.entry.allocType = pair.allocType;
         // #endregion
     }

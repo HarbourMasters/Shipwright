@@ -29,8 +29,8 @@
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/randomizer/randomizer_grotto.h"
-#include "soh/Enhancements/Restorations/N64MemoryModel/N64MemoryModel.hpp"
-#include "soh/Enhancements/Restorations/N64MemoryModel/N64SizeData.hpp"
+#include "soh/Enhancements/Restorations/HardwareMemoryLimits/HardwareMemoryLimits.hpp"
+#include "soh/Enhancements/Restorations/HardwareMemoryLimits/N64SizeData.hpp"
 #include "soh/frame_interpolation.h"
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
@@ -10848,9 +10848,11 @@ void Player_Init(Actor* thisx, PlayState* play2) {
     // get item objects is 0x2000 (see the assert in func_8083AE40), and the maximum size for
     // title cards is 0x1000 * LANGUAGE_MAX since each title card image includes all languages.
 
-    // #region SOH [Enhancement] - N64 Memory Model
+    // #region SOH [Enhancement] - Hardware Memory Limits
+    // The GI objct segment holds the title card and get-item data.  On original hardware, this is a 0x3008-byte
+    // ZeldaArena allocation regardless of region.  Track it in the shadow.
     void* giRaw = ZELDA_ARENA_MALLOC_DEBUG(0x3008);
-    N64Mem_AllocSubsidiary(giRaw, N64SizeData_GetGiObjectSegmentSize());
+    N64Mem_AllocSubsidiary(giRaw, 0x3008);
     this->giObjectSegment = (void*)((uintptr_t)giRaw + 8 & ~0xF);
     // #endregion
 

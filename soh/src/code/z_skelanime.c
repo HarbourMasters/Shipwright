@@ -5,7 +5,7 @@
 #include <assert.h>
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/Enhancements/Restorations/N64MemoryModel/N64MemoryModel.hpp"
+#include "soh/Enhancements/Restorations/HardwareMemoryLimits/HardwareMemoryLimits.hpp"
 
 #define ANIM_INTERP 1
 
@@ -1130,13 +1130,13 @@ void SkelAnime_InitLink(PlayState* play, SkelAnime* skelAnime, FlexSkeletonHeade
     if (jointTable == NULL) {
         skelAnime->jointTable = ZELDA_ARENA_MALLOC_DEBUG(allocSize);
 
-        // #region SOH [Enhancement] - N64 Memory Model
+        // #region SOH [Enhancement] - Hardware Memory Limits
         N64Mem_AllocSubsidiary(skelAnime->jointTable, allocSize);
         // #endregion
 
         skelAnime->morphTable = ZELDA_ARENA_MALLOC_DEBUG(allocSize);
 
-        // #region SOH [Enhancement] - N64 Memory Model
+        // #region SOH [Enhancement] - Hardware Memory Limits
         N64Mem_AllocSubsidiary(skelAnime->morphTable, allocSize);
         // #endregion
     } else {
@@ -1468,13 +1468,13 @@ s32 SkelAnime_Init(PlayState* play, SkelAnime* skelAnime, SkeletonHeader* skelet
     if (jointTable == NULL) {
         skelAnime->jointTable = ZELDA_ARENA_MALLOC_DEBUG(skelAnime->limbCount * sizeof(*skelAnime->jointTable));
 
-        // #region SOH [Enhancement] - N64 Memory Model
+        // #region SOH [Enhancement] - Hardware Memory Limits
         N64Mem_AllocSubsidiary(skelAnime->jointTable, skelAnime->limbCount * sizeof(*skelAnime->jointTable));
         // #endregion
 
         skelAnime->morphTable = ZELDA_ARENA_MALLOC_DEBUG(skelAnime->limbCount * sizeof(*skelAnime->morphTable));
 
-        // #region SOH [Enhancement] - N64 Memory Model
+        // #region SOH [Enhancement] - Hardware Memory Limits
         N64Mem_AllocSubsidiary(skelAnime->morphTable, skelAnime->limbCount * sizeof(*skelAnime->morphTable));
         // #endregion
     } else {
@@ -1511,13 +1511,13 @@ s32 SkelAnime_InitFlex(PlayState* play, SkelAnime* skelAnime, FlexSkeletonHeader
     if (jointTable == NULL) {
         skelAnime->jointTable = ZELDA_ARENA_MALLOC_DEBUG(skelAnime->limbCount * sizeof(*skelAnime->jointTable));
 
-        // #region SOH [Enhancement] - N64 Memory Model
+        // #region SOH [Enhancement] - Hardware Memory Limits
         N64Mem_AllocSubsidiary(skelAnime->jointTable, skelAnime->limbCount * sizeof(*skelAnime->jointTable));
         // #endregion
 
         skelAnime->morphTable = ZELDA_ARENA_MALLOC_DEBUG(skelAnime->limbCount * sizeof(*skelAnime->morphTable));
 
-        // #region SOH [Enhancement] - N64 Memory Model
+        // #region SOH [Enhancement] - Hardware Memory Limits
         N64Mem_AllocSubsidiary(skelAnime->morphTable, skelAnime->limbCount * sizeof(*skelAnime->morphTable));
         // #endregion
     } else {
@@ -1552,13 +1552,13 @@ s32 SkelAnime_InitSkin(PlayState* play, SkelAnime* skelAnime, SkeletonHeader* sk
     skelAnime->skeleton = SEGMENTED_TO_VIRTUAL(skeletonHeader->segment);
     skelAnime->jointTable = ZELDA_ARENA_MALLOC_DEBUG(skelAnime->limbCount * sizeof(*skelAnime->jointTable));
 
-    // #region SOH [Enhancement] - N64 Memory Model
+    // #region SOH [Enhancement] - Hardware Memory Limits
     N64Mem_AllocSubsidiary(skelAnime->jointTable, skelAnime->limbCount * sizeof(*skelAnime->jointTable));
     // #endregion
 
     skelAnime->morphTable = ZELDA_ARENA_MALLOC_DEBUG(skelAnime->limbCount * sizeof(*skelAnime->morphTable));
 
-    // #region SOH [Enhancement] - N64 Memory Model
+    // #region SOH [Enhancement] - Hardware Memory Limits
     N64Mem_AllocSubsidiary(skelAnime->morphTable, skelAnime->limbCount * sizeof(*skelAnime->morphTable));
     // #endregion
 
@@ -1964,7 +1964,7 @@ s32 Animation_OnFrame(SkelAnime* skelAnime, f32 frame) {
  */
 void SkelAnime_Free(SkelAnime* skelAnime, PlayState* play) {
     if (skelAnime->jointTable != NULL) {
-        // #region SOH [Enhancement] - N64 Memory Model
+        // #region SOH [Enhancement] - Hardware Memory Limits
         N64Mem_FreeSubsidiary(skelAnime->jointTable);
         // #endregion
 
@@ -1974,7 +1974,7 @@ void SkelAnime_Free(SkelAnime* skelAnime, PlayState* play) {
     }
 
     if (skelAnime->morphTable != NULL) {
-        // #region SOH [Enhancement] - N64 Memory Model
+        // #region SOH [Enhancement] - Hardware Memory Limits
         N64Mem_FreeSubsidiary(skelAnime->morphTable);
         // #endregion
 

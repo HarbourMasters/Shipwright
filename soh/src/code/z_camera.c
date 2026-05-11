@@ -8,7 +8,7 @@
 
 #include "soh/frame_interpolation.h"
 #include "soh/Enhancements/controls/Mouse.h"
-#include "soh/Enhancements/Restorations/N64MemoryModel/N64MemoryModel.hpp"
+#include "soh/Enhancements/Restorations/HardwareMemoryLimits/HardwareMemoryLimits.hpp"
 
 s16 Camera_ChangeSettingFlags(Camera* camera, s16 setting, s16 flags);
 s32 Camera_ChangeModeFlags(Camera* camera, s16 mode, u8 flags);
@@ -6944,7 +6944,8 @@ Camera* Camera_Create(View* view, CollisionContext* colCtx, PlayState* play) {
     Camera* newCamera = ZELDA_ARENA_MALLOC_DEBUG(sizeof(*newCamera));
 
     if (newCamera != NULL) {
-        // #region SOH [Enhancement] - N64 Memory Model
+        // #region SOH [Enhancement] - Hardware Memory Limits
+        // Cameras are ZeldaArena allocations on original hardware.  Track in the shadow heap.
         if (!N64Mem_AllocSubsidiary(newCamera, N64_SIZEOF_CAMERA)) {
             ZELDA_ARENA_FREE_DEBUG(newCamera);
             return NULL;
@@ -6962,7 +6963,7 @@ Camera* Camera_Create(View* view, CollisionContext* colCtx, PlayState* play) {
 void Camera_Destroy(Camera* camera) {
     if (camera != NULL) {
         osSyncPrintf(VT_FGCOL(BLUE) "camera: destroy ---" VT_RST "\n");
-        // #region SOH [Enhancement] - N64 Memory Model
+        // #region SOH [Enhancement] - Hardware Memory Limits
         N64Mem_FreeSubsidiary(camera);
         // #endregion
 

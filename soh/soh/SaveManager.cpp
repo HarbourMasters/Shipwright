@@ -504,29 +504,33 @@ void SaveManager::StartupCheckAndInitMeta(int fileNum) {
             output.close();
             saveMtx.unlock();
         }
-        s16 major = metaSaveBlock["sections"]["sohStats"]["data"]["buildVersionMajor"];
-        s16 minor = metaSaveBlock["sections"]["sohStats"]["data"]["buildVersionMinor"];
-        s16 patch = metaSaveBlock["sections"]["sohStats"]["data"]["buildVersionPatch"];
-        // block loading outdated rando save
-        if (!(major == gBuildVersionMajor && minor == gBuildVersionMinor && patch == gBuildVersionPatch)) {
-            std::string newFileName =
-                Ship::Context::GetPathRelativeToAppDirectory("Save") +
-                ("/file" + std::to_string(fileNum + 1) + "-" + std::to_string(GetUnixTimestamp()) + ".bak");
+
+        if (metaSaveBlock["sections"].contains("sohStats") && metaSaveBlock["sections"]["sohStats"].contains("data")) {
+            s16 major = metaSaveBlock["sections"]["sohStats"]["data"]["buildVersionMajor"];
+            s16 minor = metaSaveBlock["sections"]["sohStats"]["data"]["buildVersionMinor"];
+            s16 patch = metaSaveBlock["sections"]["sohStats"]["data"]["buildVersionPatch"];
+            // block loading outdated rando save
+            if (!(major == gBuildVersionMajor && minor == gBuildVersionMinor && patch == gBuildVersionPatch)) {
+                std::string newFileName =
+                    Ship::Context::GetPathRelativeToAppDirectory("Save") +
+                    ("/file" + std::to_string(fileNum + 1) + "-" + std::to_string(GetUnixTimestamp()) + ".bak");
 #if defined(__SWITCH__) || defined(__WIIU__)
-            copy_file(fileName.c_str(), newFileName.c_str());
-            std::filesystem::remove(fileName);
+                copy_file(fileName.c_str(), newFileName.c_str());
+                std::filesystem::remove(fileName);
 #else
-            std::filesystem::rename(fileName, newFileName);
+                std::filesystem::rename(fileName, newFileName);
 #endif
-            SohGui::RegisterPopup("Outdated Randomizer Save",
-                                  "The SoH version in the file in slot " + std::to_string(fileNum + 1) +
-                                      " does not match the currently running version.\n" +
-                                      "Non-matching rando saves are unsupported, and the file has been renamed to\n" +
-                                      "    " + newFileName + "\n" +
-                                      "If this was not in error, the file should be deleted.");
-            return;
+                SohGui::RegisterPopup("Outdated Randomizer Save",
+                                      "The SoH version in the file in slot " + std::to_string(fileNum + 1) +
+                                          " does not match the currently running version.\n" +
+                                          "Non-matching rando saves are unsupported, and the file has been renamed to\n" +
+                                          "    " + newFileName + "\n" +
+                                          "If this was not in error, the file should be deleted.");
+                return;
+            }
         }
     }
+
     bool isRando = metaSaveBlock["fileType"] == FILE_TYPE_SAVE_RANDO;
 
     fileMetaInfo[fileNum].valid = true;
@@ -573,12 +577,19 @@ void SaveManager::StartupCheckAndInitMeta(int fileNum) {
         fileMetaInfo[fileNum].requiresOriginal = randoBlock["masterQuestDungeonCount"] < 12;
     }
 
-    fileMetaInfo[fileNum].buildVersionMajor = metaSaveBlock["sections"]["sohStats"]["data"]["buildVersionMajor"];
-    fileMetaInfo[fileNum].buildVersionMinor = metaSaveBlock["sections"]["sohStats"]["data"]["buildVersionMinor"];
-    fileMetaInfo[fileNum].buildVersionPatch = metaSaveBlock["sections"]["sohStats"]["data"]["buildVersionPatch"];
-    SohUtils::CopyStringToCharArray(fileMetaInfo[fileNum].buildVersion,
-                                    metaSaveBlock["sections"]["sohStats"]["data"]["buildVersion"],
-                                    ARRAY_COUNT(fileMetaInfo[fileNum].buildVersion));
+    if (metaSaveBlock["sections"].contains("sohStats") && metaSaveBlock["sections"]["sohStats"].contains("data")) {
+        fileMetaInfo[fileNum].buildVersionMajor = metaSaveBlock["sections"]["sohStats"]["data"]["buildVersionMajor"];
+        fileMetaInfo[fileNum].buildVersionMinor = metaSaveBlock["sections"]["sohStats"]["data"]["buildVersionMinor"];
+        fileMetaInfo[fileNum].buildVersionPatch = metaSaveBlock["sections"]["sohStats"]["data"]["buildVersionPatch"];
+        SohUtils::CopyStringToCharArray(fileMetaInfo[fileNum].buildVersion,
+                                        metaSaveBlock["sections"]["sohStats"]["data"]["buildVersion"],
+                                        ARRAY_COUNT(fileMetaInfo[fileNum].buildVersion));
+    } else {
+        fileMetaInfo[fileNum].buildVersionMajor = 0;
+        fileMetaInfo[fileNum].buildVersionMinor = 0;
+        fileMetaInfo[fileNum].buildVersionPatch = 0;
+        fileMetaInfo[fileNum].buildVersion[0] = '\0';
+    }
 }
 
 void SaveManager::InitMeta(int fileNum) {
@@ -1154,7 +1165,15 @@ void SaveManager::SaveFileThreaded(int fileNum, SaveContext* saveContext, int se
             sectionHandlerPair.second.func(saveContext, sectionID, true);
         }
     } else {
+        if (auto it = sectionSaveHandlers.find(sectionID); it == sectionSaveHandlers.end()) {
+            SPDLOG_ERROR("[SaveManager] SaveFileThreaded: sectionID {} not found in sectionSaveHandlers", sectionID);
+            delete saveContext;
+            saveMtx.unlock();
+            return;
+        }
+
         SaveFuncInfo svi = sectionSaveHandlers.find(sectionID)->second;
+
         auto& sectionName = svi.name;
         auto sectionVersion = svi.version;
         // If section has a parentSection, it is a subsection. Load parentSection version and set sectionBlock to parent

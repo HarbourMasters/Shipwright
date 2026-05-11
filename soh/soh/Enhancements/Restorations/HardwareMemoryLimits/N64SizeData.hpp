@@ -16,7 +16,6 @@ extern "C" {
 //  misc/n64_memory/actor_instance_sizes   Actor instance struct sizes indexed by actor ID
 //  misc/n64_memory/kaleido_vram_size      max(ovl_kaleido_scope VRAM, ovl_player_actor VRAM)
 //  misc/n64_memory/arena_node_size        N64 ArenaNode size (0x10 retail, 0x30 debug)
-//  misc/n64_memory/language_max           LANGUAGE_MAX enum count (2 NTSC, 3 PAL)
 //
 // Each table is loaded lazily on first query and cached for the lifetime of the process.
 // --------------------------------------------------------------------------------------------------------------------
@@ -27,7 +26,6 @@ u32 N64SizeData_GetEffectOverlaySize(u16 effectType);
 u32 N64SizeData_GetActorInstanceSize(u16 actorId);
 u32 N64SizeData_GetKaleidoVramSize(void);
 u32 N64SizeData_GetArenaNodeSize(void);
-u32 N64SizeData_GetLanguageMax(void);
 u32 N64SizeData_GetGiObjectSegmentSize(void);
 
 #ifdef __cplusplus

@@ -2,7 +2,7 @@
 #include "vt.h"
 
 #include "soh/frame_interpolation.h"
-#include "soh/Enhancements/Restorations/N64MemoryModel/N64MemoryModel.hpp"
+#include "soh/Enhancements/Restorations/HardwareMemoryLimits/HardwareMemoryLimits.hpp"
 #include <assert.h>
 
 EffectSsInfo sEffectSsInfo = { 0 }; // "EffectSS2Info"
@@ -184,7 +184,9 @@ void EffectSs_Spawn(PlayState* play, s32 type, s32 priority, void* initParams) {
         return;
     }
 
-    // #region SOH [Enhancement] - N64 Memory Model
+    // #region SOH [Enhancement] - Hardware Memory Limits
+    // Effect overlays are MallocR'd (allocated from the top of the heap) on original hardware.  Track in the shadow
+    // heap so the forward/reverse alloc boundary stays accurate.
     if (!N64Mem_AllocEffectOverlay(type)) {
         return;
     }

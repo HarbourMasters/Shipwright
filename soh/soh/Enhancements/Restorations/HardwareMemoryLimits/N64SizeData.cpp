@@ -9,8 +9,10 @@
 static std::unordered_map<std::string, u32> sDmaFileSizes;
 static bool sIsDmaLoaded = false;
 
-static void LoadDmaFileSizes() {
-    if (sIsDmaLoaded) {
+static void LoadDmaFileSizes()
+{
+    if (sIsDmaLoaded)
+    {
         return;
     }
 
@@ -18,7 +20,8 @@ static void LoadDmaFileSizes() {
 
     const auto file =
         Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->LoadFile("misc/n64_memory/dma_sizes");
-    if (!file || !file->IsLoaded) {
+    if (!file || !file->IsLoaded)
+    {
         SPDLOG_ERROR("[N64SizeData] Failed to load misc/n64_memory/dma_sizes from OTR.");
         return;
     }
@@ -28,7 +31,8 @@ static void LoadDmaFileSizes() {
     reader->SetEndianness(Ship::Endianness::Big);
 
     const u32 entryCount = reader->ReadUInt32();
-    for (std::size_t i = 0; i < entryCount; ++i) {
+    for (std::size_t i = 0; i < entryCount; ++i)
+    {
         const u32 vromSize = reader->ReadUInt32();
         const std::string name = reader->ReadString();
         sDmaFileSizes[name] = vromSize;
@@ -46,8 +50,10 @@ static void LoadDmaFileSizes() {
 static std::vector<u32> sActorOverlaySizes;
 static bool sIsActorOverlayLoaded = false;
 
-static void LoadActorOverlaySizes() {
-    if (sIsActorOverlayLoaded) {
+static void LoadActorOverlaySizes()
+{
+    if (sIsActorOverlayLoaded)
+    {
         return;
     }
 
@@ -56,7 +62,8 @@ static void LoadActorOverlaySizes() {
     const auto file =
         Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->LoadFile(
             "misc/n64_memory/actor_overlay_sizes");
-    if (!file || !file->IsLoaded) {
+    if (!file || !file->IsLoaded)
+    {
         SPDLOG_ERROR("[N64SizeData] Failed to load misc/n64_memory/actor_overlay_sizes from OTR.");
         return;
     }
@@ -68,7 +75,8 @@ static void LoadActorOverlaySizes() {
     const u32 entryCount = reader->ReadUInt32();
     sActorOverlaySizes.resize(entryCount);
 
-    for (std::size_t i = 0; i < entryCount; ++i) {
+    for (std::size_t i = 0; i < entryCount; ++i)
+    {
         sActorOverlaySizes.at(i) = reader->ReadUInt32();
     }
 
@@ -84,8 +92,10 @@ static void LoadActorOverlaySizes() {
 static std::vector<u32> sEffectOverlaySizes;
 static bool sIsEffectOverlayLoaded = false;
 
-static void LoadEffectOverlaySizes() {
-    if (sIsEffectOverlayLoaded) {
+static void LoadEffectOverlaySizes()
+{
+    if (sIsEffectOverlayLoaded)
+    {
         return;
     }
 
@@ -94,7 +104,8 @@ static void LoadEffectOverlaySizes() {
     const auto file =
         Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->LoadFile(
             "misc/n64_memory/effect_overlay_sizes");
-    if (!file || !file->IsLoaded) {
+    if (!file || !file->IsLoaded)
+    {
         SPDLOG_ERROR("[N64SizeData] Failed to load misc/n64_memory/effect_overlay_sizes from OTR.");
         return;
     }
@@ -106,7 +117,8 @@ static void LoadEffectOverlaySizes() {
     const u32 entryCount = reader->ReadUInt32();
     sEffectOverlaySizes.resize(entryCount);
 
-    for (std::size_t i = 0; i < entryCount; ++i) {
+    for (std::size_t i = 0; i < entryCount; ++i)
+    {
         sEffectOverlaySizes.at(i) = reader->ReadUInt32();
     }
 
@@ -123,8 +135,10 @@ static void LoadEffectOverlaySizes() {
 static std::vector<u32> sActorInstanceSizes;
 static bool sIsActorInstanceLoaded = false;
 
-static void LoadActorInstanceSizes() {
-    if (sIsActorInstanceLoaded) {
+static void LoadActorInstanceSizes()
+{
+    if (sIsActorInstanceLoaded)
+    {
         return;
     }
 
@@ -133,7 +147,8 @@ static void LoadActorInstanceSizes() {
     const auto file =
         Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->LoadFile(
             "misc/n64_memory/actor_instance_sizes");
-    if (!file || !file->IsLoaded) {
+    if (!file || !file->IsLoaded)
+    {
         SPDLOG_ERROR("[N64SizeData] Failed to load misc/n64_memory/actor_instance_sizes from OTR.");
         return;
     }
@@ -145,7 +160,8 @@ static void LoadActorInstanceSizes() {
     const u32 entryCount = reader->ReadUInt32();
     sActorInstanceSizes.resize(entryCount);
 
-    for (std::size_t i = 0; i < entryCount; ++i) {
+    for (std::size_t i = 0; i < entryCount; ++i)
+    {
         sActorInstanceSizes.at(i) = reader->ReadUInt32();
     }
 
@@ -156,10 +172,12 @@ static void LoadActorInstanceSizes() {
 // API
 // --------------------------------------------------------------------------------------------------------------------
 
-extern "C" u32 N64SizeData_GetDmaFileSize(const char* name) {
+extern "C" u32 N64SizeData_GetDmaFileSize(const char* name)
+{
     LoadDmaFileSizes();
 
-    if (const auto i = sDmaFileSizes.find(name); i != sDmaFileSizes.end()) {
+    if (const auto i = sDmaFileSizes.find(name); i != sDmaFileSizes.end())
+    {
         return i->second;
     }
 
@@ -167,30 +185,36 @@ extern "C" u32 N64SizeData_GetDmaFileSize(const char* name) {
     return 0;
 }
 
-extern "C" u32 N64SizeData_GetActorOverlaySize(u16 actorId) {
+extern "C" u32 N64SizeData_GetActorOverlaySize(u16 actorId)
+{
     LoadActorOverlaySizes();
 
-    if (actorId < sActorOverlaySizes.size()) {
+    if (actorId < sActorOverlaySizes.size())
+    {
         return sActorOverlaySizes.at(actorId);
     }
 
     return 0;
 }
 
-extern "C" u32 N64SizeData_GetEffectOverlaySize(u16 effectType) {
+extern "C" u32 N64SizeData_GetEffectOverlaySize(u16 effectType)
+{
     LoadEffectOverlaySizes();
 
-    if (effectType < sEffectOverlaySizes.size()) {
+    if (effectType < sEffectOverlaySizes.size())
+    {
         return sEffectOverlaySizes.at(effectType);
     }
 
     return 0;
 }
 
-extern "C" u32 N64SizeData_GetActorInstanceSize(u16 actorId) {
+extern "C" u32 N64SizeData_GetActorInstanceSize(u16 actorId)
+{
     LoadActorInstanceSizes();
 
-    if (actorId < sActorInstanceSizes.size()) {
+    if (actorId < sActorInstanceSizes.size())
+    {
         return sActorInstanceSizes.at(actorId);
     }
 
@@ -206,8 +230,10 @@ extern "C" u32 N64SizeData_GetActorInstanceSize(u16 actorId) {
 static u32 sKaleidoVramSize = 0;
 static bool sIsKaleidoLoaded = false;
 
-static void LoadKaleidoVramSize() {
-    if (sIsKaleidoLoaded) {
+static void LoadKaleidoVramSize()
+{
+    if (sIsKaleidoLoaded)
+    {
         return;
     }
 
@@ -216,7 +242,8 @@ static void LoadKaleidoVramSize() {
     const auto file =
         Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->LoadFile(
             "misc/n64_memory/kaleido_vram_size");
-    if (!file || !file->IsLoaded) {
+    if (!file || !file->IsLoaded)
+    {
         SPDLOG_ERROR("[N64SizeData] Failed to load misc/n64_memory/kaleido_vram_size from OTR.");
         return;
     }
@@ -230,7 +257,8 @@ static void LoadKaleidoVramSize() {
     SPDLOG_INFO("[N64SizeData] Kaleido max VRAM size: 0x{:X}.", sKaleidoVramSize);
 }
 
-extern "C" u32 N64SizeData_GetKaleidoVramSize() {
+extern "C" u32 N64SizeData_GetKaleidoVramSize()
+{
     LoadKaleidoVramSize();
     return sKaleidoVramSize;
 }
@@ -244,8 +272,10 @@ extern "C" u32 N64SizeData_GetKaleidoVramSize() {
 static u32 sArenaNodeSize = 0x30; // Default to debug (safe fallback -- over-estimates node overhead)
 static bool sIsArenaNodeSizeLoaded = false;
 
-static void LoadArenaNodeSize() {
-    if (sIsArenaNodeSizeLoaded) {
+static void LoadArenaNodeSize()
+{
+    if (sIsArenaNodeSizeLoaded)
+    {
         return;
     }
 
@@ -254,7 +284,8 @@ static void LoadArenaNodeSize() {
     const auto file =
         Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->LoadFile(
             "misc/n64_memory/arena_node_size");
-    if (!file || !file->IsLoaded) {
+    if (!file || !file->IsLoaded)
+    {
         SPDLOG_WARN("[N64SizeData] Failed to load misc/n64_memory/arena_node_size from OTR, defaulting to 0x{:X}.",
                     sArenaNodeSize);
         return;
@@ -269,7 +300,8 @@ static void LoadArenaNodeSize() {
     SPDLOG_INFO("[N64SizeData] Arena node size: 0x{:X}.", sArenaNodeSize);
 }
 
-extern "C" u32 N64SizeData_GetArenaNodeSize() {
+extern "C" u32 N64SizeData_GetArenaNodeSize()
+{
     LoadArenaNodeSize();
     return sArenaNodeSize;
 }
@@ -284,8 +316,10 @@ extern "C" u32 N64SizeData_GetArenaNodeSize() {
 static u32 sLanguageMax = 2; // Default to NTSC
 static bool sIsLanguageMaxLoaded = false;
 
-static void LoadLanguageMax() {
-    if (sIsLanguageMaxLoaded) {
+static void LoadLanguageMax()
+{
+    if (sIsLanguageMaxLoaded)
+    {
         return;
     }
 
@@ -294,7 +328,8 @@ static void LoadLanguageMax() {
     const auto file =
         Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->LoadFile(
             "misc/n64_memory/language_max");
-    if (!file || !file->IsLoaded) {
+    if (!file || !file->IsLoaded)
+    {
         SPDLOG_WARN("[N64SizeData] Failed to load misc/n64_memory/n64_language_max from OTR, defaulting to {}.",
                     sLanguageMax);
         return;
@@ -307,13 +342,4 @@ static void LoadLanguageMax() {
     sLanguageMax = reader->ReadUInt32();
 
     SPDLOG_INFO("[N64SizeData] N64 LANGUAGE_MAX: {}.", sLanguageMax);
-}
-
-extern "C" u32 N64SizeData_GetLanguageMax() {
-    LoadLanguageMax();
-    return sLanguageMax;
-}
-
-extern "C" u32 N64SizeData_GetGiObjectSegmentSize() {
-    return 0x1000 * N64SizeData_GetLanguageMax() + 8;
 }

@@ -9,7 +9,7 @@
 #include <overlays/misc/ovl_kaleido_scope/z_kaleido_scope.h>
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/Enhancements/Restorations/N64MemoryModel/N64MemoryModel.hpp"
+#include "soh/Enhancements/Restorations/HardwareMemoryLimits/HardwareMemoryLimits.hpp"
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/SaveManager.h"
@@ -404,16 +404,18 @@ void Play_Init(GameState* thisx) {
 
     SystemArena_Display();
 
-    // #region SOH [Enhancement] - N64 Memory Model
-    if (CVarGetInteger(CVAR_ENHANCEMENT("N64MemoryModel"), 0)) {
+    // #region SOH [Enhancement] - Hardware Memory Limits
+    // SoH doubles the THA budget to avoid OoM from struct size differences.  When Hardware Memory Limits is active,
+    // use the original N64 budget so the ZeldaArena is the correct size.
+    if (CVarGetInteger(CVAR_ENHANCEMENT("HardwareMemoryLimits"), 0)) {
         GameState_Realloc(&play->state, 0x1D4790);
     } else {
+    // #endregion
         // OTRTODO allocate double the normal amount of memory
         // This is to avoid some parts of the game, like loading actors, causing OoM
         // This is potionally unavoidable due to struct size differences, but is x2 the right amount?
         GameState_Realloc(&play->state, 0x1D4790 * 2);
     }
-    // #endregion
 
     KaleidoManager_Init(play);
     View_Init(&play->view, gfxCtx);
@@ -578,7 +580,9 @@ void Play_Init(GameState* thisx) {
     osSyncPrintf("ZELDA ALLOC SIZE=%x\n", THA_GetSize(&play->state.tha));
     zAllocSize = THA_GetSize(&play->state.tha);
 
-    // #region SOH [Enhancement] - N64 Memory Model
+    // #region SOH [Enhancement] - Hardware Memory Limits
+    // Capture the ZeldaArena size (THA remainder) before it's consumed.  The shadow arena uses this to compute its own
+    // size, matching the original hardware's available heap space.
     N64Mem_StoreThaRemainder(zAllocSize);
     // #endregion
 
@@ -589,7 +593,9 @@ void Play_Init(GameState* thisx) {
     osSyncPrintf("ゼルダヒープ %08x-%08x\n", zAllocAligned,
                  (u8*)zAllocAligned + zAllocSize - (s32)(zAllocAligned - zAlloc));
 
-    // #region SOH [Enhancement] - N64 Memory Model
+    // #region SOH [Enhancement] - Hardware Memory Limits
+    // Create (or recreate) the shadow arena for this scene.  The shadow mirrors every ZeldaArena allocation at
+    // original hardware sizes, tracking fragmentation independently of SoH's heap.
     N64Mem_Reset(play);
     // #endregion
 
