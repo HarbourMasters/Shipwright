@@ -23,7 +23,7 @@ extern "C" {
 
 struct BlockInfo {
     u32 offset;
-    u32 size;
+    std::size_t size;
     bool isFree;
     u8 type;     // N64MEM_BLOCK_* (shadow only)
     s16 actorId; // Original actor ID (shadow only), -1 if unknown
@@ -37,12 +37,12 @@ static std::vector<BlockInfo> sBlocks;
 static std::vector<std::size_t> sDisplayOrder; // Indices into sBlocks: pinned first, then unpinned
 static u32 sPinnedCount = 0;
 static std::set<std::pair<s16, u8>> sPinnedBlocks; // {actorId, blockType} pairs
-static u32 sAllocTotal = 0;
-static u32 sFreeTotal = 0;
-static u32 sLargestFree = 0;
+static std::size_t sAllocTotal = 0;
+static std::size_t sFreeTotal = 0;
+static std::size_t sLargestFree = 0;
 static u32 sNodeCount = 0;
-static u32 sArenaSize = 0;
-static u32 sPreviousAlloc = 0;
+static std::size_t sArenaSize = 0;
+static std::size_t sPreviousAlloc = 0;
 static u32 sCycleCount = 0;
 static s32 sLastDelta = 0;
 static bool sIsShadow = false;

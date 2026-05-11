@@ -22,7 +22,7 @@ struct AddPair {
     // #endregion
 };
 
-// #region [SOH] Enhancement - N64 Memory Model
+// #region SOH [Enhancement] - Hardware Memory Limits
 #define DEFINE_ACTOR_INTERNAL(name, _1, allocType) { #name, name##_InitVars, allocType },
 #define DEFINE_ACTOR(name, _1, allocType) { #name, name##_InitVars, allocType },
 // #endregion

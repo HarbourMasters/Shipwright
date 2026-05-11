@@ -26,7 +26,6 @@ u32 N64SizeData_GetEffectOverlaySize(u16 effectType);
 u32 N64SizeData_GetActorInstanceSize(u16 actorId);
 u32 N64SizeData_GetKaleidoVramSize(void);
 u32 N64SizeData_GetArenaNodeSize(void);
-u32 N64SizeData_GetGiObjectSegmentSize(void);
 
 #ifdef __cplusplus
 }
