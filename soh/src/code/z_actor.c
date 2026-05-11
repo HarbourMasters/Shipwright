@@ -3393,7 +3393,7 @@ Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 pos
     }
 
     // #region SOH [Enhancement] - N64 Memory Model
-    if (!N64Mem_AllocInstance(actorId, actor)) {
+    if (!N64Mem_AllocInstance(actorId, params, actor)) {
         ZELDA_ARENA_FREE_DEBUG(actor);
         Actor_FreeOverlay(dbEntry);
         return NULL;

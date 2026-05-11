@@ -1,5 +1,8 @@
 #include <libultraship/bridge/consolevariablebridge.h>
 
+#include <spdlog/fmt/fmt.h>
+#include <string>
+
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
 #include "soh/ActorDB.h"
@@ -201,6 +204,78 @@ void N64Mem_LogState(const char* context) {
     }
 }
 
+void N64Mem_DumpArena(const char* tag) {
+    if (!sIsActive || sShadow.buffer == nullptr) {
+        return;
+    }
+
+    std::string out = fmt::format("\n[N64HeapDump] === {} ===\n", tag);
+
+    u32 offset = ShadowArena_GetHead(&sShadow);
+    u32 freeCount = 0;
+    u32 allocCount = 0;
+    u32 freeTotal = 0;
+    u32 allocTotal = 0;
+
+    while (offset != SHADOW_NULL) {
+        s32 isFree = 0;
+        u32 size = 0;
+        u32 next = 0;
+        if (!ShadowArena_GetNodeInfo(&sShadow, offset, &isFree, &size, &next)) {
+            out += fmt::format("  +0x{:06X} <invalid node>\n", offset);
+            break;
+        }
+
+        const u32 dataOff = offset + sShadow.nodeSize;
+        if (isFree) {
+            out += fmt::format("  +0x{:06X} 0x{:06X} FREE\n", offset, size);
+            freeTotal += size;
+            freeCount++;
+        } else {
+            u8 type = 0;
+            s16 actorId = -1;
+            const char* typeName = "???";
+            if (N64Mem_GetBlockInfo(dataOff, &type, &actorId)) {
+                switch (type) {
+                    case N64MEM_BLOCK_INSTANCE:
+                        typeName = "inst";
+                        break;
+                    case N64MEM_BLOCK_OVERLAY:
+                        typeName = "ovl ";
+                        break;
+                    case N64MEM_BLOCK_SUBSIDIARY:
+                        typeName = "sub ";
+                        break;
+                    case N64MEM_BLOCK_EFFECT:
+                        typeName = "efx ";
+                        break;
+                    case N64MEM_BLOCK_ABSOLUTE:
+                        typeName = "abs ";
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            if (actorId >= 0) {
+                out += fmt::format("  +0x{:06X} 0x{:06X} {} actor=0x{:04X}\n", offset, size, typeName,
+                                   static_cast<u16>(actorId));
+            } else {
+                out += fmt::format("  +0x{:06X} 0x{:06X} {}\n", offset, size, typeName);
+            }
+            allocTotal += size;
+            allocCount++;
+        }
+
+        offset = next;
+    }
+
+    out += fmt::format("[N64HeapDump] {} blocks: {} alloc (0x{:X}B), {} free (0x{:X}B)", freeCount + allocCount,
+                       allocCount, allocTotal, freeCount, freeTotal);
+
+    SPDLOG_INFO("{}", out);
+}
+
 void N64Mem_SetOriginalActorId(s16 actorId) {
     sOriginalActorId = actorId;
 }
@@ -271,9 +346,13 @@ s32 N64Mem_AllocOverlay(s16 actorId, u16 allocType) {
         return 1;
     }
 
-    // N64 allocates ALL actor overlays via ZeldaArena_MallocR (from the arena top).  Using Malloc (bottom-up) placed
-    // overlays interleaved with instances at the bottom, preventing proper coalescing when overlays are freed.
-    const u32 shadow = ShadowArena_MallocR(&sShadow, overlaySize);
+    // Match Actor_LoadOverlay's branching: PERSISTENT/PERMANENT overlays go through MallocR (arena top), default
+    // (NORMAL) overlays go through forward Malloc (arena bottom).  ABSOLUTE is handled above.  NORMAL overlays being
+    // interleaved with instances at the bottom is the authentic N64 fragmentation pattern -- the simulation must
+    // reproduce it, not paper over it.
+    const u32 shadow = (allocType & ALLOCTYPE_PERMANENT)
+                           ? ShadowArena_MallocR(&sShadow, overlaySize)
+                           : ShadowArena_Malloc(&sShadow, overlaySize);
     if (shadow == SHADOW_NULL) {
         SPDLOG_ERROR("[N64MemoryModel] Shadow overlay failed for actor 0x{:04X} (need 0x{:X})", actorId, overlaySize);
         return 0;
@@ -309,7 +388,7 @@ void N64Mem_FreeOverlay(s16 actorId, u16 allocType) {
 // Actor instances
 // --------------------------------------------------------------------------------------------------------------------
 
-s32 N64Mem_AllocInstance(s16 actorId, void* realPtr) {
+s32 N64Mem_AllocInstance(s16 actorId, s16 params, void* realPtr) {
     if (!sIsActive) {
         sOriginalActorId = -1;
         return 1;
@@ -345,7 +424,11 @@ s32 N64Mem_AllocInstance(s16 actorId, void* realPtr) {
 
     const u32 shadow = ShadowArena_Malloc(&sShadow, instanceSize);
     if (shadow == SHADOW_NULL) {
-        SPDLOG_ERROR("[N64MemoryModel] Shadow instance failed for actor 0x{:04X} (need 0x{:X})", actorId, instanceSize);
+        SPDLOG_ERROR("[N64MemoryModel] Shadow instance failed for actor 0x{:04X} params=0x{:04X} (need 0x{:X})",
+                     actorId, static_cast<u16>(params), instanceSize);
+        N64Mem_DumpArena(fmt::format("instance failure: actor=0x{:04X} params=0x{:04X}", actorId,
+                                     static_cast<u16>(params))
+            .c_str());
         return 0;
     }
 

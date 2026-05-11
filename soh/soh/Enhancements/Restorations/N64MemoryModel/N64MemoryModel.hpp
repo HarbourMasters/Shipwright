@@ -86,7 +86,7 @@ void N64Mem_FreeOverlay(s16 actorId, u16 allocType);
 // Call FreeInstance when the actor is deleted.
 // --------------------------------------------------------------------------------------------------------------------
 
-s32 N64Mem_AllocInstance(s16 actorId, void* realPtr);
+s32 N64Mem_AllocInstance(s16 actorId, s16 params, void* realPtr);
 // Returns the stored original actor ID for overlay free-path tracking, or -1 if not tracked.
 s16 N64Mem_FreeInstance(void* realPtr);
 
