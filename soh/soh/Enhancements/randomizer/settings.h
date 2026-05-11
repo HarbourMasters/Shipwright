@@ -58,7 +58,7 @@ class Settings {
      * @param key
      * @return Option&
      */
-    TrickOption& GetTrickOption(RandomizerTrick key);
+    TrickSetting& GetTrickSetting(RandomizerTrick key);
 
     /**
      * @brief Get the RandomizerTrick corresponding to the provided name.
@@ -135,6 +135,13 @@ class Settings {
      */
     void SetAllToContext();
 
+    /**
+     * @brief Randomizes all randomizer settings (excluding tricks) to random valid values.
+     * This function iterates through all options and sets them to a random index within
+     * their valid range.
+     */
+    void RandomizeAllSettings();
+
     static std::shared_ptr<Settings> GetInstance();
 
   private:
@@ -147,7 +154,7 @@ class Settings {
     std::array<Option, RSK_MAX> mOptions = {};
     std::array<std::string, RSK_MAX> mOptionDescriptions = {};
     std::array<OptionGroup, RSG_MAX> mOptionGroups = {};
-    std::array<TrickOption, RT_MAX> mTrickOptions = {};
+    std::array<TrickSetting, RT_MAX> mTrickSettings = {};
     std::vector<std::vector<Option*>> mExcludeLocationsOptionsAreas = {};
     std::unordered_map<std::string, RandomizerTrick> mTrickNameToEnum;
 };

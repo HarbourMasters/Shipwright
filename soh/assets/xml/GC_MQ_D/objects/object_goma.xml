@@ -159,7 +159,7 @@
         <Texture Name="gGohmaIrisTex" OutName="gohma_iris" Format="rgba16" Width="32" Height="32" Offset="0x193A8"/>
 
         <!-- Boss title card -->
-        <Texture Name="gGohmaTitleCardTex" OutName="gohma_title_card" Format="i8" Width="128" Height="120" Offset="0x19BA8"/>
+        <Texture Name="gGohmaTitleCardTex" OutName="gohma_title_card" Format="ia8" Width="128" Height="120" Offset="0x19BA8"/>
 
         <!-- Door -->
         <DList Name="gGohmaDoorDL" Offset="0x1EC20"/>

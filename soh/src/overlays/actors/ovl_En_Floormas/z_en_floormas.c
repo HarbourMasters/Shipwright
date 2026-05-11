@@ -153,7 +153,7 @@ void EnFloormas_Init(Actor* thisx, PlayState* play2) {
         // spawn first small floormaster
         this->actor.parent =
             Actor_Spawn(&play->actorCtx, play, ACTOR_EN_FLOORMAS, this->actor.world.pos.x, this->actor.world.pos.y,
-                        this->actor.world.pos.z, 0, 0, 0, invisble + SPAWN_SMALL, true);
+                        this->actor.world.pos.z, 0, 0, 0, invisble + SPAWN_SMALL);
         if (this->actor.parent == NULL) {
             Actor_Kill(&this->actor);
             return;
@@ -161,7 +161,7 @@ void EnFloormas_Init(Actor* thisx, PlayState* play2) {
         // spawn 2nd small floormaster
         this->actor.child =
             Actor_Spawn(&play->actorCtx, play, ACTOR_EN_FLOORMAS, this->actor.world.pos.x, this->actor.world.pos.y,
-                        this->actor.world.pos.z, 0, 0, 0, invisble + SPAWN_SMALL, true);
+                        this->actor.world.pos.z, 0, 0, 0, invisble + SPAWN_SMALL);
         if (this->actor.child == NULL) {
             Actor_Kill(this->actor.parent);
             Actor_Kill(&this->actor);

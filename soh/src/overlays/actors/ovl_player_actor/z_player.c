@@ -116,7 +116,7 @@ typedef struct struct_80854190 {
 typedef struct struct_80854578 {
     /* 0x00 */ LinkAnimationHeader* anim;
     /* 0x04 */ f32 unk_04;
-    /* 0x04 */ f32 unk_08;
+    /* 0x08 */ f32 unk_08;
 } struct_80854578; // size = 0x0C
 
 typedef struct struct_80854B18 {
@@ -344,8 +344,7 @@ void Player_Action_80850E84(Player* this, PlayState* play);
 void Player_Action_CsAction(Player* this, PlayState* play);
 
 #pragma region[SoH]
-u8 gWalkSpeedToggle1;
-u8 gWalkSpeedToggle2;
+u8 gWalkSpeedToggle;
 
 s32 spawn_boomerang_ivan(EnPartner* this, PlayState* play) {
     if (!CVarGetInteger(CVAR_ENHANCEMENT("IvanCoopModeEnabled"), 0)) {
@@ -356,7 +355,7 @@ s32 spawn_boomerang_ivan(EnPartner* this, PlayState* play) {
     f32 posZ = (Math_CosS(this->actor.shape.rot.y) * 1.0f) + this->actor.world.pos.z;
     s32 yaw = this->actor.shape.rot.y;
     EnBoom* boomerang = (EnBoom*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOOM, posX, this->actor.world.pos.y + 7.0f,
-                                             posZ, this->actor.focus.rot.x, yaw, 0, 0, true);
+                                             posZ, this->actor.focus.rot.x, yaw, 0, 0);
 
     this->boomerangActor = &boomerang->actor;
     if (boomerang != NULL) {
@@ -2834,8 +2833,10 @@ s32 Player_UpperAction_Sword(Player* this, PlayState* play) {
 s32 Player_UpperAction_ChangeHeldItem(Player* this, PlayState* play) {
     if (LinkAnimation_Update(play, &this->upperSkelAnime) ||
         ((Player_ItemToItemAction(this->heldItemId) == this->heldItemAction) &&
-         (sUseHeldItem =
-              (sUseHeldItem || ((this->modelAnimType != PLAYER_ANIMTYPE_3) && (play->shootingGalleryStatus == 0)))))) {
+         (sUseHeldItem = (sUseHeldItem || GameInteractor_Should(VB_USE_HELD_ITEM_AFTER_CHANGE,
+                                                                ((this->modelAnimType != PLAYER_ANIMTYPE_3) &&
+                                                                 (play->shootingGalleryStatus == 0)),
+                                                                this))))) {
         Player_SetUpperActionFunc(this, sItemActionUpdateFuncs[this->heldItemAction]);
         this->unk_834 = 0;
         this->idleType = PLAYER_IDLE_DEFAULT;
@@ -3264,7 +3265,7 @@ s32 func_808359FC(Player* this, PlayState* play) {
         s32 yaw = (this->focusActor != NULL) ? this->actor.shape.rot.y + 14000 : this->actor.shape.rot.y;
         EnBoom* boomerang =
             (EnBoom*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOOM, posX, this->actor.world.pos.y + 30.0f, posZ,
-                                 this->actor.focus.rot.x, yaw, 0, 0, true);
+                                 this->actor.focus.rot.x, yaw, 0, 0);
 
         this->boomerangActor = &boomerang->actor;
 
@@ -3828,7 +3829,8 @@ void Player_UpdateZTargeting(Player* this, PlayState* play) {
         if (!isTalking) {
             if (!(this->stateFlags1 & PLAYER_STATE1_BOOMERANG_THROWN) &&
                 ((this->heldItemAction != PLAYER_IA_FISHING_POLE) || (this->unk_860 == 0)) &&
-                CHECK_BTN_ALL(sControlInput->press.button, BTN_Z)) {
+                GameInteractor_Should(VB_TOGGLE_Z_TARGET_SWITCH_DIRECTION,
+                                      CHECK_BTN_ALL(sControlInput->press.button, BTN_Z))) {
 
                 if (this->actor.category == ACTORCAT_PLAYER) {
                     // The next lock-on actor defaults to the actor Navi is hovering over.
@@ -3854,7 +3856,7 @@ void Player_UpdateZTargeting(Player* this, PlayState* play) {
                         nextLockOnActor = play->actorCtx.targetCtx.unk_94;
                     }
 
-                    if (nextLockOnActor != this->focusActor) {
+                    if (GameInteractor_Should(VB_TOGGLE_Z_TARGET_SWITCH_TARGETS, nextLockOnActor != this->focusActor)) {
                         // Set new lock-on
 
                         if (!usingHoldTargeting) {
@@ -4270,7 +4272,7 @@ void func_80837530(PlayState* play, Player* this, s32 arg2) {
     if (this->actor.category == ACTORCAT_PLAYER) {
         Actor_Spawn(&play->actorCtx, play, ACTOR_EN_M_THUNDER, this->bodyPartsPos[PLAYER_BODYPART_WAIST].x,
                     this->bodyPartsPos[PLAYER_BODYPART_WAIST].y, this->bodyPartsPos[PLAYER_BODYPART_WAIST].z, 0, 0, 0,
-                    Player_GetMeleeWeaponHeld(this) | arg2, true);
+                    Player_GetMeleeWeaponHeld(this) | arg2);
     }
 }
 
@@ -4697,7 +4699,7 @@ int func_8083816C(s32 arg0) {
 void func_8083819C(Player* this, PlayState* play) {
     if (this->currentShield == PLAYER_SHIELD_DEKU && (CVarGetInteger(CVAR_CHEAT("FireproofDekuShield"), 0) == 0)) {
         Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_SHIELD, this->actor.world.pos.x, this->actor.world.pos.y,
-                    this->actor.world.pos.z, 0, 0, 0, 1, true);
+                    this->actor.world.pos.z, 0, 0, 0, 1);
         Inventory_DeleteEquipment(play, EQUIP_TYPE_SHIELD);
         Message_StartTextbox(play, 0x305F, NULL);
     }
@@ -5278,7 +5280,7 @@ Actor* Player_SpawnFairy(PlayState* play, Player* this, Vec3f* arg2, Vec3f* arg3
 
     Player_GetRelativePosition(this, arg2, arg3, &pos);
 
-    return Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ELF, pos.x, pos.y, pos.z, 0, 0, 0, type, true);
+    return Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ELF, pos.x, pos.y, pos.z, 0, 0, 0, type);
 }
 
 f32 func_808396F4(PlayState* play, Player* this, Vec3f* arg2, Vec3f* arg3, CollisionPoly** arg4, s32* arg5) {
@@ -5604,7 +5606,6 @@ void func_8083A0F4(PlayState* play, Player* this) {
 
 void Player_SetupTalk(PlayState* play, Player* this) {
     Player_SetupActionPreserveAnimMovement(play, this, Player_Action_Talk, 0);
-
     this->stateFlags1 |= PLAYER_STATE1_TALKING | PLAYER_STATE1_IN_CUTSCENE;
 
     if (this->actor.textId != 0) {
@@ -6061,7 +6062,9 @@ s32 Player_ActionHandler_13(Player* this, PlayState* play) {
                                 Inventory_ChangeAmmo(ITEM_BEAN, -1);
                                 Player_SetupActionPreserveItemAction(play, this, Player_Action_8084279C, 0);
                                 this->stateFlags1 |= PLAYER_STATE1_IN_CUTSCENE;
-                                this->av2.actionVar2 = 0x50;
+                                if (GameInteractor_Should(VB_PLAY_BEAN_PLANTING_CS, true)) {
+                                    this->av2.actionVar2 = 0x50;
+                                }
                                 this->av1.actionVar1 = -1;
                             }
                             talkActor->flags |= ACTOR_FLAG_TALK;
@@ -6225,7 +6228,9 @@ s32 Player_ActionHandler_Talk(Player* this, PlayState* play) {
                     // text will be used. This is especially important to prevent unwanted behavior with regards to mask
                     // trading.
                     this->currentMask = sSavedCurrentMask;
-                    Player_StartTalking(play, talkOfferActor);
+                    if (GameInteractor_Should(VB_SKIP_TALKING, true)) {
+                        Player_StartTalking(play, talkOfferActor);
+                    }
                     return true;
                 }
             }
@@ -7136,22 +7141,17 @@ void func_8083DFE0(Player* this, f32* arg1, s16* arg2) {
             maxSpeed *= 1.5f;
         }
 
-        if (CVarGetInteger(CVAR_SETTING("WalkModifier.Enabled"), 0) &&
-            !CVarGetInteger(CVAR_SETTING("WalkModifier.DoesntChangeJump"), 0)) {
-            if (CVarGetInteger(CVAR_SETTING("WalkModifier.SpeedToggle"), 0)) {
-                if (gWalkSpeedToggle1) {
-                    maxSpeed *= CVarGetFloat(CVAR_SETTING("WalkModifier.Mapping1"), 1.0f);
-                } else if (gWalkSpeedToggle2) {
-                    maxSpeed *= CVarGetFloat(CVAR_SETTING("WalkModifier.Mapping2"), 1.0f);
+        if (CVarGetFloat(CVAR_CHEAT("SpeedModifier.Value"), 1.0f) != 1.0f &&
+            !CVarGetInteger(CVAR_CHEAT("SpeedModifier.DoesntChangeJump"), 0)) {
+            if (CVarGetInteger(CVAR_CHEAT("SpeedModifier.SpeedToggle"), 0)) {
+                if (gWalkSpeedToggle) {
+                    maxSpeed *= CVarGetFloat(CVAR_CHEAT("SpeedModifier.Value"), 1.0f);
                 }
             } else {
-                const s32 mod1Mask = CVarGetInteger(CVAR_SETTING("WalkModifier.Mod1Btn"), BTN_CUSTOM_MODIFIER1);
-                const s32 mod2Mask = CVarGetInteger(CVAR_SETTING("WalkModifier.Mod2Btn"), BTN_CUSTOM_MODIFIER2);
+                const s32 mod1Mask = CVarGetInteger(CVAR_CHEAT("SpeedModifier.Btn"), BTN_CUSTOM_MODIFIER1);
 
                 if (mod1Mask != 0 && CHECK_BTN_ALL(sControlInput->cur.button, mod1Mask)) {
-                    maxSpeed *= CVarGetFloat(CVAR_SETTING("WalkModifier.Mapping1"), 1.0f);
-                } else if (mod2Mask != 0 && CHECK_BTN_ALL(sControlInput->cur.button, mod2Mask)) {
-                    maxSpeed *= CVarGetFloat(CVAR_SETTING("WalkModifier.Mapping2"), 1.0f);
+                    maxSpeed *= CVarGetFloat(CVAR_CHEAT("SpeedModifier.Value"), 1.0f);
                 }
             }
         }
@@ -8887,21 +8887,16 @@ void Player_Action_80842180(Player* this, PlayState* play) {
                 sp2C *= 1.5f;
             }
 
-            if (CVarGetInteger(CVAR_SETTING("WalkModifier.Enabled"), 0)) {
-                if (CVarGetInteger(CVAR_SETTING("WalkModifier.SpeedToggle"), 0)) {
-                    if (gWalkSpeedToggle1) {
-                        sp2C *= CVarGetFloat(CVAR_SETTING("WalkModifier.Mapping1"), 1.0f);
-                    } else if (gWalkSpeedToggle2) {
-                        sp2C *= CVarGetFloat(CVAR_SETTING("WalkModifier.Mapping2"), 1.0f);
+            if (CVarGetFloat(CVAR_CHEAT("SpeedModifier.Value"), 1.0f) != 1.0f) {
+                if (CVarGetInteger(CVAR_CHEAT("SpeedModifier.SpeedToggle"), 0)) {
+                    if (gWalkSpeedToggle) {
+                        sp2C *= CVarGetFloat(CVAR_CHEAT("SpeedModifier.Value"), 1.0f);
                     }
                 } else {
-                    const s32 mod1Mask = CVarGetInteger(CVAR_SETTING("WalkModifier.Mod1Btn"), BTN_CUSTOM_MODIFIER1);
-                    const s32 mod2Mask = CVarGetInteger(CVAR_SETTING("WalkModifier.Mod2Btn"), BTN_CUSTOM_MODIFIER2);
+                    const s32 mod1Mask = CVarGetInteger(CVAR_CHEAT("SpeedModifier.Btn"), BTN_CUSTOM_MODIFIER1);
 
                     if (mod1Mask != 0 && CHECK_BTN_ALL(sControlInput->cur.button, mod1Mask)) {
-                        sp2C *= CVarGetFloat(CVAR_SETTING("WalkModifier.Mapping1"), 1.0f);
-                    } else if (mod2Mask != 0 && CHECK_BTN_ALL(sControlInput->cur.button, mod2Mask)) {
-                        sp2C *= CVarGetFloat(CVAR_SETTING("WalkModifier.Mapping2"), 1.0f);
+                        sp2C *= CVarGetFloat(CVAR_CHEAT("SpeedModifier.Value"), 1.0f);
                     }
                 }
             }
@@ -10738,7 +10733,7 @@ Actor* Player_SpawnMagicSpell(PlayState* play, Player* this, s32 spell) {
     static s16 sMagicSpellActorIds[] = { ACTOR_MAGIC_WIND, ACTOR_MAGIC_DARK, ACTOR_MAGIC_FIRE };
 
     return Actor_Spawn(&play->actorCtx, play, sMagicSpellActorIds[spell], this->actor.world.pos.x,
-                       this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0, true);
+                       this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0);
 }
 
 void Player_StartMode_FaroresWind(PlayState* play, Player* this) {
@@ -12289,7 +12284,7 @@ void Player_Update(Actor* thisx, PlayState* play) {
                 dogParams = gSaveContext.dogParams;
 
                 dog = Actor_Spawn(&play->actorCtx, play, ACTOR_EN_DOG, sDogSpawnPos.x, sDogSpawnPos.y, sDogSpawnPos.z,
-                                  0, this->actor.shape.rot.y, 0, dogParams | 0x8000, true);
+                                  0, this->actor.shape.rot.y, 0, dogParams | 0x8000);
                 if (dog != NULL) {
                     // Room -1 allows actor to cross between rooms, similar to Navi
                     dog->room = CVarGetInteger(CVAR_ENHANCEMENT("DogFollowsEverywhere"), 0) ? -1 : 0;
@@ -12315,18 +12310,13 @@ void Player_Update(Actor* thisx, PlayState* play) {
             }
         }
 
-        if (CVarGetInteger(CVAR_SETTING("WalkModifier.Enabled"), 0) &&
-            CVarGetInteger(CVAR_SETTING("WalkModifier.SpeedToggle"), 0)) {
-            const s32 mod1Mask = CVarGetInteger(CVAR_SETTING("WalkModifier.Mod1Btn"), BTN_CUSTOM_MODIFIER1);
-            const s32 mod2Mask = CVarGetInteger(CVAR_SETTING("WalkModifier.Mod2Btn"), BTN_CUSTOM_MODIFIER2);
+        if (CVarGetFloat(CVAR_CHEAT("SpeedModifier.Value"), 1.0f) != 1.0f &&
+            CVarGetInteger(CVAR_CHEAT("SpeedModifier.SpeedToggle"), 0)) {
+            const s32 mod1Mask = CVarGetInteger(CVAR_CHEAT("SpeedModifier.Btn"), BTN_CUSTOM_MODIFIER1);
 
             if (mod1Mask != 0 && CHECK_BTN_ALL(sControlInput->cur.button, mod1Mask) &&
                 CHECK_BTN_ANY(sControlInput->press.button, mod1Mask)) {
-                gWalkSpeedToggle1 = !gWalkSpeedToggle1;
-            }
-            if (mod2Mask != 0 && CHECK_BTN_ALL(sControlInput->cur.button, mod2Mask) &&
-                CHECK_BTN_ANY(sControlInput->press.button, mod2Mask)) {
-                gWalkSpeedToggle2 = !gWalkSpeedToggle2;
+                gWalkSpeedToggle = !gWalkSpeedToggle;
             }
         }
 
@@ -12497,8 +12487,8 @@ void Player_DrawGameplay(PlayState* play, Player* this, s32 lod, Gfx* cullDList,
 
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPSegment(POLY_XLU_DISP++, 0x08,
-                       Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 16, 32, 1, 0, (play->gameplayFrames * -15) % 128,
-                                        16, 32));
+                       Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 0, 0, 16, 32, 1, 0, (play->gameplayFrames * -15) % 128,
+                                          16, 32, 0, 0, 0, -15));
             gDPSetPrimColor(POLY_XLU_DISP++, 0x80, 0x80, 255, 255, 255, D_8085486C);
             gDPSetEnvColor(POLY_XLU_DISP++, 120, 90, 30, 128);
             gSPDisplayList(POLY_XLU_DISP++, gHoverBootsCircleDL);
@@ -12613,8 +12603,8 @@ void Player_Draw(Actor* thisx, PlayState* play2) {
             f32 scale = (this->av1.actionVar1 >> 1) * 22.0f;
 
             gSPSegment(POLY_XLU_DISP++, 0x08,
-                       Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, (0 - play->gameplayFrames) % 128, 32, 32, 1, 0,
-                                        (play->gameplayFrames * -2) % 128, 32, 32));
+                       Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 0, (0 - play->gameplayFrames) % 128, 32, 32, 1, 0,
+                                          (play->gameplayFrames * -2) % 128, 32, 32, 0, -1, 0, -2));
 
             Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
@@ -12782,23 +12772,18 @@ void func_8084AEEC(Player* this, f32* arg1, f32 arg2, s16 arg3) {
     // #region SOH [Enhancement]
     f32 swimMod = 1.0f;
 
-    if (CVarGetInteger(CVAR_SETTING("WalkModifier.Enabled"), 0) == 1) {
-        if (CVarGetInteger(CVAR_SETTING("WalkModifier.SpeedToggle"), 0) == 1) {
-            if (gWalkSpeedToggle1) {
-                swimMod *= CVarGetFloat(CVAR_SETTING("WalkModifier.SwimMapping1"), 1.0f);
-            } else if (gWalkSpeedToggle2) {
-                swimMod *= CVarGetFloat(CVAR_SETTING("WalkModifier.SwimMapping2"), 1.0f);
+    if (CVarGetFloat(CVAR_CHEAT("SpeedModifier.Value"), 1.0f) != 1.0f) {
+        if (CVarGetInteger(CVAR_CHEAT("SpeedModifier.SpeedToggle"), 0) == 1) {
+            if (gWalkSpeedToggle) {
+                swimMod *= CVarGetFloat(CVAR_CHEAT("SpeedModifier.Value"), 1.0f);
             }
             // sControlInput is NULL to prevent inputs while surfacing after obtaining an underwater item so we want to
             // ignore it for that case
         } else if (sControlInput != NULL) {
-            const s32 mod1Mask = CVarGetInteger(CVAR_SETTING("WalkModifier.Mod1Btn"), BTN_CUSTOM_MODIFIER1);
-            const s32 mod2Mask = CVarGetInteger(CVAR_SETTING("WalkModifier.Mod2Btn"), BTN_CUSTOM_MODIFIER2);
+            const s32 mod1Mask = CVarGetInteger(CVAR_CHEAT("SpeedModifier.Btn"), BTN_CUSTOM_MODIFIER1);
 
             if (mod1Mask != 0 && CHECK_BTN_ALL(sControlInput->cur.button, mod1Mask)) {
-                swimMod *= CVarGetFloat(CVAR_SETTING("WalkModifier.SwimMapping1"), 1.0f);
-            } else if (mod2Mask != 0 && CHECK_BTN_ALL(sControlInput->cur.button, mod2Mask)) {
-                swimMod *= CVarGetFloat(CVAR_SETTING("WalkModifier.SwimMapping2"), 1.0f);
+                swimMod *= CVarGetFloat(CVAR_CHEAT("SpeedModifier.Value"), 1.0f);
             }
         }
         temp1 = this->skelAnime.curFrame - 10.0f;
@@ -14046,7 +14031,7 @@ void func_8084DBC4(PlayState* play, Player* this, f32 arg2) {
     func_8084AEEC(this, &this->linearVelocity, sp2C * 0.5f, sp2A);
     // Original implementation of func_8084AEEC (SurfaceWithoutSwimMod) to prevent velocity increases via swim mod which
     // push Link into the air #region SOH [Enhancement]
-    if (CVarGetInteger(CVAR_SETTING("WalkModifier.Enabled"), 0)) {
+    if (CVarGetFloat(CVAR_CHEAT("SpeedModifier.Value"), 1.0f) != 1.0f) {
         SurfaceWithoutSwimMod(this, &this->actor.velocity.y, arg2, this->yaw);
         // #endregion
     } else {
@@ -14359,7 +14344,7 @@ void Player_Action_8084E3C4(Player* this, PlayState* play) {
         this->stateFlags1 |= PLAYER_STATE1_IN_ITEM_CS | PLAYER_STATE1_IN_CUTSCENE;
         this->stateFlags2 |= PLAYER_STATE2_OCARINA_PLAYING;
 
-        if (Actor_Spawn(&play->actorCtx, play, ACTOR_DEMO_KANKYO, 0.0f, 0.0f, 0.0f, 0, 0, 0, 0xF, true) == NULL) {
+        if (Actor_Spawn(&play->actorCtx, play, ACTOR_DEMO_KANKYO, 0.0f, 0.0f, 0.0f, 0, 0, 0, 0xF) == NULL) {
             Environment_WarpSongLeave(play);
         }
 
@@ -14375,7 +14360,7 @@ void Player_Action_8084E604(Player* this, PlayState* play) {
         Inventory_ChangeAmmo(ITEM_NUT, -1);
         Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ARROW, this->bodyPartsPos[PLAYER_BODYPART_R_HAND].x,
                     this->bodyPartsPos[PLAYER_BODYPART_R_HAND].y, this->bodyPartsPos[PLAYER_BODYPART_R_HAND].z, 4000,
-                    this->actor.shape.rot.y, 0, ARROW_NUT, true);
+                    this->actor.shape.rot.y, 0, ARROW_NUT);
         Player_PlayVoiceSfx(this, NA_SE_VO_LI_SWORD_N);
     }
 
@@ -14424,7 +14409,7 @@ void Player_Action_8084E6D4(Player* this, PlayState* play) {
                 if ((this->getItemId != GI_ICE_TRAP && !IS_RANDO) ||
                     (IS_RANDO && (this->getItemId != RG_ICE_TRAP || this->getItemEntry.getItemId != RG_ICE_TRAP))) {
                     Actor_Spawn(&play->actorCtx, play, ACTOR_EN_CLEAR_TAG, this->actor.world.pos.x,
-                                this->actor.world.pos.y + 100.0f, this->actor.world.pos.z, 0, 0, 0, 0, true);
+                                this->actor.world.pos.y + 100.0f, this->actor.world.pos.z, 0, 0, 0, 0);
                     func_8083C0E8(this, play);
                 } else if (IS_RANDO) {
                     gSaveContext.ship.pendingIceTrapCount++;
@@ -14704,7 +14689,7 @@ void Player_Action_8084EFC0(Player* this, PlayState* play) {
         Actor_Spawn(&play->actorCtx, play, dropInfo->actorId,
                     (Math_SinS(this->actor.shape.rot.y) * 5.0f) + this->leftHandPos.x, this->leftHandPos.y,
                     (Math_CosS(this->actor.shape.rot.y) * 5.0f) + this->leftHandPos.z, 0x4000, this->actor.shape.rot.y,
-                    0, dropInfo->actorParams, true);
+                    0, dropInfo->actorParams);
 
         Player_UpdateBottleHeld(play, this, ITEM_BOTTLE, PLAYER_IA_BOTTLE);
         return;
@@ -14862,7 +14847,7 @@ void Player_Action_8084F608(Player* this, PlayState* play) {
 void Player_Action_8084F698(Player* this, PlayState* play) {
     Player_SetupAction(play, this, Player_Action_8084F608, 0);
     this->av2.actionVar2 = 40;
-    Actor_Spawn(&play->actorCtx, play, ACTOR_DEMO_KANKYO, 0.0f, 0.0f, 0.0f, 0, 0, 0, 0x10, true);
+    Actor_Spawn(&play->actorCtx, play, ACTOR_DEMO_KANKYO, 0.0f, 0.0f, 0.0f, 0, 0, 0, 0x10);
 }
 
 void Player_Action_8084F710(Player* this, PlayState* play) {

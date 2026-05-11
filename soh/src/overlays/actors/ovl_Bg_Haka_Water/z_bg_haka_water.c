@@ -123,8 +123,8 @@ void BgHakaWater_Draw(Actor* thisx, PlayState* play) {
 
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, (u8)(0.765f * temp));
     gSPSegment(POLY_XLU_DISP++, 0x08,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, play->gameplayFrames % 128, play->gameplayFrames % 128, 32, 32,
-                                1, 0, (0 - play->gameplayFrames) % 128, 32, 32));
+               Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, play->gameplayFrames % 128, play->gameplayFrames % 128, 32, 32,
+                                  1, 0, (0 - play->gameplayFrames) % 128, 32, 32, 1, 1, 0, -1));
 
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, gBotwWaterRingDL);

@@ -145,6 +145,17 @@ void SohMenu::AddMenuSettings() {
             "Allows controller navigation of the port menu (Settings, Enhancements,...)\nCAUTION: "
             "This will disable game inputs while the menu is visible.\n\nD-pad to move between "
             "items, A to select, B to move up in scope."));
+    AddWidget(path, "Allow background inputs", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ALLOW_BACKGROUND_INPUTS)
+        .RaceDisable(false)
+        .Callback([](WidgetInfo& info) {
+            SDL_SetHint(SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS,
+                        CVarGetInteger(CVAR_ALLOW_BACKGROUND_INPUTS, 1) ? "1" : "0");
+        })
+        .Options(CheckboxOptions()
+                     .Tooltip("Allows controller inputs to be picked up by the game even when the game window isn't "
+                              "the focused window.")
+                     .DefaultValue(1));
     AddWidget(path, "Menu Background Opacity", WIDGET_CVAR_SLIDER_FLOAT)
         .CVar(CVAR_SETTING("Menu.BackgroundOpacity"))
         .RaceDisable(false)
@@ -236,6 +247,10 @@ void SohMenu::AddMenuSettings() {
         .CVar(CVAR_SETTING("A11yNoScreenFlashForFinishingBlow"))
         .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip("Disables the white screen flash on enemy kill."));
+    AddWidget(path, "Disable Jabu Wobble", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_SETTING("A11yNoJabuWobble"))
+        .RaceDisable(false)
+        .Options(CheckboxOptions().Tooltip("Disable the geometry wobble and camera distortion inside Jabu."));
     AddWidget(path, "EXPERIMENTAL", WIDGET_SEPARATOR_TEXT).Options(TextOptions().Color(Colors::Orange));
     AddWidget(path, "ImGui Menu Scaling", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_SETTING("ImGuiScale"))
@@ -505,6 +520,10 @@ void SohMenu::AddMenuSettings() {
             });
         })
         .Options(ButtonOptions().Tooltip("Displays a test notification."));
+    AddWidget(path, "Mute Notification Sound", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_SETTING("Notifications.Mute"))
+        .RaceDisable(false)
+        .Options(CheckboxOptions().Tooltip("Prevent notifications from playing a sound."));
 
     // Mod Menu
     path.sidebarName = "Mod Menu";

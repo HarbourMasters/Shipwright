@@ -15,8 +15,8 @@ void BgHakaMegane_Destroy(Actor* thisx, PlayState* play);
 void BgHakaMegane_Update(Actor* thisx, PlayState* play);
 void BgHakaMegane_Draw(Actor* thisx, PlayState* play);
 
-void func_8087DB24(BgHakaMegane* this, PlayState* play);
-void func_8087DBF0(BgHakaMegane* this, PlayState* play);
+void BgHakaMegane_WaitForObject(BgHakaMegane* this, PlayState* play);
+void BgHakaMegane_UpdateState(BgHakaMegane* this, PlayState* play);
 void BgHakaMegane_DoNothing(BgHakaMegane* this, PlayState* play);
 
 const ActorInit Bg_Haka_Megane_InitVars = {
@@ -75,7 +75,7 @@ void BgHakaMegane_Init(Actor* thisx, PlayState* play) {
     if (this->objBankIndex < 0) {
         Actor_Kill(thisx);
     } else {
-        this->actionFunc = func_8087DB24;
+        this->actionFunc = BgHakaMegane_WaitForObject;
     }
 }
 
@@ -85,7 +85,7 @@ void BgHakaMegane_Destroy(Actor* thisx, PlayState* play) {
     DynaPoly_DeleteBgActor(play, &play->colCtx.dyna, this->dyna.bgId);
 }
 
-void func_8087DB24(BgHakaMegane* this, PlayState* play) {
+void BgHakaMegane_WaitForObject(BgHakaMegane* this, PlayState* play) {
     CollisionHeader* colHeader;
     CollisionHeader* collision;
 
@@ -94,7 +94,7 @@ void func_8087DB24(BgHakaMegane* this, PlayState* play) {
         this->dyna.actor.draw = BgHakaMegane_Draw;
         Actor_SetObjectDependency(play, &this->dyna.actor);
         if (play->roomCtx.curRoom.lensMode != LENS_MODE_HIDE_ACTORS) {
-            this->actionFunc = func_8087DBF0;
+            this->actionFunc = BgHakaMegane_UpdateState;
             collision = sCollisionHeaders[this->dyna.actor.params];
             if (collision != NULL) {
                 CollisionHeader_GetVirtual(collision, &colHeader);
@@ -106,7 +106,7 @@ void func_8087DB24(BgHakaMegane* this, PlayState* play) {
     }
 }
 
-void func_8087DBF0(BgHakaMegane* this, PlayState* play) {
+void BgHakaMegane_UpdateState(BgHakaMegane* this, PlayState* play) {
     Actor* thisx = &this->dyna.actor;
 
     if (play->actorCtx.lensActive) {

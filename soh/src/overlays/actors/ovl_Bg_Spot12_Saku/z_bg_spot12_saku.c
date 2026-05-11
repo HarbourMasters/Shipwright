@@ -6,7 +6,6 @@
 
 #include "z_bg_spot12_saku.h"
 #include "objects/object_spot12_obj/object_spot12_obj.h"
-#include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS 0

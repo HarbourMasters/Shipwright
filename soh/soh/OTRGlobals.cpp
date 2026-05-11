@@ -1,17 +1,16 @@
 #include "OTRGlobals.h"
 #include "OTRAudio.h"
-#include <iostream>
 #include <algorithm>
 #include <atomic>
 #include <filesystem>
 #include <fstream>
 #include <vector>
 #include <chrono>
+#include <optional>
 
 #include "ResourceManagerHelpers.h"
 #include <fast/Fast3dWindow.h>
 #include <ship/resource/File.h>
-#include <fast/resource/type/DisplayList.h>
 #include <ship/window/Window.h>
 #include <soh/GameVersions.h>
 #include <spdlog/sinks/rotating_file_sink.h>
@@ -66,6 +65,7 @@
 
 #include <functions.h>
 #include "Enhancements/item-tables/ItemTableManager.h"
+#include "Enhancements/Lang/Lang.h"
 #include "soh/SohGui/SohGui.hpp"
 #include "soh/SohGui/ImGuiUtils.h"
 #include "ActorDB.h"
@@ -405,13 +405,12 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
     std::vector<std::string> args;
     if (argc > 1) {
         for (int i = 1; i < argc; i++) {
-            args.push_back(argv[argc]);
+            args.push_back(argv[i]);
         }
     }
     Extractor extract;
     PromptSteps promptStep = PS_FILE_CHECK;
     bool generatedIsMQ = false;
-    std::atomic<bool> extracting = false;
     std::atomic<size_t> extractCount = 0, totalExtract = 0;
 
     std::string installPath = Ship::Context::GetAppBundlePath();
@@ -447,8 +446,14 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
     }
 
     std::shared_ptr<BS::thread_pool> threadPool = std::make_shared<BS::thread_pool>(1);
+    std::optional<std::future<void>> extractionTask;
+
+#if not defined(__SWITCH__) && not defined(__WIIU__)
+    CheckAndCreateModFolder();
+#endif
+
     while (!extractDone) {
-        if (SohGui::PopupsQueued() > 0 || extracting) {
+        if (SohGui::PopupsQueued() > 0 || extractionTask.has_value()) {
             goto render;
         }
         switch (extractStep) {
@@ -459,7 +464,7 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
 #elif (defined(__WIIU__) || defined(__SWITCH__))
                     extractStep = ES_VERIFY;
 #else
-                    extractStep = ES_EXTRACT;
+                    extractStep = args.empty() ? ES_EXTRACT : ES_EXTRACT_ARGS;
 #endif
                 } else {
                     std::string msg;
@@ -544,11 +549,7 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
                                                   "OK", "", [&]() { exit(0); });
                         } else {
                             windowsStep = WS_DONE;
-                            if (args.size() > 0) {
-                                extractStep = ES_EXTRACT_ARGS;
-                            } else {
-                                extractStep = ES_EXTRACT;
-                            }
+                            extractStep = args.empty() ? ES_EXTRACT : ES_EXTRACT_ARGS;
                         }
                         continue;
                     }
@@ -559,7 +560,7 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
             }
             case ES_EXTRACT_ARGS: {
 #if !defined(__SWITCH__) && !defined(__WIIU__)
-                if (args.size() == 0) {
+                if (args.empty()) {
                     SohGui::RegisterPopup(
                         "Run Ship of Harkinian", "All files have been processed. Run SoH?", "Yes", "No",
                         [&]() {
@@ -585,20 +586,16 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
                     if (std::filesystem::exists(Ship::Context::GetAppDirectoryPath(appShortName) + "/" + archive)) {
                         std::string msg = "Archive for current ROM, " + archive + ", already exists.\nExtract again?";
                         SohGui::RegisterPopup("Confirm Re-extract", msg.c_str(), "Yes", "No", [&]() {
-                            extracting = true;
-                            threadPool->submit_task([&]() -> void {
+                            extractionTask = threadPool->submit_task([&]() -> void {
                                 extract.CallZapd(installPath, Ship::Context::GetAppDirectoryPath(appShortName),
                                                  &extractCount, &totalExtract);
-                                extracting = false;
                                 extractCount = totalExtract = 0;
                             });
                         });
                     } else {
-                        extracting = true;
-                        threadPool->submit_task([&]() -> void {
+                        extractionTask = threadPool->submit_task([&]() -> void {
                             extract.CallZapd(installPath, Ship::Context::GetAppDirectoryPath(appShortName),
                                              &extractCount, &totalExtract);
-                            extracting = false;
                             extractCount = totalExtract = 0;
                         });
                     }
@@ -651,12 +648,10 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
                             promptStep = PS_FILE_CHECK;
                             continue;
                         }
-                        extracting = true;
-                        threadPool->submit_task([&]() -> void {
+                        extractionTask = threadPool->submit_task([&]() -> void {
                             extract.CallZapd(installPath, Ship::Context::GetAppDirectoryPath(appShortName),
                                              &extractCount, &totalExtract);
                             generatedIsMQ = extract.IsMasterQuest();
-                            extracting = false;
                             promptStep = PS_SECOND;
                             extractCount = 0;
                             totalExtract = 0;
@@ -671,11 +666,9 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
                                                                                             : RomSearchMode::MQ)) {
                                     extractStep = ES_VERIFY;
                                 } else {
-                                    extracting = true;
-                                    threadPool->submit_task([&]() -> void {
+                                    extractionTask = threadPool->submit_task([&]() -> void {
                                         extract.CallZapd(installPath, Ship::Context::GetAppDirectoryPath(appShortName),
                                                          &extractCount, &totalExtract);
-                                        extracting = false;
                                         extractStep = ES_VERIFY;
                                         extractCount = 0;
                                         totalExtract = 0;
@@ -725,30 +718,40 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
         gui->StartDraw();
         sohFast3dWindow->StartFrame();
         sohFast3dWindow->RunGuiOnly();
-        if (extracting && !ImGui::IsPopupOpen("ROM Extraction")) {
-            ImGui::OpenPopup("ROM Extraction");
-        }
-        if (extracting) {
-            ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 3.0f);
-            ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(10.0f, 8.0f));
-            auto color = UIWidgets::ColorValues.at(THEME_COLOR);
-            ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(color.x, color.y, color.z, 0.6f));
-            ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(color.x, color.y, color.z, 1.0f));
-            ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.0f, 0.0f, 0.0f, 0.3f));
-            if (ImGui::BeginPopupModal("ROM Extraction", NULL,
-                                       ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize |
-                                           ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollbar |
-                                           ImGuiWindowFlags_NoSavedSettings)) {
-                float progress = (totalExtract > 0.0f ? (float)extractCount / (float)totalExtract : 0) * 100.0f;
-                auto filename = std::filesystem::path(file).filename().string();
-                ImGui::Text("Extracting %s...%s", filename.c_str(),
-                            roundf(progress) == 100.0f ? " Done. Finishing up." : "");
-                std::string overlay = extractCount > 0 ? fmt::format("{:.0f}%", progress) : "Starting Up";
-                ImGui::ProgressBar(progress / 100.0f, ImVec2(600.0f, 50.0f), overlay.c_str());
-                ImGui::EndPopup();
+        if (extractionTask.has_value()) {
+            auto status = extractionTask->wait_for(std::chrono::milliseconds(0));
+            if (status == std::future_status::ready) {
+                try {
+                    extractionTask->get();
+                } catch (const std::exception& e) {
+                    SohGui::RegisterPopup("Extraction Crashed", e.what(), "Close", "", []() { exit(1); });
+                }
+                extractionTask.reset();
+            } else {
+                if (!ImGui::IsPopupOpen("ROM Extraction")) {
+                    ImGui::OpenPopup("ROM Extraction");
+                }
+                ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 3.0f);
+                ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(10.0f, 8.0f));
+                auto color = UIWidgets::ColorValues.at(THEME_COLOR);
+                ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(color.x, color.y, color.z, 0.6f));
+                ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(color.x, color.y, color.z, 1.0f));
+                ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.0f, 0.0f, 0.0f, 0.3f));
+                if (ImGui::BeginPopupModal("ROM Extraction", NULL,
+                                           ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize |
+                                               ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollbar |
+                                               ImGuiWindowFlags_NoSavedSettings)) {
+                    float progress = (totalExtract > 0.0f ? (float)extractCount / (float)totalExtract : 0) * 100.0f;
+                    auto filename = std::filesystem::path(file).filename().string();
+                    ImGui::Text("Extracting %s...%s", filename.c_str(),
+                                roundf(progress) == 100.0f ? " Done. Finishing up." : "");
+                    std::string overlay = extractCount > 0 ? fmt::format("{:.0f}%", progress) : "Starting Up";
+                    ImGui::ProgressBar(progress / 100.0f, ImVec2(600.0f, 50.0f), overlay.c_str());
+                    ImGui::EndPopup();
+                }
+                ImGui::PopStyleColor(3);
+                ImGui::PopStyleVar(2);
             }
-            ImGui::PopStyleColor(3);
-            ImGui::PopStyleVar(2);
         }
         gui->EndDraw();
         sohFast3dWindow->EndFrame();
@@ -759,10 +762,6 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
     Ship::Switch::Init(Ship::PreInitPhase);
 #elif defined(__WIIU__)
     Ship::WiiU::Init(appShortName);
-#endif
-
-#if not defined(__SWITCH__) && not defined(__WIIU__)
-    CheckAndCreateModFolder();
 #endif
 }
 
@@ -884,6 +883,8 @@ void OTRGlobals::Initialize() {
                                     "Sequence", static_cast<uint32_t>(SOH::ResourceType::SOH_AudioSequence), 0);
     loader->RegisterResourceFactory(std::make_shared<SOH::ResourceFactoryBinaryBackgroundV0>(), RESOURCE_FORMAT_BINARY,
                                     "Background", static_cast<uint32_t>(SOH::ResourceType::SOH_Background), 0);
+
+    Lang::LoadLangs();
 
     gSaveStateMgr = std::make_shared<SaveStateMgr>();
     gRandoContext->InitStaticData();
@@ -1471,6 +1472,7 @@ extern "C" void InitOTR(int argc, char* argv[]) {
     conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion3Updater>());
     conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion4Updater>());
     conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion5Updater>());
+    conf->RegisterVersionUpdater(std::make_shared<SOH::ConfigVersion6Updater>());
     conf->RunVersionUpdates();
 
     SohGui::SetupGuiElements();
@@ -1713,11 +1715,15 @@ void RunCommands(Gfx* Commands, const std::vector<std::unordered_map<Mtx*, MtxF>
     // Process window events for resize, mouse, keyboard events
     wnd->HandleEvents();
 
+    auto intp = wnd->GetInterpreterWeak().lock().get();
+    intp->mInterpolationIndex = 0;
+
     UIWidgets::Colors themeColor =
         static_cast<UIWidgets::Colors>(CVarGetInteger(CVAR_SETTING("Menu.Theme"), UIWidgets::Colors::LightBlue));
     ImGui::PushStyleColor(ImGuiCol_TitleBgActive, UIWidgets::ColorValues.at(themeColor));
     for (const auto& m : mtx_replacements) {
         wnd->DrawAndRunGraphicsCommands(Commands, m);
+        intp->mInterpolationIndex++;
     }
     ImGui::PopStyleColor();
 }
@@ -2556,4 +2562,13 @@ bool SoH_HandleConfigDrop(char* filePath) {
 
 extern "C" void CheckTracker_RecalculateAvailableChecks() {
     CheckTracker::RecalculateAvailableChecks();
+}
+
+extern "C" uint32_t Ship_GetInterpolationFPS() {
+    return OTRGlobals::Instance->GetInterpolationFPS();
+}
+
+// Number of interpolated frames
+extern "C" uint32_t Ship_GetInterpolationFrameCount() {
+    return ceil((float)Ship_GetInterpolationFPS() / 20.0f);
 }

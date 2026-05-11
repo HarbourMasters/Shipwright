@@ -796,3 +796,20 @@ uint32_t SohUtils::Hash(std::string str) {
     }
     return hval;
 }
+
+std::vector<std::string> SohUtils::StringSplit(const std::string& str, const std::string& delimiter) {
+    std::vector<std::string> tokens;
+    size_t pos = str.find(delimiter, 0);
+    size_t prevpos = 0;
+
+    while (pos != std::string::npos) {
+        std::string token = str.substr(prevpos, pos - prevpos);
+        tokens.push_back(token);
+        prevpos = pos + 1;
+        pos = str.find(delimiter, prevpos);
+    }
+
+    tokens.push_back(str.substr(prevpos));
+
+    return tokens;
+}

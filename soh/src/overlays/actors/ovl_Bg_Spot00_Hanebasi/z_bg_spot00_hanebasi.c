@@ -282,8 +282,8 @@ void BgSpot00Hanebasi_DrawTorches(Actor* thisx, PlayState* play2) {
         FrameInterpolation_RecordOpenChild("Hanebasi Torch", i);
 
         gSPSegment(POLY_XLU_DISP++, 0x08,
-                   Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 32, 64, 1, 0,
-                                    ((play->gameplayFrames + i) * -20) & 0x1FF, 32, 128));
+                   Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 0, 0, 32, 64, 1, 0,
+                                      ((play->gameplayFrames + i) * -20) & 0x1FF, 32, 128, 0, 0, 0, -20));
 
         Matrix_Translate((i == 0) ? 260.0f : -260.0f, 128.0f, 690.0f, MTXMODE_NEW);
         Matrix_RotateY(angle, MTXMODE_APPLY);

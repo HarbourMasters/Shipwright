@@ -618,7 +618,7 @@ void func_809861C4(DemoIm* this, PlayState* play) {
 
     if (npcAction != NULL) {
         u32 action = npcAction->action;
-        u32 unk_274 = this->unk_274;
+        u32 unk_274 = this->cueId;
 
         if (action != unk_274) {
             switch (action) {
@@ -633,7 +633,7 @@ void func_809861C4(DemoIm* this, PlayState* play) {
                 default:
                     osSyncPrintf("Demo_Im_Ocarina_Check_DemoMode:そんな動作は無い!!!!!!!!\n");
             }
-            this->unk_274 = action;
+            this->cueId = action;
         }
     }
 }
@@ -651,7 +651,7 @@ void func_809862E0(DemoIm* this, PlayState* play) {
 
     if (npcAction != NULL) {
         u32 action = npcAction->action;
-        u32 unk_274 = this->unk_274;
+        u32 unk_274 = this->cueId;
 
         if (action != unk_274) {
             switch (action) {
@@ -673,7 +673,7 @@ void func_809862E0(DemoIm* this, PlayState* play) {
                 default:
                     osSyncPrintf("Demo_Im_Ocarina_Check_DemoMode:そんな動作は無い!!!!!!!!\n");
             }
-            this->unk_274 = action;
+            this->cueId = action;
         }
     }
 }
@@ -748,7 +748,7 @@ void func_809865F8(DemoIm* this, PlayState* play, s32 arg2) {
                 f32 spawnPosZ = thisPos->z + (Math_CosS(shapeRotY) * 30.0f);
 
                 Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ARROW, spawnPosX, spawnPosY, spawnPosZ, 0xFA0,
-                            this->actor.shape.rot.y, 0, ARROW_CS_NUT, true);
+                            this->actor.shape.rot.y, 0, ARROW_CS_NUT);
                 this->unk_27C = 1;
             }
         } else {
@@ -782,7 +782,7 @@ void func_8098680C(DemoIm* this, PlayState* play) {
 
     if (npcAction != NULL) {
         u32 action = npcAction->action;
-        u32 unk_274 = this->unk_274;
+        u32 unk_274 = this->cueId;
 
         if (action != unk_274) {
             switch (action) {
@@ -801,7 +801,7 @@ void func_8098680C(DemoIm* this, PlayState* play) {
                 default:
                     osSyncPrintf("Demo_Im_Spot00_Check_DemoMode:そんな動作は無い!!!!!!!!\n");
             }
-            this->unk_274 = action;
+            this->cueId = action;
         }
     }
 }
@@ -917,7 +917,7 @@ void func_80986C30(DemoIm* this, PlayState* play) {
             func_80985F54(this);
         }
         Flags_SetEventChkInf(EVENTCHKINF_LEARNED_ZELDAS_LULLABY);
-        if (GameInteractor_Should(VB_GIVE_ITEM_ZELDAS_LULLABY, true)) {
+        if (GameInteractor_Should(VB_GIVE_ITEM_SONG, true, ITEM_SONG_LULLABY)) {
             Item_Give(play, ITEM_SONG_LULLABY);
         }
     }
@@ -1061,7 +1061,7 @@ void func_809871E8(DemoIm* this, PlayState* play) {
 
     if (npcAction != NULL) {
         u32 action = npcAction->action;
-        u32 unk_274 = this->unk_274;
+        u32 unk_274 = this->cueId;
 
         if (action != unk_274) {
             switch (action) {
@@ -1074,7 +1074,7 @@ void func_809871E8(DemoIm* this, PlayState* play) {
                 default:
                     osSyncPrintf("Demo_Im_inEnding_Check_DemoMode:そんな動作は無い!!!!!!!!\n");
             }
-            this->unk_274 = action;
+            this->cueId = action;
         }
     }
 }

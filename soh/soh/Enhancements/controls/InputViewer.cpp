@@ -11,7 +11,6 @@
 #include <cmath>
 
 #include "soh/SohGui/UIWidgets.hpp"
-#include "soh/SohGui/UIWidgets.hpp"
 #include "soh/SohGui/SohGui.hpp"
 
 using namespace UIWidgets;

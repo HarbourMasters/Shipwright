@@ -95,7 +95,7 @@ void ArmsHook_Wait(ArmsHook* this, PlayState* play) {
     }
 }
 
-void func_80865044(ArmsHook* this) {
+void ArmsHook_PullPlayer(ArmsHook* this) {
     this->actor.child = this->actor.parent;
     this->actor.parent->parent = &this->actor;
 }
@@ -178,7 +178,7 @@ void ArmsHook_Shoot(ArmsHook* this, PlayState* play) {
             if (this->collider.info.atHitInfo->bumperFlags & BUMP_HOOKABLE) {
                 ArmsHook_AttachHookToActor(this, touchedActor);
                 if (CHECK_FLAG_ALL(touchedActor->flags, ACTOR_FLAG_HOOKSHOT_PULLS_PLAYER)) {
-                    func_80865044(this);
+                    ArmsHook_PullPlayer(this);
                 }
             }
         }
@@ -279,7 +279,7 @@ void ArmsHook_Shoot(ArmsHook* this, PlayState* play) {
                         ArmsHook_AttachHookToActor(this, &dynaPolyActor->actor);
                     }
                 }
-                func_80865044(this);
+                ArmsHook_PullPlayer(this);
                 Audio_PlaySoundGeneral(NA_SE_IT_HOOKSHOT_STICK_OBJ, &this->actor.projectedPos, 4,
                                        &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             } else {

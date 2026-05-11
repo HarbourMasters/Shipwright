@@ -14,6 +14,7 @@ void RegionTable_Init_Root() {
         EVENT_ACCESS(LOGIC_TH_COULD_FREE_SLOPE_CARPENTER,       ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FAST)),
         EVENT_ACCESS(LOGIC_TH_RESCUED_ALL_CARPENTERS,           ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE)),
         EVENT_ACCESS(LOGIC_FREED_EPONA,                         (bool)ctx->GetOption(RSK_SKIP_EPONA_RACE)),
+        EVENT_ACCESS(LOGIC_SHOWED_MIDO_SWORD_AND_SHIELD,        ctx->GetOption(RSK_FOREST).Is(RO_CLOSED_FOREST_OFF)),
     }, {
         //Locations
         LOCATION(RC_LINKS_POCKET,       true),
@@ -57,7 +58,7 @@ void RegionTable_Init_Root() {
 
     areaTable[RR_BOLERO_OF_FIRE_WARP] = Region("Bolero of Fire Warp", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {}, {}, {
         //Exits
-        ENTRANCE(RR_DMC_CENTRAL_LOCAL, true),
+        ENTRANCE(RR_DMC_PAD_ENTRY, true),
     });
 
     areaTable[RR_SERENADE_OF_WATER_WARP] = Region("Serenade of Water Warp", SCENE_ID_MAX, TIME_DOESNT_PASS, {RA_LINKS_POCKET}, {}, {}, {

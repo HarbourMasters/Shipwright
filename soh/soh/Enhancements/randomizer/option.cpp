@@ -6,6 +6,7 @@
 #include "soh/SohGui/SohGui.hpp"
 #include "soh/SohGui/SohMenu.h"
 #include "soh/SohGui/UIWidgets.hpp"
+#include "soh/Enhancements/Lang/Lang.h"
 #include <soh/cvar_prefixes.h>
 
 namespace SohGui {
@@ -357,35 +358,65 @@ RandomizerCheck LocationOption::GetKey() const {
     return static_cast<RandomizerCheck>(key);
 }
 
-TrickOption::TrickOption(RandomizerTrick key_, const RandomizerCheckQuest quest_, const RandomizerArea area_,
-                         std::set<Tricks::Tag> tags_, const std::string& name_, std::string description_)
-    : Option(key_, name_, { "Disabled", "Enabled" }, OptionCategory::Setting, "", std::move(description_),
-             WIDGET_CVAR_CHECKBOX, 0, false, nullptr, IMFLAG_NONE),
-      mQuest(quest_), mArea(area_), mTags(std::move(tags_)) {
+#define RANDO_ENUM_ITEM(enum) { enum, #enum },
+
+std::unordered_map<RandomizerTrick, std::string> trickNames = {
+#include "randomizerEnums/RandomizerTrick.h"
+};
+
+#undef RANDO_ENUM_ITEM
+
+const static std::string trickPrefix = "randomizer.tricks.";
+
+static std::string MakeTrickName(RandomizerTrick key) {
+    const static std::string namePostfix = ".name";
+
+    std::string trickNamePart = trickNames[key].substr(3);
+    std::transform(trickNamePart.begin(), trickNamePart.end(), trickNamePart.begin(), ::tolower);
+    return Lang::Translate((trickPrefix + trickNamePart + namePostfix).c_str());
 }
 
-TrickOption TrickOption::LogicTrick(RandomizerTrick key_, RandomizerCheckQuest quest_, RandomizerArea area_,
-                                    std::set<Tricks::Tag> tags_, const std::string& name_, std::string description_) {
-    return { key_, quest_, area_, std::move(tags_), name_, std::move(description_) };
+static std::string MakeTrickDescription(RandomizerTrick key) {
+    const static std::string descriptionPostfix = ".description";
+
+    std::string trickNamePart = trickNames[key].substr(3);
+    std::transform(trickNamePart.begin(), trickNamePart.end(), trickNamePart.begin(), ::tolower);
+    return Lang::Translate((trickPrefix + trickNamePart + descriptionPostfix).c_str());
 }
 
-RandomizerTrick TrickOption::GetKey() const {
+TrickSetting::TrickSetting(RandomizerTrick key_, const RandomizerCheckQuest quest_, const RandomizerArea area_,
+                           std::set<Tricks::Tag> tags_, const std::string nameTag_)
+    : Option(key_, std::move(MakeTrickName(key_)), { "Disabled", "Enabled" }, OptionCategory::Setting, "",
+             std::move(MakeTrickDescription(key_)), WIDGET_CVAR_CHECKBOX, 0, false, nullptr, IMFLAG_NONE),
+      mQuest(quest_), mArea(area_), mNameTag(nameTag_), mTags(std::move(tags_)) {
+}
+
+TrickSetting TrickSetting::LogicTrick(RandomizerTrick key_, RandomizerCheckQuest quest_, RandomizerArea area_,
+                                      std::set<Tricks::Tag> tags_, const std::string nameTag_) {
+    return { key_, quest_, area_, std::move(tags_), nameTag_ };
+}
+
+RandomizerTrick TrickSetting::GetKey() const {
     return static_cast<RandomizerTrick>(key);
 }
 
-RandomizerCheckQuest TrickOption::GetQuest() const {
+RandomizerCheckQuest TrickSetting::GetQuest() const {
     return mQuest;
 }
 
-RandomizerArea TrickOption::GetArea() const {
+RandomizerArea TrickSetting::GetArea() const {
     return mArea;
 }
 
-bool TrickOption::HasTag(const Tricks::Tag tag) const {
+std::string TrickSetting::GetNameTag() const {
+    return mNameTag;
+}
+
+bool TrickSetting::HasTag(const Tricks::Tag tag) const {
     return mTags.contains(tag);
 }
 
-const std::set<Tricks::Tag>& TrickOption::GetTags() const {
+const std::set<Tricks::Tag>& TrickSetting::GetTags() const {
     return mTags;
 }
 

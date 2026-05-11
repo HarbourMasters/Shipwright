@@ -8,7 +8,6 @@
 #include "scenes/misc/hakaana_ouke/hakaana_ouke_scene.h"
 #include "scenes/overworld/spot02/spot02_scene.h"
 #include "vt.h"
-#include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_UPDATE_DURING_OCARINA)
