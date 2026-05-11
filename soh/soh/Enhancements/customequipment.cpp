@@ -80,16 +80,6 @@ static void OnBottleHeldChanged(s32 item, s32 actionParam) {
     RefreshCustomEquipment();
 }
 
-static void PatchCustomEquipment() {
-    COND_HOOK(OnPlayerSetModels, true, UpdateCustomEquipmentSetModel);
-    COND_HOOK(OnLinkEquipmentChange, true, UpdateCustomEquipment);
-    COND_HOOK(OnLinkSkeletonInit, true, UpdateCustomEquipment);
-    COND_HOOK(OnAssetAltChange, true, UpdateCustomEquipment);
-    COND_HOOK(OnPlayerBottleHeldChanged, true, OnBottleHeldChanged);
-}
-
-static RegisterShipInitFunc initFunc(PatchCustomEquipment);
-
 static void RefreshCustomEquipment() {
     if (!GameInteractor::IsSaveLoaded() || gPlayState == nullptr || GET_PLAYER(gPlayState) == nullptr ||
         IsDummyPlayer(GET_PLAYER(gPlayState))) {
@@ -609,6 +599,7 @@ static void PatchCustomEquipment() {
     COND_HOOK(OnLinkEquipmentChange, true, UpdateCustomEquipment);
     COND_HOOK(OnLinkSkeletonInit, true, UpdateCustomEquipment);
     COND_HOOK(OnAssetAltChange, true, UpdateCustomEquipment);
+    COND_HOOK(OnPlayerBottleHeldChanged, true, OnBottleHeldChanged);
 }
 
 static RegisterShipInitFunc initFunc(PatchCustomEquipment);
