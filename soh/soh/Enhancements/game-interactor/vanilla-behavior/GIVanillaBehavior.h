@@ -1968,6 +1968,8 @@ typedef enum {
     // #### `args`
     // - `*Player`
     // - `*PlayState`
+    // - `*Input` (sControlInput)
+    // - `s32` (sFloorType)
     VB_PLAYER_ROLL_CHAIN,
 
     // #### `result`

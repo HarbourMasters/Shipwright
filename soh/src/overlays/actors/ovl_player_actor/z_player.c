@@ -9853,11 +9853,7 @@ void Player_Action_Roll(Player* this, PlayState* play) {
                 }
             }
 
-            if ((this->skelAnime.curFrame >= 15.0f) && CHECK_BTN_ALL(sControlInput->press.button, BTN_A) &&
-                (sFloorType != 7) && GameInteractor_Should(VB_PLAYER_ROLL_CHAIN, false, this, play)) {
-                Player_SetupRoll(this, play);
-                return;
-            }
+            if (GameInteractor_Should(VB_PLAYER_ROLL_CHAIN, false, this, play, sControlInput, sFloorType)) { return; }
 
             if ((this->skelAnime.curFrame < 15.0f) || !Player_ActionHandler_7(this, play)) {
                 if (this->skelAnime.curFrame >= 20.0f) {

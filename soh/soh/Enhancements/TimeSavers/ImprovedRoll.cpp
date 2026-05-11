@@ -2,16 +2,27 @@
 #include "soh/ShipInit.hpp"
 #include "global.h"
 
-#define CVAR_ROLL_CHAIN_NAME CVAR_ENHANCEMENT("ImprovedRoll")
-#define CVAR_ROLL_CHAIN_VALUE CVarGetInteger(CVAR_ROLL_CHAIN_NAME, 0)
+extern "C" {
+void Player_SetupRoll(Player* player, PlayState* play);
+}
 
-#define CVAR_ROLL_STEER_NAME CVAR_ENHANCEMENT("ImprovedRollSteering")
-#define CVAR_ROLL_STEER_VALUE CVarGetInteger(CVAR_ROLL_STEER_NAME, 0)
+#define CVAR_ROLL_CHAIN CVAR_ENHANCEMENT("ImprovedRoll")
+#define CVAR_ROLL_STEER CVAR_ENHANCEMENT("ImprovedRollSteering")
 
 void ImprovedRoll_Register() {
-    COND_VB_SHOULD(VB_PLAYER_ROLL_CHAIN, CVAR_ROLL_CHAIN_VALUE, { *should = true; });
+    COND_VB_SHOULD(VB_PLAYER_ROLL_CHAIN, CVarGetInteger(CVAR_ROLL_CHAIN, 0), {
+        Player* player = va_arg(args, Player*);
+        PlayState* play = va_arg(args, PlayState*);
+        Input* controlInput = va_arg(args, Input*);
+        s32 floorType = va_arg(args, s32);
+        if ((player->skelAnime.curFrame >= 15.0f) &&
+            CHECK_BTN_ALL(controlInput->press.button, BTN_A) && (floorType != 7)) {
+            Player_SetupRoll(player, play);
+            *should = true;
+        }
+    });
 
-    COND_VB_SHOULD(VB_PLAYER_ROLL_STEER, CVAR_ROLL_CHAIN_VALUE && CVAR_ROLL_STEER_VALUE, {
+    COND_VB_SHOULD(VB_PLAYER_ROLL_STEER, CVarGetInteger(CVAR_ROLL_CHAIN, 0) && CVarGetInteger(CVAR_ROLL_STEER, 0), {
         Player* player = va_arg(args, Player*);
         PlayState* play = va_arg(args, PlayState*);
         s16 yawTarget = (s16)va_arg(args, int);
@@ -22,4 +33,4 @@ void ImprovedRoll_Register() {
     });
 }
 
-static RegisterShipInitFunc initFunc(ImprovedRoll_Register, { CVAR_ROLL_CHAIN_NAME, CVAR_ROLL_STEER_NAME });
+static RegisterShipInitFunc initFunc(ImprovedRoll_Register, { CVAR_ROLL_CHAIN, CVAR_ROLL_STEER });
