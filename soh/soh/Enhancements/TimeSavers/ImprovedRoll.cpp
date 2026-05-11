@@ -15,8 +15,8 @@ void ImprovedRoll_Register() {
         PlayState* play = va_arg(args, PlayState*);
         Input* controlInput = va_arg(args, Input*);
         s32 floorType = va_arg(args, s32);
-        if ((player->skelAnime.curFrame >= 15.0f) &&
-            CHECK_BTN_ALL(controlInput->press.button, BTN_A) && (floorType != 7)) {
+        if ((player->skelAnime.curFrame >= 15.0f) && CHECK_BTN_ALL(controlInput->press.button, BTN_A) &&
+            (floorType != 7)) {
             Player_SetupRoll(player, play);
             *should = true;
         }
