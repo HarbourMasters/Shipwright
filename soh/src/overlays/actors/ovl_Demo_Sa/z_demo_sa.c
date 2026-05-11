@@ -554,7 +554,7 @@ void func_8098F654(DemoSa* this, PlayState* play) {
 
     if (npcAction != NULL) {
         action = npcAction->action;
-        unk_1AC = this->unk_1AC;
+        unk_1AC = this->cueId;
         if (action != unk_1AC) {
             switch (action) {
                 case 7:
@@ -569,7 +569,7 @@ void func_8098F654(DemoSa* this, PlayState* play) {
                 default:
                     osSyncPrintf("Demo_Sa_inEnding_Check_DemoMode:そんな動作は無い!!!!!!!!\n");
             }
-            this->unk_1AC = action;
+            this->cueId = action;
         }
     }
 }
@@ -644,7 +644,7 @@ void func_8098F984(DemoSa* this) {
 }
 
 void func_8098F998(DemoSa* this, PlayState* play) {
-    if (this->unk_1AC == 4) {
+    if (this->cueId == 4) {
         func_8098E6EC(this, play, 1);
         this->action = 17;
         this->drawConfig = 2;
@@ -699,7 +699,7 @@ void func_8098FB68(DemoSa* this, PlayState* play) {
 
     if (npcAction != NULL) {
         action = npcAction->action;
-        unk_1AC = this->unk_1AC;
+        unk_1AC = this->cueId;
         if (action != unk_1AC) {
             switch (action) {
                 case 4:
@@ -717,7 +717,7 @@ void func_8098FB68(DemoSa* this, PlayState* play) {
                 default:
                     osSyncPrintf("Demo_Sa_inPresent_Check_DemoMode:そんな動作は無い!!!!!!!!\n");
             }
-            this->unk_1AC = action;
+            this->cueId = action;
         }
     }
 }

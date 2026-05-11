@@ -21,8 +21,8 @@ typedef struct EnHeishi4 {
     /* 0x0190 */ Vec3s jointTable[17];
     /* 0x01F6 */ Vec3s morphTable[17];
     /* 0x025C */ EnHeishi4ActionFunc actionFunc;
-    /* 0x0260 */ Vec3s unk_260;
-    /* 0x0266 */ Vec3s unk_266;
+    /* 0x0260 */ Vec3s headRot;
+    /* 0x0266 */ Vec3s torsoRot;
     /* 0x026C */ Vec3f pos;
     /* 0x0278 */ f32 height;
     /* 0x027C */ s16 unk_27C;

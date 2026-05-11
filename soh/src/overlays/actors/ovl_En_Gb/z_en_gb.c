@@ -7,7 +7,6 @@
 #include "z_en_gb.h"
 #include "objects/object_ps/object_ps.h"
 #include "soh/frame_interpolation.h"
-#include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
@@ -536,8 +535,9 @@ void EnGb_DrawCagedSouls(EnGb* this, PlayState* play) {
 
         FrameInterpolation_RecordOpenChild(&this->cagedSouls[i], this->cagedSouls[i].epoch);
         gSPSegment(POLY_XLU_DISP++, 0x08,
-                   Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 32, 64, 1, 0,
-                                    (u32)(sCagedSoulInfo[idx].timerMultiplier * this->frameTimer) % 512, 32, 128));
+                   Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 0, 0, 32, 64, 1, 0,
+                                      (u32)(sCagedSoulInfo[idx].timerMultiplier * this->frameTimer) % 512, 32, 128, 0,
+                                      0, 0, sCagedSoulInfo[idx].timerMultiplier));
         gSPSegment(POLY_XLU_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(sCagedSoulInfo[idx].texture));
         gDPSetPrimColor(POLY_XLU_DISP++, 0x80, 0x80, sCagedSoulInfo[idx].prim.r, sCagedSoulInfo[idx].prim.g,
                         sCagedSoulInfo[idx].prim.b, sCagedSoulInfo[idx].prim.a);

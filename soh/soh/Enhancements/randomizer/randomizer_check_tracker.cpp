@@ -25,8 +25,6 @@
 #include "item_location.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "z64item.h"
-#include "randomizerTypes.h"
-#include "fishsanity.h"
 
 extern "C" {
 #include "variables.h"
@@ -78,13 +76,24 @@ bool showOverworldGrass;
 bool showDungeonGrass;
 bool showOverworldCrates;
 bool showDungeonCrates;
+bool showRocks;
+bool showOverworldBoulders;
+bool showDungeonBoulders;
 bool showTrees;
 bool showBushes;
+bool showOverworldSigns;
+bool showDungeonSigns;
+bool showOverworldWonderItems;
+bool showDungeonWonderItems;
+bool showBeggar;
+bool showIcicles;
+bool showRedIce;
 bool showFrogSongRupees;
 bool showFountainFairies;
 bool showStoneFairies;
 bool showBeanFairies;
 bool showSongFairies;
+bool showButterflyFairies;
 bool showStartingMapsCompasses;
 bool showKeysanity;
 bool showGerudoFortressKeys;
@@ -468,14 +477,9 @@ RandomizerCheckArea GetCheckArea() {
     return area;
 }
 
-bool vector_contains_scene(std::vector<SceneID> vec, const int16_t scene) {
-    return std::any_of(vec.begin(), vec.end(), [&](const auto& x) { return x == scene; });
-}
-
-std::vector<SceneID> skipScenes = {
+std::array<SceneID, 4> skipScenes = {
     SCENE_GANON_BOSS,
     SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR,
-    SCENE_GANON_BOSS,
     SCENE_INSIDE_GANONS_CASTLE_COLLAPSE,
     SCENE_GANONS_TOWER_COLLAPSE_INTERIOR,
 };
@@ -566,7 +570,7 @@ void CheckTrackerLoadGame(int32_t fileNum) {
                   static_cast<RandomizerSettingKey>(RSK_MQ_DEKU_TREE + (i - RCAREA_DEKU_TREE))) != RO_MQ_SET_RANDOM) ||
              (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_MQ_DUNGEON_RANDOM) ==
                   RO_MQ_DUNGEONS_SET_NUMBER &&
-              (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_MQ_DUNGEON_COUNT) == 12 ||
+              (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_MQ_DUNGEON_COUNT) == MAX_MQ_DUNGEON_COUNT ||
                OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_MQ_DUNGEON_COUNT) == 0)))) {
             SetAreaSpoiled(static_cast<RandomizerCheckArea>(i));
         }
@@ -596,7 +600,7 @@ void CheckTrackerLoadGame(int32_t fileNum) {
         (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_MQ_DUNGEON_RANDOM) ==
              RO_MQ_DUNGEONS_RANDOM_NUMBER ||
          (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_MQ_DUNGEON_RANDOM) == RO_MQ_DUNGEONS_SET_NUMBER &&
-          OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_MQ_DUNGEON_COUNT) < 12));
+          OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_MQ_DUNGEON_COUNT) < MAX_MQ_DUNGEON_COUNT));
     initialized = true;
     UpdateAllOrdering();
     UpdateInventoryChecks();
@@ -652,7 +656,8 @@ void CheckTrackerTransition(uint32_t sceneNum) {
 }
 
 void CheckTrackerItemReceive(GetItemEntry giEntry) {
-    if (!GameInteractor::IsSaveLoaded() || vector_contains_scene(skipScenes, gPlayState->sceneNum)) {
+    if (!GameInteractor::IsSaveLoaded() || std::find(std::begin(skipScenes), std::end(skipScenes),
+                                                     (SceneID)gPlayState->sceneNum) != std::end(skipScenes)) {
         return;
     }
     auto scene = static_cast<SceneID>(gPlayState->sceneNum);
@@ -1083,13 +1088,21 @@ void CheckTrackerWindow::DrawElement() {
         }
         UIWidgets::PushStyleCombobox(THEME_COLOR);
         if (CVarGetInteger(CVAR_TRACKER_CHECK("SearchInputVisible"), 1)) {
-            if (checkSearch.Draw("", ImGui::GetContentRegionAvail().x - 6)) {
+            if (checkSearch.Draw("", ImGui::GetContentRegionAvail().x - 42)) {
                 UpdateFilters();
             }
-            std::string checkSearchText = "";
-            checkSearchText = checkSearch.InputBuf;
+            std::string checkSearchText = checkSearch.InputBuf;
             checkSearchText.erase(std::remove(checkSearchText.begin(), checkSearchText.end(), ' '),
                                   checkSearchText.end());
+            ImGui::SameLine();
+            if (UIWidgets::Button(ICON_FA_ERASER, UIWidgets::ButtonOptions()
+                                                      .Size(UIWidgets::Sizes::Inline)
+                                                      .Color(THEME_COLOR)
+                                                      .Padding(ImVec2(10.f, 6.f)))) {
+                checkSearch.Clear();
+                UpdateFilters();
+                doAreaScroll = true;
+            }
             if (checkSearchText.length() < 1) {
                 ImGui::SameLine(20.0f);
                 ImGui::TextColored(ImVec4(1.0f, 1.0f, 1.0f, 0.4f), "Search...");
@@ -1354,6 +1367,10 @@ void LoadSettings() {
     showSongFairies =
         IS_RANDO ? OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_SONG_FAIRIES) == RO_GENERIC_YES
                  : false;
+    showButterflyFairies =
+        IS_RANDO
+            ? OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_BUTTERFLY_FAIRIES) == RO_GENERIC_YES
+            : false;
     showStartingMapsCompasses = IS_RANDO ? OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(
                                                RSK_SHUFFLE_MAPANDCOMPASS) != RO_DUNGEON_ITEM_LOC_VANILLA
                                          : false;
@@ -1456,8 +1473,70 @@ void LoadSettings() {
                 showDungeonCrates = false;
                 break;
         }
+
+        showRocks = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_ROCKS);
+        switch (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_BOULDERS)) {
+            case RO_SHUFFLE_BOULDERS_ALL:
+                showOverworldBoulders = true;
+                showDungeonBoulders = true;
+                break;
+            case RO_SHUFFLE_BOULDERS_OVERWORLD:
+                showOverworldBoulders = true;
+                showDungeonBoulders = false;
+                break;
+            case RO_SHUFFLE_BOULDERS_DUNGEONS:
+                showOverworldBoulders = false;
+                showDungeonBoulders = true;
+                break;
+            default:
+                showOverworldBoulders = false;
+                showDungeonBoulders = false;
+                break;
+        }
+
+        switch (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_SIGNS)) {
+            case RO_SHUFFLE_SIGNS_ALL:
+                showOverworldSigns = true;
+                showDungeonSigns = true;
+                break;
+            case RO_SHUFFLE_SIGNS_OVERWORLD:
+                showOverworldSigns = true;
+                showDungeonSigns = false;
+                break;
+            case RO_SHUFFLE_SIGNS_DUNGEONS:
+                showOverworldSigns = false;
+                showDungeonSigns = true;
+                break;
+            default:
+                showOverworldSigns = false;
+                showDungeonSigns = false;
+                break;
+        }
+
         showTrees = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_TREES);
         showBushes = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_BUSHES);
+
+        switch (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_WONDER_ITEMS)) {
+            case RO_SHUFFLE_WONDER_ITEMS_ALL:
+                showOverworldWonderItems = true;
+                showDungeonWonderItems = true;
+                break;
+            case RO_SHUFFLE_WONDER_ITEMS_OVERWORLD:
+                showOverworldWonderItems = true;
+                showDungeonWonderItems = false;
+                break;
+            case RO_SHUFFLE_WONDER_ITEMS_DUNGEONS:
+                showOverworldWonderItems = false;
+                showDungeonWonderItems = true;
+                break;
+            default:
+                showOverworldWonderItems = false;
+                showDungeonWonderItems = false;
+                break;
+        }
+        showBeggar = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_BEGGAR);
+        showIcicles = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_ICICLES);
+        showRedIce = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_RED_ICE);
     } else { // Vanilla
         showOverworldTokens = true;
         showDungeonTokens = true;
@@ -1467,8 +1546,18 @@ void LoadSettings() {
         showDungeonGrass = false;
         showOverworldCrates = false;
         showDungeonCrates = false;
+        showRocks = false;
+        showOverworldBoulders = false;
+        showDungeonBoulders = false;
         showTrees = false;
         showBushes = false;
+        showOverworldWonderItems = false;
+        showDungeonWonderItems = false;
+        showOverworldSigns = false;
+        showDungeonSigns = false;
+        showBeggar = false;
+        showIcicles = false;
+        showRedIce = false;
     }
 
     fortressFast = false;
@@ -1559,6 +1648,7 @@ bool IsCheckShuffled(RandomizerCheck rc) {
                 (showMajorScrubs && (rc == RC_LW_DEKU_SCRUB_NEAR_BRIDGE || // The 3 scrubs that are always randomized
                                      rc == RC_HF_DEKU_SCRUB_GROTTO || rc == RC_LW_DEKU_SCRUB_GROTTO_FRONT))) &&
                (loc->GetRCType() != RCTYPE_MERCHANT || showMerchants) &&
+               (loc->GetRCType() != RCTYPE_BEGGAR || showBeggar) &&
                (loc->GetRCType() != RCTYPE_SONG_LOCATION || showSongs) &&
                (loc->GetRCType() != RCTYPE_BEEHIVE || showBeehives) &&
                (loc->GetRCType() != RCTYPE_OCARINA || showOcarinas) &&
@@ -1581,11 +1671,23 @@ bool IsCheckShuffled(RandomizerCheck rc) {
                (loc->GetRCType() != RCTYPE_SMALL_CRATE ||
                 (showOverworldCrates && RandomizerCheckObjects::AreaIsOverworld(loc->GetArea())) ||
                 (showDungeonCrates && RandomizerCheckObjects::AreaIsDungeon(loc->GetArea()))) &&
+               (loc->GetRCType() != RCTYPE_ROCK || showRocks) &&
+               (loc->GetRCType() != RCTYPE_BOULDER ||
+                (showOverworldBoulders && RandomizerCheckObjects::AreaIsOverworld(loc->GetArea())) ||
+                (showDungeonBoulders && RandomizerCheckObjects::AreaIsDungeon(loc->GetArea()))) &&
                (loc->GetRCType() != RCTYPE_TREE || showTrees) &&
                (loc->GetRCType() != RCTYPE_NLTREE ||
                 (showTrees &&
                  OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LOGIC_RULES) == RO_LOGIC_NO_LOGIC)) &&
                (loc->GetRCType() != RCTYPE_BUSH || showBushes) && (loc->GetRCType() != RCTYPE_COW || showCows) &&
+               (loc->GetRCType() != RCTYPE_SIGN ||
+                (showOverworldSigns && RandomizerCheckObjects::AreaIsOverworld(loc->GetArea())) ||
+                (showDungeonSigns && RandomizerCheckObjects::AreaIsDungeon(loc->GetArea()))) &&
+               (loc->GetRCType() != RCTYPE_WONDER_ITEM ||
+                (showOverworldWonderItems && RandomizerCheckObjects::AreaIsOverworld(loc->GetArea())) ||
+                (showDungeonWonderItems && RandomizerCheckObjects::AreaIsDungeon(loc->GetArea()))) &&
+               (loc->GetRCType() != RCTYPE_ICICLE || showIcicles) &&
+               (loc->GetRCType() != RCTYPE_RED_ICE || showRedIce) &&
                (loc->GetRCType() != RCTYPE_FISH ||
                 OTRGlobals::Instance->gRandoContext->GetFishsanity()->GetFishLocationIncluded(loc)) &&
                (loc->GetRCType() != RCTYPE_FREESTANDING ||
@@ -1604,6 +1706,7 @@ bool IsCheckShuffled(RandomizerCheck rc) {
                (loc->GetRCType() != RCTYPE_STONE_FAIRY || showStoneFairies) &&
                (loc->GetRCType() != RCTYPE_BEAN_FAIRY || showBeanFairies) &&
                (loc->GetRCType() != RCTYPE_SONG_FAIRY || showSongFairies) &&
+               (loc->GetRCType() != RCTYPE_BUTTERFLY_FAIRY || showButterflyFairies) &&
                (loc->GetRCType() != RCTYPE_SMALL_KEY || showKeysanity) &&
                (loc->GetRCType() != RCTYPE_BOSS_KEY || showBossKeysanity) &&
                (loc->GetRCType() != RCTYPE_GANON_BOSS_KEY || showGanonBossKey) &&

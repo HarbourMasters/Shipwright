@@ -6,7 +6,6 @@
 #include <ship/resource/type/Json.h>
 #include <libultraship/classes.h>
 #include <nlohmann/json.hpp>
-#include <spdlog/fmt/fmt.h>
 
 #include "soh/ShipInit.hpp"
 #include "message_data_static.h"
@@ -37,11 +36,10 @@ nlohmann::json fileChooseMap = nullptr;
 std::string GetParameritizedText(std::string key, TextBank bank, const char* arg) {
     switch (bank) {
         case TEXT_BANK_SCENES: {
-            return sceneMap[key].get<std::string>();
-            break;
+            return sceneMap.value(key, "unknown");
         }
         case TEXT_BANK_MISC: {
-            auto value = miscMap[key].get<std::string>();
+            auto value = miscMap.value(key, "unknown");
 
             std::string searchString = "$0";
             size_t index = value.find(searchString);
@@ -49,15 +47,11 @@ std::string GetParameritizedText(std::string key, TextBank bank, const char* arg
             if (index != std::string::npos) {
                 assert(arg != nullptr);
                 value.replace(index, searchString.size(), std::string(arg));
-                return value;
-            } else {
-                return value;
             }
-
-            break;
+            return value;
         }
         case TEXT_BANK_KALEIDO: {
-            auto value = kaleidoMap[key].get<std::string>();
+            auto value = kaleidoMap.value(key, "unknown");
 
             std::string searchString = "$0";
             size_t index = value.find(searchString);
@@ -65,15 +59,11 @@ std::string GetParameritizedText(std::string key, TextBank bank, const char* arg
             if (index != std::string::npos) {
                 assert(arg != nullptr);
                 value.replace(index, searchString.size(), std::string(arg));
-                return value;
-            } else {
-                return value;
             }
-
-            break;
+            return value;
         }
         case TEXT_BANK_FILECHOOSE: {
-            auto value = fileChooseMap[key].get<std::string>();
+            auto value = fileChooseMap.value(key, "unknown");
 
             std::string searchString = "$0";
             size_t index = value.find(searchString);
@@ -81,14 +71,11 @@ std::string GetParameritizedText(std::string key, TextBank bank, const char* arg
             if (index != std::string::npos) {
                 assert(arg != nullptr);
                 value.replace(index, searchString.size(), std::string(arg));
-                return value;
-            } else {
-                return value;
             }
-
-            break;
+            return value;
         }
     }
+    return "unknown";
 }
 
 const char* GetLanguageCode() {

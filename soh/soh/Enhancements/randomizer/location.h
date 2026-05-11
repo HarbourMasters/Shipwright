@@ -67,15 +67,7 @@ class Location {
           actorParams(actorParams_), shortName(std::move(shortName_)), spoilerName(std::move(spoilerName_)),
           hintKey(hintKey_), vanillaItem(vanillaItem_), isVanillaCompletion(isVanillaCompletion_),
           collectionCheck(collectionCheck_), vanillaPrice(vanillaPrice_) {
-        if (spoilerName.length() < 23) {
-            excludedOption = LocationOption(rc, spoilerName);
-        } else {
-            const size_t lastSpace = spoilerName.rfind(' ', 23);
-            std::string settingText = spoilerName;
-            settingText.replace(lastSpace, 1, "\n ");
-
-            excludedOption = LocationOption(rc, spoilerName);
-        }
+        excludedOption = LocationOption(rc, spoilerName);
     }
 
     Location(const RandomizerCheck rc_, const RandomizerCheckQuest quest_, const RandomizerCheckType checkType_,
@@ -87,15 +79,7 @@ class Location {
           actorParams(actorParams_), shortName(shortName_), spoilerName(SpoilerNameFromShortName(shortName_, area_)),
           hintKey(hintKey_), vanillaItem(vanillaItem_), isVanillaCompletion(isVanillaCompletion_),
           collectionCheck(collectionCheck_), vanillaPrice(vanillaPrice_) {
-        if (spoilerName.length() < 23) {
-            excludedOption = LocationOption(rc, spoilerName);
-        } else {
-            const size_t lastSpace = spoilerName.rfind(' ', 23);
-            std::string settingText = spoilerName;
-            settingText.replace(lastSpace, 1, "\n ");
-
-            excludedOption = LocationOption(rc, spoilerName);
-        }
+        excludedOption = LocationOption(rc, spoilerName);
     }
 
     static std::string SpoilerNameFromShortName(std::string shortName, RandomizerCheckArea area) {
@@ -245,6 +229,14 @@ class Location {
                                RandomizerHintTextKey hintKey, RandomizerGet vanillaItem,
                                SpoilerCollectionCheck collectionCheck);
 
+    static Location Rock(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_, SceneID scene_,
+                         int32_t actorParams_, std::string&& shortName_, RandomizerHintTextKey hintKey,
+                         RandomizerGet vanillaItem, SpoilerCollectionCheck collectionCheck);
+
+    static Location Boulder(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_, SceneID scene_,
+                            int32_t actorParams_, std::string&& shortName_, RandomizerHintTextKey hintKey,
+                            SpoilerCollectionCheck collectionCheck);
+
     static Location Tree(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_, SceneID scene_,
                          int32_t actorParams_, std::string&& shortName_, RandomizerHintTextKey hintKey,
                          RandomizerGet vanillaItem, SpoilerCollectionCheck collectionCheck);
@@ -256,6 +248,23 @@ class Location {
     static Location Bush(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_, SceneID scene_,
                          int32_t actorParams_, std::string&& shortName_, RandomizerHintTextKey hintKey,
                          RandomizerGet vanillaItem, SpoilerCollectionCheck collectionCheck);
+
+    static Location Sign(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_, SceneID scene_,
+                         int32_t actorParams_, std::string&& shortName_, RandomizerHintTextKey hintKey,
+                         ActorID actorId_, SpoilerCollectionCheck collectionCheck);
+
+    static Location WonderItem(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_,
+                               SceneID scene_, int32_t actorParams_, std::string&& shortName_,
+                               RandomizerHintTextKey hintKey, RandomizerGet vanillaItem,
+                               SpoilerCollectionCheck collectionCheck);
+
+    static Location Icicle(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_, SceneID scene_,
+                           int32_t actorParams_, std::string&& shortName_, RandomizerHintTextKey hintKey,
+                           SpoilerCollectionCheck collectionCheck);
+
+    static Location RedIce(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_, SceneID scene_,
+                           int32_t actorParams_, std::string&& shortName_, RandomizerHintTextKey hintKey,
+                           SpoilerCollectionCheck collectionCheck);
 
     static Location OtherHint(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_,
                               ActorID actorId_, SceneID scene_, std::string&& shortName_, std::string&& spoilerName_);
@@ -281,6 +290,10 @@ class Location {
     static Location SongFairy(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_,
                               SceneID scene_, int32_t actorParams_, std::string&& shortName_,
                               RandomizerHintTextKey hintKey, SpoilerCollectionCheck collectionCheck);
+
+    static Location ButterflyFairy(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_,
+                                   SceneID scene_, int32_t actorParams_, std::string&& shortName_,
+                                   RandomizerHintTextKey hintKey, SpoilerCollectionCheck collectionCheck);
 
     static Location HintStone(RandomizerCheck rc, RandomizerCheckQuest quest_, SceneID scene_, int32_t actorParams_,
                               std::string&& shortName_);

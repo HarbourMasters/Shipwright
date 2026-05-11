@@ -13,10 +13,10 @@ typedef struct EnPoRelay {
     /* 0x014C */ SkelAnime skelAnime;
     /* 0x0190 */ EnPoRelayActionFunc actionFunc;
     /* 0x0194 */ u8 hookshotSlotFull;
-    /* 0x0195 */ u8 unk_195;
+    /* 0x0195 */ u8 bobTimer;
     /* 0x0196 */ s16 actionTimer;
     /* 0x0198 */ s16 pathIndex;
-    /* 0x019A */ s16 unk_19A;
+    /* 0x019A */ s16 yawTowardsPathPoint;
     /* 0x019C */ u16 textId;
     /* 0x019E */ u16 eyeTextureIdx;
     /* 0x01A0 */ Vec3s jointTable[18];

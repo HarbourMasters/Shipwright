@@ -15,18 +15,18 @@ void BgHakaTrap_Update(Actor* thisx, PlayState* play);
 void BgHakaTrap_Draw(Actor* thisx, PlayState* play);
 void BgHakaTrap_Reset(void);
 
-void func_8087FFC0(BgHakaTrap* this, PlayState* play);
-void func_808801B8(BgHakaTrap* this, PlayState* play);
-void func_808802D8(BgHakaTrap* this, PlayState* play);
-void func_80880484(BgHakaTrap* this, PlayState* play);
-void func_808805C0(BgHakaTrap* this, PlayState* play);
-void func_808806BC(BgHakaTrap* this, PlayState* play);
-void func_808808F4(BgHakaTrap* this, PlayState* play);
-void func_808809B0(BgHakaTrap* this, PlayState* play);
-void func_808809E4(BgHakaTrap* this, PlayState* play, s16 arg2);
-void func_80880AE8(BgHakaTrap* this, PlayState* play);
-void func_80880C0C(BgHakaTrap* this, PlayState* play);
-void func_80880D68(BgHakaTrap* this);
+void BgHakaTrap_UpdateBodyColliderPos(BgHakaTrap* this, PlayState* play);
+void BgHakaTrap_SpikedWall_CloseIn(BgHakaTrap* this, PlayState* play);
+void BgHakaTrap_SpikedWall_Burn(BgHakaTrap* this, PlayState* play);
+void BgHakaTrap_Guillotine_Fall(BgHakaTrap* this, PlayState* play);
+void BgHakaTrap_Guillotine_Lift(BgHakaTrap* this, PlayState* play);
+void BgHakaTrap_SpikedCrusher_Fall(BgHakaTrap* this, PlayState* play);
+void BgHakaTrap_SpikedCrusher_Lift(BgHakaTrap* this, PlayState* play);
+void BgHakaTrap_FanBlade_Idle(BgHakaTrap* this, PlayState* play);
+void BgHakaTrap_FanBlade_UpdateFanRotation(BgHakaTrap* this, PlayState* play, s16 arg2);
+void BgHakaTrap_FireBarrier_Idle(BgHakaTrap* this, PlayState* play);
+void BgHakaTrap_FireBarrier_UpdateLayout(BgHakaTrap* this, PlayState* play);
+void BgHakaTrap_GetSwitchFlag(BgHakaTrap* this);
 
 UNK_TYPE D_80880F30 = 0;
 
@@ -130,7 +130,7 @@ void BgHakaTrap_Init(Actor* thisx, PlayState* play) {
                 this->unk_16A = 1;
             }
 
-            this->actionFunc = func_80880484;
+            this->actionFunc = BgHakaTrap_Guillotine_Fall;
         } else {
             DynaPolyActor_Init(&this->dyna, DPM_PLAYER);
             thisx->flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED;
@@ -140,11 +140,11 @@ void BgHakaTrap_Init(Actor* thisx, PlayState* play) {
                 this->timer = 30;
 
                 if (D_80881014 != 0) {
-                    this->actionFunc = func_808808F4;
+                    this->actionFunc = BgHakaTrap_SpikedCrusher_Lift;
                     D_80881014 = 0;
                 } else {
                     D_80881014 = 1;
-                    this->actionFunc = func_808806BC;
+                    this->actionFunc = BgHakaTrap_SpikedCrusher_Fall;
                     thisx->velocity.y = 0.5f;
                 }
 
@@ -171,14 +171,14 @@ void BgHakaTrap_Init(Actor* thisx, PlayState* play) {
                 this->colliderCylinder.info.toucherFlags = this->colliderCylinder.info.toucherFlags;
                 this->colliderCylinder.info.toucherFlags |= TOUCH_SFX_WOOD;
 
-                this->actionFunc = func_808801B8;
+                this->actionFunc = BgHakaTrap_SpikedWall_CloseIn;
             }
 
             this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, thisx, colHeader);
         }
     } else {
         this->timer = 40;
-        this->actionFunc = func_808809B0;
+        this->actionFunc = BgHakaTrap_FanBlade_Idle;
         thisx->uncullZoneScale = 500.0f;
     }
 
@@ -200,10 +200,10 @@ void BgHakaTrap_Destroy(Actor* thisx, PlayState* play) {
         Collider_DestroyCylinder(play, &this->colliderCylinder);
     }
 
-    Audio_StopSfxByPos(&this->unk_16C);
+    Audio_StopSfxByPos(&this->chainLiftSfxPos);
 }
 
-void func_8087FFC0(BgHakaTrap* this, PlayState* play) {
+void BgHakaTrap_UpdateBodyColliderPos(BgHakaTrap* this, PlayState* play) {
     f32 cosine;
     Vec3f sp28;
     f32 sine;
@@ -229,7 +229,7 @@ void func_8087FFC0(BgHakaTrap* this, PlayState* play) {
 }
 
 static UNK_TYPE D_80881018 = 0;
-void func_808801B8(BgHakaTrap* this, PlayState* play) {
+void BgHakaTrap_SpikedWall_CloseIn(BgHakaTrap* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
     if ((D_80880F30 == 0) && (!Player_InCsMode(play))) {
@@ -242,19 +242,19 @@ void func_808801B8(BgHakaTrap* this, PlayState* play) {
         }
     }
 
-    func_8087FFC0(this, play);
+    BgHakaTrap_UpdateBodyColliderPos(this, play);
 
     if (this->colliderSpikes.base.acFlags & AC_HIT) {
         this->timer = 20;
         D_80880F30 = 1;
-        this->actionFunc = func_808802D8;
+        this->actionFunc = BgHakaTrap_SpikedWall_Burn;
     } else if (D_80881018 == 3) {
         D_80881018 = 4;
         player->actor.bgCheckFlags |= 0x100;
     }
 }
 
-void func_808802D8(BgHakaTrap* this, PlayState* play) {
+void BgHakaTrap_SpikedWall_Burn(BgHakaTrap* this, PlayState* play) {
     static Vec3f zeroVec = { 0.0f, 0.0f, 0.0f };
     Vec3f vector;
     f32 xScale;
@@ -284,7 +284,7 @@ void func_808802D8(BgHakaTrap* this, PlayState* play) {
     }
 }
 
-void func_80880484(BgHakaTrap* this, PlayState* play) {
+void BgHakaTrap_Guillotine_Fall(BgHakaTrap* this, PlayState* play) {
     s32 sp24;
     s32 timer;
 
@@ -310,17 +310,17 @@ void func_80880484(BgHakaTrap* this, PlayState* play) {
         this->dyna.actor.velocity.y = 0.0f;
         this->timer = (this->unk_16A) ? 10 : 40;
         Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_GUILLOTINE_UP);
-        this->actionFunc = func_808805C0;
+        this->actionFunc = BgHakaTrap_Guillotine_Lift;
     }
 
-    func_8087FFC0(this, play);
+    BgHakaTrap_UpdateBodyColliderPos(this, play);
 
     if (sp24 == 0) {
         CollisionCheck_SetAT(play, &play->colChkCtx, &this->colliderCylinder.base);
     }
 }
 
-void func_808805C0(BgHakaTrap* this, PlayState* play) {
+void BgHakaTrap_Guillotine_Lift(BgHakaTrap* this, PlayState* play) {
     if (this->timer != 0) {
         this->timer--;
     }
@@ -343,13 +343,13 @@ void func_808805C0(BgHakaTrap* this, PlayState* play) {
         this->timer = 20;
         this->dyna.actor.world.pos.y = this->dyna.actor.home.pos.y;
         this->dyna.actor.velocity.y = 0.1f;
-        this->actionFunc = func_80880484;
+        this->actionFunc = BgHakaTrap_Guillotine_Fall;
     }
 
-    func_8087FFC0(this, play);
+    BgHakaTrap_UpdateBodyColliderPos(this, play);
 }
 
-void func_808806BC(BgHakaTrap* this, PlayState* play) {
+void BgHakaTrap_SpikedCrusher_Fall(BgHakaTrap* this, PlayState* play) {
     Vec3f vector;
     f32 tempf20;
     f32 temp;
@@ -396,40 +396,41 @@ void func_808806BC(BgHakaTrap* this, PlayState* play) {
         this->unk_16A = (s16)this->dyna.actor.world.pos.y + 50.0f;
         this->unk_16A = CLAMP_MAX(this->unk_16A, this->dyna.actor.home.pos.y);
 
-        this->actionFunc = func_808808F4;
+        this->actionFunc = BgHakaTrap_SpikedCrusher_Lift;
     }
 }
 
-void func_808808F4(BgHakaTrap* this, PlayState* play) {
+void BgHakaTrap_SpikedCrusher_Lift(BgHakaTrap* this, PlayState* play) {
     if (this->timer != 0) {
         this->timer--;
     }
 
     if (this->timer > 20) {
-        this->unk_169 = Math_StepToF(&this->dyna.actor.world.pos.y, this->unk_16A, 15.0f);
+        this->isSpikedCrusherStationary = Math_StepToF(&this->dyna.actor.world.pos.y, this->unk_16A, 15.0f);
     } else {
-        this->unk_169 = Math_StepToF(&this->dyna.actor.world.pos.y, this->dyna.actor.home.pos.y, 20.0f);
+        this->isSpikedCrusherStationary =
+            Math_StepToF(&this->dyna.actor.world.pos.y, this->dyna.actor.home.pos.y, 20.0f);
     }
 
     if (this->timer == 0) {
         this->timer = 30;
         this->dyna.actor.world.pos.y = this->dyna.actor.home.pos.y;
         this->dyna.actor.velocity.y = 0.5f;
-        this->actionFunc = func_808806BC;
+        this->actionFunc = BgHakaTrap_SpikedCrusher_Fall;
     }
 }
 
-void func_808809B0(BgHakaTrap* this, PlayState* play) {
+void BgHakaTrap_FanBlade_Idle(BgHakaTrap* this, PlayState* play) {
     if (this->timer != 0) {
         this->timer -= 1;
     }
 
     if (this->timer == 0) {
-        this->actionFunc = func_80880AE8;
+        this->actionFunc = BgHakaTrap_FireBarrier_Idle;
     }
 }
 
-void func_808809E4(BgHakaTrap* this, PlayState* play, s16 arg2) {
+void BgHakaTrap_FanBlade_UpdateFanRotation(BgHakaTrap* this, PlayState* play, s16 arg2) {
     Player* player = GET_PLAYER(play);
     Vec3f sp18;
 
@@ -442,16 +443,16 @@ void func_808809E4(BgHakaTrap* this, PlayState* play, s16 arg2) {
     }
 }
 
-void func_80880AE8(BgHakaTrap* this, PlayState* play) {
+void BgHakaTrap_FireBarrier_Idle(BgHakaTrap* this, PlayState* play) {
     if (this->timer != 0) {
         if (Math_ScaledStepToS(&this->dyna.actor.world.rot.z, 0, this->dyna.actor.world.rot.z * 0.03f + 5.0f)) {
             this->timer = 40;
-            this->actionFunc = func_808809B0;
+            this->actionFunc = BgHakaTrap_FanBlade_Idle;
         }
     } else {
         if (Math_ScaledStepToS(&this->dyna.actor.world.rot.z, 0x3A00, this->dyna.actor.world.rot.z * 0.03f + 5.0f)) {
             this->timer = 100;
-            this->actionFunc = func_80880C0C;
+            this->actionFunc = BgHakaTrap_FireBarrier_UpdateLayout;
         }
     }
 
@@ -460,10 +461,10 @@ void func_80880AE8(BgHakaTrap* this, PlayState* play) {
         func_8002F974(&this->dyna.actor, NA_SE_EV_WIND_TRAP - SFX_FLAG);
     }
 
-    func_808809E4(this, play, this->dyna.actor.world.rot.z);
+    BgHakaTrap_FanBlade_UpdateFanRotation(this, play, this->dyna.actor.world.rot.z);
 }
 
-void func_80880C0C(BgHakaTrap* this, PlayState* play) {
+void BgHakaTrap_FireBarrier_UpdateLayout(BgHakaTrap* this, PlayState* play) {
     if (this->timer != 0) {
         this->timer--;
     }
@@ -472,11 +473,11 @@ void func_80880C0C(BgHakaTrap* this, PlayState* play) {
 
     if (this->timer == 0) {
         this->timer = 1;
-        this->actionFunc = func_80880AE8;
+        this->actionFunc = BgHakaTrap_FireBarrier_Idle;
     }
 
     this->dyna.actor.shape.rot.z += this->dyna.actor.world.rot.z;
-    func_808809E4(this, play, this->dyna.actor.world.rot.z);
+    BgHakaTrap_FanBlade_UpdateFanRotation(this, play, this->dyna.actor.world.rot.z);
 }
 
 void BgHakaTrap_Update(Actor* thisx, PlayState* play) {
@@ -492,7 +493,7 @@ void BgHakaTrap_Update(Actor* thisx, PlayState* play) {
             CollisionCheck_SetAC(play, &play->colChkCtx, &this->colliderCylinder.base);
             CollisionCheck_SetOC(play, &play->colChkCtx, &this->colliderCylinder.base);
         } else {
-            if (this->actionFunc == func_808801B8) {
+            if (this->actionFunc == BgHakaTrap_SpikedWall_CloseIn) {
                 CollisionCheck_SetAC(play, &play->colChkCtx, &this->colliderSpikes.base);
             }
 
@@ -501,7 +502,7 @@ void BgHakaTrap_Update(Actor* thisx, PlayState* play) {
     }
 }
 
-void func_80880D68(BgHakaTrap* this) {
+void BgHakaTrap_GetSwitchFlag(BgHakaTrap* this) {
     Vec3f vec3;
     Vec3f vec2;
     Vec3f vec1;
@@ -525,27 +526,27 @@ void BgHakaTrap_Draw(Actor* thisx, PlayState* play) {
     s32 pad;
     Vec3f sp2C;
 
-    if (this->actionFunc == func_808802D8) {
+    if (this->actionFunc == BgHakaTrap_SpikedWall_Burn) {
         func_80026230(play, &D_8088103C, this->timer + 20, 0x28);
     }
 
     Gfx_DrawDListOpa(play, sDLists[this->dyna.actor.params]);
 
-    if (this->actionFunc == func_808801B8) {
-        func_80880D68(this);
+    if (this->actionFunc == BgHakaTrap_SpikedWall_CloseIn) {
+        BgHakaTrap_GetSwitchFlag(this);
     }
 
-    if (this->actionFunc == func_808802D8) {
+    if (this->actionFunc == BgHakaTrap_SpikedWall_Burn) {
         func_80026608(play);
     }
 
-    if ((this->actionFunc == func_808808F4) && !this->unk_169) {
+    if ((this->actionFunc == BgHakaTrap_SpikedCrusher_Lift) && !this->isSpikedCrusherStationary) {
         sp2C.x = this->dyna.actor.world.pos.x;
         sp2C.z = this->dyna.actor.world.pos.z;
         sp2C.y = this->dyna.actor.world.pos.y + 110.0f;
 
-        SkinMatrix_Vec3fMtxFMultXYZ(&play->viewProjectionMtxF, &sp2C, &this->unk_16C);
-        Sfx_PlaySfxAtPos(&this->unk_16C, NA_SE_EV_BRIDGE_CLOSE - SFX_FLAG);
+        SkinMatrix_Vec3fMtxFMultXYZ(&play->viewProjectionMtxF, &sp2C, &this->chainLiftSfxPos);
+        Sfx_PlaySfxAtPos(&this->chainLiftSfxPos, NA_SE_EV_BRIDGE_CLOSE - SFX_FLAG);
     }
 }
 

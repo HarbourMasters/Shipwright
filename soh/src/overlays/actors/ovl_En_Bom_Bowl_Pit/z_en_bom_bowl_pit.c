@@ -2,7 +2,6 @@
 #include "vt.h"
 #include "overlays/actors/ovl_En_Bom_Chu/z_en_bom_chu.h"
 #include "overlays/actors/ovl_En_Ex_Item/z_en_ex_item.h"
-#include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
@@ -77,34 +76,34 @@ void EnBomBowlPit_DetectHit(EnBomBowlPit* this, PlayState* play) {
                 Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
                 Play_ChangeCameraStatus(play, this->camId, CAM_STAT_ACTIVE);
 
-                this->unk_1C8.x = this->unk_1C8.y = this->unk_1C8.z = 0.1f;
-                this->unk_1A4.x = this->unk_1A4.y = this->unk_1A4.z = 0.1f;
+                this->subCamAtMaxVelFrac.x = this->subCamAtMaxVelFrac.y = this->subCamAtMaxVelFrac.z = 0.1f;
+                this->subCamEyeMaxVelFrac.x = this->subCamEyeMaxVelFrac.y = this->subCamEyeMaxVelFrac.z = 0.1f;
 
-                this->unk_180.x = this->unk_168.x = play->view.lookAt.x;
-                this->unk_180.y = this->unk_168.y = play->view.lookAt.y;
-                this->unk_180.z = this->unk_168.z = play->view.lookAt.z;
+                this->subCamAt.x = this->viewAt.x = play->view.lookAt.x;
+                this->subCamAt.y = this->viewAt.y = play->view.lookAt.y;
+                this->subCamAt.z = this->viewAt.z = play->view.lookAt.z;
 
-                this->unk_18C.x = this->unk_174.x = play->view.eye.x;
-                this->unk_18C.y = this->unk_174.y = play->view.eye.y;
-                this->unk_18C.z = this->unk_174.z = play->view.eye.z;
+                this->subCamEye.x = this->viewEye.x = play->view.eye.x;
+                this->subCamEye.y = this->viewEye.y = play->view.eye.y;
+                this->subCamEye.z = this->viewEye.z = play->view.eye.z;
 
-                this->unk_1BC.x = 20.0f;
-                this->unk_1BC.y = 100.0f;
-                this->unk_1BC.z = -800.0f;
+                this->subCamAtNext.x = 20.0f;
+                this->subCamAtNext.y = 100.0f;
+                this->subCamAtNext.z = -800.0f;
 
-                this->unk_198.x = 20.0f;
-                this->unk_198.y = 50.0f;
-                this->unk_198.z = -485.0f;
+                this->subCamEyeNext.x = 20.0f;
+                this->subCamEyeNext.y = 50.0f;
+                this->subCamEyeNext.z = -485.0f;
 
-                this->unk_1B0.x = fabsf(this->unk_18C.x - this->unk_198.x) * 0.02f;
-                this->unk_1B0.y = fabsf(this->unk_18C.y - this->unk_198.y) * 0.02f;
-                this->unk_1B0.z = fabsf(this->unk_18C.z - this->unk_198.z) * 0.02f;
+                this->subCamEyeVel.x = fabsf(this->subCamEye.x - this->subCamEyeNext.x) * 0.02f;
+                this->subCamEyeVel.y = fabsf(this->subCamEye.y - this->subCamEyeNext.y) * 0.02f;
+                this->subCamEyeVel.z = fabsf(this->subCamEye.z - this->subCamEyeNext.z) * 0.02f;
 
-                this->unk_1D4.x = fabsf(this->unk_180.x - this->unk_1BC.x) * 0.02f;
-                this->unk_1D4.y = fabsf(this->unk_180.y - this->unk_1BC.y) * 0.02f;
-                this->unk_1D4.z = fabsf(this->unk_180.z - this->unk_1BC.z) * 0.02f;
+                this->subCamAtVel.x = fabsf(this->subCamAt.x - this->subCamAtNext.x) * 0.02f;
+                this->subCamAtVel.y = fabsf(this->subCamAt.y - this->subCamAtNext.y) * 0.02f;
+                this->subCamAtVel.z = fabsf(this->subCamAt.z - this->subCamAtNext.z) * 0.02f;
 
-                Play_CameraSetAtEye(play, this->camId, &this->unk_180, &this->unk_18C);
+                Play_CameraSetAtEye(play, this->camId, &this->subCamAt, &this->subCamEye);
                 this->actor.textId = 0xF;
                 Message_StartTextbox(play, this->actor.textId, NULL);
                 this->unk_154 = TEXT_STATE_EVENT;
@@ -122,23 +121,26 @@ void EnBomBowlPit_DetectHit(EnBomBowlPit* this, PlayState* play) {
 
 void EnBomBowlPit_CameraDollyIn(EnBomBowlPit* this, PlayState* play) {
     if (this->camId != SUBCAM_FREE) {
-        Math_ApproachF(&this->unk_180.x, this->unk_1BC.x, this->unk_1C8.x, this->unk_1D4.x);
-        Math_ApproachF(&this->unk_180.y, this->unk_1BC.y, this->unk_1C8.y, this->unk_1D4.y);
-        Math_ApproachF(&this->unk_180.z, this->unk_1BC.z, this->unk_1C8.z, this->unk_1D4.z);
-        Math_ApproachF(&this->unk_18C.x, this->unk_198.x, this->unk_1A4.x, this->unk_1B0.x);
-        Math_ApproachF(&this->unk_18C.y, this->unk_198.y, this->unk_1A4.y, this->unk_1B0.y);
-        Math_ApproachF(&this->unk_18C.z, this->unk_198.z, this->unk_1A4.z, this->unk_1B0.z);
+        Math_ApproachF(&this->subCamAt.x, this->subCamAtNext.x, this->subCamAtMaxVelFrac.x, this->subCamAtVel.x);
+        Math_ApproachF(&this->subCamAt.y, this->subCamAtNext.y, this->subCamAtMaxVelFrac.y, this->subCamAtVel.y);
+        Math_ApproachF(&this->subCamAt.z, this->subCamAtNext.z, this->subCamAtMaxVelFrac.z, this->subCamAtVel.z);
+        Math_ApproachF(&this->subCamEye.x, this->subCamEyeNext.x, this->subCamEyeMaxVelFrac.x, this->subCamEyeVel.x);
+        Math_ApproachF(&this->subCamEye.y, this->subCamEyeNext.y, this->subCamEyeMaxVelFrac.y, this->subCamEyeVel.y);
+        Math_ApproachF(&this->subCamEye.z, this->subCamEyeNext.z, this->subCamEyeMaxVelFrac.z, this->subCamEyeVel.z);
     }
 
-    Play_CameraSetAtEye(play, this->camId, &this->unk_180, &this->unk_18C);
+    Play_CameraSetAtEye(play, this->camId, &this->subCamAt, &this->subCamEye);
 
     if ((this->unk_154 == Message_GetState(&play->msgCtx)) && Message_ShouldAdvance(play)) {
         Message_CloseTextbox(play);
     }
 
-    if ((fabsf(this->unk_18C.x - this->unk_198.x) < 5.0f) && (fabsf(this->unk_18C.y - this->unk_198.y) < 5.0f) &&
-        (fabsf(this->unk_18C.z - this->unk_198.z) < 5.0f) && (fabsf(this->unk_180.x - this->unk_1BC.x) < 5.0f) &&
-        (fabsf(this->unk_180.y - this->unk_1BC.y) < 5.0f) && (fabsf(this->unk_180.z - this->unk_1BC.z) < 5.0f)) {
+    if ((fabsf(this->subCamEye.x - this->subCamEyeNext.x) < 5.0f) &&
+        (fabsf(this->subCamEye.y - this->subCamEyeNext.y) < 5.0f) &&
+        (fabsf(this->subCamEye.z - this->subCamEyeNext.z) < 5.0f) &&
+        (fabsf(this->subCamAt.x - this->subCamAtNext.x) < 5.0f) &&
+        (fabsf(this->subCamAt.y - this->subCamAtNext.y) < 5.0f) &&
+        (fabsf(this->subCamAt.z - this->subCamAtNext.z) < 5.0f)) {
         Message_CloseTextbox(play);
         this->timer = 30;
         this->actionFunc = EnBomBowlPit_SpawnPrize;

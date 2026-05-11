@@ -1,6 +1,9 @@
 #include "Anchor.h"
 #include <libultraship/libultraship.h>
+#include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/frame_interpolation.h"
+#include "soh/OTRGlobals.h"
 
 extern "C" {
 #include "variables.h"
@@ -28,16 +31,18 @@ extern "C" {
 #include "src/overlays/actors/ovl_Obj_Hamishi/z_obj_hamishi.h"
 #include "src/overlays/actors/ovl_Bg_Hidan_Dalm/z_bg_hidan_dalm.h"
 #include "src/overlays/actors/ovl_Bg_Hidan_Kowarerukabe/z_bg_hidan_kowarerukabe.h"
+#include "objects/gameplay_keep/gameplay_keep.h"
 
 extern PlayState* gPlayState;
+extern MapData* gMapData;
 
 void func_8086ED70(BgBombwall* bgBombwall, PlayState* play);
 void BgBreakwall_Wait(BgBreakwall* bgBreakwall, PlayState* play);
-void func_80883000(BgHakaZou* bgHakaZou, PlayState* play);
+void BgHakaZou_WaitForHit(BgHakaZou* bgHakaZou, PlayState* play);
 void func_808887C4(BgHidanHamstep* bgHidanHamstep, PlayState* play);
 void func_808896B8(BgHidanHrock* bgHidanHrock, PlayState* play);
-void func_8089107C(BgIceShelter* bgIceShelter, PlayState* play);
-void func_808911BC(BgIceShelter* bgIceShelter);
+void BgIceShelter_Idle(BgIceShelter* bgIceShelter, PlayState* play);
+void BgIceShelter_SetupMelt(BgIceShelter* bgIceShelter);
 void ObjBombiwa_Break(ObjBombiwa* objBombiwa, PlayState* play);
 void ObjHamishi_Break(ObjHamishi* objHamishi, PlayState* play);
 void BgJyaBombchuiwa_WaitForExplosion(BgJyaBombchuiwa* bgJyaBombchuiwa, PlayState* play);
@@ -48,6 +53,8 @@ void BgYdanSp_FloorWebIdle(BgYdanSp* bgYdanSp, PlayState* play);
 void BgYdanSp_WallWebIdle(BgYdanSp* bgYdanSp, PlayState* play);
 void BgYdanSp_BurnWeb(BgYdanSp* bgYdanSp, PlayState* play);
 void EnDoor_Idle(EnDoor* enDoor, PlayState* play);
+float OTRGetDimensionFromLeftEdge(float v);
+float OTRGetDimensionFromRightEdge(float v);
 }
 
 void Anchor::RegisterHooks() {
@@ -210,7 +217,7 @@ void Anchor::RegisterHooks() {
     COND_ID_HOOK(ShouldActorUpdate, ACTOR_BG_HAKA_ZOU, isConnected, [&](void* refActor, bool* should) {
         BgHakaZou* actor = static_cast<BgHakaZou*>(refActor);
 
-        if (actor->actionFunc == func_80883000 && Flags_GetSwitch(gPlayState, actor->switchFlag)) {
+        if (actor->actionFunc == BgHakaZou_WaitForHit && Flags_GetSwitch(gPlayState, actor->switchFlag)) {
             actor->collider.base.acFlags |= AC_HIT;
         }
     });
@@ -234,8 +241,8 @@ void Anchor::RegisterHooks() {
     COND_ID_HOOK(ShouldActorUpdate, ACTOR_BG_ICE_SHELTER, isConnected, [&](void* refActor, bool* should) {
         BgIceShelter* actor = static_cast<BgIceShelter*>(refActor);
 
-        if (actor->actionFunc == func_8089107C && Flags_GetSwitch(gPlayState, actor->dyna.actor.params & 0x3F)) {
-            func_808911BC(actor);
+        if (actor->actionFunc == BgIceShelter_Idle && Flags_GetSwitch(gPlayState, actor->dyna.actor.params & 0x3F)) {
+            BgIceShelter_SetupMelt(actor);
             Audio_PlayActorSound2(&actor->dyna.actor, NA_SE_EV_ICE_MELT);
         }
     });
@@ -315,7 +322,7 @@ void Anchor::RegisterHooks() {
         DoorShutter* actor = static_cast<DoorShutter*>(refActor);
 
         if (Flags_GetSwitch(gPlayState, actor->dyna.actor.params & 0x3F)) {
-            DECR(actor->unk_16E);
+            DECR(actor->unlockTimer);
         }
     });
 
@@ -390,6 +397,151 @@ void Anchor::RegisterHooks() {
         if (Flags_GetSwitch(gPlayState, (actor->dyna.actor.params >> 8) & 0x3F)) {
             *should = true;
         }
+    });
+
+    // #endregion
+
+    // #region Hooks for visual effects that don't affect gameplay
+
+    struct CompassIcon {
+        Vec3f pos;
+        Vec3s rot;
+        float scale;
+        Color_RGB8 color;
+    };
+
+    COND_HOOK(OnMinimapDrawCompassIcons, isConnected, [&]() {
+        if (!CVarGetInteger(CVAR_REMOTE_ANCHOR("ShowOtherPlayersOnMinimap"), 1) ||
+            Anchor::Instance->roomState.showLocationsMode == 0) {
+            return;
+        }
+
+        std::vector<CompassIcon> compassIcons;
+
+        bool isInDungeon = gPlayState->sceneNum == SCENE_DEKU_TREE || gPlayState->sceneNum == SCENE_DODONGOS_CAVERN ||
+                           gPlayState->sceneNum == SCENE_JABU_JABU || gPlayState->sceneNum == SCENE_FOREST_TEMPLE ||
+                           gPlayState->sceneNum == SCENE_FIRE_TEMPLE || gPlayState->sceneNum == SCENE_WATER_TEMPLE ||
+                           gPlayState->sceneNum == SCENE_SPIRIT_TEMPLE || gPlayState->sceneNum == SCENE_SHADOW_TEMPLE ||
+                           gPlayState->sceneNum == SCENE_BOTTOM_OF_THE_WELL || gPlayState->sceneNum == SCENE_ICE_CAVERN;
+        std::string teamId = CVarGetString(CVAR_REMOTE_ANCHOR("TeamId"), "default");
+
+        // When transitioning to a new room via a door, curRoom.num updates immediately but the minimap still shows the
+        // previous room while fading out
+        s8 displayedRoomNum =
+            gPlayState->roomCtx.prevRoom.num >= 0 ? gPlayState->roomCtx.prevRoom.num : gPlayState->roomCtx.curRoom.num;
+
+        for (auto& [clientId, client] : Anchor::Instance->clients) {
+            // Show compass icons for other players in the current scene. Also require them to be in the current room
+            // within dungeons. If showLocationsMode isn't all players (2), only show compass icons for players of the
+            // same team
+            if (!client.self && client.online && client.player && client.sceneNum == gPlayState->sceneNum &&
+                (!isInDungeon || client.curRoomNum == displayedRoomNum) &&
+                (Anchor::Instance->roomState.showLocationsMode == 2 || client.teamId == teamId)) {
+                compassIcons.push_back(
+                    CompassIcon{ client.player->actor.world.pos, client.player->actor.shape.rot, 0.3f, client.color });
+            }
+        }
+
+        // The local player's compass icon is always last so it gets drawn above the others
+        Player* player = GET_PLAYER(gPlayState);
+        compassIcons.push_back(CompassIcon{ player->actor.world.pos, player->actor.shape.rot, 0.4f,
+                                            CVarGetColor24(CVAR_REMOTE_ANCHOR("Color.Value"), { 100, 255, 100 }) });
+
+        // Adapted internals of Minimap_DrawCompassIcons()
+        s16 leftMinimapMargin = CVarGetInteger(CVAR_COSMETIC("HUD.Margin.L"), 0);
+        s16 rightMinimapMargin = CVarGetInteger(CVAR_COSMETIC("HUD.Margin.R"), 0);
+        s16 bottomMinimapMargin = CVarGetInteger(CVAR_COSMETIC("HUD.Margin.B"), 0);
+
+        s16 xMarginsMinimap;
+        s16 yMarginsMinimap;
+        if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.UseMargins"), 0) != 0) {
+            if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) == ORIGINAL_LOCATION) {
+                xMarginsMinimap = rightMinimapMargin;
+            }
+            yMarginsMinimap = bottomMinimapMargin;
+        } else {
+            xMarginsMinimap = 0;
+            yMarginsMinimap = 0;
+        }
+
+        s16 mapWidth = isInDungeon ? R_DGN_MINIMAP_X : R_OW_MINIMAP_X;
+        s16 mapStartPosX = isInDungeon ? 96 : gMapData->owMinimapWidth[R_MAP_INDEX];
+
+        OPEN_DISPS(gPlayState->state.gfxCtx);
+        Gfx_SetupDL_42Overlay(gPlayState->state.gfxCtx);
+
+        for (auto& compassIcon : compassIcons) {
+            gSPMatrix(OVERLAY_DISP++, &gMtxClear, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gDPSetCombineLERP(OVERLAY_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0,
+                              PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
+            gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 0, 255);
+            gDPSetCombineMode(OVERLAY_DISP++, G_CC_PRIMITIVE, G_CC_PRIMITIVE);
+
+            // The compass offset value is a factor of 10 compared to N64 screen pixels and originates in the center of
+            // the screen Compute the additional mirror offset value by normalizing the original offset position and
+            // taking it's distance to the center of the map, duplicating that result and casting back to a factor of 10
+            s16 mirrorOffset =
+                ((mapWidth / 2) - ((R_COMPASS_OFFSET_X / 10) - (mapStartPosX - SCREEN_WIDTH / 2))) * 2 * 10;
+
+            s16 tempX = (s16)compassIcon.pos.x;
+            s16 tempZ = (s16)compassIcon.pos.z;
+            tempX /= R_COMPASS_SCALE_X * (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0) ? -1 : 1);
+            tempZ /= R_COMPASS_SCALE_Y;
+
+            s16 tempXOffset =
+                R_COMPASS_OFFSET_X + (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0) ? mirrorOffset : 0);
+            if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) != ORIGINAL_LOCATION) {
+                if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) == ANCHOR_LEFT) {
+                    if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.UseMargins"), 0) != 0) {
+                        xMarginsMinimap = leftMinimapMargin;
+                    };
+                    Matrix_Translate(
+                        OTRGetDimensionFromLeftEdge((tempXOffset + (xMarginsMinimap * 10) + tempX +
+                                                     (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosX"), 0) * 10)) /
+                                                    10.0f),
+                        (R_COMPASS_OFFSET_Y + ((yMarginsMinimap * 10) * -1) - tempZ +
+                         ((CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosY"), 0) * 10) * -1)) /
+                            10.0f,
+                        0.0f, MTXMODE_NEW);
+                } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) == ANCHOR_RIGHT) {
+                    if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.UseMargins"), 0) != 0) {
+                        xMarginsMinimap = rightMinimapMargin;
+                    };
+                    Matrix_Translate(
+                        OTRGetDimensionFromRightEdge((tempXOffset + (xMarginsMinimap * 10) + tempX +
+                                                      (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosX"), 0) * 10)) /
+                                                     10.0f),
+                        (R_COMPASS_OFFSET_Y + ((yMarginsMinimap * 10) * -1) - tempZ +
+                         ((CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosY"), 0) * 10) * -1)) /
+                            10.0f,
+                        0.0f, MTXMODE_NEW);
+                } else if (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosType"), 0) == ANCHOR_NONE) {
+                    Matrix_Translate(
+                        (tempXOffset + tempX + (CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosX"), 0) * 10) / 10.0f),
+                        (R_COMPASS_OFFSET_Y + ((yMarginsMinimap * 10) * -1) - tempZ +
+                         ((CVarGetInteger(CVAR_COSMETIC("HUD.Minimap.PosY"), 0) * 10) * -1)) /
+                            10.0f,
+                        0.0f, MTXMODE_NEW);
+                }
+            } else {
+                Matrix_Translate(OTRGetDimensionFromRightEdge((tempXOffset + (xMarginsMinimap * 10) + tempX) / 10.0f),
+                                 (R_COMPASS_OFFSET_Y + ((yMarginsMinimap * 10) * -1) - tempZ) / 10.0f, 0.0f,
+                                 MTXMODE_NEW);
+            }
+            Matrix_Scale(compassIcon.scale, compassIcon.scale, compassIcon.scale, MTXMODE_APPLY);
+            Matrix_RotateX(-1.6f, MTXMODE_APPLY);
+            s16 rotation = ((0x7FFF - compassIcon.rot.y) / 0x400) *
+                           (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0) ? -1 : 1);
+            Matrix_RotateY(rotation / 10.0f, MTXMODE_APPLY);
+            gSPMatrix(OVERLAY_DISP++, MATRIX_NEWMTX(gPlayState->state.gfxCtx),
+                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+
+            gDPSetPrimColor(OVERLAY_DISP++, 0, 0xFF, compassIcon.color.r, compassIcon.color.g, compassIcon.color.b,
+                            255);
+            gSPDisplayList(OVERLAY_DISP++, (Gfx*)gCompassArrowDL);
+        }
+
+        CLOSE_DISPS(gPlayState->state.gfxCtx);
     });
 
     // #endregion

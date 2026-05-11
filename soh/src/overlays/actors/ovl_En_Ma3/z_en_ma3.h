@@ -38,7 +38,7 @@ typedef struct EnMa3 {
     /* 0x0194 */ ColliderCylinder collider;
     /* 0x01E0 */ NpcInteractInfo interactInfo;
     /* 0x0208 */ s16 unk_208;
-    /* 0x020A */ s16 unk_20A;
+    /* 0x020A */ s16 isNotSinging;
     /* 0x020C */ s16 blinkTimer;
     /* 0x020E */ s16 eyeIndex;
     /* 0x0210 */ s16 mouthIndex;

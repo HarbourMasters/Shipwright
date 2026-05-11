@@ -283,7 +283,7 @@ void BossSst_Init(Actor* thisx, PlayState* play2) {
     Flags_SetSwitch(play, 0x14);
     if (this->actor.params == BONGO_HEAD) {
         sFloor = (BgSstFloor*)Actor_Spawn(&play->actorCtx, play, ACTOR_BG_SST_FLOOR, sRoomCenter.x, sRoomCenter.y,
-                                          sRoomCenter.z, 0, 0, 0, BONGOFLOOR_REST, true);
+                                          sRoomCenter.z, 0, 0, 0, BONGOFLOOR_REST);
         SkelAnime_InitFlex(play, &this->skelAnime, &gBongoHeadSkel, &gBongoHeadEyeOpenIdleAnim, this->jointTable,
                            this->morphTable, 45);
         ActorShape_Init(&this->actor.shape, 70000.0f, ActorShadow_DrawCircle, 95.0f);
@@ -298,20 +298,20 @@ void BossSst_Init(Actor* thisx, PlayState* play2) {
         if (Flags_GetClear(play, play->roomCtx.curRoom.num)) {
             if (GameInteractor_Should(VB_SPAWN_BLUE_WARP, true, this)) {
                 Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, ROOM_CENTER_X, ROOM_CENTER_Y,
-                            ROOM_CENTER_Z + 400.0f, 0, 0, 0, WARP_DUNGEON_ADULT, true);
+                            ROOM_CENTER_Z + 400.0f, 0, 0, 0, WARP_DUNGEON_ADULT);
             }
             if (GameInteractor_Should(VB_SPAWN_HEART_CONTAINER, true)) {
                 Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, ROOM_CENTER_X, ROOM_CENTER_Y,
-                            ROOM_CENTER_Z - 200.0f, 0, 0, 0, 0, true);
+                            ROOM_CENTER_Z - 200.0f, 0, 0, 0, 0);
             }
             Actor_Kill(&this->actor);
         } else {
             sHands[LEFT] = (BossSst*)Actor_Spawn(
                 &play->actorCtx, play, ACTOR_BOSS_SST, this->actor.world.pos.x + 200.0f, this->actor.world.pos.y,
-                this->actor.world.pos.z + 400.0f, 0, this->actor.shape.rot.y, 0, BONGO_LEFT_HAND, true);
+                this->actor.world.pos.z + 400.0f, 0, this->actor.shape.rot.y, 0, BONGO_LEFT_HAND);
             sHands[RIGHT] = (BossSst*)Actor_Spawn(
                 &play->actorCtx, play, ACTOR_BOSS_SST, this->actor.world.pos.x + (-200.0f), this->actor.world.pos.y,
-                this->actor.world.pos.z + 400.0f, 0, this->actor.shape.rot.y, 0, BONGO_RIGHT_HAND, true);
+                this->actor.world.pos.z + 400.0f, 0, this->actor.shape.rot.y, 0, BONGO_RIGHT_HAND);
             sHands[LEFT]->actor.child = &sHands[RIGHT]->actor;
             sHands[RIGHT]->actor.child = &sHands[LEFT]->actor;
 
@@ -1211,12 +1211,12 @@ void BossSst_HeadFinish(BossSst* this, PlayState* play) {
     } else if (this->effects[0].alpha == 0) {
         if (GameInteractor_Should(VB_SPAWN_BLUE_WARP, true, this)) {
             Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, ROOM_CENTER_X, ROOM_CENTER_Y, ROOM_CENTER_Z, 0, 0, 0,
-                        WARP_DUNGEON_ADULT, true);
+                        WARP_DUNGEON_ADULT);
         }
         if (GameInteractor_Should(VB_SPAWN_HEART_CONTAINER, true)) {
             Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART,
                         (Math_SinS(this->actor.shape.rot.y) * 200.0f) + ROOM_CENTER_X, ROOM_CENTER_Y,
-                        Math_CosS(this->actor.shape.rot.y) * 200.0f + ROOM_CENTER_Z, 0, 0, 0, 0, true);
+                        Math_CosS(this->actor.shape.rot.y) * 200.0f + ROOM_CENTER_Z, 0, 0, 0, 0);
         }
         BossSst_SetCameraTargets(1.0f, 7);
         this->effectMode = BONGO_NULL;
@@ -3195,8 +3195,8 @@ void BossSst_DrawEffect(Actor* thisx, PlayState* play) {
         Gfx_SetupDL_25Xlu(play->state.gfxCtx);
         if (this->effectMode == BONGO_ICE) {
             gSPSegment(POLY_XLU_DISP++, 0x08,
-                       Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, play->gameplayFrames % 256, 0x20, 0x10, 1, 0,
-                                        (play->gameplayFrames * 2) % 256, 0x40, 0x20));
+                       Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 0, play->gameplayFrames % 256, 0x20, 0x10, 1, 0,
+                                          (play->gameplayFrames * 2) % 256, 0x40, 0x20, 0, 1, 0, 2));
             gDPSetEnvColor(POLY_XLU_DISP++, 0, 50, 100, this->effects[0].alpha);
             gSPDisplayList(POLY_XLU_DISP++, gBongoIceCrystalDL);
 
@@ -3229,8 +3229,8 @@ void BossSst_DrawEffect(Actor* thisx, PlayState* play) {
 
             gDPPipeSync(POLY_XLU_DISP++);
             gSPSegment(POLY_XLU_DISP++, 0x08,
-                       Gfx_TwoTexScroll(play->state.gfxCtx, 0, play->gameplayFrames % 128, 0, 0x20, 0x40, 1, 0,
-                                        (play->gameplayFrames * -15) % 256, 0x20, 0x40));
+                       Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, play->gameplayFrames % 128, 0, 0x20, 0x40, 1, 0,
+                                          (play->gameplayFrames * -15) % 256, 0x20, 0x40, 1, 0, 0, -15));
 
             for (i = 0; i < 3; i++, scaleY -= 0.001f) {
                 effect = &this->effects[i];

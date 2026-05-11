@@ -278,7 +278,7 @@ void EnOkuta_SpawnProjectile(EnOkuta* this, PlayState* play) {
     pos.y = this->actor.world.pos.y - 6.0f;
     pos.z = this->actor.world.pos.z + (25.0f * cos);
     if (Actor_Spawn(&play->actorCtx, play, ACTOR_EN_OKUTA, pos.x, pos.y, pos.z, this->actor.shape.rot.x,
-                    this->actor.shape.rot.y, this->actor.shape.rot.z, 0x10, true) != NULL) {
+                    this->actor.shape.rot.y, this->actor.shape.rot.z, 0x10) != NULL) {
         pos.x = this->actor.world.pos.x + (40.0f * sin);
         pos.z = this->actor.world.pos.z + (40.0f * cos);
         pos.y = this->actor.world.pos.y;
@@ -767,9 +767,9 @@ void EnOkuta_Draw(Actor* thisx, PlayState* play) {
         if (CVarGetInteger(CVAR_ENHANCEMENT("NewDrops"), 0) != 0) {
             Gfx_SetupDL_25Opa(play->state.gfxCtx);
             gSPSegment(POLY_OPA_DISP++, 0x08,
-                       Gfx_TwoTexScroll(play->state.gfxCtx, 0, 1 * (play->state.frames * 6),
-                                        1 * (play->state.frames * 6), 32, 32, 1, 1 * (play->state.frames * 6),
-                                        1 * (play->state.frames * 6), 32, 32));
+                       Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 1 * (play->state.frames * 6),
+                                          1 * (play->state.frames * 6), 32, 32, 1, 1 * (play->state.frames * 6),
+                                          1 * (play->state.frames * 6), 32, 32, 6, 6, 6, 6));
             Matrix_Scale(7.0f, 7.0f, 7.0f, MTXMODE_APPLY);
             Matrix_RotateX(thisx->home.rot.z * (M_PI / 0x8000), MTXMODE_APPLY);
             gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);

@@ -19,9 +19,8 @@ void RegisterWideShutterDoorRange() {
     COND_VB_SHOULD(VB_BE_NEAR_DOOR_SHUTTER, CVAR_WIDE_SHUTTER_DOOR_RANGE_VALUE, {
         DoorShutter* doorShutter = va_arg(args, DoorShutter*);
         Vec3f relPlayerPos = *va_arg(args, Vec3f*);
-        // Jabu-Jabu door, Phantom Ganon bars, Gohma door, or boss door
-        if (doorShutter->unk_16C == 3 || doorShutter->unk_16C == 4 || doorShutter->unk_16C == 5 ||
-            doorShutter->unk_16C == 7) {
+        if (doorShutter->gfxType == SHUTTER_BACK_LOCKED || doorShutter->gfxType == SHUTTER_PG_BARS ||
+            doorShutter->gfxType == SHUTTER_BOSS || doorShutter->gfxType == SHUTTER_GOHMA_BLOCK) {
             *should = (SHUTTER_DOOR_RANGE_X < fabsf(relPlayerPos.x) || SHUTTER_DOOR_RANGE_Y < fabsf(relPlayerPos.y));
         }
     });

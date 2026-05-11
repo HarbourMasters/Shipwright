@@ -38,7 +38,6 @@ void BuildGanondorfHint(uint16_t* textId, bool* loadFromMessageTable) {
             msg = RAND_GET_HINT(RH_GANONDORF_HINT)->GetHintMessage(MF_AUTO_FORMAT, 0);
         }
     }
-    msg.AutoFormat();
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
 }
@@ -98,14 +97,12 @@ void BuildSheikMessage(uint16_t* textId, bool* loadFromMessageTable) {
 
 void BuildChildAltarMessage(uint16_t* textId, bool* loadFromMessageTable) {
     CustomMessage msg = RAND_GET_HINT(RH_ALTAR_CHILD)->GetHintMessage();
-    msg.AutoFormat();
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
 }
 
 void BuildAdultAltarMessage(uint16_t* textId, bool* loadFromMessageTable) {
     CustomMessage msg = RAND_GET_HINT(RH_ALTAR_ADULT)->GetHintMessage();
-    msg.AutoFormat();
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
 }
@@ -143,7 +140,7 @@ void BuildSkulltulaPeopleMessage(uint16_t* textId, bool* loadFromMessageTable) {
                                       "et j'aurai quelque chose à te donner! [[color]]([[1]])%w");
     msg.InsertNumber(count);
     msg.Replace("[[color]]", item.GetColor());
-    msg.InsertNames({ item.GetName() });
+    msg.InsertNames({ item.GetHint().GetHintMessage().GetForCurrentLanguage() });
     msg.AutoFormat();
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
@@ -158,12 +155,10 @@ void Build100SkullsHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
                                       /*french*/
                                       "Yeaaarrgh! Je suis maudit!^Détruit encore %y100 Araignées de la Malédiction%w "
                                       "et j'aurai quelque chose à te donner! [[color]]([[1]])%w");
-    msg.Replace("[[color]]", Rando::StaticData::RetrieveItem(
-                                 RAND_GET_ITEM_LOC(RC_KAK_100_GOLD_SKULLTULA_REWARD)->GetPlacedRandomizerGet())
-                                 .GetColor());
-    msg.InsertNames(
-        { Rando::StaticData::RetrieveItem(RAND_GET_ITEM_LOC(RC_KAK_100_GOLD_SKULLTULA_REWARD)->GetPlacedRandomizerGet())
-              .GetName() });
+    Rando::Item& item =
+        Rando::StaticData::RetrieveItem(RAND_GET_ITEM_LOC(RC_KAK_100_GOLD_SKULLTULA_REWARD)->GetPlacedRandomizerGet());
+    msg.Replace("[[color]]", item.GetColor());
+    msg.InsertNames({ item.GetHint().GetHintMessage().GetForCurrentLanguage() });
     msg.AutoFormat();
     msg.LoadIntoFont();
     *loadFromMessageTable = false;

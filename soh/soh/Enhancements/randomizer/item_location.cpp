@@ -1,6 +1,7 @@
 #include "item_location.h"
 #include "SeedContext.h"
 #include "logic.h"
+#include "3drando/random.hpp"
 
 namespace Rando {
 ItemLocation::ItemLocation() : rc(RC_UNKNOWN_CHECK) {

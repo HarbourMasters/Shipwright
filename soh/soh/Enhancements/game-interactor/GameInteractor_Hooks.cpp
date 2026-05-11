@@ -225,7 +225,7 @@ void GameInteractor_ExecuteOnPlayerFirstPersonControl(Player* player) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayerFirstPersonControl>(player);
 }
 
-void GameInteractor_ExecuteOnPlayerShieldControl(float_t* sp50, float_t* sp54) {
+void GameInteractor_ExecuteOnPlayerShieldControl(float* sp50, float* sp54) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayerShieldControl>(sp50, sp54);
 }
 
@@ -296,6 +296,10 @@ void GameInteractor_ExecuteOnInterfaceUpdate() {
 
 void GameInteractor_ExecuteOnKaleidoscopeUpdate(int16_t inDungeonScene) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnKaleidoscopeUpdate>(inDungeonScene);
+}
+
+void GameInteractor_ExecuteOnMinimapDrawCompassIcons() {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnMinimapDrawCompassIcons>();
 }
 
 // MARK: - Main Menu

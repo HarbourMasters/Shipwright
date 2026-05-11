@@ -8,7 +8,6 @@
 #include "vt.h"
 #include "objects/object_ge1/object_ge1.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
-#include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
@@ -235,7 +234,7 @@ void EnGe1_KickPlayer(EnGe1* this, PlayState* play) {
     if (this->cutsceneTimer > 0) {
         this->cutsceneTimer--;
     } else {
-        func_8006D074(play);
+        Horse_ResetHorseData(play);
 
         if ((INV_CONTENT(ITEM_HOOKSHOT) == ITEM_NONE) || (INV_CONTENT(ITEM_LONGSHOT) == ITEM_NONE)) {
             play->nextEntranceIndex = ENTR_GERUDO_VALLEY_1;
@@ -600,7 +599,7 @@ void EnGe1_BeginGame_Archery(EnGe1* this, PlayState* play) {
                 if (gSaveContext.rupees < 20) {
                     Message_ContinueTextbox(play, 0x85);
                     this->actionFunc = EnGe1_TalkTooPoor_Archery;
-                } else {
+                } else if (GameInteractor_Should(VB_PLAY_HORSEBACK_ARCHERY, true, this, play)) {
                     Rupees_ChangeBy(-20);
                     play->nextEntranceIndex = ENTR_GERUDOS_FORTRESS_EAST_EXIT;
                     gSaveContext.nextCutsceneIndex = 0xFFF0;

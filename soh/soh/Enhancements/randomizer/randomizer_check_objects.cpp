@@ -115,7 +115,8 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
              location.GetQuest() == RCQUEST_MQ &&
                  ((CVarGetInteger(CVAR_RANDOMIZER_SETTING("MQDungeons"), RO_MQ_DUNGEONS_NONE) ==
                            RO_MQ_DUNGEONS_SET_NUMBER &&
-                       (CVarGetInteger(CVAR_RANDOMIZER_SETTING("MQDungeonCount"), 12) > 0) || // at least one MQ dungeon
+                       (CVarGetInteger(CVAR_RANDOMIZER_SETTING("MQDungeonCount"), MAX_MQ_DUNGEON_COUNT) >
+                        0) || // at least one MQ dungeon
                    CVarGetInteger(CVAR_RANDOMIZER_SETTING("MQDungeons"), RO_MQ_DUNGEONS_NONE) ==
                        RO_MQ_DUNGEONS_RANDOM_NUMBER ||
                    CVarGetInteger(CVAR_RANDOMIZER_SETTING("MQDungeons"), RO_MQ_DUNGEONS_NONE) ==
@@ -123,7 +124,8 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
              location.GetQuest() == RCQUEST_VANILLA &&
                  (CVarGetInteger(CVAR_RANDOMIZER_SETTING("MQDungeons"), RO_MQ_DUNGEONS_NONE) !=
                       RO_MQ_DUNGEONS_SET_NUMBER ||
-                  CVarGetInteger(CVAR_RANDOMIZER_SETTING("MQDungeonCount"), 12) < 12) // at least one vanilla dungeon
+                  CVarGetInteger(CVAR_RANDOMIZER_SETTING("MQDungeonCount"), MAX_MQ_DUNGEON_COUNT) <
+                      MAX_MQ_DUNGEON_COUNT) // at least one vanilla dungeon
              ) &&
             (location.GetRCType() != RCTYPE_SHOP ||
              !(ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_OFF) ||
@@ -138,6 +140,8 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
             (location.GetRCType() != RCTYPE_MERCHANT ||
              CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleMerchants"), RO_SHUFFLE_MERCHANTS_OFF) !=
                  RO_SHUFFLE_MERCHANTS_OFF) &&
+            (location.GetRCType() != RCTYPE_BEGGAR ||
+             CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleBeggar"), RO_GENERIC_NO)) &&
             (location.GetRCType() != RCTYPE_SONG_LOCATION ||
              (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleSongs"), RO_SONG_SHUFFLE_SONG_LOCATIONS) !=
                   RO_SONG_SHUFFLE_SONG_LOCATIONS &&
@@ -195,6 +199,14 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
              CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleTrees"), RO_GENERIC_NO)) &&
             (location.GetRCType() != RCTYPE_NLTREE ||
              CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleTrees"), RO_GENERIC_NO)) &&
+            (location.GetRCType() != RCTYPE_SIGN ||
+             CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleSigns"), RO_GENERIC_NO)) &&
+            (location.GetRCType() != RCTYPE_WONDER_ITEM ||
+             CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleWonderItems"), RO_GENERIC_NO)) &&
+            (location.GetRCType() != RCTYPE_ICICLE ||
+             CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleIcicles"), RO_GENERIC_NO)) &&
+            (location.GetRCType() != RCTYPE_RED_ICE ||
+             CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleRedIce"), RO_GENERIC_NO)) &&
             (location.GetRCType() != RCTYPE_FISH ||
              ctx->GetFishsanity()->GetFishLocationIncluded(&location, FSO_SOURCE_CVARS)) &&
             (location.GetRCType() != RCTYPE_ADULT_TRADE ||
@@ -217,6 +229,8 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
              CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleBeanFairies"), RO_GENERIC_NO)) &&
             (location.GetRCType() != RCTYPE_SONG_FAIRY ||
              CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleFairySpots"), RO_GENERIC_NO)) &&
+            (location.GetRCType() != RCTYPE_BUTTERFLY_FAIRY ||
+             CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleButterflyFairies"), RO_GENERIC_NO)) &&
             ((location.GetRCType() != RCTYPE_MAP && location.GetRCType() != RCTYPE_COMPASS) ||
              CVarGetInteger(CVAR_RANDOMIZER_SETTING("StartingMapsCompasses"), RO_DUNGEON_ITEM_LOC_OWN_DUNGEON) !=
                  RO_DUNGEON_ITEM_LOC_VANILLA) &&
@@ -228,7 +242,8 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
                  RO_DUNGEON_ITEM_LOC_VANILLA) &&
             (location.GetRCType() != RCTYPE_GANON_BOSS_KEY ||
              CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleGanonBossKey"), RO_GANON_BOSS_KEY_VANILLA) !=
-                 RO_GANON_BOSS_KEY_VANILLA) && // vanilla ganon boss key
+                 RO_GANON_BOSS_KEY_VANILLA ||
+             CVarGetInteger(CVAR_RANDOMIZER_SETTING("TriforceHunt"), 0)) &&
             (location.GetRandomizerCheck() != RC_TOT_LIGHT_ARROWS_CUTSCENE ||
              (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleGanonBossKey"), RO_GANON_BOSS_KEY_VANILLA) !=
                   RO_GANON_BOSS_KEY_LACS_DUNGEONS &&

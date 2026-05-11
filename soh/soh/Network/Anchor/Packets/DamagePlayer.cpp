@@ -29,7 +29,7 @@ void Anchor::SendPacket_DamagePlayer(u32 clientId, u8 damageEffect, u8 damage) {
 }
 
 void Anchor::HandlePacket_DamagePlayer(nlohmann::json payload) {
-    uint32_t clientId = payload["clientId"].get<uint32_t>();
+    uint32_t clientId = payload.at("clientId").get<uint32_t>();
     if (!clients.contains(clientId) || clients[clientId].player == nullptr) {
         return;
     }
@@ -44,8 +44,8 @@ void Anchor::HandlePacket_DamagePlayer(nlohmann::json payload) {
         return;
     }
 
-    u8 damageEffect = payload["damageEffect"].get<u8>();
-    u8 damage = payload["damage"].get<u8>();
+    u8 damageEffect = payload.at("damageEffect").get<u8>();
+    u8 damage = payload.at("damage").get<u8>();
 
     self->actor.colChkInfo.damage = damage * 8; // Arbitrary number currently, need to fine tune
 

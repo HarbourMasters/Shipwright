@@ -33,13 +33,13 @@ typedef struct EnDivingGame {
     /* 0x02AC */ char unk_2AC[0xC]; // probably another Vec3f, but unused.
     /* 0x02B8 */ Vec3f camLookAt;
     /* 0x02C4 */ Vec3f camEye;
-    /* 0x02D0 */ Vec3f unk_2D0;
-    /* 0x02DC */ Vec3f unk_2DC;
-    /* 0x02E8 */ Vec3f unk_2E8;
-    /* 0x02F4 */ Vec3f unk_2F4;
-    /* 0x0300 */ Vec3f unk_300;
-    /* 0x030C */ Vec3f unk_30C;
-    /* 0x0318 */ f32 unk_318;
+    /* 0x02D0 */ Vec3f subCamEyeNext;
+    /* 0x02DC */ Vec3f subCamEyeMaxVelFrac;
+    /* 0x02E8 */ Vec3f subCamEyeVel;
+    /* 0x02F4 */ Vec3f subCamAtNext;
+    /* 0x0300 */ Vec3f subCamAtMaxVelFrac;
+    /* 0x030C */ Vec3f subCamAtVel;
+    /* 0x0318 */ f32 subCamVelFactor;
     /* 0x031C */ char unk_31C; // unused
     /* 0x031D */ u8 notPlayingMinigame; // flag
     /* 0x031E */ u8 allRupeesThrown; // flag

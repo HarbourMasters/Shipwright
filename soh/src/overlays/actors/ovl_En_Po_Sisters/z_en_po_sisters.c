@@ -9,7 +9,6 @@
 #include "objects/object_po_sisters/object_po_sisters.h"
 #include "soh/frame_interpolation.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS                                                                                 \
@@ -403,11 +402,11 @@ void func_80AD9A54(EnPoSisters* this, PlayState* play) {
 // Meg spawning fakes
 void func_80AD9AA8(EnPoSisters* this, PlayState* play) {
     Actor* actor1 = Actor_Spawn(&play->actorCtx, play, ACTOR_EN_PO_SISTERS, this->actor.world.pos.x,
-                                this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0x400, true);
+                                this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0x400);
     Actor* actor2 = Actor_Spawn(&play->actorCtx, play, ACTOR_EN_PO_SISTERS, this->actor.world.pos.x,
-                                this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0x800, true);
+                                this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0x800);
     Actor* actor3 = Actor_Spawn(&play->actorCtx, play, ACTOR_EN_PO_SISTERS, this->actor.world.pos.x,
-                                this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0xC00, true);
+                                this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0xC00);
     s32 pad;
     s32 pad1;
 
@@ -1378,8 +1377,8 @@ void EnPoSisters_Draw(Actor* thisx, PlayState* play) {
         gSPDisplayList(POLY_OPA_DISP++, gPoSistersTorchDL);
     }
     gSPSegment(POLY_XLU_DISP++, 0x08,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 0x20, 0x40, 1, 0, (play->gameplayFrames * -20) % 512, 0x20,
-                                0x80));
+               Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 0, 0, 0x20, 0x40, 1, 0, (play->gameplayFrames * -20) % 512,
+                                  0x20, 0x80, 0, 0, 0, -20));
     gDPSetEnvColor(POLY_XLU_DISP++, temp_s1->r, temp_s1->g, temp_s1->b, temp_s1->a);
     if (this->actionFunc == func_80ADB17C) {
         if (this->unk_19A < 32) {

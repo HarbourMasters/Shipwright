@@ -26,7 +26,7 @@ typedef struct EnZl2 {
     /* 0x01DC */ s16 unk_1DC[0x18]; // ???
     /* 0x020C */ s16 unk_20C[0x18]; // ???
     /* 0x023C */ f32 unk_23C;
-    /* 0x0240 */ s32 unk_240;
+    /* 0x0240 */ s32 cueId;
     /* 0x0244 */ s32 unk_244;
     /* 0x0248 */ s32 unk_248;
     /* 0x024C */ s32 unk_24C;
@@ -35,7 +35,7 @@ typedef struct EnZl2 {
     /* 0x0258 */ char unk_258[0xC];
     /* 0x0264 */ s32 overrideLimbDrawConfig;
     /* 0x0268 */ char unk_268[0xC];
-    /* 0x0274 */ s32 unk_274;
+    /* 0x0274 */ s32 zl2Anime1ObjectSlot;
     /* 0x0278 */ f32 unk_278;
     /* 0x027C */ f32 unk_27C;
 } EnZl2; // size = 0x0280
