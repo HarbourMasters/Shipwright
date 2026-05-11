@@ -1,4 +1,5 @@
 #include "text.h"
+#include <functional>
 
 Text::Text() = default;
 
@@ -84,10 +85,9 @@ static void replaceAll(std::string& target, const std::string& oldStr, const std
 }
 
 void Text::Replace(const std::string& oldStr, const std::string& newStr) {
-    replaceAll(english, oldStr, newStr);
-    replaceAll(french, oldStr, newStr);
-    replaceAll(german, oldStr, newStr);
-    replaceAll(spanish, oldStr, newStr);
+    for (std::string& str : { std::ref(english), std::ref(french), std::ref(german), std::ref(spanish) }) {
+        replaceAll(str, oldStr, newStr);
+    }
 }
 
 void Text::Replace(const std::string& oldStr, const Text& newText) {
