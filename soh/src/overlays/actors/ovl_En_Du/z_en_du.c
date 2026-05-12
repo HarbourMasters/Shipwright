@@ -633,7 +633,25 @@ s32 EnDu_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* po
     Vec3s sp1C;
 
     if (limbIndex == 16) {
-        Matrix_Translate(2400.0f, 0.0f, 0.0f, MTXMODE_APPLY);
+        // #region SOH [Enhancement] - Goron Neck Length
+        static f32 growNeck = 0.0f;
+        static s16 lastScene = -1;
+
+        if (CVarGetInteger(CVAR_COSMETIC("Goron.GrowingNeck"), 0)) {
+            if (play->sceneNum != lastScene) {
+                growNeck = 0.0f;
+                lastScene = play->sceneNum;
+            }
+
+            growNeck += 5.0f;
+        } else {
+            growNeck = 0.0f;
+            lastScene = play->sceneNum;
+        }
+
+        Matrix_Translate(2400.0f + CVarGetFloat(CVAR_COSMETIC("Goron.NeckLength"), 0.0f) + growNeck, 0.0f, 0.0f,
+                         MTXMODE_APPLY);
+        // #endregion
         sp1C = this->interactInfo.headRot;
         Matrix_RotateX(BINANG_TO_RAD(sp1C.y), MTXMODE_APPLY);
         Matrix_RotateZ(BINANG_TO_RAD(sp1C.x), MTXMODE_APPLY);
