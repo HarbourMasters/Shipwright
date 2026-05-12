@@ -189,6 +189,10 @@ void EnDntNomal_WaitForObject(EnDntNomal* this, PlayState* play) {
                            this->morphTable, 11);
             this->actor.draw = EnDntNomal_DrawStageScrub;
         }
+
+        // Draw is now enabled but SetFlower hasn't run yet (it waits for ground contact).  Default flowerPos to the
+        // actor's spawn position so the flower doesn't render at the origin for the intervening frames.
+        this->flowerPos = this->actor.world.pos;
         this->actionFunc = EnDntNomal_SetFlower;
     }
 }
