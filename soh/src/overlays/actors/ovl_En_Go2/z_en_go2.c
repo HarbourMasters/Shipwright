@@ -2078,7 +2078,6 @@ s32 EnGo2_OverrideLimbDraw(PlayState* play, s32 limb, Gfx** dList, Vec3f* pos, V
         Matrix_Translate(2800.0f + CVarGetFloat(CVAR_COSMETIC("Goron.NeckLength"), 0.0f) + growNeck, 0.0f, 0.0f,
                          MTXMODE_APPLY);
         // #endregion
-
         vec1 = this->interactInfo.headRot;
         float1 = (vec1.y / (f32)0x8000) * M_PI;
         Matrix_RotateX(float1, MTXMODE_APPLY);
