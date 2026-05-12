@@ -208,24 +208,8 @@ typedef enum {
     // this->collider.base.acFlags & 2 || blueFireArrowHit
     // ```
     // #### `args`
-    // - `*BgBreakwall`
+    // - None
     VB_BG_BREAKWALL_BREAK,
-
-    // #### `result`
-    // ```c
-    // this->cylinder1.base.acFlags & AC_HIT
-    // ```
-    // #### `args`
-    // - `*BgIceShelter`
-    VB_BG_ICE_SHELTER_HIT,
-
-    // #### `result`
-    // ```c
-    // (this->cylinder1.base.ac != NULL) && (this->cylinder1.base.ac->id == ACTOR_EN_ICE_HONO)
-    // ```
-    // #### `args`
-    // - `*BgIceShelter`
-    VB_BG_ICE_SHELTER_MELT,
 
     // #### `result`
     // ```c
