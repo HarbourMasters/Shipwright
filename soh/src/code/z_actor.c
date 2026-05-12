@@ -2661,10 +2661,15 @@ void Actor_UpdateAll(PlayState* play, ActorContext* actorCtx) {
                 actor = actor->next;
             } else if (actor->update == NULL) {
                 // #region SOH [Enhancement] - Hardware Memory Limits
-                // Same draw-distance distinction as the room-change kill path.  Use N64's culling check to match the
-                // immediate vs. deferred free ordering that shapes heap coalescing.
+                //
+                // On original hardware, isDrawn reflects N64's draw distance from the previous frame.  SoH's extended
+                // draw distance (Ship_CalcShouldDrawAndUpdate) sets isDrawn more permissively, so actors that N64
+                // would consider off-screen appear drawn on SoH.
+                //
+                // Recalculate the draw decision using N64's culling check (func_800314D4) so the immediate vs.
+                // deferred free path (ergo, heap coalescing pattern) matches original hardware.
                 if (N64Mem_IsActive()) {
-                    const s32 n64WouldDraw = actor->init == NULL && actor->draw != NULL &&
+                    const bool n64WouldDraw = actor->init == NULL && actor->draw != NULL &&
                                              (actor->flags & ACTOR_FLAG_DRAW_CULLING_DISABLED ||
                                               func_800314D4(play, actor, &actor->projectedPos, actor->projectedW));
                     if (!n64WouldDraw) {
@@ -2674,7 +2679,7 @@ void Actor_UpdateAll(PlayState* play, ActorContext* actorCtx) {
                         actor = actor->next;
                     }
                 } else if (!actor->isDrawn) {
-                    // #endregion
+                // #endregion
                     actor = Actor_Delete(&play->actorCtx, actor, play);
                 } else {
                     Actor_Destroy(actor, play);
@@ -3215,14 +3220,12 @@ void func_80031B14(PlayState* play, ActorContext* actorCtx) {
                 (actor->room != play->roomCtx.prevRoom.num)) {
                 // #region SOH [Enhancement] - Hardware Memory Limits
                 //
-                // On N64, departing-room actors take one of two free paths depending on whether they were drawn on the
-                // previous frame:
-                //   - NOT drawn (off-screen on N64): Immediate Actor_Delete -- memory freed this frame
-                //   - Drawn (on-screen on N64):      Deferred Actor_Kill   -- memory freed next frame
+                // On original hardware, isDrawn reflects N64's draw distance from the previous frame.  SoH's extended
+                // draw distance (Ship_CalcShouldDrawAndUpdate) sets isDrawn more permissively, so actors that N64
+                // would consider off-screen appear drawn on SoH.
                 //
-                // SoH's extended draw distance keeps more actors drawn than N64 would, pushing them into the deferred
-                // path and changing the free ordering that shapes heap coalescing.  Use N64's original culling check
-                // to decide the path.
+                // Recalculate the draw decision using N64's culling check (func_800314D4) so the immediate vs.
+                // deferred free path (ergo, heap coalescing pattern) matches original hardware.
                 if (N64Mem_IsActive()) {
                     const bool n64WouldDraw = actor->init == NULL && actor->draw != NULL &&
                                               (actor->flags & ACTOR_FLAG_DRAW_CULLING_DISABLED ||
