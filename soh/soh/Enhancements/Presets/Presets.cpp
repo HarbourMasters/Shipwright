@@ -249,16 +249,19 @@ void LoadPresets() {
     }
     if (fs::exists(presetFolder)) {
         for (auto const& preset : fs::directory_iterator(presetFolder)) {
-            std::ifstream ifs(preset.path());
+            try {
+                std::ifstream ifs(preset.path());
+                if (auto json = nlohmann::json::parse(ifs); !json.contains("presetName")) {
+                    spdlog::error(fmt::format("Attempted to load file {} as a preset, but was not a preset file.",
+                                              preset.path().filename().string()));
+                } else {
+                    ParsePreset(json, preset.path().filename().stem().string());
+                }
 
-            auto json = nlohmann::json::parse(ifs);
-            if (!json.contains("presetName")) {
-                spdlog::error(fmt::format("Attempted to load file {} as a preset, but was not a preset file.",
-                                          preset.path().filename().string()));
-            } else {
-                ParsePreset(json, preset.path().filename().stem().string());
+                ifs.close();
+            } catch (const std::exception& e) {
+                spdlog::error("Failed to load preset {}: {}", preset.path().filename().string(), e.what());
             }
-            ifs.close();
         }
     }
     auto initData = std::make_shared<Ship::ResourceInitData>();
