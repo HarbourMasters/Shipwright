@@ -103,7 +103,19 @@ void ActorShadow_Draw(Actor* actor, Lights* lights, PlayState* play, Gfx* dlist,
     f32 temp2;
     MtxF sp60;
 
-    if (actor->floorPoly != NULL) {
+    // https://github.com/HarbourMasters/Shipwright/issues/1953
+    //
+    // Actors that cache floorPoly pointers into the DynaPoly polyList buffer can end up holding stale references when
+    // DynaPoly_ExpandSRT rebuilds the buffers.  The pointer address stays valid but the data at that
+    // address shifts to a different poly -- often a wall poly with a horizontal normal.
+    //
+    // When this happens, func_80038A28 builds the shadow matrix from the wall normal, rotating the shadow 90-degrees
+    // onto a vertical plane.  Combined with G_CULL_BACK in sSetupDL[0x2C], the shadow flickers in and out depending on
+    // camera angle.
+    //
+    // Add a normal.y > 0 guard so polys that no longer face upward are rejected.  This prevents rendering from stale
+    // wall or ceiling polys.
+    if (actor->floorPoly != NULL && actor->floorPoly->normal.y > 0) {
         temp1 = actor->world.pos.y - actor->floorHeight;
 
         if (temp1 >= -50.0f && temp1 < 500.0f) {
