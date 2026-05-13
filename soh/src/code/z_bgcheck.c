@@ -2960,6 +2960,34 @@ void func_8003F8EC(PlayState* play, DynaCollisionContext* dyna, Actor* actor) {
 /**
  * DynaPolyInfo_setup
  */
+
+// https://github.com/HarbourMasters/Shipwright/issues/1953
+//
+// When DYNAPOLY_INVALIDATE_LOOKUP triggers a full rebuild in DynaPoly_ExpandSRT, the polyList buffer is rewritten and
+// poly indices can shift (i.e., when a BgActor is added or removed).  Actors that cached a floorPoly pointer into the
+// old buffer now hold stale references.
+//
+// Rederive floorPoly for every actor on a DynaPoly surface so their shadows render from correct data.
+static void DynaPoly_RefreshActorFloorPolys(PlayState* play) {
+    Actor* actor = NULL;
+    s32 floorBgId = 0;
+
+    for (s32 category = 0; category < ACTORCAT_MAX; ++category) {
+        for (actor = play->actorCtx.actorLists[category].head; actor != NULL; actor = actor->next) {
+            if (actor->floorBgId != BGCHECK_SCENE) {
+                Vec3f checkPos;
+                checkPos.x = actor->world.pos.x;
+                checkPos.y = actor->world.pos.y + 50;
+                checkPos.z = actor->world.pos.z;
+                actor->floorHeight = BgCheck_EntityRaycastFloor5(play, &play->colCtx,
+                                                                 &actor->floorPoly, &floorBgId,
+                                                                 actor, &checkPos);
+                actor->floorBgId = floorBgId;
+            }
+        }
+    }
+}
+
 void DynaPoly_Setup(PlayState* play, DynaCollisionContext* dyna) {
     DynaPolyActor* actor;
     s32 vtxStartIndex;
@@ -2999,6 +3027,9 @@ void DynaPoly_Setup(PlayState* play, DynaCollisionContext* dyna) {
             dyna->bitFlag |= DYNAPOLY_INVALIDATE_LOOKUP;
         }
     }
+
+    bool isPolyListInvalid = (dyna->bitFlag & DYNAPOLY_INVALIDATE_LOOKUP) != 0;
+
     vtxStartIndex = 0;
     polyStartIndex = 0;
     for (i = 0; i < BG_ACTOR_MAX; i++) {
@@ -3007,6 +3038,10 @@ void DynaPoly_Setup(PlayState* play, DynaCollisionContext* dyna) {
         }
     }
     dyna->bitFlag &= ~DYNAPOLY_INVALIDATE_LOOKUP;
+
+    if (isPolyListInvalid) {
+        DynaPoly_RefreshActorFloorPolys(play);
+    }
 }
 
 /**
