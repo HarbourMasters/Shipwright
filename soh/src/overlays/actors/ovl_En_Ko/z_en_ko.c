@@ -1183,7 +1183,7 @@ void func_80A99048(EnKo* this, PlayState* play) {
         if (ENKO_TYPE == ENKO_TYPE_CHILD_5) {
             this->collider.base.ocFlags1 |= 0x40;
         }
-        if (GameInteractor_Should(VB_KOKIRI_GET_FOREST_QUEST_STATE2, false, this)) {
+        if (GameInteractor_Should(VB_KOKIRI_GET_FOREST_QUEST_STATE2, true, this)) {
             this->forestQuestState = EnKo_GetForestQuestState2(this);
         }
         Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, sOsAnimeLookup[ENKO_TYPE][this->forestQuestState]);
