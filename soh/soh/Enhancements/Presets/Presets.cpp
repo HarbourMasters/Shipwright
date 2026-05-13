@@ -16,6 +16,38 @@
 
 namespace fs = std::filesystem;
 
+/**
+ * Forbidden filenames
+ *
+ * Windows, macOS, and Linux all forbid certain characters in their filenames.
+ *
+ * Replace them to prevent crashes from invalid paths (e.g, "test :)" creating an NTFS Alternate Data Stream
+ * instead of a regular file).
+ */
+static std::string SanitizeFilename(const std::string& name) {
+    std::string result;
+    result.reserve(name.size());
+    for (const char c : name) {
+        if (c == '<' || c == '>' || c == ':' || c == '"' ||
+            c == '/' || c == '\\' || c == '|' || c == '?' || c == '*' ||
+            c < 32) {
+            result += '_';
+        } else {
+            result += c;
+        }
+    }
+
+    while (!result.empty() && (result.back() == '.' || result.back() == ' ')) {
+        result.pop_back();
+    }
+
+    if (result.empty()) {
+        result = "Unnamed";
+    }
+
+    return result;
+}
+
 namespace SohGui {
 extern std::shared_ptr<SohMenu> mSohMenu;
 } // namespace SohGui
@@ -72,7 +104,7 @@ static BlockInfo blockInfo[PRESET_SECTION_MAX] = {
 };
 
 std::string FormatPresetPath(std::string name) {
-    return fmt::format("{}/{}.json", presetFolder, name);
+    return fmt::format("{}/{}.json", presetFolder, SanitizeFilename(name));
 }
 
 void applyPreset(std::string presetName, std::vector<PresetSection> includeSections) {
@@ -252,8 +284,16 @@ void SavePreset(std::string& presetName) {
     }
     presets[presetName].presetValues["presetName"] = presetName;
     presets[presetName].presetValues["fileType"] = FILE_TYPE_PRESET;
+
+    std::string safeFilename = SanitizeFilename(presetName);
     std::ofstream file(
-        fmt::format("{}/{}.json", Ship::Context::GetInstance()->LocateFileAcrossAppDirs("presets"), presetName));
+        fmt::format("{}/{}.json", Ship::Context::GetInstance()->LocateFileAcrossAppDirs("presets"), safeFilename));
+
+    if (!file.is_open()) {
+        spdlog::error("Failed to save preset '{}': Could not create file", presetName);
+        return;
+    }
+
     file << presets[presetName].presetValues.dump(4);
     file.close();
     LoadPresets();
