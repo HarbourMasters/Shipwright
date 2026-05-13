@@ -190,6 +190,7 @@ void EnDntNomal_WaitForObject(EnDntNomal* this, PlayState* play) {
             this->actor.draw = EnDntNomal_DrawStageScrub;
         }
 
+        // https://github.com/HarbourMasters/Shipwright/issues/2796
         // Draw is now enabled but SetFlower hasn't run yet (it waits for ground contact).  Default flowerPos to the
         // actor's spawn position so the flower doesn't render at the origin for the intervening frames.
         this->flowerPos = this->actor.world.pos;
