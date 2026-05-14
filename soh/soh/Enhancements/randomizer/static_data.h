@@ -61,6 +61,7 @@ class StaticData {
     static void RegisterFreestandingLocations();
     static void RegisterGrassLocations();
     static void RegisterCrateLocations();
+    static void RegisterRockLocations();
     static void RegisterTreeLocations();
     static void RegisterSignLocations();
     static void RegisterWonderItemLocations();

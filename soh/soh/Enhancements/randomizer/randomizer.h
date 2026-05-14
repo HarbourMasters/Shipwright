@@ -42,6 +42,7 @@ class Randomizer {
     CheckIdentity IdentifyGrass(s32 sceneNum, s32 posX, s32 posZ, s32 respawnData, s32 linkAge);
     CheckIdentity IdentifyCrate(s32 sceneNum, s32 posX, s32 posZ);
     CheckIdentity IdentifySmallCrate(s32 sceneNum, s32 posX, s32 posZ);
+    CheckIdentity IdentifyRock(s32 sceneNum, s32 posX, s32 posZ);
     CheckIdentity IdentifyTree(s32 sceneNum, s32 posX, s32 posZ);
     CheckIdentity IdentifySign(s32 sceneNum, s32 posX, s32 posZ, s32 id);
     CheckIdentity IdentifyWonderItem(s32 sceneNum, s32 par1, s32 par2);

@@ -248,7 +248,22 @@ void RegionTable_Init_DeathMountainCrater() {
         ENTRANCE(RR_DEATH_MOUNTAIN_SUMMIT, true),
     });
 
-    areaTable[RR_DMC_ROCK_GROTTO] = Region("DMC Rock Grotto", SCENE_DEATH_MOUNTAIN_CRATER, {}, {}, {
+    areaTable[RR_DMC_ROCK_GROTTO] = Region("DMC Rock Grotto", SCENE_DEATH_MOUNTAIN_CRATER, {}, {
+        //Locations
+        LOCATION(RC_DMC_CIRCLE_ROCK_1, logic->FireTimer() >= 8 && logic->CanBreakRocks()),
+        LOCATION(RC_DMC_CIRCLE_ROCK_2, logic->FireTimer() >= 8 && logic->CanBreakRocks()),
+        LOCATION(RC_DMC_CIRCLE_ROCK_3, logic->FireTimer() >= 8 && logic->CanBreakRocks()),
+        LOCATION(RC_DMC_CIRCLE_ROCK_4, logic->FireTimer() >= 8 && logic->CanBreakRocks()),
+        LOCATION(RC_DMC_CIRCLE_ROCK_5, logic->FireTimer() >= 8 && logic->CanBreakRocks()),
+        LOCATION(RC_DMC_CIRCLE_ROCK_6, logic->FireTimer() >= 8 && logic->CanBreakRocks()),
+        LOCATION(RC_DMC_CIRCLE_ROCK_7, logic->FireTimer() >= 8 && logic->CanBreakRocks()),
+        LOCATION(RC_DMC_CIRCLE_ROCK_8, logic->FireTimer() >= 8 && logic->CanBreakRocks()),
+        //Boulders 1 and 2 are a bit separate, but are in 8 seconds from upper entry and closeer or the same distance
+        //from all ways to reach upper grotto otherwise, so it works
+        LOCATION(RC_DMC_BOULDER_1,     logic->FireTimer() >= 8 && logic->BlastOrSmash()),
+        LOCATION(RC_DMC_BOULDER_2,     logic->FireTimer() >= 8 && logic->BlastOrSmash()),
+        LOCATION(RC_DMC_BOULDER_3,     logic->FireTimer() >= 8 && logic->BlastOrSmash()),
+    }, {
         //Exits
         ENTRANCE(RR_DMC_UPPER_GROTTO, AnyAgeTime([]{return logic->BlastOrSmash();})),
     });
@@ -260,7 +275,9 @@ void RegionTable_Init_DeathMountainCrater() {
         //Locations
         LOCATION(RC_DMC_GOSSIP_STONE_FAIRY,     logic->CallGossipFairyExceptSuns() && logic->HasExplosives()),
         LOCATION(RC_DMC_GOSSIP_STONE_FAIRY_BIG, logic->CanUse(RG_SONG_OF_STORMS) && logic->HasExplosives()),
-        LOCATION(RC_DMC_GOSSIP_STONE,           true && logic->HasExplosives()),
+        LOCATION(RC_DMC_GOSSIP_ROCK_1,          logic->IsChild),
+        LOCATION(RC_DMC_GOSSIP_ROCK_2,          logic->IsChild),
+        LOCATION(RC_DMC_GOSSIP_STONE,           logic->HasExplosives()),
     }, {});
 
     areaTable[RR_DMC_SCRUB] = Region("DMC Scrub", SCENE_DEATH_MOUNTAIN_CRATER, {
@@ -282,11 +299,15 @@ void RegionTable_Init_DeathMountainCrater() {
 
     areaTable[RR_DMC_POTS] = Region("DMC Pots", SCENE_DEATH_MOUNTAIN_CRATER, {}, {
         // Locations
-        LOCATION(RC_DMC_NEAR_GC_POT_1,          logic->CanBreakPots()),
-        LOCATION(RC_DMC_NEAR_GC_POT_2,          logic->CanBreakPots()),
-        LOCATION(RC_DMC_NEAR_GC_POT_3,          logic->CanBreakPots()),
-        LOCATION(RC_DMC_NEAR_GC_POT_4,          logic->CanBreakPots()),
-        LOCATION(RC_DMC_BRIDGE_EXIT_ARROW_SIGN, logic->CanRead()),
+        LOCATION(RC_DMC_NEAR_GC_POT_1,           logic->CanBreakPots()),
+        LOCATION(RC_DMC_NEAR_GC_POT_2,           logic->CanBreakPots()),
+        LOCATION(RC_DMC_NEAR_GC_POT_3,           logic->CanBreakPots()),
+        LOCATION(RC_DMC_NEAR_GC_POT_4,           logic->CanBreakPots()),
+        LOCATION(RC_DMC_BRONZE_BOULDER_1,        logic->CanUse(RG_MEGATON_HAMMER)),
+        LOCATION(RC_DMC_BRONZE_BOULDER_2,        logic->CanUse(RG_MEGATON_HAMMER)),
+        LOCATION(RC_DMC_BRONZE_BOULDER_3,        logic->CanUse(RG_MEGATON_HAMMER)),
+        LOCATION(RC_DMC_BRONZE_BOULDER_SHORTCUT, logic->CanUse(RG_MEGATON_HAMMER)),
+        LOCATION(RC_DMC_BRIDGE_EXIT_ARROW_SIGN,  logic->CanRead()),
     }, {
         //Exits
         ENTRANCE(RR_GC_DARUNIAS_CHAMBER, true),
@@ -316,9 +337,13 @@ void RegionTable_Init_DeathMountainCrater() {
         LOCATION(RC_DMC_BEAN_SPROUT_FAIRY_1,            logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_DMC_BEAN_SPROUT_FAIRY_2,            logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_DMC_BEAN_SPROUT_FAIRY_3,            logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION(RC_DMC_ROCK_BY_FIRE_TEMPLE_1,          logic->IsAdult),
+        LOCATION(RC_DMC_ROCK_BY_FIRE_TEMPLE_2,          logic->IsAdult),
+        LOCATION(RC_DMC_ROCK_BY_FIRE_TEMPLE_3,          logic->IsAdult),
+        LOCATION(RC_DMC_ROCK_BY_FIRE_TEMPLE_4,          logic->IsAdult),
+        LOCATION(RC_DMC_ROCK_BY_FIRE_TEMPLE_5,          logic->IsAdult),
         // RANDOTODO: A number of tricks to reach this: sidehop jumpslash or hookshot + jumpslash from bridge platform, chu+shield damage boost
         LOCATION(RC_DMC_WONDER_BENEATH_BRIDGE_PLATFORM, logic->IsAdult && (logic->CanUse(RG_LONGSHOT) || logic->CanUse(RG_HOVER_BOOTS))),
-
     }, {});
 
 

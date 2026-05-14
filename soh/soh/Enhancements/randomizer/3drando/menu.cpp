@@ -1,14 +1,10 @@
-#include <algorithm>
 #include <cstdlib>
 #include <cstdio>
 #include <cstring>
-#include <sstream>
 #include <ctime>
 
 #include "menu.hpp"
 #include "playthrough.hpp"
-#include "spoiler_log.hpp"
-#include "../location_access.h"
 #include "soh/Enhancements/debugger/performanceTimer.h"
 #include <spdlog/spdlog.h>
 #include "../../randomizer/randomizerTypes.h"

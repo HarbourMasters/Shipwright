@@ -116,6 +116,8 @@ RANDO_ENUM_ITEM(RCTYPE_POT)                        // Pots
 RANDO_ENUM_ITEM(RCTYPE_CRATE)                      // Crates
 RANDO_ENUM_ITEM(RCTYPE_NLCRATE)                    // NL Crates
 RANDO_ENUM_ITEM(RCTYPE_SMALL_CRATE)                // Small crates
+RANDO_ENUM_ITEM(RCTYPE_ROCK)                       // Rocks
+RANDO_ENUM_ITEM(RCTYPE_BOULDER)                    // Boulders
 RANDO_ENUM_ITEM(RCTYPE_TREE)                       // Trees
 RANDO_ENUM_ITEM(RCTYPE_NLTREE)                     // NL Trees
 RANDO_ENUM_ITEM(RCTYPE_BUSH)                       // Bushes

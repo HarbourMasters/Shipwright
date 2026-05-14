@@ -76,6 +76,9 @@ bool showOverworldGrass;
 bool showDungeonGrass;
 bool showOverworldCrates;
 bool showDungeonCrates;
+bool showRocks;
+bool showOverworldBoulders;
+bool showDungeonBoulders;
 bool showTrees;
 bool showBushes;
 bool showOverworldSigns;
@@ -1471,6 +1474,26 @@ void LoadSettings() {
                 break;
         }
 
+        showRocks = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_ROCKS);
+        switch (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_BOULDERS)) {
+            case RO_SHUFFLE_BOULDERS_ALL:
+                showOverworldBoulders = true;
+                showDungeonBoulders = true;
+                break;
+            case RO_SHUFFLE_BOULDERS_OVERWORLD:
+                showOverworldBoulders = true;
+                showDungeonBoulders = false;
+                break;
+            case RO_SHUFFLE_BOULDERS_DUNGEONS:
+                showOverworldBoulders = false;
+                showDungeonBoulders = true;
+                break;
+            default:
+                showOverworldBoulders = false;
+                showDungeonBoulders = false;
+                break;
+        }
+
         switch (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_SIGNS)) {
             case RO_SHUFFLE_SIGNS_ALL:
                 showOverworldSigns = true;
@@ -1489,6 +1512,7 @@ void LoadSettings() {
                 showDungeonSigns = false;
                 break;
         }
+
         showTrees = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_TREES);
         showBushes = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_BUSHES);
 
@@ -1522,12 +1546,15 @@ void LoadSettings() {
         showDungeonGrass = false;
         showOverworldCrates = false;
         showDungeonCrates = false;
-        showOverworldSigns = false;
-        showDungeonSigns = false;
+        showRocks = false;
+        showOverworldBoulders = false;
+        showDungeonBoulders = false;
         showTrees = false;
         showBushes = false;
         showOverworldWonderItems = false;
         showDungeonWonderItems = false;
+        showOverworldSigns = false;
+        showDungeonSigns = false;
         showBeggar = false;
         showIcicles = false;
         showRedIce = false;
@@ -1644,6 +1671,10 @@ bool IsCheckShuffled(RandomizerCheck rc) {
                (loc->GetRCType() != RCTYPE_SMALL_CRATE ||
                 (showOverworldCrates && RandomizerCheckObjects::AreaIsOverworld(loc->GetArea())) ||
                 (showDungeonCrates && RandomizerCheckObjects::AreaIsDungeon(loc->GetArea()))) &&
+               (loc->GetRCType() != RCTYPE_ROCK || showRocks) &&
+               (loc->GetRCType() != RCTYPE_BOULDER ||
+                (showOverworldBoulders && RandomizerCheckObjects::AreaIsOverworld(loc->GetArea())) ||
+                (showDungeonBoulders && RandomizerCheckObjects::AreaIsDungeon(loc->GetArea()))) &&
                (loc->GetRCType() != RCTYPE_TREE || showTrees) &&
                (loc->GetRCType() != RCTYPE_NLTREE ||
                 (showTrees &&
