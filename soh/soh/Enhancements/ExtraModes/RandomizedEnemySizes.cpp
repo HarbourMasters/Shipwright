@@ -1,6 +1,9 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ObjectExtension/ActorMaximumHealth.h"
 #include "soh/ShipInit.hpp"
+#include "soh/ShipUtils.h"
+#include "soh/Enhancements/enhancementTypes.h"
+#include "soh/Enhancements/randomizer/SeedContext.h"
 
 extern "C" {
 #include "functions.h"
@@ -14,6 +17,50 @@ static constexpr int32_t CVAR_RANDO_ENEMY_SIZE_DEFAULT = 0;
 static constexpr int32_t CVAR_ENEMY_SCALE_HEALTH_DEFAULT = 0;
 #define CVAR_ENEMY_SCALE_HEALTH_NAME CVAR_ENHANCEMENT("EnemySizeScalesHealth")
 #define CVAR_ENEMY_SCALE_HEALTH_VALUE CVarGetInteger(CVAR_ENEMY_SCALE_HEALTH_NAME, CVAR_ENEMY_SCALE_HEALTH_DEFAULT)
+
+static float ComputeRandomScale(Actor* actor, bool isSmallOnly) {
+    const int32_t mode = CVAR_RANDO_ENEMY_SIZE_VALUE;
+    float randomNumber = 0.0f;
+    bool isBigActor = false;
+
+    if (mode == ENEMY_SIZE_RANDOM_SEEDED) {
+        // Deterministic seed from actor spawn data + global seed, matching the pattern used by the enemy randomizer
+        // (EnemyRandomizer.cpp).  The salt (0xDEAD) decorrelates the sequence from the enemy replacement RNG so that
+        // the size and enemy type don't share the same initial state when both systems use the same actor ID and
+        // position.
+        const uint32_t seed = gPlayState->sceneNum + actor->id + static_cast<int32_t>(actor->home.pos.x) +
+                              static_cast<int32_t>(actor->home.pos.y) + static_cast<int32_t>(actor->home.pos.z) +
+                              actor->home.rot.x + actor->home.rot.y + actor->home.rot.z + actor->params;
+
+        uint64_t randomState = 0;
+        ShipUtils::RandInit(
+                (seed ^ 0xDEAD) + (IS_RANDO
+                                   ? Rando::Context::GetInstance()->GetSeed()
+                                   : gSaveContext.ship.stats.fileCreatedAt),
+            &randomState);
+
+        isBigActor = !isSmallOnly && ShipUtils::Random(0, 2, &randomState) == 1;
+        if (isBigActor) {
+            // Between 100% and 300% size.
+            randomNumber = static_cast<float>(ShipUtils::Random(0, 200, &randomState));
+            return 1.0f + randomNumber / 100.0f;
+        }
+
+        // Between 10% and 100% size.
+        randomNumber = static_cast<float>(ShipUtils::Random(0, 90, &randomState));
+        return 0.1f + randomNumber / 100.0f;
+    }
+
+    // Unseeded random -- different every room load.
+    isBigActor = !isSmallOnly && rand() % 2;
+    if (isBigActor) {
+        randomNumber = rand() % 200;
+        return 1.0f + randomNumber / 100.0f;
+    }
+
+    randomNumber = rand() % 90;
+    return 0.1f + randomNumber / 100.0f;
+}
 
 static void RandomizedEnemySizes(void* refActor) {
     // Randomized Enemy Sizes
@@ -30,27 +77,11 @@ static void RandomizedEnemySizes(void* refActor) {
         return;
     }
 
-    float randomNumber;
-    float randomScale;
-
     // Dodongo, Volvagia and Dead Hand are always smaller because they're impossible when bigger.
     bool smallOnlyEnemy = actor->id == ACTOR_BOSS_DODONGO || actor->id == ACTOR_BOSS_FD ||
                           actor->id == ACTOR_BOSS_FD2 || actor->id == ACTOR_EN_DH;
 
-    bool bigActor = !smallOnlyEnemy && (rand() % 2);
-
-    // Big actor
-    if (bigActor) {
-        randomNumber = rand() % 200;
-        // Between 100% and 300% size.
-        randomScale = 1.0f + (randomNumber / 100);
-    } else {
-        // Small actor
-        randomNumber = rand() % 90;
-        // Between 10% and 100% size.
-        randomScale = 0.1f + (randomNumber / 100);
-    }
-
+    const float randomScale = ComputeRandomScale(actor, smallOnlyEnemy);
     Actor_SetScale(actor, actor->scale.z * randomScale);
 
     if (CVAR_ENEMY_SCALE_HEALTH_VALUE && (actor->category == ACTORCAT_ENEMY)) {

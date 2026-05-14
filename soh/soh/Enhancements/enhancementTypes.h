@@ -46,6 +46,12 @@ typedef enum {
 } EnemyRandomizerMode;
 
 typedef enum {
+    ENEMY_SIZE_OFF,
+    ENEMY_SIZE_RANDOM,
+    ENEMY_SIZE_RANDOM_SEEDED,
+} EnemySizeMode;
+
+typedef enum {
     BOOTSEQUENCE_DEFAULT,
     BOOTSEQUENCE_AUTHENTIC,
     BOOTSEQUENCE_FILESELECT,
