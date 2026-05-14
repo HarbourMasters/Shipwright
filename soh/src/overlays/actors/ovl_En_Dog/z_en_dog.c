@@ -525,7 +525,7 @@ void EnDog_Thrown(EnDog* this, PlayState* play) {
         Quake_SetCountdown(quakeIndex, 20);
 
         play->actorCtx.unk_02 = 4;
-        func_800AA000(0, 255, 20, 150);
+        func_800AA000(0, 255, 20, 150); // Screen shake
         Audio_PlayActorSound2(&this->actor, NA_SE_IT_HAMMER_HIT);
     }
 
