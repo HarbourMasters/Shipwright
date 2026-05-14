@@ -3164,7 +3164,7 @@ s32 func_80835644(PlayState* play, Player* this, Actor* arg2) {
 // #region SOH [Enhancement] - Richard's Rage
 // Returns true if the held actor should be treated like Ruto for carry interactions (door opening, fall sounds,
 // action text).
-static s32 Player_HeldActorAllowsInteraction(Player* this) {
+static bool Player_HeldActorAllowsInteraction(Player* this) {
     if (this->heldActor == NULL) {
         return false;
     }
