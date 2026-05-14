@@ -22,6 +22,7 @@ static float ComputeRandomScale(Actor* actor, bool isSmallOnly) {
     const int32_t mode = CVAR_RANDO_ENEMY_SIZE_VALUE;
     float randomNumber = 0.0f;
     bool isBigActor = false;
+    static uint64_t randomState = 0;
 
     if (mode == ENEMY_SIZE_RANDOM_SEEDED) {
         // Deterministic seed from actor spawn data + global seed, matching the pattern used by the enemy randomizer
