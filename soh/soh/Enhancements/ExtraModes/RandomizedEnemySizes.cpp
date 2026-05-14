@@ -33,7 +33,6 @@ static float ComputeRandomScale(Actor* actor, bool isSmallOnly) {
                               static_cast<int32_t>(actor->home.pos.y) + static_cast<int32_t>(actor->home.pos.z) +
                               actor->home.rot.x + actor->home.rot.y + actor->home.rot.z + actor->params;
 
-        uint64_t randomState = 0;
         ShipUtils::RandInit(
                 (seed ^ 0xDEAD) + (IS_RANDO
                                    ? Rando::Context::GetInstance()->GetSeed()
