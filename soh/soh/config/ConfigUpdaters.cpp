@@ -181,7 +181,6 @@ static const Migration version3Migrations[] = {
     { "gDisableNaviCallAudio", "gAudioEditor.DisableNaviCallAudio" },
     { "gDisableTunicWarningText", "gEnhancements.DisableTunicWarningText" },
     { "gDogFollowsEverywhere", "gEnhancements.DogFollowsEverywhere" },
-    { "gRichardsRage", "gEnhancements.RichardsRage" },
     { "gDpadNoDropOcarinaInput", "gEnhancements.DpadNoDropOcarinaInput" },
     { "gDrawLineupTick", "gEnhancements.DrawLineupTick" },
     { "gDynamicWalletIcon", "gEnhancements.DynamicWalletIcon" },
