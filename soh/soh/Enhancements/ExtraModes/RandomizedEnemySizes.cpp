@@ -54,11 +54,11 @@ static float ComputeRandomScale(Actor* actor, bool isSmallOnly) {
     // Unseeded random -- different every room load.
     isBigActor = !isSmallOnly && ShipUtils::Random(0, 2, &randomState) == 1;
     if (isBigActor) {
-        randomNumber = rand() % 200;
+        randomNumber = ShipUtils::Random(0, 200, &randomState);
         return 1.0f + randomNumber / 100.0f;
     }
 
-    randomNumber = rand() % 90;
+    randomNumber = ShipUtils::Random(0, 90, &randomState);
     return 0.1f + randomNumber / 100.0f;
 }
 
