@@ -22,32 +22,32 @@ extern "C" {
 // -----------------------------------------------------------------------------------------------------------------
 
 struct BlockInfo {
-    u32 offset;
-    std::size_t size;
+    uint32_t offset;
+    size_t size;
     bool isFree;
-    u8 type;     // N64MEM_BLOCK_* (shadow only)
-    s16 actorId; // Original actor ID (shadow only), -1 if unknown
+    uint8_t type;           // N64MEM_BLOCK_* (shadow only)
+    int16_t actorId;        // Original actor ID (shadow only), -1 if unknown
     const char* actorName;
     bool isPinned;
-    bool isGhost;  // Pinned block that was freed -- shown as a grayed-out row
-    u32 heapIndex; // Original index in heap order (for block map cross-reference)
+    bool isGhost;           // Pinned block that was freed -- shown as a grayed-out row
+    uint32_t heapIndex;     // Original index in heap order (for block map cross-reference)
 };
 
 static std::vector<BlockInfo> sBlocks;
-static std::vector<std::size_t> sDisplayOrder; // Indices into sBlocks: pinned first, then unpinned
-static u32 sPinnedCount = 0;
-static std::set<std::pair<s16, u8>> sPinnedBlocks; // {actorId, blockType} pairs
-static std::size_t sAllocTotal = 0;
-static std::size_t sFreeTotal = 0;
-static std::size_t sLargestFree = 0;
-static u32 sNodeCount = 0;
-static std::size_t sArenaSize = 0;
-static std::size_t sPreviousAlloc = 0;
-static u32 sCycleCount = 0;
-static s32 sLastDelta = 0;
+static std::vector<size_t> sDisplayOrder;                   // Indices into sBlocks: pinned first, then unpinned
+static uint32_t sPinnedCount = 0;
+static std::set<std::pair<int16_t, uint8_t>> sPinnedBlocks; // {actorId, blockType} pairs
+static size_t sAllocTotal = 0;
+static size_t sFreeTotal = 0;
+static size_t sLargestFree = 0;
+static uint32_t sNodeCount = 0;
+static size_t sArenaSize = 0;
+static size_t sPreviousAlloc = 0;
+static uint32_t sCycleCount = 0;
+static int32_t sLastDelta = 0;
 static bool sIsShadow = false;
 
-static const char* GetActorName(s16 actorId) {
+static const char* GetActorName(int16_t actorId) {
     if (actorId < 0) {
         return nullptr;
     }
@@ -56,7 +56,7 @@ static const char* GetActorName(s16 actorId) {
     return entry.desc.empty() ? entry.entry.name : entry.desc.c_str();
 }
 
-static const char* BlockTypeName(u8 type) {
+static const char* BlockTypeName(uint8_t type) {
     switch (type) {
         case N64MEM_BLOCK_INSTANCE:
             return "inst";
@@ -93,7 +93,7 @@ static const char* GetBlockDisplayName(const BlockInfo& block) {
     }
 
     if (block.type == N64MEM_BLOCK_EFFECT && block.actorId >= 0 &&
-        block.actorId < static_cast<s16>(std::size(sEffectNames))) {
+        block.actorId < static_cast<int16_t>(std::size(sEffectNames))) {
         return sEffectNames[block.actorId];
     }
 
@@ -116,7 +116,7 @@ static void CollectZeldaArenaBlocks() {
 
     while (node) {
         BlockInfo block;
-        block.offset = static_cast<u32>(reinterpret_cast<uintptr_t>(node) + sizeof(ArenaNode));
+        block.offset = static_cast<uint32_t>(reinterpret_cast<uintptr_t>(node) + sizeof(ArenaNode));
         block.size = node->size;
         block.isFree = node->isFree;
         block.type = N64MEM_BLOCK_FREE;
@@ -140,7 +140,7 @@ static void CollectZeldaArenaBlocks() {
     }
 
     if (sPreviousAlloc != 0 && sAllocTotal != sPreviousAlloc) {
-        sLastDelta = static_cast<s32>(sAllocTotal) - static_cast<s32>(sPreviousAlloc);
+        sLastDelta = static_cast<int32_t>(sAllocTotal) - static_cast<int32_t>(sPreviousAlloc);
         ++sCycleCount;
     }
 
@@ -162,12 +162,12 @@ static void CollectShadowBlocks() {
     }
 
     sArenaSize = ShadowArena_GetBufferSize(shadow);
-    u32 offset = ShadowArena_GetHead(shadow);
+    uint32_t offset = ShadowArena_GetHead(shadow);
 
     while (offset != SHADOW_NULL) {
-        s32 isFree = 0;
-        u32 size = 0;
-        u32 next = SHADOW_NULL;
+        int32_t isFree = 0;
+        uint32_t size = 0;
+        uint32_t next = SHADOW_NULL;
 
         if (!ShadowArena_GetNodeInfo(shadow, offset, &isFree, &size, &next)) {
             break;
@@ -182,8 +182,8 @@ static void CollectShadowBlocks() {
         block.actorName = nullptr;
 
         if (!isFree) {
-            u8 type = 0;
-            s16 actorId = -1;
+            uint8_t type = 0;
+            int16_t actorId = -1;
             if (N64Mem_GetBlockInfo(block.offset, &type, &actorId)) {
                 block.type = type;
                 block.actorId = actorId;
@@ -207,7 +207,7 @@ static void CollectShadowBlocks() {
     }
 
     if (sPreviousAlloc != 0 && sAllocTotal != sPreviousAlloc) {
-        sLastDelta = static_cast<s32>(sAllocTotal) - static_cast<s32>(sPreviousAlloc);
+        sLastDelta = static_cast<int32_t>(sAllocTotal) - static_cast<int32_t>(sPreviousAlloc);
         ++sCycleCount;
     }
 
@@ -220,10 +220,10 @@ static void BuildDisplayOrder() {
     sPinnedCount = 0;
 
     // Track which pin keys have a live block.
-    std::set<std::pair<s16, u8>> matchedPins;
+    std::set<std::pair<int16_t, uint8_t>> matchedPins;
 
-    for (std::size_t i = 0; i < sBlocks.size(); ++i) {
-        sBlocks[i].heapIndex = static_cast<u32>(i);
+    for (size_t i = 0; i < sBlocks.size(); ++i) {
+        sBlocks[i].heapIndex = static_cast<uint32_t>(i);
         sBlocks[i].isGhost = false;
         std::pair key = { sBlocks[i].actorId, sBlocks[i].type };
         sBlocks[i].isPinned = !sBlocks[i].isFree && sPinnedBlocks.contains(key);
@@ -250,14 +250,14 @@ static void BuildDisplayOrder() {
     }
 
     // Pinned first (heap order preserved within group, ghosts at end of pinned section).
-    for (std::size_t i = 0; i < sBlocks.size(); ++i) {
+    for (size_t i = 0; i < sBlocks.size(); ++i) {
         if (sBlocks[i].isPinned && !sBlocks[i].isGhost) {
             sDisplayOrder.push_back(i);
             ++sPinnedCount;
         }
     }
 
-    for (std::size_t i = 0; i < sBlocks.size(); ++i) {
+    for (size_t i = 0; i < sBlocks.size(); ++i) {
         if (sBlocks[i].isGhost) {
             sDisplayOrder.push_back(i);
             ++sPinnedCount;
@@ -265,7 +265,7 @@ static void BuildDisplayOrder() {
     }
 
     // Then unpinned.
-    for (std::size_t i = 0; i < sBlocks.size(); ++i) {
+    for (size_t i = 0; i < sBlocks.size(); ++i) {
         if (!sBlocks[i].isPinned) {
             sDisplayOrder.push_back(i);
         }
@@ -276,7 +276,7 @@ static void BuildDisplayOrder() {
 // Colors
 // -----------------------------------------------------------------------------------------------------------------
 
-static ImU32 BlockColor(const BlockInfo& block) {
+static int32_t BlockColor(const BlockInfo& block) {
     if (block.isFree) {
         return IM_COL32(60, 180, 80, 255);
     }
@@ -321,7 +321,7 @@ static ImU32 ColorBorder() {
 void HeapViewerWindow::DrawElement() {
     // Single arena view: Shadow when active, ZeldaArena when not.
     const bool isShadowArena = N64Mem_IsActive();
-    const u32 nodeHeaderSize = isShadowArena ? N64Mem_GetShadowArena()->nodeSize : sizeof(ArenaNode);
+    const uint32_t nodeHeaderSize = isShadowArena ? N64Mem_GetShadowArena()->nodeSize : sizeof(ArenaNode);
 
     if (isShadowArena) {
         CollectShadowBlocks();
@@ -356,8 +356,8 @@ void HeapViewerWindow::DrawElement() {
                                 ? (1.0f - static_cast<f32>(sLargestFree) / static_cast<f32>(sFreeTotal)) * 100.0f
                                 : 0.0f;
 
-    ImGui::Text("Arena: 0x%X (%u KB)  |  Nodes: %u", sArenaSize, sArenaSize / 1024, sNodeCount);
-    ImGui::Text("Alloc: 0x%X (%u KB)  |  Free: 0x%X (%u KB)  |  Largest: 0x%X (%u KB)",
+    ImGui::Text("Arena: 0x%llX (%llu KB)  |  Nodes: %u", sArenaSize, sArenaSize / 1024, sNodeCount);
+    ImGui::Text("Alloc: 0x%llX (%llu KB)  |  Free: 0x%llX (%llu KB)  |  Largest: 0x%llX (%llu KB)",
                 sAllocTotal, sAllocTotal / 1024,
                 sFreeTotal, sFreeTotal / 1024,
                 sLargestFree, sLargestFree / 1024);
@@ -366,7 +366,7 @@ void HeapViewerWindow::DrawElement() {
     ImGui::Text("Cycle: %u  |  Last delta: %s0x%X (%d bytes)",
                 sCycleCount,
                 sLastDelta >= 0 ? "+" : "-",
-                static_cast<u32>(std::abs(sLastDelta)),
+                static_cast<uint32_t>(std::abs(sLastDelta)),
                 sLastDelta);
 
     // --- Utilization bar ---
@@ -391,9 +391,9 @@ void HeapViewerWindow::DrawElement() {
     drawList->AddRectFilled(mapPos, ImVec2(mapPos.x + availWidth, mapPos.y + mapHeight), ColorBorder());
 
     f32 xCursor = 0.0f;
-    s32 hoveredBlock = -1;
+    int32_t hoveredBlock = -1;
 
-    for (std::size_t i = 0; i < sBlocks.size(); ++i) {
+    for (size_t i = 0; i < sBlocks.size(); ++i) {
         f32 nodeWidth = static_cast<f32>(nodeHeaderSize) / static_cast<f32>(sArenaSize) * availWidth;
         f32 blockWidth = static_cast<f32>(sBlocks[i].size) / static_cast<f32>(sArenaSize) * availWidth;
 
@@ -423,7 +423,7 @@ void HeapViewerWindow::DrawElement() {
         const f32 fullX0 = mapPos.x + xCursor - nodeWidth;
         ImVec2 blockMin(fullX0, mapPos.y);
         if (ImVec2 blockMax(x1, mapPos.y + mapHeight); ImGui::IsMouseHoveringRect(blockMin, blockMax)) {
-            hoveredBlock = static_cast<s32>(i);
+            hoveredBlock = static_cast<int32_t>(i);
         }
 
         xCursor += blockWidth;
@@ -444,7 +444,7 @@ void HeapViewerWindow::DrawElement() {
         }
 
         ImGui::Text("Offset: 0x%X", block.offset);
-        ImGui::Text("Size: 0x%X (%u bytes)", block.size, block.size);
+        ImGui::Text("Size: 0x%llX (%llu bytes)", block.size, block.size);
         ImGui::EndTooltip();
     }
 
@@ -456,11 +456,12 @@ void HeapViewerWindow::DrawElement() {
     ImGui::Text("Block List (%u blocks%s)", sNodeCount,
                 sPinnedCount > 0 ? fmt::format(", {} pinned", sPinnedCount).c_str() : "");
 
-    if (const s32 columnCount = sIsShadow ? 5 : 4; ImGui::BeginTable("##blocks", columnCount,
-                                                                     ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg |
-                                                                     ImGuiTableFlags_ScrollY |
-                                                                     ImGuiTableFlags_Resizable,
-                                                                     ImVec2(0, ImGui::GetContentRegionAvail().y))) {
+    if (const int32_t columnCount = sIsShadow ? 5 : 4; ImGui::BeginTable("##blocks", columnCount,
+                                                                         ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg
+                                                                         |
+                                                                         ImGuiTableFlags_ScrollY |
+                                                                         ImGuiTableFlags_Resizable,
+                                                                         ImVec2(0, ImGui::GetContentRegionAvail().y))) {
         ImGui::TableSetupColumn("#", ImGuiTableColumnFlags_WidthFixed, 40.0f);
 
         if (sIsShadow) {
@@ -470,11 +471,11 @@ void HeapViewerWindow::DrawElement() {
         ImGui::TableSetupColumn("Type", ImGuiTableColumnFlags_WidthFixed, 60.0f);
         ImGui::TableSetupColumn("Size", ImGuiTableColumnFlags_WidthFixed, 140.0f);
         ImGui::TableSetupColumn("Offset", ImGuiTableColumnFlags_WidthFixed, 100.0f);
-        ImGui::TableSetupScrollFreeze(0, 1 + static_cast<s32>(sPinnedCount));
+        ImGui::TableSetupScrollFreeze(0, 1 + static_cast<int32_t>(sPinnedCount));
         ImGui::TableHeadersRow();
 
-        for (std::size_t di = 0; di < sDisplayOrder.size(); ++di) {
-            const std::size_t blockIdx = sDisplayOrder[di];
+        for (size_t di = 0; di < sDisplayOrder.size(); ++di) {
+            const size_t blockIdx = sDisplayOrder[di];
             const auto& block = sBlocks[blockIdx];
             ImGui::TableNextRow();
 
@@ -532,7 +533,7 @@ void HeapViewerWindow::DrawElement() {
             } else if (block.isFree) {
                 ImGui::TextColored(ImVec4(0.2f, 0.8f, 0.3f, 1.0f), "free");
             } else if (sIsShadow) {
-                const ImU32 color = BlockColor(block);
+                const int32_t color = BlockColor(block);
                 ImVec4 colorVec = ImGui::ColorConvertU32ToFloat4(color);
                 ImGui::TextColored(colorVec, "%s", BlockTypeName(block.type));
             } else {
@@ -544,7 +545,7 @@ void HeapViewerWindow::DrawElement() {
             if (block.isGhost) {
                 ImGui::TextDisabled("--");
             } else {
-                ImGui::Text("0x%X (%u)", block.size, block.size);
+                ImGui::Text("0x%llX (%llu)", block.size, block.size);
             }
 
             // Offset

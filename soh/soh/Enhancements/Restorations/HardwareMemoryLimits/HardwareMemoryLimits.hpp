@@ -1,6 +1,6 @@
 #pragma once
 
-#include <libultraship/libultraship.h>
+#include <stdint.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -18,14 +18,14 @@ extern "C" {
 
 // Store SoH's THA remainder before ZeldaArena_Init consumes it.  Call from Play_Init immediately after
 // THA_GetRemaining.
-void N64Mem_StoreThaRemainder(u32 sohRemainder);
+void N64Mem_StoreThaRemainder(uint32_t sohRemainder);
 
 // Store which elf message file was loaded by Scene_CommandSpecialFiles (1 = elf_message_field, 2 = elf_message_ydan,
 // 0 = none).  Called from z_scene.c during scene command processing.
-void N64Mem_StoreElfMsgNum(u8 num);
+void N64Mem_StoreElfMsgNum(uint8_t num);
 
 // Returns the elf message number stored by N64Mem_StoreElfMsgNum.
-u8 N64Mem_GetElfMsgNum(void);
+uint8_t N64Mem_GetElfMsgNum(void);
 
 // Reset shadow state, compute N64-equivalent arena size from stored THA remainder minus N64-specific consumers
 // (room buffers, etc.), and reread CVar.  Call from Play_Init after ZeldaArena_Init.
@@ -33,7 +33,7 @@ struct PlayState;
 void N64Mem_Reset(PlayState* play);
 
 // Returns whether the N64 memory model is currently active.
-s32 N64Mem_IsActive(void);
+int32_t N64Mem_IsActive(void);
 
 // Returns the shadow arena pointer for debug visualization.  Only valid when N64Mem_IsActive() is true.
 struct ShadowArena* N64Mem_GetShadowArena(void);
@@ -53,13 +53,13 @@ void N64Mem_LogState(const char* context);
 // ref counting, instance pointer mapping) uses the actual spawned actor ID.
 // --------------------------------------------------------------------------------------------------------------------
 
-void N64Mem_SetOriginalActorId(s16 actorId);
+void N64Mem_SetOriginalActorId(int16_t actorId);
 void N64Mem_ClearOriginalActorId(void);
 
 // Save/restore for the randomized-init skip flag.  Actor_Spawn saves the current value at entry and restores it
 // after Actor_Init returns, so child spawns during a randomized actor's init don't clobber the parent's flag.
-s32 N64Mem_GetRandomizedInit(void);
-void N64Mem_SetRandomizedInit(s32 value);
+int32_t N64Mem_GetRandomizedInit(void);
+void N64Mem_SetRandomizedInit(int32_t value);
 
 // Log Graveyard benchmark data (transition count, largest_free, total_free).  Call after room actors are spawned.
 void N64Mem_BenchmarkTransition(PlayState* play);
@@ -74,8 +74,8 @@ void N64Mem_BenchmarkTransition(PlayState* play);
 // Call FreeOverlay when numLoaded transitions 1 -> 0.
 // --------------------------------------------------------------------------------------------------------------------
 
-s32 N64Mem_AllocOverlay(s16 actorId, u16 allocType);
-void N64Mem_FreeOverlay(s16 actorId, u16 allocType);
+int32_t N64Mem_AllocOverlay(int16_t actorId, uint16_t allocType);
+void N64Mem_FreeOverlay(int16_t actorId, uint16_t allocType);
 
 // --------------------------------------------------------------------------------------------------------------------
 // Actor instances: Paired with real ZeldaArena allocations.
@@ -86,9 +86,9 @@ void N64Mem_FreeOverlay(s16 actorId, u16 allocType);
 // Call FreeInstance when the actor is deleted.
 // --------------------------------------------------------------------------------------------------------------------
 
-s32 N64Mem_AllocInstance(s16 actorId, s16 params, void* realPtr);
+int32_t N64Mem_AllocInstance(int16_t actorId, int16_t params, void* realPtr);
 // Returns the stored original actor ID for overlay free-path tracking, or -1 if not tracked.
-s16 N64Mem_FreeInstance(void* realPtr);
+int16_t N64Mem_FreeInstance(void* realPtr);
 
 // --------------------------------------------------------------------------------------------------------------------
 // Subsidiaries (colliders, camera, skin, etc.): Paired.
@@ -96,7 +96,7 @@ s16 N64Mem_FreeInstance(void* realPtr);
 // Same pattern as instances -- shadow-alloc at N64 size, gate on failure, free when the real allocation is freed.
 // --------------------------------------------------------------------------------------------------------------------
 
-s32 N64Mem_AllocSubsidiary(void* realPtr, u32 n64Size);
+int32_t N64Mem_AllocSubsidiary(void* realPtr, uint32_t n64Size);
 void N64Mem_FreeSubsidiary(void* realPtr);
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -105,7 +105,7 @@ void N64Mem_FreeSubsidiary(void* realPtr);
 // On N64, effect overlays load via MallocR on first spawn and are never freed until the GameState is torn down.
 // --------------------------------------------------------------------------------------------------------------------
 
-s32 N64Mem_AllocEffectOverlay(s32 type);
+int32_t N64Mem_AllocEffectOverlay(int32_t type);
 
 // --------------------------------------------------------------------------------------------------------------------
 // Heap viewer metadata
@@ -122,7 +122,7 @@ s32 N64Mem_AllocEffectOverlay(s32 type);
 #define N64MEM_BLOCK_EFFECT     4
 #define N64MEM_BLOCK_ABSOLUTE   5
 
-s32 N64Mem_GetBlockInfo(u32 dataOffset, u8* outType, s16* outActorId);
+int32_t N64Mem_GetBlockInfo(uint32_t dataOffset, uint8_t* outType, int16_t* outActorId);
 
 #ifdef __cplusplus
 }

@@ -7,22 +7,22 @@
 // Internal node layout (not exposed -- heap viewer uses offset + size queries, not direct struct access).
 //
 // Fixed header fields (0x10 bytes, identical on retail and debug):
-//  0x00        s16         magic
-//  0x02        s16         isFree
-//  0x04        u32         size    (Payload bytes, excluding node header)
-//  0x08        u32         next    (Offset into buffer, SHADOW_NULL = end)
-//  0x0C        u32         prev    (Offset into buffer, SHADOW_NULL = head)
+//  0x00    int16_t     magic
+//  0x02    int16_t     isFree
+//  0x04    uint32_t    size    (Payload bytes, excluding node header)
+//  0x08    uint32_t    next    (Offset into buffer, SHADOW_NULL = end)
+//  0x0C    uint32_t    prev    (Offset into buffer, SHADOW_NULL = head)
 //
 // On debug builds, an additional 0x20 bytes of debug fields follow (filename, line, threadId, arena, time).
 // The total node spacing is arena->nodeSize: 0x10 for retail, 0x30 for debug.
 // --------------------------------------------------------------------------------------------------------------------
 
 typedef struct ShadowNode {
-    s16 magic;
-    s16 isFree;
-    u32 size;
-    u32 next;
-    u32 prev;
+    int16_t magic;
+    int16_t isFree;
+    uint32_t size;
+    uint32_t next;
+    uint32_t prev;
 } ShadowNode; // 0x10
 
 static_assert(sizeof(ShadowNode) == 0x10, "ShadowNode header must be exactly 0x10 bytes");
@@ -34,11 +34,11 @@ static_assert(sizeof(ShadowNode) == 0x10, "ShadowNode header must be exactly 0x1
 // Offset helpers
 // --------------------------------------------------------------------------------------------------------------------
 
-static ShadowNode* NodeAt(ShadowArena* arena, u32 offset) {
+static ShadowNode* NodeAt(ShadowArena* arena, uint32_t offset) {
     return (ShadowNode*)(arena->buffer + offset);
 }
 
-static s32 NodeIsValid(ShadowArena* arena, u32 offset) {
+static int32_t NodeIsValid(ShadowArena* arena, uint32_t offset) {
     if (offset == SHADOW_NULL) {
         return 0;
     }
@@ -50,7 +50,7 @@ static s32 NodeIsValid(ShadowArena* arena, u32 offset) {
     return NodeAt(arena, offset)->magic == NODE_MAGIC;
 }
 
-static u32 NodeGetNext(ShadowArena* arena, u32 offset) {
+static uint32_t NodeGetNext(ShadowArena* arena, uint32_t offset) {
     const ShadowNode* node = NodeAt(arena, offset);
     if (node->next != SHADOW_NULL && NodeIsValid(arena, node->next)) {
         return node->next;
@@ -59,7 +59,7 @@ static u32 NodeGetNext(ShadowArena* arena, u32 offset) {
     return SHADOW_NULL;
 }
 
-static u32 NodeGetPrev(ShadowArena* arena, u32 offset) {
+static uint32_t NodeGetPrev(ShadowArena* arena, uint32_t offset) {
     const ShadowNode* node = NodeAt(arena, offset);
     if (node->prev != SHADOW_NULL && NodeIsValid(arena, node->prev)) {
         return node->prev;
@@ -72,12 +72,12 @@ static u32 NodeGetPrev(ShadowArena* arena, u32 offset) {
 // Init / Destroy
 // --------------------------------------------------------------------------------------------------------------------
 
-void ShadowArena_Init(ShadowArena* arena, u32 size, u32 nodeSize) {
+void ShadowArena_Init(ShadowArena* arena, uint32_t size, uint32_t nodeSize) {
     // Match N64's alignment: Round start up to 16, round size down to 16.  Since we control the buffer, start is
     // effectively offset 0 after alignment.  We just ensure the usable size is 16-byte aligned.
-    const u32 alignedSize = size & ~0xF;
+    const uint32_t alignedSize = size & ~0xF;
 
-    arena->buffer = (u8*)malloc(alignedSize);
+    arena->buffer = (uint8_t*)malloc(alignedSize);
     if (!arena->buffer) {
         memset(arena, 0, sizeof(ShadowArena));
         return;
@@ -94,7 +94,6 @@ void ShadowArena_Init(ShadowArena* arena, u32 size, u32 nodeSize) {
     first->size = alignedSize - nodeSize;
     first->next = SHADOW_NULL;
     first->prev = SHADOW_NULL;
-
     arena->head = 0;
 }
 
@@ -110,10 +109,10 @@ void ShadowArena_Destroy(ShadowArena* arena) {
 // Malloc: First-fit forward (matches N64 __osMalloc)
 // --------------------------------------------------------------------------------------------------------------------
 
-u32 ShadowArena_Malloc(ShadowArena* arena, u32 size) {
-    u32 iterOff = 0;
+uint32_t ShadowArena_Malloc(ShadowArena* arena, uint32_t size) {
+    uint32_t iterOff = 0;
     ShadowNode* iter = NULL;
-    u32 blockSize = 0;
+    uint32_t blockSize = 0;
 
     size = ALIGN16(size);
     blockSize = size + arena->nodeSize;
@@ -124,7 +123,7 @@ u32 ShadowArena_Malloc(ShadowArena* arena, u32 size) {
         if (iter->isFree && iter->size >= size) {
             // Split if remainder can hold a new node + payload.
             if (blockSize < iter->size) {
-                const u32 newOff = iterOff + blockSize;
+                const uint32_t newOff = iterOff + blockSize;
                 ShadowNode* newNode = NodeAt(arena, newOff);
 
                 newNode->magic = NODE_MAGIC;
@@ -157,11 +156,11 @@ u32 ShadowArena_Malloc(ShadowArena* arena, u32 size) {
 // MallocR: First-fit backward (matches N64 __osMallocR)
 // --------------------------------------------------------------------------------------------------------------------
 
-u32 ShadowArena_MallocR(ShadowArena* arena, u32 size) {
-    u32 iterOff = 0;
-    u32 nextOff = 0;
+uint32_t ShadowArena_MallocR(ShadowArena* arena, uint32_t size) {
+    uint32_t iterOff = 0;
+    uint32_t nextOff = 0;
     ShadowNode* iter = NULL;
-    u32 blockSize = 0;
+    uint32_t blockSize = 0;
 
     size = ALIGN16(size);
 
@@ -181,7 +180,7 @@ u32 ShadowArena_MallocR(ShadowArena* arena, u32 size) {
 
             // Split: Carve the allocation from the TOP of this free block.
             if (blockSize < iter->size) {
-                const u32 newOff = iterOff + (iter->size - size);
+                const uint32_t newOff = iterOff + (iter->size - size);
                 ShadowNode* newNode = NodeAt(arena, newOff);
 
                 newNode->magic = NODE_MAGIC;
@@ -215,11 +214,11 @@ u32 ShadowArena_MallocR(ShadowArena* arena, u32 size) {
 // Free: Adjacent block coalescing (matches N64 _osFree)
 // --------------------------------------------------------------------------------------------------------------------
 
-void ShadowArena_Free(ShadowArena* arena, u32 dataOffset) {
-    u32 nodeOff = 0;
+void ShadowArena_Free(ShadowArena* arena, uint32_t dataOffset) {
+    uint32_t nodeOff = 0;
     ShadowNode* node = NULL;
-    u32 nextOff = 0;
-    u32 prevOff = 0;
+    uint32_t nextOff = 0;
+    uint32_t prevOff = 0;
 
     if (dataOffset == SHADOW_NULL) {
         return;
@@ -271,8 +270,8 @@ void ShadowArena_Free(ShadowArena* arena, u32 dataOffset) {
 // Query
 // --------------------------------------------------------------------------------------------------------------------
 
-void ShadowArena_GetSizes(ShadowArena* arena, u32* outMaxFree, u32* outFree, u32* outAlloc) {
-    u32 iterOff = 0;
+void ShadowArena_GetSizes(ShadowArena* arena, uint32_t* outMaxFree, uint32_t* outFree, uint32_t* outAlloc) {
+    uint32_t iterOff = 0;
 
     *outMaxFree = 0;
     *outFree = 0;
@@ -294,11 +293,12 @@ void ShadowArena_GetSizes(ShadowArena* arena, u32* outMaxFree, u32* outFree, u32
     }
 }
 
-u32 ShadowArena_GetHead(ShadowArena* arena) {
+uint32_t ShadowArena_GetHead(ShadowArena* arena) {
     return arena->head;
 }
 
-s32 ShadowArena_GetNodeInfo(ShadowArena* arena, u32 offset, s32* outIsFree, u32* outSize, u32* outNext) {
+int32_t ShadowArena_GetNodeInfo(ShadowArena* arena, uint32_t offset, int32_t* outIsFree, uint32_t* outSize,
+                                uint32_t* outNext) {
     if (offset == SHADOW_NULL || offset + arena->nodeSize > arena->bufferSize) {
         return 0;
     }
@@ -314,6 +314,6 @@ s32 ShadowArena_GetNodeInfo(ShadowArena* arena, u32 offset, s32* outIsFree, u32*
     return 1;
 }
 
-u32 ShadowArena_GetBufferSize(ShadowArena* arena) {
+uint32_t ShadowArena_GetBufferSize(ShadowArena* arena) {
     return arena->bufferSize;
 }

@@ -3,10 +3,10 @@
 // --------------------------------------------------------------------------------------------------------------------
 // DMA file sizes (misc/dma_sizes)
 //
-// Format: u32 entryCount, then per entry: u32 vromSize, length-prefixed string name
+// Format: uint32_t entryCount, then per entry: uint32_t vromSize, length-prefixed string name
 // --------------------------------------------------------------------------------------------------------------------
 
-static std::unordered_map<std::string, u32> sDmaFileSizes;
+static std::unordered_map<std::string, uint32_t> sDmaFileSizes;
 static bool sIsDmaLoaded = false;
 
 static void LoadDmaFileSizes() {
@@ -27,9 +27,9 @@ static void LoadDmaFileSizes() {
     const auto reader = std::make_shared<Ship::BinaryReader>(stream);
     reader->SetEndianness(Ship::Endianness::Big);
 
-    const u32 entryCount = reader->ReadUInt32();
+    const uint32_t entryCount = reader->ReadUInt32();
     for (std::size_t i = 0; i < entryCount; ++i) {
-        const u32 vromSize = reader->ReadUInt32();
+        const uint32_t vromSize = reader->ReadUInt32();
         const std::string name = reader->ReadString();
         sDmaFileSizes[name] = vromSize;
     }
@@ -40,10 +40,10 @@ static void LoadDmaFileSizes() {
 // --------------------------------------------------------------------------------------------------------------------
 // Actor overlay VRAM sizes (misc/actor_overlay_sizes)
 //
-// Format: u32 entryCount, then entryCount consecutive u32 values indexed by actor ID
+// Format: uint32_t entryCount, then entryCount consecutive uint32_t values indexed by actor ID
 // --------------------------------------------------------------------------------------------------------------------
 
-static std::vector<u32> sActorOverlaySizes;
+static std::vector<uint32_t> sActorOverlaySizes;
 static bool sIsActorOverlayLoaded = false;
 
 static void LoadActorOverlaySizes() {
@@ -65,7 +65,7 @@ static void LoadActorOverlaySizes() {
     const auto reader = std::make_shared<Ship::BinaryReader>(stream);
     reader->SetEndianness(Ship::Endianness::Big);
 
-    const u32 entryCount = reader->ReadUInt32();
+    const uint32_t entryCount = reader->ReadUInt32();
     sActorOverlaySizes.resize(entryCount);
 
     for (std::size_t i = 0; i < entryCount; ++i) {
@@ -78,10 +78,10 @@ static void LoadActorOverlaySizes() {
 // --------------------------------------------------------------------------------------------------------------------
 // Effect overlay VRAM sizes (misc/effect_overlay_sizes)
 //
-// Format: u32 entryCount, then entryCount consecutive u32 values indexed by effect type
+// Format: uint32_t entryCount, then entryCount consecutive uint32_t values indexed by effect type
 // --------------------------------------------------------------------------------------------------------------------
 
-static std::vector<u32> sEffectOverlaySizes;
+static std::vector<uint32_t> sEffectOverlaySizes;
 static bool sIsEffectOverlayLoaded = false;
 
 static void LoadEffectOverlaySizes() {
@@ -103,7 +103,7 @@ static void LoadEffectOverlaySizes() {
     const auto reader = std::make_shared<Ship::BinaryReader>(stream);
     reader->SetEndianness(Ship::Endianness::Big);
 
-    const u32 entryCount = reader->ReadUInt32();
+    const uint32_t entryCount = reader->ReadUInt32();
     sEffectOverlaySizes.resize(entryCount);
 
     for (std::size_t i = 0; i < entryCount; ++i) {
@@ -116,11 +116,11 @@ static void LoadEffectOverlaySizes() {
 // --------------------------------------------------------------------------------------------------------------------
 // Actor instance sizes (misc/actor_instance_sizes)
 //
-// Format: u32 entryCount, then entryCount consecutive u32 values indexed by actor ID
+// Format: uint32_t entryCount, then entryCount consecutive uint32_t values indexed by actor ID
 // Each value is the N64 sizeof the actor's instance struct, read from ActorProfile.instanceSize.
 // --------------------------------------------------------------------------------------------------------------------
 
-static std::vector<u32> sActorInstanceSizes;
+static std::vector<uint32_t> sActorInstanceSizes;
 static bool sIsActorInstanceLoaded = false;
 
 static void LoadActorInstanceSizes() {
@@ -142,7 +142,7 @@ static void LoadActorInstanceSizes() {
     const auto reader = std::make_shared<Ship::BinaryReader>(stream);
     reader->SetEndianness(Ship::Endianness::Big);
 
-    const u32 entryCount = reader->ReadUInt32();
+    const uint32_t entryCount = reader->ReadUInt32();
     sActorInstanceSizes.resize(entryCount);
 
     for (std::size_t i = 0; i < entryCount; ++i) {
@@ -156,7 +156,7 @@ static void LoadActorInstanceSizes() {
 // API
 // --------------------------------------------------------------------------------------------------------------------
 
-extern "C" u32 N64SizeData_GetDmaFileSize(const char* name) {
+extern "C" uint32_t N64SizeData_GetDmaFileSize(const char* name) {
     LoadDmaFileSizes();
 
     if (const auto i = sDmaFileSizes.find(name); i != sDmaFileSizes.end()) {
@@ -167,7 +167,7 @@ extern "C" u32 N64SizeData_GetDmaFileSize(const char* name) {
     return 0;
 }
 
-extern "C" u32 N64SizeData_GetActorOverlaySize(u16 actorId) {
+extern "C" uint32_t N64SizeData_GetActorOverlaySize(uint16_t actorId) {
     LoadActorOverlaySizes();
 
     if (actorId < sActorOverlaySizes.size()) {
@@ -177,7 +177,7 @@ extern "C" u32 N64SizeData_GetActorOverlaySize(u16 actorId) {
     return 0;
 }
 
-extern "C" u32 N64SizeData_GetEffectOverlaySize(u16 effectType) {
+extern "C" uint32_t N64SizeData_GetEffectOverlaySize(uint16_t effectType) {
     LoadEffectOverlaySizes();
 
     if (effectType < sEffectOverlaySizes.size()) {
@@ -187,7 +187,7 @@ extern "C" u32 N64SizeData_GetEffectOverlaySize(u16 effectType) {
     return 0;
 }
 
-extern "C" u32 N64SizeData_GetActorInstanceSize(u16 actorId) {
+extern "C" uint32_t N64SizeData_GetActorInstanceSize(uint16_t actorId) {
     LoadActorInstanceSizes();
 
     if (actorId < sActorInstanceSizes.size()) {
@@ -200,10 +200,10 @@ extern "C" u32 N64SizeData_GetActorInstanceSize(u16 actorId) {
 // --------------------------------------------------------------------------------------------------------------------
 // Kaleido overlay max VRAM size (misc/kaleido_vram_size)
 //
-// Format: single u32 -- max(ovl_kaleido_scope VRAM, ovl_player_actor VRAM)
+// Format: single uint32_t -- max(ovl_kaleido_scope VRAM, ovl_player_actor VRAM)
 // --------------------------------------------------------------------------------------------------------------------
 
-static u32 sKaleidoVramSize = 0;
+static uint32_t sKaleidoVramSize = 0;
 static bool sIsKaleidoLoaded = false;
 
 static void LoadKaleidoVramSize() {
@@ -230,7 +230,7 @@ static void LoadKaleidoVramSize() {
     SPDLOG_INFO("[N64SizeData] Kaleido max VRAM size: 0x{:X}.", sKaleidoVramSize);
 }
 
-extern "C" u32 N64SizeData_GetKaleidoVramSize() {
+extern "C" uint32_t N64SizeData_GetKaleidoVramSize() {
     LoadKaleidoVramSize();
     return sKaleidoVramSize;
 }
@@ -238,10 +238,10 @@ extern "C" u32 N64SizeData_GetKaleidoVramSize() {
 // --------------------------------------------------------------------------------------------------------------------
 // Arena node size
 //
-// Format: single u32 -- ArenaNode size for this ROM version (0x10 retail, 0x30 debug)
+// Format: single uint32_t -- ArenaNode size for this ROM version (0x10 retail, 0x30 debug)
 // --------------------------------------------------------------------------------------------------------------------
 
-static u32 sArenaNodeSize = 0x30; // Default to debug (safe fallback -- over-estimates node overhead)
+static uint32_t sArenaNodeSize = 0x30; // Default to debug (safe fallback -- over-estimates node overhead)
 static bool sIsArenaNodeSizeLoaded = false;
 
 static void LoadArenaNodeSize() {
@@ -269,7 +269,7 @@ static void LoadArenaNodeSize() {
     SPDLOG_INFO("[N64SizeData] Arena node size: 0x{:X}.", sArenaNodeSize);
 }
 
-extern "C" u32 N64SizeData_GetArenaNodeSize() {
+extern "C" uint32_t N64SizeData_GetArenaNodeSize() {
     LoadArenaNodeSize();
     return sArenaNodeSize;
 }

@@ -6,7 +6,7 @@
 
 // Declared in z_bgcheck.c but not exposed via header.
 s32 BgCheck_IsSpotScene(PlayState* play);
-s32 BgCheck_TryGetCustomMemsize(s32 sceneId, u32* memSize);
+s32 BgCheck_TryGetCustomMemsize(s32 sceneId, uint32_t* memSize);
 
 // --------------------------------------------------------------------------------------------------------------------
 // N64 THA budget
@@ -22,9 +22,11 @@ s32 BgCheck_TryGetCustomMemsize(s32 sceneId, u32* memSize);
 // --------------------------------------------------------------------------------------------------------------------
 
 #define N64_SIZEOF_COLLISION_CONTEXT 0x1464 // CollisionContext size = 0x1464 (from decomp header comment)
-#define N64_SIZEOF_GFX 8 // sizeof(Gfx) on N64: Two u32 words -- SoH is 16
-#define N64_SIZEOF_VTX 0x10 // sizeof(Vtx) on N64: Same on both platforms
-#define N64_SIZEOF_EFFECT_SS 0x60 // sizeof(EffectSs) on N64: No pointer members, constant across all N64 versions
+#define N64_SIZEOF_GFX               8      // sizeof(Gfx) on N64: Two uint32_t words -- SoH is 16
+#define N64_SIZEOF_VTX               0x10   // sizeof(Vtx) on N64: Same on both platforms
+#define N64_SIZEOF_EFFECT_SS         0x60   // sizeof(EffectSs) on N64: No pointer members, constant across all N64 versions
+
+
 
 // Struct sizes that are identical on N64 and SoH (no pointer members):
 //  sizeof(MtxF)            = 0x40
@@ -39,11 +41,11 @@ s32 BgCheck_TryGetCustomMemsize(s32 sceneId, u32* memSize);
 // Fixed THA consumers (same value on every N64 scene)
 // --------------------------------------------------------------------------------------------------------------------
 
-#define N64_MATRIX_STACK_SIZE (20 * 0x40) // sys_matrix.c: 20 * sizeof(MtxF)
-#define N64_TEXT_BOX_SIZE 0x2200 // Message_Init: Constant
-#define N64_DO_ACTION_SIZE 0x480 // z_construct.c: 3 * DO_ACTION_TEX_SIZE (48x16 IA4 = 0x180 each)
-#define N64_ICON_ITEM_SIZE (0x1000 * 4) // z_construct.c: 4 * ITEM_ICON_SIZE (32x32 RGBA32)
-#define N64_MAP_SEGMENT_SIZE 0x1000 // z_map_exp.c: DMA target buffer for minimap textures
+#define N64_MATRIX_STACK_SIZE (20 * 0x40)   // sys_matrix.c: 20 * sizeof(MtxF)
+#define N64_TEXT_BOX_SIZE      0x2200       // Message_Init: Constant
+#define N64_DO_ACTION_SIZE     0x480        // z_construct.c: 3 * DO_ACTION_TEX_SIZE (48x16 IA4 = 0x180 each)
+#define N64_ICON_ITEM_SIZE    (0x1000 * 4)  // z_construct.c: 4 * ITEM_ICON_SIZE (32x32 RGBA32)
+#define N64_MAP_SEGMENT_SIZE   0x1000       // z_map_exp.c: DMA target buffer for minimap textures
 
 // --------------------------------------------------------------------------------------------------------------------
 // ovl_map_mark_data: N64-unique THA consumer for dungeon map marks
@@ -56,7 +58,7 @@ s32 BgCheck_TryGetCustomMemsize(s32 sceneId, u32* memSize);
 
 #define N64_MAP_MARK_DATA_VRAM_SIZE 0x6B60
 
-static u32 GetMapMarkDataOverlaySize(PlayState* play) {
+static uint32_t GetMapMarkDataOverlaySize(PlayState* play) {
     // Mirrors the condition in z_map_exp.c Map_Init: the dungeon case block's inner guard.
     //  Main dungeons: SCENE_DEKU_TREE (0x00) through SCENE_ICE_CAVERN (0x09)
     //  Boss rooms:    SCENE_DEKU_TREE_BOSS (0x11) through SCENE_SHADOW_TEMPLE_BOSS (0x18)
@@ -121,7 +123,7 @@ static const SkyboxDmaEntry sSkyboxDmaTable[] = {
     [SKYBOX_HOUSE_ALLEY] = { "vr_KR3VR_static", "vr_KR3VR_pal_static" },
 };
 
-static u32 GetN64SkyboxTextureSize(s16 skyboxId) {
+static uint32_t GetN64SkyboxTextureSize(int16_t skyboxId) {
     if (skyboxId == SKYBOX_NONE) {
         return 0;
     }
@@ -134,18 +136,18 @@ static u32 GetN64SkyboxTextureSize(s16 skyboxId) {
 
     // CUTSCENE_MAP loads two different texture files + 2 palette copies.
     if (skyboxId == SKYBOX_CUTSCENE_MAP) {
-        const u32 tex0 = N64SizeData_GetDmaFileSize("vr_holy0_static");
-        const u32 tex1 = N64SizeData_GetDmaFileSize("vr_holy1_static");
-        const u32 pal = N64SizeData_GetDmaFileSize("vr_holy0_pal_static");
+        const uint32_t tex0 = N64SizeData_GetDmaFileSize("vr_holy0_static");
+        const uint32_t tex1 = N64SizeData_GetDmaFileSize("vr_holy1_static");
+        const uint32_t pal = N64SizeData_GetDmaFileSize("vr_holy0_pal_static");
         return tex0 + tex1 + pal * 2;
     }
 
     // Indoor skyboxes: 1 texture + 1 palette, looked up from the DMA blob.
-    if (skyboxId >= 0 && skyboxId < (s16)ARRAY_COUNT(sSkyboxDmaTable)) {
+    if (skyboxId >= 0 && skyboxId < (int16_t)ARRAY_COUNT(sSkyboxDmaTable)) {
         const SkyboxDmaEntry* entry = &sSkyboxDmaTable[skyboxId];
         if (entry->texName != NULL) {
-            const u32 tex = N64SizeData_GetDmaFileSize(entry->texName);
-            const u32 pal = N64SizeData_GetDmaFileSize(entry->palName);
+            const uint32_t tex = N64SizeData_GetDmaFileSize(entry->texName);
+            const uint32_t pal = N64SizeData_GetDmaFileSize(entry->palName);
             return tex + pal;
         }
     }
@@ -163,7 +165,7 @@ static u32 GetN64SkyboxTextureSize(s16 skyboxId) {
 // Gfx is 8 bytes on N64, Vtx is 0x10.
 // --------------------------------------------------------------------------------------------------------------------
 
-static void GetSkyboxDlistAndVtxSize(s16 skyboxId, u32* outDlistSize, u32* outVtxSize) {
+static void GetSkyboxDlistAndVtxSize(int16_t skyboxId, uint32_t* outDlistSize, uint32_t* outVtxSize) {
     if (skyboxId == SKYBOX_NONE) {
         *outDlistSize = 0;
         *outVtxSize = 0;
@@ -198,8 +200,8 @@ static void GetSkyboxDlistAndVtxSize(s16 skyboxId, u32* outDlistSize, u32* outVt
 // bgcheck_memSize and sizeof(CollisionContext).
 // --------------------------------------------------------------------------------------------------------------------
 
-static u32 GetBgCheckMemSize(PlayState* play) {
-    const s16 sceneNum = play->sceneNum;
+static uint32_t GetBgCheckMemSize(PlayState* play) {
+    const int16_t sceneNum = play->sceneNum;
 
     if (YREG(15) == 0x10 || YREG(15) == 0x20 || YREG(15) == 0x30 || YREG(15) == 0x40) {
         return sceneNum == SCENE_STABLE ? 0x3520 : 0x4E20;
@@ -209,7 +211,7 @@ static u32 GetBgCheckMemSize(PlayState* play) {
         return 0xF000;
     }
 
-    u32 customMemSize = 0;
+    uint32_t customMemSize = 0;
     if (BgCheck_TryGetCustomMemsize(sceneNum, &customMemSize)) {
         return customMemSize;
     }
@@ -217,7 +219,7 @@ static u32 GetBgCheckMemSize(PlayState* play) {
     return 0x1CC00;
 }
 
-static u32 GetBgCheckThaTotal(PlayState* play) {
+static uint32_t GetBgCheckThaTotal(PlayState* play) {
     return GetBgCheckMemSize(play) - N64_SIZEOF_COLLISION_CONTEXT;
 }
 
@@ -225,8 +227,8 @@ static u32 GetBgCheckThaTotal(PlayState* play) {
 // Object bank size (mirrors z_scene.c Object_InitBlank)
 // --------------------------------------------------------------------------------------------------------------------
 
-static u32 GetObjectBankSize(PlayState* play) {
-    const s16 sceneNum = play->sceneNum;
+static uint32_t GetObjectBankSize(PlayState* play) {
+    const int16_t sceneNum = play->sceneNum;
     if (sceneNum == SCENE_GANON_BOSS && gSaveContext.sceneSetupIndex == 4) {
         return 1177600;
     }
@@ -251,12 +253,12 @@ static const char* sElfMsgDmaNames[] = {
     "elf_message_ydan",
 };
 
-static u32 GetElfMessageSize(PlayState* play) {
+static uint32_t GetElfMessageSize(PlayState* play) {
     if (play->cUpElfMsgs == NULL) {
         return 0;
     }
 
-    const u8 elfMsgNum = N64Mem_GetElfMsgNum();
+    const uint8_t elfMsgNum = N64Mem_GetElfMsgNum();
     if (elfMsgNum == 0 || elfMsgNum > ARRAY_COUNT(sElfMsgDmaNames)) {
         LUSLOG_WARN("[ArenaSizing] elfMsg: cUpElfMsgs non-NULL but elfMsgNum=%d out of range", elfMsgNum);
         return 0;
@@ -283,8 +285,8 @@ static uintptr_t GetMaxRoomSize(PlayState* play) {
         const TransitionActorEntry* transitionActor = &play->transiActorCtx.list[0];
 
         for (size_t j = 0; j < play->transiActorCtx.numActors; ++j) {
-            const s8 frontRoom = transitionActor->sides[0].room;
-            const s8 backRoom = transitionActor->sides[1].room;
+            const int8_t frontRoom = transitionActor->sides[0].room;
+            const int8_t backRoom = transitionActor->sides[1].room;
             const uintptr_t frontSize = frontRoom < 0
                                             ? 0
                                             : play->roomList[frontRoom].vromEnd - play->roomList[frontRoom].vromStart;
@@ -308,21 +310,21 @@ static uintptr_t GetMaxRoomSize(PlayState* play) {
 // Main computation
 // --------------------------------------------------------------------------------------------------------------------
 
-u32 ArenaSizing_ComputeN64ArenaSize(PlayState* play) {
+uint32_t ArenaSizing_ComputeN64ArenaSize(PlayState* play) {
     // Each THA consumer is allocated via GAME_STATE_ALLOC -> THA_AllocTailAlign16, which consumes ALIGN16(size) bytes.
     // We must align each consumer individually before summing; aligning the sum would under-count when individual
     // sizes are not 16-byte aligned (common for DMA file sizes).  BgCheck is the exception -- its internal allocations
     // use mixed alignment, but the tblMax computation absorbs the internal waste, so the simplified total
     // (memSize - sizeof(CollisionContext)) is used as-is.
 
-    u32 total = 0;
+    uint32_t total = 0;
 
     // Kaleido overlay buffer: max(ovl_kaleido_scope, ovl_player_actor) VRAM span, from OTR blob.
-    const u32 kaleidoVramSize = N64SizeData_GetKaleidoVramSize();
+    const uint32_t kaleidoVramSize = N64SizeData_GetKaleidoVramSize();
     total += ALIGN16(kaleidoVramSize);
 
     // parameter_static: DMA file size, version-specific but available in the OTR blob.
-    const u32 parameterStaticSize = N64SizeData_GetDmaFileSize("parameter_static");
+    const uint32_t parameterStaticSize = N64SizeData_GetDmaFileSize("parameter_static");
     total += ALIGN16(parameterStaticSize);
 
     // Fixed consumers
@@ -334,21 +336,21 @@ u32 ArenaSizing_ComputeN64ArenaSize(PlayState* play) {
         total += ALIGN16(N64_ICON_ITEM_SIZE);
         total += ALIGN16(N64_MAP_SEGMENT_SIZE);
 
-        const u32 fixed = total;
+        const uint32_t fixed = total;
         LUSLOG_INFO("[ArenaSizing] fixed=0x%X (kaleido=0x%X, param=0x%X)", fixed, kaleidoVramSize,
                     parameterStaticSize);
     }
 
     // Scene-dependent consumers
     {
-        const u32 objBank = GetObjectBankSize(play);
-        const u32 sceneFile = N64SizeData_GetDmaFileSize(play->loadedScene->sceneFile.fileName);
+        const uint32_t objBank = GetObjectBankSize(play);
+        const uint32_t sceneFile = N64SizeData_GetDmaFileSize(play->loadedScene->sceneFile.fileName);
         const uintptr_t roomBuf = GetMaxRoomSize(play);
         total += ALIGN16(objBank);
         total += ALIGN16(sceneFile);
         total += ALIGN16(roomBuf);
-        LUSLOG_INFO("[ArenaSizing] objBank=0x%X, sceneFile=0x%X, roomBuf=0x%x", (u32)objBank, (u32)sceneFile,
-                    (u32)roomBuf);
+        LUSLOG_INFO("[ArenaSizing] objBank=0x%X, sceneFile=0x%X, roomBuf=0x%x", (uint32_t)objBank, (uint32_t)sceneFile,
+                    (uint32_t)roomBuf);
     }
 
     // ----------------------------------------------------------------------------------------------------------------
@@ -360,9 +362,9 @@ u32 ArenaSizing_ComputeN64ArenaSize(PlayState* play) {
     // vtx are separate allocations.
     // ----------------------------------------------------------------------------------------------------------------
     {
-        u32 dListSize = 0;
-        u32 vtxSize = 0;
-        u32 texSize = 0;
+        uint32_t dListSize = 0;
+        uint32_t vtxSize = 0;
+        uint32_t texSize = 0;
         GetSkyboxDlistAndVtxSize(play->skyboxId, &dListSize, &vtxSize);
         texSize = GetN64SkyboxTextureSize(play->skyboxId);
         total += ALIGN16(dListSize);
@@ -380,26 +382,26 @@ u32 ArenaSizing_ComputeN64ArenaSize(PlayState* play) {
     // ALIGN16 needed here.
     // ----------------------------------------------------------------------------------------------------------------
     {
-        const u32 bgCheck = GetBgCheckThaTotal(play);
+        const uint32_t bgCheck = GetBgCheckThaTotal(play);
         total += bgCheck;
         LUSLOG_INFO("[ArenaSizing] bgCheck=0x%X (memSize=0x%X)", bgCheck, GetBgCheckMemSize(play));
     }
 
     // Elf message
     {
-        const u32 elfMsg = GetElfMessageSize(play);
+        const uint32_t elfMsg = GetElfMessageSize(play);
         total += ALIGN16(elfMsg);
         LUSLOG_INFO("[ArenaSizing] elfMsg=0x%X", elfMsg);
     }
 
     // Map mark data overlay (dungeons only)
     {
-        const u32 mapMarkData = GetMapMarkDataOverlaySize(play);
+        const uint32_t mapMarkData = GetMapMarkDataOverlaySize(play);
         total += ALIGN16(mapMarkData);
     }
 
     LUSLOG_INFO("[ArenaSizing] total=0x%X, arena=0x%X (budget=0x%X)", total, N64_THA_BUDGET - total,
-                (u32)N64_THA_BUDGET);
+                (uint32_t)N64_THA_BUDGET);
 
     if (total >= N64_THA_BUDGET) {
         return 0;

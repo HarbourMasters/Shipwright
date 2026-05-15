@@ -1,9 +1,11 @@
 #pragma once
 
-#include <libultraship/libultraship.h>
+#include <stdint.h>
 
 #ifdef __cplusplus
 extern "C" {
+
+
 #endif
 
 // Sentinel value for null offsets (no valid node can live at 0xFFFFFFFF in a buffer that's only ~245KB).
@@ -16,40 +18,41 @@ extern "C" {
 #define SHADOW_NODE_SIZE_DEBUG  0x30
 
 typedef struct ShadowArena {
-    u8* buffer;
-    u32 head; // Offset to first node
-    u32 bufferSize;
-    u32 nodeSize; // Per-version ArenaNode size (set at init from OTR data)
+    uint8_t* buffer;
+    uint32_t head;          // Offset to first node
+    uint32_t bufferSize;
+    uint32_t nodeSize;      // Per-version ArenaNode size (set at init from OTR data)
 } ShadowArena;
 
 // Allocate backing buffer and initialize with a single free node.  nodeSize is the N64 ArenaNode size for this ROM
 // version (0x10 for retail, 0x30 for debug).
-void ShadowArena_Init(ShadowArena* arena, u32 size, u32 nodeSize);
+void ShadowArena_Init(ShadowArena* arena, uint32_t size, uint32_t nodeSize);
 
 // Free the backing buffer and zero the struct.
 void ShadowArena_Destroy(ShadowArena* arena);
 
 // First-fit forward allocation. Returns offset to data area, or SHADOW_NULL on failure. Matches N64 __osMalloc.
-u32 ShadowArena_Malloc(ShadowArena* arena, u32 size);
+uint32_t ShadowArena_Malloc(ShadowArena* arena, uint32_t size);
 
 // First-fit backward allocation. Returns offset to data area, or SHADOW_NULL on failure. Matches N64 __osMallocR.
-u32 ShadowArena_MallocR(ShadowArena* arena, u32 size);
+uint32_t ShadowArena_MallocR(ShadowArena* arena, uint32_t size);
 
 // Free a shadow allocation by data offset. Coalesces adjacent free blocks. Matches N64 __osFree.
-void ShadowArena_Free(ShadowArena* arena, u32 dataOffset);
+void ShadowArena_Free(ShadowArena* arena, uint32_t dataOffset);
 
 // Query arena statistics.
-void ShadowArena_GetSizes(ShadowArena* arena, u32* outMaxFree, u32* outFree, u32* outAlloc);
+void ShadowArena_GetSizes(ShadowArena* arena, uint32_t* outMaxFree, uint32_t* outFree, uint32_t* outAlloc);
 
 // Get the head node offset for external traversal (e.g., heap viewer).
-u32 ShadowArena_GetHead(ShadowArena* arena);
+uint32_t ShadowArena_GetHead(ShadowArena* arena);
 
 // Query a node's info by offset.  Returns 1 on success, 0 if invalid.  Used by the heap viewer to walk the shadow
 // without exposing internals.
-s32 ShadowArena_GetNodeInfo(ShadowArena* arena, u32 offset, s32* outIsFree, u32* outSize, u32* outNext);
+int32_t ShadowArena_GetNodeInfo(ShadowArena* arena, uint32_t offset, int32_t* outIsFree, uint32_t* outSize,
+                                uint32_t* outNext);
 
 // Get the total buffer size.
-u32 ShadowArena_GetBufferSize(ShadowArena* arena);
+uint32_t ShadowArena_GetBufferSize(ShadowArena* arena);
 
 #ifdef __cplusplus
 }
