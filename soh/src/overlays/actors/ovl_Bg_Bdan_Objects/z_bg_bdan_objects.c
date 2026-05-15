@@ -439,6 +439,17 @@ void BgBdanObjects_FallToLowerPos(BgBdanObjects* this, PlayState* play) {
 void BgBdanObjects_Update(Actor* thisx, PlayState* play) {
     BgBdanObjects* this = (BgBdanObjects*)thisx;
 
+    // https://github.com/HarbourMasters/Shipwright/issues/4339
+    // Only BgBdanObjects_OctoPlatform_BattleInProgress checks Flags_GetClear, so if the platform is in any other state
+    // when Big Octo dies, the clear flag goes permanently unread.  This fallback catches that case: the clear flag is
+    // only ever set by Big Octo's death, and the switch flag is only set once the platform has already begun its
+    // descent.
+    if (thisx->params == 0 && Flags_GetClear(play, thisx->room) && !Flags_GetSwitch(play, this->switchFlag)) {
+        Flags_SetSwitch(play, this->switchFlag);
+        this->dyna.actor.home.rot.y = (s16)(this->dyna.actor.shape.rot.y + 0x2000) & 0xC000;
+        this->actionFunc = BgBdanObjects_SinkToFloorHeight;
+    }
+
     Actor_SetFocus(thisx, 50.0f);
     this->actionFunc(this, play);
 }
