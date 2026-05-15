@@ -2,10 +2,6 @@
 
 #include <libultraship/libultraship.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 // --------------------------------------------------------------------------------------------------------------------
 // N64 size data loaded from the OTR archive.
 //

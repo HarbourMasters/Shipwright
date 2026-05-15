@@ -21,7 +21,7 @@ extern "C" {
 // (should not happen on valid scenes).
 // --------------------------------------------------------------------------------------------------------------------
 
-u32 ArenaSizing_ComputeN64ArenaSize(PlayState * play);
+u32 ArenaSizing_ComputeN64ArenaSize(PlayState* play);
 
 #ifdef __cplusplus
 }
