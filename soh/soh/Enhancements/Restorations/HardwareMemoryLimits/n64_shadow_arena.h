@@ -6,6 +6,7 @@
 extern "C" {
 
 
+
 #endif
 
 // Sentinel value for null offsets (no valid node can live at 0xFFFFFFFF in a buffer that's only ~245KB).
@@ -19,9 +20,9 @@ extern "C" {
 
 typedef struct ShadowArena {
     uint8_t* buffer;
-    uint32_t head;          // Offset to first node
+    uint32_t head; // Offset to first node
     uint32_t bufferSize;
-    uint32_t nodeSize;      // Per-version ArenaNode size (set at init from OTR data)
+    uint32_t nodeSize; // Per-version ArenaNode size (set at init from OTR data)
 } ShadowArena;
 
 // Allocate backing buffer and initialize with a single free node.  nodeSize is the N64 ArenaNode size for this ROM

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <libultraship/libultraship.h>
+#include <stdint.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -20,12 +20,12 @@ extern "C" {
 // Each table is loaded lazily on first query and cached for the lifetime of the process.
 // --------------------------------------------------------------------------------------------------------------------
 
-u32 N64SizeData_GetDmaFileSize(const char* name);
-u32 N64SizeData_GetActorOverlaySize(u16 actorId);
-u32 N64SizeData_GetEffectOverlaySize(u16 effectType);
-u32 N64SizeData_GetActorInstanceSize(u16 actorId);
-u32 N64SizeData_GetKaleidoVramSize(void);
-u32 N64SizeData_GetArenaNodeSize(void);
+uint32_t N64SizeData_GetDmaFileSize(const char* name);
+uint32_t N64SizeData_GetActorOverlaySize(uint16_t actorId);
+uint32_t N64SizeData_GetEffectOverlaySize(uint16_t effectType);
+uint32_t N64SizeData_GetActorInstanceSize(uint16_t actorId);
+uint32_t N64SizeData_GetKaleidoVramSize(void);
+uint32_t N64SizeData_GetArenaNodeSize(void);
 
 #ifdef __cplusplus
 }

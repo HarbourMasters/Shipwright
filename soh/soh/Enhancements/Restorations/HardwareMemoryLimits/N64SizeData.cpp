@@ -1,7 +1,9 @@
 #include "N64SizeData.hpp"
 
+#include <libultraship/libultraship.h>
+
 // --------------------------------------------------------------------------------------------------------------------
-// DMA file sizes (misc/dma_sizes)
+// DMA file sizes (misc/n64_memory/dma_sizes)
 //
 // Format: uint32_t entryCount, then per entry: uint32_t vromSize, length-prefixed string name
 // --------------------------------------------------------------------------------------------------------------------
@@ -38,7 +40,7 @@ static void LoadDmaFileSizes() {
 }
 
 // --------------------------------------------------------------------------------------------------------------------
-// Actor overlay VRAM sizes (misc/actor_overlay_sizes)
+// Actor overlay VRAM sizes (misc/n64_memory/actor_overlay_sizes)
 //
 // Format: uint32_t entryCount, then entryCount consecutive uint32_t values indexed by actor ID
 // --------------------------------------------------------------------------------------------------------------------
@@ -76,7 +78,7 @@ static void LoadActorOverlaySizes() {
 }
 
 // --------------------------------------------------------------------------------------------------------------------
-// Effect overlay VRAM sizes (misc/effect_overlay_sizes)
+// Effect overlay VRAM sizes (misc/n64_memory/effect_overlay_sizes)
 //
 // Format: uint32_t entryCount, then entryCount consecutive uint32_t values indexed by effect type
 // --------------------------------------------------------------------------------------------------------------------
@@ -114,7 +116,7 @@ static void LoadEffectOverlaySizes() {
 }
 
 // --------------------------------------------------------------------------------------------------------------------
-// Actor instance sizes (misc/actor_instance_sizes)
+// Actor instance sizes (misc/n64_memory/actor_instance_sizes)
 //
 // Format: uint32_t entryCount, then entryCount consecutive uint32_t values indexed by actor ID
 // Each value is the N64 sizeof the actor's instance struct, read from ActorProfile.instanceSize.
@@ -198,7 +200,7 @@ extern "C" uint32_t N64SizeData_GetActorInstanceSize(uint16_t actorId) {
 }
 
 // --------------------------------------------------------------------------------------------------------------------
-// Kaleido overlay max VRAM size (misc/kaleido_vram_size)
+// Kaleido overlay max VRAM size (misc/n64_memory/kaleido_vram_size)
 //
 // Format: single uint32_t -- max(ovl_kaleido_scope VRAM, ovl_player_actor VRAM)
 // --------------------------------------------------------------------------------------------------------------------
