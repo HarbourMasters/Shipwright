@@ -56,6 +56,10 @@ void N64Mem_LogState(const char* context);
 void N64Mem_SetOriginalActorId(int16_t actorId);
 void N64Mem_ClearOriginalActorId(void);
 
+// Returns true if the actor at realPtr is a randomized replacement (i.e., has an original-ID entry), false otherwise.
+// Used by Actor_UpdateAll to suppress shadow allocations for children spawned during a replacement's update.
+int32_t N64Mem_IsRandomizedActor(void* realPtr);
+
 // Save/restore for the randomized-init skip flag.  Actor_Spawn saves the current value at entry and restores it
 // after Actor_Init returns, so child spawns during a randomized actor's init don't clobber the parent's flag.
 int32_t N64Mem_GetRandomizedInit(void);

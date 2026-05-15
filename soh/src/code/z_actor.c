@@ -2711,7 +2711,26 @@ void Actor_UpdateAll(PlayState* play, ActorContext* actorCtx) {
                         actor->colorFilterTimer--;
                     }
                     if (GameInteractor_ShouldActorUpdate(actor)) {
+                        // #region SOH [Enhancement] - Hardware Memory Limits
+                        //
+                        // On N64, the original actor would be running here and its children would be different -- we
+                        // already charged the original's overlay and instance sizes, so the replacement children are
+                        // excess.
+                        //
+                        // If the actor is a randomized replacement, suppress shadow allocations for any children it
+                        // spawns during its update (Actor_Spawn, Actor_SpawnAsChild, subsidiaries).
+                        const s32 n64MemSavedUpdate = N64Mem_GetRandomizedInit();
+                        if (N64Mem_IsRandomizedActor(actor)) {
+                            N64Mem_SetRandomizedInit(1);
+                        }
+                        // #endregion
+
                         actor->update(actor, play);
+
+                        // #region SOH [Enhancement] - Hardware Memory Limits
+                        N64Mem_SetRandomizedInit(n64MemSavedUpdate);
+                        // #endregion
+
                         GameInteractor_ExecuteOnActorUpdate(actor);
                     }
                     func_8003F8EC(play, &play->colCtx.dyna, actor);
