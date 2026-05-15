@@ -70,8 +70,8 @@ void N64Mem_BenchmarkTransition(PlayState* play);
 // On N64, overlays load into ZeldaArena from ROM on first spawn and free when no instances remain. SoH compiles them
 // into the binary, so they never touch ZeldaArena.  The shadow restores this pressure.
 //
-// Call AllocOverlay when numLoaded transitions 0 -> 1.
-// Call FreeOverlay when numLoaded transitions 1 -> 0.
+// Call AllocOverlay when numLoaded transitions 0 -> true.
+// Call FreeOverlay when numLoaded transitions 1 -> false.
 // --------------------------------------------------------------------------------------------------------------------
 
 int32_t N64Mem_AllocOverlay(int16_t actorId, uint16_t allocType);
@@ -81,7 +81,7 @@ void N64Mem_FreeOverlay(int16_t actorId, uint16_t allocType);
 // Actor instances: Paired with real ZeldaArena allocations.
 //
 // Call AllocInstance after the real allocation succeeds.  If the shadow cannot satisfy the N64-sized allocation,
-// returns 0 and the caller should treat the spawn as failed.
+// returns false and the caller should treat the spawn as failed.
 //
 // Call FreeInstance when the actor is deleted.
 // --------------------------------------------------------------------------------------------------------------------
@@ -110,8 +110,8 @@ int32_t N64Mem_AllocEffectOverlay(int32_t type);
 // --------------------------------------------------------------------------------------------------------------------
 // Heap viewer metadata
 //
-// Query block identity from the shadow arena.  Returns 1 if metadata exists for the given data offset, 0 if not.
-// Block type constants identify the allocation category; actorId is the original (pre-randomizer) actor ID for
+// Query block identity from the shadow arena.  Returns true if metadata exists for the given data offset, false if
+// not.  Block type constants identify the allocation category; actorId is the original (pre-randomizer) actor ID for
 // instance/overlay blocks, or -1 for subsidiary/effect/absolute blocks.
 // --------------------------------------------------------------------------------------------------------------------
 

@@ -6,7 +6,6 @@
 extern "C" {
 
 
-
 #endif
 
 // Sentinel value for null offsets (no valid node can live at 0xFFFFFFFF in a buffer that's only ~245KB).
@@ -47,8 +46,8 @@ void ShadowArena_GetSizes(ShadowArena* arena, uint32_t* outMaxFree, uint32_t* ou
 // Get the head node offset for external traversal (e.g., heap viewer).
 uint32_t ShadowArena_GetHead(ShadowArena* arena);
 
-// Query a node's info by offset.  Returns 1 on success, 0 if invalid.  Used by the heap viewer to walk the shadow
-// without exposing internals.
+// Query a node's info by offset.  Returns true on success, false if invalid.  Used by the heap viewer to walk the
+// shadow without exposing internals.
 int32_t ShadowArena_GetNodeInfo(ShadowArena* arena, uint32_t offset, int32_t* outIsFree, uint32_t* outSize,
                                 uint32_t* outNext);
 

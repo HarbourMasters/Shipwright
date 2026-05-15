@@ -2,7 +2,10 @@
 #include "N64SizeData.hpp"
 #include "soh/Enhancements/Restorations/HardwareMemoryLimits/HardwareMemoryLimits.hpp"
 
-#include "global.h"
+#include <libultraship/log/luslog.h>
+
+#include "macros.h"
+#include "variables.h"
 
 // Declared in z_bgcheck.c but not exposed via header.
 s32 BgCheck_IsSpotScene(PlayState* play);

@@ -1,6 +1,6 @@
 #include <libultraship/bridge/consolevariablebridge.h>
 
-#include <spdlog/fmt/fmt.h>
+#include <spdlog/logger.h>
 #include <string>
 
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
@@ -12,7 +12,6 @@ extern "C" {
 #include "N64SizeData.hpp"
 #include "n64_shadow_arena.h"
 #include "n64_arena_sizing.h"
-#include "global.h"
 }
 
 #define CVAR_NAME CVAR_ENHANCEMENT("HardwareMemoryLimits")
@@ -23,8 +22,8 @@ extern "C" {
 // State
 // --------------------------------------------------------------------------------------------------------------------
 
-static bool sIsActive = false;
-static ShadowArena sShadow;
+static int32_t sIsActive = 0;
+static ShadowArena sShadow = {};
 static uint32_t sSohThaRemainder = 0;
 static uint8_t sElfMsgNum = 0;
 
@@ -61,7 +60,7 @@ static int16_t sOriginalActorId = -1;
 // Set when AllocInstance consumes a non-negative sOriginalActorId, cleared after Actor_Init returns.  While set, ALL
 // shadow allocations (overlay, instance, subsidiary) from child actors spawned during the replacement actor's init are
 // skipped -- on N64 these children don't exist because the original actor never spawned them.
-static int32_t sInsideRandomizedInit = 0;
+static int32_t sIsInsideRandomizedInit = 0;
 
 // Returns the actor ID to use for size lookups.  If an original actor ID override is set (enemy randomizer active),
 // returns that; otherwise returns the passed actorId unchanged.
@@ -163,7 +162,7 @@ void N64Mem_Reset(PlayState* play) {
     sBlockMetaMap.clear();
     sAbsoluteSpaceShadow = SHADOW_NULL;
     sOriginalActorId = -1;
-    sInsideRandomizedInit = 0;
+    sIsInsideRandomizedInit = 0;
 
     for (uint32_t& sOverlayShadow : sOverlayShadows) {
         sOverlayShadow = SHADOW_NULL;
@@ -287,11 +286,11 @@ void N64Mem_ClearOriginalActorId() {
 }
 
 int32_t N64Mem_GetRandomizedInit() {
-    return sInsideRandomizedInit;
+    return sIsInsideRandomizedInit;
 }
 
 void N64Mem_SetRandomizedInit(int32_t value) {
-    sInsideRandomizedInit = value;
+    sIsInsideRandomizedInit = value;
 }
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -304,7 +303,7 @@ int32_t N64Mem_AllocOverlay(int16_t actorId, uint16_t allocType) {
     }
 
     // Child actors spawned during a randomized enemy's init don't exist on N64 -- skip shadow tracking.
-    if (sInsideRandomizedInit) {
+    if (sIsInsideRandomizedInit) {
         return 1;
     }
 
@@ -398,7 +397,7 @@ int32_t N64Mem_AllocInstance(int16_t actorId, int16_t params, void* realPtr) {
     }
 
     // Child actors spawned during a randomized enemy's init don't exist on N64 -- skip shadow tracking.
-    if (sInsideRandomizedInit) {
+    if (sIsInsideRandomizedInit) {
         return 1;
     }
 
@@ -406,10 +405,10 @@ int32_t N64Mem_AllocInstance(int16_t actorId, int16_t params, void* realPtr) {
 
     // Consume the override and enter the randomized-init phase.  Subsidiaries allocated during Actor_Init will be
     // skipped (they belong to the replacement, not the original).  Child Actor_Spawn calls during init will also
-    // be skipped via the sInsideRandomizedInit check above.
+    // be skipped via the sIsInsideRandomizedInit check above.
     if (sOriginalActorId >= 0) {
         sOriginalActorId = -1;
-        sInsideRandomizedInit = 1;
+        sIsInsideRandomizedInit = 1;
     }
 
     if (actorId < 0 || actorId >= ACTOR_ID_MAX) {
@@ -482,7 +481,7 @@ int32_t N64Mem_AllocSubsidiary(void* realPtr, uint32_t n64Size) {
     // When inside a randomized enemy's init, the replacement actor's subsidiaries (colliders, skeleton tables, skin
     // buffers) have different counts than the original's.  Rather than charge the wrong sizes, skip subsidiary
     // tracking entirely -- instance and overlay sizes from the original are already correct and dominate heap pressure.
-    if (sInsideRandomizedInit) {
+    if (sIsInsideRandomizedInit) {
         return 1;
     }
 

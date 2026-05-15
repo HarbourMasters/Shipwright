@@ -38,7 +38,7 @@ static ShadowNode* NodeAt(ShadowArena* arena, uint32_t offset) {
     return (ShadowNode*)(arena->buffer + offset);
 }
 
-static int32_t NodeIsValid(ShadowArena* arena, uint32_t offset) {
+static int32_t IsNodeValid(ShadowArena* arena, uint32_t offset) {
     if (offset == SHADOW_NULL) {
         return 0;
     }
@@ -52,7 +52,7 @@ static int32_t NodeIsValid(ShadowArena* arena, uint32_t offset) {
 
 static uint32_t NodeGetNext(ShadowArena* arena, uint32_t offset) {
     const ShadowNode* node = NodeAt(arena, offset);
-    if (node->next != SHADOW_NULL && NodeIsValid(arena, node->next)) {
+    if (node->next != SHADOW_NULL && IsNodeValid(arena, node->next)) {
         return node->next;
     }
 
@@ -61,7 +61,7 @@ static uint32_t NodeGetNext(ShadowArena* arena, uint32_t offset) {
 
 static uint32_t NodeGetPrev(ShadowArena* arena, uint32_t offset) {
     const ShadowNode* node = NodeAt(arena, offset);
-    if (node->prev != SHADOW_NULL && NodeIsValid(arena, node->prev)) {
+    if (node->prev != SHADOW_NULL && IsNodeValid(arena, node->prev)) {
         return node->prev;
     }
 
@@ -310,7 +310,7 @@ int32_t ShadowArena_GetNodeInfo(ShadowArena* arena, uint32_t offset, int32_t* ou
 
     *outIsFree = node->isFree;
     *outSize = node->size;
-    *outNext = node->next != SHADOW_NULL && NodeIsValid(arena, node->next) ? node->next : SHADOW_NULL;
+    *outNext = node->next != SHADOW_NULL && IsNodeValid(arena, node->next) ? node->next : SHADOW_NULL;
     return 1;
 }
 
