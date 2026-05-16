@@ -7,9 +7,11 @@
 #include <vector>
 #include <chrono>
 #include <optional>
+#include <imgui.h>
 
 #include "ResourceManagerHelpers.h"
 #include <fast/Fast3dWindow.h>
+#include <ship/Context.h>
 #include <ship/resource/File.h>
 #include <ship/window/Window.h>
 #include <soh/GameVersions.h>
@@ -32,6 +34,7 @@
 #include "Enhancements/randomizer/static_data.h"
 #include "soh/Enhancements/randomizer/settings.h"
 #include "Enhancements/gameplaystats.h"
+#include "soh/Enhancements/savestates.h"
 #include "frame_interpolation.h"
 #include "SohGui/SohMenu.h"
 #include "SohGui/SohGui.hpp"
@@ -123,6 +126,14 @@
 
 #include "soh/config/ConfigUpdaters.h"
 #include "soh/ShipInit.hpp"
+
+#ifdef __WIIU__
+const uint32_t defaultImGuiScale = 3;
+#else
+const uint32_t defaultImGuiScale = 1;
+#endif
+
+const float imguiScaleOptionToValue[4] = { 0.75f, 1.0f, 1.5f, 2.0f };
 
 bool SoH_HandleConfigDrop(char* filePath);
 
@@ -965,25 +976,6 @@ void OTRGlobals::ScaleImGui() {
     previousImGuiScaleIndex = imGuiScaleIndex;
 }
 
-ImFont* OTRGlobals::CreateDefaultFontWithSize(float size) {
-    auto mImGuiIo = &ImGui::GetIO();
-    ImFontConfig fontCfg = ImFontConfig();
-    fontCfg.OversampleH = fontCfg.OversampleV = 1;
-    fontCfg.PixelSnapH = true;
-    fontCfg.SizePixels = size;
-    ImFont* font = mImGuiIo->Fonts->AddFontDefault(&fontCfg);
-    // FontAwesome fonts need to have their sizes reduced by 2.0f/3.0f in order to align correctly
-    float iconFontSize = size * 2.0f / 3.0f;
-    static const ImWchar sIconsRanges[] = { ICON_MIN_FA, ICON_MAX_16_FA, 0 };
-    ImFontConfig iconsConfig;
-    iconsConfig.MergeMode = true;
-    iconsConfig.PixelSnapH = true;
-    iconsConfig.GlyphMinAdvanceX = iconFontSize;
-    mImGuiIo->Fonts->AddFontFromMemoryCompressedBase85TTF(fontawesome_compressed_data_base85, iconFontSize,
-                                                          &iconsConfig, sIconsRanges);
-    return font;
-}
-
 bool OTRGlobals::HasMasterQuest() {
     return hasMasterQuest;
 }
@@ -1006,7 +998,7 @@ uint32_t OTRGlobals::GetInterpolationFPS() {
 extern "C" void OTRMessage_Init();
 extern "C" void AudioMgr_CreateNextAudioBuffer(s16* samples, u32 num_samples);
 extern "C" void AudioPlayer_Play(const uint8_t* buf, uint32_t len);
-extern "C" int AudioPlayer_Buffered(void);
+int AudioPlayer_Buffered(void);
 extern "C" int AudioPlayer_GetDesiredBuffered(void);
 std::unordered_map<std::string, ExtensionEntry> ExtensionCache;
 
@@ -1050,8 +1042,7 @@ void OTRAudio_Thread() {
     }
 }
 
-// C->C++ Bridge
-extern "C" void OTRAudio_Init() {
+void OTRAudio_Init() {
     // Precache all our samples, sequences, etc...
     ResourceMgr_LoadDirectory("audio");
 
@@ -1061,6 +1052,7 @@ extern "C" void OTRAudio_Init() {
     }
 }
 
+// C->C++ Bridge
 extern "C" char** sequenceMap;
 extern "C" size_t sequenceMapSize;
 
@@ -1092,7 +1084,7 @@ extern "C" void OTRAudio_Exit() {
 #endif
 }
 
-extern "C" void VanillaItemTable_Init() {
+void VanillaItemTable_Init() {
     static GetItemEntry getItemTable[] = {
         // clang-format off
         GET_ITEM(ITEM_BOMBS_5,          OBJECT_GI_BOMB_1,        GID_BOMB,             0x32, 0x59, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_BOMBS_5),
@@ -1942,20 +1934,6 @@ std::filesystem::path GetSaveFile() {
     return GetSaveFile(pConf);
 }
 
-void OTRGlobals::CheckSaveFile(size_t sramSize) const {
-    const std::shared_ptr<Ship::Config> pConf = Instance->context->GetConfig();
-
-    std::filesystem::path savePath = GetSaveFile(pConf);
-    std::fstream saveFile(savePath, std::fstream::in | std::fstream::out | std::fstream::binary);
-    if (saveFile.fail()) {
-        saveFile.open(savePath, std::fstream::in | std::fstream::out | std::fstream::binary | std::fstream::app);
-        for (size_t i = 0; i < sramSize; i++) {
-            saveFile.write("\0", 1);
-        }
-    }
-    saveFile.close();
-}
-
 extern "C" void Ctx_ReadSaveFile(uintptr_t addr, void* dramAddr, size_t size) {
     SaveManager::ReadSaveFile(GetSaveFile(), addr, dramAddr, size);
 }
@@ -2080,14 +2058,6 @@ extern "C" void OTRGfxPrint(const char* str, void* printer, void (*printImpl)(vo
             }
         }
     }
-}
-
-extern "C" uint32_t OTRGetCurrentWidth() {
-    return OTRGlobals::Instance->context->GetWindow()->GetWidth();
-}
-
-extern "C" uint32_t OTRGetCurrentHeight() {
-    return OTRGlobals::Instance->context->GetWindow()->GetHeight();
 }
 
 Color_RGB8 GetColorForControllerLED() {
@@ -2261,7 +2231,7 @@ extern "C" int16_t OTRGetRectDimensionFromRightEdge(float v) {
     return ((int)ceilf(OTRGetDimensionFromRightEdge(v)));
 }
 
-extern "C" int AudioPlayer_Buffered(void) {
+int AudioPlayer_Buffered(void) {
     return AudioPlayerBuffered();
 }
 
@@ -2349,10 +2319,6 @@ extern "C" void Randomizer_ParseSpoiler(const char* fileLoc) {
     OTRGlobals::Instance->gRandoContext->ParseSpoiler(fileLoc);
 }
 
-extern "C" bool Randomizer_IsTrialRequired(s32 trialFlag) {
-    return OTRGlobals::Instance->gRandomizer->IsTrialRequired(trialFlag);
-}
-
 extern "C" u32 SpoilerFileExists(const char* spoilerFileName) {
     return OTRGlobals::Instance->gRandomizer->SpoilerFileExists(spoilerFileName);
 }
@@ -2381,15 +2347,6 @@ extern "C" GetItemEntry ItemTable_RetrieveEntry(s16 tableID, s16 getItemID) {
     return ItemTableManager::Instance->RetrieveItemEntry(tableID, getItemID);
 }
 
-extern "C" GetItemEntry Randomizer_GetItemFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogId) {
-    return OTRGlobals::Instance->gRandomizer->GetItemFromActor(actorId, sceneNum, actorParams, ogId);
-}
-
-extern "C" GetItemEntry Randomizer_GetItemFromActorWithoutObtainabilityCheck(s16 actorId, s16 sceneNum, s16 actorParams,
-                                                                             GetItemID ogId) {
-    return OTRGlobals::Instance->gRandomizer->GetItemFromActor(actorId, sceneNum, actorParams, ogId, false);
-}
-
 extern "C" GetItemEntry Randomizer_GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId) {
     return OTRGlobals::Instance->gRandomizer->GetItemFromKnownCheck(randomizerCheck, ogId);
 }
@@ -2397,10 +2354,6 @@ extern "C" GetItemEntry Randomizer_GetItemFromKnownCheck(RandomizerCheck randomi
 extern "C" GetItemEntry Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(RandomizerCheck randomizerCheck,
                                                                                   GetItemID ogId) {
     return OTRGlobals::Instance->gRandomizer->GetItemFromKnownCheck(randomizerCheck, ogId, false);
-}
-
-extern "C" RandomizerInf Randomizer_GetRandomizerInfFromCheck(RandomizerCheck randomizerCheck) {
-    return OTRGlobals::Instance->gRandomizer->GetRandomizerInfFromCheck(randomizerCheck);
 }
 
 extern "C" ItemObtainability Randomizer_GetItemObtainabilityFromRandomizerCheck(RandomizerCheck randomizerCheck) {
@@ -2417,10 +2370,6 @@ extern "C" GetItemEntry GetItemMystery() {
 
 extern "C" uint8_t Randomizer_IsSeedGenerated() {
     return OTRGlobals::Instance->gRandoContext->IsSeedGenerated() ? 1 : 0;
-}
-
-extern "C" void Randomizer_SetSeedGenerated(bool seedGenerated) {
-    OTRGlobals::Instance->gRandoContext->SetSeedGenerated(seedGenerated);
 }
 
 extern "C" uint8_t Randomizer_IsSpoilerLoaded() {
@@ -2559,10 +2508,6 @@ bool SoH_HandleConfigDrop(char* filePath) {
         return false;
     }
     return false;
-}
-
-extern "C" void CheckTracker_RecalculateAvailableChecks() {
-    CheckTracker::RecalculateAvailableChecks();
 }
 
 extern "C" uint32_t Ship_GetInterpolationFPS() {
