@@ -618,7 +618,7 @@ void func_809861C4(DemoIm* this, PlayState* play) {
 
     if (npcAction != NULL) {
         u32 action = npcAction->action;
-        u32 unk_274 = this->unk_274;
+        u32 unk_274 = this->cueId;
 
         if (action != unk_274) {
             switch (action) {
@@ -633,7 +633,7 @@ void func_809861C4(DemoIm* this, PlayState* play) {
                 default:
                     osSyncPrintf("Demo_Im_Ocarina_Check_DemoMode:そんな動作は無い!!!!!!!!\n");
             }
-            this->unk_274 = action;
+            this->cueId = action;
         }
     }
 }
@@ -651,7 +651,7 @@ void func_809862E0(DemoIm* this, PlayState* play) {
 
     if (npcAction != NULL) {
         u32 action = npcAction->action;
-        u32 unk_274 = this->unk_274;
+        u32 unk_274 = this->cueId;
 
         if (action != unk_274) {
             switch (action) {
@@ -673,7 +673,7 @@ void func_809862E0(DemoIm* this, PlayState* play) {
                 default:
                     osSyncPrintf("Demo_Im_Ocarina_Check_DemoMode:そんな動作は無い!!!!!!!!\n");
             }
-            this->unk_274 = action;
+            this->cueId = action;
         }
     }
 }
@@ -782,7 +782,7 @@ void func_8098680C(DemoIm* this, PlayState* play) {
 
     if (npcAction != NULL) {
         u32 action = npcAction->action;
-        u32 unk_274 = this->unk_274;
+        u32 unk_274 = this->cueId;
 
         if (action != unk_274) {
             switch (action) {
@@ -801,7 +801,7 @@ void func_8098680C(DemoIm* this, PlayState* play) {
                 default:
                     osSyncPrintf("Demo_Im_Spot00_Check_DemoMode:そんな動作は無い!!!!!!!!\n");
             }
-            this->unk_274 = action;
+            this->cueId = action;
         }
     }
 }
@@ -1061,7 +1061,7 @@ void func_809871E8(DemoIm* this, PlayState* play) {
 
     if (npcAction != NULL) {
         u32 action = npcAction->action;
-        u32 unk_274 = this->unk_274;
+        u32 unk_274 = this->cueId;
 
         if (action != unk_274) {
             switch (action) {
@@ -1074,7 +1074,7 @@ void func_809871E8(DemoIm* this, PlayState* play) {
                 default:
                     osSyncPrintf("Demo_Im_inEnding_Check_DemoMode:そんな動作は無い!!!!!!!!\n");
             }
-            this->unk_274 = action;
+            this->cueId = action;
         }
     }
 }

@@ -38,11 +38,11 @@ extern MapData* gMapData;
 
 void func_8086ED70(BgBombwall* bgBombwall, PlayState* play);
 void BgBreakwall_Wait(BgBreakwall* bgBreakwall, PlayState* play);
-void func_80883000(BgHakaZou* bgHakaZou, PlayState* play);
+void BgHakaZou_WaitForHit(BgHakaZou* bgHakaZou, PlayState* play);
 void func_808887C4(BgHidanHamstep* bgHidanHamstep, PlayState* play);
 void func_808896B8(BgHidanHrock* bgHidanHrock, PlayState* play);
-void func_8089107C(BgIceShelter* bgIceShelter, PlayState* play);
-void func_808911BC(BgIceShelter* bgIceShelter);
+void BgIceShelter_Idle(BgIceShelter* bgIceShelter, PlayState* play);
+void BgIceShelter_SetupMelt(BgIceShelter* bgIceShelter);
 void ObjBombiwa_Break(ObjBombiwa* objBombiwa, PlayState* play);
 void ObjHamishi_Break(ObjHamishi* objHamishi, PlayState* play);
 void BgJyaBombchuiwa_WaitForExplosion(BgJyaBombchuiwa* bgJyaBombchuiwa, PlayState* play);
@@ -217,7 +217,7 @@ void Anchor::RegisterHooks() {
     COND_ID_HOOK(ShouldActorUpdate, ACTOR_BG_HAKA_ZOU, isConnected, [&](void* refActor, bool* should) {
         BgHakaZou* actor = static_cast<BgHakaZou*>(refActor);
 
-        if (actor->actionFunc == func_80883000 && Flags_GetSwitch(gPlayState, actor->switchFlag)) {
+        if (actor->actionFunc == BgHakaZou_WaitForHit && Flags_GetSwitch(gPlayState, actor->switchFlag)) {
             actor->collider.base.acFlags |= AC_HIT;
         }
     });
@@ -241,8 +241,8 @@ void Anchor::RegisterHooks() {
     COND_ID_HOOK(ShouldActorUpdate, ACTOR_BG_ICE_SHELTER, isConnected, [&](void* refActor, bool* should) {
         BgIceShelter* actor = static_cast<BgIceShelter*>(refActor);
 
-        if (actor->actionFunc == func_8089107C && Flags_GetSwitch(gPlayState, actor->dyna.actor.params & 0x3F)) {
-            func_808911BC(actor);
+        if (actor->actionFunc == BgIceShelter_Idle && Flags_GetSwitch(gPlayState, actor->dyna.actor.params & 0x3F)) {
+            BgIceShelter_SetupMelt(actor);
             Audio_PlayActorSound2(&actor->dyna.actor, NA_SE_EV_ICE_MELT);
         }
     });
@@ -322,7 +322,7 @@ void Anchor::RegisterHooks() {
         DoorShutter* actor = static_cast<DoorShutter*>(refActor);
 
         if (Flags_GetSwitch(gPlayState, actor->dyna.actor.params & 0x3F)) {
-            DECR(actor->unk_16E);
+            DECR(actor->unlockTimer);
         }
     });
 

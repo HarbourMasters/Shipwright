@@ -744,7 +744,7 @@ s32 func_80B54DD4(EnZl3* this) {
 }
 
 void func_80B54DE0(EnZl3* this, PlayState* play) {
-    s32 idx = this->unk_318;
+    s32 idx = this->zl2Anime2ObjectSlot;
 
     gSegments[6] = VIRTUAL_TO_PHYSICAL(play->objectCtx.status[idx].segment);
 }
@@ -2634,7 +2634,7 @@ void func_80B59DB8(EnZl3* this, PlayState* play) {
     }
 
     if (Object_IsLoaded(objCtx, objIndex)) {
-        this->unk_318 = objIndex;
+        this->zl2Anime2ObjectSlot = objIndex;
         func_80B54DE0(this, play);
         func_80B59B6C(this, play);
     }

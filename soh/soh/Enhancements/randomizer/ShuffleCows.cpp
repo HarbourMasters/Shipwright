@@ -29,7 +29,7 @@ void EnCow_MoveForRandomizer(EnCow* enCow, PlayState* play) {
 
     if (moved) {
         // Reposition collider
-        func_809DEE9C(enCow);
+        EnCow_SetColliderPos(enCow);
     }
 }
 

@@ -20,14 +20,7 @@
 #include <port/switch/SwitchImpl.h>
 #endif
 #include "include/global.h"
-#include "include/z64audio.h"
-#include "soh/SaveManager.h"
-#include "soh/OTRGlobals.h"
-#include "soh/Enhancements/Presets/Presets.h"
-#include "soh/resource/type/Skeleton.h"
 
-#include "soh/Enhancements/game-interactor/GameInteractor.h"
-#include "soh/Enhancements/cosmetics/authenticGfxPatches.h"
 #include "soh/Enhancements/debugger/MessageViewer.h"
 #include "soh/Notification/Notification.h"
 #include "soh/Enhancements/TimeDisplay/TimeDisplay.h"

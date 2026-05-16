@@ -17,10 +17,9 @@ extern "C" {
     CVarGetInteger(CVAR_COLORED_MAPS_AND_COMPASSES_NAME, CVAR_COLORED_MAPS_AND_COMPASSES_DEFAULT)
 
 void RegisterColoredMapsAndCompasses() {
-    s8 mapsAndCompassesCanBeOutsideDungeon =
+    bool mapsAndCompassesCanBeOutsideDungeon =
         IS_RANDO && DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_SHUFFLE_MAPANDCOMPASS);
-    s8 isColoredMapsAndCompassesEnabled = mapsAndCompassesCanBeOutsideDungeon && CVAR_COLORED_MAPS_AND_COMPASSES_VALUE;
-    if (isColoredMapsAndCompassesEnabled) {
+    if (mapsAndCompassesCanBeOutsideDungeon && CVAR_COLORED_MAPS_AND_COMPASSES_VALUE) {
         ResourceMgr_PatchGfxByName(gGiDungeonMapDL, "Map_PrimColor", 5, gsDPNoOp());
         ResourceMgr_PatchGfxByName(gGiDungeonMapDL, "Map_EnvColor", 6, gsDPNoOp());
         ResourceMgr_PatchGfxByName(gGiCompassDL, "Compass_PrimColor", 5, gsDPNoOp());

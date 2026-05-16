@@ -24,8 +24,8 @@ typedef struct EnKz {
     /* 0x0214 */ s16 gameplayCamera;
     /* 0x0216 */ Vec3s jointTable[12];
     /* 0x025E */ Vec3s morphTable[12];
-    /* 0x02A6 */ s16 unk_2A6[12];
-    /* 0x02BE */ s16 unk_2BE[12];
+    /* 0x02A6 */ s16 fidgetTableY[12];
+    /* 0x02BE */ s16 fidgetTableZ[12];
 } EnKz; // size = 0x02D8
 
 

@@ -11,8 +11,8 @@ namespace Rando {
 class DungeonInfo {
   public:
     DungeonInfo(std::string name_, RandomizerHintTextKey hintKey_, RandomizerGet map_, RandomizerGet compass_,
-                RandomizerGet smallKey_, RandomizerGet keyRing_, RandomizerGet bossKey_, RandomizerArea area_,
-                uint8_t vanillaKeyCount_, uint8_t mqKeyCount_, RandomizerSettingKey mqSetting_);
+                RandomizerGet smallKey_, RandomizerGet keyRing_, RandomizerGet bossKey_, RandomizerGet reward_,
+                RandomizerArea area_, uint8_t vanillaKeyCount_, uint8_t mqKeyCount_, RandomizerSettingKey mqSetting_);
     DungeonInfo();
     ~DungeonInfo();
 
@@ -32,6 +32,7 @@ class DungeonInfo {
     RandomizerGet GetMap() const;
     RandomizerGet GetCompass() const;
     RandomizerGet GetBossKey() const;
+    RandomizerGet GetReward() const;
     RandomizerSettingKey GetMQSetting() const;
     void SetDungeonKnown(bool known);
     void PlaceVanillaMap() const;
@@ -50,6 +51,7 @@ class DungeonInfo {
     RandomizerGet smallKey;
     RandomizerGet keyRing;
     RandomizerGet bossKey;
+    RandomizerGet reward;
     RandomizerSettingKey mqSetting;
     bool isDungeonModeKnown = true;
     uint8_t vanillaKeyCount{};

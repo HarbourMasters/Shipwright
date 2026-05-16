@@ -1,6 +1,6 @@
 #include "functions.h"
 #include "macros.h"
-#include "soh/Enhancements/randomizer/3drando/random.hpp"
+#include "soh/ShipUtils.h"
 #include "soh/Enhancements/randomizer/SeedContext.h"
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/ObjectExtension/ObjectExtension.h"
@@ -304,15 +304,16 @@ EnemyEntry GetRandomizedEnemyEntry(uint32_t seed, PlayState* play) {
         filteredEnemyList = selectedEnemyList;
     }
     if (CVAR_ENEMY_RANDOMIZER_VALUE == ENEMY_RANDOMIZER_RANDOM_SEEDED) {
-        uint32_t finalSeed =
-            seed + (IS_RANDO ? Rando::Context::GetInstance()->GetSeed() : gSaveContext.ship.stats.fileCreatedAt);
-        Random_Init(finalSeed);
-        uint32_t randomNumber = Random(0, filteredEnemyList.size());
-        return filteredEnemyList[randomNumber];
-    } else {
-        uint32_t randomSelectedEnemy = Random(0, filteredEnemyList.size());
-        return filteredEnemyList[randomSelectedEnemy];
+        uint64_t randomState = 0;
+
+        ShipUtils::RandInit(
+            seed + (IS_RANDO ? Rando::Context::GetInstance()->GetSeed() : gSaveContext.ship.stats.fileCreatedAt),
+            &randomState);
+
+        return ShipUtils::RandomElement(filteredEnemyList, false, &randomState);
     }
+
+    return ShipUtils::RandomElement(filteredEnemyList, false);
 }
 
 bool IsEnemyFoundToRandomize(int16_t sceneNum, int8_t roomNum, int16_t actorId, int16_t params, float posX) {
@@ -392,9 +393,11 @@ uint8_t GetRandomizedEnemy(PlayState* play, int16_t* actorId, s16* posX, s16* po
     // This should probably be handled on OTR generation in the future when object dependency is fully removed.
     // Remove bats and Skulltulas from graveyard.
     // Remove Octorok in Lost Woods.
+    // Remove signs in Gerudo Fortress as child
     if (((*actorId == ACTOR_EN_FIREFLY || (*actorId == ACTOR_EN_SW && *params == 0)) &&
          play->sceneNum == SCENE_GRAVEYARD) ||
-        (*actorId == ACTOR_EN_OKUTA && play->sceneNum == SCENE_LOST_WOODS)) {
+        (*actorId == ACTOR_EN_OKUTA && play->sceneNum == SCENE_LOST_WOODS) ||
+        (*actorId == ACTOR_EN_KANBAN && play->sceneNum == SCENE_GERUDOS_FORTRESS && LINK_IS_CHILD)) {
         return 0;
     }
 

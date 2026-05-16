@@ -8,6 +8,7 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "vt.h"
 #include "soh/ResourceManagerHelpers.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS 0
 
@@ -679,7 +680,7 @@ void EnFish_UpdateCutscene(EnFish* this, PlayState* play) {
 // Update functions and Draw
 
 void EnFish_OrdinaryUpdate(EnFish* this, PlayState* play) {
-    if (this->timer > 0 && CVarGetInteger(CVAR_CHEAT("NoFishDespawn"), 0) == 0) {
+    if (GameInteractor_Should(VB_FISH_TIMER_TICK, this->timer > 0)) {
         this->timer--;
     }
 

@@ -116,7 +116,7 @@ typedef struct struct_80854190 {
 typedef struct struct_80854578 {
     /* 0x00 */ LinkAnimationHeader* anim;
     /* 0x04 */ f32 unk_04;
-    /* 0x04 */ f32 unk_08;
+    /* 0x08 */ f32 unk_08;
 } struct_80854578; // size = 0x0C
 
 typedef struct struct_80854B18 {
@@ -5606,7 +5606,6 @@ void func_8083A0F4(PlayState* play, Player* this) {
 
 void Player_SetupTalk(PlayState* play, Player* this) {
     Player_SetupActionPreserveAnimMovement(play, this, Player_Action_Talk, 0);
-
     this->stateFlags1 |= PLAYER_STATE1_TALKING | PLAYER_STATE1_IN_CUTSCENE;
 
     if (this->actor.textId != 0) {
@@ -6063,7 +6062,9 @@ s32 Player_ActionHandler_13(Player* this, PlayState* play) {
                                 Inventory_ChangeAmmo(ITEM_BEAN, -1);
                                 Player_SetupActionPreserveItemAction(play, this, Player_Action_8084279C, 0);
                                 this->stateFlags1 |= PLAYER_STATE1_IN_CUTSCENE;
-                                this->av2.actionVar2 = 0x50;
+                                if (GameInteractor_Should(VB_PLAY_BEAN_PLANTING_CS, true)) {
+                                    this->av2.actionVar2 = 0x50;
+                                }
                                 this->av1.actionVar1 = -1;
                             }
                             talkActor->flags |= ACTOR_FLAG_TALK;
@@ -6227,7 +6228,9 @@ s32 Player_ActionHandler_Talk(Player* this, PlayState* play) {
                     // text will be used. This is especially important to prevent unwanted behavior with regards to mask
                     // trading.
                     this->currentMask = sSavedCurrentMask;
-                    Player_StartTalking(play, talkOfferActor);
+                    if (GameInteractor_Should(VB_SKIP_TALKING, true)) {
+                        Player_StartTalking(play, talkOfferActor);
+                    }
                     return true;
                 }
             }

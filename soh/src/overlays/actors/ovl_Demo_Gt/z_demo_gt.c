@@ -287,7 +287,7 @@ void func_8097E454(PlayState* play, Vec3f* spawnerPos, Vec3f* velocity, Vec3f* a
     }
 }
 
-u8 func_8097E69C(PlayState* play) {
+u8 DemoGt_IsCutsceneIdle(PlayState* play) {
     if (play->csCtx.state == CS_STATE_IDLE) {
         return true;
     } else {
@@ -299,7 +299,7 @@ CsCmdActorCue* DemoGt_GetNpcAction(PlayState* play, u32 actionIdx) {
     s32 pad[2];
     CsCmdActorCue* ret = NULL;
 
-    if (!func_8097E69C(play)) {
+    if (!DemoGt_IsCutsceneIdle(play)) {
         ret = play->csCtx.npcActions[actionIdx];
     }
 
@@ -433,7 +433,7 @@ void func_8097ED64(DemoGt* this, PlayState* play, s32 actionIdx) {
     func_8097E824(this, actionIdx);
 }
 
-u8 func_8097ED94() {
+u8 DemoGt_IsCutsceneLayer() {
     if (kREG(2) != 0) {
         return true;
     } else if (gSaveContext.sceneSetupIndex < 4) {
@@ -462,7 +462,7 @@ void func_8097EDD8(DemoGt* this, PlayState* play, CollisionHeader* collision) {
 
 u8 func_8097EE44(DemoGt* this, PlayState* play, s32 updateMode, s32 drawConfig, CollisionHeader* colHeader) {
 
-    if (func_8097ED94()) {
+    if (DemoGt_IsCutsceneLayer()) {
         this->updateMode = updateMode;
         this->drawConfig = drawConfig;
         func_8097EDD8(this, play, colHeader);
