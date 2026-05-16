@@ -1763,6 +1763,9 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Climb Everything", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_CHEAT("ClimbEverything"))
         .Options(CheckboxOptions().Tooltip("Makes every surface in the game climbable."));
+    AddWidget(path, "Adult Crawlspaces", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_CHEAT("AdultCrawlspaces"))
+        .Options(CheckboxOptions().Tooltip("Allows Adult Link to enter crawlspaces."));
     AddWidget(path, "Moon Jump on L", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_CHEAT("MoonJumpOnL"))
         .Options(CheckboxOptions().Tooltip("Holding L makes you float into the air."));

@@ -7637,7 +7637,10 @@ s32 Player_TryEnteringCrawlspace(Player* this, PlayState* play, u32 interactWall
     f32 zVertex2;
     s32 i;
 
-    if (!LINK_IS_ADULT && !(this->stateFlags1 & PLAYER_STATE1_IN_WATER) && (interactWallFlags & 0x30)) {
+    // #region SOH [Enhancement] - Adult Crawlspaces
+    if ((!LINK_IS_ADULT || CVarGetInteger(CVAR_CHEAT("AdultCrawlspaces"), 0)) &&
+    // #endregion
+        !(this->stateFlags1 & PLAYER_STATE1_IN_WATER) && (interactWallFlags & 0x30)) {
         if (!GameInteractor_Should(VB_CRAWL, true)) {
             return false;
         }
