@@ -23,9 +23,10 @@
 #ifdef __cplusplus
 #include <ship/Context.h>
 #include "Enhancements/savestates.h"
-#include "Enhancements/randomizer/randomizer.h"
-#include <vector>
+#include <memory>
 #include <string>
+#include <vector>
+#include <imgui.h>
 
 struct ExtensionEntry {
     std::string path;
@@ -33,7 +34,6 @@ struct ExtensionEntry {
 };
 
 extern std::unordered_map<std::string, ExtensionEntry> ExtensionCache;
-#include "Enhancements/randomizer/settings.h"
 
 const std::string appShortName = "soh";
 
@@ -44,6 +44,12 @@ const uint32_t defaultImGuiScale = 1;
 #endif
 
 const float imguiScaleOptionToValue[4] = { 0.75f, 1.0f, 1.5f, 2.0f };
+
+class Randomizer;
+
+namespace Rando {
+    class Context;
+}
 
 class OTRGlobals {
   public:

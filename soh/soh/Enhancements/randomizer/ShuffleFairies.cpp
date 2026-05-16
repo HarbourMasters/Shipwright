@@ -5,6 +5,7 @@
 #include "static_data.h"
 #include "soh/Enhancements/item-tables/ItemTableTypes.h"
 #include "soh/ObjectExtension/ObjectExtension.h"
+#include "soh/Enhancements/randomizer/randomizer.h"
 
 extern "C" {
 #include "src/overlays/actors/ovl_En_Elf/z_en_elf.h"

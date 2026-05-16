@@ -14,6 +14,7 @@
 #include "location_access.h"
 #include "3drando/fill.hpp"
 #include "soh/Enhancements/debugger/performanceTimer.h"
+#include "soh/Enhancements/randomizer/randomizer.h"
 
 #include <string>
 #include <sstream>

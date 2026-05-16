@@ -30,6 +30,7 @@
 #include "Enhancements/randomizer/randomizer_entrance_tracker.h"
 #include "Enhancements/randomizer/randomizer_check_tracker.h"
 #include "Enhancements/randomizer/static_data.h"
+#include "soh/Enhancements/randomizer/settings.h"
 #include "Enhancements/gameplaystats.h"
 #include "frame_interpolation.h"
 #include "SohGui/SohMenu.h"
