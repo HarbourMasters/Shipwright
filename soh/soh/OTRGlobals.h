@@ -60,10 +60,6 @@ class OTRGlobals {
     std::shared_ptr<Randomizer> gRandomizer;
     std::shared_ptr<Rando::Context> gRandoContext;
 
-    ImFont* defaultFontSmaller;
-    ImFont* defaultFontLarger;
-    ImFont* defaultFontLargest;
-
     ImFont* fontMonoSmall = nullptr;
     ImFont* fontStandard = nullptr;
     ImFont* fontStandardLarger = nullptr;
@@ -82,7 +78,6 @@ class OTRGlobals {
     bool HasMasterQuest();
     bool HasOriginal();
     uint32_t GetInterpolationFPS();
-    std::shared_ptr<std::vector<std::string>> ListFiles(std::string path);
 
   private:
     void CheckSaveFile(size_t sramSize) const;
@@ -99,16 +94,11 @@ void DeinitOTR(void);
 void VanillaItemTable_Init();
 void OTRAudio_Init();
 void OTRMessage_Init();
-void InitAudio();
 void Graph_StartFrame();
 void Graph_ProcessGfxCommands(Gfx* commands);
-void Graph_ProcessFrame(void (*run_one_game_iter)(void));
-void OTRLogString(const char* src);
 void OTRGfxPrint(const char* str, void* printer, void (*printImpl)(void*, char));
 void OTRGetPixelDepthPrepare(float x, float y);
 uint16_t OTRGetPixelDepth(float x, float y);
-int32_t OTRGetLastScancode();
-char* GetResourceDataByNameHandlingMQ(const char* path);
 
 void Ctx_ReadSaveFile(uintptr_t addr, void* dramAddr, size_t size);
 void Ctx_WriteSaveFile(uintptr_t addr, void* dramAddr, size_t size);
@@ -130,8 +120,6 @@ int AudioPlayer_GetDesiredBuffered(void);
 void AudioPlayer_Play(const uint8_t* buf, uint32_t len);
 void AudioMgr_CreateNextAudioBuffer(s16* samples, u32 num_samples);
 int Controller_ShouldRumble(size_t slot);
-void Controller_BlockGameInput();
-void Controller_UnblockGameInput();
 size_t GetEquipNowMessage(char* buffer, char* src, const size_t maxBufferSize);
 u32 SpoilerFileExists(const char* spoilerFileName);
 Sprite* GetSeedTexture(uint8_t index);
@@ -164,7 +152,6 @@ void Gfx_RegisterBlendedTexture(const char* name, u8* mask, u8* replacement);
 void Gfx_UnregisterBlendedTexture(const char* name);
 void Gfx_TextureCacheDelete(const uint8_t* addr);
 void SaveManager_ThreadPoolWait();
-void CheckTracker_OnMessageClose();
 void CheckTracker_RecalculateAvailableChecks();
 
 GetItemID RetrieveGetItemIDFromItemID(ItemID itemID);
