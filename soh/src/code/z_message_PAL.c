@@ -19,6 +19,7 @@
 extern void Randomizer_Message_DecodeLoadItemIcon(PlayState* play, u16 iconToLoad, s32 displayAsEnglishAsInt);
 extern void Randomizer_Message_AppendSegmentIconGfx(Gfx** gfxp);
 extern void Randomizer_Message_RefreshCustomItemIconAtDraw(s32 displayAsEnglishAsInt);
+extern u16 Randomizer_ResolveSongIconAtDrawTime(PlayState* play, u16 itemId);
 
 // #region SOH [NTSC] - Allows custom messages to work on japanese
 static bool sDisplayNextMessageAsEnglish = false;
@@ -977,6 +978,7 @@ u16 Message_DrawItemIcon(PlayState* play, u16 itemId, Gfx** p, u16 i) {
 
     if (itemId < ITEM_CUSTOM) {
         if (GameInteractor_Should(VB_DRAW_ITEM_ICON, true, &gfx)) {
+            itemId = Randomizer_ResolveSongIconAtDrawTime(play, itemId);
             u16 iconIdClamped = itemId;
             u8 songR;
             u8 songG;

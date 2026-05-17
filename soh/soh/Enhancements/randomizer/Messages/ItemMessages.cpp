@@ -250,14 +250,46 @@ static ItemID ResolveSongMessageIcon(RandomizerGet rg, RandomizerGet resolvedSta
     return ITEM_SONG_LULLABY;
 }
 
+static bool RandomizerGet_IsSongTextboxPickup(RandomizerGet rg) {
+    return Rando::SplitSongs::IsSongPart(rg) || Rando::SplitSongs::IsProgressiveSong(rg) ||
+           DirectSongIconForRandomizerGet(rg) != ITEM_NONE;
+}
+
 extern "C" u16 Message_GetRandoTextboxItemIconOverride(PlayState* play, u16 itemId) {
     (void)play;
     return itemId;
 }
 
+/**
+ * Text id 0xF8 (TEXT_RANDOMIZER_CUSTOM_ITEM) can overwrite an earlier decoded icon byte; some vanilla
+ * song rows also use numeric text ids that collide with ITEM_* when mis-encoded. Re-resolve from the
+ * player's get-item row so dungeon songs (e.g. Nocturne) always use the correct ITEM_SONG_* + tint.
+ */
 extern "C" u16 Randomizer_ResolveSongIconAtDrawTime(PlayState* play, u16 itemId) {
-    (void)play;
-    return itemId;
+    if (!IS_RANDO || play == nullptr) {
+        return itemId;
+    }
+    Player* player = GET_PLAYER(play);
+    if (player == nullptr) {
+        return itemId;
+    }
+    const GetItemEntry gift = ResolveGiftGetItemEntry(player);
+    if (gift.modIndex != MOD_RANDOMIZER || gift.getItemId <= RG_NONE || gift.getItemId >= RG_MAX) {
+        return itemId;
+    }
+    const RandomizerGet rg = static_cast<RandomizerGet>(gift.getItemId);
+    if (!RandomizerGet_IsSongTextboxPickup(rg)) {
+        return itemId;
+    }
+    RandomizerGet stage = RG_NONE;
+    if (Rando::SplitSongs::IsProgressiveSong(rg)) {
+        stage = Rando::SplitSongs::ResolveProgressiveSongStage(rg);
+    }
+    const ItemID resolved = ResolveSongMessageIcon(rg, stage);
+    if (resolved == ITEM_NONE) {
+        return itemId;
+    }
+    return static_cast<u16>(resolved);
 }
 
 void BuildTriforcePieceMessage(CustomMessage& msg) {
@@ -369,6 +401,10 @@ void BuildCustomItemMessage(Player* player, CustomMessage& msg) {
     msg.Replace("[[name]]", name);
     if (itemForMsg.HasCustomIcon()) {
         msg.AutoFormat(ITEM_CUSTOM);
+    } else if (IS_RANDO && itemForMsg.GetItemType() == ITEMTYPE_SONG) {
+        // Always embed ITEM_SONG_* for songs. GetGIEntry()->itemId can disagree with quest text ids (e.g. Nocturne
+        // uses vanilla text 0x77) or with decoded-buffer overwrites for TEXT_RANDOMIZER_CUSTOM_ITEM (0xF8).
+        msg.AutoFormat(ResolveSongMessageIcon(rgEnum, RG_NONE));
     } else {
         // Vanilla pause-menu item id: embed a real icon byte so load/draw use gItemIcons (not stale segment data).
         const uint16_t pauseIcon = itemForMsg.GetGIEntry()->itemId;
