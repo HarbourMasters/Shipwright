@@ -1136,6 +1136,10 @@ void SohMenu::AddMenuEnhancements() {
         .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip(
             "Fixes Adult Link having a backwards Left hand when holding the Megaton Hammer."));
+    AddWidget(path, "Fix Deku Scrub Flower Flash", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("FixDekuScrubFlowerFlash"))
+        .Options(CheckboxOptions().Tooltip(
+            "Fixes the Deku Scrub flower flashing briefly at the Lost Woods entrance."));
     AddWidget(path, "Fix Vanishing Paths", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_ENHANCEMENT("SceneSpecificDirtPathFix"))
         .RaceDisable(false)
