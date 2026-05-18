@@ -532,7 +532,7 @@ void CustomStalfosPairFightDestroy(Actor* thisx, PlayState* play) {
 }
 
 static void KillVoidedEnemies(void* actorRef) {
-    constexpr float yThreshold = -1000.0f;
+    constexpr float yThreshold = -5000.0f;
     if (const auto actor = static_cast<Actor*>(actorRef); actor->category == ACTORCAT_ENEMY &&
                                                           actor->world.pos.y < yThreshold) {
         Actor_Kill(actor);
