@@ -819,7 +819,7 @@ extern "C" void ProcessSaveStateRequests(void) {
 
 void SaveStateMgr::SetCurrentSlot(unsigned int slot) {
     Ship::Context::GetRawInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(1.0f, true,
-                                                                                                "slot %u set", slot);
+                                                                                                   "slot %u set", slot);
     this->currentSlot = slot;
 }
 

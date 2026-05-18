@@ -44,8 +44,8 @@ static void OTRMessage_LoadCustom(const std::string& folderPath, MessageTableEnt
 }
 
 MessageTableEntry* OTRMessage_LoadTable(const std::string& filePath, bool isNES) {
-    auto file =
-        std::static_pointer_cast<SOH::Text>(Ship::Context::GetRawInstance()->GetResourceManager()->LoadResource(filePath));
+    auto file = std::static_pointer_cast<SOH::Text>(
+        Ship::Context::GetRawInstance()->GetResourceManager()->LoadResource(filePath));
 
     if (file == nullptr)
         return nullptr;

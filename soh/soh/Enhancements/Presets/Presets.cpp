@@ -116,7 +116,7 @@ void applyPreset(std::string presetName, std::vector<PresetSection> includeSecti
                     }
 
                     Ship::Context::GetRawInstance()->GetConfig()->SetBlock(fmt::format("{}.{}", "CVars", item.key()),
-                                                                        block);
+                                                                           block);
                     Ship::Context::GetRawInstance()->GetConsoleVariables()->Load();
                 }
             }

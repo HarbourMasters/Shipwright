@@ -437,7 +437,8 @@ void SohMenu::AddMenuSettings() {
                 "This will completely erase the controls config, including registered devices.\nContinue?", "Clear",
                 "Cancel",
                 []() {
-                    Ship::Context::GetRawInstance()->GetConsoleVariables()->ClearBlock(CVAR_PREFIX_SETTING ".Controllers");
+                    Ship::Context::GetRawInstance()->GetConsoleVariables()->ClearBlock(CVAR_PREFIX_SETTING
+                                                                                       ".Controllers");
                     uint8_t bits = 0;
                     Ship::Context::GetRawInstance()->GetControlDeck()->Init(&bits);
                 },

@@ -610,11 +610,11 @@ void DrawInventoryTab() {
                     }
                     const ItemMapEntry& slotEntry = possibleItems[pickerIndex];
                     PushStyleButton(Colors::DarkGray);
-                    auto ret = ImGui::ImageButton(
-                        slotEntry.name.c_str(),
-                        std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                            ->GetTextureByName(slotEntry.name),
-                        ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1));
+                    auto ret = ImGui::ImageButton(slotEntry.name.c_str(),
+                                                  std::dynamic_pointer_cast<Fast::Fast3dGui>(
+                                                      Ship::Context::GetRawInstance()->GetWindow()->GetGui())
+                                                      ->GetTextureByName(slotEntry.name),
+                                                  ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1));
                     PopStyleButton();
                     if (ret) {
                         gSaveContext.inventory.items[selectedIndex] = slotEntry.id;
@@ -646,9 +646,10 @@ void DrawInventoryTab() {
             ImGui::PushItemWidth(IMAGE_SIZE);
             ImGui::BeginGroup();
 
-            ImGui::Image(std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                             ->GetTextureByName(itemMapping[item].name),
-                         ImVec2(IMAGE_SIZE, IMAGE_SIZE));
+            ImGui::Image(
+                std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
+                    ->GetTextureByName(itemMapping[item].name),
+                ImVec2(IMAGE_SIZE, IMAGE_SIZE));
             PushStyleInput(THEME_COLOR);
             ImGui::InputScalar("##ammoInput", ImGuiDataType_S8, &AMMO(item));
             PopStyleInput();

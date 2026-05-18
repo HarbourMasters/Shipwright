@@ -806,7 +806,8 @@ void SohInputEditorWindow::UpdateStickDirectionToMappingIds(uint8_t port) {
     // todo: do we need this?
     for (auto stick :
          { std::make_pair<uint8_t, std::shared_ptr<Ship::ControllerStick>>(
-               Ship::LEFT, Ship::Context::GetRawInstance()->GetControlDeck()->GetControllerByPort(port)->GetLeftStick()),
+               Ship::LEFT,
+               Ship::Context::GetRawInstance()->GetControlDeck()->GetControllerByPort(port)->GetLeftStick()),
            std::make_pair<uint8_t, std::shared_ptr<Ship::ControllerStick>>(
                Ship::RIGHT,
                Ship::Context::GetRawInstance()->GetControlDeck()->GetControllerByPort(port)->GetRightStick()) }) {
@@ -829,7 +830,8 @@ void SohInputEditorWindow::DrawRemoveRumbleMappingButton(uint8_t port, std::stri
     ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(1.0f, 0.5f));
     if (ImGui::Button(StringHelper::Sprintf("%s###removeRumbleMapping%s", ICON_FA_TIMES, id.c_str()).c_str(),
                       ImVec2(SCALE_IMGUI_SIZE(20.0f), SCALE_IMGUI_SIZE(20.0f)))) {
-        Ship::Context::GetRawInstance()->GetControlDeck()->GetControllerByPort(port)->GetRumble()->ClearRumbleMapping(id);
+        Ship::Context::GetRawInstance()->GetControlDeck()->GetControllerByPort(port)->GetRumble()->ClearRumbleMapping(
+            id);
     }
     ImGui::PopStyleVar();
 }
@@ -1514,7 +1516,8 @@ void SohInputEditorWindow::DrawDeviceToggles(uint8_t portIndex) {
 
     ImGui::PopItemFlag();
 
-    auto connectedDeviceManager = Ship::Context::GetRawInstance()->GetControlDeck()->GetConnectedPhysicalDeviceManager();
+    auto connectedDeviceManager =
+        Ship::Context::GetRawInstance()->GetControlDeck()->GetConnectedPhysicalDeviceManager();
     for (const auto& [instanceId, name] : connectedDeviceManager->GetConnectedSDLGamepadNames()) {
         ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
         auto buttonColor = ImGui::GetStyleColorVec4(ImGuiCol_Button);
