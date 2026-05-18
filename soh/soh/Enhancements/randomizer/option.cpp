@@ -247,7 +247,7 @@ bool Option::RenderCheckbox() {
     if (UIWidgets::Checkbox(name.c_str(), &val, widgetOptions)) {
         CVarSetInteger(cvarName.c_str(), val);
         changed = true;
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     }
     return changed;
 }
@@ -259,7 +259,7 @@ bool Option::RenderCombobox() {
         selected = static_cast<uint8_t>(options.size());
         CVarSetInteger(cvarName.c_str(), selected);
         changed = true;
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     }
     UIWidgets::ComboboxOptions widgetOptions =
         UIWidgets::ComboboxOptions().Color(THEME_COLOR).Tooltip(description.c_str());
@@ -271,7 +271,7 @@ bool Option::RenderCombobox() {
     if (UIWidgets::Combobox(name.c_str(), &selected, options, widgetOptions)) {
         CVarSetInteger(cvarName.c_str(), static_cast<int>(selected));
         changed = true;
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     }
     return changed;
 }
@@ -304,7 +304,7 @@ bool Option::RenderSlider() {
     }
     if (changed) {
         CVarSetInteger(cvarName.c_str(), val);
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     }
     return changed;
 }

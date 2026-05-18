@@ -22,7 +22,7 @@ static void OnGameStateMainStartResetHotkey() {
         CHECK_BTN_ALL(gGameState->input[0].cur.button, mask)) {
 
         auto consoleWin = std::reinterpret_pointer_cast<Ship::ConsoleWindow>(
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"));
+            Ship::Context::GetRawInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"));
 
         if (consoleWin) {
             consoleWin->Dispatch("reset");

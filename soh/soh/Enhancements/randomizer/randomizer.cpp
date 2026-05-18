@@ -89,7 +89,7 @@ Randomizer::Randomizer() {
         SpoilerfileHintTypeNameToEnum[Rando::StaticData::hintTypeNames[(HintType)c].GetEnglish(MF_CLEAN)] = (HintType)c;
     }
 
-    Ship::Context::GetInstance()->GetFileDropMgr()->RegisterDropHandler(Rando_HandleSpoilerDrop);
+    Ship::Context::GetRawInstance()->GetFileDropMgr()->RegisterDropHandler(Rando_HandleSpoilerDrop);
 }
 
 Randomizer::~Randomizer() {
@@ -213,7 +213,7 @@ bool Randomizer::SpoilerFileExists(const char* spoilerFileName) {
                         "\nwas made by a version that doesn't match the currently running version.\n" +
                         "Loading for this file has been cancelled.");
                 CVarClear(CVAR_GENERAL("SpoilerLog"));
-                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+                Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
             }
 
             // Update cache
@@ -4443,7 +4443,7 @@ std::thread randoThread;
 
 void GenerateRandomizerImgui(std::string seed = "") {
     CVarSetInteger(CVAR_GENERAL("RandoGenerating"), 1);
-    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+    Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     auto ctx = Rando::Context::GetInstance();
     // RANDOTODO proper UI for selecting if a spoiler loaded should be used for settings
     Rando::Settings::GetInstance()->SetAllToContext();
@@ -4480,7 +4480,7 @@ void GenerateRandomizerImgui(std::string seed = "") {
 
     Rando::Context::GetInstance()->SetSeedGenerated(GenerateRandomizer(excludedLocations, enabledTricks, seed));
     CVarSetInteger(CVAR_GENERAL("RandoGenerating"), 0);
-    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+    Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
 
     generated = true;
 

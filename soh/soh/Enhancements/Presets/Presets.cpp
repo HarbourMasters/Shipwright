@@ -107,7 +107,7 @@ void applyPreset(std::string presetName, std::vector<PresetSection> includeSecti
                 } else {
                     auto block = item.value();
                     if (sectionStrategy == "merge") {
-                        auto currentJson = Ship::Context::GetInstance()->GetConfig()->GetNestedJson();
+                        auto currentJson = Ship::Context::GetRawInstance()->GetConfig()->GetNestedJson();
                         if (currentJson.contains("CVars") && currentJson["CVars"].contains(item.key())) {
                             block = currentJson["CVars"][item.key()];
                             // Recursively merge the two json objects
@@ -115,9 +115,9 @@ void applyPreset(std::string presetName, std::vector<PresetSection> includeSecti
                         }
                     }
 
-                    Ship::Context::GetInstance()->GetConfig()->SetBlock(fmt::format("{}.{}", "CVars", item.key()),
+                    Ship::Context::GetRawInstance()->GetConfig()->SetBlock(fmt::format("{}.{}", "CVars", item.key()),
                                                                         block);
-                    Ship::Context::GetInstance()->GetConsoleVariables()->Load();
+                    Ship::Context::GetRawInstance()->GetConsoleVariables()->Load();
                 }
             }
             if (i == PRESET_SECTION_RANDOMIZER) {
@@ -159,7 +159,7 @@ void DrawPresetSelector(std::vector<PresetSection> includeSections, std::string 
             if (ImGui::Selectable(iter->c_str(), *iter == currentIndex)) {
                 CVarSetString(selectorCvar.c_str(), iter->c_str());
                 currentIndex = *iter;
-                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+                Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
             }
         }
 
@@ -234,12 +234,12 @@ void LoadPresets() {
     initData->Type = static_cast<uint32_t>(Ship::ResourceType::Json);
     initData->ResourceVersion = 0;
     std::string folder = "presets/*";
-    auto builtIns = Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->ListFiles(folder);
+    auto builtIns = Ship::Context::GetRawInstance()->GetResourceManager()->GetArchiveManager()->ListFiles(folder);
     size_t start = std::string(folder).size() - 1;
     for (size_t i = 0; i < builtIns->size(); i++) {
         std::string filePath = builtIns->at(i);
         auto json = std::static_pointer_cast<Ship::Json>(
-            Ship::Context::GetInstance()->GetResourceManager()->LoadResource(filePath, true, initData));
+            Ship::Context::GetRawInstance()->GetResourceManager()->LoadResource(filePath, true, initData));
 
         std::string fileName = filePath.substr(start, filePath.size() - start - 5); // 5 for length of ".json"
         ParsePreset(json->Data, fileName);
@@ -253,7 +253,7 @@ void SavePreset(std::string& presetName) {
     presets[presetName].presetValues["presetName"] = presetName;
     presets[presetName].presetValues["fileType"] = FILE_TYPE_PRESET;
     std::ofstream file(
-        fmt::format("{}/{}.json", Ship::Context::GetInstance()->LocateFileAcrossAppDirs("presets"), presetName));
+        fmt::format("{}/{}.json", Ship::Context::GetRawInstance()->LocateFileAcrossAppDirs("presets"), presetName));
     file << presets[presetName].presetValues.dump(4);
     file.close();
     LoadPresets();
@@ -293,7 +293,7 @@ void DrawNewPresetPopup() {
                         .Padding({ 6.0f, 6.0f })
                         .Color(THEME_COLOR))) {
         presets[newPresetName] = {};
-        auto config = Ship::Context::GetInstance()->GetConfig()->GetNestedJson();
+        auto config = Ship::Context::GetRawInstance()->GetConfig()->GetNestedJson();
         for (int i = PRESET_SECTION_SETTINGS; i < PRESET_SECTION_MAX; i++) {
             if (saveSection[i]) {
                 for (size_t j = 0; j < blockInfo[i].sections.size(); j++) {
@@ -459,7 +459,7 @@ void RegisterPresetsWidgets() {
     SohGui::mSohMenu->AddWidget(path, "PresetsWidget", WIDGET_CUSTOM)
         .CustomFunction(PresetsCustomWidget)
         .HideInSearch(true);
-    presetFolder = Ship::Context::GetInstance()->GetPathRelativeToAppDirectory("presets");
+    presetFolder = Ship::Context::GetRawInstance()->GetPathRelativeToAppDirectory("presets");
     std::fill_n(saveSection, PRESET_SECTION_MAX, true);
     LoadPresets();
 }

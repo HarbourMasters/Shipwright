@@ -399,7 +399,7 @@ void AudioCollection::RemoveFromShufflePool(SequenceInfo* seqInfo) {
     excludedSequences.insert(seqInfo);
     includedSequences.erase(seqInfo);
     CVarSetInteger(cvarKey.c_str(), 1);
-    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+    Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
 }
 
 void AudioCollection::AddToShufflePool(SequenceInfo* seqInfo) {
@@ -407,7 +407,7 @@ void AudioCollection::AddToShufflePool(SequenceInfo* seqInfo) {
     includedSequences.insert(seqInfo);
     excludedSequences.erase(seqInfo);
     CVarClear(cvarKey.c_str());
-    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+    Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
 }
 
 void AudioCollection::InitializeShufflePool() {

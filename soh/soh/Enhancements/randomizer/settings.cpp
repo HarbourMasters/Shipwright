@@ -2958,7 +2958,7 @@ void Settings::RandomizeAllSettings() {
         option.RunCallback();
     }
 
-    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+    Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
 }
 
 std::shared_ptr<Settings> Settings::GetInstance() {

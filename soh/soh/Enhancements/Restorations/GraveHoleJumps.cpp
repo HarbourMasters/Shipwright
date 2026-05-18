@@ -30,7 +30,7 @@ CollisionHeader* getGraveyardCollisionHeader() {
      * game does.
      */
     SOH::Scene* scene =
-        (SOH::Scene*)Ship::Context::GetInstance()->GetResourceManager()->LoadResource(GRAVEYARD_SCENE_FILEPATH).get();
+        (SOH::Scene*)Ship::Context::GetRawInstance()->GetResourceManager()->LoadResource(GRAVEYARD_SCENE_FILEPATH).get();
     SOH::SetCollisionHeader* sceneCmd = nullptr;
     for (size_t i = 0; i < scene->commands.size(); i++) {
         auto cmd = scene->commands[i];
