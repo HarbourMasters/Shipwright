@@ -19,47 +19,40 @@ static constexpr int32_t CVAR_ENEMY_SCALE_HEALTH_DEFAULT = 0;
 #define CVAR_ENEMY_SCALE_HEALTH_VALUE CVarGetInteger(CVAR_ENEMY_SCALE_HEALTH_NAME, CVAR_ENEMY_SCALE_HEALTH_DEFAULT)
 
 static float ComputeRandomScale(Actor* actor, bool isSmallOnly) {
-    const int32_t mode = CVAR_RANDO_ENEMY_SIZE_VALUE;
-    float randomNumber = 0.0f;
+    const uint8_t mode = CVAR_RANDO_ENEMY_SIZE_VALUE;
     bool isBigActor = false;
-    static uint64_t randomState = 0;
 
     if (mode == ENEMY_SIZE_RANDOM_SEEDED) {
         // Deterministic seed from actor spawn data + global seed, matching the pattern used by the enemy randomizer
         // (EnemyRandomizer.cpp).  The salt (0xDEAD) decorrelates the sequence from the enemy replacement RNG so that
         // the size and enemy type don't share the same initial state when both systems use the same actor ID and
         // position.
+        static uint64_t randomState = 0;
         const uint32_t seed = gPlayState->sceneNum + actor->id + static_cast<int32_t>(actor->home.pos.x) +
                               static_cast<int32_t>(actor->home.pos.y) + static_cast<int32_t>(actor->home.pos.z) +
                               actor->home.rot.x + actor->home.rot.y + actor->home.rot.z + actor->params;
 
         ShipUtils::RandInit(
-                (seed ^ 0xDEAD) + (IS_RANDO
+            (seed ^ 0xDEAD) + (IS_RANDO
                                    ? Rando::Context::GetInstance()->GetSeed()
                                    : gSaveContext.ship.stats.fileCreatedAt),
             &randomState);
 
         isBigActor = !isSmallOnly && ShipUtils::Random(0, 2, &randomState) == 1;
         if (isBigActor) {
-            // Between 100% and 300% size.
-            randomNumber = static_cast<float>(ShipUtils::Random(0, 200, &randomState));
-            return 1.0f + randomNumber / 100.0f;
+            return 1.0f + ShipUtils::RandomDouble(&randomState) * 2.0f; // 100% to 300%
         }
 
-        // Between 10% and 100% size.
-        randomNumber = static_cast<float>(ShipUtils::Random(0, 90, &randomState));
-        return 0.1f + randomNumber / 100.0f;
+        return 0.1f + ShipUtils::RandomDouble(&randomState) * 0.9f; // 10% to 100%
     }
 
     // Unseeded random -- different every room load.
-    isBigActor = !isSmallOnly && ShipUtils::Random(0, 2, &randomState) == 1;
+    isBigActor = !isSmallOnly && ShipUtils::Random(0, 2, nullptr) == 1;
     if (isBigActor) {
-        randomNumber = ShipUtils::Random(0, 200, &randomState);
-        return 1.0f + randomNumber / 100.0f;
+        return 1.0f + ShipUtils::RandomDouble(nullptr) * 2.0f; // 100% to 300%
     }
 
-    randomNumber = ShipUtils::Random(0, 90, &randomState);
-    return 0.1f + randomNumber / 100.0f;
+    return 0.1f + ShipUtils::RandomDouble(nullptr) * 0.9f; // 10% to 100%
 }
 
 static void RandomizedEnemySizes(void* refActor) {
