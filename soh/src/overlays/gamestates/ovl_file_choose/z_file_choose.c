@@ -672,6 +672,17 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
     FileChoose_UpdateRandomizer();
 
     // #region SOH [Enhancement] - Hide Quest Modes
+    // If the current quest type was hidden after being selected (i.e., CVar changed while on the quest menu), advance
+    // to the next visible one.
+    while (IsQuestSkipped(this->questType[this->buttonIndex])) {
+        this->questType[this->buttonIndex] += 1;
+        if (this->questType[this->buttonIndex] > MAX_QUEST) {
+            this->questType[this->buttonIndex] = MIN_QUEST;
+        }
+    }
+    // #endregion
+
+    // #region SOH [Enhancement] - Hide Quest Modes
     if (CountVisibleQuests() > 1 && ABS(this->stickRelX) > 30 || (dpad && CHECK_BTN_ANY(input->press.button,
                                                                       BTN_DLEFT | BTN_DRIGHT))) {
         // Cycle through quest types, skipping any that are hidden (i.e., Master Quest without OTR,
