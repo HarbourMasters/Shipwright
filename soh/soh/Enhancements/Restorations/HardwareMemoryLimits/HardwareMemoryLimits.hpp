@@ -34,7 +34,7 @@ struct PlayState;
 void N64Mem_Reset(PlayState* play);
 
 // Returns whether the N64 memory model is currently active.
-int32_t N64Mem_IsActive(void);
+bool N64Mem_IsActive(void);
 
 // Returns the shadow arena pointer for debug visualization.  Only valid when N64Mem_IsActive() is true.
 struct ShadowArena* N64Mem_GetShadowArena(void);
@@ -59,12 +59,12 @@ void N64Mem_ClearOriginalActorId(void);
 
 // Returns true if the actor at realPtr is a randomized replacement (i.e., has an original-ID entry), false otherwise.
 // Used by Actor_UpdateAll to suppress shadow allocations for children spawned during a replacement's update.
-int32_t N64Mem_IsRandomizedActor(void* realPtr);
+bool N64Mem_IsRandomizedActor(void* realPtr);
 
 // Save/restore for the randomized-init skip flag.  Actor_Spawn saves the current value at entry and restores it
 // after Actor_Init returns, so child spawns during a randomized actor's init don't clobber the parent's flag.
-int32_t N64Mem_GetRandomizedInit(void);
-void N64Mem_SetRandomizedInit(int32_t value);
+bool N64Mem_IsRandomizedInit(void);
+void N64Mem_SetRandomizedInit(bool value);
 
 // Log Graveyard benchmark data (transition count, largest_free, total_free).  Call after room actors are spawned.
 void N64Mem_BenchmarkTransition(PlayState* play);
@@ -79,7 +79,7 @@ void N64Mem_BenchmarkTransition(PlayState* play);
 // Call FreeOverlay when numLoaded transitions 1 -> false.
 // --------------------------------------------------------------------------------------------------------------------
 
-int32_t N64Mem_AllocOverlay(int16_t actorId, uint16_t allocType);
+bool N64Mem_AllocOverlay(int16_t actorId, uint16_t allocType);
 void N64Mem_FreeOverlay(int16_t actorId, uint16_t allocType);
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -91,7 +91,7 @@ void N64Mem_FreeOverlay(int16_t actorId, uint16_t allocType);
 // Call FreeInstance when the actor is deleted.
 // --------------------------------------------------------------------------------------------------------------------
 
-int32_t N64Mem_AllocInstance(int16_t actorId, int16_t params, void* realPtr);
+bool N64Mem_AllocInstance(int16_t actorId, int16_t params, void* realPtr);
 // Returns the stored original actor ID for overlay free-path tracking, or -1 if not tracked.
 int16_t N64Mem_FreeInstance(void* realPtr);
 
@@ -101,7 +101,7 @@ int16_t N64Mem_FreeInstance(void* realPtr);
 // Same pattern as instances -- shadow-alloc at N64 size, gate on failure, free when the real allocation is freed.
 // --------------------------------------------------------------------------------------------------------------------
 
-int32_t N64Mem_AllocSubsidiary(void* realPtr, uint32_t n64Size);
+bool N64Mem_AllocSubsidiary(void* realPtr, uint32_t n64Size);
 void N64Mem_FreeSubsidiary(void* realPtr);
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -110,7 +110,7 @@ void N64Mem_FreeSubsidiary(void* realPtr);
 // On N64, effect overlays load via MallocR on first spawn and are never freed until the GameState is torn down.
 // --------------------------------------------------------------------------------------------------------------------
 
-int32_t N64Mem_AllocEffectOverlay(int32_t type);
+bool N64Mem_AllocEffectOverlay(int32_t type);
 
 // --------------------------------------------------------------------------------------------------------------------
 // Heap viewer metadata
@@ -127,7 +127,7 @@ int32_t N64Mem_AllocEffectOverlay(int32_t type);
 #define N64MEM_BLOCK_EFFECT     4
 #define N64MEM_BLOCK_ABSOLUTE   5
 
-int32_t N64Mem_GetBlockInfo(uint32_t dataOffset, uint8_t* outType, int16_t* outActorId);
+bool N64Mem_GetBlockInfo(uint32_t dataOffset, uint8_t* outType, int16_t* outActorId);
 
 #ifdef __cplusplus
 }

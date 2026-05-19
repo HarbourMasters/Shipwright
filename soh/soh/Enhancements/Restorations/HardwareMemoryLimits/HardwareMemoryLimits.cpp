@@ -20,7 +20,7 @@ extern "C" {
 // State
 // --------------------------------------------------------------------------------------------------------------------
 
-static int32_t sIsActive = 0;
+static bool sIsActive = false;
 static ShadowArena sShadow = {};
 static uint32_t sSohThaRemainder = 0;
 static uint8_t sElfMsgNum = 0;
@@ -58,7 +58,7 @@ static int16_t sOriginalActorId = -1;
 // Set when AllocInstance consumes a non-negative sOriginalActorId, cleared after Actor_Init returns.  While set, ALL
 // shadow allocations (overlay, instance, subsidiary) from child actors spawned during the replacement actor's init are
 // skipped -- on N64 these children don't exist because the original actor never spawned them.
-static int32_t sIsInsideRandomizedInit = 0;
+static bool sIsInsideRandomizedInit = false;
 
 // Returns the actor ID to use for size lookups.  If an original actor ID override is set (enemy randomizer active),
 // returns that; otherwise returns the passed actorId unchanged.
@@ -70,7 +70,7 @@ static uint16_t ResolveSizeActorId(int16_t actorId) {
 // Diagnostics
 // --------------------------------------------------------------------------------------------------------------------
 
-static int32_t sTraceEnabled = 0;
+static bool sIsTraceEnabled = false;
 
 static void LogShadowState(const char* context) {
     uint32_t maxFree = 0;
@@ -84,14 +84,14 @@ static void LogShadowState(const char* context) {
 }
 
 static void TraceAlloc(const char* tag, uint32_t id, uint32_t size) {
-    if (sTraceEnabled) {
+    if (sIsTraceEnabled) {
         uint32_t consumed = (size + 0xF & ~0xF) + sShadow.nodeSize;
         spdlog::trace("[N64Trace] +{} id=0x{:X} sz=0x{:X} cost=0x{:X}", tag, id, size, consumed);
     }
 }
 
 static void TraceFree(const char* tag, uint32_t id) {
-    if (sTraceEnabled) {
+    if (sIsTraceEnabled) {
         spdlog::trace("[N64Trace] -{} id=0x{:X}", tag, id);
     }
 }
@@ -160,7 +160,7 @@ void N64Mem_Reset(PlayState* play) {
     sBlockMetaMap.clear();
     sAbsoluteSpaceShadow = SHADOW_NULL;
     sOriginalActorId = -1;
-    sIsInsideRandomizedInit = 0;
+    sIsInsideRandomizedInit = false;
 
     for (uint32_t& sOverlayShadow : sOverlayShadows) {
         sOverlayShadow = SHADOW_NULL;
@@ -177,7 +177,7 @@ void N64Mem_Reset(PlayState* play) {
         uint32_t shadowArenaSize = ArenaSizing_ComputeN64ArenaSize(play);
         if (shadowArenaSize == 0) {
             spdlog::error("[HardwareMemoryLimits] Arena sizing returned 0 -- THA budget exceeded, disabling.");
-            sIsActive = 0;
+            sIsActive = false;
             return;
         }
 
@@ -185,11 +185,11 @@ void N64Mem_Reset(PlayState* play) {
                      play->sceneNum);
         ShadowArena_Init(&sShadow, shadowArenaSize, 0x30);
 
-        sTraceEnabled = play->sceneNum == SCENE_GRAVEYARD;
+        sIsTraceEnabled = play->sceneNum == SCENE_GRAVEYARD;
     }
 }
 
-int32_t N64Mem_IsActive() {
+bool N64Mem_IsActive() {
     return sIsActive;
 }
 
@@ -283,19 +283,19 @@ void N64Mem_ClearOriginalActorId() {
     sOriginalActorId = -1;
 }
 
-int32_t N64Mem_IsRandomizedActor(void* realPtr) {
+bool N64Mem_IsRandomizedActor(void* realPtr) {
     if (!sIsActive || !realPtr) {
-        return 0;
+        return false;
     }
 
-    return sActorOriginalIds.contains(realPtr) ? 1 : 0;
+    return sActorOriginalIds.contains(realPtr) ? true : false;
 }
 
-int32_t N64Mem_GetRandomizedInit() {
+bool N64Mem_IsRandomizedInit() {
     return sIsInsideRandomizedInit;
 }
 
-void N64Mem_SetRandomizedInit(int32_t value) {
+void N64Mem_SetRandomizedInit(bool value) {
     sIsInsideRandomizedInit = value;
 }
 
@@ -303,23 +303,23 @@ void N64Mem_SetRandomizedInit(int32_t value) {
 // Actor overlays
 // --------------------------------------------------------------------------------------------------------------------
 
-int32_t N64Mem_AllocOverlay(int16_t actorId, uint16_t allocType) {
+bool N64Mem_AllocOverlay(int16_t actorId, uint16_t allocType) {
     if (!sIsActive) {
-        return 1;
+        return true;
     }
 
     // Child actors spawned during a randomized enemy's init don't exist on N64 -- skip shadow tracking.
     if (sIsInsideRandomizedInit) {
-        return 1;
+        return true;
     }
 
     if (actorId < 0 || actorId >= ACTOR_ID_MAX) {
-        return 1;
+        return true;
     }
 
     const uint32_t overlaySize = N64SizeData_GetActorOverlaySize(ResolveSizeActorId(actorId));
     if (overlaySize == 0) {
-        return 1;
+        return true;
     }
 
     // When the enemy randomizer is active, use the original actor's allocType so the shadow takes the same path
@@ -336,7 +336,7 @@ int32_t N64Mem_AllocOverlay(int16_t actorId, uint16_t allocType) {
             sAbsoluteSpaceShadow = ShadowArena_MallocR(&sShadow, AM_FIELD_SIZE);
             if (sAbsoluteSpaceShadow == SHADOW_NULL) {
                 spdlog::error("[HardwareMemoryLimits] Shadow absolute space failed (need 0x{:X})", AM_FIELD_SIZE);
-                return 0;
+                return false;
             }
             sBlockMetaMap[sAbsoluteSpaceShadow] = { N64MEM_BLOCK_ABSOLUTE, -1 };
         }
@@ -350,7 +350,7 @@ int32_t N64Mem_AllocOverlay(int16_t actorId, uint16_t allocType) {
 
     // Already shadowed for this type.
     if (sOverlayShadows[overlayTrackId] != SHADOW_NULL) {
-        return 1;
+        return true;
     }
 
     // Match Actor_LoadOverlay's branching: PERSISTENT/PERMANENT overlays go through MallocR (arena top), default
@@ -363,13 +363,13 @@ int32_t N64Mem_AllocOverlay(int16_t actorId, uint16_t allocType) {
     if (shadow == SHADOW_NULL) {
         spdlog::error("[HardwareMemoryLimits] Shadow overlay failed for actor 0x{:04X} (need 0x{:X})", actorId,
                       overlaySize);
-        return 0;
+        return false;
     }
 
     sOverlayShadows[overlayTrackId] = shadow;
     sBlockMetaMap[shadow] = { N64MEM_BLOCK_OVERLAY, static_cast<int16_t>(overlayTrackId) };
     TraceAlloc("ovl", overlayTrackId, overlaySize);
-    return 1;
+    return true;
 }
 
 void N64Mem_FreeOverlay(int16_t actorId, uint16_t allocType) {
@@ -396,15 +396,15 @@ void N64Mem_FreeOverlay(int16_t actorId, uint16_t allocType) {
 // Actor instances
 // --------------------------------------------------------------------------------------------------------------------
 
-int32_t N64Mem_AllocInstance(int16_t actorId, int16_t params, void* realPtr) {
+bool N64Mem_AllocInstance(int16_t actorId, int16_t params, void* realPtr) {
     if (!sIsActive) {
         sOriginalActorId = -1;
-        return 1;
+        return true;
     }
 
     // Child actors spawned during a randomized enemy's init don't exist on N64 -- skip shadow tracking.
     if (sIsInsideRandomizedInit) {
-        return 1;
+        return true;
     }
 
     const uint16_t sizeId = ResolveSizeActorId(actorId);
@@ -412,18 +412,19 @@ int32_t N64Mem_AllocInstance(int16_t actorId, int16_t params, void* realPtr) {
     // Consume the override and enter the randomized-init phase.  Subsidiaries allocated during Actor_Init will be
     // skipped (they belong to the replacement, not the original).  Child Actor_Spawn calls during init will also
     // be skipped via the sIsInsideRandomizedInit check above.
-    if (sOriginalActorId >= 0) {
+    const bool isRandomized = sOriginalActorId >= 0;
+    if (isRandomized) {
         sOriginalActorId = -1;
-        sIsInsideRandomizedInit = 1;
+        sIsInsideRandomizedInit = true;
     }
 
     if (actorId < 0 || actorId >= ACTOR_ID_MAX) {
-        return 1;
+        return true;
     }
 
     const uint32_t instanceSize = N64SizeData_GetActorInstanceSize(sizeId);
     if (instanceSize == 0) {
-        return 1;
+        return true;
     }
 
     if (instanceSize == 0x1A0) {
@@ -437,14 +438,21 @@ int32_t N64Mem_AllocInstance(int16_t actorId, int16_t params, void* realPtr) {
         N64Mem_DumpArena(fmt::format("instance failure: actor=0x{:04X} params=0x{:04X}", actorId,
                                      static_cast<uint16_t>(params))
             .c_str());
-        return 0;
+        return false;
     }
 
     sShadowMap[realPtr] = shadow;
-    sActorOriginalIds[realPtr] = static_cast<int16_t>(sizeId);
+
+    // Only track the original-ID mapping for randomized replacements.  Non-randomized actors fall back to actor->id
+    // in Actor_Delete, which is already correct.  This keeps sActorOriginalIds scoped to randomized actors so
+    // N64Mem_IsRandomizedActor can use it as a reliable identity check.
+    if (isRandomized) {
+        sActorOriginalIds[realPtr] = static_cast<int16_t>(sizeId);
+    }
+
     sBlockMetaMap[shadow] = { N64MEM_BLOCK_INSTANCE, static_cast<int16_t>(sizeId) };
     TraceAlloc("inst", actorId, instanceSize);
-    return 1;
+    return true;
 }
 
 int16_t N64Mem_FreeInstance(void* realPtr) {
@@ -464,7 +472,7 @@ int16_t N64Mem_FreeInstance(void* realPtr) {
         sActorOriginalIds.erase(j);
     }
 
-    if (sTraceEnabled) {
+    if (sIsTraceEnabled) {
         const auto* actor = static_cast<Actor*>(realPtr);
         TraceFree("inst", actor->id);
     }
@@ -479,28 +487,28 @@ int16_t N64Mem_FreeInstance(void* realPtr) {
 // Subsidiaries
 // --------------------------------------------------------------------------------------------------------------------
 
-int32_t N64Mem_AllocSubsidiary(void* realPtr, uint32_t n64Size) {
+bool N64Mem_AllocSubsidiary(void* realPtr, uint32_t n64Size) {
     if (!sIsActive) {
-        return 1;
+        return true;
     }
 
     // When inside a randomized enemy's init, the replacement actor's subsidiaries (colliders, skeleton tables, skin
     // buffers) have different counts than the original's.  Rather than charge the wrong sizes, skip subsidiary
     // tracking entirely -- instance and overlay sizes from the original are already correct and dominate heap pressure.
     if (sIsInsideRandomizedInit) {
-        return 1;
+        return true;
     }
 
     const uint32_t shadow = ShadowArena_Malloc(&sShadow, n64Size);
     if (shadow == SHADOW_NULL) {
         spdlog::error("[HardwareMemoryLimits] Shadow subsidiary failed (need 0x{:X})", n64Size);
-        return 0;
+        return false;
     }
 
     sShadowMap[realPtr] = shadow;
     sBlockMetaMap[shadow] = { N64MEM_BLOCK_SUBSIDIARY, -1 };
     TraceAlloc("sub", 0, n64Size);
-    return 1;
+    return true;
 }
 
 void N64Mem_FreeSubsidiary(void* realPtr) {
@@ -523,40 +531,40 @@ void N64Mem_FreeSubsidiary(void* realPtr) {
 // Effect overlays
 // --------------------------------------------------------------------------------------------------------------------
 
-int32_t N64Mem_AllocEffectOverlay(int32_t type) {
+bool N64Mem_AllocEffectOverlay(int32_t type) {
     if (!sIsActive) {
-        return 1;
+        return true;
     }
 
     // Effect overlays triggered by a randomized replacement's children or update don't exist on N64 -- skip shadowing.
     if (sIsInsideRandomizedInit) {
-        return 1;
+        return true;
     }
 
     if (type < 0 || type >= EFFECT_SS_TYPE_MAX) {
-        return 1;
+        return true;
     }
 
     if (sEffectOverlayShadows[type] != SHADOW_NULL) {
-        return 1;
+        return true;
     }
 
     uint32_t overlaySize = N64SizeData_GetEffectOverlaySize(type);
     if (overlaySize == 0) {
-        return 1;
+        return true;
     }
 
     const uint32_t shadow = ShadowArena_MallocR(&sShadow, overlaySize);
     if (shadow == SHADOW_NULL) {
         spdlog::error("[HardwareMemoryLimits] Shadow effect overlay failed for type 0x{:02X} (need 0x{:X})", type,
                       overlaySize);
-        return 0;
+        return false;
     }
 
     sEffectOverlayShadows[type] = shadow;
     sBlockMetaMap[shadow] = { N64MEM_BLOCK_EFFECT, static_cast<int16_t>(type) };
     TraceAlloc("efx", type, overlaySize);
-    return 1;
+    return true;
 }
 
 
@@ -564,10 +572,10 @@ int32_t N64Mem_AllocEffectOverlay(int32_t type) {
 // Heap viewer metadata
 // --------------------------------------------------------------------------------------------------------------------
 
-int32_t N64Mem_GetBlockInfo(uint32_t dataOffset, uint8_t* outType, int16_t* outActorId) {
+bool N64Mem_GetBlockInfo(uint32_t dataOffset, uint8_t* outType, int16_t* outActorId) {
     const auto i = sBlockMetaMap.find(dataOffset);
     if (i == sBlockMetaMap.end()) {
-        return 0;
+        return false;
     }
 
     if (outType) {
@@ -578,7 +586,7 @@ int32_t N64Mem_GetBlockInfo(uint32_t dataOffset, uint8_t* outType, int16_t* outA
         *outActorId = i->second.actorId;
     }
 
-    return 1;
+    return true;
 }
 
 // --------------------------------------------------------------------------------------------------------------------

@@ -2719,7 +2719,7 @@ void Actor_UpdateAll(PlayState* play, ActorContext* actorCtx) {
                         //
                         // If the actor is a randomized replacement, suppress shadow allocations for any children it
                         // spawns during its update (Actor_Spawn, Actor_SpawnAsChild, subsidiaries).
-                        const s32 n64MemSavedUpdate = N64Mem_GetRandomizedInit();
+                        const s32 n64MemSavedUpdate = N64Mem_IsRandomizedInit();
                         if (N64Mem_IsRandomizedActor(actor)) {
                             N64Mem_SetRandomizedInit(1);
                         }
@@ -3390,7 +3390,7 @@ Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 pos
     // #region SOH [Enhancement] - Hardware Memory Limits
     // Save the randomizer state before spawn.  Enemy Randomizer may swap the actor ID, so the shadow needs to know
     // both the original and randomized IDs to allocate the correct sizes.
-    const s32 n64MemSavedInit = N64Mem_GetRandomizedInit();
+    const s32 n64MemSavedInit = N64Mem_IsRandomizedInit();
     // #endregion
 
     ActorDBEntry* dbEntry = ActorDB_Retrieve(actorId);
