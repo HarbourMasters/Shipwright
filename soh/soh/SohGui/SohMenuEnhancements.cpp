@@ -689,6 +689,16 @@ void SohMenu::AddMenuEnhancements() {
         .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip("The skybox in the background of the File Select screen will go through the "
                                            "day and night cycle over time."));
+    AddWidget(path, "Hide Randomizer Quest", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("HideRandomizerQuest"))
+        .RaceDisable(false)
+        .Options(CheckboxOptions().Tooltip(
+            "Hides the Randomizer option when selecting a quest type on the File Select screen."));
+    AddWidget(path, "Hide Boss Rush Quest", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("HideBossRushQuest"))
+        .RaceDisable(false)
+        .Options(CheckboxOptions().Tooltip(
+            "Hides the Boss Rush option when selecting a quest type on the File Select screen."));
 
     path.column = SECTION_COLUMN_3;
     AddWidget(path, "Misc.", WIDGET_SEPARATOR_TEXT);

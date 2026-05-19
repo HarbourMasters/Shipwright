@@ -28,6 +28,24 @@
 #define MIN_QUEST (ResourceMgr_GameHasOriginal() ? QUEST_NORMAL : QUEST_MASTER)
 #define MAX_QUEST QUEST_BOSSRUSH
 
+// #region SOH [Enhancement] - Hide Quest Modes
+static bool IsQuestSkipped(uint8_t quest) {
+    if (quest == QUEST_MASTER && !ResourceMgr_GameHasMasterQuest()) {
+        return true;
+    }
+
+    if (quest == QUEST_RANDOMIZER && CVarGetInteger(CVAR_ENHANCEMENT("HideRandomizerQuest"), 0)) {
+        return true;
+    }
+
+    if (quest == QUEST_BOSSRUSH && CVarGetInteger(CVAR_ENHANCEMENT("HideBossRushQuest"), 0)) {
+        return true;
+    }
+
+    return false;
+}
+// #endregion
+
 void Sram_InitDebugSave(void);
 void Sram_InitBossRushSave();
 
@@ -641,26 +659,25 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
     FileChoose_UpdateRandomizer();
 
     if (ABS(this->stickRelX) > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT | BTN_DRIGHT))) {
+        // #region SOH [Enhancement] - Hide Quest Modes
+        // Cycle through quest types, skipping any that are hidden (i.e., Master Quest without OTR,
+        // Randomizer/Boss Rush when their CVars are set).  Wraps around if past min/max.
         if (this->stickRelX > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DRIGHT))) {
-            this->questType[this->buttonIndex] += 1;
-            while (this->questType[this->buttonIndex] == QUEST_MASTER && !ResourceMgr_GameHasMasterQuest()) {
-                // If Master Quest is selected without a Master Quest OTR present, skip past it.
+            do {
                 this->questType[this->buttonIndex] += 1;
-            }
+                if (this->questType[this->buttonIndex] > MAX_QUEST) {
+                    this->questType[this->buttonIndex] = MIN_QUEST;
+                }
+            } while (IsQuestSkipped(this->questType[this->buttonIndex]));
         } else if (this->stickRelX < -30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT))) {
-            this->questType[this->buttonIndex] -= 1;
-            while (this->questType[this->buttonIndex] == QUEST_MASTER && !ResourceMgr_GameHasMasterQuest()) {
-                // If Master Quest is selected without a Master Quest OTR present, skip past it.
+            do {
                 this->questType[this->buttonIndex] -= 1;
-            }
+                if (this->questType[this->buttonIndex] < MIN_QUEST) {
+                    this->questType[this->buttonIndex] = MAX_QUEST;
+                }
+            } while (IsQuestSkipped(this->questType[this->buttonIndex]));
         }
-
-        // If current buttonIndex is higher or lower than the min/max value, wrap around.
-        if (this->questType[this->buttonIndex] > MAX_QUEST) {
-            this->questType[this->buttonIndex] = MIN_QUEST;
-        } else if (this->questType[this->buttonIndex] < MIN_QUEST) {
-            this->questType[this->buttonIndex] = MAX_QUEST;
-        }
+        // #endregion
 
         Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
                                &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
