@@ -56,7 +56,6 @@ static uint8_t CountVisibleQuests(void) {
 
     return count;
 }
-
 // #endregion
 
 void Sram_InitDebugSave(void);
