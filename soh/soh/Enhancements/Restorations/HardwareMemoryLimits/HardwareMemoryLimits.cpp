@@ -283,6 +283,14 @@ void N64Mem_ClearOriginalActorId() {
     sOriginalActorId = -1;
 }
 
+int32_t N64Mem_IsRandomizedActor(void* realPtr) {
+    if (!sIsActive || !realPtr) {
+        return 0;
+    }
+
+    return sActorOriginalIds.contains(realPtr) ? 1 : 0;
+}
+
 int32_t N64Mem_GetRandomizedInit() {
     return sIsInsideRandomizedInit;
 }
@@ -517,6 +525,11 @@ void N64Mem_FreeSubsidiary(void* realPtr) {
 
 int32_t N64Mem_AllocEffectOverlay(int32_t type) {
     if (!sIsActive) {
+        return 1;
+    }
+
+    // Effect overlays triggered by a randomized replacement's children or update don't exist on N64 -- skip shadowing.
+    if (sIsInsideRandomizedInit) {
         return 1;
     }
 
