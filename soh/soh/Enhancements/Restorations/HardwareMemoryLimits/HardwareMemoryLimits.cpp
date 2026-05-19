@@ -1,6 +1,5 @@
 #include <libultraship/bridge/consolevariablebridge.h>
 
-#include <spdlog/logger.h>
 #include <string>
 
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
@@ -15,8 +14,7 @@ extern "C" {
 }
 
 #define CVAR_NAME CVAR_ENHANCEMENT("HardwareMemoryLimits")
-#define CVAR_DEFAULT 0
-#define CVAR_VALUE CVarGetInteger(CVAR_NAME, CVAR_DEFAULT)
+#define CVAR_VALUE CVarGetInteger(CVAR_NAME, 0)
 
 // --------------------------------------------------------------------------------------------------------------------
 // State
@@ -80,21 +78,21 @@ static void LogShadowState(const char* context) {
     uint32_t totalAlloc = 0;
 
     ShadowArena_GetSizes(&sShadow, &maxFree, &totalFree, &totalAlloc);
-    SPDLOG_INFO("[HardwareMemoryLimits] ({}): alloc=0x{:X}, free=0x{:X}, largest=0x{:X}", context, totalAlloc,
-                totalFree,
-                maxFree);
+    spdlog::info("[HardwareMemoryLimits] ({}): alloc=0x{:X}, free=0x{:X}, largest=0x{:X}", context, totalAlloc,
+                 totalFree,
+                 maxFree);
 }
 
 static void TraceAlloc(const char* tag, uint32_t id, uint32_t size) {
     if (sTraceEnabled) {
         uint32_t consumed = (size + 0xF & ~0xF) + sShadow.nodeSize;
-        SPDLOG_TRACE("[N64Trace] +{} id=0x{:X} sz=0x{:X} cost=0x{:X}", tag, id, size, consumed);
+        spdlog::trace("[N64Trace] +{} id=0x{:X} sz=0x{:X} cost=0x{:X}", tag, id, size, consumed);
     }
 }
 
 static void TraceFree(const char* tag, uint32_t id) {
     if (sTraceEnabled) {
-        SPDLOG_TRACE("[N64Trace] -{} id=0x{:X}", tag, id);
+        spdlog::trace("[N64Trace] -{} id=0x{:X}", tag, id);
     }
 }
 
@@ -116,8 +114,8 @@ void N64Mem_BenchmarkTransition(PlayState* play) {
     uint32_t totalAlloc = 0;
     ShadowArena_GetSizes(&sShadow, &maxFree, &totalFree, &totalAlloc);
 
-    SPDLOG_INFO("[N64Benchmark] transition={}, largest_free=0x{:X}, total_free=0x{:X}",
-                sGraveyardTransitionCount, maxFree, totalFree);
+    spdlog::info("[N64Benchmark] transition={}, largest_free=0x{:X}, total_free=0x{:X}",
+                 sGraveyardTransitionCount, maxFree, totalFree);
 }
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -144,11 +142,11 @@ void N64Mem_Reset(PlayState* play) {
         uint32_t totalAlloc = 0;
 
         ShadowArena_GetSizes(&sShadow, &maxFree, &totalFree, &totalAlloc);
-        SPDLOG_INFO("[HardwareMemoryLimits] Teardown: alloc=0x{:X}, free=0x{:X}, largest=0x{:X}, ptrs={}", totalAlloc,
-                    totalFree, maxFree, sShadowMap.size());
+        spdlog::info("[HardwareMemoryLimits] Teardown: alloc=0x{:X}, free=0x{:X}, largest=0x{:X}, ptrs={}", totalAlloc,
+                     totalFree, maxFree, sShadowMap.size());
 
         if (sGraveyardTransitionCount > 0) {
-            SPDLOG_INFO("[N64Benchmark] RESULT transitions={}", sGraveyardTransitionCount);
+            spdlog::info("[N64Benchmark] RESULT transitions={}", sGraveyardTransitionCount);
         }
     }
 
@@ -174,18 +172,18 @@ void N64Mem_Reset(PlayState* play) {
 
     sIsActive = CVAR_VALUE;
     if (sIsActive && play != nullptr) {
-        // Compute N64-equivalent arena size from first principles.  All per-version constants are derived from the OTR
-        // blob, which was extracted from the user's specific ROM version.
+        // Compute N64-equivalent arena size from first principles.  Per-ROM overlay file sizes are derived from O2R
+        // blobs; the arena node size is hardcoded at 0x30 (uniform across all N64 ROM versions).
         uint32_t shadowArenaSize = ArenaSizing_ComputeN64ArenaSize(play);
         if (shadowArenaSize == 0) {
-            SPDLOG_ERROR("[HardwareMemoryLimits] Arena sizing returned 0 -- THA budget exceeded, disabling.");
+            spdlog::error("[HardwareMemoryLimits] Arena sizing returned 0 -- THA budget exceeded, disabling.");
             sIsActive = 0;
             return;
         }
 
-        SPDLOG_INFO("[HardwareMemoryLimits] Shadow arena size=0x{:X} for scene 0x{:X}", shadowArenaSize,
-                    play->sceneNum);
-        ShadowArena_Init(&sShadow, shadowArenaSize, N64SizeData_GetArenaNodeSize());
+        spdlog::info("[HardwareMemoryLimits] Shadow arena size=0x{:X} for scene 0x{:X}", shadowArenaSize,
+                     play->sceneNum);
+        ShadowArena_Init(&sShadow, shadowArenaSize, 0x30);
 
         sTraceEnabled = play->sceneNum == SCENE_GRAVEYARD;
     }
@@ -274,7 +272,7 @@ void N64Mem_DumpArena(const char* tag) {
     out += fmt::format("[N64HeapDump] {} blocks: {} alloc (0x{:X}B), {} free (0x{:X}B)", freeCount + allocCount,
                        allocCount, allocTotal, freeCount, freeTotal);
 
-    SPDLOG_INFO("{}", out);
+    spdlog::info("{}", out);
 }
 
 void N64Mem_SetOriginalActorId(int16_t actorId) {
@@ -337,7 +335,7 @@ int32_t N64Mem_AllocOverlay(int16_t actorId, uint16_t allocType) {
         if (sAbsoluteSpaceShadow == SHADOW_NULL) {
             sAbsoluteSpaceShadow = ShadowArena_MallocR(&sShadow, AM_FIELD_SIZE);
             if (sAbsoluteSpaceShadow == SHADOW_NULL) {
-                SPDLOG_ERROR("[HardwareMemoryLimits] Shadow absolute space failed (need 0x{:X})", AM_FIELD_SIZE);
+                spdlog::error("[HardwareMemoryLimits] Shadow absolute space failed (need 0x{:X})", AM_FIELD_SIZE);
                 return 0;
             }
             sBlockMetaMap[sAbsoluteSpaceShadow] = { N64MEM_BLOCK_ABSOLUTE, -1 };
@@ -363,8 +361,8 @@ int32_t N64Mem_AllocOverlay(int16_t actorId, uint16_t allocType) {
                                 ? ShadowArena_MallocR(&sShadow, overlaySize)
                                 : ShadowArena_Malloc(&sShadow, overlaySize);
     if (shadow == SHADOW_NULL) {
-        SPDLOG_ERROR("[HardwareMemoryLimits] Shadow overlay failed for actor 0x{:04X} (need 0x{:X})", actorId,
-                     overlaySize);
+        spdlog::error("[HardwareMemoryLimits] Shadow overlay failed for actor 0x{:04X} (need 0x{:X})", actorId,
+                      overlaySize);
         return 0;
     }
 
@@ -429,13 +427,13 @@ int32_t N64Mem_AllocInstance(int16_t actorId, int16_t params, void* realPtr) {
     }
 
     if (instanceSize == 0x1A0) {
-        SPDLOG_INFO("[HardwareMemoryLimits] 0x1A0 instance: actorId=0x{:X}", actorId);
+        spdlog::info("[HardwareMemoryLimits] 0x1A0 instance: actorId=0x{:X}", actorId);
     }
 
     const uint32_t shadow = ShadowArena_Malloc(&sShadow, instanceSize);
     if (shadow == SHADOW_NULL) {
-        SPDLOG_ERROR("[HardwareMemoryLimits] Shadow instance failed for actor 0x{:04X} params=0x{:04X} (need 0x{:X})",
-                     actorId, static_cast<uint16_t>(params), instanceSize);
+        spdlog::error("[HardwareMemoryLimits] Shadow instance failed for actor 0x{:04X} params=0x{:04X} (need 0x{:X})",
+                      actorId, static_cast<uint16_t>(params), instanceSize);
         N64Mem_DumpArena(fmt::format("instance failure: actor=0x{:04X} params=0x{:04X}", actorId,
                                      static_cast<uint16_t>(params))
             .c_str());
@@ -495,7 +493,7 @@ int32_t N64Mem_AllocSubsidiary(void* realPtr, uint32_t n64Size) {
 
     const uint32_t shadow = ShadowArena_Malloc(&sShadow, n64Size);
     if (shadow == SHADOW_NULL) {
-        SPDLOG_ERROR("[HardwareMemoryLimits] Shadow subsidiary failed (need 0x{:X})", n64Size);
+        spdlog::error("[HardwareMemoryLimits] Shadow subsidiary failed (need 0x{:X})", n64Size);
         return 0;
     }
 
@@ -550,8 +548,8 @@ int32_t N64Mem_AllocEffectOverlay(int32_t type) {
 
     const uint32_t shadow = ShadowArena_MallocR(&sShadow, overlaySize);
     if (shadow == SHADOW_NULL) {
-        SPDLOG_ERROR("[HardwareMemoryLimits] Shadow effect overlay failed for type 0x{:02X} (need 0x{:X})", type,
-                     overlaySize);
+        spdlog::error("[HardwareMemoryLimits] Shadow effect overlay failed for type 0x{:02X} (need 0x{:X})", type,
+                      overlaySize);
         return 0;
     }
 

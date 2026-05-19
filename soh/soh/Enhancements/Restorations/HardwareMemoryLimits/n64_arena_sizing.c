@@ -76,7 +76,7 @@ static uint32_t GetMapMarkDataOverlaySize(PlayState* play) {
 // --------------------------------------------------------------------------------------------------------------------
 // Skybox N64-unique THA consumers
 //
-// On N64, skybox textures and palettes are DMA'd into THA-allocated staticSegment buffers.  SoH loads from OTR via the
+// On N64, skybox textures and palettes are DMA'd into THA-allocated staticSegment buffers.  SoH loads from O2R via the
 // ResourceManager, never touching THA.
 //
 // The allocation pattern depends on the skybox type:
@@ -247,7 +247,7 @@ static uint32_t GetObjectBankSize(PlayState* play) {
 // --------------------------------------------------------------------------------------------------------------------
 // Elf message size
 //
-// On N64, loaded via Play_LoadFile into THA.  SoH loads from OTR via ResourceManager.  Only present if the scene's
+// On N64, loaded via Play_LoadFile into THA.  SoH loads from O2R via ResourceManager.  Only present if the scene's
 // SpecialFiles command has cUpElfMsgNum != 0.  The file name is determined by cUpElfMsgNum (1-indexed).
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -322,11 +322,11 @@ uint32_t ArenaSizing_ComputeN64ArenaSize(PlayState* play) {
 
     uint32_t total = 0;
 
-    // Kaleido overlay buffer: max(ovl_kaleido_scope, ovl_player_actor) VRAM span, from OTR blob.
+    // Kaleido overlay buffer: max(ovl_kaleido_scope, ovl_player_actor) VRAM span, from O2R blob.
     const uint32_t kaleidoVramSize = N64SizeData_GetKaleidoVramSize();
     total += ALIGN16(kaleidoVramSize);
 
-    // parameter_static: DMA file size, version-specific but available in the OTR blob.
+    // parameter_static: DMA file size, looked up from the O2R blob.
     const uint32_t parameterStaticSize = N64SizeData_GetDmaFileSize("parameter_static");
     total += ALIGN16(parameterStaticSize);
 

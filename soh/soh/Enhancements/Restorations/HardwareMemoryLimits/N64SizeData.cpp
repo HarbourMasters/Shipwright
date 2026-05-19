@@ -21,7 +21,7 @@ static void LoadDmaFileSizes() {
     const auto file =
         Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->LoadFile("misc/n64_memory/dma_sizes");
     if (!file || !file->IsLoaded) {
-        SPDLOG_ERROR("[N64SizeData] Failed to load misc/n64_memory/dma_sizes from OTR.");
+        spdlog::error("[N64SizeData] Failed to load misc/n64_memory/dma_sizes from O2R.");
         return;
     }
 
@@ -36,7 +36,7 @@ static void LoadDmaFileSizes() {
         sDmaFileSizes[name] = vromSize;
     }
 
-    SPDLOG_INFO("[N64SizeData] Loaded {} DMA file sizes from OTR.", sDmaFileSizes.size());
+    spdlog::info("[N64SizeData] Loaded {} DMA file sizes from O2R.", sDmaFileSizes.size());
 }
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -59,7 +59,7 @@ static void LoadActorOverlaySizes() {
         Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->LoadFile(
             "misc/n64_memory/actor_overlay_sizes");
     if (!file || !file->IsLoaded) {
-        SPDLOG_ERROR("[N64SizeData] Failed to load misc/n64_memory/actor_overlay_sizes from OTR.");
+        spdlog::error("[N64SizeData] Failed to load misc/n64_memory/actor_overlay_sizes from O2R.");
         return;
     }
 
@@ -74,7 +74,7 @@ static void LoadActorOverlaySizes() {
         sActorOverlaySizes.at(i) = reader->ReadUInt32();
     }
 
-    SPDLOG_INFO("[N64SizeData] Loaded {} actor overlay sizes.", sActorOverlaySizes.size());
+    spdlog::info("[N64SizeData] Loaded {} actor overlay sizes.", sActorOverlaySizes.size());
 }
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -97,7 +97,7 @@ static void LoadEffectOverlaySizes() {
         Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->LoadFile(
             "misc/n64_memory/effect_overlay_sizes");
     if (!file || !file->IsLoaded) {
-        SPDLOG_ERROR("[N64SizeData] Failed to load misc/n64_memory/effect_overlay_sizes from OTR.");
+        spdlog::error("[N64SizeData] Failed to load misc/n64_memory/effect_overlay_sizes from O2R.");
         return;
     }
 
@@ -112,7 +112,7 @@ static void LoadEffectOverlaySizes() {
         sEffectOverlaySizes.at(i) = reader->ReadUInt32();
     }
 
-    SPDLOG_INFO("[N64SizeData] Loaded {} effect overlay sizes.", sEffectOverlaySizes.size());
+    spdlog::info("[N64SizeData] Loaded {} effect overlay sizes.", sEffectOverlaySizes.size());
 }
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -136,7 +136,7 @@ static void LoadActorInstanceSizes() {
         Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->LoadFile(
             "misc/n64_memory/actor_instance_sizes");
     if (!file || !file->IsLoaded) {
-        SPDLOG_ERROR("[N64SizeData] Failed to load misc/n64_memory/actor_instance_sizes from OTR.");
+        spdlog::error("[N64SizeData] Failed to load misc/n64_memory/actor_instance_sizes from O2R.");
         return;
     }
 
@@ -151,7 +151,7 @@ static void LoadActorInstanceSizes() {
         sActorInstanceSizes.at(i) = reader->ReadUInt32();
     }
 
-    SPDLOG_INFO("[N64SizeData] Loaded {} actor instance sizes.", sActorInstanceSizes.size());
+    spdlog::info("[N64SizeData] Loaded {} actor instance sizes.", sActorInstanceSizes.size());
 }
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -219,7 +219,7 @@ static void LoadKaleidoVramSize() {
         Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->LoadFile(
             "misc/n64_memory/kaleido_vram_size");
     if (!file || !file->IsLoaded) {
-        SPDLOG_ERROR("[N64SizeData] Failed to load misc/n64_memory/kaleido_vram_size from OTR.");
+        spdlog::error("[N64SizeData] Failed to load misc/n64_memory/kaleido_vram_size from O2R.");
         return;
     }
 
@@ -229,49 +229,10 @@ static void LoadKaleidoVramSize() {
 
     sKaleidoVramSize = reader->ReadUInt32();
 
-    SPDLOG_INFO("[N64SizeData] Kaleido max VRAM size: 0x{:X}.", sKaleidoVramSize);
+    spdlog::info("[N64SizeData] Kaleido max VRAM size: 0x{:X}.", sKaleidoVramSize);
 }
 
 extern "C" uint32_t N64SizeData_GetKaleidoVramSize() {
     LoadKaleidoVramSize();
     return sKaleidoVramSize;
-}
-
-// --------------------------------------------------------------------------------------------------------------------
-// Arena node size
-//
-// Format: single uint32_t -- ArenaNode size for this ROM version (0x10 retail, 0x30 debug)
-// --------------------------------------------------------------------------------------------------------------------
-
-static uint32_t sArenaNodeSize = 0x30; // Default to debug (safe fallback -- over-estimates node overhead)
-static bool sIsArenaNodeSizeLoaded = false;
-
-static void LoadArenaNodeSize() {
-    if (sIsArenaNodeSizeLoaded) {
-        return;
-    }
-
-    sIsArenaNodeSizeLoaded = true;
-
-    const auto file =
-        Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->LoadFile(
-            "misc/n64_memory/arena_node_size");
-    if (!file || !file->IsLoaded) {
-        SPDLOG_WARN("[N64SizeData] Failed to load misc/n64_memory/arena_node_size from OTR, defaulting to 0x{:X}.",
-                    sArenaNodeSize);
-        return;
-    }
-
-    auto stream = std::make_shared<Ship::MemoryStream>(file->Buffer->data(), file->Buffer->size());
-    const auto reader = std::make_shared<Ship::BinaryReader>(stream);
-    reader->SetEndianness(Ship::Endianness::Big);
-
-    sArenaNodeSize = reader->ReadUInt32();
-
-    SPDLOG_INFO("[N64SizeData] Arena node size: 0x{:X}.", sArenaNodeSize);
-}
-
-extern "C" uint32_t N64SizeData_GetArenaNodeSize() {
-    LoadArenaNodeSize();
-    return sArenaNodeSize;
 }

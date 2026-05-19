@@ -4,6 +4,7 @@
 
 #ifdef __cplusplus
 extern "C" {
+
 #endif
 
 // N64 subsidiary struct sizes (32-bit, from decomp headers and linker map).

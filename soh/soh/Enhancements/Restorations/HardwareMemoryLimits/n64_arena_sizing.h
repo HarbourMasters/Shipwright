@@ -5,8 +5,6 @@
 #ifdef __cplusplus
 extern "C" {
 
-
-
 #endif
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -15,7 +13,7 @@ extern "C" {
 // Computes the N64 ZeldaArena size from first principles:
 //  arena = THA_BUDGET - sum(all THA consumers at N64 sizes)
 //
-// All per-version constants are derived from OTR blobs at runtime:
+// Per-ROM overlay and file sizes are derived from O2R blobs at runtime:
 //   kaleidoOverlayVramSize  ->  N64SizeData_GetKaleidoVramSize()   (misc/n64_memory/kaleido_vram_size)
 //   parameterStaticSize     ->  N64SizeData_GetDmaFileSize(...)    (misc/n64_memory/dma_sizes)
 //   effectSsSize            ->  N64_SIZEOF_EFFECT_SS               (constant 0x60, all N64 versions)
