@@ -5,6 +5,7 @@
 #include <soh/OTRGlobals.h>
 #include <soh/Enhancements/cosmetics/authenticGfxPatches.h>
 #include <soh/Enhancements/TimeDisplay/TimeDisplay.h>
+#include <soh/ResourceManagerHelpers.h>
 
 extern "C" {
 #include "functions.h"
@@ -134,6 +135,28 @@ static const std::map<int32_t, const char*> mirroredWorldModes = {
     { MIRRORED_WORLD_DUNGEONS_RANDOM, "Dungeons Random" },
     { MIRRORED_WORLD_DUNGEONS_RANDOM_SEEDED, "Dungeons Random (Seeded)" },
 };
+
+static uint8_t CountVisibleFileSelectQuests() {
+    uint8_t count = 0;
+
+    if (ResourceMgr_GameHasOriginal() && !CVarGetInteger(CVAR_ENHANCEMENT("HideNormalQuest"), 0)) {
+        count++;
+    }
+
+    if (ResourceMgr_GameHasMasterQuest() && !CVarGetInteger(CVAR_ENHANCEMENT("HideMasterQuest"), 0)) {
+        count++;
+    }
+
+    if (!CVarGetInteger(CVAR_ENHANCEMENT("HideRandomizerQuest"), 0)) {
+        count++;
+    }
+
+    if (!CVarGetInteger(CVAR_ENHANCEMENT("HideBossRushQuest"), 0)) {
+        count++;
+    }
+
+    return count;
+}
 
 void SohMenu::AddMenuEnhancements() {
     // Add Enhancements Menu
@@ -674,21 +697,74 @@ void SohMenu::AddMenuEnhancements() {
         .CVar(CVAR_ENHANCEMENT("AlwaysShowDungeonMinimapIcon"))
         .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip("Always shows dungeon entrance icons on the Minimap."));
-    AddWidget(path, "More Info in File Select", WIDGET_CVAR_CHECKBOX)
-        .CVar(CVAR_ENHANCEMENT("FileSelectMoreInfo"))
-        .RaceDisable(false)
-        .Options(CheckboxOptions().Tooltip(
-            "Shows what items you have collected in the File Select screen, like in N64 Randomizer."));
     AddWidget(path, "Better Ammo Rendering in Pause Menu", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("BetterAmmoRendering"))
         .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip(
             "Ammo counts in the pause menu will work correctly regardless of the position of items in the Inventory."));
-    AddWidget(path, "Enable Passage of Time on File Select", WIDGET_CVAR_CHECKBOX)
+
+    AddWidget(path, "File Select", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "More Info", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("FileSelectMoreInfo"))
+        .RaceDisable(false)
+        .Options(CheckboxOptions().Tooltip(
+            "Shows what items you have collected in the File Select screen, like in N64 Randomizer."));
+    AddWidget(path, "Enable Passage of Time", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("TimeFlowFileSelect"))
         .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip("The skybox in the background of the File Select screen will go through the "
                                            "day and night cycle over time."));
+
+    AddWidget(path, "Hide Original", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("HideNormalQuest"))
+        .RaceDisable(false)
+        .PreFunc([](const WidgetInfo& info) {
+            if (!ResourceMgr_GameHasOriginal()) {
+                info.options->disabled = true;
+                info.options->disabledTooltip = "This option requires a loaded original O2R.";
+            } else if (CountVisibleFileSelectQuests() <= 1 && !CVarGetInteger(CVAR_ENHANCEMENT("HideNormalQuest"), 0)) {
+                info.options->disabled = true;
+                info.options->disabledTooltip = "At least one quest type must remain visible.";
+            }
+        })
+        .Options(CheckboxOptions().Tooltip(
+            "Hides the original game when selecting a quest type on the File Select screen."));
+    AddWidget(path, "Hide Master Quest", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("HideMasterQuest"))
+        .RaceDisable(false)
+        .PreFunc([](const WidgetInfo& info) {
+            if (!ResourceMgr_GameHasMasterQuest()) {
+                info.options->disabled = true;
+                info.options->disabledTooltip = "This option requires a loaded Master Quest O2R.";
+            } else if (CountVisibleFileSelectQuests() <= 1 && !CVarGetInteger(CVAR_ENHANCEMENT("HideMasterQuest"), 0)) {
+                info.options->disabled = true;
+                info.options->disabledTooltip = "At least one quest type must remain visible.";
+            }
+        })
+        .Options(CheckboxOptions().Tooltip(
+            "Hides the Master Quest option when selecting a quest type on the File Select screen."));
+    AddWidget(path, "Hide Randomizer", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("HideRandomizerQuest"))
+        .RaceDisable(false)
+        .PreFunc([](const WidgetInfo& info) {
+            if (CountVisibleFileSelectQuests() <= 1 && !CVarGetInteger(CVAR_ENHANCEMENT("HideRandomizerQuest"), 0)) {
+                info.options->disabled = true;
+                info.options->disabledTooltip = "At least one quest type must remain visible.";
+            }
+        })
+        .Options(CheckboxOptions().Tooltip(
+            "Hides the Randomizer option when selecting a quest type on the File Select screen."));
+    AddWidget(path, "Hide Boss Rush", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("HideBossRushQuest"))
+        .RaceDisable(false)
+        .PreFunc([](const WidgetInfo& info) {
+            if (CountVisibleFileSelectQuests() <= 1 && !CVarGetInteger(CVAR_ENHANCEMENT("HideBossRushQuest"), 0)) {
+                info.options->disabled = true;
+                info.options->disabledTooltip = "At least one quest type must remain visible.";
+            }
+        })
+        .Options(CheckboxOptions().Tooltip(
+            "Hides the Boss Rush option when selecting a quest type on the File Select screen."));
 
     path.column = SECTION_COLUMN_3;
     AddWidget(path, "Misc.", WIDGET_SEPARATOR_TEXT);
