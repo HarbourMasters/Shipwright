@@ -6,7 +6,6 @@
 extern "C" {
 
 
-
 #endif
 
 // Sentinel value for null offsets (no valid node can live at 0xFFFFFFFF in a buffer that's only ~245KB).
