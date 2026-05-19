@@ -5,6 +5,7 @@
 #include <soh/OTRGlobals.h>
 #include <soh/Enhancements/cosmetics/authenticGfxPatches.h>
 #include <soh/Enhancements/TimeDisplay/TimeDisplay.h>
+#include <soh/ResourceManagerHelpers.h>
 
 extern "C" {
 #include "functions.h"
@@ -689,6 +690,15 @@ void SohMenu::AddMenuEnhancements() {
         .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip("The skybox in the background of the File Select screen will go through the "
                                            "day and night cycle over time."));
+    AddWidget(path, "Hide Master Quest", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("HideMasterQuest"))
+        .RaceDisable(false)
+        .PreFunc([](const WidgetInfo& info) {
+            info.options->disabled = !ResourceMgr_GameHasMasterQuest();
+            info.options->disabledTooltip = "This option requires a loaded Master Quest O2R.";
+        })
+        .Options(CheckboxOptions().Tooltip(
+            "Hides the Master Quest option when selecting a quest type on the File Select screen."));
     AddWidget(path, "Hide Randomizer Quest", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("HideRandomizerQuest"))
         .RaceDisable(false)

@@ -30,7 +30,8 @@
 
 // #region SOH [Enhancement] - Hide Quest Modes
 static bool IsQuestSkipped(uint8_t quest) {
-    if (quest == QUEST_MASTER && !ResourceMgr_GameHasMasterQuest()) {
+    if (quest == QUEST_MASTER && (!ResourceMgr_GameHasMasterQuest() ||
+                                  CVarGetInteger(CVAR_ENHANCEMENT("HideMasterQuest"), 0))) {
         return true;
     }
 
@@ -55,6 +56,7 @@ static uint8_t CountVisibleQuests(void) {
 
     return count;
 }
+
 // #endregion
 
 void Sram_InitDebugSave(void);
