@@ -136,6 +136,28 @@ static const std::map<int32_t, const char*> mirroredWorldModes = {
     { MIRRORED_WORLD_DUNGEONS_RANDOM_SEEDED, "Dungeons Random (Seeded)" },
 };
 
+static uint8_t CountVisibleFileSelectQuests() {
+    uint8_t count = 0;
+
+    if (ResourceMgr_GameHasOriginal() && !CVarGetInteger(CVAR_ENHANCEMENT("HideNormalQuest"), 0)) {
+        count++;
+    }
+
+    if (ResourceMgr_GameHasMasterQuest() && !CVarGetInteger(CVAR_ENHANCEMENT("HideMasterQuest"), 0)) {
+        count++;
+    }
+
+    if (!CVarGetInteger(CVAR_ENHANCEMENT("HideRandomizerQuest"), 0)) {
+        count++;
+    }
+
+    if (!CVarGetInteger(CVAR_ENHANCEMENT("HideBossRushQuest"), 0)) {
+        count++;
+    }
+
+    return count;
+}
+
 void SohMenu::AddMenuEnhancements() {
     // Add Enhancements Menu
     AddMenuEntry("Enhancements", CVAR_SETTING("Menu.EnhancementsSidebarSection"));
@@ -692,6 +714,21 @@ void SohMenu::AddMenuEnhancements() {
         .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip("The skybox in the background of the File Select screen will go through the "
                                            "day and night cycle over time."));
+
+    AddWidget(path, "Hide Original", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("HideNormalQuest"))
+        .RaceDisable(false)
+        .PreFunc([](const WidgetInfo& info) {
+            if (!ResourceMgr_GameHasOriginal()) {
+                info.options->disabled = true;
+                info.options->disabledTooltip = "This option requires a loaded original O2R.";
+            } else if (CountVisibleFileSelectQuests() <= 1 && !CVarGetInteger(CVAR_ENHANCEMENT("HideNormalQuest"), 0)) {
+                info.options->disabled = true;
+                info.options->disabledTooltip = "At least one quest type must remain visible.";
+            }
+        })
+        .Options(CheckboxOptions().Tooltip(
+            "Hides the original game when selecting a quest type on the File Select screen."));
     AddWidget(path, "Hide Master Quest", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("HideMasterQuest"))
         .RaceDisable(false)
@@ -699,10 +736,9 @@ void SohMenu::AddMenuEnhancements() {
             if (!ResourceMgr_GameHasMasterQuest()) {
                 info.options->disabled = true;
                 info.options->disabledTooltip = "This option requires a loaded Master Quest O2R.";
-            } else if (!ResourceMgr_GameHasOriginal()) {
+            } else if (CountVisibleFileSelectQuests() <= 1 && !CVarGetInteger(CVAR_ENHANCEMENT("HideMasterQuest"), 0)) {
                 info.options->disabled = true;
-                info.options->disabledTooltip = "Master Quest cannot be hidden when it is the only base quest.";
-                CVarClear(CVAR_ENHANCEMENT("HideMasterQuest"));
+                info.options->disabledTooltip = "At least one quest type must remain visible.";
             }
         })
         .Options(CheckboxOptions().Tooltip(
@@ -710,11 +746,23 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Hide Randomizer", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("HideRandomizerQuest"))
         .RaceDisable(false)
+        .PreFunc([](const WidgetInfo& info) {
+            if (CountVisibleFileSelectQuests() <= 1 && !CVarGetInteger(CVAR_ENHANCEMENT("HideRandomizerQuest"), 0)) {
+                info.options->disabled = true;
+                info.options->disabledTooltip = "At least one quest type must remain visible.";
+            }
+        })
         .Options(CheckboxOptions().Tooltip(
             "Hides the Randomizer option when selecting a quest type on the File Select screen."));
     AddWidget(path, "Hide Boss Rush", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("HideBossRushQuest"))
         .RaceDisable(false)
+        .PreFunc([](const WidgetInfo& info) {
+            if (CountVisibleFileSelectQuests() <= 1 && !CVarGetInteger(CVAR_ENHANCEMENT("HideBossRushQuest"), 0)) {
+                info.options->disabled = true;
+                info.options->disabledTooltip = "At least one quest type must remain visible.";
+            }
+        })
         .Options(CheckboxOptions().Tooltip(
             "Hides the Boss Rush option when selecting a quest type on the File Select screen."));
 

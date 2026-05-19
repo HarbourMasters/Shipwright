@@ -30,6 +30,10 @@
 
 // #region SOH [Enhancement] - Hide Quest Modes
 static bool IsQuestSkipped(uint8_t quest) {
+    if (quest == QUEST_NORMAL && CVarGetInteger(CVAR_ENHANCEMENT("HideNormalQuest"), 0)) {
+        return true;
+    }
+
     if (quest == QUEST_MASTER && (!ResourceMgr_GameHasMasterQuest() ||
                                   CVarGetInteger(CVAR_ENHANCEMENT("HideMasterQuest"), 0))) {
         return true;
