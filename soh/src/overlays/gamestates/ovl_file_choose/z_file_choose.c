@@ -44,6 +44,17 @@ static bool IsQuestSkipped(uint8_t quest) {
 
     return false;
 }
+
+static uint8_t CountVisibleQuests(void) {
+    uint8_t count = 0;
+    for (int32_t quest = MIN_QUEST; quest <= MAX_QUEST; ++quest) {
+        if (!IsQuestSkipped(quest)) {
+            count++;
+        }
+    }
+
+    return count;
+}
 // #endregion
 
 void Sram_InitDebugSave(void);
@@ -658,8 +669,9 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
 
     FileChoose_UpdateRandomizer();
 
-    if (ABS(this->stickRelX) > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT | BTN_DRIGHT))) {
-        // #region SOH [Enhancement] - Hide Quest Modes
+    // #region SOH [Enhancement] - Hide Quest Modes
+    if (CountVisibleQuests() > 1 && ABS(this->stickRelX) > 30 || (dpad && CHECK_BTN_ANY(input->press.button,
+                                                                      BTN_DLEFT | BTN_DRIGHT))) {
         // Cycle through quest types, skipping any that are hidden (i.e., Master Quest without OTR,
         // Randomizer/Boss Rush when their CVars are set).  Wraps around if past min/max.
         if (this->stickRelX > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DRIGHT))) {
@@ -677,7 +689,7 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
                 }
             } while (IsQuestSkipped(this->questType[this->buttonIndex]));
         }
-        // #endregion
+    // #endregion
 
         Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
                                &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
@@ -1735,31 +1747,37 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
     if ((this->configMode == CM_QUEST_MENU) || (this->configMode == CM_START_QUEST_MENU) ||
         this->configMode == CM_NAME_ENTRY_TO_QUEST_MENU ||
         this->configMode == CM_NAME_ENTRY_TO_RANDOMIZER_SETTINGS_MENU) {
-        // draw control stick prompts.
-        Gfx_SetupDL_39Opa(this->state.gfxCtx);
-        gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
-        gDPLoadTextureBlock(POLY_OPA_DISP++, gArrowCursorTex, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 24, 0,
-                            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 4, G_TX_NOMASK, G_TX_NOLOD,
-                            G_TX_NOLOD);
-        FileChoose_DrawTextRec(this->state.gfxCtx, this->stickLeftPrompt.arrowColorR, this->stickLeftPrompt.arrowColorG,
-                               this->stickLeftPrompt.arrowColorB, this->stickLeftPrompt.arrowColorA,
-                               this->stickLeftPrompt.arrowTexX, this->stickLeftPrompt.arrowTexY,
-                               this->stickLeftPrompt.z, 0, 0, -1.0f, 1.0f);
-        FileChoose_DrawTextRec(this->state.gfxCtx, this->stickRightPrompt.arrowColorR,
-                               this->stickRightPrompt.arrowColorG, this->stickRightPrompt.arrowColorB,
-                               this->stickRightPrompt.arrowColorA, this->stickRightPrompt.arrowTexX,
-                               this->stickRightPrompt.arrowTexY, this->stickRightPrompt.z, 0, 0, 1.0f, 1.0f);
-        gDPLoadTextureBlock(POLY_OPA_DISP++, gControlStickTex, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 16, 0,
-                            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 4, G_TX_NOMASK, G_TX_NOLOD,
-                            G_TX_NOLOD);
-        FileChoose_DrawTextRec(this->state.gfxCtx, this->stickLeftPrompt.stickColorR, this->stickLeftPrompt.stickColorG,
-                               this->stickLeftPrompt.stickColorB, this->stickLeftPrompt.stickColorA,
-                               this->stickLeftPrompt.stickTexX, this->stickLeftPrompt.stickTexY,
-                               this->stickLeftPrompt.z, 0, 0, -1.0f, 1.0f);
-        FileChoose_DrawTextRec(this->state.gfxCtx, this->stickRightPrompt.stickColorR,
-                               this->stickRightPrompt.stickColorG, this->stickRightPrompt.stickColorB,
-                               this->stickRightPrompt.stickColorA, this->stickRightPrompt.stickTexX,
-                               this->stickRightPrompt.stickTexY, this->stickRightPrompt.z, 0, 0, 1.0f, 1.0f);
+        // #region SOH [Enhancement] - Hide Quest Modes
+        // Only draw the control stick prompts and arrows when there's more than one quest to cycle through.
+        if (CountVisibleQuests() > 1) {
+        // #endregion
+            // draw control stick prompts.
+            Gfx_SetupDL_39Opa(this->state.gfxCtx);
+            gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
+            gDPLoadTextureBlock(POLY_OPA_DISP++, gArrowCursorTex, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 24, 0,
+                                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 4, G_TX_NOMASK, G_TX_NOLOD,
+                                G_TX_NOLOD);
+            FileChoose_DrawTextRec(this->state.gfxCtx, this->stickLeftPrompt.arrowColorR, this->stickLeftPrompt.arrowColorG,
+                                   this->stickLeftPrompt.arrowColorB, this->stickLeftPrompt.arrowColorA,
+                                   this->stickLeftPrompt.arrowTexX, this->stickLeftPrompt.arrowTexY,
+                                   this->stickLeftPrompt.z, 0, 0, -1.0f, 1.0f);
+            FileChoose_DrawTextRec(this->state.gfxCtx, this->stickRightPrompt.arrowColorR,
+                                   this->stickRightPrompt.arrowColorG, this->stickRightPrompt.arrowColorB,
+                                   this->stickRightPrompt.arrowColorA, this->stickRightPrompt.arrowTexX,
+                                   this->stickRightPrompt.arrowTexY, this->stickRightPrompt.z, 0, 0, 1.0f, 1.0f);
+            gDPLoadTextureBlock(POLY_OPA_DISP++, gControlStickTex, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 16, 0,
+                                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 4, G_TX_NOMASK, G_TX_NOLOD,
+                                G_TX_NOLOD);
+            FileChoose_DrawTextRec(this->state.gfxCtx, this->stickLeftPrompt.stickColorR, this->stickLeftPrompt.stickColorG,
+                                   this->stickLeftPrompt.stickColorB, this->stickLeftPrompt.stickColorA,
+                                   this->stickLeftPrompt.stickTexX, this->stickLeftPrompt.stickTexY,
+                                   this->stickLeftPrompt.z, 0, 0, -1.0f, 1.0f);
+            FileChoose_DrawTextRec(this->state.gfxCtx, this->stickRightPrompt.stickColorR,
+                                   this->stickRightPrompt.stickColorG, this->stickRightPrompt.stickColorB,
+                                   this->stickRightPrompt.stickColorA, this->stickRightPrompt.stickTexX,
+                                   this->stickRightPrompt.stickTexY, this->stickRightPrompt.z, 0, 0, 1.0f, 1.0f);
+        }
+
         switch (this->questType[this->buttonIndex]) {
             case QUEST_NORMAL:
             default:
