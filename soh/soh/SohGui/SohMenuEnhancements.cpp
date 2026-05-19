@@ -696,17 +696,23 @@ void SohMenu::AddMenuEnhancements() {
         .CVar(CVAR_ENHANCEMENT("HideMasterQuest"))
         .RaceDisable(false)
         .PreFunc([](const WidgetInfo& info) {
-            info.options->disabled = !ResourceMgr_GameHasMasterQuest();
-            info.options->disabledTooltip = "This option requires a loaded Master Quest O2R.";
+            if (!ResourceMgr_GameHasMasterQuest()) {
+                info.options->disabled = true;
+                info.options->disabledTooltip = "This option requires a loaded Master Quest O2R.";
+            } else if (!ResourceMgr_GameHasOriginal()) {
+                info.options->disabled = true;
+                info.options->disabledTooltip = "Master Quest cannot be hidden when it is the only base quest.";
+                CVarClear(CVAR_ENHANCEMENT("HideMasterQuest"));
+            }
         })
         .Options(CheckboxOptions().Tooltip(
             "Hides the Master Quest option when selecting a quest type on the File Select screen."));
-    AddWidget(path, "Hide Randomizer Quest", WIDGET_CVAR_CHECKBOX)
+    AddWidget(path, "Hide Randomizer", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("HideRandomizerQuest"))
         .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip(
             "Hides the Randomizer option when selecting a quest type on the File Select screen."));
-    AddWidget(path, "Hide Boss Rush Quest", WIDGET_CVAR_CHECKBOX)
+    AddWidget(path, "Hide Boss Rush", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("HideBossRushQuest"))
         .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip(

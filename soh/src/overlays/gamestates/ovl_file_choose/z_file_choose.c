@@ -684,7 +684,7 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
     // #region SOH [Enhancement] - Hide Quest Modes
     if (CountVisibleQuests() > 1 && ABS(this->stickRelX) > 30 || (dpad && CHECK_BTN_ANY(input->press.button,
                                                                       BTN_DLEFT | BTN_DRIGHT))) {
-        // Cycle through quest types, skipping any that are hidden (i.e., Master Quest without OTR,
+        // Cycle through quest types, skipping any that are hidden (i.e., Master Quest without O2R,
         // Randomizer/Boss Rush when their CVars are set).  Wraps around if past min/max.
         if (this->stickRelX > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DRIGHT))) {
             do {
