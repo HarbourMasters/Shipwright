@@ -2,7 +2,7 @@
 #include "overlays/actors/ovl_En_fHG/z_en_fhg.h"
 #include <assert.h>
 #include "soh/ResourceManagerHelpers.h"
-#include "soh/Enhancements/Restorations/HardwareMemoryLimits/HardwareMemoryLimits.hpp"
+#include "soh/Enhancements/Restorations/N64MemoryLimits/N64MemoryLimits.hpp"
 
 /**
  * Initialises the Vtx buffers used for limb at index `limbIndex`

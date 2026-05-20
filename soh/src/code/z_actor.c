@@ -14,7 +14,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/nametag.h"
-#include "soh/Enhancements/Restorations/HardwareMemoryLimits/HardwareMemoryLimits.hpp"
+#include "soh/Enhancements/Restorations/N64MemoryLimits/N64MemoryLimits.hpp"
 
 #include "soh/ActorDB.h"
 #include "soh/OTRGlobals.h"

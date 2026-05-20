@@ -9,12 +9,12 @@
 #include "soh/OTRGlobals.h"
 #include "soh/ActorDB.h"
 
-#include "soh/Enhancements/Restorations/HardwareMemoryLimits/HardwareMemoryLimits.hpp"
+#include "soh/Enhancements/Restorations/N64MemoryLimits/N64MemoryLimits.hpp"
 
 extern "C" {
 #include "z64.h"
 #include "functions.h"
-#include "soh/Enhancements/Restorations/HardwareMemoryLimits/n64_shadow_arena.h"
+#include "soh/Enhancements/Restorations/N64MemoryLimits/n64_shadow_arena.h"
 }
 
 // -----------------------------------------------------------------------------------------------------------------

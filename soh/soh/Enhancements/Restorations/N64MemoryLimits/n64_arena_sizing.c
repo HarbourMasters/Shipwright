@@ -1,6 +1,6 @@
 #include "n64_arena_sizing.h"
 #include "N64SizeData.hpp"
-#include "soh/Enhancements/Restorations/HardwareMemoryLimits/HardwareMemoryLimits.hpp"
+#include "soh/Enhancements/Restorations/N64MemoryLimits/N64MemoryLimits.hpp"
 
 #include <libultraship/log/luslog.h>
 
