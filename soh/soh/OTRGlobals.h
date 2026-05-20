@@ -1,6 +1,3 @@
-#ifndef OTR_GLOBALS_H
-#define OTR_GLOBALS_H
-
 #pragma once
 
 #define BTN_CUSTOM_MODIFIER1 0x0040
@@ -147,6 +144,4 @@ extern "C" {
 uint64_t GetUnixTimestamp();
 #ifdef __cplusplus
 };
-#endif
-
 #endif
