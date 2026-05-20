@@ -33,11 +33,11 @@ class Randomizer;
 class SaveStateMgr;
 
 namespace Rando {
-    class Context;
+class Context;
 }
 
 namespace Ship {
-    class Context;
+class Context;
 }
 
 struct ImFont;
