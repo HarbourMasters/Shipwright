@@ -272,7 +272,10 @@ void SohMenu::AddMenuEnhancements() {
         })
         .CVar(CVAR_ENHANCEMENT("ReworkedTargeting.Btn"))
         .Options(BtnSelectorOptions().Tooltip("Buttons to activate target switching."));
-
+    AddWidget(path, "Peaceful Sword Draw", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("PeacefulDraw"))
+        .RaceDisable(false)
+        .Options(CheckboxOptions().Tooltip("Allows Link to draw his sword without swinging if no enemies are nearby."));
     AddWidget(path, "Item Count Messages", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Gold Skulltula Tokens", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("InjectItemCounts.GoldSkulltula"))

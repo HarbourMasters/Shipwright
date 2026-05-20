@@ -2617,7 +2617,15 @@ void Player_StartChangingHeldItem(Player* this, PlayState* play) {
     }
 
     if (heldItemAction != PLAYER_IA_NONE) {
-        playSpeed *= 2.0f;
+        if (!CVarGetInteger(CVAR_ENHANCEMENT("PeacefulDraw"), 0) || 
+            (heldItemAction != PLAYER_IA_SWORD_KOKIRI && heldItemAction != PLAYER_IA_SWORD_MASTER && heldItemAction != PLAYER_IA_SWORD_BIGGORON) ||
+            (this->focusActor != NULL && (this->focusActor->flags & ACTOR_FLAG_HOSTILE)) ||
+            (play->actorCtx.targetCtx.arrowPointedActor != NULL && (play->actorCtx.targetCtx.arrowPointedActor->flags & ACTOR_FLAG_HOSTILE))) {
+            
+            playSpeed *= 2.0f;
+        } else {
+            playSpeed *= 1.5f;
+        }
     }
 
     LinkAnimation_Change(play, &this->upperSkelAnime, anim, playSpeed, startFrame, endFrame, ANIMMODE_ONCE, 0.0f);
@@ -2833,10 +2841,13 @@ s32 Player_UpperAction_Sword(Player* this, PlayState* play) {
 s32 Player_UpperAction_ChangeHeldItem(Player* this, PlayState* play) {
     if (LinkAnimation_Update(play, &this->upperSkelAnime) ||
         ((Player_ItemToItemAction(this->heldItemId) == this->heldItemAction) &&
-         (sUseHeldItem = (sUseHeldItem || GameInteractor_Should(VB_USE_HELD_ITEM_AFTER_CHANGE,
-                                                                ((this->modelAnimType != PLAYER_ANIMTYPE_3) &&
-                                                                 (play->shootingGalleryStatus == 0)),
-                                                                this))))) {
+         (sUseHeldItem =
+              (sUseHeldItem || ((this->modelAnimType != PLAYER_ANIMTYPE_3) && (play->shootingGalleryStatus == 0) &&
+                                (!CVarGetInteger(CVAR_ENHANCEMENT("PeacefulDraw"), 0) ||
+                                 (this->heldItemAction != PLAYER_IA_SWORD_KOKIRI && this->heldItemAction != PLAYER_IA_SWORD_MASTER && this->heldItemAction != PLAYER_IA_SWORD_BIGGORON) ||
+                                 (this->focusActor != NULL && (this->focusActor->flags & ACTOR_FLAG_HOSTILE)) ||
+                                 (play->actorCtx.targetCtx.arrowPointedActor != NULL && (play->actorCtx.targetCtx.arrowPointedActor->flags & ACTOR_FLAG_HOSTILE)))))))) {
+        
         Player_SetUpperActionFunc(this, sItemActionUpdateFuncs[this->heldItemAction]);
         this->unk_834 = 0;
         this->idleType = PLAYER_IDLE_DEFAULT;
