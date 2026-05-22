@@ -1658,58 +1658,177 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Additional Traps", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("ExtraTraps.Enabled"))
         .Options(CheckboxOptions().Tooltip("Enables additional Trap variants."));
+
     AddWidget(path, "Trap Options", WIDGET_SEPARATOR_TEXT).PreFunc([](WidgetInfo& info) {
         info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0;
     });
+
+    AddWidget(path, "Weighted Traps", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("ExtraTraps.WeightedTraps"))
+        .PreFunc(
+            [](WidgetInfo& info) { info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0; });
+
     AddWidget(path, "Tier 1 Traps:", WIDGET_TEXT).PreFunc([](WidgetInfo& info) {
         info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0;
     });
     AddWidget(path, "Freeze Traps", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("ExtraTraps.Ice"))
-        .PreFunc(
-            [](WidgetInfo& info) { info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0; });
+        .PreFunc([](WidgetInfo& info) {
+            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0 ||
+                            CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.WeightedTraps"), 0) != 0;
+        });
+
+    AddWidget(path, "Freeze Traps Weight", WIDGET_CVAR_SLIDER_INT)
+        .CVar(CVAR_ENHANCEMENT("ExtraTraps.Ice"))
+        .PreFunc([](WidgetInfo& info) {
+            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0 ||
+                            CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.WeightedTraps"), 0) == 0;
+        })
+        .Options(IntSliderOptions().DefaultValue(0).Min(0).Max(100).Tooltip("Set to zero (0) to disable."));
+
     AddWidget(path, "Burn Traps", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("ExtraTraps.Burn"))
-        .PreFunc(
-            [](WidgetInfo& info) { info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0; });
+        .PreFunc([](WidgetInfo& info) {
+            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0 ||
+                            CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.WeightedTraps"), 0) != 0;
+        });
+
+    AddWidget(path, "Burn Traps Weight", WIDGET_CVAR_SLIDER_INT)
+        .CVar(CVAR_ENHANCEMENT("ExtraTraps.Burn"))
+        .PreFunc([](WidgetInfo& info) {
+            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0 ||
+                            CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.WeightedTraps"), 0) == 0;
+        })
+        .Options(IntSliderOptions().DefaultValue(0).Min(0).Max(100).Tooltip("Set to zero (0) to disable."));
+
     AddWidget(path, "Shock Traps", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("ExtraTraps.Shock"))
-        .PreFunc(
-            [](WidgetInfo& info) { info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0; });
+        .PreFunc([](WidgetInfo& info) {
+            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0 ||
+                            CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.WeightedTraps"), 0) != 0;
+        });
+
+    AddWidget(path, "Shock Traps Weight", WIDGET_CVAR_SLIDER_INT)
+        .CVar(CVAR_ENHANCEMENT("ExtraTraps.Shock"))
+        .PreFunc([](WidgetInfo& info) {
+            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0 ||
+                            CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.WeightedTraps"), 0) == 0;
+        })
+        .Options(IntSliderOptions().DefaultValue(0).Min(0).Max(100).Tooltip("Set to zero (0) to disable."));
+
     AddWidget(path, "Tier 2 Traps:", WIDGET_TEXT).PreFunc([](WidgetInfo& info) {
         info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0;
     });
+
     AddWidget(path, "Knockback Traps", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("ExtraTraps.Knockback"))
-        .PreFunc(
-            [](WidgetInfo& info) { info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0; });
+        .PreFunc([](WidgetInfo& info) {
+            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0 ||
+                            CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.WeightedTraps"), 0) != 0;
+        });
+
+    AddWidget(path, "Knockback Traps Weight", WIDGET_CVAR_SLIDER_INT)
+        .CVar(CVAR_ENHANCEMENT("ExtraTraps.Knockback"))
+        .PreFunc([](WidgetInfo& info) {
+            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0 ||
+                            CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.WeightedTraps"), 0) == 0;
+        })
+        .Options(IntSliderOptions().DefaultValue(0).Min(0).Max(100).Tooltip("Set to zero (0) to disable."));
+
     AddWidget(path, "Speed Traps", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("ExtraTraps.Speed"))
-        .PreFunc(
-            [](WidgetInfo& info) { info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0; });
+        .PreFunc([](WidgetInfo& info) {
+            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0 ||
+                            CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.WeightedTraps"), 0) != 0;
+        });
+
+    AddWidget(path, "Speed Traps Weight", WIDGET_CVAR_SLIDER_INT)
+        .CVar(CVAR_ENHANCEMENT("ExtraTraps.Speed"))
+        .PreFunc([](WidgetInfo& info) {
+            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0 ||
+                            CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.WeightedTraps"), 0) == 0;
+        })
+        .Options(IntSliderOptions().DefaultValue(0).Min(0).Max(100).Tooltip("Set to zero (0) to disable."));
+
     AddWidget(path, "Bomb Traps", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("ExtraTraps.Bomb"))
-        .PreFunc(
-            [](WidgetInfo& info) { info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0; });
+        .PreFunc([](WidgetInfo& info) {
+            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0 ||
+                            CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.WeightedTraps"), 0) != 0;
+        });
+
+    AddWidget(path, "Bomb Traps Weight", WIDGET_CVAR_SLIDER_INT)
+        .CVar(CVAR_ENHANCEMENT("ExtraTraps.Bomb"))
+        .PreFunc([](WidgetInfo& info) {
+            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0 ||
+                            CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.WeightedTraps"), 0) == 0;
+        })
+        .Options(IntSliderOptions().DefaultValue(0).Min(0).Max(100).Tooltip("Set to zero (0) to disable."));
+
     AddWidget(path, "Tier 3 Traps:", WIDGET_TEXT).PreFunc([](WidgetInfo& info) {
         info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0;
     });
+
     AddWidget(path, "Void Traps", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("ExtraTraps.Void"))
-        .PreFunc(
-            [](WidgetInfo& info) { info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0; });
+        .PreFunc([](WidgetInfo& info) {
+            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0 ||
+                            CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.WeightedTraps"), 0) != 0;
+        });
+
+    AddWidget(path, "Void Traps Weight", WIDGET_CVAR_SLIDER_INT)
+        .CVar(CVAR_ENHANCEMENT("ExtraTraps.Void"))
+        .PreFunc([](WidgetInfo& info) {
+            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0 ||
+                            CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.WeightedTraps"), 0) == 0;
+        })
+        .Options(IntSliderOptions().DefaultValue(0).Min(0).Max(100).Tooltip("Set to zero (0) to disable."));
+
     AddWidget(path, "Ammo Traps", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("ExtraTraps.Ammo"))
-        .PreFunc(
-            [](WidgetInfo& info) { info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0; });
+        .PreFunc([](WidgetInfo& info) {
+            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0 ||
+                            CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.WeightedTraps"), 0) != 0;
+        });
+
+    AddWidget(path, "Ammo Traps Weight", WIDGET_CVAR_SLIDER_INT)
+        .CVar(CVAR_ENHANCEMENT("ExtraTraps.Ammo"))
+        .PreFunc([](WidgetInfo& info) {
+            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0 ||
+                            CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.WeightedTraps"), 0) == 0;
+        })
+        .Options(IntSliderOptions().DefaultValue(0).Min(0).Max(100).Tooltip("Set to zero (0) to disable."));
+
     AddWidget(path, "Death Traps", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("ExtraTraps.Kill"))
-        .PreFunc(
-            [](WidgetInfo& info) { info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0; });
+        .PreFunc([](WidgetInfo& info) {
+            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0 ||
+                            CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.WeightedTraps"), 0) != 0;
+        });
+
+    AddWidget(path, "Death Traps Weight", WIDGET_CVAR_SLIDER_INT)
+        .CVar(CVAR_ENHANCEMENT("ExtraTraps.Kill"))
+        .PreFunc([](WidgetInfo& info) {
+            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0 ||
+                            CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.WeightedTraps"), 0) == 0;
+        })
+        .Options(IntSliderOptions().DefaultValue(0).Min(0).Max(100).Tooltip("Set to zero (0) to disable."));
+    
+
     AddWidget(path, "Teleport Traps", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("ExtraTraps.Teleport"))
-        .PreFunc(
-            [](WidgetInfo& info) { info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0; });
+        .PreFunc([](WidgetInfo& info) {
+            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0 ||
+                            CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.WeightedTraps"), 0) != 0;
+        });
+
+    AddWidget(path, "Teleport Traps Weight", WIDGET_CVAR_SLIDER_INT)
+        .CVar(CVAR_ENHANCEMENT("ExtraTraps.Teleport"))
+        .PreFunc([](WidgetInfo& info) {
+            info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0 ||
+                            CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.WeightedTraps"), 0) == 0;
+        })
+        .Options(IntSliderOptions().DefaultValue(0).Min(0).Max(100).Tooltip("Set to zero (0) to disable."));
 
     // Cheats
     path.sidebarName = "Cheats";

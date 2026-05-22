@@ -48,22 +48,36 @@ const std::array<EntranceIndex, 7> teleportDestinations = {
     ENTR_TEMPLE_OF_TIME_WARP_PAD,
 };
 
-std::vector<AltTrapType> getEnabledAddTraps() {
-    std::vector<AltTrapType> enabledAddTraps;
+AltTrapType selectWeightedTrap(uint64_t* state) {
+    float weights[ADD_TRAP_MAX] = { 0.0f };
+    float totalWeight = 0.0f;
+
+    bool weighted = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.WeightedTraps"), 0);
+
     for (int i = 0; i < ADD_TRAP_MAX; i++) {
-        if (CVarGetInteger(altTrapTypeCvars[i], 0)) {
-            if (gSaveContext.equips.buttonItems[0] == ITEM_FISHING_POLE &&
-                (i == ADD_VOID_TRAP || i == ADD_TELEPORT_TRAP)) {
-                continue; // don't add void or teleport if you're holding the fishing pole, as this causes issues
-            }
-            enabledAddTraps.push_back(static_cast<AltTrapType>(i));
+        float weight = weighted ? CVarGetInteger(altTrapTypeCvars[i], 0) : 1;
+        if (gSaveContext.equips.buttonItems[0] == ITEM_FISHING_POLE && (i == ADD_VOID_TRAP || i == ADD_TELEPORT_TRAP)) {
+            weight = 0; // don't add void or teleport if you're holding the fishing pole, as this causes issues
+        }
+        totalWeight += weight;
+        weights[i] = totalWeight;
+        SPDLOG_TRACE("TRAP trap:{0} weight:{1} position:{2}", altTrapTypeCvars[i], weight, totalWeight);
+    }
+
+    if (totalWeight == 0.0f) // No weights? Just return an invalid value.
+        return ADD_TRAP_MAX;
+
+    double target = ShipUtils::RandomDouble(state) * totalWeight; 
+
+    for (int i = 0; i < ADD_TRAP_MAX; i++) {
+        if (weights[i] >= target) {
+            SPDLOG_TRACE("SELECTED {0} {1} {2}", target, i, altTrapTypeCvars[i]);
+            return (AltTrapType)i;
         }
     }
-    if (enabledAddTraps.size() == 0) {
-        enabledAddTraps.push_back(ADD_ICE_TRAP);
-    }
-    return enabledAddTraps;
-};
+
+    return ADD_TRAP_MAX;
+}
 
 static void RollRandomTrap(uint64_t seed) {
     uint64_t finalSeed = seed + (IS_RANDO ? static_cast<uint64_t>(Rando::Context::GetInstance()->GetSeed())
@@ -71,7 +85,12 @@ static void RollRandomTrap(uint64_t seed) {
     uint64_t state;
     ShipUtils::RandInit(finalSeed, &state);
 
-    roll = ShipUtils::RandomElement(getEnabledAddTraps(), &state);
+    roll = selectWeightedTrap(&state);
+    if (roll == ADD_TRAP_MAX) // If it failed to pick a trap, fallback to a basic ice trap.
+    {
+        roll = ADD_ICE_TRAP;
+    }
+
     switch (roll) {
         case ADD_ICE_TRAP:
             GameInteractor::RawAction::FreezePlayer();
