@@ -1,5 +1,6 @@
 #include "soh/Enhancements/randomizer/entrance.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance_tracker.h"
+#include "soh/Enhancements/randomizer/randomizer.h"
 #include <soh/OTRGlobals.h>
 
 extern "C" {
