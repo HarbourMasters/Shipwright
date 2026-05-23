@@ -824,6 +824,9 @@ static void DrawNode(LogicTrackerNode& node) {
 }
 
 static void PopulateRandomizerEventMap() {
+    if (!randomizerEventMap.empty()) {
+        return;
+    }
     for (int i = RR_NONE; i < RR_MAX; i++) {
         for (const auto& event : areaTable[i].events) {
             const auto& eventStr = event.GetEventStr();
@@ -839,10 +842,6 @@ static void PopulateRandomizerEventMap() {
 }
 
 void LogicTrackerWindow::DrawElement() {
-    CalculateShowRandomizerCheck();
-    CalculateShowRandomizerRegion();
-    CalculateShowRandomizerEvent();
-
     if (expandNodeId != -1) {
         expandingNode = true;
     }
@@ -865,9 +864,12 @@ void LogicTrackerWindow::DrawElement() {
 }
 
 void LogicTrackerWindow::InitElement() {
-    PopulateRandomizerEventMap();
+    return;
 }
 
 void LogicTrackerWindow::UpdateElement() {
-    return;
+    PopulateRandomizerEventMap();
+    CalculateShowRandomizerCheck();
+    CalculateShowRandomizerRegion();
+    CalculateShowRandomizerEvent();
 }

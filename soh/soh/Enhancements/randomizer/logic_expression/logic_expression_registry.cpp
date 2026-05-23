@@ -162,6 +162,8 @@ void LogicExpression::Impl::PopulateFunctionAdapters() {
         REGISTER_LOGIC_FUNCTION(DMCPotsToPad),
         REGISTER_LOGIC_FUNCTION(DMCUpperToPots),
         REGISTER_LOGIC_FUNCTION(DMCPadToPots),
+        REGISTER_LOGIC_FUNCTION(CanBreakRocks),
+        REGISTER_LOGIC_FUNCTION(CanRead),
     };
 }
 

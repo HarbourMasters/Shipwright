@@ -1409,6 +1409,7 @@ constexpr std::string CleanConditionString(std::string condition) {
     UpdateIsTrialCondition(condition);
     ReplaceOptionIs(condition);
     ReplaceOptionIsNot(condition);
+    ReplaceAllInString(condition, ";", "");
     return condition;
 }
 
