@@ -122,6 +122,8 @@ void applyPreset(std::string presetName, std::vector<PresetSection> includeSecti
             }
             if (i == PRESET_SECTION_RANDOMIZER) {
                 Rando::Settings::GetInstance()->UpdateAllOptions();
+                SohGui::UpdateMenuTricks();
+                SohGui::UpdateMenuLocations();
             }
         }
     }

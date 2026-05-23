@@ -88,8 +88,7 @@ s32 EnHorseGameCheck_InitIngoRace(EnHorseGameCheckBase* base, PlayState* play) {
     for (i = 0; i < 3; i++) {
         this->playerCheck[i] = 0;
     }
-    this->ingoHorse =
-        Actor_Spawn(&play->actorCtx, play, ACTOR_EN_HORSE, -250.0f, 1.0f, -1650.0f, 0, 0x4000, 0, 0x8003, true);
+    this->ingoHorse = Actor_Spawn(&play->actorCtx, play, ACTOR_EN_HORSE, -250.0f, 1.0f, -1650.0f, 0, 0x4000, 0, 0x8003);
 
     if (this->ingoHorse == NULL) {
         LOG_HUNGUP_THREAD();
@@ -232,7 +231,7 @@ s32 EnHorseGameCheck_InitGerudoArchery(EnHorseGameCheckBase* base, PlayState* pl
     EnHorseGameCheckGerudoArchery* this = (EnHorseGameCheckGerudoArchery*)base;
 
     this->base.type = HORSEGAME_GERUDO_ARCHERY;
-    this->unk_150 = 0;
+    this->startFlags = 0;
     this->startTimer = 0;
     return true;
 }
@@ -262,7 +261,7 @@ s32 EnHorseGameCheck_InitType3(EnHorseGameCheckBase* base, PlayState* play) {
     EnHorseGameCheck3* this = (EnHorseGameCheck3*)base;
 
     this->base.type = HORSEGAME_TYPE3;
-    this->unk_150 = 0;
+    this->startFlags = 0;
     return true;
 }
 

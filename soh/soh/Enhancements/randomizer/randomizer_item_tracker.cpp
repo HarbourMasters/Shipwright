@@ -25,9 +25,6 @@ extern "C" {
 #include "functions.h"
 #include "macros.h"
 extern PlayState* gPlayState;
-
-#include "textures/icon_item_static/icon_item_static.h"
-#include "textures/icon_item_24_static/icon_item_24_static.h"
 }
 
 void DrawEquip(ItemTrackerItem item);
@@ -298,7 +295,7 @@ std::map<uint16_t, std::string> itemTrackerBeanShortNames = {
     { RG_GERUDO_VALLEY_BEAN_SOUL, "GV" },
     { RG_GRAVEYARD_BEAN_SOUL, "GY" },
     { RG_KOKIRI_FOREST_BEAN_SOUL, "KF" },
-    { RG_LAKE_HYLIA_BEAN_SOUL, "LA" },
+    { RG_LAKE_HYLIA_BEAN_SOUL, "LH" },
     { RG_LOST_WOODS_BRIDGE_BEAN_SOUL, "LWB" },
     { RG_LOST_WOODS_BEAN_SOUL, "LWT" },
     { RG_ZORAS_RIVER_BEAN_SOUL, "ZR" },
@@ -540,11 +537,24 @@ ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
                                                                                                                : 500;
             result.currentAmmo = gSaveContext.rupees;
             break;
-        case ITEM_BOMBCHU:
-            result.currentCapacity = INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU ? 50 : 0;
+        case ITEM_BOMBCHU: {
+            auto bombchuBag = RAND_GET_OPTION(RSK_BOMBCHU_BAG);
+
+            uint8_t capacity = 0;
+
+            if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU) {
+                if (bombchuBag.Is(RO_BOMBCHU_BAG_PROGRESSIVE)) {
+                    capacity = OTRGlobals::Instance->gRandoContext->GetBombchuCapacity();
+                } else {
+                    capacity = 50;
+                }
+            }
+
+            result.currentCapacity = capacity;
             result.maxCapacity = 50;
             result.currentAmmo = AMMO(ITEM_BOMBCHU);
             break;
+        }
         case ITEM_BEAN:
             result.currentCapacity = INV_CONTENT(ITEM_BEAN) == ITEM_BEAN ? 10 : 0;
             result.maxCapacity = 10;
@@ -705,7 +715,7 @@ void DrawItemCount(ItemTrackerItem item, bool hideMax) {
         bool shouldDisplayAmmo = trackerNumberDisplayMode == ITEM_TRACKER_NUMBER_AMMO ||
                                  trackerNumberDisplayMode == ITEM_TRACKER_NUMBER_CURRENT_AMMO_ONLY ||
                                  // These items have a static capacity, so display ammo instead
-                                 item.id == ITEM_BOMBCHU || item.id == ITEM_BEAN || item.id == QUEST_SKULL_TOKEN ||
+                                 item.id == ITEM_BEAN || item.id == QUEST_SKULL_TOKEN ||
                                  item.id == ITEM_HEART_CONTAINER || item.id == ITEM_HEART_PIECE;
 
         bool shouldDisplayMax = !(trackerNumberDisplayMode == ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY ||
@@ -862,7 +872,7 @@ void DrawItem(ItemTrackerItem item) {
         case ITEM_BRACELET:
         case ITEM_GAUNTLETS_SILVER:
         case ITEM_GAUNTLETS_GOLD:
-            actualItemId = CUR_UPG_VALUE(UPG_STRENGTH) == 3   ? ITEM_GAUNTLETS_GOLD
+            actualItemId = CUR_UPG_VALUE(UPG_STRENGTH) >= 3   ? ITEM_GAUNTLETS_GOLD
                            : CUR_UPG_VALUE(UPG_STRENGTH) == 2 ? ITEM_GAUNTLETS_SILVER
                                                               : ITEM_BRACELET;
             hasItem = CUR_UPG_VALUE(UPG_STRENGTH) > 0;
@@ -2380,14 +2390,6 @@ void RegisterItemTrackerWidgets() {
                      .LabelPosition(LabelPositions::Far)
                      .Color(THEME_COLOR)
                      .ComboMap(displayTypes))
-        .PreFunc([&](WidgetInfo& info) {
-            if (CVarGetInteger(CVAR_TRACKER_ITEM("WindowType"), TRACKER_WINDOW_FLOATING) == TRACKER_WINDOW_FLOATING &&
-                CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Main"), TRACKER_DISPLAY_ALWAYS) ==
-                    TRACKER_DISPLAY_COMBO_BUTTON) {
-                info.options.get()->disabled = true;
-                info.options.get()->disabledTooltip = notesDisabledTooltip;
-            }
-        })
         .Callback([](WidgetInfo& info) { shouldUpdateVectors = true; });
     ;
     SohGui::mSohMenu->AddSearchWidget({ personalNotesWiget, "Randomizer", "Item Tracker", "General Settings" });

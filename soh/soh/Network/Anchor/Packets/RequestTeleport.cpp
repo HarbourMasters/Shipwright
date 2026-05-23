@@ -27,7 +27,7 @@ void Anchor::HandlePacket_RequestTeleport(nlohmann::json payload) {
         return;
     }
 
-    uint32_t clientId = payload["clientId"].get<uint32_t>();
+    uint32_t clientId = payload.at("clientId").get<uint32_t>();
     SendPacket_TeleportTo(clientId);
 }
 

@@ -249,9 +249,9 @@ void MagicFire_Draw(Actor* thisx, PlayState* play) {
         gDPSetTileSize(POLY_XLU_DISP++, 1, 0, 0, 252, 252);
         gSPDisplayList(POLY_XLU_DISP++, sMaterialDL);
         gSPDisplayList(POLY_XLU_DISP++,
-                       Gfx_TwoTexScroll(play->state.gfxCtx, 0, (gameplayFrames * 2) % 512,
-                                        511 - ((gameplayFrames * 5) % 512), 64, 64, 1, (gameplayFrames * 2) % 256,
-                                        255 - ((gameplayFrames * 20) % 256), 32, 32));
+                       Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, (gameplayFrames * 2) % 512,
+                                          511 - ((gameplayFrames * 5) % 512), 64, 64, 1, (gameplayFrames * 2) % 256,
+                                          255 - ((gameplayFrames * 20) % 256), 32, 32, 2, -5, 2, -20));
         gSPDisplayList(POLY_XLU_DISP++, sModelDL);
         CLOSE_DISPS(play->state.gfxCtx);
 

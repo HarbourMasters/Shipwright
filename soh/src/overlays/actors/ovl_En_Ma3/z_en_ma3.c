@@ -16,8 +16,8 @@ void EnMa3_Destroy(Actor* thisx, PlayState* play);
 void EnMa3_Update(Actor* thisx, PlayState* play);
 void EnMa3_Draw(Actor* thisx, PlayState* play);
 
-u16 func_80AA2AA0(PlayState* play, Actor* this);
-s16 func_80AA2BD4(PlayState* play, Actor* this);
+u16 EnMa3_GetTextId(PlayState* play, Actor* this);
+s16 EnMa3_UpdateTalkState(PlayState* play, Actor* this);
 
 void func_80AA2E54(EnMa3* this, PlayState* play);
 s32 func_80AA2EC8(EnMa3* this, PlayState* play);
@@ -74,7 +74,7 @@ static AnimationFrameCountInfo sAnimationInfo[] = {
     { &gMalonAdultSingAnim, 1.0f, ANIMMODE_LOOP, -10.0f },
 };
 
-u16 func_80AA2AA0(PlayState* play, Actor* thisx) {
+u16 EnMa3_GetTextId(PlayState* play, Actor* thisx) {
     Player* player = GET_PLAYER(play);
     s16* timerSecondsPtr; // weirdness with this necessary to match
 
@@ -111,7 +111,7 @@ u16 func_80AA2AA0(PlayState* play, Actor* thisx) {
     }
 }
 
-s16 func_80AA2BD4(PlayState* play, Actor* thisx) {
+s16 EnMa3_UpdateTalkState(PlayState* play, Actor* thisx) {
     s16 ret = NPC_TALK_STATE_TALKING;
 
     switch (Message_GetState(&play->msgCtx)) {
@@ -295,15 +295,15 @@ void EnMa3_Update(Actor* thisx, PlayState* play) {
     this->actionFunc(this, play);
     func_80AA2E54(this, play);
     Npc_UpdateTalking(play, &this->actor, &this->interactInfo.talkState, (f32)this->collider.dim.radius + 150.0f,
-                      func_80AA2AA0, func_80AA2BD4);
+                      EnMa3_GetTextId, EnMa3_UpdateTalkState);
     if (this->interactInfo.talkState == NPC_TALK_STATE_IDLE) {
-        if (this->unk_20A != 0) {
+        if (this->isNotSinging != 0) {
             func_800F6584(0);
-            this->unk_20A = 0;
+            this->isNotSinging = 0;
         }
-    } else if (this->unk_20A == 0) {
+    } else if (this->isNotSinging == 0) {
         func_800F6584(1);
-        this->unk_20A = 1;
+        this->isNotSinging = 1;
     }
 }
 

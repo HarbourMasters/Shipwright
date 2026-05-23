@@ -2,7 +2,6 @@
 #include "static_data.h"
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/item-tables/ItemTableManager.h"
-#include "3drando/shops.hpp"
 #include "dungeon.h"
 #include "logic.h"
 #include "entrance.h"
@@ -13,6 +12,7 @@
 #include "3drando/hints.hpp"
 #include "soh/util.h"
 #include "../kaleido.h"
+#include "soh/Enhancements/randomizer/Traps.h"
 
 #include <fstream>
 #include <spdlog/spdlog.h>
@@ -50,6 +50,8 @@ Context::Context() {
         &mOptions[RSK_SHUFFLE_COWS],
         &mOptions[RSK_SHUFFLE_POTS],
         &mOptions[RSK_SHUFFLE_CRATES],
+        &mOptions[RSK_SHUFFLE_ROCKS],
+        &mOptions[RSK_SHUFFLE_BOULDERS],
         &mOptions[RSK_SHUFFLE_FREESTANDING],
         &mOptions[RSK_SHUFFLE_MERCHANTS],
         &mOptions[RSK_SHUFFLE_FROG_SONG_RUPEES],
@@ -135,8 +137,8 @@ ItemOverride& Context::GetItemOverride(size_t locKey) {
 void Context::PlaceItemInLocation(const RandomizerCheck locKey, const RandomizerGet item,
                                   const bool applyEffectImmediately, const bool setHidden) {
     const auto loc = GetItemLocation(locKey);
-    SPDLOG_DEBUG(StaticData::RetrieveItem(item).GetName().GetEnglish() + " placed at " +
-                 StaticData::GetLocation(locKey)->GetName() + "\n");
+    SPDLOG_DEBUG("{} placed at {}", StaticData::RetrieveItem(item).GetName().GetEnglish(),
+                 StaticData::GetLocation(locKey)->GetName());
 
     if (applyEffectImmediately || mOptions[RSK_LOGIC_RULES].Is(RO_LOGIC_GLITCHLESS)) {
         StaticData::RetrieveItem(item).ApplyEffect();
@@ -196,6 +198,7 @@ void Context::GenerateLocationPool() {
              !(location.GetRandomizerCheck() == RC_LW_DEKU_SCRUB_GROTTO_FRONT ||
                location.GetRandomizerCheck() == RC_LW_DEKU_SCRUB_NEAR_BRIDGE ||
                location.GetRandomizerCheck() == RC_HF_DEKU_SCRUB_GROTTO)) ||
+            (location.GetRCType() == RCTYPE_BEGGAR && mOptions[RSK_SHUFFLE_BEGGAR].Is(RO_GENERIC_OFF)) ||
             (location.GetRCType() == RCTYPE_ADULT_TRADE && mOptions[RSK_SHUFFLE_ADULT_TRADE].Is(RO_GENERIC_OFF)) ||
             (location.GetRCType() == RCTYPE_COW && mOptions[RSK_SHUFFLE_COWS].Is(RO_GENERIC_OFF)) ||
             (location.GetRandomizerCheck() == RC_LH_HYRULE_LOACH &&
@@ -207,14 +210,22 @@ void Context::GenerateLocationPool() {
             (location.GetRCType() == RCTYPE_NLCRATE && (mOptions[RSK_SHUFFLE_CRATES].Is(RO_SHUFFLE_CRATES_OFF) ||
                                                         mOptions[RSK_LOGIC_RULES].IsNot(RO_LOGIC_NO_LOGIC))) ||
             (location.GetRCType() == RCTYPE_SMALL_CRATE && mOptions[RSK_SHUFFLE_CRATES].Is(RO_SHUFFLE_CRATES_OFF)) ||
+            (location.GetRCType() == RCTYPE_ROCK && !mOptions[RSK_SHUFFLE_ROCKS]) ||
+            (location.GetRCType() == RCTYPE_BOULDER && mOptions[RSK_SHUFFLE_BOULDERS].Is(RO_SHUFFLE_BOULDERS_OFF)) ||
             (location.GetRCType() == RCTYPE_FOUNTAIN_FAIRY && !mOptions[RSK_SHUFFLE_FOUNTAIN_FAIRIES]) ||
             (location.GetRCType() == RCTYPE_STONE_FAIRY && !mOptions[RSK_SHUFFLE_STONE_FAIRIES]) ||
             (location.GetRCType() == RCTYPE_BEAN_FAIRY && !mOptions[RSK_SHUFFLE_BEAN_FAIRIES]) ||
             (location.GetRCType() == RCTYPE_SONG_FAIRY && !mOptions[RSK_SHUFFLE_SONG_FAIRIES]) ||
+            (location.GetRCType() == RCTYPE_BUTTERFLY_FAIRY && !mOptions[RSK_SHUFFLE_BUTTERFLY_FAIRIES]) ||
             (location.GetRCType() == RCTYPE_TREE && !mOptions[RSK_SHUFFLE_TREES]) ||
             (location.GetRCType() == RCTYPE_NLTREE &&
              (!mOptions[RSK_SHUFFLE_TREES] || mOptions[RSK_LOGIC_RULES].IsNot(RO_LOGIC_NO_LOGIC))) ||
             (location.GetRCType() == RCTYPE_BUSH && !mOptions[RSK_SHUFFLE_BUSHES]) ||
+            (location.GetRCType() == RCTYPE_ICICLE && !mOptions[RSK_SHUFFLE_ICICLES]) ||
+            (location.GetRCType() == RCTYPE_RED_ICE && !mOptions[RSK_SHUFFLE_RED_ICE]) ||
+            (location.GetRCType() == RCTYPE_SIGN && mOptions[RSK_SHUFFLE_SIGNS].Is(RO_SHUFFLE_SIGNS_OFF)) ||
+            (location.GetRCType() == RCTYPE_WONDER_ITEM &&
+             mOptions[RSK_SHUFFLE_WONDER_ITEMS].Is(RO_SHUFFLE_WONDER_ITEMS_OFF)) ||
             (location.GetRCType() == RCTYPE_FREESTANDING &&
              mOptions[RSK_SHUFFLE_FREESTANDING].Is(RO_SHUFFLE_FREESTANDING_OFF)) ||
             (location.GetRCType() == RCTYPE_BEEHIVE && !mOptions[RSK_SHUFFLE_BEEHIVES])) {
@@ -227,12 +238,17 @@ void Context::GenerateLocationPool() {
                  mOptions[RSK_SHUFFLE_FREESTANDING].Is(RO_SHUFFLE_FREESTANDING_DUNGEONS)) ||
                 (location.GetRCType() == RCTYPE_POT && mOptions[RSK_SHUFFLE_POTS].Is(RO_SHUFFLE_POTS_DUNGEONS)) ||
                 (location.GetRCType() == RCTYPE_GRASS && mOptions[RSK_SHUFFLE_GRASS].Is(RO_SHUFFLE_GRASS_DUNGEONS)) ||
+                (location.GetRCType() == RCTYPE_WONDER_ITEM &&
+                 mOptions[RSK_SHUFFLE_WONDER_ITEMS].Is(RO_SHUFFLE_WONDER_ITEMS_DUNGEONS)) ||
                 (location.GetRCType() == RCTYPE_CRATE && mOptions[RSK_SHUFFLE_CRATES].Is(RO_SHUFFLE_CRATES_DUNGEONS)) ||
                 (location.GetRCType() == RCTYPE_NLCRATE &&
                  mOptions[RSK_SHUFFLE_CRATES].Is(RO_SHUFFLE_CRATES_DUNGEONS) &&
                  mOptions[RSK_LOGIC_RULES].Is(RO_LOGIC_NO_LOGIC)) ||
                 (location.GetRCType() == RCTYPE_SMALL_CRATE &&
-                 mOptions[RSK_SHUFFLE_CRATES].Is(RO_SHUFFLE_CRATES_DUNGEONS))) {
+                 mOptions[RSK_SHUFFLE_CRATES].Is(RO_SHUFFLE_CRATES_DUNGEONS)) ||
+                (location.GetRCType() == RCTYPE_BOULDER &&
+                 mOptions[RSK_SHUFFLE_BOULDERS].Is(RO_SHUFFLE_BOULDERS_DUNGEONS)) ||
+                (location.GetRCType() == RCTYPE_SIGN && mOptions[RSK_SHUFFLE_SIGNS].Is(RO_SHUFFLE_SIGNS_DUNGEONS))) {
                 continue;
             }
             // If we've gotten past all the conditions where an overworld location should not be
@@ -247,13 +263,19 @@ void Context::GenerateLocationPool() {
                     (location.GetRCType() == RCTYPE_POT && mOptions[RSK_SHUFFLE_POTS].Is(RO_SHUFFLE_POTS_OVERWORLD)) ||
                     (location.GetRCType() == RCTYPE_GRASS &&
                      mOptions[RSK_SHUFFLE_GRASS].Is(RO_SHUFFLE_GRASS_OVERWORLD)) ||
+                    (location.GetRCType() == RCTYPE_WONDER_ITEM &&
+                     mOptions[RSK_SHUFFLE_WONDER_ITEMS].Is(RO_SHUFFLE_WONDER_ITEMS_OVERWORLD)) ||
                     (location.GetRCType() == RCTYPE_CRATE &&
                      mOptions[RSK_SHUFFLE_CRATES].Is(RO_SHUFFLE_CRATES_OVERWORLD)) ||
                     (location.GetRCType() == RCTYPE_NLCRATE &&
                      mOptions[RSK_SHUFFLE_CRATES].Is(RO_SHUFFLE_CRATES_OVERWORLD) &&
                      mOptions[RSK_LOGIC_RULES].Is(RO_LOGIC_NO_LOGIC)) ||
                     (location.GetRCType() == RCTYPE_SMALL_CRATE &&
-                     mOptions[RSK_SHUFFLE_CRATES].Is(RO_SHUFFLE_CRATES_OVERWORLD))) {
+                     mOptions[RSK_SHUFFLE_CRATES].Is(RO_SHUFFLE_CRATES_OVERWORLD)) ||
+                    (location.GetRCType() == RCTYPE_BOULDER &&
+                     mOptions[RSK_SHUFFLE_BOULDERS].Is(RO_SHUFFLE_BOULDERS_OVERWORLD)) ||
+                    (location.GetRCType() == RCTYPE_SIGN &&
+                     mOptions[RSK_SHUFFLE_SIGNS].Is(RO_SHUFFLE_SIGNS_OVERWORLD))) {
                     continue;
                 }
                 // also add to that dungeon's location list.
@@ -333,35 +355,21 @@ void Context::HintReset() {
 }
 
 void Context::CreateItemOverrides() {
-    SPDLOG_DEBUG("NOW CREATING OVERRIDES\n\n");
+    SPDLOG_DEBUG("NOW CREATING OVERRIDES");
     for (RandomizerCheck locKey : allLocations) {
         const auto loc = StaticData::GetLocation(locKey);
         // If this is an ice trap, store the disguise model in iceTrapModels
         const auto itemLoc = GetItemLocation(locKey);
         if (itemLoc->GetPlacedRandomizerGet() == RG_ICE_TRAP) {
-            RandomizerGet trickModel = RandomElementFromSet(possibleIceTrapModels);
-            if (trickModel == RG_EMPTY_BOTTLE) {
-                trickModel = RandomElement(StaticData::normalBottles);
-            }
-            if (trickModel == RG_GUARD_HOUSE_KEY) {
-                trickModel = RandomElement(StaticData::overworldKeys);
-            }
-            if (trickModel == RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL) {
-                trickModel = RandomElement(StaticData::beanSouls);
-            }
-            ItemOverride val(locKey, trickModel);
+            ItemOverride val(locKey, Traps::GetTrapTrickModel());
             iceTrapModels[locKey] = val.LooksLike();
-            val.SetTrickName(GetIceTrapName(val.LooksLike()));
+            val.SetTrickName(Traps::GetTrapName(val.LooksLike()));
             // If this is ice trap is in a shop, change the name based on what the model will look like
             overrides[locKey] = val;
         }
-        SPDLOG_DEBUG(loc->GetName());
-        SPDLOG_DEBUG(": ");
-        SPDLOG_DEBUG(itemLoc->GetPlacedItemName().GetEnglish());
-        SPDLOG_DEBUG("\n");
+        SPDLOG_DEBUG("{}: {}", loc->GetName(), itemLoc->GetPlacedItemName().GetEnglish());
     }
-    SPDLOG_DEBUG("Overrides Created: ");
-    SPDLOG_DEBUG(std::to_string(overrides.size()));
+    SPDLOG_DEBUG("Overrides Created: {}", std::to_string(overrides.size()));
 }
 
 bool Context::IsSeedGenerated() const {

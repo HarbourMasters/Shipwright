@@ -208,8 +208,7 @@ uint32_t Menu::DrawSearchResults(std::string& menuSearchText) {
                             info.type == WIDGET_SEPARATOR_TEXT || info.isHidden || info.hideInSearch) {
                             continue;
                         }
-                        const char* tooltip = info.options->tooltip;
-                        std::string widgetStr = std::string(info.name) + std::string(tooltip != NULL ? tooltip : "");
+                        std::string widgetStr = std::string(info.name) + info.options->tooltip;
                         std::transform(widgetStr.begin(), widgetStr.end(), widgetStr.begin(), ::tolower);
                         widgetStr.erase(std::remove(widgetStr.begin(), widgetStr.end(), ' '), widgetStr.end());
                         if (widgetStr.find(menuSearchText) != std::string::npos) {

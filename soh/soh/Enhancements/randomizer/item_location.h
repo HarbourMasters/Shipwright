@@ -1,7 +1,7 @@
 #pragma once
 
 #include "randomizerTypes.h"
-#include "3drando/text.hpp"
+#include "soh/Enhancements/custom-message/text.h"
 #include "static_data.h"
 #include "option.h"
 
