@@ -41,20 +41,25 @@ bool LocationAccess::CheckConditionAtAgeTime(bool& age, bool& time) const {
     return GetConditionsMet();
 }
 
-bool LocationAccess::ConditionsMet(Region* parentRegion, bool calculatingAvailableChecks) const {
+bool LocationAccess::ConditionsMet(Region* parentRegion) const {
     // WARNING enterance validation can run this after resetting the access for sphere 0 validation
     // When refactoring ToD access, either fix the above or do not assume that we
     // have any access at all just because this is being run
-    bool conditionsMet = false;
+    auto itemLocation = Rando::Context::GetInstance()->GetItemLocation(location);
 
-    if ((parentRegion->childDay && CheckConditionAtAgeTime(logic->IsChild, logic->AtDay)) ||
-        (parentRegion->childNight && CheckConditionAtAgeTime(logic->IsChild, logic->AtNight)) ||
-        (parentRegion->adultDay && CheckConditionAtAgeTime(logic->IsAdult, logic->AtDay)) ||
-        (parentRegion->adultNight && CheckConditionAtAgeTime(logic->IsAdult, logic->AtNight))) {
-        conditionsMet = true;
+    if (itemLocation->IsChildAvailable() ||
+        (parentRegion->childDay && CheckConditionAtAgeTime(logic->IsChild, logic->AtDay)) ||
+        (parentRegion->childNight && CheckConditionAtAgeTime(logic->IsChild, logic->AtNight))) {
+        itemLocation->SetChildAvailable(true);
     }
 
-    return conditionsMet;
+    if (itemLocation->IsAdultAvailable() ||
+        (parentRegion->adultDay && CheckConditionAtAgeTime(logic->IsAdult, logic->AtDay)) ||
+        (parentRegion->adultNight && CheckConditionAtAgeTime(logic->IsAdult, logic->AtNight))) {
+        itemLocation->SetAdultAvailable(true);
+    }
+
+    return itemLocation->IsChildAvailable() || itemLocation->IsAdultAvailable();
 }
 
 static uint16_t GetMinimumPrice(const Rando::Location* loc) {
