@@ -580,6 +580,15 @@ typedef enum {
     VB_DRAW_ADDITIONAL_RETICLES,
 
     // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `PlayerMask currentMask`
+    // - `*PlayState play`
+    VB_DRAW_PLAYER_MASK,
+
+    // #### `result`
     // In `Interface_DrawAmmoCount`:
     // ```c
     // (i == ITEM_STICK) ||
