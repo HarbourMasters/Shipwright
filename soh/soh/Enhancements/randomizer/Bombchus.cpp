@@ -1,6 +1,7 @@
 #include <soh/OTRGlobals.h>
 #include "soh/ShipInit.hpp"
 #include "src/overlays/actors/ovl_En_GirlA/z_en_girla.h"
+#include "soh/Enhancements/randomizer/SeedContext.h"
 
 extern "C" {
 #include "z64save.h"

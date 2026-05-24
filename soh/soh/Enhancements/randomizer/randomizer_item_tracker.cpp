@@ -18,6 +18,7 @@
 #include "soh/SohGui/SohMenu.h"
 #include "soh/SohGui/UIWidgets.hpp"
 #include "soh/util.h"
+#include "soh/Enhancements/randomizer/randomizer.h"
 
 extern "C" {
 #include <z64.h>

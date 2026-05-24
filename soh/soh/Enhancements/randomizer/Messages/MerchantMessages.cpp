@@ -8,6 +8,7 @@
  */
 #include <soh/OTRGlobals.h>
 #include "soh/ObjectExtension/ObjectExtension.h"
+#include "soh/Enhancements/randomizer/randomizer.h"
 
 extern "C" {
 extern PlayState* gPlayState;

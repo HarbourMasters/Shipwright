@@ -7,12 +7,15 @@
 #include <libultraship/libultraship.h>
 #include <ship/resource/type/Json.h>
 #include "soh/OTRGlobals.h"
+#include "soh/util.h"
 #include "soh/SohGui/MenuTypes.h"
 #include "soh/SohGui/SohMenu.h"
 #include "soh/SohGui/SohGui.hpp"
 #include "soh/Enhancements/randomizer/randomizer_check_tracker.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance_tracker.h"
 #include "soh/Enhancements/randomizer/randomizer_item_tracker.h"
+#include "soh/Enhancements/randomizer/SeedContext.h"
+#include "soh/Enhancements/randomizer/settings.h"
 
 namespace fs = std::filesystem;
 
