@@ -29,11 +29,6 @@ typedef enum {
     ADD_TRAP_MAX
 } AltTrapType;
 
-static AltTrapType roll = ADD_TRAP_MAX;
-static int statusTimer = -1;
-static int eventTimer = -1;
-static EntranceIndex teleportRoll = ENTR_MAX;
-
 const char* altTrapTypeCvars[] = {
     CVAR_ENHANCEMENT("ExtraTraps.Ice"),   CVAR_ENHANCEMENT("ExtraTraps.Burn"),
     CVAR_ENHANCEMENT("ExtraTraps.Shock"), CVAR_ENHANCEMENT("ExtraTraps.Knockback"),
@@ -48,7 +43,22 @@ const std::array<EntranceIndex, 7> teleportDestinations = {
     ENTR_TEMPLE_OF_TIME_WARP_PAD,
 };
 
-AltTrapType selectWeightedTrap(uint64_t* state) {
+typedef struct {
+    AltTrapType trap;
+    uint16_t ticks;
+    void (*execute)(Player*, uint32_t);
+    uint32_t state;
+} EventTimer;
+
+static std::vector<EventTimer> timers = std::vector<EventTimer>();
+
+static void queueTimer(AltTrapType trap, uint16_t ticks, void (*execute)(Player*, uint32_t), uint32_t state = 0) {
+
+    EventTimer m = { .trap = trap, .ticks = ticks, .execute = execute, .state = state };
+    timers.push_back(m);
+}
+
+static AltTrapType selectWeightedTrap(uint64_t* state) {
     float weights[ADD_TRAP_MAX] = { 0.0f };
     float totalWeight = 0.0f;
 
@@ -59,6 +69,7 @@ AltTrapType selectWeightedTrap(uint64_t* state) {
         if (gSaveContext.equips.buttonItems[0] == ITEM_FISHING_POLE && (i == ADD_VOID_TRAP || i == ADD_TELEPORT_TRAP)) {
             weight = 0; // don't add void or teleport if you're holding the fishing pole, as this causes issues
         }
+
         totalWeight += weight;
         weights[i] = totalWeight;
         SPDLOG_TRACE("TRAP trap:{0} weight:{1} position:{2}", altTrapTypeCvars[i], weight, totalWeight);
@@ -67,7 +78,7 @@ AltTrapType selectWeightedTrap(uint64_t* state) {
     if (totalWeight == 0.0f) // No weights? Just return an invalid value.
         return ADD_TRAP_MAX;
 
-    double target = ShipUtils::RandomDouble(state) * totalWeight; 
+    double target = ShipUtils::RandomDouble(state) * totalWeight;
 
     for (int i = 0; i < ADD_TRAP_MAX; i++) {
         if (weights[i] >= target) {
@@ -84,74 +95,62 @@ static void RollRandomTrap(uint64_t seed) {
                                           : gSaveContext.ship.stats.fileCreatedAt);
     uint64_t state;
     ShipUtils::RandInit(finalSeed, &state);
-
-    roll = selectWeightedTrap(&state);
+    AltTrapType roll = selectWeightedTrap(&state);
     if (roll == ADD_TRAP_MAX) // If it failed to pick a trap, fallback to a basic ice trap.
     {
         roll = ADD_ICE_TRAP;
     }
 
     switch (roll) {
-        case ADD_ICE_TRAP:
+        case ADD_ICE_TRAP: {
             GameInteractor::RawAction::FreezePlayer();
             break;
-        case ADD_BURN_TRAP:
+        }
+        case ADD_BURN_TRAP: {
             GameInteractor::RawAction::BurnPlayer();
             break;
-        case ADD_SHOCK_TRAP:
+        }
+        case ADD_SHOCK_TRAP: {
             GameInteractor::RawAction::ElectrocutePlayer();
             break;
-        case ADD_KNOCK_TRAP:
-            eventTimer = 3;
+        }
+        case ADD_KNOCK_TRAP: {
+            queueTimer(ADD_KNOCK_TRAP, 3,
+                       [](Player* player, uint32_t state) { GameInteractor::RawAction::KnockbackPlayer(1); });
             break;
-        case ADD_SPEED_TRAP:
+        }
+        case ADD_SPEED_TRAP: {
             Audio_PlaySoundGeneral(NA_SE_VO_KZ_MOVE, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
                                    &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+
+            for (int i = 0; i < timers.size(); i++) {
+                if (timers[i].trap == ADD_SPEED_TRAP) {
+                    timers[i].ticks += 200;
+                    return;
+                }
+            }
             GameInteractor::State::MovementSpeedMultiplier = 0.5f;
-            statusTimer = 200;
             Notification::Emit({ .message = "Speed Decreased!" });
+            queueTimer(ADD_SPEED_TRAP, 200, [](Player* player, uint32_t state) {
+                GameInteractor::State::MovementSpeedMultiplier = 1.0f;
+                Notification::Emit({ .message = "Speed Restored!" });
+            });
             break;
-        case ADD_BOMB_TRAP:
-            eventTimer = 3;
+        }
+        case ADD_BOMB_TRAP: {
+            queueTimer(ADD_BOMB_TRAP, 3,
+                       [](Player* player, uint32_t state) { GameInteractor::RawAction::SpawnActor(ACTOR_EN_BOM, 1); });
             break;
-        case ADD_VOID_TRAP:
+        }
+        case ADD_VOID_TRAP: {
             Audio_PlaySoundGeneral(NA_SE_EN_GANON_LAUGH, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
                                    &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
-            eventTimer = 3;
+            queueTimer(ADD_VOID_TRAP, 3, [](Player* player, uint32_t state) { Play_TriggerRespawn(gPlayState); });
             break;
-        case ADD_AMMO_TRAP:
-            eventTimer = 3;
+        }
+        case ADD_AMMO_TRAP: {
             Notification::Emit({ .message = "Ammo Halved!" });
-            break;
-        case ADD_KILL_TRAP:
-            GameInteractor::RawAction::SetPlayerHealth(0);
-            break;
-        case ADD_TELEPORT_TRAP:
-            eventTimer = 3;
-            teleportRoll = ShipUtils::RandomElement(teleportDestinations, &state);
-            break;
-        default:
-            break;
-    }
-}
-
-static void OnPlayerUpdate() {
-    Player* player = GET_PLAYER(gPlayState);
-    if (statusTimer == 0) {
-        GameInteractor::State::MovementSpeedMultiplier = 1.0f;
-    }
-    if (eventTimer == 0) {
-        switch (roll) {
-            case ADD_KNOCK_TRAP:
-                GameInteractor::RawAction::KnockbackPlayer(1);
-                break;
-            case ADD_BOMB_TRAP:
-                GameInteractor::RawAction::SpawnActor(ACTOR_EN_BOM, 1);
-                break;
-            case ADD_VOID_TRAP:
-                Play_TriggerRespawn(gPlayState);
-                break;
-            case ADD_AMMO_TRAP:
+            queueTimer(ADD_AMMO_TRAP, 3, [](Player* player, uint32_t state) {
                 AMMO(ITEM_STICK) = static_cast<int8_t>(floor(AMMO(ITEM_STICK) * 0.5f));
                 AMMO(ITEM_NUT) = static_cast<int8_t>(floor(AMMO(ITEM_NUT) * 0.5f));
                 AMMO(ITEM_SLINGSHOT) = static_cast<int8_t>(floor(AMMO(ITEM_SLINGSHOT) * 0.5f));
@@ -160,24 +159,38 @@ static void OnPlayerUpdate() {
                 AMMO(ITEM_BOMBCHU) = static_cast<int8_t>(floor(AMMO(ITEM_BOMBCHU) * 0.5f));
                 Audio_PlaySoundGeneral(NA_SE_VO_FR_SMILE_0, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
                                        &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
-                break;
-            case ADD_TELEPORT_TRAP: {
-                GameInteractor::RawAction::TeleportPlayer(teleportRoll);
-                break;
-            }
-            default:
-                break;
+            });
+            break;
         }
-    }
-    if (statusTimer >= 0) {
-        statusTimer--;
-    }
-    if (eventTimer >= 0) {
-        eventTimer--;
+        case ADD_KILL_TRAP: {
+            GameInteractor::RawAction::SetPlayerHealth(0);
+            break;
+        }
+        case ADD_TELEPORT_TRAP: {
+            EntranceIndex teleportRoll = ShipUtils::RandomElement(teleportDestinations, &state);
+
+            queueTimer(
+                ADD_TELEPORT_TRAP, 3,
+                [](Player* player, uint32_t state) { GameInteractor::RawAction::TeleportPlayer(state); }, teleportRoll);
+            break;
+        }
+        default:
+            break;
     }
 }
 
-void RegisterExtraTraps() {
+static void OnPlayerUpdate() {
+    Player* player = GET_PLAYER(gPlayState);
+    for (int i = timers.size() - 1; i >= 0; i--) {
+        auto& n = timers[i];
+        if (--n.ticks == 0) {
+            n.execute(player, n.state);
+            timers.erase(timers.begin() + i);
+        }
+    }
+}
+
+static void RegisterExtraTraps() {
     COND_HOOK(OnPlayerUpdate, CVAR_EXTRA_TRAPS_VALUE, OnPlayerUpdate);
 
     COND_VB_SHOULD(VB_SHORT_CIRCUIT_GIVE_ITEM_PROCESS, true, {

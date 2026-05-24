@@ -1813,7 +1813,6 @@ void SohMenu::AddMenuEnhancements() {
                             CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.WeightedTraps"), 0) == 0;
         })
         .Options(IntSliderOptions().DefaultValue(0).Min(0).Max(100).Tooltip("Set to zero (0) to disable."));
-    
 
     AddWidget(path, "Teleport Traps", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("ExtraTraps.Teleport"))
