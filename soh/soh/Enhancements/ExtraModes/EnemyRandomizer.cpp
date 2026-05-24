@@ -947,9 +947,21 @@ void RegisterEnemyRandomizerWidgets() {
                          "- Random: Enemies are randomized every time you load a room.\n"
                          "- Random (Seeded): Enemies are randomized based on the current randomizer seed/file.\n"));
 
-    SohGui::mSohMenu->AddWidget(path, "Randomized Enemy Sizes", WIDGET_CVAR_CHECKBOX)
-        .CVar(CVAR_ENHANCEMENT("RandomizedEnemySizes"))
-        .Options(UIWidgets::CheckboxOptions().Tooltip("Enemies and Bosses spawn with random sizes."));
+    static const std::map<int32_t, const char*> enemySizeModes = {
+        { ENEMY_SIZE_OFF, "Disabled" },
+        { ENEMY_SIZE_RANDOM, "Random" },
+        { ENEMY_SIZE_RANDOM_SEEDED, "Random (Seeded)" }
+    };
+
+    SohGui::mSohMenu->AddWidget(path, "Randomized Enemy Sizes", WIDGET_CVAR_COMBOBOX)
+                    .CVar(CVAR_ENHANCEMENT("RandomizedEnemySizes"))
+                    .Options(
+                        UIWidgets::ComboboxOptions()
+                        .DefaultIndex(ENEMY_SIZE_OFF)
+                        .ComboMap(enemySizeModes)
+                        .Tooltip("Enemies and bosses spawn with random sizes.\n\n"
+                            "- Random: Sizes are randomized every time you load a room.\n"
+                            "- Random (Seeded): Sizes are consistent based on the current randomizer seed/file.\n"));
 
     SohGui::mSohMenu->AddWidget(path, "Scale Health with Size", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("EnemySizeScalesHealth"))
