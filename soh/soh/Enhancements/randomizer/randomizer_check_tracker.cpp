@@ -884,9 +884,11 @@ void CheckTrackerDialogMessage() {
     } else if (gPlayState->msgCtx.textId == TEXT_CARPET_SALESMAN_1) {
         identifyCheck(RC_WASTELAND_BOMBCHU_SALESMAN);
     } else if (gPlayState->msgCtx.textId == TEXT_SCRUB_RANDOM) {
-        auto actor = gPlayState->msgCtx.talkActor;
-        auto checkIdentity = ObjectExtension::GetInstance().Get<ScrubIdentity>(actor);
-        identifyCheck(checkIdentity->identity.randomizerCheck);
+        if (auto* actor = gPlayState->msgCtx.talkActor) {
+            if (auto* checkIdentity = ObjectExtension::GetInstance().Get<ScrubIdentity>(actor)) {
+                identifyCheck(checkIdentity->identity.randomizerCheck);
+            }
+        }
     }
 }
 
