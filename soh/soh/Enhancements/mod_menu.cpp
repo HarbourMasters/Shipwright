@@ -310,8 +310,9 @@ void ModMenuWindow::DrawElement() {
             Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         }
         if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled)) {
-            ImGui::SetTooltip(modsEnabled ? "Replaces in-game textbox text with ImGui-rendered text using a font from a mod archive."
-                                          : "Enable Mods to use the Custom Font Overlay.");
+            ImGui::SetTooltip(
+                modsEnabled ? "Replaces in-game textbox text with ImGui-rendered text using a font from a mod archive."
+                            : "Enable Mods to use the Custom Font Overlay.");
         }
         ImGui::EndDisabled();
 
@@ -325,10 +326,14 @@ void ModMenuWindow::DrawElement() {
         const std::string current = CVarGetString(CVAR_CUSTOM_FONT_NAME, "Default");
         int currentIdx = 0;
         for (int i = 0; i < (int)fontNames.size(); i++)
-            if (fontNames[i] == current) { currentIdx = i; break; }
+            if (fontNames[i] == current) {
+                currentIdx = i;
+                break;
+            }
         std::vector<const char*> labels;
         labels.reserve(fontNames.size());
-        for (const auto& name : fontNames) labels.push_back(name.c_str());
+        for (const auto& name : fontNames)
+            labels.push_back(name.c_str());
         ImGui::Text("Textbox Font");
         ImGui::SameLine();
         ImGui::SetNextItemWidth(200.0f);
@@ -348,10 +353,14 @@ void ModMenuWindow::DrawElement() {
             const std::string curTrans = CVarGetString(CVAR_CUSTOM_FONT_TRANSLATION, "None");
             int transIdx = 0;
             for (int i = 0; i < (int)translationNames.size(); i++)
-                if (translationNames[i] == curTrans) { transIdx = i; break; }
+                if (translationNames[i] == curTrans) {
+                    transIdx = i;
+                    break;
+                }
             std::vector<const char*> transLabels;
             transLabels.reserve(translationNames.size());
-            for (const auto& n : translationNames) transLabels.push_back(n.c_str());
+            for (const auto& n : translationNames)
+                transLabels.push_back(n.c_str());
             ImGui::Text("Translation");
             ImGui::SameLine();
             ImGui::SetNextItemWidth(200.0f);
