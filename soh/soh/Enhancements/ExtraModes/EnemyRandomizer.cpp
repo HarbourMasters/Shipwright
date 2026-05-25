@@ -533,8 +533,8 @@ void CustomStalfosPairFightDestroy(Actor* thisx, PlayState* play) {
 
 static void KillVoidedEnemies(void* actorRef) {
     constexpr float voidFallDistance = 200.0f;
-    if (const auto actor = static_cast<Actor*>(actorRef); actor->category == ACTORCAT_ENEMY && !actor->isDrawn &&
-                                                          actor->world.pos.y < actor->home.pos.y - voidFallDistance) {
+    const auto actor = static_cast<Actor*>(actorRef)
+    if (actor->category == ACTORCAT_ENEMY && !actor->isDrawn && actor->world.pos.y < actor->home.pos.y - voidFallDistance) {
         Actor_Kill(actor);
     }
 }
