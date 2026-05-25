@@ -7,6 +7,9 @@
 #define dgCustomBowDL "__OTR__objects/object_custom_equip/gCustomBowDL"
 static const ALIGN_ASSET(2) char gCustomBowDL[] = dgCustomBowDL;
 
+#define dgCustomFPSBowDL "__OTR__objects/object_custom_equip/gCustomFPSBowDL"
+static const ALIGN_ASSET(2) char gCustomFPSBowDL[] = dgCustomFPSBowDL;
+
 #define dgCustomHammerDL "__OTR__objects/object_custom_equip/gCustomHammerDL"
 static const ALIGN_ASSET(2) char gCustomHammerDL[] = dgCustomHammerDL;
 
@@ -15,6 +18,15 @@ static const ALIGN_ASSET(2) char gCustomHookshotDL[] = dgCustomHookshotDL;
 
 #define dgCustomLongshotDL "__OTR__objects/object_custom_equip/gCustomLongshotDL"
 static const ALIGN_ASSET(2) char gCustomLongshotDL[] = dgCustomLongshotDL;
+
+#define dgCustomFPSSlingshotDL "__OTR__objects/object_custom_equip/gCustomFPSSlingshotDL"
+static const ALIGN_ASSET(2) char gCustomFPSSlingshotDL[] = dgCustomFPSSlingshotDL;
+
+#define dgCustomFPSHookshotDL "__OTR__objects/object_custom_equip/gCustomFPSHookshotDL"
+static const ALIGN_ASSET(2) char gCustomFPSHookshotDL[] = dgCustomFPSHookshotDL;
+
+#define dgCustomFPSLongshotDL "__OTR__objects/object_custom_equip/gCustomFPSLongshotDL"
+static const ALIGN_ASSET(2) char gCustomFPSLongshotDL[] = dgCustomFPSLongshotDL;
 
 #define dgCustomHookshotTipDL "__OTR__objects/object_custom_equip/gCustomHookshotTipDL"
 static const ALIGN_ASSET(2) char gCustomHookshotTipDL[] = dgCustomHookshotTipDL;
