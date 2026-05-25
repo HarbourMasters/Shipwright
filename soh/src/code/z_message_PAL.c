@@ -863,12 +863,12 @@ u16 Message_DrawItemIcon(PlayState* play, u16 itemId, Gfx** p, u16 i) {
                                 G_IM_SIZ_32b, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
                                 G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
         }
+        gSPTextureRectangle(gfx++, (msgCtx->textPosX + R_TEXTBOX_ICON_XPOS) << 2, R_TEXTBOX_ICON_YPOS << 2,
+                            (msgCtx->textPosX + R_TEXTBOX_ICON_XPOS + R_TEXTBOX_ICON_SIZE) << 2,
+                            (R_TEXTBOX_ICON_YPOS + R_TEXTBOX_ICON_SIZE) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+        gDPPipeSync(gfx++);
+        gDPSetCombineLERP(gfx++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0);
     }
-    gSPTextureRectangle(gfx++, (msgCtx->textPosX + R_TEXTBOX_ICON_XPOS) << 2, R_TEXTBOX_ICON_YPOS << 2,
-                        (msgCtx->textPosX + R_TEXTBOX_ICON_XPOS + R_TEXTBOX_ICON_SIZE) << 2,
-                        (R_TEXTBOX_ICON_YPOS + R_TEXTBOX_ICON_SIZE) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
-    gDPPipeSync(gfx++);
-    gDPSetCombineLERP(gfx++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0);
 
     msgCtx->textPosX += 32;
 
@@ -1244,7 +1244,9 @@ void Message_DrawTextJPN(PlayState* play, Gfx** gfxP) {
                     Audio_PlaySoundGeneral(0, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
                                            &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 }
-                Message_DrawTextChar(play, &font->charTexBuf[charTexIdx], &gfx);
+                if (GameInteractor_Should(VB_DRAW_MESSAGE_TEXT, true, NULL)) {
+                    Message_DrawTextChar(play, &font->charTexBuf[charTexIdx], &gfx);
+                }
                 charTexIdx += FONT_CHAR_TEX_SIZE;
 
                 switch (character) {
@@ -1605,7 +1607,9 @@ void Message_DrawText(PlayState* play, Gfx** gfxP) {
                         Audio_PlaySoundGeneral(0, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
                                                &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                     }
-                    Message_DrawTextChar(play, &font->charTexBuf[charTexIdx], &gfx);
+                    if (GameInteractor_Should(VB_DRAW_MESSAGE_TEXT, true, NULL)) {
+                        Message_DrawTextChar(play, &font->charTexBuf[charTexIdx], &gfx);
+                    }
                     charTexIdx += FONT_CHAR_TEX_SIZE;
 
                     msgCtx->textPosX += (s32)(16.0f * (R_TEXT_CHAR_SCALE / 100.0f));
@@ -1619,7 +1623,9 @@ void Message_DrawText(PlayState* play, Gfx** gfxP) {
                     Audio_PlaySoundGeneral(0, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
                                            &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 }
-                Message_DrawTextChar(play, &font->charTexBuf[charTexIdx], &gfx);
+                if (GameInteractor_Should(VB_DRAW_MESSAGE_TEXT, true, NULL)) {
+                    Message_DrawTextChar(play, &font->charTexBuf[charTexIdx], &gfx);
+                }
                 charTexIdx += FONT_CHAR_TEX_SIZE;
 
                 msgCtx->textPosX += (s32)(sFontWidths[character - ' '] * (R_TEXT_CHAR_SCALE / 100.0f));
@@ -1973,6 +1979,7 @@ void Message_DecodeJPN(PlayState* play) {
             if (sTextboxSkipped) {
                 msgCtx->textDrawPos = msgCtx->decodedTextLen;
             }
+            GameInteractor_Should(VB_MESSAGE_DECODED, true, play, (int)(sTextBoxNum - 1));
             break;
         }
         if (curChar == MESSAGE_NAME_JPN) {
@@ -2363,6 +2370,7 @@ void Message_Decode(PlayState* play) {
             if (sTextboxSkipped) {
                 msgCtx->textDrawPos = msgCtx->decodedTextLen;
             }
+            GameInteractor_Should(VB_MESSAGE_DECODED, true, play, (int)(sTextBoxNum - 1));
             break;
         } else if (temp_s2 == MESSAGE_NAME) {
             // Substitute the player name control character for the file's player name.

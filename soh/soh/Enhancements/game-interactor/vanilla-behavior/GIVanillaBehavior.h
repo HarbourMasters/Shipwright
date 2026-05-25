@@ -2866,6 +2866,26 @@ typedef enum {
     // true
     // ```
     // #### `args`
+    // - none
+    VB_DRAW_MESSAGE_TEXT,
+
+    // Fires once per page inside Message_Decode, after msgBufDecoded is fully
+    // populated and textDrawPos / decodedTextLen are set. Allows mods to overwrite
+    // msgBufDecoded before Message_DrawText first reads it.
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `PlayState*`
+    // - `int` (0-based page index, resets to 0 on each new message open)
+    VB_MESSAGE_DECODED,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
     // - `*ActorContext`
     // - `*ActorEntry`
     // - `*PlayState`

@@ -6,6 +6,7 @@
 
 #include "mod_menu.h"
 #include "soh/OTRGlobals.h"
+#include "soh/Enhancements/fonts/CustomFont.h"
 #include "soh/resource/type/Skeleton.h"
 #include "soh/SohGui/MenuTypes.h"
 #include "soh/SohGui/SohMenu.h"
@@ -299,6 +300,73 @@ void ModMenuWindow::DrawElement() {
     //     UpdateModFiles();
     // }
     // ImGui::SameLine();
+    {
+        const bool modsEnabled = CVarGetInteger(CVAR_SETTING("AltAssets"), 1) != 0;
+
+        ImGui::BeginDisabled(!modsEnabled);
+        bool fontEnabled = CVarGetInteger(CVAR_CUSTOM_FONT_ENABLED, 0) != 0;
+        if (ImGui::Checkbox("Enable Custom Font Overlay", &fontEnabled)) {
+            CVarSetInteger(CVAR_CUSTOM_FONT_ENABLED, fontEnabled ? 1 : 0);
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        }
+        if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled)) {
+            ImGui::SetTooltip(modsEnabled ? "Replaces in-game textbox text with ImGui-rendered text using a font from a mod archive."
+                                          : "Enable Mods to use the Custom Font Overlay.");
+        }
+        ImGui::EndDisabled();
+
+        ImGui::BeginDisabled(!modsEnabled || !fontEnabled);
+        static const std::vector<std::string> fontNames = []() {
+            std::vector<std::string> names = { "Default", "Press Start 2P", "Fipps" };
+            for (const auto& n : CustomFont::GetModFontNames())
+                names.push_back(n);
+            return names;
+        }();
+        const std::string current = CVarGetString(CVAR_CUSTOM_FONT_NAME, "Default");
+        int currentIdx = 0;
+        for (int i = 0; i < (int)fontNames.size(); i++)
+            if (fontNames[i] == current) { currentIdx = i; break; }
+        std::vector<const char*> labels;
+        labels.reserve(fontNames.size());
+        for (const auto& name : fontNames) labels.push_back(name.c_str());
+        ImGui::Text("Textbox Font");
+        ImGui::SameLine();
+        ImGui::SetNextItemWidth(200.0f);
+        if (ImGui::Combo("##CustomFontName", &currentIdx, labels.data(), (int)labels.size())) {
+            CVarSetString(CVAR_CUSTOM_FONT_NAME, fontNames[currentIdx].c_str());
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        }
+        if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled)) {
+            ImGui::SetTooltip("Select the font used for the custom textbox overlay.");
+        }
+        ImGui::EndDisabled();
+
+        // Translation dropdown — only active when the font overlay is enabled.
+        ImGui::BeginDisabled(!modsEnabled || !fontEnabled);
+        {
+            const auto& translationNames = CustomFont::GetTranslationNames();
+            const std::string curTrans = CVarGetString(CVAR_CUSTOM_FONT_TRANSLATION, "None");
+            int transIdx = 0;
+            for (int i = 0; i < (int)translationNames.size(); i++)
+                if (translationNames[i] == curTrans) { transIdx = i; break; }
+            std::vector<const char*> transLabels;
+            transLabels.reserve(translationNames.size());
+            for (const auto& n : translationNames) transLabels.push_back(n.c_str());
+            ImGui::Text("Translation");
+            ImGui::SameLine();
+            ImGui::SetNextItemWidth(200.0f);
+            if (ImGui::Combo("##CustomFontTranslation", &transIdx, transLabels.data(), (int)transLabels.size())) {
+                CVarSetString(CVAR_CUSTOM_FONT_TRANSLATION, translationNames[transIdx].c_str());
+                CustomFont::LoadTranslation(translationNames[transIdx]);
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+            }
+            if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled)) {
+                ImGui::SetTooltip("Load a DEFINE_MESSAGE translation file from a mod archive (translations/*.txt).");
+            }
+        }
+        ImGui::EndDisabled();
+    }
+
     if (UIWidgets::Button("Edit",
                           UIWidgets::ButtonOptions({ { .disabled = editing, .disabledTooltip = "Already editing..." } })
                               .Size(UIWidgets::Sizes::Inline)
