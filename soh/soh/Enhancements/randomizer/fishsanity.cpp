@@ -6,6 +6,8 @@
 #include "functions.h"
 #include "macros.h"
 #include <libultraship/bridge/consolevariablebridge.h>
+#include "soh/Enhancements/randomizer/randomizer.h"
+#include "soh/Enhancements/randomizer/randomizerTypes.h"
 
 extern "C" {
 #include "src/overlays/actors/ovl_Fishing/z_fishing.h"

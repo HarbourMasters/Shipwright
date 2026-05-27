@@ -13,6 +13,7 @@
 #include "soh/util.h"
 #include "../kaleido.h"
 #include "soh/Enhancements/randomizer/Traps.h"
+#include "soh/Enhancements/randomizer/randomizer.h"
 
 #include <fstream>
 #include <spdlog/spdlog.h>

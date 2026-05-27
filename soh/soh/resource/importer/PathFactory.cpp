@@ -3,6 +3,7 @@
 #include "soh/resource/logging/PathLogger.h"
 #include "spdlog/spdlog.h"
 #include <tinyxml2.h>
+#include <libultraship/bridge/consolevariablebridge.h>
 
 namespace SOH {
 std::shared_ptr<Ship::IResource>

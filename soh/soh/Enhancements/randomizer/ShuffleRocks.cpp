@@ -4,6 +4,7 @@
 #include "item_category_adj.h"
 #include "particle_cmc.h"
 #include "soh/frame_interpolation.h"
+#include "soh/Enhancements/randomizer/randomizer.h"
 
 extern "C" {
 #include "variables.h"

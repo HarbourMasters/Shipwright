@@ -2,6 +2,8 @@
 #include "soh/ObjectExtension/ObjectExtension.h"
 #include "item_category_adj.h"
 #include "particle_cmc.h"
+#include "soh/Enhancements/randomizer/randomizer.h"
+
 extern "C" {
 extern PlayState* gPlayState;
 #include "overlays/actors/ovl_En_Kanban/z_en_kanban.h"
