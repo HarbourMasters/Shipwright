@@ -16,7 +16,6 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/vanilla-behavior/GIVanillaBehavior.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
-#include <SDL2/SDL_stdinc.h>
 
 extern "C" {
 #include "z64.h"
@@ -796,14 +795,17 @@ ImFont* CustomFont::GetModFont(const std::string& name) {
 
 static int sCurrentTransPage = 0;
 static bool sLastDecodeWasJpn = false; // true when Message_DecodeJPN ran, false for Latin decode path
+static bool sUseNativeRender = false;  // true for untranslated JPN — fall back so the game renders kanji
 
 void CustomFont::InitElement() {
     REGISTER_VB_SHOULD(VB_DRAW_MESSAGE_TEXT, {
-        if (CVarGetInteger(CVAR_SETTING("AltAssets"), 1) && CVarGetInteger(CVAR_CUSTOM_FONT_ENABLED, 0))
+        if (!sUseNativeRender && CVarGetInteger(CVAR_SETTING("AltAssets"), 1) &&
+            CVarGetInteger(CVAR_CUSTOM_FONT_ENABLED, 0))
             *should = false;
     });
     REGISTER_VB_SHOULD(VB_DRAW_ITEM_ICON, {
-        if (CVarGetInteger(CVAR_SETTING("AltAssets"), 1) && CVarGetInteger(CVAR_CUSTOM_FONT_ENABLED, 0))
+        if (!sUseNativeRender && CVarGetInteger(CVAR_SETTING("AltAssets"), 1) &&
+            CVarGetInteger(CVAR_CUSTOM_FONT_ENABLED, 0))
             *should = false;
     });
 
@@ -825,6 +827,8 @@ void CustomFont::InitElement() {
         }
 
         auto it = sActiveTranslation.find(msgCtx->textId);
+        sUseNativeRender =
+            (gSaveContext.language == LANGUAGE_JPN && sLastDecodeWasJpn && it == sActiveTranslation.end());
         if (it == sActiveTranslation.end())
             return;
 
@@ -1052,24 +1056,7 @@ static std::string SjisToUtf8(uint16_t c) {
         if (p.sjis == c)
             return Utf8FromCodepoint(p.cp);
 
-    // Kanji and other unmapped double-byte SJS: convert via SDL's iconv wrapper.
-    // Result is cached — SDL_iconv_string is called at most once per unique code point.
-    const uint8_t b1 = (c >> 8) & 0xFF;
-    const uint8_t b2 = c & 0xFF;
-    if (b1 < 0x81 || b2 < 0x40)
-        return {};
-
-    static std::unordered_map<uint16_t, std::string> sCache;
-    auto cit = sCache.find(c);
-    if (cit != sCache.end())
-        return cit->second;
-
-    char sjis[2] = { (char)b1, (char)b2 };
-    char* utf8 = SDL_iconv_string("UTF-8", "SHIFT_JIS", sjis, 2);
-    std::string result = utf8 ? utf8 : "";
-    SDL_free(utf8);
-    sCache[c] = result;
-    return result;
+    return {}; // kanji — native renderer handles via sUseNativeRender fallback
 }
 
 // Parses msgBufDecodedWide (Shift-JIS u16 stream) up to drawLen entries into
@@ -1340,6 +1327,10 @@ void CustomFont::DrawElement() {
 
     const bool isJpnTrans = (gSaveContext.language == LANGUAGE_JPN && sLastDecodeWasJpn && trans != nullptr);
     const bool isUntranslatedJpn = (gSaveContext.language == LANGUAGE_JPN && sLastDecodeWasJpn && !isJpnTrans);
+    if (isUntranslatedJpn) {
+        ImGui::PopFont();
+        return; // let the native renderer handle kanji
+    }
     const auto origFull = isJpnTrans          ? std::vector<TextSegment>{}
                           : isUntranslatedJpn ? ParseJpnBuffer(msgCtx->msgBufDecodedWide, 100)
                                               : ParseDecodedBuffer(msgCtx->msgBufDecoded, 0xFFFF);
