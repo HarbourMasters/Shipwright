@@ -26,6 +26,9 @@ class CustomFont : public Ship::GuiWindow {
     static const std::vector<std::string>& GetTranslationNames();
     static void LoadTranslation(const std::string& name);
 
+    // Map an OoT color code byte to an ImVec4.
+    static ImVec4 ColorFromCode(uint8_t code, const ImVec4& defaultColor);
+
     struct TextSegment {
         std::string text;
         ImVec4 color;
@@ -48,7 +51,4 @@ class CustomFont : public Ship::GuiWindow {
   private:
     // Parse msgBufDecoded up to drawLen characters into renderable segments.
     static std::vector<TextSegment> ParseDecodedBuffer(const uint8_t* buf, uint16_t drawLen);
-
-    // Map an OoT color code byte to an ImVec4.
-    static ImVec4 ColorFromCode(uint8_t code, const ImVec4& defaultColor);
 };

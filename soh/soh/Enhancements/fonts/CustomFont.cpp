@@ -15,6 +15,8 @@
 #include "soh/SaveManager.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/vanilla-behavior/GIVanillaBehavior.h"
+#include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
+#include <SDL2/SDL_stdinc.h>
 
 extern "C" {
 #include "z64.h"
@@ -35,12 +37,12 @@ struct TranslationFile {
 };
 
 static std::vector<TranslationFile> sTranslationFiles;
-static std::unordered_map<uint16_t, std::pair<std::vector<std::vector<CustomFont::TextSegment>>, std::vector<uint8_t>>>
-    sActiveTranslation;
-
-// ---------------------------------------------------------------------------
-// DEFINE_MESSAGE parser helpers
-// ---------------------------------------------------------------------------
+struct TranslationEntry {
+    std::vector<std::vector<CustomFont::TextSegment>> pages;
+    std::vector<uint8_t> proxyLatin; // u8 for ENG/GER/FRA
+    std::vector<uint16_t> proxyJpn;  // u16 SJS for JPN
+};
+static std::unordered_map<uint16_t, TranslationEntry> sActiveTranslation;
 
 static std::string ParseStringLiteral(const std::string& src, size_t& pos) {
     ++pos;
@@ -131,6 +133,95 @@ static ImVec4 ColorFromName(const std::string& name, const ImVec4& def) {
     return def;
 }
 
+static ImVec4 ABtnColor() {
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.AButton.Changed"), 0)) {
+        Color_RGB8 c = CVarGetColor24(CVAR_COSMETIC("HUD.AButton.Value"), Color_RGB8{ 90, 90, 255 });
+        return ImVec4(c.r / 255.0f, c.g / 255.0f, c.b / 255.0f, 1.0f);
+    }
+    if (CVarGetInteger(CVAR_COSMETIC("DefaultColorScheme"), COLORSCHEME_N64) == COLORSCHEME_GAMECUBE)
+        return ImVec4(50 / 255.0f, 1.0f, 130 / 255.0f, 1.0f); // GC A: green
+    return ImVec4(90 / 255.0f, 90 / 255.0f, 1.0f, 1.0f);      // N64 A: blue
+}
+
+static ImVec4 BBtnColor() {
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.BButton.Changed"), 0)) {
+        Color_RGB8 c = CVarGetColor24(CVAR_COSMETIC("HUD.BButton.Value"), Color_RGB8{ 0, 150, 0 });
+        return ImVec4(c.r / 255.0f, c.g / 255.0f, c.b / 255.0f, 1.0f);
+    }
+    if (CVarGetInteger(CVAR_COSMETIC("DefaultColorScheme"), COLORSCHEME_N64) == COLORSCHEME_GAMECUBE)
+        return ImVec4(1.0f, 30 / 255.0f, 30 / 255.0f, 1.0f); // GC B: red
+    return ImVec4(0.0f, 150 / 255.0f, 0.0f, 1.0f);           // N64 B: green
+}
+
+static ImVec4 CBtnGroupColor() {
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.CButtons.Changed"), 0)) {
+        Color_RGB8 c = CVarGetColor24(CVAR_COSMETIC("HUD.CButtons.Value"), Color_RGB8{ 255, 160, 0 });
+        return ImVec4(c.r / 255.0f, c.g / 255.0f, c.b / 255.0f, 1.0f);
+    }
+    return ImVec4(1.0f, 160 / 255.0f, 0.0f, 1.0f);
+}
+
+static ImVec4 CUpBtnColor() {
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.CUpButton.Changed"), 0)) {
+        Color_RGB8 c = CVarGetColor24(CVAR_COSMETIC("HUD.CUpButton.Value"), Color_RGB8{ 255, 160, 0 });
+        return ImVec4(c.r / 255.0f, c.g / 255.0f, c.b / 255.0f, 1.0f);
+    }
+    return CBtnGroupColor();
+}
+
+static ImVec4 CDownBtnColor() {
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.CDownButton.Changed"), 0)) {
+        Color_RGB8 c = CVarGetColor24(CVAR_COSMETIC("HUD.CDownButton.Value"), Color_RGB8{ 255, 160, 0 });
+        return ImVec4(c.r / 255.0f, c.g / 255.0f, c.b / 255.0f, 1.0f);
+    }
+    return CBtnGroupColor();
+}
+
+static ImVec4 CLeftBtnColor() {
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.CLeftButton.Changed"), 0)) {
+        Color_RGB8 c = CVarGetColor24(CVAR_COSMETIC("HUD.CLeftButton.Value"), Color_RGB8{ 255, 160, 0 });
+        return ImVec4(c.r / 255.0f, c.g / 255.0f, c.b / 255.0f, 1.0f);
+    }
+    return CBtnGroupColor();
+}
+
+static ImVec4 CRightBtnColor() {
+    if (CVarGetInteger(CVAR_COSMETIC("HUD.CRightButton.Changed"), 0)) {
+        Color_RGB8 c = CVarGetColor24(CVAR_COSMETIC("HUD.CRightButton.Value"), Color_RGB8{ 255, 160, 0 });
+        return ImVec4(c.r / 255.0f, c.g / 255.0f, c.b / 255.0f, 1.0f);
+    }
+    return CBtnGroupColor();
+}
+
+// bi: 0=A,1=B,2=C,3=L,4=R,5=Z,6=C-Up,7=C-Down,8=C-Left,9=C-Right,10=Z-target,11=stick,12=pad
+static ImVec4 BtnTintColor(int bi) {
+    switch (bi) {
+        case 0:
+            return ABtnColor();
+        case 1:
+            return BBtnColor();
+        case 2:
+            return CBtnGroupColor();
+        case 6:
+            return CUpBtnColor();
+        case 7:
+            return CDownBtnColor();
+        case 8:
+            return CLeftBtnColor();
+        case 9:
+            return CRightBtnColor();
+        case 3:
+        case 4:
+        case 5:
+        case 11:
+            return ImVec4(0.50f, 0.80f, 1.00f, 1.0f); // L, R, Z, stick
+        case 10:
+            return ImVec4(0.00f, 0.82f, 0.20f, 1.0f); // Z-target
+        default:
+            return ImVec4(1.00f, 1.00f, 1.00f, 1.0f); // pad, unknown
+    }
+}
+
 static const char* BtnIconFromMacro(const std::string& name) {
     if (name == "BUTTON_A")
         return dgMsgChar9FButtonATex;
@@ -163,15 +254,21 @@ static const char* BtnIconFromMacro(const std::string& name) {
 
 static ImVec4 BtnColorFromMacro(const std::string& name) {
     if (name == "BUTTON_A")
-        return ImVec4(0.00f, 0.82f, 0.20f, 1.f);
+        return ABtnColor();
     if (name == "BUTTON_B")
-        return ImVec4(0.78f, 0.05f, 0.05f, 1.f);
+        return BBtnColor();
     if (name == "BUTTON_C")
-        return ImVec4(1.00f, 0.65f, 0.00f, 1.f);
+        return CBtnGroupColor();
     if (name == "BUTTON_L" || name == "BUTTON_R" || name == "BUTTON_Z")
         return ImVec4(0.50f, 0.80f, 1.00f, 1.f);
-    if (name == "BUTTON_CUP" || name == "BUTTON_CDOWN" || name == "BUTTON_CLEFT" || name == "BUTTON_CRIGHT")
-        return ImVec4(1.00f, 0.65f, 0.00f, 1.f);
+    if (name == "BUTTON_CUP")
+        return CUpBtnColor();
+    if (name == "BUTTON_CDOWN")
+        return CDownBtnColor();
+    if (name == "BUTTON_CLEFT")
+        return CLeftBtnColor();
+    if (name == "BUTTON_CRIGHT")
+        return CRightBtnColor();
     if (name == "ZTARGET_SIGN")
         return ImVec4(0.00f, 0.82f, 0.20f, 1.f);
     if (name == "CONTROL_STICK")
@@ -179,9 +276,12 @@ static ImVec4 BtnColorFromMacro(const std::string& name) {
     return ImVec4(1.f, 1.f, 1.f, 1.f);
 }
 
-// Replicates Message_DecodeName's charset logic to get the player name as a plain string.
+// Replicates Message_DecodeName's charset logic to get the player name as a plain UTF-8 string.
+// JPN names use font-buffer indices (from gKeyboardCharactersHiragana / gKeyboardCharactersKatakana
+// / gKeyboardCharactersAlphanumeric) which are looked up to their Unicode codepoints here.
 static std::string GetPlayerName() {
     const bool isPAL = (gSaveContext.ship.filenameLanguage == NAME_LANGUAGE_PAL);
+    const bool isJpnNm = (gSaveContext.ship.filenameLanguage == NAME_LANGUAGE_NTSC_JPN);
     const uint8_t emptyChar = isPAL ? 0x3E : 0xDF;
 
     int len = 8;
@@ -189,6 +289,108 @@ static std::string GetPlayerName() {
         len--;
 
     std::string name;
+
+    if (isJpnNm) {
+        // Emit UTF-8 for a Unicode codepoint (BMP-only is sufficient here).
+        auto u8 = [&](uint32_t cp) {
+            if (cp < 0x80) {
+                name += (char)cp;
+            } else if (cp < 0x800) {
+                name += (char)(0xC0 | (cp >> 6));
+                name += (char)(0x80 | (cp & 0x3F));
+            } else {
+                name += (char)(0xE0 | (cp >> 12));
+                name += (char)(0x80 | ((cp >> 6) & 0x3F));
+                name += (char)(0x80 | (cp & 0x3F));
+            }
+        };
+        for (int i = 0; i < len; i++) {
+            const uint8_t c = gSaveContext.playerName[i];
+            // Latin from alphanumeric keyboard (gKeyboardCharactersAlphanumeric)
+            if (c >= 0xAB && c < 0xC5) {
+                u8('A' + c - 0xAB);
+                continue;
+            } // A–Z
+            if (c >= 0xC5 && c < 0xDF) {
+                u8('a' + c - 0xC5);
+                continue;
+            } // a–z
+            if (c < 0x0A) {
+                u8('0' + c);
+                continue;
+            } // 0–9
+            // clang-format off
+            switch (c) {
+                case 0xDF: u8(' ');      break;
+                case 0xEA: u8('.');      break;
+                case 0xE4: u8(0x30FC);  break; // ー (long vowel / dash glyph)
+                case 0xE7: u8(0x309B);  break; // ゛
+                case 0xE8: u8(0x309C);  break; // ゜
+                // Hiragana (gKeyboardCharactersHiragana)
+                case 0x0A: u8(0x3042); break; case 0x0B: u8(0x3044); break; // あ い
+                case 0x0C: u8(0x3046); break; case 0x0D: u8(0x3048); break; // う え
+                case 0x0E: u8(0x304A); break; case 0x0F: u8(0x304B); break; // お か
+                case 0x10: u8(0x304D); break; case 0x11: u8(0x304F); break; // き く
+                case 0x12: u8(0x3051); break; case 0x13: u8(0x3053); break; // け こ
+                case 0x14: u8(0x3055); break; case 0x15: u8(0x3057); break; // さ し
+                case 0x16: u8(0x3059); break; case 0x17: u8(0x305B); break; // す せ
+                case 0x18: u8(0x305D); break; case 0x19: u8(0x305F); break; // そ た
+                case 0x1A: u8(0x3061); break; case 0x1B: u8(0x3064); break; // ち つ
+                case 0x1C: u8(0x3066); break; case 0x1D: u8(0x3068); break; // て と
+                case 0x1E: u8(0x306A); break; case 0x1F: u8(0x306B); break; // な に
+                case 0x20: u8(0x306C); break; case 0x21: u8(0x306D); break; // ぬ ね
+                case 0x22: u8(0x306E); break; case 0x23: u8(0x306F); break; // の は
+                case 0x24: u8(0x3072); break; case 0x25: u8(0x3075); break; // ひ ふ
+                case 0x26: u8(0x3078); break; case 0x27: u8(0x307B); break; // へ ほ
+                case 0x28: u8(0x307E); break; case 0x29: u8(0x307F); break; // ま み
+                case 0x2A: u8(0x3080); break; case 0x2B: u8(0x3081); break; // む め
+                case 0x2C: u8(0x3082); break; case 0x2D: u8(0x3084); break; // も や
+                case 0x2E: u8(0x3086); break; case 0x2F: u8(0x3088); break; // ゆ よ
+                case 0x30: u8(0x3089); break; case 0x31: u8(0x308A); break; // ら り
+                case 0x32: u8(0x308B); break; case 0x33: u8(0x308C); break; // る れ
+                case 0x34: u8(0x308D); break; case 0x35: u8(0x308F); break; // ろ わ
+                case 0x36: u8(0x3092); break; case 0x37: u8(0x3093); break; // を ん
+                case 0x38: u8(0x3041); break; case 0x39: u8(0x3043); break; // ぁ ぃ
+                case 0x3A: u8(0x3045); break; case 0x3B: u8(0x3047); break; // ぅ ぇ
+                case 0x3C: u8(0x3049); break; case 0x3D: u8(0x3063); break; // ぉ っ
+                case 0x3E: u8(0x3083); break; case 0x3F: u8(0x3085); break; // ゃ ゅ
+                case 0x40: u8(0x3087); break;                                // ょ
+                // Katakana (gKeyboardCharactersKatakana)
+                case 0x5A: u8(0x30A2); break; case 0x5B: u8(0x30A4); break; // ア イ
+                case 0x5C: u8(0x30A6); break; case 0x5D: u8(0x30A8); break; // ウ エ
+                case 0x5E: u8(0x30AA); break; case 0x5F: u8(0x30AB); break; // オ カ
+                case 0x60: u8(0x30AD); break; case 0x61: u8(0x30AF); break; // キ ク
+                case 0x62: u8(0x30B1); break; case 0x63: u8(0x30B3); break; // ケ コ
+                case 0x64: u8(0x30B5); break; case 0x65: u8(0x30B7); break; // サ シ
+                case 0x66: u8(0x30B9); break; case 0x67: u8(0x30BB); break; // ス セ
+                case 0x68: u8(0x30BD); break; case 0x69: u8(0x30BF); break; // ソ タ
+                case 0x6A: u8(0x30C1); break; case 0x6B: u8(0x30C4); break; // チ ツ
+                case 0x6C: u8(0x30C6); break; case 0x6D: u8(0x30C8); break; // テ ト
+                case 0x6E: u8(0x30CA); break; case 0x6F: u8(0x30CB); break; // ナ ニ
+                case 0x70: u8(0x30CC); break; case 0x71: u8(0x30CD); break; // ヌ ネ
+                case 0x72: u8(0x30CE); break; case 0x73: u8(0x30CF); break; // ノ ハ
+                case 0x74: u8(0x30D2); break; case 0x75: u8(0x30D5); break; // ヒ フ
+                case 0x76: u8(0x30D8); break; case 0x77: u8(0x30DB); break; // ヘ ホ
+                case 0x78: u8(0x30DE); break; case 0x79: u8(0x30DF); break; // マ ミ
+                case 0x7A: u8(0x30E0); break; case 0x7B: u8(0x30E1); break; // ム メ
+                case 0x7C: u8(0x30E2); break; case 0x7D: u8(0x30E4); break; // モ ヤ
+                case 0x7E: u8(0x30E6); break; case 0x7F: u8(0x30E8); break; // ユ ヨ
+                case 0x80: u8(0x30E9); break; case 0x81: u8(0x30EA); break; // ラ リ
+                case 0x82: u8(0x30EB); break; case 0x83: u8(0x30EC); break; // ル レ
+                case 0x84: u8(0x30ED); break; case 0x85: u8(0x30EF); break; // ロ ワ
+                case 0x86: u8(0x30F2); break; case 0x87: u8(0x30F3); break; // ヲ ン
+                case 0x88: u8(0x30A1); break; case 0x89: u8(0x30A3); break; // ァ ィ
+                case 0x8A: u8(0x30A5); break; case 0x8B: u8(0x30A7); break; // ゥ ェ
+                case 0x8C: u8(0x30A9); break; case 0x8D: u8(0x30C3); break; // ォ ッ
+                case 0x8E: u8(0x30E3); break; case 0x8F: u8(0x30E5); break; // ャ ュ
+                case 0x90: u8(0x30E7); break;                                // ョ
+                default: break; // unknown — skip
+            }
+            // clang-format on
+        }
+        return name;
+    }
+
     for (int i = 0; i < len; i++) {
         uint8_t c = gSaveContext.playerName[i];
         if (isPAL) {
@@ -223,18 +425,24 @@ static std::string GetPlayerName() {
     return name;
 }
 
-// Parses a DEFINE_MESSAGE body into per-page segment vectors and a proxy buffer.
-// The proxy buffer has one 0x20 per translated character so textDrawPos tracks translation space.
-static std::pair<std::vector<std::vector<CustomFont::TextSegment>>, std::vector<uint8_t>>
-ParseMessageContent(const std::string& body) {
+// Parses a DEFINE_MESSAGE body into a TranslationEntry.
+// Both proxy streams are built in parallel so the VB hook can copy either one directly
+// without any conversion at message-display time.
+static TranslationEntry ParseMessageContent(const std::string& body) {
     std::vector<std::vector<CustomFont::TextSegment>> pages;
     std::vector<CustomFont::TextSegment> currentPage;
-    std::vector<uint8_t> proxyBuf;
+    std::vector<uint8_t> proxyLatin;
+    std::vector<uint16_t> proxyJpn;
     const ImVec4 white(1, 1, 1, 1);
     ImVec4 color = white;
     bool colorIsAdjustable = false;
     std::string acc;
     int8_t choiceIndex = -1;
+
+    auto pushChar = [&]() {
+        proxyLatin.push_back(0x20);
+        proxyJpn.push_back(MESSAGE_SPACE_JPN);
+    };
 
     auto flush = [&]() {
         if (!acc.empty()) {
@@ -256,6 +464,8 @@ ParseMessageContent(const std::string& body) {
         currentPage.push_back(nl);
         if (choiceIndex >= 0)
             choiceIndex++;
+        proxyLatin.push_back(MESSAGE_NEWLINE);
+        proxyJpn.push_back(MESSAGE_NEWLINE_JPN);
     };
 
     size_t pos = 0;
@@ -265,26 +475,25 @@ ParseMessageContent(const std::string& body) {
             break;
 
         if (body[pos] == '"') {
-            // Bracket sequences like "[A]", "[C-Up]" become icon segments; longer matches first.
             struct BtnSeq {
                 const char* seq;
                 const char* tex;
-                ImVec4 col;
+                int bi; // button index for BtnTintColor
             };
             static const BtnSeq kBtnSeqs[] = {
-                { "[C-Up]", dgMsgCharA5ButtonCUpTex, { 1.f, 0.65f, 0.f, 1.f } },
-                { "[C-Down]", dgMsgCharA6ButtonCDownTex, { 1.f, 0.65f, 0.f, 1.f } },
-                { "[C-Left]", dgMsgCharA7ButtonCLeftTex, { 1.f, 0.65f, 0.f, 1.f } },
-                { "[C-Right]", dgMsgCharA8ButtonCRightTex, { 1.f, 0.65f, 0.f, 1.f } },
+                { "[C-Up]", dgMsgCharA5ButtonCUpTex, 6 },
+                { "[C-Down]", dgMsgCharA6ButtonCDownTex, 7 },
+                { "[C-Left]", dgMsgCharA7ButtonCLeftTex, 8 },
+                { "[C-Right]", dgMsgCharA8ButtonCRightTex, 9 },
                 // "Control Pad" = analog stick (0xAA), "D-Pad" = directional cross (0xAB).
-                { "[Control-Pad]", dgMsgCharAAControlStickTex, { 0.5f, 0.8f, 1.f, 1.f } },
-                { "[D-Pad]", dgMsgCharABControlPadTex, { 1.f, 1.f, 1.f, 1.f } },
-                { "[A]", dgMsgChar9FButtonATex, { 0.f, 0.82f, 0.2f, 1.f } },
-                { "[B]", dgMsgCharA0ButtonBTex, { 0.78f, 0.05f, 0.05f, 1.f } },
-                { "[C]", dgMsgCharA1ButtonCTex, { 1.f, 0.65f, 0.f, 1.f } },
-                { "[L]", dgMsgCharA2ButtonLTex, { 0.5f, 0.8f, 1.f, 1.f } },
-                { "[R]", dgMsgCharA3ButtonRTex, { 0.5f, 0.8f, 1.f, 1.f } },
-                { "[Z]", dgMsgCharA4ButtonZTex, { 0.5f, 0.8f, 1.f, 1.f } },
+                { "[Control-Pad]", dgMsgCharAAControlStickTex, 11 },
+                { "[D-Pad]", dgMsgCharABControlPadTex, 12 },
+                { "[A]", dgMsgChar9FButtonATex, 0 },
+                { "[B]", dgMsgCharA0ButtonBTex, 1 },
+                { "[C]", dgMsgCharA1ButtonCTex, 2 },
+                { "[L]", dgMsgCharA2ButtonLTex, 3 },
+                { "[R]", dgMsgCharA3ButtonRTex, 4 },
+                { "[Z]", dgMsgCharA4ButtonZTex, 5 },
             };
 
             std::string lit = ParseStringLiteral(body, pos);
@@ -292,7 +501,6 @@ ParseMessageContent(const std::string& body) {
                 unsigned char c = (unsigned char)lit[i];
                 if (c == '\n') {
                     pushNewline();
-                    proxyBuf.push_back(MESSAGE_NEWLINE);
                     i++;
                 } else if (c == '[') {
                     bool matched = false;
@@ -302,10 +510,10 @@ ParseMessageContent(const std::string& body) {
                             flush();
                             CustomFont::TextSegment seg;
                             seg.btnIcon = btn.tex;
-                            seg.color = btn.col;
+                            seg.color = BtnTintColor(btn.bi);
                             seg.choiceIndex = choiceIndex;
                             currentPage.push_back(seg);
-                            proxyBuf.push_back(0x20);
+                            pushChar();
                             i += seqLen;
                             matched = true;
                             break;
@@ -313,7 +521,7 @@ ParseMessageContent(const std::string& body) {
                     }
                     if (!matched) {
                         acc += '[';
-                        proxyBuf.push_back(0x20);
+                        pushChar();
                         i++;
                     }
                 } else {
@@ -321,7 +529,7 @@ ParseMessageContent(const std::string& body) {
                     int seqLen = (c >= 0xF0) ? 4 : (c >= 0xE0) ? 3 : (c >= 0xC0) ? 2 : 1;
                     for (int k = 0; k < seqLen && i < lit.size(); k++, i++)
                         acc += lit[i];
-                    proxyBuf.push_back(0x20);
+                    pushChar();
                 }
             }
         } else if (std::isalpha((unsigned char)body[pos]) || body[pos] == '_') {
@@ -383,29 +591,43 @@ ParseMessageContent(const std::string& body) {
                     seg.color = color;
                     seg.choiceIndex = choiceIndex;
                     currentPage.push_back(seg);
-                    proxyBuf.push_back(MESSAGE_ITEM_ICON);
-                    proxyBuf.push_back(seg.itemId);
+                    proxyLatin.push_back(MESSAGE_ITEM_ICON);
+                    proxyLatin.push_back(seg.itemId);
+                    proxyJpn.push_back(MESSAGE_ITEM_ICON_JPN);
+                    proxyJpn.push_back((uint16_t)seg.itemId);
                 } else if (macro == "TEXT_SPEED") {
-                    proxyBuf.push_back(MESSAGE_TEXT_SPEED);
-                    proxyBuf.push_back(parseArgByte(arg, 2));
+                    const uint8_t spd = parseArgByte(arg, 2);
+                    proxyLatin.push_back(MESSAGE_TEXT_SPEED);
+                    proxyLatin.push_back(spd);
+                    proxyJpn.push_back(MESSAGE_TEXT_SPEED_JPN);
+                    proxyJpn.push_back((uint16_t)spd);
                 } else if (macro == "SFX") {
-                    uint16_t sfx = parseArgU16(arg);
-                    proxyBuf.push_back(MESSAGE_SFX);
-                    proxyBuf.push_back((uint8_t)(sfx >> 8));
-                    proxyBuf.push_back((uint8_t)(sfx & 0xFF));
+                    const uint16_t sfx = parseArgU16(arg);
+                    proxyLatin.push_back(MESSAGE_SFX);
+                    proxyLatin.push_back((uint8_t)(sfx >> 8));
+                    proxyLatin.push_back((uint8_t)(sfx & 0xFF));
+                    proxyJpn.push_back(MESSAGE_SFX_JPN);
+                    proxyJpn.push_back(sfx);
                 } else if (macro == "BOX_BREAK_DELAYED") {
-                    proxyBuf.push_back(MESSAGE_BOX_BREAK_DELAYED);
-                    proxyBuf.push_back(parseArgByte(arg, 0));
+                    const uint8_t delay = parseArgByte(arg, 0);
+                    proxyLatin.push_back(MESSAGE_BOX_BREAK_DELAYED);
+                    proxyLatin.push_back(delay);
+                    proxyJpn.push_back(MESSAGE_BOX_BREAK_DELAYED_JPN);
+                    proxyJpn.push_back((uint16_t)delay);
                 } else if (macro == "FADE") {
-                    proxyBuf.push_back(MESSAGE_FADE);
-                    proxyBuf.push_back(parseArgByte(arg, 0));
+                    const uint8_t frames = parseArgByte(arg, 0);
+                    proxyLatin.push_back(MESSAGE_FADE);
+                    proxyLatin.push_back(frames);
+                    proxyJpn.push_back(MESSAGE_FADE_JPN);
+                    proxyJpn.push_back((uint16_t)frames);
                 }
-                // HIGHSCORE, BACKGROUND, TEXTID, FADE2 — no proxy bytes.
             } else {
                 if (macro == "TWO_CHOICE" || macro == "THREE_CHOICE") {
                     flush();
                     choiceIndex = 0;
-                    proxyBuf.push_back(macro == "TWO_CHOICE" ? MESSAGE_TWO_CHOICE : MESSAGE_THREE_CHOICE);
+                    const bool isTwo = (macro == "TWO_CHOICE");
+                    proxyLatin.push_back(isTwo ? MESSAGE_TWO_CHOICE : MESSAGE_THREE_CHOICE);
+                    proxyJpn.push_back(isTwo ? MESSAGE_TWO_CHOICE_JPN : MESSAGE_THREE_CHOICE_JPN);
                 } else if (macro == "BOX_BREAK") {
                     flush();
                     pages.push_back(std::move(currentPage));
@@ -413,19 +635,26 @@ ParseMessageContent(const std::string& body) {
                     choiceIndex = -1;
                     color = white;
                     colorIsAdjustable = false;
-                    proxyBuf.push_back(MESSAGE_BOX_BREAK);
+                    proxyLatin.push_back(MESSAGE_BOX_BREAK);
+                    proxyJpn.push_back(MESSAGE_BOX_BREAK_JPN);
                 } else if (macro == "AWAIT_BUTTON_PRESS") {
-                    proxyBuf.push_back(MESSAGE_AWAIT_BUTTON_PRESS);
+                    proxyLatin.push_back(MESSAGE_AWAIT_BUTTON_PRESS);
+                    proxyJpn.push_back(MESSAGE_AWAIT_BUTTON_PRESS_JPN);
                 } else if (macro == "QUICKTEXT_ENABLE") {
-                    proxyBuf.push_back(MESSAGE_QUICKTEXT_ENABLE);
+                    proxyLatin.push_back(MESSAGE_QUICKTEXT_ENABLE);
+                    proxyJpn.push_back(MESSAGE_QUICKTEXT_ENABLE_JPN);
                 } else if (macro == "QUICKTEXT_DISABLE") {
-                    proxyBuf.push_back(MESSAGE_QUICKTEXT_DISABLE);
+                    proxyLatin.push_back(MESSAGE_QUICKTEXT_DISABLE);
+                    proxyJpn.push_back(MESSAGE_QUICKTEXT_DISABLE_JPN);
                 } else if (macro == "PERSISTENT") {
-                    proxyBuf.push_back(MESSAGE_PERSISTENT);
+                    proxyLatin.push_back(MESSAGE_PERSISTENT);
+                    proxyJpn.push_back(MESSAGE_PERSISTENT_JPN);
                 } else if (macro == "UNSKIPPABLE") {
-                    proxyBuf.push_back(MESSAGE_UNSKIPPABLE);
+                    proxyLatin.push_back(MESSAGE_UNSKIPPABLE);
+                    proxyJpn.push_back(MESSAGE_UNSKIPPABLE_JPN);
                 } else if (macro == "EVENT") {
-                    proxyBuf.push_back(MESSAGE_EVENT);
+                    proxyLatin.push_back(MESSAGE_EVENT);
+                    proxyJpn.push_back(MESSAGE_EVENT_JPN);
                 } else if (macro == "NAME") {
                     flush();
                     CustomFont::TextSegment nameSeg;
@@ -434,12 +663,13 @@ ParseMessageContent(const std::string& body) {
                     nameSeg.isAdjustable = colorIsAdjustable;
                     nameSeg.choiceIndex = choiceIndex;
                     currentPage.push_back(nameSeg);
-                    // One proxy byte per name char so textDrawPos tracks the name's width correctly.
                     const std::string pname = GetPlayerName();
-                    for (size_t k = 0; k < pname.size(); k++)
-                        proxyBuf.push_back(0x20);
+                    for (unsigned char b : pname)
+                        if ((b & 0xC0) != 0x80)
+                            pushChar();
                 } else if (macro == "OCARINA") {
-                    proxyBuf.push_back(MESSAGE_OCARINA);
+                    proxyLatin.push_back(MESSAGE_OCARINA);
+                    proxyJpn.push_back(MESSAGE_OCARINA_JPN);
                 } else {
                     const char* tex = BtnIconFromMacro(macro);
                     if (tex) {
@@ -449,7 +679,7 @@ ParseMessageContent(const std::string& body) {
                         seg.color = BtnColorFromMacro(macro);
                         seg.choiceIndex = choiceIndex;
                         currentPage.push_back(seg);
-                        proxyBuf.push_back(0x20);
+                        pushChar();
                     }
                 }
             }
@@ -459,8 +689,9 @@ ParseMessageContent(const std::string& body) {
     }
     flush();
     pages.push_back(std::move(currentPage));
-    proxyBuf.push_back(MESSAGE_END);
-    return { pages, proxyBuf };
+    proxyLatin.push_back(MESSAGE_END);
+    proxyJpn.push_back(MESSAGE_END_JPN);
+    return { pages, proxyLatin, proxyJpn };
 }
 
 static void ParseTranslationFile(const std::string& text) {
@@ -563,25 +794,19 @@ ImFont* CustomFont::GetModFont(const std::string& name) {
     return nullptr;
 }
 
-// ---------------------------------------------------------------------------
-// InitElement
-// ---------------------------------------------------------------------------
-
 static int sCurrentTransPage = 0;
+static bool sLastDecodeWasJpn = false; // true when Message_DecodeJPN ran, false for Latin decode path
 
 void CustomFont::InitElement() {
     REGISTER_VB_SHOULD(VB_DRAW_MESSAGE_TEXT, {
-        if (CVarGetInteger(CVAR_SETTING("AltAssets"), 1) && CVarGetInteger(CVAR_CUSTOM_FONT_ENABLED, 0)) {
+        if (CVarGetInteger(CVAR_SETTING("AltAssets"), 1) && CVarGetInteger(CVAR_CUSTOM_FONT_ENABLED, 0))
             *should = false;
-        }
     });
     REGISTER_VB_SHOULD(VB_DRAW_ITEM_ICON, {
-        if (CVarGetInteger(CVAR_SETTING("AltAssets"), 1) && CVarGetInteger(CVAR_CUSTOM_FONT_ENABLED, 0)) {
+        if (CVarGetInteger(CVAR_SETTING("AltAssets"), 1) && CVarGetInteger(CVAR_CUSTOM_FONT_ENABLED, 0))
             *should = false;
-        }
     });
 
-    // Inject the per-page proxy into msgBufDecoded so textDrawPos tracks translation character space.
     REGISTER_VB_SHOULD(VB_MESSAGE_DECODED, {
         if (!CVarGetInteger(CVAR_SETTING("AltAssets"), 1) || !CVarGetInteger(CVAR_CUSTOM_FONT_ENABLED, 0))
             return;
@@ -591,24 +816,54 @@ void CustomFont::InitElement() {
 
         sCurrentTransPage = pageNum;
 
+        {
+            // Message_DecodeJPN writes a JPN terminator at decodedTextLen; Message_Decode never touches
+            // msgBufDecodedWide.
+            const u16 term = msgCtx->msgBufDecodedWide[msgCtx->decodedTextLen];
+            sLastDecodeWasJpn =
+                (term == MESSAGE_END_JPN || term == MESSAGE_BOX_BREAK_JPN || term == MESSAGE_BOX_BREAK_DELAYED_JPN);
+        }
+
         auto it = sActiveTranslation.find(msgCtx->textId);
         if (it == sActiveTranslation.end())
             return;
 
-        // Seek to the start of the requested page in the proxy buffer (pages separated by BOX_BREAK).
-        const auto& proxy = it->second.second;
+        const auto& proxyLatin = it->second.proxyLatin;
         size_t pageStart = 0;
         for (int p = 0; p < pageNum; p++) {
-            while (pageStart < proxy.size() && proxy[pageStart] != MESSAGE_BOX_BREAK)
+            while (pageStart < proxyLatin.size() && proxyLatin[pageStart] != MESSAGE_BOX_BREAK)
                 pageStart++;
-            if (pageStart < proxy.size())
+            if (pageStart < proxyLatin.size())
                 pageStart++; // skip BOX_BREAK
         }
 
+        if (gSaveContext.language == LANGUAGE_JPN && sLastDecodeWasJpn) {
+            const auto& jpn = it->second.proxyJpn;
+            size_t jpnStart = 0;
+            for (int p = 0; p < pageNum; p++) {
+                while (jpnStart < jpn.size() && jpn[jpnStart] != MESSAGE_BOX_BREAK_JPN)
+                    jpnStart++;
+                if (jpnStart < jpn.size())
+                    jpnStart++; // skip BOX_BREAK_JPN itself
+            }
+            size_t dst = 0;
+            for (size_t src = jpnStart; src < jpn.size() && dst < 99; src++, dst++) {
+                msgCtx->msgBufDecodedWide[dst] = jpn[src];
+                if (jpn[src] == MESSAGE_BOX_BREAK_JPN || jpn[src] == MESSAGE_END_JPN) {
+                    dst++;
+                    break;
+                }
+            }
+            if (dst < 100)
+                msgCtx->msgBufDecodedWide[dst] = MESSAGE_END_JPN;
+            msgCtx->decodedTextLen = (u16)(dst > 0 ? dst - 1 : 0);
+            return;
+        }
+
         size_t dst = 0;
-        for (size_t src = pageStart; src < proxy.size() && dst < sizeof(msgCtx->msgBufDecoded) - 1; src++, dst++) {
-            msgCtx->msgBufDecoded[dst] = proxy[src];
-            if (proxy[src] == MESSAGE_BOX_BREAK || proxy[src] == MESSAGE_END) {
+        for (size_t src = pageStart; src < proxyLatin.size() && dst < sizeof(msgCtx->msgBufDecoded) - 1; src++, dst++) {
+            msgCtx->msgBufDecoded[dst] = proxyLatin[src];
+            if (proxyLatin[src] == MESSAGE_BOX_BREAK || proxyLatin[src] == MESSAGE_END) {
                 dst++;
                 break;
             }
@@ -618,7 +873,6 @@ void CustomFont::InitElement() {
         msgCtx->decodedTextLen = (u16)(dst > 0 ? dst - 1 : 0);
     });
 
-    // Built-in fonts in soh.o2r are excluded to avoid duplicates.
     static const char* const kBuiltins[] = {
         "fonts/PressStart2P-Regular.ttf", "fonts/Fipps-Regular.otf",      "fonts/Inconsolata-Regular.ttf",
         "fonts/Montserrat-Regular.ttf",   "fonts/NotoSansJP-Regular.ttf",
@@ -691,10 +945,6 @@ void CustomFont::InitElement() {
     LoadTranslation(selected);
 }
 
-// ---------------------------------------------------------------------------
-// Draw
-// ---------------------------------------------------------------------------
-
 void CustomFont::Draw() {
     if (!CVarGetInteger(CVAR_SETTING("AltAssets"), 1) || !CVarGetInteger(CVAR_CUSTOM_FONT_ENABLED, 0)) {
         return;
@@ -705,8 +955,6 @@ void CustomFont::Draw() {
 
     const MessageContext* msgCtx = &gPlayState->msgCtx;
 
-    // Whitelist the modes where Message_DrawText actually runs. Anything outside this set means
-    // the buffer is mid-decode or transitioning — rendering then causes flicker or stale content.
     switch (msgCtx->msgMode) {
         case MSGMODE_TEXT_DISPLAYING:
         case MSGMODE_TEXT_DELAYED_BREAK:
@@ -721,7 +969,6 @@ void CustomFont::Draw() {
         return;
     }
 
-    // Map N64 320x240 textbox coords to ImGui screen space, preserving 4:3 centering.
     const ImGuiViewport* vp = ImGui::GetMainViewport();
     const ImVec2 gamePos = vp->Pos;
     const ImVec2 gameSize = vp->Size;
@@ -755,9 +1002,247 @@ void CustomFont::Draw() {
     ImGui::End();
 }
 
-// ---------------------------------------------------------------------------
-// DrawElement
-// ---------------------------------------------------------------------------
+static std::string Utf8FromCodepoint(uint32_t cp) {
+    std::string s;
+    if (cp < 0x800) {
+        s += (char)(0xC0 | (cp >> 6));
+        s += (char)(0x80 | (cp & 0x3F));
+    } else {
+        s += (char)(0xE0 | (cp >> 12));
+        s += (char)(0x80 | ((cp >> 6) & 0x3F));
+        s += (char)(0x80 | (cp & 0x3F));
+    }
+    return s;
+}
+
+static std::string SjisToUtf8(uint16_t c) {
+    if (c >= 0x829F && c <= 0x82F1)
+        return Utf8FromCodepoint(0x3041 + (c - 0x829F)); // hiragana
+    if (c >= 0x8340 && c <= 0x837E)
+        return Utf8FromCodepoint(0x30A1 + (c - 0x8340)); // katakana
+    if (c >= 0x8380 && c <= 0x8396)
+        return Utf8FromCodepoint(0x30E0 + (c - 0x8380)); // katakana cont.
+    if (c >= 0x824F && c <= 0x8258)
+        return Utf8FromCodepoint(0xFF10 + (c - 0x824F)); // full-width 0-9
+    if (c >= 0x8260 && c <= 0x8279)
+        return Utf8FromCodepoint(0xFF21 + (c - 0x8260)); // full-width A-Z
+    if (c >= 0x8281 && c <= 0x829A)
+        return Utf8FromCodepoint(0xFF41 + (c - 0x8281)); // full-width a-z
+    static constexpr struct {
+        uint16_t sjis;
+        uint32_t cp;
+    } kPunct[] = {
+        { 0x8140, 0x3000 }, // 　 ideographic space
+        { 0x8141, 0x3001 }, // 、
+        { 0x8142, 0x3002 }, // 。
+        { 0x8145, 0x30FB }, // ・
+        { 0x8148, 0xFF1F }, // ？
+        { 0x8149, 0xFF01 }, // ！
+        { 0x8156, 0x2015 }, // ―
+        { 0x8158, 0x2026 }, // …
+        { 0x815B, 0x30FC }, // ー (long vowel mark)
+        { 0x8162, 0x300C }, // 「
+        { 0x8163, 0x300D }, // 」
+        { 0x8164, 0x300E }, // 『
+        { 0x8165, 0x300F }, // 』
+        { 0x8168, 0xFF08 }, // （
+        { 0x8169, 0xFF09 }, // ）
+    };
+    for (const auto& p : kPunct)
+        if (p.sjis == c)
+            return Utf8FromCodepoint(p.cp);
+
+    // Kanji and other unmapped double-byte SJS: convert via SDL's iconv wrapper.
+    // Result is cached — SDL_iconv_string is called at most once per unique code point.
+    const uint8_t b1 = (c >> 8) & 0xFF;
+    const uint8_t b2 = c & 0xFF;
+    if (b1 < 0x81 || b2 < 0x40)
+        return {};
+
+    static std::unordered_map<uint16_t, std::string> sCache;
+    auto cit = sCache.find(c);
+    if (cit != sCache.end())
+        return cit->second;
+
+    char sjis[2] = { (char)b1, (char)b2 };
+    char* utf8 = SDL_iconv_string("UTF-8", "SHIFT_JIS", sjis, 2);
+    std::string result = utf8 ? utf8 : "";
+    SDL_free(utf8);
+    sCache[c] = result;
+    return result;
+}
+
+// Parses msgBufDecodedWide (Shift-JIS u16 stream) up to drawLen entries into
+// renderable TextSegments.  Used for untranslated JPN messages so that hiragana
+// and katakana reach the ImGui renderer instead of the u8 alias garbage.
+static std::vector<CustomFont::TextSegment> ParseJpnBuffer(const uint16_t* buf, uint16_t drawLen) {
+    std::vector<CustomFont::TextSegment> out;
+    const ImVec4 white(1, 1, 1, 1);
+    ImVec4 color = white;
+    std::string acc;
+    bool done = false;
+    int8_t choiceIndex = -1;
+
+    auto flush = [&]() {
+        if (!acc.empty()) {
+            CustomFont::TextSegment seg;
+            seg.text = acc;
+            seg.color = color;
+            seg.choiceIndex = choiceIndex;
+            out.push_back(seg);
+            acc.clear();
+        }
+    };
+
+    const uint16_t safeLen = std::min(drawLen, (uint16_t)100);
+    for (uint16_t i = 0; i < safeLen && !done; i++) {
+        const uint16_t c = buf[i];
+        switch (c) {
+            case MESSAGE_NEWLINE_JPN:
+                flush();
+                {
+                    CustomFont::TextSegment nl;
+                    nl.newline = true;
+                    nl.color = color;
+                    nl.choiceIndex = (choiceIndex >= 0) ? choiceIndex : -1;
+                    out.push_back(nl);
+                    if (choiceIndex == -2)
+                        choiceIndex = 0;
+                    else if (choiceIndex >= 0)
+                        choiceIndex++;
+                }
+                break;
+            case MESSAGE_END_JPN:
+            case MESSAGE_BOX_BREAK_JPN:
+            case MESSAGE_PERSISTENT_JPN:
+            case MESSAGE_EVENT_JPN:
+            case MESSAGE_AWAIT_BUTTON_PRESS_JPN:
+            case MESSAGE_OCARINA_JPN:
+                flush();
+                done = true;
+                break;
+            case MESSAGE_BOX_BREAK_DELAYED_JPN:
+            case MESSAGE_FADE_JPN:
+                flush();
+                i++;
+                done = true;
+                break;
+            case MESSAGE_COLOR_JPN:
+                flush();
+                if (i + 1 < safeLen)
+                    color = CustomFont::ColorFromCode((uint8_t)buf[++i] & 0x0F, white);
+                break;
+            case MESSAGE_ITEM_ICON_JPN:
+                flush();
+                if (i + 1 < safeLen) {
+                    CustomFont::TextSegment iconSeg;
+                    iconSeg.isIcon = true;
+                    iconSeg.itemId = (uint8_t)buf[++i];
+                    iconSeg.color = color;
+                    iconSeg.choiceIndex = choiceIndex;
+                    out.push_back(iconSeg);
+                }
+                break;
+            case MESSAGE_SHIFT_JPN:
+                flush();
+                if (i + 1 < safeLen) {
+                    CustomFont::TextSegment shiftSeg;
+                    shiftSeg.shiftX = (float)(uint16_t)buf[++i];
+                    shiftSeg.color = color;
+                    shiftSeg.choiceIndex = choiceIndex;
+                    out.push_back(shiftSeg);
+                }
+                break;
+            case MESSAGE_TEXT_SPEED_JPN:
+            case MESSAGE_HIGHSCORE_JPN:
+                i++; // skip arg
+                break;
+            case MESSAGE_SFX_JPN:
+                i++; // skip sfx code (already consumed as one u16 entry)
+                break;
+            case MESSAGE_NAME_JPN:
+                flush();
+                {
+                    CustomFont::TextSegment nameSeg;
+                    nameSeg.isName = true;
+                    nameSeg.color = color;
+                    nameSeg.choiceIndex = choiceIndex;
+                    out.push_back(nameSeg);
+                }
+                break;
+            case MESSAGE_SPACE_JPN:
+                acc += ' ';
+                break;
+            case MESSAGE_TWO_CHOICE_JPN:
+            case MESSAGE_THREE_CHOICE_JPN:
+                flush();
+                choiceIndex = -2;
+                break;
+            case MESSAGE_QUICKTEXT_ENABLE_JPN:
+            case MESSAGE_QUICKTEXT_DISABLE_JPN:
+            case MESSAGE_UNSKIPPABLE_JPN:
+                break;
+            default: {
+                if (c >= 0x839F && c <= 0x83AA) { // JPN button icons
+                    static const char* sJpnBtnTexNames[] = {
+                        dgMsgChar9FButtonATex,      // 0x839F A
+                        dgMsgCharA0ButtonBTex,      // 0x83A0 B
+                        dgMsgCharA1ButtonCTex,      // 0x83A1 C
+                        dgMsgCharA2ButtonLTex,      // 0x83A2 L
+                        dgMsgCharA3ButtonRTex,      // 0x83A3 R
+                        dgMsgCharA4ButtonZTex,      // 0x83A4 Z
+                        dgMsgCharA5ButtonCUpTex,    // 0x83A5 C-Up
+                        dgMsgCharA6ButtonCDownTex,  // 0x83A6 C-Down
+                        dgMsgCharA7ButtonCLeftTex,  // 0x83A7 C-Left
+                        dgMsgCharA8ButtonCRightTex, // 0x83A8 C-Right
+                        dgMsgCharA9ZTargetSignTex,  // 0x83A9 Z-target
+                        dgMsgCharAAControlStickTex, // 0x83AA Control Stick
+                    };
+                    static const ImVec4 sJpnBtnColors[] = {
+                        {},                                // A — via ABtnColor()
+                        {},                                // B — via BBtnColor()
+                        {},                                // C — via CBtnGroupColor()
+                        ImVec4(0.50f, 0.80f, 1.00f, 1.0f), // L
+                        ImVec4(0.50f, 0.80f, 1.00f, 1.0f), // R
+                        ImVec4(0.50f, 0.80f, 1.00f, 1.0f), // Z
+                        {},                                // C-Up — via CUpBtnColor()
+                        {},                                // C-Down — via CDownBtnColor()
+                        {},                                // C-Left — via CLeftBtnColor()
+                        {},                                // C-Right — via CRightBtnColor()
+                        ImVec4(0.00f, 0.82f, 0.20f, 1.0f), // Z-target
+                        ImVec4(0.50f, 0.80f, 1.00f, 1.0f), // Control Stick
+                    };
+                    const int bi = c - 0x839F;
+                    flush();
+                    if (choiceIndex == -2)
+                        choiceIndex = 0;
+                    CustomFont::TextSegment seg;
+                    seg.btnIcon = sJpnBtnTexNames[bi];
+                    seg.color = (bi == 0)   ? ABtnColor()
+                                : (bi == 1) ? BBtnColor()
+                                : (bi == 2) ? CBtnGroupColor()
+                                : (bi == 6) ? CUpBtnColor()
+                                : (bi == 7) ? CDownBtnColor()
+                                : (bi == 8) ? CLeftBtnColor()
+                                : (bi == 9) ? CRightBtnColor()
+                                            : sJpnBtnColors[bi];
+                    seg.choiceIndex = choiceIndex;
+                    out.push_back(std::move(seg));
+                    break;
+                }
+                const std::string utf8 = SjisToUtf8(c);
+                if (!utf8.empty()) {
+                    if (choiceIndex == -2)
+                        choiceIndex = 0;
+                    acc += utf8;
+                }
+                break;
+            }
+        }
+    }
+    flush();
+    return out;
+}
 
 void CustomFont::DrawElement() {
     const MessageContext* msgCtx = &gPlayState->msgCtx;
@@ -773,22 +1258,23 @@ void CustomFont::DrawElement() {
         sPrevAltAssets = curAltAssets;
     }
 
-    // Explicitly check for alt textures — ResourceManager cache may already hold the vanilla version.
     if (!sBtnTexturesLoaded) {
         auto gui = Ship::Context::GetInstance()->GetWindow()->GetGui();
         const ImVec4 white(1, 1, 1, 1);
 
         auto loadBtn = [&](const char* otrPath) {
-            static constexpr int kOtrPrefixLen = 7; // strlen("__OTR__")
+            static constexpr int kOtrPrefixLen = 7;
+            const std::string bare = std::string(otrPath + kOtrPrefixLen);
             if (curAltAssets) {
-                const std::string bare = std::string(otrPath + kOtrPrefixLen);
                 const std::string altPath = "alt/" + bare;
                 if (ResourceMgr_FileAltExists(bare.c_str())) {
                     gui->LoadGuiTexture(otrPath, altPath, white);
                     return;
                 }
             }
-            gui->LoadGuiTexture(otrPath, otrPath, white);
+            if (ResourceMgr_FileExists(bare.c_str())) {
+                gui->LoadGuiTexture(otrPath, otrPath, white);
+            }
         };
 
         loadBtn(dgMsgChar9FButtonATex);
@@ -807,7 +1293,6 @@ void CustomFont::DrawElement() {
         sBtnTexturesLoaded = true;
     }
 
-    // Built-in fonts are identified by their baked atlas size (FontSize), mod fonts by ImFont* pointer.
     static const struct {
         const char* name;
         float size;
@@ -842,22 +1327,26 @@ void CustomFont::DrawElement() {
     const float cursorX = (R_TEXT_INIT_XPOS - R_TEXTBOX_X) * scaleX;
     const float cursorY = (R_TEXT_INIT_YPOS - R_TEXTBOX_Y) * scaleY;
 
-    // Look up the current page's translated segments; null when no translation is active.
     const auto* trans = [&]() -> const std::vector<TextSegment>* {
         auto it = sActiveTranslation.find(msgCtx->textId);
         if (it == sActiveTranslation.end())
             return nullptr;
-        const auto& pages = it->second.first;
+        const auto& pages = it->second.pages;
         if (pages.empty())
             return nullptr;
         int page = std::min(sCurrentTransPage, (int)pages.size() - 1);
         return &pages[page];
     }();
 
-    const auto origFull = ParseDecodedBuffer(msgCtx->msgBufDecoded, 0xFFFF);
-    const auto origTyped = ParseDecodedBuffer(msgCtx->msgBufDecoded, msgCtx->textDrawPos);
+    const bool isJpnTrans = (gSaveContext.language == LANGUAGE_JPN && sLastDecodeWasJpn && trans != nullptr);
+    const bool isUntranslatedJpn = (gSaveContext.language == LANGUAGE_JPN && sLastDecodeWasJpn && !isJpnTrans);
+    const auto origFull = isJpnTrans          ? std::vector<TextSegment>{}
+                          : isUntranslatedJpn ? ParseJpnBuffer(msgCtx->msgBufDecodedWide, 100)
+                                              : ParseDecodedBuffer(msgCtx->msgBufDecoded, 0xFFFF);
+    const auto origTyped = isJpnTrans          ? std::vector<TextSegment>{}
+                           : isUntranslatedJpn ? ParseJpnBuffer(msgCtx->msgBufDecodedWide, msgCtx->textDrawPos)
+                                               : ParseDecodedBuffer(msgCtx->msgBufDecoded, msgCtx->textDrawPos);
 
-    // Count printable UTF-8 leading bytes (proxy uses one 0x20 per translated char).
     auto countChars = [](const std::vector<TextSegment>& segs) -> size_t {
         size_t n = 0;
         for (const auto& s : segs)
@@ -868,7 +1357,6 @@ void CustomFont::DrawElement() {
         return n;
     };
 
-    // Return a copy of segs truncated to the first `limit` printable characters.
     auto limitSegs = [](const std::vector<TextSegment>& segs, size_t limit) {
         std::vector<TextSegment> out;
         size_t count = 0;
@@ -881,7 +1369,9 @@ void CustomFont::DrawElement() {
             if (s.isName) {
                 if (count < limit)
                     out.push_back(s);
-                count += GetPlayerName().size();
+                for (unsigned char b : GetPlayerName())
+                    if ((b & 0xC0) != 0x80)
+                        count++;
                 if (count >= limit)
                     break;
                 continue;
@@ -904,7 +1394,8 @@ void CustomFont::DrawElement() {
     };
 
     const auto& fullSegments = trans ? *trans : origFull;
-    const auto segments = trans ? limitSegs(*trans, countChars(origTyped)) : origTyped;
+    const auto segments =
+        trans ? limitSegs(*trans, isJpnTrans ? (size_t)msgCtx->textDrawPos : countChars(origTyped)) : origTyped;
 
     bool hasItemIcon = false;
     uint8_t itemIconId = 0;
@@ -925,7 +1416,6 @@ void CustomFont::DrawElement() {
     }
     const float choiceStartY = hasChoices ? (R_TEXT_CHOICE_YPOS(0) - R_TEXTBOX_Y) * scaleY : ImGui::GetWindowHeight();
 
-    // Accumulate per-line text and icon counts from fullSegments for width measurement.
     struct LineInfo {
         std::string text;
         int btnIconCount = 0;
@@ -950,12 +1440,10 @@ void CustomFont::DrawElement() {
         lineInfos.push_back(cur);
     }
 
-    // Font size matches vanilla: (R_TEXT_CHAR_SCALE / 100) * 16 N64px.
     const float itemSpacing = ImGui::GetStyle().ItemSpacing.y;
     const int numLines = std::max((int)lineInfos.size(), 1);
     const float desiredSize = (R_TEXT_CHAR_SCALE / 100.0f) * 16.0f * scaleY;
 
-    // Item icon occupies a 24px column; vanilla advances textPosX by 32px to clear it.
     const float iconSize = hasItemIcon ? (float)R_TEXTBOX_ICON_SIZE * scaleX : 0.0f;
     const float iconColumnWidth = hasItemIcon ? 32.0f * scaleX : 0.0f;
 
@@ -971,13 +1459,12 @@ void CustomFont::DrawElement() {
     }
 
     float effectiveSize = desiredSize;
-    if (maxLineWidth > availableWidth && maxLineWidth > 0.0f)
+    if (gSaveContext.language != LANGUAGE_JPN && maxLineWidth > availableWidth && maxLineWidth > 0.0f)
         effectiveSize = desiredSize * (availableWidth / maxLineWidth);
     effectiveSize = std::max(effectiveSize, 1.0f);
 
     const float lineSpacing = effectiveSize + itemSpacing;
 
-    // Lines that start with SHIFT are treated as centered; mid-line SHIFTs are raw pixel advances.
     struct LineLayout {
         float startX = 0.0f;
         bool centered = false;
@@ -1049,7 +1536,6 @@ void CustomFont::DrawElement() {
         }
     }
 
-    // Resolve ADJUSTABLE color live from game REGs.
     const ImVec4 white(1, 1, 1, 1);
     auto resolveColor = [&](const CustomFont::TextSegment& s) -> ImVec4 {
         return s.isAdjustable ? ColorFromCode(MSGCOL_ADJUSTABLE, white) : s.color;
@@ -1113,7 +1599,6 @@ void CustomFont::DrawElement() {
         lineX += activeFont->CalcTextSizeA(effectiveSize, FLT_MAX, 0.0f, seg.text.c_str()).x;
     }
 
-    // Draw item icon in the left column, vertically centered.
     if (hasItemIcon && itemIconId < 158) {
         const char* iconPath = static_cast<char*>(gItemIcons[itemIconId]);
         ImTextureID texId = iconPath ? gui->GetTextureByName(iconPath) : nullptr;
@@ -1182,10 +1667,6 @@ void CustomFont::DrawElement() {
     ImGui::PopFont();
 }
 
-// ---------------------------------------------------------------------------
-// ParseDecodedBuffer
-// ---------------------------------------------------------------------------
-
 std::vector<CustomFont::TextSegment> CustomFont::ParseDecodedBuffer(const uint8_t* buf, uint16_t drawLen) {
     std::vector<TextSegment> out;
     out.reserve(16);
@@ -1207,7 +1688,8 @@ std::vector<CustomFont::TextSegment> CustomFont::ParseDecodedBuffer(const uint8_
         }
     };
 
-    for (uint16_t i = 0; i < drawLen && !done; i++) {
+    const uint16_t safeLen = std::min(drawLen, (uint16_t)200);
+    for (uint16_t i = 0; i < safeLen && !done; i++) {
         const uint8_t c = buf[i];
 
         switch (c) {
@@ -1314,8 +1796,8 @@ std::vector<CustomFont::TextSegment> CustomFont::ParseDecodedBuffer(const uint8_
                         choiceIndex = 0;
                     acc += static_cast<char>(c);
                 } else if (c >= 0x80 && c <= 0xAF) {
-                    // 0x80-0x9E: PAL accented Latin; 0x9F-0xAB: controller button icons.
                     static const char* sLatinMap[] = {
+                        // 0x80-0x9E PAL accented Latin
                         "\xC3\x80", // 0x80 À
                         "\xC3\xAE", // 0x81 î
                         "\xC3\x82", // 0x82 Â
@@ -1364,16 +1846,16 @@ std::vector<CustomFont::TextSegment> CustomFont::ParseDecodedBuffer(const uint8_
                         dgMsgCharABControlPadTex,   // 0xAB
                     };
                     static const ImVec4 sBtnColors[] = {
-                        ImVec4(0.00f, 0.82f, 0.20f, 1.0f), // 0x9F A
-                        ImVec4(0.78f, 0.05f, 0.05f, 1.0f), // 0xA0 B
-                        ImVec4(1.00f, 0.65f, 0.00f, 1.0f), // 0xA1 C
+                        {},                                // 0x9F A — via ABtnColor()
+                        {},                                // 0xA0 B — via BBtnColor()
+                        {},                                // 0xA1 C — via CBtnGroupColor()
                         ImVec4(0.50f, 0.80f, 1.00f, 1.0f), // 0xA2 L
                         ImVec4(0.50f, 0.80f, 1.00f, 1.0f), // 0xA3 R
                         ImVec4(0.50f, 0.80f, 1.00f, 1.0f), // 0xA4 Z
-                        ImVec4(1.00f, 0.65f, 0.00f, 1.0f), // 0xA5 C-Up
-                        ImVec4(1.00f, 0.65f, 0.00f, 1.0f), // 0xA6 C-Down
-                        ImVec4(1.00f, 0.65f, 0.00f, 1.0f), // 0xA7 C-Left
-                        ImVec4(1.00f, 0.65f, 0.00f, 1.0f), // 0xA8 C-Right
+                        {},                                // 0xA5 C-Up — via CUpBtnColor()
+                        {},                                // 0xA6 C-Down — via CDownBtnColor()
+                        {},                                // 0xA7 C-Left — via CLeftBtnColor()
+                        {},                                // 0xA8 C-Right — via CRightBtnColor()
                         ImVec4(0.00f, 0.82f, 0.20f, 1.0f), // 0xA9 Z-target
                         ImVec4(0.50f, 0.80f, 1.00f, 1.0f), // 0xAA stick
                         ImVec4(1.00f, 1.00f, 1.00f, 1.0f), // 0xAB pad
@@ -1382,9 +1864,17 @@ std::vector<CustomFont::TextSegment> CustomFont::ParseDecodedBuffer(const uint8_
                         acc += sLatinMap[c - 0x80];
                     } else if (c <= 0xAB) {
                         flush();
+                        const int bi = c - 0x9F;
                         TextSegment seg;
-                        seg.btnIcon = sBtnTexNames[c - 0x9F];
-                        seg.color = sBtnColors[c - 0x9F];
+                        seg.btnIcon = sBtnTexNames[bi];
+                        seg.color = (bi == 0)   ? ABtnColor()
+                                    : (bi == 1) ? BBtnColor()
+                                    : (bi == 2) ? CBtnGroupColor()
+                                    : (bi == 6) ? CUpBtnColor()
+                                    : (bi == 7) ? CDownBtnColor()
+                                    : (bi == 8) ? CLeftBtnColor()
+                                    : (bi == 9) ? CRightBtnColor()
+                                                : sBtnColors[bi];
                         seg.choiceIndex = choiceIndex;
                         out.push_back(std::move(seg));
                     }
@@ -1396,10 +1886,6 @@ std::vector<CustomFont::TextSegment> CustomFont::ParseDecodedBuffer(const uint8_
     flush();
     return out;
 }
-
-// ---------------------------------------------------------------------------
-// ColorFromCode
-// ---------------------------------------------------------------------------
 
 ImVec4 CustomFont::ColorFromCode(uint8_t code, const ImVec4& defaultColor) {
     switch (code) {
