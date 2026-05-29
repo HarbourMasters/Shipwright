@@ -291,7 +291,7 @@ static std::string GetPlayerName() {
 
     if (isJpnNm) {
         // Emit UTF-8 for a Unicode codepoint (BMP-only is sufficient here).
-        auto u8 = [&](uint32_t cp) {
+        auto emitUtf8 = [&](uint32_t cp) {
             if (cp < 0x80) {
                 name += (char)cp;
             } else if (cp < 0x800) {
@@ -307,82 +307,82 @@ static std::string GetPlayerName() {
             const uint8_t c = gSaveContext.playerName[i];
             // Latin from alphanumeric keyboard (gKeyboardCharactersAlphanumeric)
             if (c >= 0xAB && c < 0xC5) {
-                u8('A' + c - 0xAB);
+                emitUtf8('A' + c - 0xAB);
                 continue;
             } // A–Z
             if (c >= 0xC5 && c < 0xDF) {
-                u8('a' + c - 0xC5);
+                emitUtf8('a' + c - 0xC5);
                 continue;
             } // a–z
             if (c < 0x0A) {
-                u8('0' + c);
+                emitUtf8('0' + c);
                 continue;
             } // 0–9
             // clang-format off
             switch (c) {
-                case 0xDF: u8(' ');      break;
-                case 0xEA: u8('.');      break;
-                case 0xE4: u8(0x30FC);  break; // ー (long vowel / dash glyph)
-                case 0xE7: u8(0x309B);  break; // ゛
-                case 0xE8: u8(0x309C);  break; // ゜
+                case 0xDF: emitUtf8(' ');      break;
+                case 0xEA: emitUtf8('.');      break;
+                case 0xE4: emitUtf8(0x30FC);  break; // ー (long vowel / dash glyph)
+                case 0xE7: emitUtf8(0x309B);  break; // ゛
+                case 0xE8: emitUtf8(0x309C);  break; // ゜
                 // Hiragana (gKeyboardCharactersHiragana)
-                case 0x0A: u8(0x3042); break; case 0x0B: u8(0x3044); break; // あ い
-                case 0x0C: u8(0x3046); break; case 0x0D: u8(0x3048); break; // う え
-                case 0x0E: u8(0x304A); break; case 0x0F: u8(0x304B); break; // お か
-                case 0x10: u8(0x304D); break; case 0x11: u8(0x304F); break; // き く
-                case 0x12: u8(0x3051); break; case 0x13: u8(0x3053); break; // け こ
-                case 0x14: u8(0x3055); break; case 0x15: u8(0x3057); break; // さ し
-                case 0x16: u8(0x3059); break; case 0x17: u8(0x305B); break; // す せ
-                case 0x18: u8(0x305D); break; case 0x19: u8(0x305F); break; // そ た
-                case 0x1A: u8(0x3061); break; case 0x1B: u8(0x3064); break; // ち つ
-                case 0x1C: u8(0x3066); break; case 0x1D: u8(0x3068); break; // て と
-                case 0x1E: u8(0x306A); break; case 0x1F: u8(0x306B); break; // な に
-                case 0x20: u8(0x306C); break; case 0x21: u8(0x306D); break; // ぬ ね
-                case 0x22: u8(0x306E); break; case 0x23: u8(0x306F); break; // の は
-                case 0x24: u8(0x3072); break; case 0x25: u8(0x3075); break; // ひ ふ
-                case 0x26: u8(0x3078); break; case 0x27: u8(0x307B); break; // へ ほ
-                case 0x28: u8(0x307E); break; case 0x29: u8(0x307F); break; // ま み
-                case 0x2A: u8(0x3080); break; case 0x2B: u8(0x3081); break; // む め
-                case 0x2C: u8(0x3082); break; case 0x2D: u8(0x3084); break; // も や
-                case 0x2E: u8(0x3086); break; case 0x2F: u8(0x3088); break; // ゆ よ
-                case 0x30: u8(0x3089); break; case 0x31: u8(0x308A); break; // ら り
-                case 0x32: u8(0x308B); break; case 0x33: u8(0x308C); break; // る れ
-                case 0x34: u8(0x308D); break; case 0x35: u8(0x308F); break; // ろ わ
-                case 0x36: u8(0x3092); break; case 0x37: u8(0x3093); break; // を ん
-                case 0x38: u8(0x3041); break; case 0x39: u8(0x3043); break; // ぁ ぃ
-                case 0x3A: u8(0x3045); break; case 0x3B: u8(0x3047); break; // ぅ ぇ
-                case 0x3C: u8(0x3049); break; case 0x3D: u8(0x3063); break; // ぉ っ
-                case 0x3E: u8(0x3083); break; case 0x3F: u8(0x3085); break; // ゃ ゅ
-                case 0x40: u8(0x3087); break;                                // ょ
+                case 0x0A: emitUtf8(0x3042); break; case 0x0B: emitUtf8(0x3044); break; // あ い
+                case 0x0C: emitUtf8(0x3046); break; case 0x0D: emitUtf8(0x3048); break; // う え
+                case 0x0E: emitUtf8(0x304A); break; case 0x0F: emitUtf8(0x304B); break; // お か
+                case 0x10: emitUtf8(0x304D); break; case 0x11: emitUtf8(0x304F); break; // き く
+                case 0x12: emitUtf8(0x3051); break; case 0x13: emitUtf8(0x3053); break; // け こ
+                case 0x14: emitUtf8(0x3055); break; case 0x15: emitUtf8(0x3057); break; // さ し
+                case 0x16: emitUtf8(0x3059); break; case 0x17: emitUtf8(0x305B); break; // す せ
+                case 0x18: emitUtf8(0x305D); break; case 0x19: emitUtf8(0x305F); break; // そ た
+                case 0x1A: emitUtf8(0x3061); break; case 0x1B: emitUtf8(0x3064); break; // ち つ
+                case 0x1C: emitUtf8(0x3066); break; case 0x1D: emitUtf8(0x3068); break; // て と
+                case 0x1E: emitUtf8(0x306A); break; case 0x1F: emitUtf8(0x306B); break; // な に
+                case 0x20: emitUtf8(0x306C); break; case 0x21: emitUtf8(0x306D); break; // ぬ ね
+                case 0x22: emitUtf8(0x306E); break; case 0x23: emitUtf8(0x306F); break; // の は
+                case 0x24: emitUtf8(0x3072); break; case 0x25: emitUtf8(0x3075); break; // ひ ふ
+                case 0x26: emitUtf8(0x3078); break; case 0x27: emitUtf8(0x307B); break; // へ ほ
+                case 0x28: emitUtf8(0x307E); break; case 0x29: emitUtf8(0x307F); break; // ま み
+                case 0x2A: emitUtf8(0x3080); break; case 0x2B: emitUtf8(0x3081); break; // む め
+                case 0x2C: emitUtf8(0x3082); break; case 0x2D: emitUtf8(0x3084); break; // も や
+                case 0x2E: emitUtf8(0x3086); break; case 0x2F: emitUtf8(0x3088); break; // ゆ よ
+                case 0x30: emitUtf8(0x3089); break; case 0x31: emitUtf8(0x308A); break; // ら り
+                case 0x32: emitUtf8(0x308B); break; case 0x33: emitUtf8(0x308C); break; // る れ
+                case 0x34: emitUtf8(0x308D); break; case 0x35: emitUtf8(0x308F); break; // ろ わ
+                case 0x36: emitUtf8(0x3092); break; case 0x37: emitUtf8(0x3093); break; // を ん
+                case 0x38: emitUtf8(0x3041); break; case 0x39: emitUtf8(0x3043); break; // ぁ ぃ
+                case 0x3A: emitUtf8(0x3045); break; case 0x3B: emitUtf8(0x3047); break; // ぅ ぇ
+                case 0x3C: emitUtf8(0x3049); break; case 0x3D: emitUtf8(0x3063); break; // ぉ っ
+                case 0x3E: emitUtf8(0x3083); break; case 0x3F: emitUtf8(0x3085); break; // ゃ ゅ
+                case 0x40: emitUtf8(0x3087); break;                                // ょ
                 // Katakana (gKeyboardCharactersKatakana)
-                case 0x5A: u8(0x30A2); break; case 0x5B: u8(0x30A4); break; // ア イ
-                case 0x5C: u8(0x30A6); break; case 0x5D: u8(0x30A8); break; // ウ エ
-                case 0x5E: u8(0x30AA); break; case 0x5F: u8(0x30AB); break; // オ カ
-                case 0x60: u8(0x30AD); break; case 0x61: u8(0x30AF); break; // キ ク
-                case 0x62: u8(0x30B1); break; case 0x63: u8(0x30B3); break; // ケ コ
-                case 0x64: u8(0x30B5); break; case 0x65: u8(0x30B7); break; // サ シ
-                case 0x66: u8(0x30B9); break; case 0x67: u8(0x30BB); break; // ス セ
-                case 0x68: u8(0x30BD); break; case 0x69: u8(0x30BF); break; // ソ タ
-                case 0x6A: u8(0x30C1); break; case 0x6B: u8(0x30C4); break; // チ ツ
-                case 0x6C: u8(0x30C6); break; case 0x6D: u8(0x30C8); break; // テ ト
-                case 0x6E: u8(0x30CA); break; case 0x6F: u8(0x30CB); break; // ナ ニ
-                case 0x70: u8(0x30CC); break; case 0x71: u8(0x30CD); break; // ヌ ネ
-                case 0x72: u8(0x30CE); break; case 0x73: u8(0x30CF); break; // ノ ハ
-                case 0x74: u8(0x30D2); break; case 0x75: u8(0x30D5); break; // ヒ フ
-                case 0x76: u8(0x30D8); break; case 0x77: u8(0x30DB); break; // ヘ ホ
-                case 0x78: u8(0x30DE); break; case 0x79: u8(0x30DF); break; // マ ミ
-                case 0x7A: u8(0x30E0); break; case 0x7B: u8(0x30E1); break; // ム メ
-                case 0x7C: u8(0x30E2); break; case 0x7D: u8(0x30E4); break; // モ ヤ
-                case 0x7E: u8(0x30E6); break; case 0x7F: u8(0x30E8); break; // ユ ヨ
-                case 0x80: u8(0x30E9); break; case 0x81: u8(0x30EA); break; // ラ リ
-                case 0x82: u8(0x30EB); break; case 0x83: u8(0x30EC); break; // ル レ
-                case 0x84: u8(0x30ED); break; case 0x85: u8(0x30EF); break; // ロ ワ
-                case 0x86: u8(0x30F2); break; case 0x87: u8(0x30F3); break; // ヲ ン
-                case 0x88: u8(0x30A1); break; case 0x89: u8(0x30A3); break; // ァ ィ
-                case 0x8A: u8(0x30A5); break; case 0x8B: u8(0x30A7); break; // ゥ ェ
-                case 0x8C: u8(0x30A9); break; case 0x8D: u8(0x30C3); break; // ォ ッ
-                case 0x8E: u8(0x30E3); break; case 0x8F: u8(0x30E5); break; // ャ ュ
-                case 0x90: u8(0x30E7); break;                                // ョ
+                case 0x5A: emitUtf8(0x30A2); break; case 0x5B: emitUtf8(0x30A4); break; // ア イ
+                case 0x5C: emitUtf8(0x30A6); break; case 0x5D: emitUtf8(0x30A8); break; // ウ エ
+                case 0x5E: emitUtf8(0x30AA); break; case 0x5F: emitUtf8(0x30AB); break; // オ カ
+                case 0x60: emitUtf8(0x30AD); break; case 0x61: emitUtf8(0x30AF); break; // キ ク
+                case 0x62: emitUtf8(0x30B1); break; case 0x63: emitUtf8(0x30B3); break; // ケ コ
+                case 0x64: emitUtf8(0x30B5); break; case 0x65: emitUtf8(0x30B7); break; // サ シ
+                case 0x66: emitUtf8(0x30B9); break; case 0x67: emitUtf8(0x30BB); break; // ス セ
+                case 0x68: emitUtf8(0x30BD); break; case 0x69: emitUtf8(0x30BF); break; // ソ タ
+                case 0x6A: emitUtf8(0x30C1); break; case 0x6B: emitUtf8(0x30C4); break; // チ ツ
+                case 0x6C: emitUtf8(0x30C6); break; case 0x6D: emitUtf8(0x30C8); break; // テ ト
+                case 0x6E: emitUtf8(0x30CA); break; case 0x6F: emitUtf8(0x30CB); break; // ナ ニ
+                case 0x70: emitUtf8(0x30CC); break; case 0x71: emitUtf8(0x30CD); break; // ヌ ネ
+                case 0x72: emitUtf8(0x30CE); break; case 0x73: emitUtf8(0x30CF); break; // ノ ハ
+                case 0x74: emitUtf8(0x30D2); break; case 0x75: emitUtf8(0x30D5); break; // ヒ フ
+                case 0x76: emitUtf8(0x30D8); break; case 0x77: emitUtf8(0x30DB); break; // ヘ ホ
+                case 0x78: emitUtf8(0x30DE); break; case 0x79: emitUtf8(0x30DF); break; // マ ミ
+                case 0x7A: emitUtf8(0x30E0); break; case 0x7B: emitUtf8(0x30E1); break; // ム メ
+                case 0x7C: emitUtf8(0x30E2); break; case 0x7D: emitUtf8(0x30E4); break; // モ ヤ
+                case 0x7E: emitUtf8(0x30E6); break; case 0x7F: emitUtf8(0x30E8); break; // ユ ヨ
+                case 0x80: emitUtf8(0x30E9); break; case 0x81: emitUtf8(0x30EA); break; // ラ リ
+                case 0x82: emitUtf8(0x30EB); break; case 0x83: emitUtf8(0x30EC); break; // ル レ
+                case 0x84: emitUtf8(0x30ED); break; case 0x85: emitUtf8(0x30EF); break; // ロ ワ
+                case 0x86: emitUtf8(0x30F2); break; case 0x87: emitUtf8(0x30F3); break; // ヲ ン
+                case 0x88: emitUtf8(0x30A1); break; case 0x89: emitUtf8(0x30A3); break; // ァ ィ
+                case 0x8A: emitUtf8(0x30A5); break; case 0x8B: emitUtf8(0x30A7); break; // ゥ ェ
+                case 0x8C: emitUtf8(0x30A9); break; case 0x8D: emitUtf8(0x30C3); break; // ォ ッ
+                case 0x8E: emitUtf8(0x30E3); break; case 0x8F: emitUtf8(0x30E5); break; // ャ ュ
+                case 0x90: emitUtf8(0x30E7); break;                                // ョ
                 default: break; // unknown — skip
             }
             // clang-format on
