@@ -1782,6 +1782,10 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Targetable Gold Skulltula", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_CHEAT("GSTargetable"))
         .Options(CheckboxOptions().Tooltip("Allows Z-Targeting Gold Skulltulas."));
+    AddWidget(path, "Target Actors Behind Link", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("TargetBehind"))
+        .Options(CheckboxOptions().Tooltip(
+            "Allows Z-Targeting to lock onto enemies that are behind Link without needing to face them first."));
 
     AddWidget(path, "Glitch Aids", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Easy Frame Advancing with Pause", WIDGET_CVAR_CHECKBOX)

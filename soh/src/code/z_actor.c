@@ -1886,18 +1886,23 @@ f32 func_8002EFC0(Actor* actor, Player* player, s16 arg2) {
     s16 yawTempAbs = ABS(yawTemp);
 
     if (player->focusActor != NULL) {
-        if ((yawTempAbs > 0x4000) || (actor->flags & ACTOR_FLAG_LOCK_ON_DISABLED)) {
+        if (actor->flags & ACTOR_FLAG_LOCK_ON_DISABLED) {
+            return FLT_MAX;
+        }
+        
+        if (GameInteractor_Should(VB_LIMIT_TARGET_FOV, yawTempAbs > 0x4000, actor)) {
             return FLT_MAX;
         } else {
-            f32 ret =
-                actor->xyzDistToPlayerSq - actor->xyzDistToPlayerSq * 0.8f * ((0x4000 - yawTempAbs) * (1.0f / 0x8000));
-
-            return ret;
+            return actor->xyzDistToPlayerSq - actor->xyzDistToPlayerSq * 0.8f * ((0x4000 - yawTempAbs) * (1.0f / 0x8000));
         }
     }
 
-    if (yawTempAbs > 0x2AAA) {
+    if (GameInteractor_Should(VB_LIMIT_TARGET_FOV, yawTempAbs > 0x2AAA, actor)) {
         return FLT_MAX;
+    }
+
+    if (GameInteractor_Should(VB_APPLY_TARGET_SCORING, false, actor)) {
+        return actor->xyzDistToPlayerSq - actor->xyzDistToPlayerSq * 0.8f * ((0x4000 - yawTempAbs) * (1.0f / 0x8000));
     }
 
     return actor->xyzDistToPlayerSq;
@@ -1931,7 +1936,7 @@ s32 func_8002F0C8(Actor* actor, Player* player, s32 flag) {
         s16 abs_var = ABS(var);
         f32 dist;
 
-        if ((player->focusActor == NULL) && (abs_var > 0x2AAA)) {
+        if ((player->focusActor == NULL) && GameInteractor_Should(VB_LIMIT_TARGET_FOV, abs_var > 0x2AAA, actor)) {
             dist = FLT_MAX;
         } else {
             dist = actor->xyzDistToPlayerSq;
