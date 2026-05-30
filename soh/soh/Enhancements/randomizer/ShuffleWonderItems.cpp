@@ -165,7 +165,6 @@ static void EnWonderItem_RandomizerDraw(EnWonderItem* wonderActor, Color_RGBA8* 
 
 void EnWonderItem_RandomizerDrawSetup(IEvent* event) {
     OnActorUpdate* ev = reinterpret_cast<OnActorUpdate*>(event);
-    GetItemCategory getItemCategory;
     EnWonderItem* wonderActor = static_cast<EnWonderItem*>(ev->actor);
 
     // If not a randomized item or too far, don't draw.

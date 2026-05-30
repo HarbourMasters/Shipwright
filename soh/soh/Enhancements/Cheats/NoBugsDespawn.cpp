@@ -8,8 +8,10 @@ extern "C" {
 extern s16 D_80A7DEB8;
 }
 
-static void OnActorInitNoBugsDespawn(void* refActor) {
-    EnInsect* insect = reinterpret_cast<EnInsect*>(refActor);
+static void OnActorInitNoBugsDespawn(IEvent* event) {
+    OnActorInit* ev = reinterpret_cast<OnActorInit*>(event);
+
+    EnInsect* insect = reinterpret_cast<EnInsect*>(ev->actor);
 
     if ((insect->actor.params & 2) && insect->soilActor == NULL) {
         insect->insectFlags &= ~4;

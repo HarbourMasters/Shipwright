@@ -433,6 +433,8 @@ void RandomizerOnItemReceiveHandler(IEvent* event) {
     if (randomizerQueuedCheck == RC_UNKNOWN_CHECK)
         return;
 
+    GetItemEntry receivedItemEntry = ev->itemEntry;
+
     auto loc = Rando::Context::GetInstance()->GetItemLocation(randomizerQueuedCheck);
     if (randomizerQueuedItemEntry.modIndex == ev->itemEntry.modIndex &&
         randomizerQueuedItemEntry.itemId == ev->itemEntry.itemId) {
