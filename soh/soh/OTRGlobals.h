@@ -19,6 +19,7 @@
 #include <memory> // for shared_ptr
 #include <string>
 #include <unordered_map>
+#include <stdint.h>
 
 struct ExtensionEntry {
     std::string path;
