@@ -5,6 +5,7 @@
 #include "cvar_prefixes.h"
 #include "Enhancements/enhancementTypes.h"
 #include "Enhancements/randomizer/dungeon.h"
+#include "soh/Enhancements/randomizer/SeedContext.h"
 #include <libultraship/libultraship.h>
 #include <soh/GameVersions.h>
 #include "resource/type/SohResourceType.h"
@@ -14,6 +15,8 @@
 #include <fast/Fast3dWindow.h>
 #include <fast/resource/ResourceType.h>
 #include <fast/resource/type/DisplayList.h>
+
+#include <stb_image.h>
 
 extern "C" PlayState* gPlayState;
 

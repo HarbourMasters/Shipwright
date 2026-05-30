@@ -1,5 +1,5 @@
 #pragma once
 
-#include "stdint.h"
+#include <stdint.h>
 
 void DebugConsole_Init(void);
