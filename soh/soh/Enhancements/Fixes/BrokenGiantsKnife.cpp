@@ -14,7 +14,7 @@ static constexpr int32_t CVAR_BGS_FIX_DEFAULT = 0;
 #define CVAR_BGS_FIX_VALUE CVarGetInteger(CVAR_BGS_FIX_NAME, CVAR_BGS_FIX_DEFAULT)
 
 static void OnReceiveBrokenGiantsKnife(IEvent* event) {
-    const OnItemReceive* ev = reinterpret_cast<OnItemReceive*>(event);
+    OnItemReceive* ev = reinterpret_cast<OnItemReceive*>(event);
     if (ev->itemEntry.itemId != ITEM_SWORD_BGS) {
         return;
     }

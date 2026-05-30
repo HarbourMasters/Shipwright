@@ -126,56 +126,56 @@ bool GameInteractor_Should(GIVanillaBehavior flag, u32 result, ...) {
 
 void EventSystem_Register() {
     // MARK: - Gameplay
-    REGISTER_EVENT(OnZTitleInit);
-    REGISTER_EVENT(OnZTitleUpdate);
-    REGISTER_EVENT(OnLoadGame);
-    REGISTER_EVENT(OnExitGame);
-    REGISTER_EVENT(OnGameStateMainStart);
-    REGISTER_EVENT(OnGameFrameUpdate);
-    REGISTER_EVENT(OnCameraState);
-    REGISTER_EVENT(OnItemReceive);
-    REGISTER_EVENT(OnEquipmentDelete);
-    REGISTER_EVENT(OnSaleEnd);
-    REGISTER_EVENT(OnTransitionEnd);
-    REGISTER_EVENT(OnSceneInit);
     REGISTER_EVENT(AfterSceneCommands);
-    REGISTER_EVENT(OnSceneFlagSet);
-    REGISTER_EVENT(OnSceneFlagUnset);
+    REGISTER_EVENT(OnCameraState);
+    REGISTER_EVENT(OnCuccoOrChickenHatch);
+    REGISTER_EVENT(OnDungeonKeyUsed);
+    REGISTER_EVENT(OnEquipmentDelete);
+    REGISTER_EVENT(OnExitGame);
     REGISTER_EVENT(OnFlagSet);
     REGISTER_EVENT(OnFlagUnset);
-    REGISTER_EVENT(OnSceneSpawnActors);
-    REGISTER_EVENT(OnLinkSkeletonInit);
+    REGISTER_EVENT(OnGameFrameUpdate);
+    REGISTER_EVENT(OnGameStateMainStart);
+    REGISTER_EVENT(OnItemReceive);
     REGISTER_EVENT(OnLinkEquipmentChange);
-    REGISTER_EVENT(OnPlayerUpdate);
-    REGISTER_EVENT(OnSetDoAction);
-    REGISTER_EVENT(OnPlayerSfx);
-    REGISTER_EVENT(OnOcarinaSongAction);
+    REGISTER_EVENT(OnLinkSkeletonInit);
+    REGISTER_EVENT(OnLoadGame);
     REGISTER_EVENT(OnOcarinaNote);
-    REGISTER_EVENT(OnCuccoOrChickenHatch);
+    REGISTER_EVENT(OnOcarinaSongAction);
+    REGISTER_EVENT(OnPlayerSfx);
+    REGISTER_EVENT(OnPlayerUpdate);
+    REGISTER_EVENT(OnSaleEnd);
+    REGISTER_EVENT(OnSceneFlagSet);
+    REGISTER_EVENT(OnSceneFlagUnset);
+    REGISTER_EVENT(OnSceneInit);
+    REGISTER_EVENT(OnSceneSpawnActors);
+    REGISTER_EVENT(OnSetDoAction);
     REGISTER_EVENT(OnShopSlotChange);
-    REGISTER_EVENT(OnDungeonKeyUsed);
+    REGISTER_EVENT(OnTransitionEnd);
+    REGISTER_EVENT(OnZTitleInit);
+    REGISTER_EVENT(OnZTitleUpdate);
 
     // MARK: - Actors & Entities
-    REGISTER_EVENT(ShouldActorInit);
-    REGISTER_EVENT(OnActorInit);
-    REGISTER_EVENT(OnActorSpawn);
-    REGISTER_EVENT(ShouldActorUpdate);
-    REGISTER_EVENT(OnActorUpdate);
-    REGISTER_EVENT(OnActorKill);
     REGISTER_EVENT(OnActorDestroy);
-    REGISTER_EVENT(OnEnemyDefeat);
+    REGISTER_EVENT(OnActorInit);
+    REGISTER_EVENT(OnActorKill);
+    REGISTER_EVENT(OnActorSpawn);
+    REGISTER_EVENT(OnActorUpdate);
     REGISTER_EVENT(OnBossDefeat);
+    REGISTER_EVENT(OnEnemyDefeat);
+    REGISTER_EVENT(ShouldActorInit);
+    REGISTER_EVENT(ShouldActorUpdate);
 
     // MARK: - Player specifics
-    REGISTER_EVENT(OnTimestamp);
     REGISTER_EVENT(OnPlayerBonk);
-    REGISTER_EVENT(OnPlayerSetModels);
-    REGISTER_EVENT(OnPlayerHealthChange);
     REGISTER_EVENT(OnPlayerBottleUpdate);
-    REGISTER_EVENT(OnPlayerHoldUpShield);
     REGISTER_EVENT(OnPlayerFirstPersonControl);
+    REGISTER_EVENT(OnPlayerHealthChange);
+    REGISTER_EVENT(OnPlayerHoldUpShield);
     REGISTER_EVENT(OnPlayerProcessStick);
+    REGISTER_EVENT(OnPlayerSetModels);
     REGISTER_EVENT(OnPlayerShieldControl);
+    REGISTER_EVENT(OnTimestamp);
 
     // MARK: - Play State
     REGISTER_EVENT(OnPlayDestroy);
@@ -186,34 +186,34 @@ void EventSystem_Register() {
     REGISTER_EVENT(OnVanillaBehavior);
 
     // MARK: - Save Files
-    REGISTER_EVENT(OnSaveFile);
-    REGISTER_EVENT(OnLoadFile);
     REGISTER_EVENT(OnDeleteFile);
+    REGISTER_EVENT(OnLoadFile);
+    REGISTER_EVENT(OnSaveFile);
 
     // MARK: - Dialog & UI
     REGISTER_EVENT(OnDialogMessage);
-    REGISTER_EVENT(OnPresentTitleCard);
     REGISTER_EVENT(OnInterfaceUpdate);
     REGISTER_EVENT(OnKaleidoscopeUpdate);
     REGISTER_EVENT(OnMinimapDrawCompassIcons);
+    REGISTER_EVENT(OnPresentTitleCard);
 
     // MARK: - Main Menu
-    REGISTER_EVENT(OnPresentFileSelect);
-    REGISTER_EVENT(OnUpdateFileSelectSelection);
-    REGISTER_EVENT(OnUpdateFileSelectConfirmationSelection);
-    REGISTER_EVENT(OnUpdateFileCopySelection);
-    REGISTER_EVENT(OnUpdateFileCopyConfirmationSelection);
-    REGISTER_EVENT(OnUpdateFileEraseSelection);
-    REGISTER_EVENT(OnUpdateFileEraseConfirmationSelection);
-    REGISTER_EVENT(OnUpdateFileAudioSelection);
-    REGISTER_EVENT(OnUpdateFileTargetSelection);
-    REGISTER_EVENT(OnUpdateFileLanguageSelection);
-    REGISTER_EVENT(OnUpdateFileQuestSelection);
-    REGISTER_EVENT(OnUpdateFileBossRushOptionSelection);
-    REGISTER_EVENT(OnUpdateFileRandomizerOptionSelection);
-    REGISTER_EVENT(OnUpdateFileNameSelection);
     REGISTER_EVENT(OnFileChooseMain);
     REGISTER_EVENT(OnGenerationCompletion);
+    REGISTER_EVENT(OnPresentFileSelect);
+    REGISTER_EVENT(OnUpdateFileAudioSelection);
+    REGISTER_EVENT(OnUpdateFileBossRushOptionSelection);
+    REGISTER_EVENT(OnUpdateFileCopyConfirmationSelection);
+    REGISTER_EVENT(OnUpdateFileCopySelection);
+    REGISTER_EVENT(OnUpdateFileEraseConfirmationSelection);
+    REGISTER_EVENT(OnUpdateFileEraseSelection);
+    REGISTER_EVENT(OnUpdateFileLanguageSelection);
+    REGISTER_EVENT(OnUpdateFileNameSelection);
+    REGISTER_EVENT(OnUpdateFileQuestSelection);
+    REGISTER_EVENT(OnUpdateFileRandomizerOptionSelection);
+    REGISTER_EVENT(OnUpdateFileSelectConfirmationSelection);
+    REGISTER_EVENT(OnUpdateFileSelectSelection);
+    REGISTER_EVENT(OnUpdateFileTargetSelection);
 
     // MARK: - Game
     REGISTER_EVENT(OnSetGameLanguage);
@@ -231,7 +231,7 @@ void EventSystem_Register() {
     REGISTER_EVENT(OnSeqPlayerInit);
 
     // MARK: - Randomizer
+    REGISTER_EVENT(OnRandoEntranceDiscovered);
     REGISTER_EVENT(OnRandoSetCheckStatus);
     REGISTER_EVENT(OnRandoSetIsSkipped);
-    REGISTER_EVENT(OnRandoEntranceDiscovered);
 }

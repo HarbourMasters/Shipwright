@@ -58,9 +58,7 @@ static bool MirroredWorld_ShouldApply(int32_t sceneNum) {
 }
 
 static void UpdateMirrorModeState(IEvent* event) {
-
     bool nextMirroredWorld = MirroredWorld_ShouldApply(reinterpret_cast<OnSceneInit*>(event)->sceneNum);
-
     if (prevMirroredWorld == nextMirroredWorld) {
         return;
     }
