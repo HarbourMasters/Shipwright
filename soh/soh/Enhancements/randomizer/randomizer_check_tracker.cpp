@@ -874,7 +874,7 @@ void CheckTrackerFlagSet(IEvent* event) {
     }
 }
 
-void CheckTrackerDialogMessage() {
+void CheckTrackerDialogMessage(IEvent* event) {
     auto identifyCheck = [](RandomizerCheck rc) {
         auto loc = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc);
         if (loc->GetCheckStatus() == RCSHOW_UNCHECKED) {

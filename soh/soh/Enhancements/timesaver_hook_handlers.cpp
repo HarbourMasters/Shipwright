@@ -338,7 +338,7 @@ void TimeSaverOnVanillaBehaviorHandler(IEvent* event) {
                         if (!(bombchuiwa->drawFlags & 4) && bombchuiwa->timer >= 0 && bombchuiwa->timer < 9) {
                             bombchuiwa->timer = 9;
                         }
-                        *should = false;
+                        *ev->result = false;
                         RateLimitedSuccessChime();
                         break;
                     }
@@ -393,7 +393,7 @@ void TimeSaverOnVanillaBehaviorHandler(IEvent* event) {
                     case ACTOR_OBJ_LIGHTSWITCH: {
                         ObjLightswitch* lightswitch = (ObjLightswitch*)actor;
                         lightswitch->toggleDelay = 0;
-                        *should = false;
+                        *ev->result = false;
                         RateLimitedSuccessChime();
                         break;
                     }
