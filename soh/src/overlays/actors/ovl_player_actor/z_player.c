@@ -9458,6 +9458,10 @@ void Player_Action_80843954(Player* this, PlayState* play) {
 
     Player_DecelerateToZero(this);
 
+    if (GameInteractor_Should(VB_PERFORM_KNOCKDOWN_RECOVERY, false, this, play)) {
+        return;
+    }
+
     if (LinkAnimation_Update(play, &this->skelAnime) && (this->linearVelocity == 0.0f)) {
         if (this->stateFlags1 & PLAYER_STATE1_IN_CUTSCENE) {
             this->av2.actionVar2++;
