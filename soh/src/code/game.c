@@ -3,7 +3,6 @@
 #include "vt.h"
 #include "libultraship/bridge.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
-#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ResourceManagerHelpers.h"
 
 #include "message_data_static.h"

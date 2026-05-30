@@ -4,7 +4,6 @@
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/audio/AudioEditor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
-#include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 // TODO: can these macros be shared between files? code_800F9280 seems to use
 // versions without any casts...

@@ -7,7 +7,6 @@
 #include "z_bg_mori_bigst.h"
 #include "objects/object_mori_objects/object_mori_objects.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
-#include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 

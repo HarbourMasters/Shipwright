@@ -7,7 +7,6 @@
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
-#include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 typedef enum {
     /* 0 */ LENS_FLARE_CIRCLE0,
