@@ -3884,8 +3884,13 @@ void Player_UpdateZTargeting(Player* this, PlayState* play) {
             if (this->focusActor != NULL) {
                 if ((this->actor.category == ACTORCAT_PLAYER) && (this->focusActor != this->autoLockOnActor) &&
                     func_8002F0C8(this->focusActor, this, ignoreLeash)) {
-                    Player_ReleaseLockOn(this);
-                    this->stateFlags1 |= PLAYER_STATE1_LOCK_ON_FORCED_TO_RELEASE;
+                    
+                    // TRIPWIRE: Ask the Game Interactor if we should actually drop the lock
+                    if (GameInteractor_Should(VB_DROP_Z_TARGET, true, this, play)) {
+                        Player_ReleaseLockOn(this);
+                        this->stateFlags1 |= PLAYER_STATE1_LOCK_ON_FORCED_TO_RELEASE;
+                    }
+
                 } else if (this->focusActor != NULL) {
                     this->focusActor->targetPriority = 40;
                 }

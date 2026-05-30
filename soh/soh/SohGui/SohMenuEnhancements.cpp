@@ -273,6 +273,10 @@ void SohMenu::AddMenuEnhancements() {
         })
         .CVar(CVAR_ENHANCEMENT("ReworkedTargeting.Btn"))
         .Options(BtnSelectorOptions().Tooltip("Buttons to activate target switching."));
+    AddWidget(path, "Enemy Auto-Retarget", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("EnemyRetarget"))
+        .Options(CheckboxOptions().Tooltip(
+            "Automatically locks onto the next available enemy when your current target is defeated."));
 
     AddWidget(path, "Item Count Messages", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Gold Skulltula Tokens", WIDGET_CVAR_CHECKBOX)
