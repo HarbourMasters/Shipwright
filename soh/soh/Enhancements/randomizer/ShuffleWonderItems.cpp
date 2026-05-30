@@ -5,7 +5,7 @@
 #include "soh/ObjectExtension/ActorListIndex.h"
 #include "item_category_adj.h"
 #include "particle_cmc.h"
-#include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/randomizer/randomizer.h"
 
 extern "C" {
 #include "overlays/actors/ovl_En_Wonder_Item/z_en_wonder_item.h"
@@ -129,11 +129,8 @@ uint8_t EnWonderItem_RandomizerHoldsItem(EnWonderItem* wonderActor, PlayState* p
 static void EnWonderItem_RandomizerDraw(EnWonderItem* wonderActor, Color_RGBA8* primColor, Color_RGBA8* secColor,
                                         Color_RGBA8* envColor, CheckIdentity* wonderIdentity) {
     Vec3f pos;
-    static Vec3f velocity = { 0.0f, 0.0f, 0.0f };
-    static Vec3f accel = { 0.0f, 0.0f, 0.0f };
-
-    velocity.y = -0.05f;
-    accel.y = -0.025f;
+    Vec3f velocity = { 0.0f, -0.05f, 0.0f };
+    Vec3f accel = { 0.0f, -0.025f, 0.0f };
 
     // Draw particles at tag spots if applicable, otherwise at wonder item actor location
     if (wonderActor->wonderMode == WONDERITEM_MULTITAG_ORDERED) {
@@ -187,10 +184,6 @@ void EnWonderItem_RandomizerDrawSetup(IEvent* event) {
 
     int isNotCMC = !cmc || (requiresStoneAgony && !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY));
 
-    Color_RGBA8 primColor;
-    Color_RGBA8 secColor;
-    Color_RGBA8 envColor;
-
     const auto wonderIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(ev->actor);
     if (wonderIdentity == nullptr) {
         return;
@@ -198,14 +191,11 @@ void EnWonderItem_RandomizerDrawSetup(IEvent* event) {
 
     GetItemEntry wonderItem =
         Rando::Context::GetInstance()->GetFinalGIEntry(wonderIdentity->randomizerCheck, true, GI_NONE);
-    getItemCategory = Randomizer_AdjustItemCategory(wonderItem);
+    GetItemCategory getItemCategory = isNotCMC ? ITEM_CATEGORY_MAJOR : Randomizer_AdjustItemCategory(wonderItem);
 
-    if (isNotCMC) {
-        getItemCategory = ITEM_CATEGORY_MAJOR;
-    }
-    primColor = Randomizer_GetParticleCMCColor(getItemCategory, COLOR_PRIMARY);
-    secColor = Randomizer_GetParticleCMCColor(getItemCategory, COLOR_SECONDARY);
-    envColor = Randomizer_GetParticleCMCColor(getItemCategory, COLOR_FLARE);
+    Color_RGBA8 primColor = Randomizer_GetParticleCMCColor(getItemCategory, COLOR_PRIMARY);
+    Color_RGBA8 secColor = Randomizer_GetParticleCMCColor(getItemCategory, COLOR_SECONDARY);
+    Color_RGBA8 envColor = Randomizer_GetParticleCMCColor(getItemCategory, COLOR_FLARE);
     EnWonderItem_RandomizerDraw(wonderActor, &primColor, &secColor, &envColor, wonderIdentity);
 }
 

@@ -4,6 +4,7 @@
 #include <nlohmann/json.hpp>
 #include "soh/OTRGlobals.h"
 #include "soh/util.h"
+#include "soh/ShipUtils.h"
 
 template <class DstType, class SrcType> bool IsType(const SrcType* src) {
     return dynamic_cast<const DstType*>(src) != nullptr;
@@ -340,7 +341,7 @@ void Sail::RegisterHooks() {
             return;
 
         nlohmann::json payload;
-        payload["id"] = std::rand();
+        payload["id"] = ShipUtils::Random(0, UINT32_MAX);
         payload["type"] = "hook";
         payload["hook"]["type"] = "OnTransitionEnd";
         payload["hook"]["sceneNum"] = transition->sceneNum;
@@ -354,7 +355,7 @@ void Sail::RegisterHooks() {
             return;
 
         nlohmann::json payload;
-        payload["id"] = std::rand();
+        payload["id"] = ShipUtils::Random(0, UINT32_MAX);
         payload["type"] = "hook";
         payload["hook"]["type"] = "OnLoadGame";
         payload["hook"]["fileNum"] = load->fileNum;
@@ -368,7 +369,7 @@ void Sail::RegisterHooks() {
             return;
 
         nlohmann::json payload;
-        payload["id"] = std::rand();
+        payload["id"] = ShipUtils::Random(0, UINT32_MAX);
         payload["type"] = "hook";
         payload["hook"]["type"] = "OnExitGame";
         payload["hook"]["fileNum"] = game->fileNum;
@@ -381,7 +382,7 @@ void Sail::RegisterHooks() {
         if (!Sail::Instance->isConnected || !GameInteractor::IsSaveLoaded())
             return;
         nlohmann::json payload;
-        payload["id"] = std::rand();
+        payload["id"] = ShipUtils::Random(0, UINT32_MAX);
         payload["type"] = "hook";
         payload["hook"]["type"] = "OnItemReceive";
         payload["hook"]["tableId"] = item->itemEntry.tableId;
@@ -397,7 +398,7 @@ void Sail::RegisterHooks() {
 
         Actor* actor = (Actor*)ev->actor;
         nlohmann::json payload;
-        payload["id"] = std::rand();
+        payload["id"] = ShipUtils::Random(0, UINT32_MAX);
         payload["type"] = "hook";
         payload["hook"]["type"] = "OnEnemyDefeat";
         payload["hook"]["actorId"] = actor->id;
@@ -413,7 +414,7 @@ void Sail::RegisterHooks() {
 
         Actor* actor = (Actor*)ev->actor;
         nlohmann::json payload;
-        payload["id"] = std::rand();
+        payload["id"] = ShipUtils::Random(0, UINT32_MAX);
         payload["type"] = "hook";
         payload["hook"]["type"] = "OnActorInit";
         payload["hook"]["actorId"] = actor->id;
@@ -427,7 +428,7 @@ void Sail::RegisterHooks() {
         if (!Sail::Instance->isConnected || !GameInteractor::IsSaveLoaded())
             return;
         nlohmann::json payload;
-        payload["id"] = std::rand();
+        payload["id"] = ShipUtils::Random(0, UINT32_MAX);
         payload["type"] = "hook";
         payload["hook"]["type"] = "OnFlagSet";
         payload["hook"]["flagType"] = ev->flagType;
@@ -441,7 +442,7 @@ void Sail::RegisterHooks() {
         if (!Sail::Instance->isConnected || !GameInteractor::IsSaveLoaded())
             return;
         nlohmann::json payload;
-        payload["id"] = std::rand();
+        payload["id"] = ShipUtils::Random(0, UINT32_MAX);
         payload["type"] = "hook";
         payload["hook"]["type"] = "OnFlagUnset";
         payload["hook"]["flagType"] = ev->flagType;
@@ -455,7 +456,7 @@ void Sail::RegisterHooks() {
         if (!Sail::Instance->isConnected || !GameInteractor::IsSaveLoaded())
             return;
         nlohmann::json payload;
-        payload["id"] = std::rand();
+        payload["id"] = ShipUtils::Random(0, UINT32_MAX);
         payload["type"] = "hook";
         payload["hook"]["type"] = "OnSceneFlagSet";
         payload["hook"]["flagType"] = ev->flagType;
@@ -470,7 +471,7 @@ void Sail::RegisterHooks() {
         if (!Sail::Instance->isConnected || !GameInteractor::IsSaveLoaded())
             return;
         nlohmann::json payload;
-        payload["id"] = std::rand();
+        payload["id"] = ShipUtils::Random(0, UINT32_MAX);
         payload["type"] = "hook";
         payload["hook"]["type"] = "OnSceneFlagUnset";
         payload["hook"]["flagType"] = ev->flagType;

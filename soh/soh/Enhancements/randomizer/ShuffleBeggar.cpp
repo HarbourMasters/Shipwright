@@ -1,4 +1,5 @@
 #include <soh/OTRGlobals.h>
+#include "soh/Enhancements/randomizer/randomizer.h"
 
 extern "C" {
 #include "overlays/actors/ovl_En_Hy/z_en_hy.h"

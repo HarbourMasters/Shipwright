@@ -13,6 +13,7 @@
 #include "soh/util.h"
 #include "../kaleido.h"
 #include "soh/Enhancements/randomizer/Traps.h"
+#include "soh/Enhancements/randomizer/randomizer.h"
 
 #include <fstream>
 #include <spdlog/spdlog.h>
@@ -50,6 +51,8 @@ Context::Context() {
         &mOptions[RSK_SHUFFLE_COWS],
         &mOptions[RSK_SHUFFLE_POTS],
         &mOptions[RSK_SHUFFLE_CRATES],
+        &mOptions[RSK_SHUFFLE_ROCKS],
+        &mOptions[RSK_SHUFFLE_BOULDERS],
         &mOptions[RSK_SHUFFLE_FREESTANDING],
         &mOptions[RSK_SHUFFLE_MERCHANTS],
         &mOptions[RSK_SHUFFLE_FROG_SONG_RUPEES],
@@ -208,6 +211,8 @@ void Context::GenerateLocationPool() {
             (location.GetRCType() == RCTYPE_NLCRATE && (mOptions[RSK_SHUFFLE_CRATES].Is(RO_SHUFFLE_CRATES_OFF) ||
                                                         mOptions[RSK_LOGIC_RULES].IsNot(RO_LOGIC_NO_LOGIC))) ||
             (location.GetRCType() == RCTYPE_SMALL_CRATE && mOptions[RSK_SHUFFLE_CRATES].Is(RO_SHUFFLE_CRATES_OFF)) ||
+            (location.GetRCType() == RCTYPE_ROCK && !mOptions[RSK_SHUFFLE_ROCKS]) ||
+            (location.GetRCType() == RCTYPE_BOULDER && mOptions[RSK_SHUFFLE_BOULDERS].Is(RO_SHUFFLE_BOULDERS_OFF)) ||
             (location.GetRCType() == RCTYPE_FOUNTAIN_FAIRY && !mOptions[RSK_SHUFFLE_FOUNTAIN_FAIRIES]) ||
             (location.GetRCType() == RCTYPE_STONE_FAIRY && !mOptions[RSK_SHUFFLE_STONE_FAIRIES]) ||
             (location.GetRCType() == RCTYPE_BEAN_FAIRY && !mOptions[RSK_SHUFFLE_BEAN_FAIRIES]) ||
@@ -242,6 +247,8 @@ void Context::GenerateLocationPool() {
                  mOptions[RSK_LOGIC_RULES].Is(RO_LOGIC_NO_LOGIC)) ||
                 (location.GetRCType() == RCTYPE_SMALL_CRATE &&
                  mOptions[RSK_SHUFFLE_CRATES].Is(RO_SHUFFLE_CRATES_DUNGEONS)) ||
+                (location.GetRCType() == RCTYPE_BOULDER &&
+                 mOptions[RSK_SHUFFLE_BOULDERS].Is(RO_SHUFFLE_BOULDERS_DUNGEONS)) ||
                 (location.GetRCType() == RCTYPE_SIGN && mOptions[RSK_SHUFFLE_SIGNS].Is(RO_SHUFFLE_SIGNS_DUNGEONS))) {
                 continue;
             }
@@ -266,6 +273,8 @@ void Context::GenerateLocationPool() {
                      mOptions[RSK_LOGIC_RULES].Is(RO_LOGIC_NO_LOGIC)) ||
                     (location.GetRCType() == RCTYPE_SMALL_CRATE &&
                      mOptions[RSK_SHUFFLE_CRATES].Is(RO_SHUFFLE_CRATES_OVERWORLD)) ||
+                    (location.GetRCType() == RCTYPE_BOULDER &&
+                     mOptions[RSK_SHUFFLE_BOULDERS].Is(RO_SHUFFLE_BOULDERS_OVERWORLD)) ||
                     (location.GetRCType() == RCTYPE_SIGN &&
                      mOptions[RSK_SHUFFLE_SIGNS].Is(RO_SHUFFLE_SIGNS_OVERWORLD))) {
                     continue;

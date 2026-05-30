@@ -2,7 +2,7 @@
 
 #include "randomizerTypes.h"
 #include "SeedContext.h"
-#include <cstdint>
+#include <stdint.h>
 
 namespace Rando {
 
@@ -104,6 +104,7 @@ class Logic {
     bool CanBreakPots(EnemyDistance distance = ED_CLOSE, bool wallOrFloor = true, bool inWater = false);
     bool CanBreakCrates();
     bool CanBreakSmallCrates();
+    bool CanBreakRocks();
     bool CanBonkTrees();
     bool CanRead();
     bool HasFireSource();

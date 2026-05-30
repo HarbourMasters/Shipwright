@@ -2,7 +2,7 @@
 #include "soh/ObjectExtension/ObjectExtension.h"
 #include "item_category_adj.h"
 #include "particle_cmc.h"
-#include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/randomizer/randomizer.h"
 
 extern "C" {
 extern PlayState* gPlayState;
@@ -34,12 +34,9 @@ uint8_t Sign_RandomizerHoldsItem(Actor* actor, PlayState* play) {
 
 static void Sign_RandomizerDraw(Actor* actor, Color_RGBA8* primColor, Color_RGBA8* secColor, Color_RGBA8* envColor) {
     Vec3f pos;
-    static Vec3f velocity = { 0.0f, 0.0f, 0.0f };
-    static Vec3f accel = { 0.0f, 0.0f, 0.0f };
+    Vec3f velocity = { 0.0f, -0.05f, 0.0f };
+    Vec3f accel = { 0.0f, -0.025f, 0.0f };
     float yKanbanOffset = LINK_IS_CHILD && actor->id == ACTOR_EN_KANBAN ? 15.0f : 0.0f;
-
-    velocity.y = -0.05f;
-    accel.y = -0.025f;
 
     pos.x = Rand_CenteredFloat(10.0f) + actor->world.pos.x;
     pos.y = (Rand_ZeroOne() * 10.0f) + actor->world.pos.y + yKanbanOffset;
@@ -63,10 +60,6 @@ void Sign_RandomizerDrawSetup(IEvent* event) {
 
     int isNotCMC = !cmc || (requiresStoneAgony && !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY));
 
-    Color_RGBA8 primColor;
-    Color_RGBA8 secColor;
-    Color_RGBA8 envColor;
-
     const auto signIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(signActor);
     if (signIdentity == nullptr) {
         return;
@@ -74,14 +67,11 @@ void Sign_RandomizerDrawSetup(IEvent* event) {
 
     GetItemEntry signItem =
         Rando::Context::GetInstance()->GetFinalGIEntry(signIdentity->randomizerCheck, true, GI_NONE);
-    getItemCategory = Randomizer_AdjustItemCategory(signItem);
+    GetItemCategory getItemCategory = isNotCMC ? ITEM_CATEGORY_MAJOR : Randomizer_AdjustItemCategory(signItem);
 
-    if (isNotCMC) {
-        getItemCategory = ITEM_CATEGORY_MAJOR;
-    }
-    primColor = Randomizer_GetParticleCMCColor(getItemCategory, COLOR_PRIMARY);
-    secColor = Randomizer_GetParticleCMCColor(getItemCategory, COLOR_SECONDARY);
-    envColor = Randomizer_GetParticleCMCColor(getItemCategory, COLOR_FLARE);
+    Color_RGBA8 primColor = Randomizer_GetParticleCMCColor(getItemCategory, COLOR_PRIMARY);
+    Color_RGBA8 secColor = Randomizer_GetParticleCMCColor(getItemCategory, COLOR_SECONDARY);
+    Color_RGBA8 envColor = Randomizer_GetParticleCMCColor(getItemCategory, COLOR_FLARE);
     Sign_RandomizerDraw(signActor, &primColor, &secColor, &envColor);
 }
 

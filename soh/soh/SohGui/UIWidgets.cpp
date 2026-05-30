@@ -1255,16 +1255,7 @@ bool CVarBtnSelector(const char* label, const char* cvarName, const BtnSelectorO
 }
 } // namespace UIWidgets
 
-ImVec4 GetRandomValue() {
-    ImVec4 NewColor;
-    NewColor.x = (float)ShipUtils::RandomDouble();
-    NewColor.y = (float)ShipUtils::RandomDouble();
-    NewColor.z = (float)ShipUtils::RandomDouble();
-    return NewColor;
-}
-
-ImVec4 GetRandomValue(uint32_t seed, uint64_t* state) {
-    ShipUtils::RandInit(seed, state);
+ImVec4 GetRandomValue(uint64_t* state) {
     ImVec4 NewColor;
     NewColor.x = (float)ShipUtils::RandomDouble(state);
     NewColor.y = (float)ShipUtils::RandomDouble(state);

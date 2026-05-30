@@ -14,9 +14,9 @@ void BgHidanFslift_Destroy(Actor* thisx, PlayState* play);
 void BgHidanFslift_Update(Actor* thisx, PlayState* play);
 void BgHidanFslift_Draw(Actor* thisx, PlayState* play);
 
-void func_80886FCC(BgHidanFslift* this, PlayState* play);
-void func_8088706C(BgHidanFslift* this, PlayState* play);
-void func_808870D8(BgHidanFslift* this, PlayState* play);
+void BgHidanFslift_Idle(BgHidanFslift* this, PlayState* play);
+void BgHidanFslift_Descend(BgHidanFslift* this, PlayState* play);
+void BgHidanFslift_Ascend(BgHidanFslift* this, PlayState* play);
 
 const ActorInit Bg_Hidan_Fslift_InitVars = {
     ACTOR_BG_HIDAN_FSLIFT,
@@ -54,10 +54,10 @@ void BgHidanFslift_Init(Actor* thisx, PlayState* play) {
         Actor_Kill(&this->dyna.actor);
         return;
     }
-    this->actionFunc = func_80886FCC;
+    this->actionFunc = BgHidanFslift_Idle;
 }
 
-void func_80886F24(BgHidanFslift* this) {
+void BgHidanFslift_SetHookshotTargetPos(BgHidanFslift* this) {
     if (this->dyna.actor.child != NULL && this->dyna.actor.child->update != NULL) {
         this->dyna.actor.child->world.pos.x = this->dyna.actor.world.pos.x;
         this->dyna.actor.child->world.pos.y = this->dyna.actor.world.pos.y + 40.0f;
@@ -73,12 +73,12 @@ void BgHidanFslift_Destroy(Actor* thisx, PlayState* play) {
     DynaPoly_DeleteBgActor(play, &play->colCtx.dyna, this->dyna.bgId);
 }
 
-void func_80886FB4(BgHidanFslift* this) {
+void BgHidanFslift_SetupIdle(BgHidanFslift* this) {
     this->timer = 40;
-    this->actionFunc = func_80886FCC;
+    this->actionFunc = BgHidanFslift_Idle;
 }
 
-void func_80886FCC(BgHidanFslift* this, PlayState* play) {
+void BgHidanFslift_Idle(BgHidanFslift* this, PlayState* play) {
     s32 heightBool;
 
     if (this->timer) {
@@ -91,35 +91,35 @@ void func_80886FCC(BgHidanFslift* this, PlayState* play) {
             heightBool = true;
         }
         if (DynaPolyActor_IsPlayerAbove(&this->dyna) && (heightBool)) {
-            this->actionFunc = func_808870D8;
+            this->actionFunc = BgHidanFslift_Ascend;
         } else if (!heightBool) {
-            this->actionFunc = func_8088706C;
+            this->actionFunc = BgHidanFslift_Descend;
         }
     }
 }
 
-void func_8088706C(BgHidanFslift* this, PlayState* play) {
+void BgHidanFslift_Descend(BgHidanFslift* this, PlayState* play) {
     if (Math_StepToF(&this->dyna.actor.world.pos.y, this->dyna.actor.home.pos.y, 4.0f)) {
         Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_BLOCK_BOUND);
-        func_80886FB4(this);
+        BgHidanFslift_SetupIdle(this);
     } else {
         func_8002F974(&this->dyna.actor, NA_SE_EV_ELEVATOR_MOVE3 - SFX_FLAG);
     }
-    func_80886F24(this);
+    BgHidanFslift_SetHookshotTargetPos(this);
 }
 
-void func_808870D8(BgHidanFslift* this, PlayState* play) {
+void BgHidanFslift_Ascend(BgHidanFslift* this, PlayState* play) {
     if (DynaPolyActor_IsPlayerAbove(&this->dyna)) {
         if (Math_StepToF(&this->dyna.actor.world.pos.y, this->dyna.actor.home.pos.y + 790.0f, 4.0f)) {
             Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_BLOCK_BOUND);
-            func_80886FB4(this);
+            BgHidanFslift_SetupIdle(this);
         } else {
             func_8002F974(&this->dyna.actor, NA_SE_EV_ELEVATOR_MOVE3 - SFX_FLAG);
         }
     } else {
-        func_80886FB4(this);
+        BgHidanFslift_SetupIdle(this);
     }
-    func_80886F24(this);
+    BgHidanFslift_SetHookshotTargetPos(this);
 }
 
 void BgHidanFslift_Update(Actor* thisx, PlayState* play) {

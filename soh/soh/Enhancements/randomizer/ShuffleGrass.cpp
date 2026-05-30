@@ -3,6 +3,7 @@
 #include "static_data.h"
 #include "item_category_adj.h"
 #include "soh/ObjectExtension/ObjectExtension.h"
+#include "soh/Enhancements/randomizer/randomizer.h"
 
 extern "C" {
 #include "variables.h"

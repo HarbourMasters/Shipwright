@@ -14,10 +14,10 @@ void EnBird_Destroy(Actor* thisx, PlayState* play);
 void EnBird_Update(Actor* thisx, PlayState* play);
 void EnBird_Draw(Actor* thisx, PlayState* play);
 
-void func_809C1E00(EnBird* this, s16 params);
-void func_809C1E40(EnBird* this, PlayState* play);
-void func_809C1D60(EnBird* this, PlayState* play);
-void func_809C1CAC(EnBird* this, s16 params);
+void EnBird_SetupMove(EnBird* this, s16 params);
+void EnBird_Move(EnBird* this, PlayState* play);
+void EnBird_Idle(EnBird* this, PlayState* play);
+void EnBird_SetupIdle(EnBird* this, s16 params);
 
 const ActorInit En_Bird_InitVars = {
     ACTOR_EN_BIRD,
@@ -58,7 +58,7 @@ void EnBird_Init(Actor* thisx, PlayState* play) {
     this->posYPhaseStep = 0.0f;
     this->flightDistance = 40.0f;
     this->unk_1BC = 70.0f;
-    func_809C1CAC(this, this->actor.params);
+    EnBird_SetupIdle(this, this->actor.params);
 }
 
 void EnBird_Destroy(Actor* thisx, PlayState* play) {
@@ -67,17 +67,17 @@ void EnBird_Destroy(Actor* thisx, PlayState* play) {
     SkelAnime_Free(&this->skelAnime, play);
 }
 
-void func_809C1CAC(EnBird* this, s16 params) {
+void EnBird_SetupIdle(EnBird* this, s16 params) {
     f32 frameCount = Animation_GetLastFrame(&gBirdFlyAnim);
     f32 playbackSpeed = this->scaleAnimSpeed ? 0.0f : 1.0f;
     AnimationHeader* anim = &gBirdFlyAnim;
 
     this->timer = Rand_S16Offset(5, 0x23);
     Animation_Change(&this->skelAnime, anim, playbackSpeed, 0.0f, frameCount, ANIMMODE_LOOP, 0.0f);
-    EnBird_SetupAction(this, func_809C1D60);
+    EnBird_SetupAction(this, EnBird_Idle);
 }
 
-void func_809C1D60(EnBird* this, PlayState* play) {
+void EnBird_Idle(EnBird* this, PlayState* play) {
     f32 fVar2 = sinf(this->posYPhase);
 
     this->actor.shape.yOffset = this->actor.shape.yOffset + fVar2 * this->posYMag;
@@ -91,16 +91,16 @@ void func_809C1D60(EnBird* this, PlayState* play) {
     this->timer -= 1;
 
     if (this->timer <= 0) {
-        func_809C1E00(this, this->actor.params);
+        EnBird_SetupMove(this, this->actor.params);
     }
 }
 
-void func_809C1E00(EnBird* this, s16 params) {
+void EnBird_SetupMove(EnBird* this, s16 params) {
     this->timer = Rand_S16Offset(0x14, 0x2D);
-    EnBird_SetupAction(this, func_809C1E40);
+    EnBird_SetupAction(this, EnBird_Move);
 }
 
-void func_809C1E40(EnBird* this, PlayState* play) {
+void EnBird_Move(EnBird* this, PlayState* play) {
     f32 fVar4 = sinf(this->posYPhase);
 
     this->actor.shape.yOffset += fVar4 * this->posYMag;
@@ -118,7 +118,7 @@ void func_809C1E40(EnBird* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
     this->timer -= 1;
     if (this->timer < 0) {
-        func_809C1CAC(this, this->actor.params);
+        EnBird_SetupIdle(this, this->actor.params);
     }
 }
 

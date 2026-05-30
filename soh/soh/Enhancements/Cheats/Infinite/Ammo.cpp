@@ -1,5 +1,6 @@
 #include <libultraship/bridge.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/randomizer/SeedContext.h"
 #include "soh/OTRGlobals.h"
 #include "soh/ShipInit.hpp"
 #include "z64save.h"

@@ -57,6 +57,22 @@ static const char* GetBrokenLongswordInSheathDL() {
         { gCustomBrokenLongswordInSheathDL, gCustomBreakableLongswordInSheathDL, gCustomLongswordInSheathDL });
 }
 
+static const char* GetCustomFPSSlingshotDL() {
+    return ResolveCustomChain({ gCustomFPSSlingshotDL, gCustomSlingshotDL });
+}
+
+static const char* GetCustomFPSBowDL() {
+    return ResolveCustomChain({ gCustomFPSBowDL, gCustomBowDL });
+}
+
+static const char* GetCustomFPSHookshotDL() {
+    return ResolveCustomChain({ gCustomFPSHookshotDL, gCustomHookshotDL });
+}
+
+static const char* GetCustomFPSLongshotDL() {
+    return ResolveCustomChain({ gCustomFPSLongshotDL, gCustomLongshotDL });
+}
+
 static void UpdateCustomEquipmentSetModel(IEvent* event) {
     OnPlayerSetModels* ev = reinterpret_cast<OnPlayerSetModels*>(event);
     (void)ev->modelGroup;
@@ -397,8 +413,8 @@ static void ApplyCommonEquipmentPatches() {
         ApplyPatchEntries({
             { gLinkAdultRightHandHoldingHookshotNearDL, gCustomHookshotDL, "customHookshot1", "customHookshot2",
               "customHookshot3", rightHandClosed },
-            { gLinkAdultRightHandHoldingHookshotFarDL, gCustomHookshotDL, "customHookshotFPS1", "customHookshotFPS2",
-              "customHookshotFPS3", fpsHand },
+            { gLinkAdultRightHandHoldingHookshotFarDL, GetCustomFPSHookshotDL(), "customHookshotFPS1",
+              "customHookshotFPS2", "customHookshotFPS3", fpsHand },
         });
     }
 
@@ -406,8 +422,8 @@ static void ApplyCommonEquipmentPatches() {
         ApplyPatchEntries({
             { gLinkAdultRightHandHoldingHookshotNearDL, gCustomLongshotDL, "customHookshot1", "customHookshot2",
               "customHookshot3", rightHandClosed },
-            { gLinkAdultRightHandHoldingHookshotFarDL, gCustomLongshotDL, "customHookshotFPS1", "customHookshotFPS2",
-              "customHookshotFPS3", fpsHand },
+            { gLinkAdultRightHandHoldingHookshotFarDL, GetCustomFPSLongshotDL(), "customHookshotFPS1",
+              "customHookshotFPS2", "customHookshotFPS3", fpsHand },
         });
     }
 
@@ -438,16 +454,16 @@ static void ApplyCommonEquipmentPatches() {
           "customChildOcarina3", rightHandNear },
         { gLinkAdultRightHandHoldingBowNearDL, gCustomBowDL, "customBow1", "customBow2", "customBow3",
           rightHandClosed },
-        { gLinkAdultRightHandHoldingBowFirstPersonDL, gCustomBowDL, "customBowFPS1", "customBowFPS2", "customBowFPS3",
-          fpsHand },
+        { gLinkAdultRightHandHoldingBowFirstPersonDL, GetCustomFPSBowDL(), "customBowFPS1", "customBowFPS2",
+          "customBowFPS3", fpsHand },
         { gLinkAdultLeftHandHoldingHammerNearDL, gCustomHammerDL, "customHammer1", "customHammer2", "customHammer3",
           leftHandClosed },
         { gLinkChildLeftFistAndBoomerangNearDL, gCustomBoomerangDL, "customBoomerang1", "customBoomerang2",
           "customBoomerang3", leftHandClosed },
         { gLinkChildRightHandHoldingSlingshotNearDL, gCustomSlingshotDL, "customSlingshot1", "customSlingshot2",
           "customSlingshot3", rightHandClosed },
-        { gLinkChildRightArmStretchedSlingshotDL, gCustomSlingshotDL, "customSlingshotFPS1", "customSlingshotFPS2",
-          "customSlingshotFPS3", fpsHand },
+        { gLinkChildRightArmStretchedSlingshotDL, GetCustomFPSSlingshotDL(), "customSlingshotFPS1",
+          "customSlingshotFPS2", "customSlingshotFPS3", fpsHand },
     });
 
     ApplyPatchEntries({
@@ -459,8 +475,8 @@ static void ApplyCommonEquipmentPatches() {
           "customBoomerang3", leftHandClosed },
         { gLinkChildRightHandHoldingSlingshotNearDL, gCustomSlingshotDL, "customSlingshot1", "customSlingshot2",
           "customSlingshot3", rightHandClosed },
-        { gLinkChildRightArmStretchedSlingshotDL, gCustomSlingshotDL, "customSlingshotFPS1", "customSlingshotFPS2",
-          "customSlingshotFPS3", fpsHand },
+        { gLinkChildRightArmStretchedSlingshotDL, GetCustomFPSSlingshotDL(), "customSlingshotFPS1",
+          "customSlingshotFPS2", "customSlingshotFPS3", fpsHand },
     });
 }
 

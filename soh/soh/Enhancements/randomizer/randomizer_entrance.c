@@ -77,8 +77,8 @@ static DungeonEntranceInfo dungeons[] = {
     // clang-format on
 };
 
-static s8 hasCopiedEntranceTable = 0;
-static s8 hasModifiedEntranceTable = 0;
+static bool hasCopiedEntranceTable = false;
+static bool hasModifiedEntranceTable = false;
 
 void Entrance_SetEntranceDiscovered(u16 entranceIndex, u8 isReversedEntrance);
 
@@ -130,14 +130,14 @@ static void Entrance_ReplaceChildTempleWarps() {
 void Entrance_CopyOriginalEntranceTable(void) {
     if (!hasCopiedEntranceTable) {
         memcpy(originalEntranceTable, gEntranceTable, sizeof(EntranceInfo) * ENTRANCE_TABLE_SIZE);
-        hasCopiedEntranceTable = 1;
+        hasCopiedEntranceTable = true;
     }
 }
 
 void Entrance_ResetEntranceTable(void) {
     if (hasCopiedEntranceTable && hasModifiedEntranceTable) {
         memcpy(gEntranceTable, originalEntranceTable, sizeof(EntranceInfo) * ENTRANCE_TABLE_SIZE);
-        hasModifiedEntranceTable = 0;
+        hasModifiedEntranceTable = false;
     }
 }
 
@@ -258,7 +258,7 @@ void Entrance_Init(void) {
         }
     }
 
-    hasModifiedEntranceTable = 1;
+    hasModifiedEntranceTable = true;
 }
 
 s16 Entrance_GetOverride(s16 index) {

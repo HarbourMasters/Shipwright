@@ -3,6 +3,7 @@
 #include "soh/SohGui/SohGui.hpp"
 #include "soh/OTRGlobals.h"
 #include "soh/ShipInit.hpp"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 extern "C" {
 #include <spdlog/spdlog.h>

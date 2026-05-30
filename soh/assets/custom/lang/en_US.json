@@ -198,6 +198,14 @@
 					"- Water Temple near boss key chest Gold Skulltula\n",
 					"- Shadow MQ after boat and before boss Gold Skulltulas"
 				]
+			},		
+			"bomb_detonation": {
+				"name": "Precise Bomb Detonation",
+				"description": [
+					"This trick enables methods that rely on precisely timing the detonation of bombs, ",
+					"such as detonating bombs on the surface of the water to destroy underwater rocks ",
+					"or getting the Gold Skulltula in the first room of forest temple as Child."
+				]
 			},			
 			"kf_adult_gs": {
 				"name": "Adult Kokiri Forest GS with Hover Boots",
@@ -596,8 +604,8 @@
 				"description": "Boomerang can fish the item out of the rubble without needing explosives to blow it up."
 			},
 			"forest_first_gs": {
-				"name": "Forest Temple First Room GS with Difficult-to-Use Weapons",
-				"description": "Allows killing this Skulltula with Sword or Sticks by jumpslashing it as you let go from the vines. You can avoid taking fall damage by recoiling onto the tree. Also allows killing it as Child with a Bomb throw. It's much more difficult to use a Bomb as child due to Child Link's shorter height."
+				"name": "Forest Temple First Room GS with Melee Weapons",
+				"description": "Allows killing this Skulltula with Sword or Sticks by jumpslashing it as you let go from the vines."
 			},
 			"forest_courtyard_east_gs": {
 				"name": "Forest Temple East Courtyard GS with Boomerang",

@@ -4,7 +4,7 @@
 #include "z64save.h"
 #include "item_location.h"
 #include "item_override.h"
-#include "3drando/text.hpp"
+#include "soh/Enhancements/custom-message/text.h"
 #include "hint.h"
 #include "fishsanity.h"
 #include "trial.h"

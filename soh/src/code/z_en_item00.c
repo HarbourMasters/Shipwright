@@ -4,7 +4,6 @@
 #include "overlays/effects/ovl_Effect_Ss_Dead_Sound/z_eff_ss_dead_sound.h"
 #include "textures/icon_item_static/icon_item_static.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
-#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/OTRGlobals.h"
 
 #define FLAGS 0
@@ -781,11 +780,8 @@ void EnItem00_Update(Actor* thisx, PlayState* play) {
         }
     }
 
-    if (this->unk_15A > 0) {
+    if (GameInteractor_Should(VB_ITEM00_TIMER_TICK, this->unk_15A > 0, this)) {
         this->unk_15A--;
-        if (CVarGetInteger(CVAR_CHEAT("DropsDontDie"), 0) && (this->unk_154 <= 0)) {
-            this->unk_15A++;
-        }
     }
 
     if ((this->unk_15A > 0) && (this->unk_15A < 41) && (this->unk_154 <= 0)) {

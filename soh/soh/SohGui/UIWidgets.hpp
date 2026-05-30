@@ -1089,8 +1089,7 @@ void InsertHelpHoverText(const std::string& text);
 void InsertHelpHoverText(const char* text);
 } // namespace UIWidgets
 
-ImVec4 GetRandomValue();
-ImVec4 GetRandomValue(uint32_t seed, uint64_t* state = nullptr);
+ImVec4 GetRandomValue(uint64_t* state = nullptr);
 
 Color_RGBA8 RGBA8FromVec(ImVec4 vec);
 ImVec4 VecFromRGBA8(Color_RGBA8 color);

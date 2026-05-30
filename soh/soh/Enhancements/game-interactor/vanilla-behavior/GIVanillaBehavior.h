@@ -229,6 +229,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // this->timer > 0 && this->timer <= 100
+    // ```
+    // #### `args`
+    // - `*BgSpot06Objects`
+    VB_BG_SPOT06_OBJECTS_GATE_SKIP,
+
+    // #### `result`
+    // ```c
     // gSaveContext.bgsFlag
     // ```
     // #### `args`
@@ -259,6 +267,15 @@ typedef enum {
     // #### `args`
     // - `*Actor` (interactRangeActor)
     VB_BOTTLE_ACTOR,
+
+    // #### `result`
+    // Actor is ACTOR_OBJ_BOMBIWA, or ACTOR_OBJ_HAMISHI
+    // ```c
+    // Flags_GetSwitch(play, this->actor.params & 0x3F)
+    // ```
+    // #### `args`
+    // - `*Actor` (interactRangeActor)
+    VB_BOULDER_BREAK_FLAG,
 
     // #### `result`
     // ```c
@@ -904,6 +921,31 @@ typedef enum {
     // true
     // ```
     // #### `args`
+    // - `*EnGe1`
+    // - `*PlayState`
+    VB_PLAY_HORSEBACK_ARCHERY,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*s32` (scoreIndex: 0=30pts, 1=60pts, 2=100pts)
+    VB_SCORE_HORSEBACK_ARCHERY_TARGET,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*InterfaceContext`
+    VB_SET_HORSEBACK_ARCHERY_AMMO,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
     // - `*EnItem00`
     VB_GIVE_ITEM_FROM_ITEM_00,
 
@@ -1309,6 +1351,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // this->unk_15A > 0
+    // ```
+    // #### `args`
+    // - `*EnItem00`
+    VB_ITEM00_TIMER_TICK,
+
+    // #### `result`
+    // ```c
     // true
     // ```
     // #### `args`
@@ -1557,6 +1607,14 @@ typedef enum {
     // #### `args`
     // - `*BossGanondrof`
     VB_PHANTOM_GANON_DEATH_SCENE,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
+    VB_PLAY_BEAN_PLANTING_CS,
 
     // #### `result`
     // ##### In `DoorWarp1_ChildWarpOut` - `SCENE_DODONGOS_CAVERN_BOSS`
@@ -1999,6 +2057,14 @@ typedef enum {
     // #### `args`
     // - None
     VB_REVERT_SPOILING_ITEMS,
+
+    // #### `result`
+    // ```c
+    // varies
+    // ```
+    // #### `args`
+    // - `*EnIshi`, `*ObjBombiwa`, or `*ObjHamishi`
+    VB_ROCK_DROP_ITEM,
 
     // #### `result`
     // ```c
@@ -2658,14 +2724,6 @@ typedef enum {
 
     // #### `result`
     // ```c
-    // Actor_GetCollidedExplosive(play, &this->collider.base) != NULL
-    // ```
-    // #### `args`
-    // - `*BgHidanKowarerukabe`
-    VB_FIRE_TEMPLE_BOMBABLE_WALL_BREAK,
-
-    // #### `result`
-    // ```c
     // true
     // ```
     // #### `args`
@@ -2697,6 +2755,22 @@ typedef enum {
     // #### `args`
     // - `*FileChooseContext`
     VB_FILE_SELECT_DRAW_FILE_INFO_BOX,
+
+    // #### `result`
+    // ```c
+    // Actor_GetCollidedExplosive(play, &this->collider.base) != NULL
+    // ```
+    // #### `args`
+    // - `*BgHidanKowarerukabe`
+    VB_FIRE_TEMPLE_BOMBABLE_WALL_BREAK,
+
+    // #### `result`
+    // ```c
+    // this->timer > 0
+    // ```
+    // #### `args`
+    // - None
+    VB_FISH_TIMER_TICK,
 
     // #### `result`
     // ```c

@@ -17,16 +17,16 @@ void EnSyatekiNiw_Destroy(Actor* thisx, PlayState* play);
 void EnSyatekiNiw_Update(Actor* thisx, PlayState* play);
 void EnSyatekiNiw_Draw(Actor* thisx, PlayState* play);
 
-void func_80B11DEC(EnSyatekiNiw* this, PlayState* play);
-void func_80B132A8(EnSyatekiNiw* this, PlayState* play);
-void func_80B129EC(EnSyatekiNiw* this, PlayState* play);
-void func_80B13464(EnSyatekiNiw* this, PlayState* play);
-void func_80B123A8(EnSyatekiNiw* this, PlayState* play);
-void func_80B11E78(EnSyatekiNiw* this, PlayState* play);
-void func_80B12460(EnSyatekiNiw* this, PlayState* play);
-void func_80B128D8(EnSyatekiNiw* this, PlayState* play);
+void EnSyatekiNiw_SetupDefault(EnSyatekiNiw* this, PlayState* play);
+void EnSyatekiNiw_UpdateEffects(EnSyatekiNiw* this, PlayState* play);
+void EnSyatekiNiw_Remove(EnSyatekiNiw* this, PlayState* play);
+void EnSyatekiNiw_DrawEffects(EnSyatekiNiw* this, PlayState* play);
+void EnSyatekiNiw_SetupArchery(EnSyatekiNiw* this, PlayState* play);
+void EnSyatekiNiw_Default(EnSyatekiNiw* this, PlayState* play);
+void EnSyatekiNiw_Archery(EnSyatekiNiw* this, PlayState* play);
+void EnSyatekiNiw_ExitArchery(EnSyatekiNiw* this, PlayState* play);
 
-void func_80B131B8(EnSyatekiNiw* this, Vec3f* arg1, Vec3f* arg2, Vec3f* arg3, f32 arg4);
+void EnSyatekiNiw_SpawnFeather(EnSyatekiNiw* this, Vec3f* arg1, Vec3f* arg2, Vec3f* arg3, f32 arg4);
 
 const ActorInit En_Syateki_Niw_InitVars = {
     ACTOR_EN_SYATEKI_NIW,
@@ -97,7 +97,7 @@ void EnSyatekiNiw_Init(Actor* thisx, PlayState* play) {
 
     this->initPos = this->actor.world.pos;
     this->targetPos = this->actor.world.pos;
-    this->actionFunc = func_80B11DEC;
+    this->actionFunc = EnSyatekiNiw_SetupDefault;
 }
 
 void EnSyatekiNiw_Destroy(Actor* thisx, PlayState* play) {
@@ -108,7 +108,7 @@ void EnSyatekiNiw_Destroy(Actor* thisx, PlayState* play) {
     ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
-void func_80B11A94(EnSyatekiNiw* this, PlayState* play, s16 arg2) {
+void EnSyatekiNiw_UpdateRotations(EnSyatekiNiw* this, PlayState* play, s16 arg2) {
     if (this->peckTimer == 0) {
         if (arg2 == 0) {
             this->headRotXTarget = 0.0f;
@@ -211,17 +211,17 @@ void func_80B11A94(EnSyatekiNiw* this, PlayState* play, s16 arg2) {
     }
 }
 
-void func_80B11DEC(EnSyatekiNiw* this, PlayState* play) {
+void EnSyatekiNiw_SetupDefault(EnSyatekiNiw* this, PlayState* play) {
     Animation_Change(&this->skelAnime, &gCuccoAnim, 1.0f, 0.0f, Animation_GetLastFrame(&gCuccoAnim), ANIMMODE_LOOP,
                      -10.0f);
     if (this->minigameType != 0) {
         Actor_SetScale(&this->actor, this->scale);
     }
 
-    this->actionFunc = func_80B11E78;
+    this->actionFunc = EnSyatekiNiw_Default;
 }
 
-void func_80B11E78(EnSyatekiNiw* this, PlayState* play) {
+void EnSyatekiNiw_Default(EnSyatekiNiw* this, PlayState* play) {
     Vec3f dustVelocity = { 0.0f, 0.0f, 0.0f };
     Vec3f dustAccel = { 0.0f, 0.2f, 0.0f };
     Color_RGBA8 dustPrimColor = { 0, 0, 0, 255 };
@@ -235,7 +235,7 @@ void func_80B11E78(EnSyatekiNiw* this, PlayState* play) {
 
     if ((this->archeryState != 0) && (this->minigameType == 0) && (this->actor.bgCheckFlags & 1)) {
         this->archeryState = 0;
-        this->actionFunc = func_80B123A8;
+        this->actionFunc = EnSyatekiNiw_SetupArchery;
         return;
     }
 
@@ -339,7 +339,7 @@ void func_80B11E78(EnSyatekiNiw* this, PlayState* play) {
     }
 
     if (this->sootTimer == 0) {
-        func_80B11A94(this, play, sp4A);
+        EnSyatekiNiw_UpdateRotations(this, play, sp4A);
         return;
     }
 
@@ -351,14 +351,14 @@ void func_80B11E78(EnSyatekiNiw* this, PlayState* play) {
     }
 }
 
-void func_80B123A8(EnSyatekiNiw* this, PlayState* play) {
+void EnSyatekiNiw_SetupArchery(EnSyatekiNiw* this, PlayState* play) {
     Animation_Change(&this->skelAnime, &gCuccoAnim, 1.0f, 0.0f, Animation_GetLastFrame(&gCuccoAnim), ANIMMODE_LOOP,
                      -10.0f);
     this->rightWingRotZTarget = 6000.0f;
     this->unkArcheryFloat = -10000.0f;
     this->rightWingRot.z = 6000.0f;
     this->rightWingRot.y = 10000.0f;
-    this->actionFunc = func_80B12460;
+    this->actionFunc = EnSyatekiNiw_Archery;
     this->leftWingRot.z = 6000.0f;
     this->leftWingRotZTarget = 6000.0f;
     this->rightWingRot.x = -10000.0f;
@@ -368,7 +368,7 @@ void func_80B123A8(EnSyatekiNiw* this, PlayState* play) {
     this->leftWingRotXTarget = -10000.0f;
 }
 
-void func_80B12460(EnSyatekiNiw* this, PlayState* play) {
+void EnSyatekiNiw_Archery(EnSyatekiNiw* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
     f32 phi_f16 = 0.0f;
 
@@ -474,7 +474,7 @@ void func_80B12460(EnSyatekiNiw* this, PlayState* play) {
                 play->shootingGalleryStatus = 0;
                 player->actor.freezeTimer = 20;
                 this->movementTimer = 0x14;
-                this->actionFunc = func_80B128D8;
+                this->actionFunc = EnSyatekiNiw_ExitArchery;
             }
             break;
     }
@@ -491,16 +491,16 @@ void func_80B12460(EnSyatekiNiw* this, PlayState* play) {
         this->peckTimer = this->timer1;
     }
 
-    func_80B11A94(this, play, this->archeryAnimationType);
+    EnSyatekiNiw_UpdateRotations(this, play, this->archeryAnimationType);
 }
 
-void func_80B128D8(EnSyatekiNiw* this, PlayState* play) {
+void EnSyatekiNiw_ExitArchery(EnSyatekiNiw* this, PlayState* play) {
     if (this->movementTimer == 1) {
         gSaveContext.timerState = TIMER_STATE_OFF;
     }
 }
 
-void func_80B128F8(EnSyatekiNiw* this, PlayState* play) {
+void EnSyatekiNiw_SetupRemove(EnSyatekiNiw* this, PlayState* play) {
     s16 sp26;
     s16 sp24;
 
@@ -513,11 +513,11 @@ void func_80B128F8(EnSyatekiNiw* this, PlayState* play) {
         this->removeStateYaw = Rand_CenteredFloat(8000.0f) + -10000.0f;
         this->cluckTimer = 0x1E;
         this->movementTimer = 0x64;
-        this->actionFunc = func_80B129EC;
+        this->actionFunc = EnSyatekiNiw_Remove;
     }
 }
 
-void func_80B129EC(EnSyatekiNiw* this, PlayState* play) {
+void EnSyatekiNiw_Remove(EnSyatekiNiw* this, PlayState* play) {
     s32 pad;
     f32 phi_f2;
     s16 sp2E;
@@ -546,10 +546,10 @@ void func_80B129EC(EnSyatekiNiw* this, PlayState* play) {
     tmpf2 = this->removeStateYaw + phi_f2;
     Math_SmoothStepToS(&this->actor.world.rot.y, tmpf2, 3, this->posRotStep.y, 0);
     Math_ApproachF(&this->posRotStep.y, 3000.0f, 1.0f, 500.0f);
-    func_80B11A94(this, play, 2);
+    EnSyatekiNiw_UpdateRotations(this, play, 2);
 }
 
-void func_80B12BA4(EnSyatekiNiw* this, PlayState* play) {
+void EnSyatekiNiw_CheckHit(EnSyatekiNiw* this, PlayState* play) {
     if (this->collider.base.acFlags & AC_HIT) {
         this->collider.base.acFlags &= ~AC_HIT;
         switch (this->minigameType) {
@@ -559,7 +559,7 @@ void func_80B12BA4(EnSyatekiNiw* this, PlayState* play) {
                     Audio_PlayActorSound2(&this->actor, NA_SE_EV_CHICKEN_CRY_A);
                     this->archeryState = 1;
                     this->spawnFeathers = 1;
-                    this->actionFunc = func_80B123A8;
+                    this->actionFunc = EnSyatekiNiw_SetupArchery;
                     this->actor.gravity = -3.0f;
                 }
                 break;
@@ -586,7 +586,7 @@ void EnSyatekiNiw_Update(Actor* thisx, PlayState* play) {
     Vec3f sp6C;
     Vec3f sp60;
 
-    func_80B132A8(this, play);
+    EnSyatekiNiw_UpdateEffects(this, play);
     this->lifetime++;
     if (this->peckTimer != 0) {
         this->peckTimer--;
@@ -633,15 +633,15 @@ void EnSyatekiNiw_Update(Actor* thisx, PlayState* play) {
             sp6C.z = Rand_CenteredFloat(3.0f);
             sp60.z = sp60.x = 0.0f;
             sp60.y = -0.15f;
-            func_80B131B8(this, &sp78, &sp6C, &sp60, Rand_ZeroFloat(8.0f) + 8.0f);
+            EnSyatekiNiw_SpawnFeather(this, &sp78, &sp6C, &sp60, Rand_ZeroFloat(8.0f) + 8.0f);
         }
 
         this->spawnFeathers = 0;
     }
 
-    func_80B12BA4(this, play);
+    EnSyatekiNiw_CheckHit(this, play);
     if (this->cluckTimer == 0) {
-        if (this->actionFunc == func_80B11E78) {
+        if (this->actionFunc == EnSyatekiNiw_Default) {
             this->cluckTimer = 0x12C;
             Audio_PlayActorSound2(&this->actor, NA_SE_EV_CHICKEN_CRY_N);
         } else {
@@ -697,7 +697,7 @@ void EnSyatekiNiw_Draw(Actor* thisx, PlayState* play) {
     EnSyatekiNiw* this = (EnSyatekiNiw*)thisx;
     Color_RGBA8 sp30 = { 0, 0, 0, 255 };
 
-    if (this->actionFunc != func_80B128F8) {
+    if (this->actionFunc != EnSyatekiNiw_SetupRemove) {
         Gfx_SetupDL_25Opa(play->state.gfxCtx);
         if (this->sootTimer != 0) {
             func_80026230(play, &sp30, 0, 0x14);
@@ -705,11 +705,11 @@ void EnSyatekiNiw_Draw(Actor* thisx, PlayState* play) {
 
         SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, SyatekiNiw_OverrideLimbDraw, NULL, this);
         func_80026608(play);
-        func_80B13464(this, play);
+        EnSyatekiNiw_DrawEffects(this, play);
     }
 }
 
-void func_80B131B8(EnSyatekiNiw* this, Vec3f* arg1, Vec3f* arg2, Vec3f* arg3, f32 arg4) {
+void EnSyatekiNiw_SpawnFeather(EnSyatekiNiw* this, Vec3f* arg1, Vec3f* arg2, Vec3f* arg3, f32 arg4) {
     s16 i;
     EnSyatekiNiw_1* ptr = &this->effects[0];
 
@@ -729,7 +729,7 @@ void func_80B131B8(EnSyatekiNiw* this, Vec3f* arg1, Vec3f* arg2, Vec3f* arg3, f3
     }
 }
 
-void func_80B132A8(EnSyatekiNiw* this, PlayState* play) {
+void EnSyatekiNiw_UpdateEffects(EnSyatekiNiw* this, PlayState* play) {
     s16 i;
     EnSyatekiNiw_1* ptr = &this->effects[0];
 
@@ -759,7 +759,7 @@ void func_80B132A8(EnSyatekiNiw* this, PlayState* play) {
     }
 }
 
-void func_80B13464(EnSyatekiNiw* this, PlayState* play) {
+void EnSyatekiNiw_DrawEffects(EnSyatekiNiw* this, PlayState* play) {
     GraphicsContext* gfxCtx = play->state.gfxCtx;
     s16 i;
     EnSyatekiNiw_1* ptr = &this->effects[0];

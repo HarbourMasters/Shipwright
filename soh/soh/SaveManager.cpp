@@ -8,6 +8,7 @@
 #include "soh/util.h"
 #include "Enhancements/randomizer/hint.h"
 #include "Enhancements/randomizer/item.h"
+#include "soh/Enhancements/randomizer/settings.h"
 #include "ResourceManagerHelpers.h"
 
 #include "z64.h"

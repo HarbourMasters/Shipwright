@@ -7,9 +7,11 @@
 #include <vector>
 #include <chrono>
 #include <optional>
+#include <imgui.h>
 
 #include "ResourceManagerHelpers.h"
 #include <fast/Fast3dWindow.h>
+#include <ship/Context.h>
 #include <ship/resource/File.h>
 #include <ship/window/Window.h>
 #include <soh/GameVersions.h>
@@ -30,7 +32,9 @@
 #include "Enhancements/randomizer/randomizer_entrance_tracker.h"
 #include "Enhancements/randomizer/randomizer_check_tracker.h"
 #include "Enhancements/randomizer/static_data.h"
+#include "soh/Enhancements/randomizer/settings.h"
 #include "Enhancements/gameplaystats.h"
+#include "soh/Enhancements/savestates.h"
 #include "frame_interpolation.h"
 #include "SohGui/SohMenu.h"
 #include "SohGui/SohGui.hpp"
@@ -43,6 +47,9 @@
 #include <ship/utils/StringHelper.h>
 #include "Enhancements/custom-message/CustomMessageManager.h"
 #include "util.h"
+
+#include <fast/Fast3dGui.h>
+#include <fast/debug/GfxDebugger.h>
 
 #if not defined(__SWITCH__) && not defined(__WIIU__)
 #include "Extractor/Extract.h"
@@ -123,6 +130,14 @@
 
 #include "soh/config/ConfigUpdaters.h"
 #include "soh/ShipInit.hpp"
+
+#ifdef __WIIU__
+const uint32_t defaultImGuiScale = 3;
+#else
+const uint32_t defaultImGuiScale = 1;
+#endif
+
+const float imguiScaleOptionToValue[4] = { 0.75f, 1.0f, 1.5f, 2.0f };
 
 bool SoH_HandleConfigDrop(char* filePath);
 
@@ -406,7 +421,7 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
     std::vector<std::string> args;
     if (argc > 1) {
         for (int i = 1; i < argc; i++) {
-            args.push_back(argv[argc]);
+            args.push_back(argv[i]);
         }
     }
     Extractor extract;
@@ -465,7 +480,7 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
 #elif (defined(__WIIU__) || defined(__SWITCH__))
                     extractStep = ES_VERIFY;
 #else
-                    extractStep = ES_EXTRACT;
+                    extractStep = args.empty() ? ES_EXTRACT : ES_EXTRACT_ARGS;
 #endif
                 } else {
                     std::string msg;
@@ -550,11 +565,7 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
                                                   "OK", "", [&]() { exit(0); });
                         } else {
                             windowsStep = WS_DONE;
-                            if (args.size() > 0) {
-                                extractStep = ES_EXTRACT_ARGS;
-                            } else {
-                                extractStep = ES_EXTRACT;
-                            }
+                            extractStep = args.empty() ? ES_EXTRACT : ES_EXTRACT_ARGS;
                         }
                         continue;
                     }
@@ -565,7 +576,7 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
             }
             case ES_EXTRACT_ARGS: {
 #if !defined(__SWITCH__) && !defined(__WIIU__)
-                if (args.size() == 0) {
+                if (args.empty()) {
                     SohGui::RegisterPopup(
                         "Run Ship of Harkinian", "All files have been processed. Run SoH?", "Yes", "No",
                         [&]() {
@@ -770,6 +781,21 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
 #endif
 }
 
+void InitGfxDebugger() {
+    auto dbg =
+        std::dynamic_pointer_cast<Fast::Fast3dWindow>(Ship::Context::GetInstance()->GetWindow())->GetGfxDebugger();
+
+    if (dbg != nullptr) {
+        return;
+    }
+
+    dbg = std::make_shared<Fast::GfxDebugger>();
+
+    if (dbg != nullptr) {
+        SPDLOG_ERROR("Failed to initialize gfx debugger");
+    }
+}
+
 void OTRGlobals::Initialize() {
     std::string mqPath = Ship::Context::LocateFileAcrossAppDirs("oot-mq.o2r", appShortName);
     if (std::filesystem::exists(mqPath)) {
@@ -798,7 +824,7 @@ void OTRGlobals::Initialize() {
     context->InitLogging(logLevel, logLevel);
     Ship::Context::GetInstance()->GetLogger()->set_pattern("[%H:%M:%S.%e] [%s:%#] [%l] %v");
 
-    context->InitGfxDebugger();
+    InitGfxDebugger();
     context->InitFileDropMgr();
     context->InitEventSystem();
 
@@ -970,25 +996,6 @@ void OTRGlobals::ScaleImGui() {
     previousImGuiScaleIndex = imGuiScaleIndex;
 }
 
-ImFont* OTRGlobals::CreateDefaultFontWithSize(float size) {
-    auto mImGuiIo = &ImGui::GetIO();
-    ImFontConfig fontCfg = ImFontConfig();
-    fontCfg.OversampleH = fontCfg.OversampleV = 1;
-    fontCfg.PixelSnapH = true;
-    fontCfg.SizePixels = size;
-    ImFont* font = mImGuiIo->Fonts->AddFontDefault(&fontCfg);
-    // FontAwesome fonts need to have their sizes reduced by 2.0f/3.0f in order to align correctly
-    float iconFontSize = size * 2.0f / 3.0f;
-    static const ImWchar sIconsRanges[] = { ICON_MIN_FA, ICON_MAX_16_FA, 0 };
-    ImFontConfig iconsConfig;
-    iconsConfig.MergeMode = true;
-    iconsConfig.PixelSnapH = true;
-    iconsConfig.GlyphMinAdvanceX = iconFontSize;
-    mImGuiIo->Fonts->AddFontFromMemoryCompressedBase85TTF(fontawesome_compressed_data_base85, iconFontSize,
-                                                          &iconsConfig, sIconsRanges);
-    return font;
-}
-
 bool OTRGlobals::HasMasterQuest() {
     return hasMasterQuest;
 }
@@ -1011,7 +1018,7 @@ uint32_t OTRGlobals::GetInterpolationFPS() {
 extern "C" void OTRMessage_Init();
 extern "C" void AudioMgr_CreateNextAudioBuffer(s16* samples, u32 num_samples);
 extern "C" void AudioPlayer_Play(const uint8_t* buf, uint32_t len);
-extern "C" int AudioPlayer_Buffered(void);
+int AudioPlayer_Buffered(void);
 extern "C" int AudioPlayer_GetDesiredBuffered(void);
 std::unordered_map<std::string, ExtensionEntry> ExtensionCache;
 
@@ -1055,8 +1062,7 @@ void OTRAudio_Thread() {
     }
 }
 
-// C->C++ Bridge
-extern "C" void OTRAudio_Init() {
+void OTRAudio_Init() {
     // Precache all our samples, sequences, etc...
     ResourceMgr_LoadDirectory("audio");
 
@@ -1066,6 +1072,7 @@ extern "C" void OTRAudio_Init() {
     }
 }
 
+// C->C++ Bridge
 extern "C" char** sequenceMap;
 extern "C" size_t sequenceMapSize;
 
@@ -1097,7 +1104,7 @@ extern "C" void OTRAudio_Exit() {
 #endif
 }
 
-extern "C" void VanillaItemTable_Init() {
+void VanillaItemTable_Init() {
     static GetItemEntry getItemTable[] = {
         // clang-format off
         GET_ITEM(ITEM_BOMBS_5,          OBJECT_GI_BOMB_1,        GID_BOMB,             0x32, 0x59, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_BOMBS_5),
@@ -1621,7 +1628,8 @@ extern "C" void Graph_StartFrame() {
     switch (dwScancode) {
         case KbScancode::LUS_KB_F1: {
             std::shared_ptr<SohModalWindow> modal = static_pointer_cast<SohModalWindow>(
-                Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Modal Window"));
+                std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetInstance()->GetWindow()->GetGui())
+                    ->GetGuiWindow("Modal Window"));
             if (modal->IsPopupOpen("Menu Moved")) {
                 modal->DismissPopup();
             } else {
@@ -1634,8 +1642,9 @@ extern "C" void Graph_StartFrame() {
         }
         case KbScancode::LUS_KB_F5: {
             if (CVarGetInteger(CVAR_CHEAT("SaveStatesEnabled"), 0) == 0) {
-                Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(
-                    6.0f, true, "Save states not enabled. Check Cheats Menu.");
+                std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetInstance()->GetWindow()->GetGui())
+                    ->GetGameOverlay()
+                    ->TextDrawNotification(6.0f, true, "Save states not enabled. Check Cheats Menu.");
                 return;
             }
             const unsigned int slot = OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot();
@@ -1655,8 +1664,9 @@ extern "C" void Graph_StartFrame() {
         }
         case KbScancode::LUS_KB_F6: {
             if (CVarGetInteger(CVAR_CHEAT("SaveStatesEnabled"), 0) == 0) {
-                Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(
-                    6.0f, true, "Save states not enabled. Check Cheats Menu.");
+                std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetInstance()->GetWindow()->GetGui())
+                    ->GetGameOverlay()
+                    ->TextDrawNotification(6.0f, true, "Save states not enabled. Check Cheats Menu.");
                 return;
             }
             unsigned int slot = OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot();
@@ -1670,8 +1680,9 @@ extern "C" void Graph_StartFrame() {
         }
         case KbScancode::LUS_KB_F7: {
             if (CVarGetInteger(CVAR_CHEAT("SaveStatesEnabled"), 0) == 0) {
-                Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(
-                    6.0f, true, "Save states not enabled. Check Cheats Menu.");
+                std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetInstance()->GetWindow()->GetGui())
+                    ->GetGameOverlay()
+                    ->TextDrawNotification(6.0f, true, "Save states not enabled. Check Cheats Menu.");
                 return;
             }
             const unsigned int slot = OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot();
@@ -1811,8 +1822,6 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
          OTRGlobals::Instance->context->lastScancode = -1;*/
 }
 
-float divisor_num = 0.0f;
-
 extern "C" void OTRGetPixelDepthPrepare(float x, float y) {
     auto wnd = std::dynamic_pointer_cast<Fast::Fast3dWindow>(Ship::Context::GetInstance()->GetWindow());
     if (wnd == nullptr) {
@@ -1840,62 +1849,6 @@ extern "C" uint8_t GetSeedIconIndex(uint8_t index) {
 }
 
 std::map<std::string, SoundFontSample*> cachedCustomSFs;
-
-extern "C" SoundFontSample* ReadCustomSample(const char* path) {
-    return nullptr;
-    /*
-    if (!ExtensionCache.contains(path))
-        return nullptr;
-
-    ExtensionEntry entry = ExtensionCache[path];
-
-    auto sampleRaw = Ship::Context::GetInstance()->GetResourceManager()->LoadFile(entry.path);
-    uint32_t* strem = (uint32_t*)sampleRaw->Buffer.get();
-    uint8_t* strem2 = (uint8_t*)strem;
-
-    SoundFontSample* sampleC = new SoundFontSample;
-
-    if (entry.ext == "wav") {
-        drwav_uint32 channels;
-        drwav_uint32 sampleRate;
-        drwav_uint64 totalPcm;
-        drmp3_int16* pcmData =
-            drwav_open_memory_and_read_pcm_frames_s16(strem2, sampleRaw->BufferSize, &channels, &sampleRate, &totalPcm,
-    NULL); sampleC->size = totalPcm; sampleC->sampleAddr = (uint8_t*)pcmData; sampleC->codec = CODEC_S16;
-
-        sampleC->loop = new AdpcmLoop;
-        sampleC->loop->start = 0;
-        sampleC->loop->end = sampleC->size - 1;
-        sampleC->loop->count = 0;
-        sampleC->sampleRateMagicValue = 'RIFF';
-        sampleC->sampleRate = sampleRate;
-
-        cachedCustomSFs[path] = sampleC;
-        return sampleC;
-    } else if (entry.ext == "mp3") {
-        drmp3_config mp3Info;
-        drmp3_uint64 totalPcm;
-        drmp3_int16* pcmData =
-            drmp3_open_memory_and_read_pcm_frames_s16(strem2, sampleRaw->BufferSize, &mp3Info, &totalPcm, NULL);
-
-        sampleC->size = totalPcm * mp3Info.channels * sizeof(short);
-        sampleC->sampleAddr = (uint8_t*)pcmData;
-        sampleC->codec = CODEC_S16;
-
-        sampleC->loop = new AdpcmLoop;
-        sampleC->loop->start = 0;
-        sampleC->loop->end = sampleC->size;
-        sampleC->loop->count = 0;
-        sampleC->sampleRateMagicValue = 'RIFF';
-        sampleC->sampleRate = mp3Info.sampleRate;
-
-        cachedCustomSFs[path] = sampleC;
-        return sampleC;
-    }
-
-    return nullptr;
-    */
-}
 
 ImFont* OTRGlobals::CreateFontWithSize(float size, std::string fontPath, bool isJapaneseFont) {
     auto mImGuiIo = &ImGui::GetIO();
@@ -1947,20 +1900,6 @@ std::filesystem::path GetSaveFile() {
     const std::shared_ptr<Ship::Config> pConf = OTRGlobals::Instance->context->GetConfig();
 
     return GetSaveFile(pConf);
-}
-
-void OTRGlobals::CheckSaveFile(size_t sramSize) const {
-    const std::shared_ptr<Ship::Config> pConf = Instance->context->GetConfig();
-
-    std::filesystem::path savePath = GetSaveFile(pConf);
-    std::fstream saveFile(savePath, std::fstream::in | std::fstream::out | std::fstream::binary);
-    if (saveFile.fail()) {
-        saveFile.open(savePath, std::fstream::in | std::fstream::out | std::fstream::binary | std::fstream::app);
-        for (size_t i = 0; i < sramSize; i++) {
-            saveFile.write("\0", 1);
-        }
-    }
-    saveFile.close();
 }
 
 extern "C" void Ctx_ReadSaveFile(uintptr_t addr, void* dramAddr, size_t size) {
@@ -2089,14 +2028,6 @@ extern "C" void OTRGfxPrint(const char* str, void* printer, void (*printImpl)(vo
     }
 }
 
-extern "C" uint32_t OTRGetCurrentWidth() {
-    return OTRGlobals::Instance->context->GetWindow()->GetWidth();
-}
-
-extern "C" uint32_t OTRGetCurrentHeight() {
-    return OTRGlobals::Instance->context->GetWindow()->GetHeight();
-}
-
 Color_RGB8 GetColorForControllerLED() {
     auto brightness = CVarGetFloat(CVAR_SETTING("LEDBrightness"), 1.0f) / 1.0f;
     Color_RGB8 color = { 0, 0, 0 };
@@ -2201,7 +2132,8 @@ extern "C" void OTRControllerCallback(uint8_t rumble) {
     static std::shared_ptr<SohInputEditorWindow> controllerConfigWindow = nullptr;
     if (controllerConfigWindow == nullptr) {
         controllerConfigWindow = std::dynamic_pointer_cast<SohInputEditorWindow>(
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Controller Configuration"));
+            std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetInstance()->GetWindow()->GetGui())
+                ->GetGuiWindow("Controller Configuration"));
     } else if (controllerConfigWindow->TestingRumble()) {
         return;
     }
@@ -2268,7 +2200,7 @@ extern "C" int16_t OTRGetRectDimensionFromRightEdge(float v) {
     return ((int)ceilf(OTRGetDimensionFromRightEdge(v)));
 }
 
-extern "C" int AudioPlayer_Buffered(void) {
+int AudioPlayer_Buffered(void) {
     return AudioPlayerBuffered();
 }
 
@@ -2356,10 +2288,6 @@ extern "C" void Randomizer_ParseSpoiler(const char* fileLoc) {
     OTRGlobals::Instance->gRandoContext->ParseSpoiler(fileLoc);
 }
 
-extern "C" bool Randomizer_IsTrialRequired(s32 trialFlag) {
-    return OTRGlobals::Instance->gRandomizer->IsTrialRequired(trialFlag);
-}
-
 extern "C" u32 SpoilerFileExists(const char* spoilerFileName) {
     return OTRGlobals::Instance->gRandomizer->SpoilerFileExists(spoilerFileName);
 }
@@ -2388,15 +2316,6 @@ extern "C" GetItemEntry ItemTable_RetrieveEntry(s16 tableID, s16 getItemID) {
     return ItemTableManager::Instance->RetrieveItemEntry(tableID, getItemID);
 }
 
-extern "C" GetItemEntry Randomizer_GetItemFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogId) {
-    return OTRGlobals::Instance->gRandomizer->GetItemFromActor(actorId, sceneNum, actorParams, ogId);
-}
-
-extern "C" GetItemEntry Randomizer_GetItemFromActorWithoutObtainabilityCheck(s16 actorId, s16 sceneNum, s16 actorParams,
-                                                                             GetItemID ogId) {
-    return OTRGlobals::Instance->gRandomizer->GetItemFromActor(actorId, sceneNum, actorParams, ogId, false);
-}
-
 extern "C" GetItemEntry Randomizer_GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId) {
     return OTRGlobals::Instance->gRandomizer->GetItemFromKnownCheck(randomizerCheck, ogId);
 }
@@ -2404,10 +2323,6 @@ extern "C" GetItemEntry Randomizer_GetItemFromKnownCheck(RandomizerCheck randomi
 extern "C" GetItemEntry Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(RandomizerCheck randomizerCheck,
                                                                                   GetItemID ogId) {
     return OTRGlobals::Instance->gRandomizer->GetItemFromKnownCheck(randomizerCheck, ogId, false);
-}
-
-extern "C" RandomizerInf Randomizer_GetRandomizerInfFromCheck(RandomizerCheck randomizerCheck) {
-    return OTRGlobals::Instance->gRandomizer->GetRandomizerInfFromCheck(randomizerCheck);
 }
 
 extern "C" ItemObtainability Randomizer_GetItemObtainabilityFromRandomizerCheck(RandomizerCheck randomizerCheck) {
@@ -2424,10 +2339,6 @@ extern "C" GetItemEntry GetItemMystery() {
 
 extern "C" uint8_t Randomizer_IsSeedGenerated() {
     return OTRGlobals::Instance->gRandoContext->IsSeedGenerated() ? 1 : 0;
-}
-
-extern "C" void Randomizer_SetSeedGenerated(bool seedGenerated) {
-    OTRGlobals::Instance->gRandoContext->SetSeedGenerated(seedGenerated);
 }
 
 extern "C" uint8_t Randomizer_IsSpoilerLoaded() {
@@ -2536,7 +2447,7 @@ bool SoH_HandleConfigDrop(char* filePath) {
             }
         }
 
-        auto gui = Ship::Context::GetInstance()->GetWindow()->GetGui();
+        auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetInstance()->GetWindow()->GetGui());
         gui->GetGuiWindow("Console")->Hide();
         gui->GetGuiWindow("Actor Viewer")->Hide();
         gui->GetGuiWindow("Collision Viewer")->Hide();
@@ -2544,7 +2455,8 @@ bool SoH_HandleConfigDrop(char* filePath) {
         gui->GetGuiWindow("Display List Viewer")->Hide();
         gui->GetGuiWindow("Stats")->Hide();
         std::dynamic_pointer_cast<Ship::ConsoleWindow>(
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))
+            std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetInstance()->GetWindow()->GetGui())
+                ->GetGuiWindow("Console"))
             ->ClearBindings();
 
         Rando::Settings::GetInstance()->UpdateAllOptions();
@@ -2556,27 +2468,19 @@ bool SoH_HandleConfigDrop(char* filePath) {
         return true;
     } catch (std::exception& e) {
         SPDLOG_ERROR("Failed to load config file: {}", e.what());
-        auto gui = Ship::Context::GetInstance()->GetWindow()->GetGui();
+        auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetInstance()->GetWindow()->GetGui());
         gui->GetGameOverlay()->TextDrawNotification(30.0f, true, "Failed to load config file");
         return false;
     } catch (...) {
         SPDLOG_ERROR("Failed to load config file");
-        auto gui = Ship::Context::GetInstance()->GetWindow()->GetGui();
+        auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetInstance()->GetWindow()->GetGui());
         gui->GetGameOverlay()->TextDrawNotification(30.0f, true, "Failed to load config file");
         return false;
     }
     return false;
 }
 
-extern "C" void CheckTracker_RecalculateAvailableChecks() {
-    CheckTracker::RecalculateAvailableChecks();
-}
-
-extern "C" uint32_t Ship_GetInterpolationFPS() {
-    return OTRGlobals::Instance->GetInterpolationFPS();
-}
-
 // Number of interpolated frames
 extern "C" uint32_t Ship_GetInterpolationFrameCount() {
-    return ceil((float)Ship_GetInterpolationFPS() / 20.0f);
+    return ceil((float)OTRGlobals::Instance->GetInterpolationFPS() / 20.0f);
 }

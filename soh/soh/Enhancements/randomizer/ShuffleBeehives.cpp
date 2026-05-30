@@ -1,6 +1,7 @@
 #include <soh/OTRGlobals.h>
 #include "static_data.h"
 #include "soh/ObjectExtension/ObjectExtension.h"
+#include "soh/Enhancements/randomizer/randomizer.h"
 
 extern "C" {
 #include "src/overlays/actors/ovl_Obj_Comb/z_obj_comb.h"

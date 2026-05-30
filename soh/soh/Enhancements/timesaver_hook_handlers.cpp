@@ -25,11 +25,14 @@ extern "C" {
 #include "src/overlays/actors/ovl_En_Jj/z_en_jj.h"
 #include "src/overlays/actors/ovl_En_Daiku/z_en_daiku.h"
 #include "src/overlays/actors/ovl_Bg_Spot02_Objects/z_bg_spot02_objects.h"
+#include "src/overlays/actors/ovl_Bg_Spot06_Objects/z_bg_spot06_objects.h"
 #include "src/overlays/actors/ovl_Bg_Spot03_Taki/z_bg_spot03_taki.h"
 #include "src/overlays/actors/ovl_Bg_Hidan_Kousi/z_bg_hidan_kousi.h"
 #include "src/overlays/actors/ovl_Bg_Dy_Yoseizo/z_bg_dy_yoseizo.h"
 #include "src/overlays/actors/ovl_En_Dnt_Demo/z_en_dnt_demo.h"
 #include "src/overlays/actors/ovl_En_Po_Sisters/z_en_po_sisters.h"
+#include "src/overlays/actors/ovl_Obj_Lightswitch/z_obj_lightswitch.h"
+#include "src/overlays/actors/ovl_Bg_Jya_Bombchuiwa/z_bg_jya_bombchuiwa.h"
 #include <overlays/actors/ovl_Boss_Ganondrof/z_boss_ganondrof.h>
 #include <overlays/actors/ovl_En_Ik/z_en_ik.h>
 #include <objects/object_gnd/object_gnd.h>
@@ -57,7 +60,7 @@ void EnMa1_EndTeachSong(EnMa1* enMa1, PlayState* play) {
         Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
         enMa1->actor.flags &= ~ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
         play->msgCtx.ocarinaMode = OCARINA_MODE_04;
-        enMa1->actionFunc = func_80AA0D88;
+        enMa1->actionFunc = EnMa1_Idle;
         enMa1->singingDisabled = 1;
         enMa1->interactInfo.talkState = NPC_TALK_STATE_IDLE;
         return;
@@ -174,7 +177,7 @@ void TimeSaverOnVanillaBehaviorHandler(IEvent* event) {
 
             if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO)) {
                 // LACS
-                u8 meetsLACSRequirements =
+                bool meetsLACSRequirements =
                     LINK_IS_ADULT &&
                     (gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_TEMPLE_OF_TIME) &&
                     CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) && CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) &&
@@ -330,6 +333,15 @@ void TimeSaverOnVanillaBehaviorHandler(IEvent* event) {
                         RateLimitedSuccessChime();
                         break;
                     }
+                    case ACTOR_BG_JYA_BOMBCHUIWA: {
+                        BgJyaBombchuiwa* bombchuiwa = (BgJyaBombchuiwa*)actor;
+                        if (!(bombchuiwa->drawFlags & 4) && bombchuiwa->timer >= 0 && bombchuiwa->timer < 9) {
+                            bombchuiwa->timer = 9;
+                        }
+                        *should = false;
+                        RateLimitedSuccessChime();
+                        break;
+                    }
                     case ACTOR_EN_GO2: {
                         EnGo2* biggoron = (EnGo2*)actor;
                         biggoron->isAwake = true;
@@ -378,8 +390,14 @@ void TimeSaverOnVanillaBehaviorHandler(IEvent* event) {
                         RateLimitedSuccessChime();
                         break;
                     }
+                    case ACTOR_OBJ_LIGHTSWITCH: {
+                        ObjLightswitch* lightswitch = (ObjLightswitch*)actor;
+                        lightswitch->toggleDelay = 0;
+                        *should = false;
+                        RateLimitedSuccessChime();
+                        break;
+                    }
                     case ACTOR_BG_ICE_SHUTTER:
-                    case ACTOR_OBJ_LIGHTSWITCH:
                     case ACTOR_OBJ_SYOKUDAI:
                     case ACTOR_OBJ_TIMEBLOCK:
                     case ACTOR_EN_PO_SISTERS:
@@ -556,6 +574,7 @@ void TimeSaverOnVanillaBehaviorHandler(IEvent* event) {
             }
             break;
         }
+        case VB_PLAY_BEAN_PLANTING_CS:
         case VB_PLAY_EYEDROP_CREATION_ANIM:
         case VB_PLAY_EYEDROPS_CS:
         case VB_PLAY_DROP_FISH_FOR_JABU_CS:
@@ -898,14 +917,14 @@ void TimeSaverOnActorInitHandler(IEvent* event) {
             if (innerActor->id == ACTOR_EN_MA1 &&
                 (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.LearnSong"), IS_RANDO) || IS_RANDO)) {
                 EnMa1* enMa1 = static_cast<EnMa1*>(innerActorRef);
-                if (enMa1->actionFunc == func_80AA106C) {
+                if (enMa1->actionFunc == EnMa1_StartTeachSong) {
                     enMa1->actionFunc = EnMa1_EndTeachSong;
                     UNREGISTER_LISTENER(OnActorUpdate, enMa1UpdateHook);
                     UNREGISTER_LISTENER(OnSceneInit, enMa1KillHook);
                     enMa1UpdateHook = -1;
                     enMa1KillHook = -1;
                     // They've already learned the song
-                } else if (enMa1->actionFunc == func_80AA0D88) {
+                } else if (enMa1->actionFunc == EnMa1_Idle) {
                     UNREGISTER_LISTENER(OnActorUpdate, enMa1UpdateHook);
                     UNREGISTER_LISTENER(OnSceneInit, enMa1KillHook);
                     enMa1UpdateHook = -1;

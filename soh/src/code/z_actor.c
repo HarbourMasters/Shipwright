@@ -1475,7 +1475,7 @@ s32 func_8002DEEC(Player* player) {
 }
 
 void func_8002DF18(PlayState* play, Player* player) {
-    func_8006DC68(play, player);
+    Horse_InitPlayerHorse(play, player);
 }
 
 s32 func_8002DF38(PlayState* play, Actor* actor, u8 csAction) {

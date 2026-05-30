@@ -25,6 +25,8 @@ typedef enum {
 } FishsanityCheckType;
 
 #ifdef __cplusplus
+#include "soh/Enhancements/randomizer/location.h"
+
 namespace Rando {
 
 /**

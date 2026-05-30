@@ -174,7 +174,7 @@ void RegionTable_Init_FireTemple() {
     areaTable[RR_FIRE_TEMPLE_SHORTCUT_ROOM] = Region("Fire Temple Shortcut Room", SCENE_FIRE_TEMPLE, {}, {
     }, {
         //Exits
-        ENTRANCE(RR_FIRE_TEMPLE_LAVA_GEYSER_1F,     logic->SmallKeys(SCENE_FIRE_TEMPLE, 4)),
+        ENTRANCE(RR_FIRE_TEMPLE_LAVA_GEYSER_2F,     logic->SmallKeys(SCENE_FIRE_TEMPLE, 4)),
         ENTRANCE(RR_FIRE_TEMPLE_SHORTCUT_CLIMB,     logic->Get(LOGIC_FIRE_OPENED_UPPER_SHORTCUT)),
         ENTRANCE(RR_FIRE_TEMPLE_BOULDER_MAZE_LOWER, logic->IsAdult && logic->HasItem(RG_CLIMB) && ((logic->HasItem(RG_GORONS_BRACELET) || ctx->GetTrickOption(RT_FIRE_STRENGTH)) || logic->CanGroundJump()) && logic->CanHitSwitch(ED_BOMB_THROW)),
     });
@@ -283,7 +283,7 @@ void RegionTable_Init_FireTemple() {
         LOCATION(RC_FIRE_TEMPLE_GS_SCARECROW_TOP, logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_BOMB_THROW)),
     }, {
         //Exits
-        ENTRANCE(RR_FIRE_TEMPLE_GS_CLIMB_4F,      true),
+        ENTRANCE(RR_FIRE_TEMPLE_GS_CLIMB_5F,      true),
         ENTRANCE(RR_FIRE_TEMPLE_NARROW_PATH_ROOM, logic->TakeDamage()),
     });
 
@@ -1077,7 +1077,10 @@ void RegionTable_Init_FireTemple() {
 #pragma endregion
 
     // Boss Room
-    areaTable[RR_FIRE_TEMPLE_BOSS_ENTRYWAY] = Region("Fire Temple Boss Entryway", SCENE_FIRE_TEMPLE, {}, {}, {
+    areaTable[RR_FIRE_TEMPLE_BOSS_ENTRYWAY] = Region("Fire Temple Boss Entryway", SCENE_FIRE_TEMPLE, {}, {
+        // Locations
+        LOCATION(RC_FOREST_BOSS_KEY_HINT, true),
+    }, {
         // Exits
         ENTRANCE(RR_FIRE_TEMPLE_NEAR_BOSS_ROOM,    ctx->GetDungeon(FIRE_TEMPLE)->IsVanilla() && false),
         ENTRANCE(RR_FIRE_TEMPLE_MQ_NEAR_BOSS_ROOM, ctx->GetDungeon(FIRE_TEMPLE)->IsMQ() && false),

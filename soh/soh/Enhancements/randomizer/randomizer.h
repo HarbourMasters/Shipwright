@@ -1,12 +1,9 @@
 #pragma once
 
 #include <unordered_map>
-#include <unordered_set>
 #include <string>
-#include <vector>
 #include <libultraship/libultra.h>
 #include "z64item.h"
-#include <memory>
 #include "SeedContext.h"
 #include <soh/Enhancements/randomizer/randomizerTypes.h>
 #include "soh/Enhancements/randomizer/randomizer_check_objects.h"
@@ -15,7 +12,6 @@
 #include <soh/Enhancements/custom-message/CustomMessageManager.h>
 #include "soh/Enhancements/item-tables/ItemTableTypes.h"
 #include "../custom-message/CustomMessageTypes.h"
-#include "soh/Enhancements/randomizer/fishsanity.h"
 
 #define MAX_SEED_STRING_SIZE 1024
 
@@ -42,6 +38,7 @@ class Randomizer {
     CheckIdentity IdentifyGrass(s32 sceneNum, s32 posX, s32 posZ, s32 respawnData, s32 linkAge);
     CheckIdentity IdentifyCrate(s32 sceneNum, s32 posX, s32 posZ);
     CheckIdentity IdentifySmallCrate(s32 sceneNum, s32 posX, s32 posZ);
+    CheckIdentity IdentifyRock(s32 sceneNum, s32 posX, s32 posZ);
     CheckIdentity IdentifyTree(s32 sceneNum, s32 posX, s32 posZ);
     CheckIdentity IdentifySign(s32 sceneNum, s32 posX, s32 posZ, s32 id);
     CheckIdentity IdentifyWonderItem(s32 sceneNum, s32 par1, s32 par2);
