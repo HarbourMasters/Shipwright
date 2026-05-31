@@ -2670,9 +2670,17 @@ void Inventory_UpdateBottleItem(PlayState* play, u8 item, u8 button) {
                  gSaveContext.equips.cButtonSlots[button - 1],
                  gSaveContext.inventory.items[gSaveContext.equips.cButtonSlots[button - 1]]);
 
+    u8 bottleSlot;
+    if (button == 0) {
+        // bottle on b, assign c right value
+        bottleSlot = gSaveContext.equips.buttonItems[3];
+    } else {
+        // default behavior
+        bottleSlot = gSaveContext.equips.cButtonSlots[button - 1];
+    }
+
     // Special case to only empty half of a Lon Lon Milk Bottle
-    if ((gSaveContext.inventory.items[gSaveContext.equips.cButtonSlots[button - 1]] == ITEM_MILK_BOTTLE) &&
-        (item == ITEM_BOTTLE)) {
+    if ((gSaveContext.inventory.items[bottleSlot] == ITEM_MILK_BOTTLE) && (item == ITEM_BOTTLE)) {
         item = ITEM_MILK_HALF;
     }
 
