@@ -7364,10 +7364,9 @@ s32 Camera_UpdateWater(Camera* camera) {
 
 s32 Camera_UpdateHotRoom(Camera* camera) {
     camera->distortionFlags &= ~DISTORTION_HOT_ROOM;
-    if (camera->play->roomCtx.curRoom.behaviorType2 == ROOM_BEHAVIOR_TYPE2_3) {
-        if (GameInteractor_Should(VB_HOT_ROOM_DISTORTION, true)) {
-            camera->distortionFlags |= DISTORTION_HOT_ROOM;
-        }
+    if (GameInteractor_Should(VB_HOT_ROOM_DISTORTION,
+                              camera->play->roomCtx.curRoom.behaviorType2 == ROOM_BEHAVIOR_TYPE2_3)) {
+        camera->distortionFlags |= DISTORTION_HOT_ROOM;
     }
 
     return 1;
