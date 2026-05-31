@@ -94,7 +94,7 @@ void RegisterShuffleIcicles() {
     bool shouldRegister = IS_RANDO && Rando::Context::GetInstance()->GetOption(RSK_SHUFFLE_ICICLES).Get();
 
     COND_ID_HOOK(OnActorInit, ACTOR_BG_ICE_TURARA, shouldRegister, [](IEvent* event) {
-        OnActorInit* ev = (OnActorInit*)event;
+        OnActorInit* ev = reinterpret_cast<OnActorInit*>(event);
         Actor* actor = static_cast<Actor*>(ev->actor);
         BgIceTurara* icicleActor = static_cast<BgIceTurara*>(ev->actor);
 

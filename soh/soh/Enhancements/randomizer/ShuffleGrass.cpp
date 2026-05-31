@@ -122,7 +122,7 @@ void EnKusa_RandomizerInit(IEvent* event) {
     if (actor->id != ACTOR_EN_KUSA)
         return;
 
-    EnKusa* grassActor = static_cast<EnKusa*>(ev->actor);
+    EnKusa* grassActor = static_cast<EnKusa*>(actor);
     s16 respawnData = gSaveContext.respawn[RESPAWN_MODE_RETURN].data & ((1 << 8) - 1);
 
     auto grassIdentity = OTRGlobals::Instance->gRandomizer->IdentifyGrass(

@@ -210,7 +210,7 @@ void ObjKibako2_RandomizerInit(IEvent* event) {
            (s16)actor->world.pos.z == -90))))
         return;
 
-    ObjKibako2* crateActor = static_cast<ObjKibako2*>(ev->actor);
+    ObjKibako2* crateActor = static_cast<ObjKibako2*>(actor);
 
     auto crateIdentity = OTRGlobals::Instance->gRandomizer->IdentifyCrate(gPlayState->sceneNum, (s16)actor->world.pos.x,
                                                                           (s16)actor->world.pos.z);

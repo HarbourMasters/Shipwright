@@ -509,7 +509,7 @@ void RandomizerOnItemReceiveHandler(IEvent* event) {
 
     if (loc->GetRandomizerCheck() == RC_SPIRIT_TEMPLE_SILVER_GAUNTLETS_CHEST &&
         !CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO)) {
-        static ListenerID updateHook;
+        static ListenerID updateHook = -1;
         updateHook = REGISTER_LISTENER(OnPlayerUpdate, EVENT_PRIORITY_LOW, [](IEvent* event) {
             Player* player = GET_PLAYER(gPlayState);
             if (player == NULL || Player_InBlockingCsMode(gPlayState, player) ||
@@ -2152,7 +2152,7 @@ void RandomizerOnActorInitHandler(IEvent* event) {
         RandomizerCheck rc =
             OTRGlobals::Instance->gRandomizer->GetCheckFromActor(actor->id, gPlayState->sceneNum, actor->params);
         if (rc != RC_UNKNOWN_CHECK) {
-            EnSi* enSi = static_cast<EnSi*>(ev->actor);
+            EnSi* enSi = static_cast<EnSi*>(actor);
             enSi->sohGetItemEntry = Rando::Context::GetInstance()->GetFinalGIEntry(
                 rc, true, (GetItemID)Rando::StaticData::GetLocation(rc)->GetVanillaItem());
             actor->draw = (ActorFunc)EnSi_DrawRandomizedItem;
@@ -2160,7 +2160,7 @@ void RandomizerOnActorInitHandler(IEvent* event) {
     }
 
     if (actor->id == ACTOR_EN_DNS) {
-        EnDns* enDns = static_cast<EnDns*>(ev->actor);
+        EnDns* enDns = static_cast<EnDns*>(actor);
         s16 respawnData = gSaveContext.respawn[RESPAWN_MODE_RETURN].data & ((1 << 8) - 1);
         auto scrubIdentity =
             OTRGlobals::Instance->gRandomizer->IdentifyScrub(gPlayState->sceneNum, enDns->actor.params, respawnData);
@@ -2188,7 +2188,7 @@ void RandomizerOnActorInitHandler(IEvent* event) {
             if (enDnsUpdateHook == -1) {
                 enDnsUpdateHook = REGISTER_LISTENER(OnActorUpdate, EVENT_PRIORITY_LOW, [](IEvent* event) {
                     OnActorUpdate* ev = reinterpret_cast<OnActorUpdate*>(event);
-                    Actor* innerActor = static_cast<Actor*>(ev->actor);
+                    Actor* innerActor = static_cast<Actor*>(actor);
                     if (innerActor->id == ACTOR_EN_DNS) {
                         if (ObjectExtension::GetInstance().Has<ScrubIdentity>(innerActor)) {
                             innerActor->textId = TEXT_SCRUB_RANDOM;
@@ -2206,7 +2206,7 @@ void RandomizerOnActorInitHandler(IEvent* event) {
     }
 
     if (actor->id == ACTOR_ITEM_ETCETERA) {
-        ItemEtcetera* itemEtcetera = static_cast<ItemEtcetera*>(ev->actor);
+        ItemEtcetera* itemEtcetera = static_cast<ItemEtcetera*>(actor);
         RandomizerCheck rc = OTRGlobals::Instance->gRandomizer->GetCheckFromActor(
             itemEtcetera->actor.id, gPlayState->sceneNum, itemEtcetera->actor.params);
         if (rc != RC_UNKNOWN_CHECK) {
@@ -2240,7 +2240,7 @@ void RandomizerOnActorInitHandler(IEvent* event) {
     }
 
     if (actor->id == ACTOR_EN_EX_ITEM) {
-        EnExItem* enExItem = static_cast<EnExItem*>(ev->actor);
+        EnExItem* enExItem = static_cast<EnExItem*>(actor);
 
         RandomizerCheck rc = RC_UNKNOWN_CHECK;
         switch (enExItem->type) {
@@ -2269,7 +2269,7 @@ void RandomizerOnActorInitHandler(IEvent* event) {
     }
 
     if (actor->id == ACTOR_EN_GE1) {
-        EnGe1* enGe1 = static_cast<EnGe1*>(ev->actor);
+        EnGe1* enGe1 = static_cast<EnGe1*>(actor);
         auto ge1Type = enGe1->actor.params & 0xFF;
         if (ge1Type == GE1_TYPE_TRAINING_GROUND_GUARD &&
             Flags_GetRandomizerInf(RAND_INF_GF_GTG_GATE_PERMANENTLY_OPEN)) {
@@ -2283,7 +2283,7 @@ void RandomizerOnActorInitHandler(IEvent* event) {
 
     if (actor->id == ACTOR_BG_JYA_BIGMIRROR && Flags_GetRandomizerInf(RAND_INF_SPIRIT_BIG_MIRROR_STATUE_TURNED)) {
         Flags_SetSwitch(gPlayState, 0x29); // destroy wall
-        auto jyaBigMirror = static_cast<BgJyaBigmirror*>(ev->actor);
+        auto jyaBigMirror = static_cast<BgJyaBigmirror*>(actor);
         jyaBigMirror->puzzleFlags |=
             BIGMIR_PUZZLE_COBRA1_SOLVED | BIGMIR_PUZZLE_COBRA2_SOLVED | BIGMIR_PUZZLE_BOMBIWA_DESTROYED;
         jyaBigMirror->cobraInfo[0].rotY = 0x4000;
@@ -2305,7 +2305,7 @@ void RandomizerOnActorInitHandler(IEvent* event) {
         RAND_GET_OPTION(RSK_SHUFFLE_DUNGEON_ENTRANCES).IsNot(RO_DUNGEON_ENTRANCE_SHUFFLE_OFF) &&
         (RAND_GET_OPTION(RSK_FOREST).Is(RO_CLOSED_FOREST_OFF) ||
          Flags_GetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD))) {
-        BgTreemouth* bgTreemouth = static_cast<BgTreemouth*>(ev->actor);
+        BgTreemouth* bgTreemouth = static_cast<BgTreemouth*>(actor);
         bgTreemouth->unk_168 = 1.0f;
     }
 
