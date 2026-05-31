@@ -6122,7 +6122,7 @@ s32 Player_ActionHandler_13(Player* this, PlayState* play) {
             } else if (func_8083AD4C(play, this)) {
                 if (!(this->stateFlags1 & PLAYER_STATE1_ON_HORSE)) {
                     Player_SetupAction(play, this, Player_Action_8084B1D8, 1);
-                    this->av2.actionVar2 = 13;
+                    this->av2.actionVar2 = GameInteractor_Should(VB_FAST_FIRST_PERSON_TRANSITION, false, this) ? 5 : 13;
                     func_8083B010(this);
                 }
                 this->stateFlags1 |= PLAYER_STATE1_FIRST_PERSON;

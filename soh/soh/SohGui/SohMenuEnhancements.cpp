@@ -482,6 +482,10 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Faster Pause Menu", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("FasterPauseMenu"))
         .Options(CheckboxOptions().Tooltip("Speeds up animation of the pause menu, similar to Majora's Mask"));
+    AddWidget(path, "Faster First-Person Camera", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("FasterFirstPerson"))
+        .Options(CheckboxOptions().Tooltip("Reduces the camera transition delay when entering first-person view, "
+                                           "allowing you to aim your weapons much faster."));
 
     path.column = SECTION_COLUMN_3;
     AddWidget(path, "Misc", WIDGET_SEPARATOR_TEXT);
