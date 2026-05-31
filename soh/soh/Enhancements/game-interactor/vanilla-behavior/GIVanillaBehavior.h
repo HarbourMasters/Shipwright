@@ -2967,13 +2967,13 @@ typedef enum {
     // - `*int32_t (camId)`
     VB_SHOULD_LOAD_BG_IMAGE
 
-    // #### `result`
-    // ```c
-    // yawTempAbs > 0x4000 (or 0x2AAA)
-    // ```
-    // #### `args`
-    // - `*Actor`
-    VB_LIMIT_TARGET_FOV,
+        // #### `result`
+        // ```c
+        // yawTempAbs > 0x4000 (or 0x2AAA)
+        // ```
+        // #### `args`
+        // - `*Actor`
+        VB_LIMIT_TARGET_FOV,
 
     // #### `result`
     // ```c

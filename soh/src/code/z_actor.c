@@ -1889,11 +1889,12 @@ f32 func_8002EFC0(Actor* actor, Player* player, s16 arg2) {
         if (actor->flags & ACTOR_FLAG_LOCK_ON_DISABLED) {
             return FLT_MAX;
         }
-        
+
         if (GameInteractor_Should(VB_LIMIT_TARGET_FOV, yawTempAbs > 0x4000, actor)) {
             return FLT_MAX;
         } else {
-            return actor->xyzDistToPlayerSq - actor->xyzDistToPlayerSq * 0.8f * ((0x4000 - yawTempAbs) * (1.0f / 0x8000));
+            return actor->xyzDistToPlayerSq -
+                   actor->xyzDistToPlayerSq * 0.8f * ((0x4000 - yawTempAbs) * (1.0f / 0x8000));
         }
     }
 

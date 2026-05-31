@@ -7,14 +7,10 @@
 
 void RegisterTargetBehind() {
     // Disable the FOV cone limit if the enhancement is on
-    COND_VB_SHOULD(VB_LIMIT_TARGET_FOV, CVAR_TARGET_BEHIND_VALUE, {
-        *should = false;
-    });
+    COND_VB_SHOULD(VB_LIMIT_TARGET_FOV, CVAR_TARGET_BEHIND_VALUE, { *should = false; });
 
     // Apply the angle-based scoring to targets behind Link if the enhancement is on
-    COND_VB_SHOULD(VB_APPLY_TARGET_SCORING, CVAR_TARGET_BEHIND_VALUE, {
-        *should = true;
-    });
+    COND_VB_SHOULD(VB_APPLY_TARGET_SCORING, CVAR_TARGET_BEHIND_VALUE, { *should = true; });
 }
 
 static RegisterShipInitFunc initFunc(RegisterTargetBehind, { CVAR_TARGET_BEHIND_NAME });
