@@ -11,7 +11,8 @@ void RegisterEnemyRetarget() {
         PlayState* play = va_arg(args, PlayState*);
 
         // Determine if the lock break is due to the enemy dying/despawning
-        bool targetDied = (player->focusActor->update == NULL) || !(player->focusActor->flags & ACTOR_FLAG_ATTENTION_ENABLED);
+        bool targetDied =
+            (player->focusActor->update == NULL) || !(player->focusActor->flags & ACTOR_FLAG_ATTENTION_ENABLED);
 
         if (targetDied) {
             bool usingHoldTargeting = (gSaveContext.zTargetSetting != 0);
@@ -23,13 +24,13 @@ void RegisterEnemyRetarget() {
 
                 if (nextTarget != NULL && !(nextTarget->flags & ACTOR_FLAG_LOCK_ON_DISABLED) &&
                     CHECK_FLAG_ALL(nextTarget->flags, ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE)) {
-                    
+
                     // Seamlessly transition to the new target
                     player->focusActor = nextTarget;
                     player->zTargetActiveTimer = 15;
-                    
+
                     // Tell the engine NOT to drop the lock-on!
-                    *should = false; 
+                    *should = false;
                 }
             }
         }
