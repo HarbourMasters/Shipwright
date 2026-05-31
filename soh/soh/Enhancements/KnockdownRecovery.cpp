@@ -7,8 +7,8 @@
 
 // Tell C++ that these old N64 functions exist in the codebase!
 extern "C" {
-    void func_8083BCD0(Player* thisx, PlayState* play, s32 controlStickDirection);
-    void Player_SetupRoll(Player* thisx, PlayState* play);
+void func_8083BCD0(Player* thisx, PlayState* play, s32 controlStickDirection);
+void Player_SetupRoll(Player* thisx, PlayState* play);
 }
 
 void RegisterKnockdownRecovery() {
@@ -22,8 +22,8 @@ void RegisterKnockdownRecovery() {
             } else {
                 Player_SetupRoll(player, play);
             }
-            
-            *should = true; 
+
+            *should = true;
         }
     });
 }

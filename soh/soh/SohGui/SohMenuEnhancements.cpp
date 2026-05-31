@@ -484,7 +484,8 @@ void SohMenu::AddMenuEnhancements() {
         .Options(CheckboxOptions().Tooltip("Speeds up animation of the pause menu, similar to Majora's Mask"));
     AddWidget(path, "Knockdown Recovery", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("KnockdownRecovery"))
-        .Options(CheckboxOptions().Tooltip("Allows Link to quickly recover from being knocked down by pressing the Action button."));
+        .Options(CheckboxOptions().Tooltip(
+            "Allows Link to quickly recover from being knocked down by pressing the A button."));
 
     path.column = SECTION_COLUMN_3;
     AddWidget(path, "Misc", WIDGET_SEPARATOR_TEXT);
