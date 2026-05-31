@@ -607,6 +607,15 @@ typedef enum {
     // true
     // ```
     // #### `args`
+    // - `*Player`
+    // - `*PlayState`
+    VB_DROP_Z_TARGET,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
     // - Player*
     VB_EMPTYING_BOTTLE,
 
@@ -2966,15 +2975,6 @@ typedef enum {
     // #### `args`
     // - `*int32_t (camId)`
     VB_SHOULD_LOAD_BG_IMAGE
-
-        // #### `result`
-        // ```c
-        // true
-        // ```
-        // #### `args`
-        // - `*Player`
-        // - `*PlayState`
-        VB_DROP_Z_TARGET,
 } GIVanillaBehavior;
 
 #endif
