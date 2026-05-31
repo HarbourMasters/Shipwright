@@ -16,7 +16,7 @@ void RegisterKnockdownRecovery() {
         Player* player = va_arg(args, Player*);
         PlayState* play = va_arg(args, PlayState*);
 
-        if (CHECK_BTN_ALL(play->state.input[0].press.button, BTN_A)) {
+        if (CHECK_BTN_ALL(sControlInput->press.button, BTN_A)) {
             if (player->yaw != player->actor.shape.rot.y) {
                 func_8083BCD0(player, play, PLAYER_STICK_DIR_BACKWARD);
             } else {
