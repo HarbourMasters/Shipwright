@@ -39,7 +39,7 @@ void SkipBlueWarp_OnActorUpdate(IEvent* event) {
     EnKo* enKo = static_cast<EnKo*>(ev->actor);
 
     if ((enKo->actor.params & 0xFF) == ENKO_TYPE_CHILD_3 && enKo->actionFunc == func_80A995CC) {
-        // enKo->actionFunc = EnKo_MoveWhenReady;
+        enKo->actionFunc = EnKo_MoveWhenReady;
     }
 }
 

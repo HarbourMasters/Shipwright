@@ -83,7 +83,7 @@ void RegisterSunlightArrowsHooks() {
     });
 
     COND_ID_HOOK(ShouldActorUpdate, ACTOR_OBJ_LIGHTSWITCH, shouldRegister, [](IEvent* event) {
-        /*ShouldActorUpdate* ev = reinterpret_cast<ShouldActorUpdate*>(event);
+        ShouldActorUpdate* ev = reinterpret_cast<ShouldActorUpdate*>(event);
         ObjLightswitch* thisx = (ObjLightswitch*)ev->actor;
         if ((thisx->collider.base.acFlags & AC_HIT) && thisx->collider.base.ac != nullptr) {
             auto sunData = ObjectExtension::GetInstance().Get<SunlightArrowData>(&thisx->actor);
@@ -93,7 +93,7 @@ void RegisterSunlightArrowsHooks() {
             }
 
             sunData->activatedByLightArrow = thisx->collider.base.ac->id == ACTOR_EN_ARROW;
-        }*/
+        }
     });
 }
 
