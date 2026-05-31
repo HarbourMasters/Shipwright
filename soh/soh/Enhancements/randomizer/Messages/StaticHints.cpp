@@ -8,6 +8,7 @@
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "z64scene.h"
 #include <soh/OTRGlobals.h>
+#include "soh/Enhancements/randomizer/randomizer.h"
 
 extern "C" {
 extern PlayState* gPlayState;

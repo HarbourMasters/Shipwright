@@ -26,7 +26,7 @@ GameState* gGameState;
 
 // Forward declared, because this in a C++ header.
 int gfx_create_framebuffer(uint32_t width, uint32_t height, uint32_t native_width, uint32_t native_height,
-                           uint8_t resize);
+                           uint8_t resize, bool forceFixedAspect);
 void gfx_texture_cache_clear();
 
 void GameState_FaultPrint(void) {
@@ -260,7 +260,7 @@ void GameState_Update(GameState* gameState) {
 
     if (gPauseLinkFrameBuffer == -1) {
         gPauseLinkFrameBuffer = gfx_create_framebuffer(PAUSE_EQUIP_PLAYER_WIDTH, PAUSE_EQUIP_PLAYER_HEIGHT,
-                                                       PAUSE_EQUIP_PLAYER_WIDTH, PAUSE_EQUIP_PLAYER_HEIGHT, true);
+                                                       PAUSE_EQUIP_PLAYER_WIDTH, PAUSE_EQUIP_PLAYER_HEIGHT, true, true);
     }
 
     GameState_SetFrameBuffer(gfxCtx);

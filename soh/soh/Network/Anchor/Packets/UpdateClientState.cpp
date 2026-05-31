@@ -3,6 +3,7 @@
 #include <nlohmann/json.hpp>
 #include <libultraship/libultraship.h>
 #include "soh/OTRGlobals.h"
+#include "soh/Enhancements/randomizer/SeedContext.h"
 
 extern "C" {
 #include "variables.h"

@@ -5,6 +5,7 @@
 #include "soh_assets.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
+#include "soh/Enhancements/randomizer/randomizer.h"
 
 extern "C" {
 #include "z64.h"

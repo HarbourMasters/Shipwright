@@ -2,7 +2,7 @@
 
 #include "randomizerTypes.h"
 #include "SeedContext.h"
-#include <cstdint>
+#include <stdint.h>
 
 namespace Rando {
 
