@@ -2154,6 +2154,80 @@ void StaticData::HintTable_Init_Item() {
                                     CustomMessage("a four legged friend", /*german*/"ein vierbeiniger Freund", /*french*/"un puissant animal")});
                                          // /*spanish*/una amiga cuadrúpeda
 
+    hintTextTable[RHT_ABILITY_ISG] = HintText(CustomMessage("ISG", /*german*/"ISG", /*french*/"ISG"),
+                                               // /*spanish*/ISG
+                                               {
+                                               CustomMessage("a flashy weapon", /*german*/"ISG", /*french*/"ISG")
+                                                // /*spanish*/ISG
+                                               }, {
+                                               CustomMessage("a permanent hitbox", /*german*/"ISG", /*french*/"ISG")});
+                                                // /*spanish*/ISG
+
+    hintTextTable[RHT_ABILITY_OI] = HintText(CustomMessage("OI", /*german*/"OI", /*french*/"OI"),
+                                               // /*spanish*/OI
+                                               {
+                                               CustomMessage("a musical bottle", /*german*/"OI", /*french*/"OI")
+                                                // /*spanish*/OI
+                                               }, {
+                                               CustomMessage("a potato of any color", /*german*/"OI", /*french*/"OI")});
+                                                // /*spanish*/OI
+    hintTextTable[RHT_ABILITY_QPA] = HintText(CustomMessage("QPA", /*german*/"QPA", /*french*/"QPA"),
+                                               // /*spanish*/QPA
+                                               {
+                                               CustomMessage("some funky damage", /*german*/"QPA", /*french*/"QPA")
+                                                // /*spanish*/QPA
+                                               }, {
+                                               CustomMessage("some fast hands", /*german*/"QPA", /*french*/"QPA")});
+                                                // /*spanish*/QPA
+    hintTextTable[RHT_ABILITY_HESS] = HintText(CustomMessage("Extended Superslide", /*german*/"Extended Superslide", /*french*/"Extended Superslide"),
+                                               // /*spanish*/Extended Superslide
+                                               {
+                                               CustomMessage("some explosive speed", /*german*/"Extended Superslide", /*french*/"Extended Superslide")
+                                                // /*spanish*/Extended Superslide
+                                               }, {
+                                               CustomMessage("some slick feet", /*german*/"Extended Superslide", /*french*/"Extended Superslide")});
+                                                // /*spanish*/Extended Superslide
+    hintTextTable[RHT_ABILITY_SUPERSLIDE] = HintText(CustomMessage("Superslide", /*german*/"Superslide", /*french*/"Superslide"),
+                                               // /*spanish*/Superslide
+                                               {
+                                               CustomMessage("some straight line speed", /*german*/"Superslide", /*french*/"Superslide")
+                                                // /*spanish*/Superslide
+                                               }, {
+                                               CustomMessage("some shield power", /*german*/"Superslide", /*french*/"Superslide")});
+                                                // /*spanish*/Superslide
+    hintTextTable[RHT_ABILITY_HOVER] = HintText(CustomMessage("Hovering", /*german*/"Hovering", /*french*/"Hovering"),
+                                               // /*spanish*/Hovering
+                                               {
+                                               CustomMessage("a weightless trick", /*german*/"Hovering", /*french*/"Hovering")
+                                                // /*spanish*/Hovering
+                                               }, {
+                                               CustomMessage("gravityn't", /*german*/"Hovering", /*french*/"Hovering")});
+                                                // /*spanish*/Hovering
+    hintTextTable[RHT_ABILITY_EQUIP_SWAP] = HintText(CustomMessage("Equip Swap", /*german*/"Equip Swap", /*french*/"Equip Swap"),
+                                               // /*spanish*/Equip Swap
+                                               {
+                                               CustomMessage("an unbufferable ability", /*german*/"Equip Swap", /*french*/"Equip Swap")
+                                                // /*spanish*/Equip Swap
+                                               }, {
+                                               CustomMessage("a timeless talent", /*german*/"Equip Swap", /*french*/"Equip Swap")});
+                                                // /*spanish*/Equip Swap
+    hintTextTable[RHT_ABILITY_GROUND_JUMP] = HintText(CustomMessage("Ground Jump", /*german*/"Ground Jump", /*french*/"Ground Jump"),
+                                               // /*spanish*/Ground Jump
+                                               {
+                                               CustomMessage("a little leap", /*german*/"Ground Jump", /*french*/"Ground Jump")
+                                                // /*spanish*/Ground Jump
+                                               }, {
+                                               CustomMessage("a beginner's trick", /*german*/"Ground Jump", /*french*/"Ground Jump")});
+                                                // /*spanish*/Ground Jump
+    hintTextTable[RHT_ABILITY_WEIRDSHOT] = HintText(CustomMessage("Weirdshot", /*german*/"Weirdshot", /*french*/"Weirdshot"),
+                                               // /*spanish*/Weirdshot
+                                               {
+                                               CustomMessage("a weird shot", /*german*/"Weirdshot", /*french*/"Weirdshot")
+                                                // /*spanish*/Weirdshot
+                                               }, {
+                                               CustomMessage("a mangled animation", /*german*/"Weirdshot", /*french*/"Weirdshot")});
+                                                // /*spanish*/Weirdshot
+
     //What is this used for?
     hintTextTable[RHT_HINT_MYSTERIOUS] = HintText(CustomMessage("something mysterious", /*german*/"etwas Mysteriöses", /*french*/"un sacré mystère"));
                                                   // /*spanish*/algo misterioso

@@ -58,6 +58,11 @@ DEFINE_HOOK(OnVanillaBehavior, (GIVanillaBehavior flag, bool* result, va_list or
 DEFINE_HOOK(OnSaveFile, (int32_t fileNum, int32_t sectionID));
 DEFINE_HOOK(OnLoadFile, (int32_t fileNum));
 DEFINE_HOOK(OnDeleteFile, (int32_t fileNum));
+DEFINE_HOOK(OnLinkAnimEnd, (SkelAnime * skelAnime));
+DEFINE_HOOK(OnQPADamage, (uint32_t * dmgFlags));
+DEFINE_HOOK(OnESS, ());
+DEFINE_HOOK(OnWaitForPutaway, ());
+DEFINE_HOOK(OnAnimationSetLoadFrame, (LinkAnimationHeader * animation, int32_t* frame));
 
 DEFINE_HOOK(OnDialogMessage, ());
 DEFINE_HOOK(OnPresentTitleCard, ());
@@ -85,6 +90,7 @@ DEFINE_HOOK(OnGenerationCompletion, ());
 DEFINE_HOOK(OnSetGameLanguage, ());
 DEFINE_HOOK(OnAssetAltChange, ());
 DEFINE_HOOK(OnKaleidoUpdate, ());
+DEFINE_HOOK(OnKaleidoMoveCursorFromSpecialPos, (PauseContext * pauseCtx, uint16_t* cursorItem));
 
 // Messages
 DEFINE_HOOK(OnOpenText, (uint16_t * textId, bool* loadFromMessageTable));

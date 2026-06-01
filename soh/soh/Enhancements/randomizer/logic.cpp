@@ -2075,6 +2075,33 @@ void Logic::ApplyItemEffect(Item& item, bool state) {
                 case RG_BOMBCHU_20:
                     SetInventory(ITEM_BOMBCHU, (!state ? ITEM_NONE : ITEM_BOMBCHU));
                     break;
+                case RG_ABILITY_ISG:
+                    SetRandoInf(RAND_INF_CAN_ISG, state);
+                    break;
+                case RG_ABILITY_OI:
+                    SetRandoInf(RAND_INF_CAN_OI, state);
+                    break;
+                case RG_ABILITY_QPA:
+                    SetRandoInf(RAND_INF_CAN_QPA, state);
+                    break;
+                case RG_ABILITY_HESS:
+                    SetRandoInf(RAND_INF_CAN_HESS, state);
+                    break;
+                case RG_ABILITY_SUPERSLIDE:
+                    SetRandoInf(RAND_INF_CAN_SUPERSLIDE, state);
+                    break;
+                case RG_ABILITY_HOVER:
+                    SetRandoInf(RAND_INF_CAN_HOVER, state);
+                    break;
+                case RG_ABILITY_EQUIP_SWAP:
+                    SetRandoInf(RAND_INF_CAN_EQUIP_SWAP, state);
+                    break;
+                case RG_ABILITY_GROUND_JUMP:
+                    SetRandoInf(RAND_INF_CAN_GROUND_JUMP, state);
+                    break;
+                case RG_ABILITY_WEIRDSHOT:
+                    SetRandoInf(RAND_INF_CAN_WEIRDSHOT, state);
+                    break;
                 default:
                     break;
             }
@@ -2715,6 +2742,34 @@ void Logic::Reset(bool resetSaveContext /*= true*/) {
 
         if (ctx->GetOption(RSK_SHUFFLE_SWIM).Is(false)) {
             SetRandoInf(RAND_INF_CAN_SWIM, true);
+        }
+
+        if (ctx->GetOption(RSK_SHUFFLE_ISG).Is(false)) {
+            SetRandoInf(RAND_INF_CAN_ISG, true);
+        }
+        if (ctx->GetOption(RSK_SHUFFLE_OI).Is(false)) {
+            SetRandoInf(RAND_INF_CAN_OI, true);
+        }
+        if (ctx->GetOption(RSK_SHUFFLE_QPA).Is(false)) {
+            SetRandoInf(RAND_INF_CAN_QPA, true);
+        }
+        if (ctx->GetOption(RSK_SHUFFLE_HESS).Is(false)) {
+            SetRandoInf(RAND_INF_CAN_HESS, true);
+        }
+        if (ctx->GetOption(RSK_SHUFFLE_SUPERSLIDE).Is(false)) {
+            SetRandoInf(RAND_INF_CAN_SUPERSLIDE, true);
+        }
+        if (ctx->GetOption(RSK_SHUFFLE_HOVER).Is(false)) {
+            SetRandoInf(RAND_INF_CAN_HOVER, true);
+        }
+        if (ctx->GetOption(RSK_SHUFFLE_EQUIP_SWAP).Is(false)) {
+            SetRandoInf(RAND_INF_CAN_EQUIP_SWAP, true);
+        }
+        if (ctx->GetOption(RSK_SHUFFLE_GROUND_JUMP).Is(false)) {
+            SetRandoInf(RAND_INF_CAN_GROUND_JUMP, true);
+        }
+        if (ctx->GetOption(RSK_SHUFFLE_WEIRDSHOT).Is(false)) {
+            SetRandoInf(RAND_INF_CAN_WEIRDSHOT, true);
         }
 
         if (ctx->GetOption(RSK_SHUFFLE_GRAB).Is(false)) {

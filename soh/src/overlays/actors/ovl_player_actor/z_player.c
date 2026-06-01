@@ -4455,6 +4455,7 @@ void func_80837948(PlayState* play, Player* this, s32 arg2) {
     if ((arg2 >= PLAYER_MWA_FLIPSLASH_START) && (arg2 <= PLAYER_MWA_JUMPSLASH_FINISH)) {
         if (CVarGetInteger(CVAR_GENERAL("RestoreQPA"), 1) && temp == -1) {
             dmgFlags = 0x16171617;
+            GameInteractor_ExecuteOnQPADamage(&dmgFlags);
         } else {
             dmgFlags = D_80854488[temp][1];
         }
@@ -5793,7 +5794,8 @@ void func_8083AA10(Player* this, PlayState* play) {
             if (!(this->stateFlags3 & PLAYER_STATE3_MIDAIR) && !(this->skelAnime.movementFlags & 0x80) &&
                 (Player_Action_8084411C != this->actionFunc) && (Player_Action_80844A44 != this->actionFunc)) {
 
-                if ((sPrevFloorProperty == 7) || (this->meleeWeaponState != 0)) {
+                if ((sPrevFloorProperty == 7) ||
+                    (GameInteractor_Should(VB_HOVER_WITH_ISG, true) && (this->meleeWeaponState != 0))) {
                     Math_Vec3f_Copy(&this->actor.world.pos, &this->actor.prevPos);
                     Player_ZeroSpeedXZ(this);
                     return;
@@ -6110,6 +6112,9 @@ s32 Player_ActionHandler_13(Player* this, PlayState* play) {
                         func_80835EA4(play, 2);
                     }
                 } else {
+                    if (GameInteractor_Should(VB_SKIP_FORCE_PLAY_OCARINA, false)) {
+                        return 0;
+                    }
                     Player_SetupActionPreserveItemAction(play, this, Player_Action_8084E3C4, 0);
                     Player_AnimPlayOnceAdjusted(play, this, &gPlayerAnim_link_normal_okarina_start);
                     this->stateFlags2 |= PLAYER_STATE2_OCARINA_PLAYING;
@@ -8746,6 +8751,8 @@ void Player_Action_TurnInPlace(Player* this, PlayState* play) {
                                      this->skelAnime.morphTable, sUpperBodyLimbCopyMap);
     }
 
+    GameInteractor_ExecuteOnESS();
+
     Player_GetMovementSpeedAndYaw(this, &speedTarget, &yawTarget, SPEED_MODE_CURVED, play);
 
     //! @bug This action does not handle xzSpeed in any capacity.
@@ -10236,6 +10243,8 @@ void Player_Action_80845668(Player* this, PlayState* play) {
 void Player_Action_WaitForPutAway(Player* this, PlayState* play) {
     this->stateFlags2 |= PLAYER_STATE2_DISABLE_ROTATION_Z_TARGET | PLAYER_STATE2_DISABLE_ROTATION_ALWAYS;
     LinkAnimation_Update(play, &this->skelAnime);
+
+    GameInteractor_ExecuteOnWaitForPutaway();
 
     // Wait for the held item put away process to complete.
     // Determining if the put away process is complete is a bit complicated:

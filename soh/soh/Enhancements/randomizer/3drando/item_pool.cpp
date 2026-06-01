@@ -406,6 +406,34 @@ void GenerateItemPool() {
     int powerBracelet = ctx->GetOption(RSK_SHUFFLE_GRAB) ? 1 : 0;
     AddItemToPool(RG_PROGRESSIVE_STRENGTH, 4 + powerBracelet, 3 + powerBracelet, 3 + powerBracelet, 3 + powerBracelet);
 
+    if (ctx->GetOption(RSK_SHUFFLE_ISG)) {
+        AddItemToPool(RG_ABILITY_ISG, 2, 1, 1, 1, false);
+    }
+    if (ctx->GetOption(RSK_SHUFFLE_OI)) {
+        AddItemToPool(RG_ABILITY_OI, 2, 1, 1, 1, false);
+    }
+    if (ctx->GetOption(RSK_SHUFFLE_QPA)) {
+        AddItemToPool(RG_ABILITY_QPA, 2, 1, 1, 1, false);
+    }
+    if (ctx->GetOption(RSK_SHUFFLE_HESS)) {
+        AddItemToPool(RG_ABILITY_HESS, 2, 1, 1, 1, false);
+    }
+    if (ctx->GetOption(RSK_SHUFFLE_SUPERSLIDE)) {
+        AddItemToPool(RG_ABILITY_SUPERSLIDE, 2, 1, 1, 1, false);
+    }
+    if (ctx->GetOption(RSK_SHUFFLE_HOVER)) {
+        AddItemToPool(RG_ABILITY_HOVER, 2, 1, 1, 1, false);
+    }
+    if (ctx->GetOption(RSK_SHUFFLE_EQUIP_SWAP)) {
+        AddItemToPool(RG_ABILITY_EQUIP_SWAP, 2, 1, 1, 1, false);
+    }
+    if (ctx->GetOption(RSK_SHUFFLE_GROUND_JUMP)) {
+        AddItemToPool(RG_ABILITY_GROUND_JUMP, 2, 1, 1, 1, false);
+    }
+    if (ctx->GetOption(RSK_SHUFFLE_WEIRDSHOT)) {
+        AddItemToPool(RG_ABILITY_WEIRDSHOT, 2, 1, 1, 1, false);
+    }
+
     if (ctx->GetOption(RSK_SHUFFLE_CLIMB)) {
         AddItemToPool(RG_CLIMB, 2, 1, 1, 1);
     }

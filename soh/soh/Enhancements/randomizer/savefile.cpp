@@ -315,6 +315,34 @@ extern "C" void Randomizer_InitSaveFile() {
         Flags_SetRandomizerInf(RAND_INF_CAN_SWIM);
     }
 
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_ISG) == RO_GENERIC_OFF) {
+        Flags_SetRandomizerInf(RAND_INF_CAN_ISG);
+    }
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_OI) == RO_GENERIC_OFF) {
+        Flags_SetRandomizerInf(RAND_INF_CAN_OI);
+    }
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_QPA) == RO_GENERIC_OFF) {
+        Flags_SetRandomizerInf(RAND_INF_CAN_QPA);
+    }
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_HESS) == RO_GENERIC_OFF) {
+        Flags_SetRandomizerInf(RAND_INF_CAN_HESS);
+    }
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_SUPERSLIDE) == RO_GENERIC_OFF) {
+        Flags_SetRandomizerInf(RAND_INF_CAN_SUPERSLIDE);
+    }
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_HOVER) == RO_GENERIC_OFF) {
+        Flags_SetRandomizerInf(RAND_INF_CAN_HOVER);
+    }
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_EQUIP_SWAP) == RO_GENERIC_OFF) {
+        Flags_SetRandomizerInf(RAND_INF_CAN_EQUIP_SWAP);
+    }
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_GROUND_JUMP) == RO_GENERIC_OFF) {
+        Flags_SetRandomizerInf(RAND_INF_CAN_GROUND_JUMP);
+    }
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_WEIRDSHOT) == RO_GENERIC_OFF) {
+        Flags_SetRandomizerInf(RAND_INF_CAN_WEIRDSHOT);
+    }
+
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_GRAB) == RO_GENERIC_OFF) {
         Flags_SetRandomizerInf(RAND_INF_CAN_GRAB);
     }

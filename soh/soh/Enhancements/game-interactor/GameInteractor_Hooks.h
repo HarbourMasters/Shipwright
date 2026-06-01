@@ -34,6 +34,11 @@ void GameInteractor_ExecuteOnPlayerSfx(u16 sfxId);
 void GameInteractor_ExecuteOnOcarinaSongAction();
 void GameInteractor_ExecuteOnOcarinaNote(uint8_t note, float modulator, int8_t bend);
 void GameInteractor_ExecuteOnCuccoOrChickenHatch();
+void GameInteractor_ExecuteOnLinkAnimEnd(SkelAnime* skelAnime);
+void GameInteractor_ExecuteOnQPADamage(uint32_t* dmgFlags);
+void GameInteractor_ExecuteOnESS();
+void GameInteractor_ExecuteOnWaitForPutaway();
+void GameInteractor_ExecuteOnAnimationSetLoadFrame(LinkAnimationHeader* animation, int32_t* frame);
 bool GameInteractor_ShouldActorInit(void* actor);
 void GameInteractor_ExecuteOnActorInit(void* actor);
 void GameInteractor_ExecuteOnActorSpawn(void* actor);
@@ -96,6 +101,7 @@ void GameInteractor_RegisterOnAssetAltChange(void (*fn)(void));
 
 // Mark: - Pause Menu
 void GameInteractor_ExecuteOnKaleidoUpdate();
+void GameInteractor_ExecuteOnKaleidoMoveCursorFromSpecialPos(PauseContext* pauseCtx, uint16_t* cursorItem);
 
 // MARK: - Messages
 void GameInteractor_ExecuteOnOpenText(uint16_t* textId, bool* loadFromMessageTable);

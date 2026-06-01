@@ -889,6 +889,8 @@ void AnimationContext_SetLoadFrame(PlayState* play, LinkAnimationHeader* animati
                                    Vec3s* frameTable) {
     AnimationEntry* entry = AnimationContext_AddEntry(&play->animationCtx, ANIMENTRY_LOADFRAME);
 
+    GameInteractor_ExecuteOnAnimationSetLoadFrame(animation, &frame);
+
     if (GameInteractor_Should(VB_LOAD_PLAYER_ANIMATION_FRAME, entry != NULL, entry, animation, frame, limbCount,
                               frameTable)) {
         if (ResourceMgr_OTRSigCheck(animation) != 0)
@@ -1231,6 +1233,7 @@ s32 LinkAnimation_Once(PlayState* play, SkelAnime* skelAnime) {
 
     if (skelAnime->curFrame == skelAnime->endFrame) {
         LinkAnimation_AnimateFrame(play, skelAnime);
+        GameInteractor_ExecuteOnLinkAnimEnd(skelAnime);
         return 1;
     }
     skelAnime->curFrame += skelAnime->playSpeed * updateRate;

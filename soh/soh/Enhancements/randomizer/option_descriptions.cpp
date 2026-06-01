@@ -850,5 +850,18 @@ void Settings::CreateOptionDescriptions() {
         "Shuffles 8 boss souls (one for each blue warp dungeon). A boss will not appear until you collect its "
         "respective soul."
         "\n\"On + Ganon\" will also hide Ganon and Ganondorf behind a boss soul.";
+
+    mOptionDescriptions[RSK_SHUFFLE_ISG] =
+        "Shuffles the ability to use the Infinite Sword Glitch (ISG) into the item pool.";
+    mOptionDescriptions[RSK_SHUFFLE_OI] = "Shuffles the ability to use the glitch Ocarina Items into the item pool.";
+    mOptionDescriptions[RSK_SHUFFLE_QPA] =
+        "Shuffles the ability to use Quick Putaway Glitched Damage into the item pool.";
+    mOptionDescriptions[RSK_SHUFFLE_HESS] =
+        "Shuffles the ability to perform an Extended Superslide into the item pool.";
+    mOptionDescriptions[RSK_SHUFFLE_SUPERSLIDE] = "Shuffles the ability to Superslide into the item pool.";
+    mOptionDescriptions[RSK_SHUFFLE_HOVER] = "Shuffles the ability to Hover into the item pool.";
+    mOptionDescriptions[RSK_SHUFFLE_EQUIP_SWAP] = "Shuffles the ability to Equip Swap into the item pool.";
+    mOptionDescriptions[RSK_SHUFFLE_GROUND_JUMP] = "Shuffles the ability to Ground Jump into the item pool.";
+    mOptionDescriptions[RSK_SHUFFLE_WEIRDSHOT] = "Shuffles the ability to Weirdshot into the item pool.";
 }
 } // namespace Rando
