@@ -14113,7 +14113,12 @@ s32 func_8084DFF4(PlayState* play, Player* this) {
         equipNow = CVarGetInteger(CVAR_ENHANCEMENT("AskToEquip"), 0) && giEntry.modIndex == MOD_NONE &&
                    equipItem >= ITEM_SWORD_KOKIRI && equipItem <= ITEM_TUNIC_ZORA && CHECK_AGE_REQ_ITEM(equipItem);
 
-        Message_StartTextbox(play, giEntry.textId, &this->actor);
+        // GIM Textbox swap.
+        if (this->getItemId < 0) // Compass text.
+            Message_StartTextbox(play, ItemTable_Retrieve(64).textId, &this->actor);
+        // Original textbox.
+        else Message_StartTextbox(play, giEntry.textId, &this->actor);
+
         // RANDOTODO: Macro this boolean check.
         if (!(giEntry.modIndex == MOD_RANDOMIZER && giEntry.itemId == RG_ICE_TRAP)) {
             if (giEntry.modIndex == MOD_NONE) {
