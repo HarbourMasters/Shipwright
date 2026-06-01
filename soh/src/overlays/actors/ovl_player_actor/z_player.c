@@ -14113,7 +14113,7 @@ s32 func_8084DFF4(PlayState* play, Player* this) {
         equipNow = CVarGetInteger(CVAR_ENHANCEMENT("AskToEquip"), 0) && giEntry.modIndex == MOD_NONE &&
                    equipItem >= ITEM_SWORD_KOKIRI && equipItem <= ITEM_TUNIC_ZORA && CHECK_AGE_REQ_ITEM(equipItem);
 
-        // GIM Textbox swap.
+        // SoH GIM Textbox swap
         if (this->getItemId < 0) // Compass text.
             Message_StartTextbox(play, ItemTable_Retrieve(64).textId, &this->actor);
         // Original textbox.
