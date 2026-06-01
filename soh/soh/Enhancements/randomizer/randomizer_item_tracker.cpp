@@ -18,7 +18,7 @@
 #include "soh/SohGui/SohMenu.h"
 #include "soh/SohGui/UIWidgets.hpp"
 #include "soh/util.h"
-#include "SeedContext.h"
+#include "soh/Enhancements/randomizer/randomizer.h"
 
 #include <fast/Fast3dGui.h>
 
