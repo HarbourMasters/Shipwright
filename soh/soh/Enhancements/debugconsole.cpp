@@ -12,6 +12,7 @@
 #include "soh/Enhancements/cosmetics/CosmeticsEditor.h"
 #include "soh/Enhancements/audio/AudioEditor.h"
 #include "soh/Enhancements/randomizer/logic.h"
+#include "soh/Enhancements/randomizer/randomizer.h"
 
 #define Path _Path
 #define PATH_HACK

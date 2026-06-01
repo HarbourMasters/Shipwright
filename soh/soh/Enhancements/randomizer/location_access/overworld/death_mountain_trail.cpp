@@ -147,6 +147,7 @@ void RegionTable_Init_DeathMountainTrail() {
         LOCATION(RC_DMT_STORMS_GROTTO_GRASS_2,                logic->CanCutShrubs()),
         LOCATION(RC_DMT_STORMS_GROTTO_GRASS_3,                logic->CanCutShrubs()),
         LOCATION(RC_DMT_STORMS_GROTTO_GRASS_4,                logic->CanCutShrubs()),
+        LOCATION(RC_DMT_STORMS_GROTTO_BUTTERFLY_FAIRY,        logic->CanUse(RG_STICKS)),
     }, {
         //Exits
         ENTRANCE(RR_DEATH_MOUNTAIN_TRAIL, true),

@@ -7,6 +7,8 @@
 
 #include <fast/Fast3dGui.h>
 
+#include <fast/Fast3dGui.h>
+
 std::map<uint32_t, ItemMapEntry> itemMapping = {
     ITEM_MAP_ENTRY(ITEM_STICK),
     ITEM_MAP_ENTRY(ITEM_NUT),

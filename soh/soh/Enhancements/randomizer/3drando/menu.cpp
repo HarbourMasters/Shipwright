@@ -1,11 +1,7 @@
-#include <cstdlib>
-#include <cstdio>
-#include <cstring>
-#include <ctime>
-
 #include "menu.hpp"
 #include "playthrough.hpp"
 #include "soh/Enhancements/debugger/performanceTimer.h"
+#include "soh/ShipUtils.h"
 #include <spdlog/spdlog.h>
 #include "../../randomizer/randomizerTypes.h"
 
@@ -22,10 +18,14 @@ bool GenerateRandomizer(std::set<RandomizerCheck> excludedLocations, std::set<Ra
     ResetPerformanceTimers();
     StartPerformanceTimer(PT_WHOLE_SEED);
 
-    srand(static_cast<uint32_t>(time(NULL)));
     // if a blank seed was entered, make a random one
     if (seedInput.empty()) {
-        seedInput = std::to_string(rand());
+        char seedString[12];
+        for (size_t i = 0; i < 10; i++) {
+            seedString[i] = '0' + ShipUtils::Random(0, 10);
+        }
+        seedString[11] = '\0';
+        seedInput = std::string(seedString);
     } else if (seedInput.rfind("seed_testing_count", 0) == 0 && seedInput.length() > 18) {
         int count;
         try {

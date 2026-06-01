@@ -20,6 +20,8 @@
 
 #include <fast/Fast3dGui.h>
 
+#include <fast/Fast3dGui.h>
+
 extern "C" {
 #include "include/z64item.h"
 #include "objects/gameplay_keep/gameplay_keep.h"

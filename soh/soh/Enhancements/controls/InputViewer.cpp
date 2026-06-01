@@ -15,6 +15,8 @@
 
 #include <fast/Fast3dGui.h>
 
+#include <fast/Fast3dGui.h>
+
 using namespace UIWidgets;
 
 // Text colors

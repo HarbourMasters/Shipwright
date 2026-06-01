@@ -1,5 +1,6 @@
 #include "debugSaveEditor.h"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
+#include "soh/Enhancements/randomizer/randomizer.h"
 #include "soh/util.h"
 #include "soh/SohGui/ImGuiUtils.h"
 #include "soh/OTRGlobals.h"

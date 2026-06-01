@@ -7,6 +7,7 @@
 #include <vector>
 #include <libultraship/controller/controldeck/ControlDeck.h>
 #include <libultraship/libultraship.h>
+#include "soh/Enhancements/randomizer/randomizer.h"
 
 extern "C" {
 #include <z64.h>
