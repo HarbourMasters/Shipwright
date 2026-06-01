@@ -263,7 +263,6 @@ static const Migration version3Migrations[] = {
     { "gRedGanonBlood", "gEnhancements.RedGanonBlood" },
     { "gRememberSaveLocation", "gEnhancements.RememberSaveLocation" },
     { "gRemoveExplosiveLimit", "gEnhancements.RemoveExplosiveLimit" },
-    { "gRestoreRBAValues", "gEnhancements.RestoreRBAValues" },
     { "gRupeeDash", "gEnhancements.RupeeDash" },
     { "gSceneSpecificDirtPathFix", "gEnhancements.SceneSpecificDirtPathFix" },
     { "gSeparateArrows", "gEnhancements.SeparateArrows" },

@@ -2,6 +2,7 @@
 #include "soh/ShipInit.hpp"
 
 extern "C" {
+#include "macros.h"
 #include "variables.h"
 }
 
@@ -382,12 +383,56 @@ void HandleRBASceneFlags(uint8_t itemToPutInBottle) {
 
 // padding bytes
 void HandleBAPaddingBytes() {
-    // Reading from padding bytes is not implemented
-    gSaveContext.equips.buttonItems[0] = 0;
+    u8 itemOnCRight = gSaveContext.equips.buttonItems[3];
+    u8 index;
+    switch (itemOnCRight) {
+        case ITEM_MASK_GERUDO:
+            index = 0;
+            break;
+        case ITEM_MASK_TRUTH:
+            index = 1;
+            break;
+        case ITEM_SONG_NOCTURNE:
+            index = 2;
+            break;
+        case ITEM_SONG_PRELUDE:
+            index = 3;
+            break;
+        default:
+            SPDLOG_WARN("[HandleRBAPaddingBytes] Invalid itemOnCRight ({})", itemOnCRight);
+            assert(false);
+            return;
+    }
+
+    assert(index >= 0 && index <= 3);
+
+    gSaveContext.equips.buttonItems[0] = gSaveContext.ship.rbaPaddingBytes[index];
 }
 
-void HandleRBAPaddingBytes() {
-    // Writing to padding bytes is not implemented
+void HandleRBAPaddingBytes(uint8_t itemToPutInBottle) {
+    u8 index;
+    switch (itemToPutInBottle) {
+        case ITEM_MASK_GERUDO:
+            index = 0;
+            break;
+        case ITEM_MASK_TRUTH:
+            index = 1;
+            break;
+        case ITEM_SONG_NOCTURNE:
+            index = 2;
+            break;
+        case ITEM_SONG_PRELUDE:
+            index = 3;
+            break;
+        default:
+            SPDLOG_WARN("[HandleRBAPaddingBytes] Invalid itemToPutInBottle ({})", itemToPutInBottle);
+            assert(false);
+            return;
+    }
+
+    assert(index >= 0 && index <= 3);
+
+    gSaveContext.ship.rbaPaddingBytes[index] = itemToPutInBottle;
 }
 
 // Bottle Adventure
@@ -418,6 +463,9 @@ void DoBA() {
         HandleBAPaddingBytes();
     } else if (itemOnCRight >= ITEM_SONG_LULLABY) {
         HandleBASceneFlags();
+    } else {
+        SPDLOG_WARN("[DoBA] Invalid itemOnCRight ({})", itemOnCRight);
+        assert(false);
     }
 }
 
@@ -426,29 +474,52 @@ void DoRBA(uint8_t itemToPutInBottle) {
     auto itemOnCRight = gSaveContext.equips.buttonItems[3];
 
     if (itemOnCRight >= ITEM_STICK && itemOnCRight <= ITEM_POTION_BLUE) {
-        HandleRBAInventoryItems(itemToPutInBottle);
+        if (!IS_RANDO) {
+            HandleRBAInventoryItems(itemToPutInBottle);
+        }
     } else if (itemOnCRight >= ITEM_FAIRY && itemOnCRight <= ITEM_MASK_BUNNY) {
-        HandleRBAInventoryAmmo(itemToPutInBottle);
+        if (!IS_RANDO || itemOnCRight != ITEM_BEAN) {
+            HandleRBAInventoryAmmo(itemToPutInBottle);
+        }
     } else if (itemOnCRight == ITEM_MASK_GORON || itemOnCRight == ITEM_MASK_ZORA) {
-        HandleRBAInventoryEquipment(itemToPutInBottle);
+        if (!IS_RANDO) {
+            HandleRBAInventoryEquipment(itemToPutInBottle);
+        }
     } else if (itemOnCRight == ITEM_MASK_GERUDO || itemOnCRight == ITEM_MASK_TRUTH) {
-        HandleRBAPaddingBytes();
+        HandleRBAPaddingBytes(itemToPutInBottle);
     } else if (itemOnCRight >= ITEM_SOLD_OUT && itemOnCRight <= ITEM_COJIRO) {
-        HandleRBAInventoryUpgrades(itemToPutInBottle);
+        if (!IS_RANDO) {
+            HandleRBAInventoryUpgrades(itemToPutInBottle);
+        }
     } else if (itemOnCRight >= ITEM_ODD_MUSHROOM && itemOnCRight <= ITEM_SWORD_BROKEN) {
-        HandleRBAInventoryQuestItems(itemToPutInBottle);
+        if (!IS_RANDO) {
+            HandleRBAInventoryQuestItems(itemToPutInBottle);
+        }
     } else if (itemOnCRight >= ITEM_PRESCRIPTION && itemOnCRight <= ITEM_BULLET_BAG_30) {
-        HandleRBAInventoryDungeonItems(itemToPutInBottle);
+        if (!IS_RANDO) {
+            HandleRBAInventoryDungeonItems(itemToPutInBottle);
+        }
     } else if (itemOnCRight >= ITEM_BULLET_BAG_40 && itemOnCRight <= ITEM_SWORD_KNIFE) {
-        HandleRBAInventoryDungeonKeys(itemToPutInBottle);
+        if (!IS_RANDO) {
+            HandleRBAInventoryDungeonKeys(itemToPutInBottle);
+        }
     } else if (itemOnCRight == ITEM_SONG_BOLERO) {
-        HandleRBAInventoryDefenseHearts(itemToPutInBottle);
+        if (!IS_RANDO) {
+            HandleRBAInventoryDefenseHearts(itemToPutInBottle);
+        }
     } else if (itemOnCRight == ITEM_SONG_SERENADE || itemOnCRight == ITEM_SONG_REQUIEM) {
-        HandleRBAInventoryGSTokens(itemToPutInBottle);
+        if (!IS_RANDO) {
+            HandleRBAInventoryGSTokens(itemToPutInBottle);
+        }
     } else if (itemOnCRight == ITEM_SONG_NOCTURNE || itemOnCRight == ITEM_SONG_PRELUDE) {
-        HandleRBAPaddingBytes();
+        HandleRBAPaddingBytes(itemToPutInBottle);
     } else if (itemOnCRight >= ITEM_SONG_LULLABY) {
-        HandleRBASceneFlags(itemToPutInBottle);
+        if (!IS_RANDO) {
+            HandleRBASceneFlags(itemToPutInBottle);
+        }
+    } else {
+        SPDLOG_WARN("[DoRBA] Invalid itemOnCRight ({})", itemOnCRight);
+        assert(false);
     }
 }
 
@@ -475,6 +546,27 @@ void RegisterBottleAdventure() {
 
         auto itemToPutInBottle = static_cast<uint8_t>(va_arg(args, int32_t));
         DoRBA(itemToPutInBottle);
+    });
+
+    static Color_RGB8 sGauntletColors[] = {
+        // values matching OOB reads on N64
+        { 0, 0, 6 },
+        { 2, 89, 24 },
+        { 6, 2, 90 },
+        { 96, 6, 2 },
+    };
+
+    REGISTER_VB_SHOULD(VB_SET_GAUNTLET_COLOR, {
+        Color_RGB8* color = va_arg(args, Color_RGB8*);
+        s32 strengthUpgrade = CUR_UPG_VALUE(UPG_STRENGTH);
+
+        if (strengthUpgrade <= 3) {
+            return;
+        }
+
+        color = &sGauntletColors[strengthUpgrade - 4];
+
+        *should = false;
     });
 }
 

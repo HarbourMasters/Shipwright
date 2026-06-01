@@ -1019,11 +1019,6 @@ Color_RGB8 sTunicColors[] = {
 Color_RGB8 sGauntletColors[] = {
     { 255, 255, 255 },
     { 254, 207, 15 },
-    // #region SOH [RBA] values matching OOB reads on N64
-    { 0, 0, 6 },
-    { 2, 89, 24 },
-    { 6, 2, 90 },
-    { 96, 6, 2 },
 };
 
 Gfx* sBootDListGroups[][2] = {
@@ -1100,7 +1095,9 @@ void Player_DrawImpl(PlayState* play, void** skeleton, Vec3s* jointTable, s32 dL
             if (strengthUpgrade >= 2) { // silver or gold gauntlets
                 gDPPipeSync(POLY_OPA_DISP++);
 
-                color = &sGauntletColors[strengthUpgrade - 2];
+                if (GameInteractor_Should(VB_SET_GAUNTLET_COLOR, true, color, strengthUpgrade)) {
+                    color = &sGauntletColors[strengthUpgrade - 2];
+                }
                 if (strengthUpgrade == PLAYER_STR_SILVER_G &&
                     CVarGetInteger(CVAR_COSMETIC("Gloves.SilverGauntlets.Changed"), 0)) {
                     sTemp = CVarGetColor24(CVAR_COSMETIC("Gloves.SilverGauntlets.Value"), *color);
