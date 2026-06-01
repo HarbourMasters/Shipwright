@@ -18,6 +18,7 @@
 #include "soh/SohGui/SohMenu.h"
 #include "soh/SohGui/UIWidgets.hpp"
 #include "soh/util.h"
+#include "SeedContext.h"
 
 #include <fast/Fast3dGui.h>
 
