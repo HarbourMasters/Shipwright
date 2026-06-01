@@ -1732,6 +1732,37 @@ const Entrance* EntranceShuffler::GetEntranceByIndex(int16_t index) {
     auto iter = entranceMap.find(index);
     return iter != entranceMap.end() ? iter->second : nullptr;
 }
+
+// Resolve which entrance savewarp should use after player leaves overworld.
+// Should only be used for decoupled & boss scenes,
+// remaining scenarios should just use currentEntranceIndex.
+int16_t GetReverseEntranceIndex(int16_t currentEntranceIndex) {
+    auto ctx = Rando::Context::GetInstance();
+
+    // Map currentEntranceIndex (which is the override after crossing) back to the logical
+    // forward entrance the player took, then return that forward's bound reverse index.
+    int16_t logicalIndex = currentEntranceIndex;
+    for (const auto& o : ctx->GetEntranceShuffler()->entranceOverrides) {
+        if (Entrance_EntranceIsNull(&o)) {
+            break;
+        }
+        if (o.override == currentEntranceIndex) {
+            logicalIndex = o.index;
+            break;
+        }
+    }
+
+    auto it = Rando::entranceMap.find(logicalIndex);
+    if (it == Rando::entranceMap.end()) {
+        return currentEntranceIndex;
+    }
+    Rando::Entrance* reverse = it->second->GetReverse();
+    if (reverse == nullptr) {
+        return currentEntranceIndex;
+    }
+    return reverse->GetIndex();
+}
+
 } // namespace Rando
 
 extern "C" EntranceOverride* Randomizer_GetEntranceOverrides() {

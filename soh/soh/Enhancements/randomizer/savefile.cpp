@@ -244,11 +244,10 @@ extern "C" void Randomizer_InitSaveFile() {
     // Starts pending ice traps out at 0 before potentially incrementing them down the line.
     gSaveContext.ship.pendingIceTrapCount = 0;
 
-    // Reset triforce pieces collected.
+    // Reset ship data
     gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected = 0;
-
-    // Reset Bombchu Bag Upgrade
     gSaveContext.ship.quest.data.randomizer.bombchuUpgradeLevel = 0;
+    gSaveContext.ship.quest.data.randomizer.dungeonEntranceIndex = -1;
 
     SetStartingItems();
 

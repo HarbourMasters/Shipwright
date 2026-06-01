@@ -3,8 +3,9 @@
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/custom-message/CustomMessageTypes.h"
-#include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "soh/Enhancements/randomizer/dungeon.h"
+#include "soh/Enhancements/randomizer/entrance.h"
+#include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "soh/Enhancements/randomizer/static_data.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
@@ -2710,7 +2711,31 @@ void RandomizerOnCuccoOrChickenHatch() {
     }
 }
 
-static void RandomizerRegisterHooks() {
+// bookkeeping for entrance rando, where savewarp needs to replace returning to start of dungeon
+// with returning to last overworld->dungeon entrance taken (or just before, for decoupled)
+static void Randomizer_OnTransitionEnd(s16 sceneNum) {
+    static s16 prevSceneNum = -1;
+    int8_t dungeonSceneKind = DungeonSceneKind(sceneNum);
+    if (dungeonSceneKind != 0 && DungeonSceneKind(prevSceneNum) == 0) {
+        if (RAND_GET_OPTION(RSK_DECOUPLED_ENTRANCES) || dungeonSceneKind == 2 ||
+            gSaveContext.entranceIndex == ENTR_DEKU_TREE_BOSS_DOOR ||
+            gSaveContext.entranceIndex == ENTR_DODONGOS_CAVERN_BOSS_DOOR ||
+            gSaveContext.entranceIndex == ENTR_JABU_JABU_BOSS_DOOR ||
+            gSaveContext.entranceIndex == ENTR_FOREST_TEMPLE_BOSS_DOOR ||
+            gSaveContext.entranceIndex == ENTR_FIRE_TEMPLE_BOSS_DOOR ||
+            gSaveContext.entranceIndex == ENTR_WATER_TEMPLE_BOSS_DOOR ||
+            gSaveContext.entranceIndex == ENTR_SPIRIT_TEMPLE_BOSS_DOOR ||
+            gSaveContext.entranceIndex == ENTR_SHADOW_TEMPLE_BOSS_DOOR) {
+            gSaveContext.ship.quest.data.randomizer.dungeonEntranceIndex =
+                Rando::GetReverseEntranceIndex(gSaveContext.entranceIndex);
+        } else {
+            gSaveContext.ship.quest.data.randomizer.dungeonEntranceIndex = gSaveContext.entranceIndex;
+        }
+    }
+    prevSceneNum = sceneNum;
+}
+
+static void RandomizerRegisterIsRando() {
     static uint32_t onFlagSetHook = 0;
     static uint32_t onSceneFlagSetHook = 0;
     static uint32_t onPlayerUpdateForRCQueueHook = 0;
@@ -2837,4 +2862,9 @@ static void RandomizerRegisterHooks() {
     });
 }
 
-static RegisterShipInitFunc initFunc_RegisterHooks(RandomizerRegisterHooks);
+static void RandomizerRegisterHooks() {
+    COND_HOOK(OnTransitionEnd, IS_RANDO, Randomizer_OnTransitionEnd)
+}
+
+static RegisterShipInitFunc initFunc_RegisterIsRando(RandomizerRegisterIsRando);
+static RegisterShipInitFunc initFunc_RegisterHooks(RandomizerRegisterHooks, { "IS_RANDO" });

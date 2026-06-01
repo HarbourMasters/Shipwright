@@ -35,7 +35,8 @@ extern "C" {
 
 void Entrance_Init(void);
 void Entrance_ResetEntranceTable(void);
-uint8_t Entrance_EntranceIsNull(EntranceOverride* entranceOverride);
+int8_t DungeonSceneKind(int scene);
+uint8_t Entrance_EntranceIsNull(const EntranceOverride* entranceOverride);
 int16_t Entrance_GetOverride(int16_t index);
 int16_t Entrance_OverrideNextIndex(int16_t nextEntranceIndex);
 int16_t Entrance_PeekNextIndexOverride(int16_t nextEntranceIndex);
@@ -53,6 +54,7 @@ int32_t Entrance_OverrideSpawnSceneRoom(int32_t sceneNum, int32_t spawn, int32_t
 void Entrance_EnableFW(void);
 uint8_t Entrance_GetIsEntranceDiscovered(uint16_t entranceIndex);
 void Entrance_SetEntranceDiscovered(uint16_t entranceIndex, uint8_t isReversedEntrance);
+
 #ifdef __cplusplus
 }
 #endif
