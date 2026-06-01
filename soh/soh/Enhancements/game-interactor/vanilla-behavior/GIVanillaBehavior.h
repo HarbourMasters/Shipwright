@@ -622,6 +622,16 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // (gSaveContext.inventory.items[gSaveContext.equips.cButtonSlots[button - 1]] == ITEM_MILK_BOTTLE) &&
+    //     (item == ITEM_BOTTLE)
+    // ```
+    // #### `args`
+    // - `int32_t` (button - promoted from `u8`)
+    // - `int32_t` (item - promoted from `u8`)
+    VB_EMPTY_BOTTLE_TO_HALF_MILK,
+
+    // #### `result`
+    // ```c
     // (Message_GetState(&play->msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(play)
     // ```
     // #### `args`
