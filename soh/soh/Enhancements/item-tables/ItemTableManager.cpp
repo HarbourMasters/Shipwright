@@ -158,7 +158,6 @@ GetItemEntry ItemTableManager::RetrieveItemEntry(uint16_t tableID, uint16_t getI
     try {
         ItemTable* itemTable = RetrieveItemTable(tableID);
 
-        // GIM HotPatch
         if (getItemID > 32767)
         {
             auto offset = getItemID & 0xFF;
