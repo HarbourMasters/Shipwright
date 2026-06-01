@@ -3,7 +3,7 @@
 #if !defined(RANDO_ENUM_BEGIN) && !defined(RANDO_ENUM_ITEM) && !defined(RANDO_ENUM_END)
 // clang-format off
 #define RANDO_ENUM_BEGIN(EnumName) typedef enum EnumName {
-#define RANDO_ENUM_ITEM(name, ...) name __VA_OPT__(=) __VA_ARGS__,
+#define RANDO_ENUM_ITEM(prefix, name, ...) prefix ## _ ## name __VA_OPT__(=) __VA_ARGS__,
 #define RANDO_ENUM_END(EnumName) } EnumName;
 #define RANDO_ENUM__CLEANUP
 // clang-format on

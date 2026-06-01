@@ -8,7 +8,7 @@
         static const std::unordered_map<std::string_view, EnumName> map = [] {         \
             std::unordered_map<std::string_view, EnumName> m;
 
-#define RANDO_ENUM_ITEM(name, ...) m.emplace(#name, name);
+#define RANDO_ENUM_ITEM(prefix, name, ...) m.emplace(#prefix "_" #name, prefix##_##name);
 
 #define RANDO_ENUM_END(EnumName) \
     return m;                    \
@@ -25,7 +25,7 @@
         static const std::unordered_map<EnumName, std::string_view> map = [] {         \
             std::unordered_map<EnumName, std::string_view> m;
 
-#define RANDO_ENUM_ITEM(name, ...) m.emplace(name, #name);
+#define RANDO_ENUM_ITEM(prefix, name, ...) m.emplace(prefix##_##name, #prefix "_" #name);
 
 #define RANDO_ENUM_END(EnumName) \
     return m;                    \

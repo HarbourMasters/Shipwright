@@ -363,7 +363,7 @@ const std::vector<FlagTable> flagTables = {
       RANDOMIZER_INF,
       (RAND_INF_MAX + 15) / 16,
       {
-#define RANDO_ENUM_ITEM(rand_inf) { rand_inf, #rand_inf },
+#define RANDO_ENUM_ITEM(prefix, rand_inf) { prefix##_##rand_inf, #prefix "_" #rand_inf },
 #include "soh/Enhancements/randomizer/randomizerEnums/RandomizerInf.h"
 #undef RANDO_ENUM_ITEM
       } },

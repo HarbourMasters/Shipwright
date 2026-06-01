@@ -358,7 +358,7 @@ RandomizerCheck LocationOption::GetKey() const {
     return static_cast<RandomizerCheck>(key);
 }
 
-#define RANDO_ENUM_ITEM(enum) { enum, #enum },
+#define RANDO_ENUM_ITEM(prefix, enum) { prefix##_##enum, #prefix "_" #enum },
 
 std::unordered_map<RandomizerTrick, std::string> trickNames = {
 #include "randomizerEnums/RandomizerTrick.h"
