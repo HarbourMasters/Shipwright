@@ -2362,6 +2362,7 @@ u8 Item_Give(PlayState* play, u8 item) {
                 temp = SLOT(item);
             }
 
+            bool bottleFound = false;
             for (i = 0; i < 4; i++) {
                 if (gSaveContext.inventory.items[temp + i] == ITEM_BOTTLE) {
                     // "Item_Pt(1)=%d Item_Pt(2)=%d Item_Pt(3)=%d   Empty Bottle=%d   Content=%d"
@@ -2382,9 +2383,18 @@ u8 Item_Give(PlayState* play, u8 item) {
                     }
 
                     gSaveContext.inventory.items[temp + i] = item;
+                    bottleFound = true;
                     break;
                 }
             }
+
+            if (!bottleFound)
+                for (i = 0; i < 4; i++) {
+                    if (gSaveContext.inventory.items[temp + i] == ITEM_NONE) {
+                        gSaveContext.inventory.items[temp + i] = item;
+                        break;
+                    }
+                }
         } else {
             if (item == ITEM_LETTER_RUTO) {
                 Flags_SetRandomizerInf(RAND_INF_OBTAINED_RUTOS_LETTER);

@@ -1,9 +1,6 @@
 #include "ItemTableManager.h"
 #include <stdexcept>
 
-#include "variables.h"
-#include "libultraship/libultra/types.h"
-
 ItemTableManager::ItemTableManager() {
 }
 
@@ -157,38 +154,16 @@ const uint8_t GimIdTable[] = {
     7, // 255 Deku Stick (+1)
 };
 
-GetItemEntry ItemTableManager::RetrieveGimEntry(int16_t tableID, uint16_t getItemID) {
+GetItemEntry ItemTableManager::RetrieveItemEntry(uint16_t tableID, uint16_t getItemID) {
     try {
         ItemTable* itemTable = RetrieveItemTable(tableID);
 
-        auto offset = getItemID & 0xFF;
-        if (offset < 128) getItemID = 0;
-        else getItemID = GimIdTable[offset - 128];
-
-        GetItemEntry getItemEntry = itemTable->at(getItemID);
-        auto item = getItemEntry.itemId;
-
-        // bottle items
-        if (item >= 0x15 && item <= 0x20) {
-            for (u16 i = 0; i < 4; i++) {
-                if (gSaveContext.inventory.items[SLOT_BOTTLE_1 + i] == ITEM_NONE) {
-                    gSaveContext.inventory.items[SLOT_BOTTLE_1 + i] = item;
-                    break;
-                }
-            }
+        if (getItemID > 32767) {
+            auto offset = getItemID & 0xFF;
+            if (offset < 128) getItemID = 0;
+            else getItemID = GimIdTable[offset - 128];
         }
 
-        getItemEntry.drawItemId = getItemEntry.itemId;
-        getItemEntry.drawModIndex = getItemEntry.modIndex;
-        return getItemEntry;
-    } catch (std::out_of_range& oor) { return GET_ITEM_NONE; }
-}
-
-GetItemEntry ItemTableManager::RetrieveItemEntry(uint16_t tableID, uint16_t getItemID) {
-    if (getItemID > 32767) return RetrieveGimEntry(tableID, getItemID);
-
-    try {
-        ItemTable* itemTable = RetrieveItemTable(tableID);
         GetItemEntry getItemEntry = itemTable->at(getItemID);
         getItemEntry.drawItemId = getItemEntry.itemId;
         getItemEntry.drawModIndex = getItemEntry.modIndex;

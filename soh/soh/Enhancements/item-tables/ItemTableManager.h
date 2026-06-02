@@ -13,7 +13,6 @@ class ItemTableManager {
     ~ItemTableManager();
     bool AddItemTable(uint16_t tableID);
     bool AddItemEntry(uint16_t tableID, uint16_t getItemID, GetItemEntry getItemEntry);
-    GetItemEntry RetrieveGimEntry(int16_t tableID, uint16_t getItemID);
     GetItemEntry RetrieveItemEntry(uint16_t tableID, uint16_t getItemID);
     bool ClearItemTable(uint16_t tableID);
 
