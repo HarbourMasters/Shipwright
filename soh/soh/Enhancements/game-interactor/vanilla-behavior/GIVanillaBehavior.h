@@ -2965,7 +2965,15 @@ typedef enum {
     // ```
     // #### `args`
     // - `*int32_t (camId)`
-    VB_SHOULD_LOAD_BG_IMAGE
+    VB_SHOULD_LOAD_BG_IMAGE,
+
+    // #### `result`
+    // ```c
+    // this->actor.floorHeight <= -10000.0f
+    // ```
+    // #### `args`
+    // - `*EnItem00`
+    VB_ITEM00_KILL
 } GIVanillaBehavior;
 
 #endif

@@ -258,6 +258,9 @@ void RegionTable_Init_GerudoFortress() {
     }, {
         //Locations
         LOCATION(RC_GF_GATE_EXIT_RECTANGLE_SIGN, logic->IsAdult && logic->CanRead()),
+        // "Decoy" crates to look like the crate in wasteland
+        LOCATION(RC_GF_FAR_AWAY_CRATE_CHILD, logic->IsChild && false),
+        LOCATION(RC_GF_FAR_AWAY_CRATE_ADULT, logic->IsAdult && false),
     }, {
         //Exits
         ENTRANCE(RR_GF_OUTSKIRTS,            logic->Get(LOGIC_GF_GATE_OPEN)),
