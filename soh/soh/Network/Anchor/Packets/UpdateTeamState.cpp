@@ -170,7 +170,7 @@ void Anchor::HandlePacket_UpdateTeamState(nlohmann::json payload) {
         }
 
         for (int i = 0; i < 14; i++) {
-            gSaveContext.eventChkInf[i] = loadedData.eventChkInf[i];
+            gSaveContext.eventChkInf[i] |= loadedData.eventChkInf[i];
         }
 
         for (int i = 0; i < 4; i++) {
@@ -179,7 +179,7 @@ void Anchor::HandlePacket_UpdateTeamState(nlohmann::json payload) {
 
         // Skip last row of infTable, don't want to sync swordless flag
         for (int i = 0; i < 29; i++) {
-            gSaveContext.infTable[i] = loadedData.infTable[i];
+            gSaveContext.infTable[i] |= loadedData.infTable[i];
         }
 
         for (int i = 0; i < ceil((RAND_INF_MAX + 15) / 16); i++) {
