@@ -101,7 +101,8 @@ class Logic {
     bool CanGetNightTimeGS();
     bool CanBreakUpperBeehives();
     bool CanBreakLowerBeehives();
-    bool CanBreakPots(EnemyDistance distance = ED_CLOSE, bool wallOrFloor = true, bool inWater = false, bool inGuardhouse = false);
+    bool CanBreakPots(EnemyDistance distance = ED_CLOSE, bool wallOrFloor = true, bool inWater = false,
+                      bool inGuardhouse = false);
     bool CanBreakCrates();
     bool CanBreakSmallCrates();
     bool CanBreakRocks();
