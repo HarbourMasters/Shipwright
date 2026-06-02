@@ -87,7 +87,7 @@ static Vec3f GetStackOffset(RandomizerCheck rc) {
     return it != sStackedWonderOffsets.end() ? it->second : Vec3f{ 0.0f, 0.0f, 0.0f };
 }
 
-void SpawnNTSC10WonderItem() {
+void SpawnNTSC1011WonderItem() {
     if (LINK_IS_ADULT && gPlayState->sceneNum == SCENE_ZORAS_FOUNTAIN) {
         Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_WONDER_ITEM, -667, 320, 1053, 0, 0, 1, 4799);
     } else if (LINK_IS_ADULT && gPlayState->sceneNum == SCENE_DEATH_MOUNTAIN_CRATER) {
@@ -246,21 +246,21 @@ void WonderHeishi_RandomizerSpawnCollectible(PlayState* play, Vec3f pos, f32 rot
 
 void RegisterShuffleWonderItems() {
     bool shouldRegister = IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_WONDER_ITEMS);
-    bool isNtscUs10 = false;
+    bool isNtscUs1011 = false;
     for (uint32_t i = 0; i < ResourceMgr_GetNumGameVersions(); i++) {
-        if (ResourceMgr_GetGameVersion(i) == OOT_NTSC_US_10) {
-            isNtscUs10 = true;
+        if (ResourceMgr_GetGameVersion(i) == OOT_NTSC_US_10 || ResourceMgr_GetGameVersion(i) == OOT_NTSC_US_11) {
+            isNtscUs1011 = true;
         }
     }
     bool shouldRegisterOverworld = RAND_GET_OPTION(RSK_SHUFFLE_WONDER_ITEMS).Is(RO_SHUFFLE_WONDER_ITEMS_ALL) ||
                                    RAND_GET_OPTION(RSK_SHUFFLE_WONDER_ITEMS).Is(RO_SHUFFLE_WONDER_ITEMS_OVERWORLD);
-    bool shouldRegisterNTSC10 = shouldRegister && isNtscUs10 && shouldRegisterOverworld;
+    bool shouldRegisterNTSC1011 = shouldRegister && isNtscUs1011 && shouldRegisterOverworld;
 
     // Draw particle effect in wonder item spot to indicate a randomized item
     COND_ID_HOOK(OnActorUpdate, ACTOR_EN_WONDER_ITEM, shouldRegister, EnWonderItem_RandomizerDrawSetup);
 
-    // Spawn missing wonder items for NTSC 1.0
-    COND_HOOK(OnSceneSpawnActors, shouldRegisterNTSC10, SpawnNTSC10WonderItem);
+    // Spawn missing wonder items for NTSC 1.0 and NTSC 1.1
+    COND_HOOK(OnSceneSpawnActors, shouldRegisterNTSC1011, SpawnNTSC1011WonderItem);
 
     // Prevent or delay actor kill until EnWonderItem_RandomizerDrawSetup in case item isn't yet collected
     COND_VB_SHOULD(VB_WONDER_SPAWN, shouldRegister, { *should = false; });
