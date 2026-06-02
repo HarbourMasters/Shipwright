@@ -1288,7 +1288,7 @@ bool Logic::BlueFire() {
     return CanUse(RG_BOTTLE_WITH_BLUE_FIRE) || (ctx->GetOption(RSK_BLUE_FIRE_ARROWS) && CanUse(RG_ICE_ARROWS));
 }
 
-bool Logic::CanBreakPots(EnemyDistance distance, bool wallOrFloor, bool inWater) {
+bool Logic::CanBreakPots(EnemyDistance distance, bool wallOrFloor, bool inWater, bool inGuardhouse) {
     bool hit = false;
     switch (distance) {
         case ED_CLOSE:
@@ -1310,10 +1310,10 @@ bool Logic::CanBreakPots(EnemyDistance distance, bool wallOrFloor, bool inWater)
             hit = hit || CanUse(RG_BOOMERANG);
             [[fallthrough]];
         case ED_HOOKSHOT:
-            hit = hit || CanUse(RG_HOOKSHOT);
+            hit = hit || (!inGuardhouse && CanUse(RG_HOOKSHOT));
             [[fallthrough]];
         case ED_LONGSHOT:
-            hit = hit || CanUse(RG_LONGSHOT);
+            hit = hit || (!inGuardhouse && CanUse(RG_LONGSHOT));
             [[fallthrough]];
         case ED_FAR:
             hit = hit || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_FAIRY_BOW);
