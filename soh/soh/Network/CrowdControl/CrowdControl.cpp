@@ -132,6 +132,10 @@ void CrowdControl::EmitMessage(uint32_t eventId, long timeRemaining, EffectResul
 }
 
 CrowdControl::EffectResult CrowdControl::ExecuteEffect(Effect* effect) {
+    if (!GameInteractor::IsPlayerInControl()) {
+        return EffectResult::Retry;
+    }
+
     GameInteractionEffectQueryResult giResult;
     if (effect->category == kEffectCatSpawnEnemy) {
         giResult = GameInteractor::RawAction::SpawnEnemyWithOffset(effect->spawnParams[0], effect->spawnParams[1],
@@ -149,6 +153,10 @@ CrowdControl::EffectResult CrowdControl::ExecuteEffect(Effect* effect) {
 /// Checks if effect can be applied -- should not be used to check for spawn enemy effects.
 CrowdControl::EffectResult CrowdControl::CanApplyEffect(Effect* effect) {
     assert(effect->category != kEffectCatSpawnEnemy || effect->category != kEffectCatSpawnActor);
+    if (!GameInteractor::IsPlayerInControl()) {
+        return EffectResult::Retry;
+    }
+
     GameInteractionEffectQueryResult giResult = GameInteractor::CanApplyEffect(*effect->giEffect.get());
 
     return TranslateGiEnum(giResult);
