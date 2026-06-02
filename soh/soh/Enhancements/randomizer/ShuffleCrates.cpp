@@ -207,7 +207,8 @@ static CheckIdentity IdentifyCrate(s32 sceneNum, s32 posX, s32 posZ) {
 
     s32 actorParams = TWO_ACTOR_PARAMS(posX, posZ);
 
-    Rando::Location* location = OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_OBJ_KIBAKO2, crateSceneNum, actorParams);
+    Rando::Location* location =
+        OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_OBJ_KIBAKO2, crateSceneNum, actorParams);
 
     if (location->GetRandomizerCheck() == RC_UNKNOWN_CHECK) {
         LUSLOG_WARN("IdentifyCrate did not receive a valid RC value (%d).", location->GetRandomizerCheck());
@@ -229,7 +230,8 @@ static CheckIdentity IdentifySmallCrate(s32 sceneNum, s32 posX, s32 posZ) {
 
     s32 actorParams = TWO_ACTOR_PARAMS(posX, posZ);
 
-    Rando::Location* location = OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_OBJ_KIBAKO, smallCrateSceneNum, actorParams);
+    Rando::Location* location =
+        OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_OBJ_KIBAKO, smallCrateSceneNum, actorParams);
 
     if (location->GetRandomizerCheck() == RC_UNKNOWN_CHECK) {
         LUSLOG_WARN("IdentifyCrate did not receive a valid RC value (%d).", location->GetRandomizerCheck());
@@ -267,8 +269,7 @@ void ObjKibako2_RandomizerInit(void* actorRef) {
 
     ObjKibako2* crateActor = static_cast<ObjKibako2*>(actorRef);
 
-    auto crateIdentity = IdentifyCrate(gPlayState->sceneNum, (s16)actor->world.pos.x,
-                                                                          (s16)actor->world.pos.z);
+    auto crateIdentity = IdentifyCrate(gPlayState->sceneNum, (s16)actor->world.pos.x, (s16)actor->world.pos.z);
     ObjectExtension::GetInstance().Set<CheckIdentity>(actor, std::move(crateIdentity));
 }
 
@@ -280,8 +281,7 @@ void ObjKibako_RandomizerInit(void* actorRef) {
 
     ObjKibako* smallCrateActor = static_cast<ObjKibako*>(actorRef);
 
-    auto crateIdentity = IdentifySmallCrate(
-        gPlayState->sceneNum, (s16)actor->home.pos.x, (s16)actor->home.pos.z);
+    auto crateIdentity = IdentifySmallCrate(gPlayState->sceneNum, (s16)actor->home.pos.x, (s16)actor->home.pos.z);
     ObjectExtension::GetInstance().Set<CheckIdentity>(actor, std::move(crateIdentity));
 }
 

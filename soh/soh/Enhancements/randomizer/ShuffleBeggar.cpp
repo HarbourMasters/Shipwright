@@ -12,7 +12,8 @@ static CheckIdentity IdentifyBeggar(s32 sceneNum, s32 textId) {
     beggarIdentity.randomizerInf = RAND_INF_MAX;
     beggarIdentity.randomizerCheck = RC_UNKNOWN_CHECK;
 
-    Rando::Location* location = OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_EN_HY, sceneNum, textId);
+    Rando::Location* location =
+        OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_EN_HY, sceneNum, textId);
     if (location->GetRandomizerCheck() == RC_UNKNOWN_CHECK) {
         LUSLOG_WARN("IdentifyBeggar did not receive a valid RC value (%d).", location->GetRandomizerCheck());
     } else {

@@ -116,7 +116,8 @@ static CheckIdentity IdentifyWonderItem(s32 sceneNum, s32 par1, s32 par2) {
 
     s32 actorParams = TWO_ACTOR_PARAMS(par1, par2);
 
-    Rando::Location* location = OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_EN_WONDER_ITEM, wonderSceneNum, actorParams);
+    Rando::Location* location =
+        OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_EN_WONDER_ITEM, wonderSceneNum, actorParams);
 
     if (location->GetRandomizerCheck() == RC_UNKNOWN_CHECK) {
         LUSLOG_WARN("IdentifyWonderItem did not receive a valid RC value (%d).", location->GetRandomizerCheck());
@@ -136,10 +137,9 @@ uint8_t EnWonderItem_RandomizerHoldsItem(EnWonderItem* wonderActor, PlayState* p
         bool isDungeonScene = (play->sceneNum >= SCENE_DEKU_TREE && play->sceneNum <= SCENE_GERUDO_TRAINING_GROUND) ||
                               play->sceneNum == SCENE_INSIDE_GANONS_CASTLE;
         // For dungeons, use room Id and actor index. For overworld, use xz coordinates.
-        auto newIdentity = isDungeonScene ? IdentifyWonderItem(
-                                                play->sceneNum, (s16)play->roomCtx.curRoom.num, actorIndex)
-                                          : IdentifyWonderItem(
-                                                play->sceneNum, (s16)actor->world.pos.x, (s16)actor->world.pos.z);
+        auto newIdentity = isDungeonScene
+                               ? IdentifyWonderItem(play->sceneNum, (s16)play->roomCtx.curRoom.num, actorIndex)
+                               : IdentifyWonderItem(play->sceneNum, (s16)actor->world.pos.x, (s16)actor->world.pos.z);
 
         ObjectExtension::GetInstance().Set<CheckIdentity>(actor, std::move(newIdentity));
         wonderIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(actor);

@@ -168,7 +168,8 @@ static CheckIdentity IdentifyGrass(s32 sceneNum, s32 posX, s32 posZ, s32 respawn
         respawnData = TWO_ACTOR_PARAMS(posX, posZ);
     }
 
-    Rando::Location* location = OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_EN_KUSA, sceneNum, respawnData);
+    Rando::Location* location =
+        OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_EN_KUSA, sceneNum, respawnData);
 
     if (location->GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
         grassIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
@@ -187,8 +188,8 @@ void EnKusa_RandomizerInit(void* actorRef) {
     EnKusa* grassActor = static_cast<EnKusa*>(actorRef);
     s16 respawnData = gSaveContext.respawn[RESPAWN_MODE_RETURN].data & ((1 << 8) - 1);
 
-    auto grassIdentity = IdentifyGrass(
-        gPlayState->sceneNum, (s16)actor->world.pos.x, (s16)actor->world.pos.z, respawnData, gPlayState->linkAgeOnLoad);
+    auto grassIdentity = IdentifyGrass(gPlayState->sceneNum, (s16)actor->world.pos.x, (s16)actor->world.pos.z,
+                                       respawnData, gPlayState->linkAgeOnLoad);
     ObjectExtension::GetInstance().Set<CheckIdentity>(actor, std::move(grassIdentity));
 }
 

@@ -124,16 +124,20 @@ static CheckIdentity IdentifySign(s32 sceneNum, s32 posX, s32 posZ, s32 id) {
 
     switch (id) {
         case ACTOR_EN_KANBAN:
-            location = OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_EN_KANBAN, signSceneNum, actorParams);
+            location =
+                OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_EN_KANBAN, signSceneNum, actorParams);
             break;
         case ACTOR_EN_A_OBJ:
-            location = OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_EN_A_OBJ, signSceneNum, actorParams);
+            location =
+                OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_EN_A_OBJ, signSceneNum, actorParams);
             break;
         case ACTOR_EN_WONDER_TALK2:
-            location = OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_EN_WONDER_TALK2, signSceneNum, actorParams);
+            location = OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_EN_WONDER_TALK2, signSceneNum,
+                                                                                  actorParams);
             break;
         case ACTOR_EN_WONDER_TALK:
-            location = OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_EN_WONDER_TALK, signSceneNum, actorParams);
+            location = OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_EN_WONDER_TALK, signSceneNum,
+                                                                                  actorParams);
             break;
         default:
             return signIdentity;
@@ -156,8 +160,8 @@ void RegisterShuffleSigns() {
         Actor* actor = static_cast<Actor*>(actorRef);
         EnKanban* signActor = static_cast<EnKanban*>(actorRef);
 
-        auto signIdentity = IdentifySign(
-            gPlayState->sceneNum, (s16)actor->world.pos.x, (s16)actor->world.pos.z, actor->id);
+        auto signIdentity =
+            IdentifySign(gPlayState->sceneNum, (s16)actor->world.pos.x, (s16)actor->world.pos.z, actor->id);
         ObjectExtension::GetInstance().Set<CheckIdentity>(actor, std::move(signIdentity));
     });
 
@@ -165,8 +169,8 @@ void RegisterShuffleSigns() {
         Actor* actor = static_cast<Actor*>(actorRef);
         EnAObj* signActor = static_cast<EnAObj*>(actorRef);
 
-        auto signIdentity = IdentifySign(
-            gPlayState->sceneNum, (s16)actor->world.pos.x, (s16)actor->world.pos.z, actor->id);
+        auto signIdentity =
+            IdentifySign(gPlayState->sceneNum, (s16)actor->world.pos.x, (s16)actor->world.pos.z, actor->id);
         ObjectExtension::GetInstance().Set<CheckIdentity>(actor, std::move(signIdentity));
     });
 
@@ -174,8 +178,8 @@ void RegisterShuffleSigns() {
         Actor* actor = static_cast<Actor*>(actorRef);
         EnWonderTalk* signActor = static_cast<EnWonderTalk*>(actorRef);
 
-        auto signIdentity = IdentifySign(
-            gPlayState->sceneNum, (s16)actor->world.pos.x, (s16)actor->world.pos.z, actor->id);
+        auto signIdentity =
+            IdentifySign(gPlayState->sceneNum, (s16)actor->world.pos.x, (s16)actor->world.pos.z, actor->id);
         ObjectExtension::GetInstance().Set<CheckIdentity>(actor, std::move(signIdentity));
     });
 
@@ -183,8 +187,8 @@ void RegisterShuffleSigns() {
         Actor* actor = static_cast<Actor*>(actorRef);
         EnWonderTalk2* signActor = static_cast<EnWonderTalk2*>(actorRef);
 
-        auto signIdentity = IdentifySign(
-            gPlayState->sceneNum, (s16)actor->world.pos.x, (s16)actor->world.pos.z, actor->id);
+        auto signIdentity =
+            IdentifySign(gPlayState->sceneNum, (s16)actor->world.pos.x, (s16)actor->world.pos.z, actor->id);
         ObjectExtension::GetInstance().Set<CheckIdentity>(actor, std::move(signIdentity));
     });
 

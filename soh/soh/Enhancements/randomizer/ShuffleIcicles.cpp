@@ -100,7 +100,8 @@ static CheckIdentity IdentifyIcicle(s32 sceneNum, s32 posX, s32 posZ) {
 
     s32 actorParams = TWO_ACTOR_PARAMS(posX, posZ);
 
-    Rando::Location* location = OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_BG_ICE_TURARA, icicleSceneNum, actorParams);
+    Rando::Location* location =
+        OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_BG_ICE_TURARA, icicleSceneNum, actorParams);
 
     if (location->GetRandomizerCheck() == RC_UNKNOWN_CHECK) {
         LUSLOG_WARN("IdentifyIcicle did not receive a valid RC value (%d).", location->GetRandomizerCheck());
@@ -120,8 +121,7 @@ void RegisterShuffleIcicles() {
         Actor* actor = static_cast<Actor*>(actorRef);
         BgIceTurara* icicleActor = static_cast<BgIceTurara*>(actorRef);
 
-        auto icicleIdentity = IdentifyIcicle(
-            gPlayState->sceneNum, (s16)actor->world.pos.x, (s16)actor->world.pos.z);
+        auto icicleIdentity = IdentifyIcicle(gPlayState->sceneNum, (s16)actor->world.pos.x, (s16)actor->world.pos.z);
         ObjectExtension::GetInstance().Set<CheckIdentity>(actor, std::move(icicleIdentity));
     });
 

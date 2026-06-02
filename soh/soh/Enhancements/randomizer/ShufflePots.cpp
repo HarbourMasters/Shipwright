@@ -114,7 +114,8 @@ static CheckIdentity IdentifyPot(s32 sceneNum, s32 posX, s32 posZ) {
 
     s32 actorParams = TWO_ACTOR_PARAMS(posX, posZ);
 
-    Rando::Location* location = OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_OBJ_TSUBO, potSceneNum, actorParams);
+    Rando::Location* location =
+        OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_OBJ_TSUBO, potSceneNum, actorParams);
 
     if (location->GetRandomizerCheck() == RC_UNKNOWN_CHECK) {
         LUSLOG_WARN("IdentifyPot did not receive a valid RC value (%d).", location->GetRandomizerCheck());
@@ -133,8 +134,7 @@ void RegisterShufflePots() {
         Actor* actor = static_cast<Actor*>(actorRef);
         ObjTsubo* potActor = static_cast<ObjTsubo*>(actorRef);
 
-        auto potIdentity = IdentifyPot(gPlayState->sceneNum, (s16)actor->world.pos.x,
-                                                                          (s16)actor->world.pos.z);
+        auto potIdentity = IdentifyPot(gPlayState->sceneNum, (s16)actor->world.pos.x, (s16)actor->world.pos.z);
         ObjectExtension::GetInstance().Set<CheckIdentity>(actor, std::move(potIdentity));
     });
 

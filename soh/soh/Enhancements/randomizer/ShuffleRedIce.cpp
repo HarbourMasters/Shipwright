@@ -133,7 +133,8 @@ static CheckIdentity IdentifyRedIce(s32 sceneNum, s32 posX, s32 posZ) {
 
     s32 actorParams = TWO_ACTOR_PARAMS(posX, posZ);
 
-    Rando::Location* location = OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_BG_ICE_SHELTER, redIceSceneNum, actorParams);
+    Rando::Location* location =
+        OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_BG_ICE_SHELTER, redIceSceneNum, actorParams);
 
     if (location->GetRandomizerCheck() == RC_UNKNOWN_CHECK) {
         LUSLOG_WARN("IdentifyRedIce did not receive a valid RC value (%d).", location->GetRandomizerCheck());
@@ -153,8 +154,7 @@ void RegisterShuffleRedIce() {
         BgIceShelter* redIceActor = va_arg(args, BgIceShelter*);
         Actor* actor = (Actor*)redIceActor;
 
-        auto redIceIdentity = IdentifyRedIce(
-            gPlayState->sceneNum, (s16)actor->world.pos.x, (s16)actor->world.pos.z);
+        auto redIceIdentity = IdentifyRedIce(gPlayState->sceneNum, (s16)actor->world.pos.x, (s16)actor->world.pos.z);
         ObjectExtension::GetInstance().Set<CheckIdentity>(actor, std::move(redIceIdentity));
 
         if (*should) {

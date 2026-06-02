@@ -88,7 +88,8 @@ static CheckIdentity IdentifyBeehive(s32 sceneNum, s16 xPosition, s32 respawnDat
         respawnData = TWO_ACTOR_PARAMS(xPosition, 0);
     }
 
-    Rando::Location* location = OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_OBJ_COMB, sceneNum, respawnData);
+    Rando::Location* location =
+        OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_OBJ_COMB, sceneNum, respawnData);
 
     if (location->GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
         beehiveIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
@@ -101,8 +102,7 @@ static CheckIdentity IdentifyBeehive(s32 sceneNum, s16 xPosition, s32 respawnDat
 void ObjComb_RandomizerInit(void* actor) {
     ObjComb* objComb = static_cast<ObjComb*>(actor);
     s16 respawnData = gSaveContext.respawn[RESPAWN_MODE_RETURN].data & ((1 << 8) - 1);
-    auto beehiveIdentity = IdentifyBeehive(
-        gPlayState->sceneNum, (s16)objComb->actor.world.pos.x, respawnData);
+    auto beehiveIdentity = IdentifyBeehive(gPlayState->sceneNum, (s16)objComb->actor.world.pos.x, respawnData);
     ObjectExtension::GetInstance().Set<CheckIdentity>(actor, std::move(beehiveIdentity));
     objComb->actionFunc = (ObjCombActionFunc)ObjComb_RandomizerWait;
 }

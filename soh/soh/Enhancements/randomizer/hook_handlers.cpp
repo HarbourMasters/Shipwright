@@ -916,7 +916,8 @@ static ScrubIdentity IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respawnDat
         actorParams = TWO_ACTOR_PARAMS(actorParams, respawnData);
     }
 
-    Rando::Location* location = OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_EN_DNS, sceneNum, actorParams);
+    Rando::Location* location =
+        OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_EN_DNS, sceneNum, actorParams);
 
     if (location->GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
         if (location->GetRandomizerCheck() == RC_HF_DEKU_SCRUB_GROTTO ||
@@ -1517,8 +1518,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
         case VB_BUSINESS_SCRUB_DESPAWN: {
             EnShopnuts* enShopnuts = va_arg(args, EnShopnuts*);
             s16 respawnData = gSaveContext.respawn[RESPAWN_MODE_RETURN].data & ((1 << 8) - 1);
-            ScrubIdentity scrubIdentity = IdentifyScrub(
-                gPlayState->sceneNum, enShopnuts->actor.params, respawnData);
+            ScrubIdentity scrubIdentity = IdentifyScrub(gPlayState->sceneNum, enShopnuts->actor.params, respawnData);
 
             if (scrubIdentity.identity.randomizerCheck != RC_UNKNOWN_CHECK) {
                 *should = Flags_GetRandomizerInf(scrubIdentity.identity.randomizerInf);
@@ -2194,8 +2194,7 @@ void RandomizerOnActorInitHandler(void* actorRef) {
     if (actor->id == ACTOR_EN_DNS) {
         EnDns* enDns = static_cast<EnDns*>(actorRef);
         s16 respawnData = gSaveContext.respawn[RESPAWN_MODE_RETURN].data & ((1 << 8) - 1);
-        auto scrubIdentity =
-            IdentifyScrub(gPlayState->sceneNum, enDns->actor.params, respawnData);
+        auto scrubIdentity = IdentifyScrub(gPlayState->sceneNum, enDns->actor.params, respawnData);
 
         if (scrubIdentity.identity.randomizerCheck != RC_UNKNOWN_CHECK) {
             // DNS uses pointers so we're creating our own entry instead of modifying the original

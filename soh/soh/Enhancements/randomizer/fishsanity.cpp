@@ -68,7 +68,8 @@ static CheckIdentity IdentifyFish(s32 sceneNum, s32 actorParams) {
         return OTRGlobals::Instance->gRandoContext->GetFishsanity()->IdentifyPondFish(actorParams);
     }
 
-    Rando::Location* location = OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_EN_FISH, sceneNum, actorParams);
+    Rando::Location* location =
+        OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_EN_FISH, sceneNum, actorParams);
 
     if (location->GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
         fishIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
@@ -436,8 +437,7 @@ void Fishsanity::OnActorUpdateHandler(void* refActor) {
 
         // State 6 -> Fish caught and hoisted
         if (fish->fishState == 6) {
-            CheckIdentity identity =
-                IdentifyFish(gPlayState->sceneNum, actor->params);
+            CheckIdentity identity = IdentifyFish(gPlayState->sceneNum, actor->params);
             if (identity.randomizerCheck != RC_UNKNOWN_CHECK) {
                 Flags_SetRandomizerInf(identity.randomizerInf);
                 enableAdvance = true;

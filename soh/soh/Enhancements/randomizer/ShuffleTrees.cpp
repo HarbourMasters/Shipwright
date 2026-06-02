@@ -134,9 +134,11 @@ static CheckIdentity IdentifyTree(s32 sceneNum, s32 posX, s32 posZ) {
     }
 
     s32 actorParams = TWO_ACTOR_PARAMS(posX, posZ);
-    Rando::Location* location = OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_EN_WOOD02, sceneNum, actorParams);
+    Rando::Location* location =
+        OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_EN_WOOD02, sceneNum, actorParams);
     if (location->GetRandomizerCheck() != RC_UNKNOWN_CHECK &&
-        (location->GetRCType() != RCTYPE_NLTREE || OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LOGIC_RULES) == RO_LOGIC_NO_LOGIC)) {
+        (location->GetRCType() != RCTYPE_NLTREE ||
+         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LOGIC_RULES) == RO_LOGIC_NO_LOGIC)) {
         treeIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
         treeIdentity.randomizerCheck = location->GetRandomizerCheck();
         return treeIdentity;
@@ -154,8 +156,8 @@ void EnWood02_RandomizerInit(void* actorRef) {
         (treeActor->actor.params > WOOD_TREE_KAKARIKO_ADULT &&
          treeActor->actor.params <= WOOD_BUSH_BLACK_LARGE_SPAWNED &&
          Rando::Context::GetInstance()->GetOption(RSK_SHUFFLE_BUSHES).Get())) {
-        auto treeIdentity = IdentifyTree(
-            gPlayState->sceneNum, (s16)treeActor->actor.world.pos.x, (s16)treeActor->actor.world.pos.z);
+        auto treeIdentity =
+            IdentifyTree(gPlayState->sceneNum, (s16)treeActor->actor.world.pos.x, (s16)treeActor->actor.world.pos.z);
         if (treeIdentity.randomizerInf != RAND_INF_MAX && treeIdentity.randomizerCheck != RC_UNKNOWN_CHECK) {
             ObjectExtension::GetInstance().Set<CheckIdentity>(actorRef, std::move(treeIdentity));
         }

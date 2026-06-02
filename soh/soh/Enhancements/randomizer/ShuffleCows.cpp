@@ -47,7 +47,8 @@ static CheckIdentity IdentifyCow(s32 sceneNum, s32 posX, s32 posZ) {
         actorParams = TWO_ACTOR_PARAMS(posX, posZ);
     }
 
-    Rando::Location* location = OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_EN_COW, sceneNum, actorParams);
+    Rando::Location* location =
+        OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_EN_COW, sceneNum, actorParams);
 
     if (location->GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
         cowIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
@@ -62,9 +63,8 @@ void RegisterShuffleCows() {
 
     COND_VB_SHOULD(VB_GIVE_ITEM_FROM_COW, shouldRegister, {
         EnCow* enCow = va_arg(args, EnCow*);
-        CheckIdentity cowIdentity = IdentifyCow(
-            gPlayState->sceneNum, static_cast<int32_t>(enCow->actor.world.pos.x),
-            static_cast<int32_t>(enCow->actor.world.pos.z));
+        CheckIdentity cowIdentity = IdentifyCow(gPlayState->sceneNum, static_cast<int32_t>(enCow->actor.world.pos.x),
+                                                static_cast<int32_t>(enCow->actor.world.pos.z));
         // Has this cow already rewarded an item?
         if (!Flags_GetRandomizerInf(cowIdentity.randomizerInf)) {
             Flags_SetRandomizerInf(cowIdentity.randomizerInf);
