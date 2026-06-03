@@ -7,7 +7,6 @@
 extern "C" {
 #endif
 
-void UpdateHyperBossesState();
 void InitMods();
 void SwitchAge();
 

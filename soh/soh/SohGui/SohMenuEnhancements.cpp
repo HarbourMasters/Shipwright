@@ -1350,7 +1350,6 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Enemies", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Hyper Bosses", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("HyperBosses"))
-        .Callback([](WidgetInfo& info) { UpdateHyperBossesState(); })
         .Options(CheckboxOptions().Tooltip("All Major Bosses move and act twice as fast."));
     AddWidget(path, "Hyper Enemies", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("HyperEnemies"))
