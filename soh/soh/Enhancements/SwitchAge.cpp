@@ -1,9 +1,7 @@
-#include "mods.h"
+#include "soh/Enhancements/SwitchAge.h"
 #include <libultraship/bridge.h>
-#include "game-interactor/GameInteractor.h"
-#include "soh/Enhancements/boss-rush/BossRush.h"
 #include "soh/Enhancements/enhancementTypes.h"
-#include <soh/Enhancements/item-tables/ItemTableManager.h>
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 extern "C" {
 #include <z64.h>
