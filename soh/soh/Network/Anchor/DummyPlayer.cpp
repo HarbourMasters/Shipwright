@@ -120,7 +120,7 @@ void DummyPlayer_Update(Actor* actor, PlayState* play) {
     Math_Vec3s_Copy(&player->upperLimbRot, &client.upperLimbRot);
     Math_Vec3s_Copy(&actor->shape.rot, &client.posRot.rot);
     Math_Vec3f_Copy(&actor->world.pos, &client.posRot.pos);
-    player->skelAnime.jointTable = client.jointTable;
+    memcpy(player->skelAnime.jointTable, client.jointTable, sizeof(client.jointTable));
     player->skelAnime.movementFlags = client.movementFlags;
     Math_Vec3s_Copy(&player->skelAnime.prevTransl, &client.prevTransl);
     player->currentBoots = client.currentBoots;
