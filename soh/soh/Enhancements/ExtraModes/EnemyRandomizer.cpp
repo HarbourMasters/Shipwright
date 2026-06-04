@@ -10,6 +10,8 @@
 #include "soh/SohGui/MenuTypes.h"
 #include "soh/SohGui/SohMenu.h"
 
+#include "soh/Extractor/Extract.h"
+
 extern "C" {
 #include <z64.h>
 #include "src/overlays/actors/ovl_Bg_Haka/z_bg_haka.h"
@@ -34,15 +36,15 @@ extern std::shared_ptr<SohMenu> mSohMenu;
 #define CVAR_ENEMY_RANDOMIZER_VALUE CVarGetInteger(CVAR_ENEMY_RANDOMIZER_NAME, CVAR_ENEMY_RANDOMIZER_DEFAULT)
 #define ENEMY_RANDOMIZER_ENABLED CVAR_ENEMY_RANDOMIZER_VALUE != CVAR_ENEMY_RANDOMIZER_DEFAULT
 
-typedef struct EnemyEntry {
+typedef struct OoTEnemyEntry {
     const char* cvar;
     const char* name;
     int16_t id;
     int16_t params;
-} EnemyEntry;
+} OoTEnemyEntry;
 
 // clang-format off
-static EnemyEntry randomizedEnemySpawnTable[] = {
+static OoTEnemyEntry ootRandomizedEnemySpawnTable[] = {
     { CVAR_ENHANCEMENT("RandomizedEnemyList.Anubis"),           "Anubis",                ACTOR_EN_ANUBICE_TAG,      1 }, // Anubis
     { CVAR_ENHANCEMENT("RandomizedEnemyList.Armos"),            "Armos",                 ACTOR_EN_AM,              -1 }, // Armos
     { CVAR_ENHANCEMENT("RandomizedEnemyList.Arwing"),           "Arwing",                ACTOR_EN_CLEAR_TAG,        1 }, // Arwing
@@ -111,6 +113,73 @@ static EnemyEntry randomizedEnemySpawnTable[] = {
 };
 // clang-format on
 
+typedef struct MMEnemyEntry {
+    const char* cvar;
+    const char* name;
+    int16_t* id;
+    int16_t params;
+} MMEnemyEntry;
+
+extern "C" s16 gEnPpId;
+extern "C" s16 gEnBaguoId;
+extern "C" s16 gEnEncount3Id;
+extern "C" s16 gEnJsoId;
+
+// clang-format off
+static MMEnemyEntry mmRandomizedEnemySpawnTable[] = {
+    { CVAR_ENHANCEMENT("RandomizedEnemyList.MM.Hiploop"), "Hiploop", &gEnPpId,    0 }, // Hiploop
+    { CVAR_ENHANCEMENT("RandomizedEnemyList.MM.Nejiron"), "Nejiron", &gEnBaguoId, 0 }, // Nejiron
+    { CVAR_ENHANCEMENT("RandomizedEnemyList.MM.Garo"),    "Garo",    &gEnJsoId,   0 }, // Garo
+};
+// clang-format on
+
+#define ENEMY_ENTRY_TYPE_OOT 0
+#define ENEMY_ENTRY_TYPE_MM 1
+
+typedef struct EnemyEntry {
+    u8 type;
+    union {
+        OoTEnemyEntry oot;
+        MMEnemyEntry mm;
+    } inner;
+
+    const char* cvar() {
+        switch (this->type) {
+            case ENEMY_ENTRY_TYPE_OOT:
+                return this->inner.oot.cvar;
+            case ENEMY_ENTRY_TYPE_MM:
+                return this->inner.mm.cvar;
+        }
+    }
+
+    const char* name() {
+        switch (this->type) {
+            case ENEMY_ENTRY_TYPE_OOT:
+                return this->inner.oot.name;
+            case ENEMY_ENTRY_TYPE_MM:
+                return this->inner.mm.name;
+        }
+    }
+
+    int16_t id() {
+        switch (this->type) {
+            case ENEMY_ENTRY_TYPE_OOT:
+                return this->inner.oot.id;
+            case ENEMY_ENTRY_TYPE_MM:
+                return *this->inner.mm.id;
+        }
+    }
+
+    int16_t params() {
+        switch (this->type) {
+            case ENEMY_ENTRY_TYPE_OOT:
+                return this->inner.oot.params;
+            case ENEMY_ENTRY_TYPE_MM:
+                return this->inner.mm.params;
+        }
+    }
+} EnemyEntry;
+
 static int enemiesToRandomize[] = {
     ACTOR_EN_ANUBICE_TAG, // Anubis
     ACTOR_EN_FIREFLY,     // Keese (including fire/ice)
@@ -170,12 +239,13 @@ bool IsEnemyAllowedToSpawn(int16_t sceneNum, int8_t roomNum, EnemyEntry enemy) {
     // Wallmaster - Not easily visible, often makes players think they're softlocked and that there's no enemies left.
     // Club Moblin - Many issues with them falling or placing out of bounds. Maybe fixable in the future?
     bool enemiesToExcludeClearRooms =
-        enemy.id == ACTOR_EN_FZ || enemy.id == ACTOR_EN_VM || enemy.id == ACTOR_EN_SB || enemy.id == ACTOR_EN_NY ||
-        enemy.id == ACTOR_EN_CLEAR_TAG || enemy.id == ACTOR_EN_WALLMAS || enemy.id == ACTOR_EN_TORCH2 ||
-        (enemy.id == ACTOR_EN_MB && enemy.params == 0) || enemy.id == ACTOR_EN_FD || enemy.id == ACTOR_EN_ANUBICE_TAG;
+        enemy.id() == ACTOR_EN_FZ || enemy.id() == ACTOR_EN_VM || enemy.id() == ACTOR_EN_SB ||
+        enemy.id() == ACTOR_EN_NY || enemy.id() == ACTOR_EN_CLEAR_TAG || enemy.id() == ACTOR_EN_WALLMAS ||
+        enemy.id() == ACTOR_EN_TORCH2 || (enemy.id() == ACTOR_EN_MB && enemy.params() == 0) ||
+        enemy.id() == ACTOR_EN_FD || enemy.id() == ACTOR_EN_ANUBICE_TAG;
 
     // Bari - Spawns 3 more enemies, potentially extremely difficult in timed rooms.
-    bool enemiesToExcludeTimedRooms = enemiesToExcludeClearRooms || enemy.id == ACTOR_EN_VALI;
+    bool enemiesToExcludeTimedRooms = enemiesToExcludeClearRooms || enemy.id() == ACTOR_EN_VALI;
 
     switch (sceneNum) {
         // Deku Tree
@@ -234,11 +304,11 @@ bool IsEnemyAllowedToSpawn(int16_t sceneNum, int8_t roomNum, EnemyEntry enemy) {
         // Exclude Dark Link from room with holes in the floor because it can pull you in a like-like making the player
         // fall down.
         case SCENE_BOTTOM_OF_THE_WELL:
-            return (!(!isMQ && enemy.id == ACTOR_EN_TORCH2 && roomNum == 3));
+            return (!(!isMQ && enemy.id() == ACTOR_EN_TORCH2 && roomNum == 3));
         // Don't allow Dark Link in areas with lava void out zones as it voids out the player as well.
         // Gerudo Training Ground.
         case SCENE_GERUDO_TRAINING_GROUND:
-            return (!(enemy.id == ACTOR_EN_TORCH2 && roomNum == 6) &&
+            return (!(enemy.id() == ACTOR_EN_TORCH2 && roomNum == 6) &&
                     !(!isMQ && enemiesToExcludeTimedRooms && (roomNum == 1 || roomNum == 7)) &&
                     !(!isMQ && enemiesToExcludeClearRooms && (roomNum == 3 || roomNum == 5 || roomNum == 10)) &&
                     !(isMQ && enemiesToExcludeTimedRooms &&
@@ -248,17 +318,18 @@ bool IsEnemyAllowedToSpawn(int16_t sceneNum, int8_t roomNum, EnemyEntry enemy) {
         // becoming impossible to kill.
         // Ganon's Tower.
         case SCENE_GANONS_TOWER:
-            return (!(enemiesToExcludeClearRooms || enemy.id == ACTOR_EN_VALI ||
-                      (enemy.id == ACTOR_EN_ZF && enemy.params == -1)));
+            return (!(enemiesToExcludeClearRooms || enemy.id() == ACTOR_EN_VALI ||
+                      (enemy.id() == ACTOR_EN_ZF && enemy.params() == -1)));
         // Ganon's Tower Escape.
         case SCENE_GANONS_TOWER_COLLAPSE_INTERIOR:
-            return (!((enemiesToExcludeTimedRooms || (enemy.id == ACTOR_EN_ZF && enemy.params == -1)) && roomNum == 1));
+            return (
+                !((enemiesToExcludeTimedRooms || (enemy.id() == ACTOR_EN_ZF && enemy.params() == -1)) && roomNum == 1));
         // Don't allow big Stalchildren, big Peahats and the large Bari (jellyfish) during the Gohma fight because they
         // can clip into Gohma and it crashes the game. Likely because Gohma on the ceiling can't handle collision with
         // other enemies.
         case SCENE_DEKU_TREE_BOSS:
-            return (!enemiesToExcludeTimedRooms && !(enemy.id == ACTOR_EN_SKB && enemy.params == 20) &&
-                    !(enemy.id == ACTOR_EN_PEEHAT && enemy.params == -1));
+            return (!enemiesToExcludeTimedRooms && !(enemy.id() == ACTOR_EN_SKB && enemy.params() == 20) &&
+                    !(enemy.id() == ACTOR_EN_PEEHAT && enemy.params() == -1));
         // Grottos.
         case SCENE_GROTTOS:
             return (!(enemiesToExcludeClearRooms && (roomNum == 2 || roomNum == 7)));
@@ -268,7 +339,7 @@ bool IsEnemyAllowedToSpawn(int16_t sceneNum, int8_t roomNum, EnemyEntry enemy) {
         // Don't allow Dark Link in areas with lava void out zones as it voids out the player as well.
         // Death Mountain Crater.
         case SCENE_DEATH_MOUNTAIN_CRATER:
-            return (enemy.id != ACTOR_EN_TORCH2);
+            return (enemy.id() != ACTOR_EN_TORCH2);
         default:
             return 1;
     }
@@ -278,15 +349,30 @@ static std::vector<EnemyEntry> selectedEnemyList;
 
 void GetSelectedEnemies() {
     selectedEnemyList.clear();
-    for (int i = 0; i < ARRAY_COUNT(randomizedEnemySpawnTable); i++) {
+
+    for (int i = 0; i < ARRAY_COUNT(ootRandomizedEnemySpawnTable); i++) {
         if (CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemyList.All"), 0)) {
-            selectedEnemyList.push_back(randomizedEnemySpawnTable[i]);
-        } else if (CVarGetInteger(randomizedEnemySpawnTable[i].cvar, 1)) {
-            selectedEnemyList.push_back(randomizedEnemySpawnTable[i]);
+            selectedEnemyList.push_back(
+                EnemyEntry{ .type = ENEMY_ENTRY_TYPE_OOT, .inner = { .oot = ootRandomizedEnemySpawnTable[i] } });
+        } else if (CVarGetInteger(ootRandomizedEnemySpawnTable[i].cvar, 1)) {
+            selectedEnemyList.push_back(
+                EnemyEntry{ .type = ENEMY_ENTRY_TYPE_OOT, .inner = { .oot = ootRandomizedEnemySpawnTable[i] } });
         }
     }
+
+    for (int i = 0; i < ARRAY_COUNT(mmRandomizedEnemySpawnTable); i++) {
+        if (CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemyList.MM.All"), 0)) {
+            selectedEnemyList.push_back(
+                EnemyEntry{ .type = ENEMY_ENTRY_TYPE_MM, .inner = { .mm = mmRandomizedEnemySpawnTable[i] } });
+        } else if (CVarGetInteger(mmRandomizedEnemySpawnTable[i].cvar, 1)) {
+            selectedEnemyList.push_back(
+                EnemyEntry{ .type = ENEMY_ENTRY_TYPE_MM, .inner = { .mm = mmRandomizedEnemySpawnTable[i] } });
+        }
+    }
+
     if (selectedEnemyList.size() == 0) {
-        selectedEnemyList.push_back(randomizedEnemySpawnTable[0]);
+        selectedEnemyList.push_back(
+            EnemyEntry{ .type = ENEMY_ENTRY_TYPE_OOT, .inner = { .oot = ootRandomizedEnemySpawnTable[0] } });
     }
 }
 
@@ -317,7 +403,6 @@ EnemyEntry GetRandomizedEnemyEntry(uint32_t seed, PlayState* play) {
 }
 
 bool IsEnemyFoundToRandomize(int16_t sceneNum, int8_t roomNum, int16_t actorId, int16_t params, float posX) {
-
     uint32_t isMQ = ResourceMgr_IsSceneMasterQuest(sceneNum);
 
     for (int i = 0; i < ARRAY_COUNT(enemiesToRandomize); i++) {
@@ -458,8 +543,8 @@ uint8_t GetRandomizedEnemy(PlayState* play, int16_t* actorId, s16* posX, s16* po
             play->sceneNum + *actorId + (int)*posX + (int)*posY + (int)*posZ + *rotX + *rotY + *rotZ + *params;
         EnemyEntry randomEnemy = GetRandomizedEnemyEntry(seed, play);
 
-        *actorId = randomEnemy.id;
-        *params = randomEnemy.params;
+        *actorId = randomEnemy.id();
+        *params = randomEnemy.params();
 
         // Straighten out enemies so they aren't flipped on their sides when the original spawn is.
         *rotX = 0;
@@ -930,6 +1015,12 @@ static const std::map<int32_t, const char*> enemyRandomizerModes = {
     { ENEMY_RANDOMIZER_RANDOM_SEEDED, "Random (Seeded)" },
 };
 
+std::atomic<bool> extracting = false;
+std::atomic<size_t> extractCount = 0;
+std::atomic<size_t> totalExtract = 0;
+std::optional<std::future<void>> extractionTask;
+std::shared_ptr<BS::thread_pool> threadPool = std::make_shared<BS::thread_pool>(1);
+
 void RegisterEnemyRandomizerWidgets() {
     WidgetPath path = { "Enhancements", "Extra Modes", SECTION_COLUMN_2 };
 
@@ -963,7 +1054,7 @@ void RegisterEnemyRandomizerWidgets() {
         info.isHidden = !CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0);
     });
 
-    SohGui::mSohMenu->AddWidget(path, "Select all Enemies", WIDGET_CVAR_CHECKBOX)
+    SohGui::mSohMenu->AddWidget(path, "Select All Enemies", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("RandomizedEnemyList.All"))
         .PreFunc([](WidgetInfo& info) { info.isHidden = !CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0); })
         .Callback([](WidgetInfo& info) { GetSelectedEnemies(); });
@@ -972,14 +1063,74 @@ void RegisterEnemyRandomizerWidgets() {
         info.isHidden = !CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0);
     });
 
-    for (int i = 0; i < ARRAY_COUNT(randomizedEnemySpawnTable); i++) {
-        SohGui::mSohMenu->AddWidget(path, randomizedEnemySpawnTable[i].name, WIDGET_CVAR_CHECKBOX)
-            .CVar(randomizedEnemySpawnTable[i].cvar)
+    for (int i = 0; i < ARRAY_COUNT(ootRandomizedEnemySpawnTable); i++) {
+        SohGui::mSohMenu->AddWidget(path, ootRandomizedEnemySpawnTable[i].name, WIDGET_CVAR_CHECKBOX)
+            .CVar(ootRandomizedEnemySpawnTable[i].cvar)
             .Options(UIWidgets::CheckboxOptions().DefaultValue(true))
             .PreFunc([](WidgetInfo& info) {
                 info.isHidden = !CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0);
                 info.options->disabled = CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemyList.All"), 0);
                 info.options->disabledTooltip = "These options are disabled because \"Select All Enemies\" is enabled.";
+            })
+            .Callback([](WidgetInfo& info) { GetSelectedEnemies(); });
+    }
+
+    SohGui::mSohMenu->AddWidget(path, "EXPERIMENTAL", WIDGET_SEPARATOR_TEXT)
+        .Options(UIWidgets::TextOptions().Color(UIWidgets::Colors::Orange))
+        .PreFunc([](WidgetInfo& info) { info.isHidden = !CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0); });
+
+    SohGui::mSohMenu->AddWidget(path, "MM Enemies", WIDGET_TEXT).PreFunc([](WidgetInfo& info) {
+        info.isHidden = !CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0);
+    });
+
+    // TODO:
+    /*
+    if (extracting) {
+        std::string file = "TODO";
+        float progress = (totalExtract > 0.0f ? (float)extractCount / (float)totalExtract : 0) * 100.0f;
+        auto filename = std::filesystem::path(file).filename().string();
+        ImGui::Text("Extracting %s...%s", filename.c_str(), roundf(progress) == 100.0f ? " Done. Finishing up." : "");
+        std::string overlay = extractCount > 0 ? fmt::format("{:.0f}%", progress) : "Starting Up";
+        ImGui::ProgressBar(progress / 100.0f, ImVec2(600.0f, 50.0f), overlay.c_str());
+    } else {
+        SohGui::mSohMenu->AddWidget(path, "Extract MM ROM", WIDGET_BUTTON)
+            .PreFunc([](WidgetInfo& info) {
+                info.isHidden = !CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0);
+            })
+            .Callback([](WidgetInfo& info) {
+                extracting = true;
+                extractionTask = threadPool->submit_task([&]() -> void {
+                    Extractor extract = Extractor();
+                    extract.CallZapd(Ship::Context::GetAppBundlePath(),
+    Ship::Context::GetAppDirectoryPath(appShortName), &extractCount, &totalExtract, "mm_enemies.o2r");
+
+                    extracting = false;
+
+                    extractCount = 0;
+                    totalExtract = 0;
+                });
+            });
+    }
+    */
+
+    SohGui::mSohMenu->AddWidget(path, "Select All MM Enemies", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("RandomizedEnemyList.MM.All"))
+        .PreFunc([](WidgetInfo& info) { info.isHidden = !CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0); })
+        .Callback([](WidgetInfo& info) { GetSelectedEnemies(); });
+
+    SohGui::mSohMenu->AddWidget(path, "MM Enemy List", WIDGET_SEPARATOR).PreFunc([](WidgetInfo& info) {
+        info.isHidden = !CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0);
+    });
+
+    for (int i = 0; i < ARRAY_COUNT(mmRandomizedEnemySpawnTable); i++) {
+        SohGui::mSohMenu->AddWidget(path, mmRandomizedEnemySpawnTable[i].name, WIDGET_CVAR_CHECKBOX)
+            .CVar(mmRandomizedEnemySpawnTable[i].cvar)
+            .Options(UIWidgets::CheckboxOptions().DefaultValue(false))
+            .PreFunc([](WidgetInfo& info) {
+                info.isHidden = !CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0);
+                info.options->disabled = CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemyList.MM.All"), 0);
+                info.options->disabledTooltip =
+                    "These options are disabled because \"Select All MM Enemies\" is enabled.";
             })
             .Callback([](WidgetInfo& info) { GetSelectedEnemies(); });
     }

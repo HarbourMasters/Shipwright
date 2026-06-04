@@ -612,8 +612,76 @@ static ActorDBInit EnPartnerInit = {
 };
 extern "C" s16 gEnPartnerId;
 
+#include "Enhancements/mm_actors/ovl_En_Pp/z_en_pp.h"
+static ActorDBInit EnPpInit = {
+    "En_Pp",
+    "Hiploop",
+    ACTORCAT_ENEMY,
+    (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE),
+    OBJECT_GAMEPLAY_KEEP,
+    sizeof(EnPp),
+    (ActorFunc)EnPp_Init,
+    (ActorFunc)EnPp_Destroy,
+    (ActorFunc)EnPp_Update,
+    (ActorFunc)EnPp_Draw,
+    nullptr,
+};
+extern "C" s16 gEnPpId;
+
+#include "Enhancements/mm_actors/ovl_En_Baguo/z_en_baguo.h"
+static ActorDBInit EnBaguoInit = {
+    "En_Baguo",
+    "Nejiron",
+    ACTORCAT_ENEMY,
+    (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE),
+    OBJECT_GAMEPLAY_KEEP,
+    sizeof(EnBaguo),
+    (ActorFunc)EnBaguo_Init,
+    (ActorFunc)EnBaguo_Destroy,
+    (ActorFunc)EnBaguo_Update,
+    nullptr,
+    nullptr,
+};
+extern "C" s16 gEnBaguoId;
+
+#include "Enhancements/mm_actors/ovl_En_Encount3/z_en_encount3.h"
+static ActorDBInit EnEncount3Init = {
+    "En_Encount3",
+    "Garo Spawner (Broken)",
+    ACTORCAT_ENEMY,
+    (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED | ACTOR_FLAG_LOCK_ON_DISABLED),
+    OBJECT_GAMEPLAY_KEEP,
+    sizeof(EnEncount3),
+    (ActorFunc)EnEncount3_Init,
+    (ActorFunc)EnEncount3_Destroy,
+    (ActorFunc)EnEncount3_Update,
+    (ActorFunc)EnEncount3_Draw,
+    nullptr,
+};
+extern "C" s16 gEnEncount3Id;
+
+#include "Enhancements/mm_actors/ovl_En_Jso/z_en_jso.h"
+static ActorDBInit EnJsoInit = {
+    "En_Jso",
+    "Garo",
+    ACTORCAT_ENEMY,
+    (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED),
+    OBJECT_GAMEPLAY_KEEP,
+    sizeof(EnJso),
+    (ActorFunc)EnJso_Init,
+    (ActorFunc)EnJso_Destroy,
+    (ActorFunc)EnJso_Update,
+    nullptr,
+    nullptr,
+};
+extern "C" s16 gEnJsoId;
+
 void ActorDB::AddBuiltInCustomActors() {
     gEnPartnerId = ActorDB::Instance->AddEntry(EnPartnerInit).entry.id;
+    gEnPpId = ActorDB::Instance->AddEntry(EnPpInit).entry.id;
+    gEnBaguoId = ActorDB::Instance->AddEntry(EnBaguoInit).entry.id;
+    gEnEncount3Id = ActorDB::Instance->AddEntry(EnEncount3Init).entry.id;
+    gEnJsoId = ActorDB::Instance->AddEntry(EnJsoInit).entry.id;
 }
 
 extern "C" ActorDBEntry* ActorDB_Retrieve(const int id) {
