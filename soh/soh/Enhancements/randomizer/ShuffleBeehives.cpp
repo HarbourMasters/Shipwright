@@ -1,6 +1,8 @@
 #include <soh/OTRGlobals.h>
 #include "static_data.h"
 #include "soh/ObjectExtension/ObjectExtension.h"
+#include "soh/Enhancements/randomizer/randomizer.h"
+#include "soh/Enhancements/randomizer/RCToRandInf.h"
 
 extern "C" {
 #include "src/overlays/actors/ovl_Obj_Comb/z_obj_comb.h"
@@ -74,11 +76,33 @@ void ObjComb_RandomizerWait(ObjComb* objComb, PlayState* play) {
     }
 }
 
+static CheckIdentity IdentifyBeehive(s32 sceneNum, s16 xPosition, s32 respawnData) {
+    CheckIdentity beehiveIdentity;
+
+    beehiveIdentity.randomizerInf = RAND_INF_MAX;
+    beehiveIdentity.randomizerCheck = RC_UNKNOWN_CHECK;
+
+    if (sceneNum == SCENE_GROTTOS) {
+        respawnData = TWO_ACTOR_PARAMS(xPosition, respawnData);
+    } else {
+        respawnData = TWO_ACTOR_PARAMS(xPosition, 0);
+    }
+
+    Rando::Location* location =
+        OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_OBJ_COMB, sceneNum, respawnData);
+
+    if (location->GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
+        beehiveIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
+        beehiveIdentity.randomizerCheck = location->GetRandomizerCheck();
+    }
+
+    return beehiveIdentity;
+}
+
 void ObjComb_RandomizerInit(void* actor) {
     ObjComb* objComb = static_cast<ObjComb*>(actor);
     s16 respawnData = gSaveContext.respawn[RESPAWN_MODE_RETURN].data & ((1 << 8) - 1);
-    auto beehiveIdentity = OTRGlobals::Instance->gRandomizer->IdentifyBeehive(
-        gPlayState->sceneNum, (s16)objComb->actor.world.pos.x, respawnData);
+    auto beehiveIdentity = IdentifyBeehive(gPlayState->sceneNum, (s16)objComb->actor.world.pos.x, respawnData);
     ObjectExtension::GetInstance().Set<CheckIdentity>(actor, std::move(beehiveIdentity));
     objComb->actionFunc = (ObjCombActionFunc)ObjComb_RandomizerWait;
 }

@@ -131,7 +131,8 @@ void DummyPlayer_Update(Actor* actor, PlayState* play) {
     player->itemAction = client.itemAction;
     player->heldItemAction = client.heldItemAction;
     player->invincibilityTimer = client.invincibilityTimer;
-    player->unk_862 = client.unk_862;
+    player->unk_862 =
+        (client.unk_862 > (s16)GID_MAXIMUM) ? (s16)GID_STONE_OF_AGONY : client.unk_862; // prevent OOB, show SoA if OOB
     player->unk_85C = client.unk_85C;
     player->av1.actionVar1 = client.actionVar1;
 

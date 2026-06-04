@@ -12,7 +12,7 @@
 #include "soh/Enhancements/cosmetics/CosmeticsEditor.h"
 #include "soh/Enhancements/audio/AudioEditor.h"
 #include "soh/Enhancements/randomizer/logic.h"
-#include "soh/Enhancements/randomizer/static_data.h"
+#include "soh/Enhancements/randomizer/randomizer.h"
 #include "soh/Enhancements/randomizer/split_songs.h"
 
 #define Path _Path

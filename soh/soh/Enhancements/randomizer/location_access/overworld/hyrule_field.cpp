@@ -221,17 +221,18 @@ void RegionTable_Init_HyruleField() {
 
     areaTable[RR_HF_SOUTHEAST_GROTTO] = Region("HF Southeast Grotto", SCENE_GROTTOS, grottoEvents, {
         //Locations
-        LOCATION(RC_HF_SOUTHEAST_GROTTO_CHEST,                  logic->HasItem(RG_OPEN_CHEST)),
-        LOCATION(RC_HF_SOUTHEAST_GROTTO_FISH,                   logic->HasBottle()),
-        LOCATION(RC_HF_SOUTHEAST_GROTTO_GOSSIP_STONE_FAIRY,     logic->CallGossipFairy()),
-        LOCATION(RC_HF_SOUTHEAST_GROTTO_GOSSIP_STONE_FAIRY_BIG, logic->CanUse(RG_SONG_OF_STORMS)),
-        LOCATION(RC_HF_SOUTHEAST_GROTTO_GOSSIP_STONE,           true),
-        LOCATION(RC_HF_SOUTHEAST_GROTTO_BEEHIVE_LEFT,           logic->CanBreakLowerBeehives()),
-        LOCATION(RC_HF_SOUTHEAST_GROTTO_BEEHIVE_RIGHT,          logic->CanBreakLowerBeehives()),
-        LOCATION(RC_HF_SOUTHEAST_GROTTO_GRASS_1,                logic->CanCutShrubs()),
-        LOCATION(RC_HF_SOUTHEAST_GROTTO_GRASS_2,                logic->CanCutShrubs()),
-        LOCATION(RC_HF_SOUTHEAST_GROTTO_GRASS_3,                logic->CanCutShrubs()),
-        LOCATION(RC_HF_SOUTHEAST_GROTTO_GRASS_4,                logic->CanCutShrubs()),
+        LOCATION(RC_HF_SOUTHEAST_GROTTO_CHEST,                   logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_HF_SOUTHEAST_GROTTO_FISH,                    logic->HasBottle()),
+        LOCATION(RC_HF_SOUTHEAST_GROTTO_GOSSIP_STONE_FAIRY,      logic->CallGossipFairy()),
+        LOCATION(RC_HF_SOUTHEAST_GROTTO_GOSSIP_STONE_FAIRY_BIG,  logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION(RC_HF_SOUTHEAST_GROTTO_GOSSIP_STONE,            true),
+        LOCATION(RC_HF_SOUTHEAST_GROTTO_BEEHIVE_LEFT,            logic->CanBreakLowerBeehives()),
+        LOCATION(RC_HF_SOUTHEAST_GROTTO_BEEHIVE_RIGHT,           logic->CanBreakLowerBeehives()),
+        LOCATION(RC_HF_SOUTHEAST_GROTTO_GRASS_1,                 logic->CanCutShrubs()),
+        LOCATION(RC_HF_SOUTHEAST_GROTTO_GRASS_2,                 logic->CanCutShrubs()),
+        LOCATION(RC_HF_SOUTHEAST_GROTTO_GRASS_3,                 logic->CanCutShrubs()),
+        LOCATION(RC_HF_SOUTHEAST_GROTTO_GRASS_4,                 logic->CanCutShrubs()),
+        LOCATION(RC_HF_SOUTHEAST_BOULDER_GROTTO_BUTTERFLY_FAIRY, logic->CanUse(RG_STICKS)),
     }, {
         //Exits
         ENTRANCE(RR_HYRULE_FIELD, true),
@@ -239,17 +240,18 @@ void RegionTable_Init_HyruleField() {
 
     areaTable[RR_HF_OPEN_GROTTO] = Region("HF Open Grotto", SCENE_GROTTOS, grottoEvents, {
         //Locations
-        LOCATION(RC_HF_OPEN_GROTTO_CHEST,                   logic->HasItem(RG_OPEN_CHEST)),
-        LOCATION(RC_HF_OPEN_GROTTO_FISH,                    logic->HasBottle()),
-        LOCATION(RC_HF_OPEN_GROTTO_GOSSIP_STONE_FAIRY,      logic->CallGossipFairy()),
-        LOCATION(RC_HF_OPEN_GROTTO_GOSSIP_STONE_FAIRY_BIG,  logic->CanUse(RG_SONG_OF_STORMS)),
-        LOCATION(RC_HF_OPEN_GROTTO_GOSSIP_STONE,            true),
-        LOCATION(RC_HF_OPEN_GROTTO_BEEHIVE_LEFT,            logic->CanBreakLowerBeehives()),
-        LOCATION(RC_HF_OPEN_GROTTO_BEEHIVE_RIGHT,           logic->CanBreakLowerBeehives()),
-        LOCATION(RC_HF_OPEN_GROTTO_GRASS_1,                 logic->CanCutShrubs()),
-        LOCATION(RC_HF_OPEN_GROTTO_GRASS_2,                 logic->CanCutShrubs()),
-        LOCATION(RC_HF_OPEN_GROTTO_GRASS_3,                 logic->CanCutShrubs()),
-        LOCATION(RC_HF_OPEN_GROTTO_GRASS_4,                 logic->CanCutShrubs()),
+        LOCATION(RC_HF_OPEN_GROTTO_CHEST,                  logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_HF_OPEN_GROTTO_FISH,                   logic->HasBottle()),
+        LOCATION(RC_HF_OPEN_GROTTO_GOSSIP_STONE_FAIRY,     logic->CallGossipFairy()),
+        LOCATION(RC_HF_OPEN_GROTTO_GOSSIP_STONE_FAIRY_BIG, logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION(RC_HF_OPEN_GROTTO_GOSSIP_STONE,           true),
+        LOCATION(RC_HF_OPEN_GROTTO_BEEHIVE_LEFT,           logic->CanBreakLowerBeehives()),
+        LOCATION(RC_HF_OPEN_GROTTO_BEEHIVE_RIGHT,          logic->CanBreakLowerBeehives()),
+        LOCATION(RC_HF_OPEN_GROTTO_GRASS_1,                logic->CanCutShrubs()),
+        LOCATION(RC_HF_OPEN_GROTTO_GRASS_2,                logic->CanCutShrubs()),
+        LOCATION(RC_HF_OPEN_GROTTO_GRASS_3,                logic->CanCutShrubs()),
+        LOCATION(RC_HF_OPEN_GROTTO_GRASS_4,                logic->CanCutShrubs()),
+        LOCATION(RC_HF_OPEN_GROTTO_BUTTERFLY_FAIRY,        logic->CanUse(RG_STICKS)),
     }, {
         //Exits
         ENTRANCE(RR_HYRULE_FIELD, true),
@@ -304,6 +306,7 @@ void RegionTable_Init_HyruleField() {
         LOCATION(RC_HF_NEAR_MARKET_GROTTO_GRASS_2,                logic->CanCutShrubs()),
         LOCATION(RC_HF_NEAR_MARKET_GROTTO_GRASS_3,                logic->CanCutShrubs()),
         LOCATION(RC_HF_NEAR_MARKET_GROTTO_GRASS_4,                logic->CanCutShrubs()),
+        LOCATION(RC_HF_NEAR_MARKET_GROTTO_BUTTERFLY_FAIRY,        logic->CanUse(RG_STICKS)),
     }, {
         //Exits
         ENTRANCE(RR_HYRULE_FIELD, true),

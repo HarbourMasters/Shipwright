@@ -2,6 +2,8 @@
 #include "item_category_adj.h"
 #include "particle_cmc.h"
 #include "soh/frame_interpolation.h"
+#include "soh/Enhancements/randomizer/randomizer.h"
+#include "soh/Enhancements/randomizer/RCToRandInf.h"
 
 extern "C" {
 #include "functions.h"
@@ -89,6 +91,29 @@ void BgIceTurara_RandomizerSpawnCollectible(void* actor) {
     item00->actor.world.rot.y = static_cast<int16_t>(Rand_CenteredFloat(65536.0f));
 }
 
+static CheckIdentity IdentifyIcicle(s32 sceneNum, s32 posX, s32 posZ) {
+    struct CheckIdentity icicleIdentity;
+    uint32_t icicleSceneNum = sceneNum;
+
+    icicleIdentity.randomizerInf = RAND_INF_MAX;
+    icicleIdentity.randomizerCheck = RC_UNKNOWN_CHECK;
+
+    s32 actorParams = TWO_ACTOR_PARAMS(posX, posZ);
+
+    Rando::Location* location =
+        OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_BG_ICE_TURARA, icicleSceneNum, actorParams);
+
+    if (location->GetRandomizerCheck() == RC_UNKNOWN_CHECK) {
+        LUSLOG_WARN("IdentifyIcicle did not receive a valid RC value (%d).", location->GetRandomizerCheck());
+        assert(false);
+    } else {
+        icicleIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
+        icicleIdentity.randomizerCheck = location->GetRandomizerCheck();
+    }
+
+    return icicleIdentity;
+}
+
 void RegisterShuffleIcicles() {
     bool shouldRegister = IS_RANDO && Rando::Context::GetInstance()->GetOption(RSK_SHUFFLE_ICICLES).Get();
 
@@ -96,8 +121,7 @@ void RegisterShuffleIcicles() {
         Actor* actor = static_cast<Actor*>(actorRef);
         BgIceTurara* icicleActor = static_cast<BgIceTurara*>(actorRef);
 
-        auto icicleIdentity = OTRGlobals::Instance->gRandomizer->IdentifyIcicle(
-            gPlayState->sceneNum, (s16)actor->world.pos.x, (s16)actor->world.pos.z);
+        auto icicleIdentity = IdentifyIcicle(gPlayState->sceneNum, (s16)actor->world.pos.x, (s16)actor->world.pos.z);
         ObjectExtension::GetInstance().Set<CheckIdentity>(actor, std::move(icicleIdentity));
     });
 

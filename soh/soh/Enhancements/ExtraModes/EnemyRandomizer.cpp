@@ -763,7 +763,7 @@ void RegisterEnemyRandomizer() {
             // Offset small jellyfish with Enemy Randomizer, otherwise it gets
             // stuck in a loop spawning more big jellyfish with seeded spawns.
             if (CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0)) {
-                rotY += rand() % 50;
+                rotY += ShipUtils::Random(0, 50);
             }
 
             if (!GetRandomizedEnemy(play, &actorId, &posX, &posY, &posZ, &rotX, &rotY, &rotZ, &params)) {
