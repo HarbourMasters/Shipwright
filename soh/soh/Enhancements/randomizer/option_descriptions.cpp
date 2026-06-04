@@ -218,16 +218,8 @@ void Settings::CreateOptionDescriptions() {
         "\n"
         "Anywhere - Songs can appear at any location.";
     mOptionDescriptions[RSK_SPLIT_OCARINA_SONGS] =
-        "Randomizer option next to Shuffle Songs.\n"
-        "\n"
-        "Each of the 12 ocarina songs is split into a 2-step progressive song item. Collecting both progressive "
-        "steps grants the full song.\n"
-        "\n"
-        "Requires Shuffle Songs: \"Anywhere\" — Song Locations / Dungeon Rewards only have 12 song slots, so split "
-        "parts are not generated there.\n"
-        "\n"
-        "When enabled with Anywhere, the item pool places two progressive song pickups per song (24 total song "
-        "progressive pickups instead of 12 full songs).";
+        "Each ocarina song becomes a progressive song item (like bomb bag upgrades). The first pickup marks "
+        "progress; the second grants the full song. The pool includes extra copies per song to reduce softlocks.";
     mOptionDescriptions[RSK_SHUFFLE_TOKENS] = "Shuffles Golden Skulltula Tokens into the item pool. This means "
                                               "Golden Skulltulas can contain other items as well.\n"
                                               "\n"

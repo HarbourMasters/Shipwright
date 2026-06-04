@@ -219,12 +219,7 @@ ItemObtainability SplitSongs::GetProgressiveSongObtainability(RandomizerGet prog
 
 void SplitSongs::AppendShuffledSongPoolItems(std::vector<RandomizerGet>& pool, bool split) {
     for (const auto& def : kSplitSongs) {
-        if (split) {
-            pool.push_back(def.progressive);
-            pool.push_back(def.progressive);
-        } else {
-            pool.push_back(def.fullSong);
-        }
+        pool.push_back(split ? def.progressive : def.fullSong);
     }
 }
 

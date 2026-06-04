@@ -263,102 +263,37 @@ void GenerateItemPool() {
     if (ctx->GetOption(RSK_SHUFFLE_SONGS).IsNot(RO_SONG_SHUFFLE_OFF)) {
         bool songAnywhere = ctx->GetOption(RSK_SHUFFLE_SONGS).Is(RO_SONG_SHUFFLE_ANYWHERE);
         const bool split = ctx->GetOption(RSK_SPLIT_OCARINA_SONGS) && songAnywhere;
-        if (!ctx->GetOption(RSK_STARTING_ZELDAS_LULLABY).Get()) {
-            if (!split) {
-                AddItemToPool(RG_ZELDAS_LULLABY, songAnywhere ? 2 : 1, 1, 1, 1, songAnywhere);
-            } else {
-                AddItemToPool(RG_PROGRESSIVE_ZELDAS_LULLABY, songAnywhere ? 2 : 1, 1, 1, 1, songAnywhere);
-                AddItemToPool(RG_PROGRESSIVE_ZELDAS_LULLABY, songAnywhere ? 2 : 1, 1, 1, 1, songAnywhere);
+        const int defaultPlentiful = songAnywhere ? 2 : 1;
+        auto addShuffledSong = [&](RandomizerGet fullSong, RandomizerGet progressive, bool hasStarting) {
+            if (hasStarting) {
+                return;
             }
-        }
-        if (!ctx->GetOption(RSK_STARTING_EPONAS_SONG).Get()) {
             if (!split) {
-                AddItemToPool(RG_EPONAS_SONG, songAnywhere ? 2 : 1, 1, 1, 1, songAnywhere);
+                AddItemToPool(fullSong, defaultPlentiful, 1, 1, 1, songAnywhere);
             } else {
-                AddItemToPool(RG_PROGRESSIVE_EPONAS_SONG, songAnywhere ? 2 : 1, 1, 1, 1, songAnywhere);
-                AddItemToPool(RG_PROGRESSIVE_EPONAS_SONG, songAnywhere ? 2 : 1, 1, 1, 1, songAnywhere);
+                AddItemToPool(progressive, 3, 2, 2, 2, songAnywhere);
             }
-        }
-        if (!ctx->GetOption(RSK_STARTING_SARIAS_SONG).Get()) {
-            if (!split) {
-                AddItemToPool(RG_SARIAS_SONG, songAnywhere ? 2 : 1, 1, 1, 1, songAnywhere);
-            } else {
-                AddItemToPool(RG_PROGRESSIVE_SARIAS_SONG, songAnywhere ? 2 : 1, 1, 1, 1, songAnywhere);
-                AddItemToPool(RG_PROGRESSIVE_SARIAS_SONG, songAnywhere ? 2 : 1, 1, 1, 1, songAnywhere);
-            }
-        }
-        if (!ctx->GetOption(RSK_STARTING_SUNS_SONG).Get()) {
-            if (!split) {
-                AddItemToPool(RG_SUNS_SONG, songAnywhere ? 2 : 1, 1, 1, 1, songAnywhere);
-            } else {
-                AddItemToPool(RG_PROGRESSIVE_SUNS_SONG, songAnywhere ? 2 : 1, 1, 1, 1, songAnywhere);
-                AddItemToPool(RG_PROGRESSIVE_SUNS_SONG, songAnywhere ? 2 : 1, 1, 1, 1, songAnywhere);
-            }
-        }
-        if (!ctx->GetOption(RSK_STARTING_SONG_OF_TIME).Get()) {
-            if (!split) {
-                AddItemToPool(RG_SONG_OF_TIME, songAnywhere ? 2 : 1, 1, 1, 1, songAnywhere);
-            } else {
-                AddItemToPool(RG_PROGRESSIVE_SONG_OF_TIME, songAnywhere ? 2 : 1, 1, 1, 1, songAnywhere);
-                AddItemToPool(RG_PROGRESSIVE_SONG_OF_TIME, songAnywhere ? 2 : 1, 1, 1, 1, songAnywhere);
-            }
-        }
-        if (!ctx->GetOption(RSK_STARTING_SONG_OF_STORMS).Get()) {
-            if (!split) {
-                AddItemToPool(RG_SONG_OF_STORMS, songAnywhere ? 2 : 1, 1, 1, 1, songAnywhere);
-            } else {
-                AddItemToPool(RG_PROGRESSIVE_SONG_OF_STORMS, songAnywhere ? 2 : 1, 1, 1, 1, songAnywhere);
-                AddItemToPool(RG_PROGRESSIVE_SONG_OF_STORMS, songAnywhere ? 2 : 1, 1, 1, 1, songAnywhere);
-            }
-        }
-        if (!ctx->GetOption(RSK_STARTING_MINUET_OF_FOREST).Get()) {
-            if (!split) {
-                AddItemToPool(RG_MINUET_OF_FOREST, songAnywhere ? 2 : 1, 1, 1, 1, songAnywhere);
-            } else {
-                AddItemToPool(RG_PROGRESSIVE_MINUET_OF_FOREST, songAnywhere ? 2 : 1, 1, 1, 1, songAnywhere);
-                AddItemToPool(RG_PROGRESSIVE_MINUET_OF_FOREST, songAnywhere ? 2 : 1, 1, 1, 1, songAnywhere);
-            }
-        }
-        if (!ctx->GetOption(RSK_STARTING_BOLERO_OF_FIRE).Get()) {
-            if (!split) {
-                AddItemToPool(RG_BOLERO_OF_FIRE, songAnywhere ? 2 : 1, 1, 1, 1, songAnywhere);
-            } else {
-                AddItemToPool(RG_PROGRESSIVE_BOLERO_OF_FIRE, songAnywhere ? 2 : 1, 1, 1, 1, songAnywhere);
-                AddItemToPool(RG_PROGRESSIVE_BOLERO_OF_FIRE, songAnywhere ? 2 : 1, 1, 1, 1, songAnywhere);
-            }
-        }
-        if (!ctx->GetOption(RSK_STARTING_SERENADE_OF_WATER).Get()) {
-            if (!split) {
-                AddItemToPool(RG_SERENADE_OF_WATER, songAnywhere ? 2 : 1, 1, 1, 1, songAnywhere);
-            } else {
-                AddItemToPool(RG_PROGRESSIVE_SERENADE_OF_WATER, songAnywhere ? 2 : 1, 1, 1, 1, songAnywhere);
-                AddItemToPool(RG_PROGRESSIVE_SERENADE_OF_WATER, songAnywhere ? 2 : 1, 1, 1, 1, songAnywhere);
-            }
-        }
-        if (!ctx->GetOption(RSK_STARTING_REQUIEM_OF_SPIRIT).Get()) {
-            if (!split) {
-                AddItemToPool(RG_REQUIEM_OF_SPIRIT, songAnywhere ? 2 : 1, 1, 1, 1, songAnywhere);
-            } else {
-                AddItemToPool(RG_PROGRESSIVE_REQUIEM_OF_SPIRIT, songAnywhere ? 2 : 1, 1, 1, 1, songAnywhere);
-                AddItemToPool(RG_PROGRESSIVE_REQUIEM_OF_SPIRIT, songAnywhere ? 2 : 1, 1, 1, 1, songAnywhere);
-            }
-        }
-        if (!ctx->GetOption(RSK_STARTING_NOCTURNE_OF_SHADOW).Get()) {
-            if (!split) {
-                AddItemToPool(RG_NOCTURNE_OF_SHADOW, songAnywhere ? 2 : 1, 1, 1, 1, songAnywhere);
-            } else {
-                AddItemToPool(RG_PROGRESSIVE_NOCTURNE_OF_SHADOW, songAnywhere ? 2 : 1, 1, 1, 1, songAnywhere);
-                AddItemToPool(RG_PROGRESSIVE_NOCTURNE_OF_SHADOW, songAnywhere ? 2 : 1, 1, 1, 1, songAnywhere);
-            }
-        }
-        if (!ctx->GetOption(RSK_STARTING_PRELUDE_OF_LIGHT).Get()) {
-            if (!split) {
-                AddItemToPool(RG_PRELUDE_OF_LIGHT, songAnywhere ? 2 : 1, 1, 1, 1, songAnywhere);
-            } else {
-                AddItemToPool(RG_PROGRESSIVE_PRELUDE_OF_LIGHT, songAnywhere ? 2 : 1, 1, 1, 1, songAnywhere);
-                AddItemToPool(RG_PROGRESSIVE_PRELUDE_OF_LIGHT, songAnywhere ? 2 : 1, 1, 1, 1, songAnywhere);
-            }
-        }
+        };
+        addShuffledSong(RG_ZELDAS_LULLABY, RG_PROGRESSIVE_ZELDAS_LULLABY,
+                        ctx->GetOption(RSK_STARTING_ZELDAS_LULLABY).Get());
+        addShuffledSong(RG_EPONAS_SONG, RG_PROGRESSIVE_EPONAS_SONG, ctx->GetOption(RSK_STARTING_EPONAS_SONG).Get());
+        addShuffledSong(RG_SARIAS_SONG, RG_PROGRESSIVE_SARIAS_SONG, ctx->GetOption(RSK_STARTING_SARIAS_SONG).Get());
+        addShuffledSong(RG_SUNS_SONG, RG_PROGRESSIVE_SUNS_SONG, ctx->GetOption(RSK_STARTING_SUNS_SONG).Get());
+        addShuffledSong(RG_SONG_OF_TIME, RG_PROGRESSIVE_SONG_OF_TIME, ctx->GetOption(RSK_STARTING_SONG_OF_TIME).Get());
+        addShuffledSong(RG_SONG_OF_STORMS, RG_PROGRESSIVE_SONG_OF_STORMS,
+                        ctx->GetOption(RSK_STARTING_SONG_OF_STORMS).Get());
+        addShuffledSong(RG_MINUET_OF_FOREST, RG_PROGRESSIVE_MINUET_OF_FOREST,
+                        ctx->GetOption(RSK_STARTING_MINUET_OF_FOREST).Get());
+        addShuffledSong(RG_BOLERO_OF_FIRE, RG_PROGRESSIVE_BOLERO_OF_FIRE,
+                        ctx->GetOption(RSK_STARTING_BOLERO_OF_FIRE).Get());
+        addShuffledSong(RG_SERENADE_OF_WATER, RG_PROGRESSIVE_SERENADE_OF_WATER,
+                        ctx->GetOption(RSK_STARTING_SERENADE_OF_WATER).Get());
+        addShuffledSong(RG_REQUIEM_OF_SPIRIT, RG_PROGRESSIVE_REQUIEM_OF_SPIRIT,
+                        ctx->GetOption(RSK_STARTING_REQUIEM_OF_SPIRIT).Get());
+        addShuffledSong(RG_NOCTURNE_OF_SHADOW, RG_PROGRESSIVE_NOCTURNE_OF_SHADOW,
+                        ctx->GetOption(RSK_STARTING_NOCTURNE_OF_SHADOW).Get());
+        addShuffledSong(RG_PRELUDE_OF_LIGHT, RG_PROGRESSIVE_PRELUDE_OF_LIGHT,
+                        ctx->GetOption(RSK_STARTING_PRELUDE_OF_LIGHT).Get());
     } else {
         ctx->PlaceItemInLocation(RC_SHEIK_IN_FOREST, RG_MINUET_OF_FOREST, false, true);
         ctx->PlaceItemInLocation(RC_SHEIK_IN_CRATER, RG_BOLERO_OF_FIRE, false, true);

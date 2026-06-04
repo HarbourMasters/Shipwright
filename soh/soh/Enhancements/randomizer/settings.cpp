@@ -615,7 +615,7 @@ void Settings::CreateOptions() {
         } else if (shuffleSongs != RO_SONG_SHUFFLE_OFF) {
             mOptions[RSK_SPLIT_OCARINA_SONGS].Disable(
                 "Split Ocarina Songs is only supported when Shuffle Songs is \"Anywhere\" (other modes keep 12 song "
-                "checks, not 24 parts).");
+                "checks).");
         } else {
             mOptions[RSK_SPLIT_OCARINA_SONGS].Disable(
                 "Turn on Shuffle Songs to use Split Ocarina Songs (then set Shuffle Songs to \"Anywhere\").");
