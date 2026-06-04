@@ -6,6 +6,8 @@
  */
 #include <libultraship/libultraship.h>
 #include <soh/OTRGlobals.h>
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/randomizer/split_songs.h"
 #include "soh/Enhancements/randomizer/static_data.h"
 #include "soh/Enhancements/custom-message/CustomMessageTypes.h"
