@@ -1,4 +1,4 @@
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
@@ -22,11 +22,12 @@ static void IncrementEnemyDefeatCount(GameplayStatCount countType) {
     gSaveContext.ship.stats.count[countType]++;
 }
 
-#define ENEMY_DEFEAT_COUNT(actorID, func) \
-    COND_ID_HOOK(OnEnemyDefeat, actorID, true, [](void* refActor) { func(static_cast<Actor*>(refActor)); });
+#define ENEMY_DEFEAT_COUNT(actorID, func)      \
+    COND_ID_HOOK(OnEnemyDefeat, actorID, true, \
+                 [](IEvent* ev) { func(static_cast<Actor*>(reinterpret_cast<OnEnemyDefeat*>(ev)->actor)); });
 
 #define ENEMY_DEFEAT_COUNT_UNIQUE(actorID, countType) \
-    COND_ID_HOOK(OnEnemyDefeat, actorID, true, [](void*) { IncrementEnemyDefeatCount(countType); });
+    COND_ID_HOOK(OnEnemyDefeat, actorID, true, [](IEvent* ev) { IncrementEnemyDefeatCount(countType); });
 
 static void EnemyDefeatCounts_EnBb(Actor* actor) {
     GameplayStatCount countType;

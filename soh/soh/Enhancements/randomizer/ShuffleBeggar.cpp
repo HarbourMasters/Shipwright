@@ -24,7 +24,8 @@ uint8_t EnHy_RandomizerHoldsItem(int32_t textId) {
     return true;
 }
 
-void BuildEnHyMessage_BlueFire(uint16_t* textId, bool* loadFromMessageTable) {
+void BuildEnHyMessage_BlueFire(IEvent* event) {
+    OnOpenText* ev = reinterpret_cast<OnOpenText*>(event);
     if (!EnHy_RandomizerHoldsItem(TEXT_BEGGAR_BUY_BLUE_FIRE)) {
         return;
     }
@@ -38,10 +39,11 @@ void BuildEnHyMessage_BlueFire(uint16_t* textId, bool* loadFromMessageTable) {
         "articles spéciaux %btous les 7 ans environ%w...");
     msg.AutoFormat();
     msg.LoadIntoFont();
-    *loadFromMessageTable = false;
+    *ev->loadFromMessageTable = false;
 }
 
-void BuildEnHyMessage_Fish(uint16_t* textId, bool* loadFromMessageTable) {
+void BuildEnHyMessage_Fish(IEvent* event) {
+    OnOpenText* ev = reinterpret_cast<OnOpenText*>(event);
     if (!EnHy_RandomizerHoldsItem(TEXT_BEGGAR_BUY_FISH)) {
         return;
     }
@@ -54,10 +56,11 @@ void BuildEnHyMessage_Fish(uint16_t* textId, bool* loadFromMessageTable) {
         "articles spéciaux %btous les 7 ans environ%w...");
     msg.AutoFormat();
     msg.LoadIntoFont();
-    *loadFromMessageTable = false;
+    *ev->loadFromMessageTable = false;
 }
 
-void BuildEnHyMessage_Bug(uint16_t* textId, bool* loadFromMessageTable) {
+void BuildEnHyMessage_Bug(IEvent* event) {
+    OnOpenText* ev = reinterpret_cast<OnOpenText*>(event);
     if (!EnHy_RandomizerHoldsItem(TEXT_BEGGAR_BUY_BUGS)) {
         return;
     }
@@ -72,7 +75,7 @@ void BuildEnHyMessage_Bug(uint16_t* textId, bool* loadFromMessageTable) {
                       "articles spéciaux %btous les 7 ans environ%w...");
     msg.AutoFormat();
     msg.LoadIntoFont();
-    *loadFromMessageTable = false;
+    *ev->loadFromMessageTable = false;
 }
 
 void RegisterShuffleBeggar() {

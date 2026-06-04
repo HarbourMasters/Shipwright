@@ -12,6 +12,7 @@ extern "C" {
 #include "functions.h"
 #include "macros.h"
 #include "soh/cvar_prefixes.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
 
 extern PlayState* gPlayState;
@@ -169,7 +170,7 @@ extern "C" void ValueViewer_SetupDraw() {
 }
 
 void RegisterValueViewerHooks() {
-    COND_HOOK(OnGameFrameUpdate, CVAR_VALUE, []() { ValueViewer_SetupDraw(); });
+    COND_HOOK(OnGameFrameUpdate, CVAR_VALUE, [](IEvent* event) { ValueViewer_SetupDraw(); });
 }
 
 static RegisterShipInitFunc initFunc(RegisterValueViewerHooks, { CVAR_NAME });

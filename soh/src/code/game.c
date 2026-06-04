@@ -3,7 +3,6 @@
 #include "vt.h"
 #include "libultraship/bridge.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ResourceManagerHelpers.h"
 
 #include "message_data_static.h"
@@ -265,7 +264,7 @@ void GameState_Update(GameState* gameState) {
 
     GameState_SetFrameBuffer(gfxCtx);
 
-    GameInteractor_ExecuteOnGameStateMainStart();
+    CALL_EVENT(OnGameStateMainStart);
 
     gameState->main(gameState);
 
@@ -353,7 +352,7 @@ void GameState_Update(GameState* gameState) {
         gSaveContext.language = LANGUAGE_ENG;
     }
 
-    GameInteractor_ExecuteOnGameFrameUpdate();
+    CALL_EVENT(OnGameFrameUpdate);
     gameState->frames++;
 }
 

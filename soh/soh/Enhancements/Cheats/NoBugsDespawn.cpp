@@ -1,4 +1,4 @@
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
@@ -8,8 +8,9 @@ extern "C" {
 extern s16 D_80A7DEB8;
 }
 
-static void OnActorInitNoBugsDespawn(void* refActor) {
-    EnInsect* insect = reinterpret_cast<EnInsect*>(refActor);
+static void OnActorInitNoBugsDespawn(IEvent* event) {
+    OnActorInit* ev = reinterpret_cast<OnActorInit*>(event);
+    EnInsect* insect = reinterpret_cast<EnInsect*>(ev->actor);
 
     if ((insect->actor.params & 2) && insect->soilActor == NULL) {
         insect->insectFlags &= ~4;

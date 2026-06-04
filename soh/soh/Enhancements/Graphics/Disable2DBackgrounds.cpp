@@ -1,6 +1,6 @@
 #include <libultraship/bridge.h>
 #include "soh/Enhancements/enhancementTypes.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
@@ -87,8 +87,9 @@ std::set<SkyboxId> skyboxIdControlList = {
 };
 
 void Register3DPreRenderedScenes() {
-    COND_HOOK(AfterSceneCommands, CVAR_VALUE, [](int16_t sceneNum) {
-        if (!skyboxSceneControlList.contains(static_cast<SceneID>(sceneNum))) {
+    COND_HOOK(AfterSceneCommands, CVAR_VALUE, [](IEvent* event) {
+        AfterSceneCommands* ev = reinterpret_cast<AfterSceneCommands*>(event);
+        if (!skyboxSceneControlList.contains(static_cast<SceneID>(ev->sceneNum))) {
             return;
         }
 
@@ -98,13 +99,13 @@ void Register3DPreRenderedScenes() {
         // Replace skybox with normal sky
         gPlayState->skyboxId = SKYBOX_NORMAL_SKY;
         // Apply the always cloudy skybox as an adult for Temple of Time and the Market
-        if (sceneNum == SCENE_TEMPLE_OF_TIME_EXTERIOR_RUINS || sceneNum == SCENE_MARKET_RUINS ||
-            sceneNum == SCENE_MARKET_ENTRANCE_RUINS) {
+        if (ev->sceneNum == SCENE_TEMPLE_OF_TIME_EXTERIOR_RUINS || ev->sceneNum == SCENE_MARKET_RUINS ||
+            ev->sceneNum == SCENE_MARKET_ENTRANCE_RUINS) {
             gWeatherMode = 3;
         }
     });
 
-    COND_HOOK(OnPlayDrawBegin, CVAR_VALUE, []() {
+    COND_HOOK(OnPlayDrawBegin, CVAR_VALUE, [](IEvent* event) {
         if (!fogControlList.contains(static_cast<SceneID>(gPlayState->sceneNum))) {
             return;
         }

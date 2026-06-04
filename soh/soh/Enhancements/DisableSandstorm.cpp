@@ -3,8 +3,9 @@
 
 extern "C" PlayState* gPlayState;
 
-void DisableSandstormAfterTransition(int16_t sceneNum) {
-    if (sceneNum == SCENE_HAUNTED_WASTELAND) {
+void DisableSandstormAfterTransition(IEvent* event) {
+    const OnTransitionEnd* ev = reinterpret_cast<OnTransitionEnd*>(event);
+    if (ev->sceneNum == SCENE_HAUNTED_WASTELAND) {
         gPlayState->envCtx.sandstormState = SANDSTORM_OFF;
     }
 }

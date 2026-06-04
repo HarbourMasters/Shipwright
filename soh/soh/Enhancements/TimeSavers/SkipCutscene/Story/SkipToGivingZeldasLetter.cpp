@@ -31,8 +31,9 @@ void EnZl4_SkipToGivingZeldasLetter(EnZl4* enZl4, PlayState* play) {
     }
 }
 
-void SkipToGivingZeldasLetter_OnActorInit(void* actorPtr) {
-    EnZl4* enZl4 = static_cast<EnZl4*>(actorPtr);
+void SkipToGivingZeldasLetter_OnActorInit(IEvent* event) {
+    OnActorInit* ev = reinterpret_cast<OnActorInit*>(event);
+    EnZl4* enZl4 = static_cast<EnZl4*>(ev->actor);
     if (enZl4->actionFunc != EnZl4_Cutscene || enZl4->csState != 0)
         return;
 

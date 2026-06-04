@@ -1,7 +1,7 @@
 #include "z_en_fz.h"
 #include "objects/object_fz/object_fz.h"
 #include "soh/frame_interpolation.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 #define FLAGS                                                                                 \
     (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED | \
@@ -365,7 +365,7 @@ void EnFz_ApplyDamage(EnFz* this, PlayState* play) {
                         vec.z = this->actor.world.pos.z;
                         EnFz_Damaged(this, play, &vec, 30, 10.0f);
                         EnFz_SetupDespawn(this, play);
-                        GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+                        CALL_EVENT(OnEnemyDefeat, &this->actor);
                     }
                 }
             } else {

@@ -496,15 +496,17 @@ uint8_t GetRandomizedEnemy(PlayState* play, int16_t* actorId, s16* posX, s16* po
     return 1;
 }
 
-void FixClubMoblinScale(void* ptr) {
-    Actor* actor = (Actor*)ptr;
+void FixClubMoblinScale(IEvent* event) {
+    OnActorInit* ev = reinterpret_cast<OnActorInit*>(event);
+    Actor* actor = (Actor*)ev->actor;
     if (actor->params == -1) {
         Actor_SetScale(actor, 0.014f);
     }
 }
 
-static void OnGerudoFighterDefeat(void* refActor) {
-    EnGeldB* enGeldB = reinterpret_cast<EnGeldB*>(refActor);
+static void OnGerudoFighterDefeat(IEvent* event) {
+    OnEnemyDefeat* ev = reinterpret_cast<OnEnemyDefeat*>(event);
+    EnGeldB* enGeldB = reinterpret_cast<EnGeldB*>(ev->actor);
 
     if (enGeldB->keyFlag == 0) {
         Item_DropCollectibleRandom(gPlayState, &enGeldB->actor, &enGeldB->actor.world.pos, 0xC0);

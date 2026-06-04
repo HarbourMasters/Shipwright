@@ -16,7 +16,6 @@
 #include <assert.h>
 
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/randomizer/randomizer_grotto.h"
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
@@ -1826,11 +1825,11 @@ void GameplayStats_SetTimestamp(PlayState* play, u8 item) {
     }
 
     gSaveContext.ship.stats.itemTimestamp[item] = time;
-    GameInteractor_ExecuteOnTimestamp(item);
+    CALL_EVENT(OnTimestamp, item);
 }
 
 u8 Return_Item_Entry(GetItemEntry itemEntry, u8 returnItem) {
-    GameInteractor_ExecuteOnItemReceiveHooks(itemEntry);
+    CALL_EVENT(OnItemReceive, itemEntry);
     return returnItem;
 }
 
@@ -2798,7 +2797,7 @@ void Interface_SetDoAction(PlayState* play, u16 action) {
     PauseContext* pauseCtx = &play->pauseCtx;
 
     if (interfaceCtx->unk_1F0 != action) {
-        GameInteractor_ExecuteOnSetDoAction(action);
+        CALL_EVENT(OnSetDoAction, action);
         interfaceCtx->unk_1F0 = action;
         interfaceCtx->unk_1EC = 1;
         interfaceCtx->unk_1F4 = 0.0f;
@@ -2928,7 +2927,7 @@ s32 Health_ChangeBy(PlayState* play, s16 healthChange) {
     // "Life=%d ＊＊＊  %d ＊＊＊＊＊＊"
     osSyncPrintf("  ライフ=%d  ＊＊＊  %d  ＊＊＊＊＊＊\n", gSaveContext.health, healthLevel);
 
-    GameInteractor_ExecuteOnPlayerHealthChange(healthChange);
+    CALL_EVENT(OnPlayerHealthChange, healthChange);
 
     if (gSaveContext.health <= 0) {
         gSaveContext.health = 0;
@@ -6508,7 +6507,7 @@ void Interface_Update(PlayState* play) {
     Right_HUD_Margin = CVarGetInteger(CVAR_COSMETIC("HUD.Margin.R"), 0);
     Bottom_HUD_Margin = CVarGetInteger(CVAR_COSMETIC("HUD.Margin.B"), 0);
 
-    GameInteractor_ExecuteOnInterfaceUpdate();
+    CALL_EVENT(OnInterfaceUpdate);
 
     bool isPal = ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL;
 
@@ -6733,7 +6732,7 @@ void Interface_Update(PlayState* play) {
                     tempSaleMod = MOD_RANDOMIZER;
                 }
             }
-            GameInteractor_ExecuteOnSaleEndHooks(ItemTable_RetrieveEntry(tempSaleMod, tempSaleItem));
+            CALL_EVENT(OnSaleEnd, ItemTable_RetrieveEntry(tempSaleMod, tempSaleItem));
         }
     }
 

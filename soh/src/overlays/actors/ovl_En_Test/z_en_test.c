@@ -6,7 +6,7 @@
 
 #include "z_en_test.h"
 #include "objects/object_sk2/object_sk2.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
@@ -1530,7 +1530,7 @@ void func_80862E6C(EnTest* this, PlayState* play) {
             }
 
             Actor_Kill(&this->actor);
-            GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+            CALL_EVENT(OnEnemyDefeat, &this->actor);
         }
     }
 }
@@ -1639,7 +1639,7 @@ void func_808633E8(EnTest* this, PlayState* play) {
         }
 
         Actor_Kill(&this->actor);
-        GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+        CALL_EVENT(OnEnemyDefeat, &this->actor);
     }
 }
 
@@ -1730,7 +1730,7 @@ void EnTest_Update(Actor* thisx, PlayState* play) {
             if ((floorProperty == 5) || (floorProperty == 0xC) ||
                 func_80041D4C(&play->colCtx, this->actor.floorPoly, this->actor.floorBgId) == 9) {
                 Actor_Kill(&this->actor);
-                GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+                CALL_EVENT(OnEnemyDefeat, &this->actor);
                 return;
             }
         }

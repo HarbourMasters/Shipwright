@@ -532,7 +532,7 @@ int hue = 0;
 
 // Runs every frame to update rainbow hue, a potential future optimization is to only run this a once or twice a second
 // and increase the speed of the rainbow hue rotation.
-void CosmeticsUpdateTick() {
+void CosmeticsUpdateTick(IEvent* event = nullptr) {
     int index = 0;
     float rainbowSpeed = CVarGetFloat(CVAR_COSMETIC("RainbowSpeed"), 0.6f);
     for (auto& [id, cosmeticOption] : cosmeticOptions) {
@@ -2607,7 +2607,7 @@ void CosmeticsEditorWindow::DrawElement() {
 }
 
 void RegisterOnGameFrameUpdateHook() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() { CosmeticsUpdateTick(); });
+    REGISTER_LISTENER(OnGameFrameUpdate, EVENT_PRIORITY_LOW, [](IEvent* event) { CosmeticsUpdateTick(); })
 }
 
 void CosmeticsEditorWindow::InitElement() {
@@ -2689,23 +2689,23 @@ void CosmeticsEditor_ResetGroup(CosmeticGroup group) {
 void RegisterCosmeticHooks() {
     COND_HOOK(OnGenerationCompletion,
               CVarGetInteger(CVAR_COSMETIC("RandomizeCosmeticsGenModes"), RANDOMIZE_OFF) == RANDOMIZE_ON_RANDO_GEN_ONLY,
-              []() { CosmeticsEditor_AutoRandomizeAll(); });
+              [](IEvent* event) { CosmeticsEditor_AutoRandomizeAll(); });
 
     COND_HOOK(OnLoadGame, CVarGetInteger(CVAR_COSMETIC("RandomizeCosmeticsGenModes"), RANDOMIZE_OFF) == RANDOMIZE_OFF,
-              [](s32 fileNum) { ApplyOrResetCustomGfxPatches(); });
+              [](IEvent* event) { ApplyOrResetCustomGfxPatches(); });
 
     COND_HOOK(OnLoadGame,
               CVarGetInteger(CVAR_COSMETIC("RandomizeCosmeticsGenModes"), RANDOMIZE_OFF) == RANDOMIZE_ON_FILE_LOAD,
-              [](s32 fileNum) { CosmeticsEditor_AutoRandomizeAll(); });
+              [](IEvent* event) { CosmeticsEditor_AutoRandomizeAll(); });
 
     COND_HOOK(OnLoadGame,
               CVarGetInteger(CVAR_COSMETIC("RandomizeCosmeticsGenModes"), RANDOMIZE_OFF) ==
                   RANDOMIZE_ON_FILE_LOAD_SEEDED,
-              [](s32 fileNum) { CosmeticsEditor_AutoRandomizeAll(); });
+              [](IEvent* event) { CosmeticsEditor_AutoRandomizeAll(); });
 
     COND_HOOK(OnSceneInit,
               CVarGetInteger(CVAR_COSMETIC("RandomizeCosmeticsGenModes"), RANDOMIZE_OFF) == RANDOMIZE_ON_NEW_SCENE,
-              [](s16 sceneNum) { CosmeticsEditor_AutoRandomizeAll(); });
+              [](IEvent* event) { CosmeticsEditor_AutoRandomizeAll(); });
 
     COND_HOOK(OnGameFrameUpdate, true, CosmeticsUpdateTick);
 }

@@ -1,5 +1,5 @@
 #include <libultraship/bridge.h>
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
 #include "functions.h"
 #include "macros.h"
@@ -10,11 +10,12 @@ static constexpr int32_t CVAR_HYPER_ENEMIES_DEFAULT = 0;
 #define CVAR_HYPER_ENEMIES_NAME CVAR_ENHANCEMENT("HyperEnemies")
 #define CVAR_HYPER_ENEMIES_VALUE CVarGetInteger(CVAR_HYPER_ENEMIES_NAME, CVAR_HYPER_ENEMIES_DEFAULT)
 
-static void MakeHyperEnemies(void* refActor) {
+static void MakeHyperEnemies(IEvent* event) {
     // Run the update function a second time to make enemies and minibosses move and act twice as fast.
 
+    OnActorUpdate* ev = reinterpret_cast<OnActorUpdate*>(event);
     Player* player = GET_PLAYER(gPlayState);
-    Actor* actor = static_cast<Actor*>(refActor);
+    Actor* actor = static_cast<Actor*>(ev->actor);
 
     // Some enemies are not in the ACTORCAT_ENEMY category, and some are that aren't really enemies.
     bool isEnemy = actor->category == ACTORCAT_ENEMY || actor->id == ACTOR_EN_TORCH2;

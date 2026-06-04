@@ -6,7 +6,7 @@
 
 #include "z_bg_ice_turara.h"
 #include "objects/object_ice_objects/object_ice_objects.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 #define FLAGS 0
 

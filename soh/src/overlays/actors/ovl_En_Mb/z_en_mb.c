@@ -6,7 +6,7 @@
 
 #include "z_en_mb.h"
 #include "objects/object_mb/object_mb.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ResourceManagerHelpers.h"
 
 /*
@@ -1446,14 +1446,14 @@ void EnMb_CheckColliding(EnMb* this, PlayState* play) {
                 if (this->actor.params == ENMB_TYPE_CLUB) {
                     if (this->actor.colChkInfo.health == 0) {
                         EnMb_SetupClubDead(this);
-                        GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+                        CALL_EVENT(OnEnemyDefeat, &this->actor);
                     } else if (this->state != ENMB_STATE_CLUB_KNEELING) {
                         EnMb_SetupClubDamaged(this);
                     }
                 } else {
                     if (this->actor.colChkInfo.health == 0) {
                         EnMb_SetupSpearDead(this);
-                        GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+                        CALL_EVENT(OnEnemyDefeat, &this->actor);
                     } else {
                         EnMb_SetupSpearDamaged(this);
                     }

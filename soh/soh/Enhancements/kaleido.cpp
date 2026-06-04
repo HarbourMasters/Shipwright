@@ -368,7 +368,7 @@ extern "C" void RandoKaleido_DrawMiscCollectibles(PlayState* play) {
     OTRGlobals::Instance->gRandoContext->GetKaleido()->Draw(play);
 }
 
-extern "C" void RandoKaleido_UpdateMiscCollectibles(int16_t inDungeonScene) {
+extern "C" void RandoKaleido_UpdateMiscCollectibles(IEvent* event) {
     PauseContext* pauseCtx = &gPlayState->pauseCtx;
     if (pauseCtx->randoQuestMode && pauseCtx->pageIndex == PAUSE_QUEST) {
         OTRGlobals::Instance->gRandoContext->GetKaleido()->Update(gPlayState);
@@ -603,8 +603,7 @@ void KaleidoEntryOcarinaButtons::Draw(PlayState* play, std::vector<Gfx>* mEntryD
 } // namespace Rando
 
 static void RandoKaleido_RegisterHooks() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnKaleidoscopeUpdate>(
-        RandoKaleido_UpdateMiscCollectibles);
+    REGISTER_LISTENER(OnKaleidoscopeUpdate, EVENT_PRIORITY_LOW, Rando::RandoKaleido_UpdateMiscCollectibles);
 }
 
 static RegisterShipInitFunc initFunc(RandoKaleido_RegisterHooks);

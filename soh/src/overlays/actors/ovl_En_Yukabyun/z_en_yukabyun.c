@@ -6,7 +6,7 @@
 
 #include "z_en_yukabyun.h"
 #include "objects/object_yukabyun/object_yukabyun.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
@@ -112,7 +112,7 @@ void EnYukabyun_Break(EnYukabyun* this, PlayState* play) {
     EffectSsHahen_SpawnBurst(play, &this->actor.world.pos, 8.0f, 0, 1300, 300, 15, OBJECT_YUKABYUN, 10,
                              gFloorTileEnemyFragmentDL);
     Actor_Kill(&this->actor);
-    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+    CALL_EVENT(OnEnemyDefeat, &this->actor);
 }
 
 void EnYukabyun_Update(Actor* thisx, PlayState* play) {

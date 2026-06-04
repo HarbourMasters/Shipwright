@@ -1075,10 +1075,8 @@ void EntranceTrackerWindow::DrawElement() {
 
 void EntranceTrackerWindow::InitElement() {
     // Setup hooks for loading and clearing the entrance tracker data
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>(
-        [](int32_t fileNum) { InitEntranceTrackingData(); });
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnExitGame>(
-        [](int32_t fileNum) { ClearEntranceTrackingData(); });
+    REGISTER_LISTENER(OnLoadGame, EVENT_PRIORITY_LOW, [](IEvent* event) { InitEntranceTrackingData(); });
+    REGISTER_LISTENER(OnExitGame, EVENT_PRIORITY_LOW, [](IEvent* event) { ClearEntranceTrackingData(); });
 }
 
 void RegisterCheckTrackerWidgets() {

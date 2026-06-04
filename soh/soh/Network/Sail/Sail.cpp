@@ -335,63 +335,68 @@ GameInteractionEffectBase* Sail::EffectFromJson(nlohmann::json payload) {
 }
 
 void Sail::RegisterHooks() {
-    COND_HOOK(OnTransitionEnd, isConnected, [&](int32_t sceneNum) {
-        if (!isConnected || !GameInteractor::IsSaveLoaded())
+    COND_HOOK(OnTransitionEnd, isConnected, [](IEvent* event) {
+        OnTransitionEnd* transition = reinterpret_cast<OnTransitionEnd*>(event);
+        if (!Sail::Instance->isConnected || !GameInteractor::IsSaveLoaded())
             return;
 
         nlohmann::json payload;
         payload["id"] = ShipUtils::Random(0, UINT32_MAX);
         payload["type"] = "hook";
         payload["hook"]["type"] = "OnTransitionEnd";
-        payload["hook"]["sceneNum"] = sceneNum;
+        payload["hook"]["sceneNum"] = transition->sceneNum;
 
-        SendJsonToRemote(payload);
+        Sail::Instance->SendJsonToRemote(payload);
     });
 
-    COND_HOOK(OnLoadGame, isConnected, [&](int32_t fileNum) {
-        if (!isConnected || !GameInteractor::IsSaveLoaded())
+    COND_HOOK(OnLoadGame, isConnected, [](IEvent* event) {
+        OnLoadGame* load = reinterpret_cast<OnLoadGame*>(event);
+        if (!Sail::Instance->isConnected || !GameInteractor::IsSaveLoaded())
             return;
 
         nlohmann::json payload;
         payload["id"] = ShipUtils::Random(0, UINT32_MAX);
         payload["type"] = "hook";
         payload["hook"]["type"] = "OnLoadGame";
-        payload["hook"]["fileNum"] = fileNum;
+        payload["hook"]["fileNum"] = load->fileNum;
 
-        SendJsonToRemote(payload);
+        Sail::Instance->SendJsonToRemote(payload);
     });
 
-    COND_HOOK(OnExitGame, isConnected, [&](int32_t fileNum) {
-        if (!isConnected || !GameInteractor::IsSaveLoaded())
+    COND_HOOK(OnExitGame, isConnected, [](IEvent* event) {
+        OnExitGame* game = reinterpret_cast<OnExitGame*>(event);
+        if (!Sail::Instance->isConnected || !GameInteractor::IsSaveLoaded())
             return;
 
         nlohmann::json payload;
         payload["id"] = ShipUtils::Random(0, UINT32_MAX);
         payload["type"] = "hook";
         payload["hook"]["type"] = "OnExitGame";
-        payload["hook"]["fileNum"] = fileNum;
+        payload["hook"]["fileNum"] = game->fileNum;
 
-        SendJsonToRemote(payload);
+        Sail::Instance->SendJsonToRemote(payload);
     });
 
-    COND_HOOK(OnItemReceive, isConnected, [&](GetItemEntry itemEntry) {
-        if (!isConnected || !GameInteractor::IsSaveLoaded())
+    COND_HOOK(OnItemReceive, isConnected, [](IEvent* event) {
+        OnItemReceive* item = reinterpret_cast<OnItemReceive*>(event);
+        if (!Sail::Instance->isConnected || !GameInteractor::IsSaveLoaded())
             return;
         nlohmann::json payload;
         payload["id"] = ShipUtils::Random(0, UINT32_MAX);
         payload["type"] = "hook";
         payload["hook"]["type"] = "OnItemReceive";
-        payload["hook"]["tableId"] = itemEntry.tableId;
-        payload["hook"]["getItemId"] = itemEntry.getItemId;
+        payload["hook"]["tableId"] = item->itemEntry.tableId;
+        payload["hook"]["getItemId"] = item->itemEntry.getItemId;
 
-        SendJsonToRemote(payload);
+        Sail::Instance->SendJsonToRemote(payload);
     });
 
-    COND_HOOK(OnEnemyDefeat, isConnected, [&](void* refActor) {
-        if (!isConnected || !GameInteractor::IsSaveLoaded())
+    COND_HOOK(OnEnemyDefeat, isConnected, [](IEvent* event) {
+        OnEnemyDefeat* ev = reinterpret_cast<OnEnemyDefeat*>(event);
+        if (!Sail::Instance->isConnected || !GameInteractor::IsSaveLoaded())
             return;
 
-        Actor* actor = (Actor*)refActor;
+        Actor* actor = (Actor*)ev->actor;
         nlohmann::json payload;
         payload["id"] = ShipUtils::Random(0, UINT32_MAX);
         payload["type"] = "hook";
@@ -399,14 +404,15 @@ void Sail::RegisterHooks() {
         payload["hook"]["actorId"] = actor->id;
         payload["hook"]["params"] = actor->params;
 
-        SendJsonToRemote(payload);
+        Sail::Instance->SendJsonToRemote(payload);
     });
 
-    COND_HOOK(OnActorInit, isConnected, [&](void* refActor) {
-        if (!isConnected || !GameInteractor::IsSaveLoaded())
+    COND_HOOK(OnActorInit, isConnected, [](IEvent* event) {
+        OnActorInit* ev = reinterpret_cast<OnActorInit*>(event);
+        if (!Sail::Instance->isConnected || !GameInteractor::IsSaveLoaded())
             return;
 
-        Actor* actor = (Actor*)refActor;
+        Actor* actor = (Actor*)ev->actor;
         nlohmann::json payload;
         payload["id"] = ShipUtils::Random(0, UINT32_MAX);
         payload["type"] = "hook";
@@ -414,60 +420,64 @@ void Sail::RegisterHooks() {
         payload["hook"]["actorId"] = actor->id;
         payload["hook"]["params"] = actor->params;
 
-        SendJsonToRemote(payload);
+        Sail::Instance->SendJsonToRemote(payload);
     });
 
-    COND_HOOK(OnFlagSet, isConnected, [&](int16_t flagType, int16_t flag) {
-        if (!isConnected || !GameInteractor::IsSaveLoaded())
+    COND_HOOK(OnFlagSet, isConnected, [](IEvent* event) {
+        OnFlagSet* ev = reinterpret_cast<OnFlagSet*>(event);
+        if (!Sail::Instance->isConnected || !GameInteractor::IsSaveLoaded())
             return;
         nlohmann::json payload;
         payload["id"] = ShipUtils::Random(0, UINT32_MAX);
         payload["type"] = "hook";
         payload["hook"]["type"] = "OnFlagSet";
-        payload["hook"]["flagType"] = flagType;
-        payload["hook"]["flag"] = flag;
+        payload["hook"]["flagType"] = ev->flagType;
+        payload["hook"]["flag"] = ev->flag;
 
-        SendJsonToRemote(payload);
+        Sail::Instance->SendJsonToRemote(payload);
     });
 
-    COND_HOOK(OnFlagUnset, isConnected, [&](int16_t flagType, int16_t flag) {
-        if (!isConnected || !GameInteractor::IsSaveLoaded())
+    COND_HOOK(OnFlagUnset, isConnected, [](IEvent* event) {
+        OnFlagUnset* ev = reinterpret_cast<OnFlagUnset*>(event);
+        if (!Sail::Instance->isConnected || !GameInteractor::IsSaveLoaded())
             return;
         nlohmann::json payload;
         payload["id"] = ShipUtils::Random(0, UINT32_MAX);
         payload["type"] = "hook";
         payload["hook"]["type"] = "OnFlagUnset";
-        payload["hook"]["flagType"] = flagType;
-        payload["hook"]["flag"] = flag;
+        payload["hook"]["flagType"] = ev->flagType;
+        payload["hook"]["flag"] = ev->flag;
 
-        SendJsonToRemote(payload);
+        Sail::Instance->SendJsonToRemote(payload);
     });
 
-    COND_HOOK(OnSceneFlagSet, isConnected, [&](int16_t sceneNum, int16_t flagType, int16_t flag) {
-        if (!isConnected || !GameInteractor::IsSaveLoaded())
+    COND_HOOK(OnSceneFlagSet, isConnected, [](IEvent* event) {
+        OnSceneFlagSet* ev = reinterpret_cast<OnSceneFlagSet*>(event);
+        if (!Sail::Instance->isConnected || !GameInteractor::IsSaveLoaded())
             return;
         nlohmann::json payload;
         payload["id"] = ShipUtils::Random(0, UINT32_MAX);
         payload["type"] = "hook";
         payload["hook"]["type"] = "OnSceneFlagSet";
-        payload["hook"]["flagType"] = flagType;
-        payload["hook"]["flag"] = flag;
-        payload["hook"]["sceneNum"] = sceneNum;
+        payload["hook"]["flagType"] = ev->flagType;
+        payload["hook"]["flag"] = ev->flag;
+        payload["hook"]["sceneNum"] = ev->sceneNum;
 
-        SendJsonToRemote(payload);
+        Sail::Instance->SendJsonToRemote(payload);
     });
 
-    COND_HOOK(OnSceneFlagUnset, isConnected, [&](int16_t sceneNum, int16_t flagType, int16_t flag) {
-        if (!isConnected || !GameInteractor::IsSaveLoaded())
+    COND_HOOK(OnSceneFlagUnset, isConnected, [](IEvent* event) {
+        OnSceneFlagUnset* ev = reinterpret_cast<OnSceneFlagUnset*>(event);
+        if (!Sail::Instance->isConnected || !GameInteractor::IsSaveLoaded())
             return;
         nlohmann::json payload;
         payload["id"] = ShipUtils::Random(0, UINT32_MAX);
         payload["type"] = "hook";
         payload["hook"]["type"] = "OnSceneFlagUnset";
-        payload["hook"]["flagType"] = flagType;
-        payload["hook"]["flag"] = flag;
-        payload["hook"]["sceneNum"] = sceneNum;
+        payload["hook"]["flagType"] = ev->flagType;
+        payload["hook"]["flag"] = ev->flag;
+        payload["hook"]["sceneNum"] = ev->sceneNum;
 
-        SendJsonToRemote(payload);
+        Sail::Instance->SendJsonToRemote(payload);
     });
 }

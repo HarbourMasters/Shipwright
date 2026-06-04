@@ -9,7 +9,7 @@
 #include "overlays/actors/ovl_En_Encount1/z_en_encount1.h"
 #include "vt.h"
 #include "objects/object_reeba/object_reeba.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS                                                                                 \
@@ -445,7 +445,7 @@ void EnReeba_StunDie(EnReeba* this, PlayState* play) {
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_RIVA_DEAD);
         Enemy_StartFinishingBlow(play, &this->actor);
         this->actionfunc = EnReeba_Die;
-        GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+        CALL_EVENT(OnEnemyDefeat, &this->actor);
     }
 }
 
@@ -500,7 +500,7 @@ void EnReeba_Die(EnReeba* this, PlayState* play) {
                 }
 
                 Actor_Kill(&this->actor);
-                GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+                CALL_EVENT(OnEnemyDefeat, &this->actor);
             }
         }
     }

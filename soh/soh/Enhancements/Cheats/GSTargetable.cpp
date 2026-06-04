@@ -1,4 +1,4 @@
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
 #include <spdlog/spdlog.h>
 #include <vector>
@@ -15,8 +15,9 @@ static constexpr int32_t CVAR_GSTARGETABLE_DEFAULT = 0;
 #define CVAR_GSTARGETABLE_NAME CVAR_CHEAT("GSTargetable")
 #define CVAR_GSTARGETABLE_VALUE CVarGetInteger(CVAR_GSTARGETABLE_NAME, CVAR_GSTARGETABLE_DEFAULT)
 
-static void OnActorInitGSTargetable(void* refActor) {
-    EnSw* enSw = reinterpret_cast<EnSw*>(refActor);
+static void OnActorInitGSTargetable(IEvent* event) {
+    OnActorInit* ev = reinterpret_cast<OnActorInit*>(event);
+    EnSw* enSw = reinterpret_cast<EnSw*>(ev->actor);
 
     if (enSw->actor.naviEnemyId == 0x20) {
         // Enable Targeting this Gold Skulltula, if visible by default
@@ -31,8 +32,9 @@ static void OnActorInitGSTargetable(void* refActor) {
     }
 }
 
-static void OnEnemyDefeatGSTargetable(void* refActor) {
-    EnSw* enSw = reinterpret_cast<EnSw*>(refActor);
+static void OnEnemyDefeatGSTargetable(IEvent* event) {
+    OnEnemyDefeat* ev = reinterpret_cast<OnEnemyDefeat*>(event);
+    EnSw* enSw = reinterpret_cast<EnSw*>(ev->actor);
 
     if (enSw->actor.naviEnemyId == 0x20) {
         // Disable Targeting immediately when the Gold Skulltula is defeated (like regular Skullwalltulas)
@@ -40,8 +42,9 @@ static void OnEnemyDefeatGSTargetable(void* refActor) {
     }
 }
 
-static void OnActorUpdateGSTargetable(void* refActor) {
-    EnSw* enSw = reinterpret_cast<EnSw*>(refActor);
+static void OnActorUpdateGSTargetable(IEvent* event) {
+    OnActorUpdate* ev = reinterpret_cast<OnActorUpdate*>(event);
+    EnSw* enSw = reinterpret_cast<EnSw*>(ev->actor);
 
     // Handle Night GS Spawning/Despawning
     if ((enSw->actor.naviEnemyId == 0x20) && (((enSw->actor.params & 0xE000) >> 0xD) == 2) &&

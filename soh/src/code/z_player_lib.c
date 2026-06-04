@@ -7,7 +7,6 @@
 #include "overlays/actors/ovl_Demo_Effect/z_demo_effect.h"
 
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/randomizer/draw.h"
 #include "soh/ResourceManagerHelpers.h"
 
@@ -650,7 +649,7 @@ void Player_SetModels(Player* this, s32 modelGroup) {
     this->waistDLists = &sPlayerDListGroups[gPlayerModelTypes[modelGroup][4]][gSaveContext.linkAge];
 
     Player_SetModelsForHoldingShield(this);
-    GameInteractor_ExecuteOnPlayerSetModels(this, modelGroup);
+    CALL_EVENT(OnPlayerSetModels, this, modelGroup);
 }
 
 void Player_SetModelGroup(Player* this, s32 modelGroup) {

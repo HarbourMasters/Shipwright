@@ -4,7 +4,9 @@
 #define GameInteractor_h
 
 #include "libultraship/libultraship.h"
+#include <libultraship/bridge.h>
 #include "vanilla-behavior/GIVanillaBehavior.h"
+#include "EventSystem_List.h"
 #include <z64.h>
 
 typedef enum {
@@ -76,6 +78,7 @@ uint8_t GameInteractor_GetSlipperyFloorActive();
 uint8_t GameInteractor_SecondCollisionUpdate();
 void GameInteractor_SetTriforceHuntPieceGiven(uint8_t state);
 void GameInteractor_SetTriforceHuntCreditsWarpActive(uint8_t state);
+bool GameInteractor_Should(GIVanillaBehavior flag, uint32_t result, ...);
 #ifdef __cplusplus
 }
 #endif
@@ -96,8 +99,6 @@ void GameInteractor_SetTriforceHuntCreditsWarpActive(uint8_t state);
 #endif
 
 #include "GameInteractionEffect.h"
-
-typedef uint32_t HOOK_ID;
 
 enum HookType {
     HOOK_TYPE_NORMAL,
@@ -141,41 +142,50 @@ struct HookInfo {
 #define GET_CURRENT_REGISTERING_INFO(type) (HookRegisteringInfo{})
 #endif
 
-#define REGISTER_VB_SHOULD(flag, body)                                                  \
-    GameInteractor::Instance->RegisterGameHookForID<GameInteractor::OnVanillaBehavior>( \
-        flag, [](GIVanillaBehavior _, bool* should, va_list _originalArgs) {            \
-            va_list args;                                                               \
-            va_copy(args, _originalArgs);                                               \
-            body;                                                                       \
-            va_end(args);                                                               \
-        })
+#define REGISTER_VB_SHOULD(flagToCheck, body)                                    \
+    REGISTER_LISTENER(OnVanillaBehavior, EVENT_PRIORITY_LOW, [](IEvent* event) { \
+        auto* vbEvent = reinterpret_cast<OnVanillaBehavior*>(event);             \
+        if (vbEvent->flag == flagToCheck) {                                      \
+            bool* should = vbEvent->result;                                      \
+            va_list args;                                                        \
+            va_copy(args, *vbEvent->originalArgs);                               \
+            body;                                                                \
+            va_end(args);                                                        \
+        }                                                                        \
+    })
 
-#define COND_HOOK(hookType, condition, body)                                                     \
-    {                                                                                            \
-        static HOOK_ID hookId = 0;                                                               \
-        GameInteractor::Instance->UnregisterGameHook<GameInteractor::hookType>(hookId);          \
-        hookId = 0;                                                                              \
-        if (condition) {                                                                         \
-            hookId = GameInteractor::Instance->RegisterGameHook<GameInteractor::hookType>(body); \
-        }                                                                                        \
+#define COND_HOOK(eventId, condition, body)                                    \
+    {                                                                          \
+        static ListenerID listenerId = -1;                                     \
+        if (listenerId != -1) {                                                \
+            UNREGISTER_LISTENER(eventId, listenerId);                          \
+            listenerId = -1;                                                   \
+        }                                                                      \
+        if (condition) {                                                       \
+            listenerId = REGISTER_LISTENER(eventId, EVENT_PRIORITY_LOW, body); \
+        }                                                                      \
     }
-#define COND_ID_HOOK(hookType, id, condition, body)                                                       \
-    {                                                                                                     \
-        static HOOK_ID hookId = 0;                                                                        \
-        GameInteractor::Instance->UnregisterGameHookForID<GameInteractor::hookType>(hookId);              \
-        hookId = 0;                                                                                       \
-        if (condition) {                                                                                  \
-            hookId = GameInteractor::Instance->RegisterGameHookForID<GameInteractor::hookType>(id, body); \
-        }                                                                                                 \
+#define COND_ID_HOOK(eventId, id, condition, body)                             \
+    {                                                                          \
+        static ListenerID listenerId = -1;                                     \
+        if (listenerId != -1) {                                                \
+            UNREGISTER_LISTENER(eventId, listenerId);                          \
+            listenerId = -1;                                                   \
+        }                                                                      \
+        if (condition) {                                                       \
+            listenerId = REGISTER_LISTENER(eventId, EVENT_PRIORITY_LOW, body); \
+        }                                                                      \
     }
-#define COND_VB_SHOULD(id, condition, body)                                                           \
-    {                                                                                                 \
-        static HOOK_ID hookId = 0;                                                                    \
-        GameInteractor::Instance->UnregisterGameHookForID<GameInteractor::OnVanillaBehavior>(hookId); \
-        hookId = 0;                                                                                   \
-        if (condition) {                                                                              \
-            hookId = REGISTER_VB_SHOULD(id, body);                                                    \
-        }                                                                                             \
+#define COND_VB_SHOULD(id, condition, body)                     \
+    {                                                           \
+        static ListenerID listenerId = -1;                      \
+        if (listenerId != -1) {                                 \
+            UNREGISTER_LISTENER(OnVanillaBehavior, listenerId); \
+            listenerId = -1;                                    \
+        }                                                       \
+        if (condition) {                                        \
+            listenerId = REGISTER_VB_SHOULD(id, body);          \
+        }                                                       \
     }
 
 class GameInteractor {
@@ -213,319 +223,6 @@ class GameInteractor {
     static GameInteractionEffectQueryResult CanApplyEffect(GameInteractionEffectBase& effect);
     static GameInteractionEffectQueryResult ApplyEffect(GameInteractionEffectBase& effect);
     static GameInteractionEffectQueryResult RemoveEffect(RemovableGameInteractionEffect& effect);
-
-    // Game Hooks
-    //
-    // Hooks should be idempotent and execution order is not guaranteed.
-    // If two operations must happen in a specific order, they should be placed in the same hook.
-    HOOK_ID nextHookId = 1;
-
-    template <typename H> struct RegisteredGameHooks {
-        inline static std::unordered_map<HOOK_ID, typename H::fn> functions;
-        inline static std::unordered_map<int32_t, std::unordered_map<HOOK_ID, typename H::fn>> functionsForID;
-        inline static std::unordered_map<uintptr_t, std::unordered_map<HOOK_ID, typename H::fn>> functionsForPtr;
-        inline static std::unordered_map<HOOK_ID, std::pair<typename H::filter, typename H::fn>> functionsForFilter;
-
-        // Used for the hook debugger
-        inline static std::map<HOOK_ID, HookInfo> hookData;
-    };
-
-    template <typename H> struct HooksToUnregister {
-        inline static std::vector<HOOK_ID> hooks;
-        inline static std::vector<HOOK_ID> hooksForID;
-        inline static std::vector<HOOK_ID> hooksForPtr;
-        inline static std::vector<HOOK_ID> hooksForFilter;
-    };
-
-    template <typename H> std::map<uint32_t, HookInfo>* GetHookData() {
-        return &RegisteredGameHooks<H>::hookData;
-    }
-
-    // General Hooks
-    template <typename H>
-#ifdef __cpp_lib_source_location
-    HOOK_ID RegisterGameHook(typename H::fn h, const std::source_location location = std::source_location::current()) {
-#else
-    HOOK_ID RegisterGameHook(typename H::fn h) {
-#endif
-        if (this->nextHookId == 0 || this->nextHookId >= UINT32_MAX)
-            this->nextHookId = 1;
-        while (RegisteredGameHooks<H>::functions.find(this->nextHookId) != RegisteredGameHooks<H>::functions.end()) {
-            this->nextHookId++;
-        }
-
-        RegisteredGameHooks<H>::functions[this->nextHookId] = h;
-        RegisteredGameHooks<H>::hookData[this->nextHookId] =
-            HookInfo{ 0, GET_CURRENT_REGISTERING_INFO(HOOK_TYPE_NORMAL) };
-        return this->nextHookId++;
-    }
-
-    template <typename H> void UnregisterGameHook(HOOK_ID hookId) {
-        if (hookId == 0)
-            return;
-        HooksToUnregister<H>::hooks.push_back(hookId);
-    }
-
-    template <typename H, typename... Args> void ExecuteHooks(Args&&... args) {
-        // Remove pending hooks for this type
-        for (auto& hookId : HooksToUnregister<H>::hooks) {
-            RegisteredGameHooks<H>::functions.erase(hookId);
-            RegisteredGameHooks<H>::hookData.erase(hookId);
-        }
-        HooksToUnregister<H>::hooks.clear();
-        // Execute hooks
-        for (auto& hook : RegisteredGameHooks<H>::functions) {
-            hook.second(std::forward<Args>(args)...);
-            RegisteredGameHooks<H>::hookData[hook.first].calls += 1;
-        }
-    }
-
-    // ID based Hooks
-    template <typename H>
-#ifdef __cpp_lib_source_location
-    HOOK_ID RegisterGameHookForID(int32_t id, typename H::fn h,
-                                  std::source_location location = std::source_location::current()) {
-#else
-    HOOK_ID RegisterGameHookForID(int32_t id, typename H::fn h) {
-#endif
-        if (this->nextHookId == 0 || this->nextHookId >= UINT32_MAX)
-            this->nextHookId = 1;
-        while (RegisteredGameHooks<H>::functionsForID[id].find(this->nextHookId) !=
-               RegisteredGameHooks<H>::functionsForID[id].end()) {
-            this->nextHookId++;
-        }
-
-        RegisteredGameHooks<H>::functionsForID[id][this->nextHookId] = h;
-        RegisteredGameHooks<H>::hookData[this->nextHookId] = HookInfo{ 0, GET_CURRENT_REGISTERING_INFO(HOOK_TYPE_ID) };
-        return this->nextHookId++;
-    }
-
-    template <typename H> void UnregisterGameHookForID(HOOK_ID hookId) {
-        if (hookId == 0)
-            return;
-        HooksToUnregister<H>::hooksForID.push_back(hookId);
-    }
-
-    template <typename H, typename... Args> void ExecuteHooksForID(int32_t id, Args&&... args) {
-        // Remove pending hooks for this type
-        for (auto hookIdIt = HooksToUnregister<H>::hooksForID.begin();
-             hookIdIt != HooksToUnregister<H>::hooksForID.end();) {
-            bool remove = false;
-
-            if (RegisteredGameHooks<H>::functionsForID[id].size() == 0) {
-                break;
-            }
-
-            for (auto it = RegisteredGameHooks<H>::functionsForID[id].begin();
-                 it != RegisteredGameHooks<H>::functionsForID[id].end();) {
-                if (it->first == *hookIdIt) {
-                    it = RegisteredGameHooks<H>::functionsForID[id].erase(it);
-                    RegisteredGameHooks<H>::hookData.erase(*hookIdIt);
-                    remove = true;
-                    break;
-                } else {
-                    ++it;
-                }
-            }
-
-            if (remove) {
-                hookIdIt = HooksToUnregister<H>::hooksForID.erase(hookIdIt);
-            } else {
-                ++hookIdIt;
-            }
-        }
-        // Execute hooks
-        for (auto& hook : RegisteredGameHooks<H>::functionsForID[id]) {
-            hook.second(std::forward<Args>(args)...);
-            RegisteredGameHooks<H>::hookData[hook.first].calls += 1;
-        }
-    }
-
-    // PTR based Hooks
-    template <typename H>
-#ifdef __cpp_lib_source_location
-    HOOK_ID RegisterGameHookForPtr(uintptr_t ptr, typename H::fn h,
-                                   const std::source_location location = std::source_location::current()) {
-#else
-    HOOK_ID RegisterGameHookForPtr(uintptr_t ptr, typename H::fn h) {
-#endif
-        if (this->nextHookId == 0 || this->nextHookId >= UINT32_MAX)
-            this->nextHookId = 1;
-        while (RegisteredGameHooks<H>::functionsForPtr[ptr].find(this->nextHookId) !=
-               RegisteredGameHooks<H>::functionsForPtr[ptr].end()) {
-            this->nextHookId++;
-        }
-
-        RegisteredGameHooks<H>::functionsForPtr[ptr][this->nextHookId] = h;
-        RegisteredGameHooks<H>::hookData[this->nextHookId] = HookInfo{ 0, GET_CURRENT_REGISTERING_INFO(HOOK_TYPE_PTR) };
-        return this->nextHookId++;
-    }
-
-    template <typename H> void UnregisterGameHookForPtr(HOOK_ID hookId) {
-        if (hookId == 0)
-            return;
-        HooksToUnregister<H>::hooksForPtr.push_back(hookId);
-    }
-
-    template <typename H, typename... Args> void ExecuteHooksForPtr(uintptr_t ptr, Args&&... args) {
-        // Remove pending hooks for this type
-        for (auto hookIdIt = HooksToUnregister<H>::hooksForPtr.begin();
-             hookIdIt != HooksToUnregister<H>::hooksForPtr.end();) {
-            bool remove = false;
-
-            if (RegisteredGameHooks<H>::functionsForPtr[ptr].size() == 0) {
-                break;
-            }
-
-            for (auto it = RegisteredGameHooks<H>::functionsForPtr[ptr].begin();
-                 it != RegisteredGameHooks<H>::functionsForPtr[ptr].end();) {
-                if (it->first == *hookIdIt) {
-                    it = RegisteredGameHooks<H>::functionsForPtr[ptr].erase(it);
-                    RegisteredGameHooks<H>::hookData.erase(*hookIdIt);
-                    remove = true;
-                    break;
-                } else {
-                    ++it;
-                }
-            }
-
-            if (remove) {
-                hookIdIt = HooksToUnregister<H>::hooksForPtr.erase(hookIdIt);
-            } else {
-                ++hookIdIt;
-            }
-        }
-        // Execute hooks
-        for (auto& hook : RegisteredGameHooks<H>::functionsForPtr[ptr]) {
-            hook.second(std::forward<Args>(args)...);
-            RegisteredGameHooks<H>::hookData[hook.first].calls += 1;
-        }
-    }
-
-    // Filter based Hooks
-    template <typename H>
-#ifdef __cpp_lib_source_location
-    HOOK_ID RegisterGameHookForFilter(typename H::filter f, typename H::fn h,
-                                      const std::source_location location = std::source_location::current()) {
-#else
-    HOOK_ID RegisterGameHookForFilter(typename H::filter f, typename H::fn h) {
-#endif
-        if (this->nextHookId == 0 || this->nextHookId >= UINT32_MAX)
-            this->nextHookId = 1;
-        while (RegisteredGameHooks<H>::functionsForFilter.find(this->nextHookId) !=
-               RegisteredGameHooks<H>::functionsForFilter.end()) {
-            this->nextHookId++;
-        }
-
-        RegisteredGameHooks<H>::functionsForFilter[this->nextHookId] = std::make_pair(f, h);
-        RegisteredGameHooks<H>::hookData[this->nextHookId] =
-            HookInfo{ 0, GET_CURRENT_REGISTERING_INFO(HOOK_TYPE_FILTER) };
-        return this->nextHookId++;
-    }
-
-    template <typename H> void UnregisterGameHookForFilter(HOOK_ID hookId) {
-        if (hookId == 0)
-            return;
-        HooksToUnregister<H>::hooksForFilter.push_back(hookId);
-    }
-
-    template <typename H, typename... Args> void ExecuteHooksForFilter(Args&&... args) {
-        // Remove pending hooks for this type
-        for (auto& hookId : HooksToUnregister<H>::hooksForFilter) {
-            RegisteredGameHooks<H>::functionsForFilter.erase(hookId);
-            RegisteredGameHooks<H>::hookData.erase(hookId);
-        }
-        HooksToUnregister<H>::hooksForFilter.clear();
-        // Execute hooks
-        for (auto& hook : RegisteredGameHooks<H>::functionsForFilter) {
-            if (hook.second.first(std::forward<Args>(args)...)) {
-                hook.second.second(std::forward<Args>(args)...);
-                RegisteredGameHooks<H>::hookData[hook.first].calls += 1;
-            }
-        }
-    }
-
-    template <typename H> void ProcessUnregisteredHooks() {
-        // Normal
-        for (auto& hookId : HooksToUnregister<H>::hooks) {
-            RegisteredGameHooks<H>::functions.erase(hookId);
-            RegisteredGameHooks<H>::hookData.erase(hookId);
-        }
-        HooksToUnregister<H>::hooks.clear();
-
-        // ID
-        for (auto& hookId : HooksToUnregister<H>::hooksForID) {
-            for (auto& idGroup : RegisteredGameHooks<H>::functionsForID) {
-                for (auto it = idGroup.second.begin(); it != idGroup.second.end();) {
-                    if (it->first == hookId) {
-                        it = idGroup.second.erase(it);
-                        RegisteredGameHooks<H>::hookData.erase(hookId);
-                    } else {
-                        ++it;
-                    }
-                }
-            }
-        }
-        HooksToUnregister<H>::hooksForID.clear();
-
-        // Ptr
-        for (auto& hookId : HooksToUnregister<H>::hooksForPtr) {
-            for (auto& ptrGroup : RegisteredGameHooks<H>::functionsForPtr) {
-                for (auto it = ptrGroup.second.begin(); it != ptrGroup.second.end();) {
-                    if (it->first == hookId) {
-                        it = ptrGroup.second.erase(it);
-                        RegisteredGameHooks<H>::hookData.erase(hookId);
-                    } else {
-                        ++it;
-                    }
-                }
-            }
-        }
-        HooksToUnregister<H>::hooksForPtr.clear();
-
-        // Filter
-        for (auto& hookId : HooksToUnregister<H>::hooksForFilter) {
-            RegisteredGameHooks<H>::functionsForFilter.erase(hookId);
-            RegisteredGameHooks<H>::hookData.erase(hookId);
-        }
-        HooksToUnregister<H>::hooksForFilter.clear();
-    }
-
-    void RemoveAllQueuedHooks() {
-#define DEFINE_HOOK(name, _) ProcessUnregisteredHooks<name>();
-
-#include "GameInteractor_HookTable.h"
-
-#undef DEFINE_HOOK
-    }
-
-    class HookFilter {
-      public:
-        static auto ActorNotPlayer(Actor* actor) {
-            return actor->id != ACTOR_PLAYER;
-        }
-        // For use with Should hooks
-        static auto SActorNotPlayer(Actor* actor, bool* result) {
-            return actor->id != ACTOR_PLAYER;
-        }
-        static auto ActorMatchIdAndParams(int16_t id, int16_t params) {
-            return [id, params](Actor* actor) { return actor->id == id && actor->params == params; };
-        }
-        // For use with Should hooks
-        static auto SActorMatchIdAndParams(int16_t id, int16_t params) {
-            return [id, params](Actor* actor, bool* result) { return actor->id == id && actor->params == params; };
-        }
-    };
-
-#define DEFINE_HOOK(name, args)                  \
-    struct name {                                \
-        typedef std::function<void args> fn;     \
-        typedef std::function<bool args> filter; \
-    }
-
-#include "GameInteractor_HookTable.h"
-
-#undef DEFINE_HOOK
 
     // Helpers
     static bool IsSaveLoaded(bool allowDbgSave = false);
@@ -571,6 +268,8 @@ class GameInteractor {
                                                            std::string nameTag = "");
     };
 };
+
+void EventSystem_Register();
 
 #undef GET_CURRENT_REGISTERING_INFO
 

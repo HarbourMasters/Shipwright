@@ -16,7 +16,7 @@
 
 #include "soh/frame_interpolation.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/SaveManager.h"
@@ -3760,7 +3760,7 @@ void KaleidoScope_LoadDungeonMap(PlayState* play) {
 
 static uint8_t registeredDungeonMapTextureHook = false;
 
-void KaleidoScope_RegisterUpdatedDungeonMapTexture() {
+void KaleidoScope_RegisterUpdatedDungeonMapTexture(IEvent* event) {
     if (gPlayState == NULL) {
         return;
     }
@@ -3823,7 +3823,7 @@ void KaleidoScope_UpdateDungeonMap(PlayState* play) {
     // Register alt listener to update the blended dungeon map textures on alt toggle
     if (!registeredDungeonMapTextureHook) {
         registeredDungeonMapTextureHook = true;
-        GameInteractor_RegisterOnAssetAltChange(KaleidoScope_RegisterUpdatedDungeonMapTexture);
+        REGISTER_LISTENER(OnAssetAltChange, EVENT_PRIORITY_LOW, KaleidoScope_RegisterUpdatedDungeonMapTexture);
     }
 }
 
@@ -4794,7 +4794,7 @@ void KaleidoScope_Update(PlayState* play) {
                     } else {
                         play->state.running = 0;
                         SET_NEXT_GAMESTATE(&play->state, Opening_Init, OpeningContext);
-                        GameInteractor_ExecuteOnExitGame(gSaveContext.fileNum);
+                        CALL_EVENT(OnExitGame, gSaveContext.fileNum);
                     }
                 }
             }
@@ -4879,5 +4879,5 @@ void KaleidoScope_Update(PlayState* play) {
             break;
     }
 
-    GameInteractor_ExecuteOnKaleidoscopeUpdate(sInDungeonScene);
+    CALL_EVENT(OnKaleidoscopeUpdate, sInDungeonScene);
 }

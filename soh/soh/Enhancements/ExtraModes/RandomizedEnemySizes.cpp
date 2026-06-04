@@ -1,4 +1,4 @@
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ObjectExtension/ActorMaximumHealth.h"
 #include "soh/ShipInit.hpp"
 #include "soh/ShipUtils.h"
@@ -16,9 +16,10 @@ static constexpr int32_t CVAR_ENEMY_SCALE_HEALTH_DEFAULT = 0;
 #define CVAR_ENEMY_SCALE_HEALTH_NAME CVAR_ENHANCEMENT("EnemySizeScalesHealth")
 #define CVAR_ENEMY_SCALE_HEALTH_VALUE CVarGetInteger(CVAR_ENEMY_SCALE_HEALTH_NAME, CVAR_ENEMY_SCALE_HEALTH_DEFAULT)
 
-static void RandomizedEnemySizes(void* refActor) {
+static void RandomizedEnemySizes(IEvent* event) {
     // Randomized Enemy Sizes
-    Actor* actor = static_cast<Actor*>(refActor);
+    const OnActorInit* ev = reinterpret_cast<const OnActorInit*>(event);
+    Actor* actor = static_cast<Actor*>(ev->actor);
 
     // Exclude wobbly platforms in Jabu because they need to act like platforms.
     // Exclude demo effect for Zora sapphire being re-categorized as a "boss".

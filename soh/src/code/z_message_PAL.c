@@ -10,7 +10,6 @@
 #include "soh/Enhancements/cosmetics/CosmeticsEditor.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/OTRGlobals.h"
 #include "soh/SaveManager.h"
 #include "soh/ResourceManagerHelpers.h"
@@ -2722,7 +2721,7 @@ void Message_OpenText(PlayState* play, u16 textId) {
     s16 textBoxType;
 
     bool loadFromMessageTable = true;
-    GameInteractor_ExecuteOnOpenText(&textId, &loadFromMessageTable);
+    CALL_EVENT(OnOpenText, &textId, &loadFromMessageTable);
 
     sDisplayNextMessageAsEnglish = false;
 
@@ -3820,7 +3819,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                         osSyncPrintf(VT_RST);
                         osSyncPrintf("→  OCARINA_MODE=%d\n", play->msgCtx.ocarinaMode);
                     }
-                    GameInteractor_ExecuteOnOcarinaSongAction();
+                    CALL_EVENT(OnOcarinaSongAction);
                 }
                 break;
             case MSGMODE_DISPLAY_SONG_PLAYED:
@@ -4455,7 +4454,8 @@ void Message_Update(PlayState* play) {
         return;
     }
 
-    GameInteractor_ExecuteOnDialogMessage();
+    CALL_EVENT(OnDialogMessage);
+    ;
 
     bool isB_Held = CVarGetInteger(CVAR_ENHANCEMENT("SkipText"), 0) != 0
                         ? CHECK_BTN_ALL(input->cur.button, BTN_B) && !sTextboxSkipped

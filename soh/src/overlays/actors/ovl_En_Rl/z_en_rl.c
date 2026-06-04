@@ -7,7 +7,7 @@
 #include "z_en_rl.h"
 #include "vt.h"
 #include "objects/object_rl/object_rl.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 

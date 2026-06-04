@@ -6,7 +6,7 @@
 
 #include "z_en_weiyer.h"
 #include "objects/object_ei/object_ei.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE)
@@ -577,7 +577,7 @@ void EnWeiyer_UpdateDamage(EnWeiyer* this, PlayState* play) {
                 Audio_PlayActorSound2(&this->actor, NA_SE_EN_EIER_DEAD);
                 this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
                 EnWeiyer_SetupDie(this);
-                GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+                CALL_EVENT(OnEnemyDefeat, &this->actor);
             } else {
                 EnWeiyer_SetupHurt(this);
             }

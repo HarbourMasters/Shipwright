@@ -52,9 +52,10 @@ static void BgIceShelter_RandomizerDraw(Actor* actor, Color_RGBA8* primColor, Co
     EffectSsKiraKira_SpawnFocused(gPlayState, &pos, &velocity, &accel, primColor, envColor, 2000, 100);
 }
 
-void BgIceShelter_RandomizerDrawSetup(void* actor) {
+void BgIceShelter_RandomizerDrawSetup(IEvent* event) {
+    OnActorUpdate* ev = (OnActorUpdate*)event;
     GetItemCategory getItemCategory;
-    Actor* redIceActor = (Actor*)actor;
+    Actor* redIceActor = (Actor*)ev->actor;
 
     // If not a randomized item or too far, don't draw
     if (!BgIceShelter_RandomizerHoldsItem(redIceActor) || redIceActor->xzDistToPlayer > 1000.0f) {

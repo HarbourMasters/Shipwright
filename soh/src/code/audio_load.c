@@ -8,7 +8,7 @@
 #include "soh/Enhancements/audio/AudioCollection.h"
 #include "soh/Enhancements/audio/AudioEditor.h"
 #include "soh/ResourceManagerHelpers.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include <stdio.h>
 #ifdef _MSC_VER
 #define strdup _strdup
@@ -631,7 +631,7 @@ s32 AudioLoad_SyncInitSeqPlayerInternal(s32 playerIdx, s32 seqId, s32 arg2) {
     AudioSeq_SkipForwardSequence(seqPlayer);
     //! @bug missing return (but the return value is not used so it's not UB)
 
-    GameInteractor_ExecuteOnSeqPlayerInit(playerIdx, seqId);
+    CALL_EVENT(OnSeqPlayerInit, playerIdx, seqId);
 }
 
 u8* AudioLoad_SyncLoadSeq(s32 seqId) {

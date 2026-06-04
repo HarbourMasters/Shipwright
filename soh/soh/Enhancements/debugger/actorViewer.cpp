@@ -1194,38 +1194,43 @@ void ActorViewerWindow::DrawElement() {
 }
 
 void ActorViewerWindow::InitElement() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorSpawn>([this](void* refActor) {
-        Actor* actor = static_cast<Actor*>(refActor);
+    REGISTER_LISTENER(OnActorSpawn, EVENT_PRIORITY_LOW, [](IEvent* event) {
+        OnActorSpawn* ev = reinterpret_cast<OnActorSpawn*>(event);
+        Actor* actor = static_cast<Actor*>(ev->actor);
 
         // Reload actor list if the new actor belongs to the selected category
-        if (category == actor->category) {
-            PopulateActorDropdown(actor->category, list);
+        if (SohGui::mActorViewerWindow->category == actor->category) {
+            PopulateActorDropdown(actor->category, SohGui::mActorViewerWindow->list);
         }
     });
 
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorDestroy>([this](void* refActor) {
-        Actor* actor = static_cast<Actor*>(refActor);
+    REGISTER_LISTENER(OnActorDestroy, EVENT_PRIORITY_LOW, [](IEvent* event) {
+        OnActorDestroy* ev = reinterpret_cast<OnActorDestroy*>(event);
+        Actor* actor = static_cast<Actor*>(ev->actor);
 
         // If the actor belongs to the selected category, we need to manually remove it, as it has not been removed from
         // the global actor array yet
-        if (category == actor->category) {
-            list.erase(std::remove(list.begin(), list.end(), actor), list.end());
+        if (SohGui::mActorViewerWindow->category == actor->category) {
+            SohGui::mActorViewerWindow->list.erase(
+                std::remove(SohGui::mActorViewerWindow->list.begin(), SohGui::mActorViewerWindow->list.end(), actor),
+                SohGui::mActorViewerWindow->list.end());
         }
-        if (display == actor) {
-            display = nullptr;
+        if (SohGui::mActorViewerWindow->display == actor) {
+            SohGui::mActorViewerWindow->display = nullptr;
         }
     });
 
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([this](int16_t sceneNum) {
-        display = nullptr;
-        category = ACTORCAT_SWITCH;
-        list.clear();
+    REGISTER_LISTENER(OnSceneInit, EVENT_PRIORITY_LOW, [](IEvent* event) {
+        SohGui::mActorViewerWindow->display = nullptr;
+        SohGui::mActorViewerWindow->category = ACTORCAT_SWITCH;
+        SohGui::mActorViewerWindow->list.clear();
     });
 }
 
 void ActorViewer_RegisterNameTagHooks() {
-    COND_HOOK(OnActorInit, CVAR_ACTOR_NAME_TAGS_ENABLED,
-              [](void* actor) { ActorViewer_AddTagForActor(static_cast<Actor*>(actor)); });
+    COND_HOOK(OnActorInit, CVAR_ACTOR_NAME_TAGS_ENABLED, [](IEvent* event) {
+        ActorViewer_AddTagForActor(static_cast<Actor*>(reinterpret_cast<OnActorInit*>(event)->actor));
+    });
 }
 
 static RegisterShipInitFunc initFunc(ActorViewer_RegisterNameTagHooks, { CVAR_ACTOR_NAME_TAGS_ENABLED_NAME });

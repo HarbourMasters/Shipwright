@@ -1,4 +1,4 @@
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
@@ -17,7 +17,7 @@ static constexpr int32_t CVAR_RUPEE_DASH_INTERVAL_DEFAULT = 5;
 #define CVAR_RUPEE_DASH_INTERVAL_TIME \
     CVarGetInteger(CVAR_RUPEE_DASH_INTERVAL_NAME, CVAR_RUPEE_DASH_INTERVAL_DEFAULT) * 20
 
-static void UpdateRupeeDash() {
+static void UpdateRupeeDash(IEvent* event) {
     // Initialize Timer
     static uint16_t rupeeDashTimer = 0;
 

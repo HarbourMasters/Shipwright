@@ -9,7 +9,7 @@
 #include "objects/object_ahg/object_ahg.h"
 #include "objects/object_boj/object_boj.h"
 #include <assert.h>
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
@@ -279,8 +279,8 @@ void EnSth_GiveReward(EnSth* this, PlayState* play) {
         EnSth_SetupAction(this, EnSth_RewardObtainedTalk);
         gSaveContext.eventChkInf[EVENTCHKINF_SKULLTULA_REWARD_INDEX] |= this->eventFlag;
         if (this->eventFlag != 0) {
-            GameInteractor_ExecuteOnFlagSet(FLAG_EVENT_CHECK_INF, (EVENTCHKINF_SKULLTULA_REWARD_INDEX << 4) +
-                                                                      sEventFlagsShift[this->actor.params]);
+            CALL_EVENT(OnFlagSet, FLAG_EVENT_CHECK_INF,
+                       (EVENTCHKINF_SKULLTULA_REWARD_INDEX << 4) + sEventFlagsShift[this->actor.params]);
         }
     } else if (GameInteractor_Should(VB_GIVE_ITEM_FROM_SKULLTULA_REWARD, true, this)) {
         EnSth_GivePlayerItem(this, play);

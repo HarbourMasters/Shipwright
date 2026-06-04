@@ -1,4 +1,4 @@
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
@@ -11,7 +11,7 @@ static constexpr int32_t CVAR_RESET_NAVI_DEFAULT = 0;
 #define CVAR_RESET_NAVI_VALUE CVarGetInteger(CVAR_RESET_NAVI_NAME, CVAR_RESET_NAVI_DEFAULT)
 
 static void RegisterResetNaviTimer() {
-    COND_HOOK(OnSceneInit, CVAR_RESET_NAVI_VALUE, [](int32_t) { gSaveContext.naviTimer = 0; });
+    COND_HOOK(OnSceneInit, CVAR_RESET_NAVI_VALUE, [](IEvent* event) { gSaveContext.naviTimer = 0; });
 }
 
 static RegisterShipInitFunc initFunc(RegisterResetNaviTimer, { CVAR_RESET_NAVI_NAME });

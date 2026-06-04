@@ -1,4 +1,4 @@
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/resource/type/Skeleton.h"
 #include "soh/ShipInit.hpp"
 
@@ -8,7 +8,7 @@ extern "C" {
 extern PlayState* gPlayState;
 }
 
-static void UpdateCustomSkeleton() {
+static void UpdateCustomSkeleton(IEvent* event) {
     if (!GameInteractor::IsSaveLoaded(true) || gPlayState == NULL) {
         return;
     }
@@ -16,10 +16,14 @@ static void UpdateCustomSkeleton() {
     SOH::SkeletonPatcher::UpdateCustomSkeletons();
 }
 
+static void AlwaysUpdateCustomSkeleton(IEvent* event) {
+    SOH::SkeletonPatcher::UpdateCustomSkeletons();
+}
+
 static void RegisterCustomSkeletons() {
     COND_HOOK(OnAssetAltChange, true, UpdateCustomSkeleton);
-    COND_HOOK(OnLinkSkeletonInit, true, SOH::SkeletonPatcher::UpdateCustomSkeletons);
-    COND_HOOK(OnLinkEquipmentChange, true, SOH::SkeletonPatcher::UpdateCustomSkeletons);
+    COND_HOOK(OnLinkSkeletonInit, true, AlwaysUpdateCustomSkeleton);
+    COND_HOOK(OnLinkEquipmentChange, true, AlwaysUpdateCustomSkeleton);
 }
 
 static RegisterShipInitFunc initFunc(RegisterCustomSkeletons);

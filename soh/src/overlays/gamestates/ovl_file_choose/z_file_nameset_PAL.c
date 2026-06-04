@@ -2,7 +2,7 @@
 #include "textures/title_static/title_static.h"
 #include "assets/overlays/ovl_File_Choose/ovl_file_choose.h"
 #include "assets/soh_assets.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/SaveManager.h"
@@ -651,12 +651,12 @@ void FileChoose_UpdateKeyboardCursor(GameState* thisx) {
         this->kbdButton = this->kbdX;
 
         if (sLastKbdX != this->kbdX) {
-            GameInteractor_ExecuteOnUpdateFileNameSelection(0xF0 + this->kbdX);
+            CALL_EVENT(OnUpdateFileNameSelection, 0xF0 + this->kbdX);
             sLastKbdX = this->kbdX;
             sLastCharIndex = -1;
         }
     } else if (sLastCharIndex != this->charIndex && this->charIndex < 65) {
-        GameInteractor_ExecuteOnUpdateFileNameSelection(D_808123F0[this->charIndex]);
+        CALL_EVENT(OnUpdateFileNameSelection, D_808123F0[this->charIndex]);
         sLastCharIndex = this->charIndex;
         sLastKbdX = -1;
     }
@@ -772,7 +772,7 @@ void FileChoose_UpdateOptionsMenu(GameState* thisx) {
     // Persist the new language so it is not overridden on the next frame
     if (languageChanged) {
         CVarSetInteger(CVAR_SETTING("Languages"), gSaveContext.language);
-        GameInteractor_ExecuteOnSetGameLanguage();
+        CALL_EVENT(OnSetGameLanguage);
     }
 
     // NTSC and GC only has two rows and can just flip the setting bit
@@ -814,21 +814,21 @@ void FileChoose_UpdateOptionsMenu(GameState* thisx) {
 
     if (sSelectedSetting == FS_SETTING_AUDIO) {
         if (sLastOptionButtonIndex != gSaveContext.audioSetting) {
-            GameInteractor_ExecuteOnUpdateFileAudioSelection(gSaveContext.audioSetting);
+            CALL_EVENT(OnUpdateFileAudioSelection, gSaveContext.audioSetting);
             sLastOptionButtonIndex = gSaveContext.audioSetting;
         }
     } else if (sSelectedSetting == FS_SETTING_TARGET) {
         // offset to detect switching between modes
         u8 optionOffset = gSaveContext.zTargetSetting + FS_AUDIO_SURROUND + FS_SETTING_TARGET;
         if (sLastOptionButtonIndex != optionOffset) {
-            GameInteractor_ExecuteOnUpdateFileTargetSelection(gSaveContext.zTargetSetting);
+            CALL_EVENT(OnUpdateFileTargetSelection, gSaveContext.zTargetSetting);
             sLastOptionButtonIndex = optionOffset;
         }
     } else {
         // offset to detect switching between modes
         u8 optionOffset = gSaveContext.language + FS_AUDIO_SURROUND + FS_TARGET_HOLD + FS_SETTING_LANGUAGE;
         if (sLastOptionButtonIndex != optionOffset) {
-            GameInteractor_ExecuteOnUpdateFileLanguageSelection(gSaveContext.language);
+            CALL_EVENT(OnUpdateFileLanguageSelection, gSaveContext.language);
             sLastOptionButtonIndex = optionOffset;
         }
     }

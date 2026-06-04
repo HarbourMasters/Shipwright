@@ -1,6 +1,6 @@
 #include "z_en_crow.h"
 #include "objects/object_crow/object_crow.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS \
@@ -194,7 +194,7 @@ void EnCrow_SetupDamaged(EnCrow* this, PlayState* play) {
 void EnCrow_SetupDie(EnCrow* this) {
     this->actor.colorFilterTimer = 0;
     this->actionFunc = EnCrow_Die;
-    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+    CALL_EVENT(OnEnemyDefeat, &this->actor);
 }
 
 void EnCrow_SetupTurnAway(EnCrow* this) {

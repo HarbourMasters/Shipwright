@@ -17,7 +17,7 @@
 #include "soh_assets.h"
 #include "soh/Enhancements/boss-rush/BossRush.h"
 #include "soh/Enhancements/FileSelectEnhancements.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include <assert.h>
 #include "z64save.h"
 #include "soh/SaveManager.h"
@@ -260,7 +260,7 @@ void FileChoose_FinishFadeIn(GameState* thisx) {
         this->controlsAlpha = 255;
         this->windowAlpha = 200;
         this->configMode = CM_MAIN_MENU;
-        GameInteractor_ExecuteOnPresentFileSelect();
+        CALL_EVENT(OnPresentFileSelect);
     }
 }
 
@@ -523,7 +523,7 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
         }
 
         if (sLastFileChooseButtonIndex != this->buttonIndex) {
-            GameInteractor_ExecuteOnUpdateFileSelectSelection(this->buttonIndex);
+            CALL_EVENT(OnUpdateFileSelectSelection, this->buttonIndex);
             sLastFileChooseButtonIndex = this->buttonIndex;
         }
     }
@@ -595,7 +595,7 @@ void FileChoose_StartQuestMenu(GameState* thisx) {
         this->logoAlpha = 255;
         this->configMode = CM_QUEST_MENU;
 
-        GameInteractor_ExecuteOnUpdateFileQuestSelection(this->questType[this->buttonIndex]);
+        CALL_EVENT(OnUpdateFileQuestSelection, this->questType[this->buttonIndex]);
     }
 }
 
@@ -665,7 +665,7 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
         Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
                                &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
 
-        GameInteractor_ExecuteOnUpdateFileQuestSelection(this->questType[this->buttonIndex]);
+        CALL_EVENT(OnUpdateFileQuestSelection, this->questType[this->buttonIndex]);
     }
 
     if (CHECK_BTN_ALL(input->press.button, BTN_A)) {
@@ -762,7 +762,7 @@ void FileChoose_UpdateRandomizerMenu(GameState* thisx) {
             }
         }
 
-        GameInteractor_ExecuteOnUpdateFileRandomizerOptionSelection(this->randomizerIndex);
+        CALL_EVENT(OnUpdateFileRandomizerOptionSelection, this->randomizerIndex);
 
         Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
                                &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
@@ -2400,7 +2400,7 @@ void FileChoose_ConfirmFile(GameState* thisx) {
     }
 
     if (sLastFileChooseButtonIndex != this->confirmButtonIndex) {
-        GameInteractor_ExecuteOnUpdateFileSelectConfirmationSelection(this->confirmButtonIndex);
+        CALL_EVENT(OnUpdateFileSelectConfirmationSelection, this->confirmButtonIndex);
         sLastFileChooseButtonIndex = this->confirmButtonIndex;
     }
 }
@@ -2573,7 +2573,7 @@ void FileChoose_LoadGame(GameState* thisx) {
 
     gSaveContext.naviTimer = 0;
 
-    GameInteractor_ExecuteOnLoadGame(gSaveContext.fileNum);
+    CALL_EVENT(OnLoadGame, gSaveContext.fileNum);
 }
 
 static void (*gSelectModeUpdateFuncs[])(GameState*) = {
@@ -2720,7 +2720,7 @@ void FileChoose_Main(GameState* thisx) {
 
     Color_RGB8 helpTextColor = { 100, 255, 255 };
 
-    GameInteractor_ExecuteOnFileChooseMain(thisx);
+    CALL_EVENT(OnFileChooseMain, thisx);
 
     if (CVarGetInteger(CVAR_COSMETIC("Title.FileChoose.Changed"), 0)) {
         Color_RGB8 backgroundColor =

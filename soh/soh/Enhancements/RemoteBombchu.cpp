@@ -1,4 +1,4 @@
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
@@ -157,13 +157,15 @@ static void HandleInput(EnBomChu* chu, Input* input, PlayState* play) {
 }
 
 // Track the most recently spawned bombchu
-static void OnActorInit(void* refActor) {
-    sState.activeChu = (EnBomChu*)refActor;
+static void OnActorInitImpl(IEvent* event) {
+    const OnActorInit* ev = reinterpret_cast<OnActorInit*>(event);
+    sState.activeChu = static_cast<EnBomChu*>(ev->actor);
 }
 
 // Clean up if active bombchu is destroyed
-static void OnActorDestroy(void* refActor) {
-    if (refActor == sState.activeChu) {
+static void OnActorDestroyImpl(IEvent* event) {
+    const OnActorDestroy* ev = reinterpret_cast<OnActorDestroy*>(event);
+    if (ev->actor == sState.activeChu) {
         if (sState.isActive) {
             StopControl(gPlayState);
         }
@@ -172,8 +174,10 @@ static void OnActorDestroy(void* refActor) {
 }
 
 // Main update logic
-static void OnActorUpdate(void* refActor) {
-    if (refActor != sState.activeChu)
+static void OnActorUpdateImpl(IEvent* event) {
+    const OnActorUpdate* ev = reinterpret_cast<OnActorUpdate*>(event);
+
+    if (ev->actor != sState.activeChu)
         return;
 
     if (sState.activeChu->actionFunc != EnBomChu_Move)
@@ -198,9 +202,9 @@ static void OnActorUpdate(void* refActor) {
 }
 
 void RegisterRemoteBombchu() {
-    COND_ID_HOOK(OnActorInit, ACTOR_EN_BOM_CHU, CVAR_REMOTE_BOMBCHU_VALUE, OnActorInit);
-    COND_ID_HOOK(OnActorDestroy, ACTOR_EN_BOM_CHU, CVAR_REMOTE_BOMBCHU_VALUE, OnActorDestroy);
-    COND_ID_HOOK(OnActorUpdate, ACTOR_EN_BOM_CHU, CVAR_REMOTE_BOMBCHU_VALUE, OnActorUpdate);
+    COND_ID_HOOK(OnActorInit, ACTOR_EN_BOM_CHU, CVAR_REMOTE_BOMBCHU_VALUE, OnActorInitImpl);
+    COND_ID_HOOK(OnActorDestroy, ACTOR_EN_BOM_CHU, CVAR_REMOTE_BOMBCHU_VALUE, OnActorDestroyImpl);
+    COND_ID_HOOK(OnActorUpdate, ACTOR_EN_BOM_CHU, CVAR_REMOTE_BOMBCHU_VALUE, OnActorUpdateImpl);
 }
 
 static RegisterShipInitFunc initFunc(RegisterRemoteBombchu, { CVAR_REMOTE_BOMBCHU_NAME });

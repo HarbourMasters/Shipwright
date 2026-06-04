@@ -57,9 +57,8 @@ static bool MirroredWorld_ShouldApply(int32_t sceneNum) {
     }
 }
 
-static void UpdateMirrorModeState(int32_t sceneNum) {
-    bool nextMirroredWorld = MirroredWorld_ShouldApply(sceneNum);
-
+static void UpdateMirrorModeState(IEvent* event) {
+    bool nextMirroredWorld = MirroredWorld_ShouldApply(reinterpret_cast<OnSceneInit*>(event)->sceneNum);
     if (prevMirroredWorld == nextMirroredWorld) {
         return;
     }
@@ -76,7 +75,8 @@ static void UpdateMirrorModeState(int32_t sceneNum) {
 
 static void RegisterMirroredWorld() {
     if (gPlayState != NULL) {
-        UpdateMirrorModeState(gPlayState->sceneNum);
+        OnSceneInit ev = { .sceneNum = gPlayState->sceneNum };
+        UpdateMirrorModeState(reinterpret_cast<IEvent*>(&ev));
     }
 
     COND_HOOK(OnSceneInit, CVAR_MIRRORED_WORLD_MODE_VALUE, UpdateMirrorModeState);

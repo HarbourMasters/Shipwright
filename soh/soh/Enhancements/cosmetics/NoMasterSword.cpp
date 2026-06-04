@@ -1,4 +1,4 @@
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
 #include "soh/ShipInit.hpp"
 #include "soh/OTRGlobals.h"
@@ -15,7 +15,7 @@ extern void Player_StartMode_Idle(PlayState*, Player*);
 extern u8 Randomizer_GetSettingValue(RandomizerSettingKey);
 }
 
-void UpdateNoMSPatch() {
+void UpdateNoMSPatch(IEvent* event) {
     // Condition for patching
     bool shouldPatch = (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_MASTER &&
                         gSaveContext.equips.buttonItems[0] != ITEM_SWORD_BGS &&
@@ -104,10 +104,10 @@ void RegisterNoMasterSword() {
         }
     });
 
-    COND_HOOK(OnPlayerUpdate, IS_RANDO, [] {
+    COND_HOOK(OnPlayerUpdate, IS_RANDO, [](IEvent* event) {
         static uint16_t lastItemOnB = gSaveContext.equips.buttonItems[0];
         if (lastItemOnB != gSaveContext.equips.buttonItems[0]) {
-            UpdateNoMSPatch();
+            UpdateNoMSPatch(nullptr);
             lastItemOnB = gSaveContext.equips.buttonItems[0];
         }
     });

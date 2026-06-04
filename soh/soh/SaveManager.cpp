@@ -125,8 +125,7 @@ SaveManager::SaveManager() {
 
     AddInitFunction(InitFileImpl);
 
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnExitGame>(
-        [this](uint32_t fileNum) { ThreadPoolWait(); });
+    REGISTER_LISTENER(OnExitGame, EVENT_PRIORITY_LOW, [](IEvent* event) { SaveManager::Instance->ThreadPoolWait(); });
 
     smThreadPool = std::make_shared<BS::thread_pool>(1);
 
@@ -1203,7 +1202,7 @@ void SaveManager::SaveFileThreaded(int fileNum, SaveContext* saveContext, int se
 
     delete saveContext;
     InitMeta(fileNum);
-    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSaveFile>(fileNum, sectionID);
+    CALL_EVENT(OnSaveFile, fileNum, sectionID);
     SPDLOG_INFO("Save File Finish - fileNum: {}", fileNum);
     saveMtx.unlock();
 }
@@ -1307,7 +1306,7 @@ void SaveManager::LoadFile(int fileNum) {
                 break;
         }
         InitMeta(fileNum);
-        GameInteractor::Instance->ExecuteHooks<GameInteractor::OnLoadFile>(fileNum);
+        CALL_EVENT(OnLoadFile, fileNum);
     } catch (const std::exception& e) {
         input.close();
         std::string newFileName =
@@ -2436,7 +2435,7 @@ void SaveManager::DeleteZeldaFile(int fileNum) {
     fileMetaInfo[fileNum].randoSave = false;
     fileMetaInfo[fileNum].requiresMasterQuest = false;
     fileMetaInfo[fileNum].requiresOriginal = false;
-    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnDeleteFile>(fileNum);
+    CALL_EVENT(OnDeleteFile, fileNum);
 }
 
 bool SaveManager::IsRandoFile() {

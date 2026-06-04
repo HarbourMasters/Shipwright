@@ -315,10 +315,10 @@ void RemoveAllNameTags() {
 }
 
 void NameTag_RegisterHooks() {
-    static HOOK_ID gameStatUpdateHookID = 0;
-    static HOOK_ID drawHookID = 0;
-    static HOOK_ID playDestroyHookID = 0;
-    static HOOK_ID actorDestroyHookID = 0;
+    static ListenerID gameStatUpdateHookID = -1;
+    static ListenerID drawHookID = -1;
+    static ListenerID playDestroyHookID = -1;
+    static ListenerID actorDestroyHookID = -1;
     static bool sRegisteredHooks = false;
 
     // Hooks already (un)registered based on nametags
@@ -326,10 +326,10 @@ void NameTag_RegisterHooks() {
         return;
     }
 
-    GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnGameFrameUpdate>(gameStatUpdateHookID);
-    GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnPlayDrawEnd>(drawHookID);
-    GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnPlayDestroy>(playDestroyHookID);
-    GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorDestroy>(actorDestroyHookID);
+    UNREGISTER_LISTENER(OnGameFrameUpdate, gameStatUpdateHookID);
+    UNREGISTER_LISTENER(OnPlayDrawEnd, drawHookID);
+    UNREGISTER_LISTENER(OnPlayDestroy, playDestroyHookID);
+    UNREGISTER_LISTENER(OnActorDestroy, actorDestroyHookID);
     gameStatUpdateHookID = 0;
     drawHookID = 0;
     playDestroyHookID = 0;
@@ -344,15 +344,18 @@ void NameTag_RegisterHooks() {
 
     // Reorder tags every frame to mimic depth rendering
     gameStatUpdateHookID =
-        GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>(UpdateNameTags);
+        REGISTER_LISTENER(OnGameFrameUpdate, EVENT_PRIORITY_LOW, [](IEvent* event) { UpdateNameTags(); });
 
     // Render name tags at the end of the Play World drawing
-    drawHookID = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayDrawEnd>(DrawNameTags);
+    drawHookID = REGISTER_LISTENER(OnPlayDrawEnd, EVENT_PRIORITY_LOW, [](IEvent* event) { DrawNameTags(); });
 
     // Remove all name tags on play state destroy as all actors are removed anyways
-    playDestroyHookID = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayDestroy>(RemoveAllNameTags);
+    playDestroyHookID =
+        REGISTER_LISTENER(OnPlayDestroy, EVENT_PRIORITY_LOW, [](IEvent* event) { RemoveAllNameTags(); });
 
     // Remove all name tags for actor on destroy
-    actorDestroyHookID = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorDestroy>(
-        [](void* actor) { NameTag_RemoveAllForActor((Actor*)actor); });
+    actorDestroyHookID = REGISTER_LISTENER(OnActorDestroy, EVENT_PRIORITY_LOW, [](IEvent* event) {
+        OnActorDestroy* ev = reinterpret_cast<OnActorDestroy*>(event);
+        NameTag_RemoveAllForActor((Actor*)ev->actor);
+    });
 }

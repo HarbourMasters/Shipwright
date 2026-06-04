@@ -8,7 +8,7 @@
 #include <overlays/actors/ovl_En_Niw/z_en_niw.h>
 #include <overlays/misc/ovl_kaleido_scope/z_kaleido_scope.h>
 #include "soh/Enhancements/enhancementTypes.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/SaveManager.h"
@@ -201,7 +201,7 @@ void Play_Destroy(GameState* thisx) {
     PlayState* play = (PlayState*)thisx;
     Player* player = GET_PLAYER(play);
 
-    GameInteractor_ExecuteOnPlayDestroy();
+    CALL_EVENT(OnPlayDestroy);
 
     play->state.gfxCtx->callback = NULL;
     play->state.gfxCtx->callbackParam = 0;
@@ -394,7 +394,7 @@ void Play_Init(GameState* thisx) {
         gSaveContext.entranceIndex = 0;
         play->state.running = false;
         SET_NEXT_GAMESTATE(&play->state, Opening_Init, OpeningContext);
-        GameInteractor_ExecuteOnExitGame(gSaveContext.fileNum);
+        CALL_EVENT(OnExitGame, gSaveContext.fileNum);
         return;
     }
 
@@ -518,7 +518,7 @@ void Play_Init(GameState* thisx) {
             gSaveContext.dogIsLost = true;
 
             if (Inventory_ReplaceItem(play, ITEM_WEIRD_EGG, ITEM_CHICKEN) || Inventory_HatchPocketCucco(play)) {
-                GameInteractor_ExecuteOnCuccoOrChickenHatch();
+                CALL_EVENT(OnCuccoOrChickenHatch);
                 Message_StartTextbox(play, 0x3066, NULL);
             }
 
@@ -956,7 +956,7 @@ void Play_Update(PlayState* play) {
                             }
 
                             // Transition end for standard transitions
-                            GameInteractor_ExecuteOnTransitionEndHooks(play->sceneNum);
+                            CALL_EVENT(OnTransitionEnd, play->sceneNum);
                         }
 
                         play->transitionTrigger = TRANS_TRIGGER_OFF;
@@ -1074,7 +1074,7 @@ void Play_Update(PlayState* play) {
                             play->transitionMode = TRANS_MODE_OFF;
 
                             // Transition end for sandstorm effect (delayed until effect is finished)
-                            GameInteractor_ExecuteOnTransitionEndHooks(play->sceneNum);
+                            CALL_EVENT(OnTransitionEnd, play->sceneNum);
                         }
                     } else {
                         if (play->envCtx.sandstormEnvA == 255) {
@@ -1113,7 +1113,7 @@ void Play_Update(PlayState* play) {
                             play->transitionMode = TRANS_MODE_OFF;
 
                             // Transition end for sandstorm effect (delayed until effect is finished)
-                            GameInteractor_ExecuteOnTransitionEndHooks(play->sceneNum);
+                            CALL_EVENT(OnTransitionEnd, play->sceneNum);
                         }
                     }
                     break;
@@ -1307,7 +1307,7 @@ void Play_Update(PlayState* play) {
 skip:
     PLAY_LOG(3801);
 
-    GameInteractor_ExecuteOnCameraState(play);
+    CALL_EVENT(OnCameraState, play);
 
     if (!isPaused || gDbgCamEnabled) {
         s32 i;
@@ -1398,7 +1398,7 @@ void Play_Draw(PlayState* play) {
     Gfx_SetupFrame(gfxCtx, 0, 0, 0);
 
     if ((HREG(80) != 10) || (HREG(82) != 0)) {
-        GameInteractor_ExecuteOnPlayDrawBegin();
+        CALL_EVENT(OnPlayDrawBegin);
 
         POLY_OPA_DISP = Play_SetFog(play, POLY_OPA_DISP);
         POLY_XLU_DISP = Play_SetFog(play, POLY_XLU_DISP);
@@ -1651,7 +1651,7 @@ void Play_Draw(PlayState* play) {
 
         // Draw Enhancements that need to be placed in the world. This happens before the PostWorldDraw
         // so that they aren't drawn when the pause menu is up (e.g. collision viewer, actor name tags)
-        GameInteractor_ExecuteOnPlayDrawEnd();
+        CALL_EVENT(OnPlayDrawEnd);
 
     Play_Draw_DrawOverlayElements:
         if ((HREG(80) != 10) || (HREG(89) != 0)) {

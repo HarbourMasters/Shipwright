@@ -9,12 +9,13 @@ extern "C" {
 Actor* func_80AEB124(PlayState* play);
 }
 
-void Ru1Init(void* actorRef) {
+void Ru1Init(IEvent* event) {
+    OnActorInit* ev = reinterpret_cast<OnActorInit*>(event);
     if (IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_SPEAK) && !Flags_GetRandomizerInf(RAND_INF_CAN_SPEAK_ZORA)) {
         return;
     }
 
-    EnRu1* enRu1 = static_cast<EnRu1*>(actorRef);
+    EnRu1* enRu1 = static_cast<EnRu1*>(ev->actor);
 
     if (enRu1->action == 22) {
         enRu1->action = 27;

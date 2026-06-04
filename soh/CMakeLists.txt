@@ -699,7 +699,7 @@ else()
     find_package(Opus REQUIRED)
     find_package(OpusFile REQUIRED)
      set(ADDITIONAL_LIBRARY_DEPENDENCIES
-    "libultraship;"
+        "libultraship;"
         "ZAPDLib;"
         SDL2::SDL2
         "Ogg::ogg"

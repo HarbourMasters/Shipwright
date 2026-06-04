@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <assert.h>
 #include "soh/ResourceManagerHelpers.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 #define ANIM_INTERP 1
 
@@ -1145,7 +1145,7 @@ void SkelAnime_InitLink(PlayState* play, SkelAnime* skelAnime, FlexSkeletonHeade
 
     LinkAnimation_Change(play, skelAnime, animation, 1.0f, 0.0f, 0.0f, ANIMMODE_LOOP, 0.0f);
 
-    GameInteractor_ExecuteOnLinkSkeletonInit();
+    CALL_EVENT(OnLinkSkeletonInit);
 }
 
 /**

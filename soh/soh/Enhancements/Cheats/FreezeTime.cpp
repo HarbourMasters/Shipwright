@@ -1,5 +1,5 @@
 #include <libultraship/bridge.h>
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
 #include "z64save.h"
 
@@ -13,7 +13,7 @@ extern "C" SaveContext gSaveContext;
 #define CVAR_PREV_TIME_DEFAULT -1
 #define CVAR_PREV_TIME_VALUE CVarGetInteger(CVAR_PREV_TIME_NAME, CVAR_PREV_TIME_DEFAULT)
 
-void OnGameFrameUpdateFreezeTime() {
+void OnGameFrameUpdateFreezeTime(IEvent* event) {
     if (!GameInteractor::IsSaveLoaded(true)) {
         return;
     }
@@ -26,12 +26,12 @@ void OnGameFrameUpdateFreezeTime() {
 }
 
 void RegisterFreezeTime() {
-    static HOOK_ID hookId = 0;
-    GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnGameFrameUpdate>(hookId);
-    hookId = 0;
+    static ListenerID listenerId = -1;
+    if (listenerId == -1) {
+        UNREGISTER_LISTENER(OnGameFrameUpdate, listenerId);
+    }
     if (CVAR_FREEZE_TIME_VALUE) {
-        hookId =
-            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>(OnGameFrameUpdateFreezeTime);
+        listenerId = REGISTER_LISTENER(OnGameFrameUpdate, EVENT_PRIORITY_LOW, OnGameFrameUpdateFreezeTime);
     } else {
         CVarClear(CVAR_PREV_TIME_NAME);
     }

@@ -125,8 +125,9 @@ void EnWood02_RandomizerSpawnCollectible(EnWood02* treeActor, PlayState* play) {
     treeIdentity->randomizerCheck = RC_UNKNOWN_CHECK;
 }
 
-void EnWood02_RandomizerInit(void* actorRef) {
-    EnWood02* treeActor = static_cast<EnWood02*>(actorRef);
+void EnWood02_RandomizerInit(IEvent* event) {
+    OnActorInit* ev = reinterpret_cast<OnActorInit*>(event);
+    EnWood02* treeActor = static_cast<EnWood02*>(ev->actor);
     if ((treeActor->actor.params <= WOOD_TREE_KAKARIKO_ADULT &&
          Rando::Context::GetInstance()->GetOption(RSK_SHUFFLE_TREES).Get()) ||
         (treeActor->actor.params > WOOD_TREE_KAKARIKO_ADULT &&
@@ -135,7 +136,7 @@ void EnWood02_RandomizerInit(void* actorRef) {
         auto treeIdentity = OTRGlobals::Instance->gRandomizer->IdentifyTree(
             gPlayState->sceneNum, (s16)treeActor->actor.world.pos.x, (s16)treeActor->actor.world.pos.z);
         if (treeIdentity.randomizerInf != RAND_INF_MAX && treeIdentity.randomizerCheck != RC_UNKNOWN_CHECK) {
-            ObjectExtension::GetInstance().Set<CheckIdentity>(actorRef, std::move(treeIdentity));
+            ObjectExtension::GetInstance().Set<CheckIdentity>(ev->actor, std::move(treeIdentity));
         }
     }
 }

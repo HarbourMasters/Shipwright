@@ -18,7 +18,7 @@ extern PlayState* gPlayState;
 void DummyPlayer_Update(Actor* actor, PlayState* play);
 
 static void UpdatePatchCustomEquipmentDlists();
-static void RefreshCustomEquipment();
+static void RefreshCustomEquipment(IEvent* event = nullptr);
 static u8 GetEquippedSwordItem();
 static bool IsDummyPlayer(const Player* player);
 
@@ -73,17 +73,19 @@ static const char* GetCustomFPSLongshotDL() {
     return ResolveCustomChain({ gCustomFPSLongshotDL, gCustomLongshotDL });
 }
 
-static void UpdateCustomEquipmentSetModel(Player* player, u8 ModelGroup) {
-    (void)ModelGroup;
+static void UpdateCustomEquipmentSetModel(IEvent* event) {
+    OnPlayerSetModels* ev = reinterpret_cast<OnPlayerSetModels*>(event);
+    (void)ev->modelGroup;
 
-    if (player == nullptr || gPlayState == nullptr || player != GET_PLAYER(gPlayState) || IsDummyPlayer(player)) {
+    if (ev->player == nullptr || gPlayState == nullptr || ev->player != GET_PLAYER(gPlayState) ||
+        IsDummyPlayer(ev->player)) {
         return;
     }
 
     RefreshCustomEquipment();
 }
 
-static void UpdateCustomEquipment() {
+static void UpdateCustomEquipment(IEvent* event) {
     if (!GameInteractor::IsSaveLoaded() || gPlayState == nullptr || GET_PLAYER(gPlayState) == nullptr ||
         IsDummyPlayer(GET_PLAYER(gPlayState))) {
         return;
@@ -92,7 +94,7 @@ static void UpdateCustomEquipment() {
     RefreshCustomEquipment();
 }
 
-static void RefreshCustomEquipment() {
+static void RefreshCustomEquipment(IEvent* event) {
     if (!GameInteractor::IsSaveLoaded() || gPlayState == nullptr || GET_PLAYER(gPlayState) == nullptr ||
         IsDummyPlayer(GET_PLAYER(gPlayState))) {
         return;

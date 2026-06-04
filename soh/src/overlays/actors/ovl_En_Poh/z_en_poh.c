@@ -7,7 +7,7 @@
 #include "z_en_poh.h"
 #include "objects/object_poh/object_poh.h"
 #include "objects/object_po_composer/object_po_composer.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS \
@@ -639,7 +639,7 @@ void func_80ADF15C(EnPoh* this, PlayState* play) {
                              255, 1, 9, 1);
         if (this->unk_198 == 1) {
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_EXTINCT);
-            GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+            CALL_EVENT(OnEnemyDefeat, &this->actor);
         }
     } else if (this->unk_198 == 28) {
         EnPoh_SetupDeath(this, play);

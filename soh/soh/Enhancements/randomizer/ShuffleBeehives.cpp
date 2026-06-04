@@ -75,17 +75,19 @@ void ObjComb_RandomizerWait(ObjComb* objComb, PlayState* play) {
     }
 }
 
-void ObjComb_RandomizerInit(void* actor) {
-    ObjComb* objComb = static_cast<ObjComb*>(actor);
+void ObjComb_RandomizerInit(IEvent* event) {
+    OnActorInit* ev = reinterpret_cast<OnActorInit*>(event);
+    ObjComb* objComb = static_cast<ObjComb*>(ev->actor);
     s16 respawnData = gSaveContext.respawn[RESPAWN_MODE_RETURN].data & ((1 << 8) - 1);
     auto beehiveIdentity = OTRGlobals::Instance->gRandomizer->IdentifyBeehive(
         gPlayState->sceneNum, (s16)objComb->actor.world.pos.x, respawnData);
-    ObjectExtension::GetInstance().Set<CheckIdentity>(actor, std::move(beehiveIdentity));
+    ObjectExtension::GetInstance().Set<CheckIdentity>(ev->actor, std::move(beehiveIdentity));
     objComb->actionFunc = (ObjCombActionFunc)ObjComb_RandomizerWait;
 }
 
-void ObjComb_RandomizerUpdate(void* actor) {
-    ObjComb* combActor = reinterpret_cast<ObjComb*>(actor);
+void ObjComb_RandomizerUpdate(IEvent* event) {
+    OnActorUpdate* ev = reinterpret_cast<OnActorUpdate*>(event);
+    ObjComb* combActor = reinterpret_cast<ObjComb*>(ev->actor);
     PlayState* play = gPlayState;
     combActor->unk_1B2 += 0x2EE0;
     combActor->actionFunc(combActor, play);

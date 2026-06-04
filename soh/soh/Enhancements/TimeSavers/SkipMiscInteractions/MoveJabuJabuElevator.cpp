@@ -5,9 +5,10 @@ extern "C" {
 #include "src/overlays/actors/ovl_Bg_Bdan_Objects/z_bg_bdan_objects.h"
 }
 
-void BdanInit(void* actorRef) {
+void BdanInit(IEvent* event) {
     Player* player = GET_PLAYER(gPlayState);
-    BgBdanObjects* bgBdanObjects = static_cast<BgBdanObjects*>(actorRef);
+    OnActorInit* ev = reinterpret_cast<OnActorInit*>(event);
+    BgBdanObjects* bgBdanObjects = static_cast<BgBdanObjects*>(ev->actor);
 
     if (bgBdanObjects->dyna.actor.params == 1) {
         if (player->actor.world.pos.y < -500.0f) {

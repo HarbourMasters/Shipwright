@@ -1,5 +1,5 @@
 #include <libultraship/bridge.h>
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
@@ -11,7 +11,7 @@ extern PlayState* gPlayState;
 #define CVAR_EASY_ISG_DEFAULT 0
 #define CVAR_EASY_ISG_VALUE CVarGetInteger(CVAR_EASY_ISG_NAME, CVAR_EASY_ISG_DEFAULT)
 
-void OnGameFrameUpdateEasyISG() {
+void OnGameFrameUpdateEasyISG(IEvent* event) {
     if (!GameInteractor::IsSaveLoaded(true)) {
         return;
     }

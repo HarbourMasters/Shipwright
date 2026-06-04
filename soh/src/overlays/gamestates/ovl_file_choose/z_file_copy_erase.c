@@ -1,5 +1,5 @@
 #include "file_choose.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/SaveManager.h"
 
 // when choosing a file to copy or erase, the 6 main menu buttons are placed at these offsets
@@ -120,7 +120,7 @@ void FileChoose_SelectCopySource(GameState* thisx) {
     }
 
     if (sLastCopyEraseButtonIndex != this->buttonIndex) {
-        GameInteractor_ExecuteOnUpdateFileCopySelection(this->buttonIndex);
+        CALL_EVENT(OnUpdateFileCopySelection, this->buttonIndex);
         sLastCopyEraseButtonIndex = this->buttonIndex;
     }
 }
@@ -252,7 +252,7 @@ void FileChoose_SelectCopyDest(GameState* thisx) {
         }
 
         if (sLastCopyEraseButtonIndex != this->buttonIndex) {
-            GameInteractor_ExecuteOnUpdateFileCopySelection(this->buttonIndex);
+            CALL_EVENT(OnUpdateFileCopySelection, this->buttonIndex);
             sLastCopyEraseButtonIndex = this->buttonIndex;
         }
     }
@@ -406,7 +406,7 @@ void FileChoose_CopyConfirm(GameState* thisx) {
     }
 
     if (sLastCopyEraseButtonIndex != this->buttonIndex) {
-        GameInteractor_ExecuteOnUpdateFileCopyConfirmationSelection(this->buttonIndex);
+        CALL_EVENT(OnUpdateFileCopyConfirmationSelection, this->buttonIndex);
         sLastCopyEraseButtonIndex = this->buttonIndex;
     }
 }
@@ -764,7 +764,7 @@ void FileChoose_EraseSelect(GameState* thisx) {
     }
 
     if (sLastCopyEraseButtonIndex != this->buttonIndex) {
-        GameInteractor_ExecuteOnUpdateFileEraseSelection(this->buttonIndex);
+        CALL_EVENT(OnUpdateFileEraseSelection, this->buttonIndex);
         sLastCopyEraseButtonIndex = this->buttonIndex;
     }
 }
@@ -881,7 +881,7 @@ void FileChoose_EraseConfirm(GameState* thisx) {
     }
 
     if (sLastCopyEraseButtonIndex != this->buttonIndex) {
-        GameInteractor_ExecuteOnUpdateFileEraseConfirmationSelection(this->buttonIndex);
+        CALL_EVENT(OnUpdateFileEraseConfirmationSelection, this->buttonIndex);
         sLastCopyEraseButtonIndex = this->buttonIndex;
     }
 }

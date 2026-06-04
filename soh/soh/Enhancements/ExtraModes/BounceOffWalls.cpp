@@ -1,5 +1,5 @@
 #include <libultraship/bridge.h>
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
@@ -13,7 +13,7 @@ extern PlayState* gPlayState;
 
 static RegisterShipInitFunc initFunc(
     []() {
-        COND_HOOK(OnPlayerUpdate, CVAR_BOUNCE_OFF_WALLS_VALUE, []() {
+        COND_HOOK(OnPlayerUpdate, CVAR_BOUNCE_OFF_WALLS_VALUE, [](IEvent* event) {
             Player* player = GET_PLAYER(gPlayState);
             if (player->actor.bgCheckFlags & 0x08 && ABS(player->linearVelocity) > 15.0f) {
                 player->yaw = ((player->actor.wallYaw - player->yaw) + player->actor.wallYaw) - 0x8000;

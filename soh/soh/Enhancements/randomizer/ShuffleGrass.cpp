@@ -115,13 +115,14 @@ void EnKusa_RandomizerSpawnCollectible(EnKusa* grassActor, PlayState* play) {
     item00->actor.world.rot.y = static_cast<int16_t>(Rand_CenteredFloat(65536.0f));
 }
 
-void EnKusa_RandomizerInit(void* actorRef) {
-    Actor* actor = static_cast<Actor*>(actorRef);
+void EnKusa_RandomizerInit(IEvent* event) {
+    OnActorInit* ev = reinterpret_cast<OnActorInit*>(event);
+    Actor* actor = static_cast<Actor*>(ev->actor);
 
     if (actor->id != ACTOR_EN_KUSA)
         return;
 
-    EnKusa* grassActor = static_cast<EnKusa*>(actorRef);
+    EnKusa* grassActor = reinterpret_cast<EnKusa*>(actor);
     s16 respawnData = gSaveContext.respawn[RESPAWN_MODE_RETURN].data & ((1 << 8) - 1);
 
     auto grassIdentity = OTRGlobals::Instance->gRandomizer->IdentifyGrass(

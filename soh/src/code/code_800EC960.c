@@ -4,7 +4,6 @@
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/audio/AudioEditor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 // TODO: can these macros be shared between files? code_800F9280 seems to use
 // versions without any casts...
@@ -1678,7 +1677,7 @@ void func_800ED458(s32 arg0) {
         } else if ((sPrevOcarinaNoteVal != 0xFF) && (sCurOcarinaBtnVal == 0xFF)) {
             Audio_StopSfxById(NA_SE_OC_OCARINA);
         }
-        GameInteractor_ExecuteOnOcarinaNote(sCurOcarinaBtnVal, D_80130F24, D_80130F10);
+        CALL_EVENT(OnOcarinaNote, sCurOcarinaBtnVal, D_80130F24, D_80130F10);
     }
 }
 

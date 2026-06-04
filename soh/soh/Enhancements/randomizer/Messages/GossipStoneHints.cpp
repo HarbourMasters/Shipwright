@@ -12,7 +12,8 @@ extern PlayState* gPlayState;
 #include <variables.h>
 }
 
-void BuildHintStoneMessage(uint16_t* textId, bool* loadFromMessageTable) {
+void BuildHintStoneMessage(IEvent* event) {
+    OnOpenText* ev = reinterpret_cast<OnOpenText*>(event);
     if ((RAND_GET_OPTION(RSK_GOSSIP_STONE_HINTS).Is(RO_GOSSIP_STONES_NEED_TRUTH) &&
          Player_GetMask(gPlayState) == PLAYER_MASK_TRUTH) ||
         (RAND_GET_OPTION(RSK_GOSSIP_STONE_HINTS).Is(RO_GOSSIP_STONES_NEED_STONE) &&
@@ -49,7 +50,7 @@ void BuildHintStoneMessage(uint16_t* textId, bool* loadFromMessageTable) {
     msg.Replace(" kaufen ", "");
     msg.Replace(" kaufen", "");
     msg.LoadIntoFont();
-    *loadFromMessageTable = false;
+    *ev->loadFromMessageTable = false;
 }
 
 void RegisterGossipStoneHints() {

@@ -9,9 +9,10 @@ void DoorShutter_SetupAction(DoorShutter*, DoorShutterActionFunc);
 void DoorShutter_SetupType(DoorShutter*, PlayState*);
 }
 
-static void OnDoorInit(void* actorRef) {
+static void OnDoorInit(IEvent* event) {
+    OnActorInit* ev = reinterpret_cast<OnActorInit*>(event);
     if (gPlayState->sceneNum == SCENE_INSIDE_GANONS_CASTLE) {
-        DoorShutter* door = static_cast<DoorShutter*>(actorRef);
+        DoorShutter* door = static_cast<DoorShutter*>(ev->actor);
         bool barred = false;
         switch (door->dyna.actor.params) {
             case 8255:

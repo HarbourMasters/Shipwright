@@ -4484,7 +4484,7 @@ void GenerateRandomizerImgui(std::string seed = "") {
 
     generated = true;
 
-    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnGenerationCompletion>();
+    CALL_EVENT(OnGenerationCompletion);
 }
 
 bool GenerateRandomizer(std::string seed /*= ""*/) {

@@ -12,7 +12,7 @@
 #include <soh/GameVersions.h>
 #include <soh/SaveManager.h>
 #include "soh/ResourceManagerHelpers.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include <string.h>
 
 #include "time.h"
@@ -169,5 +169,5 @@ void Title_Init(GameState* thisx) {
     this->addAlpha = -3;
     this->visibleDuration = 0x3C;
 
-    GameInteractor_ExecuteOnZTitleInit(this);
+    CALL_EVENT(OnZTitleInit, this);
 }

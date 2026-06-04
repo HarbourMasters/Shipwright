@@ -1,4 +1,4 @@
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
 
 #include "textures/nintendo_rogo_static/nintendo_rogo_static.h"
@@ -165,7 +165,7 @@ extern "C" void CustomLogoTitle_Main(TitleContext* titleContext) {
         }
     }
 
-    GameInteractor_ExecuteOnZTitleUpdate(titleContext);
+    CALL_EVENT(OnZTitleUpdate, titleContext);
 
     CLOSE_DISPS(titleContext->state.gfxCtx);
 }
@@ -174,14 +174,16 @@ extern "C" void CustomLogoTitle_Main(TitleContext* titleContext) {
 // Always
 //
 
-void OnZTitleInitReplaceTitleMainWithCustom(void* gameState) {
-    TitleContext* titleContext = (TitleContext*)gameState;
+void OnZTitleInitReplaceTitleMainWithCustom(IEvent* event) {
+    OnZTitleInit* ev = reinterpret_cast<OnZTitleInit*>(event);
+    TitleContext* titleContext = (TitleContext*)ev->gameState;
     titleContext->state.main = (GameStateFunc)CustomLogoTitle_Main;
 }
 
 // Allows pressing A to skip the boot logo and go to the next state (opening or file select)
-void OnZTitleUpdatePressButtonToSkip(void* gameState) {
-    TitleContext* titleContext = (TitleContext*)gameState;
+void OnZTitleUpdatePressButtonToSkip(IEvent* event) {
+    OnZTitleUpdate* ev = reinterpret_cast<OnZTitleUpdate*>(event);
+    TitleContext* titleContext = (TitleContext*)ev->gameState;
 
     if (CHECK_BTN_ANY(titleContext->state.input->press.button, BTN_A | BTN_B | BTN_START)) {
         // Force the title state to start fading to black and to last roughly 5 frames based on current fade in/out
@@ -201,8 +203,9 @@ static RegisterShipInitFunc registerCustomLogo(RegisterCustomLogoTitle);
 // Bootsequence
 //
 
-void OnZTitleUpdateSkipToFileSelect(void* gameState) {
-    TitleContext* titleContext = (TitleContext*)gameState;
+void OnZTitleUpdateSkipToFileSelect(IEvent* event) {
+    OnZTitleUpdate* ev = reinterpret_cast<OnZTitleUpdate*>(event);
+    TitleContext* titleContext = (TitleContext*)ev->gameState;
 
     gSaveContext.seqId = (u8)NA_BGM_DISABLED;
     gSaveContext.natureAmbienceId = 0xFF;

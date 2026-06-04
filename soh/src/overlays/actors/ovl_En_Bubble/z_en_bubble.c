@@ -1,6 +1,6 @@
 #include "z_en_bubble.h"
 #include "objects/object_bubble/object_bubble.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 #define FLAGS ACTOR_FLAG_ATTENTION_ENABLED
 
@@ -373,7 +373,7 @@ void EnBubble_Pop(EnBubble* this, PlayState* play) {
     if (EnBubble_Explosion(this, play) >= 0) {
         SoundSource_PlaySfxAtFixedWorldPos(play, &this->actor.world.pos, 60, NA_SE_EN_AWA_BREAK);
         Actor_Kill(&this->actor);
-        GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+        CALL_EVENT(OnEnemyDefeat, &this->actor);
     }
 }
 

@@ -7,7 +7,7 @@
 #include "z_en_po_field.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_po_field/object_po_field.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ResourceManagerHelpers.h"
 
 #include <string.h>
@@ -580,7 +580,7 @@ void EnPoField_Death(EnPoField* this, PlayState* play) {
                              0, 0, 255, 1, 9, 1);
         if (this->actionTimer == 1) {
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_EXTINCT);
-            GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+            CALL_EVENT(OnEnemyDefeat, &this->actor);
         }
     } else if (this->actionTimer == 28) {
         EnPoField_SetupSoulIdle(this, play);

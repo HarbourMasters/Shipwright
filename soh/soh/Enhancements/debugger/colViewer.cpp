@@ -806,5 +806,5 @@ void ColViewerWindow::InitElement() {
     CreateCylinderData();
     CreateSphereData();
 
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayDrawEnd>(DrawColViewer);
+    REGISTER_LISTENER(OnPlayDrawEnd, EVENT_PRIORITY_LOW, [](IEvent* event) { DrawColViewer(); });
 }

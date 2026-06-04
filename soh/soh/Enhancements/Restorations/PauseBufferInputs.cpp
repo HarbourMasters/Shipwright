@@ -1,5 +1,5 @@
 #include <libultraship/libultraship.h>
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
@@ -49,7 +49,7 @@ void RegisterPauseBufferInputs() {
         }
     });
 
-    COND_HOOK(OnGameStateMainStart, CVAR_BUFFER_VALUE || CVAR_INCLUDE_VALUE, []() {
+    COND_HOOK(OnGameStateMainStart, CVAR_BUFFER_VALUE || CVAR_INCLUDE_VALUE, [](IEvent* event) {
         if (gPlayState == NULL) {
             return;
         }

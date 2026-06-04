@@ -6,7 +6,7 @@
 
 #include "z_en_torch2.h"
 #include "objects/object_torch2/object_torch2.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 #define FLAGS                                                                                 \
     (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED | \
@@ -564,7 +564,7 @@ void EnTorch2_Update(Actor* thisx, PlayState* play2) {
         case ENTORCH2_DEATH:
             if (sAlpha - 13 <= 0) {
                 sAlpha = 0;
-                GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+                CALL_EVENT(OnEnemyDefeat, &this->actor);
                 Actor_Kill(&this->actor);
                 return;
             }

@@ -7,7 +7,7 @@
 #include "z_en_firefly.h"
 #include "objects/object_firefly/object_firefly.h"
 #include "overlays/actors/ovl_Obj_Syokudai/z_obj_syokudai.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS \
@@ -228,7 +228,7 @@ void EnFirefly_SetupDie(EnFirefly* this) {
     this->actor.speedXZ = 0.0f;
     this->actionFunc = EnFirefly_Die;
 
-    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+    CALL_EVENT(OnEnemyDefeat, &this->actor);
 }
 
 void EnFirefly_SetupRebound(EnFirefly* this) {

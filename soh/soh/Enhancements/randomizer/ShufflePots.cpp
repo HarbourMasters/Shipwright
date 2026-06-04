@@ -103,9 +103,10 @@ void ObjTsubo_RandomizerSpawnCollectible(ObjTsubo* potActor, PlayState* play) {
 void RegisterShufflePots() {
     bool shouldRegister = IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_POTS);
 
-    COND_ID_HOOK(OnActorInit, ACTOR_OBJ_TSUBO, shouldRegister, [](void* actorRef) {
-        Actor* actor = static_cast<Actor*>(actorRef);
-        ObjTsubo* potActor = static_cast<ObjTsubo*>(actorRef);
+    COND_ID_HOOK(OnActorInit, ACTOR_OBJ_TSUBO, shouldRegister, [](IEvent* event) {
+        OnActorInit* ev = reinterpret_cast<OnActorInit*>(event);
+        Actor* actor = static_cast<Actor*>(ev->actor);
+        ObjTsubo* potActor = static_cast<ObjTsubo*>(ev->actor);
 
         auto potIdentity = OTRGlobals::Instance->gRandomizer->IdentifyPot(gPlayState->sceneNum, (s16)actor->world.pos.x,
                                                                           (s16)actor->world.pos.z);

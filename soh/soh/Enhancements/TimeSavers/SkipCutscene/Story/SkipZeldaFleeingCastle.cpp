@@ -13,35 +13,42 @@ extern SaveContext gSaveContext;
  * To make it more obvious what happened, we'll play the sound of the Ocarina dropping into the water.
  */
 static int framesSinceSpawn = 0;
-static HOOK_ID itemOcarinaUpdateHook = 0;
-static HOOK_ID sceneInitHook = 0;
+static ListenerID itemOcarinaUpdateHook = -1;
+static ListenerID sceneInitHook = -1;
 
-void SkipZeldaFleeingCastle_OnActorUpdate(void* actorPtr) {
-    Actor* actor = static_cast<Actor*>(actorPtr);
+void SkipZeldaFleeingCastle_OnActorUpdate(IEvent* event) {
+    OnActorUpdate* ev = reinterpret_cast<OnActorUpdate*>(event);
+    Actor* actor = static_cast<Actor*>(ev->actor);
+
+    if (actor->params != 3) {
+        return;
+    }
 
     framesSinceSpawn++;
     if (framesSinceSpawn > 20) {
         Audio_PlayActorSound2(actor, NA_SE_EV_BOMB_DROP_WATER);
 
-        GameInteractor::Instance->UnregisterGameHookForPtr<GameInteractor::OnActorUpdate>(itemOcarinaUpdateHook);
-        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(sceneInitHook);
-        itemOcarinaUpdateHook = 0;
-        sceneInitHook = 0;
+        UNREGISTER_LISTENER(OnActorUpdate, itemOcarinaUpdateHook);
+        UNREGISTER_LISTENER(OnSceneInit, sceneInitHook);
+
+        itemOcarinaUpdateHook = -1;
+        sceneInitHook = -1;
     }
 }
 
-void SkipZeldaFleeingCastle_OnActorInit(void* actorPtr) {
-    Actor* actor = static_cast<Actor*>(actorPtr);
+void SkipZeldaFleeingCastle_OnActorInit(IEvent* event) {
+    OnActorInit* ev = reinterpret_cast<OnActorInit*>(event);
+    Actor* actor = static_cast<Actor*>(ev->actor);
 
     if (actor->params == 3) {
         framesSinceSpawn = 0;
-        itemOcarinaUpdateHook = GameInteractor::Instance->RegisterGameHookForPtr<GameInteractor::OnActorUpdate>(
-            (uintptr_t)actorPtr, SkipZeldaFleeingCastle_OnActorUpdate);
-        sceneInitHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) {
-            GameInteractor::Instance->UnregisterGameHookForPtr<GameInteractor::OnActorUpdate>(itemOcarinaUpdateHook);
-            GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(sceneInitHook);
-            itemOcarinaUpdateHook = 0;
-            sceneInitHook = 0;
+        itemOcarinaUpdateHook =
+            REGISTER_LISTENER(OnActorUpdate, EVENT_PRIORITY_LOW, SkipZeldaFleeingCastle_OnActorUpdate);
+        sceneInitHook = REGISTER_LISTENER(OnSceneInit, EVENT_PRIORITY_LOW, [](IEvent* event) {
+            UNREGISTER_LISTENER(OnActorUpdate, itemOcarinaUpdateHook);
+            UNREGISTER_LISTENER(OnSceneInit, sceneInitHook);
+            itemOcarinaUpdateHook = -1;
+            sceneInitHook = -1;
         });
     }
 }

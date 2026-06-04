@@ -1,4 +1,4 @@
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/ShipInit.hpp"
 
@@ -101,8 +101,9 @@ static void ResetToTMedallions() {
     endGrayscale.RevertPatch();
 }
 
-static void CheckTempleOfTime(int16_t sceneNum) {
-    if (sceneNum != SCENE_TEMPLE_OF_TIME) {
+static void CheckTempleOfTime(IEvent* event) {
+    OnSceneInit* ev = reinterpret_cast<OnSceneInit*>(event);
+    if (ev->sceneNum != SCENE_TEMPLE_OF_TIME) {
         return;
     }
     PatchToTMedallions();
@@ -115,9 +116,10 @@ static void RegisterToTMedallions() {
         ResetToTMedallions();
     }
 
-    COND_HOOK(OnItemReceive, CVAR_TOT_MEDALLION_COLORS_VALUE, [](GetItemEntry) {
+    COND_HOOK(OnItemReceive, CVAR_TOT_MEDALLION_COLORS_VALUE, [](IEvent* event) {
         if (gPlayState) {
-            CheckTempleOfTime(gPlayState->sceneNum);
+            OnSceneInit ev = { .sceneNum = gPlayState->sceneNum };
+            CheckTempleOfTime(reinterpret_cast<IEvent*>(&ev));
         }
     });
     COND_HOOK(OnSceneInit, CVAR_TOT_MEDALLION_COLORS_VALUE, CheckTempleOfTime);

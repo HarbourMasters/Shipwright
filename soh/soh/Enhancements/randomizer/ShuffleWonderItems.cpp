@@ -87,7 +87,7 @@ static Vec3f GetStackOffset(RandomizerCheck rc) {
     return it != sStackedWonderOffsets.end() ? it->second : Vec3f{ 0.0f, 0.0f, 0.0f };
 }
 
-void SpawnNTSC10WonderItem() {
+void SpawnNTSC10WonderItem(IEvent* event) {
     if (LINK_IS_ADULT && gPlayState->sceneNum == SCENE_ZORAS_FOUNTAIN) {
         Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_WONDER_ITEM, -667, 320, 1053, 0, 0, 1, 4799);
     } else if (LINK_IS_ADULT && gPlayState->sceneNum == SCENE_DEATH_MOUNTAIN_CRATER) {
@@ -163,8 +163,9 @@ static void EnWonderItem_RandomizerDraw(EnWonderItem* wonderActor, Color_RGBA8* 
     }
 }
 
-void EnWonderItem_RandomizerDrawSetup(void* refActor) {
-    EnWonderItem* wonderActor = static_cast<EnWonderItem*>(refActor);
+void EnWonderItem_RandomizerDrawSetup(IEvent* event) {
+    OnActorUpdate* ev = reinterpret_cast<OnActorUpdate*>(event);
+    EnWonderItem* wonderActor = static_cast<EnWonderItem*>(ev->actor);
 
     // If not a randomized item or too far, don't draw.
     // If item is unshuffled or collected, kill wonder actor if switch flag is set.
@@ -182,7 +183,7 @@ void EnWonderItem_RandomizerDrawSetup(void* refActor) {
 
     int isNotCMC = !cmc || (requiresStoneAgony && !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY));
 
-    const auto wonderIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(refActor);
+    const auto wonderIdentity = ObjectExtension::GetInstance().Get<CheckIdentity>(ev->actor);
     if (wonderIdentity == nullptr) {
         return;
     }

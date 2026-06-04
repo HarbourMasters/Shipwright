@@ -10,7 +10,7 @@ extern void func_808237B4(PlayState* play, Input* input);
 #define CVAR_FASTER_PAUSE_MENU_NAME CVAR_ENHANCEMENT("FasterPauseMenu")
 #define CVAR_FASTER_PAUSE_MENU_VALUE CVarGetInteger(CVAR_FASTER_PAUSE_MENU_NAME, 0)
 
-void OnKaleidoUpdateFaster() {
+void OnKaleidoUpdateFaster(IEvent* event) {
     ZREG(46) = 2; // pauseCtx->eye and pauseCtx->unk_1EA multiply by this for animation. Double the default value.
     WREG(6) = 4;  // Numerous kaleido animations divide by this for movement and alpha. Half the default value.
 
@@ -22,7 +22,7 @@ void OnKaleidoUpdateFaster() {
 }
 
 void InitFasterPauseMenu() {
-    COND_HOOK(GameInteractor::OnKaleidoUpdate, CVAR_FASTER_PAUSE_MENU_VALUE, OnKaleidoUpdateFaster);
+    COND_HOOK(OnKaleidoUpdate, CVAR_FASTER_PAUSE_MENU_VALUE, OnKaleidoUpdateFaster);
 
     // Reset register values on close. These values are only used by z_kaleido_scope_PAL.c
     COND_VB_SHOULD(VB_KALEIDO_UNPAUSE_CLOSE, CVAR_FASTER_PAUSE_MENU_VALUE, {

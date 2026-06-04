@@ -58,16 +58,16 @@ void SwitchAge() {
         Entrance_SetEntranceDiscovered(ENTR_LINKS_HOUSE_CHILD_SPAWN, false);
     }
 
-    static HOOK_ID hookId = 0;
+    static ListenerID hookId = -1;
     hookId = REGISTER_VB_SHOULD(VB_INFLICT_VOID_DAMAGE, {
         *should = false;
-        GameInteractor::Instance->UnregisterGameHookForID<GameInteractor::OnVanillaBehavior>(hookId);
+        UNREGISTER_LISTENER(OnVanillaBehavior, hookId);
     });
 }
 
 /// Switches Link's age and respawns him at the last entrance he entered.
 void RegisterOcarinaTimeTravel() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnOcarinaSongAction>([]() {
+    REGISTER_LISTENER(OnOcarinaSongAction, EVENT_PRIORITY_LOW, [](IEvent* event) {
         if (!GameInteractor::IsSaveLoaded(true) || !CVarGetInteger(CVAR_ENHANCEMENT("TimeTravel"), 0)) {
             return;
         }
@@ -117,60 +117,59 @@ bool IsHyperBossesActive() {
 }
 
 void UpdateHyperBossesState() {
-    static uint32_t actorUpdateHookId = 0;
-    if (actorUpdateHookId != 0) {
-        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(actorUpdateHookId);
-        actorUpdateHookId = 0;
+    static ListenerID actorUpdateHookId = -1;
+    if (actorUpdateHookId != -1) {
+        UNREGISTER_LISTENER(OnActorUpdate, actorUpdateHookId);
+        actorUpdateHookId = -1;
     }
 
     if (IsHyperBossesActive()) {
-        actorUpdateHookId =
-            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* refActor) {
-                // Run the update function a second time to make bosses move and act twice as fast.
+        actorUpdateHookId = REGISTER_LISTENER(OnActorUpdate, EVENT_PRIORITY_LOW, [](IEvent* event) {
+            // Run the update function a second time to make bosses move and act twice as fast.
 
-                Player* player = GET_PLAYER(gPlayState);
-                Actor* actor = static_cast<Actor*>(refActor);
+            OnActorUpdate* ev = reinterpret_cast<OnActorUpdate*>(event);
+            Player* player = GET_PLAYER(gPlayState);
+            Actor* actor = static_cast<Actor*>(ev->actor);
 
-                uint8_t isBossActor = actor->id == ACTOR_BOSS_GOMA ||      // Gohma
-                                      actor->id == ACTOR_BOSS_DODONGO ||   // King Dodongo
-                                      actor->id == ACTOR_EN_BDFIRE ||      // King Dodongo Fire Breath
-                                      actor->id == ACTOR_BOSS_VA ||        // Barinade
-                                      actor->id == ACTOR_BOSS_GANONDROF || // Phantom Ganon
-                                      actor->id == ACTOR_EN_FHG_FIRE || // Phantom Ganon/Ganondorf Energy Ball/Thunder
-                                      actor->id == ACTOR_EN_FHG ||      // Phantom Ganon's Horse
-                                      actor->id == ACTOR_BOSS_FD ||
-                                      actor->id == ACTOR_BOSS_FD2 ||   // Volvagia (grounded/flying)
-                                      actor->id == ACTOR_EN_VB_BALL || // Volvagia Rocks
-                                      actor->id == ACTOR_BOSS_MO ||    // Morpha
-                                      actor->id == ACTOR_BOSS_SST ||   // Bongo Bongo
-                                      actor->id == ACTOR_BOSS_TW ||    // Twinrova
-                                      actor->id == ACTOR_BOSS_GANON || // Ganondorf
-                                      actor->id == ACTOR_BOSS_GANON2;  // Ganon
+            uint8_t isBossActor = actor->id == ACTOR_BOSS_GOMA ||      // Gohma
+                                  actor->id == ACTOR_BOSS_DODONGO ||   // King Dodongo
+                                  actor->id == ACTOR_EN_BDFIRE ||      // King Dodongo Fire Breath
+                                  actor->id == ACTOR_BOSS_VA ||        // Barinade
+                                  actor->id == ACTOR_BOSS_GANONDROF || // Phantom Ganon
+                                  actor->id == ACTOR_EN_FHG_FIRE ||    // Phantom Ganon/Ganondorf Energy Ball/Thunder
+                                  actor->id == ACTOR_EN_FHG ||         // Phantom Ganon's Horse
+                                  actor->id == ACTOR_BOSS_FD ||
+                                  actor->id == ACTOR_BOSS_FD2 ||   // Volvagia (grounded/flying)
+                                  actor->id == ACTOR_EN_VB_BALL || // Volvagia Rocks
+                                  actor->id == ACTOR_BOSS_MO ||    // Morpha
+                                  actor->id == ACTOR_BOSS_SST ||   // Bongo Bongo
+                                  actor->id == ACTOR_BOSS_TW ||    // Twinrova
+                                  actor->id == ACTOR_BOSS_GANON || // Ganondorf
+                                  actor->id == ACTOR_BOSS_GANON2;  // Ganon
 
-                // Don't apply during cutscenes because it causes weird behaviour and/or crashes on some bosses.
-                if (IsHyperBossesActive() && isBossActor && !Player_InBlockingCsMode(gPlayState, player)) {
-                    // Barinade needs to be updated in sequence to avoid unintended behaviour.
-                    if (actor->id == ACTOR_BOSS_VA) {
-                        // params -1 is BOSSVA_BODY
-                        if (actor->params == -1) {
-                            Actor* actorList = gPlayState->actorCtx.actorLists[ACTORCAT_BOSS].head;
-                            while (actorList != NULL) {
-                                GameInteractor::RawAction::UpdateActor(actorList);
-                                actorList = actorList->next;
-                            }
+            // Don't apply during cutscenes because it causes weird behaviour and/or crashes on some bosses.
+            if (IsHyperBossesActive() && isBossActor && !Player_InBlockingCsMode(gPlayState, player)) {
+                // Barinade needs to be updated in sequence to avoid unintended behaviour.
+                if (actor->id == ACTOR_BOSS_VA) {
+                    // params -1 is BOSSVA_BODY
+                    if (actor->params == -1) {
+                        Actor* actorList = gPlayState->actorCtx.actorLists[ACTORCAT_BOSS].head;
+                        while (actorList != NULL) {
+                            GameInteractor::RawAction::UpdateActor(actorList);
+                            actorList = actorList->next;
                         }
-                    } else {
-                        GameInteractor::RawAction::UpdateActor(actor);
                     }
+                } else {
+                    GameInteractor::RawAction::UpdateActor(actor);
                 }
-            });
+            }
+        });
     }
 }
 
 void RegisterHyperBosses() {
     UpdateHyperBossesState();
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>(
-        [](int16_t fileNum) { UpdateHyperBossesState(); });
+    REGISTER_LISTENER(OnLoadGame, EVENT_PRIORITY_LOW, [](IEvent* event) { UpdateHyperBossesState(); });
 }
 
 void InitMods() {

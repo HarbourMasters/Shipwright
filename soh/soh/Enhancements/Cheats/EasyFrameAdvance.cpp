@@ -1,5 +1,5 @@
 #include <libultraship/libultraship.h>
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
@@ -16,7 +16,7 @@ static int frameAdvanceTimer = 0;
 #define PAUSE_STATE_UNPAUSE_CLOSE 19
 
 void RegisterEasyFrameAdvance() {
-    COND_HOOK(OnGameStateMainStart, CVAR_FRAME_ADVANCE_VALUE, []() {
+    COND_HOOK(OnGameStateMainStart, CVAR_FRAME_ADVANCE_VALUE, [](IEvent* event) {
         if (gPlayState == NULL) {
             return;
         }

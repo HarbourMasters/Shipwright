@@ -48,9 +48,10 @@ void BuildMerchantMessage(CustomMessage& msg, RandomizerCheck rc, bool mysteriou
     msg.InsertNames({ itemName, CustomMessage(std::to_string(location->GetPrice())) });
 }
 
-void BuildBeanGuyMessage(uint16_t* textId, bool* loadFromMessageTable) {
+void BuildBeanGuyMessage(IEvent* event) {
+    OnOpenText* ev = reinterpret_cast<OnOpenText*>(event);
     CustomMessage msg;
-    if (*textId == TEXT_BEAN_SALESMAN_BUY_FOR_100) {
+    if (*ev->textId == TEXT_BEAN_SALESMAN_BUY_FOR_100) {
         msg = CustomMessage(
             "I never thought I'd say this, but I'm selling the last %rMagic Bean%w.^%y99 Rupees%w, no "
             "less.\x1B%gYes&No%w",
@@ -58,7 +59,7 @@ void BuildBeanGuyMessage(uint16_t* textId, bool* loadFromMessageTable) {
             "Rubine%w.\x1B%gJa&Nein%w",
             "Je te vends mon dernier %rHaricot&magique%w pour %y99 Rubis%w.\x1B%gAcheter&Ne pas acheter%w");
         msg.AutoFormat();
-    } else if (*textId == TEXT_BEAN_SALESMAN_BUY_FOR_10) {
+    } else if (*ev->textId == TEXT_BEAN_SALESMAN_BUY_FOR_10) {
         msg = CustomMessage("Want to buy [[color]][[1]]%w for %y[[2]] Rupees%w?\x1B%gYes&No%w",
                             "Möchten Sie [[color]][[1]]%w für %y[[2]] Rubin%w kaufen?\x1B%gJa&Nein%w",
                             "Voulez-vous acheter [[color]][[1]]%w pour %y[[2]] Rubis%w?\x1B%gOui&Non%w");
@@ -68,10 +69,11 @@ void BuildBeanGuyMessage(uint16_t* textId, bool* loadFromMessageTable) {
         msg.AutoFormat();
     }
     msg.LoadIntoFont();
-    *loadFromMessageTable = false;
+    *ev->loadFromMessageTable = false;
 }
 
-void BuildMedigoronMessage(uint16_t* textId, bool* loadFromMessageTable) {
+void BuildMedigoronMessage(IEvent* event) {
+    OnOpenText* ev = reinterpret_cast<OnOpenText*>(event);
     CustomMessage msg = CustomMessage("Want to buy [[color]][[1]]%w for %y[[2]] Rupees%w?\x1B%gYes&No%w",
                                       "Möchten Sie [[color]][[1]]%w für %y[[2]] Rubin%w kaufen?\x1B%gJa&Nein%w",
                                       "Voulez-vous acheter [[color]][[1]]%w pour %y[[2]] Rubis%w?\x1B%gOui&Non%w");
@@ -80,10 +82,11 @@ void BuildMedigoronMessage(uint16_t* textId, bool* loadFromMessageTable) {
                              CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0));
     msg.AutoFormat();
     msg.LoadIntoFont();
-    *loadFromMessageTable = false;
+    *ev->loadFromMessageTable = false;
 }
 
-void BuildGrannyMessage(uint16_t* textId, bool* loadFromMessageTable) {
+void BuildGrannyMessage(IEvent* event) {
+    OnOpenText* ev = reinterpret_cast<OnOpenText*>(event);
     if (!Flags_GetRandomizerInf(RAND_INF_MERCHANTS_GRANNYS_SHOP) &&
         (RAND_GET_OPTION(RSK_SHUFFLE_ADULT_TRADE) || INV_CONTENT(ITEM_CLAIM_CHECK) == ITEM_CLAIM_CHECK)) {
         CustomMessage msg = CustomMessage("Want to buy [[color]][[1]]%w for %y[[2]] Rupees%w?\x1B%gYes&No%w",
@@ -94,13 +97,14 @@ void BuildGrannyMessage(uint16_t* textId, bool* loadFromMessageTable) {
                                  CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0));
         msg.AutoFormat();
         msg.LoadIntoFont();
-        *loadFromMessageTable = false;
+        *ev->loadFromMessageTable = false;
     }
 }
 
-void BuildCarpetGuyMessage(uint16_t* textId, bool* loadFromMessageTable) {
+void BuildCarpetGuyMessage(IEvent* event) {
+    OnOpenText* ev = reinterpret_cast<OnOpenText*>(event);
     CustomMessage msg;
-    if (*textId == TEXT_CARPET_SALESMAN_ARMS_DEALER) {
+    if (*ev->textId == TEXT_CARPET_SALESMAN_ARMS_DEALER) {
         msg = CustomMessage("Finally! Now I can go back to being an %rarms dealer%w!",
                             /*german*/ "Endlich! Schon bald kann ich wieder %rKrabbelminen-Händler%w sein!",
                             /*french*/ "Squalala! Je vais enfin pouvoir %rprendre des vacances%w!");
@@ -114,19 +118,21 @@ void BuildCarpetGuyMessage(uint16_t* textId, bool* loadFromMessageTable) {
     }
     msg.AutoFormat();
     msg.LoadIntoFont();
-    *loadFromMessageTable = false;
+    *ev->loadFromMessageTable = false;
 }
 
-void BuildCarpetGuyFailToBuyMessage(uint16_t* textId, bool* loadFromMessageTable) {
+void BuildCarpetGuyFailToBuyMessage(IEvent* event) {
+    OnOpenText* ev = reinterpret_cast<OnOpenText*>(event);
     CustomMessage msg =
         CustomMessage("I'm sorry I can't sell you these fine specimens, they need an %rexperienced owner%w.^"
                       "Come back when you have had %gBombchus%w of your own.");
     msg.AutoFormat();
     msg.LoadIntoFont();
-    *loadFromMessageTable = false;
+    *ev->loadFromMessageTable = false;
 }
 
-void BuildScrubMessage(uint16_t* textId, bool* loadFromMessageTable) {
+void BuildScrubMessage(IEvent* event) {
+    OnOpenText* ev = reinterpret_cast<OnOpenText*>(event);
     EnDns* enDns = reinterpret_cast<EnDns*>(GET_PLAYER(gPlayState)->talkActor);
     RandomizerCheck rc = ObjectExtension::GetInstance().Get<ScrubIdentity>(enDns)->identity.randomizerCheck;
     uint16_t price = RAND_GET_ITEM(rc)->GetPrice();
@@ -156,25 +162,26 @@ void BuildScrubMessage(uint16_t* textId, bool* loadFromMessageTable) {
                              CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0));
     msg.AutoFormat();
     msg.LoadIntoFont();
-    *loadFromMessageTable = false;
+    *ev->loadFromMessageTable = false;
 }
 
-void BuildShopMessage(uint16_t* textId, bool* loadFromMessageTable) {
+void BuildShopMessage(IEvent* event) {
+    OnOpenText* ev = reinterpret_cast<OnOpenText*>(event);
     CustomMessage msg;
     RandomizerCheck rc;
     // Shop items each have two message entries, second one offset by NUM_SHOP_ITEMS
     // textId: TEXT_SHOP_ITEM_RANDOM + (randomizerInf - RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1)
     // textId: TEXT_SHOP_ITEM_RANDOM + ((randomizerInf - RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1) + NUM_SHOP_ITEMS)
-    if (*textId >= TEXT_SHOP_ITEM_RANDOM && *textId < TEXT_SHOP_ITEM_RANDOM_CONFIRM) {
+    if (*ev->textId >= TEXT_SHOP_ITEM_RANDOM && *ev->textId < TEXT_SHOP_ITEM_RANDOM_CONFIRM) {
         rc = OTRGlobals::Instance->gRandomizer->GetCheckFromRandomizerInf(
-            static_cast<RandomizerInf>((*textId - TEXT_SHOP_ITEM_RANDOM) + RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1));
+            static_cast<RandomizerInf>((*ev->textId - TEXT_SHOP_ITEM_RANDOM) + RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1));
         msg =
             CustomMessage("\x08[[color]][[1]]%w  %y[[2]]_Rupees%w&Special deal! %rONE LEFT%w!\x0A\x02",
                           "\x08[[color]][[1]]%w  %y[[2]]_Rubine%w&Sonderangebot! %rNUR NOCH EINES VERFÜGBAR%w!\x0A\x02",
                           "\x08[[color]][[1]]%w  %y[[2]]_Rubis%w&Offre spéciale! %rDERNIER EN STOCK%w!\x0A\x02");
-    } else if (*textId >= TEXT_SHOP_ITEM_RANDOM_CONFIRM && *textId <= TEXT_SHOP_ITEM_RANDOM_CONFIRM_END) {
-        rc = OTRGlobals::Instance->gRandomizer->GetCheckFromRandomizerInf(
-            static_cast<RandomizerInf>((*textId - TEXT_SHOP_ITEM_RANDOM_CONFIRM) + RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1));
+    } else if (*ev->textId >= TEXT_SHOP_ITEM_RANDOM_CONFIRM && *ev->textId <= TEXT_SHOP_ITEM_RANDOM_CONFIRM_END) {
+        rc = OTRGlobals::Instance->gRandomizer->GetCheckFromRandomizerInf(static_cast<RandomizerInf>(
+            (*ev->textId - TEXT_SHOP_ITEM_RANDOM_CONFIRM) + RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1));
         msg = CustomMessage("\x08[[color]][[1]]%w  %y[[2]]_Rupees%w\x09\x1B%gBuy&Don't buy%w\x09\x02",
                             "\x08[[color]][[1]]%w  %y[[2]]_Rubine%w\x09\x1B%gKaufen&Nicht kaufen%w\x09\x02",
                             "\x08[[color]][[1]]%w  %y[[2]]_Rubis%w\x09\x1B%gAcheter&Ne pas acheter%w\x09\x02");
@@ -184,7 +191,7 @@ void BuildShopMessage(uint16_t* textId, bool* loadFromMessageTable) {
     BuildMerchantMessage(msg, rc, CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0));
     msg.AutoFormat();
     msg.LoadIntoFont();
-    *loadFromMessageTable = false;
+    *ev->loadFromMessageTable = false;
 }
 
 void RegisterMerchantMessages() {

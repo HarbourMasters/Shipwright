@@ -1,5 +1,5 @@
 #include <libultraship/bridge.h>
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" PlayState* gPlayState;
@@ -8,7 +8,7 @@ extern "C" PlayState* gPlayState;
 #define CVAR_UNRESTRICTED_ITEMS_DEFAULT 0
 #define CVAR_UNRESTRICTED_ITEMS_VALUE CVarGetInteger(CVAR_UNRESTRICTED_ITEMS_NAME, CVAR_UNRESTRICTED_ITEMS_DEFAULT)
 
-void OnGameFrameUpdateUnrestrictedItems() {
+void OnGameFrameUpdateUnrestrictedItems(IEvent* event) {
     if (!GameInteractor::IsSaveLoaded(true)) {
         return;
     }

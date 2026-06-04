@@ -3,7 +3,7 @@
 #include <string.h>
 
 #include "soh/frame_interpolation.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 #define FLAGS                                                                                 \
     (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED | \
@@ -376,7 +376,7 @@ void EnClearTag_Update(Actor* thisx, PlayState* play2) {
                     if ((s8)this->actor.colChkInfo.health <= 0) {
                         this->state = CLEAR_TAG_STATE_CRASHING;
                         this->actor.velocity.y = 0.0f;
-                        GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+                        CALL_EVENT(OnEnemyDefeat, &this->actor);
                         goto state_crashing;
                     }
                 }

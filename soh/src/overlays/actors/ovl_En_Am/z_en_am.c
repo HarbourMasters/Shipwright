@@ -7,7 +7,7 @@
 #include "z_en_am.h"
 #include "objects/object_am/object_am.h"
 #include "overlays/actors/ovl_En_Bom/z_en_bom.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS                                                                                 \
@@ -894,7 +894,7 @@ void EnAm_Update(Actor* thisx, PlayState* play) {
                     dustPosScale += 60.0f;
                 }
 
-                GameInteractor_ExecuteOnEnemyDefeat(thisx);
+                CALL_EVENT(OnEnemyDefeat, thisx);
 
                 Actor_Kill(&this->dyna.actor);
                 return;

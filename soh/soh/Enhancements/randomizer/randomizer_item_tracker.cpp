@@ -466,7 +466,7 @@ static bool presetLoaded = false;
 static std::unordered_map<std::string, ImVec2> presetPos;
 static std::unordered_map<std::string, ImVec2> presetSize;
 
-void ItemTrackerOnFrame() {
+void ItemTrackerOnFrame(IEvent* event) {
     if (notesNeedSave && notesIdleFrames <= notesMaxIdleFrames) {
         notesIdleFrames++;
     }
@@ -2215,7 +2215,7 @@ void ItemTrackerWindow::InitElement() {
     itemTrackerSectionId = SaveManager::Instance->AddSaveFunction("itemTrackerData", 1, ItemTrackerSaveFile, true, -1);
     SaveManager::Instance->AddLoadFunction("itemTrackerData", 1, ItemTrackerLoadFile);
 
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>(ItemTrackerOnFrame);
+    REGISTER_LISTENER(OnGameFrameUpdate, EVENT_PRIORITY_LOW, ItemTrackerOnFrame);
 }
 
 void RegisterItemTrackerWidgets() {
@@ -2406,7 +2406,7 @@ void RegisterItemTrackerWidgets() {
 }
 
 void RegisterItemTracker() {
-    COND_HOOK(OnLoadFile, true, [](int32_t fileNum) { shouldUpdateVectors = true; });
+    COND_HOOK(OnLoadFile, true, [](IEvent* event) { shouldUpdateVectors = true; });
 }
 
 static RegisterShipInitFunc registerItemTracker(RegisterItemTracker);

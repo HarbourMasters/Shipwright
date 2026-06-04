@@ -1,5 +1,5 @@
 #include "global.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "textures/icon_item_static/icon_item_static.h"
 #include "textures/icon_item_24_static/icon_item_24_static.h"
 #include "textures/parameter_static/parameter_static.h"
@@ -219,7 +219,7 @@ void Inventory_ChangeEquipment(s16 equipment, u16 value) {
     gSaveContext.equips.equipment &= gEquipNegMasks[equipment];
     gSaveContext.equips.equipment |= value << gEquipShifts[equipment];
 
-    GameInteractor_ExecuteOnLinkEquipmentChange();
+    CALL_EVENT(OnLinkEquipmentChange);
 }
 
 u8 Inventory_DeleteEquipment(PlayState* play, s16 equipment) {
@@ -240,7 +240,7 @@ u8 Inventory_DeleteEquipment(PlayState* play, s16 equipment) {
             gSaveContext.equips.equipment |= EQUIP_VALUE_TUNIC_KOKIRI << (EQUIP_TYPE_TUNIC * 4);
         }
 
-        GameInteractor_ExecuteOnEquipmentDelete(equipment, equipValue);
+        CALL_EVENT(OnEquipmentDelete, equipment, equipValue);
 
         if (equipment == EQUIP_TYPE_SWORD) {
             gSaveContext.equips.buttonItems[0] = ITEM_NONE;

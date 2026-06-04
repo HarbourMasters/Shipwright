@@ -1,4 +1,4 @@
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
@@ -6,7 +6,7 @@ extern "C" {
 #include "variables.h"
 }
 
-void ResetGameplayFramesOnSoftReset() {
+void ResetGameplayFramesOnSoftReset(IEvent* event) {
     PlayState* play = (PlayState*)gGameState;
 
     if (gGameState->init == TitleSetup_Init) {
@@ -14,7 +14,7 @@ void ResetGameplayFramesOnSoftReset() {
     }
 }
 
-void ResetGameplayFramesOnTitleScreenExit() {
+void ResetGameplayFramesOnTitleScreenExit(IEvent* event) {
     PlayState* play = (PlayState*)gGameState;
 
     if (gSaveContext.fileNum == 0xFF) {

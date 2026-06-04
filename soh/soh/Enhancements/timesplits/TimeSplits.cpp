@@ -990,7 +990,9 @@ void TimeSplitWindow::InitElement() {
     Color_RGBA8 defaultColour = { 0, 0, 0, 255 };
     windowColor = VecFromRGBA8(CVarGetColor(CVAR_ENHANCEMENT("TimeSplits.WindowColor.Value"), defaultColour));
 
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnTimestamp>([](u8 item) {
+    REGISTER_LISTENER(OnTimestamp, EVENT_PRIORITY_LOW, [](IEvent* event) {
+        OnTimestamp* ev = reinterpret_cast<OnTimestamp*>(event);
+        u8 item = ev->item;
         if (item != ITEM_SKULL_TOKEN) {
             uint32_t tempType = SPLIT_TYPE_ITEM;
             for (auto& data : splitList) {
@@ -1003,8 +1005,9 @@ void TimeSplitWindow::InitElement() {
         }
     });
 
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnItemReceive>([](GetItemEntry itemEntry) {
-        GetItemEntry testItem = itemEntry;
+    REGISTER_LISTENER(OnItemReceive, EVENT_PRIORITY_LOW, [](IEvent* event) {
+        OnItemReceive* ev = reinterpret_cast<OnItemReceive*>(event);
+        GetItemEntry itemEntry = ev->itemEntry;
         if (itemEntry.itemId == ITEM_SKULL_TOKEN || itemEntry.itemId == ITEM_BOTTLE || itemEntry.itemId == ITEM_POE ||
             itemEntry.itemId == ITEM_BIG_POE) {
             uint32_t tempType = SPLIT_TYPE_ITEM;
@@ -1018,21 +1021,25 @@ void TimeSplitWindow::InitElement() {
         }
     });
 
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerBottleUpdate>(
-        [](int16_t contents) { TimeSplitsItemSplitEvent(SPLIT_TYPE_UPGRADE, contents); });
+    REGISTER_LISTENER(OnPlayerBottleUpdate, EVENT_PRIORITY_LOW, [](IEvent* event) {
+        OnPlayerBottleUpdate* ev = reinterpret_cast<OnPlayerBottleUpdate*>(event);
+        TimeSplitsItemSplitEvent(SPLIT_TYPE_UPGRADE, ev->contents);
+    });
 
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnBossDefeat>([](void* refActor) {
-        Actor* bossActor = (Actor*)refActor;
+    REGISTER_LISTENER(OnBossDefeat, EVENT_PRIORITY_LOW, [](IEvent* event) {
+        OnBossDefeat* ev = reinterpret_cast<OnBossDefeat*>(event);
+        Actor* bossActor = (Actor*)ev->actor;
         TimeSplitsItemSplitEvent(SPLIT_TYPE_BOSS, bossActor->id);
     });
 
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) {
+    REGISTER_LISTENER(OnSceneInit, EVENT_PRIORITY_LOW, [](IEvent* event) {
+        OnSceneInit* ev = reinterpret_cast<OnSceneInit*>(event);
         if (gPlayState->sceneNum != SCENE_KAKARIKO_VILLAGE) {
-            TimeSplitsItemSplitEvent(SPLIT_TYPE_ENTRANCE, sceneNum);
+            TimeSplitsItemSplitEvent(SPLIT_TYPE_ENTRANCE, ev->sceneNum);
         }
     });
 
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerHealthChange>([](int16_t amount) {
+    REGISTER_LISTENER(OnPlayerHealthChange, EVENT_PRIORITY_LOW, [](IEvent* event) {
         if (gPlayState->sceneNum == SCENE_KAKARIKO_VILLAGE) {
             Player* player = GET_PLAYER(gPlayState);
             if (player->fallDistance > 500 && gSaveContext.health <= 0) {

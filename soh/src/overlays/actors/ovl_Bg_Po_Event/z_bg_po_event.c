@@ -7,7 +7,6 @@
 #include "z_bg_po_event.h"
 #include "objects/object_po_sisters/object_po_sisters.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS 0
 

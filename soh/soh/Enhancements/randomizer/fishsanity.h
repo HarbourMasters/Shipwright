@@ -4,7 +4,7 @@
 
 #include <z64.h>
 #include "randomizerTypes.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 typedef struct {
     u8 mode;

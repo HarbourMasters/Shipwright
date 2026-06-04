@@ -24,7 +24,8 @@ extern PlayState* gPlayState;
         RAND_GET_OPTION(RSK_KAK_30_SKULLS_HINT) || RAND_GET_OPTION(RSK_KAK_40_SKULLS_HINT) || \
         RAND_GET_OPTION(RSK_KAK_50_SKULLS_HINT)
 
-void BuildGanondorfHint(uint16_t* textId, bool* loadFromMessageTable) {
+void BuildGanondorfHint(IEvent* event) {
+    OnOpenText* ev = reinterpret_cast<OnOpenText*>(event);
     CustomMessage msg;
     if (RAND_GET_OPTION(RSK_SHUFFLE_MASTER_SWORD) && !CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER)) {
         if (INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT) {
@@ -40,10 +41,11 @@ void BuildGanondorfHint(uint16_t* textId, bool* loadFromMessageTable) {
         }
     }
     msg.LoadIntoFont();
-    *loadFromMessageTable = false;
+    *ev->loadFromMessageTable = false;
 }
 
-void BuildSheikMessage(uint16_t* textId, bool* loadFromMessageTable) {
+void BuildSheikMessage(IEvent* event) {
+    OnOpenText* ev = reinterpret_cast<OnOpenText*>(event);
     CustomMessage msg;
     switch (gPlayState->sceneNum) {
         case SCENE_TEMPLE_OF_TIME:
@@ -93,22 +95,25 @@ void BuildSheikMessage(uint16_t* textId, bool* loadFromMessageTable) {
     }
     msg.AutoFormat();
     msg.LoadIntoFont();
-    *loadFromMessageTable = false;
+    *ev->loadFromMessageTable = false;
 }
 
-void BuildChildAltarMessage(uint16_t* textId, bool* loadFromMessageTable) {
+void BuildChildAltarMessage(IEvent* event) {
+    OnOpenText* ev = reinterpret_cast<OnOpenText*>(event);
     CustomMessage msg = RAND_GET_HINT(RH_ALTAR_CHILD)->GetHintMessage();
     msg.LoadIntoFont();
-    *loadFromMessageTable = false;
+    *ev->loadFromMessageTable = false;
 }
 
-void BuildAdultAltarMessage(uint16_t* textId, bool* loadFromMessageTable) {
+void BuildAdultAltarMessage(IEvent* event) {
+    OnOpenText* ev = reinterpret_cast<OnOpenText*>(event);
     CustomMessage msg = RAND_GET_HINT(RH_ALTAR_ADULT)->GetHintMessage();
     msg.LoadIntoFont();
-    *loadFromMessageTable = false;
+    *ev->loadFromMessageTable = false;
 }
 
-void BuildSkulltulaPeopleMessage(uint16_t* textId, bool* loadFromMessageTable) {
+void BuildSkulltulaPeopleMessage(IEvent* event) {
+    OnOpenText* ev = reinterpret_cast<OnOpenText*>(event);
     uint8_t count = 0;
     RandomizerCheck rc = RC_UNKNOWN_CHECK;
     int16_t actorParams = GET_PLAYER(gPlayState)->talkActor->params;
@@ -144,10 +149,11 @@ void BuildSkulltulaPeopleMessage(uint16_t* textId, bool* loadFromMessageTable) {
     msg.InsertNames({ item.GetHint().GetHintMessage().GetForCurrentLanguage() });
     msg.AutoFormat();
     msg.LoadIntoFont();
-    *loadFromMessageTable = false;
+    *ev->loadFromMessageTable = false;
 }
 
-void Build100SkullsHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
+void Build100SkullsHintMessage(IEvent* event) {
+    OnOpenText* ev = reinterpret_cast<OnOpenText*>(event);
     CustomMessage msg = CustomMessage("Yeaaarrgh! I'm cursed!!^Please save me by destroying %y100 Spiders of the "
                                       "Curse%w and I will give you my [[color]][[1]]%w!",
                                       /*german*/
@@ -162,20 +168,22 @@ void Build100SkullsHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
     msg.InsertNames({ item.GetHint().GetHintMessage().GetForCurrentLanguage() });
     msg.AutoFormat();
     msg.LoadIntoFont();
-    *loadFromMessageTable = false;
+    *ev->loadFromMessageTable = false;
 }
 
-void BuildDampesDiaryMessage(uint16_t* textId, bool* loadFromMessageTable) {
+void BuildDampesDiaryMessage(IEvent* event) {
+    OnOpenText* ev = reinterpret_cast<OnOpenText*>(event);
     CustomMessage msg = RAND_GET_HINT(RH_DAMPES_DIARY)->GetHintMessage(MF_AUTO_FORMAT);
     msg.LoadIntoFont();
-    *loadFromMessageTable = false;
+    *ev->loadFromMessageTable = false;
 }
 
-void BuildGregHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
+void BuildGregHintMessage(IEvent* event) {
+    OnOpenText* ev = reinterpret_cast<OnOpenText*>(event);
     if (gPlayState->sceneNum == SCENE_TREASURE_BOX_SHOP) {
         CustomMessage msg = RAND_GET_HINT(RH_GREG_RUPEE)->GetHintMessage(MF_AUTO_FORMAT);
         msg.LoadIntoFont();
-        *loadFromMessageTable = false;
+        *ev->loadFromMessageTable = false;
     }
 }
 
@@ -187,85 +195,94 @@ void BuildMysteriousWarpMessage() {
     msg.LoadIntoFont();
 }
 
-void BuildMinuetWarpMessage(uint16_t* textId, bool* loadFromMessageTable) {
+void BuildMinuetWarpMessage(IEvent* event) {
+    OnOpenText* ev = reinterpret_cast<OnOpenText*>(event);
     if (!RAND_GET_OPTION(RSK_WARP_SONG_HINTS)) {
         BuildMysteriousWarpMessage();
-        *loadFromMessageTable = false;
+        *ev->loadFromMessageTable = false;
         return;
     }
     CustomMessage msg = RAND_GET_HINT(RH_MINUET_WARP_LOC)->GetHintMessage(MF_AUTO_FORMAT);
     msg.LoadIntoFont();
-    *loadFromMessageTable = false;
+    *ev->loadFromMessageTable = false;
 }
 
-void BuildBoleroWarpMessage(uint16_t* textId, bool* loadFromMessageTable) {
+void BuildBoleroWarpMessage(IEvent* event) {
+    OnOpenText* ev = reinterpret_cast<OnOpenText*>(event);
     if (!RAND_GET_OPTION(RSK_WARP_SONG_HINTS)) {
         BuildMysteriousWarpMessage();
-        *loadFromMessageTable = false;
+        *ev->loadFromMessageTable = false;
         return;
     }
     CustomMessage msg = RAND_GET_HINT(RH_BOLERO_WARP_LOC)->GetHintMessage(MF_AUTO_FORMAT);
     msg.LoadIntoFont();
-    *loadFromMessageTable = false;
+    *ev->loadFromMessageTable = false;
 }
 
-void BuildSerenadeWarpMessage(uint16_t* textId, bool* loadFromMessageTable) {
+void BuildSerenadeWarpMessage(IEvent* event) {
+    OnOpenText* ev = reinterpret_cast<OnOpenText*>(event);
     if (!RAND_GET_OPTION(RSK_WARP_SONG_HINTS)) {
         BuildMysteriousWarpMessage();
-        *loadFromMessageTable = false;
+        *ev->loadFromMessageTable = false;
         return;
     }
     CustomMessage msg = RAND_GET_HINT(RH_SERENADE_WARP_LOC)->GetHintMessage(MF_AUTO_FORMAT);
     msg.LoadIntoFont();
-    *loadFromMessageTable = false;
+    *ev->loadFromMessageTable = false;
 }
 
-void BuildRequiemWarpMessage(uint16_t* textId, bool* loadFromMessageTable) {
+void BuildRequiemWarpMessage(IEvent* event) {
+    OnOpenText* ev = reinterpret_cast<OnOpenText*>(event);
     if (!RAND_GET_OPTION(RSK_WARP_SONG_HINTS)) {
         BuildMysteriousWarpMessage();
-        *loadFromMessageTable = false;
+        *ev->loadFromMessageTable = false;
         return;
     }
     CustomMessage msg = RAND_GET_HINT(RH_REQUIEM_WARP_LOC)->GetHintMessage(MF_AUTO_FORMAT);
     msg.LoadIntoFont();
-    *loadFromMessageTable = false;
+    *ev->loadFromMessageTable = false;
 }
 
-void BuildNocturneWarpMessage(uint16_t* textId, bool* loadFromMessageTable) {
+void BuildNocturneWarpMessage(IEvent* event) {
+    OnOpenText* ev = reinterpret_cast<OnOpenText*>(event);
     if (!RAND_GET_OPTION(RSK_WARP_SONG_HINTS)) {
         BuildMysteriousWarpMessage();
-        *loadFromMessageTable = false;
+        *ev->loadFromMessageTable = false;
         return;
     }
     CustomMessage msg = RAND_GET_HINT(RH_NOCTURNE_WARP_LOC)->GetHintMessage(MF_AUTO_FORMAT);
     msg.LoadIntoFont();
-    *loadFromMessageTable = false;
+    *ev->loadFromMessageTable = false;
 }
 
-void BuildPreludeWarpMessage(uint16_t* textId, bool* loadFromMessageTable) {
+void BuildPreludeWarpMessage(IEvent* event) {
+    OnOpenText* ev = reinterpret_cast<OnOpenText*>(event);
     if (!RAND_GET_OPTION(RSK_WARP_SONG_HINTS)) {
         BuildMysteriousWarpMessage();
-        *loadFromMessageTable = false;
+        *ev->loadFromMessageTable = false;
         return;
     }
     CustomMessage msg = RAND_GET_HINT(RH_PRELUDE_WARP_LOC)->GetHintMessage(MF_AUTO_FORMAT);
     msg.LoadIntoFont();
-    *loadFromMessageTable = false;
+    *ev->loadFromMessageTable = false;
 }
 
-void BuildFrogsHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
+void BuildFrogsHintMessage(IEvent* event) {
+    OnOpenText* ev = reinterpret_cast<OnOpenText*>(event);
     CustomMessage msg = RAND_GET_HINT(RH_FROGS_HINT)->GetHintMessage(MF_AUTO_FORMAT);
     msg.LoadIntoFont();
-    *loadFromMessageTable = false;
+    *ev->loadFromMessageTable = false;
 }
 
-void BuildLoachHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
+void BuildLoachHintMessage(IEvent* event) {
+    OnOpenText* ev = reinterpret_cast<OnOpenText*>(event);
     CustomMessage msg = RAND_GET_HINT(RH_LOACH_HINT)->GetHintMessage(MF_AUTO_FORMAT);
     msg.LoadIntoFont();
-    *loadFromMessageTable = false;
+    *ev->loadFromMessageTable = false;
 }
 
-void BuildFishingPoleHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
+void BuildFishingPoleHintMessage(IEvent* event) {
+    OnOpenText* ev = reinterpret_cast<OnOpenText*>(event);
     if (Flags_GetRandomizerInf(RAND_INF_FISHING_POLE_FOUND)) {
         return;
     }
@@ -277,7 +294,7 @@ void BuildFishingPoleHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
     if (RAND_GET_OPTION(RSK_FISHING_POLE_HINT)) {
         msg = msg + RAND_GET_HINT(RH_FISHING_POLE)->GetHintMessage();
     }
-    if (*textId == TEXT_FISHING_POND_START_MET) {
+    if (*ev->textId == TEXT_FISHING_POND_START_MET) {
         msg = CustomMessage("Hey, mister! I remember you!&It's been a long time!^",
                             "Hallo, mein Herr! Ich erinnere mich an Sie!&Lang ist's her!",
                             "Hé, monsieur! Je me souviens de toi!&Ça fait longtemps!") +
@@ -285,54 +302,60 @@ void BuildFishingPoleHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
     }
     msg.AutoFormat();
     msg.LoadIntoFont();
-    *loadFromMessageTable = false;
+    *ev->loadFromMessageTable = false;
 }
 
-void BuildSariaMessage(uint16_t* textId, bool* loadFromMessageTable) {
+void BuildSariaMessage(IEvent* event) {
+    OnOpenText* ev = reinterpret_cast<OnOpenText*>(event);
     CustomMessage msg;
-    if (*textId == TEXT_SARIA_SFM) {
+    if (*ev->textId == TEXT_SARIA_SFM) {
         msg = RAND_GET_HINT(RH_SARIA_HINT)->GetHintMessage(MF_AUTO_FORMAT, 0);
     } else {
         msg = RAND_GET_HINT(RH_SARIA_HINT)->GetHintMessage(MF_AUTO_FORMAT, 1);
     }
     msg.LoadIntoFont();
-    *loadFromMessageTable = false;
+    *ev->loadFromMessageTable = false;
 }
 
-void BuildMidoMessage(uint16_t* textId, bool* loadFromMessageTable) {
+void BuildMidoMessage(IEvent* event) {
+    OnOpenText* ev = reinterpret_cast<OnOpenText*>(event);
     CustomMessage msg = RAND_GET_HINT(RH_MIDO_HINT)->GetHintMessage(MF_AUTO_FORMAT);
     msg.LoadIntoFont();
-    *loadFromMessageTable = false;
+    *ev->loadFromMessageTable = false;
 }
 
-void BuildBiggoronHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
+void BuildBiggoronHintMessage(IEvent* event) {
+    OnOpenText* ev = reinterpret_cast<OnOpenText*>(event);
     CustomMessage msg = RAND_GET_HINT(RH_BIGGORON_HINT)->GetHintMessage(MF_AUTO_FORMAT);
     msg.LoadIntoFont();
-    *loadFromMessageTable = false;
+    *ev->loadFromMessageTable = false;
 }
 
-void BuildBigPoesHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
+void BuildBigPoesHintMessage(IEvent* event) {
+    OnOpenText* ev = reinterpret_cast<OnOpenText*>(event);
     CustomMessage msg = RAND_GET_HINT(RH_BIG_POES_HINT)->GetHintMessage(MF_AUTO_FORMAT);
     msg.LoadIntoFont();
-    *loadFromMessageTable = false;
+    *ev->loadFromMessageTable = false;
 }
 
-void BuildChickensHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
+void BuildChickensHintMessage(IEvent* event) {
+    OnOpenText* ev = reinterpret_cast<OnOpenText*>(event);
     CustomMessage msg = RAND_GET_HINT(RH_CHICKENS_HINT)->GetHintMessage(MF_AUTO_FORMAT);
     msg.LoadIntoFont();
-    *loadFromMessageTable = false;
+    *ev->loadFromMessageTable = false;
 }
 
-void BuildMalonHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
+void BuildMalonHintMessage(IEvent* event) {
+    OnOpenText* ev = reinterpret_cast<OnOpenText*>(event);
     CustomMessage msg;
     int id;
-    if (*textId == TEXT_MALON_EVERYONE_TURNING_EVIL || *textId == TEXT_MALON_I_SING_THIS_SONG) {
+    if (*ev->textId == TEXT_MALON_EVERYONE_TURNING_EVIL || *ev->textId == TEXT_MALON_I_SING_THIS_SONG) {
         id = 0;
-    } else if (*textId == TEXT_MALON_HOW_IS_EPONA_DOING) {
+    } else if (*ev->textId == TEXT_MALON_HOW_IS_EPONA_DOING) {
         id = 1;
-    } else if (*textId == TEXT_MALON_OBSTICLE_COURSE) {
+    } else if (*ev->textId == TEXT_MALON_OBSTICLE_COURSE) {
         id = 2;
-    } else if (*textId == TEXT_MALON_INGO_MUST_HAVE_BEEN_TEMPTED) {
+    } else if (*ev->textId == TEXT_MALON_INGO_MUST_HAVE_BEEN_TEMPTED) {
         id = 3;
     } else {
         assert(!"This should not be reachable");
@@ -340,19 +363,20 @@ void BuildMalonHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
     }
     msg = RAND_GET_HINT(RH_MALON_HINT)->GetHintMessage(MF_AUTO_FORMAT, id);
     msg.LoadIntoFont();
-    *loadFromMessageTable = false;
+    *ev->loadFromMessageTable = false;
 }
 
-void BuildHorsebackArcheryMessage(uint16_t* textId, bool* loadFromMessageTable) {
+void BuildHorsebackArcheryMessage(IEvent* event) {
+    OnOpenText* ev = reinterpret_cast<OnOpenText*>(event);
     CustomMessage msg;
     int id;
-    if (*textId == TEXT_GF_HBA_SIGN) {
+    if (*ev->textId == TEXT_GF_HBA_SIGN) {
         id = 0;
-    } else if (*textId == TEXT_HBA_NOT_ON_HORSE) {
+    } else if (*ev->textId == TEXT_HBA_NOT_ON_HORSE) {
         id = 1;
-    } else if (*textId == TEXT_HBA_INITIAL_EXPLAINATION) {
+    } else if (*ev->textId == TEXT_HBA_INITIAL_EXPLAINATION) {
         id = 2;
-    } else if (*textId == TEXT_HBA_ALREADY_HAVE_1000) {
+    } else if (*ev->textId == TEXT_HBA_ALREADY_HAVE_1000) {
         id = 3;
     } else {
         assert(!"This should not be reachable");
@@ -360,16 +384,18 @@ void BuildHorsebackArcheryMessage(uint16_t* textId, bool* loadFromMessageTable) 
     }
     msg = RAND_GET_HINT(RH_HBA_HINT)->GetHintMessage(MF_AUTO_FORMAT, id);
     msg.LoadIntoFont();
-    *loadFromMessageTable = false;
+    *ev->loadFromMessageTable = false;
 }
 
-void BuildMaskShopSignMessage(uint16_t* textId, bool* loadFromMessageTable) {
+void BuildMaskShopSignMessage(IEvent* event) {
+    OnOpenText* ev = reinterpret_cast<OnOpenText*>(event);
     CustomMessage msg = RAND_GET_HINT(RH_MASK_SHOP_HINT)->GetHintMessage(MF_AUTO_FORMAT);
     msg.LoadIntoFont();
-    *loadFromMessageTable = false;
+    *ev->loadFromMessageTable = false;
 }
 
-void BuildBossKeyHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
+void BuildBossKeyHintMessage(IEvent* event) {
+    OnOpenText* ev = reinterpret_cast<OnOpenText*>(event);
     RandomizerHint rh = RH_NONE;
     switch (gPlayState->sceneNum) {
         case SCENE_FOREST_TEMPLE:
@@ -396,7 +422,7 @@ void BuildBossKeyHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
     if (rh != RH_NONE) {
         CustomMessage msg = RAND_GET_HINT(rh)->GetHintMessage(MF_AUTO_FORMAT);
         msg.LoadIntoFont();
-        *loadFromMessageTable = false;
+        *ev->loadFromMessageTable = false;
     }
 }
 

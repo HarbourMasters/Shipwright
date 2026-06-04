@@ -1,4 +1,4 @@
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
@@ -13,8 +13,9 @@ static constexpr int32_t CVAR_BGS_FIX_DEFAULT = 0;
 #define CVAR_BGS_FIX_NAME CVAR_ENHANCEMENT("FixBrokenGiantsKnife")
 #define CVAR_BGS_FIX_VALUE CVarGetInteger(CVAR_BGS_FIX_NAME, CVAR_BGS_FIX_DEFAULT)
 
-static void OnReceiveBrokenGiantsKnife(GetItemEntry itemEntry) {
-    if (itemEntry.itemId != ITEM_SWORD_BGS) {
+static void OnReceiveBrokenGiantsKnife(IEvent* event) {
+    OnItemReceive* ev = reinterpret_cast<OnItemReceive*>(event);
+    if (ev->itemEntry.itemId != ITEM_SWORD_BGS) {
         return;
     }
 

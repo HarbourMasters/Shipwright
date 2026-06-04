@@ -7,7 +7,7 @@
 #include "z_en_ba.h"
 #include "objects/object_bxa/object_bxa.h"
 #include "soh/frame_interpolation.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
 
@@ -456,7 +456,7 @@ void EnBa_Update(Actor* thisx, PlayState* play) {
         this->actor.colChkInfo.health--;
         if (this->actor.colChkInfo.health == 0) {
             func_809B75A0(this, play);
-            GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+            CALL_EVENT(OnEnemyDefeat, &this->actor);
         } else {
             func_809B7174(this);
         }

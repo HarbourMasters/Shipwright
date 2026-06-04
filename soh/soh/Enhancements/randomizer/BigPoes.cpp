@@ -8,10 +8,11 @@ extern "C" {
 extern PlayState* gPlayState;
 }
 
-void BuildBigPoeCollectedMessage(uint16_t* textId, bool* loadFromMessageTable) {
+void BuildBigPoeCollectedMessage(IEvent* event) {
+    OnOpenText* ev = reinterpret_cast<OnOpenText*>(event);
     CustomMessage msg = CustomMessage("You have #" + CustomMessage::POINTS("\x01") + "# points.", { QM_RED });
     msg.AutoFormat();
-    *loadFromMessageTable = false;
+    *ev->loadFromMessageTable = false;
     msg.LoadIntoFont();
 }
 

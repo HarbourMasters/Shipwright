@@ -1,4 +1,4 @@
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
 #include "soh/Enhancements/enhancementTypes.h"
 
@@ -15,7 +15,7 @@ static constexpr BonkDamage CVAR_BONK_DAMAGE_DEFAULT = BONK_DAMAGE_NONE;
 #define CVAR_BONK_DAMAGE_SET (CVAR_BONK_DAMAGE_VALUE != CVAR_BONK_DAMAGE_DEFAULT)
 
 static void RegisterBonkDamage() {
-    COND_HOOK(OnPlayerBonk, CVAR_BONK_DAMAGE_SET, [] {
+    COND_HOOK(OnPlayerBonk, CVAR_BONK_DAMAGE_SET, [](IEvent* event) {
         uint16_t bonkDamage = 0;
         switch (CVAR_BONK_DAMAGE_VALUE) {
             case BONK_DAMAGE_NONE:

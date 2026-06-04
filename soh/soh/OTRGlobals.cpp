@@ -108,6 +108,7 @@
 #include "soh/resource/type/SkeletonLimb.h"
 #include "soh/resource/type/Text.h"
 #include <ship/resource/factory/BlobFactory.h>
+#include <ship/events/EventSystem.h>
 #include <fast/resource/factory/DisplayListFactory.h>
 #include <fast/resource/factory/MatrixFactory.h>
 #include <fast/resource/factory/TextureFactory.h>
@@ -825,6 +826,7 @@ void OTRGlobals::Initialize() {
 
     InitGfxDebugger();
     context->InitFileDropMgr();
+    context->InitEventSystem();
 
     // tell LUS to reserve 3 SoH specific threads (Game, Audio, Save)
     prevAltAssets = CVarGetInteger(CVAR_SETTING("AltAssets"), 1);
@@ -1472,6 +1474,8 @@ extern "C" void InitOTR(int argc, char* argv[]) {
     OTRGlobals::Instance->RunExtract(argc, argv);
 
     OTRGlobals::Instance->Initialize();
+    EventSystem_Register();
+
     CustomMessageManager::Instance = new CustomMessageManager();
     ItemTableManager::Instance = new ItemTableManager();
     GameInteractor::Instance = new GameInteractor();
@@ -1810,7 +1814,7 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
         Ship::Context::GetInstance()->GetResourceManager()->SetAltAssetsEnabled(curAltAssets);
         gfx_texture_cache_clear();
         SOH::SkeletonPatcher::UpdateSkeletons();
-        GameInteractor::Instance->ExecuteHooks<GameInteractor::OnAssetAltChange>();
+        CALL_EVENT(OnAssetAltChange);
     }
 
     // OTRTODO: FIGURE OUT END FRAME POINT

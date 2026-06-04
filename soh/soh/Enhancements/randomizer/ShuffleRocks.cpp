@@ -205,9 +205,11 @@ void Rock_RandomizerSpawnCollectible(Actor* actor, CheckIdentity rockIdentity, P
     }
 }
 
-void EnIshi_RandomizerInit(void* actorRef) {
-    Actor* actor = static_cast<Actor*>(actorRef);
-    EnIshi* rockActor = static_cast<EnIshi*>(actorRef);
+void EnIshi_RandomizerInit(IEvent* event) {
+    OnActorInit* ev = reinterpret_cast<OnActorInit*>(event);
+
+    Actor* actor = static_cast<Actor*>(ev->actor);
+    EnIshi* rockActor = static_cast<EnIshi*>(ev->actor);
     auto rockIdentity = OTRGlobals::Instance->gRandomizer->IdentifyRock(gPlayState->sceneNum, (s16)actor->world.pos.x,
                                                                         (s16)actor->world.pos.z);
     if (rockIdentity.randomizerCheck == RC_MAX) {
@@ -224,9 +226,11 @@ void EnIshi_RandomizerInit(void* actorRef) {
     }
 }
 
-void ObjBombiwa_RandomizerInit(void* actorRef) {
-    Actor* actor = static_cast<Actor*>(actorRef);
-    ObjBombiwa* rockActor = static_cast<ObjBombiwa*>(actorRef);
+void ObjBombiwa_RandomizerInit(IEvent* event) {
+    OnActorInit* ev = reinterpret_cast<OnActorInit*>(event);
+
+    Actor* actor = static_cast<Actor*>(ev->actor);
+    ObjBombiwa* rockActor = static_cast<ObjBombiwa*>(ev->actor);
     auto rockIdentity = OTRGlobals::Instance->gRandomizer->IdentifyRock(gPlayState->sceneNum, (s16)actor->world.pos.x,
                                                                         (s16)actor->world.pos.z);
     if (rockIdentity.randomizerCheck == RC_MAX) {
@@ -242,9 +246,11 @@ void ObjBombiwa_RandomizerInit(void* actorRef) {
     }
 }
 
-void ObjHamishi_RandomizerInit(void* actorRef) {
-    Actor* actor = static_cast<Actor*>(actorRef);
-    ObjHamishi* rockActor = static_cast<ObjHamishi*>(actorRef);
+void ObjHamishi_RandomizerInit(IEvent* event) {
+    OnActorInit* ev = reinterpret_cast<OnActorInit*>(event);
+
+    Actor* actor = static_cast<Actor*>(ev->actor);
+    ObjHamishi* rockActor = static_cast<ObjHamishi*>(ev->actor);
     auto rockIdentity = OTRGlobals::Instance->gRandomizer->IdentifyRock(gPlayState->sceneNum, (s16)actor->world.pos.x,
                                                                         (s16)actor->world.pos.z);
     if (rockIdentity.randomizerCheck == RC_MAX) {

@@ -1,6 +1,6 @@
 #include <string>
 #include "soh/Enhancements/custom-message/CustomMessageTypes.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
@@ -138,12 +138,12 @@ static void PauseWarp_HandleSelection() {
 }
 
 static void RegisterPauseMenuHooks() {
-    COND_HOOK(OnKaleidoUpdate, CVAR_PAUSE_WARP_VALUE, [] {
+    COND_HOOK(OnKaleidoUpdate, CVAR_PAUSE_WARP_VALUE, [](IEvent* event) {
         if (GameInteractor::IsSaveLoaded()) {
             PauseWarp_HandleSelection();
         }
     });
-    COND_HOOK(OnGameFrameUpdate, CVAR_PAUSE_WARP_VALUE, [] {
+    COND_HOOK(OnGameFrameUpdate, CVAR_PAUSE_WARP_VALUE, [](IEvent* event) {
         if (GameInteractor::IsSaveLoaded()) {
             PauseWarp_Execute();
         }

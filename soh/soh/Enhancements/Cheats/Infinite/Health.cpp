@@ -1,5 +1,5 @@
 #include <libultraship/bridge.h>
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
 #include "z64save.h"
 
@@ -9,7 +9,7 @@ extern "C" SaveContext gSaveContext;
 #define CVAR_INFINITE_HEALTH_DEFAULT 0
 #define CVAR_INFINITE_HEALTH_VALUE CVarGetInteger(CVAR_INFINITE_HEALTH_NAME, CVAR_INFINITE_HEALTH_DEFAULT)
 
-void OnGameFrameUpdateInfiniteHealth() {
+void OnGameFrameUpdateInfiniteHealth(IEvent* event) {
     if (!GameInteractor::IsSaveLoaded(true)) {
         return;
     }
