@@ -1428,9 +1428,7 @@ Text Rando::Traps::GetTrapName(uint16_t id) {
     }
 
     RandomizerGet rg = static_cast<RandomizerGet>(id);
-    if (const Rando::SplitSongDef* splitDef = Rando::SplitSongs::GetSongDefFromPart(rg)) {
-        id = static_cast<uint16_t>(splitDef->fullSong);
-    } else if (const Rando::SplitSongDef* progDef = Rando::SplitSongs::GetSongDefFromProgressive(rg)) {
+    if (const Rando::SplitSongDef* progDef = Rando::SplitSongs::GetSongDefFromProgressive(rg)) {
         id = static_cast<uint16_t>(progDef->fullSong);
     }
 

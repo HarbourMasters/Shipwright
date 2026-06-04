@@ -403,13 +403,7 @@ GetItemEntry Context::GetFinalGIEntry(const RandomizerCheck rc, const bool check
     }
     GetItemEntry giEntry = itemLoc->GetPlacedItem().GetGIEntry_Copy();
     if (SplitSongs::IsProgressiveSong(itemLoc->GetPlacedRandomizerGet())) {
-        RandomizerGet stage = SplitSongs::ResolveProgressiveSongStage(itemLoc->GetPlacedRandomizerGet());
-        if (stage == RG_NONE) {
-            const SplitSongDef* def = SplitSongs::GetSongDefFromProgressive(itemLoc->GetPlacedRandomizerGet());
-            if (def != nullptr) {
-                stage = def->part1;
-            }
-        }
+        const RandomizerGet stage = SplitSongs::ResolveProgressiveSongStage(itemLoc->GetPlacedRandomizerGet());
         if (stage != RG_NONE) {
             giEntry = StaticData::RetrieveItem(stage).GetGIEntry_Copy();
         }

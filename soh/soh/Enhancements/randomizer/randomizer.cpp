@@ -299,9 +299,6 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
     if (Rando::SplitSongs::IsProgressiveSong(randoGet)) {
         return Rando::SplitSongs::GetProgressiveSongObtainability(randoGet);
     }
-    if (Rando::SplitSongs::IsSongPart(randoGet)) {
-        return Rando::SplitSongs::GetPartObtainability(randoGet);
-    }
     if (randomizerGetToRandInf.find(randoGet) != randomizerGetToRandInf.end()) {
         return Flags_GetRandomizerInf(randomizerGetToRandInf.find(randoGet)->second) ? CANT_OBTAIN_ALREADY_HAVE
                                                                                      : CAN_OBTAIN;
@@ -4641,19 +4638,8 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
     // Gameplay stats: Update the time the item was obtained
     Randomizer_GameplayStats_SetTimestamp(item);
 
-    if (Rando::SplitSongs::IsSongPart(item)) {
-        Rando::SplitSongs::OnItemReceived(item);
-        return Return_Item_Entry(giEntry, RG_NONE);
-    }
     if (Rando::SplitSongs::IsProgressiveSong(item)) {
-        // Resolve display before applying progression so first pickup shows Part 1 and second shows Part 2.
-        RandomizerGet displayItem = Rando::SplitSongs::ResolveProgressiveSongStage(item);
-        if (displayItem == RG_NONE) {
-            const Rando::SplitSongDef* def = Rando::SplitSongs::GetSongDefFromProgressive(item);
-            if (def != nullptr) {
-                displayItem = def->part1;
-            }
-        }
+        const RandomizerGet displayItem = Rando::SplitSongs::ResolveProgressiveSongStage(item);
         Rando::SplitSongs::OnProgressiveSongReceived(item);
         if (displayItem != RG_NONE) {
             return Return_Item_Entry(Rando::StaticData::RetrieveItem(displayItem).GetGIEntry_Copy(), RG_NONE);

@@ -135,87 +135,43 @@ static RandomizerGet RandomizerGetFromPlayerItemEntry(const Player* player) {
     return static_cast<RandomizerGet>(rgid);
 }
 
-/** Fallback: vanilla pause `gItemIcons` quest song row if tracker mapping is unavailable. */
-static ItemID VanillaSongIconForSplitOrProgressive(RandomizerGet rg) {
-    if (Rando::SplitSongs::IsSongPart(rg)) {
-        const Rando::SplitSongDef* def = Rando::SplitSongs::GetSongDefFromPart(rg);
-        return def != nullptr ? VanillaItemIdForFullSong(def->fullSong) : ITEM_NONE;
-    }
-    if (Rando::SplitSongs::IsProgressiveSong(rg)) {
-        RandomizerGet stage = Rando::SplitSongs::ResolveProgressiveSongStage(rg);
-        if (stage == RG_NONE) {
-            const Rando::SplitSongDef* def = Rando::SplitSongs::GetSongDefFromProgressive(rg);
-            if (def != nullptr) {
-                stage = def->part1;
-            }
-        }
-        const Rando::SplitSongDef* def = stage != RG_NONE ? Rando::SplitSongs::GetSongDefFromPart(stage) : nullptr;
-        return def != nullptr ? VanillaItemIdForFullSong(def->fullSong) : ITEM_NONE;
-    }
-    return ITEM_NONE;
-}
-
 static ItemID DirectSongIconForRandomizerGet(RandomizerGet rg) {
     switch (rg) {
         case RG_ZELDAS_LULLABY:
         case RG_PROGRESSIVE_ZELDAS_LULLABY:
-        case RG_ZELDAS_LULLABY_PART1:
-        case RG_ZELDAS_LULLABY_PART2:
             return ITEM_SONG_LULLABY;
         case RG_EPONAS_SONG:
         case RG_PROGRESSIVE_EPONAS_SONG:
-        case RG_EPONAS_SONG_PART1:
-        case RG_EPONAS_SONG_PART2:
             return ITEM_SONG_EPONA;
         case RG_SARIAS_SONG:
         case RG_PROGRESSIVE_SARIAS_SONG:
-        case RG_SARIAS_SONG_PART1:
-        case RG_SARIAS_SONG_PART2:
             return ITEM_SONG_SARIA;
         case RG_SUNS_SONG:
         case RG_PROGRESSIVE_SUNS_SONG:
-        case RG_SUNS_SONG_PART1:
-        case RG_SUNS_SONG_PART2:
             return ITEM_SONG_SUN;
         case RG_SONG_OF_TIME:
         case RG_PROGRESSIVE_SONG_OF_TIME:
-        case RG_SONG_OF_TIME_PART1:
-        case RG_SONG_OF_TIME_PART2:
             return ITEM_SONG_TIME;
         case RG_SONG_OF_STORMS:
         case RG_PROGRESSIVE_SONG_OF_STORMS:
-        case RG_SONG_OF_STORMS_PART1:
-        case RG_SONG_OF_STORMS_PART2:
             return ITEM_SONG_STORMS;
         case RG_MINUET_OF_FOREST:
         case RG_PROGRESSIVE_MINUET_OF_FOREST:
-        case RG_MINUET_OF_FOREST_PART1:
-        case RG_MINUET_OF_FOREST_PART2:
             return ITEM_SONG_MINUET;
         case RG_BOLERO_OF_FIRE:
         case RG_PROGRESSIVE_BOLERO_OF_FIRE:
-        case RG_BOLERO_OF_FIRE_PART1:
-        case RG_BOLERO_OF_FIRE_PART2:
             return ITEM_SONG_BOLERO;
         case RG_SERENADE_OF_WATER:
         case RG_PROGRESSIVE_SERENADE_OF_WATER:
-        case RG_SERENADE_OF_WATER_PART1:
-        case RG_SERENADE_OF_WATER_PART2:
             return ITEM_SONG_SERENADE;
         case RG_REQUIEM_OF_SPIRIT:
         case RG_PROGRESSIVE_REQUIEM_OF_SPIRIT:
-        case RG_REQUIEM_OF_SPIRIT_PART1:
-        case RG_REQUIEM_OF_SPIRIT_PART2:
             return ITEM_SONG_REQUIEM;
         case RG_NOCTURNE_OF_SHADOW:
         case RG_PROGRESSIVE_NOCTURNE_OF_SHADOW:
-        case RG_NOCTURNE_OF_SHADOW_PART1:
-        case RG_NOCTURNE_OF_SHADOW_PART2:
             return ITEM_SONG_NOCTURNE;
         case RG_PRELUDE_OF_LIGHT:
         case RG_PROGRESSIVE_PRELUDE_OF_LIGHT:
-        case RG_PRELUDE_OF_LIGHT_PART1:
-        case RG_PRELUDE_OF_LIGHT_PART2:
             return ITEM_SONG_PRELUDE;
         default:
             return ITEM_NONE;
@@ -232,27 +188,22 @@ static ItemID ResolveSongMessageIcon(RandomizerGet rg, RandomizerGet resolvedSta
         if (icon != ITEM_NONE) {
             return icon;
         }
-    }
-    icon = VanillaSongIconForSplitOrProgressive(rg);
-    if (icon != ITEM_NONE) {
-        return icon;
-    }
-    if (resolvedStage != RG_NONE) {
-        const auto* stageDef = Rando::SplitSongs::GetSongDefFromPart(resolvedStage);
-        if (stageDef != nullptr) {
-            icon = VanillaItemIdForFullSong(stageDef->fullSong);
+        const Rando::SplitSongDef* def = Rando::SplitSongs::GetSongDefFromFullSong(resolvedStage);
+        if (def != nullptr) {
+            icon = VanillaItemIdForFullSong(def->fullSong);
             if (icon != ITEM_NONE) {
                 return icon;
             }
         }
     }
-    // Never return ITEM_CUSTOM for split/progressive song messages; avoid static/noise tile path.
+    if (const Rando::SplitSongDef* def = Rando::SplitSongs::GetSongDefFromProgressive(rg)) {
+        return VanillaItemIdForFullSong(def->fullSong);
+    }
     return ITEM_SONG_LULLABY;
 }
 
 static bool RandomizerGet_IsSongTextboxPickup(RandomizerGet rg) {
-    return Rando::SplitSongs::IsSongPart(rg) || Rando::SplitSongs::IsProgressiveSong(rg) ||
-           DirectSongIconForRandomizerGet(rg) != ITEM_NONE;
+    return Rando::SplitSongs::IsProgressiveSong(rg) || DirectSongIconForRandomizerGet(rg) != ITEM_NONE;
 }
 
 extern "C" u16 Message_GetRandoTextboxItemIconOverride(PlayState* play, u16 itemId) {
@@ -357,36 +308,9 @@ void BuildCustomItemMessage(Player* player, CustomMessage& msg) {
     // Song icons: ResolveSongMessageIcon maps RG_* → vanilla ITEM_SONG_*; Format() writes MESSAGE_ITEM_ICON bytes only.
     // Decode loads icon strictly from that buffer (same contract as non-song items using GetGIEntry()->itemId).
     if (IS_RANDO && Rando::SplitSongs::IsProgressiveSong(rgEnum)) {
-        RandomizerGet stage = Rando::SplitSongs::ResolveProgressiveSongStage(rgEnum);
-        if (stage == RG_NONE) {
-            const Rando::SplitSongDef* def = Rando::SplitSongs::GetSongDefFromProgressive(rgEnum);
-            if (def != nullptr) {
-                stage = def->part1;
-            }
-        }
+        const RandomizerGet stage = Rando::SplitSongs::ResolveProgressiveSongStage(rgEnum);
         const ItemID iconFallback = ResolveSongMessageIcon(rgEnum, stage);
-        if (stage != RG_NONE) {
-            const auto& nm = Rando::StaticData::RetrieveItem(stage).GetName();
-            CustomMessage getItemText(nm.GetEnglish(), nm.GetGerman(), nm.GetFrench(), TEXTBOX_TYPE_BLUE,
-                                      TEXTBOX_POS_BOTTOM);
-            getItemText.Format(iconFallback);
-            msg = getItemText;
-            return;
-        }
-        // Stage could not be resolved to a part yet; still show progressive name with a valid vanilla song icon.
-        if (iconFallback != ITEM_NONE) {
-            const auto& nm = Rando::StaticData::RetrieveItem(rgEnum).GetName();
-            CustomMessage getItemText(nm.GetEnglish(), nm.GetGerman(), nm.GetFrench(), TEXTBOX_TYPE_BLUE,
-                                      TEXTBOX_POS_BOTTOM);
-            getItemText.Format(iconFallback);
-            msg = getItemText;
-            return;
-        }
-    }
-    if (IS_RANDO && Rando::SplitSongs::IsSongPart(rgEnum)) {
-        const auto& songPartItem = Rando::StaticData::RetrieveItem(rgEnum);
-        const ItemID iconFallback = ResolveSongMessageIcon(rgEnum, rgEnum);
-        const auto& nm = songPartItem.GetName();
+        const auto& nm = Rando::StaticData::RetrieveItem(stage != RG_NONE ? stage : rgEnum).GetName();
         CustomMessage getItemText(nm.GetEnglish(), nm.GetGerman(), nm.GetFrench(), TEXTBOX_TYPE_BLUE,
                                   TEXTBOX_POS_BOTTOM);
         getItemText.Format(iconFallback);

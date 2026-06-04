@@ -54,8 +54,6 @@ void Item::ApplyEffect() const {
         logic->ApplyItemEffect(StaticData::RetrieveItem(randomizerGet), true);
     } else if (SplitSongs::IsProgressiveSong(randomizerGet)) {
         SplitSongs::ApplyProgressiveEffectToLogicScratch(logic.get(), randomizerGet, true);
-    } else if (SplitSongs::IsSongPart(randomizerGet)) {
-        SplitSongs::ApplyPartEffectToLogicScratch(logic.get(), randomizerGet, true);
     }
     logic->Set(logicVal, true);
 }
@@ -67,8 +65,6 @@ void Item::UndoEffect() const {
         logic->ApplyItemEffect(StaticData::RetrieveItem(randomizerGet), false);
     } else if (SplitSongs::IsProgressiveSong(randomizerGet)) {
         SplitSongs::ApplyProgressiveEffectToLogicScratch(logic.get(), randomizerGet, false);
-    } else if (SplitSongs::IsSongPart(randomizerGet)) {
-        SplitSongs::ApplyPartEffectToLogicScratch(logic.get(), randomizerGet, false);
     }
     logic->Set(logicVal, false);
 }
@@ -389,12 +385,6 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
         case RG_PROGRESSIVE_NOCTURNE_OF_SHADOW:
         case RG_PROGRESSIVE_PRELUDE_OF_LIGHT:
             actual = SplitSongs::ResolveProgressiveSongStage(randomizerGet);
-            if (actual == RG_NONE) {
-                const SplitSongDef* def = SplitSongs::GetSongDefFromProgressive(randomizerGet);
-                if (def != nullptr) {
-                    actual = def->part1;
-                }
-            }
             break;
         case RG_PROGRESSIVE_BOMBCHU_BAG:
             if (OTRGlobals::Instance->gRandoContext->GetOption(RSK_BOMBCHU_BAG).Is(RO_BOMBCHU_BAG_SINGLE)) {

@@ -22,7 +22,7 @@ namespace Rando {
 bool Logic::HasItem(RandomizerGet itemName) {
     if (SplitSongs::IsProgressiveSong(itemName)) {
         const SplitSongDef* def = SplitSongs::GetSongDefFromProgressive(itemName);
-        return def != nullptr && SplitSongs::HasBothParts(def->id);
+        return def != nullptr && SplitSongs::HasFullSong(def->id);
     }
 
     switch (itemName) {
@@ -122,7 +122,7 @@ bool Logic::HasItem(RandomizerGet itemName) {
             }
             if (splitAnywhere) {
                 const SplitSongDef* sdef = SplitSongs::GetSongDefFromFullSong(itemName);
-                if (sdef != nullptr && SplitSongs::HasBothParts(sdef->id)) {
+                if (sdef != nullptr && SplitSongs::HasFullSong(sdef->id)) {
                     return true;
                 }
             }
@@ -315,22 +315,6 @@ bool Logic::HasItem(RandomizerGet itemName) {
             return HasBottle();
         default:
             break;
-    }
-    if (SplitSongs::IsSongPart(itemName)) {
-        const SplitSongDef* def = SplitSongs::GetSongDefFromPart(itemName);
-        if (def == nullptr) {
-            return false;
-        }
-        if (HasItem(def->fullSong)) {
-            return true;
-        }
-        if (itemName == def->part1) {
-            return SplitSongs::HasPart1(def->id);
-        }
-        if (itemName == def->part2) {
-            return SplitSongs::HasPart2(def->id);
-        }
-        return false;
     }
     SPDLOG_ERROR("HasItem reached `return false;`. Missing case for RandomizerGet of {}",
                  static_cast<uint32_t>(itemName));
@@ -2141,10 +2125,6 @@ void Logic::ApplyItemEffect(Item& item, bool state) {
             RandomizerGet rg = item.GetRandomizerGet();
             if (SplitSongs::IsProgressiveSong(rg)) {
                 SplitSongs::ApplyProgressiveEffectToLogicScratch(this, rg, state);
-                break;
-            }
-            if (SplitSongs::IsSongPart(rg)) {
-                SplitSongs::ApplyPartEffectToLogicScratch(this, rg, state);
                 break;
             }
             auto qi = RandoGetToQuestItem.find(rg);

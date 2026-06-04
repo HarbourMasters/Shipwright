@@ -521,7 +521,7 @@ static std::unordered_map<RandomizerGet, RandomizerCheckArea> BuildSongPartSpoil
             continue;
         }
         const RandomizerGet rg = loc->GetPlacedRandomizerGet();
-        if (!Rando::SplitSongs::IsSongPart(rg)) {
+        if (!Rando::SplitSongs::IsProgressiveSong(rg)) {
             continue;
         }
         if (partRgToArea.find(rg) != partRgToArea.end()) {
@@ -534,7 +534,7 @@ static std::unordered_map<RandomizerGet, RandomizerCheckArea> BuildSongPartSpoil
     }
     std::unordered_map<RandomizerGet, RandomizerCheckArea> fullSongToArea;
     for (const auto& kv : partRgToArea) {
-        const Rando::SplitSongDef* def = Rando::SplitSongs::GetSongDefFromPart(kv.first);
+        const Rando::SplitSongDef* def = Rando::SplitSongs::GetSongDefFromProgressive(kv.first);
         if (def == nullptr) {
             continue;
         }
@@ -1475,12 +1475,10 @@ void DrawSplitSongProgress(ItemTrackerItem item) {
     const Rando::SplitSongDef* def = Rando::SplitSongs::GetSongDefFromFullSong(fullSongRg);
     int partsCollected = 0;
     if (def != nullptr) {
-        const bool p1 = Rando::SplitSongs::HasPart1(def->id);
-        const bool p2 = Rando::SplitSongs::HasPart2(def->id);
         if (Rando::SplitSongs::HasFullSong(def->id)) {
             partsCollected = 2;
-        } else {
-            partsCollected = (p1 ? 1 : 0) + (p2 ? 1 : 0);
+        } else if (Rando::SplitSongs::HasSplitPart(def->id)) {
+            partsCollected = 1;
         }
     }
 

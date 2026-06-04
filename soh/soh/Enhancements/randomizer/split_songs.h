@@ -31,61 +31,40 @@ enum SplitSongId {
 struct SplitSongDef {
     SplitSongId id;
     RandomizerGet progressive;
-    RandomizerGet part1;
-    RandomizerGet part2;
     RandomizerGet fullSong;
 };
 
 class SplitSongs {
   public:
-    static bool IsSongPart(RandomizerGet rg);
-    static SplitSongId GetSongIdFromPart(RandomizerGet rg);
     static const SplitSongDef* GetSongDef(SplitSongId id);
-    static const SplitSongDef* GetSongDefFromPart(RandomizerGet rg);
     static const SplitSongDef* GetSongDefFromProgressive(RandomizerGet rg);
-    /** Full-song RandomizerGet (RG_ZELDAS_LULLABY, …), not part items. */
     static const SplitSongDef* GetSongDefFromFullSong(RandomizerGet fullSongRg);
 
-    static bool HasPart1(SplitSongId id);
-    static bool HasPart2(SplitSongId id);
-    static bool HasBothParts(SplitSongId id);
-    static bool IsProgressiveSong(RandomizerGet rg);
-
-    static void SetPart1(SplitSongId id, bool state);
-    static void SetPart2(SplitSongId id, bool state);
+    /** RandInf set after the first progressive pickup for this song. */
+    static bool HasSplitPart(SplitSongId id);
+    static void SetSplitPart(SplitSongId id, bool state);
 
     static bool HasFullSong(SplitSongId id);
     static void GrantFullSong(SplitSongId id);
     static void TryCompleteSong(SplitSongId id);
 
-    /** After get-item / cutscene-safe: applies deferred quest song when both parts were obtained mid get-item. */
+    static bool IsProgressiveSong(RandomizerGet rg);
+
     static void ProcessPendingFullSongGrants();
-    /** Reset deferred grants (e.g. save load). */
     static void ClearPendingFullSongGrants();
 
-    static void OnItemReceived(RandomizerGet rg);
     static void OnProgressiveSongReceived(RandomizerGet rg);
 
-    // Item pool / ice-trap models: 12 full songs vs 24 part items (same 12 logical songs).
     static void AppendShuffledSongPoolItems(std::vector<RandomizerGet>& pool, bool split);
     static void AppendSongIceTrapModels(std::vector<RandomizerGet>& models, bool split);
 
-    /** In-world obtainability for RG_*_PART1/PART2 (duplicate parts / song already complete). */
-    static ItemObtainability GetPartObtainability(RandomizerGet partRg);
     static ItemObtainability GetProgressiveSongObtainability(RandomizerGet progressiveRg);
 
-    /** Dev/testing: grant every song via Part 1 + Part 2 through the same path as chests/NPCs (Randomizer_Item_Give).
-     */
     static void DebugGiveAllSongParts(PlayState* play);
 
-    /**
-     * During 3drando fill, Logic uses a scratch SaveContext. Song-part flags must live there (not gSaveContext).
-     * No-op when Logic is tied to the real gSaveContext (in-game).
-     */
-    static void ApplyPartEffectToLogicScratch(Logic* logic, RandomizerGet rg, bool state);
     static void ApplyProgressiveEffectToLogicScratch(Logic* logic, RandomizerGet rg, bool state);
 
-    /** Returns the concrete part item represented by this progressive pickup at current state. */
+    /** Item to show on pickup / GI resolve: progressive first, full song on second. */
     static RandomizerGet ResolveProgressiveSongStage(RandomizerGet rg);
 };
 
