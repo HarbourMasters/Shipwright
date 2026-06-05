@@ -219,6 +219,11 @@ void Anchor::HandlePacket_UpdateTeamState(nlohmann::json payload) {
 
         gSaveContext.inventory = loadedData.inventory;
 
+        if (gSaveContext.mapIndex == SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR) {
+            gSaveContext.subTimerState = 300;
+            gSaveContext.subTimerSeconds = 300;
+        }
+
         // The commented out code below is an attempt at sending the entire randomizer seed over, in hopes that a player
         // doesn't have to generate the seed themselves Currently it doesn't work :)
         if (IS_RANDO && payload["state"].contains("rando")) {
