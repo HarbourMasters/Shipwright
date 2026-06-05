@@ -160,6 +160,13 @@ void Anchor::HandlePacket_UpdateTeamState(nlohmann::json payload) {
                     (loadedData.sceneFlags[i].swch & ~mask) | (gSaveContext.sceneFlags[i].swch & mask);
             }
 
+            if (i == SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR) {
+                // Keep collapse timer flag
+                u32 mask = (1 << 0x36);
+                loadedData.sceneFlags[i].swch =
+                    (loadedData.sceneFlags[i].swch & ~mask) | (gSaveContext.sceneFlags[i].swch & mask);
+            }
+
             gSaveContext.sceneFlags[i] = loadedData.sceneFlags[i];
             if (IsSaveLoaded() && gPlayState->sceneNum == i) {
                 gPlayState->actorCtx.flags.chest = loadedData.sceneFlags[i].chest;
@@ -174,7 +181,7 @@ void Anchor::HandlePacket_UpdateTeamState(nlohmann::json payload) {
         }
 
         for (int i = 0; i < 4; i++) {
-            gSaveContext.itemGetInf[i] = loadedData.itemGetInf[i];
+            gSaveContext.itemGetInf[i] |= loadedData.itemGetInf[i];
         }
 
         // Skip last row of infTable, don't want to sync swordless flag
@@ -183,11 +190,11 @@ void Anchor::HandlePacket_UpdateTeamState(nlohmann::json payload) {
         }
 
         for (int i = 0; i < ceil((RAND_INF_MAX + 15) / 16); i++) {
-            gSaveContext.ship.randomizerInf[i] = loadedData.ship.randomizerInf[i];
+            gSaveContext.ship.randomizerInf[i] |= loadedData.ship.randomizerInf[i];
         }
 
         for (int i = 0; i < 6; i++) {
-            gSaveContext.gsFlags[i] = loadedData.gsFlags[i];
+            gSaveContext.gsFlags[i] |= loadedData.gsFlags[i];
         }
 
         gSaveContext.ship.stats.firstInput = loadedData.ship.stats.firstInput;
@@ -218,11 +225,6 @@ void Anchor::HandlePacket_UpdateTeamState(nlohmann::json payload) {
         }
 
         gSaveContext.inventory = loadedData.inventory;
-
-        if (gSaveContext.mapIndex == SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR) {
-            gSaveContext.subTimerState = 300;
-            gSaveContext.subTimerSeconds = 300;
-        }
 
         // The commented out code below is an attempt at sending the entire randomizer seed over, in hopes that a player
         // doesn't have to generate the seed themselves Currently it doesn't work :)
