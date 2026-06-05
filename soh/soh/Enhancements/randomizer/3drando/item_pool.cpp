@@ -615,7 +615,7 @@ void GenerateItemPool() {
         ctx->PlaceItemInLocation(RC_TH_DEAD_END_CARPENTER, RG_RECOVERY_HEART, false, true);
         ctx->PlaceItemInLocation(RC_TH_DOUBLE_CELL_CARPENTER, RG_RECOVERY_HEART, false, true);
         ctx->PlaceItemInLocation(RC_TH_STEEP_SLOPE_CARPENTER, RG_RECOVERY_HEART, false, true);
-
+        ctx->PlaceItemInLocation(RC_TH_FREED_CARPENTERS, RG_BLUE_RUPEE, false, true);
     } else if (ctx->GetOption(RSK_GERUDO_KEYS).IsNot(RO_GERUDO_KEYS_VANILLA)) {
         if (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FAST)) {
             AddItemToPool(RG_GERUDO_FORTRESS_SMALL_KEY, 2, 1, 1, 1);
@@ -630,7 +630,6 @@ void GenerateItemPool() {
                 AddItemToPool(RG_GERUDO_FORTRESS_SMALL_KEY, 5, 4, 4, 4);
             }
         }
-
     } else {
         if (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FAST)) {
             ctx->PlaceItemInLocation(RC_TH_1_TORCH_CARPENTER, RG_GERUDO_FORTRESS_SMALL_KEY, false, true);
@@ -648,9 +647,6 @@ void GenerateItemPool() {
     // Gerudo Membership Card
     if (ctx->GetOption(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD)) {
         AddItemToPool(RG_GERUDO_MEMBERSHIP_CARD, 2, 1, 1, 1);
-        if (ctx->GetOption(RSK_GERUDO_FORTRESS).IsNot(RO_GF_CARPENTERS_FREE)) {
-            ctx->PlaceItemInLocation(RC_TH_FREED_CARPENTERS, RG_BLUE_RUPEE, false, true);
-        }
     } else {
         ctx->PlaceItemInLocation(RC_TH_FREED_CARPENTERS, RG_GERUDO_MEMBERSHIP_CARD, false, true);
     }

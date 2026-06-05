@@ -3,7 +3,7 @@
 #ifndef RANDOPTION_H
 #define RANDOPTION_H
 
-#include <cstdint>
+#include <stdint.h>
 #include <set>
 #include <string>
 #include <unordered_map>

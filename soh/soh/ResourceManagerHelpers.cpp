@@ -16,6 +16,8 @@
 #include <fast/resource/ResourceType.h>
 #include <fast/resource/type/DisplayList.h>
 
+#include <stb_image.h>
+
 extern "C" PlayState* gPlayState;
 
 extern "C" uint32_t ResourceMgr_GetNumGameVersions() {

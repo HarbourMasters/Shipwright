@@ -16,7 +16,8 @@
 #define M_PI_2f 1.57079632679489661923f // pi/2
 
 #ifdef __cplusplus
-#include <memory> // for shared_ptr
+#include <stdint.h>
+#include <memory>
 #include <string>
 #include <unordered_map>
 

@@ -81,30 +81,30 @@ static void PropagateTimeTravel(GetAccessibleLocationsStruct& gals, RandomizerGe
 static bool UpdateToDAccess(Entrance* entrance, Region* connection) {
     StartPerformanceTimer(PT_TOD_ACCESS);
 
-    bool ageTimePropogated = false;
+    bool ageTimePropagated = false;
     Region* parent = entrance->GetParentRegion();
 
     if (!connection->childDay && parent->childDay && entrance->CheckConditionAtAgeTime(logic->IsChild, logic->AtDay)) {
         connection->childDay = true;
-        ageTimePropogated = true;
+        ageTimePropagated = true;
     }
     if (!connection->childNight && parent->childNight &&
         entrance->CheckConditionAtAgeTime(logic->IsChild, logic->AtNight)) {
         connection->childNight = true;
-        ageTimePropogated = true;
+        ageTimePropagated = true;
     }
     if (!connection->adultDay && parent->adultDay && entrance->CheckConditionAtAgeTime(logic->IsAdult, logic->AtDay)) {
         connection->adultDay = true;
-        ageTimePropogated = true;
+        ageTimePropagated = true;
     }
     if (!connection->adultNight && parent->adultNight &&
         entrance->CheckConditionAtAgeTime(logic->IsAdult, logic->AtNight)) {
         connection->adultNight = true;
-        ageTimePropogated = true;
+        ageTimePropagated = true;
     }
 
     StopPerformanceTimer(PT_TOD_ACCESS);
-    return ageTimePropogated;
+    return ageTimePropagated;
 }
 
 // Check if key locations in the overworld are accessable
@@ -569,10 +569,12 @@ void GeneratePlaythrough() {
     do {
         gals.InitLoop();
         for (size_t i = 0; i < gals.regionPool.size(); i++) {
+        resetSphere:
             ProcessRegion(RegionTable(gals.regionPool[i]), gals, RG_NONE, false, true);
             if (gals.resetSphere) {
                 gals.resetSphere = false;
-                i = -1;
+                i = 0;
+                goto resetSphere;
             }
         }
         if (gals.itemSphere.size() > 0) {
@@ -891,14 +893,12 @@ static void AssumedFill(const std::vector<RandomizerGet>& items, const std::vect
 
             // retry if there are no more locations to place items
             if (accessibleLocations.empty()) {
-
                 SPDLOG_DEBUG("CANNOT PLACE {}. TRYING_AGAIN...",
                              Rando::StaticData::RetrieveItem(item).GetName().GetEnglish());
 
                 // reset any locations that got an item
                 for (RandomizerCheck loc : attemptedLocations) {
                     ctx->GetItemLocation(loc)->SetPlacedItem(RG_NONE);
-                    // itemsPlaced--;
                 }
                 attemptedLocations.clear();
 
@@ -1009,12 +1009,10 @@ static void RandomizeDungeonRewards() {
     }
 
     if (ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON)) {
-        // Randomize dungeon rewards with assumed fill
-        AssumedFill(rewards, Rando::StaticData::dungeonRewardLocations);
-        // Then remove them from the item pool
         std::erase_if(itemPool, [](const auto i) {
             return Rando::StaticData::RetrieveItem(i).GetItemType() == ITEMTYPE_DUNGEONREWARD;
         });
+        AssumedFill(rewards, Rando::StaticData::dungeonRewardLocations);
     } else if (ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_VANILLA)) {
         for (RandomizerCheck loc : Rando::StaticData::dungeonRewardLocations) {
             ctx->GetItemLocation(loc)->PlaceVanillaItem();
@@ -1439,7 +1437,6 @@ int Fill() {
         StopPerformanceTimer(PT_PLAYTHROUGH_GENERATION);
         // Successful placement, produced beatable result
         if (ctx->playthroughBeatable && !placementFailure) {
-
             SPDLOG_INFO("Calculating Playthrough...");
             StartPerformanceTimer(PT_PARE_DOWN_PLAYTHROUGH);
             PareDownPlaythrough();

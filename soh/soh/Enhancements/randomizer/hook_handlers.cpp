@@ -15,6 +15,7 @@
 #include "soh/ObjectExtension/ObjectExtension.h"
 #include "item_category_adj.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
+#include "soh/Enhancements/randomizer/RCToRandInf.h"
 
 extern "C" {
 #include "macros.h"
@@ -899,6 +900,46 @@ void RandomizerOnDialogMessageHandler() {
 
 extern "C" void func_80A5475C(EnHeishi2* CastleGuard, PlayState* play);
 
+static ScrubIdentity IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respawnData) {
+    struct ScrubIdentity scrubIdentity;
+
+    scrubIdentity.identity.randomizerInf = RAND_INF_MAX;
+    scrubIdentity.identity.randomizerCheck = RC_UNKNOWN_CHECK;
+    scrubIdentity.getItemId = GI_NONE;
+    scrubIdentity.itemPrice = -1;
+
+    // Scrubs that are 0x06 are loaded as 0x03 when child, switching from selling arrows to seeds
+    if (actorParams == 0x06)
+        actorParams = 0x03;
+
+    if (sceneNum == SCENE_GROTTOS) {
+        actorParams = TWO_ACTOR_PARAMS(actorParams, respawnData);
+    }
+
+    Rando::Location* location =
+        OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_EN_DNS, sceneNum, actorParams);
+
+    if (location->GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
+        if (location->GetRandomizerCheck() == RC_HF_DEKU_SCRUB_GROTTO ||
+            location->GetRandomizerCheck() == RC_LW_DEKU_SCRUB_GROTTO_FRONT ||
+            location->GetRandomizerCheck() == RC_LW_DEKU_SCRUB_NEAR_BRIDGE) {
+            if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_SCRUBS) == RO_SCRUBS_OFF) {
+                return scrubIdentity;
+            }
+        } else if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_SCRUBS) != RO_SCRUBS_ALL) {
+            return scrubIdentity;
+        }
+
+        scrubIdentity.identity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
+        scrubIdentity.identity.randomizerCheck = location->GetRandomizerCheck();
+        scrubIdentity.getItemId = (GetItemID)Rando::StaticData::RetrieveItem(location->GetVanillaItem()).GetItemID();
+        scrubIdentity.itemPrice =
+            OTRGlobals::Instance->gRandoContext->GetItemLocation(scrubIdentity.identity.randomizerCheck)->GetPrice();
+    }
+
+    return scrubIdentity;
+}
+
 void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_list originalArgs) {
     va_list args;
     va_copy(args, originalArgs);
@@ -1477,8 +1518,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
         case VB_BUSINESS_SCRUB_DESPAWN: {
             EnShopnuts* enShopnuts = va_arg(args, EnShopnuts*);
             s16 respawnData = gSaveContext.respawn[RESPAWN_MODE_RETURN].data & ((1 << 8) - 1);
-            ScrubIdentity scrubIdentity = OTRGlobals::Instance->gRandomizer->IdentifyScrub(
-                gPlayState->sceneNum, enShopnuts->actor.params, respawnData);
+            ScrubIdentity scrubIdentity = IdentifyScrub(gPlayState->sceneNum, enShopnuts->actor.params, respawnData);
 
             if (scrubIdentity.identity.randomizerCheck != RC_UNKNOWN_CHECK) {
                 *should = Flags_GetRandomizerInf(scrubIdentity.identity.randomizerInf);
@@ -2154,8 +2194,7 @@ void RandomizerOnActorInitHandler(void* actorRef) {
     if (actor->id == ACTOR_EN_DNS) {
         EnDns* enDns = static_cast<EnDns*>(actorRef);
         s16 respawnData = gSaveContext.respawn[RESPAWN_MODE_RETURN].data & ((1 << 8) - 1);
-        auto scrubIdentity =
-            OTRGlobals::Instance->gRandomizer->IdentifyScrub(gPlayState->sceneNum, enDns->actor.params, respawnData);
+        auto scrubIdentity = IdentifyScrub(gPlayState->sceneNum, enDns->actor.params, respawnData);
 
         if (scrubIdentity.identity.randomizerCheck != RC_UNKNOWN_CHECK) {
             // DNS uses pointers so we're creating our own entry instead of modifying the original

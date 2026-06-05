@@ -14,6 +14,7 @@
 #include "soh/SohGui/SohGui.hpp"
 #include "AudioCollection.h"
 #include "soh/Enhancements/enhancementTypes.h"
+#include "soh/ShipUtils.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/randomizer/SeedContext.h"
 
@@ -406,7 +407,7 @@ void Draw_SfxTab(const std::string& tabId, SeqType type, const std::string& tabN
 
             if (validSequences.size()) {
                 auto it = validSequences.begin();
-                const auto& seqData = *std::next(it, rand() % validSequences.size());
+                const auto& seqData = *std::next(it, ShipUtils::Random(0, validSequences.size()));
                 CVarSetInteger(cvarKey.c_str(), seqData->sequenceId);
                 if (locked) {
                     CVarClear(cvarLockKey.c_str());
