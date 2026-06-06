@@ -2965,7 +2965,15 @@ typedef enum {
     // ```
     // #### `args`
     // - `*int32_t (camId)`
-    VB_SHOULD_LOAD_BG_IMAGE
+    VB_SHOULD_LOAD_BG_IMAGE,
+
+    // #### `result`
+    // ```c
+    // (this->actor.params & 0x300) != 0
+    // ```
+    // #### `args`
+    // - `*DoorAna`
+    VB_GROTTO_BE_HIDDEN,
 } GIVanillaBehavior;
 
 #endif

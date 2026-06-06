@@ -8,6 +8,7 @@
 #include "objects/gameplay_field_keep/gameplay_field_keep.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include "soh/Enhancements/randomizer/randomizer_grotto.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/OTRGlobals.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_DURING_OCARINA
@@ -71,7 +72,7 @@ void DoorAna_Init(Actor* thisx, PlayState* play) {
     this->actor.shape.rot.z = 0;
     this->actor.shape.rot.y = this->actor.shape.rot.z;
     // init block for grottos that are initially "hidden" (require explosives/hammer/song of storms to open)
-    if ((this->actor.params & 0x300) != 0) {
+    if (GameInteractor_Should(VB_GROTTO_BE_HIDDEN, (this->actor.params & 0x300) != 0, this)) {
         // only allocate collider for grottos that need bombing/hammering open
         if ((this->actor.params & 0x200) != 0) {
             Collider_InitCylinder(play, &this->collider);

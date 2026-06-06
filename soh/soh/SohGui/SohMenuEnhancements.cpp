@@ -1781,6 +1781,9 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Targetable Gold Skulltula", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_CHEAT("GSTargetable"))
         .Options(CheckboxOptions().Tooltip("Allows Z-Targeting Gold Skulltulas."));
+    AddWidget(path, "No Hidden Grottos", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_CHEAT("NoHiddenGrottos"))
+        .Options(CheckboxOptions().Tooltip("All hidden grottos are revealed by default."));
 
     AddWidget(path, "Glitch Aids", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Easy Frame Advancing with Pause", WIDGET_CVAR_CHECKBOX)
