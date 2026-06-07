@@ -9,17 +9,13 @@ extern "C" {
 extern SaveContext gSaveContext;
 }
 
-static constexpr int32_t CVAR_EXTENDED_MODDING_DEFAULT = 0;
-#define CVAR_EXTENDED_MODDING_NAME CVAR_ENHANCEMENT("ExtendedModdingSupport")
-#define CVAR_EXTENDED_MODDING_VALUE CVarGetInteger(CVAR_EXTENDED_MODDING_NAME, CVAR_EXTENDED_MODDING_DEFAULT)
-
 static const char* sAdultMaskDLists[] = {
     gLinkAdultKeatonMaskDL, gLinkAdultSkullMaskDL, gLinkAdultSpookyMaskDL, gLinkAdultBunnyHoodDL,
     gLinkAdultGoronMaskDL,  gLinkAdultZoraMaskDL,  gLinkAdultGerudoMaskDL, gLinkAdultMaskOfTruthDL,
 };
 
 static void RegisterAgeDependentMasks() {
-    COND_VB_SHOULD(VB_DRAW_PLAYER_MASK, CVAR_EXTENDED_MODDING_VALUE, {
+    COND_VB_SHOULD(VB_DRAW_PLAYER_MASK, CVarGetInteger(CVAR_SETTING("AltAssets"), 1), {
         if (!LINK_IS_ADULT)
             return;
 
@@ -39,4 +35,4 @@ static void RegisterAgeDependentMasks() {
     });
 }
 
-static RegisterShipInitFunc initFunc(RegisterAgeDependentMasks, { CVAR_EXTENDED_MODDING_NAME });
+static RegisterShipInitFunc initFunc(RegisterAgeDependentMasks, { CVAR_SETTING("AltAssets") });

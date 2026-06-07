@@ -540,12 +540,6 @@ void SohMenu::AddMenuEnhancements() {
     path.column = SECTION_COLUMN_1;
 
     AddWidget(path, "Mods", WIDGET_SEPARATOR_TEXT);
-    AddWidget(path, "Enable Extended Modding Support", WIDGET_CVAR_CHECKBOX)
-        .CVar(CVAR_ENHANCEMENT("ExtendedModdingSupport"))
-        .RaceDisable(false)
-        .Options(CheckboxOptions().Tooltip(
-            "Enables modding quality-of-life features that go beyond the original game.\n"
-            "Allows mods to provide separate assets for situations the vanilla game did not account for."));
     AddWidget(path, "Disable Bomb Billboarding", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("DisableBombBillboarding"))
         .RaceDisable(false)
