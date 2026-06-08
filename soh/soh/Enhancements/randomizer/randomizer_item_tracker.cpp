@@ -1490,8 +1490,8 @@ void DrawSplitSongProgress(ItemTrackerItem item) {
     ImGui::BeginGroup();
     ImVec2 p = ImGui::GetCursorScreenPos();
     ImGui::SetCursorScreenPos(ImVec2(p.x + 6, p.y));
-    ImGui::Image(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
-                     hasAnyPart && IsValidSaveFile() ? item.name : item.nameFaded),
+    ImGui::Image(std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetInstance()->GetWindow()->GetGui())
+                     ->GetTextureByName(hasAnyPart && IsValidSaveFile() ? item.name : item.nameFaded),
                  ImVec2(iconSize / 1.5f, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
     const RandomizerCheckArea area = static_cast<RandomizerCheckArea>(item.data);
