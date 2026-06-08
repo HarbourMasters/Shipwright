@@ -384,16 +384,9 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
         case RG_PROGRESSIVE_SERENADE_OF_WATER:
         case RG_PROGRESSIVE_REQUIEM_OF_SPIRIT:
         case RG_PROGRESSIVE_NOCTURNE_OF_SHADOW:
-        case RG_PROGRESSIVE_PRELUDE_OF_LIGHT: {
+        case RG_PROGRESSIVE_PRELUDE_OF_LIGHT:
             actual = SplitSongs::ResolveProgressiveSongStage(randomizerGet);
-            if (actual == randomizerGet || actual == RG_NONE) {
-                const SplitSongDef* def = SplitSongs::GetSongDefFromProgressive(randomizerGet);
-                if (def != nullptr) {
-                    return StaticData::RetrieveItem(def->fullSong).GetGIEntry();
-                }
-            }
             break;
-        }
         case RG_PROGRESSIVE_BOMBCHU_BAG:
             if (OTRGlobals::Instance->gRandoContext->GetOption(RSK_BOMBCHU_BAG).Is(RO_BOMBCHU_BAG_SINGLE)) {
                 if (logic->CurrentInventory(ITEM_BOMBCHU) != ITEM_NONE) {
