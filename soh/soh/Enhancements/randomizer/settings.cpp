@@ -437,10 +437,12 @@ void Settings::CreateOptions() {
         if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("TriforceHunt"), RO_TRIFORCE_HUNT_OFF) == RO_TRIFORCE_HUNT_OFF) {
             mOptions[RSK_TRIFORCE_HUNT_PIECES_REQUIRED].Hide();
             mOptions[RSK_TRIFORCE_HUNT_PIECES_TOTAL].Hide();
+            mOptions[RSK_TRIFORCE_HUNT_PIECES_LOCATION].Hide();
             mOptions[RSK_GANONS_BOSS_KEY].Enable();
         } else {
             mOptions[RSK_TRIFORCE_HUNT_PIECES_REQUIRED].Unhide();
             mOptions[RSK_TRIFORCE_HUNT_PIECES_TOTAL].Unhide();
+            mOptions[RSK_TRIFORCE_HUNT_PIECES_LOCATION].Unhide();
             mOptions[RSK_GANONS_BOSS_KEY].Disable(
                 "This option is disabled because Triforce Hunt is enabled."
                 "Ganon's Boss key\nwill instead be given to you after Triforce Hunt completion.");
@@ -455,6 +457,7 @@ void Settings::CreateOptions() {
         }
     });
     OPT_U8(RSK_TRIFORCE_HUNT_PIECES_REQUIRED, "Triforce Hunt Required Pieces", {NumOpts(1, 100)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("TriforceHuntRequiredPieces"), mOptionDescriptions[RSK_TRIFORCE_HUNT_PIECES_REQUIRED], WIDGET_CVAR_SLIDER_INT, 19);
+    OPT_U8(RSK_TRIFORCE_HUNT_PIECES_LOCATION, "Triforce Hunt Pieces Location", {"Any Dungeon", "Overworld", "Anywhere"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("TriforceHuntPiecesLocation"), mOptionDescriptions[RSK_TRIFORCE_HUNT_PIECES_LOCATION], WIDGET_CVAR_COMBOBOX, RO_TRIFORCE_HUNT_LOCATION_ANYWHERE);
     OPT_U8(RSK_MQ_DUNGEON_RANDOM, "MQ Dungeon Setting", {"None", "Set Number", "Random", "Selection Only"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("MQDungeons"), mOptionDescriptions[RSK_MQ_DUNGEON_RANDOM], WIDGET_CVAR_COMBOBOX, RO_MQ_DUNGEONS_NONE, false, nullptr, IMFLAG_NONE);
     OPT_CALLBACK(RSK_MQ_DUNGEON_RANDOM, {
         switch (CVarGetInteger(CVAR_RANDOMIZER_SETTING("MQDungeons"), RO_MQ_DUNGEONS_NONE)) {
@@ -1751,9 +1754,10 @@ void Settings::CreateOptions() {
     mOptionGroups[RSG_MENU_SECTION_WINCON] = OptionGroup::SubGroup(
         "Win Condition",
         { &mOptions[RSK_TRIFORCE_HUNT], &mOptions[RSK_TRIFORCE_HUNT_PIECES_TOTAL],
-          &mOptions[RSK_TRIFORCE_HUNT_PIECES_REQUIRED], &mOptions[RSK_GANONS_BOSS_KEY], &mOptions[RSK_LACS_OPTIONS],
-          &mOptions[RSK_LACS_MEDALLION_COUNT], &mOptions[RSK_LACS_STONE_COUNT], &mOptions[RSK_LACS_DUNGEON_COUNT],
-          &mOptions[RSK_LACS_REWARD_COUNT], &mOptions[RSK_LACS_TOKEN_COUNT] },
+          &mOptions[RSK_TRIFORCE_HUNT_PIECES_REQUIRED], &mOptions[RSK_TRIFORCE_HUNT_PIECES_LOCATION],
+          &mOptions[RSK_GANONS_BOSS_KEY], &mOptions[RSK_LACS_OPTIONS], &mOptions[RSK_LACS_MEDALLION_COUNT],
+          &mOptions[RSK_LACS_STONE_COUNT], &mOptions[RSK_LACS_DUNGEON_COUNT], &mOptions[RSK_LACS_REWARD_COUNT],
+          &mOptions[RSK_LACS_TOKEN_COUNT] },
         WidgetContainerType::SECTION);
     mOptionGroups[RSG_MENU_COLUMN_LOGIC_WINCON] = OptionGroup::SubGroup("",
                                                                         std::initializer_list<OptionGroup*>{
@@ -2115,6 +2119,7 @@ void Settings::CreateOptions() {
                                                                  &mOptions[RSK_TRIFORCE_HUNT],
                                                                  &mOptions[RSK_TRIFORCE_HUNT_PIECES_TOTAL],
                                                                  &mOptions[RSK_TRIFORCE_HUNT_PIECES_REQUIRED],
+                                                                 &mOptions[RSK_TRIFORCE_HUNT_PIECES_LOCATION],
                                                                  &mOptions[RSK_MQ_DUNGEON_RANDOM],
                                                                  &mOptions[RSK_MQ_DUNGEON_COUNT],
                                                                  &mOptions[RSK_MQ_DUNGEON_SET],

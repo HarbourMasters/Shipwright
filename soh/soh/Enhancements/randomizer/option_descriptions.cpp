@@ -135,6 +135,12 @@ void Settings::CreateOptionDescriptions() {
         "The amount of Triforce pieces that will be placed in the world. "
         "Keep in mind seed generation can fail if more pieces are placed than there are junk items in the item pool.";
     mOptionDescriptions[RSK_TRIFORCE_HUNT_PIECES_REQUIRED] = "The amount of Triforce pieces required to win the game.";
+    mOptionDescriptions[RSK_TRIFORCE_HUNT_PIECES_LOCATION] =
+        "Any dungeon - Triforce pieces can only appear inside of any dungeon.\n"
+        "\n"
+        "Overworld - Triforce pieces can only appear outside of dungeons.\n"
+        "\n"
+        "Anywhere - Triforce pieces can appear anywhere in the world.";
     mOptionDescriptions[RSK_SHUFFLE_DUNGEON_ENTRANCES] =
         "Shuffle the pool of dungeon entrances, including Bottom of the Well, Ice Cavern and Gerudo Training Ground.\n"
         "\n"

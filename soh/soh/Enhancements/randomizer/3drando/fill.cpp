@@ -1177,6 +1177,14 @@ static void RandomizeDungeonItems() {
         AddElementsToPool(overworldItems, rewards);
     }
 
+    if (ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_LOCATION).Is(RO_TRIFORCE_HUNT_LOCATION_ANY_DUNGEON)) {
+        auto triforcePieces = FilterAndEraseFromPool(itemPool, [](const auto i) { return i == RG_TRIFORCE_PIECE; });
+        AddElementsToPool(anyDungeonItems, triforcePieces);
+    } else if (ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_LOCATION).Is(RO_TRIFORCE_HUNT_LOCATION_OVERWORLD)) {
+        auto triforcePieces = FilterAndEraseFromPool(itemPool, [](const auto i) { return i == RG_TRIFORCE_PIECE; });
+        AddElementsToPool(overworldItems, triforcePieces);
+    }
+
     // Randomize Any Dungeon and Overworld pools
     AssumedFill(anyDungeonItems, anyDungeonLocations, true);
     AssumedFill(overworldItems, ctx->overworldLocations, true);
