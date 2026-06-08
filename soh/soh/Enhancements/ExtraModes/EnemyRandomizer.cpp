@@ -531,6 +531,14 @@ void CustomStalfosPairFightDestroy(Actor* thisx, PlayState* play) {
     ObjectExtension::GetInstance().Remove<CustomStalfosPairFightData>(thisx);
 }
 
+static void KillVoidedEnemies(void* actorRef) {
+    constexpr float voidFallDistance = 200.0f;
+    const auto actor = static_cast<Actor*>(actorRef)
+    if (actor->category == ACTORCAT_ENEMY && !actor->isDrawn && actor->world.pos.y < actor->home.pos.y - voidFallDistance) {
+        Actor_Kill(actor);
+    }
+}
+
 void RegisterEnemyRandomizer() {
     COND_ID_HOOK(OnActorInit, ACTOR_EN_MB, ENEMY_RANDOMIZER_ENABLED, FixClubMoblinScale);
 
@@ -922,6 +930,10 @@ void RegisterEnemyRandomizer() {
 
         *should = false;
     });
+
+    // Kill enemies that fall into the void so room-clear checks can complete.  Randomized enemies can otherwise
+    // phase through collision in geometry they weren't designed for.
+    COND_HOOK(OnActorUpdate, ENEMY_RANDOMIZER_ENABLED, KillVoidedEnemies);
 }
 
 static const std::map<int32_t, const char*> enemyRandomizerModes = {
