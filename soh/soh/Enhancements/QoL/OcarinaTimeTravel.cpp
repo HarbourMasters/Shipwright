@@ -10,7 +10,7 @@
 extern "C" PlayState* gPlayState;
 
 #define CVAR_OCARINA_TIME_TRAVEL_DEFAULT 0
-#define CVAR_OCARINA_TIME_TRAVEL_NAME CVAR_ENHANCEMENT("HyperBosses")
+#define CVAR_OCARINA_TIME_TRAVEL_NAME CVAR_ENHANCEMENT("TimeTravel")
 #define CVAR_OCARINA_TIME_TRAVEL_VALUE CVarGetInteger(CVAR_OCARINA_TIME_TRAVEL_NAME, CVAR_OCARINA_TIME_TRAVEL_DEFAULT)
 
 /// Switches Link's age and respawns him at the last entrance he entered.
