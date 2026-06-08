@@ -511,6 +511,9 @@ static int ItemTrackerEffectiveSongPartsDisplay() {
 
 static std::unordered_map<RandomizerGet, RandomizerCheckArea> BuildSongPartSpoilerAreas() {
     std::unordered_map<RandomizerGet, RandomizerCheckArea> partRgToArea;
+    if (CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0) != 0) {
+        return partRgToArea;
+    }
     if (!GameInteractor::IsSaveLoaded() || !IS_RANDO) {
         return partRgToArea;
     }

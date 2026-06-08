@@ -21,6 +21,7 @@ int Playthrough_Init(uint32_t seed, std::set<RandomizerCheck> excludedLocations,
     Random_Init(seed);
 
     auto ctx = Rando::Context::GetInstance();
+    ctx->SetSeedGenerated(false);
     ctx->overrides.clear();
     ctx->ItemReset();
     ctx->HintReset();
