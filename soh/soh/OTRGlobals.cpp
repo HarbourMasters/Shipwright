@@ -835,7 +835,11 @@ void OTRGlobals::Initialize() {
                                               CVarGetInteger(CVAR_SETTING("AutoCaptureMouse"), 1));
     context->GetWindow()->SetForceCursorVisibility(CVarGetInteger(CVAR_SETTING("CursorVisibility"), 0));
 
-    context->InitAudio({ .SampleRate = 32000, .SampleLength = 1024, .DesiredBuffered = 1680 });
+    context->InitAudio({ .SampleRate = 32000,
+                         .SampleLength = 1024,
+                         // 4096 frames at 32 kHz (~128 ms) gives enough reservoir for frame
+                         // jitter and slow-frame spikes without perceptible audio latency.
+                         .DesiredBuffered = 4096 });
 
     SPDLOG_INFO("Starting Ship of Harkinian version {} (Branch: {} | Commit: {})", (char*)gBuildVersion,
                 (char*)gGitBranch, (char*)gGitCommitHash);
@@ -1020,42 +1024,93 @@ extern "C" int AudioPlayer_GetDesiredBuffered(void);
 std::unordered_map<std::string, ExtensionEntry> ExtensionCache;
 
 void OTRAudio_Thread() {
+#define SAMPLES_HIGH 560
+#define SAMPLES_LOW 528
+#define AUDIO_FRAMES_PER_UPDATE (R_UPDATE_RATE > 0 ? R_UPDATE_RATE : 1)
+#define NUM_AUDIO_CHANNELS 2
+
+    // Single producer routine used by both the wake-driven and pre-buffer
+    // loops. Captures the per-iteration sample count from the caller.
+    auto produce_and_play = [&](u32 num_audio_samples) {
+        const u32 total_frames = num_audio_samples * AUDIO_FRAMES_PER_UPDATE;
+        const u32 total_samples = total_frames * NUM_AUDIO_CHANNELS;
+
+        // 3 is the maximum authentic frame divisor.
+        static thread_local s16 audio_buffer[SAMPLES_HIGH * NUM_AUDIO_CHANNELS * 3];
+
+        for (int i = 0; i < AUDIO_FRAMES_PER_UPDATE; i++) {
+            AudioMgr_CreateNextAudioBuffer(audio_buffer + i * (num_audio_samples * NUM_AUDIO_CHANNELS),
+                                           num_audio_samples);
+        }
+
+        AudioPlayer_Play(reinterpret_cast<u8*>(audio_buffer), total_samples * sizeof(int16_t));
+    };
+
+    // Self-pump cadence. The gfx thread wakes us once per rendered frame
+    // (Graph_ProcessGfxCommands sets audio.processing), but a single long
+    // frame leave us asleep while the backend's queue drains to silence.
+    // So we also wake on a short timeout, independent of the gfx frame rate.
+    // Doing so is in fact closer to the console, where the audio task ran
+    // off the scheduler rather than gated on rendering..
+    constexpr auto kSelfPumpInterval = std::chrono::milliseconds(5);
+
+    // The self-pump timeout must wait that the game has reached its render
+    // loop, to avoid accessing uninitialized variables.
+    bool primed = false;
+
     while (audio.running) {
         {
             std::unique_lock<std::mutex> Lock(audio.mutex);
-            while (!audio.processing && audio.running) {
-                audio.cv_to_thread.wait(Lock);
+            if (!primed) {
+                // Pre-init: block until the gfx thread drives the first buffer
+                // (engine guaranteed ready by then), exactly as before.
+                while (!audio.processing && audio.running) {
+                    audio.cv_to_thread.wait(Lock);
+                }
+                primed = true;
+            } else if (!audio.processing && audio.running) {
+                // Primed: wait for the next gfx wake, but no longer than
+                // kSelfPumpInterval so a stalled gfx thread can't starve the
+                // backend queue. A pending wake falls straight through.
+                audio.cv_to_thread.wait_for(Lock, kSelfPumpInterval);
             }
 
             if (!audio.running) {
                 break;
             }
         }
-        std::unique_lock<std::mutex> Lock(audio.mutex);
-// AudioMgr_ThreadEntry(&gAudioMgr);
-//  528 and 544 relate to 60 fps at 32 kHz 32000/60 = 533.333..
-//  in an ideal world, one third of the calls should use num_samples=544 and two thirds num_samples=528
-#define SAMPLES_HIGH 560
-#define SAMPLES_LOW 528
 
-#define AUDIO_FRAMES_PER_UPDATE (R_UPDATE_RATE > 0 ? R_UPDATE_RATE : 1)
-#define NUM_AUDIO_CHANNELS 2
+        {
+            std::unique_lock<std::mutex> Lock(audio.mutex);
+            int samples_left = AudioPlayer_Buffered();
+            u32 num_audio_samples = samples_left < AudioPlayer_GetDesiredBuffered() ? SAMPLES_HIGH : SAMPLES_LOW;
 
-        int samples_left = AudioPlayer_Buffered();
-        u32 num_audio_samples = samples_left < AudioPlayer_GetDesiredBuffered() ? SAMPLES_HIGH : SAMPLES_LOW;
-
-        // 3 is the maximum authentic frame divisor.
-        s16 audio_buffer[SAMPLES_HIGH * NUM_AUDIO_CHANNELS * 3];
-        for (int i = 0; i < AUDIO_FRAMES_PER_UPDATE; i++) {
-            AudioMgr_CreateNextAudioBuffer(audio_buffer + i * (num_audio_samples * NUM_AUDIO_CHANNELS),
-                                           num_audio_samples);
+            // Producer guard (banteg/Shipwright#6594): skip advancing the audio
+            // engine if the backend ring cannot accept the smallest next burst.
+            // Generating PCM that DoPlay() would refuse creates a discontinuity
+            // audible as a click. The pre-buffer loop below will catch up once
+            // the backend drains enough.
+            if (AudioPlayer_Buffered() + SAMPLES_LOW * AUDIO_FRAMES_PER_UPDATE > AudioPlayer_GetDesiredBuffered()) {
+                audio.processing = false;
+            } else {
+                produce_and_play(num_audio_samples);
+                audio.processing = false;
+            }
         }
 
-        AudioPlayer_Play((u8*)audio_buffer,
-                         num_audio_samples * (sizeof(int16_t) * NUM_AUDIO_CHANNELS * AUDIO_FRAMES_PER_UPDATE));
-
-        audio.processing = false;
-        audio.cv_from_thread.notify_one();
+        // Pre-buffer: fill the reservoir while the backend can accept more,
+        // without waiting for the next frame signal. This absorbs load spikes.
+        // Safe for BGM — the N64 sequencer advances independently of gameplay.
+        // The producer guard (same as above) prevents advancing the audio engine
+        // when the backend ring is already at capacity.
+        while (audio.running && AudioPlayer_Buffered() < AudioPlayer_GetDesiredBuffered()) {
+            if (AudioPlayer_Buffered() + SAMPLES_LOW * AUDIO_FRAMES_PER_UPDATE > AudioPlayer_GetDesiredBuffered()) {
+                break;
+            }
+            int samples_left = AudioPlayer_Buffered();
+            u32 num_audio_samples = samples_left < AudioPlayer_GetDesiredBuffered() ? SAMPLES_HIGH : SAMPLES_LOW;
+            produce_and_play(num_audio_samples);
+        }
     }
 }
 
@@ -1790,13 +1845,6 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
 
     last_fps = fps;
     last_update_rate = R_UPDATE_RATE;
-
-    {
-        std::unique_lock<std::mutex> Lock(audio.mutex);
-        while (audio.processing) {
-            audio.cv_from_thread.wait(Lock);
-        }
-    }
 
     bool curAltAssets = CVarGetInteger(CVAR_SETTING("AltAssets"), 1);
     if (prevAltAssets != curAltAssets) {
