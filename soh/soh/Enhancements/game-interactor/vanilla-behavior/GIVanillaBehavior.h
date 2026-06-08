@@ -2982,7 +2982,15 @@ typedef enum {
     // ```
     // #### `args`
     // - `*int32_t (camId)`
-    VB_SHOULD_LOAD_BG_IMAGE
+    VB_SHOULD_LOAD_BG_IMAGE,
+
+    // #### `result`
+    // ```c
+    // !LINK_IS_ADULT
+    // ```
+    // #### `args`
+    // - None
+    VB_LINK_BE_ABLE_TO_ENTER_CRAWLSPACE,
 } GIVanillaBehavior;
 
 #endif
