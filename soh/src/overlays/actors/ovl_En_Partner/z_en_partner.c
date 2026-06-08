@@ -114,6 +114,17 @@ void EnPartner_Destroy(Actor* thisx, PlayState* play) {
     s32 pad;
     EnPartner* this = (EnPartner*)thisx;
 
+    if (this->hookshotTarget != NULL) {
+        Actor_Kill(this->hookshotTarget);
+        this->hookshotTarget = NULL;
+    }
+
+    Player* player = GET_PLAYER(play);
+    if (player) {
+        player->ivanFloating = 0;
+        player->ivanDamageMultiplier = 1;
+    }
+
     LightContext_RemoveLight(play, &play->lightCtx, this->lightNodeGlow);
     LightContext_RemoveLight(play, &play->lightCtx, this->lightNodeNoGlow);
 
