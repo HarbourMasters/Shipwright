@@ -2599,6 +2599,10 @@ void Context::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocation
         mOptions[RSK_STARTING_NUTS].Set(false);
     }
 
+    if (mOptions[RSK_SHUFFLE_SONGS].IsNot(RO_SONG_SHUFFLE_ANYWHERE)) {
+        mOptions[RSK_SPLIT_OCARINA_SONGS].Set(0);
+    }
+
     // RANDOTODO implement chest shuffle with keysanity
     // ShuffleChestMinigame.Set(cvarSettings[RSK_SHUFFLE_CHEST_MINIGAME]);
     mOptions[RSK_SHUFFLE_CHEST_MINIGAME].Set(RO_CHEST_GAME_OFF);

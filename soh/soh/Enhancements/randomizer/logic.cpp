@@ -111,8 +111,7 @@ bool Logic::HasItem(RandomizerGet itemName) {
         case RG_REQUIEM_OF_SPIRIT:
         case RG_NOCTURNE_OF_SHADOW:
         case RG_PRELUDE_OF_LIGHT: {
-            const bool splitAnywhere = ctx->GetOption(RSK_SPLIT_OCARINA_SONGS) &&
-                                       ctx->GetOption(RSK_SHUFFLE_SONGS).Is(RO_SONG_SHUFFLE_ANYWHERE);
+            const bool splitAnywhere = ctx->GetOption(RSK_SPLIT_OCARINA_SONGS).Get();
             const auto qiIt = RandoGetToQuestItem.find(itemName);
             if (qiIt == RandoGetToQuestItem.end()) {
                 SPDLOG_ERROR("HasItem: song RandomizerGet {} missing from RandoGetToQuestItem",

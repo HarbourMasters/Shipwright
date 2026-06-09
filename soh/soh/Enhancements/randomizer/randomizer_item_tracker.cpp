@@ -44,7 +44,6 @@ void DrawDungeonItem(ItemTrackerItem item);
 void DrawBottle(ItemTrackerItem item);
 void DrawQuest(ItemTrackerItem item);
 void DrawSong(ItemTrackerItem item);
-void DrawSplitSongProgress(ItemTrackerItem item);
 
 int itemTrackerSectionId;
 
@@ -70,7 +69,6 @@ static WidgetInfo jabberNutsTracking;
 static WidgetInfo ocarinaButtonTracking;
 static WidgetInfo overworldKeysTracking;
 static WidgetInfo fishingPoleTracking;
-static WidgetInfo songPartsTracking;
 static WidgetInfo personalNotesWiget;
 static WidgetInfo hookshotIdentWidget;
 
@@ -461,94 +459,42 @@ typedef enum {
     SECTION_DISPLAY_MINIMAL_SEPARATE,
 } ItemTrackerMinimalDisplayType;
 
-// One icon per logical song; order matches Rando::SplitSongs::GetSongDef (split_songs.cpp kSplitSongs).
-static std::vector<ItemTrackerItem> songPartItemsTemplate;
-std::vector<ItemTrackerItem> songPartItems;
-
-static void EnsureSongPartItemsTemplate() {
-    if (songPartItemsTemplate.size() == static_cast<size_t>(Rando::SplitSongId::SPLIT_SONG_MAX)) {
-        return;
+static bool ItemTrackerSplitSongsActive() {
+    if (GameInteractor::IsSaveLoaded() && IS_RANDO) {
+        return OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SPLIT_OCARINA_SONGS) != 0;
     }
-    songPartItemsTemplate.clear();
+    return CVarGetInteger(CVAR_RANDOMIZER_SETTING("SplitOcarinaSongs"), 0) != 0;
+}
+
+static const Rando::SplitSongDef* SplitSongDefForQuestBit(uint32_t questBit) {
     for (int i = 0; i < static_cast<int>(Rando::SplitSongId::SPLIT_SONG_MAX); i++) {
         const Rando::SplitSongDef* def = Rando::SplitSongs::GetSongDef(static_cast<Rando::SplitSongId>(i));
         if (def == nullptr) {
             continue;
         }
         const auto qiIt = Rando::Logic::RandoGetToQuestItem.find(static_cast<uint32_t>(def->fullSong));
-        if (qiIt == Rando::Logic::RandoGetToQuestItem.end()) {
-            continue;
+        if (qiIt != Rando::Logic::RandoGetToQuestItem.end() && static_cast<uint32_t>(qiIt->second) == questBit) {
+            return def;
         }
-        const QuestItem questSong = static_cast<QuestItem>(qiIt->second);
-        const auto sit = songMapping.find(questSong);
-        if (sit == songMapping.end()) {
-            continue;
-        }
-        const std::string& texName = sit->second.name;
-        const std::string& texFaded = sit->second.nameFaded;
-        songPartItemsTemplate.push_back(
-            { static_cast<uint32_t>(def->fullSong), texName, texFaded, 0, DrawSplitSongProgress });
     }
+    return nullptr;
 }
 
-static bool ItemTrackerSongPartsSeedActive() {
-    if (GameInteractor::IsSaveLoaded() && IS_RANDO) {
-        const uint8_t shuffle = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_SONGS);
-        return OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SPLIT_OCARINA_SONGS) != 0 &&
-               shuffle != RO_SONG_SHUFFLE_OFF && shuffle == RO_SONG_SHUFFLE_ANYWHERE;
+static int SplitSongPartsCollected(uint32_t questBit) {
+    if (!ItemTrackerSplitSongsActive()) {
+        return -1;
     }
-    const int shuffleSongs = CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleSongs"), RO_SONG_SHUFFLE_SONG_LOCATIONS);
-    return CVarGetInteger(CVAR_RANDOMIZER_SETTING("SplitOcarinaSongs"), 0) != 0 &&
-           shuffleSongs != RO_SONG_SHUFFLE_OFF && shuffleSongs == RO_SONG_SHUFFLE_ANYWHERE;
-}
-
-static int ItemTrackerEffectiveSongPartsDisplay() {
-    if (!ItemTrackerSongPartsSeedActive()) {
-        return SECTION_DISPLAY_HIDDEN;
+    const Rando::SplitSongDef* def = SplitSongDefForQuestBit(questBit);
+    if (def == nullptr) {
+        return -1;
     }
-    return CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.SongParts"), SECTION_DISPLAY_HIDDEN);
-}
-
-static std::unordered_map<RandomizerGet, RandomizerCheckArea> BuildSongPartSpoilerAreas() {
-    std::unordered_map<RandomizerGet, RandomizerCheckArea> partRgToArea;
-    if (CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0) != 0) {
-        return partRgToArea;
+    if (Rando::SplitSongs::HasFullSong(def->id)) {
+        return 2;
     }
-    if (!GameInteractor::IsSaveLoaded() || !IS_RANDO) {
-        return partRgToArea;
+    if (Rando::SplitSongs::HasSplitPart(def->id)) {
+        return 1;
     }
-    const auto ctx = Rando::Context::GetInstance();
-    if (!ctx || (!ctx->IsSeedGenerated() && !ctx->IsSpoilerLoaded())) {
-        return partRgToArea;
-    }
-    for (RandomizerCheck rc : ctx->allLocations) {
-        auto* loc = ctx->GetItemLocation(rc);
-        if (loc == nullptr) {
-            continue;
-        }
-        const RandomizerGet rg = loc->GetPlacedRandomizerGet();
-        if (!Rando::SplitSongs::IsProgressiveSong(rg)) {
-            continue;
-        }
-        if (partRgToArea.find(rg) != partRgToArea.end()) {
-            continue;
-        }
-        auto* staticLoc = Rando::StaticData::GetLocation(rc);
-        if (staticLoc != nullptr) {
-            partRgToArea[rg] = staticLoc->GetArea();
-        }
-    }
-    std::unordered_map<RandomizerGet, RandomizerCheckArea> fullSongToArea;
-    for (const auto& kv : partRgToArea) {
-        const Rando::SplitSongDef* def = Rando::SplitSongs::GetSongDefFromProgressive(kv.first);
-        if (def == nullptr) {
-            continue;
-        }
-        if (fullSongToArea.find(def->fullSong) == fullSongToArea.end()) {
-            fullSongToArea[def->fullSong] = kv.second;
-        }
-    }
-    return fullSongToArea;
+    return 0;
 }
 
 struct ItemTrackerNumbers {
@@ -1466,71 +1412,32 @@ void DrawDungeonItem(ItemTrackerItem item) {
 }
 
 void DrawSong(ItemTrackerItem item) {
-    float iconSize = static_cast<float>(CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36));
-    ImVec2 p = ImGui::GetCursorScreenPos();
-    bool hasSong = HasSong(item);
-    ImGui::SetCursorScreenPos(ImVec2(p.x + 6, p.y));
-    ImGui::Image(std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetInstance()->GetWindow()->GetGui())
-                     ->GetTextureByName(hasSong && IsValidSaveFile() ? item.name : item.nameFaded),
-                 ImVec2(iconSize / 1.5f, iconSize), ImVec2(0, 0), ImVec2(1, 1));
-    Tooltip(SohUtils::GetQuestItemName(item.id).c_str());
-}
+    const int partsCollected = SplitSongPartsCollected(item.id);
+    const bool hasSong = HasSong(item) || partsCollected == 2;
+    const bool hasProgress = partsCollected == 1;
+    const bool showBright = hasSong || hasProgress;
 
-void DrawSplitSongProgress(ItemTrackerItem item) {
-    const RandomizerGet fullSongRg = static_cast<RandomizerGet>(item.id);
-    const Rando::SplitSongDef* def = Rando::SplitSongs::GetSongDefFromFullSong(fullSongRg);
-    int partsCollected = 0;
-    if (def != nullptr) {
-        if (Rando::SplitSongs::HasFullSong(def->id)) {
-            partsCollected = 2;
-        } else if (Rando::SplitSongs::HasSplitPart(def->id)) {
-            partsCollected = 1;
-        }
-    }
-
-    const bool hasAnyPart = partsCollected > 0;
     float iconSize = static_cast<float>(CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36));
     ImGui::BeginGroup();
     ImVec2 p = ImGui::GetCursorScreenPos();
     ImGui::SetCursorScreenPos(ImVec2(p.x + 6, p.y));
     ImGui::Image(std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetInstance()->GetWindow()->GetGui())
-                     ->GetTextureByName(hasAnyPart && IsValidSaveFile() ? item.name : item.nameFaded),
+                     ->GetTextureByName(showBright && IsValidSaveFile() ? item.name : item.nameFaded),
                  ImVec2(iconSize / 1.5f, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
-    const RandomizerCheckArea area = static_cast<RandomizerCheckArea>(item.data);
-    ImU32 labelColor = IM_COL32(255, 255, 255, 255);
-    if (area != RCAREA_INVALID && GameInteractor::IsSaveLoaded() && IS_RANDO && CheckTracker::IsAreaSpoiled(area)) {
-        labelColor = IM_COL32(255, 255, 160, 255);
-    }
-
-    char progressLabel[8];
-    const bool showProgress = def != nullptr && partsCollected > 0;
-    if (showProgress) {
-        std::snprintf(progressLabel, sizeof(progressLabel), "%d/2", partsCollected);
-    }
-    const ImVec2 iconMin = ImGui::GetItemRectMin();
-    const ImVec2 iconMax = ImGui::GetItemRectMax();
-    if (showProgress) {
+    if (hasProgress) {
+        const char* progressLabel = "1/2";
+        const ImVec2 iconMin = ImGui::GetItemRectMin();
+        const ImVec2 iconMax = ImGui::GetItemRectMax();
         const ImVec2 textSize = ImGui::CalcTextSize(progressLabel);
         const ImVec2 textPos(iconMin.x + ((iconMax.x - iconMin.x) - textSize.x) * 0.5f, iconMax.y - textSize.y - 2.0f);
         ImDrawList* dl = ImGui::GetWindowDrawList();
         dl->AddText(ImVec2(textPos.x + 1.0f, textPos.y + 1.0f), IM_COL32(0, 0, 0, 220), progressLabel);
-        dl->AddText(textPos, labelColor, progressLabel);
+        dl->AddText(textPos, IM_COL32(255, 255, 255, 255), progressLabel);
     }
 
     ImGui::EndGroup();
-
-    std::string tip;
-    if (def != nullptr) {
-        tip = Rando::StaticData::RetrieveItem(fullSongRg).GetName().GetEnglish();
-        if (area != RCAREA_INVALID && IS_RANDO) {
-            tip += "\n";
-            tip += RandomizerCheckObjects::GetRCAreaName(area);
-        }
-    }
-    if (!tip.empty()) {
-        Tooltip(tip.c_str());
-    }
+    Tooltip(SohUtils::GetQuestItemName(item.id).c_str());
 }
 
 void DrawNotes(bool resizeable = false) {
@@ -1755,21 +1662,6 @@ void UpdateVectors() {
         }
     }
 
-    songPartItems.clear();
-    if (ItemTrackerSongPartsSeedActive()) {
-        EnsureSongPartItemsTemplate();
-        const auto partAreas = BuildSongPartSpoilerAreas();
-        songPartItems = songPartItemsTemplate;
-        for (auto& it : songPartItems) {
-            const RandomizerGet rg = static_cast<RandomizerGet>(it.id);
-            const auto found = partAreas.find(rg);
-            it.data =
-                found != partAreas.end() ? static_cast<uint32_t>(found->second) : static_cast<uint32_t>(RCAREA_INVALID);
-        }
-    }
-
-    const int songPartsDisplay = ItemTrackerEffectiveSongPartsDisplay();
-
     mainWindowItems.clear();
     if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Inventory"), SECTION_DISPLAY_MAIN_WINDOW) ==
         SECTION_DISPLAY_MAIN_WINDOW) {
@@ -1798,18 +1690,7 @@ void UpdateVectors() {
             mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
             mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
         }
-        const bool splitSongPartsReplaceSongsOnMain = ItemTrackerSongPartsSeedActive() &&
-                                                      songPartsDisplay == SECTION_DISPLAY_MAIN_WINDOW &&
-                                                      !songPartItems.empty();
-        if (!splitSongPartsReplaceSongsOnMain) {
-            mainWindowItems.insert(mainWindowItems.end(), songItems.begin(), songItems.end());
-        }
-    }
-    if (songPartsDisplay == SECTION_DISPLAY_MAIN_WINDOW && !songPartItems.empty()) {
-        while (mainWindowItems.size() % 6) {
-            mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
-        }
-        mainWindowItems.insert(mainWindowItems.end(), songPartItems.begin(), songPartItems.end());
+        mainWindowItems.insert(mainWindowItems.end(), songItems.begin(), songItems.end());
     }
     if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.DungeonItems"), SECTION_DISPLAY_HIDDEN) ==
         SECTION_DISPLAY_MAIN_WINDOW) {
@@ -2009,8 +1890,6 @@ void ItemTrackerWindow::Draw() {
 void ItemTrackerWindow::DrawElement() {
     UpdateVectors();
 
-    const int songPartsDisplayDraw = ItemTrackerEffectiveSongPartsDisplay();
-
     int iconSize = CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36);
     int iconSpacing = CVarGetInteger(CVAR_TRACKER_ITEM("IconSpacing"), 12);
     int comboButton1Mask = buttonMap[CVarGetInteger(CVAR_TRACKER_ITEM("ComboButton1"), TRACKER_COMBO_BUTTON_L)];
@@ -2037,7 +1916,6 @@ void ItemTrackerWindow::DrawElement() {
              SECTION_DISPLAY_MAIN_WINDOW) ||
             (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Songs"), SECTION_DISPLAY_MAIN_WINDOW) ==
              SECTION_DISPLAY_MAIN_WINDOW) ||
-            (songPartsDisplayDraw == SECTION_DISPLAY_MAIN_WINDOW) ||
             (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.DungeonItems"), SECTION_DISPLAY_HIDDEN) ==
              SECTION_DISPLAY_MAIN_WINDOW) ||
             (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Greg"), SECTION_DISPLAY_EXTENDED_HIDDEN) ==
@@ -2099,12 +1977,6 @@ void ItemTrackerWindow::DrawElement() {
             SECTION_DISPLAY_SEPARATE) {
             BeginFloatingWindows("Songs Tracker");
             DrawItemsInRows(songItems);
-            EndFloatingWindows();
-        }
-
-        if (songPartsDisplayDraw == SECTION_DISPLAY_SEPARATE && !songPartItems.empty()) {
-            BeginFloatingWindows("Song Parts Tracker");
-            DrawItemsInRows(songPartItems, 6);
             EndFloatingWindows();
         }
 
@@ -2379,7 +2251,6 @@ void ItemTrackerSettingsWindow::DrawElement() {
         SohGui::mSohMenu->MenuDrawItem(ocarinaButtonTracking, 250, THEME_COLOR);
         SohGui::mSohMenu->MenuDrawItem(overworldKeysTracking, 250, THEME_COLOR);
         SohGui::mSohMenu->MenuDrawItem(fishingPoleTracking, 250, THEME_COLOR);
-        SohGui::mSohMenu->MenuDrawItem(songPartsTracking, 250, THEME_COLOR);
 
         if (CVarCombobox("Total Checks", CVAR_TRACKER_ITEM("TotalChecks.DisplayType"), minimalDisplayTypes,
                          ComboboxOptions()
@@ -2575,18 +2446,6 @@ void RegisterItemTrackerWidgets() {
     ;
     SohGui::mSohMenu->AddSearchWidget(
         { fishingPoleTracking, "Randomizer", "Item Tracker", "General Settings", "icon" });
-
-    songPartsTracking = { .name = "Song parts (split)", .type = WidgetType::WIDGET_CVAR_COMBOBOX };
-    songPartsTracking.CVar(CVAR_TRACKER_ITEM("DisplayType.SongParts"))
-        .Options(ComboboxOptions()
-                     .DefaultIndex(SECTION_DISPLAY_HIDDEN)
-                     .ComponentAlignment(ComponentAlignments::Right)
-                     .LabelPosition(LabelPositions::Far)
-                     .Color(THEME_COLOR)
-                     .ComboMap(displayTypes))
-        .Callback([](WidgetInfo& info) { shouldUpdateVectors = true; });
-    SohGui::mSohMenu->AddSearchWidget(
-        { songPartsTracking, "Randomizer", "Item Tracker", "General Settings", "split ocarina" });
 
     personalNotesWiget = { .name = "Personal notes", .type = WidgetType::WIDGET_CVAR_COMBOBOX };
     static const char* notesDisabledTooltip =

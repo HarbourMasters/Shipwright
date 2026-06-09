@@ -22,7 +22,27 @@ extern "C" {
 #include <variables.h>
 #include <macros.h>
 #include "z64item.h"
+#include "z64player.h"
 extern PlayState* gPlayState;
+GetItemEntry ItemTable_Retrieve(int16_t getItemID);
+GetItemEntry ItemTable_RetrieveEntry(s16 modIndex, s16 getItemID);
+}
+
+static void SyncPlayerGetItemEntryForMessage(Player* player) {
+    if (player == nullptr) {
+        return;
+    }
+    if (player->getItemEntry.objectId != OBJECT_INVALID && player->getItemId == player->getItemEntry.getItemId) {
+        return;
+    }
+    GetItemEntry giEntry;
+    if (IS_RANDO && player->getItemId > RG_NONE && player->getItemId < RG_MAX) {
+        giEntry = ItemTable_RetrieveEntry(MOD_RANDOMIZER, player->getItemId);
+    } else {
+        giEntry = ItemTable_Retrieve(player->getItemId);
+    }
+    player->getItemEntry = giEntry;
+    player->getItemId = giEntry.getItemId;
 }
 
 static ItemID SongIconForRandomizerGet(RandomizerGet rg) {
@@ -212,6 +232,7 @@ void DrawCustomItemIcon(Gfx** p) {
 
 void BuildItemMessage(u16* textId, bool* loadFromMessageTable) {
     Player* player = GET_PLAYER(gPlayState);
+    SyncPlayerGetItemEntryForMessage(player);
     CustomMessage msg;
 
     if (player->getItemEntry.getItemId == RG_ICE_TRAP) {

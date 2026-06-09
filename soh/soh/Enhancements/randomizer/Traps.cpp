@@ -2,7 +2,6 @@
 #include "soh/Enhancements/randomizer/SeedContext.h"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "soh/Enhancements/randomizer/static_data.h"
-#include "soh/Enhancements/randomizer/split_songs.h"
 #include "soh/ShipUtils.h"
 
 #include <vector>
@@ -357,6 +356,68 @@ static void InitTrickNames() {
         Text{ "Progressive Whistle", "Siffler (prog.)", "Pfeife (prog.)" },      // "Silbido progresivo"
         Text{ "Progressive Flute", "Flûte (prog.)", "Flöte (prog.)" },           // "Flauta progresiva"
         Text{ "Progressive Recorder", "Harmonica (prog.)", "Rekorder (prog.)" }, // "Armónica progresiva"
+    };
+    trickNameTable[RG_PROGRESSIVE_ZELDAS_LULLABY] = {
+        Text{ "Progressive Ballad of the Goddess", "Berceuse (prog.)", "Progressives Wiegenlied" },
+        Text{ "Progressive Song of Healing", "Chant de l'apaisement (prog.)", "Progressives Heilungslied" },
+        Text{ "Progressive Song of the Hero", "Chant du héros (prog.)", "Progressives Heldenlied" },
+    };
+    trickNameTable[RG_PROGRESSIVE_EPONAS_SONG] = {
+        Text{ "Progressive Song of Birds", "Chant d'Epona (prog.)", "Progressives Eponas Lied" },
+        Text{ "Progressive Song of Soaring", "Chant de l'envol (prog.)", "Progressives Lied der Schwingen" },
+        Text{ "Progressive Song of Horse", "Chant du cheval (prog.)", "Progressives Pferdelied" },
+    };
+    trickNameTable[RG_PROGRESSIVE_SARIAS_SONG] = {
+        Text{ "Progressive Mido's Song", "Chant de Saria (prog.)", "Progressives Salias Lied" },
+        Text{ "Progressive Kass' Theme", "Chant de Kass (prog.)", "Progressives Kashiwas Thema" },
+        Text{ "Progressive Tune of Echoes", "Chant des Échos (prog.)", "Progressive Melodie des Echos" },
+    };
+    trickNameTable[RG_PROGRESSIVE_SUNS_SONG] = {
+        Text{ "Progressive Song of Passing", "Chant du Soleil (prog.)", "Progressiver Hymne der Sonne" },
+        Text{ "Progressive Command Melody", "Mambo (prog.)", "Progressive Tag- und Nachtmusik" },
+        Text{ "Progressive Moon's Song", "Chant de la lune (prog.)", "Progressives Mondlied" },
+    };
+    trickNameTable[RG_PROGRESSIVE_SONG_OF_TIME] = {
+        Text{ "Progressive Song of Double Time", "Chant du Temps (prog.)", "Progressiver Hymne der Zeit" },
+        Text{ "Progressive Inverted Song of Time", "Chant du temps inversé (prog.)", "Progressive Ballade des Kronos" },
+        Text{ "Progressive Tune of Ages", "Chant du Temps (prog.)", "Progressive Melodie der Zeit" },
+    };
+    trickNameTable[RG_PROGRESSIVE_SONG_OF_STORMS] = {
+        Text{ "Progressive Ballad of Gales", "Chant des Tempêtes (prog.)", "Progressiver Hymne des Sturms" },
+        Text{ "Progressive Frog's Song of Soul", "Rap des grenouilles (prog.)", "Progressiver Krötenrap" },
+        Text{ "Progressive Wind's Requiem", "Mélodie du vent (prog.)", "Progressives Lied des Windes" },
+    };
+    trickNameTable[RG_PROGRESSIVE_MINUET_OF_FOREST] = {
+        Text{ "Progressive Saria's Karaoke", "Menuet des Bois (prog.)", "Progressives Menuett des Waldes" },
+        Text{ "Progressive Sonata of Awakening", "Sonate de l'éveil (prog.)", "Progressive Sonate des Erwachens" },
+        Text{ "Progressive Wind God's Aria", "Hymne du dieu du vent (prog.)", "Progressive Hymne des Zephirgottes" },
+    };
+    trickNameTable[RG_PROGRESSIVE_BOLERO_OF_FIRE] = {
+        Text{ "Progressive Darunia's Tango", "Boléro du Feu (prog.)", "Progressives Bolero des Feuers" },
+        Text{ "Progressive Tune of Currents", "Chants des Flux (prog.)", "Progressives Lied des Zeitstroms" },
+        Text{ "Progressive Goron Lullaby", "Berceuse des Gorons (prog.)", "Progressives Goronisches Schlummerlied" },
+    };
+    trickNameTable[RG_PROGRESSIVE_SERENADE_OF_WATER] = {
+        Text{ "Progressive Ruto's Blues", "Sérénade de l'Eau (prog.)", "Progressive Serenade des Wassers" },
+        Text{ "Progressive New Wave Bossa Nova", "Bossa-nova des flots (prog.)", "Progressive Bossa Nova der Kaskaden" },
+        Text{ "Progressive Manbo's Mambo", "Mambo de Manbo (prog.)", "Progressives Manbos Mambo" },
+    };
+    trickNameTable[RG_PROGRESSIVE_REQUIEM_OF_SPIRIT] = {
+        Text{ "Progressive Nabooru's Reggae", "Requiem des Esprits (prog.)", "Progressives Requiem der Geister" },
+        Text{ "Progressive Elegy of Emptiness", "Hymne du vide (prog.)", "Progressive Elegie des leeren Herzens" },
+        Text{ "Progressive Earth God's Lyric", "Hymne du dieu de la terre (prog.)",
+              "Progressive Hymne des Terragottes" },
+    };
+    trickNameTable[RG_PROGRESSIVE_NOCTURNE_OF_SHADOW] = {
+        Text{ "Progressive Impa's Death Metal", "Nocturne de l'Ombre (prog.)", "Progressive Nocturne des Schattens" },
+        Text{ "Progressive Oath to Order", "Ode de l'appel (prog.)", "Progressiver Gesang des Himmels" },
+        Text{ "Progressive Song of Discovery", "Chant des secrets (prog.)", "Progressives Schatzsucherlied" },
+    };
+    trickNameTable[RG_PROGRESSIVE_PRELUDE_OF_LIGHT] = {
+        Text{ "Progressive Rauru's Sing-Along", "Prélude de la Lumière (prog.)", "Progressive Kantate des Lichts" },
+        Text{ "Progressive Ballad of the Wind Fish", "Ballade sur Poisson-Rêve (prog.)",
+              "Progressive Ballade vom Windfisch" },
+        Text{ "Progressive Song of Light", "Chant de la lumière (prog.)", "Progressives Lied des Lichts" },
     };
     trickNameTable[RG_PROGRESSIVE_GORONSWORD] = {
         Text{ "Progressive Titan Blade", "Lame des Titans (prog.)",
@@ -1424,11 +1485,6 @@ Text Rando::Traps::GetTrapName(uint16_t id) {
     if (!initTrickNames) {
         InitTrickNames();
         initTrickNames = true;
-    }
-
-    RandomizerGet rg = static_cast<RandomizerGet>(id);
-    if (const Rando::SplitSongDef* progDef = Rando::SplitSongs::GetSongDefFromProgressive(rg)) {
-        id = static_cast<uint16_t>(progDef->fullSong);
     }
 
     if (trickNameTable[id].empty()) {
