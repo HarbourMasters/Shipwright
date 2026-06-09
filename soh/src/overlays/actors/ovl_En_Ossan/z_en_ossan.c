@@ -2503,7 +2503,24 @@ s32 EnGo2_OverrideLimbDrawGoronShopkeeper(PlayState* play, s32 limb, Gfx** dList
     EnOssan* this = (EnOssan*)thisx;
 
     if (limb == 17) {
+        // #region SOH [Enhancement] - Goron Neck Length
+        static f32 growNeck = 0.0f;
+        static s16 lastScene = -1;
+
+        if (CVarGetInteger(CVAR_COSMETIC("Goron.GrowingNeck"), 0)) {
+            if (play->sceneNum != lastScene) {
+                growNeck = 0.0f;
+                lastScene = play->sceneNum;
+            }
+
+            growNeck += 5.0f;
+        } else {
+            growNeck = 0.0f;
+            lastScene = play->sceneNum;
+        }
+
         Matrix_Translate(CVarGetFloat(CVAR_COSMETIC("Goron.NeckLength"), 0.0f), 0.0f, 0.0f, MTXMODE_APPLY);
+        // #endregion
     }
     return 0;
 }

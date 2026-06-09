@@ -12436,17 +12436,46 @@ void Player_DrawGameplay(PlayState* play, Player* this, s32 lod, Gfx* cullDList,
             earRot.x = sBunnyEarKinematics.rot.y + 0x3E2;
             earRot.y = sBunnyEarKinematics.rot.z + 0xDBE;
             earRot.z = sBunnyEarKinematics.rot.x - 0x348A;
-            Matrix_SetTranslateRotateYXZ(97.0f, -1203.0f - CVarGetFloat(CVAR_COSMETIC("BunnyHood.EarLength"), 0.0f),
-                                         -240.0f - CVarGetFloat(CVAR_COSMETIC("BunnyHood.EarSpread"), 0.0f), &earRot);
-            MATRIX_TOMTX(bunnyEarMtx++);
 
-            // Left ear
-            earRot.x = sBunnyEarKinematics.rot.y - 0x3E2;
-            earRot.y = -0xDBE - sBunnyEarKinematics.rot.z;
-            earRot.z = sBunnyEarKinematics.rot.x - 0x348A;
-            Matrix_SetTranslateRotateYXZ(97.0f, -1203.0f - CVarGetFloat(CVAR_COSMETIC("BunnyHood.EarLength"), 0.0f),
-                                         240.0f + CVarGetFloat(CVAR_COSMETIC("BunnyHood.EarSpread"), 0.0f), &earRot);
-            MATRIX_TOMTX(bunnyEarMtx);
+            // #region SOH [Enhancement] - Bunny Hood Length
+            {
+                static f32 growEarLength = 0.0f;
+                static f32 growEarSpread = 0.0f;
+                static s16 lastScene = -1;
+
+                if (CVarGetInteger(CVAR_COSMETIC("BunnyHood.GrowingEars"), 0)) {
+                    if (play->sceneNum != lastScene) {
+                        growEarLength = 0.0f;
+                        growEarSpread = 0.0f;
+                        lastScene = play->sceneNum;
+                    }
+
+                    growEarLength += 2.0f;
+                    growEarSpread += 0.5f;
+                } else {
+                    growEarLength = 0.0f;
+                    growEarSpread = 0.0f;
+                    lastScene = play->sceneNum;
+                }
+
+                const f32 earLength = CVarGetFloat(CVAR_COSMETIC("BunnyHood.EarLength"), 0.0f) + growEarLength;
+                // #endregion
+
+                // #region SOH [Enhancement] - Bunny Hood Spread
+                const f32 earSpread = CVarGetFloat(CVAR_COSMETIC("BunnyHood.EarSpread"), 0.0f) + growEarSpread;
+                Matrix_SetTranslateRotateYXZ(97.0f, -1203.0f - earLength, -240.0f - earSpread, &earRot);
+                // #endregion
+                MATRIX_TOMTX(bunnyEarMtx++);
+
+                // Left ear
+                earRot.x = sBunnyEarKinematics.rot.y - 0x3E2;
+                earRot.y = -0xDBE - sBunnyEarKinematics.rot.z;
+                earRot.z = sBunnyEarKinematics.rot.x - 0x348A;
+                // #region SOH [Enhancement] - Bunny Hood Spread
+                Matrix_SetTranslateRotateYXZ(97.0f, -1203.0f - earLength, 240.0f + earSpread, &earRot);
+                // #endregion
+                MATRIX_TOMTX(bunnyEarMtx);
+            }
         }
 
         if (GameInteractor_Should(VB_DRAW_PLAYER_MASK, true, this->currentMask, play)) {
