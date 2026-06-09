@@ -153,11 +153,11 @@ static constexpr float HAND_COUNTER_SCALE_Y_OFFSET = 100.0f;
 static void BuildHandItemDL(PlayState* play, Gfx** dList, Gfx* hand, Gfx* item, bool counterScaleHand) {
     if (counterScaleHand) {
         Mtx* scaleMtx = (Mtx*)Graph_Alloc(play->state.gfxCtx, sizeof(Mtx));
-        Matrix_Push();
-        Matrix_Translate(0.0f, HAND_COUNTER_SCALE_Y_OFFSET, 0.0f, MTXMODE_NEW);
-        Matrix_Scale(1.25f, 1.25f, 1.25f, MTXMODE_APPLY);
-        MATRIX_TOMTX(scaleMtx);
-        Matrix_Pop();
+        MtxF mf = {};
+        mf.xx = mf.yy = mf.zz = 1.25f;
+        mf.ww = 1.0f;
+        mf.yw = HAND_COUNTER_SCALE_Y_OFFSET;
+        Matrix_MtxFToMtx(&mf, scaleMtx);
         Gfx* buf = (Gfx*)Graph_Alloc(play->state.gfxCtx, 5 * sizeof(Gfx));
         Gfx* p = buf;
         gSPMatrix(p++, scaleMtx, G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
