@@ -4,7 +4,6 @@
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/custom-message/CustomMessageTypes.h"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
-#include "soh/Enhancements/randomizer/split_songs.h"
 #include "soh/Enhancements/randomizer/dungeon.h"
 #include "soh/Enhancements/randomizer/static_data.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
@@ -2639,8 +2638,6 @@ std::unordered_map<s32, SpecialRespawnInfo> swimSpecialRespawnInfo = {
 f32 triforcePieceScale;
 
 void RandomizerOnPlayerUpdateHandler() {
-    Rando::SplitSongs::ProcessPendingFullSongGrants();
-
     if ((GET_PLAYER(gPlayState)->stateFlags1 & PLAYER_STATE1_IN_WATER) && !Flags_GetRandomizerInf(RAND_INF_CAN_SWIM) &&
         CUR_EQUIP_VALUE(EQUIP_TYPE_BOOTS) != EQUIP_VALUE_BOOTS_IRON) {
         // if you void out in water temple without swim you get instantly kicked out to prevent softlocks
@@ -2785,7 +2782,6 @@ static void RandomizerRegisterHooks() {
         randomizerQueuedChecks = std::queue<RandomizerCheck>();
         randomizerQueuedCheck = RC_UNKNOWN_CHECK;
         randomizerQueuedItemEntry = GET_ITEM_NONE;
-        Rando::SplitSongs::ClearPendingFullSongGrants();
 
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnFlagSet>(onFlagSetHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneFlagSet>(onSceneFlagSetHook);

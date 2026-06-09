@@ -4,141 +4,28 @@
  * Vanilla/MQ hints when collecting Maps, Ice Trap messages,
  * etc.
  */
-#include <libultraship/libultraship.h>
 #include <soh/OTRGlobals.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/Enhancements/randomizer/split_songs.h"
-#include "soh/Enhancements/randomizer/static_data.h"
 #include "soh/Enhancements/custom-message/CustomMessageTypes.h"
 #include "soh/Enhancements/randomizer/Traps.h"
 #include "soh/Enhancements/randomizer/item.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
+#include "soh/Enhancements/randomizer/split_songs.h"
+#include "soh/Enhancements/randomizer/static_data.h"
 #include "soh/ShipInit.hpp"
 #include <soh/ResourceManagerHelpers.h>
 
-#include <cstdint>
 #include <cstdarg>
-#include <cstring>
 
 extern "C" {
 #include <variables.h>
 #include <macros.h>
 #include "z64item.h"
-#include "z64player.h"
-#include "z64save.h"
 extern PlayState* gPlayState;
-void Message_LoadItemIcon(PlayState* play, u16 itemId, s16 y);
-GetItemEntry ItemTable_Retrieve(int16_t getItemID);
-GetItemEntry ItemTable_RetrieveEntry(s16 modIndex, s16 getItemID);
 }
 
-/**
- * Match `Player`'s get-item display (`z_player` func_8084DFF4): if `getItemId` does not match `getItemEntry`,
- * the table row keyed by `getItemId` wins. `Message_OpenText` runs before the entry is synced onto the player,
- * so reading only `player->getItemEntry` here can embed the wrong textbox icon versus the real gift.
- */
-static GetItemEntry ResolveGiftGetItemEntry(const Player* player) {
-    if (player == nullptr) {
-        return GET_ITEM_NONE;
-    }
-    if (player->getItemEntry.objectId == OBJECT_INVALID || player->getItemId != player->getItemEntry.getItemId) {
-        if (IS_RANDO && player->getItemId > RG_NONE && player->getItemId < RG_MAX) {
-            return ItemTable_RetrieveEntry(MOD_RANDOMIZER, player->getItemId);
-        }
-        return ItemTable_Retrieve(player->getItemId);
-    }
-    return player->getItemEntry;
-}
-
-static bool LoadCustomItemIcon(bool displayAsEnglish);
-static bool RefreshCustomItemIconForTextbox(bool displayAsEnglish, bool incrementDecodeState);
-static void ApplyCustomIconPathToTextbox(const char* customIcon, CustomIconSize iconSize, bool displayAsEnglish,
-                                         bool incrementDecodeState);
-static void DrawTextboxItemIconFromSegment(Gfx** p);
-static RandomizerGet RandomizerGetFromPlayerItemEntry(const Player* player);
-
-/** Cache the custom icon chosen during decode; draw can reuse if player context drifts before render. */
-static const char* g_LastDecodedCustomIconPath = nullptr;
-static CustomIconSize g_LastDecodedCustomIconSize = ICON_SIZE_32;
-
-/** Called from z_message_PAL MESSAGE_ITEM_ICON decode — ITEM_CUSTOM uses OTR path then vanilla fallback. */
-extern "C" void Randomizer_Message_DecodeLoadItemIcon(PlayState* play, u16 iconToLoad, s32 displayAsEnglishAsInt) {
-    if (play == nullptr || iconToLoad < ITEM_CUSTOM) {
-        return;
-    }
-    const bool displayAsEnglish = displayAsEnglishAsInt != 0;
-    if (gSaveContext.ship.quest.id == QUEST_RANDOMIZER) {
-        if (LoadCustomItemIcon(displayAsEnglish)) {
-            return;
-        }
-    }
-    Message_LoadItemIcon(play, iconToLoad, (s16)(R_TEXTBOX_Y + 10));
-}
-
-extern "C" void Randomizer_Message_RefreshCustomItemIconAtDraw(s32 displayAsEnglishAsInt) {
-    const bool displayAsEnglish = displayAsEnglishAsInt != 0;
-    (void)RefreshCustomItemIconForTextbox(displayAsEnglish, false);
-}
-
-extern "C" void Randomizer_Message_AppendSegmentIconGfx(Gfx** gfxp) {
-    if (gfxp != nullptr) {
-        DrawTextboxItemIconFromSegment(gfxp);
-    }
-}
-
-static ItemID VanillaItemIdForFullSong(RandomizerGet fullSongRg) {
-    switch (fullSongRg) {
-        case RG_ZELDAS_LULLABY:
-            return ITEM_SONG_LULLABY;
-        case RG_EPONAS_SONG:
-            return ITEM_SONG_EPONA;
-        case RG_SARIAS_SONG:
-            return ITEM_SONG_SARIA;
-        case RG_SUNS_SONG:
-            return ITEM_SONG_SUN;
-        case RG_SONG_OF_TIME:
-            return ITEM_SONG_TIME;
-        case RG_SONG_OF_STORMS:
-            return ITEM_SONG_STORMS;
-        case RG_MINUET_OF_FOREST:
-            return ITEM_SONG_MINUET;
-        case RG_BOLERO_OF_FIRE:
-            return ITEM_SONG_BOLERO;
-        case RG_SERENADE_OF_WATER:
-            return ITEM_SONG_SERENADE;
-        case RG_REQUIEM_OF_SPIRIT:
-            return ITEM_SONG_REQUIEM;
-        case RG_NOCTURNE_OF_SHADOW:
-            return ITEM_SONG_NOCTURNE;
-        case RG_PRELUDE_OF_LIGHT:
-            return ITEM_SONG_PRELUDE;
-        default:
-            return ITEM_NONE;
-    }
-}
-
-/** Same rules as `BuildCustomItemMessage` for resolving `RandomizerGet` from the current get-item context. */
-static RandomizerGet RandomizerGetFromPlayerItemEntry(const Player* player) {
-    if (player == nullptr) {
-        return RG_NONE;
-    }
-    const GetItemEntry gift = ResolveGiftGetItemEntry(player);
-    int16_t rgid;
-    if (gift.modIndex == MOD_RANDOMIZER) {
-        rgid = gift.getItemId;
-    } else if (gift.objectId != OBJECT_INVALID) {
-        rgid = gift.getItemId;
-    } else {
-        rgid = player->getItemId;
-    }
-    if (rgid < 0) {
-        rgid = static_cast<int16_t>(-rgid);
-    }
-    return static_cast<RandomizerGet>(rgid);
-}
-
-static ItemID DirectSongIconForRandomizerGet(RandomizerGet rg) {
+static ItemID SongIconForRandomizerGet(RandomizerGet rg) {
     switch (rg) {
         case RG_ZELDAS_LULLABY:
         case RG_PROGRESSIVE_ZELDAS_LULLABY:
@@ -181,69 +68,14 @@ static ItemID DirectSongIconForRandomizerGet(RandomizerGet rg) {
     }
 }
 
-static ItemID ResolveSongMessageIcon(RandomizerGet rg, RandomizerGet resolvedStage = RG_NONE) {
-    ItemID icon = DirectSongIconForRandomizerGet(rg);
-    if (icon != ITEM_NONE) {
-        return icon;
+static RandomizerGet ResolveRandoGetFromPlayer(const Player* player) {
+    if (player->getItemEntry.objectId != OBJECT_INVALID && player->getItemEntry.modIndex == MOD_RANDOMIZER) {
+        return static_cast<RandomizerGet>(player->getItemEntry.getItemId);
     }
-    if (resolvedStage != RG_NONE) {
-        icon = DirectSongIconForRandomizerGet(resolvedStage);
-        if (icon != ITEM_NONE) {
-            return icon;
-        }
-        const Rando::SplitSongDef* def = Rando::SplitSongs::GetSongDefFromFullSong(resolvedStage);
-        if (def != nullptr) {
-            icon = VanillaItemIdForFullSong(def->fullSong);
-            if (icon != ITEM_NONE) {
-                return icon;
-            }
-        }
+    if (IS_RANDO && player->getItemId > RG_NONE && player->getItemId < RG_MAX) {
+        return static_cast<RandomizerGet>(player->getItemId);
     }
-    if (const Rando::SplitSongDef* def = Rando::SplitSongs::GetSongDefFromProgressive(rg)) {
-        return VanillaItemIdForFullSong(def->fullSong);
-    }
-    return ITEM_SONG_LULLABY;
-}
-
-static bool RandomizerGet_IsSongTextboxPickup(RandomizerGet rg) {
-    return Rando::SplitSongs::IsProgressiveSong(rg) || DirectSongIconForRandomizerGet(rg) != ITEM_NONE;
-}
-
-extern "C" u16 Message_GetRandoTextboxItemIconOverride(PlayState* play, u16 itemId) {
-    (void)play;
-    return itemId;
-}
-
-/**
- * Text id 0xF8 (TEXT_RANDOMIZER_CUSTOM_ITEM) can overwrite an earlier decoded icon byte; some vanilla
- * song rows also use numeric text ids that collide with ITEM_* when mis-encoded. Re-resolve from the
- * player's get-item row so dungeon songs (e.g. Nocturne) always use the correct ITEM_SONG_* + tint.
- */
-extern "C" u16 Randomizer_ResolveSongIconAtDrawTime(PlayState* play, u16 itemId) {
-    if (!IS_RANDO || play == nullptr) {
-        return itemId;
-    }
-    Player* player = GET_PLAYER(play);
-    if (player == nullptr) {
-        return itemId;
-    }
-    const GetItemEntry gift = ResolveGiftGetItemEntry(player);
-    if (gift.modIndex != MOD_RANDOMIZER || gift.getItemId <= RG_NONE || gift.getItemId >= RG_MAX) {
-        return itemId;
-    }
-    const RandomizerGet rg = static_cast<RandomizerGet>(gift.getItemId);
-    if (!RandomizerGet_IsSongTextboxPickup(rg)) {
-        return itemId;
-    }
-    RandomizerGet stage = RG_NONE;
-    if (Rando::SplitSongs::IsProgressiveSong(rg)) {
-        stage = Rando::SplitSongs::ResolveProgressiveSongStage(rg);
-    }
-    const ItemID resolved = ResolveSongMessageIcon(rg, stage);
-    if (resolved == ITEM_NONE) {
-        return itemId;
-    }
-    return static_cast<u16>(resolved);
+    return static_cast<RandomizerGet>(player->getItemId);
 }
 
 void BuildTriforcePieceMessage(CustomMessage& msg) {
@@ -292,121 +124,81 @@ void BuildTriforcePieceMessage(CustomMessage& msg) {
 }
 
 void BuildCustomItemMessage(Player* player, CustomMessage& msg) {
+    const RandomizerGet rgEnum = ResolveRandoGetFromPlayer(player);
+
+    if (IS_RANDO && Rando::SplitSongs::IsProgressiveSong(rgEnum)) {
+        const RandomizerGet stage = Rando::SplitSongs::ResolveProgressiveSongStage(rgEnum);
+        const ItemID songIcon = SongIconForRandomizerGet(stage != RG_NONE ? stage : rgEnum);
+        const auto& nm = Rando::StaticData::RetrieveItem(stage != RG_NONE ? stage : rgEnum).GetName();
+        CustomMessage getItemText(nm.GetEnglish(), nm.GetGerman(), nm.GetFrench(), TEXTBOX_TYPE_BLUE,
+                                  TEXTBOX_POS_BOTTOM);
+        getItemText.Format(songIcon);
+        msg = getItemText;
+        return;
+    }
+
     int16_t rgid;
     msg = CustomMessage("You found [[article]][[color]][[name]]%w!",
                         "Du erhältst [[article]][[color]][[name]]%w gefunden!",
                         "Vous avez trouvé [[article]][[color]][[name]]%w!", TEXTBOX_TYPE_BLUE);
-    const GetItemEntry gift = ResolveGiftGetItemEntry(player);
-    if (gift.modIndex == MOD_RANDOMIZER) {
-        rgid = gift.getItemId;
-    } else if (gift.objectId != OBJECT_INVALID) {
-        rgid = gift.getItemId;
+    if (player->getItemEntry.objectId != OBJECT_INVALID) {
+        rgid = player->getItemEntry.getItemId;
     } else {
         rgid = player->getItemId;
     }
-    if (gift.modIndex == MOD_RANDOMIZER && rgid < 0) {
-        rgid = (s16)-rgid;
-    }
-    const RandomizerGet rgEnum = static_cast<RandomizerGet>(rgid);
-    // Song icons: ResolveSongMessageIcon maps RG_* → vanilla ITEM_SONG_*; Format() writes MESSAGE_ITEM_ICON bytes only.
-    // Decode loads icon strictly from that buffer (same contract as non-song items using GetGIEntry()->itemId).
-    if (IS_RANDO && Rando::SplitSongs::IsProgressiveSong(rgEnum)) {
-        const RandomizerGet stage = Rando::SplitSongs::ResolveProgressiveSongStage(rgEnum);
-        const ItemID iconFallback = ResolveSongMessageIcon(rgEnum, stage);
-        const auto& nm = Rando::StaticData::RetrieveItem(stage != RG_NONE ? stage : rgEnum).GetName();
-        CustomMessage getItemText(nm.GetEnglish(), nm.GetGerman(), nm.GetFrench(), TEXTBOX_TYPE_BLUE,
-                                  TEXTBOX_POS_BOTTOM);
-        getItemText.Format(iconFallback);
-        msg = getItemText;
-        return;
-    }
-    auto& itemForMsg = Rando::StaticData::RetrieveItem(rgEnum);
-    CustomMessage name = CustomMessage(itemForMsg.GetName(), TEXTBOX_TYPE_BLUE);
-    CustomMessage article = CustomMessage(itemForMsg.GetArticle(), TEXTBOX_TYPE_BLUE);
+    CustomMessage name =
+        CustomMessage(Rando::StaticData::RetrieveItem(static_cast<RandomizerGet>(rgid)).GetName(), TEXTBOX_TYPE_BLUE);
+    CustomMessage article = CustomMessage(
+        Rando::StaticData::RetrieveItem(static_cast<RandomizerGet>(rgid)).GetArticle(), TEXTBOX_TYPE_BLUE);
     msg.Replace("[[article]]", article);
-    msg.Replace("[[color]]", itemForMsg.GetColor());
+    msg.Replace("[[color]]", Rando::StaticData::RetrieveItem(static_cast<RandomizerGet>(rgid)).GetColor());
     msg.Replace("[[name]]", name);
-    if (itemForMsg.HasCustomIcon()) {
+    if (Rando::StaticData::RetrieveItem(static_cast<RandomizerGet>(rgid)).HasCustomIcon()) {
         msg.AutoFormat(ITEM_CUSTOM);
-    } else if (IS_RANDO && itemForMsg.GetItemType() == ITEMTYPE_SONG) {
-        // Always embed ITEM_SONG_* for songs. GetGIEntry()->itemId can disagree with quest text ids (e.g. Nocturne
-        // uses vanilla text 0x77) or with decoded-buffer overwrites for TEXT_RANDOMIZER_CUSTOM_ITEM (0xF8).
-        msg.AutoFormat(ResolveSongMessageIcon(rgEnum, RG_NONE));
     } else {
-        // Vanilla pause-menu item id: embed a real icon byte so load/draw use gItemIcons (not stale segment data).
-        const uint16_t pauseIcon = itemForMsg.GetGIEntry()->itemId;
-        if (pauseIcon < ITEM_CUSTOM && pauseIcon != ITEM_NONE) {
-            msg.AutoFormat(static_cast<ItemID>(pauseIcon));
-        } else {
-            msg.AutoFormat();
-        }
+        msg.AutoFormat();
     }
 }
 
-/** @return true if an OTR icon path was copied into the textbox segment (skip vanilla ITEM_CUSTOM load). */
-static bool LoadCustomItemIcon(bool displayAsEnglish) {
-    return RefreshCustomItemIconForTextbox(displayAsEnglish, true);
-}
-
-static bool RefreshCustomItemIconForTextbox(bool displayAsEnglish, bool incrementDecodeState) {
+void LoadCustomItemIcon(bool displayAsEnglish) {
     Player* player = GET_PLAYER(gPlayState);
     const char* customIcon = nullptr;
     CustomIconSize iconSize = ICON_SIZE_32;
-    RandomizerGet rgid = RG_NONE;
-    const GetItemEntry gift = ResolveGiftGetItemEntry(player);
-    if (gift.modIndex == MOD_RANDOMIZER) {
-        rgid = RandomizerGetFromPlayerItemEntry(player);
-        if (rgid != RG_NONE) {
-            customIcon = Rando::StaticData::RetrieveItem(rgid).GetCustomIcon();
-            iconSize = Rando::StaticData::RetrieveItem(rgid).GetCustomIconSize();
-        }
-    } else if (gift.objectId != OBJECT_INVALID) {
-        rgid = static_cast<RandomizerGet>(gift.getItemId);
+    if (player->getItemEntry.objectId != OBJECT_INVALID) {
+        RandomizerGet rgid = static_cast<RandomizerGet>(player->getItemEntry.getItemId);
         customIcon = Rando::StaticData::RetrieveItem(rgid).GetCustomIcon();
         iconSize = Rando::StaticData::RetrieveItem(rgid).GetCustomIconSize();
     }
     if (customIcon != nullptr) {
-        g_LastDecodedCustomIconPath = customIcon;
-        g_LastDecodedCustomIconSize = iconSize;
-        ApplyCustomIconPathToTextbox(customIcon, iconSize, displayAsEnglish, incrementDecodeState);
-        return true;
-    }
-    if (!incrementDecodeState && g_LastDecodedCustomIconPath != nullptr) {
-        ApplyCustomIconPathToTextbox(g_LastDecodedCustomIconPath, g_LastDecodedCustomIconSize, displayAsEnglish, false);
-        return true;
-    }
-    if (incrementDecodeState) {
-        g_LastDecodedCustomIconPath = nullptr;
-    }
-    return false;
-}
-
-static void ApplyCustomIconPathToTextbox(const char* customIcon, CustomIconSize iconSize, bool displayAsEnglish,
-                                         bool incrementDecodeState) {
-    static int16_t sIconItem32XOffsets[] = { 74, 74, 74, 54 };
-    static int16_t sIconItem24XOffsets[] = { 72, 72, 72, 50 };
-    MessageContext* msgCtx = &gPlayState->msgCtx;
-    uint8_t language = displayAsEnglish ? LANGUAGE_ENG : gSaveContext.language;
-    if (iconSize == ICON_SIZE_32) {
-        R_TEXTBOX_ICON_XPOS = R_TEXT_INIT_XPOS - sIconItem32XOffsets[language];
-        R_TEXTBOX_ICON_YPOS = (R_TEXTBOX_Y + 10) + 6;
-        R_TEXTBOX_ICON_SIZE = 32;
-    } else {
-        R_TEXTBOX_ICON_XPOS = R_TEXT_INIT_XPOS - sIconItem24XOffsets[language];
-        R_TEXTBOX_ICON_YPOS = (R_TEXTBOX_Y + 10) + 10;
-        R_TEXTBOX_ICON_SIZE = 24;
-    }
-    strcpy((char*)((uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE), customIcon);
-    if (incrementDecodeState) {
+        static int16_t sIconItem32XOffsets[] = { 74, 74, 74, 54 };
+        static int16_t sIconItem24XOffsets[] = { 72, 72, 72, 50 };
+        MessageContext* msgCtx = &gPlayState->msgCtx;
+        uint8_t language = displayAsEnglish ? LANGUAGE_ENG : gSaveContext.language;
+        if (iconSize == ICON_SIZE_32) {
+            R_TEXTBOX_ICON_XPOS = R_TEXT_INIT_XPOS - sIconItem32XOffsets[language];
+            R_TEXTBOX_ICON_YPOS = (R_TEXTBOX_Y + 10) + 6;
+            R_TEXTBOX_ICON_SIZE = 32;
+        } else {
+            R_TEXTBOX_ICON_XPOS = R_TEXT_INIT_XPOS - sIconItem24XOffsets[language];
+            R_TEXTBOX_ICON_YPOS = (R_TEXTBOX_Y + 10) + 10;
+            R_TEXTBOX_ICON_SIZE = 24;
+        }
+        strcpy((char*)((uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE), customIcon);
         msgCtx->msgBufPos++;
         msgCtx->choiceNum = 1;
     }
 }
 
-static void DrawTextboxItemIconFromSegment(Gfx** p) {
+void DrawCustomItemIcon(Gfx** p) {
     Gfx* gfx = *p;
     MessageContext* msgCtx = &gPlayState->msgCtx;
-    if (R_TEXTBOX_ICON_SIZE == 24) {
+    Player* player = GET_PLAYER(gPlayState);
+    CustomIconSize iconSize = ICON_SIZE_32;
+    if (player->getItemEntry.objectId != OBJECT_INVALID) {
+        RandomizerGet rgid = static_cast<RandomizerGet>(player->getItemEntry.getItemId);
+        iconSize = Rando::StaticData::RetrieveItem(rgid).GetCustomIconSize();
+    }
+    if (iconSize == ICON_SIZE_24) {
         gDPLoadTextureBlock(gfx++, (uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE, G_IM_FMT_RGBA,
                             G_IM_SIZ_32b, 24, 24, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
                             G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
@@ -421,11 +213,10 @@ static void DrawTextboxItemIconFromSegment(Gfx** p) {
 void BuildItemMessage(u16* textId, bool* loadFromMessageTable) {
     Player* player = GET_PLAYER(gPlayState);
     CustomMessage msg;
-    const GetItemEntry giftEntry = ResolveGiftGetItemEntry(player);
 
-    if (giftEntry.modIndex == MOD_RANDOMIZER && giftEntry.getItemId == RG_ICE_TRAP) {
-        Rando::Traps::BuildIceTrapMessage(msg, giftEntry);
-    } else if (giftEntry.modIndex == MOD_RANDOMIZER && giftEntry.getItemId == RG_TRIFORCE_PIECE) {
+    if (player->getItemEntry.getItemId == RG_ICE_TRAP) {
+        Rando::Traps::BuildIceTrapMessage(msg, player->getItemEntry);
+    } else if (player->getItemEntry.getItemId == RG_TRIFORCE_PIECE) {
         BuildTriforcePieceMessage(msg);
     } else {
         BuildCustomItemMessage(player, msg);
@@ -523,10 +314,6 @@ void BuildSmallKeyMessage(uint16_t* textId, bool* loadFromMessageTable) {
 }
 
 void RegisterItemMessages() {
-    if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("LogTextboxItemIcons"), 0) != 0) {
-        SPDLOG_INFO("[TextboxItemIcon] Logging is ON (menu: Dev Tools → General → Log textbox item icons). Watch for "
-                    "decode + DRAW lines when the textbox parses an icon control code.");
-    }
     COND_ID_HOOK(OnOpenText, TEXT_RANDOMIZER_CUSTOM_ITEM, IS_RANDO, BuildItemMessage);
     COND_ID_HOOK(OnOpenText, TEXT_ITEM_DUNGEON_MAP, DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_SHUFFLE_MAPANDCOMPASS),
                  BuildMapMessage);
@@ -543,3 +330,18 @@ void RegisterItemMessages() {
 }
 
 static RegisterShipInitFunc initFunc(RegisterItemMessages, { "IS_RANDO" });
+
+void RegisterCustomIconHooks() {
+    COND_VB_SHOULD(VB_LOAD_ITEM_ICON, IS_RANDO, {
+        if (*should == false) {
+            LoadCustomItemIcon(static_cast<bool>(va_arg(args, int)));
+        }
+    });
+    COND_VB_SHOULD(VB_DRAW_ITEM_ICON, IS_RANDO, {
+        if (*should == false) {
+            DrawCustomItemIcon(va_arg(args, Gfx**));
+        }
+    });
+}
+
+static RegisterShipInitFunc customIconInitFunc(RegisterCustomIconHooks, { "IS_RANDO" });

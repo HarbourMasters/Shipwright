@@ -7,13 +7,8 @@
 #include "logic.h"
 #include "static_data.h"
 
-#include "functions.h"
 #include "global.h"
 #include "macros.h"
-#include "z64player.h"
-#include "variables.h"
-
-#include <vector>
 
 namespace Rando {
 
@@ -41,21 +36,6 @@ static constexpr SplitSongDef kSplitSongs[SPLIT_SONG_MAX] = {
 
 static bool IsValidSplitSongId(SplitSongId id) {
     return id >= 0 && id < SPLIT_SONG_MAX;
-}
-
-static std::vector<SplitSongId> sPendingFullSongGrants;
-static bool sSongGrantQueued[SPLIT_SONG_MAX] = {};
-
-static bool ShouldDeferFullSongQuestGrant() {
-    if (gPlayState == nullptr) {
-        return false;
-    }
-    Player* player = GET_PLAYER(gPlayState);
-    if (player == nullptr) {
-        return false;
-    }
-    return Player_InBlockingCsMode(gPlayState, player) || (player->stateFlags1 & PLAYER_STATE1_IN_ITEM_CS) ||
-           (player->stateFlags1 & PLAYER_STATE1_GETTING_ITEM) || (player->stateFlags1 & PLAYER_STATE1_CARRYING_ACTOR);
 }
 
 static bool UsingLogicSimulationBuffer(Logic* logic) {
@@ -131,82 +111,12 @@ bool SplitSongs::HasFullSong(SplitSongId id) {
     return CHECK_QUEST_ITEM(qiIt->second);
 }
 
-void SplitSongs::GrantFullSong(SplitSongId id) {
-    const SplitSongDef* def = GetSongDef(id);
-    if (def == nullptr) {
-        return;
-    }
-
-    auto logic = Context::GetInstance()->GetLogic();
-    logic->SetSaveContext(&gSaveContext);
-    const auto qiIt = Logic::RandoGetToQuestItem.find(static_cast<uint32_t>(def->fullSong));
-    if (qiIt != Logic::RandoGetToQuestItem.end() && CHECK_QUEST_ITEM(qiIt->second)) {
-        return;
-    }
-
-    auto& fullSongItem = StaticData::RetrieveItem(def->fullSong);
-    logic->ApplyItemEffect(fullSongItem, true);
-}
-
-void SplitSongs::TryCompleteSong(SplitSongId id) {
-    if (!HasSplitPart(id) || HasFullSong(id)) {
-        return;
-    }
-    if (gPlayState == nullptr) {
-        GrantFullSong(id);
-        return;
-    }
-    if (!IsValidSplitSongId(id) || sSongGrantQueued[id]) {
-        return;
-    }
-    sSongGrantQueued[id] = true;
-    sPendingFullSongGrants.push_back(id);
-}
-
-void SplitSongs::ProcessPendingFullSongGrants() {
-    if (sPendingFullSongGrants.empty() || gPlayState == nullptr) {
-        return;
-    }
-    Player* player = GET_PLAYER(gPlayState);
-    if (player == nullptr || ShouldDeferFullSongQuestGrant()) {
-        return;
-    }
-
-    std::vector<SplitSongId> batch = std::move(sPendingFullSongGrants);
-    sPendingFullSongGrants.clear();
-
-    for (SplitSongId id : batch) {
-        if (IsValidSplitSongId(id)) {
-            sSongGrantQueued[id] = false;
-        }
-    }
-    for (SplitSongId id : batch) {
-        if (!IsValidSplitSongId(id)) {
-            continue;
-        }
-        if (HasSplitPart(id) && !HasFullSong(id)) {
-            GrantFullSong(id);
-        }
-    }
-}
-
-void SplitSongs::ClearPendingFullSongGrants() {
-    sPendingFullSongGrants.clear();
-    for (size_t i = 0; i < SPLIT_SONG_MAX; i++) {
-        sSongGrantQueued[i] = false;
-    }
-}
-
 void SplitSongs::OnProgressiveSongReceived(RandomizerGet rg) {
     const SplitSongDef* def = GetSongDefFromProgressive(rg);
-    if (def == nullptr || HasFullSong(def->id)) {
+    if (def == nullptr || HasFullSong(def->id) || HasSplitPart(def->id)) {
         return;
     }
-    if (!HasSplitPart(def->id)) {
-        SetSplitPart(def->id, true);
-        return;
-    }
-    TryCompleteSong(def->id);
+    SetSplitPart(def->id, true);
 }
 
 ItemObtainability SplitSongs::GetProgressiveSongObtainability(RandomizerGet progressiveRg) {
@@ -215,30 +125,6 @@ ItemObtainability SplitSongs::GetProgressiveSongObtainability(RandomizerGet prog
         return CAN_OBTAIN;
     }
     return HasFullSong(def->id) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN;
-}
-
-void SplitSongs::AppendShuffledSongPoolItems(std::vector<RandomizerGet>& pool, bool split) {
-    for (const auto& def : kSplitSongs) {
-        pool.push_back(split ? def.progressive : def.fullSong);
-    }
-}
-
-void SplitSongs::AppendSongIceTrapModels(std::vector<RandomizerGet>& models, bool split) {
-    AppendShuffledSongPoolItems(models, split);
-}
-
-void SplitSongs::DebugGiveAllSongParts(PlayState* play) {
-    if (play == nullptr) {
-        return;
-    }
-    for (const auto& def : kSplitSongs) {
-        if (!HasSplitPart(def.id)) {
-            Randomizer_Item_Give(play, StaticData::RetrieveItem(def.progressive).GetGIEntry_Copy());
-        }
-        if (!HasFullSong(def.id)) {
-            Randomizer_Item_Give(play, StaticData::RetrieveItem(def.progressive).GetGIEntry_Copy());
-        }
-    }
 }
 
 void SplitSongs::ApplyProgressiveEffectToLogicScratch(Logic* logic, RandomizerGet rg, bool state) {
@@ -268,10 +154,7 @@ RandomizerGet SplitSongs::ResolveProgressiveSongStage(RandomizerGet rg) {
     if (def == nullptr) {
         return RG_NONE;
     }
-    if (HasFullSong(def->id)) {
-        return def->fullSong;
-    }
-    if (HasSplitPart(def->id)) {
+    if (HasFullSong(def->id) || HasSplitPart(def->id)) {
         return def->fullSong;
     }
     return def->progressive;

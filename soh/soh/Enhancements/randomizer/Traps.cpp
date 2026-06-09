@@ -3,7 +3,6 @@
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "soh/Enhancements/randomizer/static_data.h"
 #include "soh/Enhancements/randomizer/split_songs.h"
-#include "soh/Enhancements/randomizer/3drando/random.hpp"
 #include "soh/ShipUtils.h"
 
 #include <vector>

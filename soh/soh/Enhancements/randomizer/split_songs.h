@@ -4,9 +4,6 @@
 #pragma once
 
 #include "randomizerTypes.h"
-#include <vector>
-
-struct PlayState;
 
 namespace Rando {
 
@@ -40,31 +37,15 @@ class SplitSongs {
     static const SplitSongDef* GetSongDefFromProgressive(RandomizerGet rg);
     static const SplitSongDef* GetSongDefFromFullSong(RandomizerGet fullSongRg);
 
-    /** RandInf set after the first progressive pickup for this song. */
     static bool HasSplitPart(SplitSongId id);
     static void SetSplitPart(SplitSongId id, bool state);
-
     static bool HasFullSong(SplitSongId id);
-    static void GrantFullSong(SplitSongId id);
-    static void TryCompleteSong(SplitSongId id);
 
     static bool IsProgressiveSong(RandomizerGet rg);
-
-    static void ProcessPendingFullSongGrants();
-    static void ClearPendingFullSongGrants();
-
     static void OnProgressiveSongReceived(RandomizerGet rg);
 
-    static void AppendShuffledSongPoolItems(std::vector<RandomizerGet>& pool, bool split);
-    static void AppendSongIceTrapModels(std::vector<RandomizerGet>& models, bool split);
-
     static ItemObtainability GetProgressiveSongObtainability(RandomizerGet progressiveRg);
-
-    static void DebugGiveAllSongParts(PlayState* play);
-
     static void ApplyProgressiveEffectToLogicScratch(Logic* logic, RandomizerGet rg, bool state);
-
-    /** Item to show on pickup / GI resolve: progressive first, full song on second. */
     static RandomizerGet ResolveProgressiveSongStage(RandomizerGet rg);
 };
 

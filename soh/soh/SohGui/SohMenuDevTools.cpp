@@ -78,12 +78,6 @@ void SohMenu::AddMenuDevTools() {
     AddWidget(path, "Resource logging", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_DEVELOPER_TOOLS("ResourceLogging"))
         .Options(CheckboxOptions().Tooltip("Logs some resources as XML when they're loaded in binary format."));
-    AddWidget(path, "Log textbox item icons", WIDGET_CVAR_CHECKBOX)
-        .CVar(CVAR_DEVELOPER_TOOLS("LogTextboxItemIcons"))
-        .Options(CheckboxOptions().Tooltip(
-            "Writes [TextboxItemIcon] decode and DRAW lines to the log when the message system loads or draws a "
-            "textbox item icon (MESSAGE_ITEM_ICON). Restart after enabling to see the startup confirmation when "
-            "randomizer hooks register; then open any get-item text that shows an icon."));
 
     AddWidget(path, "Frame Advance", WIDGET_CHECKBOX)
         .Options(CheckboxOptions().Tooltip(

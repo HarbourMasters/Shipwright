@@ -8,7 +8,6 @@
 #include "random.hpp"
 #include "spoiler_log.hpp"
 #include "soh/Enhancements/randomizer/Traps.h"
-#include "soh/Enhancements/randomizer/split_songs.h"
 #include "z64item.h"
 #include <spdlog/spdlog.h>
 
@@ -159,11 +158,21 @@ void GenerateItemPool() {
 
     if (ctx->GetOption(RSK_SHUFFLE_SONGS).Is(RO_SONG_SHUFFLE_ANYWHERE)) {
         const bool split = static_cast<bool>(ctx->GetOption(RSK_SPLIT_OCARINA_SONGS));
-        std::vector<RandomizerGet> songTrapModels;
-        Rando::SplitSongs::AppendSongIceTrapModels(songTrapModels, split);
-        for (RandomizerGet rg : songTrapModels) {
-            ctx->possibleIceTrapModels.insert(rg);
-        }
+        auto addSongIceTrapModel = [&](RandomizerGet fullSong, RandomizerGet progressive) {
+            ctx->possibleIceTrapModels.insert(split ? progressive : fullSong);
+        };
+        addSongIceTrapModel(RG_ZELDAS_LULLABY, RG_PROGRESSIVE_ZELDAS_LULLABY);
+        addSongIceTrapModel(RG_EPONAS_SONG, RG_PROGRESSIVE_EPONAS_SONG);
+        addSongIceTrapModel(RG_SARIAS_SONG, RG_PROGRESSIVE_SARIAS_SONG);
+        addSongIceTrapModel(RG_SUNS_SONG, RG_PROGRESSIVE_SUNS_SONG);
+        addSongIceTrapModel(RG_SONG_OF_TIME, RG_PROGRESSIVE_SONG_OF_TIME);
+        addSongIceTrapModel(RG_SONG_OF_STORMS, RG_PROGRESSIVE_SONG_OF_STORMS);
+        addSongIceTrapModel(RG_MINUET_OF_FOREST, RG_PROGRESSIVE_MINUET_OF_FOREST);
+        addSongIceTrapModel(RG_BOLERO_OF_FIRE, RG_PROGRESSIVE_BOLERO_OF_FIRE);
+        addSongIceTrapModel(RG_SERENADE_OF_WATER, RG_PROGRESSIVE_SERENADE_OF_WATER);
+        addSongIceTrapModel(RG_REQUIEM_OF_SPIRIT, RG_PROGRESSIVE_REQUIEM_OF_SPIRIT);
+        addSongIceTrapModel(RG_NOCTURNE_OF_SHADOW, RG_PROGRESSIVE_NOCTURNE_OF_SHADOW);
+        addSongIceTrapModel(RG_PRELUDE_OF_LIGHT, RG_PROGRESSIVE_PRELUDE_OF_LIGHT);
     }
 
     // clang-format off
