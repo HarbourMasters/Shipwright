@@ -422,8 +422,9 @@ void UseBoomerang(Actor* thisx, PlayState* play, u8 started) {
             f32 posX = (Math_SinS(this->actor.shape.rot.y) * 1.0f) + this->actor.world.pos.x;
             f32 posZ = (Math_CosS(this->actor.shape.rot.y) * 1.0f) + this->actor.world.pos.z;
             s32 yaw = this->actor.shape.rot.y;
-            EnBoom* boomerang = (EnBoom*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOOM, posX, this->actor.world.pos.y + 7.0f,
-                                                    posZ, this->actor.focus.rot.x, yaw, 0, 0);
+            EnBoom* boomerang =
+                (EnBoom*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOOM, posX, this->actor.world.pos.y + 7.0f, posZ,
+                                     this->actor.focus.rot.x, yaw, 0, 0);
 
             this->boomerangActor = &boomerang->actor;
             if (boomerang != NULL) {

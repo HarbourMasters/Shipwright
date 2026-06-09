@@ -23,11 +23,8 @@ static void SpawnIvan() {
         return;
 
     PosRot& world = player->actor.world;
-
-    Actor_Spawn(&gPlayState->actorCtx, gPlayState, gEnPartnerId,
-        world.pos.x, world.pos.y + Player_GetHeight(player) + 5.0f, world.pos.z,
-        0, world.rot.y, 0,
-        1);
+    Actor_Spawn(&gPlayState->actorCtx, gPlayState, gEnPartnerId, world.pos.x,
+                world.pos.y + Player_GetHeight(player) + 5.0f, world.pos.z, 0, world.rot.y, 0, 1);
 }
 
 static void KillIvan() {
@@ -35,10 +32,8 @@ static void KillIvan() {
         return;
 
     Actor* ivan = Actor_Find(&gPlayState->actorCtx, gEnPartnerId, ACTORCAT_ITEMACTION);
-    if (!ivan)
-        return;
-
-    Actor_Kill(ivan);
+    if (ivan)
+        Actor_Kill(ivan);
 }
 
 static void RegisterIvanCoop() {
@@ -47,9 +42,7 @@ static void RegisterIvanCoop() {
     else
         KillIvan();
 
-    COND_ID_HOOK(OnActorSpawn, ACTOR_PLAYER, CVAR_VALUE, [](void*) {
-        SpawnIvan();
-    });
+    COND_ID_HOOK(OnActorSpawn, ACTOR_PLAYER, CVAR_VALUE, [](void*) { SpawnIvan(); });
 }
 
 static RegisterShipInitFunc initFunc(RegisterIvanCoop, { CVAR_NAME });
