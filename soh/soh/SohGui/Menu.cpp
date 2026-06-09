@@ -142,7 +142,6 @@ void Menu::InitElement() {
     poppedPos.y = static_cast<f32>(CVarGetInteger(CVAR_SETTING("Menu.PoppedPos.y"), 0));
     menuThemeIndex = static_cast<UIWidgets::Colors>(CVarGetInteger(CVAR_SETTING("Menu.Theme"), defaultThemeIndex));
 
-    UpdateAudioBackendObjects();
     UpdateWindowBackendObjects();
 }
 

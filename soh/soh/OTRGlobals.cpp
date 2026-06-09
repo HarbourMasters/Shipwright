@@ -837,6 +837,10 @@ void OTRGlobals::Initialize() {
 
     context->InitAudio({ .SampleRate = 32000, .SampleLength = 1024, .DesiredBuffered = 1680 });
 
+    // The menu is set up before audio is initialized, so its list of available audio backends has to be
+    // populated here rather than in Menu::InitElement (where the window backends are handled).
+    SohGui::GetSohMenu()->UpdateAudioBackendObjects();
+
     SPDLOG_INFO("Starting Ship of Harkinian version {} (Branch: {} | Commit: {})", (char*)gBuildVersion,
                 (char*)gGitBranch, (char*)gGitCommitHash);
 
