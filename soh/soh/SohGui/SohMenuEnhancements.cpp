@@ -1646,6 +1646,9 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Dogs Follow You Everywhere", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("DogFollowsEverywhere"))
         .Options(CheckboxOptions().Tooltip("Allows dogs to follow you anywhere you go, even if you leave the Market."));
+    AddWidget(path, "Richard's Rage", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("RichardsRage"))
+        .Options(CheckboxOptions().Tooltip("Allows Link to carry and throw dogs around like Ruto."));
     AddWidget(path, "Rupee Dash Mode", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("RupeeDash"))
         .Options(CheckboxOptions().Tooltip("Rupees reduce over time, Link suffers damage when the count hits 0."));

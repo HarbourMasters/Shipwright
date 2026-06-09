@@ -22,6 +22,11 @@ void EnDog_RunAway(EnDog* this, PlayState* play);
 void EnDog_FaceLink(EnDog* this, PlayState* play);
 void EnDog_Wait(EnDog* this, PlayState* play);
 
+// #region SOH [Enhancement] - Richard's Rage
+void EnDog_Carried(EnDog* this, PlayState* play);
+void EnDog_Thrown(EnDog* this, PlayState* play);
+// #endregion
+
 const ActorInit En_Dog_InitVars = {
     ACTOR_EN_DOG,
     ACTORCAT_NPC,
@@ -478,17 +483,117 @@ void EnDog_Wait(EnDog* this, PlayState* play) {
     }
 }
 
+// #region SOH [Enhancement] - Richard's Rage
+void EnDog_Carried(EnDog* this, PlayState* play) {
+    // Link dropped or threw the Richard.
+    if (Actor_HasNoParent(&this->actor, play)) {
+        this->actor.gravity = -1.0f;
+        this->actor.minVelocityY = -10.0f;
+        this->actor.bgCheckFlags = 0;  // Clear stale flags from before carry
+
+        // Enable AT collider so the thrown Richard can hit enemies.
+        this->collider.base.atFlags = AT_ON | AT_TYPE_PLAYER;
+        this->collider.info.toucher.dmgFlags = DMG_HAMMER;
+        this->collider.info.toucher.damage = 4;
+        this->collider.info.toucherFlags = TOUCH_ON;
+
+        // Clear carry flag -- Richard is no longer held.
+        gSaveContext.dogParams &= ~0x4000;
+
+        this->nextBehavior = DOG_BARK;
+        this->actionFunc = EnDog_Thrown;
+        return;
+    }
+
+    // Signal carry state for scene transitions.
+    gSaveContext.dogParams |= 0x4000;
+
+    // While carried, just sit still.
+    this->nextBehavior = DOG_SIT;
+    this->actor.speedXZ = 0.0f;
+    this->actor.shape.shadowAlpha = 0;
+}
+
+void EnDog_Thrown(EnDog* this, PlayState* play) {
+    // Megaton Hammer impact effects when the Richard hits something mid-flight.
+    if (this->collider.base.atFlags & AT_HIT) {
+        this->collider.base.atFlags &= ~AT_HIT;
+
+        const s16 quakeIndex = Quake_Add(Play_GetCamera(play, 0), 3);
+        Quake_SetSpeed(quakeIndex, 27767);
+        Quake_SetQuakeValues(quakeIndex, 7, 0, 0, 0);
+        Quake_SetCountdown(quakeIndex, 20);
+
+        play->actorCtx.unk_02 = 4;
+        func_800AA000(0, 255, 20, 150); // Screen shake
+        Audio_PlayActorSound2(&this->actor, NA_SE_IT_HAMMER_HIT);
+    }
+
+    // Landed on the ground.
+    if (this->actor.bgCheckFlags & 1) {
+        // Disable AT collider.
+        this->collider.base.atFlags = AT_NONE;
+        this->collider.info.toucherFlags = TOUCH_NONE;
+
+        this->actor.speedXZ = 0.0f;
+        this->actor.velocity.y = 0.0f;
+        this->nextBehavior = DOG_BARK;
+        this->actor.shape.shadowAlpha = 255;
+
+        this->actionFunc = EnDog_FollowPlayer;
+        Audio_PlayActorSound2(&this->actor, NA_SE_EV_SMALL_DOG_BARK);
+    }
+}
+
 void EnDog_Update(Actor* thisx, PlayState* play) {
     EnDog* this = (EnDog*)thisx;
     s32 pad;
 
+    // #region SOH [Enhancement] - Richard's Rage
+    // Offer carry and detect pickup.
+    if (CVarGetInteger(CVAR_ENHANCEMENT("RichardsRage"), 0)) {
+        if (Actor_HasParent(&this->actor, play)) {
+            // Link just picked up the Richard.  Set dogParams so it respawns in the next scene.
+            if (gSaveContext.dogParams == 0) {
+                gSaveContext.dogParams = this->actor.params & 0x7FFF;
+            }
+
+            this->nextBehavior = DOG_SIT;
+            this->actor.speedXZ = 0.0f;
+            this->actionFunc = EnDog_Carried;
+        } else if (this->actionFunc != EnDog_Carried && this->actionFunc != EnDog_Thrown) {
+            // Offer carry when not already held or airborne.
+            Actor_OfferCarry(&this->actor, play);
+        }
+    }
+    // #endregion
+
     EnDog_PlayAnimAndSFX(this);
     SkelAnime_Update(&this->skelAnime);
-    Actor_UpdateBgCheckInfo(play, &this->actor, this->collider.dim.radius, this->collider.dim.height * 0.5f, 0.0f, 5);
-    Actor_MoveXZGravity(&this->actor);
+
+    // #region SOH [Enhancement] - Richard's Rage
+    // Skip physics and collision while the Richard is being carried -- Link controls the Richard's position.
+    // Without this, the Richard's OC collider pushes Link around and movement code fights the carry position.
+    if (this->actionFunc != EnDog_Carried) {
+        Actor_UpdateBgCheckInfo(play, &this->actor, this->collider.dim.radius,
+                                this->collider.dim.height * 0.5f, 0.0f, 5);
+        Actor_MoveXZGravity(&this->actor);
+    }
+    // #endregion
+
     this->actionFunc(this, play);
-    Collider_UpdateCylinder(&this->actor, &this->collider);
-    CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider.base);
+
+    // #region SOH [Enhancement] - Richard's Rage
+    if (this->actionFunc != EnDog_Carried) {
+        Collider_UpdateCylinder(&this->actor, &this->collider);
+        CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider.base);
+    }
+
+    // Register AT collider while the Richard is airborne so it can hit enemies.
+    if (this->actionFunc == EnDog_Thrown) {
+        CollisionCheck_SetAT(play, &play->colChkCtx, &this->collider.base);
+    }
+    // #endregion
 }
 
 s32 EnDog_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {

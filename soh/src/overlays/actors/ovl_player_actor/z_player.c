@@ -3161,6 +3161,38 @@ s32 func_80835644(PlayState* play, Player* this, Actor* arg2) {
     return 0;
 }
 
+// #region SOH [Enhancement] - Richard's Rage
+// Returns true if the held actor should be treated like Ruto for carry interactions (door opening, fall sounds,
+// action text).
+static s32 Player_HeldActorAllowsInteraction(Player* this) {
+    if (this->heldActor == NULL) {
+        return false;
+    }
+
+    if (this->heldActor->id == ACTOR_EN_RU1) {
+        return true;
+    }
+
+    if (this->heldActor->id == ACTOR_EN_DOG && CVarGetInteger(CVAR_ENHANCEMENT("RichardsRage"), 0)) {
+        return true;
+    }
+
+    return false;
+}
+
+static void Player_HeldActorFallSound(Player* this) {
+    if (this->heldActor == NULL) {
+        return;
+    }
+
+    if (this->heldActor->id == ACTOR_EN_RU1) {
+        Audio_PlayActorSound2(this->heldActor, NA_SE_VO_RT_FALL);
+    } else if (this->heldActor->id == ACTOR_EN_DOG && CVarGetInteger(CVAR_ENHANCEMENT("RichardsRage"), 0)) {
+        Audio_PlayActorSound2(this->heldActor, NA_SE_EV_SMALL_DOG_BARK);
+    }
+}
+// #endregion
+
 void func_80835688(Player* this, PlayState* play) {
     if (!func_80835644(play, this, this->heldActor)) {
         Player_SetUpperActionFunc(this, Player_UpperAction_CarryActor);
@@ -5333,8 +5365,7 @@ s32 Player_ActionHandler_1(Player* this, PlayState* play) {
     Vec3f checkPos;
 
     if ((this->doorType != PLAYER_DOORTYPE_NONE) &&
-        (!(this->stateFlags1 & PLAYER_STATE1_CARRYING_ACTOR) ||
-         ((this->heldActor != NULL) && (this->heldActor->id == ACTOR_EN_RU1)))) {
+        (!(this->stateFlags1 & PLAYER_STATE1_CARRYING_ACTOR) || Player_HeldActorAllowsInteraction(this))) {
         if ((CHECK_BTN_ALL(sControlInput->press.button, BTN_A) || (Player_Action_8084F9A0 == this->actionFunc)) &&
             GameInteractor_Should(VB_BE_ABLE_TO_OPEN_DOORS, true)) {
             doorActor = this->doorActor;
@@ -9574,10 +9605,7 @@ void Player_Action_80843CEC(Player* this, PlayState* play) {
 
 void func_80843E14(Player* this, u16 sfxId) {
     Player_PlayVoiceSfx(this, sfxId);
-
-    if ((this->heldActor != NULL) && (this->heldActor->id == ACTOR_EN_RU1)) {
-        Audio_PlayActorSound2(this->heldActor, NA_SE_VO_RT_FALL);
-    }
+    Player_HeldActorFallSound(this);
 }
 
 static FallImpactInfo D_80854600[] = {
@@ -11016,8 +11044,7 @@ void Player_UpdateInterface(PlayState* play, Player* this) {
                 }
             } else if ((Player_Action_8084E3C4 != this->actionFunc) && !(this->stateFlags2 & PLAYER_STATE2_CRAWLING)) {
                 if ((this->doorType != PLAYER_DOORTYPE_NONE) &&
-                    (!(this->stateFlags1 & PLAYER_STATE1_CARRYING_ACTOR) ||
-                     ((heldActor != NULL) && (heldActor->id == ACTOR_EN_RU1)))) {
+                    (!(this->stateFlags1 & PLAYER_STATE1_CARRYING_ACTOR) || Player_HeldActorAllowsInteraction(this))) {
                     doAction = DO_ACTION_OPEN;
                 } else if ((!(this->stateFlags1 & PLAYER_STATE1_CARRYING_ACTOR) || (heldActor == NULL)) &&
                            (interactRangeActor != NULL) &&
@@ -12288,6 +12315,17 @@ void Player_Update(Actor* thisx, PlayState* play) {
                 if (dog != NULL) {
                     // Room -1 allows actor to cross between rooms, similar to Navi
                     dog->room = CVarGetInteger(CVAR_ENHANCEMENT("DogFollowsEverywhere"), 0) ? -1 : 0;
+
+                    // #region SOH [Enhancement] - Richard's Rage
+                    if (CVarGetInteger(CVAR_ENHANCEMENT("RichardsRage"), 1) && gSaveContext.dogParams & 0x4000) {
+                        this->heldActor = dog;
+                        this->interactRangeActor = dog;
+                        dog->parent = &this->actor;
+                        this->actor.child = dog;
+                        this->stateFlags1 |= PLAYER_STATE1_CARRYING_ACTOR;
+                        func_80835688(this, play); // Upper body action (carry pose)
+                        gSaveContext.dogParams &= ~0x4000;
+                    }
                 }
             }
         }
