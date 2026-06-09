@@ -25,7 +25,6 @@ void EnPartner_Draw(Actor* thisx, PlayState* play);
 void EnPartner_SpawnSparkles(EnPartner* this, PlayState* play, s32 sparkleLife);
 
 void Player_RequestQuake(PlayState* play, s32 speed, s32 y, s32 countdown);
-s32 spawn_boomerang_ivan(EnPartner* this, PlayState* play);
 
 static InitChainEntry sInitChain[] = {
     ICHAIN_VEC3F_DIV1000(scale, 8, ICHAIN_STOP),
@@ -419,7 +418,18 @@ void UseBoomerang(Actor* thisx, PlayState* play, u8 started) {
     if (this->itemTimer <= 0) {
         if (started == 1) {
             this->itemTimer = 20;
-            spawn_boomerang_ivan(&this->actor, play);
+
+            f32 posX = (Math_SinS(this->actor.shape.rot.y) * 1.0f) + this->actor.world.pos.x;
+            f32 posZ = (Math_CosS(this->actor.shape.rot.y) * 1.0f) + this->actor.world.pos.z;
+            s32 yaw = this->actor.shape.rot.y;
+            EnBoom* boomerang = (EnBoom*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOOM, posX, this->actor.world.pos.y + 7.0f,
+                                                    posZ, this->actor.focus.rot.x, yaw, 0, 0);
+
+            this->boomerangActor = &boomerang->actor;
+            if (boomerang != NULL) {
+                boomerang->returnTimer = 20;
+                Audio_PlayActorSound2(&this->actor, NA_SE_IT_BOOMERANG_THROW);
+            }
         }
     }
 }

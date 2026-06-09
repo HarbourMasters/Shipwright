@@ -24,7 +24,6 @@
 #include "soh/Enhancements/item-tables/ItemTableTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
-#include <overlays/actors/ovl_En_Partner/z_en_partner.h>
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
@@ -345,26 +344,6 @@ void Player_Action_CsAction(Player* this, PlayState* play);
 
 #pragma region[SoH]
 u8 gWalkSpeedToggle;
-
-s32 spawn_boomerang_ivan(EnPartner* this, PlayState* play) {
-    if (!CVarGetInteger(CVAR_ENHANCEMENT("IvanCoopModeEnabled"), 0)) {
-        return 0;
-    }
-
-    f32 posX = (Math_SinS(this->actor.shape.rot.y) * 1.0f) + this->actor.world.pos.x;
-    f32 posZ = (Math_CosS(this->actor.shape.rot.y) * 1.0f) + this->actor.world.pos.z;
-    s32 yaw = this->actor.shape.rot.y;
-    EnBoom* boomerang = (EnBoom*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOOM, posX, this->actor.world.pos.y + 7.0f,
-                                             posZ, this->actor.focus.rot.x, yaw, 0, 0);
-
-    this->boomerangActor = &boomerang->actor;
-    if (boomerang != NULL) {
-        boomerang->returnTimer = 20;
-        Audio_PlayActorSound2(&this->actor, NA_SE_IT_BOOMERANG_THROW);
-    }
-
-    return 1;
-}
 
 // Sets a flag according to which type of flag is specified in player->pendingFlag.flagType
 // and which flag is specified in player->pendingFlag.flagID.
