@@ -80,9 +80,9 @@ static const char* GetSheathOnlyDL(PlayState* play) {
     return nullptr;
 }
 
-static const char* GetShieldOnBackDL(Player* player) {
+static const char* GetShieldOnBackDL(s32 shield) {
     const bool isAdult = gSaveContext.linkAge == LINK_AGE_ADULT;
-    switch (player->currentShield) {
+    switch (shield) {
         case PLAYER_SHIELD_DEKU:
             return gCustomDekuShieldOnBackDL;
         case PLAYER_SHIELD_HYLIAN:
@@ -194,6 +194,22 @@ static void RegisterCustomEquipment() {
 
         switch (limbIndex) {
             case PLAYER_LIMB_L_HAND: {
+                const bool isOcarina =
+                    player->heldItemAction == PLAYER_IA_OCARINA_FAIRY ||
+                    player->heldItemAction == PLAYER_IA_OCARINA_OF_TIME ||
+                    player->itemAction == PLAYER_IA_OCARINA_FAIRY || player->itemAction == PLAYER_IA_OCARINA_OF_TIME ||
+                    player->modelGroup == PLAYER_MODELGROUP_OCARINA || player->modelGroup == PLAYER_MODELGROUP_OOT;
+                if (isOcarina) {
+                    Gfx* resolvedHand = LoadGfxByName(isAdult ? gLinkAdultLeftHandNearDL : gLinkChildLeftHandNearDL);
+                    if (resolvedHand) {
+                        Gfx* buf = (Gfx*)Graph_Alloc(play->state.gfxCtx, 2 * sizeof(Gfx));
+                        Gfx* p = buf;
+                        gSPDisplayList(p++, resolvedHand);
+                        gSPEndDisplayList(p);
+                        *dList = buf;
+                    }
+                    break;
+                }
                 switch ((u8)player->leftHandType) {
                     case PLAYER_MODELTYPE_LH_SWORD: {
                         if (player == GET_PLAYER(play)) {
@@ -285,36 +301,64 @@ static void RegisterCustomEquipment() {
                     }
                 } else {
                     bool useOpenHand = false;
-                    switch ((u8)player->rightHandType) {
-                        case PLAYER_MODELTYPE_RH_SHIELD:
-                            switch (player->currentShield) {
-                                case PLAYER_SHIELD_DEKU:
-                                    customDL = gCustomDekuShieldDL;
-                                    break;
-                                case PLAYER_SHIELD_HYLIAN:
-                                    customDL = gCustomHylianShieldDL;
-                                    break;
-                                case PLAYER_SHIELD_MIRROR:
-                                    customDL = gCustomMirrorShieldDL;
-                                    break;
-                            }
-                            break;
-                        case PLAYER_MODELTYPE_RH_BOW_SLINGSHOT:
-                        case PLAYER_MODELTYPE_RH_BOW_SLINGSHOT_2:
-                            customDL = Player_HoldsBow(player) ? gCustomBowDL : gCustomSlingshotDL;
-                            break;
-                        case PLAYER_MODELTYPE_RH_HOOKSHOT:
-                            customDL =
-                                (player->heldItemAction == PLAYER_IA_HOOKSHOT) ? gCustomHookshotDL : gCustomLongshotDL;
-                            break;
-                        case PLAYER_MODELTYPE_RH_OCARINA:
-                            customDL = isAdult ? gCustomFairyOcarinaAdultDL : gCustomFairyOcarinaDL;
-                            useOpenHand = true;
-                            break;
-                        case PLAYER_MODELTYPE_RH_OOT:
-                            customDL = isAdult ? gCustomOcarinaOfTimeAdultDL : gCustomOcarinaOfTimeDL;
-                            useOpenHand = true;
-                            break;
+                    const bool isShielding = (player->stateFlags1 & PLAYER_STATE1_SHIELDING) != 0;
+                    const bool isOcarina = player->heldItemAction == PLAYER_IA_OCARINA_FAIRY ||
+                                           player->heldItemAction == PLAYER_IA_OCARINA_OF_TIME ||
+                                           player->itemAction == PLAYER_IA_OCARINA_FAIRY ||
+                                           player->itemAction == PLAYER_IA_OCARINA_OF_TIME ||
+                                           player->modelGroup == PLAYER_MODELGROUP_OCARINA ||
+                                           player->modelGroup == PLAYER_MODELGROUP_OOT;
+                    if (isShielding) {
+                        switch (player->currentShield) {
+                            case PLAYER_SHIELD_DEKU:
+                                customDL = gCustomDekuShieldDL;
+                                break;
+                            case PLAYER_SHIELD_HYLIAN:
+                                customDL = gCustomHylianShieldDL;
+                                break;
+                            case PLAYER_SHIELD_MIRROR:
+                                customDL = gCustomMirrorShieldDL;
+                                break;
+                        }
+                    } else if (isOcarina) {
+                        const bool isOoT = player->heldItemAction == PLAYER_IA_OCARINA_OF_TIME ||
+                                           player->itemAction == PLAYER_IA_OCARINA_OF_TIME ||
+                                           player->modelGroup == PLAYER_MODELGROUP_OOT;
+                        customDL = isOoT ? (isAdult ? gCustomOcarinaOfTimeAdultDL : gCustomOcarinaOfTimeDL)
+                                         : (isAdult ? gCustomFairyOcarinaAdultDL : gCustomFairyOcarinaDL);
+                        useOpenHand = true;
+                    } else {
+                        switch ((u8)player->rightHandType) {
+                            case PLAYER_MODELTYPE_RH_SHIELD:
+                                switch (player->currentShield) {
+                                    case PLAYER_SHIELD_DEKU:
+                                        customDL = gCustomDekuShieldDL;
+                                        break;
+                                    case PLAYER_SHIELD_HYLIAN:
+                                        customDL = gCustomHylianShieldDL;
+                                        break;
+                                    case PLAYER_SHIELD_MIRROR:
+                                        customDL = gCustomMirrorShieldDL;
+                                        break;
+                                }
+                                break;
+                            case PLAYER_MODELTYPE_RH_BOW_SLINGSHOT:
+                            case PLAYER_MODELTYPE_RH_BOW_SLINGSHOT_2:
+                                customDL = Player_HoldsBow(player) ? gCustomBowDL : gCustomSlingshotDL;
+                                break;
+                            case PLAYER_MODELTYPE_RH_HOOKSHOT:
+                                customDL = (player->heldItemAction == PLAYER_IA_HOOKSHOT) ? gCustomHookshotDL
+                                                                                          : gCustomLongshotDL;
+                                break;
+                            case PLAYER_MODELTYPE_RH_OCARINA:
+                                customDL = isAdult ? gCustomFairyOcarinaAdultDL : gCustomFairyOcarinaDL;
+                                useOpenHand = true;
+                                break;
+                            case PLAYER_MODELTYPE_RH_OOT:
+                                customDL = isAdult ? gCustomOcarinaOfTimeAdultDL : gCustomOcarinaOfTimeDL;
+                                useOpenHand = true;
+                                break;
+                        }
                     }
                     Gfx* resolvedCustom = LoadCustomGfx(customDL);
                     if (resolvedCustom) {
@@ -325,10 +369,12 @@ static void RegisterCustomEquipment() {
                         if (resolvedHand) {
                             const u8 rht = (u8)player->rightHandType;
                             const bool scaleHand =
-                                IsScalingAdultItemAsChild() &&
-                                ((player->currentShield == PLAYER_SHIELD_MIRROR && rht == PLAYER_MODELTYPE_RH_SHIELD) ||
-                                 rht == PLAYER_MODELTYPE_RH_HOOKSHOT ||
-                                 (rht == PLAYER_MODELTYPE_RH_BOW_SLINGSHOT && Player_HoldsBow(player)));
+                                IsScalingAdultItemAsChild() && !isOcarina &&
+                                ((player->currentShield == PLAYER_SHIELD_MIRROR &&
+                                  (isShielding || rht == PLAYER_MODELTYPE_RH_SHIELD)) ||
+                                 (!isShielding &&
+                                  (rht == PLAYER_MODELTYPE_RH_HOOKSHOT ||
+                                   (rht == PLAYER_MODELTYPE_RH_BOW_SLINGSHOT && Player_HoldsBow(player)))));
                             BuildHandItemDL(play, dList, resolvedHand, resolvedCustom, scaleHand);
                         }
                     }
@@ -337,7 +383,21 @@ static void RegisterCustomEquipment() {
             }
 
             case PLAYER_LIMB_SHEATH: {
-                const u8 sheathType = (u8)player->sheathType;
+                u8 sheathType = (u8)player->sheathType;
+                const bool isOcarinaSheath =
+                    player->heldItemAction == PLAYER_IA_OCARINA_FAIRY ||
+                    player->heldItemAction == PLAYER_IA_OCARINA_OF_TIME ||
+                    player->itemAction == PLAYER_IA_OCARINA_FAIRY || player->itemAction == PLAYER_IA_OCARINA_OF_TIME ||
+                    player->modelGroup == PLAYER_MODELGROUP_OCARINA || player->modelGroup == PLAYER_MODELGROUP_OOT;
+                if (isOcarinaSheath) {
+                    const bool hasShieldEquipped = player->currentShield != PLAYER_SHIELD_NONE;
+                    sheathType = hasShieldEquipped ? PLAYER_MODELTYPE_SHEATH_18 : PLAYER_MODELTYPE_SHEATH_16;
+                } else if (player->stateFlags1 & PLAYER_STATE1_SHIELDING) {
+                    if (sheathType == PLAYER_MODELTYPE_SHEATH_18)
+                        sheathType = PLAYER_MODELTYPE_SHEATH_16;
+                    else if (sheathType == PLAYER_MODELTYPE_SHEATH_19)
+                        sheathType = PLAYER_MODELTYPE_SHEATH_17;
+                }
                 const bool hasSword =
                     (sheathType == PLAYER_MODELTYPE_SHEATH_16 || sheathType == PLAYER_MODELTYPE_SHEATH_18);
                 const bool hasShield =
@@ -348,7 +408,7 @@ static void RegisterCustomEquipment() {
                 const char* swordPath = hasSword      ? GetSwordInSheathDLForPlayer(player, play)
                                         : emptySheath ? GetSheathOnlyDLForPlayer(player, play)
                                                       : nullptr;
-                const char* shieldPath = hasShield ? GetShieldOnBackDL(player) : nullptr;
+                const char* shieldPath = hasShield ? GetShieldOnBackDL(player->currentShield) : nullptr;
 
                 Gfx* resolvedSword = LoadCustomGfx(swordPath);
                 Gfx* resolvedShield = LoadCustomGfx(shieldPath);
@@ -420,7 +480,7 @@ static void RegisterCustomEquipment() {
 
             case PLAYER_LIMB_R_HAND: {
                 if (PauseGetLimbType(PLAYER_LIMB_R_HAND) == PLAYER_MODELTYPE_RH_SHIELD) {
-                    switch (player->currentShield) {
+                    switch (CUR_EQUIP_VALUE(EQUIP_TYPE_SHIELD)) {
                         case PLAYER_SHIELD_DEKU:
                             customDL = gCustomDekuShieldDL;
                             break;
@@ -460,7 +520,7 @@ static void RegisterCustomEquipment() {
                 const char* swordPath = hasSword      ? GetSwordInSheathDL(play)
                                         : emptySheath ? GetSheathOnlyDL(play)
                                                       : nullptr;
-                const char* shieldPath = hasShield ? GetShieldOnBackDL(player) : nullptr;
+                const char* shieldPath = hasShield ? GetShieldOnBackDL(CUR_EQUIP_VALUE(EQUIP_TYPE_SHIELD)) : nullptr;
 
                 Gfx* resolvedSword = LoadCustomGfx(swordPath);
                 Gfx* resolvedShield = LoadCustomGfx(shieldPath);
