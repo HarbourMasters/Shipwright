@@ -614,11 +614,11 @@ void Settings::CreateOptions() {
             mOptions[RSK_SPLIT_OCARINA_SONGS].Enable();
         } else if (shuffleSongs != RO_SONG_SHUFFLE_OFF) {
             mOptions[RSK_SPLIT_OCARINA_SONGS].Disable(
-                "Split Ocarina Songs is only supported when Shuffle Songs is \"Anywhere\" (other modes keep 12 song "
-                "checks).");
+                "Split Ocarina Songs only works when Shuffle Songs is set to Anywhere. Other shuffle modes keep the "
+                "usual 12 song checks.");
         } else {
             mOptions[RSK_SPLIT_OCARINA_SONGS].Disable(
-                "Turn on Shuffle Songs to use Split Ocarina Songs (then set Shuffle Songs to \"Anywhere\").");
+                "Turn on Shuffle Songs and set it to Anywhere to use Split Ocarina Songs.");
         }
     });
     OPT_BOOL(RSK_SPLIT_OCARINA_SONGS, "Split Ocarina Songs", CVAR_RANDOMIZER_SETTING("SplitOcarinaSongs"),

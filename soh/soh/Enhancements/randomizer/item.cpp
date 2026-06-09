@@ -415,6 +415,9 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
     if (giEntry != nullptr && actual == RG_NONE) {
         return giEntry;
     }
+    if (actual == randomizerGet && giEntry != nullptr) {
+        return giEntry;
+    }
     return StaticData::RetrieveItem(actual).GetGIEntry();
 }
 

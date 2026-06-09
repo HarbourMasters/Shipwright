@@ -481,6 +481,9 @@ static const Rando::SplitSongDef* SplitSongDefForQuestBit(uint32_t questBit) {
 }
 
 static int SplitSongPartsCollected(uint32_t questBit) {
+    if (CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0) != 0) {
+        return -1;
+    }
     if (!ItemTrackerSplitSongsActive()) {
         return -1;
     }
