@@ -5,6 +5,8 @@
 
 #include <fast/Fast3dGui.h>
 
+#include <fast/Fast3dGui.h>
+
 extern "C" {
 #include "functions.h"
 #include "macros.h"
@@ -90,9 +92,10 @@ void Window::Draw() {
         ImGui::SetWindowPos(notificationPos);
 
         if (notification.itemIcon != nullptr) {
-            ImGui::Image(std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetInstance()->GetWindow()->GetGui())
-                             ->GetTextureByName(notification.itemIcon),
-                         ImVec2(24, 24));
+            ImGui::Image(
+                std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
+                    ->GetTextureByName(notification.itemIcon),
+                ImVec2(24, 24));
             ImGui::SameLine();
         }
         if (!notification.prefix.empty()) {

@@ -1350,6 +1350,14 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
                                                          /*german*/ "Man erzählt sich, daß sich bewacht von einem #Ring der Flammen#, im Geistertempel #[[1]]# |befände|befänden|.",
                                                          /*french*/ "Selon moi, protégé par un #cercle de flammes# dans le Temple de l'Esprit se trouve #[[1]]#.", {QM_RED, QM_GREEN}));
 
+    hintTextTable[RHT_SPIRIT_TEMPLE_BOULDER_ROOM_SUN_FAIRY] = HintText(CustomMessage("They say that #calling the sun past rolling boulders in Spirit Temple# reveals #[[1]]#.",
+                                                     /*german*/ TODO_TRANSLATE,
+                                                     /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_SPIRIT_TEMPLE_ARMOS_ROOM_SUN_FAIRY] = HintText(CustomMessage("They say that #calling the sun in the spotlight by statues# reveals #[[1]]#.",
+                                                     /*german*/ TODO_TRANSLATE,
+                                                     /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+
     hintTextTable[RHT_CRATE_SPIRIT_TEMPLE] = HintText(CustomMessage("They say that a #crate in Spirit Temple# contains #[[1]]#.",
                                                      /*german*/ "Man erzählt sich, daß eine #Kiste im Geistertempel# #[[1]]# enthielte.",
                                                      /*french*/ "Selon moi, une #caisse dans le Temple de l'Esprit# contient #[[1]]#.", {QM_RED, QM_GREEN}));

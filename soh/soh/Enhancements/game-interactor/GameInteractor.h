@@ -530,6 +530,7 @@ class GameInteractor {
     // Helpers
     static bool IsSaveLoaded(bool allowDbgSave = false);
     static bool IsGameplayPaused();
+    static bool IsPlayerInControl();
     static bool CanSpawnActor();
     static bool CanAddOrTakeAmmo(int16_t amount, int16_t item);
 

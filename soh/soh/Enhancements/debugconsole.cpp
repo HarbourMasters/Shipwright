@@ -36,15 +36,15 @@ extern PlayState* gPlayState;
 #include <libultraship/bridge.h>
 #include <libultraship/libultraship.h>
 
-#define CMD_REGISTER Ship::Context::GetInstance()->GetConsole()->AddCommand
+#define CMD_REGISTER Ship::Context::GetRawInstance()->GetConsole()->AddCommand
 // TODO: Commands should be using the output passed in.
-#define ERROR_MESSAGE                                                                 \
-    std::reinterpret_pointer_cast<Ship::ConsoleWindow>(                               \
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console")) \
+#define ERROR_MESSAGE                                                                    \
+    std::reinterpret_pointer_cast<Ship::ConsoleWindow>(                                  \
+        Ship::Context::GetRawInstance()->GetWindow()->GetGui()->GetGuiWindow("Console")) \
         ->SendErrorMessage
-#define INFO_MESSAGE                                                                  \
-    std::reinterpret_pointer_cast<Ship::ConsoleWindow>(                               \
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console")) \
+#define INFO_MESSAGE                                                                     \
+    std::reinterpret_pointer_cast<Ship::ConsoleWindow>(                                  \
+        Ship::Context::GetRawInstance()->GetWindow()->GetGui()->GetGuiWindow("Console")) \
         ->SendInfoMessage
 
 static bool ActorSpawnHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args,
@@ -527,7 +527,7 @@ static bool FileSelectHandler(std::shared_ptr<Ship::Console> Console, const std:
 
 static bool QuitHandler(std::shared_ptr<Ship::Console> Console, const std::vector<std::string>& args,
                         std::string* output) {
-    Ship::Context::GetInstance()->GetWindow()->Close();
+    Ship::Context::GetRawInstance()->GetWindow()->Close();
     return 0;
 }
 
@@ -1772,7 +1772,7 @@ void DebugConsole_Init(void) {
                             "Available Checks - Process Undiscovered Exits",
                             { { "enable", Ship::ArgumentType::NUMBER, true } } });
 
-    Ship::Context::GetInstance()->GetConsole()->AddCommand(
+    Ship::Context::GetRawInstance()->GetConsole()->AddCommand(
         "acr", { AvailableChecksRecalculateHandler,
                  "Available Checks - Recalculate",
                  {
@@ -1780,5 +1780,5 @@ void DebugConsole_Init(void) {
                      { "ChildDay|ChildNight|AdultDay|AdultNight", Ship::ArgumentType::TEXT, true },
                  } });
 
-    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+    Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
 }

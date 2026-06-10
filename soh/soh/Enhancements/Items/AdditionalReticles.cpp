@@ -36,7 +36,7 @@ void RegisterAdditionalReticles() {
     bool shouldRegister = CVAR_BOW_RETICLE_VALUE || CVAR_BOOMERANG_RETICLE_VALUE;
 
     COND_VB_SHOULD(VB_DRAW_ADDITIONAL_RETICLES, shouldRegister, {
-        Player* player = GET_PLAYER(gPlayState);
+        Player* player = va_arg(args, Player*);
         Actor* heldActor = player->heldActor;
         if (CVAR_BOW_RETICLE_VALUE &&
             ((player->heldItemAction >= PLAYER_IA_BOW && player->heldItemAction <= PLAYER_IA_BOW_LIGHT) ||

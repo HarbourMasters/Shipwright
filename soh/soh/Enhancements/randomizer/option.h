@@ -226,16 +226,6 @@ class Option {
     uint8_t GetOptionIndex() const;
 
     /**
-     * @brief Set the delayedOption to the currently selected index so it can be restored later.
-     */
-    void SetDelayedOption();
-
-    /**
-     * @brief Restores the delayedOption back to the selected index.
-     */
-    void RestoreDelayedOption();
-
-    /**
      * @brief Set the rando context index for this Option.
      *
      * @param idx the index to set as the selected index.
@@ -296,13 +286,10 @@ class Option {
 
     void AddWidget(WidgetPath& path);
 
-    bool HasFlag(int imFlag_) const;
     void AddFlag(int imFlag_);
-    void SetFlag(int imFlag_);
     void RemoveFlag(int imFlag_);
 
     uint8_t GetValueFromText(std::string text);
-    void SetContextIndexFromText(std::string text);
 
     void SetCallback(WidgetFunc callback);
     void RunCallback();
@@ -314,14 +301,10 @@ class Option {
     size_t key;
 
   private:
-    bool RenderCheckbox();
-    bool RenderCombobox();
-    bool RenderSlider();
     void PopulateTextToNum();
     std::string name;
     std::vector<std::string> options;
     uint8_t contextSelection = 0;
-    uint8_t delayedSelection = 0;
     bool hidden = false;
     OptionCategory category = OptionCategory::Setting;
     std::string cvarName;

@@ -8,6 +8,7 @@
 
 #include "soh/frame_interpolation.h"
 #include "soh/Enhancements/controls/Mouse.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 s16 Camera_ChangeSettingFlags(Camera* camera, s16 setting, s16 flags);
 s32 Camera_ChangeModeFlags(Camera* camera, s16 mode, u8 flags);
@@ -4542,9 +4543,9 @@ s32 Camera_Subj4(Camera* camera) {
     }
 
     anim->unk_28 = temp_f16;
-    // camera->player->actor.world.pos = *eyeNext;
-    // camera->player->actor.world.pos.y = camera->playerGroundY;
-    // camera->player->actor.shape.rot.y = sp64.yaw;
+    camera->player->actor.world.pos = *eyeNext;
+    camera->player->actor.world.pos.y = camera->playerGroundY;
+    camera->player->actor.shape.rot.y = sp64.yaw;
     temp_f16 = ((240.0f * temp_f16) * (anim->unk_24 * 0.416667f));
     temp_a0 = temp_f16 + anim->unk_30;
     at->x = eye->x + (Math_SinS(temp_a0) * 10.0f);
@@ -7363,7 +7364,8 @@ s32 Camera_UpdateWater(Camera* camera) {
 
 s32 Camera_UpdateHotRoom(Camera* camera) {
     camera->distortionFlags &= ~DISTORTION_HOT_ROOM;
-    if (camera->play->roomCtx.curRoom.behaviorType2 == ROOM_BEHAVIOR_TYPE2_3) {
+    if (GameInteractor_Should(VB_HOT_ROOM_DISTORTION,
+                              camera->play->roomCtx.curRoom.behaviorType2 == ROOM_BEHAVIOR_TYPE2_3)) {
         camera->distortionFlags |= DISTORTION_HOT_ROOM;
     }
 

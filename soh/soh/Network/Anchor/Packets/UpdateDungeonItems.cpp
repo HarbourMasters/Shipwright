@@ -1,8 +1,11 @@
 #include "soh/Network/Anchor/Anchor.h"
 #include <nlohmann/json.hpp>
 #include <libultraship/libultraship.h>
-#include "soh/Enhancements/game-interactor/GameInteractor.h"
-#include "soh/OTRGlobals.h"
+#include <spdlog/spdlog.h>
+
+extern "C" {
+#include "include/macros.h"
+}
 
 /**
  * UPDATE_DUNGEON_ITEMS
@@ -33,6 +36,12 @@ void Anchor::HandlePacket_UpdateDungeonItems(nlohmann::json payload) {
     }
 
     u16 mapIndex = payload.at("mapIndex").get<u16>();
+    // dungeonKeys is shorter than dungeonItems (19 vs 20), so bound by the smaller of the two.
+    if (mapIndex >= ARRAY_COUNT(gSaveContext.inventory.dungeonItems) ||
+        mapIndex >= ARRAY_COUNT(gSaveContext.inventory.dungeonKeys)) {
+        SPDLOG_ERROR("[Anchor] UPDATE_DUNGEON_ITEMS: mapIndex {} out of range", mapIndex);
+        return;
+    }
     gSaveContext.inventory.dungeonItems[mapIndex] = payload.at("dungeonItems").get<u8>();
     gSaveContext.inventory.dungeonKeys[mapIndex] = payload.at("dungeonKeys").get<s8>();
 }

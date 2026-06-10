@@ -432,6 +432,8 @@ static FishingEffect sFishingEffects[FISHING_EFFECT_COUNT];
 static Vec3f sStreamSoundProjectedPos;
 static s16 sFishOnHandParams;
 
+f32 Fishing_GetMinimumRequiredScore();
+
 u8 AllHyruleLoaches() {
     return CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFishing"), 0) &&
            CVarGetInteger(CVAR_ENHANCEMENT("AllHyruleLoaches"), 0);
@@ -904,12 +906,16 @@ void Fishing_Init(Actor* thisx, PlayState* play2) {
         if (sLinkAge == LINK_AGE_CHILD) {
             if ((HIGH_SCORE(HS_FISHING) & HS_FISH_LENGTH_CHILD) != 0) {
                 sFishingRecordLength = HIGH_SCORE(HS_FISHING) & HS_FISH_LENGTH_CHILD;
+            } else if (CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFishing"), 0)) {
+                sFishingRecordLength = Fishing_GetMinimumRequiredScore();
             } else {
                 sFishingRecordLength = 40.0f; // 6 lbs
             }
         } else {
             if ((HIGH_SCORE(HS_FISHING) & HS_FISH_LENGTH_ADULT) != 0) {
                 sFishingRecordLength = (HIGH_SCORE(HS_FISHING) & HS_FISH_LENGTH_ADULT) >> 0x18;
+            } else if (CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFishing"), 0)) {
+                sFishingRecordLength = Fishing_GetMinimumRequiredScore();
             } else {
                 sFishingRecordLength = 45.0f; // 7 lbs
             }
