@@ -28,6 +28,7 @@ static std::map<int32_t, const char*> languages = {
 };
 void UpdateMenuTricks();
 void UpdateMenuLocations();
+void MarkRandomizerMenusDirty();
 
 class SohMenu : public Ship::Menu {
   public:

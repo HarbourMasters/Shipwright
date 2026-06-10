@@ -200,9 +200,11 @@ uint16_t GetCheapBalancedPrice() {
     return -1;
 }
 
-// Get 0 to 7, or a random number from 1-7 depending on shopsanity setting
+// Get 0 to 8, or a random number, depending on shopsanity setting. The 8th item is only allowed with No Logic,
+// since logic otherwise requires at least one buyable refill to remain reachable in each shop.
 int GetShopsanityReplaceAmount() {
     auto ctx = Rando::Context::GetInstance();
+    const int maxReplace = ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_NO_LOGIC) ? 8 : 7;
     if (ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_OFF)) {
         return 0;
     } else if (ctx->GetOption(RSK_SHOPSANITY).Is(RO_SHOPSANITY_SPECIFIC_COUNT)) {
@@ -223,12 +225,12 @@ int GetShopsanityReplaceAmount() {
         } else if (ctx->GetOption(RSK_SHOPSANITY_COUNT).Is(RO_SHOPSANITY_COUNT_SEVEN_ITEMS)) {
             return 7;
         } else if (ctx->GetOption(RSK_SHOPSANITY_COUNT).Is(RO_SHOPSANITY_COUNT_EIGHT_ITEMS)) {
-            return 8; // temporarily unreachable due to logic limitations
+            return maxReplace; // Clamped to 7 unless No Logic
         } else {
             assert(false);
             return 0;
         }
-    } else { // Random, get number in [1, 7]
-        return Random(1, 8);
+    } else { // Random, get number in [1, maxReplace]
+        return Random(1, maxReplace + 1);
     }
 }

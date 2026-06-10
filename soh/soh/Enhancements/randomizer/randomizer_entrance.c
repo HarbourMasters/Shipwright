@@ -143,7 +143,6 @@ void Entrance_ResetEntranceTable(void) {
 
 void Entrance_Init(void) {
     EntranceOverride* entranceOverrides = Randomizer_GetEntranceOverrides();
-    s32 index;
 
     Entrance_CopyOriginalEntranceTable();
 
@@ -156,7 +155,7 @@ void Entrance_Init(void) {
     }
 
     // Delete the title card and add a fade in for Hyrule Field from Ocarina of Time cutscene
-    for (index = ENTR_HYRULE_FIELD_16; index <= ENTR_HYRULE_FIELD_16_3; ++index) {
+    for (s32 index = ENTR_HYRULE_FIELD_16; index <= ENTR_HYRULE_FIELD_16_3; ++index) {
         gEntranceTable[index].field = ENTRANCE_INFO_FIELD(false, false, TRANS_TYPE_FADE_BLACK, TRANS_TYPE_INSTANT);
     }
 
@@ -199,7 +198,7 @@ void Entrance_Init(void) {
                 bossScene = dungeons[j].bossScene;
             }
 
-            if (index == dungeons[j].bossDoor) {
+            if (originalIndex == dungeons[j].bossDoor) {
                 saveWarpEntrance = dungeons[j].entryway;
             }
         }
@@ -700,17 +699,18 @@ void Entrance_OverrideSpawnScene(s32 sceneNum, s32 spawn) {
     modifiedLinkActorEntry.rot = gPlayState->linkActorEntry->rot;
     modifiedLinkActorEntry.params = gPlayState->linkActorEntry->params;
 
-    if (Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEON_ENTRANCES) == RO_DUNGEON_ENTRANCE_SHUFFLE_ON_PLUS_GANON) {
-        // Move Ganon's Castle exit spawn to be on the small ledge near the castle and not over the void
-        // to prevent Link from falling if the bridge isn't spawned
-        if (sceneNum == SCENE_OUTSIDE_GANONS_CASTLE && spawn == 1) {
-            modifiedLinkActorEntry.pos.x = 0xFEA8;
-            modifiedLinkActorEntry.pos.y = 0x065C;
-            modifiedLinkActorEntry.pos.z = 0x0290;
-            modifiedLinkActorEntry.rot.y = 0x0700;
-            modifiedLinkActorEntry.params = 0x0DFF; // stationary spawn
-            gPlayState->linkActorEntry = &modifiedLinkActorEntry;
-        }
+    // Move Ganon's Castle exit spawn to be on the small ledge near the castle and not over the void
+    // to prevent Link from falling if the bridge isn't spawned
+    if (sceneNum == SCENE_OUTSIDE_GANONS_CASTLE && spawn == 1 &&
+        (Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEON_ENTRANCES) == RO_DUNGEON_ENTRANCE_SHUFFLE_ON_PLUS_GANON ||
+         Randomizer_GetSettingValue(RSK_SHUFFLE_BOSS_ENTRANCES) != RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF ||
+         Randomizer_GetSettingValue(RSK_SHUFFLE_GANONS_TOWER_ENTRANCE))) {
+        modifiedLinkActorEntry.pos.x = 0xFEA8;
+        modifiedLinkActorEntry.pos.y = 0x065C;
+        modifiedLinkActorEntry.pos.z = 0x0290;
+        modifiedLinkActorEntry.rot.y = 0x0700;
+        modifiedLinkActorEntry.params = 0x0DFF; // stationary spawn
+        gPlayState->linkActorEntry = &modifiedLinkActorEntry;
     }
 
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_BOSS_ENTRANCES) != RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF) {

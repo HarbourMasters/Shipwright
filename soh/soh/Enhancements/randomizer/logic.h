@@ -2,7 +2,7 @@
 
 #include "randomizerTypes.h"
 #include "SeedContext.h"
-#include <cstdint>
+#include <stdint.h>
 
 namespace Rando {
 
@@ -77,6 +77,7 @@ class Logic {
     bool CanAttack();
     bool BombchusEnabled();
     bool BombchuRefill();
+    bool ShopItemNotForSale(RandomizerCheck loc);
     bool HookshotOrBoomerang();
     bool ScarecrowsSong();
     bool BlueFire();
@@ -159,6 +160,7 @@ class Logic {
     bool DMCUpperToPots();
     bool DMCPotsToPad();
     bool DMCPadToPots();
+    bool DMCUpperToPad();
     bool SpiritEastToSwitch();
     bool SpiritWestToSkull();
     bool SpiritSunBlockSouthLedge();

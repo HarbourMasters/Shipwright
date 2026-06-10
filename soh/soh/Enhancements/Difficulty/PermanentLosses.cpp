@@ -1,4 +1,5 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/randomizer/randomizer.h"
 #include "soh/OTRGlobals.h"
 #include "soh/SaveManager.h"
 #include "soh/ShipInit.hpp"
@@ -64,7 +65,7 @@ static void DeleteFileOnDeath() {
         SaveManager::Instance->DeleteZeldaFile(gSaveContext.fileNum);
         hasAffectedHealth = false;
         std::reinterpret_pointer_cast<Ship::ConsoleWindow>(
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))
+            Ship::Context::GetRawInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))
             ->Dispatch("reset");
     }
 }

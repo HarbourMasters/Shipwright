@@ -84,7 +84,7 @@ void SohFileSelect_ShowPresetModal() {
         return;
     }
     std::shared_ptr<SohModalWindow> modal = static_pointer_cast<SohModalWindow>(
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Modal Window"));
+        Ship::Context::GetRawInstance()->GetWindow()->GetGui()->GetGuiWindow("Modal Window"));
     if (modal->IsPopupOpen("Take a look at our presets!")) {
         modal->DismissPopup();
     } else {

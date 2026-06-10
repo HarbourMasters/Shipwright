@@ -4,6 +4,7 @@
 #include <libultraship/libultraship.h>
 
 #ifdef __cplusplus
+#include <set>
 
 void LoadGuiTextures();
 

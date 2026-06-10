@@ -4,6 +4,8 @@
 #include "item_category_adj.h"
 #include "particle_cmc.h"
 #include "soh/frame_interpolation.h"
+#include "soh/Enhancements/randomizer/randomizer.h"
+#include "soh/Enhancements/randomizer/RCToRandInf.h"
 
 extern "C" {
 #include "variables.h"
@@ -204,11 +206,29 @@ void Rock_RandomizerSpawnCollectible(Actor* actor, CheckIdentity rockIdentity, P
     }
 }
 
+static CheckIdentity IdentifyRock(s32 sceneNum, s32 posX, s32 posZ) {
+    CheckIdentity rockIdentity;
+
+    rockIdentity.randomizerInf = RAND_INF_MAX;
+    rockIdentity.randomizerCheck = RC_UNKNOWN_CHECK;
+
+    Rando::Location* location = OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(
+        ACTOR_EN_ISHI, sceneNum, TWO_ACTOR_PARAMS(posX, posZ));
+
+    if (location->GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
+        rockIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
+        rockIdentity.randomizerCheck = location->GetRandomizerCheck();
+    } else {
+        LUSLOG_WARN("IdentifyRock did not receive a valid RC value %d,%d.", posX, posZ);
+    }
+
+    return rockIdentity;
+}
+
 void EnIshi_RandomizerInit(void* actorRef) {
     Actor* actor = static_cast<Actor*>(actorRef);
     EnIshi* rockActor = static_cast<EnIshi*>(actorRef);
-    auto rockIdentity = OTRGlobals::Instance->gRandomizer->IdentifyRock(gPlayState->sceneNum, (s16)actor->world.pos.x,
-                                                                        (s16)actor->world.pos.z);
+    auto rockIdentity = IdentifyRock(gPlayState->sceneNum, (s16)actor->world.pos.x, (s16)actor->world.pos.z);
     if (rockIdentity.randomizerCheck == RC_MAX) {
         LUSLOG_WARN("ROCK ishi  %d\t:\t%d, %d", rockIdentity.randomizerCheck, actor->params & 1,
                     (s16)actor->world.pos.x, (s16)actor->world.pos.z);
@@ -226,8 +246,7 @@ void EnIshi_RandomizerInit(void* actorRef) {
 void ObjBombiwa_RandomizerInit(void* actorRef) {
     Actor* actor = static_cast<Actor*>(actorRef);
     ObjBombiwa* rockActor = static_cast<ObjBombiwa*>(actorRef);
-    auto rockIdentity = OTRGlobals::Instance->gRandomizer->IdentifyRock(gPlayState->sceneNum, (s16)actor->world.pos.x,
-                                                                        (s16)actor->world.pos.z);
+    auto rockIdentity = IdentifyRock(gPlayState->sceneNum, (s16)actor->world.pos.x, (s16)actor->world.pos.z);
     if (rockIdentity.randomizerCheck == RC_MAX) {
         LUSLOG_INFO("ROCK bombiwa\t:\t%d, %d", rockIdentity.randomizerCheck, (s16)actor->world.pos.x,
                     (s16)actor->world.pos.z);
@@ -244,8 +263,7 @@ void ObjBombiwa_RandomizerInit(void* actorRef) {
 void ObjHamishi_RandomizerInit(void* actorRef) {
     Actor* actor = static_cast<Actor*>(actorRef);
     ObjHamishi* rockActor = static_cast<ObjHamishi*>(actorRef);
-    auto rockIdentity = OTRGlobals::Instance->gRandomizer->IdentifyRock(gPlayState->sceneNum, (s16)actor->world.pos.x,
-                                                                        (s16)actor->world.pos.z);
+    auto rockIdentity = IdentifyRock(gPlayState->sceneNum, (s16)actor->world.pos.x, (s16)actor->world.pos.z);
     if (rockIdentity.randomizerCheck == RC_MAX) {
         LUSLOG_WARN("ROCK hamishi\t:\t%d, %d", rockIdentity.randomizerCheck, (s16)actor->world.pos.x,
                     (s16)actor->world.pos.z);
@@ -285,8 +303,8 @@ void RegisterShuffleRock() {
         if (*should) {
             Actor* rockActor = va_arg(args, Actor*);
             // hook called before OnActorInit sets up object extension
-            auto rockIdentity = OTRGlobals::Instance->gRandomizer->IdentifyRock(
-                gPlayState->sceneNum, (s16)rockActor->world.pos.x, (s16)rockActor->world.pos.z);
+            auto rockIdentity =
+                IdentifyRock(gPlayState->sceneNum, (s16)rockActor->world.pos.x, (s16)rockActor->world.pos.z);
             if (Rock_RandomizerHoldsItem(rockIdentity, gPlayState, true)) {
                 Rock_RandomizerSpawnCollectible(rockActor, rockIdentity, gPlayState);
             }
