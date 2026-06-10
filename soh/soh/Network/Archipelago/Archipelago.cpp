@@ -61,6 +61,8 @@ bool ArchipelagoClient::StartClient() {
     retries = 0;
     uri = CVarGetString(CVAR_REMOTE_ARCHIPELAGO("ServerAddress"), "localhost:38281");
     password = CVarGetString(CVAR_REMOTE_ARCHIPELAGO("Password"), "");
+    locationsScouted = false;
+    hintsInitialized = false;
 
     uuid = ap_get_uuid(Ship::Context::GetPathRelativeToAppDirectory("ap-client-uuid"));
     const std::string cert = Ship::Context::LocateFileAcrossAppDirs("networking/cacert.pem");
@@ -166,16 +168,6 @@ bool ArchipelagoClient::StartClient() {
         hintNotificationKey << "_read_hints_" << team_number << "_" << player_id;
         requests.emplace_back(hintNotificationKey.str());
         apClient->SetNotify({ hintNotificationKey.str() });
-
-        std::unordered_set<std::string> games;
-        for (const APClient::NetworkPlayer& player : apClient->get_players()) {
-            games.emplace(apClient->get_player_game(player.slot));
-        }
-
-        for (const std::string& game : games) {
-            requests.emplace_back("_read_item_name_groups_" + game);
-            requests.emplace_back("_read_location_name_groups_" + game);
-        }
         apClient->Get(requests);
     });
 
@@ -224,7 +216,8 @@ bool ArchipelagoClient::StartClient() {
             scoutedItems.push_back(apItem);
         }
 
-        CVarSetInteger(CVAR_REMOTE_ARCHIPELAGO("ConnectionStatus"), 4); // locations scouted
+        locationsScouted = true;
+        newInitDataRecieved();
     }); // todo maybe move these functions to a lambda, since they don't have to be static anymore
 
     apClient->set_location_checked_handler([&](const std::list<int64_t> locations) {
@@ -429,8 +422,9 @@ bool ArchipelagoClient::StartClient() {
         }
 
         // after getting grouping data, fetch location scouts
+        // TODO only scout for locations if we're in the process of creating a save file
+        // Foreign hints should be loaded from the save file as well
         if (groups_received) {
-            ArchipelagoClient::StartLocationScouts();
             ArchipelagoClient::InitForeignHints();
         }
     });
@@ -441,6 +435,39 @@ bool ArchipelagoClient::StartClient() {
 bool ArchipelagoClient::StopClient() {
     disconnecting = true;
     return true;
+}
+
+void ArchipelagoClient::RequestInitData() {
+    // To create a save file we'll need the following data:
+    // Slot Data: recieved on connection, we already have this
+    // Data package: recieved on connection, we already have this
+    // Location Scouts, Asynch request done here
+    // Location and Item groups, Asynch request done here
+
+    CVarSetInteger(CVAR_REMOTE_ARCHIPELAGO("ConnectionStatus"), 4); // fetching new save data
+
+    // get location scouts
+    StartLocationScouts();
+
+    // request the item and location groups
+    std::unordered_set<std::string> games;
+    for (const APClient::NetworkPlayer& player : apClient->get_players()) {
+        games.emplace(apClient->get_player_game(player.slot));
+    }
+
+    std::list<std::string> requests;
+    for (const std::string& game : games) {
+        requests.emplace_back("_read_item_name_groups_" + game);
+        requests.emplace_back("_read_location_name_groups_" + game);
+    }
+    apClient->Get(requests);
+}
+
+// update the connection status if we have all data we need to initialize a save file
+void ArchipelagoClient::newInitDataRecieved() {
+    if (locationsScouted && hintsInitialized) {
+        CVarSetInteger(CVAR_REMOTE_ARCHIPELAGO("ConnectionStatus"), 5); // new save data fetched
+    }
 }
 
 void ArchipelagoClient::GameLoaded() {
@@ -513,8 +540,7 @@ void ArchipelagoClient::SynchSentLocations() {
     std::list<int64_t> checkedLocations;
     for (const auto& loc : Rando::StaticData::GetLocationTable()) {
         const RandomizerCheck rc = loc.GetRandomizerCheck();
-        if (Rando::Context::GetInstance()->GetItemLocation(rc)->HasObtained() &&
-            !((rc == RC_HC_MALON_EGG || rc == RC_HC_ZELDAS_LETTER) && RAND_GET_OPTION(RSK_SKIP_CHILD_ZELDA))) {
+        if (Rando::Context::GetInstance()->GetItemLocation(rc)->HasObtained()) {
             const int64_t apLocation = apClient->get_location_id(loc.GetName());
             checkedLocations.emplace_back(apLocation);
         }
@@ -552,6 +578,9 @@ void ArchipelagoClient::InitForeignHints() {
         }
         foreignHints[hintKey] = foreignLocations;
     }
+
+    hintsInitialized = true;
+    newInitDataRecieved();
 }
 
 void ArchipelagoClient::QueueExternalCheck(const int64_t apLocation) {
@@ -1444,6 +1473,10 @@ extern "C" void Archipelago_InitSaveFile() {
 
 extern "C" void Archipelago_InitConnection() {
     ArchipelagoClient::GetInstance().StartClient();
+}
+
+extern "C" void Archipelago_RequestInitData() {
+    ArchipelagoClient::GetInstance().RequestInitData();
 }
 
 void SetArchipelagoParsing(uint8_t state) {

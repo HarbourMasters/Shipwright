@@ -107,6 +107,18 @@ std::array<std::string, LANGUAGE_MAX> ArchipelagoSettingsMenuText[ASM_MAX]{
         "Connected",
         "Connected",
     },
+    // ASM_LOADING_DATA
+    {
+        "Loading Data...",
+        "Loading Data...",
+        "Loading Data...",
+    },
+    // ASM_DATA_LOADED
+    {
+        "Ready to begin",
+        "Ready to begin",
+        "Ready to begin",
+    },
     // ASM_STATUS
     {
         "Status:",

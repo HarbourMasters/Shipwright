@@ -48,6 +48,7 @@ class ArchipelagoClient {
     bool StartClient();
     bool StopClient();
 
+    void RequestInitData();
     void GameLoaded();
     void StartLocationScouts();
     void SynchItems();
@@ -101,6 +102,7 @@ class ArchipelagoClient {
     void OnShopSlotChangeHook(uint8_t cursorIndex);
 
     bool slotMatch(const std::string& slotName, const std::string& roomHash);
+    void newInitDataRecieved();
 
     std::unique_ptr<APClient> apClient;
     bool itemQueued;
@@ -136,6 +138,9 @@ class ArchipelagoClient {
     std::set<int64_t> locations;
     std::vector<ApItem> scoutedItems;
     std::queue<ApItem> receiveQueue;
+
+    bool locationsScouted;
+    bool hintsInitialized;
 };
 
 void LoadArchipelagoData();
@@ -145,6 +150,7 @@ extern "C" {
 #endif // END __cplusplus
 void Archipelago_InitSaveFile();
 void Archipelago_InitConnection();
+void Archipelago_RequestInitData();
 void SetArchipelagoParsing(uint8_t state);
 uint8_t IsArchipelagoParsing();
 #ifdef __cplusplus

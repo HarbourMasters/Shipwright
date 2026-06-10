@@ -3480,12 +3480,17 @@ void Interface_DrawArchipelagoStatusString(PlayState* play) {
             break;
         case 1: // Connecting
         case 2: // Connection error, retrying
-        case 3: // Connected
             statusText = SohFileSelect_GetArchipelagoSettingText(ASM_CONNECTING, language);
             fadeStarted = false;
             Interface_ArchipelagoResetStatusFade(&fadeStatusTimer);
             break;
-        case 4: // Connected + Locations Scouted
+        case 4: // Loading data for new save, we shouldn't get in this situation
+            statusText = SohFileSelect_GetArchipelagoSettingText(ASM_LOADING_DATA, language);
+            fadeStarted = false;
+            Interface_ArchipelagoResetStatusFade(&fadeStatusTimer);
+            break;
+        case 3: // Connected
+        case 5: // New save data loaded
             statusText = SohFileSelect_GetArchipelagoSettingText(ASM_CONNECTED, language);
 
             // If not paused
