@@ -213,9 +213,9 @@ static void RegisterCustomEquipment() {
                 switch ((u8)player->leftHandType) {
                     case PLAYER_MODELTYPE_LH_SWORD: {
                         if (player == GET_PLAYER(play)) {
-                            if (player->currentSwordItemId == ITEM_SWORD_KOKIRI)
+                            if (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_KOKIRI)
                                 customDL = gCustomKokiriSwordDL;
-                            else if (player->currentSwordItemId == ITEM_SWORD_MASTER)
+                            else if (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_MASTER)
                                 customDL = gCustomMasterSwordDL;
                         } else {
                             if (player->heldItemAction == PLAYER_IA_SWORD_KOKIRI)
@@ -301,7 +301,12 @@ static void RegisterCustomEquipment() {
                     }
                 } else {
                     bool useOpenHand = false;
-                    const bool isShielding = (player->stateFlags1 & PLAYER_STATE1_SHIELDING) != 0;
+                    const bool holdsTwoHanded = player->heldItemAction >= PLAYER_IA_SWORD_BIGGORON &&
+                                                player->heldItemAction <= PLAYER_IA_HAMMER;
+                    const bool isChildHylian = !isAdult && player->currentShield == PLAYER_SHIELD_HYLIAN;
+                    const bool isShielding = (player->stateFlags1 & PLAYER_STATE1_SHIELDING) != 0 && !isChildHylian &&
+                                             (!holdsTwoHanded || (CVarGetInteger(CVAR_CHEAT("ShieldTwoHanded"), 0) &&
+                                                                  player->heldItemAction != PLAYER_IA_DEKU_STICK));
                     const bool isOcarina = player->heldItemAction == PLAYER_IA_OCARINA_FAIRY ||
                                            player->heldItemAction == PLAYER_IA_OCARINA_OF_TIME ||
                                            player->itemAction == PLAYER_IA_OCARINA_FAIRY ||
@@ -393,10 +398,18 @@ static void RegisterCustomEquipment() {
                     const bool hasShieldEquipped = player->currentShield != PLAYER_SHIELD_NONE;
                     sheathType = hasShieldEquipped ? PLAYER_MODELTYPE_SHEATH_18 : PLAYER_MODELTYPE_SHEATH_16;
                 } else if (player->stateFlags1 & PLAYER_STATE1_SHIELDING) {
-                    if (sheathType == PLAYER_MODELTYPE_SHEATH_18)
-                        sheathType = PLAYER_MODELTYPE_SHEATH_16;
-                    else if (sheathType == PLAYER_MODELTYPE_SHEATH_19)
-                        sheathType = PLAYER_MODELTYPE_SHEATH_17;
+                    const bool sheathTwoHanded = player->heldItemAction >= PLAYER_IA_SWORD_BIGGORON &&
+                                                 player->heldItemAction <= PLAYER_IA_HAMMER;
+                    const bool sheathChildHylian = !isAdult && player->currentShield == PLAYER_SHIELD_HYLIAN;
+                    const bool sheathCanShield =
+                        !sheathChildHylian && (!sheathTwoHanded || (CVarGetInteger(CVAR_CHEAT("ShieldTwoHanded"), 0) &&
+                                                                    player->heldItemAction != PLAYER_IA_DEKU_STICK));
+                    if (sheathCanShield) {
+                        if (sheathType == PLAYER_MODELTYPE_SHEATH_18)
+                            sheathType = PLAYER_MODELTYPE_SHEATH_16;
+                        else if (sheathType == PLAYER_MODELTYPE_SHEATH_19)
+                            sheathType = PLAYER_MODELTYPE_SHEATH_17;
+                    }
                 }
                 const bool hasSword =
                     (sheathType == PLAYER_MODELTYPE_SHEATH_16 || sheathType == PLAYER_MODELTYPE_SHEATH_18);
