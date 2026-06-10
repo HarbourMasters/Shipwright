@@ -183,6 +183,11 @@ void DrawLocationsMenu(WidgetInfo& info) {
     ImGui::EndDisabled();
 }
 
+void MarkRandomizerMenusDirty() {
+    locationsDirty = true;
+    tricksDirty = true;
+}
+
 void UpdateMenuLocations() {
     RandomizerCheckObjects::UpdateImGuiVisibility();
     // todo: this efficiently when we build out cvar array support
@@ -563,7 +568,7 @@ void SohMenu::AddMenuRandomizer() {
                 for (size_t i = 0; i < 10; i++) {
                     seedString[i] = '0' + ShipUtils::Random(0, 10);
                 }
-                seedString[11] = '\0';
+                seedString[10] = '\0';
             }
             ImGui::SameLine();
             if (UIWidgets::Button(ICON_FA_ERASER, UIWidgets::ButtonOptions()

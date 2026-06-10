@@ -29,19 +29,19 @@ void CrowdControl::OnDisconnected() {
 }
 
 void CrowdControl::OnIncomingJson(nlohmann::json payload) {
-    Effect* incomingEffect = ParseMessage(payload);
+    std::unique_ptr<Effect> incomingEffect = ParseMessage(payload);
     if (!incomingEffect) {
         return;
     }
 
     // If effect is not a timed effect, execute and return result.
     if (!incomingEffect->timeRemaining) {
-        EffectResult result = CrowdControl::ExecuteEffect(incomingEffect);
+        EffectResult result = CrowdControl::ExecuteEffect(incomingEffect.get());
         EmitMessage(incomingEffect->id, incomingEffect->timeRemaining, result);
     } else {
         // If another timed effect is already active that conflicts with the incoming effect.
         bool isConflictingEffectActive = false;
-        for (Effect* effect : activeEffects) {
+        for (const auto& effect : activeEffects) {
             if (effect != incomingEffect && effect->category == incomingEffect->category &&
                 effect->id < incomingEffect->id) {
                 isConflictingEffectActive = true;
@@ -52,14 +52,14 @@ void CrowdControl::OnIncomingJson(nlohmann::json payload) {
 
         if (!isConflictingEffectActive) {
             // Check if effect can be applied, if it can't, let CC know.
-            EffectResult result = CrowdControl::CanApplyEffect(incomingEffect);
+            EffectResult result = CrowdControl::CanApplyEffect(incomingEffect.get());
             if (result == EffectResult::Retry || result == EffectResult::Failure) {
                 EmitMessage(incomingEffect->id, incomingEffect->timeRemaining, result);
                 return;
             }
 
             activeEffectsMutex.lock();
-            activeEffects.push_back(incomingEffect);
+            activeEffects.push_back(std::move(incomingEffect));
             activeEffectsMutex.unlock();
         }
     }
@@ -74,17 +74,15 @@ void CrowdControl::ProcessActiveEffects() {
         auto it = activeEffects.begin();
 
         while (it != activeEffects.end()) {
-            Effect* effect = *it;
+            Effect* effect = it->get();
             EffectResult result = CrowdControl::ExecuteEffect(effect);
 
             if (result == EffectResult::Success) {
                 // If time remaining has reached 0, we have finished the effect.
                 if (effect->timeRemaining <= 0) {
-                    it = activeEffects.erase(std::remove(activeEffects.begin(), activeEffects.end(), effect),
-                                             activeEffects.end());
                     GameInteractor::RemoveEffect(
                         *dynamic_cast<RemovableGameInteractionEffect*>(effect->giEffect.get()));
-                    delete effect;
+                    it = activeEffects.erase(it);
                 } else {
                     // If we have a success after previously being paused, tell CC to resume timer.
                     if (effect->isPaused) {
@@ -176,7 +174,7 @@ CrowdControl::EffectResult CrowdControl::TranslateGiEnum(GameInteractionEffectQu
     return result;
 }
 
-CrowdControl::Effect* CrowdControl::ParseMessage(nlohmann::json dataReceived) {
+std::unique_ptr<CrowdControl::Effect> CrowdControl::ParseMessage(nlohmann::json dataReceived) {
     if (!dataReceived.contains("id") || !dataReceived.contains("type")) {
         SPDLOG_ERROR("[CrowdControl] Invalid payload received:\n{}", dataReceived.dump());
         return nullptr;
@@ -184,13 +182,16 @@ CrowdControl::Effect* CrowdControl::ParseMessage(nlohmann::json dataReceived) {
 
     SPDLOG_INFO("[CrowdControl] Received payload:\n{}", dataReceived.dump());
 
-    if (!dataReceived.contains("code")) {
+    // "parameters" is intentionally not required: most effects (spawn enemies, teleports, status
+    // effects, etc.) carry no parameters. Its absence is handled safely below, and any type error
+    // is caught by the guard in Network::HandleRemoteJson.
+    if (!dataReceived.contains("code") || !dataReceived.contains("viewer")) {
         // This seems to happen when the CC session ends
-        SPDLOG_ERROR("[CrowdControl] Payload does not contain code, ignoring.");
+        SPDLOG_ERROR("[CrowdControl] Payload does not contain code or viewer, ignoring.");
         return nullptr;
     }
 
-    Effect* effect = new Effect();
+    auto effect = std::make_unique<Effect>();
     effect->lastExecutionResult = EffectResult::Initiate;
     effect->id = dataReceived["id"];
     effect->viewerName = dataReceived["viewer"];
@@ -202,9 +203,15 @@ CrowdControl::Effect* CrowdControl::ParseMessage(nlohmann::json dataReceived) {
         receivedParameter = dataReceived["parameters"][0];
     }
 
+    auto it = effectStringToEnum.find(effectName);
+    if (it == effectStringToEnum.end()) {
+        SPDLOG_ERROR("[CrowdControl] Unknown effect code: {}", effectName);
+        return nullptr;
+    }
+
     // Assign GameInteractionEffect + values to CC effect.
     // Categories are mostly used for checking for conflicting timed effects.
-    switch (effectStringToEnum[effectName]) {
+    switch (it->second) {
 
         // Spawn Enemies and Objects
         case kEffectSpawnCuccoStorm:

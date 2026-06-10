@@ -4543,9 +4543,9 @@ s32 Camera_Subj4(Camera* camera) {
     }
 
     anim->unk_28 = temp_f16;
-    // camera->player->actor.world.pos = *eyeNext;
-    // camera->player->actor.world.pos.y = camera->playerGroundY;
-    // camera->player->actor.shape.rot.y = sp64.yaw;
+    camera->player->actor.world.pos = *eyeNext;
+    camera->player->actor.world.pos.y = camera->playerGroundY;
+    camera->player->actor.shape.rot.y = sp64.yaw;
     temp_f16 = ((240.0f * temp_f16) * (anim->unk_24 * 0.416667f));
     temp_a0 = temp_f16 + anim->unk_30;
     at->x = eye->x + (Math_SinS(temp_a0) * 10.0f);

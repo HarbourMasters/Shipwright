@@ -77,6 +77,7 @@ class Logic {
     bool CanAttack();
     bool BombchusEnabled();
     bool BombchuRefill();
+    bool ShopItemNotForSale(RandomizerCheck loc);
     bool HookshotOrBoomerang();
     bool ScarecrowsSong();
     bool BlueFire();

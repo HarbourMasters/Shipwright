@@ -1269,6 +1269,28 @@ bool Logic::BombchusEnabled() {
                                                                       : HasItem(RG_BOMB_BAG);
 }
 
+// With the shop shield/tunic gate enabled, a shop slot selling a shield/tunic is considered not-for-sale
+// in logic until the matching item has been found in the world (which sets its RandomizerInf). Shop slots
+// are randomized, so this keys off the item actually placed in the slot rather than a fixed location.
+bool Logic::ShopItemNotForSale(RandomizerCheck loc) {
+    if (ctx->GetOption(RSK_SHOP_SHIELDS_AND_TUNICS_ONLY_REFILL).IsNot(RO_GENERIC_ON) ||
+        StaticData::GetLocation(loc)->GetRCType() != RCTYPE_SHOP) {
+        return false;
+    }
+    switch (ctx->GetItemLocation(loc)->GetPlacedRandomizerGet()) {
+        case RG_BUY_DEKU_SHIELD:
+            return !CheckRandoInf(RAND_INF_HAS_FOUND_DEKU_SHIELD);
+        case RG_BUY_HYLIAN_SHIELD:
+            return !CheckRandoInf(RAND_INF_HAS_FOUND_HYLIAN_SHIELD);
+        case RG_BUY_GORON_TUNIC:
+            return !CheckRandoInf(RAND_INF_HAS_FOUND_GORON_TUNIC);
+        case RG_BUY_ZORA_TUNIC:
+            return !CheckRandoInf(RAND_INF_HAS_FOUND_ZORA_TUNIC);
+        default:
+            return false;
+    }
+}
+
 // TODO: Implement Ammo Drop Setting in place of bombchu drops
 bool Logic::BombchuRefill() {
     return Get(LOGIC_BUY_BOMBCHUS) || Get(LOGIC_COULD_PLAY_BOWLING) || Get(LOGIC_CARPET_MERCHANT) ||
@@ -2081,6 +2103,23 @@ void Logic::ApplyItemEffect(Item& item, bool state) {
         } break;
         case ITEMTYPE_EQUIP: {
             RandomizerGet itemRG = item.GetRandomizerGet();
+            // Finding a non-shop shield/tunic unlocks its matching shop copy when that gate is enabled.
+            switch (itemRG) {
+                case RG_DEKU_SHIELD:
+                    SetRandoInf(RAND_INF_HAS_FOUND_DEKU_SHIELD, state);
+                    break;
+                case RG_HYLIAN_SHIELD:
+                    SetRandoInf(RAND_INF_HAS_FOUND_HYLIAN_SHIELD, state);
+                    break;
+                case RG_GORON_TUNIC:
+                    SetRandoInf(RAND_INF_HAS_FOUND_GORON_TUNIC, state);
+                    break;
+                case RG_ZORA_TUNIC:
+                    SetRandoInf(RAND_INF_HAS_FOUND_ZORA_TUNIC, state);
+                    break;
+                default:
+                    break;
+            }
             if (itemRG == RG_DEKU_SHIELD || itemRG == RG_HYLIAN_SHIELD) {
                 return;
             }

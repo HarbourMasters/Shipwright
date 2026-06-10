@@ -1641,8 +1641,8 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Ivan the Fairy (Coop Mode)", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("IvanCoopModeEnabled"))
         .Options(CheckboxOptions().Tooltip(
-            "Enables Ivan the Fairy upon the next map change. Player 2 can control Ivan and press the C-Buttons to "
-            "use items and mess with Player 1!"));
+            "Enables Ivan the Fairy. Player 2 can control Ivan and press the C-Buttons to use items and mess with "
+            "Player 1!"));
     AddWidget(path, "Dogs Follow You Everywhere", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("DogFollowsEverywhere"))
         .Options(CheckboxOptions().Tooltip("Allows dogs to follow you anywhere you go, even if you leave the Market."));

@@ -59,6 +59,7 @@ extern "C" {
 #include "src/overlays/actors/ovl_Fishing/z_fishing.h"
 #include "src/overlays/actors/ovl_Obj_Bean/z_obj_bean.h"
 #include "src/overlays/actors/ovl_En_Heishi2/z_en_heishi2.h"
+#include "src/overlays/actors/ovl_En_GirlA/z_en_girla.h"
 #include "draw.h"
 
 static ObjectExtension::Register<DnsItemEntry> RegisterDnsItemEntryOverride;
@@ -445,6 +446,23 @@ void RandomizerOnItemReceiveHandler(GetItemEntry receivedItemEntry) {
         randomizerQueuedItemEntry = GET_ITEM_NONE;
     }
 
+    if (receivedItemEntry.modIndex == MOD_NONE) {
+        switch (receivedItemEntry.itemId) {
+            case ITEM_SHIELD_DEKU:
+                Flags_SetRandomizerInf(RAND_INF_HAS_FOUND_DEKU_SHIELD);
+                break;
+            case ITEM_SHIELD_HYLIAN:
+                Flags_SetRandomizerInf(RAND_INF_HAS_FOUND_HYLIAN_SHIELD);
+                break;
+            case ITEM_TUNIC_GORON:
+                Flags_SetRandomizerInf(RAND_INF_HAS_FOUND_GORON_TUNIC);
+                break;
+            case ITEM_TUNIC_ZORA:
+                Flags_SetRandomizerInf(RAND_INF_HAS_FOUND_ZORA_TUNIC);
+                break;
+        }
+    }
+
     if (receivedItemEntry.modIndex == MOD_RANDOMIZER && receivedItemEntry.getItemId == RG_MAGIC_BEAN_PACK) {
         if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SKIP_PLANTING_BEANS)) {
             gSaveContext.sceneFlags[SCENE_DEATH_MOUNTAIN_CRATER].swch |= (1 << 3);
@@ -491,6 +509,10 @@ void RandomizerOnItemReceiveHandler(GetItemEntry receivedItemEntry) {
             }
             AMMO(ITEM_BEAN) = 0;
         }
+    }
+
+    if (receivedItemEntry.modIndex == MOD_NONE && receivedItemEntry.itemId == ITEM_SONG_EPONA) {
+        Flags_SetEventChkInf(EVENTCHKINF_EPONA_OBTAINED);
     }
 
     if (receivedItemEntry.modIndex == MOD_NONE &&
@@ -959,6 +981,18 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
         case VB_CRAWL:
             *should = *should && Flags_GetRandomizerInf(RAND_INF_CAN_CRAWL);
             break;
+        case VB_CAN_BUY_SHOP_SHIELD_OR_TUNIC: {
+            // Gate non-randomized shop shields/tunics behind finding a non-shop copy.
+            if (RAND_GET_OPTION(RSK_SHOP_SHIELDS_AND_TUNICS_ONLY_REFILL).Is(RO_GENERIC_ON)) {
+                EnGirlACanBuyResult* canBuy = va_arg(args, EnGirlACanBuyResult*);
+                RandomizerInf requiredInf = (RandomizerInf)va_arg(args, int);
+                if (!Flags_GetRandomizerInf(requiredInf)) {
+                    *canBuy = CANBUY_RESULT_CANT_GET_NOW;
+                    *should = true;
+                }
+            }
+            break;
+        }
         case VB_ALLOW_ENTRANCE_CS_FOR_EITHER_AGE: {
             s32 entranceIndex = va_arg(args, s32);
 
@@ -2656,7 +2690,16 @@ void RandomizerOnPlayerUpdateHandler() {
                 gSaveContext.respawn[RESPAWN_MODE_DOWN].yaw = respawn->second.yaw;
             }
 
-            Play_TriggerVoidOut(gPlayState);
+            if (gPlayState->sceneNum == SCENE_GROTTOS) {
+                // RESPAWN_MODE_DOWN isn't refreshed on grotto entry, reload grotto instead
+                gPlayState->nextEntranceIndex = gSaveContext.entranceIndex;
+                gPlayState->transitionTrigger = TRANS_TRIGGER_START;
+                gPlayState->transitionType = TRANS_TYPE_FADE_BLACK;
+                gSaveContext.nextTransitionType = TRANS_TYPE_FADE_BLACK;
+                gSaveContext.respawnFlag = 0;
+            } else {
+                Play_TriggerVoidOut(gPlayState);
+            }
         }
     }
 
@@ -2669,8 +2712,14 @@ void RandomizerOnPlayerUpdateHandler() {
     }
 
     if (!GameInteractor::IsGameplayPaused() && RAND_GET_OPTION(RSK_TRIFORCE_HUNT).IsNot(RO_TRIFORCE_HUNT_OFF)) {
-        // Warp to credits
-        if (GameInteractor::State::TriforceHuntCreditsWarpActive) {
+        // Warp to credits once item queue has drained to avoid losing queued items
+        if (GameInteractor::State::TriforceHuntCreditsWarpActive && randomizerQueuedChecks.empty() &&
+            randomizerQueuedCheck == RC_UNKNOWN_CHECK) {
+            gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_TRIFORCE_COMPLETED] =
+                static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
+            gSaveContext.ship.stats.gameComplete = 1;
+            Play_PerformSave(gPlayState);
+            Notification::Emit({ .message = "Game autosaved" });
             gPlayState->nextEntranceIndex = ENTR_CHAMBER_OF_THE_SAGES_0;
             gSaveContext.nextCutsceneIndex = 0xFFF2;
             gPlayState->transitionTrigger = TRANS_TRIGGER_START;

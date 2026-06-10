@@ -1072,49 +1072,28 @@ static std::unordered_map<RandomizerGet, GameplayStatTimestamp> randomizerGetToS
 // Gameplay stat tracking: Update time the item was acquired
 // (special cases for rando items)
 void Randomizer_GameplayStats_SetTimestamp(uint16_t item) {
-
     u32 time = static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
-
     // Have items in Link's pocket shown as being obtained at 0.1 seconds
     if (time == 0) {
         time = 1;
     }
 
-    // Use ITEM_KEY_BOSS to timestamp Ganon's boss key
-    if (item == RG_GANONS_CASTLE_BOSS_KEY) {
-        gSaveContext.ship.stats.itemTimestamp[ITEM_KEY_BOSS] = time;
-        return;
-    }
-
-    if (randomizerGetToStatsTimeStamp.contains((RandomizerGet)item)) {
-        gSaveContext.ship.stats.itemTimestamp[randomizerGetToStatsTimeStamp[(RandomizerGet)item]] = time;
-        return;
-    }
-
-    // Count any bottled item as a bottle
-    if (item >= RG_EMPTY_BOTTLE && item <= RG_BOTTLE_WITH_BIG_POE) {
-        if (gSaveContext.ship.stats.itemTimestamp[ITEM_BOTTLE] == 0) {
+    if (gSaveContext.ship.stats.itemTimestamp[item] == 0) {
+        if (item == RG_GANONS_CASTLE_BOSS_KEY) {
+            gSaveContext.ship.stats.itemTimestamp[ITEM_KEY_BOSS] = time;
+        } else if (item == RG_MASTER_SWORD) {
+            gSaveContext.ship.stats.itemTimestamp[ITEM_SWORD_MASTER] = time;
+        } else if (randomizerGetToStatsTimeStamp.contains((RandomizerGet)item)) {
+            gSaveContext.ship.stats.itemTimestamp[randomizerGetToStatsTimeStamp[(RandomizerGet)item]] = time;
+        } else if (item >= RG_EMPTY_BOTTLE && item <= RG_BOTTLE_WITH_BIG_POE) {
             gSaveContext.ship.stats.itemTimestamp[ITEM_BOTTLE] = time;
-        }
-        return;
-    }
-
-    // Count any bombchu pack as bombchus
-    if ((item >= RG_BOMBCHU_5 && item <= RG_BOMBCHU_20) || item == RG_PROGRESSIVE_BOMBCHU_BAG) {
-        if (gSaveContext.ship.stats.itemTimestamp[ITEM_BOMBCHU] = 0) {
+        } else if ((item >= RG_BOMBCHU_5 && item <= RG_BOMBCHU_20) || item == RG_PROGRESSIVE_BOMBCHU_BAG) {
             gSaveContext.ship.stats.itemTimestamp[ITEM_BOMBCHU] = time;
+        } else if (item == RG_MAGIC_SINGLE) {
+            gSaveContext.ship.stats.itemTimestamp[ITEM_SINGLE_MAGIC] = time;
+        } else if (item == RG_DOUBLE_DEFENSE) {
+            gSaveContext.ship.stats.itemTimestamp[ITEM_DOUBLE_DEFENSE] = time;
         }
-        return;
-    }
-
-    if (item == RG_MAGIC_SINGLE) {
-        gSaveContext.ship.stats.itemTimestamp[ITEM_SINGLE_MAGIC] = time;
-        return;
-    }
-
-    if (item == RG_DOUBLE_DEFENSE) {
-        gSaveContext.ship.stats.itemTimestamp[ITEM_DOUBLE_DEFENSE] = time;
-        return;
     }
 }
 
@@ -1385,13 +1364,7 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
 
                 if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT) ==
                     RO_TRIFORCE_HUNT_WIN) {
-                    gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_TRIFORCE_COMPLETED] =
-                        static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
-                    gSaveContext.ship.stats.gameComplete = 1;
-                    Play_PerformSave(play);
-                    Notification::Emit({
-                        .message = "Game autosaved",
-                    });
+                    // Save and warp are deferred until item queue drains
                     GameInteractor_SetTriforceHuntCreditsWarpActive(true);
                 }
             }

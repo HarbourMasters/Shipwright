@@ -1677,7 +1677,8 @@ bool IsCheckShuffled(RandomizerCheck rc) {
                (loc->GetRCType() != RCTYPE_SCRUB || showScrubs ||
                 (showMajorScrubs && (rc == RC_LW_DEKU_SCRUB_NEAR_BRIDGE || // The 3 scrubs that are always randomized
                                      rc == RC_HF_DEKU_SCRUB_GROTTO || rc == RC_LW_DEKU_SCRUB_GROTTO_FRONT))) &&
-               (loc->GetRCType() != RCTYPE_MERCHANT || showMerchants) &&
+               ((loc->GetRCType() != RCTYPE_MERCHANT || showMerchants) ||
+                (rc == RC_ZR_MAGIC_BEAN_SALESMAN && showBeans)) &&
                (loc->GetRCType() != RCTYPE_BEGGAR || showBeggar) &&
                (loc->GetRCType() != RCTYPE_SONG_LOCATION || showSongs) &&
                (loc->GetRCType() != RCTYPE_BEEHIVE || showBeehives) &&
@@ -1728,8 +1729,7 @@ bool IsCheckShuffled(RandomizerCheck rc) {
                 rc == RC_DMT_TRADE_CLAIM_CHECK // even when shuffle adult trade is off
                 ) &&
                (rc != RC_KF_KOKIRI_SWORD_CHEST || showKokiriSword) && (rc != RC_TOT_MASTER_SWORD || showMasterSword) &&
-               (rc != RC_LH_HYRULE_LOACH || showHyruleLoach) && (rc != RC_ZR_MAGIC_BEAN_SALESMAN || showBeans) &&
-               (rc != RC_HC_MALON_EGG || showWeirdEgg) &&
+               (rc != RC_LH_HYRULE_LOACH || showHyruleLoach) && (rc != RC_HC_MALON_EGG || showWeirdEgg) &&
                (loc->GetRCType() != RCTYPE_FROG_SONG || showFrogSongRupees) &&
                ((loc->GetRCType() != RCTYPE_MAP && loc->GetRCType() != RCTYPE_COMPASS) || showStartingMapsCompasses) &&
                (loc->GetRCType() != RCTYPE_FOUNTAIN_FAIRY || showFountainFairies) &&

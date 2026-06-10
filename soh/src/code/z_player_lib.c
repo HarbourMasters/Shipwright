@@ -3,7 +3,6 @@
 #include "objects/gameplay_field_keep/gameplay_field_keep.h"
 #include "objects/object_link_boy/object_link_boy.h"
 #include "objects/object_link_child/object_link_child.h"
-#include "objects/object_triforce_spot/object_triforce_spot.h"
 #include "overlays/actors/ovl_Demo_Effect/z_demo_effect.h"
 
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
@@ -1317,12 +1316,14 @@ s32 Player_OverrideLimbDrawGameplayCommon(PlayState* play, s32 limbIndex, Gfx** 
         if (limbIndex == PLAYER_LIMB_HEAD) {
             if (CVarGetInteger(CVAR_COSMETIC("Link.HeadScale.Changed"), 0)) {
                 f32 scale = CVarGetFloat(CVAR_COSMETIC("Link.HeadScale.Value"), 1.0f);
-                Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
-                if (scale > 1.2f) {
-                    Matrix_Translate(-((LINK_IS_ADULT ? 320.0f : 200.0f) * scale), 0.0f, 0.0f, MTXMODE_APPLY);
-                } else if (scale < 1.0f) {
-                    Matrix_Translate((LINK_IS_ADULT ? 3600.0f : 2900.0f) * ABS(scale - 1.0f), 0.0f, 0.0f,
-                                     MTXMODE_APPLY);
+                if (scale != 1.0f) {
+                    Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
+                    if (scale > 1.2f) {
+                        Matrix_Translate(-((LINK_IS_ADULT ? 320.0f : 200.0f) * scale), 0.0f, 0.0f, MTXMODE_APPLY);
+                    } else if (scale < 1.0f) {
+                        Matrix_Translate((LINK_IS_ADULT ? 3600.0f : 2900.0f) * ABS(scale - 1.0f), 0.0f, 0.0f,
+                                         MTXMODE_APPLY);
+                    }
                 }
             }
             rot->x += this->headLimbRot.z;
@@ -1331,8 +1332,10 @@ s32 Player_OverrideLimbDrawGameplayCommon(PlayState* play, s32 limbIndex, Gfx** 
         } else if (limbIndex == PLAYER_LIMB_L_HAND) {
             if (CVarGetInteger(CVAR_COSMETIC("Link.SwordScale.Changed"), 0)) {
                 f32 scale = CVarGetFloat(CVAR_COSMETIC("Link.SwordScale.Value"), 1.0f);
-                Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
-                Matrix_Translate(-((LINK_IS_ADULT ? 320.0f : 200.0f) * scale), 0.0f, 0.0f, MTXMODE_APPLY);
+                if (scale != 1.0f) {
+                    Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
+                    Matrix_Translate(-((LINK_IS_ADULT ? 320.0f : 200.0f) * (scale - 1.0f)), 0.0f, 0.0f, MTXMODE_APPLY);
+                }
             }
         } else if (limbIndex == PLAYER_LIMB_UPPER) {
             if (this->upperLimbYawSecondary != 0) {
@@ -1918,8 +1921,10 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
         }
 
         if (this->actor.scale.y >= 0.0f) {
-            if (GameInteractor_Should(VB_DRAW_ADDITIONAL_RETICLES, (this->heldItemAction == PLAYER_IA_HOOKSHOT) ||
-                                                                       (this->heldItemAction == PLAYER_IA_LONGSHOT))) {
+            if (GameInteractor_Should(VB_DRAW_ADDITIONAL_RETICLES,
+                                      (this->heldItemAction == PLAYER_IA_HOOKSHOT) ||
+                                          (this->heldItemAction == PLAYER_IA_LONGSHOT),
+                                      this)) {
                 Matrix_MultVec3f(&D_80126184, &this->unk_3C8);
 
                 if (heldActor != NULL) {

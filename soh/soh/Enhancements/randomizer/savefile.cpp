@@ -425,10 +425,6 @@ extern "C" void Randomizer_InitSaveFile() {
 
     HIGH_SCORE(HS_POE_POINTS) = 1000 - (100 * Randomizer_GetSettingValue(RSK_BIG_POE_COUNT));
 
-    if (Randomizer_GetSettingValue(RSK_SKIP_EPONA_RACE)) {
-        Flags_SetEventChkInf(EVENTCHKINF_EPONA_OBTAINED);
-    }
-
     // Open lowest Vanilla Fire Temple locked door (to prevent key logic lockouts).
     // Not done on Keysanity since this lockout is a non-issue when Fire Keys can be found outside the temple.
     u8 keysanity = Randomizer_GetSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_ANYWHERE ||
