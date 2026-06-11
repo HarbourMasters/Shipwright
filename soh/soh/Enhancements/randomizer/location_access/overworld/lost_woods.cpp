@@ -122,6 +122,7 @@ void RegionTable_Init_LostWoods() {
         LOCATION(RC_LW_NEAR_SHORTCUTS_GROTTO_GRASS_2,                logic->CanCutShrubs()),
         LOCATION(RC_LW_NEAR_SHORTCUTS_GROTTO_GRASS_3,                logic->CanCutShrubs()),
         LOCATION(RC_LW_NEAR_SHORTCUTS_GROTTO_GRASS_4,                logic->CanCutShrubs()),
+        LOCATION(RC_LW_TUNNEL_GROTTO_BUTTERFLY_FAIRY,                logic->CanUse(RG_STICKS)),
     }, {
         //Exits
         ENTRANCE(RR_THE_LOST_WOODS, true),

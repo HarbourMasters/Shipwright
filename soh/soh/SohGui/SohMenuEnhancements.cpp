@@ -1,10 +1,11 @@
 ﻿#include "SohMenu.h"
 #include <soh/Enhancements/enhancementTypes.h>
-#include <soh/Enhancements/mods.h>
+#include "soh/Enhancements/SwitchAge.h"
 #include <soh/Enhancements/game-interactor/GameInteractor.h>
 #include <soh/OTRGlobals.h>
 #include <soh/Enhancements/cosmetics/authenticGfxPatches.h>
 #include <soh/Enhancements/TimeDisplay/TimeDisplay.h>
+#include "soh/Enhancements/randomizer/randomizer.h"
 
 extern "C" {
 #include "functions.h"
@@ -361,7 +362,7 @@ void SohMenu::AddMenuEnhancements() {
             CVAR_INT_SHIP_INIT(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), true);
             CVAR_INT_SHIP_INIT(CVAR_ENHANCEMENT("TimeSavers.DisableTitleCard"), true);
 
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+            Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         });
     AddWidget(path, "None##Skips", WIDGET_BUTTON)
         .SameLine(true)
@@ -378,7 +379,7 @@ void SohMenu::AddMenuEnhancements() {
             CVAR_INT_SHIP_INIT(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), false);
             CVAR_INT_SHIP_INIT(CVAR_ENHANCEMENT("TimeSavers.DisableTitleCard"), false);
 
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+            Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         });
     AddWidget(path, "Skip Intro", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Intro"))
@@ -1041,6 +1042,17 @@ void SohMenu::AddMenuEnhancements() {
             "Forces Goron City doors open if you somehow complete Fire Temple without talking to Goron Link "
             " and receiving the Goron Tunic."));
 
+    AddWidget(path, "Fix MQ Water 1F Lock", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("MQWaterLockFix"))
+        .PreFunc([](WidgetInfo& info) {
+            info.options->disabled = IS_RANDO && GameInteractor::IsSaveLoaded(true);
+            info.options->disabledTooltip = "This setting is forcefully enabled when you are playing a Randomizer.";
+        })
+        .Options(CheckboxOptions().Tooltip(
+            "The second small key lock MQ water is removed before the player can reach it by a shared flag with some "
+            "Stalfos on the way to Dark Link.\n"
+            "Enabling this will cause that lock to use a different flag, working as intended."));
+
     AddWidget(path, "Item-related Fixes", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Fix Deku Nut Upgrade", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("DekuNutUpgradeFix"))
@@ -1349,7 +1361,6 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Enemies", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Hyper Bosses", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("HyperBosses"))
-        .Callback([](WidgetInfo& info) { UpdateHyperBossesState(); })
         .Options(CheckboxOptions().Tooltip("All Major Bosses move and act twice as fast."));
     AddWidget(path, "Hyper Enemies", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("HyperEnemies"))
@@ -1630,8 +1641,8 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Ivan the Fairy (Coop Mode)", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("IvanCoopModeEnabled"))
         .Options(CheckboxOptions().Tooltip(
-            "Enables Ivan the Fairy upon the next map change. Player 2 can control Ivan and press the C-Buttons to "
-            "use items and mess with Player 1!"));
+            "Enables Ivan the Fairy. Player 2 can control Ivan and press the C-Buttons to use items and mess with "
+            "Player 1!"));
     AddWidget(path, "Dogs Follow You Everywhere", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("DogFollowsEverywhere"))
         .Options(CheckboxOptions().Tooltip("Allows dogs to follow you anywhere you go, even if you leave the Market."));
@@ -1856,7 +1867,7 @@ void SohMenu::AddMenuEnhancements() {
         .CVar(CVAR_CHEAT("SaveStatePromise"))
         .Callback([](WidgetInfo& info) {
             CVarSetInteger(CVAR_CHEAT("SaveStatesEnabled"), 0);
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+            Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         });
     AddWidget(path, "I understand, enable save states", WIDGET_CVAR_CHECKBOX)
         .PreFunc([](WidgetInfo& info) { info.isHidden = CVarGetInteger(CVAR_CHEAT("SaveStatePromise"), 0) == 0; })
@@ -1874,9 +1885,9 @@ void SohMenu::AddMenuEnhancements() {
                 CVarSetInteger(CVAR_CHEAT("BetaQuestWorld"), 0);
             }
             std::reinterpret_pointer_cast<Ship::ConsoleWindow>(
-                Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))
+                Ship::Context::GetRawInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))
                 ->Dispatch("reset");
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+            Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         })
         .Options(CheckboxOptions().Tooltip("Turns on OoT Beta Quest. *WARNING*: This will reset your game!"));
     AddWidget(path, "Beta Quest World: %d", WIDGET_CVAR_SLIDER_INT)
@@ -1886,9 +1897,9 @@ void SohMenu::AddMenuEnhancements() {
         })
         .Callback([](WidgetInfo& info) {
             std::reinterpret_pointer_cast<Ship::ConsoleWindow>(
-                Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))
+                Ship::Context::GetRawInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))
                 ->Dispatch("reset");
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+            Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         })
         .Options(IntSliderOptions().DefaultValue(0).Min(0).Max(8).Tooltip(
             "Set the Beta Quest world to explore. *WARNING*: Changing this will reset your game!\n"

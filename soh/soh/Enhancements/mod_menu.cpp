@@ -54,7 +54,7 @@ void SetEnabledModsCVarValue() {
     }
 
     CVarSetString(CVAR_ENABLED_MODS_NAME, s.c_str());
-    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+    Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
 }
 
 void AfterModChange() {
@@ -105,7 +105,7 @@ std::vector<std::string>& GetModFiles(bool enabled) {
 }
 
 std::shared_ptr<Ship::ArchiveManager> GetArchiveManager() {
-    return Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager();
+    return Ship::Context::GetRawInstance()->GetResourceManager()->GetArchiveManager();
 }
 
 bool IsValidExtension(std::string extension) {
@@ -334,8 +334,8 @@ void ModMenuWindow::DrawElement() {
                                       gfx_texture_cache_clear();
                                       SOH::SkeletonPatcher::ClearSkeletons();
                                       */
-                                      Ship::Context::GetInstance()->GetConsoleVariables()->Save();
-                                      Ship::Context::GetInstance()->GetWindow()->Close();
+                                      Ship::Context::GetRawInstance()->GetConsoleVariables()->Save();
+                                      Ship::Context::GetRawInstance()->GetWindow()->Close();
                                   });
         }
     }

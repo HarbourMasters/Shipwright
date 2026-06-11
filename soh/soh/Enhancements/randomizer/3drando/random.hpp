@@ -3,7 +3,7 @@
 #include "soh/ShipUtils.h"
 #include <array>
 #include <cstddef>
-#include <cstdint>
+#include <stdint.h>
 #include <utility>
 #include <vector>
 #include <set>

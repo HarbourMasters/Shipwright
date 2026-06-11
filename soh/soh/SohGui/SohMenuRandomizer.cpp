@@ -2,7 +2,9 @@
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
+#include "soh/Enhancements/randomizer/settings.h"
 #include "soh/OTRGlobals.h"
+#include "soh/ShipUtils.h"
 #include "soh/SohGui/SohGui.hpp"
 
 extern "C" {
@@ -39,7 +41,7 @@ void SaveEnabledTricks() {
     } else {
         CVarSetString(CVAR_RANDOMIZER_SETTING("EnabledTricks"), enabledTrickString.c_str());
     }
-    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+    Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     tricksDirty = false;
     return;
 }
@@ -109,7 +111,7 @@ void DrawLocationsMenu(WidgetInfo& info) {
                                 }
                                 CVarSetString(CVAR_RANDOMIZER_SETTING("ExcludedLocations"),
                                               excludedLocationString.c_str());
-                                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+                                Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
                                 locationsDirty = true;
                             }
                             UIWidgets::PopStyleButton();
@@ -160,7 +162,7 @@ void DrawLocationsMenu(WidgetInfo& info) {
                                     CVarSetString(CVAR_RANDOMIZER_SETTING("ExcludedLocations"),
                                                   excludedLocationString.c_str());
                                 }
-                                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+                                Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
                                 locationsDirty = true;
                             }
                             UIWidgets::PopStyleButton();
@@ -179,6 +181,11 @@ void DrawLocationsMenu(WidgetInfo& info) {
     ImGui::PopStyleVar(1);
     // ImGui::EndTabItem();
     ImGui::EndDisabled();
+}
+
+void MarkRandomizerMenusDirty() {
+    locationsDirty = true;
+    tricksDirty = true;
 }
 
 void UpdateMenuLocations() {
@@ -558,16 +565,19 @@ void SohMenu::AddMenuRandomizer() {
                         .Color(THEME_COLOR)
                         .Padding(ImVec2(10.f, 6.f))
                         .Tooltip("Creates a new random seed value to be used when generating a randomizer"))) {
-                SohUtils::CopyStringToCharArray(seedString, std::to_string(rand() & 0xFFFFFFFF), MAX_SEED_STRING_SIZE);
+                for (size_t i = 0; i < 10; i++) {
+                    seedString[i] = '0' + ShipUtils::Random(0, 10);
+                }
+                seedString[10] = '\0';
             }
             ImGui::SameLine();
             if (UIWidgets::Button(ICON_FA_ERASER, UIWidgets::ButtonOptions()
                                                       .Size(UIWidgets::Sizes::Inline)
                                                       .Color(THEME_COLOR)
                                                       .Padding(ImVec2(10.f, 6.f)))) {
-                memset(seedString, 0, MAX_SEED_STRING_SIZE);
+                seedString[0] = 0;
             }
-            if (strnlen(seedString, MAX_SEED_STRING_SIZE) == 0) {
+            if (seedString[0] == 0) {
                 ImGui::SameLine(17.0f);
                 ImGui::TextColored(ImVec4(1.0f, 1.0f, 1.0f, 0.4f), "Leave blank for random seed");
             }

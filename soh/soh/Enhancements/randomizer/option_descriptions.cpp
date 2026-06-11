@@ -135,6 +135,12 @@ void Settings::CreateOptionDescriptions() {
         "The amount of Triforce pieces that will be placed in the world. "
         "Keep in mind seed generation can fail if more pieces are placed than there are junk items in the item pool.";
     mOptionDescriptions[RSK_TRIFORCE_HUNT_PIECES_REQUIRED] = "The amount of Triforce pieces required to win the game.";
+    mOptionDescriptions[RSK_TRIFORCE_HUNT_PIECES_LOCATION] =
+        "Any dungeon - Triforce pieces can only appear inside of any dungeon.\n"
+        "\n"
+        "Overworld - Triforce pieces can only appear outside of dungeons.\n"
+        "\n"
+        "Anywhere - Triforce pieces can appear anywhere in the world.";
     mOptionDescriptions[RSK_SHUFFLE_DUNGEON_ENTRANCES] =
         "Shuffle the pool of dungeon entrances, including Bottom of the Well, Ice Cavern and Gerudo Training Ground.\n"
         "\n"
@@ -369,11 +375,9 @@ void Settings::CreateOptionDescriptions() {
         "\n"
         "1-7 Items - Vanilla shop items will be shuffled among different shops, and "
         "each shop will contain 1-7 non-vanilla shop items.\n"
-        /*
         "\n"
-        "8 Items - All shops will contain 8 non-vanilla shop items.\n"
-        */
-        ;
+        "8 Items - All shops will contain 8 non-vanilla shop items. "
+        "Only available with No Logic, since logic otherwise requires at least one buyable refill per shop.\n";
     mOptionDescriptions[RSK_SHOPSANITY_PRICES] =
         "Vanilla - The same price as the item it replaced.\n"
         "Cheap Balanced - Prices will range between 0 to 95 rupees, favoring lower numbers.\n"
@@ -400,6 +404,10 @@ void Settings::CreateOptionDescriptions() {
         "After choosing a price, set it to the affordable amount based on the wallet required.\n\n"
         "Affordable prices per tier: starter = 1, adult = 100, giant = 201, tycoon = 501\n\n"
         "Use this to enable wallet tier locking, but make shop items not as expensive as they could be.";
+    mOptionDescriptions[RSK_SHOP_SHIELDS_AND_TUNICS_ONLY_REFILL] =
+        "Non-randomized shields and tunics sold in shops cannot be purchased until you have first found a shield "
+        "elsewhere. "
+        "Regions containing a shield or tunic will not be hinted foolish.";
     mOptionDescriptions[RSK_FISHSANITY] =
         "Off - Fish will not be shuffled. No changes will be made to fishing behavior.\n\n"
         "Shuffle only Hyrule Loach - Allows you to earn an item by catching the Hyrule Loach at the fishing pond and "

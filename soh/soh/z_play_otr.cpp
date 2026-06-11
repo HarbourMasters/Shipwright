@@ -14,7 +14,7 @@ s32 OTRScene_ExecuteCommands(PlayState* play, SOH::Scene* scene);
 
 // LUS::OTRResource* OTRPlay_LoadFile(PlayState* play, RomFile* file) {
 Ship::IResource* OTRPlay_LoadFile(PlayState* play, const char* fileName) {
-    auto res = Ship::Context::GetInstance()->GetResourceManager()->LoadResource(fileName);
+    auto res = Ship::Context::GetRawInstance()->GetResourceManager()->LoadResource(fileName);
     return res.get();
 }
 
@@ -81,7 +81,7 @@ void OTRPlay_InitScene(PlayState* play, s32 spawn) {
 
     GameInteractor_ExecuteAfterSceneCommands(play->sceneNum);
     Play_InitEnvironment(play, play->skyboxId);
-    /* auto data = static_cast<LUS::Vertex*>(Ship::Context::GetInstance()
+    /* auto data = static_cast<LUS::Vertex*>(Ship::Context::GetRawInstance()
                                                ->GetResourceManager()
                                                ->ResourceLoad("object_link_child\\object_link_childVtx_01FE08")
                                                .get());

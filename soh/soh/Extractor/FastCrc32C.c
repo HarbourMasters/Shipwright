@@ -12,11 +12,18 @@
 #pragma GCC target("sse4.2")
 #endif
 
-// Include headers for the CRC32 intrinsic and cpuid instruction on windows. No need to do any other checks because it
-// assumes the target will support CRC32
+// Include headers for the CRC32 intrinsic and CPU feature checks on Windows x86/x64/ARM64.
 #ifdef _WIN32
-#include <immintrin.h>
+#if defined(_M_X64) || defined(_M_IX86) || defined(_M_ARM64)
 #include <intrin.h>
+#if defined(_M_X64) || defined(_M_IX86)
+#include <immintrin.h>
+#elif defined(_M_ARM64)
+#include <Windows.h>
+#endif
+#else
+#define NO_CRC_INTRIN
+#endif
 // Same as above but these platforms use slightly different headers
 #elif ((defined(__GNUC__) && (defined(__x86_64__) || defined(__i386__))))
 #include <nmmintrin.h>
@@ -27,12 +34,18 @@
 #define NO_CRC_INTRIN
 #endif
 
-#if defined(__aarch64__) && defined(__ARM_FEATURE_CRC32)
+#if defined(_MSC_VER) && defined(_M_ARM64)
+#define INTRIN_CRC32_64(crc, data) crc = __crc32cd(crc, data)
+#define INTRIN_CRC32_32(crc, data) crc = __crc32cw(crc, data)
+#define INTRIN_CRC32_16(crc, data) crc = __crc32ch(crc, data)
+#define INTRIN_CRC32_8(crc, data) crc = __crc32cb(crc, data)
+#elif defined(__aarch64__) && defined(__ARM_FEATURE_CRC32)
 #define INTRIN_CRC32_64(crc, value) __asm__("crc32cx %w[c], %w[c], %x[v]" : [c] "+r"(crc) : [v] "r"(value))
 #define INTRIN_CRC32_32(crc, value) __asm__("crc32cw %w[c], %w[c], %w[v]" : [c] "+r"(crc) : [v] "r"(value))
 #define INTRIN_CRC32_16(crc, value) __asm__("crc32ch %w[c], %w[c], %w[v]" : [c] "+r"(crc) : [v] "r"(value))
 #define INTRIN_CRC32_8(crc, value) __asm__("crc32cb %w[c], %w[c], %w[v]" : [c] "+r"(crc) : [v] "r"(value))
-#elif defined(__GNUC__) || defined(_MSC_VER)
+#elif ((defined(__GNUC__) || defined(_MSC_VER)) && \
+       (defined(_M_X64) || defined(_M_IX86) || defined(__x86_64__) || defined(__i386__)))
 #define INTRIN_CRC32_64(crc, data) crc = _mm_crc32_u64(crc, data)
 #define INTRIN_CRC32_32(crc, data) crc = _mm_crc32_u32(crc, data)
 #define INTRIN_CRC32_16(crc, data) crc = _mm_crc32_u16(crc, data)
@@ -78,7 +91,7 @@ static uint32_t CRC32IntrinImpl(unsigned char* data, size_t dataSize) {
     uint32_t ret = 0xFFFFFFFF;
     int64_t sizeSigned = dataSize;
 // Only 64bit platforms support doing a CRC32 operation on a 64bit value
-#if defined(_M_X64) || defined(__x86_64__) || defined(__aarch64__)
+#if defined(_M_X64) || defined(_M_ARM64) || defined(__x86_64__) || defined(__aarch64__)
     while ((sizeSigned -= sizeof(uint64_t)) >= 0) {
         INTRIN_CRC32_64(ret, *(uint64_t*)data);
         data += sizeof(uint64_t);
@@ -122,6 +135,11 @@ static uint32_t CRC32TableImpl(unsigned char* data, size_t dataSize) {
 uint32_t CRC32C(unsigned char* data, size_t dataSize) {
 #ifndef NO_CRC_INTRIN
     // Test to make sure the CPU supports the CRC32 intrinsic
+#if defined(_WIN32) && defined(_M_ARM64)
+    if (IsProcessorFeaturePresent(PF_ARM_V8_CRC32_INSTRUCTIONS_AVAILABLE)) {
+        return CRC32IntrinImpl(data, dataSize);
+    }
+#else
     unsigned int cpuidData[4];
 #ifdef _WIN32
     __cpuid(cpuidData, 1);
@@ -135,6 +153,7 @@ uint32_t CRC32C(unsigned char* data, size_t dataSize) {
     if (cpuidData[2] & (1 << 20)) { // bit_SSE4_2
         return CRC32IntrinImpl(data, dataSize);
     }
+#endif
 #endif // NO_CRC_INTRIN
     return CRC32TableImpl(data, dataSize);
 }

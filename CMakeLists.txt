@@ -81,10 +81,24 @@ add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/utf-8>)
 add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/Zc:preprocessor>)
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+    if(NOT CMAKE_VS_PLATFORM_NAME)
+        set(CMAKE_VS_PLATFORM_NAME "x64")
+    endif()
+
+    if("${CMAKE_VS_PLATFORM_NAME}" MATCHES "^[Aa][Rr][Mm]64$")
+        set(SOH_WINDOWS_ARM64 TRUE)
+    else()
+        set(SOH_WINDOWS_ARM64 FALSE)
+    endif()
+
     include(CMake/automate-vcpkg.cmake)
 
     set(VCPKG_TRIPLET x64-windows-static)
     set(VCPKG_TARGET_TRIPLET x64-windows-static)
+    if(SOH_WINDOWS_ARM64)
+        set(VCPKG_TRIPLET arm64-windows-static)
+        set(VCPKG_TARGET_TRIPLET arm64-windows-static)
+    endif()
 
     vcpkg_bootstrap()
     vcpkg_install_packages(zlib bzip2 libzip libpng sdl2 sdl2-net glew glfw3 nlohmann-json tinyxml2 spdlog libogg libvorbis opus opusfile)
@@ -103,7 +117,8 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
     message("${CMAKE_VS_PLATFORM_NAME} architecture in use")
 
     if(NOT ("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64"
-        OR "${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32"))
+        OR "${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32"
+        OR SOH_WINDOWS_ARM64))
         message(FATAL_ERROR "${CMAKE_VS_PLATFORM_NAME} arch is not supported!")
     endif()
 endif()
@@ -120,6 +135,10 @@ else()
 set(CMAKE_C_FLAGS_RELEASE "-O2 -DNDEBUG")
 set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DNDEBUG")
 set(CMAKE_OBJCXX_FLAGS_RELEASE "-O2 -DNDEBUG")
+endif()
+# IEEE 754 compliant floating-point rounding on arm64 macOS
+if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+    add_compile_options(-Xarch_arm64 -ffp-contract=off)
 endif()
 
 if(NOT CMAKE_BUILD_TYPE )
