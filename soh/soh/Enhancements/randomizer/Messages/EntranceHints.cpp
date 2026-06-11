@@ -1,5 +1,6 @@
 #include "soh/Enhancements/randomizer/entrance.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance_tracker.h"
+#include "soh/Enhancements/randomizer/randomizer.h"
 #include <soh/OTRGlobals.h>
 
 extern "C" {
@@ -57,7 +58,7 @@ void BuildEntranceHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
             entrance = ENTR_GROTTOS_13;
             break;
         case TEXT_DMT_DC_SIGN:
-            entrance = ENTR_DEATH_MOUNTAIN_TRAIL_OUTSIDE_DODONGOS_CAVERN;
+            entrance = ENTR_DODONGOS_CAVERN_ENTRANCE;
             break;
         case TEXT_DMT_GC_SIGN:
             entrance = ENTR_GORON_CITY_UPPER_EXIT;

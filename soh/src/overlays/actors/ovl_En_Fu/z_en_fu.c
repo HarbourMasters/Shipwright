@@ -7,8 +7,8 @@
 #include "z_en_fu.h"
 #include "objects/object_fu/object_fu.h"
 #include "scenes/indoors/hakasitarelay/hakasitarelay_scene.h"
-#include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS                                                                                  \
     (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED | \
@@ -179,7 +179,13 @@ void func_80A1DBD4(EnFu* this, PlayState* play) {
         Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
         this->actionFunc = func_80A1DB60;
         this->actor.flags &= ~ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
-
+        if (GameInteractor_Should(VB_PLAY_SONG_OF_STORMS_CS, true, this)) {
+            play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gSongOfStormsCs);
+            gSaveContext.cutsceneTrigger = 1;
+        }
+        if (GameInteractor_Should(VB_GIVE_ITEM_SONG, true, ITEM_SONG_STORMS)) {
+            Item_Give(play, ITEM_SONG_STORMS);
+        }
         play->msgCtx.ocarinaMode = OCARINA_MODE_00;
         Flags_SetEventChkInf(EVENTCHKINF_PLAYED_SONG_OF_STORMS_IN_WINDMILL);
     } else if (play->msgCtx.ocarinaMode == OCARINA_MODE_02) {

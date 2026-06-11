@@ -1,18 +1,20 @@
 #include <initializer_list>
-#include "src/overlays/actors/ovl_En_Elf/z_en_elf.h"
 #include "objects/object_link_boy/object_link_boy.h"
 #include "objects/object_link_child/object_link_child.h"
 #include "objects/object_custom_equip/object_custom_equip.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
 #include "soh/ResourceManagerHelpers.h"
-#include "soh_assets.h"
-#include "kaleido.h"
 #include "soh/cvar_prefixes.h"
+
+extern "C" {
+#include "variables.h"
+#include "macros.h"
 
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
-extern void Overlay_DisplayText(float duration, const char* text);
+}
+
 void DummyPlayer_Update(Actor* actor, PlayState* play);
 
 static void UpdatePatchCustomEquipmentDlists();
@@ -55,6 +57,22 @@ static const char* GetBrokenLongswordInSheathDL() {
         { gCustomBrokenLongswordInSheathDL, gCustomBreakableLongswordInSheathDL, gCustomLongswordInSheathDL });
 }
 
+static const char* GetCustomFPSSlingshotDL() {
+    return ResolveCustomChain({ gCustomFPSSlingshotDL, gCustomSlingshotDL });
+}
+
+static const char* GetCustomFPSBowDL() {
+    return ResolveCustomChain({ gCustomFPSBowDL, gCustomBowDL });
+}
+
+static const char* GetCustomFPSHookshotDL() {
+    return ResolveCustomChain({ gCustomFPSHookshotDL, gCustomHookshotDL });
+}
+
+static const char* GetCustomFPSLongshotDL() {
+    return ResolveCustomChain({ gCustomFPSLongshotDL, gCustomLongshotDL });
+}
+
 static void UpdateCustomEquipmentSetModel(Player* player, u8 ModelGroup) {
     (void)ModelGroup;
 
@@ -66,33 +84,17 @@ static void UpdateCustomEquipmentSetModel(Player* player, u8 ModelGroup) {
 }
 
 static void UpdateCustomEquipment() {
-    if (!GameInteractor::IsSaveLoaded() || gPlayState == nullptr) {
-        return;
-    }
-
-    Player* player = GET_PLAYER(gPlayState);
-    if (player == nullptr || IsDummyPlayer(player)) {
+    if (!GameInteractor::IsSaveLoaded() || gPlayState == nullptr || GET_PLAYER(gPlayState) == nullptr ||
+        IsDummyPlayer(GET_PLAYER(gPlayState))) {
         return;
     }
 
     RefreshCustomEquipment();
 }
 
-static void PatchCustomEquipment() {
-    COND_HOOK(OnPlayerSetModels, true, UpdateCustomEquipmentSetModel);
-    COND_HOOK(OnLinkEquipmentChange, true, UpdateCustomEquipment);
-    COND_HOOK(OnLinkSkeletonInit, true, UpdateCustomEquipment);
-    COND_HOOK(OnAssetAltChange, true, UpdateCustomEquipment);
-}
-
-static RegisterShipInitFunc initFunc(PatchCustomEquipment);
-
 static void RefreshCustomEquipment() {
-    if (!GameInteractor::IsSaveLoaded() || gPlayState == NULL || GET_PLAYER(gPlayState) == nullptr) {
-        return;
-    }
-
-    if (IsDummyPlayer(GET_PLAYER(gPlayState))) {
+    if (!GameInteractor::IsSaveLoaded() || gPlayState == nullptr || GET_PLAYER(gPlayState) == nullptr ||
+        IsDummyPlayer(GET_PLAYER(gPlayState))) {
         return;
     }
 
@@ -121,6 +123,8 @@ static bool IsDummyPlayer(const Player* player) {
     return player != nullptr && player->actor.update == DummyPlayer_Update;
 }
 
+static bool sPrevAltAssetsEnabled = false;
+
 void PatchOrUnpatch(const char* resource, const char* gfx, const char* dlist1, const char* dlist2, const char* dlist3,
                     const char* alternateDL) {
     if (resource == NULL || gfx == NULL || dlist1 == NULL || dlist2 == NULL) {
@@ -128,6 +132,7 @@ void PatchOrUnpatch(const char* resource, const char* gfx, const char* dlist1, c
     }
 
     const bool altAssetsRuntime = ResourceMgr_IsAltAssetsEnabled();
+    const bool altAssetsChanged = (altAssetsRuntime != sPrevAltAssetsEnabled);
 
     if (!altAssetsRuntime) {
         // Alt assets are off; ensure any prior patches using these names are reverted.
@@ -136,9 +141,14 @@ void PatchOrUnpatch(const char* resource, const char* gfx, const char* dlist1, c
         if (dlist3 != NULL) {
             ResourceMgr_UnpatchGfxByName(resource, dlist3);
         }
-        // Drop any cached version of the resource so it reloads clean (unpatched) next use.
-        ResourceMgr_UnloadResource(resource);
+        if (altAssetsChanged) {
+            ResourceMgr_UnloadResource(resource);
+        }
         return;
+    }
+
+    if (altAssetsChanged) {
+        ResourceMgr_UnloadResource(resource);
     }
 
     if (!ResourceGetIsCustomByName(gfx)) {
@@ -409,8 +419,8 @@ static void ApplyCommonEquipmentPatches() {
         ApplyPatchEntries({
             { gLinkAdultRightHandHoldingHookshotNearDL, gCustomHookshotDL, "customHookshot1", "customHookshot2",
               "customHookshot3", rightHandClosed },
-            { gLinkAdultRightHandHoldingHookshotFarDL, gCustomHookshotDL, "customHookshotFPS1", "customHookshotFPS2",
-              "customHookshotFPS3", fpsHand },
+            { gLinkAdultRightHandHoldingHookshotFarDL, GetCustomFPSHookshotDL(), "customHookshotFPS1",
+              "customHookshotFPS2", "customHookshotFPS3", fpsHand },
         });
     }
 
@@ -418,8 +428,8 @@ static void ApplyCommonEquipmentPatches() {
         ApplyPatchEntries({
             { gLinkAdultRightHandHoldingHookshotNearDL, gCustomLongshotDL, "customHookshot1", "customHookshot2",
               "customHookshot3", rightHandClosed },
-            { gLinkAdultRightHandHoldingHookshotFarDL, gCustomLongshotDL, "customHookshotFPS1", "customHookshotFPS2",
-              "customHookshotFPS3", fpsHand },
+            { gLinkAdultRightHandHoldingHookshotFarDL, GetCustomFPSLongshotDL(), "customHookshotFPS1",
+              "customHookshotFPS2", "customHookshotFPS3", fpsHand },
         });
     }
 
@@ -450,16 +460,16 @@ static void ApplyCommonEquipmentPatches() {
           "customChildOcarina3", rightHandNear },
         { gLinkAdultRightHandHoldingBowNearDL, gCustomBowDL, "customBow1", "customBow2", "customBow3",
           rightHandClosed },
-        { gLinkAdultRightHandHoldingBowFirstPersonDL, gCustomBowDL, "customBowFPS1", "customBowFPS2", "customBowFPS3",
-          fpsHand },
+        { gLinkAdultRightHandHoldingBowFirstPersonDL, GetCustomFPSBowDL(), "customBowFPS1", "customBowFPS2",
+          "customBowFPS3", fpsHand },
         { gLinkAdultLeftHandHoldingHammerNearDL, gCustomHammerDL, "customHammer1", "customHammer2", "customHammer3",
           leftHandClosed },
         { gLinkChildLeftFistAndBoomerangNearDL, gCustomBoomerangDL, "customBoomerang1", "customBoomerang2",
           "customBoomerang3", leftHandClosed },
         { gLinkChildRightHandHoldingSlingshotNearDL, gCustomSlingshotDL, "customSlingshot1", "customSlingshot2",
           "customSlingshot3", rightHandClosed },
-        { gLinkChildRightArmStretchedSlingshotDL, gCustomSlingshotDL, "customSlingshotFPS1", "customSlingshotFPS2",
-          "customSlingshotFPS3", fpsHand },
+        { gLinkChildRightArmStretchedSlingshotDL, GetCustomFPSSlingshotDL(), "customSlingshotFPS1",
+          "customSlingshotFPS2", "customSlingshotFPS3", fpsHand },
     });
 
     ApplyPatchEntries({
@@ -471,8 +481,8 @@ static void ApplyCommonEquipmentPatches() {
           "customBoomerang3", leftHandClosed },
         { gLinkChildRightHandHoldingSlingshotNearDL, gCustomSlingshotDL, "customSlingshot1", "customSlingshot2",
           "customSlingshot3", rightHandClosed },
-        { gLinkChildRightArmStretchedSlingshotDL, gCustomSlingshotDL, "customSlingshotFPS1", "customSlingshotFPS2",
-          "customSlingshotFPS3", fpsHand },
+        { gLinkChildRightArmStretchedSlingshotDL, GetCustomFPSSlingshotDL(), "customSlingshotFPS1",
+          "customSlingshotFPS2", "customSlingshotFPS3", fpsHand },
     });
 }
 
@@ -510,4 +520,15 @@ void UpdatePatchCustomEquipmentDlists() {
     }
 
     ApplyCommonEquipmentPatches();
+
+    sPrevAltAssetsEnabled = ResourceMgr_IsAltAssetsEnabled();
 }
+
+static void PatchCustomEquipment() {
+    COND_HOOK(OnPlayerSetModels, true, UpdateCustomEquipmentSetModel);
+    COND_HOOK(OnLinkEquipmentChange, true, UpdateCustomEquipment);
+    COND_HOOK(OnLinkSkeletonInit, true, UpdateCustomEquipment);
+    COND_HOOK(OnAssetAltChange, true, UpdateCustomEquipment);
+}
+
+static RegisterShipInitFunc initFunc(PatchCustomEquipment);

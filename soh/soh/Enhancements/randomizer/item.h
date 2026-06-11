@@ -1,10 +1,9 @@
 #pragma once
 
 #include <string>
-#include <variant>
 #include <memory>
 
-#include "3drando/text.hpp"
+#include "soh/Enhancements/custom-message/text.h"
 #include "randomizerTypes.h"
 #include "soh/Enhancements/item-tables/ItemTableTypes.h"
 #include "3drando/hints.hpp"
@@ -25,6 +24,8 @@ enum ItemType {
     ITEMTYPE_SHOP,
     ITEMTYPE_DUNGEONREWARD
 };
+
+enum CustomIconSize { ICON_SIZE_24, ICON_SIZE_32 };
 
 namespace Rando {
 class Item {
@@ -58,11 +59,16 @@ class Item {
     bool IsPlaythrough() const;
     bool IsBottleItem() const;
     bool IsMajorItem() const;
+    bool IsShieldOrTunic() const;
     RandomizerHintTextKey GetHintKey() const;
     const HintText& GetHint() const;
     GetItemCategory GetCategory();
     bool operator==(const Item& right) const;
     bool operator!=(const Item& right) const;
+    Item CustomIcon(const char* customIcon_, CustomIconSize iconSize_ = ICON_SIZE_32);
+    const char* GetCustomIcon();
+    CustomIconSize GetCustomIconSize();
+    bool HasCustomIcon();
 
   private:
     RandomizerGet randomizerGet;
@@ -79,5 +85,7 @@ class Item {
     uint16_t price;
     bool playthrough = false;
     std::shared_ptr<GetItemEntry> giEntry;
+    const char* customIcon = nullptr;
+    CustomIconSize iconSize = ICON_SIZE_32;
 };
 } // namespace Rando

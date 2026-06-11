@@ -14,6 +14,7 @@
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/enhancementTypes.h"
+#include "soh/Enhancements/randomizer/SeedContext.h"
 
 extern "C" {
 #include "z64.h"
@@ -1638,7 +1639,7 @@ void C_Button_Dropdown(const char* Header_Title, const char* Table_ID, const cha
             ImGui::EndTable();
         }
         std::shared_ptr<Ship::Controller> controller =
-            Ship::Context::GetInstance()->GetControlDeck()->GetControllerByPort(0);
+            Ship::Context::GetRawInstance()->GetControlDeck()->GetControllerByPort(0);
         for (auto [id, mapping] : controller->GetButton(BTN_DDOWN)->GetAllButtonMappings()) {
             controller->GetButton(BTN_CUSTOM_OCARINA_NOTE_F4)->AddButtonMapping(mapping);
         }
@@ -1889,11 +1890,11 @@ void DrawSillyTab() {
 
     UIWidgets::Separator(true, true, 2.0f, 2.0f);
 
-    UIWidgets::CVarCheckbox("Let It Snow", CVAR_GENERAL("LetItSnow"),
-                            UIWidgets::CheckboxOptions()
-                                .Color(THEME_COLOR)
-                                .Tooltip("Makes snow fall, changes chest texture colors to red and green, etc, for "
-                                         "December holidays.\nWill reset on restart outside of December 23-25."));
+    UIWidgets::CVarCheckbox(
+        "Let It Snow", CVAR_GENERAL("LetItSnow"),
+        UIWidgets::CheckboxOptions()
+            .Color(THEME_COLOR)
+            .Tooltip("Makes snow fall for December holidays.\nWill reset on restart outside of December 23-25."));
 
     UIWidgets::Separator(true, true, 2.0f, 2.0f);
 
@@ -2104,24 +2105,28 @@ void ApplySideEffects(CosmeticOption& cosmeticOption) {
     }
 }
 
-static uint64_t seeded_cosmetics_state = 0;
-
 void RandomizeColor(CosmeticOption& cosmeticOption, bool manual = true) {
     ImVec4 randomColor;
 
-    if (!manual && CVarGetInteger(CVAR_COSMETIC("RandomizeCosmeticsGenModes"), 0) == RANDOMIZE_ON_FILE_LOAD_SEEDED ||
-        !manual && CVarGetInteger(CVAR_COSMETIC("RandomizeCosmeticsGenModes"), 0) == RANDOMIZE_ON_RANDO_GEN_ONLY) {
+    uint64_t local_seed_state = 0;
+    uint64_t* randomState = nullptr;
 
-        uint32_t finalSeed = cosmeticOption.defaultColor.r + cosmeticOption.defaultColor.g +
-                             cosmeticOption.defaultColor.b + cosmeticOption.defaultColor.a +
-                             (IS_RANDO ? Rando::Context::GetInstance()->GetSeed()
-                                       : static_cast<uint32_t>(gSaveContext.ship.stats.fileCreatedAt));
+    if (!manual) {
+        int randomizeMode = CVarGetInteger(CVAR_COSMETIC("RandomizeCosmeticsGenModes"), 0);
+        if (randomizeMode == RANDOMIZE_ON_FILE_LOAD_SEEDED || randomizeMode == RANDOMIZE_ON_RANDO_GEN_ONLY) {
 
-        randomColor = GetRandomValue(finalSeed, &seeded_cosmetics_state);
-    } else {
-        randomColor = GetRandomValue();
+            uint32_t finalSeed = cosmeticOption.defaultColor.r + cosmeticOption.defaultColor.g +
+                                 cosmeticOption.defaultColor.b + cosmeticOption.defaultColor.a +
+                                 (IS_RANDO ? Rando::Context::GetInstance()->GetSeed()
+                                           : static_cast<uint32_t>(gSaveContext.ship.stats.fileCreatedAt));
+
+            randomState = &local_seed_state;
+            ShipUtils::RandInit(finalSeed, randomState);
+        }
+        // For RANDOMIZE_ON_NEW_SCENE, randomState remains nullptr, which uses the global RNG
     }
 
+    randomColor = GetRandomValue(randomState);
     Color_RGBA8 newColor;
     newColor.r = static_cast<uint8_t>(randomColor.x * 255.0f);
     newColor.g = static_cast<uint8_t>(randomColor.y * 255.0f);
@@ -2202,6 +2207,7 @@ void ResetColor(CosmeticOption& cosmeticOption) {
         ResetColor(cosmeticOptions.at("Kaleido.SaveC"));
         ResetColor(cosmeticOptions.at("Kaleido.SaveD"));
     }
+    ShipInit::Init(cosmeticOption.valuesCvar);
 }
 
 void DrawCosmeticRow(CosmeticOption& cosmeticOption) {
@@ -2211,7 +2217,7 @@ void DrawCosmeticRow(CosmeticOption& cosmeticOption) {
         CVarSetInteger((cosmeticOption.changedCvar), 1);
         ApplySideEffects(cosmeticOption);
         ApplyOrResetCustomGfxPatches();
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     }
     // the longest option name
     ImGui::SameLine((ImGui::CalcTextSize("Message Light Blue (None No Shadow)").x * 1.0f) + 60.0f);
@@ -2220,7 +2226,7 @@ void DrawCosmeticRow(CosmeticOption& cosmeticOption) {
             UIWidgets::ButtonOptions().Size(ImVec2(80, 31)).Padding(ImVec2(2.0f, 0.0f)).Color(THEME_COLOR))) {
         RandomizeColor(cosmeticOption);
         ApplyOrResetCustomGfxPatches();
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     }
     if (cosmeticOption.supportsRainbow) {
         ImGui::SameLine();
@@ -2229,7 +2235,7 @@ void DrawCosmeticRow(CosmeticOption& cosmeticOption) {
             CVarSetInteger((cosmeticOption.changedCvar), 1);
             ApplySideEffects(cosmeticOption);
             ApplyOrResetCustomGfxPatches();
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+            Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         }
     }
     ImGui::SameLine();
@@ -2243,7 +2249,7 @@ void DrawCosmeticRow(CosmeticOption& cosmeticOption) {
                               UIWidgets::ButtonOptions().Size(ImVec2(80, 31)).Padding(ImVec2(2.0f, 0.0f)))) {
             ResetColor(cosmeticOption);
             ApplyOrResetCustomGfxPatches();
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+            Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         }
     }
 }
@@ -2409,7 +2415,7 @@ void CosmeticsEditorWindow::DrawElement() {
                      "- On New Scene : Randomizes when you enter a new scene.\n"
                      "- On Rando Gen Only: Randomizes only when you generate a new randomizer.\n"
                      "- On File Load: Randomizes on File Load.\n"
-                     "- On File Load (Seeded): Randomizes on file load based on the current randomizer seed/file.\n"));
+                     "- On File Load (Seeded): Randomizes on file load based on the current randomizer seed/file."));
     UIWidgets::CVarCheckbox(
         "Advanced Mode", CVAR_COSMETIC("AdvancedMode"),
         UIWidgets::CheckboxOptions()
@@ -2616,7 +2622,7 @@ void CosmeticsEditorWindow::InitElement() {
         cosmeticOption.currentColor.z = cvarColor.b / 255.0f;
         cosmeticOption.currentColor.w = cvarColor.a / 255.0f;
     }
-    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+    Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     ApplyOrResetCustomGfxPatches();
     ApplyAuthenticGfxPatches();
 }
@@ -2629,7 +2635,7 @@ void CosmeticsEditor_RandomizeAll() {
         }
     }
 
-    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+    Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     ApplyOrResetCustomGfxPatches();
 }
 
@@ -2641,7 +2647,7 @@ void CosmeticsEditor_AutoRandomizeAll() {
         }
     }
 
-    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+    Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     ApplyOrResetCustomGfxPatches();
 }
 
@@ -2654,7 +2660,7 @@ void CosmeticsEditor_RandomizeGroup(CosmeticGroup group) {
         }
     }
 
-    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+    Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     ApplyOrResetCustomGfxPatches();
 }
 
@@ -2665,7 +2671,7 @@ void CosmeticsEditor_ResetAll() {
         }
     }
 
-    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+    Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     ApplyOrResetCustomGfxPatches();
 }
 
@@ -2676,7 +2682,7 @@ void CosmeticsEditor_ResetGroup(CosmeticGroup group) {
         }
     }
 
-    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+    Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     ApplyOrResetCustomGfxPatches();
 }
 
@@ -2702,6 +2708,7 @@ void RegisterCosmeticHooks() {
               [](s16 sceneNum) { CosmeticsEditor_AutoRandomizeAll(); });
 
     COND_HOOK(OnGameFrameUpdate, true, CosmeticsUpdateTick);
+    COND_HOOK(OnAssetAltChange, true, []() { ApplyOrResetCustomGfxPatches(true); });
 }
 
 void RegisterCosmeticWidgets() {

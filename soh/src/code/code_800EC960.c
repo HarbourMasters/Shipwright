@@ -238,7 +238,7 @@ u8 sSeqFlags[0x6F] = {
     0x1,  // NA_BGM_SHADOW_TEMPLE
     0x1,  // NA_BGM_WATER_TEMPLE
     0x2,  // NA_BGM_BRIDGE_TO_GANONS
-    0,    // NA_BGM_OCARINA_OF_TIME
+    0,    // NA_BGM_SEAL_OF_SAGES
     0x11, // NA_BGM_GERUDO_VALLEY
     0,    // NA_BGM_POTION_SHOP
     0,    // NA_BGM_KOTAKE_KOUME
@@ -246,7 +246,7 @@ u8 sSeqFlags[0x6F] = {
     0,    // NA_BGM_UNDERGROUND
     0x80, // NA_BGM_GANON_BATTLE_1
     0x80, // NA_BGM_GANON_BATTLE_2
-    0,    // NA_BGM_END_DEMO
+    0,    // NA_BGM_OCARINA_OF_TIME
     0,    // NA_BGM_STAFF_1
     0,    // NA_BGM_STAFF_2
     0,    // NA_BGM_STAFF_3

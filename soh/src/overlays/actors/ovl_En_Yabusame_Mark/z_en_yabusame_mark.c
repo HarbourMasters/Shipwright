@@ -6,6 +6,7 @@
 
 #include "z_en_yabusame_mark.h"
 #include "vt.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS 0
 
@@ -159,6 +160,8 @@ void func_80B42F74(EnYabusameMark* this, PlayState* play) {
                 return;
             }
         }
+
+        GameInteractor_Should(VB_SCORE_HORSEBACK_ARCHERY_TARGET, true, &scoreIndex);
 
         osSyncPrintf("\n\n");
         osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ posＸ ☆☆☆☆☆ %f\n" VT_RST, arrowHitPos.x);

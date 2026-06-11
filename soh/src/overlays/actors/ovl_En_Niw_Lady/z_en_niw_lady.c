@@ -3,7 +3,6 @@
 #include "objects/object_os_anime/object_os_anime.h"
 #include "overlays/actors/ovl_En_Niw/z_en_niw.h"
 #include "vt.h"
-#include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
@@ -519,10 +518,10 @@ void EnNiwLady_Update(Actor* thisx, PlayState* play) {
         this->interactInfo.trackPos.y = player->actor.world.pos.y - 10.0f;
     }
     Npc_TrackPoint(thisx, &this->interactInfo, 2, NPC_TRACKING_FULL_BODY);
-    this->unk_254 = this->interactInfo.headRot;
-    this->unk_25A = this->interactInfo.torsoRot;
+    this->headRot = this->interactInfo.headRot;
+    this->torsoRot = this->interactInfo.torsoRot;
     if (this->unk_276 == 0) {
-        Math_SmoothStepToS(&this->unk_254.y, 0, 5, 3000, 0);
+        Math_SmoothStepToS(&this->headRot.y, 0, 5, 3000, 0);
     }
     gSegments[6] = VIRTUAL_TO_PHYSICAL(play->objectCtx.status[this->objectOsAnimeIndex].segment);
     if (this->objectOsAnimeIndex >= 0) {
@@ -571,11 +570,11 @@ s32 EnNiwLady_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3
     s32 pad;
 
     if (limbIndex == 15) {
-        rot->x += this->unk_254.y;
-        rot->z += this->unk_254.x;
+        rot->x += this->headRot.y;
+        rot->z += this->headRot.x;
     }
     if (limbIndex == 8) {
-        rot->x += this->unk_25A.y;
+        rot->x += this->torsoRot.y;
     }
     if (this->unk_275 != 0) {
         if ((limbIndex == 8) || (limbIndex == 10) || (limbIndex == 13)) {

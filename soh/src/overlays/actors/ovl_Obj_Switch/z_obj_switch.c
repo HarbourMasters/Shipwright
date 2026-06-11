@@ -256,9 +256,8 @@ void ObjSwitch_SetOn(ObjSwitch* this, PlayState* play) {
             } else {
                 OnePointCutscene_AttentionSetSfx(play, &this->dyna.actor, NA_SE_SY_TRE_BOX_APPEAR);
             }
+            this->cooldownOn = true;
         }
-
-        this->cooldownOn = true;
     }
 }
 
@@ -271,8 +270,8 @@ void ObjSwitch_SetOff(ObjSwitch* this, PlayState* play) {
         if ((this->dyna.actor.params >> 4 & 7) == 1) {
             if (GameInteractor_Should(VB_PLAY_ONEPOINT_ACTOR_CS, true, this)) {
                 OnePointCutscene_AttentionSetSfx(play, &this->dyna.actor, NA_SE_SY_TRE_BOX_APPEAR);
+                this->cooldownOn = true;
             }
-            this->cooldownOn = true;
         }
     }
 }
@@ -397,7 +396,7 @@ void ObjSwitch_FloorUp(ObjSwitch* this, PlayState* play) {
                 break;
             case OBJSWITCH_SUBTYPE_FLOOR_1:
                 if ((this->dyna.interactFlags & DYNA_INTERACT_PLAYER_ON_TOP) &&
-                    !(this->unk_17F & DYNA_INTERACT_PLAYER_ON_TOP)) {
+                    !(this->prevColFlags & DYNA_INTERACT_PLAYER_ON_TOP)) {
                     ObjSwitch_FloorPressInit(this);
                     ObjSwitch_SetOn(this, play);
                 }
@@ -450,7 +449,7 @@ void ObjSwitch_FloorDown(ObjSwitch* this, PlayState* play) {
             break;
         case OBJSWITCH_SUBTYPE_FLOOR_1:
             if ((this->dyna.interactFlags & DYNA_INTERACT_PLAYER_ON_TOP) &&
-                !(this->unk_17F & DYNA_INTERACT_PLAYER_ON_TOP)) {
+                !(this->prevColFlags & DYNA_INTERACT_PLAYER_ON_TOP)) {
                 ObjSwitch_FloorReleaseInit(this);
                 ObjSwitch_SetOff(this, play);
             }
@@ -498,7 +497,7 @@ s32 ObjSwitch_EyeIsHit(ObjSwitch* this) {
     Actor* collidingActor;
     s16 yawDiff;
 
-    if ((this->tris.col.base.acFlags & AC_HIT) && !(this->unk_17F & 2)) {
+    if ((this->tris.col.base.acFlags & AC_HIT) && !(this->prevColFlags & 2)) {
         collidingActor = this->tris.col.base.ac;
         if (collidingActor != NULL) {
             yawDiff = collidingActor->world.rot.y - this->dyna.actor.shape.rot.y;
@@ -615,7 +614,7 @@ void ObjSwitch_CrystalOff(ObjSwitch* this, PlayState* play) {
             }
             break;
         case OBJSWITCH_SUBTYPE_CRYSTAL_1:
-            if ((this->jntSph.col.base.acFlags & AC_HIT) && !(this->unk_17F & 2) && this->disableAcTimer <= 0) {
+            if ((this->jntSph.col.base.acFlags & AC_HIT) && !(this->prevColFlags & 2) && this->disableAcTimer <= 0) {
                 this->disableAcTimer = 10;
                 ObjSwitch_SetOn(this, play);
                 ObjSwitch_CrystalTurnOnInit(this);
@@ -657,7 +656,7 @@ void ObjSwitch_CrystalOn(ObjSwitch* this, PlayState* play) {
             }
             break;
         case OBJSWITCH_SUBTYPE_CRYSTAL_1:
-            if ((this->jntSph.col.base.acFlags & AC_HIT) && !(this->unk_17F & 2) && this->disableAcTimer <= 0) {
+            if ((this->jntSph.col.base.acFlags & AC_HIT) && !(this->prevColFlags & 2) && this->disableAcTimer <= 0) {
                 this->disableAcTimer = 10;
                 play = play;
                 ObjSwitch_CrystalTurnOffInit(this);
@@ -697,10 +696,10 @@ void ObjSwitch_Update(Actor* thisx, PlayState* play) {
     switch ((this->dyna.actor.params & 7)) {
         case OBJSWITCH_TYPE_FLOOR:
         case OBJSWITCH_TYPE_FLOOR_RUSTY:
-            this->unk_17F = this->dyna.interactFlags;
+            this->prevColFlags = this->dyna.interactFlags;
             break;
         case OBJSWITCH_TYPE_EYE:
-            this->unk_17F = this->tris.col.base.acFlags;
+            this->prevColFlags = this->tris.col.base.acFlags;
             this->tris.col.base.acFlags &= ~AC_HIT;
             CollisionCheck_SetAC(play, &play->colChkCtx, &this->tris.col.base);
             break;
@@ -709,7 +708,7 @@ void ObjSwitch_Update(Actor* thisx, PlayState* play) {
             if (!Player_InCsMode(play) && this->disableAcTimer > 0) {
                 this->disableAcTimer--;
             }
-            this->unk_17F = this->jntSph.col.base.acFlags;
+            this->prevColFlags = this->jntSph.col.base.acFlags;
             this->jntSph.col.base.acFlags &= ~AC_HIT;
             if (this->disableAcTimer <= 0) {
                 CollisionCheck_SetAC(play, &play->colChkCtx, &this->jntSph.col.base);
@@ -779,8 +778,8 @@ void ObjSwitch_DrawCrystal(ObjSwitch* this, PlayState* play) {
 
     gDPSetEnvColor(POLY_OPA_DISP++, this->crystalColor.r, this->crystalColor.g, this->crystalColor.b, 128);
     gSPSegment(POLY_OPA_DISP++, 0x08,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, this->x1TexScroll, this->y1TexScroll, 0x20, 0x20, 1,
-                                this->x2TexScroll, this->y2TexScroll, 0x20, 0x20));
+               Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, this->x1TexScroll, this->y1TexScroll, 0x20, 0x20, 1,
+                                  this->x2TexScroll, this->y2TexScroll, 0x20, 0x20, -1, 1, 1, -1));
     gSPDisplayList(POLY_OPA_DISP++, opaDLists[subType]);
 
     CLOSE_DISPS(play->state.gfxCtx);

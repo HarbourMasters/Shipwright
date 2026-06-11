@@ -4,7 +4,6 @@
 
 #include "global.h"
 #include "vt.h"
-#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include <string.h>
 #include <assert.h>
@@ -414,34 +413,28 @@ BgImage* func_80096A74(PolygonType1* polygon1, PlayState* play) {
 
     camera = GET_ACTIVE_CAM(play);
     camId = camera->camDataIdx;
-    if (camId == -1 && (CVarGetInteger(CVAR_CHEAT("NoRestrictItems"), 0) ||
-                        (CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("Enabled"), 0)))) {
-        // This prevents a crash when using items that change the
-        // camera (such as din's fire), voiding out or dying on
-        // scenes with prerendered backgrounds.
-        return NULL;
-    }
-
-    // jfifid
-    camId2 = func_80041C10(&play->colCtx, camId, BGCHECK_SCENE)[2].y;
-    if (camId2 >= 0) {
-        camId = camId2;
-    }
-
-    player = GET_PLAYER(play);
-    player->actor.params = (player->actor.params & 0xFF00) | camId;
-
-    bgImage = SEGMENTED_TO_VIRTUAL(polygon1->multi.list);
-    for (i = 0; i < polygon1->multi.count; i++) {
-        if (bgImage->id == camId) {
-            return bgImage;
+    if (GameInteractor_Should(VB_SHOULD_LOAD_BG_IMAGE, true, &camId)) {
+        // jfifid
+        camId2 = func_80041C10(&play->colCtx, camId, BGCHECK_SCENE)[2].y;
+        if (camId2 >= 0) {
+            camId = camId2;
         }
-        bgImage++;
-    }
 
-    // "z_room.c: Data consistent with camera id does not exist camid=%d"
-    osSyncPrintf(VT_COL(RED, WHITE) "z_room.c:カメラＩＤに一致するデータが存在しません camid=%d\n" VT_RST, camId);
-    LOG_HUNGUP_THREAD();
+        player = GET_PLAYER(play);
+        player->actor.params = (player->actor.params & 0xFF00) | camId;
+
+        bgImage = SEGMENTED_TO_VIRTUAL(polygon1->multi.list);
+        for (i = 0; i < polygon1->multi.count; i++) {
+            if (bgImage->id == camId) {
+                return bgImage;
+            }
+            bgImage++;
+        }
+
+        // "z_room.c: Data consistent with camera id does not exist camid=%d"
+        osSyncPrintf(VT_COL(RED, WHITE) "z_room.c:カメラＩＤに一致するデータが存在しません camid=%d\n" VT_RST, camId);
+        LOG_HUNGUP_THREAD();
+    }
 
     return NULL;
 }

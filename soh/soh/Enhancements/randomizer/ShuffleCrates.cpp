@@ -4,6 +4,9 @@
 #include <libultraship/libultra.h>
 #include "global.h"
 #include "soh/ObjectExtension/ObjectExtension.h"
+#include "item_category_adj.h"
+#include "soh/Enhancements/randomizer/randomizer.h"
+#include "soh/Enhancements/randomizer/RCToRandInf.h"
 
 extern "C" {
 #include "variables.h"
@@ -35,24 +38,7 @@ extern "C" void ObjKibako2_RandomizerDraw(Actor* thisx, PlayState* play) {
 
     GetItemEntry crateItem =
         Rando::Context::GetInstance()->GetFinalGIEntry(crateIdentity->randomizerCheck, true, GI_NONE);
-    getItemCategory = crateItem.getItemCategory;
-
-    // If they have bombchus, don't consider the bombchu item major
-    if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU &&
-        ((crateItem.modIndex == MOD_RANDOMIZER && crateItem.getItemId == RG_PROGRESSIVE_BOMBCHU_BAG) ||
-         (crateItem.modIndex == MOD_NONE &&
-          (crateItem.getItemId == GI_BOMBCHUS_5 || crateItem.getItemId == GI_BOMBCHUS_10 ||
-           crateItem.getItemId == GI_BOMBCHUS_20)))) {
-        getItemCategory = ITEM_CATEGORY_JUNK;
-        // If it's a bottle and they already have one, consider the item lesser
-    } else if ((crateItem.modIndex == MOD_RANDOMIZER && crateItem.getItemId >= RG_BOTTLE_WITH_RED_POTION &&
-                crateItem.getItemId <= RG_BOTTLE_WITH_POE) ||
-               (crateItem.modIndex == MOD_NONE &&
-                (crateItem.getItemId == GI_BOTTLE || crateItem.getItemId == GI_MILK_BOTTLE))) {
-        if (gSaveContext.inventory.items[SLOT_BOTTLE_1] != ITEM_NONE) {
-            getItemCategory = ITEM_CATEGORY_LESSER;
-        }
-    }
+    getItemCategory = Randomizer_AdjustItemCategory(crateItem);
 
     // Change texture
     switch (getItemCategory) {
@@ -102,24 +88,7 @@ extern "C" void ObjKibako_RandomizerDraw(Actor* thisx, PlayState* play) {
 
     GetItemEntry smallCrateItem =
         Rando::Context::GetInstance()->GetFinalGIEntry(crateIdentity->randomizerCheck, true, GI_NONE);
-    getItemCategory = smallCrateItem.getItemCategory;
-
-    // If they have bombchus, don't consider the bombchu item major
-    if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU &&
-        ((smallCrateItem.modIndex == MOD_RANDOMIZER && smallCrateItem.getItemId == RG_PROGRESSIVE_BOMBCHU_BAG) ||
-         (smallCrateItem.modIndex == MOD_NONE &&
-          (smallCrateItem.getItemId == GI_BOMBCHUS_5 || smallCrateItem.getItemId == GI_BOMBCHUS_10 ||
-           smallCrateItem.getItemId == GI_BOMBCHUS_20)))) {
-        getItemCategory = ITEM_CATEGORY_JUNK;
-        // If it's a bottle and they already have one, consider the item lesser
-    } else if ((smallCrateItem.modIndex == MOD_RANDOMIZER && smallCrateItem.getItemId >= RG_BOTTLE_WITH_RED_POTION &&
-                smallCrateItem.getItemId <= RG_BOTTLE_WITH_POE) ||
-               (smallCrateItem.modIndex == MOD_NONE &&
-                (smallCrateItem.getItemId == GI_BOTTLE || smallCrateItem.getItemId == GI_MILK_BOTTLE))) {
-        if (gSaveContext.inventory.items[SLOT_BOTTLE_1] != ITEM_NONE) {
-            getItemCategory = ITEM_CATEGORY_LESSER;
-        }
-    }
+    getItemCategory = Randomizer_AdjustItemCategory(smallCrateItem);
 
     // Change texture
     switch (getItemCategory) {
@@ -218,6 +187,63 @@ void ObjKibako_RandomizerSpawnCollectible(ObjKibako* smallCrateActor, PlayState*
     item00->actor.world.rot.y = static_cast<int16_t>(Rand_CenteredFloat(65536.0f));
 }
 
+static CheckIdentity IdentifyCrate(s32 sceneNum, s32 posX, s32 posZ) {
+    CheckIdentity crateIdentity;
+    uint32_t crateSceneNum = sceneNum;
+
+    // pretend night is day to align crates in market and align GF child/adult crates
+    if (sceneNum == SCENE_MARKET_NIGHT) {
+        crateSceneNum = SCENE_MARKET_DAY;
+    } else if (sceneNum == SCENE_GERUDOS_FORTRESS && gPlayState->linkAgeOnLoad == 1 && posX == 310) {
+        if (posZ == -1830) {
+            posZ = -1842;
+        } else if (posZ == -1770) {
+            posZ = -1782;
+        }
+    }
+
+    crateIdentity.randomizerInf = RAND_INF_MAX;
+    crateIdentity.randomizerCheck = RC_UNKNOWN_CHECK;
+
+    s32 actorParams = TWO_ACTOR_PARAMS(posX, posZ);
+
+    Rando::Location* location =
+        OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_OBJ_KIBAKO2, crateSceneNum, actorParams);
+
+    if (location->GetRandomizerCheck() == RC_UNKNOWN_CHECK) {
+        LUSLOG_WARN("IdentifyCrate did not receive a valid RC value (%d).", location->GetRandomizerCheck());
+        assert(false);
+    } else {
+        crateIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
+        crateIdentity.randomizerCheck = location->GetRandomizerCheck();
+    }
+
+    return crateIdentity;
+}
+
+static CheckIdentity IdentifySmallCrate(s32 sceneNum, s32 posX, s32 posZ) {
+    CheckIdentity smallCrateIdentity;
+    uint32_t smallCrateSceneNum = sceneNum;
+
+    smallCrateIdentity.randomizerInf = RAND_INF_MAX;
+    smallCrateIdentity.randomizerCheck = RC_UNKNOWN_CHECK;
+
+    s32 actorParams = TWO_ACTOR_PARAMS(posX, posZ);
+
+    Rando::Location* location =
+        OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_OBJ_KIBAKO, smallCrateSceneNum, actorParams);
+
+    if (location->GetRandomizerCheck() == RC_UNKNOWN_CHECK) {
+        LUSLOG_WARN("IdentifyCrate did not receive a valid RC value (%d).", location->GetRandomizerCheck());
+        assert(false);
+    } else {
+        smallCrateIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
+        smallCrateIdentity.randomizerCheck = location->GetRandomizerCheck();
+    }
+
+    return smallCrateIdentity;
+}
+
 void ObjKibako2_RandomizerInit(void* actorRef) {
     Actor* actor = static_cast<Actor*>(actorRef);
     auto logicSetting = RAND_GET_OPTION(RSK_LOGIC_RULES);
@@ -243,8 +269,7 @@ void ObjKibako2_RandomizerInit(void* actorRef) {
 
     ObjKibako2* crateActor = static_cast<ObjKibako2*>(actorRef);
 
-    auto crateIdentity = OTRGlobals::Instance->gRandomizer->IdentifyCrate(gPlayState->sceneNum, (s16)actor->world.pos.x,
-                                                                          (s16)actor->world.pos.z);
+    auto crateIdentity = IdentifyCrate(gPlayState->sceneNum, (s16)actor->world.pos.x, (s16)actor->world.pos.z);
     ObjectExtension::GetInstance().Set<CheckIdentity>(actor, std::move(crateIdentity));
 }
 
@@ -256,8 +281,7 @@ void ObjKibako_RandomizerInit(void* actorRef) {
 
     ObjKibako* smallCrateActor = static_cast<ObjKibako*>(actorRef);
 
-    auto crateIdentity = OTRGlobals::Instance->gRandomizer->IdentifySmallCrate(
-        gPlayState->sceneNum, (s16)actor->home.pos.x, (s16)actor->home.pos.z);
+    auto crateIdentity = IdentifySmallCrate(gPlayState->sceneNum, (s16)actor->home.pos.x, (s16)actor->home.pos.z);
     ObjectExtension::GetInstance().Set<CheckIdentity>(actor, std::move(crateIdentity));
 }
 

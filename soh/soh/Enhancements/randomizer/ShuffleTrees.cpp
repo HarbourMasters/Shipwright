@@ -2,6 +2,9 @@
 #include "soh_assets.h"
 #include "static_data.h"
 #include "soh/ObjectExtension/ObjectExtension.h"
+#include "item_category_adj.h"
+#include "soh/Enhancements/randomizer/randomizer.h"
+#include "soh/Enhancements/randomizer/RCToRandInf.h"
 
 extern "C" {
 #include "variables.h"
@@ -60,24 +63,7 @@ extern "C" void EnWood02_RandomizerDraw(Actor* thisx, PlayState* play) {
         getItemCategory = ITEM_CATEGORY_JUNK;
     } else {
         treeItem = Rando::Context::GetInstance()->GetFinalGIEntry(treeIdentity->randomizerCheck, true, GI_NONE);
-        getItemCategory = treeItem.getItemCategory;
-
-        // If they have bombchus, don't consider the bombchu item major
-        if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU &&
-            ((treeItem.modIndex == MOD_RANDOMIZER && treeItem.getItemId == RG_PROGRESSIVE_BOMBCHU_BAG) ||
-             (treeItem.modIndex == MOD_NONE &&
-              (treeItem.getItemId == GI_BOMBCHUS_5 || treeItem.getItemId == GI_BOMBCHUS_10 ||
-               treeItem.getItemId == GI_BOMBCHUS_20)))) {
-            getItemCategory = ITEM_CATEGORY_JUNK;
-            // If it's a bottle and they already have one, consider the item lesser
-        } else if ((treeItem.modIndex == MOD_RANDOMIZER && treeItem.getItemId >= RG_BOTTLE_WITH_RED_POTION &&
-                    treeItem.getItemId <= RG_BOTTLE_WITH_POE) ||
-                   (treeItem.modIndex == MOD_NONE &&
-                    (treeItem.getItemId == GI_BOTTLE || treeItem.getItemId == GI_MILK_BOTTLE))) {
-            if (gSaveContext.inventory.items[SLOT_BOTTLE_1] != ITEM_NONE) {
-                getItemCategory = ITEM_CATEGORY_LESSER;
-            }
-        }
+        getItemCategory = Randomizer_AdjustItemCategory(treeItem);
     }
 
     GraphicsContext* gfxCtx = play->state.gfxCtx;
@@ -140,6 +126,29 @@ void EnWood02_RandomizerSpawnCollectible(EnWood02* treeActor, PlayState* play) {
     treeIdentity->randomizerCheck = RC_UNKNOWN_CHECK;
 }
 
+static CheckIdentity IdentifyTree(s32 sceneNum, s32 posX, s32 posZ) {
+    CheckIdentity treeIdentity;
+
+    if (sceneNum == SCENE_MARKET_NIGHT) {
+        sceneNum = SCENE_MARKET_DAY;
+    }
+
+    s32 actorParams = TWO_ACTOR_PARAMS(posX, posZ);
+    Rando::Location* location =
+        OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_EN_WOOD02, sceneNum, actorParams);
+    if (location->GetRandomizerCheck() != RC_UNKNOWN_CHECK &&
+        (location->GetRCType() != RCTYPE_NLTREE ||
+         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LOGIC_RULES) == RO_LOGIC_NO_LOGIC)) {
+        treeIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
+        treeIdentity.randomizerCheck = location->GetRandomizerCheck();
+        return treeIdentity;
+    }
+
+    treeIdentity.randomizerInf = RAND_INF_MAX;
+    treeIdentity.randomizerCheck = RC_UNKNOWN_CHECK;
+    return treeIdentity;
+}
+
 void EnWood02_RandomizerInit(void* actorRef) {
     EnWood02* treeActor = static_cast<EnWood02*>(actorRef);
     if ((treeActor->actor.params <= WOOD_TREE_KAKARIKO_ADULT &&
@@ -147,8 +156,8 @@ void EnWood02_RandomizerInit(void* actorRef) {
         (treeActor->actor.params > WOOD_TREE_KAKARIKO_ADULT &&
          treeActor->actor.params <= WOOD_BUSH_BLACK_LARGE_SPAWNED &&
          Rando::Context::GetInstance()->GetOption(RSK_SHUFFLE_BUSHES).Get())) {
-        auto treeIdentity = OTRGlobals::Instance->gRandomizer->IdentifyTree(
-            gPlayState->sceneNum, (s16)treeActor->actor.world.pos.x, (s16)treeActor->actor.world.pos.z);
+        auto treeIdentity =
+            IdentifyTree(gPlayState->sceneNum, (s16)treeActor->actor.world.pos.x, (s16)treeActor->actor.world.pos.z);
         if (treeIdentity.randomizerInf != RAND_INF_MAX && treeIdentity.randomizerCheck != RC_UNKNOWN_CHECK) {
             ObjectExtension::GetInstance().Set<CheckIdentity>(actorRef, std::move(treeIdentity));
         }
@@ -179,7 +188,7 @@ void RegisterShuffleTrees() {
                 treeActor->actor.home.rot.z &= 0x1FFF;
                 treeActor->actor.home.rot.z |= 0xE000;
                 Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_SW, dropsSpawnPt.x, dropsSpawnPt.y,
-                            dropsSpawnPt.z, 0, treeActor->actor.world.rot.y, 0, treeActor->actor.home.rot.z, true);
+                            dropsSpawnPt.z, 0, treeActor->actor.world.rot.y, 0, treeActor->actor.home.rot.z);
                 treeActor->actor.home.rot.z = 0;
             }
             *should = false;

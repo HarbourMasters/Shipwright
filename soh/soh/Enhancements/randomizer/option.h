@@ -3,7 +3,7 @@
 #ifndef RANDOPTION_H
 #define RANDOPTION_H
 
-#include <cstdint>
+#include <stdint.h>
 #include <set>
 #include <string>
 #include <unordered_map>
@@ -226,16 +226,6 @@ class Option {
     uint8_t GetOptionIndex() const;
 
     /**
-     * @brief Set the delayedOption to the currently selected index so it can be restored later.
-     */
-    void SetDelayedOption();
-
-    /**
-     * @brief Restores the delayedOption back to the selected index.
-     */
-    void RestoreDelayedOption();
-
-    /**
      * @brief Set the rando context index for this Option.
      *
      * @param idx the index to set as the selected index.
@@ -296,13 +286,10 @@ class Option {
 
     void AddWidget(WidgetPath& path);
 
-    bool HasFlag(int imFlag_) const;
     void AddFlag(int imFlag_);
-    void SetFlag(int imFlag_);
     void RemoveFlag(int imFlag_);
 
     uint8_t GetValueFromText(std::string text);
-    void SetContextIndexFromText(std::string text);
 
     void SetCallback(WidgetFunc callback);
     void RunCallback();
@@ -314,14 +301,10 @@ class Option {
     size_t key;
 
   private:
-    bool RenderCheckbox();
-    bool RenderCombobox();
-    bool RenderSlider();
     void PopulateTextToNum();
     std::string name;
     std::vector<std::string> options;
     uint8_t contextSelection = 0;
-    uint8_t delayedSelection = 0;
     bool hidden = false;
     OptionCategory category = OptionCategory::Setting;
     std::string cvarName;
@@ -346,9 +329,9 @@ class LocationOption : public Option {
     RandomizerCheck GetKey() const;
 };
 
-class TrickOption : public Option {
+class TrickSetting : public Option {
   public:
-    TrickOption() = default;
+    TrickSetting() = default;
     /**
      * @brief A convenience function for constructing the Option for a trick.
      *
@@ -356,12 +339,11 @@ class TrickOption : public Option {
      * @param quest_ MQ, Vanilla, or Both.
      * @param area_ The area the trick is relevant for.
      * @param tags_ The set of RandomizerTrickTags for this trick.
-     * @param name_ The name of the trick. Appears in the spoiler/patch file.
-     * @param description_ A brief description of the trick.
+     * @param nameTag_ The 3-8 character long name tag of the trick. Appears in the settings and presets file.
      * @return Option
      */
-    static TrickOption LogicTrick(RandomizerTrick key_, RandomizerCheckQuest quest_, RandomizerArea area_,
-                                  std::set<Tricks::Tag> tags_, const std::string& name_, std::string description_);
+    static TrickSetting LogicTrick(RandomizerTrick key_, RandomizerCheckQuest quest_, RandomizerArea area_,
+                                   std::set<Tricks::Tag> tags_, const std::string nameTag_);
 
     RandomizerTrick GetKey() const;
 
@@ -380,6 +362,13 @@ class TrickOption : public Option {
     RandomizerArea GetArea() const;
 
     /**
+     * @brief Get the NameTag of the trick
+     *
+     * @return std::string
+     */
+    std::string GetNameTag() const;
+
+    /**
      * @brief Check if this Trick has the given tag
      *
      * @param tag the RandomizerTrickTag to check for
@@ -390,10 +379,11 @@ class TrickOption : public Option {
     const std::set<Tricks::Tag>& GetTags() const;
 
   private:
-    TrickOption(RandomizerTrick key_, RandomizerCheckQuest quest_, RandomizerArea area_, std::set<Tricks::Tag> tags_,
-                const std::string& name_, std::string description_);
+    TrickSetting(RandomizerTrick key_, RandomizerCheckQuest quest_, RandomizerArea area_, std::set<Tricks::Tag> tags_,
+                 const std::string nameTag_);
     RandomizerCheckQuest mQuest;
     RandomizerArea mArea;
+    std::string mNameTag;
     std::set<Tricks::Tag> mTags;
 };
 

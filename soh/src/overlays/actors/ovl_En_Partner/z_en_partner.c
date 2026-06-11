@@ -24,9 +24,7 @@ void EnPartner_Update(Actor* thisx, PlayState* play);
 void EnPartner_Draw(Actor* thisx, PlayState* play);
 void EnPartner_SpawnSparkles(EnPartner* this, PlayState* play, s32 sparkleLife);
 
-void func_808328EC(Player* this, u16 sfxId);
 void Player_RequestQuake(PlayState* play, s32 speed, s32 y, s32 countdown);
-s32 spawn_boomerang_ivan(EnPartner* this, PlayState* play);
 
 static InitChainEntry sInitChain[] = {
     ICHAIN_VEC3F_DIV1000(scale, 8, ICHAIN_STOP),
@@ -115,6 +113,17 @@ void EnPartner_Destroy(Actor* thisx, PlayState* play) {
     s32 pad;
     EnPartner* this = (EnPartner*)thisx;
 
+    if (this->hookshotTarget != NULL) {
+        Actor_Kill(this->hookshotTarget);
+        this->hookshotTarget = NULL;
+    }
+
+    Player* player = GET_PLAYER(play);
+    if (player) {
+        player->ivanFloating = 0;
+        player->ivanDamageMultiplier = 1;
+    }
+
     LightContext_RemoveLight(play, &play->lightCtx, this->lightNodeGlow);
     LightContext_RemoveLight(play, &play->lightCtx, this->lightNodeNoGlow);
 
@@ -194,7 +203,7 @@ void UseBow(Actor* thisx, PlayState* play, u8 started, u8 arrowType) {
     EnPartner* this = (EnPartner*)thisx;
 
     if (started == 1) {
-        func_808328EC(this, NA_SE_PL_CHANGE_ARMS);
+        Player_PlaySfx(this, NA_SE_PL_CHANGE_ARMS);
         this->canMove = 0;
     } else if (started == 0) {
         if (this->itemTimer <= 0) {
@@ -235,7 +244,7 @@ void UseSlingshot(Actor* thisx, PlayState* play, u8 started) {
     EnPartner* this = (EnPartner*)thisx;
 
     if (started == 1) {
-        func_808328EC(this, NA_SE_PL_CHANGE_ARMS);
+        Player_PlaySfx(this, NA_SE_PL_CHANGE_ARMS);
         this->canMove = 0;
     } else if (started == 0) {
         if (this->itemTimer <= 0) {
@@ -262,7 +271,7 @@ void UseBombs(Actor* thisx, PlayState* play, u8 started) {
             if (AMMO(ITEM_BOMB) > 0 && play->actorCtx.actorLists[ACTORCAT_EXPLOSIVE].length < 3) {
                 this->itemTimer = 10;
                 Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOM, this->actor.world.pos.x, this->actor.world.pos.y + 7,
-                            this->actor.world.pos.z, 0, 0, 0, 0, false);
+                            this->actor.world.pos.z, 0, 0, 0, 0);
                 Inventory_ChangeAmmo(ITEM_BOMB, -1);
             } else {
                 Sfx_PlaySfxCentered(NA_SE_SY_ERROR);
@@ -302,7 +311,7 @@ void UseBombchus(Actor* thisx, PlayState* play, u8 started) {
             if (AMMO(ITEM_BOMBCHU) > 0) {
                 this->itemTimer = 10;
                 EnBom* bomb = Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOM, this->actor.world.pos.x,
-                                          this->actor.world.pos.y + 7, this->actor.world.pos.z, 0, 0, 0, 0, false);
+                                          this->actor.world.pos.y + 7, this->actor.world.pos.z, 0, 0, 0, 0);
                 bomb->timer = 0;
                 Inventory_ChangeAmmo(ITEM_BOMBCHU, -1);
             } else {
@@ -324,7 +333,7 @@ void UseDekuStick(Actor* thisx, PlayState* play, u8 started) {
     if (this->itemTimer <= 0) {
         if (started == 1) {
             if (AMMO(ITEM_STICK) > 0) {
-                func_808328EC(this, NA_SE_EV_FLAME_IGNITION);
+                Player_PlaySfx(this, NA_SE_EV_FLAME_IGNITION);
             } else {
                 Sfx_PlaySfxCentered(NA_SE_SY_ERROR);
             }
@@ -359,7 +368,7 @@ void UseNuts(Actor* thisx, PlayState* play, u8 started) {
             if (AMMO(ITEM_NUT) > 0) {
                 this->itemTimer = 10;
                 Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ARROW, this->actor.world.pos.x, this->actor.world.pos.y + 7,
-                            this->actor.world.pos.z, 0x1000, this->actor.world.rot.y, 0, ARROW_NUT, false);
+                            this->actor.world.pos.z, 0x1000, this->actor.world.rot.y, 0, ARROW_NUT);
                 Inventory_ChangeAmmo(ITEM_NUT, -1);
             } else {
                 Sfx_PlaySfxCentered(NA_SE_SY_ERROR);
@@ -373,7 +382,7 @@ void UseHookshot(Actor* thisx, PlayState* play, u8 started) {
 
     if (this->itemTimer <= 0) {
         if (started == 1) {
-            func_808328EC(this, NA_SE_PL_CHANGE_ARMS);
+            Player_PlaySfx(this, NA_SE_PL_CHANGE_ARMS);
             this->canMove = 0;
             this->hookshotTarget =
                 Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_OBJ_HSBLOCK, this->actor.world.pos.x,
@@ -385,7 +394,7 @@ void UseHookshot(Actor* thisx, PlayState* play, u8 started) {
         } else if (started == 0) {
             Actor_Kill(this->hookshotTarget);
             this->hookshotTarget = NULL;
-            func_808328EC(this, NA_SE_PL_CHANGE_ARMS);
+            Player_PlaySfx(this, NA_SE_PL_CHANGE_ARMS);
             this->canMove = 1;
         } else if (started == 2) {
             this->hookshotTarget->shape.rot.y = this->actor.world.rot.y;
@@ -409,7 +418,19 @@ void UseBoomerang(Actor* thisx, PlayState* play, u8 started) {
     if (this->itemTimer <= 0) {
         if (started == 1) {
             this->itemTimer = 20;
-            spawn_boomerang_ivan(&this->actor, play);
+
+            f32 posX = (Math_SinS(this->actor.shape.rot.y) * 1.0f) + this->actor.world.pos.x;
+            f32 posZ = (Math_CosS(this->actor.shape.rot.y) * 1.0f) + this->actor.world.pos.z;
+            s32 yaw = this->actor.shape.rot.y;
+            EnBoom* boomerang =
+                (EnBoom*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOOM, posX, this->actor.world.pos.y + 7.0f, posZ,
+                                     this->actor.focus.rot.x, yaw, 0, 0);
+
+            this->boomerangActor = &boomerang->actor;
+            if (boomerang != NULL) {
+                boomerang->returnTimer = 20;
+                Audio_PlayActorSound2(&this->actor, NA_SE_IT_BOOMERANG_THROW);
+            }
         }
     }
 }

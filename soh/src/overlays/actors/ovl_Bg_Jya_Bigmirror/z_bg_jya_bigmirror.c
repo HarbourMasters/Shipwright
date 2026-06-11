@@ -153,9 +153,8 @@ void BgJyaBigmirror_HandleMirRay(Actor* thisx, PlayState* play) {
         for (i = 0; i < 3; i++) {
             if (lightBeamToggles[i]) {
                 if ((this->lightBeams[i] == NULL) && Object_IsLoaded(&play->objectCtx, objBankIndex)) {
-                    this->lightBeams[i] =
-                        Actor_Spawn(&play->actorCtx, play, ACTOR_MIR_RAY, sMirRayPoss[i].x, sMirRayPoss[i].y,
-                                    sMirRayPoss[i].z, 0, 0, 0, sMirRayParamss[i], true);
+                    this->lightBeams[i] = Actor_Spawn(&play->actorCtx, play, ACTOR_MIR_RAY, sMirRayPoss[i].x,
+                                                      sMirRayPoss[i].y, sMirRayPoss[i].z, 0, 0, 0, sMirRayParamss[i]);
 
                     if (this->lightBeams[i] == NULL) {
                         // "Mir Ray generation failed"

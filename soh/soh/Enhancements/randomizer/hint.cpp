@@ -4,6 +4,7 @@
 #include "SeedContext.h"
 #include <spdlog/spdlog.h>
 #include "static_data.h"
+#include "3drando/random.hpp"
 
 namespace Rando {
 Hint::Hint() {
@@ -130,14 +131,8 @@ void Hint::FillGapsInData() {
     if (locations.size() == 0 && StaticData::staticHintInfoMap.contains(ownKey)) {
         locations = StaticData::staticHintInfoMap[ownKey].targetChecks;
     }
-    bool fillAreas = true;
-    bool fillItems = true;
-    if (areas.size() > 0) {
-        fillAreas = false;
-    }
-    if (items.size() > 0) {
-        fillItems = false;
-    }
+    bool fillAreas = areas.size() == 0;
+    bool fillItems = items.size() == 0;
     for (uint8_t c = 0; c < locations.size(); c++) {
         // if area matters for the hint, it should be specified and not left to this
         if (fillAreas) {
@@ -205,6 +200,7 @@ void Hint::NamesChosen() {
         hintType == HINT_TYPE_ALTAR_CHILD || hintType == HINT_TYPE_ALTAR_ADULT) {
         namesTemp = {};
         saveNames = false;
+
         for (uint8_t c = 0; c < areas.size(); c++) {
             uint8_t selection = GetRandomHintTextEntry(GetAreaHintText(c));
             if (selection > 0) {
@@ -518,17 +514,13 @@ const HintText Hint::GetItemHintText(uint8_t slot, bool mysterious) const {
     auto ctx = Rando::Context::GetInstance();
     RandomizerCheck hintedCheck = locations[slot];
     RandomizerGet targetRG = ctx->GetItemLocation(hintedCheck)->GetPlacedRandomizerGet();
-    CustomMessage msg;
     if (mysterious) {
         return StaticData::hintTextTable[RHT_MYSTERIOUS_ITEM];
-    } else if (!ctx->GetOption(RSK_HINT_CLARITY).Is(RO_HINT_CLARITY_AMBIGUOUS) &&
-               targetRG == RG_ICE_TRAP) { // RANDOTODO store in item hint instead of item
-        msg = CustomMessage({ ctx->overrides[hintedCheck].GetTrickName() });
+    } else if (targetRG == RG_ICE_TRAP) { // RANDOTODO store in item hint instead of item
+        return HintText(CustomMessage({ ctx->overrides[hintedCheck].GetTrickName() }));
     } else {
-        msg = ctx->GetItemLocation(hintedCheck)->GetPlacedItem().GetName();
+        return ctx->GetItemLocation(hintedCheck)->GetPlacedItem().GetHint();
     }
-    msg = CustomMessage(ctx->GetItemLocation(hintedCheck)->GetPlacedItem().GetArticle()) + msg;
-    return HintText(msg);
 }
 
 const HintText Hint::GetAreaHintText(uint8_t slot) const {

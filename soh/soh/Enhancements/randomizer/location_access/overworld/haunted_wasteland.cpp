@@ -22,16 +22,18 @@ void RegionTable_Init_HauntedWasteland() {
         EVENT_ACCESS(LOGIC_CARPET_MERCHANT, logic->HasItem(RG_ADULT_WALLET) && GetCheckPrice(RC_WASTELAND_BOMBCHU_SALESMAN) <= GetWalletCapacity() && (logic->CanJumpslash() || logic->CanUse(RG_HOVER_BOOTS))),
     }, {
         //Locations
-        LOCATION(RC_WASTELAND_CHEST,            logic->HasFireSource() && logic->HasItem(RG_OPEN_CHEST)),
-        LOCATION(RC_WASTELAND_BOMBCHU_SALESMAN, logic->CanJumpslash() || logic->CanUse(RG_HOVER_BOOTS) && logic->HasItem(RG_SPEAK_HYLIAN) && GetCheckPrice() <= GetWalletCapacity()),
-        LOCATION(RC_WASTELAND_GS,               logic->HookshotOrBoomerang() || (logic->IsAdult && ctx->GetTrickOption(RT_GROUND_JUMP_HARD) && logic->CanGroundJump() && logic->CanJumpslash())), // need to jumpslash immediately with two handed weapons
-        LOCATION(RC_WASTELAND_NEAR_GS_POT_1,    logic->CanBreakPots()),
-        LOCATION(RC_WASTELAND_NEAR_GS_POT_2,    logic->CanBreakPots()),
-        LOCATION(RC_WASTELAND_NEAR_GS_POT_3,    logic->CanBreakPots()),
-        LOCATION(RC_WASTELAND_NEAR_GS_POT_4,    logic->CanBreakPots()),
-        LOCATION(RC_HW_AFTER_QUICKSAND_CRATE_1, logic->CanBreakCrates()),
-        LOCATION(RC_HW_AFTER_QUICKSAND_CRATE_2, logic->CanBreakCrates()),
-        LOCATION(RC_HW_AFTER_QUICKSAND_CRATE_3, logic->CanBreakCrates()),
+        LOCATION(RC_WASTELAND_CHEST,               logic->HasFireSource() && logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_WASTELAND_BOMBCHU_SALESMAN,    (logic->CanJumpslash() || logic->CanUse(RG_HOVER_BOOTS)) && logic->HasItem(RG_SPEAK_HYLIAN) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_WASTELAND_GS,                  logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG) || (logic->IsAdult && logic->CanGroundJumpslash())), // need to jumpslash immediately with two handed weapons
+        LOCATION(RC_WASTELAND_NEAR_GS_POT_1,       logic->CanBreakPots()),
+        LOCATION(RC_WASTELAND_NEAR_GS_POT_2,       logic->CanBreakPots()),
+        LOCATION(RC_WASTELAND_NEAR_GS_POT_3,       logic->CanBreakPots()),
+        LOCATION(RC_WASTELAND_NEAR_GS_POT_4,       logic->CanBreakPots()),
+        LOCATION(RC_HW_AFTER_QUICKSAND_CRATE_1,    logic->CanBreakCrates()),
+        LOCATION(RC_HW_AFTER_QUICKSAND_CRATE_2,    logic->CanBreakCrates()),
+        LOCATION(RC_HW_AFTER_QUICKSAND_CRATE_3,    logic->CanBreakCrates()),
+        LOCATION(RC_HW_CARPET_SALESMAN_ARROW_SIGN, logic->CanRead()),
+        LOCATION(RC_HW_POE_ALTAR,                  logic->CanRead()),
     }, {
         //Exits
         ENTRANCE(RR_WASTELAND_NEAR_COLOSSUS, ctx->GetTrickOption(RT_LENS_HW) || logic->CanUse(RG_LENS_OF_TRUTH)),

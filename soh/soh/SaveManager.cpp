@@ -8,6 +8,7 @@
 #include "soh/util.h"
 #include "Enhancements/randomizer/hint.h"
 #include "Enhancements/randomizer/item.h"
+#include "soh/Enhancements/randomizer/settings.h"
 #include "ResourceManagerHelpers.h"
 
 #include "z64.h"
@@ -550,6 +551,10 @@ void SaveManager::StartupCheckAndInitMeta(int fileNum) {
     fileMetaInfo[fileNum].gregFound = false;
     fileMetaInfo[fileNum].filenameLanguage = baseBlock.value("filenameLanguage", 0);
     fileMetaInfo[fileNum].hasWallet = !isRando;
+    fileMetaInfo[fileNum].triforcePieces = 0;
+    fileMetaInfo[fileNum].maxTriforcePieces = 0;
+    fileMetaInfo[fileNum].hasFishingRod = !isRando;
+    fileMetaInfo[fileNum].fishingPoleShuffled = false;
     fileMetaInfo[fileNum].defense = baseBlock["inventory"]["defenseHearts"];
     fileMetaInfo[fileNum].health = baseBlock["health"];
 
@@ -567,6 +572,15 @@ void SaveManager::StartupCheckAndInitMeta(int fileNum) {
             (int16_t)baseBlock["randomizerInf"][RAND_INF_GREG_FOUND >> 4] & (1 << (RAND_INF_GREG_FOUND & 0xF));
         fileMetaInfo[fileNum].hasWallet =
             (int16_t)baseBlock["randomizerInf"][RAND_INF_HAS_WALLET >> 4] & (1 << (RAND_INF_HAS_WALLET & 0xF));
+        fileMetaInfo[fileNum].triforcePieces = randoBlock.value("triforcePiecesCollected", 0);
+        nlohmann::json& randoSettings = randoBlock["randoSettings"];
+        if (randoSettings[RSK_TRIFORCE_HUNT].get<uint8_t>() != 0) {
+            fileMetaInfo[fileNum].maxTriforcePieces =
+                randoSettings[RSK_TRIFORCE_HUNT_PIECES_REQUIRED].get<uint8_t>() + 1;
+        }
+        fileMetaInfo[fileNum].hasFishingRod = (int16_t)baseBlock["randomizerInf"][RAND_INF_FISHING_POLE_FOUND >> 4] &
+                                              (1 << (RAND_INF_FISHING_POLE_FOUND & 0xF));
+        fileMetaInfo[fileNum].fishingPoleShuffled = randoSettings[RSK_SHUFFLE_FISHING_POLE].get<uint8_t>() != 0;
         fileMetaInfo[fileNum].requiresMasterQuest = randoBlock["masterQuestDungeonCount"] > 0;
         // If the file is not marked as Master Quest, it could still theoretically be a rando save with all 12 MQ
         // dungeons, in which case we don't actually require a vanilla OTR.
@@ -1340,9 +1354,7 @@ void SaveManager::ThreadPoolWait() {
 
 bool SaveManager::SaveFile_Exist(int fileNum) {
     try {
-        bool exists = std::filesystem::exists(GetFileName(fileNum));
-        SPDLOG_INFO("File[{}] - {}", fileNum, exists ? "exists" : "does not exist");
-        return exists;
+        return std::filesystem::exists(GetFileName(fileNum));
     } catch ([[maybe_unused]] std::filesystem::filesystem_error const& ex) {
         SPDLOG_ERROR("Filesystem error");
         return false;
@@ -2412,27 +2424,7 @@ void SaveManager::CopyZeldaFile(int from, int to) {
 #else
     std::filesystem::copy_file(GetFileName(from), GetFileName(to));
 #endif
-    fileMetaInfo[to].valid = true;
-    fileMetaInfo[to].deaths = fileMetaInfo[from].deaths;
-    for (int i = 0; i < ARRAY_COUNT(fileMetaInfo[to].playerName); i++) {
-        fileMetaInfo[to].playerName[i] = fileMetaInfo[from].playerName[i];
-    }
-    for (int i = 0; i < ARRAY_COUNT(fileMetaInfo[to].seedHash); i++) {
-        fileMetaInfo[to].seedHash[i] = fileMetaInfo[from].seedHash[i];
-    }
-    fileMetaInfo[to].healthCapacity = fileMetaInfo[from].healthCapacity;
-    fileMetaInfo[to].questItems = fileMetaInfo[from].questItems;
-    fileMetaInfo[to].defense = fileMetaInfo[from].defense;
-    fileMetaInfo[to].health = fileMetaInfo[from].health;
-    fileMetaInfo[to].randoSave = fileMetaInfo[from].randoSave;
-    fileMetaInfo[to].requiresMasterQuest = fileMetaInfo[from].requiresMasterQuest;
-    fileMetaInfo[to].requiresOriginal = fileMetaInfo[from].requiresOriginal;
-    fileMetaInfo[to].buildVersionMajor = fileMetaInfo[from].buildVersionMajor;
-    fileMetaInfo[to].buildVersionMinor = fileMetaInfo[from].buildVersionMinor;
-    fileMetaInfo[to].buildVersionPatch = fileMetaInfo[from].buildVersionPatch;
-    fileMetaInfo[to].filenameLanguage = fileMetaInfo[from].filenameLanguage;
-    SohUtils::CopyStringToCharArray(fileMetaInfo[to].buildVersion, fileMetaInfo[from].buildVersion,
-                                    ARRAY_COUNT(fileMetaInfo[to].buildVersion));
+    fileMetaInfo[to] = fileMetaInfo[from];
 }
 
 void SaveManager::DeleteZeldaFile(int fileNum) {

@@ -6,7 +6,6 @@
 
 #include "z_en_ma1.h"
 #include "objects/object_ma1/object_ma1.h"
-#include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS                                                                                  \
@@ -19,15 +18,15 @@ void EnMa1_Update(Actor* thisx, PlayState* play);
 void EnMa1_Draw(Actor* thisx, PlayState* play);
 
 u16 EnMa1_GetText(PlayState* play, Actor* this);
-s16 func_80AA0778(PlayState* play, Actor* this);
+s16 EnMa1_UpdateTalkState(PlayState* play, Actor* this);
 
-void func_80AA0D88(EnMa1* this, PlayState* play);
-void func_80AA0EA0(EnMa1* this, PlayState* play);
-void func_80AA0EFC(EnMa1* this, PlayState* play);
-void func_80AA0F44(EnMa1* this, PlayState* play);
-void func_80AA106C(EnMa1* this, PlayState* play);
-void func_80AA10EC(EnMa1* this, PlayState* play);
-void func_80AA1150(EnMa1* this, PlayState* play);
+void EnMa1_Idle(EnMa1* this, PlayState* play);
+void EnMa1_GiveWeirdEgg(EnMa1* this, PlayState* play);
+void EnMa1_FinishGivingWeirdEgg(EnMa1* this, PlayState* play);
+void EnMa1_IdleTeachSong(EnMa1* this, PlayState* play);
+void EnMa1_StartTeachSong(EnMa1* this, PlayState* play);
+void EnMa1_TeachSong(EnMa1* this, PlayState* play);
+void EnMa1_WaitForPlayback(EnMa1* this, PlayState* play);
 void EnMa1_DoNothing(EnMa1* this, PlayState* play);
 
 const ActorInit En_Ma1_InitVars = {
@@ -132,7 +131,7 @@ u16 EnMa1_GetText(PlayState* play, Actor* thisx) {
     return 0x2041;
 }
 
-s16 func_80AA0778(PlayState* play, Actor* thisx) {
+s16 EnMa1_UpdateTalkState(PlayState* play, Actor* thisx) {
     s16 ret = NPC_TALK_STATE_TALKING;
 
     switch (Message_GetState(&play->msgCtx)) {
@@ -189,7 +188,7 @@ s16 func_80AA0778(PlayState* play, Actor* thisx) {
     return ret;
 }
 
-s32 func_80AA08C4(EnMa1* this, PlayState* play) {
+s32 EnMa1_ShouldSpawn(EnMa1* this, PlayState* play) {
     bool malonReturnedFromCastle = GameInteractor_Should(VB_MALON_RETURN_FROM_CASTLE,
                                                          Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE));
 
@@ -241,7 +240,7 @@ void EnMa1_ChangeAnim(EnMa1* this, s32 index) {
                      sAnimationInfo[index].mode, sAnimationInfo[index].morphFrames);
 }
 
-void func_80AA0AF4(EnMa1* this, PlayState* play) {
+void EnMa1_UpdateTracking(EnMa1* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
     s16 trackingMode;
 
@@ -257,16 +256,16 @@ void func_80AA0AF4(EnMa1* this, PlayState* play) {
     Npc_TrackPoint(&this->actor, &this->interactInfo, 0, trackingMode);
 }
 
-void func_80AA0B74(EnMa1* this) {
+void EnMa1_UpdateSinging(EnMa1* this) {
     if (this->skelAnime.animation == &gMalonChildSingAnim) {
         if (this->interactInfo.talkState == NPC_TALK_STATE_IDLE) {
-            if (this->unk_1E0 != 0) {
-                this->unk_1E0 = 0;
+            if (this->singingDisabled != 0) {
+                this->singingDisabled = 0;
                 func_800F6584(0);
             }
         } else {
-            if (this->unk_1E0 == 0) {
-                this->unk_1E0 = 1;
+            if (this->singingDisabled == 0) {
+                this->singingDisabled = 1;
                 func_800F6584(1);
             }
         }
@@ -287,7 +286,7 @@ void EnMa1_Init(Actor* thisx, PlayState* play) {
     Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
     CollisionCheck_SetInfo2(&this->actor.colChkInfo, DamageTable_Get(22), &sColChkInfoInit);
 
-    if (!func_80AA08C4(this, play)) {
+    if (!EnMa1_ShouldSpawn(this, play)) {
         Actor_Kill(&this->actor);
         return;
     }
@@ -298,10 +297,10 @@ void EnMa1_Init(Actor* thisx, PlayState* play) {
     this->interactInfo.talkState = NPC_TALK_STATE_IDLE;
 
     if (!malonReturnedFromCastle || malonTaughtEponasSong) {
-        this->actionFunc = func_80AA0D88;
+        this->actionFunc = EnMa1_Idle;
         EnMa1_ChangeAnim(this, ENMA1_ANIM_2);
     } else {
-        this->actionFunc = func_80AA0F44;
+        this->actionFunc = EnMa1_IdleTeachSong;
         EnMa1_ChangeAnim(this, ENMA1_ANIM_2);
     }
 }
@@ -313,7 +312,7 @@ void EnMa1_Destroy(Actor* thisx, PlayState* play) {
     Collider_DestroyCylinder(play, &this->collider);
 }
 
-void func_80AA0D88(EnMa1* this, PlayState* play) {
+void EnMa1_Idle(EnMa1* this, PlayState* play) {
     bool malonReturnedFromCastle = GameInteractor_Should(VB_MALON_RETURN_FROM_CASTLE,
                                                          Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE));
     bool malonTaughtEponasSong =
@@ -330,36 +329,38 @@ void func_80AA0D88(EnMa1* this, PlayState* play) {
     }
 
     if ((play->sceneNum == SCENE_HYRULE_CASTLE) && malonReturnedFromCastle) {
-        Actor_Kill(&this->actor);
+        if (GameInteractor_Should(VB_SEND_MALON_HOME, true)) {
+            Actor_Kill(&this->actor);
+        }
     } else if (!malonReturnedFromCastle || malonTaughtEponasSong) {
         if (this->interactInfo.talkState == NPC_TALK_STATE_ACTION) {
-            this->actionFunc = func_80AA0EA0;
+            this->actionFunc = EnMa1_GiveWeirdEgg;
             play->msgCtx.stateTimer = 4;
             play->msgCtx.msgMode = MSGMODE_TEXT_CLOSING;
         }
     }
 }
 
-void func_80AA0EA0(EnMa1* this, PlayState* play) {
+void EnMa1_GiveWeirdEgg(EnMa1* this, PlayState* play) {
     if (Actor_HasParent(&this->actor, play) || !GameInteractor_Should(VB_GIVE_ITEM_WEIRD_EGG, true)) {
         this->actor.parent = NULL;
-        this->actionFunc = func_80AA0EFC;
+        this->actionFunc = EnMa1_FinishGivingWeirdEgg;
     } else {
         Actor_OfferGetItem(&this->actor, play, GI_WEIRD_EGG, 120.0f, 10.0f);
     }
 }
 
-void func_80AA0EFC(EnMa1* this, PlayState* play) {
+void EnMa1_FinishGivingWeirdEgg(EnMa1* this, PlayState* play) {
     if (this->interactInfo.talkState == NPC_TALK_STATE_ITEM_GIVEN ||
         !GameInteractor_Should(VB_GIVE_ITEM_WEIRD_EGG, true)) {
         this->interactInfo.talkState = NPC_TALK_STATE_IDLE;
-        this->actionFunc = func_80AA0D88;
+        this->actionFunc = EnMa1_Idle;
         Flags_SetEventChkInf(EVENTCHKINF_OBTAINED_POCKET_EGG);
         play->msgCtx.msgMode = MSGMODE_TEXT_CLOSING;
     }
 }
 
-void func_80AA0F44(EnMa1* this, PlayState* play) {
+void EnMa1_IdleTeachSong(EnMa1* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
     if (this->interactInfo.talkState != NPC_TALK_STATE_IDLE) {
@@ -380,32 +381,32 @@ void func_80AA0F44(EnMa1* this, PlayState* play) {
             Message_StartTextbox(play, this->actor.textId, NULL);
             this->interactInfo.talkState = NPC_TALK_STATE_TALKING;
             this->actor.flags |= ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
-            this->actionFunc = func_80AA106C;
+            this->actionFunc = EnMa1_StartTeachSong;
         } else if (this->actor.xzDistToPlayer < 30.0f + (f32)this->collider.dim.radius) {
             player->stateFlags2 |= PLAYER_STATE2_NEAR_OCARINA_ACTOR;
         }
     }
 }
 
-void func_80AA106C(EnMa1* this, PlayState* play) {
+void EnMa1_StartTeachSong(EnMa1* this, PlayState* play) {
     GET_PLAYER(play)->stateFlags2 |= PLAYER_STATE2_NEAR_OCARINA_ACTOR;
     if (this->interactInfo.talkState == NPC_TALK_STATE_ACTION) {
         Audio_OcaSetInstrument(2);
         func_8010BD58(play, OCARINA_ACTION_TEACH_EPONA);
         this->actor.flags &= ~ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
-        this->actionFunc = func_80AA10EC;
+        this->actionFunc = EnMa1_TeachSong;
     }
 }
 
-void func_80AA10EC(EnMa1* this, PlayState* play) {
+void EnMa1_TeachSong(EnMa1* this, PlayState* play) {
     GET_PLAYER(play)->stateFlags2 |= PLAYER_STATE2_NEAR_OCARINA_ACTOR;
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_SONG_DEMO_DONE) {
         func_8010BD58(play, OCARINA_ACTION_PLAYBACK_EPONA);
-        this->actionFunc = func_80AA1150;
+        this->actionFunc = EnMa1_WaitForPlayback;
     }
 }
 
-void func_80AA1150(EnMa1* this, PlayState* play) {
+void EnMa1_WaitForPlayback(EnMa1* this, PlayState* play) {
     GET_PLAYER(play)->stateFlags2 |= PLAYER_STATE2_NEAR_OCARINA_ACTOR;
 
     if (play->msgCtx.ocarinaMode == OCARINA_MODE_03) {
@@ -432,10 +433,10 @@ void EnMa1_Update(Actor* thisx, PlayState* play) {
     this->actionFunc(this, play);
     if (this->actionFunc != EnMa1_DoNothing) {
         Npc_UpdateTalking(play, &this->actor, &this->interactInfo.talkState, (f32)this->collider.dim.radius + 30.0f,
-                          EnMa1_GetText, func_80AA0778);
+                          EnMa1_GetText, EnMa1_UpdateTalkState);
     }
-    func_80AA0B74(this);
-    func_80AA0AF4(this, play);
+    EnMa1_UpdateSinging(this);
+    EnMa1_UpdateTracking(this, play);
 }
 
 s32 EnMa1_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {

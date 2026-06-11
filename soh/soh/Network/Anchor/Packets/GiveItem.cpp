@@ -49,10 +49,10 @@ void Anchor::HandlePacket_GiveItem(nlohmann::json payload) {
         return;
     }
 
-    uint32_t clientId = payload["clientId"].get<uint32_t>();
+    uint32_t clientId = payload.at("clientId").get<uint32_t>();
     AnchorClient& client = clients[clientId];
-    u16 modId = payload["modId"].get<u16>();
-    u16 getItemId = payload["getItemId"].get<u16>();
+    u16 modId = payload.at("modId").get<u16>();
+    u16 getItemId = payload.at("getItemId").get<u16>();
 
     GetItemEntry getItemEntry;
     if (modId == MOD_NONE) {

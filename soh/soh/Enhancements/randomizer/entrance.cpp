@@ -3,9 +3,19 @@
 #include "3drando/fill.hpp"
 #include "3drando/pool_functions.hpp"
 #include "3drando/item_pool.hpp"
+#include "3drando/random.hpp"
 #include "../debugger/performanceTimer.h"
+#include "soh/Enhancements/gameconsole.h"
+#include "z64camera.h"
+#include "z64scene.h"
 
 #include <spdlog/spdlog.h>
+
+extern "C" {
+#include "variables.h"
+#include "macros.h"
+#include "functions.h"
+}
 
 namespace Rando {
 EntranceLinkInfo NO_RETURN_ENTRANCE = { EntranceType::None, RR_NONE, RR_NONE, -1 };
@@ -263,8 +273,8 @@ void SetAllEntrancesData() {
           { EntranceType::Dungeon,      RR_JABU_JABUS_BELLY_ENTRYWAY,        RR_ZORAS_FOUNTAIN,                    ENTR_ZORAS_FOUNTAIN_OUTSIDE_JABU_JABU } },
         { { EntranceType::Dungeon,      RR_SACRED_FOREST_MEADOW,             RR_FOREST_TEMPLE_ENTRYWAY,            ENTR_FOREST_TEMPLE_ENTRANCE },
           { EntranceType::Dungeon,      RR_FOREST_TEMPLE_ENTRYWAY,           RR_SACRED_FOREST_MEADOW,              ENTR_SACRED_FOREST_MEADOW_OUTSIDE_TEMPLE } },
-        { { EntranceType::Dungeon,      RR_DMC_OUTSIDE_FIRE_TEMPLE,          RR_FIRE_TEMPLE_ENTRYWAY,              ENTR_FIRE_TEMPLE_ENTRANCE },
-          { EntranceType::Dungeon,      RR_FIRE_TEMPLE_ENTRYWAY,             RR_DMC_OUTSIDE_FIRE_TEMPLE,           ENTR_DEATH_MOUNTAIN_CRATER_OUTSIDE_TEMPLE } },
+        { { EntranceType::Dungeon,      RR_DMC_TEMPLE_EXIT,                  RR_FIRE_TEMPLE_ENTRYWAY,              ENTR_FIRE_TEMPLE_ENTRANCE },
+          { EntranceType::Dungeon,      RR_FIRE_TEMPLE_ENTRYWAY,             RR_DMC_TEMPLE_EXIT,                   ENTR_DEATH_MOUNTAIN_CRATER_OUTSIDE_TEMPLE } },
         { { EntranceType::Dungeon,      RR_LH_FROM_WATER_TEMPLE,             RR_WATER_TEMPLE_ENTRYWAY,             ENTR_WATER_TEMPLE_ENTRANCE },
           { EntranceType::Dungeon,      RR_WATER_TEMPLE_ENTRYWAY,            RR_LH_FROM_WATER_TEMPLE,              ENTR_LAKE_HYLIA_OUTSIDE_TEMPLE } },
         { { EntranceType::Dungeon,      RR_DESERT_COLOSSUS,                  RR_SPIRIT_TEMPLE_ENTRYWAY,            ENTR_SPIRIT_TEMPLE_ENTRANCE },
@@ -348,23 +358,23 @@ void SetAllEntrancesData() {
         // ENTR_POTION_SHOP_KAKARIKO_1 is an unused entrance index repurposed to differentiate between HC and OGC fairy fountain exits
         // (normally both use ENTR_CASTLE_GROUNDS_GREAT_FAIRY_EXIT)
           { EntranceType::Interior, RR_OGC_GREAT_FAIRY_FOUNTAIN,      RR_CASTLE_GROUNDS_FROM_GREAT_FAIRY, ENTR_POTION_SHOP_KAKARIKO_1 } },
-        { { EntranceType::Interior, RR_DMC_LOWER_NEARBY,              RR_DMC_GREAT_FAIRY_FOUNTAIN,        ENTR_GREAT_FAIRYS_FOUNTAIN_MAGIC_DMC },
-          { EntranceType::Interior, RR_DMC_GREAT_FAIRY_FOUNTAIN,      RR_DMC_LOWER_LOCAL,                 ENTR_DEATH_MOUNTAIN_CRATER_GREAT_FAIRY_EXIT } },
+        { { EntranceType::Interior, RR_DMC_BLOCKED_EXIT,              RR_DMC_GREAT_FAIRY_FOUNTAIN,        ENTR_GREAT_FAIRYS_FOUNTAIN_MAGIC_DMC },
+          { EntranceType::Interior, RR_DMC_GREAT_FAIRY_FOUNTAIN,      RR_DMC_BLOCKED_ENTRY,               ENTR_DEATH_MOUNTAIN_CRATER_GREAT_FAIRY_EXIT } },
         { { EntranceType::Interior, RR_DEATH_MOUNTAIN_SUMMIT,         RR_DMT_GREAT_FAIRY_FOUNTAIN,        ENTR_GREAT_FAIRYS_FOUNTAIN_MAGIC_DMT },
           { EntranceType::Interior, RR_DMT_GREAT_FAIRY_FOUNTAIN,      RR_DEATH_MOUNTAIN_SUMMIT,           ENTR_DEATH_MOUNTAIN_TRAIL_GREAT_FAIRY_EXIT } },
         { { EntranceType::Interior, RR_ZORAS_FOUNTAIN,                RR_ZF_GREAT_FAIRY_FOUNTAIN,         ENTR_GREAT_FAIRYS_FOUNTAIN_SPELLS_FARORES_ZF },
           { EntranceType::Interior, RR_ZF_GREAT_FAIRY_FOUNTAIN,       RR_ZORAS_FOUNTAIN,                  ENTR_ZORAS_FOUNTAIN_OUTSIDE_GREAT_FAIRY } },
         
-        { { EntranceType::SpecialInterior, RR_KF_LINKS_PORCH,        RR_KF_LINKS_HOUSE,        ENTR_LINKS_HOUSE_1 },
-          { EntranceType::SpecialInterior, RR_KF_LINKS_HOUSE,        RR_KF_LINKS_PORCH,        ENTR_KOKIRI_FOREST_OUTSIDE_LINKS_HOUSE } },
-        { { EntranceType::SpecialInterior, RR_TOT_ENTRANCE,          RR_TEMPLE_OF_TIME,        ENTR_TEMPLE_OF_TIME_ENTRANCE },
-          { EntranceType::SpecialInterior, RR_TEMPLE_OF_TIME,        RR_TOT_ENTRANCE,          ENTR_TEMPLE_OF_TIME_EXTERIOR_DAY_OUTSIDE_TEMPLE } },
-        { { EntranceType::SpecialInterior, RR_KAKARIKO_VILLAGE,      RR_KAK_WINDMILL_LOWER,    ENTR_WINDMILL_AND_DAMPES_GRAVE_WINDMILL },
-          { EntranceType::SpecialInterior, RR_KAK_WINDMILL_LOWER,    RR_KAKARIKO_VILLAGE,      ENTR_KAKARIKO_VILLAGE_OUTSIDE_WINDMILL } },
-        { { EntranceType::SpecialInterior, RR_KAKARIKO_VILLAGE,      RR_KAK_POTION_SHOP_FRONT, ENTR_POTION_SHOP_KAKARIKO_FRONT },
-          { EntranceType::SpecialInterior, RR_KAK_POTION_SHOP_FRONT, RR_KAKARIKO_VILLAGE,      ENTR_KAKARIKO_VILLAGE_OUTSIDE_POTION_SHOP_FRONT } },
-        { { EntranceType::SpecialInterior, RR_KAK_BACKYARD,          RR_KAK_POTION_SHOP_BACK,  ENTR_POTION_SHOP_KAKARIKO_BACK },
-          { EntranceType::SpecialInterior, RR_KAK_POTION_SHOP_BACK,  RR_KAK_BACKYARD,          ENTR_KAKARIKO_VILLAGE_OUTSIDE_POTION_SHOP_BACK } },
+        { { EntranceType::SpecialInterior, RR_KF_LINKS_PORCH,         RR_KF_LINKS_HOUSE,         ENTR_LINKS_HOUSE_1 },
+          { EntranceType::SpecialInterior, RR_KF_LINKS_HOUSE,         RR_KF_LINKS_PORCH,         ENTR_KOKIRI_FOREST_OUTSIDE_LINKS_HOUSE } },
+        { { EntranceType::SpecialInterior, RR_TOT_ENTRANCE,           RR_TEMPLE_OF_TIME,         ENTR_TEMPLE_OF_TIME_ENTRANCE },
+          { EntranceType::SpecialInterior, RR_TEMPLE_OF_TIME,         RR_TOT_ENTRANCE,           ENTR_TEMPLE_OF_TIME_EXTERIOR_DAY_OUTSIDE_TEMPLE } },
+        { { EntranceType::SpecialInterior, RR_KAKARIKO_VILLAGE,       RR_KAK_WINDMILL_LOWER,     ENTR_WINDMILL_AND_DAMPES_GRAVE_WINDMILL },
+          { EntranceType::SpecialInterior, RR_KAK_WINDMILL_LOWER,     RR_KAKARIKO_VILLAGE,       ENTR_KAKARIKO_VILLAGE_OUTSIDE_WINDMILL } },
+        { { EntranceType::SpecialInterior, RR_KAKARIKO_VILLAGE,       RR_KAK_POTION_SHOP,        ENTR_POTION_SHOP_KAKARIKO_FRONT },
+          { EntranceType::SpecialInterior, RR_KAK_POTION_SHOP,        RR_KAKARIKO_VILLAGE,       ENTR_KAKARIKO_VILLAGE_OUTSIDE_POTION_SHOP_FRONT } },
+        { { EntranceType::SpecialInterior, RR_KAK_BEHIND_POTION_SHOP, RR_KAK_POTION_SHOP,        ENTR_POTION_SHOP_KAKARIKO_BACK },
+          { EntranceType::SpecialInterior, RR_KAK_POTION_SHOP,        RR_KAK_BEHIND_POTION_SHOP, ENTR_KAKARIKO_VILLAGE_OUTSIDE_POTION_SHOP_BACK } },
         
         { { EntranceType::ThievesHideout, RR_GF_OUTSKIRTS,                 RR_TH_1_TORCH_CELL,              ENTR_THIEVES_HIDEOUT_0 },
           { EntranceType::ThievesHideout, RR_TH_1_TORCH_CELL,              RR_GF_OUTSKIRTS,                 ENTR_GERUDOS_FORTRESS_1 } },
@@ -388,8 +398,8 @@ void SetAllEntrancesData() {
           { EntranceType::ThievesHideout, RR_TH_KITCHEN_OPPOSITE_CORRIDOR, RR_GF_NEAR_GS,                   ENTR_GERUDOS_FORTRESS_10 } },
         { { EntranceType::ThievesHideout, RR_GF_BELOW_CHEST,               RR_TH_BREAK_ROOM,                ENTR_THIEVES_HIDEOUT_10 },
           { EntranceType::ThievesHideout, RR_TH_BREAK_ROOM,                RR_GF_BELOW_CHEST,               ENTR_GERUDOS_FORTRESS_11 } },
-        { { EntranceType::ThievesHideout, RR_GF_ABOVE_JAIL,                RR_TH_BREAK_ROOM_CORRIDOR,       ENTR_THIEVES_HIDEOUT_11 },
-          { EntranceType::ThievesHideout, RR_TH_BREAK_ROOM_CORRIDOR,       RR_GF_ABOVE_JAIL,                ENTR_GERUDOS_FORTRESS_12 } },
+        { { EntranceType::ThievesHideout, RR_GF_ABOVE_JAIL,                RR_TH_BREAK_ROOM_UPPER_CORRIDOR, ENTR_THIEVES_HIDEOUT_11 },
+          { EntranceType::ThievesHideout, RR_TH_BREAK_ROOM_UPPER_CORRIDOR, RR_GF_ABOVE_JAIL,                ENTR_GERUDOS_FORTRESS_12 } },
         { { EntranceType::ThievesHideout, RR_GF_BELOW_GS,                  RR_TH_DEAD_END_CELL,             ENTR_THIEVES_HIDEOUT_12 },
           { EntranceType::ThievesHideout, RR_TH_DEAD_END_CELL,             RR_GF_BELOW_GS,                  ENTR_GERUDOS_FORTRESS_13 } },
 
@@ -407,10 +417,10 @@ void SetAllEntrancesData() {
           { EntranceType::GrottoGrave, RR_ZR_FAIRY_GROTTO,          RR_ZR_ATOP_LADDER,             ENTRANCE_GROTTO_EXIT(GROTTO_ZR_FAIRY_OFFSET) } },
         { { EntranceType::GrottoGrave, RR_ZR_ATOP_LADDER,           RR_ZR_OPEN_GROTTO,             ENTRANCE_GROTTO_LOAD(GROTTO_ZR_OPEN_OFFSET) },
           { EntranceType::GrottoGrave, RR_ZR_OPEN_GROTTO,           RR_ZR_ATOP_LADDER,             ENTRANCE_GROTTO_EXIT(GROTTO_ZR_OPEN_OFFSET) } },
-        { { EntranceType::GrottoGrave, RR_DMC_LOWER_NEARBY,         RR_DMC_HAMMER_GROTTO,          ENTRANCE_GROTTO_LOAD(GROTTO_DMC_HAMMER_OFFSET) },
-          { EntranceType::GrottoGrave, RR_DMC_HAMMER_GROTTO,        RR_DMC_LOWER_LOCAL,            ENTRANCE_GROTTO_EXIT(GROTTO_DMC_HAMMER_OFFSET) } },
-        { { EntranceType::GrottoGrave, RR_DMC_UPPER_NEARBY,         RR_DMC_UPPER_GROTTO,           ENTRANCE_GROTTO_LOAD(GROTTO_DMC_UPPER_OFFSET) },
-          { EntranceType::GrottoGrave, RR_DMC_UPPER_GROTTO,         RR_DMC_UPPER_LOCAL,            ENTRANCE_GROTTO_EXIT(GROTTO_DMC_UPPER_OFFSET) } },
+        { { EntranceType::GrottoGrave, RR_DMC_POT_GROTTO_EXIT,      RR_DMC_SCRUB_GROTTO,           ENTRANCE_GROTTO_LOAD(GROTTO_DMC_HAMMER_OFFSET) },
+          { EntranceType::GrottoGrave, RR_DMC_SCRUB_GROTTO,         RR_DMC_POT_GROTTO_ENTRY,       ENTRANCE_GROTTO_EXIT(GROTTO_DMC_HAMMER_OFFSET) } },
+        { { EntranceType::GrottoGrave, RR_DMC_ROCK_GROTTO,          RR_DMC_UPPER_GROTTO,           ENTRANCE_GROTTO_LOAD(GROTTO_DMC_UPPER_OFFSET) },
+          { EntranceType::GrottoGrave, RR_DMC_UPPER_GROTTO,         RR_DMC_ROCKS_GROTTO_ENTRY,     ENTRANCE_GROTTO_EXIT(GROTTO_DMC_UPPER_OFFSET) } },
         { { EntranceType::GrottoGrave, RR_GC_GROTTO_PLATFORM,       RR_GC_GROTTO,                  ENTRANCE_GROTTO_LOAD(GROTTO_GORON_CITY_OFFSET) },
           { EntranceType::GrottoGrave, RR_GC_GROTTO,                RR_GC_GROTTO_PLATFORM,         ENTRANCE_GROTTO_EXIT(GROTTO_GORON_CITY_OFFSET) } },
         { { EntranceType::GrottoGrave, RR_DEATH_MOUNTAIN_TRAIL,     RR_DMT_STORMS_GROTTO,          ENTRANCE_GROTTO_LOAD(GROTTO_DMT_STORMS_OFFSET) },
@@ -518,10 +528,10 @@ void SetAllEntrancesData() {
           { EntranceType::Overworld, RR_DEATH_MOUNTAIN_TRAIL,    RR_KAK_BEHIND_GATE,         ENTR_KAKARIKO_VILLAGE_GUARD_GATE } },
         { { EntranceType::Overworld, RR_DEATH_MOUNTAIN_TRAIL,    RR_GORON_CITY,              ENTR_GORON_CITY_UPPER_EXIT },
           { EntranceType::Overworld, RR_GORON_CITY,              RR_DEATH_MOUNTAIN_TRAIL,    ENTR_DEATH_MOUNTAIN_TRAIL_GC_EXIT } },
-        { { EntranceType::Overworld, RR_GC_DARUNIAS_CHAMBER,     RR_DMC_LOWER_LOCAL,         ENTR_DEATH_MOUNTAIN_CRATER_GC_EXIT },
-          { EntranceType::Overworld, RR_DMC_LOWER_NEARBY,        RR_GC_DARUNIAS_CHAMBER,     ENTR_GORON_CITY_DARUNIA_ROOM_EXIT } },
-        { { EntranceType::Overworld, RR_DEATH_MOUNTAIN_SUMMIT,   RR_DMC_UPPER_LOCAL,         ENTR_DEATH_MOUNTAIN_CRATER_UPPER_EXIT },
-          { EntranceType::Overworld, RR_DMC_UPPER_NEARBY,        RR_DEATH_MOUNTAIN_SUMMIT,   ENTR_DEATH_MOUNTAIN_TRAIL_SUMMIT_EXIT } },
+        { { EntranceType::Overworld, RR_GC_DARUNIAS_CHAMBER,     RR_DMC_POTS_ENTRY,          ENTR_DEATH_MOUNTAIN_CRATER_GC_EXIT },
+          { EntranceType::Overworld, RR_DMC_POTS,                RR_GC_DARUNIAS_CHAMBER,     ENTR_GORON_CITY_DARUNIA_ROOM_EXIT } },
+        { { EntranceType::Overworld, RR_DEATH_MOUNTAIN_SUMMIT,   RR_DMC_UPPER_ENTRY,         ENTR_DEATH_MOUNTAIN_CRATER_UPPER_EXIT },
+          { EntranceType::Overworld, RR_DMC_CRATE,               RR_DEATH_MOUNTAIN_SUMMIT,   ENTR_DEATH_MOUNTAIN_TRAIL_SUMMIT_EXIT } },
         { { EntranceType::Overworld, RR_ZR_BEHIND_WATERFALL,     RR_ZORAS_DOMAIN,            ENTR_ZORAS_DOMAIN_ENTRANCE },
           { EntranceType::Overworld, RR_ZORAS_DOMAIN,            RR_ZR_BEHIND_WATERFALL,     ENTR_ZORAS_RIVER_WATERFALL_EXIT } },
         { { EntranceType::Overworld, RR_ZD_BEHIND_KING_ZORA,     RR_ZORAS_FOUNTAIN,          ENTR_ZORAS_FOUNTAIN_TUNNEL_EXIT },
@@ -542,7 +552,7 @@ void SetAllEntrancesData() {
                                 // Adult Spawn and prelude of light (normally they both use 0x5F4)
         { { EntranceType::WarpSong, RR_MINUET_OF_FOREST_WARP,   RR_SACRED_FOREST_MEADOW,      ENTR_SACRED_FOREST_MEADOW_WARP_PAD },
           NO_RETURN_ENTRANCE },
-        { { EntranceType::WarpSong, RR_BOLERO_OF_FIRE_WARP,     RR_DMC_CENTRAL_LOCAL,         ENTR_DEATH_MOUNTAIN_CRATER_WARP_PAD },
+        { { EntranceType::WarpSong, RR_BOLERO_OF_FIRE_WARP,     RR_DMC_PAD_ENTRY,             ENTR_DEATH_MOUNTAIN_CRATER_WARP_PAD },
           NO_RETURN_ENTRANCE },
         { { EntranceType::WarpSong, RR_SERENADE_OF_WATER_WARP,  RR_LAKE_HYLIA,                ENTR_LAKE_HYLIA_WARP_PAD },
           NO_RETURN_ENTRANCE },
@@ -581,7 +591,7 @@ void SetAllEntrancesData() {
           NO_RETURN_ENTRANCE },
         { { EntranceType::BlueWarp, RR_FOREST_TEMPLE_BOSS_ROOM,    RR_SACRED_FOREST_MEADOW,      ENTR_SACRED_FOREST_MEADOW_FOREST_TEMPLE_BLUE_WARP },
           NO_RETURN_ENTRANCE },
-        { { EntranceType::BlueWarp, RR_FIRE_TEMPLE_BOSS_ROOM,      RR_DMC_CENTRAL_LOCAL,         ENTR_DEATH_MOUNTAIN_CRATER_FIRE_TEMPLE_BLUE_WARP },
+        { { EntranceType::BlueWarp, RR_FIRE_TEMPLE_BOSS_ROOM,      RR_DMC_PAD_ENTRY,             ENTR_DEATH_MOUNTAIN_CRATER_FIRE_TEMPLE_BLUE_WARP },
           NO_RETURN_ENTRANCE },
         { { EntranceType::BlueWarp, RR_WATER_TEMPLE_BOSS_ROOM,     RR_LAKE_HYLIA,                ENTR_LAKE_HYLIA_WATER_TEMPLE_BLUE_WARP },
           NO_RETURN_ENTRANCE },
@@ -589,14 +599,13 @@ void SetAllEntrancesData() {
           NO_RETURN_ENTRANCE },
         { { EntranceType::BlueWarp, RR_SHADOW_TEMPLE_BOSS_ROOM,    RR_GRAVEYARD_WARP_PAD_REGION, ENTR_GRAVEYARD_SHADOW_TEMPLE_BLUE_WARP },
           NO_RETURN_ENTRANCE },
-        { { EntranceType::BlueWarp, RR_GANONS_TOWER_GANONDORF_LAIR, RR_GANONS_TOWER_STAIRS_1,    ENTR_GANONS_TOWER_0 },
+        { { EntranceType::BlueWarp, RR_GANONS_TOWER_STAIRS_1,      RR_CASTLE_GROUNDS_FROM_GANONS_CASTLE, ENTR_OUTSIDE_GANONS_CASTLE_1_2 },
           NO_RETURN_ENTRANCE },
         // clang-format on
     };
 
     auto ctx = Rando::Context::GetInstance();
     for (auto& entrancePair : entranceShuffleTable) {
-
         auto& forwardEntry = entrancePair.first;
         auto& returnEntry = entrancePair.second;
 
@@ -647,7 +656,7 @@ BuildOneWayTargets(std::vector<EntranceType> typesToInclude,
         AddElementsToPool(oneWayEntrances, GetShuffleableEntrances(poolType, false));
     }
     // Filter out any that are passed in the exclusion list
-    FilterAndEraseFromPool(oneWayEntrances, [&exclude](Entrance* entrance) {
+    std::erase_if(oneWayEntrances, [&exclude](Entrance* entrance) {
         std::pair<RandomizerRegion, RandomizerRegion> entranceBeingChecked(entrance->GetParentRegionKey(),
                                                                            entrance->GetConnectedRegionKey());
         return ElementInContainer(entranceBeingChecked, exclude);
@@ -695,7 +704,6 @@ std::vector<Entrance*> EntranceShuffler::AssumeEntrancePool(std::vector<Entrance
 }
 
 static bool AreEntrancesCompatible(Entrance* entrance, Entrance* target, std::vector<EntrancePair>& rollbacks) {
-
     // Entrances shouldn't connect to their own scene, fail in this situation
     if (
         // allow "special" areas to connect to eachother
@@ -712,21 +720,19 @@ static bool AreEntrancesCompatible(Entrance* entrance, Entrance* target, std::ve
           target->GetConnectedRegion()->scene == SCENE_OUTSIDE_GANONS_CASTLE) ||
          (entrance->GetParentRegion()->scene == SCENE_OUTSIDE_GANONS_CASTLE &&
           target->GetConnectedRegion()->scene == SCENE_HYRULE_CASTLE))) {
-        auto message = "Entrance " + entrance->GetName() + " attempted to connect with own scene target " +
-                       target->to_string() + ". Connection failed.\n";
-        SPDLOG_DEBUG(message);
+        SPDLOG_DEBUG("Entrance {} attempted to connect with own scene target {}. Connection failed.",
+                     entrance->GetName(), target->to_string());
         return false;
     }
 
     // One way entrances shouldn't lead to the same scene as other already chosen one way entrances
     auto type = entrance->GetType();
-    const std::vector<EntranceType> oneWayTypes = { EntranceType::OwlDrop, EntranceType::Spawn,
-                                                    EntranceType::WarpSong };
+    const std::array<EntranceType, 3> oneWayTypes = { EntranceType::OwlDrop, EntranceType::Spawn,
+                                                      EntranceType::WarpSong };
     if (ElementInContainer(type, oneWayTypes)) {
         for (auto& rollback : rollbacks) {
             if (rollback.first->GetConnectedRegion()->scene == target->GetConnectedRegion()->scene) {
-                auto message = "A one way entrance already leads to " + target->to_string() + ". Connection failed.\n";
-                SPDLOG_DEBUG(message);
+                SPDLOG_DEBUG("A one way entrance already leads to {}. Connection failed.", target->to_string());
                 return false;
             }
         }
@@ -738,8 +744,7 @@ static bool AreEntrancesCompatible(Entrance* entrance, Entrance* target, std::ve
 // Change connections between an entrance and a target assumed entrance, in order to test the connections afterwards if
 // necessary
 static void ChangeConnections(Entrance* entrance, Entrance* targetEntrance) {
-    auto message = "Attempting to connect " + entrance->GetName() + " to " + targetEntrance->to_string() + "\n";
-    SPDLOG_DEBUG(message);
+    SPDLOG_DEBUG("Attempting to connect {} to {}", entrance->GetName(), targetEntrance->to_string());
     entrance->Connect(targetEntrance->Disconnect());
     entrance->SetReplacement(targetEntrance->GetReplacement());
     if (entrance->GetReverse() != nullptr && !entrance->IsDecoupled()) {
@@ -791,7 +796,7 @@ static bool EntranceUnreachableAs(Entrance* entrance, uint8_t age, std::vector<E
 
 static bool ValidateWorld(Entrance* entrancePlaced) {
     auto ctx = Rando::Context::GetInstance();
-    SPDLOG_DEBUG("Validating world\n");
+    SPDLOG_DEBUG("Validating world");
 
     // check certain conditions when certain types of ER are enabled
     EntranceType type = EntranceType::None;
@@ -801,6 +806,7 @@ static bool ValidateWorld(Entrance* entrancePlaced) {
 
     bool checkOtherEntranceAccess =
         (ctx->GetOption(RSK_SHUFFLE_OVERWORLD_ENTRANCES) ||
+         (ctx->GetOption(RSK_FOREST).Is(RO_CLOSED_FOREST_ON) && ctx->GetOption(RSK_SHUFFLE_GROTTO_ENTRANCES)) ||
          ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES).Is(RO_INTERIOR_ENTRANCE_SHUFFLE_ALL) ||
          ctx->GetOption(RSK_SHUFFLE_THIEVES_HIDEOUT_ENTRANCES) || ctx->GetOption(RSK_SHUFFLE_OVERWORLD_SPAWNS)) &&
         (entrancePlaced == nullptr || ctx->GetOption(RSK_MIXED_ENTRANCE_POOLS) ||
@@ -839,13 +845,11 @@ static bool ValidateWorld(Entrance* entrancePlaced) {
 
                     if (ElementInContainer(replacementName, childForbidden) &&
                         !EntranceUnreachableAs(entrance, RO_AGE_CHILD, alreadyChecked)) {
-                        auto message = replacementName + " is replaced by an entrance with a potential child access\n";
-                        SPDLOG_DEBUG(message);
+                        SPDLOG_DEBUG("{} is replaced by an entrance with a potential child access", replacementName);
                         return false;
                     } else if (ElementInContainer(replacementName, adultForbidden) &&
                                !EntranceUnreachableAs(entrance, RO_AGE_ADULT, alreadyChecked)) {
-                        auto message = replacementName + " is replaced by an entrance with a potential adult access\n";
-                        SPDLOG_DEBUG(message);
+                        SPDLOG_DEBUG("{} is replaced by an entrance with a potential adult access", replacementName);
                         return false;
                     }
                 }
@@ -855,13 +859,11 @@ static bool ValidateWorld(Entrance* entrancePlaced) {
 
                 if (ElementInContainer(name, childForbidden) &&
                     !EntranceUnreachableAs(entrance, RO_AGE_CHILD, alreadyChecked)) {
-                    auto message = name + " is potentially accessible as child\n";
-                    SPDLOG_DEBUG(message);
+                    SPDLOG_DEBUG("{} is potentially accessible as child", name);
                     return false;
                 } else if (ElementInContainer(name, adultForbidden) &&
                            !EntranceUnreachableAs(entrance, RO_AGE_ADULT, alreadyChecked)) {
-                    auto message = name + " is potentially accessible as adult\n";
-                    SPDLOG_DEBUG(message);
+                    SPDLOG_DEBUG("{} is potentially accessible as adult");
                     return false;
                 }
             }
@@ -874,13 +876,13 @@ static bool ValidateWorld(Entrance* entrancePlaced) {
             // At least one valid starting region with all basic refills should be reachable without using any items at
             // the beginning of the seed
             if (!RegionTable(RR_KOKIRI_FOREST)->HasAccess() && !RegionTable(RR_KAKARIKO_VILLAGE)->HasAccess()) {
-                SPDLOG_DEBUG("Invalid starting area\n");
+                SPDLOG_DEBUG("Invalid starting area");
                 return false;
             }
 
             // Check that a region where time passes is always reachable as both ages without having collected any items
             if (!Regions::HasTimePassAccess(RO_AGE_CHILD) || !Regions::HasTimePassAccess(RO_AGE_ADULT)) {
-                SPDLOG_DEBUG("Time passing is not guaranteed as both ages\n");
+                SPDLOG_DEBUG("Time passing is not guaranteed as both ages");
                 return false;
             }
 
@@ -888,16 +890,16 @@ static bool ValidateWorld(Entrance* entrancePlaced) {
             // This is important to ensure that the player never loses access to the pedestal after going through time
             if (ctx->GetOption(RSK_SELECTED_STARTING_AGE).Is(RO_AGE_CHILD) &&
                 !RegionTable(RR_TEMPLE_OF_TIME)->Adult()) {
-                SPDLOG_DEBUG("Path to Temple of Time as adult is not guaranteed\n");
+                SPDLOG_DEBUG("Path to Temple of Time as adult is not guaranteed");
                 return false;
             } else if (ctx->GetOption(RSK_SELECTED_STARTING_AGE).Is(RO_AGE_ADULT) &&
                        !RegionTable(RR_TEMPLE_OF_TIME)->Child()) {
-                SPDLOG_DEBUG("Path to Temple of Time as child is not guaranteed\n");
+                SPDLOG_DEBUG("Path to Temple of Time as child is not guaranteed");
                 return false;
             }
         }
 
-        SPDLOG_DEBUG("All Locations NOT REACHABLE\n");
+        SPDLOG_DEBUG("All Locations NOT REACHABLE");
         return false;
     }
     return true;
@@ -933,7 +935,6 @@ static void ConfirmReplacement(Entrance* entrance, Entrance* targetEntrance) {
 }
 
 bool EntranceShuffler::ReplaceEntrance(Entrance* entrance, Entrance* target, std::vector<EntrancePair>& rollbacks) {
-
     if (!AreEntrancesCompatible(entrance, target, rollbacks)) {
         return false;
     }
@@ -941,8 +942,7 @@ bool EntranceShuffler::ReplaceEntrance(Entrance* entrance, Entrance* target, std
     if (ValidateWorld(entrance)) {
 #ifdef ENABLE_DEBUG
         std::string ticks = std::to_string(svcGetSystemTick());
-        auto message = "Dumping World Graph at " + ticks + "\n";
-        // SPDLOG_DEBUG(message);
+        // SPDLOG_DEBUG("Dumping World Graph at {}", ticks);
         // Regions::DumpWorldGraph(ticks);
 #endif
         rollbacks.push_back(EntrancePair{ entrance, target });
@@ -951,8 +951,7 @@ bool EntranceShuffler::ReplaceEntrance(Entrance* entrance, Entrance* target, std
     } else {
 #ifdef ENABLE_DEBUG
         std::string ticks = std::to_string(svcGetSystemTick());
-        auto message = "Dumping World Graph at " + ticks + "\n";
-        // SPDLOG_DEBUG(message);
+        // SPDLOG_DEBUG("Dumping World Graph at {}", ticks);
         // Regions::DumpWorldGraph(ticks);
 #endif
         if (entrance->GetConnectedRegionKey() != RR_NONE) {
@@ -1006,7 +1005,7 @@ bool EntranceShuffler::PlaceOneWayPriorityEntrance(
             }
         }
     }
-    SPDLOG_DEBUG("ERROR: Unable to place priority one-way entrance for " + priorityName + "\n");
+    SPDLOG_DEBUG("ERROR: Unable to place priority one-way entrance for {}", priorityName);
     assert(false);
     return false;
 }
@@ -1044,7 +1043,7 @@ bool EntranceShuffler::ShuffleOneWayPriorityEntrances(std::map<std::string, Prio
 
     if (retryCount <= 0) {
         SPDLOG_DEBUG(
-            "Entrance placement attempt count for one way priorities exceeded. Restarting randomization completely\n");
+            "Entrance placement attempt count for one way priorities exceeded. Restarting randomization completely");
         mEntranceShuffleFailure = true;
         return false;
     }
@@ -1154,9 +1153,8 @@ void EntranceShuffler::ShuffleEntrancePool(std::vector<Entrance*>& entrancePool,
         if (retries != retryCount) {
 #ifdef ENABLE_DEBUG
             std::string ticks = std::to_string(svcGetSystemTick());
-            auto message = "Failed to connect entrances. Retrying " + std::to_string(retries) +
-                           " more times.\nDumping World Graph at " + ticks + "\n";
-            SPDLOG_DEBUG(message);
+            SPDLOG_DEBUG("Failed to connect entrances. Retrying {} more times.", retries);
+            SPDLOG_DEBUG("Dumping World Graph at {}", ticks);
             // Regions::DumpWorldGraph(ticks);
 #endif
         }
@@ -1204,7 +1202,7 @@ int EntranceShuffler::ShuffleAllEntrances() {
     mCurNumRandomizedEntrances = 0;
 
     std::map<std::string, PriorityEntrance> priorityEntranceTable = {
-        { "Bolero", { { RR_DMC_CENTRAL_LOCAL }, { EntranceType::OwlDrop, EntranceType::WarpSong } } },
+        { "Bolero", { { RR_DMC_PAD_ENTRY }, { EntranceType::OwlDrop, EntranceType::WarpSong } } },
         { "Nocturne",
           { { RR_GRAVEYARD_WARP_PAD_REGION },
             { EntranceType::OwlDrop, EntranceType::Spawn, EntranceType::WarpSong } } },
@@ -1248,39 +1246,29 @@ int EntranceShuffler::ShuffleAllEntrances() {
         if (ctx->GetOption(RSK_SHUFFLE_BOSS_ENTRANCES).Is(RO_BOSS_ROOM_ENTRANCE_SHUFFLE_FULL)) {
             entrancePools[EntranceType::Boss] = GetShuffleableEntrances(EntranceType::ChildBoss);
             AddElementsToPool(entrancePools[EntranceType::Boss], GetShuffleableEntrances(EntranceType::AdultBoss));
+            if (ctx->GetOption(RSK_SHUFFLE_GANONS_TOWER_ENTRANCE)) {
+                AddElementsToPool(entrancePools[EntranceType::Boss], GetShuffleableEntrances(EntranceType::GanonTower));
+            }
+
             if (ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
                 for (Entrance* entrance : entrancePools[EntranceType::Boss]) {
                     entrancePools[EntranceType::BossReverse].push_back(entrance->GetReverse());
                 }
             }
-
-            if (ctx->GetOption(RSK_SHUFFLE_GANONS_TOWER_ENTRANCE).IsNot(RO_GENERIC_OFF)) {
-                AddElementsToPool(entrancePools[EntranceType::Boss], GetShuffleableEntrances(EntranceType::GanonTower));
-                if (ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
-                    for (Entrance* entrance : GetShuffleableEntrances(EntranceType::GanonTower)) {
-                        entrancePools[EntranceType::BossReverse].push_back(entrance->GetReverse());
-                    }
-                }
-            }
         } else {
             entrancePools[EntranceType::ChildBoss] = GetShuffleableEntrances(EntranceType::ChildBoss);
             entrancePools[EntranceType::AdultBoss] = GetShuffleableEntrances(EntranceType::AdultBoss);
+            if (ctx->GetOption(RSK_SHUFFLE_GANONS_TOWER_ENTRANCE)) {
+                AddElementsToPool(entrancePools[EntranceType::AdultBoss],
+                                  GetShuffleableEntrances(EntranceType::GanonTower));
+            }
+
             if (ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
                 for (Entrance* entrance : entrancePools[EntranceType::ChildBoss]) {
                     entrancePools[EntranceType::ChildBossReverse].push_back(entrance->GetReverse());
                 }
                 for (Entrance* entrance : entrancePools[EntranceType::AdultBoss]) {
                     entrancePools[EntranceType::AdultBossReverse].push_back(entrance->GetReverse());
-                }
-            }
-
-            if (ctx->GetOption(RSK_SHUFFLE_GANONS_TOWER_ENTRANCE).IsNot(RO_GENERIC_OFF)) {
-                AddElementsToPool(entrancePools[EntranceType::AdultBoss],
-                                  GetShuffleableEntrances(EntranceType::GanonTower));
-                if (ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
-                    for (Entrance* entrance : GetShuffleableEntrances(EntranceType::GanonTower)) {
-                        entrancePools[EntranceType::AdultBossReverse].push_back(entrance->GetReverse());
-                    }
                 }
             }
         }
@@ -1346,7 +1334,7 @@ int EntranceShuffler::ShuffleAllEntrances() {
             GetShuffleableEntrances(EntranceType::Overworld, excludeOverworldReverse);
         // Only shuffle GV Lower Stream -> Lake Hylia if decoupled entrances are on
         if (!ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
-            FilterAndEraseFromPool(entrancePools[EntranceType::Overworld], [](const Entrance* entrance) {
+            std::erase_if(entrancePools[EntranceType::Overworld], [](const Entrance* entrance) {
                 return entrance->GetParentRegionKey() == RR_GV_LOWER_STREAM &&
                        entrance->GetConnectedRegionKey() == RR_LAKE_HYLIA;
             });
@@ -1376,7 +1364,6 @@ int EntranceShuffler::ShuffleAllEntrances() {
         std::set<EntranceType> poolsToMix = {};
         if (ctx->GetOption(RSK_MIX_DUNGEON_ENTRANCES)) {
             poolsToMix.insert(EntranceType::Dungeon);
-            // Insert reverse entrances when decoupled entrances is on
             if (ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
                 poolsToMix.insert(EntranceType::DungeonReverse);
             }
@@ -1546,15 +1533,15 @@ int EntranceShuffler::ShuffleAllEntrances() {
             { EntranceNameByRegions(RR_FOREST_TEMPLE_BOSS_ROOM, RR_FOREST_TEMPLE_BOSS_ENTRYWAY),
               GetEntrance(RR_FOREST_TEMPLE_ENTRYWAY, RR_SACRED_FOREST_MEADOW) },
             { EntranceNameByRegions(RR_FIRE_TEMPLE_BOSS_ROOM, RR_FIRE_TEMPLE_BOSS_ENTRYWAY),
-              GetEntrance(RR_FIRE_TEMPLE_ENTRYWAY, RR_DMC_OUTSIDE_FIRE_TEMPLE) },
+              GetEntrance(RR_FIRE_TEMPLE_ENTRYWAY, RR_DMC_TEMPLE_EXIT) },
             { EntranceNameByRegions(RR_WATER_TEMPLE_BOSS_ROOM, RR_WATER_TEMPLE_BOSS_ENTRYWAY),
               GetEntrance(RR_WATER_TEMPLE_ENTRYWAY, RR_LH_FROM_WATER_TEMPLE) },
             { EntranceNameByRegions(RR_SPIRIT_TEMPLE_BOSS_ROOM, RR_SPIRIT_TEMPLE_BOSS_ENTRYWAY),
               GetEntrance(RR_SPIRIT_TEMPLE_ENTRYWAY, RR_DESERT_COLOSSUS_OUTSIDE_TEMPLE) },
             { EntranceNameByRegions(RR_SHADOW_TEMPLE_BOSS_ROOM, RR_SHADOW_TEMPLE_BOSS_ENTRYWAY),
               GetEntrance(RR_SHADOW_TEMPLE_ENTRYWAY, RR_GRAVEYARD_WARP_PAD_REGION) },
-            { EntranceNameByRegions(RR_GANONS_TOWER_GANONDORF_LAIR, RR_GANONS_TOWER_BEFORE_GANONDORF_LAIR),
-              GetEntrance(RR_GANONS_TOWER_ENTRYWAY, RR_GANONS_TOWER_STAIRS_1) },
+            { EntranceNameByRegions(RR_GANONS_TOWER_STAIRS_1, RR_GANONS_TOWER_ENTRYWAY),
+              GetEntrance(RR_GANONS_CASTLE_ENTRYWAY, RR_CASTLE_GROUNDS_FROM_GANONS_CASTLE) }
         };
 
         // If a boss room is inside a dungeon entrance (or inside a dungeon which is inside a dungeon entrance), make
@@ -1568,16 +1555,16 @@ int EntranceShuffler::ShuffleAllEntrances() {
               GetEntrance(RR_JABU_JABUS_BELLY_BOSS_ROOM, RR_ZORAS_FOUNTAIN) },
             { EntranceNameByRegions(RR_FOREST_TEMPLE_ENTRYWAY, RR_SACRED_FOREST_MEADOW),
               GetEntrance(RR_FOREST_TEMPLE_BOSS_ROOM, RR_SACRED_FOREST_MEADOW) },
-            { EntranceNameByRegions(RR_FIRE_TEMPLE_ENTRYWAY, RR_DMC_OUTSIDE_FIRE_TEMPLE),
-              GetEntrance(RR_FIRE_TEMPLE_BOSS_ROOM, RR_DMC_CENTRAL_LOCAL) },
+            { EntranceNameByRegions(RR_FIRE_TEMPLE_ENTRYWAY, RR_DMC_TEMPLE_EXIT),
+              GetEntrance(RR_FIRE_TEMPLE_BOSS_ROOM, RR_DMC_PAD_ENTRY) },
             { EntranceNameByRegions(RR_WATER_TEMPLE_ENTRYWAY, RR_LH_FROM_WATER_TEMPLE),
               GetEntrance(RR_WATER_TEMPLE_BOSS_ROOM, RR_LAKE_HYLIA) },
             { EntranceNameByRegions(RR_SPIRIT_TEMPLE_ENTRYWAY, RR_DESERT_COLOSSUS_OUTSIDE_TEMPLE),
               GetEntrance(RR_SPIRIT_TEMPLE_BOSS_ROOM, RR_DESERT_COLOSSUS) },
             { EntranceNameByRegions(RR_SHADOW_TEMPLE_ENTRYWAY, RR_GRAVEYARD_WARP_PAD_REGION),
               GetEntrance(RR_SHADOW_TEMPLE_BOSS_ROOM, RR_GRAVEYARD_WARP_PAD_REGION) },
-            { EntranceNameByRegions(RR_GANONS_TOWER_ENTRYWAY, RR_GANONS_TOWER_STAIRS_1),
-              GetEntrance(RR_GANONS_TOWER_GANONDORF_LAIR, RR_GANONS_TOWER_STAIRS_1) },
+            { EntranceNameByRegions(RR_GANONS_CASTLE_ENTRYWAY, RR_CASTLE_GROUNDS_FROM_GANONS_CASTLE),
+              GetEntrance(RR_GANONS_TOWER_STAIRS_1, RR_CASTLE_GROUNDS_FROM_GANONS_CASTLE) }
         };
 
         // Pair <BlueWarp exit, BossRoom reverse exit>
@@ -1590,7 +1577,7 @@ int EntranceShuffler::ShuffleAllEntrances() {
               GetEntrance(RR_JABU_JABUS_BELLY_BOSS_ROOM, RR_JABU_JABUS_BELLY_BOSS_EXIT) },
             { GetEntrance(RR_FOREST_TEMPLE_BOSS_ROOM, RR_SACRED_FOREST_MEADOW),
               GetEntrance(RR_FOREST_TEMPLE_BOSS_ROOM, RR_FOREST_TEMPLE_BOSS_ENTRYWAY) },
-            { GetEntrance(RR_FIRE_TEMPLE_BOSS_ROOM, RR_DMC_CENTRAL_LOCAL),
+            { GetEntrance(RR_FIRE_TEMPLE_BOSS_ROOM, RR_DMC_PAD_ENTRY),
               GetEntrance(RR_FIRE_TEMPLE_BOSS_ROOM, RR_FIRE_TEMPLE_BOSS_ENTRYWAY) },
             { GetEntrance(RR_WATER_TEMPLE_BOSS_ROOM, RR_LAKE_HYLIA),
               GetEntrance(RR_WATER_TEMPLE_BOSS_ROOM, RR_WATER_TEMPLE_BOSS_ENTRYWAY) },
@@ -1598,8 +1585,8 @@ int EntranceShuffler::ShuffleAllEntrances() {
               GetEntrance(RR_SPIRIT_TEMPLE_BOSS_ROOM, RR_SPIRIT_TEMPLE_BOSS_ENTRYWAY) },
             { GetEntrance(RR_SHADOW_TEMPLE_BOSS_ROOM, RR_GRAVEYARD_WARP_PAD_REGION),
               GetEntrance(RR_SHADOW_TEMPLE_BOSS_ROOM, RR_SHADOW_TEMPLE_BOSS_ENTRYWAY) },
-            { GetEntrance(RR_GANONS_TOWER_GANONDORF_LAIR, RR_GANONS_TOWER_STAIRS_1),
-              GetEntrance(RR_GANONS_TOWER_GANONDORF_LAIR, RR_GANONS_TOWER_BEFORE_GANONDORF_LAIR) },
+            { GetEntrance(RR_GANONS_TOWER_STAIRS_1, RR_CASTLE_GROUNDS_FROM_GANONS_CASTLE),
+              GetEntrance(RR_GANONS_TOWER_STAIRS_1, RR_GANONS_TOWER_ENTRYWAY) }
         };
 
         for (EntrancePair pair : bossRoomExitPairs) {
@@ -1635,7 +1622,7 @@ void EntranceShuffler::CreateEntranceOverrides() {
     if (mNoRandomEntrances) {
         return;
     }
-    SPDLOG_DEBUG("\nCREATING ENTRANCE OVERRIDES\n");
+    SPDLOG_DEBUG("CREATING ENTRANCE OVERRIDES");
     auto allShuffleableEntrances = GetShuffleableEntrances(EntranceType::All, false);
 
     int i = 0;
@@ -1644,6 +1631,8 @@ void EntranceShuffler::CreateEntranceOverrides() {
         // Include blue warps when dungeons or bosses are shuffled
         bool includeBluewarps =
             entrance->GetType() == Rando::EntranceType::BlueWarp &&
+            (ctx->GetOption(RSK_SHUFFLE_GANONS_TOWER_ENTRANCE) ||
+             entrance->GetParentRegionKey() != RR_GANONS_TOWER_STAIRS_1) &&
             (ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES) || ctx->GetOption(RSK_SHUFFLE_BOSS_ENTRANCES));
 
         // Double-check to make sure the entrance is actually shuffled
@@ -1651,8 +1640,7 @@ void EntranceShuffler::CreateEntranceOverrides() {
             continue;
         }
 
-        auto message = "Setting " + entrance->to_string() + "\n";
-        SPDLOG_DEBUG(message);
+        SPDLOG_DEBUG("Setting {}", entrance->to_string());
 
         uint8_t type = (uint8_t)entrance->GetType();
         int16_t originalIndex = entrance->GetIndex();
@@ -1661,8 +1649,7 @@ void EntranceShuffler::CreateEntranceOverrides() {
         int16_t destinationIndex = -1;
         int16_t replacementDestinationIndex = -1;
 
-        // Only set destination indices for two way entrances and when decouple entrances
-        // is off
+        // Only set destination indices for two way entrances and when decouple entrances is off
         if (entrance->GetReverse() != nullptr && !ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
             replacementDestinationIndex = entrance->GetReplacement()->GetReverse()->GetIndex();
             destinationIndex = entrance->GetReverse()->GetIndex();
@@ -1676,10 +1663,8 @@ void EntranceShuffler::CreateEntranceOverrides() {
             .overrideDestination = replacementDestinationIndex,
         };
 
-        message = "\tOriginal: " + std::to_string(originalIndex) + "\n";
-        SPDLOG_DEBUG(message);
-        message = "\tReplacement " + std::to_string(replacementIndex) + "\n";
-        SPDLOG_DEBUG(message);
+        SPDLOG_DEBUG("\tOriginal {}", originalIndex);
+        SPDLOG_DEBUG("\tReplacement {}", replacementIndex);
         i++;
     }
 }
@@ -1752,3 +1737,30 @@ const Entrance* EntranceShuffler::GetEntranceByIndex(int16_t index) {
 extern "C" EntranceOverride* Randomizer_GetEntranceOverrides() {
     return Rando::Context::GetInstance()->GetEntranceShuffler()->entranceOverrides.data();
 }
+
+static SceneID backedUpScene = (SceneID)0xFF;
+static Camera backupCamera;
+
+void RegisterEntranceShuffleHooks() {
+    COND_VB_SHOULD(VB_SHOULD_LOAD_BG_IMAGE, IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_ENTRANCES), {
+        int32_t* camId = va_arg(args, int*);
+        Camera* camera = GET_ACTIVE_CAM(gPlayState);
+        if (*camId == -1) {
+            if (backedUpScene != gPlayState->sceneNum) {
+                *should = false;
+                return;
+            }
+            memcpy(camera, &backupCamera, sizeof(Camera));
+            Camera_ChangeMode(camera, CAM_MODE_TALK);
+            *should = false;
+        } else if (backedUpScene != gPlayState->sceneNum) {
+            memcpy(&backupCamera, camera, sizeof(Camera));
+            backedUpScene = (SceneID)gPlayState->sceneNum;
+        }
+    });
+
+    COND_HOOK(OnLoadGame, IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_ENTRANCES),
+              [](int32_t) { backedUpScene = (SceneID)0xFF; });
+}
+
+static RegisterShipInitFunc initFunc(RegisterEntranceShuffleHooks, { "IS_RANDO" });

@@ -101,13 +101,13 @@ void BgPoSyokudai_Init(Actor* thisx, PlayState* play) {
         Flags_GetSwitch(play, POE_TORCH_FLAG + POE_FLAME_BLUE) &&
         Flags_GetSwitch(play, POE_TORCH_FLAG + POE_FLAME_RED) && !Flags_GetSwitch(play, thisx->params)) {
 
-        Actor_Spawn(&play->actorCtx, play, ACTOR_EN_PO_SISTERS, 119.0f, 225.0f, -1566.0f, 0, 0, 0, thisx->params, true);
+        Actor_Spawn(&play->actorCtx, play, ACTOR_EN_PO_SISTERS, 119.0f, 225.0f, -1566.0f, 0, 0, 0, thisx->params);
         play->envCtx.unk_BF = 0x4;
 
     } else if (!Flags_GetSwitch(play, POE_TORCH_FLAG + POE_FLAME_PURPLE) && !Flags_GetSwitch(play, 0x1B)) {
 
         Actor_Spawn(&play->actorCtx, play, ACTOR_EN_PO_SISTERS, thisx->world.pos.x, thisx->world.pos.y + 52.0f,
-                    thisx->world.pos.z, 0, 0, 0, (this->flameColor << 8) + thisx->params + 0x1000, true);
+                    thisx->world.pos.z, 0, 0, 0, (this->flameColor << 8) + thisx->params + 0x1000);
 
     } else if (!Flags_GetSwitch(play, thisx->params)) {
         if (play->envCtx.unk_BF == 0xFF) {
@@ -168,8 +168,8 @@ void BgPoSyokudai_Draw(Actor* thisx, PlayState* play) {
 
         Gfx_SetupDL_25Xlu(play->state.gfxCtx);
         gSPSegment(POLY_XLU_DISP++, 0x08,
-                   Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 32, 64, 1, 0, (this->flameTextureScroll * -20) & 0x1FF,
-                                    32, 128));
+                   Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 0, 0, 32, 64, 1, 0,
+                                      (this->flameTextureScroll * -20) & 0x1FF, 32, 128, 0, 0, 0, -20));
 
         gDPSetPrimColor(POLY_XLU_DISP++, 0x80, 0x80, primColor->r, primColor->g, primColor->b, 255);
         gDPSetEnvColor(POLY_XLU_DISP++, envColor->r, envColor->g, envColor->b, 255);

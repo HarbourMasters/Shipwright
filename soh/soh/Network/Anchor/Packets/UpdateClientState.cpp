@@ -3,6 +3,7 @@
 #include <nlohmann/json.hpp>
 #include <libultraship/libultraship.h>
 #include "soh/OTRGlobals.h"
+#include "soh/Enhancements/randomizer/SeedContext.h"
 
 extern "C" {
 #include "variables.h"
@@ -33,12 +34,14 @@ nlohmann::json Anchor::PrepClientState() {
         payload["isSaveLoaded"] = true;
         payload["isGameComplete"] = gSaveContext.ship.stats.gameComplete;
         payload["sceneNum"] = gPlayState->sceneNum;
+        payload["curRoomNum"] = gPlayState->roomCtx.curRoom.num;
         payload["entranceIndex"] = gSaveContext.entranceIndex;
     } else {
         payload["seed"] = 0;
         payload["isSaveLoaded"] = false;
         payload["isGameComplete"] = false;
         payload["sceneNum"] = SCENE_ID_MAX;
+        payload["curRoomNum"] = -1;
         payload["entranceIndex"] = 0x00;
     }
 
@@ -54,7 +57,7 @@ void Anchor::SendPacket_UpdateClientState() {
 }
 
 void Anchor::HandlePacket_UpdateClientState(nlohmann::json payload) {
-    uint32_t clientId = payload["clientId"].get<uint32_t>();
+    uint32_t clientId = payload.at("clientId").get<uint32_t>();
 
     if (clients.contains(clientId)) {
         AnchorClient client = payload["state"].get<AnchorClient>();
@@ -68,6 +71,7 @@ void Anchor::HandlePacket_UpdateClientState(nlohmann::json payload) {
         clients[clientId].isSaveLoaded = client.isSaveLoaded;
         clients[clientId].isGameComplete = client.isGameComplete;
         clients[clientId].sceneNum = client.sceneNum;
+        clients[clientId].curRoomNum = client.curRoomNum;
         clients[clientId].entranceIndex = client.entranceIndex;
     }
 }

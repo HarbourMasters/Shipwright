@@ -254,8 +254,8 @@ void BgHidanCurtain_Draw(Actor* thisx, PlayState* play) {
     gDPSetEnvColor(POLY_XLU_DISP++, 255, 0, 0, 0);
 
     gSPSegment(POLY_XLU_DISP++, 0x08,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, this->texScroll & 0x7F, 0, 0x20, 0x40, 1, 0,
-                                (this->texScroll * -0xF) & 0xFF, 0x20, 0x40));
+               Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, this->texScroll & 0x7F, 0, 0x20, 0x40, 1, 0,
+                                  (this->texScroll * -0xF) & 0xFF, 0x20, 0x40, 1, 0, 0, -0xF));
 
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 

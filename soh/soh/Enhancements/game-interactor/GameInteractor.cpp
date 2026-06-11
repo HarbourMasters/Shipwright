@@ -19,20 +19,18 @@ extern "C" {
 extern PlayState* gPlayState;
 }
 
-#include "overlays/actors/ovl_En_Niw/z_en_niw.h"
-
 // MARK: - Effects
 
-GameInteractionEffectQueryResult GameInteractor::CanApplyEffect(GameInteractionEffectBase* effect) {
-    return effect->CanBeApplied();
+GameInteractionEffectQueryResult GameInteractor::CanApplyEffect(GameInteractionEffectBase& effect) {
+    return effect.CanBeApplied();
 }
 
-GameInteractionEffectQueryResult GameInteractor::ApplyEffect(GameInteractionEffectBase* effect) {
-    return effect->Apply();
+GameInteractionEffectQueryResult GameInteractor::ApplyEffect(GameInteractionEffectBase& effect) {
+    return effect.Apply();
 }
 
-GameInteractionEffectQueryResult GameInteractor::RemoveEffect(RemovableGameInteractionEffect* effect) {
-    return effect->Remove();
+GameInteractionEffectQueryResult GameInteractor::RemoveEffect(RemovableGameInteractionEffect& effect) {
+    return effect.Remove();
 }
 
 // MARK: - Helpers
@@ -53,15 +51,49 @@ bool GameInteractor::IsSaveLoaded(bool allowDbgSave) {
 }
 
 bool GameInteractor::IsGameplayPaused() {
+    if (gPlayState == NULL) {
+        return true;
+    }
+
     Player* player = GET_PLAYER(gPlayState);
+    if (player == NULL) {
+        return true;
+    }
+
     return (Player_InBlockingCsMode(gPlayState, player) || gPlayState->pauseCtx.state != 0 ||
             gPlayState->msgCtx.msgMode != 0)
                ? true
                : false;
 }
 
+bool GameInteractor::IsPlayerInControl() {
+    if (gPlayState == NULL) {
+        return false;
+    }
+
+    Player* player = GET_PLAYER(gPlayState);
+    if (player == NULL) {
+        return false;
+    }
+
+    if (gSaveContext.gameMode != GAMEMODE_NORMAL) {
+        return false;
+    }
+
+    if (!((gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2) || gSaveContext.fileNum == 0xFF)) {
+        return false;
+    }
+
+    if (Player_InBlockingCsMode(gPlayState, player) || gPlayState->pauseCtx.state != 0 ||
+        gPlayState->msgCtx.msgMode != 0 || player->unk_6AD == 4) {
+        return false;
+    }
+
+    return true;
+}
+
 bool GameInteractor::CanSpawnActor() {
-    return GameInteractor::IsSaveLoaded() && !GameInteractor::IsGameplayPaused();
+    return GameInteractor::IsPlayerInControl();
 }
 
 bool GameInteractor::CanAddOrTakeAmmo(int16_t amount, int16_t item) {

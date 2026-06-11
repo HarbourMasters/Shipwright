@@ -135,6 +135,12 @@ void Settings::CreateOptionDescriptions() {
         "The amount of Triforce pieces that will be placed in the world. "
         "Keep in mind seed generation can fail if more pieces are placed than there are junk items in the item pool.";
     mOptionDescriptions[RSK_TRIFORCE_HUNT_PIECES_REQUIRED] = "The amount of Triforce pieces required to win the game.";
+    mOptionDescriptions[RSK_TRIFORCE_HUNT_PIECES_LOCATION] =
+        "Any dungeon - Triforce pieces can only appear inside of any dungeon.\n"
+        "\n"
+        "Overworld - Triforce pieces can only appear outside of dungeons.\n"
+        "\n"
+        "Anywhere - Triforce pieces can appear anywhere in the world.";
     mOptionDescriptions[RSK_SHUFFLE_DUNGEON_ENTRANCES] =
         "Shuffle the pool of dungeon entrances, including Bottom of the Well, Ice Cavern and Gerudo Training Ground.\n"
         "\n"
@@ -312,6 +318,34 @@ void Settings::CreateOptionDescriptions() {
         "only shuffle with No Logic.";
     mOptionDescriptions[RSK_SHUFFLE_BUSHES] =
         "Bushes in Hyrule Field & Zora's Fountain will contain randomized items when first walked through.";
+    mOptionDescriptions[RSK_SHUFFLE_ICICLES] =
+        "Stalagmites and stalactites in Ice Cavern and Ganon's Castle will contain randomized items when broken.\n"
+        "Icicles will have a halo around them when carrying randomized items.";
+    mOptionDescriptions[RSK_SHUFFLE_RED_ICE] =
+        "Red Ice will give randomized items when melted.\n"
+        "Red Ice will have a particle effect inside it when it holds a randomized item";
+    mOptionDescriptions[RSK_SHUFFLE_SIGNS] = "Signs and readable pedestals, plinths, altars, and graves will grant a "
+                                             "randomized item the first time they are read. "
+                                             "Signs will have a particle effect when they hold a randomized item.\n"
+                                             "\n"
+                                             "Off - Signs will not be shuffled.\n"
+                                             "\n"
+                                             "Dungeons - Only shuffle signs that are within dungeons.\n"
+                                             "\n"
+                                             "Overworld - Only shuffle signs that are outside of dungeons.\n"
+                                             "\n"
+                                             "All Signs - Shuffle all signs.";
+    mOptionDescriptions[RSK_SHUFFLE_WONDER_ITEMS] =
+        "Wonder items will drop a randomized item the first time they're collected. "
+        "Wonder items will be marked with swirling particles.\n"
+        "\n"
+        "Off - Wonder items will not be shuffled.\n"
+        "\n"
+        "Dungeons - Only shuffle wonder items that are within dungeons.\n"
+        "\n"
+        "Overworld - Only shuffle wonder items that are outside of dungeons.\n"
+        "\n"
+        "All Wonder Items - Shuffle all wonder items.";
     mOptionDescriptions[RSK_SHUFFLE_FISHING_POLE] = "Shuffles the fishing pole into the item pool.\n"
                                                     "\n"
                                                     "The fishing pole is required to play the fishing pond minigame.";
@@ -341,11 +375,9 @@ void Settings::CreateOptionDescriptions() {
         "\n"
         "1-7 Items - Vanilla shop items will be shuffled among different shops, and "
         "each shop will contain 1-7 non-vanilla shop items.\n"
-        /*
         "\n"
-        "8 Items - All shops will contain 8 non-vanilla shop items.\n"
-        */
-        ;
+        "8 Items - All shops will contain 8 non-vanilla shop items. "
+        "Only available with No Logic, since logic otherwise requires at least one buyable refill per shop.\n";
     mOptionDescriptions[RSK_SHOPSANITY_PRICES] =
         "Vanilla - The same price as the item it replaced.\n"
         "Cheap Balanced - Prices will range between 0 to 95 rupees, favoring lower numbers.\n"
@@ -372,6 +404,10 @@ void Settings::CreateOptionDescriptions() {
         "After choosing a price, set it to the affordable amount based on the wallet required.\n\n"
         "Affordable prices per tier: starter = 1, adult = 100, giant = 201, tycoon = 501\n\n"
         "Use this to enable wallet tier locking, but make shop items not as expensive as they could be.";
+    mOptionDescriptions[RSK_SHOP_SHIELDS_AND_TUNICS_ONLY_REFILL] =
+        "Non-randomized shields and tunics sold in shops cannot be purchased until you have first found a shield "
+        "elsewhere. "
+        "Regions containing a shield or tunic will not be hinted foolish.";
     mOptionDescriptions[RSK_FISHSANITY] =
         "Off - Fish will not be shuffled. No changes will be made to fishing behavior.\n\n"
         "Shuffle only Hyrule Loach - Allows you to earn an item by catching the Hyrule Loach at the fishing pond and "
@@ -473,6 +509,9 @@ void Settings::CreateOptionDescriptions() {
                                                         "\n"
                                                         "This setting does not effect the item earned from playing\n"
                                                         "the Song of Storms and the frog song minigame.";
+    mOptionDescriptions[RSK_SHUFFLE_BEGGAR] =
+        "Shuffle the rewards the Beggar gives for selling bugs, fish, and Blue Fire.\n"
+        "The Beggar will give separate rewards to child and adult.";
     mOptionDescriptions[RSK_SHUFFLE_ADULT_TRADE] =
         "Adds all of the adult trade quest items into the pool, each of which "
         "can be traded for a unique reward.\n"
@@ -507,17 +546,20 @@ void Settings::CreateOptionDescriptions() {
         "Shuffle fairy spots. These are spots where a big fairy is revealed by a song."
         "\n"
         "This excludes gossip stones and magic bean locations.";
+    mOptionDescriptions[RSK_SHUFFLE_BUTTERFLY_FAIRIES] = "Shuffle fairies from butterfly locations.";
     mOptionDescriptions[RSK_SHUFFLE_GRASS] =
-        "Grass/Bushes will drop a randomized item the first time they're cut and collected. "
-        "Grass/Bushes will have a different appearance when they hold a randomized item.\n"
+        "Grass will drop a randomized item the first time they're cut and collected. "
+        "Grass will have a different appearance when they hold a randomized item.\n"
         "\n"
-        "Off - Grass/Bushes will not be shuffled.\n"
+        "Off - Grass will not be shuffled.\n"
         "\n"
-        "Dungeons - Only shuffle grass/bushes that are within dungeons.\n"
+        "Dungeons - Only shuffle grass that are within dungeons.\n"
         "\n"
-        "Overworld - Only shuffle grass/bushes that are outside of dungeons.\n"
+        "Overworld - Only shuffle grass that are outside of dungeons.\n"
         "\n"
-        "All Grass/Bushes - Shuffle all grass/bushes.";
+        "All Grass - Shuffle all grass.";
+    mOptionDescriptions[RSK_SHUFFLE_ROCKS] = "Shuffle rock locations.";
+    mOptionDescriptions[RSK_SHUFFLE_BOULDERS] = "Shuffle boulder locations.";
     mOptionDescriptions[RSK_SHUFFLE_DUNGEON_REWARDS] =
         "Shuffles the location of Spiritual Stones and medallions.\n"
         "Vanilla - Spiritual Stones and medallions will be given from their respective boss.\n"
@@ -772,6 +814,16 @@ void Settings::CreateOptionDescriptions() {
         "of 20. The second one will upgrade this capacity to 30, and the final one will upgrade the capacity to the "
         "usual 50.\n\n"
         "Bombchu Bowling is opened by obtaining the first Bombchu bag.";
+    mOptionDescriptions[RSK_LINKS_POCKET] =
+        "Dungeon Reward - Link will start with a Spiritual Stone or Medallion, and specific options will open up\n\n"
+        "Advancement - Link will start with a useful item.\n\n"
+        "Anything - Link will start with a random item.\n\n"
+        "Nothing - Link will not start with a bonus item.";
+    mOptionDescriptions[RSK_LINKS_POCKET_REWARD] =
+        "Any Reward - Link starts with a random Spiritual Stone or Medallion\n\n"
+        "Stone - Link starts with a random Spiritual Stone.\n\n"
+        "Any Medallion - Link starts with a random Medallion.\n\n"
+        "Light Medallion - Link starts with the Light Medallion.";
     mOptionDescriptions[RSK_ENABLE_BOMBCHU_DROPS] = "Once you obtain a Bombchu Bag, refills will sometimes replace "
                                                     "Bomb drops that would spawn."
                                                     "\n"
@@ -795,7 +847,7 @@ void Settings::CreateOptionDescriptions() {
         "and disabled below.\n"
         "\n"
         "No logic - Item placement is completely random. MAY BE IMPOSSIBLE TO BEAT.";
-    mOptionDescriptions[RSK_ALL_LOCATIONS_REACHABLE] = "When this options is enabled, the randomizer will "
+    mOptionDescriptions[RSK_ALL_LOCATIONS_REACHABLE] = "When this option is enabled, the randomizer will "
                                                        "guarantee that every item is obtainable and every "
                                                        "location is reachable. When disabled, only "
                                                        "required items and locations to beat the game "

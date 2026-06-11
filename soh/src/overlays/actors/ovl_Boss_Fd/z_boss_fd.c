@@ -229,7 +229,7 @@ void BossFd_Init(Actor* thisx, PlayState* play) {
         Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, 0.0f, 100.0f, 0.0f, 0, 0, 0,
                            WARP_DUNGEON_ADULT);
         if (GameInteractor_Should(VB_SPAWN_HEART_CONTAINER, true)) {
-            Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, 0.0f, 100.0f, 200.0f, 0, 0, 0, 0, true);
+            Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, 0.0f, 100.0f, 200.0f, 0, 0, 0, 0);
         }
     } else {
         Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_BOSS_FD2, this->actor.world.pos.x,
@@ -923,7 +923,7 @@ void BossFd_Fly(BossFd* this, PlayState* play) {
             }
             if (GameInteractor_Should(VB_SPAWN_HEART_CONTAINER, this->timers[0] == 7)) {
                 Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, this->actor.world.pos.x, this->actor.world.pos.y,
-                            this->actor.world.pos.z, 0, 0, 0, 0, true);
+                            this->actor.world.pos.z, 0, 0, 0, 0);
             }
             break;
         case BOSSFD_WAIT_INTRO:
@@ -1841,9 +1841,10 @@ void BossFd_DrawBody(PlayState* play, BossFd* this) {
         gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(sEyeTextures[this->eyeState]));
     }
     gSPSegment(POLY_OPA_DISP++, 0x08,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, (s16)this->fwork[BFD_TEX1_SCROLL_X],
-                                (s16)this->fwork[BFD_TEX1_SCROLL_Y], 0x20, 0x20, 1, (s16)this->fwork[BFD_TEX2_SCROLL_X],
-                                (s16)this->fwork[BFD_TEX2_SCROLL_Y], 0x20, 0x20));
+               Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, (s16)this->fwork[BFD_TEX1_SCROLL_X],
+                                  (s16)this->fwork[BFD_TEX1_SCROLL_Y], 0x20, 0x20, 1,
+                                  (s16)this->fwork[BFD_TEX2_SCROLL_X], (s16)this->fwork[BFD_TEX2_SCROLL_Y], 0x20, 0x20,
+                                  4, 1, 3, -2));
     gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, 255);
     gDPSetEnvColor(POLY_OPA_DISP++, 255, 255, 255, (s8)this->fwork[BFD_BODY_TEX2_ALPHA]);
 

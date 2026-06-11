@@ -298,17 +298,19 @@ void EnPeehat_HitWhenGrounded(EnPeehat* this, PlayState* play) {
         s32 i;
 
         this->colCylinder.base.acFlags &= ~AC_HIT;
-        for (i = MAX_LARVA - this->unk_2FA; i > 0; i--) {
-            Actor* larva =
-                Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_PEEHAT,
-                                   Rand_CenteredFloat(25.0f) + this->actor.world.pos.x,
-                                   Rand_CenteredFloat(25.0f) + (this->actor.world.pos.y + 50.0f),
-                                   Rand_CenteredFloat(25.0f) + this->actor.world.pos.z, 0, 0, 0, PEAHAT_TYPE_LARVA);
+        if (GameInteractor_Should(VB_PEEHAT_SPAWN_LARVAS, true, this, play)) {
+            for (i = MAX_LARVA - this->unk_2FA; i > 0; i--) {
+                Actor* larva =
+                    Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_PEEHAT,
+                                       Rand_CenteredFloat(25.0f) + this->actor.world.pos.x,
+                                       Rand_CenteredFloat(25.0f) + (this->actor.world.pos.y + 50.0f),
+                                       Rand_CenteredFloat(25.0f) + this->actor.world.pos.z, 0, 0, 0, PEAHAT_TYPE_LARVA);
 
-            if (larva != NULL) {
-                larva->velocity.y = 6.0f;
-                larva->shape.rot.y = larva->world.rot.y = Rand_CenteredFloat(0xFFFF);
-                this->unk_2FA++;
+                if (larva != NULL) {
+                    larva->velocity.y = 6.0f;
+                    larva->shape.rot.y = larva->world.rot.y = Rand_CenteredFloat(0xFFFF);
+                    this->unk_2FA++;
+                }
             }
         }
         this->unk_2D4 = 8;
@@ -870,7 +872,7 @@ void EnPeehat_StateExplode(EnPeehat* this, PlayState* play) {
 
     if (this->animTimer == 5) {
         bomb = (EnBom*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOM, this->actor.world.pos.x,
-                                   this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0x602, 0, true);
+                                   this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0x602, 0);
         if (bomb != NULL) {
             bomb->timer = 0;
         }
