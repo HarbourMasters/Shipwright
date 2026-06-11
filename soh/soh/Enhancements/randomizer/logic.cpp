@@ -2434,6 +2434,7 @@ const std::vector<uint8_t>& GetDungeonSmallKeyDoors(const SceneID sceneId) {
         { SCENE_GERUDO_TRAINING_GROUND, { { 1, 3, 4, 5, 6, 7, 9, 10, 23 }, { 20, 23, 29 } } },
         { SCENE_INSIDE_GANONS_CASTLE, { { 29, 30 }, { 20, 21, 22 } } },
     };
+    static const std::vector<uint8_t> vanillaWaterTempleDoors{ 1, 2, 5, 6, 9, 21 };
 
     if (sceneId == SCENE_THIEVES_HIDEOUT) {
         if (RAND_GET_OPTION(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_NORMAL)) {
@@ -2443,6 +2444,10 @@ const std::vector<uint8_t>& GetDungeonSmallKeyDoors(const SceneID sceneId) {
             return fastSmallKeyDoors;
         }
         return freeSmallKeyDoors;
+    }
+
+    if (sceneId == SCENE_WATER_TEMPLE && IS_VANILLA) {
+        return vanillaWaterTempleDoors;
     }
 
     auto dungeonInfo = Rando::Context::GetInstance()->GetDungeons()->GetDungeonFromScene(sceneId);
