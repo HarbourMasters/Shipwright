@@ -21,7 +21,8 @@
 extern "C" PlayState* gPlayState;
 
 extern "C" uint32_t ResourceMgr_GetNumGameVersions() {
-    return static_cast<u32>(Ship::Context::GetRawInstance()->GetResourceManager()->GetArchiveManager()->GetGameVersions().size());
+    return static_cast<u32>(
+        Ship::Context::GetRawInstance()->GetResourceManager()->GetArchiveManager()->GetGameVersions().size());
 }
 
 extern "C" uint32_t ResourceMgr_GetGameVersion(int index) {
