@@ -23,11 +23,11 @@ static void SetMessageEntry(MessageTableEntry& entry, const SOH::MessageEntry& m
 }
 
 static void OTRMessage_LoadCustom(const std::string& folderPath, MessageTableEntry*& table, size_t tableSize) {
-    auto lst = *Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->ListFiles(folderPath).get();
+    auto lst = *Ship::Context::GetRawInstance()->GetResourceManager()->GetArchiveManager()->ListFiles(folderPath).get();
 
     for (auto& tPath : lst) {
         auto file = std::static_pointer_cast<SOH::Text>(
-            Ship::Context::GetInstance()->GetResourceManager()->LoadResource(tPath));
+            Ship::Context::GetRawInstance()->GetResourceManager()->LoadResource(tPath));
 
         for (size_t j = 0; j < file->messages.size(); ++j) {
             // Check if same text ID exists already
@@ -44,8 +44,8 @@ static void OTRMessage_LoadCustom(const std::string& folderPath, MessageTableEnt
 }
 
 MessageTableEntry* OTRMessage_LoadTable(const std::string& filePath, bool isNES) {
-    auto file =
-        std::static_pointer_cast<SOH::Text>(Ship::Context::GetInstance()->GetResourceManager()->LoadResource(filePath));
+    auto file = std::static_pointer_cast<SOH::Text>(
+        Ship::Context::GetRawInstance()->GetResourceManager()->LoadResource(filePath));
 
     if (file == nullptr)
         return nullptr;
@@ -95,7 +95,7 @@ extern "C" void OTRMessage_Init() {
 
     if (sStaffMessageEntryTablePtr == NULL) {
         auto file2 =
-            std::static_pointer_cast<SOH::Text>(Ship::Context::GetInstance()->GetResourceManager()->LoadResource(
+            std::static_pointer_cast<SOH::Text>(Ship::Context::GetRawInstance()->GetResourceManager()->LoadResource(
                 "text/staff_message_data_static/staff_message_data_static"));
         // OTRTODO: Should not be malloc'ing here. It's fine for now since we check that the message table is already
         // null.

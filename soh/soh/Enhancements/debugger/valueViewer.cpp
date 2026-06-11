@@ -69,7 +69,7 @@ std::array<ValueTableElement, VVE_MAX> valueTable = {{
 // clang-format on
 
 void LoadValueConfig() {
-    auto allConfig = Ship::Context::GetInstance()->GetConfig()->GetNestedJson();
+    auto allConfig = Ship::Context::GetRawInstance()->GetConfig()->GetNestedJson();
     if (allConfig.find("ValueViewer") == allConfig.end() || !allConfig["ValueViewer"].is_array()) {
         allConfig["ValueViewer"] = nlohmann::json::array();
     }
@@ -77,10 +77,10 @@ void LoadValueConfig() {
 }
 
 void SaveValueConfig() {
-    auto allConfig = Ship::Context::GetInstance()->GetConfig()->GetNestedJson();
+    auto allConfig = Ship::Context::GetRawInstance()->GetConfig()->GetNestedJson();
     allConfig["ValueViewer"] = valueViewerSettings;
-    Ship::Context::GetInstance()->GetConfig()->SetBlock("ValueViewer", valueViewerSettings);
-    Ship::Context::GetInstance()->GetConfig()->Save();
+    Ship::Context::GetRawInstance()->GetConfig()->SetBlock("ValueViewer", valueViewerSettings);
+    Ship::Context::GetRawInstance()->GetConfig()->Save();
 }
 
 extern "C" void ValueViewer_Draw(GfxPrint* printer) {

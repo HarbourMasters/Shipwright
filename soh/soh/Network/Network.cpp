@@ -157,5 +157,9 @@ void Network::HandleRemoteJson(std::string payload) {
         return;
     }
 
-    OnIncomingJson(jsonPayload);
+    try {
+        OnIncomingJson(jsonPayload);
+    } catch (const std::exception& e) {
+        SPDLOG_ERROR("[Network] Exception handling incoming JSON: {}", e.what());
+    } catch (...) { SPDLOG_ERROR("[Network] Unknown exception handling incoming JSON"); }
 }

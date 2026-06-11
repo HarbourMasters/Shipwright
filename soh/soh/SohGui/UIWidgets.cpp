@@ -384,7 +384,7 @@ bool CVarCheckbox(const char* label, const char* cvarName, const CheckboxOptions
     bool value = (bool)CVarGetInteger(cvarName, options.defaultValue);
     if (Checkbox(label, &value, options)) {
         CVarSetInteger(cvarName, value);
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         ShipInit::Init(cvarName);
         dirty = true;
     }
@@ -615,7 +615,7 @@ bool CVarSliderInt(const char* label, const char* cvarName, const IntSliderOptio
     int32_t value = CVarGetInteger(cvarName, options.defaultValue);
     if (SliderInt(label, &value, options)) {
         CVarSetInteger(cvarName, value);
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         ShipInit::Init(cvarName);
         dirty = true;
     }
@@ -746,7 +746,7 @@ bool CVarSliderFloat(const char* label, const char* cvarName, const FloatSliderO
     float value = CVarGetFloat(cvarName, options.defaultValue);
     if (SliderFloat(label, &value, options)) {
         CVarSetFloat(cvarName, value);
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         ShipInit::Init(cvarName);
         dirty = true;
     }
@@ -822,7 +822,7 @@ bool CVarInputString(const char* label, const char* cvarName, const InputOptions
     std::string value = CVarGetString(cvarName, options.defaultValue.c_str());
     if (InputString(label, &value, options)) {
         CVarSetString(cvarName, value.c_str());
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         ShipInit::Init(cvarName);
         dirty = true;
     }
@@ -874,7 +874,7 @@ bool CVarInputInt(const char* label, const char* cvarName, const InputOptions& o
     int32_t value = CVarGetInteger(cvarName, defaultValue);
     if (InputInt(label, &value, options)) {
         CVarSetInteger(cvarName, value);
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         ShipInit::Init(cvarName);
         dirty = true;
     }
@@ -919,7 +919,7 @@ bool CVarColorPicker(const char* label, const char* cvarName, Color_RGBA8 defaul
             CVarClear((std::string(cvarName) + ".A").c_str());
             CVarClear((std::string(cvarName) + ".Type").c_str());
             CVarClearBlock(valueCVar.c_str());
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+            Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         }
     }
     if (showRandom) {
@@ -936,7 +936,7 @@ bool CVarColorPicker(const char* label, const char* cvarName, Color_RGBA8 defaul
             CVarSetColor(valueCVar.c_str(), color);
             CVarSetInteger(rainbowCVar.c_str(), 0); // On click disable rainbow mode.
             ShipInit::Init(rainbowCVar.c_str());
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+            Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         }
     }
     if (showRainbow) {
@@ -964,7 +964,7 @@ bool CVarColorPicker(const char* label, const char* cvarName, Color_RGBA8 defaul
         color.b = (uint8_t)(colorVec.z * 255.0f);
         color.a = (uint8_t)(colorVec.w * 255.0f);
         CVarSetColor(valueCVar.c_str(), color);
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         ShipInit::Init(valueCVar.c_str());
         changed = true;
     }
@@ -1039,7 +1039,7 @@ bool CVarRadioButton(const char* text, const char* cvarName, int32_t id, const R
     PushStyleCheckbox(options.color);
     if (ImGui::RadioButton(make_invisible.c_str(), id == val)) {
         CVarSetInteger(cvarName, id);
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         ret = true;
     }
     ImGui::SameLine();
@@ -1246,7 +1246,7 @@ bool CVarBtnSelector(const char* label, const char* cvarName, const BtnSelectorO
     int32_t value = CVarGetInteger(cvarName, options.defaultValue);
     if (BtnSelector(label, &value, options)) {
         CVarSetInteger(cvarName, value);
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         ShipInit::Init(cvarName);
         dirty = true;
     }

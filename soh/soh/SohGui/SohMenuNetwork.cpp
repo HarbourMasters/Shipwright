@@ -88,11 +88,11 @@ void SohMenu::AddMenuNetwork() {
         .Callback([](WidgetInfo& info) {
             if (Sail::Instance->isEnabled) {
                 CVarClear(CVAR_REMOTE_SAIL("Enabled"));
-                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+                Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
                 Sail::Instance->Disable();
             } else {
                 CVarSetInteger(CVAR_REMOTE_SAIL("Enabled"), 1);
-                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+                Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
                 Sail::Instance->Enable();
             }
         });
@@ -154,11 +154,11 @@ void SohMenu::AddMenuNetwork() {
         .Callback([](WidgetInfo& info) {
             if (CrowdControl::Instance->isEnabled) {
                 CVarClear(CVAR_REMOTE_CROWD_CONTROL("Enabled"));
-                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+                Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
                 CrowdControl::Instance->Disable();
             } else {
                 CVarSetInteger(CVAR_REMOTE_CROWD_CONTROL("Enabled"), 1);
-                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+                Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
                 CrowdControl::Instance->Enable();
             }
         });

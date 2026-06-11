@@ -22,29 +22,13 @@ class Randomizer {
   public:
     Randomizer();
     ~Randomizer();
-    static Sprite* GetSeedTexture(uint8_t index);
     bool SpoilerFileExists(const char* spoilerFileName);
     bool IsTrialRequired(s32 trialFlag);
     u8 GetRandoSettingValue(RandomizerSettingKey randoSettingKey);
     RandomizerCheck GetCheckFromRandomizerInf(RandomizerInf randomizerInf);
     RandomizerInf GetRandomizerInfFromCheck(RandomizerCheck rc);
     Rando::Location* GetCheckObjectFromActor(s16 actorId, s16 sceneNum, s32 actorParams);
-    ScrubIdentity IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respawnData);
-    CheckIdentity IdentifyBeehive(s32 sceneNum, s16 xPosition, s32 respawnData);
     ShopItemIdentity IdentifyShopItem(s32 sceneNum, u8 slotIndex);
-    CheckIdentity IdentifyCow(s32 sceneNum, s32 posX, s32 posZ);
-    CheckIdentity IdentifyPot(s32 sceneNum, s32 posX, s32 posZ);
-    CheckIdentity IdentifyFish(s32 sceneNum, s32 actorParams);
-    CheckIdentity IdentifyGrass(s32 sceneNum, s32 posX, s32 posZ, s32 respawnData, s32 linkAge);
-    CheckIdentity IdentifyCrate(s32 sceneNum, s32 posX, s32 posZ);
-    CheckIdentity IdentifySmallCrate(s32 sceneNum, s32 posX, s32 posZ);
-    CheckIdentity IdentifyRock(s32 sceneNum, s32 posX, s32 posZ);
-    CheckIdentity IdentifyTree(s32 sceneNum, s32 posX, s32 posZ);
-    CheckIdentity IdentifySign(s32 sceneNum, s32 posX, s32 posZ, s32 id);
-    CheckIdentity IdentifyWonderItem(s32 sceneNum, s32 par1, s32 par2);
-    CheckIdentity IdentifyBeggar(s32 sceneNum, s32 textId);
-    CheckIdentity IdentifyIcicle(s32 sceneNum, s32 posX, s32 posZ);
-    CheckIdentity IdentifyRedIce(s32 sceneNum, s32 posX, s32 posZ);
     GetItemEntry GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogItemId,
                                        bool checkObtainability = true);
     GetItemEntry GetItemFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogItemId,

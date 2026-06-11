@@ -259,9 +259,12 @@ void ElectrocutePlayer::_Apply() {
 
 // MARK: - KnockbackPlayer
 GameInteractionEffectQueryResult KnockbackPlayer::CanBeApplied() {
+    if (!GameInteractor::IsPlayerInControl()) {
+        return GameInteractionEffectQueryResult::TemporarilyNotPossible;
+    }
+
     Player* player = GET_PLAYER(gPlayState);
-    if (!GameInteractor::IsSaveLoaded(true) || GameInteractor::IsGameplayPaused() ||
-        player->stateFlags2 & PLAYER_STATE2_CRAWLING) {
+    if (player->stateFlags2 & PLAYER_STATE2_CRAWLING) {
         return GameInteractionEffectQueryResult::TemporarilyNotPossible;
     } else {
         return GameInteractionEffectQueryResult::Possible;

@@ -841,7 +841,8 @@ void EntranceTrackerWindow::DrawElement() {
             int comboButton2Mask =
                 buttons[CVarGetInteger(CVAR_TRACKER_ENTRANCE("ComboButton2"), TRACKER_COMBO_BUTTON_R)];
             OSContPad* trackerButtonsPressed =
-                std::dynamic_pointer_cast<LUS::ControlDeck>(Ship::Context::GetInstance()->GetControlDeck())->GetPads();
+                std::dynamic_pointer_cast<LUS::ControlDeck>(Ship::Context::GetRawInstance()->GetControlDeck())
+                    ->GetPads();
             bool comboButtonsHeld = trackerButtonsPressed != nullptr &&
                                     trackerButtonsPressed[0].button & comboButton1Mask &&
                                     trackerButtonsPressed[0].button & comboButton2Mask;

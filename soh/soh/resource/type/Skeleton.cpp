@@ -106,7 +106,7 @@ void SkeletonPatcher::ClearSkeletons() {
 }
 
 void SkeletonPatcher::UpdateSkeletons() {
-    auto resourceMgr = Ship::Context::GetInstance()->GetResourceManager();
+    auto resourceMgr = Ship::Context::GetRawInstance()->GetResourceManager();
     bool isAlt = resourceMgr->IsAltAssetsEnabled();
     for (auto skel : skeletons) {
         Skeleton* newSkel =
@@ -177,12 +177,12 @@ void SkeletonPatcher::UpdateTunicSkeletons(SkeletonPatchInfo& skel) {
 void SkeletonPatcher::UpdateCustomSkeletonFromPath(const std::string& skeletonPath, SkeletonPatchInfo& skel) {
     Skeleton* newSkel = nullptr;
     Skeleton* altSkel = nullptr;
-    auto resourceMgr = Ship::Context::GetInstance()->GetResourceManager();
+    auto resourceMgr = Ship::Context::GetRawInstance()->GetResourceManager();
     bool isAlt = resourceMgr->IsAltAssetsEnabled();
 
     // If alt assets are on, look for alt tagged skeletons
     if (isAlt) {
-        altSkel = (Skeleton*)Ship::Context::GetInstance()
+        altSkel = (Skeleton*)Ship::Context::GetRawInstance()
                       ->GetResourceManager()
                       ->LoadResource(Ship::IResource::gAltAssetPrefix + skeletonPath, true)
                       .get();
@@ -195,7 +195,8 @@ void SkeletonPatcher::UpdateCustomSkeletonFromPath(const std::string& skeletonPa
 
     // Load new skeleton based on the custom model if it exists
     if (altSkel == nullptr) {
-        newSkel = (Skeleton*)Ship::Context::GetInstance()->GetResourceManager()->LoadResource(skeletonPath, true).get();
+        newSkel =
+            (Skeleton*)Ship::Context::GetRawInstance()->GetResourceManager()->LoadResource(skeletonPath, true).get();
     }
 
     // Change back to the original skeleton if no skeleton's were found

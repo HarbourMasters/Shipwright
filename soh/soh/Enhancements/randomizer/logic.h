@@ -18,6 +18,8 @@ enum class GlitchType {
     EquipSwap,
 };
 
+const std::vector<uint8_t>& GetDungeonSmallKeyDoors(const SceneID sceneId);
+
 class Logic {
   public:
     uint8_t Bottles = 0;
@@ -77,6 +79,7 @@ class Logic {
     bool CanAttack();
     bool BombchusEnabled();
     bool BombchuRefill();
+    bool ShopItemNotForSale(RandomizerCheck loc);
     bool HookshotOrBoomerang();
     bool ScarecrowsSong();
     bool BlueFire();
@@ -160,6 +163,7 @@ class Logic {
     bool DMCUpperToPots();
     bool DMCPotsToPad();
     bool DMCPadToPots();
+    bool DMCUpperToPad();
     bool SpiritEastToSwitch();
     bool SpiritWestToSkull();
     bool SpiritSunBlockSouthLedge();

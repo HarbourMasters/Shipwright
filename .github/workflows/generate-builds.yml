@@ -82,46 +82,17 @@ jobs:
       uses: actions/checkout@v6
       with:
         submodules: true
+    - name: Setup Macports
+      uses: melusina-org/setup-macports@v1
+      with:
+        parameters: '.github/macports.yml'
     - name: Configure ccache
       uses: hendrikmuhs/ccache-action@v1.2.22
       with:
-        create-symlink: true
+        key: ${{ runner.os }} # ccache-macos-{{ timestamp }}
+        max-size: "2G"
+        evict-old-files: job
         save: ${{ github.ref_name == github.event.repository.default_branch }}
-        key: ${{ runner.os }}-14-ccache-${{ github.ref }}-${{ github.sha }}
-        restore-keys: |
-          ${{ runner.os }}-14-ccache-${{ github.ref }}
-          ${{ runner.os }}-14-ccache
-    # Needed to apply sudo for macports cache restore
-    - name: Install gtar wrapper
-      run: |
-        sudo mv /opt/homebrew/bin/gtar /opt/homebrew/bin/gtar.orig
-        sudo cp .github/workflows/gtar /opt/homebrew/bin/gtar
-        sudo chmod +x /opt/homebrew/bin/gtar
-    - name: Restore Cached MacPorts
-      id: restore-cache-macports
-      uses: actions/cache/restore@v5
-      with:
-        key: ${{ runner.os }}-14-macports-${{ hashFiles('.github/workflows/macports-deps.txt') }}-${{ github.sha }}
-        restore-keys: |
-          ${{ runner.os }}-14-macports-${{ hashFiles('.github/workflows/macports-deps.txt') }}-
-          ${{ runner.os }}-14-macports-
-        path: /opt/local/
-    # Updated PATH applies to the next step and onwards
-    - name: Install MacPorts (if necessary)
-      run: |
-        if command -v /opt/local/bin/port 2>&1 >/dev/null; then
-          echo "MacPorts already installed"
-        else
-          echo "Installing MacPorts"
-          wget https://github.com/macports/macports-base/releases/download/v2.11.5/MacPorts-2.11.5-14-Sonoma.pkg
-          sudo installer -pkg ./MacPorts-2.11.5-14-Sonoma.pkg -target /
-        fi
-        echo "/opt/local/bin:/opt/local/sbin" >> "$GITHUB_PATH"
-    - name: Install dependencies
-      run: |
-        brew uninstall --ignore-dependencies libpng
-        sudo port install $(cat .github/workflows/macports-deps.txt)
-        brew install ninja
     - name: Download soh.o2r
       uses: actions/download-artifact@v7
       with:
@@ -129,9 +100,8 @@ jobs:
         path: build-cmake/soh
     - name: Build SoH
       run: |
-        export PATH="/usr/lib/ccache:/opt/homebrew/opt/ccache/libexec:/usr/local/opt/ccache/libexec:$PATH"
-        cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" -DBUILD_REMOTE_CONTROL=1
-        cmake --build build-cmake --config Release --parallel 10
+        cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" -DBUILD_REMOTE_CONTROL=1
+        cmake --build build-cmake -j
         (cd build-cmake && cpack)
 
         mv _packages/*.dmg SoH.dmg
@@ -143,12 +113,6 @@ jobs:
         path: |
           SoH.dmg
           readme.txt
-    - name: Save Cache MacPorts
-      if: ${{ github.ref_name == github.event.repository.default_branch }}
-      uses: actions/cache/save@v5
-      with:
-        key: ${{ steps.restore-cache-macports.outputs.cache-primary-key }}
-        path: /opt/local/
 
   build-linux:
     needs: generate-soh-otr

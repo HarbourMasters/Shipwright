@@ -102,14 +102,6 @@ const std::string& Option::GetCVarName() const {
     return cvarName;
 }
 
-void Option::SetDelayedOption() {
-    delayedSelection = contextSelection;
-}
-
-void Option::RestoreDelayedOption() {
-    contextSelection = delayedSelection;
-}
-
 void Option::SetContextIndex(uint8_t idx) {
     // TODO: Set to Context's OptionValue array.
     contextSelection = idx;
@@ -152,16 +144,8 @@ bool Option::IsCategory(const OptionCategory category) const {
     return category == this->category;
 }
 
-bool Option::HasFlag(const int imFlag_) const {
-    return imFlag_ & imFlags;
-}
-
 void Option::AddFlag(const int imFlag_) {
     imFlags |= imFlag_;
-}
-
-void Option::SetFlag(const int imFlag_) {
-    imFlags = imFlag_;
 }
 
 void Option::RemoveFlag(const int imFlag_) {
@@ -176,15 +160,6 @@ uint8_t Option::GetValueFromText(const std::string text) {
         assert(false);
     }
     return defaultOption;
-}
-
-void Option::SetContextIndexFromText(const std::string text) {
-    if (optionsTextToVar.contains(text)) {
-        SetContextIndex(optionsTextToVar[text]);
-    } else {
-        SPDLOG_ERROR("Option {} does not have a var named {}.", name, text);
-        assert(false);
-    }
 }
 
 Option::Option(size_t key_, std::string name_, std::vector<std::string> options_, OptionCategory category_,
@@ -238,77 +213,6 @@ Option::Option(size_t key_, std::string name_, std::vector<std::string> options_
     PopulateTextToNum();
 }
 
-bool Option::RenderCheckbox() {
-    bool changed = false;
-    bool val = static_cast<bool>(CVarGetInteger(cvarName.c_str(), defaultOption));
-    UIWidgets::CheckboxOptions widgetOptions = static_cast<UIWidgets::CheckboxOptions>(
-        UIWidgets::CheckboxOptions().Color(THEME_COLOR).Tooltip(description.c_str()));
-    widgetOptions.disabled = disabled;
-    if (UIWidgets::Checkbox(name.c_str(), &val, widgetOptions)) {
-        CVarSetInteger(cvarName.c_str(), val);
-        changed = true;
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-    }
-    return changed;
-}
-
-bool Option::RenderCombobox() {
-    bool changed = false;
-    uint8_t selected = CVarGetInteger(cvarName.c_str(), defaultOption);
-    if (selected >= static_cast<uint8_t>(options.size())) {
-        selected = static_cast<uint8_t>(options.size());
-        CVarSetInteger(cvarName.c_str(), selected);
-        changed = true;
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-    }
-    UIWidgets::ComboboxOptions widgetOptions =
-        UIWidgets::ComboboxOptions().Color(THEME_COLOR).Tooltip(description.c_str());
-    if (this->GetKey() == RSK_LOGIC_RULES) {
-        widgetOptions = widgetOptions.LabelPosition(UIWidgets::LabelPositions::None)
-                            .ComponentAlignment(UIWidgets::ComponentAlignments::Right);
-    }
-    widgetOptions.disabled = disabled;
-    if (UIWidgets::Combobox(name.c_str(), &selected, options, widgetOptions)) {
-        CVarSetInteger(cvarName.c_str(), static_cast<int>(selected));
-        changed = true;
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-    }
-    return changed;
-}
-
-bool Option::RenderSlider() {
-    bool changed = false;
-    int val = CVarGetInteger(cvarName.c_str(), defaultOption);
-    if (val > options.size() - 1) {
-        val = static_cast<int>(options.size()) - 1;
-        changed = true;
-    }
-    UIWidgets::IntSliderOptions widgetOptions = UIWidgets::IntSliderOptions()
-                                                    .Color(THEME_COLOR)
-                                                    .Min(0)
-                                                    .Max(static_cast<uint8_t>(options.size() - 1))
-                                                    .Tooltip(description.c_str())
-                                                    .Format(options[val].c_str())
-                                                    .DefaultValue(defaultOption);
-    widgetOptions.disabled = disabled;
-    if (UIWidgets::SliderInt(name.c_str(), &val, widgetOptions)) {
-        changed = true;
-    }
-    if (val < 0) {
-        val = 0;
-        changed = true;
-    }
-    if (val > options.size() - 1) {
-        val = static_cast<int>(options.size() - 1);
-        changed = true;
-    }
-    if (changed) {
-        CVarSetInteger(cvarName.c_str(), val);
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-    }
-    return changed;
-}
-
 void Option::AddWidget(WidgetPath& path) {
     auto widget = SohGui::mSohMenu->AddWidget(path, name, widgetType)
                       .Callback(callback)
@@ -321,7 +225,13 @@ void Option::AddWidget(WidgetPath& path) {
                               UIWidgets::IntSliderOptions* sliderOpts =
                                   (UIWidgets::IntSliderOptions*)info.options.get();
                               sliderOpts->Format(this->GetOptionText(this->GetOptionIndex()).c_str());
-                              sliderOpts->Max(this->options.size() - 1);
+                              size_t maxIndex = this->options.size() - 1;
+                              if (this->GetKey() == RSK_SHOPSANITY_COUNT && maxIndex > 7 &&
+                                  CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) !=
+                                      RO_LOGIC_NO_LOGIC) {
+                                  maxIndex = 7;
+                              }
+                              sliderOpts->Max(maxIndex);
                           }
                       })
                       .CVar(cvarName.c_str())

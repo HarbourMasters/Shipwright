@@ -86,8 +86,7 @@ void RegisterShouldPlayBlueWarp() {
      * should also account for the difference between your first and following visits to the blue warp.
      */
     REGISTER_VB_SHOULD(VB_PLAY_TRANSITION_CS, {
-        // Do nothing when in a boss rush
-        if (IS_BOSS_RUSH) {
+        if (IS_BOSS_RUSH || gSaveContext.gameMode == GAMEMODE_END_CREDITS) {
             return;
         }
 
