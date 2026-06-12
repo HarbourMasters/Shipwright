@@ -15,6 +15,8 @@
 #include "soh/Enhancements/randomizer/Traps.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
 
+#include <vector>
+
 #include <fstream>
 #include <spdlog/spdlog.h>
 extern "C" {
