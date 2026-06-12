@@ -77,7 +77,7 @@ static int VorbisCloseCallback([[maybe_unused]] void* src) {
 
 static long VorbisTellCallback(void* src) {
     OggFileData* data = static_cast<OggFileData*>(src);
-    return data->pos;
+    return static_cast<long>(data->pos);
 }
 
 static const ov_callbacks vorbisCallbacks = {
@@ -286,12 +286,12 @@ ResourceFactoryXMLAudioSampleV0::ReadResource(std::shared_ptr<Ship::File> file,
 
     audioSample->sample.loop = &audioSample->loop;
     size_t size = child->Int64Attribute("Size");
-    audioSample->sample.size = size;
+    audioSample->sample.size = static_cast<u32>(size);
 
     const char* path = child->Attribute("Path");
 
     auto sampleFile = Ship::Context::GetRawInstance()->GetResourceManager()->GetArchiveManager()->LoadFile(path);
-    audioSample->sample.fileSize = sampleFile->Buffer.get()->size();
+    audioSample->sample.fileSize = static_cast<u32>(sampleFile->Buffer.get()->size());
     if (customFormatStr != nullptr) {
         // Compressed files can take a really long time to decode (~250ms per).
         // This worked when we tested it (09/04/2024) (Works on my machine)

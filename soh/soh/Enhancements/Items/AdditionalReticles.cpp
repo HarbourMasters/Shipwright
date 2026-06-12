@@ -43,7 +43,6 @@ void RegisterAdditionalReticles() {
              player->heldItemAction == PLAYER_IA_SLINGSHOT)) {
             if (heldActor != NULL) {
                 MtxF sp44;
-                s32 pad;
 
                 Matrix_RotateZYX(0, -15216, -17496, MTXMODE_APPLY);
                 Matrix_Get(&sp44);

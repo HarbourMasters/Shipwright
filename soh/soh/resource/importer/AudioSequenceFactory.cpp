@@ -23,7 +23,7 @@ ResourceFactoryBinaryAudioSequenceV2::ReadResource(std::shared_ptr<Ship::File> f
 
     audioSequence->sequence.seqDataSize = reader->ReadUInt32();
     audioSequence->sequence.seqData = new char[audioSequence->sequence.seqDataSize];
-    for (int32_t i = 0; i < audioSequence->sequence.seqDataSize; i++) {
+    for (int32_t i = 0; i < static_cast<int32_t>(audioSequence->sequence.seqDataSize); i++) {
         audioSequence->sequence.seqData[i] = reader->ReadChar();
     }
 
@@ -35,7 +35,7 @@ ResourceFactoryBinaryAudioSequenceV2::ReadResource(std::shared_ptr<Ship::File> f
     for (int32_t i = 0; i < 16; i++) {
         audioSequence->sequence.fonts[i] = 0;
     }
-    for (int32_t i = 0; i < audioSequence->sequence.numFonts; i++) {
+    for (int32_t i = 0; i < static_cast<int32_t>(audioSequence->sequence.numFonts); i++) {
         audioSequence->sequence.fonts[i] = reader->ReadUByte();
     }
 
@@ -179,9 +179,9 @@ static void WriteMonoSingleSeq(Ship::BinaryWriter* writer, uint16_t delay, uint8
     // We only have one channel
     WriteInitchan(writer, 0b11);
     // Store the current position so we can write the address of the channel when we are ready.
-    channelPlaceholderOff = writer->GetBaseAddress();
+    channelPlaceholderOff = static_cast<uint16_t>(writer->GetBaseAddress());
     // Store the current position so we can loop here after the song ends.
-    loopPoint = writer->GetBaseAddress();
+    loopPoint = static_cast<uint16_t>(writer->GetBaseAddress());
     WriteLdchan(writer, 0, 0); // Fill in the actual address later
 
     WriteVolSHeader(writer, 127); // Max volume
@@ -195,13 +195,13 @@ static void WriteMonoSingleSeq(Ship::BinaryWriter* writer, uint16_t delay, uint8
     writer->Write(static_cast<uint8_t>(0xFF));
 
     // Fill in the ldchan from before
-    channelStart = writer->GetBaseAddress();
+    channelStart = static_cast<uint16_t>(writer->GetBaseAddress());
     writer->Seek(channelPlaceholderOff, Ship::SeekOffsetType::Start);
     WriteLdchan(writer, 0, channelStart);
     writer->Seek(channelStart, Ship::SeekOffsetType::Start);
 
     // Channel header
-    layerPlaceholderOff = writer->GetBaseAddress();
+    layerPlaceholderOff = static_cast<uint16_t>(writer->GetBaseAddress());
     WriteNoshort(writer);
     WriteLdlayer(writer, 0, 0);
     WritePan(writer, 64);
@@ -211,7 +211,7 @@ static void WriteMonoSingleSeq(Ship::BinaryWriter* writer, uint16_t delay, uint8
     WriteDelay(writer, delay);
     writer->Write(static_cast<uint8_t>(0xFF));
 
-    layerStart = writer->GetBaseAddress();
+    layerStart = static_cast<uint16_t>(writer->GetBaseAddress());
     writer->Seek(layerPlaceholderOff, Ship::SeekOffsetType::Start);
     WriteLdlayer(writer, 0, layerStart);
     writer->Seek(layerStart, Ship::SeekOffsetType::Start);
@@ -232,7 +232,6 @@ static void WriteStereoSingleSeq(Ship::BinaryWriter* writer, uint16_t delay, uin
     uint16_t lLayerOffset;
     uint16_t rLayerOffset;
 
-    uint16_t layerStart;
     // Write seq header
     if (looped) {
         delay = 0x7FFF;
@@ -244,9 +243,9 @@ static void WriteStereoSingleSeq(Ship::BinaryWriter* writer, uint16_t delay, uin
     // We only have one channel
     WriteInitchan(writer, 0b11);
     // Store the current position so we can write the address of the channel when we are ready.
-    channelPlaceholderOff = writer->GetBaseAddress();
+    channelPlaceholderOff = static_cast<uint16_t>(writer->GetBaseAddress());
     // Store the current position so we can loop here after the song ends.
-    loopPoint = writer->GetBaseAddress();
+    loopPoint = static_cast<uint16_t>(writer->GetBaseAddress());
     // Left note channel
     WriteLdchan(writer, 0, 0); // Fill in the actual address later
     // Right note channel
@@ -262,10 +261,10 @@ static void WriteStereoSingleSeq(Ship::BinaryWriter* writer, uint16_t delay, uin
     WriteDisablecan(writer, 0b11);
     writer->Write(static_cast<uint8_t>(0xFF));
 
-    lChannelStart = writer->GetBaseAddress();
+    lChannelStart = static_cast<uint16_t>(writer->GetBaseAddress());
     // Left Channel header
     WriteNoshort(writer);
-    lLayerPlaceholderOff = writer->GetBaseAddress();
+    lLayerPlaceholderOff = static_cast<uint16_t>(writer->GetBaseAddress());
     WriteLdlayer(writer, 0, 0);
     WritePan(writer, 0);
     WriteVolCHeader(writer, 127); // Max volume
@@ -274,10 +273,10 @@ static void WriteStereoSingleSeq(Ship::BinaryWriter* writer, uint16_t delay, uin
     WriteDelay(writer, delay);
     writer->Write(static_cast<uint8_t>(0xFF));
 
-    rChannelStart = writer->GetBaseAddress();
+    rChannelStart = static_cast<uint16_t>(writer->GetBaseAddress());
     // Right Channel header
     WriteNoshort(writer);
-    rLayerPlaceholderOff = writer->GetBaseAddress();
+    rLayerPlaceholderOff = static_cast<uint16_t>(writer->GetBaseAddress());
     WriteLdlayer(writer, 1, 0);
     WritePan(writer, 127);
     WriteVolCHeader(writer, 127); // Max volume
@@ -285,20 +284,20 @@ static void WriteStereoSingleSeq(Ship::BinaryWriter* writer, uint16_t delay, uin
     WriteInstrument(writer, 1);
     WriteDelay(writer, delay);
     writer->Write(static_cast<uint8_t>(0xFF));
-    uint16_t placeHolder = writer->GetBaseAddress();
+    uint16_t placeHolder = static_cast<uint16_t>(writer->GetBaseAddress());
     writer->Seek(channelPlaceholderOff, Ship::SeekOffsetType::Start);
     WriteLdchan(writer, 0, lChannelStart);
     WriteLdchan(writer, 1, rChannelStart);
     writer->Seek(placeHolder, Ship::SeekOffsetType::Start);
 
     // Left Note layer
-    lLayerOffset = writer->GetBaseAddress();
+    lLayerOffset = static_cast<uint16_t>(writer->GetBaseAddress());
     WriteLegato(writer);
     WriteNotedvg(writer, 39, 0x7FFF - 1, static_cast<uint8_t>(0x7F), static_cast<uint8_t>(1));
     writer->Write(static_cast<uint8_t>(0xFF));
 
     // Right Note layer
-    rLayerOffset = writer->GetBaseAddress();
+    rLayerOffset = static_cast<uint16_t>(writer->GetBaseAddress());
     WriteLegato(writer);
     WriteNotedvg(writer, 39, 0x7FFF - 1, static_cast<uint8_t>(0x7F), static_cast<uint8_t>(1));
     writer->Write(static_cast<uint8_t>(0xFF));
@@ -346,7 +345,7 @@ ResourceFactoryXMLAudioSequenceV0::ReadResource(std::shared_ptr<Ship::File> file
     }
 
     if (!streamed) {
-        sequence->sequence.seqDataSize = seqFile->Buffer.get()->size();
+        sequence->sequence.seqDataSize = static_cast<uint32_t>(seqFile->Buffer.get()->size());
         sequence->sequence.seqData = new char[seqFile->Buffer.get()->size()];
         memcpy(sequence->sequence.seqData, seqFile->Buffer.get()->data(), seqFile->Buffer.get()->size());
     } else {
@@ -354,7 +353,7 @@ ResourceFactoryXMLAudioSequenceV0::ReadResource(std::shared_ptr<Ship::File> file
         // indicies.
         sequence->sequence.numFonts = -1;
         if (path != nullptr) {
-            sequence->sequence.seqDataSize = seqFile->Buffer.get()->size();
+            sequence->sequence.seqDataSize = static_cast<uint32_t>(seqFile->Buffer.get()->size());
             sequence->sequence.seqData = new char[seqFile->Buffer.get()->size()];
             memcpy(sequence->sequence.seqData, seqFile->Buffer.get()->data(), seqFile->Buffer.get()->size());
         } else {
@@ -377,14 +376,14 @@ ResourceFactoryXMLAudioSequenceV0::ReadResource(std::shared_ptr<Ship::File> file
             if (delayF >= 65535.0f) {
                 delay = 0x7FFF;
             } else {
-                delay = delayF;
+                delay = static_cast<uint16_t>(delayF);
             }
             if (stereo) {
                 WriteStereoSingleSeq(&writer, delay, TEMPO, looped);
             } else {
                 WriteMonoSingleSeq(&writer, delay, TEMPO, looped);
             }
-            sequence->sequence.seqDataSize = writer.ToVector().size();
+            sequence->sequence.seqDataSize = static_cast<uint32_t>(writer.ToVector().size());
             sequence->sequence.seqData = new char[sequence->sequence.seqDataSize];
             memcpy(sequence->sequence.seqData, writer.ToVector().data(), sequence->sequence.seqDataSize);
         }

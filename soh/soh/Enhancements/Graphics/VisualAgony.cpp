@@ -59,13 +59,13 @@ void DrawVisualAgony(Player* player, double temp) {
                 X_Margins_VSOA = Left_Margins;
             };
             PosX_VSOA =
-                OTRGetDimensionFromLeftEdge(CVarGetInteger(CVAR_COSMETIC("HUD.VisualSoA.PosX"), 0) + X_Margins_VSOA);
+                static_cast<s16>(OTRGetDimensionFromLeftEdge(static_cast<float>(CVarGetInteger(CVAR_COSMETIC("HUD.VisualSoA.PosX"), 0) + X_Margins_VSOA)));
         } else if (CVarGetInteger(CVAR_COSMETIC("HUD.VisualSoA.PosType"), 0) == ANCHOR_RIGHT) {
             if (CVarGetInteger(CVAR_COSMETIC("HUD.VisualSoA.UseMargins"), 0) != 0) {
                 X_Margins_VSOA = Right_Margins;
             }
             PosX_VSOA =
-                OTRGetDimensionFromRightEdge(CVarGetInteger(CVAR_COSMETIC("HUD.VisualSoA.PosX"), 0) + X_Margins_VSOA);
+                static_cast<s16>(OTRGetDimensionFromRightEdge(static_cast<float>(CVarGetInteger(CVAR_COSMETIC("HUD.VisualSoA.PosX"), 0) + X_Margins_VSOA)));
         } else if (CVarGetInteger(CVAR_COSMETIC("HUD.VisualSoA.PosType"), 0) == ANCHOR_NONE) {
             PosX_VSOA = CVarGetInteger(CVAR_COSMETIC("HUD.VisualSoA.PosX"), 0);
         } else if (CVarGetInteger(CVAR_COSMETIC("HUD.VisualSoA.PosType"), 0) == HIDDEN) {

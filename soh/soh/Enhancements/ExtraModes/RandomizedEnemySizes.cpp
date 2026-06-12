@@ -39,9 +39,9 @@ static void RandomizedEnemySizes(void* refActor) {
 
     float randomScale;
     if (bigActor) {
-        randomScale = 1.0f + ShipUtils::RandomDouble() * 2.0f;
+        randomScale = static_cast<float>(1.0f + ShipUtils::RandomDouble() * 2.0f);
     } else {
-        randomScale = 0.1f + ShipUtils::RandomDouble() * 0.9f;
+        randomScale = static_cast<float>(0.1f + ShipUtils::RandomDouble() * 0.9f);
     }
 
     Actor_SetScale(actor, actor->scale.z * randomScale);
@@ -52,7 +52,7 @@ static void RandomizedEnemySizes(void* refActor) {
         float scaledHealth = actor->colChkInfo.health * (randomScale * healthScalingFactor);
 
         // Ensure the scaled health doesn't go below zero
-        actor->colChkInfo.health = fmax(scaledHealth, 1.0f);
+        actor->colChkInfo.health = static_cast<u8>(fmax(scaledHealth, 1.0f));
 
         // Ensure maximum health gets set
         SetActorMaximumHealth(actor, actor->colChkInfo.health);

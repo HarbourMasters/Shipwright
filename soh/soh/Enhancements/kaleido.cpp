@@ -307,7 +307,7 @@ void Kaleido::Draw(PlayState* play) {
                     if (mCursorPos < static_cast<int>(mEntries.size() - 1)) {
                         mCursorPos += mNumVisible;
                         if (mCursorPos > static_cast<int>(mEntries.size() - 1)) {
-                            mCursorPos = mEntries.size() - 1;
+                            mCursorPos = static_cast<int>(mEntries.size() - 1);
                         }
                         Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
                                                &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);

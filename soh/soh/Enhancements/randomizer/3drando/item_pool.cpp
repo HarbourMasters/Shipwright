@@ -33,13 +33,13 @@ const std::map<RandomizerGet, std::vector<RandomizerGet>*> poolForItem = {
 
 void AddItemToPool(RandomizerGet item, int plentifulCount, size_t balancedCount, size_t scarceCount = 1,
                    size_t minimalCount = 1, bool iceTrapModel = true) {
-    int count = balancedCount;
+    int count = static_cast<int>(balancedCount);
     switch (ctx->GetOption(RSK_ITEM_POOL).Get()) {
         case RO_ITEM_POOL_SCARCE:
-            count = scarceCount;
+            count = static_cast<int>(scarceCount);
             break;
         case RO_ITEM_POOL_MINIMAL:
-            count = minimalCount;
+            count = static_cast<int>(minimalCount);
             break;
         default:
             break;
@@ -924,7 +924,7 @@ void GenerateItemPool() {
         }
         iceTrapstoAdd += ctx->GetOption(RSK_ADDITIONAL_ICE_TRAPS).Get();
         AddFixedItemToPool(RG_ICE_TRAP,
-                          itemPool.size() + iceTrapstoAdd < locCount ? iceTrapstoAdd : locCount - itemPool.size(), false);
+                          itemPool.size() + iceTrapstoAdd < locCount ? iceTrapstoAdd : static_cast<int>(locCount - itemPool.size()), false);
         if (itemPool.size() + lesserPool.size() < locCount) {
             itemPool.insert(itemPool.end(), lesserPool.begin(), lesserPool.end());
         } else {
@@ -942,7 +942,7 @@ void GenerateItemPool() {
     iceTrapstoAdd = 0;
     if (junkToAdd > 0) {
         if (ctx->GetOption(RSK_ICE_TRAP_PERCENT).Is(100)) {
-            iceTrapstoAdd = junkToAdd;
+            iceTrapstoAdd = static_cast<int>(junkToAdd);
         } else if (ctx->GetOption(RSK_ICE_TRAP_PERCENT).Get() >= 0) {
             for (size_t count = 0; count < junkToAdd; count++) {
                 if (Random(0, 101) < ctx->GetOption(RSK_ICE_TRAP_PERCENT).Get()) {

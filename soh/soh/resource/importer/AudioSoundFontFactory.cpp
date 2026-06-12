@@ -269,7 +269,7 @@ void ResourceFactoryXMLSoundFontV0::ParseDrums(AudioSoundFont* soundFont, tinyxm
         element = element->NextSiblingElement();
     } while (element != nullptr);
 
-    soundFont->soundFont.numDrums = soundFont->drumAddresses.size();
+    soundFont->soundFont.numDrums = static_cast<u8>(soundFont->drumAddresses.size());
     soundFont->soundFont.drums = soundFont->drumAddresses.data();
 }
 
@@ -359,7 +359,7 @@ void ResourceFactoryXMLSoundFontV0::ParseInstruments(AudioSoundFont* soundFont, 
     } while (element != nullptr);
 
     soundFont->soundFont.instruments = soundFont->instrumentAddresses.data();
-    soundFont->soundFont.numInstruments = soundFont->instrumentAddresses.size();
+    soundFont->soundFont.numInstruments = static_cast<u8>(soundFont->instrumentAddresses.size());
 }
 
 void ResourceFactoryXMLSoundFontV0::ParseSfxTable(AudioSoundFont* soundFont, tinyxml2::XMLElement* element) {
@@ -396,7 +396,7 @@ void ResourceFactoryXMLSoundFontV0::ParseSfxTable(AudioSoundFont* soundFont, tin
         }
     }
     soundFont->soundFont.soundEffects = soundFont->soundEffects.data();
-    soundFont->soundFont.numSfx = soundFont->soundEffects.size();
+    soundFont->soundFont.numSfx = static_cast<u16>(soundFont->soundEffects.size());
 }
 
 std::vector<AdsrEnvelope> SOH::ResourceFactoryXMLSoundFontV0::ParseEnvelopes(AudioSoundFont* soundFont,

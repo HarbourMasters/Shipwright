@@ -19,6 +19,10 @@
 
 #include "randomizerEnums.h"
 
+#undef RANDO_ENUM_BEGIN
+#undef RANDO_ENUM_ITEM
+#undef RANDO_ENUM_END
+
 // Redefine enum macros to generate enum->string maps for every enum.
 #define RANDO_ENUM_BEGIN(EnumName)                                                                     \
     template <> const std::unordered_map<EnumName, std::string_view>& GetEnumToStringMap<EnumName>() { \

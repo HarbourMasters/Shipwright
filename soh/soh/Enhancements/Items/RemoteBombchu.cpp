@@ -120,7 +120,7 @@ static void HandleSteering(EnBomChu* chu, Input* input) {
         return;
 
     // Calculate turn angle based on stick input
-    f32 turnAngle = BINANG_TO_RAD((s16)(TURN_RATE * (stickX / 85.0f)));
+    f32 turnAngle = static_cast<f32>(BINANG_TO_RAD((s16)(TURN_RATE * (stickX / 85.0f))));
 
     // Rotate forward and left vectors around the up axis
     RotateVectorAroundAxis(&chu->axisForwards, &chu->axisUp, -turnAngle);

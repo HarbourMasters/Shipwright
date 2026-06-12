@@ -274,7 +274,7 @@ void WonderHeishi_RandomizerSpawnCollectible(PlayState* play, Vec3f pos, f32 rot
     item00->actor.draw = (ActorFunc)EnItem00_DrawRandomizedItem;
     item00->actor.velocity.y = Rand_CenteredFloat(5.0f) + 10.0f;
     item00->actor.speedXZ = Rand_CenteredFloat(5.0f) + 10.0f;
-    item00->actor.world.rot.y = rotY;
+    item00->actor.world.rot.y = static_cast<s16>(rotY);
 }
 
 void RegisterShuffleWonderItems() {

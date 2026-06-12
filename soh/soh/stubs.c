@@ -31,6 +31,12 @@ u8 osAppNmiBuffer[2048];
 
 f32 qNaN0x10000 = 0x7F810000;
 
+// disable "must return a value" warnings
+// TODO: Actually fix all of this
+#if _MSC_VER
+#pragma warning(disable : 4716)
+#endif
+
 // void gSPTextureRectangle(Gfx* pkt, s32 xl, s32 yl, s32 xh, s32 yh, u32 tile, u32 s, s32 t, u32 dsdx, u32 dtdy)
 //{
 //	__gSPTextureRectangle(pkt, xl, yl, xh, yh, tile, s, t, dsdx, dtdy);
@@ -231,7 +237,7 @@ s32 _Printf(PrintCallback a, void* arg, const char* fmt, va_list ap) {
     unsigned char buffer[4096];
 
     vsnprintf(buffer, sizeof(buffer), fmt, ap);
-    a(arg, buffer, strlen(buffer));
+    a(arg, buffer, (u32)strlen(buffer));
 }
 
 void osSpTaskLoad(OSTask* task) {
