@@ -301,7 +301,7 @@ bool Logic::HasItem(RandomizerGet itemName) {
 }
 
 bool Logic::ItemUseAllowed(RandomizerGet itemName) {
-    switch (itemName){
+    switch (itemName) {
         case RG_KOKIRI_SWORD:
         case RG_MASTER_SWORD:
         case RG_GIANTS_KNIFE:
@@ -334,12 +334,12 @@ bool Logic::ItemUseAllowed(RandomizerGet itemName) {
             break;
     }
 
-    //hacky fix for underwater sections TODO this properly with a flag in regions
-    if (CurrentRegionKey == RR_LH_LAB_UNDERWATER){
-        return itemName == RG_HOOKSHOT || itemName == RG_LONGSHOT; 
+    // hacky fix for underwater sections TODO this properly with a flag in regions
+    if (CurrentRegionKey == RR_LH_LAB_UNDERWATER) {
+        return itemName == RG_HOOKSHOT || itemName == RG_LONGSHOT;
     }
 
-    switch (RegionTable(CurrentRegionKey)->scene){
+    switch (RegionTable(CurrentRegionKey)->scene) {
         case SCENE_DEKU_TREE:
         case SCENE_DODONGOS_CAVERN:
         case SCENE_JABU_JABU:
@@ -387,11 +387,10 @@ bool Logic::ItemUseAllowed(RandomizerGet itemName) {
         case SCENE_GANONS_TOWER_COLLAPSE_INTERIOR:
         case SCENE_INSIDE_GANONS_CASTLE_COLLAPSE:
         case SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR:
-            return !(itemName == RG_FARORES_WIND || 
-                     itemName == RG_FAIRY_OCARINA || itemName == RG_OCARINA_OF_TIME);
+            return !(itemName == RG_FARORES_WIND || itemName == RG_FAIRY_OCARINA || itemName == RG_OCARINA_OF_TIME);
         case SCENE_CASTLE_COURTYARD_ZELDA:
-            return !(StaticData::restrictSpells.contains(itemName) || 
-                     itemName == RG_FAIRY_OCARINA || itemName == RG_OCARINA_OF_TIME);
+            return !(StaticData::restrictSpells.contains(itemName) || itemName == RG_FAIRY_OCARINA ||
+                     itemName == RG_OCARINA_OF_TIME);
         case SCENE_DEKU_TREE_BOSS:
         case SCENE_DODONGOS_CAVERN_BOSS:
         case SCENE_JABU_JABU_BOSS:
@@ -402,14 +401,14 @@ bool Logic::ItemUseAllowed(RandomizerGet itemName) {
         case SCENE_SHADOW_TEMPLE_BOSS:
         case SCENE_GANONDORF_BOSS:
         case SCENE_GANON_BOSS:
-            return !(StaticData::restrictTrade.contains(itemName) || itemName == RG_FARORES_WIND || 
+            return !(StaticData::restrictTrade.contains(itemName) || itemName == RG_FARORES_WIND ||
                      itemName == RG_FAIRY_OCARINA || itemName == RG_OCARINA_OF_TIME);
         case SCENE_WINDMILL_AND_DAMPES_GRAVE:
             return !(StaticData::restrictSpells.contains(itemName));
         case SCENE_MARKET_GUARD_HOUSE:
-            return !(StaticData::restrictSpells.contains(itemName) || 
-                     itemName == RG_HOOKSHOT || itemName == RG_LONGSHOT);
-        case SCENE_MARKET_ENTRANCE_DAY: //test
+            return !(StaticData::restrictSpells.contains(itemName) || itemName == RG_HOOKSHOT ||
+                     itemName == RG_LONGSHOT);
+        case SCENE_MARKET_ENTRANCE_DAY: // test
         case SCENE_MARKET_ENTRANCE_NIGHT:
         case SCENE_MARKET_ENTRANCE_RUINS:
         case SCENE_BACK_ALLEY_DAY:
@@ -443,8 +442,8 @@ bool Logic::ItemUseAllowed(RandomizerGet itemName) {
         case SCENE_TEMPLE_OF_TIME:
         case SCENE_LON_LON_BUILDINGS:
         case SCENE_HOUSE_OF_SKULLTULA:
-            return StaticData::allowBottleMaskTrade.contains(itemName) || 
-                   itemName == RG_FAIRY_OCARINA || itemName == RG_OCARINA_OF_TIME;
+            return StaticData::allowBottleMaskTrade.contains(itemName) || itemName == RG_FAIRY_OCARINA ||
+                   itemName == RG_OCARINA_OF_TIME;
         case SCENE_TREASURE_BOX_SHOP:
             return StaticData::allowBottleMaskTrade.contains(itemName) || itemName == RG_LENS_OF_TRUTH;
         case SCENE_POTION_SHOP_GRANNY:
@@ -457,19 +456,19 @@ bool Logic::ItemUseAllowed(RandomizerGet itemName) {
         case SCENE_FISHING_POND:
             return itemName == RG_FISHING_POLE;
         default:
-            SPDLOG_INFO("ItemUseAllowed reached `default` with item {} in Scene {}.",
-                        static_cast<uint32_t>(itemName), static_cast<uint32_t>(RegionTable(CurrentRegionKey)->scene));
+            SPDLOG_INFO("ItemUseAllowed reached `default` with item {} in Scene {}.", static_cast<uint32_t>(itemName),
+                        static_cast<uint32_t>(RegionTable(CurrentRegionKey)->scene));
             return true;
     }
 }
 
 bool Logic::BAllowed() {
-    //hacky fix for underwater sections TODO this properly with a flag in regions
-    if (CurrentRegionKey == RR_LH_LAB_UNDERWATER){
-        return false; 
+    // hacky fix for underwater sections TODO this properly with a flag in regions
+    if (CurrentRegionKey == RR_LH_LAB_UNDERWATER) {
+        return false;
     }
 
-    switch (RegionTable(CurrentRegionKey)->scene){
+    switch (RegionTable(CurrentRegionKey)->scene) {
         case SCENE_TREASURE_BOX_SHOP:
         case SCENE_KNOW_IT_ALL_BROS_HOUSE:
         case SCENE_TWINS_HOUSE:
@@ -509,7 +508,7 @@ bool Logic::CanUse(RandomizerGet itemName) {
     if (!HasItem(itemName))
         return false;
 
-    if (!ItemUseAllowed(itemName)){
+    if (!ItemUseAllowed(itemName)) {
         return false;
     }
 
@@ -1986,76 +1985,52 @@ std::map<uint32_t, uint32_t> BottleRandomizerGetToItemID = {
 uint32_t HookshotLookup[3] = { ITEM_NONE, ITEM_HOOKSHOT, ITEM_LONGSHOT };
 uint32_t OcarinaLookup[3] = { ITEM_NONE, ITEM_OCARINA_FAIRY, ITEM_OCARINA_TIME };
 
-std::set<RandomizerGet> StaticData::restrictFW = {
-    RG_FARORES_WIND
-};
+std::set<RandomizerGet> StaticData::restrictFW = { RG_FARORES_WIND };
 
-std::set<RandomizerGet> StaticData::restrictSpells = {
-    RG_FARORES_WIND,
-    RG_DINS_FIRE,
-    RG_NAYRUS_LOVE
-};
+std::set<RandomizerGet> StaticData::restrictSpells = { RG_FARORES_WIND, RG_DINS_FIRE, RG_NAYRUS_LOVE };
 
 std::set<RandomizerGet> StaticData::restrictTrade = {
-    RG_POCKET_EGG,
-    RG_COJIRO,
-    RG_ODD_MUSHROOM,
-    RG_ODD_POTION,
-    RG_POACHERS_SAW,
-    RG_BROKEN_SWORD,
-    RG_PRESCRIPTION,
-    RG_EYEBALL_FROG,
-    RG_EYEDROPS,
-    RG_CLAIM_CHECK,
+    RG_POCKET_EGG,   RG_COJIRO,       RG_ODD_MUSHROOM, RG_ODD_POTION, RG_POACHERS_SAW,
+    RG_BROKEN_SWORD, RG_PRESCRIPTION, RG_EYEBALL_FROG, RG_EYEDROPS,   RG_CLAIM_CHECK,
 };
 
 std::set<RandomizerGet> StaticData::allowMasks = {
-    RG_KEATON_MASK,
-    RG_SKULL_MASK,
-    RG_SPOOKY_MASK,
-    RG_BUNNY_HOOD,
-    RG_GORON_MASK,
-    RG_ZORA_MASK,
-    RG_GERUDO_MASK,
-    RG_MASK_OF_TRUTH,
-    RG_WEIRD_EGG,
-    RG_ZELDAS_LETTER,
+    RG_KEATON_MASK, RG_SKULL_MASK,  RG_SPOOKY_MASK,   RG_BUNNY_HOOD, RG_GORON_MASK,
+    RG_ZORA_MASK,   RG_GERUDO_MASK, RG_MASK_OF_TRUTH, RG_WEIRD_EGG,  RG_ZELDAS_LETTER,
 };
 
-std::set<RandomizerGet> StaticData::allowBottleMaskTrade = {
-    RG_KEATON_MASK,
-    RG_SKULL_MASK,
-    RG_SPOOKY_MASK,
-    RG_BUNNY_HOOD,
-    RG_GORON_MASK,
-    RG_ZORA_MASK,
-    RG_GERUDO_MASK,
-    RG_MASK_OF_TRUTH,
-    RG_WEIRD_EGG,
-    RG_ZELDAS_LETTER,
-    RG_POCKET_EGG,
-    RG_COJIRO,
-    RG_ODD_MUSHROOM,
-    RG_ODD_POTION,
-    RG_POACHERS_SAW,
-    RG_BROKEN_SWORD,
-    RG_PRESCRIPTION,
-    RG_EYEBALL_FROG,
-    RG_EYEDROPS,
-    RG_CLAIM_CHECK,
-    RG_EMPTY_BOTTLE,
-    RG_BOTTLE_WITH_MILK,
-    RG_BOTTLE_WITH_RED_POTION,
-    RG_BOTTLE_WITH_GREEN_POTION,
-    RG_BOTTLE_WITH_BLUE_POTION,
-    RG_BOTTLE_WITH_FAIRY,
-    RG_BOTTLE_WITH_FISH,
-    RG_BOTTLE_WITH_BLUE_FIRE,
-    RG_BOTTLE_WITH_BUGS,
-    RG_BOTTLE_WITH_POE,
-    RG_RUTOS_LETTER,
-    RG_BOTTLE_WITH_BIG_POE
-};
+std::set<RandomizerGet> StaticData::allowBottleMaskTrade = { RG_KEATON_MASK,
+                                                             RG_SKULL_MASK,
+                                                             RG_SPOOKY_MASK,
+                                                             RG_BUNNY_HOOD,
+                                                             RG_GORON_MASK,
+                                                             RG_ZORA_MASK,
+                                                             RG_GERUDO_MASK,
+                                                             RG_MASK_OF_TRUTH,
+                                                             RG_WEIRD_EGG,
+                                                             RG_ZELDAS_LETTER,
+                                                             RG_POCKET_EGG,
+                                                             RG_COJIRO,
+                                                             RG_ODD_MUSHROOM,
+                                                             RG_ODD_POTION,
+                                                             RG_POACHERS_SAW,
+                                                             RG_BROKEN_SWORD,
+                                                             RG_PRESCRIPTION,
+                                                             RG_EYEBALL_FROG,
+                                                             RG_EYEDROPS,
+                                                             RG_CLAIM_CHECK,
+                                                             RG_EMPTY_BOTTLE,
+                                                             RG_BOTTLE_WITH_MILK,
+                                                             RG_BOTTLE_WITH_RED_POTION,
+                                                             RG_BOTTLE_WITH_GREEN_POTION,
+                                                             RG_BOTTLE_WITH_BLUE_POTION,
+                                                             RG_BOTTLE_WITH_FAIRY,
+                                                             RG_BOTTLE_WITH_FISH,
+                                                             RG_BOTTLE_WITH_BLUE_FIRE,
+                                                             RG_BOTTLE_WITH_BUGS,
+                                                             RG_BOTTLE_WITH_POE,
+                                                             RG_RUTOS_LETTER,
+                                                             RG_BOTTLE_WITH_BIG_POE };
 
 void Logic::ApplyItemEffect(Item& item, bool state) {
     auto randoGet = item.GetRandomizerGet();
