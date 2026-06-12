@@ -3,7 +3,7 @@
 #include "soh/ShipInit.hpp"
 
 // Dying or using Din's Fire in the Outside Temple of Time area crashes the game.
-// In vanilla this can never happen, but with CrowdControl, Sail, Unregstricted Items
+// In vanilla this can never happen, but with CrowdControl, Sail, Unrestricted Items
 // and others this *can* happen. Because it checks for a camId of -1, this code path
 // shouldn't ever influence vanilla play regardless.
 void RegisterFixOutsideTotCrash() {
