@@ -347,7 +347,7 @@ void Sail::RegisterHooks() {
     });
 
     COND_HOOK(OnLoadGame, isConnected, [&](int32_t fileNum) {
-        if (!isConnected || !GameInteractor::IsSaveLoaded())
+        if (!isConnected)
             return;
 
         nlohmann::json payload;
