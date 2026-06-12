@@ -453,15 +453,13 @@ void UseFaroresWind(EnPartner* this, PlayState* play, u8 started) {
         this->windEffect->actor.world.pos.z = this->actor.world.pos.z;
         this->windEffect->actor.shape.rot.y = this->actor.world.rot.y;
 
-        Vec3f sp18;
-        Actor_WorldToActorCoords(&this->actor, &sp18, &player->actor.world.pos);
-
-        float max = 400.0f;
-
-        if ((fabsf(sp18.x) < 70.0f) && (fabsf(sp18.y) < 100.0f) &&
-            (sp18.z < max) && (sp18.z > 0) &&
+        // based on BgHakaTrap_FanBlade_UpdateFanRotation
+        Vec3f playerRel;
+        Actor_WorldToActorCoords(&this->actor, &playerRel, &player->actor.world.pos);
+        if ((fabsf(playerRel.x) < 70.0f) && (fabsf(playerRel.y) < 100.0f) &&
+            (playerRel.z < 400.0f) && (playerRel.z > 0) &&
             (player->currentBoots != PLAYER_BOOTS_IRON)) {
-            float factor = (1.0f - (sp18.z / max));
+            float factor = (1.0f - (playerRel.z / 400.0f));
             factor = sqrtf(factor);
             player->pushedSpeed = factor * 10.0f;
             player->pushedYaw = this->actor.shape.rot.y;
