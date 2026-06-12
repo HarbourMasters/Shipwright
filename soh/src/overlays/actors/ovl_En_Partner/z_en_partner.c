@@ -377,7 +377,7 @@ void IvanWindEffect_UpdateShrink(DemoEffect* this, PlayState* play) {
         f32 shrinkProgress = (100 - this->timeWarp.shrinkTimer) * 0.010f;
         DemoEffect_TimewarpShrink(shrinkProgress);
     } else {
-        DemoEffect_TimewarpShrink(1.0f);  // reset shared resource before killing
+        DemoEffect_TimewarpShrink(1.0f); // reset shared resource before killing
         Actor_Kill(&this->actor);
     }
 }
@@ -408,11 +408,9 @@ DemoEffect* IvanWindEffect_Spawn(EnPartner* ivan, PlayState* play) {
         { DEGF_TO_BINANG(90.0f), ivan->actor.world.rot.y, 0 },
     };
 
-    DemoEffect* windEffect = Actor_Spawn(&play->actorCtx, play,
-        ACTOR_DEMO_EFFECT,
-        spawn.pos.x, spawn.pos.y, spawn.pos.z,
-        spawn.rot.x, spawn.rot.y, spawn.rot.z,
-        DEMO_EFFECT_TIMEWARP_TIMEBLOCK_LARGE);
+    DemoEffect* windEffect =
+        Actor_Spawn(&play->actorCtx, play, ACTOR_DEMO_EFFECT, spawn.pos.x, spawn.pos.y, spawn.pos.z, spawn.rot.x,
+                    spawn.rot.y, spawn.rot.z, DEMO_EFFECT_TIMEWARP_TIMEBLOCK_LARGE);
 
     windEffect->envXluColor[1] = 100;
     windEffect->envXluColor[2] = 0;
@@ -456,9 +454,8 @@ void UseFaroresWind(EnPartner* this, PlayState* play, u8 started) {
         // based on BgHakaTrap_FanBlade_UpdateFanRotation
         Vec3f playerRel;
         Actor_WorldToActorCoords(&this->actor, &playerRel, &player->actor.world.pos);
-        if ((fabsf(playerRel.x) < 70.0f) && (fabsf(playerRel.y) < 100.0f) &&
-            (playerRel.z < 400.0f) && (playerRel.z > 0) &&
-            (player->currentBoots != PLAYER_BOOTS_IRON)) {
+        if ((fabsf(playerRel.x) < 70.0f) && (fabsf(playerRel.y) < 100.0f) && (playerRel.z < 400.0f) &&
+            (playerRel.z > 0) && (player->currentBoots != PLAYER_BOOTS_IRON)) {
             float factor = (1.0f - (playerRel.z / 400.0f));
             factor = sqrtf(factor);
             player->pushedSpeed = factor * 10.0f;
@@ -473,8 +470,8 @@ void UseFaroresWind(EnPartner* this, PlayState* play, u8 started) {
                 EndFaroresWind(this, play);
                 return;
             }
-            gSaveContext.magic--;
-            this->magicTimer = 20;
+            gSaveContext.magic--;  // Note: after the `if` statement so that the last tick of magic
+            this->magicTimer = 20; // gives the full count of frames
         }
     }
 
