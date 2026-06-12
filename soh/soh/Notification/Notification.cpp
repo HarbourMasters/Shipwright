@@ -52,7 +52,7 @@ void Window::Draw() {
 
     for (int index = 0; index < notifications.size(); ++index) {
         auto& notification = notifications[index];
-        int inverseIndex = -ABS(index - (notifications.size() - 1));
+        int inverseIndex = -ABS(index - (static_cast<int>(notifications.size()) - 1));
 
         ImGui::SetNextWindowViewport(vp->ID);
         if (notification.remainingTime < 4.0f) {

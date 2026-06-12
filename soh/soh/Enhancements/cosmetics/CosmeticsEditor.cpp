@@ -1980,7 +1980,7 @@ void DrawSillyTab() {
 
     UIWidgets::Separator(true, true, 2.0f, 2.0f);
 
-    SohGui::mSohMenu->MenuDrawItem(goronNeck, ImGui::GetContentRegionAvail().x, THEME_COLOR);
+    SohGui::mSohMenu->MenuDrawItem(goronNeck, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x), THEME_COLOR);
     Reset_Option_Single("Reset##Goron_NeckLength", CVAR_COSMETIC("Goron.NeckLength"));
 
     UIWidgets::Separator(true, true, 2.0f, 2.0f);

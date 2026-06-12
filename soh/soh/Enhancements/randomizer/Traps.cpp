@@ -4,6 +4,8 @@
 #include "soh/Enhancements/randomizer/static_data.h"
 #include "soh/ShipUtils.h"
 
+#include "soh/Enhancements/randomizer/3drando/random.hpp"
+
 #include <vector>
 
 static std::array<std::vector<Text>, RG_MAX> trickNameTable; // Table of trick names for ice traps
@@ -1418,7 +1420,7 @@ static void InitTrickNames() {
 }
 
 // Generate a fake name for the ice trap based on the item it's displayed as
-Text Rando::Traps::GetTrapName(uint16_t id) {
+Text Rando::Traps::GetTrapName(uint16_t id, uint64_t* state) {
     // If the trick names table has not been initialized, do so
     if (!initTrickNames) {
         InitTrickNames();
@@ -1431,19 +1433,19 @@ Text Rando::Traps::GetTrapName(uint16_t id) {
     }
 
     // Randomly get the easy, medium, or hard name for the given item id
-    return ShipUtils::RandomElement(trickNameTable[id]);
+    return ShipUtils::RandomElement(trickNameTable[id], state);
 }
 
-RandomizerGet Rando::Traps::GetTrapTrickModel() {
+RandomizerGet Rando::Traps::GetTrapTrickModel(uint64_t* state) {
     auto ctx = Rando::Context::GetInstance();
-    RandomizerGet trickModel = ShipUtils::RandomElementFromSet(ctx->possibleIceTrapModels);
+    RandomizerGet trickModel = ShipUtils::RandomElementFromSet(ctx->possibleIceTrapModels, state);
 
     if (trickModel == RG_EMPTY_BOTTLE) {
-        trickModel = ShipUtils::RandomElement(Rando::StaticData::normalBottles);
+        trickModel = ShipUtils::RandomElement(Rando::StaticData::normalBottles, state);
     } else if (trickModel == RG_GUARD_HOUSE_KEY) {
-        trickModel = ShipUtils::RandomElement(Rando::StaticData::overworldKeys);
+        trickModel = ShipUtils::RandomElement(Rando::StaticData::overworldKeys, state);
     } else if (trickModel == RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL) {
-        trickModel = ShipUtils::RandomElement(Rando::StaticData::beanSouls);
+        trickModel = ShipUtils::RandomElement(Rando::StaticData::beanSouls, state);
     }
 
     return trickModel;
@@ -1451,17 +1453,9 @@ RandomizerGet Rando::Traps::GetTrapTrickModel() {
 
 bool Rando::Traps::ShouldJunkItemBeTrap() {
     auto ctx = Rando::Context::GetInstance();
-
-    if (ctx->GetOption(RSK_ICE_TRAP_PERCENT).Is(0)) {
-        return false;
-    }
-
-    if (ctx->GetOption(RSK_ICE_TRAP_PERCENT).Is(100) ||
-        ShipUtils::Random(0, 100) < ctx->GetOption(RSK_ICE_TRAP_PERCENT).Get()) {
-        return true;
-    }
-
-    return false;
+    return ctx->GetOption(RSK_ICE_TRAP_PERCENT).IsNot(0) &&
+           (ctx->GetOption(RSK_ICE_TRAP_PERCENT).Is(100) ||
+            Random(0, 100) < ctx->GetOption(RSK_ICE_TRAP_PERCENT).Get());
 }
 
 static const char* const englishIceTrapMessages[] = {

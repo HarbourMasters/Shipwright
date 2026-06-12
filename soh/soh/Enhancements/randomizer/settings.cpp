@@ -1,13 +1,11 @@
 #include "settings.h"
-#include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "trial.h"
 #include "dungeon.h"
-#include "soh/ShipUtils.h"
-
+#include "soh/Enhancements/randomizer/randomizerTypes.h"
+#include "soh/Enhancements/randomizer/3drando/random.hpp"
 #include "soh/OTRGlobals.h"
 
 #include <spdlog/spdlog.h>
-
 #include <libultraship/bridge/consolevariablebridge.h>
 #include <libultraship/libultraship.h>
 
@@ -1027,6 +1025,13 @@ void Settings::CreateOptions() {
     OPT_BOOL(RSK_SHUFFLE_BEGGAR, "Shuffle Beggar", CVAR_RANDOMIZER_SETTING("ShuffleBeggar"), mOptionDescriptions[RSK_SHUFFLE_BEGGAR]);
     OPT_BOOL(RSK_SHUFFLE_FROG_SONG_RUPEES, "Shuffle Frog Song Rupees", CVAR_RANDOMIZER_SETTING("ShuffleFrogSongRupees"), mOptionDescriptions[RSK_SHUFFLE_FROG_SONG_RUPEES]);
     OPT_BOOL(RSK_SHUFFLE_ADULT_TRADE, "Shuffle Adult Trade", CVAR_RANDOMIZER_SETTING("ShuffleAdultTrade"), mOptionDescriptions[RSK_SHUFFLE_ADULT_TRADE]);
+    OPT_CALLBACK(RSK_SHUFFLE_ADULT_TRADE, {
+        if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleAdultTrade"), RO_GENERIC_OFF)) {
+            mOptions[RSK_EARLY_GRANNYS_SHOP].Disable("This has no effect when Shuffle Adult Trade is on.");
+        } else {
+            mOptions[RSK_EARLY_GRANNYS_SHOP].Enable();
+        }
+    });
     OPT_U8(RSK_SHUFFLE_CHEST_MINIGAME, "Shuffle Chest Minigame", {"Off", "On (Separate)", "On (Pack)"});
     OPT_BOOL(RSK_SHUFFLE_100_GS_REWARD, "Shuffle 100 GS Reward", CVAR_RANDOMIZER_SETTING("Shuffle100GSReward"), mOptionDescriptions[RSK_SHUFFLE_100_GS_REWARD], IMFLAG_SEPARATOR_BOTTOM, WIDGET_CVAR_CHECKBOX, RO_GENERIC_OFF);
     OPT_CALLBACK(RSK_SHUFFLE_100_GS_REWARD, {
@@ -1250,6 +1255,7 @@ void Settings::CreateOptions() {
             mOptions[RSK_SKIP_CHILD_STEALTH].Enable();
         }
     });
+    OPT_BOOL(RSK_EARLY_GRANNYS_SHOP, "Early Granny's Potion Shop", CVAR_RANDOMIZER_SETTING("EarlyGrannysShop"), mOptionDescriptions[RSK_EARLY_GRANNYS_SHOP]);
     OPT_BOOL(RSK_SKIP_EPONA_RACE, "Skip Epona Race", {"Don't Skip", "Skip"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("SkipEponaRace"), mOptionDescriptions[RSK_SKIP_EPONA_RACE], WIDGET_CVAR_CHECKBOX, RO_GENERIC_DONT_SKIP);
     OPT_BOOL(RSK_SKIP_SCARECROWS_SONG, "Skip Scarecrow's Song", CVAR_RANDOMIZER_SETTING("SkipScarecrowsSong"), mOptionDescriptions[RSK_SKIP_SCARECROWS_SONG]);
     OPT_BOOL(RSK_SKIP_PLANTING_BEANS, "Skip Planting Beans", CVAR_RANDOMIZER_SETTING("SkipPlantingBeans"), mOptionDescriptions[RSK_SKIP_PLANTING_BEANS]);
@@ -1747,6 +1753,7 @@ void Settings::CreateOptions() {
                                                                       &mOptions[RSK_SKIP_CHILD_ZELDA],
                                                                       &mOptions[RSK_MASK_QUEST],
                                                                       &mOptions[RSK_SKIP_CHILD_STEALTH],
+                                                                      &mOptions[RSK_EARLY_GRANNYS_SHOP],
                                                                       &mOptions[RSK_SKIP_PLANTING_BEANS],
                                                                       &mOptions[RSK_SKIP_EPONA_RACE],
                                                                       &mOptions[RSK_SKIP_SCARECROWS_SONG],
@@ -2619,7 +2626,7 @@ void Context::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocation
                 case RO_MQ_SET_RANDOM:
                     // 50% per dungeon, rolled separatly so people can either have a linear distribtuion
                     // or a bell curve for the number of MQ dungeons per seed.
-                    if (ShipUtils::Random(0, 2)) {
+                    if (Random(0, 2)) {
                         dungeon->SetMQ();
                         mqSet += 1;
                     }
@@ -2686,13 +2693,13 @@ void Context::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocation
         if (randMQOption.size() > 0) {
             // Figure out how many dungeons to select, rolling the random number if needed
             if (mOptions[RSK_MQ_DUNGEON_RANDOM].Is(RO_MQ_DUNGEONS_RANDOM_NUMBER)) {
-                mqToSet = ShipUtils::Random(0, static_cast<int>(randMQOption.size()) + 1);
+                mqToSet = Random(0, static_cast<int>(randMQOption.size()) + 1);
             } else if (mqCount > mqSet) {
                 mqToSet = std::min(mqCount - mqSet, static_cast<int>(randMQOption.size()));
             }
             // we only need to shuffle if we're not using them all
             if (mqToSet <= static_cast<int8_t>(randMQOption.size()) && mqToSet > 0) {
-                ShipUtils::Shuffle(randMQOption);
+                Shuffle(randMQOption);
             }
             for (uint8_t i = 0; i < mqToSet; i++) {
                 dungeons[randMQOption[i]]->SetMQ();
@@ -2741,8 +2748,8 @@ void Context::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocation
         if (mOptions[RSK_KEYRINGS].Is(RO_KEYRINGS_RANDOM) || mOptions[RSK_KEYRINGS].Is(RO_KEYRINGS_COUNT)) {
             const uint32_t keyRingCount = mOptions[RSK_KEYRINGS].Is(RO_KEYRINGS_COUNT)
                                               ? mOptions[RSK_KEYRINGS_RANDOM_COUNT].Get()
-                                              : ShipUtils::Random(0, static_cast<int>(keyrings.size()));
-            ShipUtils::Shuffle(keyrings);
+                                              : Random(0, static_cast<int>(keyrings.size()));
+            Shuffle(keyrings);
             for (size_t i = 0; i < keyRingCount; i++) {
                 keyrings[i]->Set(RO_KEYRING_FOR_DUNGEON_ON);
             }
@@ -2751,50 +2758,49 @@ void Context::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocation
             }
         }
         if (mOptions[RSK_KEYRINGS_BOTTOM_OF_THE_WELL].Is(RO_KEYRING_FOR_DUNGEON_ON) ||
-            (mOptions[RSK_KEYRINGS_BOTTOM_OF_THE_WELL].Is(RO_KEYRING_FOR_DUNGEON_RANDOM) &&
-             ShipUtils::Random(0, 2) == 0)) {
+            (mOptions[RSK_KEYRINGS_BOTTOM_OF_THE_WELL].Is(RO_KEYRING_FOR_DUNGEON_RANDOM) && Random(0, 2) == 0)) {
             this->GetDungeon(BOTTOM_OF_THE_WELL)->SetKeyRing();
         }
         if (mOptions[RSK_KEYRINGS_FOREST_TEMPLE].Is(RO_KEYRING_FOR_DUNGEON_ON) ||
-            (mOptions[RSK_KEYRINGS_FOREST_TEMPLE].Is(RO_KEYRING_FOR_DUNGEON_RANDOM) && ShipUtils::Random(0, 2) == 0)) {
+            (mOptions[RSK_KEYRINGS_FOREST_TEMPLE].Is(RO_KEYRING_FOR_DUNGEON_RANDOM) && Random(0, 2) == 0)) {
             this->GetDungeon(FOREST_TEMPLE)->SetKeyRing();
         }
         if (mOptions[RSK_KEYRINGS_FIRE_TEMPLE].Is(RO_KEYRING_FOR_DUNGEON_ON) ||
-            (mOptions[RSK_KEYRINGS_FIRE_TEMPLE].Is(RO_KEYRING_FOR_DUNGEON_RANDOM) && ShipUtils::Random(0, 2) == 0)) {
+            (mOptions[RSK_KEYRINGS_FIRE_TEMPLE].Is(RO_KEYRING_FOR_DUNGEON_RANDOM) && Random(0, 2) == 0)) {
             this->GetDungeon(FIRE_TEMPLE)->SetKeyRing();
         }
         if (mOptions[RSK_KEYRINGS_WATER_TEMPLE].Is(RO_KEYRING_FOR_DUNGEON_ON) ||
-            (mOptions[RSK_KEYRINGS_WATER_TEMPLE].Is(RO_KEYRING_FOR_DUNGEON_RANDOM) && ShipUtils::Random(0, 2) == 0)) {
+            (mOptions[RSK_KEYRINGS_WATER_TEMPLE].Is(RO_KEYRING_FOR_DUNGEON_RANDOM) && Random(0, 2) == 0)) {
             this->GetDungeon(WATER_TEMPLE)->SetKeyRing();
         }
         if (mOptions[RSK_KEYRINGS_SPIRIT_TEMPLE].Is(RO_KEYRING_FOR_DUNGEON_ON) ||
-            (mOptions[RSK_KEYRINGS_SPIRIT_TEMPLE].Is(RO_KEYRING_FOR_DUNGEON_RANDOM) && ShipUtils::Random(0, 2) == 0)) {
+            (mOptions[RSK_KEYRINGS_SPIRIT_TEMPLE].Is(RO_KEYRING_FOR_DUNGEON_RANDOM) && Random(0, 2) == 0)) {
             this->GetDungeon(SPIRIT_TEMPLE)->SetKeyRing();
         }
         if (mOptions[RSK_KEYRINGS_SHADOW_TEMPLE].Is(RO_KEYRING_FOR_DUNGEON_ON) ||
-            (mOptions[RSK_KEYRINGS_SHADOW_TEMPLE].Is(RO_KEYRING_FOR_DUNGEON_RANDOM) && ShipUtils::Random(0, 2) == 0)) {
+            (mOptions[RSK_KEYRINGS_SHADOW_TEMPLE].Is(RO_KEYRING_FOR_DUNGEON_RANDOM) && Random(0, 2) == 0)) {
             this->GetDungeon(SHADOW_TEMPLE)->SetKeyRing();
         }
         if (mOptions[RSK_KEYRINGS_GTG].Is(RO_KEYRING_FOR_DUNGEON_ON) ||
-            (mOptions[RSK_KEYRINGS_GTG].Is(RO_KEYRING_FOR_DUNGEON_RANDOM) && ShipUtils::Random(0, 2) == 0)) {
+            (mOptions[RSK_KEYRINGS_GTG].Is(RO_KEYRING_FOR_DUNGEON_RANDOM) && Random(0, 2) == 0)) {
             this->GetDungeon(GERUDO_TRAINING_GROUND)->SetKeyRing();
         }
         if (mOptions[RSK_KEYRINGS_GANONS_CASTLE].Is(RO_KEYRING_FOR_DUNGEON_ON) ||
-            (mOptions[RSK_KEYRINGS_GANONS_CASTLE].Is(RO_KEYRING_FOR_DUNGEON_RANDOM) && ShipUtils::Random(0, 2) == 0)) {
+            (mOptions[RSK_KEYRINGS_GANONS_CASTLE].Is(RO_KEYRING_FOR_DUNGEON_RANDOM) && Random(0, 2) == 0)) {
             this->GetDungeon(GANONS_CASTLE)->SetKeyRing();
         }
     }
 
     auto trials = this->GetTrials()->GetTrialList();
-    ShipUtils::Shuffle(trials);
+    Shuffle(trials);
     for (const auto trial : trials) {
         trial->SetAsSkipped();
     }
     if (mOptions[RSK_GANONS_TRIALS].Is(RO_GANONS_TRIALS_SKIP)) {
         mOptions[RSK_TRIAL_COUNT].Set(0);
     } else if (mOptions[RSK_GANONS_TRIALS].Is(RO_GANONS_TRIALS_RANDOM_NUMBER)) {
-        mOptions[RSK_TRIAL_COUNT].Set(ShipUtils::Random(
-            0, static_cast<int>(Rando::Settings::GetInstance()->GetOption(RSK_TRIAL_COUNT).GetOptionCount())));
+        mOptions[RSK_TRIAL_COUNT].Set(
+            Random(0, static_cast<int>(Rando::Settings::GetInstance()->GetOption(RSK_TRIAL_COUNT).GetOptionCount())));
     }
     for (uint8_t i = 0; i < mOptions[RSK_TRIAL_COUNT].Get(); i++) {
         trials[i]->SetAsRequired();
@@ -2836,7 +2842,7 @@ void Context::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocation
     }
 
     if (mOptions[RSK_STARTING_AGE].Is(RO_AGE_RANDOM)) {
-        if (const uint32_t choice = ShipUtils::Random(0, 2); choice == 0) {
+        if (const uint32_t choice = Random(0, 2); choice == 0) {
             mOptions[RSK_SELECTED_STARTING_AGE].Set(RO_AGE_CHILD);
         } else {
             mOptions[RSK_SELECTED_STARTING_AGE].Set(RO_AGE_ADULT);
@@ -2961,7 +2967,7 @@ void Settings::RandomizeAllSettings() {
             continue;
         }
 
-        uint8_t randomIndex = ShipUtils::Random(0, static_cast<uint32_t>(option.GetOptionCount()));
+        uint8_t randomIndex = Random(0, static_cast<uint32_t>(option.GetOptionCount()));
 
         option.SetContextIndex(randomIndex);
         if (!option.GetCVarName().empty()) {

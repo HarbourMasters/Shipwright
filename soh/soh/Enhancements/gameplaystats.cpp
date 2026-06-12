@@ -279,7 +279,7 @@ std::string formatHexOnlyGameplayStat(uint32_t value) {
 }
 
 extern "C" char* GameplayStats_GetCurrentTime() {
-    std::string timeString = formatTimestampGameplayStat(GAMEPLAYSTAT_TOTAL_TIME).c_str();
+    std::string timeString = formatTimestampGameplayStat(static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME)).c_str();
     const size_t stringLength = timeString.length();
     char* timeChar = (char*)malloc(stringLength + 1); // We need to use malloc so we can free this from a C file.
     strcpy(timeChar, timeString.c_str());
@@ -453,10 +453,10 @@ void DrawGameplayStatsHeader() {
         GameplayStatsRow("Build Version:", (char*)gBuildVersion);
     }
     if (gSaveContext.ship.stats.rtaTiming) {
-        GameplayStatsRow("Total Time (RTA):", formatTimestampGameplayStat(GAMEPLAYSTAT_TOTAL_TIME),
+        GameplayStatsRow("Total Time (RTA):", formatTimestampGameplayStat(static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME)),
                          gSaveContext.ship.stats.gameComplete ? COLOR_GREEN : COLOR_WHITE);
     } else {
-        GameplayStatsRow("Total Game Time:", formatTimestampGameplayStat(GAMEPLAYSTAT_TOTAL_TIME),
+        GameplayStatsRow("Total Game Time:", formatTimestampGameplayStat(static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME)),
                          gSaveContext.ship.stats.gameComplete ? COLOR_GREEN : COLOR_WHITE);
     }
     if (CVarGetInteger(CVAR_GAMEPLAY_STATS("ShowAdditionalTimers"), 0)) { // !Only display total game time
@@ -592,7 +592,7 @@ void DrawGameplayStatsCountsTab() {
 }
 
 void DrawGameplayStatsBreakdownTab() {
-    for (int i = 0; i < gSaveContext.ship.stats.tsIdx; i++) {
+    for (u32 i = 0; i < gSaveContext.ship.stats.tsIdx; i++) {
         std::string sceneName = ResolveSceneID(gSaveContext.ship.stats.sceneTimestamps[i].scene,
                                                gSaveContext.ship.stats.sceneTimestamps[i].room);
         std::string name;
@@ -613,7 +613,7 @@ void DrawGameplayStatsBreakdownTab() {
     ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, { 4.0f, 4.0f });
     ImGui::BeginTable("gameplayStatsCounts", 1, ImGuiTableFlags_BordersOuter);
     ImGui::TableSetupColumn("stat", ImGuiTableColumnFlags_WidthStretch);
-    for (int i = 0; i < gSaveContext.ship.stats.tsIdx; i++) {
+    for (u32 i = 0; i < gSaveContext.ship.stats.tsIdx; i++) {
         TimestampInfo tsInfo = sceneTimestampDisplay[i];
         bool canShow = !tsInfo.isRoom || CVarGetInteger(CVAR_GAMEPLAY_STATS("RoomBreakdown"), 0);
         if (tsInfo.time > 0 && strnlen(tsInfo.name, 40) > 1 && canShow) {

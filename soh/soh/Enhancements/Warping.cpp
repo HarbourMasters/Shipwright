@@ -65,8 +65,8 @@ void Warp(WarpPoint& warpPoint) {
         for (int buttonIndex = 0; buttonIndex < ARRAY_COUNT(gSaveContext.buttonStatus); buttonIndex++) {
             gSaveContext.buttonStatus[buttonIndex] = BTN_ENABLED;
         }
-        gSaveContext.forceRisingButtonAlphas = gSaveContext.unk_13E8 = gSaveContext.unk_13EA = gSaveContext.unk_13EC =
-            0;
+        gSaveContext.unk_13E8 = gSaveContext.unk_13EA = gSaveContext.unk_13EC = 0;
+        gSaveContext.forceRisingButtonAlphas = 0;
         Audio_QueueSeqCmd(SEQ_PLAYER_BGM_MAIN << 24 | NA_BGM_STOP);
         gSaveContext.entranceIndex = warpPoint.entranceId;
 

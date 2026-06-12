@@ -3,9 +3,10 @@
 
 extern "C" SaveContext gSaveContext;
 
-#define BOSS_DEFEAT_TIMESTAMP(actorID, timestamp) \
-    COND_ID_HOOK(OnBossDefeat, actorID, true,     \
-                 [](void* refActor) { gSaveContext.ship.stats.itemTimestamp[timestamp] = GAMEPLAYSTAT_TOTAL_TIME; });
+#define BOSS_DEFEAT_TIMESTAMP(actorID, timestamp)                                                          \
+    COND_ID_HOOK(OnBossDefeat, actorID, true, [](void* refActor) {                                         \
+        gSaveContext.ship.stats.itemTimestamp[timestamp] = static_cast<uint32_t>(GAMEPLAYSTAT_TOTAL_TIME); \
+    });
 
 static void RegisterBossDefeatTimestamps() {
     BOSS_DEFEAT_TIMESTAMP(ACTOR_BOSS_GOMA, TIMESTAMP_DEFEAT_GOHMA);

@@ -58,7 +58,7 @@ std::string convertDayTime(uint32_t dayTime) {
 }
 
 std::string convertNaviTime(uint32_t value) {
-    uint32_t totalSeconds = value * 0.05;
+    uint32_t totalSeconds = value / 20;
     uint32_t ss = totalSeconds % 60;
     uint32_t mm = totalSeconds / 60;
     return fmt::format("{:0>2}:{:0>2}", mm, ss);
@@ -70,12 +70,12 @@ std::string formatHotWaterDisplay(uint32_t value) {
     return fmt::format("{:0>2}:{:0>2}", mm, ss);
 }
 
-std::string formatTimeDisplay(uint32_t value) {
-    uint32_t sec = value / 10;
-    uint32_t hh = sec / 3600;
-    uint32_t mm = (sec - hh * 3600) / 60;
-    uint32_t ss = sec - hh * 3600 - mm * 60;
-    uint32_t ds = value % 10;
+std::string formatTimeDisplay(uint64_t value) {
+    uint64_t sec = value / 10;
+    uint64_t hh = sec / 3600;
+    uint64_t mm = (sec - hh * 3600) / 60;
+    uint64_t ss = sec - hh * 3600 - mm * 60;
+    uint64_t ds = value % 10;
     return fmt::format("{}:{:0>2}:{:0>2}.{}", hh, mm, ss, ds);
 }
 

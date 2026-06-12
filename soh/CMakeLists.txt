@@ -424,14 +424,13 @@ if(MSVC)
     if(SOH_WINDOWS_64BIT)
         target_compile_options(${PROJECT_NAME} PRIVATE
             $<$<CONFIG:Debug>:
-                /w;
                 /Od
             >
             $<$<CONFIG:Release>:
                 /Oi;
                 /Gy;
-                /W3
             >
+            /W3;
             /bigobj;
             /sdl-;
             /permissive-;
@@ -453,7 +452,7 @@ if(MSVC)
             /permissive-;
             /MP;
             /sdl-;
-            /w;
+            /W3;
             ${DEFAULT_CXX_DEBUG_INFORMATION_FORMAT};
             ${DEFAULT_CXX_EXCEPTION_HANDLING}
         )

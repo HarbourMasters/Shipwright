@@ -688,8 +688,8 @@ u8 EnDs_RandoCanGetGrannyItem() {
            !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_GRANNYS_SHOP) &&
            // Traded odd mushroom when adult trade is on
            ((RAND_GET_OPTION(RSK_SHUFFLE_ADULT_TRADE) && Flags_GetItemGetInf(ITEMGETINF_30)) ||
-            // Found claim check when adult trade is off
-            (!RAND_GET_OPTION(RSK_SHUFFLE_ADULT_TRADE) && INV_CONTENT(ITEM_CLAIM_CHECK) == ITEM_CLAIM_CHECK));
+            (!RAND_GET_OPTION(RSK_SHUFFLE_ADULT_TRADE) &&
+             (RAND_GET_OPTION(RSK_EARLY_GRANNYS_SHOP) || INV_CONTENT(ITEM_CLAIM_CHECK) == ITEM_CLAIM_CHECK)));
 }
 
 u8 EnJs_RandoCanGetCarpetMerchantItem() {
@@ -2342,8 +2342,8 @@ void RandomizerOnActorInitHandler(void* actorRef) {
             enGe1->actionFunc = (EnGe1ActionFunc)EnGe1_SetNormalText;
         } else if (ge1Type == GE1_TYPE_GATE_OPERATOR && enGe1->actor.world.pos.x != -1358.0f) {
             // When spawning the gate operator, also spawn an extra gate operator on the wasteland side
-            Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_GE1, -1358.0f, 88.0f, -3018.0f, 0, 0x95B0, 0,
-                        0x0300 | GE1_TYPE_GATE_OPERATOR);
+            Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_GE1, -1358.0f, 88.0f, -3018.0f, 0,
+                        static_cast<s16>(0x95B0), 0, 0x0300 | GE1_TYPE_GATE_OPERATOR);
         }
     }
 
@@ -2352,8 +2352,8 @@ void RandomizerOnActorInitHandler(void* actorRef) {
         auto jyaBigMirror = static_cast<BgJyaBigmirror*>(actorRef);
         jyaBigMirror->puzzleFlags |=
             BIGMIR_PUZZLE_COBRA1_SOLVED | BIGMIR_PUZZLE_COBRA2_SOLVED | BIGMIR_PUZZLE_BOMBIWA_DESTROYED;
-        jyaBigMirror->cobraInfo[0].rotY = 0x4000;
-        jyaBigMirror->cobraInfo[1].rotY = 0x8000;
+        jyaBigMirror->cobraInfo[0].rotY = static_cast<s16>(0x4000);
+        jyaBigMirror->cobraInfo[1].rotY = static_cast<s16>(0x8000);
     }
 
     if (actor->id == ACTOR_DEMO_KEKKAI && actor->params == 0) { // 0 == KEKKAI_TOWER

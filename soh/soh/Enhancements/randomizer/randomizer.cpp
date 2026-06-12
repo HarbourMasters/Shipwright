@@ -70,7 +70,7 @@ bool Rando_HandleSpoilerDrop(char* filePath) {
             CVarSetInteger(CVAR_GENERAL("RandomizerNewFileDropped"), 1);
             return true;
         }
-    } catch (std::exception& e) {}
+    } catch ([[maybe_unused]] std::exception& e) {}
     return false;
 }
 
@@ -382,9 +382,7 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
                 case RO_BOMBCHU_BAG_NONE:
                     return CANT_OBTAIN_MISC;
                 case RO_BOMBCHU_BAG_SINGLE:
-                    return INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU
-                               ? (infiniteUpgrades != RO_INF_UPGRADES_OFF ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE)
-                               : CAN_OBTAIN;
+                    return CAN_OBTAIN;
                 case RO_BOMBCHU_BAG_PROGRESSIVE:
                     if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_BOMBCHUS)) {
                         return CANT_OBTAIN_ALREADY_HAVE;

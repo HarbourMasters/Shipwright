@@ -66,7 +66,7 @@ bool operator>(Color_RGBA8 const& l, Color_RGBA8 const& r) noexcept {
 }
 
 uint32_t GetVectorIndexOf(std::vector<std::string>& vector, std::string value) {
-    return std::distance(vector.begin(), std::find(vector.begin(), vector.end(), value));
+    return static_cast<u32>(std::distance(vector.begin(), std::find(vector.begin(), vector.end(), value)));
 }
 
 static bool raceDisableActive = false;
@@ -93,7 +93,7 @@ void Menu::RemoveSidebarSearch() {
     if (curIndex > searchSidebarIndex) {
         curIndex--;
     } else if (curIndex >= menuEntries["Settings"].sidebarOrder.size()) {
-        curIndex = menuEntries["Settings"].sidebarOrder.size() - 1;
+        curIndex = static_cast<u32>(menuEntries["Settings"].sidebarOrder.size() - 1);
     }
     CVarSetString(menuEntries["Settings"].sidebarCvar, menuEntries["Settings"].sidebarOrder.at(curIndex).c_str());
 }
@@ -129,10 +129,10 @@ Menu::Menu(const std::string& cVar, const std::string& name, uint8_t searchSideb
 
 void Menu::InitElement() {
     popped = CVarGetInteger(CVAR_SETTING("Menu.Popout"), 0);
-    poppedSize.x = CVarGetInteger(CVAR_SETTING("Menu.PoppedWidth"), 1280);
-    poppedSize.y = CVarGetInteger(CVAR_SETTING("Menu.PoppedHeight"), 800);
-    poppedPos.x = CVarGetInteger(CVAR_SETTING("Menu.PoppedPos.x"), 0);
-    poppedPos.y = CVarGetInteger(CVAR_SETTING("Menu.PoppedPos.y"), 0);
+    poppedSize.x = static_cast<f32>(CVarGetInteger(CVAR_SETTING("Menu.PoppedWidth"), 1280));
+    poppedSize.y = static_cast<f32>(CVarGetInteger(CVAR_SETTING("Menu.PoppedHeight"), 800));
+    poppedPos.x = static_cast<f32>(CVarGetInteger(CVAR_SETTING("Menu.PoppedPos.x"), 0));
+    poppedPos.y = static_cast<f32>(CVarGetInteger(CVAR_SETTING("Menu.PoppedPos.y"), 0));
     menuThemeIndex = static_cast<UIWidgets::Colors>(CVarGetInteger(CVAR_SETTING("Menu.Theme"), defaultThemeIndex));
 
     UpdateWindowBackendObjects();

@@ -435,9 +435,15 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Skip Text", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("SkipText"))
         .Options(CheckboxOptions().Tooltip("Holding down B skips text."));
-    AddWidget(path, "Text Speed: %dx", WIDGET_CVAR_SLIDER_INT)
+    AddWidget(path, "Text Speed", WIDGET_CVAR_SLIDER_INT)
         .CVar(CVAR_ENHANCEMENT("TextSpeed"))
-        .Options(IntSliderOptions().Min(1).Max(5).DefaultValue(1).Format("%dx"));
+        // Top notch (max) fills the whole text box in one frame
+        .Callback([](WidgetInfo& info) {
+            auto options = std::static_pointer_cast<IntSliderOptions>(info.options);
+            options->format = CVarGetInteger(info.cVar, 1) >= options->max ? "Instant" : "%dx";
+        })
+        .Options(IntSliderOptions().Min(1).Max(6).DefaultValue(1).Format(
+            CVarGetInteger(CVAR_ENHANCEMENT("TextSpeed"), 1) >= 6 ? "Instant" : "%dx"));
     AddWidget(path, "Slow Text Speed: %dx", WIDGET_CVAR_SLIDER_INT)
         .CVar(CVAR_ENHANCEMENT("SlowTextSpeed"))
         .Options(IntSliderOptions().Min(1).Max(5).DefaultValue(1).Format("%dx").Tooltip(

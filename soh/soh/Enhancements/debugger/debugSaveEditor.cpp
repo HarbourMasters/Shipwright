@@ -310,7 +310,7 @@ void DrawInfoTab() {
     }
     gSaveContext.magicCapacity = gSaveContext.magicLevel * 0x30; // Set to get the bar drawn in the UI
     if (gSaveContext.magic > gSaveContext.magicCapacity) {
-        gSaveContext.magic = gSaveContext.magicCapacity; // Clamp magic to new max
+        gSaveContext.magic = static_cast<s8>(gSaveContext.magicCapacity); // Clamp magic to new max
     }
 
     int32_t magic = (int32_t)gSaveContext.magic;
@@ -1141,7 +1141,7 @@ void DrawFlagsTab() {
                         [&]() {
                             if (j == 0) {
                                 for (int k = 0xF; k >= 0; k--) {
-                                    ImGui::SameLine(37.5 + ((0xF - k) * 33.8));
+                                    ImGui::SameLine(static_cast<f32>(37.5 + ((0xF - k) * 33.8)));
                                     ImGui::Text("%X", k);
                                 }
                             }
@@ -1768,18 +1768,18 @@ void DrawPlayerTab() {
                 ImGui::PushItemWidth(ImGui::GetFontSize() * 12);
                 if (ImGui::BeginCombo("Sword", curSword)) {
                     if (ImGui::Selectable("None")) {
-                        player->currentSwordItemId = ITEM_NONE;
-                        gSaveContext.equips.buttonItems[0] = ITEM_NONE;
+                        player->currentSwordItemId = static_cast<s8>(ITEM_NONE);
+                        gSaveContext.equips.buttonItems[0] = static_cast<u8>(ITEM_NONE);
                         Inventory_ChangeEquipment(EQUIP_TYPE_SWORD, EQUIP_VALUE_SWORD_NONE);
                     }
                     if (ImGui::Selectable("Kokiri Sword")) {
-                        player->currentSwordItemId = ITEM_SWORD_KOKIRI;
-                        gSaveContext.equips.buttonItems[0] = ITEM_SWORD_KOKIRI;
+                        player->currentSwordItemId = static_cast<s8>(ITEM_SWORD_KOKIRI);
+                        gSaveContext.equips.buttonItems[0] = static_cast<u8>(ITEM_SWORD_KOKIRI);
                         Inventory_ChangeEquipment(EQUIP_TYPE_SWORD, EQUIP_VALUE_SWORD_KOKIRI);
                     }
                     if (ImGui::Selectable("Master Sword")) {
-                        player->currentSwordItemId = ITEM_SWORD_MASTER;
-                        gSaveContext.equips.buttonItems[0] = ITEM_SWORD_MASTER;
+                        player->currentSwordItemId = static_cast<s8>(ITEM_SWORD_MASTER);
+                        gSaveContext.equips.buttonItems[0] = static_cast<u8>(ITEM_SWORD_MASTER);
                         Inventory_ChangeEquipment(EQUIP_TYPE_SWORD, EQUIP_VALUE_SWORD_MASTER);
                     }
                     if (ImGui::Selectable("Biggoron's Sword")) {
@@ -1787,21 +1787,21 @@ void DrawPlayerTab() {
                             if (gSaveContext.swordHealth < 8) {
                                 gSaveContext.swordHealth = 8;
                             }
-                            player->currentSwordItemId = ITEM_SWORD_BGS;
-                            gSaveContext.equips.buttonItems[0] = ITEM_SWORD_BGS;
+                            player->currentSwordItemId = static_cast<s8>(ITEM_SWORD_BGS);
+                            gSaveContext.equips.buttonItems[0] = static_cast<u8>(ITEM_SWORD_BGS);
                         } else {
                             if (gSaveContext.swordHealth < 8) {
                                 gSaveContext.swordHealth = 8;
                             }
-                            player->currentSwordItemId = ITEM_SWORD_BGS;
-                            gSaveContext.equips.buttonItems[0] = ITEM_SWORD_KNIFE;
+                            player->currentSwordItemId = static_cast<s8>(ITEM_SWORD_BGS);
+                            gSaveContext.equips.buttonItems[0] = static_cast<u8>(ITEM_SWORD_KNIFE);
                         }
 
                         Inventory_ChangeEquipment(EQUIP_TYPE_SWORD, EQUIP_VALUE_SWORD_BIGGORON);
                     }
                     if (ImGui::Selectable("Fishing Pole")) {
-                        player->currentSwordItemId = ITEM_FISHING_POLE;
-                        gSaveContext.equips.buttonItems[0] = ITEM_FISHING_POLE;
+                        player->currentSwordItemId = static_cast<s8>(ITEM_FISHING_POLE);
+                        gSaveContext.equips.buttonItems[0] = static_cast<u8>(ITEM_FISHING_POLE);
                         Inventory_ChangeEquipment(EQUIP_TYPE_SWORD, EQUIP_VALUE_SWORD_MASTER);
                     }
                     ImGui::EndCombo();

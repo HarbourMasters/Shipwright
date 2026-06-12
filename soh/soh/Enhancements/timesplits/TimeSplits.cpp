@@ -349,7 +349,7 @@ void HandleDragAndDrop(std::vector<SplitObject>& objectList, int targetIndex, co
 }
 
 void TimeSplitCompleteSplits() {
-    gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_GANON] = GAMEPLAYSTAT_TOTAL_TIME;
+    gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_GANON] = static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
     gSaveContext.ship.stats.gameComplete = true;
 }
 
@@ -587,13 +587,13 @@ void TimeSplitsItemSplitEvent(uint32_t type, u8 item) {
         if (split.splitType == type) {
             if (item == split.splitID) {
                 if (split.splitTimeStatus == SPLIT_STATUS_ACTIVE) {
-                    split.splitTimeCurrent = GAMEPLAYSTAT_TOTAL_TIME;
+                    split.splitTimeCurrent = static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
                     split.splitTimeStatus = SPLIT_STATUS_COLLECTED;
                     if (split.splitTimeBest > GAMEPLAYSTAT_TOTAL_TIME || split.splitTimeBest == 0) {
-                        split.splitTimeBest = GAMEPLAYSTAT_TOTAL_TIME;
+                        split.splitTimeBest = static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
                     }
                     if (split.splitTimePreviousBest == 0) {
-                        split.splitTimePreviousBest = GAMEPLAYSTAT_TOTAL_TIME;
+                        split.splitTimePreviousBest = static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
                     }
                     if (index == splitList.size() - 1) {
                         TimeSplitCompleteSplits();
@@ -612,15 +612,15 @@ void TimeSplitsSplitBestTimeDisplay(SplitObject split) {
     if (split.splitTimeStatus == SPLIT_STATUS_ACTIVE) {
         if (GAMEPLAYSTAT_TOTAL_TIME > split.splitTimePreviousBest) {
             splitTimeColor = COLOR_RED;
-            splitBestTimeDisplay = (GAMEPLAYSTAT_TOTAL_TIME - split.splitTimePreviousBest);
+            splitBestTimeDisplay = (static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME) - split.splitTimePreviousBest);
         }
         if (GAMEPLAYSTAT_TOTAL_TIME == split.splitTimePreviousBest) {
             splitTimeColor = COLOR_WHITE;
-            splitBestTimeDisplay = GAMEPLAYSTAT_TOTAL_TIME;
+            splitBestTimeDisplay = static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
         }
         if (GAMEPLAYSTAT_TOTAL_TIME < split.splitTimePreviousBest) {
             splitTimeColor = COLOR_GREEN;
-            splitBestTimeDisplay = (split.splitTimePreviousBest - GAMEPLAYSTAT_TOTAL_TIME);
+            splitBestTimeDisplay = (split.splitTimePreviousBest - static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME));
         }
         activeSplitHighlight = COLOR_LIGHT_BLUE;
     }
@@ -685,7 +685,7 @@ void TimeSplitsDrawSplitsList() {
             ImGui::TableNextColumn();
             // Current Time
             ImGui::Text("%s", (split.splitTimeStatus == SPLIT_STATUS_ACTIVE)
-                                  ? formatTimestampTimeSplit(GAMEPLAYSTAT_TOTAL_TIME).c_str()
+                                  ? formatTimestampTimeSplit(static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME)).c_str()
                               : (split.splitTimeStatus == SPLIT_STATUS_COLLECTED)
                                   ? formatTimestampTimeSplit(split.splitTimeCurrent).c_str()
                                   : "--:--:-");
@@ -1016,21 +1016,21 @@ void TimeSplitWindow::InitElement() {
                     break;
                 }
             }
-            TimeSplitsItemSplitEvent(tempType, itemEntry.itemId);
+            TimeSplitsItemSplitEvent(tempType, static_cast<u8>(itemEntry.itemId));
         }
     });
 
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerBottleUpdate>(
-        [](int16_t contents) { TimeSplitsItemSplitEvent(SPLIT_TYPE_UPGRADE, contents); });
+        [](int16_t contents) { TimeSplitsItemSplitEvent(SPLIT_TYPE_UPGRADE, static_cast<u8>(contents)); });
 
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnBossDefeat>([](void* refActor) {
         Actor* bossActor = (Actor*)refActor;
-        TimeSplitsItemSplitEvent(SPLIT_TYPE_BOSS, bossActor->id);
+        TimeSplitsItemSplitEvent(SPLIT_TYPE_BOSS, static_cast<u8>(bossActor->id));
     });
 
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) {
         if (gPlayState->sceneNum != SCENE_KAKARIKO_VILLAGE) {
-            TimeSplitsItemSplitEvent(SPLIT_TYPE_ENTRANCE, sceneNum);
+            TimeSplitsItemSplitEvent(SPLIT_TYPE_ENTRANCE, static_cast<u8>(sceneNum));
         }
     });
 
@@ -1038,7 +1038,7 @@ void TimeSplitWindow::InitElement() {
         if (gPlayState->sceneNum == SCENE_KAKARIKO_VILLAGE) {
             Player* player = GET_PLAYER(gPlayState);
             if (player->fallDistance > 500 && gSaveContext.health <= 0) {
-                TimeSplitsItemSplitEvent(SPLIT_TYPE_MISC, gPlayState->sceneNum);
+                TimeSplitsItemSplitEvent(SPLIT_TYPE_MISC, static_cast<u8>(gPlayState->sceneNum));
             }
         }
     });

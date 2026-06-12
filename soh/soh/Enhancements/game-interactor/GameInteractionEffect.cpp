@@ -271,7 +271,7 @@ GameInteractionEffectQueryResult KnockbackPlayer::CanBeApplied() {
     }
 }
 void KnockbackPlayer::_Apply() {
-    GameInteractor::RawAction::KnockbackPlayer(parameters[0]);
+    GameInteractor::RawAction::KnockbackPlayer(static_cast<f32>(parameters[0]));
 }
 
 // MARK: - ModifyLinkSize

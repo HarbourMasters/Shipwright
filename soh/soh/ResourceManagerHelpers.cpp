@@ -21,7 +21,8 @@
 extern "C" PlayState* gPlayState;
 
 extern "C" uint32_t ResourceMgr_GetNumGameVersions() {
-    return Ship::Context::GetRawInstance()->GetResourceManager()->GetArchiveManager()->GetGameVersions().size();
+    return static_cast<u32>(
+        Ship::Context::GetRawInstance()->GetResourceManager()->GetArchiveManager()->GetGameVersions().size());
 }
 
 extern "C" uint32_t ResourceMgr_GetGameVersion(int index) {
@@ -50,6 +51,9 @@ extern "C" uint32_t ResourceMgr_GetGamePlatform(int index) {
         case OOT_PAL_GC_DBG2:
         case OOT_PAL_GC_MQ_DBG:
             return GAME_PLATFORM_GC;
+        default:
+            assert(false);
+            return GAME_PLATFORM_UNKNOWN;
     }
 }
 
@@ -75,6 +79,9 @@ extern "C" uint32_t ResourceMgr_GetGameRegion(int index) {
         case OOT_PAL_GC_DBG2:
         case OOT_PAL_GC_MQ_DBG:
             return GAME_REGION_PAL;
+        default:
+            assert(false);
+            return GAME_REGION_UNKNOWN;
     }
 }
 
@@ -157,7 +164,7 @@ extern "C" char** ResourceMgr_ListFiles(const char* searchMask, int* resultSize)
         str[lst.get()[0][i].size()] = '\0';
         result[i] = str;
     }
-    *resultSize = lst->size();
+    *resultSize = static_cast<int>(lst->size());
 
     return result;
 }

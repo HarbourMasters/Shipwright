@@ -257,8 +257,10 @@ void RegionTable_Init_Kakariko() {
     }, {
         //Locations
         LOCATION(RC_KAK_TRADE_ODD_MUSHROOM, logic->IsAdult && logic->CanUse(RG_ODD_MUSHROOM)),
-        LOCATION(RC_KAK_GRANNYS_SHOP,       logic->IsAdult && logic->HasItem(RG_SPEAK_HYLIAN) && 
-                                            (logic->CanUse(RG_ODD_MUSHROOM) || logic->TradeQuestStep(RG_ODD_MUSHROOM)) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_KAK_GRANNYS_SHOP,       logic->IsAdult && logic->HasItem(RG_SPEAK_HYLIAN) &&
+                                            (logic->CanUse(RG_ODD_MUSHROOM) || (ctx->GetOption(RSK_SHUFFLE_ADULT_TRADE).Is(RO_GENERIC_OFF) &&
+                                                                                (logic->HasItem(RG_CLAIM_CHECK) || ctx->GetOption(RSK_EARLY_GRANNYS_SHOP))) &&
+                                             GetCheckPrice() <= GetWalletCapacity())),
     }, {
         // Exits
         ENTRANCE(RR_KAK_BACKYARD, true),

@@ -21,9 +21,10 @@ void Custom_EnMThunder_Update(Actor* thisx, PlayState* play) {
     // func_80A9F314(play, this->dimmingIntensity);
     blueRadius = enMThunder->spinAttackTimer;
     redGreen = (u32)(blueRadius * 255.0f) & 0xFF;
-    Lights_PointNoGlowSetInfo(&enMThunder->lightInfo, enMThunder->actor.world.pos.x, enMThunder->actor.world.pos.y,
-                              enMThunder->actor.world.pos.z, redGreen, redGreen, (u32)(blueRadius * 100.0f),
-                              (s32)(blueRadius * 800.0f));
+    Lights_PointNoGlowSetInfo(&enMThunder->lightInfo, static_cast<s16>(enMThunder->actor.world.pos.x),
+                              static_cast<s16>(enMThunder->actor.world.pos.y),
+                              static_cast<s16>(enMThunder->actor.world.pos.z), redGreen, redGreen,
+                              (u32)(blueRadius * 100.0f), (s32)(blueRadius * 800.0f));
 }
 
 void OnEnMThunderInitReplaceUpdateWithCustom(void* thunder) {

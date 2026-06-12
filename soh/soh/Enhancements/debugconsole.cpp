@@ -66,7 +66,7 @@ static bool ActorSpawnHandler(std::shared_ptr<Ship::Console> Console, const std:
     if (nameId == -1) {
         try {
             actorId = std::stoi(args[1]);
-        } catch (std::invalid_argument const& ex) {
+        } catch ([[maybe_unused]] std::invalid_argument const& ex) {
             ERROR_MESSAGE("Invalid actor ID");
             return 1;
         }
@@ -91,13 +91,13 @@ static bool ActorSpawnHandler(std::shared_ptr<Ship::Console> Console, const std:
             [[fallthrough]];
         case 6:
             if (args[3][0] != ',') {
-                spawnPoint.pos.x = std::stoi(args[3]);
+                spawnPoint.pos.x = static_cast<f32>(std::stoi(args[3]));
             }
             if (args[4][0] != ',') {
-                spawnPoint.pos.y = std::stoi(args[4]);
+                spawnPoint.pos.y = static_cast<f32>(std::stoi(args[4]));
             }
             if (args[5][0] != ',') {
-                spawnPoint.pos.z = std::stoi(args[5]);
+                spawnPoint.pos.z = static_cast<f32>(std::stoi(args[5]));
             }
     }
 
@@ -133,7 +133,7 @@ static bool SetPlayerHealthHandler(std::shared_ptr<Ship::Console> Console, const
 
     try {
         health = std::stoi(args[1]);
-    } catch (std::invalid_argument const& ex) {
+    } catch ([[maybe_unused]] std::invalid_argument const& ex) {
         ERROR_MESSAGE("[SOH] Health value must be an integer.");
         return 1;
     }
@@ -172,7 +172,7 @@ static bool RupeeHandler(std::shared_ptr<Ship::Console> Console, const std::vect
     int rupeeAmount;
     try {
         rupeeAmount = std::stoi(args[1]);
-    } catch (std::invalid_argument const& ex) {
+    } catch ([[maybe_unused]] std::invalid_argument const& ex) {
         ERROR_MESSAGE("[SOH] Rupee count must be an integer.");
         return 1;
     }
@@ -240,7 +240,7 @@ static bool AddAmmoHandler(std::shared_ptr<Ship::Console> Console, const std::ve
 
     try {
         amount = std::stoi(args[2]);
-    } catch (std::invalid_argument const& ex) {
+    } catch ([[maybe_unused]] std::invalid_argument const& ex) {
         ERROR_MESSAGE("Ammo count must be an integer");
         return 1;
     }
@@ -281,7 +281,7 @@ static bool TakeAmmoHandler(std::shared_ptr<Ship::Console> Console, const std::v
 
     try {
         amount = std::stoi(args[2]);
-    } catch (std::invalid_argument const& ex) {
+    } catch ([[maybe_unused]] std::invalid_argument const& ex) {
         ERROR_MESSAGE("Ammo count must be an integer");
         return 1;
     }
@@ -337,7 +337,7 @@ static bool BottleHandler(std::shared_ptr<Ship::Console> Console, const std::vec
     unsigned int slot;
     try {
         slot = std::stoi(args[2]);
-    } catch (std::invalid_argument const& ex) {
+    } catch ([[maybe_unused]] std::invalid_argument const& ex) {
         ERROR_MESSAGE("[SOH] Bottle slot must be an integer.");
         return 1;
     }
@@ -354,7 +354,7 @@ static bool BottleHandler(std::shared_ptr<Ship::Console> Console, const std::vec
         return 1;
     }
 
-    gSaveContext.inventory.items[0x11 + slot] = it->second;
+    gSaveContext.inventory.items[0x11 + slot] = static_cast<u8>(it->second);
 
     return 0;
 }
@@ -415,7 +415,7 @@ static bool EntranceHandler(std::shared_ptr<Ship::Console> Console, const std::v
 
     try {
         entrance = std::stoi(args[1], nullptr, 16);
-    } catch (std::invalid_argument const& ex) {
+    } catch ([[maybe_unused]] std::invalid_argument const& ex) {
         ERROR_MESSAGE("[SOH] Entrance value must be a Hex number.");
         return 1;
     }
@@ -581,7 +581,7 @@ static bool StateSlotSelectHandler(std::shared_ptr<Ship::Console> Console, const
 
     try {
         slot = std::stoi(args[1], nullptr, 10);
-    } catch (std::invalid_argument const& ex) {
+    } catch ([[maybe_unused]] std::invalid_argument const& ex) {
         ERROR_MESSAGE("[SOH] SaveState slot value must be a number.");
         return 1;
     }
@@ -606,7 +606,7 @@ static bool InvisibleHandler(std::shared_ptr<Ship::Console> Console, const std::
 
     try {
         state = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
-    } catch (std::invalid_argument const& ex) {
+    } catch ([[maybe_unused]] std::invalid_argument const& ex) {
         ERROR_MESSAGE("[SOH] Invisible value must be a number.");
         return 1;
     }
@@ -633,7 +633,7 @@ static bool GiantLinkHandler(std::shared_ptr<Ship::Console> Console, const std::
 
     try {
         state = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
-    } catch (std::invalid_argument const& ex) {
+    } catch ([[maybe_unused]] std::invalid_argument const& ex) {
         ERROR_MESSAGE("[SOH] Giant value must be a number.");
         return 1;
     }
@@ -661,7 +661,7 @@ static bool MinishLinkHandler(std::shared_ptr<Ship::Console> Console, const std:
 
     try {
         state = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
-    } catch (std::invalid_argument const& ex) {
+    } catch ([[maybe_unused]] std::invalid_argument const& ex) {
         ERROR_MESSAGE("[SOH] Minish value must be a number.");
         return 1;
     }
@@ -689,7 +689,7 @@ static bool AddHeartContainerHandler(std::shared_ptr<Ship::Console> Console, con
 
     try {
         hearts = std::stoi(args[1]);
-    } catch (std::invalid_argument const& ex) {
+    } catch ([[maybe_unused]] std::invalid_argument const& ex) {
         ERROR_MESSAGE("[SOH] Hearts value must be an integer.");
         return 1;
     }
@@ -721,7 +721,7 @@ static bool RemoveHeartContainerHandler(std::shared_ptr<Ship::Console> Console, 
 
     try {
         hearts = std::stoi(args[1]);
-    } catch (std::invalid_argument const& ex) {
+    } catch ([[maybe_unused]] std::invalid_argument const& ex) {
         ERROR_MESSAGE("[SOH] Hearts value must be an integer.");
         return 1;
     }
@@ -753,9 +753,9 @@ static bool GravityHandler(std::shared_ptr<Ship::Console> Console, const std::ve
     GameInteractionEffect::ModifyGravity effect;
 
     try {
-        effect.parameters[0] =
-            Ship::Math::clamp(std::stoi(args[1], nullptr, 10), GI_GRAVITY_LEVEL_LIGHT, GI_GRAVITY_LEVEL_HEAVY);
-    } catch (std::invalid_argument const& ex) {
+        effect.parameters[0] = static_cast<int32_t>(Ship::Math::clamp(
+            static_cast<float>(std::stoi(args[1], nullptr, 10)), GI_GRAVITY_LEVEL_LIGHT, GI_GRAVITY_LEVEL_HEAVY));
+    } catch ([[maybe_unused]] std::invalid_argument const& ex) {
         ERROR_MESSAGE("[SOH] Gravity value must be a number.");
         return 1;
     }
@@ -780,7 +780,7 @@ static bool NoUIHandler(std::shared_ptr<Ship::Console> Console, const std::vecto
 
     try {
         state = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
-    } catch (std::invalid_argument const& ex) {
+    } catch ([[maybe_unused]] std::invalid_argument const& ex) {
         ERROR_MESSAGE("[SOH] No UI value must be a number.");
         return 1;
     }
@@ -822,7 +822,7 @@ static bool DefenseModifierHandler(std::shared_ptr<Ship::Console> Console, const
 
     try {
         effect.parameters[0] = std::stoi(args[1], nullptr, 10);
-    } catch (std::invalid_argument const& ex) {
+    } catch ([[maybe_unused]] std::invalid_argument const& ex) {
         ERROR_MESSAGE("[SOH] Defense modifier value must be a number.");
         return 1;
     }
@@ -853,7 +853,7 @@ static bool DamageHandler(std::shared_ptr<Ship::Console> Console, const std::vec
         }
 
         effect.parameters[0] = -value;
-    } catch (std::invalid_argument const& ex) {
+    } catch ([[maybe_unused]] std::invalid_argument const& ex) {
         ERROR_MESSAGE("[SOH] Damage value must be a number.");
         return 1;
     }
@@ -884,7 +884,7 @@ static bool HealHandler(std::shared_ptr<Ship::Console> Console, const std::vecto
         }
 
         effect.parameters[0] = value;
-    } catch (std::invalid_argument const& ex) {
+    } catch ([[maybe_unused]] std::invalid_argument const& ex) {
         ERROR_MESSAGE("[SOH] Damage value must be a number.");
         return 1;
     }
@@ -937,7 +937,7 @@ static bool NoZHandler(std::shared_ptr<Ship::Console> Console, const std::vector
 
     try {
         state = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
-    } catch (std::invalid_argument const& ex) {
+    } catch ([[maybe_unused]] std::invalid_argument const& ex) {
         ERROR_MESSAGE("[SOH] NoZ value must be a number.");
         return 1;
     }
@@ -965,7 +965,7 @@ static bool OneHitKOHandler(std::shared_ptr<Ship::Console> Console, const std::v
 
     try {
         state = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
-    } catch (std::invalid_argument const& ex) {
+    } catch ([[maybe_unused]] std::invalid_argument const& ex) {
         ERROR_MESSAGE("[SOH] One-hit KO value must be a number.");
         return 1;
     }
@@ -993,7 +993,7 @@ static bool PacifistHandler(std::shared_ptr<Ship::Console> Console, const std::v
 
     try {
         state = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
-    } catch (std::invalid_argument const& ex) {
+    } catch ([[maybe_unused]] std::invalid_argument const& ex) {
         ERROR_MESSAGE("[SOH] Pacifist value must be a number.");
         return 1;
     }
@@ -1021,7 +1021,7 @@ static bool PaperLinkHandler(std::shared_ptr<Ship::Console> Console, const std::
 
     try {
         state = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
-    } catch (std::invalid_argument const& ex) {
+    } catch ([[maybe_unused]] std::invalid_argument const& ex) {
         ERROR_MESSAGE("[SOH] Paper Link value must be a number.");
         return 1;
     }
@@ -1050,7 +1050,7 @@ static bool RainstormHandler(std::shared_ptr<Ship::Console> Console, const std::
 
     try {
         state = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
-    } catch (std::invalid_argument const& ex) {
+    } catch ([[maybe_unused]] std::invalid_argument const& ex) {
         ERROR_MESSAGE("[SOH] Rainstorm value must be a number.");
         return 1;
     }
@@ -1078,7 +1078,7 @@ static bool ReverseControlsHandler(std::shared_ptr<Ship::Console> Console, const
 
     try {
         state = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
-    } catch (std::invalid_argument const& ex) {
+    } catch ([[maybe_unused]] std::invalid_argument const& ex) {
         ERROR_MESSAGE("[SOH] Reverse controls value must be a number.");
         return 1;
     }
@@ -1107,7 +1107,7 @@ static bool UpdateRupeesHandler(std::shared_ptr<Ship::Console> Console, const st
 
     try {
         effect.parameters[0] = std::stoi(args[1], nullptr, 10);
-    } catch (std::invalid_argument const& ex) {
+    } catch ([[maybe_unused]] std::invalid_argument const& ex) {
         ERROR_MESSAGE("[SOH] Rupee value must be a number.");
         return 1;
     }
@@ -1132,7 +1132,7 @@ static bool SpeedModifierHandler(std::shared_ptr<Ship::Console> Console, const s
 
     try {
         effect.parameters[0] = std::stoi(args[1], nullptr, 10);
-    } catch (std::invalid_argument const& ex) {
+    } catch ([[maybe_unused]] std::invalid_argument const& ex) {
         ERROR_MESSAGE("[SOH] Speed modifier value must be a number.");
         return 1;
     }
@@ -1253,7 +1253,7 @@ static bool KnockbackHandler(std::shared_ptr<Ship::Console> Console, const std::
         }
 
         effect.parameters[0] = value;
-    } catch (std::invalid_argument const& ex) {
+    } catch ([[maybe_unused]] std::invalid_argument const& ex) {
         ERROR_MESSAGE("[SOH] Knockback value must be a number.");
         return 1;
     }
@@ -1328,7 +1328,7 @@ static bool GenerateRandoHandler(std::shared_ptr<Ship::Console> Console, const s
         if (GenerateRandomizer(seed + std::to_string(value))) {
             return 0;
         }
-    } catch (std::invalid_argument const& ex) {
+    } catch ([[maybe_unused]] std::invalid_argument const& ex) {
         ERROR_MESSAGE("[SOH] seed|count value must be a number.");
         return 1;
     }
@@ -1459,7 +1459,7 @@ static bool AvailableChecksProcessUndiscoveredExitsHandler(std::shared_ptr<Ship:
     } else {
         try {
             enabled = std::stoi(args[1]);
-        } catch (std::invalid_argument const& ex) {
+        } catch ([[maybe_unused]] std::invalid_argument const& ex) {
             ERROR_MESSAGE("[SOH] Enable should be 0 or 1");
             return 1;
         }
@@ -1481,7 +1481,7 @@ static bool AvailableChecksRecalculateHandler(std::shared_ptr<Ship::Console> Con
     if (args.size() > 1) {
         try {
             startingRegion = static_cast<RandomizerRegion>(std::stoi(args[1]));
-        } catch (std::invalid_argument const& ex) {
+        } catch ([[maybe_unused]] std::invalid_argument const& ex) {
             ERROR_MESSAGE("[SOH] Region should be a number");
             return 1;
         }

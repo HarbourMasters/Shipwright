@@ -199,13 +199,14 @@ Option::Option(size_t key_, std::string name_, std::vector<std::string> options_
             if (imFlags_ & IMFLAG_LABEL_INLINE) {
                 labelPosition = UIWidgets::LabelPositions::Near;
             }
-            widgetOptions = std::make_shared<UIWidgets::IntSliderOptions>(UIWidgets::IntSliderOptions()
-                                                                              .DefaultValue(defaultOption)
-                                                                              .Tooltip(description.c_str())
-                                                                              .Min(0)
-                                                                              .Max(options.size() - 1)
-                                                                              .Format(options[defaultOption].c_str())
-                                                                              .LabelPosition(labelPosition));
+            widgetOptions =
+                std::make_shared<UIWidgets::IntSliderOptions>(UIWidgets::IntSliderOptions()
+                                                                  .DefaultValue(defaultOption)
+                                                                  .Tooltip(description.c_str())
+                                                                  .Min(0)
+                                                                  .Max(static_cast<int32_t>(options.size() - 1))
+                                                                  .Format(options[defaultOption].c_str())
+                                                                  .LabelPosition(labelPosition));
             break;
         default:
             break;
@@ -231,7 +232,7 @@ void Option::AddWidget(WidgetPath& path) {
                                       RO_LOGIC_NO_LOGIC) {
                                   maxIndex = 7;
                               }
-                              sliderOpts->Max(maxIndex);
+                              sliderOpts->Max(static_cast<int32_t>(maxIndex));
                           }
                       })
                       .CVar(cvarName.c_str())
@@ -392,7 +393,7 @@ void OptionGroup::AddWidgets(WidgetPath& path) const {
     if (mContainerType == WidgetContainerType::TABLE) {
         path.column = SECTION_COLUMN_1;
         path.sidebarName = mName;
-        SohGui::mSohMenu->AddSidebarEntry("Randomizer", path.sidebarName, mSubGroups.size());
+        SohGui::mSohMenu->AddSidebarEntry("Randomizer", path.sidebarName, static_cast<uint32_t>(mSubGroups.size()));
     }
     if (mContainerType == WidgetContainerType::SECTION || mContainerType == WidgetContainerType::COLUMN) {
         if (!mName.empty()) {

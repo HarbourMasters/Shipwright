@@ -50,7 +50,7 @@ std::shared_ptr<Ship::IResource> SetPathwaysFactoryXML::ReadResource(std::shared
         child = child->NextSiblingElement();
     }
 
-    setPathways->numPaths = setPathways->paths.size();
+    setPathways->numPaths = static_cast<u32>(setPathways->paths.size());
 
     return setPathways;
 }

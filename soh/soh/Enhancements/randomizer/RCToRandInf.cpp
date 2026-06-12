@@ -1221,6 +1221,14 @@ std::map<RandomizerCheck, RandomizerInf> rcToRandomizerInf = {
         RAND_INF_GF_SOUTH_TARGET_WEST_CRATE,
     },
     {
+        RC_GF_FAR_AWAY_CRATE_CHILD,
+        RAND_INF_GF_FAR_AWAY_CRATE_CHILD,
+    },
+    {
+        RC_GF_FAR_AWAY_CRATE_ADULT,
+        RAND_INF_GF_FAR_AWAY_CRATE_ADULT,
+    },
+    {
         RC_TH_NEAR_KITCHEN_LEFTMOST_CRATE,
         RAND_INF_TH_NEAR_KITCHEN_LEFTMOST_CRATE,
     },

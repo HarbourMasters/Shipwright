@@ -94,8 +94,8 @@ extern "C" void ValueViewer_Draw(GfxPrint* printer) {
         void* elementValue = element.valueFn();
         if (elementValue == NULL)
             continue;
-        GfxPrint_SetColor(printer, setting.color.x * 255, setting.color.y * 255, setting.color.z * 255,
-                          setting.color.w * 255);
+        GfxPrint_SetColor(printer, static_cast<u32>(setting.color.x * 255), static_cast<u32>(setting.color.y * 255),
+                          static_cast<u32>(setting.color.z * 255), static_cast<u32>(setting.color.w * 255));
         GfxPrint_SetPos(printer, setting.x, setting.y);
         switch (element.type) {
             case TYPE_S8:

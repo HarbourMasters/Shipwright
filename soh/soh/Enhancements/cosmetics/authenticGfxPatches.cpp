@@ -100,7 +100,7 @@ void PatchArrowTipTexture() {
         if (!fixTexturesOOB) {
             // Unpatch the other texture fix
             for (size_t i = 4; i < 8; i++) {
-                int instruction = start + i;
+                size_t instruction = start + i;
                 std::string unpatchName = "arrowTipTextureWithSizeFix_" + std::to_string(instruction);
                 ResourceMgr_UnpatchGfxByName(dlist, unpatchName.c_str());
             }
@@ -117,13 +117,13 @@ void PatchArrowTipTexture() {
             ResourceMgr_UnpatchGfxByName(dlist, unpatchName2.c_str());
 
             for (size_t i = 4; i < 8; i++) {
-                int instruction = start + i;
+                size_t instruction = start + i;
                 std::string patchName = "arrowTipTextureWithSizeFix_" + std::to_string(instruction);
 
                 if (i == 0) {
-                    ResourceMgr_PatchGfxByName(dlist, patchName.c_str(), instruction, gsSPNoOp());
+                    ResourceMgr_PatchGfxByName(dlist, patchName.c_str(), static_cast<int>(instruction), gsSPNoOp());
                 } else {
-                    ResourceMgr_PatchGfxByName(dlist, patchName.c_str(), instruction,
+                    ResourceMgr_PatchGfxByName(dlist, patchName.c_str(), static_cast<int>(instruction),
                                                arrowTipTextureWithSizeFixGfx[i - 1]);
                 }
             }
@@ -148,7 +148,7 @@ void PatchDekuStickTextureOverflow() {
     if (!CVarGetInteger(CVAR_ENHANCEMENT("FixTexturesOOB"), 0)) {
         // Unpatch the other texture fix
         for (size_t i = 0; i < 8; i++) {
-            int instruction = start + i;
+            size_t instruction = start + i;
             std::string unpatchName = "dekuStickWithSizeFix_" + std::to_string(instruction);
             ResourceMgr_UnpatchGfxByName(dlist, unpatchName.c_str());
         }
@@ -165,13 +165,14 @@ void PatchDekuStickTextureOverflow() {
         ResourceMgr_UnpatchGfxByName(dlist, unpatchName2.c_str());
 
         for (size_t i = 0; i < 8; i++) {
-            int instruction = start + i;
+            size_t instruction = start + i;
             std::string patchName = "dekuStickWithSizeFix_" + std::to_string(instruction);
 
             if (i == 0) {
-                ResourceMgr_PatchGfxByName(dlist, patchName.c_str(), instruction, gsSPNoOp());
+                ResourceMgr_PatchGfxByName(dlist, patchName.c_str(), static_cast<int>(instruction), gsSPNoOp());
             } else {
-                ResourceMgr_PatchGfxByName(dlist, patchName.c_str(), instruction, dekuStickTexWithSizeFixGfx[i - 1]);
+                ResourceMgr_PatchGfxByName(dlist, patchName.c_str(), static_cast<int>(instruction),
+                                           dekuStickTexWithSizeFixGfx[i - 1]);
             }
         }
     }
@@ -198,7 +199,7 @@ void PatchFreezardTextureOverflow() {
         if (!fixTexturesOOB) {
             // Unpatch the other texture fix
             for (size_t i = 0; i < 8; i++) {
-                int instruction = start + i;
+                size_t instruction = start + i;
                 std::string unpatchName = "freezardBodyTextureWithFormatFix_" + std::to_string(instruction);
                 ResourceMgr_UnpatchGfxByName(dlist, unpatchName.c_str());
             }
@@ -215,13 +216,13 @@ void PatchFreezardTextureOverflow() {
             ResourceMgr_UnpatchGfxByName(dlist, unpatchName2.c_str());
 
             for (size_t i = 0; i < 8; i++) {
-                int instruction = start + i;
+                size_t instruction = start + i;
                 std::string patchName = "freezardBodyTextureWithFormatFix_" + std::to_string(instruction);
 
                 if (i == 0) {
-                    ResourceMgr_PatchGfxByName(dlist, patchName.c_str(), instruction, gsSPNoOp());
+                    ResourceMgr_PatchGfxByName(dlist, patchName.c_str(), static_cast<int>(instruction), gsSPNoOp());
                 } else {
-                    ResourceMgr_PatchGfxByName(dlist, patchName.c_str(), instruction,
+                    ResourceMgr_PatchGfxByName(dlist, patchName.c_str(), static_cast<int>(instruction),
                                                freezardBodyTextureWithFormatFixGfx[i - 1]);
                 }
             }
@@ -250,7 +251,7 @@ void PatchIronKnuckleTextureOverflow() {
         if (!fixTexturesOOB) {
             // Unpatch the other texture fix
             for (size_t i = 0; i < 8; i++) {
-                int instruction = start + i;
+                size_t instruction = start + i;
                 std::string unpatchName = "ironKnuckleFireTexWithSizeFix_" + std::to_string(instruction);
                 ResourceMgr_UnpatchGfxByName(dlist, unpatchName.c_str());
             }
@@ -267,13 +268,13 @@ void PatchIronKnuckleTextureOverflow() {
             ResourceMgr_UnpatchGfxByName(dlist, unpatchName2.c_str());
 
             for (size_t i = 0; i < 8; i++) {
-                int instruction = start + i;
+                size_t instruction = start + i;
                 std::string patchName = "ironKnuckleFireTexWithSizeFix_" + std::to_string(instruction);
 
                 if (i == 0) {
-                    ResourceMgr_PatchGfxByName(dlist, patchName.c_str(), instruction, gsSPNoOp());
+                    ResourceMgr_PatchGfxByName(dlist, patchName.c_str(), static_cast<int>(instruction), gsSPNoOp());
                 } else {
-                    ResourceMgr_PatchGfxByName(dlist, patchName.c_str(), instruction,
+                    ResourceMgr_PatchGfxByName(dlist, patchName.c_str(), static_cast<int>(instruction),
                                                ironKnuckleFireTexWithFormatFixGfx[i - 1]);
                 }
             }

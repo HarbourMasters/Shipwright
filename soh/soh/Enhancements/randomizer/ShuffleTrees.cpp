@@ -73,32 +73,32 @@ extern "C" void EnWood02_RandomizerDraw(Actor* thisx, PlayState* play) {
     // Change texture
     switch (getItemCategory) {
         case ITEM_CATEGORY_MAJOR:
-            Matrix_Scale(0.1, 0.05, 0.1, MTXMODE_APPLY);
+            Matrix_Scale(0.1f, 0.05f, 0.1f, MTXMODE_APPLY);
             Gfx_DrawDListOpa(play, (Gfx*)gSmallMajorCrateDL);
             break;
         case ITEM_CATEGORY_SKULLTULA_TOKEN:
-            Matrix_Scale(0.1, 0.05, 0.1, MTXMODE_APPLY);
+            Matrix_Scale(0.1f, 0.05f, 0.1f, MTXMODE_APPLY);
             Gfx_DrawDListOpa(play, (Gfx*)gSmallTokenCrateDL);
             break;
         case ITEM_CATEGORY_SMALL_KEY:
-            Matrix_Scale(0.1, 0.05, 0.1, MTXMODE_APPLY);
+            Matrix_Scale(0.1f, 0.05f, 0.1f, MTXMODE_APPLY);
             Gfx_DrawDListOpa(play, (Gfx*)gSmallSmallKeyCrateDL);
             break;
         case ITEM_CATEGORY_BOSS_KEY:
-            Matrix_Scale(0.1, 0.05, 0.1, MTXMODE_APPLY);
+            Matrix_Scale(0.1f, 0.05f, 0.1f, MTXMODE_APPLY);
             Gfx_DrawDListOpa(play, (Gfx*)gSmallBossKeyCrateDL);
             break;
         case ITEM_CATEGORY_HEALTH:
-            Matrix_Scale(0.1, 0.05, 0.1, MTXMODE_APPLY);
+            Matrix_Scale(0.1f, 0.05f, 0.1f, MTXMODE_APPLY);
             Gfx_DrawDListOpa(play, (Gfx*)gSmallHeartCrateDL);
             break;
         case ITEM_CATEGORY_LESSER:
-            Matrix_Scale(0.1, 0.05, 0.1, MTXMODE_APPLY);
+            Matrix_Scale(0.1f, 0.05f, 0.1f, MTXMODE_APPLY);
             Gfx_DrawDListOpa(play, (Gfx*)gSmallMinorCrateDL);
             break;
         case ITEM_CATEGORY_JUNK:
         default:
-            Matrix_Scale(0.04, 0.02, 0.04, MTXMODE_APPLY);
+            Matrix_Scale(0.04f, 0.02f, 0.04f, MTXMODE_APPLY);
             Gfx_DrawDListOpa(play, (Gfx*)gLargeJunkCrateDL);
             break;
     }
@@ -120,7 +120,7 @@ void EnWood02_RandomizerSpawnCollectible(EnWood02* treeActor, PlayState* play) {
     item00->actor.velocity.y = 0.0f;
     item00->actor.world.pos.y += 120.0f;
     item00->actor.speedXZ = 2.0f;
-    item00->actor.world.rot.y = Rand_CenteredFloat(65536.0f);
+    item00->actor.world.rot.y = static_cast<s16>(Rand_CenteredFloat(65536.0f));
     // clear randomizerCheck to prevent multiple bonks,
     // reloading area without collecting drop won't persist this
     treeIdentity->randomizerCheck = RC_UNKNOWN_CHECK;

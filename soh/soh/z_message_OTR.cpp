@@ -19,7 +19,7 @@ static void SetMessageEntry(MessageTableEntry& entry, const SOH::MessageEntry& m
     entry.textId = msgEntry.id;
     entry.typePos = (msgEntry.textboxType << 4) | msgEntry.textboxYPos;
     entry.segment = msgEntry.msg.c_str();
-    entry.msgSize = msgEntry.msg.size();
+    entry.msgSize = static_cast<u32>(msgEntry.msg.size());
 }
 
 static void OTRMessage_LoadCustom(const std::string& folderPath, MessageTableEntry*& table, size_t tableSize) {

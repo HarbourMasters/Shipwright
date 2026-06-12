@@ -1529,7 +1529,7 @@ extern "C" void InitOTR(int argc, char* argv[]) {
         CVarClear(CVAR_GENERAL("LetItSnow"));
     }
 
-    srand(now);
+    srand(static_cast<unsigned int>(now));
 #ifdef ENABLE_REMOTE_CONTROL
     SDLNet_Init();
 #endif
@@ -1864,7 +1864,8 @@ ImFont* OTRGlobals::CreateFontWithSize(float size, std::string fontPath, bool is
         ImFontConfig fontConf;
         fontConf.FontDataOwnedByAtlas = false;
         const ImWchar* glyph_ranges = isJapaneseFont ? mImGuiIo->Fonts->GetGlyphRangesJapanese() : nullptr;
-        font = mImGuiIo->Fonts->AddFontFromMemoryTTF(fontData->Data, fontData->DataSize, size, &fontConf, glyph_ranges);
+        font = mImGuiIo->Fonts->AddFontFromMemoryTTF(fontData->Data, static_cast<int>(fontData->DataSize), size,
+                                                     &fontConf, glyph_ranges);
     }
     // FontAwesome fonts need to have their sizes reduced by 2.0f/3.0f in order to align correctly
     float iconFontSize = size * 2.0f / 3.0f;
@@ -1983,7 +1984,7 @@ extern "C" void OTRGfxPrint(const char* str, void* printer, void (*printImpl)(vo
 
     for (const auto& c : wstr) {
         if (c < 0x80) {
-            printImpl(printer, c);
+            printImpl(printer, static_cast<char>(c));
         } else if (c == GFXP_HIRAGANA_CHAR) {
             hiraganaMode = true;
         } else if (c == GFXP_KATAKANA_CHAR) {
@@ -2001,22 +2002,22 @@ extern "C" void OTRGfxPrint(const char* str, void* printer, void (*printImpl)(vo
         } else {
             auto it = std::find(hira1.begin(), hira1.end(), c);
             if (it != hira1.end()) { // hiragana block 1
-                printImpl(printer, 0x86 + std::distance(hira1.begin(), it));
+                printImpl(printer, static_cast<char>(0x86 + std::distance(hira1.begin(), it)));
             }
 
             auto it2 = std::find(hira2.begin(), hira2.end(), c);
             if (it2 != hira2.end()) { // hiragana block 2
-                printImpl(printer, 0xe0 + std::distance(hira2.begin(), it2));
+                printImpl(printer, static_cast<char>(0xe0 + std::distance(hira2.begin(), it2)));
             }
 
             auto it3 = std::find(kata1.begin(), kata1.end(), c);
             if (it3 != kata1.end()) { // katakana zenkaku block 1
-                printImpl(printer, 0xa6 + std::distance(kata1.begin(), it3));
+                printImpl(printer, static_cast<char>(0xa6 + std::distance(kata1.begin(), it3)));
             }
 
             auto it4 = std::find(kata2.begin(), kata2.end(), c);
             if (it4 != kata2.end()) { // katakana zenkaku block 2
-                printImpl(printer, 0xb1 + std::distance(kata2.begin(), it4));
+                printImpl(printer, static_cast<char>(0xb1 + std::distance(kata2.begin(), it4)));
             }
         }
     }
@@ -2109,9 +2110,9 @@ Color_RGB8 GetColorForControllerLED() {
                 }
             }
         }
-        color.r = color.r * brightness;
-        color.g = color.g * brightness;
-        color.b = color.b * brightness;
+        color.r = static_cast<u8>(color.r * brightness);
+        color.g = static_cast<u8>(color.g * brightness);
+        color.b = static_cast<u8>(color.b * brightness);
     }
 
     return color;
@@ -2221,7 +2222,7 @@ extern "C" int Controller_ShouldRumble(size_t slot) {
     if (Ship::Context::GetRawInstance()
             ->GetControlDeck()
             ->GetConnectedPhysicalDeviceManager()
-            ->GetConnectedSDLGamepadsForPort(slot)
+            ->GetConnectedSDLGamepadsForPort(static_cast<s32>(slot))
             .empty()) {
         return 0;
     }

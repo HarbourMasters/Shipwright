@@ -733,7 +733,7 @@ void SaveManager::InitFileNormal() {
         gSaveContext.inventory.dungeonItems[dungeon] = 0;
     }
     for (int dungeon = 0; dungeon < ARRAY_COUNT(gSaveContext.inventory.dungeonKeys); dungeon++) {
-        gSaveContext.inventory.dungeonKeys[dungeon] = 0xFF;
+        gSaveContext.inventory.dungeonKeys[dungeon] = static_cast<u8>(0xFF);
     }
     gSaveContext.inventory.defenseHearts = 0;
     gSaveContext.inventory.gsTokens = 0;
@@ -837,19 +837,22 @@ void SaveManager::InitFileDebug() {
 
     gSaveContext.deaths = 0;
     if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL && gSaveContext.language != LANGUAGE_JPN) {
-        const static std::array<char, 8> sPlayerName = { 0x15, 0x12, 0x17, 0x14, 0x3E, 0x3E, 0x3E, 0x3E };
+        const static std::array<u8, 8> sPlayerName = { '\x15', '\x12', '\x17', '\x14', '\x3E', '\x3E', '\x3E', '\x3E' };
+
         for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
             gSaveContext.playerName[i] = sPlayerName[i];
         }
         gSaveContext.ship.filenameLanguage = NAME_LANGUAGE_PAL;
     } else if (gSaveContext.language == LANGUAGE_JPN) { // Japanese
-        const static std::array<char, 8> sPlayerName = { 0x81, 0x87, 0x61, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF };
+        const static std::array<u8, 8> sPlayerName = { '\x81', '\x87', '\x61', '\xDF', '\xDF', '\xDF', '\xDF', '\xDF' };
+
         for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
             gSaveContext.playerName[i] = sPlayerName[i];
         }
         gSaveContext.ship.filenameLanguage = NAME_LANGUAGE_NTSC_JPN;
     } else { // GAME_REGION_NTSC
-        const static std::array<char, 8> sPlayerName = { 0xB6, 0xB3, 0xB8, 0xB5, 0xDF, 0xDF, 0xDF, 0xDF };
+        const static std::array<u8, 8> sPlayerName = { '\xB6', '\xB3', '\xB8', '\xB5', '\xDF', '\xDF', '\xDF', '\xDF' };
+
         for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
             gSaveContext.playerName[i] = sPlayerName[i];
         }
@@ -957,19 +960,22 @@ void SaveManager::InitFileMaxed() {
 
     gSaveContext.deaths = 0;
     if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL && gSaveContext.language != LANGUAGE_JPN) {
-        const static std::array<char, 8> sPlayerName = { 0x15, 0x12, 0x17, 0x14, 0x3E, 0x3E, 0x3E, 0x3E };
+        const static std::array<u8, 8> sPlayerName = { '\x15', '\x12', '\x17', '\x14', '\x3E', '\x3E', '\x3E', '\x3E' };
+
         for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
             gSaveContext.playerName[i] = sPlayerName[i];
         }
         gSaveContext.ship.filenameLanguage = NAME_LANGUAGE_PAL;
     } else if (gSaveContext.language == LANGUAGE_JPN) { // Japanese
-        const static std::array<char, 8> sPlayerName = { 0x81, 0x87, 0x61, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF };
+        const static std::array<u8, 8> sPlayerName = { '\x81', '\x87', '\x61', '\xDF', '\xDF', '\xDF', '\xDF', '\xDF' };
+
         for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
             gSaveContext.playerName[i] = sPlayerName[i];
         }
         gSaveContext.ship.filenameLanguage = NAME_LANGUAGE_NTSC_JPN;
     } else { // GAME_REGION_NTSC
-        const static std::array<char, 8> sPlayerName = { 0xB6, 0xB3, 0xB8, 0xB5, 0xDF, 0xDF, 0xDF, 0xDF };
+        const static std::array<u8, 8> sPlayerName = { '\xB6', '\xB3', '\xB8', '\xB5', '\xDF', '\xDF', '\xDF', '\xDF' };
+
         for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
             gSaveContext.playerName[i] = sPlayerName[i];
         }
@@ -1321,7 +1327,7 @@ void SaveManager::LoadFile(int fileNum) {
         }
         InitMeta(fileNum);
         GameInteractor::Instance->ExecuteHooks<GameInteractor::OnLoadFile>(fileNum);
-    } catch (const std::exception& e) {
+    } catch ([[maybe_unused]] const std::exception& e) {
         input.close();
         std::string newFileName =
             Ship::Context::GetPathRelativeToAppDirectory("Save") +
@@ -1349,7 +1355,7 @@ void SaveManager::ThreadPoolWait() {
 bool SaveManager::SaveFile_Exist(int fileNum) {
     try {
         return std::filesystem::exists(GetFileName(fileNum));
-    } catch (std::filesystem::filesystem_error const& ex) {
+    } catch ([[maybe_unused]] std::filesystem::filesystem_error const& ex) {
         SPDLOG_ERROR("Filesystem error");
         return false;
     }

@@ -60,7 +60,7 @@ SetAlternateHeadersFactoryXML::ReadResource(std::shared_ptr<Ship::ResourceInitDa
         child = child->NextSiblingElement();
     }
 
-    setAlternateHeaders->numHeaders = setAlternateHeaders->headers.size();
+    setAlternateHeaders->numHeaders = static_cast<u32>(setAlternateHeaders->headers.size());
 
     return setAlternateHeaders;
 }

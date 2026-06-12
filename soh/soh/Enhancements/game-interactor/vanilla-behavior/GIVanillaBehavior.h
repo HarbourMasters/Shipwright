@@ -3004,6 +3004,12 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // this->actor.floorHeight <= -10000.0f
+    // ```
+    // #### `args`
+    // - `*EnItem00`
+    VB_ITEM00_KILL,
+
     // true
     // ```
     // #### `args`

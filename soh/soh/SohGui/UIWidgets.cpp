@@ -18,7 +18,7 @@ std::string WrappedText(const char* text, unsigned int charactersPerLine) {
     std::string newText(text);
     const size_t tipLength = newText.length();
     int lastSpace = -1;
-    int currentLineLength = 0;
+    unsigned int currentLineLength = 0;
     for (unsigned int currentCharacter = 0; currentCharacter < tipLength; currentCharacter++) {
         if (newText[currentCharacter] == '\n') {
             currentLineLength = 0;
@@ -930,9 +930,9 @@ bool CVarColorPicker(const char* label, const char* cvarName, Color_RGBA8 defaul
                                   .Color(themeColor)
                                   .Size(UIWidgets::Sizes::Inline))) {
             colorVec = GetRandomValue();
-            color.r = fmin(fmax(colorVec.x * 255, 0), 255);
-            color.g = fmin(fmax(colorVec.y * 255, 0), 255);
-            color.b = fmin(fmax(colorVec.z * 255, 0), 255);
+            color.r = static_cast<u8>(fmin(fmax(colorVec.x * 255, 0), 255));
+            color.g = static_cast<u8>(fmin(fmax(colorVec.y * 255, 0), 255));
+            color.b = static_cast<u8>(fmin(fmax(colorVec.z * 255, 0), 255));
             CVarSetColor(valueCVar.c_str(), color);
             CVarSetInteger(rainbowCVar.c_str(), 0); // On click disable rainbow mode.
             ShipInit::Init(rainbowCVar.c_str());
@@ -1264,7 +1264,8 @@ ImVec4 GetRandomValue(uint64_t* state) {
 }
 
 Color_RGBA8 RGBA8FromVec(ImVec4 vec) {
-    Color_RGBA8 color = { vec.x * 255, vec.y * 255, vec.z * 255, vec.w * 255 };
+    Color_RGBA8 color = { static_cast<u8>(vec.x * 255), static_cast<u8>(vec.y * 255), static_cast<u8>(vec.z * 255),
+                          static_cast<u8>(vec.w * 255) };
     return color;
 }
 
