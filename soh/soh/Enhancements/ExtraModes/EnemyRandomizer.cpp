@@ -776,7 +776,9 @@ void RegisterEnemyRandomizer() {
         s16 posY2 = static_cast<s16>(posY);
         s16 posZ2 = static_cast<s16>(posZ);
         s16 rotX = 0;
-        s16 rotY = static_cast<s16>(Math_FAtan2F(playerPos->x - static_cast<f32>(posX), playerPos->z - static_cast<f32>(posZ)) * static_cast<f32>(0x8000 / M_PI));
+        s16 rotY = static_cast<s16>(
+            Math_FAtan2F(playerPos->x - static_cast<f32>(posX), playerPos->z - static_cast<f32>(posZ)) *
+            static_cast<f32>(0x8000 / M_PI));
         s16 rotZ = 0;
         s16 params = 5;
 
@@ -810,7 +812,8 @@ void RegisterEnemyRandomizer() {
             assert(false);
         }
 
-        Actor_Spawn(&play->actorCtx, play, actorId, static_cast<f32>(posX), static_cast<f32>(posY), static_cast<f32>(posZ), rotX, rotY, rotZ, params);
+        Actor_Spawn(&play->actorCtx, play, actorId, static_cast<f32>(posX), static_cast<f32>(posY),
+                    static_cast<f32>(posZ), rotX, rotY, rotZ, params);
 
         EnBlkobj_SetupAction(blkobj, EnBlkobj_DarkLinkFight);
 
@@ -860,7 +863,8 @@ void RegisterEnemyRandomizer() {
             assert(false);
         }
 
-        Actor_Spawn(&play->actorCtx, play, actorId, static_cast<f32>(posX), static_cast<f32>(posY), static_cast<f32>(posZ), rotX, rotY, rotZ, params);
+        Actor_Spawn(&play->actorCtx, play, actorId, static_cast<f32>(posX), static_cast<f32>(posY),
+                    static_cast<f32>(posZ), rotX, rotY, rotZ, params);
 
         *should = false;
     });
@@ -893,7 +897,8 @@ void RegisterEnemyRandomizer() {
                 assert(false);
             }
 
-            Actor_Spawn(&play->actorCtx, play, actorId, static_cast<f32>(posX), static_cast<f32>(posY), static_cast<f32>(posZ), rotX, rotY, rotZ, params);
+            Actor_Spawn(&play->actorCtx, play, actorId, static_cast<f32>(posX), static_cast<f32>(posY),
+                        static_cast<f32>(posZ), rotX, rotY, rotZ, params);
 
             rotY += 0x10000 / 3;
         }
@@ -921,7 +926,8 @@ void RegisterEnemyRandomizer() {
             assert(false);
         }
 
-        if (Actor_Spawn(&play->actorCtx, play, actorId, static_cast<f32>(posX), static_cast<f32>(posY), static_cast<f32>(posZ), rotX, rotY, rotZ, params)) {
+        if (Actor_Spawn(&play->actorCtx, play, actorId, static_cast<f32>(posX), static_cast<f32>(posY),
+                        static_cast<f32>(posZ), rotX, rotY, rotZ, params)) {
             encount1->curNumSpawn++;
             if (encount1->curNumSpawn >= encount1->maxCurSpawns) {
                 encount1->fieldSpawnTimer = 100;
@@ -951,7 +957,8 @@ void RegisterEnemyRandomizer() {
             assert(false);
         }
 
-        Actor* enemy1 = Actor_Spawn(&play->actorCtx, play, actorId, static_cast<f32>(posX), static_cast<f32>(posY), static_cast<f32>(posZ), rotX, rotY, rotZ, params);
+        Actor* enemy1 = Actor_Spawn(&play->actorCtx, play, actorId, static_cast<f32>(posX), static_cast<f32>(posY),
+                                    static_cast<f32>(posZ), rotX, rotY, rotZ, params);
 
         actorId = ACTOR_EN_TEST;
         posX = 170;
@@ -966,7 +973,8 @@ void RegisterEnemyRandomizer() {
             assert(false);
         }
 
-        Actor* enemy2 = Actor_Spawn(&play->actorCtx, play, actorId, static_cast<f32>(posX), static_cast<f32>(posY), static_cast<f32>(posZ), rotX, rotY, rotZ, params);
+        Actor* enemy2 = Actor_Spawn(&play->actorCtx, play, actorId, static_cast<f32>(posX), static_cast<f32>(posY),
+                                    static_cast<f32>(posZ), rotX, rotY, rotZ, params);
 
         moriBigst->dyna.actor.home.rot.z = 2;
 
@@ -986,11 +994,13 @@ void RegisterEnemyRandomizer() {
         PlayState* play = va_arg(args, PlayState*);
 
         s16 actorId = ACTOR_EN_FIREFLY;
-        s16 posX = static_cast<s16>(hakaHuta->dyna.actor.world.pos.x + (-25.0f) * Math_CosS(hakaHuta->dyna.actor.shape.rot.y) +
-                   40.0f * Math_SinS(hakaHuta->dyna.actor.shape.rot.y));
+        s16 posX =
+            static_cast<s16>(hakaHuta->dyna.actor.world.pos.x + (-25.0f) * Math_CosS(hakaHuta->dyna.actor.shape.rot.y) +
+                             40.0f * Math_SinS(hakaHuta->dyna.actor.shape.rot.y));
         s16 posY = static_cast<s16>(hakaHuta->dyna.actor.world.pos.y) - 10;
-        s16 posZ = static_cast<s16>(hakaHuta->dyna.actor.world.pos.z - (-25.0f) * Math_SinS(hakaHuta->dyna.actor.shape.rot.y) +
-                   40.0f * Math_CosS(hakaHuta->dyna.actor.shape.rot.y));
+        s16 posZ =
+            static_cast<s16>(hakaHuta->dyna.actor.world.pos.z - (-25.0f) * Math_SinS(hakaHuta->dyna.actor.shape.rot.y) +
+                             40.0f * Math_CosS(hakaHuta->dyna.actor.shape.rot.y));
         s16 rotX = 0;
         s16 rotY = hakaHuta->dyna.actor.shape.rot.y + 0x8000;
         s16 rotZ = 0;
@@ -1000,14 +1010,17 @@ void RegisterEnemyRandomizer() {
             assert(false);
         }
 
-        Actor_Spawn(&play->actorCtx, play, actorId, static_cast<f32>(posX), static_cast<f32>(posY), static_cast<f32>(posZ), rotX, rotY, rotZ, params);
+        Actor_Spawn(&play->actorCtx, play, actorId, static_cast<f32>(posX), static_cast<f32>(posY),
+                    static_cast<f32>(posZ), rotX, rotY, rotZ, params);
 
         actorId = ACTOR_EN_FIREFLY;
-        posX = static_cast<s16>(hakaHuta->dyna.actor.world.pos.x + (-25.0f) * Math_CosS(hakaHuta->dyna.actor.shape.rot.y) +
-               80.0f * Math_SinS(hakaHuta->dyna.actor.shape.rot.y));
+        posX =
+            static_cast<s16>(hakaHuta->dyna.actor.world.pos.x + (-25.0f) * Math_CosS(hakaHuta->dyna.actor.shape.rot.y) +
+                             80.0f * Math_SinS(hakaHuta->dyna.actor.shape.rot.y));
         posY = static_cast<s16>(hakaHuta->dyna.actor.world.pos.y) - 10;
-        posZ = static_cast<s16>(hakaHuta->dyna.actor.world.pos.z - (-25.0f) * Math_SinS(hakaHuta->dyna.actor.shape.rot.y) +
-               80.0f * Math_CosS(hakaHuta->dyna.actor.shape.rot.y));
+        posZ =
+            static_cast<s16>(hakaHuta->dyna.actor.world.pos.z - (-25.0f) * Math_SinS(hakaHuta->dyna.actor.shape.rot.y) +
+                             80.0f * Math_CosS(hakaHuta->dyna.actor.shape.rot.y));
         rotX = 0;
         rotY = hakaHuta->dyna.actor.shape.rot.y;
         rotZ = 0;
@@ -1017,7 +1030,8 @@ void RegisterEnemyRandomizer() {
             assert(false);
         }
 
-        Actor_Spawn(&play->actorCtx, play, actorId, static_cast<f32>(posX), static_cast<f32>(posY), static_cast<f32>(posZ), rotX, rotY, rotZ, params);
+        Actor_Spawn(&play->actorCtx, play, actorId, static_cast<f32>(posX), static_cast<f32>(posY),
+                    static_cast<f32>(posZ), rotX, rotY, rotZ, params);
 
         *should = false;
     });
@@ -1027,11 +1041,13 @@ void RegisterEnemyRandomizer() {
         PlayState* play = va_arg(args, PlayState*);
 
         s16 actorId = ACTOR_EN_RD;
-        s16 posX = static_cast<s16>(hakaHuta->dyna.actor.home.pos.x + (-25.0f) * Math_CosS(hakaHuta->dyna.actor.shape.rot.y) +
-                   100.0f * Math_SinS(hakaHuta->dyna.actor.shape.rot.y));
+        s16 posX =
+            static_cast<s16>(hakaHuta->dyna.actor.home.pos.x + (-25.0f) * Math_CosS(hakaHuta->dyna.actor.shape.rot.y) +
+                             100.0f * Math_SinS(hakaHuta->dyna.actor.shape.rot.y));
         s16 posY = static_cast<s16>(hakaHuta->dyna.actor.home.pos.y) - 40;
-        s16 posZ = static_cast<s16>(hakaHuta->dyna.actor.home.pos.z - (-25.0f) * Math_SinS(hakaHuta->dyna.actor.shape.rot.y) +
-                   100.0f * Math_CosS(hakaHuta->dyna.actor.shape.rot.y));
+        s16 posZ =
+            static_cast<s16>(hakaHuta->dyna.actor.home.pos.z - (-25.0f) * Math_SinS(hakaHuta->dyna.actor.shape.rot.y) +
+                             100.0f * Math_CosS(hakaHuta->dyna.actor.shape.rot.y));
         s16 rotX = 0;
         s16 rotY = hakaHuta->dyna.actor.shape.rot.y;
         s16 rotZ = 0;
@@ -1041,7 +1057,8 @@ void RegisterEnemyRandomizer() {
             assert(false);
         }
 
-        Actor_Spawn(&play->actorCtx, play, actorId, static_cast<f32>(posX), static_cast<f32>(posY), static_cast<f32>(posZ), rotX, rotY, rotZ, params);
+        Actor_Spawn(&play->actorCtx, play, actorId, static_cast<f32>(posX), static_cast<f32>(posY),
+                    static_cast<f32>(posZ), rotX, rotY, rotZ, params);
 
         *should = false;
     });
@@ -1067,7 +1084,8 @@ void RegisterEnemyRandomizer() {
             }
 
             Actor* enemy =
-                Actor_Spawn(&play->actorCtx, play, actorId, static_cast<f32>(homePosX), static_cast<f32>(homePosY), static_cast<f32>(homePosZ), rotX, rotY, rotZ, params);
+                Actor_Spawn(&play->actorCtx, play, actorId, static_cast<f32>(homePosX), static_cast<f32>(homePosY),
+                            static_cast<f32>(homePosZ), rotX, rotY, rotZ, params);
 
             if (enemy == NULL) {
                 assert(false);

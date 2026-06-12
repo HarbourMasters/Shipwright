@@ -1150,10 +1150,12 @@ void DrawFlagsTab() {
 
                             switch (flagTable.flagTableType) {
                                 case EVENT_CHECK_INF:
-                                    DrawFlagTableArray16(flagTable, static_cast<uint16_t>(j), gSaveContext.eventChkInf[j]);
+                                    DrawFlagTableArray16(flagTable, static_cast<uint16_t>(j),
+                                                         gSaveContext.eventChkInf[j]);
                                     break;
                                 case ITEM_GET_INF:
-                                    DrawFlagTableArray16(flagTable, static_cast<uint16_t>(j), gSaveContext.itemGetInf[j]);
+                                    DrawFlagTableArray16(flagTable, static_cast<uint16_t>(j),
+                                                         gSaveContext.itemGetInf[j]);
                                     break;
                                 case INF_TABLE:
                                     DrawFlagTableArray16(flagTable, static_cast<uint16_t>(j), gSaveContext.infTable[j]);
@@ -1162,7 +1164,8 @@ void DrawFlagsTab() {
                                     DrawFlagTableArray16(flagTable, static_cast<uint16_t>(j), gSaveContext.eventInf[j]);
                                     break;
                                 case RANDOMIZER_INF:
-                                    DrawFlagTableArray16(flagTable, static_cast<uint16_t>(j), gSaveContext.ship.randomizerInf[j]);
+                                    DrawFlagTableArray16(flagTable, static_cast<uint16_t>(j),
+                                                         gSaveContext.ship.randomizerInf[j]);
                                     break;
                             }
                         },

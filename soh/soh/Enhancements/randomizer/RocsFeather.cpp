@@ -71,7 +71,8 @@ void RegisterRocsFeather() {
                 Vec3f effectsPos = player->actor.home.pos;
                 effectsPos.y += 3;
 
-                EffectSsGRipple_Spawn(gPlayState, &effectsPos, static_cast<s16>(200 * effectsScale), static_cast<s16>(300 * effectsScale), 1);
+                EffectSsGRipple_Spawn(gPlayState, &effectsPos, static_cast<s16>(200 * effectsScale),
+                                      static_cast<s16>(300 * effectsScale), 1);
                 EffectSsGSplash_Spawn(gPlayState, &effectsPos, NULL, NULL, 0, static_cast<s16>(150 * effectsScale));
 
                 // Remove hopping state when using Roc's after sidehop/backflip to allow grabbing ledges again
