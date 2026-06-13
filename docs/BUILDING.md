@@ -194,6 +194,17 @@ You can use a `flake.nix` file to instantly setup a development environment usin
 
 Now type `nix develop` and you will be dropped into a shell with all dependencies, ensuring that all build commands work.
 
+### Verify cmake version
+Older distros may ship a cmake older than this project requires. Compare:
+```sh
+cmake --version         # your installed version
+head -1 CMakeLists.txt  # the project's required minimum
+```
+If your cmake is too old, you can install a newer version via:
+- [pypi](https://pypi.org/project/cmake/)
+- [kitware apt repo](https://apt.kitware.com/) (Ubuntu only)
+- [Homebrew](https://formulae.brew.sh/formula/cmake)
+
 ### Build
 
 _Note: If you're using Visual Studio Code, the [CMake Tools plugin](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cmake-tools) makes it very easy to just press run and debug._
