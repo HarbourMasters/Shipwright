@@ -86,14 +86,19 @@ C:\Program Files\CMake\bin\cmake.exe --build build-cmake --target ExtractAssetHe
 ```
 
 ## Linux
+### Clone the repo and enter the directory
+```sh
+git clone https://github.com/HarbourMasters/Shipwright.git
+cd Shipwright
+```
 ### Install dependencies
 #### Debian/Ubuntu
 ```sh
 # using gcc
-apt-get install gcc g++ git cmake ninja-build lsb-release libsdl2-dev libpng-dev libsdl2-net-dev libzip-dev zipcmp zipmerge ziptool nlohmann-json3-dev libtinyxml2-dev libspdlog-dev libopengl-dev libopusfile-dev libvorbis-dev
+apt-get install gcc g++ $(cat linux-build-deps/apt.txt)
 
 # or using clang
-apt-get install clang git cmake ninja-build lsb-release libsdl2-dev libpng-dev libsdl2-net-dev libzip-dev zipcmp zipmerge ziptool nlohmann-json3-dev libtinyxml2-dev libspdlog-dev libopengl-dev libopusfile-dev libvorbis-dev
+apt-get install clang $(cat linux-build-deps/apt.txt)
 ```
 #### Arch
 ```sh
@@ -194,10 +199,6 @@ Now type `nix develop` and you will be dropped into a shell with all dependencie
 _Note: If you're using Visual Studio Code, the [CMake Tools plugin](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cmake-tools) makes it very easy to just press run and debug._
 
 ```bash
-# Clone the repo and enter the directory
-git clone https://github.com/HarbourMasters/Shipwright.git
-cd Shipwright
-
 # Clone the submodules
 git submodule update --init
 

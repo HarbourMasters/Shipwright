@@ -25,7 +25,7 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y $(cat .github/workflows/apt-deps.txt)
+        sudo apt-get install -y $(cat linux-build-deps/apt.txt)
     - name: Restore Cached deps folder
       uses: actions/cache/restore@v5
       with:
@@ -137,7 +137,7 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y $(cat .github/workflows/apt-deps.txt)
+        sudo apt-get install -y $(cat linux-build-deps/apt.txt)
     - name: Configure ccache
       uses: hendrikmuhs/ccache-action@v1.2.22
       with:
