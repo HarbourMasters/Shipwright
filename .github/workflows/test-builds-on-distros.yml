@@ -5,11 +5,56 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 jobs:
+  setup:
+    runs-on: ${{ (vars.LINUX_RUNNER && fromJSON(vars.LINUX_RUNNER)) || 'ubuntu-latest' }}
+    outputs:
+      distros: ${{ steps.set-matrix.outputs.distros }}
+    steps:
+    - name: Resolve distro images
+      id: set-matrix
+      uses: actions/github-script@v9
+      with:
+        script: |
+          const today = new Date().toISOString().slice(0, 10);
+          const fetchJson = async (url) => {
+            const res = await fetch(url);
+            if (!res.ok) throw new Error(`${url} -> ${res.status}`);
+            return res.json();
+          };
+
+          // All non-EOL Ubuntu LTS releases.
+          const ubuntuCycles = await fetchJson('https://endoflife.date/api/ubuntu.json');
+          const ubuntu = ubuntuCycles
+            .filter(c => c.lts === true && c.eol > today)
+            .map(c => ({ image: `ubuntu:${c.cycle}`, packageManager: 'apt' }));
+
+          // All non-EOL Fedora releases.
+          const fedoraCycles = await fetchJson('https://endoflife.date/api/fedora.json');
+          const fedora = fedoraCycles
+            .filter(c => c.eol > today)
+            .map(c => ({ image: `fedora:${c.cycle}`, packageManager: 'dnf' }));
+
+          // Rolling.
+          const arch = [{ image: 'archlinux:base', packageManager: 'pacman' }];
+
+          // Rolling.
+          const opensuse = [{ image: 'opensuse/tumbleweed:latest', packageManager: 'zypper' }];
+
+          // Previous, current, and next Debian releases.
+          const debian = ['oldstable', 'stable', 'testing']
+            .map(t => ({ image: `debian:${t}`, packageManager: 'apt' }));
+
+          const distros = [...ubuntu, ...fedora, ...arch, ...opensuse, ...debian];
+          core.info(`Resolved distros: ${JSON.stringify(distros)}`);
+          core.setOutput('distros', JSON.stringify(distros));
   build:
+    needs: setup
+    name: build (${{ matrix.distro.image }}, ${{ matrix.cc }})
     strategy:
+      fail-fast: false
       matrix:
-        image: ["archlinux:base", "opensuse/tumbleweed:latest", "ubuntu:mantic", "debian:bookworm", "fedora:39"]
-        cc: ["gcc", "clang"] 
+        distro: ${{ fromJSON(needs.setup.outputs.distros) }}
+        cc: ["gcc", "clang"]
         include:
         - cxx: g++
           cc: gcc
@@ -17,24 +62,24 @@ jobs:
           cc: clang
     runs-on: ${{ (vars.LINUX_RUNNER && fromJSON(vars.LINUX_RUNNER)) || 'ubuntu-latest' }}
     container:
-      image: ${{ matrix.image }}
+      image: ${{ matrix.distro.image }}
     steps:
     - name: Install dependencies (pacman)
-      if: ${{ matrix.image == 'archlinux:base' }}
+      if: ${{ matrix.distro.packageManager == 'pacman' }}
       run: |
         echo arch
         echo pacman -S ${{ matrix.cc }} git cmake ninja lsb-release sdl2 libpng libzip nlohmann-json tinyxml2 spdlog sdl2_net
         pacman -Syu --noconfirm
         pacman -S --noconfirm ${{ matrix.cc }} git cmake ninja lsb-release sdl2 libpng libzip nlohmann-json tinyxml2 spdlog sdl2_net
     - name: Install dependencies (dnf)
-      if: ${{ matrix.image == 'fedora:39' }}
+      if: ${{ matrix.distro.packageManager == 'dnf' }}
       run: |
         echo fedora
         echo dnf install ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'gcc-c++') || '' }} wget git cmake ninja-build lsb_release SDL2-devel libpng-devel libzip-devel libzip-tools tinyxml2-devel spdlog-devel
         dnf -y upgrade
         dnf -y install ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'gcc-c++') || '' }} wget git cmake ninja-build lsb_release SDL2-devel libpng-devel libzip-devel libzip-tools tinyxml2-devel spdlog-devel
     - name: Install dependencies (apt)
-      if: ${{ matrix.image == 'ubuntu:mantic' || matrix.image == 'debian:bookworm' }}
+      if: ${{ matrix.distro.packageManager == 'apt' }}
       run: |
         echo debian based
         echo apt-get install ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'g++') || '' }} git cmake ninja-build lsb-release libsdl2-dev libpng-dev libsdl2-net-dev libzip-dev zipcmp zipmerge ziptool nlohmann-json3-dev libtinyxml2-dev libspdlog-dev libopengl-dev
@@ -42,23 +87,12 @@ jobs:
         apt-get -y full-upgrade
         apt-get -y install ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'g++') || '' }} git cmake ninja-build lsb-release libsdl2-dev libpng-dev libsdl2-net-dev libzip-dev zipcmp zipmerge ziptool nlohmann-json3-dev libtinyxml2-dev libspdlog-dev libopengl-dev
     - name: Install dependencies (zypper)
-      if: ${{ matrix.image == 'opensuse/tumbleweed:latest' }}
+      if: ${{ matrix.distro.packageManager == 'zypper' }}
       run: |
         echo openSUSE
         echo zypper in ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'gcc-c++') || '' }} ${{ matrix.cc == 'clang' && 'libstdc++-devel' || '' }} git cmake ninja SDL2-devel libpng16-devel libzip-devel libzip-tools nlohmann_json-devel tinyxml2-devel spdlog-devel
         zypper --non-interactive dup
         zypper --non-interactive in ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'gcc-c++') || '' }} ${{ matrix.cc == 'clang' && 'libstdc++-devel' || '' }} git cmake ninja SDL2-devel libpng16-devel libzip-devel libzip-tools nlohmann_json-devel tinyxml2-devel spdlog-devel
-    - name: Install latest nlohmann
-      if: ${{ matrix.image == 'fedora:39' }}
-      run: |
-        wget https://github.com/nlohmann/json/archive/refs/tags/v3.11.3.tar.gz
-        tar -xzvf v3.11.3.tar.gz
-        cd json-3.11.3
-        mkdir build
-        cd build
-        cmake ..
-        make
-        sudo make install
     - uses: actions/checkout@v6
       with:
         submodules: true
