@@ -90,7 +90,7 @@ jobs:
       run: |
         apt-get update
         apt-get -y full-upgrade
-        apt-get -y install ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'g++') || '' }} git cmake lsb-release libopengl-dev $(cat .github/workflows/apt-deps.txt)
+        apt-get -y install ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'g++') || '' }} git cmake lsb-release $(cat .github/workflows/apt-deps.txt)
     - name: Install dependencies (zypper)
       if: ${{ matrix.distro.packageManager == 'zypper' }}
       run: |
