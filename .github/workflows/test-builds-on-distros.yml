@@ -114,6 +114,20 @@ jobs:
           pipx install cmake
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
         fi
+    - name: Verify/update tinyxml2
+      id: tinyxml2-check
+      if: ${{ matrix.distro.packageManager == 'apt' }}
+      run: |
+        if find /usr -iname 'tinyxml2*config.cmake' 2>/dev/null | grep -q .; then
+          echo "ok"
+          echo "needs_install=false" >> "$GITHUB_OUTPUT"
+        else
+          apt-get remove -y libtinyxml2-dev
+          apt-get install -y curl
+          echo "needs_install=true" >> "$GITHUB_OUTPUT"
+        fi
+    - uses: ./.github/actions/install-tinyxml2
+      if: ${{ steps.tinyxml2-check.outputs.needs_install == 'true' }}
     - name: Build SoH
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
