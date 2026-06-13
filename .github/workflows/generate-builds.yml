@@ -36,9 +36,12 @@ jobs:
         path: deps
     - name: Create deps folder
       run: mkdir -p deps
+    - name: Add ccache to PATH
+      run: |
+        echo "/usr/lib/ccache" >> "$GITHUB_PATH"
+        echo "/usr/local/opt/ccache/libexec" >> "$GITHUB_PATH"
     - name: Install latest SDL
       run: |
-        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
         if [ ! -d "deps/SDL2-2.30.3" ]; then
           wget https://github.com/libsdl-org/SDL/releases/download/release-2.30.3/SDL2-2.30.3.tar.gz
           tar -xzf SDL2-2.30.3.tar.gz -C deps
@@ -50,7 +53,6 @@ jobs:
         sudo cp -av /usr/local/lib/libSDL* /lib/x86_64-linux-gnu/
     - name: Install latest SDL_net
       run: |
-        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
         if [ ! -d "deps/SDL2_net-2.2.0" ]; then
           wget https://www.libsdl.org/projects/SDL_net/release/SDL2_net-2.2.0.tar.gz
           tar -xzf SDL2_net-2.2.0.tar.gz -C deps
@@ -63,7 +65,6 @@ jobs:
     - name: Install latest tinyxml2
       run: |
         sudo apt-get remove libtinyxml2-dev
-        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
         if [ ! -d "deps/tinyxml2-10.0.0" ]; then
           wget https://github.com/leethomason/tinyxml2/archive/refs/tags/10.0.0.tar.gz
           tar -xzf 10.0.0.tar.gz -C deps
@@ -76,7 +77,6 @@ jobs:
         sudo make install
     - name: Generate soh.o2r
       run: |
-        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
         cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release
         cmake --build build-cmake --config Release --target GenerateSohOtr -j3
     - name: Upload soh.o2r
@@ -157,9 +157,12 @@ jobs:
         path: deps
     - name: Create deps folder
       run: mkdir -p deps
+    - name: Add ccache to PATH
+      run: |
+        echo "/usr/lib/ccache" >> "$GITHUB_PATH"
+        echo "/usr/local/opt/ccache/libexec" >> "$GITHUB_PATH"
     - name: Install latest SDL
       run: |
-        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
         if [ ! -d "deps/SDL2-2.30.3" ]; then
           wget https://github.com/libsdl-org/SDL/releases/download/release-2.30.3/SDL2-2.30.3.tar.gz
           tar -xzf SDL2-2.30.3.tar.gz -C deps
@@ -171,7 +174,6 @@ jobs:
         sudo cp -av /usr/local/lib/libSDL* /lib/x86_64-linux-gnu/
     - name: Install latest SDL_net
       run: |
-        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
         if [ ! -d "deps/SDL2_net-2.2.0" ]; then
           wget https://www.libsdl.org/projects/SDL_net/release/SDL2_net-2.2.0.tar.gz
           tar -xzf SDL2_net-2.2.0.tar.gz -C deps
@@ -184,7 +186,6 @@ jobs:
     - name: Install latest tinyxml2
       run: |
         sudo apt-get remove libtinyxml2-dev
-        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
         if [ ! -d "deps/tinyxml2-10.0.0" ]; then
           wget https://github.com/leethomason/tinyxml2/archive/refs/tags/10.0.0.tar.gz
           tar -xzf 10.0.0.tar.gz -C deps
@@ -198,7 +199,6 @@ jobs:
     - name: Install libzip without crypto
       run: |
         sudo apt-get remove -y libzip-dev
-        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
         if [ ! -d "deps/libzip-1.10.1" ]; then
           wget https://github.com/nih-at/libzip/releases/download/v1.10.1/libzip-1.10.1.tar.gz
           tar -xzf libzip-1.10.1.tar.gz -C deps
@@ -217,7 +217,6 @@ jobs:
         path: build-cmake/soh
     - name: Build SoH
       run: |
-        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
         cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release -DBUILD_REMOTE_CONTROL=1
         cmake --build build-cmake --config Release -j3
         (cd build-cmake && cpack -G External)
