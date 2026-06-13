@@ -62,19 +62,9 @@ jobs:
         make -j 10
         sudo make install
         sudo cp -av /usr/local/lib/libSDL* /lib/x86_64-linux-gnu/
-    - name: Install latest tinyxml2
-      run: |
-        sudo apt-get remove libtinyxml2-dev
-        if [ ! -d "deps/tinyxml2-10.0.0" ]; then
-          wget https://github.com/leethomason/tinyxml2/archive/refs/tags/10.0.0.tar.gz
-          tar -xzf 10.0.0.tar.gz -C deps
-        fi
-        cd deps/tinyxml2-10.0.0
-        mkdir -p build
-        cd build
-        cmake ..
-        make
-        sudo make install
+    - name: Remove distro tinyxml2
+      run: sudo apt-get remove libtinyxml2-dev
+    - uses: ./.github/actions/install-tinyxml2
     - name: Generate soh.o2r
       run: |
         cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release
@@ -183,19 +173,9 @@ jobs:
         make -j 10
         sudo make install
         sudo cp -av /usr/local/lib/libSDL* /lib/x86_64-linux-gnu/
-    - name: Install latest tinyxml2
-      run: |
-        sudo apt-get remove libtinyxml2-dev
-        if [ ! -d "deps/tinyxml2-10.0.0" ]; then
-          wget https://github.com/leethomason/tinyxml2/archive/refs/tags/10.0.0.tar.gz
-          tar -xzf 10.0.0.tar.gz -C deps
-        fi
-        cd deps/tinyxml2-10.0.0
-        mkdir -p build
-        cd build
-        cmake ..
-        make
-        sudo make install
+    - name: Remove distro tinyxml2
+      run: sudo apt-get remove libtinyxml2-dev
+    - uses: ./.github/actions/install-tinyxml2
     - name: Install libzip without crypto
       run: |
         sudo apt-get remove -y libzip-dev
