@@ -230,6 +230,11 @@ cmake --build build-cmake
 # To develop the project open the repository in VSCode (or your preferred editor)
 ```
 
+> [!TIP]
+> If cmake fails with `Could not find a package configuration file provided by "tinyxml2"`, your distro's [tinyxml2](https://github.com/leethomason/tinyxml2) is older than 10.0.0 (when the cmake config was added). Install a newer version via:
+> - [Homebrew](https://formulae.brew.sh/formula/tinyxml2) (pass `-DCMAKE_PREFIX_PATH=$(brew --prefix)` to cmake)
+> - Building from source (see [.github/actions/install-tinyxml2/action.yml](../.github/actions/install-tinyxml2/action.yml))
+
 ### Generate a distributable
 After compiling the project you can generate a distributable by running of the following:
 ```bash
