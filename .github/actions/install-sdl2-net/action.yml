@@ -1,0 +1,16 @@
+name: 'Install SDL2_net from source'
+description: 'Build and install SDL2_net from source. Used when the distro-shipped SDL2_net is older than 2.2.0 (no cmake config file).'
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      run: |
+        if [ "$(id -u)" -ne 0 ]; then SUDO=sudo; else SUDO=""; fi
+        mkdir -p deps
+        if [ ! -d "deps/SDL2_net-2.2.0" ]; then
+          curl -fsSL https://www.libsdl.org/projects/SDL_net/release/SDL2_net-2.2.0.tar.gz | tar xz -C deps
+        fi
+        cd deps/SDL2_net-2.2.0
+        ./configure
+        make
+        $SUDO make install

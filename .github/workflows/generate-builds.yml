@@ -51,17 +51,9 @@ jobs:
         make -j 10
         sudo make install
         sudo cp -av /usr/local/lib/libSDL* /lib/x86_64-linux-gnu/
-    - name: Install latest SDL_net
-      run: |
-        if [ ! -d "deps/SDL2_net-2.2.0" ]; then
-          wget https://www.libsdl.org/projects/SDL_net/release/SDL2_net-2.2.0.tar.gz
-          tar -xzf SDL2_net-2.2.0.tar.gz -C deps
-        fi
-        cd deps/SDL2_net-2.2.0
-        ./configure
-        make -j 10
-        sudo make install
-        sudo cp -av /usr/local/lib/libSDL* /lib/x86_64-linux-gnu/
+    - uses: ./.github/actions/install-sdl2-net
+    - name: Copy SDL libs to multiarch dir
+      run: sudo cp -av /usr/local/lib/libSDL* /lib/x86_64-linux-gnu/
     - name: Remove distro tinyxml2
       run: sudo apt-get remove libtinyxml2-dev
     - uses: ./.github/actions/install-tinyxml2
@@ -162,17 +154,9 @@ jobs:
         make -j 10
         sudo make install
         sudo cp -av /usr/local/lib/libSDL* /lib/x86_64-linux-gnu/
-    - name: Install latest SDL_net
-      run: |
-        if [ ! -d "deps/SDL2_net-2.2.0" ]; then
-          wget https://www.libsdl.org/projects/SDL_net/release/SDL2_net-2.2.0.tar.gz
-          tar -xzf SDL2_net-2.2.0.tar.gz -C deps
-        fi
-        cd deps/SDL2_net-2.2.0
-        ./configure
-        make -j 10
-        sudo make install
-        sudo cp -av /usr/local/lib/libSDL* /lib/x86_64-linux-gnu/
+    - uses: ./.github/actions/install-sdl2-net
+    - name: Copy SDL libs to multiarch dir
+      run: sudo cp -av /usr/local/lib/libSDL* /lib/x86_64-linux-gnu/
     - name: Remove distro tinyxml2
       run: sudo apt-get remove libtinyxml2-dev
     - uses: ./.github/actions/install-tinyxml2
