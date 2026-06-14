@@ -1488,6 +1488,61 @@
                     "The jump can also be used when already in mid-air. Roc's Feather is not considered by logic."
                 ]
             },
+            "quarter_heart": {
+                "name": "Quarter Heart",
+                "description": "Adds Quarter Heart upgrades to the item pool. Each one permanently increases maximum health by a quarter heart. Replaces heart containers and heart pieces."
+            },
+            "defense_upgrade": {
+                "name": "Defense Upgrade",
+                "description": [
+                    "Adds Defense Upgrade items to the item pool.\n",
+                    "Each upgrade incrementally reduces incoming damage, scaling up to 50% reduction at the required cap (default 5 items).\n",
+                    "With Double Defense and a maxed Defense stat, total damage reduction reaches 75%."
+                ]
+            },
+            "speed_upgrade": {
+                "name": "Speed Upgrade",
+                "description": [
+                    "Adds Speed Upgrade items to the item pool.\n",
+                    "Each upgrade incrementally increases Link's ground movement speed, scaling up to 1.4x at the required cap (default 5 items)."
+                ]
+            },
+            "power_upgrade": {
+                "name": "Power Upgrade",
+                "description": [
+                    "Adds Power Upgrade items to the item pool.\n",
+                    "Each upgrade increases the chance of dealing double damage on hit, reaching guaranteed 2x at the cap (default 5 items)."
+                ]
+            },
+            "magic_stat_upgrade": {
+                "name": "Magic Stat Upgrade",
+                "description": [
+                    "Replaces progressive magic with a new item that fills the magic bar in smaller increments.\n",
+                    "Collecting the required cap fills the bar completely (default 8 items).\n",
+                    "Logic considers magic available after 2 magic stat items (half a normal magic bar).\n",
+                    "Infinite magic is not in the pool when enabled."
+                ]
+            },
+            "adjustable_stat_upgrade": {
+                "name": "Adjustable Stat Upgrades",
+                "description": [
+                    "Enables custom Total and Percent Required sliders for stat upgrades, overriding the default pool counts.\n",
+                    "All stats scale incrementally with each item collected toward the cap.\n",
+                    "Defense and Speed reduce damage and increase speed. Magic fills the bar. Power increases the chance of dealing double damage.\n",
+                    "Magic logic threshold is half of a normal magic bar."
+                ]
+            },
+            "stat_upgrade_total": {
+                "name": "Stat Upgrade Total",
+                "description": "How many of each enabled stat upgrade item are placed in the pool."
+            },
+            "stat_upgrade_required": {
+                "name": "Percent Required",
+                "description": [
+                    "Percentage of the total stat items needed to reach the maximum stat bonus.\n",
+                    "Items collected beyond this threshold have no further effect."
+                ]
+            },
             "slingbow_break_beehives": {
                 "name": "Slingshot/Bow Can Break Beehives",
                 "description": "Allows Slingshot and Bow to break beehives when Beehive Shuffle is turned on."

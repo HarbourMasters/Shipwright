@@ -11,6 +11,8 @@
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/SohGui/SohGui.hpp"
 #include "randomizer_check_objects.h"
+#include <algorithm>
+#include "randostatupgrade.h"
 #include "soh/OTRGlobals.h"
 #include "static_data.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
@@ -505,6 +507,11 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
                        ? (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_MAGIC_METER) ? CANT_OBTAIN_ALREADY_HAVE
                                                                                     : CAN_OBTAIN)
                        : (gSaveContext.magicLevel < 2 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE);
+        case RG_MAGIC_STAT_UPGRADE: {
+            uint8_t magicRequired = StatUpgradeRequired(8);
+            return gSaveContext.ship.quest.data.randomizer.magicStatUpgrades < magicRequired ? CAN_OBTAIN
+                                                                                             : CANT_OBTAIN_ALREADY_HAVE;
+        }
         case RG_FISHING_POLE:
             return !Flags_GetRandomizerInf(RAND_INF_FISHING_POLE_FOUND) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
 
@@ -1454,6 +1461,48 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
                 *field += 1;
                 Rupees_ChangeBy(5);
             }
+            break;
+        case RG_QUARTER_HEART:
+            gSaveContext.healthCapacity += FULL_HEART_HEALTH / 4;
+            gSaveContext.health = MIN(gSaveContext.health + FULL_HEART_HEALTH / 4, gSaveContext.healthCapacity);
+            break;
+        case RG_DEFENSE_UPGRADE: {
+            uint8_t cap = StatUpgradeRequired(5);
+            if (gSaveContext.ship.quest.data.randomizer.defenseUpgrades < cap) {
+                gSaveContext.ship.quest.data.randomizer.defenseUpgrades++;
+            }
+            break;
+        }
+        case RG_SPEED_UPGRADE: {
+            uint8_t cap = StatUpgradeRequired(5);
+            if (gSaveContext.ship.quest.data.randomizer.speedUpgrades < cap) {
+                gSaveContext.ship.quest.data.randomizer.speedUpgrades++;
+            }
+            break;
+        }
+        case RG_POWER_UPGRADE: {
+            uint8_t cap = StatUpgradeRequired(5);
+            if (gSaveContext.ship.quest.data.randomizer.powerUpgrades < cap) {
+                gSaveContext.ship.quest.data.randomizer.powerUpgrades++;
+            }
+            break;
+        }
+        case RG_MAGIC_STAT_UPGRADE: {
+            uint8_t required = StatUpgradeRequired(8);
+            uint8_t lvl = gSaveContext.ship.quest.data.randomizer.magicStatUpgrades;
+            if (lvl < required) {
+                gSaveContext.ship.quest.data.randomizer.magicStatUpgrades++;
+                lvl++;
+            }
+            gSaveContext.isMagicAcquired = true;
+            uint8_t unit = (uint8_t)std::max(1, 100 / (int)required);
+            uint8_t fillCap = (uint8_t)(std::min((int)lvl, (int)required) * unit);
+            if (fillCap > MAGIC_NORMAL_METER) {
+                gSaveContext.isDoubleMagicAcquired = true;
+            }
+            gSaveContext.magicFillTarget = fillCap;
+            gSaveContext.magicLevel = 0;
+            Magic_Fill(play);
             break;
         }
         default:

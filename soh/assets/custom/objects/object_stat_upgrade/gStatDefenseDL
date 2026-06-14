@@ -1,0 +1,10 @@
+<DisplayList Version="0">
+	<CallDisplayList Path="objects/object_stat_upgrade/mat_gStatDefenseDL_Acorn_LB_layerOpaque"/>
+	<CallDisplayList Path="objects/object_stat_upgrade/gStatDefenseDL_layer_Opaque_tri_0"/>
+	<CallDisplayList Path="objects/object_stat_upgrade/mat_gStatDefenseDL_Acorn_DB_layerOpaque"/>
+	<CallDisplayList Path="objects/object_stat_upgrade/gStatDefenseDL_layer_Opaque_tri_1"/>
+	<ClearGeometryMode G_LIGHTING="1"/>
+	<SetGeometryMode G_LIGHTING="1"/>
+	<EndDisplayList/>
+</DisplayList>
+

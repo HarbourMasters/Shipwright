@@ -1399,6 +1399,23 @@ void Settings::CreateOptions() {
     OPT_BOOL(RSK_BUNNY_HOOD, CVAR_RANDOMIZER_SETTING("BunnyHood"));
     OPT_BOOL(RSK_MASKS_AS_ADULT, CVAR_RANDOMIZER_SETTING("MasksAsAdult"));
     OPT_BOOL(RSK_ROCS_FEATHER, CVAR_RANDOMIZER_SETTING("RocsFeather"));
+    OPT_BOOL(RSK_QUARTER_HEART, CVAR_RANDOMIZER_SETTING("QuarterHeart"));
+    OPT_BOOL(RSK_DEFENSE_UPGRADE, CVAR_RANDOMIZER_SETTING("DefenseUpgrade"));
+    OPT_BOOL(RSK_SPEED_UPGRADE, CVAR_RANDOMIZER_SETTING("SpeedUpgrade"));
+    OPT_BOOL(RSK_POWER_UPGRADE, CVAR_RANDOMIZER_SETTING("PowerUpgrade"));
+    OPT_BOOL(RSK_MAGIC_STAT_UPGRADE, CVAR_RANDOMIZER_SETTING("MagicStatUpgrade"));
+    OPT_BOOL(RSK_ADJUSTABLE_STAT_UPGRADE, CVAR_RANDOMIZER_SETTING("AdjustableStatUpgrade"));
+    OPT_CALLBACK(RSK_ADJUSTABLE_STAT_UPGRADE, {
+        if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("AdjustableStatUpgrade"), 0)) {
+            mOptions[RSK_STAT_UPGRADE_TOTAL].Unhide();
+            mOptions[RSK_STAT_UPGRADE_REQUIRED].Unhide();
+        } else {
+            mOptions[RSK_STAT_UPGRADE_TOTAL].Hide();
+            mOptions[RSK_STAT_UPGRADE_REQUIRED].Hide();
+        }
+    });
+    OPT_U8(RSK_STAT_UPGRADE_TOTAL, {NumOpts(1, 100)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("StatUpgradeTotal"), WIDGET_CVAR_SLIDER_INT, 4, false, nullptr, IMFLAG_NONE);
+    OPT_U8(RSK_STAT_UPGRADE_REQUIRED, {NumOpts(1, 100)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("StatUpgradeRequired"), WIDGET_CVAR_SLIDER_INT, 99, false, nullptr, IMFLAG_NONE);
     OPT_U8(RSK_INFINITE_UPGRADES, {"Off", "Progressive", "Condensed Progressive"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("InfiniteUpgrades"));
     OPT_BOOL(RSK_SKELETON_KEY, CVAR_RANDOMIZER_SETTING("SkeletonKey"));
     OPT_BOOL(RSK_SLINGBOW_BREAK_BEEHIVES, CVAR_RANDOMIZER_SETTING("SlingBowBeehives"));
@@ -2097,6 +2114,14 @@ void Settings::CreateOptions() {
                                                                                  &mOptions[RSK_SHUFFLE_OPEN_CHEST],
                                                                                  &mOptions[RSK_SHUFFLE_BEAN_SOULS],
                                                                                  &mOptions[RSK_ROCS_FEATHER],
+                                                                                 &mOptions[RSK_QUARTER_HEART],
+                                                                                 &mOptions[RSK_DEFENSE_UPGRADE],
+                                                                                 &mOptions[RSK_SPEED_UPGRADE],
+                                                                                 &mOptions[RSK_POWER_UPGRADE],
+                                                                                 &mOptions[RSK_MAGIC_STAT_UPGRADE],
+                                                                                 &mOptions[RSK_ADJUSTABLE_STAT_UPGRADE],
+                                                                                 &mOptions[RSK_STAT_UPGRADE_TOTAL],
+                                                                                 &mOptions[RSK_STAT_UPGRADE_REQUIRED],
                                                                                  &mOptions[RSK_BOMBCHU_BAG],
                                                                                  &mOptions[RSK_ENABLE_BOMBCHU_DROPS],
                                                                                  &mOptions[RSK_PROGRESSIVE_GORON_SWORD],
@@ -2291,6 +2316,14 @@ void Settings::CreateOptions() {
                                             &mOptions[RSK_SHUFFLE_BEAN_SOULS],
                                             &mOptions[RSK_ROCS_FEATHER],
                                             &mOptions[RSK_PROGRESSIVE_GORON_SWORD],
+                                            &mOptions[RSK_QUARTER_HEART],
+                                            &mOptions[RSK_DEFENSE_UPGRADE],
+                                            &mOptions[RSK_SPEED_UPGRADE],
+                                            &mOptions[RSK_POWER_UPGRADE],
+                                            &mOptions[RSK_MAGIC_STAT_UPGRADE],
+                                            &mOptions[RSK_ADJUSTABLE_STAT_UPGRADE],
+                                            &mOptions[RSK_STAT_UPGRADE_TOTAL],
+                                            &mOptions[RSK_STAT_UPGRADE_REQUIRED],
                                             &mOptions[RSK_SHUFFLE_BOSS_SOULS],
                                             &mOptions[RSK_SHUFFLE_DEKU_STICK_BAG],
                                             &mOptions[RSK_SHUFFLE_DEKU_NUT_BAG],

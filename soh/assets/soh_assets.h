@@ -107,6 +107,15 @@ static const ALIGN_ASSET(2) char gTriforcePiece2DL[] = dgTriforcePiece2DL;
 #define dgTriforcePieceCompletedDL "__OTR__objects/object_triforce_completed/gTriforcePieceCompletedDL"
 static const ALIGN_ASSET(2) char gTriforcePieceCompletedDL[] = dgTriforcePieceCompletedDL;
 
+#define dgStatDefenseDL "__OTR__objects/object_stat_upgrade/gStatDefenseDL"
+static const ALIGN_ASSET(2) char gStatDefenseDL[] = dgStatDefenseDL;
+
+#define dgStatSpeedDL "__OTR__objects/object_stat_upgrade/gStatSpeedDL"
+static const ALIGN_ASSET(2) char gStatSpeedDL[] = dgStatSpeedDL;
+
+#define dgStatPowerDL "__OTR__objects/object_stat_upgrade/gStatPowerDL"
+static const ALIGN_ASSET(2) char gStatPowerDL[] = dgStatPowerDL;
+
 #define dgBossSoulSkullDL "__OTR__objects/object_boss_soul/gGIBossSoulSkullDL"
 static const ALIGN_ASSET(2) char gBossSoulSkullDL[] = dgBossSoulSkullDL;
 

@@ -3984,6 +3984,7 @@ s32 Player_CalcSpeedAndYawFromControlStick(PlayState* play, Player* this, f32* o
 
             *outSpeedTarget = (*outSpeedTarget * 0.14f) - (8.0f * floorPitchInfluence * floorPitchInfluence);
             *outSpeedTarget = CLAMP(*outSpeedTarget, 0.0f, speedCap);
+            GameInteractor_Should(VB_PLAYER_SPEED_MULTIPLIER, true, this, outSpeedTarget);
 
             return true;
         }

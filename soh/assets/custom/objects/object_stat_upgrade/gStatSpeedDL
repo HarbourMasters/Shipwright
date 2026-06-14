@@ -1,0 +1,10 @@
+<DisplayList Version="0">
+	<CallDisplayList Path="objects/object_stat_upgrade/mat_gStatSpeedDL_Boot_LG_layerOpaque"/>
+	<CallDisplayList Path="objects/object_stat_upgrade/gStatSpeedDL_layer_Opaque_tri_0"/>
+	<CallDisplayList Path="objects/object_stat_upgrade/mat_gStatSpeedDL_Boot_DG_layerOpaque"/>
+	<CallDisplayList Path="objects/object_stat_upgrade/gStatSpeedDL_layer_Opaque_tri_1"/>
+	<ClearGeometryMode G_LIGHTING="1"/>
+	<SetGeometryMode G_LIGHTING="1"/>
+	<EndDisplayList/>
+</DisplayList>
+

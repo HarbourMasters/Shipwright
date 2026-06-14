@@ -2917,6 +2917,7 @@ s32 Health_ChangeBy(PlayState* play, s16 healthChange) {
             healthChange *= abs(giDefenseModifier);
         }
     }
+    GameInteractor_Should(VB_PLAYER_INCOMING_DAMAGE, true, play, &healthChange);
 
     gSaveContext.health += healthChange;
 
@@ -3220,6 +3221,7 @@ void Interface_UpdateMagicBar(PlayState* play) {
     switch (gSaveContext.magicState) {
         case MAGIC_STATE_STEP_CAPACITY:
             temp = gSaveContext.magicLevel * MAGIC_NORMAL_METER;
+            GameInteractor_Should(VB_MAGIC_STEP_CAPACITY_TARGET, true, &temp);
             if (gSaveContext.magicCapacity != temp) {
                 if (gSaveContext.magicCapacity < temp) {
                     gSaveContext.magicCapacity += 8;
