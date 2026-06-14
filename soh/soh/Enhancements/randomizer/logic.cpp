@@ -1547,7 +1547,7 @@ bool Logic::CanTriggerLACS() {
            (ctx->LACSCondition() == RO_LACS_TOKENS && GetGSCount() >= ctx->GetOption(RSK_LACS_TOKEN_COUNT).Get());
 }
 
-bool Logic::SmallKeys(s16 scene, uint8_t requiredAmount) {
+bool Logic::SmallKeys(SceneID scene, uint8_t requiredAmount) {
     if (HasItem(RG_SKELETON_KEY)) {
         return true;
     }
@@ -1659,7 +1659,7 @@ std::map<RandomizerGet, uint32_t> StaticData::RandoGetToRandInf = {
     { RG_FISHING_HOLE_KEY, RAND_INF_FISHING_HOLE_KEY_OBTAINED },
 };
 
-std::map<uint32_t, uint32_t> Logic::RandoGetToDungeonScene = {
+std::map<uint32_t, SceneID> Logic::RandoGetToDungeonScene = {
     { RG_FOREST_TEMPLE_SMALL_KEY, SCENE_FOREST_TEMPLE },
     { RG_FIRE_TEMPLE_SMALL_KEY, SCENE_FIRE_TEMPLE },
     { RG_WATER_TEMPLE_SMALL_KEY, SCENE_WATER_TEMPLE },
@@ -2389,83 +2389,13 @@ void Logic::SetQuestItem(uint32_t item, bool state) {
     }
 }
 
-// Get the swch bit positions for the dungeon
-const std::vector<uint8_t>& GetDungeonSmallKeyDoors(const SceneID sceneId) {
-    static const std::vector<uint8_t> emptyVector;
-
-    static const std::vector<uint8_t> normalSmallKeyDoors{ 1, 2, 3, 4 };
-    static const std::vector<uint8_t> fastSmallKeyDoors{ 1 };
-    static const std::vector<uint8_t> freeSmallKeyDoors{};
-
-    using SmallKeyDoorSets = std::pair<std::vector<uint8_t>, std::vector<uint8_t>>; // first = vanilla, second = MQ
-    static const std::unordered_map<SceneID, SmallKeyDoorSets> dungeonSmallKeyDoors{
-        { SCENE_FOREST_TEMPLE, { { 0, 1, 2, 3, 4 }, { 0, 1, 2, 3, 4, 6 } } },
-        { SCENE_FIRE_TEMPLE, { { 23, 24, 25, 26, 27, 29, 30, 31 }, { 23, 24, 26, 27, 30 } } },
-        { SCENE_WATER_TEMPLE, { { 1, 2, 5, 6, 9 }, { 4, 21 } } },
-        { SCENE_SPIRIT_TEMPLE, { { 13, 21, 27, 28, 30 }, { 1, 3, 18, 21, 27, 28, 30 } } },
-        { SCENE_SHADOW_TEMPLE, { { 21, 22, 23, 24, 25 }, { 21, 22, 23, 24, 25, 27 } } },
-        { SCENE_BOTTOM_OF_THE_WELL, { { 27, 28, 29 }, { 20, 21 } } },
-        { SCENE_GERUDO_TRAINING_GROUND, { { 1, 3, 4, 5, 6, 7, 9, 10, 23 }, { 20, 23, 29 } } },
-        { SCENE_INSIDE_GANONS_CASTLE, { { 29, 30 }, { 20, 21, 22 } } },
-    };
-    static const std::vector<uint8_t> vanillaWaterTempleDoors{ 1, 2, 5, 6, 9, 21 };
-
+int8_t Logic::GetSmallKeyCount(SceneID sceneId) {
     if (sceneId == SCENE_THIEVES_HIDEOUT) {
-        if (RAND_GET_OPTION(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_NORMAL)) {
-            return normalSmallKeyDoors;
-        }
-        if (RAND_GET_OPTION(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FAST)) {
-            return fastSmallKeyDoors;
-        }
-        return freeSmallKeyDoors;
+        std::vector<uint8_t> DoorFlags = THIEVES_HIDEOUT_DOOR_FLAGS;
+        return FindTotalSmallKeys(mSaveContext, SCENE_THIEVES_HIDEOUT, &DoorFlags);
     }
 
-    if (sceneId == SCENE_WATER_TEMPLE && IS_VANILLA) {
-        return vanillaWaterTempleDoors;
-    }
-
-    auto dungeonInfo = Rando::Context::GetInstance()->GetDungeons()->GetDungeonFromScene(sceneId);
-    if (dungeonInfo == nullptr) {
-        return emptyVector;
-    }
-
-    auto it = dungeonSmallKeyDoors.find(sceneId);
-    if (it == dungeonSmallKeyDoors.end()) {
-        return emptyVector;
-    }
-
-    return dungeonInfo->IsMQ() ? it->second.second : it->second.first;
-}
-
-int8_t Logic::GetUsedSmallKeyCount(SceneID sceneId) {
-    const auto& smallKeyDoors = GetDungeonSmallKeyDoors(sceneId);
-
-    // Get the swch value for the scene
-    uint32_t swch;
-    if (gPlayState != nullptr && gPlayState->sceneNum == sceneId) {
-        swch = gPlayState->actorCtx.flags.swch;
-    } else {
-        swch = mSaveContext->sceneFlags[sceneId].swch;
-    }
-
-    // Count the number of small keys doors unlocked
-    int8_t unlockedSmallKeyDoors = 0;
-    for (auto& smallKeyDoor : smallKeyDoors) {
-        unlockedSmallKeyDoors += swch >> smallKeyDoor & 1;
-    }
-
-    // RANDOTODO: Account for MQ Water trick that causes the basement lock to unlock when the player clears the stalfos
-    // pit.
-    return unlockedSmallKeyDoors;
-}
-
-uint8_t Logic::GetSmallKeyCount(uint32_t dungeonIndex) {
-    int8_t dungeonKeys = mSaveContext->inventory.dungeonKeys[dungeonIndex];
-    if (dungeonKeys == -1) {
-        // never got keys, so can't have used keys
-        return 0;
-    }
-    return dungeonKeys + GetUsedSmallKeyCount(SceneID(dungeonIndex));
+    return Rando::Context::GetInstance()->GetDungeons()->GetDungeonFromScene(sceneId)->GetTotalSmallKeys(mSaveContext);
 }
 
 void Logic::SetSmallKeyCount(uint32_t dungeonIndex, uint8_t count) {

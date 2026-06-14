@@ -19,6 +19,7 @@
 #include "soh/SohGui/UIWidgets.hpp"
 #include "soh/util.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
+#include "soh/Enhancements/randomizer/dungeon.h"
 
 #include <fast/Fast3dGui.h>
 
@@ -579,56 +580,50 @@ ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
             // Though the ammo/capacity naming doesn't really make sense for keys, we are
             // hijacking the same system to display key counts as there are enough similarities
             result.currentAmmo = MAX(gSaveContext.inventory.dungeonKeys[item.data], 0);
-            result.currentCapacity = gSaveContext.ship.stats.dungeonKeys[item.data];
-            switch (item.data) {
-                case SCENE_FOREST_TEMPLE:
-                    result.maxCapacity = FOREST_TEMPLE_SMALL_KEY_MAX;
-                    break;
-                case SCENE_FIRE_TEMPLE:
-                    result.maxCapacity = FIRE_TEMPLE_SMALL_KEY_MAX;
-                    break;
-                case SCENE_WATER_TEMPLE:
-                    result.maxCapacity = WATER_TEMPLE_SMALL_KEY_MAX;
-                    break;
-                case SCENE_SPIRIT_TEMPLE:
-                    result.maxCapacity = SPIRIT_TEMPLE_SMALL_KEY_MAX;
-                    break;
-                case SCENE_SHADOW_TEMPLE:
-                    result.maxCapacity = SHADOW_TEMPLE_SMALL_KEY_MAX;
-                    break;
-                case SCENE_BOTTOM_OF_THE_WELL:
-                    result.maxCapacity = BOTTOM_OF_THE_WELL_SMALL_KEY_MAX;
-                    break;
-                case SCENE_GERUDO_TRAINING_GROUND:
-                    result.maxCapacity = GERUDO_TRAINING_GROUND_SMALL_KEY_MAX;
-                    break;
-                case SCENE_THIEVES_HIDEOUT:
-                    if (IS_RANDO) {
-                        switch (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GERUDO_FORTRESS)) {
-                            case RO_GF_CARPENTERS_NORMAL:
-                                result.maxCapacity = GERUDO_FORTRESS_SMALL_KEY_MAX;
-                                break;
-                            case RO_GF_CARPENTERS_FAST:
-                                result.maxCapacity = 1;
-                                break;
-                            case RO_GF_CARPENTERS_FREE:
-                                result.maxCapacity = 0;
-                                break;
-                            default:
-                                result.maxCapacity = 0;
-                                SPDLOG_ERROR(
-                                    "Invalid value for RSK_GERUDO_FORTRESS: {}",
-                                    OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GERUDO_FORTRESS));
-                                assert(false);
-                                break;
+            if (item.data == SCENE_THIEVES_HIDEOUT) {
+                std::vector<uint8_t> DoorFlags = THIEVES_HIDEOUT_DOOR_FLAGS;
+                result.currentCapacity = Rando::FindTotalSmallKeys(&gSaveContext, SCENE_THIEVES_HIDEOUT, &DoorFlags);
+                result.maxCapacity = GERUDO_FORTRESS_SMALL_KEY_MAX;
+            } else {
+                result.currentCapacity = OTRGlobals::Instance->gRandoContext->GetDungeons()
+                                             ->GetDungeonFromScene(item.data)
+                                             ->GetTotalSmallKeys(&gSaveContext);
+                switch (item.data) {
+                    case SCENE_FOREST_TEMPLE:
+                        result.maxCapacity = FOREST_TEMPLE_SMALL_KEY_MAX;
+                        break;
+                    case SCENE_FIRE_TEMPLE:
+                        result.maxCapacity = FIRE_TEMPLE_SMALL_KEY_MAX;
+                        if (IS_RANDO &&
+                            !(OTRGlobals::Instance->gRandoContext->GetOption(RSK_KEYSANITY)
+                                  .Is(RO_DUNGEON_ITEM_LOC_ANYWHERE) ||
+                              OTRGlobals::Instance->gRandoContext->GetOption(RSK_KEYSANITY)
+                                  .Is(RO_DUNGEON_ITEM_LOC_OVERWORLD) ||
+                              OTRGlobals::Instance->gRandoContext->GetOption(RSK_KEYSANITY)
+                                  .Is(RO_DUNGEON_ITEM_LOC_ANY_DUNGEON)) &&
+                            OTRGlobals::Instance->gRandoContext->GetDungeon(Rando::FIRE_TEMPLE)->IsVanilla()) {
+                            result.currentCapacity = result.currentCapacity - 1;
                         }
-                    } else {
-                        result.maxCapacity = GERUDO_FORTRESS_SMALL_KEY_MAX;
-                    }
-                    break;
-                case SCENE_INSIDE_GANONS_CASTLE:
-                    result.maxCapacity = GANONS_CASTLE_SMALL_KEY_MAX;
-                    break;
+                        break;
+                    case SCENE_WATER_TEMPLE:
+                        result.maxCapacity = WATER_TEMPLE_SMALL_KEY_MAX;
+                        break;
+                    case SCENE_SPIRIT_TEMPLE:
+                        result.maxCapacity = SPIRIT_TEMPLE_SMALL_KEY_MAX;
+                        break;
+                    case SCENE_SHADOW_TEMPLE:
+                        result.maxCapacity = SHADOW_TEMPLE_SMALL_KEY_MAX;
+                        break;
+                    case SCENE_BOTTOM_OF_THE_WELL:
+                        result.maxCapacity = BOTTOM_OF_THE_WELL_SMALL_KEY_MAX;
+                        break;
+                    case SCENE_GERUDO_TRAINING_GROUND:
+                        result.maxCapacity = GERUDO_TRAINING_GROUND_SMALL_KEY_MAX;
+                        break;
+                    case SCENE_INSIDE_GANONS_CASTLE:
+                        result.maxCapacity = GANONS_CASTLE_SMALL_KEY_MAX;
+                        break;
+                }
             }
             break;
     }

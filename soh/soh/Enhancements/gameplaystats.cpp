@@ -691,7 +691,7 @@ void GameplayStatsWindow::DrawElement() {
 }
 void InitStats(bool isDebug) {
     int debugFile = isDebug ? CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugSaveFileMode"), 1) : 0;
-    switch(debugFile) {
+    switch (debugFile) {
         case 1:
             gSaveContext.ship.stats.heartPieces = 8;
             gSaveContext.ship.stats.heartContainers = 8;
@@ -703,7 +703,7 @@ void InitStats(bool isDebug) {
             gSaveContext.ship.stats.heartPieces = 36;
             gSaveContext.ship.stats.heartContainers = 8;
             for (int dungeon = 0; dungeon < ARRAY_COUNT(gSaveContext.ship.stats.dungeonKeys); dungeon++) {
-                //9 for maxed, 0 for none
+                // 9 for maxed, 0 for none
                 gSaveContext.ship.stats.dungeonKeys[dungeon] = 9;
             }
             break;
