@@ -580,20 +580,17 @@ s32 AudioLoad_SyncInitSeqPlayerInternal(s32 playerIdx, s32 seqId, s32 arg2) {
     s32 index;
     s32 numFonts;
     s32 fontId;
-    s8 authCachePolicy = -1; // since 0 is a valid cache policy value
 
     AudioSeq_SequencePlayerDisable(seqPlayer);
 
     fontId = 0xFF;
 
-    if (gAudioContext.seqReplaced[playerIdx]) {
-        authCachePolicy = seqCachePolicyMap[seqId];
-        seqId = gAudioContext.seqToPlay[playerIdx];
+    // seqId is the resolved 16-bit id from func_800F9280(). Reject ids with no loaded sequence; the
+    // map has sequenceMapSize + 0xF slots (custom ids skip the reserved 129-135 range).
+    if (seqId < 0 || (size_t)seqId >= sequenceMapSize + 0xF || sequenceMap[seqId] == NULL) {
+        return 0;
     }
     SequenceData seqData2 = ResourceMgr_LoadSeqByName(sequenceMap[seqId]);
-    if (authCachePolicy != -1) {
-        seqData2.cachePolicy = authCachePolicy;
-    }
 
     for (int i = 0; i < seqData2.numFonts; i++) {
         fontId = seqData2.fonts[i];
@@ -1342,7 +1339,8 @@ void AudioLoad_Init(void* heap, size_t heapSize) {
     char** seqList = ResourceMgr_ListFiles("audio/sequences*", &seqListSize);
     char** customSeqList = ResourceMgr_ListFiles("custom/music/*", &customSeqListSize);
     sequenceMapSize = (size_t)(seqListSize + customSeqListSize);
-    sequenceMap = malloc((sequenceMapSize + 0xF) * sizeof(char*));
+    // calloc: unassigned slots stay NULL for the guard in AudioLoad_SyncInitSeqPlayerInternal().
+    sequenceMap = calloc(sequenceMapSize + 0xF, sizeof(char*));
 
     gAudioContext.seqLoadStatus = malloc(sequenceMapSize);
     memset(gAudioContext.seqLoadStatus, 5, sequenceMapSize);
@@ -1431,6 +1429,15 @@ void AudioLoad_Init(void* heap, size_t heapSize) {
 
         while (AudioCollection_HasSequenceNum(seqNum)) {
             seqNum++;
+        }
+
+        // Sequence ids are carried in 16 bits; fail gracefully past the limit.
+        if (seqNum > 0xFFFF) {
+            Messagebox_ShowErrorBox("Too Many Sequences",
+                                    "The number of custom sequences exceeds the supported limit (65535). Some custom "
+                                    "music will not be available. Please reduce the size of your music pack(s).");
+            LUSLOG_ERROR("Custom sequence limit (0xFFFF) exceeded; remaining custom sequences skipped.");
+            break;
         }
 
         AudioCollection_AddToCollection(customSeqList[j], seqNum);

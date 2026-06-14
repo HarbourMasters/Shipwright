@@ -13,6 +13,7 @@
 #include <overlays/actors/ovl_Obj_Switch/z_obj_switch.h>
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
+#include <assets/objects/object_efc_tw/object_efc_tw.h>
 
 #define FLAGS                                                                                                   \
     (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED | ACTOR_FLAG_HOOKSHOT_PULLS_PLAYER | \
@@ -70,7 +71,6 @@ void EnPartner_Init(Actor* thisx, PlayState* play) {
     this->canMove = 1;
     this->shouldDraw = 1;
     this->hookshotTarget = NULL;
-    GET_PLAYER(play)->ivanFloating = 0;
 
     this->innerColor.r = 255.0f;
     this->innerColor.g = 255.0f;
@@ -118,9 +118,13 @@ void EnPartner_Destroy(Actor* thisx, PlayState* play) {
         this->hookshotTarget = NULL;
     }
 
+    if (this->windEffect != NULL) {
+        Actor_Kill(this->windEffect);
+        this->windEffect = NULL;
+    }
+
     Player* player = GET_PLAYER(play);
     if (player) {
-        player->ivanFloating = 0;
         player->ivanDamageMultiplier = 1;
     }
 
@@ -360,6 +364,123 @@ void UseDekuStick(Actor* thisx, PlayState* play, u8 started) {
     }
 }
 
+// #region IvanWindEffect
+
+// Custom DemoEffect based on the effect that beams down on timeblocks when playing Song of Time
+
+extern void DemoEffect_TimewarpShrink(f32 size);
+
+void IvanWindEffect_UpdateShrink(DemoEffect* this, PlayState* play) {
+    this->timeWarp.shrinkTimer += 20;
+
+    if (this->timeWarp.shrinkTimer <= 100) {
+        f32 shrinkProgress = (100 - this->timeWarp.shrinkTimer) * 0.010f;
+        DemoEffect_TimewarpShrink(shrinkProgress);
+    } else {
+        DemoEffect_TimewarpShrink(1.0f); // reset shared resource before killing
+        Actor_Kill(&this->actor);
+    }
+}
+
+void IvanWindEffect_SetupFadeOut(DemoEffect* this) {
+    this->updateFunc = IvanWindEffect_UpdateShrink;
+    this->timeWarp.shrinkTimer = 0;
+}
+
+void IvanWindEffect_UpdateIdle(DemoEffect* this, PlayState* play) {
+    SkelCurve_Update(play, &this->skelCurve);
+}
+
+void IvanWindEffect_Init(DemoEffect* this, PlayState* play) {
+    SkelCurve_Init(play, &this->skelCurve, &gTimeWarpSkel, &gTimeWarpAnim);
+    SkelCurve_SetAnim(&this->skelCurve, &gTimeWarpAnim, 1.0f, 59.0f, 1.0f, 8.0f);
+    SkelCurve_Update(play, &this->skelCurve);
+
+    this->updateFunc = IvanWindEffect_UpdateIdle;
+
+    Actor_SetScale(&this->actor, 0.10f);
+    DemoEffect_TimewarpShrink(1.0f);
+}
+
+DemoEffect* IvanWindEffect_Spawn(EnPartner* ivan, PlayState* play) {
+    PosRot spawn = {
+        ivan->actor.world.pos,
+        { DEGF_TO_BINANG(90.0f), ivan->actor.world.rot.y, 0 },
+    };
+
+    DemoEffect* windEffect =
+        Actor_Spawn(&play->actorCtx, play, ACTOR_DEMO_EFFECT, spawn.pos.x, spawn.pos.y, spawn.pos.z, spawn.rot.x,
+                    spawn.rot.y, spawn.rot.z, DEMO_EFFECT_TIMEWARP_TIMEBLOCK_LARGE);
+
+    windEffect->envXluColor[1] = 100;
+    windEffect->envXluColor[2] = 0;
+    windEffect->initUpdateFunc = IvanWindEffect_Init;
+
+    return windEffect;
+}
+
+// #endregion
+
+void EndFaroresWind(EnPartner* this, PlayState* play) {
+    IvanWindEffect_SetupFadeOut(this->windEffect);
+    this->windEffect = NULL;
+    gSaveContext.magicState = MAGIC_STATE_RESET;
+    this->itemTimer = 5;
+    this->usedItem = 0xFF;
+}
+
+void UseFaroresWind(EnPartner* this, PlayState* play, u8 started) {
+    Player* player = GET_PLAYER(play);
+
+    if (started == 1) {
+        if (gSaveContext.magic <= 0 || gSaveContext.magicState != MAGIC_STATE_IDLE) {
+            Sfx_PlaySfxCentered(NA_SE_SY_ERROR);
+            this->usedItem = 0xFF;
+            return;
+        }
+
+        this->windEffect = IvanWindEffect_Spawn(this, play);
+        this->magicTimer = 0;
+    }
+
+    if (started == 1 || started == 2) {
+        func_8002F974(&this->actor, NA_SE_EV_WIND_TRAP - SFX_FLAG);
+
+        this->windEffect->actor.world.pos.x = this->actor.world.pos.x;
+        this->windEffect->actor.world.pos.y = this->actor.world.pos.y;
+        this->windEffect->actor.world.pos.z = this->actor.world.pos.z;
+        this->windEffect->actor.shape.rot.y = this->actor.world.rot.y;
+
+        // based on BgHakaTrap_FanBlade_UpdateFanRotation
+        Vec3f playerRel;
+        Actor_WorldToActorCoords(&this->actor, &playerRel, &player->actor.world.pos);
+        if ((fabsf(playerRel.x) < 70.0f) && (fabsf(playerRel.y) < 100.0f) && (playerRel.z < 400.0f) &&
+            (playerRel.z > 0) && (player->currentBoots != PLAYER_BOOTS_IRON)) {
+            float factor = (1.0f - (playerRel.z / 400.0f));
+            factor = sqrtf(factor);
+            player->pushedSpeed = factor * 10.0f;
+            player->pushedYaw = this->actor.shape.rot.y;
+        }
+
+        gSaveContext.magicState = MAGIC_STATE_METER_FLASH_1;
+        this->magicTimer--;
+        if (this->magicTimer <= 0) {
+            if (gSaveContext.magic <= 0) {
+                gSaveContext.magic = 0;
+                EndFaroresWind(this, play);
+                return;
+            }
+            gSaveContext.magic--;  // Note: after the `if` statement so that the last tick of magic
+            this->magicTimer = 20; // gives the full count of frames
+        }
+    }
+
+    if (started == 0) {
+        EndFaroresWind(this, play);
+        return;
+    }
+}
+
 void UseNuts(Actor* thisx, PlayState* play, u8 started) {
     EnPartner* this = (EnPartner*)thisx;
 
@@ -486,9 +607,6 @@ void UseSpell(Actor* thisx, PlayState* play, u8 started, u8 spellType) {
                 case 1:
                     GET_PLAYER(play)->ivanDamageMultiplier = 1;
                     break;
-                case 3:
-                    GET_PLAYER(play)->ivanFloating = 0;
-                    break;
             }
 
             this->usedSpell = 0;
@@ -505,10 +623,6 @@ void UseSpell(Actor* thisx, PlayState* play, u8 started, u8 spellType) {
                         break;
                     case 2: // Nayru's
                         GET_PLAYER(play)->invincibilityTimer = -10;
-                        break;
-                    case 3: // Farore's
-                        GET_PLAYER(play)->hoverBootsTimer = 10;
-                        GET_PLAYER(play)->ivanFloating = 1;
                         break;
                 }
 
@@ -577,7 +691,7 @@ void UseItem(uint8_t usedItem, u8 started, Actor* thisx, PlayState* play) {
                 UseSpell(this, play, started, 2);
                 break;
             case ITEM_FARORES_WIND:
-                UseSpell(this, play, started, 3);
+                UseFaroresWind(this, play, started);
                 break;
             case ITEM_HAMMER:
                 UseHammer(this, play, started);
