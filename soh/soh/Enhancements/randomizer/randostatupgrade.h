@@ -7,7 +7,7 @@
 
 // Returns how many stat upgrade items are needed to reach the max stat bonus.
 // When adjustable is OFF, returns nonAdjDefault; when ON, derives from the
-// actual post-trim pool count and the configured required %.
+// configured total and required % settings.
 inline uint8_t StatUpgradeRequired(uint8_t nonAdjDefault) {
     auto ctx = Rando::Context::GetInstance();
     if (!ctx->GetOption(RSK_ADJUSTABLE_STAT_UPGRADE)) {
@@ -19,7 +19,7 @@ inline uint8_t StatUpgradeRequired(uint8_t nonAdjDefault) {
 }
 
 // Returns the number of magic stat upgrade items needed to count as having
-// magic in logic (i.e. enough units to fill at least one normal magic bar).
+// magic in logic (i.e. enough units to fill at least half of a normal magic bar).
 inline uint8_t MagicStatLogicThreshold() {
     auto ctx = Rando::Context::GetInstance();
     if (!ctx->GetOption(RSK_ADJUSTABLE_STAT_UPGRADE)) {
