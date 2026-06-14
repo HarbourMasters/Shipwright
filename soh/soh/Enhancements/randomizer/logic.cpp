@@ -300,6 +300,7 @@ bool Logic::HasItem(RandomizerGet itemName) {
     return false;
 }
 
+/* based on sRestrictionFlags in z_parameter.c */
 bool Logic::ItemUseAllowed(RandomizerGet itemName) {
     switch (itemName) {
         case RG_KOKIRI_SWORD:
