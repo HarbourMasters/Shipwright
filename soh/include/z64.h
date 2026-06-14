@@ -95,13 +95,18 @@ typedef struct {
 
 typedef struct {
     /* 0x00000 */ u16 headMagic; // GFXPOOL_HEAD_MAGIC
-    /* 0x00008 */ Gfx polyOpaBuffer[0x2FC0];
-    /* 0x0BF08 */ Gfx polyXluBuffer[0x1000];
-    /* 0x0FF08 */ Gfx overlayBuffer[0x800];
-    /* 0x11F08 */ Gfx workBuffer[0x100];
-    /* 0x11308 */ Gfx unusedBuffer[0x40];
-    /* 0x12408 */ u16 tailMagic; // GFXPOOL_TAIL_MAGIC
-} GfxPool; // size = 0x24820
+    // SOH [Port] polyOpaBuffer enlarged from 0x2FC0. It's allocated from both
+    // ends (display lists grow up, matrices/vertices grow down via THGA_AllocEnd,
+    // which has no lower bound). Very dense frames like the Death Mountain Trail
+    // rockfall drive the tail below the buffer into headMagic and hard-crash
+    // Graph_Update (graph.c:356). More headroom keeps those frames in bounds.
+    /* 0x00008 */ Gfx polyOpaBuffer[0x6000];
+    /* 0x30008 */ Gfx polyXluBuffer[0x1000];
+    /* 0x38008 */ Gfx overlayBuffer[0x800];
+    /* 0x3C008 */ Gfx workBuffer[0x100];
+    /* 0x3C808 */ Gfx unusedBuffer[0x40];
+    /* 0x3CA08 */ u16 tailMagic; // GFXPOOL_TAIL_MAGIC
+} GfxPool; // size = 0x3CA10
 
 typedef struct {
     /* 0x0000 */ u32    size;
