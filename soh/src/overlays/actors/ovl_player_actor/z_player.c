@@ -14117,7 +14117,8 @@ s32 func_8084DFF4(PlayState* play, Player* this) {
         if (this->getItemId < 0) // Compass text.
             Message_StartTextbox(play, ItemTable_Retrieve(64).textId, &this->actor);
         // Original textbox.
-        else Message_StartTextbox(play, giEntry.textId, &this->actor);
+        else
+            Message_StartTextbox(play, giEntry.textId, &this->actor);
 
         // RANDOTODO: Macro this boolean check.
         if (!(giEntry.modIndex == MOD_RANDOMIZER && giEntry.itemId == RG_ICE_TRAP)) {
