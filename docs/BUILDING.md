@@ -353,4 +353,4 @@ To get this step working on your fork, you'll need to add a machine to your own 
 You'll have to enable the ability to run unsigned scripts through PowerShell. To do this, open Powershell as administrator and run `set-executionpolicy remotesigned`. Most dependencies get installed as part of the CI process. You will also need to separately install 7z and add it to the PATH so `7z` can be run as a command. [Chocolatey](https://chocolatey.org/) or other package managers can be used to install it easily.
 
 ### Runner on UNIX systems
-If you're on macOS or Linux take a look at `macports-deps.txt` or `apt-deps.txt` to see the dependencies expected to be on your machine.
+If you're on macOS or Linux take a look at `.github/macports.yml` or `.github/workflows/apt-deps.txt` to see the dependencies expected to be on your machine.
