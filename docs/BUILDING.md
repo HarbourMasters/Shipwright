@@ -92,6 +92,12 @@ git clone https://github.com/HarbourMasters/Shipwright.git
 cd Shipwright
 ```
 ### Install dependencies
+
+> [!IMPORTANT]
+> Minimum compiler versions:
+> - GCC: see [`linux-build-deps/minimum-gcc-version.txt`](../linux-build-deps/minimum-gcc-version.txt)
+> - Clang: see [`linux-build-deps/minimum-clang-version.txt`](../linux-build-deps/minimum-clang-version.txt)
+
 #### Debian/Ubuntu
 ```sh
 # using gcc
