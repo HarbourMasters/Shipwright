@@ -3,6 +3,7 @@
 #include "soh/SohGui/SohGui.hpp"
 #include "soh/OTRGlobals.h"
 #include "soh/ShipInit.hpp"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 extern "C" {
 #include <spdlog/spdlog.h>
@@ -68,7 +69,7 @@ std::array<ValueTableElement, VVE_MAX> valueTable = {{
 // clang-format on
 
 void LoadValueConfig() {
-    auto allConfig = Ship::Context::GetInstance()->GetConfig()->GetNestedJson();
+    auto allConfig = Ship::Context::GetRawInstance()->GetConfig()->GetNestedJson();
     if (allConfig.find("ValueViewer") == allConfig.end() || !allConfig["ValueViewer"].is_array()) {
         allConfig["ValueViewer"] = nlohmann::json::array();
     }
@@ -76,10 +77,10 @@ void LoadValueConfig() {
 }
 
 void SaveValueConfig() {
-    auto allConfig = Ship::Context::GetInstance()->GetConfig()->GetNestedJson();
+    auto allConfig = Ship::Context::GetRawInstance()->GetConfig()->GetNestedJson();
     allConfig["ValueViewer"] = valueViewerSettings;
-    Ship::Context::GetInstance()->GetConfig()->SetBlock("ValueViewer", valueViewerSettings);
-    Ship::Context::GetInstance()->GetConfig()->Save();
+    Ship::Context::GetRawInstance()->GetConfig()->SetBlock("ValueViewer", valueViewerSettings);
+    Ship::Context::GetRawInstance()->GetConfig()->Save();
 }
 
 extern "C" void ValueViewer_Draw(GfxPrint* printer) {
@@ -93,8 +94,8 @@ extern "C" void ValueViewer_Draw(GfxPrint* printer) {
         void* elementValue = element.valueFn();
         if (elementValue == NULL)
             continue;
-        GfxPrint_SetColor(printer, setting.color.x * 255, setting.color.y * 255, setting.color.z * 255,
-                          setting.color.w * 255);
+        GfxPrint_SetColor(printer, static_cast<u32>(setting.color.x * 255), static_cast<u32>(setting.color.y * 255),
+                          static_cast<u32>(setting.color.z * 255), static_cast<u32>(setting.color.w * 255));
         GfxPrint_SetPos(printer, setting.x, setting.y);
         switch (element.type) {
             case TYPE_S8:

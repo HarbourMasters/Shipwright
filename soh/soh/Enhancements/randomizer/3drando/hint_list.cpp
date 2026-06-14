@@ -1,10 +1,7 @@
-#include "custom_messages.hpp"
-
 #include "../randomizerTypes.h"
 #include "../SeedContext.h"
 #include "../static_data.h"
 
-using namespace CustomMessages;
 using namespace std::literals::string_literals;
 
 // Big thanks to Lioncache, Gabyelnuevo, Danius88, and Charade for their translations!
@@ -2280,9 +2277,9 @@ void StaticData::HintTable_Init() {
     |    Static Entrance Hint   |
     ---------------------------*/
 
-    hintTextTable[RHT_WARP_SONG] = HintText(CustomMessage("Warp to&#[[1]]#?&" + TWO_WAY_CHOICE() + "#OK&No#",
-                                               /*german*/ "Das Ziel liegt&#[[1]]#!&" + TWO_WAY_CHOICE() + "#Ja!&Nein!#",
-                                               /*french*/ "Se téléporter vers&#[[1]]#?&" + TWO_WAY_CHOICE() + "#OK!&Non#",
+    hintTextTable[RHT_WARP_SONG] = HintText(CustomMessage("Warp to&#[[1]]#?&" + CustomMessage::TWO_WAY_CHOICE() + "#OK&No#",
+                                               /*german*/ "Das Ziel liegt&#[[1]]#!&" + CustomMessage::TWO_WAY_CHOICE() + "#Ja!&Nein!#",
+                                               /*french*/ "Se téléporter vers&#[[1]]#?&" + CustomMessage::TWO_WAY_CHOICE() + "#OK!&Non#",
                                                           {QM_RED, QM_GREEN}));
 
    /*--------------------------
@@ -2327,12 +2324,12 @@ void StaticData::HintTable_Init() {
                                                                         {QM_RED, QM_BLUE, QM_GREEN}));
 
     hintTextTable[RHT_MALON_HINT_OBSTICLE_COURSE] = HintText(CustomMessage("How about trying the #Obstacle Course?# If you beat my time I'll let you keep my favourite #cow# Elsie and her toy #[[1]]#!^"
-                                                                           "Challenge the #Obstacle Course?#&\x1B&#Let's go&No thanks#",
+                                                                           "Challenge the #Obstacle Course?#\x1B#Let's go&No thanks#",
                                                                 /*german*/ "Warum versuchst Du Dich nicht mit Epona an dem #Hindernisparcours#?^"
                                                                            "Gelingt es Dir den Rekord zu brechen, bekommst Du meine #Lieblingskuh# Elsie^und ihr Lieblingsspielzeug, #[[1]]#!^"
-                                                                           "Wie sieht's aus?&Möchtest Du es versuchen?\x1B&#Ja!&Nein!#",
+                                                                           "Wie sieht's aus?&Möchtest Du es versuchen?\x1B#Ja!&Nein!#",
                                                                 /*french*/ "Que dirais-tu d'essayer le #Parcours d'Obstacles#? Si tu bats mon temps, je te donnerai ma vache préférée, Elsie, et son jouet #[[1]]#!^"
-                                                                           "Tenter le #Parcours d'Obstacles#?&\x1B&#Allons-y&Non merci#",
+                                                                           "Tenter le #Parcours d'Obstacles#?\x1B#Allons-y&Non merci#",
                                                                            {QM_RED, QM_BLUE, QM_GREEN, QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_MALON_HINT_TURNING_EVIL] = HintText(CustomMessage("@? Is that you? ^If I ran the ranch, I'd build an #Obstacle Course#, and whoever gets the best time would win a #cow#!^"

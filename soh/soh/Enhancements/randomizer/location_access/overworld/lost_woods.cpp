@@ -48,6 +48,10 @@ void RegionTable_Init_LostWoods() {
         LOCATION(RC_LW_GRASS_1,                         logic->CanCutShrubs()),
         LOCATION(RC_LW_GRASS_2,                         logic->CanCutShrubs()),
         LOCATION(RC_LW_GRASS_3,                         logic->CanCutShrubs()),
+        LOCATION(RC_LW_BOULDER_BY_GORON_CITY,           logic->BlastOrSmash()),
+        LOCATION(RC_LW_WONDER_BACK_SKULL_KIDS_GRASS_1,  logic->IsChild),
+        LOCATION(RC_LW_WONDER_BACK_SKULL_KIDS_GRASS_2,  logic->IsChild),
+        LOCATION(RC_LW_WONDER_FRONT_SKULL_KIDS_GRASS,   logic->IsChild),
     }, {
         //Exits
         ENTRANCE(RR_LW_FOREST_EXIT,           true),
@@ -93,6 +97,9 @@ void RegionTable_Init_LostWoods() {
         LOCATION(RC_LW_GRASS_7,                            logic->CanCutShrubs()),
         LOCATION(RC_LW_GRASS_8,                            logic->CanCutShrubs()),
         LOCATION(RC_LW_GRASS_9,                            logic->CanCutShrubs()),
+        LOCATION(RC_LW_BOULDER_BY_SACRED_FOREST_MEADOW,    logic->BlastOrSmash()),
+        LOCATION(RC_LW_RUPEE_BOULDER,                      logic->BlastOrSmash()),
+        LOCATION(RC_LW_MEADOW_BUTTERFLY_FAIRY,             logic->IsChild && logic->CanUse(RG_STICKS)),
     }, {
         //Exits
         ENTRANCE(RR_LW_FOREST_EXIT,   true),
@@ -115,6 +122,7 @@ void RegionTable_Init_LostWoods() {
         LOCATION(RC_LW_NEAR_SHORTCUTS_GROTTO_GRASS_2,                logic->CanCutShrubs()),
         LOCATION(RC_LW_NEAR_SHORTCUTS_GROTTO_GRASS_3,                logic->CanCutShrubs()),
         LOCATION(RC_LW_NEAR_SHORTCUTS_GROTTO_GRASS_4,                logic->CanCutShrubs()),
+        LOCATION(RC_LW_TUNNEL_GROTTO_BUTTERFLY_FAIRY,                logic->CanUse(RG_STICKS)),
     }, {
         //Exits
         ENTRANCE(RR_THE_LOST_WOODS, true),
@@ -124,6 +132,7 @@ void RegionTable_Init_LostWoods() {
         //Locations
         LOCATION(RC_DEKU_THEATER_SKULL_MASK,    logic->CanUse(RG_SKULL_MASK)),
         LOCATION(RC_DEKU_THEATER_MASK_OF_TRUTH, logic->CanUse(RG_MASK_OF_TRUTH) && logic->HasItem(RG_SPEAK_DEKU)),
+        LOCATION(RC_LW_THEATER_RECTANGLE_SIGN,  logic->CanRead()),
     }, {
         //Exits
         ENTRANCE(RR_LW_BEYOND_MIDO, true),

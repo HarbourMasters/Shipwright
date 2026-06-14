@@ -5,6 +5,7 @@
 #include "soh_assets.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
+#include "soh/Enhancements/randomizer/randomizer.h"
 
 extern "C" {
 #include "z64.h"
@@ -86,7 +87,7 @@ Color_RGB8 MapOrCompassColor[10] = {
 extern "C" u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 
 extern "C" void Randomizer_DrawSmallKey(PlayState* play, GetItemEntry* getItemEntry) {
-    s8 isCustomKeysEnabled = CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("CustomKeyModels"), 1);
+    bool isCustomKeysEnabled = CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("CustomKeyModels"), 1);
     int slot = getItemEntry->drawItemId - RG_FOREST_TEMPLE_SMALL_KEY;
 
     Gfx* customIconDLs[] = {
@@ -171,7 +172,7 @@ extern "C" void Randomizer_DrawCompass(PlayState* play, GetItemEntry* getItemEnt
 }
 
 extern "C" void Randomizer_DrawBossKey(PlayState* play, GetItemEntry* getItemEntry) {
-    s8 isCustomKeysEnabled = CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("CustomKeyModels"), 1);
+    bool isCustomKeysEnabled = CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("CustomKeyModels"), 1);
     s16 slot = getItemEntry->drawItemId - RG_FOREST_TEMPLE_BOSS_KEY;
 
     std::string CvarValue[6] = {
@@ -235,7 +236,7 @@ extern "C" void Randomizer_DrawBossKey(PlayState* play, GetItemEntry* getItemEnt
 }
 
 extern "C" void Randomizer_DrawKeyRing(PlayState* play, GetItemEntry* getItemEntry) {
-    s8 isCustomKeysEnabled = CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("CustomKeyModels"), 1);
+    bool isCustomKeysEnabled = CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("CustomKeyModels"), 1);
     int slot = getItemEntry->drawItemId - RG_FOREST_TEMPLE_KEY_RING;
 
     Gfx* CustomIconDLs[] = {

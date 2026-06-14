@@ -1,5 +1,6 @@
 #include <libultraship/bridge.h>
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/randomizer/SeedContext.h"
 #include "soh/OTRGlobals.h"
 #include "soh/ShipInit.hpp"
 #include "z64save.h"
@@ -19,11 +20,11 @@ void OnGameFrameUpdateInfiniteAmmo() {
         return;
     }
 
-    AMMO(ITEM_STICK) = CUR_CAPACITY(UPG_STICKS);
-    AMMO(ITEM_NUT) = CUR_CAPACITY(UPG_NUTS);
-    AMMO(ITEM_BOMB) = CUR_CAPACITY(UPG_BOMB_BAG);
-    AMMO(ITEM_BOW) = CUR_CAPACITY(UPG_QUIVER);
-    AMMO(ITEM_SLINGSHOT) = CUR_CAPACITY(UPG_BULLET_BAG);
+    AMMO(ITEM_STICK) = static_cast<s8>(CUR_CAPACITY(UPG_STICKS));
+    AMMO(ITEM_NUT) = static_cast<s8>(CUR_CAPACITY(UPG_NUTS));
+    AMMO(ITEM_BOMB) = static_cast<s8>(CUR_CAPACITY(UPG_BOMB_BAG));
+    AMMO(ITEM_BOW) = static_cast<s8>(CUR_CAPACITY(UPG_QUIVER));
+    AMMO(ITEM_SLINGSHOT) = static_cast<s8>(CUR_CAPACITY(UPG_BULLET_BAG));
     if (INV_CONTENT(ITEM_BOMBCHU) != ITEM_NONE) {
         int chuCapacity = 50;
         if (IS_RANDO && RAND_GET_OPTION(RSK_BOMBCHU_BAG).Is(RO_BOMBCHU_BAG_PROGRESSIVE)) {

@@ -157,10 +157,10 @@ void func_80AEAC54(EnRu1* this, PlayState* play) {
     s32 pad[5];
 
     Collider_UpdateCylinder(&this->actor, &this->collider2);
-    if (this->unk_34C != 0) {
+    if (this->isSittingOCActive != 0) {
         CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider2.base);
     } else if (this->actor.xzDistToPlayer > 32.0f) {
-        this->unk_34C = 1;
+        this->isSittingOCActive = 1;
     }
 }
 
@@ -187,7 +187,7 @@ void EnRu1_DestroyColliders(EnRu1* this, PlayState* play) {
 }
 
 void func_80AEADD8(EnRu1* this) {
-    this->unk_34C = 0;
+    this->isSittingOCActive = 0;
 }
 
 u8 func_80AEADE0(EnRu1* this) {
@@ -437,10 +437,10 @@ void EnRu1_SpawnRipple(EnRu1* this, PlayState* play, s16 radiusMax, s16 life) {
 }
 
 void func_80AEB50C(EnRu1* this, PlayState* play) {
-    this->unk_270 += 1.0f;
-    if (this->unk_270 >= kREG(3) + 10.0f) {
+    this->treadTimer += 1.0f;
+    if (this->treadTimer >= kREG(3) + 10.0f) {
         EnRu1_SpawnRipple(this, play, kREG(1) + 500, 0);
-        this->unk_270 = 0.0f;
+        this->treadTimer = 0.0f;
     }
 }
 
@@ -548,7 +548,7 @@ void func_80AEBA0C(EnRu1* this, PlayState* play) {
 
 void func_80AEBA2C(EnRu1* this, PlayState* play) {
     s32 pad;
-    Vec3f* unk_364 = &this->unk_364;
+    Vec3f* unk_364 = &this->treadStartPos;
     Vec3f* thisPos;
     f32 temp_ret_2;
     CsCmdActorCue* csCmdNPCAction = func_80AEB438(play);
@@ -670,7 +670,7 @@ void func_80AEBF60(EnRu1* this, PlayState* play) {
     if (func_80AEB480(play, 6)) {
         func_80AEB7D0(this);
         this->action = 5;
-        this->unk_364 = this->actor.world.pos;
+        this->treadStartPos = this->actor.world.pos;
     } else {
         func_80AEBA0C(this, play);
     }
@@ -791,7 +791,7 @@ void func_80AEC320(EnRu1* this, PlayState* play) {
 }
 
 void func_80AEC40C(EnRu1* this) {
-    f32 unk_26C = this->unk_26C;
+    f32 unk_26C = this->walkingFrame;
 
     if (unk_26C < 8.0f) {
         this->actor.speedXZ = (((kREG(3) * 0.01f) + 2.7f) / 8.0f) * unk_26C;
@@ -809,9 +809,9 @@ void func_80AEC4CC(EnRu1* this) {
 
 void func_80AEC4F4(EnRu1* this) {
     f32* speedXZ = &this->actor.speedXZ;
-    f32* unk_26C = &this->unk_26C;
+    f32* unk_26C = &this->walkingFrame;
 
-    if (this->unk_26C < 8.0f) {
+    if (this->walkingFrame < 8.0f) {
         *unk_26C += 1.0f;
         *speedXZ *= (8.0f - *unk_26C) / 8.0f;
         this->actor.velocity.y = -*unk_26C * (((kREG(4) * 0.01f) + 13.0f) / 8.0f);
@@ -836,7 +836,7 @@ s32 func_80AEC5FC(EnRu1* this, PlayState* play) {
 void func_80AEC650(EnRu1* this) {
     s32 pad[2];
 
-    if (this->unk_280 == 0) {
+    if (this->isFalling == 0) {
         if (Animation_OnFrame(&this->skelAnime, 2.0f) || Animation_OnFrame(&this->skelAnime, 7.0f)) {
             Sfx_PlaySfxAtPos(&this->actor.projectedPos, NA_SE_PL_WALK_DIRT);
         }
@@ -849,10 +849,10 @@ void func_80AEC6B0(EnRu1* this) {
 }
 
 void func_80AEC6E4(EnRu1* this, PlayState* play) {
-    if ((func_80AEAFA0(play, 4, 3)) && (this->unk_280 == 0)) {
+    if ((func_80AEAFA0(play, 4, 3)) && (this->isFalling == 0)) {
         Animation_Change(&this->skelAnime, &gRutoChildBringArmsUpAnim, 1.0f, 0,
                          Animation_GetLastFrame(&gRutoChildBringArmsUpAnim), ANIMMODE_ONCE, -8.0f);
-        this->unk_280 = 1;
+        this->isFalling = 1;
         func_80AEC6B0(this);
     }
 }
@@ -907,15 +907,15 @@ void func_80AEC93C(EnRu1* this, UNK_TYPE arg1) {
                          ANIMMODE_LOOP, -8.0f);
         this->actor.world.rot.y += 0x8000;
         this->action = 0xB;
-        this->unk_26C = 0.0f;
+        this->walkingFrame = 0.0f;
     }
 }
 
 void func_80AEC9C4(EnRu1* this) {
-    this->unk_26C += 1.0f;
-    if (this->unk_26C >= 8.0f) {
+    this->walkingFrame += 1.0f;
+    if (this->walkingFrame >= 8.0f) {
         this->action = 12;
-        this->unk_26C = 0.0f;
+        this->walkingFrame = 0.0f;
         this->actor.velocity.y = -1.0f;
     }
 }
@@ -923,7 +923,7 @@ void func_80AEC9C4(EnRu1* this) {
 void func_80AECA18(EnRu1* this) {
     if (!(this->actor.bgCheckFlags & 1)) {
         this->action = 13;
-        this->unk_26C = 0.0f;
+        this->walkingFrame = 0.0f;
         this->actor.velocity.y = 0.0f;
     }
 }
@@ -1030,7 +1030,7 @@ void func_80AECE20(EnRu1* this, PlayState* play) {
     Vec3f* playerPos = &player->actor.world.pos;
     s16 shapeRotY = player->actor.shape.rot.y;
     s32 pad;
-    f32 unk_27C = this->unk_27C;
+    f32 unk_27C = this->xzDistToPlayerInBlueWarp;
     Vec3f* pos = &this->actor.world.pos;
 
     pos->x = (Math_SinS(shapeRotY) * unk_27C) + playerPos->x;
@@ -1058,8 +1058,8 @@ s32 func_80AECF6C(EnRu1* this, PlayState* play) {
     f32 temp2;
     s32 pad2[5];
 
-    this->unk_26C += 1.0f;
-    if ((player->actor.speedXZ == 0.0f) && (this->unk_26C >= 3.0f)) {
+    this->walkingFrame += 1.0f;
+    if ((player->actor.speedXZ == 0.0f) && (this->walkingFrame >= 3.0f)) {
         otherPlayer = GET_PLAYER(play);
         player->actor.world.pos.x = otherPlayer->unk_450.x;
         player->actor.world.pos.y = otherPlayer->unk_450.y;
@@ -1114,7 +1114,7 @@ void func_80AED110(EnRu1* this) {
 void func_80AED154(EnRu1* this, PlayState* play) {
     if (func_80AED084(this, WARP_BLUE_RUTO_STATE_ENTERED)) {
         this->action = 0x13;
-        this->unk_26C = 0.0f;
+        this->walkingFrame = 0.0f;
         func_80AECEB4(this, play);
     }
 }
@@ -1139,7 +1139,7 @@ void func_80AED218(EnRu1* this, UNK_TYPE arg1) {
         Animation_Change(&this->skelAnime, &gRutoChildWaitInBlueWarpAnim, 1.0f, 0,
                          Animation_GetLastFrame(&gRutoChildWaitInBlueWarpAnim), ANIMMODE_ONCE, -8.0f);
         this->action = 21;
-        this->unk_27C = this->actor.xzDistToPlayer;
+        this->xzDistToPlayerInBlueWarp = this->actor.xzDistToPlayer;
     }
 }
 
@@ -1294,28 +1294,28 @@ void func_80AED83C(EnRu1* this) {
 
 void func_80AED8DC(EnRu1* this) {
     s32 temp_hi;
-    s16* unk_2AC = &this->unk_2AC;
+    s16* unk_2AC = &this->headRotTimer;
     s16* someY = &this->interactInfo.headRot.y;
-    s16* unk_29E = &this->unk_29E;
+    s16* unk_29E = &this->headTurnSpeed;
     s32 pad[2];
 
     if (DECR(*unk_2AC) == 0) {
         *unk_2AC = Rand_S16Offset(0xA, 0x19);
         temp_hi = *unk_2AC % 5;
         if (temp_hi == 0) {
-            this->unk_2B0 = 1;
+            this->headRotDirection = 1;
         } else if (temp_hi == 1) {
-            this->unk_2B0 = 2;
+            this->headRotDirection = 2;
         } else {
-            this->unk_2B0 = 0;
+            this->headRotDirection = 0;
         }
         *unk_29E = 0;
     }
 
-    if (this->unk_2B0 == 0) {
+    if (this->headRotDirection == 0) {
         Math_SmoothStepToS(unk_29E, 0 - *someY, 1, 0x190, 0x190);
         Math_SmoothStepToS(someY, 0, 3, ABS(*unk_29E), 0x64);
-    } else if (this->unk_2B0 == 1) {
+    } else if (this->headRotDirection == 1) {
         Math_SmoothStepToS(unk_29E, -0x2AAA - *someY, 1, 0x190, 0x190);
         Math_SmoothStepToS(someY, -0x2AAA, 3, ABS(*unk_29E), 0x64);
     } else {
@@ -1458,13 +1458,13 @@ void func_80AEE050(EnRu1* this) {
     f32 temp_f10;
     EnRu1* thisx = this; // necessary to match
 
-    if (this->unk_350 == 0) {
+    if (this->waterState == 0) {
         if ((this->actor.minVelocityY == 0.0f) && (this->actor.speedXZ == 0.0f)) {
-            this->unk_350 = 1;
+            this->waterState = 1;
             func_80AEE02C(this);
-            this->unk_35C = 0;
-            this->unk_358 = (this->actor.yDistToWater - 10.0f) * 0.5f;
-            this->unk_354 = this->actor.world.pos.y + thisx->unk_358; // thisx only used here
+            this->bobPhase = 0;
+            this->bobDepth = (this->actor.yDistToWater - 10.0f) * 0.5f;
+            this->sinkingStartPosY = this->actor.world.pos.y + thisx->bobDepth; // thisx only used here
         } else {
             this->actor.gravity = 0.0f;
             this->actor.minVelocityY *= 0.2f;
@@ -1482,23 +1482,23 @@ void func_80AEE050(EnRu1* this) {
             Actor_UpdatePos(&this->actor);
         }
     } else {
-        if (this->unk_350 == 1) {
-            if (this->unk_358 <= 1.0f) {
+        if (this->waterState == 1) {
+            if (this->bobDepth <= 1.0f) {
                 func_80AEE02C(this);
-                this->unk_350 = 2;
-                this->unk_360 = 0.0f;
+                this->waterState = 2;
+                this->isSinking = 0.0f;
             } else {
-                sp28 = this->unk_358;
-                sp24 = this->unk_354;
-                temp_f10 = Math_CosS(this->unk_35C) * -sp28;
+                sp28 = this->bobDepth;
+                sp24 = this->sinkingStartPosY;
+                temp_f10 = Math_CosS(this->bobPhase) * -sp28;
                 this->actor.world.pos.y = temp_f10 + sp24;
-                this->unk_35C += 0x3E8;
-                this->unk_358 *= 0.95f;
+                this->bobPhase += 0x3E8;
+                this->bobDepth *= 0.95f;
             }
         } else {
-            this->unk_360 += 1.0f;
-            if (this->unk_360 > 0.0f) {
-                this->unk_350 = 3;
+            this->isSinking += 1.0f;
+            if (this->isSinking > 0.0f) {
+                this->waterState = 3;
             }
         }
     }
@@ -1591,7 +1591,7 @@ void func_80AEE568(EnRu1* this, PlayState* play) {
             func_80AEADD8(this);
         } else if (this->actor.yDistToWater > 0.0f) {
             this->action = 29;
-            this->unk_350 = 0;
+            this->waterState = 0;
         }
     }
 }
@@ -1622,7 +1622,7 @@ s32 func_80AEE6D0(EnRu1* this, PlayState* play) {
                              Animation_GetLastFrame(&gRutoChildSquirmAnim), ANIMMODE_LOOP, -8.0f);
             func_80AED600(this);
             this->action = 34;
-            this->unk_26C = 0.0f;
+            this->walkingFrame = 0.0f;
             play->csCtx.segment = &D_80AF1728;
             gSaveContext.cutsceneTrigger = 1;
         }
@@ -1637,7 +1637,7 @@ void func_80AEE7C4(EnRu1* this, PlayState* play) {
     f32 frameCount;
     s32 pad[13];
     Player* player;
-    f32* unk_370 = &this->unk_370;
+    f32* unk_370 = &this->carryIdleTimer;
 
     if (Actor_HasNoParent(&this->actor, play)) {
         frameCount = Animation_GetLastFrame(&gRutoChildSittingAnim);
@@ -1660,7 +1660,7 @@ void func_80AEE7C4(EnRu1* this, PlayState* play) {
 
     player = GET_PLAYER(play);
     if (player->stateFlags2 & PLAYER_STATE2_IDLE_FIDGET) {
-        this->unk_370 += 1.0f;
+        this->carryIdleTimer += 1.0f;
         if (this->action != 32) {
             if (*unk_370 > 30.0f) {
                 if (Rand_S16Offset(0, 3) == 0) {
@@ -1699,7 +1699,7 @@ s32 func_80AEEAC8(EnRu1* this, PlayState* play) {
 }
 
 void func_80AEEB24(EnRu1* this, PlayState* play) {
-    if ((func_80AEEAC8(this, play) == 0) && (this->unk_350 == 3)) {
+    if ((func_80AEEAC8(this, play) == 0) && (this->waterState == 3)) {
         this->action = 30;
         func_80AEE02C(this);
         this->actor.gravity = -0.1f;
@@ -2295,11 +2295,12 @@ s32 EnRu1_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* p
                            Gfx** gfx) {
     EnRu1* this = (EnRu1*)thisx;
 
-    if ((this->unk_290 < 0) || (this->unk_290 > 0) || (*sPreLimbDrawFuncs[this->unk_290] == NULL)) {
+    if ((this->preLimbDrawIndex < 0) || (this->preLimbDrawIndex > 0) ||
+        (*sPreLimbDrawFuncs[this->preLimbDrawIndex] == NULL)) {
         // "Neck rotation mode is improper!"
         osSyncPrintf(VT_FGCOL(RED) "首回しモードがおかしい!!!!!!!!!!!!!!!!!!!!!!!!!\n" VT_RST);
     } else {
-        sPreLimbDrawFuncs[this->unk_290](this, play, limbIndex, rot);
+        sPreLimbDrawFuncs[this->preLimbDrawIndex](this, play, limbIndex, rot);
     }
     return false;
 }

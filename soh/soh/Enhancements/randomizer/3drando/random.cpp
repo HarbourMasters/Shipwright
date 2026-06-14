@@ -9,10 +9,6 @@ void Random_Init(uint64_t seed) {
     ShipUtils::RandInit(seed, &rando_state);
 }
 
-uint32_t next32() {
-    return ShipUtils::next32(&rando_state);
-}
-
 // Returns a random integer in range [min, max-1]
 uint32_t Random(uint32_t min, uint32_t max) {
     return ShipUtils::Random(min, max, &rando_state);

@@ -79,15 +79,19 @@ void RegionTable_Init_LakeHylia() {
         LOCATION(RC_LH_CHILD_GRASS_4,                    logic->IsChild && logic->CanCutShrubs()),
         LOCATION(RC_LH_WARP_PAD_GRASS_1,                 logic->CanCutShrubs()),
         LOCATION(RC_LH_WARP_PAD_GRASS_2,                 logic->CanCutShrubs()),
+        LOCATION(RC_LH_SCARECROW_BUTTERFLY_FAIRY,        logic->IsChild && logic->CanUse(RG_STICKS)),
+        LOCATION(RC_LH_LAB_RECTANGLE_SIGN,               logic->CanRead()),
+        LOCATION(RC_LH_NORTH_EXIT_ARROW_SIGN,            logic->CanRead()),
+        LOCATION(RC_LH_ISLAND_PEDESTAL,                  logic->CanRead()),
     }, {
         //Exits
         ENTRANCE(RR_HF_TO_LAKE_HYLIA,     true),
         ENTRANCE(RR_LH_FROM_SHORTCUT,     true),
-        ENTRANCE(RR_LH_OWL_FLIGHT,        logic->IsChild && (logic->HasItem(RG_SPEAK_DEKU) || logic->HasItem(RG_SPEAK_GERUDO) || logic->HasItem(RG_SPEAK_GORON) || logic->HasItem(RG_SPEAK_HYLIAN) || logic->HasItem(RG_SPEAK_ZORA))),
+        ENTRANCE(RR_LH_OWL_FLIGHT,        logic->IsChild && (logic->HasItem(RG_SPEAK_DEKU) || logic->HasItem(RG_SPEAK_GERUDO) || logic->HasItem(RG_SPEAK_GORON) || logic->HasItem(RG_SPEAK_KOKIRI) || logic->HasItem(RG_SPEAK_HYLIAN) || logic->HasItem(RG_SPEAK_ZORA))),
         ENTRANCE(RR_LH_FISHING_ISLAND,    ((logic->IsChild || logic->Get(LOGIC_WATER_TEMPLE_CLEAR)) && logic->HasItem(RG_BRONZE_SCALE)) || (logic->IsAdult && (logic->ReachScarecrow() || CanPlantBean(RR_LAKE_HYLIA, RG_LAKE_HYLIA_BEAN_SOUL)))),
         ENTRANCE(RR_LH_LAB,               logic->CanOpenOverworldDoor(RG_HYLIA_LAB_KEY)),
         ENTRANCE(RR_LH_FROM_WATER_TEMPLE, true),
-        ENTRANCE(RR_LH_GROTTO,            logic->HasItem(RG_POWER_BRACELET) && (logic->IsAdult || logic->HasItem(RG_SPEAK_DEKU) || logic->HasItem(RG_SPEAK_GERUDO) || logic->HasItem(RG_SPEAK_GORON) || logic->HasItem(RG_SPEAK_HYLIAN) || logic->HasItem(RG_SPEAK_ZORA))),
+        ENTRANCE(RR_LH_GROTTO,            logic->HasItem(RG_POWER_BRACELET) && (logic->IsAdult || logic->HasItem(RG_SPEAK_DEKU) || logic->HasItem(RG_SPEAK_GERUDO) || logic->HasItem(RG_SPEAK_GORON) || logic->HasItem(RG_SPEAK_KOKIRI) || logic->HasItem(RG_SPEAK_HYLIAN) || logic->HasItem(RG_SPEAK_ZORA))),
     });
 
     areaTable[RR_LH_FROM_SHORTCUT] = Region("LH From Shortcut", SCENE_LAKE_HYLIA, TIME_DOESNT_PASS, {RA_LAKE_HYLIA}, {}, {}, {
@@ -102,7 +106,11 @@ void RegionTable_Init_LakeHylia() {
         ENTRANCE(RR_WATER_TEMPLE_ENTRYWAY, logic->CanUse(RG_HOOKSHOT) && ((logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_LH_WATER_HOOKSHOT) && logic->HasItem(RG_GOLDEN_SCALE))) || (logic->IsAdult && logic->CanUse(RG_LONGSHOT) && logic->HasItem(RG_GOLDEN_SCALE)))),
     });
 
-    areaTable[RR_LH_FISHING_ISLAND] = Region("LH Fishing Island", SCENE_LAKE_HYLIA, {}, {}, {
+    areaTable[RR_LH_FISHING_ISLAND] = Region("LH Fishing Island", SCENE_LAKE_HYLIA, {}, {
+        //Locations
+        LOCATION(RC_LH_ROCK,         logic->CanBreakRocks()),
+        LOCATION(RC_LH_FISHING_SIGN, logic->CanRead()),
+    }, {
         //Exits
         ENTRANCE(RR_LAKE_HYLIA,      logic->HasItem(RG_BRONZE_SCALE)),
         ENTRANCE(RR_LH_FISHING_POND, logic->CanOpenOverworldDoor(RG_FISHING_HOLE_KEY)),
@@ -115,58 +123,73 @@ void RegionTable_Init_LakeHylia() {
 
     areaTable[RR_LH_LAB] = Region("LH Lab", SCENE_LAKESIDE_LABORATORY, {}, {
         //Locations
-        LOCATION(RC_LH_LAB_DIVE,        (logic->HasItem(RG_GOLDEN_SCALE) || (ctx->GetTrickOption(RT_LH_LAB_DIVING) && logic->CanUse(RG_IRON_BOOTS) && logic->CanUse(RG_HOOKSHOT) && logic->HasItem(RG_BRONZE_SCALE))) && logic->HasItem(RG_SPEAK_HYLIAN)),
+        LOCATION(RC_LH_LAB_DIVE,        logic->HasItem(RG_GOLDEN_SCALE) && logic->HasItem(RG_SPEAK_HYLIAN)),
         LOCATION(RC_LH_TRADE_FROG,      logic->IsAdult && logic->CanUse(RG_EYEBALL_FROG)),
-        LOCATION(RC_LH_GS_LAB_CRATE,    logic->CanUse(RG_IRON_BOOTS) && logic->CanUse(RG_HOOKSHOT) && logic->CanBreakCrates()),
-        LOCATION(RC_LH_LAB_FRONT_RUPEE, logic->CanUse(RG_IRON_BOOTS) || logic->HasItem(RG_GOLDEN_SCALE)),
-        LOCATION(RC_LH_LAB_LEFT_RUPEE,  logic->CanUse(RG_IRON_BOOTS) || logic->HasItem(RG_GOLDEN_SCALE)),
-        LOCATION(RC_LH_LAB_RIGHT_RUPEE, logic->CanUse(RG_IRON_BOOTS) || logic->HasItem(RG_GOLDEN_SCALE)),
-        LOCATION(RC_LH_LAB_CRATE,       logic->CanUse(RG_IRON_BOOTS) && logic->CanBreakCrates()),
+        LOCATION(RC_LH_LAB_FRONT_RUPEE, logic->HasItem(RG_GOLDEN_SCALE)),
+        LOCATION(RC_LH_LAB_LEFT_RUPEE,  logic->HasItem(RG_GOLDEN_SCALE)),
+        LOCATION(RC_LH_LAB_RIGHT_RUPEE, logic->HasItem(RG_GOLDEN_SCALE)),
     }, {
         //Exits
-        ENTRANCE(RR_LAKE_HYLIA, true),
+        ENTRANCE(RR_LAKE_HYLIA,        true),
+        ENTRANCE(RR_LH_LAB_UNDERWATER, logic->CanUse(RG_IRON_BOOTS)),
+    });
+
+    //Assumes checking logic->CanUse(RG_IRON_BOOTS) on access
+    areaTable[RR_LH_LAB_UNDERWATER] = Region("LH Lab Underwater", SCENE_LAKESIDE_LABORATORY, {}, {
+        //Locations
+        //Assumes RR_LH_LAB access
+        LOCATION(RC_LH_LAB_DIVE,        (ctx->GetTrickOption(RT_LH_LAB_DIVING) && logic->CanUse(RG_HOOKSHOT) && logic->HasItem(RG_BRONZE_SCALE)) && logic->HasItem(RG_SPEAK_HYLIAN)),
+        LOCATION(RC_LH_GS_LAB_CRATE,    logic->CanUse(RG_HOOKSHOT) && logic->CanBreakCrates()),
+        LOCATION(RC_LH_LAB_FRONT_RUPEE, true),
+        LOCATION(RC_LH_LAB_LEFT_RUPEE,  true),
+        LOCATION(RC_LH_LAB_RIGHT_RUPEE, true),
+        LOCATION(RC_LH_LAB_CRATE,       logic->CanBreakCrates()),
+    }, {
+        //Exits
+        ENTRANCE(RR_LH_LAB, logic->HasItem(RG_BRONZE_SCALE)),
     });
 
     // TODO: should some of these helpers be done via events instead?
     areaTable[RR_LH_FISHING_POND] = Region("LH Fishing Hole", SCENE_FISHING_POND, {}, {
         //Locations
-        LOCATION(RC_LH_CHILD_FISHING,  logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->IsChild),
-        LOCATION(RC_LH_CHILD_FISH_1,   logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && (logic->IsChild || !ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT))),
-        LOCATION(RC_LH_CHILD_FISH_2,   logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && (logic->IsChild || !ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT))),
-        LOCATION(RC_LH_CHILD_FISH_3,   logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && (logic->IsChild || !ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT))),
-        LOCATION(RC_LH_CHILD_FISH_4,   logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && (logic->IsChild || !ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT))),
-        LOCATION(RC_LH_CHILD_FISH_5,   logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && (logic->IsChild || !ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT))),
-        LOCATION(RC_LH_CHILD_FISH_6,   logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && (logic->IsChild || !ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT))),
-        LOCATION(RC_LH_CHILD_FISH_7,   logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && (logic->IsChild || !ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT))),
-        LOCATION(RC_LH_CHILD_FISH_8,   logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && (logic->IsChild || !ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT))),
-        LOCATION(RC_LH_CHILD_FISH_9,   logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && (logic->IsChild || !ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT))),
-        LOCATION(RC_LH_CHILD_FISH_10,  logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && (logic->IsChild || !ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT))),
-        LOCATION(RC_LH_CHILD_FISH_11,  logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && (logic->IsChild || !ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT))),
-        LOCATION(RC_LH_CHILD_FISH_12,  logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && (logic->IsChild || !ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT))),
-        LOCATION(RC_LH_CHILD_FISH_13,  logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && (logic->IsChild || !ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT))),
-        LOCATION(RC_LH_CHILD_FISH_14,  logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && (logic->IsChild || !ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT))),
-        LOCATION(RC_LH_CHILD_FISH_15,  logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && (logic->IsChild || !ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT))),
-        LOCATION(RC_LH_CHILD_LOACH_1,  logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && (logic->IsChild || !ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT))),
-        LOCATION(RC_LH_CHILD_LOACH_2,  logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && (logic->IsChild || !ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT))),
-        LOCATION(RC_LH_ADULT_FISHING,  logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->IsAdult),
-        LOCATION(RC_LH_ADULT_FISH_1,   logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->IsAdult && ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT)),
-        LOCATION(RC_LH_ADULT_FISH_2,   logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->IsAdult && ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT)),
-        LOCATION(RC_LH_ADULT_FISH_3,   logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->IsAdult && ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT)),
-        LOCATION(RC_LH_ADULT_FISH_4,   logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->IsAdult && ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT)),
-        LOCATION(RC_LH_ADULT_FISH_5,   logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->IsAdult && ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT)),
-        LOCATION(RC_LH_ADULT_FISH_6,   logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->IsAdult && ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT)),
-        LOCATION(RC_LH_ADULT_FISH_7,   logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->IsAdult && ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT)),
-        LOCATION(RC_LH_ADULT_FISH_8,   logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->IsAdult && ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT)),
-        LOCATION(RC_LH_ADULT_FISH_9,   logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->IsAdult && ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT)),
-        LOCATION(RC_LH_ADULT_FISH_10,  logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->IsAdult && ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT)),
-        LOCATION(RC_LH_ADULT_FISH_11,  logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->IsAdult && ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT)),
-        LOCATION(RC_LH_ADULT_FISH_12,  logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->IsAdult && ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT)),
-        LOCATION(RC_LH_ADULT_FISH_13,  logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->IsAdult && ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT)),
-        LOCATION(RC_LH_ADULT_FISH_14,  logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->IsAdult && ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT)),
-        LOCATION(RC_LH_ADULT_FISH_15,  logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->IsAdult && ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT)),
-        LOCATION(RC_LH_ADULT_LOACH,    logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->IsAdult && ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT)),
-        LOCATION(RC_LH_HYRULE_LOACH,   logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN)),
-        LOCATION(RC_FISHING_POLE_HINT, logic->HasItem(RG_SPEAK_HYLIAN)),
+        LOCATION(RC_LH_CHILD_FISHING,               logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->IsChild),
+        LOCATION(RC_LH_CHILD_FISH_1,                logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && (logic->IsChild || !ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT))),
+        LOCATION(RC_LH_CHILD_FISH_2,                logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && (logic->IsChild || !ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT))),
+        LOCATION(RC_LH_CHILD_FISH_3,                logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && (logic->IsChild || !ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT))),
+        LOCATION(RC_LH_CHILD_FISH_4,                logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && (logic->IsChild || !ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT))),
+        LOCATION(RC_LH_CHILD_FISH_5,                logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && (logic->IsChild || !ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT))),
+        LOCATION(RC_LH_CHILD_FISH_6,                logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && (logic->IsChild || !ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT))),
+        LOCATION(RC_LH_CHILD_FISH_7,                logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && (logic->IsChild || !ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT))),
+        LOCATION(RC_LH_CHILD_FISH_8,                logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && (logic->IsChild || !ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT))),
+        LOCATION(RC_LH_CHILD_FISH_9,                logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && (logic->IsChild || !ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT))),
+        LOCATION(RC_LH_CHILD_FISH_10,               logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && (logic->IsChild || !ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT))),
+        LOCATION(RC_LH_CHILD_FISH_11,               logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && (logic->IsChild || !ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT))),
+        LOCATION(RC_LH_CHILD_FISH_12,               logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && (logic->IsChild || !ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT))),
+        LOCATION(RC_LH_CHILD_FISH_13,               logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && (logic->IsChild || !ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT))),
+        LOCATION(RC_LH_CHILD_FISH_14,               logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && (logic->IsChild || !ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT))),
+        LOCATION(RC_LH_CHILD_FISH_15,               logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && (logic->IsChild || !ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT))),
+        LOCATION(RC_LH_CHILD_LOACH_1,               logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && (logic->IsChild || !ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT))),
+        LOCATION(RC_LH_CHILD_LOACH_2,               logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && (logic->IsChild || !ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT))),
+        LOCATION(RC_LH_ADULT_FISHING,               logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->IsAdult),
+        LOCATION(RC_LH_ADULT_FISH_1,                logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->IsAdult && ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT)),
+        LOCATION(RC_LH_ADULT_FISH_2,                logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->IsAdult && ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT)),
+        LOCATION(RC_LH_ADULT_FISH_3,                logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->IsAdult && ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT)),
+        LOCATION(RC_LH_ADULT_FISH_4,                logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->IsAdult && ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT)),
+        LOCATION(RC_LH_ADULT_FISH_5,                logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->IsAdult && ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT)),
+        LOCATION(RC_LH_ADULT_FISH_6,                logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->IsAdult && ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT)),
+        LOCATION(RC_LH_ADULT_FISH_7,                logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->IsAdult && ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT)),
+        LOCATION(RC_LH_ADULT_FISH_8,                logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->IsAdult && ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT)),
+        LOCATION(RC_LH_ADULT_FISH_9,                logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->IsAdult && ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT)),
+        LOCATION(RC_LH_ADULT_FISH_10,               logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->IsAdult && ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT)),
+        LOCATION(RC_LH_ADULT_FISH_11,               logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->IsAdult && ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT)),
+        LOCATION(RC_LH_ADULT_FISH_12,               logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->IsAdult && ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT)),
+        LOCATION(RC_LH_ADULT_FISH_13,               logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->IsAdult && ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT)),
+        LOCATION(RC_LH_ADULT_FISH_14,               logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->IsAdult && ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT)),
+        LOCATION(RC_LH_ADULT_FISH_15,               logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->IsAdult && ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT)),
+        LOCATION(RC_LH_ADULT_LOACH,                 logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->IsAdult && ctx->GetOption(RSK_FISHSANITY_AGE_SPLIT)),
+        LOCATION(RC_LH_HYRULE_LOACH,                logic->CanUse(RG_FISHING_POLE) && logic->HasItem(RG_SPEAK_HYLIAN)),
+        LOCATION(RC_FISHING_POLE_HINT,              logic->HasItem(RG_SPEAK_HYLIAN)),
+        LOCATION(RC_LH_FISHING_POND_RECTANGLE_SIGN, logic->CanRead()),
     }, {
         //Exits
         ENTRANCE(RR_LH_FISHING_ISLAND, true),

@@ -150,7 +150,9 @@ void EnMs_Talk(EnMs* this, PlayState* play) {
 
 void EnMs_Sell(EnMs* this, PlayState* play) {
     if (Actor_HasParent(&this->actor, play)) {
-        Rupees_ChangeBy(-sPrices[BEANS_BOUGHT]);
+        if (GameInteractor_Should(VB_MAGIC_BEAN_SALESMAN_TAKE_MONEY, true, this)) {
+            Rupees_ChangeBy(-sPrices[BEANS_BOUGHT]);
+        }
         this->actor.parent = NULL;
         this->actionFunc = EnMs_TalkAfterPurchase;
     } else {

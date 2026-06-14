@@ -3,6 +3,7 @@
 #include "soh/resource/logging/PathLogger.h"
 #include "spdlog/spdlog.h"
 #include <tinyxml2.h>
+#include <libultraship/bridge/consolevariablebridge.h>
 
 namespace SOH {
 std::shared_ptr<Ship::IResource>
@@ -83,7 +84,7 @@ ResourceFactoryXMLPathV0::ReadResource(std::shared_ptr<Ship::File> file,
 
         PathData pathDataEntry;
         // pathDataEntry.count = pointCount;
-        pathDataEntry.count = points.size();
+        pathDataEntry.count = static_cast<u8>(points.size());
 
         path->paths.push_back(points);
         pathDataEntry.points = path->paths.back().data();
@@ -93,7 +94,7 @@ ResourceFactoryXMLPathV0::ReadResource(std::shared_ptr<Ship::File> file,
         pathDataElement = pathDataElement->NextSiblingElement();
     }
 
-    path->numPaths = path->paths.size();
+    path->numPaths = static_cast<u32>(path->paths.size());
 
     return path;
 };

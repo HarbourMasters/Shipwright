@@ -10,17 +10,17 @@ void EnMa2_Destroy(Actor* thisx, PlayState* play);
 void EnMa2_Update(Actor* thisx, PlayState* play);
 void EnMa2_Draw(Actor* thisx, PlayState* play);
 
-u16 func_80AA19A0(PlayState* play, Actor* this);
-s16 func_80AA1A38(PlayState* play, Actor* this);
+u16 EnMa2_GetTextId(PlayState* play, Actor* this);
+s16 EnMa2_UpdateTalkState(PlayState* play, Actor* this);
 
-void func_80AA1AE4(EnMa2* this, PlayState* play);
-s32 func_80AA1C68(EnMa2* this);
+void EnMa2_UpdateTracking(EnMa2* this, PlayState* play);
+s32 EnMa2_IsSinging(EnMa2* this);
 void EnMa2_UpdateEyes(EnMa2* this);
-void func_80AA1DB4(EnMa2* this, PlayState* play);
-void func_80AA2018(EnMa2* this, PlayState* play);
-void func_80AA204C(EnMa2* this, PlayState* play);
-void func_80AA20E4(EnMa2* this, PlayState* play);
-void func_80AA21C8(EnMa2* this, PlayState* play);
+void EnMa2_UpdateSinging(EnMa2* this, PlayState* play);
+void EnMa2_WaitToEndTalk(EnMa2* this, PlayState* play);
+void EnMa2_WaitForOcarina(EnMa2* this, PlayState* play);
+void EnMa2_WaitForEponasSong(EnMa2* this, PlayState* play);
+void EnMa2_ForceTalkAfterSong(EnMa2* this, PlayState* play);
 
 const ActorInit En_Ma2_InitVars = {
     ACTOR_EN_MA2,
@@ -71,7 +71,7 @@ static AnimationFrameCountInfo sAnimationInfo[] = {
     { &gMalonAdultSingAnim, 1.0f, ANIMMODE_LOOP, -10.0f },
 };
 
-u16 func_80AA19A0(PlayState* play, Actor* thisx) {
+u16 EnMa2_GetTextId(PlayState* play, Actor* thisx) {
     u16 faceReaction = Text_GetFaceReaction(play, 23);
 
     if (faceReaction != 0) {
@@ -92,7 +92,7 @@ u16 func_80AA19A0(PlayState* play, Actor* thisx) {
     return 0x204C;
 }
 
-s16 func_80AA1A38(PlayState* play, Actor* thisx) {
+s16 EnMa2_UpdateTalkState(PlayState* play, Actor* thisx) {
     s16 ret = NPC_TALK_STATE_TALKING;
 
     switch (Message_GetState(&play->msgCtx)) {
@@ -124,7 +124,7 @@ s16 func_80AA1A38(PlayState* play, Actor* thisx) {
     return ret;
 }
 
-void func_80AA1AE4(EnMa2* this, PlayState* play) {
+void EnMa2_UpdateTracking(EnMa2* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
     s16 trackingMode;
 
@@ -140,7 +140,7 @@ void func_80AA1AE4(EnMa2* this, PlayState* play) {
     Npc_TrackPoint(&this->actor, &this->interactInfo, 0, trackingMode);
 }
 
-u16 func_80AA1B58(EnMa2* this, PlayState* play) {
+u16 EnMa2_GetSpawnIndex(EnMa2* this, PlayState* play) {
     if (LINK_IS_CHILD) {
         return 0;
     }
@@ -164,7 +164,7 @@ u16 func_80AA1B58(EnMa2* this, PlayState* play) {
     return 0;
 }
 
-s32 func_80AA1C68(EnMa2* this) {
+s32 EnMa2_IsSinging(EnMa2* this) {
     if (this->skelAnime.animation != &gMalonAdultSingAnim) {
         return 0;
     }
@@ -180,7 +180,7 @@ s32 func_80AA1C68(EnMa2* this) {
 }
 
 void EnMa2_UpdateEyes(EnMa2* this) {
-    if ((!func_80AA1C68(this)) && (DECR(this->blinkTimer) == 0)) {
+    if ((!EnMa2_IsSinging(this)) && (DECR(this->blinkTimer) == 0)) {
         this->eyeIndex += 1;
         if (this->eyeIndex >= 3) {
             this->blinkTimer = Rand_S16Offset(30, 30);
@@ -196,17 +196,17 @@ void EnMa2_ChangeAnim(EnMa2* this, s32 index) {
                      sAnimationInfo[index].mode, sAnimationInfo[index].morphFrames);
 }
 
-void func_80AA1DB4(EnMa2* this, PlayState* play) {
+void EnMa2_UpdateSinging(EnMa2* this, PlayState* play) {
     if (this->skelAnime.animation == &gMalonAdultSingAnim) {
         if (this->interactInfo.talkState == NPC_TALK_STATE_IDLE) {
-            if (this->unk_20A != 0) {
+            if (this->singingDisabled != 0) {
                 func_800F6584(0);
-                this->unk_20A = 0;
+                this->singingDisabled = 0;
             }
         } else {
-            if (this->unk_20A == 0) {
+            if (this->singingDisabled == 0) {
                 func_800F6584(1);
-                this->unk_20A = 1;
+                this->singingDisabled = 1;
             }
         }
     }
@@ -222,14 +222,14 @@ void EnMa2_Init(Actor* thisx, PlayState* play) {
     Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
     CollisionCheck_SetInfo2(&this->actor.colChkInfo, DamageTable_Get(22), &sColChkInfoInit);
 
-    switch (func_80AA1B58(this, play)) {
+    switch (EnMa2_GetSpawnIndex(this, play)) {
         case 1:
             EnMa2_ChangeAnim(this, ENMA2_ANIM_2);
-            this->actionFunc = func_80AA2018;
+            this->actionFunc = EnMa2_WaitToEndTalk;
             break;
         case 2:
             EnMa2_ChangeAnim(this, ENMA2_ANIM_3);
-            this->actionFunc = func_80AA204C;
+            this->actionFunc = EnMa2_WaitForOcarina;
             break;
         case 3:
             if (Flags_GetInfTable(INFTABLE_8D)) {
@@ -237,7 +237,7 @@ void EnMa2_Init(Actor* thisx, PlayState* play) {
             } else {
                 EnMa2_ChangeAnim(this, ENMA2_ANIM_3);
             }
-            this->actionFunc = func_80AA2018;
+            this->actionFunc = EnMa2_WaitToEndTalk;
             break;
         case 0:
             Actor_Kill(&this->actor);
@@ -257,48 +257,48 @@ void EnMa2_Destroy(Actor* thisx, PlayState* play) {
     Collider_DestroyCylinder(play, &this->collider);
 }
 
-void func_80AA2018(EnMa2* this, PlayState* play) {
+void EnMa2_WaitToEndTalk(EnMa2* this, PlayState* play) {
     if (this->interactInfo.talkState == NPC_TALK_STATE_ACTION) {
         this->actor.flags &= ~ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
         this->interactInfo.talkState = NPC_TALK_STATE_IDLE;
     }
 }
 
-void func_80AA204C(EnMa2* this, PlayState* play) {
+void EnMa2_WaitForOcarina(EnMa2* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
     if (player->stateFlags2 & PLAYER_STATE2_ATTEMPT_PLAY_FOR_ACTOR) {
         player->unk_6A8 = &this->actor;
         player->stateFlags2 |= PLAYER_STATE2_PLAY_FOR_ACTOR;
         func_8010BD58(play, OCARINA_ACTION_CHECK_EPONA);
-        this->actionFunc = func_80AA20E4;
+        this->actionFunc = EnMa2_WaitForEponasSong;
     } else if (this->actor.xzDistToPlayer < 30.0f + (f32)this->collider.dim.radius) {
         player->stateFlags2 |= PLAYER_STATE2_NEAR_OCARINA_ACTOR;
     }
 }
 
-void func_80AA20E4(EnMa2* this, PlayState* play) {
+void EnMa2_WaitForEponasSong(EnMa2* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
     if (play->msgCtx.ocarinaMode >= OCARINA_MODE_04) {
-        this->actionFunc = func_80AA204C;
+        this->actionFunc = EnMa2_WaitForOcarina;
         play->msgCtx.ocarinaMode = OCARINA_MODE_04;
     } else if (play->msgCtx.ocarinaMode == OCARINA_MODE_03) {
         Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
                                &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
-        this->unk_208 = 0x1E;
+        this->timer = 0x1E;
         Flags_SetInfTable(INFTABLE_8E);
-        this->actionFunc = func_80AA21C8;
+        this->actionFunc = EnMa2_ForceTalkAfterSong;
         play->msgCtx.ocarinaMode = OCARINA_MODE_04;
     } else {
         player->stateFlags2 |= PLAYER_STATE2_NEAR_OCARINA_ACTOR;
     }
 }
 
-void func_80AA21C8(EnMa2* this, PlayState* play) {
+void EnMa2_ForceTalkAfterSong(EnMa2* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
-    if (DECR(this->unk_208)) {
+    if (DECR(this->timer)) {
         player->stateFlags2 |= PLAYER_STATE2_NEAR_OCARINA_ACTOR;
     } else {
         if (this->interactInfo.talkState == NPC_TALK_STATE_IDLE) {
@@ -306,7 +306,7 @@ void func_80AA21C8(EnMa2* this, PlayState* play) {
             Message_CloseTextbox(play);
         } else {
             this->actor.flags &= ~ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
-            this->actionFunc = func_80AA2018;
+            this->actionFunc = EnMa2_WaitToEndTalk;
         }
     }
 }
@@ -320,11 +320,11 @@ void EnMa2_Update(Actor* thisx, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
     EnMa2_UpdateEyes(this);
     this->actionFunc(this, play);
-    func_80AA1DB4(this, play);
-    func_80AA1AE4(this, play);
-    if (this->actionFunc != func_80AA20E4) {
+    EnMa2_UpdateSinging(this, play);
+    EnMa2_UpdateTracking(this, play);
+    if (this->actionFunc != EnMa2_WaitForEponasSong) {
         Npc_UpdateTalking(play, &this->actor, &this->interactInfo.talkState, (f32)this->collider.dim.radius + 30.0f,
-                          func_80AA19A0, func_80AA1A38);
+                          EnMa2_GetTextId, EnMa2_UpdateTalkState);
     }
 }
 
@@ -349,8 +349,8 @@ s32 EnMa2_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* p
     }
     if ((limbIndex == MALON_ADULT_CHEST_AND_NECK_LIMB) || (limbIndex == MALON_ADULT_LEFT_SHOULDER_LIMB) ||
         (limbIndex == MALON_ADULT_RIGHT_SHOULDER_LIMB)) {
-        rot->y += Math_SinS(this->unk_212[limbIndex].y) * 200.0f;
-        rot->z += Math_CosS(this->unk_212[limbIndex].z) * 200.0f;
+        rot->y += Math_SinS(this->upperBodyRot[limbIndex].y) * 200.0f;
+        rot->z += Math_CosS(this->upperBodyRot[limbIndex].z) * 200.0f;
     }
     return false;
 }

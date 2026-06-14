@@ -3,6 +3,7 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "ship/utils/StringHelper.h"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
+#include "soh/Enhancements/randomizer/SeedContext.h"
 #include "soh/ShipInit.hpp"
 #include "soh/ShipUtils.h"
 
@@ -521,11 +522,11 @@ void KaleidoEntryOcarinaButtons::CalculateColors() {
 }
 
 void KaleidoEntryOcarinaButtons::Update(PlayState* play) {
-    mButtonCollected[0] = GameInteractor::RawAction::CheckFlag(FLAG_RANDOMIZER_INF, RAND_INF_HAS_OCARINA_A) > 0;
-    mButtonCollected[1] = GameInteractor::RawAction::CheckFlag(FLAG_RANDOMIZER_INF, RAND_INF_HAS_OCARINA_C_UP) > 0;
-    mButtonCollected[2] = GameInteractor::RawAction::CheckFlag(FLAG_RANDOMIZER_INF, RAND_INF_HAS_OCARINA_C_DOWN) > 0;
-    mButtonCollected[3] = GameInteractor::RawAction::CheckFlag(FLAG_RANDOMIZER_INF, RAND_INF_HAS_OCARINA_C_LEFT) > 0;
-    mButtonCollected[4] = GameInteractor::RawAction::CheckFlag(FLAG_RANDOMIZER_INF, RAND_INF_HAS_OCARINA_C_RIGHT) > 0;
+    mButtonCollected[0] = GameInteractor::RawAction::CheckFlag(FLAG_RANDOMIZER_INF, RAND_INF_HAS_OCARINA_A);
+    mButtonCollected[1] = GameInteractor::RawAction::CheckFlag(FLAG_RANDOMIZER_INF, RAND_INF_HAS_OCARINA_C_UP);
+    mButtonCollected[2] = GameInteractor::RawAction::CheckFlag(FLAG_RANDOMIZER_INF, RAND_INF_HAS_OCARINA_C_DOWN);
+    mButtonCollected[3] = GameInteractor::RawAction::CheckFlag(FLAG_RANDOMIZER_INF, RAND_INF_HAS_OCARINA_C_LEFT);
+    mButtonCollected[4] = GameInteractor::RawAction::CheckFlag(FLAG_RANDOMIZER_INF, RAND_INF_HAS_OCARINA_C_RIGHT);
     CalculateColors();
     mAchieved = false;
     for (size_t i = 0; i < mButtonCollected.size(); i++) {

@@ -178,10 +178,10 @@ void CreateCylinderData() {
     cylinderVtx.push_back(gdSPDefVtxN(0, 128, 0, 0, 0, 0, 127, 0, 0xFF)); // Top center vertex
     // Create two rings of vertices
     for (int i = 0; i < CYL_DIVS; ++i) {
-        short vtx_x = floorf(0.5f + cosf(2.f * M_PI * i / CYL_DIVS) * 128.f);
-        short vtx_z = floorf(0.5f - sinf(2.f * M_PI * i / CYL_DIVS) * 128.f);
-        signed char norm_x = cosf(2.f * M_PI * i / CYL_DIVS) * 127.f;
-        signed char norm_z = -sinf(2.f * M_PI * i / CYL_DIVS) * 127.f;
+        short vtx_x = static_cast<short>(floorf(0.5f + cosf(static_cast<f32>(2.f * M_PI * i / CYL_DIVS)) * 128.f));
+        short vtx_z = static_cast<short>(floorf(0.5f - sinf(static_cast<f32>(2.f * M_PI * i / CYL_DIVS)) * 128.f));
+        signed char norm_x = static_cast<signed char>(cosf(static_cast<f32>(2.f * M_PI * i / CYL_DIVS)) * 127.f);
+        signed char norm_z = static_cast<signed char>(-sinf(static_cast<f32>(2.f * M_PI * i / CYL_DIVS)) * 127.f);
         cylinderVtx.push_back(gdSPDefVtxN(vtx_x, 0, vtx_z, 0, 0, norm_x, 0, norm_z, 0xFF));
         cylinderVtx.push_back(gdSPDefVtxN(vtx_x, 128, vtx_z, 0, 0, norm_x, 0, norm_z, 0xFF));
     }
@@ -337,8 +337,6 @@ void InitGfx(std::vector<Gfx>& gfx, ColRenderSetting setting) {
     uint32_t blc1;
     uint32_t blc2;
     uint8_t alpha;
-    uint64_t cm;
-    uint32_t gm;
 
     if (setting == ColRenderTransparent) {
         rm = Z_CMP | IM_RD | CVG_DST_FULL | FORCE_BL;
@@ -608,7 +606,9 @@ void DrawColCheckList(std::vector<Gfx>& dl, Collider** objects, int32_t count) {
 
                 Mtx m;
                 MtxF mt;
-                SkinMatrix_SetTranslate(&mt, cyl->dim.pos.x, cyl->dim.pos.y + cyl->dim.yShift, cyl->dim.pos.z);
+                SkinMatrix_SetTranslate(&mt, static_cast<f32>(cyl->dim.pos.x),
+                                        static_cast<f32>(cyl->dim.pos.y + cyl->dim.yShift),
+                                        static_cast<f32>(cyl->dim.pos.z));
                 MtxF ms;
                 int32_t radius = cyl->dim.radius == 0 ? 1 : cyl->dim.radius;
                 SkinMatrix_SetScale(&ms, radius / 128.0f, cyl->dim.height / 128.0f, radius / 128.0f);
@@ -686,14 +686,20 @@ void DrawWaterbox(std::vector<Gfx>& dl, WaterBox* water, float water_max_depth =
     }
 
     Vec3f vtx[] = {
-        { water->xMin, water->ySurface, water->zMin + water->zLength },
-        { water->xMin + water->xLength, water->ySurface, water->zMin + water->zLength },
-        { water->xMin + water->xLength, water->ySurface, water->zMin },
-        { water->xMin, water->ySurface, water->zMin },
-        { water->xMin, water_max_depth, water->zMin + water->zLength },
-        { water->xMin + water->xLength, water_max_depth, water->zMin + water->zLength },
-        { water->xMin + water->xLength, water_max_depth, water->zMin },
-        { water->xMin, water_max_depth, water->zMin },
+        { static_cast<f32>(water->xMin), static_cast<f32>(water->ySurface),
+          static_cast<f32>(water->zMin + water->zLength) },
+        { static_cast<f32>(water->xMin + water->xLength), static_cast<f32>(water->ySurface),
+          static_cast<f32>(water->zMin + water->zLength) },
+        { static_cast<f32>(water->xMin + water->xLength), static_cast<f32>(water->ySurface),
+          static_cast<f32>(water->zMin) },
+        { static_cast<f32>(water->xMin), static_cast<f32>(water->ySurface), static_cast<f32>(water->zMin) },
+        { static_cast<f32>(water->xMin), static_cast<f32>(water_max_depth),
+          static_cast<f32>(water->zMin + water->zLength) },
+        { static_cast<f32>(water->xMin + water->xLength), static_cast<f32>(water_max_depth),
+          static_cast<f32>(water->zMin + water->zLength) },
+        { static_cast<f32>(water->xMin + water->xLength), static_cast<f32>(water_max_depth),
+          static_cast<f32>(water->zMin) },
+        { static_cast<f32>(water->xMin), static_cast<f32>(water_max_depth), static_cast<f32>(water->zMin) },
     };
     DrawQuad(dl, vtx[0], vtx[1], vtx[2], vtx[3]);
     DrawQuad(dl, vtx[0], vtx[3], vtx[7], vtx[4]);
@@ -738,7 +744,7 @@ template <typename T> size_t ResetVector(T& vec) {
     size_t oldSize = vec.size();
     vec.clear();
     // Reserve slightly more space than last frame to account for variance (such as different amounts of bg actors)
-    vec.reserve(oldSize * 1.2);
+    vec.reserve(static_cast<size_t>(oldSize * 1.2f));
     return vec.capacity();
 }
 

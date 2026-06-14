@@ -823,8 +823,8 @@ s16 EnGo2_UpdateTalkState(PlayState* play, Actor* thisx) {
 
 s32 func_80A44790(EnGo2* this, PlayState* play) {
     if ((this->actor.params & 0x1F) != GORON_DMT_BIGGORON && (this->actor.params & 0x1F) != GORON_CITY_ROLLING_BIG) {
-        return Npc_UpdateTalking(play, &this->actor, &this->interactInfo.talkState, this->unk_218, EnGo2_GetTextId,
-                                 EnGo2_UpdateTalkState);
+        return Npc_UpdateTalking(play, &this->actor, &this->interactInfo.talkState, this->interactRange,
+                                 EnGo2_GetTextId, EnGo2_UpdateTalkState);
     } else if (((this->actor.params & 0x1F) == GORON_DMT_BIGGORON) && ((this->collider.base.ocFlags2 & 1) == 0)) {
         return false;
     } else {
@@ -834,7 +834,7 @@ s32 func_80A44790(EnGo2* this, PlayState* play) {
         } else if (this->interactInfo.talkState != NPC_TALK_STATE_IDLE) {
             this->interactInfo.talkState = EnGo2_UpdateTalkState(play, &this->actor);
             return false;
-        } else if (func_8002F2CC(&this->actor, play, this->unk_218)) {
+        } else if (func_8002F2CC(&this->actor, play, this->interactRange)) {
             this->actor.textId = EnGo2_GetTextId(play, &this->actor);
         }
         return false;
@@ -854,8 +854,8 @@ void EnGo2_SetShape(EnGo2* this) {
     this->actor.shape.shadowScale = D_80A481F8[index].shape_unk_10;
     Actor_SetScale(&this->actor, D_80A481F8[index].scale);
     this->actor.targetMode = D_80A481F8[index].actor_unk_1F;
-    this->unk_218 = D_80A481F8[index].unk_218;
-    this->unk_218 += this->collider.dim.radius;
+    this->interactRange = D_80A481F8[index].interactRange;
+    this->interactRange += this->collider.dim.radius;
 }
 
 void EnGo2_CheckCollision(EnGo2* this, PlayState* play) {
@@ -2017,7 +2017,7 @@ void EnGo2_Update(Actor* thisx, PlayState* play) {
     }
     this->actionFunc(this, play);
     if (this->unk_211 == true) {
-        func_80034F54(play, this->unk_226, this->unk_24A, 18);
+        func_80034F54(play, this->fidgetTableY, this->fidgetTableZ, 18);
     }
     func_80A45288(this, play);
     EnGo2_EyeMouthTexState(this);
@@ -2075,9 +2075,9 @@ s32 EnGo2_OverrideLimbDraw(PlayState* play, s32 limb, Gfx** dList, Vec3f* pos, V
         Matrix_RotateX(float1, MTXMODE_APPLY);
     }
     if ((limb == 10) || (limb == 11) || (limb == 14)) {
-        float1 = Math_SinS(this->unk_226[limb]);
+        float1 = Math_SinS(this->fidgetTableY[limb]);
         rot->y += float1 * 200.0f;
-        float1 = Math_CosS(this->unk_24A[limb]);
+        float1 = Math_CosS(this->fidgetTableZ[limb]);
         rot->z += float1 * 200.0f;
     }
     return 0;

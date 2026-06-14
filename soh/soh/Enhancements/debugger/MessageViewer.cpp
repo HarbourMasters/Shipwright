@@ -167,7 +167,7 @@ void FindMessage(PlayState* play, const uint16_t textId, const uint8_t language)
     messageTableEntry++;
     nextSeg = messageTableEntry->segment;
     font->msgOffset = foundSeg - seg;
-    font->msgLength = nextSeg - foundSeg;
+    font->msgLength = static_cast<u32>(nextSeg - foundSeg);
 }
 
 static const char* msgStaticTbl[] = {
@@ -208,11 +208,11 @@ void MessageDebug_StartTextBox(const char* tableId, uint16_t textId, uint8_t lan
         const uintptr_t src = font->msgOffset;
         memcpy(font->msgBuf, reinterpret_cast<void const*>(src), font->msgLength);
     } else {
-        constexpr int maxBufferSize = sizeof(font->msgBuf);
+        constexpr size_t maxBufferSize = sizeof(font->msgBuf);
         const CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(tableId, textId);
         font->charTexBuf[0] = (messageEntry.GetTextBoxType() << 4) | messageEntry.GetTextBoxPosition();
-        font->msgLength =
-            SohUtils::CopyStringToCharBuffer(buffer, messageEntry.GetForLanguage(language), maxBufferSize);
+        font->msgLength = static_cast<u32>(
+            SohUtils::CopyStringToCharBuffer(buffer, messageEntry.GetForLanguage(language), maxBufferSize));
         msgCtx->msgLength = static_cast<int32_t>(font->msgLength);
     }
     msgCtx->textBoxProperties = font->charTexBuf[0];
@@ -250,8 +250,8 @@ void MessageDebug_StartTextBox(const char* tableId, uint16_t textId, uint8_t lan
         }
         msgCtx->textboxColorAlphaCurrent = 0;
     }
-    msgCtx->choiceNum = msgCtx->textUnskippable = msgCtx->textboxEndType = 0;
-    msgCtx->msgBufPos = msgCtx->unk_E3D0 = msgCtx->textDrawPos = 0;
+    msgCtx->choiceNum = msgCtx->textboxEndType = 0;
+    msgCtx->textUnskippable = msgCtx->msgBufPos = msgCtx->unk_E3D0 = msgCtx->textDrawPos = 0;
     msgCtx->talkActor = &player->actor;
     msgCtx->msgMode = MSGMODE_TEXT_START;
     msgCtx->stateTimer = 0;

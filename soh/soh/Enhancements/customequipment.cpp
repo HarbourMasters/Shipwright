@@ -57,6 +57,22 @@ static const char* GetBrokenLongswordInSheathDL() {
         { gCustomBrokenLongswordInSheathDL, gCustomBreakableLongswordInSheathDL, gCustomLongswordInSheathDL });
 }
 
+static const char* GetCustomFPSSlingshotDL() {
+    return ResolveCustomChain({ gCustomFPSSlingshotDL, gCustomSlingshotDL });
+}
+
+static const char* GetCustomFPSBowDL() {
+    return ResolveCustomChain({ gCustomFPSBowDL, gCustomBowDL });
+}
+
+static const char* GetCustomFPSHookshotDL() {
+    return ResolveCustomChain({ gCustomFPSHookshotDL, gCustomHookshotDL });
+}
+
+static const char* GetCustomFPSLongshotDL() {
+    return ResolveCustomChain({ gCustomFPSLongshotDL, gCustomLongshotDL });
+}
+
 static void UpdateCustomEquipmentSetModel(Player* player, u8 ModelGroup) {
     (void)ModelGroup;
 
@@ -107,6 +123,8 @@ static bool IsDummyPlayer(const Player* player) {
     return player != nullptr && player->actor.update == DummyPlayer_Update;
 }
 
+static bool sPrevAltAssetsEnabled = false;
+
 void PatchOrUnpatch(const char* resource, const char* gfx, const char* dlist1, const char* dlist2, const char* dlist3,
                     const char* alternateDL) {
     if (resource == NULL || gfx == NULL || dlist1 == NULL || dlist2 == NULL) {
@@ -114,6 +132,7 @@ void PatchOrUnpatch(const char* resource, const char* gfx, const char* dlist1, c
     }
 
     const bool altAssetsRuntime = ResourceMgr_IsAltAssetsEnabled();
+    const bool altAssetsChanged = (altAssetsRuntime != sPrevAltAssetsEnabled);
 
     if (!altAssetsRuntime) {
         // Alt assets are off; ensure any prior patches using these names are reverted.
@@ -122,9 +141,14 @@ void PatchOrUnpatch(const char* resource, const char* gfx, const char* dlist1, c
         if (dlist3 != NULL) {
             ResourceMgr_UnpatchGfxByName(resource, dlist3);
         }
-        // Drop any cached version of the resource so it reloads clean (unpatched) next use.
-        ResourceMgr_UnloadResource(resource);
+        if (altAssetsChanged) {
+            ResourceMgr_UnloadResource(resource);
+        }
         return;
+    }
+
+    if (altAssetsChanged) {
+        ResourceMgr_UnloadResource(resource);
     }
 
     if (!ResourceGetIsCustomByName(gfx)) {
@@ -395,8 +419,8 @@ static void ApplyCommonEquipmentPatches() {
         ApplyPatchEntries({
             { gLinkAdultRightHandHoldingHookshotNearDL, gCustomHookshotDL, "customHookshot1", "customHookshot2",
               "customHookshot3", rightHandClosed },
-            { gLinkAdultRightHandHoldingHookshotFarDL, gCustomHookshotDL, "customHookshotFPS1", "customHookshotFPS2",
-              "customHookshotFPS3", fpsHand },
+            { gLinkAdultRightHandHoldingHookshotFarDL, GetCustomFPSHookshotDL(), "customHookshotFPS1",
+              "customHookshotFPS2", "customHookshotFPS3", fpsHand },
         });
     }
 
@@ -404,8 +428,8 @@ static void ApplyCommonEquipmentPatches() {
         ApplyPatchEntries({
             { gLinkAdultRightHandHoldingHookshotNearDL, gCustomLongshotDL, "customHookshot1", "customHookshot2",
               "customHookshot3", rightHandClosed },
-            { gLinkAdultRightHandHoldingHookshotFarDL, gCustomLongshotDL, "customHookshotFPS1", "customHookshotFPS2",
-              "customHookshotFPS3", fpsHand },
+            { gLinkAdultRightHandHoldingHookshotFarDL, GetCustomFPSLongshotDL(), "customHookshotFPS1",
+              "customHookshotFPS2", "customHookshotFPS3", fpsHand },
         });
     }
 
@@ -436,16 +460,16 @@ static void ApplyCommonEquipmentPatches() {
           "customChildOcarina3", rightHandNear },
         { gLinkAdultRightHandHoldingBowNearDL, gCustomBowDL, "customBow1", "customBow2", "customBow3",
           rightHandClosed },
-        { gLinkAdultRightHandHoldingBowFirstPersonDL, gCustomBowDL, "customBowFPS1", "customBowFPS2", "customBowFPS3",
-          fpsHand },
+        { gLinkAdultRightHandHoldingBowFirstPersonDL, GetCustomFPSBowDL(), "customBowFPS1", "customBowFPS2",
+          "customBowFPS3", fpsHand },
         { gLinkAdultLeftHandHoldingHammerNearDL, gCustomHammerDL, "customHammer1", "customHammer2", "customHammer3",
           leftHandClosed },
         { gLinkChildLeftFistAndBoomerangNearDL, gCustomBoomerangDL, "customBoomerang1", "customBoomerang2",
           "customBoomerang3", leftHandClosed },
         { gLinkChildRightHandHoldingSlingshotNearDL, gCustomSlingshotDL, "customSlingshot1", "customSlingshot2",
           "customSlingshot3", rightHandClosed },
-        { gLinkChildRightArmStretchedSlingshotDL, gCustomSlingshotDL, "customSlingshotFPS1", "customSlingshotFPS2",
-          "customSlingshotFPS3", fpsHand },
+        { gLinkChildRightArmStretchedSlingshotDL, GetCustomFPSSlingshotDL(), "customSlingshotFPS1",
+          "customSlingshotFPS2", "customSlingshotFPS3", fpsHand },
     });
 
     ApplyPatchEntries({
@@ -457,8 +481,8 @@ static void ApplyCommonEquipmentPatches() {
           "customBoomerang3", leftHandClosed },
         { gLinkChildRightHandHoldingSlingshotNearDL, gCustomSlingshotDL, "customSlingshot1", "customSlingshot2",
           "customSlingshot3", rightHandClosed },
-        { gLinkChildRightArmStretchedSlingshotDL, gCustomSlingshotDL, "customSlingshotFPS1", "customSlingshotFPS2",
-          "customSlingshotFPS3", fpsHand },
+        { gLinkChildRightArmStretchedSlingshotDL, GetCustomFPSSlingshotDL(), "customSlingshotFPS1",
+          "customSlingshotFPS2", "customSlingshotFPS3", fpsHand },
     });
 }
 
@@ -496,6 +520,8 @@ void UpdatePatchCustomEquipmentDlists() {
     }
 
     ApplyCommonEquipmentPatches();
+
+    sPrevAltAssetsEnabled = ResourceMgr_IsAltAssetsEnabled();
 }
 
 static void PatchCustomEquipment() {

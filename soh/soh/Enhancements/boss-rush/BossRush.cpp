@@ -302,7 +302,7 @@ void FileChoose_DrawBossRushMenuWindowContents(FileChooseContext* fileChooseCont
 
     uint8_t language = (gSaveContext.language == LANGUAGE_JPN) ? LANGUAGE_ENG : gSaveContext.language;
     uint8_t listOffset = fileChooseContext->bossRushOffset;
-    uint8_t textAlpha = fileChooseContext->bossRushUIAlpha;
+    int16_t textAlpha = fileChooseContext->bossRushUIAlpha;
 
     // Draw arrows to indicate that the list can scroll up or down.
     // Arrow up
@@ -351,12 +351,13 @@ void FileChoose_DrawBossRushMenuWindowContents(FileChooseContext* fileChooseCont
                                 G_TX_NOLOD);
             FileChoose_DrawTextRec(fileChooseContext->state.gfxCtx, fileChooseContext->stickLeftPrompt.arrowColorR,
                                    fileChooseContext->stickLeftPrompt.arrowColorG,
-                                   fileChooseContext->stickLeftPrompt.arrowColorB, textAlpha, 160, (92 + textYOffset),
-                                   0.42f, 0, 0, -1.0f, 1.0f);
+                                   fileChooseContext->stickLeftPrompt.arrowColorB, textAlpha, 160.0f,
+                                   static_cast<f32>(92 + textYOffset), 0.42f, 0, 0, -1.0f, 1.0f);
             FileChoose_DrawTextRec(fileChooseContext->state.gfxCtx, fileChooseContext->stickRightPrompt.arrowColorR,
                                    fileChooseContext->stickRightPrompt.arrowColorG,
-                                   fileChooseContext->stickRightPrompt.arrowColorB, textAlpha, (171 + finalKerning),
-                                   (92 + textYOffset), 0.42f, 0, 0, 1.0f, 1.0f);
+                                   fileChooseContext->stickRightPrompt.arrowColorB, textAlpha,
+                                   static_cast<f32>(171 + finalKerning), static_cast<f32>(92 + textYOffset), 0.42f, 0,
+                                   0, 1.0f, 1.0f);
         }
     }
 

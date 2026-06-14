@@ -41,7 +41,7 @@ std::shared_ptr<Ship::IResource> SetExitListFactoryXML::ReadResource(std::shared
         child = child->NextSiblingElement();
     }
 
-    setExitList->numExits = setExitList->exits.size();
+    setExitList->numExits = static_cast<u32>(setExitList->exits.size());
 
     return setExitList;
 }

@@ -197,6 +197,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // true
+    // ```
+    // #### `args`
+    // - 'EnHy*'
+    VB_BEGGAR_GIVE_ITEM,
+
+    // #### `result`
+    // ```c
     // this->collider.base.acFlags & 2 || blueFireArrowHit
     // ```
     // #### `args`
@@ -218,6 +226,14 @@ typedef enum {
     // #### `args`
     // - `*BgIceShelter`
     VB_BG_ICE_SHELTER_MELT,
+
+    // #### `result`
+    // ```c
+    // this->timer > 0 && this->timer <= 100
+    // ```
+    // #### `args`
+    // - `*BgSpot06Objects`
+    VB_BG_SPOT06_OBJECTS_GATE_SKIP,
 
     // #### `result`
     // ```c
@@ -251,6 +267,15 @@ typedef enum {
     // #### `args`
     // - `*Actor` (interactRangeActor)
     VB_BOTTLE_ACTOR,
+
+    // #### `result`
+    // Actor is ACTOR_OBJ_BOMBIWA, or ACTOR_OBJ_HAMISHI
+    // ```c
+    // Flags_GetSwitch(play, this->actor.params & 0x3F)
+    // ```
+    // #### `args`
+    // - `*Actor` (interactRangeActor)
+    VB_BOULDER_BREAK_FLAG,
 
     // #### `result`
     // ```c
@@ -548,11 +573,21 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // (this->heldItemAction == PLAYER_IA_HOOKSHOT) ||
+    // (this->heldItemAction == PLAYER_IA_LONGSHOT)
+    // ```
+    // #### `args`
+    // - '*Player'
+    VB_DRAW_ADDITIONAL_RETICLES,
+
+    // #### `result`
+    // ```c
     // true
     // ```
     // #### `args`
-    // - None
-    VB_DRAW_ADDITIONAL_RETICLES,
+    // - `PlayerMask currentMask`
+    // - `*PlayState play`
+    VB_DRAW_PLAYER_MASK,
 
     // #### `result`
     // In `Interface_DrawAmmoCount`:
@@ -584,6 +619,16 @@ typedef enum {
     // #### `args`
     // - Player*
     VB_EMPTYING_BOTTLE,
+
+    // #### `result`
+    // ```c
+    // (gSaveContext.inventory.items[gSaveContext.equips.cButtonSlots[button - 1]] == ITEM_MILK_BOTTLE) &&
+    //     (item == ITEM_BOTTLE)
+    // ```
+    // #### `args`
+    // - `int32_t` (button - promoted from `u8`)
+    // - `int32_t` (item - promoted from `u8`)
+    VB_EMPTY_BOTTLE_TO_HALF_MILK,
 
     // #### `result`
     // ```c
@@ -890,6 +935,39 @@ typedef enum {
     // #### `args`
     // - `*EnGe1`
     VB_GIVE_ITEM_FROM_HORSEBACK_ARCHERY,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnGe1`
+    // - `*PlayState`
+    VB_PLAY_HORSEBACK_ARCHERY,
+
+    // #### `result`
+    // ```c
+    // play->sceneNum == SCENE_KOKIRI_FOREST
+    // ```
+    // #### `args`
+    // - `*EnSa`
+    VB_SARIA_GESTURE,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*s32` (scoreIndex: 0=30pts, 1=60pts, 2=100pts)
+    VB_SCORE_HORSEBACK_ARCHERY_TARGET,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*InterfaceContext`
+    VB_SET_HORSEBACK_ARCHERY_AMMO,
 
     // #### `result`
     // ```c
@@ -1261,6 +1339,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*BgIceTurara`
+    VB_ICICLE_SETUP_DRAW,
+
+    // #### `result`
+    // ```c
     // (respawnFlag == 1) || (respawnFlag == -1)
     // ```
     // #### `args`
@@ -1293,11 +1379,27 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // this->unk_15A > 0
+    // ```
+    // #### `args`
+    // - `*EnItem00`
+    VB_ITEM00_TIMER_TICK,
+
+    // #### `result`
+    // ```c
     // true
     // ```
     // #### `args`
     // - None
     VB_JABU_WOBBLE,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
+    VB_HOT_ROOM_DISTORTION,
 
     // #### `result`
     // ```c
@@ -1370,6 +1472,14 @@ typedef enum {
     // #### `args`
     // - `*DoorShutter`
     VB_LOCK_BOSS_DOOR,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnMs`
+    VB_MAGIC_BEAN_SALESMAN_TAKE_MONEY,
 
     // #### `result`
     // ```c
@@ -1533,6 +1643,14 @@ typedef enum {
     // #### `args`
     // - `*BossGanondrof`
     VB_PHANTOM_GANON_DEATH_SCENE,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
+    VB_PLAY_BEAN_PLANTING_CS,
 
     // #### `result`
     // ##### In `DoorWarp1_ChildWarpOut` - `SCENE_DODONGOS_CAVERN_BOSS`
@@ -1928,6 +2046,22 @@ typedef enum {
     VB_REDEAD_GIBDO_FREEZE_LINK,
 
     // #### `result`
+    // ```c
+    // this->alpha <= 0
+    // ```
+    // #### `args`
+    // - `*BgIceShelter`
+    VB_RED_ICE_DROP_ITEM,
+
+    // #### `result`
+    // ```c
+    // !((this->dyna.actor.params >> 6) & 1) && (Flags_GetSwitch(play, this->dyna.actor.params & 0x3F))
+    // ```
+    // #### `args`
+    // - `*BgIceShelter`
+    VB_RED_ICE_MELTED_FLAG,
+
+    // #### `result`
     // #### `result`
     // ```c
     // true
@@ -1959,6 +2093,14 @@ typedef enum {
     // #### `args`
     // - None
     VB_REVERT_SPOILING_ITEMS,
+
+    // #### `result`
+    // ```c
+    // varies
+    // ```
+    // #### `args`
+    // - `*EnIshi`, `*ObjBombiwa`, or `*ObjHamishi`
+    VB_ROCK_DROP_ITEM,
 
     // #### `result`
     // ```c
@@ -2011,6 +2153,14 @@ typedef enum {
     // #### `args`
     // - `*EnNiwLady`
     VB_SET_CUCCO_COUNT,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
+    VB_SET_DIVING_GAME_TIME_LIMIT,
 
     // #### `result`
     // ```c
@@ -2069,6 +2219,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // CHECK_BTN_ALL(input->press.button, BTN_B)
+    // ```
+    // #### `args`
+    // - `*Input`
+    VB_SHOULD_OSSAN_CANCEL,
+
+    // #### `result`
+    // ```c
     // true
     // ```
     // #### `args`
@@ -2099,6 +2257,14 @@ typedef enum {
     // #### `args`
     // - None
     VB_SHOW_TITLE_CARD,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
+    VB_SKIP_TALKING,
 
     // #### `result`
     // ```c
@@ -2172,6 +2338,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // this->timer == 4
+    // ```
+    // #### `args`
+    // - `*EnButte`
+    VB_SPAWN_BUTTERFLY_FAIRY,
+
+    // #### `result`
+    // ```c
     // INV_CONTENT(ITEM_ARROW_FIRE) == ITEM_NONE
     // ```
     // #### `args`
@@ -2230,6 +2404,22 @@ typedef enum {
     // #### `args`
     // - None
     VB_SPEAK,
+
+    // #### `result`
+    // ```c
+    // this->dyna.actor.params == TURARA_STALACTITE_REGROW
+    // ```
+    // #### `args`
+    // - `*BgIceTurara`
+    VB_STALACTITE_DROP_ITEM,
+
+    // #### `result`
+    // ```c
+    // this->collider.base.acFlags & AC_HIT
+    // ```
+    // #### `args`
+    // - `*BgIceTurara`
+    VB_STALAGMITE_DROP_ITEM,
 
     // #### `result`
     // ```c
@@ -2400,6 +2590,42 @@ typedef enum {
     // true
     // ```
     // #### `args`
+    // - `*EnWonderItem`
+    VB_WONDER_DROP_ITEM,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - 'Vec3f' pos
+    // - 'f32' rotY
+    VB_WONDER_HEISHI_ITEM,
+
+    // #### `result`
+    // ```c
+    // (gSaveContext.dayTime < 0xB888 || IS_DAY) && ((!IS_RANDO &&
+    // !Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) || (IS_RANDO && !metZelda))
+    // (gSaveContext.dayTime >= 0xB889) || !IS_DAY || (!IS_RANDO &&
+    // Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) || (IS_RANDO && metZelda)
+    // ```
+    // #### `args`
+    // - EnHeishi1*
+    VB_WONDER_HEISHI_PATROLLING,
+
+    // #### `result`
+    // ```c
+    // (this->switchFlag >= 0) && Flags_GetSwitch(play, this->switchFlag)
+    // ```
+    // #### `args`
+    // - `None`
+    VB_WONDER_SPAWN,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
     // - `*EnWonderTalk2`
     VB_WONDER_TALK,
 
@@ -2519,6 +2745,15 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // false
+    // ```
+    // #### `args`
+    // - *EnGirlACanBuyResult
+    // - `RAND_INF`
+    VB_CAN_BUY_SHOP_SHIELD_OR_TUNIC,
+
+    // #### `result`
+    // ```c
     // true
     // ```
     // #### `args`
@@ -2539,14 +2774,6 @@ typedef enum {
     // #### `args`
     // - `*BgHidanDalm`
     VB_HAMMER_TOTEM_BREAK,
-
-    // #### `result`
-    // ```c
-    // Actor_GetCollidedExplosive(play, &this->collider.base) != NULL
-    // ```
-    // #### `args`
-    // - `*BgHidanKowarerukabe`
-    VB_FIRE_TEMPLE_BOMBABLE_WALL_BREAK,
 
     // #### `result`
     // ```c
@@ -2581,6 +2808,22 @@ typedef enum {
     // #### `args`
     // - `*FileChooseContext`
     VB_FILE_SELECT_DRAW_FILE_INFO_BOX,
+
+    // #### `result`
+    // ```c
+    // Actor_GetCollidedExplosive(play, &this->collider.base) != NULL
+    // ```
+    // #### `args`
+    // - `*BgHidanKowarerukabe`
+    VB_FIRE_TEMPLE_BOMBABLE_WALL_BREAK,
+
+    // #### `result`
+    // ```c
+    // this->timer > 0
+    // ```
+    // #### `args`
+    // - None
+    VB_FISH_TIMER_TICK,
 
     // #### `result`
     // ```c
@@ -2775,7 +3018,65 @@ typedef enum {
     // ```
     // #### `args`
     // - `*int32_t (camId)`
-    VB_SHOULD_LOAD_BG_IMAGE
+    VB_SHOULD_LOAD_BG_IMAGE,
+
+    // #### `result`
+    // ```c
+    // this->actor.floorHeight <= -10000.0f
+    // ```
+    // #### `args`
+    // - `*EnItem00`
+    VB_ITEM00_KILL,
+
+    // true
+    // ```
+    // #### `args`
+    // - `*EnPeehat`
+    // - `*PlayState`
+    VB_PEEHAT_SPAWN_LARVAS,
+
+    // #### `result`
+    // ```c
+    // gSaveContext.equips.buttonItems[0] != ITEM_NONE
+    // ```
+    // Whether the B button slot should be treated as holding an item when entering the
+    // horseback/minigame "temporary B" force path. Rando returns `true` for a swordless
+    // player so the swordless-on-Epona item glitch can be blocked.
+    // #### `args`
+    // - `*PlayState`
+    VB_TEMP_B_TREAT_AS_OCCUPIED,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // Side-effect hook (return value ignored): fired right after the vanilla
+    // `buttonStatus[0] = buttonItems[0]` stash so rando can relocate it to its swordless
+    // sentinel for later restoration.
+    // #### `args`
+    // - `*PlayState`
+    VB_TEMP_B_STASH_SWORDLESS,
+
+    // #### `result`
+    // ```c
+    // (gSaveContext.equips.buttonItems[0] != ITEM_NONE) || (gSaveContext.infTable[29] == 0)
+    // ```
+    // Whether the "temporary B" item should be restored to the B button. Rando also returns
+    // `true` when it had stashed a swordless sentinel.
+    // #### `args`
+    // - None
+    VB_TEMP_B_SHOULD_RESTORE,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // Side-effect hook (return value ignored): fired right after the vanilla
+    // `buttonItems[0] = buttonStatus[0]` restore so rando can convert its swordless sentinel
+    // back into an empty (swordless) B button.
+    // #### `args`
+    // - None
+    VB_TEMP_B_RESTORE_SWORDLESS,
 } GIVanillaBehavior;
 
 #endif

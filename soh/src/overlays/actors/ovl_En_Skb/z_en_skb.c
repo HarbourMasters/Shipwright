@@ -205,7 +205,7 @@ void func_80AFCD60(EnSkb* this) {
 
 void func_80AFCDF8(EnSkb* this) {
     Animation_PlayOnceSetSpeed(&this->skelAnime, &gStalchildUncurlingAnim, 1.0f);
-    this->unk_280 = 0;
+    this->actionState = 0;
     this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_RIVA_APPEAR);
     EnSkb_SetupAction(this, func_80AFCE5C);
@@ -231,8 +231,8 @@ void func_80AFCE5C(EnSkb* this, PlayState* play) {
 void func_80AFCF48(EnSkb* this) {
     Animation_Change(&this->skelAnime, &gStalchildUncurlingAnim, -1.0f,
                      Animation_GetLastFrame(&gStalchildUncurlingAnim), 0.0f, ANIMMODE_ONCE, -4.0f);
-    this->unk_280 = 0;
-    this->unk_281 = 0;
+    this->actionState = 0;
+    this->setColliderAT = 0;
     this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     this->actor.speedXZ = 0.0f;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_AKINDONUTS_HIDE);
@@ -253,8 +253,8 @@ void func_80AFCFF0(EnSkb* this, PlayState* play) {
 void func_80AFD0A4(EnSkb* this) {
     Animation_Change(&this->skelAnime, &gStalchildWalkingAnim, 0.96000004f, 0.0f,
                      Animation_GetLastFrame(&gStalchildWalkingAnim), ANIMMODE_LOOP, -4.0f);
-    this->unk_280 = 4;
-    this->unk_288 = 0;
+    this->actionState = 4;
+    this->headlessYawOffset = 0;
     this->actor.speedXZ = this->actor.scale.y * 160.0f;
     EnSkb_SetupAction(this, EnSkb_Advance);
 }
@@ -265,10 +265,10 @@ void EnSkb_Advance(EnSkb* this, PlayState* play) {
     f32 playSpeed;
     Player* player = GET_PLAYER(play);
 
-    if ((this->unk_283 != 0) && ((play->gameplayFrames & 0xF) == 0)) {
-        this->unk_288 = Rand_CenteredFloat(50000.0f);
+    if ((this->breakFlags != 0) && ((play->gameplayFrames & 0xF) == 0)) {
+        this->headlessYawOffset = Rand_CenteredFloat(50000.0f);
     }
-    Math_SmoothStepToS(&this->actor.shape.rot.y, (this->actor.yawTowardsPlayer + this->unk_288), 1, 0x2EE, 0);
+    Math_SmoothStepToS(&this->actor.shape.rot.y, (this->actor.yawTowardsPlayer + this->headlessYawOffset), 1, 0x2EE, 0);
     this->actor.world.rot.y = this->actor.shape.rot.y;
     thisKeyFrame = this->skelAnime.curFrame;
     SkelAnime_Update(&this->skelAnime);
@@ -305,7 +305,7 @@ void func_80AFD33C(EnSkb* this) {
     Animation_Change(&this->skelAnime, &gStalchildAttackingAnim, 0.6f, 0.0f,
                      Animation_GetLastFrame(&gStalchildAttackingAnim), ANIMMODE_ONCE_INTERP, 4.0f);
     this->collider.base.atFlags &= ~4;
-    this->unk_280 = 3;
+    this->actionState = 3;
     this->actor.speedXZ = 0.0f;
     EnSkb_SetupAction(this, EnSkb_SetupAttack);
 }
@@ -316,9 +316,9 @@ void EnSkb_SetupAttack(EnSkb* this, PlayState* play) {
     frameData = this->skelAnime.curFrame;
     if (frameData == 3) {
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_STALKID_ATTACK);
-        this->unk_281 = 1;
+        this->setColliderAT = 1;
     } else if (frameData == 6) {
-        this->unk_281 = 0;
+        this->setColliderAT = 0;
     }
     if (this->collider.base.atFlags & 4) {
         this->collider.base.atFlags &= ~6;
@@ -332,8 +332,8 @@ void func_80AFD47C(EnSkb* this) {
     Animation_Change(&this->skelAnime, &gStalchildAttackingAnim, -0.4f, this->skelAnime.curFrame - 1.0f, 0.0f,
                      ANIMMODE_ONCE_INTERP, 0.0f);
     this->collider.base.atFlags &= ~4;
-    this->unk_280 = 5;
-    this->unk_281 = 0;
+    this->actionState = 5;
+    this->setColliderAT = 0;
     EnSkb_SetupAction(this, func_80AFD508);
 }
 
@@ -348,8 +348,8 @@ void EnSkb_SetupStunned(EnSkb* this) {
         this->actor.speedXZ = 0.0f;
     }
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_GOMA_JR_FREEZE);
-    this->unk_281 = 0;
-    this->unk_280 = 6;
+    this->setColliderAT = 0;
+    this->actionState = 6;
     EnSkb_SetupAction(this, func_80AFD59C);
 }
 
@@ -378,7 +378,7 @@ void func_80AFD644(EnSkb* this) {
     }
     this->actor.world.rot.y = this->actor.yawTowardsPlayer;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_STALKID_DAMAGE);
-    this->unk_280 = 2;
+    this->actionState = 2;
     EnSkb_SetupAction(this, func_80AFD6CC);
 }
 
@@ -386,10 +386,10 @@ void func_80AFD6CC(EnSkb* this, PlayState* play) {
     // this cast is likely not real, but allows for a match
     u8* new_var;
 
-    new_var = &this->unk_283;
-    if ((this->unk_283 != 1) || BodyBreak_SpawnParts(&this->actor, &this->bodyBreak, play, 1)) {
+    new_var = &this->breakFlags;
+    if ((this->breakFlags != 1) || BodyBreak_SpawnParts(&this->actor, &this->bodyBreak, play, 1)) {
         if ((*new_var) != 0) {
-            this->unk_283 = (*new_var) | 2;
+            this->breakFlags = (*new_var) | 2;
         }
         if (this->actor.bgCheckFlags & 2) {
             this->actor.speedXZ = 0;
@@ -414,10 +414,10 @@ void func_80AFD7B4(EnSkb* this, PlayState* play) {
     if (this->actor.bgCheckFlags & 1) {
         this->actor.speedXZ = -6.0f;
     }
-    this->unk_280 = 1;
+    this->actionState = 1;
     this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     BodyBreak_Alloc(&this->bodyBreak, 18, play);
-    this->unk_283 |= 4;
+    this->breakFlags |= 4;
     EffectSsDeadSound_SpawnStationary(play, &this->actor.projectedPos, NA_SE_EN_STALKID_DEAD, 1, 1, 0x28);
     EnSkb_SetupAction(this, func_80AFD880);
     GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
@@ -435,7 +435,7 @@ void func_80AFD880(EnSkb* this, PlayState* play) {
             Item_DropCollectible(play, &this->actor.world.pos, ITEM00_RUPEE_RED);
         }
 
-        this->unk_283 |= 8;
+        this->breakFlags |= 8;
         Actor_Kill(&this->actor);
     }
 }
@@ -448,19 +448,19 @@ void func_80AFD968(EnSkb* this, PlayState* play) {
     s16 phi_v1;
     Player* player;
 
-    if ((this->unk_280 != 1) && (this->actor.bgCheckFlags & 0x60) && (this->actor.yDistToWater >= 40.0f)) {
+    if ((this->actionState != 1) && (this->actor.bgCheckFlags & 0x60) && (this->actor.yDistToWater >= 40.0f)) {
         this->actor.colChkInfo.health = 0;
-        this->unk_281 = 0;
+        this->setColliderAT = 0;
         func_80AFD7B4(this, play);
-    } else if (this->unk_280 >= 3) {
+    } else if (this->actionState >= 3) {
         if ((this->collider.base.acFlags & 2) != 0) {
             this->collider.base.acFlags &= ~2;
             if (this->actor.colChkInfo.damageEffect != 6) {
-                this->unk_282 = this->actor.colChkInfo.damageEffect;
+                this->lastDamageReaction = this->actor.colChkInfo.damageEffect;
                 Actor_SetDropFlag(&this->actor, &this->collider.elements[1].info, 1);
-                this->unk_281 = 0;
+                this->setColliderAT = 0;
                 if (this->actor.colChkInfo.damageEffect == 1) {
-                    if (this->unk_280 != 6) {
+                    if (this->actionState != 6) {
                         Actor_SetColorFilter(&this->actor, 0, 0x78, 0, 0x50);
                         Actor_ApplyDamage(&this->actor);
                         EnSkb_SetupStunned(this);
@@ -484,13 +484,13 @@ void func_80AFD968(EnSkb* this, PlayState* play) {
                         return;
                     }
                     player = GET_PLAYER(play);
-                    if (this->unk_283 == 0) {
+                    if (this->breakFlags == 0) {
                         if ((this->actor.colChkInfo.damageEffect == 0xD) ||
                             ((this->actor.colChkInfo.damageEffect == 0xE) &&
                              ((player->meleeWeaponAnimation >= 4 && player->meleeWeaponAnimation <= 11) ||
                               (player->meleeWeaponAnimation == 20 || player->meleeWeaponAnimation == 21)))) {
                             BodyBreak_Alloc(&this->bodyBreak, 2, play);
-                            this->unk_283 = 1;
+                            this->breakFlags = 1;
                         }
                     }
                     func_80AFD644(this);
@@ -510,11 +510,11 @@ void EnSkb_Update(Actor* thisx, PlayState* play) {
     this->actionFunc(this, play);
     this->actor.focus.pos = this->actor.world.pos;
     this->actor.focus.pos.y += (3000.0f * this->actor.scale.y);
-    if (this->unk_281 != 0) {
+    if (this->setColliderAT != 0) {
         CollisionCheck_SetAT(play, &play->colChkCtx, &this->collider.base);
     }
 
-    if (this->unk_280 >= 3) {
+    if (this->actionState >= 3) {
         if ((this->actor.colorFilterTimer == 0) || ((this->actor.colorFilterParams & 0x4000) == 0)) {
 
             CollisionCheck_SetAC(play, &play->colChkCtx, &this->collider.base);
@@ -529,7 +529,7 @@ s32 EnSkb_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* p
     s16 pad[2];
 
     if (limbIndex == 11) {
-        if ((this->unk_283 & 2) == 0) {
+        if ((this->breakFlags & 2) == 0) {
             OPEN_DISPS(play->state.gfxCtx);
             color = ABS((s16)(Math_SinS((play->gameplayFrames * 0x1770)) * 95.0f)) + 160;
             gDPPipeSync(POLY_OPA_DISP++);
@@ -538,7 +538,7 @@ s32 EnSkb_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* p
         } else {
             *dList = NULL;
         }
-    } else if ((limbIndex == 12) && ((this->unk_283 & 2) != 0)) {
+    } else if ((limbIndex == 12) && ((this->breakFlags & 2) != 0)) {
         *dList = NULL;
     }
     return 0;
@@ -549,9 +549,9 @@ void EnSkb_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot,
 
     Collider_UpdateSpheres(limbIndex, &this->collider);
 
-    if ((this->unk_283 ^ 1) == 0) {
+    if ((this->breakFlags ^ 1) == 0) {
         BodyBreak_SetInfo(&this->bodyBreak, limbIndex, 11, 12, 18, dList, BODYBREAK_OBJECT_DEFAULT);
-    } else if ((this->unk_283 ^ (this->unk_283 | 4)) == 0) {
+    } else if ((this->breakFlags ^ (this->breakFlags | 4)) == 0) {
         BodyBreak_SetInfo(&this->bodyBreak, limbIndex, 0, 18, 18, dList, BODYBREAK_OBJECT_DEFAULT);
     }
 }

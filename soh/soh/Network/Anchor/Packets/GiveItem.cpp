@@ -65,7 +65,7 @@ void Anchor::HandlePacket_GiveItem(nlohmann::json payload) {
         if (getItemEntry.getItemId == GI_SWORD_BGS) {
             gSaveContext.bgsFlag = true;
         }
-        Item_Give(gPlayState, getItemEntry.itemId);
+        Item_Give(gPlayState, static_cast<u8>(getItemEntry.itemId));
     } else if (getItemEntry.modIndex == MOD_RANDOMIZER) {
         if (getItemEntry.getItemId == RG_ICE_TRAP) {
             gSaveContext.ship.pendingIceTrapCount++;

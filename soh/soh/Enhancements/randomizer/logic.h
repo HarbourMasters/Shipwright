@@ -2,7 +2,7 @@
 
 #include "randomizerTypes.h"
 #include "SeedContext.h"
-#include <cstdint>
+#include <stdint.h>
 
 namespace Rando {
 
@@ -17,6 +17,8 @@ enum class GlitchType {
     EquipSwapDins,
     EquipSwap,
 };
+
+const std::vector<uint8_t>& GetDungeonSmallKeyDoors(const SceneID sceneId);
 
 class Logic {
   public:
@@ -41,6 +43,8 @@ class Logic {
     bool CanUse(RandomizerGet itemName);
     bool HasProjectile(HasProjectileAge age);
     bool HasItem(RandomizerGet itemName);
+    bool ItemUseAllowed(RandomizerGet itemName);
+    bool BAllowed();
     bool HasBossSoul(RandomizerGet itemName);
     bool CanOpenOverworldDoor(RandomizerGet itemName);
     bool SmallKeys(s16 scene, uint8_t requiredAmount);
@@ -77,6 +81,7 @@ class Logic {
     bool CanAttack();
     bool BombchusEnabled();
     bool BombchuRefill();
+    bool ShopItemNotForSale(RandomizerCheck loc);
     bool HookshotOrBoomerang();
     bool ScarecrowsSong();
     bool BlueFire();
@@ -104,11 +109,12 @@ class Logic {
     bool CanBreakPots(EnemyDistance distance = ED_CLOSE, bool wallOrFloor = true, bool inWater = false);
     bool CanBreakCrates();
     bool CanBreakSmallCrates();
+    bool CanBreakRocks();
     bool CanBonkTrees();
+    bool CanRead();
     bool HasFireSource();
     bool HasFireSourceWithTorch();
     bool SunlightArrows();
-    bool TradeQuestStep(RandomizerGet rg);
     bool CanStandingShield();
     bool CanShield();
     bool CanUseProjectile();
@@ -158,6 +164,7 @@ class Logic {
     bool DMCUpperToPots();
     bool DMCPotsToPad();
     bool DMCPadToPots();
+    bool DMCUpperToPad();
     bool SpiritEastToSwitch();
     bool SpiritWestToSkull();
     bool SpiritSunBlockSouthLedge();

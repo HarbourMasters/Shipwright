@@ -4,7 +4,7 @@
 #include "z64save.h"
 #include "item_location.h"
 #include "item_override.h"
-#include "3drando/text.hpp"
+#include "soh/Enhancements/custom-message/text.h"
 #include "hint.h"
 #include "fishsanity.h"
 #include "trial.h"
@@ -128,7 +128,6 @@ class Context {
     std::vector<RandomizerCheck> everyPossibleLocation = {};
     std::set<RandomizerGet> possibleIceTrapModels = {};
     std::unordered_map<RandomizerCheck, RandomizerGet> iceTrapModels = {};
-    std::vector<OptionValue*> VanillaLogicDefaults = {};
     std::array<uint8_t, 5> hashIconIndexes = {};
     bool playthroughBeatable = false;
     bool allLocationsReachable = false;

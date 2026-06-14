@@ -120,7 +120,7 @@ void RegionTable_Init_BottomOfTheWell() {
         ENTRANCE(RR_BOTW_B3_OOZE,   true),
     });
 
-    areaTable[RR_BOTW_SKULL_WALL_ROOM] = Region("Bottom of the Well SKull Wall Room", SCENE_BOTTOM_OF_THE_WELL, {
+    areaTable[RR_BOTW_SKULL_WALL_ROOM] = Region("Bottom of the Well Skull Wall Room", SCENE_BOTTOM_OF_THE_WELL, {
         //Events
         EVENT_ACCESS(LOGIC_STICK_ACCESS, logic->CanGetDekuBabaSticks()),
         EVENT_ACCESS(LOGIC_NUT_ACCESS,   logic->CanGetDekuBabaNuts()),
@@ -203,17 +203,32 @@ void RegionTable_Init_BottomOfTheWell() {
         LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_GRASS_1,   logic->CanCutShrubs()),
         LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_GRASS_2,   logic->CanCutShrubs()),
         LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_GRASS_3,   logic->CanCutShrubs()),
+        LOCATION(RC_BOTW_BOULDER_1,                        logic->BlastOrSmash()),
+        LOCATION(RC_BOTW_BOULDER_2,                        logic->BlastOrSmash()),
+        LOCATION(RC_BOTW_BOULDER_3,                        logic->BlastOrSmash() || logic->CanUse(RG_DINS_FIRE) || (logic->CanUse(RG_STICKS) && ctx->GetTrickOption(RT_BOTW_BASEMENT)) ||
+                                                           (ctx->GetTrickOption(RT_BOULDER_COLLISION) && logic->CanUse(RG_FAIRY_BOW))),
+        LOCATION(RC_BOTW_BOULDER_4,                        logic->BlastOrSmash()),
+        LOCATION(RC_BOTW_BOULDER_5,                        logic->BlastOrSmash()),
+        LOCATION(RC_BOTW_BOULDER_6,                        logic->BlastOrSmash()),
     }, {
         //Exits
         ENTRANCE(RR_BOTW_HIDDEN_POTS,      logic->CanClimbHighLadder()),
         //It's possible to abuse boulder's limited range of collision detection to detonate the flowers through the boulder with bow, but this is a glitch
         //the exact range is just past the furthest away plank in the green goo section
-        ENTRANCE(RR_BOTW_B3_BOMB_FLOWERS,  AnyAgeTime([]{return logic->BlastOrSmash() || logic->CanUse(RG_DINS_FIRE) || (ctx->GetTrickOption(RT_BOTW_BASEMENT) && logic->CanUse(RG_STICKS)) || (ctx->GetTrickOption(RT_DISTANT_BOULDER_COLLISION) && logic->CanUse(RG_FAIRY_BOW));})),
+        ENTRANCE(RR_BOTW_B3_BOMB_FLOWERS,  AnyAgeTime([]{return logic->BlastOrSmash() || logic->CanUse(RG_DINS_FIRE) || (ctx->GetTrickOption(RT_BOTW_BASEMENT) && logic->CanUse(RG_STICKS)) || (ctx->GetTrickOption(RT_BOULDER_COLLISION) && logic->CanUse(RG_FAIRY_BOW));})),
         ENTRANCE(RR_BOTW_B3_BLOCKED_GRASS, AnyAgeTime([]{return logic->BlastOrSmash();})),
         ENTRANCE(RR_BOTW_B3_CHEST_AREA,    AnyAgeTime([]{return logic->BlastOrSmash();})),
     });
 
-    areaTable[RR_BOTW_B3_BOMB_FLOWERS] = Region("Bottom of the Well B3 Bomb Flowers", SCENE_BOTTOM_OF_THE_WELL, {}, {}, {
+    areaTable[RR_BOTW_B3_BOMB_FLOWERS] = Region("Bottom of the Well B3 Bomb Flowers", SCENE_BOTTOM_OF_THE_WELL, {}, {
+        //Locations
+        LOCATION(RC_BOTW_BOULDER_1, logic->HasItem(RG_GORONS_BRACELET)),
+        LOCATION(RC_BOTW_BOULDER_2, logic->HasItem(RG_GORONS_BRACELET)),
+        LOCATION(RC_BOTW_BOULDER_3, logic->CanDetonateUprightBombFlower()),
+        LOCATION(RC_BOTW_BOULDER_4, logic->HasItem(RG_GORONS_BRACELET)),
+        LOCATION(RC_BOTW_BOULDER_5, logic->HasItem(RG_GORONS_BRACELET)),
+        LOCATION(RC_BOTW_BOULDER_6, logic->HasItem(RG_GORONS_BRACELET)),
+    }, {
         //Exits
         ENTRANCE(RR_BOTW_B3_OOZE,          logic->CanDetonateUprightBombFlower()),
         ENTRANCE(RR_BOTW_B3_BLOCKED_GRASS, logic->HasItem(RG_GORONS_BRACELET)),
@@ -268,7 +283,7 @@ void RegionTable_Init_BottomOfTheWell() {
                                                  //Item extension can get a fairy by either shooting the pot through the grate and letting the fairy fly through the wall
                                                  //This cannot be done if the pot has an item in it, as it cannot be collected this way.
                                                  (ctx->GetTrickOption(RT_ITEM_EXTENSION) && (ctx->GetOption(RSK_SHUFFLE_POTS).Is(RO_SHUFFLE_POTS_OFF) || ctx->GetOption(RSK_SHUFFLE_POTS).Is(RO_SHUFFLE_POTS_OVERWORLD)) && logic->CanHitEyeTargets()) ||
-                                                 (ctx->GetTrickOption(RT_VISIBLE_COLLISION) && logic->IsChild ? logic->CanHitEyeTargets() : logic->CanUse(RG_FAIRY_SLINGSHOT))),
+                                                 (ctx->GetTrickOption(RT_BOULDER_COLLISION) && logic->IsChild ? logic->CanHitEyeTargets() : logic->CanUse(RG_FAIRY_SLINGSHOT))),
         //It is possible to hit the water switch with a pot from RR_BOTW_MQ_MIDDLE, however the hitbox for making it activate is very unintuitive
         //You have to throw the pot from further back to hit the switch from the front instead of the top, trying to hit the "fingers" directly
         //This unintuitiveness means it should be a trick. ZL is needed to get a clear path to carry the pot
@@ -280,10 +295,21 @@ void RegionTable_Init_BottomOfTheWell() {
         //Instead of blowing up the boulder, you can aim through the lower left side with sling(either age) or as child with bow
         //Not even bow extension seems to get adult's bow to work
         //this would be a trick
-        LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_OUTER_LOBBY_POT,  (AnyAgeTime([]{return logic->BlastOrSmash();}) && logic->CanHitEyeTargets()) ||
-                                                            (ctx->GetTrickOption(RT_VISIBLE_COLLISION) && logic->IsChild ? logic->CanHitEyeTargets() : logic->CanUse(RG_FAIRY_SLINGSHOT))),
-        LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_BOMB_LEFT_HEART,  logic->HasExplosives()),
-        LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_BOMB_RIGHT_HEART, logic->HasExplosives()),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_OUTER_LOBBY_POT,  		(AnyAgeTime([]{return logic->BlastOrSmash();}) && logic->CanHitEyeTargets()) ||
+																	(ctx->GetTrickOption(RT_BOULDER_COLLISION) && logic->IsChild ? logic->CanHitEyeTargets() : logic->CanUse(RG_FAIRY_SLINGSHOT))),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_BOMB_LEFT_HEART,  		logic->HasExplosives()),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_BOMB_RIGHT_HEART, 		logic->HasExplosives()),
+        LOCATION(RC_BOTW_MQ_BOULDER_1,                              logic->BlastOrSmash()),
+        LOCATION(RC_BOTW_MQ_BOULDER_2,                              logic->BlastOrSmash()),
+        LOCATION(RC_BOTW_MQ_BOULDER_3,                              logic->BlastOrSmash()),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_WONDER_MAIN_ROOM_LEFT_1,  logic->CanUse(RG_FAIRY_SLINGSHOT)),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_WONDER_MAIN_ROOM_LEFT_2,  logic->CanUse(RG_FAIRY_SLINGSHOT)),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_WONDER_MAIN_ROOM_LEFT_3,  logic->CanUse(RG_FAIRY_SLINGSHOT)),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_WONDER_MAIN_ROOM_LEFT_4,  logic->CanUse(RG_FAIRY_SLINGSHOT)),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_WONDER_MAIN_ROOM_RIGHT_1, logic->CanUse(RG_FAIRY_SLINGSHOT)),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_WONDER_MAIN_ROOM_RIGHT_2, logic->CanUse(RG_FAIRY_SLINGSHOT)),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_WONDER_MAIN_ROOM_RIGHT_3, logic->CanUse(RG_FAIRY_SLINGSHOT)),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_WONDER_MAIN_ROOM_RIGHT_4, logic->CanUse(RG_FAIRY_SLINGSHOT)),
     }, {
         //Exits
         ENTRANCE(RR_BOTW_ENTRYWAY,             logic->CanUse(RG_CRAWL) && (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT))),
@@ -321,6 +347,10 @@ void RegionTable_Init_BottomOfTheWell() {
         LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_EAST_INNER_ROOM_POT_1, logic->CanBreakPots()),
         LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_EAST_INNER_ROOM_POT_2, logic->CanBreakPots()),
         LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_EAST_INNER_ROOM_POT_3, logic->CanBreakPots()),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_WONDER_SIDE_ROOM_1,    logic->CanUse(RG_FAIRY_SLINGSHOT)),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_WONDER_SIDE_ROOM_2,    logic->CanUse(RG_FAIRY_SLINGSHOT)),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_WONDER_SIDE_ROOM_3,    logic->CanUse(RG_FAIRY_SLINGSHOT)),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_WONDER_SIDE_ROOM_4,    logic->CanUse(RG_FAIRY_SLINGSHOT)),
     }, {
         //Exits
         ENTRANCE(RR_BOTW_MQ_MIDDLE, true),
@@ -350,7 +380,11 @@ void RegionTable_Init_BottomOfTheWell() {
     areaTable[RR_BOTW_MQ_PIT_CAGE] = Region("Bottom of the Well MQ Pit Cage", SCENE_BOTTOM_OF_THE_WELL, {
         //Events
         EVENT_ACCESS(LOGIC_BOTW_MQ_OPENED_WEST_ROOM, true),
-    }, {}, {
+    }, {
+        //Locations
+        LOCATION(RC_BOTW_MQ_BOULDER_2, logic->BlastOrSmash()),
+        LOCATION(RC_BOTW_MQ_BOULDER_3, logic->BlastOrSmash()),
+    }, {
         //Exits
         ENTRANCE(RR_BOTW_MQ_PERIMETER, logic->BlastOrSmash() && (logic->CanPassEnemy(RE_BIG_SKULLTULA) || ctx->GetTrickOption(RT_BOTW_PITS))),
         ENTRANCE(RR_BOTW_MQ_MIDDLE,    (bool)ctx->GetTrickOption(RT_BOTW_PITS)),
@@ -367,9 +401,9 @@ void RegionTable_Init_BottomOfTheWell() {
 
     areaTable[RR_BOTW_MQ_CRYPT] = Region("Bottom of the Well MQ Crypt", SCENE_BOTTOM_OF_THE_WELL, {}, {
         //Locations
-        LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_GS_COFFIN_ROOM,                 logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA)),
-        LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_COFFIN_ROOM_FRONT_RIGHT_HEART,  logic->HasFireSourceWithTorch() || logic->CanUse(RG_FAIRY_BOW)),
-        LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_COFFIN_ROOM_MIDDLE_LEFT_HEART,  logic->HasFireSourceWithTorch() || logic->CanUse(RG_FAIRY_BOW)),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_GS_COFFIN_ROOM,                logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA)),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_COFFIN_ROOM_FRONT_RIGHT_HEART, logic->HasFireSourceWithTorch() || logic->CanUse(RG_FAIRY_BOW)),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_COFFIN_ROOM_MIDDLE_LEFT_HEART, logic->HasFireSourceWithTorch() || logic->CanUse(RG_FAIRY_BOW)),
     }, {
         //Exits
         ENTRANCE(RR_BOTW_MQ_BEHIND_MOAT, logic->SmallKeys(SCENE_BOTTOM_OF_THE_WELL, 2)),
