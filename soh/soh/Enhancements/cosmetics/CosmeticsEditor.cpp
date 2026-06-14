@@ -2540,7 +2540,7 @@ void CosmeticsEditorWindow::InitElement() {
         cosmeticOption.currentColor.z = cvarColor.b / 255.0f;
         cosmeticOption.currentColor.w = cvarColor.a / 255.0f;
     }
-    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+    Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     ScanCustomCosmetics();
     ApplyOrResetCustomGfxPatches();
     ApplyAuthenticGfxPatches();
