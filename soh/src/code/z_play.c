@@ -683,12 +683,6 @@ void Play_Init(GameState* thisx) {
     }
 #endif
 
-    if (CVarGetInteger(CVAR_ENHANCEMENT("IvanCoopModeEnabled"), 0)) {
-        Actor_Spawn(&play->actorCtx, play, gEnPartnerId, GET_PLAYER(play)->actor.world.pos.x,
-                    GET_PLAYER(play)->actor.world.pos.y + Player_GetHeight(GET_PLAYER(play)) + 5.0f,
-                    GET_PLAYER(play)->actor.world.pos.z, 0, 0, 0, 1);
-    }
-
     // nextEntranceIndex was not initialized, so the previous value was carried over during soft resets.
     gPlayState->nextEntranceIndex = gSaveContext.entranceIndex;
 }
@@ -2231,7 +2225,7 @@ void Play_PerformSave(PlayState* play) {
             (gSaveContext.equips.buttonItems[0] == ITEM_NONE && !Flags_GetInfTable(INFTABLE_SWORDLESS))) {
 
             gSaveContext.equips.buttonItems[0] = gSaveContext.buttonStatus[0];
-            Interface_RandoRestoreSwordless();
+            GameInteractor_Should(VB_TEMP_B_RESTORE_SWORDLESS, true);
         }
 
         Save_SaveFile();

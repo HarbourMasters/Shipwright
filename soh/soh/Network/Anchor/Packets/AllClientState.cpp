@@ -22,7 +22,7 @@ void Anchor::HandlePacket_AllClientState(nlohmann::json payload) {
         if (client.self) {
             ownClientId = client.clientId;
             CVarSetInteger(CVAR_REMOTE_ANCHOR("LastClientId"), ownClientId);
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+            Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
             clients[client.clientId].self = true;
         } else {
             clients[client.clientId].self = false;

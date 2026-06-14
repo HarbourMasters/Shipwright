@@ -26,7 +26,7 @@ typedef struct {
     int16_t height;            // Textbox height
     int16_t width;             // Textbox width
     int16_t yOffset;           // Addition Y offset
-    uint8_t noZBuffer;         // Allow rendering over geometry
+    bool noZBuffer;            // Allow rendering over geometry
     Mtx* mtx;                  // Allocated Mtx for rendering
     Vtx* vtx;                  // Allocated Vtx for rendering
 } NameTag;
@@ -97,7 +97,7 @@ void DrawNameTag(PlayState* play, const NameTag* nameTag) {
     Matrix_Translate(nameTag->actor->world.pos.x, posY, nameTag->actor->world.pos.z, MTXMODE_NEW);
     Matrix_ReplaceRotation(&play->billboardMtxF);
     Matrix_Scale(scale * (sMirrorWorldActive ? -1.0f : 1.0f), -scale, 1.0f, MTXMODE_APPLY);
-    Matrix_Translate(-(float)nameTag->width / 2, -nameTag->height, 0, MTXMODE_APPLY);
+    Matrix_Translate(static_cast<f32>(-nameTag->width / 2.0f), static_cast<f32>(-nameTag->height), 0.0f, MTXMODE_APPLY);
     Matrix_ToMtx(nameTag->mtx, (char*)__FILE__, __LINE__);
 
     nameTagDl.push_back(gsSPMatrix(nameTag->mtx, G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW));

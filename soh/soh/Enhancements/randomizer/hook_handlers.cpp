@@ -15,6 +15,7 @@
 #include "soh/ObjectExtension/ObjectExtension.h"
 #include "item_category_adj.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
+#include "soh/Enhancements/randomizer/RCToRandInf.h"
 
 extern "C" {
 #include "macros.h"
@@ -58,6 +59,7 @@ extern "C" {
 #include "src/overlays/actors/ovl_Fishing/z_fishing.h"
 #include "src/overlays/actors/ovl_Obj_Bean/z_obj_bean.h"
 #include "src/overlays/actors/ovl_En_Heishi2/z_en_heishi2.h"
+#include "src/overlays/actors/ovl_En_GirlA/z_en_girla.h"
 #include "draw.h"
 
 static ObjectExtension::Register<DnsItemEntry> RegisterDnsItemEntryOverride;
@@ -444,6 +446,23 @@ void RandomizerOnItemReceiveHandler(GetItemEntry receivedItemEntry) {
         randomizerQueuedItemEntry = GET_ITEM_NONE;
     }
 
+    if (receivedItemEntry.modIndex == MOD_NONE) {
+        switch (receivedItemEntry.itemId) {
+            case ITEM_SHIELD_DEKU:
+                Flags_SetRandomizerInf(RAND_INF_HAS_FOUND_DEKU_SHIELD);
+                break;
+            case ITEM_SHIELD_HYLIAN:
+                Flags_SetRandomizerInf(RAND_INF_HAS_FOUND_HYLIAN_SHIELD);
+                break;
+            case ITEM_TUNIC_GORON:
+                Flags_SetRandomizerInf(RAND_INF_HAS_FOUND_GORON_TUNIC);
+                break;
+            case ITEM_TUNIC_ZORA:
+                Flags_SetRandomizerInf(RAND_INF_HAS_FOUND_ZORA_TUNIC);
+                break;
+        }
+    }
+
     if (receivedItemEntry.modIndex == MOD_RANDOMIZER && receivedItemEntry.getItemId == RG_MAGIC_BEAN_PACK) {
         if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SKIP_PLANTING_BEANS)) {
             gSaveContext.sceneFlags[SCENE_DEATH_MOUNTAIN_CRATER].swch |= (1 << 3);
@@ -490,6 +509,10 @@ void RandomizerOnItemReceiveHandler(GetItemEntry receivedItemEntry) {
             }
             AMMO(ITEM_BEAN) = 0;
         }
+    }
+
+    if (receivedItemEntry.modIndex == MOD_NONE && receivedItemEntry.itemId == ITEM_SONG_EPONA) {
+        Flags_SetEventChkInf(EVENTCHKINF_EPONA_OBTAINED);
     }
 
     if (receivedItemEntry.modIndex == MOD_NONE &&
@@ -665,8 +688,8 @@ u8 EnDs_RandoCanGetGrannyItem() {
            !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_GRANNYS_SHOP) &&
            // Traded odd mushroom when adult trade is on
            ((RAND_GET_OPTION(RSK_SHUFFLE_ADULT_TRADE) && Flags_GetItemGetInf(ITEMGETINF_30)) ||
-            // Found claim check when adult trade is off
-            (!RAND_GET_OPTION(RSK_SHUFFLE_ADULT_TRADE) && INV_CONTENT(ITEM_CLAIM_CHECK) == ITEM_CLAIM_CHECK));
+            (!RAND_GET_OPTION(RSK_SHUFFLE_ADULT_TRADE) &&
+             (RAND_GET_OPTION(RSK_EARLY_GRANNYS_SHOP) || INV_CONTENT(ITEM_CLAIM_CHECK) == ITEM_CLAIM_CHECK)));
 }
 
 u8 EnJs_RandoCanGetCarpetMerchantItem() {
@@ -899,6 +922,62 @@ void RandomizerOnDialogMessageHandler() {
 
 extern "C" void func_80A5475C(EnHeishi2* CastleGuard, PlayState* play);
 
+static ScrubIdentity IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respawnData) {
+    struct ScrubIdentity scrubIdentity;
+
+    scrubIdentity.identity.randomizerInf = RAND_INF_MAX;
+    scrubIdentity.identity.randomizerCheck = RC_UNKNOWN_CHECK;
+    scrubIdentity.getItemId = GI_NONE;
+    scrubIdentity.itemPrice = -1;
+
+    // Scrubs that are 0x06 are loaded as 0x03 when child, switching from selling arrows to seeds
+    if (actorParams == 0x06)
+        actorParams = 0x03;
+
+    if (sceneNum == SCENE_GROTTOS) {
+        actorParams = TWO_ACTOR_PARAMS(actorParams, respawnData);
+    }
+
+    Rando::Location* location =
+        OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_EN_DNS, sceneNum, actorParams);
+
+    if (location->GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
+        if (location->GetRandomizerCheck() == RC_HF_DEKU_SCRUB_GROTTO ||
+            location->GetRandomizerCheck() == RC_LW_DEKU_SCRUB_GROTTO_FRONT ||
+            location->GetRandomizerCheck() == RC_LW_DEKU_SCRUB_NEAR_BRIDGE) {
+            if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_SCRUBS) == RO_SCRUBS_OFF) {
+                return scrubIdentity;
+            }
+        } else if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_SCRUBS) != RO_SCRUBS_ALL) {
+            return scrubIdentity;
+        }
+
+        scrubIdentity.identity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
+        scrubIdentity.identity.randomizerCheck = location->GetRandomizerCheck();
+        scrubIdentity.getItemId = (GetItemID)Rando::StaticData::RetrieveItem(location->GetVanillaItem()).GetItemID();
+        scrubIdentity.itemPrice =
+            OTRGlobals::Instance->gRandoContext->GetItemLocation(scrubIdentity.identity.randomizerCheck)->GetPrice();
+    }
+
+    return scrubIdentity;
+}
+
+// buttonStatus[0] doubles as "B disabled" (BTN_DISABLED == 255 == ITEM_NONE) and as temp-B
+// storage during minigames/Epona. We use ITEM_NONE_FE (254) as a sentinel so a swordless rando
+// player can be funneled through that same temp-B machinery and restored to an empty B later.
+#define SWORDLESS_STATUS ITEM_NONE_FE
+
+// true when a swordless player should be funneled through temporary-B force path
+// (so their empty B is treated as "occupied", blocking swordless-on-Epona item glitch).
+static bool RandoCanTrackSwordless(PlayState* play) {
+    Player* player = GET_PLAYER(play);
+    // Child is always assumed swordless until the Kokiri Sword is found; adult only with MS shuffle.
+    bool isSwordless = (LINK_IS_CHILD || RAND_GET_OPTION(RSK_SHUFFLE_MASTER_SWORD)) &&
+                       gSaveContext.equips.buttonItems[0] == ITEM_NONE && Flags_GetInfTable(INFTABLE_SWORDLESS);
+    bool wasSwordlessBefore = gSaveContext.buttonStatus[0] == SWORDLESS_STATUS;
+    return isSwordless && !wasSwordlessBefore && !RAND_GET_OPTION(RSK_SWORDLESS_EPONA_ITEMS);
+}
+
 void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_list originalArgs) {
     va_list args;
     va_copy(args, originalArgs);
@@ -918,6 +997,18 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
         case VB_CRAWL:
             *should = *should && Flags_GetRandomizerInf(RAND_INF_CAN_CRAWL);
             break;
+        case VB_CAN_BUY_SHOP_SHIELD_OR_TUNIC: {
+            // Gate non-randomized shop shields/tunics behind finding a non-shop copy.
+            if (RAND_GET_OPTION(RSK_SHOP_SHIELDS_AND_TUNICS_ONLY_REFILL).Is(RO_GENERIC_ON)) {
+                EnGirlACanBuyResult* canBuy = va_arg(args, EnGirlACanBuyResult*);
+                RandomizerInf requiredInf = (RandomizerInf)va_arg(args, int);
+                if (!Flags_GetRandomizerInf(requiredInf)) {
+                    *canBuy = CANBUY_RESULT_CANT_GET_NOW;
+                    *should = true;
+                }
+            }
+            break;
+        }
         case VB_ALLOW_ENTRANCE_CS_FOR_EITHER_AGE: {
             s32 entranceIndex = va_arg(args, s32);
 
@@ -1394,6 +1485,27 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             }
             break;
         }
+        case VB_TEMP_B_TREAT_AS_OCCUPIED:
+            // Treat a swordless player's empty B as occupied so they enter the temp-B force path.
+            *should = *should || RandoCanTrackSwordless(va_arg(args, PlayState*));
+            break;
+        case VB_TEMP_B_STASH_SWORDLESS:
+            // Relocate the just-stashed temp-B to the swordless sentinel for later restoration.
+            if (RandoCanTrackSwordless(va_arg(args, PlayState*))) {
+                gSaveContext.buttonStatus[0] = SWORDLESS_STATUS;
+            }
+            break;
+        case VB_TEMP_B_SHOULD_RESTORE:
+            // Also restore the B button when a swordless sentinel was stashed.
+            *should = *should || gSaveContext.buttonStatus[0] == SWORDLESS_STATUS;
+            break;
+        case VB_TEMP_B_RESTORE_SWORDLESS:
+            // Convert the swordless sentinel back into an empty (swordless) B button.
+            if (gSaveContext.buttonStatus[0] == SWORDLESS_STATUS) {
+                gSaveContext.equips.buttonItems[0] = ITEM_NONE;
+                gSaveContext.buttonStatus[0] = BTN_ENABLED;
+            }
+            break;
         case VB_TRADE_POCKET_CUCCO: {
             EnNiwLady* enNiwLady = va_arg(args, EnNiwLady*);
             Flags_UnsetRandomizerInf(RAND_INF_ADULT_TRADES_HAS_POCKET_CUCCO);
@@ -1477,8 +1589,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
         case VB_BUSINESS_SCRUB_DESPAWN: {
             EnShopnuts* enShopnuts = va_arg(args, EnShopnuts*);
             s16 respawnData = gSaveContext.respawn[RESPAWN_MODE_RETURN].data & ((1 << 8) - 1);
-            ScrubIdentity scrubIdentity = OTRGlobals::Instance->gRandomizer->IdentifyScrub(
-                gPlayState->sceneNum, enShopnuts->actor.params, respawnData);
+            ScrubIdentity scrubIdentity = IdentifyScrub(gPlayState->sceneNum, enShopnuts->actor.params, respawnData);
 
             if (scrubIdentity.identity.randomizerCheck != RC_UNKNOWN_CHECK) {
                 *should = Flags_GetRandomizerInf(scrubIdentity.identity.randomizerInf);
@@ -2154,8 +2265,7 @@ void RandomizerOnActorInitHandler(void* actorRef) {
     if (actor->id == ACTOR_EN_DNS) {
         EnDns* enDns = static_cast<EnDns*>(actorRef);
         s16 respawnData = gSaveContext.respawn[RESPAWN_MODE_RETURN].data & ((1 << 8) - 1);
-        auto scrubIdentity =
-            OTRGlobals::Instance->gRandomizer->IdentifyScrub(gPlayState->sceneNum, enDns->actor.params, respawnData);
+        auto scrubIdentity = IdentifyScrub(gPlayState->sceneNum, enDns->actor.params, respawnData);
 
         if (scrubIdentity.identity.randomizerCheck != RC_UNKNOWN_CHECK) {
             // DNS uses pointers so we're creating our own entry instead of modifying the original
@@ -2269,8 +2379,8 @@ void RandomizerOnActorInitHandler(void* actorRef) {
             enGe1->actionFunc = (EnGe1ActionFunc)EnGe1_SetNormalText;
         } else if (ge1Type == GE1_TYPE_GATE_OPERATOR && enGe1->actor.world.pos.x != -1358.0f) {
             // When spawning the gate operator, also spawn an extra gate operator on the wasteland side
-            Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_GE1, -1358.0f, 88.0f, -3018.0f, 0, 0x95B0, 0,
-                        0x0300 | GE1_TYPE_GATE_OPERATOR);
+            Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_GE1, -1358.0f, 88.0f, -3018.0f, 0,
+                        static_cast<s16>(0x95B0), 0, 0x0300 | GE1_TYPE_GATE_OPERATOR);
         }
     }
 
@@ -2279,8 +2389,8 @@ void RandomizerOnActorInitHandler(void* actorRef) {
         auto jyaBigMirror = static_cast<BgJyaBigmirror*>(actorRef);
         jyaBigMirror->puzzleFlags |=
             BIGMIR_PUZZLE_COBRA1_SOLVED | BIGMIR_PUZZLE_COBRA2_SOLVED | BIGMIR_PUZZLE_BOMBIWA_DESTROYED;
-        jyaBigMirror->cobraInfo[0].rotY = 0x4000;
-        jyaBigMirror->cobraInfo[1].rotY = 0x8000;
+        jyaBigMirror->cobraInfo[0].rotY = static_cast<s16>(0x4000);
+        jyaBigMirror->cobraInfo[1].rotY = static_cast<s16>(0x8000);
     }
 
     if (actor->id == ACTOR_DEMO_KEKKAI && actor->params == 0) { // 0 == KEKKAI_TOWER
@@ -2617,7 +2727,16 @@ void RandomizerOnPlayerUpdateHandler() {
                 gSaveContext.respawn[RESPAWN_MODE_DOWN].yaw = respawn->second.yaw;
             }
 
-            Play_TriggerVoidOut(gPlayState);
+            if (gPlayState->sceneNum == SCENE_GROTTOS) {
+                // RESPAWN_MODE_DOWN isn't refreshed on grotto entry, reload grotto instead
+                gPlayState->nextEntranceIndex = gSaveContext.entranceIndex;
+                gPlayState->transitionTrigger = TRANS_TRIGGER_START;
+                gPlayState->transitionType = TRANS_TYPE_FADE_BLACK;
+                gSaveContext.nextTransitionType = TRANS_TYPE_FADE_BLACK;
+                gSaveContext.respawnFlag = 0;
+            } else {
+                Play_TriggerVoidOut(gPlayState);
+            }
         }
     }
 
@@ -2630,8 +2749,14 @@ void RandomizerOnPlayerUpdateHandler() {
     }
 
     if (!GameInteractor::IsGameplayPaused() && RAND_GET_OPTION(RSK_TRIFORCE_HUNT).IsNot(RO_TRIFORCE_HUNT_OFF)) {
-        // Warp to credits
-        if (GameInteractor::State::TriforceHuntCreditsWarpActive) {
+        // Warp to credits once item queue has drained to avoid losing queued items
+        if (GameInteractor::State::TriforceHuntCreditsWarpActive && randomizerQueuedChecks.empty() &&
+            randomizerQueuedCheck == RC_UNKNOWN_CHECK) {
+            gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_TRIFORCE_COMPLETED] =
+                static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
+            gSaveContext.ship.stats.gameComplete = 1;
+            Play_PerformSave(gPlayState);
+            Notification::Emit({ .message = "Game autosaved" });
             gPlayState->nextEntranceIndex = ENTR_CHAMBER_OF_THE_SAGES_0;
             gSaveContext.nextCutsceneIndex = 0xFFF2;
             gPlayState->transitionTrigger = TRANS_TRIGGER_START;

@@ -93,7 +93,7 @@ void FB_WriteFramebufferSliceToCPU(Gfx** gfxp, void* buffer, u8 byteSwap) {
     // Adjust the texture coordinates so that only a 4:3 region from the center is drawn
     // to the N64 resolution buffer. Currently ratios smaller than 4:3 will just stretch to fill.
     if (aspectRatio > fourByThree) {
-        int16_t adjustedWidth = OTRGetGameRenderWidth() / (aspectRatio / fourByThree);
+        int16_t adjustedWidth = (s16)(OTRGetGameRenderWidth() / (aspectRatio / fourByThree));
         s0 = (OTRGetGameRenderWidth() - adjustedWidth) / 2;
         s1 -= s0;
     }

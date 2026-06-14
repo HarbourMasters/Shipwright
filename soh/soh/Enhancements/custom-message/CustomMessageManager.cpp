@@ -119,8 +119,6 @@ extern "C" MessageTableEntry* sGerMessageEntryTablePtr;
 extern "C" MessageTableEntry* sFraMessageEntryTablePtr;
 
 CustomMessage CustomMessage::LoadVanillaMessageTableEntry(uint16_t textId) {
-    const char* foundSeg;
-    const char* nextSeg;
     MessageTableEntry* msgEntry = sNesMessageEntryTablePtr;
     u16 bufferId = textId;
     CustomMessage msg;

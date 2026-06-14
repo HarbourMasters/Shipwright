@@ -7,7 +7,9 @@
 
 #include "mixer.h"
 #ifndef __clang__
+#ifndef _MSC_VER
 #pragma GCC optimize("unroll-loops")
+#endif
 #endif
 
 #define ROUND_UP_64(v) (((v) + 63) & ~63)
@@ -516,12 +518,16 @@ void aFilterImpl(uint8_t flags, uint16_t count_or_buf, int16_t* state_or_filter)
 
         if (flags == A_INIT) {
 #ifndef __clang__
+#ifndef _MSC_VER
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wmemset-elt-size"
 #endif
+#endif
             memset(tmp, 0, 8 * sizeof(int16_t));
 #ifndef __clang__
+#ifndef _MSC_VER
 #pragma GCC diagnostic pop
+#endif
 #endif
             memset(tmp2, 0, 8 * sizeof(int16_t));
         } else {
@@ -623,15 +629,13 @@ static void aMixImplSSE2(uint16_t count, int16_t gain, uint16_t in_addr, uint16_
     int nbytes = ROUND_UP_32(ROUND_DOWN_16(count << 4));
     int16_t* in = BUF_S16(in_addr);
     int16_t* out = BUF_S16(out_addr);
-    int i;
-    int32_t sample;
     if (gain == -0x8000) {
         while (nbytes > 0) {
             for (unsigned int i = 0; i < 2; i++) {
                 __m128i outVec = _mm_loadu_si128((__m128i*)out);
                 __m128i inVec = _mm_loadu_si128((__m128i*)in);
                 __m128i subsVec = _mm_subs_epi16(outVec, inVec);
-                _mm_storeu_si128(out, subsVec);
+                _mm_storeu_si128((__m128i*)out, subsVec);
                 nbytes -= 8 * sizeof(int16_t);
                 in += 8;
                 out += 8;

@@ -6,6 +6,10 @@
 #include "assets/soh_assets.h"
 #include "soh/SohGui/ImGuiUtils.h"
 
+#include <fast/Fast3dGui.h>
+
+#include <fast/Fast3dGui.h>
+
 extern "C" {
 #include "macros.h"
 #include "functions.h"
@@ -54,7 +58,7 @@ std::string convertDayTime(uint32_t dayTime) {
 }
 
 std::string convertNaviTime(uint32_t value) {
-    uint32_t totalSeconds = value * 0.05;
+    uint32_t totalSeconds = value / 20;
     uint32_t ss = totalSeconds % 60;
     uint32_t mm = totalSeconds / 60;
     return fmt::format("{:0>2}:{:0>2}", mm, ss);
@@ -66,12 +70,12 @@ std::string formatHotWaterDisplay(uint32_t value) {
     return fmt::format("{:0>2}:{:0>2}", mm, ss);
 }
 
-std::string formatTimeDisplay(uint32_t value) {
-    uint32_t sec = value / 10;
-    uint32_t hh = sec / 3600;
-    uint32_t mm = (sec - hh * 3600) / 60;
-    uint32_t ss = sec - hh * 3600 - mm * 60;
-    uint32_t ds = value % 10;
+std::string formatTimeDisplay(uint64_t value) {
+    uint64_t sec = value / 10;
+    uint64_t hh = sec / 3600;
+    uint64_t mm = (sec - hh * 3600) / 60;
+    uint64_t ss = sec - hh * 3600 - mm * 60;
+    uint64_t ds = value % 10;
     return fmt::format("{}:{:0>2}:{:0>2}.{}", hh, mm, ss, ds);
 }
 
@@ -83,18 +87,22 @@ static void TimeDisplayGetTimer(uint32_t timeID) {
     Player* player = GET_PLAYER(gPlayState);
     uint32_t timer1 = gSaveContext.timerSeconds;
 
+    auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(
+        std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui()));
+
     switch (timeID) {
         case DISPLAY_IN_GAME_TIMER:
-            textureDisplay = Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("GAMEPLAY_TIMER");
+            textureDisplay = gui->GetTextureByName("GAMEPLAY_TIMER");
+            textureDisplay = gui->GetTextureByName("GAMEPLAY_TIMER");
             timeDisplayTime = formatTimeDisplay(GAMEPLAYSTAT_TOTAL_TIME).c_str();
             break;
         case DISPLAY_TIME_OF_DAY:
             if (gSaveContext.dayTime >= DAY_BEGINS && gSaveContext.dayTime < NIGHT_BEGINS) {
-                textureDisplay =
-                    Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("DAY_TIME_TIMER");
+                textureDisplay = gui->GetTextureByName("DAY_TIME_TIMER");
+                textureDisplay = gui->GetTextureByName("DAY_TIME_TIMER");
             } else {
-                textureDisplay =
-                    Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("NIGHT_TIME_TIMER");
+                textureDisplay = gui->GetTextureByName("NIGHT_TIME_TIMER");
+                textureDisplay = gui->GetTextureByName("NIGHT_TIME_TIMER");
             }
             timeDisplayTime = convertDayTime(gSaveContext.dayTime).c_str();
             break;
@@ -107,18 +115,22 @@ static void TimeDisplayGetTimer(uint32_t timeID) {
                                                                                               : COLOR_LIGHT_BLUE)
                         : COLOR_WHITE;
                 if (gSaveContext.timerState <= TIMER_STATE_ENV_HAZARD_TICK) {
-                    textureDisplay = Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
-                        gPlayState->roomCtx.curRoom.behaviorType2 == ROOM_BEHAVIOR_TYPE2_3
-                            ? itemMapping[ITEM_TUNIC_GORON].name
-                            : itemMapping[ITEM_TUNIC_ZORA].name);
+                    textureDisplay =
+                        gui->GetTextureByName(gPlayState->roomCtx.curRoom.behaviorType2 == ROOM_BEHAVIOR_TYPE2_3
+                                                  ? itemMapping[ITEM_TUNIC_GORON].name
+                                                  : itemMapping[ITEM_TUNIC_ZORA].name);
+                    textureDisplay =
+                        gui->GetTextureByName(gPlayState->roomCtx.curRoom.behaviorType2 == ROOM_BEHAVIOR_TYPE2_3
+                                                  ? itemMapping[ITEM_TUNIC_GORON].name
+                                                  : itemMapping[ITEM_TUNIC_ZORA].name);
                 }
                 if (gSaveContext.timerState >= TIMER_STATE_DOWN_PREVIEW) {
-                    textureDisplay = Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
-                        itemMapping[ITEM_SWORD_MASTER].name);
+                    textureDisplay = gui->GetTextureByName(itemMapping[ITEM_SWORD_MASTER].name);
+                    textureDisplay = gui->GetTextureByName(itemMapping[ITEM_SWORD_MASTER].name);
                 }
             } else {
-                textureDisplay = Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
-                    itemMapping[ITEM_TUNIC_KOKIRI].name);
+                textureDisplay = gui->GetTextureByName(itemMapping[ITEM_TUNIC_KOKIRI].name);
+                textureDisplay = gui->GetTextureByName(itemMapping[ITEM_TUNIC_KOKIRI].name);
                 timeDisplayTime = "-:--";
             }
             break;
@@ -132,7 +144,8 @@ static void TimeDisplayGetTimer(uint32_t timeID) {
                 timeDisplayTime = convertNaviTime(NAVI_COOLDOWN - gSaveContext.naviTimer).c_str();
                 textColor = COLOR_GREY;
             }
-            textureDisplay = Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("NAVI_TIMER");
+            textureDisplay = gui->GetTextureByName("NAVI_TIMER");
+            textureDisplay = gui->GetTextureByName("NAVI_TIMER");
             break;
         default:
             break;
@@ -203,13 +216,15 @@ void TimeDisplayWindow::Draw() {
                     }
                     if (textToDecode[i] == '.') {
                         ImGui::SetCursorPosY(ImGui::GetCursorPosY() + (8.0f * fontScale));
-                        ImGui::Image(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
-                                         digitList[textureIndex].first),
+                        ImGui::Image(std::dynamic_pointer_cast<Fast::Fast3dGui>(
+                                         Ship::Context::GetRawInstance()->GetWindow()->GetGui())
+                                         ->GetTextureByName(digitList[textureIndex].first),
                                      ImVec2(8.0f * fontScale, 8.0f * fontScale), ImVec2(0, 0.5f), ImVec2(1, 1),
                                      textColor, ImVec4(0, 0, 0, 0));
                     } else {
-                        ImGui::Image(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
-                                         digitList[textureIndex].first),
+                        ImGui::Image(std::dynamic_pointer_cast<Fast::Fast3dGui>(
+                                         Ship::Context::GetRawInstance()->GetWindow()->GetGui())
+                                         ->GetTextureByName(digitList[textureIndex].first),
                                      ImVec2(8.0f * fontScale, 16.0f * fontScale), ImVec2(0, 0), ImVec2(1, 1), textColor,
                                      ImVec4(0, 0, 0, 0));
                     }
@@ -247,17 +262,18 @@ static void TimeDisplayInitTimers() {
 }
 
 void TimeDisplayWindow::InitElement() {
-    Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture("GAMEPLAY_TIMER", gClockIconTex,
-                                                                        ImVec4(1, 1, 1, 1));
-    Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture("DAY_TIME_TIMER", gSunIconTex,
-                                                                        ImVec4(1, 1, 1, 1));
-    Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture("NIGHT_TIME_TIMER", gMoonIconTex,
-                                                                        ImVec4(1, 1, 1, 1));
-    Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture("NAVI_TIMER", gNaviIconTex, ImVec4(1, 1, 1, 1));
+    std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
+        ->LoadGuiTexture("GAMEPLAY_TIMER", gClockIconTex, ImVec4(1, 1, 1, 1));
+    std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
+        ->LoadGuiTexture("DAY_TIME_TIMER", gSunIconTex, ImVec4(1, 1, 1, 1));
+    std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
+        ->LoadGuiTexture("NIGHT_TIME_TIMER", gMoonIconTex, ImVec4(1, 1, 1, 1));
+    std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
+        ->LoadGuiTexture("NAVI_TIMER", gNaviIconTex, ImVec4(1, 1, 1, 1));
 
     for (auto& load : digitList) {
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(load.first.c_str(), load.second,
-                                                                            ImVec4(1, 1, 1, 1));
+        std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
+            ->LoadGuiTexture(load.first.c_str(), load.second, ImVec4(1, 1, 1, 1));
     }
 
     TimeDisplayInitSettings();

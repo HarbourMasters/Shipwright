@@ -4866,7 +4866,7 @@ void KaleidoScope_Update(PlayState* play) {
             }
 
             // Used to clear swordless temp B after unpause so minigame/epona handling restarts
-            Interface_RandoRestoreSwordless();
+            GameInteractor_Should(VB_TEMP_B_RESTORE_SWORDLESS, true);
 
             interfaceCtx->unk_1FA = interfaceCtx->unk_1FC = 0;
             osSyncPrintf(VT_FGCOL(YELLOW));

@@ -29,8 +29,10 @@ CollisionHeader* getGraveyardCollisionHeader() {
      * dspot02_sceneCollisionHeader_003C54. We have to scroll through the scene cmds to get the header the same way the
      * game does.
      */
-    SOH::Scene* scene =
-        (SOH::Scene*)Ship::Context::GetInstance()->GetResourceManager()->LoadResource(GRAVEYARD_SCENE_FILEPATH).get();
+    SOH::Scene* scene = (SOH::Scene*)Ship::Context::GetRawInstance()
+                            ->GetResourceManager()
+                            ->LoadResource(GRAVEYARD_SCENE_FILEPATH)
+                            .get();
     SOH::SetCollisionHeader* sceneCmd = nullptr;
     for (size_t i = 0; i < scene->commands.size(); i++) {
         auto cmd = scene->commands[i];

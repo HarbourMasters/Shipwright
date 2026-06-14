@@ -126,6 +126,7 @@ void GenerateStartingInventory() {
     AddItemToInventory(RG_NOCTURNE_OF_SHADOW, ctx->GetOption(RSK_STARTING_NOCTURNE_OF_SHADOW) ? 1 : 0);
     AddItemToInventory(RG_PRELUDE_OF_LIGHT, ctx->GetOption(RSK_STARTING_PRELUDE_OF_LIGHT) ? 1 : 0);
     AddItemToInventory(RG_KOKIRI_SWORD, ctx->GetOption(RSK_STARTING_KOKIRI_SWORD) ? 1 : 0);
+    AddItemToInventory(RG_MAGIC_BEAN_PACK, ctx->GetOption(RSK_STARTING_BEANS) ? 1 : 0);
     // if (ProgressiveGoronSword) {
     //   AddItemToInventory(RG_PROGRESSIVE_GORONSWORD, StartingBiggoronSword.Value<uint8_t>());
     // } else {

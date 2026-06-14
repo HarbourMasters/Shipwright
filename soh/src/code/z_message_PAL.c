@@ -15,6 +15,9 @@
 #include "soh/SaveManager.h"
 #include "soh/ResourceManagerHelpers.h"
 
+// SOH [Enhancement] Text Speed which fills whole box in one frame
+#define TEXT_SPEED_INSTANT 6
+
 // #region SOH [NTSC] - Allows custom messages to work on japanese
 static bool sDisplayNextMessageAsEnglish = false;
 static u8 sLastLanguage = LANGUAGE_ENG;
@@ -1276,7 +1279,9 @@ void Message_DrawTextJPN(PlayState* play, Gfx** gfxP) {
         }
     }
 
-    if (msgCtx->textDelay == 0) {
+    if (gTextSpeed >= TEXT_SPEED_INSTANT) {
+        msgCtx->textDrawPos = msgCtx->decodedTextLen + 1;
+    } else if (msgCtx->textDelay == 0) {
         msgCtx->textDrawPos = i + gTextSpeed;
         if (msgCtx->textDrawPos > msgCtx->decodedTextLen) {
             msgCtx->textDrawPos = msgCtx->decodedTextLen + 1;
@@ -1626,7 +1631,9 @@ void Message_DrawText(PlayState* play, Gfx** gfxP) {
                 break;
         }
     }
-    if (msgCtx->textDelay == 0) {
+    if (gTextSpeed >= TEXT_SPEED_INSTANT) {
+        msgCtx->textDrawPos = msgCtx->decodedTextLen + 1;
+    } else if (msgCtx->textDelay == 0) {
         msgCtx->textDrawPos = i + gTextSpeed;
     } else if (msgCtx->textDelayTimer == 0) {
         msgCtx->textDrawPos = i + 1;

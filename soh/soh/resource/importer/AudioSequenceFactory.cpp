@@ -342,7 +342,7 @@ ResourceFactoryXMLAudioSequenceV0::ReadResource(std::shared_ptr<Ship::File> file
     const char* path = child->Attribute("Path");
     std::shared_ptr<Ship::File> seqFile;
     if (path != nullptr) {
-        seqFile = Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->LoadFile(path);
+        seqFile = Ship::Context::GetRawInstance()->GetResourceManager()->GetArchiveManager()->LoadFile(path);
     }
 
     if (!streamed) {

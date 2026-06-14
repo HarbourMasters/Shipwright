@@ -41,6 +41,13 @@ void Anchor::HandlePacket_SetFlag(nlohmann::json payload) {
     s16 flagType = payload.at("flagType").get<s16>();
     s16 flag = payload.at("flag").get<s16>();
 
+    // sceneNum == SCENE_ID_MAX is a sentinel meaning "global flag" (handled below); only larger
+    // values would index gSaveContext.sceneFlags out of bounds.
+    if (sceneNum < 0 || sceneNum > SCENE_ID_MAX) {
+        SPDLOG_ERROR("[Anchor] SET_FLAG: sceneNum {} out of range", sceneNum);
+        return;
+    }
+
     if (sceneNum == SCENE_ID_MAX) {
         auto effect = new GameInteractionEffect::SetFlag();
         effect->parameters[0] = flagType;
@@ -61,6 +68,11 @@ void Anchor::HandlePacket_SetFlag(nlohmann::json payload) {
 
         // Special case: Ignore forest temple elevator flag, stored at 0x1B.
         if (sceneNum == SCENE_FOREST_TEMPLE && flagType == FLAG_SCENE_SWITCH && flag == 0x1B) {
+            return;
+        }
+
+        // Special case: Ignore Tower Collapse timer start.
+        if (sceneNum == SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR && flagType == FLAG_SCENE_SWITCH && flag == 0x36) {
             return;
         }
 

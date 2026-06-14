@@ -155,9 +155,9 @@ uint8_t GetRandomHintTextEntry(const HintText hintText) {
     auto ctx = Rando::Context::GetInstance();
     uint8_t size = 0;
     if (ctx->GetOption(RSK_HINT_CLARITY).Is(RO_HINT_CLARITY_AMBIGUOUS)) {
-        size = hintText.GetAmbiguousSize();
+        size = static_cast<u8>(hintText.GetAmbiguousSize());
     } else if (ctx->GetOption(RSK_HINT_CLARITY).Is(RO_HINT_CLARITY_OBSCURE)) {
-        size = hintText.GetObscureSize();
+        size = static_cast<u8>(hintText.GetObscureSize());
     }
     if (size > 0) {
         return Random(0, size);
@@ -185,7 +185,7 @@ void Hint::NamesChosen() {
         for (size_t c = 0; c < locations.size(); c++) {
             namesTemp = {};
             saveNames = false;
-            uint8_t selection = GetRandomHintTextEntry(GetItemHintText(c));
+            uint8_t selection = GetRandomHintTextEntry(GetItemHintText(static_cast<u8>(c)));
             if (selection > 0) {
                 saveNames = true;
             }

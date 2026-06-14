@@ -116,12 +116,12 @@ void ResolutionCustomWidget(WidgetInfo& info) {
         verticalPixelCount = pixelCountPresets[item_pixelCount];
 
         if (showHorizontalResField) {
-            horizontalPixelCount = (verticalPixelCount / aspectRatioY) * aspectRatioX;
+            horizontalPixelCount = static_cast<s32>((verticalPixelCount / aspectRatioY) * aspectRatioX);
         }
 
         CVarSetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".VerticalPixelCount", verticalPixelCount);
         CVarSetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".UIComboItem.PixelCount", item_pixelCount);
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     }
     UIWidgets::PopStyleCombobox();
     // Horizontal Resolution, if visibility is enabled for it.
@@ -135,8 +135,8 @@ void ResolutionCustomWidget(WidgetInfo& info) {
                 if (horizontalPixelCount < SCREEN_WIDTH) {
                     horizontalPixelCount = SCREEN_WIDTH;
                 }
-                aspectRatioX = horizontalPixelCount;
-                aspectRatioY = verticalPixelCount;
+                aspectRatioX = static_cast<f32>(horizontalPixelCount);
+                aspectRatioY = static_cast<f32>(verticalPixelCount);
                 update[UPDATE_aspectRatioX] = true;
                 update[UPDATE_aspectRatioY] = true;
             }
@@ -152,7 +152,7 @@ void ResolutionCustomWidget(WidgetInfo& info) {
                 aspectRatioY = aspectRatioPresetsY[2];
                 update[UPDATE_aspectRatioX] = true;
                 update[UPDATE_aspectRatioY] = true;
-                horizontalPixelCount = (verticalPixelCount / aspectRatioY) * aspectRatioX;
+                horizontalPixelCount = static_cast<s32>((verticalPixelCount / aspectRatioY) * aspectRatioX);
             }
         }
     }
@@ -166,8 +166,8 @@ void ResolutionCustomWidget(WidgetInfo& info) {
         // Ignore vertical resolutions that are below the lower clamp constant.
         if (showHorizontalResField && !(verticalPixelCount < minVerticalPixelCount)) {
             item_aspectRatio = default_aspectRatio;
-            aspectRatioX = horizontalPixelCount;
-            aspectRatioY = verticalPixelCount;
+            aspectRatioX = static_cast<f32>(horizontalPixelCount);
+            aspectRatioY = static_cast<f32>(verticalPixelCount);
             update[UPDATE_aspectRatioX] = true;
             update[UPDATE_aspectRatioY] = true;
         }
@@ -191,7 +191,7 @@ void ResolutionCustomWidget(WidgetInfo& info) {
                 .Color(THEME_COLOR));
         if (disabled_pixelCount && CVarGetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".PixelPerfectMode", 0)) {
             CVarSetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".PixelPerfectMode", 0);
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+            Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         }
 
         // Integer Scaling
@@ -225,7 +225,7 @@ void ResolutionCustomWidget(WidgetInfo& info) {
             // This is just here to update the value shown on the slider.
             // The function in LUS to handle this setting will ignore IntegerScaleFactor while active.
             CVarSetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".IntegerScale.Factor", integerScale_maximumBounds);
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+            Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         }
     } // End of integer scaling settings
     UIWidgets::PopStyleHeader();
@@ -255,7 +255,7 @@ void ResolutionCustomWidget(WidgetInfo& info) {
                                " If the image is stretched and you don't know why, click this.");
             if (ImGui::Button("Click to reenable aspect correction.")) {
                 CVarSetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".IgnoreAspectCorrection", 0);
-                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+                Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
             }
             UIWidgets::Spacer(2);
         }
@@ -267,12 +267,12 @@ void ResolutionCustomWidget(WidgetInfo& info) {
             if (!showHorizontalResField && (aspectRatioX > 0.0f)) { // when turning this setting off
                 // Refresh relevant values
                 aspectRatioX = aspectRatioY * horizontalPixelCount / verticalPixelCount;
-                horizontalPixelCount = (verticalPixelCount / aspectRatioY) * aspectRatioX;
+                horizontalPixelCount = static_cast<s32>((verticalPixelCount / aspectRatioY) * aspectRatioX);
             } else { // when turning this setting on
                 item_aspectRatio = default_aspectRatio;
                 if (aspectRatioX > 0.0f) {
                     // Refresh relevant values in the opposite order
-                    horizontalPixelCount = (verticalPixelCount / aspectRatioY) * aspectRatioX;
+                    horizontalPixelCount = static_cast<s32>((verticalPixelCount / aspectRatioY) * aspectRatioX);
                     aspectRatioX = aspectRatioY * horizontalPixelCount / verticalPixelCount;
                 }
             }
@@ -306,7 +306,7 @@ void ResolutionCustomWidget(WidgetInfo& info) {
                 // Initialise the (currently unused) "Exceed Bounds By" cvar if it's been changed.
                 if (CVarGetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".IntegerScale.ExceedBoundsBy", 0)) {
                     CVarSetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".IntegerScale.ExceedBoundsBy", 0);
-                    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+                    Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
                 }
             }
 
@@ -336,7 +336,7 @@ void ResolutionCustomWidget(WidgetInfo& info) {
                     if (UIWidgets::Button("Click to reset a console variable that may be causing this.",
                                           UIWidgets::ButtonOptions().Color(THEME_COLOR))) {
                         CVarSetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".IntegerScale.ExceedBoundsBy", 0);
-                        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+                        Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
                     }
                 }
             } else {
@@ -374,12 +374,12 @@ void ResolutionCustomWidget(WidgetInfo& info) {
         }
         CVarSetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".UIComboItem.AspectRatio", item_aspectRatio);
         CVarSetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".UIComboItem.PixelCount", item_pixelCount);
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     }
 }
 
 void RegisterResolutionWidgets() {
-    auto fastWnd = dynamic_pointer_cast<Fast::Fast3dWindow>(Ship::Context::GetInstance()->GetWindow());
+    auto fastWnd = dynamic_pointer_cast<Fast::Fast3dWindow>(Ship::Context::GetRawInstance()->GetWindow());
     mInterpreter = fastWnd->GetInterpreterWeak();
 
     WidgetPath path = { "Settings", "Graphics", SECTION_COLUMN_2 };
@@ -421,7 +421,7 @@ void RegisterResolutionWidgets() {
         .PreFunc([](WidgetInfo& info) { info.isHidden = !CVarGetInteger(CVAR_LOW_RES_MODE, 0); })
         .Callback([](WidgetInfo& info) {
             CVarSetInteger(CVAR_LOW_RES_MODE, 0);
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+            Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         });
 
     // Aspect Ratio
@@ -459,14 +459,14 @@ void RegisterResolutionWidgets() {
                 aspectRatioY = aspectRatioPresetsY[item_aspectRatio];
 
                 if (showHorizontalResField) {
-                    horizontalPixelCount = (verticalPixelCount / aspectRatioY) * aspectRatioX;
+                    horizontalPixelCount = static_cast<s32>((verticalPixelCount / aspectRatioY) * aspectRatioX);
                 }
 
                 CVarSetFloat(CVAR_PREFIX_ADVANCED_RESOLUTION ".AspectRatioX", aspectRatioX);
                 CVarSetFloat(CVAR_PREFIX_ADVANCED_RESOLUTION ".AspectRatioY", aspectRatioY);
             }
             CVarSetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".UIComboItem.AspectRatio", item_aspectRatio);
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+            Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         })
         .Options(ComboboxOptions().ComboMap(aspectRatioPresetLabels));
     mSohMenu->AddWidget(path, "AspectRatioCustom", WIDGET_CUSTOM)
@@ -543,7 +543,7 @@ void UpdateResolutionVars() {
         }
         CVarSetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".UIComboItem.AspectRatio", item_aspectRatio);
         CVarSetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".UIComboItem.PixelCount", item_pixelCount);
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     }
     // Initialise update flags.
     for (uint8_t i = 0; i < sizeof(update); i++) {
@@ -582,7 +582,7 @@ void UpdateResolutionVars() {
     verticalPixelCount =
         CVarGetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".VerticalPixelCount", pixelCountPresets[item_pixelCount]);
     // Additional settings
-    horizontalPixelCount = (verticalPixelCount / aspectRatioY) * aspectRatioX;
+    horizontalPixelCount = static_cast<s32>((verticalPixelCount / aspectRatioY) * aspectRatioX);
     // Disabling flags
     disabled_everything = !CVarGetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".Enabled", 0);
     disabled_pixelCount = !CVarGetInteger(CVAR_PREFIX_ADVANCED_RESOLUTION ".VerticalResolutionToggle", 0);

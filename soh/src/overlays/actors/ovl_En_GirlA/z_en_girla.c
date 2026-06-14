@@ -664,6 +664,10 @@ s32 EnGirlA_CanBuy_Longsword(PlayState* play, EnGirlA* this) {
 }
 
 s32 EnGirlA_CanBuy_HylianShield(PlayState* play, EnGirlA* this) {
+    s32 canBuy;
+    if (GameInteractor_Should(VB_CAN_BUY_SHOP_SHIELD_OR_TUNIC, false, &canBuy, RAND_INF_HAS_FOUND_HYLIAN_SHIELD)) {
+        return canBuy;
+    }
     if (CHECK_OWNED_EQUIP_ALT(EQUIP_TYPE_SHIELD, EQUIP_INV_SHIELD_HYLIAN)) {
         return CANBUY_RESULT_CANT_GET_NOW;
     }
@@ -677,6 +681,10 @@ s32 EnGirlA_CanBuy_HylianShield(PlayState* play, EnGirlA* this) {
 }
 
 s32 EnGirlA_CanBuy_DekuShield(PlayState* play, EnGirlA* this) {
+    s32 canBuy;
+    if (GameInteractor_Should(VB_CAN_BUY_SHOP_SHIELD_OR_TUNIC, false, &canBuy, RAND_INF_HAS_FOUND_DEKU_SHIELD)) {
+        return canBuy;
+    }
     if (CHECK_OWNED_EQUIP_ALT(EQUIP_TYPE_SHIELD, EQUIP_INV_SHIELD_DEKU)) {
         return CANBUY_RESULT_CANT_GET_NOW;
     }
@@ -690,6 +698,10 @@ s32 EnGirlA_CanBuy_DekuShield(PlayState* play, EnGirlA* this) {
 }
 
 s32 EnGirlA_CanBuy_GoronTunic(PlayState* play, EnGirlA* this) {
+    s32 canBuy;
+    if (GameInteractor_Should(VB_CAN_BUY_SHOP_SHIELD_OR_TUNIC, false, &canBuy, RAND_INF_HAS_FOUND_GORON_TUNIC)) {
+        return canBuy;
+    }
     if (LINK_AGE_IN_YEARS == YEARS_CHILD &&
         (!IS_RANDO || Randomizer_GetSettingValue(RSK_SHOPSANITY) == RO_SHOPSANITY_OFF)) {
         return CANBUY_RESULT_CANT_GET_NOW;
@@ -707,6 +719,10 @@ s32 EnGirlA_CanBuy_GoronTunic(PlayState* play, EnGirlA* this) {
 }
 
 s32 EnGirlA_CanBuy_ZoraTunic(PlayState* play, EnGirlA* this) {
+    s32 canBuy;
+    if (GameInteractor_Should(VB_CAN_BUY_SHOP_SHIELD_OR_TUNIC, false, &canBuy, RAND_INF_HAS_FOUND_ZORA_TUNIC)) {
+        return canBuy;
+    }
     if (LINK_AGE_IN_YEARS == YEARS_CHILD &&
         (!IS_RANDO || Randomizer_GetSettingValue(RSK_SHOPSANITY) == RO_SHOPSANITY_OFF)) {
         return CANBUY_RESULT_CANT_GET_NOW;

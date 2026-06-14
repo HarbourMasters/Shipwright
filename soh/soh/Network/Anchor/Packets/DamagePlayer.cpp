@@ -51,7 +51,7 @@ void Anchor::HandlePacket_DamagePlayer(nlohmann::json payload) {
 
     if (damageEffect == DUMMY_PLAYER_HIT_RESPONSE_FIRE) {
         for (int i = 0; i < ARRAY_COUNT(self->bodyFlameTimers); i++) {
-            self->bodyFlameTimers[i] = Rand_S16Offset(0, 200);
+            self->bodyFlameTimers[i] = static_cast<uint8_t>(Rand_S16Offset(0, 200));
         }
         self->bodyIsBurning = true;
     } else if (damageEffect == DUMMY_PLAYER_HIT_RESPONSE_STUN) {

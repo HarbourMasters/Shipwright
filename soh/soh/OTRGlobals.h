@@ -16,7 +16,8 @@
 #define M_PI_2f 1.57079632679489661923f // pi/2
 
 #ifdef __cplusplus
-#include <memory> // for shared_ptr
+#include <stdint.h>
+#include <memory>
 #include <string>
 #include <unordered_map>
 
@@ -46,7 +47,7 @@ class OTRGlobals {
   public:
     static OTRGlobals* Instance;
 
-    std::shared_ptr<Ship::Context> context;
+    Ship::Context* context;
     std::shared_ptr<SaveStateMgr> gSaveStateMgr;
     std::shared_ptr<Randomizer> gRandomizer;
     std::shared_ptr<Rando::Context> gRandoContext;

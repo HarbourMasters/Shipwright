@@ -4,6 +4,7 @@
 #include "soh/ObjectExtension/ObjectExtension.h"
 #include "item_category_adj.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
+#include "soh/Enhancements/randomizer/RCToRandInf.h"
 
 extern "C" {
 #include "variables.h"
@@ -72,32 +73,32 @@ extern "C" void EnWood02_RandomizerDraw(Actor* thisx, PlayState* play) {
     // Change texture
     switch (getItemCategory) {
         case ITEM_CATEGORY_MAJOR:
-            Matrix_Scale(0.1, 0.05, 0.1, MTXMODE_APPLY);
+            Matrix_Scale(0.1f, 0.05f, 0.1f, MTXMODE_APPLY);
             Gfx_DrawDListOpa(play, (Gfx*)gSmallMajorCrateDL);
             break;
         case ITEM_CATEGORY_SKULLTULA_TOKEN:
-            Matrix_Scale(0.1, 0.05, 0.1, MTXMODE_APPLY);
+            Matrix_Scale(0.1f, 0.05f, 0.1f, MTXMODE_APPLY);
             Gfx_DrawDListOpa(play, (Gfx*)gSmallTokenCrateDL);
             break;
         case ITEM_CATEGORY_SMALL_KEY:
-            Matrix_Scale(0.1, 0.05, 0.1, MTXMODE_APPLY);
+            Matrix_Scale(0.1f, 0.05f, 0.1f, MTXMODE_APPLY);
             Gfx_DrawDListOpa(play, (Gfx*)gSmallSmallKeyCrateDL);
             break;
         case ITEM_CATEGORY_BOSS_KEY:
-            Matrix_Scale(0.1, 0.05, 0.1, MTXMODE_APPLY);
+            Matrix_Scale(0.1f, 0.05f, 0.1f, MTXMODE_APPLY);
             Gfx_DrawDListOpa(play, (Gfx*)gSmallBossKeyCrateDL);
             break;
         case ITEM_CATEGORY_HEALTH:
-            Matrix_Scale(0.1, 0.05, 0.1, MTXMODE_APPLY);
+            Matrix_Scale(0.1f, 0.05f, 0.1f, MTXMODE_APPLY);
             Gfx_DrawDListOpa(play, (Gfx*)gSmallHeartCrateDL);
             break;
         case ITEM_CATEGORY_LESSER:
-            Matrix_Scale(0.1, 0.05, 0.1, MTXMODE_APPLY);
+            Matrix_Scale(0.1f, 0.05f, 0.1f, MTXMODE_APPLY);
             Gfx_DrawDListOpa(play, (Gfx*)gSmallMinorCrateDL);
             break;
         case ITEM_CATEGORY_JUNK:
         default:
-            Matrix_Scale(0.04, 0.02, 0.04, MTXMODE_APPLY);
+            Matrix_Scale(0.04f, 0.02f, 0.04f, MTXMODE_APPLY);
             Gfx_DrawDListOpa(play, (Gfx*)gLargeJunkCrateDL);
             break;
     }
@@ -119,10 +120,33 @@ void EnWood02_RandomizerSpawnCollectible(EnWood02* treeActor, PlayState* play) {
     item00->actor.velocity.y = 0.0f;
     item00->actor.world.pos.y += 120.0f;
     item00->actor.speedXZ = 2.0f;
-    item00->actor.world.rot.y = Rand_CenteredFloat(65536.0f);
+    item00->actor.world.rot.y = static_cast<s16>(Rand_CenteredFloat(65536.0f));
     // clear randomizerCheck to prevent multiple bonks,
     // reloading area without collecting drop won't persist this
     treeIdentity->randomizerCheck = RC_UNKNOWN_CHECK;
+}
+
+static CheckIdentity IdentifyTree(s32 sceneNum, s32 posX, s32 posZ) {
+    CheckIdentity treeIdentity;
+
+    if (sceneNum == SCENE_MARKET_NIGHT) {
+        sceneNum = SCENE_MARKET_DAY;
+    }
+
+    s32 actorParams = TWO_ACTOR_PARAMS(posX, posZ);
+    Rando::Location* location =
+        OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_EN_WOOD02, sceneNum, actorParams);
+    if (location->GetRandomizerCheck() != RC_UNKNOWN_CHECK &&
+        (location->GetRCType() != RCTYPE_NLTREE ||
+         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LOGIC_RULES) == RO_LOGIC_NO_LOGIC)) {
+        treeIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
+        treeIdentity.randomizerCheck = location->GetRandomizerCheck();
+        return treeIdentity;
+    }
+
+    treeIdentity.randomizerInf = RAND_INF_MAX;
+    treeIdentity.randomizerCheck = RC_UNKNOWN_CHECK;
+    return treeIdentity;
 }
 
 void EnWood02_RandomizerInit(void* actorRef) {
@@ -132,8 +156,8 @@ void EnWood02_RandomizerInit(void* actorRef) {
         (treeActor->actor.params > WOOD_TREE_KAKARIKO_ADULT &&
          treeActor->actor.params <= WOOD_BUSH_BLACK_LARGE_SPAWNED &&
          Rando::Context::GetInstance()->GetOption(RSK_SHUFFLE_BUSHES).Get())) {
-        auto treeIdentity = OTRGlobals::Instance->gRandomizer->IdentifyTree(
-            gPlayState->sceneNum, (s16)treeActor->actor.world.pos.x, (s16)treeActor->actor.world.pos.z);
+        auto treeIdentity =
+            IdentifyTree(gPlayState->sceneNum, (s16)treeActor->actor.world.pos.x, (s16)treeActor->actor.world.pos.z);
         if (treeIdentity.randomizerInf != RAND_INF_MAX && treeIdentity.randomizerCheck != RC_UNKNOWN_CHECK) {
             ObjectExtension::GetInstance().Set<CheckIdentity>(actorRef, std::move(treeIdentity));
         }
