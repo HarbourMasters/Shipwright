@@ -231,9 +231,27 @@ cmake --build build-cmake
 ```
 
 > [!TIP]
-> If cmake fails with `Could not find a package configuration file provided by "tinyxml2"`, your distro's [tinyxml2](https://github.com/leethomason/tinyxml2) is older than 10.0.0 (when the cmake config was added). Install a newer version via:
-> - [Homebrew](https://formulae.brew.sh/formula/tinyxml2) (pass `-DCMAKE_PREFIX_PATH=$(brew --prefix)` to cmake)
-> - Building from source (see [.github/actions/install-tinyxml2/action.yml](../.github/actions/install-tinyxml2/action.yml))
+> Some older distros ship packages without the cmake config files SoH's `find_package` calls need. If cmake fails with `Could not find a package configuration file provided by "<package>"`.
+> 
+> Known failing package versions:
+> - [tinyxml2](https://github.com/leethomason/tinyxml2) < 10.0.0
+> - [SDL2_net](https://github.com/libsdl-org/SDL_net) < 2.2.0
+>
+> You can install a newer version of that package either
+>
+> by using [Homebrew](https://brew.sh/):
+> ```sh
+> brew install <package>
+> ```
+> When invoking cmake, add `-DCMAKE_PREFIX_PATH=$(brew --prefix)` so it knows to search brew's prefix for the installed package.
+>
+> ***OR***
+>
+> by building from source:
+>
+> Reference examples:
+> - [`.github/actions/install-tinyxml2/action.yml`](../.github/actions/install-tinyxml2/action.yml)
+> - [`.github/actions/install-sdl2-net/action.yml`](../.github/actions/install-sdl2-net/action.yml)
 
 ### Generate a distributable
 After compiling the project you can generate a distributable by running of the following:
