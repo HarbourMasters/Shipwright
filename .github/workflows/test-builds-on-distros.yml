@@ -96,6 +96,20 @@ jobs:
       run: |
         zypper --non-interactive dup
         zypper --non-interactive in ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'gcc-c++') || '' }} ${{ matrix.cc == 'clang' && 'libstdc++-devel' || '' }} git cmake ninja SDL2-devel libpng16-devel libzip-devel libzip-tools nlohmann_json-devel tinyxml2-devel spdlog-devel
+    - name: Verify compiler version
+      id: verify-compiler
+      uses: ./.github/actions/verify-compiler
+      with:
+        compiler: ${{ matrix.cc }}
+        packageManager: ${{ matrix.distro.packageManager }}
+    - name: Install newer compiler
+      if: ${{ steps.verify-compiler.outputs.needs_install == 'true' }}
+      uses: ./.github/actions/install-newer-compiler
+      with:
+        compiler: ${{ matrix.cc }}
+        version: ${{ steps.verify-compiler.outputs.version }}
+        available_in_distro: ${{ steps.verify-compiler.outputs.available_in_distro }}
+        packageManager: ${{ matrix.distro.packageManager }}
     - name: Verify/update cmake
       run: |
         ver_le() { [ "$(printf '%s\n%s\n' "$1" "$2" | sort -V | head -1)" = "$1" ]; }
@@ -147,5 +161,5 @@ jobs:
         cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release -DBUILD_REMOTE_CONTROL=1
         cmake --build build-cmake --config Release -j3
       env:
-        CC: ${{ matrix.cc }}
-        CXX: ${{ matrix.cxx }}
+        CC: ${{ steps.verify-compiler.outputs.cc }}
+        CXX: ${{ steps.verify-compiler.outputs.cxx }}
