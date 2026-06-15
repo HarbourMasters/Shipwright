@@ -155,11 +155,31 @@ jobs:
         fi
     - uses: ./.github/actions/install-sdl2-net
       if: ${{ steps.sdl2-net-check.outputs.needs_install == 'true' }}
+    # https://github.com/fmtlib/fmt/issues/4807
+    - name: Check fmt/clang consteval compat
+      id: fmt-check
+      shell: bash
+      run: |
+        cat > /tmp/fmt-consteval-test.cpp <<'EOF'
+        #include <fmt/format.h>
+        int main() { auto s = fmt::format(FMT_STRING("{}"), 42); return 0; }
+        EOF
+        if "$CXX" -std=c++20 -c /tmp/fmt-consteval-test.cpp -o /tmp/fmt-consteval-test.o; then
+          echo "ok — fmt/clang consteval compatible"
+          echo "needs_workaround=false" >> "$GITHUB_OUTPUT"
+        else
+          echo "incompatible — applying workaround"
+          echo "needs_workaround=true" >> "$GITHUB_OUTPUT"
+        fi
+      env:
+        CXX: ${{ steps.verify-compiler.outputs.cxx }}
     - name: Build SoH
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
-        cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release -DBUILD_REMOTE_CONTROL=1
+        cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release -DBUILD_REMOTE_CONTROL=1 ${EXTRA_CMAKE_FLAGS}
         cmake --build build-cmake --config Release -j3
       env:
         CC: ${{ steps.verify-compiler.outputs.cc }}
         CXX: ${{ steps.verify-compiler.outputs.cxx }}
+        # https://github.com/fmtlib/fmt/issues/4807
+        EXTRA_CMAKE_FLAGS: ${{ steps.fmt-check.outputs.needs_workaround == 'true' && '-DCMAKE_CXX_FLAGS=-DFMT_CONSTEVAL=constexpr' || '' }}
