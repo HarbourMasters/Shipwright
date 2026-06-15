@@ -2,12 +2,14 @@
 
 #include <array>
 #include <map>
+#include <set>
 #include <unordered_map>
 #include "randomizerTypes.h"
 #include "item.h"
 #include "location.h"
 
 namespace Rando {
+
 /**
  * @brief Singleton for storing and accessing static Randomizer-related data
  *
@@ -93,6 +95,12 @@ class StaticData {
     static std::vector<RandomizerGet> normalBottles;
     static std::vector<RandomizerGet> beanSouls;
     static std::vector<RandomizerGet> overworldKeys;
+    static std::unordered_map<SceneID, std::set<RandomizerGet>> itemRestrictions;
+    static std::set<RandomizerGet> restrictFW;
+    static std::set<RandomizerGet> restrictSpells;
+    static std::set<RandomizerGet> restrictTrade;
+    static std::set<RandomizerGet> allowMasks;
+    static std::set<RandomizerGet> allowBottleMaskTrade;
 
     StaticData();
     ~StaticData();

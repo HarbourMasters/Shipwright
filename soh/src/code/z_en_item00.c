@@ -823,7 +823,7 @@ void EnItem00_Update(Actor* thisx, PlayState* play) {
         if (sp3A || D_80157D94[0]) {
             Actor_UpdateBgCheckInfo(play, &this->actor, 10.0f, 15.0f, 15.0f, 0x1D);
 
-            if (this->actor.floorHeight <= -10000.0f) {
+            if (GameInteractor_Should(VB_ITEM00_KILL, this->actor.floorHeight <= -10000.0f, this)) {
                 Actor_Kill(&this->actor);
                 return;
             }

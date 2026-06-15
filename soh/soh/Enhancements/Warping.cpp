@@ -30,7 +30,7 @@ NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(WarpPoint, entranceId, roomNum, pos, rotY, bo
 std::map<std::string, WarpPoint> warpPoints;
 
 void LoadConfig() {
-    auto allConfig = Ship::Context::GetInstance()->GetConfig()->GetNestedJson();
+    auto allConfig = Ship::Context::GetRawInstance()->GetConfig()->GetNestedJson();
     if (allConfig.find("WarpPoints") == allConfig.end() || !allConfig["WarpPoints"].is_object()) {
         allConfig["WarpPoints"] = nlohmann::json::object();
     }
@@ -38,10 +38,10 @@ void LoadConfig() {
 }
 
 void SaveConfig() {
-    auto allConfig = Ship::Context::GetInstance()->GetConfig()->GetNestedJson();
+    auto allConfig = Ship::Context::GetRawInstance()->GetConfig()->GetNestedJson();
     allConfig["WarpPoints"] = warpPoints;
-    Ship::Context::GetInstance()->GetConfig()->SetBlock("WarpPoints", warpPoints);
-    Ship::Context::GetInstance()->GetConfig()->Save();
+    Ship::Context::GetRawInstance()->GetConfig()->SetBlock("WarpPoints", warpPoints);
+    Ship::Context::GetRawInstance()->GetConfig()->Save();
 }
 
 void Warp(WarpPoint& warpPoint) {
@@ -65,8 +65,8 @@ void Warp(WarpPoint& warpPoint) {
         for (int buttonIndex = 0; buttonIndex < ARRAY_COUNT(gSaveContext.buttonStatus); buttonIndex++) {
             gSaveContext.buttonStatus[buttonIndex] = BTN_ENABLED;
         }
-        gSaveContext.forceRisingButtonAlphas = gSaveContext.unk_13E8 = gSaveContext.unk_13EA = gSaveContext.unk_13EC =
-            0;
+        gSaveContext.unk_13E8 = gSaveContext.unk_13EA = gSaveContext.unk_13EC = 0;
+        gSaveContext.forceRisingButtonAlphas = 0;
         Audio_QueueSeqCmd(SEQ_PLAYER_BGM_MAIN << 24 | NA_BGM_STOP);
         gSaveContext.entranceIndex = warpPoint.entranceId;
 

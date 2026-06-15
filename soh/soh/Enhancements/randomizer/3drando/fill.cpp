@@ -402,7 +402,8 @@ bool AddCheckToLogic(LocationAccess& locPair, GetAccessibleLocationsStruct& gals
            (quest == RCQUEST_VANILLA && ctx->GetDungeons()->GetDungeonFromScene(parentRegion->scene)->IsVanilla()) ||
            (quest == RCQUEST_MQ && ctx->GetDungeons()->GetDungeonFromScene(parentRegion->scene)->IsMQ()));
 
-    if (!location->IsAddedToPool() && locPair.ConditionsMet(parentRegion, logic->CalculatingAvailableChecks)) {
+    if (!location->IsAddedToPool() && locPair.ConditionsMet(parentRegion, logic->CalculatingAvailableChecks) &&
+        !logic->ShopItemNotForSale(loc)) {
         location->AddToPool();
 
         if (locItem == RG_NONE || logic->CalculatingAvailableChecks) {
@@ -735,7 +736,7 @@ static void PareDownPlaythrough() {
     }
 
     // Some spheres may now be empty, remove these
-    for (int i = ctx->playthroughLocations.size() - 2; i >= 0; i--) {
+    for (int32_t i = static_cast<int32_t>(ctx->playthroughLocations.size()) - 2; i >= 0; i--) {
         if (ctx->playthroughLocations.at(i).size() == 0) {
             ctx->playthroughLocations.erase(ctx->playthroughLocations.begin() + i);
         }
@@ -789,12 +790,17 @@ static void CalculateBarren() {
     NotBarren[RA_NONE] = true;
     NotBarren[RA_LINKS_POCKET] = true;
 
+    // When shop shields/tunics are gated behind finding a shield, those items become relevant, so
+    // regions holding a shield or tunic should not be hinted foolish.
+    const bool shieldTunicGate = ctx->GetOption(RSK_SHOP_SHIELDS_AND_TUNICS_ONLY_REFILL).Is(RO_GENERIC_ON);
+
     for (RandomizerCheck loc : ctx->allLocations) {
         Rando::ItemLocation* itemLoc = ctx->GetItemLocation(loc);
         std::set<RandomizerArea> locAreas = itemLoc->GetAreas();
         for (auto locArea : locAreas) {
             // If a location has a major item or is a way of the hero location, it is not barren
-            if (NotBarren[locArea] == false && (itemLoc->GetPlacedItem().IsMajorItem() || itemLoc->IsWothCandidate())) {
+            if (NotBarren[locArea] == false && (itemLoc->GetPlacedItem().IsMajorItem() || itemLoc->IsWothCandidate() ||
+                                                (shieldTunicGate && itemLoc->GetPlacedItem().IsShieldOrTunic()))) {
                 NotBarren[locArea] = true;
             }
         }
@@ -1175,6 +1181,14 @@ static void RandomizeDungeonItems() {
             return Rando::StaticData::RetrieveItem(i).GetItemType() == ITEMTYPE_DUNGEONREWARD;
         });
         AddElementsToPool(overworldItems, rewards);
+    }
+
+    if (ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_LOCATION).Is(RO_TRIFORCE_HUNT_LOCATION_ANY_DUNGEON)) {
+        auto triforcePieces = FilterAndEraseFromPool(itemPool, [](const auto i) { return i == RG_TRIFORCE_PIECE; });
+        AddElementsToPool(anyDungeonItems, triforcePieces);
+    } else if (ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_LOCATION).Is(RO_TRIFORCE_HUNT_LOCATION_OVERWORLD)) {
+        auto triforcePieces = FilterAndEraseFromPool(itemPool, [](const auto i) { return i == RG_TRIFORCE_PIECE; });
+        AddElementsToPool(overworldItems, triforcePieces);
     }
 
     // Randomize Any Dungeon and Overworld pools

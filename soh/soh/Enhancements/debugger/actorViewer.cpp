@@ -614,7 +614,7 @@ void CreateActorSpecificData() {
     };
 
     actorSpecificData[ACTOR_EN_SKB] = [](s16 params) -> s16 {
-        u8 size = params;
+        u8 size = static_cast<u8>(params);
         ImGui::InputScalar("Size", ImGuiDataType_U8, &size);
 
         return size;
@@ -753,7 +753,7 @@ void CreateActorSpecificData() {
             piece = false;
         }
 
-        u8 textId = params;
+        u8 textId = static_cast<u8>(params);
         if (!piece && !fishingSign) {
             if (ImGui::InputScalar("Text ID", ImGuiDataType_U8, &textId)) {
                 textId |= 0x300;

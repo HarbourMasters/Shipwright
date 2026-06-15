@@ -30,7 +30,8 @@ static void RegisterHurtContainer() {
         UpdateHurtContainerModeState();
     }
 
-    COND_HOOK(OnLoadGame, hurtEnabled != CVAR_HURT_CONTAINER_VALUE, [](int32_t) { UpdateHurtContainerModeState(); });
+    COND_HOOK(OnLoadGame, static_cast<int32_t>(hurtEnabled) != CVAR_HURT_CONTAINER_VALUE,
+              [](int32_t) { UpdateHurtContainerModeState(); });
 
     COND_VB_SHOULD(VB_HEARTS_INCREASE_WITH_CONTAINERS, CVAR_HURT_CONTAINER_VALUE, {
         *should = false;

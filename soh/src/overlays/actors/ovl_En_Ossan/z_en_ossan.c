@@ -692,7 +692,7 @@ void EnOssan_EndInteraction(PlayState* play, EnOssan* this) {
 }
 
 s32 EnOssan_TestEndInteraction(EnOssan* this, PlayState* play, Input* input) {
-    if (CHECK_BTN_ALL(input->press.button, BTN_B)) {
+    if (GameInteractor_Should(VB_SHOULD_OSSAN_CANCEL, CHECK_BTN_ALL(input->press.button, BTN_B), input)) {
         EnOssan_EndInteraction(play, this);
         return true;
     } else {
@@ -701,7 +701,7 @@ s32 EnOssan_TestEndInteraction(EnOssan* this, PlayState* play, Input* input) {
 }
 
 s32 EnOssan_TestCancelOption(EnOssan* this, PlayState* play, Input* input) {
-    if (CHECK_BTN_ALL(input->press.button, BTN_B)) {
+    if (GameInteractor_Should(VB_SHOULD_OSSAN_CANCEL, CHECK_BTN_ALL(input->press.button, BTN_B), input)) {
         this->stateFlag = this->tempStateFlag;
         Message_ContinueTextbox(play, this->shelfSlots[this->cursorIndex]->actor.textId);
         return true;

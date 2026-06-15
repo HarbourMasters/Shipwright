@@ -57,7 +57,7 @@ std::shared_ptr<Ship::IResource> SetRoomListFactoryXML::ReadResource(std::shared
         child = child->NextSiblingElement();
     }
 
-    setRoomList->numRooms = setRoomList->rooms.size();
+    setRoomList->numRooms = static_cast<u32>(setRoomList->rooms.size());
 
     return setRoomList;
 }

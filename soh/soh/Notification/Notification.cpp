@@ -5,6 +5,8 @@
 
 #include <fast/Fast3dGui.h>
 
+#include <fast/Fast3dGui.h>
+
 extern "C" {
 #include "functions.h"
 #include "macros.h"
@@ -50,7 +52,7 @@ void Window::Draw() {
 
     for (int index = 0; index < notifications.size(); ++index) {
         auto& notification = notifications[index];
-        int inverseIndex = -ABS(index - (notifications.size() - 1));
+        int inverseIndex = -ABS(index - (static_cast<int>(notifications.size()) - 1));
 
         ImGui::SetNextWindowViewport(vp->ID);
         if (notification.remainingTime < 4.0f) {
@@ -90,9 +92,10 @@ void Window::Draw() {
         ImGui::SetWindowPos(notificationPos);
 
         if (notification.itemIcon != nullptr) {
-            ImGui::Image(std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetInstance()->GetWindow()->GetGui())
-                             ->GetTextureByName(notification.itemIcon),
-                         ImVec2(24, 24));
+            ImGui::Image(
+                std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
+                    ->GetTextureByName(notification.itemIcon),
+                ImVec2(24, 24));
             ImGui::SameLine();
         }
         if (!notification.prefix.empty()) {

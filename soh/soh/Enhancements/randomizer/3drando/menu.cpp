@@ -20,11 +20,11 @@ bool GenerateRandomizer(std::set<RandomizerCheck> excludedLocations, std::set<Ra
 
     // if a blank seed was entered, make a random one
     if (seedInput.empty()) {
-        char seedString[12];
+        char seedString[11];
         for (size_t i = 0; i < 10; i++) {
             seedString[i] = '0' + ShipUtils::Random(0, 10);
         }
-        seedString[11] = '\0';
+        seedString[10] = '\0';
         seedInput = std::string(seedString);
     } else if (seedInput.rfind("seed_testing_count", 0) == 0 && seedInput.length() > 18) {
         int count;
