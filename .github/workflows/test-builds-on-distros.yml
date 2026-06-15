@@ -189,3 +189,16 @@ jobs:
         CXX: ${{ steps.verify-compiler.outputs.cxx }}
         # https://github.com/fmtlib/fmt/issues/4807
         EXTRA_CMAKE_FLAGS: ${{ steps.fmt-check.outputs.needs_workaround == 'true' && '-DCMAKE_CXX_FLAGS=-DFMT_CONSTEVAL=constexpr' || '' }}
+  build-nix:
+    runs-on: ${{ (vars.LINUX_RUNNER && fromJSON(vars.LINUX_RUNNER)) || 'ubuntu-latest' }}
+    steps:
+    - uses: actions/checkout@v6
+      with:
+        submodules: true
+    - uses: cachix/install-nix-action@v31
+    - name: Build SoH in nix dev shell
+      run: |
+        nix develop ./linux-build-deps -c bash -c '
+          cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release -DBUILD_REMOTE_CONTROL=1
+          cmake --build build-cmake --config Release -j3
+        '
