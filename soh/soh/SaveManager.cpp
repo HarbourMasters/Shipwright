@@ -30,8 +30,7 @@
 extern "C" SaveContext gSaveContext;
 using namespace std::string_literals;
 
-template <>
-void SaveManager::SaveData<std::string>(const std::string& name, const std::string& data) {
+void SaveManager::SaveData(const std::string& name, const std::string& data) {
     const std::string sanitized = SohUtils::SanitizeUtf8(data);
     if (name == "") {
         assert((*currentJsonContext).is_array());
