@@ -39,7 +39,7 @@ static void RegisterRandoStatUpgradeHooks() {
             return;
         uint8_t required = StatUpgradeRequired(5);
         Player* player = va_arg(args, Player*);
-        if (!(player->actor.bgCheckFlags & 1))
+        if (!(player->actor.bgCheckFlags & 1) && !(player->stateFlags1 & PLAYER_STATE1_IN_WATER))
             return;
         f32* speedTarget = va_arg(args, f32*);
         float multiplier = 1.0f + (float)std::min((int)level, (int)required) * (0.4f / required);

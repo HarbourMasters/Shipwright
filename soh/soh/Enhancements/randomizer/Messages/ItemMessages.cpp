@@ -222,19 +222,9 @@ void DrawCustomItemIcon(Gfx** p) {
 }
 
 void BuildQuarterHeartMessage(CustomMessage& msg) {
-    u16 cap = gSaveContext.healthCapacity + 4;
-    u16 fullHearts = cap / 0x10;
-    u16 quarters = (cap % 0x10) / 4;
-    std::string progress;
-    if (quarters > 0) {
-        progress = std::to_string(fullHearts) + " hearts and " + std::to_string(quarters) + " quarter(s)";
-    } else {
-        progress = std::to_string(fullHearts) + " hearts";
-    }
-    msg = { "You found a %yQuarter Heart%w!&Max health: %g[[progress]]%w.",
-            "Du erhältst ein %yViertelherz%w!&Maximale Lebensenergie: %g[[progress]]%w.",
-            "Vous trouvez un %yQuart de Cœur%w!&Vie maximale: %g[[progress]]%w." };
-    msg.Replace("[[progress]]", progress);
+    msg = { "You found a %yQuarter Heart Container%w!&You gained quarter of a heart.",
+            "Du erhältst einen %yViertelherz-Behälter%w!&Du gewinnst ein Viertel eines Herzens.",
+            "Vous trouvez un %yContenant de Quart de Cœur%w!&Vous gagnez un quart de cœur." };
     msg.AutoFormat();
 }
 

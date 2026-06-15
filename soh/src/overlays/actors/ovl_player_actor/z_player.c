@@ -8873,6 +8873,7 @@ void Player_Action_80842180(Player* this, PlayState* play) {
         if (!func_8083C484(this, &speedTarget, &yawTarget)) {
             GameInteractor_Should(VB_PLAYER_MODIFY_RUN_SPEED, true, this, &speedTarget);
 
+            GameInteractor_Should(VB_PLAYER_SPEED_MULTIPLIER, true, this, &speedTarget);
             func_8083DF68(this, speedTarget, yawTarget);
             func_8083DDC8(this, play);
 
@@ -8906,6 +8907,7 @@ void Player_Action_8084227C(Player* this, PlayState* play) {
                 return;
             }
 
+            GameInteractor_Should(VB_PLAYER_SPEED_MULTIPLIER, true, this, &sp2C);
             func_8083DF68(this, sp2C, sp2A);
             func_8083DDC8(this, play);
 
