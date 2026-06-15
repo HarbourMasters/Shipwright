@@ -1202,6 +1202,11 @@ void SohMenu::AddMenuEnhancements() {
         .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip(
             "Restores an unfinished feature to pulsate the boss room icon when you are in the boss room."));
+    AddWidget(path, "Saria's Friends Forever Gesture", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("SariaGestureFriendsForever"))
+        .RaceDisable(false)
+        .Options(CheckboxOptions().Tooltip(
+            "Restores an unused animation of Saria when she says, \"Saria and Link will be friends forever.\""));
 
     AddWidget(path, "Glitch Restorations", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Fish while Hovering", WIDGET_CVAR_CHECKBOX)

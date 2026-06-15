@@ -196,7 +196,7 @@ void RegionTable_Init_Kakariko() {
     }, {
         //Locations
         LOCATION(RC_KAK_WINDMILL_FREESTANDING_POH, logic->CanUse(RG_BOOMERANG)),
-        LOCATION(RC_SONG_FROM_WINDMILL,            logic->IsAdult && logic->HasItem(RG_FAIRY_OCARINA)),
+        LOCATION(RC_SONG_FROM_WINDMILL,            logic->IsAdult && logic->CanUse(RG_FAIRY_OCARINA)),
     }, {
         //Exits
         ENTRANCE(RR_KAKARIKO_VILLAGE,   true),
@@ -228,7 +228,7 @@ void RegionTable_Init_Kakariko() {
 
     areaTable[RR_KAK_SHOOTING_GALLERY] = Region("Kak Shooting Gallery", SCENE_SHOOTING_GALLERY, {}, {
         //Locations
-        LOCATION(RC_KAK_SHOOTING_GALLERY_REWARD,         logic->IsAdult && logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->CanUse(RG_FAIRY_BOW)),
+        LOCATION(RC_KAK_SHOOTING_GALLERY_REWARD,         logic->IsAdult && logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->HasItem(RG_FAIRY_BOW)),
         LOCATION(RC_KAK_SHOOTING_GALLERY_RECTANGLE_SIGN, logic->IsAdult && logic->CanRead()),
     }, {
         //Exits
@@ -247,7 +247,7 @@ void RegionTable_Init_Kakariko() {
         LOCATION(RC_KAK_POTION_SHOP_ITEM_8, logic->IsAdult && logic->HasItem(RG_SPEAK_HYLIAN) && GetCheckPrice() <= GetWalletCapacity()),
     }, {
         //Exits
-        ENTRANCE(RR_KAKARIKO_VILLAGE,     true),
+        ENTRANCE(RR_KAKARIKO_VILLAGE,       true),
         ENTRANCE(RR_KAK_BEHIND_POTION_SHOP, logic->IsAdult),
     });
 

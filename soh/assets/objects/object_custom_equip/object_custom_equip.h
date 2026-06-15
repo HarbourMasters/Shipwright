@@ -34,6 +34,12 @@ static const ALIGN_ASSET(2) char gCustomHookshotTipDL[] = dgCustomHookshotTipDL;
 #define dgCustomHookshotChainDL "__OTR__objects/object_custom_equip/gCustomHookshotChainDL"
 static const ALIGN_ASSET(2) char gCustomHookshotChainDL[] = dgCustomHookshotChainDL;
 
+#define dgCustomLongshotTipDL "__OTR__objects/object_custom_equip/gCustomLongshotTipDL"
+static const ALIGN_ASSET(2) char gCustomLongshotTipDL[] = dgCustomLongshotTipDL;
+
+#define dgCustomLongshotChainDL "__OTR__objects/object_custom_equip/gCustomLongshotChainDL"
+static const ALIGN_ASSET(2) char gCustomLongshotChainDL[] = dgCustomLongshotChainDL;
+
 #define dgCustomSlingshotDL "__OTR__objects/object_custom_equip/gCustomSlingshotDL"
 static const ALIGN_ASSET(2) char gCustomSlingshotDL[] = dgCustomSlingshotDL;
 

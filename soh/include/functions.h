@@ -2459,7 +2459,6 @@ void Font_LoadOrderedFontNTSC(Font* font);
 // #endregion
 
 // #region SOH [General]
-void Interface_RandoRestoreSwordless(void);
 s32 Ship_CalcShouldDrawAndUpdate(PlayState* play, Actor* actor, Vec3f* projectedPos, f32 projectedW, bool* shouldDraw,
                                  bool* shouldUpdate);
 

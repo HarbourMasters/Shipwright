@@ -2225,7 +2225,7 @@ void Play_PerformSave(PlayState* play) {
             (gSaveContext.equips.buttonItems[0] == ITEM_NONE && !Flags_GetInfTable(INFTABLE_SWORDLESS))) {
 
             gSaveContext.equips.buttonItems[0] = gSaveContext.buttonStatus[0];
-            Interface_RandoRestoreSwordless();
+            GameInteractor_Should(VB_TEMP_B_RESTORE_SWORDLESS, true);
         }
 
         Save_SaveFile();

@@ -41,6 +41,8 @@ class Logic {
     bool CanUse(RandomizerGet itemName);
     bool HasProjectile(HasProjectileAge age);
     bool HasItem(RandomizerGet itemName);
+    bool ItemUseAllowed(RandomizerGet itemName);
+    bool BAllowed();
     bool HasBossSoul(RandomizerGet itemName);
     bool CanOpenOverworldDoor(RandomizerGet itemName);
     bool SmallKeys(SceneID scene, uint8_t requiredAmount);

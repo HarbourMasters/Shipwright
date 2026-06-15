@@ -962,6 +962,22 @@ static ScrubIdentity IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respawnDat
     return scrubIdentity;
 }
 
+// buttonStatus[0] doubles as "B disabled" (BTN_DISABLED == 255 == ITEM_NONE) and as temp-B
+// storage during minigames/Epona. We use ITEM_NONE_FE (254) as a sentinel so a swordless rando
+// player can be funneled through that same temp-B machinery and restored to an empty B later.
+#define SWORDLESS_STATUS ITEM_NONE_FE
+
+// true when a swordless player should be funneled through temporary-B force path
+// (so their empty B is treated as "occupied", blocking swordless-on-Epona item glitch).
+static bool RandoCanTrackSwordless(PlayState* play) {
+    Player* player = GET_PLAYER(play);
+    // Child is always assumed swordless until the Kokiri Sword is found; adult only with MS shuffle.
+    bool isSwordless = (LINK_IS_CHILD || RAND_GET_OPTION(RSK_SHUFFLE_MASTER_SWORD)) &&
+                       gSaveContext.equips.buttonItems[0] == ITEM_NONE && Flags_GetInfTable(INFTABLE_SWORDLESS);
+    bool wasSwordlessBefore = gSaveContext.buttonStatus[0] == SWORDLESS_STATUS;
+    return isSwordless && !wasSwordlessBefore && !RAND_GET_OPTION(RSK_SWORDLESS_EPONA_ITEMS);
+}
+
 void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_list originalArgs) {
     va_list args;
     va_copy(args, originalArgs);
@@ -1469,6 +1485,27 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             }
             break;
         }
+        case VB_TEMP_B_TREAT_AS_OCCUPIED:
+            // Treat a swordless player's empty B as occupied so they enter the temp-B force path.
+            *should = *should || RandoCanTrackSwordless(va_arg(args, PlayState*));
+            break;
+        case VB_TEMP_B_STASH_SWORDLESS:
+            // Relocate the just-stashed temp-B to the swordless sentinel for later restoration.
+            if (RandoCanTrackSwordless(va_arg(args, PlayState*))) {
+                gSaveContext.buttonStatus[0] = SWORDLESS_STATUS;
+            }
+            break;
+        case VB_TEMP_B_SHOULD_RESTORE:
+            // Also restore the B button when a swordless sentinel was stashed.
+            *should = *should || gSaveContext.buttonStatus[0] == SWORDLESS_STATUS;
+            break;
+        case VB_TEMP_B_RESTORE_SWORDLESS:
+            // Convert the swordless sentinel back into an empty (swordless) B button.
+            if (gSaveContext.buttonStatus[0] == SWORDLESS_STATUS) {
+                gSaveContext.equips.buttonItems[0] = ITEM_NONE;
+                gSaveContext.buttonStatus[0] = BTN_ENABLED;
+            }
+            break;
         case VB_TRADE_POCKET_CUCCO: {
             EnNiwLady* enNiwLady = va_arg(args, EnNiwLady*);
             Flags_UnsetRandomizerInf(RAND_INF_ADULT_TRADES_HAS_POCKET_CUCCO);

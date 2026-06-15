@@ -452,6 +452,11 @@ void DoRBA(uint8_t itemToPutInBottle) {
     }
 }
 
+bool DoHalfMilkRBA(uint8_t item) {
+    auto itemOnCRight = gSaveContext.equips.buttonItems[3];
+    return (item == ITEM_BOTTLE) && (gSaveContext.inventory.items[itemOnCRight] == ITEM_MILK_BOTTLE);
+}
+
 void RegisterBottleAdventure() {
     REGISTER_VB_SHOULD(VB_SET_BUTTON_ITEM_FROM_C_BUTTON_SLOT, {
         // if we aren't dealing with the b button, early return
@@ -475,6 +480,17 @@ void RegisterBottleAdventure() {
 
         auto itemToPutInBottle = static_cast<uint8_t>(va_arg(args, int32_t));
         DoRBA(itemToPutInBottle);
+    });
+
+    REGISTER_VB_SHOULD(VB_EMPTY_BOTTLE_TO_HALF_MILK, {
+        // if we aren't dealing with a bottle on b, early return
+        auto buttonBottleIsOn = static_cast<uint8_t>(va_arg(args, int32_t));
+        if (buttonBottleIsOn != 0) {
+            return;
+        }
+
+        auto item = static_cast<uint8_t>(va_arg(args, int32_t));
+        *should = DoHalfMilkRBA(item);
     });
 }
 

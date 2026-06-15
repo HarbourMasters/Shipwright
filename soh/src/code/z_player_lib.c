@@ -1437,6 +1437,8 @@ s32 Player_OverrideLimbDrawGameplayDefault(PlayState* play, s32 limbIndex, Gfx**
         }
     }
 
+    GameInteractor_Should(VB_PLAYER_OVERRIDE_LIMB_DRAW, true, limbIndex, dList, thisx, play);
+
     if (GameInteractor_InvisibleLinkActive()) {
         this->actor.shape.shadowDraw = NULL;
         *dList = NULL;
@@ -1482,6 +1484,9 @@ s32 Player_OverrideLimbDrawGameplayFirstPerson(PlayState* play, s32 limbIndex, G
             *dList = NULL;
         }
     }
+
+    GameInteractor_Should(VB_PLAYER_OVERRIDE_LIMB_DRAW, true, limbIndex, dList, thisx, play);
+
     return false;
 }
 
@@ -2060,6 +2065,8 @@ s32 Player_OverrideLimbDrawPause(PlayState* play, s32 limbIndex, Gfx** dList, Ve
 
     dLists = &sPlayerDListGroups[type][gSaveContext.linkAge];
     *dList = dLists[dListOffset];
+
+    GameInteractor_Should(VB_PLAYER_OVERRIDE_LIMB_DRAW_PAUSE, true, limbIndex, dList, GET_PLAYER(play), play);
 
     return 0;
 }
