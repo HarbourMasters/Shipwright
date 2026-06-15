@@ -246,7 +246,7 @@ void BuildDefenseUpgradeMessage(CustomMessage& msg) {
                 "Du erhältst ein %yVerteidigungs-Upgrade%w!&%rBereits bei maximaler Verteidigung!%w",
                 "Vous trouvez une %yAmélioration de Défense%w!&%rDéfense déjà au maximum!%w" };
     }
-    msg.AutoFormat();
+    msg.AutoFormat(ITEM_CUSTOM);
 }
 
 void BuildSpeedUpgradeMessage(CustomMessage& msg) {
@@ -267,7 +267,7 @@ void BuildSpeedUpgradeMessage(CustomMessage& msg) {
                 "Du erhältst ein %yGeschwindigkeits-Upgrade%w!&%rBereits bei maximaler Geschwindigkeit!%w",
                 "Vous trouvez une %yAmélioration de Vitesse%w!&%rVitesse déjà au maximum!%w" };
     }
-    msg.AutoFormat();
+    msg.AutoFormat(ITEM_CUSTOM);
 }
 
 void BuildPowerUpgradeMessage(CustomMessage& msg) {
@@ -291,7 +291,7 @@ void BuildPowerUpgradeMessage(CustomMessage& msg) {
                 "Du erhältst ein %yKraft-Upgrade%w!&%rBereits bei maximaler Kraft!%w",
                 "Vous trouvez une %yAmélioration de Force%w!&%rForce déjà au maximum!%w" };
     }
-    msg.AutoFormat();
+    msg.AutoFormat(ITEM_CUSTOM);
 }
 
 void BuildMagicStatUpgradeMessage(CustomMessage& msg) {
@@ -312,7 +312,7 @@ void BuildMagicStatUpgradeMessage(CustomMessage& msg) {
                 "Du erhältst ein %yMagisches Maß%w!&%rBereits bei maximaler Magie!%w",
                 "Vous trouvez une %yJauge de Magie%w!&%rMagie déjà au maximum!%w" };
     }
-    msg.AutoFormat();
+    msg.AutoFormat(ITEM_CUSTOM);
 }
 
 void BuildItemMessage(u16* textId, bool* loadFromMessageTable) {

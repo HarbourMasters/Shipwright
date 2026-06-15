@@ -60,7 +60,10 @@ static void RegisterRandoStatUpgradeHooks() {
         u32 doubled = (u32)*damage * 2;
         *damage = (u8)(doubled > 0xFF ? 0xFF : doubled);
         if (critChance < 1.0f) {
-            Vec3f zero = { 0.0f, 0.0f, 0.0f };
+            Vec3f zero;
+            zero.x = 0.0f;
+            zero.y = 0.0f;
+            zero.z = 0.0f;
             EffectSsBomb2_SpawnFade(play, &hitActor->world.pos, &zero, &zero);
         }
     });

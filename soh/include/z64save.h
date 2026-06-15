@@ -249,6 +249,7 @@ typedef struct ShipRandomizerSaveContextData {
     s8 silverMqSpiritBigWall;
     s8 silverMqGanonWater;
     s8 silverMqGanonShadow;
+    u8 quarterHearts;
     u8 defenseUpgrades;
     u8 speedUpgrades;
     u8 powerUpgrades;

@@ -488,6 +488,15 @@ static const ALIGN_ASSET(2) char gRocsFeatherItemNameGERTex[] = dgRocsFeatherIte
 #define dgRocsFeatherItemNameFRATex "__OTR__textures/item_name_static/gRocsFeatherItemNameFRATex"
 static const ALIGN_ASSET(2) char gRocsFeatherItemNameFRATex[] = dgRocsFeatherItemNameFRATex;
 
+#define dgStatDefenseTex "__OTR__textures/icon_item_static/gStatDefenseTex"
+static const ALIGN_ASSET(2) char gStatDefenseTex[] = dgStatDefenseTex;
+
+#define dgStatSpeedTex "__OTR__textures/icon_item_static/gStatSpeedTex"
+static const ALIGN_ASSET(2) char gStatSpeedTex[] = dgStatSpeedTex;
+
+#define dgStatPowerTex "__OTR__textures/icon_item_static/gStatPowerTex"
+static const ALIGN_ASSET(2) char gStatPowerTex[] = dgStatPowerTex;
+
 #define dgEmptyTexture "__OTR__textures/virtual/gEmptyTexture"
 static const ALIGN_ASSET(2) char gEmptyTexture[] = dgEmptyTexture;
 

@@ -161,6 +161,14 @@ std::map<uint32_t, ItemMapEntry> customItemsMapping = {
         RG_POWER_BRACELET,
         { RG_POWER_BRACELET, "RG_POWER_BRACELET", "RG_POWER_BRACELET_Faded", gGrabTex },
     },
+    { RG_QUARTER_HEART,
+      { RG_QUARTER_HEART, "RG_QUARTER_HEART", "RG_QUARTER_HEART_Faded", (char*)gItemIcons[ITEM_HEART_PIECE] } },
+    { RG_DEFENSE_UPGRADE, { RG_DEFENSE_UPGRADE, "RG_DEFENSE_UPGRADE", "RG_DEFENSE_UPGRADE_Faded", gStatDefenseTex } },
+    { RG_SPEED_UPGRADE, { RG_SPEED_UPGRADE, "RG_SPEED_UPGRADE", "RG_SPEED_UPGRADE_Faded", gStatSpeedTex } },
+    { RG_POWER_UPGRADE, { RG_POWER_UPGRADE, "RG_POWER_UPGRADE", "RG_POWER_UPGRADE_Faded", gStatPowerTex } },
+    { RG_MAGIC_STAT_UPGRADE,
+      { RG_MAGIC_STAT_UPGRADE, "RG_MAGIC_STAT_UPGRADE", "RG_MAGIC_STAT_UPGRADE_Faded",
+        (char*)gItemIcons[ITEM_MAGIC_SMALL] } },
 };
 
 std::map<uint32_t, ItemMapEntry> jabbernutMapping = {

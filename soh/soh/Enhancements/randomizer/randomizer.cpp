@@ -1465,6 +1465,7 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
         case RG_QUARTER_HEART:
             gSaveContext.healthCapacity += FULL_HEART_HEALTH / 4;
             gSaveContext.health = MIN(gSaveContext.health + FULL_HEART_HEALTH / 4, gSaveContext.healthCapacity);
+            gSaveContext.ship.quest.data.randomizer.quarterHearts++;
             break;
         case RG_DEFENSE_UPGRADE: {
             uint8_t cap = StatUpgradeRequired(5);
