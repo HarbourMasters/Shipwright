@@ -111,6 +111,7 @@ s16 GetLastEntranceOverride();
 s16 GetCurrentGrottoId();
 const EntranceData* GetEntranceData(s16);
 void LoadFromPreset(nlohmann::json info);
+void ResetGraphLayout();
 
 class EntranceTrackerSettingsWindow final : public Ship::GuiWindow {
   public:
@@ -130,6 +131,11 @@ class EntranceTrackerWindow final : public Ship::GuiWindow {
     void InitElement() override;
     void DrawElement() override;
     void UpdateElement() override{};
+
+  private:
+    void DrawViewModeSelector();
+    void DrawListView();
+    void DrawGraphView();
 };
 } // namespace EntranceTracker
 

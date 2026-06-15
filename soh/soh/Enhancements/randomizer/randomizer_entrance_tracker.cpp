@@ -5,6 +5,9 @@
 
 #include <string>
 #include <vector>
+#include <cmath>
+#include <algorithm>
+#include <unordered_map>
 #include <libultraship/controller/controldeck/ControlDeck.h>
 #include <libultraship/libultraship.h>
 #include "soh/Enhancements/randomizer/randomizer.h"
@@ -30,6 +33,9 @@ using namespace UIWidgets;
 #define COLOR_GREEN IM_COL32(0, 158, 115, 255)
 #define COLOR_GRAY IM_COL32(155, 155, 155, 255)
 
+#define ENTRANCE_VIEW_LIST 0
+#define ENTRANCE_VIEW_GRAPH 1
+
 namespace EntranceTracker {
 EntranceOverride srcListSortedByArea[ENTRANCE_OVERRIDES_MAX_COUNT] = { 0 };
 EntranceOverride destListSortedByArea[ENTRANCE_OVERRIDES_MAX_COUNT] = { 0 };
@@ -50,6 +56,41 @@ static WidgetInfo windowTypeWidget;
 static bool presetLoaded = false;
 static ImVec2 presetPos;
 static ImVec2 presetSize;
+
+// ---- Flower/petal graph view state ----
+struct GraphPetal {
+    s16 entranceIndex;
+    s16 overrideIndex;
+    SpoilerEntranceGroup area;
+    ImVec2 localOffset; // radial offset from the flower center, in world units
+    float angle;
+    const EntranceData* srcData;
+    const EntranceData* dstData;
+};
+
+struct GraphFlower {
+    SpoilerEntranceGroup area;
+    ImVec2 center; // world-space position set by layout
+    int petalStart;
+    int petalCount;
+    float radius; // petal ring radius
+};
+
+struct GraphEdge {
+    int srcPetal;        // index into gGraphPetals
+    int dstPetal;        // index into gGraphPetals, or -1 if the destination isn't a source petal
+    SpoilerEntranceGroup dstArea; // fallback hub to point at when dstPetal == -1
+};
+
+static std::vector<GraphFlower> gGraphFlowers;
+static std::vector<GraphPetal> gGraphPetals;
+static std::vector<GraphEdge> gGraphEdges;
+static bool gGraphBuilt = false;
+static bool gLayoutDone = false;
+static ImVec2 gGraphPan = ImVec2(0.0f, 0.0f);
+static float gGraphZoom = 1.0f;
+
+static const float kPi = 3.14159265358979323846f;
 
 static std::string spoilerEntranceGroupNames[] = {
     "Spawns/Warp Songs/Owls",
@@ -640,6 +681,8 @@ void ClearEntranceTrackingData() {
     lastEntranceIndex = -1;
     lastSceneOrEntranceDetected = -1;
     gEntranceTrackingData = { 0 };
+    gGraphBuilt = false;
+    gLayoutDone = false;
 }
 
 void InitEntranceTrackingData() {
@@ -708,6 +751,435 @@ void InitEntranceTrackingData() {
     SortEntranceListByArea(destListSortedByArea, 1);
     SortEntranceListByType(srcListSortedByType, 0);
     SortEntranceListByType(destListSortedByType, 1);
+
+    // A new seed's data invalidates the cached graph model (and its layout).
+    gGraphBuilt = false;
+    gLayoutDone = false;
+}
+
+// Compute the highlight color for an entrance, mirroring the list view's coloring rules so the
+// two views always agree. White = discovered, gray = undiscovered, orange = last used,
+// green = available in Link's current area.
+static ImU32 GetEntranceStateColor(const EntranceData* src, const EntranceData* dst, bool highlightPrev,
+                                   bool highlightAvail) {
+    bool isDiscovered = IsEntranceDiscovered(src->index);
+    ImU32 color = isDiscovered ? IM_COL32_WHITE : COLOR_GRAY;
+    bool decoupledOff =
+        OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_DECOUPLED_ENTRANCES) == RO_GENERIC_OFF;
+    if ((src->index == lastEntranceIndex || (dst->reverseIndex == lastEntranceIndex && decoupledOff)) &&
+        highlightPrev) {
+        color = COLOR_ORANGE;
+    } else if (LinkIsInArea(src) != -1) {
+        if (highlightAvail) {
+            color = COLOR_GREEN;
+        }
+    }
+    return color;
+}
+
+// Deterministic force-directed placement of the (<=21) flower centers. Runs once and is cached
+// via gLayoutDone; recomputed only on a new seed or an explicit layout reset.
+static void LayoutGraph() {
+    int n = (int)gGraphFlowers.size();
+    if (n == 0) {
+        gLayoutDone = true;
+        return;
+    }
+
+    const float R0 = 600.0f;
+    for (int i = 0; i < n; i++) {
+        if (gGraphFlowers[i].area == ENTRANCE_GROUP_ONE_WAY) {
+            gGraphFlowers[i].center = ImVec2(0.0f, 0.0f); // pinned at origin
+        } else {
+            float a = (2.0f * kPi * i) / (float)n;
+            gGraphFlowers[i].center = ImVec2(R0 * cosf(a), R0 * sinf(a));
+        }
+    }
+
+    // Map area -> flower index, then accumulate cross-area edge weights for spring attraction.
+    int flowerIdxByArea[SPOILER_ENTRANCE_GROUP_COUNT];
+    for (int i = 0; i < SPOILER_ENTRANCE_GROUP_COUNT; i++) {
+        flowerIdxByArea[i] = -1;
+    }
+    for (int i = 0; i < n; i++) {
+        flowerIdxByArea[gGraphFlowers[i].area] = i;
+    }
+
+    std::vector<std::vector<float>> adj(n, std::vector<float>(n, 0.0f));
+    for (const auto& e : gGraphEdges) {
+        SpoilerEntranceGroup srcArea = gGraphPetals[e.srcPetal].area;
+        SpoilerEntranceGroup dstArea = (e.dstPetal >= 0) ? gGraphPetals[e.dstPetal].area : e.dstArea;
+        if (srcArea == dstArea) {
+            continue;
+        }
+        int si = flowerIdxByArea[srcArea];
+        int di = flowerIdxByArea[dstArea];
+        if (si < 0 || di < 0) {
+            continue;
+        }
+        adj[si][di] += 1.0f;
+        adj[di][si] += 1.0f;
+    }
+
+    const int kIter = 200;
+    const float kRepel = 4.0e5f;
+    const float kSpring = 0.003f;
+    const float kRest = 400.0f;
+    const float damping = 0.85f;
+    const float maxStep = 60.0f;
+    std::vector<ImVec2> vel(n, ImVec2(0.0f, 0.0f));
+
+    for (int it = 0; it < kIter; it++) {
+        std::vector<ImVec2> force(n, ImVec2(0.0f, 0.0f));
+
+        // Repulsion between every pair of centers.
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+                float dx = gGraphFlowers[i].center.x - gGraphFlowers[j].center.x;
+                float dy = gGraphFlowers[i].center.y - gGraphFlowers[j].center.y;
+                float d2 = dx * dx + dy * dy + 0.01f;
+                float d = sqrtf(d2);
+                float f = kRepel / d2;
+                float ux = dx / d;
+                float uy = dy / d;
+                force[i].x += ux * f;
+                force[i].y += uy * f;
+                force[j].x -= ux * f;
+                force[j].y -= uy * f;
+            }
+        }
+
+        // Spring attraction along area adjacency.
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+                float w = adj[i][j];
+                if (w <= 0.0f) {
+                    continue;
+                }
+                float dx = gGraphFlowers[j].center.x - gGraphFlowers[i].center.x;
+                float dy = gGraphFlowers[j].center.y - gGraphFlowers[i].center.y;
+                float d = sqrtf(dx * dx + dy * dy) + 0.01f;
+                float f = kSpring * w * (d - kRest);
+                float ux = dx / d;
+                float uy = dy / d;
+                force[i].x += ux * f;
+                force[i].y += uy * f;
+                force[j].x -= ux * f;
+                force[j].y -= uy * f;
+            }
+        }
+
+        // Integrate with damping; keep the one-way hub pinned.
+        for (int i = 0; i < n; i++) {
+            if (gGraphFlowers[i].area == ENTRANCE_GROUP_ONE_WAY) {
+                continue;
+            }
+            vel[i].x = (vel[i].x + force[i].x) * damping;
+            vel[i].y = (vel[i].y + force[i].y) * damping;
+            float vmag = sqrtf(vel[i].x * vel[i].x + vel[i].y * vel[i].y);
+            if (vmag > maxStep) {
+                vel[i].x *= maxStep / vmag;
+                vel[i].y *= maxStep / vmag;
+            }
+            gGraphFlowers[i].center.x += vel[i].x;
+            gGraphFlowers[i].center.y += vel[i].y;
+        }
+    }
+
+    // Recenter the centroid at the world origin.
+    ImVec2 centroid(0.0f, 0.0f);
+    for (int i = 0; i < n; i++) {
+        centroid.x += gGraphFlowers[i].center.x;
+        centroid.y += gGraphFlowers[i].center.y;
+    }
+    centroid.x /= n;
+    centroid.y /= n;
+    for (int i = 0; i < n; i++) {
+        gGraphFlowers[i].center.x -= centroid.x;
+        gGraphFlowers[i].center.y -= centroid.y;
+    }
+
+    gLayoutDone = true;
+}
+
+// Build the flower/petal graph from the same shuffled-override data the list view uses, applying
+// the same hide-reverse and blue-warp filters so the views stay in sync.
+static void BuildGraphModel() {
+    gGraphFlowers.clear();
+    gGraphPetals.clear();
+    gGraphEdges.clear();
+
+    bool hideReverse = CVarGetInteger(CVAR_TRACKER_ENTRANCE("HideReverseEntrances"), 1);
+    bool decoupled =
+        OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_DECOUPLED_ENTRANCES) == RO_GENERIC_ON;
+
+    for (size_t g = 0; g < SPOILER_ENTRANCE_GROUP_COUNT; g++) {
+        uint16_t count = gEntranceTrackingData.GroupEntranceCounts[ENTRANCE_SOURCE_AREA][g];
+        uint16_t start = gEntranceTrackingData.GroupOffsets[ENTRANCE_SOURCE_AREA][g];
+        if (count == 0) {
+            continue;
+        }
+
+        GraphFlower flower;
+        flower.area = (SpoilerEntranceGroup)g;
+        flower.center = ImVec2(0.0f, 0.0f);
+        flower.petalStart = (int)gGraphPetals.size();
+        flower.petalCount = 0;
+        flower.radius = 70.0f;
+
+        for (uint16_t i = 0; i < count; i++) {
+            EntranceOverride ov = srcListSortedByArea[start + i];
+            const EntranceData* src = GetEntranceData(ov.index);
+            const EntranceData* dst = GetEntranceData(ov.override);
+            if (src == nullptr || dst == nullptr) {
+                continue;
+            }
+
+            // Mirror the list's hide-reverse filter for redundant return transitions.
+            if ((src->type == ENTRANCE_TYPE_DUNGEON || src->type == ENTRANCE_TYPE_GROTTO ||
+                 src->type == ENTRANCE_TYPE_INTERIOR) &&
+                (src->oneExit != 1 && !decoupled) && hideReverse) {
+                continue;
+            }
+            // Mirror the list's blue-warp filter.
+            if (src->metaTag.ends_with("bw") || dst->metaTag.ends_with("bw")) {
+                continue;
+            }
+
+            GraphPetal p;
+            p.entranceIndex = ov.index;
+            p.overrideIndex = ov.override;
+            p.area = (SpoilerEntranceGroup)g;
+            p.localOffset = ImVec2(0.0f, 0.0f);
+            p.angle = 0.0f;
+            p.srcData = src;
+            p.dstData = dst;
+            gGraphPetals.push_back(p);
+            flower.petalCount++;
+        }
+
+        if (flower.petalCount == 0) {
+            continue;
+        }
+        gGraphFlowers.push_back(flower);
+    }
+
+    // Resolve which petal each override lands on (for edge endpoints).
+    std::unordered_map<s16, int> entranceIndexToPetal;
+    for (int i = 0; i < (int)gGraphPetals.size(); i++) {
+        entranceIndexToPetal[gGraphPetals[i].entranceIndex] = i;
+    }
+
+    // Deterministic radial petal placement around each flower center.
+    for (auto& f : gGraphFlowers) {
+        int nn = f.petalCount;
+        f.radius = std::clamp(70.0f + nn * 7.0f, 70.0f, 260.0f);
+        for (int j = 0; j < nn; j++) {
+            GraphPetal& p = gGraphPetals[f.petalStart + j];
+            float ang = (2.0f * kPi * j) / (float)nn + (float)f.area * 0.3f;
+            p.angle = ang;
+            p.localOffset = ImVec2(f.radius * cosf(ang), f.radius * sinf(ang));
+        }
+    }
+
+    // One edge per petal: source petal -> its override-destination petal (or that area's hub).
+    for (int i = 0; i < (int)gGraphPetals.size(); i++) {
+        GraphPetal& p = gGraphPetals[i];
+        GraphEdge e;
+        e.srcPetal = i;
+        auto it = entranceIndexToPetal.find(p.overrideIndex);
+        e.dstPetal = (it != entranceIndexToPetal.end()) ? it->second : -1;
+        e.dstArea = p.dstData ? p.dstData->srcGroup : p.area;
+        gGraphEdges.push_back(e);
+    }
+
+    if (!gLayoutDone) {
+        LayoutGraph();
+    }
+    gGraphBuilt = true;
+}
+
+void ResetGraphLayout() {
+    gLayoutDone = false;
+    gGraphBuilt = false;
+    gGraphPan = ImVec2(0.0f, 0.0f);
+    gGraphZoom = 1.0f;
+}
+
+void EntranceTrackerWindow::DrawViewModeSelector() {
+    CVarRadioButton("List", CVAR_TRACKER_ENTRANCE("ViewMode"), ENTRANCE_VIEW_LIST,
+                    RadioButtonsOptions().Color(THEME_COLOR).Tooltip("Show entrances as a searchable text list"));
+    ImGui::SameLine();
+    CVarRadioButton("Graph", CVAR_TRACKER_ENTRANCE("ViewMode"), ENTRANCE_VIEW_GRAPH,
+                    RadioButtonsOptions().Color(THEME_COLOR).Tooltip("Show entrances as a node graph of areas and "
+                                                                     "connections"));
+}
+
+void EntranceTrackerWindow::DrawGraphView() {
+    if (!gGraphBuilt) {
+        BuildGraphModel();
+    }
+
+    if (gGraphFlowers.empty()) {
+        ImGui::TextWrapped("No shuffled entrances to display.");
+        return;
+    }
+
+    ImGuiIO& io = ImGui::GetIO();
+    ImVec2 canvasPos = ImGui::GetCursorScreenPos();
+    ImVec2 canvasSize = ImGui::GetContentRegionAvail();
+    if (canvasSize.x < 50.0f) {
+        canvasSize.x = 50.0f;
+    }
+    if (canvasSize.y < 50.0f) {
+        canvasSize.y = 50.0f;
+    }
+    ImVec2 canvasEnd = ImVec2(canvasPos.x + canvasSize.x, canvasPos.y + canvasSize.y);
+    ImVec2 canvasCenter = ImVec2(canvasPos.x + canvasSize.x * 0.5f, canvasPos.y + canvasSize.y * 0.5f);
+
+    ImDrawList* dl = ImGui::GetWindowDrawList();
+    dl->AddRectFilled(canvasPos, canvasEnd, IM_COL32(20, 20, 24, 255));
+
+    // Full-canvas input capture for pan/zoom.
+    ImGui::InvisibleButton("##graphCanvas", canvasSize,
+                           ImGuiButtonFlags_MouseButtonLeft | ImGuiButtonFlags_MouseButtonRight);
+    bool hovered = ImGui::IsItemHovered();
+    bool active = ImGui::IsItemActive();
+
+    if (active && (ImGui::IsMouseDragging(ImGuiMouseButton_Left) || ImGui::IsMouseDragging(ImGuiMouseButton_Right))) {
+        gGraphPan.x -= io.MouseDelta.x / gGraphZoom;
+        gGraphPan.y -= io.MouseDelta.y / gGraphZoom;
+    }
+    if (hovered && io.MouseWheel != 0.0f) {
+        float prevZoom = gGraphZoom;
+        gGraphZoom = std::clamp(gGraphZoom * (1.0f + io.MouseWheel * 0.1f), 0.2f, 5.0f);
+        // Keep the world point under the cursor fixed while zooming.
+        ImVec2 m = io.MousePos;
+        ImVec2 worldBefore = ImVec2((m.x - canvasCenter.x) / prevZoom + gGraphPan.x,
+                                    (m.y - canvasCenter.y) / prevZoom + gGraphPan.y);
+        ImVec2 worldAfter = ImVec2((m.x - canvasCenter.x) / gGraphZoom + gGraphPan.x,
+                                   (m.y - canvasCenter.y) / gGraphZoom + gGraphPan.y);
+        gGraphPan.x += worldBefore.x - worldAfter.x;
+        gGraphPan.y += worldBefore.y - worldAfter.y;
+    }
+
+    auto W2S = [&](ImVec2 w) -> ImVec2 {
+        return ImVec2((w.x - gGraphPan.x) * gGraphZoom + canvasCenter.x,
+                      (w.y - gGraphPan.y) * gGraphZoom + canvasCenter.y);
+    };
+    auto inCanvas = [&](ImVec2 s) -> bool {
+        return s.x >= canvasPos.x && s.x <= canvasEnd.x && s.y >= canvasPos.y && s.y <= canvasEnd.y;
+    };
+    auto withAlpha = [](ImU32 col, int a) -> ImU32 {
+        return (col & 0x00FFFFFFu) | ((ImU32)a << IM_COL32_A_SHIFT);
+    };
+
+    bool highlightPrevious = CVarGetInteger(CVAR_TRACKER_ENTRANCE("HighlightPrevious"), 0);
+    bool highlightAvailable = CVarGetInteger(CVAR_TRACKER_ENTRANCE("HighlightAvailable"), 0);
+    bool showTo = CVarGetInteger(CVAR_TRACKER_ENTRANCE("ShowTo"), 0);
+
+    dl->PushClipRect(canvasPos, canvasEnd, true);
+
+    // Per-frame lookup of each flower's world center by area.
+    ImVec2 centerByArea[SPOILER_ENTRANCE_GROUP_COUNT];
+    bool hasFlower[SPOILER_ENTRANCE_GROUP_COUNT] = { false };
+    for (const auto& f : gGraphFlowers) {
+        centerByArea[f.area] = f.center;
+        hasFlower[f.area] = true;
+    }
+
+    auto petalWorld = [&](const GraphPetal& p) -> ImVec2 {
+        ImVec2 c = centerByArea[p.area];
+        return ImVec2(c.x + p.localOffset.x, c.y + p.localOffset.y);
+    };
+
+    // (a) Edges first (behind nodes).
+    for (const auto& e : gGraphEdges) {
+        const GraphPetal& sp = gGraphPetals[e.srcPetal];
+        ImVec2 srcW = petalWorld(sp);
+        ImVec2 dstW;
+        if (e.dstPetal >= 0) {
+            dstW = petalWorld(gGraphPetals[e.dstPetal]);
+        } else if (hasFlower[e.dstArea]) {
+            dstW = centerByArea[e.dstArea];
+        } else {
+            continue;
+        }
+        ImVec2 p0 = W2S(srcW);
+        ImVec2 p1 = W2S(dstW);
+        if (!inCanvas(p0) && !inCanvas(p1)) {
+            continue; // both endpoints off-canvas
+        }
+        ImU32 color = GetEntranceStateColor(sp.srcData, sp.dstData, highlightPrevious, highlightAvailable);
+        int alpha = (color == COLOR_GRAY) ? 45 : 130;
+        float thickness = std::max(1.0f, 1.4f * gGraphZoom);
+        dl->AddLine(p0, p1, withAlpha(color, alpha), thickness);
+    }
+
+    // (b) Flower centers (hubs).
+    float hubR = std::max(4.0f, 14.0f * gGraphZoom);
+    for (const auto& f : gGraphFlowers) {
+        ImVec2 c = W2S(f.center);
+        ImVec2 margin(hubR + f.radius * gGraphZoom, hubR + f.radius * gGraphZoom);
+        if (c.x + margin.x < canvasPos.x || c.x - margin.x > canvasEnd.x || c.y + margin.y < canvasPos.y ||
+            c.y - margin.y > canvasEnd.y) {
+            continue;
+        }
+        dl->AddCircleFilled(c, hubR, IM_COL32(70, 70, 90, 255));
+        dl->AddCircle(c, hubR, IM_COL32(160, 160, 190, 255), 0, std::max(1.0f, 1.5f * gGraphZoom));
+
+        if (gGraphZoom > 0.4f) {
+            const char* name = spoilerEntranceGroupNames[f.area].c_str();
+            ImVec2 ts = ImGui::CalcTextSize(name);
+            dl->AddText(ImVec2(c.x - ts.x * 0.5f, c.y - hubR - ts.y - 2.0f), IM_COL32_WHITE, name);
+        }
+    }
+
+    // (c) Petals, plus hover detection for tooltips.
+    float petalR = std::max(2.0f, 6.0f * gGraphZoom);
+    int hoveredPetal = -1;
+    float hoveredDist = petalR + 4.0f;
+    for (int i = 0; i < (int)gGraphPetals.size(); i++) {
+        const GraphPetal& p = gGraphPetals[i];
+        ImVec2 hubScreen = W2S(centerByArea[p.area]);
+        ImVec2 pw = W2S(petalWorld(p));
+        if (!inCanvas(pw)) {
+            continue;
+        }
+        ImU32 color = GetEntranceStateColor(p.srcData, p.dstData, highlightPrevious, highlightAvailable);
+        dl->AddLine(hubScreen, pw, withAlpha(color, 70), std::max(1.0f, gGraphZoom));
+        dl->AddCircleFilled(pw, petalR, color);
+        dl->AddCircle(pw, petalR, IM_COL32(0, 0, 0, 180), 0, 1.0f);
+
+        if (hovered) {
+            float dx = io.MousePos.x - pw.x;
+            float dy = io.MousePos.y - pw.y;
+            float dist = sqrtf(dx * dx + dy * dy);
+            if (dist <= petalR + 4.0f && dist < hoveredDist) {
+                hoveredDist = dist;
+                hoveredPetal = i;
+            }
+        }
+
+        if (gGraphZoom > 1.4f) {
+            bool isDiscovered = IsEntranceDiscovered(p.entranceIndex);
+            const char* label = isDiscovered ? p.srcData->source.c_str() : "???";
+            dl->AddText(ImVec2(pw.x + petalR + 2.0f, pw.y - ImGui::GetTextLineHeight() * 0.5f),
+                        withAlpha(IM_COL32_WHITE, 200), label);
+        }
+    }
+
+    dl->PopClipRect();
+
+    // Tooltip for the nearest hovered petal.
+    if (hoveredPetal >= 0) {
+        const GraphPetal& p = gGraphPetals[hoveredPetal];
+        bool isDiscovered = IsEntranceDiscovered(p.entranceIndex);
+        const char* dstName = (isDiscovered || showTo) ? p.dstData->destination.c_str() : "???";
+        ImGui::BeginTooltip();
+        ImGui::Text("%s -> %s", p.srcData->source.c_str(), dstName);
+        ImGui::EndTooltip();
+    }
 }
 
 void EntranceTrackerSettingsWindow::DrawElement() {
@@ -808,11 +1280,21 @@ void EntranceTrackerSettingsWindow::DrawElement() {
         ImGui::EndTable();
     }
 
+    ImGui::Text("Graph View");
+    if (Button("Reset Graph Layout",
+               ButtonOptions({ { .tooltip = "Recompute the node layout and reset pan/zoom" } })
+                   .Color(THEME_COLOR)
+                   .Size(Sizes::Inline))) {
+        ResetGraphLayout();
+    }
+
     ImGui::SetNextItemOpen(false, ImGuiCond_Once);
     if (ImGui::TreeNode("Legend")) {
         ImGui::TextColored(ImColor(COLOR_ORANGE), "Last Entrance");
         ImGui::TextColored(ImColor(COLOR_GREEN), "Available Entrances");
         ImGui::TextColored(ImColor(COLOR_GRAY), "Undiscovered Entrances");
+        ImGui::TextWrapped("Graph view: each area is a hub, its entrances are nodes around it, and "
+                           "lines connect each entrance to where it leads. Drag to pan, scroll to zoom.");
         ImGui::TreePop();
     }
 }
@@ -868,7 +1350,19 @@ void EntranceTrackerWindow::DrawElement() {
             return;
         }
 
-        static ImGuiTextFilter locationSearch;
+        DrawViewModeSelector();
+
+        if (CVarGetInteger(CVAR_TRACKER_ENTRANCE("ViewMode"), ENTRANCE_VIEW_LIST) == ENTRANCE_VIEW_GRAPH) {
+            DrawGraphView();
+        } else {
+            DrawListView();
+        }
+    }
+    Trackers::EndFloatWindows();
+}
+
+void EntranceTrackerWindow::DrawListView() {
+    static ImGuiTextFilter locationSearch;
 
         uint8_t nextTreeState = 0;
         if (Button("Collapse All", ButtonOptions({ { .tooltip = "Collapse all entrance groups" } })
@@ -1070,8 +1564,6 @@ void EntranceTrackerWindow::DrawElement() {
             }
         }
         ImGui::EndChild();
-    }
-    Trackers::EndFloatWindows();
 }
 
 void EntranceTrackerWindow::InitElement() {
