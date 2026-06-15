@@ -109,10 +109,10 @@ apt-get install clang $(cat linux-build-deps/apt.txt)
 #### Arch
 ```sh
 # using gcc
-pacman -S gcc git cmake ninja lsb-release sdl2 libpng libzip nlohmann-json tinyxml2 spdlog sdl2_net opusfile libvorbis
+pacman -S gcc $(cat linux-build-deps/pacman.txt)
 
 # or using clang
-pacman -S clang git cmake ninja lsb-release sdl2 libpng libzip nlohmann-json tinyxml2 spdlog sdl2_net opusfile libvorbis
+pacman -S clang $(cat linux-build-deps/pacman.txt)
 ```
 #### Fedora
 ```sh

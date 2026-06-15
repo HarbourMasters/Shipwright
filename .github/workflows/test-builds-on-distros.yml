@@ -79,7 +79,7 @@ jobs:
       if: ${{ matrix.distro.packageManager == 'pacman' }}
       run: |
         pacman -Syu --noconfirm
-        pacman -S --noconfirm ${{ matrix.cc }} git cmake ninja lsb-release sdl2 libpng libzip nlohmann-json tinyxml2 spdlog sdl2_net
+        pacman -S --noconfirm ${{ matrix.cc }} $(cat linux-build-deps/pacman.txt)
     - name: Install dependencies (dnf)
       if: ${{ matrix.distro.packageManager == 'dnf' }}
       run: |
