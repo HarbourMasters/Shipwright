@@ -37,8 +37,14 @@ jobs:
           // Rolling.
           const arch = [{ image: 'archlinux:base', packageManager: 'pacman' }];
 
-          // Rolling.
-          const opensuse = [{ image: 'opensuse/tumbleweed:latest', packageManager: 'zypper' }];
+          // Rolling Tumbleweed and all non-EOL Leap releases.
+          const leapCycles = await fetchJson('https://endoflife.date/api/opensuse.json');
+          const opensuse = [
+            { image: 'opensuse/tumbleweed:latest', packageManager: 'zypper' },
+            ...leapCycles
+              .filter(c => c.eol > today)
+              .map(c => ({ image: `opensuse/leap:${c.cycle}`, packageManager: 'zypper' })),
+          ];
 
           // Previous, current, and next Debian releases.
           const debian = ['oldstable', 'stable', 'testing']
