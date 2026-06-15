@@ -95,7 +95,7 @@ jobs:
       if: ${{ matrix.distro.packageManager == 'zypper' }}
       run: |
         zypper --non-interactive dup
-        zypper --non-interactive in ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'gcc-c++') || '' }} ${{ matrix.cc == 'clang' && 'libstdc++-devel' || '' }} git cmake ninja SDL2-devel libpng16-devel libzip-devel libzip-tools nlohmann_json-devel tinyxml2-devel spdlog-devel
+        zypper --non-interactive in ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'gcc-c++') || '' }} ${{ matrix.cc == 'clang' && 'libstdc++-devel' || '' }} $(cat linux-build-deps/zypper.txt)
     - name: Verify compiler version
       id: verify-compiler
       uses: ./.github/actions/verify-compiler

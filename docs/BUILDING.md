@@ -122,6 +122,14 @@ dnf install gcc gcc-c++ $(cat linux-build-deps/dnf.txt)
 # or using clang
 dnf install clang $(cat linux-build-deps/dnf.txt)
 ```
+#### openSUSE
+```sh
+# using gcc
+zypper in gcc gcc-c++ $(cat linux-build-deps/zypper.txt)
+
+# or using clang
+zypper in clang libstdc++-devel $(cat linux-build-deps/zypper.txt)
+```
 #### Nix
 You can use a `flake.nix` file to instantly setup a development environment using [Nix](https://nixos.org/). Write this `flake.nix` file in the root directory:
 
