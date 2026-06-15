@@ -269,18 +269,20 @@ static void RegisterCustomEquipment() {
 
             case PLAYER_LIMB_R_HAND: {
                 if (player->unk_6AD == 2) {
-                    const char* fpsHand = isAdult ? gCustomAdultFPSHandDL : gCustomChildFPSHandDL;
+                    const char* fpsHand = nullptr;
                     const char* fpsWeapon = nullptr;
 
                     switch (player->rightHandType) {
                         case PLAYER_MODELTYPE_RH_BOW_SLINGSHOT:
                         case PLAYER_MODELTYPE_RH_BOW_SLINGSHOT_2:
+                            fpsHand = isAdult ? gCustomAdultFPSHandDL : gCustomChildFPSHandDL;
                             fpsWeapon =
                                 Player_HoldsBow(player)
                                     ? ResolveCustomChain({ gCustomFPSBowDL, gCustomBowDL, nullptr })
                                     : ResolveCustomChain({ gCustomFPSSlingshotDL, gCustomSlingshotDL, nullptr });
                             break;
                         case PLAYER_MODELTYPE_RH_HOOKSHOT:
+                            fpsHand = isAdult ? gCustomAdultFPSHandDL : gCustomChildFPSHandDL;
                             fpsWeapon = (player->heldItemAction == PLAYER_IA_HOOKSHOT)
                                             ? ResolveCustomChain({ gCustomFPSHookshotDL, gCustomHookshotDL, nullptr })
                                             : ResolveCustomChain({ gCustomFPSLongshotDL, gCustomLongshotDL, nullptr });
