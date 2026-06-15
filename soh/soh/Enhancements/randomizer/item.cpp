@@ -48,13 +48,17 @@ Item::Item(const RandomizerGet randomizerGet_, Text name_, const ItemType type_,
       article(std::move(article_)), color(std::move(color_)), progressive(progressive_), price(price_) {
 }
 
+static bool UsingLogicSimulationBuffer(const std::shared_ptr<Rando::Logic>& logic) {
+    return logic != nullptr && logic->mSaveContext != nullptr && logic->mSaveContext != &gSaveContext;
+}
+
 void Item::ApplyEffect() const {
     auto ctx = Rando::Context::GetInstance();
     auto logic = ctx->GetLogic();
-    if (!logic->CalculatingAvailableChecks) {
-        logic->ApplyItemEffect(StaticData::RetrieveItem(randomizerGet), true);
-    } else if (SplitSongs::IsProgressiveSong(randomizerGet)) {
+    if (SplitSongs::IsProgressiveSong(randomizerGet) && UsingLogicSimulationBuffer(logic)) {
         SplitSongs::ApplyProgressiveEffectToLogicScratch(logic.get(), randomizerGet, true);
+    } else if (!logic->CalculatingAvailableChecks) {
+        logic->ApplyItemEffect(StaticData::RetrieveItem(randomizerGet), true);
     }
     logic->Set(logicVal, true);
 }
@@ -62,10 +66,10 @@ void Item::ApplyEffect() const {
 void Item::UndoEffect() const {
     auto ctx = Rando::Context::GetInstance();
     auto logic = ctx->GetLogic();
-    if (!logic->CalculatingAvailableChecks) {
-        logic->ApplyItemEffect(StaticData::RetrieveItem(randomizerGet), false);
-    } else if (SplitSongs::IsProgressiveSong(randomizerGet)) {
+    if (SplitSongs::IsProgressiveSong(randomizerGet) && UsingLogicSimulationBuffer(logic)) {
         SplitSongs::ApplyProgressiveEffectToLogicScratch(logic.get(), randomizerGet, false);
+    } else if (!logic->CalculatingAvailableChecks) {
+        logic->ApplyItemEffect(StaticData::RetrieveItem(randomizerGet), false);
     }
     logic->Set(logicVal, false);
 }
@@ -107,7 +111,8 @@ uint16_t Item::GetPrice() const {
 }
 
 std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursion)
-    if (giEntry != nullptr && giEntry->itemId != RG_PROGRESSIVE_BOMBCHU_BAG) {
+    if (giEntry != nullptr && giEntry->itemId != RG_PROGRESSIVE_BOMBCHU_BAG &&
+        !SplitSongs::IsProgressiveSong(randomizerGet)) {
         return giEntry;
     }
     std::shared_ptr<Rando::Context> ctx = Rando::Context::GetInstance();
@@ -385,7 +390,7 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
         case RG_PROGRESSIVE_REQUIEM_OF_SPIRIT:
         case RG_PROGRESSIVE_NOCTURNE_OF_SHADOW:
         case RG_PROGRESSIVE_PRELUDE_OF_LIGHT:
-            actual = SplitSongs::ResolveProgressiveSongStage(randomizerGet);
+            actual = SplitSongs::ResolveProgressiveSongStage(logic.get(), randomizerGet);
             break;
         case RG_PROGRESSIVE_BOMBCHU_BAG:
             if (OTRGlobals::Instance->gRandoContext->GetOption(RSK_BOMBCHU_BAG).Is(RO_BOMBCHU_BAG_SINGLE)) {
@@ -418,11 +423,21 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
     if (actual == randomizerGet && giEntry != nullptr) {
         return giEntry;
     }
+    if (actual == RG_NONE) {
+        if (giEntry != nullptr) {
+            return giEntry;
+        }
+        return StaticData::RetrieveItem(RG_NONE).GetGIEntry();
+    }
     return StaticData::RetrieveItem(actual).GetGIEntry();
 }
 
 GetItemEntry Item::GetGIEntry_Copy() const {
-    return *GetGIEntry();
+    const auto entry = GetGIEntry();
+    if (entry != nullptr) {
+        return *entry;
+    }
+    return *StaticData::RetrieveItem(RG_NONE).GetGIEntry();
 }
 
 void Item::SetPrice(const uint16_t price_) {

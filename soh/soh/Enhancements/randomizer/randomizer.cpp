@@ -1139,6 +1139,10 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
     Randomizer_GameplayStats_SetTimestamp(item);
 
     if (Rando::SplitSongs::IsProgressiveSong(item)) {
+        const RandomizerGet resolved = Rando::SplitSongs::ResolveProgressiveSongStage(item);
+        if (resolved != item && resolved != RG_NONE) {
+            return Randomizer_Item_Give(play, Rando::StaticData::RetrieveItem(resolved).GetGIEntry_Copy());
+        }
         Rando::SplitSongs::OnProgressiveSongReceived(item);
         return Return_Item_Entry(giEntry, RG_NONE);
     }

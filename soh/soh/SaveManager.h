@@ -119,6 +119,8 @@ class SaveManager {
         }
     }
 
+    template <> void SaveData<std::string>(const std::string& name, const std::string& data);
+
     // In the SaveArrayFunc func, the name must be "" to save to the array.
     using SaveArrayFunc = std::function<void(size_t)>;
     void SaveArray(const std::string& name, const size_t size, SaveArrayFunc func);

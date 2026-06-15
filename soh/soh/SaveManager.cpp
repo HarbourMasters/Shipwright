@@ -30,6 +30,17 @@
 extern "C" SaveContext gSaveContext;
 using namespace std::string_literals;
 
+template <>
+void SaveManager::SaveData<std::string>(const std::string& name, const std::string& data) {
+    const std::string sanitized = SohUtils::SanitizeUtf8(data);
+    if (name == "") {
+        assert((*currentJsonContext).is_array());
+        (*currentJsonContext).push_back(sanitized);
+    } else {
+        (*currentJsonContext)[name.c_str()] = sanitized;
+    }
+}
+
 void SaveManager::WriteSaveFile(const std::filesystem::path& savePath, const uintptr_t addr, void* dramAddr,
                                 const size_t size) {
     std::ofstream saveFile = std::ofstream(savePath, std::fstream::in | std::fstream::out | std::fstream::binary);
@@ -1131,80 +1142,90 @@ int copy_file(const char* src, const char* dst) {
 void SaveManager::SaveFileThreaded(int fileNum, SaveContext* saveContext, int sectionID) {
     saveMtx.lock();
     SPDLOG_INFO("Save File - fileNum: {}", fileNum);
-    // Needed for first time save, hasn't changed in forever anyway
-    saveBlock["version"] = 1;
-    if (IS_RANDO) {
-        saveBlock["fileType"] = FILE_TYPE_SAVE_RANDO;
-    } else {
-        saveBlock["fileType"] = FILE_TYPE_SAVE_VANILLA;
-    }
-    if (sectionID == SECTION_ID_BASE) {
-        for (auto& sectionHandlerPair : sectionSaveHandlers) {
-            auto& saveFuncInfo = sectionHandlerPair.second;
-            // Don't call SaveFuncs for sections that aren't tied to game save
-            if (!saveFuncInfo.saveWithBase || (saveFuncInfo.name == "randomizer" && !IS_RANDO)) {
-                continue;
+
+    try {
+        // Needed for first time save, hasn't changed in forever anyway
+        saveBlock["version"] = 1;
+        if (IS_RANDO) {
+            saveBlock["fileType"] = FILE_TYPE_SAVE_RANDO;
+        } else {
+            saveBlock["fileType"] = FILE_TYPE_SAVE_VANILLA;
+        }
+        if (sectionID == SECTION_ID_BASE) {
+            for (auto& sectionHandlerPair : sectionSaveHandlers) {
+                auto& saveFuncInfo = sectionHandlerPair.second;
+                // Don't call SaveFuncs for sections that aren't tied to game save
+                if (!saveFuncInfo.saveWithBase || (saveFuncInfo.name == "randomizer" && !IS_RANDO)) {
+                    continue;
+                }
+                nlohmann::json& sectionBlock = saveBlock["sections"][saveFuncInfo.name];
+                sectionBlock["version"] = sectionHandlerPair.second.version;
+                // If any save file is loaded for medatata, or a spoiler log is loaded (not sure which at this point), there
+                // is still data in the "randomizer" section This clears the randomizer data block if and only if the
+                // section being called is "randomizer" and the current save file is not a randomizer save file.
+
+                currentJsonContext = &sectionBlock["data"];
+                sectionHandlerPair.second.func(saveContext, sectionID, true);
             }
-            nlohmann::json& sectionBlock = saveBlock["sections"][saveFuncInfo.name];
-            sectionBlock["version"] = sectionHandlerPair.second.version;
-            // If any save file is loaded for medatata, or a spoiler log is loaded (not sure which at this point), there
-            // is still data in the "randomizer" section This clears the randomizer data block if and only if the
-            // section being called is "randomizer" and the current save file is not a randomizer save file.
-
+        } else {
+            SaveFuncInfo svi = sectionSaveHandlers.find(sectionID)->second;
+            auto& sectionName = svi.name;
+            auto sectionVersion = svi.version;
+            // If section has a parentSection, it is a subsection. Load parentSection version and set sectionBlock to parent
+            // string
+            if (svi.parentSection != -1 && svi.parentSection < sectionIndex) {
+                auto parentSvi = sectionSaveHandlers.find(svi.parentSection)->second;
+                sectionName = parentSvi.name;
+                sectionVersion = parentSvi.version;
+            }
+            nlohmann::json& sectionBlock = saveBlock["sections"][sectionName];
+            sectionBlock["version"] = sectionVersion;
             currentJsonContext = &sectionBlock["data"];
-            sectionHandlerPair.second.func(saveContext, sectionID, true);
+            svi.func(saveContext, sectionID, false);
         }
-    } else {
-        SaveFuncInfo svi = sectionSaveHandlers.find(sectionID)->second;
-        auto& sectionName = svi.name;
-        auto sectionVersion = svi.version;
-        // If section has a parentSection, it is a subsection. Load parentSection version and set sectionBlock to parent
-        // string
-        if (svi.parentSection != -1 && svi.parentSection < sectionIndex) {
-            auto parentSvi = sectionSaveHandlers.find(svi.parentSection)->second;
-            sectionName = parentSvi.name;
-            sectionVersion = parentSvi.version;
+
+        std::filesystem::path fileName = GetFileName(fileNum);
+        std::filesystem::path tempFile = GetFileTempName(fileNum);
+
+        if (std::filesystem::exists(tempFile)) {
+            std::filesystem::remove(tempFile);
         }
-        nlohmann::json& sectionBlock = saveBlock["sections"][sectionName];
-        sectionBlock["version"] = sectionVersion;
-        currentJsonContext = &sectionBlock["data"];
-        svi.func(saveContext, sectionID, false);
-    }
-
-    std::filesystem::path fileName = GetFileName(fileNum);
-    std::filesystem::path tempFile = GetFileTempName(fileNum);
-
-    if (std::filesystem::exists(tempFile)) {
-        std::filesystem::remove(tempFile);
-    }
 
 #if defined(__SWITCH__) || defined(__WIIU__)
-    FILE* w = fopen(tempFile.c_str(), "w");
-    std::string json_string = saveBlock.dump(1);
-    fwrite(json_string.c_str(), sizeof(char), json_string.length(), w);
-    fclose(w);
+        FILE* w = fopen(tempFile.c_str(), "w");
+        std::string json_string = saveBlock.dump(1);
+        fwrite(json_string.c_str(), sizeof(char), json_string.length(), w);
+        fclose(w);
 #else
-    std::ofstream output(tempFile);
-    output << std::setw(1) << saveBlock << std::endl;
-    output.close();
+        std::ofstream output(tempFile);
+        output << std::setw(1) << saveBlock << std::endl;
+        output.close();
 #endif
 
 #if defined(__SWITCH__) || defined(__WIIU__)
-    if (std::filesystem::exists(fileName)) {
-        std::filesystem::remove(fileName);
-    }
-    copy_file(tempFile.c_str(), fileName.c_str());
-    if (std::filesystem::exists(tempFile)) {
-        std::filesystem::remove(tempFile);
-    }
+        if (std::filesystem::exists(fileName)) {
+            std::filesystem::remove(fileName);
+        }
+        copy_file(tempFile.c_str(), fileName.c_str());
+        if (std::filesystem::exists(tempFile)) {
+            std::filesystem::remove(tempFile);
+        }
 #else
-    std::filesystem::rename(tempFile, fileName);
+        std::filesystem::rename(tempFile, fileName);
 #endif
 
-    delete saveContext;
-    InitMeta(fileNum);
-    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSaveFile>(fileNum, sectionID);
-    SPDLOG_INFO("Save File Finish - fileNum: {}", fileNum);
+        delete saveContext;
+        saveContext = nullptr;
+        InitMeta(fileNum);
+        GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSaveFile>(fileNum, sectionID);
+        SPDLOG_INFO("Save File Finish - fileNum: {}", fileNum);
+    } catch (const std::exception& e) {
+        SPDLOG_ERROR("SaveFileThreaded failed for fileNum {}: {}", fileNum, e.what());
+        if (saveContext != nullptr) {
+            delete saveContext;
+        }
+    }
+
     saveMtx.unlock();
 }
 

@@ -82,6 +82,9 @@ int Playthrough_Init(uint32_t seed, std::set<RandomizerCheck> excludedLocations,
         SPDLOG_INFO("Writing Spoiler Log Done");
     }
 
+    // Seed is only considered ready after spoiler JSON is fully written.
+    ctx->SetSeedGenerated(true);
+
     ctx->playthroughLocations.clear();
     ctx->playthroughBeatable = false;
 

@@ -137,27 +137,49 @@ void SplitSongs::ApplyProgressiveEffectToLogicScratch(Logic* logic, RandomizerGe
     }
 
     const uint32_t partFlag = kSplitSongPartFlags[def->id];
+    const auto qiIt = Logic::RandoGetToQuestItem.find(static_cast<uint32_t>(def->fullSong));
+    if (qiIt == Logic::RandoGetToQuestItem.end()) {
+        return;
+    }
+
     if (state) {
         if (!logic->CheckRandoInf(static_cast<RandomizerInf>(partFlag))) {
             logic->SetRandoInf(partFlag, true);
         } else {
-            auto& fullSongItem = StaticData::RetrieveItem(def->fullSong);
-            logic->ApplyItemEffect(fullSongItem, true);
+            logic->SetQuestItem(qiIt->second, true);
         }
+    } else if (logic->CheckQuestItem(qiIt->second)) {
+        logic->SetQuestItem(qiIt->second, false);
     } else if (logic->CheckRandoInf(static_cast<RandomizerInf>(partFlag))) {
         logic->SetRandoInf(partFlag, false);
     }
 }
 
-RandomizerGet SplitSongs::ResolveProgressiveSongStage(RandomizerGet rg) {
+RandomizerGet SplitSongs::ResolveProgressiveSongStage(Logic* logic, RandomizerGet rg) {
     const SplitSongDef* def = GetSongDefFromProgressive(rg);
     if (def == nullptr) {
         return RG_NONE;
     }
+
+    if (logic != nullptr && UsingLogicSimulationBuffer(logic)) {
+        const auto qiIt = Logic::RandoGetToQuestItem.find(static_cast<uint32_t>(def->fullSong));
+        if (qiIt != Logic::RandoGetToQuestItem.end() && logic->CheckQuestItem(qiIt->second)) {
+            return def->fullSong;
+        }
+        if (logic->CheckRandoInf(static_cast<RandomizerInf>(kSplitSongPartFlags[def->id]))) {
+            return def->fullSong;
+        }
+        return def->progressive;
+    }
+
     if (HasFullSong(def->id) || HasSplitPart(def->id)) {
         return def->fullSong;
     }
     return def->progressive;
+}
+
+RandomizerGet SplitSongs::ResolveProgressiveSongStage(RandomizerGet rg) {
+    return ResolveProgressiveSongStage(Context::GetInstance()->GetLogic().get(), rg);
 }
 
 } // namespace Rando

@@ -4,6 +4,7 @@
 #include "soh/Enhancements/randomizer/static_data.h"
 #include "soh/ShipUtils.h"
 
+#include <spdlog/spdlog.h>
 #include <vector>
 
 static std::array<std::vector<Text>, RG_MAX> trickNameTable; // Table of trick names for ice traps
@@ -61,17 +62,17 @@ static void InitTrickNames() {
         Text{ "Blue Mail", "Habits Bleus", "Blaues Gewand" },      // "Ropas azules"
     };
     trickNameTable[RG_IRON_BOOTS] = {
-        Text{ "Iron Hoofs", "Patins de Plomb", "Eisenhufe€" },             // "Botas férreas"
-        Text{ "Snow Boots", "Bottes de Neige", "Schneestiefel€" },         // "Botas de nieve"
-        Text{ "Red Boots", "Bottes rouges", "Rote Stiefel€" },             // "Botas rojas"
+        Text{ "Iron Hoofs", "Patins de Plomb", "Eisenhufe" },             // "Botas férreas"
+        Text{ "Snow Boots", "Bottes de Neige", "Schneestiefel" },         // "Botas de nieve"
+        Text{ "Red Boots", "Bottes rouges", "Rote Stiefel" },             // "Botas rojas"
         Text{ "Zora Greaves", "Bottes Zora", "Zora-Beinschutz" },          // "Zora Greaves"
-        Text{ "Boots of Power", "Bottes de Puissance", "Stärkestiefel€" }, // "Botas de plomo"
+        Text{ "Boots of Power", "Bottes de Puissance", "Stärkestiefel" }, // "Botas de plomo"
     };
     trickNameTable[RG_HOVER_BOOTS] = {
-        Text{ "Hover Hoofs", "Patins des airs", "Gleithufe€" },         // "Botas flotadoras"
-        Text{ "Golden Boots", "Bottes dorées", "Goldstiefel€" },        // "Botas de Oro"
-        Text{ "Pegasus Boots", "Bottes pégase", "Pegasus-Stiefel€" },   // "Botas de Pegaso"
-        Text{ "Boots of Speed", "Bottes de vitesse", "Tempostiefel€" }, // "Botas del desierto"
+        Text{ "Hover Hoofs", "Patins des airs", "Gleithufe" },         // "Botas flotadoras"
+        Text{ "Golden Boots", "Bottes dorées", "Goldstiefel" },        // "Botas de Oro"
+        Text{ "Pegasus Boots", "Bottes pégase", "Pegasus-Stiefel" },   // "Botas de Pegaso"
+        Text{ "Boots of Speed", "Bottes de vitesse", "Tempostiefel" }, // "Botas del desierto"
     };
     trickNameTable[RG_WEIRD_EGG] = {
         Text{ "Poached Egg", "Oeuf à la coque", "Spiegelei" }, // "Huevo pasado"
@@ -132,19 +133,19 @@ static void InitTrickNames() {
     };
     trickNameTable[RG_FIRE_ARROWS] = {
         Text{ "Fire Rod", "Baguette de feu", "Feuerstab" },     // "Cetro de fuego"
-        Text{ "Bomb Arrow", "Flèche-Bombe", "Bomben-Pfeile€" }, // "Flecha bomba"
+        Text{ "Bomb Arrow", "Flèche-Bombe", "Bomben-Pfeile" }, // "Flecha bomba"
         Text{ "Red Candle", "Bougie Rouge", "Rote Kerze" },     // "Vela roja"
     };
     trickNameTable[RG_ICE_ARROWS] = {
         Text{ "Ice Rod", "Baguette des Glaces", "Eisstab" },                       // "Cetro de Hielo"
-        Text{ "Ancient Arrow", "Flèche Archéonique", "Antike Pfeile€" },           // "Flecha ancestral"
-        Text{ "Ice Trap Arrow", "Flèche de Piège de Glace", "Eisfallen-Pfeile€" }, // "Cetro de hielo"
+        Text{ "Ancient Arrow", "Flèche Archéonique", "Antike Pfeile" },           // "Flecha ancestral"
+        Text{ "Ice Trap Arrow", "Flèche de Piège de Glace", "Eisfallen-Pfeile" }, // "Cetro de hielo"
     };
     trickNameTable[RG_LIGHT_ARROWS] = {
-        Text{ "Wind Arrow", "Flèche de Vent", "Wind-Pfeile€" },                     // "Flecha del Viento"
+        Text{ "Wind Arrow", "Flèche de Vent", "Wind-Pfeile" },                     // "Flecha del Viento"
         Text{ "Wand of Gamelon", "Baguette de Gamelon", "Zauberstab von Gamelon" }, // "Varita de Gamelón"
-        Text{ "Shock Arrow", "Flèches Électriques", "Elektro-Pfeile€" },            // "Flecha eléctrica"
-        Text{ "Silver Arrow", "Flèches d'Argent", "Silber-Pfeile€" },               // "Flecha de plata"
+        Text{ "Shock Arrow", "Flèches Électriques", "Elektro-Pfeile" },            // "Flecha eléctrica"
+        Text{ "Silver Arrow", "Flèches d'Argent", "Silber-Pfeile" },               // "Flecha de plata"
     };
     trickNameTable[RG_GERUDO_MEMBERSHIP_CARD] = {
         Text{ "Desert Title Deed", "Abonnement Gerudo", "Wüsten-Urkunde" }, // "Escritura del desierto"
@@ -157,12 +158,12 @@ static void InitTrickNames() {
 
     trickNameTable[RG_MAGIC_BEAN_PACK] = {
         Text{ "Funky Bean Pack", "Paquet de Fèves Magiques", "Wunderbohnen-Packung" },    // "Lote de frijoles mágicos"
-        Text{ "Grapple Berries", "Baies de grappin", "Grapple-Beeren€" },                 // "Bayas de garfio"
+        Text{ "Grapple Berries", "Baies de grappin", "Grapple-Beeren" },                 // "Bayas de garfio"
         Text{ "Crenel Bean Pack", "Paquet de Haricots Gonggle", "Gongolerbsen-Packung" }, // "Lote de alubias mágicas"
         Text{ "Mystical Seed Pack", "Pack de graines mystiques", "Saatbeutel" }, // "Paquete de semillas místicas"
     };
     trickNameTable[RG_DOUBLE_DEFENSE] = {
-        Text{ "Diamond Hearts", "Coeurs de Diamant", "Diamantherzen€" },            // "Contenedor de diamante"
+        Text{ "Diamond Hearts", "Coeurs de Diamant", "Diamantherzen" },            // "Contenedor de diamante"
         Text{ "Double Damage", "Double Souffrance", "Doppelte Angriffskraft" },     // "Doble daño receptivo"
         Text{ "Quadruple Defence", "Quadruple Défence", "Vierfache Verteidigung" }, // "Defensa cuádruple"
     };
@@ -274,7 +275,7 @@ static void InitTrickNames() {
         Text{ "Progressive Powder Kegs", "Baril de Poudre (prog.)",
               "Pulverfass (prog.)" }, // "Barril de polvo progresivo"
         Text{ "Progressive Remote Bombs", "Bombes à distance (prog.)",
-              "Fernzünderbomben (prog.)€" }, // "Bombas remotas progresivas"
+              "Fernzünderbomben (prog.)" }, // "Bombas remotas progresivas"
     };
     trickNameTable[RG_PROGRESSIVE_BOW] = {
         Text{ "Progressive Arrow Capacity", "Capacité de flèches (prog.)",
@@ -309,7 +310,7 @@ static void InitTrickNames() {
     };
     trickNameTable[RG_PROGRESSIVE_SCALE] = {
         Text{ "Progressive Flippers", "Palmes de Zora (prog.)",
-              "Schwimmflossen (prog.)€" }, // "Aletas de zora progresiva"
+              "Schwimmflossen (prog.)" }, // "Aletas de zora progresiva"
         Text{ "Progressive Dragon's Scale", "Écaille du dragon d'eau (prog.)",
               "Drachen-Schuppe (prog.)" }, // "Escama dragón acuático progresiva"
         Text{ "Progressive Diving Ability", "Plongée (prog.)", "Tauchfähigkeit (prog.)" }, // "Buceo progresivo"
@@ -324,7 +325,7 @@ static void InitTrickNames() {
               "Putput-Kapazität (prog.)" },                                        // "Capacidad progresiva de pera"
         Text{ "Progressive Nut Bag", "Sac de noix (prog.)", "Nußbeutel (prog.)" }, // "Bolsa de nueces progresiva"
         Text{ "Progressive Husk Capacity", "Capacité de noisettes (prog.)",
-              "Schalen-Kapazität (prog.)€" }, // "Mayor capacidad de castañas"
+              "Schalen-Kapazität (prog.)" }, // "Mayor capacidad de castañas"
     };
     trickNameTable[RG_PROGRESSIVE_STICK_UPGRADE] = {
         Text{ "Progressive Stick Bag", "Sac de bâtons (prog.)",
@@ -337,11 +338,11 @@ static void InitTrickNames() {
               "Stock-Kapazität (prog.)" }, // "Mayor capacidad de cetros deku"
     };
     trickNameTable[RG_PROGRESSIVE_BOMBCHU_BAG] = {
-        Text{ "Progressive Bomblings", "Bombinsectes (prog.)", "Bombenmäuse (prog.)€" }, // "Bombinsectos progresivos"
+        Text{ "Progressive Bomblings", "Bombinsectes (prog.)", "Bombenmäuse (prog.)" }, // "Bombinsectos progresivos"
         Text{ "Progressive Sentrobe Bombs", "Bombe de Sphérodrone (prog.)",
-              "Rokopterbomben (prog.)€" },                                          // "Bomba de helicobot progresivo"
+              "Rokopterbomben (prog.)" },                                          // "Bomba de helicobot progresivo"
         Text{ "Progressive Bomb-ombs", "Bombe Soldat (prog.)", "Bob-omb (prog.)" }, // "Soldado bomba progresivo"
-        Text{ "Progressive Missiles", "Missiles (prog.)", "Missiles (prog.)€" },    // "Misiles progresivos"
+        Text{ "Progressive Missiles", "Missiles (prog.)", "Missiles (prog.)" },    // "Misiles progresivos"
     };
     trickNameTable[RG_PROGRESSIVE_MAGIC_METER] = {
         Text{ "Progressive Stamina Meter", "Jauge d'endurance (prog.)",
@@ -680,31 +681,31 @@ static void InitTrickNames() {
     };
     trickNameTable[RG_BLUE_RUPEE] = {
         Text{ "Blupee", "Bleubi", "Fünfer" },                 // "Azupia"
-        Text{ "Five Rubies", "Cinq Rubys", "fünf Rubies€" },  // "Cinco rubíes"
-        Text{ "Five Rupees", "Cinq rubis", "fünf Rubine€" },  // "Bolívar hyliano"
+        Text{ "Five Rubies", "Cinq Rubys", "fünf Rubies" },  // "Cinco rubíes"
+        Text{ "Five Rupees", "Cinq rubis", "fünf Rubine" },  // "Bolívar hyliano"
         Text{ "Rupee (5)", "Rubis (5)", "Rubin (5)" },        // "Peso hyliano"
         Text{ "Rupoor (5)", "Roupir (5)", "Rubinfalle (5)" }, // "Rupobre (5)"
     };
     trickNameTable[RG_RED_RUPEE] = {
         Text{ "Big 20", "Grand 20", "Zwanni" },                    // "Los 20 grandes"
-        Text{ "Twenty Rubies", "vingt rubis", "zwanzig Rubies€" }, // "Veinte rubíes"
-        Text{ "Twenty Rupees", "Vingt rubis", "zwanzig Rubine€" }, // "Colon hyliano"
+        Text{ "Twenty Rubies", "vingt rubis", "zwanzig Rubies" }, // "Veinte rubíes"
+        Text{ "Twenty Rupees", "Vingt rubis", "zwanzig Rubine" }, // "Colon hyliano"
         Text{ "Rupee (20)", "Rubis (20)", "Rubin (20)" },          // "Peso hyliano"
         Text{ "Rupoor (20)", "Roupir (20)", "Rubinfalle (20)" },   // "Rupobre (20)"
     };
     trickNameTable[RG_PURPLE_RUPEE] = {
         Text{ "Purpee", "Pourbi", "Fuffi" },                          // "morupiua"
-        Text{ "Fifty Rubies", "Cinquante rubis", "fünfzig Rubies€" }, // "Cincuenta rubíes"
-        Text{ "Fifty Rupees", "Cinquante rubis", "fünfzig Rubine€" }, // "Balboa hyliano"
+        Text{ "Fifty Rubies", "Cinquante rubis", "fünfzig Rubies" }, // "Cincuenta rubíes"
+        Text{ "Fifty Rupees", "Cinquante rubis", "fünfzig Rubine" }, // "Balboa hyliano"
         Text{ "Rupee (50)", "Rubis (50)", "Rubin (50)" },             // "Peso hyliano"
         Text{ "Rupoor (50)", "Roupir (50)", "Rubinfalle (50)" },      // "Rupobre (50)"
     };
     trickNameTable[RG_HUGE_RUPEE] = {
-        Text{ "Hugo", "Or Rubi", "zwei Hunnis€" },                               // "Oro Rubi"
-        Text{ "Two Hundred Rubies", "Deux cents rubis", "zweihundert Rubies€" }, // "Doscientos rubíes"
+        Text{ "Hugo", "Or Rubi", "zwei Hunnis" },                               // "Oro Rubi"
+        Text{ "Two Hundred Rubies", "Deux cents rubis", "zweihundert Rubies" }, // "Doscientos rubíes"
         Text{ "Diamond", "Diamant", "Diamant" },                                 // "Diamante"
         Text{ "Huge Ruby", "Énorme rubis", "großer Ruby" },                      // "Rubi gigante"
-        Text{ "Two Hundred Rupees", "Deux cent rubis", "zweihundert Rubine€" },  // "Euro hyliano"
+        Text{ "Two Hundred Rupees", "Deux cent rubis", "zweihundert Rubine" },  // "Euro hyliano"
         Text{ "Rupee (200)", "Rubis (200)", "Rubin (200)" },                     // "Dólar hyliano"
     };
     trickNameTable[RG_PIECE_OF_HEART] = {
@@ -784,7 +785,7 @@ static void InitTrickNames() {
     };
     trickNameTable[RG_KING_DODONGO_SOUL] = {
         Text{ "Lizard Soul", "Âme d'un Lézard", "Reptilienseele" },
-        Text{ "Regal Remains", "Restes Délicieux", "royale Überreste€" },
+        Text{ "Regal Remains", "Restes Délicieux", "royale Überreste" },
         Text{ "Dodongo's Core", "Coeur de Dodongo", "Dodongos Kern" },
     };
     trickNameTable[RG_BARINADE_SOUL] = {
@@ -1346,19 +1347,19 @@ static void InitTrickNames() {
     semillas grande"
     };
     trickNameTable[GI_STRENGTH_1] = {
-        Text{"Goron's Gauntlet", "Gantelet Goron", "Goronen-Handschuhe€" }, // "Brazalete amarillo"
+        Text{"Goron's Gauntlet", "Gantelet Goron", "Goronen-Handschuhe" }, // "Brazalete amarillo"
         Text{"Power Bracelet", "Bracelet de force", "Kraftarmband" }, // "Brazalete de fuerza"
         Text{"Magic Bracelet", "Bracelet de Lavio", "Magiearmband" }, // "Brazalete de Ravio"
     };
     trickNameTable[GI_STRENGTH_2] = {
         Text{"Silver Bracelets", "Bracelets d'argent", "Silberarmband" }, // "Guantes Moguma"
-        Text{"Power Gloves", "Gant de puissance", "Silberhandschuhe€" }, // "Guante del Poder"
-        Text{"Magic Gauntlets", "Gantelet magique", "Magiehandschuhe€" }, // "Guante mágico"
+        Text{"Power Gloves", "Gant de puissance", "Silberhandschuhe" }, // "Guante del Poder"
+        Text{"Magic Gauntlets", "Gantelet magique", "Magiehandschuhe" }, // "Guante mágico"
     };
     trickNameTable[GI_STRENGTH_3] = {
         Text{"Golden Bracelets", "Bracelets d'or", "Goldarmband" }, // "Guantelete de Thanos"
-        Text{"Titan's Mitts", "Moufle de titan", "Goldhandschuhe€" }, // "Guantes de Titán"
-        Text{"Magnetic Gloves", "Magnéto-gants", "Magnethandschuhe€" }, // "Guantes de fuego"
+        Text{"Titan's Mitts", "Moufle de titan", "Goldhandschuhe" }, // "Guantes de Titán"
+        Text{"Magnetic Gloves", "Magnéto-gants", "Magnethandschuhe" }, // "Guantes de fuego"
     };
     trickNameTable[GI_SCALE_1] = {
         Text{"Silver Pearl", "Perle d'argent", "Silberne Perle" }, // "Perla de Plata progresiva"
@@ -1463,7 +1464,7 @@ static void InitTrickNames() {
     };
     trickNameTable[GI_MASK_ZORA] = {
         Text{"Zola Mask", "Masque Zola", "Zola-Maske" }, // "Máscara Zola"
-        Text{"Mask of Zora", "Masque des Zoras", "Zora-Schuppen€" }, // "Máscara de los Zora"
+        Text{"Mask of Zora", "Masque des Zoras", "Zora-Schuppen" }, // "Máscara de los Zora"
         Text{"Ruto Mask", "Masque de Ruto", "Rutos Maske" }, // "Máscara de Mikau"
     };
     trickNameTable[GI_MASK_GERUDO] = {
@@ -1487,9 +1488,12 @@ Text Rando::Traps::GetTrapName(uint16_t id) {
         initTrickNames = true;
     }
 
-    if (trickNameTable[id].empty()) {
-        assert(false);
-        return Text{ "not an Ice Trap" };
+    if (id >= RG_MAX || trickNameTable[id].empty()) {
+        SPDLOG_ERROR("GetTrapName: missing trick name for item id {}", id);
+        if (id < RG_MAX) {
+            return StaticData::RetrieveItem(static_cast<RandomizerGet>(id)).GetName();
+        }
+        return Text{ "Ice Trap" };
     }
 
     // Randomly get the easy, medium, or hard name for the given item id

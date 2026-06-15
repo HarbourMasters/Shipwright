@@ -24,8 +24,10 @@
 
 #include <ship/Context.h>
 #include <soh/OTRGlobals.h>
+#include <soh/util.h>
 
 #include <libultraship/bridge/consolevariablebridge.h>
+#include <spdlog/spdlog.h>
 
 using json = nlohmann::ordered_json;
 using namespace Rando;
@@ -39,6 +41,10 @@ extern Region* GetHintRegion(uint32_t);
 namespace {
 std::string placementtxt;
 } // namespace
+
+static std::string SafeJsonString(std::string value) {
+    return SohUtils::SanitizeUtf8(std::move(value));
+}
 
 void GenerateHash() {
     auto ctx = Rando::Context::GetInstance();
@@ -73,13 +79,16 @@ static void WriteLocation(std::string sphere, const RandomizerCheck locationKey,
     switch (gSaveContext.language) {
         case LANGUAGE_ENG:
         default:
-            jsonData["playthrough"][sphere][location->GetName()] = itemLocation->GetPlacedItemName().GetEnglish();
+            jsonData["playthrough"][sphere][location->GetName()] =
+                SafeJsonString(itemLocation->GetPlacedItemName().GetEnglish());
             break;
         case LANGUAGE_GER:
-            jsonData["playthrough"][sphere][location->GetName()] = itemLocation->GetPlacedItemName().GetGerman();
+            jsonData["playthrough"][sphere][location->GetName()] =
+                SafeJsonString(itemLocation->GetPlacedItemName().GetGerman());
             break;
         case LANGUAGE_FRA:
-            jsonData["playthrough"][sphere][location->GetName()] = itemLocation->GetPlacedItemName().GetFrench();
+            jsonData["playthrough"][sphere][location->GetName()] =
+                SafeJsonString(itemLocation->GetPlacedItemName().GetFrench());
             break;
     }
 }
@@ -130,7 +139,7 @@ static void WriteShuffledEntrance(std::string sphereString, Entrance* entrance) 
         case LANGUAGE_GER:
         case LANGUAGE_FRA:
         default:
-            jsonData["entrancesMap"][sphereString][name] = text;
+            jsonData["entrancesMap"][sphereString][name] = SafeJsonString(text);
             break;
     }
 }
@@ -141,7 +150,8 @@ static void WriteSettings() {
     std::array<Rando::Option, RSK_MAX> options = Rando::Settings::GetInstance()->GetAllOptions();
     for (const Rando::Option& option : options) {
         if (option.GetName() != "") {
-            jsonData["settings"][option.GetName()] = option.GetOptionText(ctx->GetOption(option.GetKey()).Get());
+            jsonData["settings"][option.GetName()] =
+                SafeJsonString(option.GetOptionText(ctx->GetOption(option.GetKey()).Get()));
         }
     }
 }
@@ -162,7 +172,7 @@ static void WriteExcludedLocations() {
                 continue;
             }
 
-            jsonData["excludedLocations"].push_back(RemoveLineBreaks(location->GetName()));
+            jsonData["excludedLocations"].push_back(SafeJsonString(RemoveLineBreaks(location->GetName())));
         }
     }
 }
@@ -174,7 +184,8 @@ static void WriteStartingInventory() {
     for (const Rando::OptionGroup* subGroup : optionGroup.GetSubGroups()) {
         if (subGroup->GetContainsType() == Rando::OptionGroupType::DEFAULT) {
             for (Rando::Option* option : subGroup->GetOptions()) {
-                jsonData["settings"][option->GetName()] = option->GetOptionText(ctx->GetOption(option->GetKey()).Get());
+                jsonData["settings"][option->GetName()] =
+                    SafeJsonString(option->GetOptionText(ctx->GetOption(option->GetKey()).Get()));
             }
         }
     }
@@ -188,7 +199,7 @@ static void WriteEnabledTricks() {
         if (ctx->GetTrickOption(static_cast<RandomizerTrick>(setting->GetKey())).IsNot(RO_GENERIC_ON)) {
             continue;
         }
-        jsonData["enabledTricks"].push_back(RemoveLineBreaks(setting->GetName()).c_str());
+        jsonData["enabledTricks"].push_back(SafeJsonString(RemoveLineBreaks(setting->GetName())));
     }
 }
 
@@ -200,7 +211,7 @@ static void WriteMasterQuestDungeons() {
         if (dungeon->IsVanilla()) {
             continue;
         }
-        jsonData["masterQuestDungeons"].push_back(dungeon->GetName());
+        jsonData["masterQuestDungeons"].push_back(SafeJsonString(dungeon->GetName()));
     }
 }
 
@@ -210,7 +221,7 @@ static void WriteChosenOptions() {
     for (const auto& trial : ctx->GetTrials()->GetTrialList()) {
         if (trial->IsRequired()) {
             std::string trialName = trial->GetName().GetForCurrentLanguage(MF_CLEAN);
-            jsonData["requiredTrials"].push_back(RemoveLineBreaks(trialName));
+            jsonData["requiredTrials"].push_back(SafeJsonString(RemoveLineBreaks(trialName)));
         }
     }
     if (ctx->GetOption(RSK_SELECTED_STARTING_AGE).Is(RO_AGE_ADULT)) {
@@ -276,13 +287,13 @@ static void WriteAllLocations() {
         if (!location->HasCustomPrice() && location->GetPlacedRandomizerGet() != RG_ICE_TRAP) {
 
             jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()] =
-                placedItemName;
+                SafeJsonString(placedItemName);
             continue;
         }
 
         // We're dealing with a complex item, build out the json object for it
         jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]["item"] =
-            placedItemName;
+            SafeJsonString(placedItemName);
 
         if (location->HasCustomPrice()) {
             jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]["price"] =
@@ -297,30 +308,33 @@ static void WriteAllLocations() {
                 case 0:
                 default:
                     jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]
-                            ["model"] = Rando::StaticData::RetrieveItem(
-                                            ctx->overrides[location->GetRandomizerCheck()].LooksLike())
-                                            .GetName()
-                                            .GetEnglish();
+                            ["model"] = SafeJsonString(Rando::StaticData::RetrieveItem(
+                                                             ctx->overrides[location->GetRandomizerCheck()].LooksLike())
+                                                             .GetName()
+                                                             .GetEnglish());
                     jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]
-                            ["trickName"] = ctx->overrides[location->GetRandomizerCheck()].GetTrickName().GetEnglish();
+                            ["trickName"] = SafeJsonString(
+                                ctx->overrides[location->GetRandomizerCheck()].GetTrickName().GetEnglish());
                     break;
                 case 1:
                     jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]
-                            ["model"] = Rando::StaticData::RetrieveItem(
-                                            ctx->overrides[location->GetRandomizerCheck()].LooksLike())
-                                            .GetName()
-                                            .GetGerman();
+                            ["model"] = SafeJsonString(Rando::StaticData::RetrieveItem(
+                                                             ctx->overrides[location->GetRandomizerCheck()].LooksLike())
+                                                             .GetName()
+                                                             .GetGerman());
                     jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]
-                            ["trickName"] = ctx->overrides[location->GetRandomizerCheck()].GetTrickName().GetGerman();
+                            ["trickName"] = SafeJsonString(
+                                ctx->overrides[location->GetRandomizerCheck()].GetTrickName().GetGerman());
                     break;
                 case 2:
                     jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]
-                            ["model"] = Rando::StaticData::RetrieveItem(
-                                            ctx->overrides[location->GetRandomizerCheck()].LooksLike())
-                                            .GetName()
-                                            .GetFrench();
+                            ["model"] = SafeJsonString(Rando::StaticData::RetrieveItem(
+                                                             ctx->overrides[location->GetRandomizerCheck()].LooksLike())
+                                                             .GetName()
+                                                             .GetFrench());
                     jsonData["locations"][Rando::StaticData::GetLocation(location->GetRandomizerCheck())->GetName()]
-                            ["trickName"] = ctx->overrides[location->GetRandomizerCheck()].GetTrickName().GetFrench();
+                            ["trickName"] = SafeJsonString(
+                                ctx->overrides[location->GetRandomizerCheck()].GetTrickName().GetFrench());
                     break;
             }
         }
@@ -330,59 +344,65 @@ static void WriteAllLocations() {
 void SpoilerLog_Write() {
     auto ctx = Rando::Context::GetInstance();
 
-    jsonData.clear();
+    try {
+        jsonData.clear();
+        hintedLocations.clear();
 
-    jsonData["version"] = (char*)gBuildVersion;
-    jsonData["fileType"] = FILE_TYPE_SPOILER;
-    jsonData["git_branch"] = (char*)gGitBranch;
-    jsonData["git_commit"] = (char*)gGitCommitHash;
-    jsonData["seed"] = ctx->GetSeedString();
-    jsonData["finalSeed"] = ctx->GetSeed();
+        jsonData["version"] = (char*)gBuildVersion;
+        jsonData["fileType"] = FILE_TYPE_SPOILER;
+        jsonData["git_branch"] = (char*)gGitBranch;
+        jsonData["git_commit"] = (char*)gGitCommitHash;
+        jsonData["seed"] = SafeJsonString(ctx->GetSeedString());
+        jsonData["finalSeed"] = ctx->GetSeed();
 
-    // Write Hash
-    int index = 0;
-    for (uint8_t seed_value : ctx->hashIconIndexes) {
-        jsonData["file_hash"][index] = seed_value;
-        index++;
-    }
-
-    WriteSettings();
-    WriteExcludedLocations();
-    WriteStartingInventory();
-    WriteEnabledTricks();
-    WriteMasterQuestDungeons();
-    WriteChosenOptions();
-    WritePlaythrough();
-
-    ctx->playthroughLocations.clear();
-    ctx->playthroughBeatable = false;
-
-    ctx->WriteHintJson(jsonData);
-    WriteShuffledEntrances();
-    WriteAllLocations();
-
-    if (!std::filesystem::exists(Ship::Context::GetPathRelativeToAppDirectory("Randomizer"))) {
-        std::filesystem::create_directory(Ship::Context::GetPathRelativeToAppDirectory("Randomizer"));
-    }
-
-    std::string jsonString = jsonData.dump(4);
-    std::ostringstream fileNameStream;
-    for (uint8_t i = 0; i < ctx->hashIconIndexes.size(); i++) {
-        if (i) {
-            fileNameStream << '-';
+        // Write Hash
+        int index = 0;
+        for (uint8_t seed_value : ctx->hashIconIndexes) {
+            jsonData["file_hash"][index] = seed_value;
+            index++;
         }
-        if (ctx->hashIconIndexes[i] < 10) {
-            fileNameStream << '0';
-        }
-        fileNameStream << std::to_string(ctx->hashIconIndexes[i]);
-    }
-    std::string fileName = fileNameStream.str();
-    std::ofstream jsonFile(Ship::Context::GetPathRelativeToAppDirectory(
-        (std::string("Randomizer/") + fileName + std::string(".json")).c_str()));
-    jsonFile << std::setw(4) << jsonString << std::endl;
-    jsonFile.close();
 
-    CVarSetString(CVAR_GENERAL("SpoilerLog"), (std::string("./Randomizer/") + fileName + std::string(".json")).c_str());
+        WriteSettings();
+        WriteExcludedLocations();
+        WriteStartingInventory();
+        WriteEnabledTricks();
+        WriteMasterQuestDungeons();
+        WriteChosenOptions();
+        WritePlaythrough();
+
+        ctx->playthroughLocations.clear();
+        ctx->playthroughBeatable = false;
+
+        ctx->WriteHintJson(jsonData);
+        WriteShuffledEntrances();
+        WriteAllLocations();
+
+        if (!std::filesystem::exists(Ship::Context::GetPathRelativeToAppDirectory("Randomizer"))) {
+            std::filesystem::create_directory(Ship::Context::GetPathRelativeToAppDirectory("Randomizer"));
+        }
+
+        std::string jsonString = jsonData.dump(4);
+        std::ostringstream fileNameStream;
+        for (uint8_t i = 0; i < ctx->hashIconIndexes.size(); i++) {
+            if (i) {
+                fileNameStream << '-';
+            }
+            if (ctx->hashIconIndexes[i] < 10) {
+                fileNameStream << '0';
+            }
+            fileNameStream << std::to_string(ctx->hashIconIndexes[i]);
+        }
+        std::string fileName = fileNameStream.str();
+        std::ofstream jsonFile(Ship::Context::GetPathRelativeToAppDirectory(
+            (std::string("Randomizer/") + fileName + std::string(".json")).c_str()));
+        jsonFile << std::setw(4) << jsonString << std::endl;
+        jsonFile.close();
+
+        CVarSetString(CVAR_GENERAL("SpoilerLog"),
+                      (std::string("./Randomizer/") + fileName + std::string(".json")).c_str());
+    } catch (const std::exception& e) {
+        SPDLOG_ERROR("SpoilerLog_Write failed: {}", e.what());
+    }
 }
 
 void PlacementLog_Msg(std::string_view msg) {

@@ -2122,7 +2122,7 @@ void Logic::ApplyItemEffect(Item& item, bool state) {
         case ITEMTYPE_DUNGEONREWARD:
         case ITEMTYPE_SONG: {
             RandomizerGet rg = item.GetRandomizerGet();
-            if (SplitSongs::IsProgressiveSong(rg)) {
+            if (SplitSongs::IsProgressiveSong(rg) && mSaveContext != nullptr && mSaveContext != &gSaveContext) {
                 SplitSongs::ApplyProgressiveEffectToLogicScratch(this, rg, state);
                 break;
             }

@@ -218,8 +218,8 @@ void Settings::CreateOptionDescriptions() {
         "\n"
         "Anywhere - Songs can appear at any location.";
     mOptionDescriptions[RSK_SPLIT_OCARINA_SONGS] =
-        "Each ocarina song is shuffled as a progressive item, similar to Bombchu Bag upgrades. The first pickup "
-        "marks progress for that song. The second pickup grants the full song.\n\n"
+        "Each ocarina song is shuffled as a progressive item, (2 Pieces). The first pickup marks progress for that "
+        "song. The second pickup grants the full song.\n\n"
         "Requires Shuffle Songs set to Anywhere.";
     mOptionDescriptions[RSK_SHUFFLE_TOKENS] = "Shuffles Golden Skulltula Tokens into the item pool. This means "
                                               "Golden Skulltulas can contain other items as well.\n"

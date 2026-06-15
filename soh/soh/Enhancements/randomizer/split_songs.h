@@ -47,6 +47,7 @@ class SplitSongs {
     static ItemObtainability GetProgressiveSongObtainability(RandomizerGet progressiveRg);
     static void ApplyProgressiveEffectToLogicScratch(Logic* logic, RandomizerGet rg, bool state);
     static RandomizerGet ResolveProgressiveSongStage(RandomizerGet rg);
+    static RandomizerGet ResolveProgressiveSongStage(Logic* logic, RandomizerGet rg);
 };
 
 } // namespace Rando
