@@ -84,7 +84,7 @@ jobs:
       if: ${{ matrix.distro.packageManager == 'dnf' }}
       run: |
         dnf -y upgrade
-        dnf -y install ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'gcc-c++') || '' }} wget git cmake ninja-build lsb_release SDL2-devel libpng-devel libzip-devel libzip-tools tinyxml2-devel spdlog-devel
+        dnf -y install ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'gcc-c++') || '' }} $(cat linux-build-deps/dnf.txt)
     - name: Install dependencies (apt)
       if: ${{ matrix.distro.packageManager == 'apt' }}
       run: |

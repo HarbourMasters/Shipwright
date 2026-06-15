@@ -117,10 +117,10 @@ pacman -S clang $(cat linux-build-deps/pacman.txt)
 #### Fedora
 ```sh
 # using gcc
-dnf install gcc gcc-c++ git cmake ninja-build lsb_release SDL2-devel SDL2_net-devel libpng-devel libzip-devel libzip-tools nlohmann-json-devel tinyxml2-devel spdlog-devel opusfile-devel libvorbis-devel
+dnf install gcc gcc-c++ $(cat linux-build-deps/dnf.txt)
 
 # or using clang
-dnf install clang git cmake ninja-build lsb_release SDL2-devel SDL2_net-devel libpng-devel libzip-devel libzip-tools nlohmann-json-devel tinyxml2-devel spdlog-devel opusfile-devel libvorbis-devel
+dnf install clang $(cat linux-build-deps/dnf.txt)
 ```
 #### Nix
 You can use a `flake.nix` file to instantly setup a development environment using [Nix](https://nixos.org/). Write this `flake.nix` file in the root directory:
