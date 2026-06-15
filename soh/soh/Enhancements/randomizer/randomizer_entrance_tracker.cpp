@@ -32,6 +32,7 @@ using namespace UIWidgets;
 #define COLOR_ORANGE IM_COL32(230, 159, 0, 255)
 #define COLOR_GREEN IM_COL32(0, 158, 115, 255)
 #define COLOR_GRAY IM_COL32(155, 155, 155, 255)
+#define COLOR_SPECIAL IM_COL32(255, 205, 60, 255) // accent for one-way nodes (spawns/warps/owls)
 
 #define ENTRANCE_VIEW_LIST 0
 #define ENTRANCE_VIEW_GRAPH 1
@@ -1219,8 +1220,10 @@ void EntranceTrackerWindow::DrawGraphView() {
             c.y - margin.y > canvasEnd.y) {
             continue;
         }
+        bool specialHub = f.area == ENTRANCE_GROUP_ONE_WAY;
         dl->AddCircleFilled(c, hubR, IM_COL32(70, 70, 90, 255));
-        dl->AddCircle(c, hubR, IM_COL32(160, 160, 190, 255), 0, std::max(1.0f, 1.5f * gGraphZoom));
+        dl->AddCircle(c, hubR, specialHub ? COLOR_SPECIAL : IM_COL32(160, 160, 190, 255), 0,
+                      std::max(1.0f, 1.5f * gGraphZoom));
 
         if (gGraphZoom > 0.4f) {
             const char* name = spoilerEntranceGroupNames[f.area].c_str();
@@ -1245,8 +1248,16 @@ void EntranceTrackerWindow::DrawGraphView() {
         }
         ImU32 color = GetEntranceStateColor(p.srcData, p.dstData, highlightPrevious, highlightAvailable);
         dl->AddLine(hubScreen, pw, withAlpha(color, 70), std::max(1.0f, gGraphZoom));
-        dl->AddCircleFilled(pw, petalR, color);
-        dl->AddCircle(pw, petalR, IM_COL32(0, 0, 0, 180), 0, 1.0f);
+        // One-way entrances (spawns, warp songs, owls) are drawn as a gold-ringed diamond so they
+        // stand out from regular bidirectional entrances.
+        if (p.srcData->type == ENTRANCE_TYPE_ONE_WAY) {
+            float r = petalR * 1.4f;
+            dl->AddNgonFilled(pw, r, color, 4);
+            dl->AddNgon(pw, r, COLOR_SPECIAL, 4, std::max(1.0f, 1.3f * gGraphZoom));
+        } else {
+            dl->AddCircleFilled(pw, petalR, color);
+            dl->AddCircle(pw, petalR, IM_COL32(0, 0, 0, 180), 0, 1.0f);
+        }
 
         if (hovered) {
             float dx = io.MousePos.x - pw.x;
@@ -1421,8 +1432,10 @@ void EntranceTrackerSettingsWindow::DrawElement() {
         ImGui::TextColored(ImColor(COLOR_ORANGE), "Last Entrance");
         ImGui::TextColored(ImColor(COLOR_GREEN), "Available Entrances");
         ImGui::TextColored(ImColor(COLOR_GRAY), "Undiscovered Entrances");
+        ImGui::TextColored(ImColor(COLOR_SPECIAL), "One-Way Nodes (Spawns/Warps/Owls)");
         ImGui::TextWrapped("Graph view: each area is a hub, its entrances are nodes around it, and "
-                           "lines connect each entrance to where it leads. Drag to pan, scroll to zoom.");
+                           "lines connect each entrance to where it leads. One-way entrances are "
+                           "diamonds. Drag to pan, scroll to zoom.");
         ImGui::TreePop();
     }
 }
