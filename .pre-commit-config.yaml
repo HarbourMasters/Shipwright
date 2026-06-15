@@ -1,0 +1,10 @@
+# Local clang-format hook: formats staged C/C++ in soh/ on commit, using a
+# pinned 14.x downloaded by pre-commit. Scope matches run-clang-format.sh / CI.
+#   pre-commit install --install-hooks   # enable (downloads clang-format up front)
+repos:
+  - repo: https://github.com/pre-commit/mirrors-clang-format
+    rev: v14.0.6
+    hooks:
+      - id: clang-format
+        files: '^soh/.*\.(c|cpp|h|hpp)$'
+        exclude: '^soh/assets/|^soh/(src|include)/.*\.(h|hpp)$'
