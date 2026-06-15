@@ -14187,13 +14187,15 @@ s32 func_8084DFF4(PlayState* play, Player* this) {
         play->msgCtx.msgMode = MSGMODE_TEXT_DONE;
     } else {
         if (Message_GetState(&play->msgCtx) == TEXT_STATE_CLOSING) {
-            if (GameInteractor_Should(VB_PLAY_NABOORU_CAPTURED_CS, this->getItemId == GI_GAUNTLETS_SILVER)) {
-                play->nextEntranceIndex = ENTR_DESERT_COLOSSUS_EAST_EXIT;
-                play->transitionTrigger = TRANS_TRIGGER_START;
-                gSaveContext.nextCutsceneIndex = 0xFFF1;
-                play->transitionType = TRANS_TYPE_SANDSTORM_END;
-                this->stateFlags1 &= ~PLAYER_STATE1_IN_CUTSCENE;
-                Player_TryCsAction(play, NULL, 8);
+            if (this->getItemId == GI_GAUNTLETS_SILVER) {
+                if (GameInteractor_Should(VB_PLAY_NABOORU_CAPTURED_CS, true)) {
+                    play->nextEntranceIndex = ENTR_DESERT_COLOSSUS_EAST_EXIT;
+                    play->transitionTrigger = TRANS_TRIGGER_START;
+                    gSaveContext.nextCutsceneIndex = 0xFFF1;
+                    play->transitionType = TRANS_TYPE_SANDSTORM_END;
+                    this->stateFlags1 &= ~PLAYER_STATE1_IN_CUTSCENE;
+                    Player_TryCsAction(play, NULL, 8);
+                }
             }
 
             // Set unk_862 to 0 early to not have the game draw non-custom colored models for a split second.
