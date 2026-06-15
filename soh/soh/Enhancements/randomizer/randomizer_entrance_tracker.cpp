@@ -89,6 +89,7 @@ static bool gGraphBuilt = false;
 static bool gLayoutDone = false;
 static ImVec2 gGraphPan = ImVec2(0.0f, 0.0f);
 static float gGraphZoom = 1.0f;
+static int gSelectedEdge = -1; // index into gGraphEdges, persists until clicked elsewhere
 
 static const float kPi = 3.14159265358979323846f;
 
@@ -970,10 +971,11 @@ static void BuildGraphModel() {
         entranceIndexToPetal[gGraphPetals[i].entranceIndex] = i;
     }
 
-    // Deterministic radial petal placement around each flower center.
+    // Deterministic radial petal placement around each flower center. Keep the ring close to the
+    // hub so petals read as belonging to their node.
     for (auto& f : gGraphFlowers) {
         int nn = f.petalCount;
-        f.radius = std::clamp(70.0f + nn * 7.0f, 70.0f, 260.0f);
+        f.radius = std::clamp(34.0f + nn * 3.0f, 34.0f, 120.0f);
         for (int j = 0; j < nn; j++) {
             GraphPetal& p = gGraphPetals[f.petalStart + j];
             float ang = (2.0f * kPi * j) / (float)nn + (float)f.area * 0.3f;
@@ -993,6 +995,8 @@ static void BuildGraphModel() {
         gGraphEdges.push_back(e);
     }
 
+    gSelectedEdge = -1;
+
     if (!gLayoutDone) {
         LayoutGraph();
     }
@@ -1004,6 +1008,7 @@ void ResetGraphLayout() {
     gGraphBuilt = false;
     gGraphPan = ImVec2(0.0f, 0.0f);
     gGraphZoom = 1.0f;
+    gSelectedEdge = -1;
 }
 
 void EntranceTrackerWindow::DrawViewModeSelector() {
@@ -1077,6 +1082,9 @@ void EntranceTrackerWindow::DrawGraphView() {
     bool highlightPrevious = CVarGetInteger(CVAR_TRACKER_ENTRANCE("HighlightPrevious"), 0);
     bool highlightAvailable = CVarGetInteger(CVAR_TRACKER_ENTRANCE("HighlightAvailable"), 0);
     bool showTo = CVarGetInteger(CVAR_TRACKER_ENTRANCE("ShowTo"), 0);
+    // By default the graph only reveals entrances the player has discovered, growing as they
+    // explore. The spoiler toggle shows the complete mapping up front.
+    bool showAll = CVarGetInteger(CVAR_TRACKER_ENTRANCE("GraphShowAll"), 0);
 
     dl->PushClipRect(canvasPos, canvasEnd, true);
 
@@ -1092,33 +1100,119 @@ void EntranceTrackerWindow::DrawGraphView() {
         ImVec2 c = centerByArea[p.area];
         return ImVec2(c.x + p.localOffset.x, c.y + p.localOffset.y);
     };
+    auto distToSeg = [](ImVec2 p, ImVec2 a, ImVec2 b) -> float {
+        float vx = b.x - a.x, vy = b.y - a.y;
+        float wx = p.x - a.x, wy = p.y - a.y;
+        float c1 = vx * wx + vy * wy;
+        if (c1 <= 0.0f) {
+            return sqrtf(wx * wx + wy * wy);
+        }
+        float c2 = vx * vx + vy * vy;
+        if (c2 <= c1) {
+            float dx = p.x - b.x, dy = p.y - b.y;
+            return sqrtf(dx * dx + dy * dy);
+        }
+        float t = c1 / c2;
+        float dx = p.x - (a.x + t * vx), dy = p.y - (a.y + t * vy);
+        return sqrtf(dx * dx + dy * dy);
+    };
 
-    // (a) Edges first (behind nodes).
+    // Visibility: which petals/areas are revealed. Once a source entrance is discovered we also
+    // reveal the destination area's hub so the connection has somewhere to land.
+    std::vector<bool> petalVisible(gGraphPetals.size(), false);
+    bool areaVisible[SPOILER_ENTRANCE_GROUP_COUNT] = { false };
+    int visibleCount = 0;
+    for (int i = 0; i < (int)gGraphPetals.size(); i++) {
+        bool vis = showAll || IsEntranceDiscovered(gGraphPetals[i].entranceIndex);
+        petalVisible[i] = vis;
+        if (vis) {
+            areaVisible[gGraphPetals[i].area] = true;
+            visibleCount++;
+        }
+    }
     for (const auto& e : gGraphEdges) {
-        const GraphPetal& sp = gGraphPetals[e.srcPetal];
-        ImVec2 srcW = petalWorld(sp);
-        ImVec2 dstW;
-        if (e.dstPetal >= 0) {
-            dstW = petalWorld(gGraphPetals[e.dstPetal]);
-        } else if (hasFlower[e.dstArea]) {
-            dstW = centerByArea[e.dstArea];
-        } else {
+        if (!petalVisible[e.srcPetal]) {
             continue;
         }
-        ImVec2 p0 = W2S(srcW);
-        ImVec2 p1 = W2S(dstW);
+        if (e.dstPetal >= 0 && petalVisible[e.dstPetal]) {
+            areaVisible[gGraphPetals[e.dstPetal].area] = true;
+        } else if (hasFlower[e.dstArea]) {
+            areaVisible[e.dstArea] = true;
+        }
+    }
+
+    // Resolve an edge's screen-space endpoints (and whether it should be shown at all).
+    auto edgeScreen = [&](const GraphEdge& e, ImVec2& p0, ImVec2& p1) -> bool {
+        if (!petalVisible[e.srcPetal]) {
+            return false;
+        }
+        ImVec2 dstW;
+        if (e.dstPetal >= 0 && petalVisible[e.dstPetal]) {
+            dstW = petalWorld(gGraphPetals[e.dstPetal]);
+        } else if (hasFlower[e.dstArea] && areaVisible[e.dstArea]) {
+            dstW = centerByArea[e.dstArea];
+        } else {
+            return false;
+        }
+        p0 = W2S(petalWorld(gGraphPetals[e.srcPetal]));
+        p1 = W2S(dstW);
+        return true;
+    };
+
+    // (a) Edges first (behind nodes), tracking the nearest one under the cursor.
+    int hoveredEdge = -1;
+    float hoveredEdgeDist = 7.0f;
+    for (int i = 0; i < (int)gGraphEdges.size(); i++) {
+        const GraphEdge& e = gGraphEdges[i];
+        ImVec2 p0, p1;
+        if (!edgeScreen(e, p0, p1)) {
+            continue;
+        }
         if (!inCanvas(p0) && !inCanvas(p1)) {
             continue; // both endpoints off-canvas
         }
+        const GraphPetal& sp = gGraphPetals[e.srcPetal];
         ImU32 color = GetEntranceStateColor(sp.srcData, sp.dstData, highlightPrevious, highlightAvailable);
         int alpha = (color == COLOR_GRAY) ? 45 : 130;
         float thickness = std::max(1.0f, 1.4f * gGraphZoom);
         dl->AddLine(p0, p1, withAlpha(color, alpha), thickness);
+
+        if (hovered) {
+            float d = distToSeg(io.MousePos, p0, p1);
+            if (d < hoveredEdgeDist) {
+                hoveredEdgeDist = d;
+                hoveredEdge = i;
+            }
+        }
     }
 
-    // (b) Flower centers (hubs).
+    // Redraw the selected and hovered edges on top, brighter and thicker, so overlapping lines
+    // can be disambiguated.
+    auto emphasizeEdge = [&](int idx, int alpha, float extra) {
+        if (idx < 0 || idx >= (int)gGraphEdges.size()) {
+            return;
+        }
+        ImVec2 p0, p1;
+        if (!edgeScreen(gGraphEdges[idx], p0, p1)) {
+            return;
+        }
+        const GraphPetal& sp = gGraphPetals[gGraphEdges[idx].srcPetal];
+        ImU32 color = GetEntranceStateColor(sp.srcData, sp.dstData, highlightPrevious, highlightAvailable);
+        dl->AddLine(p0, p1, withAlpha(color, alpha), std::max(2.0f, 1.4f * gGraphZoom) + extra);
+        dl->AddCircleFilled(p0, std::max(3.0f, 4.0f * gGraphZoom), withAlpha(color, alpha));
+        dl->AddCircleFilled(p1, std::max(3.0f, 4.0f * gGraphZoom), withAlpha(color, alpha));
+    };
+    if (gSelectedEdge != hoveredEdge) {
+        emphasizeEdge(gSelectedEdge, 200, 1.5f);
+    }
+    emphasizeEdge(hoveredEdge, 255, 2.5f);
+
+    // (b) Flower centers (hubs) - only revealed areas.
     float hubR = std::max(4.0f, 14.0f * gGraphZoom);
     for (const auto& f : gGraphFlowers) {
+        if (!areaVisible[f.area]) {
+            continue;
+        }
         ImVec2 c = W2S(f.center);
         ImVec2 margin(hubR + f.radius * gGraphZoom, hubR + f.radius * gGraphZoom);
         if (c.x + margin.x < canvasPos.x || c.x - margin.x > canvasEnd.x || c.y + margin.y < canvasPos.y ||
@@ -1135,11 +1229,14 @@ void EntranceTrackerWindow::DrawGraphView() {
         }
     }
 
-    // (c) Petals, plus hover detection for tooltips.
+    // (c) Petals (revealed only), plus hover detection for tooltips.
     float petalR = std::max(2.0f, 6.0f * gGraphZoom);
     int hoveredPetal = -1;
     float hoveredDist = petalR + 4.0f;
     for (int i = 0; i < (int)gGraphPetals.size(); i++) {
+        if (!petalVisible[i]) {
+            continue;
+        }
         const GraphPetal& p = gGraphPetals[i];
         ImVec2 hubScreen = W2S(centerByArea[p.area]);
         ImVec2 pw = W2S(petalWorld(p));
@@ -1162,16 +1259,30 @@ void EntranceTrackerWindow::DrawGraphView() {
         }
 
         if (gGraphZoom > 1.4f) {
-            bool isDiscovered = IsEntranceDiscovered(p.entranceIndex);
-            const char* label = isDiscovered ? p.srcData->source.c_str() : "???";
             dl->AddText(ImVec2(pw.x + petalR + 2.0f, pw.y - ImGui::GetTextLineHeight() * 0.5f),
-                        withAlpha(IM_COL32_WHITE, 200), label);
+                        withAlpha(IM_COL32_WHITE, 200), p.srcData->source.c_str());
         }
     }
 
     dl->PopClipRect();
 
-    // Tooltip for the nearest hovered petal.
+    if (visibleCount == 0) {
+        const char* hint = "Explore to reveal entrances";
+        ImVec2 ts = ImGui::CalcTextSize(hint);
+        dl->AddText(ImVec2(canvasCenter.x - ts.x * 0.5f, canvasCenter.y - ts.y * 0.5f),
+                    IM_COL32(170, 170, 170, 255), hint);
+    }
+
+    // Click without dragging selects the edge under the cursor (or clears the selection).
+    // Petals take priority, so clicking a node never selects an edge behind it.
+    if (hovered && ImGui::IsMouseReleased(ImGuiMouseButton_Left)) {
+        ImVec2 dd = ImGui::GetMouseDragDelta(ImGuiMouseButton_Left, 0.0f);
+        if (fabsf(dd.x) < 3.0f && fabsf(dd.y) < 3.0f) {
+            gSelectedEdge = (hoveredPetal < 0) ? hoveredEdge : -1;
+        }
+    }
+
+    // Tooltip: nearest hovered petal first, otherwise the hovered (or selected) edge.
     if (hoveredPetal >= 0) {
         const GraphPetal& p = gGraphPetals[hoveredPetal];
         bool isDiscovered = IsEntranceDiscovered(p.entranceIndex);
@@ -1179,6 +1290,16 @@ void EntranceTrackerWindow::DrawGraphView() {
         ImGui::BeginTooltip();
         ImGui::Text("%s -> %s", p.srcData->source.c_str(), dstName);
         ImGui::EndTooltip();
+    } else {
+        int infoEdge = (hoveredEdge >= 0) ? hoveredEdge : -1;
+        if (infoEdge >= 0) {
+            const GraphPetal& sp = gGraphPetals[gGraphEdges[infoEdge].srcPetal];
+            bool isDiscovered = IsEntranceDiscovered(sp.entranceIndex);
+            const char* dstName = (isDiscovered || showTo) ? sp.dstData->destination.c_str() : "???";
+            ImGui::BeginTooltip();
+            ImGui::Text("%s -> %s", sp.srcData->source.c_str(), dstName);
+            ImGui::EndTooltip();
+        }
     }
 }
 
@@ -1281,6 +1402,13 @@ void EntranceTrackerSettingsWindow::DrawElement() {
     }
 
     ImGui::Text("Graph View");
+    ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
+    CVarCheckbox("Show all entrances (spoiler)", CVAR_TRACKER_ENTRANCE("GraphShowAll"),
+                 CheckboxOptions()
+                     .Tooltip("Reveal the entire entrance graph immediately instead of only entrances you have "
+                              "discovered")
+                     .Color(THEME_COLOR));
+    ImGui::EndDisabled();
     if (Button("Reset Graph Layout",
                ButtonOptions({ { .tooltip = "Recompute the node layout and reset pan/zoom" } })
                    .Color(THEME_COLOR)
