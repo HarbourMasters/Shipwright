@@ -259,6 +259,9 @@ cmake --build build-cmake
 > - [`.github/actions/install-tinyxml2/action.yml`](../.github/actions/install-tinyxml2/action.yml)
 > - [`.github/actions/install-sdl2-net/action.yml`](../.github/actions/install-sdl2-net/action.yml)
 
+> [!TIP]
+> There are known incompatibilities between some newer versions of `clang` and older versions of [`{fmt}`](https://github.com/fmtlib/fmt) (see https://github.com/fmtlib/fmt/issues/4807). If you see a `call to consteval function 'fmt::basic_format_string<...>' is not a constant expression` error, you can work around it by passing `-DCMAKE_CXX_FLAGS=-DFMT_CONSTEVAL=constexpr` to `cmake`.
+
 ### Generate a distributable
 After compiling the project you can generate a distributable by running of the following:
 ```bash
