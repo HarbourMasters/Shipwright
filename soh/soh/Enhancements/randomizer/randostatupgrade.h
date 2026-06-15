@@ -1,9 +1,23 @@
 #pragma once
+#include <array>
 #include <cmath>
 #include <algorithm>
 #include <cstdint>
 #include "SeedContext.h"
+#include "randomizerEnums/RandomizerGet.h"
 #include "randomizerEnums/RandomizerSettingKey.h"
+
+static constexpr std::array<RandomizerGet, 4> STAT_UPGRADE_ITEMS = { RG_DEFENSE_UPGRADE, RG_SPEED_UPGRADE,
+                                                                     RG_POWER_UPGRADE, RG_MAGIC_STAT_UPGRADE };
+
+// Used to filter out stat items from Links pocket
+inline bool IsStatUpgrade(RandomizerGet rg) {
+    if (std::find(STAT_UPGRADE_ITEMS.begin(), STAT_UPGRADE_ITEMS.end(), rg) != STAT_UPGRADE_ITEMS.end())
+        return true;
+    if (rg == RG_PROGRESSIVE_MAGIC_METER && Rando::Context::GetInstance()->GetOption(RSK_MAGIC_STAT_UPGRADE))
+        return true;
+    return false;
+}
 
 // Returns how many stat upgrade items are needed to reach the max stat bonus.
 // When adjustable is OFF, returns nonAdjDefault; when ON, derives from the
