@@ -3031,7 +3031,8 @@ void CollisionCheck_ApplyDamage(PlayState* play, CollisionCheckContext* colChkCt
     if (CVarGetInteger(CVAR_ENHANCEMENT("IvanCoopModeEnabled"), 0)) {
         collider->actor->colChkInfo.damage *= GET_PLAYER(play)->ivanDamageMultiplier;
     }
-    GameInteractor_Should(VB_PLAYER_ATTACK_DAMAGE_MULTIPLIER, true, play, &collider->actor->colChkInfo.damage);
+    GameInteractor_Should(VB_PLAYER_ATTACK_DAMAGE_MULTIPLIER, true, play, &collider->actor->colChkInfo.damage,
+                          collider->actor);
 }
 
 /**

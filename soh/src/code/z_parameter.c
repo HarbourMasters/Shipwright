@@ -3065,6 +3065,7 @@ void Magic_Fill(PlayState* play) {
     if (gSaveContext.isMagicAcquired) {
         gSaveContext.prevMagicState = gSaveContext.magicState;
         gSaveContext.magicFillTarget = (gSaveContext.isDoubleMagicAcquired + 1) * MAGIC_NORMAL_METER;
+        GameInteractor_Should(VB_MAGIC_FILL_TARGET, true, &gSaveContext.magicFillTarget);
         gSaveContext.magicState = MAGIC_STATE_FILL;
     }
 }

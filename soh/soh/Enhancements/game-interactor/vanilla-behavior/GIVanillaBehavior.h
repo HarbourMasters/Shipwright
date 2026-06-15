@@ -1733,6 +1733,14 @@ typedef enum {
     // true
     // ```
     // #### `args`
+    // - `*s16` (magicFillTarget)
+    VB_MAGIC_FILL_TARGET,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
     // - `*s16`
     VB_MAGIC_STEP_CAPACITY_TARGET,
 
@@ -2416,6 +2424,7 @@ typedef enum {
     // #### `args`
     // - `*PlayState`
     // - `*u8`
+    // - `*Actor`
     VB_PLAYER_ATTACK_DAMAGE_MULTIPLIER,
 
     // #### `result`

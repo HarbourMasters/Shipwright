@@ -51,13 +51,31 @@ static void RegisterRandoStatUpgradeHooks() {
         if (level == 0)
             return;
         uint8_t required = StatUpgradeRequired(5);
+        PlayState* play = va_arg(args, PlayState*);
+        u8* damage = va_arg(args, u8*);
+        Actor* hitActor = va_arg(args, Actor*);
         float critChance = (float)std::min((int)level, (int)required) / (float)required;
         if (Rand_ZeroOne() > critChance)
             return;
-        va_arg(args, PlayState*);
-        u8* damage = va_arg(args, u8*);
         u32 doubled = (u32)*damage * 2;
         *damage = (u8)(doubled > 0xFF ? 0xFF : doubled);
+        if (critChance < 1.0f) {
+            Vec3f zero = { 0.0f, 0.0f, 0.0f };
+            EffectSsBomb2_SpawnFade(play, &hitActor->world.pos, &zero, &zero);
+        }
+    });
+
+    COND_VB_SHOULD(VB_MAGIC_FILL_TARGET, IS_RANDO && RAND_GET_OPTION(RSK_MAGIC_STAT_UPGRADE), {
+        u8 level = gSaveContext.ship.quest.data.randomizer.magicStatUpgrades;
+        if (level == 0)
+            return;
+        uint8_t required = StatUpgradeRequired(8);
+        uint8_t unit = (uint8_t)std::max(1, 100 / (int)required);
+        s16 cap = (s16)(std::min((int)level, (int)required) * unit);
+        s16* fillTarget = va_arg(args, s16*);
+        if (*fillTarget > cap) {
+            *fillTarget = cap;
+        }
     });
 
     COND_VB_SHOULD(VB_MAGIC_STEP_CAPACITY_TARGET, IS_RANDO && RAND_GET_OPTION(RSK_MAGIC_STAT_UPGRADE), {
