@@ -40,6 +40,5 @@ inline uint8_t MagicStatLogicThreshold() {
         return 2;
     }
     uint8_t required = StatUpgradeRequired(8);
-    uint8_t unit = (uint8_t)std::max(1, 100 / (int)required);
-    return (uint8_t)std::ceil(24.0 / unit);
+    return (uint8_t)std::ceil(24.0 * required / 100.0);
 }

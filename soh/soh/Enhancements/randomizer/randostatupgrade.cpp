@@ -72,9 +72,10 @@ static void RegisterRandoStatUpgradeHooks() {
         u8 level = gSaveContext.ship.quest.data.randomizer.magicStatUpgrades;
         if (level == 0)
             return;
-        uint8_t required = StatUpgradeRequired(8);
-        uint8_t unit = (uint8_t)std::max(1, 100 / (int)required);
-        s16 cap = (s16)(std::min((int)level, (int)required) * unit);
+        bool adjustable = (bool)RAND_GET_OPTION(RSK_ADJUSTABLE_STAT_UPGRADE);
+        uint8_t required = adjustable ? StatUpgradeRequired(8) : 8;
+        s16 magicTotal = adjustable ? 100 : 96;
+        s16 cap = (s16)(std::min((int)level, (int)required) * magicTotal / required);
         s16* fillTarget = va_arg(args, s16*);
         if (*fillTarget > cap) {
             *fillTarget = cap;
@@ -85,9 +86,10 @@ static void RegisterRandoStatUpgradeHooks() {
         u8 level = gSaveContext.ship.quest.data.randomizer.magicStatUpgrades;
         if (level == 0)
             return;
-        uint8_t required = StatUpgradeRequired(8);
-        uint8_t unit = (uint8_t)std::max(1, 100 / (int)required);
-        s16 cap = (s16)(std::min((int)level, (int)required) * unit);
+        bool adjustable = (bool)RAND_GET_OPTION(RSK_ADJUSTABLE_STAT_UPGRADE);
+        uint8_t required = adjustable ? StatUpgradeRequired(8) : 8;
+        s16 magicTotal = adjustable ? 100 : 96;
+        s16 cap = (s16)(std::min((int)level, (int)required) * magicTotal / required);
         s16* target = va_arg(args, s16*);
         *target = cap;
         gSaveContext.magicFillTarget = cap;
