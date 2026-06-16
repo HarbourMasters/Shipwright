@@ -120,7 +120,7 @@ void* LoadCustomTexture(const std::string& modelId, int32_t linkAge, const char*
         return cached->second ? cached->second->GetRawPointer() : nullptr;
     }
 
-    auto context = Ship::Context::GetInstance();
+    auto context = Ship::Context::GetRawInstance();
     if (context == nullptr || context->GetResourceManager() == nullptr) {
         return nullptr;
     }
@@ -332,7 +332,7 @@ std::string FindSkeletonPathInArchive(const std::shared_ptr<Ship::Archive>& arch
 }
 
 std::shared_ptr<SOH::Skeleton> LoadSkeletonFromArchive(AnchorModelEntry& entry, const std::string& basePath) {
-    auto context = Ship::Context::GetInstance();
+    auto context = Ship::Context::GetRawInstance();
     if (context == nullptr || context->GetResourceManager() == nullptr) {
         return nullptr;
     }
@@ -430,7 +430,7 @@ void AnchorModRegistry::Init() {
         return;
     }
 
-    auto context = Ship::Context::GetInstance();
+    auto context = Ship::Context::GetRawInstance();
     if (context == nullptr || context->GetConsoleVariables() == nullptr) {
         return;
     }
@@ -494,7 +494,7 @@ void* AnchorModRegistry::TryLoadAnchorOverride(const char* path) {
                                                                         : (sAnchorModelOverride.modelId + "_child");
     std::string customPath = "objects/object_anchor_models/" + folder + "/" + baseName;
 
-    auto context = Ship::Context::GetInstance();
+    auto context = Ship::Context::GetRawInstance();
     if (context == nullptr || context->GetResourceManager() == nullptr) {
         return nullptr;
     }
@@ -596,7 +596,7 @@ bool AnchorModRegistry::ApplyModelToPlayer(const std::string& id, int32_t linkAg
 
     Init();
 
-    auto context = Ship::Context::GetInstance();
+    auto context = Ship::Context::GetRawInstance();
     if (context == nullptr || context->GetResourceManager() == nullptr) {
         return false;
     }
