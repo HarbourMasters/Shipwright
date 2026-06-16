@@ -25,6 +25,26 @@ static const char* ResolveCustomChain(std::initializer_list<const char*> paths) 
     return fallback;
 }
 
+static const char* ResolveCustomFPSHand(const char* path) {
+    const bool isAdult = path == gCustomAdultFPSHandDL;
+    const bool isChild = path == gCustomChildFPSHandDL;
+
+    if (!isAdult && !isChild) {
+        return path;
+    }
+
+    switch (TUNIC_EQUIP_TO_PLAYER(CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC))) {
+        case PLAYER_TUNIC_GORON:
+            return ResolveCustomChain(
+                { isAdult ? gCustomAdultGoronFPSHandDL : gCustomChildGoronFPSHandDL, path, nullptr });
+        case PLAYER_TUNIC_ZORA:
+            return ResolveCustomChain(
+                { isAdult ? gCustomAdultZoraFPSHandDL : gCustomChildZoraFPSHandDL, path, nullptr });
+        default:
+            return path;
+    }
+}
+
 static Gfx* LoadGfxByName(const char* path) {
     return path ? ResourceMgr_LoadGfxByName(path) : nullptr;
 }
@@ -32,6 +52,7 @@ static Gfx* LoadGfxByName(const char* path) {
 static Gfx* LoadCustomGfx(const char* path) {
     if (!path)
         return nullptr;
+    path = ResolveCustomFPSHand(path);
     if (!ResourceGetIsCustomByName(path) && !ResourceMgr_FileAltExists(path))
         return nullptr;
     return ResourceMgr_LoadGfxByName(path);
