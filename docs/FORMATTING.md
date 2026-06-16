@@ -43,8 +43,8 @@ gives you a 14.x binary:
   (e.g. `clang-format-14_linux-amd64`), `chmod +x`, and point `CLANG_FORMAT` at it.
 - **Any OS via a Python wheel**: `uvx clang-format@14` (with
   [uv](https://docs.astral.sh/uv/)), or `pipx install clang-format==14.0.6`.
-- **macOS**: `brew install llvm@14` and use its `clang-format`, or use one of the
-  cross-platform options above.
+- **Homebrew (macOS or Linux)**: `brew install llvm@14` and use its
+  `clang-format`, or use one of the cross-platform options above.
 
 ## Optional: format on commit
 
