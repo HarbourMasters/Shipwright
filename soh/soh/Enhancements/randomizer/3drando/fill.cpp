@@ -1250,7 +1250,9 @@ void VanillaFill() {
     // Perform minimum needed initialization
     RegionTable_Init();
     ctx->GenerateLocationPool();
-    GenerateItemPool();
+    if (!GenerateItemPool()) {
+        return;
+    }
     GenerateStartingInventory();
     // Place vanilla item in each location
     RandomizeDungeonRewards();
@@ -1287,7 +1289,9 @@ int Fill() {
         RegionTable_Init(); // Reset the world graph to initialize the proper locations
         ctx->ItemReset();   // Reset shops incase of shopsanity random
         ctx->GenerateLocationPool();
-        GenerateItemPool();
+        if (!GenerateItemPool()) {
+            return -1;
+        }
         GenerateStartingInventory();
         FillExcludedLocations();
 

@@ -2474,7 +2474,7 @@ void RegisterItemTrackerWidgets() {
     SohGui::mSohMenu->AddSearchWidget(
         { statUpgradeTracking, "Randomizer", "Item Tracker", "General Settings", "icon" });
 
-    statUpgradeCount = { .name = "Stat Upgrade Count Display", .type = WidgetType::WIDGET_CVAR_COMBOBOX };
+    statUpgradeCount = { .name = "Stat Upgrade Count Tracking", .type = WidgetType::WIDGET_CVAR_COMBOBOX };
     statUpgradeCount.CVar(CVAR_TRACKER_ITEM("StatUpgradeCounts"))
         .Options(ComboboxOptions()
                      .DefaultIndex(STAT_COLLECTED_REQUIRED)

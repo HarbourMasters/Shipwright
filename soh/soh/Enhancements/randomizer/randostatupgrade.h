@@ -36,9 +36,9 @@ inline uint8_t StatUpgradeRequired(uint8_t nonAdjDefault) {
 // magic in logic (i.e. enough units to fill at least half of a normal magic bar).
 inline uint8_t MagicStatLogicThreshold() {
     auto ctx = Rando::Context::GetInstance();
-    if (!ctx->GetOption(RSK_ADJUSTABLE_STAT_UPGRADE)) {
-        return 2;
-    }
+    bool adjustable = (bool)ctx->GetOption(RSK_ADJUSTABLE_STAT_UPGRADE);
     uint8_t required = StatUpgradeRequired(8);
-    return (uint8_t)std::ceil(24.0 * required / 100.0);
+    float magicTotal = adjustable ? 100.0f : 96.0f;
+    return (uint8_t)std::ceil(23.5f * required /
+                              magicTotal); // 23.5 rounded up to 24 units to account for rounding of magic float
 }
