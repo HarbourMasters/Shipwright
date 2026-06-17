@@ -1513,7 +1513,11 @@ s32 Camera_Free(Camera* camera) {
         camera->play->camY = -0x228C;
     }
 
-    f32 distTarget = CVarGetInteger(CVAR_SETTING("FreeLook.MaxCameraDistance"), para1->distTarget);
+    // SOH [Enhancement] When set, use the game's per-mode default distance (para1->distTarget)
+    // instead of the fixed free-look distance.
+    f32 distTarget = CVarGetInteger(CVAR_SETTING("FreeLook.UseGameDistance"), 0)
+                         ? para1->distTarget
+                         : CVarGetInteger(CVAR_SETTING("FreeLook.MaxCameraDistance"), para1->distTarget);
     f32 speedScaler = CVarGetInteger(CVAR_SETTING("FreeLook.TransitionSpeed"), 25);
     f32 distDiff = ABS(distTarget - camera->dist);
     if (distDiff > 0)
