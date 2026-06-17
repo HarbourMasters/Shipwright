@@ -1,0 +1,18 @@
+<DisplayList Version="0">
+	<CallDisplayList Path="objects/object_gi_fishing_pole/mat_gGiFishingPoleDL_fishing_rod_layerOpaque"/>
+	<CallDisplayList Path="objects/object_gi_fishing_pole/gGiFishingPoleDL_layer_Opaque_tri_0"/>
+	<CallDisplayList Path="objects/object_gi_fishing_pole/mat_gGiFishingPoleDL_fishing_rod_handle_layerOpaque"/>
+	<CallDisplayList Path="objects/object_gi_fishing_pole/gGiFishingPoleDL_layer_Opaque_tri_1"/>
+	<CallDisplayList Path="objects/object_gi_fishing_pole/mat_gGiFishingPoleDL_fishing_line_layerOpaque"/>
+	<CallDisplayList Path="objects/object_gi_fishing_pole/gGiFishingPoleDL_layer_Opaque_tri_2"/>
+	<CallDisplayList Path="objects/object_gi_fishing_pole/mat_gGiFishingPoleDL_fishing_lure_head_layerOpaque"/>
+	<CallDisplayList Path="objects/object_gi_fishing_pole/gGiFishingPoleDL_layer_Opaque_tri_3"/>
+	<CallDisplayList Path="objects/object_gi_fishing_pole/mat_gGiFishingPoleDL_fishing_lure_tail_layerOpaque"/>
+	<CallDisplayList Path="objects/object_gi_fishing_pole/gGiFishingPoleDL_layer_Opaque_tri_4"/>
+	<CallDisplayList Path="objects/object_gi_fishing_pole/mat_gGiFishingPoleDL_fishing_reel_layerOpaque"/>
+	<CallDisplayList Path="objects/object_gi_fishing_pole/gGiFishingPoleDL_layer_Opaque_tri_5"/>
+	<ClearGeometryMode G_LIGHTING="1"/>
+	<SetGeometryMode G_LIGHTING="1"/>
+	<EndDisplayList/>
+</DisplayList>
+
