@@ -309,7 +309,7 @@ bool Option::RenderSlider() {
 }
 
 void Option::AddWidget(WidgetPath& path) {
-    auto widget = SohGui::mSohMenu->AddWidget(path, name, widgetType)
+    auto widget = SohGui::mSohMenu->AddWidget(path, name + "##Randomizer", widgetType)
                       .Callback(callback)
                       .PreFunc([this](WidgetInfo& info) {
                           info.isHidden = this->IsHidden();
