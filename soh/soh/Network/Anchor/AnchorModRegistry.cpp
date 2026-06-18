@@ -22,6 +22,7 @@
 #endif
 
 extern "C" {
+#include "z64.h"
 #include "macros.h"
 #include "functions.h"
 #if defined(MODDING) || defined(_MSC_VER) || defined(__GNUC__)
