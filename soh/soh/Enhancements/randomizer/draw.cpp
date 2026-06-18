@@ -1288,7 +1288,7 @@ extern "C" void Randomizer_DrawFishingPoleGI(PlayState* play, GetItemEntry* getI
     gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
               G_MTX_MODELVIEW | G_MTX_LOAD);
 
-    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiFishingPoleDL)
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiFishingPoleDL);
 
     Matrix_Pop();
 
