@@ -765,59 +765,6 @@ std::string SohUtils::Sanitize(std::string stringValue) {
     return stringValue;
 }
 
-std::string SohUtils::SanitizeUtf8(std::string value) {
-    auto isUtf8Continuation = [](unsigned char byte) { return (byte & 0xC0) == 0x80; };
-
-    auto utf8SequenceLength = [](unsigned char lead) -> size_t {
-        if (lead < 0x80) {
-            return 1;
-        }
-        if ((lead & 0xE0) == 0xC0) {
-            return 2;
-        }
-        if ((lead & 0xF0) == 0xE0) {
-            return 3;
-        }
-        if ((lead & 0xF8) == 0xF0) {
-            return 4;
-        }
-        return 0;
-    };
-
-    std::string sanitized;
-    sanitized.reserve(value.size());
-
-    for (size_t i = 0; i < value.size();) {
-        const unsigned char lead = static_cast<unsigned char>(value[i]);
-        const size_t sequenceLength = utf8SequenceLength(lead);
-
-        if (sequenceLength == 0 || i + sequenceLength > value.size()) {
-            sanitized.push_back('?');
-            i++;
-            continue;
-        }
-
-        bool valid = true;
-        for (size_t j = 1; j < sequenceLength; j++) {
-            if (!isUtf8Continuation(static_cast<unsigned char>(value[i + j]))) {
-                valid = false;
-                break;
-            }
-        }
-
-        if (!valid) {
-            sanitized.push_back('?');
-            i++;
-            continue;
-        }
-
-        sanitized.append(value, i, sequenceLength);
-        i += sequenceLength;
-    }
-
-    return sanitized;
-}
-
 size_t SohUtils::CopyStringToCharBuffer(char* buffer, const std::string& source, const size_t maxBufferSize) {
     if (!source.empty() && maxBufferSize > 0) {
         memset(buffer, 0, maxBufferSize);

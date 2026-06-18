@@ -127,32 +127,11 @@ ItemObtainability SplitSongs::GetProgressiveSongObtainability(RandomizerGet prog
     return HasFullSong(def->id) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN;
 }
 
-void SplitSongs::ApplyProgressiveEffectToLogicScratch(Logic* logic, RandomizerGet rg, bool state) {
-    if (!UsingLogicSimulationBuffer(logic)) {
-        return;
+RandomizerInf SplitSongs::GetPartFlag(SplitSongId id) {
+    if (!IsValidSplitSongId(id)) {
+        return RAND_INF_MAX;
     }
-    const SplitSongDef* def = GetSongDefFromProgressive(rg);
-    if (def == nullptr) {
-        return;
-    }
-
-    const uint32_t partFlag = kSplitSongPartFlags[def->id];
-    const auto qiIt = Logic::RandoGetToQuestItem.find(static_cast<uint32_t>(def->fullSong));
-    if (qiIt == Logic::RandoGetToQuestItem.end()) {
-        return;
-    }
-
-    if (state) {
-        if (!logic->CheckRandoInf(static_cast<RandomizerInf>(partFlag))) {
-            logic->SetRandoInf(partFlag, true);
-        } else {
-            logic->SetQuestItem(qiIt->second, true);
-        }
-    } else if (logic->CheckQuestItem(qiIt->second)) {
-        logic->SetQuestItem(qiIt->second, false);
-    } else if (logic->CheckRandoInf(static_cast<RandomizerInf>(partFlag))) {
-        logic->SetRandoInf(partFlag, false);
-    }
+    return static_cast<RandomizerInf>(kSplitSongPartFlags[id]);
 }
 
 RandomizerGet SplitSongs::ResolveProgressiveSongStage(Logic* logic, RandomizerGet rg) {

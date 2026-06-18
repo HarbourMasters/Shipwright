@@ -48,16 +48,10 @@ Item::Item(const RandomizerGet randomizerGet_, Text name_, const ItemType type_,
       article(std::move(article_)), color(std::move(color_)), progressive(progressive_), price(price_) {
 }
 
-static bool UsingLogicSimulationBuffer(const std::shared_ptr<Rando::Logic>& logic) {
-    return logic != nullptr && logic->mSaveContext != nullptr && logic->mSaveContext != &gSaveContext;
-}
-
 void Item::ApplyEffect() const {
     auto ctx = Rando::Context::GetInstance();
     auto logic = ctx->GetLogic();
-    if (SplitSongs::IsProgressiveSong(randomizerGet) && UsingLogicSimulationBuffer(logic)) {
-        SplitSongs::ApplyProgressiveEffectToLogicScratch(logic.get(), randomizerGet, true);
-    } else if (!logic->CalculatingAvailableChecks) {
+    if (!logic->CalculatingAvailableChecks) {
         logic->ApplyItemEffect(StaticData::RetrieveItem(randomizerGet), true);
     }
     logic->Set(logicVal, true);
@@ -66,9 +60,7 @@ void Item::ApplyEffect() const {
 void Item::UndoEffect() const {
     auto ctx = Rando::Context::GetInstance();
     auto logic = ctx->GetLogic();
-    if (SplitSongs::IsProgressiveSong(randomizerGet) && UsingLogicSimulationBuffer(logic)) {
-        SplitSongs::ApplyProgressiveEffectToLogicScratch(logic.get(), randomizerGet, false);
-    } else if (!logic->CalculatingAvailableChecks) {
+    if (!logic->CalculatingAvailableChecks) {
         logic->ApplyItemEffect(StaticData::RetrieveItem(randomizerGet), false);
     }
     logic->Set(logicVal, false);

@@ -2376,8 +2376,22 @@ void Logic::ApplyItemEffect(Item& item, bool state) {
         case ITEMTYPE_DUNGEONREWARD:
         case ITEMTYPE_SONG: {
             RandomizerGet rg = item.GetRandomizerGet();
-            if (SplitSongs::IsProgressiveSong(rg) && mSaveContext != nullptr && mSaveContext != &gSaveContext) {
-                SplitSongs::ApplyProgressiveEffectToLogicScratch(this, rg, state);
+            if (SplitSongs::IsProgressiveSong(rg)) {
+                const SplitSongDef* def = SplitSongs::GetSongDefFromProgressive(rg);
+                if (def != nullptr) {
+                    const RandomizerInf partFlag = SplitSongs::GetPartFlag(def->id);
+                    auto qi = RandoGetToQuestItem.find(static_cast<uint32_t>(def->fullSong));
+                    if (!CheckRandoInf(partFlag) && state) {
+                        SetRandoInf(partFlag, true);
+                    } else if (qi != RandoGetToQuestItem.end() && CheckRandoInf(partFlag) &&
+                               !CheckQuestItem(qi->second) && state) {
+                        SetQuestItem(qi->second, true);
+                    } else if (qi != RandoGetToQuestItem.end() && CheckQuestItem(qi->second) && !state) {
+                        SetQuestItem(qi->second, false);
+                    } else if (CheckRandoInf(partFlag) && !state) {
+                        SetRandoInf(partFlag, false);
+                    }
+                }
                 break;
             }
             auto qi = RandoGetToQuestItem.find(rg);
