@@ -20,15 +20,16 @@ inline bool IsStatUpgrade(RandomizerGet rg) {
 }
 
 // Returns how many stat upgrade items are needed to reach the max stat bonus.
-// When adjustable is OFF, returns nonAdjDefault; when ON, derives from the
-// configured total and required % settings.
-inline uint8_t StatUpgradeRequired(uint8_t nonAdjDefault) {
+// When the per-stat adjustable toggle is OFF, returns nonAdjDefault; when ON,
+// derives from the per-stat total and required % settings.
+inline uint8_t StatUpgradeRequired(uint8_t nonAdjDefault, RandomizerSettingKey adjKey, RandomizerSettingKey totalKey,
+                                   RandomizerSettingKey requiredKey) {
     auto ctx = Rando::Context::GetInstance();
-    if (!ctx->GetOption(RSK_ADJUSTABLE_STAT_UPGRADE)) {
+    if (!ctx->GetOption(adjKey)) {
         return nonAdjDefault;
     }
-    uint8_t total = ctx->GetOption(RSK_STAT_UPGRADE_TOTAL).Get() + 1;
-    uint8_t pct = ctx->GetOption(RSK_STAT_UPGRADE_REQUIRED).Get() + 1;
+    uint8_t total = ctx->GetOption(totalKey).Get() + 1;
+    uint8_t pct = ctx->GetOption(requiredKey).Get() + 1;
     return (uint8_t)std::max(1, (int)std::ceil(total * pct / 100.0));
 }
 
@@ -36,9 +37,9 @@ inline uint8_t StatUpgradeRequired(uint8_t nonAdjDefault) {
 // magic in logic (i.e. enough units to fill at least half of a normal magic bar).
 inline uint8_t MagicStatLogicThreshold() {
     auto ctx = Rando::Context::GetInstance();
-    bool adjustable = (bool)ctx->GetOption(RSK_ADJUSTABLE_STAT_UPGRADE);
-    uint8_t required = StatUpgradeRequired(8);
+    bool adjustable = (bool)ctx->GetOption(RSK_MAGIC_STAT_UPGRADE_ADJUSTABLE);
+    uint8_t required = StatUpgradeRequired(8, RSK_MAGIC_STAT_UPGRADE_ADJUSTABLE, RSK_MAGIC_STAT_UPGRADE_TOTAL,
+                                           RSK_MAGIC_STAT_UPGRADE_REQUIRED);
     float magicTotal = adjustable ? 100.0f : 96.0f;
-    return (uint8_t)std::ceil(23.5f * required /
-                              magicTotal); // 23.5 rounded up to 24 units to account for rounding of magic float
+    return (uint8_t)std::ceil(23.5f * required / magicTotal);
 }

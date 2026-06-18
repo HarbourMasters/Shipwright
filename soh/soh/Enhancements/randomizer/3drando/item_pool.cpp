@@ -431,31 +431,35 @@ bool GenerateItemPool() {
     if (ctx->GetOption(RSK_ROCS_FEATHER)) {
         AddItemToPool(RG_ROCS_FEATHER, 2, 1, 1, 1);
     }
-    if (ctx->GetOption(RSK_ADJUSTABLE_STAT_UPGRADE)) {
-        uint8_t statTotal = ctx->GetOption(RSK_STAT_UPGRADE_TOTAL).Get() + 1;
-        if (ctx->GetOption(RSK_DEFENSE_UPGRADE)) {
-            AddItemToPool(RG_DEFENSE_UPGRADE, statTotal, statTotal, statTotal, statTotal, false);
-        }
-        if (ctx->GetOption(RSK_SPEED_UPGRADE)) {
-            AddItemToPool(RG_SPEED_UPGRADE, statTotal, statTotal, statTotal, statTotal, false);
-        }
-        if (ctx->GetOption(RSK_POWER_UPGRADE)) {
-            AddItemToPool(RG_POWER_UPGRADE, statTotal, statTotal, statTotal, statTotal, false);
-        }
-        if (ctx->GetOption(RSK_MAGIC_STAT_UPGRADE)) {
-            AddItemToPool(RG_MAGIC_STAT_UPGRADE, statTotal, statTotal, statTotal, statTotal, false);
-        }
-    } else {
-        if (ctx->GetOption(RSK_DEFENSE_UPGRADE)) {
+    if (ctx->GetOption(RSK_DEFENSE_UPGRADE)) {
+        if (ctx->GetOption(RSK_DEFENSE_UPGRADE_ADJUSTABLE)) {
+            uint8_t t = ctx->GetOption(RSK_DEFENSE_UPGRADE_TOTAL).Get() + 1;
+            AddItemToPool(RG_DEFENSE_UPGRADE, t, t, t, t, false);
+        } else {
             AddItemToPool(RG_DEFENSE_UPGRADE, 7, 5, 3, 1, false);
         }
-        if (ctx->GetOption(RSK_SPEED_UPGRADE)) {
+    }
+    if (ctx->GetOption(RSK_SPEED_UPGRADE)) {
+        if (ctx->GetOption(RSK_SPEED_UPGRADE_ADJUSTABLE)) {
+            uint8_t t = ctx->GetOption(RSK_SPEED_UPGRADE_TOTAL).Get() + 1;
+            AddItemToPool(RG_SPEED_UPGRADE, t, t, t, t, false);
+        } else {
             AddItemToPool(RG_SPEED_UPGRADE, 7, 5, 3, 1, false);
         }
-        if (ctx->GetOption(RSK_POWER_UPGRADE)) {
+    }
+    if (ctx->GetOption(RSK_POWER_UPGRADE)) {
+        if (ctx->GetOption(RSK_POWER_UPGRADE_ADJUSTABLE)) {
+            uint8_t t = ctx->GetOption(RSK_POWER_UPGRADE_TOTAL).Get() + 1;
+            AddItemToPool(RG_POWER_UPGRADE, t, t, t, t, false);
+        } else {
             AddItemToPool(RG_POWER_UPGRADE, 7, 5, 3, 1, false);
         }
-        if (ctx->GetOption(RSK_MAGIC_STAT_UPGRADE)) {
+    }
+    if (ctx->GetOption(RSK_MAGIC_STAT_UPGRADE)) {
+        if (ctx->GetOption(RSK_MAGIC_STAT_UPGRADE_ADJUSTABLE)) {
+            uint8_t t = ctx->GetOption(RSK_MAGIC_STAT_UPGRADE_TOTAL).Get() + 1;
+            AddItemToPool(RG_MAGIC_STAT_UPGRADE, t, t, t, t, false);
+        } else {
             AddItemToPool(RG_MAGIC_STAT_UPGRADE, 10, 8, 6, 4, false);
         }
     }

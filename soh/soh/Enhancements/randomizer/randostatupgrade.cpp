@@ -24,7 +24,8 @@ static void RegisterRandoStatUpgradeHooks() {
         u8 level = gSaveContext.ship.quest.data.randomizer.defenseUpgrades;
         if (level == 0)
             return;
-        uint8_t required = StatUpgradeRequired(5);
+        uint8_t required = StatUpgradeRequired(5, RSK_DEFENSE_UPGRADE_ADJUSTABLE, RSK_DEFENSE_UPGRADE_TOTAL,
+                                               RSK_DEFENSE_UPGRADE_REQUIRED);
         va_arg(args, PlayState*);
         s16* healthChange = va_arg(args, s16*);
         if (*healthChange >= 0)
@@ -37,7 +38,8 @@ static void RegisterRandoStatUpgradeHooks() {
         u8 level = gSaveContext.ship.quest.data.randomizer.speedUpgrades;
         if (level == 0)
             return;
-        uint8_t required = StatUpgradeRequired(5);
+        uint8_t required =
+            StatUpgradeRequired(5, RSK_SPEED_UPGRADE_ADJUSTABLE, RSK_SPEED_UPGRADE_TOTAL, RSK_SPEED_UPGRADE_REQUIRED);
         Player* player = va_arg(args, Player*);
         if (!(player->actor.bgCheckFlags & 1) && !(player->stateFlags1 & PLAYER_STATE1_IN_WATER))
             return;
@@ -50,7 +52,8 @@ static void RegisterRandoStatUpgradeHooks() {
         uint8_t level = gSaveContext.ship.quest.data.randomizer.powerUpgrades;
         if (level == 0)
             return;
-        uint8_t required = StatUpgradeRequired(5);
+        uint8_t required =
+            StatUpgradeRequired(5, RSK_POWER_UPGRADE_ADJUSTABLE, RSK_POWER_UPGRADE_TOTAL, RSK_POWER_UPGRADE_REQUIRED);
         PlayState* play = va_arg(args, PlayState*);
         u8* damage = va_arg(args, u8*);
         Actor* hitActor = va_arg(args, Actor*);
@@ -72,8 +75,9 @@ static void RegisterRandoStatUpgradeHooks() {
         u8 level = gSaveContext.ship.quest.data.randomizer.magicStatUpgrades;
         if (level == 0)
             return;
-        bool adjustable = (bool)RAND_GET_OPTION(RSK_ADJUSTABLE_STAT_UPGRADE);
-        uint8_t required = adjustable ? StatUpgradeRequired(8) : 8;
+        bool adjustable = (bool)RAND_GET_OPTION(RSK_MAGIC_STAT_UPGRADE_ADJUSTABLE);
+        uint8_t required = StatUpgradeRequired(8, RSK_MAGIC_STAT_UPGRADE_ADJUSTABLE, RSK_MAGIC_STAT_UPGRADE_TOTAL,
+                                               RSK_MAGIC_STAT_UPGRADE_REQUIRED);
         s16 magicTotal = adjustable ? 100 : 96;
         s16 cap = (s16)std::round((float)std::min((int)level, (int)required) * ((float)magicTotal / required));
         s16* fillTarget = va_arg(args, s16*);
@@ -86,8 +90,9 @@ static void RegisterRandoStatUpgradeHooks() {
         u8 level = gSaveContext.ship.quest.data.randomizer.magicStatUpgrades;
         if (level == 0)
             return;
-        bool adjustable = (bool)RAND_GET_OPTION(RSK_ADJUSTABLE_STAT_UPGRADE);
-        uint8_t required = adjustable ? StatUpgradeRequired(8) : 8;
+        bool adjustable = (bool)RAND_GET_OPTION(RSK_MAGIC_STAT_UPGRADE_ADJUSTABLE);
+        uint8_t required = StatUpgradeRequired(8, RSK_MAGIC_STAT_UPGRADE_ADJUSTABLE, RSK_MAGIC_STAT_UPGRADE_TOTAL,
+                                               RSK_MAGIC_STAT_UPGRADE_REQUIRED);
         s16 magicTotal = adjustable ? 100 : 96;
         s16 cap = (s16)std::round((float)std::min((int)level, (int)required) * ((float)magicTotal / required));
         s16* target = va_arg(args, s16*);

@@ -1523,25 +1523,56 @@
                     "Infinite magic is not in the pool when enabled."
                 ]
             },
-            "adjustable_stat_upgrade": {
-                "name": "Adjustable Stat Upgrades",
+            "defense_upgrade_adjustable": {
+                "name": "Adjustable Defense",
+                "description": "Enables custom Total and Percent Required sliders for Defense Upgrades, overriding the default pool counts."
+            },
+            "defense_upgrade_total": {
+                "name": "Defense Total",
+                "description": "How many Defense Upgrade items are placed in the pool."
+            },
+            "defense_upgrade_required": {
+                "name": "Defense % Required",
+                "description": "Percentage of Defense Upgrade items needed to reach max defense bonus."
+            },
+            "speed_upgrade_adjustable": {
+                "name": "Adjustable Speed",
+                "description": "Enables custom Total and Percent Required sliders for Speed Upgrades, overriding the default pool counts."
+            },
+            "speed_upgrade_total": {
+                "name": "Speed Total",
+                "description": "How many Speed Upgrade items are placed in the pool."
+            },
+            "speed_upgrade_required": {
+                "name": "Speed % Required",
+                "description": "Percentage of Speed Upgrade items needed to reach max speed bonus."
+            },
+            "power_upgrade_adjustable": {
+                "name": "Adjustable Power",
+                "description": "Enables custom Total and Percent Required sliders for Power Upgrades, overriding the default pool counts."
+            },
+            "power_upgrade_total": {
+                "name": "Power Total",
+                "description": "How many Power Upgrade items are placed in the pool."
+            },
+            "power_upgrade_required": {
+                "name": "Power % Required",
+                "description": "Percentage of Power Upgrade items needed to reach max power bonus."
+            },
+            "magic_stat_upgrade_adjustable": {
+                "name": "Adjustable Magic",
                 "description": [
-                    "Enables custom Total and Percent Required sliders for stat upgrades, overriding the default pool counts.\n",
-                    "All stats scale incrementally with each item collected toward the cap.\n",
-                    "Defense and Speed reduce damage and increase speed. Magic fills the bar. Power increases the chance of dealing double damage.\n",
-                    "Magic logic threshold is half of a normal magic bar."
+                    "Enables custom Total and Percent Required sliders for Magic Stat Upgrades, overriding the default pool counts.\n",
+                    "Magic logic threshold is always half of a normal magic bar."
                 ]
             },
-            "stat_upgrade_total": {
-                "name": "Stat Upgrade Total",
-                "description": "How many of each enabled stat upgrade item are placed in the pool."
+            "magic_stat_upgrade_total": {
+                "name": "Magic Total",
+                "description": "How many Magic Stat Upgrade items are placed in the pool."
             },
-            "stat_upgrade_required": {
-                "name": "Percent Required",
-                "description": [
-                    "Percentage of the total stat items needed to reach the maximum stat bonus.\n",
-                    "Items collected beyond this threshold have no further effect."
-                ]
+            "magic_stat_upgrade_required": {
+                "name": "Magic % Required",
+                "description": "Percentage of Magic Stat Upgrade items needed to reach full magic capacity."
             },
             "slingbow_break_beehives": {
                 "name": "Slingshot/Bow Can Break Beehives",

@@ -230,7 +230,8 @@ void BuildQuarterHeartMessage(CustomMessage& msg) {
 
 void BuildDefenseUpgradeMessage(CustomMessage& msg) {
     uint8_t level = gSaveContext.ship.quest.data.randomizer.defenseUpgrades + 1;
-    uint8_t required = StatUpgradeRequired(5);
+    uint8_t required =
+        StatUpgradeRequired(5, RSK_DEFENSE_UPGRADE_ADJUSTABLE, RSK_DEFENSE_UPGRADE_TOTAL, RSK_DEFENSE_UPGRADE_REQUIRED);
     if (level < required) {
         uint8_t remaining = required - level;
         msg = { "You found a %yDefense Upgrade%w!&%c[[remaining]]%w more to reach max stat.",
@@ -251,7 +252,8 @@ void BuildDefenseUpgradeMessage(CustomMessage& msg) {
 
 void BuildSpeedUpgradeMessage(CustomMessage& msg) {
     uint8_t level = gSaveContext.ship.quest.data.randomizer.speedUpgrades + 1;
-    uint8_t required = StatUpgradeRequired(5);
+    uint8_t required =
+        StatUpgradeRequired(5, RSK_SPEED_UPGRADE_ADJUSTABLE, RSK_SPEED_UPGRADE_TOTAL, RSK_SPEED_UPGRADE_REQUIRED);
     if (level < required) {
         uint8_t remaining = required - level;
         msg = { "You found a %ySpeed Upgrade%w!&%c[[remaining]]%w more to reach max stat.",
@@ -272,7 +274,8 @@ void BuildSpeedUpgradeMessage(CustomMessage& msg) {
 
 void BuildPowerUpgradeMessage(CustomMessage& msg) {
     uint8_t level = gSaveContext.ship.quest.data.randomizer.powerUpgrades + 1;
-    uint8_t required = StatUpgradeRequired(5);
+    uint8_t required =
+        StatUpgradeRequired(5, RSK_POWER_UPGRADE_ADJUSTABLE, RSK_POWER_UPGRADE_TOTAL, RSK_POWER_UPGRADE_REQUIRED);
     if (level < required) {
         uint8_t remaining = required - level;
         msg = { "You found a %yPower Upgrade%w!&Raises your double damage chance!&%c[[remaining]]%w more to reach max "
@@ -296,7 +299,8 @@ void BuildPowerUpgradeMessage(CustomMessage& msg) {
 
 void BuildMagicStatUpgradeMessage(CustomMessage& msg) {
     uint8_t level = gSaveContext.ship.quest.data.randomizer.magicStatUpgrades + 1;
-    uint8_t required = StatUpgradeRequired(8);
+    uint8_t required = StatUpgradeRequired(8, RSK_MAGIC_STAT_UPGRADE_ADJUSTABLE, RSK_MAGIC_STAT_UPGRADE_TOTAL,
+                                           RSK_MAGIC_STAT_UPGRADE_REQUIRED);
     if (level < required) {
         uint8_t remaining = required - level;
         msg = { "You found a %yMagic Meter%w!&%c[[remaining]]%w more to reach max stat.",

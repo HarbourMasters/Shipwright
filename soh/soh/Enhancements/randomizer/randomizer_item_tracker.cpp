@@ -865,26 +865,44 @@ void DrawItemCount(ItemTrackerItem item, bool hideMax) {
             }
         } else if (item.id == RG_DEFENSE_UPGRADE && RAND_GET_OPTION(RSK_DEFENSE_UPGRADE)) {
             collected = gSaveContext.ship.quest.data.randomizer.defenseUpgrades;
-            required = StatUpgradeRequired(5);
+            required = StatUpgradeRequired(5, RSK_DEFENSE_UPGRADE_ADJUSTABLE, RSK_DEFENSE_UPGRADE_TOTAL,
+                                           RSK_DEFENSE_UPGRADE_REQUIRED);
             statEnabled = true;
         } else if (item.id == RG_SPEED_UPGRADE && RAND_GET_OPTION(RSK_SPEED_UPGRADE)) {
             collected = gSaveContext.ship.quest.data.randomizer.speedUpgrades;
-            required = StatUpgradeRequired(5);
+            required = StatUpgradeRequired(5, RSK_SPEED_UPGRADE_ADJUSTABLE, RSK_SPEED_UPGRADE_TOTAL,
+                                           RSK_SPEED_UPGRADE_REQUIRED);
             statEnabled = true;
         } else if (item.id == RG_POWER_UPGRADE && RAND_GET_OPTION(RSK_POWER_UPGRADE)) {
             collected = gSaveContext.ship.quest.data.randomizer.powerUpgrades;
-            required = StatUpgradeRequired(5);
+            required = StatUpgradeRequired(5, RSK_POWER_UPGRADE_ADJUSTABLE, RSK_POWER_UPGRADE_TOTAL,
+                                           RSK_POWER_UPGRADE_REQUIRED);
             statEnabled = true;
         } else if (item.id == RG_MAGIC_STAT_UPGRADE && RAND_GET_OPTION(RSK_MAGIC_STAT_UPGRADE)) {
             collected = gSaveContext.ship.quest.data.randomizer.magicStatUpgrades;
-            required = StatUpgradeRequired(8);
+            required = StatUpgradeRequired(8, RSK_MAGIC_STAT_UPGRADE_ADJUSTABLE, RSK_MAGIC_STAT_UPGRADE_TOTAL,
+                                           RSK_MAGIC_STAT_UPGRADE_REQUIRED);
             statEnabled = true;
         }
         if (statEnabled) {
             int32_t displayMode = CVarGetInteger(CVAR_TRACKER_ITEM("StatUpgradeCounts"), STAT_COLLECTED_REQUIRED);
-            uint8_t total = RAND_GET_OPTION(RSK_ADJUSTABLE_STAT_UPGRADE)
-                                ? (uint8_t)(RAND_GET_OPTION(RSK_STAT_UPGRADE_TOTAL).Get() + 1)
-                                : (item.id == RG_MAGIC_STAT_UPGRADE ? 8 : 5);
+            uint8_t total;
+            if (item.id == RG_DEFENSE_UPGRADE)
+                total = RAND_GET_OPTION(RSK_DEFENSE_UPGRADE_ADJUSTABLE)
+                            ? (uint8_t)(RAND_GET_OPTION(RSK_DEFENSE_UPGRADE_TOTAL).Get() + 1)
+                            : 5;
+            else if (item.id == RG_SPEED_UPGRADE)
+                total = RAND_GET_OPTION(RSK_SPEED_UPGRADE_ADJUSTABLE)
+                            ? (uint8_t)(RAND_GET_OPTION(RSK_SPEED_UPGRADE_TOTAL).Get() + 1)
+                            : 5;
+            else if (item.id == RG_POWER_UPGRADE)
+                total = RAND_GET_OPTION(RSK_POWER_UPGRADE_ADJUSTABLE)
+                            ? (uint8_t)(RAND_GET_OPTION(RSK_POWER_UPGRADE_TOTAL).Get() + 1)
+                            : 5;
+            else
+                total = RAND_GET_OPTION(RSK_MAGIC_STAT_UPGRADE_ADJUSTABLE)
+                            ? (uint8_t)(RAND_GET_OPTION(RSK_MAGIC_STAT_UPGRADE_TOTAL).Get() + 1)
+                            : 8;
             ImU32 currentColor = collected >= required ? IM_COL_GREEN : IM_COL_WHITE;
             std::string currentString = std::to_string(collected) + "/";
             std::string secondString = std::to_string(required);

@@ -508,7 +508,8 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
                                                                                     : CAN_OBTAIN)
                        : (gSaveContext.magicLevel < 2 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE);
         case RG_MAGIC_STAT_UPGRADE: {
-            uint8_t magicRequired = StatUpgradeRequired(8);
+            uint8_t magicRequired = StatUpgradeRequired(8, RSK_MAGIC_STAT_UPGRADE_ADJUSTABLE,
+                                                        RSK_MAGIC_STAT_UPGRADE_TOTAL, RSK_MAGIC_STAT_UPGRADE_REQUIRED);
             return gSaveContext.ship.quest.data.randomizer.magicStatUpgrades < magicRequired ? CAN_OBTAIN
                                                                                              : CANT_OBTAIN_ALREADY_HAVE;
         }
@@ -1468,36 +1469,41 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
             gSaveContext.ship.quest.data.randomizer.quarterHearts++;
             break;
         case RG_DEFENSE_UPGRADE: {
-            uint8_t cap = StatUpgradeRequired(5);
+            uint8_t cap = StatUpgradeRequired(5, RSK_DEFENSE_UPGRADE_ADJUSTABLE, RSK_DEFENSE_UPGRADE_TOTAL,
+                                              RSK_DEFENSE_UPGRADE_REQUIRED);
             if (gSaveContext.ship.quest.data.randomizer.defenseUpgrades < cap) {
                 gSaveContext.ship.quest.data.randomizer.defenseUpgrades++;
             }
             break;
         }
         case RG_SPEED_UPGRADE: {
-            uint8_t cap = StatUpgradeRequired(5);
+            uint8_t cap = StatUpgradeRequired(5, RSK_SPEED_UPGRADE_ADJUSTABLE, RSK_SPEED_UPGRADE_TOTAL,
+                                              RSK_SPEED_UPGRADE_REQUIRED);
             if (gSaveContext.ship.quest.data.randomizer.speedUpgrades < cap) {
                 gSaveContext.ship.quest.data.randomizer.speedUpgrades++;
             }
             break;
         }
         case RG_POWER_UPGRADE: {
-            uint8_t cap = StatUpgradeRequired(5);
+            uint8_t cap = StatUpgradeRequired(5, RSK_POWER_UPGRADE_ADJUSTABLE, RSK_POWER_UPGRADE_TOTAL,
+                                              RSK_POWER_UPGRADE_REQUIRED);
             if (gSaveContext.ship.quest.data.randomizer.powerUpgrades < cap) {
                 gSaveContext.ship.quest.data.randomizer.powerUpgrades++;
             }
             break;
         }
         case RG_MAGIC_STAT_UPGRADE: {
-            uint8_t required = StatUpgradeRequired(8);
+            uint8_t required = StatUpgradeRequired(8, RSK_MAGIC_STAT_UPGRADE_ADJUSTABLE, RSK_MAGIC_STAT_UPGRADE_TOTAL,
+                                                   RSK_MAGIC_STAT_UPGRADE_REQUIRED);
             uint8_t lvl = gSaveContext.ship.quest.data.randomizer.magicStatUpgrades;
             if (lvl < required) {
                 gSaveContext.ship.quest.data.randomizer.magicStatUpgrades++;
                 lvl++;
             }
             gSaveContext.isMagicAcquired = true;
-            uint8_t unit = (uint8_t)std::max(1, 100 / (int)required);
-            uint8_t fillCap = (uint8_t)(std::min((int)lvl, (int)required) * unit);
+            bool adjustable = CVarGetInteger(CVAR_RANDOMIZER_SETTING("MagicStatUpgradeAdjustable"), 0);
+            float magicTotal = adjustable ? 100.0f : 96.0f;
+            uint8_t fillCap = (uint8_t)std::round((float)std::min((int)lvl, (int)required) * (magicTotal / required));
             if (fillCap > MAGIC_NORMAL_METER) {
                 gSaveContext.isDoubleMagicAcquired = true;
             }
