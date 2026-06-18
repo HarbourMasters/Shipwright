@@ -21,14 +21,22 @@ The script calls `clang-format-14` by default. If your clang-format 14 is named
 or located differently, point `CLANG_FORMAT` at it:
 
 ```bash
-CLANG_FORMAT=clang-format            ./run-clang-format.sh   # already 14.x
-CLANG_FORMAT=/path/to/clang-format   ./run-clang-format.sh   # static binary
-CLANG_FORMAT="uvx clang-format@14"   ./run-clang-format.sh   # uv wheel
+CLANG_FORMAT=clang-format              ./run-clang-format.sh   # already 14.x
+CLANG_FORMAT=/path/to/clang-format     ./run-clang-format.sh   # static binary
+CLANG_FORMAT="uvx clang-format@14"     ./run-clang-format.sh   # uv wheel
+CLANG_FORMAT='"/path with spaces/cf"'  ./run-clang-format.sh   # quote a spaced path
 ```
 
-On Windows the script needs a Unix shell (it uses `find`/`xargs`); run it from Git
-Bash, which ships with Git for Windows and has both, or from WSL. Get the binary
-from the `uvx` wheel or the Windows static binary below.
+`CLANG_FORMAT` is treated as a command line, so it can carry arguments (the `uvx`
+case) or a quoted path containing spaces.
+
+On Windows you have two options. Run `run-clang-format.ps1` from PowerShell: it
+downloads clang-format 14.0.6 itself (needs [7-Zip](https://www.7-zip.org/)
+installed) and formats the same fileset, so you don't have to install
+clang-format or pass `CLANG_FORMAT`. Or run `run-clang-format.sh` from Git Bash
+(ships with Git for Windows) or WSL, since it needs a Unix shell for
+`find`/`xargs`; get the binary from the `uvx` wheel or the Windows static binary
+below.
 
 ## Getting clang-format 14
 
