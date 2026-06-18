@@ -3,7 +3,6 @@
 	<CallDisplayList Path="objects/object_box/gChestLidMinorDL_layer_Opaque_tri_0"/>
 	<ClearGeometryMode G_LIGHTING="1"/>
 	<SetGeometryMode G_LIGHTING="1"/>
-	<CallDisplayList Path=">0x08000000"/>
 	<EndDisplayList/>
 </DisplayList>
 
