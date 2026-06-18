@@ -6917,33 +6917,28 @@ s32 Camera_Special9(Camera* camera) {
             }
         case 4:
             camera->animState++;
-        default: {
+        default:
             camera->unk_14C |= (0x400 | 0x10);
             sCameraInterfaceFlags = 0;
 
-            // SOH [Enhancement] Also release the door camera on right-stick input, reusing the
-            // free-look activation threshold (see SetCameraManual).
-            f32 freeLookX = -D_8015BD7C->state.input[0].cur.right_stick_x * 10.0f;
-            f32 freeLookY = D_8015BD7C->state.input[0].cur.right_stick_y * 10.0f;
-            Mouse_HandleThirdPerson(&freeLookX, &freeLookY);
-            s32 freeLookMoved = CVarGetInteger(CVAR_SETTING("FreeLook.Enabled"), 0) &&
-                                (fabsf(freeLookX) >= 15.0f || fabsf(freeLookY) >= 15.0f);
-
-            if (camera->xzSpeed > 0.001f || freeLookMoved ||
-                CHECK_BTN_ALL(D_8015BD7C->state.input[0].press.button, BTN_A) ||
-                CHECK_BTN_ALL(D_8015BD7C->state.input[0].press.button, BTN_B) ||
-                CHECK_BTN_ALL(D_8015BD7C->state.input[0].press.button, BTN_CLEFT) ||
-                CHECK_BTN_ALL(D_8015BD7C->state.input[0].press.button, BTN_CDOWN) ||
-                CHECK_BTN_ALL(D_8015BD7C->state.input[0].press.button, BTN_CUP) ||
-                CHECK_BTN_ALL(D_8015BD7C->state.input[0].press.button, BTN_CRIGHT) ||
-                CHECK_BTN_ALL(D_8015BD7C->state.input[0].press.button, BTN_R) ||
-                CHECK_BTN_ALL(D_8015BD7C->state.input[0].press.button, BTN_Z) || params->interfaceFlags & 0x8) {
+            // SOH [Enhancement] VB_RELEASE_DOORC_CAMERA lets free look hand the door peek camera
+            // back on right-stick input (see soh/Enhancements/camera/FreeLookDoorCamRelease.cpp).
+            if (GameInteractor_Should(
+                    VB_RELEASE_DOORC_CAMERA,
+                    camera->xzSpeed > 0.001f || CHECK_BTN_ALL(D_8015BD7C->state.input[0].press.button, BTN_A) ||
+                        CHECK_BTN_ALL(D_8015BD7C->state.input[0].press.button, BTN_B) ||
+                        CHECK_BTN_ALL(D_8015BD7C->state.input[0].press.button, BTN_CLEFT) ||
+                        CHECK_BTN_ALL(D_8015BD7C->state.input[0].press.button, BTN_CDOWN) ||
+                        CHECK_BTN_ALL(D_8015BD7C->state.input[0].press.button, BTN_CUP) ||
+                        CHECK_BTN_ALL(D_8015BD7C->state.input[0].press.button, BTN_CRIGHT) ||
+                        CHECK_BTN_ALL(D_8015BD7C->state.input[0].press.button, BTN_R) ||
+                        CHECK_BTN_ALL(D_8015BD7C->state.input[0].press.button, BTN_Z) || params->interfaceFlags & 0x8,
+                    camera)) {
 
                 Camera_ChangeSettingFlags(camera, camera->prevSetting, 2);
                 camera->unk_14C |= (0x4 | 0x2);
             }
             break;
-        }
     }
     spAC = playerPosRot->pos;
     spAC.y += playerYOffset;
