@@ -65,7 +65,6 @@ static bool ShouldPatchDist(s16 actorId) {
         // Checks for explosions if player is nearby:
         case ACTOR_BG_SPOT17_BAKUDANKABE:
             return true;
-
     }
     return false;
 }
@@ -84,7 +83,6 @@ static f32 ClampDist(f32 distance, s16 actorId) {
         case ACTOR_OBJ_KIBAKO:
         case ACTOR_OBJ_TSUBO:
             return fmaxf(distance, 100.0f);
-
     }
     return distance;
 }
