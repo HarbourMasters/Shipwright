@@ -6,7 +6,7 @@
 	<SetOtherMode Cmd="G_SETOTHERMODE_L" Sft="0" Length="32" G_AC_NONE="1" G_ZS_PIXEL="1" G_RM_FOG_SHADE_A="1" G_RM_AA_ZB_OPA_SURF2="1" />
 	<Texture S="65535" T="65535" Level="0" Tile="0" On="1"/>
 	<SetPrimColor M="0" L="0" R="255" G="255" B="255" A="255"/>
-	<SetTextureImage Path="objects/gameplay_field_keep/flower_random_tex.rgba16" Format="G_IM_FMT_RGBA" Size="G_IM_SIZ_16b_LOAD_BLOCK" Width="1"/>
+	<SetTextureImage Path="objects/gameplay_keep/flower_random_tex.rgba16" Format="G_IM_FMT_RGBA" Size="G_IM_SIZ_16b_LOAD_BLOCK" Width="1"/>
 	<SetTile Format="G_IM_FMT_RGBA" Size="G_IM_SIZ_16b_LOAD_BLOCK" Line="0" TMem="0" Tile="7" Palette="0" Cms0="G_TX_WRAP" Cms1="G_TX_NOMIRROR" Cmt0="G_TX_WRAP" Cmt1="G_TX_NOMIRROR" MaskS="0" ShiftS="0" MaskT="0" ShiftT="0"/>
 	<LoadBlock Tile="7" Uls="0" Ult="0" Lrs="255" Dxt="512"/>
 	<SetTile Format="G_IM_FMT_RGBA" Size="G_IM_SIZ_16b" Line="4" TMem="0" Tile="0" Palette="0" Cms0="G_TX_CLAMP" Cms1="G_TX_NOMIRROR" Cmt0="G_TX_WRAP" Cmt1="G_TX_MIRROR" MaskS="4" ShiftS="0" MaskT="4" ShiftT="0"/>
