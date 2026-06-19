@@ -2,7 +2,7 @@
 #include "soh/Enhancements/controls/Mouse.h"
 #include "soh/ShipInit.hpp"
 
-#include <cmath>
+#include <math.h>
 
 extern "C" {
 #include "global.h"
