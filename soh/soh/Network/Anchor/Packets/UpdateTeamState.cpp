@@ -162,7 +162,7 @@ void Anchor::HandlePacket_UpdateTeamState(nlohmann::json payload) {
 
             if (i == SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR) {
                 // Keep collapse timer flag
-                u32 mask = (1 << 0x36);
+                u32 mask = (1 << 0x17);
                 loadedData.sceneFlags[i].swch =
                     (loadedData.sceneFlags[i].swch & ~mask) | (gSaveContext.sceneFlags[i].swch & mask);
             }
