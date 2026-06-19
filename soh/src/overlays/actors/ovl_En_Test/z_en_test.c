@@ -311,29 +311,11 @@ void EnTest_Init(Actor* thisx, PlayState* play) {
     }
 }
 
-/**
- * Check if there are any living (non-killed) En_Test actors nearby.
- * Actor_FindNearby includes killed actors still in the linked list
- * (update == NULL), which prevents BGM restore when the last Stalfos
- * in a group dies in the same frame as others.
- */
-static s32 EnTest_HasLivingNearby(PlayState* play, Actor* refActor) {
-    Actor* actor = play->actorCtx.actorLists[ACTORCAT_ENEMY].head;
-
-    while (actor != NULL) {
-        if (actor != refActor && actor->id == ACTOR_EN_TEST && actor->update != NULL &&
-            Actor_WorldDistXYZToActor(refActor, actor) <= 8000.0f) {
-            return true;
-        }
-        actor = actor->next;
-    }
-    return false;
-}
-
 void EnTest_Destroy(Actor* thisx, PlayState* play) {
     EnTest* this = (EnTest*)thisx;
 
-    if ((this->actor.params != STALFOS_TYPE_2) && !EnTest_HasLivingNearby(play, &this->actor)) {
+    if ((this->actor.params != STALFOS_TYPE_2) &&
+        !Actor_FindNearby(play, &this->actor, ACTOR_EN_TEST, ACTORCAT_ENEMY, 8000.0f)) {
         func_800F5B58();
     }
 
