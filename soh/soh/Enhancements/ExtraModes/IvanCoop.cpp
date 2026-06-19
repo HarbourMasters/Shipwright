@@ -40,18 +40,15 @@ static void KillIvan() {
 
 static bool ShouldPatchDist(s16 actorId) {
     switch (actorId) {
-
         // AC is enabled when player is nearby:
         case ACTOR_BG_BOMBWALL:
         case ACTOR_BG_SPOT08_BAKUDANKABE:
         case ACTOR_OBJ_KIBAKO2: // Note: Checks for explosions regardless of distance
             return true;
-
         // OC is enabled when player is nearby:
         case ACTOR_EN_ICE_HONO:
         case ACTOR_OBJ_HANA:
             return true;
-
         // AC/OC are enabled when player is nearby:
         case ACTOR_EN_ISHI:
         case ACTOR_EN_KUSA:
@@ -61,7 +58,6 @@ static bool ShouldPatchDist(s16 actorId) {
         case ACTOR_OBJ_KIBAKO:
         case ACTOR_OBJ_TSUBO:
             return true;
-
         // Checks for explosions if player is nearby:
         case ACTOR_BG_SPOT17_BAKUDANKABE:
             return true;
@@ -71,11 +67,9 @@ static bool ShouldPatchDist(s16 actorId) {
 
 static f32 ClampDist(f32 distance, s16 actorId) {
     switch (actorId) {
-
         // Avoid offering bottle capture
         case ACTOR_EN_ICE_HONO:
             return fmaxf(distance, 60.0f);
-
         // Avoid offering carry
         case ACTOR_EN_ISHI:
             return fmaxf(distance, 90.0f);
