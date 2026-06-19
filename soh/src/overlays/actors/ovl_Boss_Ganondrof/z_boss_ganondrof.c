@@ -13,6 +13,7 @@
 #include "overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/achievements.h"
 
 #define FLAGS                                                                                 \
     (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED | \
@@ -56,6 +57,7 @@ void BossGanondrof_SetupCharge(BossGanondrof* this, PlayState* play);
 void BossGanondrof_Charge(BossGanondrof* this, PlayState* play);
 void BossGanondrof_Stunned(BossGanondrof* this, PlayState* play);
 void BossGanondrof_Death(BossGanondrof* this, PlayState* play);
+void BossGanondrof_TryUnlockDeathAchievement();
 
 const ActorInit Boss_Ganondrof_InitVars = {
     ACTOR_BOSS_GANONDROF,
@@ -1224,6 +1226,7 @@ void BossGanondrof_CollisionCheck(BossGanondrof* this, PlayState* play) {
                         }
 
                         if ((s8)this->actor.colChkInfo.health <= 0) {
+                            BossGanondrof_TryUnlockDeathAchievement();
                             BossGanondrof_SetupDeath(this, play);
                             Enemy_StartFinishingBlow(play, &this->actor);
                             GameInteractor_ExecuteOnBossDefeat(&this->actor);
@@ -1492,4 +1495,8 @@ void BossGanondrof_Draw(Actor* thisx, PlayState* play) {
     POLY_OPA_DISP = Play_SetFog(play, POLY_OPA_DISP);
     CLOSE_DISPS(play->state.gfxCtx);
     osSyncPrintf("DRAW END %d\n", this->actor.params);
+}
+
+void BossGanondrof_TryUnlockDeathAchievement(){
+    Achievements_TryUnlock(ACHIEVEMENT_DEFEAT_PG);
 }

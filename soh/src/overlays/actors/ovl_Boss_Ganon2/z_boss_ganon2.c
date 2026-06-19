@@ -10,6 +10,7 @@
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/achievements.h"
 
 #include <string.h>
 
@@ -22,6 +23,7 @@ void BossGanon2_Destroy(Actor* thisx, PlayState* play);
 void BossGanon2_Update(Actor* thisx, PlayState* play);
 void BossGanon2_Draw(Actor* thisx, PlayState* play);
 void BossGanon2_Reset(void);
+void BossGanon2_TryUnlockDeathAchievement();
 
 void func_808FD5C4(BossGanon2* this, PlayState* play);
 void func_808FD5F4(BossGanon2* this, PlayState* play);
@@ -1962,6 +1964,7 @@ void BossGanon2_CollisionCheck(BossGanon2* this, PlayState* play) {
                     this->actor.colChkInfo.health -= 2;
                     temp_v0_4 = this->actor.colChkInfo.health;
                     if (temp_v0_4 < 0x15 && this->unk_334 == 0) {
+                        BossGanon2_TryUnlockDeathAchievement();
                         func_80900818(this, play);
                     } else {
                         if (temp_v0_4 <= 0) {
@@ -3155,4 +3158,8 @@ void BossGanon2_Reset(void) {
     memset(D_809105D8, 0, sizeof(D_809105D8));
     memset(D_80910608, 0, sizeof(D_80910608));
     memset(sBossGanon2Particles, 0, sizeof(sBossGanon2Particles));
+}
+
+void BossGanon2_TryUnlockDeathAchievement(){
+    Achievements_TryUnlock(ACHIEVEMENT_DEFEAT_GANON);
 }

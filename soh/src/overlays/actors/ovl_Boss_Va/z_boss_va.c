@@ -18,6 +18,7 @@
 #include "soh/frame_interpolation.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/achievements.h"
 
 #define FLAGS                                                                                 \
     (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED | \
@@ -199,6 +200,7 @@ void BossVa_SpawnSparkBall(PlayState* play, BossVaEffect* effect, BossVa* this, 
 void BossVa_SpawnBloodDroplets(PlayState* play, BossVaEffect* effect, Vec3f* pos, s16 scale, s16 phase, s16 yaw);
 void BossVa_Tumor(PlayState* play, BossVa* this, s32 count, s16 scale, f32 xzSpread, f32 ySpread, u8 mode, f32 range,
                   u8 fixed);
+void BossVa_TryUnlockDeathAchievement();
 
 const ActorInit Boss_Va_InitVars = {
     ACTOR_BOSS_VA,
@@ -1406,6 +1408,7 @@ void BossVa_BodyPhase4(BossVa* this, PlayState* play) {
                         sFightPhase++;
                         sPhase4HP += 3;
                         if (sFightPhase >= PHASE_DEATH) {
+                            BossVa_TryUnlockDeathAchievement();
                             BossVa_SetupBodyDeath(this, play);
                             Enemy_StartFinishingBlow(play, &this->actor);
                             GameInteractor_ExecuteOnBossDefeat(&this->actor);
@@ -4050,4 +4053,8 @@ void BossVa_Reset(void) {
     for (u8 i = 0; i < ARRAY_SIZE(sBodyBari); i++) {
         sBodyBari[i] = 0;
     }
+}
+
+void BossVa_TryUnlockDeathAchievement(){
+    Achievements_TryUnlock(ACHIEVEMENT_DEFEAT_BARINADE);
 }

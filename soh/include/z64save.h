@@ -222,6 +222,10 @@ typedef struct ShipQuestSaveContextData {
     ShipQuestSpecificSaveContextData data;
 } ShipQuestSaveContextData;
 
+typedef struct ShipAchievementSaveContextData {
+    u16 achievementFlags;
+} ShipAchievementSaveContextData;
+
 typedef struct ShipSaveContextData {
     u16 pendingSale;
     u16 pendingSaleMod;
@@ -229,6 +233,7 @@ typedef struct ShipSaveContextData {
     SohStats stats;
     FaroresWindData backupFW;
     ShipQuestSaveContextData quest;
+    ShipAchievementSaveContextData achievements;
     u8 maskMemory;
     u8 filenameLanguage;
     //TODO: Move non-rando specific flags to a new sohInf and move the remaining randomizerInf to ShipRandomizerSaveContextData

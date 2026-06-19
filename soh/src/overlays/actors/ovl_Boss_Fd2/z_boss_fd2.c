@@ -11,6 +11,7 @@
 #include "vt.h"
 #include "soh/frame_interpolation.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/achievements.h"
 
 #define FLAGS                                                                                 \
     (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED | \
@@ -49,6 +50,7 @@ void BossFd2_Vulnerable(BossFd2* this, PlayState* play);
 void BossFd2_Damaged(BossFd2* this, PlayState* play);
 void BossFd2_Death(BossFd2* this, PlayState* play);
 void BossFd2_Wait(BossFd2* this, PlayState* play);
+void BossFd2_TryUnlockDeathAchievement();
 
 const ActorInit Boss_Fd2_InitVars = {
     ACTOR_BOSS_FD2,
@@ -892,6 +894,7 @@ void BossFd2_CollisionCheck(BossFd2* this, PlayState* play) {
 
             if ((s8)bossFd->actor.colChkInfo.health <= 0) {
                 bossFd->actor.colChkInfo.health = 0;
+                BossFd2_TryUnlockDeathAchievement();
                 BossFd2_SetupDeath(this, play);
                 this->work[FD2_DAMAGE_FLASH_TIMER] = 10;
                 this->work[FD2_INVINC_TIMER] = 30000;
@@ -1226,4 +1229,8 @@ void BossFd2_Draw(Actor* thisx, PlayState* play) {
         POLY_OPA_DISP = Play_SetFog(play, POLY_OPA_DISP);
     }
     CLOSE_DISPS(play->state.gfxCtx);
+}
+
+void BossFd2_TryUnlockDeathAchievement(){
+    Achievements_TryUnlock(ACHIEVEMENT_DEFEAT_VOLVAGIA);
 }

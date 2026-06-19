@@ -593,6 +593,8 @@ void SaveManager::StartupCheckAndInitMeta(int fileNum) {
     SohUtils::CopyStringToCharArray(fileMetaInfo[fileNum].buildVersion,
                                     metaSaveBlock["sections"]["sohStats"]["data"]["buildVersion"],
                                     ARRAY_COUNT(fileMetaInfo[fileNum].buildVersion));
+
+    fileMetaInfo[fileNum].achievementFlags = 0;
 }
 
 void SaveManager::InitMeta(int fileNum) {
