@@ -39,15 +39,26 @@ u8 D_80133418 = 0;
 void func_800F9280(u8 playerIdx, u8 seqId, u8 arg2, u16 fadeTimer) {
     u8 i;
     u16 dur;
+    u16 resolvedSeqId;
     s32 pad;
 
     if (D_80133408 == 0 || playerIdx == SEQ_PLAYER_SFX) {
+        // Resolve here so the full 16-bit id rides in the command (bits 0-15) rather than the shared
+        // seqToPlay slot. seqReplaced is set out-of-band by preview/slow load.
+        // See AudioEditor_GetReplacementSeq().
+        if (gAudioContext.seqReplaced[playerIdx]) {
+            resolvedSeqId = gAudioContext.seqToPlay[playerIdx];
+            gAudioContext.seqReplaced[playerIdx] = 0;
+        } else {
+            resolvedSeqId = AudioEditor_GetReplacementSeq(seqId);
+        }
+
         arg2 &= 0x7F;
         if (arg2 == 0x7F) {
             dur = (fadeTimer >> 3) * 60 * gAudioContext.audioBufferParameters.updatesPerFrame;
-            Audio_QueueCmdS32(0x85000000 | _SHIFTL(playerIdx, 16, 8) | _SHIFTL(seqId, 8, 8), dur);
+            Audio_QueueCmdS32(0x85000000 | _SHIFTL(playerIdx, 16, 8) | (resolvedSeqId & 0xFFFF), dur);
         } else {
-            Audio_QueueCmdS32(0x82000000 | _SHIFTL(playerIdx, 16, 8) | _SHIFTL(seqId, 8, 8),
+            Audio_QueueCmdS32(0x82000000 | _SHIFTL(playerIdx, 16, 8) | (resolvedSeqId & 0xFFFF),
                               (fadeTimer * (u16)gAudioContext.audioBufferParameters.updatesPerFrame) / 4);
         }
 
@@ -372,16 +383,7 @@ extern f32 D_80130F24;
 extern f32 D_80130F28;
 
 void Audio_QueueSeqCmd(u32 cmd) {
-    u8 op = cmd >> 28;
-    if (op == 0 || op == 2 || op == 12) {
-        u8 seqId = cmd & 0xFF;
-        u8 playerIdx = GET_PLAYER_IDX(cmd);
-        u16 newSeqId = AudioEditor_GetReplacementSeq(seqId);
-        gAudioContext.seqReplaced[playerIdx] = (seqId != newSeqId);
-        gAudioContext.seqToPlay[playerIdx] = newSeqId;
-        cmd |= (seqId & 0xFF);
-    }
-
+    // Replacement is resolved per-command in func_800F9280().
     sAudioSeqCmds[sSeqCmdWrPos++] = cmd;
 }
 

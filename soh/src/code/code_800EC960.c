@@ -257,6 +257,14 @@ u8 sSeqFlags[0x6F] = {
     1,    // NA_BGM_CUSTOM_SEQ
 };
 
+// Returns 0 for ids past the authentic range (custom sequences have no vanilla flags).
+static u8 Audio_GetSeqFlags(u16 seqId) {
+    if (seqId >= ARRAY_COUNT(sSeqFlags)) {
+        return 0;
+    }
+    return sSeqFlags[seqId];
+}
+
 s8 sSpecReverbs[20] = { 0, 0, 0, 0, 0, 0, 0, 40, 0, 15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
 NatureAmbienceDataIO sNatureAmbienceDataIO[20] = {
@@ -4518,7 +4526,7 @@ void func_800F5550(u16 seqId) {
             Audio_QueueCmdS32(0xF8000000, 0);
         }
 
-        if ((sSeqFlags[D_80130630] & 0x20) && sSeqFlags[(seqId & 0xFF) & 0xFF] & 0x10) {
+        if ((Audio_GetSeqFlags(D_80130630) & 0x20) && Audio_GetSeqFlags((seqId & 0xFF) & 0xFF) & 0x10) {
 
             if ((D_8013062C & 0x3F) != 0) {
                 sp27 = 0x1E;
@@ -4528,9 +4536,9 @@ void func_800F5550(u16 seqId) {
 
             D_8013062C = 0;
         } else {
-            nv = (sSeqFlags[(seqId & 0xFF) & 0xFF] & 0x40) ? 1 : 0xFF;
+            nv = (Audio_GetSeqFlags((seqId & 0xFF) & 0xFF) & 0x40) ? 1 : 0xFF;
             func_800F5E18(SEQ_PLAYER_BGM_MAIN, seqId, 0, 7, nv);
-            if (!(sSeqFlags[seqId] & 0x20)) {
+            if (!(Audio_GetSeqFlags(seqId) & 0x20)) {
                 D_8013062C = 0xC0;
             }
         }
@@ -4544,7 +4552,7 @@ void func_800F56A8(void) {
 
     temp_v0 = func_800FA0B4(SEQ_PLAYER_BGM_MAIN);
     bvar = temp_v0 & 0xFF;
-    if ((temp_v0 != NA_BGM_DISABLED) && (sSeqFlags[bvar] & 0x10)) {
+    if ((temp_v0 != NA_BGM_DISABLED) && (Audio_GetSeqFlags(bvar) & 0x10)) {
         if (D_8013062C != 0xC0) {
             D_8013062C = gAudioContext.seqPlayers[SEQ_PLAYER_BGM_MAIN].soundScriptIO[3];
         } else {
@@ -4577,9 +4585,9 @@ void func_800F5918(void) {
 void func_800F595C(u16 arg0) {
     u8 arg0b = arg0 & 0xFF;
 
-    if (sSeqFlags[arg0b] & 2) {
+    if (Audio_GetSeqFlags(arg0b) & 2) {
         Audio_PlayFanfare(arg0);
-    } else if (sSeqFlags[arg0b] & 4) {
+    } else if (Audio_GetSeqFlags(arg0b) & 4) {
         Audio_StartSeq(SEQ_PLAYER_FANFARE, 0, arg0);
 
     } else {
@@ -4591,9 +4599,9 @@ void func_800F595C(u16 arg0) {
 void func_800F59E8(u16 arg0) {
     u8 arg0b = arg0 & 0xFF;
 
-    if (sSeqFlags[arg0b] & 2) {
+    if (Audio_GetSeqFlags(arg0b) & 2) {
         Audio_SeqCmd1(SEQ_PLAYER_FANFARE, 0);
-    } else if (sSeqFlags[arg0b] & 4) {
+    } else if (Audio_GetSeqFlags(arg0b) & 4) {
         Audio_SeqCmd1(SEQ_PLAYER_FANFARE, 0);
     } else {
         Audio_SeqCmd1(SEQ_PLAYER_BGM_MAIN, 0);
@@ -4603,9 +4611,9 @@ void func_800F59E8(u16 arg0) {
 s32 func_800F5A58(u8 arg0) {
     u8 phi_a1 = 0;
 
-    if (sSeqFlags[arg0 & 0xFF] & 2) {
+    if (Audio_GetSeqFlags(arg0 & 0xFF) & 2) {
         phi_a1 = 1;
-    } else if (sSeqFlags[arg0 & 0xFF] & 4) {
+    } else if (Audio_GetSeqFlags(arg0 & 0xFF) & 4) {
         phi_a1 = 1;
     }
 
@@ -4656,7 +4664,7 @@ void PreviewSequence(u16 seqId) {
  */
 void func_800F5B58(void) {
     if ((func_800FA0B4(SEQ_PLAYER_BGM_MAIN) != NA_BGM_DISABLED) && (sPrevMainBgmSeqId != NA_BGM_DISABLED) &&
-        (sSeqFlags[func_800FA0B4(SEQ_PLAYER_BGM_MAIN) & 0xFF] & 8)) {
+        (Audio_GetSeqFlags(func_800FA0B4(SEQ_PLAYER_BGM_MAIN) & 0xFF) & 8)) {
         if (sPrevMainBgmSeqId == NA_BGM_DISABLED) {
             Audio_SeqCmd1(SEQ_PLAYER_BGM_MAIN, 0);
         } else {
@@ -4773,7 +4781,7 @@ void Audio_SetSequenceMode(u8 seqMode) {
             seqMode = SEQ_MODE_IGNORE;
         }
 
-        if ((seqId == NA_BGM_DISABLED) || (sSeqFlags[(u8)(seqId & 0xFF)] & 1) ||
+        if ((seqId == NA_BGM_DISABLED) || (Audio_GetSeqFlags((u8)(seqId & 0xFF)) & 1) ||
             ((sPrevSeqMode & 0x7F) == SEQ_MODE_ENEMY)) {
             if (seqMode != (sPrevSeqMode & 0x7F)) {
                 if (seqMode == SEQ_MODE_ENEMY) {
@@ -5204,7 +5212,7 @@ void Audio_PlayNatureAmbienceSequence(u8 natureAmbienceId) {
     u8 val;
 
     if ((gActiveSeqs[SEQ_PLAYER_BGM_MAIN].seqId == NA_BGM_DISABLED) ||
-        !(sSeqFlags[((u8)gActiveSeqs[SEQ_PLAYER_BGM_MAIN].seqId) & 0xFF] & 0x80)) {
+        !(Audio_GetSeqFlags(((u8)gActiveSeqs[SEQ_PLAYER_BGM_MAIN].seqId) & 0xFF) & 0x80)) {
 
         Audio_StartNatureAmbienceSequence(sNatureAmbienceDataIO[natureAmbienceId].playerIO,
                                           sNatureAmbienceDataIO[natureAmbienceId].channelMask);

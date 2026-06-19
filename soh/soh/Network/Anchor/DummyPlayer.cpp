@@ -129,6 +129,7 @@ void DummyPlayer_Update(Actor* actor, PlayState* play) {
     Math_Vec3s_Copy(&player->skelAnime.prevTransl, &client.prevTransl);
     player->currentBoots = client.currentBoots;
     player->currentShield = client.currentShield;
+    player->heldItemId = client.buttonItem0;
     player->currentTunic = client.currentTunic;
     player->stateFlags1 = client.stateFlags1;
     player->stateFlags2 = client.stateFlags2;

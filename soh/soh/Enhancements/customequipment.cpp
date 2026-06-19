@@ -5,530 +5,583 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
 #include "soh/ResourceManagerHelpers.h"
-#include "soh/cvar_prefixes.h"
 
 extern "C" {
-#include "variables.h"
 #include "macros.h"
-
+#include "functions.h"
+#include "variables.h"
 extern SaveContext gSaveContext;
-extern PlayState* gPlayState;
 }
-
-void DummyPlayer_Update(Actor* actor, PlayState* play);
-
-static void UpdatePatchCustomEquipmentDlists();
-static void RefreshCustomEquipment();
-static u8 GetEquippedSwordItem();
-static bool IsDummyPlayer(const Player* player);
 
 static const char* ResolveCustomChain(std::initializer_list<const char*> paths) {
     const char* fallback = nullptr;
     for (auto path : paths) {
-        if (path != nullptr) {
-            fallback = path;
-            if (ResourceMgr_FileExists(path) || ResourceGetIsCustomByName(path)) {
-                return path;
-            }
-        }
+        if (path == nullptr)
+            continue;
+        fallback = path;
+        if (ResourceGetIsCustomByName(path) || ResourceMgr_FileAltExists(path))
+            return path;
     }
     return fallback;
 }
 
-static const char* GetBreakableLongswordDL() {
-    return ResolveCustomChain({ gCustomBreakableLongswordDL, gCustomLongswordDL });
+static Gfx* LoadGfxByName(const char* path) {
+    return path ? ResourceMgr_LoadGfxByName(path) : nullptr;
 }
 
-static const char* GetBreakableLongswordSheathDL() {
-    return ResolveCustomChain({ gCustomBreakableLongswordSheathDL, gCustomLongswordSheathDL });
+static Gfx* LoadCustomGfx(const char* path) {
+    if (!path)
+        return nullptr;
+    if (!ResourceGetIsCustomByName(path) && !ResourceMgr_FileAltExists(path))
+        return nullptr;
+    return ResourceMgr_LoadGfxByName(path);
 }
 
-static const char* GetBreakableLongswordInSheathDL() {
-    return ResolveCustomChain({ gCustomBreakableLongswordInSheathDL, gCustomLongswordInSheathDL });
-}
+static u8 sLastValidSwordEquip = EQUIP_VALUE_SWORD_NONE;
 
-static const char* GetBrokenLongswordSheathDL() {
-    return ResolveCustomChain(
-        { gCustomBrokenLongswordSheathDL, gCustomBreakableLongswordSheathDL, gCustomLongswordSheathDL });
-}
-
-static const char* GetBrokenLongswordInSheathDL() {
-    return ResolveCustomChain(
-        { gCustomBrokenLongswordInSheathDL, gCustomBreakableLongswordInSheathDL, gCustomLongswordInSheathDL });
-}
-
-static const char* GetCustomFPSSlingshotDL() {
-    return ResolveCustomChain({ gCustomFPSSlingshotDL, gCustomSlingshotDL });
-}
-
-static const char* GetCustomFPSBowDL() {
-    return ResolveCustomChain({ gCustomFPSBowDL, gCustomBowDL });
-}
-
-static const char* GetCustomFPSHookshotDL() {
-    return ResolveCustomChain({ gCustomFPSHookshotDL, gCustomHookshotDL });
-}
-
-static const char* GetCustomFPSLongshotDL() {
-    return ResolveCustomChain({ gCustomFPSLongshotDL, gCustomLongshotDL });
-}
-
-static void UpdateCustomEquipmentSetModel(Player* player, u8 ModelGroup) {
-    (void)ModelGroup;
-
-    if (player == nullptr || gPlayState == nullptr || player != GET_PLAYER(gPlayState) || IsDummyPlayer(player)) {
-        return;
+static u8 GetEquippedSwordValue(PlayState* play) {
+    const u8 sword = CUR_EQUIP_VALUE(EQUIP_TYPE_SWORD);
+    const bool inCutscene = (play->csCtx.state != CS_STATE_IDLE);
+    if (!(inCutscene && gSaveContext.linkAge == LINK_AGE_CHILD && sword == EQUIP_VALUE_SWORD_MASTER)) {
+        sLastValidSwordEquip = sword;
     }
-
-    RefreshCustomEquipment();
+    return sLastValidSwordEquip;
 }
 
-static void UpdateCustomEquipment() {
-    if (!GameInteractor::IsSaveLoaded() || gPlayState == nullptr || GET_PLAYER(gPlayState) == nullptr ||
-        IsDummyPlayer(GET_PLAYER(gPlayState))) {
-        return;
-    }
-
-    RefreshCustomEquipment();
-}
-
-static void RefreshCustomEquipment() {
-    if (!GameInteractor::IsSaveLoaded() || gPlayState == nullptr || GET_PLAYER(gPlayState) == nullptr ||
-        IsDummyPlayer(GET_PLAYER(gPlayState))) {
-        return;
-    }
-
-    UpdatePatchCustomEquipmentDlists();
-}
-
-static u8 GetEquippedSwordItem() {
-    switch (CUR_EQUIP_VALUE(EQUIP_TYPE_SWORD)) {
-        case EQUIP_VALUE_SWORD_NONE:
-            return ITEM_NONE;
+static const char* GetSwordInSheathDL(PlayState* play) {
+    switch (GetEquippedSwordValue(play)) {
         case EQUIP_VALUE_SWORD_KOKIRI:
-            return ITEM_SWORD_KOKIRI;
+            return gCustomKokiriSwordInSheathDL;
         case EQUIP_VALUE_SWORD_MASTER:
-            return ITEM_SWORD_MASTER;
+            return gCustomMasterSwordInSheathDL;
         case EQUIP_VALUE_SWORD_BIGGORON:
-            if (CHECK_OWNED_EQUIP_ALT(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_BROKENGIANTKNIFE)) {
-                return ITEM_SWORD_KNIFE;
-            }
-            return ITEM_SWORD_BGS;
-        default:
-            return ITEM_NONE;
+            if (gSaveContext.bgsFlag)
+                return gCustomLongswordInSheathDL;
+            if (CHECK_OWNED_EQUIP_ALT(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_BROKENGIANTKNIFE))
+                return gCustomBrokenLongswordInSheathDL;
+            return ResolveCustomChain({ gCustomBreakableLongswordInSheathDL, gCustomLongswordInSheathDL, nullptr });
     }
+    return nullptr;
 }
 
-static bool IsDummyPlayer(const Player* player) {
-    return player != nullptr && player->actor.update == DummyPlayer_Update;
+static const char* GetSheathOnlyDL(PlayState* play) {
+    switch (GetEquippedSwordValue(play)) {
+        case EQUIP_VALUE_SWORD_KOKIRI:
+            return gCustomKokiriSwordSheathDL;
+        case EQUIP_VALUE_SWORD_MASTER:
+            return gCustomMasterSwordSheathDL;
+        case EQUIP_VALUE_SWORD_BIGGORON:
+            if (gSaveContext.bgsFlag)
+                return gCustomLongswordSheathDL;
+            if (CHECK_OWNED_EQUIP_ALT(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_BROKENGIANTKNIFE))
+                return gCustomBrokenLongswordSheathDL;
+            return ResolveCustomChain({ gCustomBreakableLongswordSheathDL, gCustomLongswordSheathDL, nullptr });
+    }
+    return nullptr;
 }
 
-static bool sPrevAltAssetsEnabled = false;
-
-void PatchOrUnpatch(const char* resource, const char* gfx, const char* dlist1, const char* dlist2, const char* dlist3,
-                    const char* alternateDL) {
-    if (resource == NULL || gfx == NULL || dlist1 == NULL || dlist2 == NULL) {
-        return;
+static const char* GetShieldOnBackDL(s32 shield) {
+    const bool isAdult = gSaveContext.linkAge == LINK_AGE_ADULT;
+    switch (shield) {
+        case PLAYER_SHIELD_DEKU:
+            return gCustomDekuShieldOnBackDL;
+        case PLAYER_SHIELD_HYLIAN:
+            return isAdult ? gCustomHylianShieldOnBackDL : gCustomHylianShieldOnChildBackDL;
+        case PLAYER_SHIELD_MIRROR:
+            return gCustomMirrorShieldOnBackDL;
     }
-
-    const bool altAssetsRuntime = ResourceMgr_IsAltAssetsEnabled();
-    const bool altAssetsChanged = (altAssetsRuntime != sPrevAltAssetsEnabled);
-
-    if (!altAssetsRuntime) {
-        // Alt assets are off; ensure any prior patches using these names are reverted.
-        ResourceMgr_UnpatchGfxByName(resource, dlist1);
-        ResourceMgr_UnpatchGfxByName(resource, dlist2);
-        if (dlist3 != NULL) {
-            ResourceMgr_UnpatchGfxByName(resource, dlist3);
-        }
-        if (altAssetsChanged) {
-            ResourceMgr_UnloadResource(resource);
-        }
-        return;
-    }
-
-    if (altAssetsChanged) {
-        ResourceMgr_UnloadResource(resource);
-    }
-
-    if (!ResourceGetIsCustomByName(gfx)) {
-        return;
-    }
-
-    if (alternateDL == NULL || ResourceGetIsCustomByName(alternateDL) || ResourceMgr_FileExists(alternateDL)) {
-        ResourceMgr_PatchCustomGfxByName(resource, dlist1, 0, gsSPDisplayListOTRFilePath(gfx));
-        if (dlist3 == NULL) {
-            ResourceMgr_PatchCustomGfxByName(resource, dlist2, 1, gsSPEndDisplayList());
-        } else {
-            ResourceMgr_PatchCustomGfxByName(resource, dlist2, 1, gsSPDisplayListOTRFilePath(alternateDL));
-        }
-        if (dlist3 != NULL) {
-            ResourceMgr_PatchCustomGfxByName(resource, dlist3, 2, gsSPEndDisplayList());
-        }
-    }
+    return nullptr;
 }
 
-struct PatchEntry {
-    const char* resource;
-    const char* gfx;
-    const char* dlist1;
-    const char* dlist2;
-    const char* dlist3;
-    const char* alternateDL;
-};
-
-static void ApplyPatchEntries(std::initializer_list<PatchEntry> entries) {
-    for (const auto& entry : entries) {
-        PatchOrUnpatch(entry.resource, entry.gfx, entry.dlist1, entry.dlist2, entry.dlist3, entry.alternateDL);
-    }
-}
-
-static void UnpatchGroup(const char* resource, std::initializer_list<const char*> dlistNames) {
-    for (const char* name : dlistNames) {
-        ResourceMgr_UnpatchGfxByName(resource, name);
-    }
-}
-
-static void ApplySwordlessChildPatches() {
-    ApplyPatchEntries({
-        { gLinkChildDekuShieldWithMatrixDL, gCustomDekuShieldOnBackDL, "customChildShieldOnly1",
-          "customChildShieldOnly2", nullptr, nullptr },
-        { gLinkChildHylianShieldSwordAndSheathNearDL, gCustomHylianShieldOnChildBackDL, "customChildHylianShieldOnly1",
-          "customChildHylianShieldOnly2", nullptr, nullptr },
-        { gLinkAdultMirrorShieldSwordAndSheathNearDL, gCustomMirrorShieldOnBackDL, "customAdultMirrorOnly1",
-          "customAdultMirrorOnly2", nullptr, nullptr },
-    });
-
-    UnpatchGroup(gLinkChildSwordAndSheathNearDL, { "customKokiriSwordSheath1", "customKokiriSwordSheath2" });
-    UnpatchGroup(gLinkChildSheathNearDL, { "customKokiriSheath1", "customKokiriSheath2" });
-    UnpatchGroup(gLinkChildDekuShieldSwordAndSheathNearDL,
-                 { "customDekuShieldSword1", "customDekuShieldSword2", "customDekuShieldSword3" });
-    UnpatchGroup(gLinkChildHylianShieldSwordAndSheathNearDL,
-                 { "customChildHylianShieldSword1", "customChildHylianShieldSword2", "customChildHylianShieldSword3" });
-}
-
-static void ApplySwordlessAdultPatches() {
-    ApplyPatchEntries({
-        { gLinkAdultHylianShieldSwordAndSheathNearDL, gCustomHylianShieldOnBackDL, "customAdultShieldOnly1",
-          "customAdultShieldOnly2", nullptr, nullptr },
-        { gLinkAdultMirrorShieldSwordAndSheathNearDL, gCustomMirrorShieldOnBackDL, "customAdultMirrorOnly1",
-          "customAdultMirrorOnly2", nullptr, nullptr },
-        { gLinkChildDekuShieldSwordAndSheathNearDL, gCustomDekuShieldOnBackDL, "customDekuShieldSword1",
-          "customDekuShieldSword2", nullptr, nullptr },
-    });
-
-    UnpatchGroup(gLinkAdultMasterSwordAndSheathNearDL, { "customMasterSwordSheath1", "customMasterSwordSheath2" });
-}
-
-static void ApplyKokiriSwordPatches() {
-    ApplyPatchEntries({
-        { gLinkChildSheathNearDL, gCustomKokiriSwordSheathDL, "customKokiriSheath1", "customKokiriSheath2", nullptr,
-          nullptr },
-        { gLinkChildSwordAndSheathNearDL, gCustomKokiriSwordInSheathDL, "customKokiriSwordSheath1",
-          "customKokiriSwordSheath2", nullptr, nullptr },
-        { gLinkChildDekuShieldSwordAndSheathNearDL, gCustomKokiriSwordInSheathDL, "customDekuShieldSword1",
-          "customDekuShieldSword2", "customDekuShieldSword3", gCustomDekuShieldOnBackDL },
-        { gLinkChildDekuShieldAndSheathNearDL, gCustomKokiriSwordSheathDL, "customDekuShieldSheath1",
-          "customDekuShieldSheath2", "customDekuShieldSheath3", gCustomDekuShieldOnBackDL },
-        { gLinkChildHylianShieldSwordAndSheathNearDL, gCustomKokiriSwordInSheathDL, "customChildHylianShieldSword1",
-          "customChildHylianShieldSword2", "customChildHylianShieldSword3", gCustomHylianShieldOnChildBackDL },
-        { gLinkChildHylianShieldAndSheathNearDL, gCustomKokiriSwordSheathDL, "customChildHylianShieldSheath1",
-          "customChildHylianShieldSheath2", "customChildHylianShieldSheath3", gCustomHylianShieldOnChildBackDL },
-        { gLinkAdultSheathNearDL, gCustomKokiriSwordSheathDL, "customSheath1", "customSheath2", nullptr, nullptr },
-        { gLinkAdultHylianShieldSwordAndSheathNearDL, gCustomKokiriSwordInSheathDL, "customHylianShieldSword1",
-          "customHylianShieldSword2", "customHylianShieldSword3", gCustomHylianShieldOnBackDL },
-        { gLinkAdultMasterSwordAndSheathNearDL, gCustomKokiriSwordInSheathDL, "customMasterSwordSheath1",
-          "customMasterSwordSheath2", nullptr, nullptr },
-        { gLinkAdultHylianShieldAndSheathNearDL, gCustomKokiriSwordSheathDL, "customHylianShieldSheath1",
-          "customHylianShieldSheath2", "customHylianShieldSheath3", gCustomHylianShieldOnBackDL },
-        { gLinkAdultMirrorShieldSwordAndSheathNearDL, gCustomKokiriSwordInSheathDL, "customMirrorShieldSword1",
-          "customMirrorShieldSword2", "customMirrorShieldSword3", gCustomMirrorShieldOnBackDL },
-    });
-}
-
-static void ApplyMasterSwordPatches() {
-    ApplyPatchEntries({
-        { gLinkChildDekuShieldWithMatrixDL, gCustomMasterSwordInSheathDL, "customDekuShieldBack1",
-          "customDekuShieldBack2", "customDekuShieldBack2", gCustomDekuShieldOnBackDL },
-        { gLinkChildHylianShieldAndSheathNearDL, gCustomMasterSwordSheathDL, "customChildHylianShieldSheath1",
-          "customChildHylianShieldSheath2", "customChildHylianShieldSheath3", gCustomHylianShieldOnChildBackDL },
-        { gLinkChildSheathNearDL, gCustomMasterSwordSheathDL, "customKokiriSheath1", "customKokiriSheath2", nullptr,
-          nullptr },
-        { gLinkChildSwordAndSheathNearDL, gCustomMasterSwordInSheathDL, "customKokiriSwordSheath1",
-          "customKokiriSwordSheath2", nullptr, nullptr },
-        { gLinkChildDekuShieldSwordAndSheathNearDL, gCustomMasterSwordInSheathDL, "customDekuShieldSword1",
-          "customDekuShieldSword2", "customDekuShieldSword3", gCustomDekuShieldOnBackDL },
-        { gLinkChildDekuShieldAndSheathNearDL, gCustomMasterSwordSheathDL, "customDekuShieldSheath1",
-          "customDekuShieldSheath2", "customDekuShieldSheath3", gCustomDekuShieldOnBackDL },
-        { gLinkChildHylianShieldSwordAndSheathNearDL, gCustomMasterSwordInSheathDL, "customChildHylianShieldSword1",
-          "customChildHylianShieldSword2", "customChildHylianShieldSword3", gCustomHylianShieldOnChildBackDL },
-        { gLinkAdultSheathNearDL, gCustomMasterSwordSheathDL, "customSheath1", "customSheath2", nullptr, nullptr },
-        { gLinkAdultMasterSwordAndSheathNearDL, gCustomMasterSwordInSheathDL, "customMasterSwordSheath1",
-          "customMasterSwordSheath2", nullptr, nullptr },
-        { gLinkAdultHylianShieldSwordAndSheathNearDL, gCustomMasterSwordInSheathDL, "customHylianShieldSword1",
-          "customHylianShieldSword2", "customHylianShieldSword3", gCustomHylianShieldOnBackDL },
-        { gLinkAdultHylianShieldAndSheathNearDL, gCustomMasterSwordSheathDL, "customHylianShieldSheath1",
-          "customHylianShieldSheath2", "customHylianShieldSheath3", gCustomHylianShieldOnBackDL },
-        { gLinkAdultMirrorShieldSwordAndSheathNearDL, gCustomMasterSwordInSheathDL, "customMirrorShieldSword1",
-          "customMirrorShieldSword2", "customMirrorShieldSword3", gCustomMirrorShieldOnBackDL },
-    });
-}
-
-static void ApplyBiggoronSwordPatches() {
-    const bool isChild = LINK_IS_CHILD;
-    const char* leftHandClosed = isChild ? gLinkChildLeftFistNearDL : gLinkAdultLeftHandClosedNearDL;
-
-    if (gPlayState != nullptr && GET_PLAYER(gPlayState)->sheathType == PLAYER_MODELTYPE_SHEATH_19) {
-        PatchOrUnpatch(gLinkChildDekuShieldWithMatrixDL, gCustomLongswordSheathDL, "customDekuShieldBack1",
-                       "customDekuShieldBack2", "customDekuShieldBack2", gCustomDekuShieldOnBackDL);
-    } else {
-        PatchOrUnpatch(gLinkChildDekuShieldWithMatrixDL, gCustomLongswordInSheathDL, "customDekuShieldBack1",
-                       "customDekuShieldBack2", "customDekuShieldBack2", gCustomDekuShieldOnBackDL);
-    }
-
-    ApplyPatchEntries({
-        { gLinkChildHylianShieldAndSheathNearDL, gCustomLongswordSheathDL, "customChildHylianShieldSheath1",
-          "customChildHylianShieldSheath2", "customChildHylianShieldSheath3", gCustomHylianShieldOnChildBackDL },
-        { gLinkChildDekuShieldAndSheathNearDL, gCustomLongswordSheathDL, "customDekuShieldSheath1",
-          "customDekuShieldSheath2", "customDekuShieldSheath3", gCustomDekuShieldOnBackDL },
-        { gLinkAdultLeftHandHoldingBgsNearDL, gCustomLongswordDL, "customBGS1", "customBGS2", "customBGS3",
-          leftHandClosed },
-        { gLinkAdultMasterSwordAndSheathNearDL, gCustomLongswordInSheathDL, "customMasterSwordSheath1",
-          "customMasterSwordSheath2", nullptr, nullptr },
-        { gLinkChildSheathNearDL, gCustomLongswordSheathDL, "customKokiriSheath1", "customKokiriSheath2", nullptr,
-          nullptr },
-        { gLinkChildSwordAndSheathNearDL, gCustomLongswordInSheathDL, "customKokiriSwordSheath1",
-          "customKokiriSwordSheath2", nullptr, nullptr },
-        { gLinkChildDekuShieldSwordAndSheathNearDL, gCustomLongswordInSheathDL, "customDekuShieldSword1",
-          "customDekuShieldSword2", "customDekuShieldSword3", gCustomDekuShieldOnBackDL },
-        { gLinkChildHylianShieldSwordAndSheathNearDL, gCustomLongswordInSheathDL, "customChildHylianShieldSword1",
-          "customChildHylianShieldSword2", "customChildHylianShieldSword3", gCustomHylianShieldOnChildBackDL },
-        { gLinkAdultSheathNearDL, gCustomLongswordSheathDL, "customSheath1", "customSheath2", nullptr, nullptr },
-        { gLinkAdultHylianShieldSwordAndSheathNearDL, gCustomLongswordInSheathDL, "customHylianShieldSword1",
-          "customHylianShieldSword2", "customHylianShieldSword3", gCustomHylianShieldOnBackDL },
-        { gLinkAdultHylianShieldAndSheathNearDL, gCustomLongswordSheathDL, "customHylianShieldSheath1",
-          "customHylianShieldSheath2", "customHylianShieldSheath3", gCustomHylianShieldOnBackDL },
-        { gLinkAdultMirrorShieldSwordAndSheathNearDL, gCustomLongswordInSheathDL, "customMirrorShieldSword1",
-          "customMirrorShieldSword2", "customMirrorShieldSword3", gCustomMirrorShieldOnBackDL },
-        { gLinkAdultMirrorShieldAndSheathNearDL, gCustomLongswordSheathDL, "customMirrorShieldSheath1",
-          "customMirrorShieldSheath2", "customMirrorShieldSheath3", gCustomMirrorShieldOnBackDL },
-    });
-}
-
-static void ApplyBreakableLongswordPatches() {
-    const bool isChild = LINK_IS_CHILD;
-    const char* leftHandClosed = isChild ? gLinkChildLeftFistNearDL : gLinkAdultLeftHandClosedNearDL;
-
-    if (gPlayState != nullptr && GET_PLAYER(gPlayState)->sheathType == PLAYER_MODELTYPE_SHEATH_19) {
-        PatchOrUnpatch(gLinkChildDekuShieldWithMatrixDL, GetBreakableLongswordSheathDL(), "customDekuShieldBack1",
-                       "customDekuShieldBack2", "customDekuShieldBack2", gCustomDekuShieldOnBackDL);
-    } else {
-        PatchOrUnpatch(gLinkChildDekuShieldWithMatrixDL, GetBreakableLongswordInSheathDL(), "customDekuShieldBack1",
-                       "customDekuShieldBack2", "customDekuShieldBack2", gCustomDekuShieldOnBackDL);
-    }
-
-    ApplyPatchEntries({
-        { gLinkChildHylianShieldAndSheathNearDL, GetBreakableLongswordSheathDL(), "customChildHylianShieldSheath1",
-          "customChildHylianShieldSheath2", "customChildHylianShieldSheath3", gCustomHylianShieldOnChildBackDL },
-        { gLinkChildDekuShieldAndSheathNearDL, GetBreakableLongswordSheathDL(), "customDekuShieldSheath1",
-          "customDekuShieldSheath2", "customDekuShieldSheath3", gCustomDekuShieldOnBackDL },
-        { gLinkAdultLeftHandHoldingBgsNearDL, GetBreakableLongswordDL(), "customGK1", "customGK2", "customGK3",
-          leftHandClosed },
-        { gLinkAdultMasterSwordAndSheathNearDL, GetBreakableLongswordInSheathDL(), "customMasterSwordSheath1",
-          "customMasterSwordSheath2", nullptr, nullptr },
-        { gLinkChildSheathNearDL, GetBreakableLongswordSheathDL(), "customKokiriSheath1", "customKokiriSheath2",
-          nullptr, nullptr },
-        { gLinkChildSwordAndSheathNearDL, GetBreakableLongswordInSheathDL(), "customKokiriSwordSheath1",
-          "customKokiriSwordSheath2", nullptr, nullptr },
-        { gLinkChildDekuShieldSwordAndSheathNearDL, GetBreakableLongswordInSheathDL(), "customDekuShieldSword1",
-          "customDekuShieldSword2", "customDekuShieldSword3", gCustomDekuShieldOnBackDL },
-        { gLinkChildHylianShieldSwordAndSheathNearDL, GetBreakableLongswordInSheathDL(),
-          "customChildHylianShieldSword1", "customChildHylianShieldSword2", "customChildHylianShieldSword3",
-          gCustomHylianShieldOnChildBackDL },
-        { gLinkAdultSheathNearDL, GetBreakableLongswordSheathDL(), "customSheath1", "customSheath2", nullptr, nullptr },
-        { gLinkAdultHylianShieldSwordAndSheathNearDL, GetBreakableLongswordInSheathDL(), "customHylianShieldSword1",
-          "customHylianShieldSword2", "customHylianShieldSword3", gCustomHylianShieldOnBackDL },
-        { gLinkAdultHylianShieldAndSheathNearDL, GetBreakableLongswordSheathDL(), "customHylianShieldSheath1",
-          "customHylianShieldSheath2", "customHylianShieldSheath3", gCustomHylianShieldOnBackDL },
-        { gLinkAdultMirrorShieldSwordAndSheathNearDL, GetBreakableLongswordInSheathDL(), "customMirrorShieldSword1",
-          "customMirrorShieldSword2", "customMirrorShieldSword3", gCustomMirrorShieldOnBackDL },
-        { gLinkAdultMirrorShieldAndSheathNearDL, GetBreakableLongswordSheathDL(), "customMirrorShieldSheath1",
-          "customMirrorShieldSheath2", "customMirrorShieldSheath3", gCustomMirrorShieldOnBackDL },
-    });
-}
-
-static void ApplyBrokenKnifePatches() {
-    if (gPlayState != nullptr && GET_PLAYER(gPlayState)->sheathType == PLAYER_MODELTYPE_SHEATH_19) {
-        PatchOrUnpatch(gLinkChildDekuShieldWithMatrixDL, GetBrokenLongswordSheathDL(), "customDekuShieldBack1",
-                       "customDekuShieldBack2", "customDekuShieldBack2", gCustomDekuShieldOnBackDL);
-    } else {
-        PatchOrUnpatch(gLinkChildDekuShieldWithMatrixDL, GetBrokenLongswordInSheathDL(), "customDekuShieldBack1",
-                       "customDekuShieldBack2", "customDekuShieldBack2", gCustomDekuShieldOnBackDL);
-    }
-
-    ApplyPatchEntries({
-        { gLinkChildHylianShieldAndSheathNearDL, GetBrokenLongswordSheathDL(), "customChildHylianShieldSheath1",
-          "customChildHylianShieldSheath2", "customChildHylianShieldSheath3", gCustomHylianShieldOnChildBackDL },
-        { gLinkChildDekuShieldAndSheathNearDL, GetBrokenLongswordSheathDL(), "customDekuShieldSheath1",
-          "customDekuShieldSheath2", "customDekuShieldSheath3", gCustomDekuShieldOnBackDL },
-        { gLinkAdultMasterSwordAndSheathNearDL, GetBrokenLongswordInSheathDL(), "customMasterSwordSheath1",
-          "customMasterSwordSheath2", nullptr, nullptr },
-        { gLinkChildSheathNearDL, GetBrokenLongswordSheathDL(), "customKokiriSheath1", "customKokiriSheath2", nullptr,
-          nullptr },
-        { gLinkChildSwordAndSheathNearDL, GetBrokenLongswordInSheathDL(), "customKokiriSwordSheath1",
-          "customKokiriSwordSheath2", nullptr, nullptr },
-        { gLinkChildDekuShieldSwordAndSheathNearDL, GetBrokenLongswordInSheathDL(), "customDekuShieldSword1",
-          "customDekuShieldSword2", "customDekuShieldSword3", gCustomDekuShieldOnBackDL },
-        { gLinkChildHylianShieldSwordAndSheathNearDL, GetBrokenLongswordInSheathDL(), "customChildHylianShieldSword1",
-          "customChildHylianShieldSword2", "customChildHylianShieldSword3", gCustomHylianShieldOnChildBackDL },
-        { gLinkAdultSheathNearDL, GetBrokenLongswordSheathDL(), "customSheath1", "customSheath2", nullptr, nullptr },
-        { gLinkAdultHylianShieldSwordAndSheathNearDL, GetBrokenLongswordInSheathDL(), "customHylianShieldSword1",
-          "customHylianShieldSword2", "customHylianShieldSword3", gCustomHylianShieldOnBackDL },
-        { gLinkAdultHylianShieldAndSheathNearDL, GetBrokenLongswordSheathDL(), "customHylianShieldSheath1",
-          "customHylianShieldSheath2", "customHylianShieldSheath3", gCustomHylianShieldOnBackDL },
-        { gLinkAdultMirrorShieldSwordAndSheathNearDL, GetBrokenLongswordInSheathDL(), "customMirrorShieldSword1",
-          "customMirrorShieldSword2", "customMirrorShieldSword3", gCustomMirrorShieldOnBackDL },
-        { gLinkAdultMirrorShieldAndSheathNearDL, GetBrokenLongswordSheathDL(), "customMirrorShieldSheath1",
-          "customMirrorShieldSheath2", "customMirrorShieldSheath3", gCustomMirrorShieldOnBackDL },
-    });
-}
-
-static void ApplyCommonEquipmentPatches() {
-    const bool isChild = LINK_IS_CHILD;
-    const char* rightHandClosed = isChild ? gLinkChildRightHandClosedNearDL : gLinkAdultRightHandClosedNearDL;
-    const char* leftHandClosed = isChild ? gLinkChildLeftFistNearDL : gLinkAdultLeftHandClosedNearDL;
-    const char* fpsHand = isChild ? gCustomChildFPSHandDL : gCustomAdultFPSHandDL;
-    const char* rightHandNear = isChild ? gLinkChildRightHandNearDL : gLinkAdultRightHandNearDL;
-
-    ApplyPatchEntries({
-        { gLinkAdultLeftHandHoldingMasterSwordNearDL, gCustomMasterSwordDL, "customMasterSword1", "customMasterSword2",
-          "customMasterSword3", leftHandClosed },
-        { gLinkAdultRightHandHoldingHylianShieldNearDL, gCustomHylianShieldDL, "customHylianShield1",
-          "customHylianShield2", "customHylianShield3", rightHandClosed },
-        { gLinkAdultRightHandHoldingMirrorShieldNearDL, gCustomMirrorShieldDL, "customMirrorShield1",
-          "customMirrorShield2", "customMirrorShield3", rightHandClosed },
-        { gLinkAdultHandHoldingBrokenGiantsKnifeDL, gCustomBrokenLongswordDL, "customBrokenBGS1", "customBrokenBGS2",
-          "customBrokenBGS3", leftHandClosed },
-        { gLinkChildLeftFistAndKokiriSwordNearDL, gCustomKokiriSwordDL, "customKokiriSword1", "customKokiriSword2",
-          "customKokiriSword3", leftHandClosed },
-        { gLinkChildRightFistAndDekuShieldNearDL, gCustomDekuShieldDL, "customDekuShield1", "customDekuShield2",
-          "customDekuShield3", rightHandClosed },
-    });
-
-    if (INV_CONTENT(ITEM_HOOKSHOT) == ITEM_HOOKSHOT) {
-        ApplyPatchEntries({
-            { gLinkAdultRightHandHoldingHookshotNearDL, gCustomHookshotDL, "customHookshot1", "customHookshot2",
-              "customHookshot3", rightHandClosed },
-            { gLinkAdultRightHandHoldingHookshotFarDL, GetCustomFPSHookshotDL(), "customHookshotFPS1",
-              "customHookshotFPS2", "customHookshotFPS3", fpsHand },
-        });
-    }
-
-    if (INV_CONTENT(ITEM_LONGSHOT) == ITEM_LONGSHOT) {
-        ApplyPatchEntries({
-            { gLinkAdultRightHandHoldingHookshotNearDL, gCustomLongshotDL, "customHookshot1", "customHookshot2",
-              "customHookshot3", rightHandClosed },
-            { gLinkAdultRightHandHoldingHookshotFarDL, GetCustomFPSLongshotDL(), "customHookshotFPS1",
-              "customHookshotFPS2", "customHookshotFPS3", fpsHand },
-        });
-    }
-
-    ApplyPatchEntries({
-        { gLinkAdultHookshotTipDL, gCustomHookshotTipDL, "customHookshotTip1", "customHookshotTip2", nullptr, nullptr },
-        { gLinkAdultHookshotChainDL, gCustomHookshotChainDL, "customHookshotChain1", "customHookshotChain2", nullptr,
-          nullptr },
-    });
-
-    if (INV_CONTENT(ITEM_OCARINA_FAIRY) == ITEM_OCARINA_FAIRY) {
-        ApplyPatchEntries({
-            { gLinkAdultRightHandHoldingOotNearDL, isChild ? gCustomFairyOcarinaDL : gCustomFairyOcarinaAdultDL,
-              "customOcarina1", "customOcarina2", "customOcarina3", rightHandNear },
-        });
-    }
-
-    if (INV_CONTENT(ITEM_OCARINA_TIME) == ITEM_OCARINA_TIME) {
-        ApplyPatchEntries({
-            { gLinkAdultRightHandHoldingOotNearDL, isChild ? gCustomOcarinaOfTimeDL : gCustomOcarinaOfTimeAdultDL,
-              "customOcarina1", "customOcarina2", "customOcarina3", rightHandNear },
-        });
-    }
-
-    ApplyPatchEntries({
-        { gLinkChildRightHandHoldingFairyOcarinaNearDL, gCustomFairyOcarinaDL, "customFairyOcarina1",
-          "customFairyOcarina2", "customFairyOcarina3", rightHandNear },
-        { gLinkChildRightHandAndOotNearDL, gCustomOcarinaOfTimeDL, "customChildOcarina1", "customChildOcarina2",
-          "customChildOcarina3", rightHandNear },
-        { gLinkAdultRightHandHoldingBowNearDL, gCustomBowDL, "customBow1", "customBow2", "customBow3",
-          rightHandClosed },
-        { gLinkAdultRightHandHoldingBowFirstPersonDL, GetCustomFPSBowDL(), "customBowFPS1", "customBowFPS2",
-          "customBowFPS3", fpsHand },
-        { gLinkAdultLeftHandHoldingHammerNearDL, gCustomHammerDL, "customHammer1", "customHammer2", "customHammer3",
-          leftHandClosed },
-        { gLinkChildLeftFistAndBoomerangNearDL, gCustomBoomerangDL, "customBoomerang1", "customBoomerang2",
-          "customBoomerang3", leftHandClosed },
-        { gLinkChildRightHandHoldingSlingshotNearDL, gCustomSlingshotDL, "customSlingshot1", "customSlingshot2",
-          "customSlingshot3", rightHandClosed },
-        { gLinkChildRightArmStretchedSlingshotDL, GetCustomFPSSlingshotDL(), "customSlingshotFPS1",
-          "customSlingshotFPS2", "customSlingshotFPS3", fpsHand },
-    });
-
-    ApplyPatchEntries({
-        { gLinkChildRightHandHoldingFairyOcarinaNearDL, gCustomFairyOcarinaDL, "customFairyOcarina1",
-          "customFairyOcarina2", "customFairyOcarina3", rightHandNear },
-        { gLinkChildRightHandAndOotNearDL, gCustomOcarinaOfTimeDL, "customChildOcarina1", "customChildOcarina2",
-          "customChildOcarina3", rightHandNear },
-        { gLinkChildLeftFistAndBoomerangNearDL, gCustomBoomerangDL, "customBoomerang1", "customBoomerang2",
-          "customBoomerang3", leftHandClosed },
-        { gLinkChildRightHandHoldingSlingshotNearDL, gCustomSlingshotDL, "customSlingshot1", "customSlingshot2",
-          "customSlingshot3", rightHandClosed },
-        { gLinkChildRightArmStretchedSlingshotDL, GetCustomFPSSlingshotDL(), "customSlingshotFPS1",
-          "customSlingshotFPS2", "customSlingshotFPS3", fpsHand },
-    });
-}
-
-void UpdatePatchCustomEquipmentDlists() {
-    const u8 equippedSword = GetEquippedSwordItem();
-
-    if (equippedSword == ITEM_NONE) {
-        if (LINK_IS_CHILD) {
-            ApplySwordlessChildPatches();
-        }
-        if (LINK_IS_ADULT) {
-            ApplySwordlessAdultPatches();
-        }
-    }
-
-    switch (equippedSword) {
+static const char* GetSwordInSheathDLForPlayer(Player* player, PlayState* play) {
+    if (player == GET_PLAYER(play))
+        return GetSwordInSheathDL(play);
+    switch (player->heldItemId) {
         case ITEM_SWORD_KOKIRI:
-            ApplyKokiriSwordPatches();
-            break;
+            return gCustomKokiriSwordInSheathDL;
         case ITEM_SWORD_MASTER:
-            ApplyMasterSwordPatches();
-            break;
+            return gCustomMasterSwordInSheathDL;
         case ITEM_SWORD_BGS:
-            if (gSaveContext.bgsFlag) {
-                ApplyBiggoronSwordPatches();
-            } else {
-                ApplyBreakableLongswordPatches();
-            }
-            break;
+            return gCustomLongswordInSheathDL;
         case ITEM_SWORD_KNIFE:
-            ApplyBrokenKnifePatches();
-            break;
-        default:
-            break;
+            return gCustomBrokenLongswordInSheathDL;
     }
-
-    ApplyCommonEquipmentPatches();
-
-    sPrevAltAssetsEnabled = ResourceMgr_IsAltAssetsEnabled();
+    return nullptr;
 }
 
-static void PatchCustomEquipment() {
-    COND_HOOK(OnPlayerSetModels, true, UpdateCustomEquipmentSetModel);
-    COND_HOOK(OnLinkEquipmentChange, true, UpdateCustomEquipment);
-    COND_HOOK(OnLinkSkeletonInit, true, UpdateCustomEquipment);
-    COND_HOOK(OnAssetAltChange, true, UpdateCustomEquipment);
+static const char* GetSheathOnlyDLForPlayer(Player* player, PlayState* play) {
+    if (player == GET_PLAYER(play))
+        return GetSheathOnlyDL(play);
+    switch (player->heldItemId) {
+        case ITEM_SWORD_KOKIRI:
+            return gCustomKokiriSwordSheathDL;
+        case ITEM_SWORD_MASTER:
+            return gCustomMasterSwordSheathDL;
+        case ITEM_SWORD_BGS:
+            return gCustomLongswordSheathDL;
+        case ITEM_SWORD_KNIFE:
+            return gCustomBrokenLongswordSheathDL;
+    }
+    return nullptr;
 }
 
-static RegisterShipInitFunc initFunc(PatchCustomEquipment);
+static u8 PauseGetLimbType(s32 limbIndex) {
+    const u8 swordEquip = CUR_EQUIP_VALUE(EQUIP_TYPE_SWORD);
+    const u8 shieldEquip = CUR_EQUIP_VALUE(EQUIP_TYPE_SHIELD);
+    const bool isBGS = (swordEquip == EQUIP_VALUE_SWORD_BIGGORON);
+    const bool isSword = (swordEquip != EQUIP_VALUE_SWORD_NONE);
+    const bool childHylian = (!LINK_IS_ADULT && shieldEquip == PLAYER_SHIELD_HYLIAN);
+
+    switch (limbIndex) {
+        case PLAYER_LIMB_L_HAND:
+            if (!isSword)
+                return PLAYER_MODELTYPE_LH_OPEN;
+            return isBGS ? PLAYER_MODELTYPE_LH_BGS : PLAYER_MODELTYPE_LH_SWORD;
+        case PLAYER_LIMB_R_HAND:
+            return (isBGS || childHylian) ? PLAYER_MODELTYPE_RH_CLOSED : PLAYER_MODELTYPE_RH_SHIELD;
+        case PLAYER_LIMB_SHEATH:
+            if (isBGS || childHylian)
+                return PLAYER_MODELTYPE_SHEATH_19;
+            return PLAYER_MODELTYPE_SHEATH_17;
+    }
+    return 0;
+}
+
+// Counter-scale hand mesh when EquipmentAlwaysVisible + ScaleAdultEquipmentAsChild is active on child Link.
+static constexpr float HAND_COUNTER_SCALE_Y_OFFSET = 100.0f;
+
+static void BuildHandItemDL(PlayState* play, Gfx** dList, Gfx* hand, Gfx* item, bool counterScaleHand) {
+    if (counterScaleHand) {
+        Mtx* scaleMtx = (Mtx*)Graph_Alloc(play->state.gfxCtx, sizeof(Mtx));
+        MtxF mf = {};
+        mf.xx = mf.yy = mf.zz = 1.25f;
+        mf.ww = 1.0f;
+        mf.yw = HAND_COUNTER_SCALE_Y_OFFSET;
+        Matrix_MtxFToMtx(&mf, scaleMtx);
+        Gfx* buf = (Gfx*)Graph_Alloc(play->state.gfxCtx, 5 * sizeof(Gfx));
+        Gfx* p = buf;
+        gSPMatrix(p++, scaleMtx, G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+        gSPDisplayList(p++, hand);
+        gSPPopMatrix(p++, G_MTX_MODELVIEW);
+        gSPDisplayList(p++, item);
+        gSPEndDisplayList(p);
+        *dList = buf;
+    } else {
+        Gfx* buf = (Gfx*)Graph_Alloc(play->state.gfxCtx, 3 * sizeof(Gfx));
+        Gfx* p = buf;
+        gSPDisplayList(p++, hand);
+        gSPDisplayList(p++, item);
+        gSPEndDisplayList(p);
+        *dList = buf;
+    }
+}
+
+static bool IsScalingAdultItemAsChild() {
+    return CVarGetInteger(CVAR_ENHANCEMENT("EquipmentAlwaysVisible"), 0) &&
+           CVarGetInteger(CVAR_ENHANCEMENT("ScaleAdultEquipmentAsChild"), 0) && !LINK_IS_ADULT;
+}
+
+static void RegisterCustomEquipment() {
+    // World (gameplay) character
+    COND_VB_SHOULD(VB_PLAYER_OVERRIDE_LIMB_DRAW, CVarGetInteger(CVAR_SETTING("AltAssets"), 1), {
+        s32 limbIndex = va_arg(args, s32);
+        Gfx** dList = va_arg(args, Gfx**);
+        Player* player = (Player*)va_arg(args, void*);
+        PlayState* play = va_arg(args, PlayState*);
+
+        const bool isAdult = gSaveContext.linkAge == LINK_AGE_ADULT;
+        const char* customDL = nullptr;
+
+        switch (limbIndex) {
+            case PLAYER_LIMB_L_HAND: {
+                const bool isOcarina =
+                    player->heldItemAction == PLAYER_IA_OCARINA_FAIRY ||
+                    player->heldItemAction == PLAYER_IA_OCARINA_OF_TIME ||
+                    player->itemAction == PLAYER_IA_OCARINA_FAIRY || player->itemAction == PLAYER_IA_OCARINA_OF_TIME ||
+                    player->modelGroup == PLAYER_MODELGROUP_OCARINA || player->modelGroup == PLAYER_MODELGROUP_OOT;
+                if (isOcarina) {
+                    Gfx* resolvedHand = LoadGfxByName(isAdult ? gLinkAdultLeftHandNearDL : gLinkChildLeftHandNearDL);
+                    if (resolvedHand) {
+                        Gfx* buf = (Gfx*)Graph_Alloc(play->state.gfxCtx, 2 * sizeof(Gfx));
+                        Gfx* p = buf;
+                        gSPDisplayList(p++, resolvedHand);
+                        gSPEndDisplayList(p);
+                        *dList = buf;
+                    }
+                    break;
+                }
+                switch ((u8)player->leftHandType) {
+                    case PLAYER_MODELTYPE_LH_SWORD: {
+                        if (player == GET_PLAYER(play)) {
+                            if (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_KOKIRI)
+                                customDL = gCustomKokiriSwordDL;
+                            else if (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_MASTER)
+                                customDL = gCustomMasterSwordDL;
+                        } else {
+                            if (player->heldItemAction == PLAYER_IA_SWORD_KOKIRI)
+                                customDL = gCustomKokiriSwordDL;
+                            else if (player->heldItemAction == PLAYER_IA_SWORD_MASTER)
+                                customDL = gCustomMasterSwordDL;
+                        }
+                        break;
+                    }
+                    case PLAYER_MODELTYPE_LH_BGS: {
+                        const bool isBrokenKnife =
+                            (player == GET_PLAYER(play))
+                                ? CHECK_OWNED_EQUIP_ALT(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_BROKENGIANTKNIFE)
+                                : (player->heldItemId == ITEM_SWORD_KNIFE);
+                        if (isBrokenKnife) {
+                            customDL = gCustomBrokenLongswordDL;
+                        } else if (player == GET_PLAYER(play)) {
+                            if (gSaveContext.bgsFlag)
+                                customDL = gCustomLongswordDL;
+                            else
+                                customDL =
+                                    ResolveCustomChain({ gCustomBreakableLongswordDL, gCustomLongswordDL, nullptr });
+                        } else {
+                            customDL = gCustomLongswordDL;
+                        }
+                        break;
+                    }
+                    case PLAYER_MODELTYPE_LH_HAMMER:
+                        customDL = gCustomHammerDL;
+                        break;
+                    case PLAYER_MODELTYPE_LH_BOOMERANG:
+                        if (!(player->stateFlags1 & PLAYER_STATE1_BOOMERANG_THROWN))
+                            customDL = gCustomBoomerangDL;
+                        break;
+                }
+                Gfx* resolvedCustom = LoadCustomGfx(customDL);
+                if (resolvedCustom) {
+                    Gfx* resolvedHand =
+                        LoadGfxByName(isAdult ? gLinkAdultLeftHandClosedNearDL : gLinkChildLeftFistNearDL);
+                    if (resolvedHand) {
+                        const u8 lht = (u8)player->leftHandType;
+                        const bool scaleHand = IsScalingAdultItemAsChild() &&
+                                               ((gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KOKIRI &&
+                                                 lht == PLAYER_MODELTYPE_LH_SWORD) ||
+                                                lht == PLAYER_MODELTYPE_LH_BGS || lht == PLAYER_MODELTYPE_LH_HAMMER);
+                        BuildHandItemDL(play, dList, resolvedHand, resolvedCustom, scaleHand);
+                    }
+                }
+                break;
+            }
+
+            case PLAYER_LIMB_R_HAND: {
+                if (player->unk_6AD == 2) {
+                    const char* fpsHand = nullptr;
+                    const char* fpsWeapon = nullptr;
+
+                    switch (player->rightHandType) {
+                        case PLAYER_MODELTYPE_RH_BOW_SLINGSHOT:
+                        case PLAYER_MODELTYPE_RH_BOW_SLINGSHOT_2:
+                            fpsHand = isAdult ? gCustomAdultFPSHandDL : gCustomChildFPSHandDL;
+                            fpsWeapon =
+                                Player_HoldsBow(player)
+                                    ? ResolveCustomChain({ gCustomFPSBowDL, gCustomBowDL, nullptr })
+                                    : ResolveCustomChain({ gCustomFPSSlingshotDL, gCustomSlingshotDL, nullptr });
+                            break;
+                        case PLAYER_MODELTYPE_RH_HOOKSHOT:
+                            fpsHand = isAdult ? gCustomAdultFPSHandDL : gCustomChildFPSHandDL;
+                            fpsWeapon = (player->heldItemAction == PLAYER_IA_HOOKSHOT)
+                                            ? ResolveCustomChain({ gCustomFPSHookshotDL, gCustomHookshotDL, nullptr })
+                                            : ResolveCustomChain({ gCustomFPSLongshotDL, gCustomLongshotDL, nullptr });
+                            break;
+                    }
+
+                    Gfx* resolvedFpsWeapon = LoadCustomGfx(fpsWeapon);
+                    Gfx* resolvedFpsHand = LoadCustomGfx(fpsHand);
+                    if (resolvedFpsWeapon || resolvedFpsHand) {
+                        Gfx* buf = (Gfx*)Graph_Alloc(play->state.gfxCtx, 3 * sizeof(Gfx));
+                        Gfx* p = buf;
+                        if (resolvedFpsWeapon)
+                            gSPDisplayList(p++, resolvedFpsWeapon);
+                        if (resolvedFpsHand)
+                            gSPDisplayList(p++, resolvedFpsHand);
+                        gSPEndDisplayList(p);
+                        *dList = buf;
+                    }
+                } else {
+                    bool useOpenHand = false;
+                    const bool holdsTwoHanded = player->heldItemAction >= PLAYER_IA_SWORD_BIGGORON &&
+                                                player->heldItemAction <= PLAYER_IA_HAMMER;
+                    const bool isChildHylian = !isAdult && player->currentShield == PLAYER_SHIELD_HYLIAN;
+                    const bool isShielding = (player->stateFlags1 & PLAYER_STATE1_SHIELDING) != 0 && !isChildHylian &&
+                                             (!holdsTwoHanded || (CVarGetInteger(CVAR_CHEAT("ShieldTwoHanded"), 0) &&
+                                                                  player->heldItemAction != PLAYER_IA_DEKU_STICK));
+                    const bool isOcarina = player->heldItemAction == PLAYER_IA_OCARINA_FAIRY ||
+                                           player->heldItemAction == PLAYER_IA_OCARINA_OF_TIME ||
+                                           player->itemAction == PLAYER_IA_OCARINA_FAIRY ||
+                                           player->itemAction == PLAYER_IA_OCARINA_OF_TIME ||
+                                           player->modelGroup == PLAYER_MODELGROUP_OCARINA ||
+                                           player->modelGroup == PLAYER_MODELGROUP_OOT;
+                    if (isShielding) {
+                        switch (player->currentShield) {
+                            case PLAYER_SHIELD_DEKU:
+                                customDL = gCustomDekuShieldDL;
+                                break;
+                            case PLAYER_SHIELD_HYLIAN:
+                                customDL = gCustomHylianShieldDL;
+                                break;
+                            case PLAYER_SHIELD_MIRROR:
+                                customDL = gCustomMirrorShieldDL;
+                                break;
+                        }
+                    } else if (isOcarina) {
+                        const bool isOoT = player->heldItemAction == PLAYER_IA_OCARINA_OF_TIME ||
+                                           player->itemAction == PLAYER_IA_OCARINA_OF_TIME ||
+                                           player->modelGroup == PLAYER_MODELGROUP_OOT;
+                        customDL = isOoT ? (isAdult ? gCustomOcarinaOfTimeAdultDL : gCustomOcarinaOfTimeDL)
+                                         : (isAdult ? gCustomFairyOcarinaAdultDL : gCustomFairyOcarinaDL);
+                        useOpenHand = true;
+                    } else {
+                        switch ((u8)player->rightHandType) {
+                            case PLAYER_MODELTYPE_RH_SHIELD:
+                                switch (player->currentShield) {
+                                    case PLAYER_SHIELD_DEKU:
+                                        customDL = gCustomDekuShieldDL;
+                                        break;
+                                    case PLAYER_SHIELD_HYLIAN:
+                                        customDL = gCustomHylianShieldDL;
+                                        break;
+                                    case PLAYER_SHIELD_MIRROR:
+                                        customDL = gCustomMirrorShieldDL;
+                                        break;
+                                }
+                                break;
+                            case PLAYER_MODELTYPE_RH_BOW_SLINGSHOT:
+                            case PLAYER_MODELTYPE_RH_BOW_SLINGSHOT_2:
+                                customDL = Player_HoldsBow(player) ? gCustomBowDL : gCustomSlingshotDL;
+                                break;
+                            case PLAYER_MODELTYPE_RH_HOOKSHOT:
+                                customDL = (player->heldItemAction == PLAYER_IA_HOOKSHOT) ? gCustomHookshotDL
+                                                                                          : gCustomLongshotDL;
+                                break;
+                            case PLAYER_MODELTYPE_RH_OCARINA:
+                                customDL = isAdult ? gCustomFairyOcarinaAdultDL : gCustomFairyOcarinaDL;
+                                useOpenHand = true;
+                                break;
+                            case PLAYER_MODELTYPE_RH_OOT:
+                                customDL = isAdult ? gCustomOcarinaOfTimeAdultDL : gCustomOcarinaOfTimeDL;
+                                useOpenHand = true;
+                                break;
+                        }
+                    }
+                    Gfx* resolvedCustom = LoadCustomGfx(customDL);
+                    if (resolvedCustom) {
+                        const char* handPath =
+                            useOpenHand ? (isAdult ? gLinkAdultRightHandNearDL : gLinkChildRightHandNearDL)
+                                        : (isAdult ? gLinkAdultRightHandClosedNearDL : gLinkChildRightHandClosedNearDL);
+                        Gfx* resolvedHand = LoadGfxByName(handPath);
+                        if (resolvedHand) {
+                            const u8 rht = (u8)player->rightHandType;
+                            const bool scaleHand =
+                                IsScalingAdultItemAsChild() && !isOcarina &&
+                                ((player->currentShield == PLAYER_SHIELD_MIRROR &&
+                                  (isShielding || rht == PLAYER_MODELTYPE_RH_SHIELD)) ||
+                                 (!isShielding &&
+                                  (rht == PLAYER_MODELTYPE_RH_HOOKSHOT ||
+                                   (rht == PLAYER_MODELTYPE_RH_BOW_SLINGSHOT && Player_HoldsBow(player)))));
+                            BuildHandItemDL(play, dList, resolvedHand, resolvedCustom, scaleHand);
+                        }
+                    }
+                }
+                break;
+            }
+
+            case PLAYER_LIMB_SHEATH: {
+                u8 sheathType = (u8)player->sheathType;
+                const bool isOcarinaSheath =
+                    player->heldItemAction == PLAYER_IA_OCARINA_FAIRY ||
+                    player->heldItemAction == PLAYER_IA_OCARINA_OF_TIME ||
+                    player->itemAction == PLAYER_IA_OCARINA_FAIRY || player->itemAction == PLAYER_IA_OCARINA_OF_TIME ||
+                    player->modelGroup == PLAYER_MODELGROUP_OCARINA || player->modelGroup == PLAYER_MODELGROUP_OOT;
+                if (isOcarinaSheath) {
+                    const bool hasShieldEquipped = player->currentShield != PLAYER_SHIELD_NONE;
+                    sheathType = hasShieldEquipped ? PLAYER_MODELTYPE_SHEATH_18 : PLAYER_MODELTYPE_SHEATH_16;
+                } else if (player->stateFlags1 & PLAYER_STATE1_SHIELDING) {
+                    const bool sheathTwoHanded = player->heldItemAction >= PLAYER_IA_SWORD_BIGGORON &&
+                                                 player->heldItemAction <= PLAYER_IA_HAMMER;
+                    const bool sheathChildHylian = !isAdult && player->currentShield == PLAYER_SHIELD_HYLIAN;
+                    const bool sheathCanShield =
+                        !sheathChildHylian && (!sheathTwoHanded || (CVarGetInteger(CVAR_CHEAT("ShieldTwoHanded"), 0) &&
+                                                                    player->heldItemAction != PLAYER_IA_DEKU_STICK));
+                    if (sheathCanShield) {
+                        if (sheathType == PLAYER_MODELTYPE_SHEATH_18)
+                            sheathType = PLAYER_MODELTYPE_SHEATH_16;
+                        else if (sheathType == PLAYER_MODELTYPE_SHEATH_19)
+                            sheathType = PLAYER_MODELTYPE_SHEATH_17;
+                    }
+                }
+                const bool hasSword =
+                    (sheathType == PLAYER_MODELTYPE_SHEATH_16 || sheathType == PLAYER_MODELTYPE_SHEATH_18);
+                const bool hasShield =
+                    (sheathType == PLAYER_MODELTYPE_SHEATH_18 || sheathType == PLAYER_MODELTYPE_SHEATH_19);
+                const bool emptySheath =
+                    (sheathType == PLAYER_MODELTYPE_SHEATH_17 || sheathType == PLAYER_MODELTYPE_SHEATH_19);
+
+                const char* swordPath = hasSword      ? GetSwordInSheathDLForPlayer(player, play)
+                                        : emptySheath ? GetSheathOnlyDLForPlayer(player, play)
+                                                      : nullptr;
+                const char* shieldPath = hasShield ? GetShieldOnBackDL(player->currentShield) : nullptr;
+
+                Gfx* resolvedSword = LoadCustomGfx(swordPath);
+                Gfx* resolvedShield = LoadCustomGfx(shieldPath);
+                if (resolvedSword || resolvedShield) {
+                    Gfx* buf = (Gfx*)Graph_Alloc(play->state.gfxCtx, 3 * sizeof(Gfx));
+                    Gfx* p = buf;
+                    if (resolvedSword)
+                        gSPDisplayList(p++, resolvedSword);
+                    if (resolvedShield)
+                        gSPDisplayList(p++, resolvedShield);
+                    gSPEndDisplayList(p);
+                    *dList = buf;
+                }
+                break;
+            }
+
+            default:
+                break;
+        }
+    });
+
+    // Pause/equipment screen character
+    COND_VB_SHOULD(VB_PLAYER_OVERRIDE_LIMB_DRAW_PAUSE, CVarGetInteger(CVAR_SETTING("AltAssets"), 1), {
+        s32 limbIndex = va_arg(args, s32);
+        Gfx** dList = va_arg(args, Gfx**);
+        Player* player = (Player*)va_arg(args, void*);
+        PlayState* play = va_arg(args, PlayState*);
+
+        const bool isAdult = gSaveContext.linkAge == LINK_AGE_ADULT;
+        const char* customDL = nullptr;
+
+        switch (limbIndex) {
+            case PLAYER_LIMB_L_HAND: {
+                switch (PauseGetLimbType(PLAYER_LIMB_L_HAND)) {
+                    case PLAYER_MODELTYPE_LH_SWORD: {
+                        const u8 swordEquip = CUR_EQUIP_VALUE(EQUIP_TYPE_SWORD);
+                        if (swordEquip == EQUIP_VALUE_SWORD_KOKIRI)
+                            customDL = gCustomKokiriSwordDL;
+                        else
+                            customDL = gCustomMasterSwordDL;
+                        break;
+                    }
+                    case PLAYER_MODELTYPE_LH_BGS: {
+                        if (gSaveContext.bgsFlag) {
+                            customDL = gCustomLongswordDL;
+                        } else if (CHECK_OWNED_EQUIP_ALT(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_BROKENGIANTKNIFE)) {
+                            customDL = gCustomBrokenLongswordDL;
+                        } else {
+                            customDL = ResolveCustomChain({ gCustomBreakableLongswordDL, gCustomLongswordDL, nullptr });
+                        }
+                        break;
+                    }
+                }
+                Gfx* resolvedCustom = LoadCustomGfx(customDL);
+                if (resolvedCustom) {
+                    Gfx* resolvedHand =
+                        LoadGfxByName(isAdult ? gLinkAdultLeftHandClosedNearDL : gLinkChildLeftFistNearDL);
+                    if (resolvedHand) {
+                        Gfx* buf = (Gfx*)Graph_Alloc(play->state.gfxCtx, 3 * sizeof(Gfx));
+                        Gfx* p = buf;
+                        gSPDisplayList(p++, resolvedHand);
+                        gSPDisplayList(p++, resolvedCustom);
+                        gSPEndDisplayList(p);
+                        *dList = buf;
+                    }
+                }
+                break;
+            }
+
+            case PLAYER_LIMB_R_HAND: {
+                if (PauseGetLimbType(PLAYER_LIMB_R_HAND) == PLAYER_MODELTYPE_RH_SHIELD) {
+                    switch (CUR_EQUIP_VALUE(EQUIP_TYPE_SHIELD)) {
+                        case PLAYER_SHIELD_DEKU:
+                            customDL = gCustomDekuShieldDL;
+                            break;
+                        case PLAYER_SHIELD_HYLIAN:
+                            customDL = gCustomHylianShieldDL;
+                            break;
+                        case PLAYER_SHIELD_MIRROR:
+                            customDL = gCustomMirrorShieldDL;
+                            break;
+                    }
+                }
+                Gfx* resolvedCustom = LoadCustomGfx(customDL);
+                if (resolvedCustom) {
+                    Gfx* resolvedHand =
+                        LoadGfxByName(isAdult ? gLinkAdultRightHandClosedNearDL : gLinkChildRightHandClosedNearDL);
+                    if (resolvedHand) {
+                        Gfx* buf = (Gfx*)Graph_Alloc(play->state.gfxCtx, 3 * sizeof(Gfx));
+                        Gfx* p = buf;
+                        gSPDisplayList(p++, resolvedHand);
+                        gSPDisplayList(p++, resolvedCustom);
+                        gSPEndDisplayList(p);
+                        *dList = buf;
+                    }
+                }
+                break;
+            }
+
+            case PLAYER_LIMB_SHEATH: {
+                const u8 sheathType = PauseGetLimbType(PLAYER_LIMB_SHEATH);
+                const bool hasSword =
+                    (sheathType == PLAYER_MODELTYPE_SHEATH_16 || sheathType == PLAYER_MODELTYPE_SHEATH_18);
+                const bool hasShield =
+                    (sheathType == PLAYER_MODELTYPE_SHEATH_18 || sheathType == PLAYER_MODELTYPE_SHEATH_19);
+                const bool emptySheath =
+                    (sheathType == PLAYER_MODELTYPE_SHEATH_17 || sheathType == PLAYER_MODELTYPE_SHEATH_19);
+
+                const char* swordPath = hasSword      ? GetSwordInSheathDL(play)
+                                        : emptySheath ? GetSheathOnlyDL(play)
+                                                      : nullptr;
+                const char* shieldPath = hasShield ? GetShieldOnBackDL(CUR_EQUIP_VALUE(EQUIP_TYPE_SHIELD)) : nullptr;
+
+                Gfx* resolvedSword = LoadCustomGfx(swordPath);
+                Gfx* resolvedShield = LoadCustomGfx(shieldPath);
+                if (resolvedSword || resolvedShield) {
+                    Gfx* buf = (Gfx*)Graph_Alloc(play->state.gfxCtx, 3 * sizeof(Gfx));
+                    Gfx* p = buf;
+                    if (resolvedSword)
+                        gSPDisplayList(p++, resolvedSword);
+                    if (resolvedShield)
+                        gSPDisplayList(p++, resolvedShield);
+                    gSPEndDisplayList(p);
+                    *dList = buf;
+                }
+                break;
+            }
+
+            default:
+                break;
+        }
+    });
+
+    COND_VB_SHOULD(VB_DRAW_HOOKSHOT_TIP, CVarGetInteger(CVAR_SETTING("AltAssets"), 1), {
+        Player* player = va_arg(args, Player*);
+        PlayState* play = va_arg(args, PlayState*);
+        const char* tipPath = (player->heldItemAction == PLAYER_IA_LONGSHOT)
+                                  ? ResolveCustomChain({ gCustomLongshotTipDL, gCustomHookshotTipDL, nullptr })
+                                  : gCustomHookshotTipDL;
+        Gfx* resolvedTip = LoadCustomGfx(tipPath);
+        if (resolvedTip) {
+            *should = false;
+            gSPDisplayList(play->state.gfxCtx->polyOpa.p++, resolvedTip);
+        }
+    });
+
+    COND_VB_SHOULD(VB_DRAW_HOOKSHOT_CHAIN, CVarGetInteger(CVAR_SETTING("AltAssets"), 1), {
+        Player* player = va_arg(args, Player*);
+        PlayState* play = va_arg(args, PlayState*);
+        const char* chainPath = (player->heldItemAction == PLAYER_IA_LONGSHOT)
+                                    ? ResolveCustomChain({ gCustomLongshotChainDL, gCustomHookshotChainDL, nullptr })
+                                    : gCustomHookshotChainDL;
+        Gfx* resolvedChain = LoadCustomGfx(chainPath);
+        if (resolvedChain) {
+            *should = false;
+            gSPDisplayList(play->state.gfxCtx->polyOpa.p++, resolvedChain);
+        }
+    });
+}
+
+static RegisterShipInitFunc initFunc(RegisterCustomEquipment, { CVAR_SETTING("AltAssets") });

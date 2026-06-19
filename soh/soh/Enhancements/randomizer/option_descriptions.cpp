@@ -50,18 +50,17 @@ void Settings::CreateOptionDescriptions() {
         "Choose which age Link will start as.\n\n"
         "Starting as adult means you start with the Master Sword in your inventory.\n"
         "The child option is forcefully set if it would conflict with other options.";
-    mOptionDescriptions[RSK_GERUDO_FORTRESS] =
-        "Sets the state of the carpenters captured by Gerudo "
-        "in Gerudo Fortress, and with it the number of guards that spawn.\n"
-        "\n"
-        "Normal - All 4 carpenters are required to be saved.\n"
-        "\n"
-        "Fast - Only the bottom left carpenter requires rescuing.\n"
-        "\n"
-        "Free - The bridge is repaired from the start, and Nabooru cannot spawn.\n"
-        "If the Gerudo Membership Card isn't shuffled, you start with it.\n"
-        "\n"
-        "Only \"Normal\" is compatible with Gerudo Fortress Key Rings.";
+    mOptionDescriptions[RSK_GERUDO_FORTRESS] = "Sets the state of the carpenters captured by Gerudo "
+                                               "in Gerudo Fortress, and with it the number of guards that spawn.\n"
+                                               "\n"
+                                               "Normal - All 4 carpenters are required to be saved.\n"
+                                               "\n"
+                                               "Fast - Only the bottom left carpenter requires rescuing.\n"
+                                               "\n"
+                                               "Free - Bridge is repaired from start, and Nabooru cannot spawn.\n"
+                                               "If the Gerudo Membership Card isn't shuffled, you start with it.\n"
+                                               "\n"
+                                               "Only \"Normal\" is compatible with Gerudo Fortress Key Rings.";
     mOptionDescriptions[RSK_RAINBOW_BRIDGE] =
         "Alters the requirements to open the bridge to Ganon's Castle.\n"
         "\n"
@@ -244,6 +243,12 @@ void Settings::CreateOptionDescriptions() {
         "\n"
         "Adult Link will start with a second free item instead of the Master Sword.\n"
         "If you haven't found the Master Sword before facing Ganon, you won't receive it during the fight.";
+    mOptionDescriptions[RSK_SWORDLESS_EPONA_ITEMS] =
+        "Restores the vanilla glitch that lets a swordless player use C-button items (bottles, bombs, "
+        "magic, etc.) while riding Epona.\n"
+        "\n"
+        "When disabled, the B button is forced to the bow and the C buttons are disabled while swordless "
+        "on Epona, blocking the glitch.";
     mOptionDescriptions[RSK_SHUFFLE_CHILD_WALLET] = "Enabling this shuffles the Child's Wallet into the item pool.\n"
                                                     "\n"
                                                     "You will not be able to carry any rupees until you find a wallet.";
@@ -521,6 +526,11 @@ void Settings::CreateOptionDescriptions() {
         "D-pad.\n"
         "\n"
         "If disabled, only the Claim Check will be found in the pool.";
+    mOptionDescriptions[RSK_EARLY_GRANNYS_SHOP] =
+        "Makes Granny's Potion Shop available from start, rather than requiring Claim Check to be found first.\n"
+        "\n"
+        "This only applies when Shuffle Adult Trade is disabled. With Shuffle Adult "
+        "Trade enabled, Granny still requires trading the Odd Mushroom as usual.";
     mOptionDescriptions[RSK_SHUFFLE_100_GS_REWARD] =
         "Shuffle the item the cursed rich man in the House of Skulltula gives when you "
         "have collected all 100 Gold Skulltula Tokens.\n"

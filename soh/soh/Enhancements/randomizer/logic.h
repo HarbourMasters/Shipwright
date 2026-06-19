@@ -43,6 +43,8 @@ class Logic {
     bool CanUse(RandomizerGet itemName);
     bool HasProjectile(HasProjectileAge age);
     bool HasItem(RandomizerGet itemName);
+    bool ItemUseAllowed(RandomizerGet itemName);
+    bool BAllowed();
     bool HasBossSoul(RandomizerGet itemName);
     bool CanOpenOverworldDoor(RandomizerGet itemName);
     bool SmallKeys(s16 scene, uint8_t requiredAmount);
@@ -113,7 +115,6 @@ class Logic {
     bool HasFireSource();
     bool HasFireSourceWithTorch();
     bool SunlightArrows();
-    bool TradeQuestStep(RandomizerGet rg);
     bool CanStandingShield();
     bool CanShield();
     bool CanUseProjectile();

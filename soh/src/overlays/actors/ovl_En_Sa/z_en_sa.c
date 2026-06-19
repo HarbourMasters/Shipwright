@@ -544,7 +544,7 @@ void EnSa_Destroy(Actor* thisx, PlayState* play) {
 }
 
 void func_80AF6448(EnSa* this, PlayState* play) {
-    if (play->sceneNum == SCENE_KOKIRI_FOREST) {
+    if (GameInteractor_Should(VB_SARIA_GESTURE, play->sceneNum == SCENE_KOKIRI_FOREST, this)) {
         if (this->interactInfo.talkState != NPC_TALK_STATE_IDLE) {
             switch (this->actor.textId) {
                 case 0x1002:

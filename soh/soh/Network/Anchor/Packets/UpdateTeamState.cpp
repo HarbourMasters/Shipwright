@@ -160,6 +160,13 @@ void Anchor::HandlePacket_UpdateTeamState(nlohmann::json payload) {
                     (loadedData.sceneFlags[i].swch & ~mask) | (gSaveContext.sceneFlags[i].swch & mask);
             }
 
+            if (i == SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR) {
+                // Keep collapse timer flag
+                u32 mask = (1 << 0x36);
+                loadedData.sceneFlags[i].swch =
+                    (loadedData.sceneFlags[i].swch & ~mask) | (gSaveContext.sceneFlags[i].swch & mask);
+            }
+
             gSaveContext.sceneFlags[i] = loadedData.sceneFlags[i];
             if (IsSaveLoaded() && gPlayState->sceneNum == i) {
                 gPlayState->actorCtx.flags.chest = loadedData.sceneFlags[i].chest;
@@ -170,24 +177,24 @@ void Anchor::HandlePacket_UpdateTeamState(nlohmann::json payload) {
         }
 
         for (int i = 0; i < 14; i++) {
-            gSaveContext.eventChkInf[i] = loadedData.eventChkInf[i];
+            gSaveContext.eventChkInf[i] |= loadedData.eventChkInf[i];
         }
 
         for (int i = 0; i < 4; i++) {
-            gSaveContext.itemGetInf[i] = loadedData.itemGetInf[i];
+            gSaveContext.itemGetInf[i] |= loadedData.itemGetInf[i];
         }
 
         // Skip last row of infTable, don't want to sync swordless flag
         for (int i = 0; i < 29; i++) {
-            gSaveContext.infTable[i] = loadedData.infTable[i];
+            gSaveContext.infTable[i] |= loadedData.infTable[i];
         }
 
         for (int i = 0; i < ceil((RAND_INF_MAX + 15) / 16); i++) {
-            gSaveContext.ship.randomizerInf[i] = loadedData.ship.randomizerInf[i];
+            gSaveContext.ship.randomizerInf[i] |= loadedData.ship.randomizerInf[i];
         }
 
         for (int i = 0; i < 6; i++) {
-            gSaveContext.gsFlags[i] = loadedData.gsFlags[i];
+            gSaveContext.gsFlags[i] |= loadedData.gsFlags[i];
         }
 
         gSaveContext.ship.stats.firstInput = loadedData.ship.stats.firstInput;

@@ -13,7 +13,10 @@
 #include "soh/util.h"
 #include "../kaleido.h"
 #include "soh/Enhancements/randomizer/Traps.h"
+#include "soh/Enhancements/randomizer/3drando/random.hpp"
 #include "soh/Enhancements/randomizer/randomizer.h"
+
+#include <vector>
 
 #include <fstream>
 #include <spdlog/spdlog.h>
@@ -34,36 +37,6 @@ Context::Context() {
     mLogic = std::make_shared<Logic>();
     mTrials = std::make_shared<Trials>();
     mFishsanity = std::make_shared<Fishsanity>();
-    VanillaLogicDefaults = {
-        // RANDOTODO check what this does
-        &mOptions[RSK_LINKS_POCKET],
-        &mOptions[RSK_SHUFFLE_DUNGEON_REWARDS],
-        &mOptions[RSK_SHUFFLE_SONGS],
-        &mOptions[RSK_SHOPSANITY],
-        &mOptions[RSK_SHOPSANITY_COUNT],
-        &mOptions[RSK_SHOPSANITY_PRICES],
-        &mOptions[RSK_SHOPSANITY_PRICES_AFFORDABLE],
-        &mOptions[RSK_FISHSANITY],
-        &mOptions[RSK_FISHSANITY_POND_COUNT],
-        &mOptions[RSK_FISHSANITY_AGE_SPLIT],
-        &mOptions[RSK_SHUFFLE_SCRUBS],
-        &mOptions[RSK_SHUFFLE_BEEHIVES],
-        &mOptions[RSK_SHUFFLE_COWS],
-        &mOptions[RSK_SHUFFLE_POTS],
-        &mOptions[RSK_SHUFFLE_CRATES],
-        &mOptions[RSK_SHUFFLE_ROCKS],
-        &mOptions[RSK_SHUFFLE_BOULDERS],
-        &mOptions[RSK_SHUFFLE_FREESTANDING],
-        &mOptions[RSK_SHUFFLE_MERCHANTS],
-        &mOptions[RSK_SHUFFLE_FROG_SONG_RUPEES],
-        &mOptions[RSK_SHUFFLE_ADULT_TRADE],
-        &mOptions[RSK_SHUFFLE_100_GS_REWARD],
-        &mOptions[RSK_SHUFFLE_FOUNTAIN_FAIRIES],
-        &mOptions[RSK_SHUFFLE_STONE_FAIRIES],
-        &mOptions[RSK_SHUFFLE_BEAN_FAIRIES],
-        &mOptions[RSK_SHUFFLE_SONG_FAIRIES],
-        &mOptions[RSK_GOSSIP_STONE_HINTS],
-    };
 }
 
 RandomizerArea Context::GetAreaFromString(std::string str) {
@@ -360,9 +333,9 @@ void Context::CreateItemOverrides() {
         // If this is an ice trap, store the disguise model in iceTrapModels
         const auto itemLoc = GetItemLocation(locKey);
         if (itemLoc->GetPlacedRandomizerGet() == RG_ICE_TRAP) {
-            ItemOverride val(locKey, Traps::GetTrapTrickModel());
+            ItemOverride val(locKey, Traps::GetTrapTrickModel(&rando_state));
             iceTrapModels[locKey] = val.LooksLike();
-            val.SetTrickName(Traps::GetTrapName(val.LooksLike()));
+            val.SetTrickName(Traps::GetTrapName(val.LooksLike(), &rando_state));
             // If this is ice trap is in a shop, change the name based on what the model will look like
             overrides[locKey] = val;
         }

@@ -71,6 +71,11 @@ void Anchor::HandlePacket_SetFlag(nlohmann::json payload) {
             return;
         }
 
+        // Special case: Ignore Tower Collapse timer start.
+        if (sceneNum == SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR && flagType == FLAG_SCENE_SWITCH && flag == 0x36) {
+            return;
+        }
+
         auto effect = new GameInteractionEffect::SetSceneFlag();
         effect->parameters[0] = sceneNum;
         effect->parameters[1] = flagType;

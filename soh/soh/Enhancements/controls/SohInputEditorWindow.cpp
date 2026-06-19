@@ -1464,8 +1464,15 @@ void SohInputEditorWindow::DrawCameraControlPanel() {
                         .Max(5.0f)
                         .DefaultValue(1.0f)
                         .ShowButtons(true));
-    CVarSliderInt("Camera Distance: %d", CVAR_SETTING("FreeLook.MaxCameraDistance"),
-                  IntSliderOptions().Color(THEME_COLOR).Min(100).Max(900).DefaultValue(185).ShowButtons(true));
+    CVarCheckbox("Follow Default Camera Distance", CVAR_SETTING("FreeLook.UseGameDistance"),
+                 CheckboxOptions()
+                     .Color(THEME_COLOR)
+                     .Tooltip("Lets the free camera pull in and out using the game's default distance for the "
+                              "current situation instead of a fixed distance."));
+    if (!CVarGetInteger(CVAR_SETTING("FreeLook.UseGameDistance"), 0)) {
+        CVarSliderInt("Camera Distance: %d", CVAR_SETTING("FreeLook.MaxCameraDistance"),
+                      IntSliderOptions().Color(THEME_COLOR).Min(100).Max(900).DefaultValue(185).ShowButtons(true));
+    }
     CVarSliderInt("Camera Transition Speed: %d", CVAR_SETTING("FreeLook.TransitionSpeed"),
                   IntSliderOptions().Color(THEME_COLOR).Min(0).Max(900).DefaultValue(25).ShowButtons(true));
     Ship::GuiWindow::EndGroupPanel(0);
