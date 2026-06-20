@@ -60,7 +60,7 @@ void GameOver_Update(PlayState* play) {
 
                 if (gSaveContext.buttonStatus[0] != BTN_ENABLED) {
                     gSaveContext.equips.buttonItems[0] = gSaveContext.buttonStatus[0];
-                    Interface_RandoRestoreSwordless();
+                    GameInteractor_Should(VB_TEMP_B_RESTORE_SWORDLESS, true);
                 } else {
                     gSaveContext.equips.buttonItems[0] = ITEM_NONE;
                 }

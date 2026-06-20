@@ -123,16 +123,30 @@ void RegionTable_Init_LakeHylia() {
 
     areaTable[RR_LH_LAB] = Region("LH Lab", SCENE_LAKESIDE_LABORATORY, {}, {
         //Locations
-        LOCATION(RC_LH_LAB_DIVE,        (logic->HasItem(RG_GOLDEN_SCALE) || (ctx->GetTrickOption(RT_LH_LAB_DIVING) && logic->CanUse(RG_IRON_BOOTS) && logic->CanUse(RG_HOOKSHOT) && logic->HasItem(RG_BRONZE_SCALE))) && logic->HasItem(RG_SPEAK_HYLIAN)),
+        LOCATION(RC_LH_LAB_DIVE,        logic->HasItem(RG_GOLDEN_SCALE) && logic->HasItem(RG_SPEAK_HYLIAN)),
         LOCATION(RC_LH_TRADE_FROG,      logic->IsAdult && logic->CanUse(RG_EYEBALL_FROG)),
-        LOCATION(RC_LH_GS_LAB_CRATE,    logic->CanUse(RG_IRON_BOOTS) && logic->CanUse(RG_HOOKSHOT) && logic->CanBreakCrates()),
-        LOCATION(RC_LH_LAB_FRONT_RUPEE, logic->CanUse(RG_IRON_BOOTS) || logic->HasItem(RG_GOLDEN_SCALE)),
-        LOCATION(RC_LH_LAB_LEFT_RUPEE,  logic->CanUse(RG_IRON_BOOTS) || logic->HasItem(RG_GOLDEN_SCALE)),
-        LOCATION(RC_LH_LAB_RIGHT_RUPEE, logic->CanUse(RG_IRON_BOOTS) || logic->HasItem(RG_GOLDEN_SCALE)),
-        LOCATION(RC_LH_LAB_CRATE,       logic->CanUse(RG_IRON_BOOTS) && logic->CanBreakCrates()),
+        LOCATION(RC_LH_LAB_FRONT_RUPEE, logic->HasItem(RG_GOLDEN_SCALE)),
+        LOCATION(RC_LH_LAB_LEFT_RUPEE,  logic->HasItem(RG_GOLDEN_SCALE)),
+        LOCATION(RC_LH_LAB_RIGHT_RUPEE, logic->HasItem(RG_GOLDEN_SCALE)),
     }, {
         //Exits
-        ENTRANCE(RR_LAKE_HYLIA, true),
+        ENTRANCE(RR_LAKE_HYLIA,        true),
+        ENTRANCE(RR_LH_LAB_UNDERWATER, logic->CanUse(RG_IRON_BOOTS)),
+    });
+
+    //Assumes checking logic->CanUse(RG_IRON_BOOTS) on access
+    areaTable[RR_LH_LAB_UNDERWATER] = Region("LH Lab Underwater", SCENE_LAKESIDE_LABORATORY, {}, {
+        //Locations
+        //Assumes RR_LH_LAB access
+        LOCATION(RC_LH_LAB_DIVE,        (ctx->GetTrickOption(RT_LH_LAB_DIVING) && logic->CanUse(RG_HOOKSHOT) && logic->HasItem(RG_BRONZE_SCALE)) && logic->HasItem(RG_SPEAK_HYLIAN)),
+        LOCATION(RC_LH_GS_LAB_CRATE,    logic->CanUse(RG_HOOKSHOT) && logic->CanBreakCrates()),
+        LOCATION(RC_LH_LAB_FRONT_RUPEE, true),
+        LOCATION(RC_LH_LAB_LEFT_RUPEE,  true),
+        LOCATION(RC_LH_LAB_RIGHT_RUPEE, true),
+        LOCATION(RC_LH_LAB_CRATE,       logic->CanBreakCrates()),
+    }, {
+        //Exits
+        ENTRANCE(RR_LH_LAB, logic->HasItem(RG_BRONZE_SCALE)),
     });
 
     // TODO: should some of these helpers be done via events instead?

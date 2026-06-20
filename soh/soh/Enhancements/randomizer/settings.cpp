@@ -830,6 +830,7 @@ void Settings::CreateOptions() {
     });
     OPT_BOOL(RSK_SHUFFLE_KOKIRI_SWORD, "Shuffle Kokiri Sword", CVAR_RANDOMIZER_SETTING("ShuffleKokiriSword"), mOptionDescriptions[RSK_SHUFFLE_KOKIRI_SWORD]);
     OPT_BOOL(RSK_SHUFFLE_MASTER_SWORD, "Shuffle Master Sword", CVAR_RANDOMIZER_SETTING("ShuffleMasterSword"), mOptionDescriptions[RSK_SHUFFLE_MASTER_SWORD]);
+    OPT_BOOL(RSK_SWORDLESS_EPONA_ITEMS, "Swordless Epona Items", CVAR_RANDOMIZER_SETTING("SwordlessEponaItems"), mOptionDescriptions[RSK_SWORDLESS_EPONA_ITEMS]);
     OPT_BOOL(RSK_SHUFFLE_CHILD_WALLET, "Shuffle Child's Wallet", CVAR_RANDOMIZER_SETTING("ShuffleChildWallet"), mOptionDescriptions[RSK_SHUFFLE_CHILD_WALLET], IMFLAG_NONE);
     OPT_BOOL(RSK_INCLUDE_TYCOON_WALLET, "Include Tycoon Wallet", CVAR_RANDOMIZER_SETTING("IncludeTycoonWallet"), mOptionDescriptions[RSK_INCLUDE_TYCOON_WALLET]);
     OPT_BOOL(RSK_SHUFFLE_OCARINA, "Shuffle Ocarinas", CVAR_RANDOMIZER_SETTING("ShuffleOcarinas"), mOptionDescriptions[RSK_SHUFFLE_OCARINA]);
@@ -1750,6 +1751,7 @@ void Settings::CreateOptions() {
                                                                       &mOptions[RSK_SUNLIGHT_ARROWS],
                                                                       &mOptions[RSK_FULL_WALLETS],
                                                                       &mOptions[RSK_SLINGBOW_BREAK_BEEHIVES],
+                                                                      &mOptions[RSK_SWORDLESS_EPONA_ITEMS],
                                                                       &mOptions[RSK_SKIP_CHILD_ZELDA],
                                                                       &mOptions[RSK_MASK_QUEST],
                                                                       &mOptions[RSK_SKIP_CHILD_STEALTH],

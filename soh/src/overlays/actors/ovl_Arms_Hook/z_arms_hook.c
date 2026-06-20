@@ -1,5 +1,7 @@
 #include "z_arms_hook.h"
 #include "objects/object_link_boy/object_link_boy.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
@@ -331,7 +333,9 @@ void ArmsHook_Draw(Actor* thisx, PlayState* play) {
             Matrix_Scale(0.8, 0.8, 0.8, MTXMODE_APPLY);
         }
         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        gSPDisplayList(POLY_OPA_DISP++, gLinkAdultHookshotTipDL);
+        if (GameInteractor_Should(VB_DRAW_HOOKSHOT_TIP, true, player, play)) {
+            gSPDisplayList(POLY_OPA_DISP++, gLinkAdultHookshotTipDL);
+        }
         Matrix_Translate(this->actor.world.pos.x, this->actor.world.pos.y, this->actor.world.pos.z, MTXMODE_NEW);
         Math_Vec3f_Diff(&player->unk_3C8, &this->actor.world.pos, &sp78);
         sp58 = SQ(sp78.x) + SQ(sp78.z);
@@ -345,7 +349,9 @@ void ArmsHook_Draw(Actor* thisx, PlayState* play) {
             Matrix_Scale(0.015f, 0.015f, sqrtf(SQ(sp78.y) + sp58) * 0.01f, MTXMODE_APPLY);
         }
         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        gSPDisplayList(POLY_OPA_DISP++, gLinkAdultHookshotChainDL);
+        if (GameInteractor_Should(VB_DRAW_HOOKSHOT_CHAIN, true, player, play)) {
+            gSPDisplayList(POLY_OPA_DISP++, gLinkAdultHookshotChainDL);
+        }
 
         CLOSE_DISPS(play->state.gfxCtx);
     }

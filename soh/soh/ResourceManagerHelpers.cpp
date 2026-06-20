@@ -313,6 +313,8 @@ extern "C" Gfx* ResourceMgr_LoadGfxByName(const char* path) {
     ResourceMgr_UnloadOriginalWhenAltExists(path);
 
     auto res = std::static_pointer_cast<Fast::DisplayList>(ResourceMgr_GetResourceByNameHandlingMQ(path));
+    if (!res)
+        return nullptr;
     return (Gfx*)&res->Instructions[0];
 }
 

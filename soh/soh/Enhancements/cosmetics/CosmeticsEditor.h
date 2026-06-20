@@ -30,12 +30,123 @@ typedef enum {
 } CosmeticGroup;
 
 #ifdef __cplusplus
+#include <string>
+#include <map>
+#include "soh/SohGui/UIWidgets.hpp"
 extern "C" {
 #endif //__cplusplus
 
 Color_RGBA8 CosmeticsEditor_GetDefaultValue(const char* id);
 
 #ifdef __cplusplus
+}
+
+#define COSMETIC_OPTION(id, label, group, defaultColor, supportsAlpha, supportsRainbow, advancedOption)               \
+    {                                                                                                                 \
+        id, {                                                                                                         \
+            CVAR_COSMETIC(id), CVAR_COSMETIC(id ".Value"), CVAR_COSMETIC(id ".Rainbow"), CVAR_COSMETIC(id ".Locked"), \
+                CVAR_COSMETIC(id ".Changed"), label, group,                                                           \
+                ImVec4(defaultColor.r / 255.0f, defaultColor.g / 255.0f, defaultColor.b / 255.0f,                     \
+                       defaultColor.a / 255.0f),                                                                      \
+                defaultColor, supportsAlpha, supportsRainbow, advancedOption                                          \
+        }                                                                                                             \
+    }
+
+typedef struct {
+    const char* cvar;
+    const char* valuesCvar;
+    const char* rainbowCvar;
+    const char* lockedCvar;
+    const char* changedCvar;
+    std::string label;
+    CosmeticGroup group;
+    ImVec4 currentColor;
+    Color_RGBA8 defaultColor;
+    bool supportsAlpha;
+    bool supportsRainbow;
+    bool advancedOption;
+} CosmeticOption;
+
+extern std::map<std::string, CosmeticOption> cosmeticOptions;
+
+inline void ResetColor(CosmeticOption& cosmeticOption) {
+    Color_RGBA8 defaultColor = { cosmeticOption.defaultColor.r, cosmeticOption.defaultColor.g,
+                                 cosmeticOption.defaultColor.b, cosmeticOption.defaultColor.a };
+    cosmeticOption.currentColor.x = defaultColor.r / 255.0f;
+    cosmeticOption.currentColor.y = defaultColor.g / 255.0f;
+    cosmeticOption.currentColor.z = defaultColor.b / 255.0f;
+    cosmeticOption.currentColor.w = defaultColor.a / 255.0f;
+
+    CVarClear(cosmeticOption.changedCvar);
+    CVarClear(cosmeticOption.rainbowCvar);
+    CVarClear(cosmeticOption.lockedCvar);
+    CVarClear(cosmeticOption.valuesCvar);
+    CVarClear((std::string(cosmeticOption.valuesCvar) + ".R").c_str());
+    CVarClear((std::string(cosmeticOption.valuesCvar) + ".G").c_str());
+    CVarClear((std::string(cosmeticOption.valuesCvar) + ".B").c_str());
+    CVarClear((std::string(cosmeticOption.valuesCvar) + ".A").c_str());
+    CVarClear((std::string(cosmeticOption.valuesCvar) + ".Type").c_str());
+
+    if (cosmeticOption.label == "Bow Body") {
+        ResetColor(cosmeticOptions.at("Equipment.BowTips"));
+        ResetColor(cosmeticOptions.at("Equipment.BowHandle"));
+    } else if (cosmeticOption.label == "Idle Primary") {
+        ResetColor(cosmeticOptions.at("Navi.IdleSecondary"));
+    } else if (cosmeticOption.label == "Enemy Primary") {
+        ResetColor(cosmeticOptions.at("Navi.EnemySecondary"));
+    } else if (cosmeticOption.label == "NPC Primary") {
+        ResetColor(cosmeticOptions.at("Navi.NPCSecondary"));
+    } else if (cosmeticOption.label == "Props Primary") {
+        ResetColor(cosmeticOptions.at("Navi.PropsSecondary"));
+    } else if (cosmeticOption.label == "Level 1 Secondary") {
+        ResetColor(cosmeticOptions.at("SpinAttack.Level1Primary"));
+    } else if (cosmeticOption.label == "Level 2 Secondary") {
+        ResetColor(cosmeticOptions.at("SpinAttack.Level2Primary"));
+    } else if (cosmeticOption.label == "Item Select Color") {
+        ResetColor(cosmeticOptions.at("Kaleido.ItemSelB"));
+        ResetColor(cosmeticOptions.at("Kaleido.ItemSelC"));
+        ResetColor(cosmeticOptions.at("Kaleido.ItemSelD"));
+    } else if (cosmeticOption.label == "Equip Select Color") {
+        ResetColor(cosmeticOptions.at("Kaleido.EquipSelB"));
+        ResetColor(cosmeticOptions.at("Kaleido.EquipSelC"));
+        ResetColor(cosmeticOptions.at("Kaleido.EquipSelD"));
+    } else if (cosmeticOption.label == "Map Dungeon Color") {
+        ResetColor(cosmeticOptions.at("Kaleido.MapSelDunB"));
+        ResetColor(cosmeticOptions.at("Kaleido.MapSelDunC"));
+        ResetColor(cosmeticOptions.at("Kaleido.MapSelDunD"));
+    } else if (cosmeticOption.label == "Quest Status Color") {
+        ResetColor(cosmeticOptions.at("Kaleido.QuestStatusB"));
+        ResetColor(cosmeticOptions.at("Kaleido.QuestStatusC"));
+        ResetColor(cosmeticOptions.at("Kaleido.QuestStatusD"));
+    } else if (cosmeticOption.label == "Map Color") {
+        ResetColor(cosmeticOptions.at("Kaleido.MapSelectB"));
+        ResetColor(cosmeticOptions.at("Kaleido.MapSelectC"));
+        ResetColor(cosmeticOptions.at("Kaleido.MapSelectD"));
+    } else if (cosmeticOption.label == "Save Color") {
+        ResetColor(cosmeticOptions.at("Kaleido.SaveB"));
+        ResetColor(cosmeticOptions.at("Kaleido.SaveC"));
+        ResetColor(cosmeticOptions.at("Kaleido.SaveD"));
+    }
+    ShipInit::Init(cosmeticOption.valuesCvar);
+}
+
+inline CosmeticOption MakeCosmeticOption(const char* cvar, const char* valuesCvar, const char* rainbowCvar,
+                                         const char* lockedCvar, const char* changedCvar, const char* label,
+                                         CosmeticGroup group, Color_RGBA8 defaultColor, bool supportsAlpha,
+                                         bool supportsRainbow, bool advancedOption) {
+    return CosmeticOption{ cvar,
+                           valuesCvar,
+                           rainbowCvar,
+                           lockedCvar,
+                           changedCvar,
+                           label,
+                           group,
+                           ImVec4(defaultColor.r / 255.0f, defaultColor.g / 255.0f, defaultColor.b / 255.0f,
+                                  defaultColor.a / 255.0f),
+                           defaultColor,
+                           supportsAlpha,
+                           supportsRainbow,
+                           advancedOption };
 }
 
 typedef struct {
@@ -60,6 +171,11 @@ void CosmeticsEditor_RandomizeGroup(CosmeticGroup group);
 void CosmeticsEditor_ResetAll();
 void CosmeticsEditor_ResetGroup(CosmeticGroup group);
 void ApplyOrResetCustomGfxPatches(bool manualChange = true);
+void ScanCustomCosmetics();
+bool HasCustomCosmetics();
+void DrawCustomCosmetics();
+void ApplyCustomCosmetics();
+void UpdateCustomCosmeticsRainbow(int hue, float rainbowSpeed, int& index);
 
 class CosmeticsEditorWindow final : public Ship::GuiWindow {
   public:

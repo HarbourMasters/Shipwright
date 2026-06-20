@@ -1,4 +1,7 @@
+#include <algorithm>
+#include <cctype>
 #include <map>
+#include <set>
 #include <vector>
 
 #include <libultraship/classes.h>
@@ -16,7 +19,27 @@ std::vector<std::string> disabledModFiles;
 std::vector<std::string> unsupportedFiles;
 std::map<std::string, std::filesystem::path> filePaths;
 static int dragSourceIndex = -1;
-static int dragTargetIndex = -1;
+static std::set<std::string> selectedEnabledModFiles;
+static int lastSelectedModIndex = -1;
+static bool boxSelectingMods = false;
+static ImVec2 boxSelectStart;
+
+struct ModRowBounds {
+    std::string file;
+    size_t index;
+    ImVec2 min;
+    ImVec2 max;
+};
+
+static std::vector<ModRowBounds> modRowBounds;
+
+bool PointInRow(const ImVec2& point, const ModRowBounds& row) {
+    return point.x >= row.min.x && point.x <= row.max.x && point.y >= row.min.y && point.y <= row.max.y;
+}
+
+bool RectIntersectsRow(const ImVec2& min, const ImVec2& max, const ModRowBounds& row) {
+    return min.x <= row.max.x && max.x >= row.min.x && min.y <= row.max.y && max.y >= row.min.y;
+}
 
 namespace SohGui {
 extern std::shared_ptr<SohMenu> mSohMenu;
@@ -65,32 +88,88 @@ void AfterModChange() {
     });
 }
 
-void ModsPostDragAndDrop() {
-    if (dragTargetIndex != -1) {
-        std::string file = enabledModFiles[dragSourceIndex];
-        enabledModFiles.erase(enabledModFiles.begin() + dragSourceIndex);
-        enabledModFiles.insert(enabledModFiles.begin() + dragTargetIndex, file);
-        dragTargetIndex = dragSourceIndex = -1;
-        AfterModChange();
+void ClearSelectedMods() {
+    selectedEnabledModFiles.clear();
+    lastSelectedModIndex = -1;
+}
+
+void SelectOnlyMod(const std::string& file, int index) {
+    selectedEnabledModFiles.clear();
+    selectedEnabledModFiles.insert(file);
+    lastSelectedModIndex = index;
+}
+
+void HandleModSelection(size_t index, const std::string& file) {
+    const ImGuiIO& io = ImGui::GetIO();
+
+    if (io.KeyShift && lastSelectedModIndex >= 0 && lastSelectedModIndex < static_cast<int>(enabledModFiles.size())) {
+        auto [startIndex, endIndex] = std::minmax(static_cast<size_t>(lastSelectedModIndex), index);
+        selectedEnabledModFiles.clear();
+        for (size_t i = startIndex; i <= endIndex; i++)
+            selectedEnabledModFiles.insert(enabledModFiles[i]);
+    } else if (io.KeyCtrl) {
+        if (selectedEnabledModFiles.erase(file) == 0)
+            selectedEnabledModFiles.insert(file);
+        lastSelectedModIndex = static_cast<int>(index);
+    } else {
+        SelectOnlyMod(file, static_cast<int>(index));
     }
 }
 
-void ModsHandleDragAndDrop(std::vector<std::string>& objectList, int targetIndex, const std::string& itemName,
-                           ImGuiDragDropFlags flags = ImGuiDragDropFlags_SourceAllowNullID) {
-    if (ImGui::BeginDragDropSource(flags)) {
-        ImGui::SetDragDropPayload("DragMove", &targetIndex, sizeof(uint32_t));
-        ImGui::Text("Move %s", itemName.c_str());
-        ImGui::EndDragDropSource();
+void UpdateBoxSelection() {
+    if (!ImGui::IsWindowHovered(ImGuiHoveredFlags_AllowWhenBlockedByActiveItem) && !boxSelectingMods)
+        return;
+
+    ImGuiIO& io = ImGui::GetIO();
+    if (!boxSelectingMods && ImGui::IsMouseClicked(ImGuiMouseButton_Left) &&
+        !std::any_of(modRowBounds.begin(), modRowBounds.end(),
+                     [&](const ModRowBounds& row) { return PointInRow(io.MousePos, row); })) {
+        boxSelectingMods = true;
+        boxSelectStart = io.MousePos;
+        selectedEnabledModFiles.clear();
     }
 
-    if (ImGui::BeginDragDropTarget()) {
-        if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragMove")) {
-            IM_ASSERT(payload->DataSize == sizeof(uint32_t));
-            dragSourceIndex = *(const int*)payload->Data;
-            dragTargetIndex = targetIndex;
+    if (!boxSelectingMods)
+        return;
+
+    ImVec2 selectionMin(std::min(boxSelectStart.x, io.MousePos.x), std::min(boxSelectStart.y, io.MousePos.y));
+    ImVec2 selectionMax(std::max(boxSelectStart.x, io.MousePos.x), std::max(boxSelectStart.y, io.MousePos.y));
+
+    selectedEnabledModFiles.clear();
+    for (const auto& row : modRowBounds)
+        if (RectIntersectsRow(selectionMin, selectionMax, row)) {
+            selectedEnabledModFiles.insert(row.file);
+            lastSelectedModIndex = static_cast<int>(row.index);
         }
-        ImGui::EndDragDropTarget();
+
+    ImGui::GetWindowDrawList()->AddRectFilled(selectionMin, selectionMax, IM_COL32(80, 145, 220, 35));
+    ImGui::GetWindowDrawList()->AddRect(selectionMin, selectionMax, IM_COL32(80, 145, 220, 180));
+    if (ImGui::IsMouseReleased(ImGuiMouseButton_Left))
+        boxSelectingMods = false;
+}
+
+void MoveSelectedModsToInsertionIndex(size_t insertionIndex) {
+    if (dragSourceIndex < 0 || dragSourceIndex >= static_cast<int>(enabledModFiles.size()))
+        return;
+
+    insertionIndex = std::min(insertionIndex, enabledModFiles.size());
+
+    if (!selectedEnabledModFiles.contains(enabledModFiles[dragSourceIndex]))
+        SelectOnlyMod(enabledModFiles[dragSourceIndex], dragSourceIndex);
+
+    std::vector<std::string> movedFiles;
+    for (size_t i = enabledModFiles.size(); i-- > 0;) {
+        if (selectedEnabledModFiles.contains(enabledModFiles[i])) {
+            movedFiles.push_back(enabledModFiles[i]);
+            enabledModFiles.erase(enabledModFiles.begin() + i);
+            insertionIndex -= i < insertionIndex;
+        }
     }
+
+    std::reverse(movedFiles.begin(), movedFiles.end());
+    insertionIndex = std::min(insertionIndex, enabledModFiles.size());
+    enabledModFiles.insert(enabledModFiles.begin() + insertionIndex, movedFiles.begin(), movedFiles.end());
+    lastSelectedModIndex = -1;
 }
 
 std::vector<std::string> GetEnabledModsFromCVar() {
@@ -126,6 +205,7 @@ void UpdateModFiles(bool init = false, bool reset = false) {
     if (init || reset) {
         enabledModFiles.clear();
         enabledModFiles = GetEnabledModsFromCVar();
+        ClearSelectedMods();
     }
     disabledModFiles.clear();
     unsupportedFiles.clear();
@@ -187,6 +267,7 @@ void EnableMod(std::string file) {
 
     // TODO: runtime changes
     // GetArchiveManager()->AddArchive(file);
+    ClearSelectedMods();
     AfterModChange();
 }
 
@@ -196,12 +277,49 @@ void DisableMod(std::string file) {
 
     // TODO: runtime changes
     // GetArchiveManager()->RemoveArchive(file);
+    ClearSelectedMods();
     AfterModChange();
 }
 
-void DrawModInfo(std::string file) {
-    ImGui::SameLine();
-    ImGui::Text("%s", file.c_str());
+void HandleModDropBoundaries() {
+    const ImGuiPayload* payload = ImGui::GetDragDropPayload();
+    if (modRowBounds.empty() || payload == nullptr || !payload->IsDataType("DragMove"))
+        return;
+
+    ImVec2 mousePos = ImGui::GetIO().MousePos;
+    float hitPadding = std::max(4.0f, ImGui::GetTextLineHeightWithSpacing() * 0.35f);
+    float lineStartX = ImGui::GetWindowPos().x + ImGui::GetWindowContentRegionMin().x;
+    float lineEndX = ImGui::GetWindowPos().x + ImGui::GetWindowContentRegionMax().x;
+    int hoveredInsertionIndex = -1;
+    float hoveredLineY = 0.0f;
+
+    auto testBoundary = [&](size_t insertionIndex, float lineY) {
+        if (mousePos.x < lineStartX || mousePos.x > lineEndX || mousePos.y < lineY - hitPadding ||
+            mousePos.y > lineY + hitPadding) {
+            return;
+        }
+
+        hoveredInsertionIndex = static_cast<int>(insertionIndex);
+        hoveredLineY = lineY;
+    };
+
+    testBoundary(modRowBounds.front().index + 1, modRowBounds.front().min.y);
+    for (size_t i = 0; i + 1 < modRowBounds.size(); i++)
+        testBoundary(modRowBounds[i].index, (modRowBounds[i].max.y + modRowBounds[i + 1].min.y) * 0.5f);
+    testBoundary(modRowBounds.back().index, modRowBounds.back().max.y);
+
+    if (hoveredInsertionIndex == -1)
+        return;
+
+    ImGui::GetWindowDrawList()->AddLine(ImVec2(lineStartX, hoveredLineY), ImVec2(lineEndX, hoveredLineY),
+                                        IM_COL32(255, 211, 96, 255), 2.0f);
+    if (ImGui::IsMouseReleased(ImGuiMouseButton_Left)) {
+        IM_ASSERT(payload->DataSize == sizeof(int));
+        dragSourceIndex = *(const int*)payload->Data;
+        MoveSelectedModsToInsertionIndex(static_cast<size_t>(hoveredInsertionIndex));
+        dragSourceIndex = -1;
+        AfterModChange();
+    }
 }
 
 void DrawMods(bool enabled) {
@@ -213,7 +331,11 @@ void DrawMods(bool enabled) {
     bool madeAnyChange = false;
     int switchFromIndex = -1;
     int switchToIndex = -1;
-    uint32_t index = 0;
+
+    if (enabled) {
+        UpdateBoxSelection();
+        modRowBounds.clear();
+    }
 
     for (size_t i = selectedModFiles.size() - 1; i != SIZE_MAX; i--) {
         std::string file = selectedModFiles[i];
@@ -261,19 +383,45 @@ void DrawMods(bool enabled) {
             }
         }
 
-        DrawModInfo(filePaths.at(file).filename().generic_string());
+        ImGui::SameLine();
+        std::string displayName = filePaths.at(file).filename().generic_string();
+        if (enabled) {
+            ImGui::PushID(file.c_str());
+            float selectableWidth =
+                ImGui::CalcTextSize(displayName.c_str()).x + ImGui::GetStyle().FramePadding.x * 2.0f;
+            if (ImGui::Selectable(displayName.c_str(), selectedEnabledModFiles.contains(file), 0,
+                                  ImVec2(selectableWidth, 0.0f)))
+                HandleModSelection(i, file);
+            ImGui::PopID();
+        } else {
+            ImGui::Text("%s", displayName.c_str());
+        }
+
         if (enabled) {
             ImGui::EndGroup();
-            ModsHandleDragAndDrop(selectedModFiles, i, file);
+            modRowBounds.push_back({ file, i, ImGui::GetItemRectMin(), ImGui::GetItemRectMax() });
+            if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID)) {
+                int sourceIndex = static_cast<int>(i);
+                if (!selectedEnabledModFiles.contains(file))
+                    SelectOnlyMod(file, sourceIndex);
+                ImGui::SetDragDropPayload("DragMove", &sourceIndex, sizeof(int));
+                if (selectedEnabledModFiles.size() == 1) {
+                    ImGui::Text("Move %s", file.c_str());
+                } else {
+                    ImGui::Text("Move %zu mods", selectedEnabledModFiles.size());
+                }
+                ImGui::EndDragDropSource();
+            }
         }
     }
 
     if (enabled) {
-        ModsPostDragAndDrop();
+        HandleModDropBoundaries();
     }
 
     if (madeAnyChange) {
         std::iter_swap(selectedModFiles.begin() + switchFromIndex, selectedModFiles.begin() + switchToIndex);
+        ClearSelectedMods();
         AfterModChange();
     }
 }
@@ -318,6 +466,7 @@ void ModMenuWindow::DrawElement() {
                                   "to save this change.",
                                   "Clear", "Cancel", [&]() {
                                       enabledModFiles.clear();
+                                      ClearSelectedMods();
                                       AfterModChange();
                                   });
         }
