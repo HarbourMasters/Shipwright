@@ -421,6 +421,7 @@ if(MSVC)
                 /Gy;
             >
             /W3;
+            /WX;
             /bigobj;
             /sdl-;
             /permissive-;
@@ -443,6 +444,7 @@ if(MSVC)
             /MP;
             /sdl-;
             /W3;
+            /WX;
             ${DEFAULT_CXX_DEBUG_INFORMATION_FORMAT};
             ${DEFAULT_CXX_EXCEPTION_HANDLING}
         )

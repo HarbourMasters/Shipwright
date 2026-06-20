@@ -274,16 +274,16 @@ void CustomMessage::LoadIntoFont() {
     switch (gSaveContext.language) {
         case LANGUAGE_FRA:
             msgCtx->msgLength = font->msgLength =
-                SohUtils::CopyStringToCharBuffer(buffer, GetFrench(MF_RAW), maxBufferSize);
+                static_cast<u32>(SohUtils::CopyStringToCharBuffer(buffer, GetFrench(MF_RAW), maxBufferSize));
             break;
         case LANGUAGE_GER:
             msgCtx->msgLength = font->msgLength =
-                SohUtils::CopyStringToCharBuffer(buffer, GetGerman(MF_RAW), maxBufferSize);
+                static_cast<u32>(SohUtils::CopyStringToCharBuffer(buffer, GetGerman(MF_RAW), maxBufferSize));
             break;
         case LANGUAGE_ENG:
         default:
             msgCtx->msgLength = font->msgLength =
-                SohUtils::CopyStringToCharBuffer(buffer, GetEnglish(MF_RAW), maxBufferSize);
+                static_cast<u32>(SohUtils::CopyStringToCharBuffer(buffer, GetEnglish(MF_RAW), maxBufferSize));
             break;
     }
 }

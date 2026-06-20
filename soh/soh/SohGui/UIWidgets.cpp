@@ -522,6 +522,8 @@ void PopStyleSlider() {
 
 bool SliderInt(const char* label, int32_t* value, const IntSliderOptions& options) {
     bool dirty = false;
+    std::string visibleLabelStr = std::string(label).substr(0, std::string(label).find("#"));
+    const char* visibleLabel = visibleLabelStr.c_str();
     std::string invisibleLabelStr = "##" + std::string(label);
     const char* invisibleLabel = invisibleLabelStr.c_str();
     ImGui::PushID(label);
@@ -530,11 +532,11 @@ bool SliderInt(const char* label, int32_t* value, const IntSliderOptions& option
     PushStyleSlider(options.color);
     float width = (options.size == ImVec2(0, 0)) ? ImGui::GetContentRegionAvail().x : options.size.x;
     if (options.labelPosition == LabelPositions::Near || options.labelPosition == LabelPositions::Far) {
-        width = width - (ImGui::CalcTextSize(label).x + ImGui::GetStyle().FramePadding.x);
+        width = width - (ImGui::CalcTextSize(visibleLabel).x + ImGui::GetStyle().FramePadding.x);
     }
     ImGui::AlignTextToFramePadding();
     if (options.alignment == ComponentAlignments::Right) {
-        ImGui::Text(label, *value);
+        ImGui::Text(visibleLabel, *value);
         if (options.labelPosition == LabelPositions::Above) {
             ImGui::NewLine();
             ImGui::SameLine(ImGui::GetContentRegionAvail().x - width);
@@ -545,7 +547,7 @@ bool SliderInt(const char* label, int32_t* value, const IntSliderOptions& option
         }
     } else if (options.alignment == ComponentAlignments::Left) {
         if (options.labelPosition == LabelPositions::Above) {
-            ImGui::Text(label, *value);
+            ImGui::Text(visibleLabel, *value);
         }
     }
     if (options.showButtons) {
@@ -590,11 +592,11 @@ bool SliderInt(const char* label, int32_t* value, const IntSliderOptions& option
     if (options.alignment == ComponentAlignments::Left) {
         if (options.labelPosition == LabelPositions::Near) {
             ImGui::SameLine();
-            ImGui::Text(label, *value);
+            ImGui::Text(visibleLabel, *value);
         } else if (options.labelPosition == LabelPositions::Far || options.labelPosition == LabelPositions::None) {
-            ImGui::SameLine(ImGui::GetContentRegionAvail().x - ImGui::CalcTextSize(label).x +
+            ImGui::SameLine(ImGui::GetContentRegionAvail().x - ImGui::CalcTextSize(visibleLabel).x +
                             ImGui::GetStyle().ItemSpacing.x);
-            ImGui::Text(label, *value);
+            ImGui::Text(visibleLabel, *value);
         }
     }
     PopStyleSlider();
@@ -654,6 +656,8 @@ void ClampFloat(float* value, float min, float max, float step) {
 
 bool SliderFloat(const char* label, float* value, const FloatSliderOptions& options) {
     bool dirty = false;
+    std::string visibleLabelStr = std::string(label).substr(0, std::string(label).find("#"));
+    const char* visibleLabel = visibleLabelStr.c_str();
     std::string invisibleLabelStr = "##" + std::string(label);
     const char* invisibleLabel = invisibleLabelStr.c_str();
     float valueToDisplay = options.isPercentage ? *value * 100.0f : *value;
@@ -663,14 +667,14 @@ bool SliderFloat(const char* label, float* value, const FloatSliderOptions& opti
     ImGui::BeginGroup();
     ImGui::BeginDisabled(options.disabled);
     PushStyleSlider(options.color);
-    float labelSpacing = ImGui::CalcTextSize(label).x + ImGui::GetStyle().ItemSpacing.x;
+    float labelSpacing = ImGui::CalcTextSize(visibleLabel).x + ImGui::GetStyle().ItemSpacing.x;
     float width = (options.size == ImVec2(0, 0)) ? ImGui::GetContentRegionAvail().x : options.size.x;
     if (options.labelPosition == LabelPositions::Near || options.labelPosition == LabelPositions::Far) {
-        width = width - (ImGui::CalcTextSize(label).x + ImGui::GetStyle().FramePadding.x);
+        width = width - (ImGui::CalcTextSize(visibleLabel).x + ImGui::GetStyle().FramePadding.x);
     }
     ImGui::AlignTextToFramePadding();
     if (options.alignment == ComponentAlignments::Right) {
-        ImGui::Text(label, *value);
+        ImGui::Text(visibleLabel, *value);
         if (options.labelPosition == LabelPositions::Above) {
             ImGui::NewLine();
             ImGui::SameLine(ImGui::GetContentRegionAvail().x - width);
@@ -683,7 +687,7 @@ bool SliderFloat(const char* label, float* value, const FloatSliderOptions& opti
         }
     } else if (options.alignment == ComponentAlignments::Left) {
         if (options.labelPosition == LabelPositions::Above) {
-            ImGui::Text(label, *value);
+            ImGui::Text(visibleLabel, *value);
         }
     }
     if (options.showButtons) {
@@ -722,10 +726,10 @@ bool SliderFloat(const char* label, float* value, const FloatSliderOptions& opti
     if (options.alignment == ComponentAlignments::Left) {
         if (options.labelPosition == LabelPositions::Near) {
             ImGui::SameLine();
-            ImGui::Text(label, *value);
+            ImGui::Text(visibleLabel, *value);
         } else if (options.labelPosition == LabelPositions::Far || options.labelPosition == LabelPositions::None) {
             ImGui::SameLine(ImGui::GetContentRegionAvail().x - labelSpacing);
-            ImGui::Text(label, *value);
+            ImGui::Text(visibleLabel, *value);
         }
     }
     PopStyleSlider();

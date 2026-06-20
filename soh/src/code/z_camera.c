@@ -6921,14 +6921,19 @@ s32 Camera_Special9(Camera* camera) {
             camera->unk_14C |= (0x400 | 0x10);
             sCameraInterfaceFlags = 0;
 
-            if (camera->xzSpeed > 0.001f || CHECK_BTN_ALL(D_8015BD7C->state.input[0].press.button, BTN_A) ||
-                CHECK_BTN_ALL(D_8015BD7C->state.input[0].press.button, BTN_B) ||
-                CHECK_BTN_ALL(D_8015BD7C->state.input[0].press.button, BTN_CLEFT) ||
-                CHECK_BTN_ALL(D_8015BD7C->state.input[0].press.button, BTN_CDOWN) ||
-                CHECK_BTN_ALL(D_8015BD7C->state.input[0].press.button, BTN_CUP) ||
-                CHECK_BTN_ALL(D_8015BD7C->state.input[0].press.button, BTN_CRIGHT) ||
-                CHECK_BTN_ALL(D_8015BD7C->state.input[0].press.button, BTN_R) ||
-                CHECK_BTN_ALL(D_8015BD7C->state.input[0].press.button, BTN_Z) || params->interfaceFlags & 0x8) {
+            // SOH [Enhancement] VB_RELEASE_DOORC_CAMERA lets free look hand the door peek camera
+            // back on right-stick input (see soh/Enhancements/camera/FreeLookDoorCamRelease.cpp).
+            if (GameInteractor_Should(
+                    VB_RELEASE_DOORC_CAMERA,
+                    camera->xzSpeed > 0.001f || CHECK_BTN_ALL(D_8015BD7C->state.input[0].press.button, BTN_A) ||
+                        CHECK_BTN_ALL(D_8015BD7C->state.input[0].press.button, BTN_B) ||
+                        CHECK_BTN_ALL(D_8015BD7C->state.input[0].press.button, BTN_CLEFT) ||
+                        CHECK_BTN_ALL(D_8015BD7C->state.input[0].press.button, BTN_CDOWN) ||
+                        CHECK_BTN_ALL(D_8015BD7C->state.input[0].press.button, BTN_CUP) ||
+                        CHECK_BTN_ALL(D_8015BD7C->state.input[0].press.button, BTN_CRIGHT) ||
+                        CHECK_BTN_ALL(D_8015BD7C->state.input[0].press.button, BTN_R) ||
+                        CHECK_BTN_ALL(D_8015BD7C->state.input[0].press.button, BTN_Z) || params->interfaceFlags & 0x8,
+                    camera)) {
 
                 Camera_ChangeSettingFlags(camera, camera->prevSetting, 2);
                 camera->unk_14C |= (0x4 | 0x2);

@@ -125,6 +125,38 @@ void SetStartingItems() {
         Item_Give(NULL, ITEM_SWORD_KOKIRI);
     if (Randomizer_GetSettingValue(RSK_STARTING_DEKU_SHIELD))
         Item_Give(NULL, ITEM_SHIELD_DEKU);
+    if (Randomizer_GetSettingValue(RSK_STARTING_HYLIAN_SHIELD))
+        Item_Give(NULL, ITEM_SHIELD_HYLIAN);
+    if (Randomizer_GetSettingValue(RSK_STARTING_MIRROR_SHIELD))
+        Item_Give(NULL, ITEM_SHIELD_MIRROR);
+    if (Randomizer_GetSettingValue(RSK_STARTING_GORON_TUNIC))
+        Item_Give(NULL, ITEM_TUNIC_GORON);
+    if (Randomizer_GetSettingValue(RSK_STARTING_ZORA_TUNIC))
+        Item_Give(NULL, ITEM_TUNIC_ZORA);
+    if (Randomizer_GetSettingValue(RSK_STARTING_IRON_BOOTS))
+        Item_Give(NULL, ITEM_BOOTS_IRON);
+    if (Randomizer_GetSettingValue(RSK_STARTING_HOVER_BOOTS))
+        Item_Give(NULL, ITEM_BOOTS_HOVER);
+    if (Randomizer_GetSettingValue(RSK_STARTING_MEGATON_HAMMER))
+        Item_Give(NULL, ITEM_HAMMER);
+    if (Randomizer_GetSettingValue(RSK_STARTING_BOOMERANG))
+        Item_Give(NULL, ITEM_BOOMERANG);
+    if (Randomizer_GetSettingValue(RSK_STARTING_LENS_OF_TRUTH))
+        Item_Give(NULL, ITEM_LENS);
+    if (Randomizer_GetSettingValue(RSK_STARTING_DINS_FIRE))
+        Item_Give(NULL, ITEM_DINS_FIRE);
+    if (Randomizer_GetSettingValue(RSK_STARTING_FARORES_WIND))
+        Item_Give(NULL, ITEM_FARORES_WIND);
+    if (Randomizer_GetSettingValue(RSK_STARTING_NAYRUS_LOVE))
+        Item_Give(NULL, ITEM_NAYRUS_LOVE);
+    if (Randomizer_GetSettingValue(RSK_STARTING_FIRE_ARROWS))
+        Item_Give(NULL, ITEM_ARROW_FIRE);
+    if (Randomizer_GetSettingValue(RSK_STARTING_ICE_ARROWS))
+        Item_Give(NULL, ITEM_ARROW_ICE);
+    if (Randomizer_GetSettingValue(RSK_STARTING_LIGHT_ARROWS))
+        Item_Give(NULL, ITEM_ARROW_LIGHT);
+    if (Randomizer_GetSettingValue(RSK_STARTING_STONE_OF_AGONY))
+        Item_Give(NULL, ITEM_STONE_OF_AGONY);
 
     // Songs
     if (Randomizer_GetSettingValue(RSK_STARTING_ZELDAS_LULLABY))
@@ -180,6 +212,151 @@ void SetStartingItems() {
         } else {
             gSaveContext.inventory.equipment |= 1 << 1;
         }
+    }
+
+    // Tiered/progressive starting items. The upgrade items are given cumulatively where Item_Give
+    // only sets the base inventory content on the first tier.
+    switch (Randomizer_GetSettingValue(RSK_STARTING_HOOKSHOT)) {
+        case 2:
+            Item_Give(NULL, ITEM_LONGSHOT);
+            break;
+        case 1:
+            Item_Give(NULL, ITEM_HOOKSHOT);
+            break;
+    }
+
+    uint8_t startBow = Randomizer_GetSettingValue(RSK_STARTING_BOW);
+    if (startBow >= 1)
+        Item_Give(NULL, ITEM_QUIVER_30);
+    if (startBow >= 2)
+        Item_Give(NULL, ITEM_QUIVER_40);
+    if (startBow >= 3)
+        Item_Give(NULL, ITEM_QUIVER_50);
+
+    uint8_t startSlingshot = Randomizer_GetSettingValue(RSK_STARTING_SLINGSHOT);
+    if (startSlingshot >= 1)
+        Item_Give(NULL, ITEM_SLINGSHOT);
+    if (startSlingshot >= 2)
+        Item_Give(NULL, ITEM_BULLET_BAG_40);
+    if (startSlingshot >= 3)
+        Item_Give(NULL, ITEM_BULLET_BAG_50);
+
+    uint8_t startBombBag = Randomizer_GetSettingValue(RSK_STARTING_BOMB_BAG);
+    if (startBombBag >= 1)
+        Item_Give(NULL, ITEM_BOMB_BAG_20);
+    if (startBombBag >= 2)
+        Item_Give(NULL, ITEM_BOMB_BAG_30);
+    if (startBombBag >= 3)
+        Item_Give(NULL, ITEM_BOMB_BAG_40);
+
+    switch (Randomizer_GetSettingValue(RSK_STARTING_STRENGTH)) {
+        case 3:
+            Item_Give(NULL, ITEM_GAUNTLETS_GOLD);
+            break;
+        case 2:
+            Item_Give(NULL, ITEM_GAUNTLETS_SILVER);
+            break;
+        case 1:
+            Item_Give(NULL, ITEM_BRACELET);
+            break;
+    }
+
+    switch (Randomizer_GetSettingValue(RSK_STARTING_SCALE)) {
+        case 2:
+            Item_Give(NULL, ITEM_SCALE_GOLDEN);
+            break;
+        case 1:
+            Item_Give(NULL, ITEM_SCALE_SILVER);
+            break;
+    }
+
+    switch (Randomizer_GetSettingValue(RSK_STARTING_WALLET)) {
+        case 2:
+            Item_Give(NULL, ITEM_WALLET_GIANT);
+            break;
+        case 1:
+            Item_Give(NULL, ITEM_WALLET_ADULT);
+            break;
+    }
+
+    uint8_t startMagic = Randomizer_GetSettingValue(RSK_STARTING_MAGIC_METER);
+    if (startMagic > 0) {
+        gSaveContext.isMagicAcquired = true;
+        gSaveContext.isDoubleMagicAcquired = startMagic >= 2;
+        gSaveContext.magicLevel = startMagic;
+        gSaveContext.magicCapacity = startMagic * MAGIC_NORMAL_METER;
+        gSaveContext.magic = gSaveContext.magicCapacity;
+    }
+
+    uint8_t startBombchu = Randomizer_GetSettingValue(RSK_STARTING_BOMBCHU_BAG);
+    if (startBombchu > 0) {
+        uint8_t bombchuMode = Randomizer_GetSettingValue(RSK_BOMBCHU_BAG);
+        if (bombchuMode == RO_BOMBCHU_BAG_SINGLE) {
+            INV_CONTENT(ITEM_BOMBCHU) = ITEM_BOMBCHU;
+            AMMO(ITEM_BOMBCHU) = 20;
+        } else if (bombchuMode == RO_BOMBCHU_BAG_PROGRESSIVE) {
+            static const uint8_t bombchuCapacities[] = { 0, 20, 30, 50 };
+            gSaveContext.ship.quest.data.randomizer.bombchuUpgradeLevel = startBombchu;
+            INV_CONTENT(ITEM_BOMBCHU) = ITEM_BOMBCHU;
+            AMMO(ITEM_BOMBCHU) = bombchuCapacities[startBombchu];
+        }
+    }
+
+    // Big poe bottles first: Item_Give for a bottled content fills the first empty-bottle
+    // slot, so each poe is paired with the bottle given right before it. Ruto's Letter fills
+    // an empty inventory slot on its own. The remaining plain empty bottles follow.
+    uint8_t emptyBottles = 0;
+    for (RandomizerSettingKey bottleKey :
+         { RSK_STARTING_BOTTLE_1, RSK_STARTING_BOTTLE_2, RSK_STARTING_BOTTLE_3, RSK_STARTING_BOTTLE_4 }) {
+        uint8_t bottle = Randomizer_GetSettingValue(bottleKey);
+        switch (bottle) {
+            case RO_STARTING_BOTTLE_OFF:
+                break;
+            case RO_STARTING_BOTTLE_EMPTY:
+                emptyBottles++;
+                break;
+            case RO_STARTING_BOTTLE_BIG_POE:
+                Item_Give(NULL, ITEM_BOTTLE);
+                Item_Give(NULL, ITEM_BIG_POE);
+                break;
+            case RO_STARTING_BOTTLE_RUTOS_LETTER:
+                Item_Give(NULL, ITEM_LETTER_RUTO);
+                break;
+            default:
+                SPDLOG_ERROR("[SetStartingItems] Unhandled value for bottleKey {}: {}", (int)bottleKey, bottle);
+                assert(false);
+                break;
+        }
+    }
+    for (uint8_t i = 0; i < emptyBottles; i++) {
+        Item_Give(NULL, ITEM_BOTTLE);
+    }
+
+    if (Randomizer_GetSettingValue(RSK_STARTING_WEIRD_EGG) && Randomizer_GetSettingValue(RSK_SHUFFLE_WEIRD_EGG)) {
+        Item_Give(NULL, ITEM_WEIRD_EGG);
+    }
+    if (Randomizer_GetSettingValue(RSK_STARTING_CLAIM_CHECK)) {
+        Item_Give(NULL, ITEM_CLAIM_CHECK);
+    }
+    if (Randomizer_GetSettingValue(RSK_STARTING_GERUDO_CARD)) {
+        Item_Give(NULL, ITEM_GERUDO_CARD);
+    }
+
+    if (Randomizer_GetSettingValue(RSK_STARTING_BUNNY_HOOD)) {
+        Flags_SetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_MASK_BUNNY);
+        if (INV_CONTENT(ITEM_TRADE_CHILD) == ITEM_NONE) {
+            INV_CONTENT(ITEM_TRADE_CHILD) = ITEM_MASK_BUNNY;
+        }
+    }
+
+    // Giant's Knife and Biggoron's Sword share an item slot, bgsFlag marks unbreakable
+    switch (Randomizer_GetSettingValue(RSK_STARTING_BIGGORON_SWORD)) {
+        case RO_STARTING_BGS_BIGGORON_SWORD:
+            gSaveContext.bgsFlag = true;
+            [[fallthrough]];
+        case RO_STARTING_BGS_GIANTS_KNIFE:
+            Item_Give(NULL, ITEM_SWORD_BGS);
+            break;
     }
 
     if (Randomizer_GetSettingValue(RSK_FULL_WALLETS)) {
