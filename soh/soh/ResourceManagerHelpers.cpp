@@ -37,7 +37,7 @@ static const char* ResourceMgr_ResolveLinkTunicDListPath(const char* path) {
     constexpr std::string_view childPrefix = "__OTR__objects/object_link_child/";
 
     std::string_view objectPrefix;
-    const char *objectFolder;
+    const char* objectFolder;
 
     if (std::string_view(originalPath).starts_with(adultPrefix)) {
         objectPrefix = adultPrefix;
