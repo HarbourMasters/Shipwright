@@ -693,7 +693,7 @@ void Player_UpdateBottleHeld(PlayState* play, Player* this, s32 item, s32 action
         this->heldItemAction = actionParam;
     }
 
-    if (GameInteractor_Should(VB_PLAYER_UPDATE_BOTTLE_HELD, this->itemAction != PLAYER_IA_BOTTLE_MILK_FULL, this)) {
+    if (GameInteractor_Should(VB_PLAYER_UPDATE_BOTTLE_HELD, true, this)) {
         this->itemAction = actionParam;
     }
 }

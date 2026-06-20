@@ -603,16 +603,23 @@ static void RegisterCustomEquipment() {
         Player* player = va_arg(args, Player*);
         PlayState* play = va_arg(args, PlayState*);
         const char* contentDL = nullptr;
+        Gfx* resolvedContent = nullptr;
         if (player->itemAction >= PLAYER_IA_BOTTLE &&
             player->itemAction < PLAYER_IA_BOTTLE + std::size(bottleContentDLs)) {
             contentDL = bottleContentDLs[player->itemAction - PLAYER_IA_BOTTLE];
         }
-        Gfx* resolvedContent = LoadCustomGfx(contentDL);
+
+        if (contentDL) {
+            resolvedContent = LoadCustomGfx(contentDL);
+        }
+
         Gfx* resolvedBottle = LoadCustomGfx(gCustomBottleDL);
         if (resolvedBottle) {
             *should = false;
             gSPDisplayList(play->state.gfxCtx->polyXlu.p++, resolvedBottle);
-            gSPDisplayList(play->state.gfxCtx->polyOpa.p++, resolvedContent);
+            if (resolvedContent) {
+                gSPDisplayList(play->state.gfxCtx->polyOpa.p++, resolvedContent);
+            }
         }
     });
 
