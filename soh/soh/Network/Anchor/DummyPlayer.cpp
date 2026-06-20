@@ -1,5 +1,8 @@
 #include "Anchor.h"
+#include "soh/Network/Anchor/AnchorModRegistry.h"
 #include "soh/Enhancements/nametag.h"
+#include "soh/frame_interpolation.h"
+#include "soh/ResourceManagerHelpers.h"
 
 extern "C" {
 #include "macros.h"
@@ -91,6 +94,9 @@ void DummyPlayer_Init(Actor* actor, PlayState* play) {
     if (!isGlobalRoom) {
         NameTag_RegisterForActorWithOptions(actor, client.name.c_str(), {});
     }
+
+    AnchorModRegistry::ApplyModelToPlayer(client.modelId, client.linkAge, player);
+    client.appliedModelId = client.modelId;
 }
 
 void Math_Vec3s_Copy(Vec3s* dest, Vec3s* src) {
@@ -174,6 +180,11 @@ void DummyPlayer_Update(Actor* actor, PlayState* play) {
         gSaveContext.equips.buttonItems[0] = originalButtonItem0;
     }
 
+    if (client.modelId != client.appliedModelId) {
+        AnchorModRegistry::ApplyModelToPlayer(client.modelId, client.linkAge, player);
+        client.appliedModelId = client.modelId;
+    }
+
     if (Anchor::Instance->roomState.pvpMode == 0 ||
         (Anchor::Instance->roomState.pvpMode == 1 &&
          client.teamId == CVarGetString(CVAR_REMOTE_ANCHOR("TeamId"), "default"))) {
@@ -222,6 +233,7 @@ void DummyPlayer_Update(Actor* actor, PlayState* play) {
 
 void DummyPlayer_Draw(Actor* actor, PlayState* play) {
     Player* player = (Player*)actor;
+    static bool sLastAltAssetsEnabled = ResourceMgr_IsAltAssetsEnabled();
 
     uint32_t clientId = Anchor::Instance->GetDummyPlayerClientId(actor);
 
@@ -236,13 +248,39 @@ void DummyPlayer_Draw(Actor* actor, PlayState* play) {
         return;
     }
 
+    bool altAssetsEnabled = ResourceMgr_IsAltAssetsEnabled();
+    if (altAssetsEnabled != sLastAltAssetsEnabled) {
+        if (altAssetsEnabled) {
+            AnchorModRegistry::ApplyModelToPlayer(client.modelId, client.linkAge, player);
+        } else {
+            AnchorModRegistry::ApplyModelToPlayer("", client.linkAge, player);
+        }
+        sLastAltAssetsEnabled = altAssetsEnabled;
+    }
+
     // Hack to account for usage of gSaveContext in Player_Draw
     s32 originalAge = gSaveContext.linkAge;
     gSaveContext.linkAge = client.linkAge;
     u8 originalButtonItem0 = gSaveContext.equips.buttonItems[0];
     gSaveContext.equips.buttonItems[0] = client.buttonItem0;
 
+    AnchorTextureOverrides textureOverrides = {};
+    bool hasCustomModel = altAssetsEnabled && AnchorModRegistry::HasCustomModel(client.modelId, client.linkAge,
+                                                                                player->skelAnime.limbCount);
+    if (hasCustomModel) {
+        AnchorModRegistry::SetAnchorModelOverride(client.modelId, client.linkAge);
+        textureOverrides = AnchorModRegistry::ApplyAnchorFlipbookTextures(player, client.modelId, client.linkAge);
+    }
+
     Player_Draw((Actor*)player, play);
+
+    if (textureOverrides.hasEye || textureOverrides.hasMouth) {
+        AnchorModRegistry::RestoreAnchorFlipbookTextures(textureOverrides, client.linkAge);
+    }
+    if (hasCustomModel) {
+        AnchorModRegistry::ClearAnchorModelOverride();
+    }
+
     gSaveContext.linkAge = originalAge;
     gSaveContext.equips.buttonItems[0] = originalButtonItem0;
 }

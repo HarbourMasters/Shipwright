@@ -8,6 +8,7 @@
 #include "soh/Enhancements/randomizer/SeedContext.h"
 #include <libultraship/libultraship.h>
 #include <soh/GameVersions.h>
+#include <soh/Network/Anchor/AnchorModRegistry.h>
 #include "resource/type/SohResourceType.h"
 #include "resource/type/Array.h"
 #include "resource/type/Skeleton.h"
@@ -19,6 +20,14 @@
 #include <stb_image.h>
 
 extern "C" PlayState* gPlayState;
+
+void ResourceMgr_SetAnchorModelOverride(const std::string& modelId, int32_t linkAge) {
+    AnchorModRegistry::SetAnchorModelOverride(modelId, linkAge);
+}
+
+void ResourceMgr_ClearAnchorModelOverride() {
+    AnchorModRegistry::ClearAnchorModelOverride();
+}
 
 extern "C" uint32_t ResourceMgr_GetNumGameVersions() {
     return static_cast<u32>(
@@ -215,6 +224,11 @@ std::shared_ptr<Ship::IResource> ResourceMgr_GetResourceByNameHandlingMQ(const c
 }
 
 extern "C" char* ResourceMgr_GetResourceDataByNameHandlingMQ(const char* path) {
+    void* customTexture = AnchorModRegistry::TryLoadAnchorTextureOverride(path);
+    if (customTexture != nullptr) {
+        return reinterpret_cast<char*>(customTexture);
+    }
+
     auto res = ResourceMgr_GetResourceByNameHandlingMQ(path);
 
     if (res == nullptr) {
@@ -273,6 +287,11 @@ extern "C" char* ResourceMgr_LoadJPEG(char* data, size_t dataSize) {
 }
 
 extern "C" char* ResourceMgr_LoadTexOrDListByName(const char* filePath) {
+    void* customTexture = AnchorModRegistry::TryLoadAnchorTextureOverride(filePath);
+    if (customTexture != nullptr) {
+        return reinterpret_cast<char*>(customTexture);
+    }
+
     auto res = ResourceMgr_GetResourceByNameHandlingMQ(filePath);
 
     if (res->GetInitData()->Type == static_cast<uint32_t>(Fast::ResourceType::DisplayList)) {
@@ -311,6 +330,11 @@ extern "C" Gfx* ResourceMgr_LoadGfxByName(const char* path) {
     // to clear the cache so the alt asset will be loaded instead
     // OTRTODO: If Alt loading over original cache is fixed, this line can most likely be removed
     ResourceMgr_UnloadOriginalWhenAltExists(path);
+
+    Gfx* customGfx = reinterpret_cast<Gfx*>(AnchorModRegistry::TryLoadAnchorOverride(path));
+    if (customGfx != nullptr) {
+        return customGfx;
+    }
 
     auto res = std::static_pointer_cast<Fast::DisplayList>(ResourceMgr_GetResourceByNameHandlingMQ(path));
     if (!res)
