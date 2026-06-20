@@ -305,6 +305,7 @@ static const Migration version3Migrations[] = {
     { "gEnableBetaQuest", "gCheats.EnableBetaQuest" },
     { "gEzISG", "gCheats.EasyISG" },
     { "gEzQPA", "gCheats.EasyQPA" },
+    { "gEzESS", "gCheats.EasyESS" },
     { "gFireproofDekuShield", "gCheats.FireproofDekuShield" },
     { "gFreezeTime", "gCheats.FreezeTime" },
     { "gHookshotEverything", "gCheats.HookshotEverything" },

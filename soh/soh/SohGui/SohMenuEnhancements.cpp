@@ -1816,6 +1816,9 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Easy QPA", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_CHEAT("EasyQPA"))
         .Options(CheckboxOptions().Tooltip("Gives you the glitched damage value of the quick put away glitch."));
+    AddWidget(path, "Easy ESS", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_CHEAT("EasyESS"))
+        .Options(CheckboxOptions().Tooltip("Force ESS position while holding M1."));
     AddWidget(path, "Clear Cutscene Pointer", WIDGET_BUTTON)
         .Callback([](WidgetInfo& info) { GameInteractor::RawAction::ClearCutscenePointer(); })
         .Options(ButtonOptions()
