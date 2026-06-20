@@ -166,6 +166,7 @@ static const Migration version3Migrations[] = {
     { "gDamageMul", "gEnhancements.DamageMult" },
     { "gDampeAllNight", "gEnhancements.DampeAllNight" },
     { "gDampeWin", "gEnhancements.DampeWin" },
+    { "gDashScaling", "gEnhancements.RupeeDashScaling" },
     { "gDashInterval", "gEnhancements.RupeeDashInterval" },
     { "gDayGravePull", "gEnhancements.DayGravePull" },
     { "gDekuNutUpgradeFix", "gEnhancements.DekuNutUpgradeFix" },
