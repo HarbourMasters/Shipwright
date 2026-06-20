@@ -34,12 +34,10 @@ static void UpdateRupeeDash() {
 
     rupeeDashTimer = 0;
     if (gSaveContext.rupees > 0) {
-        uint16_t rupeeChange = 0;
+        uint16_t rupeeChange = -1;
         if (CVAR_RUPEE_DASH_SCALING_VALUE) {
             const uint16_t walletSize = (CUR_UPG_VALUE(UPG_WALLET) + 1);
             rupeeChange = walletSize * -1;
-        } else {
-            rupeeChange = -1;
         }
         Rupees_ChangeBy(rupeeChange);
     } else {
