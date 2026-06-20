@@ -605,7 +605,6 @@ static void RegisterCustomEquipment() {
         const char* contentDL = nullptr;
         Gfx* resolvedContent = nullptr;
         Gfx* resolvedBottle = LoadCustomGfx(gCustomBottleDL);
-        
         if (resolvedBottle) {
             *should = false;
             gSPDisplayList(play->state.gfxCtx->polyXlu.p++, resolvedBottle);
