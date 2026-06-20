@@ -291,7 +291,7 @@ static void RegisterCustomEquipment() {
 
                     Gfx* resolvedFpsWeapon = LoadCustomGfx(fpsWeapon);
                     Gfx* resolvedFpsHand = LoadCustomGfx(fpsHand);
-                    if (resolvedFpsWeapon || resolvedFpsHand) {
+                    if (resolvedFpsWeapon) {
                         Gfx* buf = (Gfx*)Graph_Alloc(play->state.gfxCtx, 3 * sizeof(Gfx));
                         Gfx* p = buf;
                         if (resolvedFpsWeapon)
