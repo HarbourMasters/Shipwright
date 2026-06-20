@@ -2179,6 +2179,16 @@ typedef enum {
     // true
     // ```
     // #### `args`
+    // - `int32_t` (item ID)
+    // - `*u8` (pointer to button status)
+    // - `*s16` (pointer to flag)
+    VB_DISABLE_ROCS_FEATHER_WHILE_SWIMMING,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
     // - `*EnNiwLady`
     VB_SET_CUCCO_COUNT,
 
