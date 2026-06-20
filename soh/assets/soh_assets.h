@@ -194,6 +194,15 @@ static const ALIGN_ASSET(2) char gGiZoraJabbernutDL[] = dgGiZoraJabbernutDL;
 #define dgGiFishingPoleDL "__OTR__objects/object_gi_fishing_pole/gGiFishingPoleDL"
 static const ALIGN_ASSET(2) char gGiFishingPoleDL[] = dgGiFishingPoleDL;
 
+#define dgGiClimbDL "__OTR__objects/object_gi_climb/gGiClimbDL"
+static const ALIGN_ASSET(2) char gGiClimbDL[] = dgGiClimbDL;
+
+#define dgGiCrawlDL "__OTR__objects/object_gi_crawl/gGiCrawlDL"
+static const ALIGN_ASSET(2) char gGiCrawlDL[] = dgGiCrawlDL;
+
+#define dgGiOpenChestsDL "__OTR__objects/object_gi_chest/gGiOpenChestsDL"
+static const ALIGN_ASSET(2) char gGiOpenChestsDL[] = dgGiOpenChestsDL;
+
 #define dgMysteryItemDL "__OTR__objects/object_mystery_item/gMysteryItemDL"
 static const ALIGN_ASSET(2) char gMysteryItemDL[] = dgMysteryItemDL;
 
@@ -490,6 +499,15 @@ static const ALIGN_ASSET(2) char gFileSelLanguageGERTex[] = dgFileSelLanguageGER
 
 #define dgRocsFeatherTex "__OTR__textures/icon_item_static/gRocsFeatherTex"
 static const ALIGN_ASSET(2) char gRocsFeatherTex[] = dgRocsFeatherTex;
+
+#define dgCrawlTex "__OTR__textures/icon_item_static/gCrawlTex"
+static const ALIGN_ASSET(2) char gCrawlTex[] = dgCrawlTex;
+
+#define dgClimbTex "__OTR__textures/icon_item_static/gClimbTex"
+static const ALIGN_ASSET(2) char gClimbTex[] = dgClimbTex;
+
+#define dgOpenChestsTex "__OTR__textures/icon_item_static/gOpenChestsTex"
+static const ALIGN_ASSET(2) char gOpenChestsTex[] = dgOpenChestsTex;
 
 #define dgRocsFeatherItemNameENGTex "__OTR__textures/item_name_static/gRocsFeatherItemNameENGTex"
 static const ALIGN_ASSET(2) char gRocsFeatherItemNameENGTex[] = dgRocsFeatherItemNameENGTex;
