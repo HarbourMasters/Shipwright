@@ -21,22 +21,28 @@
 
 extern "C" PlayState* gPlayState;
 
+struct LinkTunicDListCacheKey {
+    size_t operator()(const std::pair<std::string, const char*>& key) const {
+        return std::hash<std::string>{}(key.first) ^ std::hash<const char*>{}(key.second);
+    }
+};
+
 static const char* ResourceMgr_ResolveLinkTunicDListPath(const char* path) {
     if (path == nullptr) {
         return nullptr;
     }
 
-    const std::string originalPath = path;
+    const char* originalPath = path;
     constexpr std::string_view adultPrefix = "__OTR__objects/object_link_boy/";
     constexpr std::string_view childPrefix = "__OTR__objects/object_link_child/";
 
     std::string_view objectPrefix;
-    std::string objectFolder;
+    const char *objectFolder;
 
-    if (originalPath.starts_with(adultPrefix)) {
+    if (std::string_view(originalPath).starts_with(adultPrefix)) {
         objectPrefix = adultPrefix;
         objectFolder = "object_link_boy";
-    } else if (originalPath.starts_with(childPrefix)) {
+    } else if (std::string_view(originalPath).starts_with(childPrefix)) {
         objectPrefix = childPrefix;
         objectFolder = "object_link_child";
     } else {
@@ -58,17 +64,22 @@ static const char* ResourceMgr_ResolveLinkTunicDListPath(const char* path) {
             return path;
     }
 
+    static std::unordered_map<std::pair<std::string, const char*>, std::string, LinkTunicDListCacheKey>
+        sResolvedLinkTunicDListPaths;
+    std::pair<std::string, const char*> cacheKey{ originalPath, tunicSuffix };
+    if (auto it = sResolvedLinkTunicDListPaths.find(cacheKey); it != sResolvedLinkTunicDListPaths.end()) {
+        return it->second.c_str();
+    }
+
     const std::string candidate =
-        "__OTR__objects/" + objectFolder + "_" + tunicSuffix + "/" + originalPath.substr(objectPrefix.size());
+        fmt::format("__OTR__objects/{}_{}/{}", objectFolder, tunicSuffix, originalPath + objectPrefix.size());
 
     if (!ResourceGetIsCustomByName(candidate.c_str()) && !ResourceMgr_FileExists(candidate.c_str()) &&
         !(ResourceMgr_IsAltAssetsEnabled() && ResourceMgr_FileAltExists(candidate.c_str()))) {
         return path;
     }
 
-    static std::unordered_map<std::string, std::string> sResolvedLinkTunicDListPaths;
-    const std::string cacheKey = originalPath + "|" + tunicSuffix;
-    auto it = sResolvedLinkTunicDListPaths.emplace(cacheKey, candidate).first;
+    auto it = sResolvedLinkTunicDListPaths.emplace(std::move(cacheKey), candidate).first;
     return it->second.c_str();
 }
 
