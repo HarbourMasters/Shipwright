@@ -21,6 +21,7 @@ int Playthrough_Init(uint32_t seed, std::set<RandomizerCheck> excludedLocations,
     Random_Init(seed);
 
     auto ctx = Rando::Context::GetInstance();
+    ctx->SetSeedGenerated(false);
     ctx->overrides.clear();
     ctx->ItemReset();
     ctx->HintReset();
@@ -80,6 +81,9 @@ int Playthrough_Init(uint32_t seed, std::set<RandomizerCheck> excludedLocations,
         StopPerformanceTimer(PT_SPOILER_LOG);
         SPDLOG_INFO("Writing Spoiler Log Done");
     }
+
+    // Seed is only considered ready after spoiler JSON is fully written.
+    ctx->SetSeedGenerated(true);
 
     ctx->playthroughLocations.clear();
     ctx->playthroughBeatable = false;

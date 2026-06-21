@@ -21,6 +21,7 @@
 #include "soh/OTRGlobals.h"
 #include <ship/window/FileDropMgr.h>
 #include "static_data.h"
+#include "split_songs.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "trial.h"
 #include "settings.h"
@@ -296,6 +297,9 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerCheck(Randomizer
 }
 
 ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGet randoGet) {
+    if (Rando::SplitSongs::IsProgressiveSong(randoGet)) {
+        return Rando::SplitSongs::GetProgressiveSongObtainability(randoGet);
+    }
     if (randomizerGetToRandInf.find(randoGet) != randomizerGetToRandInf.end()) {
         return Flags_GetRandomizerInf(randomizerGetToRandInf.find(randoGet)->second) ? CANT_OBTAIN_ALREADY_HAVE
                                                                                      : CAN_OBTAIN;
@@ -1110,6 +1114,15 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
 
     // Gameplay stats: Update the time the item was obtained
     Randomizer_GameplayStats_SetTimestamp(item);
+
+    if (Rando::SplitSongs::IsProgressiveSong(item)) {
+        const RandomizerGet resolved = Rando::SplitSongs::ResolveProgressiveSongStage(item);
+        if (resolved != item && resolved != RG_NONE) {
+            return Randomizer_Item_Give(play, Rando::StaticData::RetrieveItem(resolved).GetGIEntry_Copy());
+        }
+        Rando::SplitSongs::OnProgressiveSongReceived(item);
+        return Return_Item_Entry(giEntry, RG_NONE);
+    }
 
     // if it's an item that just sets a randomizerInf, set it
     if (randomizerGetToRandInf.find(item) != randomizerGetToRandInf.end()) {

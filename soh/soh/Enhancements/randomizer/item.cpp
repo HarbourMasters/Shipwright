@@ -2,6 +2,7 @@
 #include "item_location.h"
 
 #include "SeedContext.h"
+#include "split_songs.h"
 #include "logic.h"
 #include "3drando/item_pool.hpp"
 #include "z64item.h"
@@ -108,7 +109,8 @@ uint16_t Item::GetPrice() const {
 }
 
 std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursion)
-    if (giEntry != nullptr && giEntry->itemId != RG_PROGRESSIVE_BOMBCHU_BAG) {
+    if (giEntry != nullptr && giEntry->itemId != RG_PROGRESSIVE_BOMBCHU_BAG &&
+        !SplitSongs::IsProgressiveSong(randomizerGet)) {
         return giEntry;
     }
     std::shared_ptr<Rando::Context> ctx = Rando::Context::GetInstance();
@@ -374,6 +376,20 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
         case RG_PROGRESSIVE_GORONSWORD: // todo progressive?
             actual = RG_BIGGORON_SWORD;
             break;
+        case RG_PROGRESSIVE_ZELDAS_LULLABY:
+        case RG_PROGRESSIVE_EPONAS_SONG:
+        case RG_PROGRESSIVE_SARIAS_SONG:
+        case RG_PROGRESSIVE_SUNS_SONG:
+        case RG_PROGRESSIVE_SONG_OF_TIME:
+        case RG_PROGRESSIVE_SONG_OF_STORMS:
+        case RG_PROGRESSIVE_MINUET_OF_FOREST:
+        case RG_PROGRESSIVE_BOLERO_OF_FIRE:
+        case RG_PROGRESSIVE_SERENADE_OF_WATER:
+        case RG_PROGRESSIVE_REQUIEM_OF_SPIRIT:
+        case RG_PROGRESSIVE_NOCTURNE_OF_SHADOW:
+        case RG_PROGRESSIVE_PRELUDE_OF_LIGHT:
+            actual = SplitSongs::ResolveProgressiveSongStage(logic.get(), randomizerGet);
+            break;
         case RG_PROGRESSIVE_BOMBCHU_BAG:
             if (OTRGlobals::Instance->gRandoContext->GetOption(RSK_BOMBCHU_BAG).Is(RO_BOMBCHU_BAG_SINGLE)) {
                 if (logic->CurrentInventory(ITEM_BOMBCHU) != ITEM_NONE) {
@@ -402,11 +418,24 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
     if (giEntry != nullptr && actual == RG_NONE) {
         return giEntry;
     }
+    if (actual == randomizerGet && giEntry != nullptr) {
+        return giEntry;
+    }
+    if (actual == RG_NONE) {
+        if (giEntry != nullptr) {
+            return giEntry;
+        }
+        return StaticData::RetrieveItem(RG_NONE).GetGIEntry();
+    }
     return StaticData::RetrieveItem(actual).GetGIEntry();
 }
 
 GetItemEntry Item::GetGIEntry_Copy() const {
-    return *GetGIEntry();
+    const auto entry = GetGIEntry();
+    if (entry != nullptr) {
+        return *entry;
+    }
+    return *StaticData::RetrieveItem(RG_NONE).GetGIEntry();
 }
 
 void Item::SetPrice(const uint16_t price_) {

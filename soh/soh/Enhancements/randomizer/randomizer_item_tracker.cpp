@@ -1,14 +1,22 @@
 #include <algorithm>
+#include <cstdio>
 #include <map>
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 #include <libultraship/libultraship.h>
 #include <libultraship/controller/controldeck/ControlDeck.h>
 
 #include "randomizer_check_tracker.h"
+#include "randomizer_check_objects.h"
 #include "randomizer_item_tracker.h"
 #include "randomizerTypes.h"
+#include "logic.h"
+#include "SeedContext.h"
+#include "split_songs.h"
+#include "static_data.h"
+#include "soh/SohGui/ImGuiUtils.h"
 #include "soh/cvar_prefixes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/OTRGlobals.h"
@@ -450,6 +458,47 @@ typedef enum {
     SECTION_DISPLAY_MINIMAL_HIDDEN,
     SECTION_DISPLAY_MINIMAL_SEPARATE,
 } ItemTrackerMinimalDisplayType;
+
+static bool ItemTrackerSplitSongsActive() {
+    if (GameInteractor::IsSaveLoaded() && IS_RANDO) {
+        return OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SPLIT_OCARINA_SONGS) != 0;
+    }
+    return CVarGetInteger(CVAR_RANDOMIZER_SETTING("SplitOcarinaSongs"), 0) != 0;
+}
+
+static const Rando::SplitSongDef* SplitSongDefForQuestBit(uint32_t questBit) {
+    for (int i = 0; i < static_cast<int>(Rando::SplitSongId::SPLIT_SONG_MAX); i++) {
+        const Rando::SplitSongDef* def = Rando::SplitSongs::GetSongDef(static_cast<Rando::SplitSongId>(i));
+        if (def == nullptr) {
+            continue;
+        }
+        const auto qiIt = Rando::Logic::RandoGetToQuestItem.find(static_cast<uint32_t>(def->fullSong));
+        if (qiIt != Rando::Logic::RandoGetToQuestItem.end() && static_cast<uint32_t>(qiIt->second) == questBit) {
+            return def;
+        }
+    }
+    return nullptr;
+}
+
+static int SplitSongPartsCollected(uint32_t questBit) {
+    if (CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0) != 0) {
+        return -1;
+    }
+    if (!ItemTrackerSplitSongsActive()) {
+        return -1;
+    }
+    const Rando::SplitSongDef* def = SplitSongDefForQuestBit(questBit);
+    if (def == nullptr) {
+        return -1;
+    }
+    if (Rando::SplitSongs::HasFullSong(def->id)) {
+        return 2;
+    }
+    if (Rando::SplitSongs::HasSplitPart(def->id)) {
+        return 1;
+    }
+    return 0;
+}
 
 struct ItemTrackerNumbers {
     int currentCapacity;
@@ -1367,13 +1416,31 @@ void DrawDungeonItem(ItemTrackerItem item) {
 }
 
 void DrawSong(ItemTrackerItem item) {
+    const int partsCollected = SplitSongPartsCollected(item.id);
+    const bool hasSong = HasSong(item) || partsCollected == 2;
+    const bool hasProgress = partsCollected == 1;
+    const bool showBright = hasSong || hasProgress;
+
     float iconSize = static_cast<float>(CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36));
+    ImGui::BeginGroup();
     ImVec2 p = ImGui::GetCursorScreenPos();
-    bool hasSong = HasSong(item);
     ImGui::SetCursorScreenPos(ImVec2(p.x + 6, p.y));
     ImGui::Image(std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                     ->GetTextureByName(hasSong && IsValidSaveFile() ? item.name : item.nameFaded),
+                     ->GetTextureByName(showBright && IsValidSaveFile() ? item.name : item.nameFaded),
                  ImVec2(iconSize / 1.5f, iconSize), ImVec2(0, 0), ImVec2(1, 1));
+
+    if (hasProgress) {
+        const char* progressLabel = "1/2";
+        const ImVec2 iconMin = ImGui::GetItemRectMin();
+        const ImVec2 iconMax = ImGui::GetItemRectMax();
+        const ImVec2 textSize = ImGui::CalcTextSize(progressLabel);
+        const ImVec2 textPos(iconMin.x + ((iconMax.x - iconMin.x) - textSize.x) * 0.5f, iconMax.y - textSize.y - 2.0f);
+        ImDrawList* dl = ImGui::GetWindowDrawList();
+        dl->AddText(ImVec2(textPos.x + 1.0f, textPos.y + 1.0f), IM_COL32(0, 0, 0, 220), progressLabel);
+        dl->AddText(textPos, IM_COL32(255, 255, 255, 255), progressLabel);
+    }
+
+    ImGui::EndGroup();
     Tooltip(SohUtils::GetQuestItemName(item.id).c_str());
 }
 
