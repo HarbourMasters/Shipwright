@@ -8,18 +8,20 @@ extern "C" {
 #include "functions.h"
 #include "macros.h"
 #include "variables.h"
+
 extern PlayState* gPlayState;
 }
-
-static constexpr int32_t INVALID_SAVE_SECTION_ID = -1;
-static constexpr int32_t CORPSE_RUN_VERSION = 1;
-static int32_t sCorpseRunSaveSectionId = INVALID_SAVE_SECTION_ID;
 
 static constexpr int32_t CVAR_CORPSE_RUN_DEFAULT = 0;
 #define CVAR_CORPSE_RUN_NAME CVAR_ENHANCEMENT("CorpseRun")
 #define CVAR_CORPSE_RUN_VALUE CVarGetInteger(CVAR_CORPSE_RUN_NAME, CVAR_CORPSE_RUN_DEFAULT)
 
-struct CorpseRunRemnant {
+namespace CorpseRun {
+
+static constexpr int32_t INVALID_SAVE_SECTION_ID = -1;
+static constexpr int32_t VERSION = 1;
+
+struct Remnant {
     bool dropped = false;
     bool active = false;
 
@@ -38,16 +40,49 @@ struct CorpseRunRemnant {
 
     int32_t seeds = 0;
     int32_t bombchus = 0;
+
+    void Clear() {
+        *this = {};
+    }
+
+    bool HasContents() const {
+        return rupees   > 0
+            || bombs    > 0
+            || arrows   > 0
+            || sticks   > 0
+            || nuts     > 0
+            || seeds    > 0
+            || bombchus > 0;
+    }
+
+    bool IsRecoverable() const {
+        return dropped && active;
+    }
+
+    bool IsPendingActivation() const {
+        return dropped && !active;
+    }
 };
 
-static CorpseRunRemnant sRemnant;
+static Remnant sRemnant;
+static GetItemEntry sMysteryItem = GET_ITEM_MYSTERY;
 
-static void InitCorpseRunSave(bool isDebug) {
-    sRemnant = {};
+static void SaveFile() {
+    SaveManager::Instance->SaveFile(gSaveContext.fileNum);
 }
 
-static void LoadCorpseRunSave() {
-    sRemnant = {};
+static bool IsInRoom() {
+    return gPlayState != nullptr
+        && gPlayState->sceneNum == sRemnant.sceneNum 
+        && gPlayState->roomCtx.curRoom.num == sRemnant.roomNum;
+}
+
+static void InitSave(bool isDebug) {
+    sRemnant.Clear();
+}
+
+static void LoadSave() {
+    sRemnant.Clear();
 
     SaveManager::Instance->LoadData("dropped", sRemnant.dropped, false);
 
@@ -55,7 +90,7 @@ static void LoadCorpseRunSave() {
         return;
     }
 
-    // Loaded remnants should always be recoverable
+    // Loaded remnants should always be recoverable.
     sRemnant.active = true;
 
     SaveManager::Instance->LoadData("sceneNum", sRemnant.sceneNum, (int16_t)-1);
@@ -70,17 +105,17 @@ static void LoadCorpseRunSave() {
     SaveManager::Instance->LoadData("yaw", sRemnant.yaw, (int16_t)0);
 
     SaveManager::Instance->LoadStruct("contents", []() {
-        SaveManager::Instance->LoadData("rupees",   sRemnant.rupees,   0);
-        SaveManager::Instance->LoadData("bombs",    sRemnant.bombs,    0);
-        SaveManager::Instance->LoadData("arrows",   sRemnant.arrows,   0);
-        SaveManager::Instance->LoadData("sticks",   sRemnant.sticks,   0);
-        SaveManager::Instance->LoadData("nuts",     sRemnant.nuts,     0);
-        SaveManager::Instance->LoadData("seeds",    sRemnant.seeds,    0);
+        SaveManager::Instance->LoadData("rupees", sRemnant.rupees, 0);
+        SaveManager::Instance->LoadData("bombs", sRemnant.bombs, 0);
+        SaveManager::Instance->LoadData("arrows", sRemnant.arrows, 0);
+        SaveManager::Instance->LoadData("sticks", sRemnant.sticks, 0);
+        SaveManager::Instance->LoadData("nuts", sRemnant.nuts, 0);
+        SaveManager::Instance->LoadData("seeds", sRemnant.seeds, 0);
         SaveManager::Instance->LoadData("bombchus", sRemnant.bombchus, 0);
     });
 }
 
-static void SaveCorpseRunSave(SaveContext* saveContext, int sectionID, bool fullSave) {
+static void Save(SaveContext* saveContext, int sectionID, bool fullSave) {
     SaveManager::Instance->SaveData("dropped", sRemnant.dropped);
 
     if (!sRemnant.dropped) {
@@ -99,43 +134,29 @@ static void SaveCorpseRunSave(SaveContext* saveContext, int sectionID, bool full
     SaveManager::Instance->SaveData("yaw", sRemnant.yaw);
 
     SaveManager::Instance->SaveStruct("contents", []() {
-        SaveManager::Instance->SaveData("rupees",   sRemnant.rupees  );
-        SaveManager::Instance->SaveData("bombs",    sRemnant.bombs   );
-        SaveManager::Instance->SaveData("arrows",   sRemnant.arrows  );
-        SaveManager::Instance->SaveData("sticks",   sRemnant.sticks  );
-        SaveManager::Instance->SaveData("nuts",     sRemnant.nuts    );
-        SaveManager::Instance->SaveData("seeds",    sRemnant.seeds   );
+        SaveManager::Instance->SaveData("rupees", sRemnant.rupees);
+        SaveManager::Instance->SaveData("bombs", sRemnant.bombs);
+        SaveManager::Instance->SaveData("arrows", sRemnant.arrows);
+        SaveManager::Instance->SaveData("sticks", sRemnant.sticks);
+        SaveManager::Instance->SaveData("nuts", sRemnant.nuts);
+        SaveManager::Instance->SaveData("seeds", sRemnant.seeds);
         SaveManager::Instance->SaveData("bombchus", sRemnant.bombchus);
     });
 }
 
-static void RegisterCorpseRunSave() {
-    if (sCorpseRunSaveSectionId != INVALID_SAVE_SECTION_ID) {
+static void RegisterSave() {
+    static int32_t sSaveSectionId = CorpseRun::INVALID_SAVE_SECTION_ID;
+
+    if (sSaveSectionId != CorpseRun::INVALID_SAVE_SECTION_ID) {
         return;
     }
-    SaveManager::Instance->AddInitFunction(InitCorpseRunSave);
-    SaveManager::Instance->AddLoadFunction("corpseRun", CORPSE_RUN_VERSION, LoadCorpseRunSave);
-    sCorpseRunSaveSectionId = SaveManager::Instance->AddSaveFunction("corpseRun", CORPSE_RUN_VERSION, SaveCorpseRunSave, true, SECTION_PARENT_NONE);
+
+    SaveManager::Instance->AddInitFunction(InitSave);
+    SaveManager::Instance->AddLoadFunction("corpseRun", CorpseRun::VERSION, LoadSave);
+    sSaveSectionId = SaveManager::Instance->AddSaveFunction("corpseRun", CorpseRun::VERSION, Save, true, SECTION_PARENT_NONE);
 }
 
-static bool HasRemnantContents(const CorpseRunRemnant& remnant) {
-    return remnant.rupees   > 0
-        || remnant.bombs    > 0
-        || remnant.arrows   > 0
-        || remnant.sticks   > 0
-        || remnant.nuts     > 0
-        || remnant.seeds    > 0
-        || remnant.bombchus > 0;
-}
-
-static bool IsInRemnantRoom() {
-    return sRemnant.dropped 
-        && gPlayState != nullptr 
-        && gPlayState->sceneNum == sRemnant.sceneNum 
-        && gPlayState->roomCtx.curRoom.num == sRemnant.roomNum;
-}
-
-static void ActivateRemnantOnPlayerInit(Player* player, PlayState* playState, int32_t respawnFlag) {
+static void Activate(Player* player, PlayState* playState, int32_t respawnFlag) {
     if (!sRemnant.dropped) {
         return;
     }
@@ -143,13 +164,13 @@ static void ActivateRemnantOnPlayerInit(Player* player, PlayState* playState, in
     sRemnant.active = true;
 }
 
-static void DropRemnantOnDeath() {
-    // Safety in case death hook may fire more than once during the same death flow.
-    // If we already dropped a remnant, but it has not been activated by Player_Init yet, this is probably the same death, so ignore it.
-    if (sRemnant.dropped && !sRemnant.active) {
+static void Drop() {
+    // Safety in case death hook fires more than once during the same death flow.
+    // If a remnant has been dropped but not activated by Player_Init yet, this is probably the same death.
+    if (sRemnant.IsPendingActivation()) {
         return;
     }
-    
+
     if (gPlayState == nullptr) {
         return;
     }
@@ -159,58 +180,63 @@ static void DropRemnantOnDeath() {
         return;
     }
 
-    // If there is already an active remnant, v1 can simply overwrite it.
-    // Later, this is where second-death behavior lives.
-    sRemnant = {};
+    Remnant next = {};
 
-    // TODO(jperos): Should we drop a remnant if the player has no inventory? We do still want to kill the previous
-
-    sRemnant.dropped = true;
-    sRemnant.active = false;
-    sRemnant.sceneNum = gPlayState->sceneNum;
-    sRemnant.roomNum = gPlayState->roomCtx.curRoom.num;
-    sRemnant.pos = player->actor.world.pos;
-    sRemnant.yaw = player->actor.shape.rot.y;
+    next.dropped = true;
+    next.active = false;
+    next.sceneNum = gPlayState->sceneNum;
+    next.roomNum = gPlayState->roomCtx.curRoom.num;
+    next.pos = player->actor.world.pos;
+    next.yaw = player->actor.shape.rot.y;
 
     // v1 - consumables only.
-    sRemnant.rupees   = gSaveContext.rupees;
-    sRemnant.bombs    = AMMO(ITEM_BOMB);
-    sRemnant.arrows   = AMMO(ITEM_BOW);
-    sRemnant.sticks   = AMMO(ITEM_STICK);
-    sRemnant.nuts     = AMMO(ITEM_NUT);
-    sRemnant.seeds    = AMMO(ITEM_SLINGSHOT);
-    sRemnant.bombchus = AMMO(ITEM_BOMBCHU);
+    next.rupees = gSaveContext.rupees;
+    next.bombs = AMMO(ITEM_BOMB);
+    next.arrows = AMMO(ITEM_BOW);
+    next.sticks = AMMO(ITEM_STICK);
+    next.nuts = AMMO(ITEM_NUT);
+    next.seeds = AMMO(ITEM_SLINGSHOT);
+    next.bombchus = AMMO(ITEM_BOMBCHU);
 
-    // Then remove them from the player.
-    gSaveContext.rupees  = 0;
-    AMMO(ITEM_BOMB)      = 0;
-    AMMO(ITEM_BOW)       = 0;
-    AMMO(ITEM_STICK)     = 0;
-    AMMO(ITEM_NUT)       = 0;
+    if (!next.HasContents()) {
+        // Dark Souls behavior - dying again still destroys the previous remnant,
+        // even if the new death has nothing worth dropping.
+        sRemnant.Clear();
+        SaveFile();
+        return;
+    }
+
+    sRemnant = next;
+
+    gSaveContext.rupees = 0;
+    AMMO(ITEM_BOMB) = 0;
+    AMMO(ITEM_BOW) = 0;
+    AMMO(ITEM_STICK) = 0;
+    AMMO(ITEM_NUT) = 0;
     AMMO(ITEM_SLINGSHOT) = 0;
-    AMMO(ITEM_BOMBCHU)   = 0;
+    AMMO(ITEM_BOMBCHU) = 0;
 
-    SaveManager::Instance->SaveFile(gSaveContext.fileNum);
+    SaveFile();
 }
 
-static void RecoverRemnant() {
-    gSaveContext.rupees  += sRemnant.rupees;
-    AMMO(ITEM_BOMB)      += sRemnant.bombs;
-    AMMO(ITEM_BOW)       += sRemnant.arrows;
-    AMMO(ITEM_STICK)     += sRemnant.sticks;
-    AMMO(ITEM_NUT)       += sRemnant.nuts;
+static void Recover() {
+    gSaveContext.rupees += sRemnant.rupees;
+    AMMO(ITEM_BOMB) += sRemnant.bombs;
+    AMMO(ITEM_BOW) += sRemnant.arrows;
+    AMMO(ITEM_STICK) += sRemnant.sticks;
+    AMMO(ITEM_NUT) += sRemnant.nuts;
     AMMO(ITEM_SLINGSHOT) += sRemnant.seeds;
-    AMMO(ITEM_BOMBCHU)   += sRemnant.bombchus;
+    AMMO(ITEM_BOMBCHU) += sRemnant.bombchus;
 
-    // TODO(jperos): clamp ammo/rupees to capacity
+    // TODO(jperos): clamp ammo/rupees to capacity.
 
-    sRemnant = {};
+    sRemnant.Clear();
 
-    SaveManager::Instance->SaveFile(gSaveContext.fileNum);
+    SaveFile();
 }
 
-static void UpdateRemnant() {
-    if (!IsInRemnantRoom() || !sRemnant.active) {
+static void Update() {
+    if (!IsInRoom() || !sRemnant.IsRecoverable()) {
         return;
     }
 
@@ -224,15 +250,13 @@ static void UpdateRemnant() {
     const float dz = player->actor.world.pos.z - sRemnant.pos.z;
     const float distSq = dx * dx + dy * dy + dz * dz;
 
-    if (distSq < SQ(80.0f) && sRemnant.active) {
-        RecoverRemnant();
+    if (distSq < SQ(80.0f)) {
+        Recover();
     }
 }
 
-static GetItemEntry sCorpseRunMysteryItem = GET_ITEM_MYSTERY;
-
-static void DrawRemnant() {
-    if (!IsInRemnantRoom()) {
+static void Draw() {
+    if (!IsInRoom() || !sRemnant.IsRecoverable()) {
         return;
     }
 
@@ -244,28 +268,24 @@ static void DrawRemnant() {
 
     const f32 bob = Math_SinS(bobAngle) * 8.0f;
 
-    Matrix_Translate(
-        sRemnant.pos.x,
-        sRemnant.pos.y + 40.0f + bob,
-        sRemnant.pos.z,
-        MTXMODE_NEW
-    );
-
+    Matrix_Translate(sRemnant.pos.x, sRemnant.pos.y + 40.0f + bob, sRemnant.pos.z, MTXMODE_NEW);
     Matrix_RotateY(static_cast<f32>(BINANG_TO_RAD(spinAngle)), MTXMODE_APPLY);
     Matrix_Scale(0.35f, 0.35f, 0.35f, MTXMODE_APPLY);
 
-    Randomizer_DrawMysteryItem(gPlayState, &sCorpseRunMysteryItem);
+    Randomizer_DrawMysteryItem(gPlayState, &sMysteryItem);
 
     Matrix_Pop();
 }
 
-static void RegisterCorpseRun() {
-    RegisterCorpseRunSave();
+static void Register() {
+    RegisterSave();
 
-    COND_HOOK(OnPlayerInit,      CVAR_CORPSE_RUN_VALUE, ActivateRemnantOnPlayerInit);
-    COND_HOOK(OnPlayerDeath,     CVAR_CORPSE_RUN_VALUE, DropRemnantOnDeath);
-    COND_HOOK(OnGameFrameUpdate, CVAR_CORPSE_RUN_VALUE, UpdateRemnant);
-    COND_HOOK(OnPlayDrawEnd,     CVAR_CORPSE_RUN_VALUE, DrawRemnant);
+    COND_HOOK(OnPlayerInit, CVAR_CORPSE_RUN_VALUE, Activate);
+    COND_HOOK(OnPlayerDeath, CVAR_CORPSE_RUN_VALUE, Drop);
+    COND_HOOK(OnGameFrameUpdate, CVAR_CORPSE_RUN_VALUE, Update);
+    COND_HOOK(OnPlayDrawEnd, CVAR_CORPSE_RUN_VALUE, Draw);
 }
 
-static RegisterShipInitFunc initFunc(RegisterCorpseRun, { CVAR_CORPSE_RUN_NAME });
+} // namespace CorpseRun
+
+static RegisterShipInitFunc initFunc(CorpseRun::Register, { CVAR_CORPSE_RUN_NAME });
