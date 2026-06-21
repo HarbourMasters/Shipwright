@@ -133,9 +133,19 @@ static void DrawRemnant() {
     );
 
     // Cheap bob/spin so it reads as collectible-ish.
-    const float bob = Math_SinS(gPlayState->gameplayFrames * 0x400) * 8.0f;
-    Matrix_Translate(0.0f, bob, 0.0f, MTXMODE_APPLY);
-    Matrix_RotateY(BINANG_TO_RAD(gPlayState->gameplayFrames * 0x200), MTXMODE_APPLY);
+    const s16 bobAngle = static_cast<s16>(gPlayState->gameplayFrames * 0x400);
+    const s16 spinAngle = static_cast<s16>(gPlayState->gameplayFrames * 0x200);
+
+    const f32 bob = Math_SinS(bobAngle) * 8.0f;
+
+    Matrix_Translate(
+        sCorpseRunRemnant.pos.x,
+        sCorpseRunRemnant.pos.y + 40.0f + bob,
+        sCorpseRunRemnant.pos.z,
+        MTXMODE_NEW
+    );
+
+    Matrix_RotateY(static_cast<f32>(BINANG_TO_RAD(spinAngle)), MTXMODE_APPLY);
     Matrix_Scale(0.35f, 0.35f, 0.35f, MTXMODE_APPLY);
 
     Randomizer_DrawMysteryItem(gPlayState, &sCorpseRunMysteryItem);
