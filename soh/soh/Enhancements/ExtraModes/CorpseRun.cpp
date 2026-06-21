@@ -37,7 +37,6 @@ struct Remnant {
     int32_t sticks = 0;
     int32_t nuts = 0;
     int32_t magic = 0;
-
     int32_t seeds = 0;
     int32_t bombchus = 0;
 
@@ -165,8 +164,8 @@ static void Activate(Player* player, PlayState* playState, int32_t respawnFlag) 
 }
 
 static void Drop() {
-    // Safety in case death hook fires more than once during the same death flow.
-    // If a remnant has been dropped but not activated by Player_Init yet, this is probably the same death.
+    // Safety in case death hook fires more than once during the same death flow
+    // If a remnant has been dropped but not activated by Player_Init yet, this is probably the same death
     if (sRemnant.IsPendingActivation()) {
         return;
     }
@@ -180,33 +179,32 @@ static void Drop() {
         return;
     }
 
-    Remnant next = {};
+    // Destroy previous remnant
+    sRemnant.Clear();
 
-    next.dropped = true;
-    next.active = false;
-    next.sceneNum = gPlayState->sceneNum;
-    next.roomNum = gPlayState->roomCtx.curRoom.num;
-    next.pos = player->actor.world.pos;
-    next.yaw = player->actor.shape.rot.y;
+    sRemnant.dropped = true;
+    sRemnant.active = false;
+    sRemnant.sceneNum = gPlayState->sceneNum;
+    sRemnant.roomNum = gPlayState->roomCtx.curRoom.num;
+    sRemnant.pos = player->actor.world.pos;
+    sRemnant.yaw = player->actor.shape.rot.y;
 
-    // v1 - consumables only.
-    next.rupees = gSaveContext.rupees;
-    next.bombs = AMMO(ITEM_BOMB);
-    next.arrows = AMMO(ITEM_BOW);
-    next.sticks = AMMO(ITEM_STICK);
-    next.nuts = AMMO(ITEM_NUT);
-    next.seeds = AMMO(ITEM_SLINGSHOT);
-    next.bombchus = AMMO(ITEM_BOMBCHU);
+    // v1 - consumables only
+    sRemnant.rupees = gSaveContext.rupees;
+    sRemnant.bombs = AMMO(ITEM_BOMB);
+    sRemnant.arrows = AMMO(ITEM_BOW);
+    sRemnant.sticks = AMMO(ITEM_STICK);
+    sRemnant.nuts = AMMO(ITEM_NUT);
+    sRemnant.seeds = AMMO(ITEM_SLINGSHOT);
+    sRemnant.bombchus = AMMO(ITEM_BOMBCHU);
 
-    if (!next.HasContents()) {
-        // Dark Souls behavior - dying again still destroys the previous remnant,
-        // even if the new death has nothing worth dropping.
+    if (!sRemnant.HasContents()) {
+        // Dark Souls behavior: dying again still destroys the previous remnant,
+        // even if the new death has nothing worth dropping
         sRemnant.Clear();
         SaveFile();
         return;
     }
-
-    sRemnant = next;
 
     gSaveContext.rupees = 0;
     AMMO(ITEM_BOMB) = 0;
@@ -221,12 +219,12 @@ static void Drop() {
 
 static void Recover() {
     gSaveContext.rupees += sRemnant.rupees;
-    AMMO(ITEM_BOMB) += sRemnant.bombs;
-    AMMO(ITEM_BOW) += sRemnant.arrows;
-    AMMO(ITEM_STICK) += sRemnant.sticks;
-    AMMO(ITEM_NUT) += sRemnant.nuts;
-    AMMO(ITEM_SLINGSHOT) += sRemnant.seeds;
-    AMMO(ITEM_BOMBCHU) += sRemnant.bombchus;
+    Inventory_ChangeAmmo(ITEM_BOMB, sRemnant.bombs);
+    Inventory_ChangeAmmo(ITEM_BOW, sRemnant.arrows);
+    Inventory_ChangeAmmo(ITEM_STICK, sRemnant.sticks);
+    Inventory_ChangeAmmo(ITEM_NUT, sRemnant.nuts);
+    Inventory_ChangeAmmo(ITEM_SLINGSHOT, sRemnant.seeds);
+    Inventory_ChangeAmmo(ITEM_BOMBCHU, sRemnant.bombchus);
 
     // TODO(jperos): clamp ammo/rupees to capacity.
 
