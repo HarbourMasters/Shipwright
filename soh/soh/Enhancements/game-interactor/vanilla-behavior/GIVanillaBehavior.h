@@ -2083,6 +2083,13 @@ typedef enum {
     VB_RED_ICE_MELTED_FLAG,
 
     // #### `result`
+    // ```c
+    // camera->xzSpeed > 0.001f || <any release button pressed> || params->interfaceFlags & 0x8
+    // ```
+    // #### `args`
+    // - `Camera*` (`camera`)
+    VB_RELEASE_DOORC_CAMERA,
+
     // #### `result`
     // ```c
     // true

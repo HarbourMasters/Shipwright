@@ -1281,48 +1281,14 @@ extern "C" void Randomizer_DrawOpenChest(PlayState* play, GetItemEntry* getItemE
 }
 
 extern "C" void Randomizer_DrawFishingPoleGI(PlayState* play, GetItemEntry* getItemEntry) {
-    Vec3f pos;
     OPEN_DISPS(play->state.gfxCtx);
 
-    // Draw rod
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    Matrix_Scale(0.2f, 0.2f, 0.2f, MTXMODE_APPLY);
+
     gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
               G_MTX_MODELVIEW | G_MTX_LOAD);
-    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gFishingPoleGiDL);
 
-    // Draw lure
-    Matrix_Push();
-    Matrix_Scale(5.0f, 5.0f, 5.0f, MTXMODE_APPLY);
-    pos = { 0.0f, -25.5f, -4.0f };
-    Matrix_Translate(pos.x, pos.y, pos.z, MTXMODE_APPLY);
-    Matrix_RotateZ(-M_PI_2f, MTXMODE_APPLY);
-    Matrix_RotateY(-M_PI_2f - 0.2f, MTXMODE_APPLY);
-    Matrix_Scale(0.006f, 0.006f, 0.006f, MTXMODE_APPLY);
-    Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
-              G_MTX_NOPUSH | G_MTX_MODELVIEW | G_MTX_LOAD);
-    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gFishingLureFloatDL);
-
-    // Draw hooks
-    Matrix_RotateY(0.2f, MTXMODE_APPLY);
-    Matrix_Translate(0.0f, 0.0f, -300.0f, MTXMODE_APPLY);
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gFishingLureHookDL);
-    Matrix_RotateZ(M_PI_2f, MTXMODE_APPLY);
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gFishingLureHookDL);
-
-    Matrix_Translate(0.0f, -2200.0f, 700.0f, MTXMODE_APPLY);
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gFishingLureHookDL);
-    Matrix_RotateZ(M_PIf / 2.0f, MTXMODE_APPLY);
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gFishingLureHookDL);
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiFishingPoleDL);
 
     Matrix_Pop();
 

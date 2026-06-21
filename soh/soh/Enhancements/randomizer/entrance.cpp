@@ -826,20 +826,16 @@ static bool ValidateWorld(Entrance* entrancePlaced) {
         // This is mostly relevant when mixing entrance pools or shuffling special interiors (such as windmill or kak
         // potion shop) Warp Songs and Overworld Spawns can also end up inside certain indoors so those need to be
         // handled as well
-        std::array<std::string, 3> childForbidden = { "OGC Great Fairy Fountain -> Castle Grounds",
-                                                      "GV Carpenter Tent -> GV Fortress Side",
-                                                      "Ganon's Castle Entryway -> Castle Grounds From Ganon's Castle" };
+        std::array<std::string, 1> childForbidden = { "OGC Great Fairy Fountain -> Castle Grounds" };
         std::array<std::string, 2> adultForbidden = { "HC Great Fairy Fountain -> Castle Grounds",
                                                       "HC Storms Grotto -> Castle Grounds" };
 
         auto allShuffleableEntrances = GetShuffleableEntrances(EntranceType::All, false);
         for (auto& entrance : allShuffleableEntrances) {
-
             std::vector<Entrance*> alreadyChecked = {};
 
             if (entrance->IsShuffled()) {
                 if (entrance->GetReplacement() != nullptr) {
-
                     auto replacementName = entrance->GetReplacement()->GetName();
                     alreadyChecked.push_back(entrance->GetReplacement()->GetReverse());
 

@@ -9,6 +9,7 @@
 #include "soh/Enhancements/randomizer/randomizer_entrance_tracker.h"
 #include <nlohmann/json.hpp>
 #include <spdlog/fmt/fmt.h>
+#include <spdlog/spdlog.h>
 
 #include <cstdio>
 #include <cstdlib>
@@ -90,8 +91,16 @@ static void WriteShuffledEntrance(std::string sphereString, Entrance* entrance) 
     int16_t destinationIndex = -1;
     int16_t replacementIndex = entrance->GetReplacement()->GetIndex();
     int16_t replacementDestinationIndex = -1;
-    std::string name = EntranceTracker::GetEntranceData(originalIndex)->source;
-    std::string text = EntranceTracker::GetEntranceData(replacementIndex)->destination;
+    const EntranceData* sourceData = EntranceTracker::GetEntranceData(originalIndex);
+    const EntranceData* destinationData = EntranceTracker::GetEntranceData(replacementIndex);
+    if (sourceData == nullptr || destinationData == nullptr) {
+        SPDLOG_ERROR("WriteShuffledEntrance: missing entrance data for index {} (override {})", originalIndex,
+                     replacementIndex);
+        assert(false);
+        return;
+    }
+    std::string name = sourceData->source;
+    std::string text = destinationData->destination;
 
     // Track the reverse destination, useful for savewarp handling
     if (entrance->GetReverse() != nullptr) {

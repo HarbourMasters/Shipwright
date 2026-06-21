@@ -86,118 +86,77 @@ C:\Program Files\CMake\bin\cmake.exe --build build-cmake --target ExtractAssetHe
 ```
 
 ## Linux
+### Clone the repo and enter the directory
+```sh
+git clone https://github.com/HarbourMasters/Shipwright.git
+cd Shipwright
+```
 ### Install dependencies
+
+> [!IMPORTANT]
+> Minimum compiler versions:
+> - GCC: see [`linux-build-deps/minimum-gcc-version.txt`](../linux-build-deps/minimum-gcc-version.txt)
+> - Clang: see [`linux-build-deps/minimum-clang-version.txt`](../linux-build-deps/minimum-clang-version.txt)
+
 #### Debian/Ubuntu
 ```sh
 # using gcc
-apt-get install gcc g++ git cmake ninja-build lsb-release libsdl2-dev libpng-dev libsdl2-net-dev libzip-dev zipcmp zipmerge ziptool nlohmann-json3-dev libtinyxml2-dev libspdlog-dev libopengl-dev libopusfile-dev libvorbis-dev
+apt-get install gcc g++ $(cat linux-build-deps/apt.txt)
 
 # or using clang
-apt-get install clang git cmake ninja-build lsb-release libsdl2-dev libpng-dev libsdl2-net-dev libzip-dev zipcmp zipmerge ziptool nlohmann-json3-dev libtinyxml2-dev libspdlog-dev libopengl-dev libopusfile-dev libvorbis-dev
+apt-get install clang $(cat linux-build-deps/apt.txt)
 ```
 #### Arch
 ```sh
 # using gcc
-pacman -S gcc git cmake ninja lsb-release sdl2 libpng libzip nlohmann-json tinyxml2 spdlog sdl2_net opusfile libvorbis
+pacman -S gcc $(cat linux-build-deps/pacman.txt)
 
 # or using clang
-pacman -S clang git cmake ninja lsb-release sdl2 libpng libzip nlohmann-json tinyxml2 spdlog sdl2_net opusfile libvorbis
+pacman -S clang $(cat linux-build-deps/pacman.txt)
 ```
 #### Fedora
 ```sh
 # using gcc
-dnf install gcc gcc-c++ git cmake ninja-build lsb_release SDL2-devel SDL2_net-devel libpng-devel libzip-devel libzip-tools nlohmann-json-devel tinyxml2-devel spdlog-devel opusfile-devel libvorbis-devel
+dnf install gcc gcc-c++ $(cat linux-build-deps/dnf.txt)
 
 # or using clang
-dnf install clang git cmake ninja-build lsb_release SDL2-devel SDL2_net-devel libpng-devel libzip-devel libzip-tools nlohmann-json-devel tinyxml2-devel spdlog-devel opusfile-devel libvorbis-devel
+dnf install clang $(cat linux-build-deps/dnf.txt)
+```
+#### openSUSE
+```sh
+# using gcc
+zypper in gcc gcc-c++ $(cat linux-build-deps/zypper.txt)
+
+# or using clang
+zypper in clang libstdc++-devel $(cat linux-build-deps/zypper.txt)
 ```
 #### Nix
-You can use a `flake.nix` file to instantly setup a development environment using [Nix](https://nixos.org/). Write this `flake.nix` file in the root directory:
+This repository provides a [`linux-build-deps/flake.nix`](../linux-build-deps/flake.nix) for setting up a development environment using [Nix](https://nixos.org/).
 
-```nix
-{
-  description = "Shipwright development environment";
+Run
 
-  inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    pinned.url = "github:NixOS/nixpkgs/e6f23dc08d3624daab7094b701aa3954923c6bbb";
-    flake-utils.url = "github:numtide/flake-utils";
-  };
-
-  outputs = { self, nixpkgs, pinned, flake-utils }:
-    flake-utils.lib.eachDefaultSystem (system:
-      let
-        pkgs = nixpkgs.legacyPackages.${system};
-        pinned-pkgs = pinned.legacyPackages.${system};
-      in
-      {
-        devShells.default = pkgs.mkShell {
-          buildInputs = with pkgs; [
-            # Build tools
-            git
-            cmake
-            ninja
-            lsb-release
-            pkg-config
-
-            # SDL2 libraries
-            SDL2
-            SDL2.dev
-            SDL2_net
-
-            # Assets pipeline
-            python3
-            imagemagick
-
-            # Other libraries
-            libpng
-            libzip
-            nlohmann_json
-            tinyxml-2
-            spdlog
-            libGL
-            libGL.dev
-            bzip2
-
-            # X11 libraries
-            libx11
-
-            # Audio libraries
-            libogg
-            libogg.dev
-            libvorbis
-            libvorbis.dev
-            libopus
-            libopus.dev
-            opusfile
-            opusfile.dev
-
-            # Runtime dependencies
-            zenity
-          ] ++ [
-            # Version of clang-format used by decomp
-            pinned-pkgs.clang_14
-          ];
-          shellHook = ''
-            echo "Shipwright development environment loaded"
-            echo "Available tools: clang, git, cmake, ninja, python3"
-          '';
-        };
-      });
-}
+```sh
+nix develop ./linux-build-deps
 ```
 
-Now type `nix develop` and you will be dropped into a shell with all dependencies, ensuring that all build commands work.
+from the repo root and you'll be dropped into a shell with all dependencies, ensuring that all build commands work.
+
+### Verify cmake version
+Older distros may ship a cmake older than this project requires. Compare:
+```sh
+cmake --version         # your installed version
+head -1 CMakeLists.txt  # the project's required minimum
+```
+If your cmake is too old, you can install a newer version via:
+- [pypi](https://pypi.org/project/cmake/)
+- [kitware apt repo](https://apt.kitware.com/) (Ubuntu only)
+- [Homebrew](https://formulae.brew.sh/formula/cmake)
 
 ### Build
 
 _Note: If you're using Visual Studio Code, the [CMake Tools plugin](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cmake-tools) makes it very easy to just press run and debug._
 
 ```bash
-# Clone the repo and enter the directory
-git clone https://github.com/HarbourMasters/Shipwright.git
-cd Shipwright
-
 # Clone the submodules
 git submodule update --init
 
@@ -217,6 +176,32 @@ cmake --build build-cmake
 # Now you can run the executable in ./build-cmake/soh/soh.elf
 # To develop the project open the repository in VSCode (or your preferred editor)
 ```
+
+> [!TIP]
+> Some older distros ship packages without the cmake config files SoH's `find_package` calls need. If cmake fails with `Could not find a package configuration file provided by "<package>"`.
+> 
+> Known failing package versions:
+> - [tinyxml2](https://github.com/leethomason/tinyxml2) < 10.0.0
+> - [SDL2_net](https://github.com/libsdl-org/SDL_net) < 2.2.0
+>
+> You can install a newer version of that package either
+>
+> by using [Homebrew](https://brew.sh/):
+> ```sh
+> brew install <package>
+> ```
+> When invoking cmake, add `-DCMAKE_PREFIX_PATH=$(brew --prefix)` so it knows to search brew's prefix for the installed package.
+>
+> ***OR***
+>
+> by building from source:
+>
+> Reference examples:
+> - [`.github/actions/install-tinyxml2/action.yml`](../.github/actions/install-tinyxml2/action.yml)
+> - [`.github/actions/install-sdl2-net/action.yml`](../.github/actions/install-sdl2-net/action.yml)
+
+> [!TIP]
+> There are known incompatibilities between some newer versions of `clang` and older versions of [`{fmt}`](https://github.com/fmtlib/fmt) (see https://github.com/fmtlib/fmt/issues/4807). If you see a `call to consteval function 'fmt::basic_format_string<...>' is not a constant expression` error, you can work around it by passing `-DCMAKE_CXX_FLAGS=-DFMT_CONSTEVAL=constexpr` to `cmake`.
 
 ### Generate a distributable
 After compiling the project you can generate a distributable by running of the following:

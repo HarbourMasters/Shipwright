@@ -526,25 +526,29 @@ void RandomizerOnItemReceiveHandler(GetItemEntry receivedItemEntry) {
         }
     }
 
-    if (loc->GetRandomizerCheck() == RC_SPIRIT_TEMPLE_SILVER_GAUNTLETS_CHEST &&
-        !CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO)) {
-        static uint32_t updateHook;
-        updateHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
-            Player* player = GET_PLAYER(gPlayState);
-            if (player == NULL || Player_InBlockingCsMode(gPlayState, player) ||
-                player->stateFlags1 & PLAYER_STATE1_IN_ITEM_CS || player->stateFlags1 & PLAYER_STATE1_GETTING_ITEM ||
-                player->stateFlags1 & PLAYER_STATE1_CARRYING_ACTOR) {
-                return;
-            }
+    if (loc->GetRandomizerCheck() == RC_SPIRIT_TEMPLE_SILVER_GAUNTLETS_CHEST) {
+        if (!CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO)) {
+            static uint32_t updateHook;
+            updateHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
+                Player* player = GET_PLAYER(gPlayState);
+                if (player == NULL || Player_InBlockingCsMode(gPlayState, player) ||
+                    player->stateFlags1 & PLAYER_STATE1_IN_ITEM_CS ||
+                    player->stateFlags1 & PLAYER_STATE1_GETTING_ITEM ||
+                    player->stateFlags1 & PLAYER_STATE1_CARRYING_ACTOR) {
+                    return;
+                }
 
-            gPlayState->nextEntranceIndex = ENTR_DESERT_COLOSSUS_EAST_EXIT;
-            gPlayState->transitionTrigger = TRANS_TRIGGER_START;
-            gSaveContext.nextCutsceneIndex = 0xFFF1;
-            gPlayState->transitionType = TRANS_TYPE_SANDSTORM_END;
-            GET_PLAYER(gPlayState)->stateFlags1 &= ~PLAYER_STATE1_IN_CUTSCENE;
-            Player_TryCsAction(gPlayState, NULL, 8);
-            GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnPlayerUpdate>(updateHook);
-        });
+                gPlayState->nextEntranceIndex = ENTR_DESERT_COLOSSUS_EAST_EXIT;
+                gPlayState->transitionTrigger = TRANS_TRIGGER_START;
+                gSaveContext.nextCutsceneIndex = 0xFFF1;
+                gPlayState->transitionType = TRANS_TYPE_SANDSTORM_END;
+                GET_PLAYER(gPlayState)->stateFlags1 &= ~PLAYER_STATE1_IN_CUTSCENE;
+                Player_TryCsAction(gPlayState, NULL, 8);
+                GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnPlayerUpdate>(updateHook);
+            });
+        } else {
+            Flags_SetEventChkInf(EVENTCHKINF_NABOORU_CAPTURED_BY_TWINROVA);
+        }
     }
 }
 

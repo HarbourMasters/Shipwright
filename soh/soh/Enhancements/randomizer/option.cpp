@@ -94,6 +94,10 @@ uint8_t Option::GetOptionIndex() const {
     return CVarGetInteger(cvarName.c_str(), defaultOption);
 }
 
+uint8_t Option::GetMenuOptionDefault() const {
+    return defaultOption;
+}
+
 const std::string& Option::GetOptionText(size_t index) const {
     return options[index];
 }
@@ -215,7 +219,7 @@ Option::Option(size_t key_, std::string name_, std::vector<std::string> options_
 }
 
 void Option::AddWidget(WidgetPath& path) {
-    auto widget = SohGui::mSohMenu->AddWidget(path, name, widgetType)
+    auto widget = SohGui::mSohMenu->AddWidget(path, name + "##Randomizer", widgetType)
                       .Callback(callback)
                       .PreFunc([this](WidgetInfo& info) {
                           info.isHidden = this->IsHidden();

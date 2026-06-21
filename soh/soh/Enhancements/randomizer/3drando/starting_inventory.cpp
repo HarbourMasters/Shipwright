@@ -60,8 +60,8 @@ void GenerateStartingInventory() {
         AddItemToInventory(RG_GANONS_CASTLE_BOSS_KEY);
     }
 
-    if (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) &&
-        !ctx->GetOption(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD)) {
+    if (ctx->GetOption(RSK_STARTING_GERUDO_CARD) || (ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) &&
+                                                     !ctx->GetOption(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD))) {
         AddItemToInventory(RG_GERUDO_MEMBERSHIP_CARD);
     }
 
@@ -72,46 +72,51 @@ void GenerateStartingInventory() {
     //  TODO: Uncomment when these options are implemented.
     //  AddItemToInventory(RG_PROGRESSIVE_STICK_UPGRADE, StartingStickCapacity.Value<uint8_t>());
     //  AddItemToInventory(RG_PROGRESSIVE_NUT_UPGRADE, StartingNutCapacity.Value<uint8_t>());
-    //  AddItemToInventory(RG_PROGRESSIVE_BOMB_BAG, StartingBombBag.Value<uint8_t>());
-    //  AddItemToInventory((BombchuBag ? RG_PROGRESSIVE_BOMBCHU_BAG : RG_BOMBCHU_20),
-    //  StartingBombchus.Value<uint8_t>()); AddItemToInventory(RG_PROGRESSIVE_BOW, StartingBow.Value<uint8_t>());
-    //  AddItemToInventory(RG_FIRE_ARROWS, StartingFireArrows.Value<uint8_t>());
-    //  AddItemToInventory(RG_ICE_ARROWS, StartingIceArrows.Value<uint8_t>());
-    //  AddItemToInventory(RG_LIGHT_ARROWS, StartingLightArrows.Value<uint8_t>());
-    //  AddItemToInventory(RG_DINS_FIRE, StartingDinsFire.Value<uint8_t>());
-    //  AddItemToInventory(RG_FARORES_WIND, StartingFaroresWind.Value<uint8_t>());
-    //  AddItemToInventory(RG_NAYRUS_LOVE, StartingNayrusLove.Value<uint8_t>());
-    //  AddItemToInventory(RG_PROGRESSIVE_SLINGSHOT, StartingSlingshot.Value<uint8_t>());
-    //  AddItemToInventory(RG_BOOMERANG, StartingBoomerang.Value<uint8_t>());
-    //  AddItemToInventory(RG_LENS_OF_TRUTH, StartingLensOfTruth.Value<uint8_t>());
-    //  AddItemToInventory(RG_MAGIC_BEAN_PACK, StartingMagicBean.Value<uint8_t>());
-    //  AddItemToInventory(RG_MEGATON_HAMMER, StartingMegatonHammer.Value<uint8_t>());
-    //  AddItemToInventory(RG_PROGRESSIVE_HOOKSHOT, StartingHookshot.Value<uint8_t>());
-    //  AddItemToInventory(RG_IRON_BOOTS, StartingIronBoots.Value<uint8_t>());
-    //  AddItemToInventory(RG_HOVER_BOOTS, StartingHoverBoots.Value<uint8_t>());
-    // For starting bottles, we need to check if they are a big poe and add that if so
-    //  since a big poe bottle is not logically equivalent to an empty bottle.
-    //  if (StartingBottle1.Value<uint8_t>() == STARTINGBOTTLE_BIG_POE) {
-    //    AddItemToInventory(RG_BOTTLE_WITH_BIG_POE, 1);
-    //  } else if (StartingBottle1.Value<uint8_t>()) {
-    //    AddItemToInventory(RG_EMPTY_BOTTLE, 1);
-    //  }
-    //  if (StartingBottle2.Value<uint8_t>() == STARTINGBOTTLE_BIG_POE) {
-    //    AddItemToInventory(RG_BOTTLE_WITH_BIG_POE, 1);
-    //  } else if (StartingBottle2.Value<uint8_t>()) {
-    //    AddItemToInventory(RG_EMPTY_BOTTLE, 1);
-    //  }
-    //  if (StartingBottle3.Value<uint8_t>() == STARTINGBOTTLE_BIG_POE) {
-    //    AddItemToInventory(RG_BOTTLE_WITH_BIG_POE, 1);
-    //  } else if (StartingBottle3.Value<uint8_t>()) {
-    //    AddItemToInventory(RG_EMPTY_BOTTLE, 1);
-    //  }
-    //  if (StartingBottle4.Value<uint8_t>() == STARTINGBOTTLE_BIG_POE) {
-    //    AddItemToInventory(RG_BOTTLE_WITH_BIG_POE, 1);
-    //  } else if (StartingBottle4.Value<uint8_t>()) {
-    //    AddItemToInventory(RG_EMPTY_BOTTLE, 1);
-    //  }
-    //  AddItemToInventory(RG_RUTOS_LETTER,              StartingRutoBottle.Value<uint8_t>());
+    AddItemToInventory(RG_PROGRESSIVE_BOMB_BAG, ctx->GetOption(RSK_STARTING_BOMB_BAG).Get());
+    AddItemToInventory(RG_PROGRESSIVE_BOW, ctx->GetOption(RSK_STARTING_BOW).Get());
+    AddItemToInventory(RG_PROGRESSIVE_SLINGSHOT, ctx->GetOption(RSK_STARTING_SLINGSHOT).Get());
+    AddItemToInventory(RG_BOOMERANG, ctx->GetOption(RSK_STARTING_BOOMERANG) ? 1 : 0);
+    AddItemToInventory(RG_LENS_OF_TRUTH, ctx->GetOption(RSK_STARTING_LENS_OF_TRUTH) ? 1 : 0);
+    AddItemToInventory(RG_PROGRESSIVE_HOOKSHOT, ctx->GetOption(RSK_STARTING_HOOKSHOT).Get());
+    // Bombchu bags only exist when the bombchu bag setting enables them; a single bag is one item,
+    // progressive bags are added per starting tier.
+    if (ctx->GetOption(RSK_BOMBCHU_BAG).Is(RO_BOMBCHU_BAG_SINGLE)) {
+        AddItemToInventory(RG_PROGRESSIVE_BOMBCHU_BAG, ctx->GetOption(RSK_STARTING_BOMBCHU_BAG).Get() ? 1 : 0);
+    } else if (ctx->GetOption(RSK_BOMBCHU_BAG).Is(RO_BOMBCHU_BAG_PROGRESSIVE)) {
+        AddItemToInventory(RG_PROGRESSIVE_BOMBCHU_BAG, ctx->GetOption(RSK_STARTING_BOMBCHU_BAG).Get());
+    }
+    AddItemToInventory(RG_MEGATON_HAMMER, ctx->GetOption(RSK_STARTING_MEGATON_HAMMER) ? 1 : 0);
+    AddItemToInventory(RG_IRON_BOOTS, ctx->GetOption(RSK_STARTING_IRON_BOOTS) ? 1 : 0);
+    AddItemToInventory(RG_HOVER_BOOTS, ctx->GetOption(RSK_STARTING_HOVER_BOOTS) ? 1 : 0);
+    AddItemToInventory(RG_DINS_FIRE, ctx->GetOption(RSK_STARTING_DINS_FIRE) ? 1 : 0);
+    AddItemToInventory(RG_FARORES_WIND, ctx->GetOption(RSK_STARTING_FARORES_WIND) ? 1 : 0);
+    AddItemToInventory(RG_NAYRUS_LOVE, ctx->GetOption(RSK_STARTING_NAYRUS_LOVE) ? 1 : 0);
+    AddItemToInventory(RG_FIRE_ARROWS, ctx->GetOption(RSK_STARTING_FIRE_ARROWS) ? 1 : 0);
+    AddItemToInventory(RG_ICE_ARROWS, ctx->GetOption(RSK_STARTING_ICE_ARROWS) ? 1 : 0);
+    AddItemToInventory(RG_LIGHT_ARROWS, ctx->GetOption(RSK_STARTING_LIGHT_ARROWS) ? 1 : 0);
+    AddItemToInventory(RG_HYLIAN_SHIELD, ctx->GetOption(RSK_STARTING_HYLIAN_SHIELD) ? 1 : 0);
+    AddItemToInventory(RG_MIRROR_SHIELD, ctx->GetOption(RSK_STARTING_MIRROR_SHIELD) ? 1 : 0);
+    AddItemToInventory(RG_GORON_TUNIC, ctx->GetOption(RSK_STARTING_GORON_TUNIC) ? 1 : 0);
+    AddItemToInventory(RG_ZORA_TUNIC, ctx->GetOption(RSK_STARTING_ZORA_TUNIC) ? 1 : 0);
+    AddItemToInventory(RG_STONE_OF_AGONY, ctx->GetOption(RSK_STARTING_STONE_OF_AGONY) ? 1 : 0);
+    // A big poe bottle is not logically equivalent to an empty bottle, so it's a distinct item.
+    for (RandomizerSettingKey bottleKey :
+         { RSK_STARTING_BOTTLE_1, RSK_STARTING_BOTTLE_2, RSK_STARTING_BOTTLE_3, RSK_STARTING_BOTTLE_4 }) {
+        uint8_t bottle = ctx->GetOption(bottleKey).Get();
+        if (bottle == RO_STARTING_BOTTLE_BIG_POE) {
+            AddItemToInventory(RG_BOTTLE_WITH_BIG_POE);
+        } else if (bottle == RO_STARTING_BOTTLE_RUTOS_LETTER) {
+            AddItemToInventory(RG_RUTOS_LETTER);
+        } else if (bottle != RO_STARTING_BOTTLE_OFF) {
+            AddItemToInventory(RG_EMPTY_BOTTLE);
+        }
+    }
+    // The weird egg only exists as an item when it's shuffled; vanilla gives it through the cutscene.
+    if (ctx->GetOption(RSK_SHUFFLE_WEIRD_EGG)) {
+        AddItemToInventory(RG_WEIRD_EGG, ctx->GetOption(RSK_STARTING_WEIRD_EGG) ? 1 : 0);
+    }
+    AddItemToInventory(RG_BUNNY_HOOD, ctx->GetOption(RSK_STARTING_BUNNY_HOOD) ? 1 : 0);
+    AddItemToInventory(RG_CLAIM_CHECK, ctx->GetOption(RSK_STARTING_CLAIM_CHECK) ? 1 : 0);
     AddItemToInventory(RG_PROGRESSIVE_OCARINA, ctx->GetOption(RSK_STARTING_OCARINA).Get());
     AddItemToInventory(RG_ZELDAS_LULLABY, ctx->GetOption(RSK_STARTING_ZELDAS_LULLABY) ? 1 : 0);
     AddItemToInventory(RG_EPONAS_SONG, ctx->GetOption(RSK_STARTING_EPONAS_SONG) ? 1 : 0);
@@ -127,23 +132,16 @@ void GenerateStartingInventory() {
     AddItemToInventory(RG_PRELUDE_OF_LIGHT, ctx->GetOption(RSK_STARTING_PRELUDE_OF_LIGHT) ? 1 : 0);
     AddItemToInventory(RG_KOKIRI_SWORD, ctx->GetOption(RSK_STARTING_KOKIRI_SWORD) ? 1 : 0);
     AddItemToInventory(RG_MAGIC_BEAN_PACK, ctx->GetOption(RSK_STARTING_BEANS) ? 1 : 0);
-    // if (ProgressiveGoronSword) {
-    //   AddItemToInventory(RG_PROGRESSIVE_GORONSWORD, StartingBiggoronSword.Value<uint8_t>());
-    // } else {
-    //   AddItemToInventory(RG_GIANTS_KNIFE, (StartingBiggoronSword.Is(STARTINGBGS_GIANTS_KNIFE)) ? 1 : 0);
-    //   AddItemToInventory(RG_BIGGORON_SWORD, (StartingBiggoronSword.Is(STARTINGBGS_BIGGORON_SWORD)) ? 1 : 0);
-    // }
+    AddItemToInventory(RG_GIANTS_KNIFE,
+                       ctx->GetOption(RSK_STARTING_BIGGORON_SWORD).Is(RO_STARTING_BGS_GIANTS_KNIFE) ? 1 : 0);
+    AddItemToInventory(RG_BIGGORON_SWORD,
+                       ctx->GetOption(RSK_STARTING_BIGGORON_SWORD).Is(RO_STARTING_BGS_BIGGORON_SWORD) ? 1 : 0);
     AddItemToInventory(RG_MASTER_SWORD, ctx->GetOption(RSK_STARTING_MASTER_SWORD) ? 1 : 0);
     AddItemToInventory(RG_DEKU_SHIELD, ctx->GetOption(RSK_STARTING_DEKU_SHIELD) ? 1 : 0);
-    // AddItemToInventory(RG_HYLIAN_SHIELD,             StartingHylianShield.Value<uint8_t>());
-    // AddItemToInventory(RG_MIRROR_SHIELD,             StartingMirrorShield.Value<uint8_t>());
-    // AddItemToInventory(RG_GORON_TUNIC,               StartingGoronTunic.Value<uint8_t>());
-    // AddItemToInventory(RG_ZORA_TUNIC,                StartingZoraTunic.Value<uint8_t>());
-    // AddItemToInventory(RG_PROGRESSIVE_MAGIC_METER,   StartingMagicMeter.Value<uint8_t>());
-    // AddItemToInventory(RG_PROGRESSIVE_STRENGTH,      StartingStrength.Value<uint8_t>());
-    // AddItemToInventory(RG_PROGRESSIVE_SCALE,         StartingScale.Value<uint8_t>());
-    // AddItemToInventory(RG_PROGRESSIVE_WALLET,        StartingWallet.Value<uint8_t>());
-    // AddItemToInventory(RG_STONE_OF_AGONY,            StartingShardOfAgony.Value<uint8_t>());
+    AddItemToInventory(RG_PROGRESSIVE_MAGIC_METER, ctx->GetOption(RSK_STARTING_MAGIC_METER).Get());
+    AddItemToInventory(RG_PROGRESSIVE_STRENGTH, ctx->GetOption(RSK_STARTING_STRENGTH).Get());
+    AddItemToInventory(RG_PROGRESSIVE_SCALE, ctx->GetOption(RSK_STARTING_SCALE).Get());
+    AddItemToInventory(RG_PROGRESSIVE_WALLET, ctx->GetOption(RSK_STARTING_WALLET).Get());
     // AddItemToInventory(RG_DOUBLE_DEFENSE,            StartingDoubleDefense.Value<uint8_t>());
     // AddItemToInventory(RG_KOKIRI_EMERALD,            StartingKokiriEmerald.Value<uint8_t>());
     // AddItemToInventory(RG_GORON_RUBY,                StartingGoronRuby.Value<uint8_t>());

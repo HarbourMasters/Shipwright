@@ -868,7 +868,7 @@ void RegisterOnUpdateMainMenuSelection() {
         } else if (charCode == 0xF0 + FS_KBD_BTN_END) {
             translation = GetParameritizedText("end", TEXT_BANK_FILECHOOSE, nullptr);
         } else {
-            charVal[0] = charCode;
+            charVal[0] = static_cast<char>(charCode);
         }
 
         if (translation.empty()) {

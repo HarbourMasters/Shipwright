@@ -11,6 +11,7 @@
 #include <objects/object_link_child/object_link_child.h>
 #include <overlays/actors/ovl_En_Bom/z_en_bom.h>
 #include <overlays/actors/ovl_Obj_Switch/z_obj_switch.h>
+#include <overlays/effects/ovl_Effect_Ss_HitMark/z_eff_ss_hitmark.h>
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 #include <assets/objects/object_efc_tw/object_efc_tw.h>
@@ -59,6 +60,26 @@ static ColliderCylinderInit sCylinderInit = {
     { 12, 27, 0, { 0, 0, 0 } },
 };
 
+static ColliderCylinderInit sWeaponCylinderInit = {
+    {
+        COLTYPE_NONE,
+        AT_ON | AT_TYPE_PLAYER,
+        AC_NONE,
+        OC1_NONE,
+        OC2_TYPE_PLAYER,
+        COLSHAPE_CYLINDER,
+    },
+    {
+        ELEMTYPE_UNK2,
+        { 0x00000100, 0x00, 0x01 },
+        { 0xFFCFFFFF, 0x00, 0x00 },
+        TOUCH_ON | TOUCH_SFX_NORMAL,
+        BUMP_NONE,
+        OCELEM_NONE,
+    },
+    { 32, 67, 0, { 0, 0, 0 } },
+};
+
 static CollisionCheckInfoInit sCCInfoInit = { 0, 12, 60, MASS_HEAVY };
 
 void EnPartner_Init(Actor* thisx, PlayState* play) {
@@ -92,6 +113,9 @@ void EnPartner_Init(Actor* thisx, PlayState* play) {
     this->collider.base.ocFlags1 |= OC1_TYPE_PLAYER;
     this->collider.info.toucher.damage = 1;
     GET_PLAYER(play)->ivanDamageMultiplier = 1;
+
+    Collider_InitCylinder(play, &this->weaponCollider);
+    Collider_SetCylinder(play, &this->weaponCollider, &this->actor, &sWeaponCylinderInit);
 
     Actor_ProcessInitChain(thisx, sInitChain);
     SkelAnime_Init(play, &this->skelAnime, &gFairySkel, &gFairyAnim, this->jointTable, this->morphTable, 15);
@@ -132,6 +156,7 @@ void EnPartner_Destroy(Actor* thisx, PlayState* play) {
     LightContext_RemoveLight(play, &play->lightCtx, this->lightNodeNoGlow);
 
     Collider_DestroyCylinder(play, &this->collider);
+    Collider_DestroyCylinder(play, &this->weaponCollider);
 
     ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
@@ -291,18 +316,27 @@ void UseHammer(Actor* thisx, PlayState* play, u8 started) {
 
     if (this->itemTimer <= 0) {
         if (started == 1) {
-            this->itemTimer = 10;
-            static Vec3f zeroVec = { 0.0f, 0.0f, 0.0f };
-            Vec3f shockwavePos = this->actor.world.pos;
+            // camera shake:
+            Player_RequestQuake(play, 32967, 2, 30);
 
-            Player_RequestQuake(play, 27767, 7, 20);
+            // sound effect:
             Player_PlaySfx(&this->actor, NA_SE_IT_HAMMER_HIT);
 
-            EffectSsBlast_SpawnWhiteShockwave(play, &shockwavePos, &zeroVec, &zeroVec);
+            // visual effect:
+            Vec3f effectPos = this->actor.world.pos;
+            effectPos.y += 7.0f;
+            CollisionCheck_SpawnShieldParticles(play, &effectPos);
+            EffectSsHitMark_SpawnCustomScale(play, EFFECT_HITMARK_METAL, 200, &effectPos);
 
-            if (this->actor.xzDistToPlayer < 100.0f && this->actor.yDistToPlayer < 35.0f) {
-                func_8002F71C(play, &this->actor, 8.0f, this->actor.yawTowardsPlayer, 8.0f);
-            }
+            // update collider:
+            this->weaponCollider.info.toucher.dmgFlags = DMG_HAMMER_SWING;
+            Collider_UpdateCylinder(&this->actor, &this->weaponCollider);
+            CollisionCheck_SetAT(play, &play->colChkCtx, &this->weaponCollider.base);
+
+            // cooldown and lag:
+            this->itemTimer = 10;
+            this->canMove = 0;
+            this->usedItem = 0xFF;
         }
     }
 }

@@ -410,7 +410,8 @@ void Draw_SfxTab(const std::string& tabId, SeqType type, const std::string& tabN
 
             if (validSequences.size()) {
                 auto it = validSequences.begin();
-                const auto& seqData = *std::next(it, ShipUtils::Random(0, validSequences.size()));
+                const auto& seqData =
+                    *std::next(it, ShipUtils::Random(0, static_cast<uint32_t>(validSequences.size())));
                 CVarSetInteger(cvarKey.c_str(), seqData->sequenceId);
                 if (locked) {
                     CVarClear(cvarLockKey.c_str());

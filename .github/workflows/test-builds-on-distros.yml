@@ -5,68 +5,200 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 jobs:
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      distros: ${{ steps.set-matrix.outputs.distros }}
+    steps:
+    - name: Resolve distro images
+      id: set-matrix
+      uses: actions/github-script@v9
+      with:
+        script: |
+          const today = new Date().toISOString().slice(0, 10);
+          const fetchJson = async (url) => {
+            const res = await fetch(url);
+            if (!res.ok) throw new Error(`${url} -> ${res.status}`);
+            return res.json();
+          };
+
+          // All non-EOL Ubuntu LTS releases.
+          const ubuntuCycles = await fetchJson('https://endoflife.date/api/ubuntu.json');
+          const ubuntu = ubuntuCycles
+            .filter(c => c.lts === true && c.eol > today)
+            .map(c => ({ image: `ubuntu:${c.cycle}`, packageManager: 'apt' }));
+
+          // All non-EOL Fedora releases.
+          const fedoraCycles = await fetchJson('https://endoflife.date/api/fedora.json');
+          const fedora = fedoraCycles
+            .filter(c => c.eol > today)
+            .map(c => ({ image: `fedora:${c.cycle}`, packageManager: 'dnf' }));
+
+          // Rolling.
+          const arch = [{ image: 'archlinux:base', packageManager: 'pacman' }];
+
+          // Rolling Tumbleweed and all non-EOL Leap releases.
+          const leapCycles = await fetchJson('https://endoflife.date/api/opensuse.json');
+          const opensuse = [
+            { image: 'opensuse/tumbleweed:latest', packageManager: 'zypper' },
+            ...leapCycles
+              .filter(c => c.eol > today)
+              .map(c => ({ image: `opensuse/leap:${c.cycle}`, packageManager: 'zypper' })),
+          ];
+
+          // Previous, current, and next Debian releases.
+          const debian = ['oldstable', 'stable', 'testing']
+            .map(t => ({ image: `debian:${t}`, packageManager: 'apt' }));
+
+          const distros = [...ubuntu, ...fedora, ...arch, ...opensuse, ...debian];
+          core.info(`Resolved distros: ${JSON.stringify(distros)}`);
+          core.setOutput('distros', JSON.stringify(distros));
   build:
+    needs: setup
+    name: build (${{ matrix.distro.image }}, ${{ matrix.cc }})
     strategy:
+      fail-fast: false
       matrix:
-        image: ["archlinux:base", "opensuse/tumbleweed:latest", "ubuntu:mantic", "debian:bookworm", "fedora:39"]
-        cc: ["gcc", "clang"] 
+        distro: ${{ fromJSON(needs.setup.outputs.distros) }}
+        cc: ["gcc", "clang"]
         include:
         - cxx: g++
           cc: gcc
         - cxx: clang++
           cc: clang
-    runs-on: ${{ (vars.LINUX_RUNNER && fromJSON(vars.LINUX_RUNNER)) || 'ubuntu-latest' }}
+    runs-on: ubuntu-latest
     container:
-      image: ${{ matrix.image }}
+      image: ${{ matrix.distro.image }}
     steps:
-    - name: Install dependencies (pacman)
-      if: ${{ matrix.image == 'archlinux:base' }}
+    - name: Bootstrap git
       run: |
-        echo arch
-        echo pacman -S ${{ matrix.cc }} git cmake ninja lsb-release sdl2 libpng libzip nlohmann-json tinyxml2 spdlog sdl2_net
-        pacman -Syu --noconfirm
-        pacman -S --noconfirm ${{ matrix.cc }} git cmake ninja lsb-release sdl2 libpng libzip nlohmann-json tinyxml2 spdlog sdl2_net
-    - name: Install dependencies (dnf)
-      if: ${{ matrix.image == 'fedora:39' }}
-      run: |
-        echo fedora
-        echo dnf install ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'gcc-c++') || '' }} wget git cmake ninja-build lsb_release SDL2-devel libpng-devel libzip-devel libzip-tools tinyxml2-devel spdlog-devel
-        dnf -y upgrade
-        dnf -y install ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'gcc-c++') || '' }} wget git cmake ninja-build lsb_release SDL2-devel libpng-devel libzip-devel libzip-tools tinyxml2-devel spdlog-devel
-    - name: Install dependencies (apt)
-      if: ${{ matrix.image == 'ubuntu:mantic' || matrix.image == 'debian:bookworm' }}
-      run: |
-        echo debian based
-        echo apt-get install ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'g++') || '' }} git cmake ninja-build lsb-release libsdl2-dev libpng-dev libsdl2-net-dev libzip-dev zipcmp zipmerge ziptool nlohmann-json3-dev libtinyxml2-dev libspdlog-dev libopengl-dev
-        apt-get update
-        apt-get -y full-upgrade
-        apt-get -y install ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'g++') || '' }} git cmake ninja-build lsb-release libsdl2-dev libpng-dev libsdl2-net-dev libzip-dev zipcmp zipmerge ziptool nlohmann-json3-dev libtinyxml2-dev libspdlog-dev libopengl-dev
-    - name: Install dependencies (zypper)
-      if: ${{ matrix.image == 'opensuse/tumbleweed:latest' }}
-      run: |
-        echo openSUSE
-        echo zypper in ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'gcc-c++') || '' }} ${{ matrix.cc == 'clang' && 'libstdc++-devel' || '' }} git cmake ninja SDL2-devel libpng16-devel libzip-devel libzip-tools nlohmann_json-devel tinyxml2-devel spdlog-devel
-        zypper --non-interactive dup
-        zypper --non-interactive in ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'gcc-c++') || '' }} ${{ matrix.cc == 'clang' && 'libstdc++-devel' || '' }} git cmake ninja SDL2-devel libpng16-devel libzip-devel libzip-tools nlohmann_json-devel tinyxml2-devel spdlog-devel
-    - name: Install latest nlohmann
-      if: ${{ matrix.image == 'fedora:39' }}
-      run: |
-        wget https://github.com/nlohmann/json/archive/refs/tags/v3.11.3.tar.gz
-        tar -xzvf v3.11.3.tar.gz
-        cd json-3.11.3
-        mkdir build
-        cd build
-        cmake ..
-        make
-        sudo make install
+        case "${{ matrix.distro.packageManager }}" in
+          apt)    apt-get update && apt-get -y install git ;;
+          dnf)    dnf -y install git ;;
+          pacman) pacman -Sy --noconfirm git ;;
+          zypper) zypper --non-interactive in git ;;
+        esac
     - uses: actions/checkout@v6
       with:
         submodules: true
+    - name: Install dependencies (pacman)
+      if: ${{ matrix.distro.packageManager == 'pacman' }}
+      run: |
+        pacman -Syu --noconfirm
+        pacman -S --noconfirm ${{ matrix.cc }} $(cat linux-build-deps/pacman.txt)
+    - name: Install dependencies (dnf)
+      if: ${{ matrix.distro.packageManager == 'dnf' }}
+      run: |
+        dnf -y upgrade
+        dnf -y install ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'gcc-c++') || '' }} $(cat linux-build-deps/dnf.txt)
+    - name: Install dependencies (apt)
+      if: ${{ matrix.distro.packageManager == 'apt' }}
+      run: |
+        apt-get update
+        apt-get -y full-upgrade
+        apt-get -y install ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'g++') || '' }} $(cat linux-build-deps/apt.txt)
+    - name: Install dependencies (zypper)
+      if: ${{ matrix.distro.packageManager == 'zypper' }}
+      run: |
+        zypper --non-interactive dup
+        zypper --non-interactive in ${{ matrix.cc }} ${{ (matrix.cxx == 'g++' && 'gcc-c++') || '' }} ${{ matrix.cc == 'clang' && 'libstdc++-devel' || '' }} $(cat linux-build-deps/zypper.txt)
+    - name: Verify compiler version
+      id: verify-compiler
+      uses: ./.github/actions/verify-compiler
+      with:
+        compiler: ${{ matrix.cc }}
+        packageManager: ${{ matrix.distro.packageManager }}
+    - name: Install newer compiler
+      if: ${{ steps.verify-compiler.outputs.needs_install == 'true' }}
+      uses: ./.github/actions/install-newer-compiler
+      with:
+        compiler: ${{ matrix.cc }}
+        version: ${{ steps.verify-compiler.outputs.version }}
+        available_in_distro: ${{ steps.verify-compiler.outputs.available_in_distro }}
+        packageManager: ${{ matrix.distro.packageManager }}
+    - name: Verify/update cmake
+      run: |
+        ver_le() { [ "$(printf '%s\n%s\n' "$1" "$2" | sort -V | head -1)" = "$1" ]; }
+        required=$(grep -m1 -oE '[0-9]+\.[0-9]+(\.[0-9]+)?' CMakeLists.txt)
+        installed=$(cmake --version | grep -m1 -oE '[0-9]+\.[0-9]+(\.[0-9]+)?')
+        echo "cmake required: $required  installed: $installed"
+        if ver_le "$required" "$installed"; then
+          echo "ok"
+        else
+          case "${{ matrix.distro.packageManager }}" in
+            apt)    DEBIAN_FRONTEND=noninteractive apt-get -y install --no-install-recommends pipx ;;
+            dnf)    dnf -y install pipx ;;
+            pacman) pacman -S --noconfirm python-pipx ;;
+            zypper) zypper --non-interactive in python3-pipx ;;
+          esac
+          pipx install cmake
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+        fi
+    - name: Verify/update tinyxml2
+      id: tinyxml2-check
+      if: ${{ matrix.distro.packageManager == 'apt' }}
+      run: |
+        if find /usr -iname 'tinyxml2*config.cmake' 2>/dev/null | grep -q .; then
+          echo "ok"
+          echo "needs_install=false" >> "$GITHUB_OUTPUT"
+        else
+          apt-get remove -y libtinyxml2-dev
+          apt-get install -y curl
+          echo "needs_install=true" >> "$GITHUB_OUTPUT"
+        fi
+    - uses: ./.github/actions/install-tinyxml2
+      if: ${{ steps.tinyxml2-check.outputs.needs_install == 'true' }}
+    - name: Verify/update SDL2_net
+      id: sdl2-net-check
+      if: ${{ matrix.distro.packageManager == 'apt' }}
+      run: |
+        if find /usr -iname 'sdl2_net*config.cmake' 2>/dev/null | grep -q .; then
+          echo "ok"
+          echo "needs_install=false" >> "$GITHUB_OUTPUT"
+        else
+          apt-get install -y curl
+          echo "needs_install=true" >> "$GITHUB_OUTPUT"
+        fi
+    - uses: ./.github/actions/install-sdl2-net
+      if: ${{ steps.sdl2-net-check.outputs.needs_install == 'true' }}
+    # https://github.com/fmtlib/fmt/issues/4807
+    - name: Check fmt/clang consteval compat
+      id: fmt-check
+      shell: bash
+      run: |
+        cat > /tmp/fmt-consteval-test.cpp <<'EOF'
+        #include <fmt/format.h>
+        int main() { auto s = fmt::format(FMT_STRING("{}"), 42); return 0; }
+        EOF
+        if "$CXX" -std=c++20 -c /tmp/fmt-consteval-test.cpp -o /tmp/fmt-consteval-test.o; then
+          echo "ok — fmt/clang consteval compatible"
+          echo "needs_workaround=false" >> "$GITHUB_OUTPUT"
+        else
+          echo "incompatible — applying workaround"
+          echo "needs_workaround=true" >> "$GITHUB_OUTPUT"
+        fi
+      env:
+        CXX: ${{ steps.verify-compiler.outputs.cxx }}
     - name: Build SoH
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
-        cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release -DBUILD_REMOTE_CONTROL=1
+        cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release -DBUILD_REMOTE_CONTROL=1 ${EXTRA_CMAKE_FLAGS}
         cmake --build build-cmake --config Release -j3
       env:
-        CC: ${{ matrix.cc }}
-        CXX: ${{ matrix.cxx }}
+        CC: ${{ steps.verify-compiler.outputs.cc }}
+        CXX: ${{ steps.verify-compiler.outputs.cxx }}
+        # https://github.com/fmtlib/fmt/issues/4807
+        EXTRA_CMAKE_FLAGS: ${{ steps.fmt-check.outputs.needs_workaround == 'true' && '-DCMAKE_CXX_FLAGS=-DFMT_CONSTEVAL=constexpr' || '' }}
+  build-nix:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v6
+      with:
+        submodules: true
+    - uses: cachix/install-nix-action@v31
+    - name: Build SoH in nix dev shell
+      run: |
+        nix develop ./linux-build-deps -c bash -c '
+          cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release -DBUILD_REMOTE_CONTROL=1
+          cmake --build build-cmake --config Release -j3
+        '

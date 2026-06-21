@@ -191,8 +191,8 @@ static const ALIGN_ASSET(2) char gGiKokiriJabbernutDL[] = dgGiKokiriJabbernutDL;
 #define dgGiZoraJabbernutDL "__OTR__objects/object_jabbernut/gGiZoraJabbernutDL"
 static const ALIGN_ASSET(2) char gGiZoraJabbernutDL[] = dgGiZoraJabbernutDL;
 
-#define dgFishingPoleGiDL "__OTR__objects/object_gi_fishing_pole/gFishingPoleGiDL"
-static const ALIGN_ASSET(2) char gFishingPoleGiDL[] = dgFishingPoleGiDL;
+#define dgGiFishingPoleDL "__OTR__objects/object_gi_fishing_pole/gGiFishingPoleDL"
+static const ALIGN_ASSET(2) char gGiFishingPoleDL[] = dgGiFishingPoleDL;
 
 #define dgMysteryItemDL "__OTR__objects/object_mystery_item/gMysteryItemDL"
 static const ALIGN_ASSET(2) char gMysteryItemDL[] = dgMysteryItemDL;
