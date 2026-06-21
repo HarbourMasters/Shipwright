@@ -32,52 +32,63 @@ struct Remnant {
     int16_t yaw = 0;
 
     int32_t rupees = 0;
+    int32_t magic = 0;
+
     int32_t bombs = 0;
     int32_t arrows = 0;
     int32_t sticks = 0;
     int32_t nuts = 0;
-    int32_t magic = 0;
     int32_t seeds = 0;
     int32_t bombchus = 0;
 
-    void Clear() {
-        *this = {};
-    }
+    void Clear() { *this = {}; }
+    bool HasContents() const;
+    bool IsInRoom() const;
+    bool IsRecoverable() const { return dropped && active; }
+    bool IsPendingActivation() const { return dropped && !active; }
+};
 
-    bool HasContents() const {
-        return rupees   > 0
-            || bombs    > 0
-            || arrows   > 0
-            || sticks   > 0
-            || nuts     > 0
-            || seeds    > 0
-            || bombchus > 0;
-    }
-
-    bool IsRecoverable() const {
-        return dropped && active;
-    }
-
-    bool IsPendingActivation() const {
-        return dropped && !active;
-    }
+static constexpr struct ConsumableDesc
+{
+    const char* name;
+    int32_t Remnant::* field;
+    int16_t itemId;
+} CONSUMABLE_TABLE[] = {
+    { "bombs",    &Remnant::bombs,    ITEM_BOMB      },
+    { "arrows",   &Remnant::arrows,   ITEM_BOW       },
+    { "sticks",   &Remnant::sticks,   ITEM_STICK     },
+    { "nuts",     &Remnant::nuts,     ITEM_NUT       },
+    { "seeds",    &Remnant::seeds,    ITEM_SLINGSHOT },
+    { "bombchus", &Remnant::bombchus, ITEM_BOMBCHU   }
 };
 
 static Remnant sRemnant;
 static GetItemEntry sMysteryItem = GET_ITEM_MYSTERY;
 
-static void SaveFile() {
-    SaveManager::Instance->SaveFile(gSaveContext.fileNum);
+// Remnant member helpers
+bool Remnant::HasContents() const {
+    if( rupees > 0 ) return true;
+    if( magic  > 0 ) return true;
+    for(const ConsumableDesc& desc : CONSUMABLE_TABLE)
+    {
+        if (this->*desc.field > 0) return true;
+    }
+    return false;
 }
 
-static bool IsInRoom() {
+bool Remnant::IsInRoom() const {
     return gPlayState != nullptr
-        && gPlayState->sceneNum == sRemnant.sceneNum 
-        && gPlayState->roomCtx.curRoom.num == sRemnant.roomNum;
+        && gPlayState->sceneNum == sceneNum 
+        && gPlayState->roomCtx.curRoom.num == roomNum;
 }
 
+// Save/Load
 static void InitSave(bool isDebug) {
     sRemnant.Clear();
+}
+
+static void SaveFile() {
+    SaveManager::Instance->SaveFile(gSaveContext.fileNum);
 }
 
 static void LoadSave() {
@@ -105,12 +116,11 @@ static void LoadSave() {
 
     SaveManager::Instance->LoadStruct("contents", []() {
         SaveManager::Instance->LoadData("rupees", sRemnant.rupees, 0);
-        SaveManager::Instance->LoadData("bombs", sRemnant.bombs, 0);
-        SaveManager::Instance->LoadData("arrows", sRemnant.arrows, 0);
-        SaveManager::Instance->LoadData("sticks", sRemnant.sticks, 0);
-        SaveManager::Instance->LoadData("nuts", sRemnant.nuts, 0);
-        SaveManager::Instance->LoadData("seeds", sRemnant.seeds, 0);
-        SaveManager::Instance->LoadData("bombchus", sRemnant.bombchus, 0);
+        SaveManager::Instance->LoadData("magic",  sRemnant.magic,  0);
+        for(const ConsumableDesc& desc : CONSUMABLE_TABLE)
+        {
+            SaveManager::Instance->LoadData(desc.name, sRemnant.*desc.field, 0);
+        }
     });
 }
 
@@ -134,18 +144,18 @@ static void Save(SaveContext* saveContext, int sectionID, bool fullSave) {
 
     SaveManager::Instance->SaveStruct("contents", []() {
         SaveManager::Instance->SaveData("rupees", sRemnant.rupees);
-        SaveManager::Instance->SaveData("bombs", sRemnant.bombs);
-        SaveManager::Instance->SaveData("arrows", sRemnant.arrows);
-        SaveManager::Instance->SaveData("sticks", sRemnant.sticks);
-        SaveManager::Instance->SaveData("nuts", sRemnant.nuts);
-        SaveManager::Instance->SaveData("seeds", sRemnant.seeds);
-        SaveManager::Instance->SaveData("bombchus", sRemnant.bombchus);
+        SaveManager::Instance->SaveData("magic",  sRemnant.magic);
+        for(const ConsumableDesc& desc : CONSUMABLE_TABLE)
+        {
+            SaveManager::Instance->SaveData(desc.name, sRemnant.*desc.field);
+        }
     });
 }
 
 static void RegisterSave() {
     static int32_t sSaveSectionId = CorpseRun::INVALID_SAVE_SECTION_ID;
 
+    // Don't register twice
     if (sSaveSectionId != CorpseRun::INVALID_SAVE_SECTION_ID) {
         return;
     }
@@ -155,6 +165,7 @@ static void RegisterSave() {
     sSaveSectionId = SaveManager::Instance->AddSaveFunction("corpseRun", CorpseRun::VERSION, Save, true, SECTION_PARENT_NONE);
 }
 
+// Corpse Run Logic
 static void Activate(Player* player, PlayState* playState, int32_t respawnFlag) {
     if (!sRemnant.dropped) {
         return;
@@ -191,12 +202,11 @@ static void Drop() {
 
     // v1 - consumables only
     sRemnant.rupees = gSaveContext.rupees;
-    sRemnant.bombs = AMMO(ITEM_BOMB);
-    sRemnant.arrows = AMMO(ITEM_BOW);
-    sRemnant.sticks = AMMO(ITEM_STICK);
-    sRemnant.nuts = AMMO(ITEM_NUT);
-    sRemnant.seeds = AMMO(ITEM_SLINGSHOT);
-    sRemnant.bombchus = AMMO(ITEM_BOMBCHU);
+    sRemnant.magic = gSaveContext.magic;
+    for(const ConsumableDesc& desc : CONSUMABLE_TABLE)
+    {
+        sRemnant.*desc.field = AMMO(desc.itemId);
+    }
 
     if (!sRemnant.HasContents()) {
         // Dark Souls behavior: dying again still destroys the previous remnant,
@@ -207,26 +217,22 @@ static void Drop() {
     }
 
     gSaveContext.rupees = 0;
-    AMMO(ITEM_BOMB) = 0;
-    AMMO(ITEM_BOW) = 0;
-    AMMO(ITEM_STICK) = 0;
-    AMMO(ITEM_NUT) = 0;
-    AMMO(ITEM_SLINGSHOT) = 0;
-    AMMO(ITEM_BOMBCHU) = 0;
+    Magic_Reset(gPlayState);
+    for(const ConsumableDesc& desc : CONSUMABLE_TABLE)
+    {
+        AMMO(desc.itemId) = 0;
+    }
 
     SaveFile();
 }
 
 static void Recover() {
-    gSaveContext.rupees += sRemnant.rupees;
-    Inventory_ChangeAmmo(ITEM_BOMB, sRemnant.bombs);
-    Inventory_ChangeAmmo(ITEM_BOW, sRemnant.arrows);
-    Inventory_ChangeAmmo(ITEM_STICK, sRemnant.sticks);
-    Inventory_ChangeAmmo(ITEM_NUT, sRemnant.nuts);
-    Inventory_ChangeAmmo(ITEM_SLINGSHOT, sRemnant.seeds);
-    Inventory_ChangeAmmo(ITEM_BOMBCHU, sRemnant.bombchus);
-
-    // TODO(jperos): clamp ammo/rupees to capacity.
+    Rupees_ChangeBy(sRemnant.rupees);
+    Magic_RequestChange(gPlayState, sRemnant.magic, MAGIC_ADD);
+    for(const ConsumableDesc& desc : CONSUMABLE_TABLE)
+    {
+        Inventory_ChangeAmmo(desc.itemId, sRemnant.*desc.field);
+    }
 
     sRemnant.Clear();
 
@@ -234,7 +240,7 @@ static void Recover() {
 }
 
 static void Update() {
-    if (!IsInRoom() || !sRemnant.IsRecoverable()) {
+    if (!sRemnant.IsInRoom() || !sRemnant.IsRecoverable()) {
         return;
     }
 
@@ -254,7 +260,7 @@ static void Update() {
 }
 
 static void Draw() {
-    if (!IsInRoom() || !sRemnant.IsRecoverable()) {
+    if (!sRemnant.IsInRoom() || !sRemnant.IsRecoverable()) {
         return;
     }
 
@@ -283,7 +289,6 @@ static void Register() {
     COND_HOOK(OnGameFrameUpdate, CVAR_CORPSE_RUN_VALUE, Update);
     COND_HOOK(OnPlayDrawEnd, CVAR_CORPSE_RUN_VALUE, Draw);
 }
-
 } // namespace CorpseRun
 
 static RegisterShipInitFunc initFunc(CorpseRun::Register, { CVAR_CORPSE_RUN_NAME });
