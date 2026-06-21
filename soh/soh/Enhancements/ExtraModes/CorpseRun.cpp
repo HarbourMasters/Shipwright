@@ -15,6 +15,7 @@ static constexpr int32_t CVAR_CORPSE_RUN_DEFAULT = 0;
 #define CVAR_CORPSE_RUN_VALUE CVarGetInteger(CVAR_CORPSE_RUN_NAME, CVAR_CORPSE_RUN_DEFAULT)
 
 struct CorpseRunRemnant {
+    bool dropped = false;
     bool active = false;
 
     int16_t sceneNum = -1;
@@ -37,13 +38,27 @@ struct CorpseRunRemnant {
 static CorpseRunRemnant sCorpseRunRemnant;
 
 static bool IsInRemnantRoom() {
-    return sCorpseRunRemnant.active 
+    return sCorpseRunRemnant.dropped 
         && gPlayState != nullptr 
         && gPlayState->sceneNum == sCorpseRunRemnant.sceneNum 
         && gPlayState->roomCtx.curRoom.num == sCorpseRunRemnant.roomNum;
 }
 
+static void ActivateRemnantOnPlayerInit(Player* player, PlayState* playState, int32_t respawnFlag) {
+    if (!sCorpseRunRemnant.dropped) {
+        return;
+    }
+
+    sCorpseRunRemnant.active = true;
+}
+
 static void DropRemnantOnDeath() {
+    // Safety in case death hook may fire more than once during the same death flow.
+    // If we already dropped a remnant, but it has not been activated by Player_Init yet, this is probably the same death, so ignore it.
+    if (sCorpseRunRemnant.dropped && !sCorpseRunRemnant.active) {
+        return;
+    }
+    
     if (gPlayState == nullptr) {
         return;
     }
@@ -57,7 +72,8 @@ static void DropRemnantOnDeath() {
     // Later, this is where second-death behavior lives.
     sCorpseRunRemnant = {};
 
-    sCorpseRunRemnant.active = true;
+    sCorpseRunRemnant.dropped = true;
+    sCorpseRunRemnant.active = false;
     sCorpseRunRemnant.sceneNum = gPlayState->sceneNum;
     sCorpseRunRemnant.roomNum = gPlayState->roomCtx.curRoom.num;
     sCorpseRunRemnant.pos = player->actor.world.pos;
@@ -97,7 +113,7 @@ static void RecoverRemnant() {
 }
 
 static void UpdateRemnant() {
-    if (!IsInRemnantRoom()) {
+    if (!IsInRemnantRoom() || !sCorpseRunRemnant.active) {
         return;
     }
 
@@ -111,7 +127,7 @@ static void UpdateRemnant() {
     const float dz = player->actor.world.pos.z - sCorpseRunRemnant.pos.z;
     const float distSq = dx * dx + dy * dy + dz * dz;
 
-    if (distSq < SQ(80.0f)) {
+    if (distSq < SQ(80.0f) && sCorpseRunRemnant.active) {
         RecoverRemnant();
     }
 }
@@ -124,13 +140,6 @@ static void DrawRemnant() {
     }
 
     Matrix_Push();
-
-    Matrix_Translate(
-        sCorpseRunRemnant.pos.x,
-        sCorpseRunRemnant.pos.y + 40.0f,
-        sCorpseRunRemnant.pos.z,
-        MTXMODE_NEW
-    );
 
     // Cheap bob/spin so it reads as collectible-ish.
     const s16 bobAngle = static_cast<s16>(gPlayState->gameplayFrames * 0x400);
@@ -154,6 +163,7 @@ static void DrawRemnant() {
 }
 
 static void RegisterCorpseRun() {
+    COND_HOOK(OnPlayerInit, CVAR_CORPSE_RUN_VALUE, ActivateRemnantOnPlayerInit);
     COND_HOOK(OnPlayerDeath, CVAR_CORPSE_RUN_VALUE, DropRemnantOnDeath);
     COND_HOOK(OnGameFrameUpdate, CVAR_CORPSE_RUN_VALUE, UpdateRemnant);
     COND_HOOK(OnPlayDrawEnd, CVAR_CORPSE_RUN_VALUE, DrawRemnant);
