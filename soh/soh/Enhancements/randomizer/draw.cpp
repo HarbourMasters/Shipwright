@@ -1135,10 +1135,7 @@ extern "C" void Randomizer_DrawPowerBracelet(PlayState* play, GetItemEntry* getI
     gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
               G_MTX_MODELVIEW | G_MTX_LOAD);
 
-    gSPGrayscale(POLY_OPA_DISP++, true);
-    gDPSetGrayscaleColor(POLY_OPA_DISP++, 80, 80, 80, 255);
-    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiGoronBraceletDL);
-    gSPGrayscale(POLY_OPA_DISP++, false);
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiGrabDL);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
@@ -1153,8 +1150,6 @@ extern "C" void Randomizer_DrawLadder(PlayState* play, GetItemEntry* getItemEntr
 
     gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiClimbDL);
 
-    Matrix_Pop();
-
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
@@ -1167,8 +1162,6 @@ extern "C" void Randomizer_DrawKneePads(PlayState* play, GetItemEntry* getItemEn
               G_MTX_MODELVIEW | G_MTX_LOAD);
 
     gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiCrawlDL);
-
-    Matrix_Pop();
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
@@ -1233,8 +1226,6 @@ extern "C" void Randomizer_DrawOpenChest(PlayState* play, GetItemEntry* getItemE
 
     gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiOpenChestsDL);
 
-    Matrix_Pop();
-
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
@@ -1247,8 +1238,6 @@ extern "C" void Randomizer_DrawFishingPoleGI(PlayState* play, GetItemEntry* getI
               G_MTX_MODELVIEW | G_MTX_LOAD);
 
     gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiFishingPoleDL);
-
-    Matrix_Pop();
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
