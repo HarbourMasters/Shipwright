@@ -16,6 +16,8 @@ typedef enum {
 typedef struct {
     AchievementId id;
     const char* name;
+    const char* icon;
+    const char* grayedIcon;
 } AchievementInfo;
 
 extern const AchievementInfo gAchievements[];

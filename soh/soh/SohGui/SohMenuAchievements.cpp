@@ -1,6 +1,7 @@
 #include "SohMenu.h"
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/achievements.h"
+#include <fast/Fast3dGui.h>
 
 extern "C" {
 #include "variables.h"
@@ -11,12 +12,22 @@ namespace SohGui {
 extern std::shared_ptr<SohMenu> mSohMenu;
 using namespace UIWidgets;
 
+void DrawAchievementEntry(const AchievementInfo& achievement, bool unlocked) {
+    auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
+    const char* icon = unlocked ? achievement.icon : achievement.grayedIcon;
+    auto texture = gui->GetTextureByName(icon);
+
+    ImGui::Image(texture, ImVec2(64, 64), ImVec2(0, 0), ImVec2(1, 1));
+    ImGui::SameLine();
+    ImGui::Text("%s", achievement.name);
+}
+
 void DrawAchievementsWidget(WidgetInfo& widget) {
     ImGui::SeparatorText("Obtained achievements");
 
     for (size_t i = 0; i < gAchievementCount; i++) {
         if (Achievements_IsUnlocked(gAchievements[i].id)) {
-            ImGui::Text("%s", gAchievements[i].name);
+            DrawAchievementEntry(gAchievements[i], true);
         }
     }
 
@@ -24,7 +35,7 @@ void DrawAchievementsWidget(WidgetInfo& widget) {
 
     for (size_t i = 0; i < gAchievementCount; i++) {
         if (!Achievements_IsUnlocked(gAchievements[i].id)) {
-            ImGui::Text("%s", gAchievements[i].name);
+            DrawAchievementEntry(gAchievements[i], false);
         }
     }
 }

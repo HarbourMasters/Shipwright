@@ -18,6 +18,7 @@ struct Options {
     ImVec4 suffixColor = ImVec4(1.0f, 0.5f, 0.5f, 1.0f);
     float remainingTime = 0.0f; // Seconds
     bool mute = false;          // whether notification should make a noise
+    bool achievement = true;     // whether this notification is for an achievement (custom visuals)
 };
 
 class Window final : public Ship::GuiWindow {
