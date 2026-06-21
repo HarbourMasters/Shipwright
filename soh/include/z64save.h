@@ -223,7 +223,7 @@ typedef struct ShipQuestSaveContextData {
 } ShipQuestSaveContextData;
 
 typedef struct ShipAchievementSaveContextData {
-    u16 achievementFlags;
+    u32 achievementFlags;
 } ShipAchievementSaveContextData;
 
 typedef struct ShipSaveContextData {

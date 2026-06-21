@@ -13,6 +13,14 @@ typedef enum {
     ACHIEVEMENT_DEFEAT_GANON = 9,
 } AchievementId;
 
+typedef struct {
+    AchievementId id;
+    const char* name;
+} AchievementInfo;
+
+extern const AchievementInfo gAchievements[];
+extern const size_t gAchievementCount;
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -20,6 +28,7 @@ extern "C" {
 void Achievements_Init();
 bool Achievements_IsUnlocked(AchievementId id);
 void Achievements_TryUnlock(AchievementId id);
+const AchievementInfo* Achievements_GetInfo(AchievementId id);
 
 #ifdef __cplusplus
 }

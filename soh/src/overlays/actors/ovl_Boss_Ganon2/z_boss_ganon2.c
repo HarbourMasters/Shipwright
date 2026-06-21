@@ -1964,7 +1964,6 @@ void BossGanon2_CollisionCheck(BossGanon2* this, PlayState* play) {
                     this->actor.colChkInfo.health -= 2;
                     temp_v0_4 = this->actor.colChkInfo.health;
                     if (temp_v0_4 < 0x15 && this->unk_334 == 0) {
-                        BossGanon2_TryUnlockDeathAchievement();
                         func_80900818(this, play);
                     } else {
                         if (temp_v0_4 <= 0) {
@@ -2001,6 +2000,7 @@ void BossGanon2_CollisionCheck(BossGanon2* this, PlayState* play) {
             if ((temp_v0_4 < 0x15) && (this->unk_334 == 0)) {
                 func_80900818(this, play);
             } else if ((temp_v0_4 <= 0) && (phi_v1_2 >= 2)) {
+                BossGanon2_TryUnlockDeathAchievement();
                 func_80901020(this, play);
             } else {
                 if (temp_v0_4 <= 0) {

@@ -594,7 +594,6 @@ void SaveManager::StartupCheckAndInitMeta(int fileNum) {
                                     metaSaveBlock["sections"]["sohStats"]["data"]["buildVersion"],
                                     ARRAY_COUNT(fileMetaInfo[fileNum].buildVersion));
 
-    fileMetaInfo[fileNum].achievementFlags = 0;
 }
 
 void SaveManager::InitMeta(int fileNum) {
