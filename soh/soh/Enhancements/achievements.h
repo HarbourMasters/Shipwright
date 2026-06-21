@@ -18,6 +18,7 @@ typedef struct {
     const char* name;
     const char* icon;
     const char* grayedIcon;
+    const char* description;
 } AchievementInfo;
 
 extern const AchievementInfo gAchievements[];

@@ -77,7 +77,7 @@ extern "C" void Achievements_TryUnlock(AchievementId id) {
             .messageColor = ImVec4(1.0f, 1.0f, 1.0f, 1.0f),
             .achievement = true,
         });
-        Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+        Audio_PlaySoundGeneral(NA_SE_SY_KINSTA_MARK_APPEAR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
                                            &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
 
         SPDLOG_INFO("Unlock {} -> flags={}", static_cast<int>(id), gSaveContext.ship.achievements.achievementFlags);
@@ -94,16 +94,26 @@ const AchievementInfo* Achievements_GetInfo(AchievementId id) {
 }
 
 const AchievementInfo gAchievements[] = {
-    { ACHIEVEMENT_DEFEAT_GOHMA, "Parasitic Armored Arachnid", "gAchieveGohmaDefeat", "gAchieveGohmaDefeat_Grayed" },
-    { ACHIEVEMENT_DEFEAT_KD, "Infernal Dinosaur", "gAchieveKDDefeat", "gAchieveKDDefeat_Grayed" },
-    { ACHIEVEMENT_DEFEAT_BARINADE, "Bio-Electric Anemone", "gAchieveBarinadeDefeat", "gAchieveBarinadeDefeat_Grayed" },
-    { ACHIEVEMENT_DEFEAT_PG, "Evil Spirit from Beyond", "gAchievePGDefeat", "gAchievePGDefeat_Grayed" },
-    { ACHIEVEMENT_DEFEAT_VOLVAGIA, "Subterranean Lava Dragon", "gAchieveVolvagiaDefeat", "gAchieveVolvagiaDefeat_Grayed" },
-    { ACHIEVEMENT_DEFEAT_MORPHA, "Giant Aquatic Amoeba", "gAchieveMorphaDefeat", "gAchieveMorphaDefeat_Grayed" },
-    { ACHIEVEMENT_DEFEAT_BONGO, "Phantom Shadow Beast", "gAchieveBongoDefeat", "gAchieveBongoDefeat_Grayed" },
-    { ACHIEVEMENT_DEFEAT_TWINROVA, "Sorceress Sisters", "gAchieveTwinrovaDefeat", "gAchieveTwinrovaDefeat_Grayed" },
-    { ACHIEVEMENT_DEFEAT_GANONDORF, "Great King of Evil", "gAchieveGanondorfDefeat", "gAchieveGanondorfDefeat_Grayed" },
-    { ACHIEVEMENT_DEFEAT_GANON, "Ganon", "gAchieveGanonDefeat", "gAchieveGanonDefeat_Grayed" },
+    { ACHIEVEMENT_DEFEAT_GOHMA, "Parasitic Armored Arachnid", "gAchieveGohmaDefeat", "gAchieveGohmaDefeat_Grayed", 
+      "Defeat Queen Gohma." },
+    { ACHIEVEMENT_DEFEAT_KD, "Infernal Dinosaur", "gAchieveKDDefeat", "gAchieveKDDefeat_Grayed",
+      "Defeat King Dodongo." },
+    { ACHIEVEMENT_DEFEAT_BARINADE, "Bio-Electric Anemone", "gAchieveBarinadeDefeat", "gAchieveBarinadeDefeat_Grayed", 
+      "Defeat Barinade." },
+    { ACHIEVEMENT_DEFEAT_PG, "Evil Spirit from Beyond", "gAchievePGDefeat", "gAchievePGDefeat_Grayed", 
+      "Defeat Phantom Ganon." },
+    { ACHIEVEMENT_DEFEAT_VOLVAGIA, "Subterranean Lava Dragon", "gAchieveVolvagiaDefeat", "gAchieveVolvagiaDefeat_Grayed", 
+      "Defeat Volvagia." },
+    { ACHIEVEMENT_DEFEAT_MORPHA, "Giant Aquatic Amoeba", "gAchieveMorphaDefeat", "gAchieveMorphaDefeat_Grayed", 
+      "Defeat Morpha." },
+    { ACHIEVEMENT_DEFEAT_BONGO, "Phantom Shadow Beast", "gAchieveBongoDefeat", "gAchieveBongoDefeat_Grayed", 
+      "Defeat Bongo." },
+    { ACHIEVEMENT_DEFEAT_TWINROVA, "Sorceress Sisters", "gAchieveTwinrovaDefeat", "gAchieveTwinrovaDefeat_Grayed", 
+      "Defeat Twinrova." },
+    { ACHIEVEMENT_DEFEAT_GANONDORF, "Great King of Evil", "gAchieveGanondorfDefeat", "gAchieveGanondorfDefeat_Grayed", 
+      "Defeat Ganondorf." },
+    { ACHIEVEMENT_DEFEAT_GANON, "Ganon", "gAchieveGanonDefeat", "gAchieveGanonDefeat_Grayed",
+      "Defeat Ganon." },
 };
 
 const size_t gAchievementCount =

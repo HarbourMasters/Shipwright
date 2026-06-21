@@ -18,8 +18,15 @@ void DrawAchievementEntry(const AchievementInfo& achievement, bool unlocked) {
     auto texture = gui->GetTextureByName(icon);
 
     ImGui::Image(texture, ImVec2(64, 64), ImVec2(0, 0), ImVec2(1, 1));
+    if (ImGui::IsItemHovered()) {
+        ImGui::SetTooltip("%s", achievement.description);
+    }
     ImGui::SameLine();
+    ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 16.0f);
     ImGui::Text("%s", achievement.name);
+    if (ImGui::IsItemHovered()) {
+        ImGui::SetTooltip("%s", achievement.description);
+    }
 }
 
 void DrawAchievementsWidget(WidgetInfo& widget) {

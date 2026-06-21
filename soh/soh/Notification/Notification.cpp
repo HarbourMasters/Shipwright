@@ -168,7 +168,7 @@ void drawAchievementNotification(const Options& notification) {
             ImGui::Image(
                 std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
                     ->GetTextureByName(notification.itemIcon),
-                ImVec2(64, 64));
+                ImVec2(80, 80));
             ImGui::SameLine();
         }
 
@@ -176,7 +176,7 @@ void drawAchievementNotification(const Options& notification) {
 
         if (!notification.prefix.empty()) {
             ImGui::TextColored(notification.prefixColor, "%s", notification.prefix.c_str());
-            ImGui::Dummy(ImVec2(0.0f, 5.0f)); //spacing
+            ImGui::Dummy(ImVec2(0.0f, 2.0f)); //spacing
         }
         ImGui::TextColored(notification.messageColor, "%s", notification.message.c_str());
         ImGui::EndGroup();
