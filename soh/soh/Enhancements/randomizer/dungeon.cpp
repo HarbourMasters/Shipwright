@@ -145,6 +145,7 @@ const std::vector<uint8_t>* DungeonInfo::GetDoorFlags() const {
         return &MQDoorFlags;
     }
     if (IS_RANDO) {
+        // Specifically non-MQ Rando, to handle an edge case in water temple
         return &randoDoorFlags;
     }
     return &vanillaDoorFlags;

@@ -9,6 +9,7 @@
 #include "SeedContext.h"
 #include "macros.h"
 #include "variables.h"
+#include "randomizer.h"
 #include <spdlog/spdlog.h>
 #include <ship/utils/StringHelper.h>
 #include "soh/resource/type/Scene.h"
