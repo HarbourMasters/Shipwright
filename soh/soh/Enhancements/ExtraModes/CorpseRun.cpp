@@ -20,6 +20,7 @@ namespace CorpseRun {
 
 static constexpr int32_t INVALID_SAVE_SECTION_ID = -1;
 static constexpr int32_t VERSION = 1;
+static constexpr float COLLECT_DISTANCE = 40.0f;
 
 struct Remnant {
     // State
@@ -262,7 +263,7 @@ static void Update() {
     const float dz = player->actor.world.pos.z - sRemnant.pos.z;
     const float distSq = dx * dx + dy * dy + dz * dz;
 
-    if (distSq < SQ(80.0f)) {
+    if (distSq < SQ(COLLECT_DISTANCE)) {
         Recover();
     }
 }
@@ -274,7 +275,8 @@ static void Draw() {
 
     Matrix_Push();
 
-    // Cheap bob/spin so it reads as collectible-ish.
+    // Cheap bob/spin so it reads as collectible-ish
+    // Just kind of picking the values out here
     const s16 bobAngle = static_cast<s16>(gPlayState->gameplayFrames * 0x400);
     const s16 spinAngle = static_cast<s16>(gPlayState->gameplayFrames * 0x200);
 
