@@ -285,7 +285,7 @@ void SetStartingItems() {
         gSaveContext.isDoubleMagicAcquired = startMagic >= 2;
         gSaveContext.magicLevel = startMagic;
         gSaveContext.magicCapacity = startMagic * MAGIC_NORMAL_METER;
-        gSaveContext.magic = gSaveContext.magicCapacity;
+        gSaveContext.magic = static_cast<s8>(gSaveContext.magicCapacity);
     }
 
     uint8_t startBombchu = Randomizer_GetSettingValue(RSK_STARTING_BOMBCHU_BAG);

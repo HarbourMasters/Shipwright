@@ -78,7 +78,7 @@ jobs:
           pacman) pacman -Sy --noconfirm git ;;
           zypper) zypper --non-interactive in git ;;
         esac
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
       with:
         submodules: true
     - name: Install dependencies (pacman)
@@ -192,7 +192,7 @@ jobs:
   build-nix:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
       with:
         submodules: true
     - uses: cachix/install-nix-action@v31

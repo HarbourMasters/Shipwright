@@ -1,0 +1,14 @@
+<DisplayList Version="0">
+	<CallDisplayList Path="objects/object_gi_chest/mat_gGiOpenChestsDL_chest_frame_layerOpaque"/>
+	<CallDisplayList Path="objects/object_gi_chest/gGiOpenChestsDL_layer_Opaque_tri_0"/>
+	<CallDisplayList Path="objects/object_gi_chest/mat_gGiOpenChestsDL_chest_layerOpaque"/>
+	<CallDisplayList Path="objects/object_gi_chest/gGiOpenChestsDL_layer_Opaque_tri_1"/>
+	<CallDisplayList Path="objects/object_gi_chest/mat_gGiOpenChestsDL_chest_inside_layerOpaque"/>
+	<CallDisplayList Path="objects/object_gi_chest/gGiOpenChestsDL_layer_Opaque_tri_2"/>
+	<CallDisplayList Path="objects/object_gi_chest/mat_gGiOpenChestsDL_chest_lock_layerTransparent"/>
+	<CallDisplayList Path="objects/object_gi_chest/gGiOpenChestsDL_mesh_layer_Transparent_tri_0"/>
+	<ClearGeometryMode G_LIGHTING="1"/>
+	<SetGeometryMode G_LIGHTING="1"/>
+	<EndDisplayList/>
+</DisplayList>
+

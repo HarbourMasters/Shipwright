@@ -1,0 +1,16 @@
+<DisplayList Version="0">
+	<CallDisplayList Path="objects/object_gi_crawl/mat_gGiCrawlDL_kneepad_layerOpaque"/>
+	<CallDisplayList Path="objects/object_gi_crawl/gGiCrawlDL_layer_Opaque_tri_0"/>
+	<CallDisplayList Path="objects/object_gi_crawl/mat_gGiCrawlDL_kneepad_leather_layerOpaque"/>
+	<CallDisplayList Path="objects/object_gi_crawl/gGiCrawlDL_layer_Opaque_tri_1"/>
+	<CallDisplayList Path="objects/object_gi_crawl/mat_gGiCrawlDL_kneepad_decal_layerOpaque"/>
+	<CallDisplayList Path="objects/object_gi_crawl/gGiCrawlDL_layer_Opaque_tri_2"/>
+	<CallDisplayList Path="objects/object_gi_crawl/mat_gGiCrawlDL_kneepad_decal_2_layerOpaque"/>
+	<CallDisplayList Path="objects/object_gi_crawl/gGiCrawlDL_layer_Opaque_tri_3"/>
+	<CallDisplayList Path="objects/object_gi_crawl/mat_gGiCrawlDL_kneepad_gem_layerOpaque"/>
+	<CallDisplayList Path="objects/object_gi_crawl/gGiCrawlDL_layer_Opaque_tri_4"/>
+	<ClearGeometryMode G_LIGHTING="1"/>
+	<SetGeometryMode G_LIGHTING="1"/>
+	<EndDisplayList/>
+</DisplayList>
+
