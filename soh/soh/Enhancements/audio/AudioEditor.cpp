@@ -971,9 +971,7 @@ void RegisterAudioWidgets() {
 
     randomInstruments = { .name = "Randomize Music Instruments", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
     randomInstruments.CVar(CVAR_AUDIO("RandomMusicInstruments"))
-        .Options(CheckboxOptions()
-                     .Color(THEME_COLOR)
-                     .Tooltip("Shuffles music instruments within the same music."));
+        .Options(CheckboxOptions().Color(THEME_COLOR).Tooltip("Shuffles music instruments within the same music."));
     SohGui::mSohMenu->AddSearchWidget({ randomInstruments, "Enhancements", "Audio Editor", "Audio Options" });
 }
 
