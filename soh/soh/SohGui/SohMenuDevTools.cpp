@@ -79,6 +79,13 @@ void SohMenu::AddMenuDevTools() {
         .CVar(CVAR_DEVELOPER_TOOLS("ResourceLogging"))
         .Options(CheckboxOptions().Tooltip("Logs some resources as XML when they're loaded in binary format."));
 
+    AddWidget(path, "Toon Lighting Viewer", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_DEVELOPER_TOOLS("ToonLighting.ShowDebug"))
+        .Options(CheckboxOptions().Tooltip(
+            "Draws a debug ray from each actor for every candidate light (coloured by the light, longer "
+            "when stronger) plus a bold white ray for the chosen toon key light. Lets you see which light "
+            "is winning and where the key points. Requires Toon Lighting to be enabled."));
+
     AddWidget(path, "Frame Advance", WIDGET_CHECKBOX)
         .Options(CheckboxOptions().Tooltip(
             "This allows you to advance through the game one frame at a time on command. "

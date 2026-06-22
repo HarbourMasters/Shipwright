@@ -39,6 +39,7 @@ void GameInteractor_ExecuteOnActorInit(void* actor);
 void GameInteractor_ExecuteOnActorSpawn(void* actor);
 bool GameInteractor_ShouldActorUpdate(void* actor);
 void GameInteractor_ExecuteOnActorUpdate(void* actor);
+void GameInteractor_ExecuteOnActorDraw(void* actor);
 void GameInteractor_ExecuteOnActorKill(void* actor);
 void GameInteractor_ExecuteOnActorDestroy(void* actor);
 void GameInteractor_ExecuteOnEnemyDefeat(void* actor);

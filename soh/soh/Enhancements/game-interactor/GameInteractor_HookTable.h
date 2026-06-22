@@ -38,6 +38,7 @@ DEFINE_HOOK(OnActorInit, (void* actor));
 DEFINE_HOOK(OnActorSpawn, (void* actor));
 DEFINE_HOOK(ShouldActorUpdate, (void* actor, bool* result));
 DEFINE_HOOK(OnActorUpdate, (void* actor));
+DEFINE_HOOK(OnActorDraw, (void* actor));
 DEFINE_HOOK(OnActorKill, (void* actor));
 DEFINE_HOOK(OnActorDestroy, (void* actor));
 DEFINE_HOOK(OnEnemyDefeat, (void* actor));

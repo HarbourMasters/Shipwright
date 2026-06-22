@@ -430,6 +430,85 @@ void SohMenu::AddMenuSettings() {
     path.column = SECTION_COLUMN_2;
     AddWidget(path, "Advanced Graphics Options", WIDGET_SEPARATOR_TEXT);
 
+    // Every Toon Lighting slider is shown only while the effect is enabled.
+    auto hideUnlessToonEnabled = [](WidgetInfo& info) {
+        info.isHidden = !CVarGetInteger(CVAR_ENHANCEMENT("Graphics.ToonLighting.Enabled"), 0);
+    };
+    AddWidget(path, "Toon Lighting", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Enable Toon Lighting", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("Graphics.ToonLighting.Enabled"))
+        .RaceDisable(false)
+        .Options(CheckboxOptions().Tooltip(
+            "Re-lights actors/objects with a single dominant light and a soft Wind Waker-style ramp "
+            "(cel shading). Only affects objects, not the static scene. Pairs well with cel-shaded "
+            "texture packs."));
+    AddWidget(path, "Ramp Center", WIDGET_CVAR_SLIDER_FLOAT)
+        .CVar(CVAR_ENHANCEMENT("Graphics.ToonLighting.RampCenter"))
+        .RaceDisable(false)
+        .PreFunc(hideUnlessToonEnabled)
+        .Options(FloatSliderOptions()
+                     .Tooltip("Where the dark-to-light transition sits. Higher = more of the surface "
+                              "stays in shadow.")
+                     .Min(0.0f)
+                     .Max(1.0f)
+                     .DefaultValue(0.5f)
+                     .IsPercentage());
+    AddWidget(path, "Ramp Softness", WIDGET_CVAR_SLIDER_FLOAT)
+        .CVar(CVAR_ENHANCEMENT("Graphics.ToonLighting.RampSoftness"))
+        .RaceDisable(false)
+        .PreFunc(hideUnlessToonEnabled)
+        .Options(FloatSliderOptions()
+                     .Tooltip("Width of the transition band. Low = a hard cel edge; high = a softer "
+                              "gradient.")
+                     .Min(0.01f)
+                     .Max(0.5f)
+                     .DefaultValue(0.1f));
+    AddWidget(path, "Highlight Intensity", WIDGET_CVAR_SLIDER_FLOAT)
+        .CVar(CVAR_ENHANCEMENT("Graphics.ToonLighting.HighlightIntensity"))
+        .RaceDisable(false)
+        .PreFunc(hideUnlessToonEnabled)
+        .Options(FloatSliderOptions()
+                     .Tooltip("Brightness of the lit side. Higher = brighter highlights.")
+                     .Min(0.0f)
+                     .Max(2.0f)
+                     .DefaultValue(1.0f)
+                     .IsPercentage());
+    AddWidget(path, "Shadow Intensity", WIDGET_CVAR_SLIDER_FLOAT)
+        .CVar(CVAR_ENHANCEMENT("Graphics.ToonLighting.ShadowIntensity"))
+        .RaceDisable(false)
+        .PreFunc(hideUnlessToonEnabled)
+        .Options(FloatSliderOptions()
+                     .Tooltip("How dark the shadow side gets. 0% = no shadow (flat), 100% = full "
+                              "shadow down to ambient.")
+                     .Min(0.0f)
+                     .Max(1.0f)
+                     .DefaultValue(1.0f)
+                     .IsPercentage());
+    AddWidget(path, "Point Light Range", WIDGET_CVAR_SLIDER_FLOAT)
+        .CVar(CVAR_ENHANCEMENT("Graphics.ToonLighting.PointLightRange"))
+        .RaceDisable(false)
+        .PreFunc(hideUnlessToonEnabled)
+        .Options(FloatSliderOptions()
+                     .Tooltip("Extends how far a point light can remain an object's key light, as a "
+                              "multiplier on its actual radius (key selection only — the game's real "
+                              "lighting is unchanged). Raise it so an orbiting fairy keeps lighting nearby "
+                              "objects even when it swings to its far side. 1x = the light's literal range.")
+                     .Format("%.1fx")
+                     .Min(1.0f)
+                     .Max(4.0f)
+                     .DefaultValue(1.0f));
+    AddWidget(path, "Transition Time", WIDGET_CVAR_SLIDER_FLOAT)
+        .CVar(CVAR_ENHANCEMENT("Graphics.ToonLighting.TransitionTime"))
+        .RaceDisable(false)
+        .PreFunc(hideUnlessToonEnabled)
+        .Options(FloatSliderOptions()
+                     .Tooltip("How long the key light takes to ease from one source to another. Higher "
+                              "= slower, more deliberate travel between the sun and a fairy/torch.")
+                     .Format("%.1fs")
+                     .Min(0.1f)
+                     .Max(6.0f)
+                     .DefaultValue(2.5f));
+
     // Controls
     path.sidebarName = "Controls";
     path.column = SECTION_COLUMN_1;
