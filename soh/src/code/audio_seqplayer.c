@@ -541,7 +541,7 @@ s32 AudioSeq_SeqLayerProcessScriptStep2(SequenceLayer* layer) {
             case 0xC6: // layer_setinstr
                 cmd = AudioSeq_ScriptReadU8(state);
 
-                GameInteractor_ExecuteOnSeqInstrumentSet(channel, cmd);
+                GameInteractor_ExecuteOnSeqInstrumentSet(channel, &cmd);
 
                 if (cmd >= 0x7E) {
                     if (cmd == 0x7E) {
