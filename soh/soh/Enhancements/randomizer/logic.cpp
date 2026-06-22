@@ -9,6 +9,7 @@
 #include "SeedContext.h"
 #include "macros.h"
 #include "variables.h"
+#include "randomizer.h"
 #include <spdlog/spdlog.h>
 #include <ship/utils/StringHelper.h>
 #include "soh/resource/type/Scene.h"
@@ -80,8 +81,6 @@ bool Logic::HasItem(RandomizerGet itemName) {
             return CheckEquipment(RandoGetToEquipFlag.at(itemName)) || Get(LOGIC_MEDIGORON);
         case RG_BIGGORON_SWORD:
             return CheckEquipment(RandoGetToEquipFlag.at(itemName)) && mSaveContext->bgsFlag;
-        case RG_POWER_BRACELET:
-            return CheckRandoInf(RAND_INF_CAN_GRAB);
         case RG_GORONS_BRACELET:
             return CurrentUpgrade(UPG_STRENGTH);
         case RG_SILVER_GAUNTLETS:
@@ -147,10 +146,27 @@ bool Logic::HasItem(RandomizerGet itemName) {
                     assert(false);
                     return false;
             }
+        case RG_POWER_BRACELET:
+        case RG_CHILD_WALLET:
         case RG_FISHING_POLE:
+        case RG_BRONZE_SCALE:
+        case RG_CLIMB:
+        case RG_CRAWL:
+        case RG_OPEN_CHEST:
         case RG_ZELDAS_LETTER:
         case RG_WEIRD_EGG:
         case RG_GREG_RUPEE:
+            // Adult Trade
+        case RG_COJIRO:
+        case RG_ODD_MUSHROOM:
+        case RG_ODD_POTION:
+        case RG_POACHERS_SAW:
+        case RG_BROKEN_SWORD:
+        case RG_PRESCRIPTION:
+        case RG_EYEBALL_FROG:
+        case RG_EYEDROPS:
+        case RG_CLAIM_CHECK:
+            // Jabber Nuts
         case RG_SPEAK_DEKU:
         case RG_SPEAK_GERUDO:
         case RG_SPEAK_GORON:
@@ -211,7 +227,7 @@ bool Logic::HasItem(RandomizerGet itemName) {
         case RG_HYLIA_LAB_KEY:
         case RG_FISHING_HOLE_KEY:
         case RG_RUTOS_LETTER:
-            return CheckRandoInf(RandoGetToRandInf.at(itemName));
+            return CheckRandoInf(StaticData::RandoGetToRandInf.at(itemName));
             // Boss Keys
         case RG_FOREST_TEMPLE_BOSS_KEY:
         case RG_FIRE_TEMPLE_BOSS_KEY:
@@ -245,8 +261,6 @@ bool Logic::HasItem(RandomizerGet itemName) {
         case RG_ICE_CAVERN_COMPASS:
             return CheckDungeonItem(DUNGEON_COMPASS, RandoGetToDungeonScene.at(itemName));
             // Wallets
-        case RG_CHILD_WALLET:
-            return CheckRandoInf(RAND_INF_HAS_WALLET);
         case RG_ADULT_WALLET:
             return CurrentUpgrade(UPG_WALLET) >= 1;
         case RG_GIANT_WALLET:
@@ -254,31 +268,13 @@ bool Logic::HasItem(RandomizerGet itemName) {
         case RG_TYCOON_WALLET:
             return CurrentUpgrade(UPG_WALLET) >= 3;
             // Scales
-        case RG_BRONZE_SCALE:
-            return CheckRandoInf(RAND_INF_CAN_SWIM);
         case RG_SILVER_SCALE:
             return CurrentUpgrade(UPG_SCALE) >= 1;
         case RG_GOLDEN_SCALE:
             return CurrentUpgrade(UPG_SCALE) >= 2;
-        case RG_CLIMB:
-            return CheckRandoInf(RAND_INF_CAN_CLIMB);
-        case RG_CRAWL:
-            return CheckRandoInf(RAND_INF_CAN_CRAWL);
-        case RG_OPEN_CHEST:
-            return CheckRandoInf(RAND_INF_CAN_OPEN_CHEST);
         case RG_POCKET_EGG:
             return CheckRandoInf(RAND_INF_ADULT_TRADES_HAS_POCKET_EGG) ||
                    CheckRandoInf(RAND_INF_ADULT_TRADES_HAS_POCKET_CUCCO);
-        case RG_COJIRO:
-        case RG_ODD_MUSHROOM:
-        case RG_ODD_POTION:
-        case RG_POACHERS_SAW:
-        case RG_BROKEN_SWORD:
-        case RG_PRESCRIPTION:
-        case RG_EYEBALL_FROG:
-        case RG_EYEDROPS:
-        case RG_CLAIM_CHECK:
-            return CheckRandoInf(itemName - RG_COJIRO + RAND_INF_ADULT_TRADES_HAS_COJIRO);
         case RG_BOTTLE_WITH_BIG_POE:
         case RG_BOTTLE_WITH_BLUE_FIRE:
         case RG_BOTTLE_WITH_BLUE_POTION:
@@ -1764,7 +1760,7 @@ bool Logic::CanTriggerLACS() {
            (ctx->LACSCondition() == RO_LACS_TOKENS && GetGSCount() >= ctx->GetOption(RSK_LACS_TOKEN_COUNT).Get());
 }
 
-bool Logic::SmallKeys(s16 scene, uint8_t requiredAmount) {
+bool Logic::SmallKeys(SceneID scene, uint8_t requiredAmount) {
     if (HasItem(RG_SKELETON_KEY)) {
         return true;
     }
@@ -1782,9 +1778,32 @@ std::map<RandomizerGet, uint32_t> Logic::RandoGetToEquipFlag = {
     { RG_HOVER_BOOTS, EQUIP_FLAG_BOOTS_HOVER }
 };
 
-std::map<RandomizerGet, uint32_t> Logic::RandoGetToRandInf = {
+std::map<RandomizerGet, uint32_t> StaticData::RandoGetToRandInf = {
+    { RG_BRONZE_SCALE, RAND_INF_CAN_SWIM },
+    { RG_POWER_BRACELET, RAND_INF_CAN_GRAB },
     { RG_ZELDAS_LETTER, RAND_INF_ZELDAS_LETTER },
+    { RG_CLIMB, RAND_INF_CAN_CLIMB },
+    { RG_CRAWL, RAND_INF_CAN_CRAWL },
+    { RG_OPEN_CHEST, RAND_INF_CAN_OPEN_CHEST },
+    { RG_CHILD_WALLET, RAND_INF_HAS_WALLET },
+    { RG_QUIVER_INF, RAND_INF_HAS_INFINITE_QUIVER },
+    { RG_BOMB_BAG_INF, RAND_INF_HAS_INFINITE_BOMB_BAG },
+    { RG_BULLET_BAG_INF, RAND_INF_HAS_INFINITE_BULLET_BAG },
+    { RG_STICK_UPGRADE_INF, RAND_INF_HAS_INFINITE_STICK_UPGRADE },
+    { RG_NUT_UPGRADE_INF, RAND_INF_HAS_INFINITE_NUT_UPGRADE },
+    { RG_MAGIC_INF, RAND_INF_HAS_INFINITE_MAGIC_METER },
+    { RG_BOMBCHU_INF, RAND_INF_HAS_INFINITE_BOMBCHUS },
+    { RG_WALLET_INF, RAND_INF_HAS_INFINITE_MONEY },
     { RG_WEIRD_EGG, RAND_INF_WEIRD_EGG },
+    { RG_COJIRO, RAND_INF_ADULT_TRADES_HAS_COJIRO },
+    { RG_ODD_MUSHROOM, RAND_INF_ADULT_TRADES_HAS_ODD_MUSHROOM },
+    { RG_ODD_POTION, RAND_INF_ADULT_TRADES_HAS_ODD_POTION },
+    { RG_POACHERS_SAW, RAND_INF_ADULT_TRADES_HAS_SAW },
+    { RG_BROKEN_SWORD, RAND_INF_ADULT_TRADES_HAS_SWORD_BROKEN },
+    { RG_PRESCRIPTION, RAND_INF_ADULT_TRADES_HAS_PRESCRIPTION },
+    { RG_EYEBALL_FROG, RAND_INF_ADULT_TRADES_HAS_FROG },
+    { RG_EYEDROPS, RAND_INF_ADULT_TRADES_HAS_EYEDROPS },
+    { RG_CLAIM_CHECK, RAND_INF_ADULT_TRADES_HAS_CLAIM_CHECK },
     { RG_RUTOS_LETTER, RAND_INF_OBTAINED_RUTOS_LETTER },
     { RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL, RAND_INF_DEATH_MOUNTAIN_CRATER_BEAN_SOUL },
     { RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL, RAND_INF_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL },
@@ -1853,7 +1872,7 @@ std::map<RandomizerGet, uint32_t> Logic::RandoGetToRandInf = {
     { RG_FISHING_HOLE_KEY, RAND_INF_FISHING_HOLE_KEY_OBTAINED },
 };
 
-std::map<uint32_t, uint32_t> Logic::RandoGetToDungeonScene = {
+std::map<uint32_t, SceneID> Logic::RandoGetToDungeonScene = {
     { RG_FOREST_TEMPLE_SMALL_KEY, SCENE_FOREST_TEMPLE },
     { RG_FIRE_TEMPLE_SMALL_KEY, SCENE_FIRE_TEMPLE },
     { RG_WATER_TEMPLE_SMALL_KEY, SCENE_WATER_TEMPLE },
@@ -2302,7 +2321,7 @@ void Logic::ApplyItemEffect(Item& item, bool state) {
                 case RG_BACK_TOWER_KEY:
                 case RG_HYLIA_LAB_KEY:
                 case RG_FISHING_HOLE_KEY:
-                    SetRandoInf(RandoGetToRandInf.at(randoGet), state);
+                    SetRandoInf(StaticData::RandoGetToRandInf.at(randoGet), state);
                     break;
                 case RG_TRIFORCE_PIECE:
                     mSaveContext->ship.quest.data.randomizer.triforcePiecesCollected += (!state ? -1 : 1);
@@ -2630,83 +2649,13 @@ void Logic::SetQuestItem(uint32_t item, bool state) {
     }
 }
 
-// Get the swch bit positions for the dungeon
-const std::vector<uint8_t>& GetDungeonSmallKeyDoors(const SceneID sceneId) {
-    static const std::vector<uint8_t> emptyVector;
-
-    static const std::vector<uint8_t> normalSmallKeyDoors{ 1, 2, 3, 4 };
-    static const std::vector<uint8_t> fastSmallKeyDoors{ 1 };
-    static const std::vector<uint8_t> freeSmallKeyDoors{};
-
-    using SmallKeyDoorSets = std::pair<std::vector<uint8_t>, std::vector<uint8_t>>; // first = vanilla, second = MQ
-    static const std::unordered_map<SceneID, SmallKeyDoorSets> dungeonSmallKeyDoors{
-        { SCENE_FOREST_TEMPLE, { { 0, 1, 2, 3, 4 }, { 0, 1, 2, 3, 4, 6 } } },
-        { SCENE_FIRE_TEMPLE, { { 23, 24, 25, 26, 27, 29, 30, 31 }, { 23, 24, 26, 27, 30 } } },
-        { SCENE_WATER_TEMPLE, { { 1, 2, 5, 6, 9 }, { 4, 21 } } },
-        { SCENE_SPIRIT_TEMPLE, { { 13, 21, 27, 28, 30 }, { 1, 3, 18, 21, 27, 28, 30 } } },
-        { SCENE_SHADOW_TEMPLE, { { 21, 22, 23, 24, 25 }, { 21, 22, 23, 24, 25, 27 } } },
-        { SCENE_BOTTOM_OF_THE_WELL, { { 27, 28, 29 }, { 20, 21 } } },
-        { SCENE_GERUDO_TRAINING_GROUND, { { 1, 3, 4, 5, 6, 7, 9, 10, 23 }, { 20, 23, 29 } } },
-        { SCENE_INSIDE_GANONS_CASTLE, { { 29, 30 }, { 20, 21, 22 } } },
-    };
-    static const std::vector<uint8_t> vanillaWaterTempleDoors{ 1, 2, 5, 6, 9, 21 };
-
+int8_t Logic::GetSmallKeyCount(SceneID sceneId) {
     if (sceneId == SCENE_THIEVES_HIDEOUT) {
-        if (RAND_GET_OPTION(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_NORMAL)) {
-            return normalSmallKeyDoors;
-        }
-        if (RAND_GET_OPTION(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FAST)) {
-            return fastSmallKeyDoors;
-        }
-        return freeSmallKeyDoors;
+        std::vector<uint8_t> DoorFlags = THIEVES_HIDEOUT_DOOR_FLAGS;
+        return FindTotalSmallKeys(mSaveContext, SCENE_THIEVES_HIDEOUT, &DoorFlags);
     }
 
-    if (sceneId == SCENE_WATER_TEMPLE && IS_VANILLA) {
-        return vanillaWaterTempleDoors;
-    }
-
-    auto dungeonInfo = Rando::Context::GetInstance()->GetDungeons()->GetDungeonFromScene(sceneId);
-    if (dungeonInfo == nullptr) {
-        return emptyVector;
-    }
-
-    auto it = dungeonSmallKeyDoors.find(sceneId);
-    if (it == dungeonSmallKeyDoors.end()) {
-        return emptyVector;
-    }
-
-    return dungeonInfo->IsMQ() ? it->second.second : it->second.first;
-}
-
-int8_t Logic::GetUsedSmallKeyCount(SceneID sceneId) {
-    const auto& smallKeyDoors = GetDungeonSmallKeyDoors(sceneId);
-
-    // Get the swch value for the scene
-    uint32_t swch;
-    if (gPlayState != nullptr && gPlayState->sceneNum == sceneId) {
-        swch = gPlayState->actorCtx.flags.swch;
-    } else {
-        swch = mSaveContext->sceneFlags[sceneId].swch;
-    }
-
-    // Count the number of small keys doors unlocked
-    int8_t unlockedSmallKeyDoors = 0;
-    for (auto& smallKeyDoor : smallKeyDoors) {
-        unlockedSmallKeyDoors += swch >> smallKeyDoor & 1;
-    }
-
-    // RANDOTODO: Account for MQ Water trick that causes the basement lock to unlock when the player clears the stalfos
-    // pit.
-    return unlockedSmallKeyDoors;
-}
-
-uint8_t Logic::GetSmallKeyCount(uint32_t dungeonIndex) {
-    int8_t dungeonKeys = mSaveContext->inventory.dungeonKeys[dungeonIndex];
-    if (dungeonKeys == -1) {
-        // never got keys, so can't have used keys
-        return 0;
-    }
-    return dungeonKeys + GetUsedSmallKeyCount(SceneID(dungeonIndex));
+    return Rando::Context::GetInstance()->GetDungeons()->GetDungeonFromScene(sceneId)->GetTotalSmallKeys(mSaveContext);
 }
 
 void Logic::SetSmallKeyCount(uint32_t dungeonIndex, uint8_t count) {
