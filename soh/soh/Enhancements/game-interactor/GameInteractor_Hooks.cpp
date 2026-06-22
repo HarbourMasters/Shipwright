@@ -395,6 +395,10 @@ void GameInteractor_ExecuteOnSeqPlayerInit(int32_t playerIdx, int32_t seqId) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSeqPlayerInit>(playerIdx, seqId);
 }
 
+void GameInteractor_ExecuteOnSeqInstrumentSet(void* channel, uint8_t* instId) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSeqInstrumentSet>(channel, instId);
+}
+
 // MARK: - Rando
 void GameInteractor_ExecuteOnRandoEntranceDiscovered(u16 entranceIndex, u8 isReversedEntrance) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnRandoEntranceDiscovered>(entranceIndex,

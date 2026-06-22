@@ -4,6 +4,7 @@
 #include "global.h"
 
 #include "soh/Enhancements/audio/AudioEditor.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ResourceManagerHelpers.h"
 
 extern char** sequenceMap;
@@ -539,6 +540,9 @@ s32 AudioSeq_SeqLayerProcessScriptStep2(SequenceLayer* layer) {
 
             case 0xC6: // layer_setinstr
                 cmd = AudioSeq_ScriptReadU8(state);
+
+                GameInteractor_ExecuteOnSeqInstrumentSet(channel, cmd);
+
                 if (cmd >= 0x7E) {
                     if (cmd == 0x7E) {
                         layer->instOrWave = 1;
@@ -957,6 +961,8 @@ u8 AudioSeq_GetInstrument(SequenceChannel* channel, u8 instId, Instrument** inst
 }
 
 void AudioSeq_SetInstrument(SequenceChannel* channel, u8 instId) {
+    GameInteractor_ExecuteOnSeqInstrumentSet(channel, &instId);
+
     if (instId >= 0x80) {
         channel->instOrWave = instId;
         channel->instrument = NULL;
