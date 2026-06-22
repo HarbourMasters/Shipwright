@@ -103,6 +103,7 @@ void GameInteractor_ExecuteOnOpenText(uint16_t* textId, bool* loadFromMessageTab
 // Mark: - Audio
 void GameInteractor_ExecuteOnSeqPlayerInit(int32_t playerIdx, int32_t seqId);
 void GameInteractor_ExecuteOnSeqInstrumentSet(void* channel, uint8_t* instId);
+void GameInteractor_ExecuteOnSeqInstrumentGetSound(void* instrument, int32_t semitone, void** sound);
 
 // MARK: - Rando
 void GameInteractor_ExecuteOnRandoEntranceDiscovered(u16 entranceIndex, u8 isReversedEntrance);

@@ -8,6 +8,7 @@ extern "C" {
 #include "global.h"
 #include "functions.h"
 #include "variables.h"
+
 u32 Audio_NextRandom(void);
 }
 
@@ -21,25 +22,32 @@ namespace RandomMusicInstruments {
 static constexpr uint8_t MIN_NORMAL_INSTRUMENT = 0x00;
 static constexpr uint8_t MAX_NORMAL_INSTRUMENT = 0x7D;
 static constexpr uint8_t NUM_NORMAL_INSTRUMENTS = 0x7E;
+static constexpr uint8_t INVALID_INSTRUMENT = 0xFF;
+static constexpr uint16_t NUM_FONTS = 0x100;
 
-static int32_t sCurrentMainSeqId = NA_BGM_DISABLED;
-static uint32_t sMainSeqPlayCount = 0;
+struct RangeOverride {
+    Instrument* replacement = nullptr;
+    Instrument* original = nullptr;
+};
+
+static constexpr size_t MAX_RANGE_OVERRIDES = 256;
+
+static uint8_t sInstrumentRemap[NUM_FONTS][NUM_NORMAL_INSTRUMENTS];
+static bool sReplacementUsed[NUM_FONTS][NUM_NORMAL_INSTRUMENTS];
+
+static RangeOverride sRangeOverrides[MAX_RANGE_OVERRIDES];
+static size_t sRangeOverrideCount = 0;
 
 static bool IsMainBgmChannel(SequenceChannel* channel) {
-    if (channel == nullptr) {
+    if (channel == nullptr || channel->seqPlayer == nullptr) {
         return false;
     }
 
-    SequencePlayer* seqPlayer = channel->seqPlayer;
-    if (seqPlayer == nullptr) {
-        return false;
-    }
-
-    return seqPlayer->playerIdx == SEQ_PLAYER_BGM_MAIN && seqPlayer->enabled;
+    return channel->seqPlayer->playerIdx == SEQ_PLAYER_BGM_MAIN && channel->seqPlayer->enabled;
 }
 
 static bool IsNormalInstrument(uint8_t instId) {
-    return instId <= MAX_NORMAL_INSTRUMENT;
+    return instId >= MIN_NORMAL_INSTRUMENT && instId <= MAX_NORMAL_INSTRUMENT;
 }
 
 static bool IsValidInstrument(uint8_t fontId, uint8_t instId) {
@@ -55,10 +63,69 @@ static uint32_t RandomIndex(uint32_t count) {
         return 0;
     }
 
-    return static_cast<uint32_t>(Audio_NextRandom()) % count;
+    return Audio_NextRandom() % count;
 }
 
-static uint8_t GetRandomInstrumentFromSameFont(uint8_t fontId, uint8_t originalInstId) {
+static void ResetState() {
+    memset(sInstrumentRemap, INVALID_INSTRUMENT, sizeof(sInstrumentRemap));
+    memset(sReplacementUsed, 0, sizeof(sReplacementUsed));
+
+    memset(sRangeOverrides, 0, sizeof(sRangeOverrides));
+    sRangeOverrideCount = 0;
+}
+
+static void AddRangeOverride(Instrument* original, Instrument* replacement) {
+    if (original == nullptr || replacement == nullptr || original == replacement) {
+        return;
+    }
+
+    for (size_t i = 0; i < sRangeOverrideCount; i++) {
+        if (sRangeOverrides[i].replacement == replacement) {
+            sRangeOverrides[i].original = original;
+            return;
+        }
+    }
+
+    if (sRangeOverrideCount >= MAX_RANGE_OVERRIDES) {
+        return;
+    }
+
+    sRangeOverrides[sRangeOverrideCount++] = { replacement, original };
+}
+
+static Instrument* FindOriginalRangeInstrument(Instrument* replacement) {
+    for (size_t i = 0; i < sRangeOverrideCount; i++) {
+        if (sRangeOverrides[i].replacement == replacement) {
+            return sRangeOverrides[i].original;
+        }
+    }
+
+    return nullptr;
+}
+
+static uint8_t CommitRemap(uint8_t fontId, uint8_t originalInstId, uint8_t replacementInstId) {
+    sInstrumentRemap[fontId][originalInstId] = replacementInstId;
+    sReplacementUsed[fontId][replacementInstId] = true;
+
+    Instrument* original = Audio_GetInstrumentInner(fontId, originalInstId);
+    Instrument* replacement = Audio_GetInstrumentInner(fontId, replacementInstId);
+
+    AddRangeOverride(original, replacement);
+
+    return replacementInstId;
+}
+
+static uint8_t GetOrCreateRemappedInstrument(uint8_t fontId, uint8_t originalInstId) {
+    if (!IsNormalInstrument(originalInstId)) {
+        return originalInstId;
+    }
+
+    uint8_t& remapped = sInstrumentRemap[fontId][originalInstId];
+
+    if (remapped != INVALID_INSTRUMENT) {
+        return remapped;
+    }
+
     uint8_t candidates[NUM_NORMAL_INSTRUMENTS];
     uint8_t candidateCount = 0;
 
@@ -67,35 +134,75 @@ static uint8_t GetRandomInstrumentFromSameFont(uint8_t fontId, uint8_t originalI
             continue;
         }
 
+        if (sReplacementUsed[fontId][instId]) {
+            continue;
+        }
+
         candidates[candidateCount++] = instId;
     }
 
+    // If every valid replacement is already used, allow repeats as a fallback.
+    // This should be rare, because the set of valid originals and valid replacements
+    // comes from the same font.
     if (candidateCount == 0) {
-        return originalInstId;
+        for (uint8_t instId = MIN_NORMAL_INSTRUMENT; instId <= MAX_NORMAL_INSTRUMENT; instId++) {
+            if (!IsValidInstrument(fontId, instId)) {
+                continue;
+            }
+
+            candidates[candidateCount++] = instId;
+        }
     }
 
-    if (candidateCount == 1) {
-        return candidates[0];
+    if (candidateCount == 0) {
+        remapped = originalInstId;
+        return remapped;
     }
 
-    // Try a few times to avoid returning the original instrument.
-    // If the font is weird and we keep hitting the same one, whatever.
+    // Prefer not mapping an instrument to itself.
     for (int32_t attempt = 0; attempt < 8; attempt++) {
         const uint8_t candidate = candidates[RandomIndex(candidateCount)];
 
-        if (candidate != originalInstId) {
-            return candidate;
+        if (candidate != originalInstId || candidateCount == 1) {
+            return CommitRemap(fontId, originalInstId, candidate);
         }
     }
 
-    // Guaranteed fallback to something different if possible.
+    // Guaranteed non-self fallback if possible.
     for (uint8_t i = 0; i < candidateCount; i++) {
         if (candidates[i] != originalInstId) {
-            return candidates[i];
+            return CommitRemap(fontId, originalInstId, candidates[i]);
         }
     }
 
-    return originalInstId;
+    return CommitRemap(fontId, originalInstId, candidates[0]);
+}
+
+static SoundFontSound* GetReplacementSoundUsingOriginalRange(Instrument* original, Instrument* replacement,
+                                                             int32_t semitone) {
+    if (original == nullptr || replacement == nullptr) {
+        return nullptr;
+    }
+
+    if (semitone < original->normalRangeLo) {
+        // Only use the replacement's low sample if it actually has a low range.
+        if (replacement->normalRangeLo != 0 && replacement->lowNotesSound.sample != nullptr) {
+            return &replacement->lowNotesSound;
+        }
+
+        return &replacement->normalNotesSound;
+    }
+
+    if (semitone > original->normalRangeHi) {
+        // Only use the replacement's high sample if it actually has a high range.
+        if (replacement->normalRangeHi != 0x7F && replacement->highNotesSound.sample != nullptr) {
+            return &replacement->highNotesSound;
+        }
+
+        return &replacement->normalNotesSound;
+    }
+
+    return &replacement->normalNotesSound;
 }
 
 static void OnSeqPlayerInit(int32_t playerIdx, int32_t seqId) {
@@ -103,8 +210,7 @@ static void OnSeqPlayerInit(int32_t playerIdx, int32_t seqId) {
         return;
     }
 
-    sCurrentMainSeqId = seqId;
-    sMainSeqPlayCount++;
+    ResetState();
 }
 
 static void OnSeqInstrumentSet(void* channelPtr, uint8_t* instId) {
@@ -116,7 +222,6 @@ static void OnSeqInstrumentSet(void* channelPtr, uint8_t* instId) {
         return;
     }
 
-    // Do not touch drums, sfx mode, synthetic/reverb specials, etc.
     if (!IsNormalInstrument(*instId)) {
         return;
     }
@@ -126,26 +231,39 @@ static void OnSeqInstrumentSet(void* channelPtr, uint8_t* instId) {
         return;
     }
 
-    SequencePlayer* seqPlayer = channel->seqPlayer;
-    if (seqPlayer == nullptr || seqPlayer->seqId == NA_BGM_DISABLED) {
-        return;
-    }
-
-    // This is mostly documentation/state right now, but it keeps this tied to
-    // a real BGM sequence play instead of acting globally.
-    if (sCurrentMainSeqId == NA_BGM_DISABLED || sMainSeqPlayCount == 0) {
-        return;
-    }
-
     const uint8_t fontId = channel->fontId;
     const uint8_t originalInstId = *instId;
 
-    *instId = GetRandomInstrumentFromSameFont(fontId, originalInstId);
+    *instId = GetOrCreateRemappedInstrument(fontId, originalInstId);
+}
+
+static void OnSeqInstrumentGetSound(void* instrumentPtr, int32_t semitone, void** soundPtr) {
+    if (!CVAR_RANDOM_MUSIC_INSTRUMENTS_VALUE) {
+        return;
+    }
+
+    if (instrumentPtr == nullptr || soundPtr == nullptr) {
+        return;
+    }
+
+    Instrument* replacement = static_cast<Instrument*>(instrumentPtr);
+    Instrument* original = FindOriginalRangeInstrument(replacement);
+
+    if (original == nullptr) {
+        return;
+    }
+
+    SoundFontSound* sound = GetReplacementSoundUsingOriginalRange(original, replacement, semitone);
+
+    if (sound != nullptr) {
+        *soundPtr = sound;
+    }
 }
 
 static void RegisterHooks() {
     COND_HOOK(OnSeqPlayerInit, CVAR_RANDOM_MUSIC_INSTRUMENTS_VALUE, OnSeqPlayerInit);
     COND_HOOK(OnSeqInstrumentSet, CVAR_RANDOM_MUSIC_INSTRUMENTS_VALUE, OnSeqInstrumentSet);
+    COND_HOOK(OnSeqInstrumentGetSound, CVAR_RANDOM_MUSIC_INSTRUMENTS_VALUE, OnSeqInstrumentGetSound);
 }
 
 } // namespace RandomMusicInstruments
