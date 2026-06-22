@@ -2401,11 +2401,10 @@ void CheckTrackerSettingsWindow::DrawElement() {
                                                      Color_Area_Incomplete_Main, Color_Area_Incomplete_Extra,
                                                      Color_Main_Default, Color_Area_Incomplete_Extra_Default,
                                                      CVAR_TRACKER_CHECK("AreaIncomplete.Hide"), "", THEME_COLOR);
-        CheckTracker::ImGuiDrawTwoColorPickerSection("Available", CVAR_TRACKER_CHECK("Available.MainColor"),
-                                                     CVAR_TRACKER_CHECK("Available.ExtraColor"),
-                                                     Color_Available_Main, Color_Available_Extra,
-                                                     Color_Main_Default, Color_Available_Extra_Default,
-                                                     CVAR_TRACKER_CHECK("Available.Hide"), "", THEME_COLOR);
+        CheckTracker::ImGuiDrawTwoColorPickerSection(
+            "Available", CVAR_TRACKER_CHECK("Available.MainColor"), CVAR_TRACKER_CHECK("Available.ExtraColor"),
+            Color_Available_Main, Color_Available_Extra, Color_Main_Default, Color_Available_Extra_Default,
+            CVAR_TRACKER_CHECK("Available.Hide"), "", THEME_COLOR);
         CheckTracker::ImGuiDrawTwoColorPickerSection("Area Complete", CVAR_TRACKER_CHECK("AreaComplete.MainColor"),
                                                      CVAR_TRACKER_CHECK("AreaComplete.ExtraColor"),
                                                      Color_Area_Complete_Main, Color_Area_Complete_Extra,
