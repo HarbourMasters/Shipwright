@@ -7,7 +7,6 @@
 #include "soh/OTRGlobals.h"
 #include "dungeon.h"
 #include "SeedContext.h"
-#include "split_songs.h"
 #include "macros.h"
 #include "variables.h"
 #include "randomizer.h"
@@ -18,12 +17,10 @@
 #include "src/overlays/actors/ovl_En_Door/z_en_door.h"
 #include "src/overlays/actors/ovl_Door_Shutter/z_door_shutter.h"
 #include "location_access.h"
-#include "split_songs.h"
 
 namespace Rando {
 
 bool Logic::HasItem(RandomizerGet itemName) {
-
     switch (itemName) {
         case RG_FAIRY_OCARINA:
             return CheckInventory(ITEM_OCARINA_FAIRY, false);
@@ -1873,6 +1870,18 @@ std::map<RandomizerGet, uint32_t> StaticData::RandoGetToRandInf = {
     { RG_BACK_TOWER_KEY, RAND_INF_BACK_TOWER_KEY_OBTAINED },
     { RG_HYLIA_LAB_KEY, RAND_INF_HYLIA_LAB_KEY_OBTAINED },
     { RG_FISHING_HOLE_KEY, RAND_INF_FISHING_HOLE_KEY_OBTAINED },
+    { RG_PART_OF_ZELDAS_LULLABY, RAND_INF_SPLIT_ZL_PART },
+    { RG_PART_OF_EPONAS_SONG, RAND_INF_SPLIT_EPONA_PART },
+    { RG_PART_OF_SARIAS_SONG, RAND_INF_SPLIT_SARIA_PART },
+    { RG_PART_OF_SUNS_SONG, RAND_INF_SPLIT_SUN_PART },
+    { RG_PART_OF_SONG_OF_TIME, RAND_INF_SPLIT_TIME_PART },
+    { RG_PART_OF_SONG_OF_STORMS, RAND_INF_SPLIT_STORMS_PART },
+    { RG_PART_OF_MINUET_OF_FOREST, RAND_INF_SPLIT_MINUET_PART },
+    { RG_PART_OF_BOLERO_OF_FIRE, RAND_INF_SPLIT_BOLERO_PART },
+    { RG_PART_OF_SERENADE_OF_WATER, RAND_INF_SPLIT_SERENADE_PART },
+    { RG_PART_OF_REQUIEM_OF_SPIRIT, RAND_INF_SPLIT_REQUIEM_PART },
+    { RG_PART_OF_NOCTURNE_OF_SHADOW, RAND_INF_SPLIT_NOCTURNE_PART },
+    { RG_PART_OF_PRELUDE_OF_LIGHT, RAND_INF_SPLIT_PRELUDE_PART },
 };
 
 std::map<uint32_t, SceneID> Logic::RandoGetToDungeonScene = {
@@ -2219,11 +2228,11 @@ void Logic::ApplyItemEffect(Item& item, bool state) {
                 case RG_PROGRESSIVE_REQUIEM_OF_SPIRIT:
                 case RG_PROGRESSIVE_NOCTURNE_OF_SHADOW:
                 case RG_PROGRESSIVE_PRELUDE_OF_LIGHT: {
-                    const SplitSongData* songData = GetSongDef(randoGet);
-                    if (CheckRandoInf(songData->randInf)){
-                        SetQuestItem(songData->quest, state);
+                    const SongData* song = &StaticData::songData[randoGet];
+                    if (CheckRandoInf(song->randInf)){
+                        SetQuestItem(song->quest, state);
                     } else {
-                        SetRandoInf(songData->randInf, state);
+                        SetRandoInf(song->randInf, state);
                     }
                 }
                 case RG_HEART_CONTAINER:

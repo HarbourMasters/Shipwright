@@ -267,51 +267,41 @@ void GenerateItemPool() {
     // add extra songs only if song shuffle is anywhere
     if (ctx->GetOption(RSK_SHUFFLE_SONGS).IsNot(RO_SONG_SHUFFLE_OFF)) {
         bool songAnywhere = ctx->GetOption(RSK_SHUFFLE_SONGS).Is(RO_SONG_SHUFFLE_ANYWHERE);
-        const bool split = ctx->GetOption(RSK_SPLIT_OCARINA_SONGS).Get();
-        const int defaultPlentiful = songAnywhere ? 2 : 1;
-        auto addShuffledSong = [&](RandomizerGet fullSong, RandomizerGet progressive, bool hasStarting) {
+        auto addShuffledSong = [&](RandomizerGet song, bool hasStarting) {
             if (hasStarting) {
                 return;
             }
-            if (!split) {
-                AddItemToPool(fullSong, defaultPlentiful, 1, 1, 1, songAnywhere);
+            if (!ctx->GetOption(RSK_SPLIT_OCARINA_SONGS).Get()) {
+                AddItemToPool(song, songAnywhere ? 2 : 1, 1, 1, 1, songAnywhere);
             } else {
-                AddItemToPool(progressive, 3, 2, 2, 2, songAnywhere);
+                AddItemToPool(song, 3, 2, 2, 2, songAnywhere);
             }
         };
-        addShuffledSong(RG_ZELDAS_LULLABY, RG_PROGRESSIVE_ZELDAS_LULLABY,
-                        ctx->GetOption(RSK_STARTING_ZELDAS_LULLABY).Get());
-        addShuffledSong(RG_EPONAS_SONG, RG_PROGRESSIVE_EPONAS_SONG, ctx->GetOption(RSK_STARTING_EPONAS_SONG).Get());
-        addShuffledSong(RG_SARIAS_SONG, RG_PROGRESSIVE_SARIAS_SONG, ctx->GetOption(RSK_STARTING_SARIAS_SONG).Get());
-        addShuffledSong(RG_SUNS_SONG, RG_PROGRESSIVE_SUNS_SONG, ctx->GetOption(RSK_STARTING_SUNS_SONG).Get());
-        addShuffledSong(RG_SONG_OF_TIME, RG_PROGRESSIVE_SONG_OF_TIME, ctx->GetOption(RSK_STARTING_SONG_OF_TIME).Get());
-        addShuffledSong(RG_SONG_OF_STORMS, RG_PROGRESSIVE_SONG_OF_STORMS,
-                        ctx->GetOption(RSK_STARTING_SONG_OF_STORMS).Get());
-        addShuffledSong(RG_MINUET_OF_FOREST, RG_PROGRESSIVE_MINUET_OF_FOREST,
-                        ctx->GetOption(RSK_STARTING_MINUET_OF_FOREST).Get());
-        addShuffledSong(RG_BOLERO_OF_FIRE, RG_PROGRESSIVE_BOLERO_OF_FIRE,
-                        ctx->GetOption(RSK_STARTING_BOLERO_OF_FIRE).Get());
-        addShuffledSong(RG_SERENADE_OF_WATER, RG_PROGRESSIVE_SERENADE_OF_WATER,
-                        ctx->GetOption(RSK_STARTING_SERENADE_OF_WATER).Get());
-        addShuffledSong(RG_REQUIEM_OF_SPIRIT, RG_PROGRESSIVE_REQUIEM_OF_SPIRIT,
-                        ctx->GetOption(RSK_STARTING_REQUIEM_OF_SPIRIT).Get());
-        addShuffledSong(RG_NOCTURNE_OF_SHADOW, RG_PROGRESSIVE_NOCTURNE_OF_SHADOW,
-                        ctx->GetOption(RSK_STARTING_NOCTURNE_OF_SHADOW).Get());
-        addShuffledSong(RG_PRELUDE_OF_LIGHT, RG_PROGRESSIVE_PRELUDE_OF_LIGHT,
-                        ctx->GetOption(RSK_STARTING_PRELUDE_OF_LIGHT).Get());
+        addShuffledSong(RG_PROGRESSIVE_ZELDAS_LULLABY, ctx->GetOption(RSK_STARTING_ZELDAS_LULLABY).Get());
+        addShuffledSong(RG_PROGRESSIVE_EPONAS_SONG, ctx->GetOption(RSK_STARTING_EPONAS_SONG).Get());
+        addShuffledSong(RG_PROGRESSIVE_SARIAS_SONG, ctx->GetOption(RSK_STARTING_SARIAS_SONG).Get());
+        addShuffledSong(RG_PROGRESSIVE_SUNS_SONG, ctx->GetOption(RSK_STARTING_SUNS_SONG).Get());
+        addShuffledSong(RG_PROGRESSIVE_SONG_OF_TIME, ctx->GetOption(RSK_STARTING_SONG_OF_TIME).Get());
+        addShuffledSong(RG_PROGRESSIVE_SONG_OF_STORMS, ctx->GetOption(RSK_STARTING_SONG_OF_STORMS).Get());
+        addShuffledSong(RG_PROGRESSIVE_MINUET_OF_FOREST, ctx->GetOption(RSK_STARTING_MINUET_OF_FOREST).Get());
+        addShuffledSong(RG_PROGRESSIVE_BOLERO_OF_FIRE, ctx->GetOption(RSK_STARTING_BOLERO_OF_FIRE).Get());
+        addShuffledSong(RG_PROGRESSIVE_SERENADE_OF_WATER, ctx->GetOption(RSK_STARTING_SERENADE_OF_WATER).Get());
+        addShuffledSong(RG_PROGRESSIVE_REQUIEM_OF_SPIRIT, ctx->GetOption(RSK_STARTING_REQUIEM_OF_SPIRIT).Get());
+        addShuffledSong(RG_PROGRESSIVE_NOCTURNE_OF_SHADOW, ctx->GetOption(RSK_STARTING_NOCTURNE_OF_SHADOW).Get());
+        addShuffledSong(RG_PROGRESSIVE_PRELUDE_OF_LIGHT, ctx->GetOption(RSK_STARTING_PRELUDE_OF_LIGHT).Get());
     } else {
-        ctx->PlaceItemInLocation(RC_SHEIK_IN_FOREST, RG_MINUET_OF_FOREST, false, true);
-        ctx->PlaceItemInLocation(RC_SHEIK_IN_CRATER, RG_BOLERO_OF_FIRE, false, true);
-        ctx->PlaceItemInLocation(RC_SHEIK_IN_ICE_CAVERN, RG_SERENADE_OF_WATER, false, true);
-        ctx->PlaceItemInLocation(RC_SHEIK_AT_COLOSSUS, RG_REQUIEM_OF_SPIRIT, false, true);
-        ctx->PlaceItemInLocation(RC_SHEIK_IN_KAKARIKO, RG_NOCTURNE_OF_SHADOW, false, true);
-        ctx->PlaceItemInLocation(RC_SHEIK_AT_TEMPLE, RG_PRELUDE_OF_LIGHT, false, true);
-        ctx->PlaceItemInLocation(RC_SONG_FROM_IMPA, RG_ZELDAS_LULLABY, false, true);
-        ctx->PlaceItemInLocation(RC_SONG_FROM_MALON, RG_EPONAS_SONG, false, true);
-        ctx->PlaceItemInLocation(RC_SONG_FROM_SARIA, RG_SARIAS_SONG, false, true);
-        ctx->PlaceItemInLocation(RC_SONG_FROM_ROYAL_FAMILYS_TOMB, RG_SUNS_SONG, false, true);
-        ctx->PlaceItemInLocation(RC_SONG_FROM_OCARINA_OF_TIME, RG_SONG_OF_TIME, false, true);
-        ctx->PlaceItemInLocation(RC_SONG_FROM_WINDMILL, RG_SONG_OF_STORMS, false, true);
+        ctx->PlaceItemInLocation(RC_SHEIK_IN_FOREST, RG_PROGRESSIVE_MINUET_OF_FOREST, false, true);
+        ctx->PlaceItemInLocation(RC_SHEIK_IN_CRATER, RG_PROGRESSIVE_BOLERO_OF_FIRE, false, true);
+        ctx->PlaceItemInLocation(RC_SHEIK_IN_ICE_CAVERN, RG_PROGRESSIVE_SERENADE_OF_WATER, false, true);
+        ctx->PlaceItemInLocation(RC_SHEIK_AT_COLOSSUS, RG_PROGRESSIVE_REQUIEM_OF_SPIRIT, false, true);
+        ctx->PlaceItemInLocation(RC_SHEIK_IN_KAKARIKO, RG_PROGRESSIVE_NOCTURNE_OF_SHADOW, false, true);
+        ctx->PlaceItemInLocation(RC_SHEIK_AT_TEMPLE, RG_PROGRESSIVE_PRELUDE_OF_LIGHT, false, true);
+        ctx->PlaceItemInLocation(RC_SONG_FROM_IMPA, RG_PROGRESSIVE_ZELDAS_LULLABY, false, true);
+        ctx->PlaceItemInLocation(RC_SONG_FROM_MALON, RG_PROGRESSIVE_EPONAS_SONG, false, true);
+        ctx->PlaceItemInLocation(RC_SONG_FROM_SARIA, RG_PROGRESSIVE_SARIAS_SONG, false, true);
+        ctx->PlaceItemInLocation(RC_SONG_FROM_ROYAL_FAMILYS_TOMB, RG_PROGRESSIVE_SUNS_SONG, false, true);
+        ctx->PlaceItemInLocation(RC_SONG_FROM_OCARINA_OF_TIME, RG_PROGRESSIVE_SONG_OF_TIME, false, true);
+        ctx->PlaceItemInLocation(RC_SONG_FROM_WINDMILL, RG_PROGRESSIVE_SONG_OF_STORMS, false, true);
     }
 
     bool rewardIceTraps = ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Get() >= RO_DUNGEON_REWARDS_OWN_DUNGEON;

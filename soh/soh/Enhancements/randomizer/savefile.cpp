@@ -524,6 +524,21 @@ extern "C" void Randomizer_InitSaveFile() {
         Flags_SetRandomizerInf(RAND_INF_HAS_WALLET);
     }
 
+    if (Randomizer_GetSettingValue(RSK_SPLIT_OCARINA_SONGS) == RO_GENERIC_OFF) {
+        Flags_SetRandomizerInf(RAND_INF_SPLIT_ZL_PART);
+        Flags_SetRandomizerInf(RAND_INF_SPLIT_EPONA_PART);
+        Flags_SetRandomizerInf(RAND_INF_SPLIT_SARIA_PART);
+        Flags_SetRandomizerInf(RAND_INF_SPLIT_SUN_PART);
+        Flags_SetRandomizerInf(RAND_INF_SPLIT_TIME_PART);
+        Flags_SetRandomizerInf(RAND_INF_SPLIT_STORMS_PART);
+        Flags_SetRandomizerInf(RAND_INF_SPLIT_MINUET_PART);
+        Flags_SetRandomizerInf(RAND_INF_SPLIT_BOLERO_PART);
+        Flags_SetRandomizerInf(RAND_INF_SPLIT_SERENADE_PART);
+        Flags_SetRandomizerInf(RAND_INF_SPLIT_REQUIEM_PART);
+        Flags_SetRandomizerInf(RAND_INF_SPLIT_NOCTURNE_PART);
+        Flags_SetRandomizerInf(RAND_INF_SPLIT_PRELUDE_PART);
+    }
+
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_FISHING_POLE) == RO_GENERIC_OFF) {
         Flags_SetRandomizerInf(RAND_INF_FISHING_POLE_FOUND);
     }

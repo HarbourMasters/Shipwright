@@ -14,7 +14,6 @@
 #include "randomizerTypes.h"
 #include "logic.h"
 #include "SeedContext.h"
-#include "split_songs.h"
 #include "static_data.h"
 #include "soh/SohGui/ImGuiUtils.h"
 #include "soh/cvar_prefixes.h"
@@ -131,12 +130,12 @@ std::vector<ItemTrackerItem> dungeonRewardMedallions = {
 std::vector<ItemTrackerItem> dungeonRewards = {};
 
 std::vector<ItemTrackerItem> songItems = {
-    ITEM_TRACKER_ITEM(RG_PROGRESSIVE_ZELDAS_LULLABY, 0, DrawSong),     ITEM_TRACKER_ITEM(RG_PROGRESSIVE_EPONAS_SONG, 0, DrawSong),
-    ITEM_TRACKER_ITEM(RG_PROGRESSIVE_SARIAS_SONG, 0, DrawSong),        ITEM_TRACKER_ITEM(RG_PROGRESSIVE_SUNS_SONG, 0, DrawSong),
-    ITEM_TRACKER_ITEM(RG_PROGRESSIVE_SONG_OF_TIME, 0, DrawSong),       ITEM_TRACKER_ITEM(RG_PROGRESSIVE_SONG_OF_STORMS, 0, DrawSong),
-    ITEM_TRACKER_ITEM(RG_PROGRESSIVE_MINUET_OF_FOREST, 0, DrawSong),   ITEM_TRACKER_ITEM(RG_PROGRESSIVE_BOLERO_OF_FIRE, 0, DrawSong),
-    ITEM_TRACKER_ITEM(RG_PROGRESSIVE_SERENADE_OF_WATER, 0, DrawSong),  ITEM_TRACKER_ITEM(RG_PROGRESSIVE_REQUIEM_OF_SPIRIT, 0, DrawSong),
-    ITEM_TRACKER_ITEM(RG_PROGRESSIVE_NOCTURNE_OF_SHADOW, 0, DrawSong), ITEM_TRACKER_ITEM(RG_PROGRESSIVE_PRELUDE_OF_LIGHT, 0, DrawSong),
+    ITEM_TRACKER_ITEM(QUEST_SONG_LULLABY, 0, DrawSong),  ITEM_TRACKER_ITEM(QUEST_SONG_EPONA, 0, DrawSong),
+    ITEM_TRACKER_ITEM(QUEST_SONG_SARIA, 0, DrawSong),    ITEM_TRACKER_ITEM(QUEST_SONG_SUN, 0, DrawSong),
+    ITEM_TRACKER_ITEM(QUEST_SONG_TIME, 0, DrawSong),     ITEM_TRACKER_ITEM(QUEST_SONG_STORMS, 0, DrawSong),
+    ITEM_TRACKER_ITEM(QUEST_SONG_MINUET, 0, DrawSong),   ITEM_TRACKER_ITEM(QUEST_SONG_BOLERO, 0, DrawSong),
+    ITEM_TRACKER_ITEM(QUEST_SONG_SERENADE, 0, DrawSong), ITEM_TRACKER_ITEM(QUEST_SONG_REQUIEM, 0, DrawSong),
+    ITEM_TRACKER_ITEM(QUEST_SONG_NOCTURNE, 0, DrawSong), ITEM_TRACKER_ITEM(QUEST_SONG_PRELUDE, 0, DrawSong),
 };
 
 std::vector<ItemTrackerItem> gregItems = {
@@ -486,8 +485,8 @@ bool IsValidSaveFile() {
     return validSave;
 }
 
-bool HasSong(ItemTrackerItem item) {
-    return GameInteractor::IsSaveLoaded() ? ((1 << item.id) & gSaveContext.inventory.questItems) : false;
+bool HasSong(QuestItem item) {
+    return GameInteractor::IsSaveLoaded() ? ((1 << item) & gSaveContext.inventory.questItems) : false;
 }
 
 bool HasQuestItem(ItemTrackerItem item) {
@@ -1370,8 +1369,8 @@ void DrawDungeonItem(ItemTrackerItem item) {
 }
 
 void DrawSong(ItemTrackerItem item) {
-    const bool hasSong = HasSong(GetSongDef(item.id).quest)
-    const bool hasPart = Flags_GetRandomizerInf(GetSongDef(item.id).randInf);
+    const SongData* song = &Rando::StaticData::songData[Rando::StaticData::songQuestToProg[(QuestItem)item.id]]; 
+    const bool hasSong = HasSong((QuestItem)item.id);
 
     float iconSize = static_cast<float>(CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36));
     ImGui::BeginGroup();
@@ -1383,11 +1382,11 @@ void DrawSong(ItemTrackerItem item) {
 
     // RANDOTODO merge the ammo printing pipelines
     if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SPLIT_OCARINA_SONGS) != 0) {
-        char* progressLabel = "0/2";
+        const char* progressLabel = "0/2";
         if (hasSong) {
-            progressLabel = "2/2"
-        } else if (hasPart) {
-            progressLabel = "1/2"
+            progressLabel = "2/2";
+        } else if (Flags_GetRandomizerInf(song->randInf)) {
+            progressLabel = "1/2";
         }
         const ImVec2 iconMin = ImGui::GetItemRectMin();
         const ImVec2 iconMax = ImGui::GetItemRectMax();

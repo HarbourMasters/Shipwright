@@ -102,6 +102,8 @@ class StaticData {
     static std::set<RandomizerGet> restrictTrade;
     static std::set<RandomizerGet> allowMasks;
     static std::set<RandomizerGet> allowBottleMaskTrade;
+    static std::unordered_map<RandomizerGet, SongData> songData;
+    static std::unordered_map<QuestItem, RandomizerGet> songQuestToProg;
 
     StaticData();
     ~StaticData();

@@ -2,7 +2,6 @@
 #include "item_location.h"
 
 #include "SeedContext.h"
-#include "split_songs.h"
 #include "logic.h"
 #include "3drando/item_pool.hpp"
 #include "z64item.h"
@@ -384,11 +383,11 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
         case RG_PROGRESSIVE_REQUIEM_OF_SPIRIT:
         case RG_PROGRESSIVE_NOCTURNE_OF_SHADOW:
         case RG_PROGRESSIVE_PRELUDE_OF_LIGHT:{
-            const SplitSongData* songData = GetSongDef(randomizerGet);
-            if (!OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SPLIT_OCARINA_SONGS) || logic->CheckRandoInf(songData->randInf)){
-                actual = songData->realSong;
+            const SongData* song = &StaticData::songData[randomizerGet];
+            if (logic->CheckRandoInf(song->randInf)){
+                actual = song->realSong;
             } else {
-                actual = songData->part;
+                actual = song->part;
             }
             break;
         }
@@ -420,24 +419,12 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
     if (giEntry != nullptr && actual == RG_NONE) {
         return giEntry;
     }
-    if (actual == randomizerGet && giEntry != nullptr) {
-        return giEntry;
-    }
-    if (actual == RG_NONE) {
-        if (giEntry != nullptr) {
-            return giEntry;
-        }
-        return StaticData::RetrieveItem(RG_NONE).GetGIEntry();
-    }
+
     return StaticData::RetrieveItem(actual).GetGIEntry();
 }
 
 GetItemEntry Item::GetGIEntry_Copy() const {
-    const auto entry = GetGIEntry();
-    if (entry != nullptr) {
-        return *entry;
-    }
-    return *StaticData::RetrieveItem(RG_NONE).GetGIEntry();
+    return *GetGIEntry();
 }
 
 void Item::SetPrice(const uint16_t price_) {

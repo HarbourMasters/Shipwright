@@ -683,31 +683,31 @@ static void InitTrickNames() {
     };
     trickNameTable[RG_BLUE_RUPEE] = {
         Text{ "Blupee", "Bleubi", "Fünfer" },                 // "Azupia"
-        Text{ "Five Rubies", "Cinq Rubys", "fünf Rubies" },  // "Cinco rubíes"
-        Text{ "Five Rupees", "Cinq rubis", "fünf Rubine" },  // "Bolívar hyliano"
+        Text{ "Five Rubies", "Cinq Rubys", "fünf Rubies€" },  // "Cinco rubíes"
+        Text{ "Five Rupees", "Cinq rubis", "fünf Rubine€" },  // "Bolívar hyliano"
         Text{ "Rupee (5)", "Rubis (5)", "Rubin (5)" },        // "Peso hyliano"
         Text{ "Rupoor (5)", "Roupir (5)", "Rubinfalle (5)" }, // "Rupobre (5)"
     };
     trickNameTable[RG_RED_RUPEE] = {
         Text{ "Big 20", "Grand 20", "Zwanni" },                    // "Los 20 grandes"
-        Text{ "Twenty Rubies", "vingt rubis", "zwanzig Rubies" }, // "Veinte rubíes"
-        Text{ "Twenty Rupees", "Vingt rubis", "zwanzig Rubine" }, // "Colon hyliano"
+        Text{ "Twenty Rubies", "vingt rubis", "zwanzig Rubies€" }, // "Veinte rubíes"
+        Text{ "Twenty Rupees", "Vingt rubis", "zwanzig Rubine€" }, // "Colon hyliano"
         Text{ "Rupee (20)", "Rubis (20)", "Rubin (20)" },          // "Peso hyliano"
         Text{ "Rupoor (20)", "Roupir (20)", "Rubinfalle (20)" },   // "Rupobre (20)"
     };
     trickNameTable[RG_PURPLE_RUPEE] = {
         Text{ "Purpee", "Pourbi", "Fuffi" },                          // "morupiua"
-        Text{ "Fifty Rubies", "Cinquante rubis", "fünfzig Rubies" }, // "Cincuenta rubíes"
-        Text{ "Fifty Rupees", "Cinquante rubis", "fünfzig Rubine" }, // "Balboa hyliano"
+        Text{ "Fifty Rubies", "Cinquante rubis", "fünfzig Rubies€" }, // "Cincuenta rubíes"
+        Text{ "Fifty Rupees", "Cinquante rubis", "fünfzig Rubine€" }, // "Balboa hyliano"
         Text{ "Rupee (50)", "Rubis (50)", "Rubin (50)" },             // "Peso hyliano"
         Text{ "Rupoor (50)", "Roupir (50)", "Rubinfalle (50)" },      // "Rupobre (50)"
     };
     trickNameTable[RG_HUGE_RUPEE] = {
-        Text{ "Hugo", "Or Rubi", "zwei Hunnis" },                               // "Oro Rubi"
-        Text{ "Two Hundred Rubies", "Deux cents rubis", "zweihundert Rubies" }, // "Doscientos rubíes"
+        Text{ "Hugo", "Or Rubi", "zwei Hunnis€" },                               // "Oro Rubi"
+        Text{ "Two Hundred Rubies", "Deux cents rubis", "zweihundert Rubies€" }, // "Doscientos rubíes"
         Text{ "Diamond", "Diamant", "Diamant" },                                 // "Diamante"
         Text{ "Huge Ruby", "Énorme rubis", "großer Ruby" },                      // "Rubi gigante"
-        Text{ "Two Hundred Rupees", "Deux cent rubis", "zweihundert Rubine" },  // "Euro hyliano"
+        Text{ "Two Hundred Rupees", "Deux cent rubis", "zweihundert Rubine€" },  // "Euro hyliano"
         Text{ "Rupee (200)", "Rubis (200)", "Rubin (200)" },                     // "Dólar hyliano"
     };
     trickNameTable[RG_PIECE_OF_HEART] = {
@@ -787,7 +787,7 @@ static void InitTrickNames() {
     };
     trickNameTable[RG_KING_DODONGO_SOUL] = {
         Text{ "Lizard Soul", "Âme d'un Lézard", "Reptilienseele" },
-        Text{ "Regal Remains", "Restes Délicieux", "royale Überreste" },
+        Text{ "Regal Remains", "Restes Délicieux", "royale Überreste€" },
         Text{ "Dodongo's Core", "Coeur de Dodongo", "Dodongos Kern" },
     };
     trickNameTable[RG_BARINADE_SOUL] = {
@@ -1349,19 +1349,19 @@ static void InitTrickNames() {
     semillas grande"
     };
     trickNameTable[GI_STRENGTH_1] = {
-        Text{"Goron's Gauntlet", "Gantelet Goron", "Goronen-Handschuhe" }, // "Brazalete amarillo"
+        Text{"Goron's Gauntlet", "Gantelet Goron", "Goronen-Handschuhe€" }, // "Brazalete amarillo"
         Text{"Power Bracelet", "Bracelet de force", "Kraftarmband" }, // "Brazalete de fuerza"
         Text{"Magic Bracelet", "Bracelet de Lavio", "Magiearmband" }, // "Brazalete de Ravio"
     };
     trickNameTable[GI_STRENGTH_2] = {
         Text{"Silver Bracelets", "Bracelets d'argent", "Silberarmband" }, // "Guantes Moguma"
-        Text{"Power Gloves", "Gant de puissance", "Silberhandschuhe" }, // "Guante del Poder"
-        Text{"Magic Gauntlets", "Gantelet magique", "Magiehandschuhe" }, // "Guante mágico"
+        Text{"Power Gloves", "Gant de puissance", "Silberhandschuhe€" }, // "Guante del Poder"
+        Text{"Magic Gauntlets", "Gantelet magique", "Magiehandschuhe€" }, // "Guante mágico"
     };
     trickNameTable[GI_STRENGTH_3] = {
         Text{"Golden Bracelets", "Bracelets d'or", "Goldarmband" }, // "Guantelete de Thanos"
-        Text{"Titan's Mitts", "Moufle de titan", "Goldhandschuhe" }, // "Guantes de Titán"
-        Text{"Magnetic Gloves", "Magnéto-gants", "Magnethandschuhe" }, // "Guantes de fuego"
+        Text{"Titan's Mitts", "Moufle de titan", "Goldhandschuhe€" }, // "Guantes de Titán"
+        Text{"Magnetic Gloves", "Magnéto-gants", "Magnethandschuhe€" }, // "Guantes de fuego"
     };
     trickNameTable[GI_SCALE_1] = {
         Text{"Silver Pearl", "Perle d'argent", "Silberne Perle" }, // "Perla de Plata progresiva"
@@ -1466,7 +1466,7 @@ static void InitTrickNames() {
     };
     trickNameTable[GI_MASK_ZORA] = {
         Text{"Zola Mask", "Masque Zola", "Zola-Maske" }, // "Máscara Zola"
-        Text{"Mask of Zora", "Masque des Zoras", "Zora-Schuppen" }, // "Máscara de los Zora"
+        Text{"Mask of Zora", "Masque des Zoras", "Zora-Schuppen€" }, // "Máscara de los Zora"
         Text{"Ruto Mask", "Masque de Ruto", "Rutos Maske" }, // "Máscara de Mikau"
     };
     trickNameTable[GI_MASK_GERUDO] = {
