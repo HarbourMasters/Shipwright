@@ -11,11 +11,11 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
     - name: Git Checkout
-      uses: actions/checkout@v6
+      uses: actions/checkout@v7
       with:
         submodules: true
     - name: Configure ccache
-      uses: hendrikmuhs/ccache-action@v1.2.22
+      uses: hendrikmuhs/ccache-action@v1.2.23
       with:
         save: ${{ github.ref_name == github.event.repository.default_branch }}
         key: ${{ runner.os }}-otr-ccache-${{ github.ref }}-${{ github.sha }}
@@ -73,7 +73,7 @@ jobs:
     runs-on: macos-14
     steps:
     - name: Git Checkout
-      uses: actions/checkout@v6
+      uses: actions/checkout@v7
       with:
         submodules: true
     - name: Setup Macports
@@ -81,14 +81,14 @@ jobs:
       with:
         parameters: '.github/macports.yml'
     - name: Configure ccache
-      uses: hendrikmuhs/ccache-action@v1.2.22
+      uses: hendrikmuhs/ccache-action@v1.2.23
       with:
         key: ${{ runner.os }} # ccache-macos-{{ timestamp }}
         max-size: "2G"
         evict-old-files: job
         save: ${{ github.ref_name == github.event.repository.default_branch }}
     - name: Download soh.o2r
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: soh.o2r
         path: build-cmake/soh
@@ -113,7 +113,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
     - name: Git Checkout
-      uses: actions/checkout@v6
+      uses: actions/checkout@v7
       with:
         submodules: true
     - name: Install dependencies
@@ -121,7 +121,7 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y $(cat linux-build-deps/apt.txt)
     - name: Configure ccache
-      uses: hendrikmuhs/ccache-action@v1.2.22
+      uses: hendrikmuhs/ccache-action@v1.2.23
       with:
         save: ${{ github.ref_name == github.event.repository.default_branch }}
         key: ${{ runner.os }}-ccache-${{ github.ref }}-${{ github.sha }}
@@ -175,7 +175,7 @@ jobs:
         sudo make install
         sudo cp -av /usr/local/lib/libzip* /lib/x86_64-linux-gnu/
     - name: Download soh.o2r
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: soh.o2r
         path: build-cmake/soh
@@ -213,11 +213,11 @@ jobs:
         choco install ninja -y
         Remove-Item -Path "C:\ProgramData\Chocolatey\bin\ccache.exe" -Force -ErrorAction SilentlyContinue
     - name: Git Checkout
-      uses: actions/checkout@v6
+      uses: actions/checkout@v7
       with:
         submodules: true
     - name: Configure sccache
-      uses: hendrikmuhs/ccache-action@v1.2.22
+      uses: hendrikmuhs/ccache-action@v1.2.23
       with:
         variant: sccache
         max-size: "2G"
@@ -239,7 +239,7 @@ jobs:
     - name: Configure Developer Command Prompt
       uses: ilammy/msvc-dev-cmd@v1
     - name: Download soh.o2r
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: soh.o2r
         path: build-windows/soh
