@@ -178,7 +178,7 @@ static void RegisterSave() {
 }
 
 // Corpse Run Logic
-static void Activate(Player* player, PlayState* playState, int32_t respawnFlag) {
+static void Activate(void* player) {
     if (!sRemnant.dropped) {
         return;
     }
@@ -294,7 +294,7 @@ static void Draw() {
 static void Register() {
     RegisterSave();
 
-    COND_HOOK(OnPlayerInit, CVAR_CORPSE_RUN_VALUE, Activate);
+    COND_ID_HOOK(OnActorInit, ACTOR_PLAYER, CVAR_CORPSE_RUN_VALUE, Activate);
     COND_HOOK(OnPlayerDeath, CVAR_CORPSE_RUN_VALUE, Drop);
     COND_HOOK(OnGameFrameUpdate, CVAR_CORPSE_RUN_VALUE, Update);
     COND_HOOK(OnPlayDrawEnd, CVAR_CORPSE_RUN_VALUE, Draw);

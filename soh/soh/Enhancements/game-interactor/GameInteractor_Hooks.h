@@ -28,7 +28,6 @@ void GameInteractor_ExecuteOnFlagUnset(int16_t flagType, int16_t flag);
 void GameInteractor_ExecuteOnSceneSpawnActors();
 void GameInteractor_ExecuteOnLinkSkeletonInit();
 void GameInteractor_ExecuteOnLinkEquipmentChange();
-void GameInteractor_ExecuteOnPlayerInit(Player* player, PlayState* playState, int32_t respawnFlag);
 void GameInteractor_ExecuteOnPlayerUpdate();
 void GameInteractor_ExecuteOnSetDoAction(uint16_t action);
 void GameInteractor_ExecuteOnPlayerSfx(u16 sfxId);

@@ -98,10 +98,6 @@ void GameInteractor_ExecuteOnLinkEquipmentChange() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnLinkEquipmentChange>();
 }
 
-void GameInteractor_ExecuteOnPlayerInit(Player* player, PlayState* playState, int32_t respawnFlag) {
-    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayerInit>(player, playState, respawnFlag);
-}
-
 void GameInteractor_ExecuteOnPlayerUpdate() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayerUpdate>();
 }

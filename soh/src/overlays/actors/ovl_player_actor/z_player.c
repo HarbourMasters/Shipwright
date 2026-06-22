@@ -10910,8 +10910,6 @@ void Player_Init(Actor* thisx, PlayState* play2) {
 
     Map_SavePlayerInitialInfo(play);
     MREG(64) = 0;
-
-    GameInteractor_ExecuteOnPlayerInit(this, play, respawnFlag);
 }
 
 void Player_ApproachZeroBinang(s16* pValue) {
