@@ -19,10 +19,14 @@ static constexpr int32_t CVAR_RANDOM_MUSIC_INSTRUMENTS_DEFAULT = 0;
 
 namespace RandomMusicInstruments {
 
+// Sequence instrument IDs below 0x7E are passed to AudioSeq_GetInstrument
+// 0x7E and above are special modes such as SFX, drums, synthetic waves, etc
 static constexpr uint8_t MIN_NORMAL_INSTRUMENT = 0x00;
 static constexpr uint8_t MAX_NORMAL_INSTRUMENT = 0x7D;
 static constexpr uint8_t NUM_NORMAL_INSTRUMENTS = 0x7E;
+// 0xFF is outside the remappable instrument range
 static constexpr uint8_t INVALID_INSTRUMENT = 0xFF;
+// Font IDs are byte-sized in sequence commands; 0xFF is the invalid/no-font value
 static constexpr uint16_t NUM_FONTS = 0x100;
 
 // Per-sequence remap table. Populated lazily. INVALID_INSTRUMENT means not yet assigned
