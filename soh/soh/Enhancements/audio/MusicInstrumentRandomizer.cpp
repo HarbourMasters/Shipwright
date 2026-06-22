@@ -1,3 +1,4 @@
+#include <cstdint>
 #include <stdint.h>
 #include <string.h>
 
@@ -26,14 +27,33 @@ static constexpr uint8_t MAX_NORMAL_INSTRUMENT = 0x7D;
 static constexpr uint8_t NUM_NORMAL_INSTRUMENTS = 0x7E;
 // 0xFF is outside the remappable instrument range
 static constexpr uint8_t INVALID_INSTRUMENT = 0xFF;
-// Font IDs are byte-sized in sequence commands; 0xFF is the invalid/no-font value
+// SequenceChannel::fontId is a u8 - max font index is 0xFF
 static constexpr uint16_t NUM_FONTS = 0x100;
 
 // Per-sequence remap table. Populated lazily. INVALID_INSTRUMENT means not yet assigned
+// I'd love to reduce the size of this from 64k, but would likely require runtime allocation
 static uint8_t sInstrumentRemap[NUM_FONTS][NUM_NORMAL_INSTRUMENTS];
 
 // Prevents the same replacement from being assigned twice within a sequence (shuffle)
-static bool sReplacementUsed[NUM_FONTS][NUM_NORMAL_INSTRUMENTS];
+// Moved to a bitset to reduce from 32k to 4k static memory
+static constexpr size_t BITS_PER_REPLACEMENT_USED_WORD = sizeof(uint64_t) * 8;
+static constexpr size_t NUM_REPLACEMENT_USED_WORDS = (NUM_NORMAL_INSTRUMENTS + BITS_PER_REPLACEMENT_USED_WORD - 1) / BITS_PER_REPLACEMENT_USED_WORD;
+static uint64_t sReplacementUsed[NUM_FONTS][NUM_REPLACEMENT_USED_WORDS];
+
+// Bitset helpers
+static bool IsReplacementUsed(uint8_t fontId, uint8_t instId) {
+    const size_t word = instId / BITS_PER_REPLACEMENT_USED_WORD;
+    const size_t bit = instId % BITS_PER_REPLACEMENT_USED_WORD;
+
+    return (sReplacementUsed[fontId][word] & (1ULL << bit)) != 0;
+}
+
+static void MarkReplacementUsed(uint8_t fontId, uint8_t instId) {
+    const size_t word = instId / BITS_PER_REPLACEMENT_USED_WORD;
+    const size_t bit = instId % BITS_PER_REPLACEMENT_USED_WORD;
+
+    sReplacementUsed[fontId][word] |= 1ULL << bit;
+}
 
 // When instrument A is swapped for B, the pitch range boundaries used to select between
 // B's low/normal/high samples should still come from A, otherwise B's native split points
@@ -43,6 +63,7 @@ struct RangeOverride {
     Instrument* original = nullptr;
 };
 
+// Preferring static allocation on the audio thread
 static constexpr size_t MAX_RANGE_OVERRIDES = 256;
 static RangeOverride sRangeOverrides[MAX_RANGE_OVERRIDES];
 static size_t sRangeOverrideCount = 0;
@@ -124,7 +145,7 @@ static Instrument* FindOriginalRangeInstrument(Instrument* replacement) {
 // Stores a newly chosen remap and records its range override
 static uint8_t CommitRemap(uint8_t fontId, uint8_t originalInstId, uint8_t replacementInstId) {
     sInstrumentRemap[fontId][originalInstId] = replacementInstId;
-    sReplacementUsed[fontId][replacementInstId] = true;
+    MarkReplacementUsed(fontId,replacementInstId);
 
     Instrument* original = Audio_GetInstrumentInner(fontId, originalInstId);
     Instrument* replacement = Audio_GetInstrumentInner(fontId, replacementInstId);
@@ -150,7 +171,7 @@ static uint8_t GetOrCreateRemappedInstrument(uint8_t fontId, uint8_t originalIns
     uint8_t candidateCount = 0;
 
     for (uint8_t instId = MIN_NORMAL_INSTRUMENT; instId <= MAX_NORMAL_INSTRUMENT; instId++) {
-        if (!IsValidInstrument(fontId, instId) || sReplacementUsed[fontId][instId]) {
+        if (!IsValidInstrument(fontId, instId) || IsReplacementUsed(fontId, instId)) {
             continue;
         }
 
