@@ -37,7 +37,8 @@ static uint8_t sInstrumentRemap[NUM_FONTS][NUM_NORMAL_INSTRUMENTS];
 // Prevents the same replacement from being assigned twice within a sequence (shuffle)
 // Moved to a bitset to reduce from 32k to 4k static memory
 static constexpr size_t BITS_PER_REPLACEMENT_USED_WORD = sizeof(uint64_t) * 8;
-static constexpr size_t NUM_REPLACEMENT_USED_WORDS = (NUM_NORMAL_INSTRUMENTS + BITS_PER_REPLACEMENT_USED_WORD - 1) / BITS_PER_REPLACEMENT_USED_WORD;
+static constexpr size_t NUM_REPLACEMENT_USED_WORDS =
+    (NUM_NORMAL_INSTRUMENTS + BITS_PER_REPLACEMENT_USED_WORD - 1) / BITS_PER_REPLACEMENT_USED_WORD;
 static uint64_t sReplacementUsed[NUM_FONTS][NUM_REPLACEMENT_USED_WORDS];
 
 // Bitset helpers
@@ -81,7 +82,6 @@ static bool IsMainBgmChannel(SequenceChannel* channel) {
 static bool IsNormalInstrument(uint8_t instId) {
     return instId >= MIN_NORMAL_INSTRUMENT && instId <= MAX_NORMAL_INSTRUMENT;
 }
-
 
 // Does this instrument exists in the given sound font
 static bool IsValidInstrument(uint8_t fontId, uint8_t instId) {
@@ -145,7 +145,7 @@ static Instrument* FindOriginalRangeInstrument(Instrument* replacement) {
 // Stores a newly chosen remap and records its range override
 static uint8_t CommitRemap(uint8_t fontId, uint8_t originalInstId, uint8_t replacementInstId) {
     sInstrumentRemap[fontId][originalInstId] = replacementInstId;
-    MarkReplacementUsed(fontId,replacementInstId);
+    MarkReplacementUsed(fontId, replacementInstId);
 
     Instrument* original = Audio_GetInstrumentInner(fontId, originalInstId);
     Instrument* replacement = Audio_GetInstrumentInner(fontId, replacementInstId);
@@ -214,7 +214,8 @@ static uint8_t GetOrCreateRemappedInstrument(uint8_t fontId, uint8_t originalIns
 }
 
 // Uses the original instrument's pitch boundaries to decide which region of the replacement to play
-static SoundFontSound* GetReplacementSoundUsingOriginalRange(Instrument* original, Instrument* replacement, int32_t semitone) {
+static SoundFontSound* GetReplacementSoundUsingOriginalRange(Instrument* original, Instrument* replacement,
+                                                             int32_t semitone) {
     if (original == nullptr || replacement == nullptr) {
         return nullptr;
     }
