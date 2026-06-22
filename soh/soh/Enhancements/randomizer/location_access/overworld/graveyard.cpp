@@ -45,7 +45,7 @@ void RegionTable_Init_Graveyard() {
         ENTRANCE(RR_GRAVEYARD_COMPOSERS_GRAVE,    logic->CanUse(RG_ZELDAS_LULLABY)),
         ENTRANCE(RR_GRAVEYARD_HEART_PIECE_GRAVE,  (logic->IsAdult || logic->AtNight) && logic->HasItem(RG_POWER_BRACELET)),
         ENTRANCE(RR_GRAVEYARD_DAMPES_GRAVE,       logic->IsAdult && logic->HasItem(RG_POWER_BRACELET)),
-        ENTRANCE(RR_GRAVEYARD_DAMPES_HOUSE,       logic->IsAdult && logic->CanOpenOverworldDoor(RG_DAMPES_HUT_KEY) /*|| logic->AtDampeTime*/), //TODO: This needs to be handled in ToD rework
+        ENTRANCE(RR_GRAVEYARD_DAMPES_HOUSE,       logic->IsAdult && logic->HasItem(RG_DAMPES_HUT_KEY) /*|| logic->AtDampeTime*/), //TODO: This needs to be handled in ToD rework
         ENTRANCE(RR_KAKARIKO_VILLAGE,             true),
         ENTRANCE(RR_GRAVEYARD_WARP_PAD_REGION,    false),
     });
