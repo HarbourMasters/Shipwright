@@ -99,7 +99,7 @@ bool Logic::HasItem(RandomizerGet itemName) {
         case RG_SERENADE_OF_WATER:
         case RG_REQUIEM_OF_SPIRIT:
         case RG_NOCTURNE_OF_SHADOW:
-        case RG_PRELUDE_OF_LIGHT: 
+        case RG_PRELUDE_OF_LIGHT:
         // Dungeon Rewards
         case RG_KOKIRI_EMERALD:
         case RG_GORON_RUBY:
@@ -2194,7 +2194,7 @@ void Logic::ApplyItemEffect(Item& item, bool state) {
                 case RG_PROGRESSIVE_NOCTURNE_OF_SHADOW:
                 case RG_PROGRESSIVE_PRELUDE_OF_LIGHT: {
                     const SongData* song = &StaticData::songData[randoGet];
-                    if (CheckRandoInf(song->randInf)){
+                    if (CheckRandoInf(song->randInf)) {
                         SetQuestItem(song->quest, state);
                     } else {
                         SetRandoInf(song->randInf, state);

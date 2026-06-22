@@ -67,7 +67,7 @@ static void InitTrickNames() {
         Text{ "Iron Hoofs", "Patins de Plomb", "Eisenhufe" },             // "Botas férreas"
         Text{ "Snow Boots", "Bottes de Neige", "Schneestiefel" },         // "Botas de nieve"
         Text{ "Red Boots", "Bottes rouges", "Rote Stiefel" },             // "Botas rojas"
-        Text{ "Zora Greaves", "Bottes Zora", "Zora-Beinschutz" },          // "Zora Greaves"
+        Text{ "Zora Greaves", "Bottes Zora", "Zora-Beinschutz" },         // "Zora Greaves"
         Text{ "Boots of Power", "Bottes de Puissance", "Stärkestiefel" }, // "Botas de plomo"
     };
     trickNameTable[RG_HOVER_BOOTS] = {
@@ -134,20 +134,20 @@ static void InitTrickNames() {
         Text{ "Magic Armor", "Armure Magique", "Magie-Rüstung" },          // "Armadura mágica"
     };
     trickNameTable[RG_FIRE_ARROWS] = {
-        Text{ "Fire Rod", "Baguette de feu", "Feuerstab" },     // "Cetro de fuego"
+        Text{ "Fire Rod", "Baguette de feu", "Feuerstab" },    // "Cetro de fuego"
         Text{ "Bomb Arrow", "Flèche-Bombe", "Bomben-Pfeile" }, // "Flecha bomba"
-        Text{ "Red Candle", "Bougie Rouge", "Rote Kerze" },     // "Vela roja"
+        Text{ "Red Candle", "Bougie Rouge", "Rote Kerze" },    // "Vela roja"
     };
     trickNameTable[RG_ICE_ARROWS] = {
-        Text{ "Ice Rod", "Baguette des Glaces", "Eisstab" },                       // "Cetro de Hielo"
+        Text{ "Ice Rod", "Baguette des Glaces", "Eisstab" },                      // "Cetro de Hielo"
         Text{ "Ancient Arrow", "Flèche Archéonique", "Antike Pfeile" },           // "Flecha ancestral"
         Text{ "Ice Trap Arrow", "Flèche de Piège de Glace", "Eisfallen-Pfeile" }, // "Cetro de hielo"
     };
     trickNameTable[RG_LIGHT_ARROWS] = {
-        Text{ "Wind Arrow", "Flèche de Vent", "Wind-Pfeile" },                     // "Flecha del Viento"
+        Text{ "Wind Arrow", "Flèche de Vent", "Wind-Pfeile" },                      // "Flecha del Viento"
         Text{ "Wand of Gamelon", "Baguette de Gamelon", "Zauberstab von Gamelon" }, // "Varita de Gamelón"
-        Text{ "Shock Arrow", "Flèches Électriques", "Elektro-Pfeile" },            // "Flecha eléctrica"
-        Text{ "Silver Arrow", "Flèches d'Argent", "Silber-Pfeile" },               // "Flecha de plata"
+        Text{ "Shock Arrow", "Flèches Électriques", "Elektro-Pfeile" },             // "Flecha eléctrica"
+        Text{ "Silver Arrow", "Flèches d'Argent", "Silber-Pfeile" },                // "Flecha de plata"
     };
     trickNameTable[RG_GERUDO_MEMBERSHIP_CARD] = {
         Text{ "Desert Title Deed", "Abonnement Gerudo", "Wüsten-Urkunde" }, // "Escritura del desierto"
@@ -160,12 +160,12 @@ static void InitTrickNames() {
 
     trickNameTable[RG_MAGIC_BEAN_PACK] = {
         Text{ "Funky Bean Pack", "Paquet de Fèves Magiques", "Wunderbohnen-Packung" },    // "Lote de frijoles mágicos"
-        Text{ "Grapple Berries", "Baies de grappin", "Grapple-Beeren" },                 // "Bayas de garfio"
+        Text{ "Grapple Berries", "Baies de grappin", "Grapple-Beeren" },                  // "Bayas de garfio"
         Text{ "Crenel Bean Pack", "Paquet de Haricots Gonggle", "Gongolerbsen-Packung" }, // "Lote de alubias mágicas"
         Text{ "Mystical Seed Pack", "Pack de graines mystiques", "Saatbeutel" }, // "Paquete de semillas místicas"
     };
     trickNameTable[RG_DOUBLE_DEFENSE] = {
-        Text{ "Diamond Hearts", "Coeurs de Diamant", "Diamantherzen" },            // "Contenedor de diamante"
+        Text{ "Diamond Hearts", "Coeurs de Diamant", "Diamantherzen" },             // "Contenedor de diamante"
         Text{ "Double Damage", "Double Souffrance", "Doppelte Angriffskraft" },     // "Doble daño receptivo"
         Text{ "Quadruple Defence", "Quadruple Défence", "Vierfache Verteidigung" }, // "Defensa cuádruple"
     };
@@ -342,9 +342,9 @@ static void InitTrickNames() {
     trickNameTable[RG_PROGRESSIVE_BOMBCHU_BAG] = {
         Text{ "Progressive Bomblings", "Bombinsectes (prog.)", "Bombenmäuse (prog.)" }, // "Bombinsectos progresivos"
         Text{ "Progressive Sentrobe Bombs", "Bombe de Sphérodrone (prog.)",
-              "Rokopterbomben (prog.)" },                                          // "Bomba de helicobot progresivo"
+              "Rokopterbomben (prog.)" },                                           // "Bomba de helicobot progresivo"
         Text{ "Progressive Bomb-ombs", "Bombe Soldat (prog.)", "Bob-omb (prog.)" }, // "Soldado bomba progresivo"
-        Text{ "Progressive Missiles", "Missiles (prog.)", "Missiles (prog.)" },    // "Misiles progresivos"
+        Text{ "Progressive Missiles", "Missiles (prog.)", "Missiles (prog.)" },     // "Misiles progresivos"
     };
     trickNameTable[RG_PROGRESSIVE_MAGIC_METER] = {
         Text{ "Progressive Stamina Meter", "Jauge d'endurance (prog.)",
@@ -402,7 +402,8 @@ static void InitTrickNames() {
     };
     trickNameTable[RG_PROGRESSIVE_SERENADE_OF_WATER] = {
         Text{ "Progressive Ruto's Blues", "Sérénade de l'Eau (prog.)", "Progressive Serenade des Wassers" },
-        Text{ "Progressive New Wave Bossa Nova", "Bossa-nova des flots (prog.)", "Progressive Bossa Nova der Kaskaden" },
+        Text{ "Progressive New Wave Bossa Nova", "Bossa-nova des flots (prog.)",
+              "Progressive Bossa Nova der Kaskaden" },
         Text{ "Progressive Manbo's Mambo", "Mambo de Manbo (prog.)", "Progressives Manbos Mambo" },
     };
     trickNameTable[RG_PROGRESSIVE_REQUIEM_OF_SPIRIT] = {

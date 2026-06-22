@@ -382,9 +382,9 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
         case RG_PROGRESSIVE_SERENADE_OF_WATER:
         case RG_PROGRESSIVE_REQUIEM_OF_SPIRIT:
         case RG_PROGRESSIVE_NOCTURNE_OF_SHADOW:
-        case RG_PROGRESSIVE_PRELUDE_OF_LIGHT:{
+        case RG_PROGRESSIVE_PRELUDE_OF_LIGHT: {
             const SongData* song = &StaticData::songData[randomizerGet];
-            if (logic->CheckRandoInf(song->randInf)){
+            if (logic->CheckRandoInf(song->randInf)) {
                 actual = song->realSong;
             } else {
                 actual = song->part;

@@ -9,6 +9,7 @@
 #include "spoiler_log.hpp"
 #include "soh/Enhancements/randomizer/Traps.h"
 #include "z64item.h"
+#include "../static_data.h"
 #include <algorithm>
 #include <spdlog/spdlog.h>
 
@@ -267,14 +268,15 @@ void GenerateItemPool() {
     // add extra songs only if song shuffle is anywhere
     if (ctx->GetOption(RSK_SHUFFLE_SONGS).IsNot(RO_SONG_SHUFFLE_OFF)) {
         bool songAnywhere = ctx->GetOption(RSK_SHUFFLE_SONGS).Is(RO_SONG_SHUFFLE_ANYWHERE);
-        auto addShuffledSong = [&](RandomizerGet song, bool hasStarting) {
+        auto addShuffledSong = [&](RandomizerGet progSong, bool hasStarting) {
+            SongData song = Rando::StaticData::songData[progSong];
             if (hasStarting) {
                 return;
             }
             if (!ctx->GetOption(RSK_SPLIT_OCARINA_SONGS).Get()) {
-                AddItemToPool(song, songAnywhere ? 2 : 1, 1, 1, 1, songAnywhere);
+                AddItemToPool(song.realSong, songAnywhere ? 2 : 1, 1, 1, 1, songAnywhere);
             } else {
-                AddItemToPool(song, 3, 2, 2, 2, songAnywhere);
+                AddItemToPool(progSong, 3, 2, 2, 2, songAnywhere);
             }
         };
         addShuffledSong(RG_PROGRESSIVE_ZELDAS_LULLABY, ctx->GetOption(RSK_STARTING_ZELDAS_LULLABY).Get());

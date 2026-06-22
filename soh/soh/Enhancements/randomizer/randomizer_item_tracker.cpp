@@ -1369,7 +1369,7 @@ void DrawDungeonItem(ItemTrackerItem item) {
 }
 
 void DrawSong(ItemTrackerItem item) {
-    const SongData* song = &Rando::StaticData::songData[Rando::StaticData::songQuestToProg[(QuestItem)item.id]]; 
+    const SongData* song = &Rando::StaticData::songData[Rando::StaticData::songQuestToProg[(QuestItem)item.id]];
     const bool hasSong = HasSong((QuestItem)item.id);
 
     float iconSize = static_cast<float>(CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36));
