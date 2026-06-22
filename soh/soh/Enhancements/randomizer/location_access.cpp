@@ -873,7 +873,7 @@ bool BeanPlanted(const RandomizerGet bean) {
     }
 
     // swchFlag found using the Actor Viewer to get the Obj_Bean parameters & 0x3F
-    // not tested with multiple OTRs, but can be automated similarly to GetDungeonSmallKeyDoors
+    // not tested with multiple OTRs, but can be automated similarly to GetUsedSmallKeys
     SceneID sceneID;
     uint8_t swchFlag;
     switch (bean) {
