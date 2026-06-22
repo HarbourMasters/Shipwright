@@ -18,8 +18,6 @@ enum class GlitchType {
     EquipSwap,
 };
 
-const std::vector<uint8_t>& GetDungeonSmallKeyDoors(const SceneID sceneId);
-
 class Logic {
   public:
     uint8_t Bottles = 0;
@@ -47,7 +45,7 @@ class Logic {
     bool BAllowed();
     bool HasBossSoul(RandomizerGet itemName);
     bool CanOpenOverworldDoor(RandomizerGet itemName);
-    bool SmallKeys(s16 scene, uint8_t requiredAmount);
+    bool SmallKeys(SceneID scene, uint8_t requiredAmount);
     bool CanGroundJump(bool hasBombflower = false);
     bool CanGroundJumpslash(bool hasBombflower = false);
     bool CanMiddairGroundJump(bool hasBombflower = false);
@@ -140,8 +138,7 @@ class Logic {
     bool CheckEquipment(uint32_t item);
     bool CheckQuestItem(uint32_t item);
     void SetQuestItem(uint32_t item, bool state);
-    int8_t GetUsedSmallKeyCount(SceneID sceneId);
-    uint8_t GetSmallKeyCount(uint32_t dungeonIndex);
+    int8_t GetSmallKeyCount(SceneID sceneId);
     void SetSmallKeyCount(uint32_t dungeonIndex, uint8_t count);
     bool CheckDungeonItem(uint32_t item, uint32_t dungeonIndex);
     void SetDungeonItem(uint32_t item, uint32_t dungeonIndex, bool state);
@@ -157,9 +154,8 @@ class Logic {
     void InitSaveContext();
     void NewSaveContext();
     static std::map<uint32_t, uint32_t> RandoGetToQuestItem;
-    static std::map<uint32_t, uint32_t> RandoGetToDungeonScene;
+    static std::map<uint32_t, SceneID> RandoGetToDungeonScene;
     static std::map<RandomizerGet, uint32_t> RandoGetToEquipFlag;
-    static std::map<RandomizerGet, uint32_t> RandoGetToRandInf;
     bool IsReverseAccessPossible();
     bool DMCUpperToPots();
     bool DMCPotsToPad();

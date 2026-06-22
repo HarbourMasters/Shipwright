@@ -690,10 +690,31 @@ void GameplayStatsWindow::DrawElement() {
     ImGui::Text("Note: Gameplay stats are saved to the current file and will be\nlost if you quit without saving.");
 }
 void InitStats(bool isDebug) {
-    gSaveContext.ship.stats.heartPieces = isDebug ? 8 : 0;
-    gSaveContext.ship.stats.heartContainers = isDebug ? 8 : 0;
-    for (int dungeon = 0; dungeon < ARRAY_COUNT(gSaveContext.ship.stats.dungeonKeys); dungeon++) {
-        gSaveContext.ship.stats.dungeonKeys[dungeon] = isDebug ? 8 : 0;
+    int debugFile = isDebug ? CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugSaveFileMode"), 1) : 0;
+    switch (debugFile) {
+        case 1:
+            gSaveContext.ship.stats.heartPieces = 8;
+            gSaveContext.ship.stats.heartContainers = 8;
+            for (int dungeon = 0; dungeon < ARRAY_COUNT(gSaveContext.ship.stats.dungeonKeys); dungeon++) {
+                gSaveContext.ship.stats.dungeonKeys[dungeon] = 8;
+            }
+            break;
+        case 2:
+            gSaveContext.ship.stats.heartPieces = 36;
+            gSaveContext.ship.stats.heartContainers = 8;
+            for (int dungeon = 0; dungeon < ARRAY_COUNT(gSaveContext.ship.stats.dungeonKeys); dungeon++) {
+                // 9 for maxed, 0 for none
+                gSaveContext.ship.stats.dungeonKeys[dungeon] = 9;
+            }
+            break;
+        case 0:
+        default:
+            gSaveContext.ship.stats.heartPieces = 0;
+            gSaveContext.ship.stats.heartContainers = 0;
+            for (int dungeon = 0; dungeon < ARRAY_COUNT(gSaveContext.ship.stats.dungeonKeys); dungeon++) {
+                gSaveContext.ship.stats.dungeonKeys[dungeon] = 0;
+            }
+            break;
     }
     gSaveContext.ship.stats.rtaTiming = CVarGetInteger(CVAR_GAMEPLAY_STATS("RTATiming"), 0);
     gSaveContext.ship.stats.fileCreatedAt = GetUnixTimestamp();

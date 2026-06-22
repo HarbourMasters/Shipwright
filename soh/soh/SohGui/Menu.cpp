@@ -820,7 +820,7 @@ void Menu::DrawElement() {
     pos.y += headerHeight + style.ItemSpacing.y;
     pos.x = centerX - menuSize.x / 2 + (style.ItemSpacing.x * (menuEntries.size() + 1));
     window->DrawList->AddRectFilled(pos, pos + ImVec2{ menuSize.x, 4 }, ImGui::GetColorU32({ 255, 255, 255, 255 }),
-                                    true, style.WindowRounding);
+                                    style.WindowRounding);
     pos.y += style.ItemSpacing.y;
     float sectionHeight = menuSize.y - headerHeight - 4 - style.ItemSpacing.y * 2;
     float columnHeight = sectionHeight - style.ItemSpacing.y * 4;
@@ -870,7 +870,7 @@ void Menu::DrawElement() {
 
     pos = ImVec2{ sectionCenterX + (sidebarWidth / 2), topY } + style.ItemSpacing * 2;
     window->DrawList->AddRectFilled(pos, pos + ImVec2{ 4, sectionHeight - style.FramePadding.y * 2 },
-                                    ImGui::GetColorU32({ 255, 255, 255, 255 }), true, style.WindowRounding);
+                                    ImGui::GetColorU32({ 255, 255, 255, 255 }), style.WindowRounding);
     pos.x += 4 + style.ItemSpacing.x;
     ImGui::SetNextWindowPos(pos + style.ItemSpacing);
     float sectionWidth = menuSize.x - sidebarWidth - 4 - style.ItemSpacing.x * 4;

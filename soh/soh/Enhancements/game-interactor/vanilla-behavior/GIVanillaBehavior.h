@@ -2004,6 +2004,11 @@ typedef enum {
     VB_PLAYER_ARROW_MAGIC_CONSUMPTION,
 
     // #### `args`
+    // - `void*` player (Player*)
+    // - `PlayState*` play
+    VB_PLAYER_DRAW_BOTTLE,
+
+    // #### `args`
     // - `s32` limbIndex
     // - `Gfx**` dList (write to *dList to replace the resolved display list)
     // - `void*` player (Player*)
@@ -2017,6 +2022,11 @@ typedef enum {
     // - `void*` player (Player*)
     // - `PlayState*` play
     VB_PLAYER_OVERRIDE_LIMB_DRAW_PAUSE,
+
+    // #### `args`
+    // - `*Player`
+    // - `*PlayState`
+    VB_PLAYER_UPDATE_BOTTLE_HELD,
 
     // #### `result`
     // ```c
@@ -2083,6 +2093,13 @@ typedef enum {
     VB_RED_ICE_MELTED_FLAG,
 
     // #### `result`
+    // ```c
+    // camera->xzSpeed > 0.001f || <any release button pressed> || params->interfaceFlags & 0x8
+    // ```
+    // #### `args`
+    // - `Camera*` (`camera`)
+    VB_RELEASE_DOORC_CAMERA,
+
     // #### `result`
     // ```c
     // true

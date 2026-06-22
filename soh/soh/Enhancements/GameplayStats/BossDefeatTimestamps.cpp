@@ -3,9 +3,9 @@
 
 extern "C" SaveContext gSaveContext;
 
-#define BOSS_DEFEAT_TIMESTAMP(actorID, timestamp)                                                          \
-    COND_ID_HOOK(OnBossDefeat, actorID, true, [](void* refActor) {                                         \
-        gSaveContext.ship.stats.itemTimestamp[timestamp] = static_cast<uint32_t>(GAMEPLAYSTAT_TOTAL_TIME); \
+#define BOSS_DEFEAT_TIMESTAMP(actorID, timestamp)                                                     \
+    COND_ID_HOOK(OnBossDefeat, actorID, true, [](void* refActor) {                                    \
+        gSaveContext.ship.stats.itemTimestamp[timestamp] = static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME); \
     });
 
 static void RegisterBossDefeatTimestamps() {
@@ -19,7 +19,7 @@ static void RegisterBossDefeatTimestamps() {
     BOSS_DEFEAT_TIMESTAMP(ACTOR_BOSS_TW, TIMESTAMP_DEFEAT_TWINROVA);
     BOSS_DEFEAT_TIMESTAMP(ACTOR_BOSS_GANON, TIMESTAMP_DEFEAT_GANONDORF);
     COND_ID_HOOK(OnBossDefeat, ACTOR_BOSS_GANON2, true, [](void* refActor) {
-        gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_GANON] = GAMEPLAYSTAT_TOTAL_TIME;
+        gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_DEFEAT_GANON] = static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
         gSaveContext.ship.stats.gameComplete = true;
     });
 }

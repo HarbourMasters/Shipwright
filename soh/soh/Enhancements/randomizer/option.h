@@ -226,6 +226,13 @@ class Option {
     uint8_t GetOptionIndex() const;
 
     /**
+     * @brief Get the default menu index for this Option.
+     *
+     * @return uint8_t
+     */
+    uint8_t GetMenuOptionDefault() const;
+
+    /**
      * @brief Set the rando context index for this Option.
      *
      * @param idx the index to set as the selected index.

@@ -1443,7 +1443,7 @@ void AudioLoad_Init(void* heap, size_t heapSize) {
         AudioCollection_AddToCollection(customSeqList[j], seqNum);
 
         sDat->seqNumber = seqNum;
-        printf("%d\n", seqNum);
+        LUSLOG_DEBUG("Registered custom sequence \"%s\" as seqNum %d", customSeqList[j], seqNum);
         sequenceMap[sDat->seqNumber] = strdup(customSeqList[j]);
         seqNum++;
     }

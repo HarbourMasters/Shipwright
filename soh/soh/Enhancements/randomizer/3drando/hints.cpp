@@ -503,7 +503,7 @@ static int32_t getRandomWeight(uint32_t totalWeight) {
 
 static void DistributeAndPlaceHints(std::vector<HintDistributionSetting>& distTable, size_t totalStones) {
     auto ctx = Rando::Context::GetInstance();
-    const uint8_t junkIdx = distTable.size();
+    const uint8_t junkIdx = static_cast<uint8_t>(distTable.size());
 
     // Apply fixed hints upfront (they don't participate in weighted selection)
     for (size_t i = 0; i < distTable.size(); i++) {
@@ -757,9 +757,10 @@ void CreateStaticItemHint(RandomizerHint hintKey, std::vector<RandomizerHintText
     // RANDOTODO choose area in case there are multiple
     auto ctx = Rando::Context::GetInstance();
     std::vector<RandomizerCheck> locations = FindItemsAndMarkHinted(items, hintChecks);
-    std::vector<RandomizerArea> areas = {};
+    std::vector<RandomizerArea> areas;
+    areas.reserve(locations.size());
     for (auto loc : locations) {
-        areas.push_back(ctx->GetItemLocation(loc)->GetRandomArea());
+        areas.push_back(loc == RC_UNKNOWN_CHECK ? RA_NONE : ctx->GetItemLocation(loc)->GetRandomArea());
     }
     ctx->AddHint(hintKey, Hint(hintKey, HINT_TYPE_AREA, hintTextKeys, locations, areas, {}, yourPocket));
 }

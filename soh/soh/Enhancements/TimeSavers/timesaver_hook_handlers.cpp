@@ -499,7 +499,11 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
             break;
         case VB_PLAY_NABOORU_CAPTURED_CS:
             if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO)) {
-                Flags_SetEventChkInf(EVENTCHKINF_NABOORU_CAPTURED_BY_TWINROVA);
+                // we're only here if GetItem is Silver Gauntlets
+                // either it's randomiser, or we're about to enter (or skip) the Nabooru Capture
+                if (!IS_RANDO) {
+                    Flags_SetEventChkInf(EVENTCHKINF_NABOORU_CAPTURED_BY_TWINROVA);
+                }
                 *should = false;
             }
             break;
