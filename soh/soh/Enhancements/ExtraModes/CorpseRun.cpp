@@ -22,6 +22,7 @@ static constexpr int32_t INVALID_SAVE_SECTION_ID = -1;
 static constexpr int32_t VERSION = 1;
 
 struct Remnant {
+    // State
     bool dropped = false;
     bool active = false;
 
@@ -31,9 +32,11 @@ struct Remnant {
     Vec3f pos = {};
     int16_t yaw = 0;
 
+    // Resources
     int32_t rupees = 0;
     int32_t magic = 0;
 
+    // Consumables
     int32_t bombs = 0;
     int32_t arrows = 0;
     int32_t sticks = 0;
@@ -41,25 +44,34 @@ struct Remnant {
     int32_t seeds = 0;
     int32_t bombchus = 0;
 
-    void Clear() { *this = {}; }
+    // TODO(jperos): Progression items and/or Equipment modes?
+
+    void Clear() {
+        *this = {};
+    }
     bool HasContents() const;
     bool IsInRoom() const;
-    bool IsRecoverable() const { return dropped && active; }
-    bool IsPendingActivation() const { return dropped && !active; }
+    bool IsRecoverable() const {
+        return dropped && active;
+    }
+    bool IsPendingActivation() const {
+        return dropped && !active;
+    }
 };
 
-static constexpr struct ConsumableDesc
-{
+static constexpr struct ConsumableDesc {
     const char* name;
-    int32_t Remnant::* field;
+    int32_t Remnant::*field;
     int16_t itemId;
 } CONSUMABLE_TABLE[] = {
+    // clang-format off
     { "bombs",    &Remnant::bombs,    ITEM_BOMB      },
     { "arrows",   &Remnant::arrows,   ITEM_BOW       },
     { "sticks",   &Remnant::sticks,   ITEM_STICK     },
     { "nuts",     &Remnant::nuts,     ITEM_NUT       },
     { "seeds",    &Remnant::seeds,    ITEM_SLINGSHOT },
     { "bombchus", &Remnant::bombchus, ITEM_BOMBCHU   }
+    // clang-format on
 };
 
 static Remnant sRemnant;
@@ -67,19 +79,19 @@ static GetItemEntry sMysteryItem = GET_ITEM_MYSTERY;
 
 // Remnant member helpers
 bool Remnant::HasContents() const {
-    if( rupees > 0 ) return true;
-    if( magic  > 0 ) return true;
-    for(const ConsumableDesc& desc : CONSUMABLE_TABLE)
-    {
-        if (this->*desc.field > 0) return true;
+    if (rupees > 0)
+        return true;
+    if (magic > 0)
+        return true;
+    for (const ConsumableDesc& desc : CONSUMABLE_TABLE) {
+        if (this->*desc.field > 0)
+            return true;
     }
     return false;
 }
 
 bool Remnant::IsInRoom() const {
-    return gPlayState != nullptr
-        && gPlayState->sceneNum == sceneNum 
-        && gPlayState->roomCtx.curRoom.num == roomNum;
+    return gPlayState != nullptr && gPlayState->sceneNum == sceneNum && gPlayState->roomCtx.curRoom.num == roomNum;
 }
 
 // Save/Load
@@ -116,9 +128,8 @@ static void LoadSave() {
 
     SaveManager::Instance->LoadStruct("contents", []() {
         SaveManager::Instance->LoadData("rupees", sRemnant.rupees, 0);
-        SaveManager::Instance->LoadData("magic",  sRemnant.magic,  0);
-        for(const ConsumableDesc& desc : CONSUMABLE_TABLE)
-        {
+        SaveManager::Instance->LoadData("magic", sRemnant.magic, 0);
+        for (const ConsumableDesc& desc : CONSUMABLE_TABLE) {
             SaveManager::Instance->LoadData(desc.name, sRemnant.*desc.field, 0);
         }
     });
@@ -144,9 +155,8 @@ static void Save(SaveContext* saveContext, int sectionID, bool fullSave) {
 
     SaveManager::Instance->SaveStruct("contents", []() {
         SaveManager::Instance->SaveData("rupees", sRemnant.rupees);
-        SaveManager::Instance->SaveData("magic",  sRemnant.magic);
-        for(const ConsumableDesc& desc : CONSUMABLE_TABLE)
-        {
+        SaveManager::Instance->SaveData("magic", sRemnant.magic);
+        for (const ConsumableDesc& desc : CONSUMABLE_TABLE) {
             SaveManager::Instance->SaveData(desc.name, sRemnant.*desc.field);
         }
     });
@@ -162,7 +172,8 @@ static void RegisterSave() {
 
     SaveManager::Instance->AddInitFunction(InitSave);
     SaveManager::Instance->AddLoadFunction("corpseRun", CorpseRun::VERSION, LoadSave);
-    sSaveSectionId = SaveManager::Instance->AddSaveFunction("corpseRun", CorpseRun::VERSION, Save, true, SECTION_PARENT_NONE);
+    sSaveSectionId =
+        SaveManager::Instance->AddSaveFunction("corpseRun", CorpseRun::VERSION, Save, true, SECTION_PARENT_NONE);
 }
 
 // Corpse Run Logic
@@ -203,8 +214,7 @@ static void Drop() {
     // v1 - consumables only
     sRemnant.rupees = gSaveContext.rupees;
     sRemnant.magic = gSaveContext.magic;
-    for(const ConsumableDesc& desc : CONSUMABLE_TABLE)
-    {
+    for (const ConsumableDesc& desc : CONSUMABLE_TABLE) {
         sRemnant.*desc.field = AMMO(desc.itemId);
     }
 
@@ -218,8 +228,7 @@ static void Drop() {
 
     gSaveContext.rupees = 0;
     Magic_Reset(gPlayState);
-    for(const ConsumableDesc& desc : CONSUMABLE_TABLE)
-    {
+    for (const ConsumableDesc& desc : CONSUMABLE_TABLE) {
         AMMO(desc.itemId) = 0;
     }
 
@@ -229,8 +238,7 @@ static void Drop() {
 static void Recover() {
     Rupees_ChangeBy(sRemnant.rupees);
     Magic_RequestChange(gPlayState, sRemnant.magic, MAGIC_ADD);
-    for(const ConsumableDesc& desc : CONSUMABLE_TABLE)
-    {
+    for (const ConsumableDesc& desc : CONSUMABLE_TABLE) {
         Inventory_ChangeAmmo(desc.itemId, sRemnant.*desc.field);
     }
 
