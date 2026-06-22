@@ -1940,9 +1940,6 @@ void SohMenu::AddMenuEnhancements() {
         .WindowName("Audio Editor")
         .HideInSearch(true)
         .Options(WindowButtonOptions().Tooltip("Enables the separate Audio Editor Window."));
-    AddWidget(path, "Randomize Music Instruments", WIDGET_CVAR_CHECKBOX)
-        .CVar(CVAR_ENHANCEMENT("RandomMusicInstruments"))
-        .Options(CheckboxOptions().Tooltip("Randomizes music instruments within the same music."));
 
     // Gameplay Stats
     path.sidebarName = "Gameplay Stats";
