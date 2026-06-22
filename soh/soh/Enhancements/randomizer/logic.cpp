@@ -17,14 +17,11 @@
 #include "src/overlays/actors/ovl_En_Door/z_en_door.h"
 #include "src/overlays/actors/ovl_Door_Shutter/z_door_shutter.h"
 #include "location_access.h"
+#include "split_songs.h"
 
 namespace Rando {
 
 bool Logic::HasItem(RandomizerGet itemName) {
-    if (SplitSongs::IsProgressiveSong(itemName)) {
-        const SplitSongDef* def = SplitSongs::GetSongDefFromProgressive(itemName);
-        return def != nullptr && SplitSongs::HasFullSong(def->id);
-    }
 
     switch (itemName) {
         case RG_FAIRY_OCARINA:
@@ -99,7 +96,7 @@ bool Logic::HasItem(RandomizerGet itemName) {
             return CurrentUpgrade(UPG_BOMB_BAG);
         case RG_MAGIC_SINGLE:
             return GetSaveContext()->magicLevel >= 1 || GetSaveContext()->isMagicAcquired;
-            // Songs (split + Anywhere: logical ownership is two parts on the logic scratch before quest is granted)
+        // Songs
         case RG_ZELDAS_LULLABY:
         case RG_EPONAS_SONG:
         case RG_SARIAS_SONG:
@@ -111,24 +108,8 @@ bool Logic::HasItem(RandomizerGet itemName) {
         case RG_SERENADE_OF_WATER:
         case RG_REQUIEM_OF_SPIRIT:
         case RG_NOCTURNE_OF_SHADOW:
-        case RG_PRELUDE_OF_LIGHT: {
-            const bool splitAnywhere = ctx->GetOption(RSK_SPLIT_OCARINA_SONGS).Get();
-            const auto qiIt = RandoGetToQuestItem.find(itemName);
-            if (qiIt == RandoGetToQuestItem.end()) {
-                SPDLOG_ERROR("HasItem: song RandomizerGet {} missing from RandoGetToQuestItem",
-                             static_cast<uint32_t>(itemName));
-                assert(false);
-                return false;
-            }
-            if (splitAnywhere) {
-                const SplitSongDef* sdef = SplitSongs::GetSongDefFromFullSong(itemName);
-                if (sdef != nullptr && SplitSongs::HasFullSong(sdef->id)) {
-                    return true;
-                }
-            }
-            return CheckQuestItem(qiIt->second);
-        }
-            // Dungeon Rewards
+        case RG_PRELUDE_OF_LIGHT: 
+        // Dungeon Rewards
         case RG_KOKIRI_EMERALD:
         case RG_GORON_RUBY:
         case RG_ZORA_SAPPHIRE:
@@ -2207,6 +2188,25 @@ void Logic::ApplyItemEffect(Item& item, bool state) {
                     }
                     SetInventory(ITEM_OCARINA_FAIRY, OcarinaLookup[i]);
                 } break;
+                case RG_PROGRESSIVE_ZELDAS_LULLABY:
+                case RG_PROGRESSIVE_EPONAS_SONG:
+                case RG_PROGRESSIVE_SARIAS_SONG:
+                case RG_PROGRESSIVE_SONG_OF_TIME:
+                case RG_PROGRESSIVE_SUNS_SONG:
+                case RG_PROGRESSIVE_SONG_OF_STORMS:
+                case RG_PROGRESSIVE_MINUET_OF_FOREST:
+                case RG_PROGRESSIVE_BOLERO_OF_FIRE:
+                case RG_PROGRESSIVE_SERENADE_OF_WATER:
+                case RG_PROGRESSIVE_REQUIEM_OF_SPIRIT:
+                case RG_PROGRESSIVE_NOCTURNE_OF_SHADOW:
+                case RG_PROGRESSIVE_PRELUDE_OF_LIGHT: {
+                    const SplitSongData* songData = GetSongDef(randoGet);
+                    if (CheckRandoInf(songData->randInf)){
+                        SetQuestItem(songData->quest, state);
+                    } else {
+                        SetRandoInf(songData->randInf, state);
+                    }
+                }
                 case RG_HEART_CONTAINER:
                     mSaveContext->healthCapacity += (!state ? -16 : 16);
                     break;
@@ -2374,31 +2374,8 @@ void Logic::ApplyItemEffect(Item& item, bool state) {
             }
         } break;
         case ITEMTYPE_DUNGEONREWARD:
-        case ITEMTYPE_SONG: {
-            RandomizerGet rg = item.GetRandomizerGet();
-            if (SplitSongs::IsProgressiveSong(rg)) {
-                const SplitSongDef* def = SplitSongs::GetSongDefFromProgressive(rg);
-                if (def != nullptr) {
-                    const RandomizerInf partFlag = SplitSongs::GetPartFlag(def->id);
-                    auto qi = RandoGetToQuestItem.find(static_cast<uint32_t>(def->fullSong));
-                    if (!CheckRandoInf(partFlag) && state) {
-                        SetRandoInf(partFlag, true);
-                    } else if (qi != RandoGetToQuestItem.end() && CheckRandoInf(partFlag) &&
-                               !CheckQuestItem(qi->second) && state) {
-                        SetQuestItem(qi->second, true);
-                    } else if (qi != RandoGetToQuestItem.end() && CheckQuestItem(qi->second) && !state) {
-                        SetQuestItem(qi->second, false);
-                    } else if (CheckRandoInf(partFlag) && !state) {
-                        SetRandoInf(partFlag, false);
-                    }
-                }
-                break;
-            }
-            auto qi = RandoGetToQuestItem.find(rg);
-            if (qi != RandoGetToQuestItem.end()) {
-                SetQuestItem(qi->second, state);
-            }
-        } break;
+        case ITEMTYPE_SONG:
+            SetQuestItem(RandoGetToQuestItem.find(item.GetRandomizerGet())->second, state);
         case ITEMTYPE_MAP:
             SetDungeonItem(DUNGEON_MAP, RandoGetToDungeonScene.find(item.GetRandomizerGet())->second, state);
             break;

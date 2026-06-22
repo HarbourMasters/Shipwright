@@ -109,10 +109,6 @@ uint16_t Item::GetPrice() const {
 }
 
 std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursion)
-    if (giEntry != nullptr && giEntry->itemId != RG_PROGRESSIVE_BOMBCHU_BAG &&
-        !SplitSongs::IsProgressiveSong(randomizerGet)) {
-        return giEntry;
-    }
     std::shared_ptr<Rando::Context> ctx = Rando::Context::GetInstance();
     auto logic = ctx->GetLogic();
     RandomizerGet actual = RG_NONE;
@@ -387,9 +383,15 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
         case RG_PROGRESSIVE_SERENADE_OF_WATER:
         case RG_PROGRESSIVE_REQUIEM_OF_SPIRIT:
         case RG_PROGRESSIVE_NOCTURNE_OF_SHADOW:
-        case RG_PROGRESSIVE_PRELUDE_OF_LIGHT:
-            actual = SplitSongs::ResolveProgressiveSongStage(logic.get(), randomizerGet);
+        case RG_PROGRESSIVE_PRELUDE_OF_LIGHT:{
+            const SplitSongData* songData = GetSongDef(randomizerGet);
+            if (!OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SPLIT_OCARINA_SONGS) || logic->CheckRandoInf(songData->randInf)){
+                actual = songData->realSong;
+            } else {
+                actual = songData->part;
+            }
             break;
+        }
         case RG_PROGRESSIVE_BOMBCHU_BAG:
             if (OTRGlobals::Instance->gRandoContext->GetOption(RSK_BOMBCHU_BAG).Is(RO_BOMBCHU_BAG_SINGLE)) {
                 if (logic->CurrentInventory(ITEM_BOMBCHU) != ITEM_NONE) {

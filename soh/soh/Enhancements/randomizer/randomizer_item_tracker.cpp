@@ -130,12 +130,12 @@ std::vector<ItemTrackerItem> dungeonRewardMedallions = {
 std::vector<ItemTrackerItem> dungeonRewards = {};
 
 std::vector<ItemTrackerItem> songItems = {
-    ITEM_TRACKER_ITEM(QUEST_SONG_LULLABY, 0, DrawSong),  ITEM_TRACKER_ITEM(QUEST_SONG_EPONA, 0, DrawSong),
-    ITEM_TRACKER_ITEM(QUEST_SONG_SARIA, 0, DrawSong),    ITEM_TRACKER_ITEM(QUEST_SONG_SUN, 0, DrawSong),
-    ITEM_TRACKER_ITEM(QUEST_SONG_TIME, 0, DrawSong),     ITEM_TRACKER_ITEM(QUEST_SONG_STORMS, 0, DrawSong),
-    ITEM_TRACKER_ITEM(QUEST_SONG_MINUET, 0, DrawSong),   ITEM_TRACKER_ITEM(QUEST_SONG_BOLERO, 0, DrawSong),
-    ITEM_TRACKER_ITEM(QUEST_SONG_SERENADE, 0, DrawSong), ITEM_TRACKER_ITEM(QUEST_SONG_REQUIEM, 0, DrawSong),
-    ITEM_TRACKER_ITEM(QUEST_SONG_NOCTURNE, 0, DrawSong), ITEM_TRACKER_ITEM(QUEST_SONG_PRELUDE, 0, DrawSong),
+    ITEM_TRACKER_ITEM(RG_PROGRESSIVE_ZELDAS_LULLABY, 0, DrawSong),     ITEM_TRACKER_ITEM(RG_PROGRESSIVE_EPONAS_SONG, 0, DrawSong),
+    ITEM_TRACKER_ITEM(RG_PROGRESSIVE_SARIAS_SONG, 0, DrawSong),        ITEM_TRACKER_ITEM(RG_PROGRESSIVE_SUNS_SONG, 0, DrawSong),
+    ITEM_TRACKER_ITEM(RG_PROGRESSIVE_SONG_OF_TIME, 0, DrawSong),       ITEM_TRACKER_ITEM(RG_PROGRESSIVE_SONG_OF_STORMS, 0, DrawSong),
+    ITEM_TRACKER_ITEM(RG_PROGRESSIVE_MINUET_OF_FOREST, 0, DrawSong),   ITEM_TRACKER_ITEM(RG_PROGRESSIVE_BOLERO_OF_FIRE, 0, DrawSong),
+    ITEM_TRACKER_ITEM(RG_PROGRESSIVE_SERENADE_OF_WATER, 0, DrawSong),  ITEM_TRACKER_ITEM(RG_PROGRESSIVE_REQUIEM_OF_SPIRIT, 0, DrawSong),
+    ITEM_TRACKER_ITEM(RG_PROGRESSIVE_NOCTURNE_OF_SHADOW, 0, DrawSong), ITEM_TRACKER_ITEM(RG_PROGRESSIVE_PRELUDE_OF_LIGHT, 0, DrawSong),
 };
 
 std::vector<ItemTrackerItem> gregItems = {
@@ -458,47 +458,6 @@ typedef enum {
     SECTION_DISPLAY_MINIMAL_HIDDEN,
     SECTION_DISPLAY_MINIMAL_SEPARATE,
 } ItemTrackerMinimalDisplayType;
-
-static bool ItemTrackerSplitSongsActive() {
-    if (GameInteractor::IsSaveLoaded() && IS_RANDO) {
-        return OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SPLIT_OCARINA_SONGS) != 0;
-    }
-    return CVarGetInteger(CVAR_RANDOMIZER_SETTING("SplitOcarinaSongs"), 0) != 0;
-}
-
-static const Rando::SplitSongDef* SplitSongDefForQuestBit(uint32_t questBit) {
-    for (int i = 0; i < static_cast<int>(Rando::SplitSongId::SPLIT_SONG_MAX); i++) {
-        const Rando::SplitSongDef* def = Rando::SplitSongs::GetSongDef(static_cast<Rando::SplitSongId>(i));
-        if (def == nullptr) {
-            continue;
-        }
-        const auto qiIt = Rando::Logic::RandoGetToQuestItem.find(static_cast<uint32_t>(def->fullSong));
-        if (qiIt != Rando::Logic::RandoGetToQuestItem.end() && static_cast<uint32_t>(qiIt->second) == questBit) {
-            return def;
-        }
-    }
-    return nullptr;
-}
-
-static int SplitSongPartsCollected(uint32_t questBit) {
-    if (CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0) != 0) {
-        return -1;
-    }
-    if (!ItemTrackerSplitSongsActive()) {
-        return -1;
-    }
-    const Rando::SplitSongDef* def = SplitSongDefForQuestBit(questBit);
-    if (def == nullptr) {
-        return -1;
-    }
-    if (Rando::SplitSongs::HasFullSong(def->id)) {
-        return 2;
-    }
-    if (Rando::SplitSongs::HasSplitPart(def->id)) {
-        return 1;
-    }
-    return 0;
-}
 
 struct ItemTrackerNumbers {
     int currentCapacity;
@@ -1416,21 +1375,25 @@ void DrawDungeonItem(ItemTrackerItem item) {
 }
 
 void DrawSong(ItemTrackerItem item) {
-    const int partsCollected = SplitSongPartsCollected(item.id);
-    const bool hasSong = HasSong(item) || partsCollected == 2;
-    const bool hasProgress = partsCollected == 1;
-    const bool showBright = hasSong || hasProgress;
+    const bool hasSong = HasSong(GetSongDef(item.id).quest)
+    const bool hasPart = Flags_GetRandomizerInf(GetSongDef(item.id).randInf);
 
     float iconSize = static_cast<float>(CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36));
     ImGui::BeginGroup();
     ImVec2 p = ImGui::GetCursorScreenPos();
     ImGui::SetCursorScreenPos(ImVec2(p.x + 6, p.y));
     ImGui::Image(std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                     ->GetTextureByName(showBright && IsValidSaveFile() ? item.name : item.nameFaded),
+                     ->GetTextureByName(hasSong && IsValidSaveFile() ? item.name : item.nameFaded),
                  ImVec2(iconSize / 1.5f, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
-    if (hasProgress) {
-        const char* progressLabel = "1/2";
+    // RANDOTODO merge the ammo printing pipelines
+    if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SPLIT_OCARINA_SONGS) != 0) {
+        char* progressLabel = "0/2";
+        if (hasSong) {
+            progressLabel = "2/2"
+        } else if (hasPart) {
+            progressLabel = "1/2"
+        }
         const ImVec2 iconMin = ImGui::GetItemRectMin();
         const ImVec2 iconMax = ImGui::GetItemRectMax();
         const ImVec2 textSize = ImGui::CalcTextSize(progressLabel);
