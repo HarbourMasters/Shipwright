@@ -1,7 +1,6 @@
 #include "logic.h"
 #include "../debugger/performanceTimer.h"
 
-#include <string>
 #include <vector>
 
 #include "soh/OTRGlobals.h"
@@ -12,10 +11,6 @@
 #include "randomizer.h"
 #include <spdlog/spdlog.h>
 #include <ship/utils/StringHelper.h>
-#include "soh/resource/type/Scene.h"
-#include "soh/resource/type/scenecommand/SetTransitionActorList.h"
-#include "src/overlays/actors/ovl_En_Door/z_en_door.h"
-#include "src/overlays/actors/ovl_Door_Shutter/z_door_shutter.h"
 #include "location_access.h"
 
 namespace Rando {
@@ -190,17 +185,9 @@ bool Logic::HasItem(RandomizerGet itemName) {
         case RG_LOST_WOODS_BRIDGE_BEAN_SOUL:
         case RG_LOST_WOODS_BEAN_SOUL:
         case RG_ZORAS_RIVER_BEAN_SOUL:
-            // Boss Souls
-        case RG_GOHMA_SOUL:
-        case RG_KING_DODONGO_SOUL:
-        case RG_BARINADE_SOUL:
-        case RG_PHANTOM_GANON_SOUL:
-        case RG_VOLVAGIA_SOUL:
-        case RG_MORPHA_SOUL:
-        case RG_BONGO_BONGO_SOUL:
-        case RG_TWINROVA_SOUL:
-        case RG_GANON_SOUL:
         case RG_SKELETON_KEY:
+        case RG_RUTOS_LETTER:
+            return CheckRandoInf(StaticData::RandoGetToRandInf.at(itemName));
             // Overworld Keys
         case RG_GUARD_HOUSE_KEY:
         case RG_MARKET_BAZAAR_KEY:
@@ -226,8 +213,8 @@ bool Logic::HasItem(RandomizerGet itemName) {
         case RG_BACK_TOWER_KEY:
         case RG_HYLIA_LAB_KEY:
         case RG_FISHING_HOLE_KEY:
-        case RG_RUTOS_LETTER:
-            return CheckRandoInf(StaticData::RandoGetToRandInf.at(itemName));
+            return !ctx->GetOption(RSK_LOCK_OVERWORLD_DOORS) || HasItem(RG_SKELETON_KEY) ||
+                   CheckRandoInf(StaticData::RandoGetToRandInf.at(itemName));
             // Boss Keys
         case RG_FOREST_TEMPLE_BOSS_KEY:
         case RG_FIRE_TEMPLE_BOSS_KEY:
@@ -657,41 +644,6 @@ bool Logic::HasProjectile(HasProjectileAge age) {
             (CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_BOOMERANG) || CanUse(RG_HOOKSHOT) || CanUse(RG_FAIRY_BOW)));
 }
 
-bool Logic::HasBossSoul(RandomizerGet itemName) {
-    if (!ctx->GetOption(RSK_SHUFFLE_BOSS_SOULS)) {
-        return true;
-    }
-    switch (itemName) {
-        case RG_GOHMA_SOUL:
-        case RG_KING_DODONGO_SOUL:
-        case RG_BARINADE_SOUL:
-        case RG_PHANTOM_GANON_SOUL:
-        case RG_VOLVAGIA_SOUL:
-        case RG_MORPHA_SOUL:
-        case RG_BONGO_BONGO_SOUL:
-        case RG_TWINROVA_SOUL:
-            return HasItem(itemName);
-        case RG_GANON_SOUL:
-            return ctx->GetOption(RSK_SHUFFLE_BOSS_SOULS).Is(RO_BOSS_SOULS_ON_PLUS_GANON) ? HasItem(RG_GANON_SOUL)
-                                                                                          : true;
-        default:
-            return false;
-    }
-}
-
-// RANDOMISERTODO intergrate into HasItem
-bool Logic::CanOpenOverworldDoor(RandomizerGet key) {
-    if (!ctx->GetOption(RSK_LOCK_OVERWORLD_DOORS)) {
-        return true;
-    }
-
-    if (HasItem(RG_SKELETON_KEY)) {
-        return true;
-    }
-
-    return HasItem(key);
-}
-
 bool Logic::CanGroundJump(bool hasBombflower) {
     return ctx->GetTrickOption(RT_GROUND_JUMP) && CanStandingShield() &&
            (CanUse(RG_BOMB_BAG) || (hasBombflower && HasItem(RG_GORONS_BRACELET)));
@@ -1000,33 +952,33 @@ bool Logic::CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance, bool wal
             // without shenanigans anyway. Bunny makes it free
             return CanUse(RG_KOKIRI_SWORD) || CanUse(RG_STICKS) || CanUse(RG_MASTER_SWORD);
         case RE_GOHMA:
-            return HasBossSoul(RG_GOHMA_SOUL) && CanJumpslash() &&
+            return HasItem(RG_GOHMA_SOUL) && CanJumpslash() &&
                    (CanUse(RG_NUTS) || CanUse(RG_FAIRY_SLINGSHOT) || CanUse(RG_FAIRY_BOW) || HookshotOrBoomerang());
         case RE_KING_DODONGO:
-            return HasBossSoul(RG_KING_DODONGO_SOUL) && CanJumpslash() &&
+            return HasItem(RG_KING_DODONGO_SOUL) && CanJumpslash() &&
                    (CanUse(RG_BOMB_BAG) || HasItem(RG_GORONS_BRACELET) ||
                     (ctx->GetTrickOption(RT_DC_DODONGO_CHU) && IsAdult && CanUse(RG_BOMBCHU_5)));
         case RE_BARINADE:
-            return HasBossSoul(RG_BARINADE_SOUL) && CanUse(RG_BOOMERANG) &&
+            return HasItem(RG_BARINADE_SOUL) && CanUse(RG_BOOMERANG) &&
                    (CanJumpslashExceptHammer() ||
                     (ctx->GetTrickOption(RT_JABU_BARINADE_POTS) && HasItem(RG_POWER_BRACELET)));
         case RE_PHANTOM_GANON:
-            return HasBossSoul(RG_PHANTOM_GANON_SOUL) && CanUseSword() &&
+            return HasItem(RG_PHANTOM_GANON_SOUL) && CanUseSword() &&
                    (CanUse(RG_HOOKSHOT) || CanUse(RG_FAIRY_BOW) || CanUse(RG_FAIRY_SLINGSHOT));
         case RE_VOLVAGIA:
-            return HasBossSoul(RG_VOLVAGIA_SOUL) && CanUse(RG_MEGATON_HAMMER);
+            return HasItem(RG_VOLVAGIA_SOUL) && CanUse(RG_MEGATON_HAMMER);
         case RE_MORPHA:
-            return HasBossSoul(RG_MORPHA_SOUL) &&
+            return HasItem(RG_MORPHA_SOUL) &&
                    (CanUse(RG_HOOKSHOT) ||
                     (ctx->GetTrickOption(RT_WATER_MORPHA_WITHOUT_HOOKSHOT) && HasItem(RG_BRONZE_SCALE))) &&
                    (CanUseSword() || CanUse(RG_MEGATON_HAMMER));
         case RE_BONGO_BONGO:
-            return HasBossSoul(RG_BONGO_BONGO_SOUL) &&
-                   (CanUse(RG_LENS_OF_TRUTH) || ctx->GetTrickOption(RT_LENS_BONGO)) && CanUseSword() &&
+            return HasItem(RG_BONGO_BONGO_SOUL) && (CanUse(RG_LENS_OF_TRUTH) || ctx->GetTrickOption(RT_LENS_BONGO)) &&
+                   CanUseSword() &&
                    (CanUse(RG_HOOKSHOT) || CanUse(RG_FAIRY_BOW) || CanUse(RG_FAIRY_SLINGSHOT) ||
                     ctx->GetTrickOption(RT_SHADOW_BONGO));
         case RE_TWINROVA:
-            return HasBossSoul(RG_TWINROVA_SOUL) && CanUse(RG_MIRROR_SHIELD) &&
+            return HasItem(RG_TWINROVA_SOUL) && CanUse(RG_MIRROR_SHIELD) &&
                    (CanUseSword() || CanUse(RG_MEGATON_HAMMER));
         case RE_GANONDORF:
             // RANDOTODO: Trick to use hammer (no jumpslash) or stick (only jumpslash) instead of a sword to reflect the
@@ -1036,9 +988,9 @@ bool Logic::CanKillEnemy(RandomizerEnemy enemy, EnemyDistance distance, bool wal
             // for killing ganondorf and all of those can reflect the energy ball
             // This will not be the case once ammo logic in taken into account as
             // sticks are limited and using a bottle might become a requirement in that case
-            return HasBossSoul(RG_GANON_SOUL) && CanUse(RG_LIGHT_ARROWS) && CanUseSword();
+            return HasItem(RG_GANON_SOUL) && CanUse(RG_LIGHT_ARROWS) && CanUseSword();
         case RE_GANON:
-            return HasBossSoul(RG_GANON_SOUL) && CanUse(RG_MASTER_SWORD);
+            return HasItem(RG_GANON_SOUL) && CanUse(RG_MASTER_SWORD);
         case RE_DARK_LINK:
             // RANDOTODO make a function to track our ammo vs his HP when ammo capacity is taken into account in logic
             //  all swords can at least trade blows with dark link, and even with 1 damage a slash it works out
