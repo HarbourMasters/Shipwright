@@ -44,6 +44,13 @@ typedef struct ShopItemIdentity {
     int32_t itemPrice;
 } ShopItemIdentity;
 
+struct SongData {
+    RandomizerGet realSong;
+    RandomizerGet part;
+    RandomizerInf randInf;
+    QuestItem quest;
+};
+
 #define ENTRANCE_GROTTO_LOAD_START 0x0700
 #define ENTRANCE_GROTTO_EXIT_START 0x0800
 

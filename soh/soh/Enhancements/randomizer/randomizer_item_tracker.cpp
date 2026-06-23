@@ -14,7 +14,7 @@
 #include "randomizerTypes.h"
 #include "logic.h"
 #include "SeedContext.h"
-#include "split_songs.h"
+#include "static_data.h"
 #include "static_data.h"
 #include "soh/SohGui/ImGuiUtils.h"
 #include "soh/cvar_prefixes.h"
@@ -464,40 +464,6 @@ static bool ItemTrackerSplitSongsActive() {
         return OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SPLIT_OCARINA_SONGS) != 0;
     }
     return CVarGetInteger(CVAR_RANDOMIZER_SETTING("SplitOcarinaSongs"), 0) != 0;
-}
-
-static const Rando::SplitSongDef* SplitSongDefForQuestBit(uint32_t questBit) {
-    for (int i = 0; i < static_cast<int>(Rando::SplitSongId::SPLIT_SONG_MAX); i++) {
-        const Rando::SplitSongDef* def = Rando::SplitSongs::GetSongDef(static_cast<Rando::SplitSongId>(i));
-        if (def == nullptr) {
-            continue;
-        }
-        const auto qiIt = Rando::Logic::RandoGetToQuestItem.find(static_cast<uint32_t>(def->fullSong));
-        if (qiIt != Rando::Logic::RandoGetToQuestItem.end() && static_cast<uint32_t>(qiIt->second) == questBit) {
-            return def;
-        }
-    }
-    return nullptr;
-}
-
-static int SplitSongPartsCollected(uint32_t questBit) {
-    if (CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0) != 0) {
-        return -1;
-    }
-    if (!ItemTrackerSplitSongsActive()) {
-        return -1;
-    }
-    const Rando::SplitSongDef* def = SplitSongDefForQuestBit(questBit);
-    if (def == nullptr) {
-        return -1;
-    }
-    if (Rando::SplitSongs::HasFullSong(def->id)) {
-        return 2;
-    }
-    if (Rando::SplitSongs::HasSplitPart(def->id)) {
-        return 1;
-    }
-    return 0;
 }
 
 struct ItemTrackerNumbers {
@@ -1416,21 +1382,25 @@ void DrawDungeonItem(ItemTrackerItem item) {
 }
 
 void DrawSong(ItemTrackerItem item) {
-    const int partsCollected = SplitSongPartsCollected(item.id);
-    const bool hasSong = HasSong(item) || partsCollected == 2;
-    const bool hasProgress = partsCollected == 1;
-    const bool showBright = hasSong || hasProgress;
+    const SongData* song =
+        &Rando::StaticData::songData[Rando::StaticData::songQuestToProg.at(static_cast<QuestItem>(item.id))];
+    const bool hasSong = HasSong(item);
 
     float iconSize = static_cast<float>(CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36));
     ImGui::BeginGroup();
     ImVec2 p = ImGui::GetCursorScreenPos();
     ImGui::SetCursorScreenPos(ImVec2(p.x + 6, p.y));
     ImGui::Image(std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                     ->GetTextureByName(showBright && IsValidSaveFile() ? item.name : item.nameFaded),
+                     ->GetTextureByName(hasSong && IsValidSaveFile() ? item.name : item.nameFaded),
                  ImVec2(iconSize / 1.5f, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
-    if (hasProgress) {
-        const char* progressLabel = "1/2";
+    if (ItemTrackerSplitSongsActive()) {
+        const char* progressLabel = "0/2";
+        if (hasSong) {
+            progressLabel = "2/2";
+        } else if (Flags_GetRandomizerInf(song->randInf)) {
+            progressLabel = "1/2";
+        }
         const ImVec2 iconMin = ImGui::GetItemRectMin();
         const ImVec2 iconMax = ImGui::GetItemRectMax();
         const ImVec2 textSize = ImGui::CalcTextSize(progressLabel);

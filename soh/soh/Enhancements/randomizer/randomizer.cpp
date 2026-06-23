@@ -21,7 +21,6 @@
 #include "soh/OTRGlobals.h"
 #include <ship/window/FileDropMgr.h>
 #include "static_data.h"
-#include "split_songs.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "trial.h"
 #include "settings.h"
@@ -158,6 +157,18 @@ std::unordered_map<RandomizerGet, RandomizerInf> randomizerGetToRandInf = {
     { RG_BONGO_BONGO_SOUL, RAND_INF_BONGO_BONGO_SOUL },
     { RG_TWINROVA_SOUL, RAND_INF_TWINROVA_SOUL },
     { RG_GANON_SOUL, RAND_INF_GANON_SOUL },
+    { RG_PART_OF_ZELDAS_LULLABY, RAND_INF_SPLIT_ZL_PART },
+    { RG_PART_OF_EPONAS_SONG, RAND_INF_SPLIT_EPONA_PART },
+    { RG_PART_OF_SARIAS_SONG, RAND_INF_SPLIT_SARIA_PART },
+    { RG_PART_OF_SUNS_SONG, RAND_INF_SPLIT_SUN_PART },
+    { RG_PART_OF_SONG_OF_TIME, RAND_INF_SPLIT_TIME_PART },
+    { RG_PART_OF_SONG_OF_STORMS, RAND_INF_SPLIT_STORMS_PART },
+    { RG_PART_OF_MINUET_OF_FOREST, RAND_INF_SPLIT_MINUET_PART },
+    { RG_PART_OF_BOLERO_OF_FIRE, RAND_INF_SPLIT_BOLERO_PART },
+    { RG_PART_OF_SERENADE_OF_WATER, RAND_INF_SPLIT_SERENADE_PART },
+    { RG_PART_OF_REQUIEM_OF_SPIRIT, RAND_INF_SPLIT_REQUIEM_PART },
+    { RG_PART_OF_NOCTURNE_OF_SHADOW, RAND_INF_SPLIT_NOCTURNE_PART },
+    { RG_PART_OF_PRELUDE_OF_LIGHT, RAND_INF_SPLIT_PRELUDE_PART },
 };
 
 #ifdef _MSC_VER
@@ -297,9 +308,6 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerCheck(Randomizer
 }
 
 ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGet randoGet) {
-    if (Rando::SplitSongs::IsProgressiveSong(randoGet)) {
-        return Rando::SplitSongs::GetProgressiveSongObtainability(randoGet);
-    }
     if (randomizerGetToRandInf.find(randoGet) != randomizerGetToRandInf.end()) {
         return Flags_GetRandomizerInf(randomizerGetToRandInf.find(randoGet)->second) ? CANT_OBTAIN_ALREADY_HAVE
                                                                                      : CAN_OBTAIN;
@@ -566,28 +574,40 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
             return !Flags_GetRandomizerInf(RAND_INF_FISHING_POLE_FOUND) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
 
         // Songs
+        case RG_PROGRESSIVE_ZELDAS_LULLABY:
         case RG_ZELDAS_LULLABY:
             return !CHECK_QUEST_ITEM(QUEST_SONG_LULLABY) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_PROGRESSIVE_EPONAS_SONG:
         case RG_EPONAS_SONG:
             return !CHECK_QUEST_ITEM(QUEST_SONG_EPONA) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_PROGRESSIVE_SARIAS_SONG:
         case RG_SARIAS_SONG:
             return !CHECK_QUEST_ITEM(QUEST_SONG_SARIA) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_PROGRESSIVE_SUNS_SONG:
         case RG_SUNS_SONG:
             return !CHECK_QUEST_ITEM(QUEST_SONG_SUN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_PROGRESSIVE_SONG_OF_TIME:
         case RG_SONG_OF_TIME:
             return !CHECK_QUEST_ITEM(QUEST_SONG_TIME) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_PROGRESSIVE_SONG_OF_STORMS:
         case RG_SONG_OF_STORMS:
             return !CHECK_QUEST_ITEM(QUEST_SONG_STORMS) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_PROGRESSIVE_MINUET_OF_FOREST:
         case RG_MINUET_OF_FOREST:
             return !CHECK_QUEST_ITEM(QUEST_SONG_MINUET) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_PROGRESSIVE_BOLERO_OF_FIRE:
         case RG_BOLERO_OF_FIRE:
             return !CHECK_QUEST_ITEM(QUEST_SONG_BOLERO) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_PROGRESSIVE_SERENADE_OF_WATER:
         case RG_SERENADE_OF_WATER:
             return !CHECK_QUEST_ITEM(QUEST_SONG_SERENADE) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_PROGRESSIVE_REQUIEM_OF_SPIRIT:
         case RG_REQUIEM_OF_SPIRIT:
             return !CHECK_QUEST_ITEM(QUEST_SONG_REQUIEM) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_PROGRESSIVE_NOCTURNE_OF_SHADOW:
         case RG_NOCTURNE_OF_SHADOW:
             return !CHECK_QUEST_ITEM(QUEST_SONG_NOCTURNE) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+        case RG_PROGRESSIVE_PRELUDE_OF_LIGHT:
         case RG_PRELUDE_OF_LIGHT:
             return !CHECK_QUEST_ITEM(QUEST_SONG_PRELUDE) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
 
@@ -1114,15 +1134,6 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
 
     // Gameplay stats: Update the time the item was obtained
     Randomizer_GameplayStats_SetTimestamp(item);
-
-    if (Rando::SplitSongs::IsProgressiveSong(item)) {
-        const RandomizerGet resolved = Rando::SplitSongs::ResolveProgressiveSongStage(item);
-        if (resolved != item && resolved != RG_NONE) {
-            return Randomizer_Item_Give(play, Rando::StaticData::RetrieveItem(resolved).GetGIEntry_Copy());
-        }
-        Rando::SplitSongs::OnProgressiveSongReceived(item);
-        return Return_Item_Entry(giEntry, RG_NONE);
-    }
 
     // if it's an item that just sets a randomizerInf, set it
     if (randomizerGetToRandInf.find(item) != randomizerGetToRandInf.end()) {
