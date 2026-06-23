@@ -87,7 +87,7 @@ bool Logic::HasItem(RandomizerGet itemName) {
             return CurrentUpgrade(UPG_BOMB_BAG);
         case RG_MAGIC_SINGLE:
             return GetSaveContext()->magicLevel >= 1 || GetSaveContext()->isMagicAcquired;
-        // Songs
+            // Songs
         case RG_ZELDAS_LULLABY:
         case RG_EPONAS_SONG:
         case RG_SARIAS_SONG:
@@ -100,7 +100,7 @@ bool Logic::HasItem(RandomizerGet itemName) {
         case RG_REQUIEM_OF_SPIRIT:
         case RG_NOCTURNE_OF_SHADOW:
         case RG_PRELUDE_OF_LIGHT:
-        // Dungeon Rewards
+            // Dungeon Rewards
         case RG_KOKIRI_EMERALD:
         case RG_GORON_RUBY:
         case RG_ZORA_SAPPHIRE:
@@ -2369,6 +2369,7 @@ void Logic::ApplyItemEffect(Item& item, bool state) {
         case ITEMTYPE_DUNGEONREWARD:
         case ITEMTYPE_SONG:
             SetQuestItem(RandoGetToQuestItem.find(item.GetRandomizerGet())->second, state);
+            break;
         case ITEMTYPE_MAP:
             SetDungeonItem(DUNGEON_MAP, RandoGetToDungeonScene.find(item.GetRandomizerGet())->second, state);
             break;

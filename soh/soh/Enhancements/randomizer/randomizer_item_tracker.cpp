@@ -9,11 +9,8 @@
 #include <libultraship/controller/controldeck/ControlDeck.h>
 
 #include "randomizer_check_tracker.h"
-#include "randomizer_check_objects.h"
 #include "randomizer_item_tracker.h"
 #include "randomizerTypes.h"
-#include "logic.h"
-#include "SeedContext.h"
 #include "static_data.h"
 #include "soh/SohGui/ImGuiUtils.h"
 #include "soh/cvar_prefixes.h"
