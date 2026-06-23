@@ -13396,7 +13396,7 @@ static AnimSfxEntry sDownDismountLadderAnimSfx[] = {
 
 /**
  * Dismounting ladders, both upwards and downwards.
- * `actionVar2` (dismountDown) true if dismounting down
+ * `actionVar2` true if dismounting down
  */
 void Player_Action_DismountLadder(Player* this, PlayState* play) {
     s32 interruptResult;
@@ -13411,7 +13411,8 @@ void Player_Action_DismountLadder(Player* this, PlayState* play) {
 
     // SoH: Check for `this->unk_6AD` >= 3 to fix ladder dismount softlock with cutscenes and restricted items.
     // See `RegisterFixLadderCutsceneSoftlock()`
-    if (interruptResult == PLAYER_INTERRUPT_NEW_ACTION && GameInteractor_Should(VB_LADDER_CUTSCENE_FLAG, true, &this->unk_6AD)) {
+    if (interruptResult == PLAYER_INTERRUPT_NEW_ACTION &&
+        GameInteractor_Should(VB_LADDER_CUTSCENE_FLAG, true, &this->unk_6AD)) {
         this->stateFlags1 &= ~PLAYER_STATE1_CLIMBING_LADDER;
         return;
     }
@@ -13424,7 +13425,7 @@ void Player_Action_DismountLadder(Player* this, PlayState* play) {
 
     frame = sUpDismountLadderFrames;
 
-    if (this->av2.dismountDown != false) {
+    if (this->av2.actionVar2 != false) {
         Player_ProcessAnimSfxList(this, sDownDismountLadderAnimSfx);
         frame = sDownDismountLadderFrames;
     }

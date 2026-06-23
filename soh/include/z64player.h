@@ -885,7 +885,6 @@ typedef struct Player {
         s16 bonked; // Player_Action_Roll: set to true after bonking into a wall or an actor
         s16 startedTextbox; // Player_Action_SwingBottle: set to true when the textbox is started
         s16 inWater; // Player_Action_SwingBottle: true if a bottle is swung in water. Used to determine which bottle swing animation to use.
-        s16 dismountDown; // Player_Action_DismountLadder: True if player is dismounting the ladder downwards
     } av2; // "Action Variable 2": context dependent variable that has different meanings depending on what action is currently running
 
     /* 0x0854 */ f32 unk_854;
