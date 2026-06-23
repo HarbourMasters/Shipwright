@@ -15,4 +15,27 @@ void RegisterFixOutsideTotCrash() {
     });
 }
 
-static RegisterShipInitFunc initFunc(RegisterFixOutsideTotCrash, { "" });
+// Vanilla bug: If Hookshot doesn't spawn, player is softlocked. (eg. use as child, no memory left)
+// Fix: Change item to none if no spawn. (Ranged weapon state is removed by `Player_InitItemAction`)
+void RegisterPreventHookshotNoSpawnSoftlock() {
+    COND_VB_SHOULD(VB_PREVENT_HOOKSHOT_NOSPAWN_SOFTLOCK, true, {
+            *should = true;
+    });
+}
+
+// Vanilla bug: When pulling out Hookshot, if `this->actor.parent` is set but not Hookshot, player
+// is locked into repeated fly-land-fly. Possible with enemies that grab player and set themselves
+// as parent (such as Moblin in water, eaten by Like like that despawns falling through En_Holl).
+// Fix: Ensure that parent actor has Hookshot actor ID before starting flying.
+void RegisterPreventHookshotParentSoftlock() {
+    COND_VB_SHOULD(VB_PREVENT_HOOKSHOT_PARENT_SOFTLOCK, true, {
+            s16* parentId = va_arg(args, s16*);
+            if (*parentId != ACTOR_ARMS_HOOK) {
+                *should = false;
+            }
+    });
+}
+
+static RegisterShipInitFunc initFuncFixOutsideTotCrash(RegisterFixOutsideTotCrash, { "" });
+static RegisterShipInitFunc initFuncHookshotNospawnSoftlock(RegisterPreventHookshotNoSpawnSoftlock, { "" });
+static RegisterShipInitFunc initFuncHookshotParentSoftlock(RegisterPreventHookshotParentSoftlock, { "" });

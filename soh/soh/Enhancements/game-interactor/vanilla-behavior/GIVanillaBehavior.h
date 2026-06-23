@@ -3056,6 +3056,22 @@ typedef enum {
     // - `*EnItem00`
     VB_ITEM00_KILL,
 
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
+    VB_PREVENT_HOOKSHOT_NOSPAWN_SOFTLOCK,
+
+    // #### `result`
+    // ```c
+    // true if player->actor.parent->id == ARMS_HOOK_ACTOR
+    // ```
+    // #### `args`
+    // - `s16* (&this->actor.parent->id)`
+    VB_PREVENT_HOOKSHOT_PARENT_SOFTLOCK,
+
     // true
     // ```
     // #### `args`

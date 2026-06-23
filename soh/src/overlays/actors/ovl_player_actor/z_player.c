@@ -2300,6 +2300,13 @@ void Player_InitHookshotIA(PlayState* play, Player* this) {
     this->heldActor =
         Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_ARMS_HOOK, this->actor.world.pos.x,
                            this->actor.world.pos.y, this->actor.world.pos.z, 0, this->actor.shape.rot.y, 0, 0);
+
+    // SoH: Prevent softlock if Hookshot actor fails to spawn (child, out of memory, etc).
+    if (GameInteractor_Should(VB_PREVENT_HOOKSHOT_NOSPAWN_SOFTLOCK, true)) {
+        if (this->heldActor == NULL) {
+            Player_UseItem(play, this, ITEM_NONE);
+        }
+    }
 }
 
 void Player_InitBoomerangIA(PlayState* play, Player* this) {
@@ -3572,7 +3579,9 @@ int Player_CanUpdateItems(Player* this) {
  * depending on some conditions. See details below.
  */
 s32 Player_UpdateUpperBody(Player* this, PlayState* play) {
-    if (!(this->stateFlags1 & PLAYER_STATE1_ON_HORSE) && (this->actor.parent != NULL) && Player_HoldsHookshot(this)) {
+    // SoH: Prevent player from softlocking on Hookshot use if parent is set but is not Hookshot
+    if (!(this->stateFlags1 & PLAYER_STATE1_ON_HORSE) && (this->actor.parent != NULL) && Player_HoldsHookshot(this) &&
+            GameInteractor_Should(VB_PREVENT_HOOKSHOT_PARENT_SOFTLOCK, true, &this->actor.parent->id)) {
         Player_SetupAction(play, this, Player_Action_80850AEC, 1);
         this->stateFlags3 |= PLAYER_STATE3_FLYING_WITH_HOOKSHOT;
         Player_AnimPlayOnce(play, this, &gPlayerAnim_link_hook_fly_start);
