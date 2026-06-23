@@ -10,6 +10,13 @@ extern std::shared_ptr<AnchorRoomWindow> mAnchorRoomWindow;
 } // namespace SohGui
 
 static const char* pvpModes[3] = { "Off", "On", "On + Friendly Fire" };
+static const char* pvpDamageMults[5] = {
+    "1x: Kokiri sword slash damages quarter heart.",
+    "2x: Kokiri sword slash damages half heart.",
+    "4x: Kokiri sword slash damages one heart.",
+    "8x: Kokiri sword slash damages two hearts.",
+    "One Hit KO",
+};
 static std::vector<const char*> teleportModes = { "None", "Team Only", "All" };
 static std::vector<const char*> showLocationsModes = { "None", "Team Only", "All" };
 
@@ -186,6 +193,14 @@ void AnchorAdminMenu(WidgetInfo& info) {
     UIWidgets::PopStyleButton();
 
     if (UIWidgets::CVarCombobox("PvP Mode:", CVAR_REMOTE_ANCHOR("RoomSettings.PvpMode"), pvpModes,
+                                UIWidgets::ComboboxOptions()
+                                    .DefaultIndex(1)
+                                    .LabelPosition(UIWidgets::LabelPositions::Above)
+                                    .Color(THEME_COLOR))) {
+        anchor->SendPacket_UpdateRoomState();
+    }
+    if (UIWidgets::CVarCombobox("PvP Damage Multiplier:", CVAR_REMOTE_ANCHOR("RoomSettings.PvpDamageMult"),
+                                pvpDamageMults,
                                 UIWidgets::ComboboxOptions()
                                     .DefaultIndex(1)
                                     .LabelPosition(UIWidgets::LabelPositions::Above)
