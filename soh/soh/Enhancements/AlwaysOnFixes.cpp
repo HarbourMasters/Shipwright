@@ -15,4 +15,19 @@ void RegisterFixOutsideTotCrash() {
     });
 }
 
-static RegisterShipInitFunc initFunc(RegisterFixOutsideTotCrash, { "" });
+// `Player_Action_DismountLadder`: Dismounting a ladder in a cutscene or when using
+// a cutscene item (possible using restricted items glitch), i.e. `player->unk_6AD` is 3 or 4,
+// causes the animation in `Player_Action_DismountLadder` to never finish because
+// `Player_TryActionInterrupt` always returns true and player cannot exit the action.
+// Fix: Disregard result of `Player_TryActionInterrupt` if `unk_6AD` >= 3.
+void RegisterFixLadderCutsceneSoftlock() {
+    COND_VB_SHOULD(VB_LADDER_CUTSCENE_FLAG, true, {
+        u8* unk_6AD = va_arg(args, u8*);
+        if (*unk_6AD >= 3) {
+            *should = false;
+        }
+    });
+}
+
+static RegisterShipInitFunc initFuncFixOutsideTotCrash(RegisterFixOutsideTotCrash, { "" });
+static RegisterShipInitFunc initFuncFixLadderCutsceneSoftlock(RegisterFixLadderCutsceneSoftlock, { "" });

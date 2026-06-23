@@ -3056,6 +3056,14 @@ typedef enum {
     // - `*EnItem00`
     VB_ITEM00_KILL,
 
+    // #### `result`
+    // ```c
+    // false if `player->unk_6AD` >= 3
+    // ```
+    // #### `args`
+    // - `*u8 (&player->unk_6AD)`
+    VB_LADDER_CUTSCENE_FLAG,
+
     // true
     // ```
     // #### `args`

@@ -845,7 +845,7 @@ typedef struct Player {
     /* 0x06A4 */ f32 closestSecretDistSq;
     /* 0x06A8 */ Actor* unk_6A8;
     /* 0x06AC */ s8 idleType;
-    /* 0x06AD */ u8 unk_6AD;
+    /* 0x06AD */ u8 unk_6AD; // Camera related. 0 = normal, 1 = first person without weapon, 2 = first person with weapon, 3 = cutscene action, 4 = cutscene items
     /* 0x06AE */ u16 unk_6AE_rotFlags; // See `UNK6AE_ROT_` macros. If its flag isn't set, a rot steps to 0.
     /* 0x06B0 */ s16 upperLimbYawSecondary;
     /* 0x06B2 */ char unk_6B4[0x004];
@@ -885,6 +885,7 @@ typedef struct Player {
         s16 bonked; // Player_Action_Roll: set to true after bonking into a wall or an actor
         s16 startedTextbox; // Player_Action_SwingBottle: set to true when the textbox is started
         s16 inWater; // Player_Action_SwingBottle: true if a bottle is swung in water. Used to determine which bottle swing animation to use.
+        s16 dismountDown; // Player_Action_DismountLadder: True if player is dismounting the ladder downwards
     } av2; // "Action Variable 2": context dependent variable that has different meanings depending on what action is currently running
 
     /* 0x0854 */ f32 unk_854;
