@@ -168,6 +168,7 @@ git submodule update --init
 # Add `-DCMAKE_BUILD_TYPE:STRING=Release` if you're packaging
 # Add `-DSUPPRESS_WARNINGS=0` to prevent suppression of warnings from LUS and decomp (src) files. set to 1 to re-enable suppression
 # Add `-DPython3_EXECUTABLE=$(which python3)` if you are using non-standard Python installations such as PyEnv
+# Add `-DENABLE_FLUIDSYNTH=OFF` to build without the FluidSynth synth backend (on by default; drops the fluidsynth dependency)
 cmake -H. -Bbuild-cmake -GNinja
 
 # Generate soh.o2r
@@ -250,11 +251,12 @@ cd ShipWright
 git submodule update --init
 
 # Install development dependencies (assuming homebrew)
-brew install sdl2 sdl2_net libpng glew ninja cmake tinyxml2 nlohmann-json libzip opusfile libvorbis
+brew install sdl2 sdl2_net libpng glew ninja cmake tinyxml2 nlohmann-json libzip opusfile libvorbis fluid-synth
 
 # Generate Ninja project
 # Add `-DCMAKE_BUILD_TYPE:STRING=Release` if you're packaging
 # Add `-DSUPPRESS_WARNINGS=0` to prevent suppression of warnings from LUS and decomp (src) files. set to 1 to re-enable suppression
+# Add `-DENABLE_FLUIDSYNTH=OFF` to build without the FluidSynth synth backend (on by default; drops the fluidsynth dependency)
 cmake -H. -Bbuild-cmake -GNinja
 
 # Generate soh.o2r
@@ -308,13 +310,15 @@ cmake -H. -Bbuild-cmake -GNinja
 # Extract assets & generate OTR (run this anytime you need to regenerate OTR)
 cmake --build build-cmake --target ExtractAssets
 # Setup cmake project for building for Switch
-cmake -H. -Bbuild-switch -GNinja -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/Switch.cmake
+cmake -H. -Bbuild-switch -GNinja -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/Switch.cmake -DENABLE_FLUIDSYNTH=OFF
 # Build project and generate nro
 cmake --build build-switch --target soh_nro
 
 # Now you can run the executable in ./build-switch/soh/soh.nro
 # To develop the project open the repository in VSCode (or your preferred editor)
 ```
+
+_Note: FluidSynth is disabled above because devkitpro doesn't ship it. To use the synth backend, build a fluidsynth for the platform (e.g. [fluidsynth-lite](https://github.com/rsn8887/fluidsynth-lite)) and drop `-DENABLE_FLUIDSYNTH=OFF`._
 
 ## Wii U
 1. Requires that your build machine is setup with the tools necessary for your platform above
@@ -329,13 +333,15 @@ cmake -H. -Bbuild-cmake -GNinja
 # Extract assets & generate OTR (run this anytime you need to regenerate OTR)
 cmake --build build-cmake --target ExtractAssets
 # Setup cmake project for building for Wii U
-cmake -H. -Bbuild-wiiu -GNinja -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/WiiU.cmake # -DCMAKE_BUILD_TYPE:STRING=Release (if you're packaging)
+cmake -H. -Bbuild-wiiu -GNinja -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/WiiU.cmake -DENABLE_FLUIDSYNTH=OFF # -DCMAKE_BUILD_TYPE:STRING=Release (if you're packaging)
 # Build project and generate rpx
 cmake --build build-wiiu --target soh # --target soh_wuhb (for building .wuhb)
 
 # Now you can run the executable in ./build-wiiu/soh/soh.rpx or the Wii U Homebrew Bundle in ./build-wiiu/soh/soh.wuhb
 # To develop the project open the repository in VSCode (or your preferred editor)
 ```
+
+_Note: As with Switch, FluidSynth is disabled above (not shipped by devkitpro); drop `-DENABLE_FLUIDSYNTH=OFF` once you've built a fluidsynth for the platform._
 
 # Compatible Roms
 See [`supportedHashes.json`](supportedHashes.json)
