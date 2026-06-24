@@ -3056,6 +3056,14 @@ typedef enum {
     // - `*EnItem00`
     VB_ITEM00_KILL,
 
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - none
+    VB_ITEMSHIELD_DRAW,
+
     // true
     // ```
     // #### `args`
