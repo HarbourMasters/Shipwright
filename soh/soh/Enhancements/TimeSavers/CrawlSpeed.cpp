@@ -41,7 +41,7 @@ extern "C" void ExitCrawlspace(Player* player, PlayState* play) {
 
 extern "C" void ExitCrawlspaceCS(PlayState* play, Camera* csCam, int16_t actionParameters, int16_t initTimer,
                                  CutsceneCameraPoint* atPoints, CutsceneCameraPoint* eyePoints) {
-    s16 camCrawlTemp = CVAR_CRAWL_SPEED_VALUE;
+    s16 camCrawlTemp = (s16)std::round(CVAR_CRAWL_SPEED_VALUE);
     s16 camCrawlTimer = initTimer / camCrawlTemp;
 
     OnePointCutscene_SetCsCamPoints(csCam, actionParameters | 0x1000, camCrawlTimer, atPoints, eyePoints);
