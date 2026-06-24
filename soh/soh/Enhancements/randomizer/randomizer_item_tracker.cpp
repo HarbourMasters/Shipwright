@@ -1,6 +1,8 @@
 #include <algorithm>
+#include <cstdio>
 #include <map>
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 #include <libultraship/controller/controldeck/ControlDeck.h>
@@ -8,6 +10,8 @@
 #include "randomizer_check_tracker.h"
 #include "randomizer_item_tracker.h"
 #include "randomizerTypes.h"
+#include "static_data.h"
+#include "soh/SohGui/ImGuiUtils.h"
 #include "soh/cvar_prefixes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/OTRGlobals.h"
@@ -477,8 +481,8 @@ bool IsValidSaveFile() {
     return validSave;
 }
 
-bool HasSong(ItemTrackerItem item) {
-    return GameInteractor::IsSaveLoaded() ? ((1 << item.id) & gSaveContext.inventory.questItems) : false;
+bool HasSong(QuestItem item) {
+    return GameInteractor::IsSaveLoaded() ? ((1 << item) & gSaveContext.inventory.questItems) : false;
 }
 
 bool HasQuestItem(ItemTrackerItem item) {
@@ -1361,13 +1365,35 @@ void DrawDungeonItem(ItemTrackerItem item) {
 }
 
 void DrawSong(ItemTrackerItem item) {
+    const SongData* song = &Rando::StaticData::songData[Rando::StaticData::songQuestToProg[(QuestItem)item.id]];
+    const bool hasSong = HasSong((QuestItem)item.id);
+
     float iconSize = static_cast<float>(CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36));
+    ImGui::BeginGroup();
     ImVec2 p = ImGui::GetCursorScreenPos();
-    bool hasSong = HasSong(item);
     ImGui::SetCursorScreenPos(ImVec2(p.x + 6, p.y));
     ImGui::Image(std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
                      ->GetTextureByName(hasSong && IsValidSaveFile() ? item.name : item.nameFaded),
                  ImVec2(iconSize / 1.5f, iconSize), ImVec2(0, 0), ImVec2(1, 1));
+
+    // RANDOTODO merge the ammo printing pipelines
+    if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SPLIT_OCARINA_SONGS) != 0) {
+        const char* progressLabel = "0/2";
+        if (hasSong) {
+            progressLabel = "2/2";
+        } else if (Flags_GetRandomizerInf(song->randInf)) {
+            progressLabel = "1/2";
+        }
+        const ImVec2 iconMin = ImGui::GetItemRectMin();
+        const ImVec2 iconMax = ImGui::GetItemRectMax();
+        const ImVec2 textSize = ImGui::CalcTextSize(progressLabel);
+        const ImVec2 textPos(iconMin.x + ((iconMax.x - iconMin.x) - textSize.x) * 0.5f, iconMax.y - textSize.y - 2.0f);
+        ImDrawList* dl = ImGui::GetWindowDrawList();
+        dl->AddText(ImVec2(textPos.x + 1.0f, textPos.y + 1.0f), IM_COL32(0, 0, 0, 220), progressLabel);
+        dl->AddText(textPos, IM_COL32(255, 255, 255, 255), progressLabel);
+    }
+
+    ImGui::EndGroup();
     Tooltip(SohUtils::GetQuestItemName(item.id).c_str());
 }
 

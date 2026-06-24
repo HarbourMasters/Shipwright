@@ -9,6 +9,7 @@
 #include "spoiler_log.hpp"
 #include "soh/Enhancements/randomizer/Traps.h"
 #include "z64item.h"
+#include "../static_data.h"
 #include <algorithm>
 #include <spdlog/spdlog.h>
 
@@ -267,42 +268,29 @@ void GenerateItemPool() {
     // add extra songs only if song shuffle is anywhere
     if (ctx->GetOption(RSK_SHUFFLE_SONGS).IsNot(RO_SONG_SHUFFLE_OFF)) {
         bool songAnywhere = ctx->GetOption(RSK_SHUFFLE_SONGS).Is(RO_SONG_SHUFFLE_ANYWHERE);
-        if (!ctx->GetOption(RSK_STARTING_ZELDAS_LULLABY).Get()) {
-            AddItemToPool(RG_ZELDAS_LULLABY, songAnywhere ? 2 : 1, 1, 1, 1, songAnywhere);
-        }
-        if (!ctx->GetOption(RSK_STARTING_EPONAS_SONG).Get()) {
-            AddItemToPool(RG_EPONAS_SONG, songAnywhere ? 2 : 1, 1, 1, 1, songAnywhere);
-        }
-        if (!ctx->GetOption(RSK_STARTING_SARIAS_SONG).Get()) {
-            AddItemToPool(RG_SARIAS_SONG, songAnywhere ? 2 : 1, 1, 1, 1, songAnywhere);
-        }
-        if (!ctx->GetOption(RSK_STARTING_SUNS_SONG).Get()) {
-            AddItemToPool(RG_SUNS_SONG, songAnywhere ? 2 : 1, 1, 1, 1, songAnywhere);
-        }
-        if (!ctx->GetOption(RSK_STARTING_SONG_OF_TIME).Get()) {
-            AddItemToPool(RG_SONG_OF_TIME, songAnywhere ? 2 : 1, 1, 1, 1, songAnywhere);
-        }
-        if (!ctx->GetOption(RSK_STARTING_SONG_OF_STORMS).Get()) {
-            AddItemToPool(RG_SONG_OF_STORMS, songAnywhere ? 2 : 1, 1, 1, 1, songAnywhere);
-        }
-        if (!ctx->GetOption(RSK_STARTING_MINUET_OF_FOREST).Get()) {
-            AddItemToPool(RG_MINUET_OF_FOREST, songAnywhere ? 2 : 1, 1, 1, 1, songAnywhere);
-        }
-        if (!ctx->GetOption(RSK_STARTING_BOLERO_OF_FIRE).Get()) {
-            AddItemToPool(RG_BOLERO_OF_FIRE, songAnywhere ? 2 : 1, 1, 1, 1, songAnywhere);
-        }
-        if (!ctx->GetOption(RSK_STARTING_SERENADE_OF_WATER).Get()) {
-            AddItemToPool(RG_SERENADE_OF_WATER, songAnywhere ? 2 : 1, 1, 1, 1, songAnywhere);
-        }
-        if (!ctx->GetOption(RSK_STARTING_REQUIEM_OF_SPIRIT).Get()) {
-            AddItemToPool(RG_REQUIEM_OF_SPIRIT, songAnywhere ? 2 : 1, 1, 1, 1, songAnywhere);
-        }
-        if (!ctx->GetOption(RSK_STARTING_NOCTURNE_OF_SHADOW).Get()) {
-            AddItemToPool(RG_NOCTURNE_OF_SHADOW, songAnywhere ? 2 : 1, 1, 1, 1, songAnywhere);
-        }
-        if (!ctx->GetOption(RSK_STARTING_PRELUDE_OF_LIGHT).Get()) {
-            AddItemToPool(RG_PRELUDE_OF_LIGHT, songAnywhere ? 2 : 1, 1, 1, 1, songAnywhere);
-        }
+        auto addShuffledSong = [&](RandomizerGet progSong, bool hasStarting) {
+            SongData song = Rando::StaticData::songData[progSong];
+            if (hasStarting) {
+                return;
+            }
+            if (!ctx->GetOption(RSK_SPLIT_OCARINA_SONGS).Get()) {
+                AddItemToPool(song.realSong, songAnywhere ? 2 : 1, 1, 1, 1, songAnywhere);
+            } else {
+                AddItemToPool(progSong, 3, 2, 2, 2, songAnywhere);
+            }
+        };
+        addShuffledSong(RG_PROGRESSIVE_ZELDAS_LULLABY, ctx->GetOption(RSK_STARTING_ZELDAS_LULLABY).Get());
+        addShuffledSong(RG_PROGRESSIVE_EPONAS_SONG, ctx->GetOption(RSK_STARTING_EPONAS_SONG).Get());
+        addShuffledSong(RG_PROGRESSIVE_SARIAS_SONG, ctx->GetOption(RSK_STARTING_SARIAS_SONG).Get());
+        addShuffledSong(RG_PROGRESSIVE_SUNS_SONG, ctx->GetOption(RSK_STARTING_SUNS_SONG).Get());
+        addShuffledSong(RG_PROGRESSIVE_SONG_OF_TIME, ctx->GetOption(RSK_STARTING_SONG_OF_TIME).Get());
+        addShuffledSong(RG_PROGRESSIVE_SONG_OF_STORMS, ctx->GetOption(RSK_STARTING_SONG_OF_STORMS).Get());
+        addShuffledSong(RG_PROGRESSIVE_MINUET_OF_FOREST, ctx->GetOption(RSK_STARTING_MINUET_OF_FOREST).Get());
+        addShuffledSong(RG_PROGRESSIVE_BOLERO_OF_FIRE, ctx->GetOption(RSK_STARTING_BOLERO_OF_FIRE).Get());
+        addShuffledSong(RG_PROGRESSIVE_SERENADE_OF_WATER, ctx->GetOption(RSK_STARTING_SERENADE_OF_WATER).Get());
+        addShuffledSong(RG_PROGRESSIVE_REQUIEM_OF_SPIRIT, ctx->GetOption(RSK_STARTING_REQUIEM_OF_SPIRIT).Get());
+        addShuffledSong(RG_PROGRESSIVE_NOCTURNE_OF_SHADOW, ctx->GetOption(RSK_STARTING_NOCTURNE_OF_SHADOW).Get());
+        addShuffledSong(RG_PROGRESSIVE_PRELUDE_OF_LIGHT, ctx->GetOption(RSK_STARTING_PRELUDE_OF_LIGHT).Get());
     } else {
         ctx->PlaceItemInLocation(RC_SHEIK_IN_FOREST, RG_MINUET_OF_FOREST, false, true);
         ctx->PlaceItemInLocation(RC_SHEIK_IN_CRATER, RG_BOLERO_OF_FIRE, false, true);

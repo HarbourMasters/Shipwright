@@ -14,7 +14,7 @@ typedef struct ItemTrackerItem {
     void (*drawFunc)(ItemTrackerItem);
 } ItemTrackerItem;
 
-bool HasSong(ItemTrackerItem);
+bool HasSong(QuestItem);
 bool HasQuestItem(ItemTrackerItem);
 bool HasEquipment(ItemTrackerItem);
 

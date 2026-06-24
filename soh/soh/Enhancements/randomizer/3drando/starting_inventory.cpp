@@ -115,6 +115,20 @@ void GenerateStartingInventory() {
     if (ctx->GetOption(RSK_SHUFFLE_WEIRD_EGG)) {
         AddItemToInventory(RG_WEIRD_EGG, ctx->GetOption(RSK_STARTING_WEIRD_EGG) ? 1 : 0);
     }
+    if (!ctx->GetOption(RSK_SPLIT_OCARINA_SONGS)) {
+        AddItemToInventory(RG_PROGRESSIVE_ZELDAS_LULLABY, 1);
+        AddItemToInventory(RG_PROGRESSIVE_EPONAS_SONG, 1);
+        AddItemToInventory(RG_PROGRESSIVE_SARIAS_SONG, 1);
+        AddItemToInventory(RG_PROGRESSIVE_SUNS_SONG, 1);
+        AddItemToInventory(RG_PROGRESSIVE_SONG_OF_TIME, 1);
+        AddItemToInventory(RG_PROGRESSIVE_SONG_OF_STORMS, 1);
+        AddItemToInventory(RG_PROGRESSIVE_MINUET_OF_FOREST, 1);
+        AddItemToInventory(RG_PROGRESSIVE_BOLERO_OF_FIRE, 1);
+        AddItemToInventory(RG_PROGRESSIVE_SERENADE_OF_WATER, 1);
+        AddItemToInventory(RG_PROGRESSIVE_REQUIEM_OF_SPIRIT, 1);
+        AddItemToInventory(RG_PROGRESSIVE_NOCTURNE_OF_SHADOW, 1);
+        AddItemToInventory(RG_PROGRESSIVE_PRELUDE_OF_LIGHT, 1);
+    }
     AddItemToInventory(RG_BUNNY_HOOD, ctx->GetOption(RSK_STARTING_BUNNY_HOOD) ? 1 : 0);
     AddItemToInventory(RG_CLAIM_CHECK, ctx->GetOption(RSK_STARTING_CLAIM_CHECK) ? 1 : 0);
     AddItemToInventory(RG_PROGRESSIVE_OCARINA, ctx->GetOption(RSK_STARTING_OCARINA).Get());

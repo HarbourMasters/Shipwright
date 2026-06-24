@@ -1835,6 +1835,18 @@ std::map<RandomizerGet, uint32_t> StaticData::RandoGetToRandInf = {
     { RG_BACK_TOWER_KEY, RAND_INF_BACK_TOWER_KEY_OBTAINED },
     { RG_HYLIA_LAB_KEY, RAND_INF_HYLIA_LAB_KEY_OBTAINED },
     { RG_FISHING_HOLE_KEY, RAND_INF_FISHING_HOLE_KEY_OBTAINED },
+    { RG_PART_OF_ZELDAS_LULLABY, RAND_INF_SPLIT_ZL_PART },
+    { RG_PART_OF_EPONAS_SONG, RAND_INF_SPLIT_EPONA_PART },
+    { RG_PART_OF_SARIAS_SONG, RAND_INF_SPLIT_SARIA_PART },
+    { RG_PART_OF_SUNS_SONG, RAND_INF_SPLIT_SUN_PART },
+    { RG_PART_OF_SONG_OF_TIME, RAND_INF_SPLIT_TIME_PART },
+    { RG_PART_OF_SONG_OF_STORMS, RAND_INF_SPLIT_STORMS_PART },
+    { RG_PART_OF_MINUET_OF_FOREST, RAND_INF_SPLIT_MINUET_PART },
+    { RG_PART_OF_BOLERO_OF_FIRE, RAND_INF_SPLIT_BOLERO_PART },
+    { RG_PART_OF_SERENADE_OF_WATER, RAND_INF_SPLIT_SERENADE_PART },
+    { RG_PART_OF_REQUIEM_OF_SPIRIT, RAND_INF_SPLIT_REQUIEM_PART },
+    { RG_PART_OF_NOCTURNE_OF_SHADOW, RAND_INF_SPLIT_NOCTURNE_PART },
+    { RG_PART_OF_PRELUDE_OF_LIGHT, RAND_INF_SPLIT_PRELUDE_PART },
 };
 
 std::map<uint32_t, SceneID> Logic::RandoGetToDungeonScene = {
@@ -2169,6 +2181,25 @@ void Logic::ApplyItemEffect(Item& item, bool state) {
                     }
                     SetInventory(ITEM_OCARINA_FAIRY, OcarinaLookup[i]);
                 } break;
+                case RG_PROGRESSIVE_ZELDAS_LULLABY:
+                case RG_PROGRESSIVE_EPONAS_SONG:
+                case RG_PROGRESSIVE_SARIAS_SONG:
+                case RG_PROGRESSIVE_SONG_OF_TIME:
+                case RG_PROGRESSIVE_SUNS_SONG:
+                case RG_PROGRESSIVE_SONG_OF_STORMS:
+                case RG_PROGRESSIVE_MINUET_OF_FOREST:
+                case RG_PROGRESSIVE_BOLERO_OF_FIRE:
+                case RG_PROGRESSIVE_SERENADE_OF_WATER:
+                case RG_PROGRESSIVE_REQUIEM_OF_SPIRIT:
+                case RG_PROGRESSIVE_NOCTURNE_OF_SHADOW:
+                case RG_PROGRESSIVE_PRELUDE_OF_LIGHT: {
+                    const SongData* song = &StaticData::songData[randoGet];
+                    if (CheckRandoInf(song->randInf)) {
+                        SetQuestItem(song->quest, state);
+                    } else {
+                        SetRandoInf(song->randInf, state);
+                    }
+                }
                 case RG_HEART_CONTAINER:
                     mSaveContext->healthCapacity += (!state ? -16 : 16);
                     break;
