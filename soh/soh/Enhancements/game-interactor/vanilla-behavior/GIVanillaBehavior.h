@@ -3073,7 +3073,7 @@ typedef enum {
     // #### `args`
     // - none
     VB_ITEMSHIELD_DRAW,
-  
+
     // #### `result`
     // ```c
     // true
