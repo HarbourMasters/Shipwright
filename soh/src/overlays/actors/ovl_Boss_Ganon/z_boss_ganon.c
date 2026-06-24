@@ -13,6 +13,7 @@
 #include "soh/frame_interpolation.h"
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/achievements.h"
 
 #include <string.h>
 
@@ -31,6 +32,7 @@ void func_808E229C(Actor* thisx, PlayState* play); // draw
 void func_808E324C(Actor* thisx, PlayState* play); // draw
 void BossGanon_LightBall_Draw(Actor* thisx, PlayState* play);
 void BossGanon_Reset(void);
+void BossGanon_TryUnlockDeathAchievement();
 
 void BossGanon_SetupIntroCutscene(BossGanon* this, PlayState* play);
 void BossGanon_SetupTowerCutscene(BossGanon* this, PlayState* play);
@@ -2801,6 +2803,7 @@ void BossGanon_UpdateDamage(BossGanon* this, PlayState* play) {
                 }
 
                 if ((s8)this->actor.colChkInfo.health <= 0) {
+                    BossGanon_TryUnlockDeathAchievement();
                     BossGanon_SetupDeathCutscene(this, play);
                     Audio_PlayActorSound2(&this->actor, NA_SE_EN_GANON_DEAD);
                     Audio_PlayActorSound2(&this->actor, NA_SE_EN_GANON_DD_THUNDER);
@@ -5101,4 +5104,8 @@ void BossGanon_Reset(void) {
     sBossGanonZelda = NULL;
     sBossGanonCape = NULL;
     memset(sBossGanonEffectBuf, 0, sizeof(sBossGanonEffectBuf));
+}
+
+void BossGanon_TryUnlockDeathAchievement(){
+    Achievements_TryUnlock(ACHIEVEMENT_DEFEAT_GANONDORF);
 }

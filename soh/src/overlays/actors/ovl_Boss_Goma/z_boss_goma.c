@@ -7,6 +7,7 @@
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/achievements.h"
 
 #define FLAGS                                                                                 \
     (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED | \
@@ -54,6 +55,7 @@ void BossGoma_FloorMain(BossGoma* this, PlayState* play);
 void BossGoma_WallClimb(BossGoma* this, PlayState* play);
 void BossGoma_CeilingMoveToCenter(BossGoma* this, PlayState* play);
 void BossGoma_SpawnChildGohma(BossGoma* this, PlayState* play, s16 i);
+void BossGoma_TryUnlockDeathAchievement();
 
 const ActorInit Boss_Goma_InitVars = {
     ACTOR_BOSS_GOMA,
@@ -410,6 +412,7 @@ void BossGoma_SetupDefeated(BossGoma* this, PlayState* play) {
     this->actor.shape.shadowScale = 0.0f;
     Audio_QueueSeqCmd(0x1 << 28 | SEQ_PLAYER_BGM_MAIN << 24 | 0x100FF);
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_GOMA_DEAD);
+    BossGoma_TryUnlockDeathAchievement();
 }
 
 /**
@@ -2189,4 +2192,8 @@ void BossGoma_SpawnChildGohma(BossGoma* this, PlayState* play, s16 i) {
                        this->lastTailLimbWorldPos.y - 50.0f, this->lastTailLimbWorldPos.z, 0, i * (0x10000 / 3), 0, i);
 
     this->childrenGohmaState[i] = 1;
+}
+
+void BossGoma_TryUnlockDeathAchievement(){
+    Achievements_TryUnlock(ACHIEVEMENT_DEFEAT_GOHMA);
 }

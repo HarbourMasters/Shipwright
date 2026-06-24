@@ -93,7 +93,8 @@ void SohMenu::AddMenuElements() {
     AddMenuRandomizer();
     AddMenuNetwork();
     AddMenuDevTools();
-
+    AddMenuAchievements();
+    
     if (CVarGetInteger(CVAR_SETTING("Menu.SidebarSearch"), 0)) {
         InsertSidebarSearch();
     }

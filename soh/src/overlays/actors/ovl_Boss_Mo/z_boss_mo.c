@@ -14,6 +14,7 @@
 #include "soh/frame_interpolation.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/achievements.h"
 
 #include <string.h>
 
@@ -69,6 +70,7 @@ void BossMo_SetupTentacle(BossMo* this, PlayState* play);
 void BossMo_Tentacle(BossMo* this, PlayState* play);
 
 void BossMo_Unknown(void);
+void BossMo_TryUnlockDeathAchievement();
 
 typedef enum {
     /* 0 */ MO_FX_NONE,
@@ -1801,6 +1803,7 @@ void BossMo_CoreCollisionCheck(BossMo* this, PlayState* play) {
                 if ((s8)this->actor.colChkInfo.health <= 0) {
                     if (((sMorphaTent1->csCamera == 0) && (sMorphaTent2 == NULL)) ||
                         ((sMorphaTent1->csCamera == 0) && (sMorphaTent2 != NULL) && (sMorphaTent2->csCamera == 0))) {
+                        BossMo_TryUnlockDeathAchievement();
                         Enemy_StartFinishingBlow(play, &this->actor);
                         GameInteractor_ExecuteOnBossDefeat(&this->actor);
                         Audio_QueueSeqCmd(0x1 << 28 | SEQ_PLAYER_BGM_MAIN << 24 | 0x100FF);
@@ -3622,4 +3625,8 @@ void BossMo_Reset(void) {
     sBossGanonSeed1 = 0;
     sBossGanonSeed2 = 0;
     sBossGanonSeed3 = 0;
+}
+
+void BossMo_TryUnlockDeathAchievement(){
+    Achievements_TryUnlock(ACHIEVEMENT_DEFEAT_MORPHA);
 }

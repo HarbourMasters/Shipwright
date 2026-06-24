@@ -14,6 +14,7 @@
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/achievements.h"
 
 #define FLAGS                                                                                 \
     (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED | \
@@ -62,6 +63,7 @@ void BossSst_DrawHead(Actor* thisx, PlayState* play);
 void BossSst_UpdateEffect(Actor* thisx, PlayState* play);
 void BossSst_DrawEffect(Actor* thisx, PlayState* play);
 void BossSst_Reset(void);
+void BossSst_TryUnlockDeathAchievement();
 
 void BossSst_HeadSfx(BossSst* this, u16 sfxId);
 
@@ -2572,6 +2574,7 @@ void BossSst_HeadCollisionCheck(BossSst* this, PlayState* play) {
         if ((this->actor.colChkInfo.damageEffect != 0) || (this->actor.colChkInfo.damage != 0)) {
             if (this->actionFunc == BossSst_HeadVulnerable) {
                 if (Actor_ApplyDamage(&this->actor) == 0) {
+                    BossSst_TryUnlockDeathAchievement();
                     Enemy_StartFinishingBlow(play, &this->actor);
                     BossSst_HeadSetupDeath(this, play);
                     GameInteractor_ExecuteOnBossDefeat(&this->actor);
@@ -3301,4 +3304,8 @@ void BossSst_Reset(void) {
     sStaticColor.r = 0;
     sStaticColor.g = 0;
     sStaticColor.b = 0;
+}
+
+void BossSst_TryUnlockDeathAchievement() {
+    Achievements_TryUnlock(ACHIEVEMENT_DEFEAT_BONGO);
 }

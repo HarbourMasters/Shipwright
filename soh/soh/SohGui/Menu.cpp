@@ -678,6 +678,10 @@ void Menu::DrawElement() {
         headerWidth += 200.0f;
     }
     for (auto& label : menuOrder) {
+        if (label == "Achievements") {
+            continue;  //ignore achievements for header sizing
+        }
+        
         ImVec2 size = ImGui::CalcTextSize(label.c_str());
         headerSizes.push_back(size);
         headerWidth += size.x + style.FramePadding.x * 2 + style.ItemSpacing.x;
@@ -719,10 +723,17 @@ void Menu::DrawElement() {
                       ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_HorizontalScrollbar);
     uint8_t curIndex = 0;
     for (auto& label : menuOrder) {
+        auto& entry = menuEntries.at(label);
+
+        if (label == "Achievements") {
+            if (headerIndex == label) {
+                sidebar = &entry.sidebars;
+            }
+            continue;   //make the achievement menu header hidden
+        }
         if (curIndex != 0) {
             ImGui::SameLine();
         }
-        auto& entry = menuEntries.at(label);
         std::string nextIndex = label;
         UIWidgets::PushStyleButton(menuThemeIndex);
         if (headerIndex != label) {
@@ -769,7 +780,15 @@ void Menu::DrawElement() {
         ImGui::PopStyleColor();
     }
     ImGui::EndChild();
-    ImGui::SameLine(menuSize.x - (buttonSize.x * 3) - (style.ItemSpacing.x * 2));
+    ImGui::SameLine(menuSize.x - (buttonSize.x * 4) - (style.ItemSpacing.x * 3));
+    UIWidgets::ButtonOptions options4 = {};
+    options4.color = UIWidgets::Colors::Violet;
+    options4.size = UIWidgets::Sizes::Inline;
+    options4.tooltip = "Achievements";
+    if (UIWidgets::Button(ICON_FA_TROPHY, options4)) {
+        CVarSetString(CVAR_SETTING("Menu.ActiveHeader"), "Achievements");
+    }
+    ImGui::SameLine();
     UIWidgets::ButtonOptions options3 = {};
     options3.color = UIWidgets::Colors::Red;
     options3.size = UIWidgets::Sizes::Inline;

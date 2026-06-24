@@ -7,6 +7,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
+#include "soh/Enhancements/achievements.h"
 
 #include <stdlib.h> // malloc
 #include <string.h> // memcpy
@@ -23,6 +24,7 @@ void BossDodongo_Init(Actor* thisx, PlayState* play);
 void BossDodongo_Destroy(Actor* thisx, PlayState* play);
 void BossDodongo_Update(Actor* thisx, PlayState* play);
 void BossDodongo_Draw(Actor* thisx, PlayState* play);
+void BossDodongo_TryUnlockDeathAchievement();
 
 void BossDodongo_SetupIntroCutscene(BossDodongo* this, PlayState* play);
 void BossDodongo_IntroCutscene(BossDodongo* this, PlayState* play);
@@ -1481,6 +1483,7 @@ void BossDodongo_UpdateDamage(BossDodongo* this, PlayState* play) {
     s16 i;
 
     if ((this->health <= 0) && (this->actionFunc != BossDodongo_DeathCutscene)) {
+        BossDodongo_TryUnlockDeathAchievement();
         BossDodongo_SetupDeathCutscene(this);
         Enemy_StartFinishingBlow(play, &this->actor);
         return;
@@ -1957,4 +1960,8 @@ void BossDodongo_DrawEffects(PlayState* play) {
     }
 
     CLOSE_DISPS(gfxCtx);
+}
+
+void BossDodongo_TryUnlockDeathAchievement() {
+    Achievements_TryUnlock(ACHIEVEMENT_DEFEAT_KD);
 }

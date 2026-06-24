@@ -6,6 +6,7 @@
 #include "soh/frame_interpolation.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/achievements.h"
 
 #include <string.h>
 
@@ -30,6 +31,7 @@ void BossTw_Destroy(Actor* thisx, PlayState* play);
 void BossTw_Update(Actor* thisx, PlayState* play);
 void BossTw_Draw(Actor* thisx, PlayState* play);
 void BossTw_Reset(void);
+void BossTw_TryUnlockDeathAchievement();
 
 void BossTw_TwinrovaDamage(BossTw* this, PlayState* play, u8 arg2);
 void BossTw_TwinrovaSetupFly(BossTw* this, PlayState* play);
@@ -5270,6 +5272,7 @@ void BossTw_TwinrovaDamage(BossTw* this, PlayState* play, u8 damage) {
         }
 
         if ((s8)this->actor.colChkInfo.health <= 0) {
+            BossTw_TryUnlockDeathAchievement();
             BossTw_TwinrovaSetupDeathCS(this, play);
             Enemy_StartFinishingBlow(play, &this->actor);
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_TWINROBA_YOUNG_DEAD);
@@ -5469,4 +5472,8 @@ void BossTw_TwinrovaLaugh(BossTw* this, PlayState* play) {
 void BossTw_Reset(void) {
     sTwInitalized = false;
     memset(sTwEffects, 0, sizeof(sTwEffects));
+}
+
+void BossTw_TryUnlockDeathAchievement(){
+    Achievements_TryUnlock(ACHIEVEMENT_DEFEAT_TWINROVA);
 }
