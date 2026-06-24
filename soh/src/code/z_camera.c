@@ -1450,6 +1450,20 @@ s32 Camera_Free(Camera* camera) {
     Parallel1* para1 = (Parallel1*)camera->paramData;
     f32 playerHeight;
 
+    // SOH [Enhancement] If free-look is resuming after a scene-forced/fixed camera drove the view
+    // (Camera_Free didn't run last frame while manualCamera stayed set, e.g. exiting a Spirit Temple
+    // alcove), re-seed the free-look angles from the camera's current orientation so the view continues
+    // from where it was left instead of snapping back to the pre-interruption angle.
+    static s32 sFreeLastFrame = 0;
+    s32 curFrame = camera->play->state.frames;
+    if (curFrame - sFreeLastFrame > 1) {
+        VecSph eyeAdjustment;
+        OLib_Vec3fDiffToVecSphGeo(&eyeAdjustment, &camera->at, &camera->eye);
+        camera->play->camX = eyeAdjustment.yaw;
+        camera->play->camY = eyeAdjustment.pitch;
+    }
+    sFreeLastFrame = curFrame;
+
     at->x = Camera_LERPCeilF(camera->player->actor.world.pos.x, camera->at.x, 0.5f, 1.0f);
     at->y = Camera_LERPCeilF(camera->player->actor.world.pos.y + (camera->player->rideActor != NULL
                                                                       ? Player_GetHeight(camera->player) / 2
