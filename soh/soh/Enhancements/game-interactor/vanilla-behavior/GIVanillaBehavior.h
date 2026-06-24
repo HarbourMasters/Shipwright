@@ -623,6 +623,15 @@ typedef enum {
     // true
     // ```
     // #### `args`
+    // - `*Player`
+    // - `*PlayState`
+    VB_DROP_Z_TARGET,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
     // - Player*
     VB_EMPTYING_BOTTLE,
 
