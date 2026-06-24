@@ -513,6 +513,26 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
             return gSaveContext.ship.quest.data.randomizer.magicStatUpgrades < magicRequired ? CAN_OBTAIN
                                                                                              : CANT_OBTAIN_ALREADY_HAVE;
         }
+        case RG_CRAWL_SPEED_UPGRADE: {
+            uint8_t crawlRequired = StatUpgradeRequired(
+                5, RSK_CRAWL_SPEED_UPGRADE_ADJUSTABLE, RSK_CRAWL_SPEED_UPGRADE_TOTAL, RSK_CRAWL_SPEED_UPGRADE_REQUIRED);
+            return gSaveContext.ship.quest.data.randomizer.crawlSpeedUpgrades < crawlRequired
+                       ? CAN_OBTAIN
+                       : CANT_OBTAIN_ALREADY_HAVE;
+        }
+        case RG_CLIMB_SPEED_UPGRADE: {
+            uint8_t climbRequired = StatUpgradeRequired(
+                5, RSK_CLIMB_SPEED_UPGRADE_ADJUSTABLE, RSK_CLIMB_SPEED_UPGRADE_TOTAL, RSK_CLIMB_SPEED_UPGRADE_REQUIRED);
+            return gSaveContext.ship.quest.data.randomizer.climbSpeedUpgrades < climbRequired
+                       ? CAN_OBTAIN
+                       : CANT_OBTAIN_ALREADY_HAVE;
+        }
+        case RG_PUSH_SPEED_UPGRADE: {
+            uint8_t pushRequired = StatUpgradeRequired(5, RSK_PUSH_SPEED_UPGRADE_ADJUSTABLE,
+                                                       RSK_PUSH_SPEED_UPGRADE_TOTAL, RSK_PUSH_SPEED_UPGRADE_REQUIRED);
+            return gSaveContext.ship.quest.data.randomizer.pushSpeedUpgrades < pushRequired ? CAN_OBTAIN
+                                                                                            : CANT_OBTAIN_ALREADY_HAVE;
+        }
         case RG_FISHING_POLE:
             return !Flags_GetRandomizerInf(RAND_INF_FISHING_POLE_FOUND) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
 
@@ -1510,6 +1530,30 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
             gSaveContext.magicFillTarget = fillCap;
             gSaveContext.magicLevel = 0;
             Magic_Fill(play);
+            break;
+        }
+        case RG_CRAWL_SPEED_UPGRADE: {
+            uint8_t cap = StatUpgradeRequired(5, RSK_CRAWL_SPEED_UPGRADE_ADJUSTABLE, RSK_CRAWL_SPEED_UPGRADE_TOTAL,
+                                              RSK_CRAWL_SPEED_UPGRADE_REQUIRED);
+            if (gSaveContext.ship.quest.data.randomizer.crawlSpeedUpgrades < cap) {
+                gSaveContext.ship.quest.data.randomizer.crawlSpeedUpgrades++;
+            }
+            break;
+        }
+        case RG_CLIMB_SPEED_UPGRADE: {
+            uint8_t cap = StatUpgradeRequired(5, RSK_CLIMB_SPEED_UPGRADE_ADJUSTABLE, RSK_CLIMB_SPEED_UPGRADE_TOTAL,
+                                              RSK_CLIMB_SPEED_UPGRADE_REQUIRED);
+            if (gSaveContext.ship.quest.data.randomizer.climbSpeedUpgrades < cap) {
+                gSaveContext.ship.quest.data.randomizer.climbSpeedUpgrades++;
+            }
+            break;
+        }
+        case RG_PUSH_SPEED_UPGRADE: {
+            uint8_t cap = StatUpgradeRequired(5, RSK_PUSH_SPEED_UPGRADE_ADJUSTABLE, RSK_PUSH_SPEED_UPGRADE_TOTAL,
+                                              RSK_PUSH_SPEED_UPGRADE_REQUIRED);
+            if (gSaveContext.ship.quest.data.randomizer.pushSpeedUpgrades < cap) {
+                gSaveContext.ship.quest.data.randomizer.pushSpeedUpgrades++;
+            }
             break;
         }
         default:

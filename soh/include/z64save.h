@@ -254,6 +254,9 @@ typedef struct ShipRandomizerSaveContextData {
     u8 speedUpgrades;
     u8 powerUpgrades;
     u8 magicStatUpgrades;
+    u8 crawlSpeedUpgrades;
+    u8 climbSpeedUpgrades;
+    u8 pushSpeedUpgrades;
 } ShipRandomizerSaveContextData;
 
 typedef struct ShipBossRushSaveContextData {

@@ -569,12 +569,30 @@ void SohMenu::AddMenuEnhancements() {
         .Options(CheckboxOptions().Tooltip("Speeds up emptying animation when dumping out the contents of a bottle."));
     AddWidget(path, "Vine/Ladder Climb Speed +%d", WIDGET_CVAR_SLIDER_INT)
         .CVar(CVAR_ENHANCEMENT("ClimbSpeed"))
+        .PreFunc([](WidgetInfo& info) {
+            info.options->disabled =
+                IS_RANDO && OTRGlobals::Instance->gRandoContext->GetOption(RSK_CLIMB_SPEED_UPGRADE).Is(RO_GENERIC_ON);
+            info.options->disabledTooltip = "This slider is controlled by the Climb Speed Upgrade stat item in the "
+                                            "current randomizer seed.";
+        })
         .Options(IntSliderOptions().Min(0).Max(12).DefaultValue(0).Format("+%d"));
     AddWidget(path, "Block Pushing Speed +%d", WIDGET_CVAR_SLIDER_INT)
         .CVar(CVAR_ENHANCEMENT("FasterBlockPush"))
+        .PreFunc([](WidgetInfo& info) {
+            info.options->disabled =
+                IS_RANDO && OTRGlobals::Instance->gRandoContext->GetOption(RSK_PUSH_SPEED_UPGRADE).Is(RO_GENERIC_ON);
+            info.options->disabledTooltip = "This slider is controlled by the Push Speed Upgrade stat item in the "
+                                            "current randomizer seed.";
+        })
         .Options(IntSliderOptions().Min(0).Max(5).DefaultValue(0).Format("+%d"));
     AddWidget(path, "Crawl Speed %dx", WIDGET_CVAR_SLIDER_INT)
         .CVar(CVAR_ENHANCEMENT("CrawlSpeed"))
+        .PreFunc([](WidgetInfo& info) {
+            info.options->disabled =
+                IS_RANDO && OTRGlobals::Instance->gRandoContext->GetOption(RSK_CRAWL_SPEED_UPGRADE).Is(RO_GENERIC_ON);
+            info.options->disabledTooltip = "This slider is controlled by the Crawl Speed Upgrade stat item in the "
+                                            "current randomizer seed.";
+        })
         .Options(IntSliderOptions().Min(1).Max(5).DefaultValue(1).Format("%dx"));
     AddWidget(path, "Exclude Glitch-Aiding Crawlspaces", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("GlitchAidingCrawlspaces"))

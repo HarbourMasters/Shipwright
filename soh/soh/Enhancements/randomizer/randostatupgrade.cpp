@@ -2,6 +2,7 @@
 #include "soh/ShipInit.hpp"
 #include <soh/OTRGlobals.h>
 #include "soh/Enhancements/randomizer/randostatupgrade.h"
+#include <libultraship/bridge.h>
 
 extern "C" {
 #include "z64.h"
@@ -102,3 +103,36 @@ static void RegisterRandoStatUpgradeHooks() {
 }
 
 static RegisterShipInitFunc initFunc(RegisterRandoStatUpgradeHooks, { "IS_RANDO" });
+
+extern "C" bool IsCrawlStatActive() {
+    return IS_RANDO && (bool)RAND_GET_OPTION(RSK_CRAWL_SPEED_UPGRADE);
+}
+
+extern "C" bool IsClimbStatActive() {
+    return IS_RANDO && (bool)RAND_GET_OPTION(RSK_CLIMB_SPEED_UPGRADE);
+}
+
+extern "C" bool IsPushStatActive() {
+    return IS_RANDO && (bool)RAND_GET_OPTION(RSK_PUSH_SPEED_UPGRADE);
+}
+
+extern "C" float GetCrawlStatValue() {
+    u8 level = gSaveContext.ship.quest.data.randomizer.crawlSpeedUpgrades;
+    uint8_t required = StatUpgradeRequired(5, RSK_CRAWL_SPEED_UPGRADE_ADJUSTABLE, RSK_CRAWL_SPEED_UPGRADE_TOTAL,
+                                           RSK_CRAWL_SPEED_UPGRADE_REQUIRED);
+    return level == 0 ? 1.0f : 1.0f + (float)std::min((int)level, (int)required) * 4.0f / required;
+}
+
+extern "C" float GetClimbStatValue() {
+    u8 level = gSaveContext.ship.quest.data.randomizer.climbSpeedUpgrades;
+    uint8_t required = StatUpgradeRequired(5, RSK_CLIMB_SPEED_UPGRADE_ADJUSTABLE, RSK_CLIMB_SPEED_UPGRADE_TOTAL,
+                                           RSK_CLIMB_SPEED_UPGRADE_REQUIRED);
+    return level == 0 ? 0.0f : (float)std::min((int)level, (int)required) * 5.0f / required;
+}
+
+extern "C" float GetPushStatValue() {
+    u8 level = gSaveContext.ship.quest.data.randomizer.pushSpeedUpgrades;
+    uint8_t required = StatUpgradeRequired(5, RSK_PUSH_SPEED_UPGRADE_ADJUSTABLE, RSK_PUSH_SPEED_UPGRADE_TOTAL,
+                                           RSK_PUSH_SPEED_UPGRADE_REQUIRED);
+    return level == 0 ? 0.0f : (float)std::min((int)level, (int)required) * 5.0f / required;
+}

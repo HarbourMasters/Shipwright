@@ -1472,6 +1472,60 @@ void Settings::CreateOptions() {
     });
     OPT_U8(RSK_MAGIC_STAT_UPGRADE_TOTAL,    {NumOpts(1, 100)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("MagicStatUpgradeTotal"),    WIDGET_CVAR_SLIDER_INT, 7,  false, nullptr, IMFLAG_NONE);
     OPT_U8(RSK_MAGIC_STAT_UPGRADE_REQUIRED, {NumOpts(1, 100)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("MagicStatUpgradeRequired"), WIDGET_CVAR_SLIDER_INT, 99, false, nullptr, IMFLAG_NONE);
+    OPT_BOOL(RSK_CRAWL_SPEED_UPGRADE, CVAR_RANDOMIZER_SETTING("CrawlSpeedUpgrade"));
+    OPT_CALLBACK(RSK_CRAWL_SPEED_UPGRADE, {
+        bool on = CVarGetInteger(CVAR_RANDOMIZER_SETTING("CrawlSpeedUpgrade"), 0);
+        if (on) { mOptions[RSK_CRAWL_SPEED_UPGRADE_ADJUSTABLE].Unhide(); }
+        else {
+            mOptions[RSK_CRAWL_SPEED_UPGRADE_ADJUSTABLE].Hide();
+            mOptions[RSK_CRAWL_SPEED_UPGRADE_TOTAL].Hide();
+            mOptions[RSK_CRAWL_SPEED_UPGRADE_REQUIRED].Hide();
+        }
+    });
+    OPT_BOOL(RSK_CRAWL_SPEED_UPGRADE_ADJUSTABLE, CVAR_RANDOMIZER_SETTING("CrawlSpeedUpgradeAdjustable"));
+    OPT_CALLBACK(RSK_CRAWL_SPEED_UPGRADE_ADJUSTABLE, {
+        bool on = CVarGetInteger(CVAR_RANDOMIZER_SETTING("CrawlSpeedUpgradeAdjustable"), 0);
+        if (on) { mOptions[RSK_CRAWL_SPEED_UPGRADE_TOTAL].Unhide(); mOptions[RSK_CRAWL_SPEED_UPGRADE_REQUIRED].Unhide(); }
+        else    { mOptions[RSK_CRAWL_SPEED_UPGRADE_TOTAL].Hide();   mOptions[RSK_CRAWL_SPEED_UPGRADE_REQUIRED].Hide();   }
+    });
+    OPT_U8(RSK_CRAWL_SPEED_UPGRADE_TOTAL,    {NumOpts(1, 100)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("CrawlSpeedUpgradeTotal"),    WIDGET_CVAR_SLIDER_INT, 4, false, nullptr, IMFLAG_NONE);
+    OPT_U8(RSK_CRAWL_SPEED_UPGRADE_REQUIRED, {NumOpts(1, 100)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("CrawlSpeedUpgradeRequired"), WIDGET_CVAR_SLIDER_INT, 99, false, nullptr, IMFLAG_NONE);
+    OPT_BOOL(RSK_CLIMB_SPEED_UPGRADE, CVAR_RANDOMIZER_SETTING("ClimbSpeedUpgrade"));
+    OPT_CALLBACK(RSK_CLIMB_SPEED_UPGRADE, {
+        bool on = CVarGetInteger(CVAR_RANDOMIZER_SETTING("ClimbSpeedUpgrade"), 0);
+        if (on) { mOptions[RSK_CLIMB_SPEED_UPGRADE_ADJUSTABLE].Unhide(); }
+        else {
+            mOptions[RSK_CLIMB_SPEED_UPGRADE_ADJUSTABLE].Hide();
+            mOptions[RSK_CLIMB_SPEED_UPGRADE_TOTAL].Hide();
+            mOptions[RSK_CLIMB_SPEED_UPGRADE_REQUIRED].Hide();
+        }
+    });
+    OPT_BOOL(RSK_CLIMB_SPEED_UPGRADE_ADJUSTABLE, CVAR_RANDOMIZER_SETTING("ClimbSpeedUpgradeAdjustable"));
+    OPT_CALLBACK(RSK_CLIMB_SPEED_UPGRADE_ADJUSTABLE, {
+        bool on = CVarGetInteger(CVAR_RANDOMIZER_SETTING("ClimbSpeedUpgradeAdjustable"), 0);
+        if (on) { mOptions[RSK_CLIMB_SPEED_UPGRADE_TOTAL].Unhide(); mOptions[RSK_CLIMB_SPEED_UPGRADE_REQUIRED].Unhide(); }
+        else    { mOptions[RSK_CLIMB_SPEED_UPGRADE_TOTAL].Hide();   mOptions[RSK_CLIMB_SPEED_UPGRADE_REQUIRED].Hide();   }
+    });
+    OPT_U8(RSK_CLIMB_SPEED_UPGRADE_TOTAL,    {NumOpts(1, 100)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ClimbSpeedUpgradeTotal"),    WIDGET_CVAR_SLIDER_INT, 4, false, nullptr, IMFLAG_NONE);
+    OPT_U8(RSK_CLIMB_SPEED_UPGRADE_REQUIRED, {NumOpts(1, 100)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ClimbSpeedUpgradeRequired"), WIDGET_CVAR_SLIDER_INT, 99, false, nullptr, IMFLAG_NONE);
+    OPT_BOOL(RSK_PUSH_SPEED_UPGRADE, CVAR_RANDOMIZER_SETTING("PushSpeedUpgrade"));
+    OPT_CALLBACK(RSK_PUSH_SPEED_UPGRADE, {
+        bool on = CVarGetInteger(CVAR_RANDOMIZER_SETTING("PushSpeedUpgrade"), 0);
+        if (on) { mOptions[RSK_PUSH_SPEED_UPGRADE_ADJUSTABLE].Unhide(); }
+        else {
+            mOptions[RSK_PUSH_SPEED_UPGRADE_ADJUSTABLE].Hide();
+            mOptions[RSK_PUSH_SPEED_UPGRADE_TOTAL].Hide();
+            mOptions[RSK_PUSH_SPEED_UPGRADE_REQUIRED].Hide();
+        }
+    });
+    OPT_BOOL(RSK_PUSH_SPEED_UPGRADE_ADJUSTABLE, CVAR_RANDOMIZER_SETTING("PushSpeedUpgradeAdjustable"));
+    OPT_CALLBACK(RSK_PUSH_SPEED_UPGRADE_ADJUSTABLE, {
+        bool on = CVarGetInteger(CVAR_RANDOMIZER_SETTING("PushSpeedUpgradeAdjustable"), 0);
+        if (on) { mOptions[RSK_PUSH_SPEED_UPGRADE_TOTAL].Unhide(); mOptions[RSK_PUSH_SPEED_UPGRADE_REQUIRED].Unhide(); }
+        else    { mOptions[RSK_PUSH_SPEED_UPGRADE_TOTAL].Hide();   mOptions[RSK_PUSH_SPEED_UPGRADE_REQUIRED].Hide();   }
+    });
+    OPT_U8(RSK_PUSH_SPEED_UPGRADE_TOTAL,    {NumOpts(1, 100)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("PushSpeedUpgradeTotal"),    WIDGET_CVAR_SLIDER_INT, 4, false, nullptr, IMFLAG_NONE);
+    OPT_U8(RSK_PUSH_SPEED_UPGRADE_REQUIRED, {NumOpts(1, 100)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("PushSpeedUpgradeRequired"), WIDGET_CVAR_SLIDER_INT, 99, false, nullptr, IMFLAG_NONE);
     OPT_U8(RSK_INFINITE_UPGRADES, {"Off", "Progressive", "Condensed Progressive"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("InfiniteUpgrades"));
     OPT_BOOL(RSK_SKELETON_KEY, CVAR_RANDOMIZER_SETTING("SkeletonKey"));
     OPT_BOOL(RSK_SLINGBOW_BREAK_BEEHIVES, CVAR_RANDOMIZER_SETTING("SlingBowBeehives"));
@@ -2307,6 +2361,18 @@ void Settings::CreateOptions() {
                                   &mOptions[RSK_MAGIC_STAT_UPGRADE_ADJUSTABLE],
                                   &mOptions[RSK_MAGIC_STAT_UPGRADE_TOTAL],
                                   &mOptions[RSK_MAGIC_STAT_UPGRADE_REQUIRED],
+                                  &mOptions[RSK_CRAWL_SPEED_UPGRADE],
+                                  &mOptions[RSK_CRAWL_SPEED_UPGRADE_ADJUSTABLE],
+                                  &mOptions[RSK_CRAWL_SPEED_UPGRADE_TOTAL],
+                                  &mOptions[RSK_CRAWL_SPEED_UPGRADE_REQUIRED],
+                                  &mOptions[RSK_CLIMB_SPEED_UPGRADE],
+                                  &mOptions[RSK_CLIMB_SPEED_UPGRADE_ADJUSTABLE],
+                                  &mOptions[RSK_CLIMB_SPEED_UPGRADE_TOTAL],
+                                  &mOptions[RSK_CLIMB_SPEED_UPGRADE_REQUIRED],
+                                  &mOptions[RSK_PUSH_SPEED_UPGRADE],
+                                  &mOptions[RSK_PUSH_SPEED_UPGRADE_ADJUSTABLE],
+                                  &mOptions[RSK_PUSH_SPEED_UPGRADE_TOTAL],
+                                  &mOptions[RSK_PUSH_SPEED_UPGRADE_REQUIRED],
                               },
                               WidgetContainerType::SECTION);
     mOptionGroups[RSG_MENU_COLUMN_STAT_UPGRADES] =
@@ -2467,6 +2533,18 @@ void Settings::CreateOptions() {
                                             &mOptions[RSK_MAGIC_STAT_UPGRADE_ADJUSTABLE],
                                             &mOptions[RSK_MAGIC_STAT_UPGRADE_TOTAL],
                                             &mOptions[RSK_MAGIC_STAT_UPGRADE_REQUIRED],
+                                            &mOptions[RSK_CRAWL_SPEED_UPGRADE],
+                                            &mOptions[RSK_CRAWL_SPEED_UPGRADE_ADJUSTABLE],
+                                            &mOptions[RSK_CRAWL_SPEED_UPGRADE_TOTAL],
+                                            &mOptions[RSK_CRAWL_SPEED_UPGRADE_REQUIRED],
+                                            &mOptions[RSK_CLIMB_SPEED_UPGRADE],
+                                            &mOptions[RSK_CLIMB_SPEED_UPGRADE_ADJUSTABLE],
+                                            &mOptions[RSK_CLIMB_SPEED_UPGRADE_TOTAL],
+                                            &mOptions[RSK_CLIMB_SPEED_UPGRADE_REQUIRED],
+                                            &mOptions[RSK_PUSH_SPEED_UPGRADE],
+                                            &mOptions[RSK_PUSH_SPEED_UPGRADE_ADJUSTABLE],
+                                            &mOptions[RSK_PUSH_SPEED_UPGRADE_TOTAL],
+                                            &mOptions[RSK_PUSH_SPEED_UPGRADE_REQUIRED],
                                             &mOptions[RSK_SHUFFLE_BOSS_SOULS],
                                             &mOptions[RSK_SHUFFLE_DEKU_STICK_BAG],
                                             &mOptions[RSK_SHUFFLE_DEKU_NUT_BAG],

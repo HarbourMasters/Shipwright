@@ -848,7 +848,8 @@ void DrawItemCount(ItemTrackerItem item, bool hideMax) {
         ImGui::Text("%s", maxString.c_str());
         ImGui::PopStyleColor();
     } else if ((item.id == RG_QUARTER_HEART || item.id == RG_DEFENSE_UPGRADE || item.id == RG_SPEED_UPGRADE ||
-                item.id == RG_POWER_UPGRADE || item.id == RG_MAGIC_STAT_UPGRADE) &&
+                item.id == RG_POWER_UPGRADE || item.id == RG_MAGIC_STAT_UPGRADE || item.id == RG_CRAWL_SPEED_UPGRADE ||
+                item.id == RG_CLIMB_SPEED_UPGRADE || item.id == RG_PUSH_SPEED_UPGRADE) &&
                IS_RANDO && IsValidSaveFile()) {
         uint8_t collected = 0;
         uint8_t required = 0;
@@ -883,6 +884,21 @@ void DrawItemCount(ItemTrackerItem item, bool hideMax) {
             required = StatUpgradeRequired(8, RSK_MAGIC_STAT_UPGRADE_ADJUSTABLE, RSK_MAGIC_STAT_UPGRADE_TOTAL,
                                            RSK_MAGIC_STAT_UPGRADE_REQUIRED);
             statEnabled = true;
+        } else if (item.id == RG_CRAWL_SPEED_UPGRADE && RAND_GET_OPTION(RSK_CRAWL_SPEED_UPGRADE)) {
+            collected = gSaveContext.ship.quest.data.randomizer.crawlSpeedUpgrades;
+            required = StatUpgradeRequired(5, RSK_CRAWL_SPEED_UPGRADE_ADJUSTABLE, RSK_CRAWL_SPEED_UPGRADE_TOTAL,
+                                           RSK_CRAWL_SPEED_UPGRADE_REQUIRED);
+            statEnabled = true;
+        } else if (item.id == RG_CLIMB_SPEED_UPGRADE && RAND_GET_OPTION(RSK_CLIMB_SPEED_UPGRADE)) {
+            collected = gSaveContext.ship.quest.data.randomizer.climbSpeedUpgrades;
+            required = StatUpgradeRequired(5, RSK_CLIMB_SPEED_UPGRADE_ADJUSTABLE, RSK_CLIMB_SPEED_UPGRADE_TOTAL,
+                                           RSK_CLIMB_SPEED_UPGRADE_REQUIRED);
+            statEnabled = true;
+        } else if (item.id == RG_PUSH_SPEED_UPGRADE && RAND_GET_OPTION(RSK_PUSH_SPEED_UPGRADE)) {
+            collected = gSaveContext.ship.quest.data.randomizer.pushSpeedUpgrades;
+            required = StatUpgradeRequired(5, RSK_PUSH_SPEED_UPGRADE_ADJUSTABLE, RSK_PUSH_SPEED_UPGRADE_TOTAL,
+                                           RSK_PUSH_SPEED_UPGRADE_REQUIRED);
+            statEnabled = true;
         }
         if (statEnabled) {
             int32_t displayMode = CVarGetInteger(CVAR_TRACKER_ITEM("StatUpgradeCounts"), STAT_COLLECTED_REQUIRED);
@@ -899,10 +915,22 @@ void DrawItemCount(ItemTrackerItem item, bool hideMax) {
                 total = RAND_GET_OPTION(RSK_POWER_UPGRADE_ADJUSTABLE)
                             ? (uint8_t)(RAND_GET_OPTION(RSK_POWER_UPGRADE_TOTAL).Get() + 1)
                             : 5;
-            else
+            else if (item.id == RG_MAGIC_STAT_UPGRADE)
                 total = RAND_GET_OPTION(RSK_MAGIC_STAT_UPGRADE_ADJUSTABLE)
                             ? (uint8_t)(RAND_GET_OPTION(RSK_MAGIC_STAT_UPGRADE_TOTAL).Get() + 1)
                             : 8;
+            else if (item.id == RG_CRAWL_SPEED_UPGRADE)
+                total = RAND_GET_OPTION(RSK_CRAWL_SPEED_UPGRADE_ADJUSTABLE)
+                            ? (uint8_t)(RAND_GET_OPTION(RSK_CRAWL_SPEED_UPGRADE_TOTAL).Get() + 1)
+                            : 5;
+            else if (item.id == RG_CLIMB_SPEED_UPGRADE)
+                total = RAND_GET_OPTION(RSK_CLIMB_SPEED_UPGRADE_ADJUSTABLE)
+                            ? (uint8_t)(RAND_GET_OPTION(RSK_CLIMB_SPEED_UPGRADE_TOTAL).Get() + 1)
+                            : 5;
+            else
+                total = RAND_GET_OPTION(RSK_PUSH_SPEED_UPGRADE_ADJUSTABLE)
+                            ? (uint8_t)(RAND_GET_OPTION(RSK_PUSH_SPEED_UPGRADE_TOTAL).Get() + 1)
+                            : 5;
             ImU32 currentColor = collected >= required ? IM_COL_GREEN : IM_COL_WHITE;
             std::string currentString = std::to_string(collected) + "/";
             std::string secondString = std::to_string(required);
@@ -1300,6 +1328,21 @@ void DrawItem(ItemTrackerItem item) {
                 hasItem = IS_RANDO && RAND_GET_OPTION(RSK_MAGIC_STAT_UPGRADE) &&
                           gSaveContext.ship.quest.data.randomizer.magicStatUpgrades > 0;
                 itemName = "Magic Upgrade";
+                break;
+            case RG_CRAWL_SPEED_UPGRADE:
+                hasItem = IS_RANDO && RAND_GET_OPTION(RSK_CRAWL_SPEED_UPGRADE) &&
+                          gSaveContext.ship.quest.data.randomizer.crawlSpeedUpgrades > 0;
+                itemName = "Crawl Speed Upgrade";
+                break;
+            case RG_CLIMB_SPEED_UPGRADE:
+                hasItem = IS_RANDO && RAND_GET_OPTION(RSK_CLIMB_SPEED_UPGRADE) &&
+                          gSaveContext.ship.quest.data.randomizer.climbSpeedUpgrades > 0;
+                itemName = "Climb Speed Upgrade";
+                break;
+            case RG_PUSH_SPEED_UPGRADE:
+                hasItem = IS_RANDO && RAND_GET_OPTION(RSK_PUSH_SPEED_UPGRADE) &&
+                          gSaveContext.ship.quest.data.randomizer.pushSpeedUpgrades > 0;
+                itemName = "Push Speed Upgrade";
                 break;
         }
     } else if (item.kind == ITEM_KIND_DUMMY) {
@@ -1764,6 +1807,12 @@ void UpdateVectors() {
             statUpgradeItems.push_back(ITEM_TRACKER_ITEM(RG_POWER_UPGRADE, 0, DrawItem));
         if (RAND_GET_OPTION(RSK_MAGIC_STAT_UPGRADE))
             statUpgradeItems.push_back(ITEM_TRACKER_ITEM(RG_MAGIC_STAT_UPGRADE, 0, DrawItem));
+        if (RAND_GET_OPTION(RSK_CRAWL_SPEED_UPGRADE))
+            statUpgradeItems.push_back(ITEM_TRACKER_ITEM(RG_CRAWL_SPEED_UPGRADE, 0, DrawItem));
+        if (RAND_GET_OPTION(RSK_CLIMB_SPEED_UPGRADE))
+            statUpgradeItems.push_back(ITEM_TRACKER_ITEM(RG_CLIMB_SPEED_UPGRADE, 0, DrawItem));
+        if (RAND_GET_OPTION(RSK_PUSH_SPEED_UPGRADE))
+            statUpgradeItems.push_back(ITEM_TRACKER_ITEM(RG_PUSH_SPEED_UPGRADE, 0, DrawItem));
     }
 
     // If we're adding stat upgrades to the main window...

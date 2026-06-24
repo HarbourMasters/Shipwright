@@ -1,6 +1,7 @@
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ShipInit.hpp"
+#include "soh/Enhancements/randomizer/randostatupgrade.h"
 #include "global.h"
 
 extern "C" {
@@ -11,7 +12,8 @@ extern PlayState* gPlayState;
 
 #define CVAR_CRAWL_SPEED_NAME CVAR_ENHANCEMENT("CrawlSpeed")
 #define CVAR_CRAWL_SPEED_DEFAULT 1
-#define CVAR_CRAWL_SPEED_VALUE CVarGetInteger(CVAR_CRAWL_SPEED_NAME, CVAR_CRAWL_SPEED_DEFAULT)
+#define CVAR_CRAWL_SPEED_VALUE \
+    (IsCrawlStatActive() ? GetCrawlStatValue() : CVarGetInteger(CVAR_CRAWL_SPEED_NAME, CVAR_CRAWL_SPEED_DEFAULT))
 #define CVAR_GLITCH_AIDING_NAME CVAR_ENHANCEMENT("GlitchAidingCrawlspaces")
 #define CVAR_GLITCH_AIDING_DEFAULT 0
 #define CVAR_GLITCH_AIDING_VALUE CVarGetInteger(CVAR_GLITCH_AIDING_NAME, CVAR_GLITCH_AIDING_DEFAULT)
@@ -58,7 +60,7 @@ extern "C" void IncreaseCrawlSpeed(Player* player, PlayState* play) {
 }
 
 void CrawlSpeed_Register() {
-    bool shouldRegister = CVAR_CRAWL_SPEED_VALUE > 1;
+    bool shouldRegister = CVAR_CRAWL_SPEED_VALUE > 1 || IsCrawlStatActive();
 
     COND_VB_SHOULD(VB_CRAWL_SPEED_EXIT, shouldRegister, {
         Player* player = GET_PLAYER(gPlayState);

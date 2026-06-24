@@ -113,6 +113,9 @@ inline void to_json(json& j, const ShipRandomizerSaveContextData& shipRandomizer
         { "speedUpgrades", shipRandomizerSaveContextData.speedUpgrades },
         { "powerUpgrades", shipRandomizerSaveContextData.powerUpgrades },
         { "magicStatUpgrades", shipRandomizerSaveContextData.magicStatUpgrades },
+        { "crawlSpeedUpgrades", shipRandomizerSaveContextData.crawlSpeedUpgrades },
+        { "climbSpeedUpgrades", shipRandomizerSaveContextData.climbSpeedUpgrades },
+        { "pushSpeedUpgrades", shipRandomizerSaveContextData.pushSpeedUpgrades },
     };
 }
 
@@ -124,6 +127,9 @@ inline void from_json(const json& j, ShipRandomizerSaveContextData& shipRandomiz
     j.at("speedUpgrades").get_to(shipRandomizerSaveContextData.speedUpgrades);
     j.at("powerUpgrades").get_to(shipRandomizerSaveContextData.powerUpgrades);
     j.at("magicStatUpgrades").get_to(shipRandomizerSaveContextData.magicStatUpgrades);
+    j.at("crawlSpeedUpgrades").get_to(shipRandomizerSaveContextData.crawlSpeedUpgrades);
+    j.at("climbSpeedUpgrades").get_to(shipRandomizerSaveContextData.climbSpeedUpgrades);
+    j.at("pushSpeedUpgrades").get_to(shipRandomizerSaveContextData.pushSpeedUpgrades);
 }
 
 inline void to_json(json& j, const ShipQuestSpecificSaveContextData& shipQuestSpecificSaveContextData) {

@@ -1574,6 +1574,54 @@
                 "name": "Magic % Required",
                 "description": "Percentage of Magic Stat Upgrade items needed to reach full magic capacity."
             },
+            "crawl_speed_upgrade": {
+                "name": "Crawl Speed Upgrade",
+                "description": "Adds Crawl Speed Upgrade items to the pool. Collecting them gradually increases Link's crawlspace movement speed up to 5x. Disables the Crawl Speed enhancement slider while active."
+            },
+            "crawl_speed_upgrade_adjustable": {
+                "name": "Adjustable Crawl",
+                "description": "Enables custom Total and Percent Required sliders for Crawl Speed Upgrades, overriding the default pool counts."
+            },
+            "crawl_speed_upgrade_total": {
+                "name": "Crawl Total",
+                "description": "How many Crawl Speed Upgrade items are placed in the pool."
+            },
+            "crawl_speed_upgrade_required": {
+                "name": "Crawl % Required",
+                "description": "Percentage of Crawl Speed Upgrade items needed to reach max crawl speed."
+            },
+            "climb_speed_upgrade": {
+                "name": "Climb Speed Upgrade",
+                "description": "Adds Climb Speed Upgrade items to the pool. Collecting them gradually increases Link's vine and ladder climb speed up to +5. Disables the Climb Speed enhancement slider while active."
+            },
+            "climb_speed_upgrade_adjustable": {
+                "name": "Adjustable Climb",
+                "description": "Enables custom Total and Percent Required sliders for Climb Speed Upgrades, overriding the default pool counts."
+            },
+            "climb_speed_upgrade_total": {
+                "name": "Climb Total",
+                "description": "How many Climb Speed Upgrade items are placed in the pool."
+            },
+            "climb_speed_upgrade_required": {
+                "name": "Climb % Required",
+                "description": "Percentage of Climb Speed Upgrade items needed to reach max climb speed."
+            },
+            "push_speed_upgrade": {
+                "name": "Push Speed Upgrade",
+                "description": "Adds Push Speed Upgrade items to the pool. Collecting them gradually increases Link's block push speed up to +5. Disables the Faster Block Push enhancement slider while active."
+            },
+            "push_speed_upgrade_adjustable": {
+                "name": "Adjustable Push",
+                "description": "Enables custom Total and Percent Required sliders for Push Speed Upgrades, overriding the default pool counts."
+            },
+            "push_speed_upgrade_total": {
+                "name": "Push Total",
+                "description": "How many Push Speed Upgrade items are placed in the pool."
+            },
+            "push_speed_upgrade_required": {
+                "name": "Push % Required",
+                "description": "Percentage of Push Speed Upgrade items needed to reach max push speed."
+            },
             "slingbow_break_beehives": {
                 "name": "Slingshot/Bow Can Break Beehives",
                 "description": "Allows Slingshot and Bow to break beehives when Beehive Shuffle is turned on."

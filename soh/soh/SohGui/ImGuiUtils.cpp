@@ -169,6 +169,15 @@ std::map<uint32_t, ItemMapEntry> customItemsMapping = {
     { RG_MAGIC_STAT_UPGRADE,
       { RG_MAGIC_STAT_UPGRADE, "RG_MAGIC_STAT_UPGRADE", "RG_MAGIC_STAT_UPGRADE_Faded",
         (char*)gItemIcons[ITEM_MAGIC_SMALL] } },
+    { RG_CRAWL_SPEED_UPGRADE,
+      { RG_CRAWL_SPEED_UPGRADE, "RG_CRAWL_SPEED_UPGRADE", "RG_CRAWL_SPEED_UPGRADE_Faded",
+        gItemIconDinsFireTex } }, // TODO: replace with gStatCrawlTex once art is available
+    { RG_CLIMB_SPEED_UPGRADE,
+      { RG_CLIMB_SPEED_UPGRADE, "RG_CLIMB_SPEED_UPGRADE", "RG_CLIMB_SPEED_UPGRADE_Faded",
+        gItemIconFaroresWindTex } }, // TODO: replace with gStatClimbTex once art is available
+    { RG_PUSH_SPEED_UPGRADE,
+      { RG_PUSH_SPEED_UPGRADE, "RG_PUSH_SPEED_UPGRADE", "RG_PUSH_SPEED_UPGRADE_Faded",
+        gItemIconNayrusLoveTex } }, // TODO: replace with gStatPushTex once art is available
 };
 
 std::map<uint32_t, ItemMapEntry> jabbernutMapping = {

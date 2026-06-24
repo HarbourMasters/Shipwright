@@ -1,4 +1,7 @@
 #pragma once
+#include <stdbool.h>
+
+#ifdef __cplusplus
 #include <array>
 #include <cmath>
 #include <algorithm>
@@ -7,8 +10,10 @@
 #include "randomizerEnums/RandomizerGet.h"
 #include "randomizerEnums/RandomizerSettingKey.h"
 
-static constexpr std::array<RandomizerGet, 4> STAT_UPGRADE_ITEMS = { RG_DEFENSE_UPGRADE, RG_SPEED_UPGRADE,
-                                                                     RG_POWER_UPGRADE, RG_MAGIC_STAT_UPGRADE };
+static constexpr std::array<RandomizerGet, 7> STAT_UPGRADE_ITEMS = { RG_DEFENSE_UPGRADE,     RG_SPEED_UPGRADE,
+                                                                     RG_POWER_UPGRADE,       RG_MAGIC_STAT_UPGRADE,
+                                                                     RG_CRAWL_SPEED_UPGRADE, RG_CLIMB_SPEED_UPGRADE,
+                                                                     RG_PUSH_SPEED_UPGRADE };
 
 // Used to filter out stat items from Links pocket
 inline bool IsStatUpgrade(RandomizerGet rg) {
@@ -43,3 +48,17 @@ inline uint8_t MagicStatLogicThreshold() {
     float magicTotal = adjustable ? 100.0f : 96.0f;
     return (uint8_t)std::ceil(23.5f * required / magicTotal);
 }
+
+extern "C" {
+#endif
+
+bool IsCrawlStatActive(void);
+bool IsClimbStatActive(void);
+bool IsPushStatActive(void);
+float GetCrawlStatValue(void);
+float GetClimbStatValue(void);
+float GetPushStatValue(void);
+
+#ifdef __cplusplus
+}
+#endif

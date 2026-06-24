@@ -269,6 +269,9 @@ void SaveManager::LoadRandomizer() {
     SaveManager::Instance->LoadData("speedUpgrades", gSaveContext.ship.quest.data.randomizer.speedUpgrades);
     SaveManager::Instance->LoadData("powerUpgrades", gSaveContext.ship.quest.data.randomizer.powerUpgrades);
     SaveManager::Instance->LoadData("magicStatUpgrades", gSaveContext.ship.quest.data.randomizer.magicStatUpgrades);
+    SaveManager::Instance->LoadData("crawlSpeedUpgrades", gSaveContext.ship.quest.data.randomizer.crawlSpeedUpgrades);
+    SaveManager::Instance->LoadData("climbSpeedUpgrades", gSaveContext.ship.quest.data.randomizer.climbSpeedUpgrades);
+    SaveManager::Instance->LoadData("pushSpeedUpgrades", gSaveContext.ship.quest.data.randomizer.pushSpeedUpgrades);
 
     SaveManager::Instance->LoadData("pendingIceTrapCount", gSaveContext.ship.pendingIceTrapCount);
 
@@ -464,6 +467,9 @@ void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool f
     SaveManager::Instance->SaveData("speedUpgrades", saveContext->ship.quest.data.randomizer.speedUpgrades);
     SaveManager::Instance->SaveData("powerUpgrades", saveContext->ship.quest.data.randomizer.powerUpgrades);
     SaveManager::Instance->SaveData("magicStatUpgrades", saveContext->ship.quest.data.randomizer.magicStatUpgrades);
+    SaveManager::Instance->SaveData("crawlSpeedUpgrades", saveContext->ship.quest.data.randomizer.crawlSpeedUpgrades);
+    SaveManager::Instance->SaveData("climbSpeedUpgrades", saveContext->ship.quest.data.randomizer.climbSpeedUpgrades);
+    SaveManager::Instance->SaveData("pushSpeedUpgrades", saveContext->ship.quest.data.randomizer.pushSpeedUpgrades);
 
     SaveManager::Instance->SaveData("pendingIceTrapCount", saveContext->ship.pendingIceTrapCount);
 

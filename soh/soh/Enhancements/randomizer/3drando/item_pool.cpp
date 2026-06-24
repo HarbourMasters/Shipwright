@@ -463,6 +463,30 @@ bool GenerateItemPool() {
             AddItemToPool(RG_MAGIC_STAT_UPGRADE, 10, 8, 6, 4, false);
         }
     }
+    if (ctx->GetOption(RSK_CRAWL_SPEED_UPGRADE)) {
+        if (ctx->GetOption(RSK_CRAWL_SPEED_UPGRADE_ADJUSTABLE)) {
+            uint8_t t = ctx->GetOption(RSK_CRAWL_SPEED_UPGRADE_TOTAL).Get() + 1;
+            AddItemToPool(RG_CRAWL_SPEED_UPGRADE, t, t, t, t, false);
+        } else {
+            AddItemToPool(RG_CRAWL_SPEED_UPGRADE, 7, 5, 3, 1, false);
+        }
+    }
+    if (ctx->GetOption(RSK_CLIMB_SPEED_UPGRADE)) {
+        if (ctx->GetOption(RSK_CLIMB_SPEED_UPGRADE_ADJUSTABLE)) {
+            uint8_t t = ctx->GetOption(RSK_CLIMB_SPEED_UPGRADE_TOTAL).Get() + 1;
+            AddItemToPool(RG_CLIMB_SPEED_UPGRADE, t, t, t, t, false);
+        } else {
+            AddItemToPool(RG_CLIMB_SPEED_UPGRADE, 7, 5, 3, 1, false);
+        }
+    }
+    if (ctx->GetOption(RSK_PUSH_SPEED_UPGRADE)) {
+        if (ctx->GetOption(RSK_PUSH_SPEED_UPGRADE_ADJUSTABLE)) {
+            uint8_t t = ctx->GetOption(RSK_PUSH_SPEED_UPGRADE_TOTAL).Get() + 1;
+            AddItemToPool(RG_PUSH_SPEED_UPGRADE, t, t, t, t, false);
+        } else {
+            AddItemToPool(RG_PUSH_SPEED_UPGRADE, 7, 5, 3, 1, false);
+        }
+    }
 
     int bronzeScale = ctx->GetOption(RSK_SHUFFLE_SWIM) ? 1 : 0;
     int startScale = ctx->GetOption(RSK_STARTING_SCALE).Get();
