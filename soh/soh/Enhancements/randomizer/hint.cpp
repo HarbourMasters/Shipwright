@@ -2,6 +2,7 @@
 #include "map"
 #include "string"
 #include "SeedContext.h"
+#include "soh/util.h"
 #include <spdlog/spdlog.h>
 #include "static_data.h"
 #include "3drando/random.hpp"
@@ -375,31 +376,34 @@ oJson Hint::toJSON() {
     auto ctx = Rando::Context::GetInstance();
     nlohmann::ordered_json log = {};
     if (enabled) {
-        log["type"] = StaticData::hintTypeNames[hintType].GetForCurrentLanguage(MF_CLEAN);
+        log["type"] = SohUtils::SanitizeUtf8(StaticData::hintTypeNames[hintType].GetForCurrentLanguage(MF_CLEAN));
 
         std::vector<std::string> hintMessages = GetAllMessageStrings(MF_CLEAN);
         if (hintMessages.size() == 1) {
-            log["message"] = hintMessages[0];
+            log["message"] = SohUtils::SanitizeUtf8(hintMessages[0]);
         } else if (hintMessages.size() > 1) {
-            log["messages"] = hintMessages;
+            std::vector<std::string> sanitizedMessages;
+            sanitizedMessages.reserve(hintMessages.size());
+            for (const std::string& message : hintMessages) {
+                sanitizedMessages.push_back(SohUtils::SanitizeUtf8(message));
+            }
+            log["messages"] = sanitizedMessages;
         }
 
         if (distribution != "") {
-            log["distribution"] = distribution;
+            log["distribution"] = SohUtils::SanitizeUtf8(distribution);
         }
 
         if (hintType != HINT_TYPE_FOOLISH) {
             if (!(StaticData::staticHintInfoMap.contains(ownKey) &&
                   StaticData::staticHintInfoMap[ownKey].targetChecks.size() > 0)) {
                 if (locations.size() == 1) {
-                    log["location"] = StaticData::GetLocation(locations[0])
-                                          ->GetName(); // RANDOTODO change to CustomMessage when VB is done;
+                    log["location"] = SohUtils::SanitizeUtf8(StaticData::GetLocation(locations[0])->GetName());
                 } else if (locations.size() > 1) {
                     // If we have defaults, no need to write more
                     std::vector<std::string> locStrings = {};
                     for (size_t c = 0; c < locations.size(); c++) {
-                        locStrings.push_back(StaticData::GetLocation(locations[c])
-                                                 ->GetName()); // RANDOTODO change to CustomMessage when VB is done
+                        locStrings.push_back(SohUtils::SanitizeUtf8(StaticData::GetLocation(locations[c])->GetName()));
                     }
                     log["locations"] = locStrings;
                 }
@@ -408,15 +412,11 @@ oJson Hint::toJSON() {
             if (!(StaticData::staticHintInfoMap.contains(ownKey) &&
                   StaticData::staticHintInfoMap[ownKey].targetItems.size() > 0)) {
                 if (items.size() == 1) {
-                    log["item"] = StaticData::GetItemTable()[items[0]]
-                                      .GetName()
-                                      .GetEnglish(); // RANDOTODO change to CustomMessage;
+                    log["item"] = SohUtils::SanitizeUtf8(StaticData::GetItemTable()[items[0]].GetName().GetEnglish());
                 } else if (items.size() > 1) {
                     std::vector<std::string> itemStrings = {};
                     for (size_t c = 0; c < items.size(); c++) {
-                        itemStrings.push_back(StaticData::GetItemTable()[items[c]]
-                                                  .GetName()
-                                                  .GetEnglish()); // RANDOTODO change to CustomMessage
+                        itemStrings.push_back(SohUtils::SanitizeUtf8(StaticData::GetItemTable()[items[c]].GetName().GetEnglish()));
                     }
                     log["items"] = itemStrings;
                 }
@@ -433,16 +433,16 @@ oJson Hint::toJSON() {
             }
         }
         if (areas.size() == 1) {
-            log["area"] =
-                StaticData::hintTextTable[StaticData::areaNames[areas[0]]].GetClear().GetForCurrentLanguage(MF_CLEAN);
+            log["area"] = SohUtils::SanitizeUtf8(
+                StaticData::hintTextTable[StaticData::areaNames[areas[0]]].GetClear().GetForCurrentLanguage(MF_CLEAN));
         } else if (areas.size() > 0 && !(StaticData::staticHintInfoMap.contains(ownKey) &&
                                          StaticData::staticHintInfoMap[ownKey].targetChecks.size() > 0)) {
             // If we got locations from defaults, areas are derived from them and don't need logging
             std::vector<std::string> areaStrings = {};
             for (size_t c = 0; c < areas.size(); c++) {
-                areaStrings.push_back(
+                areaStrings.push_back(SohUtils::SanitizeUtf8(
                     StaticData::hintTextTable[StaticData::areaNames[areas[c]]].GetClear().GetForCurrentLanguage(
-                        MF_CLEAN));
+                        MF_CLEAN)));
             }
             log["areas"] = areaStrings;
         }
@@ -458,11 +458,12 @@ oJson Hint::toJSON() {
         }
 
         if (trials.size() == 1) {
-            log["trial"] = ctx->GetTrial(trials[0])->GetName().GetForCurrentLanguage(MF_CLEAN);
+            log["trial"] = SohUtils::SanitizeUtf8(ctx->GetTrial(trials[0])->GetName().GetForCurrentLanguage(MF_CLEAN));
         } else if (trials.size() > 0) {
             std::vector<std::string> trialStrings = {};
             for (size_t c = 0; c < trials.size(); c++) {
-                trialStrings.push_back(ctx->GetTrial(trials[c])->GetName().GetForCurrentLanguage(MF_CLEAN));
+                trialStrings.push_back(
+                    SohUtils::SanitizeUtf8(ctx->GetTrial(trials[c])->GetName().GetForCurrentLanguage(MF_CLEAN)));
             }
             log["trials"] = trialStrings;
         }
@@ -505,7 +506,7 @@ void Hint::logHint(oJson& jsonData) {
     if (enabled &&
         (!(staticHint && (hintType == HINT_TYPE_ITEM) && ctx->GetOption(RSK_HINT_CLARITY).Is(RO_HINT_CLARITY_CLEAR)))) {
         // skip if not enabled or if a static hint with no possible variance
-        jsonData[logMap][Rando::StaticData::hintNames[ownKey].GetForCurrentLanguage(MF_CLEAN)] = toJSON();
+        jsonData[logMap][SohUtils::SanitizeUtf8(Rando::StaticData::hintNames[ownKey].GetForCurrentLanguage(MF_CLEAN))] = toJSON();
     }
 }
 
