@@ -22,6 +22,7 @@
 #include "include/global.h"
 
 #include "soh/Enhancements/debugger/MessageViewer.h"
+#include "soh/Enhancements/fonts/CustomFont.h"
 #include "soh/Notification/Notification.h"
 #include "soh/Enhancements/TimeDisplay/TimeDisplay.h"
 #include "soh/Enhancements/mod_menu.h"
@@ -78,6 +79,7 @@ std::shared_ptr<HookDebuggerWindow> mHookDebuggerWindow;
 std::shared_ptr<DLViewerWindow> mDLViewerWindow;
 std::shared_ptr<ValueViewerWindow> mValueViewerWindow;
 std::shared_ptr<MessageViewer> mMessageViewerWindow;
+std::shared_ptr<CustomFont> mCustomFontOverlay;
 std::shared_ptr<GameplayStatsWindow> mGameplayStatsWindow;
 std::shared_ptr<CheckTracker::CheckTrackerSettingsWindow> mCheckTrackerSettingsWindow;
 std::shared_ptr<CheckTracker::CheckTrackerWindow> mCheckTrackerWindow;
@@ -164,6 +166,9 @@ void SetupGuiElements() {
     mMessageViewerWindow =
         std::make_shared<MessageViewer>(CVAR_WINDOW("MessageViewer"), "Message Viewer", ImVec2(520, 600));
     gui->AddGuiWindow(mMessageViewerWindow);
+    mCustomFontOverlay = std::make_shared<CustomFont>(CVAR_WINDOW("CustomFontOverlay"), "Custom Font Overlay");
+    mCustomFontOverlay->Show();
+    gui->AddGuiWindow(mCustomFontOverlay);
     mGameplayStatsWindow =
         std::make_shared<GameplayStatsWindow>(CVAR_WINDOW("GameplayStats"), "Gameplay Stats", ImVec2(480, 550));
     gui->AddGuiWindow(mGameplayStatsWindow);
@@ -215,6 +220,7 @@ void Destroy() {
     mDLViewerWindow = nullptr;
     mValueViewerWindow = nullptr;
     mMessageViewerWindow = nullptr;
+    mCustomFontOverlay = nullptr;
     mSaveEditorWindow = nullptr;
     mHookDebuggerWindow = nullptr;
     mColViewerWindow = nullptr;
