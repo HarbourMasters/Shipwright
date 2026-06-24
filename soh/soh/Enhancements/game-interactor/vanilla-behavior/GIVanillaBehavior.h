@@ -3066,7 +3066,7 @@ typedef enum {
 
     // #### `result`
     // ```c
-    // true if player->actor.parent->id == ARMS_HOOK_ACTOR
+    // !(this->stateFlags1 & PLAYER_STATE1_ON_HORSE) && Player_HoldsHookshot(this)
     // ```
     // #### `args`
     // - `s16* (&this->actor.parent->id)`

@@ -3574,8 +3574,10 @@ int Player_CanUpdateItems(Player* this) {
  * depending on some conditions. See details below.
  */
 s32 Player_UpdateUpperBody(Player* this, PlayState* play) {
-    if (this->actor.parent != NULL && GameInteractor_Should(VB_PREVENT_HOOKSHOT_PARENT_SOFTLOCK,
-        !(this->stateFlags1 & PLAYER_STATE1_ON_HORSE) && Player_HoldsHookshot(this), &this->actor.parent->id)) {
+     if (this->actor.parent != NULL &&
+        GameInteractor_Should(VB_PREVENT_HOOKSHOT_PARENT_SOFTLOCK,
+                               !(this->stateFlags1 & PLAYER_STATE1_ON_HORSE) && Player_HoldsHookshot(this),
+                               &this->actor.parent->id)) {
         Player_SetupAction(play, this, Player_Action_80850AEC, 1);
         this->stateFlags3 |= PLAYER_STATE3_FLYING_WITH_HOOKSHOT;
         Player_AnimPlayOnce(play, this, &gPlayerAnim_link_hook_fly_start);

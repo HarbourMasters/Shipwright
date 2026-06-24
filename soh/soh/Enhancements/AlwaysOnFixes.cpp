@@ -28,7 +28,6 @@ void RegisterPreventHookshotNoSpawnSoftlock() {
         if (player->heldActor == NULL) {
             Player_UseItem(gPlayState, player, 0xFF);
         }
-
     });
 }
 
