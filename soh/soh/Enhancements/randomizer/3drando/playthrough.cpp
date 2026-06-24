@@ -1,6 +1,6 @@
 #include "playthrough.hpp"
 
-#include <libultraship/libultraship.h>
+#include <spdlog/spdlog.h>
 #include "fill.hpp"
 #include "../location_access.h"
 #include "random.hpp"

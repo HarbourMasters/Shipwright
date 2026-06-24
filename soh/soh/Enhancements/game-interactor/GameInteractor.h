@@ -3,7 +3,7 @@
 #ifndef GameInteractor_h
 #define GameInteractor_h
 
-#include "libultraship/libultraship.h"
+#include <libultraship/bridge/consolevariablebridge.h>
 #include "vanilla-behavior/GIVanillaBehavior.h"
 #include <z64.h>
 
@@ -82,6 +82,7 @@ void GameInteractor_SetTriforceHuntCreditsWarpActive(uint8_t state);
 
 #ifdef __cplusplus
 #include <stdarg.h>
+#include <cstdint>
 #include <map>
 #include <unordered_map>
 #include <vector>

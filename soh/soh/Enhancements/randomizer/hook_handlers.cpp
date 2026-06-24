@@ -15,6 +15,7 @@
 #include "soh/ObjectExtension/ObjectExtension.h"
 #include "item_category_adj.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
+#include "soh/Enhancements/randomizer/randomizer_check_tracker.h"
 #include "soh/Enhancements/randomizer/RCToRandInf.h"
 
 extern "C" {

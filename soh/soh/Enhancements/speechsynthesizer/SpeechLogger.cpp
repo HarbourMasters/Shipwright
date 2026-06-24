@@ -1,5 +1,5 @@
 #include "SpeechLogger.h"
-#include <libultraship/libultraship.h>
+#include <libultraship/luslog.h>
 
 SpeechLogger::SpeechLogger() {
 }

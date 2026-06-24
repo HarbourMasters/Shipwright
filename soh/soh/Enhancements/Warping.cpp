@@ -1,9 +1,12 @@
 #include <libultraship/bridge.h>
+#include <ship/Context.h>
+#include <ship/config/Config.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ShipInit.hpp"
 #include "functions.h"
 #include "soh/SohGui/MenuTypes.h"
+#include "soh/SohGui/UIWidgets.hpp"
 #include "soh/util.h"
 
 extern "C" {

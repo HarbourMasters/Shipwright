@@ -14,7 +14,6 @@
 #include <unordered_map>
 #include <string>
 #include <libultraship/bridge.h>
-#include <libultraship/libultraship.h>
 #include <spdlog/fmt/fmt.h>
 #include "soh/OTRGlobals.h"
 #include "soh/cvar_prefixes.h"

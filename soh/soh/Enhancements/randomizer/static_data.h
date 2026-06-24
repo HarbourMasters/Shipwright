@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include "randomizerTypes.h"
 #include "item.h"
+#include "item_location.h"
 #include "location.h"
 
 namespace Rando {
@@ -95,6 +96,7 @@ class StaticData {
     static std::vector<RandomizerGet> normalBottles;
     static std::vector<RandomizerGet> beanSouls;
     static std::vector<RandomizerGet> overworldKeys;
+    static std::map<RandomizerGet, uint32_t> RandoGetToRandInf;
     static std::unordered_map<SceneID, std::set<RandomizerGet>> itemRestrictions;
     static std::set<RandomizerGet> restrictFW;
     static std::set<RandomizerGet> restrictSpells;

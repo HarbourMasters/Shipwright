@@ -1,7 +1,6 @@
 #include "soh/Network/Anchor/Anchor.h"
 #include "soh/Network/Anchor/JsonConversions.hpp"
 #include <nlohmann/json.hpp>
-#include <libultraship/libultraship.h>
 #include "soh/OTRGlobals.h"
 
 extern "C" {

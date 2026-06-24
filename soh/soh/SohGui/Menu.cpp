@@ -1,7 +1,8 @@
 #include "Menu.h"
+#include "BackendTypes.h"
 #include "UIWidgets.hpp"
 #include "soh/OTRGlobals.h"
-#include <ship/window/gui/GuiMenuBar.h>
+#include <ship/config/Config.h>
 #include <ship/window/gui/GuiElement.h>
 #include "SohModals.h"
 #include <variant>
@@ -101,7 +102,9 @@ void Menu::RemoveSidebarSearch() {
 void Menu::UpdateAudioBackendObjects() {
     availableAudioBackends = Ship::Context::GetRawInstance()->GetAudio()->GetAvailableAudioBackends();
     for (auto& backend : *availableAudioBackends) {
-        availableAudioBackendsMap[backend] = audioBackendsMap.at(backend);
+        if (auto it = audioBackendsMap.find(backend); it != audioBackendsMap.end()) {
+            availableAudioBackendsMap[backend] = it->second;
+        }
     }
 }
 
@@ -117,7 +120,10 @@ void Menu::UpdateWindowBackendObjects() {
 
     availableWindowBackends = Ship::Context::GetRawInstance()->GetWindow()->GetAvailableWindowBackends();
     for (auto& backend : *availableWindowBackends) {
-        availableWindowBackendsMap[(Fast::WindowBackend)backend] = windowBackendsMap.at((Fast::WindowBackend)backend);
+        auto windowBackend = (Fast::WindowBackend)backend;
+        if (auto it = windowBackendsMap.find(windowBackend); it != windowBackendsMap.end()) {
+            availableWindowBackendsMap[windowBackend] = it->second;
+        }
     }
 }
 
@@ -820,7 +826,7 @@ void Menu::DrawElement() {
     pos.y += headerHeight + style.ItemSpacing.y;
     pos.x = centerX - menuSize.x / 2 + (style.ItemSpacing.x * (menuEntries.size() + 1));
     window->DrawList->AddRectFilled(pos, pos + ImVec2{ menuSize.x, 4 }, ImGui::GetColorU32({ 255, 255, 255, 255 }),
-                                    true, style.WindowRounding);
+                                    style.WindowRounding);
     pos.y += style.ItemSpacing.y;
     float sectionHeight = menuSize.y - headerHeight - 4 - style.ItemSpacing.y * 2;
     float columnHeight = sectionHeight - style.ItemSpacing.y * 4;
@@ -870,7 +876,7 @@ void Menu::DrawElement() {
 
     pos = ImVec2{ sectionCenterX + (sidebarWidth / 2), topY } + style.ItemSpacing * 2;
     window->DrawList->AddRectFilled(pos, pos + ImVec2{ 4, sectionHeight - style.FramePadding.y * 2 },
-                                    ImGui::GetColorU32({ 255, 255, 255, 255 }), true, style.WindowRounding);
+                                    ImGui::GetColorU32({ 255, 255, 255, 255 }), style.WindowRounding);
     pos.x += 4 + style.ItemSpacing.x;
     ImGui::SetNextWindowPos(pos + style.ItemSpacing);
     float sectionWidth = menuSize.x - sidebarWidth - 4 - style.ItemSpacing.x * 4;

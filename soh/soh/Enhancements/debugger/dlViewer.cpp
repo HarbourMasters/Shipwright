@@ -2,6 +2,7 @@
 #include "soh/util.h"
 #include "soh/SohGui/UIWidgets.hpp"
 #include "soh/SohGui/SohGui.hpp"
+#include <libultraship/bridge/resourcebridge.h>
 #include <ship/resource/ResourceManager.h>
 #include <fast/resource/ResourceType.h>
 #include <fast/resource/type/DisplayList.h>
@@ -11,7 +12,6 @@
 #include <bit>
 #include <map>
 #include <string>
-#include <libultraship/libultraship.h>
 #include "dlViewer.h"
 
 extern "C" {

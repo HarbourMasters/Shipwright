@@ -1,7 +1,6 @@
 #include "soh/Network/Anchor/Anchor.h"
 #include "soh/Network/Anchor/JsonConversions.hpp"
 #include <nlohmann/json.hpp>
-#include <libultraship/libultraship.h>
 #include "soh/OTRGlobals.h"
 #include "soh/Notification/Notification.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
@@ -162,7 +161,7 @@ void Anchor::HandlePacket_UpdateTeamState(nlohmann::json payload) {
 
             if (i == SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR) {
                 // Keep collapse timer flag
-                u32 mask = (1 << 0x36);
+                u32 mask = (1 << 0x17);
                 loadedData.sceneFlags[i].swch =
                     (loadedData.sceneFlags[i].swch & ~mask) | (gSaveContext.sceneFlags[i].swch & mask);
             }

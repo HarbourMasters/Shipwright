@@ -1,4 +1,4 @@
-#include <libultraship/bridge.h>
+#include <libultraship/classes.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
 #include "functions.h"

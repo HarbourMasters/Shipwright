@@ -1135,10 +1135,7 @@ extern "C" void Randomizer_DrawPowerBracelet(PlayState* play, GetItemEntry* getI
     gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
               G_MTX_MODELVIEW | G_MTX_LOAD);
 
-    gSPGrayscale(POLY_OPA_DISP++, true);
-    gDPSetGrayscaleColor(POLY_OPA_DISP++, 80, 80, 80, 255);
-    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiGoronBraceletDL);
-    gSPGrayscale(POLY_OPA_DISP++, false);
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiGrabDL);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
@@ -1147,16 +1144,11 @@ extern "C" void Randomizer_DrawLadder(PlayState* play, GetItemEntry* getItemEntr
     OPEN_DISPS(play->state.gfxCtx);
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    gSPSegment(POLY_OPA_DISP++, 0x08, (uintptr_t)gMoriHashiraTex);
-    Matrix_Translate(0, -30, 0, MTXMODE_APPLY);
-    Matrix_Scale(1.0f, 0.25f, 1.0f, MTXMODE_APPLY);
 
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gMoriHashigoLadderDL);
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_MODELVIEW | G_MTX_LOAD);
 
-    Matrix_RotateY(M_PIf, MTXMODE_APPLY);
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gMoriHashigoLadderDL);
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiClimbDL);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
@@ -1165,15 +1157,11 @@ extern "C" void Randomizer_DrawKneePads(PlayState* play, GetItemEntry* getItemEn
     OPEN_DISPS(play->state.gfxCtx);
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    Matrix_Translate(-35, -5, 0, MTXMODE_APPLY);
-    Matrix_Scale(0.4f, 0.8f, 1.2f, MTXMODE_APPLY);
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
-    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiDekuShieldDL);
 
-    Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    Matrix_Translate(35, -7, 4, MTXMODE_APPLY);
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
-    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiDekuShieldDL);
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_MODELVIEW | G_MTX_LOAD);
+
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiCrawlDL);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
@@ -1228,54 +1216,15 @@ extern "C" void Randomizer_DrawJabberNut(PlayState* play, GetItemEntry* getItemE
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
-static Gfx* boxLidDL;
-static Gfx* boxBodyDL;
-extern "C" void EnBox_PostLimbDrawOverride(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
-    Gfx** gfx = (Gfx**)thisx;
-    if (limbIndex == 1) {
-        gSPMatrix((*gfx)++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        gSPDisplayList((*gfx)++, boxBodyDL);
-    } else if (limbIndex == 3) {
-        gSPMatrix((*gfx)++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        gSPDisplayList((*gfx)++, boxLidDL);
-    }
-}
-
-extern "C" Gfx* EnBox_EmptyDList(GraphicsContext* gfxCtx);
-#define LIMB_COUNT_CHEST 5
 extern "C" void Randomizer_DrawOpenChest(PlayState* play, GetItemEntry* getItemEntry) {
-    static bool initialized = false;
-    static SkelAnime skelAnime;
-    static Vec3s jointTable[LIMB_COUNT_CHEST];
-    static Vec3s otherTable[LIMB_COUNT_CHEST];
-    static u32 lastUpdate = 0;
-
-    if (!initialized) {
-        initialized = true;
-        boxBodyDL = ResourceMgr_LoadGfxByName((const char*)gTreasureChestChestFrontDL);
-        boxLidDL = ResourceMgr_LoadGfxByName((const char*)gTreasureChestChestSideAndLidDL);
-        SkelAnime_Init(play, &skelAnime, (SkeletonHeader*)&gTreasureChestSkel,
-                       (AnimationHeader*)&gTreasureChestAnim_00024C, jointTable, otherTable, LIMB_COUNT_CHEST);
-
-        // no closing animation to loop, so play animation back & forth for smooth loop
-        Animation_PlayOnce(&skelAnime, (AnimationHeader*)&gTreasureChestAnim_00043C);
-    }
-
-    if (lastUpdate != play->state.frames) {
-        lastUpdate = play->state.frames;
-        if (SkelAnime_Update(&skelAnime)) {
-            Animation_Reverse(&skelAnime);
-        }
-    }
-
     OPEN_DISPS(play->state.gfxCtx);
-    Matrix_Scale(0.01f, 0.01f, 0.01f, MTXMODE_APPLY);
 
-    gDPPipeSync(POLY_OPA_DISP++);
-    gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 255);
-    gSPSegment(POLY_OPA_DISP++, 0x08, (uintptr_t)EnBox_EmptyDList(play->state.gfxCtx));
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    SkelAnime_DrawSkeletonOpa(play, &skelAnime, nullptr, (PostLimbDrawOpa)EnBox_PostLimbDrawOverride, &POLY_OPA_DISP);
+
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_MODELVIEW | G_MTX_LOAD);
+
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiOpenChestsDL);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
@@ -1289,8 +1238,6 @@ extern "C" void Randomizer_DrawFishingPoleGI(PlayState* play, GetItemEntry* getI
               G_MTX_MODELVIEW | G_MTX_LOAD);
 
     gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiFishingPoleDL);
-
-    Matrix_Pop();
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

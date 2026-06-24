@@ -6,6 +6,7 @@
 #include <soh/Enhancements/cosmetics/authenticGfxPatches.h>
 #include <soh/Enhancements/TimeDisplay/TimeDisplay.h>
 #include "soh/Enhancements/randomizer/randomizer.h"
+#include <ship/Context.h>
 
 extern "C" {
 #include "functions.h"
@@ -1660,6 +1661,10 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Rupee Dash Mode", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("RupeeDash"))
         .Options(CheckboxOptions().Tooltip("Rupees reduce over time, Link suffers damage when the count hits 0."));
+    AddWidget(path, "Rupee Dash Wallet Scaling", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("RupeeDashScaling"))
+        .PreFunc([](WidgetInfo& info) { info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("RupeeDash"), 0) == 0; })
+        .Options(CheckboxOptions().DefaultValue(true).Tooltip("The larger Link's wallet, the faster Rupees reduce."));
     AddWidget(path, "Rupee Dash Interval %d seconds", WIDGET_CVAR_SLIDER_INT)
         .CVar(CVAR_ENHANCEMENT("RupeeDashInterval"))
         .PreFunc([](WidgetInfo& info) { info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("RupeeDash"), 0) == 0; })

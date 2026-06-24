@@ -4,9 +4,11 @@
 #include "soh/cvar_prefixes.h"
 #include "soh/Notification/Notification.h"
 #include <vector>
+#include <libultraship/bridge/consolevariablebridge.h>
+#include <libultraship/libultra/types.h>
+#include <ship/Context.h>
 #include <ship/utils/StringHelper.h>
-#include <libultraship/bridge.h>
-#include <libultraship/classes.h>
+#include <ship/window/Window.h>
 #include <soh/OTRGlobals.h>
 #include <locale>
 #include <filesystem>

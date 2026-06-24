@@ -1,5 +1,4 @@
 #include "Anchor.h"
-#include <libultraship/libultraship.h>
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/frame_interpolation.h"

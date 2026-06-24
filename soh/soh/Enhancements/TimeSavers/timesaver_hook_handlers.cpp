@@ -1,4 +1,5 @@
 #include <libultraship/bridge.h>
+#include <spdlog/spdlog.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/enhancementTypes.h"

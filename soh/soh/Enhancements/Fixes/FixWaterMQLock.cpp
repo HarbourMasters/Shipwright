@@ -3,6 +3,7 @@
 #include "soh/ShipInit.hpp"
 
 extern "C" {
+#include "variables.h"
 #include "src/overlays/actors/ovl_En_Door/z_en_door.h"
 extern PlayState* gPlayState;
 }

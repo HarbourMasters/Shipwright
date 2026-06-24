@@ -1,3 +1,4 @@
+#include <libultraship/bridge/resourcebridge.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
 #include "soh/ResourceManagerHelpers.h"

@@ -3,7 +3,6 @@
 #include <string>
 #include <vector>
 #include <stdint.h>
-#include <libultraship/libultraship.h>
 
 void DrawItemAmmo(int itemId);
 

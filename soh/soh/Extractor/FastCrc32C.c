@@ -35,7 +35,7 @@
 #endif
 
 #if defined(_MSC_VER) && defined(_M_ARM64)
-#define INTRIN_CRC32_64(crc, data) crc = __crc32cd(crc, data)
+#define INTRIN_CRC32_64(crc, data) crc = (uint32_t)__crc32cd(crc, data)
 #define INTRIN_CRC32_32(crc, data) crc = __crc32cw(crc, data)
 #define INTRIN_CRC32_16(crc, data) crc = __crc32ch(crc, data)
 #define INTRIN_CRC32_8(crc, data) crc = __crc32cb(crc, data)
@@ -46,7 +46,7 @@
 #define INTRIN_CRC32_8(crc, value) __asm__("crc32cb %w[c], %w[c], %w[v]" : [c] "+r"(crc) : [v] "r"(value))
 #elif ((defined(__GNUC__) || defined(_MSC_VER)) && \
        (defined(_M_X64) || defined(_M_IX86) || defined(__x86_64__) || defined(__i386__)))
-#define INTRIN_CRC32_64(crc, data) crc = _mm_crc32_u64(crc, data)
+#define INTRIN_CRC32_64(crc, data) crc = (uint32_t)_mm_crc32_u64(crc, data)
 #define INTRIN_CRC32_32(crc, data) crc = _mm_crc32_u32(crc, data)
 #define INTRIN_CRC32_16(crc, data) crc = _mm_crc32_u16(crc, data)
 #define INTRIN_CRC32_8(crc, data) crc = _mm_crc32_u8(crc, data)

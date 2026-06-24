@@ -1056,7 +1056,7 @@ static void InitTrickNames() {
     trickNameTable[RG_SPEAK_HYLIAN] = {
         // TODO_TRANSLATE
         Text{ "Human Jingle Nut" },
-        Text{ "Sheikah Jabber nut" },
+        Text{ "Sheikah Jabber Nut" },
         Text{ "Lorulean Blabber Nut" },
     };
     trickNameTable[RG_SPEAK_KOKIRI] = {

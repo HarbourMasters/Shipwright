@@ -2,6 +2,7 @@
 #include "OTRGlobals.h"
 #include "variables.h"
 #include "z64.h"
+#include "macros.h"
 #include "cvar_prefixes.h"
 #include "Enhancements/enhancementTypes.h"
 #include "Enhancements/randomizer/dungeon.h"
@@ -19,6 +20,68 @@
 #include <stb_image.h>
 
 extern "C" PlayState* gPlayState;
+
+struct LinkTunicDListCacheKey {
+    size_t operator()(const std::pair<std::string, const char*>& key) const {
+        return std::hash<std::string>{}(key.first) ^ std::hash<const char*>{}(key.second);
+    }
+};
+
+static const char* ResourceMgr_ResolveLinkTunicDListPath(const char* path) {
+    if (path == nullptr) {
+        return nullptr;
+    }
+
+    const char* originalPath = path;
+    constexpr std::string_view adultPrefix = "__OTR__objects/object_link_boy/";
+    constexpr std::string_view childPrefix = "__OTR__objects/object_link_child/";
+
+    std::string_view objectPrefix;
+    const char* objectFolder;
+
+    if (std::string_view(originalPath).starts_with(adultPrefix)) {
+        objectPrefix = adultPrefix;
+        objectFolder = "object_link_boy";
+    } else if (std::string_view(originalPath).starts_with(childPrefix)) {
+        objectPrefix = childPrefix;
+        objectFolder = "object_link_child";
+    } else {
+        return path;
+    }
+
+    const char* tunicSuffix = nullptr;
+    switch (TUNIC_EQUIP_TO_PLAYER(CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC))) {
+        case PLAYER_TUNIC_KOKIRI:
+            tunicSuffix = "kokiri";
+            break;
+        case PLAYER_TUNIC_GORON:
+            tunicSuffix = "goron";
+            break;
+        case PLAYER_TUNIC_ZORA:
+            tunicSuffix = "zora";
+            break;
+        default:
+            return path;
+    }
+
+    static std::unordered_map<std::pair<std::string, const char*>, std::string, LinkTunicDListCacheKey>
+        sResolvedLinkTunicDListPaths;
+    std::pair<std::string, const char*> cacheKey{ originalPath, tunicSuffix };
+    if (auto it = sResolvedLinkTunicDListPaths.find(cacheKey); it != sResolvedLinkTunicDListPaths.end()) {
+        return it->second.c_str();
+    }
+
+    const std::string candidate =
+        fmt::format("__OTR__objects/{}_{}/{}", objectFolder, tunicSuffix, originalPath + objectPrefix.size());
+
+    if (!ResourceGetIsCustomByName(candidate.c_str()) && !ResourceMgr_FileExists(candidate.c_str()) &&
+        !(ResourceMgr_IsAltAssetsEnabled() && ResourceMgr_FileAltExists(candidate.c_str()))) {
+        return path;
+    }
+
+    auto it = sResolvedLinkTunicDListPaths.emplace(std::move(cacheKey), candidate).first;
+    return it->second.c_str();
+}
 
 extern "C" uint32_t ResourceMgr_GetNumGameVersions() {
     return static_cast<u32>(
@@ -307,6 +370,7 @@ extern "C" void ResourceMgr_PushCurrentDirectory(char* path) {
 }
 
 extern "C" Gfx* ResourceMgr_LoadGfxByName(const char* path) {
+    path = ResourceMgr_ResolveLinkTunicDListPath(path);
     // When an alt resource exists for the DL, we need to unload the original asset
     // to clear the cache so the alt asset will be loaded instead
     // OTRTODO: If Alt loading over original cache is fixed, this line can most likely be removed

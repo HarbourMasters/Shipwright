@@ -13,6 +13,7 @@
 #include "soh/Enhancements/audio/AudioEditor.h"
 #include "soh/Enhancements/randomizer/logic.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
+#include "soh/Enhancements/randomizer/randomizer_check_tracker.h"
 
 #define Path _Path
 #define PATH_HACK
@@ -32,9 +33,6 @@ extern "C" {
 #include "macros.h"
 extern PlayState* gPlayState;
 }
-
-#include <libultraship/bridge.h>
-#include <libultraship/libultraship.h>
 
 #define CMD_REGISTER Ship::Context::GetRawInstance()->GetConsole()->AddCommand
 // TODO: Commands should be using the output passed in.

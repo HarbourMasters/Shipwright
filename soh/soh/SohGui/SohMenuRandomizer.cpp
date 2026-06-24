@@ -691,7 +691,9 @@ void SohMenu::AddMenuRandomizer() {
     randoSettings->GetOptionGroup(RSG_MENU_SIDEBAR_DUNGEONS).AddWidgets(path);
     randoSettings->GetOptionGroup(RSG_MENU_SIDEBAR_SHUFFLES).AddWidgets(path);
     randoSettings->GetOptionGroup(RSG_MENU_SIDEBAR_HINTS_TRAPS).AddWidgets(path);
-    randoSettings->GetOptionGroup(RSG_MENU_SIDEBAR_STARTING_ITEMS).AddWidgets(path);
+    path.sidebarName = "Starting Items";
+    AddSidebarEntry("Randomizer", path.sidebarName, 1);
+    AddWidget(path, "Starting Items", WIDGET_CUSTOM).CustomFunction(DrawStartingItemsMenu);
     path.sidebarName = "Locations";
     AddSidebarEntry("Randomizer", path.sidebarName, 1);
     AddWidget(path, "Excluded Locations", WIDGET_CUSTOM).CustomFunction(DrawLocationsMenu);

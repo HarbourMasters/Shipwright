@@ -53,7 +53,7 @@ static void Sparkles(PlayState* play, Actor* actor, bool boulder, CheckIdentity 
     } else {
         Matrix_Translate(actor->world.pos.x + xOffset, actor->world.pos.y + yOffset, actor->world.pos.z + zOffset,
                          MTXMODE_NEW);
-        Matrix_RotateZ(-M_PI / 2, MTXMODE_APPLY);
+        Matrix_RotateZ(static_cast<f32>(-M_PI / 2), MTXMODE_APPLY);
         if (boulder) {
             Matrix_Scale(0.04f, 0.04f, 0.04f, MTXMODE_APPLY);
         } else {
@@ -153,10 +153,10 @@ void Rock_RandomizerSpawnCollectible(Actor* actor, CheckIdentity rockIdentity, P
     item00->actor.draw = (ActorFunc)EnItem00_DrawRandomizedItem;
     item00->actor.velocity.y = 9.0f;
     item00->actor.speedXZ = 2.0f;
-    item00->actor.world.rot.y = Rand_CenteredFloat(65536.0f);
+    item00->actor.world.rot.y = static_cast<s16>(Rand_CenteredFloat(65536.0f));
     switch (rockIdentity.randomizerCheck) {
         case RC_SPIRIT_TEMPLE_MQ_ENTRANCE_EYE_BOULDER:
-            item00->actor.world.rot.y = 0x8000;
+            item00->actor.world.rot.y = static_cast<s16>(0x8000);
             break;
         case RC_SPIRIT_TEMPLE_MQ_GIBDO_BOULDER_LOW:
             item00->actor.velocity.y = 15.0f;

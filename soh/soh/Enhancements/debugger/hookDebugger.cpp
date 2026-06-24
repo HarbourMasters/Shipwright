@@ -1,4 +1,5 @@
 #include "hookDebugger.h"
+#include <libultraship/libultra.h>
 #include "soh/SohGui/SohGui.hpp"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/SohGui/UIWidgets.hpp"

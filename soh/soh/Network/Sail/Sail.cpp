@@ -1,5 +1,4 @@
 #include "Sail.h"
-#include <libultraship/bridge.h>
 #include <libultraship/libultraship.h>
 #include <nlohmann/json.hpp>
 #include "soh/ShipUtils.h"

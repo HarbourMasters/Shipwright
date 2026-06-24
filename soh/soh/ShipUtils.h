@@ -1,10 +1,12 @@
 #ifndef SHIP_UTILS_H
 #define SHIP_UTILS_H
 
-#include <libultraship/libultraship.h>
+#include <libultraship/libultra.h>
 
 #ifdef __cplusplus
+#include <array>
 #include <set>
+#include <vector>
 
 void LoadGuiTextures();
 

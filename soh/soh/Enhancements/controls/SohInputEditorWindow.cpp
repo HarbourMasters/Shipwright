@@ -1,5 +1,7 @@
 #include "SohInputEditorWindow.h"
+#include <ship/controller/controldeck/ControlDeck.h>
 #include <ship/utils/StringHelper.h>
+#include <libultraship/libultra.h>
 #include <fast/Fast3dWindow.h>
 #include "soh/OTRGlobals.h"
 #include "soh/SohGui/SohMenu.h"

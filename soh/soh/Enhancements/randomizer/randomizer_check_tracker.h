@@ -5,8 +5,6 @@
 #include "randomizer_check_objects.h"
 #include "soh/SohGui/UIWidgets.hpp"
 
-#include <libultraship/libultraship.h>
-
 namespace CheckTracker {
 
 class CheckTrackerSettingsWindow final : public Ship::GuiWindow {

@@ -2,9 +2,7 @@
 #include <string>
 #include <fstream>
 #include <ship/config/Config.h>
-#include <libultraship/classes.h>
 #include <nlohmann/json.hpp>
-#include <libultraship/libultraship.h>
 #include <ship/resource/type/Json.h>
 #include "soh/OTRGlobals.h"
 #include "soh/util.h"

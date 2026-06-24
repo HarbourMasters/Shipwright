@@ -1,4 +1,4 @@
-#include "libultraship/libultraship.h"
+#include <ship/config/Config.h>
 
 namespace SOH {
 class ConfigVersion1Updater final : public Ship::ConfigVersionUpdater {

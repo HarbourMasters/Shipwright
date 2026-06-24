@@ -1,6 +1,5 @@
 #include "Anchor.h"
 #include <nlohmann/json.hpp>
-#include <libultraship/libultraship.h>
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/nametag.h"
 #include "soh/ObjectExtension/ObjectExtension.h"

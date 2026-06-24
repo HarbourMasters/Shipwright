@@ -3,6 +3,8 @@
 #include "logic.h"
 #include "3drando/random.hpp"
 
+#include <spdlog/spdlog.h>
+
 namespace Rando {
 ItemLocation::ItemLocation() : rc(RC_UNKNOWN_CHECK) {
 }

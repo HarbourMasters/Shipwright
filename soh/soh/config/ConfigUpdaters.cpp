@@ -1,5 +1,7 @@
 #include "ConfigUpdaters.h"
 
+#include <libultraship/bridge/consolevariablebridge.h>
+
 namespace SOH {
 struct Migration {
     const char* from;
