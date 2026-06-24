@@ -3061,8 +3061,8 @@ typedef enum {
     // true
     // ```
     // #### `args`
-    // - None
-    VB_PREVENT_HOOKSHOT_NOSPAWN_SOFTLOCK,
+    // - `*Player`
+    VB_INIT_HOOKSHOT_IA,
 
     // #### `result`
     // ```c

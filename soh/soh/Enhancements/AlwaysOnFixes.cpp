@@ -2,6 +2,11 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ShipInit.hpp"
 
+extern "C" {
+extern void Player_UseItem(PlayState*, Player*, s32);
+extern PlayState* gPlayState;
+}
+
 // Dying or using Din's Fire in the Outside Temple of Time area crashes the game.
 // In vanilla this can never happen, but with CrowdControl, Sail, Unrestricted Items
 // and others this *can* happen. Because it checks for a camId of -1, this code path
@@ -18,8 +23,12 @@ void RegisterFixOutsideTotCrash() {
 // Vanilla bug: If Hookshot doesn't spawn, player is softlocked. (eg. use as child, no memory left)
 // Fix: Change item to none if no spawn. (Ranged weapon state is removed by `Player_InitItemAction`)
 void RegisterPreventHookshotNoSpawnSoftlock() {
-    COND_VB_SHOULD(VB_PREVENT_HOOKSHOT_NOSPAWN_SOFTLOCK, true, {
-            *should = true;
+    COND_VB_SHOULD(VB_INIT_HOOKSHOT_IA, true, {
+        Player* player = va_arg(args, Player*);
+        if (player->heldActor == NULL) {
+            Player_UseItem(gPlayState, player, 0xFF);
+        }
+
     });
 }
 
@@ -29,10 +38,10 @@ void RegisterPreventHookshotNoSpawnSoftlock() {
 // Fix: Ensure that parent actor has Hookshot actor ID before starting flying.
 void RegisterPreventHookshotParentSoftlock() {
     COND_VB_SHOULD(VB_PREVENT_HOOKSHOT_PARENT_SOFTLOCK, true, {
-            s16* parentId = va_arg(args, s16*);
-            if (*parentId != ACTOR_ARMS_HOOK) {
-                *should = false;
-            }
+        s16* parentId = va_arg(args, s16*);
+        if (*parentId != ACTOR_ARMS_HOOK) {
+            *should = false;
+        }
     });
 }
 
