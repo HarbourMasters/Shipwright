@@ -8,6 +8,7 @@
 #include "z_item_shield.h"
 #include "objects/object_link_child/object_link_child.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
