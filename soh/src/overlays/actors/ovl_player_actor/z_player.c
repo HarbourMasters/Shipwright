@@ -525,7 +525,7 @@ static PlayerAgeProperties sAgeProperties[] = {
     },
 };
 
-static u32 sNoclipEnabled = false;
+u32 sNoclipEnabled = false;
 static f32 sControlStickMagnitude = 0.0f;
 static s16 sControlStickAngle = 0;
 static s16 sControlStickWorldYaw = 0;

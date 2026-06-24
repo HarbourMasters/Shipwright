@@ -145,7 +145,7 @@ void SetupGuiElements() {
         std::make_shared<CosmeticsEditorWindow>(CVAR_WINDOW("CosmeticsEditor"), "Cosmetics Editor", ImVec2(550, 520));
     gui->AddGuiWindow(mCosmeticsEditorWindow);
     mActorViewerWindow =
-        std::make_shared<ActorViewerWindow>(CVAR_WINDOW("ActorViewer"), "Actor Viewer", ImVec2(520, 600));
+        std::make_shared<ActorViewerWindow>(CVAR_WINDOW("ActorViewer"), "Actor Viewer", ImVec2(1200, 700));
     gui->AddGuiWindow(mActorViewerWindow);
     mColViewerWindow =
         std::make_shared<ColViewerWindow>(CVAR_WINDOW("CollisionViewer"), "Collision Viewer", ImVec2(520, 600));
