@@ -1403,8 +1403,13 @@ void Settings::CreateOptions() {
     OPT_BOOL(RSK_DEFENSE_UPGRADE, CVAR_RANDOMIZER_SETTING("DefenseUpgrade"));
     OPT_CALLBACK(RSK_DEFENSE_UPGRADE, {
         bool on = CVarGetInteger(CVAR_RANDOMIZER_SETTING("DefenseUpgrade"), 0);
-        if (on) { mOptions[RSK_DEFENSE_UPGRADE_ADJUSTABLE].Unhide(); }
-        else {
+        if (on) {
+            mOptions[RSK_DEFENSE_UPGRADE_ADJUSTABLE].Unhide();
+            if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("DefenseUpgradeAdjustable"), 0)) {
+                mOptions[RSK_DEFENSE_UPGRADE_TOTAL].Unhide();
+                mOptions[RSK_DEFENSE_UPGRADE_REQUIRED].Unhide();
+            }
+        } else {
             mOptions[RSK_DEFENSE_UPGRADE_ADJUSTABLE].Hide();
             mOptions[RSK_DEFENSE_UPGRADE_TOTAL].Hide();
             mOptions[RSK_DEFENSE_UPGRADE_REQUIRED].Hide();
@@ -1413,8 +1418,13 @@ void Settings::CreateOptions() {
     OPT_BOOL(RSK_SPEED_UPGRADE, CVAR_RANDOMIZER_SETTING("SpeedUpgrade"));
     OPT_CALLBACK(RSK_SPEED_UPGRADE, {
         bool on = CVarGetInteger(CVAR_RANDOMIZER_SETTING("SpeedUpgrade"), 0);
-        if (on) { mOptions[RSK_SPEED_UPGRADE_ADJUSTABLE].Unhide(); }
-        else {
+        if (on) {
+            mOptions[RSK_SPEED_UPGRADE_ADJUSTABLE].Unhide();
+            if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("SpeedUpgradeAdjustable"), 0)) {
+                mOptions[RSK_SPEED_UPGRADE_TOTAL].Unhide();
+                mOptions[RSK_SPEED_UPGRADE_REQUIRED].Unhide();
+            }
+        } else {
             mOptions[RSK_SPEED_UPGRADE_ADJUSTABLE].Hide();
             mOptions[RSK_SPEED_UPGRADE_TOTAL].Hide();
             mOptions[RSK_SPEED_UPGRADE_REQUIRED].Hide();
@@ -1423,8 +1433,13 @@ void Settings::CreateOptions() {
     OPT_BOOL(RSK_POWER_UPGRADE, CVAR_RANDOMIZER_SETTING("PowerUpgrade"));
     OPT_CALLBACK(RSK_POWER_UPGRADE, {
         bool on = CVarGetInteger(CVAR_RANDOMIZER_SETTING("PowerUpgrade"), 0);
-        if (on) { mOptions[RSK_POWER_UPGRADE_ADJUSTABLE].Unhide(); }
-        else {
+        if (on) {
+            mOptions[RSK_POWER_UPGRADE_ADJUSTABLE].Unhide();
+            if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("PowerUpgradeAdjustable"), 0)) {
+                mOptions[RSK_POWER_UPGRADE_TOTAL].Unhide();
+                mOptions[RSK_POWER_UPGRADE_REQUIRED].Unhide();
+            }
+        } else {
             mOptions[RSK_POWER_UPGRADE_ADJUSTABLE].Hide();
             mOptions[RSK_POWER_UPGRADE_TOTAL].Hide();
             mOptions[RSK_POWER_UPGRADE_REQUIRED].Hide();
@@ -1435,7 +1450,13 @@ void Settings::CreateOptions() {
         bool on = CVarGetInteger(CVAR_RANDOMIZER_SETTING("MagicStatUpgrade"), 0);
         if (on) {
             mOptions[RSK_MAGIC_STAT_UPGRADE_ADJUSTABLE].Unhide();
+            if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("MagicStatUpgradeAdjustable"), 0)) {
+                mOptions[RSK_MAGIC_STAT_UPGRADE_TOTAL].Unhide();
+                mOptions[RSK_MAGIC_STAT_UPGRADE_REQUIRED].Unhide();
+            }
+            CVarSetInteger(CVAR_RANDOMIZER_SETTING("SariaHint"), 0);
             mOptions[RSK_SARIA_HINT].Disable("Saria's Hint is disabled because the Magic Stat Upgrade replaces the magic meter.");
+            CVarSetInteger(CVAR_RANDOMIZER_SETTING("StartingMagicMeter"), 0);
             mOptions[RSK_STARTING_MAGIC_METER].Disable("Disabled because the Magic Stat Upgrade controls the magic meter.");
         } else {
             mOptions[RSK_MAGIC_STAT_UPGRADE_ADJUSTABLE].Hide();
@@ -1480,8 +1501,13 @@ void Settings::CreateOptions() {
     OPT_BOOL(RSK_CRAWL_SPEED_UPGRADE, CVAR_RANDOMIZER_SETTING("CrawlSpeedUpgrade"));
     OPT_CALLBACK(RSK_CRAWL_SPEED_UPGRADE, {
         bool on = CVarGetInteger(CVAR_RANDOMIZER_SETTING("CrawlSpeedUpgrade"), 0);
-        if (on) { mOptions[RSK_CRAWL_SPEED_UPGRADE_ADJUSTABLE].Unhide(); }
-        else {
+        if (on) {
+            mOptions[RSK_CRAWL_SPEED_UPGRADE_ADJUSTABLE].Unhide();
+            if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("CrawlSpeedUpgradeAdjustable"), 0)) {
+                mOptions[RSK_CRAWL_SPEED_UPGRADE_TOTAL].Unhide();
+                mOptions[RSK_CRAWL_SPEED_UPGRADE_REQUIRED].Unhide();
+            }
+        } else {
             mOptions[RSK_CRAWL_SPEED_UPGRADE_ADJUSTABLE].Hide();
             mOptions[RSK_CRAWL_SPEED_UPGRADE_TOTAL].Hide();
             mOptions[RSK_CRAWL_SPEED_UPGRADE_REQUIRED].Hide();
@@ -1498,8 +1524,13 @@ void Settings::CreateOptions() {
     OPT_BOOL(RSK_CLIMB_SPEED_UPGRADE, CVAR_RANDOMIZER_SETTING("ClimbSpeedUpgrade"));
     OPT_CALLBACK(RSK_CLIMB_SPEED_UPGRADE, {
         bool on = CVarGetInteger(CVAR_RANDOMIZER_SETTING("ClimbSpeedUpgrade"), 0);
-        if (on) { mOptions[RSK_CLIMB_SPEED_UPGRADE_ADJUSTABLE].Unhide(); }
-        else {
+        if (on) {
+            mOptions[RSK_CLIMB_SPEED_UPGRADE_ADJUSTABLE].Unhide();
+            if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ClimbSpeedUpgradeAdjustable"), 0)) {
+                mOptions[RSK_CLIMB_SPEED_UPGRADE_TOTAL].Unhide();
+                mOptions[RSK_CLIMB_SPEED_UPGRADE_REQUIRED].Unhide();
+            }
+        } else {
             mOptions[RSK_CLIMB_SPEED_UPGRADE_ADJUSTABLE].Hide();
             mOptions[RSK_CLIMB_SPEED_UPGRADE_TOTAL].Hide();
             mOptions[RSK_CLIMB_SPEED_UPGRADE_REQUIRED].Hide();
@@ -1516,8 +1547,13 @@ void Settings::CreateOptions() {
     OPT_BOOL(RSK_PUSH_SPEED_UPGRADE, CVAR_RANDOMIZER_SETTING("PushSpeedUpgrade"));
     OPT_CALLBACK(RSK_PUSH_SPEED_UPGRADE, {
         bool on = CVarGetInteger(CVAR_RANDOMIZER_SETTING("PushSpeedUpgrade"), 0);
-        if (on) { mOptions[RSK_PUSH_SPEED_UPGRADE_ADJUSTABLE].Unhide(); }
-        else {
+        if (on) {
+            mOptions[RSK_PUSH_SPEED_UPGRADE_ADJUSTABLE].Unhide();
+            if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("PushSpeedUpgradeAdjustable"), 0)) {
+                mOptions[RSK_PUSH_SPEED_UPGRADE_TOTAL].Unhide();
+                mOptions[RSK_PUSH_SPEED_UPGRADE_REQUIRED].Unhide();
+            }
+        } else {
             mOptions[RSK_PUSH_SPEED_UPGRADE_ADJUSTABLE].Hide();
             mOptions[RSK_PUSH_SPEED_UPGRADE_TOTAL].Hide();
             mOptions[RSK_PUSH_SPEED_UPGRADE_REQUIRED].Hide();
