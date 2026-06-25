@@ -3064,8 +3064,9 @@ void Inventory_ChangeAmmo(s16 item, s16 ammoChange) {
 void Magic_Fill(PlayState* play) {
     if (gSaveContext.isMagicAcquired) {
         gSaveContext.prevMagicState = gSaveContext.magicState;
-        gSaveContext.magicFillTarget = (gSaveContext.isDoubleMagicAcquired + 1) * MAGIC_NORMAL_METER;
-        GameInteractor_Should(VB_MAGIC_FILL_TARGET, true, &gSaveContext.magicFillTarget);
+        if (GameInteractor_Should(VB_MAGIC_FILL_TARGET, true, &gSaveContext.magicFillTarget)) {
+            gSaveContext.magicFillTarget = (gSaveContext.isDoubleMagicAcquired + 1) * MAGIC_NORMAL_METER;
+        }
         gSaveContext.magicState = MAGIC_STATE_FILL;
     }
 }
@@ -3221,8 +3222,9 @@ void Interface_UpdateMagicBar(PlayState* play) {
 
     switch (gSaveContext.magicState) {
         case MAGIC_STATE_STEP_CAPACITY:
-            temp = gSaveContext.magicLevel * MAGIC_NORMAL_METER;
-            GameInteractor_Should(VB_MAGIC_STEP_CAPACITY_TARGET, true, &temp);
+            if (GameInteractor_Should(VB_MAGIC_STEP_CAPACITY_TARGET, true, &temp)) {
+                temp = gSaveContext.magicLevel * MAGIC_NORMAL_METER;
+            }
             if (gSaveContext.magicCapacity != temp) {
                 if (gSaveContext.magicCapacity < temp) {
                     gSaveContext.magicCapacity += 8;

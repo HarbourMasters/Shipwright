@@ -82,9 +82,8 @@ static void RegisterRandoStatUpgradeHooks() {
         s16 magicTotal = adjustable ? 100 : 96;
         s16 cap = (s16)std::round((float)std::min((int)level, (int)required) * ((float)magicTotal / required));
         s16* fillTarget = va_arg(args, s16*);
-        if (*fillTarget > cap) {
-            *fillTarget = cap;
-        }
+        *fillTarget = cap;
+        *should = false;
     });
 
     COND_VB_SHOULD(VB_MAGIC_STEP_CAPACITY_TARGET, IS_RANDO && RAND_GET_OPTION(RSK_MAGIC_STAT_UPGRADE), {
@@ -99,6 +98,7 @@ static void RegisterRandoStatUpgradeHooks() {
         s16* target = va_arg(args, s16*);
         *target = cap;
         gSaveContext.magicFillTarget = cap;
+        *should = false;
     });
 }
 
