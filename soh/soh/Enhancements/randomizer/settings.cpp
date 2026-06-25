@@ -1433,11 +1433,16 @@ void Settings::CreateOptions() {
     OPT_BOOL(RSK_MAGIC_STAT_UPGRADE, CVAR_RANDOMIZER_SETTING("MagicStatUpgrade"));
     OPT_CALLBACK(RSK_MAGIC_STAT_UPGRADE, {
         bool on = CVarGetInteger(CVAR_RANDOMIZER_SETTING("MagicStatUpgrade"), 0);
-        if (on) { mOptions[RSK_MAGIC_STAT_UPGRADE_ADJUSTABLE].Unhide(); }
-        else {
+        if (on) {
+            mOptions[RSK_MAGIC_STAT_UPGRADE_ADJUSTABLE].Unhide();
+            mOptions[RSK_SARIA_HINT].Disable("Saria's Hint is disabled because the Magic Stat Upgrade replaces the magic meter.");
+            mOptions[RSK_STARTING_MAGIC_METER].Disable("Disabled because the Magic Stat Upgrade controls the magic meter.");
+        } else {
             mOptions[RSK_MAGIC_STAT_UPGRADE_ADJUSTABLE].Hide();
             mOptions[RSK_MAGIC_STAT_UPGRADE_TOTAL].Hide();
             mOptions[RSK_MAGIC_STAT_UPGRADE_REQUIRED].Hide();
+            mOptions[RSK_SARIA_HINT].Enable();
+            mOptions[RSK_STARTING_MAGIC_METER].Enable();
         }
     });
     OPT_BOOL(RSK_DEFENSE_UPGRADE_ADJUSTABLE, CVAR_RANDOMIZER_SETTING("DefenseUpgradeAdjustable"));
