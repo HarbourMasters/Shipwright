@@ -116,6 +116,15 @@ static const ALIGN_ASSET(2) char gStatSpeedDL[] = dgStatSpeedDL;
 #define dgStatPowerDL "__OTR__objects/object_stat_upgrade/gStatPowerDL"
 static const ALIGN_ASSET(2) char gStatPowerDL[] = dgStatPowerDL;
 
+#define dgStatClimbSpeedDL "__OTR__objects/object_stat_upgrade/gStatClimbSpeedDL"
+static const ALIGN_ASSET(2) char gStatClimbSpeedDL[] = dgStatClimbSpeedDL;
+
+#define dgStatCrawlSpeedDL "__OTR__objects/object_stat_upgrade/gStatCrawlSpeedDL"
+static const ALIGN_ASSET(2) char gStatCrawlSpeedDL[] = dgStatCrawlSpeedDL;
+
+#define dgStatPushSpeedDL "__OTR__objects/object_stat_upgrade/gStatPushSpeedDL"
+static const ALIGN_ASSET(2) char gStatPushSpeedDL[] = dgStatPushSpeedDL;
+
 #define dgBossSoulSkullDL "__OTR__objects/object_boss_soul/gGIBossSoulSkullDL"
 static const ALIGN_ASSET(2) char gBossSoulSkullDL[] = dgBossSoulSkullDL;
 

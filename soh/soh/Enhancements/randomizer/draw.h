@@ -37,6 +37,9 @@ void Randomizer_DrawStickBag(PlayState* play, GetItemEntry* getItemEntry);
 void Randomizer_DrawDefenseUpgrade(PlayState* play, GetItemEntry* getItemEntry);
 void Randomizer_DrawSpeedUpgrade(PlayState* play, GetItemEntry* getItemEntry);
 void Randomizer_DrawPowerUpgrade(PlayState* play, GetItemEntry* getItemEntry);
+void Randomizer_DrawCrawlSpeedUpgrade(PlayState* play, GetItemEntry* getItemEntry);
+void Randomizer_DrawClimbSpeedUpgrade(PlayState* play, GetItemEntry* getItemEntry);
+void Randomizer_DrawPushSpeedUpgrade(PlayState* play, GetItemEntry* getItemEntry);
 
 #define GET_ITEM_MYSTERY                                                                                 \
     {                                                                                                    \

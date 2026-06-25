@@ -2347,40 +2347,48 @@ void Settings::CreateOptions() {
                                   &mOptions[RSK_QUARTER_HEART],
                                   &mOptions[RSK_DEFENSE_UPGRADE],
                                   &mOptions[RSK_DEFENSE_UPGRADE_ADJUSTABLE],
-                                  &mOptions[RSK_DEFENSE_UPGRADE_TOTAL],
-                                  &mOptions[RSK_DEFENSE_UPGRADE_REQUIRED],
                                   &mOptions[RSK_SPEED_UPGRADE],
                                   &mOptions[RSK_SPEED_UPGRADE_ADJUSTABLE],
-                                  &mOptions[RSK_SPEED_UPGRADE_TOTAL],
-                                  &mOptions[RSK_SPEED_UPGRADE_REQUIRED],
                                   &mOptions[RSK_POWER_UPGRADE],
                                   &mOptions[RSK_POWER_UPGRADE_ADJUSTABLE],
-                                  &mOptions[RSK_POWER_UPGRADE_TOTAL],
-                                  &mOptions[RSK_POWER_UPGRADE_REQUIRED],
                                   &mOptions[RSK_MAGIC_STAT_UPGRADE],
                                   &mOptions[RSK_MAGIC_STAT_UPGRADE_ADJUSTABLE],
-                                  &mOptions[RSK_MAGIC_STAT_UPGRADE_TOTAL],
-                                  &mOptions[RSK_MAGIC_STAT_UPGRADE_REQUIRED],
                                   &mOptions[RSK_CRAWL_SPEED_UPGRADE],
                                   &mOptions[RSK_CRAWL_SPEED_UPGRADE_ADJUSTABLE],
-                                  &mOptions[RSK_CRAWL_SPEED_UPGRADE_TOTAL],
-                                  &mOptions[RSK_CRAWL_SPEED_UPGRADE_REQUIRED],
                                   &mOptions[RSK_CLIMB_SPEED_UPGRADE],
                                   &mOptions[RSK_CLIMB_SPEED_UPGRADE_ADJUSTABLE],
-                                  &mOptions[RSK_CLIMB_SPEED_UPGRADE_TOTAL],
-                                  &mOptions[RSK_CLIMB_SPEED_UPGRADE_REQUIRED],
                                   &mOptions[RSK_PUSH_SPEED_UPGRADE],
                                   &mOptions[RSK_PUSH_SPEED_UPGRADE_ADJUSTABLE],
-                                  &mOptions[RSK_PUSH_SPEED_UPGRADE_TOTAL],
-                                  &mOptions[RSK_PUSH_SPEED_UPGRADE_REQUIRED],
                               },
                               WidgetContainerType::SECTION);
     mOptionGroups[RSG_MENU_COLUMN_STAT_UPGRADES] =
         OptionGroup::SubGroup("", { &mOptionGroups[RSG_MENU_SECTION_STAT_UPGRADES] }, WidgetContainerType::COLUMN);
+    mOptionGroups[RSG_MENU_SECTION_STAT_UPGRADE_SLIDERS] =
+        OptionGroup::SubGroup("Amounts",
+                              {
+                                  &mOptions[RSK_DEFENSE_UPGRADE_TOTAL],
+                                  &mOptions[RSK_DEFENSE_UPGRADE_REQUIRED],
+                                  &mOptions[RSK_SPEED_UPGRADE_TOTAL],
+                                  &mOptions[RSK_SPEED_UPGRADE_REQUIRED],
+                                  &mOptions[RSK_POWER_UPGRADE_TOTAL],
+                                  &mOptions[RSK_POWER_UPGRADE_REQUIRED],
+                                  &mOptions[RSK_MAGIC_STAT_UPGRADE_TOTAL],
+                                  &mOptions[RSK_MAGIC_STAT_UPGRADE_REQUIRED],
+                                  &mOptions[RSK_CRAWL_SPEED_UPGRADE_TOTAL],
+                                  &mOptions[RSK_CRAWL_SPEED_UPGRADE_REQUIRED],
+                                  &mOptions[RSK_CLIMB_SPEED_UPGRADE_TOTAL],
+                                  &mOptions[RSK_CLIMB_SPEED_UPGRADE_REQUIRED],
+                                  &mOptions[RSK_PUSH_SPEED_UPGRADE_TOTAL],
+                                  &mOptions[RSK_PUSH_SPEED_UPGRADE_REQUIRED],
+                              },
+                              WidgetContainerType::SECTION);
+    mOptionGroups[RSG_MENU_COLUMN_STAT_UPGRADE_SLIDERS] = OptionGroup::SubGroup(
+        "", { &mOptionGroups[RSG_MENU_SECTION_STAT_UPGRADE_SLIDERS] }, WidgetContainerType::COLUMN);
     mOptionGroups[RSG_MENU_SIDEBAR_STAT_UPGRADES] =
         OptionGroup::SubGroup("Stat Upgrades",
                               std::initializer_list<OptionGroup*>{
                                   &mOptionGroups[RSG_MENU_COLUMN_STAT_UPGRADES],
+                                  &mOptionGroups[RSG_MENU_COLUMN_STAT_UPGRADE_SLIDERS],
                               },
                               WidgetContainerType::TABLE);
     mOptionGroups[RSG_OPEN] = OptionGroup("Open Settings", {
