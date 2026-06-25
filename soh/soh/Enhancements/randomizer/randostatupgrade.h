@@ -62,4 +62,3 @@ float GetPushStatValue(void);
 #ifdef __cplusplus
 }
 #endif
-
