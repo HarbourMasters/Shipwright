@@ -1,12 +1,15 @@
+#include "soh/ActorDB.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ShipInit.hpp"
+#include "src/overlays/actors/ovl_En_Partner/z_en_partner.h"
 
 extern "C" {
 #include "macros.h"
 #include "functions.h"
 extern PlayState* gPlayState;
-extern s16 gEnPartnerId;
 }
+
+static s16 ivanActorId;
 
 #define CVAR_NAME CVAR_ENHANCEMENT("IvanCoopModeEnabled")
 #define CVAR_VALUE CVarGetInteger(CVAR_NAME, 0)
@@ -19,11 +22,11 @@ static void SpawnIvan() {
     if (!player)
         return;
 
-    if (Actor_Find(&gPlayState->actorCtx, gEnPartnerId, ACTORCAT_ITEMACTION))
+    if (Actor_Find(&gPlayState->actorCtx, ivanActorId, ACTORCAT_ITEMACTION))
         return;
 
     PosRot& world = player->actor.world;
-    Actor_Spawn(&gPlayState->actorCtx, gPlayState, gEnPartnerId, world.pos.x,
+    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ivanActorId, world.pos.x,
                 world.pos.y + Player_GetHeight(player) + 5.0f, world.pos.z, 0, world.rot.y, 0, 1);
 }
 
@@ -31,7 +34,7 @@ static void KillIvan() {
     if (!gPlayState)
         return;
 
-    Actor* ivan = Actor_Find(&gPlayState->actorCtx, gEnPartnerId, ACTORCAT_ITEMACTION);
+    Actor* ivan = Actor_Find(&gPlayState->actorCtx, ivanActorId, ACTORCAT_ITEMACTION);
     if (ivan)
         Actor_Kill(ivan);
 }
@@ -85,7 +88,7 @@ static void PatchDistIfNeeded(Actor* actor) {
     if (!ShouldPatchDist(actor->id))
         return;
 
-    Actor* ivan = Actor_Find(&gPlayState->actorCtx, gEnPartnerId, ACTORCAT_ITEMACTION);
+    Actor* ivan = Actor_Find(&gPlayState->actorCtx, ivanActorId, ACTORCAT_ITEMACTION);
     if (ivan == nullptr)
         return;
 
@@ -97,7 +100,26 @@ static void PatchDistIfNeeded(Actor* actor) {
 
 // #endregion
 
+static ActorDBInit EnPartnerInit = {
+    "En_Partner",
+    "Ivan",
+    ACTORCAT_ITEMACTION,
+    (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED | ACTOR_FLAG_HOOKSHOT_PULLS_PLAYER |
+     ACTOR_FLAG_CAN_PRESS_SWITCHES),
+    OBJECT_GAMEPLAY_KEEP,
+    sizeof(EnPartner),
+    (ActorFunc)EnPartner_Init,
+    (ActorFunc)EnPartner_Destroy,
+    (ActorFunc)EnPartner_Update,
+    (ActorFunc)EnPartner_Draw,
+    nullptr,
+};
+
 static void RegisterIvanCoop() {
+    // Register in ActorDB on boot, regardless of whether Ivan is enabled
+    if (!ivanActorId)
+        ivanActorId = ActorDB::Instance->AddEntry(EnPartnerInit).entry.id;
+
     if (CVAR_VALUE)
         SpawnIvan();
     else
