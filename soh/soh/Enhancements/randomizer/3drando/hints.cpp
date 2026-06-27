@@ -502,7 +502,7 @@ static int32_t getRandomWeight(uint32_t totalWeight) {
 
 static void DistributeAndPlaceHints(std::vector<HintDistributionSetting>& distTable, size_t totalStones) {
     auto ctx = Rando::Context::GetInstance();
-    const uint8_t junkIdx = static_cast<uint8_t>(distTable.size());
+    const uint8_t junkIdx = static_cast<uint8_t>(distTable.size() - 1);
 
     // Apply fixed hints upfront (they don't participate in weighted selection)
     for (size_t i = 0; i < distTable.size(); i++) {
