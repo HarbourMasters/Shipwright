@@ -1,3 +1,5 @@
+#include <libultraship/bridge/consolevariablebridge.h>
+#include "soh/cvar_prefixes.h"
 #include "item_category_adj.h"
 #include "z64item.h"
 #include "variables.h"
@@ -6,6 +8,11 @@
 
 GetItemCategory Randomizer_AdjustItemCategory(GetItemEntry item) {
     GetItemCategory category = item.getItemCategory;
+
+    // Fixed mode: Always show the item category
+    if (CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), CSMC_OFF) == CSMC_FIXED) {
+        return category;
+    }
 
     // Downgrade bombchus to lesser if the player already has bombchus
     if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU &&

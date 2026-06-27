@@ -16,6 +16,9 @@
 #include "soh/Enhancements/randomizer/rng.h"
 #include "soh/Enhancements/randomizer/randomizer_check_tracker.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
+#include "item_category_adj.h"
+#include "soh/cvar_prefixes.h"
+#include <libultraship/bridge/consolevariablebridge.h>
 
 #include <vector>
 
@@ -379,12 +382,20 @@ GetItemEntry Context::GetFinalGIEntry(const RandomizerCheck rc, const bool check
         return ItemTableManager::Instance->RetrieveItemEntry(
             MOD_NONE, StaticData::RetrieveItem(StaticData::GetLocation(rc)->GetVanillaItem()).GetItemID());
     }
-    if (checkObtainability && OTRGlobals::Instance->gRandomizer->GetItemObtainabilityFromRandomizerGet(
-                                  itemLoc->GetPlacedRandomizerGet()) != CAN_OBTAIN) {
+    const auto itemCategory = itemLoc->GetPlacedItem().GetCategory();
+    const auto cmcMode = CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), CSMC_OFF);
+    const auto obtainability =
+        OTRGlobals::Instance->gRandomizer->GetItemObtainabilityFromRandomizerGet(itemLoc->GetPlacedRandomizerGet());
+    if (checkObtainability && obtainability != CAN_OBTAIN) {
         if (spoilAreas) {
             CheckTracker::SpoilAreaFromCantObtain(itemLoc->GetPlacedRandomizerGet());
         }
-        return ItemTableManager::Instance->RetrieveItemEntry(MOD_NONE, GI_RUPEE_BLUE);
+        GetItemEntry bluepee = ItemTableManager::Instance->RetrieveItemEntry(MOD_NONE, GI_RUPEE_BLUE);
+        // If CSMC Fixed is enabled and we already have the item, get the original item category
+        if (cmcMode == CSMC_FIXED && obtainability == CANT_OBTAIN_ALREADY_HAVE) {
+            bluepee.getItemCategory = itemCategory;
+        }
+        return bluepee;
     }
     GetItemEntry giEntry = itemLoc->GetPlacedItem().GetGIEntry_Copy();
     if (overrides.contains(rc)) {
@@ -394,6 +405,10 @@ GetItemEntry Context::GetFinalGIEntry(const RandomizerCheck rc, const bool check
         giEntry.drawItemId = fakeGiEntry->drawItemId;
         giEntry.drawModIndex = fakeGiEntry->drawModIndex;
         giEntry.drawFunc = fakeGiEntry->drawFunc;
+    }
+    // If CSMC Fixed is enabled, override the resolution of category and get it from the item directly
+    if (cmcMode == CSMC_FIXED) {
+        giEntry.getItemCategory = itemCategory;
     }
     return giEntry;
 }

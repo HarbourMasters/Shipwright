@@ -9,6 +9,8 @@
 #include <soh/Enhancements/TimeDisplay/TimeDisplay.h>
 #include "soh/Enhancements/Restorations/GetItemManipulation.h"
 #include "soh/Enhancements/randomizer/SeedContext.h"
+#include "soh/Enhancements/randomizer/randomizer.h"
+#include "soh/Enhancements/randomizer/item_category_adj.h"
 #include <ship/Context.h>
 
 extern "C" {
@@ -138,6 +140,12 @@ static const std::map<int32_t, const char*> dampeDropRates = {
     { DAMPE_INFERNO, "Dampe's Inferno" },
 };
 
+static const std::map<int32_t, const char*> csmcValues = {
+    { CSMC_OFF, "Off" },
+    { CSMC_ADAPTABLE, "Adaptable" },
+    { CSMC_FIXED, "Fixed" },
+};
+
 static const std::map<int32_t, const char*> cursorAnywhereValues = {
     { PAUSE_ANY_CURSOR_RANDO_ONLY, "Only in Rando" },
     { PAUSE_ANY_CURSOR_ALWAYS_ON, "Always" },
@@ -211,16 +219,21 @@ void SohMenu::AddMenuEnhancements() {
             "then asks if you want to Continue, Reset, or Reset to Spawn."));
 
     AddWidget(path, "Containers Match Contents", WIDGET_SEPARATOR_TEXT);
-    AddWidget(path, "Containers Match Contents", WIDGET_CVAR_CHECKBOX)
+    AddWidget(path, "Containers Match Contents", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"))
         .Callback([](WidgetInfo& info) {
-            if (!CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), 0)) {
+            if (!CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), CSMC_OFF)) {
                 CVarSetInteger(CVAR_ENHANCEMENT("ChestSizeDependsStoneOfAgony"), 0);
             }
         })
-        .Options(CheckboxOptions().DefaultValue(false).Tooltip(
-            "Toggle to change container textures to match their contents in randomizer games.\n"
-            "Categories: Major items, Lesser items, Junk items, Small keys, Boss keys, Skulltula Tokens."));
+        .Options(ComboboxOptions()
+                     .ComboMap(csmcValues)
+                     .DefaultIndex(CSMC_OFF)
+                     .Tooltip("Change container textures to match their contents in randomizer games.\n"
+                              "Adaptable: a progressive upgrade or additional bottles show as a lesser item.\n"
+                              "Fixed: containers always show the item category.\n"
+                              "Categories: Major items, Lesser items, Junk items, Small keys, Boss keys, Skulltula "
+                              "Tokens, Pieces of Heart."));
     AddWidget(path, "Containers of Agony", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("ChestSizeDependsStoneOfAgony"))
         .PreFunc([](WidgetInfo& info) {
