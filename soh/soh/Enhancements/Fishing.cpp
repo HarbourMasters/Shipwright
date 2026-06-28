@@ -39,4 +39,5 @@ void RegisterAllowFishingBlankB() {
 }
 
 static RegisterShipInitFunc initFunc(RegisterFishingMessages, { CVAR_ENHANCEMENT("CustomizeFishing") });
-static RegisterShipInitFunc initAllowFishingBlankB(RegisterAllowFishingBlankB, { CVAR_ENHANCEMENT("FishingBlankB"), "IS_RANDO" });
+static RegisterShipInitFunc initAllowFishingBlankB(RegisterAllowFishingBlankB,
+                                                   { CVAR_ENHANCEMENT("FishingBlankB"), "IS_RANDO" });
