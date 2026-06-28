@@ -7,7 +7,6 @@ extern "C" {
 #include "variables.h"
 extern void Player_UseItem(PlayState*, Player*, s32);
 extern PlayState* gPlayState;
-extern SaveContext gSaveContext;
 }
 
 // Dying or using Din's Fire in the Outside Temple of Time area crashes the game.
@@ -58,27 +57,7 @@ void RegisterPreventHookshotParentSoftlock() {
     });
 }
 
-// Vanilla bug: Not possible to fish with blank B because the blank B item value 0xFF gets saved
-// as temp B, which also makes B button disabled - fishing pole gets unequipped.
-// Fix: Disregard disabled B when fishing, and set used item to fishing pole on B press.
-void RegisterAllowBlankBFishing() {
-    COND_VB_SHOULD(VB_ALLOW_BLANK_B_FISHING_EQUIP, true, {
-        if (gPlayState->interfaceCtx.unk_260 != 0 && gSaveContext.equips.buttonItems[0] == ITEM_FISHING_POLE) {
-            *should = false;
-        }
-    });
-
-    COND_VB_SHOULD(VB_ALLOW_BLANK_B_FISHING_ITEM, true, {
-        s32* i = va_arg(args, s32*);
-        Player* player = va_arg(args, Player*);
-        if (gPlayState->interfaceCtx.unk_260 != 0 && i == 0 && player->itemAction == PLAYER_IA_FISHING_POLE) {
-            *should = true;
-        }
-    });
-}
-
 static RegisterShipInitFunc initFuncFixOutsideTotCrash(RegisterFixOutsideTotCrash, { "" });
 static RegisterShipInitFunc initFuncFixDekuShieldDropCrash(RegisterFixDekuShieldDropCrash, { "" });
 static RegisterShipInitFunc initFuncHookshotNospawnSoftlock(RegisterPreventHookshotNoSpawnSoftlock, { "" });
 static RegisterShipInitFunc initFuncHookshotParentSoftlock(RegisterPreventHookshotParentSoftlock, { "" });
-static RegisterShipInitFunc initAllowBlankBFishing(RegisterAllowBlankBFishing, { "" });
