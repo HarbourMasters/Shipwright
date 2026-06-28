@@ -2523,8 +2523,10 @@ void Player_ProcessItemButtons(Player* this, PlayState* play) {
             }
             if (!Player_ItemIsInUse(this, B_BTN_ITEM) && !Player_ItemIsInUse(this, C_BTN_ITEM(0)) &&
                 !Player_ItemIsInUse(this, C_BTN_ITEM(1)) && !Player_ItemIsInUse(this, C_BTN_ITEM(2)) && !hasOnDpad) {
-                Player_UseItem(play, this, ITEM_NONE);
-                return;
+                if (GameInteractor_Should(VB_ALLOW_BLANK_B_FISHING_EQUIP, true)) {
+                    Player_UseItem(play, this, ITEM_NONE);
+                    return;
+                }
             }
         }
 
@@ -2534,7 +2536,11 @@ void Player_ProcessItemButtons(Player* this, PlayState* play) {
             }
         }
 
-        item = Player_GetItemOnButton(play, i);
+        if (GameInteractor_Should(VB_ALLOW_BLANK_B_FISHING_ITEM, false, i, this)) {
+            item = ITEM_FISHING_POLE;
+        } else {
+            item = Player_GetItemOnButton(play, i);
+        }
 
         if (item >= ITEM_NONE_FE) {
             for (i = 0; i < ARRAY_COUNT(sItemButtons); i++) {

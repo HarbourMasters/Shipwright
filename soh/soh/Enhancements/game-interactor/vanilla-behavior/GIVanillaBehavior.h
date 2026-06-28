@@ -3111,6 +3111,23 @@ typedef enum {
     // - `s16* (&this->actor.parent->id)`
     VB_PREVENT_HOOKSHOT_PARENT_SOFTLOCK,
 
+    // #### `result`
+    // ```c
+    // false if gPlayState->interfaceCtx.unk_260 != 0 && gSaveContext.equips.buttonItems[0] == ITEM_FISHING_POLE
+    // ```
+    // #### `args`
+    // - none
+    VB_ALLOW_BLANK_B_FISHING_EQUIP,
+
+    // #### `result`
+    // ```c
+    // gPlayState->interfaceCtx.unk_260 != 0 && i == 0 && player->itemAction == PLAYER_IA_FISHING_POLE
+    // ```
+    // #### `args`
+    // - `s32* i`
+    // - `Player*`
+    VB_ALLOW_BLANK_B_FISHING_ITEM,
+
     // true
     // ```
     // #### `args`
