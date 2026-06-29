@@ -5,6 +5,7 @@ extern "C" {
 #include "macros.h"
 #include "functions.h"
 #include "variables.h"
+#include "src/overlays/actors/ovl_En_Go2/z_en_go2.h"
 extern void Player_UseItem(PlayState*, Player*, s32);
 extern PlayState* gPlayState;
 }
@@ -57,7 +58,21 @@ void RegisterPreventHookshotParentSoftlock() {
     });
 }
 
+// Vanilla bug: If player starts talking with Goron Link for the first time (before getting tunic)
+// but moves out of range, player will softlock because the text cannot progress to the question
+// choice textbox when Goron Link is asleep (UpdateTalkState cannot run).
+// Fix: Allow updating talkState even when Goron Link is asleep.
+void RegisterPreventGoronLinkSoftlock() {
+    COND_VB_SHOULD(VB_PREVENT_GORON_LINK_SOFTLOCK, true, {
+        EnGo2* GoronLink = va_arg(args, EnGo2*);
+        if (GoronLink->interactInfo.talkState == NPC_TALK_STATE_TALKING) {
+            *should = true;
+        }
+    });
+}
+
 static RegisterShipInitFunc initFuncFixOutsideTotCrash(RegisterFixOutsideTotCrash, { "" });
 static RegisterShipInitFunc initFuncFixDekuShieldDropCrash(RegisterFixDekuShieldDropCrash, { "" });
 static RegisterShipInitFunc initFuncHookshotNospawnSoftlock(RegisterPreventHookshotNoSpawnSoftlock, { "" });
 static RegisterShipInitFunc initFuncHookshotParentSoftlock(RegisterPreventHookshotParentSoftlock, { "" });
+static RegisterShipInitFunc initFuncGoronLinkSoftlock(RegisterPreventGoronLinkSoftlock, { "" });
