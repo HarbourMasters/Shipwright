@@ -296,6 +296,11 @@ void SohMenu::AddMenuEnhancements() {
         .CVar(CVAR_ENHANCEMENT("BetterOwl"))
         .Options(CheckboxOptions().Tooltip(
             "The default response to Kaepora Gaebora is always that you understood what he said."));
+    AddWidget(path, "Easy Butterfly Fairies", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("EasyButterflyFairies"))
+        .Options(CheckboxOptions().Tooltip(
+            "Butterflies will transform into a fairy as soon as you approach them with a Deku Stick, "
+            "skipping the need to stand still and let the butterfly land on your stick."));
 
     AddWidget(path, "Convenience", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Quit Fishing at Door", WIDGET_CVAR_CHECKBOX)
