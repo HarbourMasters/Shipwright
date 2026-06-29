@@ -43,7 +43,7 @@ static void RegisterRandoStatUpgradeHooks() {
             StatUpgradeRequired(5, RSK_SPEED_UPGRADE_ADJUSTABLE, RSK_SPEED_UPGRADE_TOTAL, RSK_SPEED_UPGRADE_REQUIRED);
         Player* player = va_arg(args, Player*);
         if (player->stateFlags1 & (PLAYER_STATE1_HOSTILE_LOCK_ON | PLAYER_STATE1_FRIENDLY_ACTOR_FOCUS |
-                                    PLAYER_STATE1_PARALLEL | PLAYER_STATE1_LOCK_ON_FORCED_TO_RELEASE))
+                                   PLAYER_STATE1_PARALLEL | PLAYER_STATE1_LOCK_ON_FORCED_TO_RELEASE))
             return;
         if (!(player->actor.bgCheckFlags & 1) && !(player->stateFlags1 & PLAYER_STATE1_IN_WATER))
             return;
