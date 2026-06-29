@@ -349,8 +349,6 @@ void EnButte_FollowLink(EnButte* this, PlayState* play) {
                 EnButte_SetupTransformIntoFairy(this);
             }
         }
-    } else {
-        EnButte_SetupTransformIntoFairy(this);
     }
 }
 
