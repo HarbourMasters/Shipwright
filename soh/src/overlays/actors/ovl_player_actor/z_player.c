@@ -2535,12 +2535,8 @@ void Player_ProcessItemButtons(Player* this, PlayState* play) {
                 break;
             }
         }
-
-        if (GameInteractor_Should(VB_ALLOW_BLANK_B_FISHING_ITEM, false, i, this)) {
-            item = ITEM_FISHING_POLE;
-        } else {
-            item = Player_GetItemOnButton(play, i);
-        }
+        // SoH: replaces item = Player_GetItemOnButton(play, i)
+        GameInteractor_Should(VB_ALLOW_BLANK_B_FISHING_ITEM, true, &i, this, &item);
 
         if (item >= ITEM_NONE_FE) {
             for (i = 0; i < ARRAY_COUNT(sItemButtons); i++) {

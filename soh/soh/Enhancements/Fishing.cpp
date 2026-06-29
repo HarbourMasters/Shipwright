@@ -6,6 +6,7 @@ extern "C" {
 extern PlayState* gPlayState;
 extern SaveContext gSaveContext;
 f32 Fishing_GetMinimumRequiredScore();
+extern s32 Player_GetItemOnButton(PlayState*, s32);
 }
 
 void BuildFishingMessage(uint16_t* textId, bool* loadFromMessageTable) {
@@ -29,11 +30,15 @@ void RegisterAllowFishingBlankB() {
         }
     });
 
-    COND_VB_SHOULD(VB_ALLOW_BLANK_B_FISHING_ITEM, (IS_RANDO || CVarGetInteger(CVAR_ENHANCEMENT("FishingBlankB"), 0)), {
+    COND_VB_SHOULD(VB_ALLOW_BLANK_B_FISHING_ITEM, true, {
         s32* i = va_arg(args, s32*);
         Player* player = va_arg(args, Player*);
-        if (gPlayState->interfaceCtx.unk_260 != 0 && i == 0 && player->itemAction == PLAYER_IA_FISHING_POLE) {
-            *should = true;
+        s32* item = va_arg(args, s32*);
+        if ((IS_RANDO || CVarGetInteger(CVAR_ENHANCEMENT("FishingBlankB"), 0)) &&
+            (gPlayState->interfaceCtx.unk_260 != 0 && *i == 0 && player->itemAction == PLAYER_IA_FISHING_POLE)) {
+            *item = ITEM_FISHING_POLE;
+        } else {
+            *item = Player_GetItemOnButton(gPlayState, *i);
         }
     });
 }

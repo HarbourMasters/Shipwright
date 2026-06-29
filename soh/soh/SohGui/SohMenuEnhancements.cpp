@@ -1636,7 +1636,7 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Allow fishing with blank B", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("FishingBlankB"))
         .Options(CheckboxOptions().Tooltip("Allow fishing even when not having any item equipped on the B button, "
-                                           "fixing a vanilla bug."));
+                                           "fixing a vanilla bug. Always enabled in randomizer."));
 
     // Extra Modes
     path.sidebarName = "Extra Modes";
