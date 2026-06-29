@@ -1101,7 +1101,7 @@ void func_80A45288(EnGo2* this, PlayState* play) {
         Npc_TrackPoint(&this->actor, &this->interactInfo, 4, this->trackingMode);
     }
     if ((this->actionFunc != EnGo2_SetGetItem) &&
-        ((this->isAwake == true) || GameInteractor_Should(VB_PREVENT_GORON_LINK_SOFTLOCK, false, this))) {
+        GameInteractor_Should(VB_PREVENT_GORON_LINK_SOFTLOCK, this->isAwake, this)) {
         if (func_80A44790(this, play)) {
             EnGo2_BiggoronSetTextId(this, play, player);
         }
