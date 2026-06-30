@@ -3193,7 +3193,7 @@ typedef enum {
     // #### `args`
     // - `EnBigokuta*`
     VB_JABU_PREVENT_BIGOCTO_SOFTLOCK,
-  
+
     // #### `result`
     // ```c
     // true if Goron Link is talking
