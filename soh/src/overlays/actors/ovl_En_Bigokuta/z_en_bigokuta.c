@@ -755,6 +755,8 @@ void func_809BE798(EnBigokuta* this, PlayState* play) {
 void EnBigokuta_UpdateDamage(EnBigokuta* this, PlayState* play) {
     if (this->collider.base.acFlags & AC_HIT) {
         this->collider.base.acFlags &= ~AC_HIT;
+        GameInteractor_Should(VB_JABU_PREVENT_BIGOCTO_SOFTLOCK, true,
+                              this); // Rando softlock risk due to intro cutscene shortening
         if (this->actor.colChkInfo.damageEffect != 0 || this->actor.colChkInfo.damage != 0) {
             if (this->actor.colChkInfo.damageEffect == 1) {
                 if (this->actionFunc != func_809BE058) {
