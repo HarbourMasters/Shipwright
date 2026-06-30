@@ -287,11 +287,11 @@ typedef enum {
 
     // #### `result`
     // ```c
-    // true
+    // this->currentShield == PLAYER_SHIELD_DEKU
     // ```
     // #### `args`
     // - `*Player`
-    VB_BURN_DEKU_SHIELD,
+    VB_BURN_SHIELD,
 
     // #### `result`
     // ```c
@@ -2525,7 +2525,7 @@ typedef enum {
 
     // #### `result`
     // ```c
-    // false
+    // ABS(wallPoly->normal.y) < 600
     // ```
     // #### `args`
     // - None
