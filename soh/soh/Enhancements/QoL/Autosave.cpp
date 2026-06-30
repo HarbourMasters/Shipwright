@@ -75,6 +75,7 @@ static void Autosave_SoftResetSave() {
 }
 
 static void RegisterAutosave() {
+    lastSaveTimestamp = GetUnixTimestamp();
     COND_HOOK(GameInteractor::OnLoadGame, CVAR_AUTOSAVE_VALUE,
               [](uint32_t fileNme) { lastSaveTimestamp = GetUnixTimestamp(); });
     COND_HOOK(GameInteractor::OnGameFrameUpdate, CVAR_AUTOSAVE_VALUE, Autosave_IntervalSave);

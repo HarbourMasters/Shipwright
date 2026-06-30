@@ -4681,7 +4681,7 @@ int func_8083816C(s32 arg0) {
 }
 
 void func_8083819C(Player* this, PlayState* play) {
-    if (this->currentShield == PLAYER_SHIELD_DEKU && (CVarGetInteger(CVAR_CHEAT("FireproofDekuShield"), 0) == 0)) {
+    if (GameInteractor_Should(VB_BURN_SHIELD, this->currentShield == PLAYER_SHIELD_DEKU, this)) {
         Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_SHIELD, this->actor.world.pos.x, this->actor.world.pos.y,
                     this->actor.world.pos.z, 0, 0, 0, 1);
         Inventory_DeleteEquipment(play, EQUIP_TYPE_SHIELD);
@@ -5705,7 +5705,7 @@ s32 func_8083A6AC(Player* this, PlayState* play) {
 
         if (BgCheck_EntityLineTest1(&play->colCtx, &this->actor.world.pos, &sp74, &sp68, &sp84, true, false, false,
                                     true, &sp80) &&
-            ((ABS(sp84->normal.y) < 600) || (CVarGetInteger(CVAR_CHEAT("ClimbEverything"), 0) != 0))) {
+            GameInteractor_Should(VB_SURFACE_ANGLE_IS_CLIMBABLE, ABS(sp84->normal.y) < 600)) {
             f32 nx = COLPOLY_GET_NORMAL(sp84->normal.x);
             f32 ny = COLPOLY_GET_NORMAL(sp84->normal.y);
             f32 nz = COLPOLY_GET_NORMAL(sp84->normal.z);
@@ -11305,56 +11305,7 @@ void Player_ProcessSceneCollision(PlayState* play, Player* this) {
 
         sTouchedWallFlags = func_80041DB8(&play->colCtx, this->actor.wallPoly, this->actor.wallBgId);
 
-        // conflicts arise from these two being enabled at once, and with ClimbEverything on, FixVineFall is redundant
-        // anyway
-        if (CVarGetInteger(CVAR_ENHANCEMENT("FixVineFall"), 0) && !CVarGetInteger(CVAR_CHEAT("ClimbEverything"), 0)) {
-            /* This fixes the "started climbing a wall and then immediately fell off" bug.
-             * The main idea is if a climbing wall is detected, double-check that it will
-             * still be valid once climbing begins by doing a second raycast with a small
-             * margin to make sure it still hits a climbable poly. Then update the flags
-             * in sTouchedWallFlags again and proceed as normal.
-             */
-            if (sTouchedWallFlags & 8) {
-                Vec3f checkPosA;
-                Vec3f checkPosB;
-                f32 yawCos;
-                f32 yawSin;
-                s32 hitWall;
-
-                /* Angle the raycast slightly out towards the side based on the angle of
-                 * attack the player takes coming at the climb wall. This is necessary because
-                 * the player's XZ position actually wobbles very slightly while climbing
-                 * due to small rounding errors in the sin/cos lookup tables. This wobble
-                 * can cause wall checks while climbing to be slightly left or right of
-                 * the wall check to start the climb. By adding this buffer it accounts for
-                 * any possible wobble. The end result is the player has to be further than
-                 * some epsilon distance from the edge of the climbing poly to actually
-                 * start the climb. I divide it by 2 to make that epsilon slightly smaller,
-                 * mainly for visuals. Using the full yawDiff leaves a noticeable gap on
-                 * the edges that can't be climbed. But with the half distance it looks like
-                 * the player is climbing right on the edge, and still works.
-                 */
-                yawCos = Math_CosS(this->actor.wallYaw - (yawDiff / 2) + 0x8000);
-                yawSin = Math_SinS(this->actor.wallYaw - (yawDiff / 2) + 0x8000);
-                checkPosA.x = this->actor.world.pos.x + (-20.0f * yawSin);
-                checkPosA.z = this->actor.world.pos.z + (-20.0f * yawCos);
-                checkPosB.x = this->actor.world.pos.x + (50.0f * yawSin);
-                checkPosB.z = this->actor.world.pos.z + (50.0f * yawCos);
-                checkPosB.y = checkPosA.y = this->actor.world.pos.y + 26.0f;
-
-                hitWall = BgCheck_EntityLineTest1(&play->colCtx, &checkPosA, &checkPosB, &sInteractWallCheckResult,
-                                                  &wallPoly, true, false, false, true, &wallBgId);
-
-                if (hitWall) {
-                    this->actor.wallPoly = wallPoly;
-                    this->actor.wallBgId = wallBgId;
-                    this->actor.wallYaw = Math_Atan2S(wallPoly->normal.z, wallPoly->normal.x);
-                    yawDiff = this->actor.shape.rot.y - (s16)(this->actor.wallYaw + 0x8000);
-
-                    sTouchedWallFlags = func_80041DB8(&play->colCtx, this->actor.wallPoly, this->actor.wallBgId);
-                }
-            }
-        }
+        GameInteractor_Should(VB_REVALIDATE_CLIMBED_WALL, true, play, this, &sTouchedWallFlags, &yawDiff);
 
         sShapeYawToTouchedWall = ABS(yawDiff);
 
@@ -11380,7 +11331,7 @@ void Player_ProcessSceneCollision(PlayState* play, Player* this) {
         if ((this->actor.bgCheckFlags & 0x200) && (sShapeYawToTouchedWall < 0x3000)) {
             CollisionPoly* wallPoly = this->actor.wallPoly;
 
-            if (ABS(wallPoly->normal.y) < 600 || (CVarGetInteger(CVAR_CHEAT("ClimbEverything"), 0) != 0)) {
+            if (GameInteractor_Should(VB_SURFACE_ANGLE_IS_CLIMBABLE, ABS(wallPoly->normal.y) < 600)) {
                 f32 wallPolyNormalX = COLPOLY_GET_NORMAL(wallPoly->normal.x);
                 f32 wallPolyNormalY = COLPOLY_GET_NORMAL(wallPoly->normal.y);
                 f32 wallPolyNormalZ = COLPOLY_GET_NORMAL(wallPoly->normal.z);
