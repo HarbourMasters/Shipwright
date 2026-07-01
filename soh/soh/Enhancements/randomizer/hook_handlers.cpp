@@ -60,7 +60,6 @@ extern "C" {
 #include "src/overlays/actors/ovl_Obj_Bean/z_obj_bean.h"
 #include "src/overlays/actors/ovl_En_Heishi2/z_en_heishi2.h"
 #include "src/overlays/actors/ovl_En_GirlA/z_en_girla.h"
-#include "src/overlays/actors/ovl_En_Bigokuta/z_en_bigokuta.h"
 #include "draw.h"
 
 static ObjectExtension::Register<DnsItemEntry> RegisterDnsItemEntryOverride;
@@ -1226,15 +1225,6 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
         case VB_KING_ZORA_TUNIC_CHECK: {
             if (!Flags_GetRandomizerInf(RAND_INF_KING_ZORA_THAWED)) {
                 *should = false;
-            }
-            break;
-        }
-        case VB_JABU_PREVENT_BIGOCTO_SOFTLOCK: {
-            EnBigokuta* enBigokuta = va_arg(args, EnBigokuta*);
-            if (enBigokuta->actor.params != 2) {
-                enBigokuta->actor.home.pos.y = enBigokuta->actor.world.pos.y = -1025.0f;
-                Actor_ChangeCategory(gPlayState, &gPlayState->actorCtx, &enBigokuta->actor, ACTORCAT_ENEMY);
-                enBigokuta->actor.params = 2;
             }
             break;
         }

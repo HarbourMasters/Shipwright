@@ -3111,14 +3111,6 @@ typedef enum {
     // - `s16* (&this->actor.parent->id)`
     VB_PREVENT_HOOKSHOT_PARENT_SOFTLOCK,
 
-    // #### `result`
-    // ```c
-    // true
-    // ```
-    // #### `args`
-    // - `EnBigokuta*`
-    VB_JABU_PREVENT_BIGOCTO_SOFTLOCK,
-
     // true
     // ```
     // #### `args`

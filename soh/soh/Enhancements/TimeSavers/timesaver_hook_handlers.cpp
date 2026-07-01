@@ -31,6 +31,7 @@ extern "C" {
 #include "src/overlays/actors/ovl_En_Po_Sisters/z_en_po_sisters.h"
 #include "src/overlays/actors/ovl_Obj_Lightswitch/z_obj_lightswitch.h"
 #include "src/overlays/actors/ovl_Bg_Jya_Bombchuiwa/z_bg_jya_bombchuiwa.h"
+#include "src/overlays/actors/ovl_En_Bigokuta/z_en_bigokuta.h"
 #include <overlays/actors/ovl_Boss_Ganondrof/z_boss_ganondrof.h>
 #include <overlays/actors/ovl_En_Ik/z_en_ik.h>
 #include <objects/object_gnd/object_gnd.h>
@@ -919,6 +920,8 @@ static uint32_t bgSpot03UpdateHook = 0;
 static uint32_t bgSpot03KillHook = 0;
 static uint32_t enPoSistersUpdateHook = 0;
 static uint32_t enPoSistersKillHook = 0;
+static uint32_t enBigokutaUpdateHook = 0;
+static uint32_t enBigokutaKillHook = 0;
 void TimeSaverOnActorInitHandler(void* actorRef) {
     Actor* actor = static_cast<Actor*>(actorRef);
 
@@ -1144,6 +1147,38 @@ void TimeSaverOnActorInitHandler(void* actorRef) {
             EnRu2_SetEncounterSwitchFlag(enRu2, gPlayState);
             Actor_Kill(actor);
         }
+    }
+
+    // Prevent softlock from pre-battle early hit on Bigocto (possible by cutscene skip)
+    if (actor->id == ACTOR_EN_BIGOKUTA) {
+        enBigokutaUpdateHook =
+            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* innerActorRef) mutable {
+                Actor* innerActor = static_cast<Actor*>(innerActorRef);
+                if (innerActor->id == ACTOR_EN_BIGOKUTA &&
+                    (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.OnePoint"), IS_RANDO))) {
+                    EnBigokuta* enBigokuta = static_cast<EnBigokuta*>(innerActorRef);
+                    if (enBigokuta->actor.params == 2) { // Platform already active
+                        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(
+                            enBigokutaUpdateHook);
+                        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(enBigokutaKillHook);
+                        enBigokutaUpdateHook = 0;
+                        enBigokutaKillHook = 0;
+                        // Possible action functions after taken damage
+                    } else if (enBigokuta->actionFunc == func_809BE058 || enBigokuta->actionFunc == func_809BDF34 ||
+                               enBigokuta->actionFunc == func_809BE180) {
+                        enBigokuta->actor.home.pos.y = enBigokuta->actor.world.pos.y = -1025.0f;
+                        Actor_ChangeCategory(gPlayState, &gPlayState->actorCtx, &enBigokuta->actor, ACTORCAT_ENEMY);
+                        enBigokuta->actor.params = 2; // Activate platform
+                    }
+                }
+            });
+        enBigokutaKillHook =
+            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) mutable {
+                GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(enBigokutaUpdateHook);
+                GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(enBigokutaKillHook);
+                enBigokutaUpdateHook = 0;
+                enBigokutaKillHook = 0;
+            });
     }
 }
 
