@@ -323,7 +323,7 @@ typedef struct SaveStateInfo {
     s16 sMessageHasSetSfx_copy;
     u16 sOcarinaSongBitFlags_copy;
 
-    u8  transitionActorCount_copy;
+    u8 transitionActorCount_copy;
     s16 transitionActorIds_copy[256];
 
 } SaveStateInfo;
