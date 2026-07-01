@@ -323,6 +323,9 @@ typedef struct SaveStateInfo {
     s16 sMessageHasSetSfx_copy;
     u16 sOcarinaSongBitFlags_copy;
 
+    u8 transitionActorCount_copy;
+    s16 transitionActorIds_copy[256];
+
 } SaveStateInfo;
 
 class SaveState {
@@ -346,9 +349,10 @@ class SaveState {
     void LoadOnePointDemoData(void);
     void SaveOverlayStaticData(void);
     void LoadOverlayStaticData(void);
-
     void SaveMiscCodeData(void);
     void LoadMiscCodeData(void);
+    void SaveTransitionActors(void);
+    void LoadTransitionActors(void);
 
     SaveStateInfo* GetSaveStateInfo(void);
 };
@@ -812,6 +816,20 @@ void SaveState::LoadMiscCodeData(void) {
     sOcarinaSongBitFlags = info->sOcarinaSongBitFlags_copy;
 }
 
+void SaveState::SaveTransitionActors(void) {
+    info->transitionActorCount_copy = gPlayState->transiActorCtx.numActors;
+    for (u32 i = 0; i < info->transitionActorCount_copy; i++) {
+        info->transitionActorIds_copy[i] = gPlayState->transiActorCtx.list[i].id;
+    }
+}
+
+void SaveState::LoadTransitionActors(void) {
+    u32 numActors = MIN(info->transitionActorCount_copy, gPlayState->transiActorCtx.numActors);
+    for (u32 i = 0; i < numActors; i++) {
+        gPlayState->transiActorCtx.list[i].id = info->transitionActorIds_copy[i];
+    }
+}
+
 extern "C" void ProcessSaveStateRequests(void) {
     OTRGlobals::Instance->gSaveStateMgr->ProcessSaveStateRequests();
 }
@@ -918,6 +936,7 @@ void SaveState::Save(void) {
     SaveOnePointDemoData();
     SaveOverlayStaticData();
     SaveMiscCodeData();
+    SaveTransitionActors();
 }
 
 void SaveState::Load(void) {
@@ -951,4 +970,5 @@ void SaveState::Load(void) {
     LoadOnePointDemoData();
     LoadOverlayStaticData();
     LoadMiscCodeData();
+    LoadTransitionActors();
 }

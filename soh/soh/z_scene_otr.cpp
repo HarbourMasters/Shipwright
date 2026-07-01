@@ -202,6 +202,12 @@ bool Scene_CommandTransitionActorList(PlayState* play, SOH::ISceneCommand* cmd) 
     play->transiActorCtx.numActors = cmdActor->numTransitionActors;
     play->transiActorCtx.list = (TransitionActorEntry*)cmdActor->GetRawPointer();
 
+    // Loops transition actors and sets them to default values (not spawned yet)
+    // used as fix for doors / crawlspaces not loading after they've already been loaded once.
+    for (s32 i = 0; i < play->transiActorCtx.numActors; i++) {
+        play->transiActorCtx.list[i].id = ABS(play->transiActorCtx.list[i].id);
+    }
+
     return false;
 }
 

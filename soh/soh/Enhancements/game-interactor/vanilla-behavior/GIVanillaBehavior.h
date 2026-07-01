@@ -287,6 +287,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // this->currentShield == PLAYER_SHIELD_DEKU
+    // ```
+    // #### `args`
+    // - `*Player`
+    VB_BURN_SHIELD,
+
+    // #### `result`
+    // ```c
     // true
     // ```
     // #### `args`
@@ -366,6 +374,14 @@ typedef enum {
     // #### `args`
     // - None
     VB_CLOSE_PAUSE_MENU,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnHorse`
+    VB_CONSUME_EPONA_BOOST,
 
     // #### `result`
     // ```c
@@ -611,6 +627,14 @@ typedef enum {
     // #### `args`
     // - `*int16_t` (item id)
     VB_DRAW_AMMO_COUNT,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
+    VB_DRAW_EPONA_BOOST_CARROTS,
 
     // #### `args`
     // - `Player*` player
@@ -1647,6 +1671,14 @@ typedef enum {
     // true
     // ```
     // #### `args`
+    // - `*Actor`
+    VB_PERFORM_WALL_COLLISION_CHECK,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
     // - `*BossGanondrof`
     VB_PHANTOM_GANON_DEATH_SCENE,
 
@@ -2150,6 +2182,17 @@ typedef enum {
     // true
     // ```
     // #### `args`
+    // - `*PlayState`
+    // - `*Player`
+    // - `*u32`
+    // - `*s16`
+    VB_REVALIDATE_CLIMBED_WALL,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
     // - None
     VB_REVERT_SPOILING_ITEMS,
 
@@ -2405,6 +2448,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnButte`
+    VB_SPAWN_BUTTERFLY_FAIRY_EASY,
+
+    // #### `result`
+    // ```c
     // INV_CONTENT(ITEM_ARROW_FIRE) == ITEM_NONE
     // ```
     // #### `args`
@@ -2479,6 +2530,30 @@ typedef enum {
     // #### `args`
     // - `*BgIceTurara`
     VB_STALAGMITE_DROP_ITEM,
+
+    // #### `result`
+    // ```c
+    // ABS(wallPoly->normal.y) < 600
+    // ```
+    // #### `args`
+    // - None
+    VB_SURFACE_ANGLE_IS_CLIMBABLE,
+
+    // #### `result`
+    // ```c
+    // false
+    // ```
+    // #### `args`
+    // - None
+    VB_SURFACE_IS_CLIMBABLE,
+
+    // #### `result`
+    // ```c
+    // SurfaceType_GetData(colCtx, poly, bgId, 1) >> 17 & 1
+    // ```
+    // #### `args`
+    // - None
+    VB_SURFACE_IS_HOOKSHOT,
 
     // #### `result`
     // ```c
@@ -3128,6 +3203,14 @@ typedef enum {
     // - `Player*`
     // - `s32* item`
     VB_ALLOW_BLANK_B_FISHING_ITEM,
+
+    // #### `result`
+    // ```c
+    // true if Goron Link is talking
+    // ```
+    // #### `args`
+    // - `*EnGo2` (Goron Link)
+    VB_PREVENT_GORON_LINK_SOFTLOCK,
 
     // true
     // ```

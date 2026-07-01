@@ -5776,7 +5776,7 @@ void Interface_Draw(PlayState* play) {
         if ((play->pauseCtx.state == 0) && (play->pauseCtx.debugState == 0)) {
             if (gSaveContext.minigameState != 1) {
                 // Carrots rendering if the action corresponds to riding a horse
-                if (interfaceCtx->unk_1EE == 8 && !CVarGetInteger(CVAR_CHEAT("InfiniteEponaBoost"), 0)) {
+                if (interfaceCtx->unk_1EE == 8 && GameInteractor_Should(VB_DRAW_EPONA_BOOST_CARROTS, true)) {
                     // Load Carrot Icon
                     gDPLoadTextureBlock(OVERLAY_DISP++, gCarrotIconTex, G_IM_FMT_RGBA, G_IM_SIZ_32b, 16, 16, 0,
                                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
