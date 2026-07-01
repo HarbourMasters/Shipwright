@@ -6,7 +6,6 @@ extern "C" {
 extern PlayState* gPlayState;
 extern SaveContext gSaveContext;
 f32 Fishing_GetMinimumRequiredScore();
-extern s32 Player_GetItemOnButton(PlayState*, s32);
 }
 
 void BuildFishingMessage(uint16_t* textId, bool* loadFromMessageTable) {
@@ -24,23 +23,22 @@ void RegisterFishingMessages() {
 // as temp B, which also makes B button disabled - fishing pole gets unequipped.
 // Fix: Disregard disabled B when fishing, and set used item to fishing pole on B press.
 void RegisterAllowFishingBlankB() {
-    COND_VB_SHOULD(VB_ALLOW_BLANK_B_FISHING_EQUIP, (IS_RANDO || CVarGetInteger(CVAR_ENHANCEMENT("FishingBlankB"), 0)), {
-        if (gPlayState->interfaceCtx.unk_260 != 0 && gSaveContext.equips.buttonItems[0] == ITEM_FISHING_POLE) {
-            *should = false;
-        }
-    });
+    COND_VB_SHOULD(
+        VB_ALLOW_BLANK_B_FISHING_EQUIP, (IS_RANDO || CVarGetInteger(CVAR_ENHANCEMENT("FishingBlankB"), IS_RANDO)), {
+            if (gPlayState->interfaceCtx.unk_260 != 0 && gSaveContext.equips.buttonItems[0] == ITEM_FISHING_POLE) {
+                *should = false;
+            }
+        });
 
-    COND_VB_SHOULD(VB_ALLOW_BLANK_B_FISHING_ITEM, true, {
-        s32* i = va_arg(args, s32*);
-        Player* player = va_arg(args, Player*);
-        s32* item = va_arg(args, s32*);
-        if ((IS_RANDO || CVarGetInteger(CVAR_ENHANCEMENT("FishingBlankB"), 0)) &&
-            (gPlayState->interfaceCtx.unk_260 != 0 && *i == 0 && player->itemAction == PLAYER_IA_FISHING_POLE)) {
-            *item = ITEM_FISHING_POLE;
-        } else {
-            *item = Player_GetItemOnButton(gPlayState, *i);
-        }
-    });
+    COND_VB_SHOULD(
+        VB_ALLOW_BLANK_B_FISHING_ITEM, (IS_RANDO || CVarGetInteger(CVAR_ENHANCEMENT("FishingBlankB"), IS_RANDO)), {
+            s32* i = va_arg(args, s32*);
+            Player* player = va_arg(args, Player*);
+            s32* item = va_arg(args, s32*);
+            if (gPlayState->interfaceCtx.unk_260 != 0 && *i == 0 && player->itemAction == PLAYER_IA_FISHING_POLE) {
+                *item = ITEM_FISHING_POLE;
+            }
+        });
 }
 
 static RegisterShipInitFunc initFunc(RegisterFishingMessages, { CVAR_ENHANCEMENT("CustomizeFishing") });

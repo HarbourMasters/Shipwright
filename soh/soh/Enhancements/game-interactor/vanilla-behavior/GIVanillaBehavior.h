@@ -3126,6 +3126,7 @@ typedef enum {
     // #### `args`
     // - `s32* i`
     // - `Player*`
+    // - `s32* item`
     VB_ALLOW_BLANK_B_FISHING_ITEM,
 
     // true
