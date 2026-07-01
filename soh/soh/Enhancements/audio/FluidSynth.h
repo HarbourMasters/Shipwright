@@ -122,6 +122,12 @@ class FluidSynth final : public IMidiSynth {
     // LoadSoundFont() so SF instrument-level modulators layer correctly on top.
     void InstallLinearVelocityModulators();
 
+    // Installs CC74 -> filter cutoff and CC71 -> filter resonance as default
+    // modulators. Neither is an SF2.01 default, so without this the host's
+    // Cutoff/Q sliders are inert on FluidSynth. Must run after new_fluid_synth()
+    // but before any LoadSoundFont() so instrument-level modulators layer on top.
+    void InstallFilterCcModulators();
+
     fluid_settings_t* mSettings = nullptr;
     fluid_synth_t* mSynth = nullptr;
     bool mLinearVelocity = false;

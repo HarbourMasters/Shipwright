@@ -162,6 +162,10 @@ FluidSynth::FluidSynth(const FluidSynthConfig& config) : mLinearVelocity(config.
         InstallLinearVelocityModulators();
     }
 
+    // Mode-neutral: make the host's Cutoff/Q sliders (CC74/CC71) audible. Stock
+    // FluidSynth has no default modulator for either, so without this they do nothing.
+    InstallFilterCcModulators();
+
     // Register the memory-backed sound-font loader alongside the default
     // filesystem loader. Loaders are tried in addition order: default
     // catches real filesystem paths, ours catches the mem:// sentinel.
@@ -215,6 +219,38 @@ void FluidSynth::InstallLinearVelocityModulators() {
     delete_fluid_mod(mod);
 
     SPDLOG_INFO("[FluidSynth] velocity modulators installed (vel/CC7/CC11 concave x 0.5)");
+}
+
+void FluidSynth::InstallFilterCcModulators() {
+    // GM2/GS map CC74 (Brightness) -> filter cutoff and CC71 (Harmonic Content) ->
+    // filter resonance, but neither is an SF2.01 default modulator, so stock
+    // FluidSynth ignores both and the host's Cutoff/Q sliders are inert. Add them
+    // as default modulators. BIPOLAR, centered at CC 64: a value of 64 contributes
+    // nothing (matches the host's neutral default), <64 darkens/relaxes, >64
+    // brightens/sharpens. ADD (not OVERWRITE): these sources have no default mod, and
+    // instrument-level SF mods still layer on top. Amounts are deliberately moderate
+    // -- tune by ear.
+    fluid_mod_t* mod = new_fluid_mod();
+    if (!mod) {
+        SPDLOG_ERROR("[FluidSynth] new_fluid_mod() failed; filter CC modulators disabled");
+        return;
+    }
+    fluid_mod_set_source2(mod, FLUID_MOD_NONE, 0);
+
+    // CC74 -> filter cutoff. +/-4800 cents (+/-4 octaves) full bipolar swing.
+    fluid_mod_set_source1(mod, 74, FLUID_MOD_CC | FLUID_MOD_LINEAR | FLUID_MOD_BIPOLAR | FLUID_MOD_POSITIVE);
+    fluid_mod_set_dest(mod, GEN_FILTERFC);
+    fluid_mod_set_amount(mod, 4800);
+    fluid_synth_add_default_mod(mSynth, mod, FLUID_SYNTH_ADD);
+
+    // CC71 -> filter resonance (Q). +/-120 cB (+/-12 dB) full bipolar swing.
+    fluid_mod_set_source1(mod, 71, FLUID_MOD_CC | FLUID_MOD_LINEAR | FLUID_MOD_BIPOLAR | FLUID_MOD_POSITIVE);
+    fluid_mod_set_dest(mod, GEN_FILTERQ);
+    fluid_mod_set_amount(mod, 120);
+    fluid_synth_add_default_mod(mSynth, mod, FLUID_SYNTH_ADD);
+
+    delete_fluid_mod(mod);
+    SPDLOG_INFO("[FluidSynth] filter CC modulators installed (CC74->cutoff, CC71->Q)");
 }
 
 FluidSynth::~FluidSynth() {
