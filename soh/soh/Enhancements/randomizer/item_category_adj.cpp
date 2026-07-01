@@ -2,6 +2,7 @@
 #include "z64item.h"
 #include "variables.h"
 #include "macros.h"
+#include "functions.h"
 
 GetItemCategory Randomizer_AdjustItemCategory(GetItemEntry item) {
     GetItemCategory category = item.getItemCategory;
@@ -21,6 +22,11 @@ GetItemCategory Randomizer_AdjustItemCategory(GetItemEntry item) {
         if (gSaveContext.inventory.items[SLOT_BOTTLE_1] != ITEM_NONE) {
             category = ITEM_CATEGORY_LESSER;
         }
+    }
+
+    // Downgrade keys to junk if the player already has skeleton key
+    if (category == ITEM_CATEGORY_SMALL_KEY && Flags_GetRandomizerInf(RAND_INF_HAS_SKELETON_KEY)) {
+        category = ITEM_CATEGORY_JUNK;
     }
 
     return category;
