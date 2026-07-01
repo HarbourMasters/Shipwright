@@ -199,6 +199,11 @@ void Anchor::HandlePacket_UpdateTeamState(nlohmann::json payload) {
         gSaveContext.ship.stats.firstInput = loadedData.ship.stats.firstInput;
         gSaveContext.ship.stats.fileCreatedAt = loadedData.ship.stats.fileCreatedAt;
 
+        // Ensure ganon barrier state matches trials
+        if (gSaveContext.eventChkInf[10] & 0x2000 && gSaveContext.eventChkInf[11] & 0xFC00) {
+            gSaveContext.eventChkInf[12] |= 0x8;
+        }
+
         // Restore master sword state
         // Disabling this for now, not really sure I understand why I did this in the past
         // u8 hasMasterSword = CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, 1);
