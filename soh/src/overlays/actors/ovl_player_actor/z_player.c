@@ -5845,6 +5845,11 @@ s32 func_8083AD4C(PlayState* play, Player* this) {
             }
 
             camMode = shouldUseBowCamera ? CAM_MODE_BOWARROW : CAM_MODE_SLINGSHOT;
+
+            // Fix child Hookshot first person in lab (CAM_MODE_SLINGSHOT is invalid there)
+            if (play->sceneNum == SCENE_LAKESIDE_LABORATORY && CVarGetInteger(CVAR_CHEAT("TimelessEquipment"), false)) {
+                camMode = CAM_MODE_BOWARROW;
+            }
         } else {
             // #region SOH [Enhancement]
             if (CVarGetInteger(CVAR_ENHANCEMENT("BoomerangFirstPerson"), 0)) {
