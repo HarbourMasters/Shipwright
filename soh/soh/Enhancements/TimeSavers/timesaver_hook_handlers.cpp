@@ -700,6 +700,14 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
             }
             break;
         }
+        case VB_PLAY_TIMEBLOCK_CS: {
+            if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.OnePoint"), IS_RANDO)) {
+                // Turn camera as if SoT block cutscene
+                func_800C0808(gPlayState, 0, GET_PLAYER(gPlayState), CAM_SET_CS_ATTENTION);
+                *should = false;
+            }
+            break;
+        }
         case VB_PLAY_GORON_FREE_CS: {
             if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO)) {
                 *should = false;

@@ -1744,6 +1744,14 @@ typedef enum {
     VB_PLAY_CARPENTER_FREE_CS,
 
     // #### `result`
+    // ```c
+    // true if one point cutscene skip not enabled, or not randomizer
+    // ```
+    // #### `args`
+    // - none
+    VB_PLAY_TIMEBLOCK_CS,
+
+    // #### `result`
     // Close enough & various cutscene checks
     // ```c
     // (func_80AEC5FC(this, play)) && (!Play_InCsMode(play)) &&
