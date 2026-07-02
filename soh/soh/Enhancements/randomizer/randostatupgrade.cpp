@@ -61,6 +61,8 @@ static void RegisterRandoStatUpgradeHooks() {
         PlayState* play = va_arg(args, PlayState*);
         u8* damage = va_arg(args, u8*);
         Actor* hitActor = va_arg(args, Actor*);
+        if (hitActor->category == ACTORCAT_PLAYER)
+            return;
         float critChance = (float)std::min((int)level, (int)required) / (float)required;
         if (Rand_ZeroOne() > critChance)
             return;
