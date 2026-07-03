@@ -233,45 +233,32 @@ use_props(${PROJECT_NAME} "${CMAKE_CONFIGURATION_TYPES}" "${DEFAULT_CXX_PROPS}")
 endif()
 
 # FluidSynth synthesis backend.
-# Resolution order: installed CMake config -> pkg-config -> build from source.
-# The from-source fallback is for macOS: the MacPorts fluidsynth port
-# hard-depends on portaudio and glib2, which fail to build.
-# FluidSynth with osal=cpp11 avoids the glib dependency.
+# Always built from source and linked statically into soh, on every platform:
+# a system/shared libfluidsynth drags in glib and leaves a dylib the AppImage
+# (and macOS/Windows bundlers) must ship -- exactly what black-screened the
+# Linux AppImage when the lib wasn't found at runtime. osal=cpp11 replaces glib
+# with the C++17 stdlib and libinstpatch=OFF keeps it from being pulled back in,
+# so the only remaining shared dep is libsndfile (SF3 Ogg decode), which the
+# platform's normal bundling handles cleanly.
 if(ENABLE_FLUIDSYNTH)
-    find_package(FluidSynth CONFIG QUIET)
-    if(NOT TARGET FluidSynth::libfluidsynth)
-        find_package(PkgConfig QUIET)
-        if(PKG_CONFIG_FOUND)
-            pkg_check_modules(FLUIDSYNTH IMPORTED_TARGET fluidsynth)
-        endif()
-    endif()
-
-    if(TARGET FluidSynth::libfluidsynth)
-        target_link_libraries(${PROJECT_NAME} PRIVATE FluidSynth::libfluidsynth)
-    elseif(TARGET PkgConfig::FLUIDSYNTH)
-        target_link_libraries(${PROJECT_NAME} PRIVATE PkgConfig::FLUIDSYNTH)
-    else()
-        message(STATUS "FluidSynth not found; building it from source (FetchContent)")
-        include(FetchContent)
-        # Static so the result links straight into soh with no dylib to bundle;
-        # only libsndfile stays dynamic (handled by the platform's normal bundling).
-        set(BUILD_SHARED_LIBS OFF)
-        set(osal cpp11 CACHE STRING "" FORCE)
-        set(enable-framework OFF CACHE BOOL "" FORCE)
-        set(enable-libsndfile ON CACHE BOOL "" FORCE)
-        set(enable-portaudio OFF CACHE BOOL "" FORCE)
-        set(enable-readline OFF CACHE BOOL "" FORCE)
-        set(enable-dbus OFF CACHE BOOL "" FORCE)
-        set(enable-jack OFF CACHE BOOL "" FORCE)
-        set(enable-sdl3 OFF CACHE BOOL "" FORCE)
-        set(enable-pulseaudio OFF CACHE BOOL "" FORCE)
-        FetchContent_Declare(fluidsynth
-            GIT_REPOSITORY https://github.com/FluidSynth/fluidsynth.git
-            GIT_TAG v2.5.5
-            GIT_SHALLOW TRUE)
-        FetchContent_MakeAvailable(fluidsynth)
-        target_link_libraries(${PROJECT_NAME} PRIVATE libfluidsynth)
-    endif()
+    include(FetchContent)
+    set(BUILD_SHARED_LIBS OFF)
+    set(osal cpp11 CACHE STRING "" FORCE)
+    set(enable-framework OFF CACHE BOOL "" FORCE)
+    set(enable-libsndfile ON CACHE BOOL "" FORCE)
+    set(enable-libinstpatch OFF CACHE BOOL "" FORCE)
+    set(enable-portaudio OFF CACHE BOOL "" FORCE)
+    set(enable-readline OFF CACHE BOOL "" FORCE)
+    set(enable-dbus OFF CACHE BOOL "" FORCE)
+    set(enable-jack OFF CACHE BOOL "" FORCE)
+    set(enable-sdl3 OFF CACHE BOOL "" FORCE)
+    set(enable-pulseaudio OFF CACHE BOOL "" FORCE)
+    FetchContent_Declare(fluidsynth
+        GIT_REPOSITORY https://github.com/FluidSynth/fluidsynth.git
+        GIT_TAG v2.5.5
+        GIT_SHALLOW TRUE)
+    FetchContent_MakeAvailable(fluidsynth)
+    target_link_libraries(${PROJECT_NAME} PRIVATE libfluidsynth)
     target_compile_definitions(${PROJECT_NAME} PRIVATE ENABLE_FLUIDSYNTH=1)
 else()
     target_compile_definitions(${PROJECT_NAME} PRIVATE ENABLE_FLUIDSYNTH=0)
