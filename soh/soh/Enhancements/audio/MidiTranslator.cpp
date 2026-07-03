@@ -911,6 +911,7 @@ int MidiTranslator::SplitEntry(int idx, uint8_t atSemitone) {
     mEntries[idx].noteHigh = static_cast<uint8_t>(atSemitone - 1); // idx keeps lower half
     mEntries.push_back(std::move(sib));                            // mEntries reserved -> no realloc, idx stays valid
     int newIdx = static_cast<int>(mEntries.size()) - 1;
+    NormalizeSplits(mEntries[idx].fontId, mEntries[idx].instOrWave);
     RecomputeActive(mEntries[idx].fontId, mEntries[idx].instOrWave);
     return newIdx;
 }
@@ -966,6 +967,7 @@ void MidiTranslator::MergeWithNext(int idx) {
     e.noteHigh = mEntries[sib].noteHigh;
     mEntries[sib].enabled = false;
     mEntries[sib].selected = false;
+    NormalizeSplits(e.fontId, e.instOrWave);
     RecomputeActive(e.fontId, e.instOrWave);
 }
 
@@ -980,6 +982,7 @@ void MidiTranslator::SetSplitBoundary(int lowerIdx, int upperIdx, uint8_t bounda
     int b = std::clamp<int>(boundary, lo.noteLow, static_cast<int>(hi.noteHigh) - 1);
     lo.noteHigh = static_cast<uint8_t>(b);
     hi.noteLow = static_cast<uint8_t>(b + 1);
+    NormalizeSplits(lo.fontId, lo.instOrWave);
     RecomputeActive(lo.fontId, lo.instOrWave);
 }
 
@@ -990,7 +993,98 @@ void MidiTranslator::SetEntryNoteRange(int idx, uint8_t noteLow, uint8_t noteHig
         noteHigh = noteLow;
     mEntries[idx].noteLow = noteLow;
     mEntries[idx].noteHigh = noteHigh;
+    NormalizeSplits(mEntries[idx].fontId, mEntries[idx].instOrWave);
     RecomputeActive(mEntries[idx].fontId, mEntries[idx].instOrWave);
+}
+
+void MidiTranslator::NormalizeSplits(uint8_t fontId, int16_t instOrWave) {
+    // Drum/SFX pairs tile by per-slot entries (noteLow == noteHigh == slot), a
+    // different model from melodic ranges -- leave them to AutoSplitDrums.
+    if (instOrWave < kDrumHistInst)
+        return;
+
+    // The split set is exactly what the editor shows as ranges: the user's
+    // selected rows, minus the whole-pair Native marker (a pair-level flag, not a
+    // range). Mod-supplied rows stay selected==false, so they remain an untouched
+    // lower-priority base layer under the user's split.
+    std::vector<int> rows;
+    for (size_t i = 0; i < mEntries.size(); i++) {
+        const ConfigEntry& e = mEntries[i];
+        if (e.fontId != fontId || e.instOrWave != instOrWave || !e.selected)
+            continue;
+        if (e.route == EntryRoute::Native && e.packName.empty())
+            continue;
+        rows.push_back(static_cast<int>(i));
+    }
+    if (rows.empty())
+        return;
+
+    std::stable_sort(rows.begin(), rows.end(), [this](int a, int b) {
+        if (mEntries[a].noteLow != mEntries[b].noteLow)
+            return mEntries[a].noteLow < mEntries[b].noteLow;
+        return mEntries[a].noteHigh < mEntries[b].noteHigh;
+    });
+
+    // Walk the sorted rows, pinning each low to the previous high + 1 so the cover
+    // is gapless and non-overlapping. Preserve each row's own high as the boundary
+    // where it's still valid; once coverage reaches 127 any trailing row is
+    // redundant and gets retired. The last surviving row is stretched to 127.
+    int nextLow = 0;
+    int lastKept = -1;
+    for (int idx : rows) {
+        ConfigEntry& e = mEntries[idx];
+        if (nextLow > 127) {
+            e.selected = false;
+            e.enabled = false;
+            continue;
+        }
+        int lo = nextLow;
+        int hi = std::clamp<int>(e.noteHigh, lo, 127);
+        e.noteLow = static_cast<uint8_t>(lo);
+        e.noteHigh = static_cast<uint8_t>(hi);
+        lastKept = idx;
+        nextLow = hi + 1;
+    }
+    if (lastKept >= 0)
+        mEntries[lastKept].noteHigh = 127;
+}
+
+void MidiTranslator::FlattenSplits(uint8_t fontId, int16_t instOrWave) {
+    if (instOrWave < kDrumHistInst)
+        return;
+    // Keep the top-priority selected row (RecomputeActive already ranked it into
+    // mActiveEntryIdx) at the full range, retire every other selected range so no
+    // stale sub-range survives to re-split the pair.
+    int keep = mActiveEntryIdx[fontId][instOrWave];
+    // The active pick can be the whole-pair Native marker (skipped below) or a
+    // stale index; only honor it if it's a real selected range, else adopt the
+    // first one in the loop.
+    if (keep >= 0 && keep < static_cast<int>(mEntries.size())) {
+        const ConfigEntry& k = mEntries[keep];
+        const bool isRealRange = k.fontId == fontId && k.instOrWave == instOrWave && k.selected &&
+                                 !(k.route == EntryRoute::Native && k.packName.empty());
+        if (!isRealRange)
+            keep = -1;
+    } else {
+        keep = -1;
+    }
+    for (size_t i = 0; i < mEntries.size(); i++) {
+        ConfigEntry& e = mEntries[i];
+        if (e.fontId != fontId || e.instOrWave != instOrWave || !e.selected)
+            continue;
+        if (e.route == EntryRoute::Native && e.packName.empty())
+            continue;
+        if (keep < 0)
+            keep = static_cast<int>(i); // no active pick: adopt the first row
+        if (static_cast<int>(i) == keep) {
+            e.noteLow = 0;
+            e.noteHigh = 127;
+        } else {
+            e.selected = false;
+            e.enabled = false;
+        }
+    }
+    RecomputeActive(fontId, instOrWave);
 }
 
 void MidiTranslator::SetEntryPreset(int idx, const std::string& pack, int16_t program, int16_t bank,
@@ -1059,6 +1153,7 @@ void MidiTranslator::AutoSplitByEngineRanges(uint8_t fontId, int16_t instOrWave)
         addRange(0, static_cast<uint8_t>(lo - 1)); // low sample range
     if (hi < 127)
         addRange(static_cast<uint8_t>(hi + 1), 127); // high sample range
+    NormalizeSplits(fontId, instOrWave);
     RecomputeActive(fontId, instOrWave);
 }
 
@@ -1761,6 +1856,17 @@ bool MidiTranslator::ApplyOverridesFromFile(const std::string& path) {
             if (f >= 0 && f < kMaxFontId && i >= kDrumHistInst && i < kMaxInstOrWave)
                 SetForcedDrum(static_cast<uint8_t>(f), static_cast<int16_t>(i), true);
         }
+    }
+    // Repair the split invariant on load: older or hand-edited files may carry
+    // melodic ranges with gaps or overlaps. Snap each touched pair's selected
+    // ranges back to a gapless cover of [0,127] before the chain is built.
+    std::set<std::pair<uint8_t, int16_t>> melodicPairs;
+    for (const ConfigEntry& e : mEntries)
+        if (e.selected && e.instOrWave >= kDrumHistInst)
+            melodicPairs.insert({ e.fontId, e.instOrWave });
+    for (const auto& p : melodicPairs) {
+        NormalizeSplits(p.first, p.second);
+        RecomputeActive(p.first, p.second);
     }
     SPDLOG_INFO("[MidiTranslator] ApplyOverridesFromFile: applied {} entries from {} (v{})", applied, path, version);
     return true;

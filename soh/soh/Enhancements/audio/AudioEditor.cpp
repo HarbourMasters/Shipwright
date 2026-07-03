@@ -2577,15 +2577,11 @@ void AudioEditor::DrawElement() {
                                             ImGui::Text("%d ranges", (int)ranges.size());
                                         ImGui::SameLine();
                                         if (ImGui::SmallButton("Flatten##melflat")) {
-                                            // Collapse back to unsplit: widen every range to the
-                                            // full 0..127 (so none register as a sub-range) and
-                                            // keep only the first enabled. The pair then renders
-                                            // as the normal melodic row again.
-                                            for (size_t k = 0; k < ranges.size(); ++k) {
-                                                SOH::MidiTranslator::Instance().SetEntryNoteRange(ranges[k], 0, 127);
-                                                if (k > 0)
-                                                    SOH::MidiTranslator::Instance().SetEntryEnabled(ranges[k], false);
-                                            }
+                                            // Collapse back to unsplit: keep the top-priority range
+                                            // at full 0..127 and retire the rest, so no stale
+                                            // sub-range lingers. The pair then renders as the normal
+                                            // melodic row again.
+                                            SOH::MidiTranslator::Instance().FlattenSplits(p.fontId, p.instOrWave);
                                             AutoSaveOverrides();
                                         }
                                         if (ImGui::IsItemHovered())
