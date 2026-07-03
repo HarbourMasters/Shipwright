@@ -1647,16 +1647,115 @@ void AudioEditor::DrawElement() {
                             }
                         }
 
+                        // ── Instrument filters ───────────────────────────
+                        // The list below shows every registered instrument, not
+                        // just what a song has revealed, so these keep it usable:
+                        // "Only named" hides slots with no sample name, "Only
+                        // played" limits it to what has sounded this session, and
+                        // Font scopes to one font (the "Song" column is really a
+                        // font, shared across songs). Order is always by font then
+                        // instrument, independent of the filters.
+                        bool onlyNamed = CVarGetInteger(CVAR_AUDIO("SynthOnlyNamed"), 1) != 0;
+                        bool onlyPlayed = CVarGetInteger(CVAR_AUDIO("SynthOnlyPlayed"), 0) != 0;
+                        int fontFilter = CVarGetInteger(CVAR_AUDIO("SynthFontFilter"), -1);
+                        {
+                            bool changed = false;
+                            if (ImGui::Checkbox("Only named", &onlyNamed)) {
+                                CVarSetInteger(CVAR_AUDIO("SynthOnlyNamed"), onlyNamed);
+                                changed = true;
+                            }
+                            if (ImGui::IsItemHovered())
+                                ImGui::SetTooltip("Hide slots with no registered sample name (usually unused).");
+                            ImGui::SameLine();
+                            if (ImGui::Checkbox("Only played", &onlyPlayed)) {
+                                CVarSetInteger(CVAR_AUDIO("SynthOnlyPlayed"), onlyPlayed);
+                                changed = true;
+                            }
+                            if (ImGui::IsItemHovered())
+                                ImGui::SetTooltip("Show only instruments that have played since launch.");
+                            ImGui::SameLine();
+                            ImGui::TextUnformatted("Font:");
+                            ImGui::SameLine();
+                            ImGui::SetNextItemWidth(180.0f);
+                            const char* curF =
+                                fontFilter < 0 ? "All" : SOH::GetFontName(static_cast<uint8_t>(fontFilter));
+                            if (ImGui::BeginCombo("##synthFontFilter", curF ? curF : "?")) {
+                                if (ImGui::Selectable("All", fontFilter < 0)) {
+                                    CVarSetInteger(CVAR_AUDIO("SynthFontFilter"), -1);
+                                    fontFilter = -1;
+                                    changed = true;
+                                }
+                                int lastFont = -1;
+                                for (const auto& inst : SOH::EnumerateRegisteredInstruments()) {
+                                    if (inst.fontId == lastFont)
+                                        continue; // sorted by fontId -> one row per font
+                                    lastFont = inst.fontId;
+                                    const char* fn = SOH::GetFontName(inst.fontId);
+                                    char lbl[64];
+                                    std::snprintf(lbl, sizeof(lbl), "%s##f%d", fn ? fn : "(font)", inst.fontId);
+                                    if (ImGui::Selectable(lbl, fontFilter == inst.fontId)) {
+                                        CVarSetInteger(CVAR_AUDIO("SynthFontFilter"), inst.fontId);
+                                        fontFilter = inst.fontId;
+                                        changed = true;
+                                    }
+                                }
+                                ImGui::EndCombo();
+                            }
+                            if (changed)
+                                Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+                        }
+                        ImGui::Separator();
+
                         // ── Per-instrument overrides ─────────────────────
-                        SOH::DiscoveredPair pairs[SOH::MidiTranslator::kMaxDiscovered];
-                        int nPairs = SOH::MidiTranslator::Instance().DiscoveredSnapshot(
-                            pairs, SOH::MidiTranslator::kMaxDiscovered);
+                        // Every registered instrument plus any discovered drum/SFX
+                        // slot, in (font, inst) order, filtered by the controls
+                        // above. A std::vector so the count isn't capped at
+                        // kMaxDiscovered; the render loops below index it exactly
+                        // like the old fixed array (pairs[i] / nPairs).
+                        std::vector<SOH::DiscoveredPair> pairs;
+                        {
+                            SOH::DiscoveredPair disc[SOH::MidiTranslator::kMaxDiscovered];
+                            int nd = SOH::MidiTranslator::Instance().DiscoveredSnapshot(
+                                disc, SOH::MidiTranslator::kMaxDiscovered);
+                            std::set<std::pair<uint8_t, int16_t>> played;
+                            for (int i = 0; i < nd; i++)
+                                played.insert({ disc[i].fontId, disc[i].instOrWave });
+                            std::set<std::pair<uint8_t, int16_t>> seen;
+                            auto consider = [&](uint8_t fontId, int16_t io, bool named) {
+                                if (!seen.insert({ fontId, io }).second)
+                                    return;
+                                if (fontFilter >= 0 && fontId != fontFilter)
+                                    return;
+                                if (onlyPlayed && !played.count({ fontId, io }))
+                                    return;
+                                if (onlyNamed && !named)
+                                    return;
+                                pairs.push_back({ fontId, io, false });
+                            };
+                            for (const auto& inst : SOH::EnumerateRegisteredInstruments()) {
+                                const bool named =
+                                    !inst.name.empty() || !SOH::MidiTranslator::Instance()
+                                                               .GetDisplayName(inst.fontId, inst.instOrWave)
+                                                               .empty();
+                                consider(inst.fontId, inst.instOrWave, named);
+                            }
+                            // Discovered drum/SFX (and any played pair the registry lacks):
+                            // treat as named so "Only named" keeps them.
+                            for (int i = 0; i < nd; i++)
+                                consider(disc[i].fontId, disc[i].instOrWave, true);
+                            // Single stable order regardless of filters: font, then instrument.
+                            std::sort(pairs.begin(), pairs.end(),
+                                      [](const SOH::DiscoveredPair& a, const SOH::DiscoveredPair& b) {
+                                          if (a.fontId != b.fontId)
+                                              return a.fontId < b.fontId;
+                                          return a.instOrWave < b.instOrWave;
+                                      });
+                        }
+                        int nPairs = static_cast<int>(pairs.size());
 
                         bool transSemis = CVarGetInteger(CVAR_AUDIO("FluidSynthTransSemitones"), 0) != 0;
-                        if (ImGui::SmallButton("Clear list##bypassClear")) {
-                            SOH::MidiTranslator::Instance().ClearDiscovered();
-                        }
-                        ImGui::SameLine();
+                        // "Clear list" was removed: with every instrument shown, clearing the
+                        // discovered set had no visible effect.
                         if (ImGui::SmallButton("Reset all##bypassReset")) {
                             // Reset all + auto-save the cleared state so disk reflects
                             // the wipe. Without this, the next pack toggle would re-read
