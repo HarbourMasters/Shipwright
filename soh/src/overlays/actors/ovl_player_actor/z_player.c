@@ -5856,7 +5856,7 @@ s32 func_8083AD4C(PlayState* play, Player* this) {
     }
 
     // Check if aiming camera mode should be overridden due to player settings
-    GameInteractor_Should(VB_CHANGE_AIMING_CAMERA, (camMode != CAM_MODE_FIRST_PERSON), this->heldItemAction, &camMode);
+    GameInteractor_Should(VB_CHANGE_AIMING_CAMERA, true, this->heldItemAction, &camMode);
 
     return Camera_ChangeMode(Play_GetCamera(play, CAM_ID_MAIN), camMode);
 }
