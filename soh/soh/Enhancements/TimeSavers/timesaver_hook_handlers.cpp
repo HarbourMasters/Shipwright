@@ -702,8 +702,7 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
         }
         case VB_PLAY_TIMEBLOCK_CS: {
             if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.OnePoint"), IS_RANDO)) {
-                // Turn camera as if SoT block cutscene
-                func_800C0808(gPlayState, 0, GET_PLAYER(gPlayState), CAM_SET_CS_ATTENTION);
+                // Todo: Preferable if possible to turn camera as if SoT block cutscene
                 *should = false;
             }
             break;
