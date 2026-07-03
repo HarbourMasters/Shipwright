@@ -389,7 +389,7 @@ void func_80AD99D4(EnPoSisters* this, PlayState* play) {
     this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     this->unk_199 = 0;
     this->actionFunc = func_80ADAFC0;
-    OnePointCutscene_Init(play, 3190, 999, &this->actor, MAIN_CAM);
+    OnePointCutscene_Init(play, 3190, 999, &this->actor, CAM_ID_MAIN);
 }
 
 void func_80AD9A54(EnPoSisters* this, PlayState* play) {
@@ -470,7 +470,7 @@ void func_80AD9DF0(EnPoSisters* this, PlayState* play) {
     this->unk_198 = 1;
     this->unk_199 &= ~0x80;
     this->actionFunc = func_80ADB4B0;
-    OnePointCutscene_Init(play, 3180, 156, &this->actor, MAIN_CAM);
+    OnePointCutscene_Init(play, 3180, 156, &this->actor, CAM_ID_MAIN);
 }
 
 void func_80AD9E60(EnPoSisters* this) {
@@ -1049,7 +1049,7 @@ void func_80ADBC88(EnPoSisters* this, PlayState* play) {
         }
         if (this->unk_19A == 30) {
             if (this->unk_194 == 0) {
-                OnePointCutscene_Init(play, 3140, 999, NULL, MAIN_CAM);
+                OnePointCutscene_Init(play, 3140, 999, NULL, CAM_ID_MAIN);
             }
             D_80ADD784 = 1;
         }

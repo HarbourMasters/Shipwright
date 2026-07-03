@@ -1520,7 +1520,7 @@ size_t Cutscene_Command_07(PlayState* play, CutsceneContext* csCtx, u8* cmd, u8 
             if (D_8015FCC8 != 0) {
                 sp2C = Play_GetCamera(play, csCtx->unk_14);
                 sp2C->player = NULL;
-                Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+                Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_WAIT);
                 Play_ChangeCameraStatus(play, csCtx->unk_14, CAM_STAT_ACTIVE);
                 Play_CameraChangeSetting(play, csCtx->unk_14, CAM_SET_FREE0);
                 sp28 = csCtx->cameraFocus->cameraRoll * 1.40625f;
@@ -1563,7 +1563,7 @@ size_t Cutscene_Command_08(PlayState* play, CutsceneContext* csCtx, u8* cmd, u8 
             if (D_8015FCC8 != 0) {
                 sp2C = Play_GetCamera(play, csCtx->unk_14);
                 sp2C->player = NULL;
-                Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+                Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_WAIT);
                 Play_ChangeCameraStatus(play, csCtx->unk_14, CAM_STAT_ACTIVE);
                 Play_CameraChangeSetting(play, csCtx->unk_14, CAM_SET_FREE0);
                 sp3C.x = csCtx->cameraFocus->pos.x;

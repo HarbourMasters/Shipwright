@@ -295,7 +295,7 @@ void EnBox_FallOnSwitchFlag(EnBox* this, PlayState* play) {
 
     if (this->unk_1A8 >= 0) {
         EnBox_SetupAction(this, EnBox_Fall);
-        this->subCamId = OnePointCutscene_Init(play, 4500, 9999, &this->dyna.actor, MAIN_CAM);
+        this->subCamId = OnePointCutscene_Init(play, 4500, 9999, &this->dyna.actor, CAM_ID_MAIN);
         func_8003EC50(play, &play->colCtx.dyna, this->dyna.bgId);
     } else if (this->unk_1A8 >= -11) {
         this->unk_1A8++;

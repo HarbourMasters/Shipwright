@@ -404,7 +404,7 @@ void func_809FE638(EnDu* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
     if (!(player->stateFlags1 & PLAYER_STATE1_IN_CUTSCENE)) {
-        OnePointCutscene_Init(play, 3330, -99, &this->actor, MAIN_CAM);
+        OnePointCutscene_Init(play, 3330, -99, &this->actor, CAM_ID_MAIN);
         player->actor.shape.rot.y = player->actor.world.rot.y = this->actor.world.rot.y + 0x7FFF;
         Audio_PlayFanfare(NA_BGM_APPEAR);
         EnDu_SetupAction(this, func_809FE6CC);

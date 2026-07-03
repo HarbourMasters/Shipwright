@@ -239,7 +239,7 @@ void BgPoEvent_BlockWait(BgPoEvent* this, PlayState* play) {
     this->dyna.actor.world.pos.y = 833.0f;
     if (sBgPoEventPuzzleState == 0x3F) {
         if (this->type == 1) {
-            OnePointCutscene_Init(play, 3150, 65, NULL, MAIN_CAM);
+            OnePointCutscene_Init(play, 3150, 65, NULL, CAM_ID_MAIN);
         }
         this->timer = 45;
         this->actionFunc = BgPoEvent_BlockShake;
@@ -342,7 +342,7 @@ void BgPoEvent_BlockIdle(BgPoEvent* this, PlayState* play) {
                               this->dyna.actor.world.pos.y - 30.0f, this->dyna.actor.world.pos.z + 30.0f, 0,
                               this->dyna.actor.shape.rot.y, 0, this->dyna.actor.params + 0x300);
             if (amy != NULL) {
-                OnePointCutscene_Init(play, 3170, 30, amy, MAIN_CAM);
+                OnePointCutscene_Init(play, 3170, 30, amy, CAM_ID_MAIN);
             }
             Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
             gSaveContext.timerState = TIMER_STATE_STOP;
@@ -539,12 +539,12 @@ void BgPoEvent_PaintingPresent(BgPoEvent* this, PlayState* play) {
         if (!BgPoEvent_NextPainting(this)) {
             Actor_Spawn(&play->actorCtx, play, ACTOR_EN_PO_SISTERS, thisx->world.pos.x, thisx->world.pos.y - 40.0f,
                         thisx->world.pos.z, 0, thisx->shape.rot.y, 0, thisx->params + ((this->type - 1) << 8));
-            OnePointCutscene_Init(play, 3160, 80, thisx, MAIN_CAM);
+            OnePointCutscene_Init(play, 3160, 80, thisx, CAM_ID_MAIN);
             Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
 
         } else {
             Audio_PlayActorSound2(thisx, NA_SE_EN_PO_LAUGH2);
-            OnePointCutscene_Init(play, 3160, 35, thisx, MAIN_CAM);
+            OnePointCutscene_Init(play, 3160, 35, thisx, CAM_ID_MAIN);
         }
         if (thisx->parent != NULL) {
             thisx->parent->child = NULL;

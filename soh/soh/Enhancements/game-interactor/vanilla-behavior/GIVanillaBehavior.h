@@ -3194,6 +3194,15 @@ typedef enum {
     // - `*EnGo2` (Goron Link)
     VB_PREVENT_GORON_LINK_SOFTLOCK,
 
+    // #### `result`
+    // ```c
+    // sets `camMode` to new mode if applicable
+    // ```
+    // #### `args`
+    // - `s32` player->heldItemAction
+    // - `s32*` camMode
+    VB_CHANGE_AIMING_CAMERA,
+
     // true
     // ```
     // #### `args`

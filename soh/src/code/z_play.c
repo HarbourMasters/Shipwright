@@ -421,9 +421,9 @@ void Play_Init(GameState* thisx) {
         Camera_ChangeStatus(&play->subCameras[i], CAM_STAT_UNK100);
     }
 
-    play->cameraPtrs[MAIN_CAM] = &play->mainCamera;
-    play->cameraPtrs[MAIN_CAM]->uid = 0;
-    play->activeCamera = MAIN_CAM;
+    play->cameraPtrs[CAM_ID_MAIN] = &play->mainCamera;
+    play->cameraPtrs[CAM_ID_MAIN]->uid = 0;
+    play->activeCamera = CAM_ID_MAIN;
     func_8005AC48(&play->mainCamera, 0xFF);
     // Sram_Init(this, &this->sramCtx);
     Regs_InitData(play);
@@ -1878,7 +1878,7 @@ void func_800C016C(PlayState* play, Vec3f* src, Vec3f* dest) {
 s16 Play_CreateSubCamera(PlayState* play) {
     s16 i;
 
-    for (i = SUBCAM_FIRST; i < NUM_CAMS; i++) {
+    for (i = CAM_ID_SUB_FIRST; i < NUM_CAMS; i++) {
         if (play->cameraPtrs[i] == NULL) {
             break;
         }
@@ -1893,7 +1893,7 @@ s16 Play_CreateSubCamera(PlayState* play) {
                      CYAN) " " VT_RST "\n",
                  i);
 
-    play->cameraPtrs[i] = &play->subCameras[i - SUBCAM_FIRST];
+    play->cameraPtrs[i] = &play->subCameras[i - CAM_ID_SUB_FIRST];
     Camera_Init(play->cameraPtrs[i], &play->view, &play->colCtx, play);
     play->cameraPtrs[i]->thisIdx = i;
 
@@ -1917,7 +1917,7 @@ s16 Play_ChangeCameraStatus(PlayState* play, s16 camId, s16 status) {
 void Play_ClearCamera(PlayState* play, s16 camId) {
     s16 camIdx = (camId == SUBCAM_ACTIVE) ? play->activeCamera : camId;
 
-    if (camIdx == MAIN_CAM) {
+    if (camIdx == CAM_ID_MAIN) {
         osSyncPrintf(VT_COL(RED, WHITE) "camera control: error: never clear camera !!\n" VT_RST);
     }
 
@@ -1935,13 +1935,13 @@ void Play_ClearCamera(PlayState* play, s16 camId) {
 void Play_ClearAllSubCameras(PlayState* play) {
     s16 i;
 
-    for (i = SUBCAM_FIRST; i < NUM_CAMS; i++) {
+    for (i = CAM_ID_SUB_FIRST; i < NUM_CAMS; i++) {
         if (play->cameraPtrs[i] != NULL) {
             Play_ClearCamera(play, i);
         }
     }
 
-    play->activeCamera = MAIN_CAM;
+    play->activeCamera = CAM_ID_MAIN;
 }
 
 Camera* Play_GetCamera(PlayState* play, s16 camId) {
@@ -2045,7 +2045,7 @@ void func_800C08AC(PlayState* play, s16 camId, s16 arg2) {
 
     Play_ClearCamera(play, camIdx);
 
-    for (i = SUBCAM_FIRST; i < NUM_CAMS; i++) {
+    for (i = CAM_ID_SUB_FIRST; i < NUM_CAMS; i++) {
         if (play->cameraPtrs[i] != NULL) {
             osSyncPrintf(
                 VT_COL(RED, WHITE) "camera control: error: return to main, other camera left. %d cleared!!\n" VT_RST,
@@ -2055,10 +2055,10 @@ void func_800C08AC(PlayState* play, s16 camId, s16 arg2) {
     }
 
     if (arg2 <= 0) {
-        Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_ACTIVE);
-        play->cameraPtrs[MAIN_CAM]->childCamIdx = play->cameraPtrs[MAIN_CAM]->parentCamIdx = SUBCAM_FREE;
+        Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_ACTIVE);
+        play->cameraPtrs[CAM_ID_MAIN]->childCamIdx = play->cameraPtrs[CAM_ID_MAIN]->parentCamIdx = SUBCAM_FREE;
     } else {
-        OnePointCutscene_Init(play, 1020, arg2, NULL, MAIN_CAM);
+        OnePointCutscene_Init(play, 1020, arg2, NULL, CAM_ID_MAIN);
     }
 }
 

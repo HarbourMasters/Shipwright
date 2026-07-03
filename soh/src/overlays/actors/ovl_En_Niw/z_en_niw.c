@@ -761,7 +761,7 @@ void func_80AB6F04(EnNiw* this, PlayState* play) {
 }
 
 void func_80AB70A0(EnNiw* this, PlayState* play) {
-    OnePointCutscene_Init(play, 2290, -99, &this->actor, MAIN_CAM);
+    OnePointCutscene_Init(play, 2290, -99, &this->actor, CAM_ID_MAIN);
     this->timer5 = 100;
     this->unk_2A2 = 1;
     this->actionFunc = func_80AB70F8;

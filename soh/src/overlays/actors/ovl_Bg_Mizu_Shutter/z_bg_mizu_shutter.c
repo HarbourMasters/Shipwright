@@ -95,7 +95,7 @@ void BgMizuShutter_Destroy(BgMizuShutter* thisx, PlayState* play) {
 void BgMizuShutter_WaitForSwitch(BgMizuShutter* this, PlayState* play) {
     if (Flags_GetSwitch(play, (u16)this->dyna.actor.params & 0x3F)) {
         if (ABS(this->dyna.actor.world.rot.x) > 0x2C60) {
-            OnePointCutscene_Init(play, 4510, -99, &this->dyna.actor, MAIN_CAM);
+            OnePointCutscene_Init(play, 4510, -99, &this->dyna.actor, CAM_ID_MAIN);
         } else {
             OnePointCutscene_Attention(play, &this->dyna.actor);
         }

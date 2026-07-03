@@ -311,7 +311,7 @@ void BossFd_Fly(BossFd* this, PlayState* play) {
 
     if (this->introState != BFD_CS_NONE) {
         Player* player2 = GET_PLAYER(play);
-        Camera* mainCam = Play_GetCamera(play, MAIN_CAM);
+        Camera* mainCam = Play_GetCamera(play, CAM_ID_MAIN);
 
         switch (this->introState) {
             case BFD_CS_WAIT:
@@ -328,7 +328,7 @@ void BossFd_Fly(BossFd* this, PlayState* play) {
                     func_80064520(play, &play->csCtx);
                     Player_SetCsActionWithHaltedActors(play, &this->actor, 8);
                     this->introCamera = Play_CreateSubCamera(play);
-                    Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+                    Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_WAIT);
                     Play_ChangeCameraStatus(play, this->introCamera, CAM_STAT_ACTIVE);
                     player2->actor.world.pos.x = 380.0f;
                     player2->actor.world.pos.y = 100.0f;

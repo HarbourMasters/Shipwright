@@ -1685,7 +1685,7 @@ void BossTw_TwinrovaMergeCS(BossTw* this, PlayState* play) {
             }
 
             if (this->timers[2] == 1) {
-                Camera* cam = Play_GetCamera(play, MAIN_CAM);
+                Camera* cam = Play_GetCamera(play, CAM_ID_MAIN);
 
                 cam->eye = this->subCamEye;
                 cam->eyeNext = this->subCamEye;
@@ -2247,7 +2247,7 @@ void BossTw_TwinrovaIntroCS(BossTw* this, PlayState* play) {
             }
 
             if (this->work[CS_TIMER_1] == 260) {
-                Camera* cam = Play_GetCamera(play, MAIN_CAM);
+                Camera* cam = Play_GetCamera(play, CAM_ID_MAIN);
 
                 cam->eye = this->subCamEye;
                 cam->eyeNext = this->subCamEye;
@@ -2600,7 +2600,7 @@ void BossTw_TwinrovaDeathCS(BossTw* this, PlayState* play) {
     s16 i;
     Vec3f spD0;
     Player* player = GET_PLAYER(play);
-    Camera* mainCam = Play_GetCamera(play, MAIN_CAM);
+    Camera* mainCam = Play_GetCamera(play, CAM_ID_MAIN);
 
     SkelAnime_Update(&this->skelAnime);
     this->work[UNK_S8] += 20;
@@ -2794,7 +2794,7 @@ void BossTw_TwinrovaDeathCS(BossTw* this, PlayState* play) {
             Actor_SetScale(&sKoumePtr->actor, sKoumePtr->actor.scale.x);
             Actor_SetScale(&sKotakePtr->actor, sKoumePtr->actor.scale.x);
             if (this->work[CS_TIMER_2] >= 1020) {
-                mainCam = Play_GetCamera(play, MAIN_CAM);
+                mainCam = Play_GetCamera(play, CAM_ID_MAIN);
                 mainCam->eye = this->subCamEye;
                 mainCam->eyeNext = this->subCamEye;
                 mainCam->at = this->subCamAt;

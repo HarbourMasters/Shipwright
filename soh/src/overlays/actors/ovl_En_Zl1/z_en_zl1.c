@@ -174,7 +174,7 @@ void func_80B4B010(EnZl1* this, PlayState* play) {
         Animation_Change(&this->skelAnime, &gChildZelda1Anim_10B38, 1.0f, 0.0f,
                          Animation_GetLastFrame(&gChildZelda1Anim_10B38), ANIMMODE_ONCE_INTERP, -10.0f);
         this->subCamId = Play_CreateSubCamera(play);
-        Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+        Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_WAIT);
         Play_ChangeCameraStatus(play, this->subCamId, CAM_STAT_ACTIVE);
         func_800C0808(play, this->subCamId, player, CAM_SET_FREE0);
         play->envCtx.screenFillColor[0] = 255;
@@ -523,8 +523,8 @@ void func_80B4BF2C(EnZl1* this, PlayState* play) {
             }
         case 2:
             if (Actor_HasParent(&this->actor, play)) {
-                Play_CopyCamera(play, MAIN_CAM, this->subCamId);
-                Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_ACTIVE);
+                Play_CopyCamera(play, CAM_ID_MAIN, this->subCamId);
+                Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_ACTIVE);
                 Play_ClearCamera(play, this->subCamId);
                 this->actor.parent = NULL;
                 this->unk_1E2++;

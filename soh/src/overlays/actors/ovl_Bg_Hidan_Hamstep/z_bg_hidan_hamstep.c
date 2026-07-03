@@ -279,7 +279,7 @@ void func_80888734(BgHidanHamstep* this) {
 
 void func_808887C4(BgHidanHamstep* this, PlayState* play) {
     if (this->collider.base.acFlags & AC_HIT) {
-        OnePointCutscene_Init(play, 3310, 100, &this->dyna.actor, MAIN_CAM);
+        OnePointCutscene_Init(play, 3310, 100, &this->dyna.actor, CAM_ID_MAIN);
         Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_HAMMER_SWITCH);
         this->collider.base.acFlags = AC_NONE;
         BgHidanHamstep_SetupAction(this, 1);

@@ -464,7 +464,7 @@ void EnTa_RunAwayStart(EnTa* this, PlayState* play) {
 
 void EnTa_TalkAwakeInCastle(EnTa* this, PlayState* play) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_EVENT) {
-        s16 csCamIdx = OnePointCutscene_Init(play, 4175, -99, &this->actor, MAIN_CAM);
+        s16 csCamIdx = OnePointCutscene_Init(play, 4175, -99, &this->actor, CAM_ID_MAIN);
         EnTa_SetupAction(this, EnTa_RunAwayStart, EnTa_AnimRepeatCurrent);
         this->timer = 5;
         Flags_SetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE);

@@ -234,7 +234,7 @@ void func_808FD5F4(BossGanon2* this, PlayState* play) {
                 func_80064520(play, &play->csCtx);
                 Player_SetCsActionWithHaltedActors(play, &this->actor, 8);
                 this->subCamId = Play_CreateSubCamera(play);
-                Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+                Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_WAIT);
                 Play_ChangeCameraStatus(play, this->subCamId, CAM_STAT_ACTIVE);
                 sBossGanon2Zelda = (EnZl3*)Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_ZL3, 970.0f,
                                                               1086.0f, -200.0f, 0, 0, 0, 1);
@@ -359,7 +359,7 @@ void func_808FD5F4(BossGanon2* this, PlayState* play) {
             Math_ApproachF(&this->subCamEye.z, -20.0f, 0.1f, this->unk_410.x * 170.0f);
             Math_ApproachF(&this->unk_410.x, 0.04f, 1.0f, 0.0005f);
             if (this->csTimer == 100) {
-                Camera* camera = Play_GetCamera(play, MAIN_CAM);
+                Camera* camera = Play_GetCamera(play, CAM_ID_MAIN);
 
                 camera->eye = this->subCamEye;
                 camera->eyeNext = this->subCamEye;
@@ -380,7 +380,7 @@ void func_808FD5F4(BossGanon2* this, PlayState* play) {
                 this->csTimer = 0;
                 func_80064520(play, &play->csCtx);
                 this->subCamId = Play_CreateSubCamera(play);
-                Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+                Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_WAIT);
                 Play_ChangeCameraStatus(play, this->subCamId, CAM_STAT_ACTIVE);
             } else {
                 break;
@@ -585,7 +585,7 @@ void func_808FD5F4(BossGanon2* this, PlayState* play) {
                 sp8D = true;
             }
             if (this->csTimer >= 60) {
-                Camera* camera = Play_GetCamera(play, MAIN_CAM);
+                Camera* camera = Play_GetCamera(play, CAM_ID_MAIN);
 
                 camera->eye = this->subCamEye;
                 camera->eyeNext = this->subCamEye;
@@ -915,7 +915,7 @@ void func_808FD5F4(BossGanon2* this, PlayState* play) {
                 Audio_PlayActorSound2(&this->actor, NA_SE_EN_MGANON_ROAR);
             }
             if (Animation_OnFrame(&this->skelAnime, this->unk_194)) {
-                Camera* camera = Play_GetCamera(play, MAIN_CAM);
+                Camera* camera = Play_GetCamera(play, CAM_ID_MAIN);
 
                 camera->eye = this->subCamEye;
                 camera->eyeNext = this->subCamEye;
@@ -1332,7 +1332,7 @@ void func_80900890(BossGanon2* this, PlayState* play) {
     f32 temp_f12;
     f32 temp_f2;
 
-    sp4C = Play_GetCamera(play, MAIN_CAM);
+    sp4C = Play_GetCamera(play, CAM_ID_MAIN);
     player = GET_PLAYER(play);
     SkelAnime_Update(&this->skelAnime);
     this->csTimer++;
@@ -1342,7 +1342,7 @@ void func_80900890(BossGanon2* this, PlayState* play) {
         case 0:
             func_80064520(play, &play->csCtx);
             this->subCamId = Play_CreateSubCamera(play);
-            Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+            Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_WAIT);
             Play_ChangeCameraStatus(play, this->subCamId, CAM_STAT_ACTIVE);
             Player_SetCsActionWithHaltedActors(play, &this->actor, 8);
             this->csState = 1;
@@ -1385,7 +1385,7 @@ void func_80900890(BossGanon2* this, PlayState* play) {
                 Message_StartTextbox(play, 0x70D7, NULL);
             }
             if ((this->unk_1A2[1] < 30) && (Message_GetState(&play->msgCtx) == TEXT_STATE_NONE)) {
-                temp_v0 = Play_GetCamera(play, MAIN_CAM);
+                temp_v0 = Play_GetCamera(play, CAM_ID_MAIN);
                 temp_v0->eye = this->subCamEye;
                 temp_v0->eyeNext = this->subCamEye;
                 temp_v0->at = this->subCamAt;
@@ -1399,7 +1399,7 @@ void func_80900890(BossGanon2* this, PlayState* play) {
         case 10:
             func_80064520(play, &play->csCtx);
             this->subCamId = Play_CreateSubCamera(play);
-            Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+            Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_WAIT);
             Play_ChangeCameraStatus(play, this->subCamId, CAM_STAT_ACTIVE);
             this->csState = 11;
             this->unk_334 = 1;
@@ -1416,7 +1416,7 @@ void func_80900890(BossGanon2* this, PlayState* play) {
             this->subCamAt.y = (player->actor.world.pos.y + 60.0f) - 25.0f;
             this->subCamAt.z = player->actor.world.pos.z;
             if (this->csTimer == 80) {
-                temp_v0_2 = Play_GetCamera(play, MAIN_CAM);
+                temp_v0_2 = Play_GetCamera(play, CAM_ID_MAIN);
                 temp_v0_2->eye = this->subCamEye;
                 temp_v0_2->eyeNext = this->subCamEye;
                 temp_v0_2->at = this->subCamAt;
@@ -1537,7 +1537,7 @@ void func_8090120C(BossGanon2* this, PlayState* play) {
         case 0:
             func_80064520(play, &play->csCtx);
             this->subCamId = Play_CreateSubCamera(play);
-            Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+            Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_WAIT);
             Play_ChangeCameraStatus(play, this->subCamId, CAM_STAT_ACTIVE);
             Player_SetCsActionWithHaltedActors(play, &this->actor, 8);
             this->csState = 1;
@@ -1672,7 +1672,7 @@ void func_8090120C(BossGanon2* this, PlayState* play) {
             this->subCamAt.y = player->actor.world.pos.y + 40.0f;
             this->subCamAt.z = player->actor.world.pos.z;
             if (this->csTimer == 166) {
-                temp_v0_2 = Play_GetCamera(play, MAIN_CAM);
+                temp_v0_2 = Play_GetCamera(play, CAM_ID_MAIN);
                 temp_v0_2->eye = this->subCamEye;
                 temp_v0_2->eyeNext = this->subCamEye;
                 temp_v0_2->at = this->subCamAt;
@@ -1693,7 +1693,7 @@ void func_8090120C(BossGanon2* this, PlayState* play) {
                 func_80064520(play, &play->csCtx);
                 GameInteractor_ExecuteOnBossDefeat(&this->actor);
                 this->subCamId = Play_CreateSubCamera(play);
-                Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+                Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_WAIT);
                 Play_ChangeCameraStatus(play, this->subCamId, CAM_STAT_ACTIVE);
                 this->csState = 7;
                 this->csTimer = 0;

@@ -4670,7 +4670,7 @@ void Message_Update(PlayState* play) {
                     ((msgCtx->textId < 0x88D || msgCtx->textId >= 0x893) || msgCtx->choiceIndex != 0) &&
                     (msgCtx->textId != 0x3055 && gSaveContext.cutsceneIndex < 0xFFF0)) {
                     osSyncPrintf("=== day_time=%x ", ((void)0, gSaveContext.cutsceneIndex));
-                    if (play->activeCamera == MAIN_CAM) {
+                    if (play->activeCamera == CAM_ID_MAIN) {
                         if (gSaveContext.unk_13EE == 0 || gSaveContext.unk_13EE == 1 || gSaveContext.unk_13EE == 2) {
                             gSaveContext.unk_13EE = 0x32;
                         }

@@ -305,7 +305,7 @@ void EnSyatekiMan_WaitForGame(EnSyatekiMan* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
     gallery = ((EnSyatekiItm*)this->actor.parent);
     if ((gallery->actor.update != NULL) && (gallery->signal == ENSYATEKI_END)) {
-        this->csCam = OnePointCutscene_Init(play, 8002, -99, &this->actor, MAIN_CAM);
+        this->csCam = OnePointCutscene_Init(play, 8002, -99, &this->actor, CAM_ID_MAIN);
         switch (gallery->hitCount) {
             case 10:
                 this->gameResult = SYATEKI_RESULT_WINNER;

@@ -151,7 +151,7 @@ void func_808BF078(BgYdanMaruta* this, PlayState* play) {
         Flags_SetSwitch(play, this->switchFlag);
         Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
         this->actionFunc = func_808BF108;
-        OnePointCutscene_Init(play, 3010, 50, &this->dyna.actor, MAIN_CAM);
+        OnePointCutscene_Init(play, 3010, 50, &this->dyna.actor, CAM_ID_MAIN);
     } else {
         CollisionCheck_SetAC(play, &play->colChkCtx, &this->collider.base);
     }
