@@ -399,6 +399,10 @@ DrawItemTableEntry sDrawItemTable[] = {
  * Calls the corresponding draw function for the given draw ID
  */
 void GetItem_Draw(PlayState* play, s16 drawId) {
+    // SoH [Enhancements] Prevent any UB here, GID_MAXIMUM useful for overriding GI draws
+    if (drawId < 0 || drawId >= GID_MAXIMUM)
+        return;
+
     sDrawItemTable[drawId].drawFunc(play, drawId);
 }
 

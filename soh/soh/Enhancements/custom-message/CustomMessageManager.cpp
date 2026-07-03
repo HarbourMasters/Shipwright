@@ -1,5 +1,7 @@
 #include "CustomMessageManager.h"
 #include "CustomMessageInterfaceAddon.h"
+#include "CustomMessageTypes.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include <algorithm>
 #include <stdint.h>
 #include <cstring>
@@ -8,6 +10,15 @@
 #include <variables.h>
 #include <soh/Enhancements/gameconsole.h>
 #include <soh/util.h>
+#include "soh/ShipInit.hpp"
+
+#include "soh/util.h"
+
+extern "C" {
+#include "functions.h"
+
+extern PlayState* gPlayState;
+}
 
 using namespace std::literals::string_literals;
 
@@ -858,3 +869,22 @@ bool CustomMessageManager::AddCustomMessageTable(std::string tableID) {
     CustomMessageTable newMessageTable;
     return messageTables.emplace(tableID, newMessageTable).second;
 }
+
+void CustomMessageManager::SetActiveCustomMessage(CustomMessage message) {
+    activeCustomMessage = message;
+}
+
+void CustomMessageManager::StartTextbox(CustomMessage message) {
+    activeCustomMessage = message;
+
+    Message_StartTextbox(gPlayState, TEXT_CUSTOM_MESSAGE, &GET_PLAYER(gPlayState)->actor);
+}
+
+static RegisterShipInitFunc initFunc(
+    []() {
+        COND_ID_HOOK(OnOpenText, TEXT_CUSTOM_MESSAGE, true, [](u16* textId, bool* loadFromMessageTable) {
+            *loadFromMessageTable = false;
+            CustomMessageManager::Instance->activeCustomMessage.LoadIntoFont();
+        });
+    },
+    {});
