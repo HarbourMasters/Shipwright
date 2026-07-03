@@ -1658,6 +1658,7 @@ void AudioEditor::DrawElement() {
                         bool onlyNamed = CVarGetInteger(CVAR_AUDIO("SynthOnlyNamed"), 1) != 0;
                         bool onlyPlayed = CVarGetInteger(CVAR_AUDIO("SynthOnlyPlayed"), 0) != 0;
                         int fontFilter = CVarGetInteger(CVAR_AUDIO("SynthFontFilter"), -1);
+                        bool simpleView = CVarGetInteger(CVAR_AUDIO("SynthSimpleView"), 1) != 0;
                         {
                             bool changed = false;
                             if (ImGui::Checkbox("Only named", &onlyNamed)) {
@@ -1672,7 +1673,19 @@ void AudioEditor::DrawElement() {
                                 changed = true;
                             }
                             if (ImGui::IsItemHovered())
-                                ImGui::SetTooltip("Show only instruments that have played since launch.");
+                                ImGui::SetTooltip("Show only instruments that have played. Use Clear to\n"
+                                                  "reset the list, then it repopulates as notes sound.");
+                            ImGui::SameLine();
+                            // Clear the played set so the list re-fills from what plays next -- the
+                            // old "hit clear when a new song starts to isolate its instruments" flow.
+                            ImGui::BeginDisabled(!onlyPlayed);
+                            if (ImGui::SmallButton("Clear")) {
+                                SOH::MidiTranslator::Instance().ClearDiscovered();
+                            }
+                            if (ImGui::IsItemHovered())
+                                ImGui::SetTooltip("Reset the played list. Hit this when a new song starts\n"
+                                                  "to isolate that song's instruments.");
+                            ImGui::EndDisabled();
                             ImGui::SameLine();
                             ImGui::TextUnformatted("Font:");
                             ImGui::SameLine();
@@ -1701,6 +1714,14 @@ void AudioEditor::DrawElement() {
                                 }
                                 ImGui::EndCombo();
                             }
+                            ImGui::SameLine();
+                            if (ImGui::Checkbox("Simple view", &simpleView)) {
+                                CVarSetInteger(CVAR_AUDIO("SynthSimpleView"), simpleView);
+                                changed = true;
+                            }
+                            if (ImGui::IsItemHovered())
+                                ImGui::SetTooltip("Hide the Inst/Mode/Gain/Shift/effects columns; show just\n"
+                                                  "the instrument and its preset.");
                             if (changed)
                                 Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
                         }
@@ -1905,23 +1926,28 @@ void AudioEditor::DrawElement() {
                             // temp volume). It sits first and its widgets are styled
                             // distinctly so the user reads "these don't get saved" at
                             // a glance.
-                            ImGui::TableSetupColumn("Override", ImGuiTableColumnFlags_WidthFixed, 168.0f);
+                            // Simple view hides the tuning columns (Override/Inst/Mode/Gain/
+                            // Shift/Adv) and leaves Song + Sample + Preset -- the same table,
+                            // just less of it. Disabled fully removes a column (no context-menu
+                            // entry), unlike DefaultHide.
+                            const ImGuiTableColumnFlags hideAdv = simpleView ? ImGuiTableColumnFlags_Disabled : 0;
+                            ImGui::TableSetupColumn("Override", ImGuiTableColumnFlags_WidthFixed | hideAdv, 168.0f);
                             // Song stretches wider than Sample by default — the modder UX
                             // wants the song-family label readable at a glance, while the
                             // Sample column's editable rename mostly sits idle and only
                             // expands when typed into.
                             ImGui::TableSetupColumn("Song", ImGuiTableColumnFlags_WidthStretch, 1.6f);
                             ImGui::TableSetupColumn("Sample", ImGuiTableColumnFlags_WidthStretch, 1.0f);
-                            ImGui::TableSetupColumn("Inst", ImGuiTableColumnFlags_WidthFixed, 96.0f);
-                            ImGui::TableSetupColumn("Mode", ImGuiTableColumnFlags_WidthFixed, 150.0f);
-                            ImGui::TableSetupColumn("Gain", ImGuiTableColumnFlags_WidthFixed, 130.0f);
+                            ImGui::TableSetupColumn("Inst", ImGuiTableColumnFlags_WidthFixed | hideAdv, 96.0f);
+                            ImGui::TableSetupColumn("Mode", ImGuiTableColumnFlags_WidthFixed | hideAdv, 150.0f);
+                            ImGui::TableSetupColumn("Gain", ImGuiTableColumnFlags_WidthFixed | hideAdv, 130.0f);
                             ImGui::TableSetupColumn(transSemis ? "Shift (st)" : "Shift (oct)",
-                                                    ImGuiTableColumnFlags_WidthFixed, 85.0f);
+                                                    ImGuiTableColumnFlags_WidthFixed | hideAdv, 85.0f);
                             ImGui::TableSetupColumn("Preset", ImGuiTableColumnFlags_WidthFixed, 280.0f);
                             // Adv: a per-entry popup with the effect sends + filter
                             // (Reverb/Chorus/Cutoff/Q). Replaces the four narrow columns that
                             // pushed the table off-screen on smaller monitors.
-                            ImGui::TableSetupColumn("Adv", ImGuiTableColumnFlags_WidthFixed, 52.0f);
+                            ImGui::TableSetupColumn("Adv", ImGuiTableColumnFlags_WidthFixed | hideAdv, 52.0f);
                             ImGui::TableSetupScrollFreeze(0, 2);
 
                             ImGui::TableNextRow();
