@@ -280,7 +280,9 @@ void func_80BA2610(ObjWarp2block* this, PlayState* play) {
     if ((func_80BA2304(this, play) != 0) && (this->unk_16C <= 0)) {
         ObjWarp2block_Spawn(this, play);
         this->unk_16C = 0xA0;
-        OnePointCutscene_Attention(play, &this->dyna.actor);
+        if (!CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.OnePoint"), !IS_RANDO)) {
+            OnePointCutscene_Attention(play, &this->dyna.actor);
+        }
         this->unk_170 = 0xC;
     }
 
