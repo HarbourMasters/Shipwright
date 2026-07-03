@@ -10677,6 +10677,10 @@ void Player_StartMode_Door(PlayState* play, Player* this) {
 }
 
 void Player_StartMode_Grotto(PlayState* play, Player* this) {
+    // If can respawn from water to grotto, need to set normal speed factor for the jump
+    if (IS_RANDO) {
+        sWaterSpeedFactor = 1.0f;
+    }
     func_808389E8(this, &gPlayerAnim_link_normal_jump, 12.0f, play);
     Player_SetupAction(play, this, Player_Action_8084F9C0, 0);
     this->stateFlags1 |= PLAYER_STATE1_IN_CUTSCENE;
