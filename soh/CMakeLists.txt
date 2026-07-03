@@ -253,6 +253,17 @@ if(ENABLE_FLUIDSYNTH)
     set(enable-jack OFF CACHE BOOL "" FORCE)
     set(enable-sdl3 OFF CACHE BOOL "" FORCE)
     set(enable-pulseaudio OFF CACHE BOOL "" FORCE)
+    # Windows audio drivers are unused (soh drives FluidSynth with audio.driver=none)
+    # and their sources (e.g. fluid_waveout.c) fail to link against soh's static CRT.
+    set(enable-waveout OFF CACHE BOOL "" FORCE)
+    set(enable-wasapi OFF CACHE BOOL "" FORCE)
+    set(enable-dsound OFF CACHE BOOL "" FORCE)
+    set(enable-winmidi OFF CACHE BOOL "" FORCE)
+    # Match soh's static CRT: FluidSynth honors CMP0091 but defaults to the DLL
+    # runtime, which mismatches soh's MultiThreaded (/MT) runtime at link time.
+    if(MSVC)
+        set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+    endif()
     FetchContent_Declare(fluidsynth
         GIT_REPOSITORY https://github.com/FluidSynth/fluidsynth.git
         GIT_TAG v2.5.5
