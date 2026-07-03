@@ -525,7 +525,8 @@ void DrawTricksMenu(WidgetInfo& info) {
                 for (int i = 0; i < RT_MAX; i++) {
                     auto option = randoSettings->GetTrickSetting(static_cast<RandomizerTrick>(i));
                     if (!enabledTricks.count(static_cast<RandomizerTrick>(i)) &&
-                        trickSearch.PassFilter(option.GetName().c_str()) && areaTreeDisabled.contains(option.GetArea()) &&
+                        trickSearch.PassFilter(option.GetName().c_str()) &&
+                        areaTreeDisabled.contains(option.GetArea()) &&
                         Rando::Tricks::CheckTags(showTag, option.GetTags())) {
                         enabledTricks.insert(static_cast<RandomizerTrick>(i));
                     }
@@ -598,7 +599,8 @@ void DrawTricksMenu(WidgetInfo& info) {
                 for (int i = 0; i < RT_MAX; i++) {
                     auto option = randoSettings->GetTrickSetting(static_cast<RandomizerTrick>(i));
                     if (enabledTricks.count(static_cast<RandomizerTrick>(i)) &&
-                        trickSearch.PassFilter(option.GetName().c_str()) && areaTreeEnabled.contains(option.GetArea()) &&
+                        trickSearch.PassFilter(option.GetName().c_str()) &&
+                        areaTreeEnabled.contains(option.GetArea()) &&
                         Rando::Tricks::CheckTags(showTag, option.GetTags())) {
                         enabledTricks.erase(static_cast<RandomizerTrick>(i));
                     }
