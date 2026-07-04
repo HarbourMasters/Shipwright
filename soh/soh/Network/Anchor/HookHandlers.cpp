@@ -118,7 +118,7 @@ void Anchor::RegisterHooks() {
     COND_HOOK(OnFlagSet, isConnected, [&](s16 flagType, s16 flag) {
         SendPacket_SetFlag(SCENE_ID_MAX, flagType, flag);
 
-        // // If we're not in rando, we have to sync some of the great fairy rewards manually
+        // If we're not in rando, we have to sync some of the great fairy rewards manually
         if (!IS_RANDO) {
             if (flagType == FLAG_RANDOMIZER_INF) {
                 switch (flag) {
