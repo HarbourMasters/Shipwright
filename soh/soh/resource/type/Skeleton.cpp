@@ -152,7 +152,8 @@ void SkeletonPatcher::UpdateTunicSkeletons(SkeletonPatchInfo& skel) {
 
     // Check if we even need updating
     s32 skelID = ageID << 4 | tunicID;
-    if (skelID == skel.lastSkeletonId) return;
+    if (skelID == skel.lastSkeletonId)
+        return;
     skel.lastSkeletonId = skelID;
 
     // Check if this is one of Link's skeletons
@@ -160,15 +161,18 @@ void SkeletonPatcher::UpdateTunicSkeletons(SkeletonPatchInfo& skel) {
         // Check what Link's current tunic is
         switch (tunicID) {
             case PLAYER_TUNIC_KOKIRI:
-                if (skel.lastSkeletonId == 4) return;
+                if (skel.lastSkeletonId == 4)
+                    return;
                 skeletonPath = std::string(gLinkAdultKokiriTunicSkel).substr(sOtr.length());
                 break;
             case PLAYER_TUNIC_GORON:
-                if (skel.lastSkeletonId == 5) return;
+                if (skel.lastSkeletonId == 5)
+                    return;
                 skeletonPath = std::string(gLinkAdultGoronTunicSkel).substr(sOtr.length());
                 break;
             case PLAYER_TUNIC_ZORA:
-                if (skel.lastSkeletonId == 6) return;
+                if (skel.lastSkeletonId == 6)
+                    return;
                 skeletonPath = std::string(gLinkAdultZoraTunicSkel).substr(sOtr.length());
                 break;
             default:

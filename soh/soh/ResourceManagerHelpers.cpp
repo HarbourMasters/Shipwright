@@ -76,7 +76,8 @@ static const char* ResourceMgr_ResolveLinkTunicDListPath(const char* path) {
     const std::string candidate =
         fmt::format("__OTR__objects/{}_{}/{}", objectFolder, tunicSuffix, originalPath + objectPrefix.size());
 
-    if (!ResourceMgr_IsAltAssetsEnabled() || !ResourceMgr_FileAltExists(candidate.c_str()) || !ResourceGetIsCustomByName(candidate.c_str())) {
+    if (!ResourceMgr_IsAltAssetsEnabled() || !ResourceMgr_FileAltExists(candidate.c_str()) ||
+        !ResourceGetIsCustomByName(candidate.c_str())) {
         return path;
     }
 
@@ -611,7 +612,6 @@ extern "C" AnimationHeaderCommon* ResourceMgr_LoadAnimByName(const char* path) {
 
             // Try alt/ first
             pathStr = Ship::IResource::gAltAssetPrefix + pathStr;
-
 
             AnimationHeaderCommon* animHeader = (AnimationHeaderCommon*)ResourceGetDataByName(pathStr.c_str());
 
