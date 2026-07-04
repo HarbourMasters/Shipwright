@@ -3105,13 +3105,13 @@ void AudioEditor::DrawElement() {
                                 // "Treat as drum": route this melodic instrument through the
                                 // drum path so each distinct note becomes a slot mapped to a GM
                                 // percussion sound. For a melodic slot that's really percussion
-                                // (e.g. a song using an instrument slot for a drum hit). Always
-                                // available -- works even on a Native pair.
-                                if (ImGui::SmallButton("As Drum##forcedrum")) {
+                                // (e.g. a song using an instrument slot for a drum hit). An
+                                // advanced move, so it's hidden in Simple view.
+                                if (!simpleView && ImGui::SmallButton("As Drum##forcedrum")) {
                                     SOH::MidiTranslator::Instance().SetForcedDrum(p.fontId, p.instOrWave, true);
                                     AutoSaveOverrides();
                                 }
-                                if (ImGui::IsItemHovered())
+                                if (!simpleView && ImGui::IsItemHovered())
                                     ImGui::SetTooltip("Treat this instrument as a drum/percussion channel.\n"
                                                       "Each distinct note it plays becomes a slot you map to\n"
                                                       "a GM drum sound. Play the song first, then expand the\n"
