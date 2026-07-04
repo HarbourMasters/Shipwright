@@ -1720,8 +1720,8 @@ void AudioEditor::DrawElement() {
                                 changed = true;
                             }
                             if (ImGui::IsItemHovered())
-                                ImGui::SetTooltip("Hide the Inst/Mode/Gain/Shift/effects columns; show just\n"
-                                                  "the instrument and its preset.");
+                                ImGui::SetTooltip("Hide the Mode/Gain/Shift/effects tuning columns. Splits and\n"
+                                                  "drums stay expandable and configurable.");
                             if (changed)
                                 Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
                         }
@@ -1926,19 +1926,22 @@ void AudioEditor::DrawElement() {
                             // temp volume). It sits first and its widgets are styled
                             // distinctly so the user reads "these don't get saved" at
                             // a glance.
-                            // Simple view hides the tuning columns (Override/Inst/Mode/Gain/
-                            // Shift/Adv) and leaves Song + Sample + Preset -- the same table,
-                            // just less of it. Disabled fully removes a column (no context-menu
-                            // entry), unlike DefaultHide.
+                            // Simple view hides the tuning knobs (Mode/Gain/Shift/Adv) and keeps
+                            // Override + Song + Sample + Inst + Preset -- the same table, minus the
+                            // numeric columns. Override (the split/drum expander + Solo/Mute) and
+                            // Inst (Split / L-M-H / As Drum / drum Slots) stay so split and drum
+                            // instruments are still expandable and configurable here, not just
+                            // melodic presets. Disabled fully removes a column (no context menu),
+                            // unlike DefaultHide.
                             const ImGuiTableColumnFlags hideAdv = simpleView ? ImGuiTableColumnFlags_Disabled : 0;
-                            ImGui::TableSetupColumn("Override", ImGuiTableColumnFlags_WidthFixed | hideAdv, 168.0f);
+                            ImGui::TableSetupColumn("Override", ImGuiTableColumnFlags_WidthFixed, 168.0f);
                             // Song stretches wider than Sample by default — the modder UX
                             // wants the song-family label readable at a glance, while the
                             // Sample column's editable rename mostly sits idle and only
                             // expands when typed into.
                             ImGui::TableSetupColumn("Song", ImGuiTableColumnFlags_WidthStretch, 1.6f);
                             ImGui::TableSetupColumn("Sample", ImGuiTableColumnFlags_WidthStretch, 1.0f);
-                            ImGui::TableSetupColumn("Inst", ImGuiTableColumnFlags_WidthFixed | hideAdv, 96.0f);
+                            ImGui::TableSetupColumn("Inst", ImGuiTableColumnFlags_WidthFixed, 96.0f);
                             ImGui::TableSetupColumn("Mode", ImGuiTableColumnFlags_WidthFixed | hideAdv, 150.0f);
                             ImGui::TableSetupColumn("Gain", ImGuiTableColumnFlags_WidthFixed | hideAdv, 130.0f);
                             ImGui::TableSetupColumn(transSemis ? "Shift (st)" : "Shift (oct)",
