@@ -243,11 +243,6 @@ void GameInteractor::RawAction::SetFlag(int16_t flagType, int16_t flag) {
             gSaveContext.eventInf[flag >> 4] |= (1 << (flag & 0xF));
             break;
         case FlagType::FLAG_RANDOMIZER_INF:
-            if (!IS_RANDO) {
-                LUSLOG_ERROR("Tried to set randomizerInf flag outside of rando (%d)", flag);
-                assert(false);
-                break;
-            }
             gSaveContext.ship.randomizerInf[flag >> 4] |= (1 << (flag & 0xF));
             break;
         case FlagType::FLAG_GS_TOKEN:

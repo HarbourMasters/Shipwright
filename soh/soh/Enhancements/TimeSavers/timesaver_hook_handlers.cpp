@@ -796,14 +796,27 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                 }
             }
 
-            if (flag != RAND_INF_MAX &&
-                (IS_RANDO || CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), IS_RANDO))) {
-                if (IS_RANDO || *should) {
+            if (flag != RAND_INF_MAX) {
+                if (IS_RANDO) {
+                    // If we're in rando, set the flag and fill magic/health. The flag will trigger the check later with
+                    // the queue Notably, we ignore the vanilla *should value because in rando we don't care about the
+                    // requirements
                     Flags_SetRandomizerInf(flag);
                     gSaveContext.healthAccumulator = MAX_HEALTH;
                     Magic_Fill(gPlayState);
+                } else {
+                    // If we're in vanilla, set the flag _if_ we were eligble, so that anchor can send the reward in
+                    // co-op
+                    if (*should) {
+                        Flags_SetRandomizerInf(flag);
+                        // If we're in vanilla and skipping the cutscene, fill health/magic, and prevent the cutscene
+                        if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), IS_RANDO)) {
+                            gSaveContext.healthAccumulator = MAX_HEALTH;
+                            Magic_Fill(gPlayState);
+                            *should = false;
+                        }
+                    }
                 }
-                *should = false;
             }
 
             break;
