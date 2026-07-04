@@ -145,4 +145,49 @@ const char* StripSamplePathPrefix(const std::string& path) {
     return path.c_str() + slash + 1;
 }
 
+std::vector<RegisteredInstrument> EnumerateRegisteredInstruments() {
+    std::vector<RegisteredInstrument> out;
+    auto& s = GetState();
+    std::lock_guard<std::mutex> lock(s.mutex);
+    out.reserve(s.entries.size());
+    // std::map iterates in ascending (fontId, instOrWave) key order.
+    for (const auto& kv : s.entries) {
+        const SlotSamples& slot = kv.second;
+        const std::string& best = !slot.normal.empty() ? slot.normal : !slot.low.empty() ? slot.low : slot.high;
+        out.push_back({ kv.first.first, kv.first.second, std::string(StripSamplePathPrefix(best)) });
+    }
+    return out;
+}
+
+void SetDrumSlotName(uint8_t fontId, uint8_t slot, std::string name) {
+    auto& s = GetState();
+    std::lock_guard<std::mutex> lock(s.mutex);
+    s.drumSlots[std::make_pair(fontId, slot)] = std::move(name);
+}
+
+std::vector<uint8_t> EnumerateDrumFonts() {
+    std::vector<uint8_t> out;
+    auto& s = GetState();
+    std::lock_guard<std::mutex> lock(s.mutex);
+    // Map is sorted by (fontId, slot), so distinct fonts come out ascending.
+    for (const auto& kv : s.drumSlots)
+        if (out.empty() || out.back() != kv.first.first)
+            out.push_back(kv.first.first);
+    return out;
+}
+
+std::vector<RegisteredDrumSlot> EnumerateDrumSlots(uint8_t fontId) {
+    std::vector<RegisteredDrumSlot> out;
+    auto& s = GetState();
+    std::lock_guard<std::mutex> lock(s.mutex);
+    // std::map iterates in ascending (fontId, slot) key order, so this font's
+    // slots come out sorted and contiguous within the scan.
+    for (const auto& kv : s.drumSlots) {
+        if (kv.first.first != fontId)
+            continue;
+        out.push_back({ kv.first.first, kv.first.second, std::string(StripSamplePathPrefix(kv.second)) });
+    }
+    return out;
+}
+
 } // namespace SOH

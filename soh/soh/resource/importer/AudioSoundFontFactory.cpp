@@ -64,6 +64,12 @@ ResourceFactoryBinaryAudioSoundFontV2::ReadResource(std::shared_ptr<Ship::File> 
         std::string sampleFileName = reader->ReadString();
         drum->sound.tuning = reader->ReadFloat();
 
+        // Register the slot's sample name for the bypass UI (mirrors the melodic capture below).
+        if (!sampleFileName.empty()) {
+            SOH::SetDrumSlotName(static_cast<uint8_t>(audioSoundFont->soundFont.fntIndex), static_cast<uint8_t>(i),
+                                 sampleFileName);
+        }
+
         if (sampleFileName.empty()) {
             drum->sound.sample = nullptr;
         } else {

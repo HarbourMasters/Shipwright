@@ -78,4 +78,37 @@ int SuggestedTranspose(uint8_t fontId, int16_t instId, uint8_t noteLow, uint8_t 
 // references inside `path` — do not outlive it.
 const char* StripSamplePathPrefix(const std::string& path);
 
+// One engine instrument slot the SoundFont factory registered a sample for.
+struct RegisteredInstrument {
+    uint8_t fontId;
+    int16_t instOrWave; // engine key: 0 = drum, 1 = SFX, >= 2 = melodic
+    std::string name;   // best-available sample name (path stripped); may be empty
+};
+
+// Every (fontId, instOrWave) the factory registered, in ascending key order.
+// This is the full engine-instrument set known at font-load time, so UIs can list
+// instruments up front instead of waiting for a song to reveal them in play.
+std::vector<RegisteredInstrument> EnumerateRegisteredInstruments();
+
+// A drum lives on instrument slot 0 as an array of per-slot samples (the note
+// byte is the slot index). Record one drum slot's sample filename so the UI can
+// list every slot up front with a real name, instead of waiting for it to play.
+// Pass the raw path the factory loaded; the helper strips it on display.
+void SetDrumSlotName(uint8_t fontId, uint8_t slot, std::string name);
+
+// One drum slot the factory registered a sample for.
+struct RegisteredDrumSlot {
+    uint8_t fontId;
+    uint8_t slot;     // note-byte index into the font's drum array
+    std::string name; // sample name (path stripped)
+};
+
+// Every registered drum slot for one font, in ascending slot order. Lets the UI
+// show all of a font's drums up front rather than discovering them from playback.
+std::vector<RegisteredDrumSlot> EnumerateDrumSlots(uint8_t fontId);
+
+// Every font that registered at least one drum slot, ascending. Lets the UI list
+// each font's drum channel (instOrWave 0) up front, like melodic instruments.
+std::vector<uint8_t> EnumerateDrumFonts();
+
 } // namespace SOH
