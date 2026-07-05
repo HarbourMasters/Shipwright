@@ -6,6 +6,7 @@
 #include <soh/Enhancements/cosmetics/authenticGfxPatches.h>
 #include <soh/Enhancements/TimeDisplay/TimeDisplay.h>
 #include "soh/Enhancements/randomizer/randomizer.h"
+#include "soh/Enhancements/Restorations/GetItemManipulation.h"
 #include <ship/Context.h>
 
 extern "C" {
@@ -60,6 +61,12 @@ static const std::map<int32_t, const char*> timeTravelOptions = {
     { TIME_TRAVEL_OOT_MS, "Ocarina of Time + Master Sword" },
     { TIME_TRAVEL_ANY, "Any Ocarina" },
     { TIME_TRAVEL_ANY_MS, "Any Ocarina + Master Sword" },
+};
+
+static const std::map<int32_t, const char*> getItemManipulationOptions = {
+    { GIM_DISABLED, "Disabled" },
+    { GIM_NTSC, "NTSC" },
+    { GIM_PAL, "PAL" },
 };
 
 static const std::map<int32_t, const char*> sleepingWaterfallOptions = {
@@ -1258,11 +1265,13 @@ void SohMenu::AddMenuEnhancements() {
         .Options(CheckboxOptions().Tooltip(
             "Restores a bug from NTSC 1.0/1.1 that allows you to obtain the eyeball frog from King Zora "
             "instead of the Zora Tunic by Holding Shield."));
-    AddWidget(path, "Get Item Manipulation (GIM)", WIDGET_CVAR_CHECKBOX)
+    AddWidget(path, "Get Item Manipulation", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_ENHANCEMENT("GetItemManipulation"))
-        .Options(CheckboxOptions().Tooltip(
-            "Restores Get Item Manipulation by emulating out-of-bounds get-item table read that "
-            "occurs on console when an item is received with negative get-item ID."));
+        .Options(ComboboxOptions()
+                     .ComboMap(getItemManipulationOptions)
+                     .DefaultIndex(GIM_DISABLED)
+                     .Tooltip("Restores Get Item Manipulation.\n"
+                              "NTSC and PAL have separate tables."));
 
     AddWidget(path, "Misc Restorations", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Fix L&Z Page Switch in Pause Menu", WIDGET_CVAR_CHECKBOX)

@@ -7,7 +7,13 @@
 extern "C" {
 #endif
 
-GetItemEntry Gim_RetrieveOobItemEntry(int16_t getItemId);
+typedef enum {
+    GIM_DISABLED,
+    GIM_NTSC,
+    GIM_PAL,
+} GimVersion;
+
+GetItemEntry Gim_RetrieveOobGetItemEntry(int16_t getItemId);
 
 #ifdef __cplusplus
 }

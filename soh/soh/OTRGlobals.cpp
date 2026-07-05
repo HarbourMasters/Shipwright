@@ -2343,7 +2343,7 @@ extern "C" GetItemEntry ItemTable_Retrieve(int16_t getItemID) {
     // A negative getItemId makes the vanilla lookup `sGetItemTable[getItemId - 1]` read out of
     // bounds below the table (Get Item Manipulation); reproduce the console result of that read.
     if (getItemID < 0) {
-        return Gim_RetrieveOobItemEntry(getItemID);
+        return Gim_RetrieveOobGetItemEntry(getItemID);
     }
     GetItemEntry giEntry = ItemTableManager::Instance->RetrieveItemEntry(MOD_NONE, getItemID);
     return giEntry;
