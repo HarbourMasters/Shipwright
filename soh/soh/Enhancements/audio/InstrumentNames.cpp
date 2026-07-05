@@ -26,6 +26,8 @@ struct State {
     std::mutex mutex;
     // Keyed by (fontId, instId). Small enough that std::map's cost is irrelevant.
     std::map<std::pair<uint8_t, int16_t>, SlotSamples> entries;
+    // Drum slot sample names, keyed by (fontId, slot).
+    std::map<std::pair<uint8_t, uint8_t>, std::string> drumSlots;
 };
 
 State& GetState() {
@@ -180,8 +182,6 @@ std::vector<RegisteredDrumSlot> EnumerateDrumSlots(uint8_t fontId) {
     std::vector<RegisteredDrumSlot> out;
     auto& s = GetState();
     std::lock_guard<std::mutex> lock(s.mutex);
-    // std::map iterates in ascending (fontId, slot) key order, so this font's
-    // slots come out sorted and contiguous within the scan.
     for (const auto& kv : s.drumSlots) {
         if (kv.first.first != fontId)
             continue;

@@ -322,16 +322,10 @@ class MidiTranslator {
     // keeping them contiguous and non-overlapping with the outer ends pinned.
     void SetSplitBoundary(int lowerIdx, int upperIdx, uint8_t boundary);
     void AutoSplitByEngineRanges(uint8_t fontId, int16_t instOrWave);
-    // Enforce the split invariant: a melodic pair's selected ranges must always
-    // tile [0,127] with no gaps or overlaps. Sorts the selected rows by noteLow,
-    // snaps each to start right after the previous ends (first pinned to 0, last
-    // to 127), and retires any row squeezed out. Idempotent on an already-valid
-    // partition; the mutators call it so coverage can never leave a hole, and it
-    // repairs older/hand-edited override files on load. Drum/SFX pairs (per-slot
-    // model) are left untouched.
+    // Snap a melodic pair's selected ranges to a gapless tiling of [0,127],
+    // retiring rows squeezed out. Idempotent; drum/SFX pairs are left untouched.
     void NormalizeSplits(uint8_t fontId, int16_t instOrWave);
-    // Collapse a melodic pair back to unsplit: keep the top-priority selected row
-    // at full [0,127] range and retire the rest, so no stale sub-ranges linger.
+    // Collapse a melodic pair back to a single full-range entry.
     void FlattenSplits(uint8_t fontId, int16_t instOrWave);
     // Set a specific entry's melodic preset (used by a split range row's preset
     // dropdown -- scoped to that range, unlike PickPreset which is per-pair).
