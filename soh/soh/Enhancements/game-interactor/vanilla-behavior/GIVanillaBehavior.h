@@ -662,19 +662,30 @@ typedef enum {
 
     // #### `result`
     // ```c
-    // (Message_GetState(&play->msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(play)
-    // ```
-    // #### `args`
-    // - None
-    VB_END_GERUDO_MEMBERSHIP_TALK,
-
-    // #### `result`
-    // ```c
     // true
     // ```
     // #### `args`
     // - `*EnArrow`
     VB_EN_ARROW_MAGIC_CONSUMPTION,
+
+    // #### `result`
+    // ```c
+    // i + 1 == msgCtx->textDrawPos &&
+    // (msgCtx->msgMode == MSGMODE_TEXT_DISPLAYING ||
+    //  (msgCtx->msgMode >= MSGMODE_OCARINA_STARTING &&
+    //   msgCtx->msgMode < MSGMODE_SCARECROW_LONG_RECORDING_START))
+    // ```
+    // #### `args`
+    // - `u16` (text position)
+    VB_ENABLE_QUICKTEXT,
+
+    // #### `result`
+    // ```c
+    // (Message_GetState(&play->msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(play)
+    // ```
+    // #### `args`
+    // - None
+    VB_END_GERUDO_MEMBERSHIP_TALK,
 
     // #### `result`
     // ```c
@@ -716,6 +727,12 @@ typedef enum {
     // #### `args`
     // - `*EnElf`
     VB_FAIRY_HEAL,
+
+    // #### `result`
+    // True if the next text position must be beyond the current position; false otherwise
+    // #### `args`
+    // - `u16` (next text position)
+    VB_FIX_TEXT_SPEED_SOFTLOCK,
 
     // #### `result`
     // ```c
@@ -1657,6 +1674,14 @@ typedef enum {
     // #### `args`
     // - `*uint16_t` (overrideTextId)
     VB_OVERRIDE_LINK_THE_GORON_DIALOGUE,
+
+    // #### `result`
+    // ```c
+    // false
+    // ```
+    // #### `args`
+    // - `None`
+    VB_OWL_CHOOSE_BETTER,
 
     // #### `result`
     // ```c
@@ -2623,6 +2648,14 @@ typedef enum {
     // - `*CollisionPoly
     // - s32 - background id`
     VB_TARGETABLE_HOOKSHOT_RETICLE,
+
+    // #### `result`
+    // ```c
+    // false
+    // ```
+    // #### `args`
+    // - `u16` (text position)
+    VB_TEXT_CRAWL_FASTER,
 
     // #### `result`
     // ```c

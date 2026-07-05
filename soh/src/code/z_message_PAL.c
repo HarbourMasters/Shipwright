@@ -956,7 +956,6 @@ void Message_DrawTextJPN(PlayState* play, Gfx** gfxP) {
     u16 i;
     u16 charTexIdx;
     Gfx* gfx = *gfxP;
-    int gTextSpeed, gSlowTextSpeed;
 
     play->msgCtx.textPosX = R_TEXT_INIT_XPOS;
     play->msgCtx.textPosY = R_TEXT_INIT_YPOS;
@@ -969,9 +968,6 @@ void Message_DrawTextJPN(PlayState* play, Gfx** gfxP) {
 
     msgCtx->unk_E3D0 = 0;
     charTexIdx = 0;
-
-    gTextSpeed = CVarGetInteger(CVAR_ENHANCEMENT("TextSpeed"), 1);
-    gSlowTextSpeed = CVarGetInteger(CVAR_ENHANCEMENT("SlowTextSpeed"), gTextSpeed);
 
     for (i = 0; i < msgCtx->textDrawPos; i++) {
         character = msgCtx->msgBufDecodedWide[i];
@@ -1012,11 +1008,7 @@ void Message_DrawTextJPN(PlayState* play, Gfx** gfxP) {
                 msgCtx->textPosX += msgCtx->msgBufDecodedWide[++i];
                 break;
             case MESSAGE_TEXTID_JPN:
-                // #region SOH [General] Fixes softlock for higher text speeds
-                if (gTextSpeed > 1) {
-                    msgCtx->textDrawPos = i + 1;
-                }
-                // #endregion
+                GameInteractor_Should(VB_FIX_TEXT_SPEED_SOFTLOCK, false, i + 1);
                 msgCtx->textboxEndType = TEXTBOX_ENDTYPE_HAS_NEXT;
                 if (msgCtx->msgMode == MSGMODE_TEXT_DISPLAYING) {
                     Audio_PlaySoundGeneral(0, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
@@ -1027,10 +1019,12 @@ void Message_DrawTextJPN(PlayState* play, Gfx** gfxP) {
                 *gfxP = gfx;
                 return;
             case MESSAGE_QUICKTEXT_ENABLE_JPN:
-                if ((i + 1 == msgCtx->textDrawPos || (gTextSpeed > 1 && i + gTextSpeed >= msgCtx->textDrawPos)) &&
-                    (msgCtx->msgMode == MSGMODE_TEXT_DISPLAYING ||
-                     (msgCtx->msgMode >= MSGMODE_OCARINA_STARTING &&
-                      msgCtx->msgMode < MSGMODE_SCARECROW_LONG_RECORDING_START))) {
+                if (GameInteractor_Should(VB_ENABLE_QUICKTEXT,
+                                          i + 1 == msgCtx->textDrawPos &&
+                                              (msgCtx->msgMode == MSGMODE_TEXT_DISPLAYING ||
+                                               (msgCtx->msgMode >= MSGMODE_OCARINA_STARTING &&
+                                                msgCtx->msgMode < MSGMODE_SCARECROW_LONG_RECORDING_START)),
+                                          i)) {
                     j = i;
                     while (true) {
                         character = msgCtx->msgBufDecodedWide[j];
@@ -1043,7 +1037,8 @@ void Message_DrawTextJPN(PlayState* play, Gfx** gfxP) {
                             break;
                         }
                     }
-                    if (j > msgCtx->textDrawPos) {
+
+                    if (GameInteractor_Should(VB_FIX_TEXT_SPEED_SOFTLOCK, true, j)) {
                         i = j - 1;
                         msgCtx->textDrawPos = j;
                     }
@@ -1151,12 +1146,7 @@ void Message_DrawTextJPN(PlayState* play, Gfx** gfxP) {
                     msgCtx->choiceTextId = msgCtx->textId;
                     msgCtx->stateTimer = 4;
                     msgCtx->choiceIndex = 0;
-                    if (CVarGetInteger(CVAR_ENHANCEMENT("BetterOwl"), 0)) {
-                        if ((msgCtx->textId == 0x2066 || msgCtx->textId == 0x607B || msgCtx->textId == 0x10C2 ||
-                             msgCtx->textId == 0x10C6 || msgCtx->textId == 0x206A)) {
-                            msgCtx->choiceIndex = 1;
-                        }
-                    }
+                    GameInteractor_Should(VB_OWL_CHOOSE_BETTER, false);
                     Font_LoadMessageBoxIcon(font, TEXTBOX_ICON_ARROW);
                 }
                 break;
@@ -1184,11 +1174,7 @@ void Message_DrawTextJPN(PlayState* play, Gfx** gfxP) {
                 *gfxP = gfx;
                 return;
             case MESSAGE_OCARINA_JPN:
-                // #region SOH [General] Fixes softlock for higher text speeds
-                if (gTextSpeed > 1) {
-                    msgCtx->textDrawPos = i + 1;
-                }
-                // #endregion
+                GameInteractor_Should(VB_FIX_TEXT_SPEED_SOFTLOCK, false, i + 1);
                 if (i + 1 == msgCtx->textDrawPos) {
                     Message_HandleOcarina(play);
                     *gfxP = gfx;
@@ -1279,20 +1265,13 @@ void Message_DrawTextJPN(PlayState* play, Gfx** gfxP) {
         }
     }
 
-    if (gTextSpeed >= TEXT_SPEED_INSTANT) {
-        msgCtx->textDrawPos = msgCtx->decodedTextLen + 1;
-    } else if (msgCtx->textDelay == 0) {
-        msgCtx->textDrawPos = i + gTextSpeed;
-        if (msgCtx->textDrawPos > msgCtx->decodedTextLen) {
-            msgCtx->textDrawPos = msgCtx->decodedTextLen + 1;
-        }
+    if (GameInteractor_Should(VB_TEXT_CRAWL_FASTER, false, i)) {
+        // Logic handled within hooks
     } else if (msgCtx->textDelayTimer == 0) {
         msgCtx->textDrawPos = i + 1;
         msgCtx->textDelayTimer = msgCtx->textDelay;
-    } else if (msgCtx->textDelayTimer <= gSlowTextSpeed) {
-        msgCtx->textDelayTimer = 0;
     } else {
-        msgCtx->textDelayTimer -= gSlowTextSpeed;
+        msgCtx->textDelayTimer--;
     }
     *gfxP = gfx;
 }
@@ -1309,13 +1288,12 @@ void Message_DrawText(PlayState* play, Gfx** gfxP) {
     u16 i;
     u16 sfxHi;
     u16 charTexIdx;
-    int gTextSpeed, gSlowTextSpeed;
     Font* font = &play->msgCtx.font;
     Gfx* gfx = *gfxP;
 
     play->msgCtx.textPosX = R_TEXT_INIT_XPOS;
 
-    if (sTextIsCredits == false) {
+    if (!sTextIsCredits) {
         msgCtx->textPosY = R_TEXT_INIT_YPOS;
     } else {
         msgCtx->textPosY = YREG(1);
@@ -1331,9 +1309,6 @@ void Message_DrawText(PlayState* play, Gfx** gfxP) {
 
     msgCtx->unk_E3D0 = 0;
     charTexIdx = 0;
-
-    gTextSpeed = CVarGetInteger(CVAR_ENHANCEMENT("TextSpeed"), 1);
-    gSlowTextSpeed = CVarGetInteger(CVAR_ENHANCEMENT("SlowTextSpeed"), gTextSpeed);
 
     for (i = 0; i < msgCtx->textDrawPos; i++) {
         character = msgCtx->msgBufDecoded[i];
@@ -1384,10 +1359,12 @@ void Message_DrawText(PlayState* play, Gfx** gfxP) {
                 *gfxP = gfx;
                 return;
             case MESSAGE_QUICKTEXT_ENABLE:
-                if ((i + 1 == msgCtx->textDrawPos || (gTextSpeed > 1 && i + gTextSpeed >= msgCtx->textDrawPos)) &&
-                    (msgCtx->msgMode == MSGMODE_TEXT_DISPLAYING ||
-                     (msgCtx->msgMode >= MSGMODE_OCARINA_STARTING &&
-                      msgCtx->msgMode < MSGMODE_SCARECROW_LONG_RECORDING_START))) {
+                if (GameInteractor_Should(VB_ENABLE_QUICKTEXT,
+                                          i + 1 == msgCtx->textDrawPos &&
+                                              (msgCtx->msgMode == MSGMODE_TEXT_DISPLAYING ||
+                                               (msgCtx->msgMode >= MSGMODE_OCARINA_STARTING &&
+                                                msgCtx->msgMode < MSGMODE_SCARECROW_LONG_RECORDING_START)),
+                                          i)) {
                     j = i;
                     while (true) {
                         lookAheadCharacter = msgCtx->msgBufDecoded[j];
@@ -1404,12 +1381,11 @@ void Message_DrawText(PlayState* play, Gfx** gfxP) {
                             break;
                         }
                     }
-                    if (j > msgCtx->textDrawPos) {
+
+                    if (GameInteractor_Should(VB_FIX_TEXT_SPEED_SOFTLOCK, true, j)) {
                         i = j - 1;
                         msgCtx->textDrawPos = j;
                     }
-
-                    if (character) {}
                 }
             case MESSAGE_QUICKTEXT_DISABLE:
                 break;
@@ -1526,12 +1502,7 @@ void Message_DrawText(PlayState* play, Gfx** gfxP) {
                     msgCtx->choiceTextId = msgCtx->textId;
                     msgCtx->stateTimer = 4;
                     msgCtx->choiceIndex = 0;
-                    if (CVarGetInteger(CVAR_ENHANCEMENT("BetterOwl"), 0)) {
-                        if ((msgCtx->textId == 0x2066 || msgCtx->textId == 0x607B || msgCtx->textId == 0x10C2 ||
-                             msgCtx->textId == 0x10C6 || msgCtx->textId == 0x206A)) {
-                            msgCtx->choiceIndex = 1;
-                        }
-                    }
+                    GameInteractor_Should(VB_OWL_CHOOSE_BETTER, false);
                     Font_LoadMessageBoxIcon(font, TEXTBOX_ICON_ARROW);
                 }
                 break;
@@ -1559,11 +1530,7 @@ void Message_DrawText(PlayState* play, Gfx** gfxP) {
                 *gfxP = gfx;
                 return;
             case MESSAGE_OCARINA:
-                // #region SOH [General] Fixes softlock for higher text speeds
-                if (gTextSpeed > 1) {
-                    msgCtx->textDrawPos = i + 1;
-                }
-                // #endregion
+                GameInteractor_Should(VB_FIX_TEXT_SPEED_SOFTLOCK, false, i + 1);
                 if (i + 1 == msgCtx->textDrawPos) {
                     Message_HandleOcarina(play);
                     *gfxP = gfx;
@@ -1631,17 +1598,13 @@ void Message_DrawText(PlayState* play, Gfx** gfxP) {
                 break;
         }
     }
-    if (gTextSpeed >= TEXT_SPEED_INSTANT) {
-        msgCtx->textDrawPos = msgCtx->decodedTextLen + 1;
-    } else if (msgCtx->textDelay == 0) {
-        msgCtx->textDrawPos = i + gTextSpeed;
+    if (GameInteractor_Should(VB_TEXT_CRAWL_FASTER, false, i)) {
+        // Logic handled within hooks
     } else if (msgCtx->textDelayTimer == 0) {
         msgCtx->textDrawPos = i + 1;
         msgCtx->textDelayTimer = msgCtx->textDelay;
-    } else if (msgCtx->textDelayTimer <= gSlowTextSpeed) {
-        msgCtx->textDelayTimer = 0;
     } else {
-        msgCtx->textDelayTimer -= gSlowTextSpeed;
+        msgCtx->textDelayTimer--;
     }
     *gfxP = gfx;
 }
