@@ -161,17 +161,17 @@ void SkeletonPatcher::UpdateTunicSkeletons(SkeletonPatchInfo& skel) {
         // Check what Link's current tunic is
         switch (tunicID) {
             case PLAYER_TUNIC_KOKIRI:
-                if (skel.lastSkeletonId == 4)
+                if (skel.lastSkeletonId == (ageID << 4 | PLAYER_TUNIC_KOKIRI))
                     return;
                 skeletonPath = std::string(gLinkAdultKokiriTunicSkel).substr(sOtr.length());
                 break;
             case PLAYER_TUNIC_GORON:
-                if (skel.lastSkeletonId == 5)
+                if (skel.lastSkeletonId == (ageID << 4 | PLAYER_TUNIC_GORON))
                     return;
                 skeletonPath = std::string(gLinkAdultGoronTunicSkel).substr(sOtr.length());
                 break;
             case PLAYER_TUNIC_ZORA:
-                if (skel.lastSkeletonId == 6)
+                if (skel.lastSkeletonId == (ageID << 4 | PLAYER_TUNIC_ZORA))
                     return;
                 skeletonPath = std::string(gLinkAdultZoraTunicSkel).substr(sOtr.length());
                 break;
@@ -182,12 +182,18 @@ void SkeletonPatcher::UpdateTunicSkeletons(SkeletonPatchInfo& skel) {
         // Check what Link's current tunic is
         switch (tunicID) {
             case PLAYER_TUNIC_KOKIRI:
+                if (skel.lastSkeletonId == (ageID << 4 | PLAYER_TUNIC_KOKIRI))
+                    return;
                 skeletonPath = std::string(gLinkChildKokiriTunicSkel).substr(sOtr.length());
                 break;
             case PLAYER_TUNIC_GORON:
+                if (skel.lastSkeletonId == (ageID << 4 | PLAYER_TUNIC_GORON))
+                    return;
                 skeletonPath = std::string(gLinkChildGoronTunicSkel).substr(sOtr.length());
                 break;
             case PLAYER_TUNIC_ZORA:
+                if (skel.lastSkeletonId == (ageID << 4 | PLAYER_TUNIC_ZORA))
+                    return;
                 skeletonPath = std::string(gLinkChildZoraTunicSkel).substr(sOtr.length());
                 break;
             default:
