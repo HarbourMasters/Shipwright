@@ -415,6 +415,13 @@ class MidiTranslator {
   private:
     MidiTranslator();
 
+    // Entries whose font (identified by resource name) isn't loaded this session,
+    // kept as raw JSON so they survive saves untouched and spring back when the
+    // owning mod returns. Their instruments play native meanwhile.
+    std::vector<std::string> mParkedEntries;
+    std::vector<std::string> mParkedDrumFlags;
+    std::vector<std::string> mParkedForcedDrums;
+
     void RecordDiscovery(uint8_t fontId, int16_t instOrWave, bool mapped);
     // Balanced inc/dec of the per-entry active counters from ProcessNote's
     // activation paths and retire/NoteDisabled. idx<0 (native fall-through) is

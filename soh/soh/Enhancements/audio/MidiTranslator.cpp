@@ -36,6 +36,24 @@ static void DbgLogNote(uint8_t fontId, int16_t instOrWave, uint8_t semitone, flo
 
 namespace SOH {
 
+// Fonts are persisted by resource name: modded fonts get their numeric id from
+// archive listing order (audio_load.c), so the number shifts with the mod set,
+// while the name follows the font. Vanilla ids (< kBuiltinFontCount) are baked
+// into the resource and stable.
+static const char* FontPathForId(uint8_t fontId) {
+    if (fontMap != nullptr && fontId < fontMapSize)
+        return fontMap[fontId]; // may be null for holes
+    return nullptr;
+}
+static int ResolveFontIdByPath(const std::string& path) {
+    if (fontMap == nullptr || path.empty())
+        return -1;
+    for (size_t i = 0; i < fontMapSize; i++)
+        if (fontMap[i] != nullptr && path == fontMap[i])
+            return static_cast<int>(i);
+    return -1;
+}
+
 // Engine semitone -> MIDI note offset for melodic instruments.
 //
 // The engine's gNoteFrequencies table labels semitone 39 as "NOTE_C4
@@ -1382,6 +1400,9 @@ void MidiTranslator::RecordDiscovery(uint8_t fontId, int16_t instOrWave, bool ma
 
 void MidiTranslator::ResetAllOverrides() {
     mEntries.clear();
+    mParkedEntries.clear();
+    mParkedDrumFlags.clear();
+    mParkedForcedDrums.clear();
     for (auto& row : mActiveEntryIdx)
         for (auto& cell : row)
             cell = -1;
@@ -1472,6 +1493,8 @@ bool MidiTranslator::SaveOverridesToFile(const std::string& path) const {
 
         nlohmann::json entry;
         entry["fontId"] = e.fontId;
+        if (const char* fp = FontPathForId(e.fontId))
+            entry["font"] = fp;
         entry["instOrWave"] = e.instOrWave;
         entry["pack"] = e.packName;
         entry["program"] = e.program;
@@ -1516,9 +1539,19 @@ bool MidiTranslator::SaveOverridesToFile(const std::string& path) const {
             continue;
         nlohmann::json entry;
         entry["fontId"] = kv.first.first;
+        if (const char* fp = FontPathForId(kv.first.first))
+            entry["font"] = fp;
         entry["instOrWave"] = kv.first.second;
         entry["display_name"] = kv.second;
         j["entries"].push_back(std::move(entry));
+    }
+
+    // Entries parked at load (their font's mod isn't mounted this session) are
+    // re-emitted verbatim so they spring back when the mod returns.
+    for (const auto& raw : mParkedEntries) {
+        nlohmann::json parked = nlohmann::json::parse(raw, nullptr, false);
+        if (!parked.is_discarded())
+            j["entries"].push_back(std::move(parked));
     }
 
     // Per-pair drum channel mode (the per-instrument Native/Synth master).
@@ -1527,8 +1560,17 @@ bool MidiTranslator::SaveOverridesToFile(const std::string& path) const {
     j["drum_channels_synth"] = nlohmann::json::array();
     for (int f = 0; f < kMaxFontId; ++f)
         for (int i = 0; i < kDrumHistInst; ++i)
-            if (mDrumChannelSynth[f][i])
-                j["drum_channels_synth"].push_back({ { "fontId", f }, { "instOrWave", i } });
+            if (mDrumChannelSynth[f][i]) {
+                nlohmann::json d = { { "fontId", f }, { "instOrWave", i } };
+                if (const char* fp = FontPathForId(static_cast<uint8_t>(f)))
+                    d["font"] = fp;
+                j["drum_channels_synth"].push_back(std::move(d));
+            }
+    for (const auto& raw : mParkedDrumFlags) {
+        nlohmann::json parked = nlohmann::json::parse(raw, nullptr, false);
+        if (!parked.is_discarded())
+            j["drum_channels_synth"].push_back(std::move(parked));
+    }
 
     // Forced-drum ("Treat as drum") pairs: a per-pair list, mirroring the drum
     // channel-mode list above. The histogram pool slot is runtime-only; only
@@ -1536,8 +1578,17 @@ bool MidiTranslator::SaveOverridesToFile(const std::string& path) const {
     j["forced_drums"] = nlohmann::json::array();
     for (int f = 0; f < kMaxFontId; ++f)
         for (int i = kDrumHistInst; i < kMaxInstOrWave; ++i)
-            if (mForcedDrumPool[f][i] >= 0)
-                j["forced_drums"].push_back({ { "fontId", f }, { "instOrWave", i } });
+            if (mForcedDrumPool[f][i] >= 0) {
+                nlohmann::json d = { { "fontId", f }, { "instOrWave", i } };
+                if (const char* fp = FontPathForId(static_cast<uint8_t>(f)))
+                    d["font"] = fp;
+                j["forced_drums"].push_back(std::move(d));
+            }
+    for (const auto& raw : mParkedForcedDrums) {
+        nlohmann::json parked = nlohmann::json::parse(raw, nullptr, false);
+        if (!parked.is_discarded())
+            j["forced_drums"].push_back(std::move(parked));
+    }
 
     std::ofstream out(path);
     if (!out.is_open()) {
@@ -1590,6 +1641,8 @@ std::string MidiTranslator::BuildPackMappingJson(const std::string& packNameFilt
 
         nlohmann::json entry;
         entry["fontId"] = e.fontId;
+        if (const char* fp = FontPathForId(e.fontId))
+            entry["font"] = fp;
         entry["instOrWave"] = e.instOrWave;
         entry["program"] = e.program;
         entry["bank"] = e.bank;
@@ -1636,8 +1689,12 @@ std::string MidiTranslator::BuildPackMappingJson(const std::string& packNameFilt
                     break;
                 }
             }
-            if (shipped)
-                forced.push_back({ { "fontId", f }, { "instOrWave", i } });
+            if (shipped) {
+                nlohmann::json d = { { "fontId", f }, { "instOrWave", i } };
+                if (const char* fp = FontPathForId(static_cast<uint8_t>(f)))
+                    d["font"] = fp;
+                forced.push_back(std::move(d));
+            }
         }
     }
     if (!forced.empty())
@@ -1684,7 +1741,17 @@ bool MidiTranslator::ApplyOverridesFromString(const std::string& json, const std
     auto entries = j.value("entries", nlohmann::json::array());
     int applied = 0;
     for (const auto& entry : entries) {
+        // Fonts resolve by name; a modded font referenced only by numeric id is
+        // skipped (ids shift with the mod set), and so is a name that isn't
+        // loaded -- the instrument plays native. Pack mappings reload on every
+        // apply, so unlike the user file nothing needs parking.
         int fontId = entry.value("fontId", -1);
+        if (fontMap != nullptr) {
+            if (entry.contains("font"))
+                fontId = ResolveFontIdByPath(entry.value("font", std::string{}));
+            else if (fontId >= kBuiltinFontCount)
+                fontId = -1;
+        }
         int instOrWave = entry.value("instOrWave", -1);
         if (fontId < 0 || fontId >= kMaxFontId || instOrWave < 0 || instOrWave >= kMaxInstOrWave)
             continue;
@@ -1747,9 +1814,18 @@ bool MidiTranslator::ApplyOverridesFromString(const std::string& json, const std
         e.selected = entry.value("selected", false);
         applied++;
     }
+    // Same name-first font resolution as the entries; unresolved -> skip.
+    auto packFontId = [](const nlohmann::json& d) -> int {
+        int f = d.value("fontId", -1);
+        if (fontMap == nullptr)
+            return f;
+        if (d.contains("font"))
+            return ResolveFontIdByPath(d.value("font", std::string{}));
+        return f < kBuiltinFontCount ? f : -1;
+    };
     if (j.contains("drum_channels_synth")) {
         for (const auto& d : j["drum_channels_synth"]) {
-            int f = d.value("fontId", -1);
+            int f = packFontId(d);
             int i = d.value("instOrWave", -1);
             if (f >= 0 && f < kMaxFontId && i >= 0 && i < kDrumHistInst)
                 mDrumChannelSynth[f][i] = true;
@@ -1757,7 +1833,7 @@ bool MidiTranslator::ApplyOverridesFromString(const std::string& json, const std
     }
     if (j.contains("forced_drums")) {
         for (const auto& d : j["forced_drums"]) {
-            int f = d.value("fontId", -1);
+            int f = packFontId(d);
             int i = d.value("instOrWave", -1);
             if (f >= 0 && f < kMaxFontId && i >= kDrumHistInst && i < kMaxInstOrWave)
                 SetForcedDrum(static_cast<uint8_t>(f), static_cast<int16_t>(i), true);
@@ -1783,11 +1859,32 @@ bool MidiTranslator::ApplyOverridesFromFile(const std::string& path) {
     int version = j.value("version", 1);
     auto entries = j.value("entries", nlohmann::json::array());
     int applied = 0;
+    // Rebuilt from this file; stale parked state must not accumulate.
+    mParkedEntries.clear();
+    mParkedDrumFlags.clear();
+    mParkedForcedDrums.clear();
+    // Resolves an object's font: by name when possible (mod ids shift with the
+    // mod set), else the numeric id for stable vanilla fonts. Returns -1 to
+    // park the object (font not loaded / legacy modded id) -- native plays
+    // until the owning mod is back and the entry can be trusted again.
+    auto resolveFont = [](const nlohmann::json& o) -> int {
+        int fontId = o.value("fontId", -1);
+        if (fontMap == nullptr) // too early for name resolution; legacy behavior
+            return fontId;
+        if (o.contains("font"))
+            return ResolveFontIdByPath(o.value("font", std::string{}));
+        return fontId < kBuiltinFontCount ? fontId : -1;
+    };
     for (const auto& entry : entries) {
-        int fontId = entry.value("fontId", -1);
+        int fontId = resolveFont(entry);
         int instOrWave = entry.value("instOrWave", -1);
-        if (fontId < 0 || fontId >= kMaxFontId || instOrWave < 0 || instOrWave >= kMaxInstOrWave)
+        if (instOrWave < 0 || instOrWave >= kMaxInstOrWave)
             continue;
+        if (fontId < 0 || fontId >= kMaxFontId) {
+            if (entry.value("fontId", -1) >= 0)
+                mParkedEntries.push_back(entry.dump());
+            continue;
+        }
 
         if (entry.contains("display_name")) {
             std::string dn = entry.value("display_name", std::string{});
@@ -1846,18 +1943,30 @@ bool MidiTranslator::ApplyOverridesFromFile(const std::string& path) {
     }
     if (j.contains("drum_channels_synth")) {
         for (const auto& d : j["drum_channels_synth"]) {
-            int f = d.value("fontId", -1);
+            int f = resolveFont(d);
             int i = d.value("instOrWave", -1);
-            if (f >= 0 && f < kMaxFontId && i >= 0 && i < kDrumHistInst)
-                mDrumChannelSynth[f][i] = true;
+            if (i < 0 || i >= kDrumHistInst)
+                continue;
+            if (f < 0 || f >= kMaxFontId) {
+                if (d.value("fontId", -1) >= 0)
+                    mParkedDrumFlags.push_back(d.dump());
+                continue;
+            }
+            mDrumChannelSynth[f][i] = true;
         }
     }
     if (j.contains("forced_drums")) {
         for (const auto& d : j["forced_drums"]) {
-            int f = d.value("fontId", -1);
+            int f = resolveFont(d);
             int i = d.value("instOrWave", -1);
-            if (f >= 0 && f < kMaxFontId && i >= kDrumHistInst && i < kMaxInstOrWave)
-                SetForcedDrum(static_cast<uint8_t>(f), static_cast<int16_t>(i), true);
+            if (i < kDrumHistInst || i >= kMaxInstOrWave)
+                continue;
+            if (f < 0 || f >= kMaxFontId) {
+                if (d.value("fontId", -1) >= 0)
+                    mParkedForcedDrums.push_back(d.dump());
+                continue;
+            }
+            SetForcedDrum(static_cast<uint8_t>(f), static_cast<int16_t>(i), true);
         }
     }
     // Repair the split cover on load: older/hand-edited files may carry gaps.
