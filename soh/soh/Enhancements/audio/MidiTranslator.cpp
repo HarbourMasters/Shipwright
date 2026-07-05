@@ -753,12 +753,23 @@ void MidiTranslator::AutoSplitDrums(uint8_t fontId, int16_t instOrWave) {
             bySlot[e.noteLow] = static_cast<int>(idx);
     }
 
+    // Sequences fire hits on drum indices the font leaves empty (e.g. slot 0 in
+    // the vanilla fonts); the engine drops those notes (Audio_GetDrum -> NULL ->
+    // stopSomething), so voicing them on the synth adds beats the game never
+    // plays. Skip them when the registry knows this font's real slots.
+    std::set<uint8_t> sampledSlots;
+    if (instOrWave == 0)
+        for (const auto& d : EnumerateDrumSlots(fontId))
+            sampledSlots.insert(d.slot);
+
     // One single-slot entry per fired slot. The default GM percussion note is
     // a stable per-slot spread (35 + slot, clamped) so each slot is audibly
-    // distinct; the user remaps via the Drum Sound combo (item 8.1 will
-    // auto-pick it later). An existing slot keeps its prior Drum Sound.
+    // distinct; the user remaps via the Drum Sound combo. An existing slot
+    // keeps its prior Drum Sound.
     for (int s = 0; s < kDrumHistSlots; ++s) {
         if (hist[s].count.load(std::memory_order_relaxed) == 0)
+            continue;
+        if (!sampledSlots.empty() && !sampledSlots.count(static_cast<uint8_t>(s)))
             continue;
         int idx = bySlot[s];
         const bool isNew = (idx < 0);
