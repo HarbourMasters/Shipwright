@@ -1,5 +1,5 @@
 <DisplayList Version="0">
-	<LoadVertices Path="objects/object_stat_upgrade/gStatClimbSpeedDL_layer_Opaque_vtx_0" VertexBufferIndex="0" VertexOffset="0" Count="30"/>
+	<LoadVertices Path="objects/object_stat_upgrade/gStatClimbSpeedDL_vtx_0" VertexBufferIndex="0" VertexOffset="0" Count="30"/>
 	<Triangle1 V00="0" V01="1" V02="2"/>
 	<Triangle1 V00="0" V01="3" V02="1"/>
 	<Triangle1 V00="4" V01="5" V02="6"/>
@@ -22,7 +22,7 @@
 	<Triangle1 V00="23" V01="27" V02="26"/>
 	<Triangle1 V00="20" V01="28" V02="29"/>
 	<Triangle1 V00="20" V01="22" V02="28"/>
-	<LoadVertices Path="objects/object_stat_upgrade/gStatClimbSpeedDL_layer_Opaque_vtx_0" VertexBufferIndex="0" VertexOffset="30" Count="32"/>
+	<LoadVertices Path="objects/object_stat_upgrade/gStatClimbSpeedDL_vtx_0" VertexBufferIndex="0" VertexOffset="30" Count="32"/>
 	<Triangle1 V00="0" V01="1" V02="2"/>
 	<Triangle1 V00="0" V01="3" V02="1"/>
 	<Triangle1 V00="4" V01="3" V02="0"/>
@@ -47,7 +47,7 @@
 	<Triangle1 V00="26" V01="28" V02="29"/>
 	<Triangle1 V00="30" V01="29" V02="28"/>
 	<Triangle1 V00="30" V01="28" V02="31"/>
-	<LoadVertices Path="objects/object_stat_upgrade/gStatClimbSpeedDL_layer_Opaque_vtx_0" VertexBufferIndex="0" VertexOffset="62" Count="6"/>
+	<LoadVertices Path="objects/object_stat_upgrade/gStatClimbSpeedDL_vtx_0" VertexBufferIndex="0" VertexOffset="62" Count="6"/>
 	<Triangle1 V00="0" V01="1" V02="2"/>
 	<Triangle1 V00="0" V01="3" V02="1"/>
 	<Triangle1 V00="3" V01="4" V02="1"/>

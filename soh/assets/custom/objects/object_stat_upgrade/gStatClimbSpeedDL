@@ -1,8 +1,8 @@
 <DisplayList Version="0">
 	<CallDisplayList Path="objects/object_stat_upgrade/mat_gStatClimbSpeedDL_speed_upgrade_layerOpaque"/>
-	<CallDisplayList Path="objects/object_stat_upgrade/gStatClimbSpeedDL_layer_Opaque_tri_0"/>
+	<CallDisplayList Path="objects/object_stat_upgrade/gStatClimbSpeedDL_tri_0"/>
 	<CallDisplayList Path="objects/object_stat_upgrade/mat_gStatClimbSpeedDL_speed_plus_layerOpaque"/>
-	<CallDisplayList Path="objects/object_stat_upgrade/gStatClimbSpeedDL_layer_Opaque_tri_1"/>
+	<CallDisplayList Path="objects/object_stat_upgrade/gStatClimbSpeedDL_tri_1"/>
 	<ClearGeometryMode G_LIGHTING="1"/>
 	<SetGeometryMode G_LIGHTING="1"/>
 	<EndDisplayList/>

@@ -506,6 +506,15 @@ static const ALIGN_ASSET(2) char gStatSpeedTex[] = dgStatSpeedTex;
 #define dgStatPowerTex "__OTR__textures/icon_item_static/gStatPowerTex"
 static const ALIGN_ASSET(2) char gStatPowerTex[] = dgStatPowerTex;
 
+#define dgCrawlSpeedTex "__OTR__textures/icon_item_static/gCrawlSpeedTex"
+static const ALIGN_ASSET(2) char gCrawlSpeedTex[] = dgCrawlSpeedTex;
+
+#define dgClimbSpeedTex "__OTR__textures/icon_item_static/gClimbSpeedTex"
+static const ALIGN_ASSET(2) char gClimbSpeedTex[] = dgClimbSpeedTex;
+
+#define dgPushSpeedTex "__OTR__textures/icon_item_static/gPushSpeedTex"
+static const ALIGN_ASSET(2) char gPushSpeedTex[] = dgPushSpeedTex;
+
 #define dgEmptyTexture "__OTR__textures/virtual/gEmptyTexture"
 static const ALIGN_ASSET(2) char gEmptyTexture[] = dgEmptyTexture;
 
