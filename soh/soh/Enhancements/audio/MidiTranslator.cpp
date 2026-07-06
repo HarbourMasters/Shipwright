@@ -106,6 +106,9 @@ void MidiTranslator::Reset() {
         c = 0;
     for (auto& c : mEntryNativeActive)
         c = 0;
+    for (auto& row : mKeyHold)
+        for (auto& cell : row)
+            cell = 0;
     auto synth = SOH::MidiSynthManager::Instance().GetActiveSynth();
     if (!synth)
         return;
@@ -1072,8 +1075,10 @@ void MidiTranslator::SetEntryNoteRange(int idx, uint8_t noteLow, uint8_t noteHig
 }
 
 void MidiTranslator::NormalizeSplits(uint8_t fontId, int16_t instOrWave) {
-    // Drum/SFX pairs are per-slot, not ranges -- leave them to AutoSplitDrums.
-    if (instOrWave < kDrumHistInst)
+    // Drum/SFX and forced-drum pairs are per-slot, not ranges -- normalizing
+    // would snap slot entries into a bogus [0,127] tiling (and retire them all
+    // when a full-range melodic entry is present).
+    if (instOrWave < kDrumHistInst || IsForcedDrum(fontId, instOrWave))
         return;
 
     // The split set = the user's selected rows, minus the whole-pair Native
@@ -2082,7 +2087,7 @@ bool MidiTranslator::ProcessNote(int noteIndex, float freqScale, float velocity,
 
     auto retireSlot = [&]() {
         if (state.kind == SlotKind::Synth) {
-            synth->NoteOff(state.channel, state.midiNote);
+            ReleaseKeyHold(synth.get(), state.channel, state.midiNote);
             if (BypassIndexValid(state.pairFontId, state.pairInstOrWave) &&
                 mSynthActiveByPair[state.pairFontId][state.pairInstOrWave] > 0) {
                 mSynthActiveByPair[state.pairFontId][state.pairInstOrWave]--;
@@ -2356,6 +2361,8 @@ bool MidiTranslator::ProcessNote(int noteIndex, float freqScale, float velocity,
         if (hasFixedNote)
             synth->NoteOff(targetChannel, midiNote);
         synth->NoteOnPitchFactor(targetChannel, midiNote, noteOnVel, effectiveBend);
+        if (targetChannel < kMaxMidiChannels && midiNote < 128 && mKeyHold[targetChannel][midiNote] < 255)
+            mKeyHold[targetChannel][midiNote]++;
         state.kind = SlotKind::Synth;
         state.channel = targetChannel;
         state.midiNote = midiNote;
@@ -2378,6 +2385,16 @@ bool MidiTranslator::ProcessNote(int noteIndex, float freqScale, float velocity,
     return true;
 }
 
+void MidiTranslator::ReleaseKeyHold(IMidiSynth* synth, uint8_t channel, uint8_t midiNote) {
+    if (channel >= kMaxMidiChannels || midiNote >= 128)
+        return;
+    uint8_t& h = mKeyHold[channel][midiNote];
+    if (h > 0)
+        --h;
+    if (h == 0)
+        synth->NoteOff(channel, midiNote);
+}
+
 void MidiTranslator::NoteDisabled(int noteIndex) {
     if (noteIndex < 0 || noteIndex >= kMaxNotes)
         return;
@@ -2385,7 +2402,7 @@ void MidiTranslator::NoteDisabled(int noteIndex) {
     if (state.kind == SlotKind::Synth) {
         auto synth = SOH::MidiSynthManager::Instance().GetActiveSynth();
         if (synth)
-            synth->NoteOff(state.channel, state.midiNote);
+            ReleaseKeyHold(synth.get(), state.channel, state.midiNote);
         if (BypassIndexValid(state.pairFontId, state.pairInstOrWave) &&
             mSynthActiveByPair[state.pairFontId][state.pairInstOrWave] > 0) {
             mSynthActiveByPair[state.pairFontId][state.pairInstOrWave]--;

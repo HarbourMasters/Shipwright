@@ -11,6 +11,8 @@
 
 namespace SOH {
 
+class IMidiSynth;
+
 // Per-channel state tracked across notes on the same MIDI channel.
 // 0xFF / 0xFFFF sentinels mean "never sent" so the first NoteOn always
 // emits a fresh ControlChange/ProgramChange.
@@ -427,6 +429,13 @@ class MidiTranslator {
     std::vector<std::string> mParkedForcedDrums;
 
     void RecordDiscovery(uint8_t fontId, int16_t instOrWave, bool mapped);
+
+    // Decrement the (channel, key) hold count and send the synth NoteOff only
+    // when the last holder ends. FluidSynth's noteoff releases EVERY voice on
+    // the key, so overlapping same-pitch notes (legato repeats) would otherwise
+    // be silenced by the earlier note's release. Audio thread only.
+    void ReleaseKeyHold(IMidiSynth* synth, uint8_t channel, uint8_t midiNote);
+    uint8_t mKeyHold[kMaxMidiChannels][128] = {};
     // Balanced inc/dec of the per-entry active counters from ProcessNote's
     // activation paths and retire/NoteDisabled. idx<0 (native fall-through) is
     // a no-op so error/fallback paths can pass -1 freely.
