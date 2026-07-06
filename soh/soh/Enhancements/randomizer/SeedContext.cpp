@@ -22,6 +22,7 @@
 #include <spdlog/spdlog.h>
 extern "C" {
 #include <functions.h>
+#include <variables.h>
 }
 
 namespace Rando {
@@ -151,6 +152,10 @@ bool Context::IsQuestOfLocationActive(RandomizerCheck rc) {
 void Context::GenerateLocationPool() {
     allLocations.clear();
     overworldLocations.clear();
+    // add wincon here so it is properly logged
+    if (ctx->GetOption(RSK_WINCON).Get() > RO_WINCON_ANYWHERE) {
+        AddLocation(RC_WINCON);
+    }
     for (auto dungeon : ctx->GetDungeons()->GetDungeonList()) {
         dungeon->locations.clear();
     }
@@ -158,7 +163,9 @@ void Context::GenerateLocationPool() {
         // skip RCs that shouldn't be in the pool for any reason (i.e. settings, unsupported check type, etc.)
         // TODO: Exclude checks for some of the older shuffles from the pool too i.e. Frog Songs, Scrubs, etc.)
         if (location.GetRandomizerCheck() == RC_UNKNOWN_CHECK ||
-            location.GetRandomizerCheck() == RC_TRIFORCE_COMPLETED || // already in pool
+            location.GetRandomizerCheck() == RC_WINCON || // already in pool
+            (location.GetRandomizerCheck() == RC_GANONS_BOSS_KEY && mGBKCondition == RO_CHECK_TRIGGER_NONE) ||
+            (location.GetRandomizerCheck() == RC_GANON_SOUL && mGanonsSoulCondition == RO_CHECK_TRIGGER_NONE) ||
             (location.GetRandomizerCheck() == RC_TOT_MASTER_SWORD &&
              mOptions[RSK_SHUFFLE_MASTER_SWORD].Is(RO_GENERIC_OFF)) ||
             (location.GetRandomizerCheck() == RC_KAK_100_GOLD_SKULLTULA_REWARD &&
@@ -263,7 +270,7 @@ void Context::GenerateLocationPool() {
 void Context::AddExcludedOptions() {
     for (auto& loc : StaticData::GetLocationTable()) {
         // Checks of these types don't have items, skip them.
-        if (loc.GetRandomizerCheck() == RC_UNKNOWN_CHECK || loc.GetRandomizerCheck() == RC_TRIFORCE_COMPLETED ||
+        if (loc.GetRandomizerCheck() == RC_UNKNOWN_CHECK || loc.GetRandomizerCheck() == RC_WINCON ||
             loc.GetRCType() == RCTYPE_CHEST_GAME || loc.GetRCType() == RCTYPE_STATIC_HINT ||
             loc.GetRCType() == RCTYPE_GOSSIP_STONE) {
             continue;
@@ -532,12 +539,28 @@ OptionValue& Context::GetLocationOption(const RandomizerCheck key) {
     return itemLocationTable[key].GetExcludedOption();
 }
 
-RandoOptionLACSCondition Context::LACSCondition() const {
-    return mLACSCondition;
+RandoOptionCheckTrigger Context::GBKCondition() const {
+    return mGBKCondition;
 }
 
-void Context::LACSCondition(RandoOptionLACSCondition lacsCondition) {
-    mLACSCondition = lacsCondition;
+void Context::GBKCondition(RandoOptionCheckTrigger condition) {
+    mGBKCondition = condition;
+}
+
+RandoOptionCheckTrigger Context::GanonsSoulCondition() const {
+    return mGanonsSoulCondition;
+}
+
+void Context::GanonsSoulCondition(RandoOptionCheckTrigger condition) {
+    mGanonsSoulCondition = condition;
+}
+
+RandoOptionWincon Context::WinCondition() const {
+    return mWinCondition;
+}
+
+void Context::WinCondition(RandoOptionWincon condition) {
+    mWinCondition = condition;
 }
 
 std::shared_ptr<Kaleido> Context::GetKaleido() {

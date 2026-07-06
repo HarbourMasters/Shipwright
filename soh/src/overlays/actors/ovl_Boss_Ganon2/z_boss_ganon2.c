@@ -1692,14 +1692,18 @@ void func_8090120C(BossGanon2* this, PlayState* play) {
                 (player->meleeWeaponState != 0) && (player->heldItemAction == PLAYER_IA_SWORD_MASTER)) {
                 func_80064520(play, &play->csCtx);
                 GameInteractor_ExecuteOnBossDefeat(&this->actor);
-                this->subCamId = Play_CreateSubCamera(play);
-                Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
-                Play_ChangeCameraStatus(play, this->subCamId, CAM_STAT_ACTIVE);
-                this->csState = 7;
-                this->csTimer = 0;
-                Animation_MorphToPlayOnce(&this->skelAnime, &gGanonFinalBlowAnim, 0.0f);
-                this->unk_194 = Animation_GetLastFrame(&gGanonFinalBlowAnim);
-                play->startPlayerCutscene(play, &this->actor, 0x61);
+                if (GameInteractor_Should(VB_SLAY_GANON, true)) {
+                    this->subCamId = Play_CreateSubCamera(play);
+                    Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+                    Play_ChangeCameraStatus(play, this->subCamId, CAM_STAT_ACTIVE);
+                    this->csState = 7;
+                    this->csTimer = 0;
+                    Animation_MorphToPlayOnce(&this->skelAnime, &gGanonFinalBlowAnim, 0.0f);
+                    this->unk_194 = Animation_GetLastFrame(&gGanonFinalBlowAnim);
+                    play->startPlayerCutscene(play, &this->actor, 0x61);
+                } else {
+                    break;
+                }
             } else {
                 break;
             }

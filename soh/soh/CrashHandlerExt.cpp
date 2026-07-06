@@ -2,7 +2,6 @@
 #include "variables.h"
 #include "z64.h"
 #include "z64actor.h"
-#include <string.h>
 #include <stdio.h>
 #include <array>
 #include "soh/ActorDB.h"

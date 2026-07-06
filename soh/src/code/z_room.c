@@ -9,6 +9,7 @@
 #include <assert.h>
 
 #include <libultraship/bridge/gfxbridge.h>
+#include <libultraship/bridge/resourcebridge.h>
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 

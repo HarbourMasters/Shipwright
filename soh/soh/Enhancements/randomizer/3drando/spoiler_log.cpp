@@ -12,7 +12,6 @@
 #include <spdlog/spdlog.h>
 
 #include <cstdio>
-#include <cstdlib>
 #include <cstring>
 #include <map>
 #include <string>
@@ -24,7 +23,6 @@
 #include <variables.h>
 
 #include <ship/Context.h>
-#include <soh/OTRGlobals.h>
 
 #include <libultraship/bridge/consolevariablebridge.h>
 

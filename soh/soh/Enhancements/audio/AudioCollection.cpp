@@ -9,7 +9,6 @@
 #include <ship/Context.h>
 #include <ship/utils/StringHelper.h>
 #include <ship/window/Window.h>
-#include <soh/OTRGlobals.h>
 #include <locale>
 #include <filesystem>
 

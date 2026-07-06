@@ -5,7 +5,6 @@
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/ObjectExtension/ObjectExtension.h"
 #include "variables.h"
-#include "soh/cvar_prefixes.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/SohGui/MenuTypes.h"
 #include "soh/SohGui/SohMenu.h"

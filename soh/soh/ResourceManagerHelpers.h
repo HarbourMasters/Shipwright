@@ -12,7 +12,10 @@
 
 #ifdef __cplusplus
 #include <memory>
-#include <ship/resource/Resource.h>
+
+namespace Ship {
+class IResource;
+} // namespace Ship
 
 std::shared_ptr<Ship::IResource> ResourceMgr_GetResourceByNameHandlingMQ(const char* path);
 

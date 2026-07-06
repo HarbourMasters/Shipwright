@@ -1100,7 +1100,8 @@ void func_80A45288(EnGo2* this, PlayState* play) {
         this->interactInfo.yOffset = D_80A482D8[this->actor.params & 0x1F][linkAge];
         Npc_TrackPoint(&this->actor, &this->interactInfo, 4, this->trackingMode);
     }
-    if ((this->actionFunc != EnGo2_SetGetItem) && (this->isAwake == true)) {
+    if ((this->actionFunc != EnGo2_SetGetItem) &&
+        GameInteractor_Should(VB_PREVENT_GORON_LINK_SOFTLOCK, this->isAwake, this)) {
         if (func_80A44790(this, play)) {
             EnGo2_BiggoronSetTextId(this, play, player);
         }

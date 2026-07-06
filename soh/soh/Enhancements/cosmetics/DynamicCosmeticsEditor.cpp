@@ -7,7 +7,6 @@
 #include <vector>
 #include <cctype>
 #include <cstdlib>
-#include <math.h>
 #include <tinyxml2.h>
 #include <fast/resource/type/DisplayList.h>
 #include <ship/resource/archive/Archive.h>
@@ -17,7 +16,6 @@
 #include "soh/OTRGlobals.h"
 
 extern "C" {
-#include "macros.h"
 #include "soh/cvar_prefixes.h"
 }
 
@@ -213,33 +211,54 @@ void ScanCustomCosmetics() {
 
     auto resourceManager = Ship::Context::GetRawInstance()->GetResourceManager();
     auto archiveManager = resourceManager->GetArchiveManager();
-    auto materialPaths = archiveManager->ListFiles("*");
+    auto archives = archiveManager->GetArchives();
     std::unordered_map<std::string, size_t> entryIndicesByKey;
 
-    for (const auto& materialPath : *materialPaths) {
-        if (!IsCustomArchive(archiveManager->GetArchiveFromFile(materialPath))) {
+    for (const auto& archive : *archives) {
+        if (!IsCustomArchive(archive)) {
             continue;
         }
 
-        tinyxml2::XMLDocument document;
-        std::shared_ptr<Fast::DisplayList> material;
-        tinyxml2::XMLElement* root = nullptr;
-        if (!TryLoadCustomDisplayListXml(archiveManager.get(), resourceManager.get(), materialPath, document, material,
-                                         root)) {
+        auto manifestFile = archive->LoadFile("CosmeticEntries");
+        if (manifestFile == nullptr || !manifestFile->IsLoaded || manifestFile->Buffer == nullptr) {
             continue;
         }
 
-        size_t searchStart = 0;
-        for (auto* child = root->FirstChildElement(); child != nullptr; child = child->NextSiblingElement()) {
-            std::string childName = child->Name();
-            bool isPrimColor = childName == "SetPrimColor";
-            if (!isPrimColor && childName != "SetEnvColor") {
-                continue;
+        tinyxml2::XMLDocument manifestDocument;
+        manifestDocument.Parse(manifestFile->Buffer->data(), manifestFile->Buffer->size());
+        if (manifestDocument.Error()) {
+            continue;
+        }
+
+        tinyxml2::XMLElement* manifestRoot = manifestDocument.FirstChildElement();
+        if (manifestRoot == nullptr) {
+            continue;
+        }
+
+        for (auto* manifestEntry = manifestRoot->FirstChildElement(); manifestEntry != nullptr;
+             manifestEntry = manifestEntry->NextSiblingElement()) {
+            const char* cosmeticEntry = manifestEntry->Attribute("CosmeticEntry");
+            const char* materialPath = manifestEntry->Attribute("MaterialPath");
+
+            std::string resolvedMaterialPath;
+            if (materialPath != nullptr && materialPath[0] != '\0') {
+                resolvedMaterialPath = materialPath;
+                if (!archiveManager->HasFile(resolvedMaterialPath)) {
+                    if (!resolvedMaterialPath.starts_with("alt/") &&
+                        archiveManager->HasFile("alt/" + resolvedMaterialPath)) {
+                        resolvedMaterialPath = "alt/" + resolvedMaterialPath;
+                    } else {
+                        resolvedMaterialPath.clear();
+                    }
+                }
             }
 
-            const char* cosmeticEntry = child->Attribute("CosmeticEntry");
-            const char* cosmeticCategory = child->Attribute("CosmeticCategory");
-            if (cosmeticEntry == nullptr || cosmeticEntry[0] == '\0') {
+            const char* cosmeticType = manifestEntry->Attribute("CosmeticType");
+            const bool isPrimColor = cosmeticType != nullptr && std::string(cosmeticType) == "Prim";
+            const bool isEnvColor = cosmeticType != nullptr && std::string(cosmeticType) == "Env";
+
+            if (cosmeticEntry == nullptr || cosmeticEntry[0] == '\0' || resolvedMaterialPath.empty() ||
+                (!isPrimColor && !isEnvColor)) {
                 continue;
             }
 
@@ -248,55 +267,85 @@ void ScanCustomCosmetics() {
             if (key.empty()) {
                 continue;
             }
-            Gfx expectedInstruction;
-            if (isPrimColor) {
-                expectedInstruction =
-                    gsDPSetPrimColor(child->IntAttribute("M"), child->IntAttribute("L"), child->IntAttribute("R"),
-                                     child->IntAttribute("G"), child->IntAttribute("B"), child->IntAttribute("A"));
-            } else {
-                expectedInstruction = gsDPSetEnvColor(child->IntAttribute("R"), child->IntAttribute("G"),
-                                                      child->IntAttribute("B"), child->IntAttribute("A"));
-            }
 
-            size_t commandIndex = FindDisplayListInstructionIndex(*material, expectedInstruction, searchStart);
-            if (commandIndex == SIZE_MAX) {
+            tinyxml2::XMLDocument displayListDocument;
+            std::shared_ptr<Fast::DisplayList> material;
+            tinyxml2::XMLElement* displayListRoot = nullptr;
+            if (!TryLoadCustomDisplayListXml(archiveManager.get(), resourceManager.get(), resolvedMaterialPath,
+                                             displayListDocument, material, displayListRoot)) {
                 continue;
             }
-            searchStart = commandIndex + 1;
 
-            size_t entryIndex = 0;
-            if (auto it = entryIndicesByKey.find(key); it != entryIndicesByKey.end()) {
-                entryIndex = it->second;
-            } else {
-                entryIndex = customCosmeticEntries.size();
-                entryIndicesByKey[key] = entryIndex;
+            size_t searchStart = 0;
+            for (auto* child = displayListRoot->FirstChildElement(); child != nullptr;
+                 child = child->NextSiblingElement()) {
+                const std::string childName = child->Name();
+                const bool childIsPrimColor = childName == "SetPrimColor";
+                if ((!childIsPrimColor && childName != "SetEnvColor") || childIsPrimColor != isPrimColor) {
+                    continue;
+                }
 
-                CustomCosmeticEntry entry;
-                entry.category = (cosmeticCategory != nullptr) ? cosmeticCategory : "";
-                entry.baseCvar = std::string(CUSTOM_CVAR_PREFIX) + key;
-                entry.valuesCvar = entry.baseCvar + ".Value";
-                entry.rainbowCvar = entry.baseCvar + ".Rainbow";
-                entry.lockedCvar = entry.baseCvar + ".Locked";
-                entry.changedCvar = entry.baseCvar + ".Changed";
-                const Color_RGBA8 defaultColor = { static_cast<uint8_t>(child->IntAttribute("R")),
-                                                   static_cast<uint8_t>(child->IntAttribute("G")),
-                                                   static_cast<uint8_t>(child->IntAttribute("B")),
-                                                   static_cast<uint8_t>(child->IntAttribute("A")) };
-                entry.option =
-                    MakeCosmeticOption(entry.baseCvar.c_str(), entry.valuesCvar.c_str(), entry.rainbowCvar.c_str(),
-                                       entry.lockedCvar.c_str(), entry.changedCvar.c_str(), cosmeticEntry,
-                                       COSMETICS_GROUP_MAX, defaultColor, false, true, false);
-                customCosmeticEntries.push_back(std::move(entry));
+                const char* childCosmeticEntry = child->Attribute("CosmeticEntry");
+                if (childCosmeticEntry == nullptr || std::string(childCosmeticEntry) != cosmeticEntry) {
+                    continue;
+                }
+
+                Gfx expectedInstruction;
+                if (isPrimColor) {
+                    expectedInstruction =
+                        gsDPSetPrimColor(child->IntAttribute("M"), child->IntAttribute("L"), child->IntAttribute("R"),
+                                         child->IntAttribute("G"), child->IntAttribute("B"), child->IntAttribute("A"));
+                } else {
+                    expectedInstruction = gsDPSetEnvColor(child->IntAttribute("R"), child->IntAttribute("G"),
+                                                          child->IntAttribute("B"), child->IntAttribute("A"));
+                }
+
+                const size_t commandIndex =
+                    FindDisplayListInstructionIndex(*material, expectedInstruction, searchStart);
+                if (commandIndex == SIZE_MAX) {
+                    continue;
+                }
+                searchStart = commandIndex + 1;
+
+                size_t entryIndex = 0;
+                if (auto it = entryIndicesByKey.find(key); it != entryIndicesByKey.end()) {
+                    entryIndex = it->second;
+                } else {
+                    entryIndex = customCosmeticEntries.size();
+                    entryIndicesByKey[key] = entryIndex;
+
+                    const char* cosmeticCategory = manifestEntry->Attribute("CosmeticCategory");
+                    if (cosmeticCategory == nullptr) {
+                        cosmeticCategory = child->Attribute("CosmeticCategory");
+                    }
+
+                    CustomCosmeticEntry entry;
+                    entry.category = (cosmeticCategory != nullptr) ? cosmeticCategory : "";
+                    entry.baseCvar = std::string(CUSTOM_CVAR_PREFIX) + key;
+                    entry.valuesCvar = entry.baseCvar + ".Value";
+                    entry.rainbowCvar = entry.baseCvar + ".Rainbow";
+                    entry.lockedCvar = entry.baseCvar + ".Locked";
+                    entry.changedCvar = entry.baseCvar + ".Changed";
+                    const Color_RGBA8 defaultColor = { static_cast<uint8_t>(child->IntAttribute("R")),
+                                                       static_cast<uint8_t>(child->IntAttribute("G")),
+                                                       static_cast<uint8_t>(child->IntAttribute("B")),
+                                                       static_cast<uint8_t>(child->IntAttribute("A")) };
+                    entry.option =
+                        MakeCosmeticOption(entry.baseCvar.c_str(), entry.valuesCvar.c_str(), entry.rainbowCvar.c_str(),
+                                           entry.lockedCvar.c_str(), entry.changedCvar.c_str(), cosmeticEntry,
+                                           COSMETICS_GROUP_MAX, defaultColor, false, true, false);
+                    customCosmeticEntries.push_back(std::move(entry));
+                }
+
+                CustomCosmeticBinding binding;
+                binding.materialPath = resolvedMaterialPath;
+                binding.commandIndex = commandIndex;
+                binding.isPrimColor = isPrimColor;
+                binding.defaultA = static_cast<uint8_t>(child->IntAttribute("A"));
+                binding.primM = static_cast<uint8_t>(child->IntAttribute("M"));
+                binding.primL = static_cast<uint8_t>(child->IntAttribute("L"));
+                customCosmeticEntries[entryIndex].bindings.push_back(std::move(binding));
             }
-
-            CustomCosmeticBinding binding;
-            binding.materialPath = materialPath;
-            binding.commandIndex = commandIndex;
-            binding.isPrimColor = isPrimColor;
-            binding.defaultA = static_cast<uint8_t>(child->IntAttribute("A"));
-            binding.primM = static_cast<uint8_t>(child->IntAttribute("M"));
-            binding.primL = static_cast<uint8_t>(child->IntAttribute("L"));
-            customCosmeticEntries[entryIndex].bindings.push_back(std::move(binding));
         }
     }
 

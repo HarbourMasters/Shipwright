@@ -2,7 +2,6 @@
 #include "soh/ShipInit.hpp"
 
 extern "C" {
-#include "macros.h"
 #include "src/overlays/actors/ovl_En_Insect/z_en_insect.h"
 
 extern s16 D_80A7DEB8;

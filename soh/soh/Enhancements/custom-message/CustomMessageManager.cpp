@@ -35,7 +35,7 @@ static const std::unordered_map<std::string, ItemID> altarIcons = {
     { "l", ITEM_ARROW_LIGHT },     { "b", ITEM_KEY_BOSS },         { "o", ITEM_SWORD_MASTER },
     { "c", ITEM_OCARINA_FAIRY },   { "i", ITEM_OCARINA_TIME },     { "L", ITEM_BOW_ARROW_LIGHT },
     { "k", ITEM_TUNIC_KOKIRI },    { "m", ITEM_DUNGEON_MAP },      { "C", ITEM_COMPASS },
-    { "s", ITEM_SKULL_TOKEN },     { "g", ITEM_MASK_GORON },
+    { "s", ITEM_SKULL_TOKEN },     { "g", ITEM_MASK_GORON },       { "w", ITEM_CUSTOM },
 };
 
 static std::map<std::string, int> pixelWidthTable = {

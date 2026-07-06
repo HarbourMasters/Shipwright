@@ -36,4 +36,10 @@ class ConfigVersion6Updater final : public Ship::ConfigVersionUpdater {
     ConfigVersion6Updater();
     void Update(Ship::Config* conf);
 };
+
+class ConfigVersion7Updater final : public Ship::ConfigVersionUpdater {
+  public:
+    ConfigVersion7Updater();
+    void Update(Ship::Config* conf);
+};
 } // namespace SOH

@@ -9,7 +9,6 @@ extern "C" {
 #include "functions.h"
 #include "variables.h"
 #include "macros.h"
-#include "objects/gameplay_keep/gameplay_keep.h"
 extern PlayState* gPlayState;
 }
 

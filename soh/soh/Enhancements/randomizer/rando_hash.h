@@ -5,8 +5,6 @@
 
 #include "randomizerTypes.h"
 #include <array>
-#include "variables.h"
-#include <string>
 #include <textures/icon_item_static/icon_item_static.h>
 #include <textures/icon_item_24_static/icon_item_24_static.h>
 

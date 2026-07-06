@@ -2,9 +2,10 @@
 #include "soh/Enhancements/speechsynthesizer/SpeechSynthesizer.h"
 
 #include <cassert>
+#include <ship/Context.h>
 #include <ship/resource/File.h>
+#include <ship/resource/ResourceManager.h>
 #include <ship/resource/type/Json.h>
-#include <libultraship/classes.h>
 #include <nlohmann/json.hpp>
 
 #include "soh/ShipInit.hpp"

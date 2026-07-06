@@ -8,9 +8,7 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
-#include <type_traits>
 
-#include "randomizerTypes.h"
 #include "tricks.h"
 #include "soh/SohGui/MenuTypes.h"
 

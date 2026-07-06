@@ -3,7 +3,6 @@
 #include "randomizerTypes.h"
 #include "z64save.h"
 #include "item_override.h"
-#include "soh/Enhancements/custom-message/text.h"
 #include "hint.h"
 #include "fishsanity.h"
 #include "trial.h"
@@ -101,20 +100,24 @@ class Context {
     OptionValue& GetLocationOption(RandomizerCheck key);
 
     /**
-     * @brief Gets the resolved Light Arrow CutScene check condition.
+     * @brief Gets the resolved GBK check condition.
      * There is no direct option for this, it is inferred based on the value of a few other options.
      *
-     * @return RandoOptionLACSCondition
+     * @return RandoOptionCheckTriggerCondition
      */
-    RandoOptionLACSCondition LACSCondition() const;
+    RandoOptionCheckTrigger GBKCondition() const;
+    RandoOptionCheckTrigger GanonsSoulCondition() const;
+    RandoOptionWincon WinCondition() const;
 
     /**
-     * @brief Sets the resolved Light Arrow CutScene check condition.
+     * @brief Sets the resolved GBK check condition.
      * There is no direct option for this, it is inferred based on the value of a few other options.
      *
-     * @param lacsCondition
+     * @param condition
      */
-    void LACSCondition(RandoOptionLACSCondition lacsCondition);
+    void GBKCondition(RandoOptionCheckTrigger condition);
+    void GanonsSoulCondition(RandoOptionCheckTrigger condition);
+    void WinCondition(RandoOptionWincon condition);
 
     GetItemEntry GetFinalGIEntry(RandomizerCheck rc, bool checkObtainability = true, GetItemID ogItemId = GI_NONE);
     void ParseSpoiler(const char* spoilerFileName);
@@ -184,7 +187,9 @@ class Context {
     std::array<ItemLocation, RC_MAX> itemLocationTable = {};
     std::array<OptionValue, RSK_MAX> mOptions;
     std::array<OptionValue, RT_MAX> mTrickOptions;
-    RandoOptionLACSCondition mLACSCondition = RO_LACS_VANILLA;
+    RandoOptionCheckTrigger mGBKCondition = RO_CHECK_TRIGGER_NONE;
+    RandoOptionCheckTrigger mGanonsSoulCondition = RO_CHECK_TRIGGER_NONE;
+    RandoOptionWincon mWinCondition = RO_WINCON_DEFEAT_GANON;
     std::shared_ptr<EntranceShuffler> mEntranceShuffler;
     std::shared_ptr<Dungeons> mDungeons;
     std::shared_ptr<Logic> mLogic;

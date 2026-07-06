@@ -1,12 +1,10 @@
 #pragma once
 
 #include <utility>
-#include <vector>
 
 #include "3drando/spoiler_log.hpp"
 #include "3drando/hints.hpp"
 
-#include "randomizerTypes.h"
 #include "z64actor_enum.h"
 #include "z64scene.h"
 #include "../../util.h"

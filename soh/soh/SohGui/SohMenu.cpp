@@ -1,11 +1,7 @@
 #include "SohMenu.h"
-#include <libultraship/libultra.h>
 #include <libultraship/bridge/consolevariablebridge.h>
 #include <ship/Context.h>
-#include <ship/window/gui/GuiMenuBar.h>
-#include <ship/window/gui/GuiElement.h>
 #include <ship/utils/StringHelper.h>
-#include <spdlog/fmt/fmt.h>
 
 extern "C" {
 extern PlayState* gPlayState;
