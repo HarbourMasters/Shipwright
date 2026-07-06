@@ -1809,6 +1809,17 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             *should = false;
             break;
         }
+        case VB_LAKE_HYLIA_PREVENT_DOMAIN_SWIM: {
+            // Don't swim as adult coming from Domain to Lake with low water.
+            // Caused by waterbox first frame y surface always being -1313.0f
+            Player* player = va_arg(args, Player*);
+            if (gPlayState->sceneNum == SCENE_LAKE_HYLIA && LINK_IS_ADULT &&
+                !Flags_GetEventChkInf(EVENTCHKINF_RAISED_LAKE_HYLIA_WATER) &&
+                player->actor.world.pos.y > -1550.0f && player->actor.world.pos.y < -1500.0f) {
+                *should = false;
+            }
+            break;
+        }
         case VB_BE_ELIGIBLE_FOR_RAINBOW_BRIDGE: {
             *should = MeetsRainbowBridgeRequirements();
             break;

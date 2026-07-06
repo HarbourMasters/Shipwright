@@ -478,7 +478,7 @@ void Audio_PlayActorSound2(Actor* actor, u16 sfxId);
 void func_8002F850(PlayState* play, Actor* actor);
 void func_8002F8F0(Actor* actor, u16 sfxId);
 void func_8002F91C(Actor* actor, u16 sfxId);
-void func_8002F948(Actor* actor, u16 sfxId);
+void Actor_PlaySfx_FlaggedCentered2(Actor* actor, u16 sfxId);
 void func_8002F974(Actor* actor, u16 sfxId);
 void func_8002F994(Actor* actor, s32 arg1);
 s32 func_8002F9EC(PlayState* play, Actor* actor, CollisionPoly* poly, s32 bgId, Vec3f* pos);

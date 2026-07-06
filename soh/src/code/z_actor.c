@@ -2291,7 +2291,7 @@ void func_8002F91C(Actor* actor, u16 sfxId) {
     actor->flags &= ~(ACTOR_FLAG_SFX_ACTOR_POS_2 | ACTOR_AUDIO_FLAG_SFX_CENTERED_2 | ACTOR_FLAG_SFX_TIMER);
 }
 
-void func_8002F948(Actor* actor, u16 sfxId) {
+void Actor_PlaySfx_FlaggedCentered2(Actor* actor, u16 sfxId) {
     actor->sfx = sfxId;
     actor->flags |= ACTOR_AUDIO_FLAG_SFX_CENTERED_2;
     actor->flags &= ~(ACTOR_FLAG_SFX_ACTOR_POS_2 | ACTOR_AUDIO_FLAG_SFX_CENTERED_1 | ACTOR_FLAG_SFX_TIMER);
@@ -3336,6 +3336,7 @@ Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 pos
     }
 
     if (actorCtx->total > ACTOR_NUMBER_MAX) {
+        LUSLOG_WARN("Actor_Spawn: Actor number max exceeded");
         // "Ａｃｔｏｒ set number exceeded"
         osSyncPrintf(VT_COL(YELLOW, BLACK) "Ａｃｔｏｒセット数オーバー\n" VT_RST);
         return NULL;
@@ -3349,6 +3350,10 @@ Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 pos
 
     if ((objBankIndex < 0) ||
         ((dbEntry->category == ACTORCAT_ENEMY) && Flags_GetClear(play, play->roomCtx.curRoom.num))) {
+            if (objBankIndex < 0) {
+                LUSLOG_INFO("Actor_Spawn: Object 0x%x missing for actor %s (0x%x)",
+                    dbEntry->objectId, dbEntry->name, actorId);
+            }
         // "No data bank!! <data bank＝%d> (profilep->bank=%d)"
         osSyncPrintf(VT_COL(RED, WHITE) "データバンク無し！！<データバンク＝%d>(profilep->bank=%d)\n" VT_RST,
                      objBankIndex, dbEntry->objectId);
@@ -3359,6 +3364,7 @@ Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 pos
     actor = ZELDA_ARENA_MALLOC_DEBUG(dbEntry->instanceSize);
 
     if (actor == NULL) {
+        LUSLOG_WARN("Actor_Spawn: Cannot allocate actor %s (0x%x)", dbEntry->name, actorId);
         // "Actor class cannot be reserved! %s <size＝%d bytes>"
         osSyncPrintf(VT_COL(RED, WHITE) "Ａｃｔｏｒクラス確保できません！ %s <サイズ＝%dバイト>\n", VT_RST,
                      dbEntry->name, dbEntry->instanceSize);
@@ -4930,7 +4936,7 @@ s32 Flags_GetEventChkInf(s32 flag) {
  * Sets "eventChkInf" flag.
  */
 void Flags_SetEventChkInf(s32 flag) {
-    u8 previouslyOff = !Flags_GetEventChkInf(flag);
+    s32 previouslyOff = !Flags_GetEventChkInf(flag);
     gSaveContext.eventChkInf[flag >> 4] |= (1 << (flag & 0xF));
     if (previouslyOff) {
         LUSLOG_INFO("EventChkInf Flag Set - %#x", flag);
@@ -4942,7 +4948,7 @@ void Flags_SetEventChkInf(s32 flag) {
  * Unsets "eventChkInf" flag.
  */
 void Flags_UnsetEventChkInf(s32 flag) {
-    u8 previouslyOn = Flags_GetEventChkInf(flag);
+    s32 previouslyOn = Flags_GetEventChkInf(flag);
     gSaveContext.eventChkInf[flag >> 4] &= ~(1 << (flag & 0xF));
     if (previouslyOn) {
         LUSLOG_INFO("EventChkInf Flag Unset - %#x", flag);
@@ -4961,7 +4967,7 @@ s32 Flags_GetItemGetInf(s32 flag) {
  * Sets "itemGetInf" flag.
  */
 void Flags_SetItemGetInf(s32 flag) {
-    u8 previouslyOff = !Flags_GetItemGetInf(flag);
+    s32 previouslyOff = !Flags_GetItemGetInf(flag);
     gSaveContext.itemGetInf[flag >> 4] |= (1 << (flag & 0xF));
     if (previouslyOff) {
         LUSLOG_INFO("ItemGetInf Flag Set - %#x", flag);
@@ -4973,7 +4979,7 @@ void Flags_SetItemGetInf(s32 flag) {
  * Unsets "itemGetInf" flag.
  */
 void Flags_UnsetItemGetInf(s32 flag) {
-    u8 previouslyOn = Flags_GetItemGetInf(flag);
+    s32 previouslyOn = Flags_GetItemGetInf(flag);
     gSaveContext.itemGetInf[flag >> 4] &= ~(1 << (flag & 0xF));
     if (previouslyOn) {
         LUSLOG_INFO("ItemGetInf Flag Unset - %#x", flag);
@@ -4992,7 +4998,7 @@ s32 Flags_GetInfTable(s32 flag) {
  * Sets "infTable" flag.
  */
 void Flags_SetInfTable(s32 flag) {
-    u8 previouslyOff = !Flags_GetInfTable(flag);
+    s32 previouslyOff = !Flags_GetInfTable(flag);
     gSaveContext.infTable[flag >> 4] |= (1 << (flag & 0xF));
     if (previouslyOff) {
         LUSLOG_INFO("InfTable Flag Set - %#x", flag);
@@ -5004,7 +5010,7 @@ void Flags_SetInfTable(s32 flag) {
  * Unsets "infTable" flag.
  */
 void Flags_UnsetInfTable(s32 flag) {
-    u8 previouslyOn = Flags_GetInfTable(flag);
+    s32 previouslyOn = Flags_GetInfTable(flag);
     gSaveContext.infTable[flag >> 4] &= ~(1 << (flag & 0xF));
     if (previouslyOn) {
         LUSLOG_INFO("InfTable Flag Unset - %#x", flag);
@@ -5023,7 +5029,7 @@ s32 Flags_GetEventInf(s32 flag) {
  * Sets "eventInf" flag.
  */
 void Flags_SetEventInf(s32 flag) {
-    u8 previouslyOff = !Flags_GetEventInf(flag);
+    s32 previouslyOff = !Flags_GetEventInf(flag);
     gSaveContext.eventInf[flag >> 4] |= (1 << (flag & 0xF));
     if (previouslyOff) {
         LUSLOG_INFO("EventInf Flag Set - %#x", flag);
@@ -5035,7 +5041,7 @@ void Flags_SetEventInf(s32 flag) {
  * Unsets "eventInf" flag.
  */
 void Flags_UnsetEventInf(s32 flag) {
-    u8 previouslyOn = Flags_GetEventInf(flag);
+    s32 previouslyOn = Flags_GetEventInf(flag);
     gSaveContext.eventInf[flag >> 4] &= ~(1 << (flag & 0xF));
     if (previouslyOn) {
         LUSLOG_INFO("EventInf Flag Unset - %#x", flag);

@@ -3090,6 +3090,14 @@ typedef enum {
     // - `s16* (&this->actor.parent->id)`
     VB_PREVENT_HOOKSHOT_PARENT_SOFTLOCK,
 
+    // #### `result`
+    // ```c
+    // false if Link is adult, water level is lowered, and entering Lake from Domain
+    // ```
+    // #### `args`
+    // - `Player*`
+    VB_LAKE_HYLIA_PREVENT_DOMAIN_SWIM,
+
     // true
     // ```
     // #### `args`
