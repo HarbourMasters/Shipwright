@@ -5,6 +5,7 @@
 #include <spdlog/spdlog.h>
 #include <nlohmann/json.hpp>
 #include <algorithm>
+#include <chrono>
 #include <cmath>
 #include <filesystem>
 #include <fstream>
@@ -199,6 +200,50 @@ MidiTranslator::DebugPairStats MidiTranslator::GetDebugStats(uint8_t fontId, int
     out.routedMute = s.routedMute.load(std::memory_order_relaxed);
     out.lastSemitone = s.lastSemitone;
     return out;
+}
+
+// Monotonic ms, nonzero (0 means "never hit" in DrumSlotHit::lastHitMs).
+static uint32_t NowMs() {
+    using namespace std::chrono;
+    static const steady_clock::time_point start = steady_clock::now();
+    return static_cast<uint32_t>(duration_cast<milliseconds>(steady_clock::now() - start).count()) | 1u;
+}
+
+bool MidiTranslator::DrumSlotRecentlyActive(uint8_t fontId, int16_t instOrWave, uint8_t slot) const {
+    if (slot >= kDrumHistSlots)
+        return false;
+    const DrumSlotHit* hist = DrumHistFor(fontId, instOrWave);
+    if (!hist)
+        return false;
+    uint32_t t = hist[slot].lastHitMs.load(std::memory_order_relaxed);
+    return t != 0 && NowMs() - t < 250;
+}
+
+bool MidiTranslator::AnyDrumSlotRecentlyActive(uint8_t fontId, int16_t instOrWave) const {
+    const DrumSlotHit* hist = DrumHistFor(fontId, instOrWave);
+    if (!hist)
+        return false;
+    // Restrict the real drum channel to its sampled slots: sequences also fire
+    // control slots the font leaves empty (silent natively), which would keep
+    // the tint permanently on.
+    bool sampledOnly[kDrumHistSlots] = {};
+    bool restrict = false;
+    if (instOrWave == 0) {
+        for (const auto& d : EnumerateDrumSlots(fontId)) {
+            if (d.slot < kDrumHistSlots)
+                sampledOnly[d.slot] = true;
+            restrict = true;
+        }
+    }
+    const uint32_t now = NowMs();
+    for (int s = 0; s < kDrumHistSlots; ++s) {
+        if (restrict && !sampledOnly[s])
+            continue;
+        uint32_t t = hist[s].lastHitMs.load(std::memory_order_relaxed);
+        if (t != 0 && now - t < 250)
+            return true;
+    }
+    return false;
 }
 
 int MidiTranslator::GetDrumSlotHistogram(uint8_t fontId, int16_t instOrWave, uint32_t out[128]) const {
@@ -2021,8 +2066,10 @@ bool MidiTranslator::ProcessNote(int noteIndex, float freqScale, float velocity,
         // drum UI treats each distinct incoming value as a slot all the same, so
         // the same histogram (a pool slot, via DrumHistFor) drives discovery.
         if (semitone < kDrumHistSlots) {
-            if (DrumSlotHit* hist = DrumHistFor(fontId, instOrWave))
+            if (DrumSlotHit* hist = DrumHistFor(fontId, instOrWave)) {
                 hist[semitone].count.fetch_add(1, std::memory_order_relaxed);
+                hist[semitone].lastHitMs.store(NowMs(), std::memory_order_relaxed);
+            }
         }
     }
     // Helper for the route-decision counters below. Only counts on a fresh

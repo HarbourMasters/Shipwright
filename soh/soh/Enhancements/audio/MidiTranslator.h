@@ -201,6 +201,10 @@ class MidiTranslator {
     // input for the drum auto-split. Returns 0 for non-drum/SFX pairs. Lock-free
     // read of audio-thread atomics.
     int GetDrumSlotHistogram(uint8_t fontId, int16_t instOrWave, uint32_t out[128]) const;
+    // Recently-played signals for drum slot rows without a ConfigEntry (the
+    // per-entry active counters can't cover them). Window ~250ms.
+    bool DrumSlotRecentlyActive(uint8_t fontId, int16_t instOrWave, uint8_t slot) const;
+    bool AnyDrumSlotRecentlyActive(uint8_t fontId, int16_t instOrWave) const;
 
     // ── Pack stack + entry sfontId refresh ───────────────────────────────
     // Set by AudioEditor after every SF stack change. Used as the
@@ -528,6 +532,9 @@ class MidiTranslator {
     static constexpr int kDrumHistSlots = 128;
     struct DrumSlotHit {
         std::atomic<uint16_t> count{ 0 };
+        // Monotonic ms of the last fresh NoteOn (0 = never), for the UI's
+        // recently-played tint on slots that have no ConfigEntry to count on.
+        std::atomic<uint32_t> lastHitMs{ 0 };
     };
     DrumSlotHit mDrumSlotHits[kMaxFontId][kDrumHistInst][kDrumHistSlots];
 
