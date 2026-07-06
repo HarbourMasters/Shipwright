@@ -124,16 +124,13 @@ void Settings::CreateOptionDescriptions() {
         "here will be guaranteed to be Vanilla. If Set Number is higher than the amount of dungeons "
         "set to either MQ or Random here, you will have fewer MQ Dungeons than the number you "
         "set.";
-    mOptionDescriptions[RSK_TRIFORCE_HUNT] =
-        "Pieces of the Triforce of Courage have been scattered across the world. Find them all to finish the game!\n"
-        "\n"
-        "If set to Win: the game is saved and the credits roll, though you can load back in to receive Ganon's "
-        "Castle Boss Key. Keep in mind that Ganon might not be logically reachable when \"All Locations Reachable\" "
-        "is disabled.";
     mOptionDescriptions[RSK_TRIFORCE_HUNT_PIECES_TOTAL] =
-        "The amount of Triforce pieces that will be placed in the world. "
-        "Keep in mind seed generation can fail if more pieces are placed than there are junk items in the item pool.";
-    mOptionDescriptions[RSK_TRIFORCE_HUNT_PIECES_REQUIRED] = "The amount of Triforce pieces required to win the game.";
+        "The amount of Triforce pieces that will be placed in the world. Set to 0 to disable Triforce Hunt.\n"
+        "\n"
+        "Triforce Pieces can be used as a requirement for the Rainbow Bridge, Ganon's Boss Key, Ganon's Soul, or the "
+        "win condition. Keep in mind seed generation can fail if more pieces are placed than there are junk items in "
+        "the item pool.";
+    mOptionDescriptions[RSK_WINCON_TRIFORCE_COUNT] = "The amount of Triforce pieces required to win the game.";
     mOptionDescriptions[RSK_TRIFORCE_HUNT_PIECES_LOCATION] =
         "Any dungeon - Triforce pieces can only appear inside of any dungeon.\n"
         "\n"
@@ -657,19 +654,15 @@ void Settings::CreateOptionDescriptions() {
         "\n"
         "Anywhere - Ganon's Boss Key Key can appear anywhere in the world.\n"
         "\n"
-        "LACS - These settings put the boss key on the Light Arrow Cutscene location, from Zelda in Temple of Time as "
-        "adult, with differing requirements:\n"
-        "- Vanilla: Obtain the Shadow Medallion and Spirit Medallion\n"
+        "Trigger - These settings put the boss key on a trigger, "
+        "granting key once requirements met:\n"
         "- Stones: Obtain the specified amount of Spiritual Stones.\n"
         "- Medallions: Obtain the specified amount of medallions.\n"
         "- Dungeon rewards: Obtain the specified total sum of Spiritual Stones or medallions.\n"
         "- Dungeons: Complete the specified amount of dungeons. Dungeons are considered complete after stepping in to "
         "the blue warp after the boss.\n"
-        "- Tokens: Obtain the specified amount of Skulltula tokens.\n"
-        "\n"
-        "100 GS Reward - Ganon's Boss Key will be awarded by the cursed rich man after you collect 100 Gold Skulltula "
-        "Tokens.";
-    mOptionDescriptions[RSK_LACS_OPTIONS] =
+        "- Tokens: Obtain the specified amount of Skulltula tokens.";
+    mOptionDescriptions[RSK_GBK_OPTIONS] =
         "Standard Rewards - Greg does not change logic, Greg does not help obtain GBK, max "
         "number of rewards on slider does not change.\n"
         "\n"
@@ -678,6 +671,16 @@ void Settings::CreateOptionDescriptions() {
         "account for Greg. \n"
         "\n"
         "Greg as Wildcard - Greg does not change logic, Greg helps obtain GBK, max number of "
+        "rewards on slider does not change.";
+    mOptionDescriptions[RSK_GANONS_SOUL_OPTIONS] =
+        "Standard Rewards - Greg does not change logic, Greg does not help obtain Ganon's Soul, max "
+        "number of rewards on slider does not change.\n"
+        "\n"
+        "Greg as Reward - Greg does change logic (can be part of expected path for obtaining "
+        "Ganon's Soul), Greg helps obtain Ganon's Soul, max number of rewards on slider increases by 1 to "
+        "account for Greg. \n"
+        "\n"
+        "Greg as Wildcard - Greg does not change logic, Greg helps obtain Ganon's Soul, max number of "
         "rewards on slider does not change.";
     mOptionDescriptions[RSK_BIG_POE_COUNT] = "The Poe collector will give a reward for turning in this many Big Poes.";
     mOptionDescriptions[RSK_SKIP_CHILD_STEALTH] =
@@ -866,7 +869,6 @@ void Settings::CreateOptionDescriptions() {
         "Shuffle 10 bean souls which must be found to spawn corresponding soil / plant.";
     mOptionDescriptions[RSK_SHUFFLE_BOSS_SOULS] =
         "Shuffles 8 boss souls (one for each blue warp dungeon). A boss will not appear until you collect its "
-        "respective soul."
-        "\n\"On + Ganon\" will also hide Ganon and Ganondorf behind a boss soul.";
+        "respective soul.";
 }
 } // namespace Rando

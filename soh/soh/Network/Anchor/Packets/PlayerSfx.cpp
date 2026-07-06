@@ -1,11 +1,8 @@
 #include "soh/Network/Anchor/Anchor.h"
-#include "soh/Network/Anchor/JsonConversions.hpp"
 #include <nlohmann/json.hpp>
 
 extern "C" {
-#include "macros.h"
 #include "functions.h"
-#include "variables.h"
 extern PlayState* gPlayState;
 }
 

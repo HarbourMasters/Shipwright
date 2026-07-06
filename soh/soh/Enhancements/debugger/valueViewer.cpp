@@ -12,7 +12,6 @@ extern "C" {
 #include "variables.h"
 #include "functions.h"
 #include "macros.h"
-#include "soh/cvar_prefixes.h"
 #include "overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
 
 extern PlayState* gPlayState;

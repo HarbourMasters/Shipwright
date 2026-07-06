@@ -5,7 +5,6 @@
 
 extern "C" {
 extern PlayState* gPlayState;
-#include "macros.h"
 #include "src/overlays/actors/ovl_En_Door/z_en_door.h"
 }
 

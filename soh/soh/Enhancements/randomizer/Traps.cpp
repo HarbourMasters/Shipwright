@@ -1,6 +1,5 @@
 #include "Traps.h"
 #include "soh/Enhancements/randomizer/SeedContext.h"
-#include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "soh/Enhancements/randomizer/static_data.h"
 #include "soh/ShipUtils.h"
 
@@ -661,6 +660,12 @@ static void InitTrickNames() {
         Text{ "Piece of Cheese", "Morceau de Fromage", "Käseteil" },        // "Piece of Cheese"
         Text{ "Triforce Shard", "Éclat de Triforce", "Triforce-Fragment" }, // "Triforce Shard"
         Text{ "Shiny Rock", "Caillou Brillant", "glänzender Stein" },       // "Shiny Rock"
+    };
+    trickNameTable[RG_TRIFORCE] = {
+        // TODO_TRANSLATE
+        Text{ "Cheese Triangle" },
+        Text{ "Triumph Fork" },
+        Text{ "Force Gem" },
     };
     trickNameTable[RG_ROCS_FEATHER] = {
         Text{ "Chicken Wing", "Chicken Wing", "Chicken Wing" }, // "Chicken Wing"

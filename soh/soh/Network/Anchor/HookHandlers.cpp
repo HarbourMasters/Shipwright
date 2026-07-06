@@ -115,8 +115,26 @@ void Anchor::RegisterHooks() {
         }
     });
 
-    COND_HOOK(OnFlagSet, isConnected,
-              [&](s16 flagType, s16 flag) { SendPacket_SetFlag(SCENE_ID_MAX, flagType, flag); });
+    COND_HOOK(OnFlagSet, isConnected, [&](s16 flagType, s16 flag) {
+        SendPacket_SetFlag(SCENE_ID_MAX, flagType, flag);
+
+        // If we're not in rando, we have to sync some of the great fairy rewards manually
+        if (!IS_RANDO) {
+            if (flagType == FLAG_RANDOMIZER_INF) {
+                switch (flag) {
+                    case RAND_INF_DMT_GREAT_FAIRY_REWARD:
+                        SendPacket_GiveItem(1, RG_MAGIC_SINGLE);
+                        break;
+                    case RAND_INF_DMC_GREAT_FAIRY_REWARD:
+                        SendPacket_GiveItem(1, RG_MAGIC_DOUBLE);
+                        break;
+                    case RAND_INF_OGC_GREAT_FAIRY_REWARD:
+                        SendPacket_GiveItem(1, RG_DOUBLE_DEFENSE);
+                        break;
+                }
+            }
+        }
+    });
 
     COND_HOOK(OnFlagUnset, isConnected,
               [&](s16 flagType, s16 flag) { SendPacket_UnsetFlag(SCENE_ID_MAX, flagType, flag); });

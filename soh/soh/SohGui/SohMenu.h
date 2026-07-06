@@ -2,8 +2,6 @@
 #define SOHMENU_H
 
 #include "Menu.h"
-#include <fast/backends/gfx_rendering_api.h>
-#include "soh/cvar_prefixes.h"
 
 extern "C" {
 #include "z64.h"

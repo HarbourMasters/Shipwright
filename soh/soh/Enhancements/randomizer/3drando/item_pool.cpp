@@ -4,11 +4,8 @@
 #include "fill.hpp"
 #include "../static_data.h"
 #include "../SeedContext.h"
-#include "pool_functions.hpp"
 #include "random.hpp"
-#include "spoiler_log.hpp"
 #include "soh/Enhancements/randomizer/Traps.h"
-#include "z64item.h"
 #include <algorithm>
 #include <spdlog/spdlog.h>
 
@@ -329,27 +326,27 @@ void GenerateItemPool() {
     AddFixedItemToPool(RG_SHADOW_MEDALLION, 1, rewardIceTraps);
     AddFixedItemToPool(RG_LIGHT_MEDALLION, 1, rewardIceTraps);
 
-    if (ctx->GetOption(RSK_TRIFORCE_HUNT).IsNot(RO_TRIFORCE_HUNT_OFF)) {
-        AddFixedItemToPool(RG_TRIFORCE_PIECE, ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_TOTAL).Get() + 1, false);
-
-        switch (ctx->GetOption(RSK_TRIFORCE_HUNT).Get()) {
-            case RO_TRIFORCE_HUNT_OFF:
-                break;
-            case RO_TRIFORCE_HUNT_WIN:
-                ctx->PlaceItemInLocation(RC_TRIFORCE_COMPLETED, RG_TRIFORCE); // Win condition
-                ctx->PlaceItemInLocation(RC_GANON, RG_BLUE_RUPEE, false, true);
-                break;
-            case RO_TRIFORCE_HUNT_GBK:
-                ctx->PlaceItemInLocation(RC_TRIFORCE_COMPLETED, RG_GANONS_CASTLE_BOSS_KEY);
-                ctx->PlaceItemInLocation(RC_GANON, RG_TRIFORCE); // Win condition
-                break;
-        }
-    } else {
-        ctx->PlaceItemInLocation(RC_GANON, RG_TRIFORCE); // Win condition
+    if (ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_TOTAL).Get() > 0) {
+        AddFixedItemToPool(RG_TRIFORCE_PIECE, ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_TOTAL).Get(), false);
     }
 
     // Fixed item locations
     ctx->PlaceItemInLocation(RC_HC_ZELDAS_LETTER, RG_ZELDAS_LETTER);
+    ctx->PlaceItemInLocation(RC_GANONS_BOSS_KEY, RG_BLUE_RUPEE); // placeholder, filled by setting
+    ctx->PlaceItemInLocation(RC_GANON_SOUL, RG_BLUE_RUPEE); // placeholder, filled by setting
+    ctx->PlaceItemInLocation(RC_WINCON, RG_BLUE_RUPEE); // placeholder, filled by setting
+
+    if (ctx->GetOption(RSK_WINCON).Is(RO_WINCON_DEFEAT_GANON)) {
+        ctx->PlaceItemInLocation(RC_GANON, RG_TRIFORCE); // Win condition
+    } else {
+        // Ganon isn't the win condition, so slaying him is optional and just hands out a junk reward.
+        ctx->PlaceItemInLocation(RC_GANON, RG_BLUE_RUPEE, false, true);
+        if (ctx->GetOption(RSK_WINCON).Is(RO_WINCON_ANYWHERE)) {
+            AddFixedItemToPool(RG_TRIFORCE, 1);
+        } else {
+            ctx->PlaceItemInLocation(RC_WINCON, RG_TRIFORCE);
+        }
+    }
 
     if (!ctx->GetOption(RSK_STARTING_KOKIRI_SWORD)) {
         if (ctx->GetOption(RSK_SHUFFLE_KOKIRI_SWORD)) {
@@ -628,9 +625,6 @@ void GenerateItemPool() {
         AddItemToPool(RG_MORPHA_SOUL, 2, 1, 1, 1);
         AddItemToPool(RG_BONGO_BONGO_SOUL, 2, 1, 1, 1);
         AddItemToPool(RG_TWINROVA_SOUL, 2, 1, 1, 1);
-        if (ctx->GetOption(RSK_SHUFFLE_BOSS_SOULS).Is(RO_BOSS_SOULS_ON_PLUS_GANON)) {
-            AddItemToPool(RG_GANON_SOUL, 2, 1, 1, 1);
-        }
     }
 
     // Gerudo Fortress
@@ -730,16 +724,21 @@ void GenerateItemPool() {
         AddItemToPool(RG_SHADOW_TEMPLE_BOSS_KEY, 2, 1, 1, 1);
     }
 
-    // Don't add GBK to the pool at all for Triforce Hunt or if we start with it.
-    if (!(ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_STARTWITH) || ctx->GetOption(RSK_TRIFORCE_HUNT))) {
-        if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_KAK_TOKENS)) {
-            ctx->PlaceItemInLocation(RC_KAK_100_GOLD_SKULLTULA_REWARD, RG_GANONS_CASTLE_BOSS_KEY);
-        } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Get() >= RO_GANON_BOSS_KEY_LACS_VANILLA) {
-            ctx->PlaceItemInLocation(RC_TOT_LIGHT_ARROWS_CUTSCENE, RG_GANONS_CASTLE_BOSS_KEY);
+    if (!(ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_STARTWITH))) {
+        if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Get() >= RO_GANON_BOSS_KEY_STONES) {
+            ctx->PlaceItemInLocation(RC_GANONS_BOSS_KEY, RG_GANONS_CASTLE_BOSS_KEY);
         } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_VANILLA)) {
             ctx->PlaceItemInLocation(RC_GANONS_TOWER_BOSS_KEY_CHEST, RG_GANONS_CASTLE_BOSS_KEY);
         } else {
             AddItemToPool(RG_GANONS_CASTLE_BOSS_KEY, 2, 1, 1, 1);
+        }
+    }
+
+    if (!(ctx->GetOption(RSK_GANONS_SOUL).Is(RO_GANONS_SOUL_STARTWITH))) {
+        if (ctx->GetOption(RSK_GANONS_SOUL).Get() >= RO_GANONS_SOUL_STONES) {
+            ctx->PlaceItemInLocation(RC_GANON_SOUL, RG_GANON_SOUL);
+        } else {
+            AddItemToPool(RG_GANON_SOUL, 2, 1, 1, 1);
         }
     }
 

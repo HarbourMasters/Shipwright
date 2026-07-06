@@ -1,5 +1,4 @@
 #include "hint.h"
-#include "map"
 #include "string"
 #include "SeedContext.h"
 #include <spdlog/spdlog.h>
@@ -307,7 +306,7 @@ const CustomMessage Hint::GetHintMessage(MessageFormat format, size_t id) const 
         } else {
             hintText.SetTextBoxType(TEXTBOX_TYPE_BLUE);
         }
-        hintText += GetBridgeReqsText() + GetGanonBossKeyText() +
+        hintText += GetBridgeReqsText() + GetGanonBossKeyText() + GetGanonsSoulText() + GetWinconText() +
                     StaticData::hintTextTable[RHT_ADULT_ALTAR_TEXT_END].GetHintMessage();
     } else {
         hintText = GetHintText(id).GetHintMessage(chosenMessage);
@@ -571,6 +570,9 @@ CustomMessage Hint::GetBridgeReqsText() {
     } else if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_TOKENS)) {
         bridgeMessage = StaticData::hintTextTable[RHT_BRIDGE_TOKENS_HINT].GetHintMessage();
         bridgeMessage.InsertNumber(ctx->GetOption(RSK_RAINBOW_BRIDGE_TOKEN_COUNT).Get());
+    } else if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_TRIFORCE_PIECES)) {
+        bridgeMessage = StaticData::hintTextTable[RHT_BRIDGE_TRIFORCE_PIECES_HINT].GetHintMessage();
+        bridgeMessage.InsertNumber(ctx->GetOption(RSK_RAINBOW_BRIDGE_TRIFORCE_COUNT).Get());
     } else if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_GREG)) {
         return StaticData::hintTextTable[RHT_BRIDGE_GREG_HINT].GetHintMessage();
     }
@@ -580,10 +582,6 @@ CustomMessage Hint::GetBridgeReqsText() {
 CustomMessage Hint::GetGanonBossKeyText() {
     auto ctx = Rando::Context::GetInstance();
     CustomMessage ganonBossKeyMessage;
-
-    if (ctx->GetOption(RSK_TRIFORCE_HUNT).IsNot(RO_TRIFORCE_HUNT_OFF)) {
-        return StaticData::hintTextTable[RHT_GANON_BK_TRIFORCE_HINT].GetHintMessage();
-    }
 
     if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_STARTWITH)) {
         return StaticData::hintTextTable[RHT_GANON_BK_START_WITH_HINT].GetHintMessage();
@@ -597,27 +595,80 @@ CustomMessage Hint::GetGanonBossKeyText() {
         return StaticData::hintTextTable[RHT_GANON_BK_OVERWORLD_HINT].GetHintMessage();
     } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_ANYWHERE)) {
         return StaticData::hintTextTable[RHT_GANON_BK_ANYWHERE_HINT].GetHintMessage();
-    } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_KAK_TOKENS)) {
-        return StaticData::hintTextTable[RHT_GANON_BK_SKULLTULA_HINT].GetHintMessage();
-    } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_VANILLA)) {
-        return StaticData::hintTextTable[RHT_LACS_VANILLA_HINT].GetHintMessage();
-    } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_STONES)) {
-        ganonBossKeyMessage = StaticData::hintTextTable[RHT_LACS_STONES_HINT].GetHintMessage();
-        ganonBossKeyMessage.InsertNumber(ctx->GetOption(RSK_LACS_STONE_COUNT).Get());
-    } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_MEDALLIONS)) {
-        ganonBossKeyMessage = StaticData::hintTextTable[RHT_LACS_MEDALLIONS_HINT].GetHintMessage();
-        ganonBossKeyMessage.InsertNumber(ctx->GetOption(RSK_LACS_MEDALLION_COUNT).Get());
-    } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_REWARDS)) {
-        ganonBossKeyMessage = StaticData::hintTextTable[RHT_LACS_REWARDS_HINT].GetHintMessage();
-        ganonBossKeyMessage.InsertNumber(ctx->GetOption(RSK_LACS_REWARD_COUNT).Get());
-    } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_DUNGEONS)) {
-        ganonBossKeyMessage = StaticData::hintTextTable[RHT_LACS_DUNGEONS_HINT].GetHintMessage();
-        ganonBossKeyMessage.InsertNumber(ctx->GetOption(RSK_LACS_DUNGEON_COUNT).Get());
-    } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_TOKENS)) {
-        ganonBossKeyMessage = StaticData::hintTextTable[RHT_LACS_TOKENS_HINT].GetHintMessage();
-        ganonBossKeyMessage.InsertNumber(ctx->GetOption(RSK_LACS_TOKEN_COUNT).Get());
+    } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_STONES)) {
+        ganonBossKeyMessage = StaticData::hintTextTable[RHT_GBK_STONES_HINT].GetHintMessage();
+        ganonBossKeyMessage.InsertNumber(ctx->GetOption(RSK_GBK_STONE_COUNT).Get());
+    } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_MEDALLIONS)) {
+        ganonBossKeyMessage = StaticData::hintTextTable[RHT_GBK_MEDALLIONS_HINT].GetHintMessage();
+        ganonBossKeyMessage.InsertNumber(ctx->GetOption(RSK_GBK_MEDALLION_COUNT).Get());
+    } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_REWARDS)) {
+        ganonBossKeyMessage = StaticData::hintTextTable[RHT_GBK_REWARDS_HINT].GetHintMessage();
+        ganonBossKeyMessage.InsertNumber(ctx->GetOption(RSK_GBK_REWARD_COUNT).Get());
+    } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_DUNGEONS)) {
+        ganonBossKeyMessage = StaticData::hintTextTable[RHT_GBK_DUNGEONS_HINT].GetHintMessage();
+        ganonBossKeyMessage.InsertNumber(ctx->GetOption(RSK_GBK_DUNGEON_COUNT).Get());
+    } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_TOKENS)) {
+        ganonBossKeyMessage = StaticData::hintTextTable[RHT_GBK_TOKENS_HINT].GetHintMessage();
+        ganonBossKeyMessage.InsertNumber(ctx->GetOption(RSK_GBK_TOKEN_COUNT).Get());
+    } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_TRIFORCE_PIECES)) {
+        ganonBossKeyMessage = StaticData::hintTextTable[RHT_GBK_TRIFORCE_PIECES_HINT].GetHintMessage();
+        ganonBossKeyMessage.InsertNumber(ctx->GetOption(RSK_GBK_TRIFORCE_COUNT).Get());
     }
     return ganonBossKeyMessage;
+}
+
+CustomMessage Hint::GetGanonsSoulText() {
+    auto ctx = Rando::Context::GetInstance();
+    CustomMessage ganonsSoulMessage;
+
+    if (ctx->GetOption(RSK_GANONS_SOUL).Is(RO_GANONS_SOUL_STONES)) {
+        ganonsSoulMessage = StaticData::hintTextTable[RHT_GANONS_SOUL_STONES_HINT].GetHintMessage();
+        ganonsSoulMessage.InsertNumber(ctx->GetOption(RSK_GANONS_SOUL_STONE_COUNT).Get());
+    } else if (ctx->GetOption(RSK_GANONS_SOUL).Is(RO_GANONS_SOUL_MEDALLIONS)) {
+        ganonsSoulMessage = StaticData::hintTextTable[RHT_GANONS_SOUL_MEDALLIONS_HINT].GetHintMessage();
+        ganonsSoulMessage.InsertNumber(ctx->GetOption(RSK_GANONS_SOUL_MEDALLION_COUNT).Get());
+    } else if (ctx->GetOption(RSK_GANONS_SOUL).Is(RO_GANONS_SOUL_REWARDS)) {
+        ganonsSoulMessage = StaticData::hintTextTable[RHT_GANONS_SOUL_REWARDS_HINT].GetHintMessage();
+        ganonsSoulMessage.InsertNumber(ctx->GetOption(RSK_GANONS_SOUL_REWARD_COUNT).Get());
+    } else if (ctx->GetOption(RSK_GANONS_SOUL).Is(RO_GANONS_SOUL_DUNGEONS)) {
+        ganonsSoulMessage = StaticData::hintTextTable[RHT_GANONS_SOUL_DUNGEONS_HINT].GetHintMessage();
+        ganonsSoulMessage.InsertNumber(ctx->GetOption(RSK_GANONS_SOUL_DUNGEON_COUNT).Get());
+    } else if (ctx->GetOption(RSK_GANONS_SOUL).Is(RO_GANONS_SOUL_TOKENS)) {
+        ganonsSoulMessage = StaticData::hintTextTable[RHT_GANONS_SOUL_TOKENS_HINT].GetHintMessage();
+        ganonsSoulMessage.InsertNumber(ctx->GetOption(RSK_GANONS_SOUL_TOKEN_COUNT).Get());
+    } else if (ctx->GetOption(RSK_GANONS_SOUL).Is(RO_GANONS_SOUL_TRIFORCE_PIECES)) {
+        ganonsSoulMessage = StaticData::hintTextTable[RHT_GANONS_SOUL_TRIFORCE_PIECES_HINT].GetHintMessage();
+        ganonsSoulMessage.InsertNumber(ctx->GetOption(RSK_GANONS_SOUL_TRIFORCE_COUNT).Get());
+    }
+    return ganonsSoulMessage;
+}
+
+CustomMessage Hint::GetWinconText() {
+    auto ctx = Rando::Context::GetInstance();
+    CustomMessage winconMessage;
+
+    if (ctx->GetOption(RSK_WINCON).Is(RO_WINCON_ANYWHERE)) {
+        return StaticData::hintTextTable[RHT_WINCON_ANYWHERE_HINT].GetHintMessage();
+    } else if (ctx->GetOption(RSK_WINCON).Is(RO_WINCON_STONES)) {
+        winconMessage = StaticData::hintTextTable[RHT_WINCON_STONES_HINT].GetHintMessage();
+        winconMessage.InsertNumber(ctx->GetOption(RSK_WINCON_STONE_COUNT).Get());
+    } else if (ctx->GetOption(RSK_WINCON).Is(RO_WINCON_MEDALLIONS)) {
+        winconMessage = StaticData::hintTextTable[RHT_WINCON_MEDALLIONS_HINT].GetHintMessage();
+        winconMessage.InsertNumber(ctx->GetOption(RSK_WINCON_MEDALLION_COUNT).Get());
+    } else if (ctx->GetOption(RSK_WINCON).Is(RO_WINCON_REWARDS)) {
+        winconMessage = StaticData::hintTextTable[RHT_WINCON_REWARDS_HINT].GetHintMessage();
+        winconMessage.InsertNumber(ctx->GetOption(RSK_WINCON_REWARD_COUNT).Get());
+    } else if (ctx->GetOption(RSK_WINCON).Is(RO_WINCON_DUNGEONS)) {
+        winconMessage = StaticData::hintTextTable[RHT_WINCON_DUNGEONS_HINT].GetHintMessage();
+        winconMessage.InsertNumber(ctx->GetOption(RSK_WINCON_DUNGEON_COUNT).Get());
+    } else if (ctx->GetOption(RSK_WINCON).Is(RO_WINCON_TOKENS)) {
+        winconMessage = StaticData::hintTextTable[RHT_WINCON_TOKENS_HINT].GetHintMessage();
+        winconMessage.InsertNumber(ctx->GetOption(RSK_WINCON_TOKEN_COUNT).Get());
+    } else if (ctx->GetOption(RSK_WINCON).Is(RO_WINCON_TRIFORCE_PIECES)) {
+        winconMessage = StaticData::hintTextTable[RHT_WINCON_TRIFORCE_PIECES_HINT].GetHintMessage();
+        winconMessage.InsertNumber(ctx->GetOption(RSK_WINCON_TRIFORCE_COUNT).Get());
+    }
+    return winconMessage;
 }
 
 void Hint::AddHintedLocation(RandomizerCheck location) {

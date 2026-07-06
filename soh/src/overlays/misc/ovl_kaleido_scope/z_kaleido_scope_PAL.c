@@ -14,6 +14,7 @@
 #include "textures/map_48x85_static/map_48x85_static.h"
 #include "vt.h"
 
+#include <libultraship/bridge/resourcebridge.h>
 #include "soh/frame_interpolation.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"

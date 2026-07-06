@@ -1,4 +1,3 @@
-#include <libultraship/bridge.h>
 #include <ship/Context.h>
 #include <ship/config/Config.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"

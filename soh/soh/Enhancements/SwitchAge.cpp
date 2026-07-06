@@ -1,12 +1,9 @@
 #include "soh/Enhancements/SwitchAge.h"
-#include <libultraship/bridge.h>
-#include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 extern "C" {
 #include <z64.h>
 #include "macros.h"
-#include "soh/cvar_prefixes.h"
 #include "variables.h"
 #include "functions.h"
 

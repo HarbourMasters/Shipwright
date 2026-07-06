@@ -5,8 +5,6 @@
 extern "C" {
 #endif
 
-#include <ship/utils/binarytools/endianness.h>
-
 #define MK_CMD(b0,b1,b2,b3) ((((b0) & 0xFF) << 0x18) | (((b1) & 0xFF) << 0x10) | (((b2) & 0xFF) << 0x8) | (((b3) & 0xFF) << 0))
 
 #define NO_LAYER ((SequenceLayer*)(-1))

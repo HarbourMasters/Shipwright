@@ -12,8 +12,6 @@
 
 #include <fast/Fast3dGui.h>
 
-#include <fast/Fast3dGui.h>
-
 extern "C" {
 #include "z64item.h"
 #include "macros.h"

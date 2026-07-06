@@ -8,9 +8,7 @@
 #include "soh/SohGui/SohGui.hpp"
 #include "soh/util.h"
 
-#include <vector>
 #include <string>
-#include <libultraship/bridge.h>
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/OTRGlobals.h"
 

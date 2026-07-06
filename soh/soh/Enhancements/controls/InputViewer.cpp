@@ -5,15 +5,12 @@
 #include <ship/Context.h>
 #include <libultraship/controller/controldeck/ControlDeck.h>
 #include "soh/OTRGlobals.h"
-#include "soh/cvar_prefixes.h"
 #include <imgui.h>
 #include <spdlog/spdlog.h>
 #include <cmath>
 
 #include "soh/SohGui/UIWidgets.hpp"
 #include "soh/SohGui/SohGui.hpp"
-
-#include <fast/Fast3dGui.h>
 
 #include <fast/Fast3dGui.h>
 

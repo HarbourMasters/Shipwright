@@ -6,9 +6,7 @@
 
 #include <array>
 #include <math.h>
-#include <map>
 #include <spdlog/spdlog.h>
-#include "z64item.h"
 
 PriceSettingsStruct::PriceSettingsStruct(RandomizerSettingKey _main, RandomizerSettingKey _fixedPrice,
                                          RandomizerSettingKey _range1, RandomizerSettingKey _range2,

@@ -7,7 +7,9 @@
 
 #include <spdlog/spdlog.h>
 #include <libultraship/bridge/consolevariablebridge.h>
-#include <libultraship/classes.h>
+#include <ship/Context.h>
+#include <ship/window/Window.h>
+#include <ship/window/gui/Gui.h>
 
 namespace Rando {
 std::shared_ptr<Settings> Settings::mInstance;
@@ -194,7 +196,7 @@ void Settings::CreateOptions() {
             mOptions[RSK_KEYRINGS_GERUDO_FORTRESS].Enable();
         }
     });
-    OPT_U8(RSK_RAINBOW_BRIDGE, "Rainbow Bridge", {"Vanilla", "Always open", "Stones", "Medallions", "Dungeon rewards", "Dungeons", "Tokens", "Greg"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("RainbowBridge"), mOptionDescriptions[RSK_RAINBOW_BRIDGE], WIDGET_CVAR_COMBOBOX, RO_BRIDGE_VANILLA, false, nullptr, IMFLAG_NONE);
+    OPT_U8(RSK_RAINBOW_BRIDGE, "Rainbow Bridge", {"Vanilla", "Always open", "Stones", "Medallions", "Dungeon rewards", "Dungeons", "Tokens", "Triforce Pieces", "Greg"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("RainbowBridge"), mOptionDescriptions[RSK_RAINBOW_BRIDGE], WIDGET_CVAR_COMBOBOX, RO_BRIDGE_VANILLA, false, nullptr, IMFLAG_NONE);
     OPT_CALLBACK(RSK_RAINBOW_BRIDGE, {
         mOptions[RSK_BRIDGE_OPTIONS].Hide();
         mOptions[RSK_RAINBOW_BRIDGE_STONE_COUNT].Hide();
@@ -202,36 +204,37 @@ void Settings::CreateOptions() {
         mOptions[RSK_RAINBOW_BRIDGE_REWARD_COUNT].Hide();
         mOptions[RSK_RAINBOW_BRIDGE_DUNGEON_COUNT].Hide();
         mOptions[RSK_RAINBOW_BRIDGE_TOKEN_COUNT].Hide();
+        mOptions[RSK_RAINBOW_BRIDGE_TRIFORCE_COUNT].Hide();
         switch (CVarGetInteger(CVAR_RANDOMIZER_SETTING("RainbowBridge"), RO_BRIDGE_VANILLA)) {
             case RO_BRIDGE_STONES:
-                // Show Bridge Options and Stone Count slider
                 mOptions[RSK_RAINBOW_BRIDGE].RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
                 mOptions[RSK_BRIDGE_OPTIONS].Unhide();
                 mOptions[RSK_RAINBOW_BRIDGE_STONE_COUNT].Unhide();
                 break;
             case RO_BRIDGE_MEDALLIONS:
-                // Show Bridge Options and Medallion Count Slider
                 mOptions[RSK_RAINBOW_BRIDGE].RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
                 mOptions[RSK_BRIDGE_OPTIONS].Unhide();
                 mOptions[RSK_RAINBOW_BRIDGE_MEDALLION_COUNT].Unhide();
                 break;
             case RO_BRIDGE_DUNGEON_REWARDS:
-                // Show Bridge Options and Dungeon Reward Count Slider
                 mOptions[RSK_RAINBOW_BRIDGE].RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
                 mOptions[RSK_BRIDGE_OPTIONS].Unhide();
                 mOptions[RSK_RAINBOW_BRIDGE_REWARD_COUNT].Unhide();
                 break;
             case RO_BRIDGE_DUNGEONS:
-                // Show Bridge Options and Dungeon Count Slider
                 mOptions[RSK_RAINBOW_BRIDGE].RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
                 mOptions[RSK_BRIDGE_OPTIONS].Unhide();
                 mOptions[RSK_RAINBOW_BRIDGE_DUNGEON_COUNT].Unhide();
                 break;
             case RO_BRIDGE_TOKENS:
-                // Show token count slider (not bridge options)
                 mOptions[RSK_RAINBOW_BRIDGE].RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
                 mOptions[RSK_BRIDGE_OPTIONS].Hide();
                 mOptions[RSK_RAINBOW_BRIDGE_TOKEN_COUNT].Unhide();
+                break;
+            case RO_BRIDGE_TRIFORCE_PIECES:
+                mOptions[RSK_RAINBOW_BRIDGE].RemoveFlag(IMFLAG_SEPARATOR_BOTTOM);
+                mOptions[RSK_BRIDGE_OPTIONS].Hide();
+                mOptions[RSK_RAINBOW_BRIDGE_TRIFORCE_COUNT].Unhide();
                 break;
             default:
                 break;
@@ -242,35 +245,20 @@ void Settings::CreateOptions() {
     OPT_U8(RSK_RAINBOW_BRIDGE_REWARD_COUNT, "Bridge Reward Count", {NumOpts(0, 10)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("RewardCount"), "", WIDGET_CVAR_SLIDER_INT, 9, true);
     OPT_U8(RSK_RAINBOW_BRIDGE_DUNGEON_COUNT, "Bridge Dungeon Count", {NumOpts(0, 9)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("DungeonCount"), "", WIDGET_CVAR_SLIDER_INT, 8, true);
     OPT_U8(RSK_RAINBOW_BRIDGE_TOKEN_COUNT, "Bridge Token Count", {NumOpts(0, 100)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("TokenCount"), "", WIDGET_CVAR_SLIDER_INT, 100, true);
+    OPT_U8(RSK_RAINBOW_BRIDGE_TRIFORCE_COUNT, "Bridge Triforce Piece Count", {NumOpts(0, 100)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("TriforcePieceCount"), "", WIDGET_CVAR_SLIDER_INT, 100, true);
     OPT_U8(RSK_BRIDGE_OPTIONS, "Bridge Reward Options", {"Standard Rewards", "Greg as Reward", "Greg as Wildcard"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("BridgeRewardOptions"), mOptionDescriptions[RSK_BRIDGE_OPTIONS], WIDGET_CVAR_COMBOBOX, RO_BRIDGE_STANDARD_REWARD, false, nullptr, IMFLAG_NONE);
     OPT_CALLBACK(RSK_BRIDGE_OPTIONS, {
         const uint8_t bridgeOpt = CVarGetInteger(CVAR_RANDOMIZER_SETTING("BridgeRewardOptions"), RO_BRIDGE_STANDARD_REWARD);
         if (bridgeOpt == RO_BRIDGE_GREG_REWARD) {
-            if (mOptions[RSK_RAINBOW_BRIDGE_STONE_COUNT].GetOptionCount() == 4) {
-                mOptions[RSK_RAINBOW_BRIDGE_STONE_COUNT].ChangeOptions(NumOpts(0, 4));
-            }
-            if (mOptions[RSK_RAINBOW_BRIDGE_MEDALLION_COUNT].GetOptionCount() == 7) {
-                mOptions[RSK_RAINBOW_BRIDGE_MEDALLION_COUNT].ChangeOptions(NumOpts(0, 7));
-            }
-            if (mOptions[RSK_RAINBOW_BRIDGE_REWARD_COUNT].GetOptionCount() == 10) {
-                mOptions[RSK_RAINBOW_BRIDGE_REWARD_COUNT].ChangeOptions(NumOpts(0, 10));
-            }
-            if (mOptions[RSK_RAINBOW_BRIDGE_DUNGEON_COUNT].GetOptionCount() == 9) {
-                mOptions[RSK_RAINBOW_BRIDGE_DUNGEON_COUNT].ChangeOptions(NumOpts(0, 9));
-            }
+            mOptions[RSK_RAINBOW_BRIDGE_STONE_COUNT].ChangeOptions(NumOpts(0, 4));
+            mOptions[RSK_RAINBOW_BRIDGE_MEDALLION_COUNT].ChangeOptions(NumOpts(0, 7));
+            mOptions[RSK_RAINBOW_BRIDGE_REWARD_COUNT].ChangeOptions(NumOpts(0, 10));
+            mOptions[RSK_RAINBOW_BRIDGE_DUNGEON_COUNT].ChangeOptions(NumOpts(0, 9));
         } else {
-            if (mOptions[RSK_RAINBOW_BRIDGE_STONE_COUNT].GetOptionCount() == 5) {
-                mOptions[RSK_RAINBOW_BRIDGE_STONE_COUNT].ChangeOptions(NumOpts(0, 3));
-            }
-            if (mOptions[RSK_RAINBOW_BRIDGE_MEDALLION_COUNT].GetOptionCount() == 8) {
-                mOptions[RSK_RAINBOW_BRIDGE_MEDALLION_COUNT].ChangeOptions(NumOpts(0, 6));
-            }
-            if (mOptions[RSK_RAINBOW_BRIDGE_REWARD_COUNT].GetOptionCount() == 11) {
-                mOptions[RSK_RAINBOW_BRIDGE_REWARD_COUNT].ChangeOptions(NumOpts(0, 9));
-            }
-            if (mOptions[RSK_RAINBOW_BRIDGE_DUNGEON_COUNT].GetOptionCount() == 10) {
-                mOptions[RSK_RAINBOW_BRIDGE_DUNGEON_COUNT].ChangeOptions(NumOpts(0, 8));
-            }
+            mOptions[RSK_RAINBOW_BRIDGE_STONE_COUNT].ChangeOptions(NumOpts(0, 3));
+            mOptions[RSK_RAINBOW_BRIDGE_MEDALLION_COUNT].ChangeOptions(NumOpts(0, 6));
+            mOptions[RSK_RAINBOW_BRIDGE_REWARD_COUNT].ChangeOptions(NumOpts(0, 9));
+            mOptions[RSK_RAINBOW_BRIDGE_DUNGEON_COUNT].ChangeOptions(NumOpts(0, 8));
         }
     });
     OPT_U8(RSK_GANONS_TRIALS, "Ganon's Trials", {"Skip", "Set Number", "Random Number"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("GanonTrial"), mOptionDescriptions[RSK_GANONS_TRIALS], WIDGET_CVAR_COMBOBOX, RO_GANONS_TRIALS_SET_NUMBER);
@@ -429,32 +417,29 @@ void Settings::CreateOptions() {
     OPT_U8(RSK_BOMBCHU_BAG, "Bombchu Bag", {"None", "Single Bag", "Progressive Bags"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("BombchuBag"), mOptionDescriptions[RSK_BOMBCHU_BAG], WIDGET_CVAR_COMBOBOX, RO_BOMBCHU_BAG_NONE);
     OPT_U8(RSK_ENABLE_BOMBCHU_DROPS, "Bombchu Drops", {"No", "Yes"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("EnableBombchuDrops"), mOptionDescriptions[RSK_ENABLE_BOMBCHU_DROPS], WIDGET_CVAR_COMBOBOX, RO_AMMO_DROPS_ON);
     // TODO: AmmoDrops and/or HeartDropRefill, combine with/separate Ammo Drops from Bombchu Drops?
-    OPT_U8(RSK_TRIFORCE_HUNT, "Triforce Hunt", {"Off", "Win", "Ganon's Boss Key"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("TriforceHunt"), mOptionDescriptions[RSK_TRIFORCE_HUNT]);
-    OPT_CALLBACK(RSK_TRIFORCE_HUNT, {
-        // Remove the pieces required/total sliders and add a separator after Triforce Hunt if Triforce Hunt is off
-        if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("TriforceHunt"), RO_TRIFORCE_HUNT_OFF) == RO_TRIFORCE_HUNT_OFF) {
-            mOptions[RSK_TRIFORCE_HUNT_PIECES_REQUIRED].Hide();
-            mOptions[RSK_TRIFORCE_HUNT_PIECES_TOTAL].Hide();
-            mOptions[RSK_TRIFORCE_HUNT_PIECES_LOCATION].Hide();
-            mOptions[RSK_GANONS_BOSS_KEY].Enable();
-        } else {
-            mOptions[RSK_TRIFORCE_HUNT_PIECES_REQUIRED].Unhide();
-            mOptions[RSK_TRIFORCE_HUNT_PIECES_TOTAL].Unhide();
-            mOptions[RSK_TRIFORCE_HUNT_PIECES_LOCATION].Unhide();
-            mOptions[RSK_GANONS_BOSS_KEY].Disable(
-                "This option is disabled because Triforce Hunt is enabled."
-                "Ganon's Boss key\nwill instead be given to you after Triforce Hunt completion.");
-        }
-    });
-    OPT_U8(RSK_TRIFORCE_HUNT_PIECES_TOTAL, "Triforce Hunt Total Pieces", {NumOpts(1, 100)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("TriforceHuntTotalPieces"), mOptionDescriptions[RSK_TRIFORCE_HUNT_PIECES_TOTAL], WIDGET_CVAR_SLIDER_INT, 29, false, nullptr, IMFLAG_NONE);
+    // Triforce Hunt: the total piece count is the on/off control. Zero disables the hunt entirely; any
+    // positive value adds that many Triforce Pieces to the pool and unlocks the pieces-location option.
+    OPT_U8(RSK_TRIFORCE_HUNT_PIECES_TOTAL, "Triforce Hunt Total Pieces", {NumOpts(0, 100)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("TriforceHuntTotalPieces"), mOptionDescriptions[RSK_TRIFORCE_HUNT_PIECES_TOTAL], WIDGET_CVAR_SLIDER_INT, 0, false, nullptr, IMFLAG_NONE);
     OPT_CALLBACK(RSK_TRIFORCE_HUNT_PIECES_TOTAL, {
-        // Update triforce pieces required to be capped at the current value for pieces total.
-        const uint8_t triforceTotal = CVarGetInteger(CVAR_RANDOMIZER_SETTING("TriforceHuntTotalPieces"), 30);
-        if (mOptions[RSK_TRIFORCE_HUNT_PIECES_REQUIRED].GetOptionCount() != triforceTotal + 1) {
-            mOptions[RSK_TRIFORCE_HUNT_PIECES_REQUIRED].ChangeOptions(NumOpts(1, triforceTotal + 1));
+        const uint8_t triforceTotal = CVarGetInteger(CVAR_RANDOMIZER_SETTING("TriforceHuntTotalPieces"), 0);
+        if (triforceTotal == 0) {
+            mOptions[RSK_TRIFORCE_HUNT_PIECES_LOCATION].Hide();
+        } else {
+            mOptions[RSK_TRIFORCE_HUNT_PIECES_LOCATION].Unhide();
+        }
+        if (mOptions[RSK_RAINBOW_BRIDGE_TRIFORCE_COUNT].GetOptionCount() != triforceTotal + 1) {
+            mOptions[RSK_RAINBOW_BRIDGE_TRIFORCE_COUNT].ChangeOptions(NumOpts(0, triforceTotal));
+        }
+        if (mOptions[RSK_GBK_TRIFORCE_COUNT].GetOptionCount() != triforceTotal + 1) {
+            mOptions[RSK_GBK_TRIFORCE_COUNT].ChangeOptions(NumOpts(0, triforceTotal));
+        }
+        if (mOptions[RSK_GANONS_SOUL_TRIFORCE_COUNT].GetOptionCount() != triforceTotal + 1) {
+            mOptions[RSK_GANONS_SOUL_TRIFORCE_COUNT].ChangeOptions(NumOpts(0, triforceTotal));
+        }
+        if (mOptions[RSK_WINCON_TRIFORCE_COUNT].GetOptionCount() != triforceTotal + 1) {
+            mOptions[RSK_WINCON_TRIFORCE_COUNT].ChangeOptions(NumOpts(0, triforceTotal));
         }
     });
-    OPT_U8(RSK_TRIFORCE_HUNT_PIECES_REQUIRED, "Triforce Hunt Required Pieces", {NumOpts(1, 100)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("TriforceHuntRequiredPieces"), mOptionDescriptions[RSK_TRIFORCE_HUNT_PIECES_REQUIRED], WIDGET_CVAR_SLIDER_INT, 19);
     OPT_U8(RSK_TRIFORCE_HUNT_PIECES_LOCATION, "Triforce Hunt Pieces Location", {"Any Dungeon", "Overworld", "Anywhere"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("TriforceHuntPiecesLocation"), mOptionDescriptions[RSK_TRIFORCE_HUNT_PIECES_LOCATION], WIDGET_CVAR_COMBOBOX, RO_TRIFORCE_HUNT_LOCATION_ANYWHERE);
     OPT_U8(RSK_MQ_DUNGEON_RANDOM, "MQ Dungeon Setting", {"None", "Set Number", "Random", "Selection Only"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("MQDungeons"), mOptionDescriptions[RSK_MQ_DUNGEON_RANDOM], WIDGET_CVAR_COMBOBOX, RO_MQ_DUNGEONS_NONE, false, nullptr, IMFLAG_NONE);
     OPT_CALLBACK(RSK_MQ_DUNGEON_RANDOM, {
@@ -832,6 +817,14 @@ void Settings::CreateOptions() {
     OPT_BOOL(RSK_SHUFFLE_MASTER_SWORD, "Shuffle Master Sword", CVAR_RANDOMIZER_SETTING("ShuffleMasterSword"), mOptionDescriptions[RSK_SHUFFLE_MASTER_SWORD]);
     OPT_BOOL(RSK_SWORDLESS_EPONA_ITEMS, "Swordless Epona Items", CVAR_RANDOMIZER_SETTING("SwordlessEponaItems"), mOptionDescriptions[RSK_SWORDLESS_EPONA_ITEMS]);
     OPT_BOOL(RSK_SHUFFLE_CHILD_WALLET, "Shuffle Child's Wallet", CVAR_RANDOMIZER_SETTING("ShuffleChildWallet"), mOptionDescriptions[RSK_SHUFFLE_CHILD_WALLET], IMFLAG_NONE);
+    OPT_CALLBACK(RSK_SHUFFLE_CHILD_WALLET, {
+        if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleChildWallet"), 0)) {
+            CVarSetInteger(CVAR_RANDOMIZER_SETTING("StartingWallet"), 0);
+            mOptions[RSK_STARTING_WALLET].Disable("Disabled because Shuffle Child's Wallet is on.");
+        } else {
+            mOptions[RSK_STARTING_WALLET].Enable();
+        }
+    });
     OPT_BOOL(RSK_INCLUDE_TYCOON_WALLET, "Include Tycoon Wallet", CVAR_RANDOMIZER_SETTING("IncludeTycoonWallet"), mOptionDescriptions[RSK_INCLUDE_TYCOON_WALLET]);
     OPT_BOOL(RSK_SHUFFLE_OCARINA, "Shuffle Ocarinas", CVAR_RANDOMIZER_SETTING("ShuffleOcarinas"), mOptionDescriptions[RSK_SHUFFLE_OCARINA]);
     OPT_CALLBACK(RSK_SHUFFLE_OCARINA, {
@@ -1059,7 +1052,7 @@ void Settings::CreateOptions() {
         }
     });
     OPT_BOOL(RSK_SHUFFLE_BEAN_SOULS, "Shuffle Bean Souls", CVAR_RANDOMIZER_SETTING("ShuffleBeanSouls"), mOptionDescriptions[RSK_SHUFFLE_BEAN_SOULS], IMFLAG_SEPARATOR_BOTTOM, WIDGET_CVAR_CHECKBOX, RO_GENERIC_OFF);
-    OPT_U8(RSK_SHUFFLE_BOSS_SOULS, "Shuffle Boss Souls", {"Off", "On", "On + Ganon"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleBossSouls"), mOptionDescriptions[RSK_SHUFFLE_BOSS_SOULS], WIDGET_CVAR_COMBOBOX);
+    OPT_U8(RSK_SHUFFLE_BOSS_SOULS, "Shuffle Boss Souls", {"Off", "On"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleBossSouls"), mOptionDescriptions[RSK_SHUFFLE_BOSS_SOULS], WIDGET_CVAR_COMBOBOX);
     OPT_BOOL(RSK_SHUFFLE_DEKU_STICK_BAG, "Shuffle Deku Stick Bag", CVAR_RANDOMIZER_SETTING("ShuffleDekuStickBag"), mOptionDescriptions[RSK_SHUFFLE_DEKU_STICK_BAG], IMFLAG_SEPARATOR_BOTTOM, WIDGET_CVAR_CHECKBOX, RO_GENERIC_OFF);
     OPT_CALLBACK(RSK_SHUFFLE_DEKU_STICK_BAG, {
         if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleDekuStickBag"), 0)) {
@@ -1131,78 +1124,169 @@ void Settings::CreateOptions() {
         }
     });
     OPT_U8(RSK_BOSS_KEYSANITY, "Boss Key Shuffle", {"Start With", "Vanilla", "Own Dungeon", "Any Dungeon", "Overworld", "Anywhere"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("BossKeysanity"), mOptionDescriptions[RSK_BOSS_KEYSANITY], WIDGET_CVAR_COMBOBOX, RO_DUNGEON_ITEM_LOC_OWN_DUNGEON);
-    OPT_U8(RSK_GANONS_BOSS_KEY, "Ganon's Boss Key", {"Vanilla", "Own Dungeon", "Start With", "Any Dungeon", "Overworld", "Anywhere", "LACS-Vanilla", "LACS-Stones", "LACS-Medallions", "LACS-Rewards", "LACS-Dungeons", "LACS-Tokens", "100 GS Reward"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleGanonBossKey"), mOptionDescriptions[RSK_GANONS_BOSS_KEY], WIDGET_CVAR_COMBOBOX, RO_GANON_BOSS_KEY_VANILLA);
+    OPT_U8(RSK_GANONS_BOSS_KEY, "Ganon's Boss Key", {"Vanilla", "Own Dungeon", "Start With", "Any Dungeon", "Overworld", "Anywhere", "Trigger-Stones", "Trigger-Medallions", "Trigger-Rewards", "Trigger-Dungeons", "Trigger-Tokens", "Trigger-Triforce Pieces"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleGanonBossKey"), mOptionDescriptions[RSK_GANONS_BOSS_KEY], WIDGET_CVAR_COMBOBOX, RO_GANON_BOSS_KEY_VANILLA);
     OPT_CALLBACK(RSK_GANONS_BOSS_KEY, {
-        // Shuffle 100 GS Reward - Force-Enabled if Ganon's Boss Key is on the 100 GS Reward
-        if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleGanonBossKey"), RO_GANON_BOSS_KEY_VANILLA) ==
-            RO_GANON_BOSS_KEY_KAK_TOKENS) {
-            mOptions[RSK_SHUFFLE_100_GS_REWARD].Disable(
-                "This option is force-enabled because \"Ganon's Boss Key\" is set to \"100 GS Reward\".");
-        } else {
-            mOptions[RSK_SHUFFLE_100_GS_REWARD].Enable();
-        }
-        mOptions[RSK_LACS_OPTIONS].Hide();
-        mOptions[RSK_LACS_STONE_COUNT].Hide();
-        mOptions[RSK_LACS_MEDALLION_COUNT].Hide();
-        mOptions[RSK_LACS_REWARD_COUNT].Hide();
-        mOptions[RSK_LACS_DUNGEON_COUNT].Hide();
-        mOptions[RSK_LACS_TOKEN_COUNT].Hide();
+        mOptions[RSK_GBK_OPTIONS].Hide();
+        mOptions[RSK_GBK_STONE_COUNT].Hide();
+        mOptions[RSK_GBK_MEDALLION_COUNT].Hide();
+        mOptions[RSK_GBK_REWARD_COUNT].Hide();
+        mOptions[RSK_GBK_DUNGEON_COUNT].Hide();
+        mOptions[RSK_GBK_TOKEN_COUNT].Hide();
+        mOptions[RSK_GBK_TRIFORCE_COUNT].Hide();
         switch (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleGanonBossKey"), RO_GANON_BOSS_KEY_VANILLA)) {
-            case RO_GANON_BOSS_KEY_LACS_STONES:
-                mOptions[RSK_LACS_OPTIONS].Unhide();
-                mOptions[RSK_LACS_STONE_COUNT].Unhide();
+            case RO_GANON_BOSS_KEY_STONES:
+                mOptions[RSK_GBK_OPTIONS].Unhide();
+                mOptions[RSK_GBK_STONE_COUNT].Unhide();
                 break;
-            case RO_GANON_BOSS_KEY_LACS_MEDALLIONS:
-                mOptions[RSK_LACS_OPTIONS].Unhide();
-                mOptions[RSK_LACS_MEDALLION_COUNT].Unhide();
+            case RO_GANON_BOSS_KEY_MEDALLIONS:
+                mOptions[RSK_GBK_OPTIONS].Unhide();
+                mOptions[RSK_GBK_MEDALLION_COUNT].Unhide();
                 break;
-            case RO_GANON_BOSS_KEY_LACS_REWARDS:
-                mOptions[RSK_LACS_OPTIONS].Unhide();
-                mOptions[RSK_LACS_REWARD_COUNT].Unhide();
+            case RO_GANON_BOSS_KEY_REWARDS:
+                mOptions[RSK_GBK_OPTIONS].Unhide();
+                mOptions[RSK_GBK_REWARD_COUNT].Unhide();
                 break;
-            case RO_GANON_BOSS_KEY_LACS_DUNGEONS:
-                mOptions[RSK_LACS_OPTIONS].Unhide();
-                mOptions[RSK_LACS_DUNGEON_COUNT].Unhide();
+            case RO_GANON_BOSS_KEY_DUNGEONS:
+                mOptions[RSK_GBK_OPTIONS].Unhide();
+                mOptions[RSK_GBK_DUNGEON_COUNT].Unhide();
                 break;
-            case RO_GANON_BOSS_KEY_LACS_TOKENS:
-                mOptions[RSK_LACS_TOKEN_COUNT].Unhide();
+            case RO_GANON_BOSS_KEY_TOKENS:
+                mOptions[RSK_GBK_TOKEN_COUNT].Unhide();
+                break;
+            case RO_GANON_BOSS_KEY_TRIFORCE_PIECES:
+                mOptions[RSK_GBK_TRIFORCE_COUNT].Unhide();
                 break;
         }
     });
-    OPT_U8(RSK_LACS_STONE_COUNT, "GCBK Stone Count", {NumOpts(0, 4)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("LacsStoneCount"), "", WIDGET_CVAR_SLIDER_INT, 3, true);
-    OPT_U8(RSK_LACS_MEDALLION_COUNT, "GCBK Medallion Count", {NumOpts(0, 7)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("LacsMedallionCount"), "", WIDGET_CVAR_SLIDER_INT, 6, true);
-    OPT_U8(RSK_LACS_REWARD_COUNT, "GCBK Reward Count", {NumOpts(0, 10)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("LacsRewardCount"), "", WIDGET_CVAR_SLIDER_INT, 9, true);
-    OPT_U8(RSK_LACS_DUNGEON_COUNT, "GCBK Dungeon Count", {NumOpts(0, 9)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("LacsDungeonCount"), "", WIDGET_CVAR_SLIDER_INT, 8, true);
-    OPT_U8(RSK_LACS_TOKEN_COUNT, "GCBK Token Count", {NumOpts(0, 100)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("LacsTokenCount"), "", WIDGET_CVAR_SLIDER_INT, 100, true);
-    OPT_U8(RSK_LACS_OPTIONS, "GCBK LACS Reward Options", {"Standard Reward", "Greg as Reward", "Greg as Wildcard"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("LacsRewardOptions"), mOptionDescriptions[RSK_LACS_OPTIONS], WIDGET_CVAR_COMBOBOX, RO_LACS_STANDARD_REWARD);
-    OPT_CALLBACK(RSK_LACS_OPTIONS, {
-        const uint8_t lacsOpts = CVarGetInteger(CVAR_RANDOMIZER_SETTING("LacsRewardOptions"), RO_LACS_STANDARD_REWARD);
-        if (lacsOpts == RO_LACS_GREG_REWARD) {
-            if (mOptions[RSK_LACS_STONE_COUNT].GetOptionCount() == 4) {
-                mOptions[RSK_LACS_STONE_COUNT].ChangeOptions(NumOpts(0, 4));
-            }
-            if (mOptions[RSK_LACS_MEDALLION_COUNT].GetOptionCount() == 7) {
-                mOptions[RSK_LACS_MEDALLION_COUNT].ChangeOptions(NumOpts(0, 7));
-            }
-            if (mOptions[RSK_LACS_REWARD_COUNT].GetOptionCount() == 10) {
-                mOptions[RSK_LACS_REWARD_COUNT].ChangeOptions(NumOpts(0, 10));
-            }
-            if (mOptions[RSK_LACS_DUNGEON_COUNT].GetOptionCount() == 9) {
-                mOptions[RSK_LACS_DUNGEON_COUNT].ChangeOptions(NumOpts(0, 9));
-            }
+    OPT_U8(RSK_GBK_STONE_COUNT, "GBK Stone Count", {NumOpts(0, 4)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("GbkStoneCount"), "", WIDGET_CVAR_SLIDER_INT, 3, true);
+    OPT_U8(RSK_GBK_MEDALLION_COUNT, "GBK Medallion Count", {NumOpts(0, 7)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("GbkMedallionCount"), "", WIDGET_CVAR_SLIDER_INT, 6, true);
+    OPT_U8(RSK_GBK_REWARD_COUNT, "GBK Reward Count", {NumOpts(0, 10)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("GbkRewardCount"), "", WIDGET_CVAR_SLIDER_INT, 9, true);
+    OPT_U8(RSK_GBK_DUNGEON_COUNT, "GBK Dungeon Count", {NumOpts(0, 9)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("GbkDungeonCount"), "", WIDGET_CVAR_SLIDER_INT, 8, true);
+    OPT_U8(RSK_GBK_TOKEN_COUNT, "GBK Token Count", {NumOpts(0, 100)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("GbkTokenCount"), "", WIDGET_CVAR_SLIDER_INT, 100, true);
+    OPT_U8(RSK_GBK_TRIFORCE_COUNT, "GBK Triforce Piece Count", {NumOpts(0, 100)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("GbkTriforceCount"), "", WIDGET_CVAR_SLIDER_INT, 100, true);
+    OPT_U8(RSK_GBK_OPTIONS, "GBK Reward Options", {"Standard Reward", "Greg as Reward", "Greg as Wildcard"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("GbkRewardOptions"), mOptionDescriptions[RSK_GBK_OPTIONS], WIDGET_CVAR_COMBOBOX, RO_CHECK_TRIGGER_STANDARD_REWARD);
+    OPT_CALLBACK(RSK_GBK_OPTIONS, {
+        const uint8_t gbkOpts = CVarGetInteger(CVAR_RANDOMIZER_SETTING("GbkRewardOptions"), RO_CHECK_TRIGGER_STANDARD_REWARD);
+        if (gbkOpts == RO_CHECK_TRIGGER_GREG_REWARD) {
+            mOptions[RSK_GBK_STONE_COUNT].ChangeOptions(NumOpts(0, 4));
+            mOptions[RSK_GBK_MEDALLION_COUNT].ChangeOptions(NumOpts(0, 7));
+            mOptions[RSK_GBK_REWARD_COUNT].ChangeOptions(NumOpts(0, 10));
+            mOptions[RSK_GBK_DUNGEON_COUNT].ChangeOptions(NumOpts(0, 9));
         } else {
-            if (mOptions[RSK_LACS_STONE_COUNT].GetOptionCount() == 5) {
-                mOptions[RSK_LACS_STONE_COUNT].ChangeOptions(NumOpts(0, 3));
-            }
-            if (mOptions[RSK_LACS_MEDALLION_COUNT].GetOptionCount() == 8) {
-                mOptions[RSK_LACS_MEDALLION_COUNT].ChangeOptions(NumOpts(0, 6));
-            }
-            if (mOptions[RSK_LACS_REWARD_COUNT].GetOptionCount() == 11) {
-                mOptions[RSK_LACS_REWARD_COUNT].ChangeOptions(NumOpts(0, 9));
-            }
-            if (mOptions[RSK_LACS_DUNGEON_COUNT].GetOptionCount() == 10) {
-                mOptions[RSK_LACS_DUNGEON_COUNT].ChangeOptions(NumOpts(0, 8));
-            }
+            mOptions[RSK_GBK_STONE_COUNT].ChangeOptions(NumOpts(0, 3));
+            mOptions[RSK_GBK_MEDALLION_COUNT].ChangeOptions(NumOpts(0, 6));
+            mOptions[RSK_GBK_REWARD_COUNT].ChangeOptions(NumOpts(0, 9));
+            mOptions[RSK_GBK_DUNGEON_COUNT].ChangeOptions(NumOpts(0, 8));
+        }
+    });
+    OPT_U8(RSK_GANONS_SOUL, "Ganon's Soul", {"Start With", "Any Dungeon", "Overworld", "Anywhere", "Trigger-Stones", "Trigger-Medallions", "Trigger-Rewards", "Trigger-Dungeons", "Trigger-Tokens", "Trigger-Triforce Pieces"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleGanonsSoul"), mOptionDescriptions[RSK_GANONS_SOUL], WIDGET_CVAR_COMBOBOX, RO_GANONS_SOUL_STARTWITH);
+    OPT_CALLBACK(RSK_GANONS_SOUL, {
+        mOptions[RSK_GANONS_SOUL_OPTIONS].Hide();
+        mOptions[RSK_GANONS_SOUL_STONE_COUNT].Hide();
+        mOptions[RSK_GANONS_SOUL_MEDALLION_COUNT].Hide();
+        mOptions[RSK_GANONS_SOUL_REWARD_COUNT].Hide();
+        mOptions[RSK_GANONS_SOUL_DUNGEON_COUNT].Hide();
+        mOptions[RSK_GANONS_SOUL_TOKEN_COUNT].Hide();
+        mOptions[RSK_GANONS_SOUL_TRIFORCE_COUNT].Hide();
+        switch (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleGanonsSoul"), RO_GANONS_SOUL_STARTWITH)) {
+            case RO_GANONS_SOUL_STONES:
+                mOptions[RSK_GANONS_SOUL_OPTIONS].Unhide();
+                mOptions[RSK_GANONS_SOUL_STONE_COUNT].Unhide();
+                break;
+            case RO_GANONS_SOUL_MEDALLIONS:
+                mOptions[RSK_GANONS_SOUL_OPTIONS].Unhide();
+                mOptions[RSK_GANONS_SOUL_MEDALLION_COUNT].Unhide();
+                break;
+            case RO_GANONS_SOUL_REWARDS:
+                mOptions[RSK_GANONS_SOUL_OPTIONS].Unhide();
+                mOptions[RSK_GANONS_SOUL_REWARD_COUNT].Unhide();
+                break;
+            case RO_GANONS_SOUL_DUNGEONS:
+                mOptions[RSK_GANONS_SOUL_OPTIONS].Unhide();
+                mOptions[RSK_GANONS_SOUL_DUNGEON_COUNT].Unhide();
+                break;
+            case RO_GANONS_SOUL_TOKENS:
+                mOptions[RSK_GANONS_SOUL_TOKEN_COUNT].Unhide();
+                break;
+            case RO_GANONS_SOUL_TRIFORCE_PIECES:
+                mOptions[RSK_GANONS_SOUL_TRIFORCE_COUNT].Unhide();
+                break;
+        }
+    });
+    OPT_U8(RSK_GANONS_SOUL_STONE_COUNT, "Ganon's Soul Stone Count", {NumOpts(0, 4)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("GanonsSoulStoneCount"), "", WIDGET_CVAR_SLIDER_INT, 3, true);
+    OPT_U8(RSK_GANONS_SOUL_MEDALLION_COUNT, "Ganon's Soul Medallion Count", {NumOpts(0, 7)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("GanonsSoulMedallionCount"), "", WIDGET_CVAR_SLIDER_INT, 6, true);
+    OPT_U8(RSK_GANONS_SOUL_REWARD_COUNT, "Ganon's Soul Reward Count", {NumOpts(0, 10)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("GanonsSoulRewardCount"), "", WIDGET_CVAR_SLIDER_INT, 9, true);
+    OPT_U8(RSK_GANONS_SOUL_DUNGEON_COUNT, "Ganon's Soul Dungeon Count", {NumOpts(0, 9)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("GanonsSoulDungeonCount"), "", WIDGET_CVAR_SLIDER_INT, 8, true);
+    OPT_U8(RSK_GANONS_SOUL_TOKEN_COUNT, "Ganon's Soul Token Count", {NumOpts(0, 100)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("GanonsSoulTokenCount"), "", WIDGET_CVAR_SLIDER_INT, 100, true);
+    OPT_U8(RSK_GANONS_SOUL_TRIFORCE_COUNT, "Ganon's Soul Triforce Piece Count", {NumOpts(0, 100)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("GanonsSoulTriforceCount"), "", WIDGET_CVAR_SLIDER_INT, 100, true);
+    OPT_U8(RSK_GANONS_SOUL_OPTIONS, "Ganon's Soul Reward Options", {"Standard Reward", "Greg as Reward", "Greg as Wildcard"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("GanonsSoulRewardOptions"), mOptionDescriptions[RSK_GANONS_SOUL_OPTIONS], WIDGET_CVAR_COMBOBOX, RO_CHECK_TRIGGER_STANDARD_REWARD);
+    OPT_CALLBACK(RSK_GANONS_SOUL_OPTIONS, {
+        const uint8_t soulOpts = CVarGetInteger(CVAR_RANDOMIZER_SETTING("GanonsSoulRewardOptions"), RO_CHECK_TRIGGER_STANDARD_REWARD);
+        if (soulOpts == RO_CHECK_TRIGGER_GREG_REWARD) {
+            mOptions[RSK_GANONS_SOUL_STONE_COUNT].ChangeOptions(NumOpts(0, 4));
+            mOptions[RSK_GANONS_SOUL_MEDALLION_COUNT].ChangeOptions(NumOpts(0, 7));
+            mOptions[RSK_GANONS_SOUL_REWARD_COUNT].ChangeOptions(NumOpts(0, 10));
+            mOptions[RSK_GANONS_SOUL_DUNGEON_COUNT].ChangeOptions(NumOpts(0, 9));
+        } else {
+            mOptions[RSK_GANONS_SOUL_STONE_COUNT].ChangeOptions(NumOpts(0, 3));
+            mOptions[RSK_GANONS_SOUL_MEDALLION_COUNT].ChangeOptions(NumOpts(0, 6));
+            mOptions[RSK_GANONS_SOUL_REWARD_COUNT].ChangeOptions(NumOpts(0, 9));
+            mOptions[RSK_GANONS_SOUL_DUNGEON_COUNT].ChangeOptions(NumOpts(0, 8));
+        }
+    });
+    OPT_U8(RSK_WINCON, "Win Condition", {"Defeat Ganon", "Anywhere", "Trigger-Stones", "Trigger-Medallions", "Trigger-Rewards", "Trigger-Dungeons", "Trigger-Tokens", "Trigger-Triforce Pieces"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleWincon"), mOptionDescriptions[RSK_WINCON], WIDGET_CVAR_COMBOBOX, RO_WINCON_DEFEAT_GANON);
+    OPT_CALLBACK(RSK_WINCON, {
+        mOptions[RSK_WINCON_OPTIONS].Hide();
+        mOptions[RSK_WINCON_STONE_COUNT].Hide();
+        mOptions[RSK_WINCON_MEDALLION_COUNT].Hide();
+        mOptions[RSK_WINCON_REWARD_COUNT].Hide();
+        mOptions[RSK_WINCON_DUNGEON_COUNT].Hide();
+        mOptions[RSK_WINCON_TOKEN_COUNT].Hide();
+        mOptions[RSK_WINCON_TRIFORCE_COUNT].Hide();
+        switch (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleWincon"), RO_WINCON_DEFEAT_GANON)) {
+            case RO_WINCON_STONES:
+                mOptions[RSK_WINCON_OPTIONS].Unhide();
+                mOptions[RSK_WINCON_STONE_COUNT].Unhide();
+                break;
+            case RO_WINCON_MEDALLIONS:
+                mOptions[RSK_WINCON_OPTIONS].Unhide();
+                mOptions[RSK_WINCON_MEDALLION_COUNT].Unhide();
+                break;
+            case RO_WINCON_REWARDS:
+                mOptions[RSK_WINCON_OPTIONS].Unhide();
+                mOptions[RSK_WINCON_REWARD_COUNT].Unhide();
+                break;
+            case RO_WINCON_DUNGEONS:
+                mOptions[RSK_WINCON_OPTIONS].Unhide();
+                mOptions[RSK_WINCON_DUNGEON_COUNT].Unhide();
+                break;
+            case RO_WINCON_TOKENS:
+                mOptions[RSK_WINCON_TOKEN_COUNT].Unhide();
+                break;
+            case RO_WINCON_TRIFORCE_PIECES:
+                mOptions[RSK_WINCON_TRIFORCE_COUNT].Unhide();
+                break;
+        }
+    });
+    OPT_U8(RSK_WINCON_STONE_COUNT, "Win Condition Stone Count", {NumOpts(0, 4)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("WinconStoneCount"), "", WIDGET_CVAR_SLIDER_INT, 3, true);
+    OPT_U8(RSK_WINCON_MEDALLION_COUNT, "Win Condition Medallion Count", {NumOpts(0, 7)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("WinconMedallionCount"), "", WIDGET_CVAR_SLIDER_INT, 6, true);
+    OPT_U8(RSK_WINCON_REWARD_COUNT, "Win Condition Reward Count", {NumOpts(0, 10)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("WinconRewardCount"), "", WIDGET_CVAR_SLIDER_INT, 9, true);
+    OPT_U8(RSK_WINCON_DUNGEON_COUNT, "Win Condition Dungeon Count", {NumOpts(0, 9)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("WinconDungeonCount"), "", WIDGET_CVAR_SLIDER_INT, 8, true);
+    OPT_U8(RSK_WINCON_TOKEN_COUNT, "Win Condition Token Count", {NumOpts(0, 100)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("WinconTokenCount"), "", WIDGET_CVAR_SLIDER_INT, 100, true);
+    OPT_U8(RSK_WINCON_TRIFORCE_COUNT, "Win Condition Triforce Piece Count", {NumOpts(0, 100)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("WinconTriforceCount"), "", WIDGET_CVAR_SLIDER_INT, 100, true);
+    OPT_U8(RSK_WINCON_OPTIONS, "Win Condition Reward Options", {"Standard Reward", "Greg as Reward", "Greg as Wildcard"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("WinconRewardOptions"), mOptionDescriptions[RSK_WINCON_OPTIONS], WIDGET_CVAR_COMBOBOX, RO_CHECK_TRIGGER_STANDARD_REWARD);
+    OPT_CALLBACK(RSK_WINCON_OPTIONS, {
+        const uint8_t winconOpts = CVarGetInteger(CVAR_RANDOMIZER_SETTING("WinconRewardOptions"), RO_CHECK_TRIGGER_STANDARD_REWARD);
+        if (winconOpts == RO_CHECK_TRIGGER_GREG_REWARD) {
+            mOptions[RSK_WINCON_STONE_COUNT].ChangeOptions(NumOpts(0, 4));
+            mOptions[RSK_WINCON_MEDALLION_COUNT].ChangeOptions(NumOpts(0, 7));
+            mOptions[RSK_WINCON_REWARD_COUNT].ChangeOptions(NumOpts(0, 10));
+            mOptions[RSK_WINCON_DUNGEON_COUNT].ChangeOptions(NumOpts(0, 9));
+        } else {
+            mOptions[RSK_WINCON_STONE_COUNT].ChangeOptions(NumOpts(0, 3));
+            mOptions[RSK_WINCON_MEDALLION_COUNT].ChangeOptions(NumOpts(0, 6));
+            mOptions[RSK_WINCON_REWARD_COUNT].ChangeOptions(NumOpts(0, 9));
+            mOptions[RSK_WINCON_DUNGEON_COUNT].ChangeOptions(NumOpts(0, 8));
         }
     });
     OPT_U8(RSK_KEYRINGS, "Key Rings", {"Off", "Random", "Count", "Selection"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleKeyRings"), mOptionDescriptions[RSK_KEYRINGS], WIDGET_CVAR_COMBOBOX, RO_KEYRINGS_OFF);
@@ -1620,6 +1704,7 @@ void Settings::CreateOptions() {
     OPT_TRICK(RT_DEKU_MQ_LOG, RCQUEST_MQ, RA_DEKU_TREE, { Tricks::Tag::NOVICE }, "DTLogRol");
     OPT_TRICK(RT_DC_SCARECROW_GS, RCQUEST_VANILLA, RA_DODONGOS_CAVERN, { Tricks::Tag::NOVICE }, "DCArmos");
     OPT_TRICK(RT_DC_VINES_GS, RCQUEST_VANILLA, RA_DODONGOS_CAVERN, { Tricks::Tag::NOVICE }, "DCGSLS");
+    OPT_TRICK(RT_DC_ALCOVE_GS, RCQUEST_VANILLA, RA_DODONGOS_CAVERN, { Tricks::Tag::INTERMEDIATE }, "DCAGSLS");
     OPT_TRICK(RT_DC_STAIRS_WITH_BOW, RCQUEST_VANILLA, RA_DODONGOS_CAVERN, { Tricks::Tag::NOVICE }, "DCStaBow");
     OPT_TRICK(RT_DC_SLINGSHOT_SKIP, RCQUEST_VANILLA, RA_DODONGOS_CAVERN, { Tricks::Tag::EXPERT }, "DCSliSkp");
     OPT_TRICK(RT_DC_SCRUB_ROOM, RCQUEST_VANILLA, RA_DODONGOS_CAVERN, { Tricks::Tag::NOVICE }, "DCSrbStr");
@@ -1811,14 +1896,34 @@ void Settings::CreateOptions() {
                                                                       &mOptions[RSK_SKIP_SCARECROWS_SONG],
                                                                   },
                                                                   WidgetContainerType::SECTION);
-    mOptionGroups[RSG_MENU_SECTION_WINCON] = OptionGroup::SubGroup(
-        "Win Condition",
-        { &mOptions[RSK_TRIFORCE_HUNT], &mOptions[RSK_TRIFORCE_HUNT_PIECES_TOTAL],
-          &mOptions[RSK_TRIFORCE_HUNT_PIECES_REQUIRED], &mOptions[RSK_TRIFORCE_HUNT_PIECES_LOCATION],
-          &mOptions[RSK_GANONS_BOSS_KEY], &mOptions[RSK_LACS_OPTIONS], &mOptions[RSK_LACS_MEDALLION_COUNT],
-          &mOptions[RSK_LACS_STONE_COUNT], &mOptions[RSK_LACS_DUNGEON_COUNT], &mOptions[RSK_LACS_REWARD_COUNT],
-          &mOptions[RSK_LACS_TOKEN_COUNT] },
-        WidgetContainerType::SECTION);
+    mOptionGroups[RSG_MENU_SECTION_WINCON] = OptionGroup::SubGroup("Win Condition",
+                                                                   { &mOptions[RSK_TRIFORCE_HUNT_PIECES_TOTAL],
+                                                                     &mOptions[RSK_TRIFORCE_HUNT_PIECES_LOCATION],
+                                                                     &mOptions[RSK_GANONS_BOSS_KEY],
+                                                                     &mOptions[RSK_GBK_OPTIONS],
+                                                                     &mOptions[RSK_GBK_MEDALLION_COUNT],
+                                                                     &mOptions[RSK_GBK_STONE_COUNT],
+                                                                     &mOptions[RSK_GBK_DUNGEON_COUNT],
+                                                                     &mOptions[RSK_GBK_REWARD_COUNT],
+                                                                     &mOptions[RSK_GBK_TOKEN_COUNT],
+                                                                     &mOptions[RSK_GBK_TRIFORCE_COUNT],
+                                                                     &mOptions[RSK_GANONS_SOUL],
+                                                                     &mOptions[RSK_GANONS_SOUL_OPTIONS],
+                                                                     &mOptions[RSK_GANONS_SOUL_MEDALLION_COUNT],
+                                                                     &mOptions[RSK_GANONS_SOUL_STONE_COUNT],
+                                                                     &mOptions[RSK_GANONS_SOUL_DUNGEON_COUNT],
+                                                                     &mOptions[RSK_GANONS_SOUL_REWARD_COUNT],
+                                                                     &mOptions[RSK_GANONS_SOUL_TOKEN_COUNT],
+                                                                     &mOptions[RSK_GANONS_SOUL_TRIFORCE_COUNT],
+                                                                     &mOptions[RSK_WINCON],
+                                                                     &mOptions[RSK_WINCON_OPTIONS],
+                                                                     &mOptions[RSK_WINCON_MEDALLION_COUNT],
+                                                                     &mOptions[RSK_WINCON_STONE_COUNT],
+                                                                     &mOptions[RSK_WINCON_DUNGEON_COUNT],
+                                                                     &mOptions[RSK_WINCON_REWARD_COUNT],
+                                                                     &mOptions[RSK_WINCON_TOKEN_COUNT],
+                                                                     &mOptions[RSK_WINCON_TRIFORCE_COUNT] },
+                                                                   WidgetContainerType::SECTION);
     mOptionGroups[RSG_MENU_COLUMN_LOGIC_WINCON] = OptionGroup::SubGroup("",
                                                                         std::initializer_list<OptionGroup*>{
                                                                             &mOptionGroups[RSG_ITEM_POOL],
@@ -1844,6 +1949,7 @@ void Settings::CreateOptions() {
                                   &mOptions[RSK_RAINBOW_BRIDGE_REWARD_COUNT],
                                   &mOptions[RSK_RAINBOW_BRIDGE_DUNGEON_COUNT],
                                   &mOptions[RSK_RAINBOW_BRIDGE_TOKEN_COUNT],
+                                  &mOptions[RSK_RAINBOW_BRIDGE_TRIFORCE_COUNT],
                                   &mOptions[RSK_GANONS_TRIALS],
                                   &mOptions[RSK_TRIAL_COUNT],
                                   &mOptions[RSK_MEDALLION_LOCKED_TRIALS],
@@ -2093,6 +2199,7 @@ void Settings::CreateOptions() {
                                                                &mOptions[RSK_RAINBOW_BRIDGE_REWARD_COUNT],
                                                                &mOptions[RSK_RAINBOW_BRIDGE_DUNGEON_COUNT],
                                                                &mOptions[RSK_RAINBOW_BRIDGE_TOKEN_COUNT],
+                                                               &mOptions[RSK_RAINBOW_BRIDGE_TRIFORCE_COUNT],
                                                                &mOptions[RSK_BRIDGE_OPTIONS],
                                                                &mOptions[RSK_GANONS_TRIALS],
                                                                &mOptions[RSK_TRIAL_COUNT],
@@ -2121,9 +2228,7 @@ void Settings::CreateOptions() {
                                                                  &mOptions[RSK_DECOUPLED_ENTRANCES],
                                                                  &mOptions[RSK_BOMBCHU_BAG],
                                                                  &mOptions[RSK_ENABLE_BOMBCHU_DROPS],
-                                                                 &mOptions[RSK_TRIFORCE_HUNT],
                                                                  &mOptions[RSK_TRIFORCE_HUNT_PIECES_TOTAL],
-                                                                 &mOptions[RSK_TRIFORCE_HUNT_PIECES_REQUIRED],
                                                                  &mOptions[RSK_TRIFORCE_HUNT_PIECES_LOCATION],
                                                                  &mOptions[RSK_MQ_DUNGEON_RANDOM],
                                                                  &mOptions[RSK_MQ_DUNGEON_COUNT],
@@ -2228,12 +2333,29 @@ void Settings::CreateOptions() {
                                                  &mOptions[RSK_GERUDO_KEYS],
                                                  &mOptions[RSK_BOSS_KEYSANITY],
                                                  &mOptions[RSK_GANONS_BOSS_KEY],
-                                                 &mOptions[RSK_LACS_STONE_COUNT],
-                                                 &mOptions[RSK_LACS_MEDALLION_COUNT],
-                                                 &mOptions[RSK_LACS_DUNGEON_COUNT],
-                                                 &mOptions[RSK_LACS_REWARD_COUNT],
-                                                 &mOptions[RSK_LACS_TOKEN_COUNT],
-                                                 &mOptions[RSK_LACS_OPTIONS],
+                                                 &mOptions[RSK_GBK_STONE_COUNT],
+                                                 &mOptions[RSK_GBK_MEDALLION_COUNT],
+                                                 &mOptions[RSK_GBK_DUNGEON_COUNT],
+                                                 &mOptions[RSK_GBK_REWARD_COUNT],
+                                                 &mOptions[RSK_GBK_TOKEN_COUNT],
+                                                 &mOptions[RSK_GBK_TRIFORCE_COUNT],
+                                                 &mOptions[RSK_GBK_OPTIONS],
+                                                 &mOptions[RSK_GANONS_SOUL],
+                                                 &mOptions[RSK_GANONS_SOUL_STONE_COUNT],
+                                                 &mOptions[RSK_GANONS_SOUL_MEDALLION_COUNT],
+                                                 &mOptions[RSK_GANONS_SOUL_DUNGEON_COUNT],
+                                                 &mOptions[RSK_GANONS_SOUL_REWARD_COUNT],
+                                                 &mOptions[RSK_GANONS_SOUL_TOKEN_COUNT],
+                                                 &mOptions[RSK_GANONS_SOUL_TRIFORCE_COUNT],
+                                                 &mOptions[RSK_GANONS_SOUL_OPTIONS],
+                                                 &mOptions[RSK_WINCON],
+                                                 &mOptions[RSK_WINCON_STONE_COUNT],
+                                                 &mOptions[RSK_WINCON_MEDALLION_COUNT],
+                                                 &mOptions[RSK_WINCON_DUNGEON_COUNT],
+                                                 &mOptions[RSK_WINCON_REWARD_COUNT],
+                                                 &mOptions[RSK_WINCON_TOKEN_COUNT],
+                                                 &mOptions[RSK_WINCON_TRIFORCE_COUNT],
+                                                 &mOptions[RSK_WINCON_OPTIONS],
                                                  &mOptions[RSK_KEYRINGS],
                                                  &mOptions[RSK_KEYRINGS_RANDOM_COUNT],
                                                  &mOptions[RSK_KEYRINGS_GERUDO_FORTRESS],
@@ -2524,11 +2646,6 @@ void Context::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocation
         mOptions[RSK_STARTING_AGE].Set(RO_AGE_CHILD);
     }
 
-    // Force 100 GS Shuffle if that's where Ganon's Boss Key is
-    if (mOptions[RSK_GANONS_BOSS_KEY].Is(RO_GANON_BOSS_KEY_KAK_TOKENS)) {
-        mOptions[RSK_SHUFFLE_100_GS_REWARD].Set(1);
-    }
-
     // If we only have MQ, set all dungeons to MQ
     if (OTRGlobals::Instance->HasMasterQuest() && !OTRGlobals::Instance->HasOriginal()) {
         mOptions[RSK_MQ_DUNGEON_RANDOM].Set(RO_MQ_DUNGEONS_SET_NUMBER);
@@ -2616,6 +2733,9 @@ void Context::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocation
     }
     if (mOptions[RSK_SHUFFLE_GRAB]) {
         mOptions[RSK_STARTING_STRENGTH].Set(0);
+    }
+    if (mOptions[RSK_SHUFFLE_CHILD_WALLET]) {
+        mOptions[RSK_STARTING_WALLET].Set(0);
     }
 
     if (mOptions[RSK_ZORAS_FOUNTAIN].IsNot(RO_ZF_OPEN) &&
@@ -2876,18 +2996,54 @@ void Context::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocation
 
     // TODO: Random Starting Time
 
-    if (mOptions[RSK_GANONS_BOSS_KEY].Is(RO_GANON_BOSS_KEY_LACS_STONES)) {
-        mLACSCondition = RO_LACS_STONES;
-    } else if (mOptions[RSK_GANONS_BOSS_KEY].Is(RO_GANON_BOSS_KEY_LACS_MEDALLIONS)) {
-        mLACSCondition = RO_LACS_MEDALLIONS;
-    } else if (mOptions[RSK_GANONS_BOSS_KEY].Is(RO_GANON_BOSS_KEY_LACS_REWARDS)) {
-        mLACSCondition = RO_LACS_REWARDS;
-    } else if (mOptions[RSK_GANONS_BOSS_KEY].Is(RO_GANON_BOSS_KEY_LACS_DUNGEONS)) {
-        mLACSCondition = RO_LACS_DUNGEONS;
-    } else if (mOptions[RSK_GANONS_BOSS_KEY].Is(RO_GANON_BOSS_KEY_LACS_TOKENS)) {
-        mLACSCondition = RO_LACS_TOKENS;
+    if (mOptions[RSK_GANONS_BOSS_KEY].Is(RO_GANON_BOSS_KEY_STONES)) {
+        mGBKCondition = RO_CHECK_TRIGGER_STONES;
+    } else if (mOptions[RSK_GANONS_BOSS_KEY].Is(RO_GANON_BOSS_KEY_MEDALLIONS)) {
+        mGBKCondition = RO_CHECK_TRIGGER_MEDALLIONS;
+    } else if (mOptions[RSK_GANONS_BOSS_KEY].Is(RO_GANON_BOSS_KEY_REWARDS)) {
+        mGBKCondition = RO_CHECK_TRIGGER_REWARDS;
+    } else if (mOptions[RSK_GANONS_BOSS_KEY].Is(RO_GANON_BOSS_KEY_DUNGEONS)) {
+        mGBKCondition = RO_CHECK_TRIGGER_DUNGEONS;
+    } else if (mOptions[RSK_GANONS_BOSS_KEY].Is(RO_GANON_BOSS_KEY_TOKENS)) {
+        mGBKCondition = RO_CHECK_TRIGGER_TOKENS;
+    } else if (mOptions[RSK_GANONS_BOSS_KEY].Is(RO_GANON_BOSS_KEY_TRIFORCE_PIECES)) {
+        mGBKCondition = RO_CHECK_TRIGGER_TRIFORCE_PIECES;
     } else {
-        mLACSCondition = RO_LACS_VANILLA;
+        mGBKCondition = RO_CHECK_TRIGGER_NONE;
+    }
+
+    if (mOptions[RSK_GANONS_SOUL].Is(RO_GANONS_SOUL_STONES)) {
+        mGanonsSoulCondition = RO_CHECK_TRIGGER_STONES;
+    } else if (mOptions[RSK_GANONS_SOUL].Is(RO_GANONS_SOUL_MEDALLIONS)) {
+        mGanonsSoulCondition = RO_CHECK_TRIGGER_MEDALLIONS;
+    } else if (mOptions[RSK_GANONS_SOUL].Is(RO_GANONS_SOUL_REWARDS)) {
+        mGanonsSoulCondition = RO_CHECK_TRIGGER_REWARDS;
+    } else if (mOptions[RSK_GANONS_SOUL].Is(RO_GANONS_SOUL_DUNGEONS)) {
+        mGanonsSoulCondition = RO_CHECK_TRIGGER_DUNGEONS;
+    } else if (mOptions[RSK_GANONS_SOUL].Is(RO_GANONS_SOUL_TOKENS)) {
+        mGanonsSoulCondition = RO_CHECK_TRIGGER_TOKENS;
+    } else if (mOptions[RSK_GANONS_SOUL].Is(RO_GANONS_SOUL_TRIFORCE_PIECES)) {
+        mGanonsSoulCondition = RO_CHECK_TRIGGER_TRIFORCE_PIECES;
+    } else {
+        mGanonsSoulCondition = RO_CHECK_TRIGGER_NONE;
+    }
+
+    if (mOptions[RSK_WINCON].Is(RO_WINCON_STONES)) {
+        mWinCondition = RO_WINCON_STONES;
+    } else if (mOptions[RSK_WINCON].Is(RO_WINCON_MEDALLIONS)) {
+        mWinCondition = RO_WINCON_MEDALLIONS;
+    } else if (mOptions[RSK_WINCON].Is(RO_WINCON_REWARDS)) {
+        mWinCondition = RO_WINCON_REWARDS;
+    } else if (mOptions[RSK_WINCON].Is(RO_WINCON_DUNGEONS)) {
+        mWinCondition = RO_WINCON_DUNGEONS;
+    } else if (mOptions[RSK_WINCON].Is(RO_WINCON_TOKENS)) {
+        mWinCondition = RO_WINCON_TOKENS;
+    } else if (mOptions[RSK_WINCON].Is(RO_WINCON_TRIFORCE_PIECES)) {
+        mWinCondition = RO_WINCON_TRIFORCE_PIECES;
+    } else if (mOptions[RSK_WINCON].Is(RO_WINCON_ANYWHERE)) {
+        mWinCondition = RO_WINCON_ANYWHERE;
+    } else {
+        mWinCondition = RO_WINCON_DEFEAT_GANON;
     }
 
     if (!mOptions[RSK_SHUFFLE_WARP_SONGS]) {

@@ -1,12 +1,13 @@
-#include <libultraship/classes.h>
+#include <ship/Context.h>
+#include <ship/window/Window.h>
+#include <ship/window/gui/ConsoleWindow.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
-#include "functions.h"
 #include "soh/OTRGlobals.h"
 
 extern "C" {
-#include "z64.h"
-#include "overlays/gamestates/ovl_file_choose/file_choose.h"
+#include "macros.h"
+#include "variables.h"
 }
 
 static constexpr int32_t CVAR_RESET_BTN_MASK_DEFAULT = BTN_CUSTOM_MODIFIER2;

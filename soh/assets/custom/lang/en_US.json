@@ -482,6 +482,10 @@
 				"name": "Deku Tree MQ Roll Under the Spiked Log",
 				"description": "You can get past the spiked log by rolling to briefly shrink your hitbox. As adult, the timing is a bit more precise."
 			},
+			"dc_alcove_gs": {
+				"name": "Dodongo's Cavern Alcove GS from Below with Longshot",
+				"description": "The floor blocking Skulltula from below are one-sided collision. You can use the Longshot to get it from below with a precise angle, bypassing the need to lower the staircase."
+			},
 			"dc_scarecrow_gs": {
 				"name": "Dodongo's Cavern Scarecrow GS with Armos Statue",
 				"description": "You can jump off an Armos Statue to reach the alcove with the Gold Skulltula. It takes quite a long time to pull the statue the entire way. The jump to the alcove can be a bit picky when done as child."

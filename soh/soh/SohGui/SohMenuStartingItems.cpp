@@ -1,4 +1,3 @@
-#include "SohMenu.h"
 #include "soh/SohGui/SohGui.hpp"
 #include "soh/SohGui/UIWidgets.hpp"
 #include "soh/SohGui/ImGuiUtils.h"
@@ -11,7 +10,6 @@
 #include <fast/Fast3dGui.h>
 
 extern "C" {
-#include "variables.h"
 #include "z64.h"
 }
 
@@ -179,7 +177,7 @@ void DrawStartingItemsMenu(WidgetInfo& info) {
     ImGui::SameLine();
     StartingItemToggle(RSK_STARTING_GERUDO_CARD, ITEM_GERUDO_CARD);
 
-    // Starting Strength/Scale have no effect when Grab/Swim are shuffled; the generator
+    // Starting Strength/Scale/Wallet have no effect when Grab/Swim/Child's Wallet are shuffled; the generator
     // force-disables them (settings.cpp), so gray them out to match.
     bool grabShuffled =
         CVarGetInteger(Rando::Settings::GetInstance()->GetOption(RSK_SHUFFLE_GRAB).GetCVarName().c_str(), 0) != 0;
@@ -201,7 +199,15 @@ void DrawStartingItemsMenu(WidgetInfo& info) {
     ImGui::SameLine();
     StartingItemTiered(RSK_STARTING_MAGIC_METER, { ITEM_MAGIC_SMALL, ITEM_MAGIC_LARGE });
     ImGui::SameLine();
+    bool childsWalletShuffled =
+        CVarGetInteger(Rando::Settings::GetInstance()->GetOption(RSK_SHUFFLE_CHILD_WALLET).GetCVarName().c_str(), 0) !=
+        0;
+    ImGui::BeginDisabled(childsWalletShuffled);
     StartingItemTiered(RSK_STARTING_WALLET, { ITEM_WALLET_ADULT, ITEM_WALLET_GIANT });
+    ImGui::EndDisabled();
+    if (childsWalletShuffled && ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled)) {
+        ImGui::SetTooltip("Disabled because Shuffle Child's Wallet is on.");
+    }
 
     ImGui::SeparatorText("Items");
     bool stickBagShuffled =

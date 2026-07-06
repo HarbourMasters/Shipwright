@@ -1,6 +1,9 @@
 #include "Sail.h"
-#include <libultraship/libultraship.h>
 #include <nlohmann/json.hpp>
+#include <ship/Context.h>
+#include <ship/window/Window.h>
+#include <ship/window/gui/ConsoleWindow.h>
+#include <spdlog/spdlog.h>
 #include "soh/ShipUtils.h"
 
 template <class DstType, class SrcType> bool IsType(const SrcType* src) {

@@ -2,6 +2,7 @@
 #include <string.h>
 #include <assert.h>
 
+#include <libultraship/bridge/resourcebridge.h>
 #include <libultraship/libultra.h>
 #include "global.h"
 #include "soh/OTRGlobals.h"

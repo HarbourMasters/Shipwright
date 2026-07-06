@@ -1,6 +1,6 @@
-#include <libultraship/bridge.h>
 #include <string>
-#include "soh/OTRGlobals.h"
+#include <libultraship/bridge/consolevariablebridge.h>
+#include <libultraship/bridge/resourcebridge.h>
 #include "soh/cvar_prefixes.h"
 #include "soh/ResourceManagerHelpers.h"
 

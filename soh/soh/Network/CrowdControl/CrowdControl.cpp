@@ -7,9 +7,7 @@
 
 extern "C" {
 #include <z64.h>
-#include "variables.h"
 #include "functions.h"
-#include "macros.h"
 extern PlayState* gPlayState;
 }
 

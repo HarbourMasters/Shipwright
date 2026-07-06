@@ -4,7 +4,6 @@
 #include "soh/OTRGlobals.h"
 
 extern "C" {
-#include "variables.h"
 extern PlayState* gPlayState;
 }
 

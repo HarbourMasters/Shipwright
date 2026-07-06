@@ -2,7 +2,6 @@
 
 #include <nlohmann/json.hpp>
 #include "randomizerTypes.h"
-#include "randomizer_check_objects.h"
 #include "soh/SohGui/UIWidgets.hpp"
 
 namespace CheckTracker {
