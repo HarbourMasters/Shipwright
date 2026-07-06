@@ -247,18 +247,35 @@ if(ENABLE_FLUIDSYNTH)
     set(enable-framework OFF CACHE BOOL "" FORCE)
     set(enable-libsndfile ON CACHE BOOL "" FORCE)
     set(enable-libinstpatch OFF CACHE BOOL "" FORCE)
-    set(enable-portaudio OFF CACHE BOOL "" FORCE)
-    set(enable-readline OFF CACHE BOOL "" FORCE)
-    set(enable-dbus OFF CACHE BOOL "" FORCE)
-    set(enable-jack OFF CACHE BOOL "" FORCE)
-    set(enable-sdl3 OFF CACHE BOOL "" FORCE)
+    # soh renders FluidSynth into its own audio pipeline (Render() -> LUS), so no
+    # FluidSynth audio/MIDI driver, network shell, or effect host is ever used.
+    # Disabling them all keeps the static lib to what we call and drops their
+    # link-time deps (alsa, gomp, ...). Options for other platforms are harmless.
+    set(enable-alsa OFF CACHE BOOL "" FORCE)
+    set(enable-oss OFF CACHE BOOL "" FORCE)
+    set(enable-pipewire OFF CACHE BOOL "" FORCE)
     set(enable-pulseaudio OFF CACHE BOOL "" FORCE)
-    # Windows audio drivers are unused (soh drives FluidSynth with audio.driver=none)
-    # and their sources (e.g. fluid_waveout.c) fail to link against soh's static CRT.
+    set(enable-jack OFF CACHE BOOL "" FORCE)
+    set(enable-portaudio OFF CACHE BOOL "" FORCE)
+    set(enable-sdl3 OFF CACHE BOOL "" FORCE)
+    set(enable-aufile OFF CACHE BOOL "" FORCE)
+    set(enable-coreaudio OFF CACHE BOOL "" FORCE)
+    set(enable-coremidi OFF CACHE BOOL "" FORCE)
     set(enable-waveout OFF CACHE BOOL "" FORCE)
     set(enable-wasapi OFF CACHE BOOL "" FORCE)
     set(enable-dsound OFF CACHE BOOL "" FORCE)
     set(enable-winmidi OFF CACHE BOOL "" FORCE)
+    set(enable-midishare OFF CACHE BOOL "" FORCE)
+    set(enable-network OFF CACHE BOOL "" FORCE)
+    set(enable-ipv6 OFF CACHE BOOL "" FORCE)
+    set(enable-ladspa OFF CACHE BOOL "" FORCE)
+    set(enable-systemd OFF CACHE BOOL "" FORCE)
+    set(enable-readline OFF CACHE BOOL "" FORCE)
+    set(enable-dbus OFF CACHE BOOL "" FORCE)
+    # OpenMP only parallelizes SF3 decode at load; not worth the libgomp dep.
+    set(enable-openmp OFF CACHE BOOL "" FORCE)
+    # DLS/GIG loading is unused (SF2/SF3 only).
+    set(enable-native-dls OFF CACHE BOOL "" FORCE)
     # Match soh's static CRT: FluidSynth honors CMP0091 but defaults to the DLL
     # runtime, which mismatches soh's MultiThreaded (/MT) runtime at link time.
     if(MSVC)

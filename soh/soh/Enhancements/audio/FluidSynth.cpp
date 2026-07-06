@@ -110,12 +110,6 @@ FluidSynth::FluidSynth(const FluidSynthConfig& config) : mLinearVelocity(config.
 
     static std::once_flag once;
     std::call_once(once, [] {
-        // Not using any audio driver for fluidsynth, we pull samples via
-        // Render() ourselves. "file" is not used, but registering only it to
-        // avoid a warning when trying to load unavailable drivers such as SDL3.
-        const char* allowed_drivers[] = { "file", nullptr };
-        fluid_audio_driver_register(allowed_drivers);
-
         // Redirect fluidsynth logs to SPDLOG at equivalent level
         for (int level = 0; level < fluid_log_level::LAST_LOG_LEVEL; ++level) {
             fluid_set_log_function(level, FluidLogToShip(level), nullptr);
@@ -131,9 +125,8 @@ FluidSynth::FluidSynth(const FluidSynthConfig& config) : mLinearVelocity(config.
     // channel, so per-pair effect CCs (CC91/93/74/71) don't stomp each
     // other. Must be a multiple of 16.
     fluid_settings_setint(mSettings, "synth.midi-channels", kNumChannels);
-    // "none" = no internal audio driver; we pull samples via Render() ourselves.
-    // "file" is an offline render-to-disk mode and must NOT be used here.
-    fluid_settings_setstr(mSettings, "audio.driver", "none");
+    // No FluidSynth audio driver exists (all compiled out); we pull samples via
+    // Render() ourselves and never call new_fluid_audio_driver.
 
     // Master gain. Stock FluidSynth is 0.2.
     fluid_settings_setnum(mSettings, "synth.gain", config.gain);
