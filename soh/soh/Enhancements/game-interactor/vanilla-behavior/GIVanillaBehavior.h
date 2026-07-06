@@ -3245,6 +3245,16 @@ typedef enum {
     // - `*EnGo2` (Goron Link)
     VB_PREVENT_GORON_LINK_SOFTLOCK,
 
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // Prevent custom fanfares set to loop from softlocking Horseback Archery by
+    // letting players escape the cutscene with A/B/start after a normal number of playframes.
+    // #### `args`
+    // - none
+    VB_PREVENT_HBA_FANFARE_SOFTLOCK,
+
     // true
     // ```
     // #### `args`

@@ -2099,7 +2099,7 @@ void func_800F5718(void);
 void func_800F5918(void);
 void func_800F595C(u16);
 void func_800F59E8(u16);
-s32 func_800F5A58(u8);
+s32 Audio_IsSequencePlaying(u8);
 void func_800F5ACC(u16 seqId);
 void PreviewSequence(u16 seqId);
 void func_800F5B58(void);

@@ -4608,7 +4608,7 @@ void func_800F59E8(u16 arg0) {
     }
 }
 
-s32 func_800F5A58(u8 arg0) {
+s32 Audio_IsSequencePlaying(u8 arg0) {
     u8 phi_a1 = 0;
 
     if (Audio_GetSeqFlags(arg0 & 0xFF) & 2) {

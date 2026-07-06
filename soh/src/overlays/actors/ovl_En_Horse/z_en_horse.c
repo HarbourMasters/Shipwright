@@ -2514,19 +2514,25 @@ void EnHorse_UpdateHbaAnim(EnHorse* this) {
 
 void EnHorse_UpdateHorsebackArchery(EnHorse* this, PlayState* play) {
     f32 playSpeed;
-    s32 sp20;
+    s32 isFanfarePlaying;
 
     if (this->animationIdx == ENHORSE_ANIM_WALK) {
         EnHorse_PlayWalkingSound(this);
     }
-    if (play->interfaceCtx.hbaAmmo == 0) {
+    // Flag 1 = end of tour
+    if (play->interfaceCtx.hbaAmmo == 0 ||
+        GameInteractor_Should(VB_PREVENT_HBA_FANFARE_SOFTLOCK, (this->hbaFlags & 1))) {
         this->hbaTimer++;
     }
 
-    sp20 = func_800F5A58(NA_BGM_HORSE_GOAL);
+    isFanfarePlaying = Audio_IsSequencePlaying(NA_BGM_HORSE_GOAL);
+
     EnHorse_UpdateHbaRaceInfo(this, play, &sHbaInfo);
     if (this->hbaFlags & 1 || this->hbaTimer >= 46) {
-        if (sp20 != 1 && gSaveContext.minigameState != 3) {
+        if ((isFanfarePlaying != 1 && gSaveContext.minigameState != 3) ||
+            GameInteractor_Should(VB_PREVENT_HBA_FANFARE_SOFTLOCK,
+                                  (this->hbaTimer >= 80 &&
+                                   CHECK_BTN_ANY(play->state.input[0].press.button, BTN_A | BTN_B | BTN_START)))) {
             gSaveContext.cutsceneIndex = 0;
             play->nextEntranceIndex = ENTR_GERUDOS_FORTRESS_16;
             play->transitionTrigger = TRANS_TRIGGER_START;
