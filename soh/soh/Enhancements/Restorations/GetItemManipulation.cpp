@@ -1,6 +1,7 @@
 #include "GetItemManipulation.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/item-tables/ItemTableManager.h"
+#include "soh/OTRGlobals.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
@@ -76,6 +77,8 @@ static const uint8_t sGimItemIdsPal[128] = {
     ITEM_STICK,        ITEM_STICK,         ITEM_STICK,        ITEM_STICK
 };
 
+extern "C" GetItemID RetrieveGetItemIDFromItemID(ItemID itemID);
+
 extern "C" GetItemEntry Gim_RetrieveOobGetItemEntry(int16_t getItemId) {
     int32_t version = CVarGetInteger(CVAR_ENHANCEMENT("GetItemManipulation"), GIM_DISABLED);
 
@@ -85,10 +88,12 @@ extern "C" GetItemEntry Gim_RetrieveOobGetItemEntry(int16_t getItemId) {
         return GET_ITEM_NONE;
     }
 
-    // Only the received itemId of the console OOB read is documented, so use the compass
-    // entry as a stand-in for the rest (object, draw id, text) to keep the get-item
-    // cutscene valid.
-    GetItemEntry giEntry = ItemTableManager::Instance->RetrieveItemEntry(MOD_NONE, GI_COMPASS);
-    giEntry.itemId = (version == GIM_PAL ? sGimItemIdsPal : sGimItemIdsNtsc)[getItemId + 128];
+    // Only the received itemId of the console OOB read is documented. Use
+    // the compass text for valid cutscene.
+
+    GetItemID giId = RetrieveGetItemIDFromItemID(
+        static_cast<ItemID>((version == GIM_PAL ? sGimItemIdsPal : sGimItemIdsNtsc)[getItemId + 128]));
+    GetItemEntry giEntry = ItemTableManager::Instance->RetrieveItemEntry(MOD_NONE, giId);
+    giEntry.textId = 0x67;
     return giEntry;
 }
