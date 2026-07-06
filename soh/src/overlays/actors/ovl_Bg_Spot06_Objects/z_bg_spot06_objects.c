@@ -522,7 +522,6 @@ void BgSpot06Objects_WaterPlaneCutsceneRise(BgSpot06Objects* this, PlayState* pl
     Actor_PlaySfx_FlaggedCentered2(&this->dyna.actor, NA_SE_EV_WATER_LEVEL_DOWN - SFX_FLAG);
 }
 
-
 /**
  * SoH: Randomizer, custom action function to raise the Laker Hylia water plane from a switch.
  */
@@ -562,7 +561,8 @@ void BgSpot06Objects_WaterControl_Lower(BgSpot06Objects* this, PlayState* play) 
         this->dyna.actor.world.pos.y = WATER_LEVEL_RAISED;
         this->actionFunc = BgSpot06Objects_DoNothing;
     } else {
-        // Go slightly beyond -681.0f so the smoothing doesn't slow down too much (matches the reverse of water rise func)
+        // Go slightly beyond -681.0f so the smoothing doesn't slow down too much (matches the reverse of water rise
+        // func)
         Math_SmoothStepToF(&this->lakeHyliaWaterLevel, -682.0f, 0.1f, 10.0f, 0.01f);
         play->colCtx.colHeader->waterBoxes[LHWB_GERUDO_VALLEY_RIVER_LOWER].ySurface = WATER_LEVEL_RIVER_LOWERED;
         play->colCtx.colHeader->waterBoxes[LHWB_GERUDO_VALLEY_RIVER_LOWER].zMin = WATER_LEVEL_RIVER_LOWER_Z - 50;

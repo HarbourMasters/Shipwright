@@ -17,9 +17,9 @@ extern void BgSpot06Objects_WaterControl_Raise(BgSpot06Objects*, PlayState*);
 
 #define WATER_LEVEL_RAISED (-1313)
 
-static Actor* sSwitchMain = nullptr; // Main water control switch
+static Actor* sSwitchMain = nullptr;   // Main water control switch
 static Actor* sSwitchIsland = nullptr; // Alternate control switch on fishing island
-static Actor* sLock = nullptr; // Water Temple hookshot lock
+static Actor* sLock = nullptr;         // Water Temple hookshot lock
 static u8 sPrevFlagState = 0;
 
 static void SpawnSwitches(PlayState* play) {
@@ -42,10 +42,12 @@ static void SpawnSwitches(PlayState* play) {
     }
 
     // Spawn floor switch and sign on main island and fishing pond island
-    sSwitchMain = Actor_Spawn(&play->actorCtx, play, ACTOR_OBJ_SWITCH, -896.0f, -1243.0f, 6953.0f, 0, 0, 0, switchParams);
+    sSwitchMain =
+        Actor_Spawn(&play->actorCtx, play, ACTOR_OBJ_SWITCH, -896.0f, -1243.0f, 6953.0f, 0, 0, 0, switchParams);
     Actor_Spawn(&play->actorCtx, play, ACTOR_EN_KANBAN, -970.0f, -1242.0f, 6954.0f, 0, 0, 0,
                 0x0000 | (TEXT_LAKE_HYLIA_WATER_SWITCH_SIGN & 0xFF));
-    sSwitchIsland = Actor_Spawn(&play->actorCtx, play, ACTOR_OBJ_SWITCH, 1320.0f, -1218.7f, 4025.0f, 0, 0, 0, switchParams);
+    sSwitchIsland =
+        Actor_Spawn(&play->actorCtx, play, ACTOR_OBJ_SWITCH, 1320.0f, -1218.7f, 4025.0f, 0, 0, 0, switchParams);
     Actor_Spawn(&play->actorCtx, play, ACTOR_EN_KANBAN, 1320.0f, -1217.7f, 3951.0f, 0, -0x4000, 0,
                 0x0000 | (TEXT_LAKE_HYLIA_WATER_SWITCH_SIGN & 0xFF));
 
