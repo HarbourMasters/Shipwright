@@ -237,7 +237,7 @@ endif()
 # a system/shared libfluidsynth drags in glib and leaves a dylib the AppImage
 # (and macOS/Windows bundlers) must ship -- exactly what black-screened the
 # Linux AppImage when the lib wasn't found at runtime. osal=cpp11 replaces glib
-# with the C++17 stdlib and libinstpatch=OFF keeps it from being pulled back in,
+# with STL threading primitives and libinstpatch=OFF keeps it from being pulled back in,
 # so the only remaining shared dep is libsndfile (SF3 Ogg decode), which the
 # platform's normal bundling handles cleanly.
 if(ENABLE_FLUIDSYNTH)
