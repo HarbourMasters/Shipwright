@@ -83,6 +83,7 @@ void RegionTable_Init_LakeHylia() {
         LOCATION(RC_LH_LAB_RECTANGLE_SIGN,               logic->CanRead()),
         LOCATION(RC_LH_NORTH_EXIT_ARROW_SIGN,            logic->CanRead()),
         LOCATION(RC_LH_ISLAND_PEDESTAL,                  logic->CanRead()),
+        LOCATION(RC_LH_WARP_WATER_SWITCH_RECTANGLE_SIGN, logic->CanRead() && logic->IsAdult),
     }, {
         //Exits
         ENTRANCE(RR_HF_TO_LAKE_HYLIA,     true),
@@ -108,8 +109,9 @@ void RegionTable_Init_LakeHylia() {
 
     areaTable[RR_LH_FISHING_ISLAND] = Region("LH Fishing Island", SCENE_LAKE_HYLIA, {}, {
         //Locations
-        LOCATION(RC_LH_ROCK,         logic->CanBreakRocks()),
-        LOCATION(RC_LH_FISHING_SIGN, logic->CanRead()),
+        LOCATION(RC_LH_ROCK,                                logic->CanBreakRocks()),
+        LOCATION(RC_LH_FISHING_SIGN,                        logic->CanRead()),
+        LOCATION(RC_LH_FISHING_WATER_SWITCH_RECTANGLE_SIGN, logic->CanRead() && logic->IsAdult),
     }, {
         //Exits
         ENTRANCE(RR_LAKE_HYLIA,      logic->HasItem(RG_BRONZE_SCALE)),
