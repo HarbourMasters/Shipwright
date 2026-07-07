@@ -3346,8 +3346,9 @@ Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 pos
         objBankIndex = 0;
     }
 
-    if ((objBankIndex < 0) || (Flags_GetClear(play, play->roomCtx.curRoom.num) &&
-        GameInteractor_Should(VB_SPAWN_IN_CLEAR_ROOM, (dbEntry->category == ACTORCAT_ENEMY), actorId))) {
+    if ((objBankIndex < 0) ||
+        (Flags_GetClear(play, play->roomCtx.curRoom.num) &&
+         GameInteractor_Should(VB_SPAWN_IN_CLEAR_ROOM, (dbEntry->category == ACTORCAT_ENEMY), actorId))) {
         // "No data bank!! <data bank＝%d> (profilep->bank=%d)"
         osSyncPrintf(VT_COL(RED, WHITE) "データバンク無し！！<データバンク＝%d>(profilep->bank=%d)\n" VT_RST,
                      objBankIndex, dbEntry->objectId);
