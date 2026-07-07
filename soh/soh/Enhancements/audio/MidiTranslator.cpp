@@ -1337,27 +1337,6 @@ void MidiTranslator::ClearAllTemporarySlotMutes() {
     mTemporarySlotMute.clear();
 }
 
-float MidiTranslator::GetTemporaryVolume(uint8_t fontId, int16_t instOrWave) const {
-    auto it = mTemporaryVolume.find({ fontId, instOrWave });
-    return it == mTemporaryVolume.end() ? 1.0f : it->second;
-}
-void MidiTranslator::SetTemporaryVolume(uint8_t fontId, int16_t instOrWave, float vol) {
-    if (!BypassIndexValid(fontId, instOrWave))
-        return;
-    if (vol == 1.0f) {
-        mTemporaryVolume.erase({ fontId, instOrWave });
-    } else {
-        if (vol < 0.0f)
-            vol = 0.0f;
-        if (vol > 4.0f)
-            vol = 4.0f;
-        mTemporaryVolume[{ fontId, instOrWave }] = vol;
-    }
-}
-void MidiTranslator::ClearAllTemporaryVolumes() {
-    mTemporaryVolume.clear();
-}
-
 // ── MIDI channel pool ─────────────────────────────────────────────────────
 
 uint8_t MidiTranslator::GetChannelsInUse() const {
@@ -2332,8 +2311,7 @@ bool MidiTranslator::ProcessNote(int noteIndex, float freqScale, float velocity,
     float entryGain = e.gain;
     if (entryGain == 0.0f)
         entryGain = 1.0f;
-    float tempVol = GetTemporaryVolume(fontId, instOrWave);
-    float shaped = std::clamp(sqrtf(std::max(0.0f, velocity)) * mGlobalGain * entryGain * tempVol, 0.0f, 1.0f);
+    float shaped = std::clamp(sqrtf(std::max(0.0f, velocity)) * mGlobalGain * entryGain, 0.0f, 1.0f);
 
     uint8_t noteOnVel;
     uint8_t cc11val;

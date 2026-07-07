@@ -370,10 +370,6 @@ class MidiTranslator {
     bool IsTemporarilySlotMuted(uint8_t fontId, int16_t instOrWave, uint8_t noteLow) const;
     void SetTemporarySlotMute(uint8_t fontId, int16_t instOrWave, uint8_t noteLow, bool muted);
     void ClearAllTemporarySlotMutes();
-    float GetTemporaryVolume(uint8_t fontId, int16_t instOrWave) const;
-    void SetTemporaryVolume(uint8_t fontId, int16_t instOrWave, float vol);
-    void ClearAllTemporaryVolumes();
-
     // ── Persistence + reset ──────────────────────────────────────────────
     void ResetAllOverrides();
     bool SaveOverridesToFile(const std::string& path) const;
@@ -519,7 +515,6 @@ class MidiTranslator {
 
     std::set<std::pair<uint8_t, int16_t>> mTemporaryMute;
     std::set<std::tuple<uint8_t, int16_t, uint8_t>> mTemporarySlotMute;
-    std::map<std::pair<uint8_t, int16_t>, float> mTemporaryVolume;
     std::map<std::pair<uint8_t, int16_t>, std::string> mDisplayName;
 
     // DEBUG: per-pair stats backing storage. Counters use relaxed atomics; read
