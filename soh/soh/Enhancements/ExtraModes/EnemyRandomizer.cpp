@@ -742,6 +742,14 @@ void RegisterEnemyRandomizer() {
     // If Random Gerudo Fighters are defeated, drop some items
     COND_ID_HOOK(OnEnemyDefeat, ACTOR_EN_GELDB, ENEMY_RANDOMIZER_ENABLED, OnGerudoFighterDefeat);
 
+    // Don't spawn Dark Link or Arwings in cleared rooms
+    COND_VB_SHOULD(VB_SPAWN_IN_CLEAR_ROOM, ENEMY_RANDOMIZER_ENABLED, {
+        const s16 actorId = va_arg(args, s16);
+        if (actorId == ACTOR_EN_TORCH2 || actorId == ACTOR_EN_CLEAR_TAG) {
+            *should = true;
+        }
+    });
+
     COND_VB_SHOULD(VB_SPAWN_ACTOR_ENTRY, ENEMY_RANDOMIZER_ENABLED, {
         ActorContext* actorCtx = va_arg(args, ActorContext*);
         ActorEntry* actorEntry = va_arg(args, ActorEntry*);

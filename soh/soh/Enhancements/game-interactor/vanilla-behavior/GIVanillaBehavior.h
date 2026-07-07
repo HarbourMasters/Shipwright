@@ -568,6 +568,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // true if actorId is Dark Link or Arwing
+    // ```
+    // #### `args`
+    // - `s16` (actorId)
+    VB_SPAWN_IN_CLEAR_ROOM,
+
+    // #### `result`
+    // ```c
     // !Flags_GetSwitch(play, this->actor.params & 0x3F)
     // ```
     // #### `args`
