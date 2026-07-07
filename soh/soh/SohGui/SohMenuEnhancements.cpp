@@ -64,9 +64,15 @@ static const std::map<int32_t, const char*> timeTravelOptions = {
 };
 
 static const std::map<int32_t, const char*> getItemManipulationOptions = {
-    { GIM_DISABLED, "Disabled" },
-    { GIM_NTSC, "NTSC" },
-    { GIM_PAL, "PAL" },
+    { GIM_DISABLED, "Disabled" },   { GIM_NTSC_1_0, "NTSC 1.0" },
+    { GIM_NTSC_1_1, "NTSC 1.1" },   { GIM_NTSC_1_2, "NTSC 1.2" },
+    { GIM_PAL_1_0, "PAL 1.0" },     { GIM_PAL_1_1, "PAL 1.1" },
+    { GIM_GC_U, "GC U" },           { GIM_GC_E, "GC E" },
+    { GIM_GC_J, "GC J" },           { GIM_MQ_U, "MQ U" },
+    { GIM_MQ_E, "MQ E" },           { GIM_MQ_J, "MQ J" },
+    { GIM_IQUE_CHN, "IQUE CHN" },   { GIM_IQUE_TWN, "IQUE TWN" },
+    { GIM_MQ_DEBUG, "MQ DEBUG" },   { GIM_MZX_NTSC, "MZX NTSC 1.0" },
+    { GIM_MZX_PAL, "MZX PAL 1.1" },
 };
 
 static const std::map<int32_t, const char*> sleepingWaterfallOptions = {
