@@ -251,7 +251,7 @@ cd ShipWright
 git submodule update --init
 
 # Install development dependencies (assuming homebrew)
-brew install sdl2 sdl2_net libpng glew ninja cmake tinyxml2 nlohmann-json libzip opusfile libvorbis fluid-synth
+brew install sdl2 sdl2_net libpng glew ninja cmake tinyxml2 nlohmann-json libzip opusfile libvorbis
 
 # Generate Ninja project
 # Add `-DCMAKE_BUILD_TYPE:STRING=Release` if you're packaging
@@ -318,7 +318,7 @@ cmake --build build-switch --target soh_nro
 # To develop the project open the repository in VSCode (or your preferred editor)
 ```
 
-_Note: FluidSynth is disabled above because devkitpro doesn't ship it. To use the synth backend, build a fluidsynth for the platform (e.g. [fluidsynth-lite](https://github.com/rsn8887/fluidsynth-lite)) and drop `-DENABLE_FLUIDSYNTH=OFF`._
+_Note: FluidSynth is disabled above because cross-compiling its dependencies for Switch is not tested. FluidSynth now builds from source on desktop platforms, so dropping `-DENABLE_FLUIDSYNTH=OFF` may work once the platform toolchain supports it._
 
 ## Wii U
 1. Requires that your build machine is setup with the tools necessary for your platform above
@@ -341,7 +341,7 @@ cmake --build build-wiiu --target soh # --target soh_wuhb (for building .wuhb)
 # To develop the project open the repository in VSCode (or your preferred editor)
 ```
 
-_Note: As with Switch, FluidSynth is disabled above (not shipped by devkitpro); drop `-DENABLE_FLUIDSYNTH=OFF` once you've built a fluidsynth for the platform._
+_Note: As with Switch, FluidSynth is disabled above because cross-compiling its dependencies for Wii U is not tested. Dropping `-DENABLE_FLUIDSYNTH=OFF` may work once the platform toolchain supports it._
 
 # Compatible Roms
 See [`supportedHashes.json`](supportedHashes.json)
