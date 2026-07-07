@@ -138,11 +138,11 @@ void BgYdanMaruta_Destroy(Actor* thisx, PlayState* play) {
 
 void func_808BEFF4(BgYdanMaruta* this, PlayState* play) {
     if (this->collider.base.atFlags & AT_HIT) {
-        func_8002F71C(play, &this->dyna.actor, 7.0f, this->dyna.actor.shape.rot.y, 6.0f);
+        Actor_SetPlayerKnockbackLargeNoDamage(play, &this->dyna.actor, 7.0f, this->dyna.actor.shape.rot.y, 6.0f);
     }
     this->dyna.actor.shape.rot.x += 0x360;
     CollisionCheck_SetAT(play, &play->colChkCtx, &this->collider.base);
-    func_8002F974(&this->dyna.actor, NA_SE_EV_TOGE_STICK_ROLLING - SFX_FLAG);
+    Actor_PlaySfx_Flagged(&this->dyna.actor, NA_SE_EV_TOGE_STICK_ROLLING - SFX_FLAG);
 }
 
 void func_808BF078(BgYdanMaruta* this, PlayState* play) {
@@ -177,7 +177,7 @@ void func_808BF108(BgYdanMaruta* this, PlayState* play) {
     this->dyna.actor.world.pos.x = (Math_CosS(this->dyna.actor.shape.rot.y) * temp) + this->dyna.actor.home.pos.x;
     this->dyna.actor.world.pos.z = (Math_SinS(this->dyna.actor.shape.rot.y) * temp) + this->dyna.actor.home.pos.z;
 
-    func_8002F974(&this->dyna.actor, NA_SE_EV_TRAP_OBJ_SLIDE - SFX_FLAG);
+    Actor_PlaySfx_Flagged(&this->dyna.actor, NA_SE_EV_TRAP_OBJ_SLIDE - SFX_FLAG);
 }
 
 void func_808BF1EC(BgYdanMaruta* this, PlayState* play) {

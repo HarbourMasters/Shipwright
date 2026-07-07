@@ -131,7 +131,7 @@ void BgYdanHasi_DecWaterTimer(BgYdanHasi* this, PlayState* play) {
         this->timer--;
     }
 
-    func_8002F994(&this->dyna.actor, this->timer);
+    Actor_PlaySfx_FlaggedTimer(&this->dyna.actor, this->timer);
     if (this->timer == 0) {
         this->actionFunc = BgYdanHasi_MoveWater;
     }
@@ -163,7 +163,7 @@ void BgYdanHasi_UpdateThreeBlocks(BgYdanHasi* this, PlayState* play) {
         Actor_PlaySfx_FlaggedCentered2(&this->dyna.actor, NA_SE_EV_ELEVATOR_MOVE - SFX_FLAG);
 
     } else {
-        func_8002F994(&this->dyna.actor, this->timer);
+        Actor_PlaySfx_FlaggedTimer(&this->dyna.actor, this->timer);
     }
 }
 

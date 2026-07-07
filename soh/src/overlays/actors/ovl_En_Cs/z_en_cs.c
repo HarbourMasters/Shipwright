@@ -257,7 +257,7 @@ void EnCs_HandleTalking(EnCs* this, PlayState* play) {
         Actor_GetScreenPos(play, &this->actor, &sp2A, &sp28);
 
         if ((sp2A >= 0) && (sp2A <= 320) && (sp28 >= 0) && (sp28 <= 240) &&
-            (func_8002F2CC(&this->actor, play, 100.0f))) {
+            (Actor_OfferTalk(&this->actor, play, 100.0f))) {
             this->actor.textId = EnCs_GetTextID(this, play);
         }
     }

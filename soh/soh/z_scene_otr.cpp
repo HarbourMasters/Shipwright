@@ -159,7 +159,7 @@ bool Scene_CommandObjectList(PlayState* play, SOH::ISceneCommand* cmd) {
             for (j = i; j < play->objectCtx.num; j++) {
                 play->objectCtx.status[j].id = OBJECT_INVALID;
             }
-            func_80031A28(play, &play->actorCtx);
+            Actor_KillAllWithMissingObject(play, &play->actorCtx);
             break;
         }
     }

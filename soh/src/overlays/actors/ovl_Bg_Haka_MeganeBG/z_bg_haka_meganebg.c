@@ -153,7 +153,7 @@ void BgHakaMeganeBG_ElevatorPlatform_Drop(BgHakaMeganeBG* this, PlayState* play)
 
     if (!Math_StepToF(&this->dyna.actor.world.pos.y, this->dyna.actor.home.pos.y - 640.0f,
                       this->dyna.actor.velocity.y)) {
-        func_8002F974(&this->dyna.actor, NA_SE_EV_CHINETRAP_DOWN - SFX_FLAG);
+        Actor_PlaySfx_Flagged(&this->dyna.actor, NA_SE_EV_CHINETRAP_DOWN - SFX_FLAG);
     }
 
     if (this->timer == 0) {
@@ -165,7 +165,7 @@ void BgHakaMeganeBG_ElevatorPlatform_Drop(BgHakaMeganeBG* this, PlayState* play)
 
 void BgHakaMeganeBG_ElevatorPlatform_Raise(BgHakaMeganeBG* this, PlayState* play) {
     Math_StepToF(&this->dyna.actor.world.pos.y, this->dyna.actor.home.pos.y, 16.0f / 3.0f);
-    func_8002F974(&this->dyna.actor, NA_SE_EV_BRIDGE_CLOSE - SFX_FLAG);
+    Actor_PlaySfx_Flagged(&this->dyna.actor, NA_SE_EV_BRIDGE_CLOSE - SFX_FLAG);
 
     if (this->timer != 0) {
         this->timer--;
@@ -179,7 +179,7 @@ void BgHakaMeganeBG_ElevatorPlatform_Raise(BgHakaMeganeBG* this, PlayState* play
 
 void BgHakaMeganeBG_RotatingPlatform_Spin(BgHakaMeganeBG* this, PlayState* play) {
     this->dyna.actor.shape.rot.y += 0x180;
-    func_8002F974(&this->dyna.actor, NA_SE_EV_ELEVATOR_MOVE - SFX_FLAG);
+    Actor_PlaySfx_Flagged(&this->dyna.actor, NA_SE_EV_ELEVATOR_MOVE - SFX_FLAG);
 }
 
 void BgHakaMeganeBG_Gate_WaitForSwitchFlag(BgHakaMeganeBG* this, PlayState* play) {
@@ -196,7 +196,7 @@ void BgHakaMeganeBG_Gate_Open(BgHakaMeganeBG* this, PlayState* play) {
         Actor_SetFocus(&this->dyna.actor, 50.0f);
         this->actionFunc = BgHakaMeganeBG_DoNothing;
     } else {
-        func_8002F974(&this->dyna.actor, NA_SE_EV_METALDOOR_OPEN);
+        Actor_PlaySfx_Flagged(&this->dyna.actor, NA_SE_EV_METALDOOR_OPEN);
     }
 }
 

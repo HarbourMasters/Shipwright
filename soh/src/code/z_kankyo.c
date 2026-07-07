@@ -2011,11 +2011,11 @@ void Environment_PlaySceneSequence(PlayState* play) {
         osSyncPrintf("\n\n\nBGM設定game_play->sound_info.BGM=[%d] old_bgm=[%d]\n\n", play->sequenceCtx.seqId,
                      ((void)0, gSaveContext.seqId));
         if (((void)0, gSaveContext.seqId) != play->sequenceCtx.seqId) {
-            func_800F5550(play->sequenceCtx.seqId);
+            Audio_PlaySceneSequence(play->sequenceCtx.seqId);
         }
     } else if (((void)0, gSaveContext.dayTime) > 0x4AAA && ((void)0, gSaveContext.dayTime) < 0xB71D) {
         if (((void)0, gSaveContext.seqId) != play->sequenceCtx.seqId) {
-            func_800F5550(play->sequenceCtx.seqId);
+            Audio_PlaySceneSequence(play->sequenceCtx.seqId);
         }
 
         play->envCtx.unk_E0 = 1;
@@ -2050,7 +2050,7 @@ void func_80075B44(PlayState* play) {
                                              CHANNEL_IO_PORT_1, 0);
             if (play->envCtx.unk_EE[0] == 0 && play->envCtx.unk_F2[0] == 0) {
                 osSyncPrintf("\n\n\nNa_StartMorinigBgm\n\n");
-                func_800F5510(play->sequenceCtx.seqId);
+                Audio_PlayMorningSceneSequence(play->sequenceCtx.seqId);
             }
             play->envCtx.unk_E0++;
             break;

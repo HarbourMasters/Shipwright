@@ -192,7 +192,7 @@ void EnVbBall_Update(Actor* thisx, PlayState* play2) {
             if ((this->actor.params == 100) || (this->actor.params == 101)) {
                 Actor_Kill(&this->actor);
                 if (this->actor.params == 100) {
-                    func_80033E88(&this->actor, play, 5, 0xA);
+                    Actor_RequestQuakeAndRumble(&this->actor, play, 5, 0xA);
                 }
                 if (this->actor.params == 100) {
                     spawnNum = 2;

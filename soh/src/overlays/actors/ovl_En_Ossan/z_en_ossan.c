@@ -768,7 +768,7 @@ void EnOssan_State_Idle(EnOssan* this, PlayState* play, Player* player) {
         Play_SetShopBrowsingViewpoint(play);
         EnOssan_SetStateStartShopping(play, this, false);
     } else if (this->actor.xzDistToPlayer < 100.0f) {
-        func_8002F2CC(&this->actor, play, 100);
+        Actor_OfferTalk(&this->actor, play, 100);
     }
 }
 
@@ -1782,7 +1782,7 @@ void EnOssan_State_ContinueShoppingPrompt(EnOssan* this, PlayState* play, Player
                         Play_SetViewpoint(play, 2);
                         Message_StartTextbox(play, this->actor.textId, &this->actor);
                         EnOssan_SetStateStartShopping(play, this, true);
-                        func_8002F298(&this->actor, play, 100.0f, -1);
+                        Actor_OfferTalkExchangeEquiCylinder(&this->actor, play, 100.0f, -1);
                         break;
                     case 1:
                     default:
@@ -1801,7 +1801,7 @@ void EnOssan_State_ContinueShoppingPrompt(EnOssan* this, PlayState* play, Player
         Play_SetViewpoint(play, 2);
         Message_StartTextbox(play, this->actor.textId, &this->actor);
         EnOssan_SetStateStartShopping(play, this, true);
-        func_8002F298(&this->actor, play, 100.0f, -1);
+        Actor_OfferTalkExchangeEquiCylinder(&this->actor, play, 100.0f, -1);
     }
 }
 

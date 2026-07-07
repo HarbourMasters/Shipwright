@@ -261,7 +261,7 @@ void func_80A91348(EnKakasi3* this, PlayState* play) {
                         player->stateFlags2 |= PLAYER_STATE2_NEAR_OCARINA_ACTOR;
                     }
                 }
-                func_8002F2CC(&this->actor, play, 100.0f);
+                Actor_OfferTalk(&this->actor, play, 100.0f);
             }
         }
     }

@@ -206,7 +206,7 @@ void func_808FD4D4(BossGanon2* this, PlayState* play, s16 arg2, s16 arg3) {
     }
 
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_MGANON_WALK);
-    func_80033E88(&this->actor, play, 2, 0xA);
+    Actor_RequestQuakeAndRumble(&this->actor, play, 2, 0xA);
 }
 
 void func_808FD5C4(BossGanon2* this, PlayState* play) {
@@ -1909,7 +1909,8 @@ void func_80902348(BossGanon2* this, PlayState* play) {
                     phi_v0_2 = 0;
                 }
 
-                func_8002F6D4(play, &this->actor, 15.0f, this->actor.yawTowardsPlayer + phi_v0_2, 2.0f, 0);
+                Actor_SetPlayerKnockbackLarge(play, &this->actor, 15.0f, this->actor.yawTowardsPlayer + phi_v0_2, 2.0f,
+                                              0);
                 sBossGanon2Zelda->unk_3C8 = 8;
                 this->unk_316 = 10;
                 break;
@@ -1928,7 +1929,7 @@ void func_80902348(BossGanon2* this, PlayState* play) {
             }
 
             player->bodyIsBurning = true;
-            func_8002F6D4(play, &this->actor, 10.0f, Math_Atan2S(temp_f12, temp_f2), 0.0f, 0x10);
+            Actor_SetPlayerKnockbackLarge(play, &this->actor, 10.0f, Math_Atan2S(temp_f12, temp_f2), 0.0f, 0x10);
             sBossGanon2Zelda->unk_3C8 = 8;
         }
     }
@@ -2058,7 +2059,7 @@ void BossGanon2_Update(Actor* thisx, PlayState* play) {
         Actor_UpdateBgCheckInfo(play, &this->actor, 60.0f, 60.0f, 100.0f, 5);
         if (this->actor.bgCheckFlags & 1) {
             if (this->actor.velocity.y < -5.0f) {
-                func_80033E88(&this->actor, play, 5, 20);
+                Actor_RequestQuakeAndRumble(&this->actor, play, 5, 20);
                 Sfx_PlaySfxCentered(NA_SE_IT_BOMB_EXPLOSION);
             }
             this->actor.velocity.y = 0.0f;

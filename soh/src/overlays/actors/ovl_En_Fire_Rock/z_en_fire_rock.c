@@ -197,7 +197,7 @@ void EnFireRock_Fall(EnFireRock* this, PlayState* play) {
         switch (this->type) {
             case FIRE_ROCK_SPAWNED_FALLING1:
             case FIRE_ROCK_SPAWNED_FALLING2:
-                func_80033E88(&this->actor, play, 5, 2);
+                Actor_RequestQuakeAndRumble(&this->actor, play, 5, 2);
             case FIRE_ROCK_BROKEN_PIECE1:
                 Actor_SpawnFloorDustRing(play, &this->actor, &this->actor.world.pos, this->actor.shape.shadowScale, 1,
                                          8.0f, 500, 10, false);
@@ -363,7 +363,7 @@ void EnFireRock_Update(Actor* thisx, PlayState* play) {
                 this->collider.base.atFlags &= ~2;
                 if (this->collider.base.at == playerActor) {
                     if (!(player->stateFlags1 & PLAYER_STATE1_DAMAGED)) {
-                        func_8002F758(play, thisx, 2.0f, -player->actor.world.rot.y, 3.0f, 4);
+                        Actor_SetPlayerKnockbackSmall(play, thisx, 2.0f, -player->actor.world.rot.y, 3.0f, 4);
                     }
                     return;
                 }

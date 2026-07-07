@@ -345,7 +345,7 @@ void Lights_GlowCheckPrepare(PlayState* play) {
             pos.x = params->x;
             pos.y = params->y;
             pos.z = params->z;
-            func_8002BE04(play, &pos, &multDest, &wDest);
+            Actor_ProjectPos(play, &pos, &multDest, &wDest);
             wX = multDest.x * wDest;
             wY = multDest.y * wDest;
 
@@ -385,7 +385,7 @@ void Lights_GlowCheck(PlayState* play) {
             pos.x = params->x;
             pos.y = params->y;
             pos.z = params->z;
-            func_8002BE04(play, &pos, &multDest, &wDest);
+            Actor_ProjectPos(play, &pos, &multDest, &wDest);
             params->drawGlow = false;
             wX = multDest.x * wDest;
             wY = multDest.y * wDest;

@@ -236,7 +236,7 @@ void EnKanban_Message(EnKanban* this, PlayState* play) {
                 if (Actor_ProcessTalkRequest(&this->actor, play)) {
                     this->msgFlag = true;
                 } else {
-                    func_8002F2CC(&this->actor, play, 68.0f);
+                    Actor_OfferTalk(&this->actor, play, 68.0f);
                 }
             }
         } else {

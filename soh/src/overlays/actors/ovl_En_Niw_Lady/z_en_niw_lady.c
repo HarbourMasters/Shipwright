@@ -298,7 +298,7 @@ void func_80ABA244(EnNiwLady* this, PlayState* play) {
             }
         }
     } else {
-        func_8002F2CC(&this->actor, play, 100.0f);
+        Actor_OfferTalk(&this->actor, play, 100.0f);
     }
 }
 
@@ -375,7 +375,7 @@ void func_80ABA878(EnNiwLady* this, PlayState* play) {
         this->unk_26E = 11;
     }
     if (Actor_ProcessTalkRequest(&this->actor, play)) {
-        playerExchangeItemId = func_8002F368(play);
+        playerExchangeItemId = Actor_GetPlayerExchangeItemId(play);
         if ((playerExchangeItemId == 6) && (Flags_GetEventChkInf(EVENTCHKINF_TALON_WOKEN_IN_KAKARIKO))) {
             Sfx_PlaySfxCentered(NA_SE_SY_TRE_BOX_APPEAR);
             player->actor.textId = sTradeItemTextIds[5];
@@ -391,7 +391,7 @@ void func_80ABA878(EnNiwLady* this, PlayState* play) {
             this->actionFunc = !this->unk_273 ? func_80ABA778 : func_80ABA9B8;
         }
     } else {
-        func_8002F298(&this->actor, play, 50.0f, 6);
+        Actor_OfferTalkExchangeEquiCylinder(&this->actor, play, 50.0f, 6);
     }
 }
 
@@ -503,7 +503,7 @@ void func_80ABAD7C(EnNiwLady* this, PlayState* play) {
         this->unk_26E = this->unk_27A + 9;
         this->actionFunc = func_80ABAD38;
     } else {
-        func_8002F2CC(&this->actor, play, 100.0f);
+        Actor_OfferTalk(&this->actor, play, 100.0f);
     }
 }
 
