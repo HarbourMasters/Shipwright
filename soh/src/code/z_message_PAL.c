@@ -15,9 +15,6 @@
 #include "soh/SaveManager.h"
 #include "soh/ResourceManagerHelpers.h"
 
-// SOH [Enhancement] Text Speed which fills whole box in one frame
-#define TEXT_SPEED_INSTANT 6
-
 // #region SOH [NTSC] - Allows custom messages to work on japanese
 static bool sDisplayNextMessageAsEnglish = false;
 static u8 sLastLanguage = LANGUAGE_ENG;
