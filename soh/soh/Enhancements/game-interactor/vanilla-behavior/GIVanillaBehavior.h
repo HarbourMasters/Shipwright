@@ -3247,13 +3247,23 @@ typedef enum {
 
     // #### `result`
     // ```c
-    // true
+    // (enHorse->hbaFlags & 1)
     // ```
     // Prevent custom fanfares set to loop from softlocking Horseback Archery by
     // letting players escape the cutscene with A/B/start after a normal number of playframes.
     // #### `args`
     // - none
-    VB_PREVENT_HBA_FANFARE_SOFTLOCK,
+    VB_PREVENT_HBA_FANFARE_SOFTLOCK_TIMER,
+
+    // #### `result`
+    // ```c
+    // (enHorse->hbaTimer >= 80 && CHECK_BTN_ANY(play->state.input[0].press.button, BTN_A | BTN_B | BTN_START))
+    // ```
+    // Prevent custom fanfares set to loop from softlocking Horseback Archery by
+    // letting players escape the cutscene with A/B/start after a normal number of playframes.
+    // #### `args`
+    // - `EnHorse*`
+    VB_PREVENT_HBA_FANFARE_SOFTLOCK_BUTTONS,
 
     // true
     // ```

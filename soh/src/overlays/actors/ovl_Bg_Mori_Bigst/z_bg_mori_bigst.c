@@ -169,7 +169,7 @@ void BgMoriBigst_Fall(BgMoriBigst* this, PlayState* play) {
         Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_STONE_BOUND);
         if (GameInteractor_Should(VB_PLAY_ONEPOINT_ACTOR_CS, true, this)) {
             OnePointCutscene_Init(play, 1020, 8, &this->dyna.actor, MAIN_CAM);
-            func_8002DF38(play, NULL, 0x3C);
+            Player_SetCsAction(play, NULL, 0x3C);
         }
     }
 }

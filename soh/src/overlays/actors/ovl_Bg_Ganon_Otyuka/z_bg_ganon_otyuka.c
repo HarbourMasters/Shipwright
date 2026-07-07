@@ -214,7 +214,7 @@ void BgGanonOtyuka_Fall(BgGanonOtyuka* this, PlayState* play) {
                                   (s16)Rand_ZeroFloat(100.0f) + 250, 5, (s16)Rand_ZeroFloat(5.0f) + 15);
                 }
 
-                func_80033DB8(play, 10, 15);
+                Actor_RequestQuake(play, 10, 15);
                 SoundSource_PlaySfxAtFixedWorldPos(play, &this->dyna.actor.world.pos, 40, NA_SE_EV_BOX_BREAK);
             }
             Actor_Kill(&this->dyna.actor);

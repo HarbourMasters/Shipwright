@@ -1123,7 +1123,7 @@ void func_80B55D00(EnZl3* this, PlayState* play) {
         this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY;
         this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
         this->actor.textId = 0x70D5;
-        func_8002F2F4(&this->actor, play);
+        Actor_OfferTalkNearColChkInfoCylinder(&this->actor, play);
     } else {
         this->actor.flags &= ~(ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY);
         this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
@@ -1182,7 +1182,7 @@ void func_80B55F6C(EnZl3* this, PlayState* play) {
             this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY;
             this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
             this->actor.textId = 0x7059;
-            func_8002F2F4(&this->actor, play);
+            Actor_OfferTalkNearColChkInfoCylinder(&this->actor, play);
         }
     } else {
         this->actor.flags &= ~(ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY);
@@ -1244,7 +1244,7 @@ void func_80B56214(EnZl3* this, PlayState* play) {
                 this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY;
                 this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
                 this->actor.textId = 0x7059;
-                func_8002F2F4(&this->actor, play);
+                Actor_OfferTalkNearColChkInfoCylinder(&this->actor, play);
             }
         }
     } else {
@@ -1698,7 +1698,7 @@ void func_80B57350(EnZl3* this, PlayState* play) {
     if (ABS(temp_v0) <= 0x4300) {
         this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY;
         this->actor.textId = func_80B572F0(play);
-        func_8002F2F4(&this->actor, play);
+        Actor_OfferTalkNearColChkInfoCylinder(&this->actor, play);
     }
 }
 

@@ -226,7 +226,7 @@ void func_808A3E54(BgMoriHineri* this, PlayState* play) {
     }
     if ((sBgMoriHineriNextCamIdx >= SUBCAM_FIRST) &&
         ((GET_ACTIVE_CAM(play)->eye.z - this->dyna.actor.world.pos.z) < 1100.0f)) {
-        func_8002F948(&this->dyna.actor, NA_SE_EV_FLOOR_ROLLING - SFX_FLAG);
+        Actor_PlaySfx_FlaggedCentered2(&this->dyna.actor, NA_SE_EV_FLOOR_ROLLING - SFX_FLAG);
     }
 }
 

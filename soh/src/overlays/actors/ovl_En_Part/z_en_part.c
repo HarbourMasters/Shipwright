@@ -193,8 +193,9 @@ void func_80ACE5C8(EnPart* this, PlayState* play) {
                     play->damagePlayer(play, -8);
                 }
             }
-            func_8002F71C(play, this->actor.parent, (650.0f - this->actor.parent->xzDistToPlayer) * 0.04f + 4.0f,
-                          this->actor.parent->world.rot.y, 8.0f);
+            Actor_SetPlayerKnockbackLargeNoDamage(play, this->actor.parent,
+                                                  (650.0f - this->actor.parent->xzDistToPlayer) * 0.04f + 4.0f,
+                                                  this->actor.parent->world.rot.y, 8.0f);
             player->invincibilityTimer = prevInvincibilityTimer;
             this->timer = 1;
         }

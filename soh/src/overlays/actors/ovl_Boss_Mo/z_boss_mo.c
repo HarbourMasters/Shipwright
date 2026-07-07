@@ -530,7 +530,7 @@ void BossMo_Tentacle(BossMo* this, PlayState* play) {
                 if ((this->sfxTimer % 32) == 0) {
                     Audio_PlaySoundIncreasinglyTransposed(&this->tentTipPos, NA_SE_EN_MOFER_WAVE,
                                                           gMorphaTransposeTable);
-                    func_800AA000(0, 100, 5, 2);
+                    Rumble_Request(0, 100, 5, 2);
                     Player_PlaySfx(&player->actor, NA_SE_VO_LI_FREEZE + player->ageProperties->unk_92);
                 }
             } else {
@@ -545,7 +545,7 @@ void BossMo_Tentacle(BossMo* this, PlayState* play) {
                 if ((this->sfxTimer % 16) == 0) {
                     Audio_PlaySoundIncreasinglyTransposed(&this->tentTipPos, NA_SE_EN_MOFER_WAVE,
                                                           gMorphaTransposeTable);
-                    func_800AA000(0, 160, 5, 4);
+                    Rumble_Request(0, 160, 5, 4);
                     Player_PlaySfx(&player->actor, NA_SE_VO_LI_FREEZE + player->ageProperties->unk_92);
                 }
             }
@@ -864,7 +864,8 @@ void BossMo_Tentacle(BossMo* this, PlayState* play) {
                         player->actor.parent = NULL;
                         player->csAction = 0;
                         if (this->timers[0] == 0) {
-                            func_8002F6D4(play, &this->actor, 20.0f, this->actor.shape.rot.y + 0x8000, 10.0f, 0);
+                            Actor_SetPlayerKnockbackLarge(play, &this->actor, 20.0f, this->actor.shape.rot.y + 0x8000,
+                                                          10.0f, 0);
                         }
                     }
                     this->timers[0] = 75;

@@ -183,7 +183,7 @@ void BgBdanObjects_OctoPlatform_WaitForRutoToStartCutscene(BgBdanObjects* this, 
             player->actor.world.pos.x = -1130.0f;
             player->actor.world.pos.y = -1025.0f;
             player->actor.world.pos.z = -3300.0f;
-            func_800AA000(0.0f, 0xFF, 0x14, 0x96);
+            Rumble_Request(0.0f, 0xFF, 0x14, 0x96);
         }
     } else if (this->timer != 0) {
         if (this->timer != 0) {
@@ -208,16 +208,16 @@ void BgBdanObjects_OctoPlatform_RaiseToUpperPosition(BgBdanObjects* this, PlaySt
         this->actionFunc = BgBdanObjects_OctoPlatform_WaitForRutoToAdvanceCutscene;
         this->timer = 30;
         BgBdanObjects_SetContactRu1(this, 2);
-        func_800AA000(0.0f, 0xFF, 0x14, 0x96);
+        Rumble_Request(0.0f, 0xFF, 0x14, 0x96);
     } else {
         if (this->timer != 0) {
             this->timer--;
         }
         if (this->timer == 0) {
-            func_800AA000(0.0f, 0x78, 0x14, 0xA);
+            Rumble_Request(0.0f, 0x78, 0x14, 0xA);
             this->timer = 11;
         }
-        func_8002F974(&this->dyna.actor, NA_SE_EV_BUYOSTAND_RISING - SFX_FLAG);
+        Actor_PlaySfx_Flagged(&this->dyna.actor, NA_SE_EV_BUYOSTAND_RISING - SFX_FLAG);
     }
 }
 
@@ -262,14 +262,14 @@ void BgBdanObjects_OctoPlatform_DescendWithBigOcto(BgBdanObjects* this, PlayStat
         player->actor.world.pos.z = -3500.0f;
         player->actor.shape.rot.y = 0x7530;
         player->actor.world.rot.y = player->actor.shape.rot.y;
-        func_800AA000(0.0f, 0xFF, 0x1E, 0x96);
+        Rumble_Request(0.0f, 0xFF, 0x1E, 0x96);
     } else {
-        func_8002F974(&this->dyna.actor, NA_SE_EV_BUYOSTAND_FALL - SFX_FLAG);
+        Actor_PlaySfx_Flagged(&this->dyna.actor, NA_SE_EV_BUYOSTAND_FALL - SFX_FLAG);
         if (this->timer != 0) {
             this->timer--;
         }
         if (this->timer == 0) {
-            func_800AA000(0.0f, 0x78, 0x14, 0xA);
+            Rumble_Request(0.0f, 0x78, 0x14, 0xA);
             this->timer = 11;
         }
         if (this->dyna.actor.child != NULL) {
@@ -340,7 +340,7 @@ void BgBdanObjects_RaiseToUpperPosition(BgBdanObjects* this, PlayState* play) {
         Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_BUYOSTAND_STOP_A);
         this->actionFunc = BgBdanObjects_DoNothing;
     } else {
-        func_8002F974(&this->dyna.actor, NA_SE_EV_BUYOSTAND_RISING - SFX_FLAG);
+        Actor_PlaySfx_Flagged(&this->dyna.actor, NA_SE_EV_BUYOSTAND_RISING - SFX_FLAG);
     }
 }
 
@@ -390,12 +390,12 @@ void BgBdanObjects_ChangeWaterBoxLevel(BgBdanObjects* this, PlayState* play) {
             Flags_UnsetSwitch(play, this->switchFlag);
             this->actionFunc = BgBdanObjects_WaitForSwitch;
         }
-        func_8002F948(&this->dyna.actor, NA_SE_EV_WATER_LEVEL_DOWN - SFX_FLAG);
+        Actor_PlaySfx_FlaggedCentered2(&this->dyna.actor, NA_SE_EV_WATER_LEVEL_DOWN - SFX_FLAG);
     } else {
         if (Math_StepToF(&this->dyna.actor.world.pos.y, this->dyna.actor.home.pos.y + 75.0f, 0.5f)) {
             this->actionFunc = BgBdanObjects_WaitForTimerExpired;
         }
-        func_8002F948(&this->dyna.actor, NA_SE_EV_WATER_LEVEL_DOWN - SFX_FLAG);
+        Actor_PlaySfx_FlaggedCentered2(&this->dyna.actor, NA_SE_EV_WATER_LEVEL_DOWN - SFX_FLAG);
     }
     play->colCtx.colHeader->waterBoxes[7].ySurface = this->dyna.actor.world.pos.y;
 }
@@ -404,7 +404,7 @@ void BgBdanObjects_WaitForTimerExpired(BgBdanObjects* this, PlayState* play) {
     if (this->timer != 0) {
         this->timer--;
     }
-    func_8002F994(&this->dyna.actor, this->timer);
+    Actor_PlaySfx_FlaggedTimer(&this->dyna.actor, this->timer);
     if (this->timer == 0) {
         this->actionFunc = BgBdanObjects_ChangeWaterBoxLevel;
     }
@@ -432,7 +432,7 @@ void BgBdanObjects_FallToLowerPos(BgBdanObjects* this, PlayState* play) {
         this->actionFunc = BgBdanObjects_DoNothing;
         Play_CopyCamera(play, MAIN_CAM, SUBCAM_ACTIVE);
     } else {
-        func_8002F974(&this->dyna.actor, NA_SE_EV_BUYOSTAND_FALL - SFX_FLAG);
+        Actor_PlaySfx_Flagged(&this->dyna.actor, NA_SE_EV_BUYOSTAND_FALL - SFX_FLAG);
     }
 }
 

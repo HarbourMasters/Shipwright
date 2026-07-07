@@ -478,7 +478,7 @@ void UseFaroresWind(EnPartner* this, PlayState* play, u8 started) {
     }
 
     if (started == 1 || started == 2) {
-        func_8002F974(&this->actor, NA_SE_EV_WIND_TRAP - SFX_FLAG);
+        Actor_PlaySfx_Flagged(&this->actor, NA_SE_EV_WIND_TRAP - SFX_FLAG);
 
         this->windEffect->actor.world.pos.x = this->actor.world.pos.x;
         this->windEffect->actor.world.pos.y = this->actor.world.pos.y;
@@ -807,7 +807,7 @@ void EnPartner_Update(Actor* thisx, PlayState* play) {
     }
 
     if (this->usedSpell != 0) {
-        func_8002F974(thisx, NA_SE_PL_MAGIC_SOUL_NORMAL - SFX_FLAG);
+        Actor_PlaySfx_Flagged(thisx, NA_SE_PL_MAGIC_SOUL_NORMAL - SFX_FLAG);
     }
 
     if (!Player_InCsMode(play)) {

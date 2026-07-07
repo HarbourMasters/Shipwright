@@ -457,7 +457,7 @@ void func_809CF984(EnBw* this, PlayState* play) {
     }
     SkelAnime_Update(&this->skelAnime);
     if (this->actor.bgCheckFlags & 3) {
-        floorPolyType = func_80041D4C(&play->colCtx, this->actor.floorPoly, this->actor.floorBgId);
+        floorPolyType = SurfaceType_GetFloorType(&play->colCtx, this->actor.floorPoly, this->actor.floorBgId);
         if ((floorPolyType == 2) || (floorPolyType == 3) || (floorPolyType == 9)) {
             Actor_Kill(&this->actor);
             return;

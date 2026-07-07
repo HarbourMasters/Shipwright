@@ -579,7 +579,7 @@ void Play_Init(GameState* thisx) {
     gItemAgeReqs[ITEM_ROCS_FEATHER] = AGE_REQ_NONE;
     gSlotAgeReqs[SLOT_NAYRUS_LOVE] = AGE_REQ_NONE;
 
-    func_800304DC(play, &play->actorCtx, play->linkActorEntry);
+    Actor_InitContext(play, &play->actorCtx, play->linkActorEntry);
 
     while (!func_800973FC(play, &play->roomCtx)) {
         ; // Empty Loop
@@ -620,7 +620,7 @@ void Play_Init(GameState* thisx) {
     Environment_PlaySceneSequence(play);
     gSaveContext.seqId = play->sequenceCtx.seqId;
     gSaveContext.natureAmbienceId = play->sequenceCtx.natureAmbienceId;
-    func_8002DF18(play, GET_PLAYER(play));
+    Actor_InitPlayerHorse(play, GET_PLAYER(play));
     AnimationContext_Update(play, &play->animationCtx);
     gSaveContext.respawnFlag = 0;
 
@@ -1546,7 +1546,7 @@ void Play_Draw(PlayState* play) {
         }
 
         if ((HREG(80) != 10) || (HREG(85) != 0)) {
-            func_800315AC(play, &play->actorCtx);
+            Actor_DrawAll(play, &play->actorCtx);
         }
 
         if ((HREG(80) != 10) || (HREG(86) != 0)) {

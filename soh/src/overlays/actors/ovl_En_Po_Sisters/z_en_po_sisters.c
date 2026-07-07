@@ -599,9 +599,9 @@ void func_80ADA35C(EnPoSisters* this, PlayState* play) {
     this->actor.world.pos.y += (2.0f + 0.5f * Rand_ZeroOne()) * Math_SinS(this->unk_196 * 0x800);
     if (this->unk_22E.a == 255 && this->actionFunc != func_80ADA8C0 && this->actionFunc != func_80ADA7F0) {
         if (this->actionFunc == func_80ADAC70) {
-            func_8002F974(&this->actor, NA_SE_EN_PO_AWAY - SFX_FLAG);
+            Actor_PlaySfx_Flagged(&this->actor, NA_SE_EN_PO_AWAY - SFX_FLAG);
         } else {
-            func_8002F974(&this->actor, NA_SE_EN_PO_FLY - SFX_FLAG);
+            Actor_PlaySfx_Flagged(&this->actor, NA_SE_EN_PO_FLY - SFX_FLAG);
         }
     }
 }
@@ -1057,7 +1057,7 @@ void func_80ADBC88(EnPoSisters* this, PlayState* play) {
             func_80ADA10C(this);
         }
     }
-    func_8002F974(&this->actor, NA_SE_EV_TORCH - SFX_FLAG);
+    Actor_PlaySfx_Flagged(&this->actor, NA_SE_EV_TORCH - SFX_FLAG);
 }
 
 void func_80ADBD38(EnPoSisters* this, PlayState* play) {

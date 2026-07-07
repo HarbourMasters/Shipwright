@@ -7,6 +7,7 @@ extern "C" {
 #include "variables.h"
 #include "src/overlays/actors/ovl_En_Go2/z_en_go2.h"
 #include "src/overlays/actors/ovl_En_Test/z_en_test.h"
+#include "src/overlays/actors/ovl_En_Horse/z_en_horse.h"
 extern void Player_UseItem(PlayState*, Player*, s32);
 extern PlayState* gPlayState;
 }
@@ -68,6 +69,21 @@ void RegisterAlwaysOnFixes() {
     COND_VB_SHOULD(VB_PREVENT_GORON_LINK_SOFTLOCK, true, {
         EnGo2* GoronLink = va_arg(args, EnGo2*);
         if (GoronLink->interactInfo.talkState == NPC_TALK_STATE_TALKING) {
+            *should = true;
+        }
+    });
+
+    COND_VB_SHOULD(VB_PREVENT_HBA_FANFARE_SOFTLOCK_TIMER, true, {
+        EnHorse* enHorse = va_arg(args, EnHorse*);
+        if (enHorse->hbaFlags & 1) {
+            *should = true; // hbaFlags 1 = end of tour
+        }
+    });
+
+    COND_VB_SHOULD(VB_PREVENT_HBA_FANFARE_SOFTLOCK_BUTTONS, true, {
+        EnHorse* enHorse = va_arg(args, EnHorse*);
+        if (enHorse->hbaTimer >= 80 &&
+            CHECK_BTN_ANY(gPlayState->state.input[0].press.button, BTN_A | BTN_B | BTN_START)) {
             *should = true;
         }
     });

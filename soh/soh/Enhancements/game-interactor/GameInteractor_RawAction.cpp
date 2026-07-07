@@ -123,7 +123,8 @@ void GameInteractor::RawAction::ElectrocutePlayer() {
 
 void GameInteractor::RawAction::KnockbackPlayer(float strength) {
     Player* player = GET_PLAYER(gPlayState);
-    func_8002F71C(gPlayState, &player->actor, strength * 5, player->actor.world.rot.y + 0x8000, strength * 5);
+    Actor_SetPlayerKnockbackLargeNoDamage(gPlayState, &player->actor, strength * 5, player->actor.world.rot.y + 0x8000,
+                                          strength * 5);
 }
 
 void GameInteractor::RawAction::SetSceneFlag(int16_t sceneNum, int16_t flagType, int16_t flag) {
