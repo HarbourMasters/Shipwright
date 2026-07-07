@@ -2,6 +2,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ShipInit.hpp"
 #include "soh/Enhancements/custom-message/CustomMessageTypes.h"
+#include <libultraship/bridge/resourcebridge.h>
 
 extern "C" {
 extern PlayState* gPlayState;
@@ -9,6 +10,7 @@ extern PlayState* gPlayState;
 #include "functions.h"
 #include "variables.h"
 #include "src/overlays/actors/ovl_Bg_Spot06_Objects/z_bg_spot06_objects.h"
+#include "textures/map_grand_static/map_grand_static.h"
 
 extern void BgSpot06Objects_LockFloat(BgSpot06Objects*, PlayState*);
 extern void BgSpot06Objects_WaterControl_Lower(BgSpot06Objects*, PlayState*);
@@ -102,9 +104,13 @@ void RegisterLakeHyliaWaterControl() {
             if (flagState) {
                 waterPlane->actionFunc = BgSpot06Objects_WaterControl_Lower;
                 Flags_UnsetEventChkInf(EVENTCHKINF_RAISED_LAKE_HYLIA_WATER);
+                gPlayState->interfaceCtx.mapSegment[0] = (char*)ResourceGetDataByName(gDrainedLakeHyliaMinimapTex);
+                gPlayState->interfaceCtx.mapSegmentName[0] = (char*)gDrainedLakeHyliaMinimapTex;
             } else {
                 waterPlane->actionFunc = BgSpot06Objects_WaterControl_Raise;
                 Flags_SetEventChkInf(EVENTCHKINF_RAISED_LAKE_HYLIA_WATER);
+                gPlayState->interfaceCtx.mapSegment[0] = (char*)ResourceGetDataByName(gLakeHyliaMinimapTex);
+                gPlayState->interfaceCtx.mapSegmentName[0] = (char*)gLakeHyliaMinimapTex;
             }
         }
     });
