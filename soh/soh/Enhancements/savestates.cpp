@@ -717,8 +717,7 @@ void SaveState::LoadOverlayStaticData(void) {
     sUpperRiverSpawned = info->sUpperRiverSpawned_copy;
     sEnPoFieldNumSpawned = info->sEnPoFieldNumSpawned_copy;
     memcpy(sEnPoFieldSpawnPositions, info->sEnPoFieldSpawnPositions_copy, sizeof(sEnPoFieldSpawnPositions));
-    memcpy(sEnPoFieldSpawnSwitchFlags, info->sEnPoFieldSpawnSwitchFlags_copy,
-           sizeof(sEnPoFieldSpawnSwitchFlags));
+    memcpy(sEnPoFieldSpawnSwitchFlags, info->sEnPoFieldSpawnSwitchFlags_copy, sizeof(sEnPoFieldSpawnSwitchFlags));
 
     sTakaraIsInitialized = info->sTakaraIsInitialized_copy;
     D_80B41D90 = info->D_80B41D90_copy;
