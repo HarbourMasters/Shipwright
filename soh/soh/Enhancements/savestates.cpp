@@ -618,7 +618,7 @@ void SaveState::SaveOverlayStaticData(void) {
     info->demoKekkaiVel_copy = demoKekkaiVel;
     info->sSlugGroup_copy = sSlugGroup;
     info->sClearTagIsEffectInitialized_copy = sClearTagIsEffectsInitialized;
-    memcpy(info->sClearTagEffects_copy, sClearTagEffects, sizeof(sClearTagEffects));
+    memcpy(info->sClearTagEffects_copy, sClearTagEffects, sizeof(info->sClearTagEffects_copy));
 
     memcpy(&info->sEnFrPointers_copy, &sEnFrPointers, sizeof(info->sEnFrPointers_copy));
     info->sSpawnNum_copy = sSpawnNum;
@@ -673,7 +673,7 @@ void SaveState::LoadOverlayStaticData(void) {
     sBossGanonGanondorf = info->sBossGanonGanondorf_copy;
     sBossGanonZelda = info->sBossGanonZelda_copy;
     sBossGanonCape = info->sBossGanonCape_copy;
-    memcpy(sBossGanonEffectBuf, info->sBossGanonEffectBuf_copy, sizeof(info->sBossGanonEffectBuf_copy));
+    memcpy(sBossGanonEffectBuf, info->sBossGanonEffectBuf_copy, sizeof(sBossGanonEffectBuf));
 
     D_8090EB20 = info->D_8090EB20_copy;
     D_80910638 = info->D_80910638_copy;
@@ -698,7 +698,7 @@ void SaveState::LoadOverlayStaticData(void) {
     sZapperRot = info->sZapperRot_copy;
     sPhase2Timer = info->sPhase2Timer_copy;
     sPhase4HP = info->sPhase4HP_copy;
-    memcpy(sBodyBari, info->sBodyBari_copy, sizeof(info->sBodyBari_copy));
+    memcpy(sBodyBari, info->sBodyBari_copy, sizeof(sBodyBari));
     sDemo6kVelocity = info->sDemo6kVelocity_copy;
 
     D_8096CE94 = info->D_8096CE94_copy;
@@ -716,9 +716,9 @@ void SaveState::LoadOverlayStaticData(void) {
     sLowerRiverSpawned = info->sLowerRiverSpawned_copy;
     sUpperRiverSpawned = info->sUpperRiverSpawned_copy;
     sEnPoFieldNumSpawned = info->sEnPoFieldNumSpawned_copy;
-    memcpy(sEnPoFieldSpawnPositions, info->sEnPoFieldSpawnPositions_copy, sizeof(info->sEnPoFieldSpawnPositions_copy));
+    memcpy(sEnPoFieldSpawnPositions, info->sEnPoFieldSpawnPositions_copy, sizeof(sEnPoFieldSpawnPositions));
     memcpy(sEnPoFieldSpawnSwitchFlags, info->sEnPoFieldSpawnSwitchFlags_copy,
-           sizeof(info->sEnPoFieldSpawnSwitchFlags_copy));
+           sizeof(sEnPoFieldSpawnSwitchFlags));
 
     sTakaraIsInitialized = info->sTakaraIsInitialized_copy;
     D_80B41D90 = info->D_80B41D90_copy;
