@@ -1144,7 +1144,6 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
             Rupees_ChangeBy(99);
         } else if (item == RG_GREG_RUPEE) {
             Rupees_ChangeBy(1);
-            // gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_FOUND_GREG] = static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
         }
 
         return Return_Item_Entry(giEntry, RG_NONE);
