@@ -16,6 +16,7 @@
 #include "../../src/overlays/actors/ovl_Boss_Ganon/z_boss_ganon.h"
 #include "../../src/overlays/actors/ovl_Boss_Ganon2/z_boss_ganon2.h"
 #include "../../src/overlays/actors/ovl_Boss_Tw/z_boss_tw.h"
+#include "../../src/overlays/actors/ovl_Boss_Va/z_boss_va.h"
 #include "../../src/overlays/actors/ovl_En_Clear_Tag/z_en_clear_tag.h"
 #include "../../src/overlays/actors/ovl_En_Fr/z_en_fr.h"
 
@@ -199,6 +200,20 @@ typedef struct SaveStateInfo {
     // z_boss_tw
     uint8_t sTwInitalized_copy;
     BossTwEffect sTwEffects_copy[150];
+
+    // z_boss_va
+    u8 sKillBari_copy;
+    s16 sCsCamera_copy;
+    BossVaEffect sVaEffects_copy[400];
+    u8 sBodyState_copy;
+    u8 sFightPhase_copy;
+    s8 sCsState_copy;
+    s16 sDoorState_copy;
+    u8 sPhase3StopMoving_copy;
+    Vec3s sZapperRot_copy;
+    u16 sPhase2Timer_copy;
+    s8 sPhase4HP_copy;
+    u8 sBodyBari_copy[10];
 
     // z_demo_6k
     Vec3f sDemo6kVelocity_copy;
@@ -586,6 +601,18 @@ void SaveState::SaveOverlayStaticData(void) {
     memcpy(info->sBossGanon2Particles_copy, sBossGanon2Particles, sizeof(sBossGanon2Particles));
     info->sTwInitalized_copy = sTwInitalized;
     memcpy(info->sTwEffects_copy, sTwEffects, sizeof(sTwEffects));
+    info->sKillBari_copy = sKillBari;
+    info->sCsCamera_copy = sCsCamera;
+    memcpy(info->sVaEffects_copy, sVaEffects, sizeof(sVaEffects));
+    info->sBodyState_copy = sBodyState;
+    info->sFightPhase_copy = sFightPhase;
+    info->sCsState_copy = sCsState;
+    info->sDoorState_copy = sDoorState;
+    info->sPhase3StopMoving_copy = sPhase3StopMoving;
+    info->sZapperRot_copy = sZapperRot;
+    info->sPhase2Timer_copy = sPhase2Timer;
+    info->sPhase4HP_copy = sPhase4HP;
+    memcpy(info->sBodyBari_copy, sBodyBari, sizeof(info->sBodyBari_copy));
     info->sDemo6kVelocity_copy = sDemo6kVelocity;
     info->D_8096CE94_copy = D_8096CE94;
     info->demoKekkaiVel_copy = demoKekkaiVel;
@@ -660,6 +687,18 @@ void SaveState::LoadOverlayStaticData(void) {
     memcpy(sBossGanon2Particles, info->sBossGanon2Particles_copy, sizeof(sBossGanon2Particles));
     sTwInitalized = info->sTwInitalized_copy;
     memcpy(sTwEffects, info->sTwEffects_copy, sizeof(sTwEffects));
+    sKillBari = info->sKillBari_copy;
+    sCsCamera = info->sCsCamera_copy;
+    memcpy(sVaEffects, info->sVaEffects_copy, sizeof(sVaEffects));
+    sBodyState = info->sBodyState_copy;
+    sFightPhase = info->sFightPhase_copy;
+    sCsState = info->sCsState_copy;
+    sDoorState = info->sDoorState_copy;
+    sPhase3StopMoving = info->sPhase3StopMoving_copy;
+    sZapperRot = info->sZapperRot_copy;
+    sPhase2Timer = info->sPhase2Timer_copy;
+    sPhase4HP = info->sPhase4HP_copy;
+    memcpy(sBodyBari, info->sBodyBari_copy, sizeof(info->sBodyBari_copy));
     sDemo6kVelocity = info->sDemo6kVelocity_copy;
 
     D_8096CE94 = info->D_8096CE94_copy;

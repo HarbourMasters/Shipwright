@@ -35,23 +35,6 @@
 #define PHASE_4 15
 #define PHASE_DEATH 18
 
-typedef struct BossVaEffect {
-    /* 0x00 */ Vec3f pos;
-    /* 0x0C */ Vec3f velocity;
-    /* 0x18 */ Vec3f accel;
-    /* 0x24 */ u8 type;
-    /* 0x26 */ u16 timer;
-    /* 0x28 */ s16 mode;
-    /* 0x2A */ Vec3s rot;
-    /* 0x30 */ s16 primColor[4];
-    /* 0x38 */ s16 envColor[4];
-    /* 0x40 */ f32 scale;
-    /* 0x44 */ f32 scaleMod;
-    /* 0x48 */ Vec3f offset;
-    /* 0x54 */ struct BossVa* parent;
-    u32 epoch;
-} BossVaEffect; // size = 0x58
-
 typedef enum {
     /* 0 */ VA_NONE,
     /* 1 */ VA_LARGE_SPARK,
@@ -385,25 +368,25 @@ static DamageTable sDamageTable[] = {
 };
 
 static Vec3f sZeroVec = { 0.0f, 0.0f, 0.0f };
-static u8 sKillBari = 0;
-static u8 sBodyBari[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-static s16 sCsCamera = 0;
+u8 sKillBari = 0;
+u8 sBodyBari[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+s16 sCsCamera = 0;
 
-static BossVaEffect sVaEffects[400];
-static u8 sBodyState;
-static u8 sFightPhase;
-static s8 sCsState;
+BossVaEffect sVaEffects[400];
+u8 sBodyState;
+u8 sFightPhase;
+s8 sCsState;
 static Vec3f sCameraEye;
 static Vec3f sCameraAt;
 static Vec3f sCameraNextEye;
 static Vec3f sCameraNextAt;
 static Vec3f sCameraEyeMaxVel;
 static Vec3f sCameraAtMaxVel;
-static s16 sDoorState;
-static u8 sPhase3StopMoving;
-static Vec3s sZapperRot;
-static u16 sPhase2Timer;
-static s8 sPhase4HP;
+s16 sDoorState;
+u8 sPhase3StopMoving;
+Vec3s sZapperRot;
+u16 sPhase2Timer;
+s8 sPhase4HP;
 
 void BossVa_SetupAction(BossVa* this, BossVaActionFunc func) {
     this->actionFunc = func;

@@ -130,6 +130,20 @@ extern "C" BossGanon2Effect sBossGanon2Particles[100];
 extern "C" uint8_t sTwInitalized;
 extern "C" BossTwEffect sTwEffects[150];
 
+// z_boss_va
+extern "C" u8 sKillBari;
+extern "C" s16 sCsCamera;
+extern "C" BossVaEffect sVaEffects[400];
+extern "C" u8 sBodyState;
+extern "C" u8 sFightPhase;
+extern "C" s8 sCsState;
+extern "C" s16 sDoorState;
+extern "C" u8 sPhase3StopMoving;
+extern "C" Vec3s sZapperRot;
+extern "C" u16 sPhase2Timer;
+extern "C" s8 sPhase4HP;
+extern "C" u8 sBodyBari[10];
+
 // z_demo_6k
 extern "C" Vec3f sDemo6kVelocity;
 
