@@ -345,7 +345,7 @@ void EnRu2_CheckWaterMedallionCutscene(EnRu2* this, PlayState* play) {
     Player* player;
     s16 yaw;
 
-    if ((gSaveContext.chamberCutsceneNum == 2) && (gSaveContext.sceneSetupIndex < 4)) {
+    if ((gSaveContext.chamberCutsceneNum == 2) && (gSaveContext.sceneLayer < 4)) {
         player = GET_PLAYER(play);
         this->action = ENRU2_AWAIT_BLUE_WARP;
         play->csCtx.segment = &gWaterMedallionCs;

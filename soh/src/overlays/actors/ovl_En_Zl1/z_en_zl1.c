@@ -88,7 +88,7 @@ void EnZl1_Init(Actor* thisx, PlayState* play) {
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 24.0f);
     this->actor.targetMode = 0;
 
-    if (gSaveContext.sceneSetupIndex >= 4) {
+    if (gSaveContext.sceneLayer >= 4) {
         frameCount = Animation_GetLastFrame(&gChildZelda1Anim_00438);
         Animation_Change(&this->skelAnime, &gChildZelda1Anim_00438, 1.0f, 0.0f, frameCount, ANIMMODE_LOOP, 0.0f);
         this->unk_1E6 = 0;

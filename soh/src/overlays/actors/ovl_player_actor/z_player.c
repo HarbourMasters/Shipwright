@@ -5458,7 +5458,7 @@ s32 Player_ActionHandler_1(Player* this, PlayState* play) {
                     play->transiActorCtx.list[(u16)doorActor->params >> 10].sides[(doorDirection > 0) ? 0 : 1].room;
 
                 if ((frontRoom >= 0) && (frontRoom != play->roomCtx.curRoom.num)) {
-                    func_8009728C(play, &play->roomCtx, frontRoom);
+                    Room_RequestNewRoom(play, &play->roomCtx, frontRoom);
                 }
             }
 
@@ -10357,7 +10357,7 @@ void Player_Action_80845EF8(Player* this, PlayState* play) {
         } else {
             func_8083C0E8(this, play);
             if (play->roomCtx.prevRoom.num >= 0) {
-                func_80097534(play, &play->roomCtx);
+                Room_FinishRoomChange(play, &play->roomCtx);
             }
             func_8005B1A4(Play_GetCamera(play, 0));
             Play_SetupRespawnPoint(play, 0, 0xDFF);
@@ -10613,7 +10613,7 @@ void Player_StartMode_Nothing(PlayState* play, Player* this) {
 
 void Player_StartMode_BlueWarp(PlayState* play, Player* this) {
     Player_SetupAction(play, this, Player_Action_8084F710, 0);
-    if ((play->sceneNum == SCENE_LAKE_HYLIA) && (gSaveContext.sceneSetupIndex >= 4)) {
+    if ((play->sceneNum == SCENE_LAKE_HYLIA) && (gSaveContext.sceneLayer >= 4)) {
         this->av1.actionVar1 = 1;
     }
     this->stateFlags1 |= PLAYER_STATE1_IN_CUTSCENE;
@@ -10828,8 +10828,8 @@ void Player_Init(Actor* thisx, PlayState* play2) {
     if ((respawnFlag == 0) || (respawnFlag < -1)) {
         titleFileSize = scene->titleFile.vromEnd - scene->titleFile.vromStart;
         if (GameInteractor_Should(VB_SHOW_TITLE_CARD, gSaveContext.showTitleCard)) {
-            if ((gSaveContext.sceneSetupIndex < 4) &&
-                (gEntranceTable[((void)0, gSaveContext.entranceIndex) + ((void)0, gSaveContext.sceneSetupIndex)].field &
+            if ((gSaveContext.sceneLayer < 4) &&
+                (gEntranceTable[((void)0, gSaveContext.entranceIndex) + ((void)0, gSaveContext.sceneLayer)].field &
                  ENTRANCE_INFO_DISPLAY_TITLE_CARD_FLAG) &&
                 ((play->sceneNum != SCENE_DODONGOS_CAVERN) ||
                  (Flags_GetEventChkInf(EVENTCHKINF_ENTERED_DODONGOS_CAVERN))) &&

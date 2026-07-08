@@ -182,7 +182,7 @@ void DoorWarp1_SetupWarp(DoorWarp1* this, PlayState* play) {
                    gSaveContext.entranceIndex == ENTR_LAKE_HYLIA_WATER_TEMPLE_BLUE_WARP || // lake hylia
                    gSaveContext.entranceIndex == ENTR_DESERT_COLOSSUS_SPIRIT_TEMPLE_BLUE_WARP || // desert colossus
                    gSaveContext.entranceIndex == ENTR_GRAVEYARD_SHADOW_TEMPLE_BLUE_WARP) &&      // graveyard
-                 gSaveContext.sceneSetupIndex < 4) ||
+                 gSaveContext.sceneLayer < 4) ||
                 (GET_PLAYER(play)->actor.params & 0xF00) != 0x200) {
                 Actor_Kill(&this->actor);
             }

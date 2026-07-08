@@ -436,7 +436,7 @@ void func_8097ED64(DemoGt* this, PlayState* play, s32 actionIdx) {
 u8 DemoGt_IsCutsceneLayer() {
     if (kREG(2) != 0) {
         return true;
-    } else if (gSaveContext.sceneSetupIndex < 4) {
+    } else if (gSaveContext.sceneLayer < 4) {
         return false;
     } else {
         return true;

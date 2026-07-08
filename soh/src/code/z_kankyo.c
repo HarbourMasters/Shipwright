@@ -336,7 +336,7 @@ void Environment_Init(PlayState* play2, EnvironmentContext* envCtx, s32 unused) 
     play->envCtx.unk_F2[0] = 0;
 
     if (gSaveContext.retainWeatherMode != 0) {
-        if (((void)0, gSaveContext.sceneSetupIndex) < 4) {
+        if (((void)0, gSaveContext.sceneLayer) < 4) {
             switch (gWeatherMode) {
                 case 1:
                     envCtx->unk_17 = 1;
@@ -936,7 +936,7 @@ void Environment_Update(PlayState* play, EnvironmentContext* envCtx, LightContex
         }
 
         //! @bug `gTimeIncrement` is unsigned, it can't be negative
-        if (((((void)0, gSaveContext.sceneSetupIndex) >= 5 || gTimeIncrement != 0) &&
+        if (((((void)0, gSaveContext.sceneLayer) >= 5 || gTimeIncrement != 0) &&
              ((void)0, gSaveContext.dayTime) > gSaveContext.skyboxTime) ||
             (((void)0, gSaveContext.dayTime) < 0xAAB || gTimeIncrement < 0)) {
             gSaveContext.skyboxTime = ((void)0, gSaveContext.dayTime);
@@ -1322,7 +1322,7 @@ void Environment_DrawSunAndMoon(PlayState* play) {
     }
 
     if (gSaveContext.entranceIndex != ENTR_HYRULE_FIELD_PAST_BRIDGE_SPAWN ||
-        ((void)0, gSaveContext.sceneSetupIndex) != 5) {
+        ((void)0, gSaveContext.sceneLayer) != 5) {
         Matrix_Translate(play->view.eye.x + play->envCtx.sunPos.x, play->view.eye.y + play->envCtx.sunPos.y,
                          play->view.eye.z + play->envCtx.sunPos.z, MTXMODE_NEW);
 

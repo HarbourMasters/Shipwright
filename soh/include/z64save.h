@@ -292,7 +292,7 @@ typedef struct {
     /* 0x1354 */ s32 fileNum; // "file_no"
     /* 0x1358 */ char unk_1358[0x0004];
     /* 0x135C */ s32 gameMode;
-    /* 0x1360 */ s32 sceneSetupIndex; // "counter" // Upstream TODO: sceneLayer
+    /* 0x1360 */ s32 sceneLayer; // "counter"
     /* 0x1364 */ s32 respawnFlag; // "restart_flag"
     /* 0x1368 */ RespawnData respawn[RESPAWN_MODE_MAX]; // "restart_data"
     /* 0x13BC */ f32 entranceSpeed;
@@ -423,7 +423,7 @@ typedef enum {
     /* 4 */ SCENE_LAYER_CUTSCENE_FIRST
 } SceneLayer;
 
-#define IS_CUTSCENE_LAYER (gSaveContext.sceneSetupIndex >= SCENE_LAYER_CUTSCENE_FIRST)
+#define IS_CUTSCENE_LAYER (gSaveContext.sceneLayer >= SCENE_LAYER_CUTSCENE_FIRST)
 
 typedef enum {
     /* 0 */ LINK_AGE_ADULT,

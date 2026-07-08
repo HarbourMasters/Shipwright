@@ -1084,7 +1084,7 @@ typedef struct {
     /* 0x00 */ Room  curRoom;
     /* 0x14 */ Room  prevRoom;
     /* 0x28 */ void* bufPtrs[2];
-    /* 0x30 */ u8    unk_30;
+    /* 0x30 */ u8    activeBufPage;
     /* 0x31 */ s8    status;
     /* 0x34 */ void* unk_34;
     /* 0x38 */ DmaRequest dmaRequest;
@@ -1477,7 +1477,7 @@ typedef struct PlayState {
     /* 0x11E14 */ u8 skyboxId;
     /* 0x11E15 */ s8 transitionTrigger; // "fade_direction"
     /* 0x11E16 */ s16 unk_11E16;
-    /* 0x11E18 */ s16 unk_11E18;
+    /* 0x11E18 */ s16 bgCoverAlpha;
     /* 0x11E1A */ s16 nextEntranceIndex;
     /* 0x11E1C */ char unk_11E1C[0x40];
     /* 0x11E5C */ s8 shootingGalleryStatus;

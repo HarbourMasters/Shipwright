@@ -197,7 +197,7 @@ void func_80969FB4(DemoDu* this, PlayState* play) {
 void DemoDu_CsFireMedallion_AdvanceTo01(DemoDu* this, PlayState* play) {
     s32 pad[2];
 
-    if ((gSaveContext.chamberCutsceneNum == 1) && (gSaveContext.sceneSetupIndex < 4)) {
+    if ((gSaveContext.chamberCutsceneNum == 1) && (gSaveContext.sceneLayer < 4)) {
         Player* player = GET_PLAYER(play);
 
         this->updateIndex = CS_FIREMEDALLION_SUBSCENE(1);

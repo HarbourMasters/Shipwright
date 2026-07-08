@@ -2184,7 +2184,7 @@ void RandomizerOnSceneInitHandler(int16_t sceneNum) {
                 // Reset room ctx back to prev room and then load the new room
                 gPlayState->roomCtx.status = 0;
                 gPlayState->roomCtx.curRoom = gPlayState->roomCtx.prevRoom;
-                func_8009728C(gPlayState, &gPlayState->roomCtx, replacedRoom);
+                Room_RequestNewRoom(gPlayState, &gPlayState->roomCtx, replacedRoom);
             }
         }
 

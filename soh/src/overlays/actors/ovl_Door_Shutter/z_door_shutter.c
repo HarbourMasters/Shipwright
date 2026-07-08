@@ -566,9 +566,9 @@ void DoorShutter_SetupClosed(DoorShutter* this, PlayState* play) {
 
             play->roomCtx.curRoom = play->roomCtx.prevRoom;
             play->roomCtx.prevRoom = tempRoom;
-            play->roomCtx.unk_30 ^= 1;
+            play->roomCtx.activeBufPage ^= 1;
         }
-        func_80097534(play, &play->roomCtx);
+        Room_FinishRoomChange(play, &play->roomCtx);
         Play_SetupRespawnPoint(play, RESPAWN_MODE_DOWN, 0x0EFF);
     }
     this->unk_164 = 0;

@@ -265,7 +265,7 @@ void BgDyYoseizo_ChooseType(BgDyYoseizo* this, PlayState* play) {
     }
 
     if (givingReward) {
-        if (gSaveContext.sceneSetupIndex < 4) {
+        if (gSaveContext.sceneLayer < 4) {
             if (play->sceneNum != SCENE_GREAT_FAIRYS_FOUNTAIN_MAGIC) {
                 switch (this->fountainType) {
                     case FAIRY_SPELL_FARORES_WIND:

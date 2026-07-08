@@ -158,14 +158,14 @@ void func_800645A0(PlayState* play, CutsceneContext* csCtx) {
     Input* input = &play->state.input[0];
 
     if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0) && CHECK_BTN_ALL(input->press.button, BTN_DLEFT) &&
-        (csCtx->state == CS_STATE_IDLE) && (gSaveContext.sceneSetupIndex >= 4)) {
+        (csCtx->state == CS_STATE_IDLE) && (gSaveContext.sceneLayer >= 4)) {
         D_8015FCC8 = 0;
         gSaveContext.cutsceneIndex = 0xFFFD;
         gSaveContext.cutsceneTrigger = 1;
     }
 
     if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0) && CHECK_BTN_ALL(input->press.button, BTN_DUP) &&
-        (csCtx->state == CS_STATE_IDLE) && (gSaveContext.sceneSetupIndex >= 4) && !gDbgCamEnabled) {
+        (csCtx->state == CS_STATE_IDLE) && (gSaveContext.sceneLayer >= 4) && !gDbgCamEnabled) {
         D_8015FCC8 = 1;
         gSaveContext.cutsceneIndex = 0xFFFD;
         gSaveContext.cutsceneTrigger = 1;
@@ -643,7 +643,7 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                     gSaveContext.cutsceneIndex = 0xFFF3;
                     play->transitionType = TRANS_TYPE_INSTANT;
                 } else {
-                    if (gSaveContext.sceneSetupIndex < 4) {
+                    if (gSaveContext.sceneLayer < 4) {
                         if (!LINK_IS_ADULT) {
                             play->linkAgeOnLoad = 0;
                         } else {
@@ -1107,7 +1107,7 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                     gSaveContext.cutsceneIndex = 0xFFF3;
                     play->transitionType = TRANS_TYPE_FADE_BLACK;
                 } else {
-                    switch (gSaveContext.sceneSetupIndex) {
+                    switch (gSaveContext.sceneLayer) {
                         case 8:
                             play->nextEntranceIndex = ENTR_SACRED_FOREST_MEADOW_SOUTH_EXIT;
                             play->transitionTrigger = TRANS_TRIGGER_START;

@@ -446,38 +446,38 @@ void Play_Init(GameState* thisx) {
     if (gSaveContext.gameMode != GAMEMODE_NORMAL || gSaveContext.cutsceneIndex >= 0xFFF0) {
         gSaveContext.nayrusLoveTimer = 0;
         Magic_Reset(play);
-        gSaveContext.sceneSetupIndex = SCENE_LAYER_CUTSCENE_FIRST + (gSaveContext.cutsceneIndex & 0xF);
+        gSaveContext.sceneLayer = SCENE_LAYER_CUTSCENE_FIRST + (gSaveContext.cutsceneIndex & 0xF);
     } else if (!LINK_IS_ADULT && IS_DAY) {
-        gSaveContext.sceneSetupIndex = SCENE_LAYER_CHILD_DAY;
+        gSaveContext.sceneLayer = SCENE_LAYER_CHILD_DAY;
     } else if (!LINK_IS_ADULT && !IS_DAY) {
-        gSaveContext.sceneSetupIndex = SCENE_LAYER_CHILD_NIGHT;
+        gSaveContext.sceneLayer = SCENE_LAYER_CHILD_NIGHT;
     } else if (LINK_IS_ADULT && IS_DAY) {
-        gSaveContext.sceneSetupIndex = SCENE_LAYER_ADULT_DAY;
+        gSaveContext.sceneLayer = SCENE_LAYER_ADULT_DAY;
     } else {
-        gSaveContext.sceneSetupIndex = SCENE_LAYER_ADULT_NIGHT;
+        gSaveContext.sceneLayer = SCENE_LAYER_ADULT_NIGHT;
     }
 
     // save the base scene layer (before accounting for the special cases below) to use later for the transition type
-    baseSceneLayer = gSaveContext.sceneSetupIndex;
+    baseSceneLayer = gSaveContext.sceneLayer;
 
     if ((gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_HYRULE_FIELD) && !LINK_IS_ADULT &&
         !IS_CUTSCENE_LAYER) {
         if (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD) && CHECK_QUEST_ITEM(QUEST_GORON_RUBY) &&
             CHECK_QUEST_ITEM(QUEST_ZORA_SAPPHIRE)) {
-            gSaveContext.sceneSetupIndex = 1;
+            gSaveContext.sceneLayer = 1;
         } else {
-            gSaveContext.sceneSetupIndex = 0;
+            gSaveContext.sceneLayer = 0;
         }
     } else if ((gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_KOKIRI_FOREST) && LINK_IS_ADULT &&
                !IS_CUTSCENE_LAYER) {
-        gSaveContext.sceneSetupIndex = (Flags_GetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP)) ? 3 : 2;
+        gSaveContext.sceneLayer = (Flags_GetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP)) ? 3 : 2;
     }
 
     Play_SpawnScene(
-        play, gEntranceTable[((void)0, gSaveContext.entranceIndex) + ((void)0, gSaveContext.sceneSetupIndex)].scene,
-        gEntranceTable[((void)0, gSaveContext.sceneSetupIndex) + ((void)0, gSaveContext.entranceIndex)].spawn);
+        play, gEntranceTable[((void)0, gSaveContext.entranceIndex) + ((void)0, gSaveContext.sceneLayer)].scene,
+        gEntranceTable[((void)0, gSaveContext.sceneLayer) + ((void)0, gSaveContext.entranceIndex)].spawn);
 
-    osSyncPrintf("\nSCENE_NO=%d COUNTER=%d\n", ((void)0, gSaveContext.entranceIndex), gSaveContext.sceneSetupIndex);
+    osSyncPrintf("\nSCENE_NO=%d COUNTER=%d\n", ((void)0, gSaveContext.entranceIndex), gSaveContext.sceneLayer);
 
 #if 0
     // When entering Gerudo Valley in the credits, trigger the GC emulator to play the ending movie.
@@ -525,7 +525,7 @@ void Play_Init(GameState* thisx) {
     play->state.destroy = Play_Destroy;
     play->transitionTrigger = TRANS_TRIGGER_END;
     play->unk_11E16 = 0xFF;
-    play->unk_11E18 = 0;
+    play->bgCoverAlpha = 0;
     play->unk_11DE9 = false;
 
     if (gSaveContext.gameMode != GAMEMODE_TITLE_SCREEN) {
@@ -1542,7 +1542,7 @@ void Play_Draw(PlayState* play) {
         }
 
         if ((HREG(80) != 10) || (HREG(84) != 0)) {
-            Environment_FillScreen(gfxCtx, 0, 0, 0, play->unk_11E18, FILL_SCREEN_OPA);
+            Environment_FillScreen(gfxCtx, 0, 0, 0, play->bgCoverAlpha, FILL_SCREEN_OPA);
         }
 
         if ((HREG(80) != 10) || (HREG(85) != 0)) {

@@ -831,7 +831,7 @@ void EnHorse_Init(Actor* thisx, PlayState* play2) {
     this->actor.focus.pos.y += 70.0f;
     this->playerControlled = false;
 
-    if ((play->sceneNum == SCENE_LON_LON_RANCH) && (gSaveContext.sceneSetupIndex < 4)) {
+    if ((play->sceneNum == SCENE_LON_LON_RANCH) && (gSaveContext.sceneLayer < 4)) {
         if (this->type == HORSE_HNI) {
             if (this->actor.world.rot.z == 0 || !IS_DAY) {
                 Actor_Kill(&this->actor);
@@ -3608,7 +3608,7 @@ void EnHorse_Update(Actor* thisx, PlayState* play2) {
             this->cyl1.base.atFlags &= ~1;
         }
 
-        if (gSaveContext.entranceIndex != ENTR_LON_LON_RANCH_ENTRANCE || gSaveContext.sceneSetupIndex != 9) {
+        if (gSaveContext.entranceIndex != ENTR_LON_LON_RANCH_ENTRANCE || gSaveContext.sceneLayer != 9) {
             if (this->dustFlags & 1) {
                 this->dustFlags &= ~1;
                 func_800287AC(play, &this->frontRightHoof, &dustVel, &dustAcc, EnHorse_RandInt(100) + 200,

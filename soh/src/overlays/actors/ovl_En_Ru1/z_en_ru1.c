@@ -2018,7 +2018,7 @@ void func_80AEF890(EnRu1* this, PlayState* play) {
     s32 pad[2];
     s8 curRoomNum;
 
-    if ((gSaveContext.sceneSetupIndex < 4) && (EnRu1_IsCsStateIdle(play))) {
+    if ((gSaveContext.sceneLayer < 4) && (EnRu1_IsCsStateIdle(play))) {
         curRoomNum = play->roomCtx.curRoom.num;
         Flags_SetInfTable(INFTABLE_145);
         Flags_SetSwitch(play, func_80AEADE0(this));

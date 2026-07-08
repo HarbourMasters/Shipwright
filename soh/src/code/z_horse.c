@@ -258,7 +258,7 @@ void Horse_InitPlayerHorse(PlayState* play, Player* player) {
         }
 
         if (Horse_CanSpawn(play->sceneNum)) {
-            if ((gSaveContext.sceneSetupIndex > 3) ||
+            if ((gSaveContext.sceneLayer > 3) ||
                 ((gSaveContext.entranceIndex == ENTR_HYRULE_FIELD_11 ||
                   gSaveContext.entranceIndex == ENTR_HYRULE_FIELD_12 ||
                   gSaveContext.entranceIndex == ENTR_HYRULE_FIELD_13 ||

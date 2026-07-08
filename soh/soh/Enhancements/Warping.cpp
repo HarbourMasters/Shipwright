@@ -57,7 +57,7 @@ void Warp(WarpPoint& warpPoint) {
         gSaveContext.magicCapacity = 0;
         gSaveContext.magicLevel = gSaveContext.magic;
         gSaveContext.fileNum = 0xFF;
-        gSaveContext.sceneSetupIndex = 0;
+        gSaveContext.sceneLayer = 0;
         gSaveContext.cutsceneIndex = 0;
         gSaveContext.linkAge = 0;
         gSaveContext.nightFlag = 0;

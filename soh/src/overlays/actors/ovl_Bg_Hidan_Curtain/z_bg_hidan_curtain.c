@@ -233,7 +233,7 @@ void BgHidanCurtain_Update(Actor* thisx, PlayState* play2) {
             this->collider.dim.height = hcParams->height * riseProgress;
             CollisionCheck_SetAT(play, &play->colChkCtx, &this->collider.base);
             CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider.base);
-            if (gSaveContext.sceneSetupIndex <= 3) {
+            if (gSaveContext.sceneLayer <= 3) {
                 Actor_PlaySfx_Flagged(&this->actor, NA_SE_EV_FIRE_PILLAR_S - SFX_FLAG);
             }
         } else if ((this->type == 1) && Flags_GetTreasure(play, this->treasureFlag)) {
