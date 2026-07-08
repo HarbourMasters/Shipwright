@@ -220,6 +220,7 @@ void ObjTimeblock_Normal(ObjTimeblock* this, PlayState* play) {
         this->demoEffectTimer = 160;
 
         if (GameInteractor_Should(VB_PLAY_TIMEBLOCK_CS, true, this)) {
+            // Possibly points the camera to this actor
             OnePointCutscene_Attention(play, &this->dyna.actor);
         }
 
