@@ -396,7 +396,7 @@ void FileChoose_CopyConfirm(GameState* thisx) {
         this->nextTitleLabel = FS_TITLE_COPY_COMPLETE;
         this->actionTimer = 8;
         this->configMode = CM_COPY_ANIM_1;
-        func_800AA000(300.0f, 0xB4, 0x14, 0x64);
+        Rumble_Request(300.0f, 0xB4, 0x14, 0x64);
         Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
                                &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     } else if ((ABS(this->stickRelY) >= 30) || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DDOWN | BTN_DUP))) {
@@ -872,7 +872,7 @@ void FileChoose_EraseConfirm(GameState* thisx) {
         this->actionTimer = 8;
         this->configMode = CM_ERASE_ANIM_1;
         this->nextTitleLabel = FS_TITLE_ERASE_COMPLETE;
-        func_800AA000(200.0f, 0xFF, 0x14, 0x96);
+        Rumble_Request(200.0f, 0xFF, 0x14, 0x96);
         sEraseDelayTimer = 15;
     } else if ((ABS(this->stickRelY) >= 30) || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DDOWN | BTN_DUP))) {
         Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,

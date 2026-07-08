@@ -161,7 +161,7 @@ void func_8088B268(BgHidanRock* this, PlayState* play) {
                 this->timer = 5 - ((CVarGetInteger(CVAR_ENHANCEMENT("FasterBlockPush"), 0) * 3) / 5);
             }
 
-            func_8002F974(&this->dyna.actor, NA_SE_EV_ROCK_SLIDE - SFX_FLAG);
+            Actor_PlaySfx_Flagged(&this->dyna.actor, NA_SE_EV_ROCK_SLIDE - SFX_FLAG);
         } else {
             player->stateFlags2 &= ~PLAYER_STATE2_MOVING_DYNAPOLY;
             this->dyna.unk_150 = 0.0f;
@@ -237,7 +237,7 @@ void func_8088B69C(BgHidanRock* this, PlayState* play) {
     }
 
     if (!(this->timer % 4)) {
-        func_800AA000(this->dyna.actor.xyzDistToPlayerSq, 0xB4, 0x0A, 0x64);
+        Rumble_Request(this->dyna.actor.xyzDistToPlayerSq, 0xB4, 0x0A, 0x64);
         Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_BLOCK_SHAKE);
     }
 }

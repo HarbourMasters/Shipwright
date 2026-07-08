@@ -42,8 +42,8 @@ bool Scene_CommandSpawnList(PlayState* play, SOH::ISceneCommand* cmd) {
     ActorEntry* entries = (ActorEntry*)cmdStartPos->GetRawPointer();
 
     play->linkActorEntry = &entries[play->setupEntranceList[play->curSpawn].spawn];
-    play->linkAgeOnLoad = ((void)0, gSaveContext.linkAge);
-    s16 linkObjectId = gLinkObjectIds[((void)0, gSaveContext.linkAge)];
+    play->linkAgeOnLoad = gSaveContext.linkAge;
+    s16 linkObjectId = gLinkObjectIds[gSaveContext.linkAge];
 
     Object_Spawn(&play->objectCtx, linkObjectId);
 
@@ -159,7 +159,7 @@ bool Scene_CommandObjectList(PlayState* play, SOH::ISceneCommand* cmd) {
             for (j = i; j < play->objectCtx.num; j++) {
                 play->objectCtx.status[j].id = OBJECT_INVALID;
             }
-            func_80031A28(play, &play->actorCtx);
+            Actor_KillAllWithMissingObject(play, &play->actorCtx);
             break;
         }
     }
@@ -262,13 +262,13 @@ bool Scene_CommandTimeSettings(PlayState* play, SOH::ISceneCommand* cmd) {
         gTimeIncrement = play->envCtx.timeIncrement;
     }
 
-    play->envCtx.sunPos.x = -(Math_SinS(((void)0, gSaveContext.dayTime) - 0x8000) * 120.0f) * 25.0f;
-    play->envCtx.sunPos.y = (Math_CosS(((void)0, gSaveContext.dayTime) - 0x8000) * 120.0f) * 25.0f;
-    play->envCtx.sunPos.z = (Math_CosS(((void)0, gSaveContext.dayTime) - 0x8000) * 20.0f) * 25.0f;
+    play->envCtx.sunPos.x = -(Math_SinS(gSaveContext.dayTime - 0x8000) * 120.0f) * 25.0f;
+    play->envCtx.sunPos.y = (Math_CosS(gSaveContext.dayTime - 0x8000) * 120.0f) * 25.0f;
+    play->envCtx.sunPos.z = (Math_CosS(gSaveContext.dayTime - 0x8000) * 20.0f) * 25.0f;
 
     if (((play->envCtx.timeIncrement == 0) && (gSaveContext.cutsceneIndex < 0xFFF0)) ||
         (gSaveContext.entranceIndex == ENTR_LAKE_HYLIA_WARP_PAD)) {
-        gSaveContext.skyboxTime = ((void)0, gSaveContext.dayTime);
+        gSaveContext.skyboxTime = gSaveContext.dayTime;
         if ((gSaveContext.skyboxTime >= 0x2AAC) && (gSaveContext.skyboxTime < 0x4555)) {
             gSaveContext.skyboxTime = 0x3556;
         } else if ((gSaveContext.skyboxTime >= 0x4555) && (gSaveContext.skyboxTime < 0x5556)) {
@@ -336,9 +336,9 @@ bool Scene_CommandAlternateHeaderList(PlayState* play, SOH::ISceneCommand* cmd) 
     // s32 pad;
     // SceneCmd* altHeader;
 
-    // osSyncPrintf("\n[ZU]sceneset age    =[%X]", ((void)0, gSaveContext.linkAge));
-    // osSyncPrintf("\n[ZU]sceneset time   =[%X]", ((void)0, gSaveContext.cutsceneIndex));
-    // osSyncPrintf("\n[ZU]sceneset counter=[%X]", ((void)0, gSaveContext.sceneSetupIndex));
+    // osSyncPrintf("\n[ZU]sceneset age    =[%X]", gSaveContext.linkAge);
+    // osSyncPrintf("\n[ZU]sceneset time   =[%X]", gSaveContext.cutsceneIndex);
+    // osSyncPrintf("\n[ZU]sceneset counter=[%X]", gSaveContext.sceneSetupIndex);
 
     if (gSaveContext.sceneSetupIndex != 0) {
         SOH::Scene* desiredHeader =

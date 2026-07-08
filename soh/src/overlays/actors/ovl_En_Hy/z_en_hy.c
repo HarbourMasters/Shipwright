@@ -746,7 +746,7 @@ void EnHy_OfferBuyBottledItem(EnHy* this, PlayState* play) {
     if ((this->actor.params & 0x7F) == ENHY_TYPE_BOJ_5) {
         if (!Inventory_HasSpecificBottle(ITEM_BLUE_FIRE) && !Inventory_HasSpecificBottle(ITEM_BUG) &&
             !Inventory_HasSpecificBottle(ITEM_FISH)) {
-            switch (func_8002F368(play)) {
+            switch (Actor_GetPlayerExchangeItemId(play)) {
                 case EXCH_ITEM_POE:
                 case EXCH_ITEM_BIG_POE:
                 case EXCH_ITEM_LETTER_RUTO:
@@ -759,7 +759,7 @@ void EnHy_OfferBuyBottledItem(EnHy* this, PlayState* play) {
                     break;
             }
         } else {
-            switch (func_8002F368(play)) {
+            switch (Actor_GetPlayerExchangeItemId(play)) {
                 case EXCH_ITEM_BLUE_FIRE:
                     this->actor.textId = 0x70F0;
                     break;
@@ -1025,7 +1025,7 @@ void EnHy_Walk(EnHy* this, PlayState* play) {
 }
 
 void EnHy_Fidget(EnHy* this, PlayState* play) {
-    func_80034F54(play, this->fidgetTableY, this->fidgetTableZ, 16);
+    Actor_UpdateFidgetTables(play, this->fidgetTableY, this->fidgetTableZ, 16);
 }
 
 void EnHy_DoNothing(EnHy* this, PlayState* play) {
@@ -1038,7 +1038,7 @@ void EnHy_SetupPace(EnHy* this, PlayState* play) {
         this->actionFunc = EnHy_Pace;
     }
 
-    func_80034F54(play, this->fidgetTableY, this->fidgetTableZ, 16);
+    Actor_UpdateFidgetTables(play, this->fidgetTableY, this->fidgetTableZ, 16);
 }
 
 void EnHy_Pace(EnHy* this, PlayState* play) {

@@ -136,7 +136,7 @@ void func_80B1778C(EnTakaraMan* this, PlayState* play) {
                     this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
                     this->unk_218 = 1;
                 }
-                func_8002F2CC(&this->actor, play, 100.0f);
+                Actor_OfferTalk(&this->actor, play, 100.0f);
             }
         }
     }
@@ -201,7 +201,7 @@ void EnTakaraMan_Update(Actor* thisx, PlayState* play) {
     }
 
     Actor_SetFocus(&this->actor, this->height);
-    func_80038290(play, &this->actor, &this->unk_22C, &this->unk_232, this->actor.focus.pos);
+    Actor_TrackPlayer(play, &this->actor, &this->unk_22C, &this->unk_232, this->actor.focus.pos);
     if (this->eyeTimer == 0) {
         this->eyeTextureIdx++;
         if (this->eyeTextureIdx >= 2) {

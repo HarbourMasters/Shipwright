@@ -870,7 +870,7 @@ void BgDyYoseizo_Update(Actor* thisx, PlayState* play2) {
     this->heightOffset = this->scale * 7500.0f;
     Actor_SetFocus(&this->actor, this->heightOffset);
     this->actor.focus.pos.y = this->heightOffset;
-    func_80038290(play, &this->actor, &this->headRot, &this->torsoRot, this->actor.focus.pos);
+    Actor_TrackPlayer(play, &this->actor, &this->headRot, &this->torsoRot, this->actor.focus.pos);
     BgDyYoseizo_ParticleUpdate(this, play);
     Actor_SetScale(&this->actor, this->scale);
 }

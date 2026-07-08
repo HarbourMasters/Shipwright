@@ -288,7 +288,7 @@ void func_80A2F83C(EnGb* this, PlayState* play) {
     }
     if (Actor_ProcessTalkRequest(&this->dyna.actor, play)) {
         if (GameInteractor_Should(VB_SELL_POES_TO_POE_COLLECTOR, true, this)) {
-            switch (func_8002F368(play)) {
+            switch (Actor_GetPlayerExchangeItemId(play)) {
                 case EXCH_ITEM_NONE:
                     func_80A2F180(this);
                     this->actionFunc = func_80A2F94C;
@@ -306,7 +306,7 @@ void func_80A2F83C(EnGb* this, PlayState* play) {
         return;
     }
     if (this->dyna.actor.xzDistToPlayer < 100.0f) {
-        func_8002F298(&this->dyna.actor, play, 100.0f, EXCH_ITEM_POE);
+        Actor_OfferTalkExchangeEquiCylinder(&this->dyna.actor, play, 100.0f, EXCH_ITEM_POE);
     }
 }
 

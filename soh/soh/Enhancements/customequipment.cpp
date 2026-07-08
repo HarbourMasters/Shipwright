@@ -54,7 +54,7 @@ static Gfx* LoadCustomGfx(const char* path) {
     if (!path)
         return nullptr;
     path = ResolveCustomFPSHand(path);
-    if (!ResourceGetIsCustomByName(path) && !ResourceMgr_FileAltExists(path))
+    if (!ResourceMgr_FileAltExists(path) || !ResourceGetIsCustomByName(path))
         return nullptr;
     return ResourceMgr_LoadGfxByName(path);
 }

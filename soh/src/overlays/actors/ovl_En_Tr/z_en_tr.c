@@ -141,7 +141,7 @@ void EnTr_CrySpellcast(EnTr* this, PlayState* play) {
     } else if (this->actor.child != NULL) {
         this->actor.child = NULL;
     }
-    func_8002F974(&this->actor, NA_SE_EN_TWINROBA_FLY_DEMO - SFX_FLAG);
+    Actor_PlaySfx_Flagged(&this->actor, NA_SE_EN_TWINROBA_FLY_DEMO - SFX_FLAG);
 }
 
 void EnTr_DoNothing(EnTr* this, PlayState* play) {
@@ -176,7 +176,7 @@ void EnTr_ChooseAction2(EnTr* this, PlayState* play) {
                     EnTr_UpdateRotation(this, play, this->actionIndex);
                     break;
             }
-            func_8002F974(&this->actor, NA_SE_EN_TWINROBA_FLY_DEMO - SFX_FLAG);
+            Actor_PlaySfx_Flagged(&this->actor, NA_SE_EN_TWINROBA_FLY_DEMO - SFX_FLAG);
         }
     }
 }
@@ -206,7 +206,7 @@ void EnTr_FlyKidnapCutscene(EnTr* this, PlayState* play) {
             }
 
             if (play->csCtx.frames < 670) {
-                func_8002F974(&this->actor, NA_SE_EN_TWINROBA_FLY_DEMO - SFX_FLAG);
+                Actor_PlaySfx_Flagged(&this->actor, NA_SE_EN_TWINROBA_FLY_DEMO - SFX_FLAG);
             }
         }
     }
@@ -295,7 +295,7 @@ void EnTr_Reappear(EnTr* this, PlayState* play) {
     if (this->timer > 0) {
         this->timer--;
     }
-    func_8002F974(&this->actor, NA_SE_EN_TWINROBA_FLY_DEMO - SFX_FLAG);
+    Actor_PlaySfx_Flagged(&this->actor, NA_SE_EN_TWINROBA_FLY_DEMO - SFX_FLAG);
 }
 
 void EnTr_WaitToReappear(EnTr* this, PlayState* play) {

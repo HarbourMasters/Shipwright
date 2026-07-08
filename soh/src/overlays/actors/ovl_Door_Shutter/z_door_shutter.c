@@ -596,7 +596,7 @@ void DoorShutter_Close(DoorShutter* this, PlayState* play) {
         Quake_SetSpeed(quakeId, -32536);
         Quake_SetQuakeValues(quakeId, 2, 0, 0, 0);
         Quake_SetCountdown(quakeId, 10);
-        func_800AA000(this->dyna.actor.xyzDistToPlayerSq, 0xB4, 0x14, 0x64);
+        Rumble_Request(this->dyna.actor.xyzDistToPlayerSq, 0xB4, 0x14, 0x64);
         DoorShutter_SetupClosed(this, play);
     }
 }

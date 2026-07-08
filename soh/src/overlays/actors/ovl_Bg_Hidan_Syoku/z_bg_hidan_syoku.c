@@ -75,7 +75,7 @@ void func_8088F514(BgHidanSyoku* this, PlayState* play) {
     if (this->timer == 0) {
         func_8088F47C(this);
     } else {
-        func_8002F974(&this->dyna.actor, NA_SE_EV_ELEVATOR_MOVE3 - SFX_FLAG);
+        Actor_PlaySfx_Flagged(&this->dyna.actor, NA_SE_EV_ELEVATOR_MOVE3 - SFX_FLAG);
     }
 }
 
@@ -87,7 +87,7 @@ void func_8088F5A0(BgHidanSyoku* this, PlayState* play) {
     if (this->timer == 0) {
         func_8088F47C(this);
     } else {
-        func_8002F974(&this->dyna.actor, NA_SE_EV_ELEVATOR_MOVE3 - SFX_FLAG);
+        Actor_PlaySfx_Flagged(&this->dyna.actor, NA_SE_EV_ELEVATOR_MOVE3 - SFX_FLAG);
     }
 }
 

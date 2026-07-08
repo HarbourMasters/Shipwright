@@ -701,7 +701,7 @@ void EnBb_Down(EnBb* this, PlayState* play) {
     }
     if (this->actor.bgCheckFlags & 3) {
         if (this->actor.params == ENBB_RED) {
-            s32 floorType = func_80041D4C(&play->colCtx, this->actor.floorPoly, this->actor.floorBgId);
+            s32 floorType = SurfaceType_GetFloorType(&play->colCtx, this->actor.floorPoly, this->actor.floorBgId);
 
             if ((floorType == 2) || (floorType == 3) || (floorType == 9)) {
                 this->moveMode = BBMOVE_HIDDEN;
@@ -820,7 +820,7 @@ void EnBb_Red(EnBb* this, PlayState* play) {
                 this->actor.bgCheckFlags &= ~8;
             }
             if (this->actor.bgCheckFlags & 1) {
-                floorType = func_80041D4C(&play->colCtx, this->actor.floorPoly, this->actor.floorBgId);
+                floorType = SurfaceType_GetFloorType(&play->colCtx, this->actor.floorPoly, this->actor.floorBgId);
                 if ((floorType == 2) || (floorType == 3) || (floorType == 9)) {
                     this->moveMode = BBMOVE_HIDDEN;
                     this->timer = 10;

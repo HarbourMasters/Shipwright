@@ -40,7 +40,7 @@ typedef struct {
 
 std::array<const char*, 12> acMapping = {
     "Switch",      "Background (Prop type 1)",
-    "Player",      "Bomb",
+    "Player",      "Bomb/Bombchu",
     "NPC",         "Enemy",
     "Prop type 2", "Item/Action",
     "Misc.",       "Boss",
@@ -958,9 +958,9 @@ void ActorViewerWindow::DrawElement() {
                     [&]() {
                         ImGui::Text("Name: %s", ActorDB::Instance->RetrieveEntry(display->id).name.c_str());
                         ImGui::Text("Description: %s", GetActorDescription(display->id).c_str());
-                        ImGui::Text("Category: %s", acMapping[display->category]);
-                        ImGui::Text("ID: %d", display->id);
-                        ImGui::Text("Parameters: %d", display->params);
+                        ImGui::Text("Category: %s (%d)", acMapping[display->category], display->category);
+                        ImGui::Text("ID: %d (0x%x)", display->id, display->id);
+                        ImGui::Text("Parameters: %d (0x%x)", display->params, display->params);
                         ImGui::Text("Actor List Index: %d", GetActorListIndex(display));
                     },
                     "Selected Actor");

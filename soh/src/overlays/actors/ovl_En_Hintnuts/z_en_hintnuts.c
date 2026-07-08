@@ -335,7 +335,7 @@ void EnHintnuts_CheckProximity(EnHintnuts* this, PlayState* play) {
         }
         if (this->actor.xzDistToPlayer < 130.0f) {
             this->actor.textId = this->textIdCopy;
-            func_8002F2F4(&this->actor, play);
+            Actor_OfferTalkNearColChkInfoCylinder(&this->actor, play);
         }
     }
 }
