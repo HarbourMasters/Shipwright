@@ -392,22 +392,22 @@ void Map_InitData(PlayState* play, s16 room) {
             extendedMapIndex = mapIndex;
             if (play->sceneNum == SCENE_GRAVEYARD) {
                 if (CHECK_QUEST_ITEM(QUEST_SONG_NOCTURNE)) {
-                    extendedMapIndex = 0x14;
+                    extendedMapIndex = 0x14; // Entrance to Shadow Temple visible
                 }
             } else if (play->sceneNum == SCENE_LAKE_HYLIA) {
                 if ((LINK_AGE_IN_YEARS == YEARS_ADULT) &&
                     ((!IS_RANDO && !CHECK_QUEST_ITEM(QUEST_MEDALLION_WATER)) ||
-                     (IS_RANDO && !Flags_GetEventChkInf(EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP)))) {
-                    extendedMapIndex = 0x15;
+                     (IS_RANDO && !Flags_GetEventChkInf(EVENTCHKINF_RAISED_LAKE_HYLIA_WATER)))) {
+                    extendedMapIndex = 0x15; // Lowered water level
                 }
             } else if (play->sceneNum == SCENE_GERUDO_VALLEY) {
                 if ((LINK_AGE_IN_YEARS == YEARS_ADULT) && !GET_EVENTCHKINF_CARPENTERS_FREE_ALL()) {
-                    extendedMapIndex = 0x16;
+                    extendedMapIndex = 0x16; // Bridge not built
                 }
             } else if (play->sceneNum == SCENE_GERUDOS_FORTRESS) {
                 if ((!IS_RANDO && GET_EVENTCHKINF_CARPENTERS_FREE_ALL()) ||
                     (IS_RANDO && CHECK_QUEST_ITEM(QUEST_GERUDO_CARD))) {
-                    extendedMapIndex = 0x17;
+                    extendedMapIndex = 0x17; // Horseback archery visible
                 }
             }
             osSyncPrintf(VT_FGCOL(BLUE));
