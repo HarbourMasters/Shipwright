@@ -41,6 +41,7 @@ class Randomizer {
     bool SpoilerFileExists(const char* spoilerFileName);
     bool IsTrialRequired(s32 trialFlag);
     u8 GetRandoSettingValue(RandomizerSettingKey randoSettingKey);
+    u8 GetTriforcePiecesRequired();
     RandomizerCheck GetCheckFromRandomizerInf(RandomizerInf randomizerInf);
     RandomizerInf GetRandomizerInfFromCheck(RandomizerCheck rc);
     Rando::Location* GetCheckObjectFromActor(s16 actorId, s16 sceneNum, s32 actorParams);

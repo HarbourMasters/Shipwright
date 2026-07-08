@@ -255,6 +255,7 @@ std::unordered_map<RandomizerGet, std::string> itemImageMap = {
     { RG_FISHING_POLE, "ITEM_FISHING_POLE" },
     { RG_SOLD_OUT, "ITEM_SOLD_OUT" },
     { RG_TRIFORCE_PIECE, "TRIFORCE_PIECE" },
+    { RG_TRIFORCE, "TRIFORCE" },
     { RG_SKELETON_KEY, "ITEM_KEY_SMALL" }
 };
 
@@ -1207,4 +1208,6 @@ void PlandomizerWindow::InitElement() {
         ->LoadGuiTexture("BOSS_SOUL", gBossSoulTex, ImVec4(1, 1, 1, 1));
     std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
         ->LoadGuiTexture("TRIFORCE_PIECE", gTriforcePieceTex, ImVec4(1, 1, 1, 1));
+    std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
+        ->LoadGuiTexture("TRIFORCE", gTriforcePieceTex, ImVec4(1, 1, 1, 1));
 }

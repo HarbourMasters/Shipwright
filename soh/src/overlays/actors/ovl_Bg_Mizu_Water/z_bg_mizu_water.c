@@ -281,11 +281,11 @@ void BgMizuWater_ChangeWaterLevel(BgMizuWater* this, PlayState* play) {
     }
 
     if (this->targetY < this->actor.world.pos.y) {
-        func_800AA000(0.0f, 0x78, 0x14, 0xA);
-        func_8002F948(&this->actor, NA_SE_EV_WATER_LEVEL_DOWN - SFX_FLAG);
+        Rumble_Request(0.0f, 0x78, 0x14, 0xA);
+        Actor_PlaySfx_FlaggedCentered2(&this->actor, NA_SE_EV_WATER_LEVEL_DOWN - SFX_FLAG);
     } else if (this->targetY > this->actor.world.pos.y) {
-        func_800AA000(0.0f, 0x78, 0x14, 0xA);
-        func_8002F948(&this->actor, NA_SE_EV_WATER_LEVEL_DOWN - SFX_FLAG);
+        Rumble_Request(0.0f, 0x78, 0x14, 0xA);
+        Actor_PlaySfx_FlaggedCentered2(&this->actor, NA_SE_EV_WATER_LEVEL_DOWN - SFX_FLAG);
     }
 }
 

@@ -32,7 +32,7 @@ void DemoGt_PlayExplosion2Sfx(PlayState* play, Vec3f* pos) {
 }
 
 void DemoGt_Rumble(PlayState* play) {
-    func_800AA000(0.0f, 0x32, 0xA, 5);
+    Rumble_Request(0.0f, 0x32, 0xA, 5);
 }
 
 void DemoGt_SpawnDust(PlayState* play, Vec3f* pos, Vec3f* velocity, Vec3f* accel, f32 scale, s16 scaleStep, s16 life) {

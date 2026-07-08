@@ -539,12 +539,12 @@ void ObjBean_SetupWaitForBean(ObjBean* this) {
 
 void ObjBean_WaitForBean(ObjBean* this, PlayState* play) {
     if (Actor_ProcessTalkRequest(&this->dyna.actor, play)) {
-        if (func_8002F368(play) == EXCH_ITEM_BEAN) {
+        if (Actor_GetPlayerExchangeItemId(play) == EXCH_ITEM_BEAN) {
             func_80B8FE00(this);
             Flags_SetSwitch(play, this->dyna.actor.params & 0x3F);
         }
     } else {
-        func_8002F298(&this->dyna.actor, play, 40.0f, EXCH_ITEM_BEAN);
+        Actor_OfferTalkExchangeEquiCylinder(&this->dyna.actor, play, 40.0f, EXCH_ITEM_BEAN);
     }
 }
 
@@ -584,7 +584,7 @@ void func_80B8FEAC(ObjBean* this, PlayState* play) {
     } else {
         this->timer = 1;
     }
-    func_8002F974(&this->dyna.actor, NA_SE_PL_PLANT_GROW_UP - SFX_FLAG);
+    Actor_PlaySfx_Flagged(&this->dyna.actor, NA_SE_PL_PLANT_GROW_UP - SFX_FLAG);
 }
 
 void func_80B8FF50(ObjBean* this) {
@@ -680,7 +680,7 @@ void ObjBean_GrowWaterPhase2(ObjBean* this, PlayState* play) {
     if (this->stalkSizeMultiplier >= 0.1f) { // 100 Frames
         ObjBean_SetupGrowWaterPhase3(this);
     }
-    func_8002F974(&this->dyna.actor, NA_SE_PL_PLANT_TALLER - SFX_FLAG);
+    Actor_PlaySfx_Flagged(&this->dyna.actor, NA_SE_PL_PLANT_TALLER - SFX_FLAG);
 }
 
 void ObjBean_SetupGrowWaterPhase3(ObjBean* this) {
@@ -791,7 +791,7 @@ void ObjBean_Fly(ObjBean* this, PlayState* play) {
 
     } else if (DynaPolyActor_IsPlayerOnTop(&this->dyna) != 0) { // Player is on top
 
-        func_8002F974(&this->dyna.actor, NA_SE_PL_PLANT_MOVE - SFX_FLAG);
+        Actor_PlaySfx_Flagged(&this->dyna.actor, NA_SE_PL_PLANT_MOVE - SFX_FLAG);
 
         if (play->sceneNum == SCENE_LOST_WOODS) {
             Camera_ChangeSetting(play->cameraPtrs[MAIN_CAM], CAM_SET_BEAN_LOST_WOODS);

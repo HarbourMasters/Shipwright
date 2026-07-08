@@ -175,7 +175,7 @@ s32 func_80AAF224(EnMm2* this, PlayState* play, EnMm2ActionFunc actionFunc) {
     }
     yawDiff = this->actor.yawTowardsPlayer - this->actor.shape.rot.y;
     if ((ABS(yawDiff) <= 0x4300) && (this->actor.xzDistToPlayer < 100.0f)) {
-        func_8002F2CC(&this->actor, play, 100.0f);
+        Actor_OfferTalk(&this->actor, play, 100.0f);
     }
     return 0;
 }
@@ -295,7 +295,7 @@ void EnMm2_Update(Actor* thisx, PlayState* play) {
     s32 pad;
 
     if (this->unk_1F4 & 1) {
-        func_80038290(play, &this->actor, &this->unk_1E8, &this->unk_1EE, this->actor.focus.pos);
+        Actor_TrackPlayer(play, &this->actor, &this->unk_1E8, &this->unk_1EE, this->actor.focus.pos);
     } else {
         Math_SmoothStepToS(&this->unk_1E8.x, 0, 6, 6200, 100);
         Math_SmoothStepToS(&this->unk_1E8.y, 0, 6, 6200, 100);

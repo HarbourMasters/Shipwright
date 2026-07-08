@@ -276,5 +276,5 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
 void Sram_InitSram(GameState* gameState) {
     Save_Init();
 
-    func_800F6700(gSaveContext.audioSetting);
+    Audio_SetSoundOutputMode(gSaveContext.audioSetting);
 }

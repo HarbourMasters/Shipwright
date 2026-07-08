@@ -2224,7 +2224,7 @@ void EnXc_SetupDialogueAction(EnXc* this, PlayState* play) {
         } else {
             this->actor.textId = 0x700F; //"You need another skill"
         }
-        func_8002F2F4(&this->actor, play);
+        Actor_OfferTalkNearColChkInfoCylinder(&this->actor, play);
     }
 }
 

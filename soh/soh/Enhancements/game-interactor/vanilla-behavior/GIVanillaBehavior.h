@@ -287,6 +287,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // this->currentShield == PLAYER_SHIELD_DEKU
+    // ```
+    // #### `args`
+    // - `*Player`
+    VB_BURN_SHIELD,
+
+    // #### `result`
+    // ```c
     // true
     // ```
     // #### `args`
@@ -366,6 +374,14 @@ typedef enum {
     // #### `args`
     // - None
     VB_CLOSE_PAUSE_MENU,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnHorse`
+    VB_CONSUME_EPONA_BOOST,
 
     // #### `result`
     // ```c
@@ -611,6 +627,14 @@ typedef enum {
     // #### `args`
     // - `*int16_t` (item id)
     VB_DRAW_AMMO_COUNT,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
+    VB_DRAW_EPONA_BOOST_CARROTS,
 
     // #### `args`
     // - `Player*` player
@@ -1655,6 +1679,14 @@ typedef enum {
     // true
     // ```
     // #### `args`
+    // - `*Actor`
+    VB_PERFORM_WALL_COLLISION_CHECK,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
     // - `*BossGanondrof`
     VB_PHANTOM_GANON_DEATH_SCENE,
 
@@ -2011,11 +2043,54 @@ typedef enum {
     // - `*int32_t` (arrowType)
     VB_PLAYER_ARROW_MAGIC_CONSUMPTION,
 
+    // #### `result`
+    // ```c
+    // true
+    // ```
     // #### `args`
     // - `void*` player (Player*)
     // - `PlayState*` play
     VB_PLAYER_DRAW_BOTTLE,
 
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*Player`
+    VB_PLAYER_LIMIT_DIVE_XZ_SPEED,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*Player`
+    VB_PLAYER_LIMIT_JUMP_SPEED,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*Player`
+    // - `f32*` speedTarget
+    VB_PLAYER_MODIFY_RUN_SPEED,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*Player`
+    // - `f32*` swimSpeed
+    // - `s32` sControlInput != NULL
+    VB_PLAYER_MODIFY_SWIM_SPEED,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
     // #### `args`
     // - `s32` limbIndex
     // - `Gfx**` dList (write to *dList to replace the resolved display list)
@@ -2152,6 +2227,17 @@ typedef enum {
     // #### `args`
     // - `**Gfx` (`&POLY_OPA_DISP`)
     VB_RENDER_YES_ON_CONTINUE_PROMPT,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*PlayState`
+    // - `*Player`
+    // - `*u32`
+    // - `*s16`
+    VB_REVALIDATE_CLIMBED_WALL,
 
     // #### `result`
     // ```c
@@ -2335,6 +2421,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
+    VB_SLAY_GANON,
+
+    // #### `result`
+    // ```c
     // (collectible >= 0) && (collectible <= 0x19
     // ```
     // #### `args`
@@ -2413,6 +2507,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnButte`
+    VB_SPAWN_BUTTERFLY_FAIRY_EASY,
+
+    // #### `result`
+    // ```c
     // INV_CONTENT(ITEM_ARROW_FIRE) == ITEM_NONE
     // ```
     // #### `args`
@@ -2487,6 +2589,30 @@ typedef enum {
     // #### `args`
     // - `*BgIceTurara`
     VB_STALAGMITE_DROP_ITEM,
+
+    // #### `result`
+    // ```c
+    // ABS(wallPoly->normal.y) < 600
+    // ```
+    // #### `args`
+    // - None
+    VB_SURFACE_ANGLE_IS_CLIMBABLE,
+
+    // #### `result`
+    // ```c
+    // false
+    // ```
+    // #### `args`
+    // - None
+    VB_SURFACE_IS_CLIMBABLE,
+
+    // #### `result`
+    // ```c
+    // SurfaceType_GetData(colCtx, poly, bgId, 1) >> 17 & 1
+    // ```
+    // #### `args`
+    // - None
+    VB_SURFACE_IS_HOOKSHOT,
 
     // #### `result`
     // ```c
@@ -3118,6 +3244,14 @@ typedef enum {
     // #### `args`
     // - `s16* (&this->actor.parent->id)`
     VB_PREVENT_HOOKSHOT_PARENT_SOFTLOCK,
+
+    // #### `result`
+    // ```c
+    // true if Goron Link is talking
+    // ```
+    // #### `args`
+    // - `*EnGo2` (Goron Link)
+    VB_PREVENT_GORON_LINK_SOFTLOCK,
 
     // true
     // ```

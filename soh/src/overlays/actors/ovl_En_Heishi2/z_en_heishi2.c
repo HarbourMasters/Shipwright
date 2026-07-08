@@ -417,7 +417,7 @@ void func_80A53AD4(EnHeishi2* this, PlayState* play) {
     }
     this->unk_300 = TEXT_STATE_DONE;
     if (Actor_ProcessTalkRequest(&this->actor, play)) {
-        exchangeItemId = func_8002F368(play);
+        exchangeItemId = Actor_GetPlayerExchangeItemId(play);
         if (GameInteractor_Should(VB_HEISHI2_ACCEPT_ITEM_AS_ZELDAS_LETTER, exchangeItemId == EXCH_ITEM_LETTER_ZELDA,
                                   exchangeItemId)) {
             Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
@@ -431,7 +431,7 @@ void func_80A53AD4(EnHeishi2* this, PlayState* play) {
         yawDiffTemp = this->actor.yawTowardsPlayer - this->actor.shape.rot.y;
         yawDiff = ABS(yawDiffTemp);
         if (!(120.0f < this->actor.xzDistToPlayer) && (yawDiff < 0x4300)) {
-            func_8002F298(&this->actor, play, 100.0f, EXCH_ITEM_LETTER_ZELDA);
+            Actor_OfferTalkExchangeEquiCylinder(&this->actor, play, 100.0f, EXCH_ITEM_LETTER_ZELDA);
         }
     }
 }
@@ -760,7 +760,7 @@ void func_80A5475C(EnHeishi2* this, PlayState* play) {
         ((yawDiff = ABS((s16)(this->actor.yawTowardsPlayer - this->actor.shape.rot.y)),
           !(this->actor.xzDistToPlayer > 120.0f)) &&
          (yawDiff < 0x4300))) {
-        func_8002F2F4(&this->actor, play);
+        Actor_OfferTalkNearColChkInfoCylinder(&this->actor, play);
     }
 }
 
@@ -793,7 +793,7 @@ void EnHeishi2_Update(Actor* thisx, PlayState* play) {
     if ((this->type == 2) || (this->type == 5)) {
         this->actor.focus.pos.y = 70.0f;
         Actor_SetFocus(&this->actor, 70.0f);
-        func_80038290(play, &this->actor, &this->unk_260, &this->unk_26C, this->actor.focus.pos);
+        Actor_TrackPlayer(play, &this->actor, &this->unk_260, &this->unk_26C, this->actor.focus.pos);
     }
 
     this->unk_2FC++;

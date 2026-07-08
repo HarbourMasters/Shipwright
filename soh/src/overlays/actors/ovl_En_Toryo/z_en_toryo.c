@@ -324,7 +324,7 @@ void EnToryo_HandleTalking(EnToryo* this, PlayState* play) {
 
     if (this->messageState == 0) {
         if (Actor_ProcessTalkRequest(&this->actor, play)) {
-            this->exchangeItemId = func_8002F368(play);
+            this->exchangeItemId = Actor_GetPlayerExchangeItemId(play);
             if (this->exchangeItemId != 0) {
                 player->actor.textId = EnToryo_ReactToExchangeItem(this, play);
                 this->actor.textId = player->actor.textId;
@@ -336,7 +336,7 @@ void EnToryo_HandleTalking(EnToryo* this, PlayState* play) {
         Actor_GetScreenPos(play, &this->actor, &sp32, &sp30);
         if ((sp32 >= 0) && (sp32 < 0x141) && (sp30 >= 0) && (sp30 < 0xF1)) {
             this->actor.textId = EnToryo_GetTextId(this, play);
-            func_8002F298(&this->actor, play, 100.0f, 10);
+            Actor_OfferTalkExchangeEquiCylinder(&this->actor, play, 100.0f, 10);
         }
     }
 }

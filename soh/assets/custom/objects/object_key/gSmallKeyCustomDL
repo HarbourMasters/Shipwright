@@ -6,7 +6,6 @@
 	<SetOtherMode Cmd="G_SETOTHERMODE_H" Sft="4" Length="20" G_AD_NOISE="1" G_CD_MAGICSQ="1" G_CK_NONE="1" G_CYC_2CYCLE="1" G_PM_NPRIMITIVE="1" G_TC_FILT="1" G_TD_CLAMP="1" G_TF_BILERP="1" G_TL_TILE="1" G_TP_PERSP="1" G_TT_NONE="1"/>
 	<SetOtherMode Cmd="G_SETOTHERMODE_L" Sft="0" Length="32" G_AC_NONE="1" G_RM_AA_ZB_OPA_SURF2="1" G_RM_FOG_SHADE_A="1" G_ZS_PIXEL="1"/>
 	<Texture S="960" T="960" Level="0" Tile="0" On="1"/>
-	<SetEnvColor R="255" G="255" B="255" A="255"/>
 	<TileSync/>
 	<SetTextureImage Path="objects/gameplay_keep/gHilite1Tex" Format="G_IM_FMT_RGBA" Size="G_IM_SIZ_16b_LOAD_BLOCK" Width="1"/>
 	<SetTile Format="G_IM_FMT_RGBA" Size="G_IM_SIZ_16b_LOAD_BLOCK" Line="0" TMem="0" Tile="7" Palette="0" Cms0="G_TX_WRAP" Cms1="G_TX_NOMIRROR" Cmt0="G_TX_WRAP" Cmt1="G_TX_NOMIRROR" MaskS="0" ShiftS="0" MaskT="0" ShiftT="0"/>

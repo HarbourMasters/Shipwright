@@ -381,7 +381,7 @@ void EnBili_DischargeLightning(EnBili* this, PlayState* play) {
     }
 
     SkelAnime_Update(&this->skelAnime);
-    func_8002F974(&this->actor, NA_SE_EN_BIRI_SPARK - SFX_FLAG);
+    Actor_PlaySfx_Flagged(&this->actor, NA_SE_EN_BIRI_SPARK - SFX_FLAG);
 
     if (this->timer != 0) {
         this->timer--;
