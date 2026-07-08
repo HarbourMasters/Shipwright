@@ -56,7 +56,7 @@ static void SlowTextCrawl(bool* should) {
 
 static void RegisterTextSpeedModifiers() {
     COND_VB_SHOULD(VB_ENABLE_QUICKTEXT, TEXT_SPEED > 1, {
-        u16 textPos = va_arg(args, u16);
+        u16 textPos = va_arg(args, int);
         if (!*should && ShouldAdvanceQuickText(textPos)) {
             *should = true;
         }
@@ -64,7 +64,7 @@ static void RegisterTextSpeedModifiers() {
 
     COND_VB_SHOULD(VB_FIX_TEXT_SPEED_SOFTLOCK, TEXT_SPEED > 1, {
         MessageContext* msgCtx = &gPlayState->msgCtx;
-        u16 nextTextPos = va_arg(args, u16);
+        u16 nextTextPos = va_arg(args, int);
 
         *should = !*should || (nextTextPos > msgCtx->textDrawPos);
         if (*should) {
@@ -79,7 +79,7 @@ static void RegisterTextSpeedModifiers() {
     });
 
     COND_VB_SHOULD(VB_TEXT_CRAWL_FASTER, TEXT_SPEED > 1 && TEXT_SPEED < TEXT_SPEED_INSTANT, {
-        u16 textPos = va_arg(args, u16);
+        u16 textPos = va_arg(args, int);
         FastTextCrawl(textPos, should);
     });
 
