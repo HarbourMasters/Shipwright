@@ -2179,8 +2179,7 @@ void DemoEffect_DrawTimeWarp(Actor* thisx, PlayState* play) {
     u8 effectType = (this->actor.params & 0x00FF);
 
     if (effectType == DEMO_EFFECT_TIMEWARP_TIMEBLOCK_LARGE || effectType == DEMO_EFFECT_TIMEWARP_TIMEBLOCK_SMALL ||
-        Flags_GetEnv(play, 1) || gSaveContext.sceneLayer >= 4 ||
-        gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_4) {
+        Flags_GetEnv(play, 1) || gSaveContext.sceneLayer >= 4 || gSaveContext.entranceIndex == ENTR_TEMPLE_OF_TIME_4) {
         OPEN_DISPS(gfxCtx);
         POLY_XLU_DISP = Gfx_SetupDL(POLY_XLU_DISP, 25);
         Matrix_Scale(2.0f, 2.0f, 2.0f, MTXMODE_APPLY);
