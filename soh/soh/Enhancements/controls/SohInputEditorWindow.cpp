@@ -1914,16 +1914,18 @@ void RegisterInputEditorWidgets() {
                               "and capture mouse input when closing the menu."));
     SohGui::mSohMenu->AddSearchWidget({ mouseAutoCapture, "Settings", "Controls", "Camera Controls" });
 
-    mouseDisableThirdPerson = { .name = "Disable Third-Person Camera Control",
+    mouseDisableThirdPerson = { .name = "Disable Third-Person Mouse Controls",
                                 .type = WidgetType::WIDGET_CVAR_CHECKBOX };
     mouseDisableThirdPerson.CVar(CVAR_SETTING("DisableThirdPersonMouse"))
-        .PreFunc([](WidgetInfo& info) { info.isHidden = !CVarGetInteger(CVAR_SETTING("EnableMouse"), 0); })
+        .PreFunc([](WidgetInfo& info) {
+            // ResetDisables() clears disabledTooltip each frame before this runs, so set it here alongside disabled.
+            info.options->disabled = !CVarGetInteger(CVAR_SETTING("EnableMouse"), 0);
+            info.options->disabledTooltip = "Forced off because Mouse Controls are disabled.";
+        })
         .Options(CheckboxOptions()
                      .Color(THEME_COLOR)
-                     .Tooltip("Stops the mouse from moving the third-person camera, while still allowing mouse "
-                              "control for first-person aiming, the shield, and quickspins.\n"
-                              "Primarily useful when mapping a controller's gyro to mouse controls, so gyro "
-                              "movement doesn't constantly drag the third-person camera around."));
+                     .Tooltip("Stops the mouse from moving the third-person camera and from triggering quickspins, "
+                              "while still allowing mouse control for first-person aiming and the shield."));
     SohGui::mSohMenu->AddSearchWidget({ mouseDisableThirdPerson, "Settings", "Controls", "Camera Controls" });
 
     rightStickOcarina = { .name = "Right Stick Ocarina Playback", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
