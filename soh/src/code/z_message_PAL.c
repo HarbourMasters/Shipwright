@@ -2776,7 +2776,9 @@ void Message_OpenText(PlayState* play, u16 textId) {
         textId = 0xB; // Traded Giant's Knife for Biggoron Sword
     } else if (!IS_RANDO &&
                (msgCtx->textId == 0xB4 && (Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_CURSED_MAN_IN_SKULL_HOUSE)))) {
-        textId = 0xB5; // Destroyed Gold Skulltula
+        textId = 0xB5;          // Destroyed Gold Skulltula
+    } else if (textId == 0x0) { // Invalid text probably from GIM or SRM
+        textId = 1;
     }
     // Ocarina Staff + Dialog
     if (textId == 0x4077 || // Pierre?

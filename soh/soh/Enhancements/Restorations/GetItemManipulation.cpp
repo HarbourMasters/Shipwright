@@ -447,9 +447,9 @@ extern "C" GetItemEntry Gim_RetrieveOobGetItemEntry(int16_t getItemId) {
 
     // Safety in case we retrieved an incompatible GI item type
     if (giId == GI_MAX) {
-        // TODO: Figure out how to prevent crash when kokiri tunic is the item that gets here...
-        // Even when returning GET_ITEM_NONE this will still crash on 'at least' kokiri tunic.
-        return GET_ITEM_NONE;
+        // We give them no item because we don't have a valid 'get item'.
+        // Allow the games original text value to pass through from text table though.
+        giEntry = GET_ITEM_NONE;
     } else {
         giEntry = ItemTableManager::Instance->RetrieveItemEntry(MOD_NONE, giId);
     }
