@@ -34,7 +34,7 @@ void Mouse_UpdateAll() {
 }
 
 void Mouse_HandleThirdPerson(f32* newCamX, f32* newCamY) {
-    if (MOUSE_ENABLED) {
+    if (MOUSE_ENABLED && !CVarGetInteger(CVAR_SETTING("DisableThirdPersonMouse"), 0)) {
         *newCamX -= mouseCoordRel.x * 40.0f;
         *newCamY -= mouseCoordRel.y * 40.0f;
     }
