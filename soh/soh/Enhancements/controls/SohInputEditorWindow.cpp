@@ -1918,7 +1918,6 @@ void RegisterInputEditorWidgets() {
                                 .type = WidgetType::WIDGET_CVAR_CHECKBOX };
     mouseDisableThirdPerson.CVar(CVAR_SETTING("DisableThirdPersonMouse"))
         .PreFunc([](WidgetInfo& info) {
-            // ResetDisables() clears disabledTooltip each frame before this runs, so set it here alongside disabled.
             info.options->disabled = !CVarGetInteger(CVAR_SETTING("EnableMouse"), 0);
             info.options->disabledTooltip = "Forced off because Mouse Controls are disabled.";
         })
