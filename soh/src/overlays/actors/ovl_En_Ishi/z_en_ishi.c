@@ -444,7 +444,7 @@ void EnIshi_Fly(EnIshi* this, PlayState* play) {
             Quake_SetSpeed(quakeIdx, -0x3CB0);
             Quake_SetQuakeValues(quakeIdx, 3, 0, 0, 0);
             Quake_SetCountdown(quakeIdx, 7);
-            func_800AA000(this->actor.xyzDistToPlayerSq, 0xFF, 0x14, 0x96);
+            Rumble_Request(this->actor.xyzDistToPlayerSq, 0xFF, 0x14, 0x96);
         }
         Actor_Kill(&this->actor);
         return;

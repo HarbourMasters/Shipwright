@@ -761,7 +761,7 @@ void func_80AB6F04(EnNiw* this, PlayState* play) {
 }
 
 void func_80AB70A0(EnNiw* this, PlayState* play) {
-    OnePointCutscene_Init(play, 2290, -99, &this->actor, MAIN_CAM);
+    OnePointCutscene_Init(play, 2290, -99, &this->actor, CAM_ID_MAIN);
     this->timer5 = 100;
     this->unk_2A2 = 1;
     this->actionFunc = func_80AB70F8;
@@ -1077,7 +1077,7 @@ void EnNiw_Update(Actor* thisx, PlayState* play) {
     dist = 20.0f;
 
     if (this->unk_2A8 != 0 && thisx->xyzDistToPlayerSq < SQ(dist) && player->invincibilityTimer == 0) {
-        func_8002F6D4(play, &this->actor, 2.0f, thisx->world.rot.y, 0.0f, 0x10);
+        Actor_SetPlayerKnockbackLarge(play, &this->actor, 2.0f, thisx->world.rot.y, 0.0f, 0x10);
     }
 
     func_80AB747C(this, play);

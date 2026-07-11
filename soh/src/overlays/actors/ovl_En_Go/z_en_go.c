@@ -345,7 +345,7 @@ s32 EnGo_UpdateTalking(PlayState* play, Actor* thisx, s16* talkState, f32 intera
     } else if (Actor_ProcessTalkRequest(thisx, play)) {
         *talkState = NPC_TALK_STATE_TALKING;
         return true;
-    } else if (!func_8002F2CC(thisx, play, interactRange)) {
+    } else if (!Actor_OfferTalk(thisx, play, interactRange)) {
         return false;
     } else {
         thisx->textId = getTextId(play, thisx);
@@ -425,7 +425,7 @@ void func_80A3F0E4(EnGo* this) {
 s32 EnGo_IsCameraModified(EnGo* this, PlayState* play) {
     f32 xyzDistSq;
     s16 yawDiff = this->actor.yawTowardsPlayer - this->actor.shape.rot.y;
-    Camera* mainCam = play->cameraPtrs[MAIN_CAM];
+    Camera* mainCam = play->cameraPtrs[CAM_ID_MAIN];
 
     if (fabsf(yawDiff) > 10920.0f) {
         return 0;
@@ -599,7 +599,7 @@ void func_80A3F908(EnGo* this, PlayState* play) {
 
         if (((this->actor.params & 0xF0) == 0x90) && (dialogStarted == true)) {
             if (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_SWORD_BROKEN) {
-                if (func_8002F368(play) == EXCH_ITEM_SWORD_BROKEN) {
+                if (Actor_GetPlayerExchangeItemId(play) == EXCH_ITEM_SWORD_BROKEN) {
                     if (Flags_GetInfTable(INFTABLE_B4)) {
                         this->actor.textId = 0x3055;
                     } else {
@@ -612,7 +612,7 @@ void func_80A3F908(EnGo* this, PlayState* play) {
             }
 
             if (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_EYEDROPS) {
-                if (func_8002F368(play) == EXCH_ITEM_EYEDROPS) {
+                if (Actor_GetPlayerExchangeItemId(play) == EXCH_ITEM_EYEDROPS) {
                     this->actor.textId = 0x3059;
                 } else {
                     this->actor.textId = 0x3058;
@@ -716,7 +716,7 @@ void EnGo_StopRolling(EnGo* this, PlayState* play) {
         if (this->collider.base.ocFlags2 & OC2_HIT_PLAYER) {
             this->collider.base.ocFlags2 &= ~OC2_HIT_PLAYER;
             play->damagePlayer(play, -4);
-            func_8002F71C(play, &this->actor, 4.0f, this->actor.yawTowardsPlayer, 6.0f);
+            Actor_SetPlayerKnockbackLargeNoDamage(play, &this->actor, 4.0f, this->actor.yawTowardsPlayer, 6.0f);
             this->unk_20E = 0x10;
         }
     }
@@ -779,7 +779,7 @@ void EnGo_CurledUp(EnGo* this, PlayState* play) {
 
         EnGo_SetupAction(this, EnGo_WakeUp);
         if ((this->actor.params & 0xF0) == 0x90) {
-            OnePointCutscene_Init(play, 4200, -99, &this->actor, MAIN_CAM);
+            OnePointCutscene_Init(play, 4200, -99, &this->actor, CAM_ID_MAIN);
         }
     }
 }
@@ -871,7 +871,7 @@ void EnGo_BiggoronActionFunc(EnGo* this, PlayState* play) {
                 EnGo_SetupAction(this, EnGo_Eyedrops);
                 play->msgCtx.msgMode = MSGMODE_PAUSED;
                 gSaveContext.subTimerState = SUBTIMER_STATE_OFF;
-                OnePointCutscene_Init(play, 4190, -99, &this->actor, MAIN_CAM);
+                OnePointCutscene_Init(play, 4190, -99, &this->actor, CAM_ID_MAIN);
             } else {
                 this->interactInfo.talkState = NPC_TALK_STATE_IDLE;
                 EnGo_SetupAction(this, EnGo_GetItem);
@@ -1031,7 +1031,7 @@ void EnGo_Update(Actor* thisx, PlayState* play) {
 
     if (this->actionFunc == EnGo_BiggoronActionFunc || this->actionFunc == EnGo_FireGenericActionFunc ||
         this->actionFunc == func_80A40B1C) {
-        func_80034F54(play, this->jointTable, this->morphTable, 18);
+        Actor_UpdateFidgetTables(play, this->jointTable, this->morphTable, 18);
     }
 
     EnGo_UpdateShadow(this);

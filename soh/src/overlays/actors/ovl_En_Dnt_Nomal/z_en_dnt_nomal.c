@@ -257,7 +257,7 @@ void EnDntNomal_TargetWait(EnDntNomal* this, PlayState* play) {
                     if (!GameInteractor_Should(VB_PLAY_ONEPOINT_ACTOR_CS, true, &this->actor)) {
                         this->actionFunc = EnDntNomal_TargetGivePrize;
                     } else {
-                        OnePointCutscene_Init(play, 4140, -99, &this->actor, MAIN_CAM);
+                        OnePointCutscene_Init(play, 4140, -99, &this->actor, CAM_ID_MAIN);
                         Player_SetCsActionWithHaltedActors(play, &this->actor, 1);
                         this->timer4 = 50;
                         this->actionFunc = EnDntNomal_SetupTargetUnburrow;

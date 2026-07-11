@@ -2,8 +2,7 @@
 
 #include <string>
 #include <vector>
-#include <cstdint>
-#include <libultraship/libultraship.h>
+#include <stdint.h>
 
 void DrawItemAmmo(int itemId);
 

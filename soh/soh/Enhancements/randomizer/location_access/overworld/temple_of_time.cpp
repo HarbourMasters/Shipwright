@@ -30,7 +30,7 @@ void RegionTable_Init_TempleOfTime() {
 
     areaTable[RR_TEMPLE_OF_TIME] = Region("Temple of Time", SCENE_TEMPLE_OF_TIME, {}, {
         //Locations
-        LOCATION(RC_TOT_LIGHT_ARROWS_CUTSCENE, logic->IsAdult && logic->CanTriggerLACS()),
+        LOCATION(RC_TOT_LIGHT_ARROWS_CUTSCENE, logic->IsAdult && logic->HasItem(RG_SHADOW_MEDALLION) && logic->HasItem(RG_SPIRIT_MEDALLION)),
         LOCATION(RC_ALTAR_HINT_CHILD,          logic->IsChild),
         LOCATION(RC_ALTAR_HINT_ADULT,          logic->IsAdult),
         LOCATION(RC_TOT_SHEIK_HINT,            logic->IsAdult && logic->HasItem(RG_SPEAK_HYLIAN)),
@@ -45,7 +45,7 @@ void RegionTable_Init_TempleOfTime() {
         //Locations
         LOCATION(RC_TOT_MASTER_SWORD, logic->IsAdult),
         LOCATION(RC_GIFT_FROM_RAURU,  logic->IsAdult),
-        LOCATION(RC_SHEIK_AT_TEMPLE,  logic->HasItem(RG_FOREST_MEDALLION) && logic->IsAdult),
+        LOCATION(RC_SHEIK_AT_TEMPLE,  logic->IsAdult && logic->HasItem(RG_FOREST_MEDALLION)),
     }, {
         //Exits
         ENTRANCE(RR_TEMPLE_OF_TIME, true),

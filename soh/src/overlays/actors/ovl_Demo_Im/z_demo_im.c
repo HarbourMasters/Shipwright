@@ -331,7 +331,7 @@ void func_80985430(DemoIm* this, PlayState* play) {
 void func_8098544C(DemoIm* this, PlayState* play) {
     s32 pad[2];
 
-    if ((gSaveContext.chamberCutsceneNum == 4) && (gSaveContext.sceneSetupIndex < 4)) {
+    if ((gSaveContext.chamberCutsceneNum == 4) && (gSaveContext.sceneLayer < 4)) {
         Player* player = GET_PLAYER(play);
 
         this->action = 1;
@@ -862,7 +862,7 @@ s32 func_80986AD0(DemoIm* this, PlayState* play) {
     this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY;
     if (!Actor_ProcessTalkRequest(&this->actor, play)) {
         this->actor.textId = 0x708E;
-        func_8002F2F4(&this->actor, play);
+        Actor_OfferTalkNearColChkInfoCylinder(&this->actor, play);
     } else {
         return true;
     }
@@ -940,7 +940,7 @@ void func_80986CFC(DemoIm* this, PlayState* play) {
 }
 
 void func_80986D40(DemoIm* this, PlayState* play) {
-    if (gSaveContext.sceneSetupIndex == 6) {
+    if (gSaveContext.sceneLayer == 6) {
         this->action = 19;
         this->drawConfig = 1;
     } else if ((Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) &&

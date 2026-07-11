@@ -1,6 +1,5 @@
-#include <stddef.h>
 #include <stdbool.h>
-#include <libultraship/bridge.h>
+#include <libultraship/bridge/consolevariablebridge.h>
 #include "bootcommands.h"
 #include "soh/cvar_prefixes.h"
 

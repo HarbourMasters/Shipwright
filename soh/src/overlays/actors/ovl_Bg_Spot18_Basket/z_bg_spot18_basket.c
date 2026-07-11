@@ -178,7 +178,7 @@ void BgSpot18Basket_SetupInactive(BgSpot18Basket* this) {
 
 void BgSpot18Basket_Inactive(BgSpot18Basket* this, PlayState* play) {
     if (Flags_GetSwitch(play, (this->dyna.actor.params >> 8) & 0x3F)) {
-        OnePointCutscene_Init(play, 4220, 80, &this->dyna.actor, MAIN_CAM);
+        OnePointCutscene_Init(play, 4220, 80, &this->dyna.actor, CAM_ID_MAIN);
         BgSpot18Basket_SetupActivation(this);
     }
 }
@@ -228,14 +228,14 @@ void BgSpot18Basket_Spinning(BgSpot18Basket* this, PlayState* play) {
             if (positionDiff > 120.0f && positionDiff < 200.0f) {
                 if (Math3D_Dist2DSq(colliderBaseAc->world.pos.z, this->colliderJntSph.base.ac->world.pos.x,
                                     this->dyna.actor.world.pos.z, this->dyna.actor.world.pos.x) < SQ(32.0f)) {
-                    OnePointCutscene_Init(play, 4210, 240, &this->dyna.actor, MAIN_CAM);
+                    OnePointCutscene_Init(play, 4210, 240, &this->dyna.actor, CAM_ID_MAIN);
                     BgSpot18Basket_SetupExplosionCs(this);
                     func_8003EBF8(play, &play->colCtx.dyna, this->dyna.bgId);
                 }
             }
         }
     }
-    func_8002F974(&this->dyna.actor, NA_SE_EV_ELEVATOR_MOVE - SFX_FLAG);
+    Actor_PlaySfx_Flagged(&this->dyna.actor, NA_SE_EV_ELEVATOR_MOVE - SFX_FLAG);
 }
 
 void BgSpot18Basket_SetupExplosionCs(BgSpot18Basket* this) {

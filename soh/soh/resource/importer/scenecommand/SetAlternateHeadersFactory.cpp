@@ -1,9 +1,9 @@
 #include "soh/resource/importer/scenecommand/SetAlternateHeadersFactory.h"
 #include "soh/resource/type/scenecommand/SetAlternateHeaders.h"
 #include "soh/resource/logging/SceneCommandLoggers.h"
-#include "spdlog/spdlog.h"
+#include <ship/Context.h>
+#include <ship/resource/ResourceManager.h>
 #include <tinyxml2.h>
-#include "libultraship/libultraship.h"
 
 namespace SOH {
 std::shared_ptr<Ship::IResource>
@@ -19,7 +19,7 @@ SetAlternateHeadersFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData>
         auto headerName = reader->ReadString();
         if (!headerName.empty()) {
             setAlternateHeaders->headers.push_back(std::static_pointer_cast<Scene>(
-                Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(headerName.c_str())));
+                Ship::Context::GetRawInstance()->GetResourceManager()->LoadResourceProcess(headerName.c_str())));
             setAlternateHeaders->headerFileNames.push_back(headerName);
         } else {
             setAlternateHeaders->headers.push_back(nullptr);
@@ -49,7 +49,8 @@ SetAlternateHeadersFactoryXML::ReadResource(std::shared_ptr<Ship::ResourceInitDa
                 auto headerName = std::string(child->Attribute("Path"));
                 if (!headerName.empty()) {
                     setAlternateHeaders->headers.push_back(std::static_pointer_cast<Scene>(
-                        Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(headerName.c_str())));
+                        Ship::Context::GetRawInstance()->GetResourceManager()->LoadResourceProcess(
+                            headerName.c_str())));
                 } else {
                     setAlternateHeaders->headers.push_back(nullptr);
                 }
@@ -59,7 +60,7 @@ SetAlternateHeadersFactoryXML::ReadResource(std::shared_ptr<Ship::ResourceInitDa
         child = child->NextSiblingElement();
     }
 
-    setAlternateHeaders->numHeaders = setAlternateHeaders->headers.size();
+    setAlternateHeaders->numHeaders = static_cast<u32>(setAlternateHeaders->headers.size());
 
     return setAlternateHeaders;
 }

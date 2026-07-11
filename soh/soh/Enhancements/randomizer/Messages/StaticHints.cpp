@@ -8,6 +8,7 @@
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "z64scene.h"
 #include <soh/OTRGlobals.h>
+#include "soh/Enhancements/randomizer/randomizer.h"
 
 extern "C" {
 extern PlayState* gPlayState;
@@ -140,7 +141,7 @@ void BuildSkulltulaPeopleMessage(uint16_t* textId, bool* loadFromMessageTable) {
                                       "et j'aurai quelque chose à te donner! [[color]]([[1]])%w");
     msg.InsertNumber(count);
     msg.Replace("[[color]]", item.GetColor());
-    msg.InsertNames({ item.GetHint().GetHintMessage().GetForCurrentLanguage() });
+    msg.InsertNames({ item.GetHint().GetHintMessage() });
     msg.AutoFormat();
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
@@ -158,7 +159,7 @@ void Build100SkullsHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
     Rando::Item& item =
         Rando::StaticData::RetrieveItem(RAND_GET_ITEM_LOC(RC_KAK_100_GOLD_SKULLTULA_REWARD)->GetPlacedRandomizerGet());
     msg.Replace("[[color]]", item.GetColor());
-    msg.InsertNames({ item.GetHint().GetHintMessage().GetForCurrentLanguage() });
+    msg.InsertNames({ item.GetHint().GetHintMessage() });
     msg.AutoFormat();
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
@@ -178,78 +179,43 @@ void BuildGregHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
     }
 }
 
-void BuildMysteriousWarpMessage() {
-    CustomMessage msg = CustomMessage(
-        "Warp to&%ra mysterious place?%w&" + CustomMessage::TWO_WAY_CHOICE() + "%gOK&No%w",
-        "Zu&%reinem mysteriösen Ort%w?&" + CustomMessage::TWO_WAY_CHOICE() + "%gOK&No%w",
-        "Se téléporter vers&%run endroit mystérieux%w?&" + CustomMessage::TWO_WAY_CHOICE() + "%rOK!&Non%w");
-    msg.LoadIntoFont();
+static void BuildWarpMessage(RandomizerHint rh, bool* loadFromMessageTable) {
+    if (!RAND_GET_OPTION(RSK_WARP_SONG_HINTS)) {
+        CustomMessage msg = CustomMessage(
+            "Warp to&%ra mysterious place?%w&" + CustomMessage::TWO_WAY_CHOICE() + "%gOK&No%w",
+            "Zu&%reinem mysteriösen Ort%w?&" + CustomMessage::TWO_WAY_CHOICE() + "%gOK&No%w",
+            "Se téléporter vers&%run endroit mystérieux%w?&" + CustomMessage::TWO_WAY_CHOICE() + "%rOK!&Non%w");
+        msg.AutoFormat();
+        msg.LoadIntoFont();
+    } else {
+        CustomMessage msg = RAND_GET_HINT(rh)->GetHintMessage(MF_AUTO_FORMAT);
+        msg.LoadIntoFont();
+    }
+    *loadFromMessageTable = false;
 }
 
 void BuildMinuetWarpMessage(uint16_t* textId, bool* loadFromMessageTable) {
-    if (!RAND_GET_OPTION(RSK_WARP_SONG_HINTS)) {
-        BuildMysteriousWarpMessage();
-        *loadFromMessageTable = false;
-        return;
-    }
-    CustomMessage msg = RAND_GET_HINT(RH_MINUET_WARP_LOC)->GetHintMessage(MF_AUTO_FORMAT);
-    msg.LoadIntoFont();
-    *loadFromMessageTable = false;
+    BuildWarpMessage(RH_MINUET_WARP_LOC, loadFromMessageTable);
 }
 
 void BuildBoleroWarpMessage(uint16_t* textId, bool* loadFromMessageTable) {
-    if (!RAND_GET_OPTION(RSK_WARP_SONG_HINTS)) {
-        BuildMysteriousWarpMessage();
-        *loadFromMessageTable = false;
-        return;
-    }
-    CustomMessage msg = RAND_GET_HINT(RH_BOLERO_WARP_LOC)->GetHintMessage(MF_AUTO_FORMAT);
-    msg.LoadIntoFont();
-    *loadFromMessageTable = false;
+    BuildWarpMessage(RH_BOLERO_WARP_LOC, loadFromMessageTable);
 }
 
 void BuildSerenadeWarpMessage(uint16_t* textId, bool* loadFromMessageTable) {
-    if (!RAND_GET_OPTION(RSK_WARP_SONG_HINTS)) {
-        BuildMysteriousWarpMessage();
-        *loadFromMessageTable = false;
-        return;
-    }
-    CustomMessage msg = RAND_GET_HINT(RH_SERENADE_WARP_LOC)->GetHintMessage(MF_AUTO_FORMAT);
-    msg.LoadIntoFont();
-    *loadFromMessageTable = false;
+    BuildWarpMessage(RH_SERENADE_WARP_LOC, loadFromMessageTable);
 }
 
 void BuildRequiemWarpMessage(uint16_t* textId, bool* loadFromMessageTable) {
-    if (!RAND_GET_OPTION(RSK_WARP_SONG_HINTS)) {
-        BuildMysteriousWarpMessage();
-        *loadFromMessageTable = false;
-        return;
-    }
-    CustomMessage msg = RAND_GET_HINT(RH_REQUIEM_WARP_LOC)->GetHintMessage(MF_AUTO_FORMAT);
-    msg.LoadIntoFont();
-    *loadFromMessageTable = false;
+    BuildWarpMessage(RH_REQUIEM_WARP_LOC, loadFromMessageTable);
 }
 
 void BuildNocturneWarpMessage(uint16_t* textId, bool* loadFromMessageTable) {
-    if (!RAND_GET_OPTION(RSK_WARP_SONG_HINTS)) {
-        BuildMysteriousWarpMessage();
-        *loadFromMessageTable = false;
-        return;
-    }
-    CustomMessage msg = RAND_GET_HINT(RH_NOCTURNE_WARP_LOC)->GetHintMessage(MF_AUTO_FORMAT);
-    msg.LoadIntoFont();
-    *loadFromMessageTable = false;
+    BuildWarpMessage(RH_NOCTURNE_WARP_LOC, loadFromMessageTable);
 }
 
 void BuildPreludeWarpMessage(uint16_t* textId, bool* loadFromMessageTable) {
-    if (!RAND_GET_OPTION(RSK_WARP_SONG_HINTS)) {
-        BuildMysteriousWarpMessage();
-        *loadFromMessageTable = false;
-        return;
-    }
-    CustomMessage msg = RAND_GET_HINT(RH_PRELUDE_WARP_LOC)->GetHintMessage(MF_AUTO_FORMAT);
-    msg.LoadIntoFont();
-    *loadFromMessageTable = false;
+    BuildWarpMessage(RH_PRELUDE_WARP_LOC, loadFromMessageTable);
 }
 
 void BuildFrogsHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
@@ -419,15 +385,17 @@ void RegisterStaticHints() {
     COND_ID_HOOK(OnOpenText, TEXT_CHEST_GAME_REAL_GAMBLER, RAND_GET_OPTION(RSK_GREG_HINT), BuildGregHintMessage);
     COND_ID_HOOK(OnOpenText, TEXT_CHEST_GAME_THANKS_A_LOT, RAND_GET_OPTION(RSK_GREG_HINT), BuildGregHintMessage);
     // Warp
-    COND_ID_HOOK(OnOpenText, TEXT_WARP_MINUET_OF_FOREST, RAND_GET_OPTION(RSK_WARP_SONG_HINTS), BuildMinuetWarpMessage);
-    COND_ID_HOOK(OnOpenText, TEXT_WARP_BOLERO_OF_FIRE, RAND_GET_OPTION(RSK_WARP_SONG_HINTS), BuildBoleroWarpMessage);
-    COND_ID_HOOK(OnOpenText, TEXT_WARP_SERENADE_OF_WATER, RAND_GET_OPTION(RSK_WARP_SONG_HINTS),
+    COND_ID_HOOK(OnOpenText, TEXT_WARP_MINUET_OF_FOREST, RAND_GET_OPTION(RSK_SHUFFLE_WARP_SONGS),
+                 BuildMinuetWarpMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_WARP_BOLERO_OF_FIRE, RAND_GET_OPTION(RSK_SHUFFLE_WARP_SONGS), BuildBoleroWarpMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_WARP_SERENADE_OF_WATER, RAND_GET_OPTION(RSK_SHUFFLE_WARP_SONGS),
                  BuildSerenadeWarpMessage);
-    COND_ID_HOOK(OnOpenText, TEXT_WARP_REQUIEM_OF_SPIRIT, RAND_GET_OPTION(RSK_WARP_SONG_HINTS),
+    COND_ID_HOOK(OnOpenText, TEXT_WARP_REQUIEM_OF_SPIRIT, RAND_GET_OPTION(RSK_SHUFFLE_WARP_SONGS),
                  BuildRequiemWarpMessage);
-    COND_ID_HOOK(OnOpenText, TEXT_WARP_NOCTURNE_OF_SHADOW, RAND_GET_OPTION(RSK_WARP_SONG_HINTS),
+    COND_ID_HOOK(OnOpenText, TEXT_WARP_NOCTURNE_OF_SHADOW, RAND_GET_OPTION(RSK_SHUFFLE_WARP_SONGS),
                  BuildNocturneWarpMessage);
-    COND_ID_HOOK(OnOpenText, TEXT_WARP_PRELUDE_OF_LIGHT, RAND_GET_OPTION(RSK_WARP_SONG_HINTS), BuildPreludeWarpMessage);
+    COND_ID_HOOK(OnOpenText, TEXT_WARP_PRELUDE_OF_LIGHT, RAND_GET_OPTION(RSK_SHUFFLE_WARP_SONGS),
+                 BuildPreludeWarpMessage);
     // Frogs
     COND_ID_HOOK(OnOpenText, TEXT_FROGS_UNDERWATER, RAND_GET_OPTION(RSK_FROGS_HINT), BuildFrogsHintMessage);
     // Loach

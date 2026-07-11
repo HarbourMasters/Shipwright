@@ -1,9 +1,7 @@
 #include "UIWidgets.hpp"
 #define IMGUI_DEFINE_MATH_OPERATORS
 #include <imgui_internal.h>
-#include <libultraship/libultraship.h>
 #include <string>
-#include <math.h>
 #include <unordered_map>
 #include <libultraship/libultra/types.h>
 #include <spdlog/fmt/fmt.h>
@@ -18,7 +16,7 @@ std::string WrappedText(const char* text, unsigned int charactersPerLine) {
     std::string newText(text);
     const size_t tipLength = newText.length();
     int lastSpace = -1;
-    int currentLineLength = 0;
+    unsigned int currentLineLength = 0;
     for (unsigned int currentCharacter = 0; currentCharacter < tipLength; currentCharacter++) {
         if (newText[currentCharacter] == '\n') {
             currentLineLength = 0;
@@ -384,7 +382,7 @@ bool CVarCheckbox(const char* label, const char* cvarName, const CheckboxOptions
     bool value = (bool)CVarGetInteger(cvarName, options.defaultValue);
     if (Checkbox(label, &value, options)) {
         CVarSetInteger(cvarName, value);
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         ShipInit::Init(cvarName);
         dirty = true;
     }
@@ -522,6 +520,8 @@ void PopStyleSlider() {
 
 bool SliderInt(const char* label, int32_t* value, const IntSliderOptions& options) {
     bool dirty = false;
+    std::string visibleLabelStr = std::string(label).substr(0, std::string(label).find("#"));
+    const char* visibleLabel = visibleLabelStr.c_str();
     std::string invisibleLabelStr = "##" + std::string(label);
     const char* invisibleLabel = invisibleLabelStr.c_str();
     ImGui::PushID(label);
@@ -530,11 +530,11 @@ bool SliderInt(const char* label, int32_t* value, const IntSliderOptions& option
     PushStyleSlider(options.color);
     float width = (options.size == ImVec2(0, 0)) ? ImGui::GetContentRegionAvail().x : options.size.x;
     if (options.labelPosition == LabelPositions::Near || options.labelPosition == LabelPositions::Far) {
-        width = width - (ImGui::CalcTextSize(label).x + ImGui::GetStyle().FramePadding.x);
+        width = width - (ImGui::CalcTextSize(visibleLabel).x + ImGui::GetStyle().FramePadding.x);
     }
     ImGui::AlignTextToFramePadding();
     if (options.alignment == ComponentAlignments::Right) {
-        ImGui::Text(label, *value);
+        ImGui::Text(visibleLabel, *value);
         if (options.labelPosition == LabelPositions::Above) {
             ImGui::NewLine();
             ImGui::SameLine(ImGui::GetContentRegionAvail().x - width);
@@ -545,7 +545,7 @@ bool SliderInt(const char* label, int32_t* value, const IntSliderOptions& option
         }
     } else if (options.alignment == ComponentAlignments::Left) {
         if (options.labelPosition == LabelPositions::Above) {
-            ImGui::Text(label, *value);
+            ImGui::Text(visibleLabel, *value);
         }
     }
     if (options.showButtons) {
@@ -590,11 +590,11 @@ bool SliderInt(const char* label, int32_t* value, const IntSliderOptions& option
     if (options.alignment == ComponentAlignments::Left) {
         if (options.labelPosition == LabelPositions::Near) {
             ImGui::SameLine();
-            ImGui::Text(label, *value);
+            ImGui::Text(visibleLabel, *value);
         } else if (options.labelPosition == LabelPositions::Far || options.labelPosition == LabelPositions::None) {
-            ImGui::SameLine(ImGui::GetContentRegionAvail().x - ImGui::CalcTextSize(label).x +
+            ImGui::SameLine(ImGui::GetContentRegionAvail().x - ImGui::CalcTextSize(visibleLabel).x +
                             ImGui::GetStyle().ItemSpacing.x);
-            ImGui::Text(label, *value);
+            ImGui::Text(visibleLabel, *value);
         }
     }
     PopStyleSlider();
@@ -615,7 +615,7 @@ bool CVarSliderInt(const char* label, const char* cvarName, const IntSliderOptio
     int32_t value = CVarGetInteger(cvarName, options.defaultValue);
     if (SliderInt(label, &value, options)) {
         CVarSetInteger(cvarName, value);
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         ShipInit::Init(cvarName);
         dirty = true;
     }
@@ -654,6 +654,8 @@ void ClampFloat(float* value, float min, float max, float step) {
 
 bool SliderFloat(const char* label, float* value, const FloatSliderOptions& options) {
     bool dirty = false;
+    std::string visibleLabelStr = std::string(label).substr(0, std::string(label).find("#"));
+    const char* visibleLabel = visibleLabelStr.c_str();
     std::string invisibleLabelStr = "##" + std::string(label);
     const char* invisibleLabel = invisibleLabelStr.c_str();
     float valueToDisplay = options.isPercentage ? *value * 100.0f : *value;
@@ -663,14 +665,14 @@ bool SliderFloat(const char* label, float* value, const FloatSliderOptions& opti
     ImGui::BeginGroup();
     ImGui::BeginDisabled(options.disabled);
     PushStyleSlider(options.color);
-    float labelSpacing = ImGui::CalcTextSize(label).x + ImGui::GetStyle().ItemSpacing.x;
+    float labelSpacing = ImGui::CalcTextSize(visibleLabel).x + ImGui::GetStyle().ItemSpacing.x;
     float width = (options.size == ImVec2(0, 0)) ? ImGui::GetContentRegionAvail().x : options.size.x;
     if (options.labelPosition == LabelPositions::Near || options.labelPosition == LabelPositions::Far) {
-        width = width - (ImGui::CalcTextSize(label).x + ImGui::GetStyle().FramePadding.x);
+        width = width - (ImGui::CalcTextSize(visibleLabel).x + ImGui::GetStyle().FramePadding.x);
     }
     ImGui::AlignTextToFramePadding();
     if (options.alignment == ComponentAlignments::Right) {
-        ImGui::Text(label, *value);
+        ImGui::Text(visibleLabel, *value);
         if (options.labelPosition == LabelPositions::Above) {
             ImGui::NewLine();
             ImGui::SameLine(ImGui::GetContentRegionAvail().x - width);
@@ -683,7 +685,7 @@ bool SliderFloat(const char* label, float* value, const FloatSliderOptions& opti
         }
     } else if (options.alignment == ComponentAlignments::Left) {
         if (options.labelPosition == LabelPositions::Above) {
-            ImGui::Text(label, *value);
+            ImGui::Text(visibleLabel, *value);
         }
     }
     if (options.showButtons) {
@@ -722,10 +724,10 @@ bool SliderFloat(const char* label, float* value, const FloatSliderOptions& opti
     if (options.alignment == ComponentAlignments::Left) {
         if (options.labelPosition == LabelPositions::Near) {
             ImGui::SameLine();
-            ImGui::Text(label, *value);
+            ImGui::Text(visibleLabel, *value);
         } else if (options.labelPosition == LabelPositions::Far || options.labelPosition == LabelPositions::None) {
             ImGui::SameLine(ImGui::GetContentRegionAvail().x - labelSpacing);
-            ImGui::Text(label, *value);
+            ImGui::Text(visibleLabel, *value);
         }
     }
     PopStyleSlider();
@@ -746,7 +748,7 @@ bool CVarSliderFloat(const char* label, const char* cvarName, const FloatSliderO
     float value = CVarGetFloat(cvarName, options.defaultValue);
     if (SliderFloat(label, &value, options)) {
         CVarSetFloat(cvarName, value);
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         ShipInit::Init(cvarName);
         dirty = true;
     }
@@ -822,7 +824,7 @@ bool CVarInputString(const char* label, const char* cvarName, const InputOptions
     std::string value = CVarGetString(cvarName, options.defaultValue.c_str());
     if (InputString(label, &value, options)) {
         CVarSetString(cvarName, value.c_str());
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         ShipInit::Init(cvarName);
         dirty = true;
     }
@@ -874,7 +876,7 @@ bool CVarInputInt(const char* label, const char* cvarName, const InputOptions& o
     int32_t value = CVarGetInteger(cvarName, defaultValue);
     if (InputInt(label, &value, options)) {
         CVarSetInteger(cvarName, value);
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         ShipInit::Init(cvarName);
         dirty = true;
     }
@@ -919,7 +921,7 @@ bool CVarColorPicker(const char* label, const char* cvarName, Color_RGBA8 defaul
             CVarClear((std::string(cvarName) + ".A").c_str());
             CVarClear((std::string(cvarName) + ".Type").c_str());
             CVarClearBlock(valueCVar.c_str());
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+            Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         }
     }
     if (showRandom) {
@@ -930,13 +932,13 @@ bool CVarColorPicker(const char* label, const char* cvarName, Color_RGBA8 defaul
                                   .Color(themeColor)
                                   .Size(UIWidgets::Sizes::Inline))) {
             colorVec = GetRandomValue();
-            color.r = fmin(fmax(colorVec.x * 255, 0), 255);
-            color.g = fmin(fmax(colorVec.y * 255, 0), 255);
-            color.b = fmin(fmax(colorVec.z * 255, 0), 255);
+            color.r = static_cast<u8>(fmin(fmax(colorVec.x * 255, 0), 255));
+            color.g = static_cast<u8>(fmin(fmax(colorVec.y * 255, 0), 255));
+            color.b = static_cast<u8>(fmin(fmax(colorVec.z * 255, 0), 255));
             CVarSetColor(valueCVar.c_str(), color);
             CVarSetInteger(rainbowCVar.c_str(), 0); // On click disable rainbow mode.
             ShipInit::Init(rainbowCVar.c_str());
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+            Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         }
     }
     if (showRainbow) {
@@ -964,7 +966,7 @@ bool CVarColorPicker(const char* label, const char* cvarName, Color_RGBA8 defaul
         color.b = (uint8_t)(colorVec.z * 255.0f);
         color.a = (uint8_t)(colorVec.w * 255.0f);
         CVarSetColor(valueCVar.c_str(), color);
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         ShipInit::Init(valueCVar.c_str());
         changed = true;
     }
@@ -1039,7 +1041,7 @@ bool CVarRadioButton(const char* text, const char* cvarName, int32_t id, const R
     PushStyleCheckbox(options.color);
     if (ImGui::RadioButton(make_invisible.c_str(), id == val)) {
         CVarSetInteger(cvarName, id);
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         ret = true;
     }
     ImGui::SameLine();
@@ -1246,7 +1248,7 @@ bool CVarBtnSelector(const char* label, const char* cvarName, const BtnSelectorO
     int32_t value = CVarGetInteger(cvarName, options.defaultValue);
     if (BtnSelector(label, &value, options)) {
         CVarSetInteger(cvarName, value);
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         ShipInit::Init(cvarName);
         dirty = true;
     }
@@ -1264,7 +1266,8 @@ ImVec4 GetRandomValue(uint64_t* state) {
 }
 
 Color_RGBA8 RGBA8FromVec(ImVec4 vec) {
-    Color_RGBA8 color = { vec.x * 255, vec.y * 255, vec.z * 255, vec.w * 255 };
+    Color_RGBA8 color = { static_cast<u8>(vec.x * 255), static_cast<u8>(vec.y * 255), static_cast<u8>(vec.z * 255),
+                          static_cast<u8>(vec.w * 255) };
     return color;
 }
 

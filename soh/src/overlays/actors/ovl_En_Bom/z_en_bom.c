@@ -8,7 +8,7 @@
 #include "overlays/effects/ovl_Effect_Ss_Dead_Sound/z_eff_ss_dead_sound.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
-#include <stdlib.h>
+#include "soh/ShipUtils.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
@@ -104,14 +104,13 @@ void EnBom_Init(Actor* thisx, PlayState* play) {
     } else {
         // Set random fuse timer with a minimum of 10. Do the sound and scale immediately,
         // otherwise the bomb is invisible until the timer hits the "normal" amount.
-        uint32_t randomTimer = (rand() % 150) + 10;
-        this->timer = randomTimer;
+        this->timer = 10 + (s16)(Rand_ZeroOne() * 150.0f);
         Audio_PlayActorSound2(thisx, NA_SE_PL_TAKE_OUT_SHIELD);
         Actor_SetScale(thisx, 0.01f);
     }
 
     if (CVarGetFloat(CVAR_CHEAT("BombTimerMultiplier"), 1.0f) != 1.0f) {
-        this->timer = (s32)(70 * CVarGetFloat(CVAR_CHEAT("BombTimerMultiplier"), 1.0f));
+        this->timer *= CVarGetFloat(CVAR_CHEAT("BombTimerMultiplier"), 1.0f);
         // Do the sound and scale immediately if GameInteractor hasn't already.
         if (!GameInteractor_GetRandomBombFuseTimerActive()) {
             Audio_PlayActorSound2(thisx, NA_SE_PL_TAKE_OUT_SHIELD);
@@ -172,7 +171,7 @@ void EnBom_Move(EnBom* this, PlayState* play) {
     } else {
         Math_StepToF(&this->actor.speedXZ, 0.0f, 1.0f);
         if ((this->actor.bgCheckFlags & 2) && (this->actor.velocity.y < -3.0f)) {
-            func_8002F850(play, &this->actor);
+            Actor_PlaySfx_SurfaceBomb(play, &this->actor);
             this->actor.velocity.y *= -0.3f;
             this->actor.bgCheckFlags &= ~2;
         } else if (this->timer >= 4) {
@@ -196,7 +195,7 @@ void EnBom_Explode(EnBom* this, PlayState* play) {
 
     if (this->explosionCollider.elements[0].dim.modelSphere.radius == 0) {
         this->actor.flags |= ACTOR_FLAG_DRAW_CULLING_DISABLED;
-        func_800AA000(this->actor.xzDistToPlayer, 0xFF, 0x14, 0x96);
+        Rumble_Request(this->actor.xzDistToPlayer, 0xFF, 0x14, 0x96);
     }
 
     if (CVarGetInteger(CVAR_ENHANCEMENT("StaticExplosionRadius"), 0)) {

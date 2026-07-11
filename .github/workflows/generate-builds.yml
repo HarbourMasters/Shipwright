@@ -11,11 +11,11 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
     - name: Git Checkout
-      uses: actions/checkout@v6
+      uses: actions/checkout@v7
       with:
         submodules: true
     - name: Configure ccache
-      uses: hendrikmuhs/ccache-action@v1.2.22
+      uses: hendrikmuhs/ccache-action@v1.2.23
       with:
         save: ${{ github.ref_name == github.event.repository.default_branch }}
         key: ${{ runner.os }}-otr-ccache-${{ github.ref }}-${{ github.sha }}
@@ -25,7 +25,7 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y $(cat .github/workflows/apt-deps.txt) libzip-dev zipcmp zipmerge ziptool
+        sudo apt-get install -y $(cat linux-build-deps/apt.txt)
     - name: Restore Cached deps folder
       uses: actions/cache/restore@v5
       with:
@@ -36,9 +36,12 @@ jobs:
         path: deps
     - name: Create deps folder
       run: mkdir -p deps
+    - name: Add ccache to PATH
+      run: |
+        echo "/usr/lib/ccache" >> "$GITHUB_PATH"
+        echo "/usr/local/opt/ccache/libexec" >> "$GITHUB_PATH"
     - name: Install latest SDL
       run: |
-        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
         if [ ! -d "deps/SDL2-2.30.3" ]; then
           wget https://github.com/libsdl-org/SDL/releases/download/release-2.30.3/SDL2-2.30.3.tar.gz
           tar -xzf SDL2-2.30.3.tar.gz -C deps
@@ -48,23 +51,14 @@ jobs:
         make -j 10
         sudo make install
         sudo cp -av /usr/local/lib/libSDL* /lib/x86_64-linux-gnu/
-    - name: Install latest tinyxml2
-      run: |
-        sudo apt-get remove libtinyxml2-dev
-        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
-        if [ ! -d "deps/tinyxml2-10.0.0" ]; then
-          wget https://github.com/leethomason/tinyxml2/archive/refs/tags/10.0.0.tar.gz
-          tar -xzf 10.0.0.tar.gz -C deps
-        fi
-        cd deps/tinyxml2-10.0.0
-        mkdir -p build
-        cd build
-        cmake ..
-        make
-        sudo make install
+    - uses: ./.github/actions/install-sdl2-net
+    - name: Copy SDL libs to multiarch dir
+      run: sudo cp -av /usr/local/lib/libSDL* /lib/x86_64-linux-gnu/
+    - name: Remove distro tinyxml2
+      run: sudo apt-get remove libtinyxml2-dev
+    - uses: ./.github/actions/install-tinyxml2
     - name: Generate soh.o2r
       run: |
-        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
         cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release
         cmake --build build-cmake --config Release --target GenerateSohOtr -j3
     - name: Upload soh.o2r
@@ -79,59 +73,29 @@ jobs:
     runs-on: macos-14
     steps:
     - name: Git Checkout
-      uses: actions/checkout@v6
+      uses: actions/checkout@v7
       with:
         submodules: true
+    - name: Setup Macports
+      uses: melusina-org/setup-macports@v1
+      with:
+        parameters: '.github/macports.yml'
     - name: Configure ccache
-      uses: hendrikmuhs/ccache-action@v1.2.22
+      uses: hendrikmuhs/ccache-action@v1.2.23
       with:
-        create-symlink: true
+        key: ${{ runner.os }} # ccache-macos-{{ timestamp }}
+        max-size: "2G"
+        evict-old-files: job
         save: ${{ github.ref_name == github.event.repository.default_branch }}
-        key: ${{ runner.os }}-14-ccache-${{ github.ref }}-${{ github.sha }}
-        restore-keys: |
-          ${{ runner.os }}-14-ccache-${{ github.ref }}
-          ${{ runner.os }}-14-ccache
-    # Needed to apply sudo for macports cache restore
-    - name: Install gtar wrapper
-      run: |
-        sudo mv /opt/homebrew/bin/gtar /opt/homebrew/bin/gtar.orig
-        sudo cp .github/workflows/gtar /opt/homebrew/bin/gtar
-        sudo chmod +x /opt/homebrew/bin/gtar
-    - name: Restore Cached MacPorts
-      id: restore-cache-macports
-      uses: actions/cache/restore@v5
-      with:
-        key: ${{ runner.os }}-14-macports-${{ hashFiles('.github/workflows/macports-deps.txt') }}-${{ github.sha }}
-        restore-keys: |
-          ${{ runner.os }}-14-macports-${{ hashFiles('.github/workflows/macports-deps.txt') }}-
-          ${{ runner.os }}-14-macports-
-        path: /opt/local/
-    # Updated PATH applies to the next step and onwards
-    - name: Install MacPorts (if necessary)
-      run: |
-        if command -v /opt/local/bin/port 2>&1 >/dev/null; then
-          echo "MacPorts already installed"
-        else
-          echo "Installing MacPorts"
-          wget https://github.com/macports/macports-base/releases/download/v2.11.5/MacPorts-2.11.5-14-Sonoma.pkg
-          sudo installer -pkg ./MacPorts-2.11.5-14-Sonoma.pkg -target /
-        fi
-        echo "/opt/local/bin:/opt/local/sbin" >> "$GITHUB_PATH"
-    - name: Install dependencies
-      run: |
-        brew uninstall --ignore-dependencies libpng
-        sudo port install $(cat .github/workflows/macports-deps.txt)
-        brew install ninja
     - name: Download soh.o2r
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: soh.o2r
         path: build-cmake/soh
     - name: Build SoH
       run: |
-        export PATH="/usr/lib/ccache:/opt/homebrew/opt/ccache/libexec:/usr/local/opt/ccache/libexec:$PATH"
-        cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" -DBUILD_REMOTE_CONTROL=1
-        cmake --build build-cmake --config Release --parallel 10
+        cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" -DBUILD_REMOTE_CONTROL=1
+        cmake --build build-cmake -j
         (cd build-cmake && cpack)
 
         mv _packages/*.dmg SoH.dmg
@@ -143,27 +107,21 @@ jobs:
         path: |
           SoH.dmg
           readme.txt
-    - name: Save Cache MacPorts
-      if: ${{ github.ref_name == github.event.repository.default_branch }}
-      uses: actions/cache/save@v5
-      with:
-        key: ${{ steps.restore-cache-macports.outputs.cache-primary-key }}
-        path: /opt/local/
 
   build-linux:
     needs: generate-soh-otr
     runs-on: ubuntu-22.04
     steps:
     - name: Git Checkout
-      uses: actions/checkout@v6
+      uses: actions/checkout@v7
       with:
         submodules: true
     - name: Install dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y $(cat .github/workflows/apt-deps.txt)
+        sudo apt-get install -y $(cat linux-build-deps/apt.txt)
     - name: Configure ccache
-      uses: hendrikmuhs/ccache-action@v1.2.22
+      uses: hendrikmuhs/ccache-action@v1.2.23
       with:
         save: ${{ github.ref_name == github.event.repository.default_branch }}
         key: ${{ runner.os }}-ccache-${{ github.ref }}-${{ github.sha }}
@@ -181,9 +139,12 @@ jobs:
         path: deps
     - name: Create deps folder
       run: mkdir -p deps
+    - name: Add ccache to PATH
+      run: |
+        echo "/usr/lib/ccache" >> "$GITHUB_PATH"
+        echo "/usr/local/opt/ccache/libexec" >> "$GITHUB_PATH"
     - name: Install latest SDL
       run: |
-        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
         if [ ! -d "deps/SDL2-2.30.3" ]; then
           wget https://github.com/libsdl-org/SDL/releases/download/release-2.30.3/SDL2-2.30.3.tar.gz
           tar -xzf SDL2-2.30.3.tar.gz -C deps
@@ -193,35 +154,15 @@ jobs:
         make -j 10
         sudo make install
         sudo cp -av /usr/local/lib/libSDL* /lib/x86_64-linux-gnu/
-    - name: Install latest SDL_net
-      run: |
-        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
-        if [ ! -d "deps/SDL2_net-2.2.0" ]; then
-          wget https://www.libsdl.org/projects/SDL_net/release/SDL2_net-2.2.0.tar.gz
-          tar -xzf SDL2_net-2.2.0.tar.gz -C deps
-        fi
-        cd deps/SDL2_net-2.2.0
-        ./configure
-        make -j 10
-        sudo make install
-        sudo cp -av /usr/local/lib/libSDL* /lib/x86_64-linux-gnu/
-    - name: Install latest tinyxml2
-      run: |
-        sudo apt-get remove libtinyxml2-dev
-        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
-        if [ ! -d "deps/tinyxml2-10.0.0" ]; then
-          wget https://github.com/leethomason/tinyxml2/archive/refs/tags/10.0.0.tar.gz
-          tar -xzf 10.0.0.tar.gz -C deps
-        fi
-        cd deps/tinyxml2-10.0.0
-        mkdir -p build
-        cd build
-        cmake ..
-        make
-        sudo make install
+    - uses: ./.github/actions/install-sdl2-net
+    - name: Copy SDL libs to multiarch dir
+      run: sudo cp -av /usr/local/lib/libSDL* /lib/x86_64-linux-gnu/
+    - name: Remove distro tinyxml2
+      run: sudo apt-get remove libtinyxml2-dev
+    - uses: ./.github/actions/install-tinyxml2
     - name: Install libzip without crypto
       run: |
-        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
+        sudo apt-get remove -y libzip-dev
         if [ ! -d "deps/libzip-1.10.1" ]; then
           wget https://github.com/nih-at/libzip/releases/download/v1.10.1/libzip-1.10.1.tar.gz
           tar -xzf libzip-1.10.1.tar.gz -C deps
@@ -234,13 +175,12 @@ jobs:
         sudo make install
         sudo cp -av /usr/local/lib/libzip* /lib/x86_64-linux-gnu/
     - name: Download soh.o2r
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: soh.o2r
         path: build-cmake/soh
     - name: Build SoH
       run: |
-        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
         cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release -DBUILD_REMOTE_CONTROL=1
         cmake --build build-cmake --config Release -j3
         (cd build-cmake && cpack -G External)
@@ -273,11 +213,11 @@ jobs:
         choco install ninja -y
         Remove-Item -Path "C:\ProgramData\Chocolatey\bin\ccache.exe" -Force -ErrorAction SilentlyContinue
     - name: Git Checkout
-      uses: actions/checkout@v6
+      uses: actions/checkout@v7
       with:
         submodules: true
     - name: Configure sccache
-      uses: hendrikmuhs/ccache-action@v1.2.22
+      uses: hendrikmuhs/ccache-action@v1.2.23
       with:
         variant: sccache
         max-size: "2G"
@@ -299,7 +239,7 @@ jobs:
     - name: Configure Developer Command Prompt
       uses: ilammy/msvc-dev-cmd@v1
     - name: Download soh.o2r
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: soh.o2r
         path: build-windows/soh

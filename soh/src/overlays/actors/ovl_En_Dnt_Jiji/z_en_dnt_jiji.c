@@ -122,7 +122,7 @@ void EnDntJiji_Wait(EnDntJiji* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
     if ((this->timer == 1) && (this->actor.xzDistToPlayer < 150.0f) && !Play_InCsMode(play) &&
         !(player->stateFlags1 & PLAYER_STATE1_CARRYING_ACTOR)) {
-        OnePointCutscene_Init(play, 2230, -99, &this->actor, MAIN_CAM);
+        OnePointCutscene_Init(play, 2230, -99, &this->actor, CAM_ID_MAIN);
         this->timer = 0;
         Player_SetCsActionWithHaltedActors(play, NULL, 8);
         this->actionFunc = EnDntJiji_SetupUnburrow;
@@ -241,7 +241,7 @@ void EnDntJiji_Cower(EnDntJiji* this, PlayState* play) {
         if (Actor_ProcessTalkRequest(&this->actor, play)) {
             this->actionFunc = EnDntJiji_SetupTalk;
         } else {
-            func_8002F2CC(&this->actor, play, 100.0f);
+            Actor_OfferTalk(&this->actor, play, 100.0f);
         }
     }
 }

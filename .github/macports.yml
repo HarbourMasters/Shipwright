@@ -1,0 +1,23 @@
+ports:
+  - name: libsdl2
+    select: [ universal ]
+  - name: libsdl2_net
+    select: [ universal ]
+  - name: libpng
+    select: [ universal ]
+  - name: glew
+    select: [ universal ]
+  - name: libzip
+    select: [ universal ]
+  - name: nlohmann-json
+    select: [ universal ]
+  - name: tinyxml2
+    select: [ universal ]
+  - name: libogg
+    select: [ universal ]
+  - name: libopus
+    select: [ universal ]
+  - name: opusfile
+    select: [ universal ]
+  - name: libvorbis
+    select: [ universal ]

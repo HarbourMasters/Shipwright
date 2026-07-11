@@ -193,7 +193,7 @@ void ObjectKankyo_Fairies(ObjectKankyo* this, PlayState* play) {
 
     player = GET_PLAYER(play);
 
-    if (play->sceneNum == SCENE_KOKIRI_FOREST && gSaveContext.sceneSetupIndex == 7) {
+    if (play->sceneNum == SCENE_KOKIRI_FOREST && gSaveContext.sceneLayer == 7) {
         dist = Math3D_Vec3f_DistXYZ(&this->prevEyePos, &play->view.eye);
 
         this->prevEyePos.x = play->view.eye.x;
@@ -226,7 +226,7 @@ void ObjectKankyo_Fairies(ObjectKankyo* this, PlayState* play) {
     }
 
     if (play->envCtx.unk_EE[3] < 64 && (gSaveContext.entranceIndex != ENTR_KOKIRI_FOREST_0 ||
-                                        gSaveContext.sceneSetupIndex != 4 || play->envCtx.unk_EE[3])) {
+                                        gSaveContext.sceneLayer != 4 || play->envCtx.unk_EE[3])) {
         play->envCtx.unk_EE[3] += 16;
     }
 

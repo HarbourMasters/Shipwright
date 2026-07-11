@@ -377,7 +377,7 @@ void EnZl4_Init(Actor* thisx, PlayState* play) {
     this->actor.textId = -1;
     this->eyeExpression = this->mouthExpression = ZL4_MOUTH_NEUTRAL;
 
-    if (gSaveContext.sceneSetupIndex >= 4) {
+    if (gSaveContext.sceneLayer >= 4) {
         Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ZL4_ANIM_0);
         this->actionFunc = EnZl4_TheEnd;
     } else if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) {
@@ -438,7 +438,7 @@ s32 EnZl4_CsWaitForPlayer(EnZl4* this, PlayState* play) {
         if ((playerx->world.pos.y != this->actor.world.pos.y) || (absYawDiff >= 0x3FFC)) {
             return false;
         } else {
-            func_8002F2CC(&this->actor, play, this->collider.dim.radius + 60.0f);
+            Actor_OfferTalk(&this->actor, play, this->collider.dim.radius + 60.0f);
             return false;
         }
     }
@@ -921,7 +921,7 @@ s32 EnZl4_CsLookWindow(EnZl4* this, PlayState* play) {
                     play->csCtx.state = CS_STATE_UNSKIPPABLE_INIT;
                 }
             } else {
-                func_800AA000(0.0f, 0xA0, 0xA, 0x28);
+                Rumble_Request(0.0f, 0xA0, 0xA, 0x28);
                 Player_SetCsActionWithHaltedActors(play, &this->actor, 1);
                 Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ZL4_ANIM_30);
                 EnZl4_SetCsCameraAngle(play, 11);

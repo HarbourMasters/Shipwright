@@ -1509,13 +1509,13 @@ s32 func_80AEE264(EnRu1* this, PlayState* play) {
         this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY;
         if ((Flags_GetInfTable(INFTABLE_143))) {
             this->actor.textId = 0x404E;
-            func_8002F2F4(&this->actor, play);
+            Actor_OfferTalkNearColChkInfoCylinder(&this->actor, play);
         } else if (Flags_GetInfTable(INFTABLE_RUTO_IN_JJ_TALK_FIRST_TIME)) {
             this->actor.textId = 0x404D;
-            func_8002F2F4(&this->actor, play);
+            Actor_OfferTalkNearColChkInfoCylinder(&this->actor, play);
         } else {
             this->actor.textId = 0x404C;
-            func_8002F2F4(&this->actor, play);
+            Actor_OfferTalkNearColChkInfoCylinder(&this->actor, play);
         }
         return false;
     }
@@ -2018,7 +2018,7 @@ void func_80AEF890(EnRu1* this, PlayState* play) {
     s32 pad[2];
     s8 curRoomNum;
 
-    if ((gSaveContext.sceneSetupIndex < 4) && (EnRu1_IsCsStateIdle(play))) {
+    if ((gSaveContext.sceneLayer < 4) && (EnRu1_IsCsStateIdle(play))) {
         curRoomNum = play->roomCtx.curRoom.num;
         Flags_SetInfTable(INFTABLE_145);
         Flags_SetSwitch(play, func_80AEADE0(this));
@@ -2149,7 +2149,7 @@ s32 func_80AEFDC0(EnRu1* this, PlayState* play) {
         if (this->actor.textId == 0) {
             this->actor.textId = 0x402C;
         }
-        func_8002F2F4(&this->actor, play);
+        Actor_OfferTalkNearColChkInfoCylinder(&this->actor, play);
         return false;
     }
     return true;

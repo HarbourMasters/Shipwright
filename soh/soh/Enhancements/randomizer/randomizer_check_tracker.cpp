@@ -3,7 +3,6 @@
 #include "randomizer_item_tracker.h"
 #include "randomizerTypes.h"
 #include "soh/OTRGlobals.h"
-#include "soh/cvar_prefixes.h"
 #include "soh/SaveManager.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/SohGui/UIWidgets.hpp"
@@ -14,15 +13,18 @@
 #include "location_access.h"
 #include "3drando/fill.hpp"
 #include "soh/Enhancements/debugger/performanceTimer.h"
+#include "soh/Enhancements/randomizer/randomizer.h"
+#include "soh/ObjectExtension/ObjectExtension.h"
+#include "overlays/actors/ovl_En_GirlA/z_en_girla.h"
 
 #include <string>
 #include <sstream>
 #include <vector>
 #include <set>
-#include <libultraship/libultraship.h>
 #include <libultraship/controller/controldeck/ControlDeck.h>
 #include "location.h"
 #include "item_location.h"
+#include "randomizer_check_objects.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "z64item.h"
 
@@ -864,6 +866,32 @@ void CheckTrackerFlagSet(int16_t flagType, int32_t flag) {
     }
 }
 
+void CheckTrackerDialogMessage() {
+    auto identifyCheck = [](RandomizerCheck rc) {
+        auto loc = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc);
+        if (loc->GetCheckStatus() == RCSHOW_UNCHECKED) {
+            loc->SetCheckStatus(RCSHOW_IDENTIFIED);
+            RecalculateAvailableChecks();
+        }
+    };
+
+    if (gPlayState->msgCtx.textId == TEXT_BEAN_SALESMAN_BUY_FOR_10) {
+        identifyCheck(RC_ZR_MAGIC_BEAN_SALESMAN);
+    } else if (gPlayState->msgCtx.textId == TEXT_MEDIGORON) {
+        identifyCheck(RC_GC_MEDIGORON);
+    } else if (gPlayState->msgCtx.textId == TEXT_GRANNYS_SHOP) {
+        identifyCheck(RC_KAK_GRANNYS_SHOP);
+    } else if (gPlayState->msgCtx.textId == TEXT_CARPET_SALESMAN_1) {
+        identifyCheck(RC_WASTELAND_BOMBCHU_SALESMAN);
+    } else if (gPlayState->msgCtx.textId == TEXT_SCRUB_RANDOM) {
+        if (auto* actor = gPlayState->msgCtx.talkActor) {
+            if (auto* checkIdentity = ObjectExtension::GetInstance().Get<ScrubIdentity>(actor)) {
+                identifyCheck(checkIdentity->identity.randomizerCheck);
+            }
+        }
+    }
+}
+
 void InitTrackerData(bool isDebug) {
     TrySetAreas();
     areasSpoiled = 0;
@@ -1001,7 +1029,8 @@ void CheckTrackerWindow::DrawElement() {
             int comboButton1Mask = buttons[CVarGetInteger(CVAR_TRACKER_CHECK("ComboButton1"), TRACKER_COMBO_BUTTON_L)];
             int comboButton2Mask = buttons[CVarGetInteger(CVAR_TRACKER_CHECK("ComboButton2"), TRACKER_COMBO_BUTTON_R)];
             OSContPad* trackerButtonsPressed =
-                std::dynamic_pointer_cast<LUS::ControlDeck>(Ship::Context::GetInstance()->GetControlDeck())->GetPads();
+                std::dynamic_pointer_cast<LUS::ControlDeck>(Ship::Context::GetRawInstance()->GetControlDeck())
+                    ->GetPads();
             bool comboButtonsHeld = trackerButtonsPressed != nullptr &&
                                     trackerButtonsPressed[0].button & comboButton1Mask &&
                                     trackerButtonsPressed[0].button & comboButton2Mask;
@@ -1604,23 +1633,23 @@ void LoadSettings() {
     }
 
     switch (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GANONS_BOSS_KEY)) {
-        case RO_GANON_BOSS_KEY_LACS_STONES:
-            Rando::Context::GetInstance()->LACSCondition(RO_LACS_STONES);
+        case RO_GANON_BOSS_KEY_STONES:
+            Rando::Context::GetInstance()->GBKCondition(RO_CHECK_TRIGGER_STONES);
             break;
-        case RO_GANON_BOSS_KEY_LACS_MEDALLIONS:
-            Rando::Context::GetInstance()->LACSCondition(RO_LACS_MEDALLIONS);
+        case RO_GANON_BOSS_KEY_MEDALLIONS:
+            Rando::Context::GetInstance()->GBKCondition(RO_CHECK_TRIGGER_MEDALLIONS);
             break;
-        case RO_GANON_BOSS_KEY_LACS_REWARDS:
-            Rando::Context::GetInstance()->LACSCondition(RO_LACS_REWARDS);
+        case RO_GANON_BOSS_KEY_REWARDS:
+            Rando::Context::GetInstance()->GBKCondition(RO_CHECK_TRIGGER_REWARDS);
             break;
-        case RO_GANON_BOSS_KEY_LACS_DUNGEONS:
-            Rando::Context::GetInstance()->LACSCondition(RO_LACS_DUNGEONS);
+        case RO_GANON_BOSS_KEY_DUNGEONS:
+            Rando::Context::GetInstance()->GBKCondition(RO_CHECK_TRIGGER_DUNGEONS);
             break;
-        case RO_GANON_BOSS_KEY_LACS_TOKENS:
-            Rando::Context::GetInstance()->LACSCondition(RO_LACS_TOKENS);
+        case RO_GANON_BOSS_KEY_TOKENS:
+            Rando::Context::GetInstance()->GBKCondition(RO_CHECK_TRIGGER_TOKENS);
             break;
         default:
-            Rando::Context::GetInstance()->LACSCondition(RO_LACS_VANILLA);
+            Rando::Context::GetInstance()->GBKCondition(RO_CHECK_TRIGGER_NONE);
             break;
     }
 }
@@ -1643,11 +1672,12 @@ bool IsCheckShuffled(RandomizerCheck rc) {
                 (showShops &&
                  OTRGlobals::Instance->gRandomizer->IdentifyShopItem(loc->GetScene(), loc->GetActorParams() + 1)
                          .enGirlAShopItem == 50)) &&
-               (rc != RC_TRIFORCE_COMPLETED) && (rc != RC_GANON) &&
+               (rc != RC_WINCON) && (rc != RC_GANON) &&
                (loc->GetRCType() != RCTYPE_SCRUB || showScrubs ||
                 (showMajorScrubs && (rc == RC_LW_DEKU_SCRUB_NEAR_BRIDGE || // The 3 scrubs that are always randomized
                                      rc == RC_HF_DEKU_SCRUB_GROTTO || rc == RC_LW_DEKU_SCRUB_GROTTO_FRONT))) &&
-               (loc->GetRCType() != RCTYPE_MERCHANT || showMerchants) &&
+               ((loc->GetRCType() != RCTYPE_MERCHANT || (showMerchants && rc != RC_ZR_MAGIC_BEAN_SALESMAN)) ||
+                (rc == RC_ZR_MAGIC_BEAN_SALESMAN && showBeans)) &&
                (loc->GetRCType() != RCTYPE_BEGGAR || showBeggar) &&
                (loc->GetRCType() != RCTYPE_SONG_LOCATION || showSongs) &&
                (loc->GetRCType() != RCTYPE_BEEHIVE || showBeehives) &&
@@ -1698,8 +1728,7 @@ bool IsCheckShuffled(RandomizerCheck rc) {
                 rc == RC_DMT_TRADE_CLAIM_CHECK // even when shuffle adult trade is off
                 ) &&
                (rc != RC_KF_KOKIRI_SWORD_CHEST || showKokiriSword) && (rc != RC_TOT_MASTER_SWORD || showMasterSword) &&
-               (rc != RC_LH_HYRULE_LOACH || showHyruleLoach) && (rc != RC_ZR_MAGIC_BEAN_SALESMAN || showBeans) &&
-               (rc != RC_HC_MALON_EGG || showWeirdEgg) &&
+               (rc != RC_LH_HYRULE_LOACH || showHyruleLoach) && (rc != RC_HC_MALON_EGG || showWeirdEgg) &&
                (loc->GetRCType() != RCTYPE_FROG_SONG || showFrogSongRupees) &&
                ((loc->GetRCType() != RCTYPE_MAP && loc->GetRCType() != RCTYPE_COMPASS) || showStartingMapsCompasses) &&
                (loc->GetRCType() != RCTYPE_FOUNTAIN_FAIRY || showFountainFairies) &&
@@ -1826,6 +1855,42 @@ bool CompareChecks(RandomizerCheck i, RandomizerCheck j) {
 
 bool IsHeartPiece(GetItemID giid) {
     return giid == GI_HEART_PIECE || giid == GI_HEART_PIECE_WIN;
+}
+
+bool IsMysteryShopItem(RandomizerCheck rc) {
+    s32 sceneNum = 0;
+    u8 slotIndex = 0;
+
+    if (rc >= RC_KF_SHOP_ITEM_1 && rc <= RC_KF_SHOP_ITEM_8) {
+        sceneNum = SCENE_KOKIRI_SHOP;
+        slotIndex = rc - RC_KF_SHOP_ITEM_1;
+    } else if (rc >= RC_MARKET_BAZAAR_ITEM_1 && rc <= RC_MARKET_BAZAAR_ITEM_8) {
+        sceneNum = SCENE_BAZAAR;
+        slotIndex = rc - RC_MARKET_BAZAAR_ITEM_1;
+    } else if (rc >= RC_MARKET_POTION_SHOP_ITEM_1 && rc <= RC_MARKET_POTION_SHOP_ITEM_8) {
+        sceneNum = SCENE_POTION_SHOP_MARKET;
+        slotIndex = rc - RC_MARKET_POTION_SHOP_ITEM_1;
+    } else if (rc >= RC_MARKET_BOMBCHU_SHOP_ITEM_1 && rc <= RC_MARKET_BOMBCHU_SHOP_ITEM_8) {
+        sceneNum = SCENE_BOMBCHU_SHOP;
+        slotIndex = rc - RC_MARKET_BOMBCHU_SHOP_ITEM_1;
+    } else if (rc >= RC_KAK_BAZAAR_ITEM_1 && rc <= RC_KAK_BAZAAR_ITEM_8) {
+        sceneNum = SCENE_TEST01;
+        slotIndex = rc - RC_KAK_BAZAAR_ITEM_1;
+    } else if (rc >= RC_KAK_POTION_SHOP_ITEM_1 && rc <= RC_KAK_POTION_SHOP_ITEM_8) {
+        sceneNum = SCENE_POTION_SHOP_KAKARIKO;
+        slotIndex = rc - RC_KAK_POTION_SHOP_ITEM_1;
+    } else if (rc >= RC_GC_SHOP_ITEM_1 && rc <= RC_GC_SHOP_ITEM_8) {
+        sceneNum = SCENE_GORON_SHOP;
+        slotIndex = rc - RC_GC_SHOP_ITEM_1;
+    } else if (rc >= RC_ZD_SHOP_ITEM_1 && rc <= RC_ZD_SHOP_ITEM_8) {
+        sceneNum = SCENE_ZORA_SHOP;
+        slotIndex = rc - RC_ZD_SHOP_ITEM_1;
+    } else {
+        return false;
+    }
+
+    ShopItemIdentity shopItemIdentity = OTRGlobals::Instance->gRandomizer->IdentifyShopItem(sceneNum, slotIndex + 1);
+    return shopItemIdentity.enGirlAShopItem == SI_RANDOMIZED_ITEM;
 }
 
 void DrawLocation(RandomizerCheck rc) {
@@ -1985,7 +2050,17 @@ void DrawLocation(RandomizerCheck rc) {
             case RCSHOW_IDENTIFIED:
             case RCSHOW_SEEN:
                 if (IS_RANDO) {
-                    if (itemLoc->GetPlacedRandomizerGet() == RG_ICE_TRAP && !mystery) {
+                    const auto checkType = loc->GetRCType();
+                    const bool hideMerchantName =
+                        checkType == RCTYPE_MERCHANT &&
+                        (!OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_MERCHANT_TEXT_HINT) || mystery);
+                    const bool hideScrubName =
+                        checkType == RCTYPE_SCRUB &&
+                        (!OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SCRUB_TEXT_HINT) || mystery);
+                    const bool hideShopName = checkType == RCTYPE_SHOP && mystery && IsMysteryShopItem(rc);
+                    const bool revealItemName = !(hideMerchantName || hideScrubName || hideShopName);
+
+                    if (itemLoc->GetPlacedRandomizerGet() == RG_ICE_TRAP && revealItemName) {
                         if (status == RCSHOW_IDENTIFIED) {
                             txt = OTRGlobals::Instance->gRandoContext->overrides[rc].GetTrickName().GetForLanguage(
                                 gSaveContext.language);
@@ -1995,14 +2070,12 @@ void DrawLocation(RandomizerCheck rc) {
                                       .GetName()
                                       .GetForLanguage(gSaveContext.language);
                         }
-                    } else if (!mystery) {
+                    } else if (revealItemName) {
                         txt = itemLoc->GetPlacedItem().GetName().GetForLanguage(gSaveContext.language);
                     }
-                    if (IsVisibleInCheckTracker(rc) && status == RCSHOW_IDENTIFIED && !mystery) {
+                    if (itemLoc->CanBePurchased() && IsVisibleInCheckTracker(rc) && status == RCSHOW_IDENTIFIED) {
                         auto price = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc)->GetPrice();
-                        if (price) {
-                            txt += fmt::format(" - {}", price);
-                        }
+                        txt = !txt.empty() ? fmt::format("{} - {}", txt, price) : fmt::format("{}", price);
                     }
                 } else {
                     if (IsHeartPiece((GetItemID)Rando::StaticData::RetrieveItem(loc->GetVanillaItem()).GetItemID())) {
@@ -2224,9 +2297,11 @@ void CheckTrackerSettingsWindow::DrawElement() {
         ImGui::TableHeadersRow();
         ImGui::TableNextRow();
         ImGui::TableNextColumn();
-        SohGui::GetSohMenu()->MenuDrawItem(backgroundColorWidget, ImGui::GetContentRegionAvail().x, THEME_COLOR);
+        SohGui::GetSohMenu()->MenuDrawItem(backgroundColorWidget,
+                                           static_cast<uint32_t>(ImGui::GetContentRegionAvail().x), THEME_COLOR);
 
-        SohGui::GetSohMenu()->MenuDrawItem(windowTypeWidget, ImGui::GetContentRegionAvail().x, THEME_COLOR);
+        SohGui::GetSohMenu()->MenuDrawItem(windowTypeWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
+                                           THEME_COLOR);
 
         UIWidgets::CVarSliderFloat("Font Size", CVAR_TRACKER_CHECK("FontSize"),
                                    UIWidgets::FloatSliderOptions()
@@ -2266,17 +2341,22 @@ void CheckTrackerSettingsWindow::DrawElement() {
             }
         }
         ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
-        SohGui::GetSohMenu()->MenuDrawItem(dungeonSpoilerWidget, ImGui::GetContentRegionAvail().x, THEME_COLOR);
+        SohGui::GetSohMenu()->MenuDrawItem(dungeonSpoilerWidget,
+                                           static_cast<uint32_t>(ImGui::GetContentRegionAvail().x), THEME_COLOR);
         ImGui::EndDisabled();
 
-        SohGui::GetSohMenu()->MenuDrawItem(hideUnshuffledShopWidget, ImGui::GetContentRegionAvail().x, THEME_COLOR);
+        SohGui::GetSohMenu()->MenuDrawItem(hideUnshuffledShopWidget,
+                                           static_cast<uint32_t>(ImGui::GetContentRegionAvail().x), THEME_COLOR);
 
-        SohGui::GetSohMenu()->MenuDrawItem(showGSWidget, ImGui::GetContentRegionAvail().x, THEME_COLOR);
+        SohGui::GetSohMenu()->MenuDrawItem(showGSWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
+                                           THEME_COLOR);
 
-        SohGui::GetSohMenu()->MenuDrawItem(showLogicWidget, ImGui::GetContentRegionAvail().x, THEME_COLOR);
+        SohGui::GetSohMenu()->MenuDrawItem(showLogicWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
+                                           THEME_COLOR);
 
         ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
-        SohGui::GetSohMenu()->MenuDrawItem(checkAvailabilityWidget, ImGui::GetContentRegionAvail().x, THEME_COLOR);
+        SohGui::GetSohMenu()->MenuDrawItem(checkAvailabilityWidget,
+                                           static_cast<uint32_t>(ImGui::GetContentRegionAvail().x), THEME_COLOR);
         ImGui::EndDisabled();
 
         // Filtering settings
@@ -2360,6 +2440,7 @@ void CheckTrackerWindow::InitElement() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnShopSlotChange>(CheckTrackerShopSlotChange);
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneFlagSet>(CheckTrackerSceneFlagSet);
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnFlagSet>(CheckTrackerFlagSet);
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnDialogMessage>(CheckTrackerDialogMessage);
 }
 
 void CheckTrackerWindow::UpdateElement() {

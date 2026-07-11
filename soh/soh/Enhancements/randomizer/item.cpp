@@ -6,9 +6,9 @@
 #include "3drando/item_pool.hpp"
 #include "z64item.h"
 #include "variables.h"
-#include "macros.h"
 #include "functions.h"
 #include "../../OTRGlobals.h"
+#include "soh/Enhancements/randomizer/randomizer.h"
 
 namespace Rando {
 Item::Item()
@@ -77,6 +77,12 @@ const std::string& Item::GetColor() const {
 }
 
 bool Item::IsAdvancement() const {
+    // With the shop shield/tunic gate on, a found Deku/Hylian Shield unlocks its shop copy, so it must
+    // be treated as progression. Tunics already are.
+    if (!advancement && (randomizerGet == RG_DEKU_SHIELD || randomizerGet == RG_HYLIAN_SHIELD) &&
+        Context::GetInstance()->GetOption(RSK_SHOP_SHIELDS_AND_TUNICS_ONLY_REFILL).Is(RO_GENERIC_ON)) {
+        return true;
+    }
     return advancement;
 }
 
@@ -427,7 +433,8 @@ bool Item::IsBottleItem() const {
 bool Item::IsMajorItem() const {
     const auto ctx = Context::GetInstance();
     if (type == ITEMTYPE_TOKEN) {
-        return ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_TOKENS) || ctx->LACSCondition() == RO_LACS_TOKENS;
+        return ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_TOKENS) ||
+               ctx->GBKCondition() == RO_CHECK_TRIGGER_TOKENS;
     }
 
     if (type == ITEMTYPE_DROP || type == ITEMTYPE_EVENT || type == ITEMTYPE_SHOP || type == ITEMTYPE_MAP ||
@@ -475,6 +482,23 @@ bool Item::IsMajorItem() const {
     }
 
     return IsAdvancement();
+}
+
+bool Item::IsShieldOrTunic() const {
+    switch (randomizerGet) {
+        case RG_DEKU_SHIELD:
+        case RG_HYLIAN_SHIELD:
+        case RG_MIRROR_SHIELD:
+        case RG_GORON_TUNIC:
+        case RG_ZORA_TUNIC:
+        case RG_BUY_DEKU_SHIELD:
+        case RG_BUY_HYLIAN_SHIELD:
+        case RG_BUY_GORON_TUNIC:
+        case RG_BUY_ZORA_TUNIC:
+            return true;
+        default:
+            return false;
+    }
 }
 
 RandomizerHintTextKey Item::GetHintKey() const {

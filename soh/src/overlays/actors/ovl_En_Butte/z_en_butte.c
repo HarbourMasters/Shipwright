@@ -338,14 +338,16 @@ void EnButte_FollowLink(EnButte* this, PlayState* play) {
 
     distSqFromHome = Math3D_Dist2DSq(this->actor.world.pos.x, this->actor.world.pos.z, this->actor.home.pos.x,
                                      this->actor.home.pos.z);
-    if (!((player->heldItemAction == PLAYER_IA_DEKU_STICK) && (fabsf(player->actor.speedXZ) < 1.8f) &&
-          (this->swordDownTimer <= 0) && (distSqFromHome < SQ(320.0f)))) {
-        EnButte_SetupFlyAround(this);
-    } else if (distSqFromHome > SQ(240.0f)) {
-        distSqFromSword = Math3D_Dist2DSq(player->meleeWeaponInfo[0].tip.x, player->meleeWeaponInfo[0].tip.z,
-                                          this->actor.world.pos.x, this->actor.world.pos.z);
-        if (distSqFromSword < SQ(60.0f)) {
-            EnButte_SetupTransformIntoFairy(this);
+    if (GameInteractor_Should(VB_SPAWN_BUTTERFLY_FAIRY_EASY, true, this)) {
+        if (!((player->heldItemAction == PLAYER_IA_DEKU_STICK) && (fabsf(player->actor.speedXZ) < 1.8f) &&
+              (this->swordDownTimer <= 0) && (distSqFromHome < SQ(320.0f)))) {
+            EnButte_SetupFlyAround(this);
+        } else if (distSqFromHome > SQ(240.0f)) {
+            distSqFromSword = Math3D_Dist2DSq(player->meleeWeaponInfo[0].tip.x, player->meleeWeaponInfo[0].tip.z,
+                                              this->actor.world.pos.x, this->actor.world.pos.z);
+            if (distSqFromSword < SQ(60.0f)) {
+                EnButte_SetupTransformIntoFairy(this);
+            }
         }
     }
 }

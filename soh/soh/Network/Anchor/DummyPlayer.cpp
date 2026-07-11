@@ -70,6 +70,10 @@ void DummyPlayer_Init(Actor* actor, PlayState* play) {
     Player_SetModelGroup(player, Player_ActionToModelGroup(player, player->heldItemAction));
     play->playerInit(player, play, gPlayerSkelHeaders[client.linkAge]);
 
+    // Prevent dummy players from holding a weapon trail effect slot, as they don't use it anyway
+    Effect_Delete(play, player->meleeWeaponEffectIndex);
+    player->meleeWeaponEffectIndex = TOTAL_EFFECT_COUNT;
+
     play->func_11D54(player, play);
     // #endregion
 
@@ -125,13 +129,15 @@ void DummyPlayer_Update(Actor* actor, PlayState* play) {
     Math_Vec3s_Copy(&player->skelAnime.prevTransl, &client.prevTransl);
     player->currentBoots = client.currentBoots;
     player->currentShield = client.currentShield;
+    player->heldItemId = client.buttonItem0;
     player->currentTunic = client.currentTunic;
     player->stateFlags1 = client.stateFlags1;
     player->stateFlags2 = client.stateFlags2;
     player->itemAction = client.itemAction;
     player->heldItemAction = client.heldItemAction;
     player->invincibilityTimer = client.invincibilityTimer;
-    player->unk_862 = client.unk_862;
+    player->unk_862 =
+        (client.unk_862 > (s16)GID_MAXIMUM) ? (s16)GID_STONE_OF_AGONY : client.unk_862; // prevent OOB, show SoA if OOB
     player->unk_85C = client.unk_85C;
     player->av1.actionVar1 = client.actionVar1;
 

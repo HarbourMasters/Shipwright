@@ -234,7 +234,7 @@ void BgHakaTrap_SpikedWall_CloseIn(BgHakaTrap* this, PlayState* play) {
 
     if ((D_80880F30 == 0) && (!Player_InCsMode(play))) {
         if (!Math_StepToF(&this->dyna.actor.world.pos.x, this->dyna.actor.home.pos.x, 0.5f)) {
-            func_8002F974(&this->dyna.actor, NA_SE_EV_TRAP_OBJ_SLIDE - SFX_FLAG);
+            Actor_PlaySfx_Flagged(&this->dyna.actor, NA_SE_EV_TRAP_OBJ_SLIDE - SFX_FLAG);
         } else if (this->dyna.actor.params == HAKA_TRAP_SPIKED_WALL) {
             D_80881018 |= 1;
         } else if (this->dyna.actor.params == HAKA_TRAP_SPIKED_WALL_2) {
@@ -264,7 +264,7 @@ void BgHakaTrap_SpikedWall_Burn(BgHakaTrap* this, PlayState* play) {
         this->timer--;
     }
 
-    func_8002F974(&this->dyna.actor, NA_SE_EV_BURN_OUT - SFX_FLAG);
+    Actor_PlaySfx_Flagged(&this->dyna.actor, NA_SE_EV_BURN_OUT - SFX_FLAG);
 
     for (i = 0; i < 2; i++) {
         f32 rand = Rand_ZeroOne();
@@ -387,7 +387,7 @@ void BgHakaTrap_SpikedCrusher_Fall(BgHakaTrap* this, PlayState* play) {
     }
 
     if (this->dyna.actor.velocity.y >= 0.01f) {
-        func_8002F974(&this->dyna.actor, NA_SE_EV_CHINETRAP_DOWN - SFX_FLAG);
+        Actor_PlaySfx_Flagged(&this->dyna.actor, NA_SE_EV_CHINETRAP_DOWN - SFX_FLAG);
     }
 
     if (this->timer == 0) {
@@ -458,7 +458,7 @@ void BgHakaTrap_FireBarrier_Idle(BgHakaTrap* this, PlayState* play) {
 
     this->dyna.actor.shape.rot.z += this->dyna.actor.world.rot.z;
     if (this->dyna.actor.world.rot.z >= 0x1801) {
-        func_8002F974(&this->dyna.actor, NA_SE_EV_WIND_TRAP - SFX_FLAG);
+        Actor_PlaySfx_Flagged(&this->dyna.actor, NA_SE_EV_WIND_TRAP - SFX_FLAG);
     }
 
     BgHakaTrap_FanBlade_UpdateFanRotation(this, play, this->dyna.actor.world.rot.z);
@@ -469,7 +469,7 @@ void BgHakaTrap_FireBarrier_UpdateLayout(BgHakaTrap* this, PlayState* play) {
         this->timer--;
     }
 
-    func_8002F974(&this->dyna.actor, NA_SE_EV_WIND_TRAP - SFX_FLAG);
+    Actor_PlaySfx_Flagged(&this->dyna.actor, NA_SE_EV_WIND_TRAP - SFX_FLAG);
 
     if (this->timer == 0) {
         this->timer = 1;

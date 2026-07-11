@@ -86,7 +86,7 @@ s32 func_80A6F0B4(EnHs2* this, PlayState* play, u16 textId, EnHs2ActionFunc acti
     if (ABS((s16)(this->actor.yawTowardsPlayer - this->actor.shape.rot.y)) < 0x2151 &&
         this->actor.xzDistToPlayer < 100.0f) {
         this->unk_2A8 |= 0x1;
-        func_8002F2CC(&this->actor, play, 100.0f);
+        Actor_OfferTalk(&this->actor, play, 100.0f);
     }
     return 0;
 }
@@ -122,7 +122,7 @@ void EnHs2_Update(Actor* thisx, PlayState* play) {
     }
     this->actionFunc(this, play);
     if (this->unk_2A8 & 0x1) {
-        func_80038290(play, &this->actor, &this->unk_29C, &this->unk_2A2, this->actor.focus.pos);
+        Actor_TrackPlayer(play, &this->actor, &this->unk_29C, &this->unk_2A2, this->actor.focus.pos);
         this->unk_2A8 &= ~1;
     } else {
         Math_SmoothStepToS(&this->unk_29C.x, 12800, 6, 6200, 100);

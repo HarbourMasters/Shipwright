@@ -778,7 +778,7 @@ s32 BossTw_BeamHitPlayerCheck(BossTw* this, PlayState* play) {
         if (sTwinrovaPtr->timers[2] == 0) {
             sTwinrovaPtr->timers[2] = 150;
             this->beamDist = sqrtf(SQ(offset.x) + SQ(offset.y) + SQ(offset.z));
-            func_8002F6D4(play, &this->actor, 3.0f, this->actor.shape.rot.y, 0.0f, 0x20);
+            Actor_SetPlayerKnockbackLarge(play, &this->actor, 3.0f, this->actor.shape.rot.y, 0.0f, 0x20);
 
             if (this->actor.params == 0) {
                 if (sFreezeState == 0) {
@@ -1091,7 +1091,7 @@ void BossTw_ShootBeam(BossTw* this, PlayState* play) {
                         this->groundBlastPos.y = 0.0f;
                         this->groundBlastPos.z = 0.0f;
                         play->envCtx.unk_D8 = 1.0f;
-                        func_800AA000(0.0f, 0x64, 5, 4);
+                        Rumble_Request(0.0f, 0x64, 5, 4);
                     } else if (beamReflection == 0) {
                         BossTw_BeamHitPlayerCheck(this, play);
 
@@ -1685,7 +1685,7 @@ void BossTw_TwinrovaMergeCS(BossTw* this, PlayState* play) {
             }
 
             if (this->timers[2] == 1) {
-                Camera* cam = Play_GetCamera(play, MAIN_CAM);
+                Camera* cam = Play_GetCamera(play, CAM_ID_MAIN);
 
                 cam->eye = this->subCamEye;
                 cam->eyeNext = this->subCamEye;
@@ -2247,7 +2247,7 @@ void BossTw_TwinrovaIntroCS(BossTw* this, PlayState* play) {
             }
 
             if (this->work[CS_TIMER_1] == 260) {
-                Camera* cam = Play_GetCamera(play, MAIN_CAM);
+                Camera* cam = Play_GetCamera(play, CAM_ID_MAIN);
 
                 cam->eye = this->subCamEye;
                 cam->eyeNext = this->subCamEye;
@@ -2600,7 +2600,7 @@ void BossTw_TwinrovaDeathCS(BossTw* this, PlayState* play) {
     s16 i;
     Vec3f spD0;
     Player* player = GET_PLAYER(play);
-    Camera* mainCam = Play_GetCamera(play, MAIN_CAM);
+    Camera* mainCam = Play_GetCamera(play, CAM_ID_MAIN);
 
     SkelAnime_Update(&this->skelAnime);
     this->work[UNK_S8] += 20;
@@ -2794,7 +2794,7 @@ void BossTw_TwinrovaDeathCS(BossTw* this, PlayState* play) {
             Actor_SetScale(&sKoumePtr->actor, sKoumePtr->actor.scale.x);
             Actor_SetScale(&sKotakePtr->actor, sKoumePtr->actor.scale.x);
             if (this->work[CS_TIMER_2] >= 1020) {
-                mainCam = Play_GetCamera(play, MAIN_CAM);
+                mainCam = Play_GetCamera(play, CAM_ID_MAIN);
                 mainCam->eye = this->subCamEye;
                 mainCam->eyeNext = this->subCamEye;
                 mainCam->at = this->subCamAt;
@@ -4307,7 +4307,7 @@ s32 BossTw_BlastShieldCheck(BossTw* this, PlayState* play) {
             if (info->toucher.dmgFlags & DMG_SHIELD) {
                 this->work[INVINC_TIMER] = 7;
                 play->envCtx.unk_D8 = 1.0f;
-                func_800AA000(0.0f, 100, 5, 4);
+                Rumble_Request(0.0f, 100, 5, 4);
 
                 if (Player_HasMirrorShieldEquipped(play)) {
                     if (this->blastType == 1) {

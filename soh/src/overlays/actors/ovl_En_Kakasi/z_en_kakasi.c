@@ -214,7 +214,7 @@ void func_80A8F75C(EnKakasi* this, PlayState* play) {
             if (absyawTowardsPlayer < 0x4300) {
                 if (!this->unk_194) {
                     if (player->stateFlags2 & PLAYER_STATE2_ATTEMPT_PLAY_FOR_ACTOR) {
-                        this->camId = OnePointCutscene_Init(play, 2260, -99, &this->actor, MAIN_CAM);
+                        this->camId = OnePointCutscene_Init(play, 2260, -99, &this->actor, CAM_ID_MAIN);
 
                         func_8010BD58(play, OCARINA_ACTION_SCARECROW_LONG_RECORDING);
                         this->unk_19A = 0;
@@ -227,7 +227,7 @@ void func_80A8F75C(EnKakasi* this, PlayState* play) {
                         player->stateFlags2 |= PLAYER_STATE2_NEAR_OCARINA_ACTOR;
                     }
                 }
-                func_8002F2CC(&this->actor, play, 100.0f);
+                Actor_OfferTalk(&this->actor, play, 100.0f);
             }
         }
     }
@@ -267,7 +267,7 @@ void func_80A8F9C8(EnKakasi* this, PlayState* play) {
         if (this->camId != SUBCAM_NONE) {
             func_8005B1A4(play->cameraPtrs[this->camId]);
         }
-        this->camId = OnePointCutscene_Init(play, 2270, -99, &this->actor, MAIN_CAM);
+        this->camId = OnePointCutscene_Init(play, 2270, -99, &this->actor, CAM_ID_MAIN);
         play->msgCtx.msgMode = MSGMODE_PAUSED;
         Player_SetCsActionWithHaltedActors(play, NULL, 8);
         func_8010BD58(play, OCARINA_ACTION_SCARECROW_LONG_PLAYBACK);
@@ -296,7 +296,7 @@ void func_80A8FAA4(EnKakasi* this, PlayState* play) {
         this->actionFunc = func_80A8FBB8;
         OnePointCutscene_EndCutscene(play, this->camId);
         this->camId = SUBCAM_NONE;
-        this->camId = OnePointCutscene_Init(play, 2260, -99, &this->actor, MAIN_CAM);
+        this->camId = OnePointCutscene_Init(play, 2260, -99, &this->actor, CAM_ID_MAIN);
         func_8005B1A4(play->cameraPtrs[this->camId]);
     }
 }

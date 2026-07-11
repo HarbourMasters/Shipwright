@@ -612,7 +612,7 @@ void EnFr_Idle(EnFr* this, PlayState* play) {
             play->msgCtx.ocarinaMode = OCARINA_MODE_00;
         }
 
-        OnePointCutscene_Init(play, 4110, ~0x62, &this->actor, MAIN_CAM);
+        OnePointCutscene_Init(play, 4110, ~0x62, &this->actor, CAM_ID_MAIN);
         play->msgCtx.msgMode = MSGMODE_PAUSED;
         player->actor.world.pos.x = this->actor.world.pos.x; // x = 990.0f
         player->actor.world.pos.y = this->actor.world.pos.y; // y = 205.0f

@@ -8,14 +8,13 @@
 #include "soh/util.h"
 #include "Enhancements/randomizer/hint.h"
 #include "Enhancements/randomizer/item.h"
+#include "soh/Enhancements/randomizer/settings.h"
 #include "ResourceManagerHelpers.h"
 
 #include "z64.h"
-#include "cvar_prefixes.h"
 #include "functions.h"
 #include "macros.h"
 #include <variables.h>
-#include <libultraship/libultraship.h>
 #include "soh/SohGui/SohGui.hpp"
 
 #define NOGDI // avoid various windows defines that conflict with things in z64.h
@@ -550,6 +549,10 @@ void SaveManager::StartupCheckAndInitMeta(int fileNum) {
     fileMetaInfo[fileNum].gregFound = false;
     fileMetaInfo[fileNum].filenameLanguage = baseBlock.value("filenameLanguage", 0);
     fileMetaInfo[fileNum].hasWallet = !isRando;
+    fileMetaInfo[fileNum].triforcePieces = 0;
+    fileMetaInfo[fileNum].maxTriforcePieces = 0;
+    fileMetaInfo[fileNum].hasFishingRod = !isRando;
+    fileMetaInfo[fileNum].fishingPoleShuffled = false;
     fileMetaInfo[fileNum].defense = baseBlock["inventory"]["defenseHearts"];
     fileMetaInfo[fileNum].health = baseBlock["health"];
 
@@ -567,6 +570,12 @@ void SaveManager::StartupCheckAndInitMeta(int fileNum) {
             (int16_t)baseBlock["randomizerInf"][RAND_INF_GREG_FOUND >> 4] & (1 << (RAND_INF_GREG_FOUND & 0xF));
         fileMetaInfo[fileNum].hasWallet =
             (int16_t)baseBlock["randomizerInf"][RAND_INF_HAS_WALLET >> 4] & (1 << (RAND_INF_HAS_WALLET & 0xF));
+        fileMetaInfo[fileNum].triforcePieces = randoBlock.value("triforcePiecesCollected", 0);
+        nlohmann::json& randoSettings = randoBlock["randoSettings"];
+        fileMetaInfo[fileNum].maxTriforcePieces = randoSettings[RSK_TRIFORCE_HUNT_PIECES_TOTAL].get<uint8_t>();
+        fileMetaInfo[fileNum].hasFishingRod = (int16_t)baseBlock["randomizerInf"][RAND_INF_FISHING_POLE_FOUND >> 4] &
+                                              (1 << (RAND_INF_FISHING_POLE_FOUND & 0xF));
+        fileMetaInfo[fileNum].fishingPoleShuffled = randoSettings[RSK_SHUFFLE_FISHING_POLE].get<uint8_t>() != 0;
         fileMetaInfo[fileNum].requiresMasterQuest = randoBlock["masterQuestDungeonCount"] > 0;
         // If the file is not marked as Master Quest, it could still theoretically be a rando save with all 12 MQ
         // dungeons, in which case we don't actually require a vanilla OTR.
@@ -609,9 +618,8 @@ void SaveManager::InitMeta(int fileNum) {
     fileMetaInfo[fileNum].health = gSaveContext.health;
     auto randoContext = Rando::Context::GetInstance();
 
-    fileMetaInfo[fileNum].maxTriforcePieces = IS_RANDO && (bool)randoContext->GetOption(RSK_TRIFORCE_HUNT)
-                                                  ? randoContext->GetOption(RSK_TRIFORCE_HUNT_PIECES_REQUIRED).Get() + 1
-                                                  : 0;
+    fileMetaInfo[fileNum].maxTriforcePieces =
+        IS_RANDO ? randoContext->GetOption(RSK_TRIFORCE_HUNT_PIECES_TOTAL).Get() : 0;
     fileMetaInfo[fileNum].fishingPoleShuffled =
         IS_RANDO ? (bool)randoContext->GetOption(RSK_SHUFFLE_FISHING_POLE) : false;
 
@@ -719,7 +727,7 @@ void SaveManager::InitFileNormal() {
         gSaveContext.inventory.dungeonItems[dungeon] = 0;
     }
     for (int dungeon = 0; dungeon < ARRAY_COUNT(gSaveContext.inventory.dungeonKeys); dungeon++) {
-        gSaveContext.inventory.dungeonKeys[dungeon] = 0xFF;
+        gSaveContext.inventory.dungeonKeys[dungeon] = static_cast<u8>(0xFF);
     }
     gSaveContext.inventory.defenseHearts = 0;
     gSaveContext.inventory.gsTokens = 0;
@@ -823,19 +831,22 @@ void SaveManager::InitFileDebug() {
 
     gSaveContext.deaths = 0;
     if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL && gSaveContext.language != LANGUAGE_JPN) {
-        const static std::array<char, 8> sPlayerName = { 0x15, 0x12, 0x17, 0x14, 0x3E, 0x3E, 0x3E, 0x3E };
+        const static std::array<u8, 8> sPlayerName = { 0x15, 0x12, 0x17, 0x14, 0x3E, 0x3E, 0x3E, 0x3E };
+
         for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
             gSaveContext.playerName[i] = sPlayerName[i];
         }
         gSaveContext.ship.filenameLanguage = NAME_LANGUAGE_PAL;
     } else if (gSaveContext.language == LANGUAGE_JPN) { // Japanese
-        const static std::array<char, 8> sPlayerName = { 0x81, 0x87, 0x61, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF };
+        const static std::array<u8, 8> sPlayerName = { 0x81, 0x87, 0x61, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF };
+
         for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
             gSaveContext.playerName[i] = sPlayerName[i];
         }
         gSaveContext.ship.filenameLanguage = NAME_LANGUAGE_NTSC_JPN;
     } else { // GAME_REGION_NTSC
-        const static std::array<char, 8> sPlayerName = { 0xB6, 0xB3, 0xB8, 0xB5, 0xDF, 0xDF, 0xDF, 0xDF };
+        const static std::array<u8, 8> sPlayerName = { 0xB6, 0xB3, 0xB8, 0xB5, 0xDF, 0xDF, 0xDF, 0xDF };
+
         for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
             gSaveContext.playerName[i] = sPlayerName[i];
         }
@@ -943,19 +954,22 @@ void SaveManager::InitFileMaxed() {
 
     gSaveContext.deaths = 0;
     if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL && gSaveContext.language != LANGUAGE_JPN) {
-        const static std::array<char, 8> sPlayerName = { 0x15, 0x12, 0x17, 0x14, 0x3E, 0x3E, 0x3E, 0x3E };
+        const static std::array<u8, 8> sPlayerName = { 0x15, 0x12, 0x17, 0x14, 0x3E, 0x3E, 0x3E, 0x3E };
+
         for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
             gSaveContext.playerName[i] = sPlayerName[i];
         }
         gSaveContext.ship.filenameLanguage = NAME_LANGUAGE_PAL;
     } else if (gSaveContext.language == LANGUAGE_JPN) { // Japanese
-        const static std::array<char, 8> sPlayerName = { 0x81, 0x87, 0x61, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF };
+        const static std::array<u8, 8> sPlayerName = { 0x81, 0x87, 0x61, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF };
+
         for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
             gSaveContext.playerName[i] = sPlayerName[i];
         }
         gSaveContext.ship.filenameLanguage = NAME_LANGUAGE_NTSC_JPN;
     } else { // GAME_REGION_NTSC
-        const static std::array<char, 8> sPlayerName = { 0xB6, 0xB3, 0xB8, 0xB5, 0xDF, 0xDF, 0xDF, 0xDF };
+        const static std::array<u8, 8> sPlayerName = { 0xB6, 0xB3, 0xB8, 0xB5, 0xDF, 0xDF, 0xDF, 0xDF };
+
         for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
             gSaveContext.playerName[i] = sPlayerName[i];
         }
@@ -1307,7 +1321,7 @@ void SaveManager::LoadFile(int fileNum) {
         }
         InitMeta(fileNum);
         GameInteractor::Instance->ExecuteHooks<GameInteractor::OnLoadFile>(fileNum);
-    } catch (const std::exception& e) {
+    } catch ([[maybe_unused]] const std::exception& e) {
         input.close();
         std::string newFileName =
             Ship::Context::GetPathRelativeToAppDirectory("Save") +
@@ -1335,7 +1349,7 @@ void SaveManager::ThreadPoolWait() {
 bool SaveManager::SaveFile_Exist(int fileNum) {
     try {
         return std::filesystem::exists(GetFileName(fileNum));
-    } catch (std::filesystem::filesystem_error const& ex) {
+    } catch ([[maybe_unused]] std::filesystem::filesystem_error const& ex) {
         SPDLOG_ERROR("Filesystem error");
         return false;
     }
@@ -2404,27 +2418,7 @@ void SaveManager::CopyZeldaFile(int from, int to) {
 #else
     std::filesystem::copy_file(GetFileName(from), GetFileName(to));
 #endif
-    fileMetaInfo[to].valid = true;
-    fileMetaInfo[to].deaths = fileMetaInfo[from].deaths;
-    for (int i = 0; i < ARRAY_COUNT(fileMetaInfo[to].playerName); i++) {
-        fileMetaInfo[to].playerName[i] = fileMetaInfo[from].playerName[i];
-    }
-    for (int i = 0; i < ARRAY_COUNT(fileMetaInfo[to].seedHash); i++) {
-        fileMetaInfo[to].seedHash[i] = fileMetaInfo[from].seedHash[i];
-    }
-    fileMetaInfo[to].healthCapacity = fileMetaInfo[from].healthCapacity;
-    fileMetaInfo[to].questItems = fileMetaInfo[from].questItems;
-    fileMetaInfo[to].defense = fileMetaInfo[from].defense;
-    fileMetaInfo[to].health = fileMetaInfo[from].health;
-    fileMetaInfo[to].randoSave = fileMetaInfo[from].randoSave;
-    fileMetaInfo[to].requiresMasterQuest = fileMetaInfo[from].requiresMasterQuest;
-    fileMetaInfo[to].requiresOriginal = fileMetaInfo[from].requiresOriginal;
-    fileMetaInfo[to].buildVersionMajor = fileMetaInfo[from].buildVersionMajor;
-    fileMetaInfo[to].buildVersionMinor = fileMetaInfo[from].buildVersionMinor;
-    fileMetaInfo[to].buildVersionPatch = fileMetaInfo[from].buildVersionPatch;
-    fileMetaInfo[to].filenameLanguage = fileMetaInfo[from].filenameLanguage;
-    SohUtils::CopyStringToCharArray(fileMetaInfo[to].buildVersion, fileMetaInfo[from].buildVersion,
-                                    ARRAY_COUNT(fileMetaInfo[to].buildVersion));
+    fileMetaInfo[to] = fileMetaInfo[from];
 }
 
 void SaveManager::DeleteZeldaFile(int fileNum) {
@@ -2570,7 +2564,7 @@ typedef struct {
     /* 0x1354 */ s32 fileNum;  // "file_no"
     /* 0x1358 */ char unk_1358[0x0004];
     /* 0x135C */ s32 gameMode;
-    /* 0x1360 */ s32 sceneSetupIndex;
+    /* 0x1360 */ s32 sceneLayer;
     /* 0x1364 */ s32 respawnFlag;           // "restart_flag"
     /* 0x1368 */ RespawnData_v0 respawn[3]; // "restart_data"
     /* 0x13BC */ f32 entranceSpeed;

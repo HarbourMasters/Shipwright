@@ -13,11 +13,16 @@
 #include "soh/util.h"
 #include "../kaleido.h"
 #include "soh/Enhancements/randomizer/Traps.h"
+#include "soh/Enhancements/randomizer/3drando/random.hpp"
+#include "soh/Enhancements/randomizer/randomizer.h"
+
+#include <vector>
 
 #include <fstream>
 #include <spdlog/spdlog.h>
 extern "C" {
 #include <functions.h>
+#include <variables.h>
 }
 
 namespace Rando {
@@ -33,36 +38,6 @@ Context::Context() {
     mLogic = std::make_shared<Logic>();
     mTrials = std::make_shared<Trials>();
     mFishsanity = std::make_shared<Fishsanity>();
-    VanillaLogicDefaults = {
-        // RANDOTODO check what this does
-        &mOptions[RSK_LINKS_POCKET],
-        &mOptions[RSK_SHUFFLE_DUNGEON_REWARDS],
-        &mOptions[RSK_SHUFFLE_SONGS],
-        &mOptions[RSK_SHOPSANITY],
-        &mOptions[RSK_SHOPSANITY_COUNT],
-        &mOptions[RSK_SHOPSANITY_PRICES],
-        &mOptions[RSK_SHOPSANITY_PRICES_AFFORDABLE],
-        &mOptions[RSK_FISHSANITY],
-        &mOptions[RSK_FISHSANITY_POND_COUNT],
-        &mOptions[RSK_FISHSANITY_AGE_SPLIT],
-        &mOptions[RSK_SHUFFLE_SCRUBS],
-        &mOptions[RSK_SHUFFLE_BEEHIVES],
-        &mOptions[RSK_SHUFFLE_COWS],
-        &mOptions[RSK_SHUFFLE_POTS],
-        &mOptions[RSK_SHUFFLE_CRATES],
-        &mOptions[RSK_SHUFFLE_ROCKS],
-        &mOptions[RSK_SHUFFLE_BOULDERS],
-        &mOptions[RSK_SHUFFLE_FREESTANDING],
-        &mOptions[RSK_SHUFFLE_MERCHANTS],
-        &mOptions[RSK_SHUFFLE_FROG_SONG_RUPEES],
-        &mOptions[RSK_SHUFFLE_ADULT_TRADE],
-        &mOptions[RSK_SHUFFLE_100_GS_REWARD],
-        &mOptions[RSK_SHUFFLE_FOUNTAIN_FAIRIES],
-        &mOptions[RSK_SHUFFLE_STONE_FAIRIES],
-        &mOptions[RSK_SHUFFLE_BEAN_FAIRIES],
-        &mOptions[RSK_SHUFFLE_SONG_FAIRIES],
-        &mOptions[RSK_GOSSIP_STONE_HINTS],
-    };
 }
 
 RandomizerArea Context::GetAreaFromString(std::string str) {
@@ -71,10 +46,10 @@ RandomizerArea Context::GetAreaFromString(std::string str) {
 
 int Context::CountEmptyLocations(const bool countShops) {
     auto ctx = Rando::Context::GetInstance();
-    return count_if(allLocations.begin(), allLocations.end(), [ctx, countShops](const auto loc) {
+    return static_cast<int>(count_if(allLocations.begin(), allLocations.end(), [ctx, countShops](const auto loc) {
         return ctx->GetItemLocation(loc)->GetPlacedRandomizerGet() == RG_NONE &&
                (countShops || Rando::StaticData::GetLocation(loc)->GetRCType() != RCTYPE_SHOP);
-    });
+    }));
 }
 
 void Context::InitStaticData() {
@@ -177,6 +152,10 @@ bool Context::IsQuestOfLocationActive(RandomizerCheck rc) {
 void Context::GenerateLocationPool() {
     allLocations.clear();
     overworldLocations.clear();
+    // add wincon here so it is properly logged
+    if (ctx->GetOption(RSK_WINCON).Get() > RO_WINCON_ANYWHERE) {
+        AddLocation(RC_WINCON);
+    }
     for (auto dungeon : ctx->GetDungeons()->GetDungeonList()) {
         dungeon->locations.clear();
     }
@@ -184,7 +163,9 @@ void Context::GenerateLocationPool() {
         // skip RCs that shouldn't be in the pool for any reason (i.e. settings, unsupported check type, etc.)
         // TODO: Exclude checks for some of the older shuffles from the pool too i.e. Frog Songs, Scrubs, etc.)
         if (location.GetRandomizerCheck() == RC_UNKNOWN_CHECK ||
-            location.GetRandomizerCheck() == RC_TRIFORCE_COMPLETED || // already in pool
+            location.GetRandomizerCheck() == RC_WINCON || // already in pool
+            (location.GetRandomizerCheck() == RC_GANONS_BOSS_KEY && mGBKCondition == RO_CHECK_TRIGGER_NONE) ||
+            (location.GetRandomizerCheck() == RC_GANON_SOUL && mGanonsSoulCondition == RO_CHECK_TRIGGER_NONE) ||
             (location.GetRandomizerCheck() == RC_TOT_MASTER_SWORD &&
              mOptions[RSK_SHUFFLE_MASTER_SWORD].Is(RO_GENERIC_OFF)) ||
             (location.GetRandomizerCheck() == RC_KAK_100_GOLD_SKULLTULA_REWARD &&
@@ -289,7 +270,7 @@ void Context::GenerateLocationPool() {
 void Context::AddExcludedOptions() {
     for (auto& loc : StaticData::GetLocationTable()) {
         // Checks of these types don't have items, skip them.
-        if (loc.GetRandomizerCheck() == RC_UNKNOWN_CHECK || loc.GetRandomizerCheck() == RC_TRIFORCE_COMPLETED ||
+        if (loc.GetRandomizerCheck() == RC_UNKNOWN_CHECK || loc.GetRandomizerCheck() == RC_WINCON ||
             loc.GetRCType() == RCTYPE_CHEST_GAME || loc.GetRCType() == RCTYPE_STATIC_HINT ||
             loc.GetRCType() == RCTYPE_GOSSIP_STONE) {
             continue;
@@ -359,9 +340,9 @@ void Context::CreateItemOverrides() {
         // If this is an ice trap, store the disguise model in iceTrapModels
         const auto itemLoc = GetItemLocation(locKey);
         if (itemLoc->GetPlacedRandomizerGet() == RG_ICE_TRAP) {
-            ItemOverride val(locKey, Traps::GetTrapTrickModel());
+            ItemOverride val(locKey, Traps::GetTrapTrickModel(&rando_state));
             iceTrapModels[locKey] = val.LooksLike();
-            val.SetTrickName(Traps::GetTrapName(val.LooksLike()));
+            val.SetTrickName(Traps::GetTrapName(val.LooksLike(), &rando_state));
             // If this is ice trap is in a shop, change the name based on what the model will look like
             overrides[locKey] = val;
         }
@@ -558,12 +539,28 @@ OptionValue& Context::GetLocationOption(const RandomizerCheck key) {
     return itemLocationTable[key].GetExcludedOption();
 }
 
-RandoOptionLACSCondition Context::LACSCondition() const {
-    return mLACSCondition;
+RandoOptionCheckTrigger Context::GBKCondition() const {
+    return mGBKCondition;
 }
 
-void Context::LACSCondition(RandoOptionLACSCondition lacsCondition) {
-    mLACSCondition = lacsCondition;
+void Context::GBKCondition(RandoOptionCheckTrigger condition) {
+    mGBKCondition = condition;
+}
+
+RandoOptionCheckTrigger Context::GanonsSoulCondition() const {
+    return mGanonsSoulCondition;
+}
+
+void Context::GanonsSoulCondition(RandoOptionCheckTrigger condition) {
+    mGanonsSoulCondition = condition;
+}
+
+RandoOptionWincon Context::WinCondition() const {
+    return mWinCondition;
+}
+
+void Context::WinCondition(RandoOptionWincon condition) {
+    mWinCondition = condition;
 }
 
 std::shared_ptr<Kaleido> Context::GetKaleido() {

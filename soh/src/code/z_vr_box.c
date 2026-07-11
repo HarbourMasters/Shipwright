@@ -556,7 +556,7 @@ void Skybox_Setup(PlayState* play, SkyboxContext* skyboxCtx, s16 skyboxId) {
     switch (skyboxId) {
         case SKYBOX_NORMAL_SKY:
             phi_v1 = 0;
-            if (gSaveContext.retainWeatherMode != 0 && gSaveContext.sceneSetupIndex < 4 && gWeatherMode > 0 &&
+            if (gSaveContext.retainWeatherMode != 0 && gSaveContext.sceneLayer < 4 && gWeatherMode > 0 &&
                 gWeatherMode < 6) {
                 phi_v1 = 1;
             }

@@ -2,11 +2,8 @@
 
 #include "SeedContext.h"
 #include "option.h"
-#include "randomizerTypes.h"
-#include "3drando/spoiler_log.hpp"
 
 #include <array>
-#include <set>
 #include <unordered_map>
 #include <nlohmann/json.hpp>
 

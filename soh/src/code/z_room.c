@@ -9,6 +9,7 @@
 #include <assert.h>
 
 #include <libultraship/bridge/gfxbridge.h>
+#include <libultraship/bridge/resourcebridge.h>
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 
@@ -33,7 +34,7 @@ Gfx D_801270B0[] = {
     gsSPEndDisplayList(),
 };
 
-s32 OTRfunc_8009728C(PlayState* play, RoomContext* roomCtx, s32 roomNum);
+s32 OTRRoom_RequestNewRoom(PlayState* play, RoomContext* roomCtx, s32 roomNum);
 s32 OTRfunc_800973FC(PlayState* play, RoomContext* roomCtx);
 
 void (*sRoomDrawHandlers[])(PlayState* play, Room* room, u32 flags) = {
@@ -569,20 +570,20 @@ u32 func_80096FE8(PlayState* play, RoomContext* roomCtx) {
     // "Room buffer end pointer=%08x"
     osSyncPrintf("部屋バッファ終了ポインタ=%08x\n", roomCtx->bufPtrs[1]);
     osSyncPrintf(VT_RST);
-    roomCtx->unk_30 = 0;
+    roomCtx->activeBufPage = 0;
     roomCtx->status = 0;
 
     frontRoom = gSaveContext.respawnFlag > 0 ? ((void)0, gSaveContext.respawn[gSaveContext.respawnFlag - 1].roomIndex)
                                              : play->setupEntranceList[play->curSpawn].room;
-    func_8009728C(play, roomCtx, frontRoom);
+    Room_RequestNewRoom(play, roomCtx, frontRoom);
 
     return maxRoomSize;
 }
 
-s32 func_8009728C(PlayState* play, RoomContext* roomCtx, s32 roomNum) {
+s32 Room_RequestNewRoom(PlayState* play, RoomContext* roomCtx, s32 roomNum) {
     size_t size;
 
-    return OTRfunc_8009728C(play, roomCtx, roomNum);
+    return OTRRoom_RequestNewRoom(play, roomCtx, roomNum);
 
     if (roomCtx->status == 0) {
         roomCtx->prevRoom = roomCtx->curRoom;
@@ -593,13 +594,13 @@ s32 func_8009728C(PlayState* play, RoomContext* roomCtx, s32 roomNum) {
         assert(roomNum < play->numRooms);
 
         size = play->roomList[roomNum].vromEnd - play->roomList[roomNum].vromStart;
-        roomCtx->unk_34 =
-            (void*)ALIGN16((intptr_t)roomCtx->bufPtrs[roomCtx->unk_30] - ((size + 8) * roomCtx->unk_30 + 7));
+        roomCtx->unk_34 = (void*)ALIGN16((intptr_t)roomCtx->bufPtrs[roomCtx->activeBufPage] -
+                                         ((size + 8) * roomCtx->activeBufPage + 7));
 
         osCreateMesgQueue(&roomCtx->loadQueue, &roomCtx->loadMsg, 1);
         DmaMgr_SendRequest2(&roomCtx->dmaRequest, roomCtx->unk_34, play->roomList[roomNum].vromStart, size, 0,
                             &roomCtx->loadQueue, OS_MESG_PTR(NULL), __FILE__, __LINE__);
-        roomCtx->unk_30 ^= 1;
+        roomCtx->activeBufPage ^= 1;
 
         return 1;
     }
@@ -637,7 +638,7 @@ void Room_Draw(PlayState* play, Room* room, u32 flags) {
     }
 }
 
-void func_80097534(PlayState* play, RoomContext* roomCtx) {
+void Room_FinishRoomChange(PlayState* play, RoomContext* roomCtx) {
     roomCtx->prevRoom.num = -1;
     roomCtx->prevRoom.segment = NULL;
     func_80031B14(play, &play->actorCtx); // kills all actors without room num set to -1

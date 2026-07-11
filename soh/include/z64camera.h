@@ -11,8 +11,9 @@
 #define CAM_STAT_UNK100     0x100
 
 #define NUM_CAMS 4
-#define MAIN_CAM 0
-#define SUBCAM_FIRST 1
+
+#define CAM_ID_MAIN 0
+#define CAM_ID_SUB_FIRST 1
 #define SUBCAM_FREE 0
 #define SUBCAM_NONE -1
 #define SUBCAM_ACTIVE -1
@@ -98,12 +99,12 @@ typedef enum {
     /* 0x03 */ CAM_MODE_TALK,
     /* 0x04 */ CAM_MODE_BATTLE,
     /* 0x05 */ CAM_MODE_CLIMB,
-    /* 0x06 */ CAM_MODE_FIRSTPERSON,  // "SUBJECT"
-    /* 0x07 */ CAM_MODE_BOWARROW,
+    /* 0x06 */ CAM_MODE_FIRST_PERSON,  // "SUBJECT"
+    /* 0x07 */ CAM_MODE_AIM_ADULT,
     /* 0x08 */ CAM_MODE_BOWARROWZ,
     /* 0x09 */ CAM_MODE_HOOKSHOT, // "FOOKSHOT"
-    /* 0x0A */ CAM_MODE_BOOMERANG,
-    /* 0x0B */ CAM_MODE_SLINGSHOT, // "PACHINCO"
+    /* 0x0A */ CAM_MODE_AIM_BOOMERANG,
+    /* 0x0B */ CAM_MODE_AIM_CHILD, // "PACHINCO"
     /* 0x0C */ CAM_MODE_CLIMBZ,
     /* 0x0D */ CAM_MODE_JUMP,
     /* 0x0E */ CAM_MODE_HANG,

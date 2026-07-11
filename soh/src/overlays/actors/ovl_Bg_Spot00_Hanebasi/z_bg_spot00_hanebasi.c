@@ -66,20 +66,19 @@ void BgSpot00Hanebasi_Init(Actor* thisx, PlayState* play) {
     this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, &this->dyna.actor, colHeader);
 
     if (this->dyna.actor.params == DT_DRAWBRIDGE) {
-        if (LINK_IS_ADULT && (gSaveContext.sceneSetupIndex < 4)) {
+        if (LINK_IS_ADULT && (gSaveContext.sceneLayer < 4)) {
             Actor_Kill(&this->dyna.actor);
             return;
         }
 
-        if ((gSaveContext.sceneSetupIndex != 6) &&
-            ((gSaveContext.sceneSetupIndex == 4) || (gSaveContext.sceneSetupIndex == 5) ||
-             (!LINK_IS_ADULT && !IS_DAY))) {
+        if ((gSaveContext.sceneLayer != 6) &&
+            ((gSaveContext.sceneLayer == 4) || (gSaveContext.sceneLayer == 5) || (!LINK_IS_ADULT && !IS_DAY))) {
             this->dyna.actor.shape.rot.x = -0x4000;
         } else {
             this->dyna.actor.shape.rot.x = 0;
         }
 
-        if (gSaveContext.sceneSetupIndex != 6) {
+        if (gSaveContext.sceneLayer != 6) {
             // Don't close the bridge in rando to accomodate hyrule castle exit
             if (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD) && CHECK_QUEST_ITEM(QUEST_GORON_RUBY) &&
                 CHECK_QUEST_ITEM(QUEST_ZORA_SAPPHIRE) && !Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE) &&
@@ -142,11 +141,11 @@ void BgSpot00Hanebasi_Destroy(Actor* thisx, PlayState* play) {
 void BgSpot00Hanebasi_DrawbridgeWait(BgSpot00Hanebasi* this, PlayState* play) {
     BgSpot00Hanebasi* child = (BgSpot00Hanebasi*)this->dyna.actor.child;
 
-    if ((gSaveContext.sceneSetupIndex >= 4) || !CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD) ||
+    if ((gSaveContext.sceneLayer >= 4) || !CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD) ||
         !CHECK_QUEST_ITEM(QUEST_GORON_RUBY) || !CHECK_QUEST_ITEM(QUEST_ZORA_SAPPHIRE) ||
         (Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE))) {
         if (this->dyna.actor.shape.rot.x != 0) {
-            if (Flags_GetEnv(play, 0) || ((gSaveContext.sceneSetupIndex < 4) && IS_DAY)) {
+            if (Flags_GetEnv(play, 0) || ((gSaveContext.sceneLayer < 4) && IS_DAY)) {
                 this->actionFunc = BgSpot00Hanebasi_DrawbridgeRiseAndFall;
                 this->destAngle = 0;
                 child->destAngle = 0;
@@ -155,7 +154,7 @@ void BgSpot00Hanebasi_DrawbridgeWait(BgSpot00Hanebasi* this, PlayState* play) {
 
             if (this) {} // required to match
         }
-        if ((this->dyna.actor.shape.rot.x == 0) && (gSaveContext.sceneSetupIndex < 4) && !LINK_IS_ADULT && !IS_DAY) {
+        if ((this->dyna.actor.shape.rot.x == 0) && (gSaveContext.sceneLayer < 4) && !LINK_IS_ADULT && !IS_DAY) {
             this->actionFunc = BgSpot00Hanebasi_DrawbridgeRiseAndFall;
             this->destAngle = -0x4000;
             child->destAngle = -0xFE0;
@@ -187,13 +186,13 @@ void BgSpot00Hanebasi_DrawbridgeRiseAndFall(BgSpot00Hanebasi* this, PlayState* p
         if (this->actionFunc == BgSpot00Hanebasi_DrawbridgeWait) {
             Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_BRIDGE_CLOSE_STOP);
         } else {
-            func_8002F974(&this->dyna.actor, NA_SE_EV_BRIDGE_CLOSE - SFX_FLAG);
+            Actor_PlaySfx_Flagged(&this->dyna.actor, NA_SE_EV_BRIDGE_CLOSE - SFX_FLAG);
         }
     } else {
         if (this->actionFunc == BgSpot00Hanebasi_DrawbridgeWait) {
             Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_BRIDGE_OPEN_STOP);
         } else {
-            func_8002F974(&this->dyna.actor, NA_SE_EV_BRIDGE_OPEN - SFX_FLAG);
+            Actor_PlaySfx_Flagged(&this->dyna.actor, NA_SE_EV_BRIDGE_OPEN - SFX_FLAG);
         }
     }
 }
@@ -236,7 +235,7 @@ void BgSpot00Hanebasi_Update(Actor* thisx, PlayState* play) {
             }
         }
 
-        if (gSaveContext.sceneSetupIndex == 5) {
+        if (gSaveContext.sceneLayer == 5) {
             u16 dayTime;
             s32 tmp;
 
@@ -252,7 +251,7 @@ void BgSpot00Hanebasi_Update(Actor* thisx, PlayState* play) {
 
             dayTime = gSaveContext.dayTime;
 
-            if ((dayTime >= 0x2AAC) && (dayTime < 0x3000) && (gSaveContext.sceneSetupIndex == 5)) {
+            if ((dayTime >= 0x2AAC) && (dayTime < 0x3000) && (gSaveContext.sceneLayer == 5)) {
                 gTimeIncrement = 0;
             }
         }
@@ -268,7 +267,7 @@ void BgSpot00Hanebasi_DrawTorches(Actor* thisx, PlayState* play2) {
 
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
-    if (gSaveContext.sceneSetupIndex >= 4) {
+    if (gSaveContext.sceneLayer >= 4) {
         sTorchFlameScale = 0.008f;
     } else {
         sTorchFlameScale = ((thisx->shape.rot.x * -1) - 0x2000) * (1.0f / 1024000.0f);
@@ -322,8 +321,8 @@ void BgSpot00Hanebasi_Draw(Actor* thisx, PlayState* play) {
         thisx->child->child->world.pos.y = newPos.y;
         thisx->child->child->world.pos.z = newPos.z;
 
-        if (gSaveContext.sceneSetupIndex != 12) {
-            if ((gSaveContext.sceneSetupIndex >= 4) || (!LINK_IS_ADULT && (thisx->shape.rot.x < -0x2000))) {
+        if (gSaveContext.sceneLayer != 12) {
+            if ((gSaveContext.sceneLayer >= 4) || (!LINK_IS_ADULT && (thisx->shape.rot.x < -0x2000))) {
                 BgSpot00Hanebasi_DrawTorches(thisx, play);
             } else {
                 sTorchFlameScale = 0.0f;

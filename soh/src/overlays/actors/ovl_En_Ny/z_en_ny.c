@@ -229,7 +229,7 @@ void EnNy_Move(EnNy* this, PlayState* play) {
     s32 stoneTimer;
 
     if (!(this->unk_1F0 < this->actor.yDistToWater)) {
-        func_8002F974(&this->actor, NA_SE_EN_NYU_MOVE - SFX_FLAG);
+        Actor_PlaySfx_Flagged(&this->actor, NA_SE_EN_NYU_MOVE - SFX_FLAG);
     }
     func_80ABCD40(this);
     stoneTimer = this->stoneTimer;

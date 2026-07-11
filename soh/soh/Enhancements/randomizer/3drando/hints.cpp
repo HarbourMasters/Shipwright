@@ -5,7 +5,6 @@
 #include "../trial.h"
 #include "../entrance.h"
 #include <spdlog/spdlog.h>
-#include "../randomizerTypes.h"
 #include "pool_functions.hpp"
 #include "../hint.h"
 #include "../static_data.h"
@@ -212,39 +211,72 @@ const std::array<HintSetting, 4> hintSettingTable{{
 }};
 
 struct BridgeReqConfig {
-    RandomizerSettingKey bridgeDirectKey;
-    RandomizerSettingKey lacsDirectKey;
+    RandomizerSettingKey bridgeKey;
+    RandomizerSettingKey gbkKey;
+    RandomizerSettingKey soulKey;
+    RandomizerSettingKey winKey;
     RandoOptionRainbowBridge bridgeEnum;
-    RandoOptionGanonsBossKey lacsEnum;
+    RandoOptionGanonsBossKey gbkEnum;
+    RandoOptionGanonsSoul soulEnum;
+    RandoOptionWincon winEnum;
     uint8_t offset;
 };
 
-static constexpr BridgeReqConfig StonesConfig{ RSK_RAINBOW_BRIDGE_STONE_COUNT, RSK_LACS_STONE_COUNT, RO_BRIDGE_STONES,
-                                               RO_GANON_BOSS_KEY_LACS_STONES, 6 };
-static constexpr BridgeReqConfig MedallionsConfig{ RSK_RAINBOW_BRIDGE_MEDALLION_COUNT, RSK_LACS_MEDALLION_COUNT,
-                                                   RO_BRIDGE_MEDALLIONS, RO_GANON_BOSS_KEY_LACS_MEDALLIONS, 3 };
-static constexpr BridgeReqConfig TokensConfig{ RSK_RAINBOW_BRIDGE_TOKEN_COUNT, RSK_LACS_TOKEN_COUNT, RO_BRIDGE_TOKENS,
-                                               RO_GANON_BOSS_KEY_LACS_TOKENS, 0 };
+static constexpr BridgeReqConfig StonesConfig{
+    RSK_RAINBOW_BRIDGE_STONE_COUNT, RSK_GBK_STONE_COUNT, RSK_GANONS_SOUL_STONE_COUNT,
+    RSK_WINCON_STONE_COUNT,         RO_BRIDGE_STONES,    RO_GANON_BOSS_KEY_STONES,
+    RO_GANONS_SOUL_STONES,          RO_WINCON_STONES,    6
+};
+static constexpr BridgeReqConfig MedallionsConfig{
+    RSK_RAINBOW_BRIDGE_MEDALLION_COUNT, RSK_GBK_MEDALLION_COUNT, RSK_GANONS_SOUL_MEDALLION_COUNT,
+    RSK_WINCON_MEDALLION_COUNT,         RO_BRIDGE_MEDALLIONS,    RO_GANON_BOSS_KEY_MEDALLIONS,
+    RO_GANONS_SOUL_MEDALLIONS,          RO_WINCON_MEDALLIONS,    3
+};
+static constexpr BridgeReqConfig TokensConfig{
+    RSK_RAINBOW_BRIDGE_TOKEN_COUNT, RSK_GBK_TOKEN_COUNT, RSK_GANONS_SOUL_TOKEN_COUNT,
+    RSK_WINCON_TOKEN_COUNT,         RO_BRIDGE_TOKENS,    RO_GANON_BOSS_KEY_TOKENS,
+    RO_GANONS_SOUL_TOKENS,          RO_WINCON_TOKENS,    0
+};
 
 static uint8_t RequiredBySettings(const BridgeReqConfig& cfg) {
     auto ctx = Rando::Context::GetInstance();
     uint8_t count = 0;
+
     if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(cfg.bridgeEnum)) {
-        count = ctx->GetOption(cfg.bridgeDirectKey).Get();
+        count = ctx->GetOption(cfg.bridgeKey).Get();
     } else if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_DUNGEON_REWARDS)) {
         count = ctx->GetOption(RSK_RAINBOW_BRIDGE_REWARD_COUNT).Get() - cfg.offset;
     } else if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_DUNGEONS) &&
                ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON)) {
         count = ctx->GetOption(RSK_RAINBOW_BRIDGE_DUNGEON_COUNT).Get() - cfg.offset;
     }
-    if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(cfg.lacsEnum)) {
-        count = std::max<uint8_t>(count, ctx->GetOption(cfg.lacsDirectKey).Get());
-    } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_REWARDS)) {
-        count = std::max<uint8_t>(count, (uint8_t)(ctx->GetOption(RSK_LACS_REWARD_COUNT).Get() - cfg.offset));
-    } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_DUNGEONS) &&
+    if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(cfg.gbkEnum)) {
+        count = std::max<uint8_t>(count, ctx->GetOption(cfg.gbkKey).Get());
+    } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_REWARDS)) {
+        count = std::max<uint8_t>(count, (uint8_t)(ctx->GetOption(RSK_GBK_REWARD_COUNT).Get() - cfg.offset));
+    } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_DUNGEONS) &&
                ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON)) {
-        count = std::max<uint8_t>(count, (uint8_t)(ctx->GetOption(RSK_LACS_DUNGEON_COUNT).Get() - cfg.offset));
+        count = std::max<uint8_t>(count, (uint8_t)(ctx->GetOption(RSK_GBK_DUNGEON_COUNT).Get() - cfg.offset));
     }
+
+    if (ctx->GetOption(RSK_GANONS_SOUL).Is(cfg.soulEnum)) {
+        count = std::max<uint8_t>(count, ctx->GetOption(cfg.soulKey).Get());
+    } else if (ctx->GetOption(RSK_GANONS_SOUL).Is(RO_GANONS_SOUL_REWARDS)) {
+        count = std::max<uint8_t>(count, (uint8_t)(ctx->GetOption(RSK_GANONS_SOUL_REWARD_COUNT).Get() - cfg.offset));
+    } else if (ctx->GetOption(RSK_GANONS_SOUL).Is(RO_GANONS_SOUL_DUNGEONS) &&
+               ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON)) {
+        count = std::max<uint8_t>(count, (uint8_t)(ctx->GetOption(RSK_GANONS_SOUL_DUNGEON_COUNT).Get() - cfg.offset));
+    }
+
+    if (ctx->GetOption(RSK_WINCON).Is(cfg.winEnum)) {
+        count = std::max<uint8_t>(count, ctx->GetOption(cfg.winKey).Get());
+    } else if (ctx->GetOption(RSK_WINCON).Is(RO_WINCON_REWARDS)) {
+        count = std::max<uint8_t>(count, (uint8_t)(ctx->GetOption(RSK_WINCON_REWARD_COUNT).Get() - cfg.offset));
+    } else if (ctx->GetOption(RSK_WINCON).Is(RO_WINCON_DUNGEONS) &&
+               ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON)) {
+        count = std::max<uint8_t>(count, (uint8_t)(ctx->GetOption(RSK_WINCON_DUNGEON_COUNT).Get() - cfg.offset));
+    }
+
     return count;
 }
 
@@ -503,7 +535,7 @@ static int32_t getRandomWeight(uint32_t totalWeight) {
 
 static void DistributeAndPlaceHints(std::vector<HintDistributionSetting>& distTable, size_t totalStones) {
     auto ctx = Rando::Context::GetInstance();
-    const uint8_t junkIdx = distTable.size();
+    const uint8_t junkIdx = static_cast<uint8_t>(distTable.size() - 1);
 
     // Apply fixed hints upfront (they don't participate in weighted selection)
     for (size_t i = 0; i < distTable.size(); i++) {
@@ -757,9 +789,10 @@ void CreateStaticItemHint(RandomizerHint hintKey, std::vector<RandomizerHintText
     // RANDOTODO choose area in case there are multiple
     auto ctx = Rando::Context::GetInstance();
     std::vector<RandomizerCheck> locations = FindItemsAndMarkHinted(items, hintChecks);
-    std::vector<RandomizerArea> areas = {};
+    std::vector<RandomizerArea> areas;
+    areas.reserve(locations.size());
     for (auto loc : locations) {
-        areas.push_back(ctx->GetItemLocation(loc)->GetRandomArea());
+        areas.push_back(loc == RC_UNKNOWN_CHECK ? RA_NONE : ctx->GetItemLocation(loc)->GetRandomArea());
     }
     ctx->AddHint(hintKey, Hint(hintKey, HINT_TYPE_AREA, hintTextKeys, locations, areas, {}, yourPocket));
 }

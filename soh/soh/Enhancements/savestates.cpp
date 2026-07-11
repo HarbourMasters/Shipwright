@@ -1,9 +1,10 @@
 #include "savestates.h"
 
-#include <soh/GameVersions.h>
-
 #include <spdlog/spdlog.h>
 
+#include <ship/Context.h>
+#include <ship/window/Window.h>
+#include <ship/window/gui/GameOverlay.h>
 #include <soh/OTRGlobals.h>
 #include <soh/OTRAudio.h>
 
@@ -17,8 +18,6 @@
 #include "../../src/overlays/actors/ovl_Boss_Tw/z_boss_tw.h"
 #include "../../src/overlays/actors/ovl_En_Clear_Tag/z_en_clear_tag.h"
 #include "../../src/overlays/actors/ovl_En_Fr/z_en_fr.h"
-
-#include <libultraship/libultraship.h>
 
 extern "C" PlayState* gPlayState;
 
@@ -324,6 +323,9 @@ typedef struct SaveStateInfo {
     s16 sMessageHasSetSfx_copy;
     u16 sOcarinaSongBitFlags_copy;
 
+    u8 transitionActorCount_copy;
+    s16 transitionActorIds_copy[256];
+
 } SaveStateInfo;
 
 class SaveState {
@@ -347,9 +349,10 @@ class SaveState {
     void LoadOnePointDemoData(void);
     void SaveOverlayStaticData(void);
     void LoadOverlayStaticData(void);
-
     void SaveMiscCodeData(void);
     void LoadMiscCodeData(void);
+    void SaveTransitionActors(void);
+    void LoadTransitionActors(void);
 
     SaveStateInfo* GetSaveStateInfo(void);
 };
@@ -813,13 +816,27 @@ void SaveState::LoadMiscCodeData(void) {
     sOcarinaSongBitFlags = info->sOcarinaSongBitFlags_copy;
 }
 
+void SaveState::SaveTransitionActors(void) {
+    info->transitionActorCount_copy = gPlayState->transiActorCtx.numActors;
+    for (u32 i = 0; i < info->transitionActorCount_copy; i++) {
+        info->transitionActorIds_copy[i] = gPlayState->transiActorCtx.list[i].id;
+    }
+}
+
+void SaveState::LoadTransitionActors(void) {
+    u32 numActors = MIN(info->transitionActorCount_copy, gPlayState->transiActorCtx.numActors);
+    for (u32 i = 0; i < numActors; i++) {
+        gPlayState->transiActorCtx.list[i].id = info->transitionActorIds_copy[i];
+    }
+}
+
 extern "C" void ProcessSaveStateRequests(void) {
     OTRGlobals::Instance->gSaveStateMgr->ProcessSaveStateRequests();
 }
 
 void SaveStateMgr::SetCurrentSlot(unsigned int slot) {
-    Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(1.0f, true,
-                                                                                                "slot %u set", slot);
+    Ship::Context::GetRawInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(1.0f, true,
+                                                                                                   "slot %u set", slot);
     this->currentSlot = slot;
 }
 
@@ -838,13 +855,13 @@ void SaveStateMgr::ProcessSaveStateRequests(void) {
                         std::make_shared<SaveState>(OTRGlobals::Instance->gSaveStateMgr, request.slot);
                 }
                 this->states[request.slot]->Save();
-                Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(
+                Ship::Context::GetRawInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(
                     1.0f, true, "saved state %u", request.slot);
                 break;
             case RequestType::LOAD:
                 if (this->states.contains(request.slot)) {
                     this->states[request.slot]->Load();
-                    Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(
+                    Ship::Context::GetRawInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(
                         1.0f, true, "loaded state %u", request.slot);
                 } else {
                     SPDLOG_ERROR("Invalid SaveState slot: {}", request.slot);
@@ -861,7 +878,7 @@ void SaveStateMgr::ProcessSaveStateRequests(void) {
 SaveStateReturn SaveStateMgr::AddRequest(const SaveStateRequest request) {
     if (gPlayState == nullptr) {
         SPDLOG_ERROR("[SOH] Can not save or load a state outside of \"GamePlay\"");
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(
+        Ship::Context::GetRawInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(
             1.0f, true, "states not available here", request.slot);
         return SaveStateReturn::FAIL_WRONG_GAMESTATE;
     }
@@ -876,7 +893,7 @@ SaveStateReturn SaveStateMgr::AddRequest(const SaveStateRequest request) {
                 return SaveStateReturn::SUCCESS;
             } else {
                 SPDLOG_ERROR("Invalid SaveState slot: {}", request.slot);
-                Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(
+                Ship::Context::GetRawInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(
                     1.0f, true, "state slot %u empty", request.slot);
                 return SaveStateReturn::FAIL_INVALID_SLOT;
             }
@@ -919,6 +936,7 @@ void SaveState::Save(void) {
     SaveOnePointDemoData();
     SaveOverlayStaticData();
     SaveMiscCodeData();
+    SaveTransitionActors();
 }
 
 void SaveState::Load(void) {
@@ -952,4 +970,5 @@ void SaveState::Load(void) {
     LoadOnePointDemoData();
     LoadOverlayStaticData();
     LoadMiscCodeData();
+    LoadTransitionActors();
 }

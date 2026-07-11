@@ -1,10 +1,5 @@
-#include <libultraship/bridge.h>
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ShipInit.hpp"
-
-extern "C" {
-#include "macros.h"
-}
 
 static constexpr int32_t CVAR_NOKEESEGUAYTARGET_DEFAULT = 0;
 #define CVAR_NOKEESEGUAYTARGET_NAME CVAR_CHEAT("NoKeeseGuayTarget")

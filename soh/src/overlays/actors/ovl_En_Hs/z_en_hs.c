@@ -115,7 +115,7 @@ s32 func_80A6E53C(EnHs* this, PlayState* play, u16 textId, EnHsActionFunc action
     yawDiff = this->actor.yawTowardsPlayer - this->actor.shape.rot.y;
     if ((ABS(yawDiff) <= 0x2150) && (this->actor.xzDistToPlayer < 100.0f)) {
         this->unk_2A8 |= 1;
-        func_8002F2CC(&this->actor, play, 100.0f);
+        Actor_OfferTalk(&this->actor, play, 100.0f);
     }
 
     return 0;
@@ -216,7 +216,7 @@ void func_80A6E9AC(EnHs* this, PlayState* play) {
     s16 yawDiff;
 
     if (Actor_ProcessTalkRequest(&this->actor, play)) {
-        if (func_8002F368(play) == 7) {
+        if (Actor_GetPlayerExchangeItemId(play) == 7) {
             player->actor.textId = 0x10B2;
             func_80A6E3A0(this, func_80A6E8CC);
             Animation_Change(&this->skelAnime, &object_hs_Anim_000304, 1.0f, 0.0f,
@@ -231,7 +231,7 @@ void func_80A6E9AC(EnHs* this, PlayState* play) {
         yawDiff = this->actor.yawTowardsPlayer - this->actor.shape.rot.y;
         this->actor.textId = 0x10B1;
         if ((ABS(yawDiff) <= 0x2150) && (this->actor.xzDistToPlayer < 100.0f)) {
-            func_8002F298(&this->actor, play, 100.0f, 7);
+            Actor_OfferTalkExchangeEquiCylinder(&this->actor, play, 100.0f, 7);
         }
     }
 }
@@ -251,7 +251,7 @@ void EnHs_Update(Actor* thisx, PlayState* play) {
     this->actionFunc(this, play);
 
     if (this->unk_2A8 & 1) {
-        func_80038290(play, &this->actor, &this->unk_29C, &this->unk_2A2, this->actor.focus.pos);
+        Actor_TrackPlayer(play, &this->actor, &this->unk_29C, &this->unk_2A2, this->actor.focus.pos);
         this->unk_2A8 &= ~1;
     } else {
         Math_SmoothStepToS(&this->unk_29C.x, 12800, 6, 6200, 100);

@@ -287,6 +287,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // this->currentShield == PLAYER_SHIELD_DEKU
+    // ```
+    // #### `args`
+    // - `*Player`
+    VB_BURN_SHIELD,
+
+    // #### `result`
+    // ```c
     // true
     // ```
     // #### `args`
@@ -366,6 +374,14 @@ typedef enum {
     // #### `args`
     // - None
     VB_CLOSE_PAUSE_MENU,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnHorse`
+    VB_CONSUME_EPONA_BOOST,
 
     // #### `result`
     // ```c
@@ -573,11 +589,21 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // (this->heldItemAction == PLAYER_IA_HOOKSHOT) ||
+    // (this->heldItemAction == PLAYER_IA_LONGSHOT)
+    // ```
+    // #### `args`
+    // - '*Player'
+    VB_DRAW_ADDITIONAL_RETICLES,
+
+    // #### `result`
+    // ```c
     // true
     // ```
     // #### `args`
-    // - None
-    VB_DRAW_ADDITIONAL_RETICLES,
+    // - `PlayerMask currentMask`
+    // - `*PlayState play`
+    VB_DRAW_PLAYER_MASK,
 
     // #### `result`
     // In `Interface_DrawAmmoCount`:
@@ -607,8 +633,32 @@ typedef enum {
     // true
     // ```
     // #### `args`
+    // - None
+    VB_DRAW_EPONA_BOOST_CARROTS,
+
+    // #### `args`
+    // - `Player*` player
+    // - `PlayState*` play
+    VB_DRAW_HOOKSHOT_CHAIN,
+    VB_DRAW_HOOKSHOT_TIP,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
     // - Player*
     VB_EMPTYING_BOTTLE,
+
+    // #### `result`
+    // ```c
+    // (gSaveContext.inventory.items[gSaveContext.equips.cButtonSlots[button - 1]] == ITEM_MILK_BOTTLE) &&
+    //     (item == ITEM_BOTTLE)
+    // ```
+    // #### `args`
+    // - `int32_t` (button - promoted from `u8`)
+    // - `int32_t` (item - promoted from `u8`)
+    VB_EMPTY_BOTTLE_TO_HALF_MILK,
 
     // #### `result`
     // ```c
@@ -924,6 +974,14 @@ typedef enum {
     // - `*EnGe1`
     // - `*PlayState`
     VB_PLAY_HORSEBACK_ARCHERY,
+
+    // #### `result`
+    // ```c
+    // play->sceneNum == SCENE_KOKIRI_FOREST
+    // ```
+    // #### `args`
+    // - `*EnSa`
+    VB_SARIA_GESTURE,
 
     // #### `result`
     // ```c
@@ -1371,6 +1429,14 @@ typedef enum {
     // ```
     // #### `args`
     // - None
+    VB_HOT_ROOM_DISTORTION,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
     VB_KALEIDO_UNPAUSE_CLOSE,
 
     // #### `result`
@@ -1605,6 +1671,14 @@ typedef enum {
     // true
     // ```
     // #### `args`
+    // - `*Actor`
+    VB_PERFORM_WALL_COLLISION_CHECK,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
     // - `*BossGanondrof`
     VB_PHANTOM_GANON_DEATH_SCENE,
 
@@ -1668,6 +1742,14 @@ typedef enum {
     // #### `args`
     // - `*EnDaiku`
     VB_PLAY_CARPENTER_FREE_CS,
+
+    // #### `result`
+    // ```c
+    // true if one point cutscene skip not enabled, or not randomizer
+    // ```
+    // #### `args`
+    // - none
+    VB_PLAY_TIMEBLOCK_CS,
 
     // #### `result`
     // Close enough & various cutscene checks
@@ -1963,6 +2045,103 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `void*` player (Player*)
+    // - `PlayState*` play
+    VB_PLAYER_DRAW_BOTTLE,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*Player`
+    VB_PLAYER_LIMIT_DIVE_XZ_SPEED,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*Player`
+    VB_PLAYER_LIMIT_JUMP_SPEED,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*Player`
+    // - `f32*` speedTarget
+    VB_PLAYER_MODIFY_RUN_SPEED,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*Player`
+    // - `f32*` swimSpeed
+    // - `s32` sControlInput != NULL
+    VB_PLAYER_MODIFY_SWIM_SPEED,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `s32` limbIndex
+    // - `Gfx**` dList (write to *dList to replace the resolved display list)
+    // - `void*` player (Player*)
+    // - `PlayState*` play
+    VB_PLAYER_OVERRIDE_LIMB_DRAW,
+
+    // Fired from Player_OverrideLimbDrawPause (pause/equipment screen character only).
+    // #### `args`
+    // - `s32` limbIndex
+    // - `Gfx**` dList (write to *dList to replace the resolved display list)
+    // - `void*` player (Player*)
+    // - `PlayState*` play
+    VB_PLAYER_OVERRIDE_LIMB_DRAW_PAUSE,
+
+    // #### `args`
+    // - `*Player`
+    // - `*PlayState`
+    VB_PLAYER_UPDATE_BOTTLE_HELD,
+
+    // #### `result`
+    // ```c
+    // false
+    // ```
+    // #### `args`
+    // - `*Player`
+    // - `*PlayState`
+    // - `*Input` (sControlInput)
+    // - `s32` (sFloorType)
+    VB_PLAYER_ROLL_CHAIN,
+
+    // #### `result`
+    // ```c
+    // false
+    // ```
+    // #### `args`
+    // - `*Player`
+    // - `*PlayState`
+    // - `s16 yawTarget` (stick world-space yaw, promoted to int in va_list)
+    VB_PLAYER_ROLL_STEER,
+
+    // #### `result`
+    // ```c
+    // this->ageProperties->unk_24 <= ySurface
+    // ```
+    // #### `args`
+    // - `Player*`
+    VB_PLAYER_SPAWN_SWIMMING,
+
+    // #### `result`
+    // ```c
     // item == ITEM_SAW
     // ```
     // #### `args`
@@ -2026,6 +2205,13 @@ typedef enum {
     VB_RED_ICE_MELTED_FLAG,
 
     // #### `result`
+    // ```c
+    // camera->xzSpeed > 0.001f || <any release button pressed> || params->interfaceFlags & 0x8
+    // ```
+    // #### `args`
+    // - `Camera*` (`camera`)
+    VB_RELEASE_DOORC_CAMERA,
+
     // #### `result`
     // ```c
     // true
@@ -2049,6 +2235,17 @@ typedef enum {
     // #### `args`
     // - `**Gfx` (`&POLY_OPA_DISP`)
     VB_RENDER_YES_ON_CONTINUE_PROMPT,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*PlayState`
+    // - `*Player`
+    // - `*u32`
+    // - `*s16`
+    VB_REVALIDATE_CLIMBED_WALL,
 
     // #### `result`
     // ```c
@@ -2183,6 +2380,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // CHECK_BTN_ALL(input->press.button, BTN_B)
+    // ```
+    // #### `args`
+    // - `*Input`
+    VB_SHOULD_OSSAN_CANCEL,
+
+    // #### `result`
+    // ```c
     // true
     // ```
     // #### `args`
@@ -2221,6 +2426,14 @@ typedef enum {
     // #### `args`
     // - None
     VB_SKIP_TALKING,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
+    VB_SLAY_GANON,
 
     // #### `result`
     // ```c
@@ -2302,6 +2515,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnButte`
+    VB_SPAWN_BUTTERFLY_FAIRY_EASY,
+
+    // #### `result`
+    // ```c
     // INV_CONTENT(ITEM_ARROW_FIRE) == ITEM_NONE
     // ```
     // #### `args`
@@ -2376,6 +2597,30 @@ typedef enum {
     // #### `args`
     // - `*BgIceTurara`
     VB_STALAGMITE_DROP_ITEM,
+
+    // #### `result`
+    // ```c
+    // ABS(wallPoly->normal.y) < 600
+    // ```
+    // #### `args`
+    // - None
+    VB_SURFACE_ANGLE_IS_CLIMBABLE,
+
+    // #### `result`
+    // ```c
+    // false
+    // ```
+    // #### `args`
+    // - None
+    VB_SURFACE_IS_CLIMBABLE,
+
+    // #### `result`
+    // ```c
+    // SurfaceType_GetData(colCtx, poly, bgId, 1) >> 17 & 1
+    // ```
+    // #### `args`
+    // - None
+    VB_SURFACE_IS_HOOKSHOT,
 
     // #### `result`
     // ```c
@@ -2701,6 +2946,15 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // false
+    // ```
+    // #### `args`
+    // - *EnGirlACanBuyResult
+    // - `RAND_INF`
+    VB_CAN_BUY_SHOP_SHIELD_OR_TUNIC,
+
+    // #### `result`
+    // ```c
     // true
     // ```
     // #### `args`
@@ -2965,7 +3219,105 @@ typedef enum {
     // ```
     // #### `args`
     // - `*int32_t (camId)`
-    VB_SHOULD_LOAD_BG_IMAGE
+    VB_SHOULD_LOAD_BG_IMAGE,
+
+    // #### `result`
+    // ```c
+    // this->actor.floorHeight <= -10000.0f
+    // ```
+    // #### `args`
+    // - `*EnItem00`
+    VB_ITEM00_KILL,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - none
+    VB_ITEMSHIELD_DRAW,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*Player`
+    VB_INIT_HOOKSHOT_IA,
+
+    // #### `result`
+    // ```c
+    // !(this->stateFlags1 & PLAYER_STATE1_ON_HORSE) && Player_HoldsHookshot(this)
+    // ```
+    // #### `args`
+    // - `s16* (&this->actor.parent->id)`
+    VB_PREVENT_HOOKSHOT_PARENT_SOFTLOCK,
+
+    // #### `result`
+    // true if Goron Link is talking
+    // ```
+    // #### `args`
+    // - `*EnGo2` (Goron Link)
+    VB_PREVENT_GORON_LINK_SOFTLOCK,
+
+    // #### `result`
+    // ```c
+    // sets `camMode` to new mode if applicable
+    // ```
+    // #### `args`
+    // - `s32` player->heldItemAction
+    // - `s32*` camMode
+    VB_CHANGE_AIMING_CAMERA,
+
+    // true
+    // ```
+    // #### `args`
+    // - `*EnPeehat`
+    // - `*PlayState`
+    VB_PEEHAT_SPAWN_LARVAS,
+
+    // #### `result`
+    // ```c
+    // gSaveContext.equips.buttonItems[0] != ITEM_NONE
+    // ```
+    // Whether the B button slot should be treated as holding an item when entering the
+    // horseback/minigame "temporary B" force path. Rando returns `true` for a swordless
+    // player so the swordless-on-Epona item glitch can be blocked.
+    // #### `args`
+    // - `*PlayState`
+    VB_TEMP_B_TREAT_AS_OCCUPIED,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // Side-effect hook (return value ignored): fired right after the vanilla
+    // `buttonStatus[0] = buttonItems[0]` stash so rando can relocate it to its swordless
+    // sentinel for later restoration.
+    // #### `args`
+    // - `*PlayState`
+    VB_TEMP_B_STASH_SWORDLESS,
+
+    // #### `result`
+    // ```c
+    // (gSaveContext.equips.buttonItems[0] != ITEM_NONE) || (gSaveContext.infTable[29] == 0)
+    // ```
+    // Whether the "temporary B" item should be restored to the B button. Rando also returns
+    // `true` when it had stashed a swordless sentinel.
+    // #### `args`
+    // - None
+    VB_TEMP_B_SHOULD_RESTORE,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // Side-effect hook (return value ignored): fired right after the vanilla
+    // `buttonItems[0] = buttonStatus[0]` restore so rando can convert its swordless sentinel
+    // back into an empty (swordless) B button.
+    // #### `args`
+    // - None
+    VB_TEMP_B_RESTORE_SWORDLESS,
 } GIVanillaBehavior;
 
 #endif

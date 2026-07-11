@@ -179,11 +179,11 @@ void BgBdanObjects_OctoPlatform_WaitForRutoToStartCutscene(BgBdanObjects* this, 
         if (this->dyna.actor.xzDistToPlayer < 250.0f) {
             BgBdanObjects_SetContactRu1(this, 1);
             this->timer = 20;
-            OnePointCutscene_Init(play, 3070, -99, &this->dyna.actor, MAIN_CAM);
+            OnePointCutscene_Init(play, 3070, -99, &this->dyna.actor, CAM_ID_MAIN);
             player->actor.world.pos.x = -1130.0f;
             player->actor.world.pos.y = -1025.0f;
             player->actor.world.pos.z = -3300.0f;
-            func_800AA000(0.0f, 0xFF, 0x14, 0x96);
+            Rumble_Request(0.0f, 0xFF, 0x14, 0x96);
         }
     } else if (this->timer != 0) {
         if (this->timer != 0) {
@@ -208,16 +208,16 @@ void BgBdanObjects_OctoPlatform_RaiseToUpperPosition(BgBdanObjects* this, PlaySt
         this->actionFunc = BgBdanObjects_OctoPlatform_WaitForRutoToAdvanceCutscene;
         this->timer = 30;
         BgBdanObjects_SetContactRu1(this, 2);
-        func_800AA000(0.0f, 0xFF, 0x14, 0x96);
+        Rumble_Request(0.0f, 0xFF, 0x14, 0x96);
     } else {
         if (this->timer != 0) {
             this->timer--;
         }
         if (this->timer == 0) {
-            func_800AA000(0.0f, 0x78, 0x14, 0xA);
+            Rumble_Request(0.0f, 0x78, 0x14, 0xA);
             this->timer = 11;
         }
-        func_8002F974(&this->dyna.actor, NA_SE_EV_BUYOSTAND_RISING - SFX_FLAG);
+        Actor_PlaySfx_Flagged(&this->dyna.actor, NA_SE_EV_BUYOSTAND_RISING - SFX_FLAG);
     }
 }
 
@@ -256,20 +256,20 @@ void BgBdanObjects_OctoPlatform_DescendWithBigOcto(BgBdanObjects* this, PlayStat
         Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_BUYOSTAND_STOP_U);
         this->dyna.actor.child->world.pos.y = this->dyna.actor.world.pos.y + 140.0f;
         this->actionFunc = BgBdanObjects_OctoPlatform_WaitForBigOctoToStartBattle;
-        OnePointCutscene_Init(play, 3080, -99, this->dyna.actor.child, MAIN_CAM);
+        OnePointCutscene_Init(play, 3080, -99, this->dyna.actor.child, CAM_ID_MAIN);
         player->actor.world.pos.x = -1130.0f;
         player->actor.world.pos.y = -1025.0f;
         player->actor.world.pos.z = -3500.0f;
         player->actor.shape.rot.y = 0x7530;
         player->actor.world.rot.y = player->actor.shape.rot.y;
-        func_800AA000(0.0f, 0xFF, 0x1E, 0x96);
+        Rumble_Request(0.0f, 0xFF, 0x1E, 0x96);
     } else {
-        func_8002F974(&this->dyna.actor, NA_SE_EV_BUYOSTAND_FALL - SFX_FLAG);
+        Actor_PlaySfx_Flagged(&this->dyna.actor, NA_SE_EV_BUYOSTAND_FALL - SFX_FLAG);
         if (this->timer != 0) {
             this->timer--;
         }
         if (this->timer == 0) {
-            func_800AA000(0.0f, 0x78, 0x14, 0xA);
+            Rumble_Request(0.0f, 0x78, 0x14, 0xA);
             this->timer = 11;
         }
         if (this->dyna.actor.child != NULL) {
@@ -329,7 +329,7 @@ void BgBdanObjects_WaitForPlayerInRange(BgBdanObjects* this, PlayState* play) {
     if (DynaPolyActor_IsPlayerOnTop(&this->dyna)) {
         if (this->dyna.actor.xzDistToPlayer < 120.0f) {
             this->actionFunc = BgBdanObjects_RaiseToUpperPosition;
-            OnePointCutscene_Init(play, 3090, -99, &this->dyna.actor, MAIN_CAM);
+            OnePointCutscene_Init(play, 3090, -99, &this->dyna.actor, CAM_ID_MAIN);
         }
     }
 }
@@ -340,7 +340,7 @@ void BgBdanObjects_RaiseToUpperPosition(BgBdanObjects* this, PlayState* play) {
         Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_BUYOSTAND_STOP_A);
         this->actionFunc = BgBdanObjects_DoNothing;
     } else {
-        func_8002F974(&this->dyna.actor, NA_SE_EV_BUYOSTAND_RISING - SFX_FLAG);
+        Actor_PlaySfx_Flagged(&this->dyna.actor, NA_SE_EV_BUYOSTAND_RISING - SFX_FLAG);
     }
 }
 
@@ -353,21 +353,21 @@ void BgBdanObjects_ElevatorOscillate(BgBdanObjects* this, PlayState* play) {
     }
     if (this->switchFlag == 0) {
         if (DynaPolyActor_IsPlayerOnTop(&this->dyna)) {
-            this->cameraSetting = play->cameraPtrs[MAIN_CAM]->setting;
-            Camera_ChangeSetting(play->cameraPtrs[MAIN_CAM], CAM_SET_NORMAL2);
-            func_8005AD1C(play->cameraPtrs[MAIN_CAM], 4);
+            this->cameraSetting = play->cameraPtrs[CAM_ID_MAIN]->setting;
+            Camera_ChangeSetting(play->cameraPtrs[CAM_ID_MAIN], CAM_SET_NORMAL2);
+            func_8005AD1C(play->cameraPtrs[CAM_ID_MAIN], 4);
             this->switchFlag = 10;
         }
     } else {
-        Camera_ChangeSetting(play->cameraPtrs[MAIN_CAM], CAM_SET_NORMAL2);
+        Camera_ChangeSetting(play->cameraPtrs[CAM_ID_MAIN], CAM_SET_NORMAL2);
         if (!DynaPolyActor_IsPlayerOnTop(&this->dyna)) {
             if (this->switchFlag != 0) {
                 this->switchFlag--;
             }
         }
         if (this->switchFlag == 0) {
-            Camera_ChangeSetting(play->cameraPtrs[MAIN_CAM], this->cameraSetting);
-            func_8005ACFC(play->cameraPtrs[MAIN_CAM], 4);
+            Camera_ChangeSetting(play->cameraPtrs[CAM_ID_MAIN], this->cameraSetting);
+            func_8005ACFC(play->cameraPtrs[CAM_ID_MAIN], 4);
         }
     }
     this->dyna.actor.world.pos.y =
@@ -390,12 +390,12 @@ void BgBdanObjects_ChangeWaterBoxLevel(BgBdanObjects* this, PlayState* play) {
             Flags_UnsetSwitch(play, this->switchFlag);
             this->actionFunc = BgBdanObjects_WaitForSwitch;
         }
-        func_8002F948(&this->dyna.actor, NA_SE_EV_WATER_LEVEL_DOWN - SFX_FLAG);
+        Actor_PlaySfx_FlaggedCentered2(&this->dyna.actor, NA_SE_EV_WATER_LEVEL_DOWN - SFX_FLAG);
     } else {
         if (Math_StepToF(&this->dyna.actor.world.pos.y, this->dyna.actor.home.pos.y + 75.0f, 0.5f)) {
             this->actionFunc = BgBdanObjects_WaitForTimerExpired;
         }
-        func_8002F948(&this->dyna.actor, NA_SE_EV_WATER_LEVEL_DOWN - SFX_FLAG);
+        Actor_PlaySfx_FlaggedCentered2(&this->dyna.actor, NA_SE_EV_WATER_LEVEL_DOWN - SFX_FLAG);
     }
     play->colCtx.colHeader->waterBoxes[7].ySurface = this->dyna.actor.world.pos.y;
 }
@@ -404,7 +404,7 @@ void BgBdanObjects_WaitForTimerExpired(BgBdanObjects* this, PlayState* play) {
     if (this->timer != 0) {
         this->timer--;
     }
-    func_8002F994(&this->dyna.actor, this->timer);
+    Actor_PlaySfx_FlaggedTimer(&this->dyna.actor, this->timer);
     if (this->timer == 0) {
         this->actionFunc = BgBdanObjects_ChangeWaterBoxLevel;
     }
@@ -416,7 +416,7 @@ void BgBdanObjects_WaitForPlayerOnTop(BgBdanObjects* this, PlayState* play) {
         this->timer = 50;
         this->actionFunc = BgBdanObjects_FallToLowerPos;
         this->dyna.actor.home.pos.y -= 200.0f;
-        OnePointCutscene_Init(play, 3100, 51, &this->dyna.actor, MAIN_CAM);
+        OnePointCutscene_Init(play, 3100, 51, &this->dyna.actor, CAM_ID_MAIN);
     }
 }
 
@@ -430,9 +430,9 @@ void BgBdanObjects_FallToLowerPos(BgBdanObjects* this, PlayState* play) {
     if (this->timer == 0) {
         Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_BUYOSTAND_STOP_U);
         this->actionFunc = BgBdanObjects_DoNothing;
-        Play_CopyCamera(play, MAIN_CAM, SUBCAM_ACTIVE);
+        Play_CopyCamera(play, CAM_ID_MAIN, SUBCAM_ACTIVE);
     } else {
-        func_8002F974(&this->dyna.actor, NA_SE_EV_BUYOSTAND_FALL - SFX_FLAG);
+        Actor_PlaySfx_Flagged(&this->dyna.actor, NA_SE_EV_BUYOSTAND_FALL - SFX_FLAG);
     }
 }
 

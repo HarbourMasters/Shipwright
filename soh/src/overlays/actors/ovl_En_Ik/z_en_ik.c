@@ -444,7 +444,7 @@ void func_80A74EBC(EnIk* this, PlayState* play) {
         sp2C.y = this->actor.world.pos.y;
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_IRONNACK_HIT_GND);
         Camera_AddQuake(&play->mainCamera, 2, 0x19, 5);
-        func_800AA000(this->actor.xzDistToPlayer, 0xFF, 0x14, 0x96);
+        Rumble_Request(this->actor.xzDistToPlayer, 0xFF, 0x14, 0x96);
         CollisionCheck_SpawnShieldParticles(play, &sp2C);
     }
 
@@ -790,7 +790,7 @@ void func_80A75FA0(Actor* thisx, PlayState* play) {
                     this->unk_2FE = 0;
                 }
             }
-            func_8002F71C(play, &this->actor, 8.0f, this->actor.yawTowardsPlayer, 8.0f);
+            Actor_SetPlayerKnockbackLargeNoDamage(play, &this->actor, 8.0f, this->actor.yawTowardsPlayer, 8.0f);
             player->invincibilityTimer = prevInvincibilityTimer;
         }
     }

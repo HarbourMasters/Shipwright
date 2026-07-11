@@ -15,6 +15,9 @@
 #include "soh/SaveManager.h"
 #include "soh/ResourceManagerHelpers.h"
 
+// SOH [Enhancement] Text Speed which fills whole box in one frame
+#define TEXT_SPEED_INSTANT 6
+
 // #region SOH [NTSC] - Allows custom messages to work on japanese
 static bool sDisplayNextMessageAsEnglish = false;
 static u8 sLastLanguage = LANGUAGE_ENG;
@@ -1276,7 +1279,9 @@ void Message_DrawTextJPN(PlayState* play, Gfx** gfxP) {
         }
     }
 
-    if (msgCtx->textDelay == 0) {
+    if (gTextSpeed >= TEXT_SPEED_INSTANT) {
+        msgCtx->textDrawPos = msgCtx->decodedTextLen + 1;
+    } else if (msgCtx->textDelay == 0) {
         msgCtx->textDrawPos = i + gTextSpeed;
         if (msgCtx->textDrawPos > msgCtx->decodedTextLen) {
             msgCtx->textDrawPos = msgCtx->decodedTextLen + 1;
@@ -1626,7 +1631,9 @@ void Message_DrawText(PlayState* play, Gfx** gfxP) {
                 break;
         }
     }
-    if (msgCtx->textDelay == 0) {
+    if (gTextSpeed >= TEXT_SPEED_INSTANT) {
+        msgCtx->textDrawPos = msgCtx->decodedTextLen + 1;
+    } else if (msgCtx->textDelay == 0) {
         msgCtx->textDrawPos = i + gTextSpeed;
     } else if (msgCtx->textDelayTimer == 0) {
         msgCtx->textDrawPos = i + 1;
@@ -4663,7 +4670,7 @@ void Message_Update(PlayState* play) {
                     ((msgCtx->textId < 0x88D || msgCtx->textId >= 0x893) || msgCtx->choiceIndex != 0) &&
                     (msgCtx->textId != 0x3055 && gSaveContext.cutsceneIndex < 0xFFF0)) {
                     osSyncPrintf("=== day_time=%x ", ((void)0, gSaveContext.cutsceneIndex));
-                    if (play->activeCamera == MAIN_CAM) {
+                    if (play->activeCamera == CAM_ID_MAIN) {
                         if (gSaveContext.unk_13EE == 0 || gSaveContext.unk_13EE == 1 || gSaveContext.unk_13EE == 2) {
                             gSaveContext.unk_13EE = 0x32;
                         }

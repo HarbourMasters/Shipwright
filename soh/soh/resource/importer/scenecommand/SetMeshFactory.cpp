@@ -1,9 +1,10 @@
 #include "soh/resource/importer/scenecommand/SetMeshFactory.h"
 #include "soh/resource/type/scenecommand/SetMesh.h"
 #include "soh/resource/logging/SceneCommandLoggers.h"
-#include "spdlog/spdlog.h"
+#include <ship/Context.h>
+#include <ship/resource/ResourceManager.h>
+#include <spdlog/spdlog.h>
 #include <tinyxml2.h>
-#include "libultraship/libultraship.h"
 
 namespace SOH {
 std::shared_ptr<Ship::IResource> SetMeshFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,
@@ -93,8 +94,8 @@ std::shared_ptr<Ship::IResource> SetMeshFactory::ReadResource(std::shared_ptr<Sh
                 if (setMesh->meshHeader.polygon1.format == 1) {
                     setMesh->meshHeader.polygon1.single.source = image.source;
                     setMesh->meshHeader.polygon1.single.unk_0C = image.unk_0C;
-                    setMesh->meshHeader.polygon1.single.tlut =
-                        (void*)image.tlut; // OTRTODO: type of bgimage.tlut should be uintptr_t
+                    setMesh->meshHeader.polygon1.single.tlut = reinterpret_cast<void*>(
+                        static_cast<uintptr_t>(image.tlut)); // OTRTODO: type of bgimage.tlut should be uintptr_t
                     setMesh->meshHeader.polygon1.single.width = image.width;
                     setMesh->meshHeader.polygon1.single.height = image.height;
                     setMesh->meshHeader.polygon1.single.fmt = image.fmt;
@@ -277,8 +278,8 @@ std::shared_ptr<Ship::IResource> SetMeshFactoryXML::ReadResource(std::shared_ptr
                 if (setMesh->meshHeader.polygon1.format == 1) {
                     setMesh->meshHeader.polygon1.single.source = image.source;
                     setMesh->meshHeader.polygon1.single.unk_0C = image.unk_0C;
-                    setMesh->meshHeader.polygon1.single.tlut =
-                        (void*)image.tlut; // OTRTODO: type of bgimage.tlut should be uintptr_t
+                    setMesh->meshHeader.polygon1.single.tlut = reinterpret_cast<void*>(
+                        static_cast<uintptr_t>(image.tlut)); // OTRTODO: type of bgimage.tlut should be uintptr_t
                     setMesh->meshHeader.polygon1.single.width = image.width;
                     setMesh->meshHeader.polygon1.single.height = image.height;
                     setMesh->meshHeader.polygon1.single.fmt = image.fmt;

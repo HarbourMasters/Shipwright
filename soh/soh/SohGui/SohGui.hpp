@@ -8,7 +8,6 @@
 #ifndef SohGui_hpp
 #define SohGui_hpp
 
-#include <stdio.h>
 #include "SohMenu.h"
 #include "soh/Enhancements/audio/AudioEditor.h"
 #include "soh/Enhancements/controls/InputViewer.h"
@@ -45,6 +44,7 @@ void ShowRandomizerSettingsMenu();
 void ShowEscMenu();
 UIWidgets::Colors GetMenuThemeColor();
 std::shared_ptr<SohMenu> GetSohMenu();
+void DrawStartingItemsMenu(WidgetInfo& info);
 } // namespace SohGui
 
 #define THEME_COLOR SohGui::GetMenuThemeColor()

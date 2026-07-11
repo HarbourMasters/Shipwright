@@ -1,0 +1,63 @@
+name: 'Install newer compiler'
+description: 'Installs ${compiler}-${version} from the distro repos when available, or from apt.llvm.org for clang on apt distros. Errors out for combinations without a known install path.'
+inputs:
+  compiler:
+    description: 'gcc or clang'
+    required: true
+  version:
+    description: 'major version to install'
+    required: true
+  available_in_distro:
+    description: 'true if compiler-${version} is in the distro repos (verify-compiler output)'
+    required: true
+  packageManager:
+    description: 'apt, dnf, pacman, or zypper'
+    required: true
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      run: |
+        install_apt() {
+          local compiler="$1" version="$2"
+          case "$compiler" in
+            gcc)   apt-get -y install "gcc-${version}" "g++-${version}" ;;
+            clang) apt-get -y install "clang-${version}" ;;
+          esac
+        }
+
+        install_zypper() {
+          local compiler="$1" version="$2"
+          case "$compiler" in
+            gcc)   zypper --non-interactive in "gcc${version}" "gcc${version}-c++" ;;
+            clang) zypper --non-interactive in "clang${version}" ;;
+          esac
+        }
+
+        bootstrap_apt_llvm_and_install() {
+          local version="$1"
+          apt-get update
+          apt-get -y install --no-install-recommends wget lsb-release gnupg ca-certificates software-properties-common
+          wget -q https://apt.llvm.org/llvm.sh
+          chmod +x llvm.sh
+          ./llvm.sh "$version"
+        }
+
+        fail_no_path() {
+          local compiler="$1" version="$2"
+          echo "Minimum version not readily available." >&2
+          echo "An alternative installation method for ${compiler} ${version} is needed." >&2
+          exit 1
+        }
+
+        compiler='${{ inputs.compiler }}'
+        version='${{ inputs.version }}'
+        available_in_distro='${{ inputs.available_in_distro }}'
+        package_manager='${{ inputs.packageManager }}'
+
+        case "$package_manager:$available_in_distro:$compiler" in
+          apt:true:*)       install_apt   "$compiler" "$version" ;;
+          apt:false:clang)  bootstrap_apt_llvm_and_install "$version" ;;
+          zypper:true:*)    install_zypper "$compiler" "$version" ;;
+          *)                fail_no_path  "$compiler" "$version" ;;
+        esac

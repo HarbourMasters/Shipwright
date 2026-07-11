@@ -3,7 +3,7 @@
 #ifndef GameInteractor_h
 #define GameInteractor_h
 
-#include "libultraship/libultraship.h"
+#include <libultraship/bridge/consolevariablebridge.h>
 #include "vanilla-behavior/GIVanillaBehavior.h"
 #include <z64.h>
 
@@ -74,21 +74,21 @@ uint8_t GameInteractor_GetRandomWindActive();
 uint8_t GameInteractor_GetRandomBonksActive();
 uint8_t GameInteractor_GetSlipperyFloorActive();
 uint8_t GameInteractor_SecondCollisionUpdate();
-void GameInteractor_SetTriforceHuntPieceGiven(uint8_t state);
-void GameInteractor_SetTriforceHuntCreditsWarpActive(uint8_t state);
+void GameInteractor_SetTriforceHuntPieceGiven(bool state);
+void GameInteractor_SetTriforceHuntCreditsWarpActive(bool state);
 #ifdef __cplusplus
 }
 #endif
 
 #ifdef __cplusplus
 #include <stdarg.h>
+#include <cstdint>
 #include <map>
 #include <unordered_map>
 #include <vector>
 #include <functional>
 #include <cstring>
 
-#include <version>
 #ifdef __cpp_lib_source_location
 #include <source_location>
 #else
@@ -203,8 +203,8 @@ class GameInteractor {
         static uint8_t RandomBonksActive;
         static uint8_t SlipperyFloorActive;
         static uint8_t SecondCollisionUpdate;
-        static uint8_t TriforceHuntPieceGiven;
-        static uint8_t TriforceHuntCreditsWarpActive;
+        static bool TriforceHuntPieceGiven;
+        static bool TriforceHuntCreditsWarpActive;
 
         static void SetPacifistMode(bool active);
     };
@@ -530,6 +530,7 @@ class GameInteractor {
     // Helpers
     static bool IsSaveLoaded(bool allowDbgSave = false);
     static bool IsGameplayPaused();
+    static bool IsPlayerInControl();
     static bool CanSpawnActor();
     static bool CanAddOrTakeAmmo(int16_t amount, int16_t item);
 

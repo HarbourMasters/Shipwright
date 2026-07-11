@@ -202,7 +202,7 @@ void RegionTable_Init_GerudoFortress() {
 
     areaTable[RR_GF_ABOVE_JAIL] = Region("GF Above Jail", SCENE_GERUDOS_FORTRESS, {}, {
         //Locations
-        LOCATION(RC_GF_ABOVE_JAIL_CRATE, true),
+        LOCATION(RC_GF_ABOVE_JAIL_CRATE, logic->IsAdult),
     }, {
         //Exits
         //there's a trick to reach RR_GF_LONG_ROOF
@@ -258,6 +258,9 @@ void RegionTable_Init_GerudoFortress() {
     }, {
         //Locations
         LOCATION(RC_GF_GATE_EXIT_RECTANGLE_SIGN, logic->IsAdult && logic->CanRead()),
+        // "Decoy" crates to look like the crate in wasteland
+        LOCATION(RC_GF_FAR_AWAY_CRATE_CHILD, logic->IsChild && false),
+        LOCATION(RC_GF_FAR_AWAY_CRATE_ADULT, logic->IsAdult && false),
     }, {
         //Exits
         ENTRANCE(RR_GF_OUTSKIRTS,            logic->Get(LOGIC_GF_GATE_OPEN)),

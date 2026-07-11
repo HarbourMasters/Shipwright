@@ -868,7 +868,7 @@ void RegionTable_Init_GanonsCastle() {
 
     areaTable[RR_GANONS_TOWER_GANONDORF_LAIR] = Region("Ganondorf's Lair", SCENE_GANONDORF_BOSS, {}, {
         //Locations
-        LOCATION(RC_GANONDORF_HINT, logic->HasBossSoul(RG_GANON_SOUL)),
+        LOCATION(RC_GANONDORF_HINT, logic->HasItem(RG_GANON_SOUL)),
     }, {
         //Exits
         ENTRANCE(RR_GANONS_CASTLE_ESCAPE, logic->CanKillEnemy(RE_GANONDORF)),

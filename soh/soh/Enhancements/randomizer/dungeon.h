@@ -1,18 +1,20 @@
 #pragma once
 
-#include "randomizerTypes.h"
-
 #include <array>
 #include <vector>
 #include <string>
 #include "nlohmann/json.hpp"
+#include "z64save.h"
+#include "z64scene.h"
 
 namespace Rando {
 class DungeonInfo {
   public:
     DungeonInfo(std::string name_, RandomizerHintTextKey hintKey_, RandomizerGet map_, RandomizerGet compass_,
                 RandomizerGet smallKey_, RandomizerGet keyRing_, RandomizerGet bossKey_, RandomizerGet reward_,
-                RandomizerArea area_, uint8_t vanillaKeyCount_, uint8_t mqKeyCount_, RandomizerSettingKey mqSetting_);
+                RandomizerArea area_, uint8_t vanillaKeyCount_, uint8_t mqKeyCount_, RandomizerSettingKey mqSetting_,
+                SceneID scene_, std::vector<uint8_t> vanillaDoorFlags_, std::vector<uint8_t> randoDoorFlags_,
+                std::vector<uint8_t> MQDoorFlags_);
     DungeonInfo();
     ~DungeonInfo();
 
@@ -33,7 +35,11 @@ class DungeonInfo {
     RandomizerGet GetCompass() const;
     RandomizerGet GetBossKey() const;
     RandomizerGet GetReward() const;
+    int8_t GetUsedSmallKeys(SaveContext* saveContext) const;
+    int8_t GetCurrentSmallKeys(SaveContext* saveContext) const;
+    int8_t GetTotalSmallKeys(SaveContext* saveContext) const;
     RandomizerSettingKey GetMQSetting() const;
+    const std::vector<uint8_t>* GetDoorFlags() const;
     void SetDungeonKnown(bool known);
     void PlaceVanillaMap() const;
     void PlaceVanillaCompass() const;
@@ -45,20 +51,29 @@ class DungeonInfo {
   private:
     std::string name;
     RandomizerHintTextKey hintKey;
-    RandomizerArea area;
     RandomizerGet map;
     RandomizerGet compass;
     RandomizerGet smallKey;
     RandomizerGet keyRing;
     RandomizerGet bossKey;
     RandomizerGet reward;
-    RandomizerSettingKey mqSetting;
-    bool isDungeonModeKnown = true;
+    RandomizerArea area;
     uint8_t vanillaKeyCount{};
     uint8_t mqKeyCount{};
+    RandomizerSettingKey mqSetting;
+    bool isDungeonModeKnown = true;
     bool masterQuest = false;
     bool hasKeyRing = false;
+    SceneID scene;
+    std::vector<uint8_t> vanillaDoorFlags;
+    // Specifically non-MQ Rando, to handle an edge case in water temple
+    std::vector<uint8_t> randoDoorFlags;
+    std::vector<uint8_t> MQDoorFlags;
 };
+
+int8_t FindUsedSmallKeys(const SaveContext* saveContext, const SceneID scene, const std::vector<uint8_t>* DoorFlags);
+int8_t FindCurrentSmallKeys(const SaveContext* saveContext, const SceneID scene);
+int8_t FindTotalSmallKeys(const SaveContext* saveContext, const SceneID scene, const std::vector<uint8_t>* DoorFlags);
 
 typedef enum {
     DEKU_TREE,

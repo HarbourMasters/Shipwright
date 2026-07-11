@@ -29,23 +29,21 @@ extern "C" void CustomLogoTitle_Draw(TitleContext* titleContext, uint8_t logoToD
 
     u16 y;
     u16 idx;
-    s32 pad1;
     Vec3f v3;
     Vec3f v1;
     Vec3f v2;
-    s32 pad2[2];
 
     OPEN_DISPS(titleContext->state.gfxCtx);
 
-    v3.x = 69;
-    v3.y = 69;
-    v3.z = 69;
-    v2.x = -4949.148;
-    v2.y = 4002.5417;
-    v1.x = 0;
-    v1.y = 0;
-    v1.z = 0;
-    v2.z = 1119.0837;
+    v3.x = 69.0f;
+    v3.y = 69.0f;
+    v3.z = 69.0f;
+    v2.x = -4949.148f;
+    v2.y = 4002.5417f;
+    v1.x = 0.0f;
+    v1.y = 0.0f;
+    v1.z = 0.0f;
+    v2.z = 1119.0837f;
 
     func_8002EABC(&v1, &v2, &v3, titleContext->state.gfxCtx);
     gSPSetLights1(POLY_OPA_DISP++, sTitleLights);
@@ -111,9 +109,10 @@ extern "C" void CustomLogoTitle_Draw(TitleContext* titleContext, uint8_t logoToD
         gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gEffIceFragment3DL);
     }
 
-    Environment_FillScreen(titleContext->state.gfxCtx, 0, 0, 0, (s16)titleContext->coverAlpha, FILL_SCREEN_XLU);
+    Environment_FillScreen(titleContext->state.gfxCtx, 0, 0, 0, static_cast<u8>(titleContext->coverAlpha),
+                           FILL_SCREEN_XLU);
 
-    sTitleRotY += (300 * CVarGetFloat(CVAR_COSMETIC("N64Logo.SpinSpeed"), 1.0f));
+    sTitleRotY += static_cast<s16>(300 * CVarGetFloat(CVAR_COSMETIC("N64Logo.SpinSpeed"), 1.0f));
 
     CLOSE_DISPS(titleContext->state.gfxCtx);
 }

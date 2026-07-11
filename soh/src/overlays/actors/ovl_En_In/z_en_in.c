@@ -450,7 +450,7 @@ void func_80A79C78(EnIn* this, PlayState* play) {
     Vec3s zeroVec = { 0, 0, 0 };
 
     this->camId = Play_CreateSubCamera(play);
-    Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+    Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_WAIT);
     Play_ChangeCameraStatus(play, this->camId, CAM_STAT_ACTIVE);
     sp48.x = this->actor.world.pos.x;
     sp48.y = this->actor.world.pos.y + 60.0f;

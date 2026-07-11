@@ -265,7 +265,7 @@ void BgDyYoseizo_ChooseType(BgDyYoseizo* this, PlayState* play) {
     }
 
     if (givingReward) {
-        if (gSaveContext.sceneSetupIndex < 4) {
+        if (gSaveContext.sceneLayer < 4) {
             if (play->sceneNum != SCENE_GREAT_FAIRYS_FOUNTAIN_MAGIC) {
                 switch (this->fountainType) {
                     case FAIRY_SPELL_FARORES_WIND:
@@ -305,9 +305,9 @@ void BgDyYoseizo_ChooseType(BgDyYoseizo* this, PlayState* play) {
     play->envCtx.unk_BF = 2;
 
     if (play->sceneNum == SCENE_GREAT_FAIRYS_FOUNTAIN_MAGIC) {
-        OnePointCutscene_Init(play, 8603, -99, NULL, MAIN_CAM);
+        OnePointCutscene_Init(play, 8603, -99, NULL, CAM_ID_MAIN);
     } else {
-        OnePointCutscene_Init(play, 8604, -99, NULL, MAIN_CAM);
+        OnePointCutscene_Init(play, 8604, -99, NULL, CAM_ID_MAIN);
     };
 
     Audio_PlayActorSound2(&this->actor, NA_SE_EV_GREAT_FAIRY_APPEAR);
@@ -870,7 +870,7 @@ void BgDyYoseizo_Update(Actor* thisx, PlayState* play2) {
     this->heightOffset = this->scale * 7500.0f;
     Actor_SetFocus(&this->actor, this->heightOffset);
     this->actor.focus.pos.y = this->heightOffset;
-    func_80038290(play, &this->actor, &this->headRot, &this->torsoRot, this->actor.focus.pos);
+    Actor_TrackPlayer(play, &this->actor, &this->headRot, &this->torsoRot, this->actor.focus.pos);
     BgDyYoseizo_ParticleUpdate(this, play);
     Actor_SetScale(&this->actor, this->scale);
 }

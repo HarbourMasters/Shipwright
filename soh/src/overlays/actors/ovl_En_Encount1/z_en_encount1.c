@@ -109,7 +109,7 @@ void EnEncount1_SpawnLeevers(EnEncount1* this, PlayState* play) {
 
     if ((this->timer == 0) && (play->csCtx.state == CS_STATE_IDLE) && (this->curNumSpawn <= this->maxCurSpawns) &&
         (this->curNumSpawn < 5)) {
-        floorType = func_80041D4C(&play->colCtx, player->actor.floorPoly, player->actor.floorBgId);
+        floorType = SurfaceType_GetFloorType(&play->colCtx, player->actor.floorPoly, player->actor.floorBgId);
         if ((floorType != 4) && (floorType != 7) && (floorType != 12)) {
             this->numLeeverSpawns = 0;
         } else if (!(this->reduceLeevers && (this->actor.xzDistToPlayer > 1300.0f))) {

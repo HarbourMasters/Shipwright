@@ -60,7 +60,7 @@ void OnePointCutscene_SetCsCamPoints(Camera* camera, s16 actionParameters, s16 i
 s32 OnePointCutscene_SetInfo(PlayState* play, s16 camIdx, s16 csId, Actor* actor, s16 timer) {
     Camera* csCam = play->cameraPtrs[camIdx];
     Camera* childCam = play->cameraPtrs[csCam->childCamIdx];
-    Camera* mainCam = play->cameraPtrs[MAIN_CAM];
+    Camera* mainCam = play->cameraPtrs[CAM_ID_MAIN];
     Player* player = mainCam->player;
     VecSph spD0;
     s32 i;
@@ -255,7 +255,7 @@ s32 OnePointCutscene_SetInfo(PlayState* play, s16 camIdx, s16 csId, Actor* actor
                 csInfo->keyFrames = D_801211D4;
                 csInfo->keyFrameCnt = 2;
             }
-            Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_UNK3);
+            Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_UNK3);
             func_800C0808(play, camIdx, player, CAM_SET_CS_C);
         } break;
         case 2290: {
@@ -329,7 +329,7 @@ s32 OnePointCutscene_SetInfo(PlayState* play, s16 camIdx, s16 csId, Actor* actor
             break;
         case 9601:
             Play_CameraChangeSetting(play, camIdx, CAM_SET_CS_3);
-            Play_CameraChangeSetting(play, MAIN_CAM, mainCam->prevSetting);
+            Play_CameraChangeSetting(play, CAM_ID_MAIN, mainCam->prevSetting);
             if (GameInteractor_Should(VB_CRAWL_SPEED_EXIT_CS, true, csCam, csId, D_80120430, D_8012042C, D_80120308,
                                       D_80120398)) {
                 OnePointCutscene_SetCsCamPoints(csCam, D_80120430 | 0x1000, D_8012042C, D_80120308, D_80120398);
@@ -337,7 +337,7 @@ s32 OnePointCutscene_SetInfo(PlayState* play, s16 camIdx, s16 csId, Actor* actor
             break;
         case 9602:
             Play_CameraChangeSetting(play, camIdx, CAM_SET_CS_3);
-            Play_CameraChangeSetting(play, MAIN_CAM, mainCam->prevSetting);
+            Play_CameraChangeSetting(play, CAM_ID_MAIN, mainCam->prevSetting);
             if (GameInteractor_Should(VB_CRAWL_SPEED_EXIT_CS, true, csCam, csId, D_80120430, D_8012042C, D_80120308,
                                       D_80120434)) {
                 OnePointCutscene_SetCsCamPoints(csCam, D_80120430 | 0x1000, D_8012042C, D_80120308, D_80120434);
@@ -516,7 +516,7 @@ s32 OnePointCutscene_SetInfo(PlayState* play, s16 camIdx, s16 csId, Actor* actor
             Play_CameraSetAtEye(play, camIdx, &spC0, &spB4);
             csCam->roll = 0x50;
             csCam->fov = 55.0f;
-            func_8002DF38(play, &player->actor, 8);
+            Player_SetCsAction(play, &player->actor, 8);
             break;
         case 3170:
             Actor_GetWorld(&spA0, actor);
@@ -529,10 +529,10 @@ s32 OnePointCutscene_SetInfo(PlayState* play, s16 camIdx, s16 csId, Actor* actor
             OnePointCutscene_AddVecSphToVec3f(&spB4, &spC0, &spD0);
             Play_CameraChangeSetting(play, camIdx, CAM_SET_FREE2);
             Play_CameraSetAtEye(play, camIdx, &spC0, &spB4);
-            Play_CopyCamera(play, MAIN_CAM, camIdx);
+            Play_CopyCamera(play, CAM_ID_MAIN, camIdx);
             csCam->roll = -1;
             csCam->fov = 55.0f;
-            func_8002DF38(play, actor, 1);
+            Player_SetCsAction(play, actor, 1);
             break;
         case 3160:
             Actor_GetWorld(&spA0, actor);
@@ -545,7 +545,7 @@ s32 OnePointCutscene_SetInfo(PlayState* play, s16 camIdx, s16 csId, Actor* actor
             Play_CameraSetAtEye(play, camIdx, &spC0, &spB4);
             csCam->roll = 0;
             csCam->fov = 55.0f;
-            func_8002DF38(play, &player->actor, 8);
+            Player_SetCsAction(play, &player->actor, 8);
             break;
         case 3180:
             Actor_GetWorldPosShapeRot(&spA0, actor);
@@ -559,12 +559,12 @@ s32 OnePointCutscene_SetInfo(PlayState* play, s16 camIdx, s16 csId, Actor* actor
             Play_CameraSetAtEye(play, camIdx, &spC0, &spB4);
             csCam->roll = 0;
             csCam->fov = 60.0f;
-            func_8002DF38(play, actor, 1);
+            Player_SetCsAction(play, actor, 1);
             break;
         case 3190:
             Play_CameraChangeSetting(play, camIdx, CAM_SET_FOREST_DEFEAT_POE);
             Camera_ChangeMode(mainCam, CAM_MODE_NORMAL);
-            func_8002DF38(play, actor, 0xC);
+            Player_SetCsAction(play, actor, 0xC);
             break;
         case 3230:
             spC0.x = 120.0f;
@@ -577,7 +577,7 @@ s32 OnePointCutscene_SetInfo(PlayState* play, s16 camIdx, s16 csId, Actor* actor
             Play_CameraSetAtEye(play, camIdx, &spC0, &spB4);
             csCam->roll = 0x1E;
             csCam->fov = 75.0f;
-            func_8002DF38(play, &player->actor, 8);
+            Player_SetCsAction(play, &player->actor, 8);
             Actor_GetWorldPosShapeRot(&spA0, actor);
             Actor_GetFocus(&sp8C, &player->actor);
             spC0.x = sp8C.pos.x;
@@ -587,7 +587,7 @@ s32 OnePointCutscene_SetInfo(PlayState* play, s16 camIdx, s16 csId, Actor* actor
             spD0.pitch = 0x5DC;
             spD0.r = 120.0f;
             OnePointCutscene_AddVecSphToVec3f(&spB4, &spC0, &spD0);
-            Play_CameraSetAtEye(play, MAIN_CAM, &spC0, &spB4);
+            Play_CameraSetAtEye(play, CAM_ID_MAIN, &spC0, &spB4);
 
             i = Quake_Add(csCam, 3);
             Quake_SetSpeed(i, 22000);
@@ -606,7 +606,7 @@ s32 OnePointCutscene_SetInfo(PlayState* play, s16 camIdx, s16 csId, Actor* actor
             Play_CameraSetAtEye(play, camIdx, &spC0, &spB4);
             csCam->roll = 0;
             csCam->fov = 45.0f;
-            func_8002DF38(play, &player->actor, 8);
+            Player_SetCsAction(play, &player->actor, 8);
             break;
         case 3220:
             Actor_GetFocus(&spA0, actor);
@@ -650,7 +650,7 @@ s32 OnePointCutscene_SetInfo(PlayState* play, s16 camIdx, s16 csId, Actor* actor
             break;
         case 3400:
             Play_CameraChangeSetting(play, camIdx, CAM_SET_CS_3);
-            func_8002DF38(play, &player->actor, 8);
+            Player_SetCsAction(play, &player->actor, 8);
             OnePointCutscene_SetCsCamPoints(csCam, D_8012069C | 0x2000, D_80120698, D_801204D4, D_801205B4);
             OnePointCutscene_Vec3sToVec3f(&mainCam->eye, &D_801205B4[D_80120694 - 2].pos);
             OnePointCutscene_Vec3sToVec3f(&mainCam->at, &D_801204D4[D_80120694 - 2].pos);
@@ -672,7 +672,7 @@ s32 OnePointCutscene_SetInfo(PlayState* play, s16 camIdx, s16 csId, Actor* actor
         case 3310:
             Play_CameraChangeSetting(play, camIdx, CAM_SET_FIRE_STAIRCASE);
             Player_SetCsActionWithHaltedActors(play, NULL, 8);
-            Play_CopyCamera(play, camIdx, MAIN_CAM);
+            Play_CopyCamera(play, camIdx, CAM_ID_MAIN);
 
             i = Quake_Add(csCam, 1);
             Quake_SetSpeed(i, 32000);
@@ -716,7 +716,7 @@ s32 OnePointCutscene_SetInfo(PlayState* play, s16 camIdx, s16 csId, Actor* actor
             csInfo->keyFrames = D_8012205C;
             csInfo->keyFrameCnt = 3;
 
-            func_8002DF38(play, &player->actor, 8);
+            Player_SetCsAction(play, &player->actor, 8);
             func_800C0808(play, camIdx, player, CAM_SET_CS_C);
             break;
         case 3350:
@@ -742,7 +742,7 @@ s32 OnePointCutscene_SetInfo(PlayState* play, s16 camIdx, s16 csId, Actor* actor
             csInfo->keyFrames = D_8012219C;
             csInfo->keyFrameCnt = 7;
 
-            func_8002DF38(play, &player->actor, 8);
+            Player_SetCsAction(play, &player->actor, 8);
             func_800C0808(play, camIdx, player, CAM_SET_CS_C);
             break;
         case 3410:
@@ -761,7 +761,7 @@ s32 OnePointCutscene_SetInfo(PlayState* play, s16 camIdx, s16 csId, Actor* actor
             csInfo->keyFrames = D_8012237C;
             csInfo->keyFrameCnt = 2;
 
-            func_8002DF38(play, &player->actor, 8);
+            Player_SetCsAction(play, &player->actor, 8);
             func_800C0808(play, camIdx, player, CAM_SET_CS_C);
 
             i = Quake_Add(csCam, 1);
@@ -807,7 +807,7 @@ s32 OnePointCutscene_SetInfo(PlayState* play, s16 camIdx, s16 csId, Actor* actor
             csInfo->keyFrames = D_8012269C;
             csInfo->keyFrameCnt = 3;
 
-            func_8002DF38(play, &player->actor, 8);
+            Player_SetCsAction(play, &player->actor, 8);
             func_800C0808(play, camIdx, player, CAM_SET_CS_C);
             break;
         case 4120:
@@ -853,7 +853,7 @@ s32 OnePointCutscene_SetInfo(PlayState* play, s16 camIdx, s16 csId, Actor* actor
             csInfo->keyFrames = D_80122A5C;
             csInfo->keyFrameCnt = 8;
 
-            func_8002DF38(play, &player->actor, 8);
+            Player_SetCsAction(play, &player->actor, 8);
             Camera_ChangeMode(mainCam, CAM_MODE_NORMAL);
             func_800C0808(play, camIdx, player, CAM_SET_CS_C);
             break;
@@ -861,7 +861,7 @@ s32 OnePointCutscene_SetInfo(PlayState* play, s16 camIdx, s16 csId, Actor* actor
             csInfo->keyFrames = D_80122B9C;
             csInfo->keyFrameCnt = 3;
 
-            func_8002DF38(play, &player->actor, 8);
+            Player_SetCsAction(play, &player->actor, 8);
             Camera_ChangeMode(mainCam, CAM_MODE_NORMAL);
             func_800C0808(play, camIdx, player, CAM_SET_CS_C);
             break;
@@ -884,7 +884,7 @@ s32 OnePointCutscene_SetInfo(PlayState* play, s16 camIdx, s16 csId, Actor* actor
 
             func_800C0808(play, camIdx, player, CAM_SET_CS_C);
             if (GameInteractor_Should(VB_LINK_SPIN_WITH_GORON_POT, true)) {
-                func_8002DF38(play, &player->actor, 1);
+                Player_SetCsAction(play, &player->actor, 1);
             }
 
             i = Quake_Add(csCam, 3);
@@ -966,7 +966,7 @@ s32 OnePointCutscene_SetInfo(PlayState* play, s16 camIdx, s16 csId, Actor* actor
                 func_800C0808(play, camIdx, player, CAM_SET_TURN_AROUND);
                 csCam->data2 = 0xC;
             } else {
-                Play_CopyCamera(play, camIdx, MAIN_CAM);
+                Play_CopyCamera(play, camIdx, CAM_ID_MAIN);
                 Play_CameraChangeSetting(play, camIdx, CAM_SET_FREE2);
             }
             break;
@@ -1137,7 +1137,7 @@ s32 OnePointCutscene_RemoveCamera(PlayState* play, s16 camIdx) {
         PARENT_CAM(camera)->childCamIdx = camera->childCamIdx;
     }
     nextCamIdx = (play->activeCamera == camIdx) ? camera->parentCamIdx : SUBCAM_NONE;
-    camera->parentCamIdx = MAIN_CAM;
+    camera->parentCamIdx = CAM_ID_MAIN;
     camera->childCamIdx = camera->parentCamIdx;
     camera->timer = -1;
     Play_ClearCamera(camera->play, camera->thisIdx);
@@ -1183,7 +1183,7 @@ s16 OnePointCutscene_Init(PlayState* play, s16 csId, s16 timer, Actor* actor, s1
 
     vChildCamIdx = play->cameraPtrs[parentCamIdx]->childCamIdx;
     vCsStatus = CAM_STAT_ACTIVE;
-    if (vChildCamIdx >= SUBCAM_FIRST) {
+    if (vChildCamIdx >= CAM_ID_SUB_FIRST) {
         OnePointCutscene_SetAsChild(play, vChildCamIdx, csCamIdx);
         vCsStatus = CAM_STAT_WAIT;
     } else {
@@ -1202,7 +1202,7 @@ s16 OnePointCutscene_Init(PlayState* play, s16 csId, s16 timer, Actor* actor, s1
 
     csCam->csId = csId;
 
-    if (parentCamIdx == MAIN_CAM) {
+    if (parentCamIdx == CAM_ID_MAIN) {
         Play_ChangeCameraStatus(play, parentCamIdx, CAM_STAT_UNK3);
     } else {
         Play_ChangeCameraStatus(play, parentCamIdx, CAM_STAT_WAIT);
@@ -1214,7 +1214,7 @@ s16 OnePointCutscene_Init(PlayState* play, s16 csId, s16 timer, Actor* actor, s1
     vCurCamIdx = csCamIdx;
     vNextCamIdx = play->cameraPtrs[csCamIdx]->childCamIdx;
 
-    while (vNextCamIdx >= SUBCAM_FIRST) {
+    while (vNextCamIdx >= CAM_ID_SUB_FIRST) {
         s16 nextCsId = play->cameraPtrs[vNextCamIdx]->csId;
         s16 thisCsId = play->cameraPtrs[csCamIdx]->csId;
 
@@ -1276,7 +1276,7 @@ s32 OnePointCutscene_Attention(PlayState* play, Actor* actor) {
     }
     sUnused = -1;
 
-    parentCam = play->cameraPtrs[MAIN_CAM];
+    parentCam = play->cameraPtrs[CAM_ID_MAIN];
     if (parentCam->mode == CAM_MODE_FOLLOWBOOMERANG) {
         osSyncPrintf(VT_COL(YELLOW, BLACK) "actor attention demo camera: change mode BOOKEEPON -> NORMAL\n" VT_RST);
         Camera_ChangeMode(parentCam, CAM_MODE_NORMAL);
@@ -1306,7 +1306,7 @@ s32 OnePointCutscene_Attention(PlayState* play, Actor* actor) {
     }
     // Actorcat is only undefined if the actor is in a higher category than all other attention cutscenes. In this case,
     // it goes in the first position of the list. Otherwise, it goes in the index found in the loop.
-    vParentCamIdx = (vLastHigherCat == -1) ? MAIN_CAM : parentCam->thisIdx;
+    vParentCamIdx = (vLastHigherCat == -1) ? CAM_ID_MAIN : parentCam->thisIdx;
 
     switch (actor->category) {
         case ACTORCAT_SWITCH:
@@ -1377,7 +1377,7 @@ void OnePointCutscene_DisableAttention() {
 }
 
 s32 OnePointCutscene_CheckForCategory(PlayState* play, s32 category) {
-    Camera* parentCam = play->cameraPtrs[MAIN_CAM];
+    Camera* parentCam = play->cameraPtrs[CAM_ID_MAIN];
 
     while (parentCam->childCamIdx != SUBCAM_FREE) {
         parentCam = play->cameraPtrs[parentCam->childCamIdx];

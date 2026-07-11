@@ -104,7 +104,7 @@ void BgJyaLift_DelayMove(BgJyaLift* this, PlayState* play) {
                   Randomizer_GetSettingValue(RSK_SUNLIGHT_ARROWS)) ||
                 (GET_PLAYER(play)->actor.world.pos.x > -19.0f && GET_PLAYER(play)->actor.world.pos.x < 139.0f &&
                  GET_PLAYER(play)->actor.world.pos.z > -1172.0f && GET_PLAYER(play)->actor.world.pos.z < -1009.0f)) {
-                OnePointCutscene_Init(play, 3430, -99, &this->dyna.actor, MAIN_CAM);
+                OnePointCutscene_Init(play, 3430, -99, &this->dyna.actor, CAM_ID_MAIN);
             }
             BgJyaLift_SetupMove(this);
         }
@@ -129,7 +129,7 @@ void BgJyaLift_Move(BgJyaLift* this, PlayState* play) {
         BgJyaLift_SetFinalPosY(this);
         Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_ELEVATOR_STOP);
     } else {
-        func_8002F974(&this->dyna.actor, NA_SE_EV_BRIDGE_OPEN - SFX_FLAG);
+        Actor_PlaySfx_Flagged(&this->dyna.actor, NA_SE_EV_BRIDGE_OPEN - SFX_FLAG);
     }
 }
 
@@ -147,10 +147,10 @@ void BgJyaLift_Update(Actor* thisx, PlayState* play2) {
     }
     if ((this->dyna.interactFlags & DYNA_INTERACT_PLAYER_ABOVE) &&
         ((this->unk_16B & DYNA_INTERACT_PLAYER_ABOVE) == 0)) {
-        Camera_ChangeSetting(play->cameraPtrs[MAIN_CAM], CAM_SET_DIRECTED_YAW);
+        Camera_ChangeSetting(play->cameraPtrs[CAM_ID_MAIN], CAM_SET_DIRECTED_YAW);
     } else if (((this->dyna.interactFlags) & 4) == 0 && ((this->unk_16B & 4)) &&
-               (play->cameraPtrs[MAIN_CAM]->setting == CAM_SET_DIRECTED_YAW)) {
-        Camera_ChangeSetting(play->cameraPtrs[MAIN_CAM], CAM_SET_DUNGEON0);
+               (play->cameraPtrs[CAM_ID_MAIN]->setting == CAM_SET_DIRECTED_YAW)) {
+        Camera_ChangeSetting(play->cameraPtrs[CAM_ID_MAIN], CAM_SET_DUNGEON0);
     }
     this->unk_16B = this->dyna.interactFlags;
 

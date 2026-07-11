@@ -163,14 +163,14 @@ void BgDodoago_WaitExplosives(BgDodoago* this, PlayState* play) {
             Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
                                    &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             BgDodoago_SetupAction(this, BgDodoago_OpenJaw);
-            OnePointCutscene_Init(play, 3380, 160, &this->dyna.actor, MAIN_CAM);
+            OnePointCutscene_Init(play, 3380, 160, &this->dyna.actor, CAM_ID_MAIN);
         } else if (play->roomCtx.unk_74[this->state] == 0) {
-            OnePointCutscene_Init(play, 3065, 40, &this->dyna.actor, MAIN_CAM);
+            OnePointCutscene_Init(play, 3065, 40, &this->dyna.actor, CAM_ID_MAIN);
             BgDodoago_SetupAction(this, BgDodoago_LightOneEye);
             Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
                                    &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         } else {
-            OnePointCutscene_Init(play, 3065, 20, &this->dyna.actor, MAIN_CAM);
+            OnePointCutscene_Init(play, 3065, 20, &this->dyna.actor, CAM_ID_MAIN);
             Audio_PlaySoundGeneral(NA_SE_SY_ERROR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
                                    &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             sBgDodoagoTimer += 30;
@@ -246,7 +246,7 @@ void BgDodoago_OpenJaw(BgDodoago* this, PlayState* play) {
     BgDodoago_SpawnSparkles(&pos, play);
 
     Math_StepToS(&this->state, 100, 3);
-    func_800AA000(500.0f, 0x78, 0x14, 0xA);
+    Rumble_Request(500.0f, 0x78, 0x14, 0xA);
 
     if (Math_SmoothStepToS(&this->dyna.actor.shape.rot.x, 0x1333, 110 - this->state, 0x3E8, 0x32) == 0) {
         BgDodoago_SetupAction(this, BgDodoago_DoNothing);

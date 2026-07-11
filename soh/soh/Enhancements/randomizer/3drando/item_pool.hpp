@@ -2,7 +2,6 @@
 
 #include <cstddef>
 #include <vector>
-#include <stdint.h>
 #include "../randomizerTypes.h"
 
 class ItemLocation;

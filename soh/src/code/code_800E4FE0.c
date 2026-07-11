@@ -247,11 +247,12 @@ void func_800E5584(AudioCmd* cmd) {
             AudioLoad_SyncLoadSeqParts(cmd->arg1, cmd->arg2);
             return;
         case 0x82:
-            AudioLoad_SyncInitSeqPlayer(cmd->arg0, cmd->arg1, cmd->arg2);
+            // 16-bit seqId packed in opArgs bits 0-15. See func_800F9280().
+            AudioLoad_SyncInitSeqPlayer(cmd->arg0, cmd->opArgs & 0xFFFF, 0);
             func_800E59AC(cmd->arg0, cmd->data);
             return;
         case 0x85:
-            AudioLoad_SyncInitSeqPlayerSkipTicks(cmd->arg0, cmd->arg1, cmd->data);
+            AudioLoad_SyncInitSeqPlayerSkipTicks(cmd->arg0, cmd->opArgs & 0xFFFF, cmd->data);
             return;
         case 0x83:
             if (gAudioContext.seqPlayers[cmd->arg0].enabled) {

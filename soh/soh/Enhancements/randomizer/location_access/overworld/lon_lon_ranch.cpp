@@ -30,18 +30,18 @@ void RegionTable_Init_LonLonRanch() {
     }, {
         //Exits
         ENTRANCE(RR_HYRULE_FIELD,     true),
-        ENTRANCE(RR_LLR_TALONS_HOUSE, logic->CanOpenOverworldDoor(RG_TALONS_HOUSE_KEY)),
-        ENTRANCE(RR_LLR_STABLES,      logic->CanOpenOverworldDoor(RG_STABLES_KEY)),
-        ENTRANCE(RR_LLR_TOWER,        logic->CanOpenOverworldDoor(RG_BACK_TOWER_KEY)),
+        ENTRANCE(RR_LLR_TALONS_HOUSE, logic->HasItem(RG_TALONS_HOUSE_KEY)),
+        ENTRANCE(RR_LLR_STABLES,      logic->HasItem(RG_STABLES_KEY)),
+        ENTRANCE(RR_LLR_TOWER,        logic->HasItem(RG_BACK_TOWER_KEY)),
         ENTRANCE(RR_LLR_GROTTO,       logic->IsChild),
     });
 
     areaTable[RR_LLR_TALONS_HOUSE] = Region("LLR Talons House", SCENE_LON_LON_BUILDINGS, {}, {
         //Locations
         LOCATION(RC_LLR_TALONS_CHICKENS,    logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->IsChild && logic->AtDay && logic->HasItem(RG_ZELDAS_LETTER) && logic->HasItem(RG_POWER_BRACELET)),
-        LOCATION(RC_LLR_TALONS_HOUSE_POT_1, logic->HasItem(RG_POWER_BRACELET) || logic->CanUseSword()), // TODO: CanBreakPots() restricted
-        LOCATION(RC_LLR_TALONS_HOUSE_POT_2, logic->HasItem(RG_POWER_BRACELET) || logic->CanUseSword()), // TODO: CanBreakPots() restricted
-        LOCATION(RC_LLR_TALONS_HOUSE_POT_3, logic->HasItem(RG_POWER_BRACELET) || logic->CanUseSword()), // TODO: CanBreakPots() restricted
+        LOCATION(RC_LLR_TALONS_HOUSE_POT_1, logic->CanBreakPots()),
+        LOCATION(RC_LLR_TALONS_HOUSE_POT_2, logic->CanBreakPots()),
+        LOCATION(RC_LLR_TALONS_HOUSE_POT_3, logic->CanBreakPots()),
     }, {
         //Exits
         ENTRANCE(RR_LON_LON_RANCH, true),
