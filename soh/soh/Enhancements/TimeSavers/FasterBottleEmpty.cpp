@@ -1,5 +1,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
+#include "z64player.h"
+#include "soh/cvar_prefixes.h"
 
 void RegisterFasterEmptyBottle() {
     COND_VB_SHOULD(VB_EMPTYING_BOTTLE, CVarGetInteger(CVAR_ENHANCEMENT("FasterBottleEmpty"), 0), {

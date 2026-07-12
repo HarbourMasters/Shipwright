@@ -2,8 +2,9 @@
 #include "soh/ShipInit.hpp"
 
 extern "C" {
-extern PlayState* gPlayState;
+#include "z64.h"
 #include "macros.h"
+extern PlayState* gPlayState;
 }
 
 #define CVAR_EASY_QPA_NAME CVAR_CHEAT("EasyQPA")

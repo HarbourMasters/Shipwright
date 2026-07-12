@@ -1,5 +1,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
+#include "soh/cvar_prefixes.h"
+#include "z64actor.h"
 
 static void RegisterDropsDontDie() {
     COND_VB_SHOULD(VB_ITEM00_TIMER_TICK, CVarGetInteger(CVAR_CHEAT("DropsDontDie"), 0), {

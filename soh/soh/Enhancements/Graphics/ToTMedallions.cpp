@@ -3,6 +3,7 @@
 #include "soh/ShipInit.hpp"
 
 extern "C" {
+#include "z64.h"
 #include "align_asset_macro.h"
 #include "macros.h"
 #include "variables.h"

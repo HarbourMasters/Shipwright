@@ -2,7 +2,6 @@
 #include "soh/ShipInit.hpp"
 
 extern "C" {
-#include "macros.h"
 #include "functions.h"
 #include "variables.h"
 #include "src/overlays/actors/ovl_En_Go2/z_en_go2.h"
@@ -43,7 +42,7 @@ void RegisterAlwaysOnFixes() {
     // overwrites it and crashes. Re-set segment 12 before drawing.
     COND_VB_SHOULD(VB_ITEMSHIELD_DRAW, true, {
         GraphicsContext* __gfxCtx = gPlayState->state.gfxCtx;
-        gSPSegment(POLY_OPA_DISP++, 0x0C, (uintptr_t)SEGMENTED_TO_VIRTUAL(gCullBackDList));
+        gSPSegment(POLY_OPA_DISP++, 0x0C, (uintptr_t)gCullBackDList);
     });
 
     // Hookshot not spawning softlocks player (child use, memory full). Clear item on no

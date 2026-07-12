@@ -8,6 +8,7 @@
 #include "soh/ResourceManagerHelpers.h"
 
 extern "C" {
+#include "z64.h"
 #include "macros.h"
 #include "functions.h"
 #include "variables.h"

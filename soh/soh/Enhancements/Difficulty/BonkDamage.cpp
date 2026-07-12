@@ -3,6 +3,7 @@
 #include "soh/Enhancements/enhancementTypes.h"
 
 extern "C" {
+#include "z64.h"
 #include "functions.h"
 #include "macros.h"
 extern PlayState* gPlayState;
