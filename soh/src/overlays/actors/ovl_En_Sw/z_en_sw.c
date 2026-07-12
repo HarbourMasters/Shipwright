@@ -651,7 +651,7 @@ void func_80B0DB00(EnSw* this, PlayState* play) {
     this->actor.shape.rot.z += 0x1000;
     Actor_UpdateBgCheckInfo(play, &this->actor, 20.0f, 20.0f, 0.0f, 5);
 
-    if ((this->actor.bgCheckFlags & 1) && (!(0.0f <= this->actor.velocity.y))) {
+    if ((this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) && (!(0.0f <= this->actor.velocity.y))) {
         if (this->actor.floorHeight <= BGCHECK_Y_MIN || this->actor.floorHeight >= 32000.0f) {
             Actor_Kill(&this->actor);
             return;

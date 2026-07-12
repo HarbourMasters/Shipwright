@@ -1491,7 +1491,7 @@ void BossVa_BodyPhase4(BossVa* this, PlayState* play) {
     this->unk_1AC += 0xC31;
     this->unk_1A0 = (Math_CosS(this->unk_1AC) * 0.1f) + 1.0f;
     this->unk_1A4 = (Math_SinS(this->unk_1AC) * 0.05f) + 1.0f;
-    if (this->actor.bgCheckFlags & 8) {
+    if (this->actor.bgCheckFlags & BGCHECKFLAG_WALL) {
         this->actor.bgCheckFlags &= ~8;
         this->actor.world.rot.y = (s16)Rand_CenteredFloat(30 * (0x10000 / 360)) + this->actor.wallYaw;
     }

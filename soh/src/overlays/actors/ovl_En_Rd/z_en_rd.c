@@ -618,7 +618,7 @@ void EnRd_Crouch(EnRd* this, PlayState* play) {
 void EnRd_SetupDamaged(EnRd* this) {
     Animation_MorphToPlayOnce(&this->skelAnime, &gGibdoRedeadDamageAnim, -6.0f);
 
-    if (this->actor.bgCheckFlags & 1) {
+    if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
         this->actor.speedXZ = -2.0f;
     }
 

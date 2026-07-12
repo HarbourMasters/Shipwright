@@ -745,7 +745,7 @@ void EnMb_SpearPatrolEndCharge(EnMb* this, PlayState* play) {
         Actor_SetPlayerKnockbackLargeNoDamage(play, &this->actor, 4.0f, this->actor.world.rot.y, 4.0f);
     }
 
-    if (this->actor.bgCheckFlags & 1) {
+    if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
         Math_SmoothStepToF(&this->actor.speedXZ, 0.0f, 1.0f, 1.5f, 0.0f);
 
         if (this->actor.speedXZ > 1.0f) {

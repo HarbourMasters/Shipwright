@@ -1694,7 +1694,7 @@ void func_800ED848(u8 inputEnabled) {
     sOcarinaInpEnabled = inputEnabled;
 }
 
-void Audio_OcaSetInstrument(u8 arg0) {
+void AudioOcarina_SetInstrument(u8 arg0) {
     if (D_80130F10 == arg0) {
         return;
     }
@@ -2191,14 +2191,14 @@ void func_800EE824(void) {
                     D_80131C80++;
                 } else {
                     D_80131C80 = 3;
-                    Audio_OcaSetInstrument(0);
+                    AudioOcarina_SetInstrument(0);
                 }
                 D_80131C88 = 1200;
             }
             break;
         case 1:
             Audio_SetSoundBanksMute(0);
-            Audio_OcaSetInstrument(D_80131C84);
+            AudioOcarina_SetInstrument(D_80131C84);
             Audio_OcaSetSongPlayback(OCARINA_SONG_SCARECROW_LONG + 1, 1);
             D_80131C84++;
             D_80131C80++;
@@ -4223,12 +4223,12 @@ void Audio_StepFreqLerp(FreqLerp* lerp) {
     }
 }
 
-void func_800F47BC(void) {
+void Audio_SetBgmVolumeOffDuringFanfare(void) {
     Audio_SetVolScale(SEQ_PLAYER_BGM_MAIN, 1, 0, 10);
     Audio_SetVolScale(SEQ_PLAYER_BGM_SUB, 1, 0, 10);
 }
 
-void func_800F47FC(void) {
+void Audio_SetBgmVolumeOnDuringFanfare(void) {
     Audio_SetVolScale(SEQ_PLAYER_BGM_MAIN, 1, 0x7F, 3);
     Audio_SetVolScale(SEQ_PLAYER_BGM_SUB, 1, 0x7F, 3);
 }
@@ -5122,7 +5122,7 @@ void func_800F6C34(void) {
     sAudioExtraFilter = 0;
     sAudioBaseFilter2 = 0;
     sAudioExtraFilter2 = 0;
-    Audio_OcaSetInstrument(0);
+    AudioOcarina_SetInstrument(0);
     sRiverFreqScaleLerp.remainingFrames = 0;
     sWaterfallFreqScaleLerp.remainingFrames = 0;
     sRiverFreqScaleLerp.value = 1.0f;

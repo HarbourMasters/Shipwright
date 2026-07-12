@@ -613,7 +613,7 @@ void EnPoField_SoulIdle(EnPoField* this, PlayState* play) {
     if (this->actionTimer != 0) {
         this->actionTimer--;
     }
-    if (this->actor.bgCheckFlags & 1) {
+    if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
         EffectSsHahen_SpawnBurst(play, &this->actor.world.pos, 6.0f, 0, 1, 1, 15, OBJECT_PO_FIELD, 10,
                                  gPoeFieldLanternDL);
         func_80AD42B0(this);

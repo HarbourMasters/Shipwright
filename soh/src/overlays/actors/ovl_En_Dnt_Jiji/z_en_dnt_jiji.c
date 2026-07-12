@@ -102,7 +102,7 @@ void EnDntJiji_Destroy(Actor* thisx, PlayState* play) {
 }
 
 void EnDntJiji_SetFlower(EnDntJiji* this, PlayState* play) {
-    if (this->actor.bgCheckFlags & 1) {
+    if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
         this->flowerPos = this->actor.world.pos;
         this->actionFunc = EnDntJiji_SetupWait;
     }
@@ -184,7 +184,7 @@ void EnDntJiji_Walk(EnDntJiji* this, PlayState* play) {
         this->sfxTimer = 5;
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_NUTS_WALK);
     }
-    if ((this->actor.bgCheckFlags & 8) && (this->actor.bgCheckFlags & 1)) {
+    if ((this->actor.bgCheckFlags & BGCHECKFLAG_WALL) && (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND)) {
         this->actor.velocity.y = 9.0f;
         this->actor.speedXZ = 3.0f;
     }
@@ -351,7 +351,7 @@ void EnDntJiji_Return(EnDntJiji* this, PlayState* play) {
     dz = this->flowerPos.z - this->actor.world.pos.z;
     Math_SmoothStepToS(&this->actor.shape.rot.y, Math_FAtan2F(dx, dz) * (0x8000 / M_PI), 1, 0xBB8, 0);
     this->actor.world.rot.y = this->actor.shape.rot.y;
-    if ((this->actor.bgCheckFlags & 8) && (this->actor.bgCheckFlags & 1)) {
+    if ((this->actor.bgCheckFlags & BGCHECKFLAG_WALL) && (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND)) {
         this->actor.velocity.y = 9.0f;
         this->actor.speedXZ = 3.0f;
     }

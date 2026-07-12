@@ -336,7 +336,7 @@ void DemoKankyo_SetupType(DemoKankyo* this, PlayState* play) {
                             play->csCtx.segment = gAdultWarpInCS;
                         }
                     }
-                    if (func_800C0CB8(play) != 0) {
+                    if (Play_CamIsNotFixed(play) != 0) {
                         gSaveContext.cutsceneTrigger = 1;
                     }
                     DemoKankyo_SetupAction(this, DemoKankyo_DoNothing);

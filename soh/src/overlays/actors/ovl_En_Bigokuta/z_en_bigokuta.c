@@ -647,7 +647,7 @@ void func_809BE26C(EnBigokuta* this, PlayState* play) {
         }
         if (this->unk_198 == 0 && Math_StepToF(&this->actor.scale.y, 0.0f, 0.001f)) {
             Flags_SetClear(play, this->actor.room);
-            Camera_ChangeSetting(play->cameraPtrs[CAM_ID_MAIN], CAM_SET_DUNGEON0);
+            Camera_RequestSetting(play->cameraPtrs[CAM_ID_MAIN], CAM_SET_DUNGEON0);
             func_8005ACFC(play->cameraPtrs[CAM_ID_MAIN], 4);
             SoundSource_PlaySfxAtFixedWorldPos(play, &this->actor.world.pos, 50, NA_SE_EN_OCTAROCK_BUBLE);
             Item_DropCollectibleRandom(play, &this->actor, &this->actor.world.pos, 0xB0);
@@ -785,7 +785,7 @@ void EnBigokuta_Update(Actor* thisx, PlayState* play2) {
     this->actionFunc(this, play);
     func_809BD2E4(this);
     func_809BE568(this);
-    Camera_ChangeSetting(play->cameraPtrs[CAM_ID_MAIN], CAM_SET_BIG_OCTO);
+    Camera_RequestSetting(play->cameraPtrs[CAM_ID_MAIN], CAM_SET_BIG_OCTO);
     func_8005AD1C(play->cameraPtrs[CAM_ID_MAIN], 4);
 
     if (this->cylinder[0].base.atFlags & AT_ON) {

@@ -877,7 +877,7 @@ void EnFr_OcarinaMistake(EnFr* this, PlayState* play) {
     Message_CloseTextbox(play);
     this->reward = GI_NONE;
     Sfx_PlaySfxCentered(NA_SE_SY_OCARINA_ERROR);
-    Audio_OcaSetInstrument(0);
+    AudioOcarina_SetInstrument(0);
     sEnFrPointers.flags = 12;
     EnFr_DeactivateButterfly();
     this->actionFunc = EnFr_Deactivate;
@@ -947,7 +947,7 @@ void EnFr_SetupReward(EnFr* this, PlayState* play, u8 unkCondition) {
         Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
     }
 
-    Audio_OcaSetInstrument(0);
+    AudioOcarina_SetInstrument(0);
     play->msgCtx.msgMode = MSGMODE_PAUSED;
     this->actionFunc = EnFr_PrintTextBox;
 }

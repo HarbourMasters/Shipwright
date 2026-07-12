@@ -401,7 +401,7 @@ void DrawDynapoly(std::vector<Gfx>& dl, CollisionHeader* col, int32_t bgId) {
         } else if (SurfaceType_GetFloorType(&gPlayState->colCtx, poly, bgId) != 0 ||
                    SurfaceType_IsWallDamage(&gPlayState->colCtx, poly, bgId)) {
             color = CVarGetColor(CVAR_DEVELOPER_TOOLS("ColViewer.ColorSpecialSurface.Value"), { 192, 255, 192, 255 });
-        } else if (SurfaceType_GetSlope(&gPlayState->colCtx, poly, bgId) == 0x01) {
+        } else if (SurfaceType_GetFloorEffect(&gPlayState->colCtx, poly, bgId) == 0x01) {
             color = CVarGetColor(CVAR_DEVELOPER_TOOLS("ColViewer.ColorSlope.Value"), { 255, 255, 128, 255 });
         } else {
             color = CVarGetColor(CVAR_DEVELOPER_TOOLS("ColViewer.ColorNormal.Value"), { 255, 255, 255, 255 });

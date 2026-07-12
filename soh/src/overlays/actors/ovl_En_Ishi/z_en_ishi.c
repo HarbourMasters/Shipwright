@@ -149,11 +149,11 @@ void EnIshi_SpawnFragmentsSmall(EnIshi* this, PlayState* play) {
         pos.y = this->actor.world.pos.y + (Rand_ZeroOne() * 5.0f) + 5.0f;
         pos.z = this->actor.world.pos.z + (Rand_ZeroOne() - 0.5f) * 8.0f;
         Math_Vec3f_Copy(&velocity, &this->actor.velocity);
-        if (this->actor.bgCheckFlags & 1) {
+        if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
             velocity.x *= 0.8f;
             velocity.y *= -0.8f;
             velocity.z *= 0.8f;
-        } else if (this->actor.bgCheckFlags & 8) {
+        } else if (this->actor.bgCheckFlags & BGCHECKFLAG_WALL) {
             velocity.x *= -0.8f;
             velocity.y *= 0.8f;
             velocity.z *= -0.8f;
@@ -221,11 +221,11 @@ void EnIshi_SpawnDustSmall(EnIshi* this, PlayState* play) {
     Vec3f pos;
 
     Math_Vec3f_Copy(&pos, &this->actor.world.pos);
-    if (this->actor.bgCheckFlags & 1) {
+    if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
         pos.x += 2.0f * this->actor.velocity.x;
         pos.y -= 2.0f * this->actor.velocity.y;
         pos.z += 2.0f * this->actor.velocity.z;
-    } else if (this->actor.bgCheckFlags & 8) {
+    } else if (this->actor.bgCheckFlags & BGCHECKFLAG_WALL) {
         pos.x -= 2.0f * this->actor.velocity.x;
         pos.y += 2.0f * this->actor.velocity.y;
         pos.z -= 2.0f * this->actor.velocity.z;
@@ -237,11 +237,11 @@ void EnIshi_SpawnDustLarge(EnIshi* this, PlayState* play) {
     Vec3f pos;
 
     Math_Vec3f_Copy(&pos, &this->actor.world.pos);
-    if (this->actor.bgCheckFlags & 1) {
+    if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
         pos.x += 2.0f * this->actor.velocity.x;
         pos.y -= 2.0f * this->actor.velocity.y;
         pos.z += 2.0f * this->actor.velocity.z;
-    } else if (this->actor.bgCheckFlags & 8) {
+    } else if (this->actor.bgCheckFlags & BGCHECKFLAG_WALL) {
         pos.x -= 2.0f * this->actor.velocity.x;
         pos.y += 2.0f * this->actor.velocity.y;
         pos.z -= 2.0f * this->actor.velocity.z;

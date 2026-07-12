@@ -724,7 +724,7 @@ void EnPoh_Death(EnPoh* this, PlayState* play) {
     if (this->unk_198 != 0) {
         this->unk_198--;
     }
-    if (this->actor.bgCheckFlags & 1) {
+    if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
         objId = (this->infoIdx == EN_POH_INFO_COMPOSER) ? OBJECT_PO_COMPOSER : OBJECT_POH;
         EffectSsHahen_SpawnBurst(play, &this->actor.world.pos, 6.0f, 0, 1, 1, 15, objId, 10,
                                  this->info->lanternDisplayList);

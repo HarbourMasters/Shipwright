@@ -354,19 +354,19 @@ void BgBdanObjects_ElevatorOscillate(BgBdanObjects* this, PlayState* play) {
     if (this->switchFlag == 0) {
         if (DynaPolyActor_IsPlayerOnTop(&this->dyna)) {
             this->cameraSetting = play->cameraPtrs[CAM_ID_MAIN]->setting;
-            Camera_ChangeSetting(play->cameraPtrs[CAM_ID_MAIN], CAM_SET_NORMAL2);
+            Camera_RequestSetting(play->cameraPtrs[CAM_ID_MAIN], CAM_SET_NORMAL2);
             func_8005AD1C(play->cameraPtrs[CAM_ID_MAIN], 4);
             this->switchFlag = 10;
         }
     } else {
-        Camera_ChangeSetting(play->cameraPtrs[CAM_ID_MAIN], CAM_SET_NORMAL2);
+        Camera_RequestSetting(play->cameraPtrs[CAM_ID_MAIN], CAM_SET_NORMAL2);
         if (!DynaPolyActor_IsPlayerOnTop(&this->dyna)) {
             if (this->switchFlag != 0) {
                 this->switchFlag--;
             }
         }
         if (this->switchFlag == 0) {
-            Camera_ChangeSetting(play->cameraPtrs[CAM_ID_MAIN], this->cameraSetting);
+            Camera_RequestSetting(play->cameraPtrs[CAM_ID_MAIN], this->cameraSetting);
             func_8005ACFC(play->cameraPtrs[CAM_ID_MAIN], 4);
         }
     }

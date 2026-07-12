@@ -453,7 +453,7 @@ void BossSst_HeadIntro(BossSst* this, PlayState* play) {
         }
 
         Math_Vec3f_Copy(&sCameraAt, &player->actor.world.pos);
-        if (player->actor.bgCheckFlags & 2) {
+        if (player->actor.bgCheckFlags & BGCHECKFLAG_GROUND_TOUCH) {
             if (!this->ready) {
                 sFloor->dyna.actor.params = BONGOFLOOR_HIT;
                 this->ready = true;
@@ -1652,7 +1652,7 @@ void BossSst_HandPunch(BossSst* this, PlayState* play) {
 
     this->actor.world.pos.x += this->actor.speedXZ * Math_SinS(this->actor.shape.rot.y);
     this->actor.world.pos.z += this->actor.speedXZ * Math_CosS(this->actor.shape.rot.y);
-    if (this->actor.bgCheckFlags & 8) {
+    if (this->actor.bgCheckFlags & BGCHECKFLAG_WALL) {
         BossSst_HandSetupRetreat(this);
     } else if (this->colliderJntSph.base.atFlags & AT_HIT) {
         Player_PlaySfx(&GET_PLAYER(play)->actor, NA_SE_PL_BODY_HIT);

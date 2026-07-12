@@ -526,7 +526,7 @@ void Play_Init(GameState* thisx) {
     play->transitionTrigger = TRANS_TRIGGER_END;
     play->unk_11E16 = 0xFF;
     play->bgCoverAlpha = 0;
-    play->unk_11DE9 = false;
+    play->haltAllActors = false;
 
     if (gSaveContext.gameMode != GAMEMODE_TITLE_SCREEN) {
         if (gSaveContext.nextTransitionType == TRANS_NEXT_TYPE_DEFAULT) {
@@ -793,7 +793,7 @@ void Play_Update(PlayState* play) {
                 case TRANS_MODE_SETUP:
                     if (play->transitionTrigger != TRANS_TRIGGER_END) {
                         s16 sceneLayer = 0;
-                        Interface_ChangeAlpha(1);
+                        Interface_ChangeHudVisibilityMode(1);
 
                         if (gSaveContext.cutsceneIndex >= 0xFFF0) {
                             sceneLayer = SCENE_LAYER_CUTSCENE_FIRST + (gSaveContext.cutsceneIndex & 0xF);
@@ -1191,7 +1191,7 @@ void Play_Update(PlayState* play) {
 
                     PLAY_LOG(3637);
 
-                    if (!play->unk_11DE9) {
+                    if (!play->haltAllActors) {
                         Actor_UpdateAll(play, &play->actorCtx);
                     }
 
@@ -2017,11 +2017,11 @@ s32 func_800C0808(PlayState* play, s16 camId, Player* player, s16 setting) {
 
     camera = play->cameraPtrs[camIdx];
     Camera_InitPlayerSettings(camera, player);
-    return Camera_ChangeSetting(camera, setting);
+    return Camera_RequestSetting(camera, setting);
 }
 
 s32 Play_CameraChangeSetting(PlayState* play, s16 camId, s16 setting) {
-    return Camera_ChangeSetting(Play_GetCamera(play, camId), setting);
+    return Camera_RequestSetting(Play_GetCamera(play, camId), setting);
 }
 
 void func_800C08AC(PlayState* play, s16 camId, s16 arg2) {
@@ -2141,7 +2141,7 @@ void Play_TriggerRespawn(PlayState* play) {
     Play_LoadToLastEntrance(play);
 }
 
-s32 func_800C0CB8(PlayState* play) {
+s32 Play_CamIsNotFixed(PlayState* play) {
     return (play->roomCtx.curRoom.meshHeader->base.type != 1) && (YREG(15) != 0x20) && (YREG(15) != 0x30) &&
            (YREG(15) != 0x40) && (play->sceneNum != SCENE_CASTLE_COURTYARD_GUARDS_DAY);
 }

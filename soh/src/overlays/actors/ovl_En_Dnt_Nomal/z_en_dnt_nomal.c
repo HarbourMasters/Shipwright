@@ -194,7 +194,7 @@ void EnDntNomal_WaitForObject(EnDntNomal* this, PlayState* play) {
 }
 
 void EnDntNomal_SetFlower(EnDntNomal* this, PlayState* play) {
-    if (this->actor.bgCheckFlags & 1) {
+    if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
         this->flowerPos = this->actor.world.pos;
         if (this->type == ENDNTNOMAL_TARGET) {
             this->actionFunc = EnDntNomal_SetupTargetWait;
@@ -551,7 +551,7 @@ void EnDntNomal_StageCelebrate(EnDntNomal* this, PlayState* play) {
     } else if ((this->timer5 & 3) == 0) {
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_NUTS_WALK);
     }
-    if ((this->actor.bgCheckFlags & 8) && (this->actor.bgCheckFlags & 1)) {
+    if ((this->actor.bgCheckFlags & BGCHECKFLAG_WALL) && (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND)) {
         this->actor.velocity.y = 7.5f;
     }
 }

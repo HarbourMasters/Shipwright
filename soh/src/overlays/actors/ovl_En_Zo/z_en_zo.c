@@ -712,7 +712,7 @@ void EnZo_Dive(EnZo* this, PlayState* play) {
         return;
     }
 
-    if (this->actor.yDistToWater > 80.0f || this->actor.bgCheckFlags & 1) {
+    if (this->actor.yDistToWater > 80.0f || this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
         Math_ApproachF(&this->actor.velocity.y, -1.0f, 0.4f, 0.6f);
         Math_ApproachF(&this->alpha, 0.0f, 0.3f, 10.0f);
     }

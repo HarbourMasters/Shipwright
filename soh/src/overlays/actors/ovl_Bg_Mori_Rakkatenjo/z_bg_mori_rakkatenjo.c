@@ -209,11 +209,11 @@ void BgMoriRakkatenjo_Update(Actor* thisx, PlayState* play) {
             osSyncPrintf("camera changed (mori rakka tenjyo) ... \n");
             sCamSetting = play->cameraPtrs[CAM_ID_MAIN]->setting;
             Camera_SetCameraData(play->cameraPtrs[CAM_ID_MAIN], 1, &this->dyna.actor, NULL, 0, 0, 0);
-            Camera_ChangeSetting(play->cameraPtrs[CAM_ID_MAIN], CAM_SET_FOREST_BIRDS_EYE);
+            Camera_RequestSetting(play->cameraPtrs[CAM_ID_MAIN], CAM_SET_FOREST_BIRDS_EYE);
         }
     } else if (sCamSetting != CAM_SET_NONE) {
         osSyncPrintf("camera changed (previous) ... \n");
-        Camera_ChangeSetting(play->cameraPtrs[CAM_ID_MAIN], CAM_SET_DUNGEON1);
+        Camera_RequestSetting(play->cameraPtrs[CAM_ID_MAIN], CAM_SET_DUNGEON1);
         sCamSetting = 0;
     }
 }

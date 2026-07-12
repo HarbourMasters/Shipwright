@@ -379,7 +379,7 @@ void func_80AB6100(EnNiw* this, PlayState* play, s32 arg2) {
     if (this->timer4 == 0) {
         this->timer4 = 3;
 
-        if (this->actor.bgCheckFlags & 1) {
+        if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
             this->actor.velocity.y = 3.5f;
         }
     }
@@ -394,7 +394,7 @@ void func_80AB6100(EnNiw* this, PlayState* play, s32 arg2) {
         factor = -D_80AB860C[arg2];
     }
     if (arg2 == 1) {
-        if (this->timer6 == 0 || this->actor.bgCheckFlags & 8) {
+        if (this->timer6 == 0 || this->actor.bgCheckFlags & BGCHECKFLAG_WALL) {
             this->timer6 = 150;
             if (this->timer8 == 0) {
                 this->timer8 = 70;
@@ -552,7 +552,7 @@ void func_80AB6570(EnNiw* this, PlayState* play) {
             this->unk_2B8.z = this->unk_2AC.z + posZ;
         } else {
             this->timer4 = 4;
-            if (this->actor.bgCheckFlags & 1) {
+            if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
                 this->actor.speedXZ = 0.0f;
                 this->actor.velocity.y = 3.5f;
             }
@@ -650,7 +650,7 @@ void func_80AB6BF8(EnNiw* this, PlayState* play) {
 
 void func_80AB6D08(EnNiw* this, PlayState* play) {
     if (this->path == 0) {
-        if (!(this->actor.bgCheckFlags & 1)) {
+        if (!(this->actor.bgCheckFlags & BGCHECKFLAG_GROUND)) {
             return;
         }
         if (this->actor.params == 0xE) {
@@ -671,7 +671,7 @@ void func_80AB6D08(EnNiw* this, PlayState* play) {
         this->actor.speedXZ = 0.0f;
         this->actor.velocity.y = 4.0f;
     } else {
-        if (this->actor.bgCheckFlags & 1) {
+        if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
             this->sfxTimer1 = 0;
             this->actor.velocity.y = 4.0f;
             this->unk_2A6 = 1;
@@ -730,21 +730,21 @@ void func_80AB6F04(EnNiw* this, PlayState* play) {
             pos.y += this->actor.yDistToWater;
             EffectSsGRipple_Spawn(play, &pos, 100, 500, 30);
         }
-        if (this->actor.bgCheckFlags & 8) {
+        if (this->actor.bgCheckFlags & BGCHECKFLAG_WALL) {
             this->actor.velocity.y = 10.0f;
             this->actor.speedXZ = 1.0f;
         }
     } else {
         this->actor.gravity = -2.0f;
 
-        if (this->actor.bgCheckFlags & 8) {
+        if (this->actor.bgCheckFlags & BGCHECKFLAG_WALL) {
             this->actor.velocity.y = 10.0f;
             this->actor.speedXZ = 1.0f;
             this->actor.gravity = 0.0f;
         } else {
             this->actor.speedXZ = 4.0f;
         }
-        if (this->actor.bgCheckFlags & 1) {
+        if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
             this->actor.gravity = -2.0f;
             this->timer6 = 100;
             this->timer4 = 0;
@@ -856,7 +856,7 @@ void func_80AB7328(EnNiw* this, PlayState* play) {
 }
 
 void func_80AB7420(EnNiw* this, PlayState* play) {
-    if (this->actor.bgCheckFlags & 1) {
+    if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
         this->unk_2A4 = (s16)Rand_ZeroFloat(3.99f) + 5;
         this->actionFunc = EnNiw_ResetAction;
     }

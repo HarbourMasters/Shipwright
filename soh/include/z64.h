@@ -1461,7 +1461,7 @@ typedef struct PlayState {
     /* 0x11DE0 */ Mtx* billboardMtx;
     /* 0x11DE4 */ u32 gameplayFrames;
     /* 0x11DE8 */ u8 linkAgeOnLoad;
-    /* 0x11DE9 */ u8 unk_11DE9;
+    /* 0x11DE9 */ u8 haltAllActors;
     /* 0x11DEA */ u8 curSpawn;
     /* 0x11DEB */ u8 numSetupActors;
     /* 0x11DEC */ u8 numRooms;

@@ -416,7 +416,7 @@ void EnXc_SetWalkingSFX(EnXc* this, PlayState* play) {
     s32 pad2;
 
     if (Animation_OnFrame(&this->skelAnime, 11.0f) || Animation_OnFrame(&this->skelAnime, 23.0f)) {
-        if (this->actor.bgCheckFlags & 1) {
+        if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
             sfxId = SFX_FLAG;
             sfxId += SurfaceType_GetSfx(&play->colCtx, this->actor.floorPoly, this->actor.floorBgId);
             Sfx_PlaySfxAtPos(&this->actor.projectedPos, sfxId);
@@ -430,7 +430,7 @@ void EnXc_SetNutThrowSFX(EnXc* this, PlayState* play) {
     s32 pad2;
 
     if (Animation_OnFrame(&this->skelAnime, 7.0f)) {
-        if (this->actor.bgCheckFlags & 1) {
+        if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
             sfxId = SFX_FLAG;
             sfxId += SurfaceType_GetSfx(&play->colCtx, this->actor.floorPoly, this->actor.floorBgId);
             Sfx_PlaySfxAtPos(&this->actor.projectedPos, sfxId);

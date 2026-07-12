@@ -594,7 +594,7 @@ void EnWallmas_Update(Actor* thisx, PlayState* play) {
         Collider_UpdateCylinder(&this->actor, &this->collider);
         CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider.base);
 
-        if ((this->actionFunc != EnWallmas_TakeDamage) && (this->actor.bgCheckFlags & 1) != 0 &&
+        if ((this->actionFunc != EnWallmas_TakeDamage) && (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) != 0 &&
             (this->actor.freezeTimer == 0)) {
             CollisionCheck_SetAC(play, &play->colChkCtx, &this->collider.base);
         }

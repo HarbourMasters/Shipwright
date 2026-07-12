@@ -141,7 +141,7 @@ void func_80A8F320(EnKakasi* this, PlayState* play, s16 arg) {
 
     if (this->unk_19A != 0) {
         this->actor.gravity = -1.0f;
-        if (this->unk_19A == 8 && (this->actor.bgCheckFlags & 1)) {
+        if (this->unk_19A == 8 && (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND)) {
             this->actor.velocity.y = 3.0f;
             Audio_PlayActorSound2(&this->actor, NA_SE_IT_KAKASHI_JUMP);
         }

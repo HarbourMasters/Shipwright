@@ -587,20 +587,20 @@ typedef enum PlayerStickDirection {
     /*  3 */ PLAYER_STICK_DIR_RIGHT
 } PlayerStickDirection;
 
-typedef enum {
+typedef enum PlayerKnockbackType {
     /* 0 */ PLAYER_KNOCKBACK_NONE, // No knockback
     /* 1 */ PLAYER_KNOCKBACK_SMALL, // A small hop, remains standing up
     /* 2 */ PLAYER_KNOCKBACK_LARGE, // Sent flying in the air and lands laying down on the floor
-    /* 3 */ PLAYER_KNOCKBACK_LARGE_SHOCK // Same as`PLAYER_KNOCKBACK_LARGE` with a shock effect
+    /* 3 */ PLAYER_KNOCKBACK_LARGE_ELECTRIFIED // Same as`PLAYER_KNOCKBACK_LARGE` with a shock effect
 } PlayerKnockbackType;
 
-typedef enum {
+typedef enum PlayerHitResponseType {
     /* 0 */ PLAYER_HIT_RESPONSE_NONE,
     /* 1 */ PLAYER_HIT_RESPONSE_KNOCKBACK_LARGE,
     /* 2 */ PLAYER_HIT_RESPONSE_KNOCKBACK_SMALL,
-    /* 3 */ PLAYER_HIT_RESPONSE_ICE_TRAP,
-    /* 4 */ PLAYER_HIT_RESPONSE_ELECTRIC_SHOCK
-} PlayerDamageResponseType;
+    /* 3 */ PLAYER_HIT_RESPONSE_FROZEN,
+    /* 4 */ PLAYER_HIT_RESPONSE_ELECTRIFIED
+} PlayerHitResponseType;
 
 typedef struct PlayerAgeProperties {
     /* 0x00 */ f32 ceilingCheckHeight;

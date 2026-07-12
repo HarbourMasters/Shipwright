@@ -962,7 +962,7 @@ s32 OnePointCutscene_SetInfo(PlayState* play, s16 camIdx, s16 csId, Actor* actor
         } break;
         case 9806:
             csCam->timer = -99;
-            if (func_800C0CB8(play)) {
+            if (Play_CamIsNotFixed(play)) {
                 func_800C0808(play, camIdx, player, CAM_SET_TURN_AROUND);
                 csCam->data2 = 0xC;
             } else {
@@ -971,7 +971,7 @@ s32 OnePointCutscene_SetInfo(PlayState* play, s16 camIdx, s16 csId, Actor* actor
             }
             break;
         case 9908:
-            if (func_800C0CB8(play)) {
+            if (Play_CamIsNotFixed(play)) {
                 D_801231B4[0].eyeTargetInit.z = D_801231B4[1].eyeTargetInit.z = !LINK_IS_ADULT ? 100.0f : 120.0f;
 
                 if (player->stateFlags1 & PLAYER_STATE1_IN_WATER) {
@@ -1187,7 +1187,7 @@ s16 OnePointCutscene_Init(PlayState* play, s16 csId, s16 timer, Actor* actor, s1
         OnePointCutscene_SetAsChild(play, vChildCamIdx, csCamIdx);
         vCsStatus = CAM_STAT_WAIT;
     } else {
-        Interface_ChangeAlpha(2);
+        Interface_ChangeHudVisibilityMode(2);
     }
     OnePointCutscene_SetAsChild(play, csCamIdx, parentCamIdx);
 

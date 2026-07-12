@@ -350,7 +350,7 @@ void EnAnubice_Die(EnAnubice* this, PlayState* play) {
     Actor_SetColorFilter(&this->actor, 0x4000, 128, 0, 8);
     EffectSsEnFire_SpawnVec3f(play, &this->actor, &fireEffectPos, 100, 0, 0, -1);
 
-    if ((this->animLastFrame <= curFrame) && (this->actor.bgCheckFlags & 1)) {
+    if ((this->animLastFrame <= curFrame) && (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND)) {
         Math_ApproachF(&this->actor.shape.yOffset, -4230.0f, 0.5f, 300.0f);
         if (this->actor.shape.yOffset < -2000.0f) {
             Item_DropCollectibleRandom(play, &this->actor, &this->actor.world.pos, 0xC0);

@@ -262,7 +262,7 @@ void EnReeba_Move(EnReeba* this, PlayState* play) {
         this->actor.speedXZ = 0.0f;
         this->actionfunc = EnReeba_SetupSink;
     } else if ((this->moveTimer == 0) || (this->actor.xzDistToPlayer < 30.0f) ||
-               (this->actor.xzDistToPlayer > 400.0f) || (this->actor.bgCheckFlags & 8)) {
+               (this->actor.xzDistToPlayer > 400.0f) || (this->actor.bgCheckFlags & BGCHECKFLAG_WALL)) {
         this->actionfunc = EnReeba_SetupSink;
     } else if (this->sfxTimer == 0) {
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_RIVA_MOVE);
@@ -290,7 +290,7 @@ void EnReeba_MoveBig(EnReeba* this, PlayState* play) {
     surfaceType = SurfaceType_GetFloorType(&play->colCtx, this->actor.floorPoly, this->actor.floorBgId);
 
     if (((surfaceType != 4) && (surfaceType != 7)) || (this->actor.xzDistToPlayer > 400.0f) ||
-        (this->actor.bgCheckFlags & 8)) {
+        (this->actor.bgCheckFlags & BGCHECKFLAG_WALL)) {
         this->actionfunc = EnReeba_SetupSink;
     } else {
         if ((this->actor.xzDistToPlayer < 70.0f) && (this->bigLeeverTimer == 0)) {

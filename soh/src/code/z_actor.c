@@ -1456,8 +1456,8 @@ void Actor_SwapHookshotAttachment(PlayState* play, Actor* actorA, Actor* actorB)
 }
 
 void Actor_RequestHorseCameraSetting(PlayState* play, Player* player) {
-    if ((play->roomCtx.curRoom.behaviorType1 != ROOM_BEHAVIOR_TYPE1_4) && func_800C0CB8(play)) {
-        Camera_ChangeSetting(Play_GetCamera(play, CAM_ID_MAIN), CAM_SET_HORSE);
+    if ((play->roomCtx.curRoom.behaviorType1 != ROOM_BEHAVIOR_TYPE1_4) && Play_CamIsNotFixed(play)) {
+        Camera_RequestSetting(Play_GetCamera(play, CAM_ID_MAIN), CAM_SET_HORSE);
     }
 }
 

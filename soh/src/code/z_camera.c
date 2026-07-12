@@ -775,7 +775,7 @@ void Camera_UpdateInterface(s16 flags) {
         if (flags & SHRINKWIN_CURVAL) {
             ShrinkWindow_SetCurrentVal(sCameraShrinkWindowVal);
         } else {
-            ShrinkWindow_SetVal(sCameraShrinkWindowVal);
+            Letterbox_SetSizeTarget(sCameraShrinkWindowVal);
         }
     }
 
@@ -786,7 +786,7 @@ void Camera_UpdateInterface(s16 flags) {
         }
         if (interfaceAlpha != sCameraInterfaceAlpha) {
             sCameraInterfaceAlpha = interfaceAlpha;
-            Interface_ChangeAlpha(sCameraInterfaceAlpha);
+            Interface_ChangeHudVisibilityMode(sCameraInterfaceAlpha);
         }
     }
 }
@@ -7416,7 +7416,7 @@ s32 Camera_DbgChangeMode(Camera* camera) {
         }
         if (changeDir != 0) {
             sDbgModeIdx = (sDbgModeIdx + changeDir) % 6;
-            if (Camera_ChangeSetting(camera, D_8011DAFC[sDbgModeIdx]) > 0) {
+            if (Camera_RequestSetting(camera, D_8011DAFC[sDbgModeIdx]) > 0) {
                 osSyncPrintf("camera: force change SET to %s!\n", sCameraSettingNames[D_8011DAFC[sDbgModeIdx]]);
             }
         }
@@ -8023,7 +8023,7 @@ s16 Camera_ChangeSettingFlags(Camera* camera, s16 setting, s16 flags) {
     return setting;
 }
 
-s32 Camera_ChangeSetting(Camera* camera, s16 setting) {
+s32 Camera_RequestSetting(Camera* camera, s16 setting) {
     return Camera_ChangeSettingFlags(camera, setting, 0);
 }
 
@@ -8225,14 +8225,14 @@ s32 Camera_ChangeDoorCam(Camera* camera, Actor* doorActor, s16 camDataIdx, f32 a
     }
 
     if (camDataIdx == -1) {
-        Camera_ChangeSetting(camera, CAM_SET_DOORC);
+        Camera_RequestSetting(camera, CAM_SET_DOORC);
         osSyncPrintf(".... change default door camera (set %d)\n", CAM_SET_DOORC);
     } else {
         s32 setting = Camera_GetCamDataSetting(camera, camDataIdx);
 
         camera->unk_14A |= 0x40;
 
-        if (Camera_ChangeSetting(camera, setting) >= 0) {
+        if (Camera_RequestSetting(camera, setting) >= 0) {
             camera->camDataIdx = camDataIdx;
             camera->unk_14A |= 4;
         }

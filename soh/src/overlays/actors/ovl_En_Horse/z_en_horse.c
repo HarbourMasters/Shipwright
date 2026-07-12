@@ -1755,7 +1755,7 @@ void EnHorse_Inactive(EnHorse* this, PlayState* play2) {
 
             // Focus the camera on Epona
             Camera_SetParam(play->cameraPtrs[0], 8, this);
-            Camera_ChangeSetting(play->cameraPtrs[0], 0x38);
+            Camera_RequestSetting(play->cameraPtrs[0], 0x38);
             Camera_SetCameraData(play->cameraPtrs[0], 4, NULL, NULL, 0x51, 0, 0);
         }
     }
@@ -1829,7 +1829,7 @@ void EnHorse_Idle(EnHorse* this, PlayState* play) {
                 this->followTimer = 0;
                 EnHorse_SetFollowAnimation(this, play);
                 Camera_SetParam(play->cameraPtrs[0], 8, this);
-                Camera_ChangeSetting(play->cameraPtrs[0], 0x38);
+                Camera_RequestSetting(play->cameraPtrs[0], 0x38);
                 Camera_SetCameraData(play->cameraPtrs[0], 4, NULL, NULL, 0x51, 0, 0);
             }
         } else {

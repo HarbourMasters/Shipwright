@@ -214,7 +214,7 @@ void EnFu_TeachSong(EnFu* this, PlayState* play) {
     // if dialog state is 2, start song demonstration
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_CLOSING) {
         this->behaviorFlags &= ~FU_WAIT;
-        Audio_OcaSetInstrument(4); // seems to be related to setting instrument type
+        AudioOcarina_SetInstrument(4); // seems to be related to setting instrument type
         func_8010BD58(play, OCARINA_ACTION_TEACH_STORMS);
         this->actionFunc = EnFu_WaitForPlayback;
     }

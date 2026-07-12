@@ -2350,7 +2350,7 @@ typedef enum {
 
     // #### `result`
     // ```c
-    // SurfaceType_GetSlope(&play->colCtx, poly, bgId) == 2
+    // SurfaceType_GetFloorEffect(&play->colCtx, poly, bgId) == 2
     // ```
     // #### `args`
     // - `*int16_t` - original next entrance index (`play->setupExitList[exitIndex - 1]`)

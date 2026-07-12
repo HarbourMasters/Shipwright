@@ -1382,8 +1382,8 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
 
                 // This is typically called when you close the text box after getting an item, in case a previous
                 // function hid the interface.
-                gSaveContext.unk_13EA = 0;
-                Interface_ChangeAlpha(0x32);
+                gSaveContext.hudVisibilityMode = 0;
+                Interface_ChangeHudVisibilityMode(0x32);
                 // EnItem00_SetupAction(item00, func_8001E5C8);
                 // *should = false;
             } else if (item00->actor.params == ITEM00_SOH_GIVE_ITEM_ENTRY_GI) {

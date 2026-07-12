@@ -207,7 +207,7 @@ void EnBa_SetupFallAsBlob(EnBa* this) {
  * Action function of the pink fleshy blobs that spawn and fall to the floor when a tentacle dies
  */
 void EnBa_FallAsBlob(EnBa* this, PlayState* play) {
-    if (this->actor.bgCheckFlags & 1) {
+    if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
         this->actor.scale.y -= 0.001f;
         this->actor.scale.x += 0.0005f;
         this->actor.scale.z += 0.0005f;

@@ -724,7 +724,7 @@ void func_8098652C(DemoIm* this, PlayState* play) {
 }
 
 void func_80986570(DemoIm* this, PlayState* play) {
-    if (Animation_OnFrame(&this->skelAnime, 7.0f) && (this->actor.bgCheckFlags & 1)) {
+    if (Animation_OnFrame(&this->skelAnime, 7.0f) && (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND)) {
         u32 sfxId = SFX_FLAG;
 
         sfxId += SurfaceType_GetSfx(&play->colCtx, this->actor.floorPoly, this->actor.floorBgId);

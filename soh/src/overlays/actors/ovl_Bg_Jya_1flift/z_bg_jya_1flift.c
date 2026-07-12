@@ -190,9 +190,9 @@ void BgJya1flift_Update(Actor* thisx, PlayState* play2) {
         tempIsRiding = DynaPolyActor_IsPlayerOnTop(&this->dyna) ? true : false;
         if ((this->actionFunc == BgJya1flift_Move) || (this->actionFunc == BgJya1flift_DelayMove)) {
             if (tempIsRiding) {
-                Camera_ChangeSetting(play->cameraPtrs[CAM_ID_MAIN], CAM_SET_FIRE_PLATFORM);
+                Camera_RequestSetting(play->cameraPtrs[CAM_ID_MAIN], CAM_SET_FIRE_PLATFORM);
             } else if (!tempIsRiding && this->isLinkRiding) {
-                Camera_ChangeSetting(play->cameraPtrs[CAM_ID_MAIN], CAM_SET_DUNGEON0);
+                Camera_RequestSetting(play->cameraPtrs[CAM_ID_MAIN], CAM_SET_DUNGEON0);
             }
         }
         this->isLinkRiding = tempIsRiding;

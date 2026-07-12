@@ -1368,7 +1368,7 @@ void BossTw_HitByBeam(BossTw* this, PlayState* play) {
     Actor_UpdateBgCheckInfo(play, &this->actor, 50.0f, 50.0f, 100.0f, 4);
     this->actor.world.pos.y += 50.0f;
 
-    if (this->actor.bgCheckFlags & 1) {
+    if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
         this->actor.speedXZ = 0.0f;
     }
 
@@ -5333,7 +5333,7 @@ void BossTw_TwinrovaStun(BossTw* this, PlayState* play) {
         Animation_MorphToLoop(&this->skelAnime, &gTwinrovaStunLoopAnim, 0.0f);
     }
 
-    if (this->actor.bgCheckFlags & 1) {
+    if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
         this->actor.velocity.y = 0.0f;
     }
 

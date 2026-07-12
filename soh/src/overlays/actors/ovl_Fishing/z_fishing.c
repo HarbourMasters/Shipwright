@@ -2331,7 +2331,7 @@ void Fishing_UpdateLure(Fishing* this, PlayState* play) {
                     if (this->actor.bgCheckFlags & 0x10) {
                         sLurePosDelta.y = -0.5f;
                     }
-                    if (this->actor.bgCheckFlags & 8) {
+                    if (this->actor.bgCheckFlags & BGCHECKFLAG_WALL) {
                         if (sLurePosDelta.y > 0.0f) {
                             sLurePosDelta.y = 0.0f;
                         }
@@ -4230,11 +4230,11 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
 
             this->actor.velocity.y = velocityY;
 
-            if (this->actor.bgCheckFlags & 8) {
+            if (this->actor.bgCheckFlags & BGCHECKFLAG_WALL) {
                 this->bumpTimer = 20;
             }
 
-            if (this->actor.bgCheckFlags & 1) {
+            if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
                 if (this->actor.world.pos.y > WATER_SURFACE_Y(play)) {
                     this->unk_184 = Rand_ZeroFloat(3.0f) + 3.0f;
                     this->actor.velocity.x = this->actor.world.pos.x * -0.003f;
@@ -5406,13 +5406,13 @@ void Fishing_UpdateOwner(Actor* thisx, PlayState* play2) {
             sCameraAt.y = mainCam->at.y;
             sCameraAt.z = mainCam->at.z;
             sFishingPlayerCinematicState = 2;
-            Interface_ChangeAlpha(12);
+            Interface_ChangeHudVisibilityMode(12);
             sSubCamVelFactor = 0.0f;
             // fallthrough
         }
 
         case 2:
-            ShrinkWindow_SetVal(0x1B);
+            Letterbox_SetSizeTarget(0x1B);
 
             lureDist.x = sLurePos.x - player->actor.world.pos.x;
             lureDist.z = sLurePos.z - player->actor.world.pos.z;

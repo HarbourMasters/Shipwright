@@ -680,7 +680,7 @@ void EnSkj_Fade(EnSkj* this, PlayState* play) {
     }
 
     if (this->actor.velocity.y <= 0.0f) {
-        if (this->actor.bgCheckFlags & 2) {
+        if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND_TOUCH) {
             this->actor.bgCheckFlags &= ~2;
             func_80AFF2A0(this);
         }
@@ -1106,7 +1106,7 @@ void EnSkj_JumpFromStump(EnSkj* this) {
 
 void EnSkj_WaitForLanding(EnSkj* this, PlayState* play) {
     if (this->actor.velocity.y <= 0.0f) {
-        if (this->actor.bgCheckFlags & 2) {
+        if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND_TOUCH) {
             this->actor.bgCheckFlags &= ~2;
             this->actor.speedXZ = 0.0f;
             EnSkj_SetupWaitForLandAnimFinish(this);
@@ -1503,7 +1503,7 @@ void EnSkj_WaitForPlayback(EnSkj* this, PlayState* play) {
                             SKULL_KID_OCARINA_PLAY_NOTES;
                     }
                     this->songFailTimer = 160;
-                    Audio_OcaSetInstrument(6); // related instrument sound (flute?)
+                    AudioOcarina_SetInstrument(6); // related instrument sound (flute?)
                     Audio_OcaSetSongPlayback(OCARINA_SONG_MEMORY_GAME + 1, 1);
                     play->msgCtx.msgMode = MSGMODE_MEMORY_GAME_LEFT_SKULLKID_PLAYING;
                     play->msgCtx.stateTimer = 2;

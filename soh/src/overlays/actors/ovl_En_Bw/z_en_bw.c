@@ -284,7 +284,7 @@ void func_809CEA24(EnBw* this, PlayState* play) {
             }
             this->unk_222 = (Rand_ZeroOne() * 200.0f) + 200.0f;
         }
-    } else if ((this->actor.speedXZ != 0.0f) && (this->actor.bgCheckFlags & 8)) {
+    } else if ((this->actor.speedXZ != 0.0f) && (this->actor.bgCheckFlags & BGCHECKFLAG_WALL)) {
         if (this->unk_236 != this->actor.wallYaw) {
             sp64 = 1;
             this->unk_236 = this->actor.wallYaw;
@@ -367,7 +367,7 @@ void func_809CEA24(EnBw* this, PlayState* play) {
             }
             break;
         case 1:
-            if (((sp64 == 0) && !(this->actor.bgCheckFlags & 8)) || Actor_IsFacingPlayer(&this->actor, 0x1C70)) {
+            if (((sp64 == 0) && !(this->actor.bgCheckFlags & BGCHECKFLAG_WALL)) || Actor_IsFacingPlayer(&this->actor, 0x1C70)) {
                 if (Actor_IsFacingPlayer(&this->actor, 0x1C70)) {
                     this->unk_238 = -this->unk_238;
                 }
@@ -495,7 +495,7 @@ void func_809CFC4C(EnBw* this, PlayState* play) {
         this->unk_221 = 4;
         this->unk_258 += this->unk_25C;
         Math_SmoothStepToF(&this->unk_260, 0.075f, 1.0f, 0.005f, 0.0f);
-        if (this->actor.bgCheckFlags & 2) {
+        if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND_TOUCH) {
             Actor_SpawnFloorDustRing(play, &this->actor, &this->actor.world.pos, 30.0f, 11, 4.0f, 0, 0, false);
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_DODO_M_GND);
         }
@@ -681,7 +681,7 @@ void func_809D0424(EnBw* this, PlayState* play) {
 }
 
 void func_809D0584(EnBw* this, PlayState* play) {
-    if ((this->actor.bgCheckFlags & 0x10) && (this->actor.bgCheckFlags & 1)) {
+    if ((this->actor.bgCheckFlags & 0x10) && (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND)) {
         this->unk_230 = 0;
         this->actor.scale.y -= 0.009f;
         Actor_SpawnFloorDustRing(play, &this->actor, &this->actor.world.pos, 30.0f, 11, 4.0f, 0, 0, false);
@@ -729,7 +729,7 @@ void func_809D0584(EnBw* this, PlayState* play) {
                 this->unk_248 = 0.0f;
             }
         }
-        if ((play->actorCtx.unk_02 != 0) && (this->actor.xzDistToPlayer <= 400.0f) && (this->actor.bgCheckFlags & 1)) {
+        if ((play->actorCtx.unk_02 != 0) && (this->actor.xzDistToPlayer <= 400.0f) && (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND)) {
             if (this->unk_220 == 5) {
                 this->unk_23C = 0;
                 func_809CFF10(this);

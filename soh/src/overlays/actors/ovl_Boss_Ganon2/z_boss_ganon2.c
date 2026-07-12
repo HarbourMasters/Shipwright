@@ -1076,7 +1076,7 @@ void func_808FFCFC(BossGanon2* this, PlayState* play) {
         this->unk_311 = false;
         func_80900580(this, play);
         Audio_StopSfxById(NA_SE_EN_MGANON_UNARI);
-    } else if ((this->actor.bgCheckFlags & 8) && func_808FFA24(this, play)) {
+    } else if ((this->actor.bgCheckFlags & BGCHECKFLAG_WALL) && func_808FFA24(this, play)) {
         this->unk_311 = false;
         func_80900580(this, play);
         Audio_StopSfxById(NA_SE_EN_MGANON_UNARI);
@@ -2057,7 +2057,7 @@ void BossGanon2_Update(Actor* thisx, PlayState* play) {
     this->actor.shape.rot = this->actor.world.rot;
     if (this->unk_335 != 0) {
         Actor_UpdateBgCheckInfo(play, &this->actor, 60.0f, 60.0f, 100.0f, 5);
-        if (this->actor.bgCheckFlags & 1) {
+        if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
             if (this->actor.velocity.y < -5.0f) {
                 Actor_RequestQuakeAndRumble(&this->actor, play, 5, 20);
                 Sfx_PlaySfxCentered(NA_SE_IT_BOMB_EXPLOSION);

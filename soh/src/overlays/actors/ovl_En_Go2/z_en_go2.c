@@ -991,7 +991,7 @@ s32 EnGo2_IsWakingUp(EnGo2* this) {
 }
 
 s32 EnGo2_IsRollingOnGround(EnGo2* this, s16 arg1, f32 arg2, s16 arg3) {
-    if ((this->actor.bgCheckFlags & 1) == 0 || this->actor.velocity.y > 0.0f) {
+    if ((this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) == 0 || this->actor.velocity.y > 0.0f) {
         return false;
     }
 
@@ -1167,10 +1167,10 @@ s32 EnGo2_IsCameraModified(EnGo2* this, PlayState* play) {
 
     if ((this->actor.params & 0x1F) == GORON_DMT_BIGGORON) {
         if (EnGo2_IsWakingUp(this)) {
-            Camera_ChangeSetting(camera, CAM_SET_DIRECTED_YAW);
+            Camera_RequestSetting(camera, CAM_SET_DIRECTED_YAW);
             func_8005AD1C(camera, 4);
         } else if (!EnGo2_IsWakingUp(this) && (camera->setting == CAM_SET_DIRECTED_YAW)) {
-            Camera_ChangeSetting(camera, CAM_SET_DUNGEON1);
+            Camera_RequestSetting(camera, CAM_SET_DUNGEON1);
             func_8005ACFC(camera, 4);
         }
     }

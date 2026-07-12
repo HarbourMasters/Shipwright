@@ -184,8 +184,8 @@ void func_80B4B010(EnZl1* this, PlayState* play) {
         play->envCtx.fillScreen = true;
         Play_CameraSetAtEye(play, this->subCamId, &vec1, &vec2);
         Play_CameraSetFov(play, this->subCamId, 30.0f);
-        ShrinkWindow_SetVal(0x20);
-        Interface_ChangeAlpha(2);
+        Letterbox_SetSizeTarget(0x20);
+        Interface_ChangeHudVisibilityMode(2);
         player->actor.world.pos = playerPos;
         player->actor.speedXZ = 0.0f;
         this->unk_1E2 = 0;
@@ -559,7 +559,7 @@ void func_80B4BF2C(EnZl1* this, PlayState* play) {
         case 6:
             if (Actor_TextboxIsClosing(&this->actor, play)) {
                 Player_SetCsActionWithHaltedActors(play, &this->actor, 7);
-                Interface_ChangeAlpha(50);
+                Interface_ChangeHudVisibilityMode(50);
                 this->actor.flags &= ~ACTOR_FLAG_TALK;
                 this->unk_1E2 = 4;
             }

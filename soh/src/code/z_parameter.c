@@ -196,11 +196,11 @@ static const char* actionsTbl[] = {
 };
 
 // original name: "alpha_change"
-void Interface_ChangeAlpha(u16 alphaType) {
-    if (alphaType != gSaveContext.unk_13EA) {
-        osSyncPrintf("ＡＬＰＨＡーＴＹＰＥ＝%d  LAST_TIME_TYPE=%d\n", alphaType, gSaveContext.unk_13EE);
-        gSaveContext.unk_13EA = gSaveContext.unk_13E8 = alphaType;
-        gSaveContext.unk_13EC = 1;
+void Interface_ChangeHudVisibilityMode(u16 hudVisibilityMode) {
+    if (hudVisibilityMode != gSaveContext.hudVisibilityMode) {
+        osSyncPrintf("ＡＬＰＨＡーＴＹＰＥ＝%d  LAST_TIME_TYPE=%d\n", hudVisibilityMode, gSaveContext.prevHudVisibilityMode);
+        gSaveContext.hudVisibilityMode = gSaveContext.nextHudVisibilityMode = hudVisibilityMode;
+        gSaveContext.hudVisibilityModeTimer = 1;
     }
 }
 
@@ -347,13 +347,13 @@ void func_80082850(PlayState* play, s16 maxAlpha) {
     InterfaceContext* interfaceCtx = &play->interfaceCtx;
     s16 alpha = 255 - maxAlpha;
 
-    switch (gSaveContext.unk_13E8) {
+    switch (gSaveContext.nextHudVisibilityMode) {
         case 1:
         case 2:
         case 8:
             osSyncPrintf("a_alpha=%d, c_alpha=%d   →   ", interfaceCtx->aAlpha, interfaceCtx->cLeftAlpha);
 
-            if (gSaveContext.unk_13E8 == 8) {
+            if (gSaveContext.nextHudVisibilityMode == 8) {
                 if (interfaceCtx->bAlpha != 255) {
                     interfaceCtx->bAlpha = alpha;
                 }
@@ -852,28 +852,28 @@ void func_80083108(PlayState* play) {
                         BTN_DISABLED;
                     gSaveContext.buttonStatus[5] = gSaveContext.buttonStatus[6] = gSaveContext.buttonStatus[7] =
                         gSaveContext.buttonStatus[8] = BTN_DISABLED;
-                    Interface_ChangeAlpha(6);
+                    Interface_ChangeHudVisibilityMode(6);
                 }
 
                 if (play->transitionMode != TRANS_MODE_OFF) {
-                    Interface_ChangeAlpha(1);
+                    Interface_ChangeHudVisibilityMode(1);
                 } else if (gSaveContext.minigameState == 1) {
-                    Interface_ChangeAlpha(8);
+                    Interface_ChangeHudVisibilityMode(8);
                 } else if (play->shootingGalleryStatus > 1) {
-                    Interface_ChangeAlpha(8);
+                    Interface_ChangeHudVisibilityMode(8);
                 } else if ((play->sceneNum == SCENE_BOMBCHU_BOWLING_ALLEY) && Flags_GetSwitch(play, 0x38)) {
-                    Interface_ChangeAlpha(8);
+                    Interface_ChangeHudVisibilityMode(8);
                 } else if (player->stateFlags1 & PLAYER_STATE1_ON_HORSE) {
-                    Interface_ChangeAlpha(12);
+                    Interface_ChangeHudVisibilityMode(12);
                 }
             } else {
                 if (player->stateFlags1 & PLAYER_STATE1_ON_HORSE) {
-                    Interface_ChangeAlpha(12);
+                    Interface_ChangeHudVisibilityMode(12);
                 }
             }
             // Don't hide the HUD in the Chamber of Sages when in Boss Rush.
         } else if (play->sceneNum == SCENE_CHAMBER_OF_THE_SAGES && !IS_BOSS_RUSH) {
-            Interface_ChangeAlpha(1);
+            Interface_ChangeHudVisibilityMode(1);
         } else if (play->sceneNum == SCENE_FISHING_POND) {
             gSaveContext.forceRisingButtonAlphas = 2;
             if (play->interfaceCtx.unk_260 != 0) {
@@ -881,17 +881,17 @@ void func_80083108(PlayState* play) {
                     gSaveContext.buttonStatus[0] = gSaveContext.equips.buttonItems[0];
                     GameInteractor_Should(VB_TEMP_B_STASH_SWORDLESS, true, play);
                     gSaveContext.equips.buttonItems[0] = ITEM_FISHING_POLE;
-                    gSaveContext.unk_13EA = 0;
+                    gSaveContext.hudVisibilityMode = 0;
                     Interface_LoadItemIcon1(play, 0);
-                    Interface_ChangeAlpha(12);
+                    Interface_ChangeHudVisibilityMode(12);
                 }
 
-                if (gSaveContext.unk_13EA != 12) {
-                    Interface_ChangeAlpha(12);
+                if (gSaveContext.hudVisibilityMode != 12) {
+                    Interface_ChangeHudVisibilityMode(12);
                 }
             } else if (gSaveContext.equips.buttonItems[0] == ITEM_FISHING_POLE) {
                 gSaveContext.equips.buttonItems[0] = gSaveContext.buttonStatus[0];
-                gSaveContext.unk_13EA = 0;
+                gSaveContext.hudVisibilityMode = 0;
 
                 GameInteractor_Should(VB_TEMP_B_RESTORE_SWORDLESS, true);
 
@@ -903,17 +903,17 @@ void func_80083108(PlayState* play) {
                     gSaveContext.buttonStatus[3] = BTN_DISABLED;
                 gSaveContext.buttonStatus[5] = gSaveContext.buttonStatus[6] = gSaveContext.buttonStatus[7] =
                     gSaveContext.buttonStatus[8] = BTN_DISABLED;
-                Interface_ChangeAlpha(50);
+                Interface_ChangeHudVisibilityMode(50);
             } else {
                 if (gSaveContext.buttonStatus[0] == BTN_ENABLED) {
-                    gSaveContext.unk_13EA = 0;
+                    gSaveContext.hudVisibilityMode = 0;
                 }
 
                 gSaveContext.buttonStatus[0] = gSaveContext.buttonStatus[1] = gSaveContext.buttonStatus[2] =
                     gSaveContext.buttonStatus[3] = BTN_DISABLED;
                 gSaveContext.buttonStatus[5] = gSaveContext.buttonStatus[6] = gSaveContext.buttonStatus[7] =
                     gSaveContext.buttonStatus[8] = BTN_DISABLED;
-                Interface_ChangeAlpha(50);
+                Interface_ChangeHudVisibilityMode(50);
             }
         } else if (msgCtx->msgMode == MSGMODE_NONE) {
             if (GameInteractor_PacifistModeActive()) {
@@ -961,10 +961,10 @@ void func_80083108(PlayState* play) {
                 }
 
                 if (sp28) {
-                    gSaveContext.unk_13EA = 0;
+                    gSaveContext.hudVisibilityMode = 0;
                 }
 
-                Interface_ChangeAlpha(50);
+                Interface_ChangeHudVisibilityMode(50);
             } else if ((player->stateFlags1 & PLAYER_STATE1_CLIMBING_LADDER) ||
                        (player->stateFlags2 & PLAYER_STATE2_CRAWLING)) {
                 if (gSaveContext.buttonStatus[0] != BTN_DISABLED) {
@@ -976,8 +976,8 @@ void func_80083108(PlayState* play) {
                     gSaveContext.buttonStatus[6] = BTN_DISABLED;
                     gSaveContext.buttonStatus[7] = BTN_DISABLED;
                     gSaveContext.buttonStatus[8] = BTN_DISABLED;
-                    gSaveContext.unk_13EA = 0;
-                    Interface_ChangeAlpha(50);
+                    gSaveContext.hudVisibilityMode = 0;
+                    Interface_ChangeHudVisibilityMode(50);
                 }
             } else if ((gSaveContext.eventInf[0] & 0xF) == 1) {
                 if (player->stateFlags1 & PLAYER_STATE1_ON_HORSE) {
@@ -1032,10 +1032,10 @@ void func_80083108(PlayState* play) {
                 }
 
                 if (sp28) {
-                    gSaveContext.unk_13EA = 0;
+                    gSaveContext.hudVisibilityMode = 0;
                 }
 
-                Interface_ChangeAlpha(50);
+                Interface_ChangeHudVisibilityMode(50);
             } else {
                 if (interfaceCtx->restrictions.bButton == 0) {
                     if ((gSaveContext.equips.buttonItems[0] == ITEM_SLINGSHOT) ||
@@ -1305,9 +1305,9 @@ void func_80083108(PlayState* play) {
     }
 
     if (sp28) {
-        gSaveContext.unk_13EA = 0;
+        gSaveContext.hudVisibilityMode = 0;
         if ((play->transitionTrigger == TRANS_TRIGGER_OFF) && (play->transitionMode == TRANS_MODE_OFF)) {
-            Interface_ChangeAlpha(50);
+            Interface_ChangeHudVisibilityMode(50);
             osSyncPrintf("????????  alpha_change( 50 );  ?????\n");
         } else {
             osSyncPrintf("game_play->fade_direction || game_play->fbdemo_wipe_modem");
@@ -1751,7 +1751,7 @@ void func_80084BF4(PlayState* play, u16 flag) {
             gSaveContext.buttonStatus[3] = BTN_ENABLED;
         gSaveContext.buttonStatus[5] = gSaveContext.buttonStatus[6] = gSaveContext.buttonStatus[7] =
             gSaveContext.buttonStatus[8] = BTN_ENABLED;
-        Interface_ChangeAlpha(7);
+        Interface_ChangeHudVisibilityMode(7);
     } else {
         gSaveContext.buttonStatus[0] = gSaveContext.buttonStatus[1] = gSaveContext.buttonStatus[2] =
             gSaveContext.buttonStatus[3] = BTN_ENABLED;
@@ -4198,7 +4198,7 @@ void Interface_DrawItemButtons(PlayState* play) {
             // C-Up Button Texture, Color & Label (Navi Text)
             gDPPipeSync(OVERLAY_DISP++);
 
-            if ((gSaveContext.unk_13EA == 1) || (gSaveContext.unk_13EA == 2) || (gSaveContext.unk_13EA == 5)) {
+            if ((gSaveContext.hudVisibilityMode == 1) || (gSaveContext.hudVisibilityMode == 2) || (gSaveContext.hudVisibilityMode == 5)) {
                 temp = 0;
             } else if ((player->stateFlags1 & PLAYER_STATE1_CLIMBING_LADDER) ||
                        (Player_GetEnvironmentalHazard(play) == 4) || (player->stateFlags2 & PLAYER_STATE2_CRAWLING)) {
@@ -6520,7 +6520,7 @@ void Interface_Update(PlayState* play) {
         }
     }
 
-    switch (gSaveContext.unk_13E8) {
+    switch (gSaveContext.nextHudVisibilityMode) {
         case 1:
         case 2:
         case 3:
@@ -6534,20 +6534,20 @@ void Interface_Update(PlayState* play) {
         case 11:
         case 12:
         case 13:
-            alpha = 255 - (gSaveContext.unk_13EC << 5);
+            alpha = 255 - (gSaveContext.hudVisibilityModeTimer << 5);
             if (alpha < 0) {
                 alpha = 0;
             }
 
             func_80082850(play, alpha);
-            gSaveContext.unk_13EC++;
+            gSaveContext.hudVisibilityModeTimer++;
 
             if (alpha == 0) {
-                gSaveContext.unk_13E8 = 0;
+                gSaveContext.nextHudVisibilityMode = 0;
             }
             break;
         case 50:
-            alpha = 255 - (gSaveContext.unk_13EC << 5);
+            alpha = 255 - (gSaveContext.hudVisibilityModeTimer << 5);
             if (alpha < 0) {
                 alpha = 0;
             }
@@ -6602,16 +6602,16 @@ void Interface_Update(PlayState* play) {
                     break;
             }
 
-            gSaveContext.unk_13EC++;
+            gSaveContext.hudVisibilityModeTimer++;
             if (alpha1 == 0xFF) {
-                gSaveContext.unk_13E8 = 0;
+                gSaveContext.nextHudVisibilityMode = 0;
             }
 
             break;
         case 52:
-            gSaveContext.unk_13E8 = 1;
+            gSaveContext.nextHudVisibilityMode = 1;
             func_80082850(play, 0);
-            gSaveContext.unk_13E8 = 0;
+            gSaveContext.nextHudVisibilityMode = 0;
         default:
             break;
     }
@@ -6862,12 +6862,12 @@ void Interface_Update(PlayState* play) {
                 gSaveContext.nextDayTime = 0;
                 play->transitionType = TRANS_TYPE_FADE_BLACK_FAST;
                 gSaveContext.nextTransitionType = TRANS_TYPE_FADE_BLACK;
-                play->unk_11DE9 = 1;
+                play->haltAllActors = 1;
             } else {
                 gSaveContext.nextDayTime = 0x8001;
                 play->transitionType = TRANS_TYPE_FADE_WHITE_FAST;
                 gSaveContext.nextTransitionType = TRANS_TYPE_FADE_WHITE;
-                play->unk_11DE9 = 1;
+                play->haltAllActors = 1;
             }
 
             if (play->sceneNum == SCENE_HAUNTED_WASTELAND) {

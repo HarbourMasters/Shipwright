@@ -627,7 +627,7 @@ void func_80ADA530(EnPoSisters* this, PlayState* play) {
     } else if (this->unk_19A == 0 && Math_StepToF(&this->actor.speedXZ, 0.0f, 0.2f) != 0) {
         func_80AD9368(this);
     }
-    if (this->actor.bgCheckFlags & 8) {
+    if (this->actor.bgCheckFlags & BGCHECKFLAG_WALL) {
         Math_ScaledStepToS(&this->actor.world.rot.y, Actor_WorldYawTowardPoint(&this->actor, &this->actor.home.pos),
                            0x71C);
     } else if (Actor_WorldDistXZToPoint(&this->actor, &this->actor.home.pos) > 300.0f) {
@@ -739,7 +739,7 @@ void func_80ADAC70(EnPoSisters* this, PlayState* play) {
     if (Animation_OnFrame(&this->skelAnime, 0.0f) && this->unk_19A != 0) {
         this->unk_19A--;
     }
-    if (this->actor.bgCheckFlags & 8) {
+    if (this->actor.bgCheckFlags & BGCHECKFLAG_WALL) {
         this->actor.world.rot.y = this->actor.shape.rot.y;
         this->unk_199 |= 2;
         func_80AD9718(this);

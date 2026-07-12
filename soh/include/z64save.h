@@ -13,6 +13,28 @@
 #define STARTING_HEALTH (3 * FULL_HEART_HEALTH)
 #define MAX_HEALTH (20 * FULL_HEART_HEALTH)
 
+// `_FORCE` means that this request will respond to `forceRisingButtonAlphas`.
+// If set, the buttons will also raise alphas but will also account for disabled buttons
+
+typedef enum HudVisibilityMode {
+    /*  0 */ HUD_VISIBILITY_NO_CHANGE,
+    /*  1 */ HUD_VISIBILITY_NOTHING,
+    /*  2 */ HUD_VISIBILITY_NOTHING_ALT, // Identical to HUD_VISIBILITY_NOTHING
+    /*  3 */ HUD_VISIBILITY_HEARTS_FORCE, // See above
+    /*  4 */ HUD_VISIBILITY_A,
+    /*  5 */ HUD_VISIBILITY_A_HEARTS_MAGIC_FORCE, // See above
+    /*  6 */ HUD_VISIBILITY_A_HEARTS_MAGIC_MINIMAP_FORCE, // See above
+    /*  7 */ HUD_VISIBILITY_ALL_NO_MINIMAP_BY_BTN_STATUS, // Only raises button alphas if not disabled
+    /*  8 */ HUD_VISIBILITY_B,
+    /*  9 */ HUD_VISIBILITY_HEARTS_MAGIC,
+    /* 10 */ HUD_VISIBILITY_B_ALT, // Identical to HUD_VISIBILITY_B
+    /* 11 */ HUD_VISIBILITY_HEARTS,
+    /* 12 */ HUD_VISIBILITY_A_B_MINIMAP,
+    /* 13 */ HUD_VISIBILITY_HEARTS_MAGIC_FORCE, // See above
+    /* 50 */ HUD_VISIBILITY_ALL = 50, // Only raises button alphas if not disabled
+    /* 52 */ HUD_VISIBILITY_NOTHING_INSTANT = 52
+} HudVisibilityMode;
+
 typedef enum {
     /* 0x0 */ MAGIC_STATE_IDLE, // Regular gameplay
     /* 0x1 */ MAGIC_STATE_CONSUME_SETUP, // Sets the speed at which magic border flashes
@@ -316,10 +338,10 @@ typedef struct {
     /* 0x13E1 */ u8 natureAmbienceId;
     /* 0x13E2 */ u8 buttonStatus[9]; // SOH [Enhancements] Changed from 5 to 9 to support Dpad equips
     /* 0x13E7 */ u8 forceRisingButtonAlphas; // alpha related
-    /* 0x13E8 */ u16 unk_13E8; // alpha type?
-    /* 0x13EA */ u16 unk_13EA; // also alpha type?
-    /* 0x13EC */ u16 unk_13EC; // alpha type counter?
-    /* 0x13EE */ u16 unk_13EE; // previous alpha type?
+    /* 0x13E8 */ u16 nextHudVisibilityMode; // triggers the hud to change visibility mode to the requested value. Reset to HUD_VISIBILITY_NO_CHANGE when target is reached
+    /* 0x13EA */ u16 hudVisibilityMode; // current hud visibility mode
+    /* 0x13EC */ u16 hudVisibilityModeTimer; // number of frames in the transition to a new hud visibility mode. Used to step alpha
+    /* 0x13EE */ u16 prevHudVisibilityMode; // used to store and recover hud visibility mode for pause menu and text boxes
     /* 0x13F0 */ s16 magicState; // determines magic meter behavior on each frame
     /* 0x13F2 */ s16 prevMagicState; // used to resume the previous state after adding or filling magic
     /* 0x13F4 */ s16 magicCapacity; // maximum magic available

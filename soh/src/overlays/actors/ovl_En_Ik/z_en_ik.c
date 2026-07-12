@@ -385,7 +385,7 @@ void func_80A74BA4(EnIk* this, PlayState* play) {
         sp2E = 9;
     }
     temp_a1 = this->actor.wallYaw - this->actor.shape.rot.y;
-    if ((this->actor.bgCheckFlags & 8) && (ABS(temp_a1) >= 0x4000)) {
+    if ((this->actor.bgCheckFlags & BGCHECKFLAG_WALL) && (ABS(temp_a1) >= 0x4000)) {
         temp_a1 = (this->actor.yawTowardsPlayer > 0) ? this->actor.wallYaw - 0x4000 : this->actor.wallYaw + 0x4000;
         Math_SmoothStepToS(&this->actor.world.rot.y, temp_a1, 1, phi_a3, 0);
     } else {

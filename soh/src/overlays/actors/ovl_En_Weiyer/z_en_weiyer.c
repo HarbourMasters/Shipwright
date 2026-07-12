@@ -252,7 +252,7 @@ void EnWeiyer_FreeSwim(EnWeiyer* this, PlayState* play) {
         Math_StepToF(&this->actor.speedXZ, 1.3f, 0.03f);
     }
 
-    if (this->actor.bgCheckFlags & 8) {
+    if (this->actor.bgCheckFlags & BGCHECKFLAG_WALL) {
         this->targetYaw = this->actor.wallYaw;
         this->timer = 30;
     }
@@ -284,7 +284,7 @@ void EnWeiyer_FreeSwim(EnWeiyer* this, PlayState* play) {
     } else {
         Player* player = GET_PLAYER(play);
 
-        if (this->actor.bgCheckFlags & 1) {
+        if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
             this->targetSwimHeight =
                 this->actor.home.pos.y - Rand_ZeroOne() * ((this->actor.home.pos.y - this->actor.floorHeight) / 2.0f);
         } else if (sp34 && (Rand_ZeroOne() < 0.1f)) {
@@ -320,7 +320,7 @@ void EnWeiyer_TurnAround(EnWeiyer* this, PlayState* play) {
             }
 
             EnWeiyer_SetupInactive(this);
-        } else if (this->actor.bgCheckFlags & 1) {
+        } else if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
             EnWeiyer_SetupStuckOnFloor(this);
         }
     }
@@ -419,7 +419,7 @@ void EnWeiyer_Inactive(EnWeiyer* this, PlayState* play) {
         this->timer--;
     }
 
-    if (this->actor.bgCheckFlags & 8) {
+    if (this->actor.bgCheckFlags & BGCHECKFLAG_WALL) {
         this->targetYaw = this->actor.wallYaw;
     }
 
@@ -447,7 +447,7 @@ void EnWeiyer_Hurt(EnWeiyer* this, PlayState* play) {
         this->timer--;
     }
 
-    if (this->actor.bgCheckFlags & 8) {
+    if (this->actor.bgCheckFlags & BGCHECKFLAG_WALL) {
         this->targetYaw = this->actor.wallYaw;
     } else {
         this->targetYaw = this->actor.yawTowardsPlayer + 0x8000;
@@ -502,7 +502,7 @@ void EnWeiyer_Stunned(EnWeiyer* this, PlayState* play) {
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_EIER_FLUTTER);
         }
 
-        if (this->actor.bgCheckFlags & 2) {
+        if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND_TOUCH) {
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_DODO_M_GND);
         }
     }
@@ -550,7 +550,7 @@ void EnWeiyer_OutOfWater(EnWeiyer* this, PlayState* play) {
             Math_ScaledStepToS(&this->actor.shape.rot.x, phi_a1, 0x400);
         }
 
-        if (this->actor.bgCheckFlags & 1) {
+        if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
             EnWeiyer_SetupTurnAround(this);
         } else if ((this->actor.bgCheckFlags & 0x20) && (this->actor.shape.rot.x > 0)) {
             EffectSsGSplash_Spawn(play, &this->actor.world.pos, NULL, NULL, 1, 400);

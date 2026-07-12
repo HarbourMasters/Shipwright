@@ -758,9 +758,9 @@ void ObjBean_WaitForPlayer(ObjBean* this, PlayState* play) {
     if (DynaPolyActor_IsPlayerOnTop(&this->dyna)) { // Player is standing on
         ObjBean_SetupFly(this);
         if (play->sceneNum == SCENE_LOST_WOODS) { // Lost woods
-            Camera_ChangeSetting(play->cameraPtrs[CAM_ID_MAIN], CAM_SET_BEAN_LOST_WOODS);
+            Camera_RequestSetting(play->cameraPtrs[CAM_ID_MAIN], CAM_SET_BEAN_LOST_WOODS);
         } else {
-            Camera_ChangeSetting(play->cameraPtrs[CAM_ID_MAIN], CAM_SET_BEAN_GENERIC);
+            Camera_RequestSetting(play->cameraPtrs[CAM_ID_MAIN], CAM_SET_BEAN_GENERIC);
         }
     }
     ObjBean_UpdatePosition(this);
@@ -786,7 +786,7 @@ void ObjBean_Fly(ObjBean* this, PlayState* play) {
         camera = play->cameraPtrs[CAM_ID_MAIN];
 
         if ((camera->setting == CAM_SET_BEAN_LOST_WOODS) || (camera->setting == CAM_SET_BEAN_GENERIC)) {
-            Camera_ChangeSetting(camera, CAM_SET_NORMAL0);
+            Camera_RequestSetting(camera, CAM_SET_NORMAL0);
         }
 
     } else if (DynaPolyActor_IsPlayerOnTop(&this->dyna) != 0) { // Player is on top
@@ -794,15 +794,15 @@ void ObjBean_Fly(ObjBean* this, PlayState* play) {
         Actor_PlaySfx_Flagged(&this->dyna.actor, NA_SE_PL_PLANT_MOVE - SFX_FLAG);
 
         if (play->sceneNum == SCENE_LOST_WOODS) {
-            Camera_ChangeSetting(play->cameraPtrs[CAM_ID_MAIN], CAM_SET_BEAN_LOST_WOODS);
+            Camera_RequestSetting(play->cameraPtrs[CAM_ID_MAIN], CAM_SET_BEAN_LOST_WOODS);
         } else {
-            Camera_ChangeSetting(play->cameraPtrs[CAM_ID_MAIN], CAM_SET_BEAN_GENERIC);
+            Camera_RequestSetting(play->cameraPtrs[CAM_ID_MAIN], CAM_SET_BEAN_GENERIC);
         }
     } else if (this->stateFlags & BEAN_STATE_PLAYER_ON_TOP) {
         camera = play->cameraPtrs[CAM_ID_MAIN];
 
         if ((camera->setting == CAM_SET_BEAN_LOST_WOODS) || (camera->setting == CAM_SET_BEAN_GENERIC)) {
-            Camera_ChangeSetting(camera, CAM_SET_NORMAL0);
+            Camera_RequestSetting(camera, CAM_SET_NORMAL0);
         }
     }
 

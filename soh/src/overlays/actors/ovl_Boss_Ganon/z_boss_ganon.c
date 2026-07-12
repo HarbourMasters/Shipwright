@@ -797,7 +797,7 @@ void BossGanon_IntroCutscene(BossGanon* this, PlayState* play) {
 
             if (this->csTimer == 20) {
                 Player_SetCsActionWithHaltedActors(play, &this->actor, 0x17);
-                Interface_ChangeAlpha(11); // show hearts only
+                Interface_ChangeHudVisibilityMode(11); // show hearts only
             }
 
             if (this->csTimer == 25) {
@@ -805,7 +805,7 @@ void BossGanon_IntroCutscene(BossGanon* this, PlayState* play) {
             }
 
             if (this->csTimer == 100) {
-                Interface_ChangeAlpha(1);
+                Interface_ChangeHudVisibilityMode(1);
             }
 
             if (this->csTimer == 120) {
@@ -4142,7 +4142,7 @@ void BossGanon_LightBall_Update(Actor* thisx, PlayState* play2) {
             spBA = 4;
         }
 
-        if ((spBA != 0) || (this->actor.bgCheckFlags & 1)) {
+        if ((spBA != 0) || (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND)) {
             f32 sp58;
             f32 sp54;
             f32 phi_f20;

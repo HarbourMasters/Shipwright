@@ -934,7 +934,7 @@ void BossDodongo_Roll(BossDodongo* this, PlayState* play) {
         Math_SmoothStepToF(&this->actor.world.pos.z, sp5C->z, 1.0f, this->unk_1E4, 0.0f);
         this->unk_1C4 += 2000;
 
-        if (this->actor.bgCheckFlags & 1) {
+        if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
             this->unk_228 = 7700.0f;
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_DODO_K_ROLL - SFX_FLAG);
 
