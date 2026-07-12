@@ -1048,11 +1048,6 @@ void Player_DrawImpl(PlayState* play, void** skeleton, Vec3s* jointTable, s32 dL
     if (eyeIndex > 7)
         eyeIndex = 7;
 
-#if defined(MODDING) || defined(_MSC_VER) || defined(__GNUC__)
-    gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sEyeTextures[gSaveContext.linkAge][eyeIndex]));
-#else
-    gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sEyeTextures[eyeIndex]));
-#endif
     if (mouthIndex < 0) {
         mouthIndex = sEyeMouthIndexes[face][1];
     }
@@ -1061,10 +1056,15 @@ void Player_DrawImpl(PlayState* play, void** skeleton, Vec3s* jointTable, s32 dL
         mouthIndex = 3;
 
 #if defined(MODDING) || defined(_MSC_VER) || defined(__GNUC__)
-    gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(sMouthTextures[gSaveContext.linkAge][mouthIndex]));
+    void* eyeTexture = sEyeTextures[gSaveContext.linkAge][eyeIndex];
+    void* mouthTexture = sMouthTextures[gSaveContext.linkAge][mouthIndex];
 #else
-    gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(sMouthTextures[eyeIndex]));
+    void* eyeTexture = sEyeTextures[eyeIndex];
+    void* mouthTexture = sMouthTextures[eyeIndex];
 #endif
+    GameInteractor_Should(VB_PLAYER_APPLY_FACE_TEXTURES, true, &eyeTexture, &mouthTexture, eyeIndex, mouthIndex);
+    gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTexture));
+    gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(mouthTexture));
 
     Color_RGB8 sTemp;
     color = &sTunicColors[tunic];
@@ -1084,7 +1084,7 @@ void Player_DrawImpl(PlayState* play, void** skeleton, Vec3s* jointTable, s32 dL
     }
 
     // If we have a custom link model, always use the most detailed LOD
-    if (Player_IsCustomLinkModel()) {
+    if (Player_IsCustomLinkModel() || GameInteractor_Should(VB_PLAYER_USE_MAX_LOD, false, data)) {
         lod = 0;
     }
 
@@ -1095,7 +1095,8 @@ void Player_DrawImpl(PlayState* play, void** skeleton, Vec3s* jointTable, s32 dL
     if (((CVarGetInteger(CVAR_ENHANCEMENT("FirstPersonGauntlets"), 0) && LINK_IS_ADULT) ||
          (overrideLimbDraw != Player_OverrideLimbDrawGameplayFirstPerson)) &&
         (overrideLimbDraw != Player_OverrideLimbDrawGameplayCrawling) &&
-        (gSaveContext.gameMode != GAMEMODE_END_CREDITS)) {
+        (gSaveContext.gameMode != GAMEMODE_END_CREDITS) &&
+        GameInteractor_Should(VB_DRAW_PLAYER_STRENGTH_AND_BOOTS, true, data, play)) {
         if (LINK_IS_ADULT) {
             s32 strengthUpgrade = CUR_UPG_VALUE(UPG_STRENGTH);
 
@@ -1291,14 +1292,16 @@ s32 Player_OverrideLimbDrawGameplayCommon(PlayState* play, s32 limbIndex, Gfx** 
         sRightHandType = this->rightHandType;
         D_80160000 = &this->meleeWeaponInfo[2].base;
 
-        if (!LINK_IS_ADULT) {
+        f32 ageTranslScale = 0.64f;
+
+        if (GameInteractor_Should(VB_PLAYER_SCALE_ANIM_TRANSLATION, !LINK_IS_ADULT, this, &ageTranslScale)) {
             if (!(this->skelAnime.movementFlags & 4) || (this->skelAnime.movementFlags & 1)) {
-                pos->x *= 0.64f;
-                pos->z *= 0.64f;
+                pos->x *= ageTranslScale;
+                pos->z *= ageTranslScale;
             }
 
             if (!(this->skelAnime.movementFlags & 4) || (this->skelAnime.movementFlags & 2)) {
-                pos->y *= 0.64f;
+                pos->y *= ageTranslScale;
             }
         }
 
@@ -2007,8 +2010,10 @@ u32 func_80091738(PlayState* play, u8* segment, SkelAnime* skelAnime) {
     gSegments[4] = VIRTUAL_TO_PHYSICAL(segment + 0x3800);
     gSegments[6] = VIRTUAL_TO_PHYSICAL(segment + 0x8800);
 
-    SkelAnime_InitLink(play, skelAnime, gPlayerSkelHeaders[gSaveContext.linkAge], &gPlayerAnim_link_normal_wait, 9, ptr,
-                       ptr, PLAYER_LIMB_MAX);
+    FlexSkeletonHeader* skelHeader = gPlayerSkelHeaders[gSaveContext.linkAge];
+
+    GameInteractor_Should(VB_PLAYER_INIT_SKELETON, true, NULL, &skelHeader);
+    SkelAnime_InitLink(play, skelAnime, skelHeader, &gPlayerAnim_link_normal_wait, 9, ptr, ptr, PLAYER_LIMB_MAX);
 
     return size + 0x8800 + 0x90;
 }

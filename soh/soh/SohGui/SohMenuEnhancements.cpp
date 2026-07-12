@@ -5,6 +5,7 @@
 #include <soh/OTRGlobals.h>
 #include <soh/Enhancements/cosmetics/authenticGfxPatches.h>
 #include <soh/Enhancements/TimeDisplay/TimeDisplay.h>
+#include <soh/Enhancements/mm/PlayerFormSystem.h>
 #include "soh/Enhancements/randomizer/randomizer.h"
 #include <ship/Context.h>
 
@@ -865,6 +866,16 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Masks Equippable as Adult", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("AdultMasks"))
         .Options(CheckboxOptions().Tooltip("Allows masks to be equipped normally from the pause menu as adult."));
+    AddWidget(path, "Transformation Masks", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("TransformationMasks"))
+        .PreFunc([](WidgetInfo& info) {
+            info.options->disabled = !PlayerForm_AssetsAvailable();
+            info.options->disabledTooltip = "Requires MM assets: generate mm.o2r with 2Ship2Harkinian and place "
+                                            "it in the mods folder (needs object_link_goron and object_link_zora).";
+        })
+        .Options(CheckboxOptions().Tooltip("Equipping the Goron or Zora mask transforms Link, Majora's Mask style.\n"
+                                           "Currently transforms the model and physical properties only; form "
+                                           "abilities like the Goron roll and Zora swim are not implemented yet."));
     AddWidget(path, "Persistent Masks", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("PersistentMasks"))
         .Options(
