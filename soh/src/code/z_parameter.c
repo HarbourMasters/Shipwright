@@ -198,7 +198,8 @@ static const char* actionsTbl[] = {
 // original name: "alpha_change"
 void Interface_ChangeHudVisibilityMode(u16 hudVisibilityMode) {
     if (hudVisibilityMode != gSaveContext.hudVisibilityMode) {
-        osSyncPrintf("ＡＬＰＨＡーＴＹＰＥ＝%d  LAST_TIME_TYPE=%d\n", hudVisibilityMode, gSaveContext.prevHudVisibilityMode);
+        osSyncPrintf("ＡＬＰＨＡーＴＹＰＥ＝%d  LAST_TIME_TYPE=%d\n", hudVisibilityMode,
+                     gSaveContext.prevHudVisibilityMode);
         gSaveContext.hudVisibilityMode = gSaveContext.nextHudVisibilityMode = hudVisibilityMode;
         gSaveContext.hudVisibilityModeTimer = 1;
     }
@@ -4198,7 +4199,8 @@ void Interface_DrawItemButtons(PlayState* play) {
             // C-Up Button Texture, Color & Label (Navi Text)
             gDPPipeSync(OVERLAY_DISP++);
 
-            if ((gSaveContext.hudVisibilityMode == 1) || (gSaveContext.hudVisibilityMode == 2) || (gSaveContext.hudVisibilityMode == 5)) {
+            if ((gSaveContext.hudVisibilityMode == 1) || (gSaveContext.hudVisibilityMode == 2) ||
+                (gSaveContext.hudVisibilityMode == 5)) {
                 temp = 0;
             } else if ((player->stateFlags1 & PLAYER_STATE1_CLIMBING_LADDER) ||
                        (Player_GetEnvironmentalHazard(play) == 4) || (player->stateFlags2 & PLAYER_STATE2_CRAWLING)) {

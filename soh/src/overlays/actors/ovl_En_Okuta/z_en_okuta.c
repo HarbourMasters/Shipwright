@@ -490,9 +490,9 @@ void EnOkuta_ProjectileFly(EnOkuta* this, PlayState* play) {
         this->actor.speedXZ -= 0.1f;
         this->actor.speedXZ = CLAMP_MIN(this->actor.speedXZ, 1.0f);
     }
-    if ((this->actor.bgCheckFlags & BGCHECKFLAG_WALL) || (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) || (this->collider.base.atFlags & AT_HIT) ||
-        this->collider.base.acFlags & AC_HIT || this->collider.base.ocFlags1 & OC1_HIT ||
-        this->actor.floorHeight == BGCHECK_Y_MIN) {
+    if ((this->actor.bgCheckFlags & BGCHECKFLAG_WALL) || (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) ||
+        (this->collider.base.atFlags & AT_HIT) || this->collider.base.acFlags & AC_HIT ||
+        this->collider.base.ocFlags1 & OC1_HIT || this->actor.floorHeight == BGCHECK_Y_MIN) {
         if ((player->currentShield == PLAYER_SHIELD_DEKU ||
              (player->currentShield == PLAYER_SHIELD_HYLIAN && LINK_IS_ADULT)) &&
             this->collider.base.atFlags & AT_HIT && this->collider.base.atFlags & AT_TYPE_ENEMY &&

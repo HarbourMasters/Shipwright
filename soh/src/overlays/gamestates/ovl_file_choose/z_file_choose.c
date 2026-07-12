@@ -2560,8 +2560,8 @@ void FileChoose_LoadGame(GameState* thisx) {
         gSaveContext.buttonStatus[buttonIndex] = BTN_ENABLED;
     }
 
-    gSaveContext.forceRisingButtonAlphas = gSaveContext.nextHudVisibilityMode = gSaveContext.hudVisibilityMode = gSaveContext.hudVisibilityModeTimer =
-        gSaveContext.magicCapacity = 0;
+    gSaveContext.forceRisingButtonAlphas = gSaveContext.nextHudVisibilityMode = gSaveContext.hudVisibilityMode =
+        gSaveContext.hudVisibilityModeTimer = gSaveContext.magicCapacity = 0;
 
     gSaveContext.magicFillTarget = gSaveContext.magic;
     gSaveContext.magic = 0;

@@ -1555,7 +1555,8 @@ void func_80B56E38(EnZl3* this, PlayState* play) {
     s32 sfxId;
     SkelAnime* sp20 = &this->skelAnime;
 
-    if ((Animation_OnFrame(sp20, 6.0f) || Animation_OnFrame(sp20, 0.0f)) && (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND)) {
+    if ((Animation_OnFrame(sp20, 6.0f) || Animation_OnFrame(sp20, 0.0f)) &&
+        (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND)) {
         sfxId = 0x800;
         sfxId += SurfaceType_GetSfx(&play->colCtx, this->actor.floorPoly, this->actor.floorBgId);
         Sfx_PlaySfxAtPos(&this->actor.projectedPos, sfxId);

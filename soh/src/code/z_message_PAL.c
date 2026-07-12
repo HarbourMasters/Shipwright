@@ -4631,7 +4631,8 @@ void Message_Update(PlayState* play) {
                     (msgCtx->textId != 0x3055 && gSaveContext.cutsceneIndex < 0xFFF0)) {
                     osSyncPrintf("=== day_time=%x ", ((void)0, gSaveContext.cutsceneIndex));
                     if (play->activeCamera == CAM_ID_MAIN) {
-                        if (gSaveContext.prevHudVisibilityMode == 0 || gSaveContext.prevHudVisibilityMode == 1 || gSaveContext.prevHudVisibilityMode == 2) {
+                        if (gSaveContext.prevHudVisibilityMode == 0 || gSaveContext.prevHudVisibilityMode == 1 ||
+                            gSaveContext.prevHudVisibilityMode == 2) {
                             gSaveContext.prevHudVisibilityMode = 0x32;
                         }
                         gSaveContext.hudVisibilityMode = 0;

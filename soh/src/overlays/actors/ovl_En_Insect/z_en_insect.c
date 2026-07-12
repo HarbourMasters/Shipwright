@@ -265,7 +265,8 @@ void EnInsect_SlowDown(EnInsect* this, PlayState* play) {
     }
 
     if (((this->insectFlags & 4) && this->lifeTimer <= 0) ||
-        ((sp2E == 2 || sp2E == 3) && (this->insectFlags & 1) && (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) && D_80A7DEB8 >= 4)) {
+        ((sp2E == 2 || sp2E == 3) && (this->insectFlags & 1) && (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) &&
+         D_80A7DEB8 >= 4)) {
         EnInsect_SetupDig(this);
     } else if ((this->insectFlags & 1) && (this->actor.bgCheckFlags & 0x40)) {
         EnInsect_SetupWalkOnWater(this);
@@ -308,7 +309,8 @@ void EnInsect_Crawl(EnInsect* this, PlayState* play) {
     }
 
     if (((this->insectFlags & 4) && this->lifeTimer <= 0) ||
-        ((sp34 == 2 || sp34 == 3) && (this->insectFlags & 1) && (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) && D_80A7DEB8 >= 4)) {
+        ((sp34 == 2 || sp34 == 3) && (this->insectFlags & 1) && (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) &&
+         D_80A7DEB8 >= 4)) {
         EnInsect_SetupDig(this);
     } else if ((this->insectFlags & 1) && (this->actor.bgCheckFlags & 0x40)) {
         EnInsect_SetupWalkOnWater(this);
