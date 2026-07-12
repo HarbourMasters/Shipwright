@@ -3257,7 +3257,7 @@ typedef enum {
 
     // #### `result`
     // ```c
-    // (enHorse->hbaTimer >= 80 && CHECK_BTN_ANY(play->state.input[0].press.button, BTN_A | BTN_B | BTN_START))
+    // (isFanfarePlaying != 1 && gSaveContext.minigameState != 3)
     // ```
     // Prevent custom fanfares set to loop from softlocking Horseback Archery by
     // letting players escape the cutscene with A/B/start after a normal number of playframes.
