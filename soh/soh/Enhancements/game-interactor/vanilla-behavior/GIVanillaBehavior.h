@@ -3247,7 +3247,7 @@ typedef enum {
 
     // #### `result`
     // ```c
-    // (enHorse->hbaFlags & 1)
+    // play->interfaceCtx.hbaAmmo == 0
     // ```
     // Prevent custom fanfares set to loop from softlocking Horseback Archery by
     // letting players escape the cutscene with A/B/start after a normal number of playframes.
