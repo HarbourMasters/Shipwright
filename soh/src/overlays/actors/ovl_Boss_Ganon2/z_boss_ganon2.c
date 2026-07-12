@@ -10,6 +10,7 @@
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/savestate_serialize.h"
 
 #include <string.h>
 
@@ -56,23 +57,36 @@ const ActorInit Boss_Ganon2_InitVars = {
 
 #include "z_boss_ganon2_data.c"
 
-Vec3f D_8090EB20;
+static Vec3f D_8090EB20;
 
-EnZl3* sBossGanon2Zelda;
+static EnZl3* sBossGanon2Zelda;
 
-Actor* D_8090EB30;
+static Actor* D_8090EB30;
 
-BossGanon2Effect sBossGanon2Particles[100];
+static BossGanon2Effect sBossGanon2Particles[100];
 
-s32 sBossGanon2Seed1;
-s32 sBossGanon2Seed2;
-s32 sBossGanon2Seed3;
+static s32 sBossGanon2Seed1;
+static s32 sBossGanon2Seed2;
+static s32 sBossGanon2Seed3;
 
-Vec3f D_809105D8[4];
+static Vec3f D_809105D8[4];
 
-Vec3f D_80910608[4];
+static Vec3f D_80910608[4];
 
-s8 D_80910638;
+static s8 D_80910638;
+
+#define BOSS_GANON2_SHIP_SAVESTATE_FIELDS(F) \
+    F(D_8090EB20)                            \
+    F(D_80910638)                            \
+    F(sBossGanon2Zelda)                      \
+    F(D_8090EB30)                            \
+    F(sBossGanon2Seed1)                      \
+    F(sBossGanon2Seed2)                      \
+    F(sBossGanon2Seed3)                      \
+    F(D_809105D8)                            \
+    F(D_80910608)                            \
+    F(sBossGanon2Particles)
+SHIP_SAVESTATE_DEFINE(BossGanon2, BOSS_GANON2_SHIP_SAVESTATE_FIELDS)
 
 void BossGanon2_InitRand(s32 seedInit0, s32 seedInit1, s32 seedInit2) {
     sBossGanon2Seed1 = seedInit0;
@@ -234,7 +248,7 @@ void func_808FD5F4(BossGanon2* this, PlayState* play) {
                 func_80064520(play, &play->csCtx);
                 Player_SetCsActionWithHaltedActors(play, &this->actor, 8);
                 this->subCamId = Play_CreateSubCamera(play);
-                Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+                Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_WAIT);
                 Play_ChangeCameraStatus(play, this->subCamId, CAM_STAT_ACTIVE);
                 sBossGanon2Zelda = (EnZl3*)Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_ZL3, 970.0f,
                                                               1086.0f, -200.0f, 0, 0, 0, 1);
@@ -359,7 +373,7 @@ void func_808FD5F4(BossGanon2* this, PlayState* play) {
             Math_ApproachF(&this->subCamEye.z, -20.0f, 0.1f, this->unk_410.x * 170.0f);
             Math_ApproachF(&this->unk_410.x, 0.04f, 1.0f, 0.0005f);
             if (this->csTimer == 100) {
-                Camera* camera = Play_GetCamera(play, MAIN_CAM);
+                Camera* camera = Play_GetCamera(play, CAM_ID_MAIN);
 
                 camera->eye = this->subCamEye;
                 camera->eyeNext = this->subCamEye;
@@ -380,7 +394,7 @@ void func_808FD5F4(BossGanon2* this, PlayState* play) {
                 this->csTimer = 0;
                 func_80064520(play, &play->csCtx);
                 this->subCamId = Play_CreateSubCamera(play);
-                Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+                Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_WAIT);
                 Play_ChangeCameraStatus(play, this->subCamId, CAM_STAT_ACTIVE);
             } else {
                 break;
@@ -585,7 +599,7 @@ void func_808FD5F4(BossGanon2* this, PlayState* play) {
                 sp8D = true;
             }
             if (this->csTimer >= 60) {
-                Camera* camera = Play_GetCamera(play, MAIN_CAM);
+                Camera* camera = Play_GetCamera(play, CAM_ID_MAIN);
 
                 camera->eye = this->subCamEye;
                 camera->eyeNext = this->subCamEye;
@@ -915,7 +929,7 @@ void func_808FD5F4(BossGanon2* this, PlayState* play) {
                 Audio_PlayActorSound2(&this->actor, NA_SE_EN_MGANON_ROAR);
             }
             if (Animation_OnFrame(&this->skelAnime, this->unk_194)) {
-                Camera* camera = Play_GetCamera(play, MAIN_CAM);
+                Camera* camera = Play_GetCamera(play, CAM_ID_MAIN);
 
                 camera->eye = this->subCamEye;
                 camera->eyeNext = this->subCamEye;
@@ -1076,7 +1090,7 @@ void func_808FFCFC(BossGanon2* this, PlayState* play) {
         this->unk_311 = false;
         func_80900580(this, play);
         Audio_StopSfxById(NA_SE_EN_MGANON_UNARI);
-    } else if ((this->actor.bgCheckFlags & 8) && func_808FFA24(this, play)) {
+    } else if ((this->actor.bgCheckFlags & BGCHECKFLAG_WALL) && func_808FFA24(this, play)) {
         this->unk_311 = false;
         func_80900580(this, play);
         Audio_StopSfxById(NA_SE_EN_MGANON_UNARI);
@@ -1332,7 +1346,7 @@ void func_80900890(BossGanon2* this, PlayState* play) {
     f32 temp_f12;
     f32 temp_f2;
 
-    sp4C = Play_GetCamera(play, MAIN_CAM);
+    sp4C = Play_GetCamera(play, CAM_ID_MAIN);
     player = GET_PLAYER(play);
     SkelAnime_Update(&this->skelAnime);
     this->csTimer++;
@@ -1342,7 +1356,7 @@ void func_80900890(BossGanon2* this, PlayState* play) {
         case 0:
             func_80064520(play, &play->csCtx);
             this->subCamId = Play_CreateSubCamera(play);
-            Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+            Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_WAIT);
             Play_ChangeCameraStatus(play, this->subCamId, CAM_STAT_ACTIVE);
             Player_SetCsActionWithHaltedActors(play, &this->actor, 8);
             this->csState = 1;
@@ -1385,7 +1399,7 @@ void func_80900890(BossGanon2* this, PlayState* play) {
                 Message_StartTextbox(play, 0x70D7, NULL);
             }
             if ((this->unk_1A2[1] < 30) && (Message_GetState(&play->msgCtx) == TEXT_STATE_NONE)) {
-                temp_v0 = Play_GetCamera(play, MAIN_CAM);
+                temp_v0 = Play_GetCamera(play, CAM_ID_MAIN);
                 temp_v0->eye = this->subCamEye;
                 temp_v0->eyeNext = this->subCamEye;
                 temp_v0->at = this->subCamAt;
@@ -1399,7 +1413,7 @@ void func_80900890(BossGanon2* this, PlayState* play) {
         case 10:
             func_80064520(play, &play->csCtx);
             this->subCamId = Play_CreateSubCamera(play);
-            Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+            Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_WAIT);
             Play_ChangeCameraStatus(play, this->subCamId, CAM_STAT_ACTIVE);
             this->csState = 11;
             this->unk_334 = 1;
@@ -1416,7 +1430,7 @@ void func_80900890(BossGanon2* this, PlayState* play) {
             this->subCamAt.y = (player->actor.world.pos.y + 60.0f) - 25.0f;
             this->subCamAt.z = player->actor.world.pos.z;
             if (this->csTimer == 80) {
-                temp_v0_2 = Play_GetCamera(play, MAIN_CAM);
+                temp_v0_2 = Play_GetCamera(play, CAM_ID_MAIN);
                 temp_v0_2->eye = this->subCamEye;
                 temp_v0_2->eyeNext = this->subCamEye;
                 temp_v0_2->at = this->subCamAt;
@@ -1537,7 +1551,7 @@ void func_8090120C(BossGanon2* this, PlayState* play) {
         case 0:
             func_80064520(play, &play->csCtx);
             this->subCamId = Play_CreateSubCamera(play);
-            Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+            Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_WAIT);
             Play_ChangeCameraStatus(play, this->subCamId, CAM_STAT_ACTIVE);
             Player_SetCsActionWithHaltedActors(play, &this->actor, 8);
             this->csState = 1;
@@ -1672,7 +1686,7 @@ void func_8090120C(BossGanon2* this, PlayState* play) {
             this->subCamAt.y = player->actor.world.pos.y + 40.0f;
             this->subCamAt.z = player->actor.world.pos.z;
             if (this->csTimer == 166) {
-                temp_v0_2 = Play_GetCamera(play, MAIN_CAM);
+                temp_v0_2 = Play_GetCamera(play, CAM_ID_MAIN);
                 temp_v0_2->eye = this->subCamEye;
                 temp_v0_2->eyeNext = this->subCamEye;
                 temp_v0_2->at = this->subCamAt;
@@ -1694,7 +1708,7 @@ void func_8090120C(BossGanon2* this, PlayState* play) {
                 GameInteractor_ExecuteOnBossDefeat(&this->actor);
                 if (GameInteractor_Should(VB_SLAY_GANON, true)) {
                     this->subCamId = Play_CreateSubCamera(play);
-                    Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+                    Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_WAIT);
                     Play_ChangeCameraStatus(play, this->subCamId, CAM_STAT_ACTIVE);
                     this->csState = 7;
                     this->csTimer = 0;
@@ -2057,7 +2071,7 @@ void BossGanon2_Update(Actor* thisx, PlayState* play) {
     this->actor.shape.rot = this->actor.world.rot;
     if (this->unk_335 != 0) {
         Actor_UpdateBgCheckInfo(play, &this->actor, 60.0f, 60.0f, 100.0f, 5);
-        if (this->actor.bgCheckFlags & 1) {
+        if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
             if (this->actor.velocity.y < -5.0f) {
                 Actor_RequestQuakeAndRumble(&this->actor, play, 5, 20);
                 Sfx_PlaySfxCentered(NA_SE_IT_BOMB_EXPLOSION);

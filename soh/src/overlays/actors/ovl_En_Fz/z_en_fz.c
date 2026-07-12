@@ -326,7 +326,7 @@ void EnFz_SpawnIceSmokeActiveState(EnFz* this) {
 void EnFz_ApplyDamage(EnFz* this, PlayState* play) {
     Vec3f vec;
 
-    if (this->isMoving && ((this->actor.bgCheckFlags & 8) ||
+    if (this->isMoving && ((this->actor.bgCheckFlags & BGCHECKFLAG_WALL) ||
                            (Actor_TestFloorInDirection(&this->actor, play, 60.0f, this->actor.world.rot.y) == 0))) {
         this->actor.bgCheckFlags &= ~8;
         this->isMoving = false;

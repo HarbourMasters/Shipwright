@@ -9,6 +9,7 @@
 #include "objects/object_ts/object_ts.h"
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
+#include "soh/Enhancements/savestate_serialize.h"
 
 #define FLAGS                                                                                  \
     (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED | \
@@ -40,7 +41,11 @@ const ActorInit En_Takara_Man_InitVars = {
     (ActorResetFunc)EnTakaraMan_Reset,
 };
 
-u8 sTakaraIsInitialized = false;
+static u8 sTakaraIsInitialized = false;
+
+#define EN_TAKARA_MAN_SHIP_SAVESTATE_FIELDS(F) F(sTakaraIsInitialized)
+
+SHIP_SAVESTATE_DEFINE(EnTakaraMan, EN_TAKARA_MAN_SHIP_SAVESTATE_FIELDS)
 
 void EnTakaraMan_Reset(Actor* thisx, PlayState* play) {
     sTakaraIsInitialized = false;

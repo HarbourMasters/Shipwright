@@ -234,11 +234,11 @@ void EnBombf_Move(EnBombf* this, PlayState* play) {
 
     this->flowerBombScale = 1.0f;
 
-    if (!(this->actor.bgCheckFlags & 1)) {
+    if (!(this->actor.bgCheckFlags & BGCHECKFLAG_GROUND)) {
         Math_SmoothStepToF(&this->actor.speedXZ, 0.0f, 1.0f, 0.025f, 0.0f);
     } else {
         Math_SmoothStepToF(&this->actor.speedXZ, 0.0f, 1.0f, 1.5f, 0.0f);
-        if ((this->actor.bgCheckFlags & 2) && (this->actor.velocity.y < -6.0f)) {
+        if ((this->actor.bgCheckFlags & BGCHECKFLAG_GROUND_TOUCH) && (this->actor.velocity.y < -6.0f)) {
             Actor_PlaySfx_SurfaceBomb(play, &this->actor);
             this->actor.velocity.y *= -0.5f;
         } else if (this->timer >= 4) {

@@ -327,7 +327,7 @@ void GameInteractor::RawAction::GiveOrTakeShield(int32_t shield) {
 }
 
 void GameInteractor::RawAction::ForceInterfaceUpdate() {
-    gSaveContext.unk_13E8 = 50;
+    gSaveContext.nextHudVisibilityMode = 50;
     Interface_Update(gPlayState);
 }
 

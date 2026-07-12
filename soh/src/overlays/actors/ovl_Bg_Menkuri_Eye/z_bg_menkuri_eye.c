@@ -7,6 +7,7 @@
 #include "z_bg_menkuri_eye.h"
 #include "objects/object_menkuri_objects/object_menkuri_objects.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/savestate_serialize.h"
 
 #define FLAGS ACTOR_FLAG_DRAW_CULLING_DISABLED
 
@@ -29,7 +30,11 @@ const ActorInit Bg_Menkuri_Eye_InitVars = {
     (ActorResetFunc)BgMenkuriEye_Reset,
 };
 
-s32 D_8089C1A0;
+static s32 D_8089C1A0;
+
+#define BG_MENKURI_EYE_SHIP_SAVESTATE_FIELDS(F) F(D_8089C1A0)
+
+SHIP_SAVESTATE_DEFINE(BgMenkuriEye, BG_MENKURI_EYE_SHIP_SAVESTATE_FIELDS)
 
 static ColliderJntSphElementInit sJntSphElementsInit[1] = {
     {

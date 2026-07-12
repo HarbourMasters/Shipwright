@@ -9,6 +9,7 @@
 #include "scenes/dungeons/ganontika/ganontika_scene.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ResourceManagerHelpers.h"
+#include "soh/Enhancements/savestate_serialize.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
@@ -139,7 +140,12 @@ void DemoKekkai_Destroy(Actor* thisx, PlayState* play) {
     Collider_DestroyCylinder(play, &this->collider2);
 }
 
-Vec3f demoKekkaiVel = { 0.0f, 0.0f, 0.0f };
+static Vec3f demoKekkaiVel = { 0.0f, 0.0f, 0.0f };
+
+#define DEMO_KEKKAI_SHIP_SAVESTATE_FIELDS(F) F(demoKekkaiVel)
+
+SHIP_SAVESTATE_DEFINE(DemoKekkai, DEMO_KEKKAI_SHIP_SAVESTATE_FIELDS)
+
 void DemoKekkai_SpawnParticles(DemoKekkai* this, PlayState* play) {
     static Vec3f accel = { 0.0f, 0.0f, 0.0f };
     static Color_RGBA8 lightYellow = { 255, 255, 170, 0 };

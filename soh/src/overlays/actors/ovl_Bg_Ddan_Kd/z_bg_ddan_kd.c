@@ -6,6 +6,7 @@
 
 #include "z_bg_ddan_kd.h"
 #include "objects/object_ddan_objects/object_ddan_objects.h"
+#include "soh/Enhancements/savestate_serialize.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
@@ -105,7 +106,7 @@ void BgDdanKd_CheckForExplosions(BgDdanKd* this, PlayState* play) {
     if ((explosive != NULL) && (this->prevExplosive != NULL) && (explosive != this->prevExplosive) &&
         (Math_Vec3f_DistXZ(&this->prevExplosivePos, &explosive->world.pos) > 80.0f)) {
         BgDdanKd_SetupAction(this, BgDdanKd_LowerStairs);
-        OnePointCutscene_Init(play, 3050, 999, &this->dyna.actor, MAIN_CAM);
+        OnePointCutscene_Init(play, 3050, 999, &this->dyna.actor, CAM_ID_MAIN);
     } else {
         if (this->timer != 0) {
             this->timer--;
@@ -121,8 +122,14 @@ void BgDdanKd_CheckForExplosions(BgDdanKd* this, PlayState* play) {
     }
 }
 
-Vec3f sBgDdanKdVelocity = { 0.0f, 5.0f, 0.0f };
-Vec3f sBgDdanKdAccel = { 0.0f, -0.45f, 0.0f };
+static Vec3f sBgDdanKdVelocity = { 0.0f, 5.0f, 0.0f };
+static Vec3f sBgDdanKdAccel = { 0.0f, -0.45f, 0.0f };
+
+#define BG_DDAN_KD_SHIP_SAVESTATE_FIELDS(F) \
+    F(sBgDdanKdVelocity)                    \
+    F(sBgDdanKdAccel)
+
+SHIP_SAVESTATE_DEFINE(BgDdanKd, BG_DDAN_KD_SHIP_SAVESTATE_FIELDS)
 
 void BgDdanKd_LowerStairs(BgDdanKd* this, PlayState* play) {
     Vec3f pos1;

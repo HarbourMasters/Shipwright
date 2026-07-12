@@ -2542,7 +2542,7 @@ void FileChoose_LoadGame(GameState* thisx) {
     gSaveContext.eventInf[1] = 0;
     gSaveContext.eventInf[2] = 0;
     gSaveContext.eventInf[3] = 0;
-    gSaveContext.unk_13EE = 0x32;
+    gSaveContext.prevHudVisibilityMode = 0x32;
     gSaveContext.nayrusLoveTimer = 0;
     gSaveContext.healthAccumulator = 0;
     gSaveContext.magicState = MAGIC_STATE_IDLE;
@@ -2560,8 +2560,8 @@ void FileChoose_LoadGame(GameState* thisx) {
         gSaveContext.buttonStatus[buttonIndex] = BTN_ENABLED;
     }
 
-    gSaveContext.forceRisingButtonAlphas = gSaveContext.unk_13E8 = gSaveContext.unk_13EA = gSaveContext.unk_13EC =
-        gSaveContext.magicCapacity = 0;
+    gSaveContext.forceRisingButtonAlphas = gSaveContext.nextHudVisibilityMode = gSaveContext.hudVisibilityMode =
+        gSaveContext.hudVisibilityModeTimer = gSaveContext.magicCapacity = 0;
 
     gSaveContext.magicFillTarget = gSaveContext.magic;
     gSaveContext.magic = 0;
@@ -3062,7 +3062,7 @@ void FileChoose_InitContext(GameState* thisx) {
     this->bossRushOffset = 0;
     this->randomizerIndex = 0;
 
-    ShrinkWindow_SetVal(0);
+    Letterbox_SetSizeTarget(0);
 
     gSaveContext.skyboxTime = 0;
     gSaveContext.dayTime = 0;

@@ -7,6 +7,7 @@
 #include "z_bg_relay_objects.h"
 #include "objects/object_relay_objects/object_relay_objects.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/savestate_serialize.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
@@ -46,7 +47,12 @@ static InitChainEntry sInitChain[] = {
     ICHAIN_VEC3F_DIV1000(scale, 100, ICHAIN_STOP),
 };
 
-u32 D_808A9508 = 0;
+static u32 D_808A9508 = 0;
+
+#define BG_RELAY_OBJECTS_SHIP_SAVESTATE_FIELDS(F) F(D_808A9508)
+
+SHIP_SAVESTATE_DEFINE(BgRelayObjects, BG_RELAY_OBJECTS_SHIP_SAVESTATE_FIELDS)
+
 void BgRelayObjects_Init(Actor* thisx, PlayState* play) {
     BgRelayObjects* this = (BgRelayObjects*)thisx;
     s32 pad;

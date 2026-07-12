@@ -13,6 +13,7 @@
 #include "soh/frame_interpolation.h"
 #include <assert.h>
 #include "soh/ResourceManagerHelpers.h"
+#include "soh/Enhancements/savestate_serialize.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
@@ -309,7 +310,11 @@ void func_8096712C(Demo6K* this, PlayState* play) {
     }
 }
 
-Vec3f sDemo6kVelocity = { 0.0f, 0.0f, 0.0f };
+static Vec3f sDemo6kVelocity = { 0.0f, 0.0f, 0.0f };
+
+#define DEMO_6K_SHIP_SAVESTATE_FIELDS(F) F(sDemo6kVelocity)
+
+SHIP_SAVESTATE_DEFINE(Demo6k, DEMO_6K_SHIP_SAVESTATE_FIELDS)
 void func_80967244(Demo6K* this, PlayState* play) {
     static Vec3f accel = { 0.0f, 0.0f, 0.0f };
     static Color_RGBA8 primColor = { 255, 255, 255, 0 };

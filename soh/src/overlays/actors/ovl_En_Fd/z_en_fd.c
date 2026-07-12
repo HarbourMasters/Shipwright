@@ -509,7 +509,7 @@ void EnFd_SpinAndGrow(EnFd* this, PlayState* play) {
 }
 
 void EnFd_JumpToGround(EnFd* this, PlayState* play) {
-    if ((this->actor.bgCheckFlags & 1) && !(this->actor.velocity.y > 0.0f)) {
+    if ((this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) && !(this->actor.velocity.y > 0.0f)) {
         this->actor.velocity.y = 0.0f;
         this->actor.speedXZ = 0.0f;
         this->actor.world.rot.y = this->actor.shape.rot.y;

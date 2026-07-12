@@ -163,7 +163,7 @@ void EnHorseLinkChild_Init(Actor* thisx, PlayState* play) {
     this->unk_1F0 = 0;
     this->eyeTexIndex = 0;
 
-    if (gSaveContext.sceneSetupIndex > 3) {
+    if (gSaveContext.sceneLayer > 3) {
         func_80A69EC0(this);
     } else if (play->sceneNum == SCENE_LON_LON_RANCH) {
         if (!Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE)) {

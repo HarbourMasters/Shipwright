@@ -5,6 +5,7 @@
 #include <ship/window/gui/ConsoleWindow.h>
 #include <spdlog/spdlog.h>
 #include "soh/ShipUtils.h"
+#include "soh/cvar_prefixes.h"
 
 template <class DstType, class SrcType> bool IsType(const SrcType* src) {
     return dynamic_cast<const DstType*>(src) != nullptr;

@@ -319,7 +319,7 @@ void func_80A5372C(EnHeishi2* this, PlayState* play) {
     if (GameInteractor_Should(VB_PLAY_GATE_OPENING_OR_CLOSING_CS, true, this, false)) {
         this->unk_2F2[0] = 200;
         this->cameraId = Play_CreateSubCamera(play);
-        Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+        Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_WAIT);
         Play_ChangeCameraStatus(play, this->cameraId, CAM_STAT_ACTIVE);
         this->subCamEye.x = 947.0f;
         this->subCamEye.y = 1195.0f;
@@ -345,7 +345,7 @@ void func_80A53850(EnHeishi2* this, PlayState* play) {
     if ((this->unk_2F2[0] == 0) || (gate->unk_168 == 0)) {
         if (GameInteractor_Should(VB_PLAY_GATE_OPENING_OR_CLOSING_CS, true, this, true)) {
             Play_ClearCamera(play, this->cameraId);
-            Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_ACTIVE);
+            Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_ACTIVE);
         }
         Message_CloseTextbox(play);
         this->unk_30C = 1;
@@ -490,7 +490,7 @@ void func_80A53DF8(EnHeishi2* this, PlayState* play) {
     if (GameInteractor_Should(VB_PLAY_GATE_OPENING_OR_CLOSING_CS, true, this, false)) {
         this->unk_2F2[0] = 200;
         this->cameraId = Play_CreateSubCamera(play);
-        Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+        Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_WAIT);
         Play_ChangeCameraStatus(play, this->cameraId, CAM_STAT_ACTIVE);
         this->subCamEyeInit.x = -71.0f;
         this->subCamEye.x = -71.0f;
@@ -520,7 +520,7 @@ void func_80A53F30(EnHeishi2* this, PlayState* play) {
     if ((this->unk_2F2[0] == 0) || (gate->openingState == 0)) {
         if (GameInteractor_Should(VB_PLAY_GATE_OPENING_OR_CLOSING_CS, true, this, true)) {
             Play_ClearCamera(play, this->cameraId);
-            Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_ACTIVE);
+            Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_ACTIVE);
         }
         if ((this->unk_30A != 2)) {
             if (this->unk_30A == 0) {

@@ -279,7 +279,7 @@ s32 EnOwl_CheckInitTalk(EnOwl* this, PlayState* play, u16 textId, f32 targetDist
                 this->actionFlags &= ~0x40;
             }
         }
-        this->cameraIdx = OnePointCutscene_Init(play, 8700, timer, &this->actor, MAIN_CAM);
+        this->cameraIdx = OnePointCutscene_Init(play, 8700, timer, &this->actor, CAM_ID_MAIN);
         return true;
     } else {
         this->actor.textId = textId;

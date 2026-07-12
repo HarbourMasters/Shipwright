@@ -129,11 +129,11 @@ void BgHidanCurtain_WaitForSwitchOn(BgHidanCurtain* this, PlayState* play) {
     if (Flags_GetSwitch(play, this->actor.params)) {
         if (this->type == 1) {
             this->actionFunc = BgHidanCurtain_WaitForCutscene;
-            OnePointCutscene_Init(play, 3350, -99, &this->actor, MAIN_CAM);
+            OnePointCutscene_Init(play, 3350, -99, &this->actor, CAM_ID_MAIN);
             this->timer = 50;
         } else if (this->type == 3) {
             this->actionFunc = BgHidanCurtain_WaitForCutscene;
-            OnePointCutscene_Init(play, 3360, 60, &this->actor, MAIN_CAM);
+            OnePointCutscene_Init(play, 3360, 60, &this->actor, CAM_ID_MAIN);
             this->timer = 30;
         } else {
             this->actionFunc = BgHidanCurtain_TurnOff;
@@ -210,8 +210,8 @@ void BgHidanCurtain_Update(Actor* thisx, PlayState* play2) {
     BgHidanCurtainParams* hcParams = &sHCParams[this->size];
     f32 riseProgress;
 
-    if ((play->cameraPtrs[MAIN_CAM]->setting == CAM_SET_SLOW_CHEST_CS) ||
-        (play->cameraPtrs[MAIN_CAM]->setting == CAM_SET_TURN_AROUND)) {
+    if ((play->cameraPtrs[CAM_ID_MAIN]->setting == CAM_SET_SLOW_CHEST_CS) ||
+        (play->cameraPtrs[CAM_ID_MAIN]->setting == CAM_SET_TURN_AROUND)) {
         this->collider.base.atFlags &= ~AT_HIT;
     } else {
         if (this->collider.base.atFlags & AT_HIT) {
@@ -233,7 +233,7 @@ void BgHidanCurtain_Update(Actor* thisx, PlayState* play2) {
             this->collider.dim.height = hcParams->height * riseProgress;
             CollisionCheck_SetAT(play, &play->colChkCtx, &this->collider.base);
             CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider.base);
-            if (gSaveContext.sceneSetupIndex <= 3) {
+            if (gSaveContext.sceneLayer <= 3) {
                 Actor_PlaySfx_Flagged(&this->actor, NA_SE_EV_FIRE_PILLAR_S - SFX_FLAG);
             }
         } else if ((this->type == 1) && Flags_GetTreasure(play, this->treasureFlag)) {

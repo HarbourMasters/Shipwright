@@ -1,7 +1,10 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
 
-extern "C" PlayState* gPlayState;
+extern "C" {
+#include "z64.h"
+extern PlayState* gPlayState;
+}
 
 void DisableSandstormAfterTransition(int16_t sceneNum) {
     if (sceneNum == SCENE_HAUNTED_WASTELAND) {

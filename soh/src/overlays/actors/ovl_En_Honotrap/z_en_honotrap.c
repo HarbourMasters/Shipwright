@@ -431,7 +431,7 @@ void EnHonotrap_FlameChase(EnHonotrap* this, PlayState* play) {
         this->actor.speedXZ *= 0.1f;
         this->actor.velocity.y *= 0.1f;
         EnHonotrap_SetupFlameVanish(this);
-    } else if ((this->actor.bgCheckFlags & 8) || (this->timer <= 0)) {
+    } else if ((this->actor.bgCheckFlags & BGCHECKFLAG_WALL) || (this->timer <= 0)) {
         EnHonotrap_SetupFlameVanish(this);
     } else {
         EnHonotrap_FlameCollisionCheck(this, play);

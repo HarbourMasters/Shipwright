@@ -109,7 +109,7 @@ void func_80ACE13C(EnPart* this, PlayState* play) {
     if ((this->actor.params == 12) || (this->actor.params == 13)) {
         Actor_UpdateBgCheckInfo(play, &this->actor, 5.0f, 15.0f, 0.0f, 0x1D);
 
-        if ((this->actor.bgCheckFlags & 1) || (this->actor.world.pos.y <= this->actor.floorHeight)) {
+        if ((this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) || (this->actor.world.pos.y <= this->actor.floorHeight)) {
             this->action = 4;
             this->actor.speedXZ = 0.0f;
             this->actor.gravity = 0.0f;

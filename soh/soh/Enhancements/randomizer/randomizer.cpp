@@ -1033,6 +1033,41 @@ static std::unordered_map<RandomizerGet, GameplayStatTimestamp> randomizerGetToS
     { RG_BACK_TOWER_KEY, TIMESTAMP_FOUND_BACK_TOWER_KEY },
     { RG_HYLIA_LAB_KEY, TIMESTAMP_FOUND_HYLIA_LAB_KEY },
     { RG_FISHING_HOLE_KEY, TIMESTAMP_FOUND_FISHING_HOLE_KEY },
+
+    { RG_GREG_RUPEE, TIMESTAMP_FOUND_GREG },
+
+    { RG_CHILD_WALLET, TIMESTAMP_FOUND_CHILD_WALLET },
+    { RG_TYCOON_WALLET, TIMESTAMP_FOUND_TYCOON_WALLET },
+
+    { RG_DEKU_STICK_BAG, TIMESTAMP_FOUND_DEKU_STICK_BAG },
+    { RG_DEKU_NUT_BAG, TIMESTAMP_FOUND_DEKU_NUT_BAG },
+
+    { RG_POWER_BRACELET, TIMESTAMP_FOUND_GRAB },
+    { RG_CLIMB, TIMESTAMP_FOUND_CLIMB },
+    { RG_CRAWL, TIMESTAMP_FOUND_CRAWL },
+    { RG_OPEN_CHEST, TIMESTAMP_FOUND_OPEN_CHESTS },
+
+    { RG_SPEAK_DEKU, TIMESTAMP_FOUND_SPEAK_DEKU },
+    { RG_SPEAK_GERUDO, TIMESTAMP_FOUND_SPEAK_GERUDO },
+    { RG_SPEAK_GORON, TIMESTAMP_FOUND_SPEAK_GORON },
+    { RG_SPEAK_HYLIAN, TIMESTAMP_FOUND_SPEAK_HYLIAN },
+    { RG_SPEAK_KOKIRI, TIMESTAMP_FOUND_SPEAK_KOKIRI },
+    { RG_SPEAK_ZORA, TIMESTAMP_FOUND_SPEAK_ZORA },
+
+    { RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL, TIMESTAMP_FOUND_DMC_BEAN_SOUL },
+    { RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL, TIMESTAMP_FOUND_DMT_BEAN_SOUL },
+    { RG_DESERT_COLOSSUS_BEAN_SOUL, TIMESTAMP_FOUND_COLOSSUS_BEAN_SOUL },
+    { RG_GERUDO_VALLEY_BEAN_SOUL, TIMESTAMP_FOUND_GV_BEAN_SOUL },
+    { RG_GRAVEYARD_BEAN_SOUL, TIMESTAMP_FOUND_GY_BEAN_SOUL },
+    { RG_KOKIRI_FOREST_BEAN_SOUL, TIMESTAMP_FOUND_KF_BEAN_SOUL },
+    { RG_LAKE_HYLIA_BEAN_SOUL, TIMESTAMP_FOUND_LH_BEAN_SOUL },
+    { RG_LOST_WOODS_BRIDGE_BEAN_SOUL, TIMESTAMP_FOUND_LW_BRIDGE_BEAN_SOUL },
+    { RG_LOST_WOODS_BEAN_SOUL, TIMESTAMP_FOUND_LW_MEADOW_BEAN_SOUL },
+    { RG_ZORAS_RIVER_BEAN_SOUL, TIMESTAMP_FOUND_ZR_BEAN_SOUL },
+
+    { RG_SKELETON_KEY, TIMESTAMP_FOUND_SKELETON_KEY },
+
+    { RG_ROCS_FEATHER, TIMESTAMP_FOUND_ROCS_FEATHER },
 };
 
 // Gameplay stat tracking: Update time the item was acquired
@@ -1044,22 +1079,27 @@ void Randomizer_GameplayStats_SetTimestamp(uint16_t item) {
         time = 1;
     }
 
-    if (gSaveContext.ship.stats.itemTimestamp[item] == 0) {
-        if (item == RG_GANONS_CASTLE_BOSS_KEY) {
-            gSaveContext.ship.stats.itemTimestamp[ITEM_KEY_BOSS] = time;
-        } else if (item == RG_MASTER_SWORD) {
-            gSaveContext.ship.stats.itemTimestamp[ITEM_SWORD_MASTER] = time;
-        } else if (randomizerGetToStatsTimeStamp.contains((RandomizerGet)item)) {
-            gSaveContext.ship.stats.itemTimestamp[randomizerGetToStatsTimeStamp[(RandomizerGet)item]] = time;
-        } else if (item >= RG_EMPTY_BOTTLE && item <= RG_BOTTLE_WITH_BIG_POE) {
-            gSaveContext.ship.stats.itemTimestamp[ITEM_BOTTLE] = time;
-        } else if ((item >= RG_BOMBCHU_5 && item <= RG_BOMBCHU_20) || item == RG_PROGRESSIVE_BOMBCHU_BAG) {
-            gSaveContext.ship.stats.itemTimestamp[ITEM_BOMBCHU] = time;
-        } else if (item == RG_MAGIC_SINGLE) {
-            gSaveContext.ship.stats.itemTimestamp[ITEM_SINGLE_MAGIC] = time;
-        } else if (item == RG_DOUBLE_DEFENSE) {
-            gSaveContext.ship.stats.itemTimestamp[ITEM_DOUBLE_DEFENSE] = time;
-        }
+    int16_t timestampItem = -1;
+    if (item == RG_GANONS_CASTLE_BOSS_KEY) {
+        timestampItem = ITEM_KEY_BOSS;
+    } else if (item == RG_MASTER_SWORD) {
+        timestampItem = ITEM_SWORD_MASTER;
+    } else if (item >= RG_EMPTY_BOTTLE && item <= RG_BOTTLE_WITH_BIG_POE) {
+        timestampItem = ITEM_BOTTLE;
+    } else if ((item >= RG_BOMBCHU_5 && item <= RG_BOMBCHU_20) || item == RG_PROGRESSIVE_BOMBCHU_BAG) {
+        timestampItem = ITEM_BOMBCHU;
+    } else if (item == RG_MAGIC_SINGLE) {
+        timestampItem = ITEM_SINGLE_MAGIC;
+    } else if (item == RG_DOUBLE_DEFENSE) {
+        timestampItem = ITEM_DOUBLE_DEFENSE;
+    } else if (item >= RG_KEATON_MASK && item <= RG_MASK_OF_TRUTH) {
+        timestampItem = ITEM_MASK_KEATON + (item - RG_KEATON_MASK);
+    } else if (randomizerGetToStatsTimeStamp.contains((RandomizerGet)item)) {
+        timestampItem = randomizerGetToStatsTimeStamp[(RandomizerGet)item];
+    }
+
+    if (timestampItem != -1 && gSaveContext.ship.stats.itemTimestamp[timestampItem] == 0) {
+        gSaveContext.ship.stats.itemTimestamp[timestampItem] = time;
     }
 }
 
@@ -1104,7 +1144,6 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
             Rupees_ChangeBy(99);
         } else if (item == RG_GREG_RUPEE) {
             Rupees_ChangeBy(1);
-            gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_FOUND_GREG] = static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
         }
 
         return Return_Item_Entry(giEntry, RG_NONE);

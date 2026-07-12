@@ -1115,6 +1115,19 @@ typedef enum {
     /* -1 */ OCARINA_NOTE_INVALID = 0xFF
 } OcarinaNoteIdx;
 
+typedef enum OcarinaInstrumentId {
+    /* 0 */ OCARINA_INSTRUMENT_OFF,
+    /* 1 */ OCARINA_INSTRUMENT_DEFAULT,
+    /* 2 */ OCARINA_INSTRUMENT_MALON,
+    /* 3 */ OCARINA_INSTRUMENT_WHISTLE,
+    /* 4 */ OCARINA_INSTRUMENT_HARP,
+    /* 5 */ OCARINA_INSTRUMENT_GRIND_ORGAN,
+    /* 6 */ OCARINA_INSTRUMENT_FLUTE,
+    /* 7 */ OCARINA_INSTRUMENT_MAX,
+    /* 7 */ OCARINA_INSTRUMENT_DEFAULT_COPY1 = OCARINA_INSTRUMENT_MAX, // Unused but present in Sequence 0 table
+    /* 8 */ OCARINA_INSTRUMENT_DEFAULT_COPY2 = OCARINA_INSTRUMENT_MAX + 1 // Unused but present in Sequence 0 table
+} OcarinaInstrumentId;
+
 typedef struct {
     char* seqData;
     int32_t seqDataSize;

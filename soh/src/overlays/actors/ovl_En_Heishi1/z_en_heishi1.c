@@ -9,6 +9,7 @@
 #include "vt.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/savestate_serialize.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
@@ -32,7 +33,11 @@ void EnHeishi1_TurnTowardLink(EnHeishi1* this, PlayState* play);
 void EnHeishi1_Kick(EnHeishi1* this, PlayState* play);
 void EnHeishi1_WaitNight(EnHeishi1* this, PlayState* play);
 
-s32 sHeishi1PlayerIsCaught = false;
+static s32 sHeishi1PlayerIsCaught = false;
+
+#define EN_HEISHI1_SHIP_SAVESTATE_FIELDS(F) F(sHeishi1PlayerIsCaught)
+
+SHIP_SAVESTATE_DEFINE(EnHeishi1, EN_HEISHI1_SHIP_SAVESTATE_FIELDS)
 
 const ActorInit En_Heishi1_InitVars = {
     ACTOR_EN_HEISHI1,

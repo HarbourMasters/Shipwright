@@ -173,7 +173,7 @@ void BgMizuWater_WaitForAction(BgMizuWater* this, PlayState* play) {
             waterLevelActionIndex = BgMizuWater_GetWaterLevelActionIndex(this->actor.params, play);
             if (waterLevelActionIndex != 0) {
                 if (prevSwitchFlag != sWaterLevels[waterLevelActionIndex].switchFlag) {
-                    OnePointCutscene_Init(play, 3120, -100 - waterLevelActionIndex, NULL, MAIN_CAM);
+                    OnePointCutscene_Init(play, 3120, -100 - waterLevelActionIndex, NULL, CAM_ID_MAIN);
                     this->actor.params = sWaterLevels[waterLevelActionIndex].switchFlag;
                     this->targetY = sWaterLevels[waterLevelActionIndex].yDiff + this->baseY;
                 }

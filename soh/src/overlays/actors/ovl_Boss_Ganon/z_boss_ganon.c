@@ -13,6 +13,7 @@
 #include "soh/frame_interpolation.h"
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/savestate_serialize.h"
 #include <libultraship/bridge/resourcebridge.h>
 
 #include <string.h>
@@ -112,17 +113,27 @@ static ColliderCylinderInit sLightBallCylinderInit = {
 static u8 D_808E4C58[] = { 0, 12, 10, 12, 14, 16, 12, 14, 16, 12, 14, 16, 12, 14, 16, 10, 16, 14 };
 static Vec3f sZeroVec = { 0.0f, 0.0f, 0.0f };
 
-EnGanonMant* sBossGanonCape;
+static EnGanonMant* sBossGanonCape;
 
-s32 sBossGanonSeed1;
-s32 sBossGanonSeed3;
-s32 sBossGanonSeed2;
+static s32 sBossGanonSeed1;
+static s32 sBossGanonSeed3;
+static s32 sBossGanonSeed2;
 
-BossGanon* sBossGanonGanondorf;
+static BossGanon* sBossGanonGanondorf;
 
-EnZl3* sBossGanonZelda;
+static EnZl3* sBossGanonZelda;
 
-GanondorfEffect sBossGanonEffectBuf[200];
+static GanondorfEffect sBossGanonEffectBuf[200];
+
+#define BOSS_GANON_SHIP_SAVESTATE_FIELDS(F) \
+    F(sBossGanonSeed1)                      \
+    F(sBossGanonSeed2)                      \
+    F(sBossGanonSeed3)                      \
+    F(sBossGanonGanondorf)                  \
+    F(sBossGanonZelda)                      \
+    F(sBossGanonCape)                       \
+    F(sBossGanonEffectBuf)
+SHIP_SAVESTATE_DEFINE(BossGanon, BOSS_GANON_SHIP_SAVESTATE_FIELDS)
 
 static u8 sWindowShatterTex[2048] = { { 0 } };
 
@@ -569,7 +580,7 @@ void BossGanon_IntroCutscene(BossGanon* this, PlayState* play) {
             func_80064520(play, &play->csCtx);
             Player_SetCsActionWithHaltedActors(play, &this->actor, 8);
             this->csCamIndex = Play_CreateSubCamera(play);
-            Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+            Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_WAIT);
             Play_ChangeCameraStatus(play, this->csCamIndex, CAM_STAT_ACTIVE);
             this->csCamFov = 60.0f;
 
@@ -797,7 +808,7 @@ void BossGanon_IntroCutscene(BossGanon* this, PlayState* play) {
 
             if (this->csTimer == 20) {
                 Player_SetCsActionWithHaltedActors(play, &this->actor, 0x17);
-                Interface_ChangeAlpha(11); // show hearts only
+                Interface_ChangeHudVisibilityMode(11); // show hearts only
             }
 
             if (this->csTimer == 25) {
@@ -805,7 +816,7 @@ void BossGanon_IntroCutscene(BossGanon* this, PlayState* play) {
             }
 
             if (this->csTimer == 100) {
-                Interface_ChangeAlpha(1);
+                Interface_ChangeHudVisibilityMode(1);
             }
 
             if (this->csTimer == 120) {
@@ -1149,7 +1160,7 @@ void BossGanon_IntroCutscene(BossGanon* this, PlayState* play) {
             }
 
             if (this->csTimer == 120) {
-                mainCam = Play_GetCamera(play, MAIN_CAM);
+                mainCam = Play_GetCamera(play, CAM_ID_MAIN);
                 mainCam->eye = this->csCamEye;
                 mainCam->eyeNext = this->csCamEye;
                 mainCam->at = this->csCamAt;
@@ -1271,7 +1282,7 @@ void BossGanon_DeathAndTowerCutscene(BossGanon* this, PlayState* play) {
             func_80064520(play, &play->csCtx);
             Player_SetCsActionWithHaltedActors(play, &this->actor, 8);
             this->csCamIndex = Play_CreateSubCamera(play);
-            Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+            Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_WAIT);
             Play_ChangeCameraStatus(play, this->csCamIndex, CAM_STAT_ACTIVE);
 
             this->actor.world.pos.x = 0.0f;
@@ -1550,7 +1561,7 @@ void BossGanon_DeathAndTowerCutscene(BossGanon* this, PlayState* play) {
             func_80064520(play, &play->csCtx);
             Player_SetCsActionWithHaltedActors(play, &this->actor, 8);
             this->csCamIndex = Play_CreateSubCamera(play);
-            Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+            Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_WAIT);
             Play_ChangeCameraStatus(play, this->csCamIndex, CAM_STAT_ACTIVE);
             Animation_MorphToPlayOnce(&this->skelAnime, &gGanondorfCollapseAnim, 0.0f);
             this->fwork[1] = Animation_GetLastFrame(&gGanondorfDefeatedStartAnim);
@@ -1849,7 +1860,7 @@ void BossGanon_DeathAndTowerCutscene(BossGanon* this, PlayState* play) {
             this->csCamAt.z = (sBossGanonZelda->actor.world.pos.z - 25.0f) + 80.0f;
 
             if (this->csTimer > 50) {
-                mainCam = Play_GetCamera(play, MAIN_CAM);
+                mainCam = Play_GetCamera(play, CAM_ID_MAIN);
 
                 mainCam->eye = this->csCamEye;
                 mainCam->eyeNext = this->csCamEye;
@@ -4142,7 +4153,7 @@ void BossGanon_LightBall_Update(Actor* thisx, PlayState* play2) {
             spBA = 4;
         }
 
-        if ((spBA != 0) || (this->actor.bgCheckFlags & 1)) {
+        if ((spBA != 0) || (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND)) {
             f32 sp58;
             f32 sp54;
             f32 phi_f20;
@@ -4774,7 +4785,7 @@ void BossGanon_UpdateEffects(PlayState* play) {
                 }
             } else if (eff->type == GDF_EFF_LIGHTNING) {
                 if (eff->unk_3C == 0.0f) {
-                    eff->unk_44 = BINANG_TO_RAD(Camera_GetInputDirYaw(Play_GetCamera(play, MAIN_CAM)));
+                    eff->unk_44 = BINANG_TO_RAD(Camera_GetInputDirYaw(Play_GetCamera(play, CAM_ID_MAIN)));
                 } else {
                     eff->unk_44 = M_PI / 2;
                 }

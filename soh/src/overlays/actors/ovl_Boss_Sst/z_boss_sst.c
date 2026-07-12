@@ -397,7 +397,7 @@ void BossSst_HeadSetupIntro(BossSst* this, PlayState* play) {
     func_80064520(play, &play->csCtx);
     Player_SetCsActionWithHaltedActors(play, &this->actor, 8);
     sCutsceneCamera = Play_CreateSubCamera(play);
-    Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+    Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_WAIT);
     Play_ChangeCameraStatus(play, sCutsceneCamera, CAM_STAT_ACTIVE);
     Math_Vec3f_Copy(&sCameraAt, &player->actor.world.pos);
     if (Flags_GetEventChkInf(EVENTCHKINF_BEGAN_BONGO_BONGO_BATTLE)) {
@@ -432,9 +432,9 @@ void BossSst_HeadIntro(BossSst* this, PlayState* play) {
         sCameraAt.y += 30.0f;
         sCameraAt.z += 300.0f;
         Play_CameraSetAtEye(play, sCutsceneCamera, &sCameraAt, &sCameraEye);
-        Play_CopyCamera(play, MAIN_CAM, sCutsceneCamera);
+        Play_CopyCamera(play, CAM_ID_MAIN, sCutsceneCamera);
         Play_ChangeCameraStatus(play, sCutsceneCamera, CAM_STAT_WAIT);
-        Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_ACTIVE);
+        Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_ACTIVE);
         Play_ClearCamera(play, sCutsceneCamera);
         Flags_SetEventChkInf(EVENTCHKINF_BEGAN_BONGO_BONGO_BATTLE);
         BossSst_HeadSetupNeutral(this);
@@ -453,7 +453,7 @@ void BossSst_HeadIntro(BossSst* this, PlayState* play) {
         }
 
         Math_Vec3f_Copy(&sCameraAt, &player->actor.world.pos);
-        if (player->actor.bgCheckFlags & 2) {
+        if (player->actor.bgCheckFlags & BGCHECKFLAG_GROUND_TOUCH) {
             if (!this->ready) {
                 sFloor->dyna.actor.params = BONGOFLOOR_HIT;
                 this->ready = true;
@@ -1036,9 +1036,9 @@ void BossSst_HeadSetupDeath(BossSst* this, PlayState* play) {
     sHands[RIGHT]->colliderJntSph.base.ocFlags1 &= ~OC1_ON;
     Audio_QueueSeqCmd(0x1 << 28 | SEQ_PLAYER_BGM_MAIN << 24 | 0x100FF);
     sCutsceneCamera = Play_CreateSubCamera(play);
-    Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+    Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_WAIT);
     Play_ChangeCameraStatus(play, sCutsceneCamera, CAM_STAT_ACTIVE);
-    Play_CopyCamera(play, sCutsceneCamera, MAIN_CAM);
+    Play_CopyCamera(play, sCutsceneCamera, CAM_ID_MAIN);
     Player_SetCsActionWithHaltedActors(play, &player->actor, 8);
     func_80064520(play, &play->csCtx);
     Math_Vec3f_Copy(&sCameraEye, &GET_ACTIVE_CAM(play)->eye);
@@ -1197,9 +1197,9 @@ void BossSst_HeadFinish(BossSst* this, PlayState* play) {
     if (this->effectMode == BONGO_NULL) {
         if (this->timer < -170) {
             BossSst_UpdateDeathCamera(this, play);
-            Play_CopyCamera(play, MAIN_CAM, sCutsceneCamera);
+            Play_CopyCamera(play, CAM_ID_MAIN, sCutsceneCamera);
             Play_ChangeCameraStatus(play, sCutsceneCamera, CAM_STAT_WAIT);
-            Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_ACTIVE);
+            Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_ACTIVE);
             Play_ClearCamera(play, sCutsceneCamera);
             Player_SetCsActionWithHaltedActors(play, &GET_PLAYER(play)->actor, 7);
             func_80064534(play, &play->csCtx);
@@ -1652,7 +1652,7 @@ void BossSst_HandPunch(BossSst* this, PlayState* play) {
 
     this->actor.world.pos.x += this->actor.speedXZ * Math_SinS(this->actor.shape.rot.y);
     this->actor.world.pos.z += this->actor.speedXZ * Math_CosS(this->actor.shape.rot.y);
-    if (this->actor.bgCheckFlags & 8) {
+    if (this->actor.bgCheckFlags & BGCHECKFLAG_WALL) {
         BossSst_HandSetupRetreat(this);
     } else if (this->colliderJntSph.base.atFlags & AT_HIT) {
         Player_PlaySfx(&GET_PLAYER(play)->actor, NA_SE_PL_BODY_HIT);

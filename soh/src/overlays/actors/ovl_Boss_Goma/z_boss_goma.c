@@ -889,7 +889,7 @@ void BossGoma_Encounter(BossGoma* this, PlayState* play) {
             Math_ApproachS(&this->actor.world.rot.y, Actor_WorldYawTowardActor(&this->actor, &GET_PLAYER(play)->actor),
                            2, 0x7D0);
 
-            if (this->actor.bgCheckFlags & 1) {
+            if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
                 this->actionState = 130;
                 this->actor.velocity.y = 0.0f;
                 Animation_Change(&this->skelanime, &gGohmaInitialLandingAnim, 1.0f, 0.0f,
@@ -1441,7 +1441,7 @@ void BossGoma_FallJump(BossGoma* this, PlayState* play) {
     Math_ApproachS(&this->actor.world.rot.y, Actor_WorldYawTowardActor(&this->actor, &GET_PLAYER(play)->actor), 2,
                    0x7D0);
 
-    if (this->actor.bgCheckFlags & 1) {
+    if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
         BossGoma_SetupFloorLand(this);
         this->actor.velocity.y = 0.0f;
         BossGoma_PlayEffectsAndSfx(this, play, 0, 8);
@@ -1458,7 +1458,7 @@ void BossGoma_FallStruckDown(BossGoma* this, PlayState* play) {
     Math_ApproachS(&this->actor.world.rot.y, Actor_WorldYawTowardActor(&this->actor, &GET_PLAYER(play)->actor), 3,
                    0x7D0);
 
-    if (this->actor.bgCheckFlags & 1) {
+    if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
         BossGoma_SetupFloorLandStruckDown(this);
         this->actor.velocity.y = 0.0f;
         BossGoma_PlayEffectsAndSfx(this, play, 0, 8);
@@ -1651,11 +1651,11 @@ void BossGoma_FloorMain(BossGoma* this, PlayState* play) {
         }
     }
 
-    if (this->actor.bgCheckFlags & 1) {
+    if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
         this->actor.velocity.y = 0.0f;
     }
 
-    if (this->actor.bgCheckFlags & 8) {
+    if (this->actor.bgCheckFlags & BGCHECKFLAG_WALL) {
         BossGoma_SetupWallClimb(this);
     }
 
@@ -1702,7 +1702,7 @@ void BossGoma_CeilingMoveToCenter(BossGoma* this, PlayState* play) {
     Math_ApproachS(&this->actor.shape.rot.x, -0x8000, 3, 0x3E8);
 
     // avoid walking into a wall?
-    if (this->actor.bgCheckFlags & 8) {
+    if (this->actor.bgCheckFlags & BGCHECKFLAG_WALL) {
         angle = this->actor.shape.rot.y + 0x8000;
 
         if (angle < this->actor.wallYaw) {

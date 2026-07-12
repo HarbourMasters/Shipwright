@@ -6,6 +6,7 @@
 #include "soh/frame_interpolation.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/savestate_serialize.h"
 
 #include <string.h>
 
@@ -165,7 +166,7 @@ static Vec3f sTwinrovaPillarPos[] = {
     { 0.0f, 380.0f, -580.0f },
 };
 
-u8 sTwInitalized = false;
+static u8 sTwInitalized = false;
 
 static InitChainEntry sInitChain[] = {
     ICHAIN_U8(targetMode, 5, ICHAIN_CONTINUE),
@@ -198,7 +199,13 @@ static u8 D_8094C878;
 static s16 D_8094C87A;
 static s16 D_8094C87C;
 static u8 D_8094C87E;
-BossTwEffect sTwEffects[150];
+static BossTwEffect sTwEffects[150];
+
+#define BOSS_TW_SHIP_SAVESTATE_FIELDS(F) \
+    F(sTwInitalized)                     \
+    F(sTwEffects)
+
+SHIP_SAVESTATE_DEFINE(BossTw, BOSS_TW_SHIP_SAVESTATE_FIELDS)
 
 void BossTw_AddDotEffect(PlayState* play, Vec3f* initalPos, Vec3f* initalSpeed, Vec3f* accel, f32 scale, s16 args,
                          s16 countLimit) {
@@ -1368,7 +1375,7 @@ void BossTw_HitByBeam(BossTw* this, PlayState* play) {
     Actor_UpdateBgCheckInfo(play, &this->actor, 50.0f, 50.0f, 100.0f, 4);
     this->actor.world.pos.y += 50.0f;
 
-    if (this->actor.bgCheckFlags & 1) {
+    if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
         this->actor.speedXZ = 0.0f;
     }
 
@@ -1685,7 +1692,7 @@ void BossTw_TwinrovaMergeCS(BossTw* this, PlayState* play) {
             }
 
             if (this->timers[2] == 1) {
-                Camera* cam = Play_GetCamera(play, MAIN_CAM);
+                Camera* cam = Play_GetCamera(play, CAM_ID_MAIN);
 
                 cam->eye = this->subCamEye;
                 cam->eyeNext = this->subCamEye;
@@ -2247,7 +2254,7 @@ void BossTw_TwinrovaIntroCS(BossTw* this, PlayState* play) {
             }
 
             if (this->work[CS_TIMER_1] == 260) {
-                Camera* cam = Play_GetCamera(play, MAIN_CAM);
+                Camera* cam = Play_GetCamera(play, CAM_ID_MAIN);
 
                 cam->eye = this->subCamEye;
                 cam->eyeNext = this->subCamEye;
@@ -2600,7 +2607,7 @@ void BossTw_TwinrovaDeathCS(BossTw* this, PlayState* play) {
     s16 i;
     Vec3f spD0;
     Player* player = GET_PLAYER(play);
-    Camera* mainCam = Play_GetCamera(play, MAIN_CAM);
+    Camera* mainCam = Play_GetCamera(play, CAM_ID_MAIN);
 
     SkelAnime_Update(&this->skelAnime);
     this->work[UNK_S8] += 20;
@@ -2794,7 +2801,7 @@ void BossTw_TwinrovaDeathCS(BossTw* this, PlayState* play) {
             Actor_SetScale(&sKoumePtr->actor, sKoumePtr->actor.scale.x);
             Actor_SetScale(&sKotakePtr->actor, sKoumePtr->actor.scale.x);
             if (this->work[CS_TIMER_2] >= 1020) {
-                mainCam = Play_GetCamera(play, MAIN_CAM);
+                mainCam = Play_GetCamera(play, CAM_ID_MAIN);
                 mainCam->eye = this->subCamEye;
                 mainCam->eyeNext = this->subCamEye;
                 mainCam->at = this->subCamAt;
@@ -5333,7 +5340,7 @@ void BossTw_TwinrovaStun(BossTw* this, PlayState* play) {
         Animation_MorphToLoop(&this->skelAnime, &gTwinrovaStunLoopAnim, 0.0f);
     }
 
-    if (this->actor.bgCheckFlags & 1) {
+    if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
         this->actor.velocity.y = 0.0f;
     }
 

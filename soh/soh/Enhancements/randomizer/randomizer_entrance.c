@@ -590,7 +590,7 @@ void Entrance_OverrideWeatherState() {
     gPlayState->envCtx.gloomySkyMode = 0;
 
     // Weather only applyies to adult link
-    if (LINK_IS_CHILD || gSaveContext.sceneSetupIndex >= 4) {
+    if (LINK_IS_CHILD || gSaveContext.sceneLayer >= 4) {
         return;
     }
 

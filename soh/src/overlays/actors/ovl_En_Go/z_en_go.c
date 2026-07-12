@@ -425,7 +425,7 @@ void func_80A3F0E4(EnGo* this) {
 s32 EnGo_IsCameraModified(EnGo* this, PlayState* play) {
     f32 xyzDistSq;
     s16 yawDiff = this->actor.yawTowardsPlayer - this->actor.shape.rot.y;
-    Camera* mainCam = play->cameraPtrs[MAIN_CAM];
+    Camera* mainCam = play->cameraPtrs[CAM_ID_MAIN];
 
     if (fabsf(yawDiff) > 10920.0f) {
         return 0;
@@ -433,13 +433,13 @@ s32 EnGo_IsCameraModified(EnGo* this, PlayState* play) {
 
     xyzDistSq = (this->actor.scale.x / 0.01f) * SQ(100.0f);
     if ((this->actor.params & 0xF0) == 0x90) {
-        Camera_ChangeSetting(mainCam, CAM_SET_DIRECTED_YAW);
+        Camera_RequestSetting(mainCam, CAM_SET_DIRECTED_YAW);
         xyzDistSq *= 4.8f;
     }
 
     if (fabsf(this->actor.xyzDistToPlayerSq) > xyzDistSq) {
         if (mainCam->setting == CAM_SET_DIRECTED_YAW) {
-            Camera_ChangeSetting(mainCam, CAM_SET_NORMAL0);
+            Camera_RequestSetting(mainCam, CAM_SET_NORMAL0);
         }
         return 0;
     } else {
@@ -546,7 +546,7 @@ s32 EnGo_SpawnDust(EnGo* this, u8 initialTimer, f32 scale, f32 scaleStep, s32 nu
 }
 
 s32 EnGo_IsRollingOnGround(EnGo* this, s16 unkArg1, f32 unkArg2) {
-    if ((this->actor.bgCheckFlags & 1) == 0 || this->actor.velocity.y > 0.0f) {
+    if ((this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) == 0 || this->actor.velocity.y > 0.0f) {
         return false;
     } else if (this->interactInfo.talkState != NPC_TALK_STATE_IDLE) {
         return true;
@@ -779,7 +779,7 @@ void EnGo_CurledUp(EnGo* this, PlayState* play) {
 
         EnGo_SetupAction(this, EnGo_WakeUp);
         if ((this->actor.params & 0xF0) == 0x90) {
-            OnePointCutscene_Init(play, 4200, -99, &this->actor, MAIN_CAM);
+            OnePointCutscene_Init(play, 4200, -99, &this->actor, CAM_ID_MAIN);
         }
     }
 }
@@ -871,7 +871,7 @@ void EnGo_BiggoronActionFunc(EnGo* this, PlayState* play) {
                 EnGo_SetupAction(this, EnGo_Eyedrops);
                 play->msgCtx.msgMode = MSGMODE_PAUSED;
                 gSaveContext.subTimerState = SUBTIMER_STATE_OFF;
-                OnePointCutscene_Init(play, 4190, -99, &this->actor, MAIN_CAM);
+                OnePointCutscene_Init(play, 4190, -99, &this->actor, CAM_ID_MAIN);
             } else {
                 this->interactInfo.talkState = NPC_TALK_STATE_IDLE;
                 EnGo_SetupAction(this, EnGo_GetItem);

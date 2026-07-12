@@ -473,7 +473,7 @@ void EnDaiku_InitSubCamera(EnDaiku* this, PlayState* play) {
     this->subCamAtTarget.z = this->subCamAt.z = this->actor.world.pos.z;
 
     this->subCamId = Play_CreateSubCamera(play);
-    Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+    Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_WAIT);
     Play_ChangeCameraStatus(play, this->subCamId, CAM_STAT_ACTIVE);
 
     Play_CameraSetAtEye(play, this->subCamId, &this->subCamAt, &this->subCamEye);
@@ -506,7 +506,7 @@ void EnDaiku_EscapeSuccess(EnDaiku* this, PlayState* play) {
 
     if (GameInteractor_Should(VB_PLAY_CARPENTER_FREE_CS, true, this)) {
         Play_ClearCamera(play, this->subCamId);
-        Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_ACTIVE);
+        Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_ACTIVE);
     }
     this->subCamActive = false;
 

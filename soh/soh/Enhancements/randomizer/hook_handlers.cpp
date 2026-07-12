@@ -1382,8 +1382,8 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
 
                 // This is typically called when you close the text box after getting an item, in case a previous
                 // function hid the interface.
-                gSaveContext.unk_13EA = 0;
-                Interface_ChangeAlpha(0x32);
+                gSaveContext.hudVisibilityMode = 0;
+                Interface_ChangeHudVisibilityMode(0x32);
                 // EnItem00_SetupAction(item00, func_8001E5C8);
                 // *should = false;
             } else if (item00->actor.params == ITEM00_SOH_GIVE_ITEM_ENTRY_GI) {
@@ -1851,6 +1851,17 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             *should = false;
             break;
         }
+        case VB_PLAYER_SPAWN_SWIMMING: {
+            // Don't swim as adult coming from Domain to Lake with low water.
+            // Caused by waterbox first frame y surface always being -1313.0f
+            Player* player = va_arg(args, Player*);
+            if (gPlayState->sceneNum == SCENE_LAKE_HYLIA && LINK_IS_ADULT &&
+                !Flags_GetEventChkInf(EVENTCHKINF_RAISED_LAKE_HYLIA_WATER) && player->actor.world.pos.y > -1550.0f &&
+                player->actor.world.pos.y < -1500.0f) {
+                *should = false;
+            }
+            break;
+        }
         case VB_BE_ELIGIBLE_FOR_RAINBOW_BRIDGE: {
             *should = MeetsRainbowBridgeRequirements();
             break;
@@ -2173,7 +2184,7 @@ void RandomizerOnSceneInitHandler(int16_t sceneNum) {
                 // Reset room ctx back to prev room and then load the new room
                 gPlayState->roomCtx.status = 0;
                 gPlayState->roomCtx.curRoom = gPlayState->roomCtx.prevRoom;
-                func_8009728C(gPlayState, &gPlayState->roomCtx, replacedRoom);
+                Room_RequestNewRoom(gPlayState, &gPlayState->roomCtx, replacedRoom);
             }
         }
 

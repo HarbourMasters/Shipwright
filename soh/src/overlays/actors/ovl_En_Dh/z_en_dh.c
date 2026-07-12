@@ -406,7 +406,7 @@ void EnDh_Burrow(EnDh* this, PlayState* play) {
 
 void EnDh_SetupDamage(EnDh* this) {
     Animation_MorphToPlayOnce(&this->skelAnime, &object_dh_Anim_003D6C, -6.0f);
-    if (this->actor.bgCheckFlags & 1) {
+    if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
         this->actor.speedXZ = -1.0f;
     }
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_DEADHAND_DAMAGE);

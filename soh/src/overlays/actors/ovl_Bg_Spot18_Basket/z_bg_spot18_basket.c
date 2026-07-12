@@ -2,6 +2,7 @@
 #include "objects/object_spot18_obj/object_spot18_obj.h"
 #include "vt.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/savestate_serialize.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
@@ -85,7 +86,12 @@ void BgSpot18Basket_InitColliderJntSph(Actor* thisx, PlayState* play) {
     this->dyna.actor.colChkInfo.mass = MASS_IMMOVABLE;
 }
 
-s16 D_808B85D0 = 0;
+static s16 D_808B85D0 = 0;
+
+#define BG_SPOT18_BASKET_SHIP_SAVESTATE_FIELDS(F) F(D_808B85D0)
+
+SHIP_SAVESTATE_DEFINE(BgSpot18Basket, BG_SPOT18_BASKET_SHIP_SAVESTATE_FIELDS)
+
 void BgSpot18Basket_SpawnDustClouds(BgSpot18Basket* this, PlayState* play, f32 arg2) {
     Vec3f acceleration;
     Vec3f velocity;
@@ -178,7 +184,7 @@ void BgSpot18Basket_SetupInactive(BgSpot18Basket* this) {
 
 void BgSpot18Basket_Inactive(BgSpot18Basket* this, PlayState* play) {
     if (Flags_GetSwitch(play, (this->dyna.actor.params >> 8) & 0x3F)) {
-        OnePointCutscene_Init(play, 4220, 80, &this->dyna.actor, MAIN_CAM);
+        OnePointCutscene_Init(play, 4220, 80, &this->dyna.actor, CAM_ID_MAIN);
         BgSpot18Basket_SetupActivation(this);
     }
 }
@@ -228,7 +234,7 @@ void BgSpot18Basket_Spinning(BgSpot18Basket* this, PlayState* play) {
             if (positionDiff > 120.0f && positionDiff < 200.0f) {
                 if (Math3D_Dist2DSq(colliderBaseAc->world.pos.z, this->colliderJntSph.base.ac->world.pos.x,
                                     this->dyna.actor.world.pos.z, this->dyna.actor.world.pos.x) < SQ(32.0f)) {
-                    OnePointCutscene_Init(play, 4210, 240, &this->dyna.actor, MAIN_CAM);
+                    OnePointCutscene_Init(play, 4210, 240, &this->dyna.actor, CAM_ID_MAIN);
                     BgSpot18Basket_SetupExplosionCs(this);
                     func_8003EBF8(play, &play->colCtx.dyna, this->dyna.bgId);
                 }

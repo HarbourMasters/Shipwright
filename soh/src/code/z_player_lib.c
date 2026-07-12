@@ -710,7 +710,7 @@ void Player_ReleaseLockOn(Player* this) {
  * TODO: Learn more about this and give a name to PLAYER_STATE1_19
  */
 void Player_ClearZTargeting(Player* this) {
-    if ((this->actor.bgCheckFlags & 1) ||
+    if ((this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) ||
         (this->stateFlags1 & (PLAYER_STATE1_CLIMBING_LADDER | PLAYER_STATE1_ON_HORSE | PLAYER_STATE1_IN_WATER)) ||
         (!(this->stateFlags1 & (PLAYER_STATE1_JUMPING | PLAYER_STATE1_FREEFALL)) &&
          ((this->actor.world.pos.y - this->actor.floorHeight) < 100.0f))) {
@@ -930,7 +930,7 @@ s32 Player_GetEnvironmentalHazard(PlayState* play) {
         envHazard = PLAYER_ENV_HAZARD_HOTROOM - 1;
     } else if ((this->underwaterTimer > 80) &&
                ((this->currentBoots == PLAYER_BOOTS_IRON) || (this->underwaterTimer >= 300))) { // Deep underwater
-        envHazard = ((this->currentBoots == PLAYER_BOOTS_IRON) && (this->actor.bgCheckFlags & 1))
+        envHazard = ((this->currentBoots == PLAYER_BOOTS_IRON) && (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND))
                         ? (PLAYER_ENV_HAZARD_UNDERWATER_FLOOR - 1)
                         : (PLAYER_ENV_HAZARD_UNDERWATER_FREE - 1);
     } else if (this->stateFlags1 & PLAYER_STATE1_IN_WATER) { // Swimming

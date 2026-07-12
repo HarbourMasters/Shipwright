@@ -831,7 +831,7 @@ void EnHorse_Init(Actor* thisx, PlayState* play2) {
     this->actor.focus.pos.y += 70.0f;
     this->playerControlled = false;
 
-    if ((play->sceneNum == SCENE_LON_LON_RANCH) && (gSaveContext.sceneSetupIndex < 4)) {
+    if ((play->sceneNum == SCENE_LON_LON_RANCH) && (gSaveContext.sceneLayer < 4)) {
         if (this->type == HORSE_HNI) {
             if (this->actor.world.rot.z == 0 || !IS_DAY) {
                 Actor_Kill(&this->actor);
@@ -1755,7 +1755,7 @@ void EnHorse_Inactive(EnHorse* this, PlayState* play2) {
 
             // Focus the camera on Epona
             Camera_SetParam(play->cameraPtrs[0], 8, this);
-            Camera_ChangeSetting(play->cameraPtrs[0], 0x38);
+            Camera_RequestSetting(play->cameraPtrs[0], 0x38);
             Camera_SetCameraData(play->cameraPtrs[0], 4, NULL, NULL, 0x51, 0, 0);
         }
     }
@@ -1829,7 +1829,7 @@ void EnHorse_Idle(EnHorse* this, PlayState* play) {
                 this->followTimer = 0;
                 EnHorse_SetFollowAnimation(this, play);
                 Camera_SetParam(play->cameraPtrs[0], 8, this);
-                Camera_ChangeSetting(play->cameraPtrs[0], 0x38);
+                Camera_RequestSetting(play->cameraPtrs[0], 0x38);
                 Camera_SetCameraData(play->cameraPtrs[0], 4, NULL, NULL, 0x51, 0, 0);
             }
         } else {
@@ -3611,7 +3611,7 @@ void EnHorse_Update(Actor* thisx, PlayState* play2) {
             this->cyl1.base.atFlags &= ~1;
         }
 
-        if (gSaveContext.entranceIndex != ENTR_LON_LON_RANCH_ENTRANCE || gSaveContext.sceneSetupIndex != 9) {
+        if (gSaveContext.entranceIndex != ENTR_LON_LON_RANCH_ENTRANCE || gSaveContext.sceneLayer != 9) {
             if (this->dustFlags & 1) {
                 this->dustFlags &= ~1;
                 func_800287AC(play, &this->frontRightHoof, &dustVel, &dustAcc, EnHorse_RandInt(100) + 200,

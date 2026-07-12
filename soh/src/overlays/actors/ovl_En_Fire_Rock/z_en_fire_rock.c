@@ -193,7 +193,7 @@ void EnFireRock_Fall(EnFireRock* this, PlayState* play) {
             }
             break;
     }
-    if ((this->actor.bgCheckFlags & 1) && (this->timer == 0)) {
+    if ((this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) && (this->timer == 0)) {
         switch (this->type) {
             case FIRE_ROCK_SPAWNED_FALLING1:
             case FIRE_ROCK_SPAWNED_FALLING2:

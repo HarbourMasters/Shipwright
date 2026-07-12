@@ -822,10 +822,10 @@ void func_80860F84(EnTest* this, PlayState* play) {
             }
         }
 
-        if ((this->actor.bgCheckFlags & 8) ||
+        if ((this->actor.bgCheckFlags & BGCHECKFLAG_WALL) ||
             ((this->actor.params == STALFOS_TYPE_CEILING) &&
              !Actor_TestFloorInDirection(&this->actor, play, this->actor.speedXZ, this->actor.world.rot.y))) {
-            if (this->actor.bgCheckFlags & 8) {
+            if (this->actor.bgCheckFlags & BGCHECKFLAG_WALL) {
                 if (this->actor.speedXZ >= 0.0f) {
                     newYaw = this->actor.shape.rot.y + 0x3FFF;
                 } else {
@@ -1228,8 +1228,9 @@ void func_808621D4(EnTest* this, PlayState* play) {
     if (SkelAnime_Update(&this->skelAnime)) {
         this->actor.speedXZ = 0.0f;
 
-        if ((this->actor.bgCheckFlags & 8) && ((ABS((s16)(this->actor.wallYaw - this->actor.shape.rot.y)) < 0x38A4) &&
-                                               (this->actor.xzDistToPlayer < 80.0f))) {
+        if ((this->actor.bgCheckFlags & BGCHECKFLAG_WALL) &&
+            ((ABS((s16)(this->actor.wallYaw - this->actor.shape.rot.y)) < 0x38A4) &&
+             (this->actor.xzDistToPlayer < 80.0f))) {
             EnTest_SetupJumpUp(this);
         } else if (!EnTest_ReactToProjectile(play, this)) {
             EnTest_ChooseAction(this, play);
@@ -1239,8 +1240,9 @@ void func_808621D4(EnTest* this, PlayState* play) {
     }
 
     if (player->meleeWeaponState != 0) {
-        if ((this->actor.bgCheckFlags & 8) && ((ABS((s16)(this->actor.wallYaw - this->actor.shape.rot.y)) < 0x38A4) &&
-                                               (this->actor.xzDistToPlayer < 80.0f))) {
+        if ((this->actor.bgCheckFlags & BGCHECKFLAG_WALL) &&
+            ((ABS((s16)(this->actor.wallYaw - this->actor.shape.rot.y)) < 0x38A4) &&
+             (this->actor.xzDistToPlayer < 80.0f))) {
             EnTest_SetupJumpUp(this);
         } else if ((Rand_ZeroOne() > 0.7f) && (this->actor.params != STALFOS_TYPE_CEILING) &&
                    (player->meleeWeaponAnimation != 0x11)) {
@@ -1278,8 +1280,9 @@ void func_80862418(EnTest* this, PlayState* play) {
     }
 
     if (player->meleeWeaponState != 0) {
-        if ((this->actor.bgCheckFlags & 8) && ((ABS((s16)(this->actor.wallYaw - this->actor.shape.rot.y)) < 0x38A4) &&
-                                               (this->actor.xzDistToPlayer < 80.0f))) {
+        if ((this->actor.bgCheckFlags & BGCHECKFLAG_WALL) &&
+            ((ABS((s16)(this->actor.wallYaw - this->actor.shape.rot.y)) < 0x38A4) &&
+             (this->actor.xzDistToPlayer < 80.0f))) {
             EnTest_SetupJumpUp(this);
         } else if ((Rand_ZeroOne() > 0.7f) && (this->actor.params != STALFOS_TYPE_CEILING) &&
                    (player->meleeWeaponAnimation != 0x11)) {
@@ -1324,7 +1327,7 @@ void EnTest_Stunned(EnTest* this, PlayState* play) {
         if (this->actor.colChkInfo.health == 0) {
             func_80862FA8(this, play);
         } else if (player->meleeWeaponState != 0) {
-            if ((this->actor.bgCheckFlags & 8) &&
+            if ((this->actor.bgCheckFlags & BGCHECKFLAG_WALL) &&
                 ((ABS((s16)(this->actor.wallYaw - this->actor.shape.rot.y)) < 0x38A4) &&
                  (this->actor.xzDistToPlayer < 80.0f))) {
                 EnTest_SetupJumpUp(this);
@@ -1393,10 +1396,10 @@ void func_808628C8(EnTest* this, PlayState* play) {
         }
     }
 
-    if ((this->actor.bgCheckFlags & 8) ||
+    if ((this->actor.bgCheckFlags & BGCHECKFLAG_WALL) ||
         ((this->actor.params == STALFOS_TYPE_CEILING) &&
          !Actor_TestFloorInDirection(&this->actor, play, this->actor.speedXZ, this->actor.shape.rot.y + 0x3FFF))) {
-        if (this->actor.bgCheckFlags & 8) {
+        if (this->actor.bgCheckFlags & BGCHECKFLAG_WALL) {
             if (this->actor.speedXZ >= 0.0f) {
                 newYaw = (this->actor.shape.rot.y + 0x3FFF);
             } else {
@@ -1724,7 +1727,7 @@ void EnTest_Update(Actor* thisx, PlayState* play) {
             if (this->actor.floorHeight <= this->actor.home.pos.y) {
                 this->actor.floorHeight = this->actor.home.pos.y;
             }
-        } else if (this->actor.bgCheckFlags & 2) {
+        } else if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND_TOUCH) {
             floorProperty = func_80041EA4(&play->colCtx, this->actor.floorPoly, this->actor.floorBgId);
 
             if ((floorProperty == 5) || (floorProperty == 0xC) ||
@@ -2001,7 +2004,7 @@ s32 EnTest_ReactToProjectile(PlayState* play, EnTest* this) {
     if (projectileActor != NULL) {
         yawToProjectile = Actor_WorldYawTowardActor(&this->actor, projectileActor) - (u16)this->actor.shape.rot.y;
 
-        if ((u8)(this->actor.bgCheckFlags & 8)) {
+        if ((u8)(this->actor.bgCheckFlags & BGCHECKFLAG_WALL)) {
             wallYawDiff = ((u16)this->actor.wallYaw - (u16)this->actor.shape.rot.y);
             touchingWall = true;
         } else {

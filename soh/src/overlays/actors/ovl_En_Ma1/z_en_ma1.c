@@ -192,7 +192,7 @@ s32 EnMa1_ShouldSpawn(EnMa1* this, PlayState* play) {
     bool malonReturnedFromCastle = GameInteractor_Should(VB_MALON_RETURN_FROM_CASTLE,
                                                          Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE));
 
-    if ((this->actor.shape.rot.z == 3) && (gSaveContext.sceneSetupIndex == 5)) {
+    if ((this->actor.shape.rot.z == 3) && (gSaveContext.sceneLayer == 5)) {
         return 1;
     }
     if (!LINK_IS_CHILD) {
@@ -391,7 +391,7 @@ void EnMa1_IdleTeachSong(EnMa1* this, PlayState* play) {
 void EnMa1_StartTeachSong(EnMa1* this, PlayState* play) {
     GET_PLAYER(play)->stateFlags2 |= PLAYER_STATE2_NEAR_OCARINA_ACTOR;
     if (this->interactInfo.talkState == NPC_TALK_STATE_ACTION) {
-        Audio_OcaSetInstrument(2);
+        AudioOcarina_SetInstrument(2);
         func_8010BD58(play, OCARINA_ACTION_TEACH_EPONA);
         this->actor.flags &= ~ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
         this->actionFunc = EnMa1_TeachSong;

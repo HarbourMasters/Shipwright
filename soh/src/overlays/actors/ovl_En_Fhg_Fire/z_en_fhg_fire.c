@@ -303,7 +303,7 @@ void EnFhgFire_LightningShock(EnFhgFire* this, PlayState* play) {
     }
 
     Actor_UpdateBgCheckInfo(play, &this->actor, 50.0f, 50.0f, 100.0f, 1);
-    if (this->actor.bgCheckFlags & 8) {
+    if (this->actor.bgCheckFlags & BGCHECKFLAG_WALL) {
         Actor_Kill(&this->actor);
     }
 }

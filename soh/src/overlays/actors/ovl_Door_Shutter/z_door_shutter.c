@@ -434,8 +434,8 @@ void DoorShutter_InitOpeningDoorCam(DoorShutter* this, PlayState* play) {
         DoorShutter_SetupAction(this, DoorShutter_Open);
         this->gfxType = sp38;
         this->barsClosedAmount = 0.0f;
-        Camera_ChangeDoorCam(play->cameraPtrs[MAIN_CAM], &this->dyna.actor, player->cv.slidingDoorBgCamIndex, 0.0f, 12,
-                             sp34, 10);
+        Camera_ChangeDoorCam(play->cameraPtrs[CAM_ID_MAIN], &this->dyna.actor, player->cv.slidingDoorBgCamIndex, 0.0f,
+                             12, sp34, 10);
     }
 }
 
@@ -566,9 +566,9 @@ void DoorShutter_SetupClosed(DoorShutter* this, PlayState* play) {
 
             play->roomCtx.curRoom = play->roomCtx.prevRoom;
             play->roomCtx.prevRoom = tempRoom;
-            play->roomCtx.unk_30 ^= 1;
+            play->roomCtx.activeBufPage ^= 1;
         }
-        func_80097534(play, &play->roomCtx);
+        Room_FinishRoomChange(play, &play->roomCtx);
         Play_SetupRespawnPoint(play, RESPAWN_MODE_DOWN, 0x0EFF);
     }
     this->unk_164 = 0;

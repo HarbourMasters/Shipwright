@@ -338,11 +338,11 @@ bool Scene_CommandAlternateHeaderList(PlayState* play, SOH::ISceneCommand* cmd) 
 
     // osSyncPrintf("\n[ZU]sceneset age    =[%X]", gSaveContext.linkAge);
     // osSyncPrintf("\n[ZU]sceneset time   =[%X]", gSaveContext.cutsceneIndex);
-    // osSyncPrintf("\n[ZU]sceneset counter=[%X]", gSaveContext.sceneSetupIndex);
+    // osSyncPrintf("\n[ZU]sceneset counter=[%X]", gSaveContext.sceneLayer);
 
-    if (gSaveContext.sceneSetupIndex != 0) {
+    if (gSaveContext.sceneLayer != 0) {
         SOH::Scene* desiredHeader =
-            std::static_pointer_cast<SOH::Scene>(cmdHeaders->headers[gSaveContext.sceneSetupIndex - 1]).get();
+            std::static_pointer_cast<SOH::Scene>(cmdHeaders->headers[gSaveContext.sceneLayer - 1]).get();
 
         if (desiredHeader != nullptr) {
             OTRScene_ExecuteCommands(play, desiredHeader);
@@ -351,9 +351,9 @@ bool Scene_CommandAlternateHeaderList(PlayState* play, SOH::ISceneCommand* cmd) 
             // "Coughh! There is no specified dataaaaa!"
             osSyncPrintf("\nげぼはっ！ 指定されたデータがないでええっす！");
 
-            if (gSaveContext.sceneSetupIndex == 3) {
+            if (gSaveContext.sceneLayer == 3) {
                 SOH::Scene* desiredHeader =
-                    std::static_pointer_cast<SOH::Scene>(cmdHeaders->headers[gSaveContext.sceneSetupIndex - 2]).get();
+                    std::static_pointer_cast<SOH::Scene>(cmdHeaders->headers[gSaveContext.sceneLayer - 2]).get();
 
                 // "Using adult day data there!"
                 osSyncPrintf("\nそこで、大人の昼データを使用するでええっす！！");
@@ -487,7 +487,7 @@ extern "C" s32 OTRfunc_800973FC(PlayState* play, RoomContext* roomCtx) {
     return 1;
 }
 
-extern "C" s32 OTRfunc_8009728C(PlayState* play, RoomContext* roomCtx, s32 roomNum) {
+extern "C" s32 OTRRoom_RequestNewRoom(PlayState* play, RoomContext* roomCtx, s32 roomNum) {
     u32 size;
 
     if (roomCtx->status == 0) {
@@ -502,8 +502,8 @@ extern "C" s32 OTRfunc_8009728C(PlayState* play, RoomContext* roomCtx, s32 roomN
             return 0; // UH OH
 
         size = static_cast<u32>(play->roomList[roomNum].vromEnd - play->roomList[roomNum].vromStart);
-        roomCtx->unk_34 =
-            (void*)ALIGN16((uintptr_t)roomCtx->bufPtrs[roomCtx->unk_30] - ((size + 8) * roomCtx->unk_30 + 7));
+        roomCtx->unk_34 = (void*)ALIGN16((uintptr_t)roomCtx->bufPtrs[roomCtx->activeBufPage] -
+                                         ((size + 8) * roomCtx->activeBufPage + 7));
 
         osCreateMesgQueue(&roomCtx->loadQueue, &roomCtx->loadMsg, 1);
         // DmaMgr_SendRequest2(&roomCtx->dmaRequest, roomCtx->unk_34, play->roomList[roomNum].vromStart, size, 0,
@@ -514,7 +514,7 @@ extern "C" s32 OTRfunc_8009728C(PlayState* play, RoomContext* roomCtx, s32 roomN
         roomCtx->status = 1;
         roomCtx->roomToLoad = roomData.get();
 
-        roomCtx->unk_30 ^= 1;
+        roomCtx->activeBufPage ^= 1;
 
         SPDLOG_INFO("Room Init - curRoom.num: {0:#x}", roomCtx->curRoom.num);
 

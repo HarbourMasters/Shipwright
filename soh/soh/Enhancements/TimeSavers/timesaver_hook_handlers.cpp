@@ -697,6 +697,13 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
             }
             break;
         }
+        case VB_PLAY_TIMEBLOCK_CS: {
+            if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.OnePoint"), IS_RANDO)) {
+                // Todo: Preferable if possible to turn camera as if SoT block cutscene
+                *should = false;
+            }
+            break;
+        }
         case VB_PLAY_GORON_FREE_CS: {
             if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO)) {
                 *should = false;
@@ -801,6 +808,9 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                     Flags_SetRandomizerInf(flag);
                     gSaveContext.healthAccumulator = MAX_HEALTH;
                     Magic_Fill(gPlayState);
+                    // Also prevent the cutscene from playing, technically we could let it play in rando but we'd
+                    // need to VB prevent the item gives that happen during the cutscene.
+                    *should = false;
                 } else {
                     // If we're in vanilla, set the flag _if_ we were eligble, so that anchor can send the reward in
                     // co-op
@@ -826,7 +836,7 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                 // The second argument determines whether the vanilla code should be run anyway. It
                 // should be set to `true` ONLY IF said code calls `Play_ClearCamera`, false otherwise.
                 bool clearCamera = (bool)va_arg(args, int);
-                *should = clearCamera && enHeishi2->cameraId != MAIN_CAM;
+                *should = clearCamera && enHeishi2->cameraId != CAM_ID_MAIN;
             }
             break;
         }

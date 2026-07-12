@@ -4,6 +4,7 @@
 
 #include "soh/frame_interpolation.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/savestate_serialize.h"
 
 #define FLAGS                                                                                 \
     (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED | \
@@ -39,7 +40,7 @@ const ActorInit En_Clear_Tag_InitVars = {
     (ActorResetFunc)EnClearTag_Reset,
 };
 
-u8 sClearTagIsEffectsInitialized = false;
+static u8 sClearTagIsEffectsInitialized = false;
 
 static Vec3f sZeroVector = { 0.0f, 0.0f, 0.0f };
 
@@ -86,7 +87,13 @@ static ColliderCylinderInit sLaserCylinderInit = {
 // static UNK_TYPE4 D_809D5C98 = 0; // unused
 // static UNK_TYPE4 D_809D5C9C = 0; // unused
 
-EnClearTagEffect sClearTagEffects[CLEAR_TAG_EFFECT_MAX_COUNT];
+static EnClearTagEffect sClearTagEffects[CLEAR_TAG_EFFECT_MAX_COUNT];
+
+#define EN_CLEAR_TAG_SHIP_SAVESTATE_FIELDS(F) \
+    F(sClearTagIsEffectsInitialized)          \
+    F(sClearTagEffects)
+
+SHIP_SAVESTATE_DEFINE(EnClearTag, EN_CLEAR_TAG_SHIP_SAVESTATE_FIELDS)
 
 #include "overlays/ovl_En_Clear_Tag/ovl_En_Clear_Tag.h"
 
@@ -610,7 +617,7 @@ void EnClearTag_Update(Actor* thisx, PlayState* play2) {
                         this->cutsceneMode = CLEAR_TAG_CUTSCENE_MODE_PLAY;
                         func_80064520(play, &play->csCtx);
                         this->cameraId = Play_CreateSubCamera(play);
-                        Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+                        Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_WAIT);
                         Play_ChangeCameraStatus(play, this->cameraId, CAM_STAT_ACTIVE);
                     case CLEAR_TAG_CUTSCENE_MODE_PLAY:
                         // Update the Arwing cutscene camera to spin around in a circle.

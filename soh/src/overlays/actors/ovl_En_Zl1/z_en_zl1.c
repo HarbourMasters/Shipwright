@@ -88,7 +88,7 @@ void EnZl1_Init(Actor* thisx, PlayState* play) {
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 24.0f);
     this->actor.targetMode = 0;
 
-    if (gSaveContext.sceneSetupIndex >= 4) {
+    if (gSaveContext.sceneLayer >= 4) {
         frameCount = Animation_GetLastFrame(&gChildZelda1Anim_00438);
         Animation_Change(&this->skelAnime, &gChildZelda1Anim_00438, 1.0f, 0.0f, frameCount, ANIMMODE_LOOP, 0.0f);
         this->unk_1E6 = 0;
@@ -174,7 +174,7 @@ void func_80B4B010(EnZl1* this, PlayState* play) {
         Animation_Change(&this->skelAnime, &gChildZelda1Anim_10B38, 1.0f, 0.0f,
                          Animation_GetLastFrame(&gChildZelda1Anim_10B38), ANIMMODE_ONCE_INTERP, -10.0f);
         this->subCamId = Play_CreateSubCamera(play);
-        Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+        Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_WAIT);
         Play_ChangeCameraStatus(play, this->subCamId, CAM_STAT_ACTIVE);
         func_800C0808(play, this->subCamId, player, CAM_SET_FREE0);
         play->envCtx.screenFillColor[0] = 255;
@@ -184,8 +184,8 @@ void func_80B4B010(EnZl1* this, PlayState* play) {
         play->envCtx.fillScreen = true;
         Play_CameraSetAtEye(play, this->subCamId, &vec1, &vec2);
         Play_CameraSetFov(play, this->subCamId, 30.0f);
-        ShrinkWindow_SetVal(0x20);
-        Interface_ChangeAlpha(2);
+        Letterbox_SetSizeTarget(0x20);
+        Interface_ChangeHudVisibilityMode(2);
         player->actor.world.pos = playerPos;
         player->actor.speedXZ = 0.0f;
         this->unk_1E2 = 0;
@@ -523,8 +523,8 @@ void func_80B4BF2C(EnZl1* this, PlayState* play) {
             }
         case 2:
             if (Actor_HasParent(&this->actor, play)) {
-                Play_CopyCamera(play, MAIN_CAM, this->subCamId);
-                Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_ACTIVE);
+                Play_CopyCamera(play, CAM_ID_MAIN, this->subCamId);
+                Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_ACTIVE);
                 Play_ClearCamera(play, this->subCamId);
                 this->actor.parent = NULL;
                 this->unk_1E2++;
@@ -559,7 +559,7 @@ void func_80B4BF2C(EnZl1* this, PlayState* play) {
         case 6:
             if (Actor_TextboxIsClosing(&this->actor, play)) {
                 Player_SetCsActionWithHaltedActors(play, &this->actor, 7);
-                Interface_ChangeAlpha(50);
+                Interface_ChangeHudVisibilityMode(50);
                 this->actor.flags &= ~ACTOR_FLAG_TALK;
                 this->unk_1E2 = 4;
             }

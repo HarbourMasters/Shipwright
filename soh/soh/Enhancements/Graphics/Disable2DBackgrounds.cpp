@@ -2,9 +2,10 @@
 #include "soh/ShipInit.hpp"
 
 extern "C" {
+#include "variables.h"
+#include "z64save.h"
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
-#include "variables.h"
 }
 
 #define CVAR_NAME CVAR_ENHANCEMENT("3DSceneRender")

@@ -642,7 +642,7 @@ void EnGoroiwa_SetupMoveAndFallToGround(EnGoroiwa* this) {
 
 void EnGoroiwa_MoveAndFallToGround(EnGoroiwa* this, PlayState* play) {
     EnGoroiwa_MoveAndFall(this, play);
-    if ((this->actor.bgCheckFlags & 1) && this->actor.velocity.y < 0.0f) {
+    if ((this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) && this->actor.velocity.y < 0.0f) {
         if ((this->stateFlags & ENGOROIWA_PLAYER_IN_THE_WAY) && (this->actor.home.rot.z & 1) == 1) {
             EnGoroiwa_ReverseDirection(this);
             EnGoroiwa_FaceNextWaypoint(this, play);

@@ -1285,8 +1285,8 @@ void KaleidoScope_SwitchPage(PauseContext* pauseCtx, u8 pt) {
 
     osSyncPrintf("kscope->kscp_pos+pt = %d\n", pauseCtx->pageIndex + pt);
 
-    gSaveContext.unk_13EA = 0;
-    Interface_ChangeAlpha(50);
+    gSaveContext.hudVisibilityMode = 0;
+    Interface_ChangeHudVisibilityMode(50);
 
     KaleidoScope_ResetItemCycling();
 }
@@ -4274,8 +4274,8 @@ void KaleidoScope_Update(PlayState* play) {
                         gSaveContext.buttonStatus[4] = BTN_ENABLED;
                         gSaveContext.buttonStatus[5] = gSaveContext.buttonStatus[6] = gSaveContext.buttonStatus[7] =
                             gSaveContext.buttonStatus[8] = BTN_DISABLED;
-                        gSaveContext.unk_13EA = 0;
-                        Interface_ChangeAlpha(50);
+                        gSaveContext.hudVisibilityMode = 0;
+                        Interface_ChangeHudVisibilityMode(50);
                         pauseCtx->unk_1EC = 0;
                         pauseCtx->state = 7;
                     } else if (IS_RANDO && CHECK_BTN_ALL(input->press.button, BTN_CUP) &&
@@ -4294,7 +4294,7 @@ void KaleidoScope_Update(PlayState* play) {
                     pauseCtx->ocarinaStaff = Audio_OcaGetDisplayingStaff();
                     if (pauseCtx->ocarinaStaff->state == 0) {
                         pauseCtx->unk_1E4 = 4;
-                        Audio_OcaSetInstrument(0);
+                        AudioOcarina_SetInstrument(0);
                     }
                     break;
 
@@ -4309,7 +4309,7 @@ void KaleidoScope_Update(PlayState* play) {
                     pauseCtx->ocarinaStaff = Audio_OcaGetPlayingStaff();
 
                     if (CHECK_BTN_ALL(input->press.button, BTN_START)) {
-                        Audio_OcaSetInstrument(0);
+                        AudioOcarina_SetInstrument(0);
                         Interface_SetDoAction(play, DO_ACTION_NONE);
                         pauseCtx->state = 0x12;
                         WREG(2) = -6240;
@@ -4317,7 +4317,7 @@ void KaleidoScope_Update(PlayState* play) {
                         pauseCtx->unk_1E4 = 0;
                         break;
                     } else if (CHECK_BTN_ALL(input->press.button, BTN_B)) {
-                        Audio_OcaSetInstrument(0);
+                        AudioOcarina_SetInstrument(0);
                         pauseCtx->unk_1E4 = 0;
                         pauseCtx->mode = 0;
                         pauseCtx->promptChoice = 0;
@@ -4328,8 +4328,8 @@ void KaleidoScope_Update(PlayState* play) {
                         gSaveContext.buttonStatus[4] = BTN_ENABLED;
                         gSaveContext.buttonStatus[5] = gSaveContext.buttonStatus[6] = gSaveContext.buttonStatus[7] =
                             gSaveContext.buttonStatus[8] = BTN_DISABLED;
-                        gSaveContext.unk_13EA = 0;
-                        Interface_ChangeAlpha(50);
+                        gSaveContext.hudVisibilityMode = 0;
+                        Interface_ChangeHudVisibilityMode(50);
                         pauseCtx->unk_1EC = 0;
                         pauseCtx->state = 7;
                     } else if (pauseCtx->ocarinaStaff->state == pauseCtx->ocarinaSongIdx) {
@@ -4352,7 +4352,7 @@ void KaleidoScope_Update(PlayState* play) {
                     if (D_8082B25C == 0) {
                         pauseCtx->unk_1E4 = D_8082B258;
                         if (pauseCtx->unk_1E4 == 0) {
-                            Audio_OcaSetInstrument(0);
+                            AudioOcarina_SetInstrument(0);
                         }
                     }
                     break;
@@ -4362,14 +4362,14 @@ void KaleidoScope_Update(PlayState* play) {
 
                 case 8:
                     if (CHECK_BTN_ALL(input->press.button, BTN_START)) {
-                        Audio_OcaSetInstrument(0);
+                        AudioOcarina_SetInstrument(0);
                         Interface_SetDoAction(play, DO_ACTION_NONE);
                         pauseCtx->state = 0x12;
                         WREG(2) = -6240;
                         func_800F64E0(0);
                         pauseCtx->unk_1E4 = 0;
                     } else if (CHECK_BTN_ALL(input->press.button, BTN_B)) {
-                        Audio_OcaSetInstrument(0);
+                        AudioOcarina_SetInstrument(0);
                         pauseCtx->unk_1E4 = 0;
                         pauseCtx->mode = 0;
                         pauseCtx->promptChoice = 0;
@@ -4380,8 +4380,8 @@ void KaleidoScope_Update(PlayState* play) {
                         gSaveContext.buttonStatus[4] = BTN_ENABLED;
                         gSaveContext.buttonStatus[5] = gSaveContext.buttonStatus[6] = gSaveContext.buttonStatus[7] =
                             gSaveContext.buttonStatus[8] = BTN_DISABLED;
-                        gSaveContext.unk_13EA = 0;
-                        Interface_ChangeAlpha(50);
+                        gSaveContext.hudVisibilityMode = 0;
+                        Interface_ChangeHudVisibilityMode(50);
                         pauseCtx->unk_1EC = 0;
                         pauseCtx->state = 7;
                     }
@@ -4416,8 +4416,8 @@ void KaleidoScope_Update(PlayState* play) {
                                 gSaveContext.buttonStatus[3] = BTN_ENABLED;
                             gSaveContext.buttonStatus[5] = gSaveContext.buttonStatus[6] = gSaveContext.buttonStatus[7] =
                                 gSaveContext.buttonStatus[8] = BTN_ENABLED;
-                            gSaveContext.unk_13EA = 0;
-                            Interface_ChangeAlpha(50);
+                            gSaveContext.hudVisibilityMode = 0;
+                            Interface_ChangeHudVisibilityMode(50);
                             pauseCtx->unk_1EC = 2;
                             WREG(2) = -6240;
                             YREG(8) = pauseCtx->unk_204;
@@ -4442,8 +4442,8 @@ void KaleidoScope_Update(PlayState* play) {
                             gSaveContext.buttonStatus[3] = BTN_ENABLED;
                         gSaveContext.buttonStatus[5] = gSaveContext.buttonStatus[6] = gSaveContext.buttonStatus[7] =
                             gSaveContext.buttonStatus[8] = BTN_ENABLED;
-                        gSaveContext.unk_13EA = 0;
-                        Interface_ChangeAlpha(50);
+                        gSaveContext.hudVisibilityMode = 0;
+                        Interface_ChangeHudVisibilityMode(50);
                     }
                     break;
 
@@ -4455,8 +4455,8 @@ void KaleidoScope_Update(PlayState* play) {
                             gSaveContext.buttonStatus[3] = BTN_ENABLED;
                         gSaveContext.buttonStatus[5] = gSaveContext.buttonStatus[6] = gSaveContext.buttonStatus[7] =
                             gSaveContext.buttonStatus[8] = BTN_ENABLED;
-                        gSaveContext.unk_13EA = 0;
-                        Interface_ChangeAlpha(50);
+                        gSaveContext.hudVisibilityMode = 0;
+                        Interface_ChangeHudVisibilityMode(50);
                         pauseCtx->unk_1EC = 5;
                         WREG(2) = -6240;
                         YREG(8) = pauseCtx->unk_204;
@@ -4509,7 +4509,7 @@ void KaleidoScope_Update(PlayState* play) {
             WREG(16) = -175;
             WREG(17) = 155;
             pauseCtx->unk_204 = -434.0f;
-            Interface_ChangeAlpha(1);
+            Interface_ChangeHudVisibilityMode(1);
 
 #if 1
             pauseCtx->iconItemSegment = (void*)(((uintptr_t)play->objectCtx.spaceStart + 0x30) & ~0x3F);
@@ -4871,9 +4871,9 @@ void KaleidoScope_Update(PlayState* play) {
 
             interfaceCtx->unk_1FA = interfaceCtx->unk_1FC = 0;
             osSyncPrintf(VT_FGCOL(YELLOW));
-            osSyncPrintf("i=%d  LAST_TIME_TYPE=%d\n", i, gSaveContext.unk_13EE);
-            gSaveContext.unk_13EA = 0;
-            Interface_ChangeAlpha(gSaveContext.unk_13EE);
+            osSyncPrintf("i=%d  LAST_TIME_TYPE=%d\n", i, gSaveContext.prevHudVisibilityMode);
+            gSaveContext.hudVisibilityMode = 0;
+            Interface_ChangeHudVisibilityMode(gSaveContext.prevHudVisibilityMode);
             player->talkActor = NULL;
             Player_SetEquipmentData(play, player);
             osSyncPrintf(VT_RST);

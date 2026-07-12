@@ -6,6 +6,7 @@
 #include <soh/Enhancements/cosmetics/authenticGfxPatches.h>
 #include <soh/Enhancements/TimeDisplay/TimeDisplay.h>
 #include "soh/Enhancements/randomizer/randomizer.h"
+#include "soh/Enhancements/Restorations/GetItemManipulation.h"
 #include <ship/Context.h>
 
 extern "C" {
@@ -60,6 +61,18 @@ static const std::map<int32_t, const char*> timeTravelOptions = {
     { TIME_TRAVEL_OOT_MS, "Ocarina of Time + Master Sword" },
     { TIME_TRAVEL_ANY, "Any Ocarina" },
     { TIME_TRAVEL_ANY_MS, "Any Ocarina + Master Sword" },
+};
+
+static const std::map<int32_t, const char*> getItemManipulationOptions = {
+    { GIM_DISABLED, "Disabled" },   { GIM_NTSC_1_0, "NTSC 1.0" },
+    { GIM_NTSC_1_1, "NTSC 1.1" },   { GIM_NTSC_1_2, "NTSC 1.2" },
+    { GIM_PAL_1_0, "PAL 1.0" },     { GIM_PAL_1_1, "PAL 1.1" },
+    { GIM_GC_U, "GC U" },           { GIM_GC_E, "GC E" },
+    { GIM_GC_J, "GC J" },           { GIM_MQ_U, "MQ U" },
+    { GIM_MQ_E, "MQ E" },           { GIM_MQ_J, "MQ J" },
+    { GIM_IQUE_CHN, "IQUE CHN" },   { GIM_IQUE_TWN, "IQUE TWN" },
+    { GIM_MQ_DEBUG, "MQ DEBUG" },   { GIM_MZX_NTSC, "MZX NTSC 1.0" },
+    { GIM_MZX_PAL, "MZX PAL 1.1" },
 };
 
 static const std::map<int32_t, const char*> sleepingWaterfallOptions = {
@@ -1258,6 +1271,13 @@ void SohMenu::AddMenuEnhancements() {
         .Options(CheckboxOptions().Tooltip(
             "Restores a bug from NTSC 1.0/1.1 that allows you to obtain the eyeball frog from King Zora "
             "instead of the Zora Tunic by Holding Shield."));
+    AddWidget(path, "Get Item Manipulation", WIDGET_CVAR_COMBOBOX)
+        .CVar(CVAR_ENHANCEMENT("GetItemManipulation"))
+        .Options(ComboboxOptions()
+                     .ComboMap(getItemManipulationOptions)
+                     .DefaultIndex(GIM_DISABLED)
+                     .Tooltip("Restores Get Item Manipulation.\n"
+                              "NTSC and PAL have separate tables."));
 
     AddWidget(path, "Misc Restorations", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Fix L&Z Page Switch in Pause Menu", WIDGET_CVAR_CHECKBOX)

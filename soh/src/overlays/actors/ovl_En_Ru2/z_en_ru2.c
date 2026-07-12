@@ -345,7 +345,7 @@ void EnRu2_CheckWaterMedallionCutscene(EnRu2* this, PlayState* play) {
     Player* player;
     s16 yaw;
 
-    if ((gSaveContext.chamberCutsceneNum == 2) && (gSaveContext.sceneSetupIndex < 4)) {
+    if ((gSaveContext.chamberCutsceneNum == 2) && (gSaveContext.sceneLayer < 4)) {
         player = GET_PLAYER(play);
         this->action = ENRU2_AWAIT_BLUE_WARP;
         play->csCtx.segment = &gWaterMedallionCs;
@@ -769,7 +769,7 @@ s32 EnRu2_IsPlayerInRangeForEncounter(EnRu2* this, PlayState* play) {
 void EnRu2_CheckRangeToStartEncounter(EnRu2* this, PlayState* play) {
     if (EnRu2_IsPlayerInRangeForEncounter(this, play) && !Play_InCsMode(play)) {
         this->action = ENRU2_WATER_TEMPLE_ENCOUNTER_BEGINNING;
-        this->subCamId = OnePointCutscene_Init(play, 3130, -99, &this->actor, MAIN_CAM);
+        this->subCamId = OnePointCutscene_Init(play, 3130, -99, &this->actor, CAM_ID_MAIN);
     }
 }
 
@@ -778,7 +778,7 @@ void EnRu2_CheckRangeToStartEncounter(EnRu2* this, PlayState* play) {
  */
 void EnRu2_StartEncounter(EnRu2* this, PlayState* play) {
     this->action = ENRU2_WATER_TEMPLE_ENCOUNTER_BEGINNING;
-    this->subCamId = OnePointCutscene_Init(play, 3130, -99, &this->actor, MAIN_CAM);
+    this->subCamId = OnePointCutscene_Init(play, 3130, -99, &this->actor, CAM_ID_MAIN);
 }
 
 /**

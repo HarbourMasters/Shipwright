@@ -1,9 +1,11 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ShipInit.hpp"
+#include "soh/cvar_prefixes.h"
 
 extern "C" {
-extern PlayState* gPlayState;
+#include "z64.h"
 #include "macros.h"
+extern PlayState* gPlayState;
 }
 
 #define CVAR_MOON_JUMP_NAME CVAR_CHEAT("MoonJumpOnL")

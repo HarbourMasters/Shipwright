@@ -5,7 +5,6 @@
 
 #include <libultraship/bridge/consolevariablebridge.h>
 #include "vanilla-behavior/GIVanillaBehavior.h"
-#include <z64.h>
 
 typedef enum {
     /* 0x00 */ GI_LINK_SIZE_NORMAL,
@@ -55,6 +54,9 @@ typedef enum {
 #ifdef __cplusplus
 extern "C" {
 #endif
+#include <z64actor.h>
+struct Player;
+struct PlayState;
 uint8_t GameInteractor_NoUIActive();
 GILinkSize GameInteractor_GetLinkSize();
 void GameInteractor_SetLinkSize(GILinkSize size);

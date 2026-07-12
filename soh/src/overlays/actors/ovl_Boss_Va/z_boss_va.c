@@ -671,7 +671,7 @@ void BossVa_Init(Actor* thisx, PlayState* play2) {
                         play->envCtx.screenFillColor[3] = 0xD2;
                         func_80064520(play, &play->csCtx);
                         sCsCamera = Play_CreateSubCamera(play);
-                        Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+                        Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_WAIT);
                         Play_ChangeCameraStatus(play, sCsCamera, CAM_STAT_ACTIVE);
                         sCameraNextEye.x = sCameraEye.x = 140.0f;
                         sCameraNextEye.y = sCameraEye.y = 205.0f;
@@ -815,7 +815,7 @@ void BossVa_BodyIntro(BossVa* this, PlayState* play) {
             if (sCsCamera == SUBCAM_FREE) {
                 sCsCamera = Play_CreateSubCamera(play);
             }
-            Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+            Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_WAIT);
             Play_ChangeCameraStatus(play, sCsCamera, CAM_STAT_ACTIVE);
 
             sCameraNextEye.x = sCameraEye.x = 13.0f;
@@ -857,7 +857,7 @@ void BossVa_BodyIntro(BossVa* this, PlayState* play) {
             if (sCsCamera == SUBCAM_FREE) {
                 sCsCamera = Play_CreateSubCamera(play);
             }
-            Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+            Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_WAIT);
             Play_ChangeCameraStatus(play, sCsCamera, CAM_STAT_ACTIVE);
 
             sCameraNextEye.x = sCameraEye.x = 13.0f;
@@ -1036,7 +1036,7 @@ void BossVa_BodyIntro(BossVa* this, PlayState* play) {
                 Play_ClearCamera(play, sCsCamera);
                 sCsCamera = 0;
                 func_80064534(play, &play->csCtx);
-                Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_ACTIVE);
+                Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_ACTIVE);
                 Player_SetCsActionWithHaltedActors(play, &this->actor, 7);
                 sCsState++;
                 Flags_SetEventChkInf(EVENTCHKINF_BEGAN_BARINA_BATTLE);
@@ -1491,7 +1491,7 @@ void BossVa_BodyPhase4(BossVa* this, PlayState* play) {
     this->unk_1AC += 0xC31;
     this->unk_1A0 = (Math_CosS(this->unk_1AC) * 0.1f) + 1.0f;
     this->unk_1A4 = (Math_SinS(this->unk_1AC) * 0.05f) + 1.0f;
-    if (this->actor.bgCheckFlags & 8) {
+    if (this->actor.bgCheckFlags & BGCHECKFLAG_WALL) {
         this->actor.bgCheckFlags &= ~8;
         this->actor.world.rot.y = (s16)Rand_CenteredFloat(30 * (0x10000 / 360)) + this->actor.wallYaw;
     }
@@ -1559,7 +1559,7 @@ void BossVa_BodyDeath(BossVa* this, PlayState* play) {
             Player_SetCsActionWithHaltedActors(play, &this->actor, 1);
             func_80064520(play, &play->csCtx);
             sCsCamera = Play_CreateSubCamera(play);
-            Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+            Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_WAIT);
             Play_ChangeCameraStatus(play, sCsCamera, CAM_STAT_ACTIVE);
 
             sCameraNextAt.x = this->actor.world.pos.x;
@@ -1652,7 +1652,7 @@ void BossVa_BodyDeath(BossVa* this, PlayState* play) {
                 Play_ClearCamera(play, sCsCamera);
                 sCsCamera = 0;
                 func_80064534(play, &play->csCtx);
-                Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_ACTIVE);
+                Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_ACTIVE);
 
                 camera->eyeNext = camera->eye = sCameraEye;
 

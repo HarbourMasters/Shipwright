@@ -7,6 +7,7 @@
 #include "z_bg_dodoago.h"
 #include "overlays/actors/ovl_En_Bom/z_en_bom.h"
 #include "objects/object_ddan_objects/object_ddan_objects.h"
+#include "soh/Enhancements/savestate_serialize.h"
 
 #define FLAGS 0
 
@@ -74,13 +75,20 @@ static ColliderCylinderInit sColCylinderInitLeftRight = {
     { 50, 60, 280, { 0, 0, 0 } },
 };
 
-s16 sBgDodoagoFirstExplosiveFlag = false;
+static s16 sBgDodoagoFirstExplosiveFlag = false;
 
-u8 sBgDodoagoDisableBombCatcher;
+static u8 sBgDodoagoDisableBombCatcher;
 
 // static u8 sUnused[90]; // unknown length
 
-s32 sBgDodoagoTimer;
+static s32 sBgDodoagoTimer;
+
+#define BG_DODOAGO_SHIP_SAVESTATE_FIELDS(F) \
+    F(sBgDodoagoFirstExplosiveFlag)         \
+    F(sBgDodoagoDisableBombCatcher)         \
+    F(sBgDodoagoTimer)
+
+SHIP_SAVESTATE_DEFINE(BgDodoago, BG_DODOAGO_SHIP_SAVESTATE_FIELDS)
 
 void BgDodoago_SetupAction(BgDodoago* this, BgDodoagoActionFunc actionFunc) {
     this->actionFunc = actionFunc;
@@ -163,14 +171,14 @@ void BgDodoago_WaitExplosives(BgDodoago* this, PlayState* play) {
             Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
                                    &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             BgDodoago_SetupAction(this, BgDodoago_OpenJaw);
-            OnePointCutscene_Init(play, 3380, 160, &this->dyna.actor, MAIN_CAM);
+            OnePointCutscene_Init(play, 3380, 160, &this->dyna.actor, CAM_ID_MAIN);
         } else if (play->roomCtx.unk_74[this->state] == 0) {
-            OnePointCutscene_Init(play, 3065, 40, &this->dyna.actor, MAIN_CAM);
+            OnePointCutscene_Init(play, 3065, 40, &this->dyna.actor, CAM_ID_MAIN);
             BgDodoago_SetupAction(this, BgDodoago_LightOneEye);
             Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
                                    &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         } else {
-            OnePointCutscene_Init(play, 3065, 20, &this->dyna.actor, MAIN_CAM);
+            OnePointCutscene_Init(play, 3065, 20, &this->dyna.actor, CAM_ID_MAIN);
             Audio_PlaySoundGeneral(NA_SE_SY_ERROR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
                                    &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             sBgDodoagoTimer += 30;

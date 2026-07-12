@@ -123,7 +123,7 @@ void BgHidanFwbig_UpdatePosition(BgHidanFwbig* this) {
 void BgHidanFwbig_WaitForSwitch(BgHidanFwbig* this, PlayState* play) {
     if (Flags_GetSwitch(play, this->actor.params)) {
         this->actionFunc = BgHidanFwbig_WaitForCs;
-        OnePointCutscene_Init(play, 3340, -99, &this->actor, MAIN_CAM);
+        OnePointCutscene_Init(play, 3340, -99, &this->actor, CAM_ID_MAIN);
         this->timer = 35;
     }
 }
@@ -181,7 +181,7 @@ void BgHidanFwbig_WaitForPlayer(BgHidanFwbig* this, PlayState* play) {
 
     if (player->actor.world.pos.x < 1150.0f) {
         this->actionFunc = BgHidanFwbig_Rise;
-        OnePointCutscene_Init(play, 3290, -99, &this->actor, MAIN_CAM);
+        OnePointCutscene_Init(play, 3290, -99, &this->actor, CAM_ID_MAIN);
     }
 }
 
@@ -238,7 +238,7 @@ void BgHidanFwbig_Update(Actor* thisx, PlayState* play) {
     this->actionFunc(this, play);
 
     if ((this->actor.home.pos.y - 200.0f) < this->actor.world.pos.y) {
-        if (gSaveContext.sceneSetupIndex < 4) {
+        if (gSaveContext.sceneLayer < 4) {
             Actor_PlaySfx_Flagged(&this->actor, NA_SE_EV_BURNING - SFX_FLAG);
         } else if ((s16)this->actor.world.pos.x == -513) {
             Actor_PlaySfx_Flagged(&this->actor, NA_SE_EV_FLAME_OF_FIRE - SFX_FLAG);

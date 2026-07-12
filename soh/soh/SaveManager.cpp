@@ -2564,7 +2564,7 @@ typedef struct {
     /* 0x1354 */ s32 fileNum;  // "file_no"
     /* 0x1358 */ char unk_1358[0x0004];
     /* 0x135C */ s32 gameMode;
-    /* 0x1360 */ s32 sceneSetupIndex;
+    /* 0x1360 */ s32 sceneLayer;
     /* 0x1364 */ s32 respawnFlag;           // "restart_flag"
     /* 0x1368 */ RespawnData_v0 respawn[3]; // "restart_data"
     /* 0x13BC */ f32 entranceSpeed;

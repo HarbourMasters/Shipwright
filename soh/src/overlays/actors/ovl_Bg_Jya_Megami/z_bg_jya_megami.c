@@ -194,7 +194,7 @@ void BgJyaMegami_DetectLight(BgJyaMegami* this, PlayState* play) {
         Flags_SetSwitch(play, this->dyna.actor.params & 0x3F);
         BgJyaMegami_SetupExplode(this);
         SoundSource_PlaySfxAtFixedWorldPos(play, &this->dyna.actor.world.pos, 100, NA_SE_EV_FACE_EXPLOSION);
-        OnePointCutscene_Init(play, 3440, -99, &this->dyna.actor, MAIN_CAM);
+        OnePointCutscene_Init(play, 3440, -99, &this->dyna.actor, CAM_ID_MAIN);
     } else {
         if (this->lightTimer < 8) {
             this->crumbleIndex = 0;

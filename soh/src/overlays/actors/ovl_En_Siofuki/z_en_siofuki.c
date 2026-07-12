@@ -258,7 +258,7 @@ void func_80AFC478(EnSiofuki* this, PlayState* play) {
         if (Flags_GetSwitch(play, ((u16)this->dyna.actor.params >> 6) & 0x3F)) {
             this->timer = 20;
             this->actionFunc = func_80AFC3C8;
-            OnePointCutscene_Init(play, 5010, 40, &this->dyna.actor, MAIN_CAM);
+            OnePointCutscene_Init(play, 5010, 40, &this->dyna.actor, CAM_ID_MAIN);
         }
 
         if (Flags_GetTreasure(play, (u16)this->dyna.actor.params & 0x3F)) {
