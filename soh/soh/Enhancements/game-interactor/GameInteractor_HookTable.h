@@ -96,3 +96,6 @@ DEFINE_HOOK(OnSeqPlayerInit, (int32_t playerIdx, int32_t seqId));
 DEFINE_HOOK(OnRandoSetCheckStatus, (RandomizerCheck rc, RandomizerCheckStatus status));
 DEFINE_HOOK(OnRandoSetIsSkipped, (RandomizerCheck rc, bool isSkipped));
 DEFINE_HOOK(OnRandoEntranceDiscovered, (u16 entranceIndex, u8 isReversedEntrance));
+// Fires when a hint's message is resolved for textbox display. Can fire for
+// hints the seed has disabled; subscribers should check the hint is enabled.
+DEFINE_HOOK(OnRandoHintRevealed, (RandomizerHint hintKey));

@@ -771,6 +771,26 @@ void SohMenu::AddMenuRandomizer() {
         .WindowName("Check Tracker Settings")
         .HideInSearch(true)
         .Options(WindowButtonOptions().Tooltip("Enables the separate Check Tracker Settings Window."));
+
+    // Hint Tracker
+    path.sidebarName = "Hint Tracker";
+    AddSidebarEntry("Randomizer", path.sidebarName, 1);
+
+    AddWidget(path, "Hint Tracker", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Toggle Hint Tracker", WIDGET_WINDOW_BUTTON)
+        .CVar(CVAR_WINDOW("HintTracker"))
+        .RaceDisable(false)
+        .WindowName("Hint Tracker")
+        .HideInSearch(true)
+        .Options(WindowButtonOptions().Tooltip("Toggles the Hint Tracker.").EmbedWindow(false));
+
+    AddWidget(path, "Hint Tracker Settings", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Popout Hint Tracker Settings", WIDGET_WINDOW_BUTTON)
+        .CVar(CVAR_WINDOW("HintTrackerSettings"))
+        .RaceDisable(false)
+        .WindowName("Hint Tracker Settings")
+        .HideInSearch(true)
+        .Options(WindowButtonOptions().Tooltip("Enables the separate Hint Tracker Settings Window."));
 }
 
 } // namespace SohGui
