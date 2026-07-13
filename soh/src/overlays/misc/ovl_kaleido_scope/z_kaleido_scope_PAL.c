@@ -4291,10 +4291,10 @@ void KaleidoScope_Update(PlayState* play) {
                     break;
 
                 case 2:
-                    pauseCtx->ocarinaStaff = Audio_OcaGetDisplayingStaff();
+                    pauseCtx->ocarinaStaff = AudioOcarina_GetPlaybackStaff();
                     if (pauseCtx->ocarinaStaff->state == 0) {
                         pauseCtx->unk_1E4 = 4;
-                        AudioOcarina_SetInstrument(0);
+                        AudioOcarina_SetInstrument(OCARINA_INSTRUMENT_OFF);
                     }
                     break;
 
@@ -4306,10 +4306,10 @@ void KaleidoScope_Update(PlayState* play) {
                     break;
 
                 case 5:
-                    pauseCtx->ocarinaStaff = Audio_OcaGetPlayingStaff();
+                    pauseCtx->ocarinaStaff = AudioOcarina_GetPlayingStaff();
 
                     if (CHECK_BTN_ALL(input->press.button, BTN_START)) {
-                        AudioOcarina_SetInstrument(0);
+                        AudioOcarina_SetInstrument(OCARINA_INSTRUMENT_OFF);
                         Interface_SetDoAction(play, DO_ACTION_NONE);
                         pauseCtx->state = 0x12;
                         WREG(2) = -6240;
@@ -4317,7 +4317,7 @@ void KaleidoScope_Update(PlayState* play) {
                         pauseCtx->unk_1E4 = 0;
                         break;
                     } else if (CHECK_BTN_ALL(input->press.button, BTN_B)) {
-                        AudioOcarina_SetInstrument(0);
+                        AudioOcarina_SetInstrument(OCARINA_INSTRUMENT_OFF);
                         pauseCtx->unk_1E4 = 0;
                         pauseCtx->mode = 0;
                         pauseCtx->promptChoice = 0;
@@ -4352,7 +4352,7 @@ void KaleidoScope_Update(PlayState* play) {
                     if (D_8082B25C == 0) {
                         pauseCtx->unk_1E4 = D_8082B258;
                         if (pauseCtx->unk_1E4 == 0) {
-                            AudioOcarina_SetInstrument(0);
+                            AudioOcarina_SetInstrument(OCARINA_INSTRUMENT_OFF);
                         }
                     }
                     break;
@@ -4362,14 +4362,14 @@ void KaleidoScope_Update(PlayState* play) {
 
                 case 8:
                     if (CHECK_BTN_ALL(input->press.button, BTN_START)) {
-                        AudioOcarina_SetInstrument(0);
+                        AudioOcarina_SetInstrument(OCARINA_INSTRUMENT_OFF);
                         Interface_SetDoAction(play, DO_ACTION_NONE);
                         pauseCtx->state = 0x12;
                         WREG(2) = -6240;
                         func_800F64E0(0);
                         pauseCtx->unk_1E4 = 0;
                     } else if (CHECK_BTN_ALL(input->press.button, BTN_B)) {
-                        AudioOcarina_SetInstrument(0);
+                        AudioOcarina_SetInstrument(OCARINA_INSTRUMENT_OFF);
                         pauseCtx->unk_1E4 = 0;
                         pauseCtx->mode = 0;
                         pauseCtx->promptChoice = 0;

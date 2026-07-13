@@ -772,23 +772,21 @@ void SaveManager::InitFileNormal() {
     gSaveContext.worldMapAreaData = 0;
     gSaveContext.scarecrowLongSongSet = 0;
     for (int i = 0; i < ARRAY_COUNT(gSaveContext.scarecrowLongSong); i++) {
-        gSaveContext.scarecrowLongSong[i].noteIdx = 0;
-        gSaveContext.scarecrowLongSong[i].unk_01 = 0;
-        gSaveContext.scarecrowLongSong[i].unk_02 = 0;
+        gSaveContext.scarecrowLongSong[i].pitch = 0;
+        gSaveContext.scarecrowLongSong[i].length = 0;
         gSaveContext.scarecrowLongSong[i].volume = 0;
         gSaveContext.scarecrowLongSong[i].vibrato = 0;
-        gSaveContext.scarecrowLongSong[i].tone = 0;
-        gSaveContext.scarecrowLongSong[i].semitone = 0;
+        gSaveContext.scarecrowLongSong[i].bend = 0;
+        gSaveContext.scarecrowLongSong[i].bFlat4Flag = 0;
     }
     gSaveContext.scarecrowSpawnSongSet = 0;
     for (int i = 0; i < ARRAY_COUNT(gSaveContext.scarecrowSpawnSong); i++) {
-        gSaveContext.scarecrowSpawnSong[i].noteIdx = 0;
-        gSaveContext.scarecrowSpawnSong[i].unk_01 = 0;
-        gSaveContext.scarecrowSpawnSong[i].unk_02 = 0;
+        gSaveContext.scarecrowSpawnSong[i].pitch = 0;
+        gSaveContext.scarecrowSpawnSong[i].length = 0;
         gSaveContext.scarecrowSpawnSong[i].volume = 0;
         gSaveContext.scarecrowSpawnSong[i].vibrato = 0;
-        gSaveContext.scarecrowSpawnSong[i].tone = 0;
-        gSaveContext.scarecrowSpawnSong[i].semitone = 0;
+        gSaveContext.scarecrowSpawnSong[i].bend = 0;
+        gSaveContext.scarecrowSpawnSong[i].bFlat4Flag = 0;
     }
 
     gSaveContext.horseData.scene = SCENE_HYRULE_FIELD;
@@ -1703,25 +1701,23 @@ void SaveManager::LoadBaseVersion2() {
     SaveManager::Instance->LoadData("scarecrowCustomSongSet", gSaveContext.scarecrowLongSongSet);
     SaveManager::Instance->LoadArray("scarecrowCustomSong", ARRAY_COUNT(gSaveContext.scarecrowLongSong), [](size_t i) {
         SaveManager::Instance->LoadStruct("", [&i]() {
-            SaveManager::Instance->LoadData("noteIdx", gSaveContext.scarecrowLongSong[i].noteIdx);
-            SaveManager::Instance->LoadData("unk_01", gSaveContext.scarecrowLongSong[i].unk_01);
-            SaveManager::Instance->LoadData("unk_02", gSaveContext.scarecrowLongSong[i].unk_02);
+            SaveManager::Instance->LoadData("pitch", gSaveContext.scarecrowLongSong[i].pitch);
+            SaveManager::Instance->LoadData("length", gSaveContext.scarecrowLongSong[i].length);
             SaveManager::Instance->LoadData("volume", gSaveContext.scarecrowLongSong[i].volume);
             SaveManager::Instance->LoadData("vibrato", gSaveContext.scarecrowLongSong[i].vibrato);
-            SaveManager::Instance->LoadData("tone", gSaveContext.scarecrowLongSong[i].tone);
-            SaveManager::Instance->LoadData("semitone", gSaveContext.scarecrowLongSong[i].semitone);
+            SaveManager::Instance->LoadData("bend", gSaveContext.scarecrowLongSong[i].bend);
+            SaveManager::Instance->LoadData("bFlat4Flag", gSaveContext.scarecrowLongSong[i].bFlat4Flag);
         });
     });
     SaveManager::Instance->LoadData("scarecrowSpawnSongSet", gSaveContext.scarecrowSpawnSongSet);
     SaveManager::Instance->LoadArray("scarecrowSpawnSong", ARRAY_COUNT(gSaveContext.scarecrowSpawnSong), [](size_t i) {
         SaveManager::Instance->LoadStruct("", [&i]() {
-            SaveManager::Instance->LoadData("noteIdx", gSaveContext.scarecrowSpawnSong[i].noteIdx);
-            SaveManager::Instance->LoadData("unk_01", gSaveContext.scarecrowSpawnSong[i].unk_01);
-            SaveManager::Instance->LoadData("unk_02", gSaveContext.scarecrowSpawnSong[i].unk_02);
+            SaveManager::Instance->LoadData("pitch", gSaveContext.scarecrowSpawnSong[i].pitch);
+            SaveManager::Instance->LoadData("length", gSaveContext.scarecrowSpawnSong[i].length);
             SaveManager::Instance->LoadData("volume", gSaveContext.scarecrowSpawnSong[i].volume);
             SaveManager::Instance->LoadData("vibrato", gSaveContext.scarecrowSpawnSong[i].vibrato);
-            SaveManager::Instance->LoadData("tone", gSaveContext.scarecrowSpawnSong[i].tone);
-            SaveManager::Instance->LoadData("semitone", gSaveContext.scarecrowSpawnSong[i].semitone);
+            SaveManager::Instance->LoadData("bend", gSaveContext.scarecrowSpawnSong[i].bend);
+            SaveManager::Instance->LoadData("bFlat4Flag", gSaveContext.scarecrowSpawnSong[i].bFlat4Flag);
         });
     });
     SaveManager::Instance->LoadStruct("horseData", []() {
@@ -1759,13 +1755,12 @@ void SaveManager::LoadBaseVersion2() {
             SaveManager::Instance->LoadArray(
                 "scarecrowLongSong", ARRAY_COUNT(gSaveContext.scarecrowLongSong), [](size_t i) {
                     SaveManager::Instance->LoadStruct("", [&i]() {
-                        SaveManager::Instance->LoadData("noteIdx", gSaveContext.scarecrowLongSong[i].noteIdx);
-                        SaveManager::Instance->LoadData("unk_01", gSaveContext.scarecrowLongSong[i].unk_01);
-                        SaveManager::Instance->LoadData("unk_02", gSaveContext.scarecrowLongSong[i].unk_02);
+                        SaveManager::Instance->LoadData("pitch", gSaveContext.scarecrowLongSong[i].pitch);
+                        SaveManager::Instance->LoadData("length", gSaveContext.scarecrowLongSong[i].length);
                         SaveManager::Instance->LoadData("volume", gSaveContext.scarecrowLongSong[i].volume);
                         SaveManager::Instance->LoadData("vibrato", gSaveContext.scarecrowLongSong[i].vibrato);
-                        SaveManager::Instance->LoadData("tone", gSaveContext.scarecrowLongSong[i].tone);
-                        SaveManager::Instance->LoadData("semitone", gSaveContext.scarecrowLongSong[i].semitone);
+                        SaveManager::Instance->LoadData("bend", gSaveContext.scarecrowLongSong[i].bend);
+                        SaveManager::Instance->LoadData("bFlat4Flag", gSaveContext.scarecrowLongSong[i].bFlat4Flag);
                     });
                 });
         }
@@ -1932,25 +1927,23 @@ void SaveManager::LoadBaseVersion3() {
     SaveManager::Instance->LoadData("scarecrowLongSongSet", gSaveContext.scarecrowLongSongSet);
     SaveManager::Instance->LoadArray("scarecrowLongSong", ARRAY_COUNT(gSaveContext.scarecrowLongSong), [](size_t i) {
         SaveManager::Instance->LoadStruct("", [&i]() {
-            SaveManager::Instance->LoadData("noteIdx", gSaveContext.scarecrowLongSong[i].noteIdx);
-            SaveManager::Instance->LoadData("unk_01", gSaveContext.scarecrowLongSong[i].unk_01);
-            SaveManager::Instance->LoadData("unk_02", gSaveContext.scarecrowLongSong[i].unk_02);
+            SaveManager::Instance->LoadData("pitch", gSaveContext.scarecrowLongSong[i].pitch);
+            SaveManager::Instance->LoadData("length", gSaveContext.scarecrowLongSong[i].length);
             SaveManager::Instance->LoadData("volume", gSaveContext.scarecrowLongSong[i].volume);
             SaveManager::Instance->LoadData("vibrato", gSaveContext.scarecrowLongSong[i].vibrato);
-            SaveManager::Instance->LoadData("tone", gSaveContext.scarecrowLongSong[i].tone);
-            SaveManager::Instance->LoadData("semitone", gSaveContext.scarecrowLongSong[i].semitone);
+            SaveManager::Instance->LoadData("bend", gSaveContext.scarecrowLongSong[i].bend);
+            SaveManager::Instance->LoadData("bFlat4Flag", gSaveContext.scarecrowLongSong[i].bFlat4Flag);
         });
     });
     SaveManager::Instance->LoadData("scarecrowSpawnSongSet", gSaveContext.scarecrowSpawnSongSet);
     SaveManager::Instance->LoadArray("scarecrowSpawnSong", ARRAY_COUNT(gSaveContext.scarecrowSpawnSong), [](size_t i) {
         SaveManager::Instance->LoadStruct("", [&i]() {
-            SaveManager::Instance->LoadData("noteIdx", gSaveContext.scarecrowSpawnSong[i].noteIdx);
-            SaveManager::Instance->LoadData("unk_01", gSaveContext.scarecrowSpawnSong[i].unk_01);
-            SaveManager::Instance->LoadData("unk_02", gSaveContext.scarecrowSpawnSong[i].unk_02);
+            SaveManager::Instance->LoadData("pitch", gSaveContext.scarecrowSpawnSong[i].pitch);
+            SaveManager::Instance->LoadData("length", gSaveContext.scarecrowSpawnSong[i].length);
             SaveManager::Instance->LoadData("volume", gSaveContext.scarecrowSpawnSong[i].volume);
             SaveManager::Instance->LoadData("vibrato", gSaveContext.scarecrowSpawnSong[i].vibrato);
-            SaveManager::Instance->LoadData("tone", gSaveContext.scarecrowSpawnSong[i].tone);
-            SaveManager::Instance->LoadData("semitone", gSaveContext.scarecrowSpawnSong[i].semitone);
+            SaveManager::Instance->LoadData("bend", gSaveContext.scarecrowSpawnSong[i].bend);
+            SaveManager::Instance->LoadData("bFlat4Flag", gSaveContext.scarecrowSpawnSong[i].bFlat4Flag);
         });
     });
     SaveManager::Instance->LoadStruct("horseData", []() {
@@ -2107,25 +2100,23 @@ void SaveManager::LoadBaseVersion4() {
     SaveManager::Instance->LoadData("scarecrowLongSongSet", gSaveContext.scarecrowLongSongSet);
     SaveManager::Instance->LoadArray("scarecrowLongSong", ARRAY_COUNT(gSaveContext.scarecrowLongSong), [](size_t i) {
         SaveManager::Instance->LoadStruct("", [&i]() {
-            SaveManager::Instance->LoadData("noteIdx", gSaveContext.scarecrowLongSong[i].noteIdx);
-            SaveManager::Instance->LoadData("unk_01", gSaveContext.scarecrowLongSong[i].unk_01);
-            SaveManager::Instance->LoadData("unk_02", gSaveContext.scarecrowLongSong[i].unk_02);
+            SaveManager::Instance->LoadData("pitch", gSaveContext.scarecrowLongSong[i].pitch);
+            SaveManager::Instance->LoadData("length", gSaveContext.scarecrowLongSong[i].length);
             SaveManager::Instance->LoadData("volume", gSaveContext.scarecrowLongSong[i].volume);
             SaveManager::Instance->LoadData("vibrato", gSaveContext.scarecrowLongSong[i].vibrato);
-            SaveManager::Instance->LoadData("tone", gSaveContext.scarecrowLongSong[i].tone);
-            SaveManager::Instance->LoadData("semitone", gSaveContext.scarecrowLongSong[i].semitone);
+            SaveManager::Instance->LoadData("bend", gSaveContext.scarecrowLongSong[i].bend);
+            SaveManager::Instance->LoadData("bFlat4Flag", gSaveContext.scarecrowLongSong[i].bFlat4Flag);
         });
     });
     SaveManager::Instance->LoadData("scarecrowSpawnSongSet", gSaveContext.scarecrowSpawnSongSet);
     SaveManager::Instance->LoadArray("scarecrowSpawnSong", ARRAY_COUNT(gSaveContext.scarecrowSpawnSong), [](size_t i) {
         SaveManager::Instance->LoadStruct("", [&i]() {
-            SaveManager::Instance->LoadData("noteIdx", gSaveContext.scarecrowSpawnSong[i].noteIdx);
-            SaveManager::Instance->LoadData("unk_01", gSaveContext.scarecrowSpawnSong[i].unk_01);
-            SaveManager::Instance->LoadData("unk_02", gSaveContext.scarecrowSpawnSong[i].unk_02);
+            SaveManager::Instance->LoadData("pitch", gSaveContext.scarecrowSpawnSong[i].pitch);
+            SaveManager::Instance->LoadData("length", gSaveContext.scarecrowSpawnSong[i].length);
             SaveManager::Instance->LoadData("volume", gSaveContext.scarecrowSpawnSong[i].volume);
             SaveManager::Instance->LoadData("vibrato", gSaveContext.scarecrowSpawnSong[i].vibrato);
-            SaveManager::Instance->LoadData("tone", gSaveContext.scarecrowSpawnSong[i].tone);
-            SaveManager::Instance->LoadData("semitone", gSaveContext.scarecrowSpawnSong[i].semitone);
+            SaveManager::Instance->LoadData("bend", gSaveContext.scarecrowSpawnSong[i].bend);
+            SaveManager::Instance->LoadData("bFlat4Flag", gSaveContext.scarecrowSpawnSong[i].bFlat4Flag);
         });
     });
     SaveManager::Instance->LoadStruct("horseData", []() {
@@ -2279,25 +2270,23 @@ void SaveManager::SaveBase(SaveContext* saveContext, int sectionID, bool fullSav
     SaveManager::Instance->SaveData("scarecrowLongSongSet", saveContext->scarecrowLongSongSet);
     SaveManager::Instance->SaveArray("scarecrowLongSong", ARRAY_COUNT(saveContext->scarecrowLongSong), [&](size_t i) {
         SaveManager::Instance->SaveStruct("", [&]() {
-            SaveManager::Instance->SaveData("noteIdx", saveContext->scarecrowLongSong[i].noteIdx);
-            SaveManager::Instance->SaveData("unk_01", saveContext->scarecrowLongSong[i].unk_01);
-            SaveManager::Instance->SaveData("unk_02", saveContext->scarecrowLongSong[i].unk_02);
+            SaveManager::Instance->SaveData("pitch", saveContext->scarecrowLongSong[i].pitch);
+            SaveManager::Instance->SaveData("length", saveContext->scarecrowLongSong[i].length);
             SaveManager::Instance->SaveData("volume", saveContext->scarecrowLongSong[i].volume);
             SaveManager::Instance->SaveData("vibrato", saveContext->scarecrowLongSong[i].vibrato);
-            SaveManager::Instance->SaveData("tone", saveContext->scarecrowLongSong[i].tone);
-            SaveManager::Instance->SaveData("semitone", saveContext->scarecrowLongSong[i].semitone);
+            SaveManager::Instance->SaveData("bend", saveContext->scarecrowLongSong[i].bend);
+            SaveManager::Instance->SaveData("bFlat4Flag", saveContext->scarecrowLongSong[i].bFlat4Flag);
         });
     });
     SaveManager::Instance->SaveData("scarecrowSpawnSongSet", saveContext->scarecrowSpawnSongSet);
     SaveManager::Instance->SaveArray("scarecrowSpawnSong", ARRAY_COUNT(saveContext->scarecrowSpawnSong), [&](size_t i) {
         SaveManager::Instance->SaveStruct("", [&]() {
-            SaveManager::Instance->SaveData("noteIdx", saveContext->scarecrowSpawnSong[i].noteIdx);
-            SaveManager::Instance->SaveData("unk_01", saveContext->scarecrowSpawnSong[i].unk_01);
-            SaveManager::Instance->SaveData("unk_02", saveContext->scarecrowSpawnSong[i].unk_02);
+            SaveManager::Instance->SaveData("pitch", saveContext->scarecrowSpawnSong[i].pitch);
+            SaveManager::Instance->SaveData("length", saveContext->scarecrowSpawnSong[i].length);
             SaveManager::Instance->SaveData("volume", saveContext->scarecrowSpawnSong[i].volume);
             SaveManager::Instance->SaveData("vibrato", saveContext->scarecrowSpawnSong[i].vibrato);
-            SaveManager::Instance->SaveData("tone", saveContext->scarecrowSpawnSong[i].tone);
-            SaveManager::Instance->SaveData("semitone", saveContext->scarecrowSpawnSong[i].semitone);
+            SaveManager::Instance->SaveData("bend", saveContext->scarecrowSpawnSong[i].bend);
+            SaveManager::Instance->SaveData("bFlat4Flag", saveContext->scarecrowSpawnSong[i].bFlat4Flag);
         });
     });
     SaveManager::Instance->SaveStruct("horseData", [&]() {

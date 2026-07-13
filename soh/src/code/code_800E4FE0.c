@@ -247,7 +247,7 @@ void func_800E5584(AudioCmd* cmd) {
             AudioLoad_SyncLoadSeqParts(cmd->arg1, cmd->arg2);
             return;
         case 0x82:
-            // 16-bit seqId packed in opArgs bits 0-15. See func_800F9280().
+            // 16-bit seqId packed in opArgs bits 0-15. See Audio_StartSequence().
             AudioLoad_SyncInitSeqPlayer(cmd->arg0, cmd->opArgs & 0xFFFF, 0);
             func_800E59AC(cmd->arg0, cmd->data);
             return;

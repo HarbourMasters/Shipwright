@@ -150,9 +150,10 @@ extern "C"
 	extern u8 gUsedChannelsPerBank[4][7];
 	extern u8 gMorphaTransposeTable[16];
 	extern u8* gFrogsSongPtr;
-	extern OcarinaNote* gScarecrowCustomSongPtr;
+	extern OcarinaNote* gScarecrowLongSongPtr;
 	extern u8* gScarecrowSpawnSongPtr;
-	extern OcarinaSongInfo gOcarinaSongNotes[];
+	extern OcarinaNote sOcarinaSongNotes[OCARINA_SONG_MAX][20];
+	extern OcarinaSongButtons gOcarinaSongButtons[OCARINA_SONG_MAX];
 	extern SoundParams* gSoundParams[7];
 	extern char D_80133390[];
 	extern char D_80133398[];

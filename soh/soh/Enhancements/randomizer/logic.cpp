@@ -2591,23 +2591,21 @@ void Logic::InitSaveContext() {
     mSaveContext->worldMapAreaData = 0;
     mSaveContext->scarecrowLongSongSet = 0;
     for (int i = 0; i < ARRAY_COUNT(mSaveContext->scarecrowLongSong); i++) {
-        mSaveContext->scarecrowLongSong[i].noteIdx = 0;
-        mSaveContext->scarecrowLongSong[i].unk_01 = 0;
-        mSaveContext->scarecrowLongSong[i].unk_02 = 0;
+        mSaveContext->scarecrowLongSong[i].pitch = 0;
+        mSaveContext->scarecrowLongSong[i].length = 0;
         mSaveContext->scarecrowLongSong[i].volume = 0;
         mSaveContext->scarecrowLongSong[i].vibrato = 0;
-        mSaveContext->scarecrowLongSong[i].tone = 0;
-        mSaveContext->scarecrowLongSong[i].semitone = 0;
+        mSaveContext->scarecrowLongSong[i].bend = 0;
+        mSaveContext->scarecrowLongSong[i].bFlat4Flag = 0;
     }
     mSaveContext->scarecrowSpawnSongSet = 0;
     for (int i = 0; i < ARRAY_COUNT(mSaveContext->scarecrowSpawnSong); i++) {
-        mSaveContext->scarecrowSpawnSong[i].noteIdx = 0;
-        mSaveContext->scarecrowSpawnSong[i].unk_01 = 0;
-        mSaveContext->scarecrowSpawnSong[i].unk_02 = 0;
+        mSaveContext->scarecrowSpawnSong[i].pitch = 0;
+        mSaveContext->scarecrowSpawnSong[i].length = 0;
         mSaveContext->scarecrowSpawnSong[i].volume = 0;
         mSaveContext->scarecrowSpawnSong[i].vibrato = 0;
-        mSaveContext->scarecrowSpawnSong[i].tone = 0;
-        mSaveContext->scarecrowSpawnSong[i].semitone = 0;
+        mSaveContext->scarecrowSpawnSong[i].bend = 0;
+        mSaveContext->scarecrowSpawnSong[i].bFlat4Flag = 0;
     }
 
     mSaveContext->horseData.scene = SCENE_HYRULE_FIELD;

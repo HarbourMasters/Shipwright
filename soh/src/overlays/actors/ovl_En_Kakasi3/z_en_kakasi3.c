@@ -109,30 +109,30 @@ void func_80A90EBC(EnKakasi3* this, PlayState* play, s32 arg) {
         ocarinaNote = this->unk_1A6;
     }
     switch (ocarinaNote) {
-        case OCARINA_NOTE_D4:
+        case OCARINA_BTN_A:
             this->unk_19A++;
             if (this->unk_1A4 == 0) {
                 this->unk_1A4 = 1;
                 Audio_PlayActorSound2(&this->actor, NA_SE_EV_KAKASHI_ROLL);
             }
             break;
-        case OCARINA_NOTE_F4:
+        case OCARINA_BTN_C_DOWN:
             this->unk_19A++;
             this->unk_1B8 = 1.0f;
             break;
-        case OCARINA_NOTE_A4:
+        case OCARINA_BTN_C_RIGHT:
             this->unk_19A++;
             if (this->unk_1AE == 0x0) {
                 this->unk_1AE = 0x1388;
             }
             break;
-        case OCARINA_NOTE_B4:
+        case OCARINA_BTN_C_LEFT:
             this->unk_19A++;
             if (this->unk_1AA == 0x0) {
                 this->unk_1AA = 0x1388;
             }
             break;
-        case OCARINA_NOTE_D5:
+        case OCARINA_BTN_C_UP:
             this->unk_19A++;
             this->unk_1B8 = 2.0f;
             break;

@@ -239,7 +239,7 @@ void DrawPreviewButton(uint16_t sequenceId, std::string sfxKey, SeqType sequence
                     Audio_PlaySoundGeneral(sequenceId, &pos, 4, &freqScale, &freqScale, &reverbAdd);
                 } else if (sequenceType == SEQ_INSTRUMENT) {
                     AudioOcarina_SetInstrument(sequenceId - INSTRUMENT_OFFSET);
-                    Audio_OcaSetSongPlayback(9, 1);
+                    AudioOcarina_SetPlaybackSong(9, 1);
                 } else {
                     // TODO: Cant do both here, so have to click preview button twice
                     PreviewSequence(sequenceId);

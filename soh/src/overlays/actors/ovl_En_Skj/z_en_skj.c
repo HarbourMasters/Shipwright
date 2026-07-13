@@ -1503,8 +1503,8 @@ void EnSkj_WaitForPlayback(EnSkj* this, PlayState* play) {
                             SKULL_KID_OCARINA_PLAY_NOTES;
                     }
                     this->songFailTimer = 160;
-                    AudioOcarina_SetInstrument(6); // related instrument sound (flute?)
-                    Audio_OcaSetSongPlayback(OCARINA_SONG_MEMORY_GAME + 1, 1);
+                    AudioOcarina_SetInstrument(OCARINA_INSTRUMENT_FLUTE); // related instrument sound (flute?)
+                    AudioOcarina_SetPlaybackSong(OCARINA_SONG_MEMORY_GAME + 1, 1);
                     play->msgCtx.msgMode = MSGMODE_MEMORY_GAME_LEFT_SKULLKID_PLAYING;
                     play->msgCtx.stateTimer = 2;
                 }

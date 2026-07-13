@@ -159,9 +159,9 @@ void Sram_OpenSave() {
         osSyncPrintf(VT_FGCOL(BLUE));
         osSyncPrintf("\n====================================================================\n");
 
-        memcpy(gScarecrowCustomSongPtr, gSaveContext.scarecrowLongSong, sizeof(gSaveContext.scarecrowLongSong));
+        memcpy(gScarecrowLongSongPtr, gSaveContext.scarecrowLongSong, sizeof(gSaveContext.scarecrowLongSong));
 
-        ptr = (u8*)gScarecrowCustomSongPtr;
+        ptr = (u8*)gScarecrowLongSongPtr;
         for (i = 0; i < ARRAY_COUNT(gSaveContext.scarecrowLongSong); i++, ptr++) {
             osSyncPrintf("%d, ", *ptr);
         }

@@ -207,7 +207,7 @@ static u8 sJumpOrder[] = {
 };
 
 static u8 sOcarinaNotes[] = {
-    OCARINA_NOTE_D4, OCARINA_NOTE_F4, OCARINA_NOTE_A4, OCARINA_NOTE_B4, OCARINA_NOTE_D5,
+    OCARINA_BTN_A, OCARINA_BTN_C_DOWN, OCARINA_BTN_C_RIGHT, OCARINA_BTN_C_LEFT, OCARINA_BTN_C_UP,
 };
 
 void EnFr_OrientUnderwater(EnFr* this) {
@@ -703,19 +703,19 @@ void EnFr_ListeningToOcarinaNotes(EnFr* this, PlayState* play) {
             break;
         case OCARINA_MODE_01:                      // Ocarina note played, but no song played
             switch (play->msgCtx.lastOcaNoteIdx) { // Jumping frogs in open ocarina based on ocarina note played
-                case OCARINA_NOTE_D4:
+                case OCARINA_BTN_A:
                     EnFr_SetupJumpingUp(this, FROG_BLUE);
                     break;
-                case OCARINA_NOTE_F4:
+                case OCARINA_BTN_C_DOWN:
                     EnFr_SetupJumpingUp(this, FROG_YELLOW);
                     break;
-                case OCARINA_NOTE_A4:
+                case OCARINA_BTN_C_RIGHT:
                     EnFr_SetupJumpingUp(this, FROG_RED);
                     break;
-                case OCARINA_NOTE_B4:
+                case OCARINA_BTN_C_LEFT:
                     EnFr_SetupJumpingUp(this, FROG_PURPLE);
                     break;
-                case OCARINA_NOTE_D5:
+                case OCARINA_BTN_C_UP:
                     EnFr_SetupJumpingUp(this, FROG_WHITE);
                     break;
             }
@@ -882,7 +882,7 @@ void EnFr_OcarinaMistake(EnFr* this, PlayState* play) {
     Message_CloseTextbox(play);
     this->reward = GI_NONE;
     Sfx_PlaySfxCentered(NA_SE_SY_OCARINA_ERROR);
-    AudioOcarina_SetInstrument(0);
+    AudioOcarina_SetInstrument(OCARINA_INSTRUMENT_OFF);
     sEnFrPointers.flags = 12;
     EnFr_DeactivateButterfly();
     this->actionFunc = EnFr_Deactivate;
@@ -921,19 +921,19 @@ void EnFr_ContinueFrogSong(EnFr* this, PlayState* play) {
         if (play->msgCtx.msgMode == MSGMODE_FROGS_WAITING) {
             play->msgCtx.msgMode = MSGMODE_FROGS_START;
             switch (play->msgCtx.lastOcaNoteIdx) {
-                case OCARINA_NOTE_D4:
+                case OCARINA_BTN_A:
                     EnFr_SetupJumpingUp(this, FROG_BLUE);
                     break;
-                case OCARINA_NOTE_F4:
+                case OCARINA_BTN_C_DOWN:
                     EnFr_SetupJumpingUp(this, FROG_YELLOW);
                     break;
-                case OCARINA_NOTE_A4:
+                case OCARINA_BTN_C_RIGHT:
                     EnFr_SetupJumpingUp(this, FROG_RED);
                     break;
-                case OCARINA_NOTE_B4:
+                case OCARINA_BTN_C_LEFT:
                     EnFr_SetupJumpingUp(this, FROG_PURPLE);
                     break;
-                case OCARINA_NOTE_D5:
+                case OCARINA_BTN_C_UP:
                     EnFr_SetupJumpingUp(this, FROG_WHITE);
             }
             if (EnFr_IsFrogSongComplete(this, play)) {
@@ -952,7 +952,7 @@ void EnFr_SetupReward(EnFr* this, PlayState* play, u8 unkCondition) {
         Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
     }
 
-    AudioOcarina_SetInstrument(0);
+    AudioOcarina_SetInstrument(OCARINA_INSTRUMENT_OFF);
     play->msgCtx.msgMode = MSGMODE_PAUSED;
     this->actionFunc = EnFr_PrintTextBox;
 }
