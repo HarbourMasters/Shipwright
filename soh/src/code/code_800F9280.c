@@ -217,7 +217,8 @@ void Audio_ProcessSeqCmd(u32 cmd) {
             if (found == 0) {
                 func_800F9474(playerIdx, fadeTimer);
                 if (sNumSeqRequests[playerIdx] != 0) {
-                    Audio_StartSequence(playerIdx, D_8016E320[playerIdx][0].unk_0, D_8016E320[playerIdx][0].unk_1, fadeTimer);
+                    Audio_StartSequence(playerIdx, D_8016E320[playerIdx][0].unk_0, D_8016E320[playerIdx][0].unk_1,
+                                        fadeTimer);
                 }
             }
             break;

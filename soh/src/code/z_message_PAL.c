@@ -2895,10 +2895,18 @@ void Message_ContinueTextbox(PlayState* play, u16 textId) {
 
 void Message_StartOcarina(PlayState* play, u16 ocarinaActionId) {
     static u16 sOcarinaSongFlagsMap[] = {
-        (1 << OCARINA_SONG_MINUET),    (1 << OCARINA_SONG_BOLERO),   (1 << OCARINA_SONG_SERENADE),
-        (1 << OCARINA_SONG_REQUIEM),   (1 << OCARINA_SONG_NOCTURNE), (1 << OCARINA_SONG_PRELUDE),
-        (1 << OCARINA_SONG_LULLABY),   (1 << OCARINA_SONG_EPONAS),   (1 << OCARINA_SONG_SARIAS),
-        (1 << OCARINA_SONG_SUNS),      (1 << OCARINA_SONG_TIME),     (1 << OCARINA_SONG_STORMS),
+        (1 << OCARINA_SONG_MINUET),
+        (1 << OCARINA_SONG_BOLERO),
+        (1 << OCARINA_SONG_SERENADE),
+        (1 << OCARINA_SONG_REQUIEM),
+        (1 << OCARINA_SONG_NOCTURNE),
+        (1 << OCARINA_SONG_PRELUDE),
+        (1 << OCARINA_SONG_LULLABY),
+        (1 << OCARINA_SONG_EPONAS),
+        (1 << OCARINA_SONG_SARIAS),
+        (1 << OCARINA_SONG_SUNS),
+        (1 << OCARINA_SONG_TIME),
+        (1 << OCARINA_SONG_STORMS),
         (1 << OCARINA_SONG_SCARECROW_SPAWN),
     };
     MessageContext* msgCtx = &play->msgCtx;
@@ -3897,8 +3905,10 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                         sOcarinaButtonIndexBufLen--;
                     }
                     // "Button Entered"
-                    osSyncPrintf("    入力ボタン【%d】=%d", sOcarinaButtonIndexBufLen, msgCtx->ocarinaStaff->buttonIndex);
-                    msgCtx->lastOcaNoteIdx = sOcarinaButtonIndexBuf[sOcarinaButtonIndexBufLen] = msgCtx->ocarinaStaff->buttonIndex;
+                    osSyncPrintf("    入力ボタン【%d】=%d", sOcarinaButtonIndexBufLen,
+                                 msgCtx->ocarinaStaff->buttonIndex);
+                    msgCtx->lastOcaNoteIdx = sOcarinaButtonIndexBuf[sOcarinaButtonIndexBufLen] =
+                        msgCtx->ocarinaStaff->buttonIndex;
                     sOcarinaButtonIndexBufLen++;
                     sOcarinaButtonIndexBuf[sOcarinaButtonIndexBufLen] = OCARINA_BTN_INVALID;
                     sOcarinaButtonIndexBufPos++;
@@ -3981,7 +3991,8 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
             case MSGMODE_SCARECROW_RECORDING_ONGOING:
                 msgCtx->ocarinaStaff = AudioOcarina_GetRecordingStaff();
                 if (msgCtx->ocarinaStaff->pos && sOcarinaButtonIndexBufPos == msgCtx->ocarinaStaff->pos - 1) {
-                    msgCtx->lastOcaNoteIdx = sOcarinaButtonIndexBuf[sOcarinaButtonIndexBufPos] = msgCtx->ocarinaStaff->buttonIndex;
+                    msgCtx->lastOcaNoteIdx = sOcarinaButtonIndexBuf[sOcarinaButtonIndexBufPos] =
+                        msgCtx->ocarinaStaff->buttonIndex;
                     sOcarinaButtonIndexBufPos++;
                     sOcarinaButtonIndexBuf[sOcarinaButtonIndexBufPos] = OCARINA_BTN_INVALID;
                 }
@@ -4213,15 +4224,14 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                     gDPSetPrimColor(gfx++, 0, 0, 150, 150, 150, 150);
                     gDPSetEnvColor(gfx++, 10, 10, 10, 0);
 
-                    gDPLoadTextureBlock(gfx++, sOcarinaNoteTextures[gOcarinaSongButtons[g].buttonsIndex[i]], G_IM_FMT_IA,
-                                        G_IM_SIZ_8b, 16, 16, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
-                                        G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                    gDPLoadTextureBlock(gfx++, sOcarinaNoteTextures[gOcarinaSongButtons[g].buttonsIndex[i]],
+                                        G_IM_FMT_IA, G_IM_SIZ_8b, 16, 16, 0, G_TX_NOMIRROR | G_TX_WRAP,
+                                        G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-                    gSPTextureRectangle(gfx++, notePosX << 2,
-                                        R_OCARINA_NOTES_YPOS(gOcarinaSongButtons[g].buttonsIndex[i]) << 2,
-                                        (notePosX + 16) << 2,
-                                        (R_OCARINA_NOTES_YPOS(gOcarinaSongButtons[g].buttonsIndex[i]) + 16) << 2,
-                                        G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+                    gSPTextureRectangle(
+                        gfx++, notePosX << 2, R_OCARINA_NOTES_YPOS(gOcarinaSongButtons[g].buttonsIndex[i]) << 2,
+                        (notePosX + 16) << 2, (R_OCARINA_NOTES_YPOS(gOcarinaSongButtons[g].buttonsIndex[i]) + 16) << 2,
+                        G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
                 }
             }
 
@@ -4265,13 +4275,14 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                         gDPSetEnvColor(gfx++, sOcarinaNoteCBtnEnv.r, sOcarinaNoteCBtnEnv.g, sOcarinaNoteCBtnEnv.b, 0);
                     }
 
-                    gDPLoadTextureBlock(gfx++, sOcarinaNoteTextures[sOcarinaButtonIndexBuf[i]], G_IM_FMT_IA, G_IM_SIZ_8b, 16,
-                                        16, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
-                                        G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                    gDPLoadTextureBlock(gfx++, sOcarinaNoteTextures[sOcarinaButtonIndexBuf[i]], G_IM_FMT_IA,
+                                        G_IM_SIZ_8b, 16, 16, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
+                                        G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
                     gSPTextureRectangle(gfx++, notePosX << 2, R_OCARINA_NOTES_YPOS(sOcarinaButtonIndexBuf[i]) << 2,
-                                        (notePosX + 16) << 2, (R_OCARINA_NOTES_YPOS(sOcarinaButtonIndexBuf[i]) + 16) << 2,
-                                        G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+                                        (notePosX + 16) << 2,
+                                        (R_OCARINA_NOTES_YPOS(sOcarinaButtonIndexBuf[i]) + 16) << 2, G_TX_RENDERTILE, 0,
+                                        0, 1 << 10, 1 << 10);
                 }
             }
         }
@@ -4710,10 +4721,10 @@ UNK_TYPE D_80153D7C = 0x00000000;
 s16 gGameOverTimer = 0;
 
 #define MESSAGE_PAL_SHIP_SAVESTATE_FIELDS(F) \
-    F(sOcarinaButtonIndexBufPos)                    \
-    F(sOcarinaButtonIndexBufLen)                    \
-    F(sOcarinaButtonIndexBuf)                       \
-    F(sMessageStartFrameCount)                            \
+    F(sOcarinaButtonIndexBufPos)             \
+    F(sOcarinaButtonIndexBufLen)             \
+    F(sOcarinaButtonIndexBuf)                \
+    F(sMessageStartFrameCount)               \
     F(sTextboxSkipped)                       \
     F(sNextTextId)                           \
     F(sLastPlayedSong)                       \

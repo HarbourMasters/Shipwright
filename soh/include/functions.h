@@ -2059,7 +2059,7 @@ OcarinaStaff* AudioOcarina_GetPlayingStaff(void);
 OcarinaStaff* AudioOcarina_GetPlaybackStaff(void);
 void AudioOcarina_MemoryGameInit(u8 minigameIdx);
 s32 AudioOcarina_MemoryGameNextNote(void);
-void func_800EE824(void);
+void AudioOcarina_PlayLongScarecrowSong(void);
 void AudioDebug_Draw(GfxPrint* printer);
 void AudioDebug_ScrPrt(const s8* str, u16 num);
 void Audio_Update(void);

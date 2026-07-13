@@ -427,7 +427,7 @@ void func_80064824(PlayState* play, CutsceneContext* csCtx, CsCmdBase* cmd) {
             }
             break;
         case 35:
-            func_800EE824();
+            AudioOcarina_PlayLongScarecrowSong();
             csCtx->frames = cmd->startFrame - 1;
             break;
     }
