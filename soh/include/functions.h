@@ -682,14 +682,14 @@ u32 SurfaceType_GetFloorType(CollisionContext* colCtx, CollisionPoly* poly, s32 
 u32 func_80041D70(CollisionContext* colCtx, CollisionPoly* poly, s32 bgId);
 u32 func_80041D94(CollisionContext* colCtx, CollisionPoly* poly, s32 bgId);
 s32 func_80041DB8(CollisionContext* colCtx, CollisionPoly* poly, s32 bgId);
-s32 SurfaceType_CheckWallFlag0(CollisionContext* colCtx, CollisionPoly* poly, s32 bgId);
-s32 SurfaceType_CheckWallFlag1(CollisionContext* colCtx, CollisionPoly* poly, s32 bgId);
+s32 func_80041DE4(CollisionContext* colCtx, CollisionPoly* poly, s32 bgId);
+s32 func_80041E18(CollisionContext* colCtx, CollisionPoly* poly, s32 bgId);
 s32 func_80041E4C(CollisionContext* colCtx, CollisionPoly* poly, s32 bgId);
 s32 func_80041E80(CollisionContext* colCtx, CollisionPoly* poly, s32 bgId);
-u32 SurfaceType_GetFloorProperty(CollisionContext* colCtx, CollisionPoly* poly, s32 bgId);
+u32 func_80041EA4(CollisionContext* colCtx, CollisionPoly* poly, s32 bgId);
 u32 func_80041EC8(CollisionContext* colCtx, CollisionPoly* poly, s32 bgId);
 u32 SurfaceType_IsHorseBlocked(CollisionContext* colCtx, CollisionPoly* poly, s32 bgId);
-u32 SurfaceType_GetMaterial(CollisionContext* colCtx, CollisionPoly* poly, s32 bgId);
+u32 func_80041F10(CollisionContext* colCtx, CollisionPoly* poly, s32 bgId);
 u16 SurfaceType_GetSfx(CollisionContext* colCtx, CollisionPoly* poly, s32 bgId);
 u32 SurfaceType_GetFloorEffect(CollisionContext* colCtx, CollisionPoly* poly, s32 bgId);
 u32 SurfaceType_GetLightSettingIndex(CollisionContext* colCtx, CollisionPoly* poly, s32 bgId);
@@ -925,7 +925,7 @@ void Environment_DrawSunLensFlare(PlayState* play, EnvironmentContext* envCtx, V
 void Environment_DrawLensFlare(PlayState* play, EnvironmentContext* envCtx, View* view,
                                GraphicsContext* gfxCtx, Vec3f pos, s32 unused, s16 arg6, f32 arg7, s16 arg8, u8 arg9);
 void Environment_DrawRain(PlayState* play, View* view, GraphicsContext* gfxCtx);
-void fEnvironment_ChangeLightSetting8(PlayState* play, u32 arg1);
+void func_80074CE8(PlayState* play, u32 arg1);
 void Environment_DrawSkyboxFilters(PlayState* play);
 void Environment_UpdateLightningStrike(PlayState* play);
 void Environment_AddLightningBolts(PlayState* play, u8 num);
@@ -2053,7 +2053,7 @@ void AudioSeq_InitSequencePlayers(void);
 void AudioOcarina_Start(u16);
 void AudioOcarina_SetInstrument(u8);
 void AudioOcarina_SetPlaybackSong(s8 songIdxPlusOne, s8 playbackState);
-void AudioOcarina_SetRecordingStateAudio_OcaSetRecordingState(u8);
+void AudioOcarina_SetRecordingState(u8);
 OcarinaStaff* AudioOcarina_GetRecordingStaff(void);
 OcarinaStaff* AudioOcarina_GetPlayingStaff(void);
 OcarinaStaff* AudioOcarina_GetPlaybackStaff(void);

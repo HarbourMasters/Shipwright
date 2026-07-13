@@ -2262,7 +2262,7 @@ OcarinaStaff* AudioOcarina_GetPlaybackStaff(void) {
     return &sPlaybackStaff;
 }
 
-void AudioOcarina_RecordSong4(void) {
+void AudioOcarina_RecordSong(void) {
     s32 noteChanged;
 
     if ((sRecordingState != OCARINA_RECORD_OFF) && ((sOcarinaUpdateTaskStart - sOcarinaRecordTaskStart) >= 3)) {
@@ -2410,7 +2410,7 @@ void AudioOcarina_Update(void) {
         sOcarinaPlaybackTaskStart = sOcarinaUpdateTaskStart;
 
         if (sPlaybackState == 0) {
-            AudioOcarina_RecordSong4();
+            AudioOcarina_RecordSong();
         }
 
         if ((sOcarinaFlags != 0) && (sPrevOcarinaPitch != sCurOcarinaPitch)) {
