@@ -5,7 +5,7 @@ s32 D_8012CED0 = 0;
 s32 sShrinkWindowVal = 0;
 s32 sShrinkWindowCurrentVal = 0;
 
-void ShrinkWindow_SetVal(s32 value) {
+void Letterbox_SetSizeTarget(s32 value) {
     if (CVarGetInteger(CVAR_ENHANCEMENT("DisableBlackBars"), 0)) {
         sShrinkWindowVal = 0;
         return;

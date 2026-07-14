@@ -1,7 +1,8 @@
 #include "soh/Network/Anchor/Anchor.h"
 #include "soh/Network/Anchor/JsonConversions.hpp"
 #include <nlohmann/json.hpp>
-#include <libultraship/libultraship.h>
+#include <ship/Context.h>
+#include <ship/window/Window.h>
 #include "soh/OTRGlobals.h"
 #include "soh/Notification/Notification.h"
 

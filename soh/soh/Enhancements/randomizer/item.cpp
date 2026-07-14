@@ -6,7 +6,6 @@
 #include "3drando/item_pool.hpp"
 #include "z64item.h"
 #include "variables.h"
-#include "macros.h"
 #include "functions.h"
 #include "../../OTRGlobals.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
@@ -434,7 +433,8 @@ bool Item::IsBottleItem() const {
 bool Item::IsMajorItem() const {
     const auto ctx = Context::GetInstance();
     if (type == ITEMTYPE_TOKEN) {
-        return ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_TOKENS) || ctx->LACSCondition() == RO_LACS_TOKENS;
+        return ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_TOKENS) ||
+               ctx->GBKCondition() == RO_CHECK_TRIGGER_TOKENS;
     }
 
     if (type == ITEMTYPE_DROP || type == ITEMTYPE_EVENT || type == ITEMTYPE_SHOP || type == ITEMTYPE_MAP ||

@@ -1676,10 +1676,10 @@ void EntranceShuffler::UnshuffleAllEntrances() {
     }
 }
 
-void EntranceShuffler::ParseJson(nlohmann::json spoilerFileJson) {
+void EntranceShuffler::ParseJson(const nlohmann::json& spoilerFileJson) {
     UnshuffleAllEntrances();
     try {
-        nlohmann::json entrancesJson = spoilerFileJson["entrances"];
+        nlohmann::json entrancesJson = spoilerFileJson.value("entrances", nlohmann::json());
         size_t i = 0;
         for (auto it = entrancesJson.begin(); it != entrancesJson.end() && i < entranceOverrides.size(); ++it, i++) {
             nlohmann::json entranceJson = *it;

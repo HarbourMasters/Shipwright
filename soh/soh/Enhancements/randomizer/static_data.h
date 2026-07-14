@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include "randomizerTypes.h"
 #include "item.h"
+#include "item_location.h"
 #include "location.h"
 
 namespace Rando {
@@ -36,9 +37,9 @@ class StaticData {
     static Location* GetLocation(RandomizerCheck locKey);
     static std::array<Rando::Location, RC_MAX>& GetLocationTable();
     static std::unordered_map<std::string, uint32_t>
-    PopulateTranslationMap(std::unordered_map<uint32_t, CustomMessage> input);
+    PopulateTranslationMap(const std::unordered_map<uint32_t, CustomMessage>& input);
     static std::unordered_map<std::string, uint32_t>
-    PopulateTranslationMap(std::unordered_map<uint32_t, RandomizerHintTextKey> input);
+    PopulateTranslationMap(const std::unordered_map<uint32_t, RandomizerHintTextKey>& input);
     static std::multimap<std::tuple<s16, s16, s32>, RandomizerCheck> CheckFromActorMultimap;
     static std::vector<RandomizerCheck> GetAllDungeonLocations();
     static std::vector<RandomizerCheck> dungeonRewardLocations;

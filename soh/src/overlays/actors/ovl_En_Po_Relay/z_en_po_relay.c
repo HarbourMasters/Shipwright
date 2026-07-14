@@ -175,9 +175,9 @@ void EnPoRelay_Idle(EnPoRelay* this, PlayState* play) {
     } else if (this->actor.xzDistToPlayer < 250.0f) {
         this->actor.flags |= ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
         this->actor.textId = this->textId;
-        func_8002F2CC(&this->actor, play, 250.0f);
+        Actor_OfferTalk(&this->actor, play, 250.0f);
     }
-    func_8002F974(&this->actor, NA_SE_EN_PO_FLY - SFX_FLAG);
+    Actor_PlaySfx_Flagged(&this->actor, NA_SE_EN_PO_FLY - SFX_FLAG);
 }
 
 void EnPoRelay_Talk(EnPoRelay* this, PlayState* play) {
@@ -187,7 +187,7 @@ void EnPoRelay_Talk(EnPoRelay* this, PlayState* play) {
         this->textId = this->actor.textId;
         EnPoRelay_SetupRace(this);
     }
-    func_8002F974(&this->actor, NA_SE_EN_PO_FLY - SFX_FLAG);
+    Actor_PlaySfx_Flagged(&this->actor, NA_SE_EN_PO_FLY - SFX_FLAG);
 }
 
 void EnPoRelay_Race(EnPoRelay* this, PlayState* play) {
@@ -265,7 +265,7 @@ void EnPoRelay_Race(EnPoRelay* this, PlayState* play) {
         }
     }
     this->yawTowardsPathPoint = Actor_WorldYawTowardPoint(&this->actor, &vec);
-    func_8002F974(&this->actor, NA_SE_EN_PO_AWAY - SFX_FLAG);
+    Actor_PlaySfx_Flagged(&this->actor, NA_SE_EN_PO_AWAY - SFX_FLAG);
 }
 
 void EnPoRelay_EndRace(EnPoRelay* this, PlayState* play) {
@@ -277,9 +277,9 @@ void EnPoRelay_EndRace(EnPoRelay* this, PlayState* play) {
         gSaveContext.timerState = TIMER_STATE_OFF;
     } else if (Actor_IsFacingAndNearPlayer(&this->actor, 150.0f, 0x3000)) {
         this->actor.textId = this->textId;
-        func_8002F2CC(&this->actor, play, 250.0f);
+        Actor_OfferTalk(&this->actor, play, 250.0f);
     }
-    func_8002F974(&this->actor, NA_SE_EN_PO_FLY - SFX_FLAG);
+    Actor_PlaySfx_Flagged(&this->actor, NA_SE_EN_PO_FLY - SFX_FLAG);
 }
 
 void EnPoRelay_Talk2(EnPoRelay* this, PlayState* play) {
@@ -299,7 +299,7 @@ void EnPoRelay_Talk2(EnPoRelay* this, PlayState* play) {
         this->actionTimer = 0;
         this->actionFunc = EnPoRelay_DisappearAndReward;
     }
-    func_8002F974(&this->actor, NA_SE_EN_PO_FLY - SFX_FLAG);
+    Actor_PlaySfx_Flagged(&this->actor, NA_SE_EN_PO_FLY - SFX_FLAG);
 }
 
 void EnPoRelay_DisappearAndReward(EnPoRelay* this, PlayState* play) {

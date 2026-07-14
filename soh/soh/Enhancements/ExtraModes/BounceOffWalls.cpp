@@ -1,8 +1,8 @@
-#include <libultraship/bridge.h>
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
+#include "z64.h"
 #include "macros.h"
 #include "functions.h"
 extern PlayState* gPlayState;

@@ -1,12 +1,9 @@
 #include "soh/Enhancements/SwitchAge.h"
-#include <libultraship/bridge.h>
-#include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 extern "C" {
 #include <z64.h>
 #include "macros.h"
-#include "soh/cvar_prefixes.h"
 #include "variables.h"
 #include "functions.h"
 
@@ -54,6 +51,12 @@ void SwitchAge() {
         Entrance_SetEntranceDiscovered(ENTR_HYRULE_FIELD_10, false);
     } else {
         Entrance_SetEntranceDiscovered(ENTR_LINKS_HOUSE_CHILD_SPAWN, false);
+    }
+
+    // If paused, restore things as if unpausing
+    if (gPlayState->pauseCtx.state != 0) {
+        // Restore A button enabled alpha (disabled if changing on item/equip subscreen, difficult to get re-enable)
+        gSaveContext.buttonStatus[4] = 0;
     }
 
     static HOOK_ID hookId = 0;

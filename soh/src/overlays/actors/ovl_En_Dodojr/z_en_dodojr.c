@@ -149,7 +149,7 @@ s32 EnDodojr_UpdateBounces(EnDodojr* this, PlayState* play) {
         return 0;
     }
 
-    if (this->actor.bgCheckFlags & 1) {
+    if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_DODO_M_GND);
         this->dustPos = this->actor.world.pos;
         EnDodojr_SpawnLargeDust(this, play, 10);
@@ -456,7 +456,7 @@ void EnDodojr_CrawlTowardsTarget(EnDodojr* this, PlayState* play) {
         this->actionFunc = EnDodojr_JumpAttackBounce;
     }
 
-    if (this->actor.bgCheckFlags & 8) {
+    if (this->actor.bgCheckFlags & BGCHECKFLAG_WALL) {
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_DODO_M_DOWN);
         EnDodojr_SetupDespawn(this);
         this->actionFunc = EnDodojr_Despawn;

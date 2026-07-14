@@ -4,12 +4,10 @@
 #include <set>
 #include <vector>
 
-#include <libultraship/classes.h>
 #include <ship/utils/StringHelper.h>
 
 #include "mod_menu.h"
 #include "soh/OTRGlobals.h"
-#include "soh/resource/type/Skeleton.h"
 #include "soh/SohGui/MenuTypes.h"
 #include "soh/SohGui/SohMenu.h"
 #include "soh/SohGui/SohGui.hpp"

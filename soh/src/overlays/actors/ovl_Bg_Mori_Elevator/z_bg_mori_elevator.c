@@ -170,8 +170,8 @@ void BgMoriElevator_MoveIntoGround(BgMoriElevator* this, PlayState* play) {
 
 void func_808A1CF4(BgMoriElevator* this, PlayState* play) {
     this->actionFunc = BgMoriElevator_MoveAboveGround;
-    OnePointCutscene_Init(play, 3230, 70, &this->dyna.actor, MAIN_CAM);
-    OnePointCutscene_Init(play, 1020, 15, &this->dyna.actor, MAIN_CAM);
+    OnePointCutscene_Init(play, 3230, 70, &this->dyna.actor, CAM_ID_MAIN);
+    OnePointCutscene_Init(play, 1020, 15, &this->dyna.actor, CAM_ID_MAIN);
 }
 
 void BgMoriElevator_MoveAboveGround(BgMoriElevator* this, PlayState* play) {

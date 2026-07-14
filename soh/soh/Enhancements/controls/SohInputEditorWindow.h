@@ -1,13 +1,15 @@
 #pragma once
 
-#include <stdint.h>
-#include <libultraship/libultraship.h>
 #include <imgui.h>
 #include <unordered_map>
+#include <memory>
 #include <string>
 #include <vector>
 #include <set>
 #include <list>
+
+#include <ship/controller/controldevice/controller/Controller.h>
+#include <ship/window/gui/GuiWindow.h>
 
 typedef CONTROLLERBUTTONS_T N64ButtonMask;
 

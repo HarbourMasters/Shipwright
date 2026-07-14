@@ -2,7 +2,6 @@
 #include "soh/ShipInit.hpp"
 
 extern "C" {
-#include "macros.h"
 #include "functions.h"
 }
 

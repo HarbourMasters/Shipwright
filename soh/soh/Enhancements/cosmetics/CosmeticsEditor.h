@@ -1,5 +1,4 @@
 #pragma once
-#include <libultraship/libultraship.h>
 
 // Not to be confused with tabs, groups are 1:1 with the boxes shown in the UI, grouping them allows us to
 // reset/randomize every item in a group at once. If you are looking for tabs they are rendered manually in ImGui in
@@ -32,6 +31,7 @@ typedef enum {
 #ifdef __cplusplus
 #include <string>
 #include <map>
+#include <ship/window/gui/GuiWindow.h>
 #include "soh/SohGui/UIWidgets.hpp"
 extern "C" {
 #endif //__cplusplus

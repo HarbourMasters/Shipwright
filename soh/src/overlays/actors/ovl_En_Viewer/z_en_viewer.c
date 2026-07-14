@@ -201,7 +201,7 @@ void EnViewer_UpdateImpl(EnViewer* this, PlayState* play) {
     s32 animationEnded;
 
     if (type == ENVIEWER_TYPE_2_ZELDA) {
-        if (gSaveContext.sceneSetupIndex == 5) {
+        if (gSaveContext.sceneLayer == 5) {
             csFrames = play->csCtx.frames;
             if (csFrames == 792) {
                 Audio_PlayActorSound2(&this->actor, NA_SE_VO_Z0_SURPRISE);
@@ -215,7 +215,7 @@ void EnViewer_UpdateImpl(EnViewer* this, PlayState* play) {
         this->actor.uncullZoneScale = 10000.0f;
         this->actor.uncullZoneDownward = 10000.0f;
     } else if (type == ENVIEWER_TYPE_3_GANONDORF) {
-        if (gSaveContext.sceneSetupIndex == 4) {
+        if (gSaveContext.sceneLayer == 4) {
             switch (play->csCtx.frames) {
                 case 20:
                 case 59:
@@ -233,7 +233,7 @@ void EnViewer_UpdateImpl(EnViewer* this, PlayState* play) {
                     break;
             }
         }
-        if (gSaveContext.sceneSetupIndex == 5) {
+        if (gSaveContext.sceneLayer == 5) {
             if (play->csCtx.frames == 1508) {
                 Audio_PlayActorSound2(&this->actor, NA_SE_EN_FANTOM_ST_LAUGH);
             }
@@ -250,7 +250,7 @@ void EnViewer_UpdateImpl(EnViewer* this, PlayState* play) {
                                    &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         }
     } else if (type == ENVIEWER_TYPE_6_HORSE_GANONDORF) {
-        if (gSaveContext.sceneSetupIndex == 5 || gSaveContext.sceneSetupIndex == 10) {
+        if (gSaveContext.sceneLayer == 5 || gSaveContext.sceneLayer == 10) {
             Audio_PlayActorSound2(&this->actor, NA_SE_EV_HORSE_RUN_LEVEL - SFX_FLAG);
         }
     } else if (type == ENVIEWER_TYPE_4_HORSE_GANONDORF) {
@@ -359,7 +359,7 @@ void EnViewer_UpdateImpl(EnViewer* this, PlayState* play) {
             }
         }
     } else if (type == ENVIEWER_TYPE_1_IMPA) {
-        if (gSaveContext.sceneSetupIndex == 5) {
+        if (gSaveContext.sceneLayer == 5) {
             if (play->csCtx.frames == 845) {
                 Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_ITEM_OCARINA, 4.0f, 81.0f, 2600.0f, 0, 0,
                                    0, 0);
@@ -495,7 +495,7 @@ void EnViewer_Update(Actor* thisx, PlayState* play) {
 
 s32 EnViewer_Ganondorf3OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
                                         void* thisx) {
-    if (gSaveContext.sceneSetupIndex == 4) {
+    if (gSaveContext.sceneLayer == 4) {
         if (play->csCtx.frames >= 400) {
             if (limbIndex == 5) {
                 *dList = gYoungGanondorfOpenLeftHandDL;
@@ -537,7 +537,7 @@ void EnViewer_DrawGanondorf(EnViewer* this, PlayState* play) {
     type = this->actor.params >> 8;
     if (type == ENVIEWER_TYPE_3_GANONDORF || type == ENVIEWER_TYPE_5_GANONDORF || type == ENVIEWER_TYPE_7_GANONDORF ||
         type == ENVIEWER_TYPE_8_GANONDORF) {
-        if (gSaveContext.sceneSetupIndex != 4) {
+        if (gSaveContext.sceneLayer != 4) {
             frames = 149;
         }
 
@@ -646,7 +646,7 @@ void EnViewer_DrawZelda(EnViewer* this, PlayState* play) {
             gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(gChildZeldaEyeOutTex));
         }
 
-        if (gSaveContext.sceneSetupIndex == 6) {
+        if (gSaveContext.sceneLayer == 6) {
             gSPSegment(POLY_OPA_DISP++, 0x0A, SEGMENTED_TO_VIRTUAL(gChildZeldaMouthSurprisedTex));
         } else {
             if (play->csCtx.frames < 758) {

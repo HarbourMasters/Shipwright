@@ -1,7 +1,5 @@
 #include "draw.h"
 #include "soh/OTRGlobals.h"
-#include "soh/cvar_prefixes.h"
-#include "randomizerTypes.h"
 #include "soh_assets.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
@@ -13,16 +11,13 @@ extern "C" {
 #include "functions.h"
 #include "variables.h"
 #include "dungeon.h"
-#include "objects/object_box/object_box.h"
 #include "objects/object_gi_key/object_gi_key.h"
 #include "objects/object_gi_bosskey/object_gi_bosskey.h"
-#include "objects/object_gi_bracelet/object_gi_bracelet.h"
 #include "objects/object_gi_compass/object_gi_compass.h"
 #include "objects/object_gi_map/object_gi_map.h"
 #include "objects/object_gi_hearts/object_gi_hearts.h"
 #include "objects/object_gi_scale/object_gi_scale.h"
 #include "objects/object_gi_fire/object_gi_fire.h"
-#include "objects/object_fish/object_fish.h"
 #include "objects/object_toki_objects/object_toki_objects.h"
 #include "objects/object_gi_bomb_2/object_gi_bomb_2.h"
 #include "objects/object_goma/object_goma.h"
@@ -32,12 +27,10 @@ extern "C" {
 #include "objects/object_fd/object_fd.h"
 #include "objects/object_mamenoki/object_mamenoki.h"
 #include "objects/object_mo/object_mo.h"
-#include "objects/object_mori_objects/object_mori_objects.h"
 #include "objects/object_sst/object_sst.h"
 #include "overlays/actors/ovl_Boss_Goma/z_boss_goma.h"
 #include "objects/object_tw/object_tw.h"
 #include "objects/object_ganon2/object_ganon2.h"
-#include "objects/object_gi_shield_1/object_gi_shield_1.h"
 extern PlayState* gPlayState;
 extern SaveContext gSaveContext;
 }
@@ -415,8 +408,21 @@ extern "C" void Randomizer_DrawTriforcePieceGI(PlayState* play, GetItemEntry get
 
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
+    auto rando = OTRGlobals::Instance->gRandomizer;
     uint8_t current = gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected;
-    uint8_t required = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED) + 1;
+    bool fullTriforce = false;
+    if (rando->GetRandoSettingValue(RSK_RAINBOW_BRIDGE) == RO_BRIDGE_TRIFORCE_PIECES) {
+        fullTriforce = rando->GetRandoSettingValue(RSK_RAINBOW_BRIDGE_TRIFORCE_COUNT) == current;
+    }
+    if (rando->GetRandoSettingValue(RSK_WINCON) == RO_WINCON_TRIFORCE_PIECES) {
+        fullTriforce = fullTriforce || (rando->GetRandoSettingValue(RSK_WINCON_TRIFORCE_COUNT) == current);
+    }
+    if (rando->GetRandoSettingValue(RSK_GANONS_BOSS_KEY) == RO_GANON_BOSS_KEY_TRIFORCE_PIECES) {
+        fullTriforce = fullTriforce || (rando->GetRandoSettingValue(RSK_GBK_TRIFORCE_COUNT) == current);
+    }
+    if (rando->GetRandoSettingValue(RSK_GANONS_SOUL) == RO_GANONS_SOUL_TRIFORCE_PIECES) {
+        fullTriforce = fullTriforce || (rando->GetRandoSettingValue(RSK_GANONS_SOUL_TRIFORCE_COUNT) == current);
+    }
 
     Matrix_Scale(triforcePieceScale, triforcePieceScale, triforcePieceScale, MTXMODE_APPLY);
 
@@ -428,7 +434,7 @@ extern "C" void Randomizer_DrawTriforcePieceGI(PlayState* play, GetItemEntry get
 
     // Animation. When not the completed triforce, create delay before showing the piece to bypass interpolation.
     // If the completed triforce, make it grow slowly.
-    if (current != required) {
+    if (!fullTriforce) {
         if (triforcePieceScale > 0.00008f && triforcePieceScale < 0.034f) {
             triforcePieceScale = 0.034f;
         } else if (triforcePieceScale < 0.035f) {
@@ -443,13 +449,13 @@ extern "C" void Randomizer_DrawTriforcePieceGI(PlayState* play, GetItemEntry get
 
     // Show piece when not currently completing the triforce. Use the scale to create a delay so interpolation doesn't
     // make the triforce twitch when the size is set to a higher value.
-    if (current != required && triforcePieceScale > 0.035f) {
+    if (!fullTriforce && triforcePieceScale > 0.035f) {
         // Get shard DL. Remove one before division to account for triforce piece given in the textbox
         // to match up the shard from the overworld model.
         Gfx* triforcePieceDL = Randomizer_GetTriforcePieceDL((current - 1) % 3);
 
         gSPDisplayList(POLY_XLU_DISP++, triforcePieceDL);
-    } else if (current == required && triforcePieceScale > 0.00008f) {
+    } else if (fullTriforce && triforcePieceScale > 0.00008f) {
         gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gTriforcePieceCompletedDL);
     }
 

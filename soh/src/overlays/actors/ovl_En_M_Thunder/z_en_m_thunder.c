@@ -173,7 +173,7 @@ void EnMThunder_ChargingSpinAttack(EnMThunder* this, PlayState* play) {
     }
 
     if (player->unk_858 >= 0.1f) {
-        func_800AA000(0.0f, (s32)(player->unk_858 * 150.0f) & 0xFF, 2, (s32)(player->unk_858 * 150.0f) & 0xFF);
+        Rumble_Request(0.0f, (s32)(player->unk_858 * 150.0f) & 0xFF, 2, (s32)(player->unk_858 * 150.0f) & 0xFF);
     }
 
     if (player->stateFlags2 & PLAYER_STATE2_SPIN_ATTACKING) {

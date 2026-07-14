@@ -96,7 +96,7 @@ void func_80B43AD4(EnYukabyun* this, PlayState* play) {
         this->actionfunc = func_80B43B6C;
     }
     Math_StepToF(&this->actor.world.pos.y, this->actor.home.pos.y + 30.0f, 1.0f);
-    func_8002F974(&this->actor, NA_SE_EN_YUKABYUN_FLY - SFX_FLAG);
+    Actor_PlaySfx_Flagged(&this->actor, NA_SE_EN_YUKABYUN_FLY - SFX_FLAG);
 }
 
 void func_80B43B6C(EnYukabyun* this, PlayState* play) {
@@ -105,7 +105,7 @@ void func_80B43B6C(EnYukabyun* this, PlayState* play) {
         Actor_Kill(&this->actor);
         return;
     }
-    func_8002F974(&this->actor, NA_SE_EN_YUKABYUN_FLY - SFX_FLAG);
+    Actor_PlaySfx_Flagged(&this->actor, NA_SE_EN_YUKABYUN_FLY - SFX_FLAG);
 }
 
 void EnYukabyun_Break(EnYukabyun* this, PlayState* play) {
@@ -121,7 +121,7 @@ void EnYukabyun_Update(Actor* thisx, PlayState* play) {
 
     if (((this->collider.base.atFlags & AT_HIT) || (this->collider.base.acFlags & AC_HIT) ||
          ((this->collider.base.ocFlags1 & OC1_HIT) && !(this->collider.base.oc->id == ACTOR_EN_YUKABYUN))) ||
-        ((this->actionfunc == func_80B43B6C) && (this->actor.bgCheckFlags & 8))) {
+        ((this->actionfunc == func_80B43B6C) && (this->actor.bgCheckFlags & BGCHECKFLAG_WALL))) {
         this->collider.base.atFlags &= ~AT_HIT;
         this->collider.base.acFlags &= ~AC_HIT;
         this->collider.base.ocFlags1 &= ~OC1_HIT;

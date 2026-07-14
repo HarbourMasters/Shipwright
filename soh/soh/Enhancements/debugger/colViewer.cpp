@@ -12,7 +12,6 @@ extern "C" {
 #include "variables.h"
 #include "functions.h"
 #include "macros.h"
-#include "soh/cvar_prefixes.h"
 #include "overlays/actors/ovl_En_Kakasi2/z_en_kakasi2.h"
 extern PlayState* gPlayState;
 }
@@ -399,10 +398,10 @@ void DrawDynapoly(std::vector<Gfx>& dl, CollisionHeader* col, int32_t bgId) {
         } else if (SurfaceType_GetSceneExitIndex(&gPlayState->colCtx, poly, bgId) ||
                    func_80041E80(&gPlayState->colCtx, poly, bgId) == 0x05) {
             color = CVarGetColor(CVAR_DEVELOPER_TOOLS("ColViewer.ColorEntrance.Value"), { 0, 255, 0, 255 });
-        } else if (func_80041D4C(&gPlayState->colCtx, poly, bgId) != 0 ||
+        } else if (SurfaceType_GetFloorType(&gPlayState->colCtx, poly, bgId) != 0 ||
                    SurfaceType_IsWallDamage(&gPlayState->colCtx, poly, bgId)) {
             color = CVarGetColor(CVAR_DEVELOPER_TOOLS("ColViewer.ColorSpecialSurface.Value"), { 192, 255, 192, 255 });
-        } else if (SurfaceType_GetSlope(&gPlayState->colCtx, poly, bgId) == 0x01) {
+        } else if (SurfaceType_GetFloorEffect(&gPlayState->colCtx, poly, bgId) == 0x01) {
             color = CVarGetColor(CVAR_DEVELOPER_TOOLS("ColViewer.ColorSlope.Value"), { 255, 255, 128, 255 });
         } else {
             color = CVarGetColor(CVAR_DEVELOPER_TOOLS("ColViewer.ColorNormal.Value"), { 255, 255, 255, 255 });

@@ -135,7 +135,7 @@ void BgMoriHashira4_GateWait(BgMoriHashira4* this, PlayState* play) {
         if (this->gateTimer > 30) {
             Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_METALDOOR_OPEN);
             BgMoriHashira4_SetupAction(this, BgMoriHashira4_GateOpen);
-            OnePointCutscene_Init(play, 6010, 20, &this->dyna.actor, MAIN_CAM);
+            OnePointCutscene_Init(play, 6010, 20, &this->dyna.actor, CAM_ID_MAIN);
             sUnkTimer++;
         }
     }

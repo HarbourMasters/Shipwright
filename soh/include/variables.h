@@ -77,7 +77,7 @@ extern "C"
 	extern u8 D_8011FB34;
 	extern u8 D_8011FB38;
 	extern u8 gSkyboxBlendingEnabled;
-	extern u16 gTimeIncrement;
+	extern u16 gTimeSpeed;
 	extern struct_8011FC1C D_8011FC1C[][9];
 	extern SkyboxFile gSkyboxFiles[];
 	extern s32 gZeldaArenaLogSeverity;

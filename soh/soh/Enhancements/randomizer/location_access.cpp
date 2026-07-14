@@ -6,6 +6,7 @@
 #include "soh/Enhancements/debugger/performanceTimer.h"
 
 #include <fstream>
+#include <libultraship/log/luslog.h>
 #include <soh/OTRGlobals.h>
 
 #include "3drando/shops.hpp"

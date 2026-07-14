@@ -1,8 +1,8 @@
 #include "soh/resource/importer/SkeletonLimbFactory.h"
 #include "soh/resource/type/SkeletonLimb.h"
-#include "spdlog/spdlog.h"
+#include <ship/Context.h>
+#include <ship/resource/ResourceManager.h>
 #include <tinyxml2.h>
-#include "libultraship/libultraship.h"
 
 namespace SOH {
 std::shared_ptr<Ship::IResource>

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "../randomizerTypes.h"
 #include "../location_access.h"
 #include "../entrance.h"
 

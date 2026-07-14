@@ -77,8 +77,8 @@ void GameOver_Update(PlayState* play) {
             for (int buttonIndex = 0; buttonIndex < ARRAY_COUNT(gSaveContext.buttonStatus); buttonIndex++) {
                 gSaveContext.buttonStatus[buttonIndex] = BTN_ENABLED;
             }
-            gSaveContext.forceRisingButtonAlphas = gSaveContext.unk_13E8 = gSaveContext.unk_13EA =
-                gSaveContext.unk_13EC = 0;
+            gSaveContext.forceRisingButtonAlphas = gSaveContext.nextHudVisibilityMode = gSaveContext.hudVisibilityMode =
+                gSaveContext.hudVisibilityModeTimer = 0;
 
             Environment_InitGameOverLights(play);
             gGameOverTimer = 20;
@@ -86,8 +86,8 @@ void GameOver_Update(PlayState* play) {
             v91 = VREG(91);
             v92 = VREG(92);
 
-            func_800AA000(0.0f, ((v90 > 0x64) ? 0xFF : (v90 * 0xFF) / 0x64), (CLAMP_MAX(v91 * 3, 0xFF)),
-                          ((v92 > 0x64) ? 0xFF : (v92 * 0xFF) / 0x64));
+            Rumble_Request(0.0f, ((v90 > 0x64) ? 0xFF : (v90 * 0xFF) / 0x64), (CLAMP_MAX(v91 * 3, 0xFF)),
+                           ((v92 > 0x64) ? 0xFF : (v92 * 0xFF) / 0x64));
 
             gameOverCtx->state = GAMEOVER_DEATH_WAIT_GROUND;
             break;
@@ -109,7 +109,7 @@ void GameOver_Update(PlayState* play) {
             gameOverCtx->state++;
             gGameOverTimer = 0;
             Environment_InitGameOverLights(play);
-            ShrinkWindow_SetVal(0x20);
+            Letterbox_SetSizeTarget(0x20);
             return;
 
         case GAMEOVER_REVIVE_RUMBLE:
@@ -120,8 +120,8 @@ void GameOver_Update(PlayState* play) {
             v91 = VREG(91);
             v92 = VREG(92);
 
-            func_800AA000(0.0f, ((v90 > 0x64) ? 0xFF : (v90 * 0xFF) / 0x64), (CLAMP_MAX(v91 * 3, 0xFF)),
-                          ((v92 > 0x64) ? 0xFF : (v92 * 0xFF) / 0x64));
+            Rumble_Request(0.0f, ((v90 > 0x64) ? 0xFF : (v90 * 0xFF) / 0x64), (CLAMP_MAX(v91 * 3, 0xFF)),
+                           ((v92 > 0x64) ? 0xFF : (v92 * 0xFF) / 0x64));
             break;
 
         case GAMEOVER_REVIVE_WAIT_GROUND:

@@ -251,7 +251,7 @@ void func_809BCF68(EnBigokuta* this, PlayState* play) {
     }
     EffectSsGSplash_Spawn(play, &effectPos, NULL, NULL, 1, 800);
     if (this->actionFunc != func_809BE4A4) {
-        func_8002F974(&this->actor, NA_SE_EN_DAIOCTA_SPLASH - SFX_FLAG);
+        Actor_PlaySfx_Flagged(&this->actor, NA_SE_EN_DAIOCTA_SPLASH - SFX_FLAG);
     }
 }
 
@@ -269,7 +269,7 @@ void func_809BD1C8(EnBigokuta* this, PlayState* play) {
 
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_DAIOCTA_LAND_WATER);
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_GOLON_LAND_BIG);
-    func_80033E88(&this->actor, play, 0xA, 8);
+    Actor_RequestQuakeAndRumble(&this->actor, play, 0xA, 8);
 }
 
 void func_809BD2E4(EnBigokuta* this) {
@@ -442,7 +442,7 @@ void func_809BD8DC(EnBigokuta* this, PlayState* play) {
             EffectSsGSplash_Spawn(play, &effectPos, NULL, NULL, 1, 2000);
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_DAIOCTA_LAND_WATER);
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_GOLON_LAND_BIG);
-            func_800AA000(0.0f, 0xFF, 0x14, 0x96);
+            Rumble_Request(0.0f, 0xFF, 0x14, 0x96);
         }
     } else if (this->unk_196 < -1) {
         this->actor.world.pos.y = this->actor.home.pos.y - (sinf((this->unk_196 + 1) * (M_PI / 10)) * 20.0f);
@@ -647,8 +647,8 @@ void func_809BE26C(EnBigokuta* this, PlayState* play) {
         }
         if (this->unk_198 == 0 && Math_StepToF(&this->actor.scale.y, 0.0f, 0.001f)) {
             Flags_SetClear(play, this->actor.room);
-            Camera_ChangeSetting(play->cameraPtrs[MAIN_CAM], CAM_SET_DUNGEON0);
-            func_8005ACFC(play->cameraPtrs[MAIN_CAM], 4);
+            Camera_RequestSetting(play->cameraPtrs[CAM_ID_MAIN], CAM_SET_DUNGEON0);
+            func_8005ACFC(play->cameraPtrs[CAM_ID_MAIN], 4);
             SoundSource_PlaySfxAtFixedWorldPos(play, &this->actor.world.pos, 50, NA_SE_EN_OCTAROCK_BUBLE);
             Item_DropCollectibleRandom(play, &this->actor, &this->actor.world.pos, 0xB0);
             Actor_Kill(&this->actor);
@@ -739,7 +739,7 @@ void func_809BE798(EnBigokuta* this, PlayState* play) {
         } else {
             effectRot = -0x6000;
         }
-        func_8002F71C(play, &this->actor, 10.0f, this->actor.world.rot.y + effectRot, 5.0f);
+        Actor_SetPlayerKnockbackLargeNoDamage(play, &this->actor, 10.0f, this->actor.world.rot.y + effectRot, 5.0f);
         if (this->actionFunc == func_809BDC08) {
             func_809BD4A4(this);
             this->unk_196 = 40;
@@ -785,8 +785,8 @@ void EnBigokuta_Update(Actor* thisx, PlayState* play2) {
     this->actionFunc(this, play);
     func_809BD2E4(this);
     func_809BE568(this);
-    Camera_ChangeSetting(play->cameraPtrs[MAIN_CAM], CAM_SET_BIG_OCTO);
-    func_8005AD1C(play->cameraPtrs[MAIN_CAM], 4);
+    Camera_RequestSetting(play->cameraPtrs[CAM_ID_MAIN], CAM_SET_BIG_OCTO);
+    func_8005AD1C(play->cameraPtrs[CAM_ID_MAIN], 4);
 
     if (this->cylinder[0].base.atFlags & AT_ON) {
         if (this->actionFunc != func_809BE058) {

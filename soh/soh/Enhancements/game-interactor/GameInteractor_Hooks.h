@@ -2,7 +2,6 @@
 
 #include "vanilla-behavior/GIVanillaBehavior.h"
 #include "GameInteractor.h"
-#include <stdarg.h>
 
 #ifdef __cplusplus
 extern "C" {

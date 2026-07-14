@@ -1,6 +1,5 @@
 #include "Network.h"
 #include <spdlog/spdlog.h>
-#include <libultraship/libultraship.h>
 
 // MARK: - Public
 

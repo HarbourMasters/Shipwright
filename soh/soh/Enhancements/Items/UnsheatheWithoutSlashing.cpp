@@ -1,6 +1,10 @@
-#include <libultraship/bridge.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
+#include "soh/cvar_prefixes.h"
+
+extern "C" {
+#include "z64player.h"
+}
 
 #define CVAR_UNSHEATHE_NAME CVAR_ENHANCEMENT("UnsheatheWithoutSlashing")
 #define CVAR_UNSHEATHE_VALUE CVarGetInteger(CVAR_UNSHEATHE_NAME, 0)

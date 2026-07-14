@@ -4,7 +4,6 @@
 #include "soh/SohGui/UIWidgets.hpp"
 #include "soh/OTRGlobals.h"
 #include <string>
-#include <version>
 
 static std::map<const char*, std::map<HOOK_ID, HookInfo>*> hookData;
 

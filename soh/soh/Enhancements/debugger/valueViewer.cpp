@@ -1,4 +1,5 @@
 #include "valueViewer.h"
+#include <ship/config/Config.h>
 #include "soh/SohGui/UIWidgets.hpp"
 #include "soh/SohGui/SohGui.hpp"
 #include "soh/OTRGlobals.h"
@@ -11,7 +12,6 @@ extern "C" {
 #include "variables.h"
 #include "functions.h"
 #include "macros.h"
-#include "soh/cvar_prefixes.h"
 #include "overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
 
 extern PlayState* gPlayState;
@@ -58,7 +58,7 @@ std::array<ValueTableElement, VVE_MAX> valueTable = {{
     { "Frame Counter",      "play->state.frames",             "FRAM:",   TYPE_S32,   true,  []() -> void* { return &gPlayState->state.frames; }},
     { "Cutscene Pointer",   "play->csCtx.segment",            "CSP:",    TYPE_PTR,   true,  []() -> void* { return &gPlayState->csCtx.segment; }},
     { "Framerate Divisor",  "R_UPDATE_RATE",                  "FRDV:",   TYPE_S16,   false, []() -> void* { return &R_UPDATE_RATE; }},
-    { "Next HUD mode",      "gSaveContext.nextHudMode",       "HUD:",    TYPE_S16,   false, []() -> void* { return &gSaveContext.unk_13E8; }},
+    { "Next HUD mode",      "gSaveContext.nextHudMode",       "HUD:",    TYPE_S16,   false, []() -> void* { return &gSaveContext.nextHudVisibilityMode; }},
     { "Temp B Value",       "gSaveContext.buttonStatus[0]",   "TEMPB:",  TYPE_U8,    false, []() -> void* { return &gSaveContext.buttonStatus[0]; }},
     { "Blue Warp Timer",    "DoorWarp1->warpTimer",           "WARPT:",  TYPE_U16,   true,  []() -> void* { DoorWarp1 *actor = (DoorWarp1 *)Actor_Find(&gPlayState->actorCtx, ACTOR_DOOR_WARP1 ,ACTORCAT_ITEMACTION); if(actor) { return &actor->warpTimer; } else { return nullptr; }}},
     /* TODO: Find these (from GZ)

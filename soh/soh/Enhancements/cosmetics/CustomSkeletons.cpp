@@ -3,7 +3,6 @@
 #include "soh/ShipInit.hpp"
 
 extern "C" {
-#include "macros.h"
 #include "variables.h"
 extern PlayState* gPlayState;
 }

@@ -1,23 +1,18 @@
 #include "randomizer_entrance_tracker.h"
 #include "soh/OTRGlobals.h"
-#include "soh/cvar_prefixes.h"
 #include "soh/SohGui/SohGui.hpp"
 
 #include <string>
 #include <vector>
 #include <libultraship/controller/controldeck/ControlDeck.h>
-#include <libultraship/libultraship.h>
 #include "soh/Enhancements/randomizer/randomizer.h"
 
 extern "C" {
 #include <z64.h>
-#include "variables.h"
-#include "functions.h"
 #include "macros.h"
 extern PlayState* gPlayState;
 
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
-#include "soh/Enhancements/randomizer/randomizer_grotto.h"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 }
 
@@ -472,10 +467,10 @@ const EntranceData* GetEntranceData(s16 index) {
     return nullptr;
 }
 
-void LoadFromPreset(nlohmann::json info) {
+void LoadFromPreset(const nlohmann::json& info) {
     presetLoaded = true;
-    presetPos = { info["pos"]["x"], info["pos"]["y"] };
-    presetSize = { info["size"]["width"], info["size"]["height"] };
+    presetPos = { info.at("pos").at("x"), info.at("pos").at("y") };
+    presetSize = { info.at("size").at("width"), info.at("size").at("height") };
 }
 
 // Used for verifying the names on both sides of entrance pairs match. Keeping for ease of use for further name changes

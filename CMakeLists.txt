@@ -127,19 +127,23 @@ endif()
 # Global configuration types
 ################################################################################
 if (CMAKE_SYSTEM_NAME STREQUAL "NintendoSwitch")
-set(CMAKE_C_FLAGS_DEBUG "-g -ffast-math -DDEBUG")
-set(CMAKE_CXX_FLAGS_DEBUG "-g -ffast-math -DDEBUG")
-set(CMAKE_C_FLAGS_RELEASE "-O3 -ffast-math -DNDEBUG")
-set(CMAKE_CXX_FLAGS_RELEASE "-O3 -ffast-math -DNDEBUG")
+set(CMAKE_C_FLAGS_DEBUG "-g -DDEBUG")
+set(CMAKE_CXX_FLAGS_DEBUG "-g -DDEBUG")
+set(CMAKE_C_FLAGS_RELEASE "-O3 -DNDEBUG")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
 else()
 set(CMAKE_C_FLAGS_RELEASE "-O2 -DNDEBUG")
 set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DNDEBUG")
 set(CMAKE_OBJCXX_FLAGS_RELEASE "-O2 -DNDEBUG")
 endif()
-# IEEE 754 compliant floating-point rounding on arm64 macOS
-if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-    add_compile_options(-Xarch_arm64 -ffp-contract=off)
-endif()
+
+# Enforce strict, deterministic IEEE-754 floating-point to match N64 (MIPS) semantics.
+# Never enable fast-math, and disable FMA contraction: the R4300 CPU and RSP have no
+# fused multiply-add, so contracting mul+add into an FMA produces extra precision.
+add_compile_options($<$<CXX_COMPILER_ID:GNU,Clang,AppleClang>:-fno-fast-math>)
+add_compile_options($<$<CXX_COMPILER_ID:GNU,Clang,AppleClang>:-ffp-contract=off>)
+add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/fp:precise>)
+add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/fp:except->)
 
 if(NOT CMAKE_BUILD_TYPE )
     set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Choose the type of build." FORCE)
