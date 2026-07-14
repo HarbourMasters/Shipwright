@@ -13321,7 +13321,8 @@ void Player_Action_DismountLadder(Player* this, PlayState* play) {
     interruptResult = Player_TryActionInterrupt(play, this, &this->skelAnime, 4.0f);
 
     // SoH: Prevent ladder cutscene softlock
-    if (GameInteractor_Should(VB_INTERRUPT_LADDER_DISMOUNT, interruptResult == PLAYER_INTERRUPT_NEW_ACTION, &this->unk_6AD)) {
+    if (GameInteractor_Should(VB_INTERRUPT_LADDER_DISMOUNT, interruptResult == PLAYER_INTERRUPT_NEW_ACTION,
+                              &this->unk_6AD)) {
         this->stateFlags1 &= ~PLAYER_STATE1_CLIMBING_LADDER;
         return;
     }
