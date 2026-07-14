@@ -47,11 +47,11 @@ static void StartControl(PlayState* play) {
     if (sState.subCamId == SUBCAM_NONE)
         return;
 
-    Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+    Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_WAIT);
     Play_ChangeCameraStatus(play, sState.subCamId, CAM_STAT_ACTIVE);
 
     // Initialize camera vectors from main camera for smooth transition
-    Camera* mainCam = Play_GetCamera(play, MAIN_CAM);
+    Camera* mainCam = Play_GetCamera(play, CAM_ID_MAIN);
     sState.cameraEye = mainCam->eye;
     sState.cameraAt = mainCam->at;
 
@@ -69,7 +69,7 @@ static void StopControl(PlayState* play) {
         return;
 
     if (sState.subCamId != SUBCAM_NONE) {
-        Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_ACTIVE);
+        Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_ACTIVE);
         Play_ClearCamera(play, sState.subCamId);
         sState.subCamId = SUBCAM_NONE;
     }
@@ -120,7 +120,7 @@ static void HandleSteering(EnBomChu* chu, Input* input) {
         return;
 
     // Calculate turn angle based on stick input
-    f32 turnAngle = BINANG_TO_RAD((s16)(TURN_RATE * (stickX / 85.0f)));
+    f32 turnAngle = static_cast<f32>(BINANG_TO_RAD((s16)(TURN_RATE * (stickX / 85.0f))));
 
     // Rotate forward and left vectors around the up axis
     RotateVectorAroundAxis(&chu->axisForwards, &chu->axisUp, -turnAngle);

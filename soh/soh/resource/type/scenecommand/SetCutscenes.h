@@ -1,10 +1,8 @@
 #pragma once
 
 #include <stdint.h>
-#include <vector>
 #include <memory>
 #include <string>
-#include <ship/resource/Resource.h>
 #include "soh/resource/type/scenecommand/SceneCommand.h"
 #include "soh/resource/type/Cutscene.h"
 // #include <libultraship/libultra.h>

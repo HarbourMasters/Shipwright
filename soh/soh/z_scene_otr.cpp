@@ -1,15 +1,10 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "ResourceManagerHelpers.h"
-#include <libultraship/libultraship.h>
 #include "soh/resource/type/Scene.h"
-#include <ship/utils/StringHelper.h>
 #include "global.h"
 #include "vt.h"
 #include "soh/resource/type/CollisionHeader.h"
-#include <fast/resource/type/DisplayList.h>
 #include "soh/resource/type/Cutscene.h"
-#include "soh/resource/type/Path.h"
-#include "soh/resource/type/Text.h"
 #include <ship/resource/type/Blob.h>
 #include <memory>
 #include <cassert>
@@ -34,6 +29,7 @@
 #include "soh/resource/type/scenecommand/SetSoundSettings.h"
 #include "soh/resource/type/scenecommand/SetEchoSettings.h"
 #include "soh/resource/type/scenecommand/SetAlternateHeaders.h"
+#include <spdlog/spdlog.h>
 
 extern Ship::IResource* OTRPlay_LoadFile(PlayState* play, const char* fileName);
 extern "C" s32 Object_Spawn(ObjectContext* objectCtx, s16 objectId);
@@ -46,8 +42,8 @@ bool Scene_CommandSpawnList(PlayState* play, SOH::ISceneCommand* cmd) {
     ActorEntry* entries = (ActorEntry*)cmdStartPos->GetRawPointer();
 
     play->linkActorEntry = &entries[play->setupEntranceList[play->curSpawn].spawn];
-    play->linkAgeOnLoad = ((void)0, gSaveContext.linkAge);
-    s16 linkObjectId = gLinkObjectIds[((void)0, gSaveContext.linkAge)];
+    play->linkAgeOnLoad = gSaveContext.linkAge;
+    s16 linkObjectId = gLinkObjectIds[gSaveContext.linkAge];
 
     Object_Spawn(&play->objectCtx, linkObjectId);
 
@@ -163,7 +159,7 @@ bool Scene_CommandObjectList(PlayState* play, SOH::ISceneCommand* cmd) {
             for (j = i; j < play->objectCtx.num; j++) {
                 play->objectCtx.status[j].id = OBJECT_INVALID;
             }
-            func_80031A28(play, &play->actorCtx);
+            Actor_KillAllWithMissingObject(play, &play->actorCtx);
             break;
         }
     }
@@ -205,6 +201,12 @@ bool Scene_CommandTransitionActorList(PlayState* play, SOH::ISceneCommand* cmd) 
 
     play->transiActorCtx.numActors = cmdActor->numTransitionActors;
     play->transiActorCtx.list = (TransitionActorEntry*)cmdActor->GetRawPointer();
+
+    // Loops transition actors and sets them to default values (not spawned yet)
+    // used as fix for doors / crawlspaces not loading after they've already been loaded once.
+    for (s32 i = 0; i < play->transiActorCtx.numActors; i++) {
+        play->transiActorCtx.list[i].id = ABS(play->transiActorCtx.list[i].id);
+    }
 
     return false;
 }
@@ -257,16 +259,16 @@ bool Scene_CommandTimeSettings(PlayState* play, SOH::ISceneCommand* cmd) {
     }
 
     if (gSaveContext.sunsSongState == SUNSSONG_INACTIVE) {
-        gTimeIncrement = play->envCtx.timeIncrement;
+        gTimeSpeed = play->envCtx.timeIncrement;
     }
 
-    play->envCtx.sunPos.x = -(Math_SinS(((void)0, gSaveContext.dayTime) - 0x8000) * 120.0f) * 25.0f;
-    play->envCtx.sunPos.y = (Math_CosS(((void)0, gSaveContext.dayTime) - 0x8000) * 120.0f) * 25.0f;
-    play->envCtx.sunPos.z = (Math_CosS(((void)0, gSaveContext.dayTime) - 0x8000) * 20.0f) * 25.0f;
+    play->envCtx.sunPos.x = -(Math_SinS(gSaveContext.dayTime - 0x8000) * 120.0f) * 25.0f;
+    play->envCtx.sunPos.y = (Math_CosS(gSaveContext.dayTime - 0x8000) * 120.0f) * 25.0f;
+    play->envCtx.sunPos.z = (Math_CosS(gSaveContext.dayTime - 0x8000) * 20.0f) * 25.0f;
 
     if (((play->envCtx.timeIncrement == 0) && (gSaveContext.cutsceneIndex < 0xFFF0)) ||
         (gSaveContext.entranceIndex == ENTR_LAKE_HYLIA_WARP_PAD)) {
-        gSaveContext.skyboxTime = ((void)0, gSaveContext.dayTime);
+        gSaveContext.skyboxTime = gSaveContext.dayTime;
         if ((gSaveContext.skyboxTime >= 0x2AAC) && (gSaveContext.skyboxTime < 0x4555)) {
             gSaveContext.skyboxTime = 0x3556;
         } else if ((gSaveContext.skyboxTime >= 0x4555) && (gSaveContext.skyboxTime < 0x5556)) {
@@ -334,13 +336,13 @@ bool Scene_CommandAlternateHeaderList(PlayState* play, SOH::ISceneCommand* cmd) 
     // s32 pad;
     // SceneCmd* altHeader;
 
-    // osSyncPrintf("\n[ZU]sceneset age    =[%X]", ((void)0, gSaveContext.linkAge));
-    // osSyncPrintf("\n[ZU]sceneset time   =[%X]", ((void)0, gSaveContext.cutsceneIndex));
-    // osSyncPrintf("\n[ZU]sceneset counter=[%X]", ((void)0, gSaveContext.sceneSetupIndex));
+    // osSyncPrintf("\n[ZU]sceneset age    =[%X]", gSaveContext.linkAge);
+    // osSyncPrintf("\n[ZU]sceneset time   =[%X]", gSaveContext.cutsceneIndex);
+    // osSyncPrintf("\n[ZU]sceneset counter=[%X]", gSaveContext.sceneLayer);
 
-    if (gSaveContext.sceneSetupIndex != 0) {
+    if (gSaveContext.sceneLayer != 0) {
         SOH::Scene* desiredHeader =
-            std::static_pointer_cast<SOH::Scene>(cmdHeaders->headers[gSaveContext.sceneSetupIndex - 1]).get();
+            std::static_pointer_cast<SOH::Scene>(cmdHeaders->headers[gSaveContext.sceneLayer - 1]).get();
 
         if (desiredHeader != nullptr) {
             OTRScene_ExecuteCommands(play, desiredHeader);
@@ -349,9 +351,9 @@ bool Scene_CommandAlternateHeaderList(PlayState* play, SOH::ISceneCommand* cmd) 
             // "Coughh! There is no specified dataaaaa!"
             osSyncPrintf("\nげぼはっ！ 指定されたデータがないでええっす！");
 
-            if (gSaveContext.sceneSetupIndex == 3) {
+            if (gSaveContext.sceneLayer == 3) {
                 SOH::Scene* desiredHeader =
-                    std::static_pointer_cast<SOH::Scene>(cmdHeaders->headers[gSaveContext.sceneSetupIndex - 2]).get();
+                    std::static_pointer_cast<SOH::Scene>(cmdHeaders->headers[gSaveContext.sceneLayer - 2]).get();
 
                 // "Using adult day data there!"
                 osSyncPrintf("\nそこで、大人の昼データを使用するでええっす！！");
@@ -485,7 +487,7 @@ extern "C" s32 OTRfunc_800973FC(PlayState* play, RoomContext* roomCtx) {
     return 1;
 }
 
-extern "C" s32 OTRfunc_8009728C(PlayState* play, RoomContext* roomCtx, s32 roomNum) {
+extern "C" s32 OTRRoom_RequestNewRoom(PlayState* play, RoomContext* roomCtx, s32 roomNum) {
     u32 size;
 
     if (roomCtx->status == 0) {
@@ -500,8 +502,8 @@ extern "C" s32 OTRfunc_8009728C(PlayState* play, RoomContext* roomCtx, s32 roomN
             return 0; // UH OH
 
         size = static_cast<u32>(play->roomList[roomNum].vromEnd - play->roomList[roomNum].vromStart);
-        roomCtx->unk_34 =
-            (void*)ALIGN16((uintptr_t)roomCtx->bufPtrs[roomCtx->unk_30] - ((size + 8) * roomCtx->unk_30 + 7));
+        roomCtx->unk_34 = (void*)ALIGN16((uintptr_t)roomCtx->bufPtrs[roomCtx->activeBufPage] -
+                                         ((size + 8) * roomCtx->activeBufPage + 7));
 
         osCreateMesgQueue(&roomCtx->loadQueue, &roomCtx->loadMsg, 1);
         // DmaMgr_SendRequest2(&roomCtx->dmaRequest, roomCtx->unk_34, play->roomList[roomNum].vromStart, size, 0,
@@ -512,7 +514,7 @@ extern "C" s32 OTRfunc_8009728C(PlayState* play, RoomContext* roomCtx, s32 roomN
         roomCtx->status = 1;
         roomCtx->roomToLoad = roomData.get();
 
-        roomCtx->unk_30 ^= 1;
+        roomCtx->activeBufPage ^= 1;
 
         SPDLOG_INFO("Room Init - curRoom.num: {0:#x}", roomCtx->curRoom.num);
 

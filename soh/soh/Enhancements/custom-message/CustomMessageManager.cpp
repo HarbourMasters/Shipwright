@@ -35,7 +35,7 @@ static const std::unordered_map<std::string, ItemID> altarIcons = {
     { "l", ITEM_ARROW_LIGHT },     { "b", ITEM_KEY_BOSS },         { "o", ITEM_SWORD_MASTER },
     { "c", ITEM_OCARINA_FAIRY },   { "i", ITEM_OCARINA_TIME },     { "L", ITEM_BOW_ARROW_LIGHT },
     { "k", ITEM_TUNIC_KOKIRI },    { "m", ITEM_DUNGEON_MAP },      { "C", ITEM_COMPASS },
-    { "s", ITEM_SKULL_TOKEN },     { "g", ITEM_MASK_GORON },
+    { "s", ITEM_SKULL_TOKEN },     { "g", ITEM_MASK_GORON },       { "w", ITEM_CUSTOM },
 };
 
 static std::map<std::string, int> pixelWidthTable = {
@@ -80,8 +80,8 @@ CustomMessage::CustomMessage(std::string english_, std::string german_, std::str
     messages[LANGUAGE_ENG] = std::move(english_);
     messages[LANGUAGE_GER] = std::move(german_);
     messages[LANGUAGE_FRA] = std::move(french_);
-    colors = colors_;
-    capital = capital_;
+    colors = std::move(colors_);
+    capital = std::move(capital_);
     type = type_;
     position = position_;
 }
@@ -94,8 +94,8 @@ CustomMessage::CustomMessage(std::string english_, TextBoxType type_, TextBoxPos
 CustomMessage::CustomMessage(std::string english_, std::vector<std::string> colors_, std::vector<bool> capital_,
                              TextBoxType type_, TextBoxPosition position_) {
     messages[LANGUAGE_ENG] = std::move(english_);
-    colors = colors_;
-    capital = capital_;
+    colors = std::move(colors_);
+    capital = std::move(capital_);
     type = type_;
     position = position_;
 }
@@ -167,7 +167,7 @@ const std::string CustomMessage::GetForLanguage(uint8_t language, MessageFormat 
 
 const std::vector<std::string> CustomMessage::GetAllMessages(MessageFormat format) const {
     std::vector<std::string> output = messages;
-    for (auto str : output) {
+    for (auto& str : output) {
         ProcessMessageFormat(str, format);
     }
     return output;
@@ -190,14 +190,14 @@ const std::vector<bool>& CustomMessage::GetCapital() const {
 }
 
 void CustomMessage::SetCapital(std::vector<bool> capital_) {
-    capital = capital_;
+    capital = std::move(capital_);
 }
 const std::vector<std::string>& CustomMessage::GetColors() const {
     return colors;
 }
 
 void CustomMessage::SetColors(std::vector<std::string> colors_) {
-    colors = colors_;
+    colors = std::move(colors_);
 }
 
 const TextBoxType& CustomMessage::GetTextBoxType() const {
@@ -218,8 +218,8 @@ void CustomMessage::SetTextBoxPosition(TextBoxPosition boxPos) {
 
 CustomMessage CustomMessage::operator+(const CustomMessage& right) const {
     std::vector<std::string> newColors = colors;
-    std::vector<std::string> rColors = right.GetColors();
-    for (auto color : rColors) {
+    const std::vector<std::string>& rColors = right.GetColors();
+    for (const auto& color : rColors) {
         newColors.push_back(color);
     }
     std::vector<bool> newCapital = capital;
@@ -253,7 +253,7 @@ bool CustomMessage::operator==(const CustomMessage& operand) const {
 }
 
 bool CustomMessage::operator==(const std::string& operand) const {
-    for (auto str : messages) {
+    for (const auto& str : messages) {
         if (str == operand) {
             return true;
         }
@@ -274,16 +274,16 @@ void CustomMessage::LoadIntoFont() {
     switch (gSaveContext.language) {
         case LANGUAGE_FRA:
             msgCtx->msgLength = font->msgLength =
-                SohUtils::CopyStringToCharBuffer(buffer, GetFrench(MF_RAW), maxBufferSize);
+                static_cast<u32>(SohUtils::CopyStringToCharBuffer(buffer, GetFrench(MF_RAW), maxBufferSize));
             break;
         case LANGUAGE_GER:
             msgCtx->msgLength = font->msgLength =
-                SohUtils::CopyStringToCharBuffer(buffer, GetGerman(MF_RAW), maxBufferSize);
+                static_cast<u32>(SohUtils::CopyStringToCharBuffer(buffer, GetGerman(MF_RAW), maxBufferSize));
             break;
         case LANGUAGE_ENG:
         default:
             msgCtx->msgLength = font->msgLength =
-                SohUtils::CopyStringToCharBuffer(buffer, GetEnglish(MF_RAW), maxBufferSize);
+                static_cast<u32>(SohUtils::CopyStringToCharBuffer(buffer, GetEnglish(MF_RAW), maxBufferSize));
             break;
     }
 }
@@ -506,7 +506,10 @@ size_t CustomMessage::FindNEWLINE(std::string& str, size_t lastNewline) const {
 
 bool CustomMessage::AddBreakString(std::string& str, size_t pos, std::string breakString) const {
     if (str[pos] == ' ' || str[pos] == '&') {
-        str.replace(pos, 1, breakString);
+        // don't add a break next to an existing newline
+        if (str[pos] != ' ' || (str[pos + 1] != '&' && str[pos + 1] != NEWLINE()[0])) {
+            str.replace(pos, 1, breakString);
+        }
         return false;
     } else {
         if (pos <= str.size() - 1) {
@@ -515,7 +518,10 @@ bool CustomMessage::AddBreakString(std::string& str, size_t pos, std::string bre
                 return false;
                 // otherwise, if it is a line break or space, replace it
             } else if (str[pos + 1] == ' ' || str[pos + 1] == '&') {
-                str.replace(pos + 1, 1, breakString);
+                // don't add a break next to an existing newline
+                if (str[pos + 1] != ' ' || (str[pos + 2] != '&' && str[pos + 2] != NEWLINE()[0])) {
+                    str.replace(pos + 1, 1, breakString);
+                }
                 return false;
             }
         }
@@ -680,14 +686,16 @@ void CustomMessage::SetSingularPlural() {
 }
 
 void CustomMessage::Capitalize() {
-    for (std::string str : messages) {
-        (str)[0] = std::toupper((str)[0]);
+    for (std::string& str : messages) {
+        if (!str.empty()) {
+            str[0] = std::toupper(str[0]);
+        }
     }
 }
 
 void CustomMessage::ReplaceSpecialCharacters(std::string& str) const {
     // add special characters
-    for (auto specialCharacterPair : textBoxSpecialCharacters) {
+    for (const auto& specialCharacterPair : textBoxSpecialCharacters) {
         size_t start_pos = 0;
         std::string textBoxSpecialCharacterString = ""s;
         textBoxSpecialCharacterString += specialCharacterPair.second;
@@ -701,7 +709,7 @@ void CustomMessage::ReplaceSpecialCharacters(std::string& str) const {
 const char* Interface_ReplaceSpecialCharacters(char text[]) {
     std::string textString(text);
 
-    for (auto specialCharacterPair : textBoxSpecialCharacters) {
+    for (const auto& specialCharacterPair : textBoxSpecialCharacters) {
         size_t start_pos = 0;
         std::string textBoxSpecialCharacterString = ""s;
         textBoxSpecialCharacterString += specialCharacterPair.second;
@@ -717,7 +725,7 @@ const char* Interface_ReplaceSpecialCharacters(char text[]) {
 }
 
 void CustomMessage::EncodeColors(std::string& str) const {
-    for (std::string color : colors) {
+    for (const std::string& color : colors) {
         if (const size_t firstHashtag = str.find('#'); firstHashtag != std::string::npos) {
             str.replace(firstHashtag, 1, colorToPercent.at(color));
             if (const size_t secondHashtag = str.find('#', firstHashtag + 1); secondHashtag != std::string::npos) {
@@ -798,33 +806,33 @@ std::string CustomMessage::TWO_WAY_CHOICE() {
     return "\x1B"s;
 }
 
-bool CustomMessageManager::InsertCustomMessage(std::string tableID, uint16_t textID, CustomMessage messages) {
+bool CustomMessageManager::InsertCustomMessage(const std::string& tableID, uint16_t textID, CustomMessage messages) {
     auto foundMessageTable = messageTables.find(tableID);
     if (foundMessageTable == messageTables.end()) {
         return false;
     }
     auto& messageTable = foundMessageTable->second;
-    auto messageInsertResult = messageTable.emplace(textID, messages);
+    auto messageInsertResult = messageTable.emplace(textID, std::move(messages));
     return messageInsertResult.second;
 }
 
-bool CustomMessageManager::CreateGetItemMessage(std::string tableID, uint16_t giid, ItemID iid,
+bool CustomMessageManager::CreateGetItemMessage(const std::string& tableID, uint16_t giid, ItemID iid,
                                                 CustomMessage messageEntry) {
     messageEntry.Format(iid);
     const uint16_t textID = giid;
-    return InsertCustomMessage(tableID, textID, messageEntry);
+    return InsertCustomMessage(tableID, textID, std::move(messageEntry));
 }
 
-bool CustomMessageManager::CreateMessage(std::string tableID, uint16_t textID, CustomMessage messageEntry) {
-    return InsertCustomMessage(tableID, textID, messageEntry);
+bool CustomMessageManager::CreateMessage(const std::string& tableID, uint16_t textID, CustomMessage messageEntry) {
+    return InsertCustomMessage(tableID, textID, std::move(messageEntry));
 }
 
-CustomMessage CustomMessageManager::RetrieveMessage(std::string tableID, uint16_t textID, MessageFormat format) {
+CustomMessage CustomMessageManager::RetrieveMessage(const std::string& tableID, uint16_t textID, MessageFormat format) {
     std::unordered_map<std::string, CustomMessageTable>::const_iterator foundMessageTable = messageTables.find(tableID);
     if (foundMessageTable == messageTables.end()) {
         throw(MessageNotFoundException(tableID, textID));
     }
-    CustomMessageTable messageTable = foundMessageTable->second;
+    const CustomMessageTable& messageTable = foundMessageTable->second;
     std::unordered_map<uint16_t, CustomMessage>::const_iterator foundMessage = messageTable.find(textID);
     if (foundMessage == messageTable.end()) {
         throw(MessageNotFoundException(tableID, textID));
@@ -844,7 +852,7 @@ CustomMessage CustomMessageManager::RetrieveMessage(std::string tableID, uint16_
     return message;
 }
 
-bool CustomMessageManager::ClearMessageTable(std::string tableID) {
+bool CustomMessageManager::ClearMessageTable(const std::string& tableID) {
     auto foundMessageTable = messageTables.find(tableID);
     if (foundMessageTable == messageTables.end()) {
         return false;
@@ -854,7 +862,6 @@ bool CustomMessageManager::ClearMessageTable(std::string tableID) {
     return true;
 }
 
-bool CustomMessageManager::AddCustomMessageTable(std::string tableID) {
-    CustomMessageTable newMessageTable;
-    return messageTables.emplace(tableID, newMessageTable).second;
+bool CustomMessageManager::AddCustomMessageTable(const std::string& tableID) {
+    return messageTables.try_emplace(tableID).second;
 }

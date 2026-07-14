@@ -204,7 +204,7 @@ void EnSth_FacePlayer(EnSth* this, PlayState* play) {
     if (ABS(diffRot) <= 0x4000) {
         Math_SmoothStepToS(&this->actor.shape.rot.y, this->actor.yawTowardsPlayer, 6, 0xFA0, 0x64);
         this->actor.world.rot.y = this->actor.shape.rot.y;
-        func_80038290(play, &this->actor, &this->headRot, &this->unk_2AC, this->actor.focus.pos);
+        Actor_TrackPlayer(play, &this->actor, &this->headRot, &this->unk_2AC, this->actor.focus.pos);
     } else {
         if (diffRot < 0) {
             Math_SmoothStepToS(&this->headRot.y, -0x2000, 6, 0x1838, 0x100);
@@ -220,7 +220,7 @@ void EnSth_LookAtPlayer(EnSth* this, PlayState* play) {
     s16 diffRot = this->actor.yawTowardsPlayer - this->actor.shape.rot.y;
 
     if ((ABS(diffRot) <= 0x4300) && (this->actor.xzDistToPlayer < 100.0f)) {
-        func_80038290(play, &this->actor, &this->headRot, &this->unk_2AC, this->actor.focus.pos);
+        Actor_TrackPlayer(play, &this->actor, &this->headRot, &this->unk_2AC, this->actor.focus.pos);
     } else {
         Math_SmoothStepToS(&this->headRot.x, 0, 6, 0x1838, 0x64);
         Math_SmoothStepToS(&this->headRot.y, 0, 6, 0x1838, 0x64);
@@ -246,7 +246,7 @@ void EnSth_ParentRewardObtainedWait(EnSth* this, PlayState* play) {
     } else {
         this->actor.textId = 0x23;
         if (this->actor.xzDistToPlayer < 100.0f) {
-            func_8002F2CC(&this->actor, play, 100.0f);
+            Actor_OfferTalk(&this->actor, play, 100.0f);
         }
     }
     EnSth_LookAtPlayer(this, play);
@@ -309,7 +309,7 @@ void EnSth_RewardUnobtainedWait(EnSth* this, PlayState* play) {
             this->actor.textId = 0x21;
         }
         if (this->actor.xzDistToPlayer < 100.0f) {
-            func_8002F2CC(&this->actor, play, 100.0f);
+            Actor_OfferTalk(&this->actor, play, 100.0f);
         }
     }
     EnSth_LookAtPlayer(this, play);
@@ -325,7 +325,7 @@ void EnSth_ChildRewardObtainedWait(EnSth* this, PlayState* play) {
             this->actor.textId = 0x1F;
         }
         if (this->actor.xzDistToPlayer < 100.0f) {
-            func_8002F2CC(&this->actor, play, 100.0f);
+            Actor_OfferTalk(&this->actor, play, 100.0f);
         }
     }
     EnSth_LookAtPlayer(this, play);

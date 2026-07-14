@@ -5,9 +5,7 @@
 #endif
 
 #include "soh/Enhancements/custom-message/CustomMessageManager.h"
-#include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "soh/Enhancements/custom-message/text.h"
-#include "libultraship/libultra/types.h"
 
 namespace Rando {
 namespace Traps {

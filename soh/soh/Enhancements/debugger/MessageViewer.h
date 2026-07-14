@@ -4,7 +4,7 @@
 
 #ifdef __cplusplus
 #include <ship/window/gui/GuiWindow.h>
-#include <unordered_map>
+
 extern "C" {
 #endif
 /**

@@ -1,9 +1,9 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/ShipInit.hpp"
-#include "soh/ResourceManagerHelpers.h"
 
 extern "C" {
+#include "z64.h"
 #include "align_asset_macro.h"
 #include "macros.h"
 #include "variables.h"

@@ -155,7 +155,7 @@ void BgSpot06Objects_Init(Actor* thisx, PlayState* play) {
             thisx->flags = ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED;
 
             if (LINK_IS_ADULT && !Flags_GetEventChkInf(EVENTCHKINF_RAISED_LAKE_HYLIA_WATER)) {
-                if (gSaveContext.sceneSetupIndex < 4) {
+                if (gSaveContext.sceneLayer < 4) {
                     this->lakeHyliaWaterLevel = -681.0f;
                     play->colCtx.colHeader->waterBoxes[LHWB_GERUDO_VALLEY_RIVER_LOWER].ySurface =
                         WATER_LEVEL_RIVER_LOWERED;
@@ -206,8 +206,11 @@ void BgSpot06Objects_Destroy(Actor* thisx, PlayState* play) {
             break;
     }
 
-    // Due to Ships resource caching, the water box collisions for the river have to be manually reset
+    // Due to Ships resource caching, the water boxes have to be manually reset
+    play->colCtx.colHeader->waterBoxes[LHWB_GERUDO_VALLEY_RIVER_LOWER].ySurface = WATER_LEVEL_RIVER_RAISED;
     play->colCtx.colHeader->waterBoxes[LHWB_GERUDO_VALLEY_RIVER_LOWER].zMin = WATER_LEVEL_RIVER_LOWER_Z;
+    play->colCtx.colHeader->waterBoxes[LHWB_MAIN_1].ySurface = WATER_LEVEL_RAISED;
+    play->colCtx.colHeader->waterBoxes[LHWB_MAIN_2].ySurface = WATER_LEVEL_RAISED;
 }
 
 /**
@@ -267,7 +270,7 @@ void BgSpot06Objects_GateOpen(BgSpot06Objects* this, PlayState* play) {
         this->timer = 0;
         Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_METALDOOR_STOP);
     } else {
-        func_8002F974(&this->dyna.actor, NA_SE_EV_METALDOOR_SLIDE - SFX_FLAG);
+        Actor_PlaySfx_Flagged(&this->dyna.actor, NA_SE_EV_METALDOOR_SLIDE - SFX_FLAG);
     }
 }
 
@@ -326,7 +329,7 @@ void BgSpot06Objects_LockWait(BgSpot06Objects* this, PlayState* play) {
         Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
                                &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         Flags_SetSwitch(play, this->switchFlag);
-        OnePointCutscene_Init(play, 4120, 170, &this->dyna.actor, MAIN_CAM);
+        OnePointCutscene_Init(play, 4120, 170, &this->dyna.actor, CAM_ID_MAIN);
     } else {
         CollisionCheck_SetAC(play, &play->colChkCtx, &this->collider.base);
     }
@@ -456,7 +459,7 @@ void BgSpot06Objects_DrawLakeHyliaWater(BgSpot06Objects* this, PlayState* play) 
 
     gDPSetEnvColor(POLY_XLU_DISP++, 255, 255, 255, 128);
 
-    if ((this->lakeHyliaWaterLevel < -680.0f) && (gSaveContext.sceneSetupIndex < 4)) {
+    if ((this->lakeHyliaWaterLevel < -680.0f) && (gSaveContext.sceneLayer < 4)) {
         gSPDisplayList(POLY_XLU_DISP++, gLakeHyliaLowWaterDL);
     } else {
         gSPDisplayList(POLY_XLU_DISP++, gLakeHyliaHighWaterDL);
@@ -509,52 +512,62 @@ void BgSpot06Objects_WaterPlaneCutsceneRise(BgSpot06Objects* this, PlayState* pl
     if (this->lakeHyliaWaterLevel >= 0.0001f) {
         this->dyna.actor.world.pos.y = WATER_LEVEL_RAISED;
         this->actionFunc = BgSpot06Objects_DoNothing;
-
-        // On rando, this is used with the water control system switch to finalize raising the water
-        if (IS_RANDO) {
-            this->lakeHyliaWaterLevel = 0;
-            play->colCtx.colHeader->waterBoxes[LHWB_GERUDO_VALLEY_RIVER_LOWER].ySurface = WATER_LEVEL_RIVER_RAISED;
-            play->colCtx.colHeader->waterBoxes[LHWB_GERUDO_VALLEY_RIVER_LOWER].zMin = WATER_LEVEL_RIVER_LOWER_Z;
-            Flags_SetEventChkInf(EVENTCHKINF_RAISED_LAKE_HYLIA_WATER); // Set the "raise lake hylia water" flag
-            play->roomCtx.unk_74[0] = 0; // Apply the moving under water texture to lake hylia ground
-        }
     } else {
-        Math_SmoothStepToF(&this->lakeHyliaWaterLevel, 1.0f, 0.1f, IS_RANDO ? 10.0f : 1.0f, 0.001f);
+        Math_SmoothStepToF(&this->lakeHyliaWaterLevel, 1.0f, 0.1f, 1.0f, 0.001f);
         play->colCtx.colHeader->waterBoxes[LHWB_GERUDO_VALLEY_RIVER_LOWER].ySurface = WATER_LEVEL_RIVER_LOWERED;
         play->colCtx.colHeader->waterBoxes[LHWB_MAIN_1].ySurface = this->dyna.actor.world.pos.y;
         play->colCtx.colHeader->waterBoxes[LHWB_MAIN_2].ySurface = this->dyna.actor.world.pos.y;
     }
 
-    func_8002F948(&this->dyna.actor, NA_SE_EV_WATER_LEVEL_DOWN - SFX_FLAG);
+    Actor_PlaySfx_FlaggedCentered2(&this->dyna.actor, NA_SE_EV_WATER_LEVEL_DOWN - SFX_FLAG);
 }
 
 /**
- * Custom action func to lower the Laker Hylia water plane from a switch.
+ * SoH: Randomizer, custom action function to raise the Laker Hylia water plane from a switch.
  */
-void BgSpot06Objects_WaterPlaneCutsceneLower(BgSpot06Objects* this, PlayState* play) {
-    f32 yPos = this->dyna.actor.world.pos.y = this->lakeHyliaWaterLevel + WATER_LEVEL_RAISED;
+void BgSpot06Objects_WaterControl_Raise(BgSpot06Objects* this, PlayState* play) {
+    this->dyna.actor.world.pos.y = this->lakeHyliaWaterLevel + WATER_LEVEL_RAISED;
 
-    // A slightly smaller number thatn -680 (which is when textures change)
+    if (this->lakeHyliaWaterLevel >= 0.0001f) {
+        this->dyna.actor.world.pos.y = WATER_LEVEL_RAISED;
+        this->actionFunc = BgSpot06Objects_DoNothing;
+        this->lakeHyliaWaterLevel = 0;
+        play->colCtx.colHeader->waterBoxes[LHWB_GERUDO_VALLEY_RIVER_LOWER].ySurface = WATER_LEVEL_RIVER_RAISED;
+        play->colCtx.colHeader->waterBoxes[LHWB_GERUDO_VALLEY_RIVER_LOWER].zMin = WATER_LEVEL_RIVER_LOWER_Z;
+        play->roomCtx.unk_74[0] = 0; // Apply the moving under water texture to Lake Hylia ground
+    } else {
+        Math_SmoothStepToF(&this->lakeHyliaWaterLevel, 1.0f, 0.1f, 10.0f, 0.001f);
+        play->colCtx.colHeader->waterBoxes[LHWB_GERUDO_VALLEY_RIVER_LOWER].ySurface = WATER_LEVEL_RIVER_LOWERED;
+        play->colCtx.colHeader->waterBoxes[LHWB_MAIN_1].ySurface = this->dyna.actor.world.pos.y;
+        play->colCtx.colHeader->waterBoxes[LHWB_MAIN_2].ySurface = this->dyna.actor.world.pos.y;
+        Actor_PlaySfx_FlaggedCentered2(&this->dyna.actor, NA_SE_EV_WATER_LEVEL_DOWN - SFX_FLAG);
+    }
+}
+
+/**
+ * SoH: Randomizer, custom action function to lower the Laker Hylia water plane from a switch.
+ */
+void BgSpot06Objects_WaterControl_Lower(BgSpot06Objects* this, PlayState* play) {
+    f32 yPos = this->dyna.actor.world.pos.y = this->lakeHyliaWaterLevel + WATER_LEVEL_RAISED;
+    play->roomCtx.unk_74[0] = 87; // Remove the moving under water texture from Lake Hylia ground
+
+    // A slightly smaller number than -680.0f (which is when surface textures change)
     // Then we change the position since the "low water" texture has a different height
     if (this->lakeHyliaWaterLevel <= -679.9f) {
         this->dyna.actor.world.pos.y = (this->lakeHyliaWaterLevel + 680.0f) + WATER_LEVEL_RAISED;
     }
-
-    Flags_UnsetEventChkInf(EVENTCHKINF_RAISED_LAKE_HYLIA_WATER); // Unset the "raised lake hylia water" flag
-    play->roomCtx.unk_74[0] = 87; // Remove the moving under water texture from lake hylia ground
-
     if (this->lakeHyliaWaterLevel <= -681.0f) {
         this->lakeHyliaWaterLevel = -681.0f;
         this->dyna.actor.world.pos.y = WATER_LEVEL_RAISED;
         this->actionFunc = BgSpot06Objects_DoNothing;
     } else {
-        // Go slightly beyond -681 so the smoothing doesn't slow down too much (matches the reverse of water rise func)
+        // Go slightly beyond -681.0f so the smoothing doesn't slow down too much (matches the reverse of water rise
+        // func)
         Math_SmoothStepToF(&this->lakeHyliaWaterLevel, -682.0f, 0.1f, 10.0f, 0.01f);
         play->colCtx.colHeader->waterBoxes[LHWB_GERUDO_VALLEY_RIVER_LOWER].ySurface = WATER_LEVEL_RIVER_LOWERED;
         play->colCtx.colHeader->waterBoxes[LHWB_GERUDO_VALLEY_RIVER_LOWER].zMin = WATER_LEVEL_RIVER_LOWER_Z - 50;
         play->colCtx.colHeader->waterBoxes[LHWB_MAIN_1].ySurface = yPos;
         play->colCtx.colHeader->waterBoxes[LHWB_MAIN_2].ySurface = yPos;
+        Actor_PlaySfx_FlaggedCentered2(&this->dyna.actor, NA_SE_EV_WATER_LEVEL_DOWN - SFX_FLAG);
     }
-
-    func_8002F948(&this->dyna.actor, NA_SE_EV_WATER_LEVEL_DOWN - SFX_FLAG);
 }

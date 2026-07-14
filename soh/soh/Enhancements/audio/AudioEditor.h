@@ -1,10 +1,10 @@
 #pragma once
-#include <stdint.h>
 
 #ifdef __cplusplus
 
-#include <libultraship/libultraship.h>
-#include <imgui.h>
+#include <libultraship/libultra/types.h>
+#include <ship/window/gui/GuiWindow.h>
+
 #include "AudioCollection.h"
 
 class AudioEditor final : public Ship::GuiWindow {

@@ -5,6 +5,7 @@
 #include "overlays/effects/ovl_Effect_Ss_Hahen/z_eff_ss_hahen.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ResourceManagerHelpers.h"
+#include "soh/Enhancements/savestate_serialize.h"
 
 #define FLAGS                                                                                 \
     (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED | \
@@ -100,8 +101,12 @@ static ColliderCylinderInit D_80A4B7CC = {
     { 15, 30, 10, { 0, 0, 0 } },
 };
 
-u8 sSpawnNum = 0;
+static u8 sSpawnNum = 0;
 static Vec3f sDeadEffectVel = { 0.0f, 0.0f, 0.0f };
+
+#define EN_GOMA_SHIP_SAVESTATE_FIELDS(F) F(sSpawnNum)
+
+SHIP_SAVESTATE_DEFINE(EnGoma, EN_GOMA_SHIP_SAVESTATE_FIELDS)
 
 static InitChainEntry sInitChain[] = {
     ICHAIN_U8(targetMode, 3, ICHAIN_CONTINUE),
@@ -220,7 +225,7 @@ void EnGoma_EggFallToGround(EnGoma* this, PlayState* play) {
 
     switch (this->hatchState) {
         case 0:
-            if (this->actor.bgCheckFlags & 1) { // floor
+            if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) { // floor
                 if (this->actor.params < 6) {
                     Audio_PlayActorSound2(&this->actor, NA_SE_EN_GOMA_BJR_EGG1);
                 } else {
@@ -266,7 +271,7 @@ void EnGoma_EggFallToGround(EnGoma* this, PlayState* play) {
             break;
     }
 
-    if (this->actor.bgCheckFlags & 1) {
+    if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
         Math_ApproachZeroF(&this->actor.speedXZ, 0.2f, 0.05f);
     }
     this->eggPitch += (this->actor.speedXZ * 0.1f);
@@ -348,7 +353,7 @@ void EnGoma_SetupHurt(EnGoma* this, PlayState* play) {
 void EnGoma_Hurt(EnGoma* this, PlayState* play) {
     SkelAnime_Update(&this->skelanime);
 
-    if (this->actor.bgCheckFlags & 1) {
+    if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
         Math_ApproachZeroF(&this->actor.speedXZ, 1.0f, 2.0f);
     }
 
@@ -380,7 +385,7 @@ void EnGoma_SetupDie(EnGoma* this) {
 void EnGoma_Die(EnGoma* this, PlayState* play) {
     SkelAnime_Update(&this->skelanime);
 
-    if (this->actor.bgCheckFlags & 1) {
+    if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
         Math_ApproachZeroF(&this->actor.speedXZ, 1.0f, 2.0f);
     }
 
@@ -485,7 +490,7 @@ void EnGoma_SetupLand(EnGoma* this) {
 void EnGoma_Land(EnGoma* this, PlayState* play) {
     SkelAnime_Update(&this->skelanime);
 
-    if (this->actor.bgCheckFlags & 1) {
+    if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
         Math_ApproachZeroF(&this->actor.speedXZ, 1.0f, 2.0f);
     }
     if (this->actionTimer == 0) {
@@ -511,7 +516,7 @@ void EnGoma_Jump(EnGoma* this, PlayState* play) {
     SkelAnime_Update(&this->skelanime);
     Math_ApproachF(&this->actor.speedXZ, 10.0f, 0.5f, 5.0f);
 
-    if (this->actor.velocity.y <= 0.0f && (this->actor.bgCheckFlags & 1)) {
+    if (this->actor.velocity.y <= 0.0f && (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND)) {
         EnGoma_SetupLand(this);
         if (this->actor.params < 6) {
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_GOMA_BJR_LAND2);
@@ -548,7 +553,7 @@ void EnGoma_ChasePlayer(EnGoma* this, PlayState* play) {
     Math_ApproachS(&this->actor.world.rot.y, this->actor.yawTowardsPlayer, 3, 2000);
     Math_ApproachS(&this->actor.shape.rot.y, this->actor.world.rot.y, 2, 3000);
 
-    if (this->actor.bgCheckFlags & 1) {
+    if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
         this->actor.velocity.y = 0.0f;
     }
     if (this->actor.xzDistToPlayer <= 150.0f) {
@@ -577,7 +582,7 @@ void EnGoma_Stunned(EnGoma* this, PlayState* play) {
         SkelAnime_Update(&this->skelanime);
     }
 
-    if (this->actor.bgCheckFlags & 1) {
+    if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
         this->actor.velocity.y = 0.0f;
         Math_ApproachZeroF(&this->actor.speedXZ, 0.5f, 2.0f);
     }
@@ -885,7 +890,7 @@ void EnGoma_BossLimb(EnGoma* this, PlayState* play) {
     Actor_UpdateBgCheckInfo(play, &this->actor, 50.0f, 50.0f, 100.0f, 4);
     this->actor.world.pos.y += 5.0f;
 
-    if (this->actor.bgCheckFlags & 1) {
+    if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
         this->actor.velocity.y = 0.0f;
     } else if (this->actionTimer < 250) {
         this->actor.shape.rot.y += 2000;

@@ -1,13 +1,11 @@
-#include <libultraship/bridge.h>
-#include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
+#include "variables.h"
+#include "z64save.h"
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
-#include "macros.h"
-#include "variables.h"
 }
 
 #define CVAR_NAME CVAR_ENHANCEMENT("3DSceneRender")

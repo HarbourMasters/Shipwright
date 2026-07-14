@@ -1,4 +1,4 @@
-#include <libultraship/bridge.h>
+#include <spdlog/spdlog.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/enhancementTypes.h"
@@ -31,6 +31,7 @@ extern "C" {
 #include "src/overlays/actors/ovl_En_Po_Sisters/z_en_po_sisters.h"
 #include "src/overlays/actors/ovl_Obj_Lightswitch/z_obj_lightswitch.h"
 #include "src/overlays/actors/ovl_Bg_Jya_Bombchuiwa/z_bg_jya_bombchuiwa.h"
+#include "src/overlays/actors/ovl_En_Bigokuta/z_en_bigokuta.h"
 #include <overlays/actors/ovl_Boss_Ganondrof/z_boss_ganondrof.h>
 #include <overlays/actors/ovl_En_Ik/z_en_ik.h>
 #include <objects/object_gnd/object_gnd.h>
@@ -174,12 +175,9 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
 
             if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO)) {
                 // LACS
-                bool meetsLACSRequirements =
-                    LINK_IS_ADULT &&
-                    (gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_TEMPLE_OF_TIME) &&
+                if (LINK_IS_ADULT && (gEntranceTable[gSaveContext.entranceIndex].scene == SCENE_TEMPLE_OF_TIME) &&
                     CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) && CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) &&
-                    !Flags_GetEventChkInf(EVENTCHKINF_RETURNED_TO_TEMPLE_OF_TIME_WITH_ALL_MEDALLIONS);
-                if (GameInteractor_Should(VB_BE_ELIGIBLE_FOR_LIGHT_ARROWS, meetsLACSRequirements)) {
+                    !Flags_GetEventChkInf(EVENTCHKINF_RETURNED_TO_TEMPLE_OF_TIME_WITH_ALL_MEDALLIONS)) {
                     Flags_SetEventChkInf(EVENTCHKINF_RETURNED_TO_TEMPLE_OF_TIME_WITH_ALL_MEDALLIONS);
                     if (GameInteractor_Should(VB_GIVE_ITEM_LIGHT_ARROW, true)) {
                         Item_Give(gPlayState, ITEM_ARROW_LIGHT);
@@ -699,6 +697,13 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
             }
             break;
         }
+        case VB_PLAY_TIMEBLOCK_CS: {
+            if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.OnePoint"), IS_RANDO)) {
+                // Todo: Preferable if possible to turn camera as if SoT block cutscene
+                *should = false;
+            }
+            break;
+        }
         case VB_PLAY_GORON_FREE_CS: {
             if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO)) {
                 *should = false;
@@ -795,14 +800,30 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                 }
             }
 
-            if (flag != RAND_INF_MAX &&
-                (IS_RANDO || CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), IS_RANDO))) {
-                if (IS_RANDO || *should) {
+            if (flag != RAND_INF_MAX) {
+                if (IS_RANDO) {
+                    // If we're in rando, set the flag and fill magic/health. The flag will trigger the check later with
+                    // the queue Notably, we ignore the vanilla *should value because in rando we don't care about the
+                    // requirements
                     Flags_SetRandomizerInf(flag);
                     gSaveContext.healthAccumulator = MAX_HEALTH;
                     Magic_Fill(gPlayState);
+                    // Also prevent the cutscene from playing, technically we could let it play in rando but we'd
+                    // need to VB prevent the item gives that happen during the cutscene.
+                    *should = false;
+                } else {
+                    // If we're in vanilla, set the flag _if_ we were eligble, so that anchor can send the reward in
+                    // co-op
+                    if (*should) {
+                        Flags_SetRandomizerInf(flag);
+                        // If we're in vanilla and skipping the cutscene, fill health/magic, and prevent the cutscene
+                        if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), IS_RANDO)) {
+                            gSaveContext.healthAccumulator = MAX_HEALTH;
+                            Magic_Fill(gPlayState);
+                            *should = false;
+                        }
+                    }
                 }
-                *should = false;
             }
 
             break;
@@ -815,7 +836,7 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                 // The second argument determines whether the vanilla code should be run anyway. It
                 // should be set to `true` ONLY IF said code calls `Play_ClearCamera`, false otherwise.
                 bool clearCamera = (bool)va_arg(args, int);
-                *should = clearCamera && enHeishi2->cameraId != MAIN_CAM;
+                *should = clearCamera && enHeishi2->cameraId != CAM_ID_MAIN;
             }
             break;
         }
@@ -823,7 +844,7 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
             if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO)) {
                 *should = false;
                 if (!Flags_GetEventChkInf(EVENTCHKINF_RAINBOW_BRIDGE_BUILT)) {
-                    func_800F595C(NA_BGM_BRIDGE_TO_GANONS);
+                    Audio_PlaySequenceInCutscene(NA_BGM_BRIDGE_TO_GANONS);
                     // This would have been set 2 frames later, but we're skipping now so the sound doesn't play twice
                     Flags_SetEventChkInf(EVENTCHKINF_RAINBOW_BRIDGE_BUILT);
                 }
@@ -919,6 +940,8 @@ static uint32_t bgSpot03UpdateHook = 0;
 static uint32_t bgSpot03KillHook = 0;
 static uint32_t enPoSistersUpdateHook = 0;
 static uint32_t enPoSistersKillHook = 0;
+static uint32_t enBigokutaUpdateHook = 0;
+static uint32_t enBigokutaKillHook = 0;
 void TimeSaverOnActorInitHandler(void* actorRef) {
     Actor* actor = static_cast<Actor*>(actorRef);
 
@@ -1144,6 +1167,38 @@ void TimeSaverOnActorInitHandler(void* actorRef) {
             EnRu2_SetEncounterSwitchFlag(enRu2, gPlayState);
             Actor_Kill(actor);
         }
+    }
+
+    // Prevent softlock from pre-battle early hit on Bigocto (possible by cutscene skip)
+    if (actor->id == ACTOR_EN_BIGOKUTA) {
+        enBigokutaUpdateHook =
+            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* innerActorRef) mutable {
+                Actor* innerActor = static_cast<Actor*>(innerActorRef);
+                if (innerActor->id == ACTOR_EN_BIGOKUTA &&
+                    (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.OnePoint"), IS_RANDO))) {
+                    EnBigokuta* enBigokuta = static_cast<EnBigokuta*>(innerActorRef);
+                    if (enBigokuta->actor.params == 2) { // Platform already active
+                        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(
+                            enBigokutaUpdateHook);
+                        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(enBigokutaKillHook);
+                        enBigokutaUpdateHook = 0;
+                        enBigokutaKillHook = 0;
+                        // Possible action functions after taken damage
+                    } else if (enBigokuta->actionFunc == func_809BE058 || enBigokuta->actionFunc == func_809BDF34 ||
+                               enBigokuta->actionFunc == func_809BE180) {
+                        enBigokuta->actor.home.pos.y = enBigokuta->actor.world.pos.y = -1025.0f;
+                        Actor_ChangeCategory(gPlayState, &gPlayState->actorCtx, &enBigokuta->actor, ACTORCAT_ENEMY);
+                        enBigokuta->actor.params = 2; // Activate platform
+                    }
+                }
+            });
+        enBigokutaKillHook =
+            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) mutable {
+                GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(enBigokutaUpdateHook);
+                GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(enBigokutaKillHook);
+                enBigokutaUpdateHook = 0;
+                enBigokutaKillHook = 0;
+            });
     }
 }
 

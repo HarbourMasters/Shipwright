@@ -144,7 +144,7 @@ void func_80A90EBC(EnKakasi3* this, PlayState* play, s32 arg) {
 
     if (this->unk_19A != 0) {
         this->actor.gravity = -1.0f;
-        if (this->unk_19A == 8 && (this->actor.bgCheckFlags & 1)) {
+        if (this->unk_19A == 8 && (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND)) {
             this->actor.velocity.y = 3.0f;
             Audio_PlayActorSound2(&this->actor, NA_SE_IT_KAKASHI_JUMP);
         }
@@ -233,7 +233,7 @@ void func_80A91348(EnKakasi3* this, PlayState* play) {
                 if (!this->unk_194) {
 
                     if (player->stateFlags2 & PLAYER_STATE2_ATTEMPT_PLAY_FOR_ACTOR) {
-                        this->camId = OnePointCutscene_Init(play, 2260, -99, &this->actor, MAIN_CAM);
+                        this->camId = OnePointCutscene_Init(play, 2260, -99, &this->actor, CAM_ID_MAIN);
                         play->msgCtx.msgMode = MSGMODE_PAUSED;
                         this->dialogState = TEXT_STATE_EVENT;
                         this->unk_1B8 = 0.0f;
@@ -248,7 +248,7 @@ void func_80A91348(EnKakasi3* this, PlayState* play) {
                 } else if (gSaveContext.scarecrowSpawnSongSet && !this->unk_195) {
 
                     if (player->stateFlags2 & PLAYER_STATE2_ATTEMPT_PLAY_FOR_ACTOR) {
-                        this->camId = OnePointCutscene_Init(play, 2260, -99, &this->actor, MAIN_CAM);
+                        this->camId = OnePointCutscene_Init(play, 2260, -99, &this->actor, CAM_ID_MAIN);
                         play->msgCtx.msgMode = MSGMODE_PAUSED;
                         this->dialogState = TEXT_STATE_EVENT;
                         this->unk_1B8 = 0.0f;
@@ -261,7 +261,7 @@ void func_80A91348(EnKakasi3* this, PlayState* play) {
                         player->stateFlags2 |= PLAYER_STATE2_NEAR_OCARINA_ACTOR;
                     }
                 }
-                func_8002F2CC(&this->actor, play, 100.0f);
+                Actor_OfferTalk(&this->actor, play, 100.0f);
             }
         }
     }
@@ -315,7 +315,7 @@ void func_80A91760(EnKakasi3* this, PlayState* play) {
         play->msgCtx.msgMode = MSGMODE_PAUSED;
         func_8010BD58(play, OCARINA_ACTION_SCARECROW_PLAYBACK);
         this->actionFunc = func_80A917FC;
-        this->camId = OnePointCutscene_Init(play, 2280, -99, &this->actor, MAIN_CAM);
+        this->camId = OnePointCutscene_Init(play, 2280, -99, &this->actor, CAM_ID_MAIN);
     }
 }
 

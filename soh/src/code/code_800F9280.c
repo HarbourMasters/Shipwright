@@ -379,9 +379,6 @@ void Audio_ProcessSeqCmd(u32 cmd) {
     }
 }
 
-extern f32 D_80130F24;
-extern f32 D_80130F28;
-
 void Audio_QueueSeqCmd(u32 cmd) {
     // Replacement is resolved per-command in func_800F9280().
     sAudioSeqCmds[sSeqCmdWrPos++] = cmd;

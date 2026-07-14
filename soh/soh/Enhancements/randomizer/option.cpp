@@ -1,9 +1,7 @@
 #include "option.h"
-#include "libultraship/bridge.h"
 #include <ship/Context.h>
 #include <imgui.h>
 #include "soh/Enhancements/randomizer/settings.h"
-#include "soh/SohGui/SohGui.hpp"
 #include "soh/SohGui/SohMenu.h"
 #include "soh/SohGui/UIWidgets.hpp"
 #include "soh/Enhancements/Lang/Lang.h"
@@ -94,7 +92,14 @@ uint8_t Option::GetOptionIndex() const {
     return CVarGetInteger(cvarName.c_str(), defaultOption);
 }
 
+uint8_t Option::GetMenuOptionDefault() const {
+    return defaultOption;
+}
+
 const std::string& Option::GetOptionText(size_t index) const {
+    if (index >= options.size()) {
+        index = options.size() - 1;
+    }
     return options[index];
 }
 
@@ -225,7 +230,6 @@ void Option::AddWidget(WidgetPath& path) {
                           if (info.type == WIDGET_CVAR_SLIDER_INT) {
                               UIWidgets::IntSliderOptions* sliderOpts =
                                   (UIWidgets::IntSliderOptions*)info.options.get();
-                              sliderOpts->Format(this->GetOptionText(this->GetOptionIndex()).c_str());
                               size_t maxIndex = this->options.size() - 1;
                               if (this->GetKey() == RSK_SHOPSANITY_COUNT && maxIndex > 7 &&
                                   CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) !=
@@ -233,6 +237,10 @@ void Option::AddWidget(WidgetPath& path) {
                                   maxIndex = 7;
                               }
                               sliderOpts->Max(static_cast<int32_t>(maxIndex));
+                              if (this->GetOptionIndex() > maxIndex) {
+                                  CVarSetInteger(cvarName.c_str(), static_cast<int32_t>(maxIndex));
+                              }
+                              sliderOpts->Format(this->GetOptionText(this->GetOptionIndex()).c_str());
                           }
                       })
                       .CVar(cvarName.c_str())

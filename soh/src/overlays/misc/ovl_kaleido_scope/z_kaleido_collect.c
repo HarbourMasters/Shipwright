@@ -205,7 +205,7 @@ void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
                         }
 
                         D_8082A11C = 0;
-                        Audio_OcaSetInstrument(1);
+                        AudioOcarina_SetInstrument(1);
                         func_800ECC04((1 << pauseCtx->ocarinaSongIdx) + 0x8000);
                         pauseCtx->ocarinaStaff = Audio_OcaGetDisplayingStaff();
                         pauseCtx->ocarinaStaff->pos = 0;
@@ -216,13 +216,13 @@ void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
                         VREG(24) = -46;
                         VREG(25) = -41;
                         pauseCtx->unk_1E4 = 8;
-                        Audio_OcaSetInstrument(0);
+                        AudioOcarina_SetInstrument(0);
                     }
                 }
             } else if (pauseCtx->unk_1E4 == 5) {
                 if ((pauseCtx->stickRelX != 0) || (pauseCtx->stickRelY != 0)) {
                     pauseCtx->unk_1E4 = 0;
-                    Audio_OcaSetInstrument(0);
+                    AudioOcarina_SetInstrument(0);
                 }
             } else if (pauseCtx->unk_1E4 == 8) {
                 if (CHECK_BTN_ALL(input->press.button, BTN_A) && (sp216 >= QUEST_SONG_MINUET) &&
@@ -292,8 +292,8 @@ void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
                 VREG(24) = -46;
                 VREG(25) = -41;
                 sp216 = pauseCtx->cursorSlot[PAUSE_QUEST];
-                Audio_OcaSetInstrument(1);
-                Audio_OcaSetInstrument(1);
+                AudioOcarina_SetInstrument(1);
+                AudioOcarina_SetInstrument(1);
                 pauseCtx->ocarinaSongIdx = gOcarinaSongItemMap[sp216 - QUEST_SONG_MINUET];
                 Audio_OcaSetSongPlayback(pauseCtx->ocarinaSongIdx + 1, 1);
                 pauseCtx->unk_1E4 = 2;
@@ -721,7 +721,7 @@ void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
                     }
 
                     D_8082A11C = 0;
-                    Audio_OcaSetInstrument(1);
+                    AudioOcarina_SetInstrument(1);
                     func_800ECC04((1 << pauseCtx->ocarinaSongIdx) + 0x8000);
                     pauseCtx->ocarinaStaff = Audio_OcaGetDisplayingStaff();
                     pauseCtx->ocarinaStaff->pos = 0;

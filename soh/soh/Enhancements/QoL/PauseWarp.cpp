@@ -69,7 +69,7 @@ static void PauseWarp_Execute() {
 }
 
 static void ActivateWarp(PauseContext* pauseCtx, int song) {
-    Audio_OcaSetInstrument(0);
+    AudioOcarina_SetInstrument(0);
     Interface_SetDoAction(gPlayState, DO_ACTION_NONE);
     pauseCtx->state = 0x12;
     WREG(2) = -6240;

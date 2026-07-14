@@ -8,8 +8,6 @@
 #ifndef SOHSpeechSynthesizer_h
 #define SOHSpeechSynthesizer_h
 
-#include <stdio.h>
-
 class SpeechSynthesizer {
   public:
     static SpeechSynthesizer* Instance;

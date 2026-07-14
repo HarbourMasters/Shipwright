@@ -4,10 +4,11 @@
 #include "textures/nintendo_rogo_static/nintendo_rogo_static.h"
 #include "assets/objects/gameplay_keep/gameplay_keep.h"
 #include "soh_assets.h"
+#include "soh/cvar_prefixes.h"
 
 extern "C" {
-#include "macros.h"
 #include "z64.h"
+#include "macros.h"
 #include "functions.h"
 #include "variables.h"
 #include "soh/Enhancements/enhancementTypes.h"

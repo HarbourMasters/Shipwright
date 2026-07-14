@@ -2,9 +2,10 @@
 #include "soh/Enhancements/speechsynthesizer/SpeechSynthesizer.h"
 
 #include <cassert>
+#include <ship/Context.h>
 #include <ship/resource/File.h>
+#include <ship/resource/ResourceManager.h>
 #include <ship/resource/type/Json.h>
-#include <libultraship/classes.h>
 #include <nlohmann/json.hpp>
 
 #include "soh/ShipInit.hpp"
@@ -868,7 +869,7 @@ void RegisterOnUpdateMainMenuSelection() {
         } else if (charCode == 0xF0 + FS_KBD_BTN_END) {
             translation = GetParameritizedText("end", TEXT_BANK_FILECHOOSE, nullptr);
         } else {
-            charVal[0] = charCode;
+            charVal[0] = static_cast<char>(charCode);
         }
 
         if (translation.empty()) {

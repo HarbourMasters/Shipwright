@@ -1,7 +1,5 @@
 #include "soh/Network/Anchor/Anchor.h"
 #include <nlohmann/json.hpp>
-#include <libultraship/libultraship.h>
-#include "soh/OTRGlobals.h"
 
 /**
  * REQUEST_TEAM_STATE

@@ -10,7 +10,6 @@ extern "C" {
 #include "variables.h"
 #include "src/overlays/actors/ovl_En_Wood02/z_en_wood02.h"
 #include "objects/object_wood02/object_wood02.h"
-#include "soh/Enhancements/enhancementTypes.h"
 extern PlayState* gPlayState;
 void EnWood02_Draw(Actor*, PlayState*);
 }

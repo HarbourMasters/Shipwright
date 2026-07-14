@@ -6,13 +6,13 @@
 #include <vector>
 #include <string>
 #include "soh/OTRGlobals.h"
-#include "soh/cvar_prefixes.h"
 #include <soh/Enhancements/item-tables/ItemTableManager.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/cosmetics/CosmeticsEditor.h"
 #include "soh/Enhancements/audio/AudioEditor.h"
 #include "soh/Enhancements/randomizer/logic.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
+#include "soh/Enhancements/randomizer/randomizer_check_tracker.h"
 
 #define Path _Path
 #define PATH_HACK
@@ -20,8 +20,6 @@
 
 #include <ship/window/Window.h>
 #include <ship/Context.h>
-#include <imgui.h>
-#include <imgui_internal.h>
 #undef PATH_HACK
 #undef Path
 
@@ -32,9 +30,6 @@ extern "C" {
 #include "macros.h"
 extern PlayState* gPlayState;
 }
-
-#include <libultraship/bridge.h>
-#include <libultraship/libultraship.h>
 
 #define CMD_REGISTER Ship::Context::GetRawInstance()->GetConsole()->AddCommand
 // TODO: Commands should be using the output passed in.

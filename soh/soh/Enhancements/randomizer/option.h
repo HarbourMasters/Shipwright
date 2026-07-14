@@ -8,9 +8,7 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
-#include <type_traits>
 
-#include "randomizerTypes.h"
 #include "tricks.h"
 #include "soh/SohGui/MenuTypes.h"
 
@@ -224,6 +222,13 @@ class Option {
      * @return uint8_t
      */
     uint8_t GetOptionIndex() const;
+
+    /**
+     * @brief Get the default menu index for this Option.
+     *
+     * @return uint8_t
+     */
+    uint8_t GetMenuOptionDefault() const;
 
     /**
      * @brief Set the rando context index for this Option.

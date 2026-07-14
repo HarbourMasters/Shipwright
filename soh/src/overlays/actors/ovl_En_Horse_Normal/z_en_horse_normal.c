@@ -398,7 +398,7 @@ void EnHorseNormal_Wander(EnHorseNormal* this, PlayState* play) {
                 this->actor.speedXZ = 8.0f;
                 phi_t0 = 6;
             }
-            if (Rand_ZeroOne() < 0.1f || (this->unk_21E == 0 && ((this->actor.bgCheckFlags & 8) ||
+            if (Rand_ZeroOne() < 0.1f || (this->unk_21E == 0 && ((this->actor.bgCheckFlags & BGCHECKFLAG_WALL) ||
                                                                  (this->bodyCollider.base.ocFlags1 & OC1_HIT) ||
                                                                  (this->headCollider.base.ocFlags1 & OC1_HIT)))) {
                 this->unk_21E += (Rand_ZeroOne() * 30.0f) - 15.0f;

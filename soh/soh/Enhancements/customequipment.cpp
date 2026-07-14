@@ -1,4 +1,5 @@
 #include <initializer_list>
+#include <libultraship/bridge/resourcebridge.h>
 #include "objects/object_link_boy/object_link_boy.h"
 #include "objects/object_link_child/object_link_child.h"
 #include "objects/object_custom_equip/object_custom_equip.h"
@@ -7,6 +8,7 @@
 #include "soh/ResourceManagerHelpers.h"
 
 extern "C" {
+#include "z64.h"
 #include "macros.h"
 #include "functions.h"
 #include "variables.h"
@@ -25,6 +27,26 @@ static const char* ResolveCustomChain(std::initializer_list<const char*> paths) 
     return fallback;
 }
 
+static const char* ResolveCustomFPSHand(const char* path) {
+    const bool isAdult = path == gCustomAdultFPSHandDL;
+    const bool isChild = path == gCustomChildFPSHandDL;
+
+    if (!isAdult && !isChild) {
+        return path;
+    }
+
+    switch (TUNIC_EQUIP_TO_PLAYER(CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC))) {
+        case PLAYER_TUNIC_GORON:
+            return ResolveCustomChain(
+                { isAdult ? gCustomAdultGoronFPSHandDL : gCustomChildGoronFPSHandDL, path, nullptr });
+        case PLAYER_TUNIC_ZORA:
+            return ResolveCustomChain(
+                { isAdult ? gCustomAdultZoraFPSHandDL : gCustomChildZoraFPSHandDL, path, nullptr });
+        default:
+            return path;
+    }
+}
+
 static Gfx* LoadGfxByName(const char* path) {
     return path ? ResourceMgr_LoadGfxByName(path) : nullptr;
 }
@@ -32,7 +54,8 @@ static Gfx* LoadGfxByName(const char* path) {
 static Gfx* LoadCustomGfx(const char* path) {
     if (!path)
         return nullptr;
-    if (!ResourceGetIsCustomByName(path) && !ResourceMgr_FileAltExists(path))
+    path = ResolveCustomFPSHand(path);
+    if (!ResourceMgr_FileAltExists(path) && !ResourceGetIsCustomByName(path))
         return nullptr;
     return ResourceMgr_LoadGfxByName(path);
 }
@@ -181,6 +204,22 @@ static bool IsScalingAdultItemAsChild() {
            CVarGetInteger(CVAR_ENHANCEMENT("ScaleAdultEquipmentAsChild"), 0) && !LINK_IS_ADULT;
 }
 
+const char* bottleContentDLs[] = {
+    nullptr,                    // 0: PLAYER_IA_BOTTLE (empty - no custom content needed)
+    gCustomBottleFishDL,        // 1: PLAYER_IA_BOTTLE_FISH
+    gCustomBottleBlueFireDL,    // 2: PLAYER_IA_BOTTLE_FIRE
+    gCustomBottleBugDL,         // 3: PLAYER_IA_BOTTLE_BUG
+    gCustomBottlePoeDL,         // 4: PLAYER_IA_BOTTLE_POE
+    gCustomBottleBigPoeDL,      // 5: PLAYER_IA_BOTTLE_BIG_POE
+    gCustomBottleLetterDL,      // 6: PLAYER_IA_BOTTLE_RUTOS_LETTER
+    gCustomBottleRedPotionDL,   // 7: PLAYER_IA_BOTTLE_POTION_RED
+    gCustomBottleBluePotionDL,  // 8: PLAYER_IA_BOTTLE_POTION_BLUE
+    gCustomBottleGreenPotionDL, // 9: PLAYER_IA_BOTTLE_POTION_GREEN
+    gCustomBottleMilkDL,        // 10: PLAYER_IA_BOTTLE_MILK_FULL
+    gCustomBottleMilkHalfDL,    // 11: PLAYER_IA_BOTTLE_MILK_HALF
+    gCustomBottleFairyDL,       // 12: PLAYER_IA_BOTTLE_FAIRY
+};
+
 static void RegisterCustomEquipment() {
     // World (gameplay) character
     COND_VB_SHOULD(VB_PLAYER_OVERRIDE_LIMB_DRAW, CVarGetInteger(CVAR_SETTING("AltAssets"), 1), {
@@ -291,7 +330,7 @@ static void RegisterCustomEquipment() {
 
                     Gfx* resolvedFpsWeapon = LoadCustomGfx(fpsWeapon);
                     Gfx* resolvedFpsHand = LoadCustomGfx(fpsHand);
-                    if (resolvedFpsWeapon || resolvedFpsHand) {
+                    if (resolvedFpsWeapon) {
                         Gfx* buf = (Gfx*)Graph_Alloc(play->state.gfxCtx, 3 * sizeof(Gfx));
                         Gfx* p = buf;
                         if (resolvedFpsWeapon)
@@ -580,6 +619,40 @@ static void RegisterCustomEquipment() {
         if (resolvedChain) {
             *should = false;
             gSPDisplayList(play->state.gfxCtx->polyOpa.p++, resolvedChain);
+        }
+    });
+
+    COND_VB_SHOULD(VB_PLAYER_DRAW_BOTTLE, CVarGetInteger(CVAR_SETTING("AltAssets"), 1), {
+        Player* player = va_arg(args, Player*);
+        PlayState* play = va_arg(args, PlayState*);
+        const char* contentDL = nullptr;
+        Gfx* resolvedContent = nullptr;
+        Gfx* resolvedBottle = LoadCustomGfx(gCustomBottleDL);
+        if (resolvedBottle) {
+            *should = false;
+            gSPDisplayList(play->state.gfxCtx->polyXlu.p++, resolvedBottle);
+
+            if (player->itemAction >= PLAYER_IA_BOTTLE &&
+                player->itemAction < PLAYER_IA_BOTTLE + std::size(bottleContentDLs)) {
+                contentDL = bottleContentDLs[player->itemAction - PLAYER_IA_BOTTLE];
+            }
+
+            if (contentDL) {
+                resolvedContent = LoadCustomGfx(contentDL);
+            }
+
+            if (resolvedContent) {
+                gSPDisplayList(play->state.gfxCtx->polyOpa.p++, resolvedContent);
+            }
+        }
+    });
+
+    COND_VB_SHOULD(VB_PLAYER_UPDATE_BOTTLE_HELD, CVarGetInteger(CVAR_SETTING("AltAssets"), 1), {
+        Player* player = va_arg(args, Player*);
+        const bool isFullMilk = player->itemAction == PLAYER_IA_BOTTLE_MILK_FULL;
+        if (isFullMilk) {
+            *should = false;
+            player->itemAction = PLAYER_IA_BOTTLE_MILK_HALF;
         }
     });
 }

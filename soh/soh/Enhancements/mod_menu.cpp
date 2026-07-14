@@ -4,12 +4,10 @@
 #include <set>
 #include <vector>
 
-#include <libultraship/classes.h>
 #include <ship/utils/StringHelper.h>
 
 #include "mod_menu.h"
 #include "soh/OTRGlobals.h"
-#include "soh/resource/type/Skeleton.h"
 #include "soh/SohGui/MenuTypes.h"
 #include "soh/SohGui/SohMenu.h"
 #include "soh/SohGui/SohGui.hpp"
@@ -361,8 +359,8 @@ void DrawMods(bool enabled) {
             if (UIWidgets::StateButton((file + "_up").c_str(), ICON_FA_ARROW_UP, ImVec2(25, 25),
                                        UIWidgets::ButtonOptions().Color(THEME_COLOR))) {
                 madeAnyChange = true;
-                switchFromIndex = i;
-                switchToIndex = i + 1;
+                switchFromIndex = static_cast<int>(i);
+                switchToIndex = static_cast<int>(i + 1);
             }
             if (i == selectedModFiles.size() - 1) {
                 ImGui::EndDisabled();
@@ -375,8 +373,8 @@ void DrawMods(bool enabled) {
             if (UIWidgets::StateButton((file + "_down").c_str(), ICON_FA_ARROW_DOWN, ImVec2(25, 25),
                                        UIWidgets::ButtonOptions().Color(THEME_COLOR))) {
                 madeAnyChange = true;
-                switchFromIndex = i;
-                switchToIndex = i - 1;
+                switchFromIndex = static_cast<int>(i);
+                switchToIndex = static_cast<int>(i - 1);
             }
             if (i == 0) {
                 ImGui::EndDisabled();

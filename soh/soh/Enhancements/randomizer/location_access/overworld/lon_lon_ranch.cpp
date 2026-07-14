@@ -30,9 +30,9 @@ void RegionTable_Init_LonLonRanch() {
     }, {
         //Exits
         ENTRANCE(RR_HYRULE_FIELD,     true),
-        ENTRANCE(RR_LLR_TALONS_HOUSE, logic->CanOpenOverworldDoor(RG_TALONS_HOUSE_KEY)),
-        ENTRANCE(RR_LLR_STABLES,      logic->CanOpenOverworldDoor(RG_STABLES_KEY)),
-        ENTRANCE(RR_LLR_TOWER,        logic->CanOpenOverworldDoor(RG_BACK_TOWER_KEY)),
+        ENTRANCE(RR_LLR_TALONS_HOUSE, logic->HasItem(RG_TALONS_HOUSE_KEY)),
+        ENTRANCE(RR_LLR_STABLES,      logic->HasItem(RG_STABLES_KEY)),
+        ENTRANCE(RR_LLR_TOWER,        logic->HasItem(RG_BACK_TOWER_KEY)),
         ENTRANCE(RR_LLR_GROTTO,       logic->IsChild),
     });
 

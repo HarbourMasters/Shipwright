@@ -3,9 +3,6 @@
 #include "SeedContext.h"
 #include <map>
 #include <string>
-#include <libultraship/bridge.h>
-#include "z64.h"
-#include "soh/OTRGlobals.h"
 #include "soh/cvar_prefixes.h"
 #include "fishsanity.h"
 
@@ -242,24 +239,33 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
                  RO_DUNGEON_ITEM_LOC_VANILLA) &&
             (location.GetRCType() != RCTYPE_GANON_BOSS_KEY ||
              CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleGanonBossKey"), RO_GANON_BOSS_KEY_VANILLA) !=
-                 RO_GANON_BOSS_KEY_VANILLA ||
-             CVarGetInteger(CVAR_RANDOMIZER_SETTING("TriforceHunt"), 0)) &&
-            (location.GetRandomizerCheck() != RC_TOT_LIGHT_ARROWS_CUTSCENE ||
+                 RO_GANON_BOSS_KEY_VANILLA) && // vanilla ganon boss key
+            (location.GetRandomizerCheck() != RC_GANONS_BOSS_KEY ||
              (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleGanonBossKey"), RO_GANON_BOSS_KEY_VANILLA) !=
-                  RO_GANON_BOSS_KEY_LACS_DUNGEONS &&
+                  RO_GANON_BOSS_KEY_DUNGEONS &&
               CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleGanonBossKey"), RO_GANON_BOSS_KEY_VANILLA) !=
-                  RO_GANON_BOSS_KEY_LACS_MEDALLIONS &&
+                  RO_GANON_BOSS_KEY_MEDALLIONS &&
               CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleGanonBossKey"), RO_GANON_BOSS_KEY_VANILLA) !=
-                  RO_GANON_BOSS_KEY_LACS_REWARDS &&
+                  RO_GANON_BOSS_KEY_REWARDS &&
               CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleGanonBossKey"), RO_GANON_BOSS_KEY_VANILLA) !=
-                  RO_GANON_BOSS_KEY_LACS_STONES &&
+                  RO_GANON_BOSS_KEY_STONES &&
               CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleGanonBossKey"), RO_GANON_BOSS_KEY_VANILLA) !=
-                  RO_GANON_BOSS_KEY_LACS_TOKENS &&
-              CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleGanonBossKey"), RO_GANON_BOSS_KEY_VANILLA) !=
-                  RO_GANON_BOSS_KEY_LACS_VANILLA)) && // LACS ganon boss key
-            (location.GetRandomizerCheck() != RC_KAK_100_GOLD_SKULLTULA_REWARD ||
-             CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleGanonBossKey"), RO_GANON_BOSS_KEY_VANILLA) !=
-                 RO_GANON_BOSS_KEY_KAK_TOKENS) && // 100 skull reward ganon boss key
+                  RO_GANON_BOSS_KEY_TOKENS) &&
+                 CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleGanonBossKey"), RO_GANON_BOSS_KEY_VANILLA) !=
+                     RO_GANON_BOSS_KEY_TRIFORCE_PIECES) && // ganon boss key condition
+            (location.GetRandomizerCheck() != RC_GANON_SOUL ||
+             (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleGanonsSoul"), RO_GANONS_SOUL_STARTWITH) !=
+                  RO_GANONS_SOUL_DUNGEONS &&
+              CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleGanonsSoul"), RO_GANONS_SOUL_STARTWITH) !=
+                  RO_GANONS_SOUL_MEDALLIONS &&
+              CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleGanonsSoul"), RO_GANONS_SOUL_STARTWITH) !=
+                  RO_GANONS_SOUL_REWARDS &&
+              CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleGanonsSoul"), RO_GANONS_SOUL_STARTWITH) !=
+                  RO_GANONS_SOUL_STONES &&
+              CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleGanonsSoul"), RO_GANONS_SOUL_STARTWITH) !=
+                  RO_GANONS_SOUL_TOKENS) &&
+                 CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleGanonsSoul"), RO_GANONS_SOUL_STARTWITH) !=
+                     RO_GANONS_SOUL_TRIFORCE_PIECES) && // ganon's soul condition
             (location.GetRCType() != RCTYPE_GF_KEY && location.GetRandomizerCheck() != RC_TH_FREED_CARPENTERS ||
              (CVarGetInteger(CVAR_RANDOMIZER_SETTING("FortressCarpenters"), RO_GF_CARPENTERS_NORMAL) ==
                   RO_GF_CARPENTERS_FREE &&
