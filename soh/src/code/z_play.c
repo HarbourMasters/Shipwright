@@ -1372,7 +1372,11 @@ void Play_Draw(PlayState* play) {
     gSPSegment(POLY_XLU_DISP++, 0x02, play->sceneSegment);
     gSPSegment(OVERLAY_DISP++, 0x02, play->sceneSegment);
 
+if (CVarGetInteger(CVAR_CHEAT("GreenScreenMode"), 0) > 0) {
+    Gfx_SetupFrame(gfxCtx, 0, 255, 0);
+} else {
     Gfx_SetupFrame(gfxCtx, 0, 0, 0);
+}
 
     if ((HREG(80) != 10) || (HREG(82) != 0)) {
         GameInteractor_ExecuteOnPlayDrawBegin();
@@ -1479,7 +1483,8 @@ void Play_Draw(PlayState* play) {
         }
 
         if ((HREG(80) != 10) || (HREG(83) != 0)) {
-            if (play->skyboxId && (play->skyboxId != SKYBOX_UNSET_1D) && !play->envCtx.skyboxDisabled) {
+            if (!CVarGetInteger(CVAR_CHEAT("GreenScreenMode"), 0) &&
+    play->skyboxId && (play->skyboxId != SKYBOX_UNSET_1D) && !play->envCtx.skyboxDisabled) {
                 if ((play->skyboxId == SKYBOX_NORMAL_SKY) || (play->skyboxId == SKYBOX_CUTSCENE_MAP)) {
                     Environment_UpdateSkybox(play, play->skyboxId, &play->envCtx, &play->skyboxCtx);
                     SkyboxDraw_Draw(&play->skyboxCtx, gfxCtx, play->skyboxId, play->envCtx.skyboxBlend,
@@ -1513,7 +1518,7 @@ void Play_Draw(PlayState* play) {
         }
 
         if ((HREG(80) != 10) || (HREG(84) != 0)) {
-            if (VREG(94) == 0) {
+            if (VREG(94) == 0 && CVarGetInteger(CVAR_CHEAT("GreenScreenMode"), 0) == 0) {
                 s32 roomDrawFlags;
 
                 if (HREG(80) != 10) {
