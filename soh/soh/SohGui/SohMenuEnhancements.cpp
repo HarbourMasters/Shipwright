@@ -174,6 +174,15 @@ void SohMenu::AddMenuEnhancements() {
         .RaceDisable(false)
         .Options(CheckboxOptions().DefaultValue(true).Tooltip("Show a notification when the game is autosaved."));
 
+AddWidget(path, "Green Screen Mode", WIDGET_CVAR_COMBOBOX)
+    .CVar(CVAR_CHEAT("GreenScreenMode"))
+    .Options(ComboboxOptions()
+        .ComboMap({
+            { 0, { "Desactivado", ImVec4() } },
+            { 1, { "Solo Link", ImVec4() } },
+            { 2, { "Link + Personajes", ImVec4() } }
+        }));
+
     AddWidget(path, "Remember Save Location", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("RememberSaveLocation"))
         .Options(CheckboxOptions().Tooltip(
