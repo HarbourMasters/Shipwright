@@ -108,7 +108,7 @@ void SkeletonPatcher::ClearSkeletons() {
 void SkeletonPatcher::UpdateSkeletons() {
     auto resourceMgr = Ship::Context::GetRawInstance()->GetResourceManager();
     bool isAlt = resourceMgr->IsAltAssetsEnabled();
-    for (auto skel : skeletons) {
+    for (auto& skel : skeletons) {
         Skeleton* newSkel =
             (Skeleton*)resourceMgr
                 ->LoadResource((isAlt ? Ship::IResource::gAltAssetPrefix : "") + skel.vanillaSkeletonPath, true)
@@ -124,7 +124,7 @@ void SkeletonPatcher::UpdateSkeletons() {
 }
 
 void SkeletonPatcher::UpdateCustomSkeletons() {
-    for (auto skel : skeletons) {
+    for (auto& skel : skeletons) {
         if (!skel.isLocalPlayer) {
             continue;
         }
@@ -152,48 +152,36 @@ void SkeletonPatcher::UpdateTunicSkeletons(SkeletonPatchInfo& skel) {
 
     // Check if we even need updating
     s32 skelID = ageID << 4 | tunicID;
-    if (skelID == skel.lastSkeletonId)
+    if (skelID == skel.lastSkeletonId) {
         return;
-    skel.lastSkeletonId = skelID;
+    }
 
     // Check if this is one of Link's skeletons
     if (ageID == 2) {
         // Check what Link's current tunic is
         switch (tunicID) {
             case PLAYER_TUNIC_KOKIRI:
-                if (skel.lastSkeletonId == (ageID << 4 | PLAYER_TUNIC_KOKIRI))
-                    return;
                 skeletonPath = std::string(gLinkAdultKokiriTunicSkel).substr(sOtr.length());
                 break;
             case PLAYER_TUNIC_GORON:
-                if (skel.lastSkeletonId == (ageID << 4 | PLAYER_TUNIC_GORON))
-                    return;
                 skeletonPath = std::string(gLinkAdultGoronTunicSkel).substr(sOtr.length());
                 break;
             case PLAYER_TUNIC_ZORA:
-                if (skel.lastSkeletonId == (ageID << 4 | PLAYER_TUNIC_ZORA))
-                    return;
                 skeletonPath = std::string(gLinkAdultZoraTunicSkel).substr(sOtr.length());
                 break;
             default:
                 return;
         }
-    } else if (skelID == 1) {
+    } else if (ageID == 1) {
         // Check what Link's current tunic is
         switch (tunicID) {
             case PLAYER_TUNIC_KOKIRI:
-                if (skel.lastSkeletonId == (ageID << 4 | PLAYER_TUNIC_KOKIRI))
-                    return;
                 skeletonPath = std::string(gLinkChildKokiriTunicSkel).substr(sOtr.length());
                 break;
             case PLAYER_TUNIC_GORON:
-                if (skel.lastSkeletonId == (ageID << 4 | PLAYER_TUNIC_GORON))
-                    return;
                 skeletonPath = std::string(gLinkChildGoronTunicSkel).substr(sOtr.length());
                 break;
             case PLAYER_TUNIC_ZORA:
-                if (skel.lastSkeletonId == (ageID << 4 | PLAYER_TUNIC_ZORA))
-                    return;
                 skeletonPath = std::string(gLinkChildZoraTunicSkel).substr(sOtr.length());
                 break;
             default:
@@ -202,6 +190,7 @@ void SkeletonPatcher::UpdateTunicSkeletons(SkeletonPatchInfo& skel) {
     }
 
     UpdateCustomSkeletonFromPath(skeletonPath, skel);
+    skel.lastSkeletonId = skelID;
 }
 
 void SkeletonPatcher::UpdateCustomSkeletonFromPath(const std::string& skeletonPath, SkeletonPatchInfo& skel) {
