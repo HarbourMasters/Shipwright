@@ -616,6 +616,8 @@ void AudioEditor::DrawElement() {
                                                static_cast<uint32_t>(ImGui::GetContentRegionAvail().x), THEME_COLOR);
                 SohGui::mSohMenu->MenuDrawItem(lowerOctaves, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
                                                THEME_COLOR);
+                SohGui::mSohMenu->MenuDrawItem(randomInstruments,
+                                               static_cast<uint32_t>(ImGui::GetContentRegionAvail().x), THEME_COLOR);
             }
             ImGui::EndChild();
             ImGui::EndTable();
