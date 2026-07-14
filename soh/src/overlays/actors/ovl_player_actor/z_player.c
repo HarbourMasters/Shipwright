@@ -31,6 +31,7 @@
 #include "soh/frame_interpolation.h"
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
+#include "soh/Enhancements/savestate_serialize.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -16597,3 +16598,30 @@ void Player_StartTalking(PlayState* play, Actor* actor) {
         Player_SetTurnAroundCamera(play, CAM_ITEM_TYPE_11);
     }
 }
+
+#define PLAYER_SHIP_SAVESTATE_FIELDS(F) \
+    F(D_80858AA0)                       \
+    F(sSavedCurrentMask)                \
+    F(sInteractWallCheckResult)         \
+    F(sControlInput)                    \
+    F(sNoclipEnabled)                   \
+    F(sControlStickMagnitude)           \
+    F(sControlStickAngle)               \
+    F(sControlStickWorldYaw)            \
+    F(sUpperBodyIsBusy)                 \
+    F(sFloorType)                       \
+    F(sWaterSpeedFactor)                \
+    F(sInvWaterSpeedFactor)             \
+    F(sTouchedWallFlags)                \
+    F(sConveyorSpeed)                   \
+    F(sIsFloorConveyor)                 \
+    F(sConveyorYaw)                     \
+    F(sYDistToFloor)                    \
+    F(sPrevFloorProperty)               \
+    F(sShapeYawToTouchedWall)           \
+    F(sWorldYawToTouchedWall)           \
+    F(sFloorShapePitch)                 \
+    F(sUseHeldItem)                     \
+    F(sHeldItemButtonIsHeldDown)
+
+SHIP_SAVESTATE_DEFINE(Player, PLAYER_SHIP_SAVESTATE_FIELDS)
