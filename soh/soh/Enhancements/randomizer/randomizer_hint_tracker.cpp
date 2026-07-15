@@ -442,12 +442,15 @@ static void DrawHintList() {
                 }
             } else if ((type == HINT_TYPE_ITEM || type == HINT_TYPE_ITEM_AREA) &&
                        !CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0)) {
-                // Rank item hints by the same adjusted item category that
-                // drives chest appearance, so ice trap disguises rank as
-                // their cover item. Mysterious Shuffle disables the ranking.
+                // Rank item hints by their adjusted item category, so ice trap
+                // disguises rank as their cover item. Mysterious Shuffle disables
+                // the ranking. Pass checkObtainability = false: we want the true
+                // placed item's value, otherwise a genuine major item that isn't
+                // reachable yet (e.g. Anju's Lens of Truth as adult) gets masked
+                // to a blue rupee and wrongly sinks to junk rank.
                 sortRank = ItemCategoryRank(ITEM_CATEGORY_JUNK) + 1;
                 for (RandomizerCheck rc : hint->GetHintedLocations()) {
-                    GetItemEntry itemEntry = ctx->GetFinalGIEntry(rc, true, GI_NONE);
+                    GetItemEntry itemEntry = ctx->GetFinalGIEntry(rc, false, GI_NONE);
                     sortRank = std::min(sortRank, ItemCategoryRank(Randomizer_AdjustItemCategory(itemEntry)));
                 }
             }
