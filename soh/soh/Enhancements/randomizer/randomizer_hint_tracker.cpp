@@ -12,6 +12,7 @@
 #include <unordered_map>
 #include <vector>
 #include <libultraship/controller/controldeck/ControlDeck.h>
+#include <ship/window/gui/IconsFontAwesome4.h>
 
 extern "C" {
 #include <z64.h>
@@ -58,6 +59,7 @@ static WidgetInfo readTextColorWidget;
 static WidgetInfo unreadColorWidget;
 static WidgetInfo wothColorWidget;
 static WidgetInfo foolishColorWidget;
+static WidgetInfo foundColorWidget;
 
 static const Color_RGBA8 Color_ReadText_Default = { 179, 179, 179, 255 };
 static const Color_RGBA8 Color_Unread_Default = { 128, 128, 128, 255 };
@@ -65,10 +67,13 @@ static const Color_RGBA8 Color_Unread_Default = { 128, 128, 128, 255 };
 // "the way of the hero" renders light blue, "a foolish choice" pink.
 static const Color_RGBA8 Color_Woth_Default = { 100, 180, 255, 255 };
 static const Color_RGBA8 Color_Foolish_Default = { 255, 150, 180, 255 };
+// Dimmed grey for hints whose item has already been collected.
+static const Color_RGBA8 Color_Found_Default = { 110, 110, 110, 255 };
 static Color_RGBA8 Color_ReadText = Color_ReadText_Default;
 static Color_RGBA8 Color_Unread = Color_Unread_Default;
 static Color_RGBA8 Color_Woth = Color_Woth_Default;
 static Color_RGBA8 Color_Foolish = Color_Foolish_Default;
+static Color_RGBA8 Color_Found = Color_Found_Default;
 
 static const CustomMessage locationsTabLabel = CustomMessage("Locations", "Orte", "Lieux");
 static const CustomMessage journalTabLabel = CustomMessage("Journal", "Tagebuch", "Journal");
@@ -230,6 +235,9 @@ struct HintEntry {
     int sortRank = 0;
     // Optional color for the name line (points at one of the color statics).
     const Color_RGBA8* nameColor = nullptr;
+    // True once every location this hint points at has been collected. Found
+    // entries sink to the bottom of their group and render dimmed with a tick.
+    bool found = false;
 };
 
 // Most valuable first, mirroring the ordering implied by chest size & color
@@ -255,21 +263,26 @@ static int ItemCategoryRank(GetItemCategory category) {
 }
 
 static void DrawHintEntry(const HintEntry& entry) {
-    if (entry.nameColor != nullptr) {
-        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(entry.nameColor->r / 255.0f, entry.nameColor->g / 255.0f,
-                                                    entry.nameColor->b / 255.0f, entry.nameColor->a / 255.0f));
-        ImGui::TextUnformatted(entry.name.c_str());
+    // A collected hint is dimmed and prefixed with a tick; the dim colour wins
+    // over any per-type name colour (Way of the Hero / Foolish).
+    const Color_RGBA8* nameColor = entry.found ? &Color_Found : entry.nameColor;
+    std::string name = entry.found ? (ICON_FA_CHECK " " + entry.name) : entry.name;
+    if (nameColor != nullptr) {
+        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(nameColor->r / 255.0f, nameColor->g / 255.0f, nameColor->b / 255.0f,
+                                                    nameColor->a / 255.0f));
+        ImGui::TextUnformatted(name.c_str());
         ImGui::PopStyleColor();
     } else {
-        ImGui::TextUnformatted(entry.name.c_str());
+        ImGui::TextUnformatted(name.c_str());
     }
     if (entry.compact) {
         return;
     }
     ImGui::Indent();
     if (IsHintRead(entry.hintKey)) {
-        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(Color_ReadText.r / 255.0f, Color_ReadText.g / 255.0f,
-                                                    Color_ReadText.b / 255.0f, Color_ReadText.a / 255.0f));
+        const Color_RGBA8& textColor = entry.found ? Color_Found : Color_ReadText;
+        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(textColor.r / 255.0f, textColor.g / 255.0f, textColor.b / 255.0f,
+                                                    textColor.a / 255.0f));
         ImGui::TextWrapped("%s", GetJoinedHintText(entry.hintKey).c_str());
         ImGui::PopStyleColor();
     } else {
@@ -340,6 +353,7 @@ static void DrawHintList() {
     Color_Unread = CVarGetColor(CVAR_TRACKER_HINT("UnreadColor.Value"), Color_Unread_Default);
     Color_Woth = CVarGetColor(CVAR_TRACKER_HINT("WothColor.Value"), Color_Woth_Default);
     Color_Foolish = CVarGetColor(CVAR_TRACKER_HINT("FoolishColor.Value"), Color_Foolish_Default);
+    Color_Found = CVarGetColor(CVAR_TRACKER_HINT("FoundColor.Value"), Color_Found_Default);
 
     bool showExpandCollapse = CVarGetInteger(CVAR_TRACKER_HINT("ExpandCollapseButtonsVisible"), 1);
     bool showSearch = CVarGetInteger(CVAR_TRACKER_HINT("SearchInputVisible"), 1);
@@ -423,6 +437,7 @@ static void DrawHintList() {
         // journal the hinted area name alone says everything the hint did.
         bool compact = false;
         int sortRank = 0;
+        bool found = false;
         const Color_RGBA8* nameColor = nullptr;
         std::string hintName;
         if (journalView) {
@@ -449,17 +464,27 @@ static void DrawHintList() {
                 // reachable yet (e.g. Anju's Lens of Truth as adult) gets masked
                 // to a blue rupee and wrongly sinks to junk rank.
                 sortRank = ItemCategoryRank(ITEM_CATEGORY_JUNK) + 1;
-                for (RandomizerCheck rc : hint->GetHintedLocations()) {
+                std::vector<RandomizerCheck> hintedLocations = hint->GetHintedLocations();
+                // "Found" means every location this hint points at is collected;
+                // a multi-location hint still matters while any part is uncollected.
+                found = !hintedLocations.empty();
+                for (RandomizerCheck rc : hintedLocations) {
                     GetItemEntry itemEntry = ctx->GetFinalGIEntry(rc, false, GI_NONE);
                     sortRank = std::min(sortRank, ItemCategoryRank(Randomizer_AdjustItemCategory(itemEntry)));
+                    if (!ctx->GetItemLocation(rc)->HasObtained()) {
+                        found = false;
+                    }
                 }
             }
         }
         if (hintName.empty()) {
             hintName = Rando::StaticData::hintNames[hintKey].GetForCurrentLanguage(MF_CLEAN);
         }
-        if (hintSearch.PassFilter(hintName.c_str()) || hintSearch.PassFilter(groupName.c_str())) {
-            group.entries.push_back({ hintKey, hintName, compact, sortRank, nameColor });
+        // "Hide found" only removes fully-collected hints from the journal view
+        // (found is never set in the locations view).
+        bool hideFound = found && CVarGetInteger(CVAR_TRACKER_HINT("HideFound"), 0);
+        if (!hideFound && (hintSearch.PassFilter(hintName.c_str()) || hintSearch.PassFilter(groupName.c_str()))) {
+            group.entries.push_back({ hintKey, hintName, compact, sortRank, nameColor, found });
         }
     };
     auto typeGroupKey = [](HintType type) {
@@ -541,6 +566,10 @@ static void DrawHintList() {
             continue;
         }
         std::sort(group.entries.begin(), group.entries.end(), [](const auto& left, const auto& right) {
+            // Collected hints sink to the bottom of their group.
+            if (left.found != right.found) {
+                return !left.found;
+            }
             if (left.sortRank != right.sortRank) {
                 return left.sortRank < right.sortRank;
             }
@@ -687,6 +716,14 @@ void HintTrackerSettingsWindow::DrawElement() {
     CVarCheckbox("Hint Totals", CVAR_TRACKER_HINT("HintTotalsVisible"),
                  CheckboxOptions().Color(THEME_COLOR).DefaultValue(true));
 
+    ImGui::SeparatorText("Journal");
+    CVarCheckbox("Hide Found Items", CVAR_TRACKER_HINT("HideFound"),
+                 CheckboxOptions()
+                     .Tooltip("Removes hints whose item you have already collected from the Journal, instead of "
+                              "dimming them and sorting them to the bottom.")
+                     .Color(THEME_COLOR)
+                     .DefaultValue(false));
+
     ImGui::TableNextColumn();
 
     SohGui::GetSohMenu()->MenuDrawItem(readTextColorWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
@@ -696,6 +733,8 @@ void HintTrackerSettingsWindow::DrawElement() {
     SohGui::GetSohMenu()->MenuDrawItem(wothColorWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
                                        THEME_COLOR);
     SohGui::GetSohMenu()->MenuDrawItem(foolishColorWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
+                                       THEME_COLOR);
+    SohGui::GetSohMenu()->MenuDrawItem(foundColorWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
                                        THEME_COLOR);
 
     ImGui::EndTable();
@@ -738,6 +777,11 @@ void RegisterHintTrackerWidgets() {
     foolishColorWidget.CVar(CVAR_TRACKER_HINT("FoolishColor"))
         .Options(ColorPickerOptions().Color(THEME_COLOR).DefaultValue(Color_Foolish_Default).UseAlpha().ShowReset());
     SohGui::GetSohMenu()->AddSearchWidget({ foolishColorWidget, "Randomizer", "Hint Tracker", "General Settings" });
+
+    foundColorWidget = { .name = "Found (collected)##HintTracker", .type = WidgetType::WIDGET_CVAR_COLOR_PICKER };
+    foundColorWidget.CVar(CVAR_TRACKER_HINT("FoundColor"))
+        .Options(ColorPickerOptions().Color(THEME_COLOR).DefaultValue(Color_Found_Default).UseAlpha().ShowReset());
+    SohGui::GetSohMenu()->AddSearchWidget({ foundColorWidget, "Randomizer", "Hint Tracker", "General Settings" });
 }
 
 static RegisterMenuInitFunc menuInitFunc(RegisterHintTrackerWidgets);
