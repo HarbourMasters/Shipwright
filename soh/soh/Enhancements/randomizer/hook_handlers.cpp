@@ -1039,11 +1039,30 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             if (RAND_GET_OPTION(RSK_SHUFFLE_CLIMB) && !Flags_GetRandomizerInf(RAND_INF_CAN_CLIMB)) {
                 s32* x = va_arg(args, s32*);
                 s32* y = va_arg(args, s32*);
+                Player* player = GET_PLAYER(gPlayState);
 
-                *x = 0;
-                if (*y > 0) {
-                    *y = 0;
+                // Detach player if moving up/down when start climb animation has finished
+                // (except at top of ladder, then normal dismount)
+                if (player->av2.actionVar2 >= 0 && *y != 0) {
+                    Vec3f pos;
+                    Vec3f raycastOffset = { 0.0f, player->ageProperties->unk_40, 26.0f };
+                    f32 wallHeight = func_8083973C(gPlayState, player, &raycastOffset, &pos);
+
+                    *should = false;
+                    if (player->av1.actionVar1 == false && *y > 0 && player->actor.world.pos.y < wallHeight) {
+                        func_8083F070(player, player->ageProperties->unk_CC[player->av2.actionVar2], gPlayState);
+                    } else {
+                        player->actor.bgCheckFlags &= ~BGCHECKFLAG_PLAYER_WALL_INTERACT;
+                        func_8083FBC0(player, gPlayState);
+                    }
                 }
+
+                *x = *y = 0; // Zero speed even for start climb animation
+            }
+            break;
+        case VB_START_CLIMB_FROM_ABOVE:
+            if (RAND_GET_OPTION(RSK_SHUFFLE_CLIMB) && !Flags_GetRandomizerInf(RAND_INF_CAN_CLIMB)) {
+                *should = false; // Start hanging action instead of climbing
             }
             break;
         case VB_CRAWL:

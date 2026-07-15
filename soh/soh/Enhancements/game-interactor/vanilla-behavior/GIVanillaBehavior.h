@@ -364,8 +364,17 @@ typedef enum {
     // true
     // ```
     // #### `args`
-    // - None
+    // - `s32*` (sp80 = x)
+    // - `s32*` (sp84 = y)
     VB_CLIMB,
+
+    // #### `result`
+    // ```c
+    // (!sp50 && (func_80041DB8(&play->colCtx, sp84, sp80) & 8))
+    // ```
+    // #### `args`
+    // - None
+    VB_START_CLIMB_FROM_ABOVE,
 
     // #### `result`
     // ```c
