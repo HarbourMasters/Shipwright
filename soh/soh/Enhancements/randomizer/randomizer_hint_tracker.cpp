@@ -60,6 +60,12 @@ static WidgetInfo unreadColorWidget;
 static WidgetInfo wothColorWidget;
 static WidgetInfo foolishColorWidget;
 static WidgetInfo foundColorWidget;
+static WidgetInfo draggableWidget;
+static WidgetInfo showOnlyPausedWidget;
+static WidgetInfo expandCollapseWidget;
+static WidgetInfo searchInputWidget;
+static WidgetInfo hintTotalsWidget;
+static WidgetInfo hideFoundWidget;
 
 static const Color_RGBA8 Color_ReadText_Default = { 179, 179, 179, 255 };
 static const Color_RGBA8 Color_Unread_Default = { 128, 128, 128, 255 };
@@ -683,9 +689,10 @@ void HintTrackerSettingsWindow::DrawElement() {
                         .DefaultValue(1.0f));
 
     if (CVarGetInteger(CVAR_TRACKER_HINT("WindowType"), TRACKER_WINDOW_WINDOW) == TRACKER_WINDOW_FLOATING) {
-        CVarCheckbox("Enable Dragging", CVAR_TRACKER_HINT("Draggable"), CheckboxOptions().Color(THEME_COLOR));
-        CVarCheckbox("Only Enable While Paused", CVAR_TRACKER_HINT("ShowOnlyPaused"),
-                     CheckboxOptions().Color(THEME_COLOR));
+        SohGui::GetSohMenu()->MenuDrawItem(draggableWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
+                                           THEME_COLOR);
+        SohGui::GetSohMenu()->MenuDrawItem(showOnlyPausedWidget,
+                                           static_cast<uint32_t>(ImGui::GetContentRegionAvail().x), THEME_COLOR);
         CVarCombobox("Display Mode", CVAR_TRACKER_HINT("DisplayType"), showMode,
                      ComboboxOptions()
                          .LabelPosition(LabelPositions::Far)
@@ -709,20 +716,16 @@ void HintTrackerSettingsWindow::DrawElement() {
     }
 
     ImGui::SeparatorText("Tracker Header Visibility");
-    CVarCheckbox("Expand/Collapse Buttons", CVAR_TRACKER_HINT("ExpandCollapseButtonsVisible"),
-                 CheckboxOptions().Color(THEME_COLOR).DefaultValue(true));
-    CVarCheckbox("Search Input", CVAR_TRACKER_HINT("SearchInputVisible"),
-                 CheckboxOptions().Color(THEME_COLOR).DefaultValue(true));
-    CVarCheckbox("Hint Totals", CVAR_TRACKER_HINT("HintTotalsVisible"),
-                 CheckboxOptions().Color(THEME_COLOR).DefaultValue(true));
+    SohGui::GetSohMenu()->MenuDrawItem(expandCollapseWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
+                                       THEME_COLOR);
+    SohGui::GetSohMenu()->MenuDrawItem(searchInputWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
+                                       THEME_COLOR);
+    SohGui::GetSohMenu()->MenuDrawItem(hintTotalsWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
+                                       THEME_COLOR);
 
     ImGui::SeparatorText("Journal");
-    CVarCheckbox("Hide Found Items", CVAR_TRACKER_HINT("HideFound"),
-                 CheckboxOptions()
-                     .Tooltip("Removes hints whose item you have already collected from the Journal, instead of "
-                              "dimming them and sorting them to the bottom.")
-                     .Color(THEME_COLOR)
-                     .DefaultValue(false));
+    SohGui::GetSohMenu()->MenuDrawItem(hideFoundWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
+                                       THEME_COLOR);
 
     ImGui::TableNextColumn();
 
@@ -782,6 +785,39 @@ void RegisterHintTrackerWidgets() {
     foundColorWidget.CVar(CVAR_TRACKER_HINT("FoundColor"))
         .Options(ColorPickerOptions().Color(THEME_COLOR).DefaultValue(Color_Found_Default).UseAlpha().ShowReset());
     SohGui::GetSohMenu()->AddSearchWidget({ foundColorWidget, "Randomizer", "Hint Tracker", "General Settings" });
+
+    draggableWidget = { .name = "Enable Dragging##HintTracker", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
+    draggableWidget.CVar(CVAR_TRACKER_HINT("Draggable")).Options(CheckboxOptions().Color(THEME_COLOR));
+    SohGui::GetSohMenu()->AddSearchWidget({ draggableWidget, "Randomizer", "Hint Tracker", "General Settings" });
+
+    showOnlyPausedWidget = { .name = "Only Enable While Paused##HintTracker",
+                             .type = WidgetType::WIDGET_CVAR_CHECKBOX };
+    showOnlyPausedWidget.CVar(CVAR_TRACKER_HINT("ShowOnlyPaused")).Options(CheckboxOptions().Color(THEME_COLOR));
+    SohGui::GetSohMenu()->AddSearchWidget({ showOnlyPausedWidget, "Randomizer", "Hint Tracker", "General Settings" });
+
+    expandCollapseWidget = { .name = "Expand/Collapse Buttons##HintTracker", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
+    expandCollapseWidget.CVar(CVAR_TRACKER_HINT("ExpandCollapseButtonsVisible"))
+        .Options(CheckboxOptions().Color(THEME_COLOR).DefaultValue(true));
+    SohGui::GetSohMenu()->AddSearchWidget({ expandCollapseWidget, "Randomizer", "Hint Tracker", "General Settings" });
+
+    searchInputWidget = { .name = "Search Input##HintTracker", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
+    searchInputWidget.CVar(CVAR_TRACKER_HINT("SearchInputVisible"))
+        .Options(CheckboxOptions().Color(THEME_COLOR).DefaultValue(true));
+    SohGui::GetSohMenu()->AddSearchWidget({ searchInputWidget, "Randomizer", "Hint Tracker", "General Settings" });
+
+    hintTotalsWidget = { .name = "Hint Totals##HintTracker", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
+    hintTotalsWidget.CVar(CVAR_TRACKER_HINT("HintTotalsVisible"))
+        .Options(CheckboxOptions().Color(THEME_COLOR).DefaultValue(true));
+    SohGui::GetSohMenu()->AddSearchWidget({ hintTotalsWidget, "Randomizer", "Hint Tracker", "General Settings" });
+
+    hideFoundWidget = { .name = "Hide Found Items##HintTracker", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
+    hideFoundWidget.CVar(CVAR_TRACKER_HINT("HideFound"))
+        .Options(CheckboxOptions()
+                     .Tooltip("Removes hints whose item you have already collected from the Journal, instead of "
+                              "dimming them and sorting them to the bottom.")
+                     .Color(THEME_COLOR)
+                     .DefaultValue(false));
+    SohGui::GetSohMenu()->AddSearchWidget({ hideFoundWidget, "Randomizer", "Hint Tracker", "General Settings" });
 }
 
 static RegisterMenuInitFunc menuInitFunc(RegisterHintTrackerWidgets);
