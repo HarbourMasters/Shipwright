@@ -85,6 +85,9 @@ static const CustomMessage locationsTabLabel = CustomMessage("Locations", "Orte"
 static const CustomMessage journalTabLabel = CustomMessage("Journal", "Tagebuch", "Journal");
 static const CustomMessage junkLabel = CustomMessage("Junk", "Ramsch", "Inutile");
 static const CustomMessage itemsLabel = CustomMessage("Items", "Gegenstände", "Objets");
+static const CustomMessage majorItemsLabel = CustomMessage("Major Items", "Wichtige Gegenstände", "Objets majeurs");
+static const CustomMessage minorItemsLabel = CustomMessage("Minor Items", "Kleinere Gegenstände", "Objets mineurs");
+static const CustomMessage junkItemsLabel = CustomMessage("Junk Items", "Nutzlose Gegenstände", "Objets inutiles");
 static const CustomMessage otherHintsLabel = CustomMessage("Other Hints", "Sonstige Hinweise", "Autres indices");
 static const CustomMessage hintsReadLabel = CustomMessage("Hints Read", "Hinweise gelesen", "Indices lus");
 static const CustomMessage noHintsMessage =
@@ -268,6 +271,31 @@ static int ItemCategoryRank(GetItemCategory category) {
     }
 }
 
+// Splits item hints into the three value tiers a player thinks in, from the
+// same ItemCategoryRank used for sorting: 0 = major (progression + boss keys),
+// 1 = minor (small keys, tokens, hearts, lesser), 2 = junk. The default
+// sortRank for an unresolved item (JUNK + 1) also lands in junk.
+static size_t ItemTier(int sortRank) {
+    if (sortRank <= ItemCategoryRank(ITEM_CATEGORY_BOSS_KEY)) {
+        return 0;
+    }
+    if (sortRank <= ItemCategoryRank(ITEM_CATEGORY_LESSER)) {
+        return 1;
+    }
+    return 2;
+}
+
+static std::string ItemTierName(size_t tier) {
+    switch (tier) {
+        case 0:
+            return majorItemsLabel.GetForCurrentLanguage(MF_CLEAN);
+        case 1:
+            return minorItemsLabel.GetForCurrentLanguage(MF_CLEAN);
+        default:
+            return junkItemsLabel.GetForCurrentLanguage(MF_CLEAN);
+    }
+}
+
 static void DrawHintEntry(const HintEntry& entry) {
     // A collected hint is dimmed and prefixed with a tick; the dim colour wins
     // over any per-type name colour (Way of the Hero / Foolish).
@@ -430,15 +458,6 @@ static void DrawHintList() {
         if (journalView && !read) {
             return;
         }
-        HintGroup& group = groups[groupKey];
-        if (group.name.empty()) {
-            group.name = groupName;
-            group.area = area;
-        }
-        group.total++;
-        if (read) {
-            group.read++;
-        }
         // Way of the Hero / Foolish hints are just area statements, so in the
         // journal the hinted area name alone says everything the hint did.
         bool compact = false;
@@ -446,6 +465,10 @@ static void DrawHintList() {
         bool found = false;
         const Color_RGBA8* nameColor = nullptr;
         std::string hintName;
+        // The group this hint lands in. Item hints override it with a value
+        // tier (Major/Minor/Junk) once their category is known below.
+        size_t effectiveKey = groupKey;
+        std::string effectiveName = groupName;
         if (journalView) {
             Rando::Hint* hint = ctx->GetHint(hintKey);
             HintType type = hint->GetHintType();
@@ -481,15 +504,28 @@ static void DrawHintList() {
                         found = false;
                     }
                 }
+                // Fan the single "Items" group out into value tiers.
+                size_t tier = ItemTier(sortRank);
+                effectiveKey = groupKey + tier;
+                effectiveName = ItemTierName(tier);
             }
         }
         if (hintName.empty()) {
             hintName = Rando::StaticData::hintNames[hintKey].GetForCurrentLanguage(MF_CLEAN);
         }
+        HintGroup& group = groups[effectiveKey];
+        if (group.name.empty()) {
+            group.name = effectiveName;
+            group.area = area;
+        }
+        group.total++;
+        if (read) {
+            group.read++;
+        }
         // "Hide found" only removes fully-collected hints from the journal view
         // (found is never set in the locations view).
         bool hideFound = found && CVarGetInteger(CVAR_TRACKER_HINT("HideFound"), 0);
-        if (!hideFound && (hintSearch.PassFilter(hintName.c_str()) || hintSearch.PassFilter(groupName.c_str()))) {
+        if (!hideFound && (hintSearch.PassFilter(hintName.c_str()) || hintSearch.PassFilter(effectiveName.c_str()))) {
             group.entries.push_back({ hintKey, hintName, compact, sortRank, nameColor, found });
         }
     };
@@ -503,12 +539,15 @@ static void DrawHintList() {
             HINT_TYPE_WOTH,  HINT_TYPE_FOOLISH,     HINT_TYPE_ITEM,        HINT_TYPE_AREA,    HINT_TYPE_ENTRANCE,
             HINT_TYPE_TRIAL, HINT_TYPE_ALTAR_CHILD, HINT_TYPE_ALTAR_ADULT, HINT_TYPE_MESSAGE, HINT_TYPE_HINT_KEY,
         };
+        // Keys are scaled so the "Items" slot can fan out into value tiers
+        // (Major/Minor/Junk, +0..+2) without colliding with the next hint type.
+        constexpr size_t kTierSlots = 4;
         auto rank = std::find(priority.begin(), priority.end(), type);
         if (rank == priority.end()) {
             // Unranked types each get their own group after the ranked ones.
-            return priority.size() + static_cast<size_t>(type);
+            return (priority.size() + static_cast<size_t>(type)) * kTierSlots;
         }
-        return static_cast<size_t>(rank - priority.begin());
+        return static_cast<size_t>(rank - priority.begin()) * kTierSlots;
     };
     auto typeGroupName = [](HintType type) {
         if (type == HINT_TYPE_ITEM || type == HINT_TYPE_ITEM_AREA) {
