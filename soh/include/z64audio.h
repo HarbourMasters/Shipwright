@@ -486,7 +486,7 @@ typedef struct {
     /* 0x16 */ u16 unk_16;
     /* 0x18 */ u16 unk_18;
     /* 0x1A */ u8 unk_1A;
-    /* 0x1C */ u16 unk_1C;
+    /* 0x1C */ u16 surroundEffectGain;
     /* 0x1E */ u16 unk_1E;
     struct OggOpusFile* opusFile; // Only for streamed opus audio
 } NoteSynthesisState; // size = 0x20
@@ -543,7 +543,7 @@ typedef struct {
     /* 0x03 */ u8 headsetPanRight;
     /* 0x04 */ u8 headsetPanLeft;
     /* 0x05 */ u8 reverbVol;
-    /* 0x06 */ u8 unk_06;
+    /* 0x06 */ u8 surroundEffectIndex;
     /* 0x07 */ u8 unk_07;
     /* 0x08 */ u16 targetVolLeft;
     /* 0x0A */ u16 targetVolRight;

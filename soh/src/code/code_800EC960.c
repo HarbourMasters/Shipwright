@@ -3867,7 +3867,7 @@ f32 Audio_ComputeSoundFreqScale(u8 bankId, u8 entryIdx) {
     return freq;
 }
 
-u8 func_800F37B8(f32 behindScreenZ, SoundBankEntry* arg1, s8 arg2) {
+u8 AudioSfx_ComputeSurroundSoundFilter(f32 behindScreenZ, SoundBankEntry* arg1, s8 arg2) {
     s8 phi_v0;
     u8 phi_v1;
     f32 phi_f0;
@@ -3914,17 +3914,27 @@ u8 func_800F37B8(f32 behindScreenZ, SoundBankEntry* arg1, s8 arg2) {
     return (phi_v1 * 0x10) + (u8)((phi_f0 * phi_f12) / (10000.0f / 5.2f));
 }
 
-s8 func_800F3990(f32 arg0, u16 sfxParams) {
+s8 AudioSfx_ComputeSurroundEffectIndex(f32 projectedPosZ, u16 sfxParams) {
     s8 ret = 0;
 
-    if (arg0 >= 0.0f) {
-        if (arg0 > 625.0f) {
+    // Enhanced surround effect calculation for better RL/RR separation
+    if (projectedPosZ > 0.0f) {
+        // Front of screen: map 0-100 range to 0-64 for rear left bias
+        if (projectedPosZ > 100.0f) {
+            ret = 0;
+        } else {
+            ret = (s8)(((100.0f - projectedPosZ) / 100.0f) * 64.0f);
+        }
+    } else {
+        // Behind screen: map -100-0 range to 63-127 for rear right bias
+        if (projectedPosZ < -100.0f) {
             ret = 127;
         } else {
-            ret = (arg0 / 625.0f) * 126.0f;
+            ret = (s8)((-projectedPosZ / 100.0f) * 64.0f) + 63;
         }
     }
-    return ret | 1;
+
+    return ret;
 }
 
 void Audio_SetSoundProperties(u8 bankId, u8 entryIdx, u8 channelIdx) {
@@ -3947,7 +3957,9 @@ void Audio_SetSoundProperties(u8 bankId, u8 entryIdx, u8 channelIdx) {
         case BANK_ENEMY:
         case BANK_VOICE:
             if (D_80130604 == 2) {
-                sp38 = func_800F3990(*entry->posY, entry->sfxParams);
+                // Use Z position for depth-based surround effect (front/back)
+                // This provides better RL/RR separation
+                sp38 = AudioSfx_ComputeSurroundEffectIndex(*entry->posZ, entry->sfxParams);
             }
             // fallthrough
         case BANK_OCARINA:
@@ -3983,7 +3995,7 @@ void Audio_SetSoundProperties(u8 bankId, u8 entryIdx, u8 channelIdx) {
             if ((baseFilter | sAudioExtraFilter) != 0) {
                 filter = (baseFilter | sAudioExtraFilter);
             } else if (D_80130604 == 2 && (entry->sfxParams & 0x2000) == 0) {
-                filter = func_800F37B8(behindScreenZ, entry, panSigned);
+                filter = AudioSfx_ComputeSurroundSoundFilter(behindScreenZ, entry, panSigned);
             }
             break;
         case BANK_SYSTEM:
