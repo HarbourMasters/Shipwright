@@ -1102,6 +1102,8 @@ void Path_CopyLastPoint(Path* path, Vec3f* dest);
 void FrameAdvance_Init(FrameAdvanceContext* frameAdvCtx);
 s32 FrameAdvance_Update(FrameAdvanceContext* frameAdvCtx, Input* input);
 u8 PlayerGrounded(Player* player);
+s32 Player_ActionHandler_1(Player* player, PlayState* play);
+void Player_Action_8084BDFC(Player* player, PlayState* play);
 void Player_SetBootData(PlayState* play, Player* player);
 void Player_StartAnimMovement(PlayState* play, Player* player, s32 flags);
 s32 Player_InBlockingCsMode(PlayState* play, Player* player);

@@ -11436,6 +11436,8 @@ void Player_ProcessSceneCollision(PlayState* play, Player* this) {
         this->prevFloorType = sFloorType;
         this->floorTypeTimer = 0;
     }
+
+    GameInteractor_Should(VB_AFTER_PROCESS_SCENE_COLLISION, true);
 }
 
 void Player_UpdateCamAndSeqModes(PlayState* play, Player* this) {
@@ -13130,6 +13132,8 @@ void Player_Action_8084BBE4(Player* this, PlayState* play) {
 
 void Player_Action_8084BDFC(Player* this, PlayState* play) {
     this->stateFlags2 |= PLAYER_STATE2_DISABLE_ROTATION_ALWAYS;
+
+    GameInteractor_Should(VB_CLIMB_UP, true);
 
     if (LinkAnimation_Update(play, &this->skelAnime)) {
         Player_ApplyAnimMovementScaledByAge(this, 1);

@@ -369,6 +369,22 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
+    VB_CLIMB_UP,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
+    VB_AFTER_PROCESS_SCENE_COLLISION,
+
+    // #### `result`
+    // ```c
     // CHECK_BTN_ALL(input->press.button, BTN_START)
     // ```
     // #### `args`
@@ -2945,7 +2961,18 @@ typedef enum {
     // ```
     // #### `args`
     // - `*DoorShutter`
+    // - `Vec3f` (relPlayerPos)
+    // - `*f32` (maxDistSides)
     VB_BE_NEAR_DOOR_SHUTTER,
+
+    // #### `result`
+    // ```c
+    // arg3 < fabsf(sp1C.x) || arg4 < fabsf(sp1C.y)
+    // ```
+    // #### `args`
+    // - `Vec3f` (playerPosRelToDoor)
+    // - `*Player`
+    VB_EN_DOOR_OFFER_OPEN_CONDITION,
 
     // #### `result`
     // ```c
