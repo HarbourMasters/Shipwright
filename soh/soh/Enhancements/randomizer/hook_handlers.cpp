@@ -1065,6 +1065,18 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
                 *should = false; // Start hanging action instead of climbing
             }
             break;
+        case VB_REATTACH_TO_CLIMB_WALL_LADDER:
+            if (RAND_GET_OPTION(RSK_SHUFFLE_CLIMB) && !Flags_GetRandomizerInf(RAND_INF_CAN_CLIMB)) {
+                u32* touchedWallFlags = va_arg(args, u32*);
+                Player* player = GET_PLAYER(gPlayState);
+
+                if (*touchedWallFlags & 2) {
+                    player->fallDistance = 0;
+                    player->fallStartHeight = (s16)player->actor.world.pos.y;
+                    *should = false; // If falling off ladder, reset fall height but don't grab ladder
+                }
+            }
+            break;
         case VB_CRAWL:
             *should = *should && Flags_GetRandomizerInf(RAND_INF_CAN_CRAWL);
             break;

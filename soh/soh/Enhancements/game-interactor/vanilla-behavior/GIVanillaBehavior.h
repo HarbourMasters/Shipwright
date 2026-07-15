@@ -378,6 +378,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `u32*` (sTouchedWallFlags)
+    VB_REATTACH_TO_CLIMB_WALL_LADDER,
+
+    // #### `result`
+    // ```c
     // CHECK_BTN_ALL(input->press.button, BTN_START)
     // ```
     // #### `args`
