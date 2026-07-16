@@ -2961,7 +2961,7 @@ typedef enum {
     // ```
     // #### `args`
     // - `*DoorShutter`
-    // - `Vec3f` (relPlayerPos)
+    // - `*Vec3f` (relPlayerPos)
     // - `*f32` (maxDistSides)
     VB_BE_NEAR_DOOR_SHUTTER,
 
@@ -2970,9 +2970,8 @@ typedef enum {
     // arg3 < fabsf(sp1C.x) || arg4 < fabsf(sp1C.y)
     // ```
     // #### `args`
-    // - `Vec3f` (playerPosRelToDoor)
-    // - `*Player`
-    VB_EN_DOOR_OFFER_OPEN_CONDITION,
+    // - `*Vec3f` (playerPosRelToDoor)
+    VB_EN_DOOR_OFFER_OPEN,
 
     // #### `result`
     // ```c

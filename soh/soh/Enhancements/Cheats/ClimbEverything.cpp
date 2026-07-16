@@ -35,7 +35,7 @@ static void RegisterClimbEverything() {
         }
     });
 
-    COND_VB_SHOULD(VB_EN_DOOR_OFFER_OPEN_CONDITION, CVarGetInteger(CVAR_CHEAT("ClimbEverything"), false), {
+    COND_VB_SHOULD(VB_EN_DOOR_OFFER_OPEN, CVarGetInteger(CVAR_CHEAT("ClimbEverything"), false), {
         Vec3f playerPosRelToDoor = *va_arg(args, Vec3f*);
         Player* player = GET_PLAYER(gPlayState);
 
@@ -53,7 +53,7 @@ static void RegisterClimbEverything() {
 
         // Set higher y distance limit to offer open door
         // Todo: Individualize this y depending on shutter door type.
-        if (fabsf(relPlayerPos.x) < *maxDistSides && fabsf(relPlayerPos.y) < 100.0f) {
+        if (fabsf(relPlayerPos.x) < *maxDistSides && fabsf(relPlayerPos.y) < 50.0f) {
             *should = false;
         }
     });
