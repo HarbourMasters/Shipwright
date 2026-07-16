@@ -213,8 +213,9 @@ void EnDoor_Idle(EnDoor* this, PlayState* play) {
         }
     } else if (!Player_InCsMode(play)) {
         if (GameInteractor_Should(VB_EN_DOOR_OFFER_OPEN,
-            (fabsf(playerPosRelToDoor.y) < 20.0f && fabsf(playerPosRelToDoor.x) < 20.0f &&
-            fabsf(playerPosRelToDoor.z) < 50.0f), &playerPosRelToDoor)) {
+                                  (fabsf(playerPosRelToDoor.y) < 20.0f && fabsf(playerPosRelToDoor.x) < 20.0f &&
+                                   fabsf(playerPosRelToDoor.z) < 50.0f),
+                                  &playerPosRelToDoor)) {
             phi_v0 = player->actor.shape.rot.y - this->actor.shape.rot.y;
             if (playerPosRelToDoor.z > 0.0f) {
                 phi_v0 = 0x8000 - phi_v0;

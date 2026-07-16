@@ -336,8 +336,8 @@ f32 DoorShutter_GetPlayerDistance(PlayState* play, DoorShutter* this, f32 arg2, 
     sp28.z = player->actor.world.pos.z;
     Actor_WorldToActorCoords(&this->dyna.actor, &sp1C, &sp28);
 
-    if (GameInteractor_Should(VB_BE_NEAR_DOOR_SHUTTER, (arg3 < fabsf(sp1C.x) || arg4 < fabsf(sp1C.y)),
-        this, &sp1C, &arg3)) {
+    if (GameInteractor_Should(VB_BE_NEAR_DOOR_SHUTTER, (arg3 < fabsf(sp1C.x) || arg4 < fabsf(sp1C.y)), this, &sp1C,
+                              &arg3)) {
         return FLT_MAX;
     } else {
         return sp1C.z;
