@@ -1685,7 +1685,8 @@ void AudioOcarina_CheckSongsWithMusicStaff(void) {
             // if there are no more songs remaining that it could be and the maximum position has been exceeded, then
             if (sAvailOcarinaSongFlags == 0 && sStaffOcarinaPlayingPos >= sMusicStaffNumNotesPerTest) {
                 sIsOcarinaInputEnabled = false;
-                if (CHECK_BTN_ANY(sOcarinaFlags, BTN_B) && sCurOcarinaPitch == sOcarinaSongNotes[songIndex][0].noteIdx) {
+                if (CHECK_BTN_ANY(sOcarinaFlags, BTN_B) &&
+                    sCurOcarinaPitch == sOcarinaSongNotes[songIndex][0].noteIdx) {
                     // case never taken, this function is not called if (sOcarinaFlags & 0x4000) is set
                     sPrevOcarinaWithMusicStaffFlags = sOcarinaFlags;
                 }
@@ -1872,6 +1873,7 @@ void AudioOcarina_PlayControllerInput(u8 unused) {
         } else {
             // no bending or vibrato for recording state OCARINA_RECORD_SCARECROW_SPAWN
             sCurOcarinaBendIndex = 0;
+            sCurOcarinaVibrato = 0;     // PAL/NTSC 1.1 version
             sCurOcarinaBendFreq = 1.0f; // No bend
         }
 
@@ -2305,13 +2307,13 @@ void AudioOcarina_RecordSong(void) {
         } else if (sRecordOcarinaVolume != sCurOcarinaVolume) {
             noteChanged = true;
         } else if (sRecordOcarinaVibrato != sCurOcarinaVibrato) {
-            // PAL/NTSC 1.2 version
+            // PAL/NTSC 1.1 version
             if (sRecordingState != OCARINA_RECORD_SCARECROW_SPAWN) {
                 noteChanged = true;
             }
             noteChanged = true;
         } else if (sRecordOcarinaBendIndex != sCurOcarinaBendIndex) {
-            // PAL/NTSC 1.2 version
+            // PAL/NTSC 1.1 version
             if (sRecordingState != OCARINA_RECORD_SCARECROW_SPAWN) {
                 noteChanged = true;
             }
