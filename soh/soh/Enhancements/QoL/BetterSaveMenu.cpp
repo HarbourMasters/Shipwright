@@ -52,7 +52,7 @@ void HandleSaveMenu(bool* should, PlayState* play) {
                     Interface_ChangeHudVisibilityMode(50);
                     pauseCtx->unk_1EC = 2;
                     WREG(2) = -6240;
-                    YREG(8) = pauseCtx->unk_204;
+                    YREG(8) = static_cast<int16_t>(pauseCtx->unk_204);
                     func_800F64E0(0);
                 }
             }
@@ -72,7 +72,7 @@ void HandleSaveMenu(bool* should, PlayState* play) {
                         Interface_ChangeHudVisibilityMode(50);
                         pauseCtx->unk_1EC = 5;
                         WREG(2) = -6240;
-                        YREG(8) = pauseCtx->unk_204;
+                        YREG(8) = static_cast<int16_t>(pauseCtx->unk_204);
                         func_800F64E0(0);
                         break;
                     case 1:
