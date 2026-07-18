@@ -1050,7 +1050,8 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
 
                     *should = false;
                     if (player->av1.actionVar1 == false && *y > 0 && player->actor.world.pos.y < wallHeight) {
-                        func_8083F070(player, player->ageProperties->unk_CC[player->av2.actionVar2], gPlayState);
+                        Player_SetupDismountLadder(player, player->ageProperties->unk_CC[player->av2.actionVar2],
+                                                   gPlayState);
                     } else {
                         player->actor.bgCheckFlags &= ~BGCHECKFLAG_PLAYER_WALL_INTERACT;
                         func_8083FBC0(player, gPlayState);
