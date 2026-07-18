@@ -807,7 +807,7 @@ std::string CustomMessage::TWO_WAY_CHOICE() {
 }
 
 std::string CustomMessage::THREE_WAY_CHOICE() {
-  return "\x1C"s;
+    return "\x1C"s;
 }
 
 bool CustomMessageManager::InsertCustomMessage(const std::string& tableID, uint16_t textID, CustomMessage messages) {

@@ -16,219 +16,225 @@ extern PlayState* gPlayState;
 #define CVAR_BETTERSAVE CVAR_ENHANCEMENT("BetterSaveMenu")
 #define CVAR_BETTERSAVE_DEFAULT 0
 #define CVAR_BETTERSAVE_VALUE CVarGetInteger(CVAR_BETTERSAVE, CVAR_BETTERSAVE_DEFAULT)
-static CustomMessage saveMsg = CustomMessage("\x08Would you like to save?&&" + CustomMessage::TWO_WAY_CHOICE() + "%gYes&No%w\x09", TEXTBOX_TYPE_BLUE);
-static CustomMessage continueMsg = CustomMessage("\x08 Continue?&" + CustomMessage::THREE_WAY_CHOICE() + "%gContinue&Restart&Return to Spawn%w\x09", TEXTBOX_TYPE_BLUE);
+static CustomMessage saveMsg = CustomMessage(
+    "\x08Would you like to save?&&" + CustomMessage::TWO_WAY_CHOICE() + "%gYes&No%w\x09", TEXTBOX_TYPE_BLUE);
+static CustomMessage continueMsg =
+    CustomMessage("\x08 Continue?&" + CustomMessage::THREE_WAY_CHOICE() + "%gContinue&Restart&Return to Spawn%w\x09",
+                  TEXTBOX_TYPE_BLUE);
 
 extern "C" uint8_t Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 
 void HandleSaveMenu(bool* should, PlayState* play) {
-  PauseContext* pauseCtx = &play->pauseCtx;
-  InterfaceContext* interfaceCtx = &play->interfaceCtx;
-  switch (pauseCtx->unk_1EC) {
-    case 0:
-      *should = false;
-      Message_StartTextbox(play, TEXT_SAVE_MSG, NULL);
-      pauseCtx->unk_1EC = 1;
-      break;
-    case 1:
-      *should = false;
-      if (Message_GetState(&play->msgCtx) == TEXT_STATE_CHOICE && Message_ShouldAdvance(play)) {
-        if (play->msgCtx.choiceIndex == 0) {
-          Audio_PlaySoundGeneral(NA_SE_SY_PIECE_OF_HEART, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
-          Play_PerformSave(play);
-          pauseCtx->unk_1EC = 4;
-          Message_StartTextbox(play, TEXT_CONTINUE_MSG, NULL);
-        } else {
-          Interface_SetDoAction(play, DO_ACTION_NONE);
-          gSaveContext.buttonStatus[0] = gSaveContext.buttonStatus[1] = gSaveContext.buttonStatus[2] =
-            gSaveContext.buttonStatus[3] = BTN_ENABLED;
-          gSaveContext.buttonStatus[5] = gSaveContext.buttonStatus[6] = gSaveContext.buttonStatus[7] =
-            gSaveContext.buttonStatus[8] = BTN_ENABLED;
-          gSaveContext.hudVisibilityMode = 0;
-          Interface_ChangeHudVisibilityMode(50);
-          pauseCtx->unk_1EC = 2;
-          WREG(2) = -6240;
-          YREG(8) = pauseCtx->unk_204;
-          func_800F64E0(0);
-        }
-      }
-      break;
-    case 4:
-      *should = false;
-      if (Message_GetState(&play->msgCtx) == TEXT_STATE_CHOICE && Message_ShouldAdvance(play)) {
-        switch (play->msgCtx.choiceIndex) {
-          case 0:
-            // Continue
-            Interface_SetDoAction(play, DO_ACTION_NONE);
-            gSaveContext.buttonStatus[0] = gSaveContext.buttonStatus[1] = gSaveContext.buttonStatus[2] =
-              gSaveContext.buttonStatus[3] = BTN_ENABLED;
-            gSaveContext.buttonStatus[5] = gSaveContext.buttonStatus[6] = gSaveContext.buttonStatus[7] =
-              gSaveContext.buttonStatus[8] = BTN_ENABLED;
-            gSaveContext.hudVisibilityMode = 0;
-            Interface_ChangeHudVisibilityMode(50);
-            pauseCtx->unk_1EC = 5;
-            WREG(2) = -6240;
-            YREG(8) = pauseCtx->unk_204;
-            func_800F64E0(0);
+    PauseContext* pauseCtx = &play->pauseCtx;
+    InterfaceContext* interfaceCtx = &play->interfaceCtx;
+    switch (pauseCtx->unk_1EC) {
+        case 0:
+            *should = false;
+            Message_StartTextbox(play, TEXT_SAVE_MSG, NULL);
+            pauseCtx->unk_1EC = 1;
             break;
-          case 1:
-            // Reset
-            Audio_PlaySoundGeneral(NA_SE_SY_PIECE_OF_HEART, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
-            Play_SaveSceneFlags(play);
-
-            Sram_OpenSave();
-            switch (gSaveContext.savedSceneNum) {
-              case SCENE_DEKU_TREE:
-              case SCENE_DEKU_TREE_BOSS:
-                gSaveContext.entranceIndex = ENTR_DEKU_TREE_ENTRANCE;
-                break;
-              case SCENE_DODONGOS_CAVERN:
-              case SCENE_DODONGOS_CAVERN_BOSS:
-                gSaveContext.entranceIndex = ENTR_DODONGOS_CAVERN_ENTRANCE;
-                break;
-              case SCENE_JABU_JABU:
-              case SCENE_JABU_JABU_BOSS:
-                gSaveContext.entranceIndex = ENTR_JABU_JABU_ENTRANCE;
-                break;
-              case SCENE_FOREST_TEMPLE:
-              case SCENE_FOREST_TEMPLE_BOSS:
-                gSaveContext.entranceIndex = ENTR_FOREST_TEMPLE_ENTRANCE;
-                break;
-              case SCENE_FIRE_TEMPLE:
-              case SCENE_FIRE_TEMPLE_BOSS:
-                gSaveContext.entranceIndex = ENTR_FIRE_TEMPLE_ENTRANCE;
-                break;
-              case SCENE_WATER_TEMPLE:
-              case SCENE_WATER_TEMPLE_BOSS:
-                gSaveContext.entranceIndex = ENTR_WATER_TEMPLE_ENTRANCE;
-                break;
-              case SCENE_SPIRIT_TEMPLE:
-              case SCENE_SPIRIT_TEMPLE_BOSS:
-                gSaveContext.entranceIndex = ENTR_SPIRIT_TEMPLE_ENTRANCE;
-                break;
-              case SCENE_SHADOW_TEMPLE:
-              case SCENE_SHADOW_TEMPLE_BOSS:
-                gSaveContext.entranceIndex = ENTR_SHADOW_TEMPLE_ENTRANCE;
-                break;
-              case SCENE_BOTTOM_OF_THE_WELL:
-                gSaveContext.entranceIndex = ENTR_BOTTOM_OF_THE_WELL_ENTRANCE;
-                break;
-              case SCENE_GERUDO_TRAINING_GROUND:
-                gSaveContext.entranceIndex = ENTR_THIEVES_HIDEOUT_0;
-                break;
-              case SCENE_ICE_CAVERN:
-                gSaveContext.entranceIndex = ENTR_ICE_CAVERN_ENTRANCE;
-                break;
-              case SCENE_INSIDE_GANONS_CASTLE:
-                gSaveContext.entranceIndex = ENTR_INSIDE_GANONS_CASTLE_ENTRANCE;
-                break;
-              case SCENE_GANONS_TOWER_COLLAPSE_INTERIOR:
-              case SCENE_INSIDE_GANONS_CASTLE_COLLAPSE:
-              case SCENE_GANONDORF_BOSS:
-              case SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR:
-              case SCENE_GANON_BOSS:
-              case SCENE_GANONS_TOWER:
-                gSaveContext.entranceIndex = ENTR_GANONS_TOWER_0;
-                break;
-              default:
-                if (CVarGetInteger(CVAR_ENHANCEMENT("RememberSaveLocation"), 0) &&
-                    gSaveContext.savedSceneNum != SCENE_FAIRYS_FOUNTAIN && gSaveContext.savedSceneNum != SCENE_GROTTOS) {
-                  break;
-                }
-                if (gSaveContext.savedSceneNum != SCENE_LINKS_HOUSE) {
-                  gSaveContext.entranceIndex = (LINK_AGE_IN_YEARS == YEARS_CHILD) ? ENTR_LINKS_HOUSE_CHILD_SPAWN : ENTR_TEMPLE_OF_TIME_WARP_PAD;
+        case 1:
+            *should = false;
+            if (Message_GetState(&play->msgCtx) == TEXT_STATE_CHOICE && Message_ShouldAdvance(play)) {
+                if (play->msgCtx.choiceIndex == 0) {
+                    Audio_PlaySoundGeneral(NA_SE_SY_PIECE_OF_HEART, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                           &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                    Play_PerformSave(play);
+                    pauseCtx->unk_1EC = 4;
+                    Message_StartTextbox(play, TEXT_CONTINUE_MSG, NULL);
                 } else {
-                  gSaveContext.entranceIndex = ENTR_LINKS_HOUSE_CHILD_SPAWN;
+                    Interface_SetDoAction(play, DO_ACTION_NONE);
+                    gSaveContext.buttonStatus[0] = gSaveContext.buttonStatus[1] = gSaveContext.buttonStatus[2] =
+                        gSaveContext.buttonStatus[3] = BTN_ENABLED;
+                    gSaveContext.buttonStatus[5] = gSaveContext.buttonStatus[6] = gSaveContext.buttonStatus[7] =
+                        gSaveContext.buttonStatus[8] = BTN_ENABLED;
+                    gSaveContext.hudVisibilityMode = 0;
+                    Interface_ChangeHudVisibilityMode(50);
+                    pauseCtx->unk_1EC = 2;
+                    WREG(2) = -6240;
+                    YREG(8) = pauseCtx->unk_204;
+                    func_800F64E0(0);
                 }
-                if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_SPAWNS)) {
-                  if (LINK_AGE_IN_YEARS == YEARS_ADULT) {
-                    gSaveContext.entranceIndex = ENTR_HYRULE_FIELD_10;
-                  }
-                  gSaveContext.entranceIndex = Entrance_OverrideNextIndex(gSaveContext.entranceIndex);
-                }
-                break;
             }
-            pauseCtx->promptChoice = 0;
-            pauseCtx->unk_1EC = 7;
             break;
-          case 2:
-            // Reset to Spawn
-            Audio_PlaySoundGeneral(NA_SE_SY_PIECE_OF_HEART, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
-            Play_SaveSceneFlags(play);
-            Sram_OpenSave();
-            gSaveContext.entranceIndex = (LINK_AGE_IN_YEARS == YEARS_CHILD) ? ENTR_LINKS_HOUSE_CHILD_SPAWN: ENTR_TEMPLE_OF_TIME_WARP_PAD;
-            if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_SPAWNS)) {
-              if (LINK_AGE_IN_YEARS == YEARS_ADULT) {
-                gSaveContext.entranceIndex = ENTR_HYRULE_FIELD_10;
-              }
-              gSaveContext.entranceIndex = Entrance_OverrideNextIndex(gSaveContext.entranceIndex);
-            }
-            pauseCtx->promptChoice = 0;
-            pauseCtx->unk_1EC = 7;
-            break;
-        }
-      }
-      break;
-    case 7:
-      if (interfaceCtx->unk_244 != 255) {
-        interfaceCtx->unk_244 += 10;
-        if (interfaceCtx->unk_244 >= 255) {
-          interfaceCtx->unk_244 = 255;
-          pauseCtx->state = 0;
-          R_UPDATE_RATE = 3;
-          R_PAUSE_MENU_MODE = 0;
-          func_800981B8(&play->objectCtx);
-          func_800418D0(&play->colCtx, play);
-          // Reset frame counter to prevent autosave on respawn
-          play->gameplayFrames = 0;
-          gSaveContext.nextTransitionType = TRANS_TYPE_FADE_BLACK;
-          gSaveContext.health = CVarGetInteger(CVAR_ENHANCEMENT("FullHealthSpawn"), 0)
-            ? gSaveContext.healthCapacity
-            : STARTING_HEALTH;
-          Audio_QueueSeqCmd(0xF << 28 | SEQ_PLAYER_BGM_MAIN << 24 | 0xA);
-          gSaveContext.healthAccumulator = 0;
-          gSaveContext.magicState = MAGIC_STATE_IDLE;
-          gSaveContext.prevMagicState = MAGIC_STATE_IDLE;
-          gSaveContext.magicCapacity = 0;
-          gSaveContext.magicFillTarget = gSaveContext.magic;
-          gSaveContext.magicLevel = gSaveContext.magic = 0;
-          play->state.running = false;
-          SET_NEXT_GAMESTATE(&play->state, Play_Init, PlayState);
-        }
-      }
-      break;
+        case 4:
+            *should = false;
+            if (Message_GetState(&play->msgCtx) == TEXT_STATE_CHOICE && Message_ShouldAdvance(play)) {
+                switch (play->msgCtx.choiceIndex) {
+                    case 0:
+                        // Continue
+                        Interface_SetDoAction(play, DO_ACTION_NONE);
+                        gSaveContext.buttonStatus[0] = gSaveContext.buttonStatus[1] = gSaveContext.buttonStatus[2] =
+                            gSaveContext.buttonStatus[3] = BTN_ENABLED;
+                        gSaveContext.buttonStatus[5] = gSaveContext.buttonStatus[6] = gSaveContext.buttonStatus[7] =
+                            gSaveContext.buttonStatus[8] = BTN_ENABLED;
+                        gSaveContext.hudVisibilityMode = 0;
+                        Interface_ChangeHudVisibilityMode(50);
+                        pauseCtx->unk_1EC = 5;
+                        WREG(2) = -6240;
+                        YREG(8) = pauseCtx->unk_204;
+                        func_800F64E0(0);
+                        break;
+                    case 1:
+                        // Reset
+                        Audio_PlaySoundGeneral(NA_SE_SY_PIECE_OF_HEART, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                        Play_SaveSceneFlags(play);
 
-    default:
-      *should = true;
-  }
-  Message_Update(play);
+                        Sram_OpenSave();
+                        switch (gSaveContext.savedSceneNum) {
+                            case SCENE_DEKU_TREE:
+                            case SCENE_DEKU_TREE_BOSS:
+                                gSaveContext.entranceIndex = ENTR_DEKU_TREE_ENTRANCE;
+                                break;
+                            case SCENE_DODONGOS_CAVERN:
+                            case SCENE_DODONGOS_CAVERN_BOSS:
+                                gSaveContext.entranceIndex = ENTR_DODONGOS_CAVERN_ENTRANCE;
+                                break;
+                            case SCENE_JABU_JABU:
+                            case SCENE_JABU_JABU_BOSS:
+                                gSaveContext.entranceIndex = ENTR_JABU_JABU_ENTRANCE;
+                                break;
+                            case SCENE_FOREST_TEMPLE:
+                            case SCENE_FOREST_TEMPLE_BOSS:
+                                gSaveContext.entranceIndex = ENTR_FOREST_TEMPLE_ENTRANCE;
+                                break;
+                            case SCENE_FIRE_TEMPLE:
+                            case SCENE_FIRE_TEMPLE_BOSS:
+                                gSaveContext.entranceIndex = ENTR_FIRE_TEMPLE_ENTRANCE;
+                                break;
+                            case SCENE_WATER_TEMPLE:
+                            case SCENE_WATER_TEMPLE_BOSS:
+                                gSaveContext.entranceIndex = ENTR_WATER_TEMPLE_ENTRANCE;
+                                break;
+                            case SCENE_SPIRIT_TEMPLE:
+                            case SCENE_SPIRIT_TEMPLE_BOSS:
+                                gSaveContext.entranceIndex = ENTR_SPIRIT_TEMPLE_ENTRANCE;
+                                break;
+                            case SCENE_SHADOW_TEMPLE:
+                            case SCENE_SHADOW_TEMPLE_BOSS:
+                                gSaveContext.entranceIndex = ENTR_SHADOW_TEMPLE_ENTRANCE;
+                                break;
+                            case SCENE_BOTTOM_OF_THE_WELL:
+                                gSaveContext.entranceIndex = ENTR_BOTTOM_OF_THE_WELL_ENTRANCE;
+                                break;
+                            case SCENE_GERUDO_TRAINING_GROUND:
+                                gSaveContext.entranceIndex = ENTR_THIEVES_HIDEOUT_0;
+                                break;
+                            case SCENE_ICE_CAVERN:
+                                gSaveContext.entranceIndex = ENTR_ICE_CAVERN_ENTRANCE;
+                                break;
+                            case SCENE_INSIDE_GANONS_CASTLE:
+                                gSaveContext.entranceIndex = ENTR_INSIDE_GANONS_CASTLE_ENTRANCE;
+                                break;
+                            case SCENE_GANONS_TOWER_COLLAPSE_INTERIOR:
+                            case SCENE_INSIDE_GANONS_CASTLE_COLLAPSE:
+                            case SCENE_GANONDORF_BOSS:
+                            case SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR:
+                            case SCENE_GANON_BOSS:
+                            case SCENE_GANONS_TOWER:
+                                gSaveContext.entranceIndex = ENTR_GANONS_TOWER_0;
+                                break;
+                            default:
+                                if (CVarGetInteger(CVAR_ENHANCEMENT("RememberSaveLocation"), 0) &&
+                                    gSaveContext.savedSceneNum != SCENE_FAIRYS_FOUNTAIN &&
+                                    gSaveContext.savedSceneNum != SCENE_GROTTOS) {
+                                    break;
+                                }
+                                if (gSaveContext.savedSceneNum != SCENE_LINKS_HOUSE) {
+                                    gSaveContext.entranceIndex = (LINK_AGE_IN_YEARS == YEARS_CHILD)
+                                                                     ? ENTR_LINKS_HOUSE_CHILD_SPAWN
+                                                                     : ENTR_TEMPLE_OF_TIME_WARP_PAD;
+                                } else {
+                                    gSaveContext.entranceIndex = ENTR_LINKS_HOUSE_CHILD_SPAWN;
+                                }
+                                if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_SPAWNS)) {
+                                    if (LINK_AGE_IN_YEARS == YEARS_ADULT) {
+                                        gSaveContext.entranceIndex = ENTR_HYRULE_FIELD_10;
+                                    }
+                                    gSaveContext.entranceIndex = Entrance_OverrideNextIndex(gSaveContext.entranceIndex);
+                                }
+                                break;
+                        }
+                        pauseCtx->promptChoice = 0;
+                        pauseCtx->unk_1EC = 7;
+                        break;
+                    case 2:
+                        // Reset to Spawn
+                        Audio_PlaySoundGeneral(NA_SE_SY_PIECE_OF_HEART, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                        Play_SaveSceneFlags(play);
+                        Sram_OpenSave();
+                        gSaveContext.entranceIndex = (LINK_AGE_IN_YEARS == YEARS_CHILD) ? ENTR_LINKS_HOUSE_CHILD_SPAWN
+                                                                                        : ENTR_TEMPLE_OF_TIME_WARP_PAD;
+                        if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_SPAWNS)) {
+                            if (LINK_AGE_IN_YEARS == YEARS_ADULT) {
+                                gSaveContext.entranceIndex = ENTR_HYRULE_FIELD_10;
+                            }
+                            gSaveContext.entranceIndex = Entrance_OverrideNextIndex(gSaveContext.entranceIndex);
+                        }
+                        pauseCtx->promptChoice = 0;
+                        pauseCtx->unk_1EC = 7;
+                        break;
+                }
+            }
+            break;
+        case 7:
+            if (interfaceCtx->unk_244 != 255) {
+                interfaceCtx->unk_244 += 10;
+                if (interfaceCtx->unk_244 >= 255) {
+                    interfaceCtx->unk_244 = 255;
+                    pauseCtx->state = 0;
+                    R_UPDATE_RATE = 3;
+                    R_PAUSE_MENU_MODE = 0;
+                    func_800981B8(&play->objectCtx);
+                    func_800418D0(&play->colCtx, play);
+                    // Reset frame counter to prevent autosave on respawn
+                    play->gameplayFrames = 0;
+                    gSaveContext.nextTransitionType = TRANS_TYPE_FADE_BLACK;
+                    gSaveContext.health = CVarGetInteger(CVAR_ENHANCEMENT("FullHealthSpawn"), 0)
+                                              ? gSaveContext.healthCapacity
+                                              : STARTING_HEALTH;
+                    Audio_QueueSeqCmd(0xF << 28 | SEQ_PLAYER_BGM_MAIN << 24 | 0xA);
+                    gSaveContext.healthAccumulator = 0;
+                    gSaveContext.magicState = MAGIC_STATE_IDLE;
+                    gSaveContext.prevMagicState = MAGIC_STATE_IDLE;
+                    gSaveContext.magicCapacity = 0;
+                    gSaveContext.magicFillTarget = gSaveContext.magic;
+                    gSaveContext.magicLevel = gSaveContext.magic = 0;
+                    play->state.running = false;
+                    SET_NEXT_GAMESTATE(&play->state, Play_Init, PlayState);
+                }
+            }
+            break;
+
+        default:
+            *should = true;
+    }
+    Message_Update(play);
 }
 
 void RegisterBetterSave() {
-  saveMsg.Format();
-  continueMsg.Format();
-  REGISTER_VB_SHOULD(VB_LOAD_SAVE_MENU, {
-      PlayState* play = va_arg(args, PlayState*);
-      HandleSaveMenu(should, play);
-  });
+    saveMsg.Format();
+    continueMsg.Format();
+    REGISTER_VB_SHOULD(VB_LOAD_SAVE_MENU, {
+        PlayState* play = va_arg(args, PlayState*);
+        HandleSaveMenu(should, play);
+    });
 
-  REGISTER_VB_SHOULD(VB_DRAW_SAVE_MENU, {
-      *should = false;
-  });
+    REGISTER_VB_SHOULD(VB_DRAW_SAVE_MENU, { *should = false; });
 
-  COND_ID_HOOK(OnOpenText, TEXT_SAVE_MSG, true, [](uint16_t* textId, bool* loadFromMessageTable){
-      saveMsg.LoadIntoFont();
-      *loadFromMessageTable = false;
-      return;
-  });
+    COND_ID_HOOK(OnOpenText, TEXT_SAVE_MSG, true, [](uint16_t* textId, bool* loadFromMessageTable) {
+        saveMsg.LoadIntoFont();
+        *loadFromMessageTable = false;
+        return;
+    });
 
-  COND_ID_HOOK(OnOpenText, TEXT_CONTINUE_MSG, true, [](uint16_t*textId, bool* loadFromMessageTable) {
-      continueMsg.LoadIntoFont();
-      *loadFromMessageTable = false;
-      return;
-  });
+    COND_ID_HOOK(OnOpenText, TEXT_CONTINUE_MSG, true, [](uint16_t* textId, bool* loadFromMessageTable) {
+        continueMsg.LoadIntoFont();
+        *loadFromMessageTable = false;
+        return;
+    });
 }
 
 static RegisterShipInitFunc initFunc(RegisterBetterSave, { CVAR_BETTERSAVE });
