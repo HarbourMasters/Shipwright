@@ -9632,6 +9632,8 @@ void Player_Action_8084411C(Player* this, PlayState* play) {
 
     Player_GetMovementSpeedAndYaw(this, &sp4C, &sp4A, SPEED_MODE_LINEAR, play);
 
+    GameInteractor_Should(VB_NOT_ON_GROUND_ACTION, true);
+
     if (!(this->actor.bgCheckFlags & BGCHECKFLAG_GROUND)) {
         if (this->stateFlags1 & PLAYER_STATE1_CARRYING_ACTOR) {
             Actor* heldActor = this->heldActor;
@@ -9682,7 +9684,7 @@ void Player_Action_8084411C(Player* this, PlayState* play) {
                         (this->linearVelocity > 0.0f)) {
                         if ((this->yDistToLedge >= 150.0f) &&
                             (this->controlStickDirections[this->controlStickDataIndex] == 0)) {
-                            if (GameInteractor_Should(VB_REATTACH_TO_CLIMB_WALL_LADDER, true, &sTouchedWallFlags)) {
+                            if (GameInteractor_Should(VB_REATTACH_TO_CLIMB_WALL_LADDER, true)) {
                                 func_8083EC18(this, play, sTouchedWallFlags);
                             }
                         } else if ((this->ledgeClimbType >= 2) && (this->yDistToLedge < 150.0f) &&

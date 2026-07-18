@@ -1065,16 +1065,35 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
                 *should = false; // Start hanging action instead of climbing
             }
             break;
-        case VB_REATTACH_TO_CLIMB_WALL_LADDER:
+        case VB_NOT_ON_GROUND_ACTION:
             if (RAND_GET_OPTION(RSK_SHUFFLE_CLIMB) && !Flags_GetRandomizerInf(RAND_INF_CAN_CLIMB)) {
-                u32* touchedWallFlags = va_arg(args, u32*);
                 Player* player = GET_PLAYER(gPlayState);
+                CollisionPoly* wallPoly;
+                Vec3f raycastPos;
+                Vec3f posResult;
+                s32 bgId;
 
-                if (*touchedWallFlags & 2) {
+                // Check if climb wall/ladder in front. If not, different rotation if hanging fall so check behind
+                raycastPos.x = player->actor.world.pos.x + 50.0f * Math_SinS(player->actor.world.rot.y);
+                raycastPos.y = player->actor.world.pos.y;
+                raycastPos.z = player->actor.world.pos.z + 50.0f * Math_CosS(player->actor.world.rot.y);
+                BgCheck_EntityLineTest1(&gPlayState->colCtx, &player->actor.world.pos, &raycastPos, &posResult, &wallPoly, true, false, false, true, &bgId);
+                if (wallPoly == NULL) {
+                    raycastPos.x = player->actor.world.pos.x - 50.0f * Math_SinS(player->actor.world.rot.y);
+                    raycastPos.z = player->actor.world.pos.z - 50.0f * Math_CosS(player->actor.world.rot.y);
+                    BgCheck_EntityLineTest1(&gPlayState->colCtx, &player->actor.world.pos, &raycastPos, &posResult, &wallPoly, true, false, false, true, &bgId);
+                }
+
+                // No fall damage if falling from ladder or climbable wall for can take damage logic
+                if (func_80041E18(&gPlayState->colCtx, wallPoly, bgId) || func_80041DB8(&gPlayState->colCtx, wallPoly, bgId) & 8) {
                     player->fallDistance = 0;
                     player->fallStartHeight = (s16)player->actor.world.pos.y;
-                    *should = false; // If falling off ladder, reset fall height but don't grab ladder
                 }
+            }
+            break;
+        case VB_REATTACH_TO_CLIMB_WALL_LADDER:
+            if (RAND_GET_OPTION(RSK_SHUFFLE_CLIMB) && !Flags_GetRandomizerInf(RAND_INF_CAN_CLIMB)) {
+                *should = false; // Can't attach if can't climb
             }
             break;
         case VB_CRAWL:
