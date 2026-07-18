@@ -73,6 +73,15 @@ void RegisterAlwaysOnFixes() {
         }
     });
 
+    // Dismounting a ladder in a cutscene or using cutscene item (using restricted items glitch) i.e.
+    // `player->unk_6AD` == 3 or 4 softlocks as animation update stops. Let animation continue in that case.
+    COND_VB_SHOULD(VB_INTERRUPT_LADDER_DISMOUNT, true, {
+        u8* unk_6AD = va_arg(args, u8*);
+        if (*unk_6AD >= 3) {
+            *should = false;
+        }
+    });
+
     COND_VB_SHOULD(VB_PREVENT_HBA_FANFARE_SOFTLOCK_TIMER, true, {
         EnHorse* enHorse = va_arg(args, EnHorse*);
         if (enHorse->hbaFlags & 1) {

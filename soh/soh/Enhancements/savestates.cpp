@@ -50,6 +50,7 @@ extern "C" void EnZf_SaveState(SaveStateCtx* ctx);
 extern "C" void EnZl3_SaveState(SaveStateCtx* ctx);
 extern "C" void ObjectKankyo_SaveState(SaveStateCtx* ctx);
 extern "C" void EnHeishi1_SaveState(SaveStateCtx* ctx);
+extern "C" void Player_SaveState(SaveStateCtx* ctx);
 
 extern "C" void Matrix_SaveState(SaveStateCtx* ctx);
 extern "C" void Lights_SaveState(SaveStateCtx* ctx);
@@ -147,6 +148,7 @@ typedef struct SaveStateInfo {
     std::unique_ptr<uint8_t[]> enZl3State;
     std::unique_ptr<uint8_t[]> objectKankyoState;
     std::unique_ptr<uint8_t[]> enHeishi1State;
+    std::unique_ptr<uint8_t[]> playerState;
 
     u8 transitionActorCount_copy;
     s16 transitionActorIds_copy[256];
@@ -281,6 +283,7 @@ void SaveState::SaveOverlayStaticData(void) {
     SaveOverlayState(info->enZl3State, EnZl3_SaveState);
     SaveOverlayState(info->objectKankyoState, ObjectKankyo_SaveState);
     SaveOverlayState(info->enHeishi1State, EnHeishi1_SaveState);
+    SaveOverlayState(info->playerState, Player_SaveState);
 }
 
 void SaveState::LoadOverlayStaticData(void) {
@@ -326,6 +329,7 @@ void SaveState::LoadOverlayStaticData(void) {
     LoadOverlayState(info->enZl3State, EnZl3_SaveState);
     LoadOverlayState(info->objectKankyoState, ObjectKankyo_SaveState);
     LoadOverlayState(info->enHeishi1State, EnHeishi1_SaveState);
+    LoadOverlayState(info->playerState, Player_SaveState);
 }
 
 void SaveState::SaveTransitionActors(void) {

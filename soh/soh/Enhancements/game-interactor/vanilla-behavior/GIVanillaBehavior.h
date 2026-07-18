@@ -3297,6 +3297,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // interruptResult == PLAYER_INTERRUPT_NEW_ACTION
+    // ```
+    // #### `args`
+    // - `*u8 (&player->unk_6AD)`
+    VB_INTERRUPT_LADDER_DISMOUNT,
+
+    // #### `result`
+    // ```c
     // true
     // ```
     // #### `args`
