@@ -25,7 +25,7 @@ static CustomMessage continueDungeonMsg =
 
 extern "C" uint8_t Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 
-bool IsSceneDungeon(uint8_t scene) {
+bool IsSceneDungeon(int16_t scene) {
     bool result = false;
     switch (scene) {
         case SCENE_DEKU_TREE:
