@@ -2,7 +2,6 @@
 #include "soh/Enhancements/custom-message/CustomMessageTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
-#include "soh/Enhancements/randomizer/randomizer_grotto.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
@@ -18,11 +17,51 @@ extern PlayState* gPlayState;
 #define CVAR_BETTERSAVE_VALUE CVarGetInteger(CVAR_BETTERSAVE, CVAR_BETTERSAVE_DEFAULT)
 static CustomMessage saveMsg = CustomMessage(
     "\x08Would you like to save?&&" + CustomMessage::TWO_WAY_CHOICE() + "%gYes&No%w\x09", TEXTBOX_TYPE_BLUE);
-static CustomMessage continueMsg =
+static CustomMessage continueOverworldMsg = CustomMessage(
+    "\x08 Continue?&&" + CustomMessage::TWO_WAY_CHOICE() + "%gContinue&Return to Spawn%w\x09", TEXTBOX_TYPE_BLUE);
+static CustomMessage continueDungeonMsg =
     CustomMessage("\x08 Continue?&" + CustomMessage::THREE_WAY_CHOICE() + "%gContinue&Restart&Return to Spawn%w\x09",
                   TEXTBOX_TYPE_BLUE);
 
 extern "C" uint8_t Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
+
+bool IsSceneDungeon(uint8_t scene) {
+  bool result = false;
+  switch (scene) {
+    case SCENE_DEKU_TREE:
+    case SCENE_DEKU_TREE_BOSS:
+    case SCENE_DODONGOS_CAVERN:
+    case SCENE_DODONGOS_CAVERN_BOSS:
+    case SCENE_JABU_JABU:
+    case SCENE_JABU_JABU_BOSS:
+    case SCENE_FOREST_TEMPLE:
+    case SCENE_FOREST_TEMPLE_BOSS:
+    case SCENE_FIRE_TEMPLE:
+    case SCENE_FIRE_TEMPLE_BOSS:
+    case SCENE_WATER_TEMPLE:
+    case SCENE_WATER_TEMPLE_BOSS:
+    case SCENE_SPIRIT_TEMPLE:
+    case SCENE_SPIRIT_TEMPLE_BOSS:
+    case SCENE_SHADOW_TEMPLE:
+    case SCENE_SHADOW_TEMPLE_BOSS:
+    case SCENE_BOTTOM_OF_THE_WELL:
+    case SCENE_GERUDO_TRAINING_GROUND:
+    case SCENE_ICE_CAVERN:
+    case SCENE_INSIDE_GANONS_CASTLE:
+    case SCENE_GANONS_TOWER:
+    case SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR:
+    case SCENE_GANONS_TOWER_COLLAPSE_INTERIOR:
+    case SCENE_GANONDORF_BOSS:
+    case SCENE_GANON_BOSS:
+    case SCENE_INSIDE_GANONS_CASTLE_COLLAPSE:
+      result = true;
+      break;
+    default:
+      result = false;
+      break;
+  }
+  return result;
+}
 
 void HandleSaveMenu(bool* should, PlayState* play) {
     PauseContext* pauseCtx = &play->pauseCtx;
@@ -41,7 +80,11 @@ void HandleSaveMenu(bool* should, PlayState* play) {
                                            &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                     Play_PerformSave(play);
                     pauseCtx->unk_1EC = 4;
-                    Message_StartTextbox(play, TEXT_CONTINUE_MSG, NULL);
+                    if (IsSceneDungeon(gSaveContext.savedSceneNum)) {
+                      Message_StartTextbox(play, TEXT_CONTINUE_DUNGEON_MSG, NULL);
+                    } else {
+                      Message_StartTextbox(play, TEXT_CONTINUE_OVERWORLD_MSG, NULL);
+                    }
                 } else {
                     Interface_SetDoAction(play, DO_ACTION_NONE);
                     gSaveContext.buttonStatus[0] = gSaveContext.buttonStatus[1] = gSaveContext.buttonStatus[2] =
@@ -76,91 +119,24 @@ void HandleSaveMenu(bool* should, PlayState* play) {
                         func_800F64E0(0);
                         break;
                     case 1:
-                        // Reset
+                        // Reset (Dungeon) / Return to Spawn (Overworld)
                         Audio_PlaySoundGeneral(NA_SE_SY_PIECE_OF_HEART, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
                                                &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                         Play_SaveSceneFlags(play);
-
                         Sram_OpenSave();
-                        switch (gSaveContext.savedSceneNum) {
-                            case SCENE_DEKU_TREE:
-                            case SCENE_DEKU_TREE_BOSS:
-                                gSaveContext.entranceIndex = ENTR_DEKU_TREE_ENTRANCE;
-                                break;
-                            case SCENE_DODONGOS_CAVERN:
-                            case SCENE_DODONGOS_CAVERN_BOSS:
-                                gSaveContext.entranceIndex = ENTR_DODONGOS_CAVERN_ENTRANCE;
-                                break;
-                            case SCENE_JABU_JABU:
-                            case SCENE_JABU_JABU_BOSS:
-                                gSaveContext.entranceIndex = ENTR_JABU_JABU_ENTRANCE;
-                                break;
-                            case SCENE_FOREST_TEMPLE:
-                            case SCENE_FOREST_TEMPLE_BOSS:
-                                gSaveContext.entranceIndex = ENTR_FOREST_TEMPLE_ENTRANCE;
-                                break;
-                            case SCENE_FIRE_TEMPLE:
-                            case SCENE_FIRE_TEMPLE_BOSS:
-                                gSaveContext.entranceIndex = ENTR_FIRE_TEMPLE_ENTRANCE;
-                                break;
-                            case SCENE_WATER_TEMPLE:
-                            case SCENE_WATER_TEMPLE_BOSS:
-                                gSaveContext.entranceIndex = ENTR_WATER_TEMPLE_ENTRANCE;
-                                break;
-                            case SCENE_SPIRIT_TEMPLE:
-                            case SCENE_SPIRIT_TEMPLE_BOSS:
-                                gSaveContext.entranceIndex = ENTR_SPIRIT_TEMPLE_ENTRANCE;
-                                break;
-                            case SCENE_SHADOW_TEMPLE:
-                            case SCENE_SHADOW_TEMPLE_BOSS:
-                                gSaveContext.entranceIndex = ENTR_SHADOW_TEMPLE_ENTRANCE;
-                                break;
-                            case SCENE_BOTTOM_OF_THE_WELL:
-                                gSaveContext.entranceIndex = ENTR_BOTTOM_OF_THE_WELL_ENTRANCE;
-                                break;
-                            case SCENE_GERUDO_TRAINING_GROUND:
-                                gSaveContext.entranceIndex = ENTR_THIEVES_HIDEOUT_0;
-                                break;
-                            case SCENE_ICE_CAVERN:
-                                gSaveContext.entranceIndex = ENTR_ICE_CAVERN_ENTRANCE;
-                                break;
-                            case SCENE_INSIDE_GANONS_CASTLE:
-                                gSaveContext.entranceIndex = ENTR_INSIDE_GANONS_CASTLE_ENTRANCE;
-                                break;
-                            case SCENE_GANONS_TOWER_COLLAPSE_INTERIOR:
-                            case SCENE_INSIDE_GANONS_CASTLE_COLLAPSE:
-                            case SCENE_GANONDORF_BOSS:
-                            case SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR:
-                            case SCENE_GANON_BOSS:
-                            case SCENE_GANONS_TOWER:
-                                gSaveContext.entranceIndex = ENTR_GANONS_TOWER_0;
-                                break;
-                            default:
-                                if (CVarGetInteger(CVAR_ENHANCEMENT("RememberSaveLocation"), 0) &&
-                                    gSaveContext.savedSceneNum != SCENE_FAIRYS_FOUNTAIN &&
-                                    gSaveContext.savedSceneNum != SCENE_GROTTOS) {
-                                    break;
-                                }
-                                if (gSaveContext.savedSceneNum != SCENE_LINKS_HOUSE) {
-                                    gSaveContext.entranceIndex = (LINK_AGE_IN_YEARS == YEARS_CHILD)
-                                                                     ? ENTR_LINKS_HOUSE_CHILD_SPAWN
-                                                                     : ENTR_TEMPLE_OF_TIME_WARP_PAD;
-                                } else {
-                                    gSaveContext.entranceIndex = ENTR_LINKS_HOUSE_CHILD_SPAWN;
-                                }
-                                if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_SPAWNS)) {
-                                    if (LINK_AGE_IN_YEARS == YEARS_ADULT) {
-                                        gSaveContext.entranceIndex = ENTR_HYRULE_FIELD_10;
-                                    }
-                                    gSaveContext.entranceIndex = Entrance_OverrideNextIndex(gSaveContext.entranceIndex);
-                                }
-                                break;
+                        if (!IsSceneDungeon(gSaveContext.savedSceneNum)) {
+                          if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_SPAWNS)) {
+                            if (LINK_AGE_IN_YEARS == YEARS_ADULT) {
+                              gSaveContext.entranceIndex = ENTR_HYRULE_FIELD_10;
+                            }
+                            gSaveContext.entranceIndex = Entrance_OverrideNextIndex(gSaveContext.entranceIndex);
+                          }
                         }
                         pauseCtx->promptChoice = 0;
                         pauseCtx->unk_1EC = 7;
                         break;
                     case 2:
-                        // Reset to Spawn
+                        // Reset to Spawn (Dungeon)
                         Audio_PlaySoundGeneral(NA_SE_SY_PIECE_OF_HEART, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
                                                &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                         Play_SaveSceneFlags(play);
@@ -216,7 +192,9 @@ void HandleSaveMenu(bool* should, PlayState* play) {
 
 void RegisterBetterSave() {
     saveMsg.Format();
-    continueMsg.Format();
+    continueOverworldMsg.Format();
+    continueDungeonMsg.Format();
+
     REGISTER_VB_SHOULD(VB_LOAD_SAVE_MENU, {
         PlayState* play = va_arg(args, PlayState*);
         HandleSaveMenu(should, play);
@@ -230,8 +208,14 @@ void RegisterBetterSave() {
         return;
     });
 
-    COND_ID_HOOK(OnOpenText, TEXT_CONTINUE_MSG, true, [](uint16_t* textId, bool* loadFromMessageTable) {
-        continueMsg.LoadIntoFont();
+    COND_ID_HOOK(OnOpenText, TEXT_CONTINUE_DUNGEON_MSG, true, [](uint16_t* textId, bool* loadFromMessageTable) {
+        continueDungeonMsg.LoadIntoFont();
+        *loadFromMessageTable = false;
+        return;
+    });
+
+    COND_ID_HOOK(OnOpenText, TEXT_CONTINUE_OVERWORLD_MSG, true, [](uint16_t* textId, bool* loadFromMessageTable) {
+        continueOverworldMsg.LoadIntoFont();
         *loadFromMessageTable = false;
         return;
     });
