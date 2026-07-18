@@ -5721,7 +5721,6 @@ s32 func_8083A6AC(Player* this, PlayState* play) {
             sp54 = Math3D_UDistPlaneToPos(nx, ny, nz, sp84->dist, &this->actor.world.pos);
 
             sp50 = (sPrevFloorProperty == 6);
-            // Shuffle climb check
             if (GameInteractor_Should(VB_START_CLIMB_FROM_ABOVE,
                                       (!sp50 && (func_80041DB8(&play->colCtx, sp84, sp80) & 8)))) {
                 sp50 = 1;
