@@ -1764,7 +1764,7 @@ void KaleidoScope_DrawPages(PlayState* play, GraphicsContext* gfxCtx) {
 
     Gfx_SetupDL_42Opa(gfxCtx);
 
-    if ((pauseCtx->state == 7) || ((pauseCtx->state >= 8) && (pauseCtx->state < 0x12))) {
+    if ((GameInteractor_Should(VB_DRAW_SAVE_MENU, pauseCtx->state == 7, pauseCtx)) || ((pauseCtx->state >= 8) && (pauseCtx->state < 0x12))) {
         KaleidoScope_UpdatePrompt(play);
 
         gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA, G_CC_MODULATEIA);
@@ -4397,6 +4397,7 @@ void KaleidoScope_Update(PlayState* play) {
             break;
 
         case 7:
+            if (GameInteractor_Should(VB_LOAD_SAVE_MENU, 1, play)) {
             switch (pauseCtx->unk_1EC) {
                 case 0:
                     pauseCtx->unk_204 -= 314.0f / WREG(6);
@@ -4500,6 +4501,7 @@ void KaleidoScope_Update(PlayState* play) {
                         pauseCtx->unk_204 = -434.0f;
                     }
                     break;
+            }
             }
             break;
 

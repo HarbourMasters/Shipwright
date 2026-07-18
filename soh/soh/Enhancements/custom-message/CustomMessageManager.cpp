@@ -806,6 +806,10 @@ std::string CustomMessage::TWO_WAY_CHOICE() {
     return "\x1B"s;
 }
 
+std::string CustomMessage::THREE_WAY_CHOICE() {
+  return "\x1C"s;
+}
+
 bool CustomMessageManager::InsertCustomMessage(const std::string& tableID, uint16_t textID, CustomMessage messages) {
     auto foundMessageTable = messageTables.find(tableID);
     if (foundMessageTable == messageTables.end()) {
