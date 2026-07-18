@@ -1077,15 +1077,18 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
                 raycastPos.x = player->actor.world.pos.x + 50.0f * Math_SinS(player->actor.world.rot.y);
                 raycastPos.y = player->actor.world.pos.y;
                 raycastPos.z = player->actor.world.pos.z + 50.0f * Math_CosS(player->actor.world.rot.y);
-                BgCheck_EntityLineTest1(&gPlayState->colCtx, &player->actor.world.pos, &raycastPos, &posResult, &wallPoly, true, false, false, true, &bgId);
+                BgCheck_EntityLineTest1(&gPlayState->colCtx, &player->actor.world.pos, &raycastPos, &posResult,
+                                        &wallPoly, true, false, false, true, &bgId);
                 if (wallPoly == NULL) {
                     raycastPos.x = player->actor.world.pos.x - 50.0f * Math_SinS(player->actor.world.rot.y);
                     raycastPos.z = player->actor.world.pos.z - 50.0f * Math_CosS(player->actor.world.rot.y);
-                    BgCheck_EntityLineTest1(&gPlayState->colCtx, &player->actor.world.pos, &raycastPos, &posResult, &wallPoly, true, false, false, true, &bgId);
+                    BgCheck_EntityLineTest1(&gPlayState->colCtx, &player->actor.world.pos, &raycastPos, &posResult,
+                                            &wallPoly, true, false, false, true, &bgId);
                 }
 
                 // No fall damage if falling from ladder or climbable wall for can take damage logic
-                if (func_80041E18(&gPlayState->colCtx, wallPoly, bgId) || func_80041DB8(&gPlayState->colCtx, wallPoly, bgId) & 8) {
+                if (func_80041E18(&gPlayState->colCtx, wallPoly, bgId) ||
+                    func_80041DB8(&gPlayState->colCtx, wallPoly, bgId) & 8) {
                     player->fallDistance = 0;
                     player->fallStartHeight = (s16)player->actor.world.pos.y;
                 }
