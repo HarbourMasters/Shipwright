@@ -7,6 +7,7 @@
 #include "z_en_torch2.h"
 #include "objects/object_torch2/object_torch2.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS                                                                                 \
     (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED | \
@@ -172,6 +173,8 @@ void EnTorch2_Destroy(Actor* thisx, PlayState* play) {
     s32 pad;
     Player* this = (Player*)thisx;
 
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
+    ResourceMgr_UnregisterSkeleton(&this->upperSkelAnime);
     Effect_Delete(play, this->meleeWeaponEffectIndex);
     func_800F5B58();
     Collider_DestroyCylinder(play, &this->cylinder);
