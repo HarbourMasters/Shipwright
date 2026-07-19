@@ -364,8 +364,33 @@ typedef enum {
     // true
     // ```
     // #### `args`
-    // - None
+    // - `s32*` (sp80 = x)
+    // - `s32*` (sp84 = y)
     VB_CLIMB,
+
+    // #### `result`
+    // ```c
+    // (!sp50 && (func_80041DB8(&play->colCtx, sp84, sp80) & 8))
+    // ```
+    // #### `args`
+    // - None
+    VB_START_CLIMB_FROM_ABOVE,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
+    VB_REATTACH_TO_CLIMB_WALL_LADDER,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
+    VB_NOT_ON_GROUND_ACTION,
 
     // #### `result`
     // ```c

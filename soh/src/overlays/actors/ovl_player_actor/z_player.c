@@ -5721,7 +5721,8 @@ s32 func_8083A6AC(Player* this, PlayState* play) {
             sp54 = Math3D_UDistPlaneToPos(nx, ny, nz, sp84->dist, &this->actor.world.pos);
 
             sp50 = (sPrevFloorProperty == 6);
-            if (!sp50 && (func_80041DB8(&play->colCtx, sp84, sp80) & 8)) {
+            if (GameInteractor_Should(VB_START_CLIMB_FROM_ABOVE,
+                                      (!sp50 && (func_80041DB8(&play->colCtx, sp84, sp80) & 8)))) {
                 sp50 = 1;
             }
 
@@ -9631,6 +9632,8 @@ void Player_Action_8084411C(Player* this, PlayState* play) {
 
     Player_GetMovementSpeedAndYaw(this, &sp4C, &sp4A, SPEED_MODE_LINEAR, play);
 
+    GameInteractor_Should(VB_NOT_ON_GROUND_ACTION, true);
+
     if (!(this->actor.bgCheckFlags & BGCHECKFLAG_GROUND)) {
         if (this->stateFlags1 & PLAYER_STATE1_CARRYING_ACTOR) {
             Actor* heldActor = this->heldActor;
@@ -9681,7 +9684,9 @@ void Player_Action_8084411C(Player* this, PlayState* play) {
                         (this->linearVelocity > 0.0f)) {
                         if ((this->yDistToLedge >= 150.0f) &&
                             (this->controlStickDirections[this->controlStickDataIndex] == 0)) {
-                            func_8083EC18(this, play, sTouchedWallFlags);
+                            if (GameInteractor_Should(VB_REATTACH_TO_CLIMB_WALL_LADDER, true)) {
+                                func_8083EC18(this, play, sTouchedWallFlags);
+                            }
                         } else if ((this->ledgeClimbType >= 2) && (this->yDistToLedge < 150.0f) &&
                                    (((this->actor.world.pos.y - this->actor.floorHeight) + this->yDistToLedge) >
                                     (70.0f * this->ageProperties->unk_08))) {
