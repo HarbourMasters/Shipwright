@@ -373,14 +373,6 @@ typedef enum {
     // ```
     // #### `args`
     // - None
-    VB_CLIMB_UP,
-
-    // #### `result`
-    // ```c
-    // true
-    // ```
-    // #### `args`
-    // - None
     VB_AFTER_PROCESS_SCENE_COLLISION,
 
     // #### `result`
