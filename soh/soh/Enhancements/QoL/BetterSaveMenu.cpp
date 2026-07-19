@@ -26,7 +26,6 @@ static CustomMessage continueDungeonMsg =
 extern "C" uint8_t Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 
 bool IsSceneDungeon(int16_t scene) {
-    bool result = false;
     switch (scene) {
         case SCENE_DEKU_TREE:
         case SCENE_DEKU_TREE_BOSS:
@@ -54,13 +53,10 @@ bool IsSceneDungeon(int16_t scene) {
         case SCENE_GANONDORF_BOSS:
         case SCENE_GANON_BOSS:
         case SCENE_INSIDE_GANONS_CASTLE_COLLAPSE:
-            result = true;
-            break;
+            return true;
         default:
-            result = false;
-            break;
+            return false;
     }
-    return result;
 }
 
 void HandleSaveMenu(bool* should, PlayState* play) {
