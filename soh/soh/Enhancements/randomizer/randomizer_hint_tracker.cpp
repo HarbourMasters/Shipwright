@@ -86,7 +86,12 @@ static const CustomMessage journalTabLabel = CustomMessage("Journal", "Tagebuch"
 static const CustomMessage junkLabel = CustomMessage("Junk", "Ramsch", "Inutile");
 static const CustomMessage itemsLabel = CustomMessage("Items", "Gegenstände", "Objets");
 static const CustomMessage majorItemsLabel = CustomMessage("Major Items", "Wichtige Gegenstände", "Objets majeurs");
-static const CustomMessage minorItemsLabel = CustomMessage("Minor Items", "Kleinere Gegenstände", "Objets mineurs");
+static const CustomMessage bossKeysLabel = CustomMessage("Boss Keys", "Master-Schlüssel", "Clés d'Or");
+static const CustomMessage smallKeysLabel = CustomMessage("Small Keys", "Kleine Schlüssel", "Petites Clés");
+static const CustomMessage skulltulaTokensLabel =
+    CustomMessage("Skulltula Tokens", "Skulltula-Symbole", "Symboles de Skulltula");
+static const CustomMessage heartsLabel = CustomMessage("Hearts", "Herzen", "Cœurs");
+static const CustomMessage lesserItemsLabel = CustomMessage("Lesser Items", "Kleinere Gegenstände", "Objets mineurs");
 static const CustomMessage junkItemsLabel = CustomMessage("Junk Items", "Nutzlose Gegenstände", "Objets inutiles");
 static const CustomMessage otherHintsLabel = CustomMessage("Other Hints", "Sonstige Hinweise", "Autres indices");
 static const CustomMessage hintsReadLabel = CustomMessage("Hints Read", "Hinweise gelesen", "Indices lus");
@@ -271,29 +276,19 @@ static int ItemCategoryRank(GetItemCategory category) {
     }
 }
 
-// Splits item hints into the three value tiers a player thinks in, from the
-// same ItemCategoryRank used for sorting: 0 = major (progression + boss keys),
-// 1 = minor (small keys, tokens, hearts, lesser), 2 = junk. The default
-// sortRank for an unresolved item (JUNK + 1) also lands in junk.
-static size_t ItemTier(int sortRank) {
-    if (sortRank <= ItemCategoryRank(ITEM_CATEGORY_BOSS_KEY)) {
-        return 0;
-    }
-    if (sortRank <= ItemCategoryRank(ITEM_CATEGORY_LESSER)) {
-        return 1;
-    }
-    return 2;
-}
-
-static std::string ItemTierName(size_t tier) {
-    switch (tier) {
-        case 0:
-            return majorItemsLabel.GetForCurrentLanguage(MF_CLEAN);
-        case 1:
-            return minorItemsLabel.GetForCurrentLanguage(MF_CLEAN);
-        default:
-            return junkItemsLabel.GetForCurrentLanguage(MF_CLEAN);
-    }
+// Group label for each ItemCategoryRank value, in rank order. Callers clamp
+// the unresolved-item fallback rank (JUNK + 1) into the Junk group first.
+static std::string ItemCategoryRankName(int rank) {
+    static const CustomMessage* const rankLabels[] = {
+        &majorItemsLabel,      // ITEM_CATEGORY_MAJOR
+        &bossKeysLabel,        // ITEM_CATEGORY_BOSS_KEY
+        &smallKeysLabel,       // ITEM_CATEGORY_SMALL_KEY
+        &skulltulaTokensLabel, // ITEM_CATEGORY_SKULLTULA_TOKEN
+        &heartsLabel,          // ITEM_CATEGORY_HEALTH
+        &lesserItemsLabel,     // ITEM_CATEGORY_LESSER
+        &junkItemsLabel,       // ITEM_CATEGORY_JUNK
+    };
+    return rankLabels[rank]->GetForCurrentLanguage(MF_CLEAN);
 }
 
 static void DrawHintEntry(const HintEntry& entry) {
@@ -465,8 +460,8 @@ static void DrawHintList() {
         bool found = false;
         const Color_RGBA8* nameColor = nullptr;
         std::string hintName;
-        // The group this hint lands in. Item hints override it with a value
-        // tier (Major/Minor/Junk) once their category is known below.
+        // The group this hint lands in. Item hints override it with their
+        // item category once it is known below.
         size_t effectiveKey = groupKey;
         std::string effectiveName = groupName;
         if (journalView) {
@@ -504,10 +499,11 @@ static void DrawHintList() {
                         found = false;
                     }
                 }
-                // Fan the single "Items" group out into value tiers.
-                size_t tier = ItemTier(sortRank);
-                effectiveKey = groupKey + tier;
-                effectiveName = ItemTierName(tier);
+                // Fan the single "Items" group out into the item categories.
+                // The unresolved-item fallback rank shares the Junk group.
+                int rank = std::min(sortRank, ItemCategoryRank(ITEM_CATEGORY_JUNK));
+                effectiveKey = groupKey + static_cast<size_t>(rank);
+                effectiveName = ItemCategoryRankName(rank);
             }
         }
         if (hintName.empty()) {
@@ -539,15 +535,15 @@ static void DrawHintList() {
             HINT_TYPE_WOTH,  HINT_TYPE_FOOLISH,     HINT_TYPE_ITEM,        HINT_TYPE_AREA,    HINT_TYPE_ENTRANCE,
             HINT_TYPE_TRIAL, HINT_TYPE_ALTAR_CHILD, HINT_TYPE_ALTAR_ADULT, HINT_TYPE_MESSAGE, HINT_TYPE_HINT_KEY,
         };
-        // Keys are scaled so the "Items" slot can fan out into value tiers
-        // (Major/Minor/Junk, +0..+2) without colliding with the next hint type.
-        constexpr size_t kTierSlots = 4;
+        // Keys are scaled so the "Items" slot can fan out into the item
+        // categories (+0..+6) without colliding with the next hint type.
+        constexpr size_t kCategorySlots = 8;
         auto rank = std::find(priority.begin(), priority.end(), type);
         if (rank == priority.end()) {
             // Unranked types each get their own group after the ranked ones.
-            return (priority.size() + static_cast<size_t>(type)) * kTierSlots;
+            return (priority.size() + static_cast<size_t>(type)) * kCategorySlots;
         }
-        return static_cast<size_t>(rank - priority.begin()) * kTierSlots;
+        return static_cast<size_t>(rank - priority.begin()) * kCategorySlots;
     };
     auto typeGroupName = [](HintType type) {
         if (type == HINT_TYPE_ITEM || type == HINT_TYPE_ITEM_AREA) {
