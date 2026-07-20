@@ -151,14 +151,13 @@ void GenerateItemPool() {
     plentifulPool.clear();
     lesserPool.clear();
     int reservedSlots = 0;
-    JunkPoolItems = {
-      RG_BOMBS_5,  RG_BOMBS_10,  RG_BOMBS_20,  RG_DEKU_NUTS_5, RG_DEKU_STICK_1, RG_DEKU_SEEDS_30, RG_RECOVERY_HEART,
-      RG_ARROWS_5, RG_ARROWS_10, RG_ARROWS_30, RG_BLUE_RUPEE,  RG_RED_RUPEE,    RG_DEKU_NUTS_10
-    };
+    JunkPoolItems = { RG_BOMBS_5,       RG_BOMBS_10,       RG_BOMBS_20,    RG_DEKU_NUTS_5, RG_DEKU_STICK_1,
+                      RG_DEKU_SEEDS_30, RG_RECOVERY_HEART, RG_ARROWS_5,    RG_ARROWS_10,   RG_ARROWS_30,
+                      RG_BLUE_RUPEE,    RG_RED_RUPEE,      RG_DEKU_NUTS_10 };
     if (ctx->GetOption(RSK_ENABLE_BOMBCHU_DROPS).Is(RO_GENERIC_ON)) {
-      JunkPoolItems.emplace_back(RG_BOMBCHU_5);
-      JunkPoolItems.emplace_back(RG_BOMBCHU_10);
-      JunkPoolItems.emplace_back(RG_BOMBCHU_20);
+        JunkPoolItems.emplace_back(RG_BOMBCHU_5);
+        JunkPoolItems.emplace_back(RG_BOMBCHU_10);
+        JunkPoolItems.emplace_back(RG_BOMBCHU_20);
     }
 
     // clang-format off
