@@ -324,6 +324,35 @@ void func_80ABF7CC(EnOkarinaTag* this, PlayState* play) {
     }
 }
 
+// Hands the in-range staff spot matching the played song to its listening handler; the caller sets
+// ocarinaMode=OCARINA_MODE_03 to fire the effect. All effect and scene logic stays in the handler.
+void EnOkarinaTag_ActivateFromPauseMenu(PlayState* play) {
+    Player* player = GET_PLAYER(play);
+    u16 song = play->msgCtx.lastPlayedSong;
+    // Type-7 spots store the song in ocarinaSong as an offset from Saria (Lullaby = 2).
+    u8 songIndex = (u8)(song - OCARINA_SONG_SARIAS);
+    Actor* actor = play->actorCtx.actorLists[ACTORCAT_PROP].head;
+
+    while (actor != NULL) {
+        Actor* next = actor->next;
+        if (actor->id == ACTOR_EN_OKARINA_TAG) {
+            EnOkarinaTag* tag = (EnOkarinaTag*)actor;
+            if ((tag->actor.xzDistToPlayer < (90.0f + tag->interactRange)) &&
+                (fabsf(player->actor.world.pos.y - tag->actor.world.pos.y) < 80.0f)) {
+                if (tag->actionFunc == func_80ABEF2C && tag->ocarinaSong == songIndex) {
+                    tag->actionFunc = func_80ABF0CC;
+                } else if (tag->actionFunc == func_80ABF28C &&
+                           ((song == OCARINA_SONG_LULLABY && (tag->type == 1 || tag->type == 6)) ||
+                            (song == OCARINA_SONG_STORMS && tag->type == 2) ||
+                            (song == OCARINA_SONG_TIME && tag->type == 4))) {
+                    tag->actionFunc = func_80ABF4C8;
+                }
+            }
+        }
+        actor = next;
+    }
+}
+
 void EnOkarinaTag_Update(Actor* thisx, PlayState* play) {
     EnOkarinaTag* this = (EnOkarinaTag*)thisx;
 
