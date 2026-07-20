@@ -16,12 +16,18 @@
 #include "soh/Enhancements/randomizer/randomizer.h"
 #include "soh/ObjectExtension/ObjectExtension.h"
 #include "overlays/actors/ovl_En_GirlA/z_en_girla.h"
+#include "overlays/actors/ovl_En_Ex_Item/z_en_ex_item.h"
+#include "overlays/actors/ovl_En_Si/z_en_si.h"
+#include "overlays/actors/ovl_Item_B_Heart/z_item_b_heart.h"
+#include "overlays/actors/ovl_Item_Etcetera/z_item_etcetera.h"
 
 #include <array>
+#include <cmath>
 #include <string>
 #include <sstream>
 #include <vector>
 #include <set>
+#include <unordered_map>
 #include <libultraship/controller/controldeck/ControlDeck.h>
 #include "location.h"
 #include "item_location.h"
@@ -586,6 +592,152 @@ void CheckTrackerHintRevealed(RandomizerHint hintKey) {
     }
 }
 
+// isDrawn alone isn't proof of sight (cull volume > frustum, enlarged
+// further by Disable Draw Distance, and culling ignores walls). A world
+// item counts as seen after several consecutive frames drawn inside the
+// real frustum, close enough to read, and unoccluded from the camera.
+
+static constexpr float kSeenItemMaxDepth = 700.0f;  // max view depth
+static constexpr int kSeenItemFramesRequired = 8;   // consecutive frames
+static constexpr float kSeenItemRayYOffset = 15.0f; // aim above ground
+
+// Keyed by check, not actor, so respawns/room reloads can't dangle it.
+static std::unordered_map<RandomizerCheck, int> seenItemFrames;
+
+// Resolves an actor's check + the item entry its draw function renders.
+// False when the actor carries no check identity.
+static bool SeenItemIdentity(Actor* actor, RandomizerCheck& rc, GetItemEntry& drawnEntry) {
+    switch (actor->id) {
+        case ACTOR_EN_ITEM00: {
+            EnItem00* item00 = reinterpret_cast<EnItem00*>(actor);
+            if (item00->actor.params != ITEM00_SOH_DUMMY) {
+                return false;
+            }
+            // Heart piece / small key drops only stamp the entry, not the check.
+            rc = item00->randoCheck != RC_UNKNOWN_CHECK ? item00->randoCheck
+                                                        : OTRGlobals::Instance->gRandomizer->GetCheckFromActor(
+                                                              actor->id, gPlayState->sceneNum, item00->ogParams);
+            drawnEntry = item00->itemEntry;
+            break;
+        }
+        case ACTOR_EN_SI: {
+            // Token drops encode their GS flag in params; unshuffled ones miss.
+            rc = OTRGlobals::Instance->gRandomizer->GetCheckFromActor(actor->id, gPlayState->sceneNum, actor->params);
+            drawnEntry = reinterpret_cast<EnSi*>(actor)->sohGetItemEntry;
+            break;
+        }
+        case ACTOR_ITEM_B_HEART: {
+            rc = OTRGlobals::Instance->gRandomizer->GetCheckFromActor(actor->id, gPlayState->sceneNum, actor->params);
+            drawnEntry = reinterpret_cast<ItemBHeart*>(actor)->sohItemEntry;
+            break;
+        }
+        case ACTOR_ITEM_ETCETERA: {
+            // Excludes the chest-game rupees: they draw through the Lens of Truth.
+            int32_t type = actor->params & 0xFF;
+            if (type != ITEM_ETC_LETTER && type != ITEM_ETC_ARROW_FIRE) {
+                return false;
+            }
+            rc = OTRGlobals::Instance->gRandomizer->GetCheckFromActor(actor->id, gPlayState->sceneNum, actor->params);
+            drawnEntry = reinterpret_cast<ItemEtcetera*>(actor)->sohItemEntry;
+            break;
+        }
+        case ACTOR_EN_EX_ITEM: {
+            // Mirrors the type mapping in RandomizerOnActorInitHandler.
+            EnExItem* exItem = reinterpret_cast<EnExItem*>(actor);
+            switch (exItem->type) {
+                case EXITEM_BOMB_BAG_COUNTER:
+                case EXITEM_BOMB_BAG_BOWLING:
+                    rc = RC_MARKET_BOMBCHU_BOWLING_FIRST_PRIZE;
+                    break;
+                case EXITEM_HEART_PIECE_COUNTER:
+                case EXITEM_HEART_PIECE_BOWLING:
+                    rc = RC_MARKET_BOMBCHU_BOWLING_SECOND_PRIZE;
+                    break;
+                case EXITEM_BULLET_BAG:
+                    rc = RC_LW_TARGET_IN_WOODS;
+                    break;
+                default:
+                    return false;
+            }
+            drawnEntry = exItem->sohItemEntry;
+            break;
+        }
+        default:
+            return false;
+    }
+    return rc != RC_UNKNOWN_CHECK;
+}
+
+static bool IsSeenItemVisible(Actor* actor) {
+    if (!actor->isDrawn) {
+        return false;
+    }
+    // Inside the actual view frustum, not just the (larger) uncull volume.
+    float w = actor->projectedW;
+    if (w <= 0.0f || std::fabs(actor->projectedPos.x) > w || std::fabs(actor->projectedPos.y) > w ||
+        w > kSeenItemMaxDepth) {
+        return false;
+    }
+    // Unoccluded from the camera eye to the item's centre.
+    Vec3f eye = gPlayState->view.eye;
+    Vec3f target = actor->world.pos;
+    target.y += kSeenItemRayYOffset;
+    Vec3f hitPos;
+    CollisionPoly* poly;
+    s32 bgId;
+    return !BgCheck_AnyLineTest3(&gPlayState->colCtx, &eye, &target, &hitPos, &poly, true, true, true, true, &bgId);
+}
+
+void CheckTrackerSeenItemsFrame() {
+    if (gPlayState == nullptr || !GameInteractor::IsSaveLoaded() || !IS_RANDO) {
+        return;
+    }
+    // Mystery-shuffled items draw as "?", not the stamped entry, so a
+    // fidelity match here would falsely mark what was never really shown.
+    if (mystery) {
+        return;
+    }
+    // Don't let a glimpse in one scene carry over into the next.
+    static int16_t lastSceneNum = -1;
+    if (gPlayState->sceneNum != lastSceneNum) {
+        lastSceneNum = gPlayState->sceneNum;
+        seenItemFrames.clear();
+    }
+    bool anySeen = false;
+    for (int i = 0; i < ACTORCAT_MAX; i++) {
+        for (Actor* actor = gPlayState->actorCtx.actorLists[i].head; actor != nullptr; actor = actor->next) {
+            RandomizerCheck rc;
+            GetItemEntry drawnEntry;
+            if (!SeenItemIdentity(actor, rc, drawnEntry)) {
+                continue;
+            }
+            auto loc = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc);
+            if (loc->GetCheckStatus() != RCSHOW_UNCHECKED) {
+                seenItemFrames.erase(rc);
+                continue;
+            }
+            if (!IsSeenItemVisible(actor)) {
+                seenItemFrames.erase(rc);
+                continue;
+            }
+            if (++seenItemFrames[rc] >= kSeenItemFramesRequired) {
+                seenItemFrames.erase(rc);
+                // Unobtainable items draw as a blue rupee; only mark when the
+                // drawn model matches the truth (disguises match both sides).
+                GetItemEntry truthful = OTRGlobals::Instance->gRandoContext->GetFinalGIEntry(
+                    rc, false, (GetItemID)Rando::StaticData::GetLocation(rc)->GetVanillaItem());
+                if (drawnEntry.modIndex == truthful.modIndex && drawnEntry.getItemId == truthful.getItemId) {
+                    loc->SetCheckStatus(RCSHOW_SEEN_OR_HINTED);
+                    anySeen = true;
+                }
+            }
+        }
+    }
+    if (anySeen) {
+        SaveManager::Instance->SaveSection(gSaveContext.fileNum, sectionId, true);
+    }
+}
+
 void CheckTrackerLoadGame(int32_t fileNum) {
     if (IS_BOSS_RUSH) {
         return;
@@ -1036,6 +1188,7 @@ void Teardown() {
     areasSpoiled = 0;
     filterAreasHidden = { 0 };
     filterChecksHidden = { 0 };
+    seenItemFrames.clear();
 
     lastLocationChecked = RC_UNKNOWN_CHECK;
 }
@@ -2515,6 +2668,7 @@ void CheckTrackerWindow::InitElement() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnFlagSet>(CheckTrackerFlagSet);
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnDialogMessage>(CheckTrackerDialogMessage);
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnRandoHintRevealed>(CheckTrackerHintRevealed);
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>(CheckTrackerSeenItemsFrame);
 }
 
 void CheckTrackerWindow::UpdateElement() {
