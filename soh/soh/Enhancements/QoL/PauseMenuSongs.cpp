@@ -96,7 +96,7 @@ static void PauseWarp_Execute() {
             if (gPlayState->msgCtx.lastPlayedSong == ocarinaSongMap[i]) {
                 gSaveContext.respawn[RESPAWN_MODE_RETURN].entranceIndex = entranceIndexMap[i];
                 gSaveContext.respawn[RESPAWN_MODE_RETURN].playerParams = 0x5FF;
-                gSaveContext.respawn[RESPAWN_MODE_RETURN].data = gPlayState->msgCtx.lastPlayedSong;
+                gSaveContext.respawn[RESPAWN_MODE_RETURN].data = (s8)gPlayState->msgCtx.lastPlayedSong;
                 Interface_SetSubTimerToFinalSecond(gPlayState);
                 break;
             }
