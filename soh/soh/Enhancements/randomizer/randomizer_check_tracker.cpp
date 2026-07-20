@@ -17,6 +17,7 @@
 #include "soh/ObjectExtension/ObjectExtension.h"
 #include "overlays/actors/ovl_En_GirlA/z_en_girla.h"
 
+#include <array>
 #include <string>
 #include <sstream>
 #include <vector>
@@ -519,6 +520,19 @@ void SetShopSeen(uint32_t sceneNum, bool prices) {
     }
 }
 
+// Items share hint text keys: all six jabber nuts are "the ability to speak".
+// Counted once on first use.
+static bool HintNamesItemUniquely(RandomizerGet rg) {
+    static const auto keyUses = [] {
+        std::array<uint16_t, RHT_MAX> uses{};
+        for (const auto& item : Rando::StaticData::GetItemTable()) {
+            uses[item.GetHintKey()]++;
+        }
+        return uses;
+    }();
+    return keyUses[Rando::StaticData::RetrieveItem(rg).GetHintKey()] == 1;
+}
+
 // Only HINT_TYPE_ITEM hints name a check's item outright; other types stay
 // ambiguous. Marks Seen, not Identified, since hints never state a price.
 static bool ApplyItemHintToChecks(RandomizerHint hintKey) {
@@ -536,6 +550,16 @@ static bool ApplyItemHintToChecks(RandomizerHint hintKey) {
             continue;
         }
         auto loc = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc);
+        // Ice traps hint, and display, as their disguise.
+        RandomizerGet named = loc->GetPlacedRandomizerGet();
+        auto& overrides = OTRGlobals::Instance->gRandoContext->overrides;
+        if (named == RG_ICE_TRAP && overrides.contains(rc)) {
+            named = overrides[rc].LooksLike();
+        }
+        if (!HintNamesItemUniquely(named)) {
+            // The hint could mean several items, no spoilers!
+            continue;
+        }
         if (loc->GetCheckStatus() == RCSHOW_UNCHECKED) {
             loc->SetCheckStatus(RCSHOW_SEEN_OR_HINTED);
             changed = true;
