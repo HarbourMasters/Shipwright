@@ -31,3 +31,32 @@ GetItemCategory Randomizer_AdjustItemCategory(GetItemEntry item) {
 
     return category;
 }
+
+// Singular, since this names a single check's contents (e.g. what a chest's
+// size and texture convey), not a group of them.
+const CustomMessage& ItemCategoryName(GetItemCategory category) {
+    static const CustomMessage major = CustomMessage("Major Item", "Wichtiger Gegenstand", "Objet majeur");
+    static const CustomMessage bossKeys = CustomMessage("Boss Key", "Master-Schlüssel", "Clé d'Or");
+    static const CustomMessage smallKeys = CustomMessage("Small Key", "Kleiner Schlüssel", "Petite Clé");
+    static const CustomMessage tokens = CustomMessage("Skulltula Token", "Skulltula-Symbol", "Symbole de Skulltula");
+    static const CustomMessage hearts = CustomMessage("Heart", "Herz", "Cœur");
+    static const CustomMessage lesser = CustomMessage("Lesser Item", "Kleinerer Gegenstand", "Objet mineur");
+    static const CustomMessage junk = CustomMessage("Junk Item", "Nutzloser Gegenstand", "Objet inutile");
+    switch (category) {
+        case ITEM_CATEGORY_MAJOR:
+            return major;
+        case ITEM_CATEGORY_BOSS_KEY:
+            return bossKeys;
+        case ITEM_CATEGORY_SMALL_KEY:
+            return smallKeys;
+        case ITEM_CATEGORY_SKULLTULA_TOKEN:
+            return tokens;
+        case ITEM_CATEGORY_HEALTH:
+            return hearts;
+        case ITEM_CATEGORY_LESSER:
+            return lesser;
+        case ITEM_CATEGORY_JUNK:
+        default:
+            return junk;
+    }
+}

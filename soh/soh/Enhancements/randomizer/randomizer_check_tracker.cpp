@@ -16,10 +16,12 @@
 #include "soh/Enhancements/randomizer/randomizer.h"
 #include "soh/ObjectExtension/ObjectExtension.h"
 #include "overlays/actors/ovl_En_GirlA/z_en_girla.h"
+#include "overlays/actors/ovl_En_Box/z_en_box.h"
 #include "overlays/actors/ovl_En_Ex_Item/z_en_ex_item.h"
 #include "overlays/actors/ovl_En_Si/z_en_si.h"
 #include "overlays/actors/ovl_Item_B_Heart/z_item_b_heart.h"
 #include "overlays/actors/ovl_Item_Etcetera/z_item_etcetera.h"
+#include "soh/Enhancements/randomizer/item_category_adj.h"
 
 #include <array>
 #include <cmath>
@@ -203,6 +205,7 @@ void UpdateOrdering(RandomizerCheckArea);
 int sectionId;
 
 bool hideUnchecked = false;
+bool hideCategory = false;
 bool hideScummed = false;
 bool hideSeen = false;
 bool hideSkipped = false;
@@ -252,7 +255,7 @@ const Color_RGBA8 Color_Unchecked_Extra_Default = { 255, 255, 255, 255 };       
 const Color_RGBA8 Color_Skipped_Main_Default = { 160, 160, 160, 255 };          // Grey
 const Color_RGBA8 Color_Skipped_Extra_Default = { 160, 160, 160, 255 };         // Grey
 const Color_RGBA8 Color_Seen_Extra_Default = { 255, 255, 255, 255 };            // TODO
-const Color_RGBA8 Color_Hinted_Extra_Default = { 255, 255, 255, 255 };          // TODO
+const Color_RGBA8 Color_Hinted_Extra_Default = { 193, 84, 216, 255 };           // Purple
 const Color_RGBA8 Color_Collected_Extra_Default = { 242, 101, 34, 255 };        // Orange
 const Color_RGBA8 Color_Scummed_Extra_Default = { 0, 174, 239, 255 };           // Blue
 const Color_RGBA8 Color_Saved_Extra_Default = { 0, 185, 0, 255 };               // Green
@@ -269,8 +272,8 @@ Color_RGBA8 Color_Skipped_Main = { 160, 160, 160, 255 };          // Grey
 Color_RGBA8 Color_Skipped_Extra = { 160, 160, 160, 255 };         // Grey
 Color_RGBA8 Color_Seen_Main = { 255, 255, 255, 255 };             // TODO
 Color_RGBA8 Color_Seen_Extra = { 160, 160, 160, 255 };            // TODO
-Color_RGBA8 Color_Hinted_Main = { 255, 255, 255, 255 };           // TODO
-Color_RGBA8 Color_Hinted_Extra = { 255, 255, 255, 255 };          // TODO
+Color_RGBA8 Color_Hinted_Main = { 255, 255, 255, 255 };           // White
+Color_RGBA8 Color_Hinted_Extra = { 193, 84, 216, 255 };           // Purple
 Color_RGBA8 Color_Collected_Main = { 255, 255, 255, 255 };        // White
 Color_RGBA8 Color_Collected_Extra = { 242, 101, 34, 255 };        // Orange
 Color_RGBA8 Color_Scummed_Main = { 255, 255, 255, 255 };          // White
@@ -321,11 +324,12 @@ bool IsCheckHidden(RandomizerCheck rc) {
     bool skipped = itemLocation->GetIsSkipped();
     bool obtained = itemLocation->HasObtained();
     bool seen = status == RCSHOW_SEEN_OR_HINTED || status == RCSHOW_IDENTIFIED;
+    bool category = status == RCSHOW_CATEGORY;
     bool scummed = status == RCSHOW_SCUMMED;
     bool unchecked = status == RCSHOW_UNCHECKED;
 
-    return !showHidden &&
-           ((skipped && hideSkipped) || (seen && hideSeen) || (scummed && hideScummed) || (unchecked && hideUnchecked));
+    return !showHidden && ((skipped && hideSkipped) || (seen && hideSeen) || (category && hideCategory) ||
+                           (scummed && hideScummed) || (unchecked && hideUnchecked));
 }
 
 void RecalculateAreaTotals(RandomizerCheckArea rcArea) {
@@ -575,7 +579,9 @@ static bool ApplyItemHintToChecks(RandomizerHint hintKey) {
             // The hint could mean several items, no spoilers!
             continue;
         }
-        if (loc->GetCheckStatus() == RCSHOW_UNCHECKED) {
+        // A hint names the item, so it outranks a chest's category-only sighting.
+        RandomizerCheckStatus status = loc->GetCheckStatus();
+        if (status == RCSHOW_UNCHECKED || status == RCSHOW_CATEGORY) {
             loc->SetCheckStatus(RCSHOW_SEEN_OR_HINTED);
             changed = true;
         }
@@ -597,9 +603,12 @@ void CheckTrackerHintRevealed(RandomizerHint hintKey) {
 // item counts as seen after several consecutive frames drawn inside the
 // real frustum, close enough to read, and unoccluded from the camera.
 
-static constexpr float kSeenItemMaxDepth = 700.0f;  // max view depth
-static constexpr int kSeenItemFramesRequired = 8;   // consecutive frames
-static constexpr float kSeenItemRayYOffset = 15.0f; // aim above ground
+// Seen-detection tuning, shared by the world-item and chest paths.
+static constexpr float kSeenMaxDepth = 1200.0f; // max view depth to count
+static constexpr int kSeenFramesRequired = 8;   // consecutive frames looked at
+// Occlusion-ray targets — these correct for actor height, not eagerness.
+static constexpr float kSeenItemRayYOffset = 15.0f;  // above a grounded item
+static constexpr float kSeenChestRayYOffset = 20.0f; // a chest's mid-height
 
 // Keyed by check, not actor, so respawns/room reloads can't dangle it.
 static std::unordered_map<RandomizerCheck, int> seenItemFrames;
@@ -668,33 +677,48 @@ static bool SeenItemIdentity(Actor* actor, RandomizerCheck& rc, GetItemEntry& dr
     return rc != RC_UNKNOWN_CHECK;
 }
 
-static bool IsSeenItemVisible(Actor* actor) {
+// ignoreBgId lets a chest disregard its own collision so the ray to its
+// centre, which necessarily passes through its front face, doesn't read as
+// occluded. -1 ignores nothing (dyna ids are 0..49, scene is 50).
+static bool IsSeenVisible(Actor* actor, float yOffset, s32 ignoreBgId = -1) {
     if (!actor->isDrawn) {
         return false;
     }
     // Inside the actual view frustum, not just the (larger) uncull volume.
     float w = actor->projectedW;
     if (w <= 0.0f || std::fabs(actor->projectedPos.x) > w || std::fabs(actor->projectedPos.y) > w ||
-        w > kSeenItemMaxDepth) {
+        w > kSeenMaxDepth) {
         return false;
     }
-    // Unoccluded from the camera eye to the item's centre.
+    // Unoccluded from the camera eye to the actor's centre.
     Vec3f eye = gPlayState->view.eye;
     Vec3f target = actor->world.pos;
-    target.y += kSeenItemRayYOffset;
+    target.y += yOffset;
     Vec3f hitPos;
     CollisionPoly* poly;
     s32 bgId;
-    return !BgCheck_AnyLineTest3(&gPlayState->colCtx, &eye, &target, &hitPos, &poly, true, true, true, true, &bgId);
+    bool hit = BgCheck_AnyLineTest3(&gPlayState->colCtx, &eye, &target, &hitPos, &poly, true, true, true, true, &bgId);
+    // A hit on the actor's own collision is the frontmost surface, so it is
+    // visible; a hit on anything else is a real occluder.
+    return !hit || bgId == ignoreBgId;
+}
+
+// A shuffled chest currently showing its item category (CSMC), whose category
+// the player can therefore read off the chest. Mirrors EnBox_UpdateTexture's
+// gate so we only mark when the chest actually looks the part.
+static bool SeenChestCategory(Actor* actor, RandomizerCheck& rc) {
+    if (actor->id != ACTOR_EN_BOX || !CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), 0) ||
+        (CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeDependsStoneOfAgony"), 0) &&
+         !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY)) ||
+        (gPlayState->sceneNum == SCENE_TREASURE_BOX_SHOP && actor->room != 6)) {
+        return false;
+    }
+    rc = OTRGlobals::Instance->gRandomizer->GetCheckFromActor(actor->id, gPlayState->sceneNum, actor->params);
+    return rc != RC_UNKNOWN_CHECK && OTRGlobals::Instance->gRandoContext->IsLocationShuffled(rc);
 }
 
 void CheckTrackerSeenItemsFrame() {
     if (gPlayState == nullptr || !GameInteractor::IsSaveLoaded() || !IS_RANDO) {
-        return;
-    }
-    // Mystery-shuffled items draw as "?", not the stamped entry, so a
-    // fidelity match here would falsely mark what was never really shown.
-    if (mystery) {
         return;
     }
     // Don't let a glimpse in one scene carry over into the next.
@@ -708,7 +732,12 @@ void CheckTrackerSeenItemsFrame() {
         for (Actor* actor = gPlayState->actorCtx.actorLists[i].head; actor != nullptr; actor = actor->next) {
             RandomizerCheck rc;
             GetItemEntry drawnEntry;
-            if (!SeenItemIdentity(actor, rc, drawnEntry)) {
+            // Mystery-shuffled items draw as "?", not their stamped entry, so
+            // seeing one reveals nothing and it must not mark. A chest still
+            // shows its category under mystery, so that path runs regardless.
+            bool isItem = !mystery && SeenItemIdentity(actor, rc, drawnEntry);
+            bool isChest = !isItem && SeenChestCategory(actor, rc);
+            if (!isItem && !isChest) {
                 continue;
             }
             auto loc = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc);
@@ -716,20 +745,29 @@ void CheckTrackerSeenItemsFrame() {
                 seenItemFrames.erase(rc);
                 continue;
             }
-            if (!IsSeenItemVisible(actor)) {
+            // A chest ignores its own dyna collision when testing occlusion.
+            s32 ignoreBgId = isChest ? reinterpret_cast<EnBox*>(actor)->dyna.bgId : -1;
+            if (!IsSeenVisible(actor, isChest ? kSeenChestRayYOffset : kSeenItemRayYOffset, ignoreBgId)) {
                 seenItemFrames.erase(rc);
                 continue;
             }
-            if (++seenItemFrames[rc] >= kSeenItemFramesRequired) {
-                seenItemFrames.erase(rc);
-                // Unobtainable items draw as a blue rupee; only mark when the
-                // drawn model matches the truth (disguises match both sides).
-                GetItemEntry truthful = OTRGlobals::Instance->gRandoContext->GetFinalGIEntry(
-                    rc, false, (GetItemID)Rando::StaticData::GetLocation(rc)->GetVanillaItem());
-                if (drawnEntry.modIndex == truthful.modIndex && drawnEntry.getItemId == truthful.getItemId) {
-                    loc->SetCheckStatus(RCSHOW_SEEN_OR_HINTED);
-                    anySeen = true;
-                }
+            if (++seenItemFrames[rc] < kSeenFramesRequired) {
+                continue;
+            }
+            seenItemFrames.erase(rc);
+            if (isChest) {
+                // The chest shows only a category; the label is derived on draw.
+                loc->SetCheckStatus(RCSHOW_CATEGORY);
+                anySeen = true;
+                continue;
+            }
+            // Unobtainable items draw as a blue rupee; only mark when the drawn
+            // model matches the truth (disguises match both sides).
+            GetItemEntry truthful = OTRGlobals::Instance->gRandoContext->GetFinalGIEntry(
+                rc, false, (GetItemID)Rando::StaticData::GetLocation(rc)->GetVanillaItem());
+            if (drawnEntry.modIndex == truthful.modIndex && drawnEntry.getItemId == truthful.getItemId) {
+                loc->SetCheckStatus(RCSHOW_SEEN_OR_HINTED);
+                anySeen = true;
             }
         }
     }
@@ -1229,6 +1267,7 @@ void CheckTrackerWindow::DrawElement() {
     Color_Saved_Main = CVarGetColor(CVAR_TRACKER_CHECK("Saved.MainColor.Value"), Color_Main_Default);
     Color_Saved_Extra = CVarGetColor(CVAR_TRACKER_CHECK("Saved.ExtraColor.Value"), Color_Saved_Extra_Default);
     hideUnchecked = CVarGetInteger(CVAR_TRACKER_CHECK("Unchecked.Hide"), 0);
+    hideCategory = CVarGetInteger(CVAR_TRACKER_CHECK("Hinted.Hide"), 0);
     hideScummed = CVarGetInteger(CVAR_TRACKER_CHECK("Scummed.Hide"), 0);
     hideSeen = CVarGetInteger(CVAR_TRACKER_CHECK("Seen.Hide"), 0);
     hideSkipped = CVarGetInteger(CVAR_TRACKER_CHECK("Skipped.Hide"), 0);
@@ -1552,6 +1591,13 @@ bool ShouldShowCheck(RandomizerCheck check) {
         search += Rando::StaticData::RetrieveItem(OTRGlobals::Instance->gRandoContext->overrides[check].LooksLike())
                       .GetName()
                       .GetForLanguage(gSaveContext.language);
+    } else if (itemLoc->GetCheckStatus() == RCSHOW_CATEGORY) {
+        // Category-seen: searchable by category, never the item name.
+        GetItemEntry entry = OTRGlobals::Instance->gRandoContext->GetFinalGIEntry(
+            check, false, (GetItemID)Rando::StaticData::GetLocation(check)->GetVanillaItem());
+        search +=
+            " " +
+            ItemCategoryName(Randomizer_AdjustItemCategory(entry)).GetForLanguage(gSaveContext.language, MF_CLEAN);
     }
     return (IsVisibleInCheckTracker(check) &&
             (checkSearch.Filters.Size == 0 || checkSearch.PassFilter(search.c_str())));
@@ -2169,6 +2215,12 @@ void DrawLocation(RandomizerCheck rc) {
                 ? Color_Seen_Extra
                 : Color_Seen_Main;
         extraColor = Color_Seen_Extra;
+    } else if (status == RCSHOW_CATEGORY) {
+        if (!showHidden && hideCategory) {
+            return;
+        }
+        mainColor = Color_Hinted_Main;
+        extraColor = Color_Hinted_Extra;
     } else if (status == RCSHOW_SCUMMED) {
         if (!showHidden && hideScummed) {
             return;
@@ -2200,11 +2252,11 @@ void DrawLocation(RandomizerCheck rc) {
         txt = "* " + txt;
     }
 
-    // Draw button - for Skipped/Seen/Scummed/Unchecked only
+    // Draw button - for Category/Skipped/Seen/Scummed/Unchecked only
     ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, { 4.0f, 3.0f });
     float sz = ImGui::GetFrameHeight();
-    if (status == RCSHOW_UNCHECKED || status == RCSHOW_SEEN_OR_HINTED || status == RCSHOW_IDENTIFIED ||
-        status == RCSHOW_SCUMMED || skipped) {
+    if (status == RCSHOW_UNCHECKED || status == RCSHOW_CATEGORY || status == RCSHOW_SEEN_OR_HINTED ||
+        status == RCSHOW_IDENTIFIED || status == RCSHOW_SCUMMED || skipped) {
         if (UIWidgets::StateButton(std::to_string(rc).c_str(), skipped ? ICON_FA_PLUS : ICON_FA_TIMES, ImVec2(sz, sz),
                                    UIWidgets::ButtonOptions().Color(THEME_COLOR))) {
             if (skipped) {
@@ -2257,6 +2309,17 @@ void DrawLocation(RandomizerCheck rc) {
 
     if (status != RCSHOW_UNCHECKED) {
         switch (status) {
+            case RCSHOW_CATEGORY: {
+                // A seen chest reveals only its category (via CSMC), so show the
+                // category the chest draws, not the item. Recomputed here so it
+                // tracks the chest's dynamic downgrades. Not mystery-gated: the
+                // chest shows the category under mystery too.
+                GetItemEntry entry = OTRGlobals::Instance->gRandoContext->GetFinalGIEntry(
+                    rc, false, (GetItemID)Rando::StaticData::GetLocation(rc)->GetVanillaItem());
+                txt = ItemCategoryName(Randomizer_AdjustItemCategory(entry))
+                          .GetForLanguage(gSaveContext.language, MF_CLEAN);
+                break;
+            }
             case RCSHOW_SAVED:
             case RCSHOW_COLLECTED:
             case RCSHOW_SCUMMED:
@@ -2636,10 +2699,11 @@ void CheckTrackerSettingsWindow::DrawElement() {
             Color_Scummed_Main, Color_Scummed_Extra, Color_Main_Default, Color_Scummed_Extra_Default,
             CVAR_TRACKER_CHECK("Scummed.Hide"),
             "Checks you collect, but then reload before saving so you no longer have them.", THEME_COLOR);
-        // CheckTracker::ImGuiDrawTwoColorPickerSection("Hinted (WIP)",     CVAR_TRACKER_CHECK("Hinted.MainColor"),
-        // CVAR_TRACKER_CHECK("Hinted.ExtraColor"),          Color_Hinted_Main,            Color_Hinted_Extra,
-        // Color_Main_Default, Color_Hinted_Extra_Default,          CVAR_TRACKER_CHECK("Hinted.Hide"),         "",
-        // THEME_COLOR);
+        CheckTracker::ImGuiDrawTwoColorPickerSection(
+            "Category", CVAR_TRACKER_CHECK("Hinted.MainColor"), CVAR_TRACKER_CHECK("Hinted.ExtraColor"),
+            Color_Hinted_Main, Color_Hinted_Extra, Color_Main_Default, Color_Hinted_Extra_Default,
+            CVAR_TRACKER_CHECK("Hinted.Hide"),
+            "Chests whose item category you have seen via Chest Size And Texture Match Contents.", THEME_COLOR);
         CheckTracker::ImGuiDrawTwoColorPickerSection(
             "Collected", CVAR_TRACKER_CHECK("Collected.MainColor"), CVAR_TRACKER_CHECK("Collected.ExtraColor"),
             Color_Collected_Main, Color_Collected_Extra, Color_Main_Default, Color_Collected_Extra_Default,
