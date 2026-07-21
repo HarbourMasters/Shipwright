@@ -59,7 +59,7 @@ extern "C" void Camera_SaveState(SaveStateCtx* ctx);
 extern "C" void OnePointCutscene_SaveState(SaveStateCtx* ctx);
 extern "C" void Environment_SaveState(SaveStateCtx* ctx);
 extern "C" void MapExp_SaveState(SaveStateCtx* ctx);
-extern "C" void AudioOca_SaveState(SaveStateCtx* ctx);
+extern "C" void AudioOcarina_SaveState(SaveStateCtx* ctx);
 extern "C" void MessagePAL_SaveState(SaveStateCtx* ctx);
 
 static void SaveOverlayState(std::unique_ptr<uint8_t[]>& buf, void (*fn)(SaveStateCtx*)) {
@@ -112,7 +112,7 @@ typedef struct SaveStateInfo {
     std::unique_ptr<uint8_t[]> onePointCutsceneState;
     std::unique_ptr<uint8_t[]> environmentState;
     std::unique_ptr<uint8_t[]> mapExpState;
-    std::unique_ptr<uint8_t[]> audioOcaState;
+    std::unique_ptr<uint8_t[]> audioOcarinaState;
     std::unique_ptr<uint8_t[]> messagePalState;
 
     // Overlay static data
@@ -249,7 +249,7 @@ void SaveState::SaveOverlayStaticData(void) {
     SaveOverlayState(info->onePointCutsceneState, OnePointCutscene_SaveState);
     SaveOverlayState(info->environmentState, Environment_SaveState);
     SaveOverlayState(info->mapExpState, MapExp_SaveState);
-    SaveOverlayState(info->audioOcaState, AudioOca_SaveState);
+    SaveOverlayState(info->audioOcarinaState, AudioOcarina_SaveState);
     SaveOverlayState(info->messagePalState, MessagePAL_SaveState);
     SaveOverlayState(info->bgDdanKdState, BgDdanKd_SaveState);
     SaveOverlayState(info->bgDodoagoState, BgDodoago_SaveState);
@@ -295,7 +295,7 @@ void SaveState::LoadOverlayStaticData(void) {
     LoadOverlayState(info->onePointCutsceneState, OnePointCutscene_SaveState);
     LoadOverlayState(info->environmentState, Environment_SaveState);
     LoadOverlayState(info->mapExpState, MapExp_SaveState);
-    LoadOverlayState(info->audioOcaState, AudioOca_SaveState);
+    LoadOverlayState(info->audioOcarinaState, AudioOcarina_SaveState);
     LoadOverlayState(info->messagePalState, MessagePAL_SaveState);
     LoadOverlayState(info->bgDdanKdState, BgDdanKd_SaveState);
     LoadOverlayState(info->bgDodoagoState, BgDodoago_SaveState);
