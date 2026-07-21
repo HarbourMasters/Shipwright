@@ -7,6 +7,7 @@ extern "C" {
 #include "macros.h"
 #include "variables.h"
 #include "src/overlays/actors/ovl_En_Okarina_Tag/z_en_okarina_tag.h"
+#include "src/overlays/actors/ovl_En_Md/z_en_md.h"
 extern PlayState* gPlayState;
 u8 Randomizer_GetSettingValue(RandomizerSettingKey);
 
@@ -15,6 +16,10 @@ void func_80ABEF2C(EnOkarinaTag* tag, PlayState* play);
 void func_80ABF0CC(EnOkarinaTag* tag, PlayState* play);
 void func_80ABF28C(EnOkarinaTag* tag, PlayState* play);
 void func_80ABF4C8(EnOkarinaTag* tag, PlayState* play);
+// Mido (En_Md) block/listen handlers, not exposed in a header.
+void EnMd_BlockPath(EnMd* actor, PlayState* play);
+void EnMd_ListenToOcarina(EnMd* actor, PlayState* play);
+void Player_StartTalking(PlayState* play, Actor* actor);
 }
 
 static constexpr int32_t CVAR_PAUSE_WARP_DEFAULT = 0;
@@ -127,11 +132,13 @@ static void PauseWarp_Execute() {
 
 // Fire each in-range staff spot matching the played song by calling its listening handler directly.
 // The caller has set ocarinaMode == OCARINA_MODE_03, so the handler runs its full effect/scene logic.
-static void PauseSong_ActivateOkarinaTags() {
+// Returns true if a spot was fired.
+static bool PauseSong_ActivateOkarinaTags() {
     Player* player = GET_PLAYER(gPlayState);
     u16 song = gPlayState->msgCtx.lastPlayedSong;
     // Type-7 spots store the song in ocarinaSong as an offset from Saria (Lullaby = 2).
     u8 songIndex = (u8)(song - OCARINA_SONG_SARIAS);
+    bool matched = false;
 
     for (Actor* actor = gPlayState->actorCtx.actorLists[ACTORCAT_PROP].head; actor != NULL; actor = actor->next) {
         if (actor->id != ACTOR_EN_OKARINA_TAG) {
@@ -142,17 +149,76 @@ static void PauseSong_ActivateOkarinaTags() {
             (fabsf(player->actor.world.pos.y - tag->actor.world.pos.y) < 80.0f)) {
             if (tag->actionFunc == func_80ABEF2C && tag->ocarinaSong == songIndex) {
                 func_80ABF0CC(tag, gPlayState);
+                matched = true;
             } else if (tag->actionFunc == func_80ABF28C &&
                        ((song == OCARINA_SONG_LULLABY && (tag->type == 1 || tag->type == 6)) ||
                         (song == OCARINA_SONG_STORMS && tag->type == 2) ||
                         (song == OCARINA_SONG_TIME && tag->type == 4))) {
                 func_80ABF4C8(tag, gPlayState);
+                matched = true;
             }
         }
     }
+    return matched;
+}
+
+// --- Per-actor hand-off for non-tag ocarina NPCs ---
+// Unlike the staff spots, these actors have no generic way to be driven, and going through the vanilla
+// play-for-actor flow (PLAYER_STATE2_ATTEMPT_PLAY_FOR_ACTOR) opens a real note-input prompt the player
+// can't satisfy from the menu. So, exactly like the tags, we set the actor's actionFunc straight to its
+// listening handler and leave OCARINA_MODE_03 set; the handler reacts on the next frame. Any dialogue it
+// offers is then started here, since the player -- never in its ocarina action -- won't do it itself.
+static Actor* npcTalkActor = NULL;
+static int npcHandoffTimer = 0;
+
+static void PauseSong_EndNpcHandoff() {
+    if (gPlayState->msgCtx.ocarinaMode == OCARINA_MODE_03 || gPlayState->msgCtx.ocarinaMode == OCARINA_MODE_04) {
+        gPlayState->msgCtx.ocarinaMode = OCARINA_MODE_00;
+    }
+    npcTalkActor = NULL;
+    npcHandoffTimer = 0;
+}
+
+// Hand the played song to a matching in-range NPC. Returns true if one was engaged, in which case
+// OCARINA_MODE_03 is left set for it to consume next frame.
+static bool PauseSong_ActivateNpcActors() {
+    Player* player = GET_PLAYER(gPlayState);
+    u16 song = gPlayState->msgCtx.lastPlayedSong;
+
+    for (Actor* actor = gPlayState->actorCtx.actorLists[ACTORCAT_NPC].head; actor != NULL; actor = actor->next) {
+        // Mido, in the Lost Woods, moves aside when played Saria's Song.
+        if (actor->id == ACTOR_EN_MD && song == OCARINA_SONG_SARIAS && gPlayState->sceneNum == SCENE_LOST_WOODS) {
+            EnMd* mido = (EnMd*)actor;
+            if (mido->actionFunc == EnMd_BlockPath && mido->interactInfo.talkState == NPC_TALK_STATE_IDLE &&
+                actor->xzDistToPlayer < 100.0f) {
+                mido->actionFunc = EnMd_ListenToOcarina;
+                npcTalkActor = actor;
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+// Returns true while a hand-off is running, so the caller skips starting another song this frame.
+static bool PauseSong_AdvanceNpcHandoff() {
+    if (npcTalkActor == NULL) {
+        return false;
+    }
+    // The actor consumed OCARINA_MODE_03 (set MODE_04) and reacted; start any dialogue it offered.
+    if (gPlayState->msgCtx.ocarinaMode != OCARINA_MODE_03 || ++npcHandoffTimer > 30) {
+        if (gPlayState->msgCtx.ocarinaMode != OCARINA_MODE_03 && npcTalkActor->textId != 0) {
+            Player_StartTalking(gPlayState, npcTalkActor);
+        }
+        PauseSong_EndNpcHandoff();
+    }
+    return true;
 }
 
 static void PauseSong_Execute() {
+    if (PauseSong_AdvanceNpcHandoff()) {
+        return;
+    }
     if (!isSongActive || gPlayState->pauseCtx.state != 0 || gPlayState->msgCtx.msgMode != MSGMODE_NONE) {
         return;
     }
@@ -170,11 +236,18 @@ static void PauseSong_Execute() {
     Actor_Spawn(&gPlayState->actorCtx, gPlayState, effectActorIds[idx], player->actor.world.pos.x,
                 player->actor.world.pos.y, player->actor.world.pos.z, 0, 0, 0, effectActorParams[idx]);
 
-    // Flag the correct-song state, fire matching in-range spots, then return ocarina/message state to
-    // rest. The Water Temple triforce leaves msgMode = MSGMODE_PAUSED, which would otherwise block the
-    // pause menu (z_play gates on NONE).
+    // Flag the correct-song state and fire matching in-range spots. A staff spot runs synchronously, so
+    // reset the ocarina/message state right after. The Water Temple triforce leaves msgMode =
+    // MSGMODE_PAUSED, which would otherwise block the pause menu (z_play gates on NONE).
     gPlayState->msgCtx.ocarinaMode = OCARINA_MODE_03;
-    PauseSong_ActivateOkarinaTags();
+    bool matched = PauseSong_ActivateOkarinaTags();
+
+    // No staff spot took it: try a matching NPC (Mido, ...). If one engages, leave OCARINA_MODE_03 set
+    // for it to consume next frame; the hand-off machinery finishes and restores state.
+    if (!matched && PauseSong_ActivateNpcActors()) {
+        return;
+    }
+
     gPlayState->msgCtx.ocarinaMode = OCARINA_MODE_00;
     if (gPlayState->msgCtx.msgMode == MSGMODE_PAUSED) {
         gPlayState->msgCtx.msgMode = MSGMODE_NONE;
