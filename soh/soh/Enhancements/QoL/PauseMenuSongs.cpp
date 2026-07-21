@@ -6,9 +6,15 @@ extern "C" {
 #include "functions.h"
 #include "macros.h"
 #include "variables.h"
+#include "src/overlays/actors/ovl_En_Okarina_Tag/z_en_okarina_tag.h"
 extern PlayState* gPlayState;
 u8 Randomizer_GetSettingValue(RandomizerSettingKey);
-void EnOkarinaTag_ActivateFromPauseMenu(PlayState* play);
+
+// Staff-spot (En_Okarina_Tag) idle/listening handlers, not exposed in a header.
+void func_80ABEF2C(EnOkarinaTag* tag, PlayState* play);
+void func_80ABF0CC(EnOkarinaTag* tag, PlayState* play);
+void func_80ABF28C(EnOkarinaTag* tag, PlayState* play);
+void func_80ABF4C8(EnOkarinaTag* tag, PlayState* play);
 }
 
 static constexpr int32_t CVAR_PAUSE_WARP_DEFAULT = 0;
@@ -120,6 +126,33 @@ static void PauseWarp_Execute() {
     gSaveContext.natureAmbienceId = NATURE_ID_DISABLED;
 }
 
+// Hand each in-range staff spot matching the played song to its listening handler, so the vanilla
+// handler (with ocarinaMode == OCARINA_MODE_03 set by the caller) fires all effect and scene logic.
+static void PauseSong_ActivateOkarinaTags() {
+    Player* player = GET_PLAYER(gPlayState);
+    u16 song = gPlayState->msgCtx.lastPlayedSong;
+    // Type-7 spots store the song in ocarinaSong as an offset from Saria (Lullaby = 2).
+    u8 songIndex = (u8)(song - OCARINA_SONG_SARIAS);
+
+    for (Actor* actor = gPlayState->actorCtx.actorLists[ACTORCAT_PROP].head; actor != NULL; actor = actor->next) {
+        if (actor->id != ACTOR_EN_OKARINA_TAG) {
+            continue;
+        }
+        EnOkarinaTag* tag = (EnOkarinaTag*)actor;
+        if ((tag->actor.xzDistToPlayer < (90.0f + tag->interactRange)) &&
+            (fabsf(player->actor.world.pos.y - tag->actor.world.pos.y) < 80.0f)) {
+            if (tag->actionFunc == func_80ABEF2C && tag->ocarinaSong == songIndex) {
+                tag->actionFunc = func_80ABF0CC;
+            } else if (tag->actionFunc == func_80ABF28C &&
+                       ((song == OCARINA_SONG_LULLABY && (tag->type == 1 || tag->type == 6)) ||
+                        (song == OCARINA_SONG_STORMS && tag->type == 2) ||
+                        (song == OCARINA_SONG_TIME && tag->type == 4))) {
+                tag->actionFunc = func_80ABF4C8;
+            }
+        }
+    }
+}
+
 static void PauseSong_Execute() {
     if (needsOcarinaCleanup) {
         // Restore ocarina/message state to rest after the trigger frame. The Water Temple triforce
@@ -151,7 +184,7 @@ static void PauseSong_Execute() {
 
     // Flag the correct-song state and hand matching in-range spots to their listening handler.
     gPlayState->msgCtx.ocarinaMode = OCARINA_MODE_03;
-    EnOkarinaTag_ActivateFromPauseMenu(gPlayState);
+    PauseSong_ActivateOkarinaTags();
     needsOcarinaCleanup = true;
 }
 
