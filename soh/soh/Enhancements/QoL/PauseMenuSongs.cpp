@@ -82,7 +82,6 @@ static const int effectActorParams[] = { 0, 0, 0, 0, 1, 0 };
 
 static bool isWarpActive = false;
 static bool isSongActive = false;
-static bool needsOcarinaCleanup = false;
 
 static void PauseWarp_Execute() {
     if (!isWarpActive || gPlayState->msgCtx.msgMode != MSGMODE_NONE) {
@@ -126,8 +125,8 @@ static void PauseWarp_Execute() {
     gSaveContext.natureAmbienceId = NATURE_ID_DISABLED;
 }
 
-// Hand each in-range staff spot matching the played song to its listening handler, so the vanilla
-// handler (with ocarinaMode == OCARINA_MODE_03 set by the caller) fires all effect and scene logic.
+// Fire each in-range staff spot matching the played song by calling its listening handler directly.
+// The caller has set ocarinaMode == OCARINA_MODE_03, so the handler runs its full effect/scene logic.
 static void PauseSong_ActivateOkarinaTags() {
     Player* player = GET_PLAYER(gPlayState);
     u16 song = gPlayState->msgCtx.lastPlayedSong;
@@ -142,29 +141,18 @@ static void PauseSong_ActivateOkarinaTags() {
         if ((tag->actor.xzDistToPlayer < (90.0f + tag->interactRange)) &&
             (fabsf(player->actor.world.pos.y - tag->actor.world.pos.y) < 80.0f)) {
             if (tag->actionFunc == func_80ABEF2C && tag->ocarinaSong == songIndex) {
-                tag->actionFunc = func_80ABF0CC;
+                func_80ABF0CC(tag, gPlayState);
             } else if (tag->actionFunc == func_80ABF28C &&
                        ((song == OCARINA_SONG_LULLABY && (tag->type == 1 || tag->type == 6)) ||
                         (song == OCARINA_SONG_STORMS && tag->type == 2) ||
                         (song == OCARINA_SONG_TIME && tag->type == 4))) {
-                tag->actionFunc = func_80ABF4C8;
+                func_80ABF4C8(tag, gPlayState);
             }
         }
     }
 }
 
 static void PauseSong_Execute() {
-    if (needsOcarinaCleanup) {
-        // Restore ocarina/message state to rest after the trigger frame. The Water Temple triforce
-        // leaves msgMode = MSGMODE_PAUSED, which would otherwise block the pause menu (z_play gates on NONE).
-        gPlayState->msgCtx.ocarinaMode = OCARINA_MODE_00;
-        if (gPlayState->msgCtx.msgMode == MSGMODE_PAUSED) {
-            gPlayState->msgCtx.msgMode = MSGMODE_NONE;
-        }
-        needsOcarinaCleanup = false;
-        return;
-    }
-
     if (!isSongActive || gPlayState->pauseCtx.state != 0 || gPlayState->msgCtx.msgMode != MSGMODE_NONE) {
         return;
     }
@@ -182,10 +170,15 @@ static void PauseSong_Execute() {
     Actor_Spawn(&gPlayState->actorCtx, gPlayState, effectActorIds[idx], player->actor.world.pos.x,
                 player->actor.world.pos.y, player->actor.world.pos.z, 0, 0, 0, effectActorParams[idx]);
 
-    // Flag the correct-song state and hand matching in-range spots to their listening handler.
+    // Flag the correct-song state, fire matching in-range spots, then return ocarina/message state to
+    // rest. The Water Temple triforce leaves msgMode = MSGMODE_PAUSED, which would otherwise block the
+    // pause menu (z_play gates on NONE).
     gPlayState->msgCtx.ocarinaMode = OCARINA_MODE_03;
     PauseSong_ActivateOkarinaTags();
-    needsOcarinaCleanup = true;
+    gPlayState->msgCtx.ocarinaMode = OCARINA_MODE_00;
+    if (gPlayState->msgCtx.msgMode == MSGMODE_PAUSED) {
+        gPlayState->msgCtx.msgMode = MSGMODE_NONE;
+    }
 }
 
 static void ActivateWarp(PauseContext* pauseCtx, int song) {
