@@ -106,8 +106,7 @@ void applyPreset(std::string presetName, std::vector<PresetSection> includeSecti
     auto& info = presets[presetName];
     for (int i = PRESET_SECTION_SETTINGS; i < PRESET_SECTION_MAX; i++) {
         if (info.apply[i] && info.presetValues["blocks"].contains(blockInfo[i].names[1])) {
-            if (!includeSections.empty() &&
-                std::find(includeSections.begin(), includeSections.end(), i) == includeSections.end()) {
+            if (!includeSections.empty() && !SohUtils::Contains(i, includeSections)) {
                 continue;
             }
             if (i == PRESET_SECTION_TRACKERS) {

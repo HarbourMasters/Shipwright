@@ -71,6 +71,7 @@ bool showKokiriSword;
 bool showMasterSword;
 bool showHyruleLoach;
 bool showWeirdEgg;
+bool showZeldasLetter;
 bool showGerudoCard;
 bool showOverworldPots;
 bool showDungeonPots;
@@ -1373,8 +1374,11 @@ void LoadSettings() {
     showHyruleLoach =
         IS_RANDO ? OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY) == RO_FISHSANITY_HYRULE_LOACH
                  : false;
-    showWeirdEgg =
-        IS_RANDO ? OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_WEIRD_EGG) == RO_GENERIC_YES
+    showWeirdEgg = IS_RANDO ? OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_WEIRD_EGG) ==
+                                  RO_WEIRD_EGG_SHUFFLED
+                            : true;
+    showZeldasLetter =
+        IS_RANDO ? OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_ZELDAS_LETTER) == RO_GENERIC_YES
                  : true;
     showGerudoCard = IS_RANDO ? OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(
                                     RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD) == RO_GENERIC_YES
@@ -1665,8 +1669,7 @@ bool IsCheckShuffled(RandomizerCheck rc) {
                (loc->GetRCType() != RCTYPE_STATIC_HINT) &&  // TODO: Don't show hints until tracker supports them
                (loc->GetRCType() != RCTYPE_CHEST_GAME) &&   // don't show non final reward chest game checks until we
                                                             // support shuffling them
-               (rc != RC_HC_ZELDAS_LETTER) &&               // don't show zeldas letter until we support shuffling it
-               (rc != RC_LINKS_POCKET || showLinksPocket) &&
+               (rc != RC_HC_ZELDAS_LETTER || showZeldasLetter) && (rc != RC_LINKS_POCKET || showLinksPocket) &&
                OTRGlobals::Instance->gRandoContext->IsQuestOfLocationActive(rc) &&
                (loc->GetRCType() != RCTYPE_SHOP ||
                 (showShops &&

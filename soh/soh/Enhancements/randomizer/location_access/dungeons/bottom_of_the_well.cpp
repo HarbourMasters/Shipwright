@@ -340,7 +340,7 @@ void RegionTable_Init_BottomOfTheWell() {
         ENTRANCE(RR_BOTW_MQ_GRAVE_ROOM,     logic->Get(LOGIC_BOTW_MQ_OPENED_WEST_ROOM)),
     });
 
-    areaTable[RR_BOTW_MQ_INVISIBLE_PATH] = Region("Bottom of the Well Invisible Path", SCENE_BOTTOM_OF_THE_WELL, {}, {
+    areaTable[RR_BOTW_MQ_INVISIBLE_PATH] = Region("Bottom of the Well MQ Invisible Path", SCENE_BOTTOM_OF_THE_WELL, {}, {
         //Locations
         //This location technically involves an invisible platform, but it's intended to do lensless in vanilla and is clearly signposted by pots.
         LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_EAST_INNER_ROOM_FREESTANDING_KEY, true),
@@ -357,7 +357,7 @@ void RegionTable_Init_BottomOfTheWell() {
         ENTRANCE(RR_BOTW_MQ_B3,     true),
     });
 
-    areaTable[RR_BOTW_MQ_GRAVE_ROOM] = Region("Bottom of the Well Grave Room", SCENE_BOTTOM_OF_THE_WELL, {}, {
+    areaTable[RR_BOTW_MQ_GRAVE_ROOM] = Region("Bottom of the Well MQ Grave Room", SCENE_BOTTOM_OF_THE_WELL, {}, {
         //Locations
         //The enemies in this room are invisible and crowd around the player, being awkward to deal with blind unless you already know how.
         //the right wall is safe, and can be followed to get behind the grave which you can then pull easily assuming you can tank invisible keese

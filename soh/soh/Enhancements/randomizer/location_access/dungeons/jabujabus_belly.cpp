@@ -142,7 +142,7 @@ void RegionTable_Init_JabuJabusBelly() {
     });
 
     // this handles spawning in tentacle
-    areaTable[RR_JABU_JABUS_BELLY_TO_FORK_NORTH_WEST] = Region("Jabu Jabus Belly To Fork West", SCENE_JABU_JABU, {}, {}, {
+    areaTable[RR_JABU_JABUS_BELLY_TO_FORK_NORTH_WEST] = Region("Jabu Jabus Belly To Fork North West", SCENE_JABU_JABU, {}, {}, {
         //Exits
         ENTRANCE(RR_JABU_JABUS_BELLY_FORKED_CORRIDOR, logic->Get(LOGIC_JABU_WEST_TENTACLE) || logic->TakeDamage()),
         ENTRANCE(RR_JABU_JABUS_BELLY_FORK_NORTH_WEST, logic->Get(LOGIC_JABU_WEST_TENTACLE)),
@@ -174,7 +174,7 @@ void RegionTable_Init_JabuJabusBelly() {
     });
 
     // this handles spawning in tentacle
-    areaTable[RR_JABU_JABUS_BELLY_TO_FORK_NORTH_EAST] = Region("Jabu Jabus Belly MQ To Fork West", SCENE_JABU_JABU, {}, {}, {
+    areaTable[RR_JABU_JABUS_BELLY_TO_FORK_NORTH_EAST] = Region("Jabu Jabus Belly To Fork North East", SCENE_JABU_JABU, {}, {}, {
         //Exits
         ENTRANCE(RR_JABU_JABUS_BELLY_FORKED_CORRIDOR, logic->Get(LOGIC_JABU_WEST_TENTACLE) || logic->TakeDamage()),
         ENTRANCE(RR_JABU_JABUS_BELLY_FORK_NORTH_EAST, logic->Get(LOGIC_JABU_WEST_TENTACLE)),

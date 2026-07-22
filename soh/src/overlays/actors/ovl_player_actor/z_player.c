@@ -22,11 +22,11 @@
 #include "objects/object_link_child/object_link_child.h"
 #include <soh/Enhancements/custom-message/CustomMessageTypes.h>
 #include "soh/Enhancements/item-tables/ItemTableTypes.h"
-#include "soh/Enhancements/game-interactor/GameInteractor.h"
-#include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 #include "soh/Enhancements/enhancementTypes.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include "soh/Enhancements/randomizer/randomizer_grotto.h"
 #include "soh/frame_interpolation.h"
 #include "soh/OTRGlobals.h"
@@ -12371,7 +12371,8 @@ void Player_DrawGameplay(PlayState* play, Player* this, s32 lod, Gfx* cullDList,
             MATRIX_TOMTX(bunnyEarMtx);
         }
 
-        if (GameInteractor_Should(VB_DRAW_PLAYER_MASK, true, this->currentMask, play)) {
+        if (!GameInteractor_InvisibleLinkActive() &&
+            GameInteractor_Should(VB_DRAW_PLAYER_MASK, true, this->currentMask, play)) {
             if (this->currentMask != PLAYER_MASK_BUNNY || !CVarGetInteger(CVAR_ENHANCEMENT("HideBunnyHood"), 0)) {
                 gSPDisplayList(POLY_OPA_DISP++, sMaskDlists[this->currentMask - 1]);
             }

@@ -1,6 +1,6 @@
 #include "item_pool.hpp"
 #include "../location_access.h"
-#include "random.hpp"
+#include "../rng.h"
 #include "shops.hpp"
 #include "../location.h"
 

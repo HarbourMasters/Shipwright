@@ -899,7 +899,7 @@ void RegionTable_Init_FireTemple() {
         ENTRANCE(RR_FIRE_TEMPLE_MQ_NARROW_PATH_ROOM,            true),
     });
 
-    areaTable[RR_FIRE_TEMPLE_MQ_CORRIDOR] = Region("Fire Temple Corridor", SCENE_FIRE_TEMPLE, {}, {}, {
+    areaTable[RR_FIRE_TEMPLE_MQ_CORRIDOR] = Region("Fire Temple MQ Corridor", SCENE_FIRE_TEMPLE, {}, {}, {
         //Exits
         ENTRANCE(RR_FIRE_TEMPLE_MQ_HIGH_TORCH_ROOM_BARRED_DOOR, true),
         ENTRANCE(RR_FIRE_TEMPLE_MQ_FIRE_MAZE_MAIN,              true),

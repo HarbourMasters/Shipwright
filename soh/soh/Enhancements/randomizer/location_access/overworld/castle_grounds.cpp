@@ -25,6 +25,7 @@ void RegionTable_Init_CastleGrounds() {
         //Events
         EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->CallGossipFairy() || logic->CanUse(RG_STICKS)),
         EVENT_ACCESS(LOGIC_BUG_ACCESS,   logic->HasItem(RG_POWER_BRACELET)),
+        EVENT_ACCESS(LOGIC_MALON_RETURNED_FROM_CASTLE, logic->Get(LOGIC_TALON_RETURNED_FROM_CASTLE) && logic->HasItem(RG_SPEAK_HYLIAN)),
     }, {
         //Locations
         LOCATION(RC_HC_MALON_EGG,      logic->HasItem(RG_SPEAK_HYLIAN)),
@@ -95,7 +96,10 @@ void RegionTable_Init_CastleGrounds() {
         ENTRANCE(RR_HC_MOAT,      true),
     });
 
-    areaTable[RR_HC_MOAT] = Region("Hyrule Castle Grounds", SCENE_HYRULE_CASTLE, {}, {
+    areaTable[RR_HC_MOAT] = Region("Hyrule Castle Moat", SCENE_HYRULE_CASTLE, {
+        //Events
+        EVENT_ACCESS(LOGIC_TALON_RETURNED_FROM_CASTLE, logic->CanUse(RG_WEIRD_EGG) && logic->HasItem(RG_SPEAK_HYLIAN)),
+    }, {
         //Locations
         LOCATION(RC_HC_GRASS_1,             logic->CanCutShrubs()),
         LOCATION(RC_HC_GRASS_2,             logic->CanCutShrubs()),
@@ -116,7 +120,7 @@ void RegionTable_Init_CastleGrounds() {
         //Exits
         ENTRANCE(RR_HC_GATE,          true),
         ENTRANCE(RR_HC_STORMS_GROTTO, logic->CanOpenStormsGrotto()),
-        ENTRANCE(RR_HC_DRAIN_LEDGE,   (logic->CanUse(RG_WEIRD_EGG) && logic->HasItem(RG_POWER_BRACELET) && logic->HasItem(RG_SPEAK_HYLIAN)) || 
+        ENTRANCE(RR_HC_DRAIN_LEDGE,   (logic->Get(LOGIC_TALON_RETURNED_FROM_CASTLE) && logic->HasItem(RG_POWER_BRACELET)) ||
                                       (ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->TakeDamage() && logic->HasExplosives() && logic->CanJumpslash())),
     });
 
@@ -126,10 +130,13 @@ void RegionTable_Init_CastleGrounds() {
         ENTRANCE(RR_HC_GARDEN, logic->CanUse(RG_CRAWL)),
     });
 
-    areaTable[RR_HC_GARDEN] = Region("HC Garden", SCENE_CASTLE_COURTYARD_ZELDA, {}, {
+    areaTable[RR_HC_GARDEN] = Region("HC Garden", SCENE_CASTLE_COURTYARD_ZELDA, {
+        //Events
+        EVENT_ACCESS(LOGIC_MET_ZELDA, logic->HasItem(RG_SPEAK_HYLIAN)),
+    }, {
         //Locations
-        LOCATION(RC_HC_ZELDAS_LETTER,                 logic->HasItem(RG_SPEAK_HYLIAN)),
-        LOCATION(RC_SONG_FROM_IMPA,                   logic->HasItem(RG_SPEAK_HYLIAN)),
+        LOCATION(RC_HC_ZELDAS_LETTER,                 logic->Get(LOGIC_MET_ZELDA)),
+        LOCATION(RC_SONG_FROM_IMPA,                   logic->Get(LOGIC_MET_ZELDA)),
         LOCATION(RC_HC_WONDER_COURTYARD_RIGHT_WINDOW, logic->CanUse(RG_FAIRY_SLINGSHOT)),
         LOCATION(RC_HC_WONDER_COURTYARD_LEFT_WINDOW,  logic->CanUse(RG_FAIRY_SLINGSHOT)),
     }, {

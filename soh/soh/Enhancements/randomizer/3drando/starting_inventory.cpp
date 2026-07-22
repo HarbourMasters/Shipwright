@@ -5,6 +5,7 @@
 #include "../logic.h"
 #include "pool_functions.hpp"
 #include "soh/Enhancements/randomizer/static_data.h"
+#include "soh/util.h"
 
 std::vector<RandomizerGet> StartingInventory;
 uint8_t AdditionalHeartContainers;
@@ -109,8 +110,12 @@ void GenerateStartingInventory() {
         }
     }
     // The weird egg only exists as an item when it's shuffled; vanilla gives it through the cutscene.
-    if (ctx->GetOption(RSK_SHUFFLE_WEIRD_EGG)) {
+    if (ctx->GetOption(RSK_SHUFFLE_WEIRD_EGG).Is(RO_WEIRD_EGG_SHUFFLED)) {
         AddItemToInventory(RG_WEIRD_EGG, ctx->GetOption(RSK_STARTING_WEIRD_EGG) ? 1 : 0);
+    }
+    // Same for Zelda's Letter.
+    if (ctx->GetOption(RSK_SHUFFLE_ZELDAS_LETTER)) {
+        AddItemToInventory(RG_ZELDAS_LETTER, ctx->GetOption(RSK_STARTING_ZELDAS_LETTER) ? 1 : 0);
     }
     AddItemToInventory(RG_BUNNY_HOOD, ctx->GetOption(RSK_STARTING_BUNNY_HOOD) ? 1 : 0);
     AddItemToInventory(RG_CLAIM_CHECK, ctx->GetOption(RSK_STARTING_CLAIM_CHECK) ? 1 : 0);
@@ -154,7 +159,7 @@ void GenerateStartingInventory() {
 
 bool StartingInventoryHasBottle() {
     RandomizerGet bottle = RG_EMPTY_BOTTLE;
-    return ElementInContainer(bottle, StartingInventory);
+    return SohUtils::Contains(bottle, StartingInventory);
 }
 
 void ApplyStartingInventory() {

@@ -8,6 +8,7 @@
 
 #include "mod_menu.h"
 #include "soh/OTRGlobals.h"
+#include "soh/util.h"
 #include "soh/SohGui/MenuTypes.h"
 #include "soh/SohGui/SohMenu.h"
 #include "soh/SohGui/SohGui.hpp"
@@ -225,8 +226,7 @@ void UpdateModFiles(bool init = false, bool reset = false) {
                 if (!IsValidExtension(extension)) {
                     continue;
                 }
-                bool enabled =
-                    std::find(enabledModFiles.begin(), enabledModFiles.end(), filename) != enabledModFiles.end();
+                bool enabled = SohUtils::Contains(filename, enabledModFiles);
                 if (!enabled) {
                     tempMods.emplace(p.path().lexically_normal().generic_string(), filename);
                 }

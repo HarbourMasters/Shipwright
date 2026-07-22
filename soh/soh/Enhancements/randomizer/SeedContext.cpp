@@ -13,7 +13,7 @@
 #include "soh/util.h"
 #include "../kaleido.h"
 #include "soh/Enhancements/randomizer/Traps.h"
-#include "soh/Enhancements/randomizer/3drando/random.hpp"
+#include "soh/Enhancements/randomizer/rng.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
 
 #include <vector>

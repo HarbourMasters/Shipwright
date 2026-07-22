@@ -290,12 +290,29 @@ void DrawStartingItemsMenu(WidgetInfo& info) {
     StartingItemToggle(RSK_STARTING_CLAIM_CHECK, ITEM_CLAIM_CHECK);
     ImGui::SameLine();
     bool weirdEggShuffled =
-        CVarGetInteger(Rando::Settings::GetInstance()->GetOption(RSK_SHUFFLE_WEIRD_EGG).GetCVarName().c_str(), 0) != 0;
+        CVarGetInteger(Rando::Settings::GetInstance()->GetOption(RSK_SHUFFLE_WEIRD_EGG).GetCVarName().c_str(),
+                       RO_WEIRD_EGG_VANILLA) == RO_WEIRD_EGG_SHUFFLED;
     ImGui::BeginDisabled(!weirdEggShuffled);
     StartingItemToggle(RSK_STARTING_WEIRD_EGG, ITEM_WEIRD_EGG, !weirdEggShuffled);
     ImGui::EndDisabled();
     if (!weirdEggShuffled && ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled)) {
         ImGui::SetTooltip("Enable Shuffle Weird Egg to start with the Weird Egg.");
+    }
+    ImGui::SameLine();
+    bool zeldasLetterShuffled =
+        CVarGetInteger(Rando::Settings::GetInstance()->GetOption(RSK_SHUFFLE_ZELDAS_LETTER).GetCVarName().c_str(), 0) !=
+        0;
+    StartingItemToggle(RSK_STARTING_ZELDAS_LETTER, ITEM_LETTER_ZELDA);
+    if (ImGui::IsItemHovered()) {
+        if (zeldasLetterShuffled) {
+            ImGui::SetTooltip("Start with Zelda's Letter\n\n"
+                              "The Kakariko gate starts open.");
+        } else {
+            ImGui::SetTooltip("Start with Zelda's Letter\n\n"
+                              "The Kakariko gate starts open.\n"
+                              "While the letter isn't shuffled this also skips child Zelda:\n"
+                              "you get the item Impa would give and skip everything up to meeting Zelda.");
+        }
     }
     ImGui::SameLine();
     StartingItemToggle(RSK_STARTING_BUNNY_HOOD, ITEM_MASK_BUNNY);

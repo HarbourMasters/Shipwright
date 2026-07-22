@@ -1659,5 +1659,15 @@ void ConfigVersion7Updater::Update(Ship::Config* conf) {
         CVarSetInteger("gRandoSettings.ShuffleBossSouls", RO_BOSS_SOULS_ON);
         CVarSetInteger("gRandoSettings.ShuffleGanonsSoul", RO_GANONS_SOUL_ANYWHERE);
     }
+
+    // Skip Child Zelda split into starting with unshuffled Zelda's Letter & Skip Waking Talon
+    if (CVarGetInteger("gRandoSettings.SkipChildZelda", 0)) {
+        CVarSetInteger("gRandoSettings.StartingZeldasLetter", 1);
+        CVarSetInteger("gRandoSettings.ShuffleWeirdEgg", RO_WEIRD_EGG_SKIP_TALON);
+    }
+    CVarClear("gRandoSettings.SkipChildZelda");
+
+    // Kakariko Gate setting removed; the gate opens when starting with an unshuffled letter
+    CVarClear("gRandoSettings.KakarikoGate");
 }
 } // namespace SOH

@@ -15,11 +15,6 @@ void Settings::CreateOptionDescriptions() {
         "\n"
         "Off - Mido no longer blocks the path to the Deku Tree. Kokiri "
         "boy no longer blocks the path out of the forest.";
-    mOptionDescriptions[RSK_KAK_GATE] = "Closed - The gate will remain closed until Zelda's Letter "
-                                        "is shown to the guard.\n"
-                                        "\n"
-                                        "Open - The gate is always open. The Happy Mask Shop "
-                                        "will open immediately after obtaining Zelda's Letter.";
     mOptionDescriptions[RSK_DOOR_OF_TIME] = "Closed - The Ocarina of Time, the Song of Time and all "
                                             "three Spiritual Stones are required to open the Door of Time.\n"
                                             "\n"
@@ -274,15 +269,20 @@ void Settings::CreateOptionDescriptions() {
         "Shuffle ability to speak to NPCs. 6 jabbernuts will be shuffled:\nDeku, Gerudo, Goron, Hylian, Kokiri, "
         "Zora\nKaepora Gaebora speaks any language.";
     mOptionDescriptions[RSK_SHUFFLE_OPEN_CHEST] = "Shuffles the ability to open chests into the item pool.";
-    mOptionDescriptions[RSK_SHUFFLE_WEIRD_EGG] = "Shuffles the Weird Egg from Malon in to the item pool. Enabling "
-                                                 "\"Skip Child Zelda\" disables this feature.\n"
-                                                 "\n"
-                                                 "The Weird Egg is required to unlock several events:\n"
-                                                 "  - Zelda's Lullaby from Impa\n"
-                                                 "  - Saria's Song in Sacred Forest Meadow\n"
-                                                 "  - Epona's Song and chicken minigame at Lon Lon Ranch\n"
-                                                 "  - Zelda's Letter for Kakariko gate (if set to closed)\n"
-                                                 "  - Happy Mask Shop sidequest\n";
+    mOptionDescriptions[RSK_SHUFFLE_WEIRD_EGG] =
+        "Vanilla: Malon gives the Weird Egg at Hyrule Castle.\n"
+        "\n"
+        "Shuffled: shuffles Weird Egg into item pool.\n"
+        "\n"
+        "Skip Waking Talon: Talon already woken and back at Lon Lon Ranch with Malon.";
+    mOptionDescriptions[RSK_SHUFFLE_ZELDAS_LETTER] =
+        "Shuffles Zelda's Letter into the item pool, meeting Zelda gives a random item instead.\n"
+        "\n"
+        "Required to open Kakariko gate and Happy Mask Shop. Starting with letter starts with gate opened.\n"
+        "\n"
+        "Meeting Zelda still triggers Saria at Sacred Forest Meadow.\n"
+        "\n"
+        "When disabled, \"Start with Zelda's Letter\" skips child Zelda: you also get item Impa would give.";
     mOptionDescriptions[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD] =
         "Shuffles the Gerudo Membership Card into the item pool.\n"
         "\n"
@@ -685,9 +685,6 @@ void Settings::CreateOptionDescriptions() {
     mOptionDescriptions[RSK_BIG_POE_COUNT] = "The Poe collector will give a reward for turning in this many Big Poes.";
     mOptionDescriptions[RSK_SKIP_CHILD_STEALTH] =
         "The crawlspace into Hyrule Castle goes straight to Zelda, skipping the guards.";
-    mOptionDescriptions[RSK_SKIP_CHILD_ZELDA] =
-        "Start with Zelda's Letter and the item Impa would normally give you and skip the sequence up "
-        "until after meeting Zelda. Disables the ability to shuffle Weird Egg.";
     mOptionDescriptions[RSK_SKIP_EPONA_RACE] = "Epona can be summoned with Epona's Song without needing to race Ingo.";
     mOptionDescriptions[RSK_MASK_QUEST] =
         "How masks are acquired.\n"

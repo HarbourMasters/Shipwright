@@ -122,7 +122,7 @@ bool Logic::HasItem(RandomizerGet itemName) {
                 case RO_MASK_QUEST_VANILLA:
                     return Get(LOGIC_BORROW_SKULL_MASK);
                 case RO_MASK_QUEST_COMPLETED:
-                    return HasItem(RG_ZELDAS_LETTER) && Get(LOGIC_KAKARIKO_GATE_OPEN);
+                    return Get(LOGIC_KAKARIKO_GATE_OPEN);
                 case RO_MASK_QUEST_SHUFFLE:
                     return CheckRandoInf(RAND_INF_CHILD_TRADES_HAS_MASK_SKULL);
                 default:
@@ -134,7 +134,7 @@ bool Logic::HasItem(RandomizerGet itemName) {
                 case RO_MASK_QUEST_VANILLA:
                     return Get(LOGIC_BORROW_RIGHT_MASKS);
                 case RO_MASK_QUEST_COMPLETED:
-                    return HasItem(RG_ZELDAS_LETTER) && Get(LOGIC_KAKARIKO_GATE_OPEN);
+                    return Get(LOGIC_KAKARIKO_GATE_OPEN);
                 case RO_MASK_QUEST_SHUFFLE:
                     return CheckRandoInf(RAND_INF_CHILD_TRADES_HAS_MASK_TRUTH);
                 default:

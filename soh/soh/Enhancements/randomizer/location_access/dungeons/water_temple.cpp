@@ -1033,7 +1033,7 @@ void RegionTable_Init_WaterTemple() {
         LOCATION(RC_WATER_TEMPLE_MQ_LIZALFOS_HALLWAY_GATE_CRATE_2, logic->CanBreakCrates()),
     }, {});
 
-    areaTable[RR_WATER_TEMPLE_MQ_OUTSIDE_WATERFALL] = Region("Water Temple Outside Waterfall", SCENE_WATER_TEMPLE, {}, {}, {
+    areaTable[RR_WATER_TEMPLE_MQ_OUTSIDE_WATERFALL] = Region("Water Temple MQ Outside Waterfall", SCENE_WATER_TEMPLE, {}, {}, {
         //Exits
         ENTRANCE(RR_WATER_TEMPLE_MQ_MAIN,                     true),
         ENTRANCE(RR_WATER_TEMPLE_MQ_OUTSIDE_HIDDEN_SWITCH_2F, logic->WaterLevel(WL_MID)),
@@ -1042,7 +1042,7 @@ void RegionTable_Init_WaterTemple() {
         ENTRANCE(RR_WATER_TEMPLE_MQ_2F_CENTRAL_H,             logic->WaterLevel(WL_HIGH) && logic->CanUse(RG_HOOKSHOT) && logic->CanUse(RG_IRON_BOOTS)),
     });
 
-    areaTable[RR_WATER_TEMPLE_MQ_WATERFALL] = Region("Water Temple Waterfall", SCENE_WATER_TEMPLE, {}, {
+    areaTable[RR_WATER_TEMPLE_MQ_WATERFALL] = Region("Water Temple MQ Waterfall", SCENE_WATER_TEMPLE, {}, {
         //Locations
         LOCATION(RC_WATER_TEMPLE_MQ_WONDER_HOOKSHOT_STAIRCASE_RIGHT_1, logic->CanUse(RG_LONGSHOT)),
         LOCATION(RC_WATER_TEMPLE_MQ_WONDER_HOOKSHOT_STAIRCASE_RIGHT_2, logic->CanUse(RG_LONGSHOT)),
@@ -1056,7 +1056,7 @@ void RegionTable_Init_WaterTemple() {
         ENTRANCE(RR_WATER_TEMPLE_MQ_WATERFALL_TOP,     logic->CanUse(RG_LONGSHOT)),
     });
 
-    areaTable[RR_WATER_TEMPLE_MQ_WATERFALL_TOP] = Region("Water Temple Waterfall Top", SCENE_WATER_TEMPLE, {}, {
+    areaTable[RR_WATER_TEMPLE_MQ_WATERFALL_TOP] = Region("Water Temple MQ Waterfall Top", SCENE_WATER_TEMPLE, {}, {
         //Locations
         LOCATION(RC_WATER_TEMPLE_MQ_WONDER_HOOKSHOT_STAIRCASE_RIGHT_1, logic->CanUse(RG_HOOKSHOT)),
         LOCATION(RC_WATER_TEMPLE_MQ_WONDER_HOOKSHOT_STAIRCASE_RIGHT_2, logic->CanUse(RG_HOOKSHOT)),

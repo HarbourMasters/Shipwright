@@ -294,12 +294,7 @@ void RandomizerOnFlagSetHandler(int16_t flagType, int16_t flag) {
     }
 
     if (flagType == FLAG_EVENT_CHECK_INF && flag == EVENTCHKINF_TALON_WOKEN_IN_CASTLE) {
-        // remove chicken as this is the only use for it
         Flags_UnsetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_CHICKEN);
-    }
-
-    if (flagType == FLAG_EVENT_CHECK_INF && flag == EVENTCHKINF_OBTAINED_ZELDAS_LETTER) {
-        Flags_SetRandomizerInf(RAND_INF_ZELDAS_LETTER);
     }
 
     if (flagType == FLAG_EVENT_CHECK_INF && flag == EVENTCHKINF_TALON_RETURNED_FROM_CASTLE) {
@@ -2913,13 +2908,6 @@ void RandomizerOnKaleidoscopeUpdateHandler(int16_t inDungeonScene) {
     prevKaleidoState = gPlayState->pauseCtx.state;
 }
 
-void RandomizerOnCuccoOrChickenHatch() {
-    if (LINK_IS_CHILD) {
-        Flags_UnsetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_WEIRD_EGG);
-        Flags_SetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_CHICKEN);
-    }
-}
-
 static void RandomizerRegisterHooks() {
     static uint32_t onFlagSetHook = 0;
     static uint32_t onSceneFlagSetHook = 0;
@@ -2938,7 +2926,6 @@ static void RandomizerRegisterHooks() {
     static uint32_t onPlayDestroyHook = 0;
     static uint32_t onExitGameHook = 0;
     static uint32_t onKaleidoUpdateHook = 0;
-    static uint32_t onCuccoOrChickenHatchHook = 0;
 
     // register this outside OnLoadGame as VB is invoked before OnLoadGame
     COND_VB_SHOULD(VB_REVERT_SPOILING_ITEMS, true, {
@@ -2971,7 +2958,6 @@ static void RandomizerRegisterHooks() {
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnPlayDestroy>(onPlayDestroyHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnExitGame>(onExitGameHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnKaleidoscopeUpdate>(onKaleidoUpdateHook);
-        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnCuccoOrChickenHatch>(onCuccoOrChickenHatchHook);
 
         onFlagSetHook = 0;
         onSceneFlagSetHook = 0;
@@ -2990,7 +2976,6 @@ static void RandomizerRegisterHooks() {
         onPlayDestroyHook = 0;
         onExitGameHook = 0;
         onKaleidoUpdateHook = 0;
-        onCuccoOrChickenHatchHook = 0;
 
         if (!IS_RANDO)
             return;
@@ -3038,8 +3023,6 @@ static void RandomizerRegisterHooks() {
             GameInteractor::Instance->RegisterGameHook<GameInteractor::OnExitGame>(RandomizerOnExitGameHandler);
         onKaleidoUpdateHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnKaleidoscopeUpdate>(
             RandomizerOnKaleidoscopeUpdateHandler);
-        onCuccoOrChickenHatchHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnCuccoOrChickenHatch>(
-            RandomizerOnCuccoOrChickenHatch);
 
         if (RAND_GET_OPTION(RSK_FISHSANITY).IsNot(RO_FISHSANITY_OFF)) {
             OTRGlobals::Instance->gRandoContext->GetFishsanity()->InitializeFromSave();

@@ -1,6 +1,6 @@
 #include "hints.hpp"
 
-#include "random.hpp"
+#include "../rng.h"
 #include "fill.hpp"
 #include "../trial.h"
 #include "../entrance.h"
@@ -638,7 +638,7 @@ void CreateStoneHints() {
     std::vector<HintDistributionSetting> distTable = hintSetting.distTable;
 
     // Apply impa's song exclusions when zelda is skipped
-    if (ctx->GetOption(RSK_SKIP_CHILD_ZELDA)) {
+    if (ctx->GetOption(RSK_STARTING_ZELDAS_LETTER) && !ctx->GetOption(RSK_SHUFFLE_ZELDAS_LETTER)) {
         ctx->GetItemLocation(RC_SONG_FROM_IMPA)->SetHintAccesible();
     }
     if (ctx->GetOption(RSK_SELECTED_STARTING_AGE).Is(RO_AGE_ADULT) || !ctx->GetOption(RSK_SHUFFLE_MASTER_SWORD)) {

@@ -218,12 +218,9 @@ void CustomMessage::SetTextBoxPosition(TextBoxPosition boxPos) {
 
 CustomMessage CustomMessage::operator+(const CustomMessage& right) const {
     std::vector<std::string> newColors = colors;
-    const std::vector<std::string>& rColors = right.GetColors();
-    for (const auto& color : rColors) {
-        newColors.push_back(color);
-    }
+    SohUtils::AppendVector(newColors, right.GetColors());
     std::vector<bool> newCapital = capital;
-    newCapital.insert(newCapital.end(), right.GetCapital().begin(), right.GetCapital().end());
+    SohUtils::AppendVector(newCapital, right.GetCapital());
     return CustomMessage(messages[LANGUAGE_ENG] + right.GetEnglish(MF_RAW),
                          messages[LANGUAGE_GER] + right.GetGerman(MF_RAW),
                          messages[LANGUAGE_FRA] + right.GetFrench(MF_RAW), newColors, newCapital, type, position);
@@ -238,8 +235,8 @@ void CustomMessage::operator+=(const CustomMessage& right) {
     messages[LANGUAGE_ENG] += right.GetEnglish(MF_RAW);
     messages[LANGUAGE_GER] += right.GetGerman(MF_RAW);
     messages[LANGUAGE_FRA] += right.GetFrench(MF_RAW);
-    colors.insert(colors.end(), right.GetColors().begin(), right.GetColors().end());
-    capital.insert(capital.end(), right.GetCapital().begin(), right.GetCapital().end());
+    SohUtils::AppendVector(colors, right.GetColors());
+    SohUtils::AppendVector(capital, right.GetCapital());
 }
 
 void CustomMessage::operator+=(const std::string& right) {

@@ -1094,6 +1094,10 @@ void Randomizer_GameplayStats_SetTimestamp(uint16_t item) {
         timestampItem = ITEM_DOUBLE_DEFENSE;
     } else if (item >= RG_KEATON_MASK && item <= RG_MASK_OF_TRUTH) {
         timestampItem = ITEM_MASK_KEATON + (item - RG_KEATON_MASK);
+    } else if (item == RG_WEIRD_EGG) {
+        timestampItem = ITEM_WEIRD_EGG;
+    } else if (item == RG_ZELDAS_LETTER) {
+        timestampItem = ITEM_LETTER_ZELDA;
     } else if (randomizerGetToStatsTimeStamp.contains((RandomizerGet)item)) {
         timestampItem = randomizerGetToStatsTimeStamp[(RandomizerGet)item];
     }
@@ -1104,6 +1108,16 @@ void Randomizer_GameplayStats_SetTimestamp(uint16_t item) {
 }
 
 extern "C" u8 Return_Item_Entry(GetItemEntry itemEntry, u8 returnItem);
+
+// The child trade slot can be displaced (e.g. chicken consumed waking Talon,
+// letter shown to the guard), leaving an item there the player no longer owns.
+static bool ChildTradeSlotOccupied() {
+    u8 slotItem = INV_CONTENT(ITEM_TRADE_CHILD);
+    if (slotItem < ITEM_WEIRD_EGG || slotItem > ITEM_MASK_TRUTH) {
+        return false;
+    }
+    return Flags_GetRandomizerInf((RandomizerInf)(slotItem - ITEM_WEIRD_EGG + RAND_INF_CHILD_TRADES_HAS_WEIRD_EGG));
+}
 
 extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
     if (giEntry.modIndex != MOD_RANDOMIZER) {
@@ -1136,8 +1150,18 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
             gSaveContext.inventory.dungeonKeys[SCENE_THIEVES_HIDEOUT] = GERUDO_FORTRESS_SMALL_KEY_MAX;
             gSaveContext.inventory.dungeonKeys[SCENE_INSIDE_GANONS_CASTLE] = GANONS_CASTLE_SMALL_KEY_MAX;
         } else if (item >= RG_KEATON_MASK && item <= RG_MASK_OF_TRUTH) {
-            if (INV_CONTENT(ITEM_TRADE_CHILD) == ITEM_NONE) {
+            if (!ChildTradeSlotOccupied()) {
                 INV_CONTENT(ITEM_TRADE_CHILD) = (int)ITEM_MASK_KEATON + (item - RG_KEATON_MASK);
+            }
+        } else if (item == RG_WEIRD_EGG) {
+            Flags_SetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_WEIRD_EGG);
+            if (!ChildTradeSlotOccupied()) {
+                INV_CONTENT(ITEM_TRADE_CHILD) = ITEM_WEIRD_EGG;
+            }
+        } else if (item == RG_ZELDAS_LETTER) {
+            Flags_SetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_LETTER_ZELDA);
+            if (!ChildTradeSlotOccupied()) {
+                INV_CONTENT(ITEM_TRADE_CHILD) = ITEM_LETTER_ZELDA;
             }
         } else if (item == RG_CHILD_WALLET &&
                    OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FULL_WALLETS)) {

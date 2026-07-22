@@ -3,7 +3,7 @@
 #include "soh/Enhancements/randomizer/static_data.h"
 #include "soh/ShipUtils.h"
 
-#include "soh/Enhancements/randomizer/3drando/random.hpp"
+#include "soh/Enhancements/randomizer/rng.h"
 
 #include <vector>
 

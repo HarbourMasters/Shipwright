@@ -429,7 +429,7 @@ void RegionTable_Init_ShadowTemple() {
         ENTRANCE(RR_SHADOW_TEMPLE_MQ_WHISPERING_WALLS_DEAD_HAND, logic->CanHitEyeTargets()),
     });
 
-    areaTable[RR_SHADOW_TEMPLE_MQ_WHISPERING_WALLS_SIDE_ROOM] = Region("Shadow Temple MQ Whispering Walls Redeads", SCENE_SHADOW_TEMPLE, {}, {
+    areaTable[RR_SHADOW_TEMPLE_MQ_WHISPERING_WALLS_SIDE_ROOM] = Region("Shadow Temple MQ Whispering Walls Side Room", SCENE_SHADOW_TEMPLE, {}, {
         //Locations
         LOCATION(RC_SHADOW_TEMPLE_MQ_COMPASS_CHEST,         logic->CanKillEnemy(RE_REDEAD) && logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_SHADOW_TEMPLE_MQ_ENTRANCE_REDEAD_POT_1, logic->CanBreakPots()),
@@ -544,7 +544,7 @@ void RegionTable_Init_ShadowTemple() {
         ENTRANCE(RR_SHADOW_TEMPLE_MQ_STONE_UMBRELLA_ROOM,       AnyAgeTime([]{return logic->CanJumpslash() || logic->HasExplosives() || logic->CanUse(RG_GIANTS_KNIFE) || (ctx->GetTrickOption(RT_ITEM_EXTENSION) && (logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_FAIRY_SLINGSHOT)));})),
     });
 
-    areaTable[RR_SHADOW_TEMPLE_MQ_LOWER_HUGE_PIT_DOOR_LEDGE] = Region("Shadow Temple MQ Upper Huge Pit Door Ledge", SCENE_SHADOW_TEMPLE, {}, {}, {
+    areaTable[RR_SHADOW_TEMPLE_MQ_LOWER_HUGE_PIT_DOOR_LEDGE] = Region("Shadow Temple MQ Lower Huge Pit Door Ledge", SCENE_SHADOW_TEMPLE, {}, {}, {
         ENTRANCE(RR_SHADOW_TEMPLE_MQ_LOWER_HUGE_PIT,    logic->CanUse(RG_HOVER_BOOTS) && (ctx->GetTrickOption(RT_LENS_SHADOW_MQ_PLATFORM) || logic->CanUse(RG_LENS_OF_TRUTH)) && ctx->GetTrickOption(RT_LENS_SHADOW_MQ) || logic->CanUse(RG_LENS_OF_TRUTH)),
         ENTRANCE(RR_SHADOW_TEMPLE_MQ_FLOOR_SPIKES_ROOM, logic->SmallKeys(SCENE_SHADOW_TEMPLE, 3)),
     });

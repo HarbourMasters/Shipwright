@@ -154,7 +154,8 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
                  RO_DUNGEON_REWARDS_END_OF_DUNGEON) && // dungeon rewards end of dungeons
             (location.GetRCType() != RCTYPE_OCARINA ||
              CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleOcarinas"), RO_GENERIC_NO)) && // ocarina locations
-            (location.GetRandomizerCheck() != RC_HC_ZELDAS_LETTER) && // don't show until we support shuffling letter
+            (location.GetRandomizerCheck() != RC_HC_ZELDAS_LETTER ||
+             CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleZeldasLetter"), RO_GENERIC_NO)) &&
             (location.GetRCType() !=
              RCTYPE_GOSSIP_STONE) && // don't show gossip stones (maybe gossipsanity will be a thing eventually?)
             (location.GetRCType() != RCTYPE_STATIC_HINT) &&  // don't show static hints
@@ -215,7 +216,8 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
             (location.GetRandomizerCheck() != RC_ZR_MAGIC_BEAN_SALESMAN ||
              CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleMerchants"), RO_SHUFFLE_MERCHANTS_OFF) % 2) &&
             (location.GetRandomizerCheck() != RC_HC_MALON_EGG ||
-             CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleWeirdEgg"), RO_GENERIC_NO)) &&
+             CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleWeirdEgg"), RO_WEIRD_EGG_VANILLA) ==
+                 RO_WEIRD_EGG_SHUFFLED) &&
             (location.GetRCType() != RCTYPE_FROG_SONG ||
              CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleFrogSongRupees"), RO_GENERIC_NO)) &&
             (location.GetRCType() != RCTYPE_FOUNTAIN_FAIRY ||

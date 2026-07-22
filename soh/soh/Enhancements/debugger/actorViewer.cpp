@@ -1097,7 +1097,7 @@ void ActorViewerWindow::DrawElement() {
                 PushStyleInput(THEME_COLOR);
                 ImGui::InputScalar("params", ImGuiDataType_S16, &newActor.params, &one);
                 PopStyleInput();
-            } else if (std::find(noParamsActors.begin(), noParamsActors.end(), newActor.id) == noParamsActors.end()) {
+            } else if (!SohUtils::Contains(newActor.id, noParamsActors)) {
                 CreateActorSpecificData();
                 if (actorSpecificData.find(newActor.id) == actorSpecificData.end()) {
                     PushStyleInput(THEME_COLOR);

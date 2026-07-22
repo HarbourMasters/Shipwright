@@ -4,7 +4,7 @@
 #include "fill.hpp"
 #include "../static_data.h"
 #include "../SeedContext.h"
-#include "random.hpp"
+#include "../rng.h"
 #include "soh/Enhancements/randomizer/Traps.h"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include <algorithm>
@@ -338,7 +338,9 @@ void GenerateItemPool() {
     }
 
     // Fixed item locations
-    ctx->PlaceItemInLocation(RC_HC_ZELDAS_LETTER, RG_ZELDAS_LETTER);
+    if (!ctx->GetOption(RSK_SHUFFLE_ZELDAS_LETTER)) {
+        ctx->PlaceItemInLocation(RC_HC_ZELDAS_LETTER, RG_ZELDAS_LETTER);
+    }
     ctx->PlaceItemInLocation(RC_GANONS_BOSS_KEY, RG_BLUE_RUPEE); // placeholder, filled by setting
     ctx->PlaceItemInLocation(RC_GANON_SOUL, RG_BLUE_RUPEE); // placeholder, filled by setting
     ctx->PlaceItemInLocation(RC_WINCON, RG_BLUE_RUPEE); // placeholder, filled by setting
@@ -371,12 +373,16 @@ void GenerateItemPool() {
         }
     }
 
-    if (ctx->GetOption(RSK_SHUFFLE_WEIRD_EGG)) {
+    if (ctx->GetOption(RSK_SHUFFLE_WEIRD_EGG).Is(RO_WEIRD_EGG_SHUFFLED)) {
         if (!ctx->GetOption(RSK_STARTING_WEIRD_EGG)) {
             AddItemToPool(RG_WEIRD_EGG, 2, 1, 1, 1);
         }
     } else {
         ctx->PlaceItemInLocation(RC_HC_MALON_EGG, RG_WEIRD_EGG, false, true);
+    }
+
+    if (ctx->GetOption(RSK_SHUFFLE_ZELDAS_LETTER) && !ctx->GetOption(RSK_STARTING_ZELDAS_LETTER)) {
+        AddItemToPool(RG_ZELDAS_LETTER, 2, 1, 1, 1);
     }
 
     if (ctx->GetOption(RSK_SHUFFLE_OCARINA)) {

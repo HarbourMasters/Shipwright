@@ -152,7 +152,7 @@ void RegionTable_Init_Market() {
         //Currently, mask swap in menu doesn't need access to the mask shop
         //If it is forced on/a setting, a copy of these events should be added to root
         //it also doesn't need you to open kak gate, but that might be best treated as a bug
-        EVENT_ACCESS(LOGIC_CAN_BORROW_MASKS,   logic->HasItem(RG_ZELDAS_LETTER) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->Get(LOGIC_KAKARIKO_GATE_OPEN)),
+        EVENT_ACCESS(LOGIC_CAN_BORROW_MASKS,   logic->HasItem(RG_SPEAK_HYLIAN) && logic->Get(LOGIC_KAKARIKO_GATE_OPEN)),
         EVENT_ACCESS(LOGIC_BORROW_SKULL_MASK,  ctx->GetOption(RSK_MASK_QUEST).Is(RO_MASK_QUEST_COMPLETED) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->Get(LOGIC_CAN_BORROW_MASKS)),
         EVENT_ACCESS(LOGIC_BORROW_SPOOKY_MASK, ctx->GetOption(RSK_MASK_QUEST).Is(RO_MASK_QUEST_COMPLETED) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->Get(LOGIC_CAN_BORROW_MASKS)),
         EVENT_ACCESS(LOGIC_BORROW_BUNNY_HOOD,  ctx->GetOption(RSK_MASK_QUEST).Is(RO_MASK_QUEST_COMPLETED) && logic->HasItem(RG_SPEAK_HYLIAN) && logic->Get(LOGIC_CAN_BORROW_MASKS)),

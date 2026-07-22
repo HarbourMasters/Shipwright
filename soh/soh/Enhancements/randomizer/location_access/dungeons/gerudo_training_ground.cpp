@@ -384,7 +384,7 @@ void RegionTable_Init_GerudoTrainingGround() {
         ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_MAZE_RIGHT,           logic->Get(LOGIC_GTG_MQ_RIGHT_SIDE_SWITCH) && (logic->CanUse(RG_LONGSHOT) || (logic->CanUse(RG_HOOKSHOT) && logic->HasFireSource()))),
     });
 
-    areaTable[RR_GERUDO_TRAINING_GROUND_MQ_TORCH_SIDE_PLATFORMS] = Region("Gerudo Training Ground Torch Side Platforms", SCENE_GERUDO_TRAINING_GROUND, {
+    areaTable[RR_GERUDO_TRAINING_GROUND_MQ_TORCH_SIDE_PLATFORMS] = Region("Gerudo Training Ground MQ Torch Side Platforms", SCENE_GERUDO_TRAINING_GROUND, {
         //Events
         //this torch shot is possible as child but tight and obtuse enough to be a trick
         EVENT_ACCESS(LOGIC_GTG_PLATFORM_SILVER_RUPEES, ((logic->CanUse(RG_FAIRY_BOW) && logic->IsAdult) || logic->CanUse(RG_FIRE_ARROWS)) && logic->CanUse(RG_HOVER_BOOTS)),
