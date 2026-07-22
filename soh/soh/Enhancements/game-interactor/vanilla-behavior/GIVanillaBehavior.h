@@ -1530,6 +1530,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // gSaveContext.eventInf[0] & 0x40
+    // ```
+    // #### `args`
+    // - None
+    VB_LINK_WIN_EPONA,
+
+    // #### `result`
+    // ```c
     // !Flags_GetSwitch(play, this->dyna.actor.params & 0x3F)
     // ```
     // #### `args`
