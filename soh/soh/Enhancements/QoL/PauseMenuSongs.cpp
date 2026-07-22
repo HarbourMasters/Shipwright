@@ -8,6 +8,8 @@ extern "C" {
 #include "variables.h"
 #include "src/overlays/actors/ovl_En_Okarina_Tag/z_en_okarina_tag.h"
 #include "src/overlays/actors/ovl_En_Md/z_en_md.h"
+#include "src/overlays/actors/ovl_Obj_Timeblock/z_obj_timeblock.h"
+#include "src/overlays/actors/ovl_Shot_Sun/z_shot_sun.h"
 extern PlayState* gPlayState;
 u8 Randomizer_GetSettingValue(RandomizerSettingKey);
 
@@ -20,6 +22,12 @@ void func_80ABF4C8(EnOkarinaTag* tag, PlayState* play);
 void EnMd_BlockPath(EnMd* actor, PlayState* play);
 void EnMd_ListenToOcarina(EnMd* actor, PlayState* play);
 void Player_StartTalking(PlayState* play, Actor* actor);
+
+// Song of Time block (Obj_Timeblock) and Great Fairy spawner (Shot_Sun) observers, not exposed in a header.
+u8 ObjTimeblock_PlayerIsInRange(ObjTimeblock* timeblock, PlayState* play);
+s32 ObjTimeblock_WaitForOcarina(ObjTimeblock* timeblock, PlayState* play);
+s32 ObjTimeblock_WaitForSong(ObjTimeblock* timeblock, PlayState* play);
+void ShotSun_UpdateFairySpawner(ShotSun* shotSun, PlayState* play);
 }
 
 static constexpr int32_t CVAR_PAUSE_WARP_DEFAULT = 0;
@@ -150,12 +158,17 @@ static bool PauseSong_ActivateOkarinaTags() {
             if (tag->actionFunc == func_80ABEF2C && tag->ocarinaSong == songIndex) {
                 func_80ABF0CC(tag, gPlayState);
                 matched = true;
-            } else if (tag->actionFunc == func_80ABF28C &&
-                       ((song == OCARINA_SONG_LULLABY && (tag->type == 1 || tag->type == 6)) ||
-                        (song == OCARINA_SONG_STORMS && tag->type == 2) ||
-                        (song == OCARINA_SONG_TIME && tag->type == 4))) {
-                func_80ABF4C8(tag, gPlayState);
-                matched = true;
+            } else if (tag->actionFunc == func_80ABF28C) {
+                // Type 1/6 react to Zelda's Lullaby, type 2 to Song of Storms, type 4 to Song of Time.
+                bool songMatchesType = (((tag->type == 1) || (tag->type == 6)) && (song == OCARINA_SONG_LULLABY)) ||
+                                       ((tag->type == 2) && (song == OCARINA_SONG_STORMS)) ||
+                                       ((tag->type == 4) && (song == OCARINA_SONG_TIME));
+                if (songMatchesType) {
+                    // Like the type-7 spots, run the listening handler now while MODE_03 is set so it
+                    // fires this frame (its actionFunc is func_80ABF28C, so it consumes it).
+                    func_80ABF4C8(tag, gPlayState);
+                    matched = true;
+                }
             }
         }
     }
@@ -200,6 +213,73 @@ static bool PauseSong_ActivateNpcActors() {
     return false;
 }
 
+// --- Song of Time blocks and Great Fairy spawners ---
+// These don't consume the MODE_03 "correct song" event the staff spots and NPCs do. Instead each runs a
+// small state machine that, driven by a real ocarina play-for-actor, ends by reading OCARINA_MODE_04 +
+// lastPlayedSong. We can't reach that through the menu, so -- as with the tags and Mido -- we push the
+// matching in-range actors straight into that final state and hold MODE_04 for a couple frames, since
+// they update before this hook and only react on their next pass.
+static int songEventHoldTimer = 0;
+
+// Clears the held MODE_04 once the block/fairy has had its frame(s) to read it. Returns true while holding.
+static bool PauseSong_AdvanceSongEvent() {
+    if (songEventHoldTimer <= 0) {
+        return false;
+    }
+    if (--songEventHoldTimer == 0 && gPlayState->msgCtx.ocarinaMode == OCARINA_MODE_04) {
+        gPlayState->msgCtx.ocarinaMode = OCARINA_MODE_00;
+    }
+    return true;
+}
+
+// Engage any in-range Song of Time block (Song of Time) or Great Fairy spawner (Sun's Song / Song of
+// Storms). Returns true if at least one was engaged, in which case MODE_04 is left set for it to consume.
+static bool PauseSong_ActivateSongEventActors() {
+    Player* player = GET_PLAYER(gPlayState);
+    u16 song = gPlayState->msgCtx.lastPlayedSong;
+    bool engaged = false;
+
+    if (song == OCARINA_SONG_TIME) {
+        for (Actor* actor = gPlayState->actorCtx.actorLists[ACTORCAT_ITEMACTION].head; actor != NULL;
+             actor = actor->next) {
+            if (actor->id != ACTOR_OBJ_TIMEBLOCK) {
+                continue;
+            }
+            ObjTimeblock* timeblock = (ObjTimeblock*)actor;
+            // Only idle blocks the player could actually reach; skip ones mid-sequence or out of range.
+            if (timeblock->songObserverFunc == ObjTimeblock_WaitForOcarina &&
+                ObjTimeblock_PlayerIsInRange(timeblock, gPlayState)) {
+                // WaitForSong reports completion once lastPlayedSong is Song of Time and its countdown ends;
+                // a non-sentinel prior song plus a 1-frame timer makes it fire on the block's next update.
+                timeblock->songObserverFunc = ObjTimeblock_WaitForSong;
+                timeblock->unk_172 = OCARINA_SONG_TIME;
+                timeblock->songEndTimer = 1;
+                engaged = true;
+            }
+        }
+    } else if (song == OCARINA_SONG_SUNS || song == OCARINA_SONG_STORMS) {
+        s32 wantParams = (song == OCARINA_SONG_SUNS) ? 0x40 : 0x41;
+        for (Actor* actor = gPlayState->actorCtx.actorLists[ACTORCAT_PROP].head; actor != NULL; actor = actor->next) {
+            if (actor->id != ACTOR_SHOT_SUN || (actor->params & 0xFF) != wantParams) {
+                continue;
+            }
+            ShotSun* shotSun = (ShotSun*)actor;
+            // fairySpawnerState 2 is the "song finished" state; the actor reads MODE_04 + song from there.
+            if (shotSun->actionFunc == ShotSun_UpdateFairySpawner &&
+                Math3D_Vec3fDistSq(&actor->world.pos, &player->actor.world.pos) <= 22500.0f) {
+                shotSun->fairySpawnerState = 2;
+                engaged = true;
+            }
+        }
+    }
+
+    if (engaged) {
+        gPlayState->msgCtx.ocarinaMode = OCARINA_MODE_04;
+        songEventHoldTimer = 2;
+    }
+    return engaged;
+}
+
 // Returns true while a hand-off is running, so the caller skips starting another song this frame.
 static bool PauseSong_AdvanceNpcHandoff() {
     if (npcTalkActor == NULL) {
@@ -216,7 +296,7 @@ static bool PauseSong_AdvanceNpcHandoff() {
 }
 
 static void PauseSong_Execute() {
-    if (PauseSong_AdvanceNpcHandoff()) {
+    if (PauseSong_AdvanceSongEvent() || PauseSong_AdvanceNpcHandoff()) {
         return;
     }
     if (!isSongActive || gPlayState->pauseCtx.state != 0 || gPlayState->msgCtx.msgMode != MSGMODE_NONE) {
@@ -236,14 +316,18 @@ static void PauseSong_Execute() {
     Actor_Spawn(&gPlayState->actorCtx, gPlayState, effectActorIds[idx], player->actor.world.pos.x,
                 player->actor.world.pos.y, player->actor.world.pos.z, 0, 0, 0, effectActorParams[idx]);
 
-    // Flag the correct-song state and fire matching in-range spots. A staff spot runs synchronously, so
+    // Simulate the ocarina system reporting a successful song check. A staff spot runs synchronously, so
     // reset the ocarina/message state right after. The Water Temple triforce leaves msgMode =
     // MSGMODE_PAUSED, which would otherwise block the pause menu (z_play gates on NONE).
     gPlayState->msgCtx.ocarinaMode = OCARINA_MODE_03;
     bool matched = PauseSong_ActivateOkarinaTags();
 
-    // No staff spot took it: try a matching NPC (Mido, ...). If one engages, leave OCARINA_MODE_03 set
-    // for it to consume next frame; the hand-off machinery finishes and restores state.
+    // No staff spot took it: try the MODE_04 song-event actors (Song of Time blocks, Great Fairy
+    // spawners), then a matching NPC (Mido, ...). Either leaves the ocarina result set for the actor to
+    // consume next frame, and its hand-off machinery finishes and restores state.
+    if (!matched && PauseSong_ActivateSongEventActors()) {
+        return;
+    }
     if (!matched && PauseSong_ActivateNpcActors()) {
         return;
     }
