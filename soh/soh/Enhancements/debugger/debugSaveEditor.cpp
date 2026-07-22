@@ -1989,5 +1989,5 @@ void SaveEditorWindow::DrawElement() {
 
 void SaveEditorWindow::InitElement() {
     std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-        ->LoadGuiTexture("ROCS_FEATHER", gRocsFeatherTex, ImVec4(1, 1, 1, 1));
+        ->LoadGuiTexture("ROCS_FEATHER", gRocsFeatherTex, "", ImVec4(1, 1, 1, 1));
 }
