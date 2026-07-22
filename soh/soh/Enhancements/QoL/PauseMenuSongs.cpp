@@ -8,6 +8,8 @@ extern "C" {
 #include "variables.h"
 #include "src/overlays/actors/ovl_En_Okarina_Tag/z_en_okarina_tag.h"
 #include "src/overlays/actors/ovl_En_Md/z_en_md.h"
+#include "src/overlays/actors/ovl_En_Du/z_en_du.h"
+#include "src/overlays/actors/ovl_En_Ma2/z_en_ma2.h"
 #include "src/overlays/actors/ovl_Obj_Timeblock/z_obj_timeblock.h"
 #include "src/overlays/actors/ovl_Shot_Sun/z_shot_sun.h"
 extern PlayState* gPlayState;
@@ -18,9 +20,14 @@ void func_80ABEF2C(EnOkarinaTag* tag, PlayState* play);
 void func_80ABF0CC(EnOkarinaTag* tag, PlayState* play);
 void func_80ABF28C(EnOkarinaTag* tag, PlayState* play);
 void func_80ABF4C8(EnOkarinaTag* tag, PlayState* play);
-// Mido (En_Md) block/listen handlers, not exposed in a header.
+
+// NPC ocarina idle/listen handlers (Mido, Darunia, adult Malon), not exposed in a header.
 void EnMd_BlockPath(EnMd* actor, PlayState* play);
 void EnMd_ListenToOcarina(EnMd* actor, PlayState* play);
+void func_809FE3C0(EnDu* actor, PlayState* play); // Darunia: idle, waiting for the ocarina
+void func_809FE4A4(EnDu* actor, PlayState* play); // Darunia: listening for Saria's Song
+void EnMa2_WaitForOcarina(EnMa2* actor, PlayState* play);
+void EnMa2_WaitForEponasSong(EnMa2* actor, PlayState* play);
 void Player_StartTalking(PlayState* play, Actor* actor);
 
 // Song of Time block (Obj_Timeblock) and Great Fairy spawner (Shot_Sun) observers, not exposed in a header.
@@ -181,31 +188,54 @@ static bool PauseSong_ActivateOkarinaTags() {
 // can't satisfy from the menu. So, exactly like the tags, we set the actor's actionFunc straight to its
 // listening handler and leave OCARINA_MODE_03 set; the handler reacts on the next frame. Any dialogue it
 // offers is then started here, since the player -- never in its ocarina action -- won't do it itself.
-static Actor* npcTalkActor = NULL;
+static Actor* npcHandoffActor = NULL;
+static bool npcHandoffStartTalk = false;
 static int npcHandoffTimer = 0;
 
 static void PauseSong_EndNpcHandoff() {
     if (gPlayState->msgCtx.ocarinaMode == OCARINA_MODE_03 || gPlayState->msgCtx.ocarinaMode == OCARINA_MODE_04) {
         gPlayState->msgCtx.ocarinaMode = OCARINA_MODE_00;
     }
-    npcTalkActor = NULL;
+    npcHandoffActor = NULL;
+    npcHandoffStartTalk = false;
     npcHandoffTimer = 0;
 }
 
 // Hand the played song to a matching in-range NPC. Returns true if one was engaged, in which case
-// OCARINA_MODE_03 is left set for it to consume next frame.
+// OCARINA_MODE_03 is left set for it to consume next frame; the hand-off machinery then restores state
+// and, for actors that offer a dialogue the player would normally start, begins that talk.
 static bool PauseSong_ActivateNpcActors() {
     Player* player = GET_PLAYER(gPlayState);
     u16 song = gPlayState->msgCtx.lastPlayedSong;
+    s16 scene = gPlayState->sceneNum;
 
     for (Actor* actor = gPlayState->actorCtx.actorLists[ACTORCAT_NPC].head; actor != NULL; actor = actor->next) {
-        // Mido, in the Lost Woods, moves aside when played Saria's Song.
-        if (actor->id == ACTOR_EN_MD && song == OCARINA_SONG_SARIAS && gPlayState->sceneNum == SCENE_LOST_WOODS) {
+        // Mido, in the Lost Woods, moves aside for Saria's Song, then offers a dialogue we must start.
+        if (actor->id == ACTOR_EN_MD && scene == SCENE_LOST_WOODS && song == OCARINA_SONG_SARIAS) {
             EnMd* mido = (EnMd*)actor;
             if (mido->actionFunc == EnMd_BlockPath && mido->interactInfo.talkState == NPC_TALK_STATE_IDLE &&
                 actor->xzDistToPlayer < 100.0f) {
                 mido->actionFunc = EnMd_ListenToOcarina;
-                npcTalkActor = actor;
+                npcHandoffActor = actor;
+                npcHandoffStartTalk = true;
+                return true;
+            }
+        }
+        // Darunia, in Goron City as a child, dances (a cutscene) for Saria's Song.
+        if (actor->id == ACTOR_EN_DU && scene == SCENE_GORON_CITY && song == OCARINA_SONG_SARIAS) {
+            EnDu* darunia = (EnDu*)actor;
+            if (darunia->actionFunc == func_809FE3C0 && actor->xzDistToPlayer < 120.0f) {
+                darunia->actionFunc = func_809FE4A4;
+                npcHandoffActor = actor;
+                return true;
+            }
+        }
+        // Adult Malon, at Lon Lon Ranch, reacts to Epona's Song (she starts her own dialogue).
+        if (actor->id == ACTOR_EN_MA2 && scene == SCENE_LON_LON_RANCH && song == OCARINA_SONG_EPONAS) {
+            EnMa2* malon = (EnMa2*)actor;
+            if (malon->actionFunc == EnMa2_WaitForOcarina && actor->xzDistToPlayer < 60.0f) {
+                malon->actionFunc = EnMa2_WaitForEponasSong;
+                npcHandoffActor = actor;
                 return true;
             }
         }
@@ -282,13 +312,14 @@ static bool PauseSong_ActivateSongEventActors() {
 
 // Returns true while a hand-off is running, so the caller skips starting another song this frame.
 static bool PauseSong_AdvanceNpcHandoff() {
-    if (npcTalkActor == NULL) {
+    if (npcHandoffActor == NULL) {
         return false;
     }
-    // The actor consumed OCARINA_MODE_03 (set MODE_04) and reacted; start any dialogue it offered.
+    // The actor consumed OCARINA_MODE_03 (set MODE_04) and reacted. For actors that offer a dialogue the
+    // player would normally start (Mido), start it now; others drive their own cutscene / talk.
     if (gPlayState->msgCtx.ocarinaMode != OCARINA_MODE_03 || ++npcHandoffTimer > 30) {
-        if (gPlayState->msgCtx.ocarinaMode != OCARINA_MODE_03 && npcTalkActor->textId != 0) {
-            Player_StartTalking(gPlayState, npcTalkActor);
+        if (npcHandoffStartTalk && gPlayState->msgCtx.ocarinaMode != OCARINA_MODE_03 && npcHandoffActor->textId != 0) {
+            Player_StartTalking(gPlayState, npcHandoffActor);
         }
         PauseSong_EndNpcHandoff();
     }
