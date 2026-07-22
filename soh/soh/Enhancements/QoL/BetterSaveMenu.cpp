@@ -76,7 +76,8 @@ void HandleSaveMenu(bool* should, PlayState* play) {
                                            &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                     Play_PerformSave(play);
                     pauseCtx->unk_1EC = 4;
-                    if (IsSceneDungeon(gSaveContext.savedSceneNum)) {
+                    if (IsSceneDungeon(gSaveContext.savedSceneNum) ||
+                        CVarGetInteger(CVAR_ENHANCEMENT("RememberSaveLocation"), 0)) {
                         Message_StartTextbox(play, TEXT_CONTINUE_DUNGEON_MSG, NULL);
                     } else {
                         Message_StartTextbox(play, TEXT_CONTINUE_OVERWORLD_MSG, NULL);
