@@ -2345,6 +2345,14 @@ typedef enum {
     // true
     // ```
     // #### `args`
+    // - `None`
+    VB_SET_BOMBCHU_BOWLING_AMMO,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
     // - `int32_t` (button - promoted from `s16`)
     VB_SET_BUTTON_ITEM_FROM_C_BUTTON_SLOT,
 
@@ -2545,6 +2553,14 @@ typedef enum {
     // ##### In `z_boss_va.c`:
     // - `*BossVa`
     VB_SPAWN_BLUE_WARP,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `s32` (Cucco index; 0 = small, 1 = big)
+    VB_SPAWN_BOMBCHU_BOWLING_CUCCOS,
 
     // #### `result`
     // ```c
