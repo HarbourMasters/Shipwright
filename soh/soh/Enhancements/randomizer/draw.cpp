@@ -1285,19 +1285,6 @@ extern "C" void Randomizer_DrawBombchuBag(PlayState* play, GetItemEntry* getItem
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
-extern "C" void Randomizer_DrawBombchuBagInLogic(PlayState* play, GetItemEntry* getItemEntry) {
-    if (IS_RANDO && OTRGlobals::Instance->gRandoContext->GetOption(RSK_BOMBCHU_BAG).IsNot(RO_BOMBCHU_BAG_NONE)) {
-        Randomizer_DrawBombchuBag(play, getItemEntry);
-    } else {
-        OPEN_DISPS(play->state.gfxCtx);
-        Gfx_SetupDL_26Opa(play->state.gfxCtx);
-        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
-                  G_MTX_MODELVIEW | G_MTX_LOAD);
-        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiBombchuDL);
-        CLOSE_DISPS(play->state.gfxCtx);
-    }
-}
-
 extern "C" void Randomizer_DrawOverworldKey(PlayState* play, GetItemEntry* getItemEntry) {
     OPEN_DISPS(play->state.gfxCtx);
 
