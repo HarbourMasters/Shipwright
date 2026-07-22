@@ -20,35 +20,38 @@ static constexpr s32 CUCCO_BOWLING_AMMO_DEFAULT = 10;
 #define CVAR_BOWLING_AMMO_VALUE CVarGetInteger(CVAR_BOWLING_AMMO_NAME, CUCCO_BOWLING_AMMO_DEFAULT)
 
 typedef enum {
-	CUCCO_INDEX_SMALL,
-	CUCCO_INDEX_BIG,
+    CUCCO_INDEX_SMALL,
+    CUCCO_INDEX_BIG,
 } BombchuBowlingCuccoIndex;
 
 static void RegisterBombchuBowlingNoSmallCucco() {
-	COND_VB_SHOULD(VB_SPAWN_BOMBCHU_BOWLING_CUCCOS, CVAR_BOWLING_VALUE && CVAR_CUCCO_SMALL_VALUE, {
-		s32 index = va_arg(args, s32);
-		if (index == CUCCO_INDEX_SMALL) {
-			*should = false;
-		}
-	});
+    COND_VB_SHOULD(VB_SPAWN_BOMBCHU_BOWLING_CUCCOS, CVAR_BOWLING_VALUE && CVAR_CUCCO_SMALL_VALUE, {
+        s32 index = va_arg(args, s32);
+        if (index == CUCCO_INDEX_SMALL) {
+            *should = false;
+        }
+    });
 }
 
 static void RegisterBombchuBowlingNoBigCucco() {
-	COND_VB_SHOULD(VB_SPAWN_BOMBCHU_BOWLING_CUCCOS, CVAR_BOWLING_VALUE && CVAR_CUCCO_BIG_VALUE, {
-		s32 index = va_arg(args, s32);
-		if (index == CUCCO_INDEX_BIG) {
-			*should = false;
-		}
-	});
+    COND_VB_SHOULD(VB_SPAWN_BOMBCHU_BOWLING_CUCCOS, CVAR_BOWLING_VALUE && CVAR_CUCCO_BIG_VALUE, {
+        s32 index = va_arg(args, s32);
+        if (index == CUCCO_INDEX_BIG) {
+            *should = false;
+        }
+    });
 }
 
 static void RegisterBombchuBowlingAmmo() {
-	COND_VB_SHOULD(VB_SET_BOMBCHU_BOWLING_AMMO, CVAR_BOWLING_VALUE && (CVAR_BOWLING_AMMO_VALUE != CUCCO_BOWLING_AMMO_DEFAULT), {
-		gPlayState->bombchuBowlingStatus = CVAR_BOWLING_AMMO_VALUE;
-		*should = false;
-	});
+    COND_VB_SHOULD(VB_SET_BOMBCHU_BOWLING_AMMO,
+                   CVAR_BOWLING_VALUE && (CVAR_BOWLING_AMMO_VALUE != CUCCO_BOWLING_AMMO_DEFAULT), {
+                       gPlayState->bombchuBowlingStatus = CVAR_BOWLING_AMMO_VALUE;
+                       *should = false;
+                   });
 }
 
-static RegisterShipInitFunc initFunc_SmallCucco(RegisterBombchuBowlingNoSmallCucco, { CVAR_BOWLING_NAME, CVAR_CUCCO_SMALL_NAME });
-static RegisterShipInitFunc initFunc_BigCucco(RegisterBombchuBowlingNoBigCucco, { CVAR_BOWLING_NAME, CVAR_CUCCO_BIG_NAME });
+static RegisterShipInitFunc initFunc_SmallCucco(RegisterBombchuBowlingNoSmallCucco,
+                                                { CVAR_BOWLING_NAME, CVAR_CUCCO_SMALL_NAME });
+static RegisterShipInitFunc initFunc_BigCucco(RegisterBombchuBowlingNoBigCucco,
+                                              { CVAR_BOWLING_NAME, CVAR_CUCCO_BIG_NAME });
 static RegisterShipInitFunc initFunc_Ammo(RegisterBombchuBowlingAmmo, { CVAR_BOWLING_NAME, CVAR_BOWLING_AMMO_NAME });
