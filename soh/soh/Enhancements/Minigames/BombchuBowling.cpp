@@ -19,13 +19,45 @@ static constexpr s32 CUCCO_BOWLING_AMMO_DEFAULT = 10;
 #define CVAR_BOWLING_AMMO_NAME CVAR_ENHANCEMENT("BombchuBowlingAmmo")
 #define CVAR_BOWLING_AMMO_VALUE CVarGetInteger(CVAR_BOWLING_AMMO_NAME, CUCCO_BOWLING_AMMO_DEFAULT)
 
+static constexpr f32 CUCCO_SEARCH_Z = -520.0f;
+
 typedef enum {
     CUCCO_INDEX_SMALL,
     CUCCO_INDEX_BIG,
 } BombchuBowlingCuccoIndex;
 
+static void KillSmallCucco() {
+    Actor* cucco = gPlayState->actorCtx.actorLists[ACTORCAT_PROP].head;
+
+    while (cucco != NULL) {
+        if (cucco->id == ACTOR_EN_SYATEKI_NIW && cucco->home.pos.z > CUCCO_SEARCH_Z) {
+            Actor_Kill(cucco);
+            break;
+        }
+        cucco = cucco->next;
+    }
+}
+
+static void KillBigCucco() {
+    Actor* cucco = gPlayState->actorCtx.actorLists[ACTORCAT_PROP].head;
+
+    while (cucco != NULL) {
+        if (cucco->id == ACTOR_EN_SYATEKI_NIW && cucco->home.pos.z < CUCCO_SEARCH_Z) {
+            Actor_Kill(cucco);
+            break;
+        }
+        cucco = cucco->next;
+    }
+}
+
 static void RegisterBombchuBowlingNoSmallCucco() {
-    COND_VB_SHOULD(VB_SPAWN_BOMBCHU_BOWLING_CUCCOS, CVAR_BOWLING_VALUE && CVAR_CUCCO_SMALL_VALUE, {
+    s32 noCucco = CVAR_BOWLING_VALUE && CVAR_CUCCO_SMALL_VALUE;
+
+    if (noCucco && gPlayState != NULL && gPlayState->sceneNum == SCENE_BOMBCHU_BOWLING_ALLEY) {
+        KillSmallCucco();
+    }
+
+    COND_VB_SHOULD(VB_SPAWN_BOMBCHU_BOWLING_CUCCOS, noCucco, {
         s32 index = va_arg(args, s32);
         if (index == CUCCO_INDEX_SMALL) {
             *should = false;
@@ -34,7 +66,13 @@ static void RegisterBombchuBowlingNoSmallCucco() {
 }
 
 static void RegisterBombchuBowlingNoBigCucco() {
-    COND_VB_SHOULD(VB_SPAWN_BOMBCHU_BOWLING_CUCCOS, CVAR_BOWLING_VALUE && CVAR_CUCCO_BIG_VALUE, {
+    s32 noCucco = CVAR_BOWLING_VALUE && CVAR_CUCCO_BIG_VALUE;
+
+    if (noCucco && gPlayState != NULL && gPlayState->sceneNum == SCENE_BOMBCHU_BOWLING_ALLEY) {
+        KillBigCucco();
+    }
+
+    COND_VB_SHOULD(VB_SPAWN_BOMBCHU_BOWLING_CUCCOS, noCucco, {
         s32 index = va_arg(args, s32);
         if (index == CUCCO_INDEX_BIG) {
             *should = false;
