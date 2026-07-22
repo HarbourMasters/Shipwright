@@ -529,10 +529,11 @@ void DrawInventoryTab() {
         "Restrict to valid items", &restrictToValid,
         checkboxOptionsBase.Tooltip("Restricts items and ammo to only what is possible to legally acquire in-game"));
 
-    for (int32_t y = 0; y < 4; y++) {
-        for (int32_t x = 0; x < 6; x++) {
-            int32_t index = x + y * 6;
-            static int32_t selectedIndex = -1;
+    for (int y = 0; y < 4; y++) {
+        for (int x = 0; x < 6; x++) {
+            static_assert(5 + 3 * 6 < sizeof(gSaveContext.inventory.items) / sizeof(gSaveContext.inventory.items[0]));
+            InventorySlot index = static_cast<InventorySlot>(x + y * 6);
+            static InventorySlot selectedIndex = SLOT_NONE;
             static const char* itemPopupPicker = "itemPopupPicker";
 
             ImGui::PushID(index);
@@ -541,7 +542,7 @@ void DrawInventoryTab() {
                 ImGui::SameLine();
             }
 
-            uint8_t item = gSaveContext.inventory.items[index];
+            ItemID item = (ItemID)gSaveContext.inventory.items[index];
             PushStyleButton(Colors::DarkGray);
             if (item == ITEM_ROCS_FEATHER) {
                 auto ret = ImGui::ImageButton(
@@ -553,8 +554,9 @@ void DrawInventoryTab() {
                     selectedIndex = index;
                     ImGui::OpenPopup(itemPopupPicker);
                 }
-            } else if (item != ITEM_NONE) {
-                const ItemMapEntry& slotEntry = itemMapping.find(item)->second;
+            } else if (const auto mappedItem = itemMapping.find(item);
+                       item != ITEM_NONE && mappedItem != itemMapping.end()) {
+                const ItemMapEntry& slotEntry = mappedItem->second;
                 auto ret = ImGui::ImageButton(
                     slotEntry.name.c_str(),
                     std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
@@ -577,7 +579,8 @@ void DrawInventoryTab() {
                 PushStyleButton(Colors::DarkGray);
                 if (ImGui::Button("##itemNonePicker",
                                   ImVec2(IMAGE_SIZE, IMAGE_SIZE) + ImGui::GetStyle().FramePadding * 2)) {
-                    gSaveContext.inventory.items[selectedIndex] = ITEM_NONE;
+                    if (selectedIndex != SLOT_NONE)
+                        gSaveContext.inventory.items[selectedIndex] = ITEM_NONE;
                     ImGui::CloseCurrentPopup();
                 }
                 PopStyleButton();
@@ -591,8 +594,9 @@ void DrawInventoryTab() {
                                          selectedIndex == SLOT_BOTTLE_3 || selectedIndex == SLOT_BOTTLE_4)
                                             ? SLOT_BOTTLE_1
                                             : selectedIndex;
-                        if (gItemSlots[slotIndex] == testIndex) {
-                            possibleItems.push_back(itemMapping[slotIndex]);
+                        if (const auto mappedItem = itemMapping.find(slotIndex);
+                            gItemSlots[slotIndex] == testIndex && mappedItem != itemMapping.end()) {
+                            possibleItems.push_back(mappedItem->second);
                         }
                     }
                 } else {

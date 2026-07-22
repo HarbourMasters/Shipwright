@@ -76,7 +76,8 @@ void HandleSaveMenu(bool* should, PlayState* play) {
                                            &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                     Play_PerformSave(play);
                     pauseCtx->unk_1EC = 4;
-                    if (IsSceneDungeon(gSaveContext.savedSceneNum)) {
+                    if (IsSceneDungeon(gSaveContext.savedSceneNum) ||
+                        CVarGetInteger(CVAR_ENHANCEMENT("RememberSaveLocation"), 0)) {
                         Message_StartTextbox(play, TEXT_CONTINUE_DUNGEON_MSG, NULL);
                     } else {
                         Message_StartTextbox(play, TEXT_CONTINUE_OVERWORLD_MSG, NULL);
@@ -164,9 +165,6 @@ void HandleSaveMenu(bool* should, PlayState* play) {
                     // Reset frame counter to prevent autosave on respawn
                     play->gameplayFrames = 0;
                     gSaveContext.nextTransitionType = TRANS_TYPE_FADE_BLACK;
-                    gSaveContext.health = CVarGetInteger(CVAR_ENHANCEMENT("FullHealthSpawn"), 0)
-                                              ? gSaveContext.healthCapacity
-                                              : STARTING_HEALTH;
                     Audio_QueueSeqCmd(0xF << 28 | SEQ_PLAYER_BGM_MAIN << 24 | 0xA);
                     gSaveContext.healthAccumulator = 0;
                     gSaveContext.magicState = MAGIC_STATE_IDLE;
@@ -176,6 +174,8 @@ void HandleSaveMenu(bool* should, PlayState* play) {
                     gSaveContext.magicLevel = gSaveContext.magic = 0;
                     play->state.running = false;
                     SET_NEXT_GAMESTATE(&play->state, Play_Init, PlayState);
+                    gSaveContext.seqId = static_cast<uint8_t>(NA_BGM_DISABLED);
+                    gSaveContext.natureAmbienceId = 0xFF;
                 }
             }
             break;
