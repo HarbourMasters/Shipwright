@@ -2036,6 +2036,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnSyatekiItm`
+    VB_PLAY_SHOOTING_GALLERY,
+
+    // #### `result`
+    // ```c
     // (giEntry.itemId != ITEM_NONE) && (giEntry.gi >= 0) && (Item_CheckObtainability(giEntry.itemId) == ITEM_NONE)
     // ```
     // #### `args`
@@ -2382,6 +2390,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*s32` (ammo count)
+    VB_SET_SHOOTING_GALLERY_AMMO,
+
+    // #### `result`
+    // ```c
     // SurfaceType_GetFloorEffect(&play->colCtx, poly, bgId) == 2
     // ```
     // #### `args`
@@ -2405,6 +2421,14 @@ typedef enum {
     // #### `args`
     // - None
     VB_SHIEK_PREPARE_TO_GIVE_SERENADE_OF_WATER,
+
+    // #### `result`
+    // ```c
+    // LINK_IS_ADULT
+    // ```
+    // #### `args`
+    // - None
+    VB_SHOOTING_GALLERY_SHUFFLE_ADULT_RUPEES,
 
     // #### `result`
     // ```c
