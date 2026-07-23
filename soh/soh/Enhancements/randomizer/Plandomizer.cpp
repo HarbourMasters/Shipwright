@@ -1187,27 +1187,27 @@ void PlandomizerWindow::DrawElement() {
 
 void PlandomizerWindow::InitElement() {
     std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-        ->LoadGuiTexture("ITEM_RUPEE_GRAYSCALE", gRupeeCounterIconTex, ImVec4(1, 1, 1, 1));
+        ->LoadGuiTexture("ITEM_RUPEE_GRAYSCALE", gRupeeCounterIconTex, "", ImVec4(1, 1, 1, 1));
     std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-        ->LoadGuiTexture("ITEM_HEART_GRAYSCALE", gHeartFullTex, ImVec4(0.87f, 0.10f, 0.10f, 1));
+        ->LoadGuiTexture("ITEM_HEART_GRAYSCALE", gHeartFullTex, "", ImVec4(0.87f, 0.10f, 0.10f, 1));
     std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-        ->LoadGuiTexture("ITEM_SEEDS", gItemIconDekuSeedsTex, ImVec4(1, 1, 1, 1));
+        ->LoadGuiTexture("ITEM_SEEDS", gItemIconDekuSeedsTex, "", ImVec4(1, 1, 1, 1));
     std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-        ->LoadGuiTexture("ITEM_ARROWS_SMALL", gDropArrows1Tex, ImVec4(1, 1, 1, 1));
+        ->LoadGuiTexture("ITEM_ARROWS_SMALL", gDropArrows1Tex, "", ImVec4(1, 1, 1, 1));
     std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-        ->LoadGuiTexture("ITEM_ARROWS_MEDIUM", gDropArrows2Tex, ImVec4(1, 1, 1, 1));
+        ->LoadGuiTexture("ITEM_ARROWS_MEDIUM", gDropArrows2Tex, "", ImVec4(1, 1, 1, 1));
     std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-        ->LoadGuiTexture("ITEM_ARROWS_LARGE", gDropArrows3Tex, ImVec4(1, 1, 1, 1));
+        ->LoadGuiTexture("ITEM_ARROWS_LARGE", gDropArrows3Tex, "", ImVec4(1, 1, 1, 1));
     std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-        ->LoadGuiTexture("ITEM_ICE_TRAP", gMagicArrowEquipEffectTex, ImVec4(1, 1, 1, 1));
+        ->LoadGuiTexture("ITEM_ICE_TRAP", gMagicArrowEquipEffectTex, "", ImVec4(1, 1, 1, 1));
     std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-        ->LoadGuiTexture("HASH_ARROW_UP", gEmptyCDownArrowTex, ImVec4(1, 1, 1, 1));
+        ->LoadGuiTexture("HASH_ARROW_UP", gEmptyCDownArrowTex, "", ImVec4(1, 1, 1, 1));
     std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-        ->LoadGuiTexture("HASH_ARROW_DWN", gEmptyCDownArrowTex, ImVec4(1, 1, 1, 1));
+        ->LoadGuiTexture("HASH_ARROW_DWN", gEmptyCDownArrowTex, "", ImVec4(1, 1, 1, 1));
     std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-        ->LoadGuiTexture("BOSS_SOUL", gBossSoulTex, ImVec4(1, 1, 1, 1));
+        ->LoadGuiTexture("BOSS_SOUL", gBossSoulTex, "", ImVec4(1, 1, 1, 1));
     std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-        ->LoadGuiTexture("TRIFORCE_PIECE", gTriforcePieceTex, ImVec4(1, 1, 1, 1));
+        ->LoadGuiTexture("TRIFORCE_PIECE", gTriforcePieceTex, "", ImVec4(1, 1, 1, 1));
     std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-        ->LoadGuiTexture("TRIFORCE", gTriforcePieceTex, ImVec4(1, 1, 1, 1));
+        ->LoadGuiTexture("TRIFORCE", gTriforcePieceTex, "", ImVec4(1, 1, 1, 1));
 }

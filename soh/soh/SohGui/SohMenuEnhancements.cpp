@@ -1620,6 +1620,11 @@ void SohMenu::AddMenuEnhancements() {
         .CVar(CVAR_ENHANCEMENT("SkipAmyPuzzle"))
         .Options(CheckboxOptions().Tooltip("Amy's block pushing puzzle instantly solved."));
 
+    AddWidget(path, "Ingo's Race", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Only Race Once", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("IngoRaceOnce"))
+        .Options(CheckboxOptions().Tooltip("Link only needs to race Ingo once to win Epona."));
+
     path.column = SECTION_COLUMN_3;
     AddWidget(path, "Rupee Diving Game", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Time Limit: %d seconds", WIDGET_CVAR_SLIDER_INT)
