@@ -21,7 +21,8 @@ static void IngoRaceInstantWin(void* refActor) {
 }
 
 static void RegisterIngoRaceOnce() {
-    COND_ID_HOOK(OnActorInit, ACTOR_EN_HORSE_GAME_CHECK, CVAR_INGO_RACE_ONCE_VALUE == INGO_RACE_NONE, IngoRaceInstantWin);
+    COND_ID_HOOK(OnActorInit, ACTOR_EN_HORSE_GAME_CHECK, CVAR_INGO_RACE_ONCE_VALUE == INGO_RACE_NONE,
+                 IngoRaceInstantWin);
 
     COND_VB_SHOULD(VB_LINK_WIN_EPONA, CVAR_INGO_RACE_ONCE_VALUE != INGO_RACE_TWICE, { *should = true; });
 }
