@@ -64,12 +64,12 @@ static void RegisterLostWoodsOcarinaGameRoundNotesSetup() {
 
 static void RegisterLostWoodsOcarinaGameStartingNotesSetup() {
     COND_VB_SHOULD(VB_SET_LOST_WOODS_OCARINA_GAME_STARTING_NOTES,
-        CVAR_CUSTOMIZE_VALUE && (CVAR_STARTING_NOTES_VALUE != OCARINA_GAME_STARTING_NOTES), {
-            for (u8 i = 0; i < CVAR_STARTING_NOTES_VALUE; i++) {
-                AudioOcarina_MemoryGameNextNote();
-            }
-            *should = false;
-        });
+                   CVAR_CUSTOMIZE_VALUE && (CVAR_STARTING_NOTES_VALUE != OCARINA_GAME_STARTING_NOTES), {
+                       for (u8 i = 0; i < CVAR_STARTING_NOTES_VALUE; i++) {
+                           AudioOcarina_MemoryGameNextNote();
+                       }
+                       *should = false;
+                   });
 }
 
 static void RegisterLostWoodsOcarinaGameModifyNoteSpeed() {
