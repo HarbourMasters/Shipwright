@@ -805,6 +805,14 @@ typedef enum {
     // ```
     // #### `args`
     // - None
+    VB_FROGS_OCARINA_GAME_TIMER_TICK,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
     VB_GANON_HEAL_BEFORE_FIGHT,
 
     // #### `result`
@@ -1905,6 +1913,14 @@ typedef enum {
     // true
     // ```
     // #### `args`
+    // - `*EnFr`
+    VB_PLAY_FROG_OCARINA_GAME,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
     // - `*EnHeishi2`
     // - `bool` (clearCamera - true if the code clears a sub-camera, false otherwise)
     VB_PLAY_GATE_OPENING_OR_CLOSING_CS,
@@ -2393,9 +2409,18 @@ typedef enum {
     // true
     // ```
     // #### `args`
+    // - `*EnFr`
+    // - `s16` (default time limit)
+    VB_SET_FROG_OCARINA_GAME_TIME_LIMIT,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
     // - `*s32` (ammo count)
     VB_SET_SHOOTING_GALLERY_AMMO,
-
+  
     // #### `result`
     // ```c
     // SurfaceType_GetFloorEffect(&play->colCtx, poly, bgId) == 2
