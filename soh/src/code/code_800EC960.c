@@ -2403,35 +2403,16 @@ void AudioOcarina_RecordSong(void) {
 void AudioOcarina_MemoryGameInit(u8 minigameRound) {
     u8 i;
 
-    // #region SOH [Enhancement]
-    if (CVarGetInteger(CVAR_ENHANCEMENT("CustomizeOcarinaGame"), 0)) {
-        u8 startingNotes = 3;
-        u8 roundOneCount = CVarGetInteger(CVAR_ENHANCEMENT("OcarinaGame.RoundOneNotes"), 5);
-        u8 roundTwoCount = CVarGetInteger(CVAR_ENHANCEMENT("OcarinaGame.RoundTwoNotes"), 6);
-        u8 roundThreeCount = CVarGetInteger(CVAR_ENHANCEMENT("OcarinaGame.RoundThreeNotes"), 8);
-        u8 modMinigameNoteCnts[] = { roundOneCount, roundTwoCount, roundThreeCount };
+    if (minigameRound > 2) {
+        minigameRound = 2;
+    }
 
-        startingNotes = CVarGetInteger(CVAR_ENHANCEMENT("OcarinaGame.StartingNotes"), 3);
-
-        if (minigameRound > 2) {
-            minigameRound = 2;
-        }
-
-        sOcaMemoryGameAppendPos = 0;
-        sOcaMemoryGameEndPos = modMinigameNoteCnts[minigameRound];
-
-        for (i = 0; i < startingNotes; i++) {
-            AudioOcarina_MemoryGameNextNote();
-        }
-        // #endregion
-    } else {
-        if (minigameRound > 2) {
-            minigameRound = 2;
-        }
-
-        sOcaMemoryGameAppendPos = 0;
+    sOcaMemoryGameAppendPos = 0;
+    if (GameInteractor_Should(VB_SET_LOST_WOODS_OCARINA_GAME_NOTES, true, minigameRound, &sOcaMemoryGameEndPos)) {
         sOcaMemoryGameEndPos = sOcaMemoryGameNumNotes[minigameRound];
+    }
 
+    if (GameInteractor_Should(VB_SET_LOST_WOODS_OCARINA_GAME_STARTING_NOTES, true)) {
         for (i = 0; i < 3; i++) {
             AudioOcarina_MemoryGameNextNote();
         }
@@ -2453,24 +2434,13 @@ s32 AudioOcarina_MemoryGameNextNote(void) {
         randomPitch = sButtonToPitchMap[(randomButtonIndex + 1) % 5];
     }
 
-    // #region SOH [Enhancement]
-    if (CVarGetInteger(CVAR_ENHANCEMENT("CustomizeOcarinaGame"), 0)) {
-        int noteSpeed = 0x2D;
-        noteSpeed = noteSpeed / CVarGetInteger(CVAR_ENHANCEMENT("OcarinaGame.NoteSpeed"), 1);
+    sOcarinaSongNotes[OCARINA_SONG_MEMORY_GAME][sOcaMemoryGameAppendPos].pitch = randomPitch;
+    sOcarinaSongNotes[OCARINA_SONG_MEMORY_GAME][sOcaMemoryGameAppendPos].length = 0x2D;
+    sOcarinaSongNotes[OCARINA_SONG_MEMORY_GAME][sOcaMemoryGameAppendPos].volume = 0x50;
+    sOcarinaSongNotes[OCARINA_SONG_MEMORY_GAME][sOcaMemoryGameAppendPos].vibrato = 0;
+    sOcarinaSongNotes[OCARINA_SONG_MEMORY_GAME][sOcaMemoryGameAppendPos].bend = 0;
 
-        sOcarinaSongNotes[OCARINA_SONG_MEMORY_GAME][sOcaMemoryGameAppendPos].pitch = randomPitch;
-        sOcarinaSongNotes[OCARINA_SONG_MEMORY_GAME][sOcaMemoryGameAppendPos].length = noteSpeed;
-        sOcarinaSongNotes[OCARINA_SONG_MEMORY_GAME][sOcaMemoryGameAppendPos].volume = 0x50;
-        sOcarinaSongNotes[OCARINA_SONG_MEMORY_GAME][sOcaMemoryGameAppendPos].vibrato = 0;
-        sOcarinaSongNotes[OCARINA_SONG_MEMORY_GAME][sOcaMemoryGameAppendPos].bend = 0;
-        // #endregion
-    } else {
-        sOcarinaSongNotes[OCARINA_SONG_MEMORY_GAME][sOcaMemoryGameAppendPos].pitch = randomPitch;
-        sOcarinaSongNotes[OCARINA_SONG_MEMORY_GAME][sOcaMemoryGameAppendPos].length = 0x2D;
-        sOcarinaSongNotes[OCARINA_SONG_MEMORY_GAME][sOcaMemoryGameAppendPos].volume = 0x50;
-        sOcarinaSongNotes[OCARINA_SONG_MEMORY_GAME][sOcaMemoryGameAppendPos].vibrato = 0;
-        sOcarinaSongNotes[OCARINA_SONG_MEMORY_GAME][sOcaMemoryGameAppendPos].bend = 0;
-    }
+    GameInteractor_Should(VB_MODIFY_LOST_WOODS_OCARINA_GAME_NOTE_SPEED, false, sOcaMemoryGameAppendPos);
 
     sOcaMemoryGameAppendPos++;
 
