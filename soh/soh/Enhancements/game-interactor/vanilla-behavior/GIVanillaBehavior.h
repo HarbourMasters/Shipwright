@@ -2420,7 +2420,7 @@ typedef enum {
     // #### `args`
     // - `*s32` (ammo count)
     VB_SET_SHOOTING_GALLERY_AMMO,
-  
+
     // #### `result`
     // ```c
     // SurfaceType_GetFloorEffect(&play->colCtx, poly, bgId) == 2
