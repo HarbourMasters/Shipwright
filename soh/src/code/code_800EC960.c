@@ -1,6 +1,7 @@
 #include <libultraship/libultra.h>
 #include <libultraship/bridge/audiobridge.h>
 #include "global.h"
+#include "padmgr.h"
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/audio/AudioEditor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"

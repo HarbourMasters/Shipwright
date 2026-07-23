@@ -1,4 +1,6 @@
 #include "global.h"
+#include "padmgr.h"
+#include "libc64/sleep.h"
 #include "vt.h"
 
 u32 gIsCtrlr2Valid = false;

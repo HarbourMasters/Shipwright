@@ -1,4 +1,6 @@
 #include "global.h"
+#include "padmgr.h"
+#include "prenmi_buff.h"
 #include "vt.h"
 #include "regs.h"
 

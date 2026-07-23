@@ -1,5 +1,8 @@
 #include <libultraship/libultra.h>
 #include "global.h"
+#include "debug_display.h"
+#include "mempak.h"
+#include "olib.h"
 
 static PlayState* sPlayState;
 

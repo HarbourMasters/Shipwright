@@ -65,22 +65,22 @@ Let's begin by finding where the time is updated. Thankfully in the save editor 
 So this tells us that `gSaveContext.dayTime` is what we're looking for. Let's now do a global search for this to see if we can find where it is updated. We find the following in `soh/src/code/z_kankyo.c` around line 925:
 
 ```cpp
-if (IS_DAY || gTimeIncrement >= 0x190) {
-    gSaveContext.dayTime += gTimeIncrement;
+if (IS_DAY || gTimeSpeed >= 0x190) {
+    gSaveContext.dayTime += gTimeSpeed;
 } else {
-    gSaveContext.dayTime += gTimeIncrement * 2; // time moves twice as fast at night
+    gSaveContext.dayTime += gTimeSpeed * 2; // time moves twice as fast at night
 }
 ```
 
-We can make a quick change to this code to verify this is indeed what we are looking for, lets multiply the gTimeIncrement by 10:
+We can make a quick change to this code to verify this is indeed what we are looking for, lets multiply the gTimeSpeed by 10:
 
 ```diff
-if (IS_DAY || gTimeIncrement >= 0x190) {
--    gSaveContext.dayTime += gTimeIncrement;
-+    gSaveContext.dayTime += gTimeIncrement * 10;
+if (IS_DAY || gTimeSpeed >= 0x190) {
+-    gSaveContext.dayTime += gTimeSpeed;
++    gSaveContext.dayTime += gTimeSpeed * 10;
 } else {
--    gSaveContext.dayTime += gTimeIncrement * 2; // time moves twice as fast at night
-+    gSaveContext.dayTime += gTimeIncrement * 2 * 10; // time moves twice as fast at night
+-    gSaveContext.dayTime += gTimeSpeed * 2; // time moves twice as fast at night
++    gSaveContext.dayTime += gTimeSpeed * 2 * 10; // time moves twice as fast at night
 }
 ```
 
@@ -102,12 +102,12 @@ This adds a `Widget` which sets a CVar, which then sets the options of the slide
 Now we need to replace our hard coded values with the new variable. We can do this by replacing the `10` with a cvar call
 
 ```diff
-if (IS_DAY || gTimeIncrement >= 0x190) {
--    gSaveContext.dayTime += gTimeIncrement * 10;
-+    gSaveContext.dayTime += gTimeIncrement * CVarGetFloat(CVAR_CHEAT("TimeOfDayMultiplier"),1.0f);
+if (IS_DAY || gTimeSpeed >= 0x190) {
+-    gSaveContext.dayTime += gTimeSpeed * 10;
++    gSaveContext.dayTime += gTimeSpeed * CVarGetFloat(CVAR_CHEAT("TimeOfDayMultiplier"),1.0f);
 } else {
--    gSaveContext.dayTime += gTimeIncrement * 2 * 10;
-+   gSaveContext.dayTime += gTimeIncrement * 2 * CVarGetFloat(CVAR_CHEAT("TimeOfDayMultiplier"),1.0f);
+-    gSaveContext.dayTime += gTimeSpeed * 2 * 10;
++    gSaveContext.dayTime += gTimeSpeed * 2 * CVarGetFloat(CVAR_CHEAT("TimeOfDayMultiplier"),1.0f);
 }
 ```
 

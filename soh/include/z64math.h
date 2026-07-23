@@ -12,77 +12,90 @@
 #define Vec3s Vec3s_
 #endif
 
-typedef struct {
+typedef struct Vec2f {
     f32 x, y;
 } Vec2f; // size = 0x08
 
-typedef struct {
+typedef struct Vec3f {
     f32 x, y, z;
 } Vec3f; // size = 0x0C
 
-typedef struct {
+typedef struct Vec3us {
     u16 x, y, z;
 } Vec3us; // size = 0x06
 
-typedef struct {
+typedef struct Vec3s {
     s16 x, y, z;
 } Vec3s; // size = 0x06
 
-typedef struct {
+typedef struct Vec3i {
     s32 x, y, z;
 } Vec3i; // size = 0x0C
 
-typedef struct {
+typedef struct Sphere16 {
     Vec3s center;
     s16 radius;
 } Sphere16; // size = 0x08
 
-typedef struct {
+typedef struct Spheref {
     Vec3f center;
     f32 radius;
 } Spheref; // size = 0x10
 
-typedef struct {
+typedef struct Plane {
     Vec3f normal;
     f32 originDist;
 } Plane; // size = 0x10
 
-typedef struct {
+typedef struct TriNorm {
     Vec3f vtx[3];
     Plane plane;
 } TriNorm; // size = 0x34
 
-typedef struct {
+typedef struct Cylinder16 {
     /* 0x0000 */ s16 radius;
     /* 0x0002 */ s16 height;
     /* 0x0004 */ s16 yShift;
     /* 0x0006 */ Vec3s pos;
 } Cylinder16; // size = 0x0C
 
-typedef struct {
+typedef struct Cylinderf {
     /* 0x00 */ f32 radius;
     /* 0x04 */ f32 height;
     /* 0x08 */ f32 yShift;
     /* 0x0C */ Vec3f pos;
 } Cylinderf; // size = 0x18
 
-typedef struct {
+typedef struct InfiniteLine {
     /* 0x0000 */ Vec3f point;
     /* 0x000C */ Vec3f dir;
 } InfiniteLine; // size = 0x18
 
-typedef struct {
+typedef struct Linef {
     /* 0x0000 */ Vec3f a;
     /* 0x000C */ Vec3f b;
 } Linef; // size = 0x18
 
 // Defines a point in the spherical coordinate system
-typedef struct {
+typedef struct VecSph {
     /* 0x00 */ f32 r;      // radius
     /* 0x04 */ s16 pitch;  // polar (zenith) angle
     /* 0x06 */ s16 yaw;    // azimuthal angle
 } VecSph; // size = 0x08
 
+/**
+ * Macros
+ */
+
+// General number macros
+#define SQ(x) ((x)*(x))
+#define ABS(x) ((x) >= 0 ? (x) : -(x))
+#define DECR(x) ((x) == 0 ? 0 : --(x))
+#define CLAMP(x, min, max) ((x) < (min) ? (min) : (x) > (max) ? (max) : (x))
+#define CLAMP_MAX(x, max) ((x) > (max) ? (max) : (x))
+#define CLAMP_MIN(x, min) ((x) < (min) ? (min) : (x))
+
+// LERP macros
 #define LERP(x, y, scale) (((y) - (x)) * (scale) + (x))
 #define LERP32(x, y, scale) ((s32)(((y) - (x)) * (scale)) + (x))
 #define LERP16(x, y, scale) ((s16)(((y) - (x)) * (scale)) + (x))

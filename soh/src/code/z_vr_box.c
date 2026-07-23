@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <assert.h>
 
-#include "z64environment.h"
+#include "environment.h"
 #include "assets/textures/backgrounds/vr_ALVR_static.h"
 #include "assets/textures/backgrounds/vr_ALVR_pal_static.h"
 #include "assets/textures/backgrounds/vr_DGVR_static.h"

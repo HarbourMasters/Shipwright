@@ -73,12 +73,6 @@ extern "C"
 	extern Gfx D_80116280[];
 	extern s32 gDbgCamEnabled;
 	extern GameStateOverlay gGameStateOverlayTable[6];
-	extern u8 gWeatherMode;
-	extern u8 D_8011FB34;
-	extern u8 D_8011FB38;
-	extern u8 gSkyboxBlendingEnabled;
-	extern u16 gTimeSpeed;
-	extern struct_8011FC1C D_8011FC1C[][9];
 	extern SkyboxFile gSkyboxFiles[];
 	extern s32 gZeldaArenaLogSeverity;
 	extern MapData gMapDataTable;
@@ -92,7 +86,6 @@ extern "C"
 	extern Gfx* gPlayerLeftHandBoomerangDLs[];
 	extern Gfx gCullBackDList[];
 	extern Gfx gCullFrontDList[];
-	extern Gfx gEmptyDL[];
 	extern u32 gBitFlags[32];
 	extern u16 gEquipMasks[4];
 	extern u16 gEquipNegMasks[4];
@@ -114,9 +107,6 @@ extern "C"
 	extern EntranceInfo gEntranceTable[ENTR_MAX];
 	extern SceneTableEntry gSceneTable[SCENE_ID_MAX];
 	extern u16 gSramSlotOffsets[];
-	// 4 16-colors palettes
-	extern u64 gMojiFontTLUTs[4][4]; // original name: "moji_tlut"
-	extern u64 gMojiFontTex[]; // original name: "font_ff"
 	extern KaleidoMgrOverlay gKaleidoMgrOverlayTable[KALEIDO_OVL_MAX];
 	extern KaleidoMgrOverlay* gKaleidoMgrCurOvl;
 	extern u8 gBossMarkState;
@@ -193,20 +183,11 @@ extern "C"
 	extern u16 D_8015FCC2;
 	extern u16 D_8015FCC4;
 	extern u8 D_8015FCC8;
-	extern u8 gCustomLensFlareOn;
-	extern Vec3f gCustomLensFlarePos;
-	extern s16 gLensFlareScale;
-	extern f32 gLensFlareColorIntensity;
-	extern s16 gLensFlareScreenFillAlpha;
-	extern LightningStrike gLightningStrike;
 	extern MapData* gMapData;
 	extern f32 gBossMarkScale;
 	extern PauseMapMarksData* gLoadedPauseMarkDataTable;
 	extern s32 gTrnsnUnkState;
 	extern Color_RGBA8_u32 gVisMonoColor;
-	extern PreNmiBuff* gAppNmiBufferPtr;
-	extern SchedContext gSchedContext;
-	extern PadMgr gPadMgr;
 	extern uintptr_t gSegments[NUM_SEGMENTS];
 	extern volatile OSTime D_8016A520;
 	extern volatile OSTime D_8016A528;

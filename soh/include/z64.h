@@ -12,7 +12,7 @@
 #include "z64audio.h"
 #include "z64object.h"
 #include "z64camera.h"
-#include "z64environment.h"
+#include "environment.h"
 #include "z64cutscene.h"
 #include "z64collision_check.h"
 #include "z64scene.h"
@@ -33,6 +33,9 @@
 #include "ichain.h"
 #include "regs.h"
 #include "gfx.h"
+#include "font.h"
+#include "libu64/pad.h"
+#include "quake.h"
 
 #if defined(__LP64__) 
 #define _SOH64
@@ -52,9 +55,6 @@ namespace Fast {
 };
 #include <memory>
 #endif
-
-#define SCREEN_WIDTH  320
-#define SCREEN_HEIGHT 240
 
 #define REGION_NULL 0
 #define REGION_US 1
@@ -94,100 +94,13 @@ typedef struct {
 } GameInfo; // size = 0x15D4
 
 typedef struct {
-    /* 0x00000 */ u16 headMagic; // GFXPOOL_HEAD_MAGIC
-    /* 0x00008 */ Gfx polyOpaBuffer[0x2FC0];
-    /* 0x0BF08 */ Gfx polyXluBuffer[0x1000];
-    /* 0x0FF08 */ Gfx overlayBuffer[0x800];
-    /* 0x11F08 */ Gfx workBuffer[0x100];
-    /* 0x11308 */ Gfx unusedBuffer[0x40];
-    /* 0x12408 */ u16 tailMagic; // GFXPOOL_TAIL_MAGIC
-} GfxPool; // size = 0x24820
-
-typedef struct {
-    /* 0x0000 */ u32    size;
-    /* 0x0004 */ void*    bufp;
-    /* 0x0008 */ void*    head;
-    /* 0x000C */ void*    tail;
-} TwoHeadArena; // size = 0x10
-
-typedef struct {
-    /* 0x0000 */ u32    size;
-    /* 0x0004 */ Gfx*   bufp;
-    /* 0x0008 */ Gfx*   p;
-    /* 0x000C */ Gfx*   d;
-} TwoHeadGfxArena; // size = 0x10
-
-typedef struct {
-    /* 0x00 */ u16* fb1;
-    /* 0x04 */ u16* swapBuffer;
-    /* 0x08 */ OSViMode* viMode;
-    /* 0x0C */ u32 features;
-    /* 0x10 */ u8 unk_10;
-    /* 0x11 */ s8 updateRate;
-    /* 0x12 */ s8 updateRate2;
-    /* 0x13 */ u8 unk_13;
-    /* 0x14 */ f32 xScale;
-    /* 0x18 */ f32 yScale;
-} CfbInfo; // size = 0x1C
-
-typedef struct OSScTask {
-    /* 0x00 */ struct OSScTask* next;
-    /* 0x04 */ u32 state;
-    /* 0x08 */ u32 flags;
-    /* 0x0C */ CfbInfo* framebuffer;
-    /* 0x10 */ OSTask list;
-    /* 0x50 */ OSMesgQueue* msgQ;
-    /* 0x54 */ OSMesg msg;
-} OSScTask;
-
-typedef struct GraphicsContext {
-    /* 0x0000 */ Gfx* polyOpaBuffer; // Pointer to "Zelda 0"
-    /* 0x0004 */ Gfx* polyXluBuffer; // Pointer to "Zelda 1"
-    /* 0x0008 */ char unk_008[0x08]; // Unused, could this be pointers to "Zelda 2" / "Zelda 3"
-    /* 0x0010 */ Gfx* overlayBuffer; // Pointer to "Zelda 4"
-    /* 0x0014 */ u32 unk_014;
-    /* 0x0018 */ char unk_018[0x20];
-    /* 0x0038 */ OSMesg msgBuff[0x08];
-    /* 0x0058 */ OSMesgQueue* schedMsgQ;
-    /* 0x005C */ OSMesgQueue queue;
-    /* 0x0074 */ char unk_074[0x04];
-    /* 0x0078 */ OSScTask task; // size of OSScTask might be wrong
-    /* 0x00D0 */ char unk_0D0[0xE0];
-    /* 0x01B0 */ Gfx* workBuffer;
-    /* 0x01B4 */ TwoHeadGfxArena work;
-    /* 0x01C4 */ char unk_01C4[0xC0];
-    /* 0x0284 */ OSViMode* viMode;
-    /* 0x0288 */ char unk_0288[0x20]; // Unused, could this be Zelda 2/3 ?
-    /* 0x02A8 */ TwoHeadGfxArena overlay; // "Zelda 4"
-    /* 0x02B8 */ TwoHeadGfxArena polyOpa; // "Zelda 0"
-    /* 0x02C8 */ TwoHeadGfxArena polyXlu; // "Zelda 1"
-    /* 0x02D8 */ u32 gfxPoolIdx;
-    /* 0x02DC */ u16* curFrameBuffer;
-    /* 0x02E0 */ char unk_2E0[0x04];
-    /* 0x02E4 */ u32 viFeatures;
-    /* 0x02E8 */ s32 fbIdx;
-    /* 0x02EC */ void (*callback)(struct GraphicsContext*, void*);
-    /* 0x02F0 */ void* callbackParam;
-    /* 0x02F4 */ f32 xScale;
-    /* 0x02F8 */ f32 yScale;
-    /* 0x02FC */ char unk_2FC[0x04];
-} GraphicsContext; // size = 0x300
-
-typedef struct {
-    /* 0x00 */ OSContPad cur;
-    /* 0x06 */ OSContPad prev;
-    /* 0x0C */ OSContPad press; // X/Y store delta from last frame
-    /* 0x12 */ OSContPad rel; // X/Y store adjusted
-} Input; // size = 0x18
-
-typedef struct {
    /* 0x0000 */ s32 topY;    // uly (upper left y)
    /* 0x0004 */ s32 bottomY; // lry (lower right y)
    /* 0x0008 */ s32 leftX;   // ulx (upper left x)
    /* 0x000C */ s32 rightX;  // lrx (lower right x)
 } Viewport; // size = 0x10
 
-typedef struct {
+typedef struct View {
     /* 0x0000 */ s32    magic; // string literal "VIEW" / 0x56494557
     /* 0x0004 */ GraphicsContext* gfxCtx;
     /* 0x0008 */ Viewport viewport;
@@ -425,7 +338,7 @@ typedef enum {
     /* 0x27 */ SKYBOX_UNSET_27 = 39
 } SkyboxId;
 
-typedef struct {
+typedef struct SkyboxContext {
     char unk_00[0x128];
     s16 skyboxId;
     void* textures[2][6];
@@ -547,11 +460,6 @@ typedef enum {
 #define TODO_TRANSLATE "TranslateThis" 
 
 // TODO get these properties from the textures themselves
-#define FONT_CHAR_TEX_WIDTH  16
-#define FONT_CHAR_TEX_HEIGHT 16
-#define FONT_CHAR_TEX_SIZE ((16 * 16) / 2) // 16x16 I4 texture
-
-// TODO get these properties from the textures themselves
 #define MESSAGE_STATIC_TEX_SIZE 0x1000
 
 typedef enum {
@@ -627,21 +535,6 @@ typedef enum {
     /* 10 */ TEXT_STATE_AWAITING_NEXT
 } TextState;
 
-// Increased char buffer because texture paths could be bigger than (16 * 16 / 2)
-#define FONT_CHAR_MULTIPLIER 256
-
-typedef struct {
-    /* 0x0000 */ uintptr_t    msgOffset;
-    /* 0x0004 */ u32          msgLength;
-    /* 0x0008 */ u8           charTexBuf[FONT_CHAR_TEX_SIZE * FONT_CHAR_MULTIPLIER];
-    /* 0x3C08 */ u8           iconBuf[FONT_CHAR_TEX_SIZE * FONT_CHAR_MULTIPLIER];
-    /* 0x3C88 */ u8           fontBuf[FONT_CHAR_TEX_SIZE * FONT_CHAR_MULTIPLIER];
-    union {
-         /* 0xDC88 */ char   msgBuf[1280];
-         /* 0xDC88 */ u16    msgBufWide[640];
-    };
-} Font; // size = 0xE188
-
 #define TEXTBOX_ENDTYPE_DEFAULT     0x00
 #define TEXTBOX_ENDTYPE_2_CHOICE    0x10
 #define TEXTBOX_ENDTYPE_3_CHOICE    0x20
@@ -650,7 +543,7 @@ typedef struct {
 #define TEXTBOX_ENDTYPE_EVENT       0x50
 #define TEXTBOX_ENDTYPE_FADING      0x60
 
-typedef struct {
+typedef struct MessageContext {
     /* 0x0000 */ View   view;
     /* 0x0128 */ Font   font;
     /* 0xE2B0 */ void*  textboxSegment; // original name: "fukidashiSegment"
@@ -857,7 +750,7 @@ typedef enum {
     /* 0x04 */ PAUSE_WORLD_MAP
 } PauseMenuPage;
 
-typedef struct {
+typedef struct PauseContext {
     /* 0x0000 */ View   view;
     /* 0x0128 */ u8*    iconItemSegment;
     /* 0x012C */ u8*    iconItem24Segment;
@@ -943,7 +836,7 @@ typedef enum {
     /* 24 */ GAMEOVER_REVIVE_FADE_OUT // fade out the game over lights as link is revived and gets back up
 } GameOverState;
 
-typedef struct {
+typedef struct GameOverContext {
     /* 0x00 */ u16 state;
 } GameOverContext; // size = 0x2
 
@@ -1757,15 +1650,6 @@ typedef struct {
 
 typedef PauseMapMarkData PauseMapMarksData[3];
 
-typedef struct DebugDispObject {
-    /* 0x00 */ Vec3f pos;
-    /* 0x0C */ Vec3s rot;
-    /* 0x14 */ Vec3f scale;
-    /* 0x20 */ Color_RGBA8 color;
-    /* 0x24 */ s16   type;
-    /* 0x28 */ struct DebugDispObject* next;
-} DebugDispObject; // size = 0x2C
-
 typedef enum {
     MTXMODE_NEW,  // generates a new matrix
     MTXMODE_APPLY // applies transformation to the current matrix
@@ -1838,36 +1722,6 @@ typedef struct {
     /* 0x38 */ void(*inputCallback)();
 } FaultDrawer; // size = 0x3C
 
-typedef struct {
-    /* 0x00 */ PrintCallback callback;
-    /* 0x04 */ Gfx* dList;
-    /* 0x08 */ u16 posX;
-    /* 0x0A */ u16 posY;
-    /* 0x0C */ u16 baseX;
-    /* 0x0E */ u8 baseY;
-    /* 0x0F */ u8 flags;
-    /* 0x10 */ Color_RGBA8_u32 color;
-    /* 0x14 */ char unk_14[0x1C]; // unused
-} GfxPrint; // size = 0x30
-
-#define GFXP_UNUSED "\x8E"
-#define GFXP_UNUSED_CHAR 0x8E
-#define GFXP_HIRAGANA "\x8D"
-#define GFXP_HIRAGANA_CHAR 0x8D
-#define GFXP_KATAKANA "\x8C"
-#define GFXP_KATAKANA_CHAR 0x8C
-#define GFXP_RAINBOW_ON "\x8B"
-#define GFXP_RAINBOW_ON_CHAR 0x8B
-#define GFXP_RAINBOW_OFF "\x8A"
-#define GFXP_RAINBOW_OFF_CHAR 0x8A
-
-#define GFXP_FLAG_HIRAGANA (1 << 0)
-#define GFXP_FLAG_RAINBOW  (1 << 1)
-#define GFXP_FLAG_SHADOW   (1 << 2)
-#define GFXP_FLAG_UPDATE   (1 << 3)
-#define GFXP_FLAG_ENLARGE  (1 << 6)
-#define GFXP_FLAG_OPEN     (1 << 7)
-
 typedef struct StackEntry {
     /* 0x00 */ struct StackEntry* next;
     /* 0x04 */ struct StackEntry* prev;
@@ -1915,105 +1769,11 @@ typedef struct {
 } Yaz0Header; // size = 0x10 ("data" is not part of the header)
 
 typedef struct {
-    /* 0x00 */ s16 type;
-    /* 0x02 */ char  misc[0x1E];
-} OSScMsg; // size = 0x20
-
-typedef struct IrqMgrClient {
-    /* 0x00 */ struct IrqMgrClient* prev;
-    /* 0x04 */ OSMesgQueue* queue;
-} IrqMgrClient;
-
-typedef struct {
-    /* 0x000 */ OSScMsg retraceMsg; // this apparently got moved from OSSched
-    /* 0x020 */ OSScMsg prenmiMsg; // this apparently got moved from OSSched
-    /* 0x040 */ OSScMsg nmiMsg;
-    /* 0x060 */ OSMesgQueue queue;
-    /* 0x078 */ OSMesg msgBuf[8];
-    /* 0x098 */ OSThread thread;
-    /* 0x248 */ IrqMgrClient* clients;
-    /* 0x24C */ u8 resetStatus;
-    /* 0x250 */ OSTime resetTime;
-    /* 0x258 */ OSTimer timer;
-    /* 0x278 */ OSTime retraceTime;
-} IrqMgr; // size = 0x280
-
-typedef struct PadMgr {
-    /* 0x0000 */ OSContStatus padStatus[4];
-    /* 0x0010 */ OSMesg serialMsgBuf[1];
-    /* 0x0014 */ OSMesg lockMsgBuf[1];
-    /* 0x0018 */ OSMesg interruptMsgBuf[4];
-    /* 0x0028 */ OSMesgQueue serialMsgQ;
-    /* 0x0040 */ OSMesgQueue lockMsgQ;
-    /* 0x0058 */ OSMesgQueue interruptMsgQ;
-    /* 0x0070 */ IrqMgrClient irqClient;
-    /* 0x0078 */ IrqMgr* irqMgr;
-    /* 0x0080 */ OSThread thread;
-    /* 0x0230 */ Input inputs[4];
-    /* 0x0290 */ OSContPad pads[4];
-    /* 0x02A8 */ vu8 validCtrlrsMask;
-    /* 0x02A9 */ u8 nControllers;
-    /* 0x02AA */ u8 ctrlrIsConnected[4]; // "Key_switch" originally
-    /* 0x02AE */ u8 pakType[4]; // 1 if rumble pack, 2 if mempak?
-    /* 0x02B2 */ vu8 rumbleEnable[4];
-    /* 0x02B6 */ u8 rumbleCounter[4]; // not clear exact meaning
-    /* 0x02BC */ OSPfs pfs[4];
-    /* 0x045C */ vu8 rumbleOffFrames;
-    /* 0x045D */ vu8 rumbleOnFrames;
-    /* 0x045E */ u8 preNMIShutdown;
-    /* 0x0460 */ void (*retraceCallback)(struct PadMgr* padmgr, s32 unk464);
-    /* 0x0464 */ u32 retraceCallbackValue;
-} PadMgr; // size = 0x468
-
-// == Previously sched.h
-
-#define OS_SC_NEEDS_RDP         0x0001
-#define OS_SC_NEEDS_RSP         0x0002
-#define OS_SC_DRAM_DLIST        0x0004
-#define OS_SC_PARALLEL_TASK     0x0010
-#define OS_SC_LAST_TASK         0x0020
-#define OS_SC_SWAPBUFFER        0x0040
-
-#define OS_SC_RCP_MASK          0x0003
-#define OS_SC_TYPE_MASK         0x0007
-
-typedef struct {
     /* 0x0000 */ u16*   curBuffer;
     /* 0x0004 */ u16*   nextBuffer;
 } FrameBufferSwap;
 
-typedef struct {
-    /* 0x0000 */ OSMesgQueue  interruptQ;
-    /* 0x0018 */ OSMesg       intBuf[8];
-    /* 0x0038 */ OSMesgQueue  cmdQ;
-    /* 0x0050 */ OSMesg       cmdMsgBuf[8];
-    /* 0x0070 */ OSThread     thread;
-    /* 0x0220 */ OSScTask*    audioListHead;
-    /* 0x0224 */ OSScTask*    gfxListHead;
-    /* 0x0228 */ OSScTask*    audioListTail;
-    /* 0x022C */ OSScTask*    gfxListTail;
-    /* 0x0230 */ OSScTask*    curRSPTask;
-    /* 0x0234 */ OSScTask*    curRDPTask;
-    /* 0x0238 */ s32          retraceCnt;
-    /* 0x023C */ s32          doAudio;
-    /* 0x0240 */ CfbInfo*     curBuf;
-    /* 0x0244 */ CfbInfo*     pendingSwapBuf1;
-    /* 0x0220 */ CfbInfo*     pendingSwapBuf2;
-    /* 0x0220 */ UNK_TYPE4    unk_24C;
-    /* 0x0250 */ IrqMgrClient irqClient;
-} SchedContext; // size = 0x258
-
 // ========================
-
-#define OS_SC_RETRACE_MSG       1
-#define OS_SC_DONE_MSG          2
-#define OS_SC_NMI_MSG           3 // name is made up, 3 is OS_SC_RDP_DONE_MSG in the original sched.c
-#define OS_SC_PRE_NMI_MSG       4
-
-#define OS_SC_DP                0x0001
-#define OS_SC_SP                0x0002
-#define OS_SC_YIELD             0x0010
-#define OS_SC_YIELDED           0x0020
 
 typedef struct {
     /* 0x0000 */ IrqMgr*       irqMgr;
@@ -2068,19 +1828,6 @@ typedef struct OverlayRelocationSection {
 } OverlayRelocationSection; // size >= 0x18
 
 typedef struct {
-    /* 0x00 */ u32 resetting;
-    /* 0x04 */ u32 resetCount;
-    /* 0x08 */ OSTime duration;
-    /* 0x10 */ OSTime resetTime;
-} PreNmiBuff; // size = 0x18 (actually osAppNmiBuffer is 0x40 bytes large but the rest is unused)
-
-typedef struct {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ s16 unk_04;
-} SubQuakeRequest14;
-
-typedef struct {
     /* 0x00 */ s16 randIdx;
     /* 0x02 */ s16 countdownMax;
     /* 0x04 */ Camera* cam;
@@ -2095,24 +1842,6 @@ typedef struct {
     /* 0x1E */ s16 countdown;
     /* 0x20 */ s16 camPtrIdx;
 } QuakeRequest; // size = 0x24
-
-typedef struct {
-    /* 0x00 */ Vec3f vec1;
-    /* 0x0C */ Vec3f vec2;
-    /* 0x18 */ s16 rotZ;
-    /* 0x1A */ s16 unk_1A;
-    /* 0x1C */ s16 zoom;
-} ShakeInfo; // size = 0x1E
-
-typedef struct {
-    /* 0x00 */ Vec3f atOffset;
-    /* 0x0C */ Vec3f eyeOffset;
-    /* 0x18 */ s16 rotZ;
-    /* 0x1A */ s16 unk_1A;
-    /* 0x1C */ s16 zoom;
-    /* 0x20 */ f32 unk_20;
-} QuakeCamCalc; // size = 0x24
-
 
 #define UCODE_NULL      0
 #define UCODE_F3DZEX    1
@@ -2148,78 +1877,6 @@ typedef struct {
     /* 0xD0 */ u32 modeL;
     /* 0xD4 */ u32 geometryMode;
 } UCodeDisas; // size = 0xD8
-
-typedef struct {
-    /* 0x00 */ u16 table[8*8];
-} JpegQuantizationTable; // size = 0x80
-
-typedef struct {
-    /* 0x00 */ u8 codeOffs[16];
-    /* 0x10 */ u16 codesA[16];
-    /* 0x30 */ u16 codesB[16];
-    /* 0x50 */ u8* symbols;
-} JpegHuffmanTable; // size = 0x54
-
-// this struct might be inaccurate but it's not used outside jpegutils.c anyways
-typedef struct {
-    /* 0x000 */ u8 codeOffs[16];
-    /* 0x010 */ u16 dcCodes[120];
-    /* 0x100 */ u16 acCodes[256];
-} JpegHuffmanTableOld; // size = 0x300
-
-typedef struct {
-    /* 0x00 */ u32 address;
-    /* 0x04 */ u32 mbCount;
-    /* 0x08 */ u32 mode;
-    /* 0x0C */ u32 qTableYPtr;
-    /* 0x10 */ u32 qTableUPtr;
-    /* 0x14 */ u32 qTableVPtr;
-    /* 0x18 */ char unk_18[0x8];
-} JpegTaskData; // size = 0x20
-
-typedef struct {
-    /* 0x000 */ JpegTaskData taskData;
-    /* 0x020 */ char yieldData[0x200];
-    /* 0x220 */ JpegQuantizationTable qTableY;
-    /* 0x2A0 */ JpegQuantizationTable qTableU;
-    /* 0x320 */ JpegQuantizationTable qTableV;
-    /* 0x3A0 */ u8 codesLengths[0x110];
-    /* 0x4B0 */ u16 codes[0x108];
-    /* 0x6C0 */ u16 data[4][0x180];
-} JpegWork; // size = 0x12C0
-
-typedef struct {
-    /* 0x00 */ void* imageData;
-    /* 0x04 */ u8 mode;
-    /* 0x05 */ u8 unk_05;
-    /* 0x08 */ JpegHuffmanTable* hTablePtrs[4];
-    /* 0x18 */ u8 unk_18;
-} JpegDecoder; // size = 0x1C
-
-typedef struct {
-    /* 0x00 */ u8 dqtCount;
-    /* 0x04 */ u8* dqtPtr[3];
-    /* 0x10 */ u8 dhtCount;
-    /* 0x14 */ u8* dhtPtr[4];
-    /* 0x24 */ void* imageData;
-    /* 0x28 */ u32 mode; // 0 if Y V0 is 1 and 2 if Y V0 is 2
-    /* 0x2C */ char unk_2C[4];
-    /* 0x30 */ OSScTask scTask;
-    /* 0x88 */ char unk_88[0x10];
-    /* 0x98 */ OSMesgQueue mq;
-    /* 0xB0 */ OSMesg msg;
-    /* 0xB4 */ JpegWork* workBuf;
-} JpegContext; // size = 0xB8
-
-typedef struct {
-    /* 0x00 */ u32 byteIdx;
-    /* 0x04 */ u8 bitIdx;
-    /* 0x05 */ u8 dontSkip;
-    /* 0x08 */ u32 curWord;
-    /* 0x0C */ s16 unk_0C;
-    /* 0x0E */ s16 unk_0E;
-    /* 0x10 */ s16 unk_10;
-} JpegDecoderState; // size = 0x14
 
 typedef struct {
     /* 0x0000 */ OSViMode customViMode;
@@ -2337,6 +1994,9 @@ typedef enum {
     LED_SOURCE_NAVI_COSMETICS,
     LED_SOURCE_CUSTOM
 } LEDColorSource;
+
+#define GET_ACTIVE_CAM(play) ((play)->cameraPtrs[(play)->activeCamera])
+#define GET_PLAYER(play) ((Player*)(play)->actorCtx.actorLists[ACTORCAT_PLAYER].head)
 
 #define ROM_FILE(name) \
     { 0, 0, #name }

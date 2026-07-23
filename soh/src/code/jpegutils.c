@@ -1,5 +1,8 @@
 #include "global.h"
 
+#include <libultraship/libultra.h>
+#include "jpeg.h"
+
 void JpegUtils_ProcessQuantizationTable(u8* dqt, JpegQuantizationTable* qt, u8 count) {
     u8 i;
 

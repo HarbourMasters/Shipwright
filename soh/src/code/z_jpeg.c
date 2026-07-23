@@ -1,4 +1,5 @@
 #include "global.h"
+#include "jpeg.h"
 #include "vt.h"
 #include <assert.h>
 

@@ -1,4 +1,5 @@
 #include "global.h"
+#include "padmgr.h"
 
 OSPfs sMempakPfsHandle;
 s32 sMempakFreeBytes;

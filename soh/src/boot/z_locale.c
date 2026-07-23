@@ -1,4 +1,5 @@
 #include "global.h"
+#include "padmgr.h"
 #include "vt.h"
 
 u32 gCurrentRegion = 0;

@@ -1,5 +1,7 @@
 #include "global.h"
+#include "padmgr.h"
 #include "vt.h"
+#include "libc64/sleep.h"
 #include <stdio.h>
 
 // data

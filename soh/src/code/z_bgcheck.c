@@ -29,6 +29,9 @@
 #define COLPOLY_IGNORE_ENTITY (1 << 1)
 #define COLPOLY_IGNORE_PROJECTILES (1 << 2)
 
+void BgCheck_GetStaticLookupIndicesFromPos(CollisionContext* colCtx, Vec3f* pos, Vec3i* arg2);
+s32 BgCheck_PosInStaticBoundingBox(CollisionContext* colCtx, Vec3f* pos);
+
 // func_80041DB8, SurfaceType wall properties
 s32 D_80119D90[32] = {
     0, 1, 3, 5, 8, 16, 32, 64, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,

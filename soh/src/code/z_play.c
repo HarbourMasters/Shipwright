@@ -352,6 +352,8 @@ u8 CheckBridgeRewardCount() {
     return bridgeRewardCount;
 }
 
+CollisionHeader* BgCheck_GetCollisionHeader(CollisionContext* colCtx, s32 bgId);
+
 void Play_Init(GameState* thisx) {
     PlayState* play = (PlayState*)thisx;
     GraphicsContext* gfxCtx = play->state.gfxCtx;

@@ -3,6 +3,13 @@
 
 #include <string.h>
 
+s16 Quake_Callback1(QuakeRequest* req, ShakeInfo* shake);
+s16 Quake_Callback2(QuakeRequest* req, ShakeInfo* shake);
+s16 Quake_Callback3(QuakeRequest* req, ShakeInfo* shake);
+s16 Quake_Callback4(QuakeRequest* req, ShakeInfo* shake);
+s16 Quake_Callback5(QuakeRequest* req, ShakeInfo* shake);
+s16 Quake_Callback6(QuakeRequest* req, ShakeInfo* shake);
+
 QuakeRequest sQuakeRequest[4];
 s16 D_80126250 = 1;
 s16 sQuakeRequestCount = 0;

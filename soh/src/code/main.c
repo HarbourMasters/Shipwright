@@ -4,6 +4,8 @@
 #endif
 
 #include "global.h"
+#include "padmgr.h"
+#include "prenmi_buff.h"
 #include "vt.h"
 #include "stdio.h"
 #include <libultraship/bridge/crashhandlerbridge.h>

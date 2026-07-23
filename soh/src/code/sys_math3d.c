@@ -1,4 +1,5 @@
 #include "global.h"
+#include "sys_math3d.h"
 #include "vt.h"
 
 s32 Math3D_LineVsLineClosestTwoPoints(Vec3f* lineAPointA, Vec3f* lineAPointB, Vec3f* lineBPointA, Vec3f* lineBPointB,

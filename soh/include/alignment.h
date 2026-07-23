@@ -7,9 +7,12 @@
 #define ALIGN64(val) (((val) + 0x3F) & ~0x3F)
 #define ALIGN256(val) (((val) + 0xFF) & ~0xFF)
 
+// TODO: Update these
 #ifdef __GNUC__
+#define ALIGNED4 __attribute__ ((aligned (4)))
 #define ALIGNED8 __attribute__ ((aligned (8)))
 #else
+#define ALIGNED4
 #define ALIGNED8
 #endif
 

@@ -1,4 +1,5 @@
 #include "global.h"
+#include "padmgr.h"
 
 UnkRumbleStruct D_80160FD0;
 

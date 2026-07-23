@@ -116,6 +116,8 @@ static void DisableFixedCamera_RestoreCameraData(CollisionHeader* colHeader) {
     it->second.active = false;
 }
 
+extern "C" CollisionHeader* BgCheck_GetCollisionHeader(CollisionContext* colCtx, s32 bgId);
+
 extern "C" void DisableFixedCamera_SetNormalCamera(PlayState* play) {
     CollisionHeader* colHeader = BgCheck_GetCollisionHeader(&play->colCtx, BGCHECK_SCENE);
     if (colHeader != nullptr && colHeader->cameraDataList != nullptr && colHeader->cameraDataListLen > 0) {

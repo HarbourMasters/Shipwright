@@ -447,12 +447,63 @@ typedef enum {
 
 #define IS_CUTSCENE_LAYER (gSaveContext.sceneLayer >= SCENE_LAYER_CUTSCENE_FIRST)
 
-typedef enum {
+typedef enum LinkAge {
     /* 0 */ LINK_AGE_ADULT,
     /* 1 */ LINK_AGE_CHILD
 } LinkAge;
 
+#define LINK_IS_ADULT (gSaveContext.linkAge == LINK_AGE_ADULT)
+#define LINK_IS_CHILD (gSaveContext.linkAge == LINK_AGE_CHILD)
 
+#define YEARS_CHILD 5
+#define YEARS_ADULT 17
+#define LINK_AGE_IN_YEARS (!LINK_IS_ADULT ? YEARS_CHILD : YEARS_ADULT)
+
+#define CLOCK_TIME(hr, min) ((s32)(((hr) * 60 + (min)) * (f32)0x10000 / (24 * 60) + 0.5f))
+
+#define IS_DAY (gSaveContext.nightFlag == 0)
+#define IS_NIGHT (gSaveContext.nightFlag == 1)
+
+#define SLOT(item) gItemSlots[item]
+#define INV_CONTENT(item) gSaveContext.inventory.items[SLOT(item)]
+#define AMMO(item) gSaveContext.inventory.ammo[SLOT(item)]
+#define BEANS_BOUGHT AMMO(ITEM_BEAN + 1)
+
+#define ALL_EQUIP_VALUE(equip) ((s32)(gSaveContext.inventory.equipment & gEquipMasks[equip]) >> gEquipShifts[equip])
+#define CUR_EQUIP_VALUE(equip) ((s32)(gSaveContext.equips.equipment & gEquipMasks[equip]) >> gEquipShifts[equip])
+#define OWNED_EQUIP_FLAG(equip, value) (gBitFlags[value] << gEquipShifts[equip])
+#define OWNED_EQUIP_FLAG_ALT(equip, value) ((1 << (value)) << gEquipShifts[equip])
+#define CHECK_OWNED_EQUIP(equip, value) (OWNED_EQUIP_FLAG(equip, value) & gSaveContext.inventory.equipment)
+#define CHECK_OWNED_EQUIP_ALT(equip, value) (gBitFlags[(value) + (equip) * 4] & gSaveContext.inventory.equipment)
+
+#define SWORD_EQUIP_TO_PLAYER(swordEquip) (swordEquip)
+#define SHIELD_EQUIP_TO_PLAYER(shieldEquip) (shieldEquip)
+#define TUNIC_EQUIP_TO_PLAYER(tunicEquip) ((tunicEquip) - 1)
+#define BOOTS_EQUIP_TO_PLAYER(bootsEquip) ((bootsEquip) - 1)
+
+#define CUR_UPG_VALUE(upg) ((s32)(gSaveContext.inventory.upgrades & gUpgradeMasks[upg]) >> gUpgradeShifts[upg])
+#define CAPACITY(upg, value) gUpgradeCapacities[upg][value]
+#define CUR_CAPACITY(upg) CAPACITY(upg, CUR_UPG_VALUE(upg))
+
+#define CHECK_QUEST_ITEM(item) (gBitFlags[item] & gSaveContext.inventory.questItems)
+#define CHECK_DUNGEON_ITEM(item, dungeonIndex) (gSaveContext.inventory.dungeonItems[dungeonIndex] & gBitFlags[item])
+
+#define GET_GS_FLAGS(index) \
+    ((gSaveContext.gsFlags[(index) >> 2] & gGsFlagsMasks[(index) & 3]) >> gGsFlagsShifts[(index) & 3])
+#define SET_GS_FLAGS(index, value) \
+    (gSaveContext.gsFlags[(index) >> 2] |= (value) << gGsFlagsShifts[(index) & 3])
+
+#define HIGH_SCORE(score) (gSaveContext.highScores[score])
+
+#define B_BTN_ITEM ((gSaveContext.buttonStatus[0] == ITEM_NONE)                    \
+                        ? ITEM_NONE                                                \
+                        : (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_KNIFE) \
+                            ? ITEM_SWORD_BGS                                       \
+                            : gSaveContext.equips.buttonItems[0])
+
+#define C_BTN_ITEM(button) ((gSaveContext.buttonStatus[(button) + 1] != BTN_DISABLED) \
+                                ? gSaveContext.equips.buttonItems[(button) + 1]       \
+                                : ITEM_NONE)
 
 /*
  *

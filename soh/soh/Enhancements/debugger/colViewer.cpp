@@ -7,6 +7,8 @@
 #include <cmath>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 
+#include "skin_matrix.h"
+
 extern "C" {
 #include <z64.h>
 #include "variables.h"

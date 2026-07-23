@@ -1,4 +1,5 @@
 #include "global.h"
+#include "padmgr.h"
 #include <string.h>
 
 void func_800D2E30(UnkRumbleStruct* arg0) {
