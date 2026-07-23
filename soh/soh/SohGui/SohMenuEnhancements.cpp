@@ -55,6 +55,12 @@ static const std::map<int32_t, const char*> skipForcedDialogOptions = {
     { FORCED_DIALOG_SKIP_ALL, "All" },
 };
 
+static const std::map<int32_t, const char*> ingoRaceOptions = {
+    { INGO_RACE_TWICE, "Twice" },
+    { INGO_RACE_ONCE, "Once" },
+    { INGO_RACE_NONE, "None" },
+};
+
 static const std::map<int32_t, const char*> timeTravelOptions = {
     { TIME_TRAVEL_DISABLED, "Disabled" },
     { TIME_TRAVEL_OOT, "Ocarina of Time" },
@@ -1621,9 +1627,12 @@ void SohMenu::AddMenuEnhancements() {
         .Options(CheckboxOptions().Tooltip("Amy's block pushing puzzle instantly solved."));
 
     AddWidget(path, "Ingo's Race", WIDGET_SEPARATOR_TEXT);
-    AddWidget(path, "Only Race Once", WIDGET_CVAR_CHECKBOX)
+    AddWidget(path, "Number of Races", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_ENHANCEMENT("IngoRaceOnce"))
-        .Options(CheckboxOptions().Tooltip("Link only needs to race Ingo once to win Epona."));
+        .Options(ComboboxOptions()
+            .ComboMap(ingoRaceOptions)
+            .DefaultIndex(INGO_RACE_TWICE)
+            .Tooltip("Number of races Link must win against Ingo to earn Epona."));
 
     path.column = SECTION_COLUMN_3;
     AddWidget(path, "Rupee Diving Game", WIDGET_SEPARATOR_TEXT);
