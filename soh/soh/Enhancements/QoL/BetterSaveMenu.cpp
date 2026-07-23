@@ -191,30 +191,32 @@ void RegisterBetterSave() {
     continueOverworldMsg.Format();
     continueDungeonMsg.Format();
 
-    REGISTER_VB_SHOULD(VB_LOAD_SAVE_MENU, {
+    COND_VB_SHOULD(VB_LOAD_SAVE_MENU, CVAR_BETTERSAVE_VALUE, {
         PlayState* play = va_arg(args, PlayState*);
         HandleSaveMenu(should, play);
     });
 
-    REGISTER_VB_SHOULD(VB_DRAW_SAVE_MENU, { *should = false; });
+    COND_VB_SHOULD(VB_DRAW_SAVE_MENU, CVAR_BETTERSAVE_VALUE, { *should = false; });
 
-    COND_ID_HOOK(OnOpenText, TEXT_SAVE_MSG, true, [](uint16_t* textId, bool* loadFromMessageTable) {
+    COND_ID_HOOK(OnOpenText, TEXT_SAVE_MSG, CVAR_BETTERSAVE_VALUE, [](uint16_t* textId, bool* loadFromMessageTable) {
         saveMsg.LoadIntoFont();
         *loadFromMessageTable = false;
         return;
     });
 
-    COND_ID_HOOK(OnOpenText, TEXT_CONTINUE_DUNGEON_MSG, true, [](uint16_t* textId, bool* loadFromMessageTable) {
-        continueDungeonMsg.LoadIntoFont();
-        *loadFromMessageTable = false;
-        return;
-    });
+    COND_ID_HOOK(OnOpenText, TEXT_CONTINUE_DUNGEON_MSG, CVAR_BETTERSAVE_VALUE,
+                 [](uint16_t* textId, bool* loadFromMessageTable) {
+                     continueDungeonMsg.LoadIntoFont();
+                     *loadFromMessageTable = false;
+                     return;
+                 });
 
-    COND_ID_HOOK(OnOpenText, TEXT_CONTINUE_OVERWORLD_MSG, true, [](uint16_t* textId, bool* loadFromMessageTable) {
-        continueOverworldMsg.LoadIntoFont();
-        *loadFromMessageTable = false;
-        return;
-    });
+    COND_ID_HOOK(OnOpenText, TEXT_CONTINUE_OVERWORLD_MSG, CVAR_BETTERSAVE_VALUE,
+                 [](uint16_t* textId, bool* loadFromMessageTable) {
+                     continueOverworldMsg.LoadIntoFont();
+                     *loadFromMessageTable = false;
+                     return;
+                 });
 }
 
 static RegisterShipInitFunc initFunc(RegisterBetterSave, { CVAR_BETTERSAVE });
