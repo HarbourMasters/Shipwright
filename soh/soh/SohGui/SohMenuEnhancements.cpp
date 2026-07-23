@@ -1630,9 +1630,9 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Number of Races", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_ENHANCEMENT("IngoRaceOnce"))
         .Options(ComboboxOptions()
-            .ComboMap(ingoRaceOptions)
-            .DefaultIndex(INGO_RACE_TWICE)
-            .Tooltip("Number of races Link must win against Ingo to earn Epona."));
+                     .ComboMap(ingoRaceOptions)
+                     .DefaultIndex(INGO_RACE_TWICE)
+                     .Tooltip("Number of races Link must win against Ingo to earn Epona."));
 
     path.column = SECTION_COLUMN_3;
     AddWidget(path, "Rupee Diving Game", WIDGET_SEPARATOR_TEXT);
