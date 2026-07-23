@@ -6,7 +6,7 @@
 
 #include "z_en_horse_game_check.h"
 #include "overlays/actors/ovl_En_Horse/z_en_horse.h"
-#include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
