@@ -268,7 +268,10 @@ void Settings::CreateOptionDescriptions() {
     mOptionDescriptions[RSK_SHUFFLE_SPEAK] =
         "Shuffle ability to speak to NPCs. 6 jabbernuts will be shuffled:\nDeku, Gerudo, Goron, Hylian, Kokiri, "
         "Zora\nKaepora Gaebora speaks any language.";
-    mOptionDescriptions[RSK_SHUFFLE_OPEN_CHEST] = "Shuffles the ability to open chests into the item pool.";
+    mOptionDescriptions[RSK_SHUFFLE_OPEN_CHEST] =
+        "Shuffles the ability to open chests into the item pool.\n"
+        "\n"
+        "Progressive shuffles two copies: first only opens small chests, second also opens big chests.";
     mOptionDescriptions[RSK_SHUFFLE_WEIRD_EGG] =
         "Vanilla: Malon gives the Weird Egg at Hyrule Castle.\n"
         "\n"

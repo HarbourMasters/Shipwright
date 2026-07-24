@@ -805,6 +805,14 @@ typedef enum {
     // ```
     // #### `args`
     // - None
+    VB_FROGS_OCARINA_GAME_TIMER_TICK,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
     VB_GANON_HEAL_BEFORE_FIGHT,
 
     // #### `result`
@@ -1680,7 +1688,7 @@ typedef enum {
     // this->getItemId != GI_NONE
     // ```
     // #### `args`
-    // - `None`
+    // - `*EnBox`
     VB_OPEN_CHEST,
 
     // #### `result`
@@ -1905,6 +1913,14 @@ typedef enum {
     // true
     // ```
     // #### `args`
+    // - `*EnFr`
+    VB_PLAY_FROG_OCARINA_GAME,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
     // - `*EnHeishi2`
     // - `bool` (clearCamera - true if the code clears a sub-camera, false otherwise)
     VB_PLAY_GATE_OPENING_OR_CLOSING_CS,
@@ -2033,6 +2049,14 @@ typedef enum {
     // #### `args`
     // - None
     VB_PLAY_SHIEK_BLOCK_MASTER_SWORD_CS,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnSyatekiItm`
+    VB_PLAY_SHOOTING_GALLERY,
 
     // #### `result`
     // ```c
@@ -2382,6 +2406,23 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnFr`
+    // - `s16` (default time limit)
+    VB_SET_FROG_OCARINA_GAME_TIME_LIMIT,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*s32` (ammo count)
+    VB_SET_SHOOTING_GALLERY_AMMO,
+
+    // #### `result`
+    // ```c
     // SurfaceType_GetFloorEffect(&play->colCtx, poly, bgId) == 2
     // ```
     // #### `args`
@@ -2405,6 +2446,14 @@ typedef enum {
     // #### `args`
     // - None
     VB_SHIEK_PREPARE_TO_GIVE_SERENADE_OF_WATER,
+
+    // #### `result`
+    // ```c
+    // LINK_IS_ADULT
+    // ```
+    // #### `args`
+    // - None
+    VB_SHOOTING_GALLERY_SHUFFLE_ADULT_RUPEES,
 
     // #### `result`
     // ```c

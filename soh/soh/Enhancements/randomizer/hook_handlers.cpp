@@ -1131,9 +1131,16 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
         case VB_MIDO_CONSIDER_DEKU_TREE_DEAD:
             *should = Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_KOKIRI_EMERALD_DEKU_TREE_DEAD);
             break;
-        case VB_OPEN_CHEST:
+        case VB_OPEN_CHEST: {
+            EnBox* chest = va_arg(args, EnBox*);
             *should = *should && Flags_GetRandomizerInf(RAND_INF_CAN_OPEN_CHEST);
+            if (*should && RAND_GET_OPTION(RSK_SHUFFLE_OPEN_CHEST).Is(RO_OPEN_CHEST_PROGRESSIVE) &&
+                chest->type != ENBOX_TYPE_SMALL && chest->type != ENBOX_TYPE_6 &&
+                chest->type != ENBOX_TYPE_ROOM_CLEAR_SMALL && chest->type != ENBOX_TYPE_SWITCH_FLAG_FALL_SMALL) {
+                *should = Flags_GetRandomizerInf(RAND_INF_CAN_OPEN_LARGE_CHEST);
+            }
             break;
+        }
         case VB_OPEN_KOKIRI_FOREST:
             *should = Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_KOKIRI_EMERALD_DEKU_TREE_DEAD) ||
                       RAND_GET_OPTION(RSK_FOREST).IsNot(RO_CLOSED_FOREST_ON);

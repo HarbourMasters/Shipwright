@@ -436,7 +436,9 @@ void GenerateItemPool() {
     if (ctx->GetOption(RSK_SHUFFLE_CRAWL)) {
         AddItemToPool(RG_CRAWL, 2, 1, 1, 1);
     }
-    if (ctx->GetOption(RSK_SHUFFLE_OPEN_CHEST)) {
+    if (ctx->GetOption(RSK_SHUFFLE_OPEN_CHEST).Is(RO_OPEN_CHEST_PROGRESSIVE)) {
+        AddItemToPool(RG_OPEN_CHEST, 3, 2, 2, 2);
+    } else if (ctx->GetOption(RSK_SHUFFLE_OPEN_CHEST)) {
         AddItemToPool(RG_OPEN_CHEST, 2, 1, 1, 1);
     }
 
