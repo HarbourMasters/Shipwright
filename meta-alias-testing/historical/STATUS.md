@@ -1,5 +1,13 @@
 # Test status — engine changes
 
+> [!NOTE]
+> **Superseded / historical.** This tracks the first (shadowing-based) engine
+> approach and a since-corrected resolution model — some "expected" values here
+> (e.g. case4, L3) no longer match. The current model is
+> [meta-loading.md](../meta-loading.md) and the current cases are in
+> [README.md](../README.md); this file will be replaced with fresh results after the
+> override-identity rework.
+
 Tracks the five test cases + control as the three libultraship engine changes
 (branch `meta-alias-fallback`) are applied **one at a time**. See `BASELINE.md`
 for the pre-change reference and `README.md` for how to run each case.

@@ -1,5 +1,11 @@
 # Baseline — current engine (before the fix)
 
+> [!NOTE]
+> **Historical.** A faithful record of what the **unmodified** engine did, but its
+> "expected after fix" column uses the old (shadowing) model — since corrected to
+> [meta-loading.md](../meta-loading.md). The case set has also been reworked; see
+> [README.md](../README.md).
+
 Captured on 2026-07-23 against the **unmodified** libultraship submodule
 (`2bfbde3a`), by dropping each archive into `build/soh/mods/` one at a time and
 reading the color of the first (LUS) boot logo.

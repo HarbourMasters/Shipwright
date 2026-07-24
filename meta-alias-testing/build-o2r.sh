@@ -46,30 +46,22 @@ build_o2r case3-noreal-meta-target "meta-test 3 meta+target"       "${META[@]}" 
 build_o2r case4-meta-only          "meta-test 4 meta-only"         "${META[@]}"
 build_o2r case5-real-nometa        "meta-test 5 real (no meta)"    "${REAL[@]}"
 
-# --- layered cases: 20-* is the higher-priority archive (loaded last, should win) ---
-# L1  higher real must beat lower meta+target  -> green (bug shows magenta)
-build_o2r layered/L1-10-lower-meta-target   "L1 lower meta+target"  "${META[@]}" "${TARGET[@]}"
-build_o2r layered/L1-20-higher-real         "L1 higher real"        "${REAL[@]}"
-# L1b higher real over lower meta-only         -> green
-build_o2r layered/L1b-10-lower-meta-only    "L1b lower meta-only"   "${META[@]}"
-build_o2r layered/L1b-20-higher-real        "L1b higher real"       "${REAL[@]}"
-# L2  higher meta+target beats lower real      -> magenta
-build_o2r layered/L2-10-lower-real          "L2 lower real"         "${REAL[@]}"
-build_o2r layered/L2-20-higher-meta-target  "L2 higher meta+target" "${META[@]}" "${TARGET[@]}"
-# L3  higher meta-only over lower real         -> green or nothing (open question)
-build_o2r layered/L3-10-lower-real          "L3 lower real"         "${REAL[@]}"
-build_o2r layered/L3-20-higher-meta-only    "L3 higher meta-only"   "${META[@]}"
+# --- layered cases: NN-* prefix = intended priority (higher number = higher / loaded last) ---
 
-# L5  cross-game motivation (order-independent): a base ships the alias + its native real,
-#     a SEPARATE mod supplies the shared alias target.
-#       base + target present -> magenta ("mod loaded")
-#       base alone            -> green   ("vanilla boot", falls back — same as case2)
-build_o2r layered/L5-base-real-meta         "L5 base real+meta"     "${REAL[@]}" "${META[@]}"
-build_o2r layered/L5-target                 "L5 shared target"      "${TARGET[@]}"
+# Flagship (cross-game): three mods replicating 2ship / mm / mod.
+#   mod1 meta (2ship) < mod2 real,green (mm) < mod3 target,magenta (mod)
+#     all three loaded  -> magenta (alias target outranks the real) — "mod loaded"
+#     drop mod3         -> green   (mod2's real, target absent)     — "vanilla"
+build_o2r layered/flagship-10-meta    "flagship mod1 meta (2ship)"  "${META[@]}"
+build_o2r layered/flagship-20-real    "flagship mod2 real (mm)"     "${REAL[@]}"
+build_o2r layered/flagship-30-target  "flagship mod3 target (mod)"  "${TARGET[@]}"
 
-# L6  "reach back": the winning (highest) .meta overrides a lower real, and resolves its target
-#     from a SEPARATE archive that may be lower priority than the .meta (a different path, so it's
-#     a normal global lookup). All three present -> magenta.
-build_o2r layered/L6-10-lower-real          "L6 lower real"         "${REAL[@]}"
-build_o2r layered/L6-20-mid-target          "L6 mid target"         "${TARGET[@]}"
-build_o2r layered/L6-30-higher-meta         "L6 higher meta"        "${META[@]}"
+# L1: a real ABOVE the alias target -> the real wins.
+#   low = meta + target (magenta),  high = real (green)  -> green
+build_o2r layered/L1-10-meta-target   "L1 low meta+target"  "${META[@]}" "${TARGET[@]}"
+build_o2r layered/L1-20-real          "L1 high real"        "${REAL[@]}"
+
+# Reach-back: the alias target lives in an archive BELOW the .meta -> still resolves.
+#   low = target (magenta),  high = meta  -> magenta
+build_o2r layered/reachback-10-target "reachback low target" "${TARGET[@]}"
+build_o2r layered/reachback-20-meta   "reachback high meta"  "${META[@]}"
