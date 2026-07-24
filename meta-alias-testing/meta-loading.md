@@ -1,79 +1,65 @@
 # `.meta` alias loading flow
 
 How libultraship resolves a resource request when a `.meta` alias is involved, across one or more
-layered archives. This is the **intended model** (the target of the override-identity rework); it
-matches the rules in [README.md](README.md#resolution-model-what-a-layered-meta-does). It's kept as
-a standalone Mermaid diagram so it can be ported into the LUS doxygen docs later.
+layered archives. Kept as a standalone Mermaid diagram so it can be ported into the LUS doxygen
+docs later. See [README.md](README.md) for the runnable test cases built from this model.
+
+## The rule
+
+`X.meta → Y` adds **Y as an alternate provider of X**. A request for `X` resolves to the
+**highest-priority provider**, where each provider is ranked by the archive its **asset** lives in:
+
+- **real `X`** — one provider per archive that ships a real `X`, ranked at that archive.
+- **aliased `Y`** — for each `X.meta → Y` whose target `Y` exists, a provider ranked at the archive
+  that ships **`Y`** (*not* the archive that ships the `.meta`).
+
+Highest-priority provider wins. If an archive ships both a real `X` and an `X.meta`, its `.meta`
+takes precedence over its own real `X`. No providers → the load fails.
+
+"Fall back to the real asset" is **not** a separate rule — it's just the case where the alias's
+target `Y` doesn't exist, so there's no aliased provider and a real `X` is what remains.
 
 ## Terms
 
-- **X** — the resource path being requested (e.g. `textures/nintendo_rogo_static/gShipLogoDL`).
-- **X.meta** — a JSON sidecar that describes/aliases X: a target `path` plus `type`/`format`/`version`.
-- **winning archive (W)** — the highest-priority loaded archive that supplies X *or* X.meta. `X`
-  and `X.meta` are **one** override identity, so a single archive wins the slot (last loaded =
-  highest priority).
+- **X** — the requested path (e.g. `gLinkHumanSkel`).
+- **X.meta** — a JSON sidecar: a target `path` (call it `Y`) plus `type` / `format` / `version`.
+- **provider** — a concrete way to satisfy `X`: a real `X`, or an aliased `Y`.
+- **priority** — archive load order; last loaded = highest. A provider's priority is the archive
+  where its **asset** lives.
 
-## Resolution flow
+## Flow
 
 ```mermaid
 flowchart TD
-    A(["request X"]) --> B{"winning archive W for X?<br/>(highest-priority archive<br/>that has X or X.meta)"}
-    B -- "none" --> FAIL1["FAIL — not found"]
-    B -- "W" --> C{"does W contain<br/>X.meta?"}
-    C -- "no" --> REAL["load W's real X<br/>(embedded header / XML)"]
-    C -- "yes" --> M["read X.meta:<br/>target path Y + type/format/version"]
-    M --> T{"load target Y<br/>(normal global lookup —<br/>any archive, by priority)"}
-    T -- "found" --> TGT["load Y as the aliased resource"]
-    T -- "missing" --> FB{"does W also ship<br/>a real X? (co-located)"}
-    FB -- "yes" --> FALLBACK["fall back: load W's real X"]
-    FB -- "no" --> FAIL2["FAIL — target missing,<br/>no co-located real"]
+    A(["request X"]) --> B["collect providers of X:<br/>• each archive's real X<br/>• each X.meta → Y whose target Y exists (the asset Y)"]
+    B --> C{"any providers?"}
+    C -- "no" --> FAIL["FAIL — nothing to load"]
+    C -- "yes" --> W["pick the highest-priority provider<br/>(ranked by the archive its asset lives in;<br/>an archive's own X.meta beats its own real X)"]
+    W --> R{"winner is…"}
+    R -- "a real X" --> LR["load real X<br/>(its own embedded header / XML)"]
+    R -- "an aliased Y" --> LY["load Y<br/>(with the .meta's type / format / version)"]
 ```
 
-## Which path each test case takes
+## Worked examples — the cross-game skeleton case
 
-| outcome (leaf) | meaning | test cases |
-|---|---|---|
-| `load W's real X` | winner has no `.meta`; plain load | case5, **L1**, L1b |
-| `load Y (target)` | alias resolved to its target | case1, case3, **L2**, L5 (mod loaded), **L6** |
-| `fall back: real X` | target missing, co-located real used | case2, L5 (vanilla boot) |
-| `FAIL` | nothing to load | case4, **L3**, and "none" |
+Archive priority, low → high: `2ship.o2r` < `mm.o2r` < `mod.o2r`. `2ship.o2r` ships only the
+`.meta`; the real `gLinkHumanSkel` lives in `mm.o2r`. Request: `gLinkHumanSkel`.
 
-(Bold = the layered / archive-priority cases.)
+| scenario | real `gLinkHumanSkel` | aliased `gLinkChildSkel` | highest wins → loads |
+|---|---|---|---|
+| **A** — mod present | `mm.o2r` (middle) | `mod.o2r` (**highest**) | **`gLinkChildSkel`** (the mod's) |
+| **B** — no mod | `mm.o2r` (middle) | — (`gLinkChildSkel` absent) | **`gLinkHumanSkel`** (vanilla) |
+| **L1** — real in the top archive¹ | `mod2.o2r` (**highest**) | `mod1.o2r` (lower) | **`gLinkHumanSkel`** (mod2's) |
 
-## Priority / override identity
+¹ L1: `mod1.o2r` has `gLinkHumanSkel.meta → gLinkChildSkel` (and a `gLinkChildSkel`); `mod2.o2r`
+has a real `gLinkHumanSkel` and is loaded after `mod1`, so it's higher priority.
 
-`X` and `X.meta` share one override slot. Indexing an archive that contains `X.meta` also claims
-the base name `X`, so whichever archive is highest priority owns the identity — and only *that*
-archive's `.meta` (if any) is consulted:
+The whole trick: the alias's provider is ranked by where **`Y`** lives (`mod.o2r` in A,
+`mod1.o2r` in L1) — **not** where the `.meta` lives. That single fact makes A resolve to the alias
+and L1 to the real, with no "alias always wins" / "real always wins" special-casing.
 
-```mermaid
-flowchart LR
-    subgraph low["lower priority"]
-      L["archive A:<br/>X.meta → Y"]
-    end
-    subgraph high["higher priority (loaded later)"]
-      H["archive B:<br/>real X"]
-    end
-    high -- "wins X" --> W["winner = B<br/>→ load real X<br/>(A's .meta ignored)"]
-```
+## Notes
 
-This is why a higher-priority real asset beats a lower-priority `.meta` (test **L1**): the winner
-is chosen first, and a lower archive's `.meta` never gets a look in.
-
-Note the asymmetry the flow relies on:
-
-- The alias **target Y** is a *different* path, resolved by a normal global lookup — it's found in
-  whatever archive holds it, **above or below** the `.meta` ("reach back", tests L5/L6).
-- The **same-path fallback** (a real `X` when Y is missing) is **winner-local** only — it never
-  reaches down into lower-priority archives (test **L3** fails). Practical rule: ship a `.meta`
-  and its intended fallback real in the *same* archive.
-
-## Where this maps in the code (target design)
-
-- **winner selection** — `ArchiveManager`'s file→archive index; an archive with `X.meta` claims
-  the base name `X`, and the last-loaded (highest-priority) archive wins the slot.
-- **`.meta` read + alias/fallback decision** — `ResourceLoader::LoadResource`, scoped to the
-  winning archive; `ReadResourceInitData` parses the JSON, `ReadResourceInitDataLegacy` reads a
-  real/fallback asset's own header/XML.
-- **file fetch** — `ResourceManager::LoadFileProcess` (global lookup for the target Y) and the
-  winning archive's own `LoadFile` (the co-located real `X`).
+- The target `Y` is resolved like any normal resource, so it can sit in an archive **above or
+  below** the `.meta` ("reach back").
+- If `Y` is itself aliased (`Y.meta`), the same rule applies to it — resolution is recursive.

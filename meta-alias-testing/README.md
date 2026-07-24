@@ -11,6 +11,12 @@ a `.meta` file aliases the boot **ship logo** DisplayList to a renamed copy, and
 title screen to see which asset actually loaded. `f5d2e58` only covered "alias target present";
 this kit covers the full matrix, and recolors the assets so the loaded one is obvious.
 
+> [!WARNING]
+> The resolution model was corrected (see [meta-loading.md](meta-loading.md) — "highest-priority
+> provider wins"). The per-case **expected-result tables below are being recomputed** against it
+> and the `.o2r` sets reworked; treat `meta-loading.md` as the source of truth until this notice
+> is removed.
+
 ## What a `.meta` alias should do (#1165)
 
 A `.meta` sidecar means *"prefer the target asset, otherwise fall back to the real asset at the
@@ -117,21 +123,16 @@ global lookup — it's found wherever it lives, regardless of priority relative 
 
 ## Resolution model (what a layered `.meta` does)
 
-See [meta-loading.md](meta-loading.md) for a flowchart of this. For a requested path `X`:
+See **[meta-loading.md](meta-loading.md)** for the flowchart and worked examples — that's the
+source of truth. In short:
 
-1. **One identity, by priority.** `X` and `X.meta` are the *same* override slot; the
-   highest-priority archive that supplies either one **wins** `X`. Lower archives are shadowed.
-2. **Winner decides.** If the winning archive supplies a real `X`, load it. If it supplies
-   `X.meta`, resolve the alias (below). (A higher-priority real therefore beats a lower `.meta` —
-   that's L1.)
-3. **Target — resolved globally.** The alias's target path is looked up like any other resource:
-   found in whatever loaded archive has it, highest priority wins, above **or below** the `.meta`
-   (L5, L6).
-4. **Same-path fallback — local only.** If the target is missing, fall back to a real `X` **only
-   if the winning archive itself also ships one** (co-located, e.g. `soh.o2r` shipping both). The
-   fallback does **not** reach down into lower-priority archives (L3 → fail). Practical rule:
-   *ship a `.meta` and its intended fallback real in the same archive.*
-5. **Nothing to load → fail** (case4).
+> `X.meta → Y` adds **`Y` as an alternate provider of `X`**. A request for `X` loads the
+> **highest-priority provider** — a real `X`, or an aliased `Y` — ranked by the archive where that
+> provider's **asset** lives (*not* where the `.meta` lives). An archive's own `.meta` beats its
+> own real `X`; if nothing provides `X` or a resolvable `Y`, the load fails.
+
+"Fall back to the real asset" is just the case where the target `Y` doesn't exist, so a real `X`
+is the only provider left.
 
 ## How to run a case
 
