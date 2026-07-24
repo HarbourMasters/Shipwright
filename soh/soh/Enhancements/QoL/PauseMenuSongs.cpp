@@ -385,6 +385,25 @@ static void ActivateWarp(PauseContext* pauseCtx, int song) {
     isWarpActive = true;
 }
 
+// Only inject a played song when Link is in a normal, controllable field state -- the footing the vanilla
+// ocarina action itself needs to start (see Player_ActionHandler_13: grounded and not in a blocking state).
+// Firing from an item cutscene, a message, mid-song, mid-air, in water, while talking, mounted, or dying
+// could leave the ocarina/message system in a bad state, which is the class of corruption we want to avoid.
+static bool PauseSong_CanPlayOcarina() {
+    Player* player = GET_PLAYER(gPlayState);
+    if (gPlayState->msgCtx.msgMode != MSGMODE_NONE || gPlayState->msgCtx.ocarinaMode != OCARINA_MODE_00) {
+        return false;
+    }
+    if (player->stateFlags1 & (PLAYER_STATE1_DEAD | PLAYER_STATE1_IN_ITEM_CS | PLAYER_STATE1_IN_CUTSCENE |
+                               PLAYER_STATE1_TALKING | PLAYER_STATE1_ON_HORSE)) {
+        return false;
+    }
+    if (player->stateFlags2 & PLAYER_STATE2_OCARINA_PLAYING) {
+        return false;
+    }
+    return (player->actor.bgCheckFlags & BGCHECKFLAG_GROUND) != 0;
+}
+
 static void ActivateSong(PauseContext* pauseCtx, int questSong) {
     int idx = questSong - QUEST_SONG_LULLABY;
     Interface_SetDoAction(gPlayState, DO_ACTION_NONE);
@@ -454,6 +473,9 @@ static void PauseMenuSongs_HandleSelection() {
         }
         ActivateWarp(&gPlayState->pauseCtx, song);
     } else if (song >= QUEST_SONG_LULLABY && song <= QUEST_SONG_STORMS) {
+        if (!PauseSong_CanPlayOcarina()) {
+            return;
+        }
         ActivateSong(&gPlayState->pauseCtx, song);
     }
 }
