@@ -467,10 +467,10 @@ const EntranceData* GetEntranceData(s16 index) {
     return nullptr;
 }
 
-void LoadFromPreset(nlohmann::json info) {
+void LoadFromPreset(const nlohmann::json& info) {
     presetLoaded = true;
-    presetPos = { info["pos"]["x"], info["pos"]["y"] };
-    presetSize = { info["size"]["width"], info["size"]["height"] };
+    presetPos = { info.at("pos").at("x"), info.at("pos").at("y") };
+    presetSize = { info.at("size").at("width"), info.at("size").at("height") };
 }
 
 // Used for verifying the names on both sides of entrance pairs match. Keeping for ease of use for further name changes
@@ -941,8 +941,10 @@ void EntranceTrackerWindow::DrawElement() {
                     continue;
                 }
 
-                // RANDOTODO: Only show blue warps if bluewarp shuffle is on
-                if (original->metaTag.ends_with("bw") || override->metaTag.ends_with("bw")) {
+                // Only show blue warps if bluewarp shuffle is on
+                if ((original->metaTag.ends_with("bw") || override->metaTag.ends_with("bw")) &&
+                    OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_DECOUPLED_ENTRANCES) ==
+                        RO_GENERIC_OFF) {
                     continue;
                 }
 
