@@ -20,7 +20,11 @@ static void RegisterHorsebackArcheryEnhancements() {
                        Flags_SetEventChkInf(EVENTCHKINF_PLAYED_HORSEBACK_ARCHERY);
                        gSaveContext.minigameScore = 1500;
                        Message_CloseTextbox(play);
-                       enGe1->actionFunc = EnGe1_TalkAfterGame_Archery;
+                       gSaveContext.minigameState = 3;
+                       gSaveContext.eventInf[0] |= 0x100;
+                       play->nextEntranceIndex = ENTR_GERUDOS_FORTRESS_16;
+                       play->transitionType = TRANS_TYPE_CIRCLE(TCA_STARBURST, TCC_BLACK, TCS_FAST);
+                       play->transitionTrigger = TRANS_TRIGGER_START;
                        *should = false;
                    });
 
