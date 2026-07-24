@@ -14,6 +14,7 @@ extern "C" {
 #include "src/overlays/actors/ovl_En_Ma2/z_en_ma2.h"
 #include "src/overlays/actors/ovl_Obj_Timeblock/z_obj_timeblock.h"
 #include "src/overlays/actors/ovl_Shot_Sun/z_shot_sun.h"
+#include "src/overlays/actors/ovl_En_Skj/z_en_skj.h"
 extern PlayState* gPlayState;
 u8 Randomizer_GetSettingValue(RandomizerSettingKey);
 
@@ -36,6 +37,10 @@ void func_809FE4A4(EnDu* actor, PlayState* play); // Darunia: listening for Sari
 void EnMa2_WaitForOcarina(EnMa2* actor, PlayState* play);
 void EnMa2_WaitForEponasSong(EnMa2* actor, PlayState* play);
 void Player_StartTalking(PlayState* play, Actor* actor);
+
+// Lost Woods stump Skull Kid (En_Skj) Saria's-Song handlers, not exposed in a header.
+void EnSkj_WaitInRange(EnSkj* actor, PlayState* play);
+void EnSkj_SetupWaitForSong(EnSkj* actor);
 
 // Song of Time block (Obj_Timeblock) and Great Fairy spawner (Shot_Sun) observers, not exposed in a header.
 u8 ObjTimeblock_PlayerIsInRange(ObjTimeblock* timeblock, PlayState* play);
@@ -274,6 +279,19 @@ static bool PauseSong_ActivateNpcActors() {
             EnMa2* malon = (EnMa2*)actor;
             if (malon->actionFunc == EnMa2_WaitForOcarina && actor->xzDistToPlayer < 60.0f) {
                 malon->actionFunc = EnMa2_WaitForEponasSong;
+                PauseSong_HoldMode(OCARINA_MODE_03);
+                return true;
+            }
+        }
+        // The visible Lost Woods stump Skull Kid (moved to ACTORCAT_NPC on init) reacts to Saria's Song.
+        // Its idle WaitInRange state normally opens a real ocarina prompt, so -- like Mido -- push it into
+        // WaitForSong, hold MODE_03, and start the reward talk once it reacts. Being in WaitInRange already
+        // implies the player is in range (it drops out of that state otherwise).
+        if (actor->id == ACTOR_EN_SKJ && song == OCARINA_SONG_SARIAS) {
+            EnSkj* skullKid = (EnSkj*)actor;
+            if (skullKid->actionFunc == EnSkj_WaitInRange) {
+                EnSkj_SetupWaitForSong(skullKid);
+                pendingTalkActor = actor;
                 PauseSong_HoldMode(OCARINA_MODE_03);
                 return true;
             }
