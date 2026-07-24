@@ -205,15 +205,11 @@ static bool PauseSong_ActivateOkarinaTags() {
     return matched;
 }
 
-// --- Deferred hand-off for the actors that can't be driven inline ---
-// The staff spots above are safe to run synchronously, but the Song of Time blocks, Great Fairy spawners,
-// and the ocarina NPCs (Mido, Darunia, adult Malon) all update *before* this hook and simply poll
-// ocarinaMode + lastPlayedSong. Going through the vanilla play-for-actor flow instead
-// (PLAYER_STATE2_ATTEMPT_PLAY_FOR_ACTOR) would open a real note-input prompt the player can't satisfy from
-// the menu. So for all of them we push the matching in-range actors straight into their song-finished
-// state, leave the matching ocarinaMode set, and hold it a couple frames for them to read; then we restore
-// it. Mido is the one actor whose follow-up dialogue the player would normally start, so we do that here
-// once it has reacted.
+// --- Deferred hand-off for actors that can't be driven inline ---
+// The Song of Time blocks, Great Fairy spawners, and ocarina NPCs update before this hook and just poll
+// ocarinaMode + lastPlayedSong. We can't use the real play-for-actor flow (it opens a note-input prompt the
+// menu can't satisfy), so we push the matching in-range actor into its song-finished state, hold the
+// matching mode a couple frames for it to read, then restore it. Only Mido needs its dialogue started here.
 static u8 pendingMode = OCARINA_MODE_00;
 static Actor* pendingTalkActor = NULL;
 static int pendingTimer = 0;
@@ -371,19 +367,19 @@ static void PauseSong_Execute() {
     Actor_Spawn(&gPlayState->actorCtx, gPlayState, effectActorIds[idx], player->actor.world.pos.x,
                 player->actor.world.pos.y, player->actor.world.pos.z, 0, 0, 0, effectActorParams[idx]);
 
-    // Staff spots are the one category safe to drive inline: calling them here, after every actor has
-    // already updated this frame, lets them consume MODE_03 and set their own MODE_04 without it leaking to
-    // the MODE_04 readers below. So drive and reset them within this frame. (The Water Temple triforce
-    // leaves msgMode = MSGMODE_PAUSED, which would otherwise block the pause menu -- z_play gates on NONE.)
+    // Staff spots are the one category safe to drive inline: calling them now, after every actor has already
+    // updated this frame, lets them consume MODE_03 and set their own MODE_04 without it leaking to the
+    // MODE_04 readers below, so we can reset within this frame.
     gPlayState->msgCtx.ocarinaMode = OCARINA_MODE_03;
-    if (PauseSong_ActivateOkarinaTags()) {
-        gPlayState->msgCtx.ocarinaMode = OCARINA_MODE_00;
+    bool tagMatched = PauseSong_ActivateOkarinaTags();
+    gPlayState->msgCtx.ocarinaMode = OCARINA_MODE_00;
+    if (tagMatched) {
+        // The Water Temple triforce tag leaves msgMode = MSGMODE_PAUSED, which would block the pause menu.
         if (gPlayState->msgCtx.msgMode == MSGMODE_PAUSED) {
             gPlayState->msgCtx.msgMode = MSGMODE_NONE;
         }
         return;
     }
-    gPlayState->msgCtx.ocarinaMode = OCARINA_MODE_00;
 
     // Otherwise hand the song to a deferred actor: a Song of Time block / Great Fairy spawner (MODE_04), or
     // a matching NPC (MODE_03). Either holds the mode for the actor to poll next frame; AdvancePending then
@@ -393,13 +389,18 @@ static void PauseSong_Execute() {
     }
 }
 
-static void ActivateWarp(PauseContext* pauseCtx, int song) {
-    AudioOcarina_SetInstrument(OCARINA_INSTRUMENT_OFF);
+// Start the pause-menu close/hand-off, the way vanilla does when a song is played from the quest screen.
+static void PauseMenu_BeginClose(PauseContext* pauseCtx) {
     Interface_SetDoAction(gPlayState, DO_ACTION_NONE);
     pauseCtx->state = 0x12;
     WREG(2) = -6240;
     func_800F64E0(0);
     pauseCtx->unk_1E4 = 0;
+}
+
+static void ActivateWarp(PauseContext* pauseCtx, int song) {
+    AudioOcarina_SetInstrument(OCARINA_INSTRUMENT_OFF);
+    PauseMenu_BeginClose(pauseCtx);
     int idx = song - QUEST_SONG_MINUET;
     gPlayState->msgCtx.lastPlayedSong = ocarinaSongMap[idx];
     Audio_SetSfxBanksMute(0x20);
@@ -430,11 +431,7 @@ static bool PauseSong_CanPlayOcarina() {
 
 static void ActivateSong(PauseContext* pauseCtx, int questSong) {
     int idx = questSong - QUEST_SONG_LULLABY;
-    Interface_SetDoAction(gPlayState, DO_ACTION_NONE);
-    pauseCtx->state = 0x12;
-    WREG(2) = -6240;
-    func_800F64E0(0);
-    pauseCtx->unk_1E4 = 0;
+    PauseMenu_BeginClose(pauseCtx);
     gPlayState->msgCtx.lastPlayedSong = questSongToOcarinaSong[idx];
     // Intentionally no Audio_SetSoundBanksMute(0x20): it mutes BANK_OCARINA and is only cleared via
     // AudioOcarina_SetInstrument(OFF), which this in-scene path never hits, silencing the next real ocarina.
@@ -445,11 +442,7 @@ static void ActivateSong(PauseContext* pauseCtx, int questSong) {
 // Selected a non-warp song somewhere the ocarina can't be played: close the menu and show a short message,
 // the same hand-off a warp song uses (minus the song). PauseCannotPlay_Execute restores control after.
 static void ActivateCannotPlay(PauseContext* pauseCtx) {
-    Interface_SetDoAction(gPlayState, DO_ACTION_NONE);
-    pauseCtx->state = 0x12;
-    WREG(2) = -6240;
-    func_800F64E0(0);
-    pauseCtx->unk_1E4 = 0;
+    PauseMenu_BeginClose(pauseCtx);
     Message_StartTextbox(gPlayState, TEXT_CANNOT_PLAY_OCARINA_MSG, NULL);
     GET_PLAYER(gPlayState)->stateFlags1 |= PLAYER_STATE1_IN_CUTSCENE;
     isCannotPlayActive = true;
