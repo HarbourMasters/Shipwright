@@ -1,4 +1,6 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include <string>
+#include "soh/Enhancements/custom-message/CustomMessageManager.h"
 #include "soh/Enhancements/custom-message/CustomMessageTypes.h"
 #include "soh/ShipInit.hpp"
 
@@ -107,6 +109,15 @@ static const int effectActorParams[] = { 0, 0, 0, 0, 1, 0 };
 
 static bool isWarpActive = false;
 static bool isSongActive = false;
+static bool isCannotPlayActive = false;
+
+// Shown (through the OnOpenText hook below) when a song is selected somewhere the ocarina can't be played.
+// Phrased impersonally in each language so it reads consistently and sidesteps the tu/vous (du/Sie) choice.
+static CustomMessage cannotPlayHereMsg = CustomMessage(
+    "Can't play the Ocarina here!" + CustomMessage::MESSAGE_END(),
+    "Hier kann die Okarina" + CustomMessage::NEWLINE() + "nicht gespielt werden!" + CustomMessage::MESSAGE_END(),
+    "Impossible de jouer" + CustomMessage::NEWLINE() + "de l'ocarina ici !" + CustomMessage::MESSAGE_END(),
+    TEXTBOX_TYPE_BLACK);
 
 static void PauseWarp_Execute() {
     if (!isWarpActive || gPlayState->msgCtx.msgMode != MSGMODE_NONE) {
@@ -411,6 +422,27 @@ static void ActivateSong(PauseContext* pauseCtx, int questSong) {
     isSongActive = true;
 }
 
+// Selected a non-warp song somewhere the ocarina can't be played: close the menu and show a short message,
+// the same hand-off a warp song uses (minus the song). PauseCannotPlay_Execute restores control after.
+static void ActivateCannotPlay(PauseContext* pauseCtx) {
+    Interface_SetDoAction(gPlayState, DO_ACTION_NONE);
+    pauseCtx->state = 0x12;
+    WREG(2) = -6240;
+    func_800F64E0(0);
+    pauseCtx->unk_1E4 = 0;
+    Message_StartTextbox(gPlayState, TEXT_CANNOT_PLAY_OCARINA_MSG, NULL);
+    GET_PLAYER(gPlayState)->stateFlags1 |= PLAYER_STATE1_IN_CUTSCENE;
+    isCannotPlayActive = true;
+}
+
+static void PauseCannotPlay_Execute() {
+    if (!isCannotPlayActive || gPlayState->msgCtx.msgMode != MSGMODE_NONE) {
+        return;
+    }
+    isCannotPlayActive = false;
+    GET_PLAYER(gPlayState)->stateFlags1 &= ~PLAYER_STATE1_IN_CUTSCENE;
+}
+
 static void PauseMenuSongs_HandleSelection() {
     if (gSaveContext.inventory.items[SLOT_OCARINA] == ITEM_NONE) {
         return;
@@ -467,6 +499,7 @@ static void PauseMenuSongs_HandleSelection() {
         ActivateWarp(&gPlayState->pauseCtx, song);
     } else if (song >= QUEST_SONG_LULLABY && song <= QUEST_SONG_STORMS) {
         if (!PauseSong_CanPlayOcarina()) {
+            ActivateCannotPlay(&gPlayState->pauseCtx);
             return;
         }
         ActivateSong(&gPlayState->pauseCtx, song);
@@ -482,9 +515,15 @@ static void RegisterPauseMenuHooks() {
     COND_HOOK(OnGameFrameUpdate, CVAR_PAUSE_WARP_VALUE, [] {
         if (GameInteractor::IsSaveLoaded()) {
             PauseWarp_Execute();
+            PauseCannotPlay_Execute();
             PauseSong_Execute();
         }
     });
+    COND_ID_HOOK(OnOpenText, TEXT_CANNOT_PLAY_OCARINA_MSG, CVAR_PAUSE_WARP_VALUE,
+                 [](uint16_t* textId, bool* loadFromMessageTable) {
+                     cannotPlayHereMsg.LoadIntoFont();
+                     *loadFromMessageTable = false;
+                 });
 }
 
 static RegisterShipInitFunc initFunc(RegisterPauseMenuHooks, { CVAR_PAUSE_WARP_NAME });
