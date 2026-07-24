@@ -1,3 +1,8 @@
+> [!NOTE]
+> **This is a testing branch** for the libultraship `.meta` alias fallback work
+> ([Kenix3/libultraship#1165](https://github.com/Kenix3/libultraship/issues/1165)). See
+> [`meta-alias-testing/`](meta-alias-testing/) for the test kit, cases, and instructions.
+
 ![Ship of Harkinian](docs/shiptitle.darkmode.png#gh-dark-mode-only)
 ![Ship of Harkinian](docs/shiptitle.lightmode.png#gh-light-mode-only)
 

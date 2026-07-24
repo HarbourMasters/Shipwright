@@ -1,0 +1,5 @@
+# The repo ignores *.o2r and *.meta globally (build artifacts / sidecars). The
+# archives and source assets under this directory are intentional test fixtures,
+# so re-include them here.
+!o2r/*.o2r
+!**/*.meta
