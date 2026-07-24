@@ -117,7 +117,7 @@ global lookup — it's found wherever it lives, regardless of priority relative 
 
 ## Resolution model (what a layered `.meta` does)
 
-For a requested path `X`:
+See [meta-loading.md](meta-loading.md) for a flowchart of this. For a requested path `X`:
 
 1. **One identity, by priority.** `X` and `X.meta` are the *same* override slot; the
    highest-priority archive that supplies either one **wins** `X`. Lower archives are shadowed.
