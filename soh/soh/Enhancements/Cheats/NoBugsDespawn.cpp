@@ -4,7 +4,7 @@
 extern "C" {
 #include "src/overlays/actors/ovl_En_Insect/z_en_insect.h"
 
-extern s16 D_80A7DEB8;
+extern s16 sDroppedCount;
 }
 
 static void OnActorInitNoBugsDespawn(void* refActor) {
@@ -12,7 +12,7 @@ static void OnActorInitNoBugsDespawn(void* refActor) {
 
     if ((insect->actor.params & 2) && insect->soilActor == NULL) {
         insect->insectFlags &= ~4;
-        D_80A7DEB8--;
+        sDroppedCount--;
     }
 }
 

@@ -75,10 +75,7 @@ void EnBomBowlMan_Init(Actor* thisx, PlayState* play2) {
     Actor_SetScale(&this->actor, 0.013f);
 
     for (i = 0; i < 2; i++) {
-        if (CVarGetInteger(CVAR_ENHANCEMENT("CustomizeBombchuBowling"), 0) &&
-            CVarGetInteger(i == 0 ? CVAR_ENHANCEMENT("BombchuBowlingNoSmallCucco")
-                                  : CVAR_ENHANCEMENT("BombchuBowlingNoBigCucco"),
-                           0)) {
+        if (!GameInteractor_Should(VB_SPAWN_BOMBCHU_BOWLING_CUCCOS, true, i)) {
             continue;
         }
 
@@ -122,7 +119,7 @@ void EnBomBowMan_WaitAsleep(EnBomBowlMan* this, PlayState* play) {
         yawDiff = ABS((s16)(this->actor.yawTowardsPlayer - this->actor.shape.rot.y));
 
         if (!(this->actor.xzDistToPlayer > 120.0f) && (yawDiff < 0x4300)) {
-            func_8002F2CC(&this->actor, play, 120.0f);
+            Actor_OfferTalk(&this->actor, play, 120.0f);
         }
     }
 }
@@ -208,7 +205,7 @@ void EnBomBowMan_WaitNotBeatenDC(EnBomBowlMan* this, PlayState* play) {
     if (Actor_ProcessTalkRequest(&this->actor, play)) {
         this->actionFunc = EnBomBowMan_TalkNotBeatenDC;
     } else {
-        func_8002F2CC(&this->actor, play, 120.0f);
+        Actor_OfferTalk(&this->actor, play, 120.0f);
     }
 }
 
@@ -303,7 +300,7 @@ void EnBomBowMan_RunGame(EnBomBowlMan* this, PlayState* play) {
             yawDiff = ABS((s16)(this->actor.yawTowardsPlayer - this->actor.shape.rot.y));
 
             if (!(this->actor.xzDistToPlayer > 120.0f) && (yawDiff < 0x4300)) {
-                func_8002F2CC(&this->actor, play, 120.0f);
+                Actor_OfferTalk(&this->actor, play, 120.0f);
             }
         }
     }
@@ -321,9 +318,7 @@ void EnBomBowlMan_HandlePlayChoice(EnBomBowlMan* this, PlayState* play) {
                     Rupees_ChangeBy(-30);
                     this->minigamePlayStatus = 1;
                     this->wallStatus[0] = this->wallStatus[1] = 0;
-                    if (CVarGetInteger(CVAR_ENHANCEMENT("CustomizeBombchuBowling"), 0)) {
-                        play->bombchuBowlingStatus = CVarGetInteger(CVAR_ENHANCEMENT("BombchuBowlingAmmo"), 10);
-                    } else {
+                    if (GameInteractor_Should(VB_SET_BOMBCHU_BOWLING_AMMO, true)) {
                         play->bombchuBowlingStatus = 10;
                     }
                     Flags_SetSwitch(play, 0x38);
@@ -337,7 +332,7 @@ void EnBomBowlMan_HandlePlayChoice(EnBomBowlMan* this, PlayState* play) {
                         this->actor.textId = 0x1B;
                         Message_ContinueTextbox(play, this->actor.textId);
                         this->dialogState = TEXT_STATE_EVENT;
-                        OnePointCutscene_Init(play, 8010, -99, NULL, MAIN_CAM);
+                        OnePointCutscene_Init(play, 8010, -99, NULL, CAM_ID_MAIN);
                         Player_SetCsActionWithHaltedActors(play, NULL, 8);
                         this->actionFunc = EnBomBowMan_SetupChooseShowPrize;
                     }
@@ -373,7 +368,7 @@ void func_809C41FC(EnBomBowlMan* this, PlayState* play) {
             this->actor.textId = 0x1B;
             Message_ContinueTextbox(play, this->actor.textId);
             this->dialogState = TEXT_STATE_EVENT;
-            OnePointCutscene_Init(play, 8010, -99, NULL, MAIN_CAM);
+            OnePointCutscene_Init(play, 8010, -99, NULL, CAM_ID_MAIN);
             Player_SetCsActionWithHaltedActors(play, NULL, 8);
             this->actionFunc = EnBomBowMan_SetupChooseShowPrize;
         } else {
@@ -539,7 +534,7 @@ void EnBomBowlMan_Update(Actor* thisx, PlayState* play) {
                 }
             }
 
-            func_80038290(play, &this->actor, &this->unk_218, &this->unk_224, this->actor.focus.pos);
+            Actor_TrackPlayer(play, &this->actor, &this->unk_218, &this->unk_224, this->actor.focus.pos);
             break;
     }
 

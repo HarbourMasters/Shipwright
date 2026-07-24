@@ -2,10 +2,12 @@
 #include "soh/ShipInit.hpp"
 
 extern "C" {
-extern PlayState* gPlayState;
-extern SaveContext gSaveContext;
+#include "z64.h"
+#include "z64save.h"
 #include "macros.h"
 #include "functions.h"
+extern PlayState* gPlayState;
+extern SaveContext gSaveContext;
 }
 
 #define CVAR_BOW_RETICLE_NAME CVAR_ENHANCEMENT("BowReticle")

@@ -4,15 +4,24 @@
 #include <array>
 #include <cstddef>
 #include <stdint.h>
-#include <utility>
 #include <vector>
 #include <set>
 
-extern uint64_t rando_state;
+inline uint64_t rando_state = 0;
 
-void Random_Init(uint64_t seed);
-uint32_t Random(uint32_t min, uint32_t max);
-double RandomDouble();
+static inline void Random_Init(uint64_t seed) {
+    ShipUtils::RandInit(seed, &rando_state);
+}
+
+// Returns a random integer in range [min, max-1]
+static inline uint32_t Random(uint32_t min, uint32_t max) {
+    return ShipUtils::Random(min, max, &rando_state);
+}
+
+// Returns a random floating point number in [0.0, 1.0)
+static inline double RandomDouble() {
+    return ShipUtils::RandomDouble(&rando_state);
+}
 
 // Get a random element from a vector or array
 template <typename T> T RandomElement(std::vector<T>& vector, bool erase) {
@@ -30,14 +39,9 @@ template <typename T> const T RandomElementFromSet(const std::set<T>& set) {
 }
 
 // Shuffle items within a vector or array
-// RANDOTODO There's probably a more efficient way to do what this does.
 template <typename T> void Shuffle(std::vector<T>& vector) {
-    for (size_t i = 0; i + 1 < vector.size(); i++) {
-        std::swap(vector[i], vector[Random(static_cast<uint32_t>(i), static_cast<uint32_t>(vector.size()))]);
-    }
+    ShipUtils::Shuffle(vector, &rando_state);
 }
 template <typename T, size_t size> void Shuffle(std::array<T, size>& arr) {
-    for (size_t i = 0; i + 1 < arr.size(); i++) {
-        std::swap(arr[i], arr[Random(static_cast<uint32_t>(i), static_cast<uint32_t>(arr.size()))]);
-    }
+    ShipUtils::Shuffle(arr, &rando_state);
 }

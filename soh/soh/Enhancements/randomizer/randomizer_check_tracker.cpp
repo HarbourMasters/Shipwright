@@ -71,6 +71,7 @@ bool showKokiriSword;
 bool showMasterSword;
 bool showHyruleLoach;
 bool showWeirdEgg;
+bool showZeldasLetter;
 bool showGerudoCard;
 bool showOverworldPots;
 bool showDungeonPots;
@@ -1373,8 +1374,11 @@ void LoadSettings() {
     showHyruleLoach =
         IS_RANDO ? OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FISHSANITY) == RO_FISHSANITY_HYRULE_LOACH
                  : false;
-    showWeirdEgg =
-        IS_RANDO ? OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_WEIRD_EGG) == RO_GENERIC_YES
+    showWeirdEgg = IS_RANDO ? OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_WEIRD_EGG) ==
+                                  RO_WEIRD_EGG_SHUFFLED
+                            : true;
+    showZeldasLetter =
+        IS_RANDO ? OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_ZELDAS_LETTER) == RO_GENERIC_YES
                  : true;
     showGerudoCard = IS_RANDO ? OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(
                                     RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD) == RO_GENERIC_YES
@@ -1633,23 +1637,23 @@ void LoadSettings() {
     }
 
     switch (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GANONS_BOSS_KEY)) {
-        case RO_GANON_BOSS_KEY_LACS_STONES:
-            Rando::Context::GetInstance()->LACSCondition(RO_LACS_STONES);
+        case RO_GANON_BOSS_KEY_STONES:
+            Rando::Context::GetInstance()->GBKCondition(RO_CHECK_TRIGGER_STONES);
             break;
-        case RO_GANON_BOSS_KEY_LACS_MEDALLIONS:
-            Rando::Context::GetInstance()->LACSCondition(RO_LACS_MEDALLIONS);
+        case RO_GANON_BOSS_KEY_MEDALLIONS:
+            Rando::Context::GetInstance()->GBKCondition(RO_CHECK_TRIGGER_MEDALLIONS);
             break;
-        case RO_GANON_BOSS_KEY_LACS_REWARDS:
-            Rando::Context::GetInstance()->LACSCondition(RO_LACS_REWARDS);
+        case RO_GANON_BOSS_KEY_REWARDS:
+            Rando::Context::GetInstance()->GBKCondition(RO_CHECK_TRIGGER_REWARDS);
             break;
-        case RO_GANON_BOSS_KEY_LACS_DUNGEONS:
-            Rando::Context::GetInstance()->LACSCondition(RO_LACS_DUNGEONS);
+        case RO_GANON_BOSS_KEY_DUNGEONS:
+            Rando::Context::GetInstance()->GBKCondition(RO_CHECK_TRIGGER_DUNGEONS);
             break;
-        case RO_GANON_BOSS_KEY_LACS_TOKENS:
-            Rando::Context::GetInstance()->LACSCondition(RO_LACS_TOKENS);
+        case RO_GANON_BOSS_KEY_TOKENS:
+            Rando::Context::GetInstance()->GBKCondition(RO_CHECK_TRIGGER_TOKENS);
             break;
         default:
-            Rando::Context::GetInstance()->LACSCondition(RO_LACS_VANILLA);
+            Rando::Context::GetInstance()->GBKCondition(RO_CHECK_TRIGGER_NONE);
             break;
     }
 }
@@ -1665,14 +1669,13 @@ bool IsCheckShuffled(RandomizerCheck rc) {
                (loc->GetRCType() != RCTYPE_STATIC_HINT) &&  // TODO: Don't show hints until tracker supports them
                (loc->GetRCType() != RCTYPE_CHEST_GAME) &&   // don't show non final reward chest game checks until we
                                                             // support shuffling them
-               (rc != RC_HC_ZELDAS_LETTER) &&               // don't show zeldas letter until we support shuffling it
-               (rc != RC_LINKS_POCKET || showLinksPocket) &&
+               (rc != RC_HC_ZELDAS_LETTER || showZeldasLetter) && (rc != RC_LINKS_POCKET || showLinksPocket) &&
                OTRGlobals::Instance->gRandoContext->IsQuestOfLocationActive(rc) &&
                (loc->GetRCType() != RCTYPE_SHOP ||
                 (showShops &&
                  OTRGlobals::Instance->gRandomizer->IdentifyShopItem(loc->GetScene(), loc->GetActorParams() + 1)
                          .enGirlAShopItem == 50)) &&
-               (rc != RC_TRIFORCE_COMPLETED) && (rc != RC_GANON) &&
+               (rc != RC_WINCON) && (rc != RC_GANON) &&
                (loc->GetRCType() != RCTYPE_SCRUB || showScrubs ||
                 (showMajorScrubs && (rc == RC_LW_DEKU_SCRUB_NEAR_BRIDGE || // The 3 scrubs that are always randomized
                                      rc == RC_HF_DEKU_SCRUB_GROTTO || rc == RC_LW_DEKU_SCRUB_GROTTO_FRONT))) &&
@@ -2274,10 +2277,10 @@ void RecalculateAvailableChecks(RandomizerRegion startingRegion /* = RR_ROOT */,
     availableChecksStartingAgeTime = startingAgeTime;
 }
 
-void LoadFromPreset(nlohmann::json info) {
+void LoadFromPreset(const nlohmann::json& info) {
     presetLoaded = true;
-    presetPos = { info["pos"]["x"], info["pos"]["y"] };
-    presetSize = { info["size"]["width"], info["size"]["height"] };
+    presetPos = { info.at("pos").at("x"), info.at("pos").at("y") };
+    presetSize = { info.at("size").at("width"), info.at("size").at("height") };
 }
 
 void CheckTrackerWindow::Draw() {

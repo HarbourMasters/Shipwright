@@ -38,7 +38,7 @@ void RegionTable_Init_DekuTree() {
 
     areaTable[RR_DEKU_TREE_LOBBY_2F] = Region("Deku Tree Lobby 2F", SCENE_DEKU_TREE, {}, {
         //Locations
-        LOCATION(RC_DEKU_TREE_MAP_CHEST,         logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_DEKU_TREE_MAP_CHEST,         logic->CanOpenLargeChest()),
         LOCATION(RC_DEKU_TREE_LOBBY_LOWER_HEART, true),
         LOCATION(RC_DEKU_TREE_2F_GRASS_1,        logic->CanCutShrubs()),
         LOCATION(RC_DEKU_TREE_2F_GRASS_2,        logic->CanCutShrubs()),
@@ -69,7 +69,7 @@ void RegionTable_Init_DekuTree() {
 
     areaTable[RR_DEKU_TREE_SLINGSHOT_ROOM] = Region("Deku Tree Slingshot Room", SCENE_DEKU_TREE, {}, {
         //Locations
-        LOCATION(RC_DEKU_TREE_SLINGSHOT_CHEST,           logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_DEKU_TREE_SLINGSHOT_CHEST,           logic->CanOpenLargeChest()),
         LOCATION(RC_DEKU_TREE_SLINGSHOT_ROOM_SIDE_CHEST, (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT)) && logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_DEKU_TREE_SLINGSHOT_GRASS_1,         logic->CanCutShrubs()),
         LOCATION(RC_DEKU_TREE_SLINGSHOT_GRASS_2,         logic->CanCutShrubs()),
@@ -86,7 +86,7 @@ void RegionTable_Init_DekuTree() {
         EVENT_ACCESS(LOGIC_NUT_ACCESS,   logic->CanGetDekuBabaNuts()),
     }, {
         //Locations
-        LOCATION(RC_DEKU_TREE_COMPASS_CHEST,           logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_DEKU_TREE_COMPASS_CHEST,           logic->CanOpenLargeChest()),
         LOCATION(RC_DEKU_TREE_COMPASS_ROOM_SIDE_CHEST, logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_DEKU_TREE_GS_COMPASS_ROOM,         logic->CanAttack()),
         LOCATION(RC_DEKU_TREE_COMPASS_GRASS_1,         logic->CanCutShrubs()),
@@ -247,7 +247,7 @@ void RegionTable_Init_DekuTree() {
         EVENT_ACCESS(LOGIC_DEKU_TREE_MQ_2F_BURNED_WEB, logic->HasFireSource()),
     }, {
         //Locations
-        LOCATION(RC_DEKU_TREE_MQ_MAP_CHEST,     logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_DEKU_TREE_MQ_MAP_CHEST,     logic->CanOpenLargeChest()),
         LOCATION(RC_DEKU_TREE_MQ_GS_LOBBY,      (logic->CanBreakCrates() || ctx->GetTrickOption(RT_VISIBLE_COLLISION)) && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA)),
         LOCATION(RC_DEKU_TREE_MQ_LOBBY_HEART,   true),
         LOCATION(RC_DEKU_TREE_MQ_2F_GRASS_1,    logic->CanCutShrubs()),
@@ -281,7 +281,7 @@ void RegionTable_Init_DekuTree() {
     }, {
         //Locations
         //Implies CanKillEnemy(RE_GOHMA_LARVA)
-        LOCATION(RC_DEKU_TREE_MQ_SLINGSHOT_CHEST,           logic->CanKillEnemy(RE_DEKU_BABA) && logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_DEKU_TREE_MQ_SLINGSHOT_CHEST,           logic->CanKillEnemy(RE_DEKU_BABA) && logic->CanOpenLargeChest()),
         LOCATION(RC_DEKU_TREE_MQ_SLINGSHOT_ROOM_BACK_CHEST, (logic->HasFireSourceWithTorch() || (logic->IsAdult && logic->CanUse(RG_FAIRY_BOW))) && logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_DEKU_TREE_MQ_SLINGSHOT_ROOM_HEART,      true),
         LOCATION(RC_DEKU_TREE_MQ_SLINGSHOT_GRASS_1,         logic->CanCutShrubs()),
@@ -313,7 +313,7 @@ void RegionTable_Init_DekuTree() {
 
     areaTable[RR_DEKU_TREE_MQ_COMPASS_ROOM] = Region("Deku Tree MQ Compass Room", SCENE_DEKU_TREE, {}, {
         //Locations
-        LOCATION(RC_DEKU_TREE_MQ_COMPASS_CHEST,   logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_DEKU_TREE_MQ_COMPASS_CHEST,   logic->CanOpenLargeChest()),
         LOCATION(RC_DEKU_TREE_MQ_COMPASS_GRASS_1, logic->CanCutShrubs()),
         LOCATION(RC_DEKU_TREE_MQ_COMPASS_GRASS_2, logic->CanCutShrubs()),
         LOCATION(RC_DEKU_TREE_MQ_COMPASS_GRASS_3, logic->CanCutShrubs()),

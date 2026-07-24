@@ -123,42 +123,97 @@ RandomizerCheck GetRandomizerCheckFromSceneFlag(int16_t sceneNum, int16_t flagTy
     return RC_UNKNOWN_CHECK;
 }
 
-bool MeetsLACSRequirements() {
-    switch (RAND_GET_OPTION(RSK_GANONS_BOSS_KEY).Get()) {
-        case RO_GANON_BOSS_KEY_LACS_STONES:
-            if ((CheckStoneCount() + CheckLACSRewardCount()) >= RAND_GET_OPTION(RSK_LACS_STONE_COUNT).Get()) {
-                return true;
-            }
-            break;
-        case RO_GANON_BOSS_KEY_LACS_MEDALLIONS:
-            if ((CheckMedallionCount() + CheckLACSRewardCount()) >= RAND_GET_OPTION(RSK_LACS_MEDALLION_COUNT).Get()) {
-                return true;
-            }
-            break;
-        case RO_GANON_BOSS_KEY_LACS_REWARDS:
-            if ((CheckMedallionCount() + CheckStoneCount() + CheckLACSRewardCount()) >=
-                RAND_GET_OPTION(RSK_LACS_REWARD_COUNT).Get()) {
-                return true;
-            }
-            break;
-        case RO_GANON_BOSS_KEY_LACS_DUNGEONS:
-            if ((CheckDungeonCount() + CheckLACSRewardCount()) >= RAND_GET_OPTION(RSK_LACS_DUNGEON_COUNT).Get()) {
-                return true;
-            }
-            break;
-        case RO_GANON_BOSS_KEY_LACS_TOKENS:
-            if (gSaveContext.inventory.gsTokens >= RAND_GET_OPTION(RSK_LACS_TOKEN_COUNT).Get()) {
-                return true;
-            }
-            break;
-        default:
-            if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) && CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW)) {
-                return true;
+bool MeetsGBKRequirements() {
+    u8 bonusRewardCount = 0;
+    switch (RAND_GET_OPTION(RSK_GBK_OPTIONS).Get()) {
+        case RO_CHECK_TRIGGER_WILDCARD_REWARD:
+        case RO_CHECK_TRIGGER_GREG_REWARD:
+            if (Flags_GetRandomizerInf(RAND_INF_GREG_FOUND)) {
+                bonusRewardCount = 1;
             }
             break;
     }
 
-    return false;
+    switch (RAND_GET_OPTION(RSK_GANONS_BOSS_KEY).Get()) {
+        case RO_GANON_BOSS_KEY_STONES:
+            return (CheckStoneCount() + bonusRewardCount) >= RAND_GET_OPTION(RSK_GBK_STONE_COUNT).Get();
+        case RO_GANON_BOSS_KEY_MEDALLIONS:
+            return (CheckMedallionCount() + bonusRewardCount) >= RAND_GET_OPTION(RSK_GBK_MEDALLION_COUNT).Get();
+        case RO_GANON_BOSS_KEY_REWARDS:
+            return (CheckMedallionCount() + CheckStoneCount() + bonusRewardCount) >=
+                   RAND_GET_OPTION(RSK_GBK_REWARD_COUNT).Get();
+        case RO_GANON_BOSS_KEY_DUNGEONS:
+            return (CheckDungeonCount() + bonusRewardCount) >= RAND_GET_OPTION(RSK_GBK_DUNGEON_COUNT).Get();
+        case RO_GANON_BOSS_KEY_TOKENS:
+            return gSaveContext.inventory.gsTokens >= RAND_GET_OPTION(RSK_GBK_TOKEN_COUNT).Get();
+        case RO_GANON_BOSS_KEY_TRIFORCE_PIECES:
+            return gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected >=
+                   RAND_GET_OPTION(RSK_GBK_TRIFORCE_COUNT).Get();
+        default:
+            return false;
+    }
+}
+
+bool MeetsGanonsSoulRequirements() {
+    u8 bonusRewardCount = 0;
+    switch (RAND_GET_OPTION(RSK_GANONS_SOUL_OPTIONS).Get()) {
+        case RO_CHECK_TRIGGER_WILDCARD_REWARD:
+        case RO_CHECK_TRIGGER_GREG_REWARD:
+            if (Flags_GetRandomizerInf(RAND_INF_GREG_FOUND)) {
+                bonusRewardCount = 1;
+            }
+            break;
+    }
+
+    switch (RAND_GET_OPTION(RSK_GANONS_SOUL).Get()) {
+        case RO_GANONS_SOUL_STONES:
+            return (CheckStoneCount() + bonusRewardCount) >= RAND_GET_OPTION(RSK_GANONS_SOUL_STONE_COUNT).Get();
+        case RO_GANONS_SOUL_MEDALLIONS:
+            return (CheckMedallionCount() + bonusRewardCount) >= RAND_GET_OPTION(RSK_GANONS_SOUL_MEDALLION_COUNT).Get();
+        case RO_GANONS_SOUL_REWARDS:
+            return (CheckMedallionCount() + CheckStoneCount() + bonusRewardCount) >=
+                   RAND_GET_OPTION(RSK_GANONS_SOUL_REWARD_COUNT).Get();
+        case RO_GANONS_SOUL_DUNGEONS:
+            return (CheckDungeonCount() + bonusRewardCount) >= RAND_GET_OPTION(RSK_GANONS_SOUL_DUNGEON_COUNT).Get();
+        case RO_GANONS_SOUL_TOKENS:
+            return gSaveContext.inventory.gsTokens >= RAND_GET_OPTION(RSK_GANONS_SOUL_TOKEN_COUNT).Get();
+        case RO_GANONS_SOUL_TRIFORCE_PIECES:
+            return gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected >=
+                   RAND_GET_OPTION(RSK_GANONS_SOUL_TRIFORCE_COUNT).Get();
+        default:
+            return false;
+    }
+}
+
+bool MeetsWinconRequirements() {
+    u8 bonusRewardCount = 0;
+    switch (RAND_GET_OPTION(RSK_WINCON_OPTIONS).Get()) {
+        case RO_CHECK_TRIGGER_WILDCARD_REWARD:
+        case RO_CHECK_TRIGGER_GREG_REWARD:
+            if (Flags_GetRandomizerInf(RAND_INF_GREG_FOUND)) {
+                bonusRewardCount = 1;
+            }
+            break;
+    }
+
+    switch (RAND_GET_OPTION(RSK_WINCON).Get()) {
+        case RO_WINCON_STONES:
+            return (CheckStoneCount() + bonusRewardCount) >= RAND_GET_OPTION(RSK_WINCON_STONE_COUNT).Get();
+        case RO_WINCON_MEDALLIONS:
+            return (CheckMedallionCount() + bonusRewardCount) >= RAND_GET_OPTION(RSK_WINCON_MEDALLION_COUNT).Get();
+        case RO_WINCON_REWARDS:
+            return (CheckMedallionCount() + CheckStoneCount() + bonusRewardCount) >=
+                   RAND_GET_OPTION(RSK_WINCON_REWARD_COUNT).Get();
+        case RO_WINCON_DUNGEONS:
+            return (CheckDungeonCount() + bonusRewardCount) >= RAND_GET_OPTION(RSK_WINCON_DUNGEON_COUNT).Get();
+        case RO_WINCON_TOKENS:
+            return gSaveContext.inventory.gsTokens >= RAND_GET_OPTION(RSK_WINCON_TOKEN_COUNT).Get();
+        case RO_WINCON_TRIFORCE_PIECES:
+            return gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected >=
+                   RAND_GET_OPTION(RSK_WINCON_TRIFORCE_COUNT).Get();
+        default:
+            return false;
+    }
 }
 
 bool CompletedAllTrials() {
@@ -172,59 +227,33 @@ bool CompletedAllTrials() {
 
 bool MeetsRainbowBridgeRequirements() {
     switch (RAND_GET_OPTION(RSK_RAINBOW_BRIDGE).Get()) {
-        case RO_BRIDGE_VANILLA: {
-            if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) && CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) &&
-                (INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT)) {
-                return true;
-            }
-            break;
-        }
-        case RO_BRIDGE_STONES: {
-            if ((CheckStoneCount() + CheckBridgeRewardCount()) >=
-                RAND_GET_OPTION(RSK_RAINBOW_BRIDGE_STONE_COUNT).Get()) {
-                return true;
-            }
-            break;
-        }
-        case RO_BRIDGE_MEDALLIONS: {
-            if ((CheckMedallionCount() + CheckBridgeRewardCount()) >=
-                RAND_GET_OPTION(RSK_RAINBOW_BRIDGE_MEDALLION_COUNT).Get()) {
-                return true;
-            }
-            break;
-        }
-        case RO_BRIDGE_DUNGEON_REWARDS: {
-            if ((CheckMedallionCount() + CheckStoneCount() + CheckBridgeRewardCount()) >=
-                RAND_GET_OPTION(RSK_RAINBOW_BRIDGE_REWARD_COUNT).Get()) {
-                return true;
-            }
-            break;
-        }
-        case RO_BRIDGE_DUNGEONS: {
-            if ((CheckDungeonCount() + CheckBridgeRewardCount()) >=
-                RAND_GET_OPTION(RSK_RAINBOW_BRIDGE_DUNGEON_COUNT).Get()) {
-                return true;
-            }
-            break;
-        }
-        case RO_BRIDGE_TOKENS: {
-            if (gSaveContext.inventory.gsTokens >= RAND_GET_OPTION(RSK_RAINBOW_BRIDGE_TOKEN_COUNT).Get()) {
-                return true;
-            }
-            break;
-        }
-        case RO_BRIDGE_GREG: {
-            if (Flags_GetRandomizerInf(RAND_INF_GREG_FOUND)) {
-                return true;
-            }
-            break;
-        }
-        case RO_BRIDGE_ALWAYS_OPEN: {
+        case RO_BRIDGE_VANILLA:
+            return CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) && CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) &&
+                   INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT;
+        case RO_BRIDGE_STONES:
+            return (CheckStoneCount() + CheckBridgeRewardCount()) >=
+                   RAND_GET_OPTION(RSK_RAINBOW_BRIDGE_STONE_COUNT).Get();
+        case RO_BRIDGE_MEDALLIONS:
+            return (CheckMedallionCount() + CheckBridgeRewardCount()) >=
+                   RAND_GET_OPTION(RSK_RAINBOW_BRIDGE_MEDALLION_COUNT).Get();
+        case RO_BRIDGE_DUNGEON_REWARDS:
+            return (CheckMedallionCount() + CheckStoneCount() + CheckBridgeRewardCount()) >=
+                   RAND_GET_OPTION(RSK_RAINBOW_BRIDGE_REWARD_COUNT).Get();
+        case RO_BRIDGE_DUNGEONS:
+            return (CheckDungeonCount() + CheckBridgeRewardCount()) >=
+                   RAND_GET_OPTION(RSK_RAINBOW_BRIDGE_DUNGEON_COUNT).Get();
+        case RO_BRIDGE_TOKENS:
+            return gSaveContext.inventory.gsTokens >= RAND_GET_OPTION(RSK_RAINBOW_BRIDGE_TOKEN_COUNT).Get();
+        case RO_BRIDGE_TRIFORCE_PIECES:
+            return gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected >=
+                   RAND_GET_OPTION(RSK_RAINBOW_BRIDGE_TRIFORCE_COUNT).Get();
+        case RO_BRIDGE_GREG:
+            return Flags_GetRandomizerInf(RAND_INF_GREG_FOUND);
+        case RO_BRIDGE_ALWAYS_OPEN:
             return true;
-        }
+        default:
+            return false;
     }
-
-    return false;
 }
 
 // Todo Move this to randomizer context, clear it out on save load etc
@@ -232,9 +261,26 @@ static std::queue<RandomizerCheck> randomizerQueuedChecks;
 static RandomizerCheck randomizerQueuedCheck = RC_UNKNOWN_CHECK;
 static GetItemEntry randomizerQueuedItemEntry = GET_ITEM_NONE;
 
+void CheckTriggers() {
+    if (!(gSaveContext.inventory.dungeonItems[SCENE_GANONS_TOWER] & 1) && MeetsGBKRequirements()) {
+        SPDLOG_INFO("Queuing RC: RC_GANONS_BOSS_KEY");
+        randomizerQueuedChecks.push(RC_GANONS_BOSS_KEY);
+    }
+
+    if (!Flags_GetRandomizerInf(RAND_INF_GANON_SOUL) && MeetsGanonsSoulRequirements()) {
+        SPDLOG_INFO("Queuing RC: RC_GANON_SOUL");
+        randomizerQueuedChecks.push(RC_GANON_SOUL);
+    }
+
+    if (MeetsWinconRequirements()) {
+        SPDLOG_INFO("Queuing RC: RC_WINCON");
+        randomizerQueuedChecks.push(RC_WINCON);
+    }
+}
+
 void RandomizerOnFlagSetHandler(int16_t flagType, int16_t flag) {
     // Consume adult trade items
-    if (RAND_GET_OPTION(RSK_SHUFFLE_ADULT_TRADE) && flagType == FLAG_RANDOMIZER_INF) {
+    if (RAND_GET_OPTION(RSK_SHUFFLE_ADULT_TRADE).Get() && flagType == FLAG_RANDOMIZER_INF) {
         switch (flag) {
             case RAND_INF_ADULT_TRADES_DMT_TRADE_BROKEN_SWORD:
                 Flags_UnsetRandomizerInf(RAND_INF_ADULT_TRADES_HAS_SWORD_BROKEN);
@@ -248,12 +294,7 @@ void RandomizerOnFlagSetHandler(int16_t flagType, int16_t flag) {
     }
 
     if (flagType == FLAG_EVENT_CHECK_INF && flag == EVENTCHKINF_TALON_WOKEN_IN_CASTLE) {
-        // remove chicken as this is the only use for it
         Flags_UnsetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_CHICKEN);
-    }
-
-    if (flagType == FLAG_EVENT_CHECK_INF && flag == EVENTCHKINF_OBTAINED_ZELDAS_LETTER) {
-        Flags_SetRandomizerInf(RAND_INF_ZELDAS_LETTER);
     }
 
     if (flagType == FLAG_EVENT_CHECK_INF && flag == EVENTCHKINF_TALON_RETURNED_FROM_CASTLE) {
@@ -550,6 +591,8 @@ void RandomizerOnItemReceiveHandler(GetItemEntry receivedItemEntry) {
             Flags_SetEventChkInf(EVENTCHKINF_NABOORU_CAPTURED_BY_TWINROVA);
         }
     }
+
+    CheckTriggers();
 }
 
 void EnExItem_DrawRandomizedItem(EnExItem* enExItem, PlayState* play) {
@@ -1088,9 +1131,16 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
         case VB_MIDO_CONSIDER_DEKU_TREE_DEAD:
             *should = Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_KOKIRI_EMERALD_DEKU_TREE_DEAD);
             break;
-        case VB_OPEN_CHEST:
+        case VB_OPEN_CHEST: {
+            EnBox* chest = va_arg(args, EnBox*);
             *should = *should && Flags_GetRandomizerInf(RAND_INF_CAN_OPEN_CHEST);
+            if (*should && RAND_GET_OPTION(RSK_SHUFFLE_OPEN_CHEST).Is(RO_OPEN_CHEST_PROGRESSIVE) &&
+                chest->type != ENBOX_TYPE_SMALL && chest->type != ENBOX_TYPE_6 &&
+                chest->type != ENBOX_TYPE_ROOM_CLEAR_SMALL && chest->type != ENBOX_TYPE_SWITCH_FLAG_FALL_SMALL) {
+                *should = Flags_GetRandomizerInf(RAND_INF_CAN_OPEN_LARGE_CHEST);
+            }
             break;
+        }
         case VB_OPEN_KOKIRI_FOREST:
             *should = Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_KOKIRI_EMERALD_DEKU_TREE_DEAD) ||
                       RAND_GET_OPTION(RSK_FOREST).IsNot(RO_CLOSED_FOREST_ON);
@@ -1098,14 +1148,9 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
         case VB_BE_ELIGIBLE_FOR_DARUNIAS_JOY_REWARD:
             *should = !Flags_GetRandomizerInf(RAND_INF_DARUNIAS_JOY);
             break;
-        case VB_BE_ELIGIBLE_FOR_LIGHT_ARROWS:
-            *should = LINK_IS_ADULT && (gEntranceTable[gSaveContext.entranceIndex].scene == SCENE_TEMPLE_OF_TIME) &&
-                      !Flags_GetEventChkInf(EVENTCHKINF_RETURNED_TO_TEMPLE_OF_TIME_WITH_ALL_MEDALLIONS) &&
-                      MeetsLACSRequirements();
-            break;
         case VB_BE_ELIGIBLE_FOR_NOCTURNE_OF_SHADOW:
             *should = !Flags_GetEventChkInf(EVENTCHKINF_BONGO_BONGO_ESCAPED_FROM_WELL) && LINK_IS_ADULT &&
-                      gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_KAKARIKO_VILLAGE &&
+                      gEntranceTable[gSaveContext.entranceIndex].scene == SCENE_KAKARIKO_VILLAGE &&
                       CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST) && CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE) &&
                       CHECK_QUEST_ITEM(QUEST_MEDALLION_WATER) && gSaveContext.cutsceneIndex < 0xFFF0;
             break;
@@ -1228,6 +1273,17 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             }
             break;
         }
+        case VB_JABU_PREVENT_RUTO_REENTER_BIGOCTO: {
+            // Don't let player carry Ruto through doors 21 and 3 to Bigocto room if Ruto abducted flag set
+            Player* player = va_arg(args, Player*);
+            Actor* doorActor = va_arg(args, Actor*);
+            if (gPlayState->sceneNum == SCENE_JABU_JABU && GET_INFTABLE(INFTABLE_146) &&
+                (GET_TRANSITION_ACTOR_INDEX(doorActor) == 21 || GET_TRANSITION_ACTOR_INDEX(doorActor) == 3) &&
+                player->heldActor != NULL && player->heldActor->id == ACTOR_EN_RU1) {
+                *should = false;
+            }
+            break;
+        }
         case VB_BIGGORON_CONSIDER_SWORD_COLLECTED: {
             *should = Flags_GetRandomizerInf(RAND_INF_ADULT_TRADES_DMT_TRADE_CLAIM_CHECK);
             break;
@@ -1339,8 +1395,8 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
 
                 // This is typically called when you close the text box after getting an item, in case a previous
                 // function hid the interface.
-                gSaveContext.unk_13EA = 0;
-                Interface_ChangeAlpha(0x32);
+                gSaveContext.hudVisibilityMode = 0;
+                Interface_ChangeHudVisibilityMode(0x32);
                 // EnItem00_SetupAction(item00, func_8001E5C8);
                 // *should = false;
             } else if (item00->actor.params == ITEM00_SOH_GIVE_ITEM_ENTRY_GI) {
@@ -1564,7 +1620,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
                 bool hasShieldHoldingR = (CHECK_BTN_ANY(input.cur.button, BTN_R) &&
                                           CUR_EQUIP_VALUE(EQUIP_TYPE_SHIELD) > EQUIP_VALUE_SHIELD_NONE);
 
-                if (func_8002F368(gPlayState) == EXCH_ITEM_PRESCRIPTION ||
+                if (Actor_GetPlayerExchangeItemId(gPlayState) == EXCH_ITEM_PRESCRIPTION ||
                     (hasShieldHoldingR && INV_CONTENT(ITEM_TRADE_ADULT) < ITEM_FROG)) {
                     Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_ZD_TRADE_PRESCRIPTION);
                     Flags_UnsetRandomizerInf(RAND_INF_ADULT_TRADES_HAS_PRESCRIPTION);
@@ -1808,6 +1864,17 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             *should = false;
             break;
         }
+        case VB_PLAYER_SPAWN_SWIMMING: {
+            // Don't swim as adult coming from Domain to Lake with low water.
+            // Caused by waterbox first frame y surface always being -1313.0f
+            Player* player = va_arg(args, Player*);
+            if (gPlayState->sceneNum == SCENE_LAKE_HYLIA && LINK_IS_ADULT &&
+                !Flags_GetEventChkInf(EVENTCHKINF_RAISED_LAKE_HYLIA_WATER) && player->actor.world.pos.y > -1550.0f &&
+                player->actor.world.pos.y < -1500.0f) {
+                *should = false;
+            }
+            break;
+        }
         case VB_BE_ELIGIBLE_FOR_RAINBOW_BRIDGE: {
             *should = MeetsRainbowBridgeRequirements();
             break;
@@ -1821,6 +1888,18 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             }
             break;
         }
+        case VB_SLAY_GANON:
+            if (RAND_GET_OPTION(RSK_WINCON).IsNot(RO_WINCON_DEFEAT_GANON)) {
+                *should = false;
+                Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_GANONS_TOWER);
+                randomizerQueuedChecks.push(RC_GANON);
+                CheckTriggers();
+                gPlayState->nextEntranceIndex = ENTR_OUTSIDE_GANONS_CASTLE_1_2;
+                gPlayState->transitionTrigger = TRANS_TRIGGER_START;
+                gPlayState->transitionType = TRANS_TYPE_FADE_WHITE;
+                gSaveContext.nextTransitionType = TRANS_TYPE_FADE_WHITE_SLOW;
+            }
+            break;
         case VB_DRAW_AMMO_COUNT: {
             s16 item = *va_arg(args, s16*);
             // don't draw ammo count if you have the infinite upgrade
@@ -1871,8 +1950,8 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
         }
         case VB_SKIP_SCARECROWS_SONG: {
             int ocarinaButtonCount = 0;
-            for (int i = VB_HAVE_OCARINA_NOTE_A4; i <= VB_HAVE_OCARINA_NOTE_F4; i++) {
-                if (GameInteractor_Should((GIVanillaBehavior)i, true)) {
+            for (int i = RAND_INF_HAS_OCARINA_A; i <= RAND_INF_HAS_OCARINA_C_RIGHT; i++) {
+                if (Flags_GetRandomizerInf((RandomizerInf)i)) {
                     ocarinaButtonCount++;
                 }
             }
@@ -2022,6 +2101,8 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             break;
         }
         case VB_FREEZE_ON_SKULL_TOKEN:
+            CheckTriggers();
+            [[fallthrough]];
         case VB_TRADE_TIMER_ODD_MUSHROOM:
         case VB_TRADE_TIMER_FROG:
         case VB_GIVE_ITEM_FROM_TARGET_IN_WOODS:
@@ -2116,13 +2197,16 @@ void RandomizerOnSceneInitHandler(int16_t sceneNum) {
                 // Reset room ctx back to prev room and then load the new room
                 gPlayState->roomCtx.status = 0;
                 gPlayState->roomCtx.curRoom = gPlayState->roomCtx.prevRoom;
-                func_8009728C(gPlayState, &gPlayState->roomCtx, replacedRoom);
+                Room_RequestNewRoom(gPlayState, &gPlayState->roomCtx, replacedRoom);
             }
         }
 
         // Handle updated link spawn positions
         Entrance_OverrideSpawnScene(sceneNum, gPlayState->curSpawn);
     }
+
+    // Check here in case queued item got lost by poorly timed save & quit
+    CheckTriggers();
 
     // LACS & Prelude checks
     static uint32_t updateHook = 0;
@@ -2146,7 +2230,9 @@ void RandomizerOnSceneInitHandler(int16_t sceneNum) {
         }
 
         // We're always in rando here, and rando always overrides this should so we can just pass false
-        if (GameInteractor_Should(VB_BE_ELIGIBLE_FOR_LIGHT_ARROWS, false)) {
+        if (LINK_IS_ADULT && (gEntranceTable[gSaveContext.entranceIndex].scene == SCENE_TEMPLE_OF_TIME) &&
+            CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) && CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) &&
+            !Flags_GetEventChkInf(EVENTCHKINF_RETURNED_TO_TEMPLE_OF_TIME_WITH_ALL_MEDALLIONS)) {
             Flags_SetEventChkInf(EVENTCHKINF_RETURNED_TO_TEMPLE_OF_TIME_WITH_ALL_MEDALLIONS);
         }
 
@@ -2424,9 +2510,9 @@ void RandomizerOnActorInitHandler(void* actorRef) {
         Actor_Kill(actor);
     }
 
+    RandomizerInf currentBossSoulRandInf = RAND_INF_MAX;
     if (RAND_GET_OPTION(RSK_SHUFFLE_BOSS_SOULS)) {
         // Boss souls require an additional item (represented by a RAND_INF) to spawn a boss in a particular lair
-        RandomizerInf currentBossSoulRandInf = RAND_INF_MAX;
         switch (gPlayState->sceneNum) {
             case SCENE_DEKU_TREE_BOSS:
                 currentBossSoulRandInf = RAND_INF_GOHMA_SOUL;
@@ -2452,30 +2538,33 @@ void RandomizerOnActorInitHandler(void* actorRef) {
             case SCENE_SPIRIT_TEMPLE_BOSS:
                 currentBossSoulRandInf = RAND_INF_TWINROVA_SOUL;
                 break;
-            case SCENE_GANONDORF_BOSS:
-            case SCENE_GANON_BOSS:
-                if (RAND_GET_OPTION(RSK_SHUFFLE_BOSS_SOULS).Is(RO_BOSS_SOULS_ON_PLUS_GANON)) {
-                    currentBossSoulRandInf = RAND_INF_GANON_SOUL;
-                }
-                break;
             default:
                 break;
         }
+    }
 
-        // Deletes all actors in the boss category if the soul isn't found.
-        // Some actors, like Dark Link, Arwings, and Zora's Sapphire...?, are in this category despite not being actual
-        // bosses, so ignore any "boss" if `currentBossSoulRandInf` doesn't change from RAND_INF_MAX. Iron Knuckle
-        // (Nabooru) in Twinrova's room is a special exception, so exclude knuckles too.
-        if (currentBossSoulRandInf != RAND_INF_MAX) {
-            if (!Flags_GetRandomizerInf(currentBossSoulRandInf) && actor->category == ACTORCAT_BOSS &&
-                actor->id != ACTOR_EN_IK) {
-                Actor_Delete(&gPlayState->actorCtx, actor, gPlayState);
-            }
-            // Special case for Phantom Ganon's horse (and fake), as they're considered "background actors",
-            // but still control the boss fight flow.
-            if (!Flags_GetRandomizerInf(RAND_INF_PHANTOM_GANON_SOUL) && actor->id == ACTOR_EN_FHG) {
-                Actor_Delete(&gPlayState->actorCtx, actor, gPlayState);
-            }
+    if (RAND_GET_OPTION(RSK_GANONS_SOUL).IsNot(RO_GANONS_SOUL_STARTWITH)) {
+        switch (gPlayState->sceneNum) {
+            case SCENE_GANONDORF_BOSS:
+            case SCENE_GANON_BOSS:
+                currentBossSoulRandInf = RAND_INF_GANON_SOUL;
+                break;
+        }
+    }
+
+    // Deletes all actors in the boss category if the soul isn't found.
+    // Some actors, like Dark Link, Arwings, and Zora's Sapphire...?, are in this category despite not being actual
+    // bosses, so ignore any "boss" if `currentBossSoulRandInf` doesn't change from RAND_INF_MAX. Iron Knuckle
+    // (Nabooru) in Twinrova's room is a special exception, so exclude knuckles too.
+    if (currentBossSoulRandInf != RAND_INF_MAX) {
+        if (!Flags_GetRandomizerInf(currentBossSoulRandInf) && actor->category == ACTORCAT_BOSS &&
+            actor->id != ACTOR_EN_IK) {
+            Actor_Delete(&gPlayState->actorCtx, actor, gPlayState);
+        }
+        // Special case for Phantom Ganon's horse (and fake), as they're considered "background actors",
+        // but still control the boss fight flow.
+        if (!Flags_GetRandomizerInf(RAND_INF_PHANTOM_GANON_SOUL) && actor->id == ACTOR_EN_FHG) {
+            Actor_Delete(&gPlayState->actorCtx, actor, gPlayState);
         }
     }
 
@@ -2714,7 +2803,8 @@ f32 triforcePieceScale;
 
 void RandomizerOnPlayerUpdateHandler() {
     if ((GET_PLAYER(gPlayState)->stateFlags1 & PLAYER_STATE1_IN_WATER) && !Flags_GetRandomizerInf(RAND_INF_CAN_SWIM) &&
-        CUR_EQUIP_VALUE(EQUIP_TYPE_BOOTS) != EQUIP_VALUE_BOOTS_IRON) {
+        CUR_EQUIP_VALUE(EQUIP_TYPE_BOOTS) != EQUIP_VALUE_BOOTS_IRON &&
+        gPlayState->transitionTrigger == TRANS_TRIGGER_OFF) {
         // if you void out in water temple without swim you get instantly kicked out to prevent softlocks
         if (gPlayState->sceneNum == SCENE_WATER_TEMPLE) {
             GameInteractor::RawAction::TeleportPlayer(
@@ -2740,19 +2830,12 @@ void RandomizerOnPlayerUpdateHandler() {
                 gSaveContext.respawnFlag = 0;
             } else {
                 Play_TriggerVoidOut(gPlayState);
+                Grotto_ForceGrottoReturnOnSpecialEntrance();
             }
         }
     }
 
-    // Triforce Hunt needs the check if the player isn't being teleported to the credits scene.
-    if (!GameInteractor::IsGameplayPaused() && Flags_GetRandomizerInf(RAND_INF_GRANT_GANONS_BOSSKEY) &&
-        gPlayState->transitionTrigger != TRANS_TRIGGER_START &&
-        (1 << 0 & gSaveContext.inventory.dungeonItems[SCENE_GANONS_TOWER]) == 0) {
-        GiveItemEntryWithoutActor(gPlayState,
-                                  *Rando::StaticData::GetItemTable().at(RG_GANONS_CASTLE_BOSS_KEY).GetGIEntry());
-    }
-
-    if (!GameInteractor::IsGameplayPaused() && RAND_GET_OPTION(RSK_TRIFORCE_HUNT).IsNot(RO_TRIFORCE_HUNT_OFF)) {
+    if (!GameInteractor::IsGameplayPaused()) {
         // Warp to credits once item queue has drained to avoid losing queued items
         if (GameInteractor::State::TriforceHuntCreditsWarpActive && randomizerQueuedChecks.empty() &&
             randomizerQueuedCheck == RC_UNKNOWN_CHECK) {
@@ -2775,7 +2858,7 @@ void RandomizerOnPlayerUpdateHandler() {
         // to ensure it's done at that point in time specifically.
         if (GameInteractor::State::TriforceHuntPieceGiven) {
             triforcePieceScale = 0.0f;
-            GameInteractor::State::TriforceHuntPieceGiven = 0;
+            GameInteractor::State::TriforceHuntPieceGiven = false;
         }
     }
 }
@@ -2832,13 +2915,6 @@ void RandomizerOnKaleidoscopeUpdateHandler(int16_t inDungeonScene) {
     prevKaleidoState = gPlayState->pauseCtx.state;
 }
 
-void RandomizerOnCuccoOrChickenHatch() {
-    if (LINK_IS_CHILD) {
-        Flags_UnsetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_WEIRD_EGG);
-        Flags_SetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_CHICKEN);
-    }
-}
-
 static void RandomizerRegisterHooks() {
     static uint32_t onFlagSetHook = 0;
     static uint32_t onSceneFlagSetHook = 0;
@@ -2857,7 +2933,6 @@ static void RandomizerRegisterHooks() {
     static uint32_t onPlayDestroyHook = 0;
     static uint32_t onExitGameHook = 0;
     static uint32_t onKaleidoUpdateHook = 0;
-    static uint32_t onCuccoOrChickenHatchHook = 0;
 
     // register this outside OnLoadGame as VB is invoked before OnLoadGame
     COND_VB_SHOULD(VB_REVERT_SPOILING_ITEMS, true, {
@@ -2890,7 +2965,6 @@ static void RandomizerRegisterHooks() {
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnPlayDestroy>(onPlayDestroyHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnExitGame>(onExitGameHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnKaleidoscopeUpdate>(onKaleidoUpdateHook);
-        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnCuccoOrChickenHatch>(onCuccoOrChickenHatchHook);
 
         onFlagSetHook = 0;
         onSceneFlagSetHook = 0;
@@ -2909,7 +2983,6 @@ static void RandomizerRegisterHooks() {
         onPlayDestroyHook = 0;
         onExitGameHook = 0;
         onKaleidoUpdateHook = 0;
-        onCuccoOrChickenHatchHook = 0;
 
         if (!IS_RANDO)
             return;
@@ -2957,8 +3030,6 @@ static void RandomizerRegisterHooks() {
             GameInteractor::Instance->RegisterGameHook<GameInteractor::OnExitGame>(RandomizerOnExitGameHandler);
         onKaleidoUpdateHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnKaleidoscopeUpdate>(
             RandomizerOnKaleidoscopeUpdateHandler);
-        onCuccoOrChickenHatchHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnCuccoOrChickenHatch>(
-            RandomizerOnCuccoOrChickenHatch);
 
         if (RAND_GET_OPTION(RSK_FISHSANITY).IsNot(RO_FISHSANITY_OFF)) {
             OTRGlobals::Instance->gRandoContext->GetFishsanity()->InitializeFromSave();

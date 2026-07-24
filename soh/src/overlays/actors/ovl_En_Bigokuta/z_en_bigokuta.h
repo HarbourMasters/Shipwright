@@ -24,4 +24,8 @@ typedef struct EnBigokuta {
     /* 0x02EC */ ColliderCylinder cylinder[2];
 } EnBigokuta; // size = 0x0384
 
+void func_809BE058(EnBigokuta*, PlayState*);
+void func_809BDF34(EnBigokuta*, PlayState*);
+void func_809BE180(EnBigokuta*, PlayState*);
+
 #endif

@@ -19,6 +19,7 @@ using namespace UIWidgets;
 static WidgetInfo freeLook;
 static WidgetInfo mouseControl;
 static WidgetInfo mouseAutoCapture;
+static WidgetInfo mouseDisableThirdPerson;
 static WidgetInfo rightStickOcarina;
 static WidgetInfo dpadOcarina;
 static WidgetInfo dpadPause;
@@ -1377,6 +1378,10 @@ void SohInputEditorWindow::DrawCameraControlPanel() {
     ImGui::SetCursorPos(ImVec2(cursor.x + 5, cursor.y + 5));
     SohGui::mSohMenu->MenuDrawItem(mouseAutoCapture, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
                                    THEME_COLOR);
+    cursor = ImGui::GetCursorPos();
+    ImGui::SetCursorPos(ImVec2(cursor.x + 5, cursor.y + 5));
+    SohGui::mSohMenu->MenuDrawItem(mouseDisableThirdPerson, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
+                                   THEME_COLOR);
 
     Ship::GuiWindow::BeginGroupPanel("Aiming/First-Person Camera", ImGui::GetContentRegionAvail());
     CVarCheckbox("Right Stick Aiming", CVAR_SETTING("Controls.RightStickAim"),
@@ -1908,6 +1913,19 @@ void RegisterInputEditorWidgets() {
                               "hide the cursor "
                               "and capture mouse input when closing the menu."));
     SohGui::mSohMenu->AddSearchWidget({ mouseAutoCapture, "Settings", "Controls", "Camera Controls" });
+
+    mouseDisableThirdPerson = { .name = "Disable Third-Person Mouse Controls",
+                                .type = WidgetType::WIDGET_CVAR_CHECKBOX };
+    mouseDisableThirdPerson.CVar(CVAR_SETTING("DisableThirdPersonMouse"))
+        .PreFunc([](WidgetInfo& info) {
+            info.options->disabled = !CVarGetInteger(CVAR_SETTING("EnableMouse"), 0);
+            info.options->disabledTooltip = "Forced off because Mouse Controls are disabled.";
+        })
+        .Options(CheckboxOptions()
+                     .Color(THEME_COLOR)
+                     .Tooltip("Stops the mouse from moving the third-person camera and from triggering quickspins, "
+                              "while still allowing mouse control for first-person aiming and the shield."));
+    SohGui::mSohMenu->AddSearchWidget({ mouseDisableThirdPerson, "Settings", "Controls", "Camera Controls" });
 
     rightStickOcarina = { .name = "Right Stick Ocarina Playback", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
     rightStickOcarina.CVar(CVAR_SETTING("CustomOcarina.RightStick")).Options(CheckboxOptions().Color(THEME_COLOR));

@@ -3,7 +3,7 @@
 #include <spdlog/spdlog.h>
 #include "fill.hpp"
 #include "../location_access.h"
-#include "random.hpp"
+#include "../rng.h"
 #include "spoiler_log.hpp"
 #include "soh/Enhancements/randomizer/settings.h"
 #include "variables.h"

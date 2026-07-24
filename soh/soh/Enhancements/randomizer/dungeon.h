@@ -106,7 +106,7 @@ class Dungeons {
     /// @return
     std::array<DungeonInfo*, 12> GetDungeonList();
     size_t GetDungeonListSize() const;
-    void ParseJson(nlohmann::json spoilerFileJson);
+    void ParseJson(const nlohmann::json& spoilerFileJson);
 
   private:
     std::array<DungeonInfo, 12> dungeonList;

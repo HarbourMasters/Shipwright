@@ -11,8 +11,9 @@
 #define CAM_STAT_UNK100     0x100
 
 #define NUM_CAMS 4
-#define MAIN_CAM 0
-#define SUBCAM_FIRST 1
+
+#define CAM_ID_MAIN 0
+#define CAM_ID_SUB_FIRST 1
 #define SUBCAM_FREE 0
 #define SUBCAM_NONE -1
 #define SUBCAM_ACTIVE -1
@@ -20,6 +21,12 @@
 #define ONEPOINT_CS_INFO(camera) ((Unique9OnePointCs*)camera->paramData)
 #define PARENT_CAM(cam) ((cam)->play->cameraPtrs[(cam)->parentCamIdx])
 #define CHILD_CAM(cam) ((cam)->play->cameraPtrs[(cam)->childCamIdx])
+
+#define CAM_DATA_SET_0 (1 << 0)
+#define CAM_DATA_SET_1 (1 << 1)
+#define CAM_DATA_SET_2 (1 << 2)
+#define CAM_DATA_SET_3 (1 << 3)
+#define CAM_DATA_SET_4 (1 << 4)
 
 typedef enum {
     /* 0x00 */ CAM_SET_NONE,
@@ -98,12 +105,12 @@ typedef enum {
     /* 0x03 */ CAM_MODE_TALK,
     /* 0x04 */ CAM_MODE_BATTLE,
     /* 0x05 */ CAM_MODE_CLIMB,
-    /* 0x06 */ CAM_MODE_FIRSTPERSON,  // "SUBJECT"
-    /* 0x07 */ CAM_MODE_BOWARROW,
+    /* 0x06 */ CAM_MODE_FIRST_PERSON,  // "SUBJECT"
+    /* 0x07 */ CAM_MODE_AIM_ADULT,
     /* 0x08 */ CAM_MODE_BOWARROWZ,
     /* 0x09 */ CAM_MODE_HOOKSHOT, // "FOOKSHOT"
-    /* 0x0A */ CAM_MODE_BOOMERANG,
-    /* 0x0B */ CAM_MODE_SLINGSHOT, // "PACHINCO"
+    /* 0x0A */ CAM_MODE_AIM_BOOMERANG,
+    /* 0x0B */ CAM_MODE_AIM_CHILD, // "PACHINCO"
     /* 0x0C */ CAM_MODE_CLIMBZ,
     /* 0x0D */ CAM_MODE_JUMP,
     /* 0x0E */ CAM_MODE_HANG,
@@ -632,6 +639,22 @@ typedef struct {
     { atLerpStepScale, CAM_DATA_AT_LERP_STEP_SCALE }, \
     { yawUpdateRateTarget, CAM_DATA_YAW_UPDATE_RATE_TARGET }, \
     { flags, CAM_DATA_FLAGS }
+
+typedef enum CameraItemType {
+    /*  1 */ CAM_ITEM_TYPE_1 = 1,
+    /*  2 */ CAM_ITEM_TYPE_2,
+    /*  3 */ CAM_ITEM_TYPE_3,
+    /*  4 */ CAM_ITEM_TYPE_4,
+    /*  5 */ CAM_ITEM_TYPE_5,
+    /*  8 */ CAM_ITEM_TYPE_8 = 8,
+    /*  9 */ CAM_ITEM_TYPE_9,
+    /* 10 */ CAM_ITEM_TYPE_10,
+    /* 11 */ CAM_ITEM_TYPE_11,
+    /* 12 */ CAM_ITEM_TYPE_12,
+    /* 81 */ CAM_ITEM_TYPE_81 = 81,
+    /* 90 */ CAM_ITEM_TYPE_90 = 90,
+    /* 91 */ CAM_ITEM_TYPE_91
+} CameraItemType;
 
 typedef struct {
     /* 0x00 */ f32 unk_00;

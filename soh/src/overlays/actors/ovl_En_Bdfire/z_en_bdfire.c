@@ -181,7 +181,7 @@ void func_809BC598(EnBdfire* this, PlayState* play) {
                 player->bodyFlameTimers[i] = Rand_S16Offset(0, 200);
             }
             player->bodyIsBurning = true;
-            func_8002F6D4(play, &this->actor, 20.0f, this->actor.world.rot.y, 0.0f, 8);
+            Actor_SetPlayerKnockbackLarge(play, &this->actor, 20.0f, this->actor.world.rot.y, 0.0f, 8);
             osSyncPrintf("POWER\n");
         }
     }

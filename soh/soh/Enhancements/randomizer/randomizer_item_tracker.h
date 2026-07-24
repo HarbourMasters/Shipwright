@@ -39,7 +39,7 @@ static std::vector<const char*> itemTrackerWindowIDs = { "Item Tracker",
                                                          "Fishing Pole Tracker",
                                                          "Personal Notes",
                                                          "Total Checks" };
-void ItemTracker_LoadFromPreset(nlohmann::json trackerInfo);
+void ItemTracker_LoadFromPreset(const nlohmann::json& trackerInfo);
 
 typedef struct ItemTrackerDungeon {
     uint32_t id;

@@ -344,7 +344,7 @@ bool CanMaskSelect() {
 void KaleidoScope_HandleItemCycles(PlayState* play) {
     // handle the mask select
     KaleidoScope_HandleItemCycleExtras(
-        play, SLOT_TRADE_CHILD, CanMaskSelect(),
+        play, SLOT_TRADE_CHILD, IS_RANDO || CanMaskSelect(),
         IS_RANDO ? Randomizer_GetPrevChildTradeItem()
                  : (INV_CONTENT(ITEM_TRADE_CHILD) <= ITEM_MASK_KEATON || INV_CONTENT(ITEM_TRADE_CHILD) > ITEM_MASK_TRUTH
                         ? ITEM_MASK_TRUTH
@@ -385,7 +385,7 @@ void KaleidoScope_HandleItemCycles(PlayState* play) {
 void KaleidoScope_DrawItemCycles(PlayState* play) {
     // draw the mask select
     KaleidoScope_DrawItemCycleExtras(
-        play, SLOT_TRADE_CHILD, CanMaskSelect(),
+        play, SLOT_TRADE_CHILD, IS_RANDO || CanMaskSelect(),
         IS_RANDO ? Randomizer_GetPrevChildTradeItem()
                  : (INV_CONTENT(ITEM_TRADE_CHILD) <= ITEM_MASK_KEATON || INV_CONTENT(ITEM_TRADE_CHILD) > ITEM_MASK_TRUTH
                         ? ITEM_MASK_TRUTH

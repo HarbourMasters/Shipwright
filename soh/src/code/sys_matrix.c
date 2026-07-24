@@ -1,6 +1,7 @@
 #include "global.h"
 
 #include "soh/frame_interpolation.h"
+#include "soh/Enhancements/savestate_serialize.h"
 #include <assert.h>
 
 // clang-format off
@@ -19,8 +20,13 @@ MtxF gMtxFClear = {
 };
 // clang-format on
 
-MtxF* sMatrixStack;   // "Matrix_stack"
-MtxF* sCurrentMatrix; // "Matrix_now"
+static MtxF* sMatrixStack;   // "Matrix_stack"
+static MtxF* sCurrentMatrix; // "Matrix_now"
+
+void Matrix_SaveState(SaveStateCtx* ctx) {
+    SaveState_Blob(ctx, sMatrixStack, sizeof(MtxF) * 20);
+    SaveState_Blob(ctx, sCurrentMatrix, sizeof(MtxF));
+}
 
 void Matrix_Init(GameState* gameState) {
     sCurrentMatrix = GAMESTATE_ALLOC_MC(gameState, 20 * sizeof(MtxF));

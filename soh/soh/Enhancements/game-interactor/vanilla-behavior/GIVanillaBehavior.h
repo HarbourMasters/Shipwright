@@ -22,7 +22,7 @@ typedef enum {
 
     // #### `result`
     // ```c
-    // sBgPoEventPuzzleState == 0xF
+    // sPuzzleState == 0xF
     // ```
     // #### `args`
     // - None
@@ -369,6 +369,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
+    VB_AFTER_PROCESS_SCENE_COLLISION,
+
+    // #### `result`
+    // ```c
     // CHECK_BTN_ALL(input->press.button, BTN_START)
     // ```
     // #### `args`
@@ -662,19 +670,30 @@ typedef enum {
 
     // #### `result`
     // ```c
-    // (Message_GetState(&play->msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(play)
-    // ```
-    // #### `args`
-    // - None
-    VB_END_GERUDO_MEMBERSHIP_TALK,
-
-    // #### `result`
-    // ```c
     // true
     // ```
     // #### `args`
     // - `*EnArrow`
     VB_EN_ARROW_MAGIC_CONSUMPTION,
+
+    // #### `result`
+    // ```c
+    // i + 1 == msgCtx->textDrawPos &&
+    // (msgCtx->msgMode == MSGMODE_TEXT_DISPLAYING ||
+    //  (msgCtx->msgMode >= MSGMODE_OCARINA_STARTING &&
+    //   msgCtx->msgMode < MSGMODE_SCARECROW_LONG_RECORDING_START))
+    // ```
+    // #### `args`
+    // - `u16` (text position)
+    VB_ENABLE_QUICKTEXT,
+
+    // #### `result`
+    // ```c
+    // (Message_GetState(&play->msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(play)
+    // ```
+    // #### `args`
+    // - None
+    VB_END_GERUDO_MEMBERSHIP_TALK,
 
     // #### `result`
     // ```c
@@ -716,6 +735,12 @@ typedef enum {
     // #### `args`
     // - `*EnElf`
     VB_FAIRY_HEAL,
+
+    // #### `result`
+    // True if the next text position must be beyond the current position; false otherwise
+    // #### `args`
+    // - `u16` (next text position)
+    VB_FIX_TEXT_SPEED_SOFTLOCK,
 
     // #### `result`
     // ```c
@@ -773,6 +798,14 @@ typedef enum {
     // #### `args`
     // - `*EnFr`
     VB_FROGS_GO_TO_IDLE,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
+    VB_FROGS_OCARINA_GAME_TIMER_TICK,
 
     // #### `result`
     // ```c
@@ -1481,6 +1514,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // false if in Jabu, carrying Ruto, abducted flag set, door is id 21 or 3
+    // ```
+    // #### `args`
+    // - `*Actor` (shutter door)
+    VB_JABU_PREVENT_RUTO_REENTER_BIGOCTO,
+
+    // #### `result`
+    // ```c
     // varies
     // ```
     // #### `args`
@@ -1494,6 +1535,14 @@ typedef enum {
     // #### `args`
     // - None
     VB_LINK_SPIN_WITH_GORON_POT,
+
+    // #### `result`
+    // ```c
+    // gSaveContext.eventInf[0] & 0x40
+    // ```
+    // #### `args`
+    // - None
+    VB_LINK_WIN_EPONA,
 
     // #### `result`
     // ```c
@@ -1639,7 +1688,7 @@ typedef enum {
     // this->getItemId != GI_NONE
     // ```
     // #### `args`
-    // - `None`
+    // - `*EnBox`
     VB_OPEN_CHEST,
 
     // #### `result`
@@ -1657,6 +1706,14 @@ typedef enum {
     // #### `args`
     // - `*uint16_t` (overrideTextId)
     VB_OVERRIDE_LINK_THE_GORON_DIALOGUE,
+
+    // #### `result`
+    // ```c
+    // false
+    // ```
+    // #### `args`
+    // - `None`
+    VB_OWL_CHOOSE_BETTER,
 
     // #### `result`
     // ```c
@@ -1742,6 +1799,14 @@ typedef enum {
     // #### `args`
     // - `*EnDaiku`
     VB_PLAY_CARPENTER_FREE_CS,
+
+    // #### `result`
+    // ```c
+    // true if one point cutscene skip not enabled, or not randomizer
+    // ```
+    // #### `args`
+    // - none
+    VB_PLAY_TIMEBLOCK_CS,
 
     // #### `result`
     // Close enough & various cutscene checks
@@ -1842,6 +1907,14 @@ typedef enum {
     // #### `args`
     // - None
     VB_PLAY_FIRE_ARROW_CS,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnFr`
+    VB_PLAY_FROG_OCARINA_GAME,
 
     // #### `result`
     // ```c
@@ -1979,6 +2052,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnSyatekiItm`
+    VB_PLAY_SHOOTING_GALLERY,
+
+    // #### `result`
+    // ```c
     // (giEntry.itemId != ITEM_NONE) && (giEntry.gi >= 0) && (Item_CheckObtainability(giEntry.itemId) == ITEM_NONE)
     // ```
     // #### `args`
@@ -2035,11 +2116,54 @@ typedef enum {
     // - `*int32_t` (arrowType)
     VB_PLAYER_ARROW_MAGIC_CONSUMPTION,
 
+    // #### `result`
+    // ```c
+    // true
+    // ```
     // #### `args`
     // - `void*` player (Player*)
     // - `PlayState*` play
     VB_PLAYER_DRAW_BOTTLE,
 
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*Player`
+    VB_PLAYER_LIMIT_DIVE_XZ_SPEED,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*Player`
+    VB_PLAYER_LIMIT_JUMP_SPEED,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*Player`
+    // - `f32*` speedTarget
+    VB_PLAYER_MODIFY_RUN_SPEED,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*Player`
+    // - `f32*` swimSpeed
+    // - `s32` sControlInput != NULL
+    VB_PLAYER_MODIFY_SWIM_SPEED,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
     // #### `args`
     // - `s32` limbIndex
     // - `Gfx**` dList (write to *dList to replace the resolved display list)
@@ -2080,6 +2204,14 @@ typedef enum {
     // - `*PlayState`
     // - `s16 yawTarget` (stick world-space yaw, promoted to int in va_list)
     VB_PLAYER_ROLL_STEER,
+
+    // #### `result`
+    // ```c
+    // this->ageProperties->unk_24 <= ySurface
+    // ```
+    // #### `args`
+    // - `Player*`
+    VB_PLAYER_SPAWN_SWIMMING,
 
     // #### `result`
     // ```c
@@ -2245,6 +2377,14 @@ typedef enum {
     // true
     // ```
     // #### `args`
+    // - `None`
+    VB_SET_BOMBCHU_BOWLING_AMMO,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
     // - `int32_t` (button - promoted from `s16`)
     VB_SET_BUTTON_ITEM_FROM_C_BUTTON_SLOT,
 
@@ -2266,7 +2406,24 @@ typedef enum {
 
     // #### `result`
     // ```c
-    // SurfaceType_GetSlope(&play->colCtx, poly, bgId) == 2
+    // true
+    // ```
+    // #### `args`
+    // - `*EnFr`
+    // - `s16` (default time limit)
+    VB_SET_FROG_OCARINA_GAME_TIME_LIMIT,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*s32` (ammo count)
+    VB_SET_SHOOTING_GALLERY_AMMO,
+
+    // #### `result`
+    // ```c
+    // SurfaceType_GetFloorEffect(&play->colCtx, poly, bgId) == 2
     // ```
     // #### `args`
     // - `*int16_t` - original next entrance index (`play->setupExitList[exitIndex - 1]`)
@@ -2289,6 +2446,14 @@ typedef enum {
     // #### `args`
     // - None
     VB_SHIEK_PREPARE_TO_GIVE_SERENADE_OF_WATER,
+
+    // #### `result`
+    // ```c
+    // LINK_IS_ADULT
+    // ```
+    // #### `args`
+    // - None
+    VB_SHOOTING_GALLERY_SHUFFLE_ADULT_RUPEES,
 
     // #### `result`
     // ```c
@@ -2370,6 +2535,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
+    VB_SLAY_GANON,
+
+    // #### `result`
+    // ```c
     // (collectible >= 0) && (collectible <= 0x19
     // ```
     // #### `args`
@@ -2437,6 +2610,14 @@ typedef enum {
     // ##### In `z_boss_va.c`:
     // - `*BossVa`
     VB_SPAWN_BLUE_WARP,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `s32` (Cucco index; 0 = small, 1 = big)
+    VB_SPAWN_BOMBCHU_BOWLING_CUCCOS,
 
     // #### `result`
     // ```c
@@ -2572,6 +2753,14 @@ typedef enum {
     // - `*CollisionPoly
     // - s32 - background id`
     VB_TARGETABLE_HOOKSHOT_RETICLE,
+
+    // #### `result`
+    // ```c
+    // false
+    // ```
+    // #### `args`
+    // - `u16` (text position)
+    VB_TEXT_CRAWL_FASTER,
 
     // #### `result`
     // ```c
@@ -2837,7 +3026,17 @@ typedef enum {
     // ```
     // #### `args`
     // - `*DoorShutter`
+    // - `*Vec3f` (relPlayerPos)
+    // - `*f32` (maxDistSides)
     VB_BE_NEAR_DOOR_SHUTTER,
+
+    // #### `result`
+    // ```c
+    // arg3 < fabsf(sp1C.x) || arg4 < fabsf(sp1C.y)
+    // ```
+    // #### `args`
+    // - `*Vec3f` (playerPosRelToDoor)
+    VB_EN_DOOR_OFFER_OPEN,
 
     // #### `result`
     // ```c
@@ -3164,6 +3363,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // interruptResult == PLAYER_INTERRUPT_NEW_ACTION
+    // ```
+    // #### `args`
+    // - `*u8 (&player->unk_6AD)`
+    VB_INTERRUPT_LADDER_DISMOUNT,
+
+    // #### `result`
+    // ```c
     // true
     // ```
     // #### `args`
@@ -3211,6 +3418,35 @@ typedef enum {
     // #### `args`
     // - `*EnGo2` (Goron Link)
     VB_PREVENT_GORON_LINK_SOFTLOCK,
+
+    // #### `result`
+    // ```c
+    // play->interfaceCtx.hbaAmmo == 0
+    // ```
+    // Prevent custom fanfares set to loop from softlocking Horseback Archery by
+    // letting players escape the cutscene with A/B/start after a normal number of playframes.
+    // #### `args`
+    // - none
+    VB_PREVENT_HBA_FANFARE_SOFTLOCK_TIMER,
+
+    // #### `result`
+    // ```c
+    // (isFanfarePlaying != 1 && gSaveContext.minigameState != 3)
+    // ```
+    // Prevent custom fanfares set to loop from softlocking Horseback Archery by
+    // letting players escape the cutscene with A/B/start after a normal number of playframes.
+    // #### `args`
+    // - `EnHorse*`
+    VB_PREVENT_HBA_FANFARE_SOFTLOCK_BUTTONS,
+
+    // #### `result`
+    // ```c
+    // sets `camMode` to new mode if applicable
+    // ```
+    // #### `args`
+    // - `s32` player->heldItemAction
+    // - `s32*` camMode
+    VB_CHANGE_AIMING_CAMERA,
 
     // true
     // ```
@@ -3261,6 +3497,26 @@ typedef enum {
     // #### `args`
     // - None
     VB_TEMP_B_RESTORE_SWORDLESS,
+
+    // #### `result`
+    // ```c
+    // true
+    // // ```
+    // Hook to override the save menu for a message box allowing you to
+    // Continue, Reset, and Reset to Spawn after saving (only from the pause menu, not the
+    // game over screen).
+    // #### `args`
+    // - `*PlayState`
+    VB_LOAD_SAVE_MENU,
+
+    // #### `result`
+    // ```c
+    // pauseCtx->state == 7
+    // ```
+    // Hook to override the drawing/loading textures for the save menu so that
+    // a textbox can be rendered instead. Pause screen only, Game Over version left
+    // intact.
+    VB_DRAW_SAVE_MENU,
 } GIVanillaBehavior;
 
 #endif

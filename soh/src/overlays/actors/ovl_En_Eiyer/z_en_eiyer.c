@@ -433,7 +433,7 @@ void EnEiyer_Glide(EnEiyer* this, PlayState* play) {
         Math_StepToF(&this->actor.speedXZ, 1.5f, 0.03f);
     }
 
-    if (this->actor.bgCheckFlags & 8) {
+    if (this->actor.bgCheckFlags & BGCHECKFLAG_WALL) {
         this->targetYaw = this->actor.wallYaw;
     }
 
@@ -450,7 +450,7 @@ void EnEiyer_Glide(EnEiyer* this, PlayState* play) {
         EnEiyer_SetupStartAttack(this);
     }
 
-    func_8002F974(&this->actor, NA_SE_EN_EIER_FLY - SFX_FLAG);
+    Actor_PlaySfx_Flagged(&this->actor, NA_SE_EN_EIER_FLY - SFX_FLAG);
 }
 
 void EnEiyer_StartAttack(EnEiyer* this, PlayState* play) {
@@ -474,14 +474,14 @@ void EnEiyer_StartAttack(EnEiyer* this, PlayState* play) {
     this->actor.world.rot.x = -this->actor.shape.rot.x;
     Math_StepToF(&this->actor.speedXZ, 5.0f, 0.3f);
     Math_ApproachS(&this->actor.world.rot.y, this->actor.yawTowardsPlayer, 2, 0x71C);
-    func_8002F974(&this->actor, NA_SE_EN_EIER_FLY - SFX_FLAG);
+    Actor_PlaySfx_Flagged(&this->actor, NA_SE_EN_EIER_FLY - SFX_FLAG);
 }
 
 void EnEiyer_DiveAttack(EnEiyer* this, PlayState* play) {
     SkelAnime_Update(&this->skelanime);
     this->actor.speedXZ *= 1.1f;
 
-    if (this->actor.bgCheckFlags & 8 || this->actor.bgCheckFlags & 1) {
+    if (this->actor.bgCheckFlags & 8 || this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
         EnEiyer_SetupLand(this);
     }
 
@@ -489,7 +489,7 @@ void EnEiyer_DiveAttack(EnEiyer* this, PlayState* play) {
         this->collider.base.atFlags &= ~(AT_ON | AT_HIT);
     }
 
-    func_8002F974(&this->actor, NA_SE_EN_EIER_FLY - SFX_FLAG);
+    Actor_PlaySfx_Flagged(&this->actor, NA_SE_EN_EIER_FLY - SFX_FLAG);
 }
 
 void EnEiyer_Land(EnEiyer* this, PlayState* play) {
@@ -498,11 +498,11 @@ void EnEiyer_Land(EnEiyer* this, PlayState* play) {
     Math_StepToF(&this->actor.speedXZ, 7.0f, 1.0f);
 
     if (this->timer == -1) {
-        if (this->actor.bgCheckFlags & 8 || this->actor.bgCheckFlags & 1) {
+        if (this->actor.bgCheckFlags & 8 || this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
             this->timer = 10;
             SoundSource_PlaySfxAtFixedWorldPos(play, &this->actor.world.pos, 30, NA_SE_EN_OCTAROCK_SINK);
 
-            if (this->actor.bgCheckFlags & 1) {
+            if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
                 EffectSsGSplash_Spawn(play, &this->actor.world.pos, NULL, NULL, 1, 700);
             }
         }
@@ -529,7 +529,7 @@ void EnEiyer_Hurt(EnEiyer* this, PlayState* play) {
     Math_ApproachF(&this->basePos.y, this->actor.floorHeight + 80.0f + 5.0f, 0.5f, this->actor.speedXZ);
     this->actor.world.pos.y = this->basePos.y - 5.0f;
 
-    if (this->actor.bgCheckFlags & 8) {
+    if (this->actor.bgCheckFlags & BGCHECKFLAG_WALL) {
         this->targetYaw = this->actor.wallYaw;
     } else {
         this->targetYaw = this->actor.yawTowardsPlayer + 0x8000;
@@ -592,7 +592,7 @@ void EnEiyer_Stunned(EnEiyer* this, PlayState* play) {
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_EIER_FLUTTER);
     }
 
-    if (this->actor.bgCheckFlags & 2) {
+    if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND_TOUCH) {
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_DODO_M_GND);
     }
 

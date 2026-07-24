@@ -96,7 +96,7 @@ void func_808B2970(BgSpot11Oasis* this) {
 
 void func_808B2980(BgSpot11Oasis* this, PlayState* play) {
     if (Flags_GetEnv(play, 5) && func_808B280C(play)) {
-        OnePointCutscene_Init(play, 4150, -99, &this->actor, MAIN_CAM);
+        OnePointCutscene_Init(play, 4150, -99, &this->actor, CAM_ID_MAIN);
         func_808B29E0(this);
     }
 }

@@ -71,7 +71,7 @@ void RegionTable_Init_IceCavern() {
         EVENT_ACCESS(LOGIC_BLUE_FIRE_ACCESS, true),
     }, {
         //Locations
-        LOCATION(RC_ICE_CAVERN_MAP_CHEST,                     logic->BlueFire() && logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_ICE_CAVERN_MAP_CHEST,                     logic->BlueFire() && logic->CanOpenLargeChest()),
         // Bow extension is possible, but very precise: X = 403, Z = 2062-3, Rot = -11475, needs a setup and is its own trick
         LOCATION(RC_ICE_CAVERN_FROZEN_POT_1,                  (logic->CanBreakPots() && logic->BlueFire()) || logic->HasExplosives() ||
                                                               (ctx->GetTrickOption(RT_VISIBLE_COLLISION) && logic->CanJumpslash()) ||
@@ -94,12 +94,12 @@ void RegionTable_Init_IceCavern() {
         ENTRANCE(RR_ICE_CAVERN_HUB, true),
     });
 
-    areaTable[RR_ICE_CAVERN_COMPASS_ROOM] = Region("Ice Cavern Map Room", SCENE_ICE_CAVERN, {
+    areaTable[RR_ICE_CAVERN_COMPASS_ROOM] = Region("Ice Cavern Compass Room", SCENE_ICE_CAVERN, {
         //Events
         EVENT_ACCESS(LOGIC_BLUE_FIRE_ACCESS, true),
     }, {
         //Locations
-        LOCATION(RC_ICE_CAVERN_COMPASS_CHEST,                         (logic->IsChild || logic->CanClearStalagmite() || ctx->GetTrickOption(RT_ICE_STALAGMITE_CLIP)) && logic->BlueFire() && logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_ICE_CAVERN_COMPASS_CHEST,                         (logic->IsChild || logic->CanClearStalagmite() || ctx->GetTrickOption(RT_ICE_STALAGMITE_CLIP)) && logic->BlueFire() && logic->CanOpenLargeChest()),
         LOCATION(RC_ICE_CAVERN_FREESTANDING_POH,                      (logic->CanClearStalagmite() || ctx->GetTrickOption(RT_ICE_STALAGMITE_CLIP)) && logic->BlueFire()), // can skip blue fire with rang trick
         LOCATION(RC_ICE_CAVERN_GS_HEART_PIECE_ROOM,                   logic->HookshotOrBoomerang()),
         LOCATION(RC_ICE_CAVERN_HEART_PIECE_ROOM_CENTER_STALACTITE_1,  true),
@@ -202,7 +202,7 @@ void RegionTable_Init_IceCavern() {
 
     areaTable[RR_ICE_CAVERN_FINAL_ROOM] = Region("Ice Cavern Final Room", SCENE_ICE_CAVERN, {}, {
         //Locations
-        LOCATION(RC_ICE_CAVERN_IRON_BOOTS_CHEST, AnyAgeTime([]{return logic->CanKillEnemy(RE_WOLFOS);}) && logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_ICE_CAVERN_IRON_BOOTS_CHEST, AnyAgeTime([]{return logic->CanKillEnemy(RE_WOLFOS);}) && logic->CanOpenLargeChest()),
         LOCATION(RC_SHEIK_IN_ICE_CAVERN,         AnyAgeTime([]{return logic->CanKillEnemy(RE_WOLFOS);}) && logic->HasItem(RG_OPEN_CHEST)), // rando enables this for child
     }, {
         //Exits
@@ -281,7 +281,7 @@ void RegionTable_Init_IceCavern() {
         EVENT_ACCESS(LOGIC_BLUE_FIRE_ACCESS, logic->IsChild || logic->CanClearStalagmite() || ctx->GetTrickOption(RT_ICE_STALAGMITE_CLIP)),
     }, {
         //Locations
-        LOCATION(RC_ICE_CAVERN_MQ_MAP_CHEST,                    logic->BlueFire() && AnyAgeTime([]{return logic->CanHitSwitch();}) && logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_ICE_CAVERN_MQ_MAP_CHEST,                    logic->BlueFire() && AnyAgeTime([]{return logic->CanHitSwitch();}) && logic->CanOpenLargeChest()),
         LOCATION(RC_ICE_CAVERN_MQ_MAP_ROOM_LEFT_STALAGMITE_1,   logic->CanClearStalagmite()),
         LOCATION(RC_ICE_CAVERN_MQ_MAP_ROOM_LEFT_STALAGMITE_2,   logic->CanClearStalagmite()),
         LOCATION(RC_ICE_CAVERN_MQ_MAP_ROOM_CENTER_STALAGMITE_1, logic->CanClearStalagmite()),
@@ -335,7 +335,7 @@ void RegionTable_Init_IceCavern() {
         EVENT_ACCESS(LOGIC_BLUE_FIRE_ACCESS, true),
     }, {
         //Locations
-        LOCATION(RC_ICE_CAVERN_MQ_COMPASS_CHEST,              logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_ICE_CAVERN_MQ_COMPASS_CHEST,              logic->CanOpenLargeChest()),
         //It is possible for child with master, BGS or sticks, or adult with BGS, to hit this switch through the ice with a crouchstab, but it's precise and unintuitive for a trick
         LOCATION(RC_ICE_CAVERN_MQ_FREESTANDING_POH,           logic->HasExplosives()), // can get with rang trick
         //doing RT_ICE_MQ_RED_ICE_GS as child is untested, as I could not perform the trick reliably even as adult
@@ -353,7 +353,7 @@ void RegionTable_Init_IceCavern() {
 
     areaTable[RR_ICE_CAVERN_MQ_STALFOS_ROOM] = Region("Ice Cavern MQ Stalfos Room", SCENE_ICE_CAVERN, {}, {
         //Locations
-        LOCATION(RC_ICE_CAVERN_MQ_IRON_BOOTS_CHEST, logic->CanKillEnemy(RE_STALFOS) && logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_ICE_CAVERN_MQ_IRON_BOOTS_CHEST, logic->CanKillEnemy(RE_STALFOS) && logic->CanOpenLargeChest()),
         LOCATION(RC_SHEIK_IN_ICE_CAVERN,            logic->CanKillEnemy(RE_STALFOS) && logic->HasItem(RG_OPEN_CHEST)), // rando enables this for child
     }, {
         //Exits

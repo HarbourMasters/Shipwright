@@ -34,7 +34,7 @@ void Mouse_UpdateAll() {
 }
 
 void Mouse_HandleThirdPerson(f32* newCamX, f32* newCamY) {
-    if (MOUSE_ENABLED) {
+    if (MOUSE_ENABLED && !CVarGetInteger(CVAR_SETTING("DisableThirdPersonMouse"), 0)) {
         *newCamX -= mouseCoordRel.x * 40.0f;
         *newCamY -= mouseCoordRel.y * 40.0f;
     }
@@ -84,7 +84,7 @@ static s32 mouseQuickspinY[5] = {};
 static u8 quickspinCount = 0;
 
 void Mouse_UpdateQuickspinCount() {
-    if (MOUSE_ENABLED) {
+    if (MOUSE_ENABLED && !CVarGetInteger(CVAR_SETTING("DisableThirdPersonMouse"), 0)) {
         quickspinCount = (quickspinCount + 1) % 5;
         mouseQuickspinX[quickspinCount] = mouseCoord.x;
         mouseQuickspinY[quickspinCount] = mouseCoord.y;
@@ -97,7 +97,7 @@ bool Mouse_HandleQuickspin(bool* should, s8* iter2, s8* sp3C) {
     s8 temp1;
     s8 temp2;
     s32 i;
-    if (!MOUSE_ENABLED) {
+    if (!MOUSE_ENABLED || CVarGetInteger(CVAR_SETTING("DisableThirdPersonMouse"), 0)) {
         return *should = false;
     }
 

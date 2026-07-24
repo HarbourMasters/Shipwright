@@ -62,6 +62,7 @@ static WidgetInfo overworldKeysTracking;
 static WidgetInfo fishingPoleTracking;
 static WidgetInfo personalNotesWiget;
 static WidgetInfo hookshotIdentWidget;
+static WidgetInfo openChestIdentWidget;
 
 namespace SohGui {
 extern std::shared_ptr<SohMenu> mSohMenu;
@@ -488,12 +489,13 @@ bool HasEquipment(ItemTrackerItem item) {
     return GameInteractor::IsSaveLoaded() ? (item.data & gSaveContext.inventory.equipment) : false;
 }
 
-void ItemTracker_LoadFromPreset(nlohmann::json trackerInfo) {
+void ItemTracker_LoadFromPreset(const nlohmann::json& trackerInfo) {
     presetLoaded = true;
     for (auto window : itemTrackerWindowIDs) {
         if (trackerInfo.contains(window)) {
-            presetPos[window] = { trackerInfo[window]["pos"]["x"], trackerInfo[window]["pos"]["y"] };
-            presetSize[window] = { trackerInfo[window]["size"]["width"], trackerInfo[window]["size"]["height"] };
+            const nlohmann::json& windowInfo = trackerInfo.at(window);
+            presetPos[window] = { windowInfo.at("pos").at("x"), windowInfo.at("pos").at("y") };
+            presetSize[window] = { windowInfo.at("size").at("width"), windowInfo.at("size").at("height") };
         }
     }
 }
@@ -669,6 +671,23 @@ void DrawItemCount(ItemTrackerItem item, bool hideMax) {
         }
     }
 
+    // progressive open chest: 'S' for small chests only, 'B' once big chests can be opened too
+    if (item.id == RG_OPEN_CHEST && CVarGetInteger(CVAR_TRACKER_ITEM("OpenChestIdentifier"), 0) && IS_RANDO &&
+        RAND_GET_OPTION(RSK_SHUFFLE_OPEN_CHEST).Is(RO_OPEN_CHEST_PROGRESSIVE) &&
+        Flags_GetRandomizerInf(RAND_INF_CAN_OPEN_CHEST)) {
+        const char* ident = Flags_GetRandomizerInf(RAND_INF_CAN_OPEN_LARGE_CHEST) ? "B" : "S";
+
+        ImVec2 textPos = ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize(ident).x * textScalingFactor / 2) +
+                                    8 * textScalingFactor,
+                                p.y - 22 * textScalingFactor);
+
+        ImGui::SetCursorScreenPos(textPos);
+        ImGui::SetWindowFontScale(textScalingFactor);
+
+        ImGui::Text("%s", ident);
+        ImGui::SetWindowFontScale(1.0f);
+    }
+
     ImGui::SetWindowFontScale(textSize / 13.0f);
 
     if (item.id == ITEM_KEY_SMALL && IsValidSaveFile()) {
@@ -756,15 +775,17 @@ void DrawItemCount(ItemTrackerItem item, bool hideMax) {
         ImGui::Text("%s", maxString.c_str());
         ImGui::PopStyleColor();
     } else if (item.id == RG_TRIFORCE_PIECE && IS_RANDO &&
-               (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT) != RO_TRIFORCE_HUNT_OFF) &&
+               (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_TOTAL) > 0) &&
                IsValidSaveFile()) {
         std::string currentString = "";
         std::string requiredString = "";
         std::string maxString = "";
-        uint8_t piecesRequired =
-            (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED) + 1);
-        uint8_t piecesTotal =
-            (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_TOTAL) + 1);
+        uint8_t piecesTotal = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_TOTAL);
+        uint8_t piecesRequired = OTRGlobals::Instance->gRandomizer->GetTriforcePiecesRequired();
+        // If no trigger uses Triforce Pieces they're just filler; gauge progress against the whole pool.
+        if (piecesRequired == 0) {
+            piecesRequired = piecesTotal;
+        }
         ImU32 currentColor = gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected >= piecesRequired
                                  ? IM_COL_GREEN
                                  : IM_COL_WHITE;
@@ -827,11 +848,15 @@ void DrawQuest(ItemTrackerItem item) {
 };
 
 bool HasBossSoul(RandomizerInf bossSoul) {
-    uint8_t soulSetting = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_BOSS_SOULS);
-    bool isSoulRandomized = IS_RANDO && (soulSetting == RO_BOSS_SOULS_ON_PLUS_GANON ||
-                                         (soulSetting == RO_BOSS_SOULS_ON && bossSoul != RAND_INF_GANON_SOUL));
-
-    return isSoulRandomized ? Flags_GetRandomizerInf(bossSoul) : true;
+    if (!IS_RANDO) {
+        return false;
+    } else if (bossSoul == RAND_INF_GANON_SOUL) {
+        return OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GANONS_SOUL) == RO_GANONS_SOUL_STARTWITH ||
+               Flags_GetRandomizerInf(RAND_INF_GANON_SOUL);
+    } else {
+        return OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_BOSS_SOULS) &&
+               Flags_GetRandomizerInf(bossSoul);
+    }
 }
 
 void DrawItem(ItemTrackerItem item) {
@@ -885,8 +910,8 @@ void DrawItem(ItemTrackerItem item) {
             break;
         case RG_TRIFORCE_PIECE:
             actualItemId = item.id;
-            hasItem = IS_RANDO && (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT) !=
-                                   RO_TRIFORCE_HUNT_OFF);
+            hasItem = IS_RANDO &&
+                      (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_TOTAL) > 0);
             itemName = "Triforce Piece";
             break;
         case ITEM_NAYRUS_LOVE:
@@ -2193,6 +2218,7 @@ void ItemTrackerSettingsWindow::DrawElement() {
 
         SohGui::mSohMenu->MenuDrawItem(personalNotesWiget, 250, THEME_COLOR);
         SohGui::mSohMenu->MenuDrawItem(hookshotIdentWidget, 250, THEME_COLOR);
+        SohGui::mSohMenu->MenuDrawItem(openChestIdentWidget, 250, THEME_COLOR);
 
         ImGui::PopStyleVar(1);
         ImGui::EndTable();
@@ -2397,6 +2423,14 @@ void RegisterItemTrackerWidgets() {
                      .Color(THEME_COLOR)
                      .Tooltip("Shows an 'H' or an 'L' to more easily distinguish between Hookshot and Longshot."));
     SohGui::mSohMenu->AddSearchWidget({ hookshotIdentWidget, "Randomizer", "Item Tracker", "General Settings" });
+
+    openChestIdentWidget = { .name = "Show Open Chest Identifiers", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
+    openChestIdentWidget.CVar(CVAR_TRACKER_ITEM("OpenChestIdentifier"))
+        .Options(CheckboxOptions()
+                     .Color(THEME_COLOR)
+                     .Tooltip("With progressive Shuffle Open Chest, shows an 'S' when only small chests can be "
+                              "opened and a 'B' once big chests can be opened too."));
+    SohGui::mSohMenu->AddSearchWidget({ openChestIdentWidget, "Randomizer", "Item Tracker", "General Settings" });
 }
 
 void RegisterItemTracker() {

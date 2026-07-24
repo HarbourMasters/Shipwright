@@ -119,10 +119,10 @@ void BgMoriIdomizu_Main(BgMoriIdomizu* this, PlayState* play) {
         this->targetWaterLevel = 184.0f;
     }
     if (switchFlagSet && !this->prevSwitchFlagSet) {
-        OnePointCutscene_Init(play, 3240, 70, thisx, MAIN_CAM);
+        OnePointCutscene_Init(play, 3240, 70, thisx, CAM_ID_MAIN);
         this->drainTimer = 90;
     } else if (!switchFlagSet && this->prevSwitchFlagSet) {
-        OnePointCutscene_Init(play, 3240, 70, thisx, MAIN_CAM);
+        OnePointCutscene_Init(play, 3240, 70, thisx, CAM_ID_MAIN);
         this->drainTimer = 90;
         thisx->world.pos.y = 0.0f;
     }

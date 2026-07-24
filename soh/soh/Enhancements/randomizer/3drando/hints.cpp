@@ -1,6 +1,6 @@
 #include "hints.hpp"
 
-#include "random.hpp"
+#include "../rng.h"
 #include "fill.hpp"
 #include "../trial.h"
 #include "../entrance.h"
@@ -211,39 +211,72 @@ const std::array<HintSetting, 4> hintSettingTable{{
 }};
 
 struct BridgeReqConfig {
-    RandomizerSettingKey bridgeDirectKey;
-    RandomizerSettingKey lacsDirectKey;
+    RandomizerSettingKey bridgeKey;
+    RandomizerSettingKey gbkKey;
+    RandomizerSettingKey soulKey;
+    RandomizerSettingKey winKey;
     RandoOptionRainbowBridge bridgeEnum;
-    RandoOptionGanonsBossKey lacsEnum;
+    RandoOptionGanonsBossKey gbkEnum;
+    RandoOptionGanonsSoul soulEnum;
+    RandoOptionWincon winEnum;
     uint8_t offset;
 };
 
-static constexpr BridgeReqConfig StonesConfig{ RSK_RAINBOW_BRIDGE_STONE_COUNT, RSK_LACS_STONE_COUNT, RO_BRIDGE_STONES,
-                                               RO_GANON_BOSS_KEY_LACS_STONES, 6 };
-static constexpr BridgeReqConfig MedallionsConfig{ RSK_RAINBOW_BRIDGE_MEDALLION_COUNT, RSK_LACS_MEDALLION_COUNT,
-                                                   RO_BRIDGE_MEDALLIONS, RO_GANON_BOSS_KEY_LACS_MEDALLIONS, 3 };
-static constexpr BridgeReqConfig TokensConfig{ RSK_RAINBOW_BRIDGE_TOKEN_COUNT, RSK_LACS_TOKEN_COUNT, RO_BRIDGE_TOKENS,
-                                               RO_GANON_BOSS_KEY_LACS_TOKENS, 0 };
+static constexpr BridgeReqConfig StonesConfig{
+    RSK_RAINBOW_BRIDGE_STONE_COUNT, RSK_GBK_STONE_COUNT, RSK_GANONS_SOUL_STONE_COUNT,
+    RSK_WINCON_STONE_COUNT,         RO_BRIDGE_STONES,    RO_GANON_BOSS_KEY_STONES,
+    RO_GANONS_SOUL_STONES,          RO_WINCON_STONES,    6
+};
+static constexpr BridgeReqConfig MedallionsConfig{
+    RSK_RAINBOW_BRIDGE_MEDALLION_COUNT, RSK_GBK_MEDALLION_COUNT, RSK_GANONS_SOUL_MEDALLION_COUNT,
+    RSK_WINCON_MEDALLION_COUNT,         RO_BRIDGE_MEDALLIONS,    RO_GANON_BOSS_KEY_MEDALLIONS,
+    RO_GANONS_SOUL_MEDALLIONS,          RO_WINCON_MEDALLIONS,    3
+};
+static constexpr BridgeReqConfig TokensConfig{
+    RSK_RAINBOW_BRIDGE_TOKEN_COUNT, RSK_GBK_TOKEN_COUNT, RSK_GANONS_SOUL_TOKEN_COUNT,
+    RSK_WINCON_TOKEN_COUNT,         RO_BRIDGE_TOKENS,    RO_GANON_BOSS_KEY_TOKENS,
+    RO_GANONS_SOUL_TOKENS,          RO_WINCON_TOKENS,    0
+};
 
 static uint8_t RequiredBySettings(const BridgeReqConfig& cfg) {
     auto ctx = Rando::Context::GetInstance();
     uint8_t count = 0;
+
     if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(cfg.bridgeEnum)) {
-        count = ctx->GetOption(cfg.bridgeDirectKey).Get();
+        count = ctx->GetOption(cfg.bridgeKey).Get();
     } else if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_DUNGEON_REWARDS)) {
         count = ctx->GetOption(RSK_RAINBOW_BRIDGE_REWARD_COUNT).Get() - cfg.offset;
     } else if (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_DUNGEONS) &&
                ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON)) {
         count = ctx->GetOption(RSK_RAINBOW_BRIDGE_DUNGEON_COUNT).Get() - cfg.offset;
     }
-    if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(cfg.lacsEnum)) {
-        count = std::max<uint8_t>(count, ctx->GetOption(cfg.lacsDirectKey).Get());
-    } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_REWARDS)) {
-        count = std::max<uint8_t>(count, (uint8_t)(ctx->GetOption(RSK_LACS_REWARD_COUNT).Get() - cfg.offset));
-    } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_LACS_DUNGEONS) &&
+    if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(cfg.gbkEnum)) {
+        count = std::max<uint8_t>(count, ctx->GetOption(cfg.gbkKey).Get());
+    } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_REWARDS)) {
+        count = std::max<uint8_t>(count, (uint8_t)(ctx->GetOption(RSK_GBK_REWARD_COUNT).Get() - cfg.offset));
+    } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_DUNGEONS) &&
                ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON)) {
-        count = std::max<uint8_t>(count, (uint8_t)(ctx->GetOption(RSK_LACS_DUNGEON_COUNT).Get() - cfg.offset));
+        count = std::max<uint8_t>(count, (uint8_t)(ctx->GetOption(RSK_GBK_DUNGEON_COUNT).Get() - cfg.offset));
     }
+
+    if (ctx->GetOption(RSK_GANONS_SOUL).Is(cfg.soulEnum)) {
+        count = std::max<uint8_t>(count, ctx->GetOption(cfg.soulKey).Get());
+    } else if (ctx->GetOption(RSK_GANONS_SOUL).Is(RO_GANONS_SOUL_REWARDS)) {
+        count = std::max<uint8_t>(count, (uint8_t)(ctx->GetOption(RSK_GANONS_SOUL_REWARD_COUNT).Get() - cfg.offset));
+    } else if (ctx->GetOption(RSK_GANONS_SOUL).Is(RO_GANONS_SOUL_DUNGEONS) &&
+               ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON)) {
+        count = std::max<uint8_t>(count, (uint8_t)(ctx->GetOption(RSK_GANONS_SOUL_DUNGEON_COUNT).Get() - cfg.offset));
+    }
+
+    if (ctx->GetOption(RSK_WINCON).Is(cfg.winEnum)) {
+        count = std::max<uint8_t>(count, ctx->GetOption(cfg.winKey).Get());
+    } else if (ctx->GetOption(RSK_WINCON).Is(RO_WINCON_REWARDS)) {
+        count = std::max<uint8_t>(count, (uint8_t)(ctx->GetOption(RSK_WINCON_REWARD_COUNT).Get() - cfg.offset));
+    } else if (ctx->GetOption(RSK_WINCON).Is(RO_WINCON_DUNGEONS) &&
+               ctx->GetOption(RSK_SHUFFLE_DUNGEON_REWARDS).Is(RO_DUNGEON_REWARDS_END_OF_DUNGEON)) {
+        count = std::max<uint8_t>(count, (uint8_t)(ctx->GetOption(RSK_WINCON_DUNGEON_COUNT).Get() - cfg.offset));
+    }
+
     return count;
 }
 
@@ -605,7 +638,7 @@ void CreateStoneHints() {
     std::vector<HintDistributionSetting> distTable = hintSetting.distTable;
 
     // Apply impa's song exclusions when zelda is skipped
-    if (ctx->GetOption(RSK_SKIP_CHILD_ZELDA)) {
+    if (ctx->GetOption(RSK_STARTING_ZELDAS_LETTER) && !ctx->GetOption(RSK_SHUFFLE_ZELDAS_LETTER)) {
         ctx->GetItemLocation(RC_SONG_FROM_IMPA)->SetHintAccesible();
     }
     if (ctx->GetOption(RSK_SELECTED_STARTING_AGE).Is(RO_AGE_ADULT) || !ctx->GetOption(RSK_SHUFFLE_MASTER_SWORD)) {

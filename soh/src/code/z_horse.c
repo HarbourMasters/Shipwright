@@ -59,7 +59,7 @@ void Horse_SetupInGameplay(PlayState* play, Player* player) {
         assert(player->rideActor != NULL);
 
         Actor_MountHorse(play, player, player->rideActor);
-        func_8002DE74(play, player);
+        Actor_RequestHorseCameraSetting(play, player);
         gSaveContext.horseData.scene = play->sceneNum;
 
         if (play->sceneNum == SCENE_GERUDOS_FORTRESS) {
@@ -166,7 +166,7 @@ void Horse_SetupInCutscene(PlayState* play, Player* player) {
         assert(player->rideActor != NULL);
 
         Actor_MountHorse(play, player, player->rideActor);
-        func_8002DE74(play, player);
+        Actor_RequestHorseCameraSetting(play, player);
         gSaveContext.horseData.scene = play->sceneNum;
     } else if ((play->sceneNum == SCENE_LON_LON_RANCH) && ((gSaveContext.eventInf[0] & 0xF) == 6) &&
                (Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED) == 0) && (DREG(1) == 0)) {
@@ -175,7 +175,7 @@ void Horse_SetupInCutscene(PlayState* play, Player* player) {
         assert(player->rideActor != NULL);
 
         Actor_MountHorse(play, player, player->rideActor);
-        func_8002DE74(play, player);
+        Actor_RequestHorseCameraSetting(play, player);
         gSaveContext.horseData.scene = play->sceneNum;
 
         if (play->sceneNum == SCENE_GERUDOS_FORTRESS) {
@@ -209,7 +209,7 @@ void Horse_SetupInCutscene(PlayState* play, Player* player) {
                     assert(player->rideActor != NULL);
 
                     Actor_MountHorse(play, player, player->rideActor);
-                    func_8002DE74(play, player);
+                    Actor_RequestHorseCameraSetting(play, player);
                 } else if ((D_8011F9B8[i].type == 5) || (D_8011F9B8[i].type == 6) || (D_8011F9B8[i].type == 8)) {
                     Vec3f sp54;
                     s32 temp = 0;
@@ -230,7 +230,7 @@ void Horse_SetupInCutscene(PlayState* play, Player* player) {
                     player->actor.shape.rot.y = D_8011F9B8[i].angle;
 
                     Actor_MountHorse(play, player, player->rideActor);
-                    func_8002DE74(play, player);
+                    Actor_RequestHorseCameraSetting(play, player);
 
                     sp54.x = player->actor.world.pos.x - 200.0f;
                     sp54.y = player->actor.world.pos.y + 100.0f;
@@ -258,7 +258,7 @@ void Horse_InitPlayerHorse(PlayState* play, Player* player) {
         }
 
         if (Horse_CanSpawn(play->sceneNum)) {
-            if ((gSaveContext.sceneSetupIndex > 3) ||
+            if ((gSaveContext.sceneLayer > 3) ||
                 ((gSaveContext.entranceIndex == ENTR_HYRULE_FIELD_11 ||
                   gSaveContext.entranceIndex == ENTR_HYRULE_FIELD_12 ||
                   gSaveContext.entranceIndex == ENTR_HYRULE_FIELD_13 ||

@@ -325,8 +325,8 @@ size_t Dungeons::GetDungeonListSize() const {
     return dungeonList.size();
 }
 
-void Dungeons::ParseJson(nlohmann::json spoilerFileJson) {
-    nlohmann::json mqDungeonsJson = spoilerFileJson["masterQuestDungeons"];
+void Dungeons::ParseJson(const nlohmann::json& spoilerFileJson) {
+    nlohmann::json mqDungeonsJson = spoilerFileJson.value("masterQuestDungeons", nlohmann::json());
 
     for (auto& dungeon : dungeonList) {
         dungeon.ClearMQ();

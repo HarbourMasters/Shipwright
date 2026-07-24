@@ -5,6 +5,7 @@
 #include "textures/icon_item_24_static/icon_item_24_static.h"
 
 extern "C" {
+#include "z64.h"
 #include "macros.h"
 #include "variables.h"
 #include "functions.h"

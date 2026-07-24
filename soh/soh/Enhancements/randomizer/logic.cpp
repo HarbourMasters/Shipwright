@@ -122,7 +122,7 @@ bool Logic::HasItem(RandomizerGet itemName) {
                 case RO_MASK_QUEST_VANILLA:
                     return Get(LOGIC_BORROW_SKULL_MASK);
                 case RO_MASK_QUEST_COMPLETED:
-                    return HasItem(RG_ZELDAS_LETTER) && Get(LOGIC_KAKARIKO_GATE_OPEN);
+                    return Get(LOGIC_KAKARIKO_GATE_OPEN);
                 case RO_MASK_QUEST_SHUFFLE:
                     return CheckRandoInf(RAND_INF_CHILD_TRADES_HAS_MASK_SKULL);
                 default:
@@ -134,7 +134,7 @@ bool Logic::HasItem(RandomizerGet itemName) {
                 case RO_MASK_QUEST_VANILLA:
                     return Get(LOGIC_BORROW_RIGHT_MASKS);
                 case RO_MASK_QUEST_COMPLETED:
-                    return HasItem(RG_ZELDAS_LETTER) && Get(LOGIC_KAKARIKO_GATE_OPEN);
+                    return Get(LOGIC_KAKARIKO_GATE_OPEN);
                 case RO_MASK_QUEST_SHUFFLE:
                     return CheckRandoInf(RAND_INF_CHILD_TRADES_HAS_MASK_TRUTH);
                 default:
@@ -199,7 +199,7 @@ bool Logic::HasItem(RandomizerGet itemName) {
         case RG_TWINROVA_SOUL:
             return !ctx->GetOption(RSK_SHUFFLE_BOSS_SOULS) || CheckRandoInf(StaticData::RandoGetToRandInf.at(itemName));
         case RG_GANON_SOUL:
-            return !ctx->GetOption(RSK_SHUFFLE_BOSS_SOULS).Is(RO_BOSS_SOULS_ON_PLUS_GANON) ||
+            return ctx->GetOption(RSK_GANONS_SOUL).Is(RO_GANONS_SOUL_STARTWITH) ||
                    CheckRandoInf(StaticData::RandoGetToRandInf.at(itemName));
             // Overworld Keys
         case RG_GUARD_HOUSE_KEY:
@@ -675,6 +675,10 @@ bool Logic::CanMiddairGroundJump(bool hasBombflower) {
 bool Logic::CanOpenUnderwaterChest() {
     return ctx->GetTrickOption(RT_OPEN_UNDERWATER_CHEST) && CanUse(RG_IRON_BOOTS) && CanUse(RG_HOOKSHOT) &&
            HasItem(RG_OPEN_CHEST);
+}
+
+bool Logic::CanOpenLargeChest() {
+    return CheckRandoInf(RAND_INF_CAN_OPEN_LARGE_CHEST);
 }
 
 uint8_t GetDifficultyValueFromString(Rando::Option& glitchOption) {
@@ -1704,25 +1708,92 @@ bool Logic::CanBuildRainbowBridge() {
                 ctx->GetOption(RSK_RAINBOW_BRIDGE_DUNGEON_COUNT).Get()) ||
            (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_TOKENS) &&
             GetGSCount() >= ctx->GetOption(RSK_RAINBOW_BRIDGE_TOKEN_COUNT).Get()) ||
+           (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_TRIFORCE_PIECES) &&
+            GetTriforcePieceCount() >= ctx->GetOption(RSK_RAINBOW_BRIDGE_TRIFORCE_COUNT).Get()) ||
            (ctx->GetOption(RSK_RAINBOW_BRIDGE).Is(RO_BRIDGE_GREG) && HasItem(RG_GREG_RUPEE));
 }
 
-bool Logic::CanTriggerLACS() {
-    return (ctx->LACSCondition() == RO_LACS_VANILLA && HasItem(RG_SHADOW_MEDALLION) && HasItem(RG_SPIRIT_MEDALLION)) ||
-           (ctx->LACSCondition() == RO_LACS_STONES &&
-            StoneCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_LACS_OPTIONS).Is(RO_LACS_GREG_REWARD)) >=
-                ctx->GetOption(RSK_LACS_STONE_COUNT).Get()) ||
-           (ctx->LACSCondition() == RO_LACS_MEDALLIONS &&
-            MedallionCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_LACS_OPTIONS).Is(RO_LACS_GREG_REWARD)) >=
-                ctx->GetOption(RSK_LACS_MEDALLION_COUNT).Get()) ||
-           (ctx->LACSCondition() == RO_LACS_REWARDS &&
-            StoneCount() + MedallionCount() +
-                    (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_LACS_OPTIONS).Is(RO_LACS_GREG_REWARD)) >=
-                ctx->GetOption(RSK_LACS_REWARD_COUNT).Get()) ||
-           (ctx->LACSCondition() == RO_LACS_DUNGEONS &&
-            DungeonCount() + (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_LACS_OPTIONS).Is(RO_LACS_GREG_REWARD)) >=
-                ctx->GetOption(RSK_LACS_DUNGEON_COUNT).Get()) ||
-           (ctx->LACSCondition() == RO_LACS_TOKENS && GetGSCount() >= ctx->GetOption(RSK_LACS_TOKEN_COUNT).Get());
+bool Logic::CanTriggerGBK() {
+    switch (ctx->GBKCondition()) {
+        case RO_CHECK_TRIGGER_STONES:
+            return StoneCount() +
+                       (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_GBK_OPTIONS).Is(RO_CHECK_TRIGGER_GREG_REWARD)) >=
+                   ctx->GetOption(RSK_GBK_STONE_COUNT).Get();
+        case RO_CHECK_TRIGGER_MEDALLIONS:
+            return MedallionCount() +
+                       (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_GBK_OPTIONS).Is(RO_CHECK_TRIGGER_GREG_REWARD)) >=
+                   ctx->GetOption(RSK_GBK_MEDALLION_COUNT).Get();
+        case RO_CHECK_TRIGGER_REWARDS:
+            return StoneCount() + MedallionCount() +
+                       (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_GBK_OPTIONS).Is(RO_CHECK_TRIGGER_GREG_REWARD)) >=
+                   ctx->GetOption(RSK_GBK_REWARD_COUNT).Get();
+        case RO_CHECK_TRIGGER_DUNGEONS:
+            return DungeonCount() +
+                       (HasItem(RG_GREG_RUPEE) && ctx->GetOption(RSK_GBK_OPTIONS).Is(RO_CHECK_TRIGGER_GREG_REWARD)) >=
+                   ctx->GetOption(RSK_GBK_DUNGEON_COUNT).Get();
+        case RO_CHECK_TRIGGER_TOKENS:
+            return GetGSCount() >= ctx->GetOption(RSK_GBK_TOKEN_COUNT).Get();
+        case RO_CHECK_TRIGGER_TRIFORCE_PIECES:
+            return GetTriforcePieceCount() >= ctx->GetOption(RSK_GBK_TRIFORCE_COUNT).Get();
+        default:
+            return false;
+    }
+}
+
+bool Logic::CanTriggerGanonsSoul() {
+    switch (ctx->GanonsSoulCondition()) {
+        case RO_CHECK_TRIGGER_STONES:
+            return StoneCount() + (HasItem(RG_GREG_RUPEE) &&
+                                   ctx->GetOption(RSK_GANONS_SOUL_OPTIONS).Is(RO_CHECK_TRIGGER_GREG_REWARD)) >=
+                   ctx->GetOption(RSK_GANONS_SOUL_STONE_COUNT).Get();
+        case RO_CHECK_TRIGGER_MEDALLIONS:
+            return MedallionCount() + (HasItem(RG_GREG_RUPEE) &&
+                                       ctx->GetOption(RSK_GANONS_SOUL_OPTIONS).Is(RO_CHECK_TRIGGER_GREG_REWARD)) >=
+                   ctx->GetOption(RSK_GANONS_SOUL_MEDALLION_COUNT).Get();
+        case RO_CHECK_TRIGGER_REWARDS:
+            return StoneCount() + MedallionCount() +
+                       (HasItem(RG_GREG_RUPEE) &&
+                        ctx->GetOption(RSK_GANONS_SOUL_OPTIONS).Is(RO_CHECK_TRIGGER_GREG_REWARD)) >=
+                   ctx->GetOption(RSK_GANONS_SOUL_REWARD_COUNT).Get();
+        case RO_CHECK_TRIGGER_DUNGEONS:
+            return DungeonCount() + (HasItem(RG_GREG_RUPEE) &&
+                                     ctx->GetOption(RSK_GANONS_SOUL_OPTIONS).Is(RO_CHECK_TRIGGER_GREG_REWARD)) >=
+                   ctx->GetOption(RSK_GANONS_SOUL_DUNGEON_COUNT).Get();
+        case RO_CHECK_TRIGGER_TOKENS:
+            return GetGSCount() >= ctx->GetOption(RSK_GANONS_SOUL_TOKEN_COUNT).Get();
+        case RO_CHECK_TRIGGER_TRIFORCE_PIECES:
+            return GetTriforcePieceCount() >= ctx->GetOption(RSK_GANONS_SOUL_TRIFORCE_COUNT).Get();
+        default:
+            return false;
+    }
+}
+
+bool Logic::CanTriggerWincon() {
+    switch (ctx->WinCondition()) {
+        case RO_WINCON_STONES:
+            return StoneCount() + (HasItem(RG_GREG_RUPEE) &&
+                                   ctx->GetOption(RSK_WINCON_OPTIONS).Is(RO_CHECK_TRIGGER_GREG_REWARD)) >=
+                   ctx->GetOption(RSK_WINCON_STONE_COUNT).Get();
+        case RO_WINCON_MEDALLIONS:
+            return MedallionCount() + (HasItem(RG_GREG_RUPEE) &&
+                                       ctx->GetOption(RSK_WINCON_OPTIONS).Is(RO_CHECK_TRIGGER_GREG_REWARD)) >=
+                   ctx->GetOption(RSK_WINCON_MEDALLION_COUNT).Get();
+        case RO_WINCON_REWARDS:
+            return StoneCount() + MedallionCount() +
+                       (HasItem(RG_GREG_RUPEE) &&
+                        ctx->GetOption(RSK_WINCON_OPTIONS).Is(RO_CHECK_TRIGGER_GREG_REWARD)) >=
+                   ctx->GetOption(RSK_WINCON_REWARD_COUNT).Get();
+        case RO_WINCON_DUNGEONS:
+            return DungeonCount() + (HasItem(RG_GREG_RUPEE) &&
+                                     ctx->GetOption(RSK_WINCON_OPTIONS).Is(RO_CHECK_TRIGGER_GREG_REWARD)) >=
+                   ctx->GetOption(RSK_WINCON_DUNGEON_COUNT).Get();
+        case RO_WINCON_TOKENS:
+            return GetGSCount() >= ctx->GetOption(RSK_WINCON_TOKEN_COUNT).Get();
+        case RO_WINCON_TRIFORCE_PIECES:
+            return GetTriforcePieceCount() >= ctx->GetOption(RSK_WINCON_TRIFORCE_COUNT).Get();
+        default:
+            return false;
+    }
 }
 
 bool Logic::SmallKeys(SceneID scene, uint8_t requiredAmount) {
@@ -2018,7 +2089,17 @@ void Logic::ApplyItemEffect(Item& item, bool state) {
                     SetRandoInf(RAND_INF_CAN_CRAWL, state);
                     break;
                 case RG_OPEN_CHEST:
-                    SetRandoInf(RAND_INF_CAN_OPEN_CHEST, state);
+                    if (ctx->GetOption(RSK_SHUFFLE_OPEN_CHEST).Is(RO_OPEN_CHEST_PROGRESSIVE)) {
+                        if (state ? CheckRandoInf(RAND_INF_CAN_OPEN_CHEST)
+                                  : CheckRandoInf(RAND_INF_CAN_OPEN_LARGE_CHEST)) {
+                            SetRandoInf(RAND_INF_CAN_OPEN_LARGE_CHEST, state);
+                        } else {
+                            SetRandoInf(RAND_INF_CAN_OPEN_CHEST, state);
+                        }
+                    } else {
+                        SetRandoInf(RAND_INF_CAN_OPEN_CHEST, state);
+                        SetRandoInf(RAND_INF_CAN_OPEN_LARGE_CHEST, state);
+                    }
                     break;
                 case RG_PROGRESSIVE_HOOKSHOT: {
                     uint8_t i;
@@ -2524,23 +2605,21 @@ void Logic::InitSaveContext() {
     mSaveContext->worldMapAreaData = 0;
     mSaveContext->scarecrowLongSongSet = 0;
     for (int i = 0; i < ARRAY_COUNT(mSaveContext->scarecrowLongSong); i++) {
-        mSaveContext->scarecrowLongSong[i].noteIdx = 0;
-        mSaveContext->scarecrowLongSong[i].unk_01 = 0;
-        mSaveContext->scarecrowLongSong[i].unk_02 = 0;
+        mSaveContext->scarecrowLongSong[i].pitch = 0;
+        mSaveContext->scarecrowLongSong[i].length = 0;
         mSaveContext->scarecrowLongSong[i].volume = 0;
         mSaveContext->scarecrowLongSong[i].vibrato = 0;
-        mSaveContext->scarecrowLongSong[i].tone = 0;
-        mSaveContext->scarecrowLongSong[i].semitone = 0;
+        mSaveContext->scarecrowLongSong[i].bend = 0;
+        mSaveContext->scarecrowLongSong[i].bFlat4Flag = 0;
     }
     mSaveContext->scarecrowSpawnSongSet = 0;
     for (int i = 0; i < ARRAY_COUNT(mSaveContext->scarecrowSpawnSong); i++) {
-        mSaveContext->scarecrowSpawnSong[i].noteIdx = 0;
-        mSaveContext->scarecrowSpawnSong[i].unk_01 = 0;
-        mSaveContext->scarecrowSpawnSong[i].unk_02 = 0;
+        mSaveContext->scarecrowSpawnSong[i].pitch = 0;
+        mSaveContext->scarecrowSpawnSong[i].length = 0;
         mSaveContext->scarecrowSpawnSong[i].volume = 0;
         mSaveContext->scarecrowSpawnSong[i].vibrato = 0;
-        mSaveContext->scarecrowSpawnSong[i].tone = 0;
-        mSaveContext->scarecrowSpawnSong[i].semitone = 0;
+        mSaveContext->scarecrowSpawnSong[i].bend = 0;
+        mSaveContext->scarecrowSpawnSong[i].bFlat4Flag = 0;
     }
 
     mSaveContext->horseData.scene = SCENE_HYRULE_FIELD;
@@ -2665,6 +2744,10 @@ void Logic::SetEventChkInf(int32_t flag, bool state) {
 
 uint8_t Logic::GetGSCount() {
     return static_cast<uint8_t>(mSaveContext->inventory.gsTokens);
+}
+
+uint8_t Logic::GetTriforcePieceCount() {
+    return mSaveContext->ship.quest.data.randomizer.triforcePiecesCollected;
 }
 
 uint8_t Logic::GetAmmo(uint32_t item) {
@@ -2872,6 +2955,7 @@ void Logic::Reset(bool resetSaveContext /*= true*/) {
 
         if (ctx->GetOption(RSK_SHUFFLE_OPEN_CHEST).Is(false)) {
             SetRandoInf(RAND_INF_CAN_OPEN_CHEST, true);
+            SetRandoInf(RAND_INF_CAN_OPEN_LARGE_CHEST, true);
         }
 
         if (ctx->GetOption(RSK_SHUFFLE_SPEAK).Is(false)) {
