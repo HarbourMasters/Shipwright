@@ -851,7 +851,7 @@ void Settings::CreateOptions() {
         }
     });
     OPT_BOOL(RSK_SHUFFLE_SPEAK, "Shuffle Jabber Nuts", CVAR_RANDOMIZER_SETTING("ShuffleSpeak"), mOptionDescriptions[RSK_SHUFFLE_SPEAK]);
-    OPT_BOOL(RSK_SHUFFLE_OPEN_CHEST, "Shuffle Open Chest", CVAR_RANDOMIZER_SETTING("ShuffleOpenChest"), mOptionDescriptions[RSK_SHUFFLE_OPEN_CHEST]);
+    OPT_U8(RSK_SHUFFLE_OPEN_CHEST, "Shuffle Open Chest", {"Off", "On", "Progressive"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleOpenChest"), mOptionDescriptions[RSK_SHUFFLE_OPEN_CHEST], WIDGET_CVAR_COMBOBOX, RO_OPEN_CHEST_OFF);
     OPT_U8(RSK_SHUFFLE_WEIRD_EGG, "Shuffle Weird Egg", {"Vanilla", "Shuffled", "Skip Waking Talon"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleWeirdEgg"), mOptionDescriptions[RSK_SHUFFLE_WEIRD_EGG], WIDGET_CVAR_COMBOBOX, RO_WEIRD_EGG_VANILLA);
     OPT_BOOL(RSK_SHUFFLE_ZELDAS_LETTER, "Shuffle Zelda's Letter", CVAR_RANDOMIZER_SETTING("ShuffleZeldasLetter"), mOptionDescriptions[RSK_SHUFFLE_ZELDAS_LETTER]);
     OPT_BOOL(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD, "Shuffle Gerudo Membership Card", CVAR_RANDOMIZER_SETTING("ShuffleGerudoToken"), mOptionDescriptions[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD]);

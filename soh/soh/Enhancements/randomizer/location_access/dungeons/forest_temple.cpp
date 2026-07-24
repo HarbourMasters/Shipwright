@@ -191,7 +191,7 @@ void RegionTable_Init_ForestTemple() {
 
     areaTable[RR_FOREST_TEMPLE_MAP_ROOM] = Region("Forest Temple Map Room", SCENE_FOREST_TEMPLE, {}, {
         //Locations
-        LOCATION(RC_FOREST_TEMPLE_MAP_CHEST, logic->CanKillEnemy(RE_BLUE_BUBBLE) && logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_FOREST_TEMPLE_MAP_CHEST, logic->CanKillEnemy(RE_BLUE_BUBBLE) && logic->CanOpenLargeChest()),
     }, {
         //Exits
         ENTRANCE(RR_FOREST_TEMPLE_NW_COURTYARD_UPPER_ALCOVE, AnyAgeTime([]{return logic->CanKillEnemy(RE_BLUE_BUBBLE);})),
@@ -296,7 +296,7 @@ void RegionTable_Init_ForestTemple() {
 
     areaTable[RR_FOREST_TEMPLE_NW_HALLWAY_STRAIGHTENED] = Region("Forest Temple NW Hallway Straightened", SCENE_FOREST_TEMPLE, {}, {
         //Locations
-        LOCATION(RC_FOREST_TEMPLE_BOSS_KEY_CHEST, logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_FOREST_TEMPLE_BOSS_KEY_CHEST, logic->CanOpenLargeChest()),
     }, {
         //Exits
         ENTRANCE(RR_FOREST_TEMPLE_BELOW_BOSS_KEY_CHEST, true),
@@ -321,7 +321,7 @@ void RegionTable_Init_ForestTemple() {
         EVENT_ACCESS(LOGIC_FOREST_CLEAR_BETWEEN_JOELLE_AND_BETH, logic->CanKillEnemy(RE_STALFOS, ED_CLOSE, true, 2)),
     }, {
         //Locations
-        LOCATION(RC_FOREST_TEMPLE_BOW_CHEST,           logic->Get(LOGIC_FOREST_CLEAR_BETWEEN_JOELLE_AND_BETH) && logic->CanKillEnemy(RE_STALFOS, ED_CLOSE, true, 3) && logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_FOREST_TEMPLE_BOW_CHEST,           logic->Get(LOGIC_FOREST_CLEAR_BETWEEN_JOELLE_AND_BETH) && logic->CanKillEnemy(RE_STALFOS, ED_CLOSE, true, 3) && logic->CanOpenLargeChest()),
         LOCATION(RC_FOREST_TEMPLE_UPPER_STALFOS_POT_1, logic->CanBreakPots()),
         LOCATION(RC_FOREST_TEMPLE_UPPER_STALFOS_POT_2, logic->CanBreakPots()),
         LOCATION(RC_FOREST_TEMPLE_UPPER_STALFOS_POT_3, logic->CanBreakPots()),
@@ -337,7 +337,7 @@ void RegionTable_Init_ForestTemple() {
         EVENT_ACCESS(LOGIC_FOREST_BETH, logic->CanUse(RG_FAIRY_BOW)),
     }, {
         //Locations
-        LOCATION(RC_FOREST_TEMPLE_BLUE_POE_CHEST, logic->Get(LOGIC_FOREST_BETH) && logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_FOREST_TEMPLE_BLUE_POE_CHEST, logic->Get(LOGIC_FOREST_BETH) && logic->CanOpenLargeChest()),
         LOCATION(RC_FOREST_TEMPLE_BLUE_POE_POT_1, logic->CanBreakPots()),
         LOCATION(RC_FOREST_TEMPLE_BLUE_POE_POT_2, logic->CanBreakPots()),
         LOCATION(RC_FOREST_TEMPLE_BLUE_POE_POT_3, logic->CanBreakPots()),
@@ -562,7 +562,7 @@ void RegionTable_Init_ForestTemple() {
 
     areaTable[RR_FOREST_TEMPLE_MQ_STRAIGHT_HALLWAY] = Region("Forest Temple MQ Straight Hallway", SCENE_FOREST_TEMPLE, {}, {
         //Locations
-        LOCATION(RC_FOREST_TEMPLE_MQ_BOSS_KEY_CHEST, logic->SmallKeys(SCENE_FOREST_TEMPLE, 3) && logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_FOREST_TEMPLE_MQ_BOSS_KEY_CHEST, logic->SmallKeys(SCENE_FOREST_TEMPLE, 3) && logic->CanOpenLargeChest()),
     }, {
         //Exits
         ENTRANCE(RR_FOREST_TEMPLE_MQ_FLOORMASTER_ROOM, true),
@@ -719,7 +719,7 @@ void RegionTable_Init_ForestTemple() {
         EVENT_ACCESS(LOGIC_FOREST_JOELLE, logic->CanUse(RG_FAIRY_BOW)),
     }, {
         //Locations
-        LOCATION(RC_FOREST_TEMPLE_MQ_MAP_CHEST, logic->Get(LOGIC_FOREST_JOELLE) && logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_FOREST_TEMPLE_MQ_MAP_CHEST, logic->Get(LOGIC_FOREST_JOELLE) && logic->CanOpenLargeChest()),
     }, {
         //Exits
         ENTRANCE(RR_FOREST_TEMPLE_MQ_UPPER_BLOCK_PUZZLE, logic->SmallKeys(SCENE_FOREST_TEMPLE, 4)),
@@ -732,7 +732,7 @@ void RegionTable_Init_ForestTemple() {
         EVENT_ACCESS(LOGIC_FOREST_CLEAR_BETWEEN_JOELLE_AND_BETH, logic->CanKillEnemy(RE_WOLFOS)),
     }, {
         //Locations
-        LOCATION(RC_FOREST_TEMPLE_MQ_BOW_CHEST,           logic->Get(LOGIC_FOREST_CLEAR_BETWEEN_JOELLE_AND_BETH) && logic->CanKillEnemy(RE_STALFOS, ED_CLOSE, true, 3) && logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_FOREST_TEMPLE_MQ_BOW_CHEST,           logic->Get(LOGIC_FOREST_CLEAR_BETWEEN_JOELLE_AND_BETH) && logic->CanKillEnemy(RE_STALFOS, ED_CLOSE, true, 3) && logic->CanOpenLargeChest()),
         LOCATION(RC_FOREST_TEMPLE_MQ_UPPER_STALFOS_POT_1, logic->CanBreakPots()),
         LOCATION(RC_FOREST_TEMPLE_MQ_UPPER_STALFOS_POT_2, logic->CanBreakPots()),
         LOCATION(RC_FOREST_TEMPLE_MQ_UPPER_STALFOS_POT_3, logic->CanBreakPots()),
@@ -748,7 +748,7 @@ void RegionTable_Init_ForestTemple() {
         EVENT_ACCESS(LOGIC_FOREST_BETH, logic->CanUse(RG_FAIRY_BOW)),
     }, {
         //Locations
-        LOCATION(RC_FOREST_TEMPLE_MQ_COMPASS_CHEST,  logic->Get(LOGIC_FOREST_BETH) && logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_FOREST_TEMPLE_MQ_COMPASS_CHEST,  logic->Get(LOGIC_FOREST_BETH) && logic->CanOpenLargeChest()),
         LOCATION(RC_FOREST_TEMPLE_MQ_BLUE_POE_POT_1, logic->CanBreakPots()),
         LOCATION(RC_FOREST_TEMPLE_MQ_BLUE_POE_POT_2, logic->CanBreakPots()),
         LOCATION(RC_FOREST_TEMPLE_MQ_BLUE_POE_POT_3, logic->CanBreakPots()),

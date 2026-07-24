@@ -287,11 +287,7 @@ void EnSyatekiMan_StartGame(EnSyatekiMan* this, PlayState* play) {
         Message_CloseTextbox(play);
         gallery = ((EnSyatekiItm*)this->actor.parent);
         if (gallery->actor.update != NULL) {
-            if (CVarGetInteger(CVAR_ENHANCEMENT("CustomizeShootingGallery"), 0) &&
-                CVarGetInteger(CVAR_ENHANCEMENT("InstantShootingGalleryWin"), 0)) {
-                gallery->hitCount = 10;
-                gallery->signal = ENSYATEKI_END;
-            } else {
+            if (GameInteractor_Should(VB_PLAY_SHOOTING_GALLERY, true, gallery)) {
                 gallery->signal = ENSYATEKI_START;
             }
             this->actionFunc = EnSyatekiMan_WaitForGame;
@@ -389,11 +385,7 @@ void EnSyatekiMan_EndGame(EnSyatekiMan* this, PlayState* play) {
                 case SYATEKI_RESULT_ALMOST:
                     this->timer = 20;
                     s32 ammunition = 15;
-                    if (CVarGetInteger(CVAR_ENHANCEMENT("CustomizeShootingGallery"), 0)) {
-                        ammunition = CVarGetInteger(LINK_IS_ADULT ? CVAR_ENHANCEMENT("ShootingGalleryAmmoAdult")
-                                                                  : CVAR_ENHANCEMENT("ShootingGalleryAmmoChild"),
-                                                    15);
-                    }
+                    GameInteractor_Should(VB_SET_SHOOTING_GALLERY_AMMO, true, &ammunition);
                     func_8008EF44(play, ammunition);
                     this->actionFunc = EnSyatekiMan_RestartGame;
                     break;

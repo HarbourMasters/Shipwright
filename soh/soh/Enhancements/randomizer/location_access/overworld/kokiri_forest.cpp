@@ -154,7 +154,7 @@ void RegionTable_Init_KokiriForest() {
 
     areaTable[RR_KF_BOULDER_LOOP] = Region("KF Boulder Loop", SCENE_KOKIRI_FOREST, {}, {
         //Locations
-        LOCATION(RC_KF_KOKIRI_SWORD_CHEST,              logic->IsChild && logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_KF_KOKIRI_SWORD_CHEST,              logic->IsChild && logic->CanOpenLargeChest()),
         LOCATION(RC_KF_BOULDER_RUPEE_1,                 logic->IsChild),
         LOCATION(RC_KF_BOULDER_RUPEE_2,                 logic->IsChild),
         LOCATION(RC_KF_CHILD_GRASS_MAZE_1,              logic->IsChild && logic->CanCutShrubs()),

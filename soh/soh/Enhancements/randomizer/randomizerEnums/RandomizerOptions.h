@@ -314,6 +314,13 @@ RANDO_ENUM_ITEM(RO_WEIRD_EGG_SHUFFLED)
 RANDO_ENUM_ITEM(RO_WEIRD_EGG_SKIP_TALON)
 RANDO_ENUM_END(RandoOptionShuffleWeirdEgg)
 
+// Shuffle Open Chest Settings (off, on, progressive)
+RANDO_ENUM_BEGIN(RandoOptionShuffleOpenChest)
+RANDO_ENUM_ITEM(RO_OPEN_CHEST_OFF)
+RANDO_ENUM_ITEM(RO_OPEN_CHEST_ON)
+RANDO_ENUM_ITEM(RO_OPEN_CHEST_PROGRESSIVE)
+RANDO_ENUM_END(RandoOptionShuffleOpenChest)
+
 // Starting Ocarina Settings (off, fairy, oot)
 RANDO_ENUM_BEGIN(RandoOptionStartingOcarina)
 RANDO_ENUM_ITEM(RO_STARTING_OCARINA_OFF)

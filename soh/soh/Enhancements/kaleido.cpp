@@ -215,6 +215,11 @@ Kaleido::Kaleido() {
         mEntries.push_back(std::make_shared<KaleidoEntryIconFlag>(
             gMapChestIconTex, G_IM_FMT_RGBA, G_IM_SIZ_16b, 8, 8, Color_RGBA8{ 255, 255, 255, 255 },
             FlagType::FLAG_RANDOMIZER_INF, RAND_INF_CAN_OPEN_CHEST, "Open Chests"));
+        if (ctx->GetOption(RSK_SHUFFLE_OPEN_CHEST).Is(RO_OPEN_CHEST_PROGRESSIVE)) {
+            mEntries.push_back(std::make_shared<KaleidoEntryIconFlag>(
+                gMapChestIconTex, G_IM_FMT_RGBA, G_IM_SIZ_16b, 8, 8, Color_RGBA8{ 255, 255, 255, 255 },
+                FlagType::FLAG_RANDOMIZER_INF, RAND_INF_CAN_OPEN_LARGE_CHEST, "Open Large Chests"));
+        }
     }
     if (ctx->GetOption(RSK_SHUFFLE_SWIM)) {
         mEntries.push_back(std::make_shared<KaleidoEntryIconFlag>(
