@@ -1536,6 +1536,12 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
         case VB_DEKU_THEATER_FINISH_GIVING_PRIZE:
             *should = true;
             break;
+        case VB_DAMPE_AWARD_SECOND_PRIZE:
+            if (!*should) {
+                Flags_SetTreasure(gPlayState, 0x1E);
+                *should = true;
+            }
+            break;
         case VB_FROGS_GO_TO_IDLE: {
             EnFr* enFr = va_arg(args, EnFr*);
 
