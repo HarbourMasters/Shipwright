@@ -14,7 +14,6 @@
 #include "3drando/fill.hpp"
 #include "soh/Enhancements/debugger/performanceTimer.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
-#include "soh/Enhancements/custom-message/CustomMessageManager.h"
 #include "soh/ObjectExtension/ObjectExtension.h"
 #include "overlays/actors/ovl_En_GirlA/z_en_girla.h"
 
@@ -521,55 +520,55 @@ void SetShopSeen(uint32_t sceneNum, bool prices) {
     }
 }
 
-// A hint renders one of an item's phrases -- clarity picks its clear,
-// ambiguous, or obscure form -- and distinct items share phrases: the four
-// swords all read as "a sword". So uniqueness must be judged on the phrase the
-// player actually saw, not the item's hint key. Counts how many items that
-// phrase can name in the current language; ambiguous when more than one.
-static bool HintPhraseNamesOneItem(const CustomMessage& shown) {
-    const std::string phrase = shown.GetForCurrentLanguage(MF_CLEAN);
-    int items = 0;
-    for (const auto& item : Rando::StaticData::GetItemTable()) {
-        const HintText& hint = item.GetHint();
-        bool names = hint.GetClear().GetForCurrentLanguage(MF_CLEAN) == phrase;
-        for (size_t i = 0; !names && i < hint.GetAmbiguousSize(); i++) {
-            names = hint.GetAmbiguous(i).GetForCurrentLanguage(MF_CLEAN) == phrase;
+// Items share hint text keys: all six jabber nuts are "the ability to speak".
+// Counted once on first use.
+static bool HintNamesItemUniquely(RandomizerGet rg) {
+    static const auto keyUses = [] {
+        std::array<uint16_t, RHT_MAX> uses{};
+        for (const auto& item : Rando::StaticData::GetItemTable()) {
+            uses[item.GetHintKey()]++;
         }
-        for (size_t i = 0; !names && i < hint.GetObscureSize(); i++) {
-            names = hint.GetObscure(i).GetForCurrentLanguage(MF_CLEAN) == phrase;
-        }
-        if (names && ++items > 1) {
-            return false;
-        }
-    }
-    return items == 1;
+        return uses;
+    }();
+    return keyUses[Rando::StaticData::RetrieveItem(rg).GetHintKey()] == 1;
 }
 
 // Only HINT_TYPE_ITEM hints name a check's item outright; other types stay
 // ambiguous. Marks Seen, not Identified, since hints never state a price.
 static bool ApplyItemHintToChecks(RandomizerHint hintKey) {
+    // Ambiguous/obscure hints reuse the same phrase across items (all four swords are
+    // just "a sword"), so only clear hints are safe to mark - skip anything else
+    if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_HINT_CLARITY) != RO_HINT_CLARITY_CLEAR) {
+        return false;
+    }
+
     if (hintKey == RH_NONE) {
         return false;
     }
-    auto hint = OTRGlobals::Instance->gRandoContext->GetHint(hintKey);
+
     // The hint-revealed hook can fire for hints the seed has disabled.
+    auto hint = OTRGlobals::Instance->gRandoContext->GetHint(hintKey);
     if (!hint->IsEnabled() || hint->GetHintType() != HINT_TYPE_ITEM) {
         return false;
     }
+
+    // Loop over hinted locations, apply the ones which are unambiguous
     bool changed = false;
-    std::vector<RandomizerCheck> locations = hint->GetHintedLocations();
-    for (size_t slot = 0; slot < locations.size(); slot++) {
-        RandomizerCheck rc = locations[slot];
+    for (RandomizerCheck rc : hint->GetHintedLocations()) {
         if (rc == RC_UNKNOWN_CHECK) {
             continue;
         }
-        // Judge ambiguity on the exact phrase shown for this slot (its clarity
-        // variant, and an ice trap's disguise name), not the placed item.
-        if (!HintPhraseNamesOneItem(hint->GetItemName(static_cast<uint8_t>(slot)))) {
+        auto loc = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc);
+        // Ice traps hint, and display, as their disguise.
+        RandomizerGet named = loc->GetPlacedRandomizerGet();
+        auto& overrides = OTRGlobals::Instance->gRandoContext->overrides;
+        if (named == RG_ICE_TRAP && overrides.contains(rc)) {
+            named = overrides[rc].LooksLike();
+        }
+        if (!HintNamesItemUniquely(named)) {
             // The hint could mean several items, no spoilers!
             continue;
         }
-        auto loc = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc);
         if (loc->GetCheckStatus() == RCSHOW_UNCHECKED) {
             loc->SetCheckStatus(RCSHOW_SEEN_OR_HINTED);
             changed = true;
