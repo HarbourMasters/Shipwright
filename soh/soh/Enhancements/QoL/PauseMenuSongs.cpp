@@ -182,30 +182,53 @@ static bool PauseSong_ActivateOkarinaTags() {
     return matched;
 }
 
-// --- Per-actor hand-off for non-tag ocarina NPCs ---
-// Unlike the staff spots, these actors have no generic way to be driven, and going through the vanilla
-// play-for-actor flow (PLAYER_STATE2_ATTEMPT_PLAY_FOR_ACTOR) opens a real note-input prompt the player
-// can't satisfy from the menu. So, exactly like the tags, we set the actor's actionFunc straight to its
-// listening handler and leave OCARINA_MODE_03 set; the handler reacts on the next frame. Any dialogue it
-// offers is then started here, since the player -- never in its ocarina action -- won't do it itself.
-static Actor* npcHandoffActor = NULL;
-static bool npcHandoffStartTalk = false;
-static int npcHandoffTimer = 0;
+// --- Deferred hand-off for the actors that can't be driven inline ---
+// The staff spots above are safe to run synchronously, but the Song of Time blocks, Great Fairy spawners,
+// and the ocarina NPCs (Mido, Darunia, adult Malon) all update *before* this hook and simply poll
+// ocarinaMode + lastPlayedSong. Going through the vanilla play-for-actor flow instead
+// (PLAYER_STATE2_ATTEMPT_PLAY_FOR_ACTOR) would open a real note-input prompt the player can't satisfy from
+// the menu. So for all of them we push the matching in-range actors straight into their song-finished
+// state, leave the matching ocarinaMode set, and hold it a couple frames for them to read; then we restore
+// it. Mido is the one actor whose follow-up dialogue the player would normally start, so we do that here
+// once it has reacted.
+static u8 pendingMode = OCARINA_MODE_00;
+static Actor* pendingTalkActor = NULL;
+static int pendingTimer = 0;
 
-static void PauseSong_EndNpcHandoff() {
-    if (gPlayState->msgCtx.ocarinaMode == OCARINA_MODE_03 || gPlayState->msgCtx.ocarinaMode == OCARINA_MODE_04) {
-        gPlayState->msgCtx.ocarinaMode = OCARINA_MODE_00;
-    }
-    npcHandoffActor = NULL;
-    npcHandoffStartTalk = false;
-    npcHandoffTimer = 0;
+static void PauseSong_HoldMode(u8 mode) {
+    gPlayState->msgCtx.ocarinaMode = mode;
+    pendingMode = mode;
+    pendingTimer = 2;
 }
 
-// Hand the played song to a matching in-range NPC. Returns true if one was engaged, in which case
-// OCARINA_MODE_03 is left set for it to consume next frame; the hand-off machinery then restores state
-// and, for actors that offer a dialogue the player would normally start, begins that talk.
+// Restores the held ocarina/message state once the actor has had its frame(s) to read it. Returns true
+// while a hand-off is in flight, so the caller skips starting another song. The NPCs flip ocarinaMode to
+// MODE_04 when they react, which is how we notice a hand-off completed early.
+static bool PauseSong_AdvancePending() {
+    if (pendingTimer <= 0) {
+        return false;
+    }
+    bool reacted = gPlayState->msgCtx.ocarinaMode != pendingMode;
+    if (--pendingTimer == 0 || reacted) {
+        if (pendingTalkActor != NULL && reacted && pendingTalkActor->textId != 0) {
+            Player_StartTalking(gPlayState, pendingTalkActor);
+        }
+        if (gPlayState->msgCtx.ocarinaMode == OCARINA_MODE_03 || gPlayState->msgCtx.ocarinaMode == OCARINA_MODE_04) {
+            gPlayState->msgCtx.ocarinaMode = OCARINA_MODE_00;
+        }
+        if (gPlayState->msgCtx.msgMode == MSGMODE_PAUSED) {
+            gPlayState->msgCtx.msgMode = MSGMODE_NONE;
+        }
+        pendingMode = OCARINA_MODE_00;
+        pendingTalkActor = NULL;
+        pendingTimer = 0;
+    }
+    return true;
+}
+
+// Hand the played song to a matching in-range NPC. Returns true if one was engaged, leaving MODE_03 held
+// for it to consume next frame.
 static bool PauseSong_ActivateNpcActors() {
-    Player* player = GET_PLAYER(gPlayState);
     u16 song = gPlayState->msgCtx.lastPlayedSong;
     s16 scene = gPlayState->sceneNum;
 
@@ -216,8 +239,8 @@ static bool PauseSong_ActivateNpcActors() {
             if (mido->actionFunc == EnMd_BlockPath && mido->interactInfo.talkState == NPC_TALK_STATE_IDLE &&
                 actor->xzDistToPlayer < 100.0f) {
                 mido->actionFunc = EnMd_ListenToOcarina;
-                npcHandoffActor = actor;
-                npcHandoffStartTalk = true;
+                pendingTalkActor = actor;
+                PauseSong_HoldMode(OCARINA_MODE_03);
                 return true;
             }
         }
@@ -226,7 +249,7 @@ static bool PauseSong_ActivateNpcActors() {
             EnDu* darunia = (EnDu*)actor;
             if (darunia->actionFunc == func_809FE3C0 && actor->xzDistToPlayer < 120.0f) {
                 darunia->actionFunc = func_809FE4A4;
-                npcHandoffActor = actor;
+                PauseSong_HoldMode(OCARINA_MODE_03);
                 return true;
             }
         }
@@ -235,7 +258,7 @@ static bool PauseSong_ActivateNpcActors() {
             EnMa2* malon = (EnMa2*)actor;
             if (malon->actionFunc == EnMa2_WaitForOcarina && actor->xzDistToPlayer < 60.0f) {
                 malon->actionFunc = EnMa2_WaitForEponasSong;
-                npcHandoffActor = actor;
+                PauseSong_HoldMode(OCARINA_MODE_03);
                 return true;
             }
         }
@@ -243,27 +266,9 @@ static bool PauseSong_ActivateNpcActors() {
     return false;
 }
 
-// --- Song of Time blocks and Great Fairy spawners ---
-// These don't consume the MODE_03 "correct song" event the staff spots and NPCs do. Instead each runs a
-// small state machine that, driven by a real ocarina play-for-actor, ends by reading OCARINA_MODE_04 +
-// lastPlayedSong. We can't reach that through the menu, so -- as with the tags and Mido -- we push the
-// matching in-range actors straight into that final state and hold MODE_04 for a couple frames, since
-// they update before this hook and only react on their next pass.
-static int songEventHoldTimer = 0;
-
-// Clears the held MODE_04 once the block/fairy has had its frame(s) to read it. Returns true while holding.
-static bool PauseSong_AdvanceSongEvent() {
-    if (songEventHoldTimer <= 0) {
-        return false;
-    }
-    if (--songEventHoldTimer == 0 && gPlayState->msgCtx.ocarinaMode == OCARINA_MODE_04) {
-        gPlayState->msgCtx.ocarinaMode = OCARINA_MODE_00;
-    }
-    return true;
-}
-
 // Engage any in-range Song of Time block (Song of Time) or Great Fairy spawner (Sun's Song / Song of
-// Storms). Returns true if at least one was engaged, in which case MODE_04 is left set for it to consume.
+// Storms) by pushing it into its song-finished state. Returns true if at least one was engaged, leaving
+// MODE_04 held for the actor(s) to read.
 static bool PauseSong_ActivateSongEventActors() {
     Player* player = GET_PLAYER(gPlayState);
     u16 song = gPlayState->msgCtx.lastPlayedSong;
@@ -304,30 +309,13 @@ static bool PauseSong_ActivateSongEventActors() {
     }
 
     if (engaged) {
-        gPlayState->msgCtx.ocarinaMode = OCARINA_MODE_04;
-        songEventHoldTimer = 2;
+        PauseSong_HoldMode(OCARINA_MODE_04);
     }
     return engaged;
 }
 
-// Returns true while a hand-off is running, so the caller skips starting another song this frame.
-static bool PauseSong_AdvanceNpcHandoff() {
-    if (npcHandoffActor == NULL) {
-        return false;
-    }
-    // The actor consumed OCARINA_MODE_03 (set MODE_04) and reacted. For actors that offer a dialogue the
-    // player would normally start (Mido), start it now; others drive their own cutscene / talk.
-    if (gPlayState->msgCtx.ocarinaMode != OCARINA_MODE_03 || ++npcHandoffTimer > 30) {
-        if (npcHandoffStartTalk && gPlayState->msgCtx.ocarinaMode != OCARINA_MODE_03 && npcHandoffActor->textId != 0) {
-            Player_StartTalking(gPlayState, npcHandoffActor);
-        }
-        PauseSong_EndNpcHandoff();
-    }
-    return true;
-}
-
 static void PauseSong_Execute() {
-    if (PauseSong_AdvanceSongEvent() || PauseSong_AdvanceNpcHandoff()) {
+    if (PauseSong_AdvancePending()) {
         return;
     }
     if (!isSongActive || gPlayState->pauseCtx.state != 0 || gPlayState->msgCtx.msgMode != MSGMODE_NONE) {
@@ -347,25 +335,25 @@ static void PauseSong_Execute() {
     Actor_Spawn(&gPlayState->actorCtx, gPlayState, effectActorIds[idx], player->actor.world.pos.x,
                 player->actor.world.pos.y, player->actor.world.pos.z, 0, 0, 0, effectActorParams[idx]);
 
-    // Simulate the ocarina system reporting a successful song check. A staff spot runs synchronously, so
-    // reset the ocarina/message state right after. The Water Temple triforce leaves msgMode =
-    // MSGMODE_PAUSED, which would otherwise block the pause menu (z_play gates on NONE).
+    // Staff spots are the one category safe to drive inline: calling them here, after every actor has
+    // already updated this frame, lets them consume MODE_03 and set their own MODE_04 without it leaking to
+    // the MODE_04 readers below. So drive and reset them within this frame. (The Water Temple triforce
+    // leaves msgMode = MSGMODE_PAUSED, which would otherwise block the pause menu -- z_play gates on NONE.)
     gPlayState->msgCtx.ocarinaMode = OCARINA_MODE_03;
-    bool matched = PauseSong_ActivateOkarinaTags();
-
-    // No staff spot took it: try the MODE_04 song-event actors (Song of Time blocks, Great Fairy
-    // spawners), then a matching NPC (Mido, ...). Either leaves the ocarina result set for the actor to
-    // consume next frame, and its hand-off machinery finishes and restores state.
-    if (!matched && PauseSong_ActivateSongEventActors()) {
+    if (PauseSong_ActivateOkarinaTags()) {
+        gPlayState->msgCtx.ocarinaMode = OCARINA_MODE_00;
+        if (gPlayState->msgCtx.msgMode == MSGMODE_PAUSED) {
+            gPlayState->msgCtx.msgMode = MSGMODE_NONE;
+        }
         return;
     }
-    if (!matched && PauseSong_ActivateNpcActors()) {
-        return;
-    }
-
     gPlayState->msgCtx.ocarinaMode = OCARINA_MODE_00;
-    if (gPlayState->msgCtx.msgMode == MSGMODE_PAUSED) {
-        gPlayState->msgCtx.msgMode = MSGMODE_NONE;
+
+    // Otherwise hand the song to a deferred actor: a Song of Time block / Great Fairy spawner (MODE_04), or
+    // a matching NPC (MODE_03). Either holds the mode for the actor to poll next frame; AdvancePending then
+    // finishes the hand-off and restores state.
+    if (!PauseSong_ActivateSongEventActors()) {
+        PauseSong_ActivateNpcActors();
     }
 }
 
