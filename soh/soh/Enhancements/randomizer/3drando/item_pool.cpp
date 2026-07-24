@@ -158,7 +158,6 @@ void GenerateItemPool() {
         ctx->GetOption(RSK_BOMBCHU_BAG).IsNot(RO_BOMBCHU_BAG_NONE)) {
         JunkPoolItems.emplace_back(RG_BOMBCHU_5);
         JunkPoolItems.emplace_back(RG_BOMBCHU_10);
-        JunkPoolItems.emplace_back(RG_BOMBCHU_20);
     }
 
     // clang-format off
