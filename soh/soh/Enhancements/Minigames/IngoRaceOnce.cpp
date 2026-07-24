@@ -4,25 +4,26 @@
 
 extern "C" {
 #include "functions.h"
-#include "src/overlays/actors/ovl_En_Horse_Game_Check/z_en_horse_game_check.h"
+extern SaveContext gSaveContext;
+extern PlayState* gPlayState;
 }
 
 #define CVAR_INGO_RACE_ONCE_NAME CVAR_ENHANCEMENT("IngoRaceOnce")
 #define CVAR_INGO_RACE_ONCE_VALUE CVarGetInteger(CVAR_INGO_RACE_ONCE_NAME, INGO_RACE_TWICE)
 
-static void IngoRaceInstantWin(void* refActor) {
-    EnHorseGameCheckBase* base = reinterpret_cast<EnHorseGameCheckBase*>(refActor);
-    if (base->actor.params != HORSEGAME_INGO_RACE) {
-        return;
-    }
-
-    EnHorseGameCheckIngoRace* ingoRace = reinterpret_cast<EnHorseGameCheckIngoRace*>(base);
-    ingoRace->result = 1;
-}
-
 static void RegisterIngoRaceOnce() {
-    COND_ID_HOOK(OnActorInit, ACTOR_EN_HORSE_GAME_CHECK, CVAR_INGO_RACE_ONCE_VALUE == INGO_RACE_NONE,
-                 IngoRaceInstantWin);
+    COND_VB_SHOULD(VB_RACE_INGO, CVAR_INGO_RACE_ONCE_VALUE == INGO_RACE_NONE, {
+        s32 entranceIndex = va_arg(args, s32);
+        if (entranceIndex == 2 && (gSaveContext.eventInf[0] & 0x10) == 0) {
+            gPlayState->nextEntranceIndex = ENTR_LON_LON_RANCH_7;
+            gSaveContext.eventInf[0] = (gSaveContext.eventInf[0] & ~0xF) | 0x8006;
+            gPlayState->transitionType = TRANS_TYPE_FADE_WHITE;
+            gPlayState->transitionTrigger = TRANS_TRIGGER_START;
+            gSaveContext.timerState = TIMER_STATE_OFF;
+            Environment_ForcePlaySequence(NA_BGM_INGO);
+            *should = false;
+        }
+    })
 
     COND_VB_SHOULD(VB_LINK_WIN_EPONA, CVAR_INGO_RACE_ONCE_VALUE != INGO_RACE_TWICE, { *should = true; });
 }

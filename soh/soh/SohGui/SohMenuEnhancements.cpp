@@ -1632,7 +1632,8 @@ void SohMenu::AddMenuEnhancements() {
         .Options(ComboboxOptions()
                      .ComboMap(ingoRaceOptions)
                      .DefaultIndex(INGO_RACE_TWICE)
-                     .Tooltip("Number of races Link must win against Ingo to earn Epona."));
+                     .Tooltip("Number of races Link must win against Ingo to earn Epona. "
+                              "Only works if Link is riding Epona, not the other rideable horse."));
 
     path.column = SECTION_COLUMN_3;
     AddWidget(path, "Rupee Diving Game", WIDGET_SEPARATOR_TEXT);

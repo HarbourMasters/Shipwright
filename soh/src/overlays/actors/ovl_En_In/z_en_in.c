@@ -2,6 +2,7 @@
 #include "overlays/actors/ovl_En_Horse/z_en_horse.h"
 #include "objects/object_in/object_in.h"
 #include "soh/ResourceManagerHelpers.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
 
@@ -694,7 +695,9 @@ void func_80A7A568(EnIn* this, PlayState* play) {
             phi_a2 = 0;
             transitionType = TRANS_TYPE_CIRCLE(TCA_NORMAL, TCC_BLACK, TCS_FAST);
         }
-        func_80A79BAC(this, play, phi_a2, transitionType);
+        if (GameInteractor_Should(VB_RACE_INGO, true, phi_a2)) {
+            func_80A79BAC(this, play, phi_a2, transitionType);
+        }
         play->msgCtx.stateTimer = 0;
         gSaveContext.eventInf[0] = (gSaveContext.eventInf[0] & ~0x8000) | 0x8000;
         play->msgCtx.msgMode = MSGMODE_TEXT_CLOSING;
