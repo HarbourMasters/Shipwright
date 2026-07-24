@@ -3395,21 +3395,21 @@ typedef enum {
 
     // #### `result`
     // ```c
-    // false if gPlayState->interfaceCtx.unk_260 != 0 && gSaveContext.equips.buttonItems[0] == ITEM_FISHING_POLE
+    // true
     // ```
     // #### `args`
     // - none
-    VB_ALLOW_BLANK_B_FISHING_EQUIP,
+    VB_PUTAWAY_BECAUSE_DISABLED_ITEM_BUTTONS,
 
     // #### `result`
     // ```c
-    // gPlayState->interfaceCtx.unk_260 != 0 && i == 0 && player->itemAction == PLAYER_IA_FISHING_POLE
+    // true
     // ```
     // #### `args`
-    // - `s32* i`
+    // - `s32* i` (button index)
     // - `Player*`
     // - `s32* item`
-    VB_ALLOW_BLANK_B_FISHING_ITEM,
+    VB_OVERRIDE_BUTTON_ITEM_USED,
 
     // #### `result`
     // ```c
