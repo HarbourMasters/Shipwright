@@ -57,6 +57,82 @@ The engine fix is proven by **case 1 (green → magenta)** and **case 3 (nothing
 Cases 2/4/5 confirm no regressions. (The "current engine" column is the baseline captured before
 any code change — see `BASELINE.md` once recorded.)
 
+## Layered cases (`o2r/layered/`) — archive priority
+
+The five cases above use a single mod over `soh.o2r`. The issues also require correct behavior
+when **two archives** touch the same path at different priorities (libultraship #1165's design
+notes): `resource` and `resource.meta` must act as **one** override identity, resolved by archive
+priority (last loaded wins).
+
+Each set is a pair — `L#-10-…` (lower priority) and `L#-20-…` (higher priority). Drop **both**
+files of one set into `mods/`, make `20-*` the higher priority, and restart:
+
+- In the Mods menu, drag `20-*` **above** `10-*` (top of the list = highest priority, overrides
+  those below it), **or**
+- set the `gSettings.EnabledMods` CVar to `L#-10-…|L#-20-…` (last in the list = highest priority).
+
+Mods are **not** hot-reloaded — restart the game after changing which set is present or its order.
+
+| set | lower (`10-`) | higher (`20-`) | correct result | current impl |
+|---|---|---|---|---|
+| **L1**  | meta → target (magenta) | real (green) | **green** (higher real wins) | **magenta** ✗ |
+| **L1b** | meta-only (target absent) | real (green) | **green** | **green** |
+| **L2**  | real (green) | meta → target (magenta) | **magenta** (higher meta wins) | **magenta** |
+| **L3**  | real (green) | meta-only (target absent) | **nothing** (real is in a lower archive, not with the `.meta`) | **nothing** |
+
+- **L1** is the key correctness gap: `resource` and `resource.meta` currently occupy *separate*
+  override slots, so a lower-priority `.meta` still overrides a higher-priority real asset. It
+  should render green; today it renders magenta.
+- **L3** is decided (see the resolution model below): the alias's *same-path* fallback only uses a
+  real asset shipped **in the same archive as the `.meta`**. Here the winning archive has just the
+  `.meta`; the real lives in a lower archive, so there's nothing to fall back to → nothing.
+
+### L5 — the cross-game motivation (order-independent)
+
+The point of #1165: a base archive ships an alias plus its native real asset, and a **separate**
+mod supplies the shared alias target (nothing overlaps on the same key, so load order doesn't
+matter here). Toggle the target mod to switch between "mod loaded" and "vanilla boot":
+
+- `L5-base-real-meta.o2r` **+** `L5-target.o2r` in `mods/` → **magenta** (alias resolves to the
+  mod's shared target — "mod loaded").
+- `L5-base-real-meta.o2r` **alone** → **green** (target absent → falls back to the base's native
+  real asset — "vanilla boot"; same behavior as `case2`).
+
+Both states already work with the current implementation (the target lookup is a normal
+cross-archive resolve); L5 is here as the end-to-end demonstration of the feature's purpose.
+
+### L6 — "reach back" to an asset in another archive
+
+A mod ships `gShipLogoDL.meta → fancyShipDL.xml`; the alias **target** (`fancyShipDL.xml`) lives
+in a *separate* archive that may even be lower priority than the `.meta`. Three files, priority
+low → high: `L6-10-lower-real` (a real that the `.meta` overrides), `L6-20-mid-target` (the target
+asset), `L6-30-higher-meta` (the winning alias).
+
+- All three present → **magenta**. The `.meta` wins the `gShipLogoDL` identity (highest priority)
+  and resolves its target from the separate archive.
+
+This works because the **target is a different path** (`fancyShipDL.xml`), resolved by a normal
+global lookup — it's found wherever it lives, regardless of priority relative to the `.meta`
+(hence "reach back"). Contrast with L3, which is about the *same-path* fallback, not the target.
+
+## Resolution model (what a layered `.meta` does)
+
+For a requested path `X`:
+
+1. **One identity, by priority.** `X` and `X.meta` are the *same* override slot; the
+   highest-priority archive that supplies either one **wins** `X`. Lower archives are shadowed.
+2. **Winner decides.** If the winning archive supplies a real `X`, load it. If it supplies
+   `X.meta`, resolve the alias (below). (A higher-priority real therefore beats a lower `.meta` —
+   that's L1.)
+3. **Target — resolved globally.** The alias's target path is looked up like any other resource:
+   found in whatever loaded archive has it, highest priority wins, above **or below** the `.meta`
+   (L5, L6).
+4. **Same-path fallback — local only.** If the target is missing, fall back to a real `X` **only
+   if the winning archive itself also ships one** (co-located, e.g. `soh.o2r` shipping both). The
+   fallback does **not** reach down into lower-priority archives (L3 → fail). Practical rule:
+   *ship a `.meta` and its intended fallback real in the same archive.*
+5. **Nothing to load → fail** (case4).
+
 ## How to run a case
 
 1. Build/run SoH as usual (executable at `build/soh/soh.elf`, with `oot.o2r` / `soh.o2r` /
@@ -94,5 +170,6 @@ meta-alias-testing/
   regen-assets.sh      derives src/assets/ from soh's gShipLogoDL (recolor + alias)
   build-o2r.sh         assembles o2r/case*.o2r from src/assets/
   src/assets/…         generated test assets (default green, replacement magenta, the .meta)
-  o2r/case*.o2r        the five committed test archives
+  o2r/case*.o2r        the five single-archive test archives
+  o2r/layered/L*.o2r   layered (two-archive priority) test sets
 ```
