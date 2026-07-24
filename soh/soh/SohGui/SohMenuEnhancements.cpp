@@ -1691,6 +1691,11 @@ void SohMenu::AddMenuEnhancements() {
         .Options(CheckboxOptions().Tooltip("Allow fishing even when not having any item equipped on the B button, "
                                            "fixing a vanilla bug. Always enabled in randomizer."));
 
+    AddWidget(path, "Multiple Prizes", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Horseback Archery", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("HorsebackArcheryBothPrizes"))
+        .Options(CheckboxOptions().Tooltip("Link can win both Horseback Archery prizes in one attempt"));
+
     // Extra Modes
     path.sidebarName = "Extra Modes";
     AddSidebarEntry("Enhancements", path.sidebarName, 3);

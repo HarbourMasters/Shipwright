@@ -697,6 +697,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnGe1`
+    VB_END_HORSEBACK_ARCHERY,
+
+    // #### `result`
+    // ```c
     // !(this->stateFlags3 & PLAYER_STATE3_PAUSE_ACTION_FUNC)
     // ```
     // #### `args`
