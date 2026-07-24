@@ -15,10 +15,15 @@ extern "C" {
 extern PlayState* gPlayState;
 u8 Randomizer_GetSettingValue(RandomizerSettingKey);
 
-// Staff-spot (En_Okarina_Tag) idle/listening handlers, not exposed in a header.
+// Staff-spot (En_Okarina_Tag) idle/listening handlers. These decomp functions have no descriptive names
+// yet, so we reference them by their raw symbols:
+//   func_80ABEF2C - idle, waiting for the player to approach
+//   func_80ABF28C - listening for the ocarina
+//   func_80ABF0CC - waiting for the type-7 playback result
+//   func_80ABF4C8 - handling a matched song event (types 1/2/4/6)
 void func_80ABEF2C(EnOkarinaTag* tag, PlayState* play);
-void func_80ABF0CC(EnOkarinaTag* tag, PlayState* play);
 void func_80ABF28C(EnOkarinaTag* tag, PlayState* play);
+void func_80ABF0CC(EnOkarinaTag* tag, PlayState* play);
 void func_80ABF4C8(EnOkarinaTag* tag, PlayState* play);
 
 // NPC ocarina idle/listen handlers (Mido, Darunia, adult Malon), not exposed in a header.
@@ -163,17 +168,17 @@ static bool PauseSong_ActivateOkarinaTags() {
         if ((tag->actor.xzDistToPlayer < (90.0f + tag->interactRange)) &&
             (fabsf(player->actor.world.pos.y - tag->actor.world.pos.y) < 80.0f)) {
             if (tag->actionFunc == func_80ABEF2C && tag->ocarinaSong == songIndex) {
-                func_80ABF0CC(tag, gPlayState);
+                func_80ABF0CC(tag, gPlayState); // waiting for the playback result
                 matched = true;
-            } else if (tag->actionFunc == func_80ABF28C) {
+            } else if (tag->actionFunc == func_80ABF28C) { // listening for the ocarina
                 // Type 1/6 react to Zelda's Lullaby, type 2 to Song of Storms, type 4 to Song of Time.
                 bool songMatchesType = (((tag->type == 1) || (tag->type == 6)) && (song == OCARINA_SONG_LULLABY)) ||
                                        ((tag->type == 2) && (song == OCARINA_SONG_STORMS)) ||
                                        ((tag->type == 4) && (song == OCARINA_SONG_TIME));
                 if (songMatchesType) {
-                    // Like the type-7 spots, run the listening handler now while MODE_03 is set so it
-                    // fires this frame (its actionFunc is func_80ABF28C, so it consumes it).
-                    func_80ABF4C8(tag, gPlayState);
+                    // Like the type-7 spots, run the listening handler now while MODE_03 is set so it fires
+                    // this frame (its actionFunc is the ocarina-listening state, so it consumes it).
+                    func_80ABF4C8(tag, gPlayState); // handle the matched song event
                     matched = true;
                 }
             }
