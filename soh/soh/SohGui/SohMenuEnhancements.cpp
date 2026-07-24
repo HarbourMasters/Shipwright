@@ -119,6 +119,12 @@ static const std::map<int32_t, const char*> zFightingOptions = {
     { ZFIGHT_FIX_NO_VANISH, "No Vanish" },
 };
 
+static const std::map<int32_t, const char*> teleportTrapModes = {
+    { TELEPORT_TRAP_OFF, "Off" },
+    { TELEPORT_TRAP_SIMPLE, "Simple" },
+    { TELEPORT_TRAP_ADVANCED, "Advanced" },
+};
+
 static const std::map<int32_t, const char*> swordToggleModes = {
     { SWORD_TOGGLE_NONE, "None" },
     { SWORD_TOGGLE_CHILD, "Child Toggle" },
@@ -1755,10 +1761,16 @@ void SohMenu::AddMenuEnhancements() {
         .CVar(CVAR_ENHANCEMENT("ExtraTraps.Kill"))
         .PreFunc(
             [](WidgetInfo& info) { info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0; });
-    AddWidget(path, "Teleport Traps", WIDGET_CVAR_CHECKBOX)
+    AddWidget(path, "Teleport Traps", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_ENHANCEMENT("ExtraTraps.Teleport"))
         .PreFunc(
-            [](WidgetInfo& info) { info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0; });
+            [](WidgetInfo& info) { info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0; })
+        .Options(ComboboxOptions()
+                     .ComboMap(teleportTrapModes)
+                     .DefaultIndex(TELEPORT_TRAP_OFF)
+                     .Tooltip("Where a Teleport Trap can send you. Off keeps them out of the trap pool.\n\n"
+                              "Simple: Link's House and the six warp song pads.\n"
+                              "Advanced: The same pool the randomizer uses when it shuffles spawns and warp songs."));
 
     // Cheats
     path.sidebarName = "Cheats";

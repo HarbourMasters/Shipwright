@@ -126,4 +126,10 @@ typedef enum {
     RANDOMIZE_ON_FILE_LOAD_SEEDED,
 } RandomizeOnMode;
 
+typedef enum {
+    TELEPORT_TRAP_OFF,
+    TELEPORT_TRAP_SIMPLE,
+    TELEPORT_TRAP_ADVANCED,
+} TeleportTrapMode;
+
 #endif
