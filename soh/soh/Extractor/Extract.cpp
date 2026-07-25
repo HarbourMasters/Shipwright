@@ -646,7 +646,6 @@ bool Extractor::CallTorch(std::string installPath, std::string exportdir, std::a
     char portVersion[18]; // 5 digits for int16_max (x3) + separators + terminator
     snprintf(portVersion, 18, "%d.%d.%d", gBuildVersionMajor, gBuildVersionMinor, gBuildVersionPatch);
 
-    const char* archiveName = IsMasterQuest() ? "oot-mq.o2r" : "oot.o2r";
     std::string romPath = std::filesystem::absolute(mCurrentRomPath).string();
     std::string srcDir = std::filesystem::absolute(installPath).string() + "/assets";
     exportdir = std::filesystem::absolute(exportdir).string();
@@ -656,7 +655,9 @@ bool Extractor::CallTorch(std::string installPath, std::string exportdir, std::a
     *totalExtract = SohTorch::CountAssetFiles(srcDir + "/" + GetTorchVersionDir());
     *extractCount = 0;
 
-    bool success = SohTorch::Extract(romPath, srcDir, tempdir, portVersion, archiveName, extractCount);
+    // config.yml decides whether this is oot.o2r or oot-mq.o2r.
+    std::string archiveName = SohTorch::Extract(romPath, srcDir, tempdir, portVersion, extractCount);
+    bool success = !archiveName.empty();
 
     std::error_code ec;
     if (success) {

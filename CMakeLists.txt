@@ -242,32 +242,42 @@ install(DIRECTORY "${CMAKE_SOURCE_DIR}/soh/assets/extractor/" DESTINATION ./asse
 install(DIRECTORY "${CMAKE_SOURCE_DIR}/soh/assets/xml/" DESTINATION ./assets/xml COMPONENT ship)
 endif()
 
-find_package(Python3 COMPONENTS Interpreter)
+# Build-time ROM extraction. soh links torch as a static library, which compiles out torch's
+# own CLI, so this supplies an entry point around the same code the game runs.
+add_executable(soh-torch
+    ${CMAKE_CURRENT_SOURCE_DIR}/tools/torch-cli/main.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/soh/soh/Extractor/TorchExtract.cpp
+)
+target_include_directories(soh-torch PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/soh/soh/Extractor)
+target_link_libraries(soh-torch PRIVATE torch)
 
-# Target to generate OTRs
+# Target to generate OTRs. SOH_ROM_PATH takes roms and/or directories of roms; torch names each
+# archive (oot.o2r or oot-mq.o2r) from its hash, so a vanilla and a master quest rom produce both
+# in one run. soh.o2r comes from GenerateSohOtr, chained below.
+set(SOH_ROM_PATH "${CMAKE_SOURCE_DIR}/roms" CACHE STRING "Roms, or directories of roms, to extract")
 add_custom_target(
     ExtractAssets
-    COMMAND ${CMAKE_COMMAND} -E rm -f oot.o2r oot-mq.o2r soh.o2r
-
-    # copy LUS default shaders into assets/custom
-    COMMAND ${CMAKE_COMMAND} -E rm -r -f ${CMAKE_CURRENT_SOURCE_DIR}/soh/assets/custom/shaders/
-    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/libultraship/src/fast/shaders/ ${CMAKE_CURRENT_SOURCE_DIR}/soh/assets/custom/shaders/
-
-    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/OTRExporter/extract_assets.py -z "$<TARGET_FILE:ZAPD>" --non-interactive --xml-root assets/xml --custom-otr-file soh.o2r "--custom-assets-path" ${CMAKE_CURRENT_SOURCE_DIR}/soh/assets/custom --port-ver "${CMAKE_PROJECT_VERSION}"
-    COMMAND ${CMAKE_COMMAND} -DSYSTEM_NAME=${CMAKE_SYSTEM_NAME} -DTARGET_DIR="$<TARGET_FILE_DIR:ZAPD>" -DSOURCE_DIR=${CMAKE_CURRENT_SOURCE_DIR} -DBINARY_DIR=${CMAKE_BINARY_DIR} -P ${CMAKE_CURRENT_SOURCE_DIR}/copy-existing-otrs.cmake
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/soh
+    COMMAND ${CMAKE_COMMAND} -E rm -f ${CMAKE_BINARY_DIR}/soh/oot.o2r ${CMAKE_BINARY_DIR}/soh/oot-mq.o2r
+    COMMAND $<TARGET_FILE:soh-torch>
+            --src ${CMAKE_CURRENT_SOURCE_DIR}/soh/assets/yml
+            --dest ${CMAKE_BINARY_DIR}/soh
+            --version ${CMAKE_PROJECT_VERSION}
+            ${SOH_ROM_PATH}
+    # torch caches extraction state next to the archive; drop it so the game's directory stays clean
+    COMMAND ${CMAKE_COMMAND} -E rm -f ${CMAKE_BINARY_DIR}/soh/torch.hash.yml
     COMMENT "Running asset extraction..."
-    DEPENDS ZAPD
-    BYPRODUCTS oot.o2r ${CMAKE_SOURCE_DIR}/oot.o2r oot-mq.o2r ${CMAKE_SOURCE_DIR}/oot-mq.o2r ${CMAKE_SOURCE_DIR}/soh.o2r
+    DEPENDS soh-torch
+    BYPRODUCTS ${CMAKE_BINARY_DIR}/soh/oot.o2r ${CMAKE_BINARY_DIR}/soh/oot-mq.o2r
 )
 
-# Target to generate headers
+# Target to generate headers. Torch has no OoT header exporter yet -- every REGISTER in
+# src/factories/oot/ is REGISTER(Binary, ...) -- and it emits no `#define d<sym>` line, which
+# soh source references ~24k times. Kept so the failure explains itself.
 add_custom_target(
     ExtractAssetHeaders
-    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/OTRExporter/extract_assets.py -z "$<TARGET_FILE:ZAPD>" --non-interactive --xml-root assets/xml --gen-headers
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/soh
-    COMMENT "Generating asset headers..."
-    DEPENDS ZAPD
+    COMMAND ${CMAKE_COMMAND} -E echo "ExtractAssetHeaders is currently unavailable: torch does not emit OoT asset headers yet."
+    COMMAND ${CMAKE_COMMAND} -E echo "The checked-in headers under soh/assets are unaffected. See docs/BUILDING.md."
+    COMMAND ${CMAKE_COMMAND} -E false
 )
 
 # TEMPORARY (Torch migration): soh.o2r is copied from prebuilt/, not generated.
@@ -313,10 +323,12 @@ add_custom_target(
     GenerateSohOtr
     COMMAND ${CMAKE_COMMAND} -E copy_if_different "${SOH_PREBUILT_O2R}" ${CMAKE_CURRENT_SOURCE_DIR}/soh.o2r
     COMMAND ${CMAKE_COMMAND} -E copy_if_different "${SOH_PREBUILT_O2R}" ${CMAKE_BINARY_DIR}/soh/soh.o2r
-    # No BYPRODUCTS: ExtractAssets already claims ${CMAKE_SOURCE_DIR}/soh.o2r as one of its
-    # own (see above), and two rules generating the same path is a hard ninja error.
     COMMENT "Copying prebuilt soh.o2r (TEMPORARY -- see prebuilt/README.md)..."
+    BYPRODUCTS ${CMAKE_SOURCE_DIR}/soh.o2r ${CMAKE_BINARY_DIR}/soh/soh.o2r
 )
+
+# ExtractAssets produced soh.o2r as well as the rom archives, so keep doing that.
+add_dependencies(ExtractAssets GenerateSohOtr)
 
 if(CMAKE_SYSTEM_NAME MATCHES "Linux")
     find_package(ImageMagick COMPONENTS convert)
