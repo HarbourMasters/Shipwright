@@ -46,41 +46,55 @@ Reading the source says all six should be fine. Reading is how we got here; runn
 
 ## How the gates are actually run
 
-**Do not use `tools/test_assets.py` for these gates.** It hardcodes `TORCH` to
-`torch/build/torch`, and it copies a *filtered subset* of the yml into a scratch dir (1,320 of
-1,450 files for `pal_gc`) — which is not the invocation SoH will make. It's the right tool for
-bisecting a single failing asset, not for proving a configuration.
+**`tools/test_assets.py`, unfiltered — the same tool that produced the existing 14/14.** Using
+anything else would make the gate results not directly comparable to the baseline they're being
+measured against.
 
-Use the **full-tree + `check.sh`** path instead. It points Torch at the entire yml tree — the same
-shape as Phase 1's `srcdir = assets/` — and diffs the two archives file-by-file:
+An unfiltered run is a genuine full-tree, both-directions comparison:
 
-```sh
-OUT=$(mktemp -d)                                   # fresh every run — see below
-"$TORCH_BIN" o2r -s assets/yml -d "$OUT" -u 9.2.3 roms/<rom>.z64
-cp "$OUT/oot.o2r" o2r/torch.o2r
-cp "o2r/<rom>.o2r" o2r/reference.o2r
-./check.sh                                          # missing / extra / mismatched, all three
+- `list_assets` with no `--category/--file/--type` returns **every** key in
+  `manifests/<version>.json` — all 35,386 for `pal_gc`.
+- `collect_yaml_files` reverse-maps those asset paths to yml files (1,320), then `setup_scratch`'s
+  `copy_yaml_with_externals` recursion follows `external_files:` and pulls in the remaining 130 —
+  **all 1,450 land in the scratch dir.** Verified by replaying the logic: `copied == on-disk`, zero
+  yml files omitted.
+- It hashes what Torch produced and diffs it against the manifest in *both* directions —
+  `not generated` (in the reference, missing from ours) and `not in reference` (extras, computed
+  over the whole zip, not just the filtered set).
+- The destdir is a fresh `mkdtemp` per run, which matters: `Process()` writes
+  `destdir/torch.hash.yml` and reads it back next run to skip unchanged files. Reuse a destdir and
+  the second run silently produces a partial archive. (Same constraint that forces Phase 3's
+  `Mkdtemp()`.)
+
+> The `Copying 1320 YAMLs to scratch dir` line in the logs is printed *before* the `external_files`
+> recursion runs — it's the pre-recursion count, not what actually gets copied. Easy to misread as
+> a filtered subset. It isn't one.
+
+**One harness patch is needed:** the torch binary path is hardcoded in two places —
+`tools/test_assets.py:34` and `lib.sh:12`. Make both honour a `TORCH_BIN` environment override so
+Gate A's driver can be dropped in without editing files between runs:
+
+```python
+TORCH = os.environ.get("TORCH_BIN") or os.path.join(SOH_DIR, "torch", "build", "torch")
 ```
 
-`check.sh` never invokes Torch, so it takes any binary — Gate A's driver drops straight in with no
-harness patching.
-
-> **The fresh destdir is mandatory, not hygiene.** `Process()` writes `destdir/torch.hash.yml` and
-> reads it back on the next run to skip unchanged files. Reuse a destdir and the second run
-> silently produces a partial archive. (This is the same constraint that forces Phase 3's
-> `Mkdtemp()`.)
+`./check.sh` stays as the secondary whole-archive check — it compares two extracted `.o2r`
+directly, so it's the tool to reach for if a gate fails and you want the raw file-list diff rather
+than a per-asset table.
 
 ### New: `tools/matrix.sh`
 
-One script, used by every gate:
+There's no 19-ROM loop script today; every gate needs one. It's a thin wrapper, not new comparison
+logic:
 
 ```sh
-tools/matrix.sh <torch-bin> <label>
+TORCH_BIN=<binary> tools/matrix.sh <label>
 ```
 
-- loops all 19 ROM dumps, fresh destdir each
-- writes `logs/matrix-<label>/<rom>.log`
-- prints a 19-row PASS/FAIL table and exits non-zero on any failure
+- loops all 19 ROM dumps, mapping each to its `--rom-version`
+- calls `test_assets.py <rom> --rom-version <ver> --failures-only`
+- writes `logs/matrix-<label>/<rom>.log`, prints a 19-row PASS/FAIL table, exits non-zero on any
+  failure
 
 Cost: ~20 s per ROM (19 s of that is Torch), so **~7 min per configuration**. Four configurations
 plus preflight is well under an hour of wall-clock; the builds dominate.
@@ -92,10 +106,10 @@ plus preflight is well under an hour of wall-clock; the builds dominate.
 Before changing a single variable, re-run the *current* configuration on this machine, today:
 
 ```sh
-tools/matrix.sh torch/build/torch baseline
+TORCH_BIN=torch/build/torch tools/matrix.sh baseline
 ```
 
-Expect 19/19 `PASS: All N files match!`. Without this, a later gate failure is ambiguous between
+Expect 19/19 `0 failed, 0 not generated, 0 not in reference`. Without this, a later gate failure is ambiguous between
 "the variable broke it" and "something drifted in the environment."
 
 Also confirm the reference archives are what we think they are (the README claims this for
@@ -162,8 +176,10 @@ target_link_libraries(torchlib-driver PRIVATE torch)
 `torch` exports `src/`, `lib/`, and the yaml-cpp includes as `PUBLIC` under `USE_STANDALONE=OFF`
 (`torch/CMakeLists.txt:437-442`), and spdlog becomes `PUBLIC` too — so nothing else is needed.
 
-**`main.cpp`** — argv-compatible with `torch o2r -s S -d D -u V <rom>` so `matrix.sh` can't tell
-the two binaries apart:
+**`main.cpp`** — must be argv-compatible with `torch o2r -s S -d D -u V <rom>`, because that's
+exactly what `test_assets.py:run_torch` execs (`[TORCH, "o2r", "-s", …, "-d", …, "-u", "9.2.3",
+rom]`). Get that right and `TORCH_BIN` is the only thing that changes between the baseline and
+every gate:
 
 ```cpp
 #include <atomic>
@@ -242,7 +258,7 @@ the first person who builds SoH under WSL after this lands.
 ```sh
 cmake -S torchlib-driver -B torchlib-driver/build -GNinja -DCMAKE_BUILD_TYPE=Debug
 cmake --build torchlib-driver/build -j
-tools/matrix.sh torchlib-driver/build/torchlib-driver static-lib
+TORCH_BIN=torchlib-driver/build/torchlib-driver tools/matrix.sh static-lib
 ```
 
 **Pass:** 19/19 identical, and `phases=` matches the yml count for each version.
@@ -269,13 +285,22 @@ session hits state SoH has never exercised:
 - File-scope statics in `TextureFactory.cpp:14-15`, `CompressedTextureFactory.cpp:17-18`,
   `DisplayListFactory.cpp:82`.
 
+This is the one gate `test_assets.py` **can't** drive — it execs the binary once per ROM, so two
+extractions in one process has to come from the driver itself. Hence the `--second` flag, and a
+`--pair` mode in `matrix.sh` that invokes the driver directly and then hands each of the two
+outputs to `check.sh`:
+
 ```sh
-tools/matrix.sh --pair pal_gc_0227d7 pal_mq_f46239 <driver> reentrancy
+DEST_A=$(mktemp -d); DEST_B=$(mktemp -d)
+"$TORCH_BIN" o2r -s assets/yml -d "$DEST_A" -u 9.2.3 roms/pal_gc_0227d7.z64 \
+             --second roms/pal_mq_f46239.z64 "$DEST_B"
+# then, for each of (DEST_A, pal_gc_0227d7) and (DEST_B, pal_mq_f46239):
+cp "$DEST/oot.o2r" o2r/torch.o2r; cp "o2r/<rom>.o2r" o2r/reference.o2r; ./check.sh
 ```
 
-One process, two fresh `Companion`s, two destdirs; both archives compared against their own
-references. **Pass:** both identical — specifically, the *second* one must be identical, which is
-the whole point.
+One process, two fresh `Companion`s, two destdirs. Deliberately a vanilla ROM then an MQ one — the
+same sequence a user hits when they answer "Yes" to "extract another". **Pass:** `check.sh` prints
+`PASS: All N files match!` for both — specifically for the *second*, which is the whole point.
 
 ---
 
@@ -290,7 +315,7 @@ cmake -S torch -B torch/build-oot -GNinja -DCMAKE_BUILD_TYPE=Debug \
       -DBUILD_SM64=OFF -DBUILD_MK64=OFF -DBUILD_SF64=OFF -DBUILD_PM64=OFF \
       -DBUILD_FZERO=OFF -DBUILD_BK64=OFF -DBUILD_MARIO_ARTIST=OFF -DBUILD_NAUDIO=OFF
 cmake --build torch/build-oot -j
-tools/matrix.sh torch/build-oot/torch oot-only
+TORCH_BIN=torch/build-oot/torch tools/matrix.sh oot-only
 ```
 
 Each `BUILD_X=OFF` drops `-DX_SUPPORT` and filters `src/factories/x/*` out of the source glob
@@ -322,7 +347,7 @@ in Torch can change bytes between `-g` and `-O3`.
 ```sh
 cmake -S torch -B torch/build-release -GNinja -DCMAKE_BUILD_TYPE=Release -DPORT_VERSION_ENDIANNESS=ON
 cmake --build torch/build-release -j
-tools/matrix.sh torch/build-release/torch release
+TORCH_BIN=torch/build-release/torch tools/matrix.sh release
 ```
 
 Seven minutes to find out, versus finding out from a user whose release-build archive doesn't match
@@ -342,8 +367,9 @@ cmake -S torchlib-driver -B torchlib-driver/build-ship -GNinja -DCMAKE_BUILD_TYP
       -DBUILD_SM64=OFF -DBUILD_MK64=OFF -DBUILD_SF64=OFF -DBUILD_PM64=OFF \
       -DBUILD_FZERO=OFF -DBUILD_BK64=OFF -DBUILD_MARIO_ARTIST=OFF -DBUILD_NAUDIO=OFF
 cmake --build torchlib-driver/build-ship -j
-tools/matrix.sh torchlib-driver/build-ship/torchlib-driver shipping
-tools/matrix.sh --pair pal_gc_0227d7 pal_mq_f46239 torchlib-driver/build-ship/torchlib-driver shipping-pair
+export TORCH_BIN=torchlib-driver/build-ship/torchlib-driver
+tools/matrix.sh shipping
+tools/matrix.sh --pair pal_gc_0227d7 pal_mq_f46239 shipping-pair   # Gate A2, shipping config
 ```
 
 **When A′ is green, that flag set is the spec.** Phase 2's root-`CMakeLists.txt` block is a
@@ -416,8 +442,8 @@ Current state: `soh.o2r` at the repo root, **1,042 entries** = 1,041 files under
 | A′ | 19/19 identical, plus the pair run |
 | E | `manifests/soh_o2r.json` (1,042 entries) + input hashes + version + SHA committed |
 
-"Identical" means `check.sh` prints `PASS: All N files match!` — **0 missing, 0 extra,
-0 mismatched**, not "close enough".
+"Identical" means `test_assets.py` reports **`0 failed, 0 not generated, 0 not in reference`** —
+not "close enough". `--failures-only` keeps the logs to the point; drop it when bisecting.
 
 Write the results up as a second table in the harness README, next to the existing 14/14 one. That
 table is the evidence the Shipwright PR points at.
