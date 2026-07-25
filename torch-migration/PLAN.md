@@ -445,6 +445,9 @@ validated automatically. Needs a ROM, so self-hosted or encrypted secret.
    sawtooth**) → "Extraction Complete" → boots.
 9. **Two-ROM session** — extract vanilla, answer "Yes" to extract another, extract MQ in the same
    process. Highest-value manual test: covers re-entrancy and both output names.
+   ✅ **Passed 2026-07-25.** Both extracted, both loaded and played. Closes risk #6 in the game
+   itself, not just offline (Gate A2), and confirms `config.yml` naming produces `oot.o2r` and
+   `oot-mq.o2r` with no rename step in SoH.
 10. CLI path: `./soh <rom.z64>` → `ES_EXTRACT_ARGS`.
 11. Failure paths: non-OoT ROM and a truncated ROM → clean popup, not a hang or half-written `.o2r`.
 12. No litter: no `torch.hash.yml`, no temp dir surviving in the app directory.
