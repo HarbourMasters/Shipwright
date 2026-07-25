@@ -436,7 +436,7 @@ Current state: `soh.o2r` at the repo root, **1,042 entries** = 1,041 files under
 | Preflight | 19/19 identical with the existing baseline binary; one manifest re-derivation matches | ✅ **green** — see below |
 | D | pin SHA recorded; `git diff` vs upstream main still empty | ✅ green (trees equal) |
 | A | 19/19 identical; `phases=` matches the per-version yml count | ✅ **green** — see below |
-| A2 | both archives in a two-extraction process identical — especially the second | ⬜ |
+| A2 | both archives in a two-extraction process identical — especially the second | ✅ **green** — see below |
 | B | 19/19 identical | ⬜ |
 | C | 19/19 identical | ⬜ |
 | A′ | 19/19 identical, plus the pair run | ⬜ |
@@ -497,9 +497,10 @@ exactly what the CLI does. Confirmed rather than assumed:
   | wc -l` for all three distinct counts: `pal_gc` 1450/1450, `ntsc_u_gc` 1449/1449, `pal_gc_dbg`
   1480/1480. So Phase 3's bar is monotonic 0→100 with a denominator counted off disk, and
   `OTRGlobals.cpp:750-755` needs no change.
-- **Archive size matches the CLI build's** (33,154,599 bytes for `pal_gc`, same as
-  `o2r/generated.o2r`). It's ~343 KB larger than the OTRExporter reference — a zip-compression
-  difference, not content, which is why comparison is always file-by-file inside the archive.
+- **Archive size matches the CLI build's** (33,154,599 bytes for `pal_gc`). It's ~343 KB larger
+  than the OTRExporter reference: 76 KB of that is Torch's duplicate archive entries (see Gate A2
+  below) and the remaining ~267 KB is zip-compression difference, not content. Which is why
+  comparison is always file-by-file inside the archive.
 - The `Companion::Instance` hand-assignment, `SetVersion`, `SetPhaseCallback`, `Init(Binary)`
   sequence works from outside the library, so `TorchExtract.cpp` can be a transcription of
   `RunOnce()`.
@@ -509,6 +510,61 @@ exactly what the CLI does. Confirmed rather than assumed:
 because that `FetchContent_Declare(... OVERRIDE_FIND_PACKAGE)` is unconditional. Risk #1 is
 observed, not hypothetical. Conversely spdlog was *not* fetched (`find_package(spdlog QUIET)` found
 the distrobox's), so the second-copy ABI concern doesn't apply — only the global-logger stomping.
+
+### Gate A2 result — 2026-07-24 — ✅ green
+
+`TORCH_BIN=torchlib-driver/build/torchlib-driver tools/matrix.sh --pair pal_gc_0227d7
+pal_mq_f46239 reentrancy`. One process, vanilla then MQ, a fresh `Companion` and destdir each:
+
+| | assets | missing | extra | mismatched |
+|---|---|---|---|---|
+| `pal_gc` (first) | 35,386 / 35,386 | 0 | 0 | 0 |
+| `pal_mq` (second) | 35,352 / 35,352 | 0 | 0 | 0 |
+
+The load-bearing number is the **second** run's `phases=1450`, exactly `pal_mq`'s on-disk yml
+count. Had `gProcessedFiles` leaked across runs the second pass would have skipped files it
+believed already processed — a collapsed phase count and a truncated archive. It processed all
+1,450 and reproduced the reference exactly.
+
+**A fresh `Companion` per extraction is sufficient.** `AliasManager::Instance` not being cleared,
+`AudioManager::Instance` leaking, and the file-scope statics in `TextureFactory.cpp:14-15`,
+`CompressedTextureFactory.cpp:17-18`, `DisplayListFactory.cpp:82` are all confirmed inert for
+OoT/Binary. [`PLAN.md`](PLAN.md) risk #6 is retired offline; the in-game two-ROM session (§9 of
+the verification matrix) is now a confirmation, not a discovery.
+
+#### Found along the way: Torch writes duplicate archive entries
+
+The first attempt failed both comparisons — not on parity, but because `check.sh` never got to
+compare. `unzip` had aborted mid-extract.
+
+**Torch writes some assets more than once under the same archive path.** `pal_mq`: 35,377 physical
+zip entries for 35,352 unique names; 24 names duplicated (23 cutscenes + `link_home_room_0Back
+ground_002480`, which appears three times) = 25 redundant entries. `pal_gc`: also 24. Every copy is
+byte-identical to its siblings. All 19 OTRExporter reference archives have **zero**. Identical
+under `USE_STANDALONE` ON and OFF, so it is not a static-lib artifact — pre-existing Torch
+behavior, and Gate A's conclusions are unaffected.
+
+Zip permits this: the format is a flat sequence of member records plus a central directory, with
+the path as an ordinary string field and no uniqueness constraint. Only a reader materializing to
+a real filesystem has to reconcile them — hence `unzip` prompting `replace ...?`, reading EOF from
+a non-interactive stdin, and exiting non-zero into `set -e`.
+
+**Benign for SoH.** `O2rArchive::LoadFile` resolves via `zip_name_locate`, which returns one entry
+index, and the copies are byte-identical. `O2rArchive::Open` is the only place LUS walks entries by
+raw index, and it only feeds `Archive::IndexFile`, which does `(*mHashes)[CRC64(path)] = path` — a
+repeat insert is an idempotent overwrite. `ListFiles`/`HasFile` derive from that same map. So the
+duplicates collapse at the archive's front door: no double-loading, no double-counting, no
+duplicate list entries. Cost is 76 KB compressed on a 33 MB archive.
+
+Filed as item 5 of [HarbourMasters/Torch#233](https://github.com/HarbourMasters/Torch/issues/233#issuecomment-5076597596)
+for post-migration cleanup. **Not a blocker and not something the migration needs to fix.**
+
+The lasting lesson is about the *harness*, not Torch: a comparison keyed on archive path — which is
+both `test_assets.py` and `check.sh` — structurally cannot see duplicate entries, because they
+collapse into one key. Asset parity genuinely holds (identical unique-path sets, identical bytes at
+every path), but "19/19 identical" was never a statement about the zip container. `check.sh` now
+extracts with `unzip -o` and prints a duplicate-name count for both archives so this can't go quiet
+again.
 
 ---
 
