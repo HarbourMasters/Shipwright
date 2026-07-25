@@ -439,7 +439,7 @@ Current state: `soh.o2r` at the repo root, **1,042 entries** = 1,041 files under
 | A2 | both archives in a two-extraction process identical — especially the second | ✅ **green** — see below |
 | B | 19/19 identical | ✅ **green** — see below |
 | C | 19/19 identical | ✅ **green** — see below |
-| A′ | 19/19 identical, plus the pair run | ⬜ |
+| A′ | 19/19 identical, plus the pair run | ✅ **green** — see below |
 | E | `manifests/soh_o2r.json` (1,042 entries) + input hashes + version + SHA committed | ⬜ |
 
 "Identical" means `test_assets.py` reports **`0 failed, 0 not generated, 0 not in reference`** —
@@ -605,6 +605,40 @@ Directly relevant to [`PLAN.md`](PLAN.md) risk #5. SoH ships Release, so in-game
 the OoT-only flags cost nothing. What's still unmeasured is **ZAPD's** time on the same machine,
 so "does it regress?" remains formally open; but at ~11 s the answer is unlikely to need a
 "this takes N minutes" note in the UI.
+
+### Gate A′ result — 2026-07-24 — ✅ green
+
+The shipping configuration, all variables at once. **19/19 identical**, plus the pair run
+**PASS/PASS**. Verified as genuinely that combination, not assumed:
+
+```
+USE_STANDALONE=OFF   CMAKE_BUILD_TYPE=Release   BUILD_OOT=ON   PORT_VERSION_ENDIANNESS=ON
+BUILD_{SM64,MK64,SF64,PM64,FZERO,BK64,MARIO_ARTIST,NAUDIO}=OFF   BUILD_UI=OFF
+BUILD_STORMLIB=OFF   ROM_CRC_BSWAP=OFF
+```
+
+**That flag set is now the spec.** Phase 2's root-`CMakeLists.txt` block is a transcription of it
+and `main.cpp`'s `RunOnce` a transcription into `TorchExtract.cpp` — copy, don't re-derive.
+
+- **libgfxd is absent here too**, in the exact combination that ships: `_deps/` holds only
+  tinyxml2, yaml-cpp and zlib. The Binary export path is gfxd-free under Release as well as Debug.
+- **Archive bytes are configuration-independent.** The pair produced 33,154,599 (`pal_gc`) and
+  33,120,244 (`pal_mq`) — identical to the Debug static-lib run in Gate A2, and both runs reported
+  `phases=1450` including the second. Debug/Release and CLI/static-lib all agree.
+- **Extraction: 11.8 s mean per ROM**, matching Gate C's Release number. The static-lib wrapper
+  costs nothing.
+
+**Both Phase 2 dependency risks are now confirmed in the shipping configuration, not merely
+predicted:**
+
+- **zlib is fetched** under `USE_STANDALONE=OFF` + `BUILD_STORMLIB=OFF` despite zero `zlib.h`
+  includes in `torch/src` (risk #1).
+- **tinyxml2 is fetched** even though `BUILD_NAUDIO=OFF` removes its only Torch consumers — the
+  `FetchContent_Declare(... OVERRIDE_FIND_PACKAGE)` is unconditional, so it will hijack
+  libultraship's `find_package(tinyxml2 REQUIRED)` regardless.
+
+Neither affects archive bytes; both are link/configure concerns for Phase 2, and both are now
+observed facts rather than readings of the CMake.
 
 ---
 
