@@ -216,27 +216,6 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(torch)
 
-################################################################################
-# Sub-projects
-################################################################################
-add_subdirectory(libultraship ${CMAKE_BINARY_DIR}/libultraship)
-target_compile_options(libultraship PRIVATE "${WARNING_OVERRIDE}")
-target_compile_definitions(libultraship PUBLIC INCLUDE_MPQ_SUPPORT)
-add_subdirectory(soh)
-
-set_property(TARGET soh PROPERTY APPIMAGE_DESKTOP_FILE_TERMINAL YES)
-set_property(TARGET soh PROPERTY APPIMAGE_DESKTOP_FILE "${CMAKE_SOURCE_DIR}/scripts/linux/appimage/soh.desktop")
-set_property(TARGET soh PROPERTY APPIMAGE_ICON_FILE "${CMAKE_BINARY_DIR}/sohIcon.png")
-
-if("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
-install(FILES "${CMAKE_BINARY_DIR}/soh/soh.o2r" DESTINATION . COMPONENT ship)
-install(DIRECTORY "${CMAKE_SOURCE_DIR}/soh/assets/yml/" DESTINATION ./assets COMPONENT ship)
-endif()
-
-if ("${CMAKE_SYSTEM_NAME}" STREQUAL "Windows")
-install(DIRECTORY "${CMAKE_SOURCE_DIR}/soh/assets/yml/" DESTINATION ./assets COMPONENT ship)
-endif()
-
 # Build-time ROM extraction. soh links torch as a static library, which compiles out torch's
 # own CLI, so this supplies an entry point around the same code the game runs.
 add_executable(soh-torch
@@ -300,6 +279,35 @@ add_custom_target(
 
 # ExtractAssets produced soh.o2r as well as the rom archives, so keep doing that.
 add_dependencies(ExtractAssets GenerateSohOtr)
+
+# The asset tools only need torch, so a tools-only configure can skip libultraship and soh
+# entirely -- that is all CI needs to produce soh.o2r.
+option(SOH_TOOLS_ONLY "Configure only the asset tools, skipping libultraship and soh" OFF)
+if(SOH_TOOLS_ONLY)
+    file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/soh)
+    return()
+endif()
+
+################################################################################
+# Sub-projects
+################################################################################
+add_subdirectory(libultraship ${CMAKE_BINARY_DIR}/libultraship)
+target_compile_options(libultraship PRIVATE "${WARNING_OVERRIDE}")
+target_compile_definitions(libultraship PUBLIC INCLUDE_MPQ_SUPPORT)
+add_subdirectory(soh)
+
+set_property(TARGET soh PROPERTY APPIMAGE_DESKTOP_FILE_TERMINAL YES)
+set_property(TARGET soh PROPERTY APPIMAGE_DESKTOP_FILE "${CMAKE_SOURCE_DIR}/scripts/linux/appimage/soh.desktop")
+set_property(TARGET soh PROPERTY APPIMAGE_ICON_FILE "${CMAKE_BINARY_DIR}/sohIcon.png")
+
+if("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
+install(FILES "${CMAKE_BINARY_DIR}/soh/soh.o2r" DESTINATION . COMPONENT ship)
+install(DIRECTORY "${CMAKE_SOURCE_DIR}/soh/assets/yml/" DESTINATION ./assets COMPONENT ship)
+endif()
+
+if ("${CMAKE_SYSTEM_NAME}" STREQUAL "Windows")
+install(DIRECTORY "${CMAKE_SOURCE_DIR}/soh/assets/yml/" DESTINATION ./assets COMPONENT ship)
+endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "Linux")
     find_package(ImageMagick COMPONENTS convert)

@@ -67,6 +67,7 @@ int main(int argc, char** argv) {
         fs::copy_file(path, stage / rel, fs::copy_options::overwrite_existing);
     }
 
+    fs::create_directories(outPath.parent_path(), ec);
     fs::remove(outPath, ec);
     Companion::Pack(stage.string(), outPath.string(), ArchiveType::O2R, version);
     fs::remove_all(stage, ec);
