@@ -175,7 +175,7 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 # Set LUS vars
 ################################################################################
 
-# Enable the Gfx debugger in LUS to use libgfxd from ZAPDTR
+# Enable the Gfx debugger in LUS, which fetches its own libgfxd
 set(GFX_DEBUG_DISASSEMBLER ON)
 
 # Tell LUS we're using F3DEX_GBI_2 (in a way that doesn't break libgfxd)
@@ -222,8 +222,6 @@ FetchContent_MakeAvailable(torch)
 add_subdirectory(libultraship ${CMAKE_BINARY_DIR}/libultraship)
 target_compile_options(libultraship PRIVATE "${WARNING_OVERRIDE}")
 target_compile_definitions(libultraship PUBLIC INCLUDE_MPQ_SUPPORT)
-add_subdirectory(ZAPDTR/ZAPD ${CMAKE_BINARY_DIR}/ZAPD)
-add_subdirectory(OTRExporter)
 add_subdirectory(soh)
 
 set_property(TARGET soh PROPERTY APPIMAGE_DESKTOP_FILE_TERMINAL YES)
@@ -232,14 +230,11 @@ set_property(TARGET soh PROPERTY APPIMAGE_ICON_FILE "${CMAKE_BINARY_DIR}/sohIcon
 
 if("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
 install(FILES "${CMAKE_BINARY_DIR}/soh/soh.o2r" DESTINATION . COMPONENT ship)
-install(TARGETS ZAPD DESTINATION ./assets/extractor COMPONENT extractor)
-install(DIRECTORY "${CMAKE_SOURCE_DIR}/soh/assets/extractor/" DESTINATION ./assets COMPONENT extractor)
-install(DIRECTORY "${CMAKE_SOURCE_DIR}/soh/assets/xml/" DESTINATION ./assets/xml COMPONENT extractor)
+install(DIRECTORY "${CMAKE_SOURCE_DIR}/soh/assets/yml/" DESTINATION ./assets COMPONENT ship)
 endif()
 
 if ("${CMAKE_SYSTEM_NAME}" STREQUAL "Windows")
-install(DIRECTORY "${CMAKE_SOURCE_DIR}/soh/assets/extractor/" DESTINATION ./assets/ COMPONENT ship)
-install(DIRECTORY "${CMAKE_SOURCE_DIR}/soh/assets/xml/" DESTINATION ./assets/xml COMPONENT ship)
+install(DIRECTORY "${CMAKE_SOURCE_DIR}/soh/assets/yml/" DESTINATION ./assets COMPONENT ship)
 endif()
 
 # Build-time ROM extraction. soh links torch as a static library, which compiles out torch's
@@ -359,12 +354,9 @@ add_custom_target(CreateOSXIcons
     )
 add_dependencies(soh CreateOSXIcons)
 
-install(TARGETS ZAPD DESTINATION ${CMAKE_BINARY_DIR}/assets)
-
 set(PROGRAM_PERMISSIONS_EXECUTE OWNER_EXECUTE OWNER_WRITE OWNER_READ GROUP_EXECUTE GROUP_READ WORLD_EXECUTE WORLD_READ)
 
-install(DIRECTORY "${CMAKE_SOURCE_DIR}/soh/assets/extractor/" DESTINATION ./assets/)
-install(DIRECTORY "${CMAKE_SOURCE_DIR}/soh/assets/xml/" DESTINATION ./assets/xml)
+install(DIRECTORY "${CMAKE_SOURCE_DIR}/soh/assets/yml/" DESTINATION ./assets)
 
 # Rename the installed soh binary to drop the macos suffix
 INSTALL(CODE "FILE(RENAME \${CMAKE_INSTALL_PREFIX}/../MacOS/soh-macos \${CMAKE_INSTALL_PREFIX}/../MacOS/soh)")
