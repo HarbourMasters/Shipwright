@@ -223,10 +223,11 @@ foreach(_torch_game SM64 MK64 SF64 PM64 FZERO BK64 MARIO_ARTIST)
     set(BUILD_${_torch_game} OFF CACHE BOOL "" FORCE)
 endforeach()
 
+# Temporary fork pin for the Windows fixes in HarbourMasters/Torch#234; back to upstream once merged.
 FetchContent_Declare(
     torch
-    GIT_REPOSITORY https://github.com/HarbourMasters/Torch.git
-    GIT_TAG        4cae44160693e1beb562e39dc301bd42278be1f9
+    GIT_REPOSITORY https://github.com/briaguya0/Torch.git
+    GIT_TAG        b10d71da3712cd71e159caaf1bbf305385101870
 )
 FetchContent_MakeAvailable(torch)
 
