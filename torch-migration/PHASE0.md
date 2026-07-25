@@ -431,22 +431,55 @@ Current state: `soh.o2r` at the repo root, **1,042 entries** = 1,041 files under
 
 ## Exit criteria
 
-| Gate | Pass condition |
-|---|---|
-| Preflight | 19/19 identical with the existing baseline binary; one manifest re-derivation matches |
-| D | pin SHA recorded; `git diff` vs upstream main still empty |
-| A | 19/19 identical; `phases=` matches the per-version yml count |
-| A2 | both archives in a two-extraction process identical — especially the second |
-| B | 19/19 identical |
-| C | 19/19 identical |
-| A′ | 19/19 identical, plus the pair run |
-| E | `manifests/soh_o2r.json` (1,042 entries) + input hashes + version + SHA committed |
+| Gate | Pass condition | Status |
+|---|---|---|
+| Preflight | 19/19 identical with the existing baseline binary; one manifest re-derivation matches | ✅ **green** — see below |
+| D | pin SHA recorded; `git diff` vs upstream main still empty | ✅ green (trees equal) |
+| A | 19/19 identical; `phases=` matches the per-version yml count | ⬜ |
+| A2 | both archives in a two-extraction process identical — especially the second | ⬜ |
+| B | 19/19 identical | ⬜ |
+| C | 19/19 identical | ⬜ |
+| A′ | 19/19 identical, plus the pair run | ⬜ |
+| E | `manifests/soh_o2r.json` (1,042 entries) + input hashes + version + SHA committed | ⬜ |
 
 "Identical" means `test_assets.py` reports **`0 failed, 0 not generated, 0 not in reference`** —
 not "close enough". `--failures-only` keeps the logs to the point; drop it when bisecting.
 
 Write the results up as a second table in the harness README, next to the existing 14/14 one. That
 table is the evidence the Shipwright PR points at.
+
+### Preflight result — 2026-07-24
+
+`TORCH_BIN=torch/build/torch tools/matrix.sh baseline`, harness `phase0-gates` off
+`bump-torch-9422bf4`. **19 passed, 0 failed, of 19 ROM dumps**, every one
+`0 failed, 0 not generated, 0 not in reference`.
+
+| Version | Dumps | Assets |
+|---|---|---:|
+| `ntsc_1-0` | `ntsc_j_1-0_c892bb`, `ntsc_u_1-0_ad69c9` | 38,390 |
+| `ntsc_1-1` | `ntsc_j_1-1_dbfc81`, `ntsc_u_1-1_d3ecb2` | 38,526 |
+| `ntsc_1-2` | `ntsc_j_1-2_fa5f59`, `ntsc_u_1-2_41b3bd` | 39,032 |
+| `ntsc_j_gc` | `ntsc_j_gc_0769c8` | 39,064 |
+| `ntsc_j_gc_collection` | `ntsc_j_gc_collection_2ce2d1` | 39,066 |
+| `ntsc_j_mq` | `ntsc_j_mq_dd14e1` | 39,026 |
+| `ntsc_u_gc` | `ntsc_u_gc_b82710` | 39,066 |
+| `ntsc_u_mq` | `ntsc_u_mq_8b5d13` | 39,029 |
+| `pal_1-0` | `pal_1-0_328a1f` | 35,362 |
+| `pal_1-1` | `pal_1-1_cfbb98` | 35,362 |
+| `pal_gc` | `pal_gc_0227d7` | 35,386 |
+| `pal_gc_dbg` | `pal_gc_dbg_cee6bc` | 35,646 |
+| `pal_mq` | `pal_mq_f46239` | 35,352 |
+| `pal_mq_dbg` | `pal_mq_dbg_079b85`, `_50bebe`, `_cfecfd` | 35,612 |
+
+Counts match the harness README's 14-target table exactly. The **19**-dump matrix adds something
+the 14-target one never showed: the duplicate dumps agree with each other — both 1.0 dumps produce
+the same 38,390 assets against the same manifest, and all three `pal_mq_dbg` dumps produce the same
+35,612. Since `PLAN.md`'s MQ handling keys off `IsMasterQuest()` rather than the dump, that's worth
+having on record.
+
+Reference archives spot-checked as well — `manifest.sh` re-derivation of
+`o2r/ntsc_u_gc_b82710.o2r` (39,066 entries) and `o2r/pal_mq_dbg_079b85.o2r` (35,612) reproduces the
+committed manifests byte-for-byte. The baseline the gates measure against hasn't drifted.
 
 ---
 
