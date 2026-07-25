@@ -437,8 +437,8 @@ Current state: `soh.o2r` at the repo root, **1,042 entries** = 1,041 files under
 | D | pin SHA recorded; `git diff` vs upstream main still empty | ✅ green (trees equal) |
 | A | 19/19 identical; `phases=` matches the per-version yml count | ✅ **green** — see below |
 | A2 | both archives in a two-extraction process identical — especially the second | ✅ **green** — see below |
-| B | 19/19 identical | ⬜ |
-| C | 19/19 identical | ⬜ |
+| B | 19/19 identical | ✅ **green** — see below |
+| C | 19/19 identical | ✅ **green** — see below |
 | A′ | 19/19 identical, plus the pair run | ⬜ |
 | E | `manifests/soh_o2r.json` (1,042 entries) + input hashes + version + SHA committed | ⬜ |
 
@@ -565,6 +565,46 @@ collapse into one key. Asset parity genuinely holds (identical unique-path sets,
 every path), but "19/19 identical" was never a statement about the zip container. `check.sh` now
 extracts with `unzip -o` and prints a duplicate-name count for both archives so this can't go quiet
 again.
+
+### Gates B and C result — 2026-07-24 — ✅ both green
+
+Run back to back; builds in the `soh` distrobox, matrices on the host. **19/19 each**, every dump
+`0 failed, 0 not generated, 0 not in reference`, asset counts identical to the preflight table.
+
+The `option()` defaults matter for the claim that each gate moves exactly one variable:
+`BUILD_UI`, `BUILD_STORMLIB` and `ROM_CRC_BSWAP` all default `OFF` and so already match the
+baseline cache; only `PORT_VERSION_ENDIANNESS` (default `OFF`) has to be passed explicitly. So
+Gate B differs from the preflight baseline in the eight `BUILD_<game>` flags and nothing else, and
+Gate C in `CMAKE_BUILD_TYPE` and nothing else.
+
+**Gate B — OoT-only.** No shared path is touched by dropping the other eight games. In particular
+`BUILD_BK64=OFF` removing `BK64::TrySynthesizeRomConfig` changes nothing for our 19 dumps, all of
+which are in `config.yml` — but it does mean an *unknown* dump behaves differently, which is why
+Phase 3 must stat the output rather than trust the run.
+
+**Gate C — Release.** No UB, uninitialised read, or evaluation-order dependence in Torch changes
+bytes between `-g` and `-O3`. This is the gate that wasn't in `PLAN.md`, and it was worth adding:
+every prior parity measurement, including the harness's original 14/14, was a `Debug` measurement,
+while CI and every release build `-O3`.
+
+Builds were verified real rather than assumed — the three binaries are distinct, freshly
+timestamped, and sized as expected (baseline Debug all-games 125 MB, OoT-only Debug 49 MB,
+Release 7.2 MB). They configure fast because Fedora puts `/usr/lib64/ccache` on `PATH`; ccache
+emits identical objects, so this doesn't weaken the result.
+
+#### Bonus: extraction wall-clock, from Torch's own `Took NNNNms`
+
+| Build | Mean per ROM | vs baseline |
+|---|---|---|
+| baseline — Debug, all games | 26.7 s | — |
+| Gate B — Debug, OoT-only | 26.2 s | unchanged |
+| Gate C — **Release** | **11.4 s** | **2.3× faster** |
+
+Directly relevant to [`PLAN.md`](PLAN.md) risk #5. SoH ships Release, so in-game extraction is a
+~11 s operation on this machine, not the ~27 s every Debug measurement so far has implied — and
+the OoT-only flags cost nothing. What's still unmeasured is **ZAPD's** time on the same machine,
+so "does it regress?" remains formally open; but at ~11 s the answer is unlikely to need a
+"this takes N minutes" note in the UI.
 
 ---
 
