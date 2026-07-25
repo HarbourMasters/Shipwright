@@ -67,35 +67,52 @@ that header regeneration is temporarily unavailable; file the Torch PR in parall
 
 ## Phase 0 — Verification gates (no Shipwright changes)
 
-All run in `zapd-to-torch-test-harness` against the committed `manifests/*.json`.
+> **Detail: [`PHASE0.md`](PHASE0.md)** — driver source, exact commands, cost, exit criteria, and
+> what Phase 0 deliberately doesn't cover.
 
-**Gate A — `USE_STANDALONE=OFF` is byte-identical.**
-The static-lib build has no CLI, so add a throwaway driver *in the harness*
-(`torchlib-driver/`: `add_subdirectory(../torch)` with `USE_STANDALONE=OFF`, ~40-line `main.cpp`
-constructing `Companion` and calling `Init(ExportType::Binary)`). Build both ways from the same
-tree with `-DPORT_VERSION_ENDIANNESS=ON`, run all 14 versions, compare via `check.sh`.
-Expected identical: the only reachable `#ifdef STANDALONE` difference is `enums:` parsing
-(`Companion.cpp:1524`) and the Code exporter — and `assets/yml/config.yml` has no `enums:` key.
-Smoke-test `pal_gc` first.
+The harness's 14/14 was measured on **one** build of Torch (`USE_STANDALONE=ON`, all 9 games,
+`Debug`, driven by the CLI) — Shipwright will use a different build in a different way. Each gate
+below changes exactly **one** variable against that baseline, so a failure names its own cause.
+All run in `zapd-to-torch-test-harness`; nothing touches Shipwright.
 
-**Gate B — OoT-only build is byte-identical.**
-`-DBUILD_{SM64,MK64,SF64,PM64,FZERO,BK64,MARIO_ARTIST,NAUDIO}=OFF`. Run the 14-target matrix
-(`ROM_VERSION=<v> python3 tools/test_assets.py roms/<rom>.z64`). The 14/14 parity was measured
-with defaults ON, so this is a genuine change. Two real effects: `BUILD_BK64=OFF` drops the
-`BK64::TrySynthesizeRomConfig` fallback (irrelevant — all 17 hashes are in `config.yml`), and
-`BUILD_NAUDIO=OFF` removes Torch's only tinyxml2 consumers.
+**Preflight.** Re-run the existing baseline binary over all 19 ROM dumps first, so a later failure
+can't be confused with environment drift.
 
-**Gate A′ — the shipping configuration.** Re-run Gate A *with* the Gate B flags. This exact
-combination is what ships.
+**Gate A — static lib, driven the way SoH will drive it.** `USE_STANDALONE=OFF` plus a
+`torchlib-driver/` in the harness that executes the exact `Companion` sequence Phase 3 will use
+(assign `Companion::Instance`, `SetVersion`, `SetPhaseCallback`, `Init(Binary)`, try/catch, stat
+the output) — so it's a dry run of `TorchExtract.cpp`, not just a link test. The real hazard:
+**libgfxd is fetched and compiled only `if(USE_STANDALONE)`**. Reading says every `gfxd_*` call is
+inside `#ifdef STANDALONE` (Code exporter + debug dump) and the Binary exporter is outside it — if
+that reading is wrong, display lists break loudly. Also confirms the phase-callback count matches
+the on-disk yml count, which is the Phase 3 progress denominator.
 
-**Gate E — `soh.o2r` baseline.** From current `develop`, build `GenerateSohOtr` and record a
-sha256 manifest of all 1,041 entries. This is the acceptance test for the new packer. All 31
-convertible PNGs are 8-bit / colour-type 6, so decode risk is low; the risk is quantisation
-(see Phase 4).
+**Gate A2 — two extractions in one process.** Free once the driver exists; retires risk #6
+(`gProcessedFiles` is never cleared, `AliasManager` isn't reset, factory-local statics) offline
+instead of by hand in the game.
 
-**Gate D — upstream pin.** Already satisfied (trees equal). Just record the SHA.
+**Gate B — OoT-only build.** `-DBUILD_{SM64,MK64,SF64,PM64,FZERO,BK64,MARIO_ARTIST,NAUDIO}=OFF`.
+Two real effects: `BUILD_BK64=OFF` drops the `BK64::TrySynthesizeRomConfig` fallback (unreachable —
+all 19 hashes are in `config.yml`), and `BUILD_NAUDIO=OFF` removes Torch's only tinyxml2 consumers
+(but not the unconditional tinyxml2 `FetchContent`).
 
-**Nothing in Shipwright changes until A, B, A′, E are green.**
+**Gate C — Release build.** The 14/14 is a `Debug` measurement; CI and releases build `-O3`. Any UB
+or unspecified evaluation order in Torch can change bytes between the two. Seven minutes to find
+out here instead of from a user.
+
+**Gate A′ — the shipping configuration.** Static lib + driver + OoT-only + Release, all at once.
+Not implied by the others — `#ifdef` interactions are combinatorial. When it's green, that flag set
+*is* the spec: Phase 2's CMake block and Phase 3's `TorchExtract.cpp` are transcriptions of it.
+
+**Gate D — upstream pin.** Already satisfied (trees equal). Record the SHA; re-diff before opening
+the PR.
+
+**Gate E — `soh.o2r` baseline.** Rebuild `GenerateSohOtr` on current `develop` **while ZAPD still
+builds** and record a sha256 manifest of all 1,042 entries (1,041 files + `portVersion`), plus the
+input hashes and version that produced it. Only 31 files hit the conversion path; the risk is
+quantisation, not decoding (see Phase 4).
+
+**Nothing in Shipwright changes until A, A2, B, C, A′, E are green.**
 
 ---
 
@@ -109,7 +126,7 @@ empty). Submoduled at **`assets/`** (top level, sibling of `soh/`) so the eventu
 **It holds yml and nothing else** — no generators, no generator inputs, no manifests:
 
 ```
-config.yml            17 ROM SHA1 → 14 version dirs (gbi: F3DEX2_OoT, sort: OFFSET,
+config.yml            19 ROM SHA1 → 14 version dirs (gbi: F3DEX2_OoT, sort: OFFSET,
                       primary_virtual_segment: 0x80, strict_declarations: true)
 <14 version dirs>/    20,353 .yml, 111 MB
 README.md             what this is; which harness commit produced the initial import
@@ -285,7 +302,7 @@ because a fresh temp destdir has no `torch.hash.yml`. **Nothing in the ImGui pro
 straight into the app dir would litter it *and* make a second in-session extraction skip files it
 thinks are unchanged.
 
-**MQ naming:** leave `config.yml` at `binary: oot.o2r` for all 17 hashes and rename on the way out
+**MQ naming:** leave `config.yml` at `binary: oot.o2r` for all 19 hashes and rename on the way out
 of the temp dir based on `IsMasterQuest()`. Torch offers no output-filename override
 (`-d` sets only the directory; you'd get a *directory* named `oot-mq.o2r`), and this keeps SoH the
 single source of truth for MQ-ness and preserves the harness's `<out>/oot.o2r` expectation.
@@ -443,7 +460,7 @@ validated automatically. Needs a ROM, so self-hosted or encrypted secret.
 
 ```
 0.  Torch PR: gate the zlib fetch, make stb/StringHelper guards unconditional  [only if they fire]
-1.  Harness: Gates A, B, A′
+1.  Harness: preflight, then Gates A, A2, B, C, A′  (see PHASE0.md)
 2.  Seed briaguya0/soh-asset-yml: one-shot conversion output (config.yml + 14 version dirs)
 3.  Gate E: soh.o2r manifest from current develop
 --- single Shipwright PR from here ---
