@@ -8,3 +8,7 @@
 [submodule "OTRExporter"]
 	path = OTRExporter
 	url = https://github.com/harbourmasters/OTRExporter
+[submodule "soh/assets/yml"]
+	path = soh/assets/yml
+	url = https://github.com/briaguya0/soh-asset-yml.git
+	branch = code

@@ -191,6 +191,32 @@ set(INCLUDE_MPQ_SUPPORT ON)
 add_compile_definitions(CONTROLLERBUTTONS_T=uint32_t)
 
 ################################################################################
+# Torch (ROM asset extraction)
+################################################################################
+find_package(ZLIB REQUIRED)
+
+include(FetchContent)
+
+set(USE_STANDALONE          OFF CACHE BOOL "" FORCE)  # static lib, no CLI
+set(PORT_VERSION_ENDIANNESS ON  CACHE BOOL "" FORCE)  # 7-byte portVersion
+set(ROM_CRC_BSWAP           OFF CACHE BOOL "" FORCE)
+set(BUILD_UI                OFF CACHE BOOL "" FORCE)  # would fetch a 2nd libultraship
+set(BUILD_STORMLIB          OFF CACHE BOOL "" FORCE)  # target name clashes with LUS's `storm`
+set(BUILD_NAUDIO            OFF CACHE BOOL "" FORCE)
+
+set(BUILD_OOT               ON  CACHE BOOL "" FORCE)
+foreach(_torch_game SM64 MK64 SF64 PM64 FZERO BK64 MARIO_ARTIST)
+    set(BUILD_${_torch_game} OFF CACHE BOOL "" FORCE)
+endforeach()
+
+FetchContent_Declare(
+    torch
+    GIT_REPOSITORY https://github.com/HarbourMasters/Torch.git
+    GIT_TAG        4cae44160693e1beb562e39dc301bd42278be1f9
+)
+FetchContent_MakeAvailable(torch)
+
+################################################################################
 # Sub-projects
 ################################################################################
 add_subdirectory(libultraship ${CMAKE_BINARY_DIR}/libultraship)
