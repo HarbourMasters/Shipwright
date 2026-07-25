@@ -197,6 +197,20 @@ find_package(ZLIB REQUIRED)
 
 include(FetchContent)
 
+# Workaround: torch declares spdlog without OVERRIDE_FIND_PACKAGE and the first declaration
+# wins, which leaves libultraship's find_package(spdlog REQUIRED) with no config to find.
+# Declaring it here first keeps that working. See HarbourMasters/Torch#233.
+find_package(spdlog QUIET)
+if(NOT spdlog_FOUND)
+    FetchContent_Declare(
+        spdlog
+        GIT_REPOSITORY https://github.com/gabime/spdlog.git
+        GIT_TAG v1.16.0
+        OVERRIDE_FIND_PACKAGE
+    )
+    FetchContent_MakeAvailable(spdlog)
+endif()
+
 set(USE_STANDALONE          OFF CACHE BOOL "" FORCE)  # static lib, no CLI
 set(PORT_VERSION_ENDIANNESS ON  CACHE BOOL "" FORCE)  # 7-byte portVersion
 set(ROM_CRC_BSWAP           OFF CACHE BOOL "" FORCE)
@@ -218,14 +232,14 @@ FetchContent_MakeAvailable(torch)
 
 # Build-time ROM extraction. soh links torch as a static library, which compiles out torch's
 # own CLI, so this supplies an entry point around the same code the game runs.
-add_executable(soh-torch
+add_executable(soh-torch EXCLUDE_FROM_ALL
     ${CMAKE_CURRENT_SOURCE_DIR}/soh/assets/tools/torch-cli/main.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/soh/soh/Extractor/TorchExtract.cpp
 )
 target_include_directories(soh-torch PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/soh/soh/Extractor)
 target_link_libraries(soh-torch PRIVATE torch)
 
-add_executable(soh-o2r-packer
+add_executable(soh-o2r-packer EXCLUDE_FROM_ALL
     ${CMAKE_CURRENT_SOURCE_DIR}/soh/assets/tools/soh-o2r-packer/main.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/soh/assets/tools/soh-o2r-packer/PngTexture.cpp
 )
