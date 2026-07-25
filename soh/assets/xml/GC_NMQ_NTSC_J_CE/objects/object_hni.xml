@@ -1,0 +1,51 @@
+<Root>
+    <File Name="object_hni" Segment="6">
+        <Skeleton Name="gHorseIngoSkel" Type="Normal" LimbType="Skin" Offset="0x4A24"/>
+
+        <Animation Name="gHorseIngoIdleAnim" Offset="0x9FC4"/>
+        <Animation Name="gHorseIngoWhinnyAnim" Offset="0xA6B4"/>
+        <Animation Name="gHorseIngoRefuseAnim" Offset="0x901C"/>
+        <Animation Name="gHorseIngoRearingAnim" Offset="0x85E0"/>
+        <Animation Name="gHorseIngoWalkingAnim" Offset="0xAF60"/>
+        <Animation Name="gHorseIngoTrottingAnim" Offset="0x7B54"/>
+        <Animation Name="gHorseIngoGallopingAnim" Offset="0x506C"/>
+        <Animation Name="gHorseIngoJumpingAnim" Offset="0x5684"/>
+        <Animation Name="gHorseIngoJumpingHighAnim" Offset="0x5E20"/>
+
+        <!-- Head -->
+        <Texture Name="gHorseIngoManeTex" OutName="horse_ingo_mane" Format="i8" Width="16" Height="16" Offset="0x740"/>
+        <Texture Name="gHorseIngoNostrilsTex" OutName="horse_ingo_nostrils" Format="rgba16" Width="16" Height="16" Offset="0x440"/>
+        <Texture Name="gHorseIngoNoseTex" OutName="horse_ingo_nose" Format="i8" Width="8" Height="8" Offset="0x400"/>
+        <Texture Name="gHorseIngoForeheadTex" OutName="horse_ingo_forehead" Format="i8" Width="8" Height="8" Offset="0x840"/>
+        <Limb Name="gHorseIngoHeadLimb" LimbType="Skin" Offset="0x4748"/>
+
+        <!-- Body -->
+        <Texture Name="gHorseIngoNeckTex" OutName="horse_ingo_neck" Format="i8" Width="16" Height="16" Offset="0x6DD0"/>
+        <Texture Name="gHorseIngoThighTex" OutName="horse_ingo_thigh" Format="i8" Width="16" Height="16" Offset="0x66D0"/>
+        <Texture Name="gHorseIngoShoulderTex" OutName="horse_ingo_shoulder" Format="i8" Width="32" Height="32" Offset="0x67D0"/>
+        <Texture Name="gHorseIngoSaddleGirthTex" OutName="horse_ingo_saddle_girth" Format="rgba16" Width="8" Height="16" Offset="0x6BD0"/>
+        <Texture Name="gHorseIngoSaddlePadTex" OutName="horse_ingo_saddle_pad" Format="rgba16" Width="8" Height="16" Offset="0x6CD0"/>
+        <Limb Name="gHorseIngoBodyLimb" LimbType="Skin" Offset="0x46C8"/>
+
+        <!-- Saddle -->
+        <Texture Name="gHorseIngoSaddleTex" OutName="horse_ingo_saddle" Format="rgba16" Width="16" Height="16" Offset="0x8C0"/>
+        <Texture Name="gHorseIngoSaddleFlapTex" OutName="horse_ingo_saddle_flap" Format="rgba16" Width="16" Height="32" Offset="0xAC0"/>
+        <Limb Name="gHorseIngoSaddleLimb" LimbType="Skin" Offset="0x4858"/>
+
+        <!-- Hooves -->
+        <Texture Name="gHorseIngoHorseshoeTex" OutName="horse_ingo_horseshoe" Format="rgba16" Width="8" Height="8" Offset="0x6C0"/>
+        <Texture Name="gHorseIngoFeatheringTex" OutName="horse_ingo_feathering" Format="rgba16" Width="8" Height="8" Offset="0x640"/>
+        <Limb Name="gHorseIngoHoof1Limb" LimbType="Skin" Offset="0x4838"/>
+        <Limb Name="gHorseIngoHoof2Limb" LimbType="Skin" Offset="0x4948"/>
+        <Limb Name="gHorseIngoHoof3Limb" LimbType="Skin" Offset="0x48C8"/>
+        <Limb Name="gHorseIngoHoof4Limb" LimbType="Skin" Offset="0x47B8"/>
+
+        <!-- Gerudo saddle -->
+        <DList Name="gHorseIngoGerudoSaddleDL" Offset="0x6530"/>
+        <Texture Name="gHorseIngoGerudoSaddleTex" OutName="horse_ingo_gerudo_saddle" Format="rgba16" Width="16" Height="16" Offset="0x5E30"/>
+        <Texture Name="gHorseIngoGerudoSaddleFlapTex" OutName="horse_ingo_gerudo_saddle_flap" Format="rgba16" Width="16" Height="16" Offset="0x6030"/>
+
+        <!-- Eye texture -->
+        <Texture Name="gHorseIngoEyeTex" OutName="horse_ingo_eye" Format="rgba16" Width="32" Height="16" Offset="0x0"/>
+    </File>
+</Root>

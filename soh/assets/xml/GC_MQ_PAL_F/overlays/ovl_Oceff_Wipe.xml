@@ -1,0 +1,10 @@
+<Root>
+    <File Name="ovl_Oceff_Wipe" BaseAddress="0x80B7F8A0" RangeStart="0x520" RangeEnd="0xD10">
+        <Texture Name="sTex" OutName="oceff" Format="i8" Width="32" Height="32" Offset="0x520"/>
+        <Array Name="sFrustumVtx" Count="40" Offset="0x920">
+            <Vtx/>
+        </Array>
+        <DList Name="sMaterialDL" Offset="0xBA0"/>
+        <DList Name="sFrustumDL" Offset="0xC28"/>
+    </File>
+</Root>

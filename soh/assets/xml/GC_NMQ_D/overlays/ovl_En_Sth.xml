@@ -1,0 +1,15 @@
+<Root>
+    <File Name="ovl_En_Sth" BaseAddress="0x80B07540" RangeStart="0xEF0" RangeEnd="0x3EC4">
+        <Texture Name="sNoseTex" OutName="nose" Format="rgba16" Width="8" Height="8" Offset="0xEF0"/>
+        <Texture Name="sHair1Tex" OutName="hair_1" Format="rgba16" Width="8" Height="16" Offset="0xF70"/>
+        <Texture Name="sEar1Tex" OutName="ear_1" Format="rgba16" Width="8" Height="8" Offset="0x1070"/>
+        <Texture Name="sEyeTex" OutName="eye" Format="rgba16" Width="32" Height="32" Offset="0x10F0"/>
+        <Texture Name="sMouthTex" OutName="mouth" Format="rgba16" Width="32" Height="16" Offset="0x18F0"/>
+        <Texture Name="sEar2Tex" OutName="ear_2" Format="rgba16" Width="8" Height="8" Offset="0x1CF0"/>
+        <Texture Name="sHair2Tex" OutName="hair_2" Format="rgba16" Width="8" Height="16" Offset="0x1D70"/>
+        <DList Name="D_80B0A050" Offset="0x2B10"/>
+        <DList Name="D_80B0A3C0" Offset="0x2E80"/>
+        <Animation Name="sChildDanceAnim" Offset="0x3620"/>
+        <Animation Name="sParentDanceAnim" Offset="0x3EB4"/>
+    </File>
+</Root>

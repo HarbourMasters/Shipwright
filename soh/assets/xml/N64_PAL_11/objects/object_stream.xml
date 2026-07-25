@@ -1,0 +1,6 @@
+<Root>
+    <File Name="object_stream" Segment="6">
+        <Texture Name="object_stream_Tex_000000" OutName="tex_00000000" Format="i4" Width="64" Height="64" Offset="0x0"/>
+        <DList Name="object_stream_DL_000950" Offset="0x950"/>
+    </File>
+</Root>

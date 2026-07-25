@@ -1,0 +1,18 @@
+<Root>
+    <File Name="object_spot01_matoyab" Segment="6">
+        <Collision Name="object_spot01_matoyab_col" Offset="0x1C58"/>
+
+        <!-- Kakariko Guard Gate -->
+        <DList Name="gKakarikoGuardGateDL" Offset="0x1CD0"/>
+        <Texture Name="gKakarikoGuardGateMetalSidebarDL" OutName="guard_gate_metal_sidebar" Format="rgba16" Width="8" Height="64" Offset="0x1DE0"/>
+        <Collision Name="gKakarikoGuardGateCol" Offset="0x1DA8"/>
+
+        <!-- Kakariko Construction Site -->
+        <DList Name="gKakarikoConstructionSiteDL" Offset="0x1228"/>
+        <Texture Name="gKakarikoConstructionSiteTLUT" OutName="construction_site_tlut" Format="rgba16" Width="16" Height="16" Offset="0x0"/>
+        <Texture Name="gKakarikoConstructionSiteBrickWithGrassTex" OutName="construction_site_brick_with_grass" Format="ci8" Width="16" Height="32" Offset="0x0208" TlutOffset="0x0"/>
+        <Texture Name="gKakarikoConstructionSiteBrickTex" OutName="construction_site_brick" Format="ci8" Width="16" Height="32" Offset="0x0408" TlutOffset="0x0"/>
+        <Texture Name="gKakarikoConstructionSitRailingTex" OutName="construction_site_railing" Format="ci8" Width="16" Height="8" Offset="0x0608" TlutOffset="0x0"/>
+        <Texture Name="gKakarikoConstructionSiteWoodTex" OutName="construction_site_wood" Format="ci8" Width="16" Height="32" Offset="0x0688" TlutOffset="0x0"/>
+    </File>
+</Root>

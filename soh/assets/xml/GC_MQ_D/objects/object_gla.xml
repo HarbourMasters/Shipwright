@@ -1,0 +1,85 @@
+<Root>
+    <File Name="object_gla" Segment="6">
+        <!-- Purple-clothed Gerudo Skeleton -->
+        <Skeleton Name="gGerudoPurpleSkel" Type="Flex" LimbType="Standard" Offset="0x8968"/>
+
+        <!-- Purple-clothed Gerudo Limbs -->
+        <Limb Name="gGerudoPurpleRootLimb" LimbType="Standard" Offset="0x8818"/>
+        <Limb Name="gGerudoPurpleTorsoLimb" LimbType="Standard" Offset="0x8824"/>
+        <Limb Name="gGerudoPurpleNeckLimb" LimbType="Standard" Offset="0x8830"/>
+        <Limb Name="gGerudoPurplePonytailLimb" LimbType="Standard" Offset="0x883C"/>
+        <Limb Name="gGerudoPurpleVeilLimb" LimbType="Standard" Offset="0x8848"/>
+        <Limb Name="gGerudoPurpleHeadLimb" LimbType="Standard" Offset="0x8854"/>
+        <Limb Name="gGerudoPurpleRightUpperArmLimb" LimbType="Standard" Offset="0x8860"/>
+        <Limb Name="gGerudoPurpleRightForearmLimb" LimbType="Standard" Offset="0x886C"/>
+        <Limb Name="gGerudoPurpleRightWristLimb" LimbType="Standard" Offset="0x8878"/>
+        <Limb Name="gGerudoPurpleRightHandLimb" LimbType="Standard" Offset="0x8884"/>
+        <Limb Name="gGerudoPurpleGlaiveLimb" LimbType="Standard" Offset="0x8890"/>
+        <Limb Name="gGerudoPurpleLeftUpperArmLimb" LimbType="Standard" Offset="0x889C"/>
+        <Limb Name="gGerudoPurpleLeftForearmLimb" LimbType="Standard" Offset="0x88A8"/>
+        <Limb Name="gGerudoPurpleLeftHandLimb" LimbType="Standard" Offset="0x88B4"/>
+        <Limb Name="gGerudoPurpleLeftThighLimb" LimbType="Standard" Offset="0x88C0"/>
+        <Limb Name="gGerudoPurpleLeftShinLimb" LimbType="Standard" Offset="0x88CC"/>
+        <Limb Name="gGerudoPurpleLeftFootLimb" LimbType="Standard" Offset="0x88D8"/>
+        <Limb Name="gGerudoPurpleRightThighLimb" LimbType="Standard" Offset="0x88E4"/>
+        <Limb Name="gGerudoPurpleRightShinLimb" LimbType="Standard" Offset="0x88F0"/>
+        <Limb Name="gGerudoPurpleRightFootLimb" LimbType="Standard" Offset="0x88FC"/>
+        <Limb Name="gGerudoPurpleWaistLimb" LimbType="Standard" Offset="0x8908"/>
+
+        <!-- Purple-clothed Gerudo Limb DisplayLists -->
+        <DList Name="gGerudoPurpleTorsoDL" Offset="0x3540"/>
+        <DList Name="gGerudoPurplePonytailDL" Offset="0x8270"/>
+        <DList Name="gGerudoPurpleVeilDL" Offset="0x81B8"/>
+        <DList Name="gGerudoPurpleHeadDL" Offset="0x8360"/>
+        <DList Name="gGerudoPurpleRightUpperArmDL" Offset="0x39E0"/>
+        <DList Name="gGerudoPurpleRightForearmDL" Offset="0x3B18"/>
+        <DList Name="gGerudoPurpleRightHandDL" Offset="0x7E60"/>
+        <DList Name="gGerudoPurpleGlaiveDL" Offset="0x7FC8"/>
+        <DList Name="gGerudoPurpleLeftUpperArmDL" Offset="0x3D18"/>
+        <DList Name="gGerudoPurpleLeftForearmDL" Offset="0x3E50"/>
+        <DList Name="gGerudoPurpleLeftHandDL" Offset="0x7CF8"/>
+        <DList Name="gGerudoPurpleLeftThighDL" Offset="0x44B8"/>
+        <DList Name="gGerudoPurpleLeftShinDL" Offset="0x45C8"/>
+        <DList Name="gGerudoPurpleLeftFootDL" Offset="0x7978"/>
+        <DList Name="gGerudoPurpleRightThighDL" Offset="0x41E8"/>
+        <DList Name="gGerudoPurpleRightShinDL" Offset="0x42F8"/>
+        <DList Name="gGerudoPurpleRightFootDL" Offset="0x7B38"/>
+        <DList Name="gGerudoPurpleWaistDL" Offset="0x4050"/>
+
+        <!-- Purple-clothed Gerudo palettes -->
+        <Texture Name="gGerudoPurple1TLUT" OutName="gerudo_purple_1_tlut" Format="rgba16" Width="16" Height="16" Offset="0x4788"/>
+        <Texture Name="gGerudoPurple2TLUT" OutName="gerudo_purple_2_tlut" Format="rgba16" Width="18" Height="12" Offset="0x4D08"/>
+
+        <!-- Purple-clothed Gerudo Displaylist textures -->
+        <Texture Name="gGerudoPurpleSkinShadowTex" OutName="gerudo_purple_skin_shadow" Format="ci8" Width="8" Height="8" Offset="0x4988" TlutOffset="0x4788"/>
+        <Texture Name="gGerudoPurpleNavelTex" OutName="gerudo_purple_navel" Format="ci8" Width="16" Height="16" Offset="0x4A08" TlutOffset="0x4788"/>
+        <Texture Name="gGerudoPurpleChestJewelTex" OutName="gerudo_purple_chest_jewel" Format="ci8" Width="16" Height="16" Offset="0x4B08" TlutOffset="0x4788"/>
+        <Texture Name="gGerudoPurpleSkinEdgeTex" OutName="gerudo_purple_skin_edge" Format="ci8" Width="8" Height="8" Offset="0x4EB8" TlutOffset="0x4D08"/>
+        <Texture Name="gGerudoPurpleEarTex" OutName="gerudo_purple_ear" Format="ci8" Width="8" Height="16" Offset="0x4EF8" TlutOffset="0x4D08"/>
+        <Texture Name="gGerudoPurpleDarkFabricTex" OutName="gerudo_purple_dark_fabric" Format="ci8" Width="8" Height="8" Offset="0x49C8" TlutOffset="0x4788"/>
+        <Texture Name="gGerudoPurpleFabricFoldTex" OutName="gerudo_purple_fabric_fold" Format="i8" Width="16" Height="16" Offset="0x4C08"/>
+        <Texture Name="gGerudoPurpleGlaiveGuard" OutName="gerudo_purple_glaive_guard" Format="i8" Width="8" Height="8" Offset="0x5378"/>
+        <Texture Name="gGerudoPurpleGlaiveBladeFabricPatternTex" OutName="gerudo_purple_fabric_pattern" Format="i8" Width="16" Height="16" Offset="0x53B8"/>
+        <Texture Name="gGerudoPurpleShoeUpperTex" OutName="gerudo_purple_shoe_upper" Format="ci8" Width="8" Height="16" Offset="0x54B8" TlutOffset="0x4D08"/>
+        <Texture Name="gGerudoPurpleGlaiveHaftShoeSoleTex" OutName="gerudo_purple_glaive_haft_shoe_upper" Format="ci8" Width="8" Height="8" Offset="0x5538" TlutOffset="0x4D08"/>
+        <Texture Name="gGerudoPurpleMetalTex" OutName="gerudo_purple_metal" Format="i8" Width="8" Height="16" Offset="0x5978"/>
+        <Texture Name="gGerudoPurpleHairTex" OutName="gerudo_purple_hair" Format="ci8" Width="16" Height="16" Offset="0x59F8" TlutOffset="0x4D08"/>
+        <Texture Name="gGerudoPurpleLipsFingersTex" OutName="gerudo_purple_lips_fingers" Format="i8" Width="16" Height="16" Offset="0x5AF8"/>
+
+        <!-- Purple-clothed Gerudo Eye Textures -->
+        <Texture Name="gGerudoPurpleEyeOpenTex" OutName="gerudo_purple_eye_open" Format="ci8" Width="32" Height="32" Offset="0x4F78" TlutOffset="0x4D08"/>
+        <Texture Name="gGerudoPurpleEyeHalfTex" OutName="gerudo_purple_eye_half" Format="ci8" Width="32" Height="32" Offset="0x5578" TlutOffset="0x4D08"/>
+        <Texture Name="gGerudoPurpleEyeClosedTex" OutName="gerudo_purple_eye_closed" Format="ci8" Width="32" Height="32" Offset="0x5BF8" TlutOffset="0x4D08"/>
+
+        <!-- Purple-clothed Gerudo Animations -->
+        <Animation Name="gGerudoPurpleUnusedHorizontalSlashAnim" Offset="0x0324"/>
+        <Animation Name="gGerudoPurpleUnusedSlashToStandingAnim" Offset="0x0780"/>
+        <Animation Name="gGerudoPurpleFallingToGroundAnim" Offset="0x11F4"/>
+        <Animation Name="gGerudoPurpleUnusedStandingToCrouchAnim" Offset="0x15D0"/>
+        <Animation Name="gGerudoPurpleUnusedCrouchingLookAroundAnim" Offset="0x1B3C"/>
+        <Animation Name="gGerudoPurpleChargingAnim" Offset="0x8D60"/>
+        <Animation Name="gGerudoPurpleLookingAboutAnim" Offset="0x98AC"/>
+        <Animation Name="gGerudoPurpleWalkingAnim" Offset="0x9ED4"/>
+
+    </File>
+</Root>

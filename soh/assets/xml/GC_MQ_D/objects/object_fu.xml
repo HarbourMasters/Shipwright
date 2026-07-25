@@ -1,0 +1,55 @@
+<Root>
+    <File Name="object_fu" Segment="6">
+        <Animation Name="gWindmillManPlayAndMoveHeadAnim" Offset="0x57C"/>
+        <Animation Name="gWindmillManPlayStillAnim" Offset="0xB04"/>
+        <DList Name="gWindmillManHornDL" Offset="0x3130"/>
+        <DList Name="gWindmillManChestAndMusicBoxPipeDL" Offset="0x3320"/>
+        <DList Name="gWindmillManHeadDL" Offset="0x36A0"/>
+        <DList Name="gWindmillManRightShoulderDL" Offset="0x3BD8"/>
+        <DList Name="gWindmillManRightArmDL" Offset="0x3D08"/>
+        <DList Name="gWindmillManRightHandAndCrankDL" Offset="0x3E38"/>
+        <DList Name="gWindmillManLeftArmAndMusicBoxDL" Offset="0x40E0"/>
+        <DList Name="gWindmillManBlueTriangleDL" Offset="0x4390"/>
+        <DList Name="gWindmillManTorsoDL" Offset="0x4460"/>
+        <DList Name="gWindmillManRightThighDL" Offset="0x4570"/>
+        <DList Name="gWindmillManRightLegDL" Offset="0x4690"/>
+        <DList Name="gWindmillManRightFootDL" Offset="0x47E0"/>
+        <DList Name="gWindmillManLeftThighDL" Offset="0x48E8"/>
+        <DList Name="gWindmillManLeftLegDL" Offset="0x4A08"/>
+        <DList Name="gWindmillManLeftFootDL" Offset="0x4B58"/>
+        <Texture Name="gWindmillManClothesTLUT" OutName="clothes_tlut" Format="rgba16" Width="16" Height="16" Offset="0x4C60"/>
+        <Texture Name="gWindmillManSkinTLUT" OutName="skin_tlut" Format="rgba16" Width="16" Height="16" Offset="0x4E60"/>
+        <Texture Name="gWindmillManPantsTex" OutName="pants" Format="ci8" Width="16" Height="16" Offset="0x5060" TlutOffset="0x4C60"/>
+        <Texture Name="gWindmillManHeadSkinTex" OutName="head_skin" Format="ci8" Width="8" Height="8" Offset="0x5160" TlutOffset="0x4E60"/>
+        <Texture Name="gWindmillManMusicBoxTex" OutName="music_box" Format="ci8" Width="32" Height="32" Offset="0x51A0" TlutOffset="0x4C60"/>
+        <Texture Name="gWindmillManFingersAndToesTex" OutName="fingers_and_toes" Format="ci8" Width="16" Height="16" Offset="0x55A0" TlutOffset="0x4E60"/>
+        <Texture Name="gWindmillManEarTex" OutName="ear" Format="ci8" Width="8" Height="8" Offset="0x56A0" TlutOffset="0x4E60"/>
+        <Texture Name="gWindmillManUpperHornAndCrankTex" OutName="upper_horn_and_crank" Format="ci8" Width="32" Height="32" Offset="0x56E0" TlutOffset="0x4C60"/>
+        <Texture Name="gWindmillManShirtTex" OutName="shirt" Format="ci8" Width="32" Height="32" Offset="0x5AE0" TlutOffset="0x4C60"/>
+        <Texture Name="gWindmillManHornAndPipeTex" OutName="horn_and_pipe" Format="ci8" Width="8" Height="8" Offset="0x5EE0" TlutOffset="0x4C60"/>
+
+        <Texture Name="gWindmillManEyeClosedTex" OutName="eye_closed" Format="ci8" Width="32" Height="32" Offset="0x5F20" TlutOffset="0x4E60"/>
+        <Texture Name="gWindmillManEyeAngryTex" OutName="eye_angry" Format="ci8" Width="32" Height="32" Offset="0x6320" TlutOffset="0x4E60"/>
+
+        <Texture Name="gWindmillManMouthOpenTex" OutName="mouth_open" Format="ci8" Width="32" Height="16" Offset="0x6720" TlutOffset="0x4E60"/>
+        <Texture Name="gWindmillManMouthAngryTex" OutName="mouth_angry" Format="ci8" Width="32" Height="16" Offset="0x6920" TlutOffset="0x4E60"/>
+
+        <Texture Name="gWindmillManHairTex" OutName="hair" Format="ci8" Width="8" Height="16" Offset="0x6B20" TlutOffset="0x4E60"/>
+        <Skeleton Name="gWindmillManSkel" Type="Flex" LimbType="Standard" Offset="0x6C90"/>
+        <Limb Name="gWindmillManTorsoLimb" LimbType="Standard" Offset="0x6BA0"/>
+        <Limb Name="gWindmillManLeftThighLimb" LimbType="Standard" Offset="0x6BAC"/>
+        <Limb Name="gWindmillManLeftLegLimb" LimbType="Standard" Offset="0x6BB8"/>
+        <Limb Name="gWindmillManLeftFootLimb" LimbType="Standard" Offset="0x6BC4"/>
+        <Limb Name="gWindmillManRightThighLimb" LimbType="Standard" Offset="0x6BD0"/>
+        <Limb Name="gWindmillManRightLegLimb" LimbType="Standard" Offset="0x6BDC"/>
+        <Limb Name="gWindmillManRightFootLimb" LimbType="Standard" Offset="0x6BE8"/>
+        <Limb Name="gWindmillManChestAndMusicBoxPipeLimb" LimbType="Standard" Offset="0x6BF4"/>
+        <Limb Name="gWindmillManLeftArmAndMusicBoxLimb" LimbType="Standard" Offset="0x6C00"/>
+        <Limb Name="gWindmillManLimb_006C0C" LimbType="Standard" Offset="0x6C0C"/> <!--A random triangle near the right side of the music box-->
+        <Limb Name="gWindmillManRightShoulderLimb" LimbType="Standard" Offset="0x6C18"/>
+        <Limb Name="gWindmillManRightArmLimb" LimbType="Standard" Offset="0x6C24"/>
+        <Limb Name="gWindmillManRightHandAndCrankLimb" LimbType="Standard" Offset="0x6C30"/>
+        <Limb Name="gWindmillManHeadLimb" LimbType="Standard" Offset="0x6C3C"/>
+        <Limb Name="gWindmillManHornLimb" LimbType="Standard" Offset="0x6C48"/>
+    </File>
+</Root>

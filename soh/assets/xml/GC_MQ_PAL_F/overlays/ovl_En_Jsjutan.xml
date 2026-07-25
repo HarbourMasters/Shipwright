@@ -1,0 +1,38 @@
+<Root>
+    <File Name="ovl_En_Jsjutan" BaseAddress="0x80A6E1D0" RangeStart="0x12C8" RangeEnd="0x4C88">
+        <!-- D_80A8AA98. Carpet texture. -->
+        <Texture Name="sCarpetTex" OutName="carpet" Format="rgba16" Width="32" Height="64" Offset="0x12C8"/>
+
+        <!-- D_80A8BA98. Carpet's shadow vertices. Same vertex type as sShadowEvenVtx. Used when gameplayFrames is odd. -->
+        <Array Name="gShadowOddVtx" Count="144" Offset="0x22C8">
+            <Vtx/>
+        </Array>
+        <!-- D_80A8C398. Carpet's shadow vertices. Same vertex type as gShadowOddVtx. Used when gameplayFrames is even. -->
+        <Array Name="sShadowEvenVtx" Count="144" Offset="0x2BC8">
+            <Vtx/>
+        </Array>
+        <!-- D_80A8CC98. Carpet vertices. Same vertex type as sCarpetEvenVtx. Used when gameplayFrames is odd. -->
+        <Array Name="sCarpetOddVtx" Count="144" Offset="0x34C8">
+            <Vtx/>
+        </Array>
+
+        <!-- D_80A8E610. Variable declared in `.bss` of EnJsjutan. Used by sShadowMaterialDL -->
+        <Symbol Name="sShadowTex" Type="u8" TypeSize="1" Count="0x800" Offset="0x4E40"/>
+
+        <!-- D_80A8D598. Draws the carpet's texture. -->
+        <DList Name="sCarpetMaterialDL" Offset="0x3DC8"/>
+        <!-- D_80A8D618. Draws the carpet's shadow texture. -->
+        <DList Name="sShadowMaterialDL" Offset="0x3E48"/>
+
+        <!-- D_80A8D688. Draws vertexs in segment 0x0C. -->
+        <DList Name="sModelDL" Offset="0x3EB8"/>
+
+        <!-- D_80A8DAB8. Carpet vertices. Same vertex type as sCarpetOddVtx. Used when gameplayFrames is even. -->
+        <Array Name="sCarpetEvenVtx" Count="144" Offset="0x42E8">
+            <Vtx/>
+        </Array>
+
+        <!-- D_80A8E400 -->
+        <Collision Name="sCol" Offset="0x4C30"/>
+    </File>
+</Root>

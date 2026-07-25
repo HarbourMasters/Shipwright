@@ -1,0 +1,7 @@
+<Root>
+    <File Name="object_gjyo_objects" Segment="6">
+        <Texture Name="gRainbowBridgeTex" OutName="rainbow_bridge" Format="rgba16" Width="32" Height="32" Offset="0xDF0"/>
+        <DList Name="gRainbowBridgeDL" Offset="0x600"/>
+        <Collision Name="gRainbowBridgeCol" Offset="0xDB8"/>
+    </File>
+</Root>

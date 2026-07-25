@@ -1,0 +1,12 @@
+<Root>
+    <File Name="object_gi_arrowcase" Segment="6">
+        <DList Name="gGiQuiver30InnerColorDL" Offset="0x08D0"/>
+        <DList Name="gGiQuiver40InnerColorDL" Offset="0x08F0"/>
+        <DList Name="gGiQuiver50InnerColorDL" Offset="0x0910"/>
+        <DList Name="gGiQuiver30OuterColorDL" Offset="0x0930"/>
+        <DList Name="gGiQuiver40OuterColorDL" Offset="0x0950"/>
+        <DList Name="gGiQuiver50OuterColorDL" Offset="0x0970"/>
+        <DList Name="gGiQuiverInnerDL" Offset="0x0990"/>
+        <DList Name="gGiQuiverOuterDL" Offset="0x0A80"/>
+    </File>
+</Root>

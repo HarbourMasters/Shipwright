@@ -1,0 +1,39 @@
+<Root>
+    <File Name="object_warp1" Segment="6">
+        <!-- Portal -->
+        <DList Name="gWarpPortalDL" Offset="0x01A0"/>
+        <Texture Name="gWarpPortalTex" OutName="warp_portal_tex" Format="i8" Width="64" Height="64" Offset="0x02C0"/>
+        <!-- Crystal -->
+        <Animation Name="gWarpCrystalAnim" Offset="0x1374"/>
+        <DList Name="gWarp1DL_001750" Offset="0x1750"/>
+        <DList Name="gWarp1DL_001828" Offset="0x1828"/>
+        <DList Name="gWarp1DL_0018B0" Offset="0x18B0"/>
+        <DList Name="gWarp1DL_001938" Offset="0x1938"/>
+        <DList Name="gWarp1DL_0019C0" Offset="0x19C0"/>
+        <DList Name="gWarp1DL_001A48" Offset="0x1A48"/>
+        <DList Name="gWarp1DL_001AD0" Offset="0x1AD0"/>
+        <Texture Name="gWarpCrystalTex" OutName="warp_crystal_tex" Format="i8" Width="64" Height="64" Offset="0x1B58"/>
+        <Limb Name="gWarpCrystalLimb_002B58" LimbType="Standard" Offset="0x2B58"/>
+        <Limb Name="gWarpCrystalLimb_002B64" LimbType="Standard" Offset="0x2B64"/>
+        <Limb Name="gWarpCrystalLimb_002B70" LimbType="Standard" Offset="0x2B70"/>
+        <Limb Name="gWarpCrystalLimb_002B7C" LimbType="Standard" Offset="0x2B7C"/>
+        <Limb Name="gWarpCrystalLimb_002B88" LimbType="Standard" Offset="0x2B88"/>
+        <Limb Name="gWarpCrystalLimb_002B94" LimbType="Standard" Offset="0x2B94"/>
+        <Limb Name="gWarpCrystalLimb_002BA0" LimbType="Standard" Offset="0x2BA0"/>
+        <Limb Name="gWarpCrystalLimb_002BAC" LimbType="Standard" Offset="0x2BAC"/>
+        <Limb Name="gWarpCrystalLimb_002BB8" LimbType="Standard" Offset="0x2BB8"/>
+        <Limb Name="gWarpCrystalLimb_002BC4" LimbType="Standard" Offset="0x2BC4"/>
+        <Limb Name="gWarpCrystalLimb_002BD0" LimbType="Standard" Offset="0x2BD0"/>
+        <Limb Name="gWarpCrystalLimb_002BDC" LimbType="Standard" Offset="0x2BDC"/>
+        <Limb Name="gWarpCrystalLimb_002BE8" LimbType="Standard" Offset="0x2BE8"/>
+        <Limb Name="gWarpCrystalLimb_002BF4" LimbType="Standard" Offset="0x2BF4"/>
+        <Limb Name="gWarpCrystalLimb_002C00" LimbType="Standard" Offset="0x2C00"/>
+        <Limb Name="gWarpCrystalLimb_002C0C" LimbType="Standard" Offset="0x2C0C"/>
+        <Limb Name="gWarpCrystalLimb_002C18" LimbType="Standard" Offset="0x2C18"/>
+        <Limb Name="gWarpCrystalLimb_002C24" LimbType="Standard" Offset="0x2C24"/>
+        <Limb Name="gWarpCrystalLimb_002C30" LimbType="Standard" Offset="0x2C30"/>
+        <Limb Name="gWarpCrystalLimb_002C3C" LimbType="Standard" Offset="0x2C3C"/>
+        <Limb Name="gWarpCrystalLimb_002C48" LimbType="Standard" Offset="0x2C48"/>
+        <Skeleton Name="gWarpCrystalSkel" Type="Normal" LimbType="Standard" Offset="0x2CA8"/>
+    </File>
+</Root>

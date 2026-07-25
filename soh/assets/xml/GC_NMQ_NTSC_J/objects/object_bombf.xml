@@ -1,0 +1,14 @@
+<Root>
+    <File Name="object_bombf" Segment="6">
+        <!-- Bomb Flower DisplayList Textures -->
+        <Texture Name="gBombFlowerLeafOutwardsTex" OutName="bomb_flower_leaf_outwards" Format="rgba16" Width="32" Height="32" Offset="0x05D8"/>
+        <Texture Name="gBombFlowerLeafUpwardsTex" OutName="bomb_flower_leaf_upwards" Format="rgba16" Width="16" Height="32" Offset="0x0DD8"/>
+        <Texture Name="gBombFlowerBombTex" OutName="bomb_flower_bomb" Format="ia16" Width="32" Height="32" Offset="0x011D8"/>
+        <Texture Name="gBombFlowerFuseTex" OutName="bomb_flower_fuse" Format="rgba16" Width="4" Height="4" Offset="0x019D8"/>
+
+        <!-- Bomb Flower DisplayLists -->
+        <DList Name="gBombFlowerLeavesDL" Offset="0x340"/>
+        <DList Name="gBombFlowerBombAndSparkDL" Offset="0x408"/>
+        <DList Name="gBombFlowerBaseLeavesDL" Offset="0x530"/>
+    </File>
+</Root>

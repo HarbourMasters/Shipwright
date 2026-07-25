@@ -1,0 +1,32 @@
+<Root>
+    <File Name="object_ddan_objects" Segment="6">
+        <!-- Dodongo's Cavern DisplayList Textures -->
+        <Texture Name="gDodongoTex_0410" OutName="tex_0410" Format="ci8" Width="32" Height="64" Offset="0x0410" TlutOffset="0x02D0"/>
+        <Texture Name="gDodongoRisingPlatformSide1Tex" OutName="rising_platform_side_1" Format="ci8" Width="32" Height="64" Offset="0x2018" TlutOffset="0x1E10"/>
+        <Texture Name="gDodongoRisingPlatformTopTex" OutName="rising_platform_top" Format="ci8" Width="32" Height="32" Offset="0x2818" TlutOffset="0x1E10"/>
+        <Texture Name="gDodongoRisingPlatformSide2Tex" OutName="rising_platform_side_2" Format="ci8" Width="32" Height="64" Offset="0x2C18" TlutOffset="0x1E10"/>
+        <Texture Name="gDodongoFallingStairsTex" OutName="falling_stairs" Format="ci8" Width="32" Height="32" Offset="0x3F18" TlutOffset="0x3D10"/>
+        <Texture Name="gDodongoDoorLeftSideTex" OutName="door_left_side" Format="rgba16" Width="32" Height="64" Offset="0x4F60"/>
+        <Texture Name="gDodongoBarsTex" OutName="door_bars" Format="rgba16" Width="32" Height="32" Offset="0x5F60"/>
+        <Texture Name="gDodongoBarsBottomTex" OutName="door_bars_bottom" Format="rgba16" Width="32" Height="32" Offset="0x6760"/>
+        <Texture Name="gDodongoTex_6F60" OutName="tex_6F60" Format="rgba16" Width="32" Height="32" Offset="0x6F60"/>
+        <Texture Name="gDodongoFallingStairsVinesTex" OutName="falling_stairs_vines" Format="rgba16" Width="32" Height="64" Offset="0x7760"/>
+        
+        <!-- Palettes -->
+        <Texture Name="gDodongo1TLUT" OutName="tlut_1" Format="rgba16" Width="160" Height="1" Offset="0x02D0"/>
+        <Texture Name="gDodongo2TLUT" OutName="tlut_2" Format="rgba16" Width="16" Height="16" Offset="0x1E10"/> <!-- Palette seems to be actually 258 colors -->
+        <Texture Name="gDodongo3TLUT" OutName="tlut_3" Format="rgba16" Width="16" Height="16" Offset="0x3D10"/> <!-- Palette seems to be actually 258 colors -->
+        
+        <!-- Dodongo's Cavern DisplayLists -->
+        <DList Name="gDodongoDoorDL" Offset="0xC0"/>
+        <DList Name="gDodongoBarsDL" Offset="0x1F0"/>
+        <DList Name="gDodongoLowerJawDL" Offset="0x1350"/>
+        <DList Name="gDodongoRisingPlatformDL" Offset="0x37B8"/>
+        <DList Name="gDodongoFallingStairsDL" Offset="0x48A8"/>
+
+        <!-- Dodongo's Cavern Collision -->
+        <Collision Name="gDodongoLowerJawCol" Offset="0x1DDC"/>
+        <Collision Name="gDodongoRisingPlatformCol" Offset="0x3CE0"/>
+        <Collision Name="gDodongoFallingStairsCol" Offset="0x4F30"/>
+    </File>
+</Root>

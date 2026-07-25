@@ -1,0 +1,37 @@
+<Root>
+    <File Name="spot09_scene" Segment="2">
+        <Texture Name="spot09_sceneTex_003460" OutName="spot09_sceneTex_003460" Format="rgba16" Width="32" Height="64" Offset="0x3460" AddedByScript="true"/>
+        <Texture Name="spot09_sceneTex_004460" OutName="spot09_sceneTex_004460" Format="rgba16" Width="64" Height="32" Offset="0x4460" AddedByScript="true"/>
+        <Texture Name="spot09_sceneTex_005460" OutName="spot09_sceneTex_005460" Format="ci4" Width="32" Height="128" Offset="0x5460" TlutOffset="0x3440" AddedByScript="true"/>
+        <Texture Name="spot09_sceneTex_005C60" OutName="spot09_sceneTex_005C60" Format="rgba16" Width="32" Height="32" Offset="0x5C60" AddedByScript="true"/>
+        <Texture Name="spot09_sceneTex_006460" OutName="spot09_sceneTex_006460" Format="rgba16" Width="32" Height="32" Offset="0x6460" AddedByScript="true"/>
+        <Texture Name="spot09_sceneTex_006C60" OutName="spot09_sceneTex_006C60" Format="i8" Width="16" Height="16" Offset="0x6C60" AddedByScript="true"/>
+        <Texture Name="spot09_sceneTex_006D60" OutName="spot09_sceneTex_006D60" Format="rgba16" Width="16" Height="32" Offset="0x6D60" AddedByScript="true"/>
+        <Texture Name="spot09_sceneTex_007160" OutName="spot09_sceneTex_007160" Format="rgba16" Width="64" Height="32" Offset="0x7160" AddedByScript="true"/>
+        <Texture Name="spot09_sceneTex_008160" OutName="spot09_sceneTex_008160" Format="rgba16" Width="64" Height="32" Offset="0x8160" AddedByScript="true"/>
+        <Texture Name="spot09_sceneTex_009160" OutName="spot09_sceneTex_009160" Format="rgba16" Width="32" Height="64" Offset="0x9160" AddedByScript="true"/>
+        <Texture Name="spot09_sceneTex_00A160" OutName="spot09_sceneTex_00A160" Format="rgba16" Width="32" Height="32" Offset="0xA160" AddedByScript="true"/>
+        <Texture Name="spot09_sceneTex_00A960" OutName="spot09_sceneTex_00A960" Format="rgba16" Width="32" Height="64" Offset="0xA960" AddedByScript="true"/>
+        <Texture Name="spot09_sceneTex_00B960" OutName="spot09_sceneTex_00B960" Format="rgba16" Width="32" Height="32" Offset="0xB960" AddedByScript="true"/>
+        <Texture Name="spot09_sceneTex_00C160" OutName="spot09_sceneTex_00C160" Format="rgba16" Width="64" Height="32" Offset="0xC160" AddedByScript="true"/>
+        <Texture Name="spot09_sceneTex_00D160" OutName="spot09_sceneTex_00D160" Format="rgba16" Width="128" Height="16" Offset="0xD160" AddedByScript="true"/>
+        <Texture Name="spot09_sceneTex_00E160" OutName="spot09_sceneTex_00E160" Format="rgba16" Width="32" Height="32" Offset="0xE160" AddedByScript="true"/>
+        <Texture Name="spot09_sceneTex_00E960" OutName="spot09_sceneTex_00E960" Format="i4" Width="64" Height="64" Offset="0xE960" AddedByScript="true"/>
+        <Texture Name="spot09_sceneTex_00F160" OutName="spot09_sceneTex_00F160" Format="i4" Width="32" Height="128" Offset="0xF160" AddedByScript="true"/>
+        <Texture Name="spot09_sceneTex_00F960" OutName="spot09_sceneTex_00F960" Format="rgba16" Width="64" Height="32" Offset="0xF960" AddedByScript="true"/>
+        <Texture Name="spot09_sceneTex_010960" OutName="spot09_sceneTex_010960" Format="rgba16" Width="32" Height="32" Offset="0x10960" AddedByScript="true"/>
+        <Texture Name="spot09_sceneTLUT_003440" OutName="spot09_sceneTLUT_003440" Format="rgba16" Width="4" Height="4" Offset="0x3440" AddedByScript="true"/>
+        <Cutscene Name="gGerudoValleyBridgeJumpFieldFortressCs" Offset="0x2AC0"/>
+        <Cutscene Name="gGerudoValleyBridgeJumpFortressToFieldCs" Offset="0x230"/>
+        <Cutscene Name="gGerudoValleyIntroCs" Offset="0x31E0"/>
+        <Path Name="spot09_scenePathList_002F58" Offset="0x2F58" NumPaths="3"/>
+
+        <Scene Name="spot09_scene" Offset="0x0"/>
+    </File>
+    <File Name="spot09_room_0" Segment="3">
+        <DList Name="gSpot09DL_007108" Offset="0x7108"/>
+        <DList Name="gSpot09DL_008780" Offset="0x8780"/>
+
+        <Room Name="spot09_room_0" Offset="0x0"/>
+    </File>
+</Root>

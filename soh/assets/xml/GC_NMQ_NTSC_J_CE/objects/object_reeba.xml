@@ -1,0 +1,27 @@
+<Root>
+    <File Name="object_reeba" Segment="6">
+        <Animation Name="object_reeba_Anim_0001E4" Offset="0x1E4"/>
+        <DList Name="object_reeba_DL_000200" Offset="0x200"/>
+        <DList Name="object_reeba_DL_0002D0" Offset="0x2D0"/>
+        <DList Name="object_reeba_DL_0002E0" Offset="0x2E0"/>
+        <DList Name="object_reeba_DL_000430" Offset="0x430"/>
+        <DList Name="object_reeba_DL_000570" Offset="0x570"/>
+        <DList Name="object_reeba_DL_000580" Offset="0x580"/>
+        <DList Name="object_reeba_DL_000760" Offset="0x760"/>
+        <DList Name="object_reeba_DL_0007F8" Offset="0x7F8"/>
+        <DList Name="object_reeba_DL_000808" Offset="0x808"/>
+        <DList Name="object_reeba_DL_0008B8" Offset="0x8B8"/>
+        <DList Name="object_reeba_DL_000950" Offset="0x950"/>
+        <DList Name="object_reeba_DL_000960" Offset="0x960"/>
+        <DList Name="object_reeba_DL_000A10" Offset="0xA10"/>
+        <DList Name="object_reeba_DL_000AB0" Offset="0xAB0"/>
+        <DList Name="object_reeba_DL_000AC0" Offset="0xAC0"/>
+        <DList Name="object_reeba_DL_000B80" Offset="0xB80"/>
+        <DList Name="object_reeba_DL_000C18" Offset="0xC18"/>
+        <DList Name="object_reeba_DL_000C28" Offset="0xC28"/>
+        <Texture Name="object_reeba_Tex_000CD8" OutName="tex_00000CD8" Format="rgba16" Width="8" Height="16" Offset="0xCD8"/>
+        <Texture Name="object_reeba_Tex_000DD8" OutName="tex_00000DD8" Format="rgba16" Width="32" Height="32" Offset="0xDD8"/>
+        <Texture Name="object_reeba_Tex_0015D8" OutName="tex_000015D8" Format="rgba16" Width="32" Height="32" Offset="0x15D8"/>
+        <Skeleton Name="object_reeba_Skel_001EE8" Type="Normal" LimbType="Standard" Offset="0x1EE8"/>
+    </File>
+</Root>

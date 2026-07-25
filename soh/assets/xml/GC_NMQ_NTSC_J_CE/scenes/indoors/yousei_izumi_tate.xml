@@ -1,0 +1,18 @@
+<Root>
+    <File Name="yousei_izumi_tate_scene" Segment="2">
+        <Texture Name="yousei_izumi_tate_sceneTex_002010" OutName="yousei_izumi_tate_sceneTex_002010" Format="ia8" Width="64" Height="32" Offset="0x2010" AddedByScript="true"/>
+        <Texture Name="yousei_izumi_tate_sceneTex_002810" OutName="yousei_izumi_tate_sceneTex_002810" Format="i8" Width="16" Height="256" Offset="0x2810" AddedByScript="true"/>
+        <Texture Name="yousei_izumi_tate_sceneTex_003810" OutName="yousei_izumi_tate_sceneTex_003810" Format="ia16" Width="128" Height="16" Offset="0x3810" AddedByScript="true"/>
+        <Texture Name="yousei_izumi_tate_sceneTex_004810" OutName="yousei_izumi_tate_sceneTex_004810" Format="i8" Width="32" Height="64" Offset="0x4810" AddedByScript="true"/>
+        <Texture Name="yousei_izumi_tate_sceneTex_005010" OutName="yousei_izumi_tate_sceneTex_005010" Format="i8" Width="32" Height="64" Offset="0x5010" AddedByScript="true"/>
+        <Texture Name="yousei_izumi_tate_sceneTex_005810" OutName="yousei_izumi_tate_sceneTex_005810" Format="rgba16" Width="32" Height="32" Offset="0x5810" AddedByScript="true"/>
+        <Texture Name="yousei_izumi_tate_sceneTex_006010" OutName="yousei_izumi_tate_sceneTex_006010" Format="i4" Width="64" Height="128" Offset="0x6010" AddedByScript="true"/>
+        <Texture Name="yousei_izumi_tate_sceneTex_007010" OutName="yousei_izumi_tate_sceneTex_007010" Format="rgba16" Width="32" Height="32" Offset="0x7010" AddedByScript="true"/>
+        <Texture Name="yousei_izumi_tate_sceneTex_007810" OutName="yousei_izumi_tate_sceneTex_007810" Format="rgba16" Width="32" Height="32" Offset="0x7810" AddedByScript="true"/>
+        <Texture Name="yousei_izumi_tate_sceneTex_008010" OutName="yousei_izumi_tate_sceneTex_008010" Format="rgba16" Width="32" Height="32" Offset="0x8010" AddedByScript="true"/>
+        <Scene Name="yousei_izumi_tate_scene" Offset="0x0"/>
+    </File>
+    <File Name="yousei_izumi_tate_room_0" Segment="3">
+        <Room Name="yousei_izumi_tate_room_0" Offset="0x0"/>
+    </File>
+</Root>

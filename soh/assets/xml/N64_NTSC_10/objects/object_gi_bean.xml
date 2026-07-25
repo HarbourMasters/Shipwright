@@ -1,0 +1,5 @@
+<Root>
+    <File Name="object_gi_bean" Segment="6">
+        <DList Name="gGiBeanDL" Offset="0x0580"/>
+    </File>
+</Root>

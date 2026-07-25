@@ -1,0 +1,16 @@
+<Root>
+    <File Name="object_masterkokirihead" Segment="6">
+        <Texture Name="object_masterkokiriheadTex_0009F0" OutName="object_masterkokiriheadTex_0009F0" Format="ci8" Width="8" Height="8" Offset="0x9F0" TlutOffset="0x0" AddedByScript="true"/>
+        <Texture Name="object_masterkokiriheadTex_000A30" OutName="object_masterkokiriheadTex_000A30" Format="ci8" Width="16" Height="16" Offset="0xA30" TlutOffset="0x0" AddedByScript="true"/>
+        <DList Name="gKokiriShopkeeperHeadDL" Offset="0x2820"/>
+        <Texture Name="gKokiriShopkeeperTLUT" OutName="tlut" Format="rgba16" Width="248" Height="1" Offset="0x0"/>
+        <Texture Name="gKokiriShopkeeperEyeHalfTex" OutName="eye_half" Format="rgba16" Width="32" Height="32" Offset="0x1F0"/>
+        <Texture Name="gKokiriShopkeeperEyeOpenTex" OutName="eye_open" Format="rgba16" Width="32" Height="32" Offset="0xB30"/>
+        <Texture Name="gKokiriShopkeeperHairTex" OutName="hair" Format="ci8" Width="16" Height="16" Offset="0x1330" TlutOffset="0x0"/>
+        <Texture Name="gKokiriShopkeeperNoseTex" OutName="nose" Format="ci8" Width="8" Height="8" Offset="0x1430" TlutOffset="0x0"/>
+        <Texture Name="gKokiriShopkeeperEarTex" OutName="ear" Format="ci8" Width="16" Height="16" Offset="0x1470" TlutOffset="0x0"/>
+        <Texture Name="gKokiriShopkeeperEyeDefaultTex" OutName="eye_default" Format="rgba16" Width="32" Height="32" Offset="0x1570"/>
+        <Texture Name="gKokiriShopkeeperHatTex" OutName="hat" Format="ci8" Width="8" Height="8" Offset="0x1D70" TlutOffset="0x0"/>
+        <Texture Name="gKokiriShopkeeperMouthAndNoseTex" OutName="mouth_and_nose" Format="ci8" Width="32" Height="32" Offset="0x1DB0" TlutOffset="0x0"/>
+    </File>
+</Root>

@@ -1,0 +1,9 @@
+<Root>
+    <File Name="market_day_scene" Segment="2">
+        <Path Name="market_day_scenePathList_000330" Offset="0x0330" NumPaths="4"/>
+        <Scene Name="market_day_scene" Offset="0x0"/>
+    </File>
+    <File Name="market_day_room_0" Segment="3">
+        <Room Name="market_day_room_0" Offset="0x0"/>
+    </File>
+</Root>

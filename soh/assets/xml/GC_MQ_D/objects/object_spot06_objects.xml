@@ -1,0 +1,24 @@
+<Root>
+    <File Name="object_spot06_objects" Segment="6">
+        <!-- Lake Hylia Low Water -->
+        <DList Name="gLakeHyliaLowWaterDL" Offset="0x0120"/>
+
+        <!-- Lake Hylia High Water -->
+        <DList Name="gLakeHyliaHighWaterDL" Offset="0x0470"/>
+        <Texture Name="gLakeHyliaWaterTex" OutName="water" Format="rgba16" Width="32" Height="32" Offset="0x25A0"/>
+
+        <!-- Lake Hylia Water Temple Gate -->
+        <DList Name="gLakeHyliaWaterTempleGateDL" Offset="0x0E10"/>
+        <Texture Name="gLakeHyliaWaterTempleGateTex" OutName="water_temple_gate" Format="rgba16" Width="16" Height="64" Offset="0x05D0"/>
+        <Collision Name="gLakeHyliaWaterTempleGateCol" Offset="0x0EE8"/>
+
+        <!-- Lake Hylia Zora Shortcut Iceblock -->
+        <DList Name="gLakeHyliaZoraShortcutIceblockDL" Offset="0x1160"/>
+        <Texture Name="gLakeHyliaZoraShortcutIceblockTex" OutName="zora_shortcut_iceblock" Format="rgba16" Width="16" Height="16" Offset="0x0F20"/>
+        <Collision Name="gLakeHyliaZoraShortcutIceblockCol" Offset="0x1238"/>
+
+        <!-- Lake Hylia Water Temple Key -->
+        <DList Name="gLakeHyliaWaterTempleKeyDL" Offset="0x2490"/>
+        <Texture Name="gLakeHyliaWaterTempleKeyTex" OutName="water_temple_key" Format="rgba16" Width="32" Height="64" Offset="0x1270"/>
+    </File>
+</Root>

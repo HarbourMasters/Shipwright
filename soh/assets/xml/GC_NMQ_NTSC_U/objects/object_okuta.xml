@@ -1,0 +1,29 @@
+<Root>
+    <File Name="object_okuta" Segment="6">
+        <!-- Octorok Animations -->
+        <Animation Name="gOctorokShootAnim" Offset="0x344"/>
+        <Animation Name="gOctorokDieAnim" Offset="0x8FC"/>
+        <Animation Name="gOctorokHideAnim" Offset="0xAC0"/>
+        <Animation Name="gOctorokFloatAnim" Offset="0xDDC"/>
+        <Animation Name="gOctorokHitAnim" Offset="0x3910"/>
+        <Animation Name="gOctorokAppearAnim" Offset="0x3C64"/>
+
+        <!-- Octorok Textures -->
+        <Texture Name="gOctorokRoughSkinTex" OutName="rough_skin" Format="rgba16" Width="16" Height="16" Offset="0x2250"/>
+        <Texture Name="gOctorokStripesTex" OutName="stripes" Format="rgba16" Width="8" Height="16" Offset="0x2450"/>
+        <Texture Name="gOctorokScalesTex" OutName="scales" Format="rgba16" Width="16" Height="16" Offset="0x2550"/>
+        <Texture Name="gOctorokSnoutConnectionTex" OutName="snout_connection" Format="rgba16" Width="8" Height="8" Offset="0x2750"/>
+        <Texture Name="gOctorokMouthTex" OutName="mouth" Format="rgba16" Width="8" Height="16" Offset="0x27D0"/>
+        <Texture Name="gOctorokArmTex" OutName="arm" Format="rgba16" Width="16" Height="32" Offset="0x28D0"/>
+        <Texture Name="gOctorokFinTex" OutName="fin" Format="rgba16" Width="16" Height="16" Offset="0x2CD0"/>
+        <Texture Name="gOctorokEyeTex" OutName="eye" Format="rgba16" Width="16" Height="16" Offset="0x2ED0"/>
+        <Texture Name="gOctorokFadeToBlackTex" OutName="fade_to_black" Format="rgba16" Width="8" Height="8" Offset="0x30D0"/>
+
+        <!-- Octorok Skeleton -->
+        <Skeleton Name="gOctorokSkel" Type="Normal" LimbType="Standard" Offset="0x3660"/>
+
+        <!-- Projectile -->
+        <Texture Name="gOctorokProjectileTex" OutName="projectile" Format="rgba16" Width="16" Height="16" Offset="0x3150"/>
+        <DList Name="gOctorokProjectileDL" Offset="0x3380"/>
+    </File>
+</Root>
