@@ -728,8 +728,7 @@ void func_80A7A848(EnIn* this, PlayState* play) {
         if ((play->msgCtx.choiceIndex == 0 && gSaveContext.rupees < 50) || play->msgCtx.choiceIndex == 1) {
             gSaveContext.eventInf[0] &= ~0xF;
             this->actionFunc = func_80A7A4C8;
-        }
-        else {
+        } else {
             if (GameInteractor_Should(VB_RACE_INGO, true, 2)) {
                 func_80A79BAC(this, play, 2, TRANS_TYPE_CIRCLE(TCA_STARBURST, TCC_BLACK, TCS_FAST));
             }
