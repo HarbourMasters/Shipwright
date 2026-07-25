@@ -594,14 +594,14 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
                         SohGui::RegisterPopup("Confirm Re-extract", msg.c_str(), "Yes", "No", [&]() {
                             extractionTask = threadPool->submit_task([&]() -> void {
                                 extract.CallTorch(installPath, Ship::Context::GetAppDirectoryPath(appShortName),
-                                                 &extractCount, &totalExtract);
+                                                  &extractCount, &totalExtract);
                                 extractCount = totalExtract = 0;
                             });
                         });
                     } else {
                         extractionTask = threadPool->submit_task([&]() -> void {
                             extract.CallTorch(installPath, Ship::Context::GetAppDirectoryPath(appShortName),
-                                             &extractCount, &totalExtract);
+                                              &extractCount, &totalExtract);
                             extractCount = totalExtract = 0;
                         });
                     }
@@ -656,7 +656,7 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
                         }
                         extractionTask = threadPool->submit_task([&]() -> void {
                             extract.CallTorch(installPath, Ship::Context::GetAppDirectoryPath(appShortName),
-                                             &extractCount, &totalExtract);
+                                              &extractCount, &totalExtract);
                             generatedIsMQ = extract.IsMasterQuest();
                             promptStep = PS_SECOND;
                             extractCount = 0;
@@ -674,7 +674,7 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
                                 } else {
                                     extractionTask = threadPool->submit_task([&]() -> void {
                                         extract.CallTorch(installPath, Ship::Context::GetAppDirectoryPath(appShortName),
-                                                         &extractCount, &totalExtract);
+                                                          &extractCount, &totalExtract);
                                         extractStep = ES_VERIFY;
                                         extractCount = 0;
                                         totalExtract = 0;
