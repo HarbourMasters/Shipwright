@@ -135,8 +135,6 @@ void SaveManager_ThreadPoolWait();
 GetItemID RetrieveGetItemIDFromItemID(ItemID itemID);
 RandomizerGet RetrieveRandomizerGetFromItemID(ItemID itemID);
 void Messagebox_ShowErrorBox(char* title, char* body);
-
-uint32_t Ship_GetInterpolationFrameCount();
 #endif
 
 #ifdef __cplusplus

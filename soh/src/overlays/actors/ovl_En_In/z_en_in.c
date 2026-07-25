@@ -729,15 +729,19 @@ void func_80A7A848(EnIn* this, PlayState* play) {
             gSaveContext.eventInf[0] &= ~0xF;
             this->actionFunc = func_80A7A4C8;
         } else {
-            func_80A79BAC(this, play, 2, TRANS_TYPE_CIRCLE(TCA_STARBURST, TCC_BLACK, TCS_FAST));
+            if (GameInteractor_Should(VB_RACE_INGO, true, 2)) {
+                func_80A79BAC(this, play, 2, TRANS_TYPE_CIRCLE(TCA_STARBURST, TCC_BLACK, TCS_FAST));
+            }
             gSaveContext.eventInf[0] = (gSaveContext.eventInf[0] & ~0xF) | 2;
             gSaveContext.eventInf[0] = (gSaveContext.eventInf[0] & ~0x8000) | 0x8000;
             play->msgCtx.stateTimer = 0;
             play->msgCtx.msgMode = MSGMODE_TEXT_CLOSING;
         }
         this->interactInfo.talkState = NPC_TALK_STATE_IDLE;
-        gSaveContext.eventInf[0] &= ~0x20;
-        gSaveContext.eventInf[0] &= ~0x40;
+        if (GameInteractor_Should(VB_RACE_INGO, true, 2)) {
+            gSaveContext.eventInf[0] &= ~0x20;
+            gSaveContext.eventInf[0] &= ~0x40;
+        }
     }
 }
 

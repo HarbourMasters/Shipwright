@@ -1699,6 +1699,9 @@ void SohMenu::AddMenuEnhancements() {
             info.options->disabledTooltip = "This setting is forcefully enabled when you are playing a Randomizer.";
         })
         .Options(CheckboxOptions().Tooltip("Dampe awards both prizes on the first race, not just the Hookshot."));
+    AddWidget(path, "Horseback Archery", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("HorsebackArcheryBothPrizes"))
+        .Options(CheckboxOptions().Tooltip("Link can win both Horseback Archery prizes in one attempt"));
 
     // Extra Modes
     path.sidebarName = "Extra Modes";
