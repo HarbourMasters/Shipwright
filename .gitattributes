@@ -1,1 +1,6 @@
 * text=auto eol=lf
+
+# TEMPORARY (Torch migration): checked-in archive. text=auto would almost certainly
+# detect this as binary anyway, but an eol conversion on a 4.4 MB zip would corrupt it
+# silently, so say so explicitly. Remove with prebuilt/ -- see prebuilt/README.md.
+prebuilt/soh.o2r binary

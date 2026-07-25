@@ -244,20 +244,52 @@ add_custom_target(
     DEPENDS ZAPD
 )
 
-# Target to generate only soh.o2r
+# TEMPORARY (Torch migration): soh.o2r is copied from prebuilt/, not generated.
+#
+# The real producer drives ZAPD via OTRExporter/extract_assets.py, and the migration deletes
+# both. Its replacement -- a small in-tree packer, Phase 4 of torch-migration/PLAN.md -- has to
+# reproduce ZAPD's texture quantisation exactly, so rather than block Phases 2/3/5 on it, the
+# archive is checked in and copied into place. See prebuilt/README.md for provenance and for how
+# to restore a real build step (which must also bring back the libultraship shader copy that the
+# copy-only version below has no use for -- the shaders are already inside the archive).
+#
+# Fail at configure time if the prebuilt archive's baked-in portVersion no longer matches the
+# project version. OTRGlobals.cpp:283 demands exact major.minor.patch equality and RunExtract
+# exit(1)s with "soh.o2r is outdated" -- an obscure symptom for what is really a stale checked-in
+# file. portVersion is 7 bytes: endianness, then u16 major/minor/patch big-endian.
+set(SOH_PREBUILT_O2R "${CMAKE_CURRENT_SOURCE_DIR}/prebuilt/soh.o2r")
+if(NOT EXISTS "${SOH_PREBUILT_O2R}")
+    message(FATAL_ERROR "Missing ${SOH_PREBUILT_O2R} -- see prebuilt/README.md")
+endif()
+file(READ "${SOH_PREBUILT_O2R}" _soh_o2r_hex HEX)
+string(FIND "${_soh_o2r_hex}" "706f727456657273696f6e" _pv_at)  # "portVersion" as hex
+if(_pv_at EQUAL -1)
+    message(FATAL_ERROR "No portVersion entry in ${SOH_PREBUILT_O2R} -- see prebuilt/README.md")
+endif()
+math(EXPR _pv_at "${_pv_at} + 22")  # skip the 11-character name
+string(SUBSTRING "${_soh_o2r_hex}" ${_pv_at} 14 _pv)
+string(SUBSTRING "${_pv}" 2 4 _pv_major)
+string(SUBSTRING "${_pv}" 6 4 _pv_minor)
+string(SUBSTRING "${_pv}" 10 4 _pv_patch)
+math(EXPR _pv_major "0x${_pv_major}")
+math(EXPR _pv_minor "0x${_pv_minor}")
+math(EXPR _pv_patch "0x${_pv_patch}")
+if(NOT "${_pv_major}.${_pv_minor}.${_pv_patch}" STREQUAL "${CMAKE_PROJECT_VERSION}")
+    message(FATAL_ERROR
+        "prebuilt/soh.o2r is stamped ${_pv_major}.${_pv_minor}.${_pv_patch} but this build is "
+        "${CMAKE_PROJECT_VERSION}. The game would reject it at startup (\"soh.o2r is outdated\"). "
+        "Regenerate it -- see prebuilt/README.md.")
+endif()
+unset(_soh_o2r_hex)
+
+# Target to place soh.o2r (copy of the prebuilt archive)
 add_custom_target(
     GenerateSohOtr
-    COMMAND ${CMAKE_COMMAND} -E rm -f soh.o2r
-
-    # copy LUS default shaders into assets/custom
-    COMMAND ${CMAKE_COMMAND} -E rm -r -f ${CMAKE_CURRENT_SOURCE_DIR}/soh/assets/custom/shaders/
-    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/libultraship/src/fast/shaders/ ${CMAKE_CURRENT_SOURCE_DIR}/soh/assets/custom/shaders/
-
-    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/OTRExporter/extract_assets.py -z "$<TARGET_FILE:ZAPD>" --norom --custom-otr-file soh.o2r "--custom-assets-path" ${CMAKE_CURRENT_SOURCE_DIR}/soh/assets/custom --port-ver "${CMAKE_PROJECT_VERSION}"
-    COMMAND ${CMAKE_COMMAND} -DSYSTEM_NAME=${CMAKE_SYSTEM_NAME} -DTARGET_DIR="$<TARGET_FILE_DIR:ZAPD>" -DSOURCE_DIR=${CMAKE_CURRENT_SOURCE_DIR} -DBINARY_DIR=${CMAKE_BINARY_DIR} -DONLYSOHOTR=On -P ${CMAKE_CURRENT_SOURCE_DIR}/copy-existing-otrs.cmake
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/soh
-    COMMENT "Generating soh.o2r..."
-    DEPENDS ZAPD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different "${SOH_PREBUILT_O2R}" ${CMAKE_CURRENT_SOURCE_DIR}/soh.o2r
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different "${SOH_PREBUILT_O2R}" ${CMAKE_BINARY_DIR}/soh/soh.o2r
+    # No BYPRODUCTS: ExtractAssets already claims ${CMAKE_SOURCE_DIR}/soh.o2r as one of its
+    # own (see above), and two rules generating the same path is a hard ninja error.
+    COMMENT "Copying prebuilt soh.o2r (TEMPORARY -- see prebuilt/README.md)..."
 )
 
 if(CMAKE_SYSTEM_NAME MATCHES "Linux")
