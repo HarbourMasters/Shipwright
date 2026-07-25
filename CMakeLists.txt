@@ -240,15 +240,15 @@ endif()
 # Build-time ROM extraction. soh links torch as a static library, which compiles out torch's
 # own CLI, so this supplies an entry point around the same code the game runs.
 add_executable(soh-torch
-    ${CMAKE_CURRENT_SOURCE_DIR}/tools/torch-cli/main.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/soh/assets/tools/torch-cli/main.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/soh/soh/Extractor/TorchExtract.cpp
 )
 target_include_directories(soh-torch PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/soh/soh/Extractor)
 target_link_libraries(soh-torch PRIVATE torch)
 
 add_executable(soh-o2r-packer
-    ${CMAKE_CURRENT_SOURCE_DIR}/tools/soh-o2r-packer/main.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/tools/soh-o2r-packer/PngTexture.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/soh/assets/tools/soh-o2r-packer/main.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/soh/assets/tools/soh-o2r-packer/PngTexture.cpp
 )
 target_link_libraries(soh-o2r-packer PRIVATE torch)
 
