@@ -613,6 +613,22 @@ static constexpr float kSeenChestRayYOffset = 20.0f; // a chest's mid-height
 // Keyed by check, not actor, so respawns/room reloads can't dangle it.
 static std::unordered_map<RandomizerCheck, int> seenItemFrames;
 
+// The check types a world sighting may mark, as an allowlist: most shuffle
+// features route their items through EnItem00, so a new one has to opt in here
+// rather than start marking on its own. Freestanding rupees and hearts are left
+// out deliberately - they sit inside bushes and grass, whose actor collision the
+// occlusion ray can't see, so they would mark while hidden.
+static bool SeenItemTypeAllowed(RandomizerCheck rc) {
+    switch (Rando::StaticData::GetLocation(rc)->GetRCType()) {
+        case RCTYPE_STANDARD:
+        case RCTYPE_SKULL_TOKEN:
+        case RCTYPE_BOSS_HEART_OR_OTHER_REWARD:
+            return true;
+        default:
+            return false;
+    }
+}
+
 // Resolves an actor's check + the item entry its draw function renders.
 // False when the actor carries no check identity.
 static bool SeenItemIdentity(Actor* actor, RandomizerCheck& rc, GetItemEntry& drawnEntry) {
@@ -651,19 +667,16 @@ static bool SeenItemIdentity(Actor* actor, RandomizerCheck& rc, GetItemEntry& dr
             break;
         }
         case ACTOR_EN_EX_ITEM: {
-            // Mirrors the type mapping in RandomizerOnActorInitHandler.
+            // Only the prizes on display at the Bombchu Bowling counter: the awarded
+            // variants and the Lost Woods target's fly straight to Link, so seeing
+            // one tells the player nothing they aren't about to be told anyway.
             EnExItem* exItem = reinterpret_cast<EnExItem*>(actor);
             switch (exItem->type) {
                 case EXITEM_BOMB_BAG_COUNTER:
-                case EXITEM_BOMB_BAG_BOWLING:
                     rc = RC_MARKET_BOMBCHU_BOWLING_FIRST_PRIZE;
                     break;
                 case EXITEM_HEART_PIECE_COUNTER:
-                case EXITEM_HEART_PIECE_BOWLING:
                     rc = RC_MARKET_BOMBCHU_BOWLING_SECOND_PRIZE;
-                    break;
-                case EXITEM_BULLET_BAG:
-                    rc = RC_LW_TARGET_IN_WOODS;
                     break;
                 default:
                     return false;
@@ -674,7 +687,7 @@ static bool SeenItemIdentity(Actor* actor, RandomizerCheck& rc, GetItemEntry& dr
         default:
             return false;
     }
-    return rc != RC_UNKNOWN_CHECK;
+    return rc != RC_UNKNOWN_CHECK && SeenItemTypeAllowed(rc);
 }
 
 // ignoreBgId lets a chest disregard its own collision so the ray to its
