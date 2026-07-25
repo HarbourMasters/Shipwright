@@ -435,7 +435,7 @@ Current state: `soh.o2r` at the repo root, **1,042 entries** = 1,041 files under
 |---|---|---|
 | Preflight | 19/19 identical with the existing baseline binary; one manifest re-derivation matches | ✅ **green** — see below |
 | D | pin SHA recorded; `git diff` vs upstream main still empty | ✅ green (trees equal) |
-| A | 19/19 identical; `phases=` matches the per-version yml count | ⬜ |
+| A | 19/19 identical; `phases=` matches the per-version yml count | ✅ **green** — see below |
 | A2 | both archives in a two-extraction process identical — especially the second | ⬜ |
 | B | 19/19 identical | ⬜ |
 | C | 19/19 identical | ⬜ |
@@ -480,6 +480,35 @@ having on record.
 Reference archives spot-checked as well — `manifest.sh` re-derivation of
 `o2r/ntsc_u_gc_b82710.o2r` (39,066 entries) and `o2r/pal_mq_dbg_079b85.o2r` (35,612) reproduces the
 committed manifests byte-for-byte. The baseline the gates measure against hasn't drifted.
+
+### Gate A result — 2026-07-24
+
+`TORCH_BIN=torchlib-driver/build/torchlib-driver tools/matrix.sh static-lib`, harness
+`phase0-gates` @ `504f086`. **19 passed, 0 failed, of 19 ROM dumps** — identical counts to the
+preflight table above, every one `0 failed, 0 not generated, 0 not in reference`.
+
+**`USE_STANDALONE=OFF` changes nothing about the bytes**, and driving `Companion` by hand produces
+exactly what the CLI does. Confirmed rather than assumed:
+
+- **libgfxd really is absent.** `torchlib-driver/build/_deps/` contains only `tinyxml2`, `yaml-cpp`
+  and `zlib` — no `libgfxd-src`, because the `FetchContent` sits inside `if(USE_STANDALONE)`. The
+  Binary export path is genuinely gfxd-free; all 19 archives extract identically without it.
+- **The progress denominator is exact.** `phases=` matched `find assets/yml/<version> -name '*.yml'
+  | wc -l` for all three distinct counts: `pal_gc` 1450/1450, `ntsc_u_gc` 1449/1449, `pal_gc_dbg`
+  1480/1480. So Phase 3's bar is monotonic 0→100 with a denominator counted off disk, and
+  `OTRGlobals.cpp:750-755` needs no change.
+- **Archive size matches the CLI build's** (33,154,599 bytes for `pal_gc`, same as
+  `o2r/generated.o2r`). It's ~343 KB larger than the OTRExporter reference — a zip-compression
+  difference, not content, which is why comparison is always file-by-file inside the archive.
+- The `Companion::Instance` hand-assignment, `SetVersion`, `SetPhaseCallback`, `Init(Binary)`
+  sequence works from outside the library, so `TorchExtract.cpp` can be a transcription of
+  `RunOnce()`.
+
+**Also learned, for Phase 2:** zlib *is* fetched under `USE_STANDALONE=OFF` with
+`BUILD_STORMLIB=OFF` — `_deps/zlib-src` exists despite zero `zlib.h` includes in `torch/src`,
+because that `FetchContent_Declare(... OVERRIDE_FIND_PACKAGE)` is unconditional. Risk #1 is
+observed, not hypothetical. Conversely spdlog was *not* fetched (`find_package(spdlog QUIET)` found
+the distrobox's), so the second-copy ABI concern doesn't apply — only the global-logger stomping.
 
 ---
 
