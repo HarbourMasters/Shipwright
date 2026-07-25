@@ -8,7 +8,6 @@
 #include "overlays/actors/ovl_En_Bom/z_en_bom.h"
 #include "objects/object_dodojr/object_dodojr.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE)
 
@@ -90,8 +89,6 @@ void EnDodojr_Destroy(Actor* thisx, PlayState* play) {
     EnDodojr* this = (EnDodojr*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnDodojr_DoSwallowedBombEffects(EnDodojr* this) {

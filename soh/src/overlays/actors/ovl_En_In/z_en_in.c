@@ -1,7 +1,6 @@
 #include "z_en_in.h"
 #include "overlays/actors/ovl_En_Horse/z_en_horse.h"
 #include "objects/object_in/object_in.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
@@ -505,8 +504,6 @@ void EnIn_Destroy(Actor* thisx, PlayState* play) {
 
     if (this->actionFunc != NULL && this->actionFunc != EnIn_WaitForObject) {
         Collider_DestroyCylinder(play, &this->collider);
-
-        ResourceMgr_UnregisterSkeleton(&this->skelAnime);
     }
 }
 

@@ -6,7 +6,6 @@
 
 #include "z_en_daiku_kakariko.h"
 #include "objects/object_daiku/object_daiku.h"
-#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
 
@@ -208,8 +207,6 @@ void EnDaikuKakariko_Destroy(Actor* thisx, PlayState* play) {
     EnDaikuKakariko* this = (EnDaikuKakariko*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 s32 EnDaikuKakariko_GetTalkState(EnDaikuKakariko* this, PlayState* play) {

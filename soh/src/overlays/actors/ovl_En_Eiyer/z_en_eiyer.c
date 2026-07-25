@@ -1,7 +1,6 @@
 #include "z_en_eiyer.h"
 #include "objects/object_ei/object_ei.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE)
 
@@ -172,8 +171,6 @@ void EnEiyer_Init(Actor* thisx, PlayState* play) {
 void EnEiyer_Destroy(Actor* thisx, PlayState* play) {
     EnEiyer* this = (EnEiyer*)thisx;
     Collider_DestroyCylinder(play, &this->collider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelanime);
 }
 
 void EnEiyer_RotateAroundHome(EnEiyer* this) {

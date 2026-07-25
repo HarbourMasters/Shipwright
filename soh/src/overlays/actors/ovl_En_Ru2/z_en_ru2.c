@@ -8,7 +8,6 @@
 #include "objects/object_ru2/object_ru2.h"
 #include "overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
 #include "vt.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
@@ -156,8 +155,6 @@ void EnRu2_Destroy(Actor* thisx, PlayState* play) {
     EnRu2* this = (EnRu2*)thisx;
     D_80AF4118 = 0;
     Collider_DestroyCylinder(play, &this->collider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnRu2_UpdateEyes(EnRu2* this) {

@@ -30,7 +30,6 @@
 #include "soh/Enhancements/randomizer/randomizer_grotto.h"
 #include "soh/frame_interpolation.h"
 #include "soh/OTRGlobals.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/savestate_serialize.h"
 
 #include <string.h>
@@ -12577,9 +12576,6 @@ void Player_Destroy(Actor* thisx, PlayState* play) {
     Magic_Reset(play);
 
     gSaveContext.linkAge = play->linkAgeOnLoad;
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
-    ResourceMgr_UnregisterSkeleton(&this->upperSkelAnime);
 }
 
 // first person manipulate player actor

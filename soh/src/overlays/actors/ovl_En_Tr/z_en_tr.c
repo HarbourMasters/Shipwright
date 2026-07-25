@@ -7,7 +7,6 @@
 #include "z_en_tr.h"
 #include "objects/object_tr/object_tr.h"
 #include <assert.h>
-#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
@@ -122,9 +121,6 @@ void EnTr_Init(Actor* thisx, PlayState* play) {
 }
 
 void EnTr_Destroy(Actor* thisx, PlayState* play) {
-    EnTr* this = (EnTr*)thisx;
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnTr_CrySpellcast(EnTr* this, PlayState* play) {
