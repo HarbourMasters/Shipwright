@@ -461,6 +461,3 @@ soh/properties.h
 /clang-format
 /clang-format.exe
 *.o2r
-# TEMPORARY (Torch migration): the checked-in soh.o2r that GenerateSohOtr copies.
-# Remove this negation when Phase 4's packer replaces it -- see prebuilt/README.md.
-!prebuilt/soh.o2r
