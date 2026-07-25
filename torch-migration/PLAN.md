@@ -28,7 +28,7 @@ and Torch's OoT FourCC `ResourceType`s are byte-identical to `soh/soh/resource/t
 |---|---|
 | ZAPDTR / OTRExporter | Full deletion |
 | Torch consumption | `FetchContent`, pinned to `HarbourMasters/Torch` **`4cae44160693e1beb562e39dc301bd42278be1f9`** |
-| Asset YAML home | Shipwright, but a **separate repo consumed as a submodule** for PR reviewability; flatten into the tree post-merge |
+| Asset YAML home | `briaguya0/soh-asset-yml`, submoduled at `assets/` for PR reviewability; flatten into the tree post-merge. Holds yml only, and is the source of truth — not a build artifact |
 | In-game extraction | Keep it — link Torch as a **static lib** (`USE_STANDALONE=OFF`) and drive `Companion` directly |
 | `soh.o2r` | Small **in-tree C++ packer** (no Python — Windows devs). Long term: Torch PR adding PNG support to `Companion::Pack` |
 | `ExtractAssetHeaders` | **Dropped.** Freeze the 1,085 checked-in `.h` files; follow-up Torch PR (see Blocker below) |
@@ -101,27 +101,35 @@ convertible PNGs are 8-bit / colour-type 6, so decode risk is low; the risk is q
 
 ## Phase 1 — The asset YAML repo
 
-New repo (e.g. `HarbourMasters/soh-assets`), submoduled at **`assets/`** (top level, sibling of
-`soh/`) so the eventual flatten is one `git rm` + `git add` of a single directory.
+Repo: **[`briaguya0/soh-asset-yml`](https://github.com/briaguya0/soh-asset-yml)** (created, currently
+empty). Submoduled at **`assets/`** (top level, sibling of `soh/`) so the eventual flatten is one
+`git rm` + `git add` of a single directory. `srcdir = assets`, which is exactly where Torch expects
+`config.yml`.
+
+**It holds yml and nothing else** — no generators, no generator inputs, no manifests:
 
 ```
 config.yml            17 ROM SHA1 → 14 version dirs (gbi: F3DEX2_OoT, sort: OFFSET,
                       primary_virtual_segment: 0x80, strict_declarations: true)
 <14 version dirs>/    20,353 .yml, 111 MB
-xml/                  SNAPSHOT of soh/assets/xml before deletion  ← most important item here
-filelists/ symbols/   moved from soh/assets/extractor (generator inputs)
-dma/ supplemental/    17 JSON each (generator inputs)
-tools/                zapd_to_torch.py, extract_dma.py, generate_supplemental.py
-manifests/            14 sha256 manifests from the OTRExporter reference
-README.md             regeneration recipe + which SoH commit the reference came from
+README.md             what this is; which harness commit produced the initial import
 ```
 
-Python lives **here**, not in Shipwright — SoH devs never need it; regeneration is a maintainer
-task. Regeneration: `extract_dma.py` → `generate_supplemental.py` → `zapd_to_torch.py` →
-`manifest.sh` → re-run the 14-target check.
+**The yml is the source of truth from day one — not a build artifact.** Once ZAPD is deleted nobody
+edits the XMLs again, so there is no ongoing regeneration workflow: adding or changing an asset
+definition means editing the yml directly. `zapd_to_torch.py` and its inputs (`dma/`,
+`supplemental/`, the XMLs) are a **one-shot conversion**, run once to seed this repo and thereafter
+kept only for reproducing or auditing that original conversion.
 
-**Snapshotting `soh/assets/xml/` into this repo before deleting it is non-negotiable** — it is
-the only input from which the YAML can be regenerated.
+Those inputs stay in `zapd-to-torch-test-harness`, which already has all of them plus a `shipwright`
+submodule pinned at `95d8f7e` whose tree still contains `soh/assets/xml/`, `filelists/`, and
+`symbols/`. So nothing needs snapshotting or moving out of Shipwright before deletion — the harness
+pin and Shipwright's own git history both preserve it. Python never enters Shipwright; SoH devs
+never need it.
+
+The harness `manifests/` remain the regression baseline: any hand-edit to the yml can be re-checked
+against them, and any *intentional* divergence from OTRExporter output means regenerating the
+affected manifest deliberately.
 
 ---
 
@@ -190,7 +198,11 @@ it currently lives inside both deleted targets.
 
 ### `soh/CMakeLists.txt`
 
-- L107-109: drop the `ZAPDLib` `add_subdirectory` guard (Torch comes from the root).
+- L107-109: delete the `if (NOT TARGET ZAPDLib) add_subdirectory(../ZAPDTR/ZAPD …)` block. It's a
+  fallback for configuring `soh/` directly rather than from the repo root (mirroring the
+  libultraship guard just above it); normally the root's L199 has already created the target. With
+  Torch coming from the root's `FetchContent` there's nothing for it to fall back to, so it just
+  goes away. The renames at L624/642/662/704 are the parts that matter.
 - L325: delete the dead `../ZAPDTR/ZAPD/resource/type` include — **that directory doesn't exist**.
 - L599-612: swap the `soh/assets/extractor` + `soh/assets/xml` POST_BUILD copies for a copy of
   `${CMAKE_SOURCE_DIR}/assets`; drop the ZAPD-only `assets/symbols` mkdir.
@@ -326,12 +338,15 @@ table so it lifts into Torch wholesale.
 
 ## Phase 5 — Deletions
 
+Pure deletion — **nothing is moved anywhere.** Every generator input is already preserved by the
+harness's `shipwright @ 95d8f7e` submodule pin and by Shipwright's own git history, and the yml is
+the source of truth going forward (Phase 1).
+
 - **Submodules:** `ZAPDTR/` (1.9 MB), `OTRExporter/` (71 MB) — `.gitmodules` + `git rm`
-- **`soh/assets/xml/`** — 7,680 files, 54 MB (**snapshot into the assets repo first**)
+- **`soh/assets/xml/`** — 7,680 files, 54 MB
 - `soh/assets/extractor/Config_*.xml` (14) and `TexturePool.xml` — ZAPD `-rconf` inputs, no runtime use
-- `soh/assets/extractor/filelists/`, `soh/assets/extractor/symbols/` — **move** to the assets repo
-  (`extract_dma.py` needs filelists; symbols are referenced only from the deleted `Config_*.xml`,
-  with no runtime reader in `soh/soh` or `soh/src`)
+- `soh/assets/extractor/filelists/`, `soh/assets/extractor/symbols/` — ZAPD `-fl` input and
+  `Config_*.xml` references respectively; verified no runtime reader in `soh/soh` or `soh/src`
 - `copy-existing-otrs.cmake`
 - CMake and source hunks listed in Phases 2–3
 
@@ -376,9 +391,9 @@ validated automatically. Needs a ROM, so self-hosted or encrypted secret.
 4. **Windows build** — Torch forces `/MT`, adds `-DSTORMLIB_NO_AUTO_LINK`, `/bigobj`, and carries a
    `cmake_minimum_required(3.12)` + policy shim under a CMake 4 host. The one platform not
    predictable from reading. Build it early.
-5. **Extraction wall-clock** — Torch parses ~1,450 YAMLs per run and the parse phase is serial
-   (export is explicitly serial for Binary too: *"Binary/code/header all share wrapper state"*,
-   `Companion.cpp:1748`). Measure vs ZAPD; if it regresses, the UI needs a "this takes N minutes" note.
+5. **Extraction wall-clock** — *low.* Significant perf work landed in #219, and the yml carrying full
+   declarations (rather than relying on autodiscovery) is part of why. The harness measures ~19 s per
+   ROM. Still worth a before/after measurement vs ZAPD, but not expected to regress.
 6. **Re-entrancy across two in-session extractions** — `AliasManager` uncleaned plus file-scope
    statics in `TextureFactory.cpp:14-15`, `CompressedTextureFactory.cpp:17-18`,
    `DisplayListFactory.cpp:82`. Believed inert for OoT/Binary; only a real vanilla-then-MQ run proves it.
@@ -429,7 +444,7 @@ validated automatically. Needs a ROM, so self-hosted or encrypted secret.
 ```
 0.  Torch PR: gate the zlib fetch, make stb/StringHelper guards unconditional  [only if they fire]
 1.  Harness: Gates A, B, A′
-2.  New assets repo: snapshot soh/assets/xml, publish YAML + generators
+2.  Seed briaguya0/soh-asset-yml: one-shot conversion output (config.yml + 14 version dirs)
 3.  Gate E: soh.o2r manifest from current develop
 --- single Shipwright PR from here ---
 4.  Add assets submodule; FetchContent Torch before libultraship
