@@ -383,13 +383,24 @@ Net: −127 MB submodules, −54 MB XML, +111 MB YAML (submodule initially; ~7-1
   `add_subdirectory(libultraship)`/`add_subdirectory(soh)` and configures only Torch +
   `soh-o2r-packer`. Saves ~5-8 min per run and drops the `install-tinyxml2` dependency. Add a step
   asserting the `soh.o2r` content manifest.
+  *Written before the prebuilt-archive workaround.* While `GenerateSohOtr` is a copy of
+  `prebuilt/soh.o2r`, this job builds nothing — the simplest form is to publish the checked-in
+  file, or drop the job and let consumers read it from the repo. The tools-only guard becomes
+  worthwhile again when Phase 4's packer replaces the prebuilt archive.
 - **Platform build jobs** (`build-macos` L71, `build-linux`, `build-windows`, Switch, Wii U):
   `submodules: true` already covers the new `assets/` submodule (it has no nested submodules).
   Switch/Wii U must not build Torch — same `NintendoSwitch|CafeOS` guard as `ZAPDLib` today.
   Package payload changes from `assets/xml/` to `assets/`.
 - **`test-builds-on-distros.yml` L137-150** removes distro tinyxml2 and builds 10.0.0 from source.
-  **Leave it in this PR** — one variable at a time; delete in a follow-up once Torch's fetched
-  tinyxml2 is confirmed to satisfy LUS.
+  **Leave it alone — not just in this PR.** Torch's fetched tinyxml2 does satisfy LUS today (the
+  distrobox has a system copy installed and `soh.elf` still links the fetched static one, no
+  `libtinyxml2.so`), so these steps are currently redundant. But that redundancy rests on Torch
+  declaring tinyxml2 with `OVERRIDE_FIND_PACKAGE` *unconditionally*, which is an implementation
+  detail — and one we've asked upstream to reconsider
+  ([Torch#233](https://github.com/HarbourMasters/Torch/issues/233), where gating the zlib fetch is
+  proposed and tinyxml2 noted as the same pattern). If that lands, `find_package(tinyxml2)` needs a
+  system copy again and CI breaks precisely because these steps were removed. Providing tinyxml2
+  ourselves costs little and doesn't depend on someone else's build internals.
 - `pr-artifacts.yml:51` already filters `soh.o2r`; no change.
 
 Optional follow-up: a CI job running Gate A/B against a checked-in manifest so Torch pin bumps are
