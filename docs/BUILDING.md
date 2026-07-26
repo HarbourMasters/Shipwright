@@ -20,7 +20,7 @@ It is recommended that you install Python and Git standalone, the install proces
 
 1. Clone the Ship of Harkinian repository
 
-_Note: Be sure to either clone with the ``--recursive`` flag or do ``git submodule update --init`` after cloning to pull in the libultraship submodule!_
+_Note: Be sure to either clone with the ``--recursive`` flag or do ``git submodule update --init`` after cloning to pull in the libultraship and torch submodules!_
 
 2. After setup and initial build, use the built-in OTR extraction to make your oot.o2r/oot-mq.o2r files.
 
@@ -246,7 +246,7 @@ _Note: If you're using Visual Studio Code, the [CMake Tools plugin](https://mark
 git clone https://github.com/HarbourMasters/Shipwright.git
 cd ShipWright
 
-# Clone the submodule libultraship
+# Clone the submodules
 git submodule update --init
 
 # Install development dependencies (assuming homebrew)

@@ -223,12 +223,7 @@ foreach(_torch_game SM64 MK64 SF64 PM64 FZERO BK64 MARIO_ARTIST)
     set(BUILD_${_torch_game} OFF CACHE BOOL "" FORCE)
 endforeach()
 
-FetchContent_Declare(
-    torch
-    GIT_REPOSITORY https://github.com/HarbourMasters/Torch.git
-    GIT_TAG        e92c2103e22281b892e65760b4b11d81d4795c86
-)
-FetchContent_MakeAvailable(torch)
+add_subdirectory(torch)
 
 # Build-time ROM extraction. soh links torch as a static library, which compiles out torch's
 # own CLI, so this supplies an entry point around the same code the game runs.
