@@ -1,0 +1,71 @@
+:config:
+  segments:
+    - [ 6, 0x0153B000 ]
+    - [ 4, 0x00F5E000 ]
+    - [ 8, 0x0153B000 ]
+    - [ 9, 0x0153B000 ]
+    - [ 10, 0x0153B000 ]
+    - [ 11, 0x0153B000 ]
+    - [ 12, 0x0153B000 ]
+    - [ 13, 0x0153B000 ]
+  external_files:
+    - pal_gc_dbg/objects/gameplay_keep.yml
+
+gGiBombBag20BagColorDL:
+  type: GFX
+  offset: 0x0AD0
+  symbol: gGiBombBag20BagColorDL
+
+gGiBombBag20RingColorDL:
+  type: GFX
+  offset: 0x0B30
+  symbol: gGiBombBag20RingColorDL
+
+gGiBombBag30BagColorDL:
+  type: GFX
+  offset: 0x0AF0
+  symbol: gGiBombBag30BagColorDL
+
+gGiBombBag30RingColorDL:
+  type: GFX
+  offset: 0x0B50
+  symbol: gGiBombBag30RingColorDL
+
+gGiBombBag40BagColorDL:
+  type: GFX
+  offset: 0x0B10
+  symbol: gGiBombBag40BagColorDL
+
+gGiBombBag40RingColorDL:
+  type: GFX
+  offset: 0x0B70
+  symbol: gGiBombBag40RingColorDL
+
+gGiBombBagDL:
+  type: GFX
+  offset: 0x0B90
+  symbol: gGiBombBagDL
+
+gGiBombBagRingDL:
+  type: GFX
+  offset: 0x0D98
+  symbol: gGiBombBagRingDL
+
+
+object_gi_bombpouchVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_gi_bombpouchVtx_000000
+  count: 152
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_bombpouchVtx_000980:
+  type: OOT:ARRAY
+  offset: 0x000980
+  symbol: object_gi_bombpouchVtx_000980
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

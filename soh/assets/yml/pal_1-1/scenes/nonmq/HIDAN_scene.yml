@@ -1,0 +1,87 @@
+:config:
+  segments:
+    - [ 2, 0x018B7F70 ]
+
+HIDAN_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: HIDAN_scene
+
+HIDAN_sceneTLUT_018990:
+  type: TEXTURE
+  offset: 0x18B30
+  symbol: HIDAN_sceneTLUT_018990
+  format: RGBA16
+  width: 4
+  height: 4
+
+HIDAN_sceneTLUT_0189B0:
+  type: TEXTURE
+  offset: 0x18B50
+  symbol: HIDAN_sceneTLUT_0189B0
+  format: RGBA16
+  width: 4
+  height: 4
+
+HIDAN_sceneTex_0189D0:
+  type: TEXTURE
+  offset: 0x18B70
+  symbol: HIDAN_sceneTex_0189D0
+  format: CI4
+  width: 32
+  height: 32
+  tlut: 0x18B50
+
+HIDAN_sceneTex_018BD0:
+  type: TEXTURE
+  offset: 0x18D70
+  symbol: HIDAN_sceneTex_018BD0
+  format: CI4
+  width: 32
+  height: 32
+  tlut: 0x18B50
+
+HIDAN_sceneTex_018DD0:
+  type: TEXTURE
+  offset: 0x18F70
+  symbol: HIDAN_sceneTex_018DD0
+  format: RGBA16
+  width: 32
+  height: 32
+
+HIDAN_sceneTex_0195D0:
+  type: TEXTURE
+  offset: 0x19770
+  symbol: HIDAN_sceneTex_0195D0
+  format: RGBA16
+  width: 32
+  height: 32
+
+HIDAN_sceneTex_019DD0:
+  type: TEXTURE
+  offset: 0x19F70
+  symbol: HIDAN_sceneTex_019DD0
+  format: CI4
+  width: 32
+  height: 32
+  tlut: 0x18B50
+
+HIDAN_sceneTex_019FD0:
+  type: TEXTURE
+  offset: 0x1A170
+  symbol: HIDAN_sceneTex_019FD0
+  format: RGBA16
+  width: 32
+  height: 32
+
+gHidanPath_560:
+  type: OOT:PATH
+  offset: 0x558
+  symbol: gHidanPath_560
+  num_paths: 19
+
+
+HIDAN_sceneCollisionHeader_018AFC:
+  type: OOT:COLLISION
+  offset: 0x018AFC
+  symbol: HIDAN_sceneCollisionHeader_018AFC

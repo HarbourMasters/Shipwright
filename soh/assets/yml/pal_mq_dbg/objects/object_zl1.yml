@@ -1,0 +1,836 @@
+:config:
+  segments:
+    - [ 6, 0x01120000 ]
+    - [ 4, 0x00F5E000 ]
+    - [ 8, 0x01120000 ]
+    - [ 9, 0x01120000 ]
+    - [ 10, 0x01120000 ]
+    - [ 11, 0x01120000 ]
+    - [ 12, 0x01120000 ]
+    - [ 13, 0x01120000 ]
+  external_files:
+    - pal_mq_dbg/objects/gameplay_keep.yml
+
+gChildZelda1ALternateDressBeltTex:
+  type: TEXTURE
+  offset: 0x8448
+  symbol: gChildZelda1ALternateDressBeltTex
+  format: CI8
+  width: 32
+  height: 8
+  tlut: 0x70C8
+
+gChildZelda1AlternateDressDL:
+  type: GFX
+  offset: 0xDEC8
+  symbol: gChildZelda1AlternateDressDL
+
+gChildZelda1AlternateDressGradientTex:
+  type: TEXTURE
+  offset: 0x8548
+  symbol: gChildZelda1AlternateDressGradientTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x70C8
+
+gChildZelda1AlternateDressLiningTex:
+  type: TEXTURE
+  offset: 0x8648
+  symbol: gChildZelda1AlternateDressLiningTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gChildZelda1AlternateDressPatternTex:
+  type: TEXTURE
+  offset: 0x8408
+  symbol: gChildZelda1AlternateDressPatternTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x70C8
+
+gChildZelda1Anim_00438:
+  type: OOT:ANIMATION
+  offset: 0x00438
+  symbol: gChildZelda1Anim_00438
+
+gChildZelda1Anim_10B38:
+  type: OOT:ANIMATION
+  offset: 0x10B38
+  symbol: gChildZelda1Anim_10B38
+
+gChildZelda1Anim_11348:
+  type: OOT:ANIMATION
+  offset: 0x11348
+  symbol: gChildZelda1Anim_11348
+
+gChildZelda1Anim_116E4:
+  type: OOT:ANIMATION
+  offset: 0x116E4
+  symbol: gChildZelda1Anim_116E4
+
+gChildZelda1Anim_12118:
+  type: OOT:ANIMATION
+  offset: 0x12118
+  symbol: gChildZelda1Anim_12118
+
+gChildZelda1Anim_12B04:
+  type: OOT:ANIMATION
+  offset: 0x12B04
+  symbol: gChildZelda1Anim_12B04
+
+gChildZelda1Anim_12B88:
+  type: OOT:ANIMATION
+  offset: 0x11B88
+  symbol: gChildZelda1Anim_12B88
+
+gChildZelda1Anim_12F80:
+  type: OOT:ANIMATION
+  offset: 0x12F80
+  symbol: gChildZelda1Anim_12F80
+
+gChildZelda1Anim_132D8:
+  type: OOT:ANIMATION
+  offset: 0x132D8
+  symbol: gChildZelda1Anim_132D8
+
+gChildZelda1Anim_138E0:
+  type: OOT:ANIMATION
+  offset: 0x138E0
+  symbol: gChildZelda1Anim_138E0
+
+gChildZelda1Anim_13F10:
+  type: OOT:ANIMATION
+  offset: 0x13F10
+  symbol: gChildZelda1Anim_13F10
+
+gChildZelda1Anim_143A8:
+  type: OOT:ANIMATION
+  offset: 0x143A8
+  symbol: gChildZelda1Anim_143A8
+
+gChildZelda1BackOfHandTex:
+  type: TEXTURE
+  offset: 0x14D0
+  symbol: gChildZelda1BackOfHandTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gChildZelda1BeltLoopsTex:
+  type: TEXTURE
+  offset: 0x1090
+  symbol: gChildZelda1BeltLoopsTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x0450
+
+gChildZelda1BeltTex:
+  type: TEXTURE
+  offset: 0x0F90
+  symbol: gChildZelda1BeltTex
+  format: CI8
+  width: 32
+  height: 8
+  tlut: 0x0450
+
+gChildZelda1BlueUndershirtGradient1Tex:
+  type: TEXTURE
+  offset: 0x17D0
+  symbol: gChildZelda1BlueUndershirtGradient1Tex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gChildZelda1BlueUndershirtGradient2Tex:
+  type: TEXTURE
+  offset: 0x1850
+  symbol: gChildZelda1BlueUndershirtGradient2Tex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gChildZelda1BootShaftTex:
+  type: TEXTURE
+  offset: 0x87C8
+  symbol: gChildZelda1BootShaftTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gChildZelda1BootTex:
+  type: TEXTURE
+  offset: 0x8748
+  symbol: gChildZelda1BootTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gChildZelda1BraceletTex:
+  type: TEXTURE
+  offset: 0x16D0
+  symbol: gChildZelda1BraceletTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x0450
+
+gChildZelda1Dress1DL:
+  type: GFX
+  offset: 0x6828
+  symbol: gChildZelda1Dress1DL
+
+gChildZelda1Dress1Limb:
+  type: OOT:LIMB
+  offset: 0xF510
+  symbol: gChildZelda1Dress1Limb
+  limb_type: Standard
+
+gChildZelda1Dress2DL:
+  type: GFX
+  offset: 0x69E0
+  symbol: gChildZelda1Dress2DL
+
+gChildZelda1Dress2Limb:
+  type: OOT:LIMB
+  offset: 0xF51C
+  symbol: gChildZelda1Dress2Limb
+  limb_type: Standard
+
+gChildZelda1Dress3DL:
+  type: GFX
+  offset: 0x6BA0
+  symbol: gChildZelda1Dress3DL
+
+gChildZelda1Dress3Limb:
+  type: OOT:LIMB
+  offset: 0xF528
+  symbol: gChildZelda1Dress3Limb
+  limb_type: Standard
+
+gChildZelda1DressGradientTex:
+  type: TEXTURE
+  offset: 0x0650
+  symbol: gChildZelda1DressGradientTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x0450
+
+gChildZelda1DressWrinklesTex:
+  type: TEXTURE
+  offset: 0x10D0
+  symbol: gChildZelda1DressWrinklesTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x0450
+
+gChildZelda1EarTex:
+  type: TEXTURE
+  offset: 0x8208
+  symbol: gChildZelda1EarTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gChildZelda1EyeClosedTex:
+  type: TEXTURE
+  offset: 0x9C48
+  symbol: gChildZelda1EyeClosedTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x6CD8
+
+gChildZelda1EyeHalf1Tex:
+  type: TEXTURE
+  offset: 0x9448
+  symbol: gChildZelda1EyeHalf1Tex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x6CD8
+
+gChildZelda1EyeHalf2Tex:
+  type: TEXTURE
+  offset: 0x9848
+  symbol: gChildZelda1EyeHalf2Tex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x6CD8
+
+gChildZelda1EyeOpenLookingLeftTex:
+  type: TEXTURE
+  offset: 0x8848
+  symbol: gChildZelda1EyeOpenLookingLeftTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x6CD8
+
+gChildZelda1EyeOpenLookingRightTex:
+  type: TEXTURE
+  offset: 0x8C48
+  symbol: gChildZelda1EyeOpenLookingRightTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x6CD8
+
+gChildZelda1EyeOpenLookingUpRightTex:
+  type: TEXTURE
+  offset: 0x7208
+  symbol: gChildZelda1EyeOpenLookingUpRightTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x6CD8
+
+gChildZelda1EyeWideTex:
+  type: TEXTURE
+  offset: 0xA048
+  symbol: gChildZelda1EyeWideTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x6CD8
+
+gChildZelda1HairTex:
+  type: TEXTURE
+  offset: 0x80C8
+  symbol: gChildZelda1HairTex
+  format: RGBA16
+  width: 16
+  height: 8
+
+gChildZelda1HeadDL:
+  type: GFX
+  offset: 0xCD98
+  symbol: gChildZelda1HeadDL
+
+gChildZelda1HeadLimb:
+  type: OOT:LIMB
+  offset: 0xF588
+  symbol: gChildZelda1HeadLimb
+  limb_type: Standard
+
+gChildZelda1HeaddressGradientTex:
+  type: TEXTURE
+  offset: 0x7A08
+  symbol: gChildZelda1HeaddressGradientTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x70C8
+
+gChildZelda1HeaddressStripeTex:
+  type: TEXTURE
+  offset: 0xA948
+  symbol: gChildZelda1HeaddressStripeTex
+  format: CI8
+  width: 16
+  height: 32
+  tlut: 0x70C8
+
+gChildZelda1HeaddressTex_A8C8:
+  type: TEXTURE
+  offset: 0xA8C8
+  symbol: gChildZelda1HeaddressTex_A8C8
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0x70C8
+
+gChildZelda1HeaddressTriforceEmblemTex:
+  type: TEXTURE
+  offset: 0x7AC8
+  symbol: gChildZelda1HeaddressTriforceEmblemTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gChildZelda1LeftFootDL:
+  type: GFX
+  offset: 0xE748
+  symbol: gChildZelda1LeftFootDL
+
+gChildZelda1LeftFootLimb:
+  type: OOT:LIMB
+  offset: 0xF4EC
+  symbol: gChildZelda1LeftFootLimb
+  limb_type: Standard
+
+gChildZelda1LeftForearmDL:
+  type: GFX
+  offset: 0x5CD8
+  symbol: gChildZelda1LeftForearmDL
+
+gChildZelda1LeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0xF54C
+  symbol: gChildZelda1LeftForearmLimb
+  limb_type: Standard
+
+gChildZelda1LeftHandDL:
+  type: GFX
+  offset: 0x5E28
+  symbol: gChildZelda1LeftHandDL
+
+gChildZelda1LeftHandLimb:
+  type: OOT:LIMB
+  offset: 0xF558
+  symbol: gChildZelda1LeftHandLimb
+  limb_type: Standard
+
+gChildZelda1LeftLegDL:
+  type: GFX
+  offset: 0xEE00
+  symbol: gChildZelda1LeftLegDL
+
+gChildZelda1LeftLegLimb:
+  type: OOT:LIMB
+  offset: 0xF4E0
+  symbol: gChildZelda1LeftLegLimb
+  limb_type: Standard
+
+gChildZelda1LeftUpperArmDL:
+  type: GFX
+  offset: 0x5A68
+  symbol: gChildZelda1LeftUpperArmDL
+
+gChildZelda1LeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0xF540
+  symbol: gChildZelda1LeftUpperArmLimb
+  limb_type: Standard
+
+gChildZelda1MouthFrowningTex:
+  type: TEXTURE
+  offset: 0x9048
+  symbol: gChildZelda1MouthFrowningTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x6ED0
+
+gChildZelda1MouthNeutralTex:
+  type: TEXTURE
+  offset: 0x7608
+  symbol: gChildZelda1MouthNeutralTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x6ED0
+
+gChildZelda1MouthOpenSmilingTex:
+  type: TEXTURE
+  offset: 0xAB48
+  symbol: gChildZelda1MouthOpenSmilingTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x6ED0
+
+gChildZelda1MouthOpenTex:
+  type: TEXTURE
+  offset: 0xA448
+  symbol: gChildZelda1MouthOpenTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x6ED0
+
+gChildZelda1OcarinaDL:
+  type: GFX
+  offset: 0xF3A8
+  symbol: gChildZelda1OcarinaDL
+
+gChildZelda1PendantTex:
+  type: TEXTURE
+  offset: 0x1BD0
+  symbol: gChildZelda1PendantTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gChildZelda1PointedHairOnSideTex:
+  type: TEXTURE
+  offset: 0x7EC8
+  symbol: gChildZelda1PointedHairOnSideTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gChildZelda1PurpleDressPatternTex:
+  type: TEXTURE
+  offset: 0x0690
+  symbol: gChildZelda1PurpleDressPatternTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x0450
+
+gChildZelda1RightFootDL:
+  type: GFX
+  offset: 0xEA78
+  symbol: gChildZelda1RightFootDL
+
+gChildZelda1RightFootLimb:
+  type: OOT:LIMB
+  offset: 0xF504
+  symbol: gChildZelda1RightFootLimb
+  limb_type: Standard
+
+gChildZelda1RightForearmDL:
+  type: GFX
+  offset: 0x5738
+  symbol: gChildZelda1RightForearmDL
+
+gChildZelda1RightForearmLimb:
+  type: OOT:LIMB
+  offset: 0xF570
+  symbol: gChildZelda1RightForearmLimb
+  limb_type: Standard
+
+gChildZelda1RightHandDL:
+  type: GFX
+  offset: 0x5888
+  symbol: gChildZelda1RightHandDL
+
+gChildZelda1RightHandLimb:
+  type: OOT:LIMB
+  offset: 0xF57C
+  symbol: gChildZelda1RightHandLimb
+  limb_type: Standard
+
+gChildZelda1RightLegDL:
+  type: GFX
+  offset: 0xEDA8
+  symbol: gChildZelda1RightLegDL
+
+gChildZelda1RightLegLimb:
+  type: OOT:LIMB
+  offset: 0xF4F8
+  symbol: gChildZelda1RightLegLimb
+  limb_type: Standard
+
+gChildZelda1RightUpperArmDL:
+  type: GFX
+  offset: 0x54D0
+  symbol: gChildZelda1RightUpperArmDL
+
+gChildZelda1RightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0xF564
+  symbol: gChildZelda1RightUpperArmLimb
+  limb_type: Standard
+
+gChildZelda1RootLimb:
+  type: OOT:LIMB
+  offset: 0xF4C8
+  symbol: gChildZelda1RootLimb
+  limb_type: Standard
+
+gChildZelda1Skel:
+  type: OOT:SKELETON
+  offset: 0xF5D8
+  symbol: gChildZelda1Skel
+  limb_type: Standard
+  skel_type: Flex
+
+gChildZelda1SkinGradientTex:
+  type: TEXTURE
+  offset: 0x7A48
+  symbol: gChildZelda1SkinGradientTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gChildZelda1StripedShoulderPatternTex:
+  type: TEXTURE
+  offset: 0x1A90
+  symbol: gChildZelda1StripedShoulderPatternTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x0450
+
+gChildZelda1TLUT_0450:
+  type: TEXTURE
+  offset: 0x0450
+  symbol: gChildZelda1TLUT_0450
+  format: RGBA16
+  width: 16
+  height: 16
+
+gChildZelda1TLUT_6CD8:
+  type: TEXTURE
+  offset: 0x6CD8
+  symbol: gChildZelda1TLUT_6CD8
+  format: RGBA16
+  width: 252
+  height: 1
+
+gChildZelda1TLUT_6ED0:
+  type: TEXTURE
+  offset: 0x6ED0
+  symbol: gChildZelda1TLUT_6ED0
+  format: RGBA16
+  width: 252
+  height: 1
+
+gChildZelda1TLUT_70C8:
+  type: TEXTURE
+  offset: 0x70C8
+  symbol: gChildZelda1TLUT_70C8
+  format: RGBA16
+  width: 160
+  height: 1
+
+gChildZelda1Tex_1A50:
+  type: TEXTURE
+  offset: 0x1A50
+  symbol: gChildZelda1Tex_1A50
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x0450
+
+gChildZelda1Tex_81C8:
+  type: TEXTURE
+  offset: 0x81C8
+  symbol: gChildZelda1Tex_81C8
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x70C8
+
+gChildZelda1Tex_A848:
+  type: TEXTURE
+  offset: 0xA848
+  symbol: gChildZelda1Tex_A848
+  format: RGBA16
+  width: 8
+  height: 8
+
+gChildZelda1TorsoDL:
+  type: GFX
+  offset: 0x4B50
+  symbol: gChildZelda1TorsoDL
+
+gChildZelda1TorsoLimb:
+  type: OOT:LIMB
+  offset: 0xF534
+  symbol: gChildZelda1TorsoLimb
+  limb_type: Standard
+
+gChildZelda1TriforceSashTex:
+  type: TEXTURE
+  offset: 0x0790
+  symbol: gChildZelda1TriforceSashTex
+  format: CI8
+  width: 32
+  height: 64
+  tlut: 0x0450
+
+gChildZelda1UndershirtWrinklesTex:
+  type: TEXTURE
+  offset: 0x1AD0
+  symbol: gChildZelda1UndershirtWrinklesTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x0450
+
+gChildZelda1WaistDL:
+  type: GFX
+  offset: 0x6008
+  symbol: gChildZelda1WaistDL
+
+gChildZelda1WaistLimb:
+  type: OOT:LIMB
+  offset: 0xF4D4
+  symbol: gChildZelda1WaistLimb
+  limb_type: Standard
+
+object_zl1Tex_00EE58:
+  type: TEXTURE
+  offset: 0xEE58
+  symbol: object_zl1Tex_00EE58
+  format: RGBA16
+  width: 32
+  height: 16
+
+
+object_zl1Vtx_0023D0:
+  type: OOT:ARRAY
+  offset: 0x0023D0
+  symbol: object_zl1Vtx_0023D0
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zl1Vtx_0025E0:
+  type: OOT:ARRAY
+  offset: 0x0025E0
+  symbol: object_zl1Vtx_0025E0
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zl1Vtx_002840:
+  type: OOT:ARRAY
+  offset: 0x002840
+  symbol: object_zl1Vtx_002840
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zl1Vtx_002A80:
+  type: OOT:ARRAY
+  offset: 0x002A80
+  symbol: object_zl1Vtx_002A80
+  count: 85
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zl1Vtx_002FD0:
+  type: OOT:ARRAY
+  offset: 0x002FD0
+  symbol: object_zl1Vtx_002FD0
+  count: 45
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zl1Vtx_0032A0:
+  type: OOT:ARRAY
+  offset: 0x0032A0
+  symbol: object_zl1Vtx_0032A0
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zl1Vtx_0034E0:
+  type: OOT:ARRAY
+  offset: 0x0034E0
+  symbol: object_zl1Vtx_0034E0
+  count: 62
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zl1Vtx_0038C0:
+  type: OOT:ARRAY
+  offset: 0x0038C0
+  symbol: object_zl1Vtx_0038C0
+  count: 45
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zl1Vtx_003B90:
+  type: OOT:ARRAY
+  offset: 0x003B90
+  symbol: object_zl1Vtx_003B90
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zl1Vtx_003DD0:
+  type: OOT:ARRAY
+  offset: 0x003DD0
+  symbol: object_zl1Vtx_003DD0
+  count: 62
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zl1Vtx_0041B0:
+  type: OOT:ARRAY
+  offset: 0x0041B0
+  symbol: object_zl1Vtx_0041B0
+  count: 154
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zl1Vtx_00AF48:
+  type: OOT:ARRAY
+  offset: 0x00AF48
+  symbol: object_zl1Vtx_00AF48
+  count: 226
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zl1Vtx_00BD68:
+  type: OOT:ARRAY
+  offset: 0x00BD68
+  symbol: object_zl1Vtx_00BD68
+  count: 147
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zl1Vtx_00C698:
+  type: OOT:ARRAY
+  offset: 0x00C698
+  symbol: object_zl1Vtx_00C698
+  count: 53
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zl1Vtx_00C9E8:
+  type: OOT:ARRAY
+  offset: 0x00C9E8
+  symbol: object_zl1Vtx_00C9E8
+  count: 53
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zl1Vtx_00CD38:
+  type: OOT:ARRAY
+  offset: 0x00CD38
+  symbol: object_zl1Vtx_00CD38
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zl1Vtx_00CD68:
+  type: OOT:ARRAY
+  offset: 0x00CD68
+  symbol: object_zl1Vtx_00CD68
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zl1Vtx_00F258:
+  type: OOT:ARRAY
+  offset: 0x00F258
+  symbol: object_zl1Vtx_00F258
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gChildZelda1SkelLimbs:
+  type: BLOB
+  offset: 0xF594
+  symbol: gChildZelda1SkelLimbs
+  size: 0

@@ -2,7 +2,3 @@
 	path = libultraship
 	url = https://github.com/kenix3/libultraship.git
 	branch = port-maintenance
-[submodule "soh/assets/yml"]
-	path = soh/assets/yml
-	url = https://github.com/briaguya0/soh-asset-yml.git
-	branch = code

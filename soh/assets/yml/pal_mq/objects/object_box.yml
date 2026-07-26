@@ -1,0 +1,357 @@
+:config:
+  segments:
+    - [ 6, 0x00D996F0 ]
+    - [ 4, 0x00D250B0 ]
+    - [ 8, 0x00D996F0 ]
+    - [ 9, 0x00D996F0 ]
+    - [ 10, 0x00D996F0 ]
+    - [ 11, 0x00D996F0 ]
+    - [ 12, 0x00D996F0 ]
+    - [ 13, 0x00D996F0 ]
+  external_files:
+    - pal_mq/objects/gameplay_keep.yml
+
+gBoxBlob_00025C:
+  type: BLOB
+  offset: 0x025C
+  size: 0xF4
+  symbol: gBoxBlob_00025C
+
+gBoxBlob_00044C:
+  type: BLOB
+  offset: 0x044C
+  size: 0x64
+  symbol: gBoxBlob_00044C
+
+gTreasureChestAnim_000128:
+  type: OOT:ANIMATION
+  offset: 0x128
+  symbol: gTreasureChestAnim_000128
+
+gTreasureChestAnim_00024C:
+  type: OOT:ANIMATION
+  offset: 0x24C
+  symbol: gTreasureChestAnim_00024C
+
+gTreasureChestAnim_00043C:
+  type: OOT:ANIMATION
+  offset: 0x43C
+  symbol: gTreasureChestAnim_00043C
+
+gTreasureChestBossKeyChestFrontDL:
+  type: GFX
+  offset: 0xAE8
+  symbol: gTreasureChestBossKeyChestFrontDL
+
+gTreasureChestBossKeyChestSideAndTopDL:
+  type: GFX
+  offset: 0x1678
+  symbol: gTreasureChestBossKeyChestSideAndTopDL
+
+gTreasureChestBossKeyFrontTex:
+  type: TEXTURE
+  offset: 0x3798
+  symbol: gTreasureChestBossKeyFrontTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gTreasureChestBossKeySideAndTopTex:
+  type: TEXTURE
+  offset: 0x2F98
+  symbol: gTreasureChestBossKeySideAndTopTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gTreasureChestChestFrontDL:
+  type: GFX
+  offset: 0x6F0
+  symbol: gTreasureChestChestFrontDL
+
+gTreasureChestChestSideAndLidDL:
+  type: GFX
+  offset: 0x10C0
+  symbol: gTreasureChestChestSideAndLidDL
+
+gTreasureChestCol:
+  type: OOT:COLLISION
+  offset: 0x5FC8
+  symbol: gTreasureChestCol
+
+gTreasureChestCurveAnim_4B60:
+  type: OOT:CURVE_ANIMATION
+  offset: 0x4B60
+  symbol: gTreasureChestCurveAnim_4B60
+  skel_offset: 0x5EB8
+
+gTreasureChestCurveAnim_4F70:
+  type: OOT:CURVE_ANIMATION
+  offset: 0x4F70
+  symbol: gTreasureChestCurveAnim_4F70
+  skel_offset: 0x5EB8
+
+gTreasureChestCurveSkel:
+  type: OOT:SKELETON
+  offset: 0x5EB8
+  symbol: gTreasureChestCurveSkel
+  limb_type: Curve
+  skel_type: Curve
+
+gTreasureChestFrontTex:
+  type: TEXTURE
+  offset: 0x1798
+  symbol: gTreasureChestFrontTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gTreasureChestSideAndTopTex:
+  type: TEXTURE
+  offset: 0x2798
+  symbol: gTreasureChestSideAndTopTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gTreasureChestSkel:
+  type: OOT:SKELETON
+  offset: 0x47D8
+  symbol: gTreasureChestSkel
+  limb_type: Standard
+  skel_type: Normal
+
+object_boxTex_004F80:
+  type: TEXTURE
+  offset: 0x4F80
+  symbol: object_boxTex_004F80
+  format: I8
+  width: 64
+  height: 32
+
+
+object_boxVtx_0004B0:
+  type: OOT:ARRAY
+  offset: 0x0004B0
+  symbol: object_boxVtx_0004B0
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boxVtx_0008A8:
+  type: OOT:ARRAY
+  offset: 0x0008A8
+  symbol: object_boxVtx_0008A8
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boxVtx_000CA0:
+  type: OOT:ARRAY
+  offset: 0x000CA0
+  symbol: object_boxVtx_000CA0
+  count: 66
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boxVtx_001258:
+  type: OOT:ARRAY
+  offset: 0x001258
+  symbol: object_boxVtx_001258
+  count: 66
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gTreasureChestSkelLimbsLimb_004798:
+  type: OOT:LIMB
+  offset: 0x004798
+  symbol: gTreasureChestSkelLimbsLimb_004798
+  limb_type: Standard
+
+gTreasureChestSkelLimbsLimb_0047A4:
+  type: OOT:LIMB
+  offset: 0x0047A4
+  symbol: gTreasureChestSkelLimbsLimb_0047A4
+  limb_type: Standard
+
+gTreasureChestSkelLimbsLimb_0047B0:
+  type: OOT:LIMB
+  offset: 0x0047B0
+  symbol: gTreasureChestSkelLimbsLimb_0047B0
+  limb_type: Standard
+
+gTreasureChestSkelLimbsLimb_0047BC:
+  type: OOT:LIMB
+  offset: 0x0047BC
+  symbol: gTreasureChestSkelLimbsLimb_0047BC
+  limb_type: Standard
+
+gTreasureChestSkelLimbs:
+  type: BLOB
+  offset: 0x47C8
+  symbol: gTreasureChestSkelLimbs
+  size: 0
+
+object_boxVtx_005780:
+  type: OOT:ARRAY
+  offset: 0x005780
+  symbol: object_boxVtx_005780
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boxVtx_0058D0:
+  type: OOT:ARRAY
+  offset: 0x0058D0
+  symbol: object_boxVtx_0058D0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boxVtx_005910:
+  type: OOT:ARRAY
+  offset: 0x005910
+  symbol: object_boxVtx_005910
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boxVtx_005950:
+  type: OOT:ARRAY
+  offset: 0x005950
+  symbol: object_boxVtx_005950
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_boxVtx_005990:
+  type: OOT:ARRAY
+  offset: 0x005990
+  symbol: object_boxVtx_005990
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gTreasureChestCurveSkelLimbsLimb_005DE4Curve2DL_0059D0:
+  type: GFX
+  offset: 0x0059D0
+  symbol: gTreasureChestCurveSkelLimbsLimb_005DE4Curve2DL_0059D0
+
+gTreasureChestCurveSkelLimbsLimb_005E74Curve2DL_005AB8:
+  type: GFX
+  offset: 0x005AB8
+  symbol: gTreasureChestCurveSkelLimbsLimb_005E74Curve2DL_005AB8
+
+gTreasureChestCurveSkelLimbsLimb_005E2CCurve2DL_005B80:
+  type: GFX
+  offset: 0x005B80
+  symbol: gTreasureChestCurveSkelLimbsLimb_005E2CCurve2DL_005B80
+
+gTreasureChestCurveSkelLimbsLimb_005E08Curve2DL_005C48:
+  type: GFX
+  offset: 0x005C48
+  symbol: gTreasureChestCurveSkelLimbsLimb_005E08Curve2DL_005C48
+
+gTreasureChestCurveSkelLimbsLimb_005E50Curve2DL_005D10:
+  type: GFX
+  offset: 0x005D10
+  symbol: gTreasureChestCurveSkelLimbsLimb_005E50Curve2DL_005D10
+
+gTreasureChestCurveSkelLimbsLimb_005DD8:
+  type: OOT:LIMB
+  offset: 0x005DD8
+  symbol: gTreasureChestCurveSkelLimbsLimb_005DD8
+  limb_type: Curve
+
+gTreasureChestCurveSkelLimbsLimb_005DE4:
+  type: OOT:LIMB
+  offset: 0x005DE4
+  symbol: gTreasureChestCurveSkelLimbsLimb_005DE4
+  limb_type: Curve
+
+gTreasureChestCurveSkelLimbsLimb_005DF0:
+  type: OOT:LIMB
+  offset: 0x005DF0
+  symbol: gTreasureChestCurveSkelLimbsLimb_005DF0
+  limb_type: Curve
+
+gTreasureChestCurveSkelLimbsLimb_005DFC:
+  type: OOT:LIMB
+  offset: 0x005DFC
+  symbol: gTreasureChestCurveSkelLimbsLimb_005DFC
+  limb_type: Curve
+
+gTreasureChestCurveSkelLimbsLimb_005E08:
+  type: OOT:LIMB
+  offset: 0x005E08
+  symbol: gTreasureChestCurveSkelLimbsLimb_005E08
+  limb_type: Curve
+
+gTreasureChestCurveSkelLimbsLimb_005E14:
+  type: OOT:LIMB
+  offset: 0x005E14
+  symbol: gTreasureChestCurveSkelLimbsLimb_005E14
+  limb_type: Curve
+
+gTreasureChestCurveSkelLimbsLimb_005E20:
+  type: OOT:LIMB
+  offset: 0x005E20
+  symbol: gTreasureChestCurveSkelLimbsLimb_005E20
+  limb_type: Curve
+
+gTreasureChestCurveSkelLimbsLimb_005E2C:
+  type: OOT:LIMB
+  offset: 0x005E2C
+  symbol: gTreasureChestCurveSkelLimbsLimb_005E2C
+  limb_type: Curve
+
+gTreasureChestCurveSkelLimbsLimb_005E38:
+  type: OOT:LIMB
+  offset: 0x005E38
+  symbol: gTreasureChestCurveSkelLimbsLimb_005E38
+  limb_type: Curve
+
+gTreasureChestCurveSkelLimbsLimb_005E44:
+  type: OOT:LIMB
+  offset: 0x005E44
+  symbol: gTreasureChestCurveSkelLimbsLimb_005E44
+  limb_type: Curve
+
+gTreasureChestCurveSkelLimbsLimb_005E50:
+  type: OOT:LIMB
+  offset: 0x005E50
+  symbol: gTreasureChestCurveSkelLimbsLimb_005E50
+  limb_type: Curve
+
+gTreasureChestCurveSkelLimbsLimb_005E5C:
+  type: OOT:LIMB
+  offset: 0x005E5C
+  symbol: gTreasureChestCurveSkelLimbsLimb_005E5C
+  limb_type: Curve
+
+gTreasureChestCurveSkelLimbsLimb_005E68:
+  type: OOT:LIMB
+  offset: 0x005E68
+  symbol: gTreasureChestCurveSkelLimbsLimb_005E68
+  limb_type: Curve
+
+gTreasureChestCurveSkelLimbsLimb_005E74:
+  type: OOT:LIMB
+  offset: 0x005E74
+  symbol: gTreasureChestCurveSkelLimbsLimb_005E74
+  limb_type: Curve
+
+gTreasureChestCurveSkelLimbs:
+  type: BLOB
+  offset: 0x5E80
+  symbol: gTreasureChestCurveSkelLimbs
+  size: 0

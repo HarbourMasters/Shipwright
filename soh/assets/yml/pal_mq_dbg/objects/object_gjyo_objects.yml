@@ -1,0 +1,40 @@
+:config:
+  segments:
+    - [ 6, 0x017A1000 ]
+    - [ 4, 0x00F5E000 ]
+    - [ 8, 0x017A1000 ]
+    - [ 9, 0x017A1000 ]
+    - [ 10, 0x017A1000 ]
+    - [ 11, 0x017A1000 ]
+    - [ 12, 0x017A1000 ]
+    - [ 13, 0x017A1000 ]
+  external_files:
+    - pal_mq_dbg/objects/gameplay_keep.yml
+
+gRainbowBridgeCol:
+  type: OOT:COLLISION
+  offset: 0xDB8
+  symbol: gRainbowBridgeCol
+
+gRainbowBridgeDL:
+  type: GFX
+  offset: 0x600
+  symbol: gRainbowBridgeDL
+
+gRainbowBridgeTex:
+  type: TEXTURE
+  offset: 0xDF0
+  symbol: gRainbowBridgeTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+object_gjyo_objectsVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_gjyo_objectsVtx_000000
+  count: 96
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

@@ -1,0 +1,120 @@
+:config:
+  segments:
+    - [ 3, 0x03189000 ]
+    - [ 2, 0x03130000 ]
+  directory: scenes/shared/ganon_scene
+  external_files:
+    - pal_mq_dbg/scenes/shared/ganon_scene.yml
+    - pal_mq_dbg/code/sys_matrix.yml
+
+ganon_room_8:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: ganon_room_8
+
+ganon_room_8TLUT_004950:
+  type: TEXTURE
+  offset: 0x4950
+  symbol: ganon_room_8TLUT_004950
+  format: RGBA16
+  width: 16
+  height: 16
+
+ganon_room_8Tex_004A20:
+  type: TEXTURE
+  offset: 0x4A20
+  symbol: ganon_room_8Tex_004A20
+  format: CI8
+  width: 32
+  height: 64
+  tlut: 0x4950
+
+ganon_room_8Tex_005220:
+  type: TEXTURE
+  offset: 0x5220
+  symbol: ganon_room_8Tex_005220
+  format: CI8
+  width: 16
+  height: 16
+  external_tlut: ganon_scene
+  external_tlut_offset: 0xEBE0
+
+ganon_room_8Tex_005320:
+  type: TEXTURE
+  offset: 0x5320
+  symbol: ganon_room_8Tex_005320
+  format: CI8
+  width: 8
+  height: 8
+  external_tlut: ganon_scene
+  external_tlut_offset: 0xEBE0
+
+ganon_room_8Tex_005360:
+  type: TEXTURE
+  offset: 0x5360
+  symbol: ganon_room_8Tex_005360
+  format: CI8
+  width: 16
+  height: 8
+  external_tlut: ganon_scene
+  external_tlut_offset: 0xEBE0
+
+ganon_room_8Tex_0053E0:
+  type: TEXTURE
+  offset: 0x53E0
+  symbol: ganon_room_8Tex_0053E0
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: ganon_scene
+  external_tlut_offset: 0xE9D8
+
+ganon_room_8Tex_005BE0:
+  type: TEXTURE
+  offset: 0x5BE0
+  symbol: ganon_room_8Tex_005BE0
+  format: CI8
+  width: 32
+  height: 32
+  external_tlut: ganon_scene
+  external_tlut_offset: 0xEBE0
+
+ganon_room_8Tex_005FE0:
+  type: TEXTURE
+  offset: 0x5FE0
+  symbol: ganon_room_8Tex_005FE0
+  format: CI8
+  width: 32
+  height: 32
+  external_tlut: ganon_scene
+  external_tlut_offset: 0xEDA0
+
+ganon_room_8Tex_0063E0:
+  type: TEXTURE
+  offset: 0x63E0
+  symbol: ganon_room_8Tex_0063E0
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: ganon_scene
+  external_tlut_offset: 0xEDA0
+
+
+ganon_room_8Vtx_0001A0:
+  type: OOT:ARRAY
+  offset: 0x0001A0
+  symbol: ganon_room_8Vtx_0001A0
+  count: 555
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganon_room_8DL_002450:
+  type: GFX
+  offset: 0x002450
+  symbol: ganon_room_8DL_002450
+
+ganon_room_8DL_004940:
+  type: GFX
+  offset: 0x004940
+  symbol: ganon_room_8DL_004940

@@ -1,0 +1,377 @@
+:config:
+  segments:
+    - [ 6, 0x00E48000 ]
+    - [ 4, 0x00D30660 ]
+    - [ 8, 0x00E48000 ]
+    - [ 9, 0x00E48000 ]
+    - [ 10, 0x00E48000 ]
+    - [ 11, 0x00E48000 ]
+    - [ 12, 0x00E48000 ]
+    - [ 13, 0x00E48000 ]
+  external_files:
+    - pal_1-1/objects/gameplay_keep.yml
+
+gStingerBackflipAnim:
+  type: OOT:ANIMATION
+  offset: 0x704
+  symbol: gStingerBackflipAnim
+
+gStingerBodyDL:
+  type: GFX
+  offset: 0x2BD0
+  symbol: gStingerBodyDL
+
+gStingerBodyGradientTex:
+  type: TEXTURE
+  offset: 0x13C0
+  symbol: gStingerBodyGradientTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gStingerBodyLimb:
+  type: OOT:LIMB
+  offset: 0x3308
+  symbol: gStingerBodyLimb
+  limb_type: Standard
+
+gStingerBodyRootLimb:
+  type: OOT:LIMB
+  offset: 0x32FC
+  symbol: gStingerBodyRootLimb
+  limb_type: Standard
+
+gStingerDiveAnim:
+  type: OOT:ANIMATION
+  offset: 0x4C4
+  symbol: gStingerDiveAnim
+
+gStingerEyeTex:
+  type: TEXTURE
+  offset: 0x14C0
+  symbol: gStingerEyeTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gStingerFinLowerDL:
+  type: GFX
+  offset: 0x3238
+  symbol: gStingerFinLowerDL
+
+gStingerFinLowerLimb:
+  type: OOT:LIMB
+  offset: 0x335C
+  symbol: gStingerFinLowerLimb
+  limb_type: Standard
+
+gStingerFinRootLimb:
+  type: OOT:LIMB
+  offset: 0x3344
+  symbol: gStingerFinRootLimb
+  limb_type: Standard
+
+gStingerFinTex:
+  type: TEXTURE
+  offset: 0x1640
+  symbol: gStingerFinTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gStingerFinUpperDL:
+  type: GFX
+  offset: 0x3178
+  symbol: gStingerFinUpperDL
+
+gStingerFinUpperLimb:
+  type: OOT:LIMB
+  offset: 0x3350
+  symbol: gStingerFinUpperLimb
+  limb_type: Standard
+
+gStingerHeadDL:
+  type: GFX
+  offset: 0x3018
+  symbol: gStingerHeadDL
+
+gStingerHeadLimb:
+  type: OOT:LIMB
+  offset: 0x3374
+  symbol: gStingerHeadLimb
+  limb_type: Standard
+
+gStingerHeadRootLimb:
+  type: OOT:LIMB
+  offset: 0x3368
+  symbol: gStingerHeadRootLimb
+  limb_type: Standard
+
+gStingerHitAnim:
+  type: OOT:ANIMATION
+  offset: 0xFC0
+  symbol: gStingerHitAnim
+
+gStingerIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x12AC
+  symbol: gStingerIdleAnim
+
+gStingerLeftWingBaseDL:
+  type: GFX
+  offset: 0x2470
+  symbol: gStingerLeftWingBaseDL
+
+gStingerLeftWingBaseLimb:
+  type: OOT:LIMB
+  offset: 0x338C
+  symbol: gStingerLeftWingBaseLimb
+  limb_type: Standard
+
+gStingerLeftWingEndDL:
+  type: GFX
+  offset: 0x2648
+  symbol: gStingerLeftWingEndDL
+
+gStingerLeftWingEndLimb:
+  type: OOT:LIMB
+  offset: 0x3398
+  symbol: gStingerLeftWingEndLimb
+  limb_type: Standard
+
+gStingerLeftWingRootLimb:
+  type: OOT:LIMB
+  offset: 0x3380
+  symbol: gStingerLeftWingRootLimb
+  limb_type: Standard
+
+gStingerLimb_3338:
+  type: OOT:LIMB
+  offset: 0x3338
+  symbol: gStingerLimb_3338
+  limb_type: Standard
+
+gStingerPopOutAnim:
+  type: OOT:ANIMATION
+  offset: 0x288
+  symbol: gStingerPopOutAnim
+
+gStingerRightWingBaseDL:
+  type: GFX
+  offset: 0x2820
+  symbol: gStingerRightWingBaseDL
+
+gStingerRightWingBaseLimb:
+  type: OOT:LIMB
+  offset: 0x33B0
+  symbol: gStingerRightWingBaseLimb
+  limb_type: Standard
+
+gStingerRightWingEndDL:
+  type: GFX
+  offset: 0x29F8
+  symbol: gStingerRightWingEndDL
+
+gStingerRightWingEndLimb:
+  type: OOT:LIMB
+  offset: 0x33BC
+  symbol: gStingerRightWingEndLimb
+  limb_type: Standard
+
+gStingerRightWingRootLimb:
+  type: OOT:LIMB
+  offset: 0x33A4
+  symbol: gStingerRightWingRootLimb
+  limb_type: Standard
+
+gStingerRootLimb:
+  type: OOT:LIMB
+  offset: 0x32F0
+  symbol: gStingerRootLimb
+  limb_type: Standard
+
+gStingerSkel:
+  type: OOT:SKELETON
+  offset: 0x3410
+  symbol: gStingerSkel
+  limb_type: Standard
+  skel_type: Normal
+
+gStingerTailConnectionGradientTex:
+  type: TEXTURE
+  offset: 0x16E0
+  symbol: gStingerTailConnectionGradientTex
+  format: RGBA16
+  width: 4
+  height: 4
+
+gStingerTailGradientTex:
+  type: TEXTURE
+  offset: 0x16C0
+  symbol: gStingerTailGradientTex
+  format: RGBA16
+  width: 4
+  height: 4
+
+gStingerTailLowerDL:
+  type: GFX
+  offset: 0x2F70
+  symbol: gStingerTailLowerDL
+
+gStingerTailLowerLimb:
+  type: OOT:LIMB
+  offset: 0x332C
+  symbol: gStingerTailLowerLimb
+  limb_type: Standard
+
+gStingerTailRootDL:
+  type: GFX
+  offset: 0x2D00
+  symbol: gStingerTailRootDL
+
+gStingerTailRootLimb:
+  type: OOT:LIMB
+  offset: 0x3314
+  symbol: gStingerTailRootLimb
+  limb_type: Standard
+
+gStingerTailUpperDL:
+  type: GFX
+  offset: 0x2EB0
+  symbol: gStingerTailUpperDL
+
+gStingerTailUpperLimb:
+  type: OOT:LIMB
+  offset: 0x3320
+  symbol: gStingerTailUpperLimb
+  limb_type: Standard
+
+gStingerUndersideTex:
+  type: TEXTURE
+  offset: 0x15C0
+  symbol: gStingerUndersideTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gStingerWingEndTex:
+  type: TEXTURE
+  offset: 0x1440
+  symbol: gStingerWingEndTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gStingerWingTex:
+  type: TEXTURE
+  offset: 0x12C0
+  symbol: gStingerWingTex
+  format: RGBA16
+  width: 16
+  height: 8
+
+
+object_eiVtx_001700:
+  type: OOT:ARRAY
+  offset: 0x001700
+  symbol: object_eiVtx_001700
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_eiVtx_001880:
+  type: OOT:ARRAY
+  offset: 0x001880
+  symbol: object_eiVtx_001880
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_eiVtx_001A60:
+  type: OOT:ARRAY
+  offset: 0x001A60
+  symbol: object_eiVtx_001A60
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_eiVtx_001BE0:
+  type: OOT:ARRAY
+  offset: 0x001BE0
+  symbol: object_eiVtx_001BE0
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_eiVtx_001DC0:
+  type: OOT:ARRAY
+  offset: 0x001DC0
+  symbol: object_eiVtx_001DC0
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_eiVtx_001F50:
+  type: OOT:ARRAY
+  offset: 0x001F50
+  symbol: object_eiVtx_001F50
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_eiVtx_002110:
+  type: OOT:ARRAY
+  offset: 0x002110
+  symbol: object_eiVtx_002110
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_eiVtx_0021B0:
+  type: OOT:ARRAY
+  offset: 0x0021B0
+  symbol: object_eiVtx_0021B0
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_eiVtx_002200:
+  type: OOT:ARRAY
+  offset: 0x002200
+  symbol: object_eiVtx_002200
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_eiVtx_002370:
+  type: OOT:ARRAY
+  offset: 0x002370
+  symbol: object_eiVtx_002370
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_eiVtx_002400:
+  type: OOT:ARRAY
+  offset: 0x002400
+  symbol: object_eiVtx_002400
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gStingerSkelLimbs:
+  type: BLOB
+  offset: 0x33C8
+  symbol: gStingerSkelLimbs
+  size: 0

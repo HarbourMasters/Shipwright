@@ -1,0 +1,27 @@
+:config:
+  segments:
+    - [ 6, 0x010903A0 ]
+    - [ 4, 0x00D31090 ]
+    - [ 8, 0x010903A0 ]
+    - [ 9, 0x010903A0 ]
+    - [ 10, 0x010903A0 ]
+    - [ 11, 0x010903A0 ]
+    - [ 12, 0x010903A0 ]
+    - [ 13, 0x010903A0 ]
+  external_files:
+    - ntsc_j_gc/objects/gameplay_keep.yml
+
+gGiStickDL:
+  type: GFX
+  offset: 0x04D0
+  symbol: gGiStickDL
+
+
+object_gi_stickVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_gi_stickVtx_000000
+  count: 77
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

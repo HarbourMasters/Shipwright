@@ -1,0 +1,1497 @@
+:config:
+  segments:
+    - [ 6, 0x012344E0 ]
+    - [ 4, 0x00D3AED0 ]
+    - [ 8, 0x012344E0 ]
+    - [ 9, 0x012344E0 ]
+    - [ 10, 0x012344E0 ]
+    - [ 11, 0x012344E0 ]
+    - [ 12, 0x012344E0 ]
+    - [ 13, 0x012344E0 ]
+  external_files:
+    - ntsc_1-2/objects/gameplay_keep.yml
+
+gFishingAquariumBottomDL:
+  type: GFX
+  offset: 0x153D0
+  symbol: gFishingAquariumBottomDL
+
+gFishingAquariumBottomTex:
+  type: TEXTURE
+  offset: 0x140D0
+  symbol: gFishingAquariumBottomTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gFishingAquariumContainerDL:
+  type: GFX
+  offset: 0x15470
+  symbol: gFishingAquariumContainerDL
+
+gFishingAquariumGlassTex:
+  type: TEXTURE
+  offset: 0x14AD0
+  symbol: gFishingAquariumGlassTex
+  format: I8
+  width: 32
+  height: 32
+
+gFishingAquariumWaterTex:
+  type: TEXTURE
+  offset: 0x142D0
+  symbol: gFishingAquariumWaterTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gFishingBubbleMaterialDL:
+  type: GFX
+  offset: 0x3460
+  symbol: gFishingBubbleMaterialDL
+
+gFishingBubbleModelDL:
+  type: GFX
+  offset: 0x34C0
+  symbol: gFishingBubbleModelDL
+
+gFishingBubbleTex:
+  type: TEXTURE
+  offset: 0x3320
+  symbol: gFishingBubbleTex
+  format: IA8
+  width: 16
+  height: 16
+
+gFishingDustSplashMaterialDL:
+  type: GFX
+  offset: 0x3610
+  symbol: gFishingDustSplashMaterialDL
+
+gFishingDustSplashModelDL:
+  type: GFX
+  offset: 0x3680
+  symbol: gFishingDustSplashModelDL
+
+gFishingDustSplashTex:
+  type: TEXTURE
+  offset: 0x34E0
+  symbol: gFishingDustSplashTex
+  format: I8
+  width: 16
+  height: 16
+
+gFishingFishAnim:
+  type: OOT:ANIMATION
+  offset: 0x7C
+  symbol: gFishingFishAnim
+
+gFishingFishDL_000940:
+  type: GFX
+  offset: 0x940
+  symbol: gFishingFishDL_000940
+
+gFishingFishDL_0009E8:
+  type: GFX
+  offset: 0x9E8
+  symbol: gFishingFishDL_0009E8
+
+gFishingFishDL_000B00:
+  type: GFX
+  offset: 0xB00
+  symbol: gFishingFishDL_000B00
+
+gFishingFishDL_000BA0:
+  type: GFX
+  offset: 0xBA0
+  symbol: gFishingFishDL_000BA0
+
+gFishingFishDL_000C40:
+  type: GFX
+  offset: 0xC40
+  symbol: gFishingFishDL_000C40
+
+gFishingFishDL_000E30:
+  type: GFX
+  offset: 0xE30
+  symbol: gFishingFishDL_000E30
+
+gFishingFishDL_000ED0:
+  type: GFX
+  offset: 0xED0
+  symbol: gFishingFishDL_000ED0
+
+gFishingFishDL_000F70:
+  type: GFX
+  offset: 0xF70
+  symbol: gFishingFishDL_000F70
+
+gFishingFishDL_0010A0:
+  type: GFX
+  offset: 0x10A0
+  symbol: gFishingFishDL_0010A0
+
+gFishingFishDL_001260:
+  type: GFX
+  offset: 0x1260
+  symbol: gFishingFishDL_001260
+
+gFishingFishDL_001300:
+  type: GFX
+  offset: 0x1300
+  symbol: gFishingFishDL_001300
+
+gFishingFishDL_0013A0:
+  type: GFX
+  offset: 0x13A0
+  symbol: gFishingFishDL_0013A0
+
+gFishingFishLimb_0028D0:
+  type: OOT:LIMB
+  offset: 0x28D0
+  symbol: gFishingFishLimb_0028D0
+  limb_type: Standard
+
+gFishingFishLimb_0028DC:
+  type: OOT:LIMB
+  offset: 0x28DC
+  symbol: gFishingFishLimb_0028DC
+  limb_type: Standard
+
+gFishingFishLimb_0028E8:
+  type: OOT:LIMB
+  offset: 0x28E8
+  symbol: gFishingFishLimb_0028E8
+  limb_type: Standard
+
+gFishingFishLimb_0028F4:
+  type: OOT:LIMB
+  offset: 0x28F4
+  symbol: gFishingFishLimb_0028F4
+  limb_type: Standard
+
+gFishingFishLimb_002900:
+  type: OOT:LIMB
+  offset: 0x2900
+  symbol: gFishingFishLimb_002900
+  limb_type: Standard
+
+gFishingFishLimb_00290C:
+  type: OOT:LIMB
+  offset: 0x290C
+  symbol: gFishingFishLimb_00290C
+  limb_type: Standard
+
+gFishingFishLimb_002918:
+  type: OOT:LIMB
+  offset: 0x2918
+  symbol: gFishingFishLimb_002918
+  limb_type: Standard
+
+gFishingFishLimb_002924:
+  type: OOT:LIMB
+  offset: 0x2924
+  symbol: gFishingFishLimb_002924
+  limb_type: Standard
+
+gFishingFishLimb_002930:
+  type: OOT:LIMB
+  offset: 0x2930
+  symbol: gFishingFishLimb_002930
+  limb_type: Standard
+
+gFishingFishLimb_00293C:
+  type: OOT:LIMB
+  offset: 0x293C
+  symbol: gFishingFishLimb_00293C
+  limb_type: Standard
+
+gFishingFishLimb_002948:
+  type: OOT:LIMB
+  offset: 0x2948
+  symbol: gFishingFishLimb_002948
+  limb_type: Standard
+
+gFishingFishLimb_002954:
+  type: OOT:LIMB
+  offset: 0x2954
+  symbol: gFishingFishLimb_002954
+  limb_type: Standard
+
+gFishingFishLimb_002960:
+  type: OOT:LIMB
+  offset: 0x2960
+  symbol: gFishingFishLimb_002960
+  limb_type: Standard
+
+gFishingFishLimb_00296C:
+  type: OOT:LIMB
+  offset: 0x296C
+  symbol: gFishingFishLimb_00296C
+  limb_type: Standard
+
+gFishingFishLimb_002978:
+  type: OOT:LIMB
+  offset: 0x2978
+  symbol: gFishingFishLimb_002978
+  limb_type: Standard
+
+gFishingFishSkel:
+  type: OOT:SKELETON
+  offset: 0x29C0
+  symbol: gFishingFishSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gFishingFishTex_0014D0:
+  type: TEXTURE
+  offset: 0x14D0
+  symbol: gFishingFishTex_0014D0
+  format: RGBA16
+  width: 16
+  height: 16
+
+gFishingFishTex_0016D0:
+  type: TEXTURE
+  offset: 0x16D0
+  symbol: gFishingFishTex_0016D0
+  format: RGBA16
+  width: 16
+  height: 16
+
+gFishingFishTex_0018D0:
+  type: TEXTURE
+  offset: 0x18D0
+  symbol: gFishingFishTex_0018D0
+  format: RGBA16
+  width: 16
+  height: 16
+
+gFishingFishTex_001AD0:
+  type: TEXTURE
+  offset: 0x1AD0
+  symbol: gFishingFishTex_001AD0
+  format: RGBA16
+  width: 32
+  height: 32
+
+gFishingFishTex_0022D0:
+  type: TEXTURE
+  offset: 0x22D0
+  symbol: gFishingFishTex_0022D0
+  format: RGBA16
+  width: 16
+  height: 16
+
+gFishingFishTex_0024D0:
+  type: TEXTURE
+  offset: 0x24D0
+  symbol: gFishingFishTex_0024D0
+  format: RGBA16
+  width: 16
+  height: 16
+
+gFishingFishTex_0026D0:
+  type: TEXTURE
+  offset: 0x26D0
+  symbol: gFishingFishTex_0026D0
+  format: RGBA16
+  width: 16
+  height: 16
+
+gFishingGroupFishMaterialDL:
+  type: GFX
+  offset: 0xC220
+  symbol: gFishingGroupFishMaterialDL
+
+gFishingGroupFishModelDL:
+  type: GFX
+  offset: 0xC298
+  symbol: gFishingGroupFishModelDL
+
+gFishingGroupFishTex:
+  type: TEXTURE
+  offset: 0xB9E0
+  symbol: gFishingGroupFishTex
+  format: RGBA16
+  width: 64
+  height: 16
+
+gFishingLilyPadMaterialDL:
+  type: GFX
+  offset: 0x13330
+  symbol: gFishingLilyPadMaterialDL
+
+gFishingLilyPadModelDL:
+  type: GFX
+  offset: 0x133B0
+  symbol: gFishingLilyPadModelDL
+
+gFishingLilyPadTex:
+  type: TEXTURE
+  offset: 0x122E0
+  symbol: gFishingLilyPadTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gFishingLineModelDL:
+  type: GFX
+  offset: 0x3710
+  symbol: gFishingLineModelDL
+
+gFishingLoachAnim:
+  type: OOT:ANIMATION
+  offset: 0xCFE0
+  symbol: gFishingLoachAnim
+
+gFishingLoachDL_00DED0:
+  type: GFX
+  offset: 0xDED0
+  symbol: gFishingLoachDL_00DED0
+
+gFishingLoachDL_00DFA8:
+  type: GFX
+  offset: 0xDFA8
+  symbol: gFishingLoachDL_00DFA8
+
+gFishingLoachDL_00E048:
+  type: GFX
+  offset: 0xE048
+  symbol: gFishingLoachDL_00E048
+
+gFishingLoachDL_00E168:
+  type: GFX
+  offset: 0xE168
+  symbol: gFishingLoachDL_00E168
+
+gFishingLoachDL_00E460:
+  type: GFX
+  offset: 0xE460
+  symbol: gFishingLoachDL_00E460
+
+gFishingLoachDL_00E500:
+  type: GFX
+  offset: 0xE500
+  symbol: gFishingLoachDL_00E500
+
+gFishingLoachDL_00E808:
+  type: GFX
+  offset: 0xE808
+  symbol: gFishingLoachDL_00E808
+
+gFishingLoachDL_00E8B0:
+  type: GFX
+  offset: 0xE8B0
+  symbol: gFishingLoachDL_00E8B0
+
+gFishingLoachDL_00EB28:
+  type: GFX
+  offset: 0xEB28
+  symbol: gFishingLoachDL_00EB28
+
+gFishingLoachDL_00EBC8:
+  type: GFX
+  offset: 0xEBC8
+  symbol: gFishingLoachDL_00EBC8
+
+gFishingLoachDL_00EC68:
+  type: GFX
+  offset: 0xEC68
+  symbol: gFishingLoachDL_00EC68
+
+gFishingLoachLimb_010FA8:
+  type: OOT:LIMB
+  offset: 0x10FA8
+  symbol: gFishingLoachLimb_010FA8
+  limb_type: Standard
+
+gFishingLoachLimb_010FB4:
+  type: OOT:LIMB
+  offset: 0x10FB4
+  symbol: gFishingLoachLimb_010FB4
+  limb_type: Standard
+
+gFishingLoachLimb_010FC0:
+  type: OOT:LIMB
+  offset: 0x10FC0
+  symbol: gFishingLoachLimb_010FC0
+  limb_type: Standard
+
+gFishingLoachLimb_010FCC:
+  type: OOT:LIMB
+  offset: 0x10FCC
+  symbol: gFishingLoachLimb_010FCC
+  limb_type: Standard
+
+gFishingLoachLimb_010FD8:
+  type: OOT:LIMB
+  offset: 0x10FD8
+  symbol: gFishingLoachLimb_010FD8
+  limb_type: Standard
+
+gFishingLoachLimb_010FE4:
+  type: OOT:LIMB
+  offset: 0x10FE4
+  symbol: gFishingLoachLimb_010FE4
+  limb_type: Standard
+
+gFishingLoachLimb_010FF0:
+  type: OOT:LIMB
+  offset: 0x10FF0
+  symbol: gFishingLoachLimb_010FF0
+  limb_type: Standard
+
+gFishingLoachLimb_010FFC:
+  type: OOT:LIMB
+  offset: 0x10FFC
+  symbol: gFishingLoachLimb_010FFC
+  limb_type: Standard
+
+gFishingLoachLimb_011008:
+  type: OOT:LIMB
+  offset: 0x11008
+  symbol: gFishingLoachLimb_011008
+  limb_type: Standard
+
+gFishingLoachLimb_011014:
+  type: OOT:LIMB
+  offset: 0x11014
+  symbol: gFishingLoachLimb_011014
+  limb_type: Standard
+
+gFishingLoachLimb_011020:
+  type: OOT:LIMB
+  offset: 0x11020
+  symbol: gFishingLoachLimb_011020
+  limb_type: Standard
+
+gFishingLoachSkel:
+  type: OOT:SKELETON
+  offset: 0x11058
+  symbol: gFishingLoachSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gFishingLoachTex_00ED28:
+  type: TEXTURE
+  offset: 0xED28
+  symbol: gFishingLoachTex_00ED28
+  format: RGBA16
+  width: 32
+  height: 32
+
+gFishingLoachTex_00F528:
+  type: TEXTURE
+  offset: 0xF528
+  symbol: gFishingLoachTex_00F528
+  format: RGBA16
+  width: 32
+  height: 32
+
+gFishingLoachTex_00FD28:
+  type: TEXTURE
+  offset: 0xFD28
+  symbol: gFishingLoachTex_00FD28
+  format: RGBA16
+  width: 32
+  height: 32
+
+gFishingLoachTex_010528:
+  type: TEXTURE
+  offset: 0x10528
+  symbol: gFishingLoachTex_010528
+  format: RGBA16
+  width: 32
+  height: 32
+
+gFishingLoachTex_010D28:
+  type: TEXTURE
+  offset: 0x10D28
+  symbol: gFishingLoachTex_010D28
+  format: RGBA16
+  width: 8
+  height: 8
+
+gFishingLoachTex_010DA8:
+  type: TEXTURE
+  offset: 0x10DA8
+  symbol: gFishingLoachTex_010DA8
+  format: RGBA16
+  width: 16
+  height: 16
+
+gFishingLureFloatDL:
+  type: GFX
+  offset: 0x121F0
+  symbol: gFishingLureFloatDL
+
+gFishingLureFloatTex:
+  type: TEXTURE
+  offset: 0x11C40
+  symbol: gFishingLureFloatTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gFishingLureHookDL:
+  type: GFX
+  offset: 0x12160
+  symbol: gFishingLureHookDL
+
+gFishingLureHookTex:
+  type: TEXTURE
+  offset: 0x11440
+  symbol: gFishingLureHookTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gFishingOldLureDL:
+  type: GFX
+  offset: 0x2BD0
+  symbol: gFishingOldLureDL
+
+gFishingOldLureFloatTex:
+  type: TEXTURE
+  offset: 0x2AD0
+  symbol: gFishingOldLureFloatTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gFishingOldLureHookTex:
+  type: TEXTURE
+  offset: 0x29D0
+  symbol: gFishingOldLureHookTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gFishingOwnerAnim:
+  type: OOT:ANIMATION
+  offset: 0x453C
+  symbol: gFishingOwnerAnim
+
+gFishingOwnerCollarTex:
+  type: TEXTURE
+  offset: 0xA790
+  symbol: gFishingOwnerCollarTex
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0x8990
+
+gFishingOwnerDL_006F60:
+  type: GFX
+  offset: 0x6F60
+  symbol: gFishingOwnerDL_006F60
+
+gFishingOwnerDL_0076B8:
+  type: GFX
+  offset: 0x76B8
+  symbol: gFishingOwnerDL_0076B8
+
+gFishingOwnerDL_007CF8:
+  type: GFX
+  offset: 0x7CF8
+  symbol: gFishingOwnerDL_007CF8
+
+gFishingOwnerDL_007E48:
+  type: GFX
+  offset: 0x7E48
+  symbol: gFishingOwnerDL_007E48
+
+gFishingOwnerDL_007F78:
+  type: GFX
+  offset: 0x7F78
+  symbol: gFishingOwnerDL_007F78
+
+gFishingOwnerDL_008138:
+  type: GFX
+  offset: 0x8138
+  symbol: gFishingOwnerDL_008138
+
+gFishingOwnerDL_008288:
+  type: GFX
+  offset: 0x8288
+  symbol: gFishingOwnerDL_008288
+
+gFishingOwnerDL_0083B8:
+  type: GFX
+  offset: 0x83B8
+  symbol: gFishingOwnerDL_0083B8
+
+gFishingOwnerEyeClosedTex:
+  type: TEXTURE
+  offset: 0x9A50
+  symbol: gFishingOwnerEyeClosedTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x8990
+
+gFishingOwnerEyeHalfTex:
+  type: TEXTURE
+  offset: 0x9650
+  symbol: gFishingOwnerEyeHalfTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x8990
+
+gFishingOwnerEyeOpenTex:
+  type: TEXTURE
+  offset: 0x9250
+  symbol: gFishingOwnerEyeOpenTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x8990
+
+gFishingOwnerFingersTex:
+  type: TEXTURE
+  offset: 0xA690
+  symbol: gFishingOwnerFingersTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x8990
+
+gFishingOwnerHairDL:
+  type: GFX
+  offset: 0x7350
+  symbol: gFishingOwnerHairDL
+
+gFishingOwnerHairFullTex:
+  type: TEXTURE
+  offset: 0x8BD0
+  symbol: gFishingOwnerHairFullTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x8990
+
+gFishingOwnerHairPartialTex:
+  type: TEXTURE
+  offset: 0x8CD0
+  symbol: gFishingOwnerHairPartialTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x8990
+
+gFishingOwnerHatDL:
+  type: GFX
+  offset: 0x74C8
+  symbol: gFishingOwnerHatDL
+
+gFishingOwnerHatTex:
+  type: TEXTURE
+  offset: 0x9E50
+  symbol: gFishingOwnerHatTex
+  format: CI8
+  width: 64
+  height: 32
+  tlut: 0x8990
+
+gFishingOwnerHearTex:
+  type: TEXTURE
+  offset: 0x8DD0
+  symbol: gFishingOwnerHearTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x8990
+
+gFishingOwnerLimb_008578:
+  type: OOT:LIMB
+  offset: 0x8578
+  symbol: gFishingOwnerLimb_008578
+  limb_type: Standard
+
+gFishingOwnerLimb_008584:
+  type: OOT:LIMB
+  offset: 0x8584
+  symbol: gFishingOwnerLimb_008584
+  limb_type: Standard
+
+gFishingOwnerLimb_008590:
+  type: OOT:LIMB
+  offset: 0x8590
+  symbol: gFishingOwnerLimb_008590
+  limb_type: Standard
+
+gFishingOwnerLimb_00859C:
+  type: OOT:LIMB
+  offset: 0x859C
+  symbol: gFishingOwnerLimb_00859C
+  limb_type: Standard
+
+gFishingOwnerLimb_0085A8:
+  type: OOT:LIMB
+  offset: 0x85A8
+  symbol: gFishingOwnerLimb_0085A8
+  limb_type: Standard
+
+gFishingOwnerLimb_0085B4:
+  type: OOT:LIMB
+  offset: 0x85B4
+  symbol: gFishingOwnerLimb_0085B4
+  limb_type: Standard
+
+gFishingOwnerLimb_0085C0:
+  type: OOT:LIMB
+  offset: 0x85C0
+  symbol: gFishingOwnerLimb_0085C0
+  limb_type: Standard
+
+gFishingOwnerLimb_0085CC:
+  type: OOT:LIMB
+  offset: 0x85CC
+  symbol: gFishingOwnerLimb_0085CC
+  limb_type: Standard
+
+gFishingOwnerMouthTex:
+  type: TEXTURE
+  offset: 0x8E10
+  symbol: gFishingOwnerMouthTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x8990
+
+gFishingOwnerNostrilTex:
+  type: TEXTURE
+  offset: 0x9210
+  symbol: gFishingOwnerNostrilTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x8990
+
+gFishingOwnerShirtTex:
+  type: TEXTURE
+  offset: 0xA650
+  symbol: gFishingOwnerShirtTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x8990
+
+gFishingOwnerSkel:
+  type: OOT:SKELETON
+  offset: 0x85F8
+  symbol: gFishingOwnerSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gFishingOwnerSkinTex:
+  type: TEXTURE
+  offset: 0x8B90
+  symbol: gFishingOwnerSkinTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x8990
+
+gFishingOwnerTLUT:
+  type: TEXTURE
+  offset: 0x8990
+  symbol: gFishingOwnerTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gFishingOwnerVestTex:
+  type: TEXTURE
+  offset: 0xA810
+  symbol: gFishingOwnerVestTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x8990
+
+gFishingRainDropModelDL:
+  type: GFX
+  offset: 0x3760
+  symbol: gFishingRainDropModelDL
+
+gFishingRainSplashMaterialDL:
+  type: GFX
+  offset: 0x39A8
+  symbol: gFishingRainSplashMaterialDL
+
+gFishingRainSplashModelDL:
+  type: GFX
+  offset: 0x3A18
+  symbol: gFishingRainSplashModelDL
+
+gFishingRainSplashTex:
+  type: TEXTURE
+  offset: 0x3778
+  symbol: gFishingRainSplashTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gFishingReedMaterialDL:
+  type: GFX
+  offset: 0x14030
+  symbol: gFishingReedMaterialDL
+
+gFishingReedModelDL:
+  type: GFX
+  offset: 0x140B0
+  symbol: gFishingReedModelDL
+
+gFishingRippleMaterialDL:
+  type: GFX
+  offset: 0x8610
+  symbol: gFishingRippleMaterialDL
+
+gFishingRippleModelDL:
+  type: GFX
+  offset: 0x8678
+  symbol: gFishingRippleModelDL
+
+gFishingRockMaterialDL:
+  type: GFX
+  offset: 0x13590
+  symbol: gFishingRockMaterialDL
+
+gFishingRockModelDL:
+  type: GFX
+  offset: 0x13610
+  symbol: gFishingRockModelDL
+
+gFishingRockTex:
+  type: TEXTURE
+  offset: 0x12AE0
+  symbol: gFishingRockTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gFishingRodMaterialDL:
+  type: GFX
+  offset: 0x113D0
+  symbol: gFishingRodMaterialDL
+
+gFishingRodSegmentBlackTex:
+  type: TEXTURE
+  offset: 0x11170
+  symbol: gFishingRodSegmentBlackTex
+  format: RGBA16
+  width: 16
+  height: 8
+
+gFishingRodSegmentDL:
+  type: GFX
+  offset: 0x11410
+  symbol: gFishingRodSegmentDL
+
+gFishingRodSegmentStripTex:
+  type: TEXTURE
+  offset: 0x11070
+  symbol: gFishingRodSegmentStripTex
+  format: RGBA16
+  width: 16
+  height: 8
+
+gFishingRodSegmentWhiteTex:
+  type: TEXTURE
+  offset: 0x11270
+  symbol: gFishingRodSegmentWhiteTex
+  format: RGBA16
+  width: 16
+  height: 8
+
+gFishingSinkingLureSegmentMaterialDL:
+  type: GFX
+  offset: 0xB950
+  symbol: gFishingSinkingLureSegmentMaterialDL
+
+gFishingSinkingLureSegmentModelDL:
+  type: GFX
+  offset: 0xB9C0
+  symbol: gFishingSinkingLureSegmentModelDL
+
+gFishingSinkingLureSegmentTex:
+  type: TEXTURE
+  offset: 0xA910
+  symbol: gFishingSinkingLureSegmentTex
+  format: IA8
+  width: 64
+  height: 64
+
+gFishingStreamSplashDL:
+  type: GFX
+  offset: 0x3230
+  symbol: gFishingStreamSplashDL
+
+gFishingStreamSplashTile1Tex:
+  type: TEXTURE
+  offset: 0x2CE0
+  symbol: gFishingStreamSplashTile1Tex
+  format: I4
+  width: 32
+  height: 64
+
+gFishingStreamSplashTile2Tex:
+  type: TEXTURE
+  offset: 0x30E0
+  symbol: gFishingStreamSplashTile2Tex
+  format: I4
+  width: 16
+  height: 16
+
+gFishingUnusedMaterialDL:
+  type: GFX
+  offset: 0x36E0
+  symbol: gFishingUnusedMaterialDL
+
+gFishingUnusedRockDL:
+  type: GFX
+  offset: 0xC650
+  symbol: gFishingUnusedRockDL
+
+gFishingUnusedRockTex:
+  type: TEXTURE
+  offset: 0xC780
+  symbol: gFishingUnusedRockTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gFishingWaterDustMaterialDL:
+  type: GFX
+  offset: 0x88C0
+  symbol: gFishingWaterDustMaterialDL
+
+gFishingWaterDustModelDL:
+  type: GFX
+  offset: 0x8970
+  symbol: gFishingWaterDustModelDL
+
+gFishingWaterDustTex:
+  type: TEXTURE
+  offset: 0x8690
+  symbol: gFishingWaterDustTex
+  format: I4
+  width: 32
+  height: 32
+
+gFishingWoodPostMaterialDL:
+  type: GFX
+  offset: 0x13F50
+  symbol: gFishingWoodPostMaterialDL
+
+gFishingWoodPostModelDL:
+  type: GFX
+  offset: 0x13FD0
+  symbol: gFishingWoodPostModelDL
+
+gFishingWoodPostTex:
+  type: TEXTURE
+  offset: 0x13660
+  symbol: gFishingWoodPostTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+object_fishVtx_000090:
+  type: OOT:ARRAY
+  offset: 0x000090
+  symbol: object_fishVtx_000090
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fishVtx_0000E0:
+  type: OOT:ARRAY
+  offset: 0x0000E0
+  symbol: object_fishVtx_0000E0
+  count: 11
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fishVtx_000190:
+  type: OOT:ARRAY
+  offset: 0x000190
+  symbol: object_fishVtx_000190
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fishVtx_0003B0:
+  type: OOT:ARRAY
+  offset: 0x0003B0
+  symbol: object_fishVtx_0003B0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fishVtx_0003E0:
+  type: OOT:ARRAY
+  offset: 0x0003E0
+  symbol: object_fishVtx_0003E0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fishVtx_000410:
+  type: OOT:ARRAY
+  offset: 0x000410
+  symbol: object_fishVtx_000410
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fishVtx_0005B0:
+  type: OOT:ARRAY
+  offset: 0x0005B0
+  symbol: object_fishVtx_0005B0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fishVtx_0005E0:
+  type: OOT:ARRAY
+  offset: 0x0005E0
+  symbol: object_fishVtx_0005E0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fishVtx_000610:
+  type: OOT:ARRAY
+  offset: 0x000610
+  symbol: object_fishVtx_000610
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fishVtx_0007F0:
+  type: OOT:ARRAY
+  offset: 0x0007F0
+  symbol: object_fishVtx_0007F0
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fishVtx_0008E0:
+  type: OOT:ARRAY
+  offset: 0x0008E0
+  symbol: object_fishVtx_0008E0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fishVtx_000910:
+  type: OOT:ARRAY
+  offset: 0x000910
+  symbol: object_fishVtx_000910
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gFishingFishSkelLimbs:
+  type: BLOB
+  offset: 0x2984
+  symbol: gFishingFishSkelLimbs
+  size: 0
+
+object_fishVtx_002B50:
+  type: OOT:ARRAY
+  offset: 0x002B50
+  symbol: object_fishVtx_002B50
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fishVtx_003160:
+  type: OOT:ARRAY
+  offset: 0x003160
+  symbol: object_fishVtx_003160
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fishVtx_003420:
+  type: OOT:ARRAY
+  offset: 0x003420
+  symbol: object_fishVtx_003420
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fishVtx_0035E0:
+  type: OOT:ARRAY
+  offset: 0x0035E0
+  symbol: object_fishVtx_0035E0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fishVtx_0036A0:
+  type: OOT:ARRAY
+  offset: 0x0036A0
+  symbol: object_fishVtx_0036A0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fishVtx_003730:
+  type: OOT:ARRAY
+  offset: 0x003730
+  symbol: object_fishVtx_003730
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fishVtx_003978:
+  type: OOT:ARRAY
+  offset: 0x003978
+  symbol: object_fishVtx_003978
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fishVtx_004550:
+  type: OOT:ARRAY
+  offset: 0x004550
+  symbol: object_fishVtx_004550
+  count: 159
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fishVtx_004F40:
+  type: OOT:ARRAY
+  offset: 0x004F40
+  symbol: object_fishVtx_004F40
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fishVtx_0051C0:
+  type: OOT:ARRAY
+  offset: 0x0051C0
+  symbol: object_fishVtx_0051C0
+  count: 107
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fishVtx_005870:
+  type: OOT:ARRAY
+  offset: 0x005870
+  symbol: object_fishVtx_005870
+  count: 79
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fishVtx_005D60:
+  type: OOT:ARRAY
+  offset: 0x005D60
+  symbol: object_fishVtx_005D60
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fishVtx_005EE0:
+  type: OOT:ARRAY
+  offset: 0x005EE0
+  symbol: object_fishVtx_005EE0
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fishVtx_006160:
+  type: OOT:ARRAY
+  offset: 0x006160
+  symbol: object_fishVtx_006160
+  count: 79
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fishVtx_006650:
+  type: OOT:ARRAY
+  offset: 0x006650
+  symbol: object_fishVtx_006650
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fishVtx_0067D0:
+  type: OOT:ARRAY
+  offset: 0x0067D0
+  symbol: object_fishVtx_0067D0
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fishVtx_006A50:
+  type: OOT:ARRAY
+  offset: 0x006A50
+  symbol: object_fishVtx_006A50
+  count: 81
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gFishingOwnerSkelLimbs:
+  type: BLOB
+  offset: 0x85D8
+  symbol: gFishingOwnerSkelLimbs
+  size: 0
+
+object_fishVtx_008890:
+  type: OOT:ARRAY
+  offset: 0x008890
+  symbol: object_fishVtx_008890
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fishVtx_00B910:
+  type: OOT:ARRAY
+  offset: 0x00B910
+  symbol: object_fishVtx_00B910
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fishVtx_00C1E0:
+  type: OOT:ARRAY
+  offset: 0x00C1E0
+  symbol: object_fishVtx_00C1E0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fishVtx_00C2B0:
+  type: OOT:ARRAY
+  offset: 0x00C2B0
+  symbol: object_fishVtx_00C2B0
+  count: 58
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fishVtx_00CFF0:
+  type: OOT:ARRAY
+  offset: 0x00CFF0
+  symbol: object_fishVtx_00CFF0
+  count: 47
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fishVtx_00D2E0:
+  type: OOT:ARRAY
+  offset: 0x00D2E0
+  symbol: object_fishVtx_00D2E0
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fishVtx_00D330:
+  type: OOT:ARRAY
+  offset: 0x00D330
+  symbol: object_fishVtx_00D330
+  count: 63
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fishVtx_00D720:
+  type: OOT:ARRAY
+  offset: 0x00D720
+  symbol: object_fishVtx_00D720
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fishVtx_00D750:
+  type: OOT:ARRAY
+  offset: 0x00D750
+  symbol: object_fishVtx_00D750
+  count: 57
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fishVtx_00DAE0:
+  type: OOT:ARRAY
+  offset: 0x00DAE0
+  symbol: object_fishVtx_00DAE0
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fishVtx_00DD20:
+  type: OOT:ARRAY
+  offset: 0x00DD20
+  symbol: object_fishVtx_00DD20
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fishVtx_00DD50:
+  type: OOT:ARRAY
+  offset: 0x00DD50
+  symbol: object_fishVtx_00DD50
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fishVtx_00DD80:
+  type: OOT:ARRAY
+  offset: 0x00DD80
+  symbol: object_fishVtx_00DD80
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fishVtx_00DDB0:
+  type: OOT:ARRAY
+  offset: 0x00DDB0
+  symbol: object_fishVtx_00DDB0
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fishVtx_00DE80:
+  type: OOT:ARRAY
+  offset: 0x00DE80
+  symbol: object_fishVtx_00DE80
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gFishingLoachSkelLimbs:
+  type: BLOB
+  offset: 0x1102C
+  symbol: gFishingLoachSkelLimbs
+  size: 0
+
+object_fishVtx_011370:
+  type: OOT:ARRAY
+  offset: 0x011370
+  symbol: object_fishVtx_011370
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fishVtx_012040:
+  type: OOT:ARRAY
+  offset: 0x012040
+  symbol: object_fishVtx_012040
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fishVtx_012080:
+  type: OOT:ARRAY
+  offset: 0x012080
+  symbol: object_fishVtx_012080
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fishVtx_0132E0:
+  type: OOT:ARRAY
+  offset: 0x0132E0
+  symbol: object_fishVtx_0132E0
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fishVtx_0133D0:
+  type: OOT:ARRAY
+  offset: 0x0133D0
+  symbol: object_fishVtx_0133D0
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fishVtx_013E60:
+  type: OOT:ARRAY
+  offset: 0x013E60
+  symbol: object_fishVtx_013E60
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fishVtx_014000:
+  type: OOT:ARRAY
+  offset: 0x014000
+  symbol: object_fishVtx_014000
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fishVtx_014ED0:
+  type: OOT:ARRAY
+  offset: 0x014ED0
+  symbol: object_fishVtx_014ED0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fishVtx_014F50:
+  type: OOT:ARRAY
+  offset: 0x014F50
+  symbol: object_fishVtx_014F50
+  count: 72
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

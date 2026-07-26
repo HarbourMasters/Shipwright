@@ -1,0 +1,48 @@
+:config:
+  segments:
+    - [ 6, 0x012D1000 ]
+    - [ 4, 0x00F5E000 ]
+    - [ 8, 0x012D1000 ]
+    - [ 9, 0x012D1000 ]
+    - [ 10, 0x012D1000 ]
+    - [ 11, 0x012D1000 ]
+    - [ 12, 0x012D1000 ]
+    - [ 13, 0x012D1000 ]
+  external_files:
+    - pal_gc_dbg/objects/gameplay_keep.yml
+
+gWarpPadBaseDL:
+  type: GFX
+  offset: 0x330
+  symbol: gWarpPadBaseDL
+
+gWarpPadCol:
+  type: OOT:COLLISION
+  offset: 0x658
+  symbol: gWarpPadCol
+
+gWarpPadSideTex:
+  type: TEXTURE
+  offset: 0x690
+  symbol: gWarpPadSideTex
+  format: RGBA16
+  width: 64
+  height: 16
+
+gWarpPadTopTex:
+  type: TEXTURE
+  offset: 0xE90
+  symbol: gWarpPadTopTex
+  format: I8
+  width: 32
+  height: 32
+
+
+object_mjinVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_mjinVtx_000000
+  count: 51
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

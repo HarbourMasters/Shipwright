@@ -1,0 +1,87 @@
+:config:
+  segments:
+    - [ 2, 0x017D8840 ]
+
+  external_files:
+    - pal_1-0/scenes/shared/spot10_sceneSet_00BD00.yml
+    - pal_1-0/scenes/shared/spot10_sceneSet_00C0A0.yml
+spot10_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: spot10_scene
+
+gSpot10Path_00C080:
+  type: OOT:PATH
+  offset: 0xC080
+  symbol: gSpot10Path_00C080
+  num_paths: 3
+
+spot10_sceneTex_00C230:
+  type: TEXTURE
+  offset: 0xC230
+  symbol: spot10_sceneTex_00C230
+  format: RGBA16
+  width: 32
+  height: 32
+
+spot10_sceneTex_00CA30:
+  type: TEXTURE
+  offset: 0xCA30
+  symbol: spot10_sceneTex_00CA30
+  format: RGBA16
+  width: 32
+  height: 32
+
+spot10_sceneTex_00D230:
+  type: TEXTURE
+  offset: 0xD230
+  symbol: spot10_sceneTex_00D230
+  format: I4
+  width: 64
+  height: 64
+
+spot10_sceneTex_00DA30:
+  type: TEXTURE
+  offset: 0xDA30
+  symbol: spot10_sceneTex_00DA30
+  format: RGBA16
+  width: 32
+  height: 64
+
+spot10_sceneTex_00EA30:
+  type: TEXTURE
+  offset: 0xEA30
+  symbol: spot10_sceneTex_00EA30
+  format: RGBA16
+  width: 32
+  height: 32
+
+spot10_sceneTex_00F230:
+  type: TEXTURE
+  offset: 0xF230
+  symbol: spot10_sceneTex_00F230
+  format: RGBA16
+  width: 16
+  height: 16
+
+spot10_sceneTex_00F430:
+  type: TEXTURE
+  offset: 0xF430
+  symbol: spot10_sceneTex_00F430
+  format: RGBA16
+  width: 32
+  height: 32
+
+spot10_sceneTex_00FC30:
+  type: TEXTURE
+  offset: 0xFC30
+  symbol: spot10_sceneTex_00FC30
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+spot10_sceneCollisionHeader_00AC98:
+  type: OOT:COLLISION
+  offset: 0x00AC98
+  symbol: spot10_sceneCollisionHeader_00AC98

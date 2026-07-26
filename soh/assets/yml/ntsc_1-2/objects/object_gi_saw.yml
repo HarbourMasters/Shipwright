@@ -1,0 +1,27 @@
+:config:
+  segments:
+    - [ 6, 0x01126E70 ]
+    - [ 4, 0x00D3AED0 ]
+    - [ 8, 0x01126E70 ]
+    - [ 9, 0x01126E70 ]
+    - [ 10, 0x01126E70 ]
+    - [ 11, 0x01126E70 ]
+    - [ 12, 0x01126E70 ]
+    - [ 13, 0x01126E70 ]
+  external_files:
+    - ntsc_1-2/objects/gameplay_keep.yml
+
+gGiSawDL:
+  type: GFX
+  offset: 0x07E0
+  symbol: gGiSawDL
+
+
+object_gi_sawVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_gi_sawVtx_000000
+  count: 126
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

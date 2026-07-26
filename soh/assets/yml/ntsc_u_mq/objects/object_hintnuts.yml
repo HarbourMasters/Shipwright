@@ -1,0 +1,327 @@
+:config:
+  segments:
+    - [ 6, 0x01244AD0 ]
+    - [ 4, 0x00D30F80 ]
+    - [ 8, 0x01244AD0 ]
+    - [ 9, 0x01244AD0 ]
+    - [ 10, 0x01244AD0 ]
+    - [ 11, 0x01244AD0 ]
+    - [ 12, 0x01244AD0 ]
+    - [ 13, 0x01244AD0 ]
+  external_files:
+    - ntsc_u_mq/objects/gameplay_keep.yml
+
+gHintNutsBurrowAnim:
+  type: OOT:ANIMATION
+  offset: 0x24CC
+  symbol: gHintNutsBurrowAnim
+
+gHintNutsFlowerDL:
+  type: GFX
+  offset: 0x14E0
+  symbol: gHintNutsFlowerDL
+
+gHintNutsFreezeAnim:
+  type: OOT:ANIMATION
+  offset: 0x29BC
+  symbol: gHintNutsFreezeAnim
+
+gHintNutsLookAroundAnim:
+  type: OOT:ANIMATION
+  offset: 0x2894
+  symbol: gHintNutsLookAroundAnim
+
+gHintNutsNutDL:
+  type: GFX
+  offset: 0x12F0
+  symbol: gHintNutsNutDL
+
+gHintNutsRunAnim:
+  type: OOT:ANIMATION
+  offset: 0x3128
+  symbol: gHintNutsRunAnim
+
+gHintNutsSkel:
+  type: OOT:SKELETON
+  offset: 0x23B8
+  symbol: gHintNutsSkel
+  limb_type: Standard
+  skel_type: Normal
+
+gHintNutsSpitAnim:
+  type: OOT:ANIMATION
+  offset: 0x168
+  symbol: gHintNutsSpitAnim
+
+gHintNutsStandAnim:
+  type: OOT:ANIMATION
+  offset: 0x2F7C
+  symbol: gHintNutsStandAnim
+
+gHintNutsTalkAnim:
+  type: OOT:ANIMATION
+  offset: 0x2E84
+  symbol: gHintNutsTalkAnim
+
+gHintNutsUnburrowAnim:
+  type: OOT:ANIMATION
+  offset: 0x26C4
+  symbol: gHintNutsUnburrowAnim
+
+gHintNutsUpAnim:
+  type: OOT:ANIMATION
+  offset: 0x2B90
+  symbol: gHintNutsUpAnim
+
+object_hintnutsTex_0015A8:
+  type: TEXTURE
+  offset: 0x15A8
+  symbol: object_hintnutsTex_0015A8
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_hintnutsTex_001DA8:
+  type: TEXTURE
+  offset: 0x1DA8
+  symbol: object_hintnutsTex_001DA8
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_hintnutsTex_001FA8:
+  type: TEXTURE
+  offset: 0x1FA8
+  symbol: object_hintnutsTex_001FA8
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_hintnutsTex_002028:
+  type: TEXTURE
+  offset: 0x2028
+  symbol: object_hintnutsTex_002028
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_hintnutsTex_0020A8:
+  type: TEXTURE
+  offset: 0x20A8
+  symbol: object_hintnutsTex_0020A8
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_hintnutsTex_002128:
+  type: TEXTURE
+  offset: 0x2128
+  symbol: object_hintnutsTex_002128
+  format: RGBA16
+  width: 16
+  height: 16
+
+
+object_hintnutsVtx_000180:
+  type: OOT:ARRAY
+  offset: 0x000180
+  symbol: object_hintnutsVtx_000180
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hintnutsVtx_0002E0:
+  type: OOT:ARRAY
+  offset: 0x0002E0
+  symbol: object_hintnutsVtx_0002E0
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hintnutsVtx_000340:
+  type: OOT:ARRAY
+  offset: 0x000340
+  symbol: object_hintnutsVtx_000340
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hintnutsVtx_000430:
+  type: OOT:ARRAY
+  offset: 0x000430
+  symbol: object_hintnutsVtx_000430
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hintnutsVtx_000480:
+  type: OOT:ARRAY
+  offset: 0x000480
+  symbol: object_hintnutsVtx_000480
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hintnutsVtx_0004F0:
+  type: OOT:ARRAY
+  offset: 0x0004F0
+  symbol: object_hintnutsVtx_0004F0
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hintnutsVtx_000560:
+  type: OOT:ARRAY
+  offset: 0x000560
+  symbol: object_hintnutsVtx_000560
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hintnutsVtx_0005B0:
+  type: OOT:ARRAY
+  offset: 0x0005B0
+  symbol: object_hintnutsVtx_0005B0
+  count: 68
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hintnutsVtx_0009F0:
+  type: OOT:ARRAY
+  offset: 0x0009F0
+  symbol: object_hintnutsVtx_0009F0
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gHintNutsSkelLimbsLimb_002334DL_000B30:
+  type: GFX
+  offset: 0x000B30
+  symbol: gHintNutsSkelLimbsLimb_002334DL_000B30
+
+gHintNutsSkelLimbsLimb_002328DL_000C68:
+  type: GFX
+  offset: 0x000C68
+  symbol: gHintNutsSkelLimbsLimb_002328DL_000C68
+
+gHintNutsSkelLimbsLimb_002358DL_000D10:
+  type: GFX
+  offset: 0x000D10
+  symbol: gHintNutsSkelLimbsLimb_002358DL_000D10
+
+gHintNutsSkelLimbsLimb_00237CDL_000E28:
+  type: GFX
+  offset: 0x000E28
+  symbol: gHintNutsSkelLimbsLimb_00237CDL_000E28
+
+gHintNutsSkelLimbsLimb_002388DL_000EC8:
+  type: GFX
+  offset: 0x000EC8
+  symbol: gHintNutsSkelLimbsLimb_002388DL_000EC8
+
+gHintNutsSkelLimbsLimb_002370DL_000F78:
+  type: GFX
+  offset: 0x000F78
+  symbol: gHintNutsSkelLimbsLimb_002370DL_000F78
+
+gHintNutsSkelLimbsLimb_002364DL_001028:
+  type: GFX
+  offset: 0x001028
+  symbol: gHintNutsSkelLimbsLimb_002364DL_001028
+
+gHintNutsSkelLimbsLimb_002340DL_0010C8:
+  type: GFX
+  offset: 0x0010C8
+  symbol: gHintNutsSkelLimbsLimb_002340DL_0010C8
+
+gHintNutsSkelLimbsLimb_00234CDL_001208:
+  type: GFX
+  offset: 0x001208
+  symbol: gHintNutsSkelLimbsLimb_00234CDL_001208
+
+object_hintnutsVtx_0012C0:
+  type: OOT:ARRAY
+  offset: 0x0012C0
+  symbol: object_hintnutsVtx_0012C0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hintnutsVtx_001380:
+  type: OOT:ARRAY
+  offset: 0x001380
+  symbol: object_hintnutsVtx_001380
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gHintNutsSkelLimbsLimb_002328:
+  type: OOT:LIMB
+  offset: 0x002328
+  symbol: gHintNutsSkelLimbsLimb_002328
+  limb_type: Standard
+
+gHintNutsSkelLimbsLimb_002334:
+  type: OOT:LIMB
+  offset: 0x002334
+  symbol: gHintNutsSkelLimbsLimb_002334
+  limb_type: Standard
+
+gHintNutsSkelLimbsLimb_002340:
+  type: OOT:LIMB
+  offset: 0x002340
+  symbol: gHintNutsSkelLimbsLimb_002340
+  limb_type: Standard
+
+gHintNutsSkelLimbsLimb_00234C:
+  type: OOT:LIMB
+  offset: 0x00234C
+  symbol: gHintNutsSkelLimbsLimb_00234C
+  limb_type: Standard
+
+gHintNutsSkelLimbsLimb_002358:
+  type: OOT:LIMB
+  offset: 0x002358
+  symbol: gHintNutsSkelLimbsLimb_002358
+  limb_type: Standard
+
+gHintNutsSkelLimbsLimb_002364:
+  type: OOT:LIMB
+  offset: 0x002364
+  symbol: gHintNutsSkelLimbsLimb_002364
+  limb_type: Standard
+
+gHintNutsSkelLimbsLimb_002370:
+  type: OOT:LIMB
+  offset: 0x002370
+  symbol: gHintNutsSkelLimbsLimb_002370
+  limb_type: Standard
+
+gHintNutsSkelLimbsLimb_00237C:
+  type: OOT:LIMB
+  offset: 0x00237C
+  symbol: gHintNutsSkelLimbsLimb_00237C
+  limb_type: Standard
+
+gHintNutsSkelLimbsLimb_002388:
+  type: OOT:LIMB
+  offset: 0x002388
+  symbol: gHintNutsSkelLimbsLimb_002388
+  limb_type: Standard
+
+gHintNutsSkelLimbs:
+  type: BLOB
+  offset: 0x2394
+  symbol: gHintNutsSkelLimbs
+  size: 0

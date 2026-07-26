@@ -1,0 +1,253 @@
+:config:
+  segments:
+    - [ 2, 0x01B06CD0 ]
+
+  external_files:
+    - pal_gc/scenes/shared/spot05_sceneSet_0067D0.yml
+    - pal_gc/scenes/shared/spot05_sceneSet_006A00.yml
+    - pal_gc/scenes/shared/spot05_sceneSet_006AE0.yml
+spot05_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: spot05_scene
+
+gMinuetCs:
+  type: OOT:CUTSCENE
+  offset: 0x3F80
+  symbol: gMinuetCs
+
+gSpot05Path_0069D8:
+  type: OOT:PATH
+  offset: 0x69D8
+  symbol: gSpot05Path_0069D8
+  num_paths: 5
+
+spot05_sceneTLUT_006BC0:
+  type: TEXTURE
+  offset: 0x6BC0
+  symbol: spot05_sceneTLUT_006BC0
+  format: RGBA16
+  width: 16
+  height: 16
+
+spot05_sceneTex_006D60:
+  type: TEXTURE
+  offset: 0x6D60
+  symbol: spot05_sceneTex_006D60
+  format: RGBA16
+  width: 32
+  height: 64
+
+spot05_sceneTex_007D60:
+  type: TEXTURE
+  offset: 0x7D60
+  symbol: spot05_sceneTex_007D60
+  format: RGBA16
+  width: 32
+  height: 64
+
+spot05_sceneTex_008D60:
+  type: TEXTURE
+  offset: 0x8D60
+  symbol: spot05_sceneTex_008D60
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x6BC0
+
+spot05_sceneTex_009160:
+  type: TEXTURE
+  offset: 0x9160
+  symbol: spot05_sceneTex_009160
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x6BC0
+
+spot05_sceneTex_009560:
+  type: TEXTURE
+  offset: 0x9560
+  symbol: spot05_sceneTex_009560
+  format: RGBA16
+  width: 16
+  height: 32
+
+spot05_sceneTex_009960:
+  type: TEXTURE
+  offset: 0x9960
+  symbol: spot05_sceneTex_009960
+  format: CI8
+  width: 64
+  height: 32
+  tlut: 0x6BC0
+
+spot05_sceneTex_00A160:
+  type: TEXTURE
+  offset: 0xA160
+  symbol: spot05_sceneTex_00A160
+  format: RGBA16
+  width: 64
+  height: 32
+
+spot05_sceneTex_00B160:
+  type: TEXTURE
+  offset: 0xB160
+  symbol: spot05_sceneTex_00B160
+  format: RGBA16
+  width: 32
+  height: 32
+
+spot05_sceneTex_00B960:
+  type: TEXTURE
+  offset: 0xB960
+  symbol: spot05_sceneTex_00B960
+  format: RGBA16
+  width: 16
+  height: 16
+
+spot05_sceneTex_00BB60:
+  type: TEXTURE
+  offset: 0xBB60
+  symbol: spot05_sceneTex_00BB60
+  format: RGBA16
+  width: 16
+  height: 128
+
+spot05_sceneTex_00CB60:
+  type: TEXTURE
+  offset: 0xCB60
+  symbol: spot05_sceneTex_00CB60
+  format: RGBA16
+  width: 32
+  height: 32
+
+spot05_sceneTex_00D360:
+  type: TEXTURE
+  offset: 0xD360
+  symbol: spot05_sceneTex_00D360
+  format: I4
+  width: 64
+  height: 64
+
+spot05_sceneTex_00DB60:
+  type: TEXTURE
+  offset: 0xDB60
+  symbol: spot05_sceneTex_00DB60
+  format: RGBA16
+  width: 32
+  height: 32
+
+spot05_sceneTex_00E360:
+  type: TEXTURE
+  offset: 0xE360
+  symbol: spot05_sceneTex_00E360
+  format: I4
+  width: 64
+  height: 64
+
+spot05_sceneTex_00EB60:
+  type: TEXTURE
+  offset: 0xEB60
+  symbol: spot05_sceneTex_00EB60
+  format: RGBA16
+  width: 64
+  height: 16
+
+spot05_sceneTex_00F360:
+  type: TEXTURE
+  offset: 0xF360
+  symbol: spot05_sceneTex_00F360
+  format: RGBA16
+  width: 32
+  height: 32
+
+spot05_sceneTex_00FB60:
+  type: TEXTURE
+  offset: 0xFB60
+  symbol: spot05_sceneTex_00FB60
+  format: I4
+  width: 64
+  height: 64
+
+spot05_sceneTex_010360:
+  type: TEXTURE
+  offset: 0x10360
+  symbol: spot05_sceneTex_010360
+  format: RGBA16
+  width: 32
+  height: 32
+
+spot05_sceneTex_010B60:
+  type: TEXTURE
+  offset: 0x10B60
+  symbol: spot05_sceneTex_010B60
+  format: RGBA16
+  width: 32
+  height: 32
+
+spot05_sceneTex_011360:
+  type: TEXTURE
+  offset: 0x11360
+  symbol: spot05_sceneTex_011360
+  format: RGBA16
+  width: 32
+  height: 64
+
+spot05_sceneTex_012360:
+  type: TEXTURE
+  offset: 0x12360
+  symbol: spot05_sceneTex_012360
+  format: RGBA16
+  width: 32
+  height: 32
+
+spot05_sceneTex_012B60:
+  type: TEXTURE
+  offset: 0x12B60
+  symbol: spot05_sceneTex_012B60
+  format: RGBA16
+  width: 32
+  height: 32
+
+spot05_sceneTex_013360:
+  type: TEXTURE
+  offset: 0x13360
+  symbol: spot05_sceneTex_013360
+  format: RGBA16
+  width: 32
+  height: 32
+
+spot05_sceneTex_013B60:
+  type: TEXTURE
+  offset: 0x13B60
+  symbol: spot05_sceneTex_013B60
+  format: RGBA16
+  width: 64
+  height: 16
+
+spot05_sceneTex_014360:
+  type: TEXTURE
+  offset: 0x14360
+  symbol: spot05_sceneTex_014360
+  format: RGBA16
+  width: 32
+  height: 32
+
+spot05_sceneTex_014B60:
+  type: TEXTURE
+  offset: 0x14B60
+  symbol: spot05_sceneTex_014B60
+  format: IA8
+  width: 16
+  height: 32
+
+spot05_scene_Cs_005730:
+  type: OOT:CUTSCENE
+  offset: 0x5730
+  symbol: spot05_scene_Cs_005730
+
+
+spot05_sceneCollisionHeader_003F4C:
+  type: OOT:COLLISION
+  offset: 0x003F4C
+  symbol: spot05_sceneCollisionHeader_003F4C

@@ -1,0 +1,484 @@
+:config:
+  segments:
+    - [ 6, 0x0117F7B0 ]
+    - [ 4, 0x00D30E00 ]
+    - [ 8, 0x0117F7B0 ]
+    - [ 9, 0x0117F7B0 ]
+    - [ 10, 0x0117F7B0 ]
+    - [ 11, 0x0117F7B0 ]
+    - [ 12, 0x0117F7B0 ]
+    - [ 13, 0x0117F7B0 ]
+  external_files:
+    - ntsc_j_gc_collection/objects/gameplay_keep.yml
+
+object_toryo_Anim_000E50:
+  type: OOT:ANIMATION
+  offset: 0xE50
+  symbol: object_toryo_Anim_000E50
+
+object_toryo_DL_004B20:
+  type: GFX
+  offset: 0x4B20
+  symbol: object_toryo_DL_004B20
+
+object_toryo_DL_004F20:
+  type: GFX
+  offset: 0x4F20
+  symbol: object_toryo_DL_004F20
+
+object_toryo_DL_005438:
+  type: GFX
+  offset: 0x5438
+  symbol: object_toryo_DL_005438
+
+object_toryo_DL_005720:
+  type: GFX
+  offset: 0x5720
+  symbol: object_toryo_DL_005720
+
+object_toryo_DL_005958:
+  type: GFX
+  offset: 0x5958
+  symbol: object_toryo_DL_005958
+
+object_toryo_DL_005BA0:
+  type: GFX
+  offset: 0x5BA0
+  symbol: object_toryo_DL_005BA0
+
+object_toryo_DL_005D10:
+  type: GFX
+  offset: 0x5D10
+  symbol: object_toryo_DL_005D10
+
+object_toryo_DL_005EC8:
+  type: GFX
+  offset: 0x5EC8
+  symbol: object_toryo_DL_005EC8
+
+object_toryo_DL_006110:
+  type: GFX
+  offset: 0x6110
+  symbol: object_toryo_DL_006110
+
+object_toryo_DL_006280:
+  type: GFX
+  offset: 0x6280
+  symbol: object_toryo_DL_006280
+
+object_toryo_DL_0064B8:
+  type: GFX
+  offset: 0x64B8
+  symbol: object_toryo_DL_0064B8
+
+object_toryo_DL_0067E0:
+  type: GFX
+  offset: 0x67E0
+  symbol: object_toryo_DL_0067E0
+
+object_toryo_DL_0068E8:
+  type: GFX
+  offset: 0x68E8
+  symbol: object_toryo_DL_0068E8
+
+object_toryo_DL_006A88:
+  type: GFX
+  offset: 0x6A88
+  symbol: object_toryo_DL_006A88
+
+object_toryo_DL_006DA8:
+  type: GFX
+  offset: 0x6DA8
+  symbol: object_toryo_DL_006DA8
+
+object_toryo_DL_006EB0:
+  type: GFX
+  offset: 0x6EB0
+  symbol: object_toryo_DL_006EB0
+
+object_toryo_Limb_007050:
+  type: OOT:LIMB
+  offset: 0x7050
+  symbol: object_toryo_Limb_007050
+  limb_type: Standard
+
+object_toryo_Limb_00705C:
+  type: OOT:LIMB
+  offset: 0x705C
+  symbol: object_toryo_Limb_00705C
+  limb_type: Standard
+
+object_toryo_Limb_007068:
+  type: OOT:LIMB
+  offset: 0x7068
+  symbol: object_toryo_Limb_007068
+  limb_type: Standard
+
+object_toryo_Limb_007074:
+  type: OOT:LIMB
+  offset: 0x7074
+  symbol: object_toryo_Limb_007074
+  limb_type: Standard
+
+object_toryo_Limb_007080:
+  type: OOT:LIMB
+  offset: 0x7080
+  symbol: object_toryo_Limb_007080
+  limb_type: Standard
+
+object_toryo_Limb_00708C:
+  type: OOT:LIMB
+  offset: 0x708C
+  symbol: object_toryo_Limb_00708C
+  limb_type: Standard
+
+object_toryo_Limb_007098:
+  type: OOT:LIMB
+  offset: 0x7098
+  symbol: object_toryo_Limb_007098
+  limb_type: Standard
+
+object_toryo_Limb_0070A4:
+  type: OOT:LIMB
+  offset: 0x70A4
+  symbol: object_toryo_Limb_0070A4
+  limb_type: Standard
+
+object_toryo_Limb_0070B0:
+  type: OOT:LIMB
+  offset: 0x70B0
+  symbol: object_toryo_Limb_0070B0
+  limb_type: Standard
+
+object_toryo_Limb_0070BC:
+  type: OOT:LIMB
+  offset: 0x70BC
+  symbol: object_toryo_Limb_0070BC
+  limb_type: Standard
+
+object_toryo_Limb_0070C8:
+  type: OOT:LIMB
+  offset: 0x70C8
+  symbol: object_toryo_Limb_0070C8
+  limb_type: Standard
+
+object_toryo_Limb_0070D4:
+  type: OOT:LIMB
+  offset: 0x70D4
+  symbol: object_toryo_Limb_0070D4
+  limb_type: Standard
+
+object_toryo_Limb_0070E0:
+  type: OOT:LIMB
+  offset: 0x70E0
+  symbol: object_toryo_Limb_0070E0
+  limb_type: Standard
+
+object_toryo_Limb_0070EC:
+  type: OOT:LIMB
+  offset: 0x70EC
+  symbol: object_toryo_Limb_0070EC
+  limb_type: Standard
+
+object_toryo_Limb_0070F8:
+  type: OOT:LIMB
+  offset: 0x70F8
+  symbol: object_toryo_Limb_0070F8
+  limb_type: Standard
+
+object_toryo_Limb_007104:
+  type: OOT:LIMB
+  offset: 0x7104
+  symbol: object_toryo_Limb_007104
+  limb_type: Standard
+
+object_toryo_Skel_007150:
+  type: OOT:SKELETON
+  offset: 0x7150
+  symbol: object_toryo_Skel_007150
+  limb_type: Standard
+  skel_type: Flex
+
+object_toryo_TLUT_000E60:
+  type: TEXTURE
+  offset: 0xE60
+  symbol: object_toryo_TLUT_000E60
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_toryo_Tex_001060:
+  type: TEXTURE
+  offset: 0x1060
+  symbol: object_toryo_Tex_001060
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0xE60
+
+object_toryo_Tex_001160:
+  type: TEXTURE
+  offset: 0x1160
+  symbol: object_toryo_Tex_001160
+  format: CI8
+  width: 8
+  height: 4
+  tlut: 0xE60
+
+object_toryo_Tex_001180:
+  type: TEXTURE
+  offset: 0x1180
+  symbol: object_toryo_Tex_001180
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0xE60
+
+object_toryo_Tex_0011C0:
+  type: TEXTURE
+  offset: 0x11C0
+  symbol: object_toryo_Tex_0011C0
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0xE60
+
+object_toryo_Tex_001200:
+  type: TEXTURE
+  offset: 0x1200
+  symbol: object_toryo_Tex_001200
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0xE60
+
+object_toryo_Tex_001240:
+  type: TEXTURE
+  offset: 0x1240
+  symbol: object_toryo_Tex_001240
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0xE60
+
+object_toryo_Tex_0012C0:
+  type: TEXTURE
+  offset: 0x12C0
+  symbol: object_toryo_Tex_0012C0
+  format: RGBA16
+  width: 32
+  height: 16
+
+object_toryo_Tex_0016C0:
+  type: TEXTURE
+  offset: 0x16C0
+  symbol: object_toryo_Tex_0016C0
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0xE60
+
+object_toryo_Tex_0017C0:
+  type: TEXTURE
+  offset: 0x17C0
+  symbol: object_toryo_Tex_0017C0
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0xE60
+
+object_toryo_Tex_0018C0:
+  type: TEXTURE
+  offset: 0x18C0
+  symbol: object_toryo_Tex_0018C0
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0xE60
+
+object_toryo_Tex_0019C0:
+  type: TEXTURE
+  offset: 0x19C0
+  symbol: object_toryo_Tex_0019C0
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0xE60
+
+object_toryo_Tex_001A00:
+  type: TEXTURE
+  offset: 0x1A00
+  symbol: object_toryo_Tex_001A00
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0xE60
+
+object_toryo_Tex_001A80:
+  type: TEXTURE
+  offset: 0x1A80
+  symbol: object_toryo_Tex_001A80
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0xE60
+
+object_toryo_Tex_001B80:
+  type: TEXTURE
+  offset: 0x1B80
+  symbol: object_toryo_Tex_001B80
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0xE60
+
+
+object_toryoVtx_001C80:
+  type: OOT:ARRAY
+  offset: 0x001C80
+  symbol: object_toryoVtx_001C80
+  count: 53
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_toryoVtx_001FD0:
+  type: OOT:ARRAY
+  offset: 0x001FD0
+  symbol: object_toryoVtx_001FD0
+  count: 124
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_toryoVtx_002790:
+  type: OOT:ARRAY
+  offset: 0x002790
+  symbol: object_toryoVtx_002790
+  count: 46
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_toryoVtx_002A70:
+  type: OOT:ARRAY
+  offset: 0x002A70
+  symbol: object_toryoVtx_002A70
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_toryoVtx_002C00:
+  type: OOT:ARRAY
+  offset: 0x002C00
+  symbol: object_toryoVtx_002C00
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_toryoVtx_002E10:
+  type: OOT:ARRAY
+  offset: 0x002E10
+  symbol: object_toryoVtx_002E10
+  count: 46
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_toryoVtx_0030F0:
+  type: OOT:ARRAY
+  offset: 0x0030F0
+  symbol: object_toryoVtx_0030F0
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_toryoVtx_003280:
+  type: OOT:ARRAY
+  offset: 0x003280
+  symbol: object_toryoVtx_003280
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_toryoVtx_003490:
+  type: OOT:ARRAY
+  offset: 0x003490
+  symbol: object_toryoVtx_003490
+  count: 88
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_toryoVtx_003A10:
+  type: OOT:ARRAY
+  offset: 0x003A10
+  symbol: object_toryoVtx_003A10
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_toryoVtx_003C50:
+  type: OOT:ARRAY
+  offset: 0x003C50
+  symbol: object_toryoVtx_003C50
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_toryoVtx_003D80:
+  type: OOT:ARRAY
+  offset: 0x003D80
+  symbol: object_toryoVtx_003D80
+  count: 59
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_toryoVtx_004130:
+  type: OOT:ARRAY
+  offset: 0x004130
+  symbol: object_toryoVtx_004130
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_toryoVtx_004370:
+  type: OOT:ARRAY
+  offset: 0x004370
+  symbol: object_toryoVtx_004370
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_toryoVtx_0044A0:
+  type: OOT:ARRAY
+  offset: 0x0044A0
+  symbol: object_toryoVtx_0044A0
+  count: 59
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_toryoVtx_004850:
+  type: OOT:ARRAY
+  offset: 0x004850
+  symbol: object_toryoVtx_004850
+  count: 45
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_toryo_Skel_007150Limbs:
+  type: BLOB
+  offset: 0x7110
+  symbol: object_toryo_Skel_007150Limbs
+  size: 0

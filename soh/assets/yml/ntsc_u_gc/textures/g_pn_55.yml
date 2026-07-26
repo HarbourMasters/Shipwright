@@ -1,0 +1,20 @@
+:config:
+  segments:
+    - [ 128, 0x01307660 ]
+
+gDesertColossusTitleCardENGTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gDesertColossusTitleCardENGTex
+  format: IA8
+  width: 144
+  height: 24
+
+gDesertColossusTitleCardJPNTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gDesertColossusTitleCardJPNTex
+  format: IA8
+  width: 144
+  height: 24
+

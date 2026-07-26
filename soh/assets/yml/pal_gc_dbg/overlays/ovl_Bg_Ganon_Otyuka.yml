@@ -1,0 +1,88 @@
+:config:
+  segments:
+    - [ 128, 0x00C44720 ]
+    - [ 4, 0x00F5E000 ]
+    - [ 8, 0x00C44720 ]
+    - [ 9, 0x00C44720 ]
+    - [ 10, 0x00C44720 ]
+    - [ 11, 0x00C44720 ]
+    - [ 12, 0x00C44720 ]
+    - [ 13, 0x00C44720 ]
+  virtual: [ 0x808759A0, 0x00C44720 ]
+  external_files:
+    - pal_gc_dbg/objects/gameplay_keep.yml
+
+sCol:
+  type: OOT:COLLISION
+  offset: 0x2570
+  symbol: sCol
+
+sFlashDL:
+  type: GFX
+  offset: 0x23D8
+  symbol: sFlashDL
+
+sFlashTex:
+  type: TEXTURE
+  offset: 0x1B58
+  symbol: sFlashTex
+  format: I8
+  width: 32
+  height: 64
+
+sFlashVtx:
+  type: OOT:ARRAY
+  offset: 0x2358
+  symbol: sFlashVtx
+  count: 8
+  array_type: VTX
+
+sPlatformBottomDL:
+  type: GFX
+  offset: 0x1AE8
+  symbol: sPlatformBottomDL
+
+sPlatformBottomVtx:
+  type: OOT:ARRAY
+  offset: 0x1AA8
+  symbol: sPlatformBottomVtx
+  count: 4
+  array_type: VTX
+
+sPlatformMaterialDL:
+  type: GFX
+  offset: 0x1A08
+  symbol: sPlatformMaterialDL
+
+sPlatformSideDL:
+  type: GFX
+  offset: 0x1B40
+  symbol: sPlatformSideDL
+
+sPlatformSideVtx:
+  type: OOT:ARRAY
+  offset: 0x01B00
+  symbol: sPlatformSideVtx
+  count: 4
+  array_type: VTX
+
+sPlatformTex:
+  type: TEXTURE
+  offset: 0x11C0
+  symbol: sPlatformTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+sPlatformTopDL:
+  type: GFX
+  offset: 0x1A90
+  symbol: sPlatformTopDL
+
+sPlatformTopVtx:
+  type: OOT:ARRAY
+  offset: 0x19C8
+  symbol: sPlatformTopVtx
+  count: 4
+  array_type: VTX
+

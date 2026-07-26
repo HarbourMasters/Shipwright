@@ -1,0 +1,115 @@
+:config:
+  segments:
+    - [ 6, 0x011BE950 ]
+    - [ 4, 0x00D3A8E0 ]
+    - [ 8, 0x011BE950 ]
+    - [ 9, 0x011BE950 ]
+    - [ 10, 0x011BE950 ]
+    - [ 11, 0x011BE950 ]
+    - [ 12, 0x011BE950 ]
+    - [ 13, 0x011BE950 ]
+  external_files:
+    - ntsc_1-1/objects/gameplay_keep.yml
+
+gFaDL:
+  type: GFX
+  offset: 0x2940
+  symbol: gFaDL
+
+gFaEarTex:
+  type: TEXTURE
+  offset: 0x8C0
+  symbol: gFaEarTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x0
+
+gFaEyeClosedTex:
+  type: TEXTURE
+  offset: 0x1140
+  symbol: gFaEyeClosedTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x0
+
+gFaEyeHalfTex:
+  type: TEXTURE
+  offset: 0xD40
+  symbol: gFaEyeHalfTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x0
+
+gFaEyeOpenTex:
+  type: TEXTURE
+  offset: 0x240
+  symbol: gFaEyeOpenTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x0
+
+gFaHair1Tex:
+  type: TEXTURE
+  offset: 0x840
+  symbol: gFaHair1Tex
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0x0
+
+gFaHair2Tex:
+  type: TEXTURE
+  offset: 0x900
+  symbol: gFaHair2Tex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gFaHeadbandTex:
+  type: TEXTURE
+  offset: 0xD00
+  symbol: gFaHeadbandTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x0
+
+gFaMouthTex:
+  type: TEXTURE
+  offset: 0x640
+  symbol: gFaMouthTex
+  format: CI8
+  width: 32
+  height: 16
+  tlut: 0x0
+
+gFaSkinTex:
+  type: TEXTURE
+  offset: 0x200
+  symbol: gFaSkinTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x0
+
+gFaTLUT:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gFaTLUT
+  format: RGBA16
+  width: 256
+  height: 1
+
+
+object_faVtx_001540:
+  type: OOT:ARRAY
+  offset: 0x001540
+  symbol: object_faVtx_001540
+  count: 320
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

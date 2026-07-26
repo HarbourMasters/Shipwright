@@ -1,0 +1,39 @@
+:config:
+  segments:
+    - [ 128, 0x00D15160 ]
+    - [ 4, 0x00D31090 ]
+    - [ 8, 0x00D15160 ]
+    - [ 9, 0x00D15160 ]
+    - [ 10, 0x00D15160 ]
+    - [ 11, 0x00D15160 ]
+    - [ 12, 0x00D15160 ]
+    - [ 13, 0x00D15160 ]
+  virtual: [ 0x80B63E40, 0x00D15160 ]
+  external_files:
+    - ntsc_j_gc/objects/gameplay_keep.yml
+
+sDiamondMaterialDL:
+  type: GFX
+  offset: 0x15D0
+  symbol: sDiamondMaterialDL
+
+sDiamondModelDL:
+  type: GFX
+  offset: 0x1680
+  symbol: sDiamondModelDL
+
+sDiamondTex:
+  type: TEXTURE
+  offset: 0xC90
+  symbol: sDiamondTex
+  format: I8
+  width: 32
+  height: 64
+
+sDiamondVtx:
+  type: OOT:ARRAY
+  offset: 0x1490
+  symbol: sDiamondVtx
+  count: 20
+  array_type: VTX
+

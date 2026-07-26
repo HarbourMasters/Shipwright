@@ -1,0 +1,65 @@
+:config:
+  segments:
+    - [ 6, 0x0101D770 ]
+    - [ 4, 0x00D30F80 ]
+    - [ 8, 0x0101D770 ]
+    - [ 9, 0x0101D770 ]
+    - [ 10, 0x0101D770 ]
+    - [ 11, 0x0101D770 ]
+    - [ 12, 0x0101D770 ]
+    - [ 13, 0x0101D770 ]
+  external_files:
+    - ntsc_u_mq/objects/gameplay_keep.yml
+
+gShieldBeamGlowDL:
+  type: GFX
+  offset: 0xC50
+  symbol: gShieldBeamGlowDL
+
+gShieldBeamGlowRayTex:
+  type: TEXTURE
+  offset: 0xCF8
+  symbol: gShieldBeamGlowRayTex
+  format: IA16
+  width: 8
+  height: 256
+
+gShieldBeamImageCircleTex:
+  type: TEXTURE
+  offset: 0x188
+  symbol: gShieldBeamImageCircleTex
+  format: IA16
+  width: 16
+  height: 16
+
+gShieldBeamImageDL:
+  type: GFX
+  offset: 0xB0
+  symbol: gShieldBeamImageDL
+
+gShieldBeamImageGerudoSymbolNewTex:
+  type: TEXTURE
+  offset: 0x388
+  symbol: gShieldBeamImageGerudoSymbolNewTex
+  format: IA16
+  width: 32
+  height: 32
+
+
+object_mir_rayVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_mir_rayVtx_000000
+  count: 11
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mir_rayVtx_000B90:
+  type: OOT:ARRAY
+  offset: 0x000B90
+  symbol: object_mir_rayVtx_000B90
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

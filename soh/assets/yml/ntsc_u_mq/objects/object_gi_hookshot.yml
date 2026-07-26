@@ -1,0 +1,41 @@
+:config:
+  segments:
+    - [ 6, 0x010E7160 ]
+    - [ 4, 0x00D30F80 ]
+    - [ 8, 0x010E7160 ]
+    - [ 9, 0x010E7160 ]
+    - [ 10, 0x010E7160 ]
+    - [ 11, 0x010E7160 ]
+    - [ 12, 0x010E7160 ]
+    - [ 13, 0x010E7160 ]
+  external_files:
+    - ntsc_u_mq/objects/gameplay_keep.yml
+
+gGiHookshotDL:
+  type: GFX
+  offset: 0x0750
+  symbol: gGiHookshotDL
+
+gGiLongshotDL:
+  type: GFX
+  offset: 0x1240
+  symbol: gGiLongshotDL
+
+
+object_gi_hookshotVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_gi_hookshotVtx_000000
+  count: 117
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_hookshotVtx_000A50:
+  type: OOT:ARRAY
+  offset: 0x000A50
+  symbol: object_gi_hookshotVtx_000A50
+  count: 127
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

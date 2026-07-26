@@ -1,0 +1,102 @@
+:config:
+  segments:
+    - [ 3, 0x019F2260 ]
+    - [ 2, 0x019CA3D0 ]
+  directory: scenes/nonmq/men_scene
+  external_files:
+    - ntsc_j_gc_collection/scenes/nonmq/men_scene.yml
+    - ntsc_j_gc_collection/code/sys_matrix.yml
+
+men_room_5:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: men_room_5
+
+men_room_5Tex_002418:
+  type: TEXTURE
+  offset: 0x24D8
+  symbol: men_room_5Tex_002418
+  format: CI8
+  width: 64
+  height: 32
+  external_tlut: men_scene
+  external_tlut_offset: 0xF730
+
+men_room_5Tex_002C18:
+  type: TEXTURE
+  offset: 0x2CD8
+  symbol: men_room_5Tex_002C18
+  format: CI8
+  width: 32
+  height: 32
+  external_tlut: men_scene
+  external_tlut_offset: 0xF730
+
+men_room_5Tex_003018:
+  type: TEXTURE
+  offset: 0x30D8
+  symbol: men_room_5Tex_003018
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: men_scene
+  external_tlut_offset: 0xF730
+
+men_room_5Tex_003818:
+  type: TEXTURE
+  offset: 0x38D8
+  symbol: men_room_5Tex_003818
+  format: CI8
+  width: 64
+  height: 32
+  external_tlut: men_scene
+  external_tlut_offset: 0xF730
+
+men_room_5Tex_004018:
+  type: TEXTURE
+  offset: 0x40D8
+  symbol: men_room_5Tex_004018
+  format: CI8
+  width: 64
+  height: 32
+  external_tlut: men_scene
+  external_tlut_offset: 0xF730
+
+men_room_5Tex_004818:
+  type: TEXTURE
+  offset: 0x48D8
+  symbol: men_room_5Tex_004818
+  format: CI8
+  width: 64
+  height: 32
+  external_tlut: men_scene
+  external_tlut_offset: 0xF730
+
+
+men_room_5Vtx_0001E0:
+  type: OOT:ARRAY
+  offset: 0x0001E0
+  symbol: men_room_5Vtx_0001E0
+  count: 273
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+men_room_5DL_0012F0:
+  type: GFX
+  offset: 0x0012F0
+  symbol: men_room_5DL_0012F0
+
+men_room_5Vtx_001C58:
+  type: OOT:ARRAY
+  offset: 0x001C58
+  symbol: men_room_5Vtx_001C58
+  count: 89
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+men_room_5DL_0021E8:
+  type: GFX
+  offset: 0x0021E8
+  symbol: men_room_5DL_0021E8
