@@ -304,7 +304,6 @@ void EnPoRelay_DisappearAndReward(EnPoRelay* this, PlayState* play) {
     Vec3f vec;
     f32 multiplier;
     s32 pad;
-    Vec3f sp60;
     s32 pad1;
 
     this->actionTimer++;
