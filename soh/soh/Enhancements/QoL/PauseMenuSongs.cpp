@@ -467,7 +467,19 @@ static void PauseMenuSongs_HandleSelection() {
         return;
     }
 
-    if (song >= QUEST_SONG_MINUET && song <= QUEST_SONG_PRELUDE) {
+    bool isWarpSong = (song >= QUEST_SONG_MINUET) && (song <= QUEST_SONG_PRELUDE);
+    if (!isWarpSong && (song < QUEST_SONG_LULLABY || song > QUEST_SONG_STORMS)) {
+        return; // cursor isn't on a playable song
+    }
+
+    // Every song needs the ocarina to be playable here -- warp songs included, so you can no longer warp
+    // from places the game would never let you pull the ocarina out (mid-air, underwater, on horseback...).
+    if (!PauseSong_CanPlayOcarina()) {
+        ActivateCannotPlay(&gPlayState->pauseCtx);
+        return;
+    }
+
+    if (isWarpSong) {
         if (gSaveContext.ship.quest.id == QUEST_RANDOMIZER && Randomizer_GetSettingValue(RSK_SHUFFLE_OCARINA_BUTTONS)) {
             bool canplay = false;
             switch (song) {
@@ -510,11 +522,7 @@ static void PauseMenuSongs_HandleSelection() {
             }
         }
         ActivateWarp(&gPlayState->pauseCtx, song);
-    } else if (song >= QUEST_SONG_LULLABY && song <= QUEST_SONG_STORMS) {
-        if (!PauseSong_CanPlayOcarina()) {
-            ActivateCannotPlay(&gPlayState->pauseCtx);
-            return;
-        }
+    } else {
         ActivateSong(&gPlayState->pauseCtx, song);
     }
 }
