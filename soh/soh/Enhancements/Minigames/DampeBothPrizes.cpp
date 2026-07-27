@@ -4,7 +4,7 @@
 extern "C" {
 #include "functions.h"
 #include "macros.h"
-#include "src/overlays/actors/ovl_en_po_relay/z_en_po_relay.h"
+#include "src/overlays/actors/ovl_En_Po_Relay/z_en_o_relay.h"
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
 }
