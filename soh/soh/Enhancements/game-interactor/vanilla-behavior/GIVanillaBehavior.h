@@ -462,11 +462,11 @@ typedef enum {
 
     // #### `result`
     // ```c
-    // this->hookshotSlotFull != 0
+    // Math_StepToF(&this->actor.scale.x, 0.0f, 0.001f) != 0
     // ```
     // #### `args`
-    // - None
-    VB_DAMPE_AWARD_SECOND_PRIZE,
+    // - `*EnPoRelay`
+    VB_DAMPE_AWARD_PRIZES,
 
     // #### `result`
     // ```c

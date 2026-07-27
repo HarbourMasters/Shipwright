@@ -335,18 +335,21 @@ void EnPoRelay_DisappearAndReward(EnPoRelay* this, PlayState* play) {
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_EXTINCT);
         }
     }
-    if (Math_StepToF(&this->actor.scale.x, 0.0f, 0.001f) != 0) {
-        if (GameInteractor_Should(VB_DAMPE_AWARD_SECOND_PRIZE, this->hookshotSlotFull != 0)) {
-            sp60.x = this->actor.world.pos.x;
-            sp60.y = this->actor.floorHeight;
-            sp60.z = this->actor.world.pos.z;
+    if (GameInteractor_Should(VB_DAMPE_AWARD_PRIZES, Math_StepToF(&this->actor.scale.x, 0.0f, 0.001f), this)) {
+        if (this->hookshotSlotFull) {
+            Vec3f posAtGround;
+
+            posAtGround.x = this->actor.world.pos.x;
+            posAtGround.y = this->actor.floorHeight;
+            posAtGround.z = this->actor.world.pos.z;
             if (gSaveContext.timerSeconds < HIGH_SCORE(HS_DAMPE_RACE)) {
                 HIGH_SCORE(HS_DAMPE_RACE) = gSaveContext.timerSeconds;
             }
-            if (Flags_GetCollectible(play, this->actor.params) == 0 && gSaveContext.timerSeconds <= 60) {
-                Item_DropCollectible2(play, &sp60, (this->actor.params << 8) + (0x4000 | ITEM00_HEART_PIECE));
+            if (!Flags_GetCollectible(play, this->actor.params) && gSaveContext.timerSeconds <= 60) {
+                Item_DropCollectible2(play, &posAtGround, (this->actor.params << 8) + (0x4000 | ITEM00_HEART_PIECE));
             } else {
-                Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ITEM00, sp60.x, sp60.y, sp60.z, 0, 0, 0, 2);
+                Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ITEM00, posAtGround.x, posAtGround.y, posAtGround.z, 0, 0,
+                            0, 2);
             }
         } else {
             Flags_SetTempClear(play, 4);
