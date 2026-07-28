@@ -346,7 +346,8 @@ void EnPoRelay_DisappearAndReward(EnPoRelay* this, PlayState* play) {
             if (Flags_GetCollectible(play, this->actor.params) == 0 && gSaveContext.timerSeconds <= 60) {
                 Item_DropCollectible2(play, &posAtGround, (this->actor.params << 8) + (0x4000 | ITEM00_HEART_PIECE));
             } else {
-                Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ITEM00, posAtGround.x, posAtGround.y, posAtGround.z, 0, 0, 0, 2);
+                Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ITEM00, posAtGround.x, posAtGround.y, posAtGround.z, 0, 0,
+                            0, 2);
             }
         } else {
             Flags_SetTempClear(play, 4);
