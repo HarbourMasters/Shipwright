@@ -462,7 +462,7 @@ typedef enum {
 
     // #### `result`
     // ```c
-    // this->hookshotSlotFull != 0
+    // this->hookshotSlotFull
     // ```
     // #### `args`
     // - None
