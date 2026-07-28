@@ -116,15 +116,27 @@ static const int effectActorParams[] = { 0, 0, 0, 0, 1, 0 };
 
 static bool isWarpActive = false;
 static bool isSongActive = false;
-static bool isCannotPlayActive = false;
 
-// Shown (through the OnOpenText hook below) when a song is selected somewhere the ocarina can't be played.
-// Phrased impersonally in each language so it reads consistently and sidesteps the tu/vous (du/Sie) choice.
+// A song selected while the ocarina momentarily can't be played (see PauseSong_RetryPlay).
+static int retrySong = 0;
+static bool retryIsWarp = false;
+static int retryTimer = 0;
+// A handful of game-update frames (roughly a quarter second). The block is usually a previous song's
+// ocarina/message state still settling, which clears a frame or two after unpausing; this leaves margin
+// without a noticeable delay before a genuine "can't play here".
+static constexpr int OCARINA_RETRY_GRACE_FRAMES = 6;
+
+static bool isCannotPlayActive = false;
+// How long the "can't play here" textbox lingers before fading out on its own, in message-system
+// updates (~20/sec, so this is about three seconds). Long enough to read, short enough not to nag.
+static constexpr int CANNOT_PLAY_FADE_FRAMES = 60;
+
+// Shown (through the OnOpenText hook below) once the grace retry gives up: a song was selected somewhere
+// the ocarina genuinely can't be played.
 static CustomMessage cannotPlayHereMsg = CustomMessage(
     "Can't play the Ocarina here!" + CustomMessage::MESSAGE_END(),
     "Hier kann die Okarina" + CustomMessage::NEWLINE() + "nicht gespielt werden!" + CustomMessage::MESSAGE_END(),
-    "Impossible de jouer" + CustomMessage::NEWLINE() + "de l'ocarina ici !" + CustomMessage::MESSAGE_END(),
-    TEXTBOX_TYPE_BLACK);
+    "Impossible de jouer" + CustomMessage::NEWLINE() + "de l'ocarina ici !" + CustomMessage::MESSAGE_END());
 
 static void PauseWarp_Execute() {
     if (!isWarpActive || gPlayState->msgCtx.msgMode != MSGMODE_NONE) {
@@ -398,9 +410,9 @@ static void PauseMenu_BeginClose(PauseContext* pauseCtx) {
     pauseCtx->unk_1E4 = 0;
 }
 
-static void ActivateWarp(PauseContext* pauseCtx, int song) {
+// Start warp-song playback. The caller has already begun closing the quest screen.
+static void StartWarpPlayback(int song) {
     AudioOcarina_SetInstrument(OCARINA_INSTRUMENT_OFF);
-    PauseMenu_BeginClose(pauseCtx);
     int idx = song - QUEST_SONG_MINUET;
     gPlayState->msgCtx.lastPlayedSong = ocarinaSongMap[idx];
     Audio_SetSfxBanksMute(0x20);
@@ -429,9 +441,9 @@ static bool PauseSong_CanPlayOcarina() {
     return (player->actor.bgCheckFlags & BGCHECKFLAG_GROUND) != 0;
 }
 
-static void ActivateSong(PauseContext* pauseCtx, int questSong) {
+// Start non-warp song playback. The caller has already begun closing the quest screen.
+static void StartSongPlayback(int questSong) {
     int idx = questSong - QUEST_SONG_LULLABY;
-    PauseMenu_BeginClose(pauseCtx);
     gPlayState->msgCtx.lastPlayedSong = questSongToOcarinaSong[idx];
     // Intentionally no Audio_SetSoundBanksMute(0x20): it mutes BANK_OCARINA and is only cleared via
     // AudioOcarina_SetInstrument(OFF), which this in-scene path never hits, silencing the next real ocarina.
@@ -439,21 +451,89 @@ static void ActivateSong(PauseContext* pauseCtx, int questSong) {
     isSongActive = true;
 }
 
-// Selected a non-warp song somewhere the ocarina can't be played: close the menu and show a short message,
-// the same hand-off a warp song uses (minus the song). PauseCannotPlay_Execute restores control after.
-static void ActivateCannotPlay(PauseContext* pauseCtx) {
-    PauseMenu_BeginClose(pauseCtx);
-    Message_StartTextbox(gPlayState, TEXT_CANNOT_PLAY_OCARINA_MSG, NULL);
-    GET_PLAYER(gPlayState)->stateFlags1 |= PLAYER_STATE1_IN_CUTSCENE;
-    isCannotPlayActive = true;
+// Randomizer's "Shuffle Ocarina Buttons" setting turns each ocarina button (A and the four C-buttons)
+// into a separate item to find; until you hold every button a warp song's melody uses, the real ocarina
+// won't play it. Mirror that here. Always true outside that setting (nothing to gate on).
+static bool WarpSongButtonsUnlocked(int song) {
+    if (gSaveContext.ship.quest.id != QUEST_RANDOMIZER || !Randomizer_GetSettingValue(RSK_SHUFFLE_OCARINA_BUTTONS)) {
+        return true;
+    }
+    switch (song) {
+        case QUEST_SONG_MINUET:
+            return Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_A) &&
+                   Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_LEFT) &&
+                   Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_RIGHT) &&
+                   Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_UP);
+        case QUEST_SONG_BOLERO:
+            return Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_A) &&
+                   Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_RIGHT) &&
+                   Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_DOWN);
+        case QUEST_SONG_SERENADE:
+            return Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_A) &&
+                   Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_LEFT) &&
+                   Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_RIGHT) &&
+                   Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_DOWN);
+        case QUEST_SONG_REQUIEM:
+            return Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_A) &&
+                   Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_RIGHT) &&
+                   Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_DOWN);
+        case QUEST_SONG_NOCTURNE:
+            return Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_A) &&
+                   Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_LEFT) &&
+                   Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_RIGHT) &&
+                   Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_DOWN);
+        case QUEST_SONG_PRELUDE:
+            return Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_LEFT) &&
+                   Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_RIGHT) &&
+                   Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_UP);
+    }
+    return true;
 }
 
-static void PauseCannotPlay_Execute() {
-    if (!isCannotPlayActive || gPlayState->msgCtx.msgMode != MSGMODE_NONE) {
+// After the menu closes, keep re-checking whether the ocarina can be played and start the pending song
+// once it can. A block at selection time is usually a previous song's ocarina/message state still settling
+// -- which only advances once unpaused -- so we give it a short grace before concluding it truly can't be
+// played here. Runs each game frame; a no-op unless a retry is armed.
+static void PauseSong_RetryPlay() {
+    if (retryTimer <= 0) {
         return;
     }
-    isCannotPlayActive = false;
-    GET_PLAYER(gPlayState)->stateFlags1 &= ~PLAYER_STATE1_IN_CUTSCENE;
+    // The state we're waiting on can't change while the quest screen is still up or a message is open.
+    if (gPlayState->pauseCtx.state != 0 || gPlayState->msgCtx.msgMode != MSGMODE_NONE) {
+        return;
+    }
+    if (PauseSong_CanPlayOcarina()) {
+        if (retryIsWarp) {
+            StartWarpPlayback(retrySong);
+        } else {
+            StartSongPlayback(retrySong);
+        }
+        retryTimer = 0;
+    } else if (--retryTimer == 0) {
+        // Grace expired and the ocarina still can't come out: this really is a spot it can't be played.
+        // The menu is already closed, so show the standard in-game textbox. Link keeps normal control and
+        // physics -- this is pure feedback, and freezing him here (a cutscene hold) would suspend his
+        // physics mid-air/underwater, exactly the states this message fires in.
+        Message_StartTextbox(gPlayState, TEXT_CANNOT_PLAY_OCARINA_MSG, NULL);
+        isCannotPlayActive = true;
+    }
+}
+
+// Drives the "can't play here" textbox. Once its text has finished animating in, hand it the game's own
+// fade-out end type -- the same one cutscene messages use -- so it dismisses itself after a few seconds
+// instead of waiting on an A press (and A can't close a fading box early). The isCannotPlayActive guard
+// keeps this scoped to our own message so ordinary textboxes are never touched.
+static void PauseCannotPlay_Execute() {
+    if (!isCannotPlayActive) {
+        return;
+    }
+    MessageContext* msgCtx = &gPlayState->msgCtx;
+    if (msgCtx->msgMode == MSGMODE_TEXT_DONE && msgCtx->textboxEndType == TEXTBOX_ENDTYPE_DEFAULT) {
+        msgCtx->textboxEndType = TEXTBOX_ENDTYPE_FADING;
+        msgCtx->stateTimer = CANNOT_PLAY_FADE_FRAMES;
+    } else if (msgCtx->msgMode == MSGMODE_NONE) {
+        isCannotPlayActive = false;
+    }
 }
 
 static void PauseMenuSongs_HandleSelection() {
@@ -472,58 +552,29 @@ static void PauseMenuSongs_HandleSelection() {
         return; // cursor isn't on a playable song
     }
 
-    // Every song needs the ocarina to be playable here -- warp songs included, so you can no longer warp
-    // from places the game would never let you pull the ocarina out (mid-air, underwater, on horseback...).
-    if (!PauseSong_CanPlayOcarina()) {
-        ActivateCannotPlay(&gPlayState->pauseCtx);
+    // If randomizer's shuffled ocarina buttons mean this warp song isn't playable yet, do nothing and
+    // leave the menu open -- same as the real ocarina refusing it.
+    if (isWarpSong && !WarpSongButtonsUnlocked(song)) {
         return;
     }
 
-    if (isWarpSong) {
-        if (gSaveContext.ship.quest.id == QUEST_RANDOMIZER && Randomizer_GetSettingValue(RSK_SHUFFLE_OCARINA_BUTTONS)) {
-            bool canplay = false;
-            switch (song) {
-                case QUEST_SONG_MINUET:
-                    canplay = Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_A) &&
-                              Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_LEFT) &&
-                              Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_RIGHT) &&
-                              Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_UP);
-                    break;
-                case QUEST_SONG_BOLERO:
-                    canplay = Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_A) &&
-                              Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_RIGHT) &&
-                              Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_DOWN);
-                    break;
-                case QUEST_SONG_SERENADE:
-                    canplay = Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_A) &&
-                              Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_LEFT) &&
-                              Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_RIGHT) &&
-                              Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_DOWN);
-                    break;
-                case QUEST_SONG_REQUIEM:
-                    canplay = Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_A) &&
-                              Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_RIGHT) &&
-                              Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_DOWN);
-                    break;
-                case QUEST_SONG_NOCTURNE:
-                    canplay = Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_A) &&
-                              Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_LEFT) &&
-                              Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_RIGHT) &&
-                              Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_DOWN);
-                    break;
-                case QUEST_SONG_PRELUDE:
-                    canplay = Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_LEFT) &&
-                              Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_RIGHT) &&
-                              Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_UP);
-                    break;
-            }
-            if (!canplay) {
-                return;
-            }
+    // Commit to playing: close the quest screen now. If the ocarina can come out this instant, start the
+    // song immediately; otherwise arm a short grace retry (PauseSong_RetryPlay) instead of giving up, since
+    // the block is often just a previous song's ocarina/message state still settling. Every song needs the
+    // ocarina playable here -- warp songs included, so you can no longer warp from spots the game would
+    // never let you pull the ocarina out (mid-air, underwater, on horseback...).
+    PauseMenu_BeginClose(&gPlayState->pauseCtx);
+    retrySong = song;
+    retryIsWarp = isWarpSong;
+    if (PauseSong_CanPlayOcarina()) {
+        retryTimer = 0;
+        if (isWarpSong) {
+            StartWarpPlayback(song);
+        } else {
+            StartSongPlayback(song);
         }
-        ActivateWarp(&gPlayState->pauseCtx, song);
     } else {
-        ActivateSong(&gPlayState->pauseCtx, song);
+        retryTimer = OCARINA_RETRY_GRACE_FRAMES;
     }
 }
 
@@ -536,8 +587,9 @@ static void RegisterPauseMenuHooks() {
     COND_HOOK(OnGameFrameUpdate, CVAR_PAUSE_WARP_VALUE, [] {
         if (GameInteractor::IsSaveLoaded()) {
             PauseWarp_Execute();
-            PauseCannotPlay_Execute();
             PauseSong_Execute();
+            PauseSong_RetryPlay();
+            PauseCannotPlay_Execute();
         }
     });
     COND_ID_HOOK(OnOpenText, TEXT_CANNOT_PLAY_OCARINA_MSG, CVAR_PAUSE_WARP_VALUE,
