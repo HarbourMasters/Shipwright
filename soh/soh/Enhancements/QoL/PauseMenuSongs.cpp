@@ -51,9 +51,9 @@ s32 ObjTimeblock_WaitForSong(ObjTimeblock* timeblock, PlayState* play);
 void ShotSun_UpdateFairySpawner(ShotSun* shotSun, PlayState* play);
 }
 
-static constexpr int32_t CVAR_PAUSE_WARP_DEFAULT = 0;
-#define CVAR_PAUSE_WARP_NAME CVAR_ENHANCEMENT("PauseMenuSongs")
-#define CVAR_PAUSE_WARP_VALUE CVarGetInteger(CVAR_PAUSE_WARP_NAME, CVAR_PAUSE_WARP_DEFAULT)
+static constexpr int32_t CVAR_PAUSE_SONGS_DEFAULT = 0;
+#define CVAR_PAUSE_SONGS_NAME CVAR_ENHANCEMENT("PauseMenuSongs")
+#define CVAR_PAUSE_SONGS_VALUE CVarGetInteger(CVAR_PAUSE_SONGS_NAME, CVAR_PAUSE_SONGS_DEFAULT)
 
 // --- Warp songs (QUEST_SONG_MINUET through QUEST_SONG_PRELUDE) ---
 
@@ -121,14 +121,11 @@ static bool isSongActive = false;
 static int retrySong = 0;
 static bool retryIsWarp = false;
 static int retryTimer = 0;
-// A handful of game-update frames (roughly a quarter second). The block is usually a previous song's
-// ocarina/message state still settling, which clears a frame or two after unpausing; this leaves margin
-// without a noticeable delay before a genuine "can't play here".
+// ~6 game-update frames (about a quarter second) of grace; see PauseSong_RetryPlay for why.
 static constexpr int OCARINA_RETRY_GRACE_FRAMES = 6;
 
 static bool isCannotPlayActive = false;
-// How long the "can't play here" textbox lingers before fading out on its own, in message-system
-// updates (~20/sec, so this is about three seconds). Long enough to read, short enough not to nag.
+// Frames the "can't play here" textbox stays up before fading on its own (message updates run ~20/sec).
 static constexpr int CANNOT_PLAY_FADE_FRAMES = 60;
 
 // Shown (through the OnOpenText hook below) once the grace retry gives up: a song was selected somewhere
@@ -206,8 +203,7 @@ static bool PauseSong_ActivateOkarinaTags() {
                                        ((tag->type == 2) && (song == OCARINA_SONG_STORMS)) ||
                                        ((tag->type == 4) && (song == OCARINA_SONG_TIME));
                 if (songMatchesType) {
-                    // Like the type-7 spots, run the listening handler now while MODE_03 is set so it fires
-                    // this frame (its actionFunc is the ocarina-listening state, so it consumes it).
+                    // Run the listening handler now, while MODE_03 is set, so it fires this frame.
                     func_80ABF4C8(tag, gPlayState); // handle the matched song event
                     matched = true;
                 }
@@ -221,7 +217,7 @@ static bool PauseSong_ActivateOkarinaTags() {
 // The Song of Time blocks, Great Fairy spawners, and ocarina NPCs update before this hook and just poll
 // ocarinaMode + lastPlayedSong. We can't use the real play-for-actor flow (it opens a note-input prompt the
 // menu can't satisfy), so we push the matching in-range actor into its song-finished state, hold the
-// matching mode a couple frames for it to read, then restore it. Only Mido needs its dialogue started here.
+// matching mode a couple frames for it to read, then restore it.
 static u8 pendingMode = OCARINA_MODE_00;
 static Actor* pendingTalkActor = NULL;
 static int pendingTimer = 0;
@@ -293,10 +289,8 @@ static bool PauseSong_ActivateNpcActors() {
                 return true;
             }
         }
-        // The visible Lost Woods stump Skull Kid (moved to ACTORCAT_NPC on init) reacts to Saria's Song.
-        // Its idle WaitInRange state normally opens a real ocarina prompt, so -- like Mido -- push it into
-        // WaitForSong, hold MODE_03, and start the reward talk once it reacts. Being in WaitInRange already
-        // implies the player is in range (it drops out of that state otherwise).
+        // Lost Woods stump Skull Kid reacts to Saria's Song. WaitInRange already implies the player is in
+        // range, so push it into WaitForSong and start the reward talk once it reacts.
         if (actor->id == ACTOR_EN_SKJ && song == OCARINA_SONG_SARIAS) {
             EnSkj* skullKid = (EnSkj*)actor;
             if (skullKid->actionFunc == EnSkj_WaitInRange) {
@@ -422,10 +416,9 @@ static void StartWarpPlayback(int song) {
     isWarpActive = true;
 }
 
-// Only inject a played song when Link is in a normal, controllable field state -- the footing the vanilla
-// ocarina action itself needs to start (see Player_ActionHandler_13: grounded and not in a blocking state).
-// Firing from an item cutscene, a message, mid-song, mid-air, in water, while talking, mounted, or dying
-// could leave the ocarina/message system in a bad state, which is the class of corruption we want to avoid.
+// Only play when Link is in a normal, grounded, controllable state -- the footing the vanilla ocarina
+// action itself requires (cf. Player_ActionHandler_13). Firing from a cutscene, message, mid-air, water,
+// horseback, etc. can leave the ocarina/message system corrupted.
 static bool PauseSong_CanPlayOcarina() {
     Player* player = GET_PLAYER(gPlayState);
     if (gPlayState->msgCtx.msgMode != MSGMODE_NONE || gPlayState->msgCtx.ocarinaMode != OCARINA_MODE_00) {
@@ -510,19 +503,17 @@ static void PauseSong_RetryPlay() {
         }
         retryTimer = 0;
     } else if (--retryTimer == 0) {
-        // Grace expired and the ocarina still can't come out: this really is a spot it can't be played.
-        // The menu is already closed, so show the standard in-game textbox. Link keeps normal control and
-        // physics -- this is pure feedback, and freezing him here (a cutscene hold) would suspend his
-        // physics mid-air/underwater, exactly the states this message fires in.
+        // Grace expired: this really is a spot the ocarina can't be played. Show the standard textbox, but
+        // don't freeze Link -- a cutscene hold would suspend his physics in the very states (mid-air, water)
+        // this message fires in.
         Message_StartTextbox(gPlayState, TEXT_CANNOT_PLAY_OCARINA_MSG, NULL);
         isCannotPlayActive = true;
     }
 }
 
-// Drives the "can't play here" textbox. Once its text has finished animating in, hand it the game's own
-// fade-out end type -- the same one cutscene messages use -- so it dismisses itself after a few seconds
-// instead of waiting on an A press (and A can't close a fading box early). The isCannotPlayActive guard
-// keeps this scoped to our own message so ordinary textboxes are never touched.
+// Once our "can't play here" textbox finishes animating in, give it the game's fading end type (as used by
+// cutscene messages) so it dismisses itself after a few seconds instead of waiting on A. The guard scopes
+// this to our own message.
 static void PauseCannotPlay_Execute() {
     if (!isCannotPlayActive) {
         return;
@@ -552,17 +543,13 @@ static void PauseMenuSongs_HandleSelection() {
         return; // cursor isn't on a playable song
     }
 
-    // If randomizer's shuffled ocarina buttons mean this warp song isn't playable yet, do nothing and
-    // leave the menu open -- same as the real ocarina refusing it.
+    // Rando's shuffled ocarina buttons can leave a warp song not yet playable; if so, leave the menu open.
     if (isWarpSong && !WarpSongButtonsUnlocked(song)) {
         return;
     }
 
-    // Commit to playing: close the quest screen now. If the ocarina can come out this instant, start the
-    // song immediately; otherwise arm a short grace retry (PauseSong_RetryPlay) instead of giving up, since
-    // the block is often just a previous song's ocarina/message state still settling. Every song needs the
-    // ocarina playable here -- warp songs included, so you can no longer warp from spots the game would
-    // never let you pull the ocarina out (mid-air, underwater, on horseback...).
+    // Commit: close the quest screen. Play now if the ocarina can come out, else arm the grace retry. Warp
+    // songs are gated the same way, so you can't warp from a spot the game wouldn't let you play in.
     PauseMenu_BeginClose(&gPlayState->pauseCtx);
     retrySong = song;
     retryIsWarp = isWarpSong;
@@ -579,12 +566,12 @@ static void PauseMenuSongs_HandleSelection() {
 }
 
 static void RegisterPauseMenuHooks() {
-    COND_HOOK(OnKaleidoUpdate, CVAR_PAUSE_WARP_VALUE, [] {
+    COND_HOOK(OnKaleidoUpdate, CVAR_PAUSE_SONGS_VALUE, [] {
         if (GameInteractor::IsSaveLoaded()) {
             PauseMenuSongs_HandleSelection();
         }
     });
-    COND_HOOK(OnGameFrameUpdate, CVAR_PAUSE_WARP_VALUE, [] {
+    COND_HOOK(OnGameFrameUpdate, CVAR_PAUSE_SONGS_VALUE, [] {
         if (GameInteractor::IsSaveLoaded()) {
             PauseWarp_Execute();
             PauseSong_Execute();
@@ -592,11 +579,11 @@ static void RegisterPauseMenuHooks() {
             PauseCannotPlay_Execute();
         }
     });
-    COND_ID_HOOK(OnOpenText, TEXT_CANNOT_PLAY_OCARINA_MSG, CVAR_PAUSE_WARP_VALUE,
+    COND_ID_HOOK(OnOpenText, TEXT_CANNOT_PLAY_OCARINA_MSG, CVAR_PAUSE_SONGS_VALUE,
                  [](uint16_t* textId, bool* loadFromMessageTable) {
                      cannotPlayHereMsg.LoadIntoFont();
                      *loadFromMessageTable = false;
                  });
 }
 
-static RegisterShipInitFunc initFunc(RegisterPauseMenuHooks, { CVAR_PAUSE_WARP_NAME });
+static RegisterShipInitFunc initFunc(RegisterPauseMenuHooks, { CVAR_PAUSE_SONGS_NAME });
