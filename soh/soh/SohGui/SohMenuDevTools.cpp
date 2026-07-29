@@ -120,7 +120,7 @@ void SohMenu::AddMenuDevTools() {
                      .ComboMap(logLevels)
                      .DefaultIndex(defaultLogLevel))
         .Callback([](WidgetInfo& info) {
-            Ship::Context::GetInstance()->GetLogger()->set_level(
+            Ship::Context::GetRawInstance()->GetLogger()->set_level(
                 (spdlog::level::level_enum)CVarGetInteger(CVAR_DEVELOPER_TOOLS("LogLevel"), defaultLogLevel));
         });
 

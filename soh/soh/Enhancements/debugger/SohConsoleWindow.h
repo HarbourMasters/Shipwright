@@ -1,7 +1,6 @@
 #ifndef SOH_CONSOLE_H
 #define SOH_CONSOLE_H
 
-#include <ship/window/gui/GuiWindow.h>
 #include <ship/window/gui/ConsoleWindow.h>
 
 class SohConsoleWindow : public Ship::ConsoleWindow {

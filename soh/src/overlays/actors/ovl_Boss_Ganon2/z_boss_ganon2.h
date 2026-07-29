@@ -93,11 +93,11 @@ typedef struct BossGanon2 {
     /* 0x0394 */ f32 unk_394;
     /* 0x0398 */ u32 csTimer;
     /* 0x039C */ s16 csState;
-    /* 0x039E */ s16 unk_39E;
+    /* 0x039E */ s16 subCamId;
     /* 0x03A0 */ char unk_3A0[0x4];
-    /* 0x03A4 */ Vec3f unk_3A4;
-    /* 0x03B0 */ Vec3f unk_3B0;
-    /* 0x03BC */ Vec3f unk_3BC;
+    /* 0x03A4 */ Vec3f subCamEye;
+    /* 0x03B0 */ Vec3f subCamAt;
+    /* 0x03BC */ Vec3f subCamUp;
     /* 0x03C8 */ char unk_3C8[0x48];
     /* 0x0410 */ Vec3f unk_410;
     /* 0x041C */ f32 unk_41C;

@@ -229,7 +229,7 @@ void EnNy_Move(EnNy* this, PlayState* play) {
     s32 stoneTimer;
 
     if (!(this->unk_1F0 < this->actor.yDistToWater)) {
-        func_8002F974(&this->actor, NA_SE_EN_NYU_MOVE - SFX_FLAG);
+        Actor_PlaySfx_Flagged(&this->actor, NA_SE_EN_NYU_MOVE - SFX_FLAG);
     }
     func_80ABCD40(this);
     stoneTimer = this->stoneTimer;
@@ -255,7 +255,7 @@ void EnNy_TurnToStone(EnNy* this, PlayState* play) {
     phi_f0 -= 2.0f;
     if (phi_f0 <= 0.25f) {
         phi_f0 = 0.25f;
-        if (this->actor.bgCheckFlags & 2) {
+        if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND_TOUCH) {
             if (!(this->unk_1F0 < this->actor.yDistToWater)) {
                 Audio_PlayActorSound2(&this->actor, NA_SE_EN_DODO_M_GND);
             }

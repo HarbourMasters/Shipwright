@@ -118,10 +118,6 @@ void GameInteractor_ExecuteOnOcarinaNote(uint8_t note, float modulator, int8_t b
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnOcarinaNote>(note, modulator, bend);
 }
 
-void GameInteractor_ExecuteOnCuccoOrChickenHatch() {
-    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnCuccoOrChickenHatch>();
-}
-
 void GameInteractor_ExecuteOnShopSlotChangeHooks(uint8_t cursorIndex, int16_t price) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnShopSlotChange>(cursorIndex, price);
 }

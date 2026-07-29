@@ -1,22 +1,18 @@
 #include "randomizer_entrance_tracker.h"
 #include "soh/OTRGlobals.h"
-#include "soh/cvar_prefixes.h"
 #include "soh/SohGui/SohGui.hpp"
 
 #include <string>
 #include <vector>
 #include <libultraship/controller/controldeck/ControlDeck.h>
-#include <libultraship/libultraship.h>
+#include "soh/Enhancements/randomizer/randomizer.h"
 
 extern "C" {
 #include <z64.h>
-#include "variables.h"
-#include "functions.h"
 #include "macros.h"
 extern PlayState* gPlayState;
 
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
-#include "soh/Enhancements/randomizer/randomizer_grotto.h"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 }
 
@@ -51,26 +47,11 @@ static ImVec2 presetPos;
 static ImVec2 presetSize;
 
 static std::string spoilerEntranceGroupNames[] = {
-    "Spawns/Warp Songs/Owls",
-    "Kokiri Forest",
-    "Lost Woods",
-    "Sacred Forest Meadow",
-    "Kakariko Village",
-    "Graveyard",
-    "Death Mountain Trail",
-    "Death Mountain Crater",
-    "Goron City",
-    "Zora's River",
-    "Zora's Domain",
-    "Zora's Fountain",
-    "Hyrule Field",
-    "Lon Lon Ranch",
-    "Lake Hylia",
-    "Gerudo Valley",
-    "Gerudo Fortress",
-    "Haunted Wasteland",
-    "Desert Colossus",
-    "Market",
+    "Spawns/Warp Songs", "Kokiri Forest",     "Lost Woods",           "Sacred Forest Meadow",
+    "Kakariko Village",  "Graveyard",         "Death Mountain Trail", "Death Mountain Crater",
+    "Goron City",        "Zora's River",      "Zora's Domain",        "Zora's Fountain",
+    "Hyrule Field",      "Lon Lon Ranch",     "Lake Hylia",           "Gerudo Valley",
+    "Gerudo Fortress",   "Haunted Wasteland", "Desert Colossus",      "Market",
     "Hyrule Castle",
 };
 
@@ -92,9 +73,6 @@ const EntranceData entranceData[] = {
     { ENTR_DESERT_COLOSSUS_WARP_PAD,       -1, {{ -1 }}, "Requiem of Spirit",  "Desert Colossus Warp Pad",  ENTRANCE_GROUP_ONE_WAY, ENTRANCE_GROUP_ONE_WAY, ENTRANCE_TYPE_ONE_WAY},
     { ENTR_GRAVEYARD_WARP_PAD,             -1, {{ -1 }}, "Nocturne of Shadow", "Graveyard Warp Pad",        ENTRANCE_GROUP_ONE_WAY, ENTRANCE_GROUP_ONE_WAY, ENTRANCE_TYPE_ONE_WAY},
     { ENTR_TEMPLE_OF_TIME_WARP_PAD,        -1, {{ -1 }}, "Prelude of Light",   "Temple of Time Warp Pad",   ENTRANCE_GROUP_ONE_WAY, ENTRANCE_GROUP_ONE_WAY, ENTRANCE_TYPE_ONE_WAY},
-
-    { ENTR_KAKARIKO_VILLAGE_OWL_DROP, -1, SINGLE_SCENE_INFO(SCENE_DEATH_MOUNTAIN_TRAIL), "DMT Owl Flight", "Kakariko Village Owl Drop", ENTRANCE_GROUP_ONE_WAY, ENTRANCE_GROUP_ONE_WAY, ENTRANCE_TYPE_ONE_WAY},
-    { ENTR_HYRULE_FIELD_OWL_DROP,     -1, SINGLE_SCENE_INFO(SCENE_LAKE_HYLIA),           "LH Owl Flight",  "Hyrule Field Owl Drop",     ENTRANCE_GROUP_ONE_WAY, ENTRANCE_GROUP_ONE_WAY, ENTRANCE_TYPE_ONE_WAY},
 
     // Kokiri Forest
     { ENTR_LOST_WOODS_BRIDGE_EAST_EXIT,              ENTR_KOKIRI_FOREST_LOWER_EXIT,                 SINGLE_SCENE_INFO(SCENE_KOKIRI_FOREST),          "Kokiri Forest Lower Exit",     "Lost Woods Bridge East Exit", ENTRANCE_GROUP_KOKIRI_FOREST, ENTRANCE_GROUP_LOST_WOODS,    ENTRANCE_TYPE_OVERWORLD, "lw"},
@@ -197,6 +175,7 @@ const EntranceData entranceData[] = {
     { ENTR_GRAVEYARD_SHADOW_TEMPLE_BLUE_WARP, -1,                                    SINGLE_SCENE_INFO(SCENE_SHADOW_TEMPLE_BOSS),         "Bongo-Bongo Blue Warp",        "Shadow Temple Blue Warp",      ENTRANCE_GROUP_GRAVEYARD, ENTRANCE_GROUP_GRAVEYARD, ENTRANCE_TYPE_ONE_WAY, "bw", 1},
 
     // Death Mountain Trail
+    { ENTR_KAKARIKO_VILLAGE_OWL_DROP,                    -1,                                                SINGLE_SCENE_INFO(SCENE_DEATH_MOUNTAIN_TRAIL), "DMT Owl Flight",                                "Kakariko Village Owl Drop",                     ENTRANCE_GROUP_DEATH_MOUNTAIN_TRAIL, ENTRANCE_GROUP_KAKARIKO,              ENTRANCE_TYPE_ONE_WAY},
     { ENTR_GORON_CITY_UPPER_EXIT,                        ENTR_DEATH_MOUNTAIN_TRAIL_GC_EXIT,                 SINGLE_SCENE_INFO(SCENE_DEATH_MOUNTAIN_TRAIL), "Death Mountain Trail Middle Exit",              "Goron City Upper Exit",                         ENTRANCE_GROUP_DEATH_MOUNTAIN_TRAIL, ENTRANCE_GROUP_GORON_CITY,            ENTRANCE_TYPE_OVERWORLD, "gc"},
     { ENTR_KAKARIKO_VILLAGE_GUARD_GATE,                  ENTR_DEATH_MOUNTAIN_TRAIL_BOTTOM_EXIT,             SINGLE_SCENE_INFO(SCENE_DEATH_MOUNTAIN_TRAIL), "Death Mountain Trail Bottom Exit",              "Kakariko Guard Gate Exit",                      ENTRANCE_GROUP_DEATH_MOUNTAIN_TRAIL, ENTRANCE_GROUP_KAKARIKO,              ENTRANCE_TYPE_OVERWORLD},
     { ENTR_DEATH_MOUNTAIN_CRATER_UPPER_EXIT,             ENTR_DEATH_MOUNTAIN_TRAIL_SUMMIT_EXIT,             SINGLE_SCENE_INFO(SCENE_DEATH_MOUNTAIN_TRAIL), "Death Mountain Trail Top Exit",                 "Death Mountain Crater Upper Exit",              ENTRANCE_GROUP_DEATH_MOUNTAIN_TRAIL, ENTRANCE_GROUP_DEATH_MOUNTAIN_CRATER, ENTRANCE_TYPE_OVERWORLD},
@@ -305,6 +284,7 @@ const EntranceData entranceData[] = {
     { ENTRANCE_GROTTO_EXIT(GROTTO_LLR_OFFSET), ENTRANCE_GROTTO_LOAD(GROTTO_LLR_OFFSET), {{ SCENE_GROTTOS, 0x04 }},              "LLR Deku Scrub Grotto",   "LLR Grotto Entry",         ENTRANCE_GROUP_LON_LON_RANCH, ENTRANCE_GROUP_LON_LON_RANCH, ENTRANCE_TYPE_GROTTO,    "scrubs"},
 
     // Lake Hylia
+    { ENTR_HYRULE_FIELD_OWL_DROP,             -1,                                     SINGLE_SCENE_INFO(SCENE_LAKE_HYLIA),          "LH Owl Flight",                  "Hyrule Field Owl Drop",             ENTRANCE_GROUP_LAKE_HYLIA, ENTRANCE_GROUP_HYRULE_FIELD, ENTRANCE_TYPE_ONE_WAY},
     { ENTR_HYRULE_FIELD_FENCE_EXIT,           ENTR_LAKE_HYLIA_NORTH_EXIT,             SINGLE_SCENE_INFO(SCENE_LAKE_HYLIA),          "Lake Hylia North Exit",          "Hyrule Field Fence Exit",           ENTRANCE_GROUP_LAKE_HYLIA, ENTRANCE_GROUP_HYRULE_FIELD, ENTRANCE_TYPE_OVERWORLD, "lh"},
     { ENTR_ZORAS_DOMAIN_UNDERWATER_SHORTCUT,  ENTR_LAKE_HYLIA_UNDERWATER_SHORTCUT,    SINGLE_SCENE_INFO(SCENE_LAKE_HYLIA),          "Lake Hylia Underwater Shortcut", "Zora's Domain Underwater Shortcut", ENTRANCE_GROUP_LAKE_HYLIA, ENTRANCE_GROUP_ZORAS_DOMAIN, ENTRANCE_TYPE_OVERWORLD, "lh"},
     { ENTR_LAKESIDE_LABORATORY_0,             ENTR_LAKE_HYLIA_OUTSIDE_LAB,            SINGLE_SCENE_INFO(SCENE_LAKE_HYLIA),          "LH Lab Entry",                   "LH Lab",                            ENTRANCE_GROUP_LAKE_HYLIA, ENTRANCE_GROUP_LAKE_HYLIA,   ENTRANCE_TYPE_INTERIOR,  "lh", 1},
@@ -487,10 +467,10 @@ const EntranceData* GetEntranceData(s16 index) {
     return nullptr;
 }
 
-void LoadFromPreset(nlohmann::json info) {
+void LoadFromPreset(const nlohmann::json& info) {
     presetLoaded = true;
-    presetPos = { info["pos"]["x"], info["pos"]["y"] };
-    presetSize = { info["size"]["width"], info["size"]["height"] };
+    presetPos = { info.at("pos").at("x"), info.at("pos").at("y") };
+    presetSize = { info.at("size").at("width"), info.at("size").at("height") };
 }
 
 // Used for verifying the names on both sides of entrance pairs match. Keeping for ease of use for further name changes
@@ -715,9 +695,11 @@ void EntranceTrackerSettingsWindow::DrawElement() {
     Spacer(0);
 
     ImGui::TableNextColumn();
-    SohGui::GetSohMenu()->MenuDrawItem(backgroundColorWidget, ImGui::GetContentRegionAvail().x, THEME_COLOR);
+    SohGui::GetSohMenu()->MenuDrawItem(backgroundColorWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
+                                       THEME_COLOR);
 
-    SohGui::GetSohMenu()->MenuDrawItem(windowTypeWidget, ImGui::GetContentRegionAvail().x, THEME_COLOR);
+    SohGui::GetSohMenu()->MenuDrawItem(windowTypeWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
+                                       THEME_COLOR);
 
     if (CVarGetInteger(CVAR_TRACKER_ENTRANCE("WindowType"), TRACKER_WINDOW_WINDOW) == TRACKER_WINDOW_FLOATING) {
         CVarCheckbox("Enable Dragging", CVAR_TRACKER_ENTRANCE("Draggable"), CheckboxOptions().Color(THEME_COLOR));
@@ -840,7 +822,8 @@ void EntranceTrackerWindow::DrawElement() {
             int comboButton2Mask =
                 buttons[CVarGetInteger(CVAR_TRACKER_ENTRANCE("ComboButton2"), TRACKER_COMBO_BUTTON_R)];
             OSContPad* trackerButtonsPressed =
-                std::dynamic_pointer_cast<LUS::ControlDeck>(Ship::Context::GetInstance()->GetControlDeck())->GetPads();
+                std::dynamic_pointer_cast<LUS::ControlDeck>(Ship::Context::GetRawInstance()->GetControlDeck())
+                    ->GetPads();
             bool comboButtonsHeld = trackerButtonsPressed != nullptr &&
                                     trackerButtonsPressed[0].button & comboButton1Mask &&
                                     trackerButtonsPressed[0].button & comboButton2Mask;
@@ -958,8 +941,10 @@ void EntranceTrackerWindow::DrawElement() {
                     continue;
                 }
 
-                // RANDOTODO: Only show blue warps if bluewarp shuffle is on
-                if (original->metaTag.ends_with("bw") || override->metaTag.ends_with("bw")) {
+                // Only show blue warps if bluewarp shuffle is on
+                if ((original->metaTag.ends_with("bw") || override->metaTag.ends_with("bw")) &&
+                    OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_DECOUPLED_ENTRANCES) ==
+                        RO_GENERIC_OFF) {
                     continue;
                 }
 

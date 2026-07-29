@@ -3,6 +3,7 @@
  * trapped Gorons have when you free them.
  */
 #include <soh/OTRGlobals.h>
+#include "soh/Enhancements/randomizer/randomizer.h"
 
 extern "C" {
 #include <variables.h>

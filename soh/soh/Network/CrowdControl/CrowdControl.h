@@ -4,6 +4,7 @@
 
 #include <thread>
 #include <memory>
+#include <mutex>
 #include <vector>
 
 #include "soh/Network/Network.h"
@@ -64,14 +65,14 @@ class CrowdControl : public Network {
 
     std::thread ccThreadProcess;
 
-    std::vector<Effect*> activeEffects;
+    std::vector<std::unique_ptr<Effect>> activeEffects;
     std::mutex activeEffectsMutex;
 
     void HandleRemoteData(nlohmann::json payload);
     void ProcessActiveEffects();
 
     void EmitMessage(uint32_t eventId, long timeRemaining, EffectResult status);
-    Effect* ParseMessage(nlohmann::json payload);
+    std::unique_ptr<Effect> ParseMessage(nlohmann::json payload);
     EffectResult ExecuteEffect(Effect* effect);
     EffectResult CanApplyEffect(Effect* effect);
     EffectResult TranslateGiEnum(GameInteractionEffectQueryResult giResult);

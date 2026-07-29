@@ -1,15 +1,34 @@
 #include <soh/OTRGlobals.h>
+#include "soh/Enhancements/randomizer/randomizer.h"
+#include "soh/Enhancements/randomizer/RCToRandInf.h"
 
 extern "C" {
 #include "overlays/actors/ovl_En_Hy/z_en_hy.h"
 extern PlayState* gPlayState;
 }
 
+static CheckIdentity IdentifyBeggar(s32 sceneNum, s32 textId) {
+    CheckIdentity beggarIdentity;
+    beggarIdentity.randomizerInf = RAND_INF_MAX;
+    beggarIdentity.randomizerCheck = RC_UNKNOWN_CHECK;
+
+    Rando::Location* location =
+        OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_EN_HY, sceneNum, textId);
+    if (location->GetRandomizerCheck() == RC_UNKNOWN_CHECK) {
+        LUSLOG_WARN("IdentifyBeggar did not receive a valid RC value (%d).", location->GetRandomizerCheck());
+    } else {
+        beggarIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
+        beggarIdentity.randomizerCheck = location->GetRandomizerCheck();
+    }
+
+    return beggarIdentity;
+}
+
 CheckIdentity ShuffleBeggar_GetBeggarIdentity(int32_t textId) {
     CheckIdentity beggarIdentity;
     s16 sceneNum = gPlayState->sceneNum;
 
-    beggarIdentity = OTRGlobals::Instance->gRandomizer->IdentifyBeggar(sceneNum, textId);
+    beggarIdentity = IdentifyBeggar(sceneNum, textId);
 
     return beggarIdentity;
 }
@@ -33,8 +52,8 @@ void BuildEnHyMessage_BlueFire(uint16_t* textId, bool* loadFromMessageTable) {
         "special inventory %bevery 7 years or so%w...",
         "%cBlaues Feuer%w! Ich tausche es gegen %retwas Besonderes%w. Und nicht feilschen, okay! Ich bekomme neue "
         "besondere Ware %balle 7 Jahre oder so%w...",
-        "%cFeu bleu%w ! Je l'échange contre %rquelque chose de spécial%w. Pas de retour ! Je reçois de nouveaux "
-        "articles spéciaux %btous les 7 ans environ%w...");
+        "%cFeu bleu%w ! Je l'Ã©change contre %rquelque chose de spÃ©cial%w. Pas de retour ! Je reÃ§ois de nouveaux "
+        "articles spÃ©ciaux %btous les 7 ans environ%w...");
     msg.AutoFormat();
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
@@ -49,8 +68,8 @@ void BuildEnHyMessage_Fish(uint16_t* textId, bool* loadFromMessageTable) {
         "special inventory %bevery 7 years or so%w...",
         "Ein %pFisch%w! Ich tausche ihn gegen %retwas Besonderes%w. Und nicht feilschen, okay! Ich bekomme neue "
         "besondere Ware %balle 7 Jahre oder so%w...",
-        "Un %ppoisson%w ! Je l'échange contre %rquelque chose de spécial%w. Pas de retour ! Je reçois de nouveaux "
-        "articles spéciaux %btous les 7 ans environ%w...");
+        "Un %ppoisson%w ! Je l'Ã©change contre %rquelque chose de spÃ©cial%w. Pas de retour ! Je reÃ§ois de nouveaux "
+        "articles spÃ©ciaux %btous les 7 ans environ%w...");
     msg.AutoFormat();
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
@@ -63,12 +82,12 @@ void BuildEnHyMessage_Bug(uint16_t* textId, bool* loadFromMessageTable) {
     CustomMessage msg =
         CustomMessage("A tiny %gbug%w! I'll trade you %rsomething special%w for it. No returns! I get new "
                       "special inventory %bevery 7 years or so%w...",
-                      "Ein kleiner %gKäfer%w! Ich tausche ihn gegen %retwas Besonderes%w. Und nicht feilschen, okay! "
+                      "Ein kleiner %gKÃ¤fer%w! Ich tausche ihn gegen %retwas Besonderes%w. Und nicht feilschen, okay! "
                       "Ich bekomme neue "
                       "besondere Ware %balle 7 Jahre oder so%w...",
-                      "Un petit %ginsecte%w ! Je l'échange contre %rquelque chose de spécial%w. Pas de retour ! Je "
-                      "reçois de nouveaux "
-                      "articles spéciaux %btous les 7 ans environ%w...");
+                      "Un petit %ginsecte%w ! Je l'Ã©change contre %rquelque chose de spÃ©cial%w. Pas de retour ! Je "
+                      "reÃ§ois de nouveaux "
+                      "articles spÃ©ciaux %btous les 7 ans environ%w...");
     msg.AutoFormat();
     msg.LoadIntoFont();
     *loadFromMessageTable = false;

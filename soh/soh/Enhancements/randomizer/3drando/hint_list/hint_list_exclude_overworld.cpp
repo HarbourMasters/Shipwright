@@ -1557,7 +1557,7 @@ void StaticData::HintTable_Init_Exclude_Overworld() {
                                                   /*french*/ "Selon moi, une #jarre dans le Village de Cocorico# contient #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_POT_DAMPE] = HintText(CustomMessage("They say that a #pot in gravekeeper's tomb# contains #[[1]]#.",
-                                                         //TODO_TRANSLATE check these to make sure they refernce dampe's tomb not the graveyard area
+                                                         //TODO_TRANSLATE check these to make sure they reference dampe's tomb not the graveyard area
                                                    /*german*/ "Man erzählt sich, daß ein #Krug auf dem Friedhof# #[[1]]# enthielte.",
                                                    /*french*/ "Selon moi, une #jarre dans le Cimetière# contient #[[1]]#.", {QM_RED, QM_GREEN}));
 
@@ -2102,63 +2102,216 @@ void StaticData::HintTable_Init_Exclude_Overworld() {
                                             /*german*/ "Man erzählt sich, daß eine #Kiste im Labor am See# #[[1]]# enthielte.",
                                             /*french*/ "Selon moi, une #caisse dans un laboratoire# contient #[[1]]#.", {QM_RED, QM_GREEN}));
 
+    hintTextTable[RHT_KF_ROCK] = HintText(CustomMessage("They say that a #rock in Kokiri Forest# contains #[[1]]#.",
+                                                       /*german*/ TODO_TRANSLATE,
+                                                       /*french*/ "Selon moi, une #roche dans la Fôret Kokiri# contient #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_LW_BOULDER] = HintText(CustomMessage("They say that a #boulder in the Lost Woods# contains #[[1]]#.",
+                                                       /*german*/ TODO_TRANSLATE,
+                                                       /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_HC_ROCK] = HintText(CustomMessage("They say that a #rock at Hyrule Castle# contains #[[1]]#.",
+                                                       /*german*/ TODO_TRANSLATE,
+                                                       /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+    hintTextTable[RHT_HC_BOULDER] = HintText(CustomMessage("They say that a #boulder at Hyrule Castle# contains #[[1]]#.",
+                                                       /*german*/ TODO_TRANSLATE,
+                                                       /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_OGC_BRONZE_BOULDER] = HintText(CustomMessage("They say that a #bronze boulder outside Ganon's Castle# contains #[[1]]#.",
+                                                       /*german*/ TODO_TRANSLATE,
+                                                       /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+    hintTextTable[RHT_OGC_SILVER_BOULDER] = HintText(CustomMessage("They say that a #silver boulder outside Ganon's Castle# contains #[[1]]#.",
+                                                       /*german*/ TODO_TRANSLATE,
+                                                       /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_DMC_ROCK] = HintText(CustomMessage("They say that a #rock in Death Mountain Crater# contains #[[1]]#.",
+                                                       /*german*/ TODO_TRANSLATE,
+                                                       /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+    hintTextTable[RHT_DMC_BOULDER] = HintText(CustomMessage("They say that a #boulder in Death Mountain Crater# contains #[[1]]#.",
+                                                       /*german*/ TODO_TRANSLATE,
+                                                       /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+    hintTextTable[RHT_DMC_BRONZE_BOULDER] = HintText(CustomMessage("They say that a #bronze boulder in Death Mountain Crater# contains #[[1]]#.",
+                                                       /*german*/ TODO_TRANSLATE,
+                                                       /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_GV_SILVER_BOULDER] = HintText(CustomMessage("They say that a #silver boulder in Gerudo Valley# contains #[[1]]#.",
+                                                       /*german*/ TODO_TRANSLATE,
+                                                       /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+    hintTextTable[RHT_GV_ROCK] = HintText(CustomMessage("They say that a #rock in Gerudo Valley# contains #[[1]]#.",
+                                                       /*german*/ TODO_TRANSLATE,
+                                                       /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+    hintTextTable[RHT_GV_BOULDER] = HintText(CustomMessage("They say that a #boulder in Gerudo Valley# contains #[[1]]#.",
+                                                       /*german*/ TODO_TRANSLATE,
+                                                       /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+    hintTextTable[RHT_GV_BRONZE_BOULDER] = HintText(CustomMessage("They say that a #bronze boulder in Gerudo Valley# contains #[[1]]#.",
+                                                       /*german*/ TODO_TRANSLATE,
+                                                       /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_HF_SILVER_BOULDER] = HintText(CustomMessage("They say that a #silver boulder on Hyrule Field# contains #[[1]]#.",
+                                                       /*german*/ TODO_TRANSLATE,
+                                                       /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+    hintTextTable[RHT_HF_ROCK] = HintText(CustomMessage("They say that a #rock on Hyrule Field# contains #[[1]]#.",
+                                                       /*german*/ TODO_TRANSLATE,
+                                                       /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+    hintTextTable[RHT_HF_BOULDER] = HintText(CustomMessage("They say that a #boulder on Hyrule Field# contains #[[1]]#.",
+                                                       /*german*/ TODO_TRANSLATE,
+                                                       /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+    hintTextTable[RHT_HF_BRONZE_BOULDER] = HintText(CustomMessage("They say that a #bronze boulder on Hyrule Field# contains #[[1]]#.",
+                                                       /*german*/ TODO_TRANSLATE,
+                                                       /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_KAK_SILVER_BOULDER] = HintText(CustomMessage("They say that a #silver boulder at Kakariko Village# contains #[[1]]#.",
+                                                       /*german*/ TODO_TRANSLATE,
+                                                       /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+    hintTextTable[RHT_KAK_ROCK] = HintText(CustomMessage("They say that a #rock at Kakariko Village# contains #[[1]]#.",
+                                                       /*german*/ TODO_TRANSLATE,
+                                                       /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_GY_ROCK] = HintText(CustomMessage("They say that a #rock in a graveyard# contains #[[1]]#.",
+                                                       /*german*/ TODO_TRANSLATE,
+                                                       /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_LH_ROCK] = HintText(CustomMessage("They say that a #rock at Lake Hylia# contains #[[1]]#.",
+                                                       /*german*/ TODO_TRANSLATE,
+                                                       /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_ZD_ROCK] = HintText(CustomMessage("They say that a #rock in Zora's Domain# contains #[[1]]#.",
+                                                       /*german*/ TODO_TRANSLATE,
+                                                       /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_ZF_BOULDER] = HintText(CustomMessage("They say that a #boulder in Zora's Fountain# contains #[[1]]#.",
+                                                       /*german*/ TODO_TRANSLATE,
+                                                       /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+                                                       
+    hintTextTable[RHT_ZF_SILVER_BOULDER] = HintText(CustomMessage("They say that a #silver boulder in Zora's Fountain# contains #[[1]]#.",
+                                                       /*german*/ TODO_TRANSLATE,
+                                                       /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_ZR_ROCK] = HintText(CustomMessage("They say that a #rock along a river# contains #[[1]]#.",
+                                                       /*german*/ TODO_TRANSLATE,
+                                                       /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+    hintTextTable[RHT_ZR_BOULDER] = HintText(CustomMessage("They say that a #boulder along a river# contains #[[1]]#.",
+                                                       /*german*/ TODO_TRANSLATE,
+                                                       /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_DMT_ROCK] = HintText(CustomMessage("They say that a #rock on Death Mountain Trail# contains #[[1]]#.",
+                                                       /*german*/ TODO_TRANSLATE,
+                                                       /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+    hintTextTable[RHT_DMT_BOULDER] = HintText(CustomMessage("They say that a #boulder on Death Mountain Trail# contains #[[1]]#.",
+                                                       /*german*/ TODO_TRANSLATE,
+                                                       /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+    hintTextTable[RHT_DMT_BRONZE_BOULDER] = HintText(CustomMessage("They say that a #bronze boulder on Death Mountain Trail# contains #[[1]]#.",
+                                                       /*german*/ TODO_TRANSLATE,
+                                                       /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+    hintTextTable[RHT_GC_ROCK] = HintText(CustomMessage("They say that a #rock in Goron City# contains #[[1]]#.",
+                                                       /*german*/ TODO_TRANSLATE,
+                                                       /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+    hintTextTable[RHT_GC_BOULDER] = HintText(CustomMessage("They say that a #boulder in Goron City# contains #[[1]]#.",
+                                                       /*german*/ TODO_TRANSLATE,
+                                                       /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+    hintTextTable[RHT_GC_BRONZE_BOULDER] = HintText(CustomMessage("They say that a #bronze boulder in Goron City# contains #[[1]]#.",
+                                                       /*german*/ TODO_TRANSLATE,
+                                                       /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+    hintTextTable[RHT_GC_SILVER_BOULDER] = HintText(CustomMessage("They say that a #silver boulder in Goron City# contains #[[1]]#.",
+                                                       /*german*/ TODO_TRANSLATE,
+                                                       /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_COLOSSUS_SILVER_BOULDER] = HintText(CustomMessage("They say that a #silver boulder in a desert# contains #[[1]]#.",
+                                                       /*german*/ TODO_TRANSLATE,
+                                                       /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+    hintTextTable[RHT_COLOSSUS_ROCK] = HintText(CustomMessage("They say that a #rock in a desert# contains #[[1]]#.",
+                                                       /*german*/ TODO_TRANSLATE,
+                                                       /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+
     hintTextTable[RHT_TREE_HYRULE_FIELD] =
         HintText(CustomMessage("They say that a #tree in Hyrule Field# contains #[[1]]#.",
-                               /*german*/ "",
+                               /*german*/ TODO_TRANSLATE,
                                /*french*/ "Selon moi, un #arbre dans la Plaine d'Hyrule# cache #[[1]]#.", { QM_RED, QM_GREEN }));
     hintTextTable[RHT_TREE_MARKET] =
         HintText(CustomMessage("They say that a #tree in Hyrule Market# contains #[[1]]#.",
-                               /*german*/ "",
+                               /*german*/ TODO_TRANSLATE,
                                /*french*/ "Selon moi, un #arbre sur la Place du Marché# cache #[[1]]#.", { QM_RED, QM_GREEN }));
     hintTextTable[RHT_TREE_HYRULE_CASTLE] =
         HintText(CustomMessage("They say that a #tree in Hyrule Castle# contains #[[1]]#.",
-                               /*german*/ "",
+                               /*german*/ TODO_TRANSLATE,
                                /*french*/ "Selon moi, un #arbre au Château d'Hyrule# cache #[[1]]#.", { QM_RED, QM_GREEN }));
     hintTextTable[RHT_TREE_ZORAS_RIVER] =
         HintText(CustomMessage("They say that a #tree in Zora's River# contains #[[1]]#.",
-                               /*german*/ "",
+                               /*german*/ TODO_TRANSLATE,
                                /*french*/ "Selon moi, un #arbre à la Rivière Zora# cache #[[1]]#.", { QM_RED, QM_GREEN }));
     hintTextTable[RHT_TREE_ZORAS_FOUNTAIN] =
         HintText(CustomMessage("They say that a #tree in Zora's Fountain# contains #[[1]]#.",
-                               /*german*/ "",
+                               /*german*/ TODO_TRANSLATE,
                                /*french*/ "Selon moi, un #arbre à la Fontaine Zora# cache #[[1]]#.", { QM_RED, QM_GREEN }));
     hintTextTable[RHT_TREE_LON_LON_RANCH] =
         HintText(CustomMessage("They say that a #tree in Lon Lon Ranch# contains #[[1]]#.",
-                               /*german*/ "",
+                               /*german*/ TODO_TRANSLATE,
                                /*french*/ "Selon moi, un #arbre au Ranch Lon Lon# cache #[[1]]#.", { QM_RED, QM_GREEN }));
 
     hintTextTable[RHT_BUSH_HYRULE_FIELD] =
-        HintText(CustomMessage("They say that a #bush in Hyrle Field# contains #[[1]]#.",
-                               /*german*/ "",
+        HintText(CustomMessage("They say that a #bush in Hyrule Field# contains #[[1]]#.",
+                               /*german*/ TODO_TRANSLATE,
                                /*french*/ "Selon moi, un #buisson dans la Plaine d'Hyrule# cache #[[1]]#.", { QM_RED, QM_GREEN }));
     hintTextTable[RHT_BUSH_ZORAS_FOUNTAIN] =
         HintText(CustomMessage("They say that a #bush in Zora's Fountain# contains #[[1]]#.",
-                               /*german*/ "",
+                               /*german*/ TODO_TRANSLATE,
                                /*french*/ "Selon moi, un #buisson à la Fontaine Zora# cache #[[1]]#.", { QM_RED, QM_GREEN }));
 
     hintTextTable[RHT_BUTTERFLY_FAIRY_HYRULE_CASTLE] = HintText(CustomMessage("They say that a #butterfly near the castle# reveals #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß ein #Schmetterling in der Nähe des Schlosses# #[[1]]# enthülle.",
-                                            /*french*/ "Selon moi, une #un papillon près du château# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
+                                            /*french*/ "Selon moi, #un papillon près du château# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_BUTTERFLY_FAIRY_LOST_WOODS] = HintText(CustomMessage("They say that a #butterfly in the woods# reveals #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß ein #Schmetterling im Wald# #[[1]]# enthülle.",
-                                            /*french*/ "Selon moi, une #un papillon dans les bois# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
+                                            /*french*/ "Selon moi, #un papillon dans les bois# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_BUTTERFLY_FAIRY_KAKARIKO_VILLAGE] = HintText(CustomMessage("They say that a #butterfly on a watchtower# reveals #[[1]]#.",
+                                            /*german*/ "Man erzählt sich, daß ein #Schmetterling auf einem Wachturm# #[[1]]# enthülle.",
+                                            /*french*/ "Selon moi, #un papillon sur une tour de guet# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_BUTTERFLY_FAIRY_GRAVEYARD] = HintText(CustomMessage("They say that a #butterfly in the graveyard# reveals #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß ein #Schmetterling auf dem Friedhof# #[[1]]# enthülle.",
-                                            /*french*/ "Selon moi, une #un papillon dans le cimetière# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
+                                            /*french*/ "Selon moi, #un papillon dans le cimetière# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_BUTTERFLY_FAIRY_ZORAS_RIVER] = HintText(CustomMessage("They say that a #butterfly near a river# reveals #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß ein #Schmetterling in der Nähe eines Flusses# #[[1]]# enthülle.",
-                                            /*french*/ "Selon moi, une #un papillon près d'une rivière# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
+                                            /*french*/ "Selon moi, #un papillon près d'une rivière# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_BUTTERFLY_FAIRY_ZORAS_FOUNTAIN] = HintText(CustomMessage("They say that a #butterfly on a log# reveals #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß ein #Schmetterling auf einem Baumstamm# #[[1]]# enthülle.",
-                                            /*french*/ "Selon moi, une #un papillon sur une bûche# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
+                                            /*french*/ "Selon moi, #un papillon sur une bûche# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_BUTTERFLY_FAIRY_LAKE_HYLIA] = HintText(CustomMessage("They say that a #butterfly near a lake# reveals #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß ein #Schmetterling in der Nähe eines Sees# #[[1]]# enthülle.",
-                                            /*french*/ "Selon moi, une #un papillon près d'un lac# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
+                                            /*french*/ "Selon moi, #un papillon près d'un lac# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_BUTTERFLY_FAIRY_KF_GROTTO] = HintText(CustomMessage("They say that a #butterfly in a forest village grotto# reveals #[[1]]#.",
+                                            /*german*/ "Man erzählt sich, daß ein #Schmetterling in einer Grotte des Walddorfes# #[[1]]# enthülle.",
+                                            /*french*/ "Selon moi, #un papillon dans une grotte du village de la forêt# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_BUTTERFLY_FAIRY_LW_GROTTO] = HintText(CustomMessage("They say that a #butterfly underground in the woods# reveals #[[1]]#.",
+                                            /*german*/ "Man erzählt sich, daß ein #Schmetterling unterirdisch im Wald# #[[1]]# enthülle.",
+                                            /*french*/ "Selon moi, #un papillon sous terre dans les bois# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_BUTTERFLY_FAIRY_DMT_GROTTO] = HintText(CustomMessage("They say that a #butterfly underground near a mountain village# reveals #[[1]]#.",
+                                            /*german*/ "Man erzählt sich, daß ein #Schmetterling unterirdisch nahe eines Bergdorfes# #[[1]]# enthülle.",
+                                            /*french*/ "Selon moi, #un papillon sous terre près d'un village de montagne# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_BUTTERFLY_FAIRY_DMC_GROTTO] = HintText(CustomMessage("They say that a #butterfly underground in a crater# reveals #[[1]]#.",
+                                            /*german*/ "Man erzählt sich, daß ein #Schmetterling unterirdisch in einem Krater# #[[1]]# enthülle.",
+                                            /*french*/ "Selon moi, #un papillon sous terre dans un cratère# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_BUTTERFLY_FAIRY_HF_GROTTO] = HintText(CustomMessage("They say that a #butterfly underground in a field# reveals #[[1]]#.",
+                                            /*german*/ "Man erzählt sich, daß ein #Schmetterling unterirdisch auf einem Feld# #[[1]]# enthülle.",
+                                            /*french*/ "Selon moi, #un papillon sous terre dans un champ# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_BUTTERFLY_FAIRY_KAK_GROTTO] = HintText(CustomMessage("They say that a #butterfly underground in Kakariko# reveals #[[1]]#.",
+                                            /*german*/ "Man erzählt sich, daß ein #Schmetterling unterirdisch in Kakariko# #[[1]]# enthülle.",
+                                            /*french*/ "Selon moi, #un papillon sous terre dans Cocorico# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_BUTTERFLY_FAIRY_ZR_GROTTO] = HintText(CustomMessage("They say that a #butterfly underground near a river# reveals #[[1]]#.",
+                                            /*german*/ "Man erzählt sich, daß ein #Schmetterling unterirdisch in der Nähe eines Flusses# #[[1]]# enthülle.",
+                                            /*french*/ "Selon moi, #un papillon sous terre près d'une rivière# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_SIGN_KOKIRI_FOREST] = HintText(CustomMessage("They say that #reading a sign in a forest# reveals #[[1]]#.",
                                                         /*german*/ "Man erzählt sich, daß das #Lesen eines Schildes in einem Wald# #[[1]]# enthülle.",
@@ -2323,6 +2476,11 @@ void StaticData::HintTable_Init_Exclude_Overworld() {
     hintTextTable[RHT_BEGGAR_KAKARIKO_VILLAGE] = HintText(CustomMessage("They say that #trading with a beggar in Kakariko Village# gives #[[1]]#.",
                                                         /*german*/ "Man erzählt sich, daß das #Handeln mit einem Bettler in Kakariko# #[[1]]# gäbe.",
                                                         /*french*/ "Selon moi, #échanger avec un mendiant dans le Village de Cocorico# donne #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_RED_ICE_ZORAS_DOMAIN] = HintText(CustomMessage("They say that #melting red ice in Zora's Domain# gives #[[1]]#.",
+                                                        /*german*/ "Man erzählt sich, daß das #Schmelzen von rotem Eis in Zoras Reich# #[[1]]# gäbe.",
+                                                        /*french*/ "Selon moi, #faire fondre la glace rouge dans le Domaine Zora# donne #[[1]]#.", {QM_RED, QM_GREEN}));
+
     // clang-format on
 }
 } // namespace Rando

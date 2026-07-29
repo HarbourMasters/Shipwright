@@ -1,6 +1,6 @@
 #pragma once
 
-#include <cstdint>
+#include <stdint.h>
 #include <ship/resource/Resource.h>
 #include "SkeletonLimb.h"
 #include <z64animation.h>
@@ -78,6 +78,8 @@ class Skeleton : public Ship::Resource<SkeletonData> {
 struct SkeletonPatchInfo {
     SkelAnime* skelAnime;
     std::string vanillaSkeletonPath;
+
+    u8 lastSkeletonId = 0xFF;
     bool isLocalPlayer;
 };
 

@@ -14,8 +14,8 @@ typedef struct EnNiwLady {
     /* 0x0190 */ Vec3s jointTable[16];
     /* 0x01F0 */ Vec3s morphTable[16];
     /* 0x0250 */ EnNiwLadyActionFunc actionFunc;
-    /* 0x0254 */ Vec3s unk_254;
-    /* 0x025A */ Vec3s unk_25A;
+    /* 0x0254 */ Vec3s headRot;
+    /* 0x025A */ Vec3s torsoRot;
     /* 0x0260 */ s16 unusedTimer;
     /* 0x0262 */ s16 unk_262; // "message_end_code"
     /* 0x0264 */ s16 unusedTimer2;

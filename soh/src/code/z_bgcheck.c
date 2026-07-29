@@ -3,6 +3,7 @@
 
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include <assert.h>
 
 #define SS_NULL 0xFFFF
@@ -398,16 +399,6 @@ s32 CollisionPoly_LineVsPoly(CollisionPoly* poly, Vec3s* vtxList, Vec3f* posA, V
     planeDistB =
         (poly->normal.x * posB->x + poly->normal.y * posB->y + poly->normal.z * posB->z) * COLPOLY_NORMAL_FRAC +
         plane.originDist;
-
-#if defined(__SWITCH__) || defined(__WIIU__)
-    // on some platforms this ends up as very small numbers due to rounding issues
-    if (IS_ZERO(planeDistA)) {
-        planeDistA = 0.0f;
-    }
-    if (IS_ZERO(planeDistB)) {
-        planeDistB = 0.0f;
-    }
-#endif
 
     planeDistDelta = planeDistA - planeDistB;
     if ((planeDistA >= 0.0f && planeDistB >= 0.0f) || (planeDistA < 0.0f && planeDistB < 0.0f) ||
@@ -1902,7 +1893,7 @@ s32 BgCheck_CheckWallImpl(CollisionContext* colCtx, u16 xpFlags, Vec3f* posResul
     s32 bgId2;
     f32 nx, ny, nz; // unit normal of polygon
 
-    if (CVarGetInteger(CVAR_CHEAT("NoClip"), 0) && actor != NULL && actor->id == ACTOR_PLAYER) {
+    if (!GameInteractor_Should(VB_PERFORM_WALL_COLLISION_CHECK, true, actor)) {
         return false;
     }
 
@@ -3999,7 +3990,7 @@ u32 SurfaceType_GetSceneExitIndex(CollisionContext* colCtx, CollisionPoly* poly,
 /**
  * SurfaceType Get ? Property (& 0x0003 E000)
  */
-u32 func_80041D4C(CollisionContext* colCtx, CollisionPoly* poly, s32 bgId) {
+u32 SurfaceType_GetFloorType(CollisionContext* colCtx, CollisionPoly* poly, s32 bgId) {
     return SurfaceType_GetData(colCtx, poly, bgId, 0) >> 13 & 0x1F;
 }
 
@@ -4021,7 +4012,7 @@ u32 func_80041D94(CollisionContext* colCtx, CollisionPoly* poly, s32 bgId) {
  * SurfaceType Get Wall Flags
  */
 s32 func_80041DB8(CollisionContext* colCtx, CollisionPoly* poly, s32 bgId) {
-    if (CVarGetInteger(CVAR_CHEAT("ClimbEverything"), 0) != 0) {
+    if (GameInteractor_Should(VB_SURFACE_IS_CLIMBABLE, false)) {
         return (1 << 3) | D_80119D90[func_80041D94(colCtx, poly, bgId)];
     } else {
         return D_80119D90[func_80041D94(colCtx, poly, bgId)];
@@ -4096,7 +4087,7 @@ u16 SurfaceType_GetSfx(CollisionContext* colCtx, CollisionPoly* poly, s32 bgId) 
 /**
  * SurfaceType get terrain slope surface
  */
-u32 SurfaceType_GetSlope(CollisionContext* colCtx, CollisionPoly* poly, s32 bgId) {
+u32 SurfaceType_GetFloorEffect(CollisionContext* colCtx, CollisionPoly* poly, s32 bgId) {
     return SurfaceType_GetData(colCtx, poly, bgId, 1) >> 4 & 3;
 }
 
@@ -4118,7 +4109,7 @@ u32 SurfaceType_GetEcho(CollisionContext* colCtx, CollisionPoly* poly, s32 bgId)
  * SurfaceType Is Hookshot Surface
  */
 u32 SurfaceType_IsHookshotSurface(CollisionContext* colCtx, CollisionPoly* poly, s32 bgId) {
-    return CVarGetInteger(CVAR_CHEAT("HookshotEverything"), 0) || SurfaceType_GetData(colCtx, poly, bgId, 1) >> 17 & 1;
+    return GameInteractor_Should(VB_SURFACE_IS_HOOKSHOT, SurfaceType_GetData(colCtx, poly, bgId, 1) >> 17 & 1);
 }
 
 /**

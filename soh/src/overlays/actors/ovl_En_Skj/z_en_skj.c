@@ -680,7 +680,7 @@ void EnSkj_Fade(EnSkj* this, PlayState* play) {
     }
 
     if (this->actor.velocity.y <= 0.0f) {
-        if (this->actor.bgCheckFlags & 2) {
+        if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND_TOUCH) {
             this->actor.bgCheckFlags &= ~2;
             func_80AFF2A0(this);
         }
@@ -947,7 +947,7 @@ void EnSkj_WaitInRange(EnSkj* this, PlayState* play) {
             } else {
                 this->textId = Text_GetFaceReaction(play, 0x15);
             }
-            func_8002F2CC(&this->actor, play, EnSkj_GetItemXzRange(this));
+            Actor_OfferTalk(&this->actor, play, EnSkj_GetItemXzRange(this));
         }
     }
 }
@@ -966,7 +966,7 @@ void EnSkj_WaitForSong(EnSkj* this, PlayState* play) {
         play->msgCtx.ocarinaMode = OCARINA_MODE_04;
         Message_CloseTextbox(play);
         player->unk_6A8 = &this->actor;
-        func_8002F2CC(&this->actor, play, EnSkj_GetItemXzRange(this));
+        Actor_OfferTalk(&this->actor, play, EnSkj_GetItemXzRange(this));
         EnSkj_SetupWrongSong(this);
     } else {
         if ((play->msgCtx.msgMode == MSGMODE_OCARINA_CORRECT_PLAYBACK) && (this->unk_2D6 == 0)) {
@@ -987,7 +987,7 @@ void EnSkj_WaitForSong(EnSkj* this, PlayState* play) {
                 play->msgCtx.ocarinaMode = OCARINA_MODE_04;
                 Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
                 player->unk_6A8 = &this->actor;
-                func_8002F2CC(&this->actor, play, EnSkj_GetItemXzRange(this));
+                Actor_OfferTalk(&this->actor, play, EnSkj_GetItemXzRange(this));
                 this->textId = 0x10BB;
                 EnSkj_SetupAfterSong(this);
             } else {
@@ -1004,13 +1004,13 @@ void EnSkj_WaitForSong(EnSkj* this, PlayState* play) {
                 if (Flags_GetItemGetInf(ITEMGETINF_16)) {
                     play->msgCtx.ocarinaMode = OCARINA_MODE_04;
                     player->unk_6A8 = &this->actor;
-                    func_8002F2CC(&this->actor, play, EnSkj_GetItemXzRange(this));
+                    Actor_OfferTalk(&this->actor, play, EnSkj_GetItemXzRange(this));
                     this->textId = 0x10BD;
                     EnSkj_SetupAfterSong(this);
                 } else {
                     play->msgCtx.ocarinaMode = OCARINA_MODE_04;
                     player->unk_6A8 = &this->actor;
-                    func_8002F2CC(&this->actor, play, EnSkj_GetItemXzRange(this));
+                    Actor_OfferTalk(&this->actor, play, EnSkj_GetItemXzRange(this));
                     EnSkj_SetupWrongSong(this);
                 }
             }
@@ -1028,7 +1028,7 @@ void EnSkj_AfterSong(EnSkj* this, PlayState* play) {
     if (D_80B01EA0 != 0) {
         EnSkj_SetupTalk(this);
     } else {
-        func_8002F2CC(&this->actor, play, EnSkj_GetItemXzRange(this));
+        Actor_OfferTalk(&this->actor, play, EnSkj_GetItemXzRange(this));
     }
 }
 
@@ -1106,7 +1106,7 @@ void EnSkj_JumpFromStump(EnSkj* this) {
 
 void EnSkj_WaitForLanding(EnSkj* this, PlayState* play) {
     if (this->actor.velocity.y <= 0.0f) {
-        if (this->actor.bgCheckFlags & 2) {
+        if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND_TOUCH) {
             this->actor.bgCheckFlags &= ~2;
             this->actor.speedXZ = 0.0f;
             EnSkj_SetupWaitForLandAnimFinish(this);
@@ -1203,7 +1203,7 @@ void EnSkj_WrongSong(EnSkj* this, PlayState* play) {
     if (D_80B01EA0 != 0) {
         EnSkj_SetupWaitForTextClear(this);
     } else {
-        func_8002F2CC(&this->actor, play, EnSkj_GetItemXzRange(this));
+        Actor_OfferTalk(&this->actor, play, EnSkj_GetItemXzRange(this));
     }
 }
 
@@ -1414,21 +1414,12 @@ void EnSkj_StartOcarinaMinigame(EnSkj* this, PlayState* play) {
 
     EnSkj_TurnPlayer(this, player);
 
-    if (dialogState == TEXT_STATE_CLOSING) {
-        // #region SOH [Enhancement]
-        if (CVarGetInteger(CVAR_ENHANCEMENT("InstantOcarinaGameWin"), 0) &&
-            CVarGetInteger(CVAR_ENHANCEMENT("CustomizeOcarinaGame"), 0)) {
-            play->msgCtx.ocarinaMode = OCARINA_MODE_0F;
+    if (dialogState == TEXT_STATE_CLOSING && GameInteractor_Should(VB_PLAY_LOST_WOODS_OCARINA_GAME, true, this)) {
+        func_8010BD58(play, OCARINA_ACTION_MEMORY_GAME);
+        if (sOcarinaMinigameSkullKids[SKULL_KID_LEFT].skullkid != NULL) {
+            sOcarinaMinigameSkullKids[SKULL_KID_LEFT].skullkid->minigameState = SKULL_KID_OCARINA_PLAY_NOTES;
             this->songFailTimer = 160;
             this->actionFunc = EnSkj_WaitForPlayback;
-            // #endregion
-        } else {
-            func_8010BD58(play, OCARINA_ACTION_MEMORY_GAME);
-            if (sOcarinaMinigameSkullKids[SKULL_KID_LEFT].skullkid != NULL) {
-                sOcarinaMinigameSkullKids[SKULL_KID_LEFT].skullkid->minigameState = SKULL_KID_OCARINA_PLAY_NOTES;
-                this->songFailTimer = 160;
-                this->actionFunc = EnSkj_WaitForPlayback;
-            }
         }
     }
 }
@@ -1442,7 +1433,7 @@ void EnSkj_WaitForPlayback(EnSkj* this, PlayState* play) {
         Message_CloseTextbox(play);
         play->msgCtx.ocarinaMode = OCARINA_MODE_04;
         player->unk_6A8 = &this->actor;
-        func_8002F2CC(&this->actor, play, 26.0f);
+        Actor_OfferTalk(&this->actor, play, 26.0f);
         this->textId = 0x102D;
         this->actionFunc = EnSkj_FailedMiniGame;
     } else if (play->msgCtx.ocarinaMode == OCARINA_MODE_0F) { // completed the game
@@ -1450,7 +1441,7 @@ void EnSkj_WaitForPlayback(EnSkj* this, PlayState* play) {
         Message_CloseTextbox(play);
         play->msgCtx.ocarinaMode = OCARINA_MODE_04;
         player->unk_6A8 = &this->actor;
-        func_8002F2CC(&this->actor, play, 26.0f);
+        Actor_OfferTalk(&this->actor, play, 26.0f);
         this->textId = 0x10BF;
         this->actionFunc = EnSkj_WonOcarinaMiniGame;
     } else { // playing the game
@@ -1478,12 +1469,7 @@ void EnSkj_WaitForPlayback(EnSkj* this, PlayState* play) {
                 break;
             case MSGMODE_MEMORY_GAME_PLAYER_PLAYING:
                 if (this->songFailTimer != 0) {
-                    // #region SOH [Enhancement]
-                    if (CVarGetInteger(CVAR_ENHANCEMENT("OcarinaUnlimitedFailTime"), 0) == 1 &&
-                        CVarGetInteger(CVAR_ENHANCEMENT("CustomizeOcarinaGame"), 0) == 1) {
-                        // don't decrement timer
-                        // #endregion
-                    } else {
+                    if (GameInteractor_Should(VB_LOST_WOODS_OCARINA_GAME_TIMER_TICK, true)) {
                         this->songFailTimer--;
                     }
                 } else { // took too long, game failed
@@ -1491,7 +1477,7 @@ void EnSkj_WaitForPlayback(EnSkj* this, PlayState* play) {
                     Message_CloseTextbox(play);
                     play->msgCtx.ocarinaMode = OCARINA_MODE_04;
                     player->unk_6A8 = &this->actor;
-                    func_8002F2CC(&this->actor, play, 26.0f);
+                    Actor_OfferTalk(&this->actor, play, 26.0f);
                     this->textId = 0x102D;
                     this->actionFunc = EnSkj_FailedMiniGame;
                 }
@@ -1503,8 +1489,8 @@ void EnSkj_WaitForPlayback(EnSkj* this, PlayState* play) {
                             SKULL_KID_OCARINA_PLAY_NOTES;
                     }
                     this->songFailTimer = 160;
-                    Audio_OcaSetInstrument(6); // related instrument sound (flute?)
-                    Audio_OcaSetSongPlayback(OCARINA_SONG_MEMORY_GAME + 1, 1);
+                    AudioOcarina_SetInstrument(OCARINA_INSTRUMENT_FLUTE);
+                    AudioOcarina_SetPlaybackSong(OCARINA_SONG_MEMORY_GAME + 1, 1);
                     play->msgCtx.msgMode = MSGMODE_MEMORY_GAME_LEFT_SKULLKID_PLAYING;
                     play->msgCtx.stateTimer = 2;
                 }
@@ -1517,7 +1503,7 @@ void EnSkj_FailedMiniGame(EnSkj* this, PlayState* play) {
     if (D_80B01EA0) {
         this->actionFunc = EnSkj_WaitForNextRound;
     } else {
-        func_8002F2CC(&this->actor, play, 26.0f);
+        Actor_OfferTalk(&this->actor, play, 26.0f);
     }
 }
 
@@ -1556,7 +1542,7 @@ void EnSkj_WonOcarinaMiniGame(EnSkj* this, PlayState* play) {
             this->actionFunc = EnSkj_WaitToGiveReward;
         }
     } else {
-        func_8002F2CC(&this->actor, play, 26.0f);
+        Actor_OfferTalk(&this->actor, play, 26.0f);
     }
 }
 

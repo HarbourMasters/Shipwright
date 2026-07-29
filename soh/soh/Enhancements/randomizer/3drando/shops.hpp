@@ -2,7 +2,6 @@
 #include "../SeedContext.h"
 
 #include <vector>
-#include <array>
 
 struct PriceSettingsStruct {
     RandomizerSettingKey main;

@@ -2,6 +2,7 @@
 #include "soh/ShipInit.hpp"
 
 extern "C" {
+#include "z64.h"
 #include "z64save.h"
 #include "macros.h"
 #include "variables.h"

@@ -118,7 +118,7 @@ s32 func_80A1D94C(EnFu* this, PlayState* play, u16 textID, EnFuActionFunc action
     yawDiff = this->actor.yawTowardsPlayer - this->actor.shape.rot.y;
 
     if ((ABS(yawDiff) < 0x2301) && (this->actor.xzDistToPlayer < 100.0f)) {
-        func_8002F2CC(&this->actor, play, 100.0f);
+        Actor_OfferTalk(&this->actor, play, 100.0f);
     } else {
         this->behaviorFlags |= FU_RESET_LOOK_ANGLE;
     }
@@ -214,7 +214,7 @@ void EnFu_TeachSong(EnFu* this, PlayState* play) {
     // if dialog state is 2, start song demonstration
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_CLOSING) {
         this->behaviorFlags &= ~FU_WAIT;
-        Audio_OcaSetInstrument(4); // seems to be related to setting instrument type
+        AudioOcarina_SetInstrument(4); // seems to be related to setting instrument type
         func_8010BD58(play, OCARINA_ACTION_TEACH_STORMS);
         this->actionFunc = EnFu_WaitForPlayback;
     }
@@ -237,7 +237,7 @@ void EnFu_WaitAdult(EnFu* this, PlayState* play) {
     } else if (ABS(yawDiff) < 0x2301) {
         if (this->actor.xzDistToPlayer < 100.0f) {
             this->actor.textId = 0x5034;
-            func_8002F2CC(&this->actor, play, 100.0f);
+            Actor_OfferTalk(&this->actor, play, 100.0f);
             player->stateFlags2 |= PLAYER_STATE2_NEAR_OCARINA_ACTOR;
         }
     }
@@ -263,7 +263,7 @@ void EnFu_Update(Actor* thisx, PlayState* play) {
         Math_SmoothStepToS(&this->unk_2A2.y, 0, 6, 6200, 100);
         this->behaviorFlags &= ~FU_RESET_LOOK_ANGLE;
     } else {
-        func_80038290(play, &this->actor, &this->lookAngleOffset, &this->unk_2A2, this->actor.focus.pos);
+        Actor_TrackPlayer(play, &this->actor, &this->lookAngleOffset, &this->unk_2A2, this->actor.focus.pos);
     }
 }
 

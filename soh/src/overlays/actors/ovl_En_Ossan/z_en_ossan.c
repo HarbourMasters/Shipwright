@@ -606,10 +606,7 @@ void EnOssan_Init(Actor* thisx, PlayState* play) {
     }
 
     // If you haven't given Zelda's Letter to the Kakariko Guard
-    // or are rando'd and haven't gotten gotten the letter from zelda yet
-    if (this->actor.params == OSSAN_TYPE_MASK &&
-        (!Flags_GetInfTable(INFTABLE_SHOWED_ZELDAS_LETTER_TO_GATE_GUARD) ||
-         (IS_RANDO && !Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)))) {
+    if (this->actor.params == OSSAN_TYPE_MASK && !Flags_GetInfTable(INFTABLE_SHOWED_ZELDAS_LETTER_TO_GATE_GUARD)) {
         Actor_Kill(&this->actor);
         return;
     }
@@ -682,7 +679,7 @@ void EnOssan_EndInteraction(PlayState* play, EnOssan* this) {
     play->msgCtx.stateTimer = 4;
     player->stateFlags2 &= ~PLAYER_STATE2_DISABLE_DRAW;
     Play_SetViewpoint(play, 1);
-    Interface_ChangeAlpha(50);
+    Interface_ChangeHudVisibilityMode(50);
     this->drawCursor = 0;
     this->stickLeftPrompt.isEnabled = false;
     this->stickRightPrompt.isEnabled = false;
@@ -692,7 +689,7 @@ void EnOssan_EndInteraction(PlayState* play, EnOssan* this) {
 }
 
 s32 EnOssan_TestEndInteraction(EnOssan* this, PlayState* play, Input* input) {
-    if (CHECK_BTN_ALL(input->press.button, BTN_B)) {
+    if (GameInteractor_Should(VB_SHOULD_OSSAN_CANCEL, CHECK_BTN_ALL(input->press.button, BTN_B), input)) {
         EnOssan_EndInteraction(play, this);
         return true;
     } else {
@@ -701,7 +698,7 @@ s32 EnOssan_TestEndInteraction(EnOssan* this, PlayState* play, Input* input) {
 }
 
 s32 EnOssan_TestCancelOption(EnOssan* this, PlayState* play, Input* input) {
-    if (CHECK_BTN_ALL(input->press.button, BTN_B)) {
+    if (GameInteractor_Should(VB_SHOULD_OSSAN_CANCEL, CHECK_BTN_ALL(input->press.button, BTN_B), input)) {
         this->stateFlag = this->tempStateFlag;
         Message_ContinueTextbox(play, this->shelfSlots[this->cursorIndex]->actor.textId);
         return true;
@@ -768,7 +765,7 @@ void EnOssan_State_Idle(EnOssan* this, PlayState* play, Player* player) {
         Play_SetShopBrowsingViewpoint(play);
         EnOssan_SetStateStartShopping(play, this, false);
     } else if (this->actor.xzDistToPlayer < 100.0f) {
-        func_8002F2CC(&this->actor, play, 100);
+        Actor_OfferTalk(&this->actor, play, 100);
     }
 }
 
@@ -1402,7 +1399,7 @@ void EnOssan_GiveItemWithFanfare(PlayState* play, EnOssan* this) {
     play->msgCtx.stateTimer = 4;
     player->stateFlags2 &= ~PLAYER_STATE2_DISABLE_DRAW;
     Play_SetViewpoint(play, 1);
-    Interface_ChangeAlpha(50);
+    Interface_ChangeHudVisibilityMode(50);
     this->drawCursor = 0;
     EnOssan_UpdateCameraDirection(this, play, 0.0f);
     this->stateFlag = OSSAN_STATE_GIVE_ITEM_FANFARE;
@@ -1782,7 +1779,7 @@ void EnOssan_State_ContinueShoppingPrompt(EnOssan* this, PlayState* play, Player
                         Play_SetViewpoint(play, 2);
                         Message_StartTextbox(play, this->actor.textId, &this->actor);
                         EnOssan_SetStateStartShopping(play, this, true);
-                        func_8002F298(&this->actor, play, 100.0f, -1);
+                        Actor_OfferTalkExchangeEquiCylinder(&this->actor, play, 100.0f, -1);
                         break;
                     case 1:
                     default:
@@ -1801,7 +1798,7 @@ void EnOssan_State_ContinueShoppingPrompt(EnOssan* this, PlayState* play, Player
         Play_SetViewpoint(play, 2);
         Message_StartTextbox(play, this->actor.textId, &this->actor);
         EnOssan_SetStateStartShopping(play, this, true);
-        func_8002F298(&this->actor, play, 100.0f, -1);
+        Actor_OfferTalkExchangeEquiCylinder(&this->actor, play, 100.0f, -1);
     }
 }
 

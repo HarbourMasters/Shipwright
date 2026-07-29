@@ -3,6 +3,7 @@
 
 extern "C" {
 #include "variables.h"
+#include "z64.h"
 extern PlayState* gPlayState;
 extern void func_808237B4(PlayState* play, Input* input);
 }

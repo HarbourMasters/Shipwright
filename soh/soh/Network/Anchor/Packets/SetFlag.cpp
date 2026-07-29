@@ -1,8 +1,6 @@
 #include "soh/Network/Anchor/Anchor.h"
 #include <nlohmann/json.hpp>
-#include <libultraship/libultraship.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
-#include "soh/OTRGlobals.h"
 
 extern "C" {
 #include "functions.h"
@@ -41,6 +39,13 @@ void Anchor::HandlePacket_SetFlag(nlohmann::json payload) {
     s16 flagType = payload.at("flagType").get<s16>();
     s16 flag = payload.at("flag").get<s16>();
 
+    // sceneNum == SCENE_ID_MAX is a sentinel meaning "global flag" (handled below); only larger
+    // values would index gSaveContext.sceneFlags out of bounds.
+    if (sceneNum < 0 || sceneNum > SCENE_ID_MAX) {
+        SPDLOG_ERROR("[Anchor] SET_FLAG: sceneNum {} out of range", sceneNum);
+        return;
+    }
+
     if (sceneNum == SCENE_ID_MAX) {
         auto effect = new GameInteractionEffect::SetFlag();
         effect->parameters[0] = flagType;
@@ -61,6 +66,17 @@ void Anchor::HandlePacket_SetFlag(nlohmann::json payload) {
 
         // Special case: Ignore forest temple elevator flag, stored at 0x1B.
         if (sceneNum == SCENE_FOREST_TEMPLE && flagType == FLAG_SCENE_SWITCH && flag == 0x1B) {
+            return;
+        }
+
+        // Special case: Ignore tower collapse timer start, stored 0x36.
+        if (sceneNum == SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR && flagType == FLAG_SCENE_SWITCH && flag == 0x36) {
+            return;
+        }
+
+        // Special case: Ignore Great Fairy cutscenes, stored 0x38.
+        if ((sceneNum == SCENE_GREAT_FAIRYS_FOUNTAIN_MAGIC || sceneNum == SCENE_GREAT_FAIRYS_FOUNTAIN_SPELLS) &&
+            flagType == FLAG_SCENE_SWITCH && flag == 0x38) {
             return;
         }
 

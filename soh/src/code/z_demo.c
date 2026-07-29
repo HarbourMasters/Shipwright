@@ -158,14 +158,14 @@ void func_800645A0(PlayState* play, CutsceneContext* csCtx) {
     Input* input = &play->state.input[0];
 
     if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0) && CHECK_BTN_ALL(input->press.button, BTN_DLEFT) &&
-        (csCtx->state == CS_STATE_IDLE) && (gSaveContext.sceneSetupIndex >= 4)) {
+        (csCtx->state == CS_STATE_IDLE) && (gSaveContext.sceneLayer >= 4)) {
         D_8015FCC8 = 0;
         gSaveContext.cutsceneIndex = 0xFFFD;
         gSaveContext.cutsceneTrigger = 1;
     }
 
     if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0) && CHECK_BTN_ALL(input->press.button, BTN_DUP) &&
-        (csCtx->state == CS_STATE_IDLE) && (gSaveContext.sceneSetupIndex >= 4) && !gDbgCamEnabled) {
+        (csCtx->state == CS_STATE_IDLE) && (gSaveContext.sceneLayer >= 4) && !gDbgCamEnabled) {
         D_8015FCC8 = 1;
         gSaveContext.cutsceneIndex = 0xFFFD;
         gSaveContext.cutsceneTrigger = 1;
@@ -195,8 +195,8 @@ u32 func_8006472C(PlayState* play, CutsceneContext* csCtx, f32 target) {
 }
 
 void func_80064760(PlayState* play, CutsceneContext* csCtx) {
-    Interface_ChangeAlpha(1);
-    ShrinkWindow_SetVal(0x20);
+    Interface_ChangeHudVisibilityMode(1);
+    Letterbox_SetSizeTarget(0x20);
 
     if (func_8006472C(play, csCtx, 1.0f)) {
         Audio_SetCutsceneFlag(1);
@@ -206,8 +206,8 @@ void func_80064760(PlayState* play, CutsceneContext* csCtx) {
 
 void func_800647C0(PlayState* play, CutsceneContext* csCtx) {
     func_80068C3C(play, csCtx);
-    Interface_ChangeAlpha(1);
-    ShrinkWindow_SetVal(0x20);
+    Interface_ChangeHudVisibilityMode(1);
+    Letterbox_SetSizeTarget(0x20);
 
     if (func_8006472C(play, csCtx, 1.0f)) {
         Audio_SetCutsceneFlag(1);
@@ -399,10 +399,10 @@ void func_80064824(PlayState* play, CutsceneContext* csCtx, CsCmdBase* cmd) {
             }
             break;
         case 28:
-            play->unk_11DE9 = 1;
+            play->haltAllActors = 1;
             break;
         case 29:
-            play->unk_11DE9 = 0;
+            play->haltAllActors = 0;
             break;
         case 30:
             Flags_SetEnv(play, 3);
@@ -421,13 +421,13 @@ void func_80064824(PlayState* play, CutsceneContext* csCtx, CsCmdBase* cmd) {
             break;
         case 34:
             if (IS_DAY) {
-                gSaveContext.dayTime -= gTimeIncrement;
+                gSaveContext.dayTime -= gTimeSpeed;
             } else {
-                gSaveContext.dayTime -= gTimeIncrement * 2;
+                gSaveContext.dayTime -= gTimeSpeed * 2;
             }
             break;
         case 35:
-            func_800EE824();
+            AudioOcarina_PlayLongScarecrowSong();
             csCtx->frames = cmd->startFrame - 1;
             break;
     }
@@ -444,14 +444,14 @@ void Cutscene_Command_SetLighting(PlayState* play, CutsceneContext* csCtx, CsCmd
 // Command 0x56: Play Background Music
 void Cutscene_Command_PlayBGM(PlayState* play, CutsceneContext* csCtx, CsCmdMusicChange* cmd) {
     if (csCtx->frames == cmd->startFrame) {
-        func_800F595C(cmd->sequence - 1);
+        Audio_PlaySequenceInCutscene(cmd->sequence - 1);
     }
 }
 
 // Command 0x57: Stop Background Music
 void Cutscene_Command_StopBGM(PlayState* play, CutsceneContext* csCtx, CsCmdMusicChange* cmd) {
     if (csCtx->frames == cmd->startFrame) {
-        func_800F59E8(cmd->sequence - 1);
+        Audio_StopSequenceInCutscene(cmd->sequence - 1);
     }
 }
 
@@ -473,7 +473,7 @@ void Cutscene_Command_FadeBGM(PlayState* play, CutsceneContext* csCtx, CsCmdMusi
 // Command 9: ?
 void Cutscene_Command_09(PlayState* play, CutsceneContext* csCtx, CsCmdUnknown9* cmd) {
     if (csCtx->frames == cmd->startFrame) {
-        func_800AA000(0.0f, cmd->unk_06, cmd->unk_07, cmd->unk_08);
+        Rumble_Request(0.0f, cmd->unk_06, cmd->unk_07, cmd->unk_08);
     }
 }
 
@@ -643,7 +643,7 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                     gSaveContext.cutsceneIndex = 0xFFF3;
                     play->transitionType = TRANS_TYPE_INSTANT;
                 } else {
-                    if (gSaveContext.sceneSetupIndex < 4) {
+                    if (gSaveContext.sceneLayer < 4) {
                         if (!LINK_IS_ADULT) {
                             play->linkAgeOnLoad = 0;
                         } else {
@@ -912,7 +912,7 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                 break;
             case 54:
                 gSaveContext.gameMode = GAMEMODE_END_CREDITS;
-                Audio_SetSoundBanksMute(0x6F);
+                Audio_SetSfxBanksMute(0x6F);
                 play->linkAgeOnLoad = 1;
                 play->nextEntranceIndex = ENTR_GERUDO_VALLEY_EAST_EXIT;
                 gSaveContext.cutsceneIndex = 0xFFF2;
@@ -1107,7 +1107,7 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                     gSaveContext.cutsceneIndex = 0xFFF3;
                     play->transitionType = TRANS_TYPE_FADE_BLACK;
                 } else {
-                    switch (gSaveContext.sceneSetupIndex) {
+                    switch (gSaveContext.sceneLayer) {
                         case 8:
                             play->nextEntranceIndex = ENTR_SACRED_FOREST_MEADOW_SOUTH_EXIT;
                             play->transitionTrigger = TRANS_TRIGGER_START;
@@ -1229,31 +1229,43 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                 play->nextEntranceIndex = ENTR_INSIDE_GANONS_CASTLE_2;
                 play->transitionTrigger = TRANS_TRIGGER_START;
                 play->transitionType = TRANS_TYPE_FADE_BLACK;
+                Flags_SetEventChkInf(EVENTCHKINF_COMPLETED_FOREST_TRIAL);
+                gSaveContext.eventChkInf[11] &= ~0x800;
                 break;
             case 108:
                 play->nextEntranceIndex = ENTR_INSIDE_GANONS_CASTLE_3;
                 play->transitionTrigger = TRANS_TRIGGER_START;
                 play->transitionType = TRANS_TYPE_FADE_BLACK;
+                Flags_SetEventChkInf(EVENTCHKINF_COMPLETED_WATER_TRIAL);
+                gSaveContext.eventChkInf[11] &= ~0x1000;
                 break;
             case 109:
                 play->nextEntranceIndex = ENTR_INSIDE_GANONS_CASTLE_4;
                 play->transitionTrigger = TRANS_TRIGGER_START;
                 play->transitionType = TRANS_TYPE_FADE_BLACK;
+                Flags_SetEventChkInf(EVENTCHKINF_COMPLETED_SHADOW_TRIAL);
+                gSaveContext.eventChkInf[11] &= ~0x2000;
                 break;
             case 110:
                 play->nextEntranceIndex = ENTR_INSIDE_GANONS_CASTLE_5;
                 play->transitionTrigger = TRANS_TRIGGER_START;
                 play->transitionType = TRANS_TYPE_FADE_BLACK;
+                Flags_SetEventChkInf(EVENTCHKINF_COMPLETED_FIRE_TRIAL);
+                gSaveContext.eventChkInf[11] &= ~0x4000;
                 break;
             case 111:
                 play->nextEntranceIndex = ENTR_INSIDE_GANONS_CASTLE_6;
                 play->transitionTrigger = TRANS_TRIGGER_START;
                 play->transitionType = TRANS_TYPE_FADE_BLACK;
+                Flags_SetEventChkInf(EVENTCHKINF_COMPLETED_LIGHT_TRIAL);
+                gSaveContext.eventChkInf[11] &= ~0x8000;
                 break;
             case 112:
                 play->nextEntranceIndex = ENTR_INSIDE_GANONS_CASTLE_7;
                 play->transitionTrigger = TRANS_TRIGGER_START;
                 play->transitionType = TRANS_TYPE_FADE_BLACK;
+                Flags_SetEventChkInf(EVENTCHKINF_COMPLETED_SPIRIT_TRIAL);
+                gSaveContext.eventChkInf[10] &= ~0x2000;
                 break;
             case 113:
                 if (Flags_GetEventChkInf(EVENTCHKINF_COMPLETED_FOREST_TRIAL) &&
@@ -1297,7 +1309,7 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                 break;
             case 117:
                 gSaveContext.gameMode = GAMEMODE_END_CREDITS;
-                Audio_SetSoundBanksMute(0x6F);
+                Audio_SetSfxBanksMute(0x6F);
                 play->linkAgeOnLoad = 0;
                 play->nextEntranceIndex = ENTR_HYRULE_FIELD_PAST_BRIDGE_SPAWN;
                 gSaveContext.cutsceneIndex = 0xFFF7;
@@ -1508,7 +1520,7 @@ size_t Cutscene_Command_07(PlayState* play, CutsceneContext* csCtx, u8* cmd, u8 
             if (D_8015FCC8 != 0) {
                 sp2C = Play_GetCamera(play, csCtx->unk_14);
                 sp2C->player = NULL;
-                Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+                Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_WAIT);
                 Play_ChangeCameraStatus(play, csCtx->unk_14, CAM_STAT_ACTIVE);
                 Play_CameraChangeSetting(play, csCtx->unk_14, CAM_SET_FREE0);
                 sp28 = csCtx->cameraFocus->cameraRoll * 1.40625f;
@@ -1551,7 +1563,7 @@ size_t Cutscene_Command_08(PlayState* play, CutsceneContext* csCtx, u8* cmd, u8 
             if (D_8015FCC8 != 0) {
                 sp2C = Play_GetCamera(play, csCtx->unk_14);
                 sp2C->player = NULL;
-                Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+                Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_WAIT);
                 Play_ChangeCameraStatus(play, csCtx->unk_14, CAM_STAT_ACTIVE);
                 Play_CameraChangeSetting(play, csCtx->unk_14, CAM_SET_FREE0);
                 sp3C.x = csCtx->cameraFocus->pos.x;
@@ -1686,7 +1698,7 @@ void Cutscene_Command_Textbox(PlayState* play, CutsceneContext* csCtx, CsCmdText
             }
 
             if (csCtx->frames == originalCsFrames) {
-                Interface_ChangeAlpha(1);
+                Interface_ChangeHudVisibilityMode(1);
                 D_8011E1C0 = 0;
                 D_8011E1C4 = 0;
             }
@@ -2153,8 +2165,8 @@ void func_80068ECC(PlayState* play, CutsceneContext* csCtx) {
             }
 
             if (gSaveContext.cutsceneTrigger == 0) {
-                Interface_ChangeAlpha(1);
-                ShrinkWindow_SetVal(0x20);
+                Interface_ChangeHudVisibilityMode(1);
+                Letterbox_SetSizeTarget(0x20);
                 ShrinkWindow_SetCurrentVal(0x20);
                 csCtx->state++;
             }

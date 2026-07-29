@@ -1,8 +1,9 @@
 #ifndef MENUTYPES_H
 #define MENUTYPES_H
 
-#include <libultraship/libultraship.h>
-#include "UIWidgets.hpp"
+#include <variant>
+
+#include "UIWidgetOptions.hpp"
 
 typedef enum {
     DISABLE_FOR_NO_VSYNC,
@@ -262,19 +263,6 @@ struct MainMenuEntry {
     const char* sidebarCvar;
     std::unordered_map<std::string, SidebarEntry> sidebars = {};
     std::vector<std::string> sidebarOrder = {};
-};
-
-static const std::map<Ship::AudioBackend, const char*> audioBackendsMap = {
-    { Ship::AudioBackend::WASAPI, "Windows Audio Session API" },
-    { Ship::AudioBackend::SDL, "SDL" },
-    { Ship::AudioBackend::COREAUDIO, "Core Audio" },
-    { Ship::AudioBackend::NUL, "Null" },
-};
-
-static const std::map<Ship::WindowBackend, const char*> windowBackendsMap = {
-    { Ship::WindowBackend::FAST3D_DXGI_DX11, "DirectX" },
-    { Ship::WindowBackend::FAST3D_SDL_OPENGL, "OpenGL" },
-    { Ship::WindowBackend::FAST3D_SDL_METAL, "Metal" },
 };
 
 struct MenuInit {

@@ -38,7 +38,7 @@ void RegionTable_Init_DekuTree() {
 
     areaTable[RR_DEKU_TREE_LOBBY_2F] = Region("Deku Tree Lobby 2F", SCENE_DEKU_TREE, {}, {
         //Locations
-        LOCATION(RC_DEKU_TREE_MAP_CHEST,         logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_DEKU_TREE_MAP_CHEST,         logic->CanOpenLargeChest()),
         LOCATION(RC_DEKU_TREE_LOBBY_LOWER_HEART, true),
         LOCATION(RC_DEKU_TREE_2F_GRASS_1,        logic->CanCutShrubs()),
         LOCATION(RC_DEKU_TREE_2F_GRASS_2,        logic->CanCutShrubs()),
@@ -63,13 +63,13 @@ void RegionTable_Init_DekuTree() {
 
     areaTable[RR_DEKU_TREE_2F_MIDDLE_ROOM] = Region("Deku Tree 2F Middle Room", SCENE_DEKU_TREE, {}, {}, {
         //Exits
-        ENTRANCE(RR_DEKU_TREE_LOBBY,          AnyAgeTime([]{return logic->CanReflectNuts() || logic->CanUse(RG_MEGATON_HAMMER);})),
+        ENTRANCE(RR_DEKU_TREE_LOBBY_2F,       AnyAgeTime([]{return logic->CanReflectNuts() || logic->CanUse(RG_MEGATON_HAMMER);})),
         ENTRANCE(RR_DEKU_TREE_SLINGSHOT_ROOM, AnyAgeTime([]{return logic->CanReflectNuts() || logic->CanUse(RG_MEGATON_HAMMER);})),
     });
 
     areaTable[RR_DEKU_TREE_SLINGSHOT_ROOM] = Region("Deku Tree Slingshot Room", SCENE_DEKU_TREE, {}, {
         //Locations
-        LOCATION(RC_DEKU_TREE_SLINGSHOT_CHEST,           logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_DEKU_TREE_SLINGSHOT_CHEST,           logic->CanOpenLargeChest()),
         LOCATION(RC_DEKU_TREE_SLINGSHOT_ROOM_SIDE_CHEST, (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT)) && logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_DEKU_TREE_SLINGSHOT_GRASS_1,         logic->CanCutShrubs()),
         LOCATION(RC_DEKU_TREE_SLINGSHOT_GRASS_2,         logic->CanCutShrubs()),
@@ -86,14 +86,14 @@ void RegionTable_Init_DekuTree() {
         EVENT_ACCESS(LOGIC_NUT_ACCESS,   logic->CanGetDekuBabaNuts()),
     }, {
         //Locations
-        LOCATION(RC_DEKU_TREE_COMPASS_CHEST,           logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_DEKU_TREE_COMPASS_CHEST,           logic->CanOpenLargeChest()),
         LOCATION(RC_DEKU_TREE_COMPASS_ROOM_SIDE_CHEST, logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_DEKU_TREE_GS_COMPASS_ROOM,         logic->CanAttack()),
         LOCATION(RC_DEKU_TREE_COMPASS_GRASS_1,         logic->CanCutShrubs()),
         LOCATION(RC_DEKU_TREE_COMPASS_GRASS_2,         logic->CanCutShrubs()),
     }, {
         //Exits
-        ENTRANCE(RR_DEKU_TREE_LOBBY,         logic->HasFireSourceWithTorch() || logic->CanUse(RG_FAIRY_BOW)),
+        ENTRANCE(RR_DEKU_TREE_LOBBY_3F,      logic->HasFireSourceWithTorch() || logic->CanUse(RG_FAIRY_BOW)),
         ENTRANCE(RR_DEKU_TREE_BOSS_ENTRYWAY, false),
     });
 
@@ -247,7 +247,7 @@ void RegionTable_Init_DekuTree() {
         EVENT_ACCESS(LOGIC_DEKU_TREE_MQ_2F_BURNED_WEB, logic->HasFireSource()),
     }, {
         //Locations
-        LOCATION(RC_DEKU_TREE_MQ_MAP_CHEST,     logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_DEKU_TREE_MQ_MAP_CHEST,     logic->CanOpenLargeChest()),
         LOCATION(RC_DEKU_TREE_MQ_GS_LOBBY,      (logic->CanBreakCrates() || ctx->GetTrickOption(RT_VISIBLE_COLLISION)) && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA)),
         LOCATION(RC_DEKU_TREE_MQ_LOBBY_HEART,   true),
         LOCATION(RC_DEKU_TREE_MQ_2F_GRASS_1,    logic->CanCutShrubs()),
@@ -281,7 +281,7 @@ void RegionTable_Init_DekuTree() {
     }, {
         //Locations
         //Implies CanKillEnemy(RE_GOHMA_LARVA)
-        LOCATION(RC_DEKU_TREE_MQ_SLINGSHOT_CHEST,           logic->CanKillEnemy(RE_DEKU_BABA) && logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_DEKU_TREE_MQ_SLINGSHOT_CHEST,           logic->CanKillEnemy(RE_DEKU_BABA) && logic->CanOpenLargeChest()),
         LOCATION(RC_DEKU_TREE_MQ_SLINGSHOT_ROOM_BACK_CHEST, (logic->HasFireSourceWithTorch() || (logic->IsAdult && logic->CanUse(RG_FAIRY_BOW))) && logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_DEKU_TREE_MQ_SLINGSHOT_ROOM_HEART,      true),
         LOCATION(RC_DEKU_TREE_MQ_SLINGSHOT_GRASS_1,         logic->CanCutShrubs()),
@@ -313,21 +313,31 @@ void RegionTable_Init_DekuTree() {
 
     areaTable[RR_DEKU_TREE_MQ_COMPASS_ROOM] = Region("Deku Tree MQ Compass Room", SCENE_DEKU_TREE, {}, {
         //Locations
-        LOCATION(RC_DEKU_TREE_MQ_COMPASS_CHEST,   logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_DEKU_TREE_MQ_COMPASS_CHEST,   logic->CanOpenLargeChest()),
         LOCATION(RC_DEKU_TREE_MQ_COMPASS_GRASS_1, logic->CanCutShrubs()),
         LOCATION(RC_DEKU_TREE_MQ_COMPASS_GRASS_2, logic->CanCutShrubs()),
         LOCATION(RC_DEKU_TREE_MQ_COMPASS_GRASS_3, logic->CanCutShrubs()),
         LOCATION(RC_DEKU_TREE_MQ_COMPASS_GRASS_4, logic->CanCutShrubs()),
+        LOCATION(RC_DEKU_TREE_MQ_BOULDER_1,       logic->CanUse(RG_BOOMERANG) && 
+                                                  AnyAgeTime([]{return logic->CanUse(RG_BOMBCHU_5) || (logic->CanUse(RG_BOMB_BAG) && (logic->CanUse(RG_SONG_OF_TIME) || logic->IsAdult || logic->CanUse(RG_HOVER_BOOTS)));})),
+        LOCATION(RC_DEKU_TREE_MQ_BOULDER_2,       logic->CanUse(RG_BOOMERANG) && 
+                                                  AnyAgeTime([]{return logic->CanUse(RG_BOMBCHU_5) || (logic->CanUse(RG_BOMB_BAG) && (logic->CanUse(RG_SONG_OF_TIME) || logic->IsAdult || logic->CanUse(RG_HOVER_BOOTS)));})),
+        LOCATION(RC_DEKU_TREE_MQ_BOULDER_3,       logic->CanUse(RG_BOOMERANG) && 
+                                                  AnyAgeTime([]{return logic->CanUse(RG_BOMBCHU_5) || (logic->CanUse(RG_BOMB_BAG) && (logic->CanUse(RG_SONG_OF_TIME) || logic->IsAdult || logic->CanUse(RG_HOVER_BOOTS)));})),
     }, {
         //Exits
         ENTRANCE(RR_DEKU_TREE_MQ_EYE_TARGET_ROOM,    true),
-        ENTRANCE(RR_DEKU_TREE_MQ_PAST_BOULDER_VINES, (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT) || (logic->IsAdult && logic->CanUse(RG_SONG_OF_TIME))) && AnyAgeTime([]{return logic->CanUse(RG_BOMBCHU_5) || (logic->CanUse(RG_BOMB_BAG) && (logic->CanUse(RG_SONG_OF_TIME) || logic->IsAdult || logic->CanUse(RG_HOVER_BOOTS))) || (logic->CanUse(RG_MEGATON_HAMMER) && ((logic->IsAdult && logic->CanUse(RG_SONG_OF_TIME)) || (ctx->GetTrickOption(RT_DEKU_MQ_COMPASS_GS) && logic->HasItem(RG_CLIMB))));})),
+        ENTRANCE(RR_DEKU_TREE_MQ_PAST_BOULDER_VINES, (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT) || (logic->IsAdult && logic->CanUse(RG_SONG_OF_TIME))) && 
+                                                     AnyAgeTime([]{return logic->CanUse(RG_BOMBCHU_5) || (logic->CanUse(RG_BOMB_BAG) && (logic->CanUse(RG_SONG_OF_TIME) || logic->IsAdult || logic->CanUse(RG_HOVER_BOOTS))) || (logic->CanUse(RG_MEGATON_HAMMER) && ((logic->IsAdult && logic->CanUse(RG_SONG_OF_TIME)) || (ctx->GetTrickOption(RT_DEKU_MQ_COMPASS_GS) && logic->HasItem(RG_CLIMB))));})),
     });
 
     areaTable[RR_DEKU_TREE_MQ_PAST_BOULDER_VINES] = Region("Deku Tree MQ Past Boulder Vines", SCENE_DEKU_TREE, {}, {
         //Locations
         LOCATION(RC_DEKU_TREE_MQ_GS_PAST_BOULDER_VINES, logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG)),
         LOCATION(RC_DEKU_TREE_MQ_COMPASS_ROOM_HEART,    true),
+        LOCATION(RC_DEKU_TREE_MQ_BOULDER_1,             logic->BlastOrSmash()),
+        LOCATION(RC_DEKU_TREE_MQ_BOULDER_2,             logic->BlastOrSmash()),
+        LOCATION(RC_DEKU_TREE_MQ_BOULDER_3,             logic->BlastOrSmash()),
     }, {
         //Exits
         ENTRANCE(RR_DEKU_TREE_MQ_COMPASS_ROOM, logic->BlastOrSmash()),

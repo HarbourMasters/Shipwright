@@ -17,12 +17,12 @@ typedef struct EnInsect {
     /* 0x01F0 */ Vec3s jointTable[24];
     /* 0x0280 */ Vec3s morphTable[24];
     /* 0x0310 */ EnInsectActionFunc actionFunc;
-    /* 0x0314 */ u16 unk_314;
+    /* 0x0314 */ u16 insectFlags;
     /* 0x0316 */ s16 unk_316;
     /* 0x0318 */ s16 unk_318;
-    /* 0x031A */ s16 unk_31A;
-    /* 0x031C */ s16 unk_31C;
-    /* 0x031E */ s16 unk_31E;
+    /* 0x031A */ s16 actionTimer;
+    /* 0x031C */ s16 lifeTimer;
+    /* 0x031E */ s16 crawlSoundDelay;
     /* 0x0320 */ ObjMakekinsuta* soilActor;
     /* 0x0324 */ f32 unk_324;
     /* 0x0328 */ s16 unk_328;

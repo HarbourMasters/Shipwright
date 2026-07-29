@@ -378,7 +378,7 @@ void DoorKiller_FallOver(DoorKiller* this, PlayState* play) {
         if ((fabsf(playerPosRelToDoor.y) < 20.0f) && (fabsf(playerPosRelToDoor.x) < 20.0f) &&
             (playerPosRelToDoor.z < 100.0f) && (playerPosRelToDoor.z > 0.0f)) {
             this->hasHitPlayerOrGround |= 1;
-            func_8002F6D4(play, &this->actor, 6.0f, this->actor.yawTowardsPlayer, 6.0f, 16);
+            Actor_SetPlayerKnockbackLarge(play, &this->actor, 6.0f, this->actor.yawTowardsPlayer, 6.0f, 16);
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_KDOOR_HIT);
             Player_PlaySfx(&player->actor, NA_SE_PL_BODY_HIT);
         }

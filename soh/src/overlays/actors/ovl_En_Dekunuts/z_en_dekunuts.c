@@ -367,7 +367,7 @@ void EnDekunuts_Run(EnDekunuts* this, PlayState* play) {
     if (Math_SmoothStepToS(&this->actor.world.rot.y, this->runDirection, 1, 0xE38, 0xB6) == 0) {
         if (this->actor.bgCheckFlags & 0x20) {
             this->runDirection = Actor_WorldYawTowardPoint(&this->actor, &this->actor.home.pos);
-        } else if (this->actor.bgCheckFlags & 8) {
+        } else if (this->actor.bgCheckFlags & BGCHECKFLAG_WALL) {
             this->runDirection = this->actor.wallYaw;
         } else if (this->runAwayCount == 0) {
             diffRotInit = Actor_WorldYawTowardPoint(&this->actor, &this->actor.home.pos);
