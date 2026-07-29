@@ -468,13 +468,13 @@ void SetMarginAll(const char* ButtonName, bool SetActivated, const char* tooltip
                         CVarSetInteger(cvarNameMargins.c_str(), false); // force set off
                     } else if ((strcmp(cvarName, MarginCvarNonAnchor[i]) == 0) &&
                                (CVarGetInteger(cvarPosType.c_str(), 0) !=
-                                ORIGINAL_LOCATION)) { // Our element is not in original position regarless it has no
-                                                      // anchor by default since player made it anchored we can toggle
+                                ORIGINAL_LOCATION)) { // Element not in original position, regardless. It has no
+                                                      // anchor by default; since player made it anchored we can toggle
                                                       // margins
                         CVarSetInteger(cvarNameMargins.c_str(), SetActivated);
                     } else if (strcmp(cvarName, MarginCvarNonAnchor[i]) !=
-                               0) { // Our elements has an anchor by default so regarless of it's position right now
-                                    // that okay to toggle margins.
+                               0) { // Our element has an anchor by default, so regardless of its position right now
+                                    // it's okay to toggle margins.
                         CVarSetInteger(cvarNameMargins.c_str(), SetActivated);
                     }
                 }
@@ -1500,7 +1500,7 @@ void Table_InitHeader(bool has_header = true) {
     }
     ImGui::TableNextRow();
     ImGui::TableNextColumn();
-    ImGui::AlignTextToFramePadding(); // This is to adjust Vertical pos of item in a cell to be normlized.
+    ImGui::AlignTextToFramePadding(); // This is to adjust Vertical pos of item in a cell to be normalized.
     ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 2);
     ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x - 60);
 }

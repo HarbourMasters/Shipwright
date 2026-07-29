@@ -897,7 +897,7 @@ void SetupDisplayNames() {
     strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_SPEAK_DEKU],                       "Speak Deku:            ");
     strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_SPEAK_GERUDO],                     "Speak Gerudo:          ");
     strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_SPEAK_GORON],                      "Speak Goron:           ");
-    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_SPEAK_HYLIAN],                     "SpeakHylian:           ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_SPEAK_HYLIAN],                     "Speak Hylian:           ");
     strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_SPEAK_KOKIRI],                     "Speak Kokiri:          ");
     strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_SPEAK_ZORA],                       "Speak Zora:            ");
     strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_DMC_BEAN_SOUL],                    "DMC Bean Soul:         ");

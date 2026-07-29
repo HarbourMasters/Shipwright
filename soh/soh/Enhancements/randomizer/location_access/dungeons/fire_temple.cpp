@@ -928,7 +928,7 @@ void RegionTable_Init_FireTemple() {
         ENTRANCE(RR_FIRE_TEMPLE_MQ_FIRE_MAZE_MAIN,          true),
         ENTRANCE(RR_FIRE_TEMPLE_MQ_FIRE_MAZE_MIDDLE,        logic->CanUse(RG_SONG_OF_TIME) || logic->CanUse(RG_HOVER_BOOTS)),
         ENTRANCE(RR_FIRE_TEMPLE_MQ_2_FIRE_WALLS_UPPER_DOOR, true),
-        //This one might be a bit too hard for base logic, but is only relevent in doorsanity or with RT_FIRE_MQ_MAZE_HOVERS
+        //This one might be a bit too hard for base logic, but is only relevant in doorsanity or with RT_FIRE_MQ_MAZE_HOVERS
         ENTRANCE(RR_FIRE_TEMPLE_MQ_FIRE_MAZE_SWITCH,        logic->CanUse(RG_SONG_OF_TIME) && logic->CanUse(RG_HOVER_BOOTS) && (logic->TakeDamage() || logic->CanJumpslash())),
     });
 

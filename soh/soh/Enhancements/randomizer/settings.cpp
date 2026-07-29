@@ -1759,7 +1759,7 @@ void Settings::CreateOptions() {
     OPT_TRICK(RT_WATER_BK_REGION, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::INTERMEDIATE }, "WTBKHB");
     OPT_TRICK(RT_WATER_NORTH_BASEMENT_LEDGE_JUMP, RCQUEST_BOTH, RA_WATER_TEMPLE, { Tricks::Tag::INTERMEDIATE },
               "WTBolLdg");
-    // Also used in MQ logic, but won't be relevent unless a way to enter tower without irons exists (likely a clip +
+    // Also used in MQ logic, but won't be relevant unless a way to enter tower without irons exists (likely a clip +
     // swim)
     OPT_TRICK(RT_WATER_FW_CENTRAL_GS, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::NOVICE }, "WTGSFW");
     OPT_TRICK(RT_WATER_IRONS_CENTRAL_GS, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::NOVICE }, "WTGSIB");

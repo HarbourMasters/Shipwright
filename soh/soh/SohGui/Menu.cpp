@@ -832,7 +832,7 @@ void Menu::DrawElement() {
     float columnHeight = sectionHeight - style.ItemSpacing.y * 4;
     ImGui::SetNextWindowPos(pos + style.ItemSpacing * 2);
 
-    // Increase sidebar width on larger screens to accomodate people scaling their menus.
+    // Increase sidebar width on larger screens to accommodate people scaling their menus.
     float sidebarWidth = 200 - style.ItemSpacing.x;
     if (menuSize.x > 1600) {
         sidebarWidth = menuSize.x * 0.15f;

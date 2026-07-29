@@ -319,7 +319,7 @@ void Settings::CreateOptionDescriptions() {
     mOptionDescriptions[RSK_SHUFFLE_TREES] =
         "Trees will contain randomized items which are dropped the first time the player rolls into one.\n"
         "Trees will have a special appearance when carrying randomized items.\n"
-        "\nSome trees are dependant on Link's age, such as some trees in Hyrule Field.\nTwo trees at Hyrule Castle are "
+        "\nSome trees are dependent on Link's age, such as some trees in Hyrule Field.\nTwo trees at Hyrule Castle are "
         "only shuffle with No Logic.";
     mOptionDescriptions[RSK_SHUFFLE_BUSHES] =
         "Bushes in Hyrule Field & Zora's Fountain will contain randomized items when first walked through.";

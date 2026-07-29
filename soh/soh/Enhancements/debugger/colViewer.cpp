@@ -68,7 +68,7 @@ void ColViewerWindow::DrawElement() {
 
     CVarCheckbox("Apply as decal", CVAR_DEVELOPER_TOOLS("ColViewer.Decal"),
                  checkOpt.DefaultValue(true).Tooltip(
-                     "Applies the collision as a decal display. This can be useful if there is z-fighting occuring "
+                     "Applies the collision as a decal display. This can be useful if there is z-fighting occurring "
                      "with the scene geometry, but can cause other artifacts."));
     CVarCheckbox("Shaded", CVAR_DEVELOPER_TOOLS("ColViewer.Shaded"),
                  checkOpt.DefaultValue(false).Tooltip("Applies the scene's shading to the collision display."));

@@ -48,7 +48,7 @@ void SaveConfig() {
 
 void Warp(WarpPoint& warpPoint) {
     if (gPlayState == NULL) {
-        // If gPlayState is NULL, it means the the user opted into BootToWarpPoint and the game is starting up.
+        // If gPlayState is NULL, it means the user opted into BootToWarpPoint and the game is starting up.
         gSaveContext.gameMode = GAMEMODE_NORMAL;
         gSaveContext.fileNum = 0xFE; // temporary file so that this will respect debug save file option
         Sram_InitDebugSave();

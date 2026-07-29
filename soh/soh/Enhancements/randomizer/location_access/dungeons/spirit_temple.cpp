@@ -843,7 +843,7 @@ void RegionTable_Init_SpiritTemple() {
         LOCATION(RC_SPIRIT_TEMPLE_SILVER_GAUNTLETS_CHEST, SpiritShared(RR_SPIRIT_TEMPLE_MQ_OUTER_RIGHT_HAND, []{return logic->CanOpenLargeChest();})),
     }, {
         //Exits
-        //If it is ever relevent for 1 age to spawn the mirror shield chest for the other can longshot across, it needs an eventAccess
+        //If it is ever relevant for 1 age to spawn the mirror shield chest for the other can longshot across, it needs an eventAccess
         ENTRANCE(RR_SPIRIT_TEMPLE_MQ_RIGHT_HAND_EXIT, true),
         ENTRANCE(RR_DESERT_COLOSSUS,                  SpiritCertainAccess(RR_SPIRIT_TEMPLE_MQ_OUTER_RIGHT_HAND)),
     });

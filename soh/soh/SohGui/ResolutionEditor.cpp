@@ -405,7 +405,7 @@ void RegisterResolutionWidgets() {
         .RaceDisable(false);
     // Error/Warning display
     mSohMenu
-        ->AddWidget(path, ICON_FA_EXCLAMATION_TRIANGLE " Significant frame rate (FPS) drops may be occuring.",
+        ->AddWidget(path, ICON_FA_EXCLAMATION_TRIANGLE " Significant frame rate (FPS) drops may be occurring.",
                     WIDGET_TEXT)
         .RaceDisable(false)
         .PreFunc(

@@ -768,7 +768,7 @@ bool SpiritCertainAccess(RandomizerRegion region) {
     Spirit Shared can take up to 3 regions, this is because checks can exist in many regions at the same time
     and the logic needs to be able to check the access logic from those regions to check the other universes properly.
 
-    anyAge is equivalent to a self referencing Here, used for events and any check where that is relevent.
+    anyAge is equivalent to a self referencing Here, used for events and any check where that is relevant.
 */
 
 bool SpiritShared(RandomizerRegion region, ConditionFn condition, bool anyAge, RandomizerRegion otherRegion,

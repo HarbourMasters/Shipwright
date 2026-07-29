@@ -6,6 +6,7 @@
 #include "../SeedContext.h"
 #include "../rng.h"
 #include "soh/Enhancements/randomizer/Traps.h"
+#include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include <algorithm>
 #include <spdlog/spdlog.h>
 
@@ -13,10 +14,7 @@ std::vector<RandomizerGet> itemPool = {};
 std::vector<RandomizerGet> lesserPool = {};
 std::vector<RandomizerGet> plentifulPool = {};
 std::vector<RandomizerGet> junkPool = {};
-const std::array<RandomizerGet, 13> JunkPoolItems = {
-    RG_BOMBS_5,  RG_BOMBS_10,  RG_BOMBS_20,  RG_DEKU_NUTS_5, RG_DEKU_STICK_1, RG_DEKU_SEEDS_30, RG_RECOVERY_HEART,
-    RG_ARROWS_5, RG_ARROWS_10, RG_ARROWS_30, RG_BLUE_RUPEE,  RG_RED_RUPEE,    RG_DEKU_NUTS_10,
-};
+std::vector<RandomizerGet> JunkPoolItems = {};
 // RANDOTODO should probably check the same thing as check matches contents at some point
 const std::map<RandomizerGet, std::vector<RandomizerGet>*> poolForItem = {
     { RG_BOMBS_5, &junkPool },         { RG_BOMBS_10, &junkPool },     { RG_BOMBS_20, &junkPool },
@@ -153,6 +151,14 @@ void GenerateItemPool() {
     plentifulPool.clear();
     lesserPool.clear();
     int reservedSlots = 0;
+    JunkPoolItems = { RG_BOMBS_5,       RG_BOMBS_10,       RG_BOMBS_20,    RG_DEKU_NUTS_5, RG_DEKU_STICK_1,
+                      RG_DEKU_SEEDS_30, RG_RECOVERY_HEART, RG_ARROWS_5,    RG_ARROWS_10,   RG_ARROWS_30,
+                      RG_BLUE_RUPEE,    RG_RED_RUPEE,      RG_DEKU_NUTS_10 };
+    if (ctx->GetOption(RSK_ENABLE_BOMBCHU_DROPS).Is(RO_GENERIC_ON) &&
+        ctx->GetOption(RSK_BOMBCHU_BAG).IsNot(RO_BOMBCHU_BAG_NONE)) {
+        JunkPoolItems.emplace_back(RG_BOMBCHU_5);
+        JunkPoolItems.emplace_back(RG_BOMBCHU_10);
+    }
 
     // clang-format off
     // Items the player can start with are removed from the pool so a started copy isn't also shuffled.

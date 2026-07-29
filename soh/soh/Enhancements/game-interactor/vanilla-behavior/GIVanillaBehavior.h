@@ -462,11 +462,27 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // this->hookshotSlotFull != 0
+    // ```
+    // #### `args`
+    // - None
+    VB_DAMPE_AWARD_SECOND_PRIZE,
+
+    // #### `result`
+    // ```c
     // this->actionTimer == 0 && Rand_ZeroOne() < 0.03f
     // ```
     // #### `args`
     // - `*EnPoRelay`
     VB_DAMPE_DROP_FLAME,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*f32` (speed
+    VB_DAMPE_GO_BACKWARDS,
 
     // #### `result`
     // ```c
@@ -694,6 +710,14 @@ typedef enum {
     // #### `args`
     // - None
     VB_END_GERUDO_MEMBERSHIP_TALK,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*EnGe1`
+    VB_END_HORSEBACK_ARCHERY,
 
     // #### `result`
     // ```c
@@ -1557,6 +1581,14 @@ typedef enum {
     // true
     // ```
     // #### `args`
+    // - None
+    VB_LOST_WOODS_OCARINA_GAME_TIMER_TICK,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
     // - `*EnMs`
     VB_MAGIC_BEAN_SALESMAN_TAKE_MONEY,
 
@@ -1599,6 +1631,14 @@ typedef enum {
     // #### `args`
     // - `*EnMd`
     VB_MIDO_SPAWN,
+
+    // #### `result`
+    // ```c
+    // false
+    // ```
+    // #### `args`
+    // - `s32` (note append position)
+    VB_MODIFY_LOST_WOODS_OCARINA_GAME_NOTE_SPEED,
 
     // #### `result`
     // ```c
@@ -1938,6 +1978,14 @@ typedef enum {
     // true
     // ```
     // #### `args`
+    // - `*EnSkj`
+    VB_PLAY_LOST_WOODS_OCARINA_GAME,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
     // - None
     VB_PLAY_MINUET_OF_FOREST_CS,
 
@@ -2258,6 +2306,14 @@ typedef enum {
     // true
     // ```
     // #### `args`
+    // - `s32` (entrance index)
+    VB_RACE_INGO,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
     // - `*EnRd`
     VB_REDEAD_GIBDO_FREEZE_LINK,
 
@@ -2412,6 +2468,23 @@ typedef enum {
     // - `*EnFr`
     // - `s16` (default time limit)
     VB_SET_FROG_OCARINA_GAME_TIME_LIMIT,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `s32` (round number, zero-based)
+    // - `*u8` (note end position)
+    VB_SET_LOST_WOODS_OCARINA_GAME_NOTES,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
+    VB_SET_LOST_WOODS_OCARINA_GAME_STARTING_NOTES,
 
     // #### `result`
     // ```c
@@ -3394,6 +3467,25 @@ typedef enum {
     VB_PREVENT_HOOKSHOT_PARENT_SOFTLOCK,
 
     // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - none
+    VB_PUTAWAY_BECAUSE_DISABLED_ITEM_BUTTONS,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `s32* i` (button index)
+    // - `Player*`
+    // - `s32* item`
+    VB_OVERRIDE_BUTTON_ITEM_USED,
+
+    // #### `result`
+    // ```c
     // true if Goron Link is talking
     // ```
     // #### `args`

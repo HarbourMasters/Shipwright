@@ -79,7 +79,7 @@ void BgSpot00Hanebasi_Init(Actor* thisx, PlayState* play) {
         }
 
         if (gSaveContext.sceneLayer != 6) {
-            // Don't close the bridge in rando to accomodate hyrule castle exit
+            // Don't close the bridge in rando to accommodate hyrule castle exit
             if (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD) && CHECK_QUEST_ITEM(QUEST_GORON_RUBY) &&
                 CHECK_QUEST_ITEM(QUEST_ZORA_SAPPHIRE) && !Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE) &&
                 !(IS_RANDO)) {
