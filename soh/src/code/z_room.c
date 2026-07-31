@@ -263,6 +263,9 @@ void Room_DrawBackground2D(Gfx** gfxP, void* tex, void* tlut, u16 width, u16 hei
     Gfx* gfx = *gfxP;
     uObjBg* bg;
 
+    // Stereo: apply the shared screen-space depth used by all prerendered 2D backgrounds.
+    gSPSetExtraGeometryMode(gfx++, G_EX_STEREO_BACKGROUND);
+
     bg = (uObjBg*)(gfx + 1);
     gSPBranchList(gfx, (Gfx*)(bg + 1));
 
@@ -341,6 +344,8 @@ void Room_DrawBackground2D(Gfx** gfxP, void* tex, void* tlut, u16 width, u16 hei
     }
 
     gDPPipeSync(gfx++);
+    // Stereo: do not leak the prerendered-background depth override into later S2DEX or UI draws.
+    gSPClearExtraGeometryMode(gfx++, G_EX_STEREO_BACKGROUND);
 
     *gfxP = gfx;
 }

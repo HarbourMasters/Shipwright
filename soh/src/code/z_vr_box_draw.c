@@ -27,6 +27,8 @@ void SkyboxDraw_Draw(SkyboxContext* skyboxCtx, GraphicsContext* gfxCtx, s16 skyb
 
     gDPSetPrimColor(POLY_OPA_DISP++, 0x00, 0x00, 0, 0, 0, blend);
     gSPTexture(POLY_OPA_DISP++, 0x8000, 0x8000, 0, G_TX_RENDERTILE, G_ON);
+    // Stereo: keep the camera-centered sky at maximum (horizon) depth.
+    gSPSetExtraGeometryMode(POLY_OPA_DISP++, G_EX_STEREO_HORIZON);
 
     sSkyboxDrawMatrix = Graph_Alloc(gfxCtx, sizeof(Mtx));
 
@@ -91,6 +93,8 @@ void SkyboxDraw_Draw(SkyboxContext* skyboxCtx, GraphicsContext* gfxCtx, s16 skyb
         }
     }
 
+    // Stereo: restore normal finite-depth projection for subsequent world geometry.
+    gSPClearExtraGeometryMode(POLY_OPA_DISP++, G_EX_STEREO_HORIZON);
     gDPPipeSync(POLY_OPA_DISP++);
     // gsSPShaderTest2(POLY_OPA_DISP++);
 

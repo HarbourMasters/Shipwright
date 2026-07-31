@@ -37,6 +37,13 @@ std::map<int32_t, const char*> aspectRatioPresetLabels = { { 0, "Off" },
                                                            { 4, "Nintendo 3DS (5:3)" },
                                                            { 5, "16:10 (8:5)" },
                                                            { 6, "Ultrawide (21:9)" } };
+static const std::map<int32_t, const char*> stereoRenderingMap = {
+    { static_cast<int32_t>(Fast::StereoMode::Off), "Off" },
+    { static_cast<int32_t>(Fast::StereoMode::HalfSBS), "Half SBS (Side-by-Side)" },
+    { static_cast<int32_t>(Fast::StereoMode::FullSBS), "Full SBS (Side-by-Side)" },
+    { static_cast<int32_t>(Fast::StereoMode::HalfTAB), "Half TAB (Top-and-Bottom)" },
+    { static_cast<int32_t>(Fast::StereoMode::FullTAB), "Full TAB (Top-and-Bottom)" },
+};
 const float aspectRatioPresetsX[] = { 0.0f, 16.0f, 4.0f, 16.0f, 5.0f, 16.0f, 21.0f };
 const float aspectRatioPresetsY[] = { 0.0f, 9.0f, 3.0f, 9.0f, 3.0f, 10.0f, 9.0f };
 const int default_aspectRatio = 1; // Default combo list option
@@ -344,6 +351,63 @@ void ResolutionCustomWidget(WidgetInfo& info) {
         } // End of Integer Scaling additional settings.
 
     } // End of additional settings
+    UIWidgets::PopStyleHeader();
+
+    UIWidgets::PushStyleHeader(THEME_COLOR);
+    if (ImGui::CollapsingHeader("Stereoscopic 3D Settings")) {
+        if (UIWidgets::CVarCombobox("Stereo Output", CVAR_STEREO_MODE, stereoRenderingMap,
+                                    UIWidgets::ComboboxOptions()
+                                        .Tooltip("The output format of stereoscopic rendering.")
+                                        .DefaultIndex(static_cast<int32_t>(Fast::StereoMode::Off))
+                                        .Color(THEME_COLOR))) {
+            Ship::Context::GetRawInstance()->GetWindow()->SetStereoMode(
+                CVarGetInteger(CVAR_STEREO_MODE, static_cast<int32_t>(Fast::StereoMode::Off)));
+        }
+
+        const bool stereoDisabled = CVarGetInteger(CVAR_STEREO_MODE, static_cast<int32_t>(Fast::StereoMode::Off)) ==
+                                    static_cast<int32_t>(Fast::StereoMode::Off);
+        ImGui::BeginDisabled(stereoDisabled);
+
+        if (UIWidgets::CVarSliderFloat("Separation: %.0f", CVAR_STEREO_SEPARATION,
+                                       UIWidgets::FloatSliderOptions()
+                                           .Tooltip("Controls maximum depth of the image, default is 20. \n"
+                                                    "Higher values increase stereo depth but will add eyes strain.")
+                                           .Min(0.0f)
+                                           .Max(100.0f)
+                                           .Step(1.0f)
+                                           .DefaultValue(20.0f)
+                                           .Format("%.0f")
+                                           .Color(THEME_COLOR))) {
+            Ship::Context::GetRawInstance()->GetWindow()->SetStereoSeparation(
+                CVarGetFloat(CVAR_STEREO_SEPARATION, 20.0f));
+        }
+        if (UIWidgets::CVarSliderFloat(
+                "Convergence: %.0f", CVAR_STEREO_CONVERGENCE,
+                UIWidgets::FloatSliderOptions()
+                    .Tooltip("Controls where that depth sits relative to the screen, default is 20. \n"
+                             "Higher values shifts the whole 3D scene closer to the viewer.")
+                    .Min(0.0f)
+                    .Max(100.0f)
+                    .Step(1.0f)
+                    .DefaultValue(20.0f)
+                    .Format("%.0f")
+                    .Color(THEME_COLOR))) {
+            Ship::Context::GetRawInstance()->GetWindow()->SetStereoConvergence(
+                CVarGetFloat(CVAR_STEREO_CONVERGENCE, 20.0f));
+        }
+        if (UIWidgets::CVarSliderFloat("UI Depth: %.0f", CVAR_STEREO_UI_DEPTH,
+                                       UIWidgets::FloatSliderOptions()
+                                           .Tooltip("Moves UI in stereo depth, default is 0.")
+                                           .Min(-50.0f)
+                                           .Max(50.0f)
+                                           .Step(1.0f)
+                                           .DefaultValue(0.0f)
+                                           .Format("%.0f")
+                                           .Color(THEME_COLOR))) {
+            Ship::Context::GetRawInstance()->GetWindow()->SetStereoUiDepth(CVarGetFloat(CVAR_STEREO_UI_DEPTH, 0.0f));
+        }
+        ImGui::EndDisabled();
+    }
     UIWidgets::PopStyleHeader();
 
     // Clamp and update the cvars that don't use UIWidgets
