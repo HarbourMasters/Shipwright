@@ -522,6 +522,22 @@ void DrawBGSItemFlag(uint8_t itemID) {
                  ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1));
 }
 
+// A C/D-pad item button mirrors the inventory slot it points at: buttonItems[i] == items[cButtonSlots[i-1]].
+// The pickers below write inventory.items[] raw, so re-sync any button aimed at the edited slot; otherwise the
+// button keeps a stale id (e.g. an emptied bottle still showing its old contents), a desync the game trips on
+// at the next age swap or bottle update. Equipment buttons hold an equipment-page index in cButtonSlots (>= 24),
+// so they never match an inventory slot here and are left alone.
+static void SyncButtonItemsForSlot(uint8_t slot) {
+    for (size_t i = 1; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
+        if (gSaveContext.equips.cButtonSlots[i - 1] == slot) {
+            gSaveContext.equips.buttonItems[i] = gSaveContext.inventory.items[slot];
+            if (gPlayState != nullptr) {
+                Interface_LoadItemIcon1(gPlayState, i);
+            }
+        }
+    }
+}
+
 void DrawInventoryTab() {
     static bool restrictToValid = true;
 
@@ -579,8 +595,10 @@ void DrawInventoryTab() {
                 PushStyleButton(Colors::DarkGray);
                 if (ImGui::Button("##itemNonePicker",
                                   ImVec2(IMAGE_SIZE, IMAGE_SIZE) + ImGui::GetStyle().FramePadding * 2)) {
-                    if (selectedIndex != SLOT_NONE)
+                    if (selectedIndex != SLOT_NONE) {
                         gSaveContext.inventory.items[selectedIndex] = ITEM_NONE;
+                        SyncButtonItemsForSlot(selectedIndex);
+                    }
                     ImGui::CloseCurrentPopup();
                 }
                 PopStyleButton();
@@ -619,6 +637,7 @@ void DrawInventoryTab() {
                     PopStyleButton();
                     if (ret) {
                         gSaveContext.inventory.items[selectedIndex] = slotEntry.id;
+                        SyncButtonItemsForSlot(selectedIndex);
                         ImGui::CloseCurrentPopup();
                     }
                     UIWidgets::Tooltip(SohUtils::GetItemName(slotEntry.id).c_str());
