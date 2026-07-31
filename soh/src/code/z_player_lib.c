@@ -495,7 +495,7 @@ void Player_SetBootData(PlayState* play, Player* this) {
     }
 }
 
-// Custom method used to determine if we're using a custom model for link
+// SoH: Custom method used to determine if we're using a custom model for link
 uint8_t Player_IsCustomLinkModel() {
     return (LINK_IS_ADULT && ResourceGetIsCustomByName(gLinkAdultSkel)) ||
            (LINK_IS_CHILD && ResourceGetIsCustomByName(gLinkChildSkel));
@@ -529,8 +529,8 @@ s32 Player_IsChildWithHylianShield(Player* this) {
     return gSaveContext.linkAge != 0 && (this->currentShield == PLAYER_SHIELD_HYLIAN);
 }
 
-s32 Player_ActionToModelGroup(Player* this, s32 actionParam) {
-    s32 modelGroup = sActionModelGroups[actionParam];
+s32 Player_ActionToModelGroup(Player* this, s32 itemAction) {
+    s32 modelGroup = sActionModelGroups[itemAction];
 
     if ((modelGroup == PLAYER_MODELGROUP_SWORD_AND_SHIELD) && Player_IsChildWithHylianShield(this)) {
         // child, using kokiri sword with hylian shield equipped
@@ -686,16 +686,16 @@ void Player_SetEquipmentData(PlayState* play, Player* this) {
     }
 }
 
-void Player_UpdateBottleHeld(PlayState* play, Player* this, s32 item, s32 actionParam) {
+void Player_UpdateBottleHeld(PlayState* play, Player* this, s32 item, s32 itemAction) {
     Inventory_UpdateBottleItem(play, item, this->heldItemButton);
 
     if (item != ITEM_BOTTLE) {
         this->heldItemId = item;
-        this->heldItemAction = actionParam;
+        this->heldItemAction = itemAction;
     }
 
     if (GameInteractor_Should(VB_PLAYER_UPDATE_BOTTLE_HELD, true, this)) {
-        this->itemAction = actionParam;
+        this->itemAction = itemAction;
     }
 }
 
@@ -817,8 +817,8 @@ s32 Player_HasMirrorShieldSetToDraw(PlayState* play) {
     return (this->rightHandType == PLAYER_MODELTYPE_RH_SHIELD) && (this->currentShield == PLAYER_SHIELD_MIRROR);
 }
 
-s32 Player_ActionToMagicSpell(Player* this, s32 actionParam) {
-    s32 magicSpell = actionParam - PLAYER_IA_MAGIC_SPELL_15;
+s32 Player_ActionToMagicSpell(Player* this, s32 itemAction) {
+    s32 magicSpell = itemAction - PLAYER_IA_MAGIC_SPELL_15;
 
     if ((magicSpell >= 0) && (magicSpell < 6)) {
         return magicSpell;
@@ -831,6 +831,7 @@ s32 Player_HoldsHookshot(Player* this) {
     return (this->heldItemAction == PLAYER_IA_HOOKSHOT) || (this->heldItemAction == PLAYER_IA_LONGSHOT);
 }
 
+// SoH
 s32 Player_HoldsBow(Player* this) {
     switch (this->heldItemAction) {
         case PLAYER_IA_BOW:
@@ -843,6 +844,7 @@ s32 Player_HoldsBow(Player* this) {
     }
 }
 
+// SoH
 s32 Player_HoldsSlingshot(Player* this) {
     return this->heldItemAction == PLAYER_IA_SLINGSHOT;
 }
@@ -851,8 +853,8 @@ s32 func_8008F128(Player* this) {
     return Player_HoldsHookshot(this) && (this->heldActor == NULL);
 }
 
-s32 Player_ActionToMeleeWeapon(s32 actionParam) {
-    s32 sword = actionParam - PLAYER_IA_FISHING_POLE;
+s32 Player_ActionToMeleeWeapon(s32 itemAction) {
+    s32 sword = itemAction - PLAYER_IA_FISHING_POLE;
 
     if ((sword > 0) && (sword < 6)) {
         return sword;
@@ -867,9 +869,9 @@ s32 Player_GetMeleeWeaponHeld(Player* this) {
 
 s32 Player_HoldsTwoHandedWeapon(Player* this) {
     if ((this->heldItemAction >= PLAYER_IA_SWORD_BIGGORON) && (this->heldItemAction <= PLAYER_IA_HAMMER)) {
-        return 1;
+        return true;
     } else {
-        return 0;
+        return false;
     }
 }
 
@@ -877,8 +879,8 @@ s32 Player_HoldsBrokenKnife(Player* this) {
     return (this->heldItemAction == PLAYER_IA_SWORD_BIGGORON) && (gSaveContext.swordHealth <= 0.0f);
 }
 
-s32 Player_ActionToBottle(Player* this, s32 actionParam) {
-    s32 bottle = actionParam - PLAYER_IA_BOTTLE;
+s32 Player_ActionToBottle(Player* this, s32 itemAction) {
+    s32 bottle = itemAction - PLAYER_IA_BOTTLE;
 
     if ((bottle >= 0) && (bottle < 13)) {
         return bottle;
@@ -891,8 +893,8 @@ s32 Player_GetBottleHeld(Player* this) {
     return Player_ActionToBottle(this, this->heldItemAction);
 }
 
-s32 Player_ActionToExplosive(Player* this, s32 actionParam) {
-    s32 explosive = actionParam - PLAYER_IA_BOMB;
+s32 Player_ActionToExplosive(Player* this, s32 itemAction) {
+    s32 explosive = itemAction - PLAYER_IA_BOMB;
 
     if ((explosive >= 0) && (explosive < 2)) {
         return explosive;
@@ -905,11 +907,11 @@ s32 Player_GetExplosiveHeld(Player* this) {
     return Player_ActionToExplosive(this, this->heldItemAction);
 }
 
-s32 func_8008F2BC(Player* this, s32 actionParam) {
+s32 func_8008F2BC(Player* this, s32 itemAction) {
     s32 sword = 0;
 
-    if (actionParam != PLAYER_IA_SWORD_CS) {
-        sword = actionParam - PLAYER_IA_SWORD_MASTER;
+    if (itemAction != PLAYER_IA_SWORD_CS) {
+        sword = itemAction - PLAYER_IA_SWORD_MASTER;
         if ((sword < 0) || (sword >= 3)) {
             goto return_neg;
         }
@@ -1731,7 +1733,8 @@ void Player_DrawHookshotReticle(PlayState* play, Player* this, f32 hookshotRange
     }
 }
 
-Vec3f D_801260D4 = { 1100.0f, -700.0f, 0.0f };
+// Coordinates of the player focus position, in the head limb's own model space.
+Vec3f sPlayerFocusOffsetFromHead = { 1100.0f, -700.0f, 0.0f };
 
 f32 sMeleeWeaponLengths[] = {
     0.0f, 4000.0f, 3000.0f, 5500.0f, 0.0f, 2500.0f,
@@ -1981,7 +1984,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                 Matrix_Get(&this->shieldMf);
             }
         } else if (limbIndex == PLAYER_LIMB_HEAD) {
-            Matrix_MultVec3f(&D_801260D4, &this->actor.focus.pos);
+            Matrix_MultVec3f(&sPlayerFocusOffsetFromHead, &this->actor.focus.pos);
         } else {
             Vec3f* vec = &sLeftRightFootLimbModelFootPos[(gSaveContext.linkAge)];
 

@@ -475,7 +475,7 @@ void func_80A79C78(EnIn* this, PlayState* play) {
     player->actor.freezeTimer = 10;
     this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
     Letterbox_SetSizeTarget(0x20);
-    Interface_ChangeHudVisibilityMode(2);
+    Interface_ChangeHudVisibilityMode(HUD_VISIBILITY_NOTHING_ALT);
 }
 
 static s32 D_80A7B998 = 0;
@@ -803,7 +803,7 @@ void func_80A7AA40(EnIn* this, PlayState* play) {
     this->unk_1FC = 0;
     play->csCtx.frames = 0;
     Letterbox_SetSizeTarget(0x20);
-    Interface_ChangeHudVisibilityMode(2);
+    Interface_ChangeHudVisibilityMode(HUD_VISIBILITY_NOTHING_ALT);
     this->actionFunc = func_80A7ABD4;
 }
 

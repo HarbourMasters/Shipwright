@@ -1184,116 +1184,116 @@ s32 OnePointCutscene_RemoveCamera(PlayState* play, s16 camIdx) {
     return nextCamIdx;
 }
 
-#define vChildCamIdx temp2
-#define vCsStatus temp1
-#define vCurCamIdx temp2
-#define vNextCamIdx temp1
+#define vChildCamId temp2
+#define vSubCamStatus temp1
+#define vCurCamId temp2
+#define vNextCamId temp1
 
 /**
  * Creates a cutscene subcamera with the specified ID, duration, and targeted actor. The camera is placed into the
  * cutscene queue in front of the specified camera, then all lower priority demos in front of it are removed from the
  * queue.
  */
-s16 OnePointCutscene_Init(PlayState* play, s16 csId, s16 timer, Actor* actor, s16 parentCamIdx) {
+s16 OnePointCutscene_Init(PlayState* play, s16 csId, s16 timer, Actor* actor, s16 parentCamId) {
+    Camera* subCam;
+    s16 subCamId;
     s16 temp1;
     s16 temp2;
-    s16 csCamIdx;
-    Camera* csCam;
 
     if (actor != NULL && actor->id != ACTOR_PLAYER) {
         if (!GameInteractor_Should(VB_PLAY_ONEPOINT_ACTOR_CS, true, actor)) {
-            return SUBCAM_NONE;
+            return CAM_ID_NONE;
         }
     } else {
         if (!GameInteractor_Should(VB_PLAY_ONEPOINT_CS, true, &csId)) {
-            return SUBCAM_NONE;
+            return CAM_ID_NONE;
         }
     }
 
-    if (parentCamIdx == SUBCAM_ACTIVE) {
-        parentCamIdx = play->activeCamera;
+    if (parentCamId == CAM_ID_NONE) {
+        parentCamId = play->activeCamera;
     }
-    csCamIdx = Play_CreateSubCamera(play);
-    if (csCamIdx == SUBCAM_NONE) {
+    subCamId = Play_CreateSubCamera(play);
+    if (subCamId == CAM_ID_NONE) {
         osSyncPrintf(VT_COL(RED, WHITE) "onepoint demo: error: too many cameras ... give up! type=%d\n" VT_RST, csId);
-        return SUBCAM_NONE;
+        return CAM_ID_NONE;
     }
 
     // Inserts the cutscene camera into the cutscene queue in front of parentCam
 
-    vChildCamIdx = play->cameraPtrs[parentCamIdx]->childCamIdx;
-    vCsStatus = CAM_STAT_ACTIVE;
-    if (vChildCamIdx >= CAM_ID_SUB_FIRST) {
-        OnePointCutscene_SetAsChild(play, vChildCamIdx, csCamIdx);
-        vCsStatus = CAM_STAT_WAIT;
+    vChildCamId = play->cameraPtrs[parentCamId]->childCamIdx;
+    vSubCamStatus = CAM_STAT_ACTIVE;
+    if (vChildCamId >= CAM_ID_SUB_FIRST) {
+        OnePointCutscene_SetAsChild(play, vChildCamId, subCamId);
+        vSubCamStatus = CAM_STAT_WAIT;
     } else {
-        Interface_ChangeHudVisibilityMode(2);
+        Interface_ChangeHudVisibilityMode(HUD_VISIBILITY_NOTHING_ALT);
     }
-    OnePointCutscene_SetAsChild(play, csCamIdx, parentCamIdx);
+    OnePointCutscene_SetAsChild(play, subCamId, parentCamId);
 
-    csCam = play->cameraPtrs[csCamIdx];
+    subCam = play->cameraPtrs[subCamId];
 
-    csCam->timer = timer;
-    csCam->target = actor;
+    subCam->timer = timer;
+    subCam->target = actor;
 
-    csCam->at = play->view.lookAt;
-    csCam->eye = play->view.eye;
-    csCam->fov = play->view.fovy;
+    subCam->at = play->view.lookAt;
+    subCam->eye = play->view.eye;
+    subCam->fov = play->view.fovy;
 
-    csCam->csId = csId;
+    subCam->csId = csId;
 
-    if (parentCamIdx == CAM_ID_MAIN) {
-        Play_ChangeCameraStatus(play, parentCamIdx, CAM_STAT_UNK3);
+    if (parentCamId == CAM_ID_MAIN) {
+        Play_ChangeCameraStatus(play, parentCamId, CAM_STAT_UNK3);
     } else {
-        Play_ChangeCameraStatus(play, parentCamIdx, CAM_STAT_WAIT);
+        Play_ChangeCameraStatus(play, parentCamId, CAM_STAT_WAIT);
     }
-    OnePointCutscene_SetInfo(play, csCamIdx, csId, actor, timer);
-    Play_ChangeCameraStatus(play, csCamIdx, vCsStatus);
+    OnePointCutscene_SetInfo(play, subCamId, csId, actor, timer);
+    Play_ChangeCameraStatus(play, subCamId, vSubCamStatus);
 
     // Removes all lower priority cutscenes in front of this cutscene from the queue.
-    vCurCamIdx = csCamIdx;
-    vNextCamIdx = play->cameraPtrs[csCamIdx]->childCamIdx;
+    vCurCamId = subCamId;
+    vNextCamId = play->cameraPtrs[subCamId]->childCamIdx;
 
-    while (vNextCamIdx >= CAM_ID_SUB_FIRST) {
-        s16 nextCsId = play->cameraPtrs[vNextCamIdx]->csId;
-        s16 thisCsId = play->cameraPtrs[csCamIdx]->csId;
+    while (vNextCamId >= CAM_ID_SUB_FIRST) {
+        s16 nextCsId = play->cameraPtrs[vNextCamId]->csId;
+        s16 thisCsId = play->cameraPtrs[subCamId]->csId;
 
         if ((nextCsId / 100) < (thisCsId / 100)) {
             osSyncPrintf(VT_COL(YELLOW, BLACK) "onepointdemo camera[%d]: killed 'coz low priority (%d < %d)\n" VT_RST,
-                         vNextCamIdx, nextCsId, thisCsId);
-            if (play->cameraPtrs[vNextCamIdx]->csId != 5010) {
-                if ((vNextCamIdx = OnePointCutscene_RemoveCamera(play, vNextCamIdx)) != SUBCAM_NONE) {
-                    Play_ChangeCameraStatus(play, vNextCamIdx, CAM_STAT_ACTIVE);
+                         vNextCamId, nextCsId, thisCsId);
+            if (play->cameraPtrs[vNextCamId]->csId != 5010) {
+                if ((vNextCamId = OnePointCutscene_RemoveCamera(play, vNextCamId)) != CAM_ID_NONE) {
+                    Play_ChangeCameraStatus(play, vNextCamId, CAM_STAT_ACTIVE);
                 }
             } else {
-                vCurCamIdx = vNextCamIdx;
-                OnePointCutscene_EndCutscene(play, vNextCamIdx);
+                vCurCamId = vNextCamId;
+                OnePointCutscene_EndCutscene(play, vNextCamId);
             }
         } else {
-            vCurCamIdx = vNextCamIdx;
+            vCurCamId = vNextCamId;
         }
-        vNextCamIdx = play->cameraPtrs[vCurCamIdx]->childCamIdx;
+        vNextCamId = play->cameraPtrs[vCurCamId]->childCamIdx;
     }
-    return csCamIdx;
+    return subCamId;
 }
 
 /**
- *  Ends the cutscene in camIdx by setting its timer to 0. For attention cutscenes, it is set to 5 instead.
+ *  Ends the cutscene in subCamId by setting its timer to 0. For attention cutscenes, it is set to 5 instead.
  */
-s16 OnePointCutscene_EndCutscene(PlayState* play, s16 camIdx) {
-    if (camIdx == SUBCAM_ACTIVE) {
-        camIdx = play->activeCamera;
+s16 OnePointCutscene_EndCutscene(PlayState* play, s16 subCamId) {
+    if (subCamId == CAM_ID_NONE) {
+        subCamId = play->activeCamera;
     }
-    if (play->cameraPtrs[camIdx] != NULL) {
-        osSyncPrintf("onepointdemo camera[%d]: delete timer=%d next=%d\n", camIdx, play->cameraPtrs[camIdx]->timer,
-                     play->cameraPtrs[camIdx]->parentCamIdx);
-        if (play->cameraPtrs[camIdx]->csId == 5010) {
-            play->cameraPtrs[camIdx]->timer = 5;
+    if (play->cameraPtrs[subCamId] != NULL) {
+        osSyncPrintf("onepointdemo camera[%d]: delete timer=%d next=%d\n", subCamId, play->cameraPtrs[subCamId]->timer,
+                     play->cameraPtrs[subCamId]->parentCamIdx);
+        if (play->cameraPtrs[subCamId]->csId == 5010) {
+            play->cameraPtrs[subCamId]->timer = 5;
         } else {
-            play->cameraPtrs[camIdx]->timer = 0;
+            play->cameraPtrs[subCamId]->timer = 0;
         }
     }
-    return camIdx;
+    return subCamId;
 }
 
 #define vTargetCat temp1

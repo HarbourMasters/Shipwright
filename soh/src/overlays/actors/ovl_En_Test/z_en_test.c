@@ -1730,7 +1730,7 @@ void EnTest_Update(Actor* thisx, PlayState* play) {
         } else if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND_TOUCH) {
             floorProperty = func_80041EA4(&play->colCtx, this->actor.floorPoly, this->actor.floorBgId);
 
-            if ((floorProperty == 5) || (floorProperty == 0xC) ||
+            if ((floorProperty == FLOOR_PROPERTY_5) || (floorProperty == FLOOR_PROPERTY_12) ||
                 SurfaceType_GetFloorType(&play->colCtx, this->actor.floorPoly, this->actor.floorBgId) == 9) {
                 Actor_Kill(&this->actor);
                 GameInteractor_ExecuteOnEnemyDefeat(&this->actor);

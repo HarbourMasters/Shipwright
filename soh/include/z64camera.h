@@ -12,8 +12,14 @@
 
 #define NUM_CAMS 4
 
-#define CAM_ID_MAIN 0
-#define CAM_ID_SUB_FIRST 1
+// Camera IDs are indices into `PlayState.cameraPtrs`
+#define CAM_ID_MAIN 0 // The index of the main camera
+#define CAM_ID_SUB_FIRST 1 // The index sub cameras start at
+#define CAM_ID_NONE -1 // Used to indicate no camera. Can be used to default to the active camera in some scenarios
+
+#define SUB_CAM_ID_DONE 0 // Used in some actors for variables holding sub camera IDs to indicate "subcam is finished"
+
+// Older decomp names
 #define SUBCAM_FREE 0
 #define SUBCAM_NONE -1
 #define SUBCAM_ACTIVE -1
@@ -107,7 +113,7 @@ typedef enum {
     /* 0x05 */ CAM_MODE_CLIMB,
     /* 0x06 */ CAM_MODE_FIRST_PERSON,  // "SUBJECT"
     /* 0x07 */ CAM_MODE_AIM_ADULT,
-    /* 0x08 */ CAM_MODE_BOWARROWZ,
+    /* 0x08 */ CAM_MODE_Z_AIM,
     /* 0x09 */ CAM_MODE_HOOKSHOT, // "FOOKSHOT"
     /* 0x0A */ CAM_MODE_AIM_BOOMERANG,
     /* 0x0B */ CAM_MODE_AIM_CHILD, // "PACHINCO"
