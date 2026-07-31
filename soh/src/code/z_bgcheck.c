@@ -4020,7 +4020,7 @@ u32 func_80041D94(CollisionContext* colCtx, CollisionPoly* poly, s32 bgId) {
  */
 s32 SurfaceType_GetWallFlags(CollisionContext* colCtx, CollisionPoly* poly, s32 bgId) {
     if (GameInteractor_Should(VB_SURFACE_IS_CLIMBABLE, false)) {
-        return (1 << 3) | D_80119D90[func_80041D94(colCtx, poly, bgId)];
+        return WALL_FLAG_CLIMBABLE | D_80119D90[func_80041D94(colCtx, poly, bgId)];
     } else {
         return D_80119D90[func_80041D94(colCtx, poly, bgId)];
     }
