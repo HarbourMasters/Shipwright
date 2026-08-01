@@ -532,7 +532,7 @@ static void SyncButtonItemsForSlot(uint8_t slot) {
         if (gSaveContext.equips.cButtonSlots[i - 1] == slot) {
             gSaveContext.equips.buttonItems[i] = gSaveContext.inventory.items[slot];
             if (gPlayState != nullptr) {
-                Interface_LoadItemIcon1(gPlayState, i);
+                Interface_LoadItemIcon1(gPlayState, static_cast<u16>(i));
             }
         }
     }
