@@ -1748,6 +1748,8 @@ void Actor_UpdateBgCheckInfo(PlayState* play, Actor* actor, f32 wallCheckHeight,
             actor->yDistToWater = BGCHECK_Y_MIN;
         }
     }
+
+    GameInteractor_Should(VB_AFTER_ACTOR_UPDATE_BGCHECKINFO, true, actor);
 }
 
 Mtx D_8015BBA8;

@@ -988,6 +988,39 @@ void RegisterEnemyRandomizer() {
         *should = false;
     });
 
+    COND_VB_SHOULD(VB_AFTER_ACTOR_UPDATE_BGCHECKINFO, ENEMY_RANDOMIZER_ENABLED, {
+        Actor* enemy = va_arg(args, Actor*);
+        Player* player = GET_PLAYER(gPlayState);
+
+        if (enemy->category != ACTORCAT_ENEMY) {
+            return;
+        }
+
+        if (IsClearRoom(ResourceMgr_IsSceneMasterQuest(gPlayState->sceneNum), gPlayState->sceneNum,
+                        gPlayState->roomCtx.curRoom.num) &&
+            enemy->id != ACTOR_EN_FIREFLY && enemy->id != ACTOR_EN_CROW) {
+            u32 floorProperty = func_80041EA4(&gPlayState->colCtx, enemy->floorPoly, enemy->floorBgId);
+
+            // Let ground enemies air walk above voidout floor in clear rooms
+            // and move them up if setting is enabled after they're fallen down
+            if (CVarGetInteger(CVAR_ENHANCEMENT("EnemyRandomizerAirWalkVoidouts"), false) &&
+                (SurfaceType_GetFloorType(&gPlayState->colCtx, enemy->floorPoly, enemy->floorBgId) == 9 ||
+                 floorProperty == FLOOR_PROPERTY_5 || floorProperty == FLOOR_PROPERTY_12)) {
+                if (enemy->world.pos.y < player->actor.floorHeight) {
+                    Math_StepToF(&enemy->world.pos.y, player->actor.floorHeight, 12.0f);
+                    enemy->velocity.y = 0.0f;
+                }
+            }
+            // Backup. If player really above enemy, probably fallen out of bounds
+            if (player->actor.world.pos.y > (enemy->world.pos.y + 1000.0f)) {
+                LUSLOG_INFO(
+                    "AfterActorUpdateBgCheckInfo: Killing enemy, out of bounds (id 0x%x, pos x %.1f y %.1f z %.1f)",
+                    enemy->id, enemy->world.pos.x, enemy->world.pos.y, enemy->world.pos.z);
+                Actor_Kill(enemy);
+            }
+        }
+    });
+
     COND_VB_SHOULD(VB_HAKA_HUTA_SPAWN_KEESE, ENEMY_RANDOMIZER_ENABLED, {
         BgHakaHuta* hakaHuta = va_arg(args, BgHakaHuta*);
         PlayState* play = va_arg(args, PlayState*);
@@ -1132,6 +1165,13 @@ void RegisterEnemyRandomizerWidgets() {
         })
         .Options(UIWidgets::CheckboxOptions().Tooltip("Scales normal enemies Health with their randomized size.\n"
                                                       "*This will NOT affect Bosses!*"));
+
+    SohGui::mSohMenu->AddWidget(path, "Enemies Walk over Voidout Pits", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("EnemyRandomizerAirWalkVoidouts"))
+        .Options(
+            UIWidgets::CheckboxOptions().Tooltip("Ground enemies will air walk over pits/floors that void out Link\n"
+                                                 "to prevent softlocks. Can be toggled to make enemies fall down\n"
+                                                 "or fly back up from a void pit."));
 
     SohGui::mSohMenu->AddWidget(path, "Enemy List", WIDGET_SEPARATOR_TEXT).PreFunc([](WidgetInfo& info) {
         info.isHidden = !CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0);

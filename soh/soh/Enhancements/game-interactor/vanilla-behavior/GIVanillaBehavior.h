@@ -3405,6 +3405,14 @@ typedef enum {
     // true
     // ```
     // #### `args`
+    // - `*Actor`
+    VB_AFTER_ACTOR_UPDATE_BGCHECKINFO,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
     // - `*BgHakaHuta`
     // - `*PlayState`
     VB_HAKA_HUTA_SPAWN_KEESE,
