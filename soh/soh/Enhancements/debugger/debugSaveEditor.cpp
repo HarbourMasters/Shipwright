@@ -2066,8 +2066,7 @@ void DrawEquipmentTab() {
         // After the 4th sword, append the Fishing Pole as a 5th B-button sword option.
         // Only relevant in rando saves that shuffle the pole into the pool
         // (RSK_SHUFFLE_FISHING_POLE -> RG_FISHING_POLE in item_pool.cpp).
-        if (i == 3 && IS_RANDO &&
-            OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_FISHING_POLE) &&
+        if (i == 3 && IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_FISHING_POLE) &&
             gPlayState != nullptr) {
             ImGui::SameLine();
             Player* player = GET_PLAYER(gPlayState);
@@ -2077,8 +2076,7 @@ void DrawEquipmentTab() {
             PushStyleButton(Colors::DarkGray);
             if (ImGui::ImageButton(
                     poleEntry.name.c_str(),
-                    std::dynamic_pointer_cast<Fast::Fast3dGui>(
-                        Ship::Context::GetRawInstance()->GetWindow()->GetGui())
+                    std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
                         ->GetTextureByName(poleEquipped ? poleEntry.name : poleEntry.nameFaded),
                     ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1))) {
                 player->currentSwordItemId = static_cast<s8>(ITEM_FISHING_POLE);
@@ -2091,8 +2089,8 @@ void DrawEquipmentTab() {
                 ImVec2 itemMin = ImGui::GetItemRectMin();
                 ImVec2 itemMax = ImGui::GetItemRectMax();
                 ImGui::GetWindowDrawList()->AddRect(ImVec2(itemMin.x - 2, itemMin.y - 2),
-                                                    ImVec2(itemMax.x + 2, itemMax.y + 2),
-                                                    IM_COL32(255, 255, 255, 255), 0.0f, 0, 2.0f);
+                                                    ImVec2(itemMax.x + 2, itemMax.y + 2), IM_COL32(255, 255, 255, 255),
+                                                    0.0f, 0, 2.0f);
             }
             ImGui::PopID();
         }
@@ -2195,17 +2193,15 @@ void DrawEquipmentTab() {
     // seed actually uses at least one of these features (no empty card on vanilla-ish saves).
     if (IS_RANDO) {
         auto& randomizer = *OTRGlobals::Instance->gRandomizer;
-        bool bombchuProgressive =
-            randomizer.GetRandoSettingValue(RSK_BOMBCHU_BAG) == RO_BOMBCHU_BAG_PROGRESSIVE;
+        bool bombchuProgressive = randomizer.GetRandoSettingValue(RSK_BOMBCHU_BAG) == RO_BOMBCHU_BAG_PROGRESSIVE;
         bool triforceHunt = randomizer.GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_TOTAL) > 0;
-        bool anyAbilityShuffle = randomizer.GetRandoSettingValue(RSK_SHUFFLE_SWIM) ||
-                                 randomizer.GetRandoSettingValue(RSK_SHUFFLE_GRAB) ||
-                                 randomizer.GetRandoSettingValue(RSK_SHUFFLE_CLIMB) ||
-                                 randomizer.GetRandoSettingValue(RSK_SHUFFLE_CRAWL) ||
-                                 randomizer.GetRandoSettingValue(RSK_SHUFFLE_OPEN_CHEST) ||
-                                 randomizer.GetRandoSettingValue(RSK_SHUFFLE_SPEAK) ||
-                                 randomizer.GetRandoSettingValue(RSK_SHUFFLE_OCARINA_BUTTONS) ||
-                                 randomizer.GetRandoSettingValue(RSK_ROCS_FEATHER);
+        bool anyAbilityShuffle =
+            randomizer.GetRandoSettingValue(RSK_SHUFFLE_SWIM) || randomizer.GetRandoSettingValue(RSK_SHUFFLE_GRAB) ||
+            randomizer.GetRandoSettingValue(RSK_SHUFFLE_CLIMB) || randomizer.GetRandoSettingValue(RSK_SHUFFLE_CRAWL) ||
+            randomizer.GetRandoSettingValue(RSK_SHUFFLE_OPEN_CHEST) ||
+            randomizer.GetRandoSettingValue(RSK_SHUFFLE_SPEAK) ||
+            randomizer.GetRandoSettingValue(RSK_SHUFFLE_OCARINA_BUTTONS) ||
+            randomizer.GetRandoSettingValue(RSK_ROCS_FEATHER);
 
         if (bombchuProgressive || triforceHunt || anyAbilityShuffle) {
             UIWidgets::BeginCard("randomizerSpecificCard", 0);
@@ -2260,8 +2256,7 @@ void DrawEquipmentTab() {
                 };
                 std::vector<AbilityEntry> abilities;
                 auto add = [&](RandomizerGet rg, RandomizerInf flag) {
-                    abilities.push_back(
-                        { Rando::StaticData::RetrieveItem(rg).GetName().english, flag });
+                    abilities.push_back({ Rando::StaticData::RetrieveItem(rg).GetName().english, flag });
                 };
 
                 if (randomizer.GetRandoSettingValue(RSK_SHUFFLE_SWIM))
