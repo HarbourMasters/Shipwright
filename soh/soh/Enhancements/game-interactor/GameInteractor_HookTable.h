@@ -30,7 +30,6 @@ DEFINE_HOOK(OnSetDoAction, (uint16_t action));
 DEFINE_HOOK(OnPlayerSfx, (u16 sfxId));
 DEFINE_HOOK(OnOcarinaSongAction, ());
 DEFINE_HOOK(OnOcarinaNote, (uint8_t note, float modulator, int8_t bend));
-DEFINE_HOOK(OnCuccoOrChickenHatch, ());
 DEFINE_HOOK(OnShopSlotChange, (uint8_t cursorIndex, int16_t price));
 DEFINE_HOOK(OnDungeonKeyUsed, (uint16_t mapIndex));
 DEFINE_HOOK(ShouldActorInit, (void* actor, bool* result));
@@ -50,7 +49,7 @@ DEFINE_HOOK(OnPlayerBottleUpdate, (int16_t contents));
 DEFINE_HOOK(OnPlayerHoldUpShield, ());
 DEFINE_HOOK(OnPlayerFirstPersonControl, (Player * player));
 DEFINE_HOOK(OnPlayerProcessStick, ());
-DEFINE_HOOK(OnPlayerShieldControl, (float_t * sp50, float_t* sp54));
+DEFINE_HOOK(OnPlayerShieldControl, (float* sp50, float* sp54));
 DEFINE_HOOK(OnPlayDestroy, ());
 DEFINE_HOOK(OnPlayDrawBegin, ());
 DEFINE_HOOK(OnPlayDrawEnd, ());
@@ -63,6 +62,7 @@ DEFINE_HOOK(OnDialogMessage, ());
 DEFINE_HOOK(OnPresentTitleCard, ());
 DEFINE_HOOK(OnInterfaceUpdate, ());
 DEFINE_HOOK(OnKaleidoscopeUpdate, (int16_t inDungeonScene));
+DEFINE_HOOK(OnMinimapDrawCompassIcons, ());
 
 DEFINE_HOOK(OnPresentFileSelect, ());
 DEFINE_HOOK(OnUpdateFileSelectSelection, (uint16_t optionIndex));
@@ -85,6 +85,9 @@ DEFINE_HOOK(OnSetGameLanguage, ());
 DEFINE_HOOK(OnAssetAltChange, ());
 DEFINE_HOOK(OnKaleidoUpdate, ());
 
+// Messages
+DEFINE_HOOK(OnOpenText, (uint16_t * textId, bool* loadFromMessageTable));
+
 // Audio
 DEFINE_HOOK(OnSeqPlayerInit, (int32_t playerIdx, int32_t seqId));
 
@@ -92,3 +95,6 @@ DEFINE_HOOK(OnSeqPlayerInit, (int32_t playerIdx, int32_t seqId));
 DEFINE_HOOK(OnRandoSetCheckStatus, (RandomizerCheck rc, RandomizerCheckStatus status));
 DEFINE_HOOK(OnRandoSetIsSkipped, (RandomizerCheck rc, bool isSkipped));
 DEFINE_HOOK(OnRandoEntranceDiscovered, (u16 entranceIndex, u8 isReversedEntrance));
+// Fires when a hint's message is resolved for textbox display. Can fire for
+// hints the seed has disabled; subscribers should check the hint is enabled.
+DEFINE_HOOK(OnRandoHintRevealed, (RandomizerHint hintKey));

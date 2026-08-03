@@ -1,0 +1,20 @@
+:config:
+  segments:
+    - [ 128, 0x01305950 ]
+
+gSacredForestMeadowTitleCardENGTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gSacredForestMeadowTitleCardENGTex
+  format: IA8
+  width: 144
+  height: 24
+
+gSacredForestMeadowTitleCardJPNTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gSacredForestMeadowTitleCardJPNTex
+  format: IA8
+  width: 144
+  height: 24
+

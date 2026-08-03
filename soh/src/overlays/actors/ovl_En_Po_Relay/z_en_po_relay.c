@@ -126,7 +126,7 @@ void EnPoRelay_Destroy(Actor* thisx, PlayState* play) {
 }
 
 void EnPoRelay_SetupIdle(EnPoRelay* this) {
-    this->unk_195 = 32;
+    this->bobTimer = 32;
     this->pathIndex = 0;
     this->actor.room = -1;
     this->actor.shape.rot.y = 0;
@@ -146,10 +146,10 @@ void EnPoRelay_SetupRace(EnPoRelay* this) {
 
     EnPoRelay_Vec3sToVec3f(&vec, &D_80AD8C30[this->pathIndex]);
     this->actionTimer = ((s16)(this->actor.shape.rot.y - this->actor.world.rot.y - 0x8000) >> 0xB) % 32U;
-    func_80088B34(0);
+    Interface_SetTimer(0);
     this->hookshotSlotFull =
         (INV_CONTENT(ITEM_HOOKSHOT) != ITEM_NONE && !IS_RANDO) || (IS_RANDO && Flags_GetTreasure(gPlayState, 0x1E));
-    this->unk_19A = Actor_WorldYawTowardPoint(&this->actor, &vec);
+    this->yawTowardsPathPoint = Actor_WorldYawTowardPoint(&this->actor, &vec);
     this->actor.flags |= ACTOR_FLAG_LOCK_ON_DISABLED;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_PO_LAUGH);
     this->actionFunc = EnPoRelay_Race;
@@ -164,7 +164,7 @@ void EnPoRelay_SetupEndRace(EnPoRelay* this) {
 
 void EnPoRelay_CorrectY(EnPoRelay* this) {
     Math_StepToF(&this->actor.home.pos.y, D_80AD8C30[(this->pathIndex >= 28) ? 27 : this->pathIndex].y + 45.0f, 2.0f);
-    this->actor.world.pos.y = Math_SinS(this->unk_195 * 0x800) * 8.0f + this->actor.home.pos.y;
+    this->actor.world.pos.y = Math_SinS(this->bobTimer * 0x800) * 8.0f + this->actor.home.pos.y;
 }
 
 void EnPoRelay_Idle(EnPoRelay* this, PlayState* play) {
@@ -175,9 +175,9 @@ void EnPoRelay_Idle(EnPoRelay* this, PlayState* play) {
     } else if (this->actor.xzDistToPlayer < 250.0f) {
         this->actor.flags |= ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
         this->actor.textId = this->textId;
-        func_8002F2CC(&this->actor, play, 250.0f);
+        Actor_OfferTalk(&this->actor, play, 250.0f);
     }
-    func_8002F974(&this->actor, NA_SE_EN_PO_FLY - SFX_FLAG);
+    Actor_PlaySfx_Flagged(&this->actor, NA_SE_EN_PO_FLY - SFX_FLAG);
 }
 
 void EnPoRelay_Talk(EnPoRelay* this, PlayState* play) {
@@ -187,7 +187,7 @@ void EnPoRelay_Talk(EnPoRelay* this, PlayState* play) {
         this->textId = this->actor.textId;
         EnPoRelay_SetupRace(this);
     }
-    func_8002F974(&this->actor, NA_SE_EN_PO_FLY - SFX_FLAG);
+    Actor_PlaySfx_Flagged(&this->actor, NA_SE_EN_PO_FLY - SFX_FLAG);
 }
 
 void EnPoRelay_Race(EnPoRelay* this, PlayState* play) {
@@ -213,12 +213,12 @@ void EnPoRelay_Race(EnPoRelay* this, PlayState* play) {
             speed = 30.0f * multiplier;
 
             Actor_Spawn(&play->actorCtx, play, ACTOR_EN_HONOTRAP,
-                        Math_CosS(this->unk_19A) * speed + this->actor.world.pos.x, this->actor.world.pos.y,
-                        Math_SinS(this->unk_19A) * speed + this->actor.world.pos.z, 0,
-                        (this->unk_19A + 0x8000) - (0x2000 * multiplier), 0, HONOTRAP_FLAME_DROP, true);
+                        Math_CosS(this->yawTowardsPathPoint) * speed + this->actor.world.pos.x, this->actor.world.pos.y,
+                        Math_SinS(this->yawTowardsPathPoint) * speed + this->actor.world.pos.z, 0,
+                        (this->yawTowardsPathPoint + 0x8000) - (0x2000 * multiplier), 0, HONOTRAP_FLAME_DROP);
         }
     }
-    Math_SmoothStepToS(&this->actor.world.rot.y, this->unk_19A, 2, 0x1000, 0x100);
+    Math_SmoothStepToS(&this->actor.world.rot.y, this->yawTowardsPathPoint, 2, 0x1000, 0x100);
     this->actor.shape.rot.y = this->actor.world.rot.y + (this->actionTimer * 0x800) + 0x8000;
     if (this->pathIndex < 23) {
         // If the player travels along a different path to Dampé that converges later
@@ -239,9 +239,7 @@ void EnPoRelay_Race(EnPoRelay* this, PlayState* play) {
             speed = 3.5f;
         }
 
-        if (CVarGetInteger(CVAR_ENHANCEMENT("FixDampeGoingBackwards"), false)) {
-            speed = ABS(speed);
-        }
+        GameInteractor_Should(VB_DAMPE_GO_BACKWARDS, true, &speed);
 
         multiplier = 250.0f - this->actor.xzDistToPlayer;
         multiplier = CLAMP_MIN(multiplier, 0.0f);
@@ -264,8 +262,8 @@ void EnPoRelay_Race(EnPoRelay* this, PlayState* play) {
             Flags_SetSwitch(play, 0x37);
         }
     }
-    this->unk_19A = Actor_WorldYawTowardPoint(&this->actor, &vec);
-    func_8002F974(&this->actor, NA_SE_EN_PO_AWAY - SFX_FLAG);
+    this->yawTowardsPathPoint = Actor_WorldYawTowardPoint(&this->actor, &vec);
+    Actor_PlaySfx_Flagged(&this->actor, NA_SE_EN_PO_AWAY - SFX_FLAG);
 }
 
 void EnPoRelay_EndRace(EnPoRelay* this, PlayState* play) {
@@ -274,12 +272,12 @@ void EnPoRelay_EndRace(EnPoRelay* this, PlayState* play) {
         this->actionFunc = EnPoRelay_Talk2;
     } else if (play->roomCtx.curRoom.num == 5) {
         Actor_Kill(&this->actor);
-        gSaveContext.timerState = 0;
+        gSaveContext.timerState = TIMER_STATE_OFF;
     } else if (Actor_IsFacingAndNearPlayer(&this->actor, 150.0f, 0x3000)) {
         this->actor.textId = this->textId;
-        func_8002F2CC(&this->actor, play, 250.0f);
+        Actor_OfferTalk(&this->actor, play, 250.0f);
     }
-    func_8002F974(&this->actor, NA_SE_EN_PO_FLY - SFX_FLAG);
+    Actor_PlaySfx_Flagged(&this->actor, NA_SE_EN_PO_FLY - SFX_FLAG);
 }
 
 void EnPoRelay_Talk2(EnPoRelay* this, PlayState* play) {
@@ -295,11 +293,11 @@ void EnPoRelay_Talk2(EnPoRelay* this, PlayState* play) {
             Message_ContinueTextbox(play, this->actor.textId);
         }
     } else if (Actor_TextboxIsClosing(&this->actor, play)) {
-        gSaveContext.timerState = 0;
+        gSaveContext.timerState = TIMER_STATE_OFF;
         this->actionTimer = 0;
         this->actionFunc = EnPoRelay_DisappearAndReward;
     }
-    func_8002F974(&this->actor, NA_SE_EN_PO_FLY - SFX_FLAG);
+    Actor_PlaySfx_Flagged(&this->actor, NA_SE_EN_PO_FLY - SFX_FLAG);
 }
 
 void EnPoRelay_DisappearAndReward(EnPoRelay* this, PlayState* play) {
@@ -338,42 +336,21 @@ void EnPoRelay_DisappearAndReward(EnPoRelay* this, PlayState* play) {
         }
     }
     if (Math_StepToF(&this->actor.scale.x, 0.0f, 0.001f) != 0) {
-        if (!IS_RANDO) {
-            if (this->hookshotSlotFull != 0) {
-                sp60.x = this->actor.world.pos.x;
-                sp60.y = this->actor.floorHeight;
-                sp60.z = this->actor.world.pos.z;
-                if (gSaveContext.timerSeconds < HIGH_SCORE(HS_DAMPE_RACE)) {
-                    HIGH_SCORE(HS_DAMPE_RACE) = gSaveContext.timerSeconds;
-                }
-                if (Flags_GetCollectible(play, this->actor.params) == 0 && gSaveContext.timerSeconds <= 60) {
-                    Item_DropCollectible2(play, &sp60, (this->actor.params << 8) + (0x4000 | ITEM00_HEART_PIECE));
-                } else {
-                    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ITEM00, sp60.x, sp60.y, sp60.z, 0, 0, 0, 2, true);
-                }
-            } else {
-                Flags_SetTempClear(play, 4);
-                HIGH_SCORE(HS_DAMPE_RACE) = gSaveContext.timerSeconds;
-            }
-        } else {
+        if (GameInteractor_Should(VB_DAMPE_AWARD_SECOND_PRIZE, this->hookshotSlotFull != 0)) {
             sp60.x = this->actor.world.pos.x;
             sp60.y = this->actor.floorHeight;
             sp60.z = this->actor.world.pos.z;
-
-            if (this->hookshotSlotFull == 0) {
-                Flags_SetTempClear(play, 4);
-                Flags_SetTreasure(gPlayState, 0x1E);
-                HIGH_SCORE(HS_DAMPE_RACE) = gSaveContext.timerSeconds;
-            }
-
             if (gSaveContext.timerSeconds < HIGH_SCORE(HS_DAMPE_RACE)) {
                 HIGH_SCORE(HS_DAMPE_RACE) = gSaveContext.timerSeconds;
             }
             if (Flags_GetCollectible(play, this->actor.params) == 0 && gSaveContext.timerSeconds <= 60) {
                 Item_DropCollectible2(play, &sp60, (this->actor.params << 8) + (0x4000 | ITEM00_HEART_PIECE));
-            } else if (Flags_GetCollectible(play, this->actor.params) != 0) {
-                Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ITEM00, sp60.x, sp60.y, sp60.z, 0, 0, 0, 2, true);
+            } else {
+                Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ITEM00, sp60.x, sp60.y, sp60.z, 0, 0, 0, 2);
             }
+        } else {
+            Flags_SetTempClear(play, 4);
+            HIGH_SCORE(HS_DAMPE_RACE) = gSaveContext.timerSeconds;
         }
         Actor_Kill(&this->actor);
     }
@@ -394,11 +371,11 @@ void EnPoRelay_Update(Actor* thisx, PlayState* play) {
     Collider_UpdateCylinder(&this->actor, &this->collider);
     CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider.base);
     Actor_SetFocus(&this->actor, 50.0f);
-    if (this->unk_195 != 0) {
-        this->unk_195 -= 1;
+    if (this->bobTimer != 0) {
+        this->bobTimer -= 1;
     }
-    if (this->unk_195 == 0) {
-        this->unk_195 = 32;
+    if (this->bobTimer == 0) {
+        this->bobTimer = 32;
     }
     this->eyeTextureIdx++;
     if (this->eyeTextureIdx == 3) {

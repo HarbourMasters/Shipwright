@@ -1,0 +1,91 @@
+:config:
+  segments:
+    - [ 6, 0x01279010 ]
+    - [ 4, 0x00D310D0 ]
+    - [ 8, 0x01279010 ]
+    - [ 9, 0x01279010 ]
+    - [ 10, 0x01279010 ]
+    - [ 11, 0x01279010 ]
+    - [ 12, 0x01279010 ]
+    - [ 13, 0x01279010 ]
+  external_files:
+    - ntsc_j_mq/objects/gameplay_keep.yml
+
+gGiBulletBag50ColorDL:
+  type: GFX
+  offset: 0x0B10
+  symbol: gGiBulletBag50ColorDL
+
+gGiBulletBag50StringColorDL:
+  type: GFX
+  offset: 0x0B50
+  symbol: gGiBulletBag50StringColorDL
+
+gGiBulletBagColorDL:
+  type: GFX
+  offset: 0x0AF0
+  symbol: gGiBulletBagColorDL
+
+gGiBulletBagDL:
+  type: GFX
+  offset: 0x0B70
+  symbol: gGiBulletBagDL
+
+gGiBulletBagStringColorDL:
+  type: GFX
+  offset: 0x0B30
+  symbol: gGiBulletBagStringColorDL
+
+gGiBulletBagStringDL:
+  type: GFX
+  offset: 0x0F48
+  symbol: gGiBulletBagStringDL
+
+gGiBulletBagWritingDL:
+  type: GFX
+  offset: 0x0FF0
+  symbol: gGiBulletBagWritingDL
+
+object_gi_dekupouchTex_000000:
+  type: TEXTURE
+  offset: 0x0
+  symbol: object_gi_dekupouchTex_000000
+  format: I4
+  width: 32
+  height: 16
+
+object_gi_dekupouchTex_000100:
+  type: TEXTURE
+  offset: 0x100
+  symbol: object_gi_dekupouchTex_000100
+  format: I4
+  width: 32
+  height: 32
+
+
+object_gi_dekupouchVtx_000300:
+  type: OOT:ARRAY
+  offset: 0x000300
+  symbol: object_gi_dekupouchVtx_000300
+  count: 111
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_dekupouchVtx_0009F0:
+  type: OOT:ARRAY
+  offset: 0x0009F0
+  symbol: object_gi_dekupouchVtx_0009F0
+  count: 11
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_dekupouchVtx_000AA0:
+  type: OOT:ARRAY
+  offset: 0x000AA0
+  symbol: object_gi_dekupouchVtx_000AA0
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

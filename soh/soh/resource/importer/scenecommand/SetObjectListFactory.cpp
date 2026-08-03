@@ -41,7 +41,7 @@ std::shared_ptr<Ship::IResource> SetObjectListFactoryXML::ReadResource(std::shar
         child = child->NextSiblingElement();
     }
 
-    setObjectList->numObjects = setObjectList->objects.size();
+    setObjectList->numObjects = static_cast<u32>(setObjectList->objects.size());
 
     return setObjectList;
 }

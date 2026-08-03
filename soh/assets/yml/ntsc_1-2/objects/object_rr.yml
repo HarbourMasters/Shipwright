@@ -1,0 +1,51 @@
+:config:
+  segments:
+    - [ 6, 0x010E8D00 ]
+    - [ 4, 0x00D3AED0 ]
+    - [ 8, 0x010E8D00 ]
+    - [ 9, 0x010E8D00 ]
+    - [ 10, 0x010E8D00 ]
+    - [ 11, 0x010E8D00 ]
+    - [ 12, 0x010E8D00 ]
+    - [ 13, 0x010E8D00 ]
+  external_files:
+    - ntsc_1-2/objects/gameplay_keep.yml
+
+gLikeLikeBodyPattern1Tex:
+  type: TEXTURE
+  offset: 0x800
+  symbol: gLikeLikeBodyPattern1Tex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gLikeLikeBodyPattern2Tex:
+  type: TEXTURE
+  offset: 0xA00
+  symbol: gLikeLikeBodyPattern2Tex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gLikeLikeDL:
+  type: GFX
+  offset: 0x470
+  symbol: gLikeLikeDL
+
+gLikeLikeHoleTex:
+  type: TEXTURE
+  offset: 0xC00
+  symbol: gLikeLikeHoleTex
+  format: IA16
+  width: 16
+  height: 16
+
+
+object_rrVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_rrVtx_000000
+  count: 71
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

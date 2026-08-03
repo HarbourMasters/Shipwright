@@ -1,0 +1,15 @@
+:config:
+  segments:
+    - [ 3, 0x02123000 ]
+    - [ 2, 0x020DB000 ]
+  directory: scenes/nonmq/bdan_scene
+  external_files:
+    - pal_gc_dbg/scenes/nonmq/bdan_room_8.yml
+    - pal_gc_dbg/scenes/nonmq/bdan_scene.yml
+    - pal_gc_dbg/code/sys_matrix.yml
+
+bdan_room_8Set_0000E0:
+  type: OOT:ROOM
+  offset: 0xE0
+  symbol: bdan_room_8Set_0000E0
+  base_name: bdan_room_8

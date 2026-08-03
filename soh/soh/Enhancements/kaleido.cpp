@@ -1,8 +1,9 @@
 #include "kaleido.h"
 
 #include "objects/gameplay_keep/gameplay_keep.h"
+#include "ship/utils/StringHelper.h"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
-#include "soh/frame_interpolation.h"
+#include "soh/Enhancements/randomizer/SeedContext.h"
 #include "soh/ShipInit.hpp"
 #include "soh/ShipUtils.h"
 
@@ -11,7 +12,6 @@ extern "C" {
 #include "functions.h"
 #include "macros.h"
 #include "variables.h"
-#include <textures/message_static/message_static.h>
 #include <textures/parameter_static/parameter_static.h>
 extern PlayState* gPlayState;
 }
@@ -42,6 +42,11 @@ void KaleidoEntryIcon::LoadIconTex(std::vector<Gfx>* mEntryDl) {
         if (mIconSize == G_IM_SIZ_32b) {
             Gfx iconTexture[] = { gsDPLoadTextureBlock(
                 mIconResourceName, G_IM_FMT_RGBA, G_IM_SIZ_32b, mIconWidth, mIconHeight, 0, G_TX_NOMIRROR | G_TX_WRAP,
+                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD) };
+            mEntryDl->insert(mEntryDl->end(), std::begin(iconTexture), std::end(iconTexture));
+        } else if (mIconSize == G_IM_SIZ_16b) {
+            Gfx iconTexture[] = { gsDPLoadTextureBlock(
+                mIconResourceName, G_IM_FMT_RGBA, G_IM_SIZ_16b, mIconWidth, mIconHeight, 0, G_TX_NOMIRROR | G_TX_WRAP,
                 G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD) };
             mEntryDl->insert(mEntryDl->end(), std::begin(iconTexture), std::end(iconTexture));
         }
@@ -139,12 +144,11 @@ Kaleido::Kaleido() {
             gItemIconFishingPoleTex, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 32, Color_RGBA8{ 255, 255, 255, 255 },
             FlagType::FLAG_RANDOMIZER_INF, static_cast<int>(RAND_INF_FISHING_POLE_FOUND), "Fishing Pole"));
     }
-    if (ctx->GetOption(RSK_TRIFORCE_HUNT).IsNot(RO_TRIFORCE_HUNT_OFF)) {
+    if (ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_TOTAL).Get() > 0) {
         mEntries.push_back(std::make_shared<KaleidoEntryIconCountRequired>(
             gTriforcePieceTex, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 32, Color_RGBA8{ 255, 255, 255, 255 },
             reinterpret_cast<int*>(&gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected),
-            ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_REQUIRED).Get() + 1,
-            ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_TOTAL).Get() + 1));
+            ctx->GetOption(RSK_WINCON_TRIFORCE_COUNT).Get(), ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_TOTAL).Get()));
     }
     if (ctx->GetOption(RSK_SKELETON_KEY)) {
         mEntries.push_back(std::make_shared<KaleidoEntryIconFlag>(
@@ -165,7 +169,7 @@ Kaleido::Kaleido() {
                 FlagType::FLAG_RANDOMIZER_INF, i, bossSoulNames[i - RAND_INF_GOHMA_SOUL]));
         }
     }
-    if (ctx->GetOption(RSK_SHUFFLE_BOSS_SOULS).Is(RO_BOSS_SOULS_ON_PLUS_GANON)) {
+    if (ctx->GetOption(RSK_GANONS_SOUL).IsNot(RO_GANONS_SOUL_STARTWITH)) {
         mEntries.push_back(std::make_shared<KaleidoEntryIconFlag>(
             gBossSoulTex, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 32, Color_RGBA8{ 255, 255, 255, 255 },
             FlagType::FLAG_RANDOMIZER_INF, RAND_INF_GANON_SOUL, "Ganon's Soul"));
@@ -178,6 +182,65 @@ Kaleido::Kaleido() {
                 FlagType::FLAG_RANDOMIZER_INF, i,
                 Rando::StaticData::RetrieveItem(static_cast<RandomizerGet>(rg)).GetName().english));
         }
+    }
+    // Default A button color stored for action shuffle (crawl, climb, etc.)
+    // TODO: find a way to update this so we can match Cosmetics Editor color, or just replace these icons
+    Color_RGBA8 aButtonColor = { 90, 90, 255, 255 };
+    if (ctx->GetOption(RSK_SHUFFLE_CRAWL)) {
+        mEntries.push_back(std::make_shared<KaleidoEntryIconFlag>(gButtonBackgroundTex, G_IM_FMT_IA, G_IM_SIZ_8b, 32,
+                                                                  32, aButtonColor, FlagType::FLAG_RANDOMIZER_INF,
+                                                                  RAND_INF_CAN_CRAWL, "Crawl"));
+    }
+    if (ctx->GetOption(RSK_SHUFFLE_CLIMB)) {
+        mEntries.push_back(std::make_shared<KaleidoEntryIconFlag>(gButtonBackgroundTex, G_IM_FMT_IA, G_IM_SIZ_8b, 32,
+                                                                  32, aButtonColor, FlagType::FLAG_RANDOMIZER_INF,
+                                                                  RAND_INF_CAN_CLIMB, "Climb"));
+    }
+    if (ctx->GetOption(RSK_SHUFFLE_GRAB)) {
+        mEntries.push_back(std::make_shared<KaleidoEntryIconFlag>(gButtonBackgroundTex, G_IM_FMT_IA, G_IM_SIZ_8b, 32,
+                                                                  32, aButtonColor, FlagType::FLAG_RANDOMIZER_INF,
+                                                                  RAND_INF_CAN_GRAB, "Grab"));
+    }
+    if (ctx->GetOption(RSK_SHUFFLE_SPEAK)) {
+        int rg = RG_SPEAK_DEKU;
+        for (int i = RAND_INF_CAN_SPEAK_DEKU; i <= RAND_INF_CAN_SPEAK_ZORA; i++, rg++) {
+            std::string speakName = Rando::StaticData::RetrieveItem(static_cast<RandomizerGet>(rg)).GetName().english;
+            StringHelper::ReplaceOriginal(speakName, " Jabber Nut", "");
+            mEntries.push_back(std::make_shared<KaleidoEntryIconFlag>(gItemIconDekuNutTex, G_IM_FMT_RGBA, G_IM_SIZ_32b,
+                                                                      32, 32, Color_RGBA8{ 255, 255, 255, 255 },
+                                                                      FlagType::FLAG_RANDOMIZER_INF, i, speakName));
+        }
+    }
+    if (ctx->GetOption(RSK_SHUFFLE_OPEN_CHEST)) {
+        mEntries.push_back(std::make_shared<KaleidoEntryIconFlag>(
+            gMapChestIconTex, G_IM_FMT_RGBA, G_IM_SIZ_16b, 8, 8, Color_RGBA8{ 255, 255, 255, 255 },
+            FlagType::FLAG_RANDOMIZER_INF, RAND_INF_CAN_OPEN_CHEST, "Open Chests"));
+        if (ctx->GetOption(RSK_SHUFFLE_OPEN_CHEST).Is(RO_OPEN_CHEST_PROGRESSIVE)) {
+            mEntries.push_back(std::make_shared<KaleidoEntryIconFlag>(
+                gMapChestIconTex, G_IM_FMT_RGBA, G_IM_SIZ_16b, 8, 8, Color_RGBA8{ 255, 255, 255, 255 },
+                FlagType::FLAG_RANDOMIZER_INF, RAND_INF_CAN_OPEN_LARGE_CHEST, "Open Large Chests"));
+        }
+    }
+    if (ctx->GetOption(RSK_SHUFFLE_SWIM)) {
+        mEntries.push_back(std::make_shared<KaleidoEntryIconFlag>(
+            gItemIconScaleSilverTex, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 32, Color_RGBA8{ 255, 255, 255, 255 },
+            FlagType::FLAG_RANDOMIZER_INF, RAND_INF_CAN_SWIM, "Swim"));
+    }
+    if (ctx->GetOption(RSK_SHUFFLE_BEAN_SOULS)) {
+        int rg = RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL;
+        for (int i = RAND_INF_DEATH_MOUNTAIN_CRATER_BEAN_SOUL; i <= RAND_INF_ZORAS_RIVER_BEAN_SOUL; i++, rg++) {
+            std::string beanSoulName =
+                Rando::StaticData::RetrieveItem(static_cast<RandomizerGet>(rg)).GetName().english;
+            StringHelper::ReplaceOriginal(beanSoulName, " Bean Soul", "");
+            mEntries.push_back(std::make_shared<KaleidoEntryIconFlag>(
+                gItemIconMagicBeanTex, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 32, Color_RGBA8{ 255, 255, 255, 255 },
+                FlagType::FLAG_RANDOMIZER_INF, i, std::move(beanSoulName)));
+        }
+    }
+    if (ctx->GetOption(RSK_ROCS_FEATHER)) {
+        mEntries.push_back(std::make_shared<KaleidoEntryIconFlag>(
+            gRocsFeatherTex, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 32, Color_RGBA8{ 255, 255, 255, 255 },
+            FlagType::FLAG_RANDOMIZER_INF, RAND_INF_OBTAINED_ROCS_FEATHER, "Roc's Feather"));
     }
 }
 
@@ -203,12 +266,16 @@ void Kaleido::Draw(PlayState* play) {
     Matrix_Translate(-108.f, 58.f, 0.0f, MTXMODE_APPLY);
     // Invert the matrix to render vertices with positive going down
     Matrix_Scale(1.0f, -1.0f, 1.0f, MTXMODE_APPLY);
-    bool dpad = CVarGetInteger(CVAR_SETTING("DPadOnPause"), 0);
     if (((pauseCtx->unk_1E4 == 0) || (pauseCtx->unk_1E4 == 5) || (pauseCtx->unk_1E4 == 8)) &&
         (pauseCtx->pageIndex == PAUSE_QUEST)) {
-        if (!((pauseCtx->state != 6) || ((pauseCtx->stickRelX == 0) && (pauseCtx->stickRelY == 0)))) {
+        u16 buttonsToCheck = BTN_CLEFT | BTN_CRIGHT;
+        if (CVarGetInteger(CVAR_SETTING("DPadOnPause"), 0)) {
+            buttonsToCheck |= BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT;
+        }
+        if (!((pauseCtx->state != 6) || ((pauseCtx->stickRelX == 0) && (pauseCtx->stickRelY == 0) &&
+                                         !CHECK_BTN_ANY(input->press.button, buttonsToCheck)))) {
             if (pauseCtx->cursorSpecialPos == 0) {
-                if ((pauseCtx->stickRelY > 30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DUP))) {
+                if ((pauseCtx->stickRelY > 30) || CHECK_BTN_ALL(input->press.button, BTN_DUP)) {
                     if (mCursorPos > 0) {
                         mCursorPos--;
                         Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
@@ -217,31 +284,56 @@ void Kaleido::Draw(PlayState* play) {
                     if (mCursorPos < mTopIndex) {
                         mTopIndex = mCursorPos;
                     }
-                } else if ((pauseCtx->stickRelY < -30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DDOWN))) {
-                    if (mCursorPos < mEntries.size() - 1) {
+                } else if ((pauseCtx->stickRelY < -30) || CHECK_BTN_ALL(input->press.button, BTN_DDOWN)) {
+                    if (mCursorPos < static_cast<int>(mEntries.size() - 1)) {
                         mCursorPos++;
                         Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
                                                &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                     }
-                    if (mCursorPos >= mTopIndex + mNumVisible && mTopIndex + mNumVisible < mEntries.size()) {
+                    if (mCursorPos >= mTopIndex + mNumVisible &&
+                        mTopIndex + mNumVisible < static_cast<int>(mEntries.size())) {
                         mTopIndex = mCursorPos - mNumVisible + 1;
                     }
-                }
-                if ((pauseCtx->stickRelX < -30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DLEFT))) {
+                } else if (CHECK_BTN_ALL(input->press.button, BTN_CLEFT)) {
+                    if (mCursorPos > 0) {
+                        mCursorPos -= mNumVisible;
+                        if (mCursorPos < 0) {
+                            mCursorPos = 0;
+                        }
+                        Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                    }
+                    if (mCursorPos < mTopIndex) {
+                        mTopIndex = mCursorPos;
+                    }
+                } else if (CHECK_BTN_ALL(input->press.button, BTN_CRIGHT)) {
+                    if (mCursorPos < static_cast<int>(mEntries.size() - 1)) {
+                        mCursorPos += mNumVisible;
+                        if (mCursorPos > static_cast<int>(mEntries.size() - 1)) {
+                            mCursorPos = static_cast<int>(mEntries.size() - 1);
+                        }
+                        Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                    }
+                    if (mCursorPos >= mTopIndex + mNumVisible &&
+                        mTopIndex + mNumVisible < static_cast<int>(mEntries.size())) {
+                        mTopIndex = mCursorPos - mNumVisible + 1;
+                    }
+                } else if ((pauseCtx->stickRelX < -30) || CHECK_BTN_ALL(input->press.button, BTN_DLEFT)) {
                     KaleidoScope_MoveCursorToSpecialPos(play, PAUSE_CURSOR_PAGE_LEFT);
                     pauseCtx->unk_1E4 = 0;
-                } else if ((pauseCtx->stickRelX > 30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DRIGHT))) {
+                } else if ((pauseCtx->stickRelX > 30) || CHECK_BTN_ALL(input->press.button, BTN_DRIGHT)) {
                     KaleidoScope_MoveCursorToSpecialPos(play, PAUSE_CURSOR_PAGE_RIGHT);
                     pauseCtx->unk_1E4 = 0;
                 }
             } else if (pauseCtx->cursorSpecialPos == PAUSE_CURSOR_PAGE_LEFT) {
-                if ((pauseCtx->stickRelX > 30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DRIGHT))) {
+                if ((pauseCtx->stickRelX > 30) || CHECK_BTN_ALL(input->press.button, BTN_DRIGHT)) {
                     pauseCtx->cursorSpecialPos = 0;
                     Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
                                            &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 }
             } else if (pauseCtx->cursorSpecialPos == PAUSE_CURSOR_PAGE_RIGHT) {
-                if ((pauseCtx->stickRelX < -30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DLEFT))) {
+                if ((pauseCtx->stickRelX < -30) || CHECK_BTN_ALL(input->press.button, BTN_DLEFT)) {
                     pauseCtx->cursorSpecialPos = 0;
                     Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
                                            &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
@@ -252,7 +344,7 @@ void Kaleido::Draw(PlayState* play) {
         }
     }
     int yOffset = 1;
-    for (size_t i = mTopIndex; i < (mTopIndex + mNumVisible) && i < mEntries.size(); i++) {
+    for (int i = mTopIndex; i < (mTopIndex + mNumVisible) && i < static_cast<int>(mEntries.size()); i++) {
         auto& entry = mEntries[i];
         entry->SetYOffset(yOffset);
         yOffset += 9;
@@ -269,7 +361,7 @@ void Kaleido::Draw(PlayState* play) {
 }
 
 void Kaleido::Update(PlayState* play) {
-    for (size_t i = mTopIndex; i < (mTopIndex + mNumVisible) && i < mEntries.size(); i++) {
+    for (int i = mTopIndex; i < (mTopIndex + mNumVisible) && i < static_cast<int>(mEntries.size()); i++) {
         const auto& entry = mEntries[i];
         entry->Update(play);
     }
@@ -433,11 +525,11 @@ void KaleidoEntryOcarinaButtons::CalculateColors() {
 }
 
 void KaleidoEntryOcarinaButtons::Update(PlayState* play) {
-    mButtonCollected[0] = GameInteractor::RawAction::CheckFlag(FLAG_RANDOMIZER_INF, RAND_INF_HAS_OCARINA_A) > 0;
-    mButtonCollected[1] = GameInteractor::RawAction::CheckFlag(FLAG_RANDOMIZER_INF, RAND_INF_HAS_OCARINA_C_UP) > 0;
-    mButtonCollected[2] = GameInteractor::RawAction::CheckFlag(FLAG_RANDOMIZER_INF, RAND_INF_HAS_OCARINA_C_DOWN) > 0;
-    mButtonCollected[3] = GameInteractor::RawAction::CheckFlag(FLAG_RANDOMIZER_INF, RAND_INF_HAS_OCARINA_C_LEFT) > 0;
-    mButtonCollected[4] = GameInteractor::RawAction::CheckFlag(FLAG_RANDOMIZER_INF, RAND_INF_HAS_OCARINA_C_RIGHT) > 0;
+    mButtonCollected[0] = GameInteractor::RawAction::CheckFlag(FLAG_RANDOMIZER_INF, RAND_INF_HAS_OCARINA_A);
+    mButtonCollected[1] = GameInteractor::RawAction::CheckFlag(FLAG_RANDOMIZER_INF, RAND_INF_HAS_OCARINA_C_UP);
+    mButtonCollected[2] = GameInteractor::RawAction::CheckFlag(FLAG_RANDOMIZER_INF, RAND_INF_HAS_OCARINA_C_DOWN);
+    mButtonCollected[3] = GameInteractor::RawAction::CheckFlag(FLAG_RANDOMIZER_INF, RAND_INF_HAS_OCARINA_C_LEFT);
+    mButtonCollected[4] = GameInteractor::RawAction::CheckFlag(FLAG_RANDOMIZER_INF, RAND_INF_HAS_OCARINA_C_RIGHT);
     CalculateColors();
     mAchieved = false;
     for (size_t i = 0; i < mButtonCollected.size(); i++) {

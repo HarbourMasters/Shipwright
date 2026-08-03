@@ -1,6 +1,5 @@
 #include "soh/Network/Anchor/Anchor.h"
 #include <nlohmann/json.hpp>
-#include <libultraship/libultraship.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 extern "C" {
@@ -29,7 +28,7 @@ void Anchor::SendPacket_DamagePlayer(u32 clientId, u8 damageEffect, u8 damage) {
 }
 
 void Anchor::HandlePacket_DamagePlayer(nlohmann::json payload) {
-    uint32_t clientId = payload["clientId"].get<uint32_t>();
+    uint32_t clientId = payload.at("clientId").get<uint32_t>();
     if (!clients.contains(clientId) || clients[clientId].player == nullptr) {
         return;
     }
@@ -44,14 +43,14 @@ void Anchor::HandlePacket_DamagePlayer(nlohmann::json payload) {
         return;
     }
 
-    u8 damageEffect = payload["damageEffect"].get<u8>();
-    u8 damage = payload["damage"].get<u8>();
+    u8 damageEffect = payload.at("damageEffect").get<u8>();
+    u8 damage = payload.at("damage").get<u8>();
 
     self->actor.colChkInfo.damage = damage * 8; // Arbitrary number currently, need to fine tune
 
     if (damageEffect == DUMMY_PLAYER_HIT_RESPONSE_FIRE) {
         for (int i = 0; i < ARRAY_COUNT(self->bodyFlameTimers); i++) {
-            self->bodyFlameTimers[i] = Rand_S16Offset(0, 200);
+            self->bodyFlameTimers[i] = static_cast<uint8_t>(Rand_S16Offset(0, 200));
         }
         self->bodyIsBurning = true;
     } else if (damageEffect == DUMMY_PLAYER_HIT_RESPONSE_STUN) {

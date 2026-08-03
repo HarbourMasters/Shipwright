@@ -1,0 +1,84 @@
+:config:
+  segments:
+    - [ 6, 0x01128980 ]
+    - [ 4, 0x00D3AED0 ]
+    - [ 8, 0x01128980 ]
+    - [ 9, 0x01128980 ]
+    - [ 10, 0x01128980 ]
+    - [ 11, 0x01128980 ]
+    - [ 12, 0x01128980 ]
+    - [ 13, 0x01128980 ]
+  external_files:
+    - ntsc_1-2/objects/gameplay_keep.yml
+
+gKakarikoWellArchCol:
+  type: OOT:COLLISION
+  offset: 0x075C
+  symbol: gKakarikoWellArchCol
+
+gKakarikoWellArchDL:
+  type: GFX
+  offset: 0x0420
+  symbol: gKakarikoWellArchDL
+
+gKakarikoWellArchTex:
+  type: TEXTURE
+  offset: 0x2090
+  symbol: gKakarikoWellArchTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gKakarikoWellWaterDL:
+  type: GFX
+  offset: 0x07D0
+  symbol: gKakarikoWellWaterDL
+
+gKakarikoWellWaterTex:
+  type: TEXTURE
+  offset: 0x0890
+  symbol: gKakarikoWellWaterTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gKakarikoWindmillSailsDL:
+  type: GFX
+  offset: 0x0100
+  symbol: gKakarikoWindmillSailsDL
+
+gKakarikoWindmillSailsTex:
+  type: TEXTURE
+  offset: 0x1090
+  symbol: gKakarikoWindmillSailsTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+
+object_spot01_objectsVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_spot01_objectsVtx_000000
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_spot01_objectsVtx_0001B0:
+  type: OOT:ARRAY
+  offset: 0x0001B0
+  symbol: object_spot01_objectsVtx_0001B0
+  count: 39
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_spot01_objectsVtx_000790:
+  type: OOT:ARRAY
+  offset: 0x000790
+  symbol: object_spot01_objectsVtx_000790
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

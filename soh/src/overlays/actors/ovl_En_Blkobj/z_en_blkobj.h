@@ -15,4 +15,7 @@ typedef struct EnBlkobj {
     /* 0x0168 */ EnBlkobjActionFunc actionFunc;
 } EnBlkobj; // size = 0x016C
 
+void EnBlkobj_SetupAction(EnBlkobj* thisx, EnBlkobjActionFunc actionFunc);
+void EnBlkobj_DarkLinkFight(EnBlkobj* thisx, PlayState* play);
+
 #endif

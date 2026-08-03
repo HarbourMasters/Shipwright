@@ -4,9 +4,7 @@
 #include "textures/do_action_static/do_action_static.h"
 #include "textures/icon_item_static/icon_item_static.h"
 #include "soh_assets.h"
-#include "soh/Enhancements/randomizer/randomizer_entrance.h"
 
-#include "libultraship/bridge.h"
 #include "soh/Enhancements/gameplaystats.h"
 #include "soh/Enhancements/custom-message/CustomMessageInterfaceAddon.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
@@ -172,8 +170,8 @@ static s16 sExtraItemBases[] = {
     ITEM_BOW,   ITEM_BOW,   ITEM_SEEDS, ITEM_BOMBCHU, ITEM_BOMBCHU, ITEM_STICK, ITEM_STICK, ITEM_NUT,  ITEM_NUT,
 };
 
-static s16 D_80125A58 = 0;
-static s16 D_80125A5C = 0;
+static s16 sEnvHazard = PLAYER_ENV_HAZARD_NONE;
+static s16 sEnvHazardActive = false;
 
 static Gfx sSetupDL_80125A60[] = {
     gsDPPipeSync(),
@@ -198,11 +196,12 @@ static const char* actionsTbl[] = {
 };
 
 // original name: "alpha_change"
-void Interface_ChangeAlpha(u16 alphaType) {
-    if (alphaType != gSaveContext.unk_13EA) {
-        osSyncPrintf("ＡＬＰＨＡーＴＹＰＥ＝%d  LAST_TIME_TYPE=%d\n", alphaType, gSaveContext.unk_13EE);
-        gSaveContext.unk_13EA = gSaveContext.unk_13E8 = alphaType;
-        gSaveContext.unk_13EC = 1;
+void Interface_ChangeHudVisibilityMode(u16 hudVisibilityMode) {
+    if (hudVisibilityMode != gSaveContext.hudVisibilityMode) {
+        osSyncPrintf("ＡＬＰＨＡーＴＹＰＥ＝%d  LAST_TIME_TYPE=%d\n", hudVisibilityMode,
+                     gSaveContext.prevHudVisibilityMode);
+        gSaveContext.hudVisibilityMode = gSaveContext.nextHudVisibilityMode = hudVisibilityMode;
+        gSaveContext.hudVisibilityModeTimer = 1;
     }
 }
 
@@ -349,13 +348,13 @@ void func_80082850(PlayState* play, s16 maxAlpha) {
     InterfaceContext* interfaceCtx = &play->interfaceCtx;
     s16 alpha = 255 - maxAlpha;
 
-    switch (gSaveContext.unk_13E8) {
+    switch (gSaveContext.nextHudVisibilityMode) {
         case 1:
         case 2:
         case 8:
             osSyncPrintf("a_alpha=%d, c_alpha=%d   →   ", interfaceCtx->aAlpha, interfaceCtx->cLeftAlpha);
 
-            if (gSaveContext.unk_13E8 == 8) {
+            if (gSaveContext.nextHudVisibilityMode == 8) {
                 if (interfaceCtx->bAlpha != 255) {
                     interfaceCtx->bAlpha = alpha;
                 }
@@ -798,20 +797,6 @@ void func_80082850(PlayState* play, s16 maxAlpha) {
     }
 }
 
-// buttonStatus[0] is used to represent if the B button is disabled, but also tracks
-// the last active B button item during mini-games/epona (temp B)
-// Since ITEM_NONE is the same as BTN_DISABLED (255), we need a different value to help us track
-// that the player was swordless before like ITEM_NONE_FE (254)
-#define SWORDLESS_STATUS ITEM_NONE_FE
-
-// Restores swordless state when using the custom value for temp B and then clears temp B
-void Interface_RandoRestoreSwordless(void) {
-    if (IS_RANDO && gSaveContext.buttonStatus[0] == SWORDLESS_STATUS) {
-        gSaveContext.equips.buttonItems[0] = ITEM_NONE;
-        gSaveContext.buttonStatus[0] = BTN_ENABLED;
-    }
-}
-
 void func_80083108(PlayState* play) {
     MessageContext* msgCtx = &play->msgCtx;
     Player* player = GET_PLAYER(play);
@@ -819,20 +804,14 @@ void func_80083108(PlayState* play) {
     s16 i;
     s16 sp28 = 0;
 
-    // Check for the player being swordless in rando (no item on B and swordless flag set)
-    // Child is always assumed due to not finding kokiri sword yet. Adult is only checked with MS shuffle on.
-    u8 randoIsSwordless = IS_RANDO && (LINK_IS_CHILD || Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD)) &&
-                          gSaveContext.equips.buttonItems[0] == ITEM_NONE && Flags_GetInfTable(INFTABLE_SWORDLESS);
-    u8 randoWasSwordlessBefore = IS_RANDO && gSaveContext.buttonStatus[0] == SWORDLESS_STATUS;
-    u8 randoCanTrackSwordless = randoIsSwordless && !randoWasSwordlessBefore;
-
     if ((gSaveContext.cutsceneIndex < 0xFFF0) ||
         ((play->sceneNum == SCENE_LON_LON_RANCH) && (gSaveContext.cutsceneIndex == 0xFFF0))) {
         gSaveContext.forceRisingButtonAlphas = 0;
 
         if ((player->stateFlags1 & PLAYER_STATE1_ON_HORSE) || (play->shootingGalleryStatus > 1) ||
             ((play->sceneNum == SCENE_BOMBCHU_BOWLING_ALLEY) && Flags_GetSwitch(play, 0x38))) {
-            if (gSaveContext.equips.buttonItems[0] != ITEM_NONE || randoCanTrackSwordless) {
+            if (GameInteractor_Should(VB_TEMP_B_TREAT_AS_OCCUPIED, gSaveContext.equips.buttonItems[0] != ITEM_NONE,
+                                      play)) {
                 gSaveContext.forceRisingButtonAlphas = 1;
 
                 if (gSaveContext.buttonStatus[0] == BTN_DISABLED) {
@@ -845,13 +824,10 @@ void func_80083108(PlayState* play) {
                 if ((gSaveContext.equips.buttonItems[0] != ITEM_SLINGSHOT) &&
                     (gSaveContext.equips.buttonItems[0] != ITEM_BOW) &&
                     (gSaveContext.equips.buttonItems[0] != ITEM_BOMBCHU) &&
-                    (gSaveContext.equips.buttonItems[0] != ITEM_NONE || randoCanTrackSwordless)) {
+                    GameInteractor_Should(VB_TEMP_B_TREAT_AS_OCCUPIED, gSaveContext.equips.buttonItems[0] != ITEM_NONE,
+                                          play)) {
                     gSaveContext.buttonStatus[0] = gSaveContext.equips.buttonItems[0];
-
-                    // Track swordless status for restoration later
-                    if (randoCanTrackSwordless) {
-                        gSaveContext.buttonStatus[0] = SWORDLESS_STATUS;
-                    }
+                    GameInteractor_Should(VB_TEMP_B_STASH_SWORDLESS, true, play);
 
                     if ((play->sceneNum == SCENE_BOMBCHU_BOWLING_ALLEY) && Flags_GetSwitch(play, 0x38)) {
                         gSaveContext.equips.buttonItems[0] = ITEM_BOMBCHU;
@@ -877,53 +853,48 @@ void func_80083108(PlayState* play) {
                         BTN_DISABLED;
                     gSaveContext.buttonStatus[5] = gSaveContext.buttonStatus[6] = gSaveContext.buttonStatus[7] =
                         gSaveContext.buttonStatus[8] = BTN_DISABLED;
-                    Interface_ChangeAlpha(6);
+                    Interface_ChangeHudVisibilityMode(6);
                 }
 
                 if (play->transitionMode != TRANS_MODE_OFF) {
-                    Interface_ChangeAlpha(1);
+                    Interface_ChangeHudVisibilityMode(1);
                 } else if (gSaveContext.minigameState == 1) {
-                    Interface_ChangeAlpha(8);
+                    Interface_ChangeHudVisibilityMode(8);
                 } else if (play->shootingGalleryStatus > 1) {
-                    Interface_ChangeAlpha(8);
+                    Interface_ChangeHudVisibilityMode(8);
                 } else if ((play->sceneNum == SCENE_BOMBCHU_BOWLING_ALLEY) && Flags_GetSwitch(play, 0x38)) {
-                    Interface_ChangeAlpha(8);
+                    Interface_ChangeHudVisibilityMode(8);
                 } else if (player->stateFlags1 & PLAYER_STATE1_ON_HORSE) {
-                    Interface_ChangeAlpha(12);
+                    Interface_ChangeHudVisibilityMode(12);
                 }
             } else {
                 if (player->stateFlags1 & PLAYER_STATE1_ON_HORSE) {
-                    Interface_ChangeAlpha(12);
+                    Interface_ChangeHudVisibilityMode(12);
                 }
             }
             // Don't hide the HUD in the Chamber of Sages when in Boss Rush.
         } else if (play->sceneNum == SCENE_CHAMBER_OF_THE_SAGES && !IS_BOSS_RUSH) {
-            Interface_ChangeAlpha(1);
+            Interface_ChangeHudVisibilityMode(1);
         } else if (play->sceneNum == SCENE_FISHING_POND) {
             gSaveContext.forceRisingButtonAlphas = 2;
             if (play->interfaceCtx.unk_260 != 0) {
                 if (gSaveContext.equips.buttonItems[0] != ITEM_FISHING_POLE) {
                     gSaveContext.buttonStatus[0] = gSaveContext.equips.buttonItems[0];
-
-                    // Track swordless status for restoration later
-                    if (randoCanTrackSwordless) {
-                        gSaveContext.buttonStatus[0] = SWORDLESS_STATUS;
-                    }
-
+                    GameInteractor_Should(VB_TEMP_B_STASH_SWORDLESS, true, play);
                     gSaveContext.equips.buttonItems[0] = ITEM_FISHING_POLE;
-                    gSaveContext.unk_13EA = 0;
+                    gSaveContext.hudVisibilityMode = 0;
                     Interface_LoadItemIcon1(play, 0);
-                    Interface_ChangeAlpha(12);
+                    Interface_ChangeHudVisibilityMode(12);
                 }
 
-                if (gSaveContext.unk_13EA != 12) {
-                    Interface_ChangeAlpha(12);
+                if (gSaveContext.hudVisibilityMode != 12) {
+                    Interface_ChangeHudVisibilityMode(12);
                 }
             } else if (gSaveContext.equips.buttonItems[0] == ITEM_FISHING_POLE) {
                 gSaveContext.equips.buttonItems[0] = gSaveContext.buttonStatus[0];
-                gSaveContext.unk_13EA = 0;
+                gSaveContext.hudVisibilityMode = 0;
 
-                Interface_RandoRestoreSwordless();
+                GameInteractor_Should(VB_TEMP_B_RESTORE_SWORDLESS, true);
 
                 if (gSaveContext.equips.buttonItems[0] != ITEM_NONE) {
                     Interface_LoadItemIcon1(play, 0);
@@ -933,17 +904,17 @@ void func_80083108(PlayState* play) {
                     gSaveContext.buttonStatus[3] = BTN_DISABLED;
                 gSaveContext.buttonStatus[5] = gSaveContext.buttonStatus[6] = gSaveContext.buttonStatus[7] =
                     gSaveContext.buttonStatus[8] = BTN_DISABLED;
-                Interface_ChangeAlpha(50);
+                Interface_ChangeHudVisibilityMode(50);
             } else {
                 if (gSaveContext.buttonStatus[0] == BTN_ENABLED) {
-                    gSaveContext.unk_13EA = 0;
+                    gSaveContext.hudVisibilityMode = 0;
                 }
 
                 gSaveContext.buttonStatus[0] = gSaveContext.buttonStatus[1] = gSaveContext.buttonStatus[2] =
                     gSaveContext.buttonStatus[3] = BTN_DISABLED;
                 gSaveContext.buttonStatus[5] = gSaveContext.buttonStatus[6] = gSaveContext.buttonStatus[7] =
                     gSaveContext.buttonStatus[8] = BTN_DISABLED;
-                Interface_ChangeAlpha(50);
+                Interface_ChangeHudVisibilityMode(50);
             }
         } else if (msgCtx->msgMode == MSGMODE_NONE) {
             if (GameInteractor_PacifistModeActive()) {
@@ -991,10 +962,10 @@ void func_80083108(PlayState* play) {
                 }
 
                 if (sp28) {
-                    gSaveContext.unk_13EA = 0;
+                    gSaveContext.hudVisibilityMode = 0;
                 }
 
-                Interface_ChangeAlpha(50);
+                Interface_ChangeHudVisibilityMode(50);
             } else if ((player->stateFlags1 & PLAYER_STATE1_CLIMBING_LADDER) ||
                        (player->stateFlags2 & PLAYER_STATE2_CRAWLING)) {
                 if (gSaveContext.buttonStatus[0] != BTN_DISABLED) {
@@ -1006,8 +977,8 @@ void func_80083108(PlayState* play) {
                     gSaveContext.buttonStatus[6] = BTN_DISABLED;
                     gSaveContext.buttonStatus[7] = BTN_DISABLED;
                     gSaveContext.buttonStatus[8] = BTN_DISABLED;
-                    gSaveContext.unk_13EA = 0;
-                    Interface_ChangeAlpha(50);
+                    gSaveContext.hudVisibilityMode = 0;
+                    Interface_ChangeHudVisibilityMode(50);
                 }
             } else if ((gSaveContext.eventInf[0] & 0xF) == 1) {
                 if (player->stateFlags1 & PLAYER_STATE1_ON_HORSE) {
@@ -1032,7 +1003,7 @@ void func_80083108(PlayState* play) {
                             (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KNIFE)) {
                             gSaveContext.equips.buttonItems[0] = gSaveContext.buttonStatus[0];
 
-                            Interface_RandoRestoreSwordless();
+                            GameInteractor_Should(VB_TEMP_B_RESTORE_SWORDLESS, true);
                         } else {
                             gSaveContext.buttonStatus[0] = gSaveContext.equips.buttonItems[0];
                         }
@@ -1062,21 +1033,22 @@ void func_80083108(PlayState* play) {
                 }
 
                 if (sp28) {
-                    gSaveContext.unk_13EA = 0;
+                    gSaveContext.hudVisibilityMode = 0;
                 }
 
-                Interface_ChangeAlpha(50);
+                Interface_ChangeHudVisibilityMode(50);
             } else {
                 if (interfaceCtx->restrictions.bButton == 0) {
                     if ((gSaveContext.equips.buttonItems[0] == ITEM_SLINGSHOT) ||
                         (gSaveContext.equips.buttonItems[0] == ITEM_BOW) ||
                         (gSaveContext.equips.buttonItems[0] == ITEM_BOMBCHU) ||
                         (gSaveContext.equips.buttonItems[0] == ITEM_NONE)) {
-                        if ((gSaveContext.equips.buttonItems[0] != ITEM_NONE) || (gSaveContext.infTable[29] == 0) ||
-                            randoWasSwordlessBefore) {
+                        if (GameInteractor_Should(VB_TEMP_B_SHOULD_RESTORE,
+                                                  (gSaveContext.equips.buttonItems[0] != ITEM_NONE) ||
+                                                      (gSaveContext.infTable[29] == 0))) {
                             gSaveContext.equips.buttonItems[0] = gSaveContext.buttonStatus[0];
 
-                            Interface_RandoRestoreSwordless();
+                            GameInteractor_Should(VB_TEMP_B_RESTORE_SWORDLESS, true);
 
                             sp28 = 1;
 
@@ -1099,11 +1071,12 @@ void func_80083108(PlayState* play) {
                         (gSaveContext.equips.buttonItems[0] == ITEM_BOW) ||
                         (gSaveContext.equips.buttonItems[0] == ITEM_BOMBCHU) ||
                         (gSaveContext.equips.buttonItems[0] == ITEM_NONE)) {
-                        if ((gSaveContext.equips.buttonItems[0] != ITEM_NONE) || (gSaveContext.infTable[29] == 0) ||
-                            randoWasSwordlessBefore) {
+                        if (GameInteractor_Should(VB_TEMP_B_SHOULD_RESTORE,
+                                                  (gSaveContext.equips.buttonItems[0] != ITEM_NONE) ||
+                                                      (gSaveContext.infTable[29] == 0))) {
                             gSaveContext.equips.buttonItems[0] = gSaveContext.buttonStatus[0];
 
-                            Interface_RandoRestoreSwordless();
+                            GameInteractor_Should(VB_TEMP_B_RESTORE_SWORDLESS, true);
 
                             sp28 = 1;
 
@@ -1333,9 +1306,9 @@ void func_80083108(PlayState* play) {
     }
 
     if (sp28) {
-        gSaveContext.unk_13EA = 0;
+        gSaveContext.hudVisibilityMode = 0;
         if ((play->transitionTrigger == TRANS_TRIGGER_OFF) && (play->transitionMode == TRANS_MODE_OFF)) {
-            Interface_ChangeAlpha(50);
+            Interface_ChangeHudVisibilityMode(50);
             osSyncPrintf("????????  alpha_change( 50 );  ?????\n");
         } else {
             osSyncPrintf("game_play->fade_direction || game_play->fbdemo_wipe_modem");
@@ -1713,7 +1686,9 @@ void Interface_InitHorsebackArchery(PlayState* play) {
     gSaveContext.minigameState = 1;
     interfaceCtx->unk_23C = interfaceCtx->unk_240 = interfaceCtx->unk_242 = 0;
     gSaveContext.minigameScore = sHBAScoreTier = 0;
-    interfaceCtx->hbaAmmo = 20;
+    if (GameInteractor_Should(VB_SET_HORSEBACK_ARCHERY_AMMO, true, interfaceCtx)) {
+        interfaceCtx->hbaAmmo = 20;
+    }
 }
 
 void func_800849EC(PlayState* play) {
@@ -1762,13 +1737,13 @@ void func_80084BF4(PlayState* play, u16 flag) {
                 (gSaveContext.equips.buttonItems[0] == ITEM_BOMBCHU) ||
                 (gSaveContext.equips.buttonItems[0] == ITEM_FISHING_POLE)) {
                 gSaveContext.equips.buttonItems[0] = gSaveContext.buttonStatus[0];
-                Interface_RandoRestoreSwordless();
+                GameInteractor_Should(VB_TEMP_B_RESTORE_SWORDLESS, true);
                 Interface_LoadItemIcon1(play, 0);
             }
         } else if (gSaveContext.equips.buttonItems[0] == ITEM_NONE) {
             if ((gSaveContext.equips.buttonItems[0] != ITEM_NONE) || (gSaveContext.infTable[29] == 0)) {
                 gSaveContext.equips.buttonItems[0] = gSaveContext.buttonStatus[0];
-                Interface_RandoRestoreSwordless();
+                GameInteractor_Should(VB_TEMP_B_RESTORE_SWORDLESS, true);
                 Interface_LoadItemIcon1(play, 0);
             }
         }
@@ -1777,7 +1752,7 @@ void func_80084BF4(PlayState* play, u16 flag) {
             gSaveContext.buttonStatus[3] = BTN_ENABLED;
         gSaveContext.buttonStatus[5] = gSaveContext.buttonStatus[6] = gSaveContext.buttonStatus[7] =
             gSaveContext.buttonStatus[8] = BTN_ENABLED;
-        Interface_ChangeAlpha(7);
+        Interface_ChangeHudVisibilityMode(7);
     } else {
         gSaveContext.buttonStatus[0] = gSaveContext.buttonStatus[1] = gSaveContext.buttonStatus[2] =
             gSaveContext.buttonStatus[3] = BTN_ENABLED;
@@ -1912,7 +1887,7 @@ u8 Item_Give(PlayState* play, u8 item) {
         osSyncPrintf(VT_RST);
 
         if (item == ITEM_MEDALLION_WATER) {
-            func_8006D0AC(play);
+            Horse_FixLakeHyliaPosition(play);
         }
 
         return Return_Item(item, MOD_NONE, ITEM_NONE);
@@ -2120,7 +2095,7 @@ u8 Item_Give(PlayState* play, u8 item) {
                 }
             }
         }
-        // update the adult/child equips when rando'd (accounting for equp swapped hookshot as child)
+        // update the adult/child equips when rando'd (accounting for equip swapped hookshot as child)
         if (IS_RANDO && LINK_IS_CHILD) {
             for (i = 1; i < ARRAY_COUNT(gSaveContext.adultEquips.buttonItems); i++) {
                 if (gSaveContext.adultEquips.buttonItems[i] == ITEM_HOOKSHOT) {
@@ -2408,7 +2383,7 @@ u8 Item_Give(PlayState* play, u8 item) {
                     }
 
                     gSaveContext.inventory.items[temp + i] = item;
-                    break;
+                    return Return_Item(item, MOD_NONE, ITEM_NONE);
                 }
             }
         } else {
@@ -2418,11 +2393,14 @@ u8 Item_Give(PlayState* play, u8 item) {
             for (i = 0; i < 4; i++) {
                 if (gSaveContext.inventory.items[temp + i] == ITEM_NONE) {
                     gSaveContext.inventory.items[temp + i] = item;
-                    break;
+                    return Return_Item(item, MOD_NONE, ITEM_NONE);
                 }
             }
         }
-        return Return_Item(item, MOD_NONE, ITEM_NONE);
+
+        if (IS_RANDO) {
+            return Return_Item(item, MOD_NONE, ITEM_NONE);
+        }
     } else if ((item >= ITEM_WEIRD_EGG) && (item <= ITEM_CLAIM_CHECK)) {
         if (GameInteractor_Should(VB_POACHERS_SAW_SET_DEKU_NUT_UPGRADE_FLAG, item == ITEM_SAW)) {
             Flags_SetItemGetInf(ITEMGETINF_OBTAINED_NUT_UPGRADE_FROM_STAGE);
@@ -2432,6 +2410,7 @@ u8 Item_Give(PlayState* play, u8 item) {
             if (item >= ITEM_POCKET_EGG) {
                 Flags_SetRandomizerInf(item - ITEM_POCKET_EGG + RAND_INF_ADULT_TRADES_HAS_POCKET_EGG);
             } else if (item == ITEM_LETTER_ZELDA) {
+                Flags_SetRandomizerInf(RAND_INF_ZELDAS_LETTER);
                 // don't care about zelda's letter if it's already been shown to the guard
                 if (!Flags_GetInfTable(INFTABLE_SHOWED_ZELDAS_LETTER_TO_GATE_GUARD)) {
                     Flags_SetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_LETTER_ZELDA);
@@ -2463,6 +2442,12 @@ u8 Item_Give(PlayState* play, u8 item) {
             }
         }
 
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
+    } else if (item == ITEM_NAYRUS_LOVE && Randomizer_GetSettingValue(RSK_ROCS_FEATHER)) {
+        Flags_SetRandomizerInf(RAND_INF_OBTAINED_NAYRUS_LOVE);
+        if (INV_CONTENT(ITEM_NAYRUS_LOVE) == ITEM_NONE) {
+            INV_CONTENT(ITEM_NAYRUS_LOVE) = ITEM_NAYRUS_LOVE;
+        }
         return Return_Item(item, MOD_NONE, ITEM_NONE);
     }
     returnItem = gSaveContext.inventory.items[slot];
@@ -2691,8 +2676,11 @@ void Inventory_UpdateBottleItem(PlayState* play, u8 item, u8 button) {
                  gSaveContext.inventory.items[gSaveContext.equips.cButtonSlots[button - 1]]);
 
     // Special case to only empty half of a Lon Lon Milk Bottle
-    if ((gSaveContext.inventory.items[gSaveContext.equips.cButtonSlots[button - 1]] == ITEM_MILK_BOTTLE) &&
-        (item == ITEM_BOTTLE)) {
+    if (GameInteractor_Should(
+            VB_EMPTY_BOTTLE_TO_HALF_MILK,
+            (gSaveContext.inventory.items[gSaveContext.equips.cButtonSlots[button - 1]] == ITEM_MILK_BOTTLE) &&
+                (item == ITEM_BOTTLE),
+            button, item)) {
         item = ITEM_MILK_HALF;
     }
 
@@ -2733,6 +2721,23 @@ s32 Inventory_ConsumeFairy(PlayState* play) {
     return 0;
 }
 
+// SOH helper
+bool Inventory_HatchWeirdEgg(PlayState* play) {
+    if (!IS_RANDO) {
+        return Inventory_ReplaceItem(play, ITEM_WEIRD_EGG, ITEM_CHICKEN);
+    }
+
+    if (!LINK_IS_CHILD || !Flags_GetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_WEIRD_EGG)) {
+        return 0;
+    }
+
+    Flags_UnsetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_WEIRD_EGG);
+    Flags_SetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_CHICKEN);
+    Inventory_ReplaceItem(play, ITEM_WEIRD_EGG, ITEM_CHICKEN);
+    return 1;
+}
+
+// SOH helper
 bool Inventory_HatchPocketCucco(PlayState* play) {
     if (!IS_RANDO) {
         return Inventory_ReplaceItem(play, ITEM_POCKET_EGG, ITEM_POCKET_CUCCO);
@@ -3222,7 +3227,7 @@ void Interface_UpdateMagicBar(PlayState* play) {
         case MAGIC_STATE_FILL:
             gSaveContext.magic += 4;
 
-            if (gSaveContext.gameMode == GAMEMODE_NORMAL && gSaveContext.sceneSetupIndex < 4) {
+            if (gSaveContext.gameMode == GAMEMODE_NORMAL && gSaveContext.sceneLayer < 4) {
                 Audio_PlaySoundGeneral(NA_SE_SY_GAUGE_UP - SFX_FLAG, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
                                        &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             }
@@ -3650,7 +3655,7 @@ void Interface_DrawEnemyHealthBar(TargetContext* targetCtx, PlayState* play) {
 
         if (anchorType == ENEMYHEALTH_ANCHOR_ACTOR) {
             // Get actor projected position
-            func_8002BE04(play, &targetCtx->targetCenterPos, &projTargetCenter, &projTargetCappedInvW);
+            Actor_ProjectPos(play, &targetCtx->targetCenterPos, &projTargetCenter, &projTargetCappedInvW);
 
             projTargetCenter.x = (SCREEN_WIDTH / 2) * (projTargetCenter.x * projTargetCappedInvW);
             projTargetCenter.x = projTargetCenter.x * (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0) ? -1 : 1);
@@ -3757,21 +3762,21 @@ void Interface_DrawEnemyHealthBar(TargetContext* targetCtx, PlayState* play) {
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
-void func_80088AA0(s16 arg0) {
-    gSaveContext.timerX[1] = 140;
-    gSaveContext.timerY[1] = 80;
-    D_80125A5C = 0;
-    gSaveContext.subTimerSeconds = arg0;
+void Interface_SetSubTimer(s16 seconds) {
+    gSaveContext.timerX[TIMER_ID_SUB] = 140;
+    gSaveContext.timerY[TIMER_ID_SUB] = 80;
+    sEnvHazardActive = false;
+    gSaveContext.subTimerSeconds = seconds;
 
-    if (arg0 != 0) {
-        gSaveContext.subTimerState = 1;
+    if (seconds) {
+        gSaveContext.subTimerState = SUBTIMER_STATE_DOWN_INIT;
     } else {
-        gSaveContext.subTimerState = 7;
+        gSaveContext.subTimerState = SUBTIMER_STATE_UP_INIT;
     }
 }
 
-void func_80088AF0(PlayState* play) {
-    if (gSaveContext.subTimerState != 0) {
+void Interface_SetSubTimerToFinalSecond(PlayState* play) {
+    if (gSaveContext.subTimerState != SUBTIMER_STATE_OFF) {
         if (gSaveContext.eventInf[1] & 1) {
             gSaveContext.subTimerSeconds = 239;
         } else {
@@ -3780,16 +3785,16 @@ void func_80088AF0(PlayState* play) {
     }
 }
 
-void func_80088B34(s16 arg0) {
-    gSaveContext.timerX[0] = 140;
-    gSaveContext.timerY[0] = 80;
-    D_80125A5C = 0;
-    gSaveContext.timerSeconds = arg0;
+void Interface_SetTimer(s16 seconds) {
+    gSaveContext.timerX[TIMER_ID_MAIN] = 140;
+    gSaveContext.timerY[TIMER_ID_MAIN] = 80;
+    sEnvHazardActive = false;
+    gSaveContext.timerSeconds = seconds;
 
-    if (arg0 != 0) {
-        gSaveContext.timerState = 5;
+    if (seconds) {
+        gSaveContext.timerState = TIMER_STATE_DOWN_INIT;
     } else {
-        gSaveContext.timerState = 11;
+        gSaveContext.timerState = TIMER_STATE_UP_INIT;
     }
 }
 
@@ -4215,7 +4220,8 @@ void Interface_DrawItemButtons(PlayState* play) {
             // C-Up Button Texture, Color & Label (Navi Text)
             gDPPipeSync(OVERLAY_DISP++);
 
-            if ((gSaveContext.unk_13EA == 1) || (gSaveContext.unk_13EA == 2) || (gSaveContext.unk_13EA == 5)) {
+            if ((gSaveContext.hudVisibilityMode == 1) || (gSaveContext.hudVisibilityMode == 2) ||
+                (gSaveContext.hudVisibilityMode == 5)) {
                 temp = 0;
             } else if ((player->stateFlags1 & PLAYER_STATE1_CLIMBING_LADDER) ||
                        (Player_GetEnvironmentalHazard(play) == 4) || (player->stateFlags2 & PLAYER_STATE2_CRAWLING)) {
@@ -5120,10 +5126,10 @@ void Interface_Draw(PlayState* play) {
     static s16 spoilingItemEntrances[] = { ENTR_LOST_WOODS_2, ENTR_ZORAS_DOMAIN_3, ENTR_ZORAS_DOMAIN_3 };
     static f32 D_80125B54[] = { -40.0f, -35.0f }; // unused
     static s16 D_80125B5C[] = { 91, 91 };         // unused
-    static s16 D_8015FFE0;
-    static s16 D_8015FFE2;
-    static s16 D_8015FFE4;
-    static s16 D_8015FFE6;
+    static s16 sTimerNextSecondTimer;
+    static s16 sTimerStateTimer;
+    static s16 sSubTimerNextSecondTimer;
+    static s16 sSubTimerStateTimer;
     static s16 timerDigits[5];
     InterfaceContext* interfaceCtx = &play->interfaceCtx;
     PauseContext* pauseCtx = &play->pauseCtx;
@@ -5134,7 +5140,7 @@ void Interface_Draw(PlayState* play) {
     s16 svar3;
     s16 svar4;
     s16 svar5;
-    s16 svar6;
+    s16 timerId;
     bool fullUi = !CVarGetInteger(CVAR_ENHANCEMENT("MinimalUI"), 0) || !R_MINIMAP_DISABLED || play->pauseCtx.state != 0;
     // #region SOH [NTSC]
     s32 languageOffset = gSaveContext.language;
@@ -5333,15 +5339,17 @@ void Interface_Draw(PlayState* play) {
                                 interfaceCtx->counterDigits[3] -= 10;
                             }
 
+                            svar3 = 16;
                             if (interfaceCtx->counterDigits[2] != 0) {
                                 OVERLAY_DISP = Gfx_TextureI8(
                                     OVERLAY_DISP, ((u8*)((u8*)digitTextures[interfaceCtx->counterDigits[2]])), 8, 16,
-                                    PosX_SKC + 8, PosY_SKC, 8, 16, 1 << 10, 1 << 10);
+                                    PosX_SKC + 16, PosY_SKC, 8, 16, 1 << 10, 1 << 10);
+                                svar3 = 24;
                             }
 
                             OVERLAY_DISP =
                                 Gfx_TextureI8(OVERLAY_DISP, ((u8*)digitTextures[interfaceCtx->counterDigits[3]]), 8, 16,
-                                              PosX_SKC + 16, PosY_SKC, 8, 16, 1 << 10, 1 << 10);
+                                              PosX_SKC + svar3, PosY_SKC, 8, 16, 1 << 10, 1 << 10);
                         }
                         break;
                     default:
@@ -5410,7 +5418,7 @@ void Interface_Draw(PlayState* play) {
                 gSPMatrix(OVERLAY_DISP++, interfaceCtx->view.projectionFlippedPtr,
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
             }
-            func_8002C124(&play->actorCtx.targetCtx, play); // Draw Z-Target
+            Attention_Draw(&play->actorCtx.targetCtx, play); // Draw Z-Target
             if (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0)) {
                 gSPMatrix(OVERLAY_DISP++, interfaceCtx->view.projectionPtr,
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
@@ -5791,7 +5799,7 @@ void Interface_Draw(PlayState* play) {
         if ((play->pauseCtx.state == 0) && (play->pauseCtx.debugState == 0)) {
             if (gSaveContext.minigameState != 1) {
                 // Carrots rendering if the action corresponds to riding a horse
-                if (interfaceCtx->unk_1EE == 8 && !CVarGetInteger(CVAR_CHEAT("InfiniteEponaBoost"), 0)) {
+                if (interfaceCtx->unk_1EE == 8 && GameInteractor_Should(VB_DRAW_EPONA_BOOST_CARROTS, true)) {
                     // Load Carrot Icon
                     gDPLoadTextureBlock(OVERLAY_DISP++, gCarrotIconTex, G_IM_FMT_RGBA, G_IM_SIZ_32b, 16, 16, 0,
                                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
@@ -5901,13 +5909,14 @@ void Interface_Draw(PlayState* play) {
             }
         }
 
-        if ((gSaveContext.subTimerState == 5) && (Message_GetState(&play->msgCtx) == TEXT_STATE_EVENT)) {
+        if ((gSaveContext.subTimerState == SUBTIMER_STATE_RESPAWN) &&
+            (Message_GetState(&play->msgCtx) == TEXT_STATE_EVENT)) {
             // Trade quest timer reached 0
-            D_8015FFE6 = 40;
+            sSubTimerStateTimer = 40;
             gSaveContext.cutsceneIndex = 0;
             play->transitionTrigger = TRANS_TRIGGER_START;
             play->transitionType = TRANS_TYPE_FADE_WHITE;
-            gSaveContext.subTimerState = 0;
+            gSaveContext.subTimerState = SUBTIMER_STATE_OFF;
 
             if ((gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KOKIRI) &&
                 (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_MASTER) &&
@@ -5915,7 +5924,7 @@ void Interface_Draw(PlayState* play) {
                 (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KNIFE)) {
                 if (gSaveContext.buttonStatus[0] != BTN_ENABLED) {
                     gSaveContext.equips.buttonItems[0] = gSaveContext.buttonStatus[0];
-                    Interface_RandoRestoreSwordless();
+                    GameInteractor_Should(VB_TEMP_B_RESTORE_SWORDLESS, true);
                 } else {
                     gSaveContext.equips.buttonItems[0] = ITEM_NONE;
                 }
@@ -5947,98 +5956,99 @@ void Interface_Draw(PlayState* play) {
             (play->transitionTrigger == TRANS_TRIGGER_OFF) && (play->transitionMode == TRANS_MODE_OFF) &&
             !Play_InCsMode(play) && (gSaveContext.minigameState != 1) && (play->shootingGalleryStatus <= 1) &&
             !((play->sceneNum == SCENE_BOMBCHU_BOWLING_ALLEY) && Flags_GetSwitch(play, 0x38))) {
-            svar6 = 0;
+            timerId = TIMER_ID_MAIN;
             switch (gSaveContext.timerState) {
-                case 1:
-                    D_8015FFE2 = 20;
-                    D_8015FFE0 = 20;
+                case TIMER_STATE_ENV_HAZARD_INIT:
+                    sTimerStateTimer = 20;
+                    sTimerNextSecondTimer = 20;
                     gSaveContext.timerSeconds = gSaveContext.health >> 1;
-                    gSaveContext.timerState = 2;
+                    gSaveContext.timerState = TIMER_STATE_ENV_HAZARD_PREVIEW;
                     break;
-                case 2:
-                    D_8015FFE2--;
-                    if (D_8015FFE2 == 0) {
-                        D_8015FFE2 = 20;
-                        gSaveContext.timerState = 3;
+                case TIMER_STATE_ENV_HAZARD_PREVIEW:
+                    sTimerStateTimer--;
+                    if (sTimerStateTimer == 0) {
+                        sTimerStateTimer = 20;
+                        gSaveContext.timerState = TIMER_STATE_ENV_HAZARD_MOVE;
                     }
                     break;
-                case 5:
-                case 11:
-                    D_8015FFE2 = 20;
-                    D_8015FFE0 = 20;
-                    if (gSaveContext.timerState == 5) {
-                        gSaveContext.timerState = 6;
+                case TIMER_STATE_DOWN_INIT:
+                case TIMER_STATE_UP_INIT:
+                    sTimerStateTimer = 20;
+                    sTimerNextSecondTimer = 20;
+                    if (gSaveContext.timerState == TIMER_STATE_DOWN_INIT) {
+                        gSaveContext.timerState = TIMER_STATE_DOWN_PREVIEW;
                     } else {
-                        gSaveContext.timerState = 12;
+                        gSaveContext.timerState = TIMER_STATE_UP_PREVIEW;
                     }
                     break;
-                case 6:
-                case 12:
-                    D_8015FFE2--;
-                    if (D_8015FFE2 == 0) {
-                        D_8015FFE2 = 20;
-                        if (gSaveContext.timerState == 6) {
-                            gSaveContext.timerState = 7;
+                case TIMER_STATE_DOWN_PREVIEW:
+                case TIMER_STATE_UP_PREVIEW:
+                    sTimerStateTimer--;
+                    if (sTimerStateTimer == 0) {
+                        sTimerStateTimer = 20;
+                        if (gSaveContext.timerState == TIMER_STATE_DOWN_PREVIEW) {
+                            gSaveContext.timerState = TIMER_STATE_DOWN_MOVE;
                         } else {
-                            gSaveContext.timerState = 13;
+                            gSaveContext.timerState = TIMER_STATE_UP_MOVE;
                         }
                     }
                     break;
-                case 3:
-                case 7:
-                    svar1 = (gSaveContext.timerX[0] - 26) / D_8015FFE2;
-                    gSaveContext.timerX[0] -= svar1;
+                case TIMER_STATE_ENV_HAZARD_MOVE:
+                case TIMER_STATE_DOWN_MOVE:
+                    svar1 = (gSaveContext.timerX[TIMER_ID_MAIN] - 26) / sTimerStateTimer;
+                    gSaveContext.timerX[TIMER_ID_MAIN] -= svar1;
 
                     if (gSaveContext.healthCapacity > 0xA0) {
-                        svar1 = (gSaveContext.timerY[0] - 54) / D_8015FFE2;
+                        svar1 = (gSaveContext.timerY[TIMER_ID_MAIN] - 54) / sTimerStateTimer;
                     } else {
-                        svar1 = (gSaveContext.timerY[0] - 46) / D_8015FFE2;
+                        svar1 = (gSaveContext.timerY[TIMER_ID_MAIN] - 46) / sTimerStateTimer;
                     }
-                    gSaveContext.timerY[0] -= svar1;
+                    gSaveContext.timerY[TIMER_ID_MAIN] -= svar1;
 
-                    D_8015FFE2--;
-                    if (D_8015FFE2 == 0) {
-                        D_8015FFE2 = 20;
-                        gSaveContext.timerX[0] = 26;
+                    sTimerStateTimer--;
+                    if (sTimerStateTimer == 0) {
+                        sTimerStateTimer = 20;
+                        gSaveContext.timerX[TIMER_ID_MAIN] = 26;
 
                         if (gSaveContext.healthCapacity > 0xA0) {
-                            gSaveContext.timerY[0] = 54;
+                            gSaveContext.timerY[TIMER_ID_MAIN] = 54;
                         } else {
-                            gSaveContext.timerY[0] = 46;
+                            gSaveContext.timerY[TIMER_ID_MAIN] = 46;
                         }
 
-                        if (gSaveContext.timerState == 3) {
-                            gSaveContext.timerState = 4;
+                        if (gSaveContext.timerState == TIMER_STATE_ENV_HAZARD_MOVE) {
+                            gSaveContext.timerState = TIMER_STATE_ENV_HAZARD_TICK;
                         } else {
-                            gSaveContext.timerState = 8;
+                            gSaveContext.timerState = TIMER_STATE_DOWN_TICK;
                         }
                     }
-                case 4:
-                case 8:
-                    if ((gSaveContext.timerState == 4) || (gSaveContext.timerState == 8)) {
+                case TIMER_STATE_ENV_HAZARD_TICK:
+                case TIMER_STATE_DOWN_TICK:
+                    if ((gSaveContext.timerState == TIMER_STATE_ENV_HAZARD_TICK) ||
+                        (gSaveContext.timerState == TIMER_STATE_DOWN_TICK)) {
                         if (gSaveContext.healthCapacity > 0xA0) {
-                            gSaveContext.timerY[0] = 54;
+                            gSaveContext.timerY[TIMER_ID_MAIN] = 54;
                         } else {
-                            gSaveContext.timerY[0] = 46;
+                            gSaveContext.timerY[TIMER_ID_MAIN] = 46;
                         }
                     }
 
-                    if ((gSaveContext.timerState >= 3) && (msgCtx->msgLength == 0)) {
-                        D_8015FFE0--;
-                        if (D_8015FFE0 == 0) {
+                    if ((gSaveContext.timerState >= TIMER_STATE_ENV_HAZARD_MOVE) && (msgCtx->msgLength == 0)) {
+                        sTimerNextSecondTimer--;
+                        if (sTimerNextSecondTimer == 0) {
                             if (gSaveContext.timerSeconds != 0) {
                                 gSaveContext.timerSeconds--;
                             }
 
-                            D_8015FFE0 = 20;
+                            sTimerNextSecondTimer = 20;
 
                             if (gSaveContext.timerSeconds == 0) {
-                                gSaveContext.timerState = 10;
-                                if (D_80125A5C != 0) {
+                                gSaveContext.timerState = TIMER_STATE_STOP;
+                                if (sEnvHazardActive) {
                                     gSaveContext.health = 0;
                                     play->damagePlayer(play, -(gSaveContext.health + 2));
                                 }
-                                D_80125A5C = 0;
+                                sEnvHazardActive = false;
                             } else if (gSaveContext.timerSeconds > 60) {
                                 if (timerDigits[4] == 1) {
                                     Audio_PlaySoundGeneral(NA_SE_SY_MESSAGE_WOMAN, &gSfxDefaultPos, 4,
@@ -6059,47 +6069,47 @@ void Interface_Draw(PlayState* play) {
                         }
                     }
                     break;
-                case 13:
-                    svar1 = (gSaveContext.timerX[0] - 26) / D_8015FFE2;
-                    gSaveContext.timerX[0] -= svar1;
+                case TIMER_STATE_UP_MOVE:
+                    svar1 = (gSaveContext.timerX[TIMER_ID_MAIN] - 26) / sTimerStateTimer;
+                    gSaveContext.timerX[TIMER_ID_MAIN] -= svar1;
 
                     if (gSaveContext.healthCapacity > 0xA0) {
-                        svar1 = (gSaveContext.timerY[0] - 54) / D_8015FFE2;
+                        svar1 = (gSaveContext.timerY[TIMER_ID_MAIN] - 54) / sTimerStateTimer;
                     } else {
-                        svar1 = (gSaveContext.timerY[0] - 46) / D_8015FFE2;
+                        svar1 = (gSaveContext.timerY[TIMER_ID_MAIN] - 46) / sTimerStateTimer;
                     }
-                    gSaveContext.timerY[0] -= svar1;
+                    gSaveContext.timerY[TIMER_ID_MAIN] -= svar1;
 
-                    D_8015FFE2--;
-                    if (D_8015FFE2 == 0) {
-                        D_8015FFE2 = 20;
-                        gSaveContext.timerX[0] = 26;
+                    sTimerStateTimer--;
+                    if (sTimerStateTimer == 0) {
+                        sTimerStateTimer = 20;
+                        gSaveContext.timerX[TIMER_ID_MAIN] = 26;
                         if (gSaveContext.healthCapacity > 0xA0) {
-                            gSaveContext.timerY[0] = 54;
+                            gSaveContext.timerY[TIMER_ID_MAIN] = 54;
                         } else {
-                            gSaveContext.timerY[0] = 46;
+                            gSaveContext.timerY[TIMER_ID_MAIN] = 46;
                         }
 
-                        gSaveContext.timerState = 14;
+                        gSaveContext.timerState = TIMER_STATE_UP_TICK;
                     }
-                case 14:
-                    if (gSaveContext.timerState == 14) {
+                case TIMER_STATE_UP_TICK:
+                    if (gSaveContext.timerState == TIMER_STATE_UP_TICK) {
                         if (gSaveContext.healthCapacity > 0xA0) {
-                            gSaveContext.timerY[0] = 54;
+                            gSaveContext.timerY[TIMER_ID_MAIN] = 54;
                         } else {
-                            gSaveContext.timerY[0] = 46;
+                            gSaveContext.timerY[TIMER_ID_MAIN] = 46;
                         }
                     }
 
-                    if (gSaveContext.timerState >= 3) {
-                        D_8015FFE0--;
-                        if (D_8015FFE0 == 0) {
+                    if (gSaveContext.timerState >= TIMER_STATE_ENV_HAZARD_MOVE) {
+                        sTimerNextSecondTimer--;
+                        if (sTimerNextSecondTimer == 0) {
                             gSaveContext.timerSeconds++;
-                            D_8015FFE0 = 20;
+                            sTimerNextSecondTimer = 20;
 
                             if (gSaveContext.timerSeconds == 3599) {
-                                D_8015FFE2 = 40;
-                                gSaveContext.timerState = 15;
+                                sTimerStateTimer = 40;
+                                gSaveContext.timerState = TIMER_STATE_UP_FREEZE;
                             } else {
                                 Audio_PlaySoundGeneral(NA_SE_SY_WARNING_COUNT_N, &gSfxDefaultPos, 4,
                                                        &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
@@ -6108,98 +6118,99 @@ void Interface_Draw(PlayState* play) {
                         }
                     }
                     break;
-                case 10:
-                    if (gSaveContext.subTimerState != 0) {
-                        D_8015FFE6 = 20;
-                        D_8015FFE4 = 20;
-                        gSaveContext.timerX[1] = 140;
-                        gSaveContext.timerY[1] = 80;
+                case TIMER_STATE_STOP:
+                    if (gSaveContext.subTimerState != SUBTIMER_STATE_OFF) {
+                        sSubTimerStateTimer = 20;
+                        sSubTimerNextSecondTimer = 20;
+                        gSaveContext.timerX[TIMER_ID_SUB] = 140;
+                        gSaveContext.timerY[TIMER_ID_SUB] = 80;
 
-                        if (gSaveContext.subTimerState < 7) {
-                            gSaveContext.subTimerState = 2;
+                        if (gSaveContext.subTimerState <= SUBTIMER_STATE_STOP) {
+                            gSaveContext.subTimerState = SUBTIMER_STATE_DOWN_PREVIEW;
                         } else {
-                            gSaveContext.subTimerState = 8;
+                            gSaveContext.subTimerState = SUBTIMER_STATE_UP_PREVIEW;
                         }
 
-                        gSaveContext.timerState = 0;
+                        gSaveContext.timerState = TIMER_STATE_OFF;
                     } else {
-                        gSaveContext.timerState = 0;
+                        gSaveContext.timerState = TIMER_STATE_OFF;
                     }
-                case 15:
+                case TIMER_STATE_UP_FREEZE:
                     break;
                 default:
-                    svar6 = 1;
+                    timerId = TIMER_ID_SUB;
                     switch (gSaveContext.subTimerState) {
-                        case 1:
-                        case 7:
-                            D_8015FFE6 = 20;
-                            D_8015FFE4 = 20;
-                            gSaveContext.timerX[1] = 140;
-                            gSaveContext.timerY[1] = 80;
-                            if (gSaveContext.subTimerState == 1) {
-                                gSaveContext.subTimerState = 2;
+                        case SUBTIMER_STATE_DOWN_INIT:
+                        case SUBTIMER_STATE_UP_INIT:
+                            sSubTimerStateTimer = 20;
+                            sSubTimerNextSecondTimer = 20;
+                            gSaveContext.timerX[TIMER_ID_SUB] = 140;
+                            gSaveContext.timerY[TIMER_ID_SUB] = 80;
+                            if (gSaveContext.subTimerState == SUBTIMER_STATE_DOWN_INIT) {
+                                gSaveContext.subTimerState = SUBTIMER_STATE_DOWN_PREVIEW;
                             } else {
-                                gSaveContext.subTimerState = 8;
+                                gSaveContext.subTimerState = SUBTIMER_STATE_UP_PREVIEW;
                             }
                             break;
-                        case 2:
-                        case 8:
-                            D_8015FFE6--;
-                            if (D_8015FFE6 == 0) {
-                                D_8015FFE6 = 20;
-                                if (gSaveContext.subTimerState == 2) {
-                                    gSaveContext.subTimerState = 3;
+                        case SUBTIMER_STATE_DOWN_PREVIEW:
+                        case SUBTIMER_STATE_UP_PREVIEW:
+                            sSubTimerStateTimer--;
+                            if (sSubTimerStateTimer == 0) {
+                                sSubTimerStateTimer = 20;
+                                if (gSaveContext.subTimerState == SUBTIMER_STATE_DOWN_PREVIEW) {
+                                    gSaveContext.subTimerState = SUBTIMER_STATE_DOWN_MOVE;
                                 } else {
-                                    gSaveContext.subTimerState = 9;
+                                    gSaveContext.subTimerState = SUBTIMER_STATE_UP_MOVE;
                                 }
                             }
                             break;
-                        case 3:
-                        case 9:
+                        case SUBTIMER_STATE_DOWN_MOVE:
+                        case SUBTIMER_STATE_UP_MOVE:
                             osSyncPrintf("event_xp[1]=%d,  event_yp[1]=%d  TOTAL_EVENT_TM=%d\n",
-                                         svar5 = gSaveContext.timerX[1], svar2 = gSaveContext.timerY[1],
-                                         gSaveContext.subTimerSeconds);
-                            svar1 = (gSaveContext.timerX[1] - 26) / D_8015FFE6;
-                            gSaveContext.timerX[1] -= svar1;
+                                         svar5 = gSaveContext.timerX[TIMER_ID_SUB],
+                                         svar2 = gSaveContext.timerY[TIMER_ID_SUB], gSaveContext.subTimerSeconds);
+                            svar1 = (gSaveContext.timerX[TIMER_ID_SUB] - 26) / sSubTimerStateTimer;
+                            gSaveContext.timerX[TIMER_ID_SUB] -= svar1;
                             if (gSaveContext.healthCapacity > 0xA0) {
-                                svar1 = (gSaveContext.timerY[1] - 54) / D_8015FFE6;
+                                svar1 = (gSaveContext.timerY[TIMER_ID_SUB] - 54) / sSubTimerStateTimer;
                             } else {
-                                svar1 = (gSaveContext.timerY[1] - 46) / D_8015FFE6;
+                                svar1 = (gSaveContext.timerY[TIMER_ID_SUB] - 46) / sSubTimerStateTimer;
                             }
-                            gSaveContext.timerY[1] -= svar1;
+                            gSaveContext.timerY[TIMER_ID_SUB] -= svar1;
 
-                            D_8015FFE6--;
-                            if (D_8015FFE6 == 0) {
-                                D_8015FFE6 = 20;
-                                gSaveContext.timerX[1] = 26;
+                            sSubTimerStateTimer--;
+                            if (sSubTimerStateTimer == 0) {
+                                sSubTimerStateTimer = 20;
+                                gSaveContext.timerX[TIMER_ID_SUB] = 26;
 
                                 if (gSaveContext.healthCapacity > 0xA0) {
-                                    gSaveContext.timerY[1] = 54;
+                                    gSaveContext.timerY[TIMER_ID_SUB] = 54;
                                 } else {
-                                    gSaveContext.timerY[1] = 46;
+                                    gSaveContext.timerY[TIMER_ID_SUB] = 46;
                                 }
 
-                                if (gSaveContext.subTimerState == 3) {
-                                    gSaveContext.subTimerState = 4;
+                                if (gSaveContext.subTimerState == SUBTIMER_STATE_DOWN_MOVE) {
+                                    gSaveContext.subTimerState = SUBTIMER_STATE_DOWN_TICK;
                                 } else {
-                                    gSaveContext.subTimerState = 10;
+                                    gSaveContext.subTimerState = SUBTIMER_STATE_UP_TICK;
                                 }
                             }
-                        case 4:
-                        case 10:
-                            if ((gSaveContext.subTimerState == 4) || (gSaveContext.subTimerState == 10)) {
+                        case SUBTIMER_STATE_DOWN_TICK:
+                        case SUBTIMER_STATE_UP_TICK:
+                            if ((gSaveContext.subTimerState == SUBTIMER_STATE_DOWN_TICK) ||
+                                (gSaveContext.subTimerState == SUBTIMER_STATE_UP_TICK)) {
                                 if (gSaveContext.healthCapacity > 0xA0) {
-                                    gSaveContext.timerY[1] = 54;
+                                    gSaveContext.timerY[TIMER_ID_SUB] = 54;
                                 } else {
-                                    gSaveContext.timerY[1] = 46;
+                                    gSaveContext.timerY[TIMER_ID_SUB] = 46;
                                 }
                             }
 
-                            if (gSaveContext.subTimerState >= 3) {
-                                D_8015FFE4--;
-                                if (D_8015FFE4 == 0) {
-                                    D_8015FFE4 = 20;
-                                    if (gSaveContext.subTimerState == 4) {
+                            if (gSaveContext.subTimerState >= SUBTIMER_STATE_DOWN_MOVE) {
+                                sSubTimerNextSecondTimer--;
+                                if (sSubTimerNextSecondTimer == 0) {
+                                    sSubTimerNextSecondTimer = 20;
+                                    if (gSaveContext.subTimerState == SUBTIMER_STATE_DOWN_TICK) {
                                         gSaveContext.subTimerSeconds--;
                                         osSyncPrintf("TOTAL_EVENT_TM=%d\n", gSaveContext.subTimerSeconds);
 
@@ -6209,14 +6220,14 @@ void Interface_Draw(PlayState* play) {
                                                  (play->sceneNum != SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR) &&
                                                  (play->sceneNum != SCENE_GANONS_TOWER_COLLAPSE_INTERIOR) &&
                                                  (play->sceneNum != SCENE_INSIDE_GANONS_CASTLE_COLLAPSE))) {
-                                                D_8015FFE6 = 40;
-                                                gSaveContext.subTimerState = 5;
+                                                sSubTimerStateTimer = 40;
+                                                gSaveContext.subTimerState = SUBTIMER_STATE_RESPAWN;
                                                 gSaveContext.cutsceneIndex = 0;
                                                 Message_StartTextbox(play, 0x71B0, NULL);
                                                 Player_SetCsActionWithHaltedActors(play, NULL, 8);
                                             } else {
-                                                D_8015FFE6 = 40;
-                                                gSaveContext.subTimerState = 6;
+                                                sSubTimerStateTimer = 40;
+                                                gSaveContext.subTimerState = SUBTIMER_STATE_STOP;
                                             }
                                         } else if (gSaveContext.subTimerSeconds > 60) {
                                             if (timerDigits[4] == 1) {
@@ -6241,7 +6252,7 @@ void Interface_Draw(PlayState* play) {
                                             if (gSaveContext.subTimerSeconds == 240) {
                                                 Message_StartTextbox(play, 0x6083, NULL);
                                                 gSaveContext.eventInf[1] &= ~1;
-                                                gSaveContext.subTimerState = 0;
+                                                gSaveContext.subTimerState = SUBTIMER_STATE_OFF;
                                             }
                                         }
                                     }
@@ -6255,21 +6266,21 @@ void Interface_Draw(PlayState* play) {
                             }
                             break;
                         case 6:
-                            D_8015FFE6--;
-                            if (D_8015FFE6 == 0) {
-                                gSaveContext.subTimerState = 0;
+                            sSubTimerStateTimer--;
+                            if (sSubTimerStateTimer == 0) {
+                                gSaveContext.subTimerState = SUBTIMER_STATE_OFF;
                             }
                             break;
                     }
                     break;
             }
 
-            if (((gSaveContext.timerState != 0) && (gSaveContext.timerState != 10)) ||
-                (gSaveContext.subTimerState != 0)) {
+            if (((gSaveContext.timerState != TIMER_STATE_OFF) && (gSaveContext.timerState != TIMER_STATE_STOP)) ||
+                (gSaveContext.subTimerState != SUBTIMER_STATE_OFF)) {
                 timerDigits[0] = timerDigits[1] = svar2 = timerDigits[3] = 0;
                 timerDigits[2] = 10; // digit 10 is used as ':' (colon)
 
-                if (gSaveContext.timerState != 0) {
+                if (gSaveContext.timerState != TIMER_STATE_OFF) {
                     timerDigits[4] = gSaveContext.timerSeconds;
                 } else {
                     timerDigits[4] = gSaveContext.subTimerSeconds;
@@ -6301,8 +6312,8 @@ void Interface_Draw(PlayState* play) {
                 } else {
                     X_Margins_Timer = 0;
                 }
-                svar5 = OTRGetRectDimensionFromLeftEdge(gSaveContext.timerX[svar6] + X_Margins_Timer);
-                svar2 = gSaveContext.timerY[svar6];
+                svar5 = OTRGetRectDimensionFromLeftEdge(gSaveContext.timerX[timerId] + X_Margins_Timer);
+                svar2 = gSaveContext.timerY[timerId];
                 if (CVarGetInteger(CVAR_COSMETIC("HUD.Timers.PosType"), 0) != ORIGINAL_LOCATION) {
                     svar2 = (CVarGetInteger(CVAR_COSMETIC("HUD.Timers.PosY"), 0));
                     if (CVarGetInteger(CVAR_COSMETIC("HUD.Timers.PosType"), 0) == ANCHOR_LEFT) {
@@ -6332,14 +6343,14 @@ void Interface_Draw(PlayState* play) {
                 gDPSetCombineLERP(OVERLAY_DISP++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE,
                                   TEXEL0, 0, PRIMITIVE, 0);
 
-                if (gSaveContext.timerState != 0) {
-                    if ((gSaveContext.timerSeconds < 10) && (gSaveContext.timerState < 11)) {
+                if (gSaveContext.timerState != TIMER_STATE_OFF) {
+                    if ((gSaveContext.timerSeconds < 10) && (gSaveContext.timerState <= TIMER_STATE_STOP)) {
                         gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 50, 0, 255);
                     } else {
                         gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, 255);
                     }
                 } else {
-                    if ((gSaveContext.subTimerSeconds < 10) && (gSaveContext.subTimerState < 6)) {
+                    if ((gSaveContext.subTimerSeconds < 10) && (gSaveContext.subTimerState <= SUBTIMER_STATE_RESPAWN)) {
                         gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 50, 0, 255);
                     } else {
                         gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 0, 255);
@@ -6349,7 +6360,7 @@ void Interface_Draw(PlayState* play) {
                 for (svar1 = 0; svar1 < 5; svar1++) {
                     // clang-format off
                     //svar5 = svar5 + 8;
-                    //svar5 = OTRGetRectDimensionFromLeftEdge(gSaveContext.timerX[svar6]);
+                    //svar5 = OTRGetRectDimensionFromLeftEdge(gSaveContext.timerX[timerId]);
                     OVERLAY_DISP = Gfx_TextureI8(OVERLAY_DISP, digitTextures[timerDigits[svar1]], 8, 16,
                                       svar5 + timerDigitLeftPos[svar1],
                                       svar2, digitWidth[svar1], VREG(42), VREG(43) << 1,
@@ -6483,7 +6494,7 @@ void Interface_DrawTotalGameplayTimer(PlayState* play) {
 
 void Interface_Update(PlayState* play) {
     static u8 D_80125B60 = 0;
-    static s16 sPrevTimeIncrement = 0;
+    static s16 sPrevTimeSpeed = 0;
     MessageContext* msgCtx = &play->msgCtx;
     InterfaceContext* interfaceCtx = &play->interfaceCtx;
     Player* player = GET_PLAYER(play);
@@ -6521,8 +6532,8 @@ void Interface_Update(PlayState* play) {
     }
 
     if ((play->pauseCtx.state == 0) && (play->pauseCtx.debugState == 0)) {
-        if ((gSaveContext.minigameState == 1) || (gSaveContext.sceneSetupIndex < 4) ||
-            ((play->sceneNum == SCENE_LON_LON_RANCH) && (gSaveContext.sceneSetupIndex == 4))) {
+        if ((gSaveContext.minigameState == 1) || (gSaveContext.sceneLayer < 4) ||
+            ((play->sceneNum == SCENE_LON_LON_RANCH) && (gSaveContext.sceneLayer == 4))) {
             if ((msgCtx->msgMode == MSGMODE_NONE) ||
                 ((msgCtx->msgMode != MSGMODE_NONE) && (play->sceneNum == SCENE_BOMBCHU_BOWLING_ALLEY))) {
                 if (play->gameOverCtx.state == GAMEOVER_INACTIVE) {
@@ -6532,7 +6543,7 @@ void Interface_Update(PlayState* play) {
         }
     }
 
-    switch (gSaveContext.unk_13E8) {
+    switch (gSaveContext.nextHudVisibilityMode) {
         case 1:
         case 2:
         case 3:
@@ -6546,20 +6557,20 @@ void Interface_Update(PlayState* play) {
         case 11:
         case 12:
         case 13:
-            alpha = 255 - (gSaveContext.unk_13EC << 5);
+            alpha = 255 - (gSaveContext.hudVisibilityModeTimer << 5);
             if (alpha < 0) {
                 alpha = 0;
             }
 
             func_80082850(play, alpha);
-            gSaveContext.unk_13EC++;
+            gSaveContext.hudVisibilityModeTimer++;
 
             if (alpha == 0) {
-                gSaveContext.unk_13E8 = 0;
+                gSaveContext.nextHudVisibilityMode = 0;
             }
             break;
         case 50:
-            alpha = 255 - (gSaveContext.unk_13EC << 5);
+            alpha = 255 - (gSaveContext.hudVisibilityModeTimer << 5);
             if (alpha < 0) {
                 alpha = 0;
             }
@@ -6614,16 +6625,16 @@ void Interface_Update(PlayState* play) {
                     break;
             }
 
-            gSaveContext.unk_13EC++;
+            gSaveContext.hudVisibilityModeTimer++;
             if (alpha1 == 0xFF) {
-                gSaveContext.unk_13E8 = 0;
+                gSaveContext.nextHudVisibilityMode = 0;
             }
 
             break;
         case 52:
-            gSaveContext.unk_13E8 = 1;
+            gSaveContext.nextHudVisibilityMode = 1;
             func_80082850(play, 0);
-            gSaveContext.unk_13E8 = 0;
+            gSaveContext.nextHudVisibilityMode = 0;
         default:
             break;
     }
@@ -6650,24 +6661,25 @@ void Interface_Update(PlayState* play) {
     }
 
     HealthMeter_HandleCriticalAlarm(play);
-    D_80125A58 = Player_GetEnvironmentalHazard(play);
+    sEnvHazard = Player_GetEnvironmentalHazard(play);
 
-    if (D_80125A58 == 1) {
+    if (sEnvHazard == PLAYER_ENV_HAZARD_HOTROOM) {
         if (CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC) == EQUIP_VALUE_TUNIC_GORON ||
             CVarGetInteger(CVAR_CHEAT("SuperTunic"), 0) != 0) {
-            D_80125A58 = 0;
+            sEnvHazard = PLAYER_ENV_HAZARD_NONE;
         }
     } else if ((Player_GetEnvironmentalHazard(play) >= 2) && (Player_GetEnvironmentalHazard(play) < 5)) {
         if (CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC) == EQUIP_VALUE_TUNIC_ZORA ||
             CVarGetInteger(CVAR_CHEAT("SuperTunic"), 0) != 0) {
-            D_80125A58 = 0;
+            sEnvHazard = PLAYER_ENV_HAZARD_NONE;
         }
     }
 
     HealthMeter_Update(play);
 
-    if ((gSaveContext.timerState >= 3) && (play->pauseCtx.state == 0) && (play->pauseCtx.debugState == 0) &&
-        (msgCtx->msgMode == MSGMODE_NONE) && !(player->stateFlags2 & PLAYER_STATE2_ATTEMPT_PLAY_FOR_ACTOR) &&
+    if ((gSaveContext.timerState >= TIMER_STATE_ENV_HAZARD_MOVE) && (play->pauseCtx.state == 0) &&
+        (play->pauseCtx.debugState == 0) && (msgCtx->msgMode == MSGMODE_NONE) &&
+        !(player->stateFlags2 & PLAYER_STATE2_ATTEMPT_PLAY_FOR_ACTOR) &&
         (play->transitionTrigger == TRANS_TRIGGER_OFF) && (play->transitionMode == TRANS_MODE_OFF) &&
         !Play_InCsMode(play)) {}
 
@@ -6788,16 +6800,19 @@ void Interface_Update(PlayState* play) {
         Interface_UpdateMagicBar(play);
     }
 
-    if (gSaveContext.timerState == 0) {
-        if (((D_80125A58 == 1) || (D_80125A58 == 2) || (D_80125A58 == 4)) && ((gSaveContext.health >> 1) != 0)) {
-            gSaveContext.timerState = 1;
-            gSaveContext.timerX[0] = 140;
-            gSaveContext.timerY[0] = 80;
-            D_80125A5C = 1;
+    if (gSaveContext.timerState == TIMER_STATE_OFF) {
+        if (((sEnvHazard == PLAYER_ENV_HAZARD_HOTROOM) || (sEnvHazard == PLAYER_ENV_HAZARD_UNDERWATER_FLOOR) ||
+             (sEnvHazard == PLAYER_ENV_HAZARD_UNDERWATER_FREE)) &&
+            ((gSaveContext.health >> 1) != 0)) {
+            gSaveContext.timerState = TIMER_STATE_ENV_HAZARD_INIT;
+            gSaveContext.timerX[TIMER_ID_MAIN] = 140;
+            gSaveContext.timerY[TIMER_ID_MAIN] = 80;
+            sEnvHazardActive = true;
         }
     } else {
-        if (((D_80125A58 == 0) || (D_80125A58 == 3)) && (gSaveContext.timerState < 5)) {
-            gSaveContext.timerState = 0;
+        if (((sEnvHazard == PLAYER_ENV_HAZARD_NONE) || (sEnvHazard == PLAYER_ENV_HAZARD_SWIMMING)) &&
+            (gSaveContext.timerState <= TIMER_STATE_ENV_HAZARD_TICK)) {
+            gSaveContext.timerState = TIMER_STATE_OFF;
         }
     }
 
@@ -6851,17 +6866,17 @@ void Interface_Update(PlayState* play) {
                 }
 
                 gSaveContext.sunsSongState = SUNSSONG_SPEED_TIME;
-                sPrevTimeIncrement = gTimeIncrement;
-                gTimeIncrement = 400;
+                sPrevTimeSpeed = gTimeSpeed;
+                gTimeSpeed = 400;
             } else if (D_80125B60 == 0) {
                 if ((gSaveContext.dayTime >= 0x4555) && (gSaveContext.dayTime <= 0xC001)) {
                     gSaveContext.sunsSongState = SUNSSONG_INACTIVE;
-                    gTimeIncrement = sPrevTimeIncrement;
+                    gTimeSpeed = sPrevTimeSpeed;
                     play->msgCtx.ocarinaMode = OCARINA_MODE_04;
                 }
             } else if (gSaveContext.dayTime > 0xC001) {
                 gSaveContext.sunsSongState = SUNSSONG_INACTIVE;
-                gTimeIncrement = sPrevTimeIncrement;
+                gTimeSpeed = sPrevTimeSpeed;
                 play->msgCtx.ocarinaMode = OCARINA_MODE_04;
             }
         } else if ((play->roomCtx.curRoom.behaviorType1 != ROOM_BEHAVIOR_TYPE1_1) &&
@@ -6870,12 +6885,12 @@ void Interface_Update(PlayState* play) {
                 gSaveContext.nextDayTime = 0;
                 play->transitionType = TRANS_TYPE_FADE_BLACK_FAST;
                 gSaveContext.nextTransitionType = TRANS_TYPE_FADE_BLACK;
-                play->unk_11DE9 = 1;
+                play->haltAllActors = 1;
             } else {
                 gSaveContext.nextDayTime = 0x8001;
                 play->transitionType = TRANS_TYPE_FADE_WHITE_FAST;
                 gSaveContext.nextTransitionType = TRANS_TYPE_FADE_WHITE;
-                play->unk_11DE9 = 1;
+                play->haltAllActors = 1;
             }
 
             if (play->sceneNum == SCENE_HAUNTED_WASTELAND) {

@@ -1,8 +1,10 @@
-#include <libultraship/bridge.h>
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ShipInit.hpp"
 
-extern "C" PlayState* gPlayState;
+extern "C" {
+extern PlayState* gPlayState;
+#include "z64.h"
+}
 
 #define CVAR_UNRESTRICTED_ITEMS_NAME CVAR_CHEAT("NoRestrictItems")
 #define CVAR_UNRESTRICTED_ITEMS_DEFAULT 0

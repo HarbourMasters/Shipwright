@@ -322,7 +322,7 @@ void BgSpot16Bombstone_SpawnFragments(BgSpot16Bombstone* this, PlayState* play) 
 
     if (this->actor.params == 0) {
         Actor_Spawn(&play->actorCtx, play, ACTOR_BG_SPOT16_BOMBSTONE, this->actor.world.pos.x, this->actor.world.pos.y,
-                    this->actor.world.pos.z, 0, 0, 0, 5, true);
+                    this->actor.world.pos.z, 0, 0, 0, 5);
         index = 3;
     } else {
         index = 0;
@@ -354,7 +354,7 @@ void func_808B561C(BgSpot16Bombstone* this, PlayState* play) {
     world = &this->actor.world;
     for (index = 0; index < ARRAY_COUNT(D_808B6088); index++) {
         if (Actor_Spawn(&play->actorCtx, play, ACTOR_BG_SPOT16_BOMBSTONE, world->pos.x, world->pos.y, world->pos.z, 0,
-                        0, 0, D_808B6088[index], true) == NULL) {
+                        0, 0, D_808B6088[index]) == NULL) {
             break;
         }
     }
@@ -407,7 +407,7 @@ void func_808B57E0(BgSpot16Bombstone* this, PlayState* play) {
             currentBomb = sPlayerBomb;
             if (currentBomb->timer > 0) {
                 sTimer = currentBomb->timer + 20;
-                OnePointCutscene_Init(play, 4180, sTimer, NULL, MAIN_CAM);
+                OnePointCutscene_Init(play, 4180, sTimer, NULL, CAM_ID_MAIN);
             }
         }
     } else if (player->stateFlags1 & PLAYER_STATE1_CARRYING_ACTOR) {
@@ -437,7 +437,7 @@ void func_808B5950(BgSpot16Bombstone* this, PlayState* play) {
 
         func_808B561C(this, play);
 
-        OnePointCutscene_Init(play, 4180, 50, NULL, MAIN_CAM);
+        OnePointCutscene_Init(play, 4180, 50, NULL, CAM_ID_MAIN);
 
         Flags_SetSwitch(play, this->switchFlag);
         Flags_SetEventChkInf(EVENTCHKINF_BOMBED_DODONGOS_CAVERN_ENTRANCE);

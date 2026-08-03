@@ -1,0 +1,118 @@
+:config:
+  segments:
+    - [ 2, 0x01F1C2E0 ]
+
+mahouya_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: mahouya_scene
+
+mahouya_sceneTex_000A20:
+  type: TEXTURE
+  offset: 0xA20
+  symbol: mahouya_sceneTex_000A20
+  format: RGBA16
+  width: 32
+  height: 32
+
+mahouya_sceneTex_001220:
+  type: TEXTURE
+  offset: 0x1220
+  symbol: mahouya_sceneTex_001220
+  format: RGBA16
+  width: 32
+  height: 32
+
+mahouya_sceneTex_001A20:
+  type: TEXTURE
+  offset: 0x1A20
+  symbol: mahouya_sceneTex_001A20
+  format: RGBA16
+  width: 16
+  height: 128
+
+mahouya_sceneTex_002A20:
+  type: TEXTURE
+  offset: 0x2A20
+  symbol: mahouya_sceneTex_002A20
+  format: RGBA16
+  width: 32
+  height: 64
+
+mahouya_sceneTex_003A20:
+  type: TEXTURE
+  offset: 0x3A20
+  symbol: mahouya_sceneTex_003A20
+  format: RGBA16
+  width: 64
+  height: 32
+
+mahouya_sceneTex_004A20:
+  type: TEXTURE
+  offset: 0x4A20
+  symbol: mahouya_sceneTex_004A20
+  format: RGBA16
+  width: 32
+  height: 32
+
+mahouya_sceneTex_005220:
+  type: TEXTURE
+  offset: 0x5220
+  symbol: mahouya_sceneTex_005220
+  format: RGBA16
+  width: 16
+  height: 128
+
+mahouya_sceneTex_006220:
+  type: TEXTURE
+  offset: 0x6220
+  symbol: mahouya_sceneTex_006220
+  format: RGBA16
+  width: 16
+  height: 128
+
+mahouya_sceneTex_007220:
+  type: TEXTURE
+  offset: 0x7220
+  symbol: mahouya_sceneTex_007220
+  format: RGBA16
+  width: 32
+  height: 32
+
+mahouya_sceneTex_007A20:
+  type: TEXTURE
+  offset: 0x7A20
+  symbol: mahouya_sceneTex_007A20
+  format: RGBA16
+  width: 64
+  height: 32
+
+mahouya_sceneTex_008A20:
+  type: TEXTURE
+  offset: 0x8A20
+  symbol: mahouya_sceneTex_008A20
+  format: I8
+  width: 16
+  height: 128
+
+mahouya_sceneTex_009220:
+  type: TEXTURE
+  offset: 0x9220
+  symbol: mahouya_sceneTex_009220
+  format: RGBA16
+  width: 32
+  height: 32
+
+mahouya_sceneTex_009A20:
+  type: TEXTURE
+  offset: 0x9A20
+  symbol: mahouya_sceneTex_009A20
+  format: RGBA16
+  width: 64
+  height: 32
+
+
+mahouya_sceneCollisionHeader_0009F4:
+  type: OOT:COLLISION
+  offset: 0x0009F4
+  symbol: mahouya_sceneCollisionHeader_0009F4

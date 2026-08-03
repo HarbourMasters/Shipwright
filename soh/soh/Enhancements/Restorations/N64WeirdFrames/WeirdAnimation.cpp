@@ -36,7 +36,7 @@ void WeirdAnimation::Build() {
     auto& animation = animationData.emplace();
 
     for (const auto& neighborName : neighborAnimations) {
-        const auto neighbor = Ship::Context::GetInstance()->GetResourceManager()->LoadResource(neighborName);
+        const auto neighbor = Ship::Context::GetRawInstance()->GetResourceManager()->LoadResource(neighborName);
 
         const auto prevSize = animation.size();
         animation.resize(prevSize + neighbor->GetPointerSize());

@@ -6,7 +6,6 @@
 
 #include "z_bg_spot12_saku.h"
 #include "objects/object_spot12_obj/object_spot12_obj.h"
-#include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS 0
@@ -86,7 +85,7 @@ void func_808B357C(BgSpot12Saku* this, PlayState* play) {
     if (GameInteractor_Should(VB_GTG_GATE_BE_OPEN, Flags_GetSwitch(play, this->dyna.actor.params & 0x3F))) {
         func_808B35E4(this);
         this->timer = 20;
-        OnePointCutscene_Init(play, 4170, -99, &this->dyna.actor, MAIN_CAM);
+        OnePointCutscene_Init(play, 4170, -99, &this->dyna.actor, CAM_ID_MAIN);
     }
 }
 
@@ -108,7 +107,7 @@ void func_808B3604(BgSpot12Saku* this, PlayState* play) {
         func_808B3714(this);
         Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_BRIDGE_OPEN_STOP);
     } else {
-        func_8002F974(&this->dyna.actor, NA_SE_EV_METALGATE_OPEN - SFX_FLAG);
+        Actor_PlaySfx_Flagged(&this->dyna.actor, NA_SE_EV_METALGATE_OPEN - SFX_FLAG);
     }
 }
 

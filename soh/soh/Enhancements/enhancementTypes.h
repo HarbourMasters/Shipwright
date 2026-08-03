@@ -49,6 +49,8 @@ typedef enum {
     BOOTSEQUENCE_DEFAULT,
     BOOTSEQUENCE_AUTHENTIC,
     BOOTSEQUENCE_FILESELECT,
+    BOOTSEQUENCE_DEBUGWARPSCREEN,
+    BOOTSEQUENCE_WARPPOINT,
 } BootSequenceType;
 
 typedef enum {
@@ -115,6 +117,12 @@ typedef enum {
     WATERFALL_ONCE,
     WATERFALL_NEVER,
 } SleepingWaterfallType;
+
+typedef enum {
+    INGO_RACE_TWICE,
+    INGO_RACE_ONCE,
+    INGO_RACE_NONE,
+} IngoRaceType;
 
 typedef enum {
     RANDOMIZE_OFF,

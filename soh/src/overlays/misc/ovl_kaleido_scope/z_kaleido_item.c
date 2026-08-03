@@ -2,12 +2,11 @@
 #include "textures/parameter_static/parameter_static.h"
 #include "textures/icon_item_static/icon_item_static.h"
 #include "soh/Enhancements/randomizer/ShuffleTradeItems.h"
+#include "soh/Enhancements/randomizer/RocsFeatherCycle.h"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
-#include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 #include "soh/OTRGlobals.h"
 
-#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 u8 gAmmoItems[] = {
@@ -323,9 +322,11 @@ void KaleidoScope_HandleItemCycleExtras(PlayState* play, u8 slot, bool canCycle,
 
 bool CanMaskSelect() {
     if (IS_RANDO) {
-        return CVarGetInteger(CVAR_ENHANCEMENT("MaskSelect"), 0) &&
-               Flags_GetRandomizerInf(
-                   RAND_INF_ZELDAS_LETTER); /* || Randomizer_GetSettingValue(RSK_SHUFFLE_CHILD_TRADE) */
+        return ((CVarGetInteger(CVAR_ENHANCEMENT("MaskSelect"), 0) ||
+                 Randomizer_GetSettingValue(RSK_MASK_QUEST) != RO_MASK_QUEST_VANILLA) &&
+                Flags_GetRandomizerInf(RAND_INF_ZELDAS_LETTER) &&
+                Flags_GetInfTable(INFTABLE_SHOWED_ZELDAS_LETTER_TO_GATE_GUARD)) ||
+               Randomizer_GetSettingValue(RSK_MASK_QUEST) == RO_MASK_QUEST_SHUFFLE;
     }
 
     // only allow mask select when:
@@ -333,7 +334,8 @@ bool CanMaskSelect() {
     // * zelda's letter check: Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)
     // * kak gate check: Flags_GetInfTable(INFTABLE_SHOWED_ZELDAS_LETTER_TO_GATE_GUARD)
     // and the mask quest is complete: Flags_GetEventChkInf(EVENTCHKINF_PAID_BACK_BUNNY_HOOD_FEE)
-    return CVarGetInteger(CVAR_ENHANCEMENT("MaskSelect"), 0) &&
+    return (CVarGetInteger(CVAR_ENHANCEMENT("MaskSelect"), 0) ||
+            Randomizer_GetSettingValue(RSK_MASK_QUEST) != RO_MASK_QUEST_VANILLA) &&
            Flags_GetEventChkInf(EVENTCHKINF_PAID_BACK_BUNNY_HOOD_FEE) &&
            Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER) &&
            Flags_GetInfTable(INFTABLE_SHOWED_ZELDAS_LETTER_TO_GATE_GUARD);
@@ -342,7 +344,7 @@ bool CanMaskSelect() {
 void KaleidoScope_HandleItemCycles(PlayState* play) {
     // handle the mask select
     KaleidoScope_HandleItemCycleExtras(
-        play, SLOT_TRADE_CHILD, CanMaskSelect(),
+        play, SLOT_TRADE_CHILD, IS_RANDO || CanMaskSelect(),
         IS_RANDO ? Randomizer_GetPrevChildTradeItem()
                  : (INV_CONTENT(ITEM_TRADE_CHILD) <= ITEM_MASK_KEATON || INV_CONTENT(ITEM_TRADE_CHILD) > ITEM_MASK_TRUTH
                         ? ITEM_MASK_TRUTH
@@ -374,12 +376,16 @@ void KaleidoScope_HandleItemCycles(PlayState* play) {
     KaleidoScope_HandleItemCycleExtras(play, SLOT_TRADE_ADULT,
                                        IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE),
                                        Randomizer_GetPrevAdultTradeItem(), Randomizer_GetNextAdultTradeItem(), true);
+
+    // Handle Nayru's Love/Roc's Feather
+    KaleidoScope_HandleItemCycleExtras(play, SLOT_NAYRUS_LOVE, Randomizer_GetSettingValue(RSK_ROCS_FEATHER),
+                                       Enhancement_GetPrevNayrusItem(), Enhancement_GetNextNayrusItem(), true);
 }
 
 void KaleidoScope_DrawItemCycles(PlayState* play) {
     // draw the mask select
     KaleidoScope_DrawItemCycleExtras(
-        play, SLOT_TRADE_CHILD, CanMaskSelect(),
+        play, SLOT_TRADE_CHILD, IS_RANDO || CanMaskSelect(),
         IS_RANDO ? Randomizer_GetPrevChildTradeItem()
                  : (INV_CONTENT(ITEM_TRADE_CHILD) <= ITEM_MASK_KEATON || INV_CONTENT(ITEM_TRADE_CHILD) > ITEM_MASK_TRUTH
                         ? ITEM_MASK_TRUTH
@@ -393,6 +399,10 @@ void KaleidoScope_DrawItemCycles(PlayState* play) {
     KaleidoScope_DrawItemCycleExtras(play, SLOT_TRADE_ADULT,
                                      IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE),
                                      Randomizer_GetPrevAdultTradeItem(), Randomizer_GetNextAdultTradeItem());
+
+    // Draw Nayru's Love/Roc's Feather
+    KaleidoScope_DrawItemCycleExtras(play, SLOT_NAYRUS_LOVE, Randomizer_GetSettingValue(RSK_ROCS_FEATHER),
+                                     Enhancement_GetPrevNayrusItem(), Enhancement_GetNextNayrusItem());
 }
 
 bool IsItemCycling() {

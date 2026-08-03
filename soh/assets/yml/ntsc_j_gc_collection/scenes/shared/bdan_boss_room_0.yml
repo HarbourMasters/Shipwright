@@ -1,0 +1,86 @@
+:config:
+  segments:
+    - [ 3, 0x01D43DD0 ]
+    - [ 2, 0x01D43480 ]
+  directory: scenes/shared/bdan_boss_scene
+  external_files:
+    - ntsc_j_gc_collection/scenes/shared/bdan_boss_scene.yml
+    - ntsc_j_gc_collection/code/sys_matrix.yml
+
+bdan_boss_room_0:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: bdan_boss_room_0
+
+bdan_boss_room_0TLUT_001E38:
+  type: TEXTURE
+  offset: 0x1E38
+  symbol: bdan_boss_room_0TLUT_001E38
+  format: RGBA16
+  width: 16
+  height: 16
+
+bdan_boss_room_0TLUT_002A10:
+  type: TEXTURE
+  offset: 0x2A10
+  symbol: bdan_boss_room_0TLUT_002A10
+  format: RGBA16
+  width: 16
+  height: 16
+
+bdan_boss_room_0Tex_002040:
+  type: TEXTURE
+  offset: 0x2040
+  symbol: bdan_boss_room_0Tex_002040
+  format: CI8
+  width: 32
+  height: 64
+  tlut: 0x1E38
+
+bdan_boss_room_0Tex_002C18:
+  type: TEXTURE
+  offset: 0x2C18
+  symbol: bdan_boss_room_0Tex_002C18
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x2A10
+
+
+bdan_boss_room_0Vtx_000070:
+  type: OOT:ARRAY
+  offset: 0x000070
+  symbol: bdan_boss_room_0Vtx_000070
+  count: 380
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+bdan_boss_room_0DL_001830:
+  type: GFX
+  offset: 0x001830
+  symbol: bdan_boss_room_0DL_001830
+
+bdan_boss_room_0DL_001E28:
+  type: GFX
+  offset: 0x001E28
+  symbol: bdan_boss_room_0DL_001E28
+
+bdan_boss_room_0Vtx_002840:
+  type: OOT:ARRAY
+  offset: 0x002840
+  symbol: bdan_boss_room_0Vtx_002840
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+bdan_boss_room_0DL_002910:
+  type: GFX
+  offset: 0x002910
+  symbol: bdan_boss_room_0DL_002910
+
+bdan_boss_room_0DL_002A00:
+  type: GFX
+  offset: 0x002A00
+  symbol: bdan_boss_room_0DL_002A00

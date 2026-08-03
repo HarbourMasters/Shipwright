@@ -1,6 +1,6 @@
-#include <libultraship/bridge.h>
 #include <string>
-#include "soh/OTRGlobals.h"
+#include <libultraship/bridge/consolevariablebridge.h>
+#include <libultraship/bridge/resourcebridge.h>
 #include "soh/cvar_prefixes.h"
 #include "soh/ResourceManagerHelpers.h"
 
@@ -100,7 +100,7 @@ void PatchArrowTipTexture() {
         if (!fixTexturesOOB) {
             // Unpatch the other texture fix
             for (size_t i = 4; i < 8; i++) {
-                int instruction = start + i;
+                size_t instruction = start + i;
                 std::string unpatchName = "arrowTipTextureWithSizeFix_" + std::to_string(instruction);
                 ResourceMgr_UnpatchGfxByName(dlist, unpatchName.c_str());
             }
@@ -117,13 +117,13 @@ void PatchArrowTipTexture() {
             ResourceMgr_UnpatchGfxByName(dlist, unpatchName2.c_str());
 
             for (size_t i = 4; i < 8; i++) {
-                int instruction = start + i;
+                size_t instruction = start + i;
                 std::string patchName = "arrowTipTextureWithSizeFix_" + std::to_string(instruction);
 
                 if (i == 0) {
-                    ResourceMgr_PatchGfxByName(dlist, patchName.c_str(), instruction, gsSPNoOp());
+                    ResourceMgr_PatchGfxByName(dlist, patchName.c_str(), static_cast<int>(instruction), gsSPNoOp());
                 } else {
-                    ResourceMgr_PatchGfxByName(dlist, patchName.c_str(), instruction,
+                    ResourceMgr_PatchGfxByName(dlist, patchName.c_str(), static_cast<int>(instruction),
                                                arrowTipTextureWithSizeFixGfx[i - 1]);
                 }
             }
@@ -148,7 +148,7 @@ void PatchDekuStickTextureOverflow() {
     if (!CVarGetInteger(CVAR_ENHANCEMENT("FixTexturesOOB"), 0)) {
         // Unpatch the other texture fix
         for (size_t i = 0; i < 8; i++) {
-            int instruction = start + i;
+            size_t instruction = start + i;
             std::string unpatchName = "dekuStickWithSizeFix_" + std::to_string(instruction);
             ResourceMgr_UnpatchGfxByName(dlist, unpatchName.c_str());
         }
@@ -165,13 +165,14 @@ void PatchDekuStickTextureOverflow() {
         ResourceMgr_UnpatchGfxByName(dlist, unpatchName2.c_str());
 
         for (size_t i = 0; i < 8; i++) {
-            int instruction = start + i;
+            size_t instruction = start + i;
             std::string patchName = "dekuStickWithSizeFix_" + std::to_string(instruction);
 
             if (i == 0) {
-                ResourceMgr_PatchGfxByName(dlist, patchName.c_str(), instruction, gsSPNoOp());
+                ResourceMgr_PatchGfxByName(dlist, patchName.c_str(), static_cast<int>(instruction), gsSPNoOp());
             } else {
-                ResourceMgr_PatchGfxByName(dlist, patchName.c_str(), instruction, dekuStickTexWithSizeFixGfx[i - 1]);
+                ResourceMgr_PatchGfxByName(dlist, patchName.c_str(), static_cast<int>(instruction),
+                                           dekuStickTexWithSizeFixGfx[i - 1]);
             }
         }
     }
@@ -198,7 +199,7 @@ void PatchFreezardTextureOverflow() {
         if (!fixTexturesOOB) {
             // Unpatch the other texture fix
             for (size_t i = 0; i < 8; i++) {
-                int instruction = start + i;
+                size_t instruction = start + i;
                 std::string unpatchName = "freezardBodyTextureWithFormatFix_" + std::to_string(instruction);
                 ResourceMgr_UnpatchGfxByName(dlist, unpatchName.c_str());
             }
@@ -215,13 +216,13 @@ void PatchFreezardTextureOverflow() {
             ResourceMgr_UnpatchGfxByName(dlist, unpatchName2.c_str());
 
             for (size_t i = 0; i < 8; i++) {
-                int instruction = start + i;
+                size_t instruction = start + i;
                 std::string patchName = "freezardBodyTextureWithFormatFix_" + std::to_string(instruction);
 
                 if (i == 0) {
-                    ResourceMgr_PatchGfxByName(dlist, patchName.c_str(), instruction, gsSPNoOp());
+                    ResourceMgr_PatchGfxByName(dlist, patchName.c_str(), static_cast<int>(instruction), gsSPNoOp());
                 } else {
-                    ResourceMgr_PatchGfxByName(dlist, patchName.c_str(), instruction,
+                    ResourceMgr_PatchGfxByName(dlist, patchName.c_str(), static_cast<int>(instruction),
                                                freezardBodyTextureWithFormatFixGfx[i - 1]);
                 }
             }
@@ -250,7 +251,7 @@ void PatchIronKnuckleTextureOverflow() {
         if (!fixTexturesOOB) {
             // Unpatch the other texture fix
             for (size_t i = 0; i < 8; i++) {
-                int instruction = start + i;
+                size_t instruction = start + i;
                 std::string unpatchName = "ironKnuckleFireTexWithSizeFix_" + std::to_string(instruction);
                 ResourceMgr_UnpatchGfxByName(dlist, unpatchName.c_str());
             }
@@ -267,13 +268,13 @@ void PatchIronKnuckleTextureOverflow() {
             ResourceMgr_UnpatchGfxByName(dlist, unpatchName2.c_str());
 
             for (size_t i = 0; i < 8; i++) {
-                int instruction = start + i;
+                size_t instruction = start + i;
                 std::string patchName = "ironKnuckleFireTexWithSizeFix_" + std::to_string(instruction);
 
                 if (i == 0) {
-                    ResourceMgr_PatchGfxByName(dlist, patchName.c_str(), instruction, gsSPNoOp());
+                    ResourceMgr_PatchGfxByName(dlist, patchName.c_str(), static_cast<int>(instruction), gsSPNoOp());
                 } else {
-                    ResourceMgr_PatchGfxByName(dlist, patchName.c_str(), instruction,
+                    ResourceMgr_PatchGfxByName(dlist, patchName.c_str(), static_cast<int>(instruction),
                                                ironKnuckleFireTexWithFormatFixGfx[i - 1]);
                 }
             }
@@ -283,8 +284,8 @@ void PatchIronKnuckleTextureOverflow() {
 
 void PatchBoulderFragment() {
     // The boulder fragment renders invisible due to the change made by https://github.com/Kenix3/libultraship/pull/721
-    // Until it is known wether this change is approriate or something else should be done to it, the following patches
-    // adjust the render mode for the DL to not become invisible
+    // Until it is known whether this change is appropriate or something else should be done to it, the following
+    // patches adjust the render mode for the DL to not become invisible
     ResourceMgr_PatchGfxByName(gBoulderFragmentsDL, "boulderFragmentRenderFix3", 3,
                                gsDPSetRenderMode(G_RM_FOG_SHADE_A, G_RM_AA_ZB_OPA_SURF2));
     ResourceMgr_PatchGfxByName(gBoulderFragmentsDL, "boulderFragmentRenderFix6", 6,

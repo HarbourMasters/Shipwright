@@ -1,0 +1,20 @@
+:config:
+  segments:
+    - [ 128, 0x012F5130 ]
+
+gZoraShopTitleCardENGTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gZoraShopTitleCardENGTex
+  format: IA8
+  width: 144
+  height: 24
+
+gZoraShopTitleCardJPNTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gZoraShopTitleCardJPNTex
+  format: IA8
+  width: 144
+  height: 24
+

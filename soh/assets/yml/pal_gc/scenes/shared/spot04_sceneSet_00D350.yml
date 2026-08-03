@@ -1,0 +1,12 @@
+:config:
+  segments:
+    - [ 2, 0x01AE3EB0 ]
+  directory: scenes/shared/spot04_scene
+  external_files:
+    - pal_gc/scenes/shared/spot04_scene.yml
+
+spot04_sceneSet_00D350:
+  type: OOT:SCENE
+  offset: 0xD350
+  symbol: spot04_sceneSet_00D350
+  base_name: spot04_scene

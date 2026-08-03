@@ -1,0 +1,14 @@
+:config:
+  segments:
+    - [ 2, 0x02B57000 ]
+
+sutaru_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: sutaru_scene
+
+
+sutaru_sceneCollisionHeader_000B78:
+  type: OOT:COLLISION
+  offset: 0x000B78
+  symbol: sutaru_sceneCollisionHeader_000B78

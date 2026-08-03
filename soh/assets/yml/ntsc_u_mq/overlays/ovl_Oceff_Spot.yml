@@ -1,0 +1,39 @@
+:config:
+  segments:
+    - [ 128, 0x00D2AA00 ]
+    - [ 4, 0x00D30F80 ]
+    - [ 8, 0x00D2AA00 ]
+    - [ 9, 0x00D2AA00 ]
+    - [ 10, 0x00D2AA00 ]
+    - [ 11, 0x00D2AA00 ]
+    - [ 12, 0x00D2AA00 ]
+    - [ 13, 0x00D2AA00 ]
+  virtual: [ 0x80B7E430, 0x00D2AA00 ]
+  external_files:
+    - ntsc_u_mq/objects/gameplay_keep.yml
+
+sCylinderMaterialDL:
+  type: GFX
+  offset: 0xD30
+  symbol: sCylinderMaterialDL
+
+sCylinderModelDL:
+  type: GFX
+  offset: 0xDC8
+  symbol: sCylinderModelDL
+
+sCylinderVtx:
+  type: OOT:ARRAY
+  offset: 0xB80
+  symbol: sCylinderVtx
+  count: 27
+  array_type: VTX
+
+sTex:
+  type: TEXTURE
+  offset: 0x780
+  symbol: sTex
+  format: I8
+  width: 32
+  height: 32
+

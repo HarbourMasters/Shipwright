@@ -50,7 +50,7 @@ SetEntranceListFactoryXML::ReadResource(std::shared_ptr<Ship::ResourceInitData> 
         child = child->NextSiblingElement();
     }
 
-    setEntranceList->numEntrances = setEntranceList->entrances.size();
+    setEntranceList->numEntrances = static_cast<u32>(setEntranceList->entrances.size());
 
     return setEntranceList;
 }

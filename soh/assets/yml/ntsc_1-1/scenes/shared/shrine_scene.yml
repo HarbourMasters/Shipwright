@@ -1,0 +1,14 @@
+:config:
+  segments:
+    - [ 2, 0x01DF5E40 ]
+
+shrine_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: shrine_scene
+
+
+shrine_sceneCollisionHeader_0014AC:
+  type: OOT:COLLISION
+  offset: 0x0014AC
+  symbol: shrine_sceneCollisionHeader_0014AC

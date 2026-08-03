@@ -6,6 +6,7 @@
 
 #include "z_bg_ice_turara.h"
 #include "objects/object_ice_objects/object_ice_objects.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS 0
 
@@ -114,7 +115,7 @@ void BgIceTurara_Break(BgIceTurara* this, PlayState* play, f32 arg2) {
 }
 
 void BgIceTurara_Stalagmite(BgIceTurara* this, PlayState* play) {
-    if (this->collider.base.acFlags & AC_HIT) {
+    if (GameInteractor_Should(VB_STALAGMITE_DROP_ITEM, this->collider.base.acFlags & AC_HIT, this)) {
         BgIceTurara_Break(this, play, 50.0f);
         Actor_Kill(&this->dyna.actor);
         return;
@@ -165,7 +166,7 @@ void BgIceTurara_Fall(BgIceTurara* this, PlayState* play) {
             this->dyna.actor.world.pos.y = this->dyna.actor.floorHeight;
         }
         BgIceTurara_Break(this, play, 40.0f);
-        if (this->dyna.actor.params == TURARA_STALACTITE_REGROW) {
+        if (GameInteractor_Should(VB_STALACTITE_DROP_ITEM, this->dyna.actor.params == TURARA_STALACTITE_REGROW, this)) {
             this->dyna.actor.world.pos.y = this->dyna.actor.home.pos.y + 120.0f;
             func_8003EC50(play, &play->colCtx.dyna, this->dyna.bgId);
             this->actionFunc = BgIceTurara_Regrow;
@@ -198,4 +199,5 @@ void BgIceTurara_Update(Actor* thisx, PlayState* play) {
 
 void BgIceTurara_Draw(Actor* thisx, PlayState* play) {
     Gfx_DrawDListOpa(play, object_ice_objects_DL_0023D0);
+    if (GameInteractor_Should(VB_ICICLE_SETUP_DRAW, true, thisx)) {}
 }

@@ -1,11 +1,11 @@
-#include <libultraship/bridge/consolevariablebridge.h>
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ShipInit.hpp"
 #include "functions.h"
-#include "soh/Enhancements/enhancementTypes.h"
 #include "soh/resource/type/Scene.h"
 #include "soh/resource/type/scenecommand/SceneCommand.h"
 #include "soh/resource/type/scenecommand/SetCollisionHeader.h"
+#include <ship/Context.h>
+#include <ship/resource/ResourceManager.h>
 
 #define CVAR_GRAVE_HOLE_NAME CVAR_ENHANCEMENT("GraveHoles")
 #define GRAVE_HOLES_DEFAULT 0
@@ -29,17 +29,20 @@ CollisionHeader* getGraveyardCollisionHeader() {
      * dspot02_sceneCollisionHeader_003C54. We have to scroll through the scene cmds to get the header the same way the
      * game does.
      */
-    SOH::Scene* scene =
-        (SOH::Scene*)Ship::Context::GetInstance()->GetResourceManager()->LoadResource(GRAVEYARD_SCENE_FILEPATH).get();
-    SOH::ISceneCommand* sceneCmd = nullptr;
-    for (int i = 0; i < scene->commands.size(); i++) {
+    SOH::Scene* scene = (SOH::Scene*)Ship::Context::GetRawInstance()
+                            ->GetResourceManager()
+                            ->LoadResource(GRAVEYARD_SCENE_FILEPATH)
+                            .get();
+    SOH::SetCollisionHeader* sceneCmd = nullptr;
+    for (size_t i = 0; i < scene->commands.size(); i++) {
         auto cmd = scene->commands[i];
         if (cmd->cmdId == SOH::SceneCommandID::SetCollisionHeader) {
-            sceneCmd = cmd.get();
+            sceneCmd = static_cast<SOH::SetCollisionHeader*>(cmd.get());
             break;
         }
     }
-    CollisionHeader* graveyardColHeader = (CollisionHeader*)((SOH::SetCollisionHeader*)sceneCmd)->GetRawPointer();
+    CollisionHeader* graveyardColHeader = (CollisionHeader*)sceneCmd->GetRawPointer();
+    uint32_t surfaceTypesCount = sceneCmd->collisionHeader->surfaceTypesCount;
 
     /*
      * Copy the surface type list and give ourselves some extra space to create another surface type for Link to fall
@@ -47,7 +50,7 @@ CollisionHeader* getGraveyardCollisionHeader() {
      * are shifted somewhat between versions, so to be safe we just create an extra slot that is not in any version.
      */
     static SurfaceType newSurfaceTypes[33];
-    memcpy(newSurfaceTypes, graveyardColHeader->surfaceTypeList, sizeof(SurfaceType) * 33);
+    memcpy(newSurfaceTypes, graveyardColHeader->surfaceTypeList, sizeof(SurfaceType) * surfaceTypesCount);
     newSurfaceTypes[CUSTOM_SURFACE_TYPE].data[0] = 0x24000004;
     newSurfaceTypes[CUSTOM_SURFACE_TYPE].data[1] = 0xFC8;
     graveyardColHeader->surfaceTypeList = newSurfaceTypes;

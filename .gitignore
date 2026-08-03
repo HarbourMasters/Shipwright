@@ -2,6 +2,7 @@
 __pycache__/
 .pyc
 .DS_Store
+.cache/*
 
 # Text editor remnants
 .vscode/*
@@ -456,6 +457,7 @@ soh/src/boot/build.c
 soh/properties.h
 
 # Tools
+.clangd
 /clang-format
 /clang-format.exe
 *.o2r

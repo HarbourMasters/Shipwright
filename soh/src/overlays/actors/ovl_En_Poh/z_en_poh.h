@@ -24,7 +24,7 @@ typedef struct {
     /* 0x0000 */ Color_RGB8 primColor;
     /* 0x0003 */ Color_RGB8 lightColor;
     /* 0x0006 */ u8 unk_6; // limb index
-    /* 0x0006 */ u8 unk_7; // limb index
+    /* 0x0007 */ u8 unk_7; // limb index
     /* 0x0008 */ s8 unk_8; // rate of some kind
     /* 0x000C */ AnimationHeader* idleAnim;
     /* 0x0010 */ AnimationHeader* idleAnim2;

@@ -1,0 +1,10 @@
+:config:
+  segments:
+    - [ 6, 0x010265F0 ]
+
+gWarpDemoTreLgtBlob_000000:
+  type: BLOB
+  offset: 0x0
+  size: 0x10
+  symbol: gWarpDemoTreLgtBlob_000000
+

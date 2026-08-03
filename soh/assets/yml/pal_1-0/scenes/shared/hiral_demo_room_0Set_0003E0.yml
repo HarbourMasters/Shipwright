@@ -1,0 +1,15 @@
+:config:
+  segments:
+    - [ 3, 0x01BF32F0 ]
+    - [ 2, 0x01BF1BA0 ]
+  directory: scenes/shared/hiral_demo_scene
+  external_files:
+    - pal_1-0/scenes/shared/hiral_demo_room_0.yml
+    - pal_1-0/scenes/shared/hiral_demo_scene.yml
+    - pal_1-0/code/sys_matrix.yml
+
+hiral_demo_room_0Set_0003E0:
+  type: OOT:ROOM
+  offset: 0x3E0
+  symbol: hiral_demo_room_0Set_0003E0
+  base_name: hiral_demo_room_0

@@ -2,7 +2,6 @@
 
 #include "vanilla-behavior/GIVanillaBehavior.h"
 #include "GameInteractor.h"
-#include <stdarg.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -33,7 +32,6 @@ void GameInteractor_ExecuteOnSetDoAction(uint16_t action);
 void GameInteractor_ExecuteOnPlayerSfx(u16 sfxId);
 void GameInteractor_ExecuteOnOcarinaSongAction();
 void GameInteractor_ExecuteOnOcarinaNote(uint8_t note, float modulator, int8_t bend);
-void GameInteractor_ExecuteOnCuccoOrChickenHatch();
 bool GameInteractor_ShouldActorInit(void* actor);
 void GameInteractor_ExecuteOnActorInit(void* actor);
 void GameInteractor_ExecuteOnActorSpawn(void* actor);
@@ -50,7 +48,7 @@ void GameInteractor_ExecuteOnPlayerHealthChange(int16_t amount);
 void GameInteractor_ExecuteOnPlayerBottleUpdate(int16_t contents);
 void GameInteractor_ExecuteOnPlayerHoldUpShield();
 void GameInteractor_ExecuteOnPlayerFirstPersonControl(Player* player);
-void GameInteractor_ExecuteOnPlayerShieldControl(float_t* sp50, float_t* sp54);
+void GameInteractor_ExecuteOnPlayerShieldControl(float* sp50, float* sp54);
 void GameInteractor_ExecuteOnPlayerProcessStick();
 void GameInteractor_ExecuteOnShopSlotChangeHooks(uint8_t cursorIndex, int16_t price);
 void GameInteractor_ExecuteOnDungeonKeyUsedHooks(uint16_t mapIndex);
@@ -69,6 +67,7 @@ void GameInteractor_ExecuteOnDialogMessage();
 void GameInteractor_ExecuteOnPresentTitleCard();
 void GameInteractor_ExecuteOnInterfaceUpdate();
 void GameInteractor_ExecuteOnKaleidoscopeUpdate(int16_t inDungeonScene);
+void GameInteractor_ExecuteOnMinimapDrawCompassIcons();
 
 // MARK: - Main Menu
 void GameInteractor_ExecuteOnPresentFileSelect();
@@ -95,6 +94,9 @@ void GameInteractor_RegisterOnAssetAltChange(void (*fn)(void));
 
 // Mark: - Pause Menu
 void GameInteractor_ExecuteOnKaleidoUpdate();
+
+// MARK: - Messages
+void GameInteractor_ExecuteOnOpenText(uint16_t* textId, bool* loadFromMessageTable);
 
 // Mark: - Audio
 void GameInteractor_ExecuteOnSeqPlayerInit(int32_t playerIdx, int32_t seqId);

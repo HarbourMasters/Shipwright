@@ -3,7 +3,6 @@
 #include "textures/icon_item_24_static/icon_item_24_static.h"
 #include "textures/icon_item_dungeon_static/icon_item_dungeon_static.h"
 #include "textures/parameter_static/parameter_static.h"
-#include "textures/nes_font_static/nes_font_static.h"
 #include "soh_assets.h"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "soh/SaveManager.h"
@@ -385,12 +384,7 @@ static bool ShouldRenderItem(s16 fileIndex, u8 item) {
         return false;
     }
 
-    if (item == ITEM_MASK_KEATON && (HasItem(fileIndex, ITEM_WEIRD_EGG) || HasItem(fileIndex, ITEM_CHICKEN) ||
-                                     HasItem(fileIndex, ITEM_LETTER_ZELDA) || HasItem(fileIndex, ITEM_MASK_SKULL) ||
-                                     HasItem(fileIndex, ITEM_MASK_SPOOKY) || HasItem(fileIndex, ITEM_MASK_BUNNY) ||
-                                     HasItem(fileIndex, ITEM_MASK_GORON) || HasItem(fileIndex, ITEM_MASK_ZORA) ||
-                                     HasItem(fileIndex, ITEM_MASK_GERUDO) || HasItem(fileIndex, ITEM_MASK_TRUTH) ||
-                                     HasItem(fileIndex, ITEM_SOLD_OUT))) {
+    if (item == ITEM_MASK_KEATON && !HasItem(fileIndex, ITEM_MASK_KEATON)) {
         return false;
     }
 

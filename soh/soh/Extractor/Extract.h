@@ -1,6 +1,7 @@
 #ifndef EXTRACT_H
 #define EXTRACT_H
 
+#include <atomic>
 #include <stdint.h>
 #include <string>
 #include <memory>
@@ -40,29 +41,30 @@ class Extractor {
 
     bool ValidateRom(bool skipCrcBox = false);
     bool ValidateNotCompressed() const;
-    const char* GetZapdVerStr() const;
+    const char* GetTorchVersionDir() const;
 
     void SetRomInfo(const std::string& path);
 
     void FilterRoms(std::vector<std::string>& roms, RomSearchMode searchMode);
-    void GetRoms(std::vector<std::string>& roms);
     void ShowSizeErrorBox() const;
     void ShowCrcErrorBox() const;
     void ShowCompressedErrorBox() const;
     int ShowRomPickBox(uint32_t verCrc) const;
     bool ManuallySearchForRom();
-    bool ManuallySearchForRomMatchingType(RomSearchMode searchMode);
 
   public:
     // TODO create some kind of abstraction for message boxes.
     static int ShowYesNoBox(const char* title, const char* text);
     static void ShowErrorBox(const char* title, const char* text);
     bool IsMasterQuest() const;
+    bool ManuallySearchForRomMatchingType(RomSearchMode searchMode);
 
+    void SetSearchPath(const std::string& path);
+    void GetRoms(std::vector<std::string>& roms);
     bool RunFileStandalone(std::string file);
     bool Run(std::string searchPath, RomSearchMode searchMode = RomSearchMode::Both);
-    bool CallZapd(std::string installPath, std::string exportdir);
-    const char* GetZapdStr();
+    bool CallTorch(std::string installPath, std::string exportdir, std::atomic<size_t>* extractCount,
+                   std::atomic<size_t>* totalExtract);
     std::string Mkdtemp();
 };
 #endif

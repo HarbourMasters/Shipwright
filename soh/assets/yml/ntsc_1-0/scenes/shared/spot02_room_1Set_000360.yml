@@ -1,0 +1,15 @@
+:config:
+  segments:
+    - [ 3, 0x01728CB0 ]
+    - [ 2, 0x01720AD0 ]
+  directory: scenes/shared/spot02_scene
+  external_files:
+    - ntsc_1-0/scenes/shared/spot02_room_1.yml
+    - ntsc_1-0/scenes/shared/spot02_scene.yml
+    - ntsc_1-0/code/sys_matrix.yml
+
+spot02_room_1Set_000360:
+  type: OOT:ROOM
+  offset: 0x360
+  symbol: spot02_room_1Set_000360
+  base_name: spot02_room_1

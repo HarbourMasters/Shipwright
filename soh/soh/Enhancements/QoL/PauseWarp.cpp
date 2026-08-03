@@ -61,7 +61,7 @@ static void PauseWarp_Execute() {
     for (int i = 0; i < ARRAY_COUNT(ocarinaSongMap); i++) {
         if (gPlayState->msgCtx.lastPlayedSong == ocarinaSongMap[i]) {
             gPlayState->nextEntranceIndex = entranceIndexMap[i];
-            func_80088AF0(gPlayState);
+            Interface_SetSubTimerToFinalSecond(gPlayState);
             return;
         }
     }
@@ -69,7 +69,7 @@ static void PauseWarp_Execute() {
 }
 
 static void ActivateWarp(PauseContext* pauseCtx, int song) {
-    Audio_OcaSetInstrument(0);
+    AudioOcarina_SetInstrument(OCARINA_INSTRUMENT_OFF);
     Interface_SetDoAction(gPlayState, DO_ACTION_NONE);
     pauseCtx->state = 0x12;
     WREG(2) = -6240;
@@ -77,7 +77,7 @@ static void ActivateWarp(PauseContext* pauseCtx, int song) {
     pauseCtx->unk_1E4 = 0;
     int idx = song - QUEST_SONG_MINUET;
     gPlayState->msgCtx.lastPlayedSong = ocarinaSongMap[idx];
-    Audio_SetSoundBanksMute(0x20);
+    Audio_SetSfxBanksMute(0x20);
     Audio_PlayFanfare(songAudioMap[idx]);
     Message_StartTextbox(gPlayState, songMessageMap[idx], NULL);
     GET_PLAYER(gPlayState)->stateFlags1 |= PLAYER_STATE1_IN_CUTSCENE;

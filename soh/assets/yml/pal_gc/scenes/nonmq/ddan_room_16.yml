@@ -1,0 +1,100 @@
+:config:
+  segments:
+    - [ 3, 0x01731030 ]
+    - [ 2, 0x016DCE70 ]
+  directory: scenes/nonmq/ddan_scene
+  external_files:
+    - pal_gc/scenes/nonmq/ddan_scene.yml
+    - pal_gc/code/sys_matrix.yml
+
+ddan_room_16:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: ddan_room_16
+
+ddan_room_16Tex_002158:
+  type: TEXTURE
+  offset: 0x2148
+  symbol: ddan_room_16Tex_002158
+  format: RGBA16
+  width: 32
+  height: 64
+
+ddan_room_16Tex_003158:
+  type: TEXTURE
+  offset: 0x3148
+  symbol: ddan_room_16Tex_003158
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: ddan_scene
+  external_tlut_offset: 0x11D70
+
+ddan_room_16Tex_003958:
+  type: TEXTURE
+  offset: 0x3948
+  symbol: ddan_room_16Tex_003958
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: ddan_scene
+  external_tlut_offset: 0x11D70
+
+ddan_room_16Tex_004158:
+  type: TEXTURE
+  offset: 0x4148
+  symbol: ddan_room_16Tex_004158
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: ddan_scene
+  external_tlut_offset: 0x11D70
+
+ddan_room_16Tex_004958:
+  type: TEXTURE
+  offset: 0x4948
+  symbol: ddan_room_16Tex_004958
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: ddan_scene
+  external_tlut_offset: 0x11D70
+
+ddan_room_16Tex_005158:
+  type: TEXTURE
+  offset: 0x5148
+  symbol: ddan_room_16Tex_005158
+  format: CI8
+  width: 32
+  height: 32
+  external_tlut: ddan_scene
+  external_tlut_offset: 0x11D70
+
+
+ddan_room_16Vtx_000070:
+  type: OOT:ARRAY
+  offset: 0x000070
+  symbol: ddan_room_16Vtx_000070
+  count: 149
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ddan_room_16DL_0009C0:
+  type: GFX
+  offset: 0x0009C0
+  symbol: ddan_room_16DL_0009C0
+
+ddan_room_16Vtx_000DC8:
+  type: OOT:ARRAY
+  offset: 0x000DC8
+  symbol: ddan_room_16Vtx_000DC8
+  count: 190
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ddan_room_16DL_0019A8:
+  type: GFX
+  offset: 0x0019A8
+  symbol: ddan_room_16DL_0019A8

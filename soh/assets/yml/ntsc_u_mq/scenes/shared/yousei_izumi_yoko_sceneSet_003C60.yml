@@ -1,0 +1,12 @@
+:config:
+  segments:
+    - [ 2, 0x01D6E780 ]
+  directory: scenes/shared/yousei_izumi_yoko_scene
+  external_files:
+    - ntsc_u_mq/scenes/shared/yousei_izumi_yoko_scene.yml
+
+yousei_izumi_yoko_sceneSet_003C60:
+  type: OOT:SCENE
+  offset: 0x3C60
+  symbol: yousei_izumi_yoko_sceneSet_003C60
+  base_name: yousei_izumi_yoko_scene

@@ -1,0 +1,73 @@
+:config:
+  segments:
+    - [ 2, 0x0172BA60 ]
+
+  external_files:
+    - ntsc_u_gc/scenes/nonmq/bdan_sceneSet_013700.yml
+bdan_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: bdan_scene
+
+bdan_sceneTLUT_0139F0:
+  type: TEXTURE
+  offset: 0x139D0
+  symbol: bdan_sceneTLUT_0139F0
+  format: RGBA16
+  width: 16
+  height: 16
+
+bdan_sceneTLUT_013BF8:
+  type: TEXTURE
+  offset: 0x13BD8
+  symbol: bdan_sceneTLUT_013BF8
+  format: RGBA16
+  width: 16
+  height: 16
+
+bdan_sceneTex_013E00:
+  type: TEXTURE
+  offset: 0x13DE0
+  symbol: bdan_sceneTex_013E00
+  format: CI8
+  width: 32
+  height: 64
+  tlut: 0x13BD8
+
+bdan_sceneTex_014600:
+  type: TEXTURE
+  offset: 0x145E0
+  symbol: bdan_sceneTex_014600
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x13BD8
+
+bdan_sceneTex_014A00:
+  type: TEXTURE
+  offset: 0x149E0
+  symbol: bdan_sceneTex_014A00
+  format: CI8
+  width: 32
+  height: 64
+  tlut: 0x13BD8
+
+bdan_sceneTex_015200:
+  type: TEXTURE
+  offset: 0x151E0
+  symbol: bdan_sceneTex_015200
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x139D0
+
+gJabuJabuIntroCs:
+  type: OOT:CUTSCENE
+  offset: 0x155E0
+  symbol: gJabuJabuIntroCs
+
+
+bdan_sceneCollisionHeader_013054:
+  type: OOT:COLLISION
+  offset: 0x013054
+  symbol: bdan_sceneCollisionHeader_013054

@@ -1,0 +1,230 @@
+:config:
+  segments:
+    - [ 2, 0x01E81230 ]
+
+turibori_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: turibori_scene
+
+turibori_sceneTex_001CE0:
+  type: TEXTURE
+  offset: 0x1CE0
+  symbol: turibori_sceneTex_001CE0
+  format: RGBA16
+  width: 32
+  height: 64
+
+turibori_sceneTex_002CE0:
+  type: TEXTURE
+  offset: 0x2CE0
+  symbol: turibori_sceneTex_002CE0
+  format: RGBA16
+  width: 64
+  height: 32
+
+turibori_sceneTex_003CE0:
+  type: TEXTURE
+  offset: 0x3CE0
+  symbol: turibori_sceneTex_003CE0
+  format: RGBA16
+  width: 64
+  height: 32
+
+turibori_sceneTex_004CE0:
+  type: TEXTURE
+  offset: 0x4CE0
+  symbol: turibori_sceneTex_004CE0
+  format: RGBA16
+  width: 32
+  height: 4
+
+turibori_sceneTex_004DE0:
+  type: TEXTURE
+  offset: 0x4DE0
+  symbol: turibori_sceneTex_004DE0
+  format: RGBA16
+  width: 32
+  height: 16
+
+turibori_sceneTex_0051E0:
+  type: TEXTURE
+  offset: 0x51E0
+  symbol: turibori_sceneTex_0051E0
+  format: IA16
+  width: 32
+  height: 32
+
+turibori_sceneTex_0059E0:
+  type: TEXTURE
+  offset: 0x59E0
+  symbol: turibori_sceneTex_0059E0
+  format: IA8
+  width: 64
+  height: 64
+
+turibori_sceneTex_0069E0:
+  type: TEXTURE
+  offset: 0x69E0
+  symbol: turibori_sceneTex_0069E0
+  format: IA8
+  width: 32
+  height: 16
+
+turibori_sceneTex_006BE0:
+  type: TEXTURE
+  offset: 0x6BE0
+  symbol: turibori_sceneTex_006BE0
+  format: RGBA16
+  width: 32
+  height: 64
+
+turibori_sceneTex_007BE0:
+  type: TEXTURE
+  offset: 0x7BE0
+  symbol: turibori_sceneTex_007BE0
+  format: IA8
+  width: 64
+  height: 16
+
+turibori_sceneTex_007FE0:
+  type: TEXTURE
+  offset: 0x7FE0
+  symbol: turibori_sceneTex_007FE0
+  format: RGBA16
+  width: 32
+  height: 8
+
+turibori_sceneTex_0081E0:
+  type: TEXTURE
+  offset: 0x81E0
+  symbol: turibori_sceneTex_0081E0
+  format: RGBA16
+  width: 64
+  height: 32
+
+turibori_sceneTex_0091E0:
+  type: TEXTURE
+  offset: 0x91E0
+  symbol: turibori_sceneTex_0091E0
+  format: IA8
+  width: 16
+  height: 16
+
+turibori_sceneTex_0092E0:
+  type: TEXTURE
+  offset: 0x92E0
+  symbol: turibori_sceneTex_0092E0
+  format: IA8
+  width: 16
+  height: 32
+
+turibori_sceneTex_0094E0:
+  type: TEXTURE
+  offset: 0x94E0
+  symbol: turibori_sceneTex_0094E0
+  format: RGBA16
+  width: 32
+  height: 32
+
+turibori_sceneTex_009CE0:
+  type: TEXTURE
+  offset: 0x9CE0
+  symbol: turibori_sceneTex_009CE0
+  format: RGBA16
+  width: 32
+  height: 64
+
+turibori_sceneTex_00ACE0:
+  type: TEXTURE
+  offset: 0xACE0
+  symbol: turibori_sceneTex_00ACE0
+  format: RGBA16
+  width: 64
+  height: 32
+
+turibori_sceneTex_00BCE0:
+  type: TEXTURE
+  offset: 0xBCE0
+  symbol: turibori_sceneTex_00BCE0
+  format: IA8
+  width: 32
+  height: 128
+
+turibori_sceneTex_00CCE0:
+  type: TEXTURE
+  offset: 0xCCE0
+  symbol: turibori_sceneTex_00CCE0
+  format: RGBA16
+  width: 64
+  height: 32
+
+turibori_sceneTex_00DCE0:
+  type: TEXTURE
+  offset: 0xDCE0
+  symbol: turibori_sceneTex_00DCE0
+  format: RGBA16
+  width: 32
+  height: 32
+
+turibori_sceneTex_00E4E0:
+  type: TEXTURE
+  offset: 0xE4E0
+  symbol: turibori_sceneTex_00E4E0
+  format: RGBA16
+  width: 32
+  height: 32
+
+turibori_sceneTex_00ECE0:
+  type: TEXTURE
+  offset: 0xECE0
+  symbol: turibori_sceneTex_00ECE0
+  format: RGBA16
+  width: 32
+  height: 32
+
+turibori_sceneTex_00F4E0:
+  type: TEXTURE
+  offset: 0xF4E0
+  symbol: turibori_sceneTex_00F4E0
+  format: IA4
+  width: 64
+  height: 64
+
+turibori_sceneTex_00FCE0:
+  type: TEXTURE
+  offset: 0xFCE0
+  symbol: turibori_sceneTex_00FCE0
+  format: RGBA16
+  width: 32
+  height: 32
+
+turibori_sceneTex_0104E0:
+  type: TEXTURE
+  offset: 0x104E0
+  symbol: turibori_sceneTex_0104E0
+  format: RGBA16
+  width: 64
+  height: 32
+
+turibori_sceneTex_0114E0:
+  type: TEXTURE
+  offset: 0x114E0
+  symbol: turibori_sceneTex_0114E0
+  format: I4
+  width: 32
+  height: 32
+
+turibori_sceneTex_0116E0:
+  type: TEXTURE
+  offset: 0x116E0
+  symbol: turibori_sceneTex_0116E0
+  format: RGBA16
+  width: 32
+  height: 64
+
+
+turibori_sceneCollisionHeader_001CAC:
+  type: OOT:COLLISION
+  offset: 0x001CAC
+  symbol: turibori_sceneCollisionHeader_001CAC

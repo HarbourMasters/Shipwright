@@ -1,0 +1,105 @@
+:config:
+  segments:
+    - [ 2, 0x01AE3EB0 ]
+
+  external_files:
+    - pal_gc/scenes/shared/spot04_sceneSet_00CC00.yml
+    - pal_gc/scenes/shared/spot04_sceneSet_00CF10.yml
+    - pal_gc/scenes/shared/spot04_sceneSet_00D220.yml
+    - pal_gc/scenes/shared/spot04_sceneSet_00D350.yml
+    - pal_gc/scenes/shared/spot04_sceneSet_00D470.yml
+    - pal_gc/scenes/shared/spot04_sceneSet_00D590.yml
+    - pal_gc/scenes/shared/spot04_sceneSet_00D740.yml
+    - pal_gc/scenes/shared/spot04_sceneSet_00D8F0.yml
+    - pal_gc/scenes/shared/spot04_sceneSet_00DAA0.yml
+    - pal_gc/scenes/shared/spot04_sceneSet_00DB80.yml
+    - pal_gc/scenes/shared/spot04_sceneSet_00DC60.yml
+    - pal_gc/scenes/shared/spot04_sceneSet_00DE30.yml
+spot04_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: spot04_scene
+
+gKokiriForestDekuSproutCs:
+  type: OOT:CUTSCENE
+  offset: 0xC9D0
+  symbol: gKokiriForestDekuSproutCs
+
+gSpot04Cs_10E20:
+  type: OOT:CUTSCENE
+  offset: 0x10E20
+  symbol: gSpot04Cs_10E20
+
+gSpot04Path_00030C:
+  type: OOT:PATH
+  offset: 0x30C
+  symbol: gSpot04Path_00030C
+  num_paths: 3
+
+gSpot04Path_00D730:
+  type: OOT:PATH
+  offset: 0xD730
+  symbol: gSpot04Path_00D730
+
+spot04_sceneTLUT_00E010:
+  type: TEXTURE
+  offset: 0xE010
+  symbol: spot04_sceneTLUT_00E010
+  format: RGBA16
+  width: 16
+  height: 16
+
+spot04_sceneTex_00E218:
+  type: TEXTURE
+  offset: 0xE218
+  symbol: spot04_sceneTex_00E218
+  format: RGBA16
+  width: 32
+  height: 32
+
+spot04_sceneTex_00EA18:
+  type: TEXTURE
+  offset: 0xEA18
+  symbol: spot04_sceneTex_00EA18
+  format: I4
+  width: 64
+  height: 64
+
+spot04_sceneTex_00F218:
+  type: TEXTURE
+  offset: 0xF218
+  symbol: spot04_sceneTex_00F218
+  format: I4
+  width: 64
+  height: 64
+
+spot04_sceneTex_00FA18:
+  type: TEXTURE
+  offset: 0xFA18
+  symbol: spot04_sceneTex_00FA18
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0xE010
+
+spot04_sceneTex_00FE18:
+  type: TEXTURE
+  offset: 0xFE18
+  symbol: spot04_sceneTex_00FE18
+  format: RGBA16
+  width: 32
+  height: 32
+
+spot04_sceneTex_010618:
+  type: TEXTURE
+  offset: 0x10618
+  symbol: spot04_sceneTex_010618
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+spot04_sceneCollisionHeader_008918:
+  type: OOT:COLLISION
+  offset: 0x008918
+  symbol: spot04_sceneCollisionHeader_008918

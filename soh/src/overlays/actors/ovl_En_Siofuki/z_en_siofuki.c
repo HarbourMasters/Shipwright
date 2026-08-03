@@ -206,7 +206,7 @@ void func_80AFC218(EnSiofuki* this, PlayState* play) {
                 break;
         }
     } else {
-        func_8002F994(&this->dyna.actor, this->timer);
+        Actor_PlaySfx_FlaggedTimer(&this->dyna.actor, this->timer);
     }
 
     if (((((u16)this->dyna.actor.params >> 0xC) & 0xF) == EN_SIOFUKI_LOWERING) &&
@@ -258,7 +258,7 @@ void func_80AFC478(EnSiofuki* this, PlayState* play) {
         if (Flags_GetSwitch(play, ((u16)this->dyna.actor.params >> 6) & 0x3F)) {
             this->timer = 20;
             this->actionFunc = func_80AFC3C8;
-            OnePointCutscene_Init(play, 5010, 40, &this->dyna.actor, MAIN_CAM);
+            OnePointCutscene_Init(play, 5010, 40, &this->dyna.actor, CAM_ID_MAIN);
         }
 
         if (Flags_GetTreasure(play, (u16)this->dyna.actor.params & 0x3F)) {
@@ -293,7 +293,8 @@ void EnSiofuki_Draw(Actor* thisx, PlayState* play) {
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     x = gameplayFrames * 15;
     y = gameplayFrames * -15;
-    gSPSegment(POLY_XLU_DISP++, 0x08, Gfx_TwoTexScroll(play->state.gfxCtx, 0, x, y, 64, 64, 1, x, y, 64, 64));
+    gSPSegment(POLY_XLU_DISP++, 0x08,
+               Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, x, y, 64, 64, 1, x, y, 64, 64, 15, -15, 15, -15));
     gSPDisplayList(POLY_XLU_DISP++, object_siofuki_DL_000B70);
     CLOSE_DISPS(play->state.gfxCtx);
 

@@ -1,0 +1,652 @@
+:config:
+  segments:
+    - [ 6, 0x010915C0 ]
+    - [ 4, 0x00D31090 ]
+    - [ 8, 0x010915C0 ]
+    - [ 9, 0x010915C0 ]
+    - [ 10, 0x010915C0 ]
+    - [ 11, 0x010915C0 ]
+    - [ 12, 0x010915C0 ]
+    - [ 13, 0x010915C0 ]
+  external_files:
+    - ntsc_j_gc/objects/gameplay_keep.yml
+
+gGoronAnim_000750:
+  type: OOT:ANIMATION
+  offset: 0x750
+  symbol: gGoronAnim_000750
+
+gGoronAnim_000D5C:
+  type: OOT:ANIMATION
+  offset: 0xD5C
+  symbol: gGoronAnim_000D5C
+
+gGoronAnim_00161C:
+  type: OOT:ANIMATION
+  offset: 0x161C
+  symbol: gGoronAnim_00161C
+
+gGoronAnim_001A00:
+  type: OOT:ANIMATION
+  offset: 0x1A00
+  symbol: gGoronAnim_001A00
+
+gGoronAnim_0021D0:
+  type: OOT:ANIMATION
+  offset: 0x21D0
+  symbol: gGoronAnim_0021D0
+
+gGoronAnim_0029A8:
+  type: OOT:ANIMATION
+  offset: 0x29A8
+  symbol: gGoronAnim_0029A8
+
+gGoronAnim_002D80:
+  type: OOT:ANIMATION
+  offset: 0x2D80
+  symbol: gGoronAnim_002D80
+
+gGoronAnim_003768:
+  type: OOT:ANIMATION
+  offset: 0x3768
+  symbol: gGoronAnim_003768
+
+gGoronAnim_0038E4:
+  type: OOT:ANIMATION
+  offset: 0x38E4
+  symbol: gGoronAnim_0038E4
+
+gGoronAnim_004930:
+  type: OOT:ANIMATION
+  offset: 0x4930
+  symbol: gGoronAnim_004930
+
+gGoronAnim_010590:
+  type: OOT:ANIMATION
+  offset: 0x10590
+  symbol: gGoronAnim_010590
+
+gGoronCsEyeClosed2Tex:
+  type: TEXTURE
+  offset: 0xDA80
+  symbol: gGoronCsEyeClosed2Tex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0xC640
+
+gGoronCsEyeClosedTex:
+  type: TEXTURE
+  offset: 0xD680
+  symbol: gGoronCsEyeClosedTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0xC640
+
+gGoronCsEyeHalfTex:
+  type: TEXTURE
+  offset: 0xD280
+  symbol: gGoronCsEyeHalfTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0xC640
+
+gGoronCsEyeOpenTex:
+  type: TEXTURE
+  offset: 0xCE80
+  symbol: gGoronCsEyeOpenTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0xC640
+
+gGoronCsMouthNeutralTex:
+  type: TEXTURE
+  offset: 0xDE80
+  symbol: gGoronCsMouthNeutralTex
+  format: CI8
+  width: 64
+  height: 32
+  tlut: 0xC640
+
+gGoronCsMouthSmileTex:
+  type: TEXTURE
+  offset: 0xE680
+  symbol: gGoronCsMouthSmileTex
+  format: CI8
+  width: 64
+  height: 32
+  tlut: 0xC640
+
+gGoronDL_00BD80:
+  type: GFX
+  offset: 0xBD80
+  symbol: gGoronDL_00BD80
+
+gGoronDL_00C140:
+  type: GFX
+  offset: 0xC140
+  symbol: gGoronDL_00C140
+
+gGoronDL_00FD40:
+  type: GFX
+  offset: 0xFD40
+  symbol: gGoronDL_00FD40
+
+gGoronDL_00FD50:
+  type: GFX
+  offset: 0xFD50
+  symbol: gGoronDL_00FD50
+
+gGoronSkel:
+  type: OOT:SKELETON
+  offset: 0xFEF0
+  symbol: gGoronSkel
+  limb_type: Standard
+  skel_type: Flex
+
+object_oF1d_mapTLUT_009130:
+  type: TEXTURE
+  offset: 0x9130
+  symbol: object_oF1d_mapTLUT_009130
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_oF1d_mapTLUT_00C440:
+  type: TEXTURE
+  offset: 0xC440
+  symbol: object_oF1d_mapTLUT_00C440
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_oF1d_mapTex_009270:
+  type: TEXTURE
+  offset: 0x9270
+  symbol: object_oF1d_mapTex_009270
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x9130
+
+object_oF1d_mapTex_0092B0:
+  type: TEXTURE
+  offset: 0x92B0
+  symbol: object_oF1d_mapTex_0092B0
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x9130
+
+object_oF1d_mapTex_0092F0:
+  type: TEXTURE
+  offset: 0x92F0
+  symbol: object_oF1d_mapTex_0092F0
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0x9130
+
+object_oF1d_mapTex_009370:
+  type: TEXTURE
+  offset: 0x9370
+  symbol: object_oF1d_mapTex_009370
+  format: CI8
+  width: 32
+  height: 64
+  tlut: 0x9130
+
+object_oF1d_mapTex_009B70:
+  type: TEXTURE
+  offset: 0x9B70
+  symbol: object_oF1d_mapTex_009B70
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x9130
+
+object_oF1d_mapTex_009C70:
+  type: TEXTURE
+  offset: 0x9C70
+  symbol: object_oF1d_mapTex_009C70
+  format: RGBA16
+  width: 64
+  height: 32
+
+object_oF1d_mapTex_00C840:
+  type: TEXTURE
+  offset: 0xC840
+  symbol: object_oF1d_mapTex_00C840
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0xC440
+
+object_oF1d_mapTex_00C880:
+  type: TEXTURE
+  offset: 0xC880
+  symbol: object_oF1d_mapTex_00C880
+  format: CI8
+  width: 32
+  height: 16
+  tlut: 0xC440
+
+object_oF1d_mapTex_00CA80:
+  type: TEXTURE
+  offset: 0xCA80
+  symbol: object_oF1d_mapTex_00CA80
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0xC440
+
+object_oF1d_mapTex_00EE80:
+  type: TEXTURE
+  offset: 0xEE80
+  symbol: object_oF1d_mapTex_00EE80
+  format: CI8
+  width: 32
+  height: 64
+  tlut: 0xC440
+
+object_oF1d_mapTex_00F680:
+  type: TEXTURE
+  offset: 0xF680
+  symbol: object_oF1d_mapTex_00F680
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0xC440
+
+object_oF1d_mapTex_00F6C0:
+  type: TEXTURE
+  offset: 0xF6C0
+  symbol: object_oF1d_mapTex_00F6C0
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0xC440
+
+object_oF1d_mapTex_00F7C0:
+  type: TEXTURE
+  offset: 0xF7C0
+  symbol: object_oF1d_mapTex_00F7C0
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0xC440
+
+object_oF1d_mapTex_00F8C0:
+  type: TEXTURE
+  offset: 0xF8C0
+  symbol: object_oF1d_mapTex_00F8C0
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0xC440
+
+object_oF1d_mapTex_00FCC0:
+  type: TEXTURE
+  offset: 0xFCC0
+  symbol: object_oF1d_mapTex_00FCC0
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0xC440
+
+object_oF1d_map_TLUT_00C640:
+  type: TEXTURE
+  offset: 0xC640
+  symbol: object_oF1d_map_TLUT_00C640
+  format: RGBA16
+  width: 16
+  height: 16
+
+
+object_oF1d_mapVtx_004940:
+  type: OOT:ARRAY
+  offset: 0x004940
+  symbol: object_oF1d_mapVtx_004940
+  count: 49
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_oF1d_mapVtx_004C50:
+  type: OOT:ARRAY
+  offset: 0x004C50
+  symbol: object_oF1d_mapVtx_004C50
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_oF1d_mapVtx_004E80:
+  type: OOT:ARRAY
+  offset: 0x004E80
+  symbol: object_oF1d_mapVtx_004E80
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_oF1d_mapVtx_004F20:
+  type: OOT:ARRAY
+  offset: 0x004F20
+  symbol: object_oF1d_mapVtx_004F20
+  count: 49
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_oF1d_mapVtx_005230:
+  type: OOT:ARRAY
+  offset: 0x005230
+  symbol: object_oF1d_mapVtx_005230
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_oF1d_mapVtx_005460:
+  type: OOT:ARRAY
+  offset: 0x005460
+  symbol: object_oF1d_mapVtx_005460
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_oF1d_mapVtx_005500:
+  type: OOT:ARRAY
+  offset: 0x005500
+  symbol: object_oF1d_mapVtx_005500
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_oF1d_mapVtx_005530:
+  type: OOT:ARRAY
+  offset: 0x005530
+  symbol: object_oF1d_mapVtx_005530
+  count: 127
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_oF1d_mapVtx_005D20:
+  type: OOT:ARRAY
+  offset: 0x005D20
+  symbol: object_oF1d_mapVtx_005D20
+  count: 54
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_oF1d_mapVtx_006080:
+  type: OOT:ARRAY
+  offset: 0x006080
+  symbol: object_oF1d_mapVtx_006080
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_oF1d_mapVtx_006220:
+  type: OOT:ARRAY
+  offset: 0x006220
+  symbol: object_oF1d_mapVtx_006220
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_oF1d_mapVtx_006380:
+  type: OOT:ARRAY
+  offset: 0x006380
+  symbol: object_oF1d_mapVtx_006380
+  count: 54
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_oF1d_mapVtx_0066E0:
+  type: OOT:ARRAY
+  offset: 0x0066E0
+  symbol: object_oF1d_mapVtx_0066E0
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_oF1d_mapVtx_006880:
+  type: OOT:ARRAY
+  offset: 0x006880
+  symbol: object_oF1d_mapVtx_006880
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_oF1d_mapVtx_0069E0:
+  type: OOT:ARRAY
+  offset: 0x0069E0
+  symbol: object_oF1d_mapVtx_0069E0
+  count: 91
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gGoronSkelLimbsLimb_00FE4CDL_006F90:
+  type: GFX
+  offset: 0x006F90
+  symbol: gGoronSkelLimbsLimb_00FE4CDL_006F90
+
+gGoronSkelLimbsLimb_00FEA0DL_007458:
+  type: GFX
+  offset: 0x007458
+  symbol: gGoronSkelLimbsLimb_00FEA0DL_007458
+
+gGoronSkelLimbsLimb_00FE7CDL_007D28:
+  type: GFX
+  offset: 0x007D28
+  symbol: gGoronSkelLimbsLimb_00FE7CDL_007D28
+
+gGoronSkelLimbsLimb_00FE88DL_007EB0:
+  type: GFX
+  offset: 0x007EB0
+  symbol: gGoronSkelLimbsLimb_00FE88DL_007EB0
+
+gGoronSkelLimbsLimb_00FE94DL_007FF0:
+  type: GFX
+  offset: 0x007FF0
+  symbol: gGoronSkelLimbsLimb_00FE94DL_007FF0
+
+gGoronSkelLimbsLimb_00FE58DL_008218:
+  type: GFX
+  offset: 0x008218
+  symbol: gGoronSkelLimbsLimb_00FE58DL_008218
+
+gGoronSkelLimbsLimb_00FE64DL_0083A0:
+  type: GFX
+  offset: 0x0083A0
+  symbol: gGoronSkelLimbsLimb_00FE64DL_0083A0
+
+gGoronSkelLimbsLimb_00FE70DL_0084E0:
+  type: GFX
+  offset: 0x0084E0
+  symbol: gGoronSkelLimbsLimb_00FE70DL_0084E0
+
+gGoronSkelLimbsLimb_00FDECDL_008708:
+  type: GFX
+  offset: 0x008708
+  symbol: gGoronSkelLimbsLimb_00FDECDL_008708
+
+gGoronSkelLimbsLimb_00FE28DL_0087D0:
+  type: GFX
+  offset: 0x0087D0
+  symbol: gGoronSkelLimbsLimb_00FE28DL_0087D0
+
+gGoronSkelLimbsLimb_00FE34DL_0088C0:
+  type: GFX
+  offset: 0x0088C0
+  symbol: gGoronSkelLimbsLimb_00FE34DL_0088C0
+
+gGoronSkelLimbsLimb_00FE40DL_008A10:
+  type: GFX
+  offset: 0x008A10
+  symbol: gGoronSkelLimbsLimb_00FE40DL_008A10
+
+gGoronSkelLimbsLimb_00FE04DL_008C80:
+  type: GFX
+  offset: 0x008C80
+  symbol: gGoronSkelLimbsLimb_00FE04DL_008C80
+
+gGoronSkelLimbsLimb_00FE10DL_008D70:
+  type: GFX
+  offset: 0x008D70
+  symbol: gGoronSkelLimbsLimb_00FE10DL_008D70
+
+gGoronSkelLimbsLimb_00FE1CDL_008EC0:
+  type: GFX
+  offset: 0x008EC0
+  symbol: gGoronSkelLimbsLimb_00FE1CDL_008EC0
+
+object_oF1d_mapVtx_00AC70:
+  type: OOT:ARRAY
+  offset: 0x00AC70
+  symbol: object_oF1d_mapVtx_00AC70
+  count: 156
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_oF1d_mapVtx_00B630:
+  type: OOT:ARRAY
+  offset: 0x00B630
+  symbol: object_oF1d_mapVtx_00B630
+  count: 117
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_oF1d_mapVtx_00FDA0:
+  type: OOT:ARRAY
+  offset: 0x00FDA0
+  symbol: object_oF1d_mapVtx_00FDA0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gGoronSkelLimbsLimb_00FDE0:
+  type: OOT:LIMB
+  offset: 0x00FDE0
+  symbol: gGoronSkelLimbsLimb_00FDE0
+  limb_type: Standard
+
+gGoronSkelLimbsLimb_00FDEC:
+  type: OOT:LIMB
+  offset: 0x00FDEC
+  symbol: gGoronSkelLimbsLimb_00FDEC
+  limb_type: Standard
+
+gGoronSkelLimbsLimb_00FDF8:
+  type: OOT:LIMB
+  offset: 0x00FDF8
+  symbol: gGoronSkelLimbsLimb_00FDF8
+  limb_type: Standard
+
+gGoronSkelLimbsLimb_00FE04:
+  type: OOT:LIMB
+  offset: 0x00FE04
+  symbol: gGoronSkelLimbsLimb_00FE04
+  limb_type: Standard
+
+gGoronSkelLimbsLimb_00FE10:
+  type: OOT:LIMB
+  offset: 0x00FE10
+  symbol: gGoronSkelLimbsLimb_00FE10
+  limb_type: Standard
+
+gGoronSkelLimbsLimb_00FE1C:
+  type: OOT:LIMB
+  offset: 0x00FE1C
+  symbol: gGoronSkelLimbsLimb_00FE1C
+  limb_type: Standard
+
+gGoronSkelLimbsLimb_00FE28:
+  type: OOT:LIMB
+  offset: 0x00FE28
+  symbol: gGoronSkelLimbsLimb_00FE28
+  limb_type: Standard
+
+gGoronSkelLimbsLimb_00FE34:
+  type: OOT:LIMB
+  offset: 0x00FE34
+  symbol: gGoronSkelLimbsLimb_00FE34
+  limb_type: Standard
+
+gGoronSkelLimbsLimb_00FE40:
+  type: OOT:LIMB
+  offset: 0x00FE40
+  symbol: gGoronSkelLimbsLimb_00FE40
+  limb_type: Standard
+
+gGoronSkelLimbsLimb_00FE4C:
+  type: OOT:LIMB
+  offset: 0x00FE4C
+  symbol: gGoronSkelLimbsLimb_00FE4C
+  limb_type: Standard
+
+gGoronSkelLimbsLimb_00FE58:
+  type: OOT:LIMB
+  offset: 0x00FE58
+  symbol: gGoronSkelLimbsLimb_00FE58
+  limb_type: Standard
+
+gGoronSkelLimbsLimb_00FE64:
+  type: OOT:LIMB
+  offset: 0x00FE64
+  symbol: gGoronSkelLimbsLimb_00FE64
+  limb_type: Standard
+
+gGoronSkelLimbsLimb_00FE70:
+  type: OOT:LIMB
+  offset: 0x00FE70
+  symbol: gGoronSkelLimbsLimb_00FE70
+  limb_type: Standard
+
+gGoronSkelLimbsLimb_00FE7C:
+  type: OOT:LIMB
+  offset: 0x00FE7C
+  symbol: gGoronSkelLimbsLimb_00FE7C
+  limb_type: Standard
+
+gGoronSkelLimbsLimb_00FE88:
+  type: OOT:LIMB
+  offset: 0x00FE88
+  symbol: gGoronSkelLimbsLimb_00FE88
+  limb_type: Standard
+
+gGoronSkelLimbsLimb_00FE94:
+  type: OOT:LIMB
+  offset: 0x00FE94
+  symbol: gGoronSkelLimbsLimb_00FE94
+  limb_type: Standard
+
+gGoronSkelLimbsLimb_00FEA0:
+  type: OOT:LIMB
+  offset: 0x00FEA0
+  symbol: gGoronSkelLimbsLimb_00FEA0
+  limb_type: Standard
+
+gGoronSkelLimbs:
+  type: BLOB
+  offset: 0xFEAC
+  symbol: gGoronSkelLimbs
+  size: 0

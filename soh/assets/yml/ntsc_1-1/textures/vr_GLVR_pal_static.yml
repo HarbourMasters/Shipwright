@@ -1,0 +1,20 @@
+:config:
+  segments:
+    - [ 128, 0x015D34B0 ]
+
+gGoronShopBg2TLUT:
+  type: TEXTURE
+  offset: 0x200
+  symbol: gGoronShopBg2TLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGoronShopBgTLUT:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gGoronShopBgTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+

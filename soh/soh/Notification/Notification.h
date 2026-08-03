@@ -3,7 +3,7 @@
 #ifdef __cplusplus
 
 #include <string>
-#include <libultraship/libultraship.h>
+#include <ship/window/gui/GuiWindow.h>
 
 namespace Notification {
 

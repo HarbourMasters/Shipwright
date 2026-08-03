@@ -4,10 +4,7 @@
 #include <vector>
 #include <variant>
 
-#include "text.hpp"
-#include "random.hpp"
 #include <functional>
-#include "../randomizerTypes.h"
 #include "../../custom-message/CustomMessageManager.h"
 
 struct HintDistributionSetting {

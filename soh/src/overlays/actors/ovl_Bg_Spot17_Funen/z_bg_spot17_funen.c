@@ -63,8 +63,8 @@ void func_808B7478(Actor* thisx, PlayState* play) {
 
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPSegment(POLY_XLU_DISP++, 0x08,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, (0 - play->gameplayFrames) & 0x7F, 0x20, 0x20, 1, 0,
-                                (0 - play->gameplayFrames) & 0x7F, 0x20, 0x20));
+               Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 0, (0 - play->gameplayFrames) & 0x7F, 0x20, 0x20, 1, 0,
+                                  (0 - play->gameplayFrames) & 0x7F, 0x20, 0x20, 0, -1, 0, -1));
     gSPDisplayList(POLY_XLU_DISP++, gCraterSmokeConeDL);
 
     CLOSE_DISPS(play->state.gfxCtx);

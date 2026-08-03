@@ -8,7 +8,6 @@
 #include "scenes/misc/hakaana_ouke/hakaana_ouke_scene.h"
 #include "scenes/overworld/spot02/spot02_scene.h"
 #include "vt.h"
-#include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_UPDATE_DURING_OCARINA)
@@ -253,7 +252,7 @@ void func_80ABF4C8(EnOkarinaTag* this, PlayState* play) {
                     play->csCtx.segment = D_80ABF9D0;
                     gSaveContext.cutsceneTrigger = 1;
                 }
-                func_800F574C(1.18921f, 0x5A);
+                Audio_SetMainBgmTempoFreqAfterFanfare(1.18921f, 0x5A);
                 break;
             case 4: // Door of Time
                 if (GameInteractor_Should(VB_PLAY_DOOR_OF_TIME_CS, true, this)) {
@@ -305,7 +304,7 @@ void func_80ABF708(EnOkarinaTag* this, PlayState* play) {
             yawDiffNew = ABS(yawDiff);
             if (yawDiffNew < 0x4300) {
                 this->unk_15A = 0;
-                func_8002F2CC(&this->actor, play, 70.0f);
+                Actor_OfferTalk(&this->actor, play, 70.0f);
             }
         }
     }

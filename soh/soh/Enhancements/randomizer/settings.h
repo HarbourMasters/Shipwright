@@ -2,11 +2,8 @@
 
 #include "SeedContext.h"
 #include "option.h"
-#include "randomizerTypes.h"
-#include "3drando/spoiler_log.hpp"
 
 #include <array>
-#include <set>
 #include <unordered_map>
 #include <nlohmann/json.hpp>
 
@@ -58,7 +55,7 @@ class Settings {
      * @param key
      * @return Option&
      */
-    TrickOption& GetTrickOption(RandomizerTrick key);
+    TrickSetting& GetTrickSetting(RandomizerTrick key);
 
     /**
      * @brief Get the RandomizerTrick corresponding to the provided name.
@@ -118,7 +115,7 @@ class Settings {
      *
      * @param spoilerFileJson
      */
-    void ParseJson(nlohmann::json spoilerFileJson);
+    void ParseJson(const nlohmann::json& spoilerFileJson);
     std::map<RandomizerArea, std::vector<RandomizerTrick>> mTricksByArea = {};
 
     /**
@@ -135,6 +132,13 @@ class Settings {
      */
     void SetAllToContext();
 
+    /**
+     * @brief Randomizes all randomizer settings (excluding tricks) to random valid values.
+     * This function iterates through all options and sets them to a random index within
+     * their valid range.
+     */
+    void RandomizeAllSettings();
+
     static std::shared_ptr<Settings> GetInstance();
 
   private:
@@ -147,7 +151,7 @@ class Settings {
     std::array<Option, RSK_MAX> mOptions = {};
     std::array<std::string, RSK_MAX> mOptionDescriptions = {};
     std::array<OptionGroup, RSG_MAX> mOptionGroups = {};
-    std::array<TrickOption, RT_MAX> mTrickOptions = {};
+    std::array<TrickSetting, RT_MAX> mTrickSettings = {};
     std::vector<std::vector<Option*>> mExcludeLocationsOptionsAreas = {};
     std::unordered_map<std::string, RandomizerTrick> mTrickNameToEnum;
 };

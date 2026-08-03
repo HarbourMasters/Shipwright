@@ -1,0 +1,56 @@
+:config:
+  segments:
+    - [ 2, 0x019CBEA0 ]
+
+men_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: men_scene
+
+gGTGDayEntranceTex:
+  type: TEXTURE
+  offset: 0xF8C0
+  symbol: gGTGDayEntranceTex
+  format: IA16
+  width: 8
+  height: 128
+
+gGTGNightEntranceTex:
+  type: TEXTURE
+  offset: 0x100C0
+  symbol: gGTGNightEntranceTex
+  format: IA16
+  width: 8
+  height: 128
+
+men_sceneTLUT_00F6C0:
+  type: TEXTURE
+  offset: 0xF6C0
+  symbol: men_sceneTLUT_00F6C0
+  format: RGBA16
+  width: 16
+  height: 16
+
+men_sceneTex_0108C0:
+  type: TEXTURE
+  offset: 0x108C0
+  symbol: men_sceneTex_0108C0
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0xF6C0
+
+men_sceneTex_010CC0:
+  type: TEXTURE
+  offset: 0x10CC0
+  symbol: men_sceneTex_010CC0
+  format: CI8
+  width: 64
+  height: 32
+  tlut: 0xF6C0
+
+
+men_sceneCollisionHeader_00F690:
+  type: OOT:COLLISION
+  offset: 0x00F690
+  symbol: men_sceneCollisionHeader_00F690

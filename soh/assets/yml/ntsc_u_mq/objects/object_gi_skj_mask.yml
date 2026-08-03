@@ -1,0 +1,27 @@
+:config:
+  segments:
+    - [ 6, 0x011ADA10 ]
+    - [ 4, 0x00D30F80 ]
+    - [ 8, 0x011ADA10 ]
+    - [ 9, 0x011ADA10 ]
+    - [ 10, 0x011ADA10 ]
+    - [ 11, 0x011ADA10 ]
+    - [ 12, 0x011ADA10 ]
+    - [ 13, 0x011ADA10 ]
+  external_files:
+    - ntsc_u_mq/objects/gameplay_keep.yml
+
+gGiSkullMaskDL:
+  type: GFX
+  offset: 0x09D0
+  symbol: gGiSkullMaskDL
+
+
+object_gi_skj_maskVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_gi_skj_maskVtx_000000
+  count: 157
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

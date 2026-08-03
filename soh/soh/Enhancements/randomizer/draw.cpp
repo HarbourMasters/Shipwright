@@ -1,10 +1,9 @@
 #include "draw.h"
 #include "soh/OTRGlobals.h"
-#include "soh/cvar_prefixes.h"
-#include "randomizerTypes.h"
-#include <array>
 #include "soh_assets.h"
+#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
+#include "soh/Enhancements/randomizer/randomizer.h"
 
 extern "C" {
 #include "z64.h"
@@ -19,10 +18,8 @@ extern "C" {
 #include "objects/object_gi_hearts/object_gi_hearts.h"
 #include "objects/object_gi_scale/object_gi_scale.h"
 #include "objects/object_gi_fire/object_gi_fire.h"
-#include "objects/object_fish/object_fish.h"
 #include "objects/object_toki_objects/object_toki_objects.h"
 #include "objects/object_gi_bomb_2/object_gi_bomb_2.h"
-#include "objects/gameplay_field_keep/gameplay_field_keep.h"
 #include "objects/object_goma/object_goma.h"
 #include "objects/object_kingdodongo/object_kingdodongo.h"
 #include "objects/object_bv/object_bv.h"
@@ -32,7 +29,6 @@ extern "C" {
 #include "objects/object_mo/object_mo.h"
 #include "objects/object_sst/object_sst.h"
 #include "overlays/actors/ovl_Boss_Goma/z_boss_goma.h"
-#include "overlays/ovl_Boss_Sst/ovl_Boss_Sst.h"
 #include "objects/object_tw/object_tw.h"
 #include "objects/object_ganon2/object_ganon2.h"
 extern PlayState* gPlayState;
@@ -68,10 +64,23 @@ Color_RGB8 SmallEmblemDefaultValue[10] = {
     { 255, 255, 255 }, // Chest Game
 };
 
+Color_RGB8 MapOrCompassColor[10] = {
+    { 4, 100, 46 },    // Deku Tree
+    { 140, 30, 30 },   // Dodongo's Cavern
+    { 30, 60, 255 },   // Jabu Jabu's Belly
+    { 4, 195, 46 },    // Forest Temple
+    { 237, 95, 95 },   // Fire Temple
+    { 85, 180, 223 },  // Water Temple
+    { 222, 158, 47 },  // Spirit Temple
+    { 126, 16, 177 },  // Shadow Temple
+    { 227, 110, 255 }, // Bottom of the Well
+    { 0, 255, 255 },   // Ice Cavern
+};
+
 extern "C" u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 
 extern "C" void Randomizer_DrawSmallKey(PlayState* play, GetItemEntry* getItemEntry) {
-    s8 isCustomKeysEnabled = CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("CustomKeyModels"), 1);
+    bool isCustomKeysEnabled = CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("CustomKeyModels"), 1);
     int slot = getItemEntry->drawItemId - RG_FOREST_TEMPLE_SMALL_KEY;
 
     Gfx* customIconDLs[] = {
@@ -118,19 +127,7 @@ extern "C" void Randomizer_DrawSmallKey(PlayState* play, GetItemEntry* getItemEn
 }
 
 extern "C" void Randomizer_DrawMap(PlayState* play, GetItemEntry* getItemEntry) {
-    s16 color_slot = getItemEntry->drawItemId - RG_DEKU_TREE_MAP;
-    s16 colors[12][3] = {
-        { 4, 100, 46 },    // Deku Tree
-        { 140, 30, 30 },   // Dodongo's Cavern
-        { 30, 60, 255 },   // Jabu Jabu's Belly
-        { 4, 195, 46 },    // Forest Temple
-        { 237, 95, 95 },   // Fire Temple
-        { 85, 180, 223 },  // Water Temple
-        { 222, 158, 47 },  // Spirit Temple
-        { 126, 16, 177 },  // Shadow Temple
-        { 227, 110, 255 }, // Bottom of the Well
-        { 0, 255, 255 },   // Ice Cavern
-    };
+    auto color = MapOrCompassColor[getItemEntry->drawItemId - RG_DEKU_TREE_MAP];
 
     OPEN_DISPS(play->state.gfxCtx);
 
@@ -138,7 +135,7 @@ extern "C" void Randomizer_DrawMap(PlayState* play, GetItemEntry* getItemEntry) 
     gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
               G_MTX_MODELVIEW | G_MTX_LOAD);
 
-    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, colors[color_slot][0], colors[color_slot][1], colors[color_slot][2], 255);
+    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, color.r, color.g, color.b, 255);
 
     gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiDungeonMapDL);
 
@@ -146,21 +143,7 @@ extern "C" void Randomizer_DrawMap(PlayState* play, GetItemEntry* getItemEntry) 
 }
 
 extern "C" void Randomizer_DrawCompass(PlayState* play, GetItemEntry* getItemEntry) {
-    s16 color_slot = getItemEntry->drawItemId - RG_DEKU_TREE_COMPASS;
-    s16 colors[12][3] = {
-        { 4, 100, 46 },    // Deku Tree
-        { 140, 30, 30 },   // Dodongo's Cavern
-        { 30, 60, 255 },   // Jabu Jabu's Belly
-        { 4, 195, 46 },    // Forest Temple
-        { 237, 95, 95 },   // Fire Temple
-        { 85, 180, 223 },  // Water Temple
-        { 222, 158, 47 },  // Spirit Temple
-        { 126, 16, 177 },  // Shadow Temple
-        { 227, 110, 255 }, // Bottom of the Well
-        { 221, 212, 60 },  // Gerudo Training Ground
-        { 255, 255, 255 }, // Thieves' Hideout
-        { 80, 80, 80 }     // Ganon's Castle
-    };
+    auto color = MapOrCompassColor[getItemEntry->drawItemId - RG_DEKU_TREE_COMPASS];
 
     OPEN_DISPS(play->state.gfxCtx);
 
@@ -168,9 +151,8 @@ extern "C" void Randomizer_DrawCompass(PlayState* play, GetItemEntry* getItemEnt
     gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
               G_MTX_MODELVIEW | G_MTX_LOAD);
 
-    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, colors[color_slot][0], colors[color_slot][1], colors[color_slot][2], 255);
-    gDPSetEnvColor(POLY_OPA_DISP++, colors[color_slot][0] / 2, colors[color_slot][1] / 2, colors[color_slot][2] / 2,
-                   255);
+    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, color.r, color.g, color.b, 255);
+    gDPSetEnvColor(POLY_OPA_DISP++, color.r / 2, color.g / 2, color.b / 2, 255);
 
     gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiCompassDL);
 
@@ -183,8 +165,8 @@ extern "C" void Randomizer_DrawCompass(PlayState* play, GetItemEntry* getItemEnt
 }
 
 extern "C" void Randomizer_DrawBossKey(PlayState* play, GetItemEntry* getItemEntry) {
-    s8 isCustomKeysEnabled = CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("CustomKeyModels"), 1);
-    s16 slot = getItemEntry->getItemId - RG_FOREST_TEMPLE_BOSS_KEY;
+    bool isCustomKeysEnabled = CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("CustomKeyModels"), 1);
+    s16 slot = getItemEntry->drawItemId - RG_FOREST_TEMPLE_BOSS_KEY;
 
     std::string CvarValue[6] = {
         "gCosmetics.Key.ForestBoss", "gCosmetics.Key.FireBoss",   "gCosmetics.Key.WaterBoss",
@@ -247,7 +229,7 @@ extern "C" void Randomizer_DrawBossKey(PlayState* play, GetItemEntry* getItemEnt
 }
 
 extern "C" void Randomizer_DrawKeyRing(PlayState* play, GetItemEntry* getItemEntry) {
-    s8 isCustomKeysEnabled = CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("CustomKeyModels"), 1);
+    bool isCustomKeysEnabled = CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("CustomKeyModels"), 1);
     int slot = getItemEntry->drawItemId - RG_FOREST_TEMPLE_KEY_RING;
 
     Gfx* CustomIconDLs[] = {
@@ -371,9 +353,9 @@ extern "C" void Randomizer_DrawMasterSword(PlayState* play, GetItemEntry* getIte
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     gSPSegment(POLY_OPA_DISP++, 0x08,
-               (uintptr_t)Gfx_TwoTexScroll(play->state.gfxCtx, 0, 1 * (play->state.frames * 1),
-                                           0 * (play->state.frames * 1), 32, 32, 1, 0 * (play->state.frames * 1),
-                                           0 * (play->state.frames * 1), 32, 32));
+               (uintptr_t)Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 1 * (play->state.frames * 1),
+                                             0 * (play->state.frames * 1), 32, 32, 1, 0 * (play->state.frames * 1),
+                                             0 * (play->state.frames * 1), 32, 32, 1, 0, 0, 0));
 
     Matrix_Scale(0.05f, 0.05f, 0.05f, MTXMODE_APPLY);
     Matrix_RotateZ(2.1f, MTXMODE_APPLY);
@@ -416,7 +398,7 @@ extern "C" void Randomizer_DrawTriforcePiece(PlayState* play, GetItemEntry getIt
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
-// Seperate draw function for drawing the Triforce piece when in the GI state.
+// Separate draw function for drawing the Triforce piece when in the GI state.
 // Needed for delaying showing the triforce piece slightly so the triforce shard doesn't
 // suddenly snap to the new piece model or completed triforce because the piece is
 // given mid textbox. Also makes it so the overworld models don't turn into the completed
@@ -426,8 +408,21 @@ extern "C" void Randomizer_DrawTriforcePieceGI(PlayState* play, GetItemEntry get
 
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
+    auto rando = OTRGlobals::Instance->gRandomizer;
     uint8_t current = gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected;
-    uint8_t required = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED) + 1;
+    bool fullTriforce = false;
+    if (rando->GetRandoSettingValue(RSK_RAINBOW_BRIDGE) == RO_BRIDGE_TRIFORCE_PIECES) {
+        fullTriforce = rando->GetRandoSettingValue(RSK_RAINBOW_BRIDGE_TRIFORCE_COUNT) == current;
+    }
+    if (rando->GetRandoSettingValue(RSK_WINCON) == RO_WINCON_TRIFORCE_PIECES) {
+        fullTriforce = fullTriforce || (rando->GetRandoSettingValue(RSK_WINCON_TRIFORCE_COUNT) == current);
+    }
+    if (rando->GetRandoSettingValue(RSK_GANONS_BOSS_KEY) == RO_GANON_BOSS_KEY_TRIFORCE_PIECES) {
+        fullTriforce = fullTriforce || (rando->GetRandoSettingValue(RSK_GBK_TRIFORCE_COUNT) == current);
+    }
+    if (rando->GetRandoSettingValue(RSK_GANONS_SOUL) == RO_GANONS_SOUL_TRIFORCE_PIECES) {
+        fullTriforce = fullTriforce || (rando->GetRandoSettingValue(RSK_GANONS_SOUL_TRIFORCE_COUNT) == current);
+    }
 
     Matrix_Scale(triforcePieceScale, triforcePieceScale, triforcePieceScale, MTXMODE_APPLY);
 
@@ -439,7 +434,7 @@ extern "C" void Randomizer_DrawTriforcePieceGI(PlayState* play, GetItemEntry get
 
     // Animation. When not the completed triforce, create delay before showing the piece to bypass interpolation.
     // If the completed triforce, make it grow slowly.
-    if (current != required) {
+    if (!fullTriforce) {
         if (triforcePieceScale > 0.00008f && triforcePieceScale < 0.034f) {
             triforcePieceScale = 0.034f;
         } else if (triforcePieceScale < 0.035f) {
@@ -454,13 +449,13 @@ extern "C" void Randomizer_DrawTriforcePieceGI(PlayState* play, GetItemEntry get
 
     // Show piece when not currently completing the triforce. Use the scale to create a delay so interpolation doesn't
     // make the triforce twitch when the size is set to a higher value.
-    if (current != required && triforcePieceScale > 0.035f) {
+    if (!fullTriforce && triforcePieceScale > 0.035f) {
         // Get shard DL. Remove one before division to account for triforce piece given in the textbox
         // to match up the shard from the overworld model.
         Gfx* triforcePieceDL = Randomizer_GetTriforcePieceDL((current - 1) % 3);
 
         gSPDisplayList(POLY_XLU_DISP++, triforcePieceDL);
-    } else if (current == required && triforcePieceScale > 0.00008f) {
+    } else if (fullTriforce && triforcePieceScale > 0.00008f) {
         gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gTriforcePieceCompletedDL);
     }
 
@@ -486,6 +481,21 @@ extern "C" void Randomizer_DrawMysteryItem(PlayState* play, GetItemEntry* getIte
     gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gMysteryItemDL);
 
     gSPGrayscale(POLY_XLU_DISP++, false);
+
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
+extern "C" void Randomizer_DrawRocsFeather(PlayState* play, GetItemEntry* getItemEntry) {
+    Color_RGB8 color = { 0, 60, 100 };
+
+    OPEN_DISPS(play->state.gfxCtx);
+
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
+
+    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_MODELVIEW | G_MTX_LOAD);
+
+    gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiRocsFeatherDL);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
@@ -594,8 +604,8 @@ extern "C" s32 OverrideLimbDrawBarinade(PlayState* play, s32 limbIndex, Gfx** dL
     if (limbIndex == 20) {
         gDPPipeSync(POLY_OPA_DISP++);
         gSPSegment(POLY_OPA_DISP++, 0x08,
-                   (uintptr_t)Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 8, 16, 1, 0,
-                                               (play->gameplayFrames * -2) % 64, 16, 16));
+                   (uintptr_t)Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 0, 0, 8, 16, 1, 0,
+                                                 (play->gameplayFrames * -2) % 64, 16, 16, 0, 0, 0, -2));
         gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 200);
         Matrix_RotateX(-M_PIf / 2.0f, MTXMODE_APPLY);
     } else if ((limbIndex >= 10) && (limbIndex < 20)) {
@@ -620,8 +630,8 @@ extern "C" void PostLimbDrawBarinade(PlayState* play, s32 limbIndex, Gfx** dList
 
     if (limbIndex == 25) {
         gSPSegment(POLY_XLU_DISP++, 0x09,
-                   (uintptr_t)Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, (play->gameplayFrames * 10) % 128, 16, 32, 1,
-                                               0, (play->gameplayFrames * 5) % 128, 16, 32));
+                   (uintptr_t)Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 0, (play->gameplayFrames * 10) % 128, 16, 32, 1,
+                                                 0, (play->gameplayFrames * 5) % 128, 16, 32, 0, 10, 0, 5));
         gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gBarinadeDL_008D70);
@@ -676,11 +686,11 @@ extern "C" void DrawBarinade(PlayState* play) {
     Matrix_Scale(0.03f, 0.03f, 0.03f, MTXMODE_APPLY);
 
     gSPSegment(POLY_OPA_DISP++, 0x08,
-               (uintptr_t)Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 8, 16, 1, 0, (play->gameplayFrames * -10) % 16,
-                                           16, 16));
+               (uintptr_t)Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 0, 0, 8, 16, 1, 0,
+                                             (play->gameplayFrames * -10) % 16, 16, 16, 0, 0, 0, -10));
     gSPSegment(POLY_OPA_DISP++, 0x09,
-               (uintptr_t)Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, (play->gameplayFrames * -10) % 32, 16, 0x20, 1, 0,
-                                           (play->gameplayFrames * -5) % 32, 16, 32));
+               (uintptr_t)Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 0, (play->gameplayFrames * -10) % 32, 16, 0x20, 1,
+                                             0, (play->gameplayFrames * -5) % 32, 16, 32, 0, -10, 0, -5));
 
     SkelAnime_DrawSkeletonOpa(play, &skelAnime, OverrideLimbDrawBarinade, PostLimbDrawBarinade, NULL);
 
@@ -746,8 +756,8 @@ extern "C" void DrawVolvagia(PlayState* play) {
 
     gSPSegment(POLY_OPA_DISP++, 0x09, (uintptr_t)gVolvagiaEyeOpenTex);
     gSPSegment(POLY_OPA_DISP++, 0x08,
-               (uintptr_t)Gfx_TwoTexScroll(play->state.gfxCtx, 0, play->state.frames * 4, 120, 0x20, 0x20, 1,
-                                           play->state.frames * 3, play->state.frames * -2, 0x20, 0x20));
+               (uintptr_t)Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, play->state.frames * 4, 120, 0x20, 0x20, 1,
+                                             play->state.frames * 3, play->state.frames * -2, 0x20, 0x20, 4, 0, 3, -2));
 
     gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, 255);
     gDPSetEnvColor(POLY_OPA_DISP++, 255, 255, 255, 255);
@@ -765,12 +775,13 @@ extern "C" void DrawMorpha(PlayState* play) {
     Matrix_Scale(0.015f, 0.015f, 0.015f, MTXMODE_APPLY);
 
     gSPSegment(POLY_XLU_DISP++, 0x08,
-               (uintptr_t)Gfx_TwoTexScroll(play->state.gfxCtx, 0, play->state.frames * 3, play->state.frames * 3, 32,
-                                           32, 1, play->state.frames * -3, play->state.frames * -3, 32, 32));
+               (uintptr_t)Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, play->state.frames * 3, play->state.frames * 3, 32,
+                                             32, 1, play->state.frames * -3, play->state.frames * -3, 32, 32, 3, 3, -3,
+                                             -3));
 
     gSPSegment(POLY_XLU_DISP++, 0x09,
-               (uintptr_t)Gfx_TwoTexScroll(play->state.gfxCtx, 0, play->state.frames * 3, 0, 32, 32, 1, 0,
-                                           play->state.frames * -5, 32, 32));
+               (uintptr_t)Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, play->state.frames * 3, 0, 32, 32, 1, 0,
+                                             play->state.frames * -5, 32, 32, 3, 0, 0, -5));
 
     Matrix_RotateX(play->state.frames * 0.1f, MTXMODE_APPLY);
     Matrix_RotateZ(play->state.frames * 0.16f, MTXMODE_APPLY);
@@ -875,11 +886,12 @@ extern "C" void DrawKotake(PlayState* play) {
     gSPSegment(POLY_OPA_DISP++, 10, (uintptr_t)gTwinrovaKotakeKoumeEyeOpenTex);
     gSPSegment(POLY_XLU_DISP++, 10, (uintptr_t)gTwinrovaKotakeKoumeEyeOpenTex);
     gSPSegment(POLY_XLU_DISP++, 8,
-               (uintptr_t)Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0 & 0x7F, 0 & 0x7F, 0x20, 0x20, 1,
-                                           play->state.frames & 0x7F, (play->state.frames * -7) & 0xFF, 0x20, 0x40));
+               (uintptr_t)Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 0 & 0x7F, 0 & 0x7F, 0x20, 0x20, 1,
+                                             play->state.frames & 0x7F, (play->state.frames * -7) & 0xFF, 0x20, 0x40, 0,
+                                             0, 1, -7));
 
     gSPSegment(POLY_XLU_DISP++, 9,
-               (uintptr_t)Gfx_TexScroll(play->state.gfxCtx, 0 & 0x7F, play->state.frames & 0xFF, 0x20, 0x40));
+               (uintptr_t)Gfx_TexScrollEx(play->state.gfxCtx, 0 & 0x7F, play->state.frames & 0xFF, 0x20, 0x40, 0, 1));
 
     SkelAnime_DrawSkeletonOpa(play, &skelAnime, OverrideLimbDrawKotake, PostLimbDrawKotake, NULL);
 
@@ -965,9 +977,9 @@ extern "C" void Randomizer_DrawBossSoul(PlayState* play, GetItemEntry* getItemEn
     OPEN_DISPS(play->state.gfxCtx);
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     gSPSegment(POLY_XLU_DISP++, 8,
-               (uintptr_t)Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0 * (play->state.frames * 0),
-                                           0 * (play->state.frames * 0), 16, 32, 1, 1 * (play->state.frames * 1),
-                                           -1 * (play->state.frames * 8), 16, 32));
+               (uintptr_t)Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 0 * (play->state.frames * 0),
+                                             0 * (play->state.frames * 0), 16, 32, 1, 1 * (play->state.frames * 1),
+                                             -1 * (play->state.frames * 8), 16, 32, 0, 0, 1, -8));
     Matrix_Push();
     Matrix_Translate(0.0f, -70.0f, 0.0f, MTXMODE_APPLY);
     Matrix_Scale(5.0f, 5.0f, 5.0f, MTXMODE_APPLY);
@@ -1106,9 +1118,9 @@ extern "C" void Randomizer_DrawBronzeScale(PlayState* play, GetItemEntry* getIte
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     gSPSegment(POLY_XLU_DISP++, 0x08,
-               (uintptr_t)Gfx_TwoTexScroll(play->state.gfxCtx, 0, 1 * (play->state.frames * 2),
-                                           -1 * (play->state.frames * 2), 64, 64, 1, 1 * (play->state.frames * 4),
-                                           -1 * (play->state.frames * 4), 32, 32));
+               (uintptr_t)Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 1 * (play->state.frames * 2),
+                                             -1 * (play->state.frames * 2), 64, 64, 1, 1 * (play->state.frames * 4),
+                                             -1 * (play->state.frames * 4), 32, 32, 2, -2, 4, -4));
 
     gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
               G_MTX_MODELVIEW | G_MTX_LOAD);
@@ -1121,51 +1133,117 @@ extern "C" void Randomizer_DrawBronzeScale(PlayState* play, GetItemEntry* getIte
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
-extern "C" void Randomizer_DrawFishingPoleGI(PlayState* play, GetItemEntry* getItemEntry) {
-    Vec3f pos;
+extern "C" void Randomizer_DrawPowerBracelet(PlayState* play, GetItemEntry* getItemEntry) {
     OPEN_DISPS(play->state.gfxCtx);
 
-    // Draw rod
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    Matrix_Scale(0.2f, 0.2f, 0.2f, MTXMODE_APPLY);
+
     gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
               G_MTX_MODELVIEW | G_MTX_LOAD);
-    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gFishingPoleGiDL);
 
-    // Draw lure
-    Matrix_Push();
-    Matrix_Scale(5.0f, 5.0f, 5.0f, MTXMODE_APPLY);
-    pos = { 0.0f, -25.5f, -4.0f };
-    Matrix_Translate(pos.x, pos.y, pos.z, MTXMODE_APPLY);
-    Matrix_RotateZ(-M_PI_2f, MTXMODE_APPLY);
-    Matrix_RotateY(-M_PI_2f - 0.2f, MTXMODE_APPLY);
-    Matrix_Scale(0.006f, 0.006f, 0.006f, MTXMODE_APPLY);
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiGrabDL);
+
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
+extern "C" void Randomizer_DrawLadder(PlayState* play, GetItemEntry* getItemEntry) {
+    OPEN_DISPS(play->state.gfxCtx);
+
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
-              G_MTX_NOPUSH | G_MTX_MODELVIEW | G_MTX_LOAD);
-    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gFishingLureFloatDL);
 
-    // Draw hooks
-    Matrix_RotateY(0.2f, MTXMODE_APPLY);
-    Matrix_Translate(0.0f, 0.0f, -300.0f, MTXMODE_APPLY);
     gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gFishingLureHookDL);
-    Matrix_RotateZ(M_PI_2f, MTXMODE_APPLY);
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gFishingLureHookDL);
+              G_MTX_MODELVIEW | G_MTX_LOAD);
 
-    Matrix_Translate(0.0f, -2200.0f, 700.0f, MTXMODE_APPLY);
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gFishingLureHookDL);
-    Matrix_RotateZ(M_PIf / 2.0f, MTXMODE_APPLY);
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gFishingLureHookDL);
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiClimbDL);
 
-    Matrix_Pop();
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
+extern "C" void Randomizer_DrawKneePads(PlayState* play, GetItemEntry* getItemEntry) {
+    OPEN_DISPS(play->state.gfxCtx);
+
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_MODELVIEW | G_MTX_LOAD);
+
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiCrawlDL);
+
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
+extern "C" void Randomizer_DrawJabberNut(PlayState* play, GetItemEntry* getItemEntry) {
+    OPEN_DISPS(play->state.gfxCtx);
+
+    Gfx_SetupDL_26Opa(play->state.gfxCtx);
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_MODELVIEW | G_MTX_LOAD);
+
+    Color_RGB8 bodyColor;
+    if (CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("GenericJabberNutModel"), 0)) {
+        bodyColor = CVarGetColor24(CVAR_COSMETIC("Equipment.JabberNut.Value"), Color_RGB8{ 255, 0, 216 });
+        gDPSetEnvColor(POLY_OPA_DISP++, bodyColor.r, bodyColor.g, bodyColor.b, 255);
+        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiJabbernutDL);
+    } else {
+        switch (getItemEntry->drawItemId) {
+            case RG_SPEAK_DEKU:
+                bodyColor = CVarGetColor24(CVAR_COSMETIC("Equipment.DekuJabberNut.Value"), Color_RGB8{ 255, 160, 32 });
+                gDPSetEnvColor(POLY_OPA_DISP++, bodyColor.r, bodyColor.g, bodyColor.b, 255);
+                gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiDekuJabbernutDL);
+                break;
+            case RG_SPEAK_GERUDO:
+                bodyColor = CVarGetColor24(CVAR_COSMETIC("Equipment.GerudoJabberNut.Value"), Color_RGB8{ 128, 64, 0 });
+                gDPSetEnvColor(POLY_OPA_DISP++, bodyColor.r, bodyColor.g, bodyColor.b, 255);
+                gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiGerudoJabbernutDL);
+                break;
+            case RG_SPEAK_GORON:
+                bodyColor = CVarGetColor24(CVAR_COSMETIC("Equipment.GoronJabberNut.Value"), Color_RGB8{ 255, 32, 0 });
+                gDPSetEnvColor(POLY_OPA_DISP++, bodyColor.r, bodyColor.g, bodyColor.b, 255);
+                gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiGoronJabbernutDL);
+                break;
+            case RG_SPEAK_HYLIAN:
+                bodyColor = CVarGetColor24(CVAR_COSMETIC("Equipment.HylianJabberNut.Value"), Color_RGB8{ 255, 255, 0 });
+                gDPSetEnvColor(POLY_OPA_DISP++, bodyColor.r, bodyColor.g, bodyColor.b, 255);
+                gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiHylianJabbernutDL);
+                break;
+            case RG_SPEAK_KOKIRI:
+                bodyColor =
+                    CVarGetColor24(CVAR_COSMETIC("Equipment.KokiriJabberNut.Value"), Color_RGB8{ 128, 216, 48 });
+                gDPSetEnvColor(POLY_OPA_DISP++, bodyColor.r, bodyColor.g, bodyColor.b, 255);
+                gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiKokiriJabbernutDL);
+                break;
+            case RG_SPEAK_ZORA:
+                bodyColor = CVarGetColor24(CVAR_COSMETIC("Equipment.ZoraJabberNut.Value"), Color_RGB8{ 96, 240, 255 });
+                gDPSetEnvColor(POLY_OPA_DISP++, bodyColor.r, bodyColor.g, bodyColor.b, 255);
+                gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiZoraJabbernutDL);
+                break;
+        }
+    }
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
+extern "C" void Randomizer_DrawOpenChest(PlayState* play, GetItemEntry* getItemEntry) {
+    OPEN_DISPS(play->state.gfxCtx);
+
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_MODELVIEW | G_MTX_LOAD);
+
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiOpenChestsDL);
+
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
+extern "C" void Randomizer_DrawFishingPoleGI(PlayState* play, GetItemEntry* getItemEntry) {
+    OPEN_DISPS(play->state.gfxCtx);
+
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_MODELVIEW | G_MTX_LOAD);
+
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiFishingPoleDL);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
@@ -1205,19 +1283,6 @@ extern "C" void Randomizer_DrawBombchuBag(PlayState* play, GetItemEntry* getItem
 
     gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gBombchuBagBodyDL);
     CLOSE_DISPS(play->state.gfxCtx);
-}
-
-extern "C" void Randomizer_DrawBombchuBagInLogic(PlayState* play, GetItemEntry* getItemEntry) {
-    if (IS_RANDO && OTRGlobals::Instance->gRandoContext->GetOption(RSK_BOMBCHU_BAG).IsNot(RO_BOMBCHU_BAG_NONE)) {
-        Randomizer_DrawBombchuBag(play, getItemEntry);
-    } else {
-        OPEN_DISPS(play->state.gfxCtx);
-        Gfx_SetupDL_26Opa(play->state.gfxCtx);
-        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
-                  G_MTX_MODELVIEW | G_MTX_LOAD);
-        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiBombchuDL);
-        CLOSE_DISPS(play->state.gfxCtx);
-    }
 }
 
 extern "C" void Randomizer_DrawOverworldKey(PlayState* play, GetItemEntry* getItemEntry) {

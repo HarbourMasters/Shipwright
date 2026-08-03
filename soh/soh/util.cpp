@@ -9,6 +9,8 @@
 #include "Enhancements/randomizer/randomizerTypes.h"
 #include <variables.h>
 
+std::string invalidString = "";
+
 std::vector<std::string> sceneNames = {
     "Inside the Deku Tree",
     "Dodongo's Cavern",
@@ -683,7 +685,7 @@ const std::string& SohUtils::GetSceneName(int32_t scene) {
     if (scene > sceneNames.size()) {
         SPDLOG_WARN("Passed invalid scene id to SohUtils::GetSceneName: ({})", scene);
         assert(false);
-        return "";
+        return invalidString;
     }
 
     return sceneNames[scene];
@@ -708,7 +710,7 @@ const std::string& SohUtils::GetItemName(int32_t item) {
     if (item >= currentItemNames->size()) {
         SPDLOG_WARN("Passed invalid item id to SohUtils::GetItemName: ({})", item);
         assert(false);
-        return "";
+        return invalidString;
     }
 
     return (*currentItemNames)[item];
@@ -732,7 +734,7 @@ const std::string& SohUtils::GetQuestItemName(int32_t item) {
     if (item > questItemNamesEng.size()) {
         SPDLOG_WARN("Passed invalid quest item id to SohUtils::GetQuestItemName: ({})", item);
         assert(false);
-        return "";
+        return invalidString;
     }
 
     return (*currentQuestItemNames)[item];
@@ -742,7 +744,7 @@ const std::string& SohUtils::GetRandomizerCheckAreaPrefix(int32_t rcarea) {
     if (rcarea > rcareaPrefixes.size()) {
         SPDLOG_WARN("Passed invalid rcarea to SohUtils::GetRandomizerCheckAreaPrefix: ({})", rcarea);
         assert(false);
-        return "";
+        return invalidString;
     }
 
     return rcareaPrefixes[rcarea];
@@ -793,4 +795,21 @@ uint32_t SohUtils::Hash(std::string str) {
         hval *= 0x01000193;
     }
     return hval;
+}
+
+std::vector<std::string> SohUtils::StringSplit(const std::string& str, const std::string& delimiter) {
+    std::vector<std::string> tokens;
+    size_t pos = str.find(delimiter, 0);
+    size_t prevpos = 0;
+
+    while (pos != std::string::npos) {
+        std::string token = str.substr(prevpos, pos - prevpos);
+        tokens.push_back(token);
+        prevpos = pos + 1;
+        pos = str.find(delimiter, prevpos);
+    }
+
+    tokens.push_back(str.substr(prevpos));
+
+    return tokens;
 }

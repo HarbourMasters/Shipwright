@@ -7,14 +7,7 @@
 #include <array>
 #include <map>
 #include <string>
-#include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "variables.h" //only for gItemIcons
-
-extern "C" {
-#include "textures/icon_item_static/icon_item_static.h"
-#include "textures/icon_item_24_static/icon_item_24_static.h"
-#include "textures/parameter_static/parameter_static.h"
-}
 
 const char* GetTextureForItemId(uint32_t itemId);
 void RegisterImGuiItemIcons();
@@ -35,8 +28,6 @@ typedef struct {
 
 // Maps items ids to info for use in ImGui
 extern std::map<uint32_t, ItemMapEntry> itemMapping;
-
-extern std::map<uint32_t, ItemMapEntry> gregMapping;
 
 typedef struct {
     uint32_t id;

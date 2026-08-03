@@ -1,0 +1,12 @@
+:config:
+  segments:
+    - [ 2, 0x01CCA8F0 ]
+  directory: scenes/shared/syatekijyou_scene
+  external_files:
+    - pal_gc/scenes/shared/syatekijyou_scene.yml
+
+syatekijyou_sceneSet_001A20:
+  type: OOT:SCENE
+  offset: 0x1A20
+  symbol: syatekijyou_sceneSet_001A20
+  base_name: syatekijyou_scene

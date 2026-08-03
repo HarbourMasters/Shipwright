@@ -1,31 +1,31 @@
 #include "randomizer_entrance_tracker.h"
 #include "soh/OTRGlobals.h"
-#include "soh/cvar_prefixes.h"
 #include "soh/SohGui/SohGui.hpp"
 
 #include <string>
 #include <vector>
-#include <libultraship/libultraship.h>
+#include <libultraship/controller/controldeck/ControlDeck.h>
+#include "soh/Enhancements/randomizer/randomizer.h"
 
 extern "C" {
 #include <z64.h>
-#include "variables.h"
-#include "functions.h"
 #include "macros.h"
 extern PlayState* gPlayState;
 
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
-#include "soh/Enhancements/randomizer/randomizer_grotto.h"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 }
 
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "entrance.h"
 
+using namespace UIWidgets;
+
 #define COLOR_ORANGE IM_COL32(230, 159, 0, 255)
 #define COLOR_GREEN IM_COL32(0, 158, 115, 255)
 #define COLOR_GRAY IM_COL32(155, 155, 155, 255)
 
+namespace EntranceTracker {
 EntranceOverride srcListSortedByArea[ENTRANCE_OVERRIDES_MAX_COUNT] = { 0 };
 EntranceOverride destListSortedByArea[ENTRANCE_OVERRIDES_MAX_COUNT] = { 0 };
 EntranceOverride srcListSortedByType[ENTRANCE_OVERRIDES_MAX_COUNT] = { 0 };
@@ -38,31 +38,20 @@ static s16 lastEntranceIndex = -1;
 static s16 currentGrottoId = -1;
 static s16 lastSceneOrEntranceDetected = -1;
 
+Color_RGBA8 Color_Background = { 0, 0, 0, 255 };
+static WidgetInfo backgroundColorWidget;
+static WidgetInfo windowTypeWidget;
+
 static bool presetLoaded = false;
 static ImVec2 presetPos;
 static ImVec2 presetSize;
 
 static std::string spoilerEntranceGroupNames[] = {
-    "Spawns/Warp Songs/Owls",
-    "Kokiri Forest",
-    "Lost Woods",
-    "Sacred Forest Meadow",
-    "Kakariko Village",
-    "Graveyard",
-    "Death Mountain Trail",
-    "Death Mountain Crater",
-    "Goron City",
-    "Zora's River",
-    "Zora's Domain",
-    "Zora's Fountain",
-    "Hyrule Field",
-    "Lon Lon Ranch",
-    "Lake Hylia",
-    "Gerudo Valley",
-    "Gerudo Fortress",
-    "Haunted Wasteland",
-    "Desert Colossus",
-    "Market",
+    "Spawns/Warp Songs", "Kokiri Forest",     "Lost Woods",           "Sacred Forest Meadow",
+    "Kakariko Village",  "Graveyard",         "Death Mountain Trail", "Death Mountain Crater",
+    "Goron City",        "Zora's River",      "Zora's Domain",        "Zora's Fountain",
+    "Hyrule Field",      "Lon Lon Ranch",     "Lake Hylia",           "Gerudo Valley",
+    "Gerudo Fortress",   "Haunted Wasteland", "Desert Colossus",      "Market",
     "Hyrule Castle",
 };
 
@@ -84,9 +73,6 @@ const EntranceData entranceData[] = {
     { ENTR_DESERT_COLOSSUS_WARP_PAD,       -1, {{ -1 }}, "Requiem of Spirit",  "Desert Colossus Warp Pad",  ENTRANCE_GROUP_ONE_WAY, ENTRANCE_GROUP_ONE_WAY, ENTRANCE_TYPE_ONE_WAY},
     { ENTR_GRAVEYARD_WARP_PAD,             -1, {{ -1 }}, "Nocturne of Shadow", "Graveyard Warp Pad",        ENTRANCE_GROUP_ONE_WAY, ENTRANCE_GROUP_ONE_WAY, ENTRANCE_TYPE_ONE_WAY},
     { ENTR_TEMPLE_OF_TIME_WARP_PAD,        -1, {{ -1 }}, "Prelude of Light",   "Temple of Time Warp Pad",   ENTRANCE_GROUP_ONE_WAY, ENTRANCE_GROUP_ONE_WAY, ENTRANCE_TYPE_ONE_WAY},
-
-    { ENTR_KAKARIKO_VILLAGE_OWL_DROP, -1, SINGLE_SCENE_INFO(SCENE_DEATH_MOUNTAIN_TRAIL), "DMT Owl Flight", "Kakariko Village Owl Drop", ENTRANCE_GROUP_ONE_WAY, ENTRANCE_GROUP_ONE_WAY, ENTRANCE_TYPE_ONE_WAY},
-    { ENTR_HYRULE_FIELD_OWL_DROP,     -1, SINGLE_SCENE_INFO(SCENE_LAKE_HYLIA),           "LH Owl Flight",  "Hyrule Field Owl Drop",     ENTRANCE_GROUP_ONE_WAY, ENTRANCE_GROUP_ONE_WAY, ENTRANCE_TYPE_ONE_WAY},
 
     // Kokiri Forest
     { ENTR_LOST_WOODS_BRIDGE_EAST_EXIT,              ENTR_KOKIRI_FOREST_LOWER_EXIT,                 SINGLE_SCENE_INFO(SCENE_KOKIRI_FOREST),          "Kokiri Forest Lower Exit",     "Lost Woods Bridge East Exit", ENTRANCE_GROUP_KOKIRI_FOREST, ENTRANCE_GROUP_LOST_WOODS,    ENTRANCE_TYPE_OVERWORLD, "lw"},
@@ -189,6 +175,7 @@ const EntranceData entranceData[] = {
     { ENTR_GRAVEYARD_SHADOW_TEMPLE_BLUE_WARP, -1,                                    SINGLE_SCENE_INFO(SCENE_SHADOW_TEMPLE_BOSS),         "Bongo-Bongo Blue Warp",        "Shadow Temple Blue Warp",      ENTRANCE_GROUP_GRAVEYARD, ENTRANCE_GROUP_GRAVEYARD, ENTRANCE_TYPE_ONE_WAY, "bw", 1},
 
     // Death Mountain Trail
+    { ENTR_KAKARIKO_VILLAGE_OWL_DROP,                    -1,                                                SINGLE_SCENE_INFO(SCENE_DEATH_MOUNTAIN_TRAIL), "DMT Owl Flight",                                "Kakariko Village Owl Drop",                     ENTRANCE_GROUP_DEATH_MOUNTAIN_TRAIL, ENTRANCE_GROUP_KAKARIKO,              ENTRANCE_TYPE_ONE_WAY},
     { ENTR_GORON_CITY_UPPER_EXIT,                        ENTR_DEATH_MOUNTAIN_TRAIL_GC_EXIT,                 SINGLE_SCENE_INFO(SCENE_DEATH_MOUNTAIN_TRAIL), "Death Mountain Trail Middle Exit",              "Goron City Upper Exit",                         ENTRANCE_GROUP_DEATH_MOUNTAIN_TRAIL, ENTRANCE_GROUP_GORON_CITY,            ENTRANCE_TYPE_OVERWORLD, "gc"},
     { ENTR_KAKARIKO_VILLAGE_GUARD_GATE,                  ENTR_DEATH_MOUNTAIN_TRAIL_BOTTOM_EXIT,             SINGLE_SCENE_INFO(SCENE_DEATH_MOUNTAIN_TRAIL), "Death Mountain Trail Bottom Exit",              "Kakariko Guard Gate Exit",                      ENTRANCE_GROUP_DEATH_MOUNTAIN_TRAIL, ENTRANCE_GROUP_KAKARIKO,              ENTRANCE_TYPE_OVERWORLD},
     { ENTR_DEATH_MOUNTAIN_CRATER_UPPER_EXIT,             ENTR_DEATH_MOUNTAIN_TRAIL_SUMMIT_EXIT,             SINGLE_SCENE_INFO(SCENE_DEATH_MOUNTAIN_TRAIL), "Death Mountain Trail Top Exit",                 "Death Mountain Crater Upper Exit",              ENTRANCE_GROUP_DEATH_MOUNTAIN_TRAIL, ENTRANCE_GROUP_DEATH_MOUNTAIN_CRATER, ENTRANCE_TYPE_OVERWORLD},
@@ -297,6 +284,7 @@ const EntranceData entranceData[] = {
     { ENTRANCE_GROTTO_EXIT(GROTTO_LLR_OFFSET), ENTRANCE_GROTTO_LOAD(GROTTO_LLR_OFFSET), {{ SCENE_GROTTOS, 0x04 }},              "LLR Deku Scrub Grotto",   "LLR Grotto Entry",         ENTRANCE_GROUP_LON_LON_RANCH, ENTRANCE_GROUP_LON_LON_RANCH, ENTRANCE_TYPE_GROTTO,    "scrubs"},
 
     // Lake Hylia
+    { ENTR_HYRULE_FIELD_OWL_DROP,             -1,                                     SINGLE_SCENE_INFO(SCENE_LAKE_HYLIA),          "LH Owl Flight",                  "Hyrule Field Owl Drop",             ENTRANCE_GROUP_LAKE_HYLIA, ENTRANCE_GROUP_HYRULE_FIELD, ENTRANCE_TYPE_ONE_WAY},
     { ENTR_HYRULE_FIELD_FENCE_EXIT,           ENTR_LAKE_HYLIA_NORTH_EXIT,             SINGLE_SCENE_INFO(SCENE_LAKE_HYLIA),          "Lake Hylia North Exit",          "Hyrule Field Fence Exit",           ENTRANCE_GROUP_LAKE_HYLIA, ENTRANCE_GROUP_HYRULE_FIELD, ENTRANCE_TYPE_OVERWORLD, "lh"},
     { ENTR_ZORAS_DOMAIN_UNDERWATER_SHORTCUT,  ENTR_LAKE_HYLIA_UNDERWATER_SHORTCUT,    SINGLE_SCENE_INFO(SCENE_LAKE_HYLIA),          "Lake Hylia Underwater Shortcut", "Zora's Domain Underwater Shortcut", ENTRANCE_GROUP_LAKE_HYLIA, ENTRANCE_GROUP_ZORAS_DOMAIN, ENTRANCE_TYPE_OVERWORLD, "lh"},
     { ENTR_LAKESIDE_LABORATORY_0,             ENTR_LAKE_HYLIA_OUTSIDE_LAB,            SINGLE_SCENE_INFO(SCENE_LAKE_HYLIA),          "LH Lab Entry",                   "LH Lab",                            ENTRANCE_GROUP_LAKE_HYLIA, ENTRANCE_GROUP_LAKE_HYLIA,   ENTRANCE_TYPE_INTERIOR,  "lh", 1},
@@ -397,15 +385,18 @@ const EntranceData entranceData[] = {
     { ENTR_TEMPLE_OF_TIME_EXTERIOR_DAY_OUTSIDE_TEMPLE,    ENTR_TEMPLE_OF_TIME_ENTRANCE,                       SINGLE_SCENE_INFO(SCENE_TEMPLE_OF_TIME),                                                                                                                                                  "Temple of Time Entrance",          "ToT Courtyard Temple Entry",       ENTRANCE_GROUP_MARKET, ENTRANCE_GROUP_MARKET,        ENTRANCE_TYPE_INTERIOR,  "tot"},
 
     // Hyrule Castle
-    { ENTR_MARKET_DAY_CASTLE_EXIT,                   ENTR_CASTLE_GROUNDS_SOUTH_EXIT,                {SCENE_NO_SPAWN(SCENE_HYRULE_CASTLE), SCENE_NO_SPAWN(SCENE_OUTSIDE_GANONS_CASTLE)}, "Castle Grounds South Exit",      "Market Castle Exit",             ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_GROUP_MARKET,        ENTRANCE_TYPE_OVERWORLD, "outside ganon's castle"},
-    { ENTR_GREAT_FAIRYS_FOUNTAIN_SPELLS_DINS_HC,     ENTR_CASTLE_GROUNDS_GREAT_FAIRY_EXIT,          SINGLE_SCENE_INFO(SCENE_HYRULE_CASTLE),                                             "HC Boulder Crawlspace",          "HC Great Fairy Fountain",        ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_TYPE_INTERIOR,  "", 1},
-    { ENTRANCE_GROTTO_LOAD(GROTTO_HC_STORMS_OFFSET), ENTRANCE_GROTTO_EXIT(GROTTO_HC_STORMS_OFFSET), SINGLE_SCENE_INFO(SCENE_HYRULE_CASTLE),                                             "HC Storms Grotto Entry",         "HC Storms Grotto",               ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_TYPE_GROTTO,    "bombable", 1},
-    { ENTR_CASTLE_GROUNDS_GREAT_FAIRY_EXIT,          ENTR_GREAT_FAIRYS_FOUNTAIN_SPELLS_DINS_HC,     {{ SCENE_GREAT_FAIRYS_FOUNTAIN_SPELLS, 0x01 }},                                     "HC Great Fairy Fountain",        "HC Boulder Crawlspace",          ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_TYPE_INTERIOR},
-    { ENTRANCE_GROTTO_EXIT(GROTTO_HC_STORMS_OFFSET), ENTRANCE_GROTTO_LOAD(GROTTO_HC_STORMS_OFFSET), {{ SCENE_GROTTOS, 0x09 }},                                                          "HC Storms Grotto",               "HC Storms Grotto Entry",         ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_TYPE_GROTTO,    "bombable"},
-    { ENTR_GREAT_FAIRYS_FOUNTAIN_MAGIC_OGC_DD,       ENTR_POTION_SHOP_KAKARIKO_1,                   SINGLE_SCENE_INFO(SCENE_OUTSIDE_GANONS_CASTLE),                                     "OGC Behind Pillar",              "OGC Great Fairy Fountain",       ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_TYPE_INTERIOR,  "outside ganon's castle", 1},
-    { ENTR_INSIDE_GANONS_CASTLE_ENTRANCE,            ENTR_CASTLE_GROUNDS_RAINBOW_BRIDGE_EXIT,       SINGLE_SCENE_INFO(SCENE_OUTSIDE_GANONS_CASTLE),                                     "OGC Rainbow Bridge Exit",        "Inside Ganon's Castle Entrance", ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_TYPE_DUNGEON,   "outside ganon's castle,gc", 1},
-    { ENTR_POTION_SHOP_KAKARIKO_1,                   ENTR_GREAT_FAIRYS_FOUNTAIN_MAGIC_OGC_DD,       {{ SCENE_GREAT_FAIRYS_FOUNTAIN_MAGIC, 0x02 }},                                      "OGC Great Fairy Fountain",       "OGC Behind Pillar",              ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_TYPE_INTERIOR,  "outside ganon's castle"},
-    { ENTR_CASTLE_GROUNDS_RAINBOW_BRIDGE_EXIT,       ENTR_INSIDE_GANONS_CASTLE_ENTRANCE,            SINGLE_SCENE_INFO(SCENE_INSIDE_GANONS_CASTLE),                                      "Inside Ganon's Castle Entrance", "OGC Rainbow Bridge Exit",        ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_TYPE_DUNGEON,   "outside ganon's castle,gc"}
+    { ENTR_MARKET_DAY_CASTLE_EXIT,                   ENTR_CASTLE_GROUNDS_SOUTH_EXIT,                {SCENE_NO_SPAWN(SCENE_HYRULE_CASTLE), SCENE_NO_SPAWN(SCENE_OUTSIDE_GANONS_CASTLE)}, "Castle Grounds South Exit",         "Market Castle Exit",                ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_GROUP_MARKET,        ENTRANCE_TYPE_OVERWORLD, "outside ganon's castle"},
+    { ENTR_GREAT_FAIRYS_FOUNTAIN_SPELLS_DINS_HC,     ENTR_CASTLE_GROUNDS_GREAT_FAIRY_EXIT,          SINGLE_SCENE_INFO(SCENE_HYRULE_CASTLE),                                             "HC Boulder Crawlspace",             "HC Great Fairy Fountain",           ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_TYPE_INTERIOR,  "", 1},
+    { ENTRANCE_GROTTO_LOAD(GROTTO_HC_STORMS_OFFSET), ENTRANCE_GROTTO_EXIT(GROTTO_HC_STORMS_OFFSET), SINGLE_SCENE_INFO(SCENE_HYRULE_CASTLE),                                             "HC Storms Grotto Entry",            "HC Storms Grotto",                  ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_TYPE_GROTTO,    "bombable", 1},
+    { ENTR_CASTLE_GROUNDS_GREAT_FAIRY_EXIT,          ENTR_GREAT_FAIRYS_FOUNTAIN_SPELLS_DINS_HC,     {{ SCENE_GREAT_FAIRYS_FOUNTAIN_SPELLS, 0x01 }},                                     "HC Great Fairy Fountain",           "HC Boulder Crawlspace",             ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_TYPE_INTERIOR},
+    { ENTRANCE_GROTTO_EXIT(GROTTO_HC_STORMS_OFFSET), ENTRANCE_GROTTO_LOAD(GROTTO_HC_STORMS_OFFSET), {{ SCENE_GROTTOS, 0x09 }},                                                          "HC Storms Grotto",                  "HC Storms Grotto Entry",            ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_TYPE_GROTTO,    "bombable"},
+    { ENTR_GREAT_FAIRYS_FOUNTAIN_MAGIC_OGC_DD,       ENTR_POTION_SHOP_KAKARIKO_1,                   SINGLE_SCENE_INFO(SCENE_OUTSIDE_GANONS_CASTLE),                                     "OGC Behind Pillar",                 "OGC Great Fairy Fountain",          ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_TYPE_INTERIOR,  "outside ganon's castle", 1},
+    { ENTR_INSIDE_GANONS_CASTLE_ENTRANCE,            ENTR_CASTLE_GROUNDS_RAINBOW_BRIDGE_EXIT,       SINGLE_SCENE_INFO(SCENE_OUTSIDE_GANONS_CASTLE),                                     "OGC Rainbow Bridge Exit",           "Inside Ganon's Castle Entrance",    ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_TYPE_DUNGEON,   "outside ganon's castle,gc", 1},
+    { ENTR_POTION_SHOP_KAKARIKO_1,                   ENTR_GREAT_FAIRYS_FOUNTAIN_MAGIC_OGC_DD,       {{ SCENE_GREAT_FAIRYS_FOUNTAIN_MAGIC, 0x02 }},                                      "OGC Great Fairy Fountain",          "OGC Behind Pillar",                 ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_TYPE_INTERIOR,  "outside ganon's castle"},
+    { ENTR_CASTLE_GROUNDS_RAINBOW_BRIDGE_EXIT,       ENTR_INSIDE_GANONS_CASTLE_ENTRANCE,            SINGLE_SCENE_INFO(SCENE_INSIDE_GANONS_CASTLE),                                      "Inside Ganon's Castle Entrance",    "OGC Rainbow Bridge Exit",           ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_TYPE_DUNGEON,   "outside ganon's castle,gc"},
+    { ENTR_INSIDE_GANONS_CASTLE_1,                   ENTR_GANONS_TOWER_0,                           SINGLE_SCENE_INFO(SCENE_GANONS_TOWER),                                              "Ganon's Tower Entrance",            "Inside Ganon's Castle",             ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_TYPE_DUNGEON,   "gc"},
+    { ENTR_GANONS_TOWER_0,                           ENTR_INSIDE_GANONS_CASTLE_1,                   SINGLE_SCENE_INFO(SCENE_INSIDE_GANONS_CASTLE),                                      "Inside Ganon's Castle",             "Ganon's Tower Entrance",            ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_TYPE_DUNGEON,   "gc"},
+    { ENTR_OUTSIDE_GANONS_CASTLE_1_2,                -1,                                            SINGLE_SCENE_INFO(SCENE_OUTSIDE_GANONS_CASTLE),                                     "Ganon's Blue Warp",                 "Ganon's Castle Blue Warp",          ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_GROUP_HYRULE_CASTLE, ENTRANCE_TYPE_ONE_WAY,   "gc,bw", 1},
 
     // clang-format on
 };
@@ -476,10 +467,10 @@ const EntranceData* GetEntranceData(s16 index) {
     return nullptr;
 }
 
-void EntranceTracker_LoadFromPreset(nlohmann::json info) {
+void LoadFromPreset(const nlohmann::json& info) {
     presetLoaded = true;
-    presetPos = { info["pos"]["x"], info["pos"]["y"] };
-    presetSize = { info["size"]["width"], info["size"]["height"] };
+    presetPos = { info.at("pos").at("x"), info.at("pos").at("y") };
+    presetSize = { info.at("size").at("width"), info.at("size").at("height") };
 }
 
 // Used for verifying the names on both sides of entrance pairs match. Keeping for ease of use for further name changes
@@ -701,9 +692,41 @@ void InitEntranceTrackingData() {
 void EntranceTrackerSettingsWindow::DrawElement() {
 
     ImGui::TextWrapped("The entrance tracker will only track shuffled entrances");
-    UIWidgets::Spacer(0);
+    Spacer(0);
 
     ImGui::TableNextColumn();
+    SohGui::GetSohMenu()->MenuDrawItem(backgroundColorWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
+                                       THEME_COLOR);
+
+    SohGui::GetSohMenu()->MenuDrawItem(windowTypeWidget, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
+                                       THEME_COLOR);
+
+    if (CVarGetInteger(CVAR_TRACKER_ENTRANCE("WindowType"), TRACKER_WINDOW_WINDOW) == TRACKER_WINDOW_FLOATING) {
+        CVarCheckbox("Enable Dragging", CVAR_TRACKER_ENTRANCE("Draggable"), CheckboxOptions().Color(THEME_COLOR));
+        CVarCheckbox("Only Enable While Paused", CVAR_TRACKER_ENTRANCE("ShowOnlyPaused"),
+                     CheckboxOptions().Color(THEME_COLOR));
+        CVarCombobox("Display Mode", CVAR_TRACKER_ENTRANCE("DisplayType"), showMode,
+                     ComboboxOptions()
+                         .LabelPosition(LabelPositions::Far)
+                         .ComponentAlignment(ComponentAlignments::Right)
+                         .Color(THEME_COLOR)
+                         .DefaultIndex(0));
+        if (CVarGetInteger(CVAR_TRACKER_ENTRANCE("DisplayType"), TRACKER_DISPLAY_ALWAYS) ==
+            TRACKER_DISPLAY_COMBO_BUTTON) {
+            CVarCombobox("Combo Button 1", CVAR_TRACKER_ENTRANCE("ComboButton1"), buttonStrings,
+                         ComboboxOptions()
+                             .LabelPosition(LabelPositions::Far)
+                             .ComponentAlignment(ComponentAlignments::Right)
+                             .Color(THEME_COLOR)
+                             .DefaultIndex(TRACKER_COMBO_BUTTON_L));
+            CVarCombobox("Combo Button 2", CVAR_TRACKER_ENTRANCE("ComboButton2"), buttonStrings,
+                         ComboboxOptions()
+                             .LabelPosition(LabelPositions::Far)
+                             .ComponentAlignment(ComponentAlignments::Right)
+                             .Color(THEME_COLOR)
+                             .DefaultIndex(TRACKER_COMBO_BUTTON_L));
+        }
+    }
 
     if (ImGui::BeginTable("entranceTrackerSubSettings", 2,
                           ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_SizingStretchProp)) {
@@ -713,64 +736,55 @@ void EntranceTrackerSettingsWindow::DrawElement() {
         ImGui::TableNextColumn();
 
         ImGui::Text("Sort By");
-        UIWidgets::CVarRadioButton("To", CVAR_TRACKER_ENTRANCE("SortBy"), 0,
-                                   UIWidgets::RadioButtonsOptions()
-                                       .Color(THEME_COLOR)
-                                       .Tooltip("Sort entrances by the original source entrance"));
-        UIWidgets::CVarRadioButton(
+        CVarRadioButton(
+            "To", CVAR_TRACKER_ENTRANCE("SortBy"), 0,
+            RadioButtonsOptions().Color(THEME_COLOR).Tooltip("Sort entrances by the original source entrance"));
+        CVarRadioButton(
             "From", CVAR_TRACKER_ENTRANCE("SortBy"), 1,
-            UIWidgets::RadioButtonsOptions().Color(THEME_COLOR).Tooltip("Sort entrances by the overrided destination"));
+            RadioButtonsOptions().Color(THEME_COLOR).Tooltip("Sort entrances by the overrided destination"));
 
         ImGui::Text("List Items");
-        UIWidgets::CVarCheckbox(
-            "Auto scroll", CVAR_TRACKER_ENTRANCE("AutoScroll"),
-            UIWidgets::CheckboxOptions()
-                .Tooltip("Automatically scroll to the first available entrance in the current scene")
-                .Color(THEME_COLOR));
+        CVarCheckbox("Auto scroll", CVAR_TRACKER_ENTRANCE("AutoScroll"),
+                     CheckboxOptions()
+                         .Tooltip("Automatically scroll to the first available entrance in the current scene")
+                         .Color(THEME_COLOR));
         ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
-        UIWidgets::CVarCheckbox("Highlight previous", CVAR_TRACKER_ENTRANCE("HighlightPrevious"),
-                                UIWidgets::CheckboxOptions()
-                                    .Tooltip("Highlight the previous entrance that Link came from")
-                                    .Color(THEME_COLOR));
-        UIWidgets::CVarCheckbox("Highlight available", CVAR_TRACKER_ENTRANCE("HighlightAvailable"),
-                                UIWidgets::CheckboxOptions()
-                                    .Tooltip("Highlight available entrances in the current scene")
-                                    .Color(THEME_COLOR));
+        CVarCheckbox(
+            "Highlight previous", CVAR_TRACKER_ENTRANCE("HighlightPrevious"),
+            CheckboxOptions().Tooltip("Highlight the previous entrance that Link came from").Color(THEME_COLOR));
+        CVarCheckbox(
+            "Highlight available", CVAR_TRACKER_ENTRANCE("HighlightAvailable"),
+            CheckboxOptions().Tooltip("Highlight available entrances in the current scene").Color(THEME_COLOR));
         ImGui::EndDisabled();
-        UIWidgets::CVarCheckbox("Hide undiscovered", CVAR_TRACKER_ENTRANCE("CollapseUndiscovered"),
-                                UIWidgets::CheckboxOptions()
-                                    .Tooltip("Collapse undiscovered entrances towards the bottom of each group")
-                                    .Color(THEME_COLOR));
+        CVarCheckbox("Hide undiscovered", CVAR_TRACKER_ENTRANCE("CollapseUndiscovered"),
+                     CheckboxOptions()
+                         .Tooltip("Collapse undiscovered entrances towards the bottom of each group")
+                         .Color(THEME_COLOR));
         bool disableHideReverseEntrances =
             OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_DECOUPLED_ENTRANCES) == RO_GENERIC_ON;
         static const char* disableHideReverseEntrancesText =
             "This option is disabled because \"Decouple Entrances\" is enabled.";
-        UIWidgets::CVarCheckbox("Hide reverse", CVAR_TRACKER_ENTRANCE("HideReverseEntrances"),
-                                UIWidgets::CheckboxOptions({ { .disabled = disableHideReverseEntrances,
-                                                               .disabledTooltip = disableHideReverseEntrancesText } })
-                                    .Tooltip("Hide reverse entrance transitions when Decouple Entrances is off")
-                                    .DefaultValue(true)
-                                    .Color(THEME_COLOR));
+        CVarCheckbox("Hide reverse", CVAR_TRACKER_ENTRANCE("HideReverseEntrances"),
+                     CheckboxOptions({ { .disabled = disableHideReverseEntrances,
+                                         .disabledTooltip = disableHideReverseEntrancesText } })
+                         .Tooltip("Hide reverse entrance transitions when Decouple Entrances is off")
+                         .DefaultValue(true)
+                         .Color(THEME_COLOR));
 
         ImGui::TableNextColumn();
 
         ImGui::Text("Group By");
-        UIWidgets::CVarRadioButton(
-            "Area", CVAR_TRACKER_ENTRANCE("GroupBy"), 0,
-            UIWidgets::RadioButtonsOptions().Color(THEME_COLOR).Tooltip("Group entrances by their area"));
-        UIWidgets::CVarRadioButton(
-            "Type", CVAR_TRACKER_ENTRANCE("GroupBy"), 1,
-            UIWidgets::RadioButtonsOptions().Color(THEME_COLOR).Tooltip("Group entrances by their entrance type"));
+        CVarRadioButton("Area", CVAR_TRACKER_ENTRANCE("GroupBy"), 0,
+                        RadioButtonsOptions().Color(THEME_COLOR).Tooltip("Group entrances by their area"));
+        CVarRadioButton("Type", CVAR_TRACKER_ENTRANCE("GroupBy"), 1,
+                        RadioButtonsOptions().Color(THEME_COLOR).Tooltip("Group entrances by their entrance type"));
 
         ImGui::Text("Spoiler Reveal");
         ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
-        UIWidgets::CVarCheckbox(
-            "Show Source", CVAR_TRACKER_ENTRANCE("ShowFrom"),
-            UIWidgets::CheckboxOptions().Tooltip("Reveal the source for undiscovered entrances").Color(THEME_COLOR));
-        UIWidgets::CVarCheckbox("Show Destination", CVAR_TRACKER_ENTRANCE("ShowTo"),
-                                UIWidgets::CheckboxOptions()
-                                    .Tooltip("Reveal the destination for undiscovered entrances")
-                                    .Color(THEME_COLOR));
+        CVarCheckbox("Show Source", CVAR_TRACKER_ENTRANCE("ShowFrom"),
+                     CheckboxOptions().Tooltip("Reveal the source for undiscovered entrances").Color(THEME_COLOR));
+        CVarCheckbox("Show Destination", CVAR_TRACKER_ENTRANCE("ShowTo"),
+                     CheckboxOptions().Tooltip("Reveal the destination for undiscovered entrances").Color(THEME_COLOR));
         ImGui::EndDisabled();
         ImGui::EndTable();
     }
@@ -794,6 +808,30 @@ void EntranceTrackerWindow::Draw() {
 }
 
 void EntranceTrackerWindow::DrawElement() {
+    Color_Background = CVarGetColor(CVAR_TRACKER_ENTRANCE("BgColor.Value"), Color_Bg_Default);
+    if (CVarGetInteger(CVAR_TRACKER_ENTRANCE("WindowType"), TRACKER_WINDOW_WINDOW) == TRACKER_WINDOW_FLOATING) {
+        if (CVarGetInteger(CVAR_TRACKER_ENTRANCE("ShowOnlyPaused"), 0) &&
+            (gPlayState == nullptr || gPlayState->pauseCtx.state == 0)) {
+            return;
+        }
+
+        if (CVarGetInteger(CVAR_TRACKER_ENTRANCE("DisplayType"), TRACKER_DISPLAY_ALWAYS) ==
+            TRACKER_DISPLAY_COMBO_BUTTON) {
+            int comboButton1Mask =
+                buttons[CVarGetInteger(CVAR_TRACKER_ENTRANCE("ComboButton1"), TRACKER_COMBO_BUTTON_L)];
+            int comboButton2Mask =
+                buttons[CVarGetInteger(CVAR_TRACKER_ENTRANCE("ComboButton2"), TRACKER_COMBO_BUTTON_R)];
+            OSContPad* trackerButtonsPressed =
+                std::dynamic_pointer_cast<LUS::ControlDeck>(Ship::Context::GetRawInstance()->GetControlDeck())
+                    ->GetPads();
+            bool comboButtonsHeld = trackerButtonsPressed != nullptr &&
+                                    trackerButtonsPressed[0].button & comboButton1Mask &&
+                                    trackerButtonsPressed[0].button & comboButton2Mask;
+            if (!comboButtonsHeld) {
+                return;
+            }
+        }
+    }
     if (presetLoaded) {
         ImGui::SetNextWindowSize(presetSize);
         ImGui::SetNextWindowPos(presetPos);
@@ -801,214 +839,222 @@ void EntranceTrackerWindow::DrawElement() {
     } else {
         ImGui::SetNextWindowSize(ImVec2(600, 375), ImGuiCond_FirstUseEver);
     }
-
-    if (!ImGui::Begin("Entrance Tracker", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
-        ImGui::End();
-        return;
-    }
-
-    static ImGuiTextFilter locationSearch;
-
-    uint8_t nextTreeState = 0;
-    if (UIWidgets::Button("Collapse All", UIWidgets::ButtonOptions({ { .tooltip = "Collapse all entrance groups" } })
-                                              .Color(THEME_COLOR)
-                                              .Size(UIWidgets::Sizes::Inline))) {
-        nextTreeState = 1;
-    }
-    ImGui::SameLine();
-    if (UIWidgets::Button("Expand All", UIWidgets::ButtonOptions({ { .tooltip = "Expand all entrance groups" } })
-                                            .Color(THEME_COLOR)
-                                            .Size(UIWidgets::Sizes::Inline))) {
-        nextTreeState = 2;
-    }
-    ImGui::SameLine();
-    if (UIWidgets::Button("Clear", UIWidgets::ButtonOptions({ { .tooltip = "Clear the search field" } })
-                                       .Color(THEME_COLOR)
-                                       .Size(UIWidgets::Sizes::Inline))) {
-        locationSearch.Clear();
-    }
-
-    UIWidgets::PushStyleCombobox(THEME_COLOR);
-    if (locationSearch.Draw()) {
-        nextTreeState = 2;
-    }
-    UIWidgets::PopStyleCombobox();
-
-    uint8_t destToggle = CVarGetInteger(CVAR_TRACKER_ENTRANCE("SortBy"), 0);
-    uint8_t groupToggle = CVarGetInteger(CVAR_TRACKER_ENTRANCE("GroupBy"), 0);
-
-    // Combine destToggle and groupToggle to get a range of 0-3
-    uint8_t groupType = destToggle + (groupToggle * 2);
-    size_t groupCount = groupToggle ? (size_t)ENTRANCE_TYPE_COUNT : (size_t)SPOILER_ENTRANCE_GROUP_COUNT;
-    auto groupNames = groupToggle ? groupTypeNames : spoilerEntranceGroupNames;
-
-    EntranceOverride* entranceList;
-
-    switch (groupType) {
-        case ENTRANCE_SOURCE_AREA:
-            entranceList = srcListSortedByArea;
-            break;
-        case ENTRANCE_DESTINATION_AREA:
-            entranceList = destListSortedByArea;
-            break;
-        case ENTRANCE_SOURCE_TYPE:
-            entranceList = srcListSortedByType;
-            break;
-        case ENTRANCE_DESTINATION_TYPE:
-            entranceList = destListSortedByType;
-            break;
-    }
-
-    // Begin tracker list
-    ImGui::BeginChild("ChildEntranceTrackerLocations", ImVec2(0, -8));
-    bool showTo = CVarGetInteger(CVAR_TRACKER_ENTRANCE("ShowTo"), 0);
-    bool showFrom = CVarGetInteger(CVAR_TRACKER_ENTRANCE("ShowFrom"), 0);
-    bool collapseUndiscovered = CVarGetInteger(CVAR_TRACKER_ENTRANCE("CollapseUndiscovered"), 0);
-    bool highlightPrevious = CVarGetInteger(CVAR_TRACKER_ENTRANCE("HighlightPrevious"), 0);
-    bool highlightAvailable = CVarGetInteger(CVAR_TRACKER_ENTRANCE("HighlightAvailable"), 0);
-    bool hideReverse = CVarGetInteger(CVAR_TRACKER_ENTRANCE("HideReverseEntrances"), 1);
-    bool autoScrollArea = CVarGetInteger(CVAR_TRACKER_ENTRANCE("AutoScroll"), 0);
-    for (size_t i = 0; i < groupCount; i++) {
-        std::string groupName = groupNames[i];
-
-        uint16_t entranceCount = gEntranceTrackingData.GroupEntranceCounts[groupType][i];
-        uint16_t startIndex = gEntranceTrackingData.GroupOffsets[groupType][i];
-
-        bool doAreaScroll = false;
-        int undiscovered = 0;
-        std::vector<EntranceOverride> displayEntrances = {};
-
-        // Loop over entrances first for filtering
-        for (size_t entranceIdx = 0; entranceIdx < entranceCount; entranceIdx++) {
-            size_t trueIdx = entranceIdx + startIndex;
-
-            EntranceOverride entrance = entranceList[trueIdx];
-
-            const EntranceData* original = GetEntranceData(entrance.index);
-            const EntranceData* override = GetEntranceData(entrance.override);
-
-            // If entrance is a dungeon, grotto, or interior entrance, the transition into that area has oneExit set,
-            // which means we can filter the return transitions as redundant if entrances are not decoupled, as this is
-            // redundant information. Also checks a setting, enabled by default, for hiding them. If all of these
-            // conditions are met, we skip adding this entrance to any lists. However, if entrances are decoupled, then
-            // all transitions need to be displayed, so we proceed with the filtering
-            if ((original->type == ENTRANCE_TYPE_DUNGEON || original->type == ENTRANCE_TYPE_GROTTO ||
-                 original->type == ENTRANCE_TYPE_INTERIOR) &&
-                (original->oneExit != 1 &&
-                 OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_DECOUPLED_ENTRANCES) == RO_GENERIC_OFF) &&
-                hideReverse == 1) {
-                continue;
-            }
-
-            // RANDOTODO: Only show blue warps if bluewarp shuffle is on
-            if (original->metaTag.ends_with("bw") || override->metaTag.ends_with("bw")) {
-                continue;
-            }
-
-            bool isDiscovered = IsEntranceDiscovered(entrance.index);
-
-            bool showOverride = (!destToggle ? showTo : showFrom) || isDiscovered;
-            bool showOriginal = (!destToggle ? showFrom : showTo) || isDiscovered;
-
-            const char* origSrcAreaName = spoilerEntranceGroupNames[original->srcGroup].c_str();
-            const char* origTypeName = groupTypeNames[original->type].c_str();
-            const char* rplcSrcAreaName = spoilerEntranceGroupNames[override->srcGroup].c_str();
-            const char* rplcTypeName = groupTypeNames[override->type].c_str();
-
-            const char* origSrcName = showOriginal ? original->source.c_str() : "";
-            const char* rplcDstName = showOverride ? override->destination.c_str() : "";
-
-            // Filter for entrances by group name, type, source/destination names, and meta tags
-            if ((!locationSearch.IsActive() && (showOriginal || showOverride || !collapseUndiscovered)) ||
-                ((showOriginal &&
-                  (locationSearch.PassFilter(origSrcName) || locationSearch.PassFilter(origSrcAreaName) ||
-                   locationSearch.PassFilter(origTypeName) || locationSearch.PassFilter(original->metaTag.c_str()))) ||
-                 (showOverride &&
-                  (locationSearch.PassFilter(rplcDstName) || locationSearch.PassFilter(rplcSrcAreaName) ||
-                   locationSearch.PassFilter(rplcTypeName) || locationSearch.PassFilter(override->metaTag.c_str()))))) {
-
-                // Detect if a scroll should happen and remember the scene for that scroll
-                if (!doAreaScroll &&
-                    (lastSceneOrEntranceDetected != LinkIsInArea(original) && LinkIsInArea(original) != -1)) {
-                    lastSceneOrEntranceDetected = LinkIsInArea(original);
-                    doAreaScroll = true;
-                }
-
-                displayEntrances.push_back(entrance);
-            } else if (!isDiscovered) {
-                undiscovered++;
-            }
+    if (Trackers::BeginFloatWindows(
+            "Entrance Tracker", mIsVisible, Color_Background,
+            static_cast<TrackerWindowType>(CVarGetInteger(CVAR_TRACKER_ENTRANCE("WindowType"), TRACKER_WINDOW_WINDOW)),
+            CVarGetInteger(CVAR_TRACKER_ENTRANCE("Draggable"), 1), ImGuiWindowFlags_NoScrollbar)) {
+        if (!GameInteractor::IsSaveLoaded()) {
+            ImGui::Text("Waiting for file load..."); // TODO Language
+            Trackers::EndFloatWindows();
+            return;
         }
 
-        // Then display the entrances in groups
-        if (displayEntrances.size() != 0 || (!locationSearch.IsActive() && undiscovered > 0)) {
-            // Handle opening/closing trees based on auto scroll or collapse/expand buttons
-            if (nextTreeState == 1) {
-                ImGui::SetNextItemOpen(false, ImGuiCond_None);
-            } else {
-                ImGui::SetNextItemOpen(true, nextTreeState == 0 && !doAreaScroll ? ImGuiCond_Once : ImGuiCond_None);
-            }
+        static ImGuiTextFilter locationSearch;
 
-            if (ImGui::TreeNode(groupName.c_str())) {
-                for (auto entrance : displayEntrances) {
-                    const EntranceData* original = GetEntranceData(entrance.index);
-                    const EntranceData* override = GetEntranceData(entrance.override);
+        uint8_t nextTreeState = 0;
+        if (Button("Collapse All", ButtonOptions({ { .tooltip = "Collapse all entrance groups" } })
+                                       .Color(THEME_COLOR)
+                                       .Size(Sizes::Inline))) {
+            nextTreeState = 1;
+        }
+        ImGui::SameLine();
+        if (Button("Expand All", ButtonOptions({ { .tooltip = "Expand all entrance groups" } })
+                                     .Color(THEME_COLOR)
+                                     .Size(Sizes::Inline))) {
+            nextTreeState = 2;
+        }
+        ImGui::SameLine();
+        if (Button("Clear",
+                   ButtonOptions({ { .tooltip = "Clear the search field" } }).Color(THEME_COLOR).Size(Sizes::Inline))) {
+            locationSearch.Clear();
+        }
 
-                    bool isDiscovered = IsEntranceDiscovered(entrance.index);
+        PushStyleCombobox(THEME_COLOR);
+        if (locationSearch.Draw()) {
+            nextTreeState = 2;
+        }
+        PopStyleCombobox();
 
-                    bool showOverride = (!destToggle ? showTo : showFrom) || isDiscovered;
-                    bool showOriginal = (!destToggle ? showFrom : showTo) || isDiscovered;
+        uint8_t destToggle = CVarGetInteger(CVAR_TRACKER_ENTRANCE("SortBy"), 0);
+        uint8_t groupToggle = CVarGetInteger(CVAR_TRACKER_ENTRANCE("GroupBy"), 0);
 
-                    const char* unknown = "???";
+        // Combine destToggle and groupToggle to get a range of 0-3
+        uint8_t groupType = destToggle + (groupToggle * 2);
+        size_t groupCount = groupToggle ? (size_t)ENTRANCE_TYPE_COUNT : (size_t)SPOILER_ENTRANCE_GROUP_COUNT;
+        auto groupNames = groupToggle ? groupTypeNames : spoilerEntranceGroupNames;
 
-                    const char* origSrcName = showOriginal ? original->source.c_str() : unknown;
-                    const char* rplcDstName = showOverride ? override->destination.c_str() : unknown;
+        EntranceOverride* entranceList;
 
-                    uint32_t color = isDiscovered ? IM_COL32_WHITE : COLOR_GRAY;
+        switch (groupType) {
+            case ENTRANCE_SOURCE_AREA:
+                entranceList = srcListSortedByArea;
+                break;
+            case ENTRANCE_DESTINATION_AREA:
+                entranceList = destListSortedByArea;
+                break;
+            case ENTRANCE_SOURCE_TYPE:
+                entranceList = srcListSortedByType;
+                break;
+            case ENTRANCE_DESTINATION_TYPE:
+                entranceList = destListSortedByType;
+                break;
+        }
 
-                    // Handle highlighting and auto scroll
-                    if ((original->index == lastEntranceIndex ||
-                         (override->reverseIndex == lastEntranceIndex &&
-                          OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_DECOUPLED_ENTRANCES) ==
-                              RO_GENERIC_OFF)) &&
-                        highlightPrevious) {
-                        color = COLOR_ORANGE;
-                    } else if (LinkIsInArea(original) != -1) {
-                        if (highlightAvailable) {
-                            color = COLOR_GREEN;
-                        }
+        // Begin tracker list
+        ImGui::BeginChild("ChildEntranceTrackerLocations", ImVec2(0, -8));
+        bool showTo = CVarGetInteger(CVAR_TRACKER_ENTRANCE("ShowTo"), 0);
+        bool showFrom = CVarGetInteger(CVAR_TRACKER_ENTRANCE("ShowFrom"), 0);
+        bool collapseUndiscovered = CVarGetInteger(CVAR_TRACKER_ENTRANCE("CollapseUndiscovered"), 0);
+        bool highlightPrevious = CVarGetInteger(CVAR_TRACKER_ENTRANCE("HighlightPrevious"), 0);
+        bool highlightAvailable = CVarGetInteger(CVAR_TRACKER_ENTRANCE("HighlightAvailable"), 0);
+        bool hideReverse = CVarGetInteger(CVAR_TRACKER_ENTRANCE("HideReverseEntrances"), 1);
+        bool autoScrollArea = CVarGetInteger(CVAR_TRACKER_ENTRANCE("AutoScroll"), 0);
+        for (size_t i = 0; i < groupCount; i++) {
+            std::string groupName = groupNames[i];
 
-                        if (doAreaScroll) {
-                            doAreaScroll = false;
-                            if (autoScrollArea) {
-                                ImGui::SetScrollHereY(0.0f);
-                            }
-                        }
+            uint16_t entranceCount = gEntranceTrackingData.GroupEntranceCounts[groupType][i];
+            uint16_t startIndex = gEntranceTrackingData.GroupOffsets[groupType][i];
+
+            bool doAreaScroll = false;
+            int undiscovered = 0;
+            std::vector<EntranceOverride> displayEntrances = {};
+
+            // Loop over entrances first for filtering
+            for (size_t entranceIdx = 0; entranceIdx < entranceCount; entranceIdx++) {
+                size_t trueIdx = entranceIdx + startIndex;
+
+                EntranceOverride entrance = entranceList[trueIdx];
+
+                const EntranceData* original = GetEntranceData(entrance.index);
+                const EntranceData* override = GetEntranceData(entrance.override);
+
+                // If entrance is a dungeon, grotto, or interior entrance, the transition into that area has oneExit
+                // set, which means we can filter the return transitions as redundant if entrances are not decoupled, as
+                // this is redundant information. Also checks a setting, enabled by default, for hiding them. If all of
+                // these conditions are met, we skip adding this entrance to any lists. However, if entrances are
+                // decoupled, then all transitions need to be displayed, so we proceed with the filtering
+                if ((original->type == ENTRANCE_TYPE_DUNGEON || original->type == ENTRANCE_TYPE_GROTTO ||
+                     original->type == ENTRANCE_TYPE_INTERIOR) &&
+                    (original->oneExit != 1 && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(
+                                                   RSK_DECOUPLED_ENTRANCES) == RO_GENERIC_OFF) &&
+                    hideReverse == 1) {
+                    continue;
+                }
+
+                // Only show blue warps if bluewarp shuffle is on
+                if ((original->metaTag.ends_with("bw") || override->metaTag.ends_with("bw")) &&
+                    OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_DECOUPLED_ENTRANCES) ==
+                        RO_GENERIC_OFF) {
+                    continue;
+                }
+
+                bool isDiscovered = IsEntranceDiscovered(entrance.index);
+
+                bool showOverride = (!destToggle ? showTo : showFrom) || isDiscovered;
+                bool showOriginal = (!destToggle ? showFrom : showTo) || isDiscovered;
+
+                const char* origSrcAreaName = spoilerEntranceGroupNames[original->srcGroup].c_str();
+                const char* origTypeName = groupTypeNames[original->type].c_str();
+                const char* rplcSrcAreaName = spoilerEntranceGroupNames[override->srcGroup].c_str();
+                const char* rplcTypeName = groupTypeNames[override->type].c_str();
+
+                const char* origSrcName = showOriginal ? original->source.c_str() : "";
+                const char* rplcDstName = showOverride ? override->destination.c_str() : "";
+
+                // Filter for entrances by group name, type, source/destination names, and meta tags
+                if ((!locationSearch.IsActive() && (showOriginal || showOverride || !collapseUndiscovered)) ||
+                    ((showOriginal &&
+                      (locationSearch.PassFilter(origSrcName) || locationSearch.PassFilter(origSrcAreaName) ||
+                       locationSearch.PassFilter(origTypeName) ||
+                       locationSearch.PassFilter(original->metaTag.c_str()))) ||
+                     (showOverride &&
+                      (locationSearch.PassFilter(rplcDstName) || locationSearch.PassFilter(rplcSrcAreaName) ||
+                       locationSearch.PassFilter(rplcTypeName) ||
+                       locationSearch.PassFilter(override->metaTag.c_str()))))) {
+
+                    // Detect if a scroll should happen and remember the scene for that scroll
+                    if (!doAreaScroll &&
+                        (lastSceneOrEntranceDetected != LinkIsInArea(original) && LinkIsInArea(original) != -1)) {
+                        lastSceneOrEntranceDetected = LinkIsInArea(original);
+                        doAreaScroll = true;
                     }
 
-                    ImGui::PushStyleColor(ImGuiCol_Text, color);
+                    displayEntrances.push_back(entrance);
+                } else if (!isDiscovered) {
+                    undiscovered++;
+                }
+            }
 
-                    // Use a non-breaking space to keep the arrow from wrapping to a newline by itself
-                    ImGui::TextWrapped("%s\u00A0-> %s", origSrcName, rplcDstName);
-
-                    ImGui::PopStyleColor();
+            // Then display the entrances in groups
+            if (displayEntrances.size() != 0 || (!locationSearch.IsActive() && undiscovered > 0)) {
+                // Handle opening/closing trees based on auto scroll or collapse/expand buttons
+                if (nextTreeState == 1) {
+                    ImGui::SetNextItemOpen(false, ImGuiCond_None);
+                } else {
+                    ImGui::SetNextItemOpen(true, nextTreeState == 0 && !doAreaScroll ? ImGuiCond_Once : ImGuiCond_None);
                 }
 
-                // Write collapsed undiscovered info
-                if (!locationSearch.IsActive() && undiscovered > 0) {
-                    UIWidgets::Spacer(0);
-                    ImGui::PushStyleColor(ImGuiCol_Text, COLOR_GRAY);
-                    ImGui::TextWrapped("%d Undiscovered", undiscovered);
-                    ImGui::PopStyleColor();
-                }
+                if (ImGui::TreeNode(groupName.c_str())) {
+                    for (auto entrance : displayEntrances) {
+                        const EntranceData* original = GetEntranceData(entrance.index);
+                        const EntranceData* override = GetEntranceData(entrance.override);
 
-                UIWidgets::Spacer(0);
-                ImGui::TreePop();
+                        bool isDiscovered = IsEntranceDiscovered(entrance.index);
+
+                        bool showOverride = (!destToggle ? showTo : showFrom) || isDiscovered;
+                        bool showOriginal = (!destToggle ? showFrom : showTo) || isDiscovered;
+
+                        const char* unknown = "???";
+
+                        const char* origSrcName = showOriginal ? original->source.c_str() : unknown;
+                        const char* rplcDstName = showOverride ? override->destination.c_str() : unknown;
+
+                        uint32_t color = isDiscovered ? IM_COL32_WHITE : COLOR_GRAY;
+
+                        // Handle highlighting and auto scroll
+                        if ((original->index == lastEntranceIndex ||
+                             (override->reverseIndex == lastEntranceIndex &&
+                              OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_DECOUPLED_ENTRANCES) ==
+                                  RO_GENERIC_OFF)) &&
+                            highlightPrevious) {
+                            color = COLOR_ORANGE;
+                        } else if (LinkIsInArea(original) != -1) {
+                            if (highlightAvailable) {
+                                color = COLOR_GREEN;
+                            }
+
+                            if (doAreaScroll) {
+                                doAreaScroll = false;
+                                if (autoScrollArea) {
+                                    ImGui::SetScrollHereY(0.0f);
+                                }
+                            }
+                        }
+
+                        ImGui::PushStyleColor(ImGuiCol_Text, color);
+
+                        // Use a non-breaking space to keep the arrow from wrapping to a newline by itself
+                        ImGui::TextWrapped("%s\u00A0-> %s", origSrcName, rplcDstName);
+
+                        ImGui::PopStyleColor();
+                    }
+
+                    // Write collapsed undiscovered info
+                    if (!locationSearch.IsActive() && undiscovered > 0) {
+                        Spacer(0);
+                        ImGui::PushStyleColor(ImGuiCol_Text, COLOR_GRAY);
+                        ImGui::TextWrapped("%d Undiscovered", undiscovered);
+                        ImGui::PopStyleColor();
+                    }
+
+                    Spacer(0);
+                    ImGui::TreePop();
+                }
             }
         }
+        ImGui::EndChild();
     }
-    ImGui::EndChild();
-    ImGui::End();
+    Trackers::EndFloatWindows();
 }
 
 void EntranceTrackerWindow::InitElement() {
@@ -1018,3 +1064,66 @@ void EntranceTrackerWindow::InitElement() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnExitGame>(
         [](int32_t fileNum) { ClearEntranceTrackingData(); });
 }
+
+void RegisterCheckTrackerWidgets() {
+    backgroundColorWidget = { .name = "Background Color##EntranceTracker",
+                              .type = WidgetType::WIDGET_CVAR_COLOR_PICKER };
+    backgroundColorWidget.CVar(CVAR_TRACKER_ENTRANCE("BgColor"))
+        .Options(
+            ColorPickerOptions().Color(THEME_COLOR).DefaultValue(Color_Bg_Default).UseAlpha().ShowReset().ShowRandom());
+    SohGui::GetSohMenu()->AddSearchWidget(
+        { backgroundColorWidget, "Randomizer", "Entrance Tracker", "General Settings" });
+
+    windowTypeWidget = { .name = "Window Type##EntranceTracker", .type = WidgetType::WIDGET_CVAR_COMBOBOX };
+    windowTypeWidget.CVar(CVAR_TRACKER_ENTRANCE("WindowType"))
+        .Options(ComboboxOptions()
+                     .DefaultIndex(TRACKER_WINDOW_WINDOW)
+                     .ComponentAlignment(ComponentAlignments::Right)
+                     .LabelPosition(LabelPositions::Far)
+                     .Color(THEME_COLOR)
+                     .ComboMap(windowType));
+    SohGui::GetSohMenu()->AddSearchWidget({ windowTypeWidget, "Randomizer", "Entrance Tracker", "General Settings" });
+}
+
+static RegisterMenuInitFunc menuInitFunc(RegisterCheckTrackerWidgets);
+} // namespace EntranceTracker
+
+namespace Trackers {
+// Windowing stuff
+bool BeginFloatWindows(std::string UniqueName, bool& open, Color_RGBA8& bgCol, TrackerWindowType windowType,
+                       bool draggable, ImGuiWindowFlags flags) {
+    ImGuiWindowFlags windowFlags = flags;
+
+    if (windowFlags == 0) {
+        windowFlags |= ImGuiWindowFlags_AlwaysVerticalScrollbar | ImGuiWindowFlags_NoFocusOnAppearing;
+    }
+
+    if (windowType == TRACKER_WINDOW_FLOATING) {
+        ImGui::SetNextWindowViewport(ImGui::GetMainViewport()->ID);
+        windowFlags |= ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoTitleBar |
+                       ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoScrollbar;
+
+        if (!draggable) {
+            windowFlags |= ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoMove;
+        }
+    }
+    auto maybeParent = ImGui::GetCurrentWindow();
+    ImGuiWindow* window = ImGui::FindWindowByName(UniqueName.c_str());
+    ImVec4 bgColVec = VecFromRGBA8(bgCol);
+    if (window != NULL && window->DockTabIsVisible && window->ParentWindow != NULL &&
+        std::string(window->ParentWindow->Name).compare(0, strlen("Main - Deck"), "Main - Deck") == 0) {
+        bgColVec.w = 1.0f;
+    }
+    ImGui::PushStyleColor(ImGuiCol_WindowBg, bgColVec);
+    ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 4.0f);
+    return ImGui::Begin(UniqueName.c_str(), &open, windowFlags);
+}
+
+void EndFloatWindows() {
+    ImGui::PopStyleVar();
+    ImGui::PopStyleColor();
+    ImGui::PopStyleColor();
+    ImGui::End();
+} // namespace Trackers
+} // namespace Trackers

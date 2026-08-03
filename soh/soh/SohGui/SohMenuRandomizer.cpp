@@ -1,15 +1,24 @@
+#include <unordered_set>
 #include "SohMenu.h"
+#include "soh/Enhancements/enhancementTypes.h"
+#include "soh/Enhancements/randomizer/randomizer_check_objects.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
+#include "soh/Enhancements/randomizer/settings.h"
 #include "soh/OTRGlobals.h"
+#include "soh/ShipUtils.h"
 #include "soh/SohGui/SohGui.hpp"
+
+extern "C" {
+#include "variables.h"
+}
 
 namespace SohGui {
 
 extern std::shared_ptr<SohMenu> mSohMenu;
 using namespace UIWidgets;
 
-static const std::unordered_map<int32_t, const char*> skipGetItemAnimationOptions = {
+static const std::map<int32_t, const char*> skipGetItemAnimationOptions = {
     { SGIA_DISABLED, "Disabled" },
     { SGIA_JUNK, "Junk Items" },
     { SGIA_ALL, "All Items" },
@@ -17,29 +26,137 @@ static const std::unordered_map<int32_t, const char*> skipGetItemAnimationOption
 
 static bool locationsDirty = true;
 static bool tricksDirty = true;
+static int32_t prevMQDungeonSetting;
 static char seedString[MAX_SEED_STRING_SIZE];
 static std::set<RandomizerCheck> excludedLocations;
 static std::set<RandomizerTrick> enabledTricks;
 static std::set<RandomizerTrick> enabledGlitches;
 
+void SaveEnabledTricks() {
+    std::string enabledTrickString = "";
+    for (auto enabledTrickIt : enabledTricks) {
+        enabledTrickString += Rando::Settings::GetInstance()->GetTrickSetting(enabledTrickIt).GetNameTag();
+        enabledTrickString += ",";
+    }
+    if (enabledTricks.size() == 0) {
+        CVarClear(CVAR_RANDOMIZER_SETTING("EnabledTricks"));
+    } else {
+        CVarSetString(CVAR_RANDOMIZER_SETTING("EnabledTricks"), enabledTrickString.c_str());
+    }
+    Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+    tricksDirty = false;
+    return;
+}
+
+void SaveExcludedLocations() {
+    // todo: this efficiently when we build out cvar array support
+    std::string excludedLocationString = "";
+    for (auto excludedLocationIt : excludedLocations) {
+        if (!excludedLocationString.empty()) {
+            excludedLocationString += ",";
+        }
+        excludedLocationString += std::to_string(excludedLocationIt);
+    }
+    if (excludedLocationString == "") {
+        CVarClear(CVAR_RANDOMIZER_SETTING("ExcludedLocations"));
+    } else {
+        CVarSetString(CVAR_RANDOMIZER_SETTING("ExcludedLocations"), excludedLocationString.c_str());
+    }
+    Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+    locationsDirty = true;
+}
+
 void DrawLocationsMenu(WidgetInfo& info) {
     auto ctx = OTRGlobals::Instance->gRandoContext;
+    int32_t currMQDungeonSetting = CVarGetInteger(CVAR_RANDOMIZER_SETTING("MQDungeons"), 0) |
+                                   CVarGetInteger(CVAR_RANDOMIZER_SETTING("MQDungeonCount"), 0) << 8;
     static ImVec2 cellPadding(8.0f, 8.0f);
     bool generating = CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0);
     bool disableEditingRandoSettings = generating || CVarGetInteger(CVAR_GENERAL("OnFileSelectNameEntry"), 0);
     ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0) || disableEditingRandoSettings);
     ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
-    if (locationsDirty) {
-        RandomizerCheckObjects::UpdateImGuiVisibility();
-        // todo: this efficently when we build out cvar array support
-        std::stringstream excludedLocationStringStream(CVarGetString(CVAR_RANDOMIZER_SETTING("ExcludedLocations"), ""));
-        std::string excludedLocationString;
-        excludedLocations.clear();
-        while (getline(excludedLocationStringStream, excludedLocationString, ',')) {
-            excludedLocations.insert((RandomizerCheck)std::stoi(excludedLocationString));
-        }
+    if (locationsDirty || currMQDungeonSetting != prevMQDungeonSetting || GameInteractor::IsSaveLoaded()) {
         locationsDirty = false;
+        prevMQDungeonSetting = currMQDungeonSetting;
+        UpdateMenuLocations();
+    } else {
+        RandomizerCheckObjects::UpdateImGuiVisibility();
     }
+
+    // Locations
+    static std::unordered_set<RandomizerCheckArea> areaTreeIncluded{
+        RCAREA_KOKIRI_FOREST,
+        RCAREA_LOST_WOODS,
+        RCAREA_SACRED_FOREST_MEADOW,
+        RCAREA_HYRULE_FIELD,
+        RCAREA_LAKE_HYLIA,
+        RCAREA_GERUDO_VALLEY,
+        RCAREA_GERUDO_FORTRESS,
+        RCAREA_WASTELAND,
+        RCAREA_DESERT_COLOSSUS,
+        RCAREA_MARKET,
+        RCAREA_HYRULE_CASTLE,
+        RCAREA_KAKARIKO_VILLAGE,
+        RCAREA_GRAVEYARD,
+        RCAREA_DEATH_MOUNTAIN_TRAIL,
+        RCAREA_GORON_CITY,
+        RCAREA_DEATH_MOUNTAIN_CRATER,
+        RCAREA_ZORAS_RIVER,
+        RCAREA_ZORAS_DOMAIN,
+        RCAREA_ZORAS_FOUNTAIN,
+        RCAREA_LON_LON_RANCH,
+        RCAREA_DEKU_TREE,
+        RCAREA_DODONGOS_CAVERN,
+        RCAREA_JABU_JABUS_BELLY,
+        RCAREA_FOREST_TEMPLE,
+        RCAREA_FIRE_TEMPLE,
+        RCAREA_WATER_TEMPLE,
+        RCAREA_SPIRIT_TEMPLE,
+        RCAREA_SHADOW_TEMPLE,
+        RCAREA_BOTTOM_OF_THE_WELL,
+        RCAREA_ICE_CAVERN,
+        RCAREA_GERUDO_TRAINING_GROUND,
+        RCAREA_GANONS_CASTLE,
+    };
+    static std::unordered_set<RandomizerCheckArea> areaTreeExcluded{
+        RCAREA_KOKIRI_FOREST,
+        RCAREA_LOST_WOODS,
+        RCAREA_SACRED_FOREST_MEADOW,
+        RCAREA_HYRULE_FIELD,
+        RCAREA_LAKE_HYLIA,
+        RCAREA_GERUDO_VALLEY,
+        RCAREA_GERUDO_FORTRESS,
+        RCAREA_WASTELAND,
+        RCAREA_DESERT_COLOSSUS,
+        RCAREA_MARKET,
+        RCAREA_HYRULE_CASTLE,
+        RCAREA_KAKARIKO_VILLAGE,
+        RCAREA_GRAVEYARD,
+        RCAREA_DEATH_MOUNTAIN_TRAIL,
+        RCAREA_GORON_CITY,
+        RCAREA_DEATH_MOUNTAIN_CRATER,
+        RCAREA_ZORAS_RIVER,
+        RCAREA_ZORAS_DOMAIN,
+        RCAREA_ZORAS_FOUNTAIN,
+        RCAREA_LON_LON_RANCH,
+        RCAREA_DEKU_TREE,
+        RCAREA_DODONGOS_CAVERN,
+        RCAREA_JABU_JABUS_BELLY,
+        RCAREA_FOREST_TEMPLE,
+        RCAREA_FIRE_TEMPLE,
+        RCAREA_WATER_TEMPLE,
+        RCAREA_SPIRIT_TEMPLE,
+        RCAREA_SHADOW_TEMPLE,
+        RCAREA_BOTTOM_OF_THE_WELL,
+        RCAREA_ICE_CAVERN,
+        RCAREA_GERUDO_TRAINING_GROUND,
+        RCAREA_GANONS_CASTLE,
+    };
+
+    static ImGuiTextFilter locationSearch;
+    UIWidgets::PushStyleInput(THEME_COLOR);
+    locationSearch.Draw("Filter (inc,-exc)", 490.0f);
+    UIWidgets::PopStyleInput();
 
     if (ImGui::BeginTable("tableRandoLocations", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
         ImGui::TableSetupColumn("Included", ImGuiTableColumnFlags_WidthStretch, 200.0f);
@@ -53,10 +170,35 @@ void DrawLocationsMenu(WidgetInfo& info) {
         ImGui::TableNextColumn();
         // window->DC.CurrLineTextBaseOffset = 0.0f;
 
-        static ImGuiTextFilter locationSearch;
-        UIWidgets::PushStyleInput(THEME_COLOR);
-        locationSearch.Draw();
-        UIWidgets::PopStyleInput();
+        if (UIWidgets::Button("Collapse All##included",
+                              UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(ImVec2(0.f, 0.f)))) {
+            for (int i = 0; i < RCAREA_INVALID; i++) {
+                areaTreeIncluded.erase(static_cast<RandomizerCheckArea>(i));
+            }
+        }
+        ImGui::SameLine();
+        if (UIWidgets::Button("Open All##included",
+                              UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(ImVec2(0.f, 0.f)))) {
+            for (int i = 0; i < RCAREA_INVALID; i++) {
+                areaTreeIncluded.insert(static_cast<RandomizerCheckArea>(i));
+            }
+        }
+        ImGui::SameLine();
+        if (UIWidgets::Button("Exclude Visible",
+                              UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(ImVec2(0.f, 0.f)))) {
+            for (auto& [rcArea, locations] : RandomizerCheckObjects::GetAllRCObjectsByArea()) {
+                if (!areaTreeIncluded.contains(rcArea)) {
+                    continue;
+                }
+                for (RandomizerCheck rc : locations) {
+                    if (ctx->GetItemLocation(rc)->IsVisible() && !excludedLocations.count(rc) &&
+                        locationSearch.PassFilter(Rando::StaticData::GetLocation(rc)->GetName().c_str())) {
+                        excludedLocations.insert(rc);
+                    }
+                }
+            }
+            SaveExcludedLocations();
+        }
 
         ImGui::BeginChild("ChildIncludedLocations", ImVec2(0, -8));
         for (auto& [rcArea, locations] : RandomizerCheckObjects::GetAllRCObjectsByArea()) {
@@ -71,31 +213,27 @@ void DrawLocationsMenu(WidgetInfo& info) {
             }
 
             if (hasItems) {
+                std::string areaLabel = RandomizerCheckObjects::GetRCAreaName(rcArea) + "##included";
+                ImGui::TreeNodeSetOpen(ImGui::GetID(areaLabel.c_str()), areaTreeIncluded.contains(rcArea));
                 ImGui::SetNextItemOpen(true, ImGuiCond_Once);
-                if (ImGui::TreeNode(RandomizerCheckObjects::GetRCAreaName(rcArea).c_str())) {
+                if (ImGui::TreeNode(areaLabel.c_str())) {
                     for (auto& location : locations) {
                         if (ctx->GetItemLocation(location)->IsVisible() && !excludedLocations.count(location) &&
                             locationSearch.PassFilter(Rando::StaticData::GetLocation(location)->GetName().c_str())) {
                             UIWidgets::PushStyleButton(THEME_COLOR, ImVec2(7.f, 5.f));
                             if (ImGui::ArrowButton(std::to_string(location).c_str(), ImGuiDir_Right)) {
                                 excludedLocations.insert(location);
-                                // todo: this efficently when we build out cvar array support
-                                std::string excludedLocationString = "";
-                                for (auto excludedLocationIt : excludedLocations) {
-                                    excludedLocationString += std::to_string(excludedLocationIt);
-                                    excludedLocationString += ",";
-                                }
-                                CVarSetString(CVAR_RANDOMIZER_SETTING("ExcludedLocations"),
-                                              excludedLocationString.c_str());
-                                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-                                locationsDirty = true;
+                                SaveExcludedLocations();
                             }
                             UIWidgets::PopStyleButton();
                             ImGui::SameLine();
                             ImGui::Text("%s", Rando::StaticData::GetLocation(location)->GetShortName().c_str());
                         }
                     }
+                    areaTreeIncluded.insert(rcArea);
                     ImGui::TreePop();
+                } else {
+                    areaTreeIncluded.erase(rcArea);
                 }
             }
         }
@@ -105,46 +243,71 @@ void DrawLocationsMenu(WidgetInfo& info) {
         ImGui::TableNextColumn();
         // window->DC.CurrLineTextBaseOffset = 0.0f;
 
+        if (UIWidgets::Button("Collapse All##excluded",
+                              UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(ImVec2(0.f, 0.f)))) {
+            for (int i = 0; i < RCAREA_INVALID; i++) {
+                areaTreeExcluded.erase(static_cast<RandomizerCheckArea>(i));
+            }
+        }
+        ImGui::SameLine();
+        if (UIWidgets::Button("Open All##excluded",
+                              UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(ImVec2(0.f, 0.f)))) {
+            for (int i = 0; i < RCAREA_INVALID; i++) {
+                areaTreeExcluded.insert(static_cast<RandomizerCheckArea>(i));
+            }
+        }
+        ImGui::SameLine();
+        if (UIWidgets::Button("Include Visible",
+                              UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(ImVec2(0.f, 0.f)))) {
+            for (auto& [rcArea, locations] : RandomizerCheckObjects::GetAllRCObjectsByArea()) {
+                if (!areaTreeExcluded.contains(rcArea)) {
+                    continue;
+                }
+                for (RandomizerCheck rc : locations) {
+                    if (ctx->GetItemLocation(rc)->IsVisible() && excludedLocations.count(rc) &&
+                        locationSearch.PassFilter(Rando::StaticData::GetLocation(rc)->GetName().c_str())) {
+                        excludedLocations.erase(rc);
+                    }
+                }
+            }
+            SaveExcludedLocations();
+        }
+
         ImGui::BeginChild("ChildExcludedLocations", ImVec2(0, -8));
         for (auto& [rcArea, locations] : RandomizerCheckObjects::GetAllRCObjectsByArea()) {
             bool hasItems = false;
             for (RandomizerCheck rc : locations) {
-                if (ctx->GetItemLocation(rc)->IsVisible() && excludedLocations.count(rc)) {
+                if (ctx->GetItemLocation(rc)->IsVisible() && excludedLocations.count(rc) &&
+                    locationSearch.PassFilter(Rando::StaticData::GetLocation(rc)->GetName().c_str())) {
+
                     hasItems = true;
                     break;
                 }
             }
 
             if (hasItems) {
+                std::string areaLabel = RandomizerCheckObjects::GetRCAreaName(rcArea) + "##excluded";
+                ImGui::TreeNodeSetOpen(ImGui::GetID(areaLabel.c_str()), areaTreeExcluded.contains(rcArea));
                 ImGui::SetNextItemOpen(true, ImGuiCond_Once);
-                if (ImGui::TreeNode(RandomizerCheckObjects::GetRCAreaName(rcArea).c_str())) {
+                if (ImGui::TreeNode(areaLabel.c_str())) {
                     for (auto& location : locations) {
                         auto elfound = excludedLocations.find(location);
-                        if (ctx->GetItemLocation(location)->IsVisible() && elfound != excludedLocations.end()) {
+                        if (ctx->GetItemLocation(location)->IsVisible() && elfound != excludedLocations.end() &&
+                            locationSearch.PassFilter(Rando::StaticData::GetLocation(location)->GetName().c_str())) {
                             UIWidgets::PushStyleButton(THEME_COLOR, ImVec2(7.f, 5.f));
                             if (ImGui::ArrowButton(std::to_string(location).c_str(), ImGuiDir_Left)) {
                                 excludedLocations.erase(elfound);
-                                // todo: this efficently when we build out cvar array support
-                                std::string excludedLocationString = "";
-                                for (auto excludedLocationIt : excludedLocations) {
-                                    excludedLocationString += std::to_string(excludedLocationIt);
-                                    excludedLocationString += ",";
-                                }
-                                if (excludedLocationString == "") {
-                                    CVarClear(CVAR_RANDOMIZER_SETTING("ExcludedLocations"));
-                                } else {
-                                    CVarSetString(CVAR_RANDOMIZER_SETTING("ExcludedLocations"),
-                                                  excludedLocationString.c_str());
-                                }
-                                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-                                locationsDirty = true;
+                                SaveExcludedLocations();
                             }
                             UIWidgets::PopStyleButton();
                             ImGui::SameLine();
                             ImGui::Text("%s", Rando::StaticData::GetLocation(location)->GetShortName().c_str());
                         }
                     }
+                    areaTreeExcluded.insert(rcArea);
                     ImGui::TreePop();
+                } else {
+                    areaTreeExcluded.erase(rcArea);
                 }
             }
         }
@@ -157,6 +320,45 @@ void DrawLocationsMenu(WidgetInfo& info) {
     ImGui::EndDisabled();
 }
 
+void MarkRandomizerMenusDirty() {
+    locationsDirty = true;
+    tricksDirty = true;
+}
+
+void UpdateMenuLocations() {
+    RandomizerCheckObjects::UpdateImGuiVisibility();
+    // todo: this efficiently when we build out cvar array support
+    std::stringstream excludedLocationStringStream(CVarGetString(CVAR_RANDOMIZER_SETTING("ExcludedLocations"), ""));
+    std::string excludedLocationString;
+    excludedLocations.clear();
+    while (getline(excludedLocationStringStream, excludedLocationString, ',')) {
+        if (!excludedLocationString.empty()) {
+            excludedLocations.insert((RandomizerCheck)std::stoi(excludedLocationString));
+        }
+    }
+}
+
+void UpdateMenuTricks() {
+    // RandomizerTricks::UpdateImGuiVisibility();
+    //  todo: this efficiently when we build out cvar array support
+    std::stringstream enabledTrickStringStream(CVarGetString(CVAR_RANDOMIZER_SETTING("EnabledTricks"), ""));
+    std::string enabledTrickString;
+    enabledTricks.clear();
+    while (getline(enabledTrickStringStream, enabledTrickString, ',')) {
+        if (Rando::StaticData::trickToEnum.contains(enabledTrickString)) {
+            enabledTricks.insert(Rando::StaticData::trickToEnum[enabledTrickString]);
+        }
+    }
+    std::stringstream enabledGlitchStringStream(CVarGetString(CVAR_RANDOMIZER_SETTING("EnabledGlitches"), ""));
+    std::string enabledGlitchString;
+    enabledGlitches.clear();
+    while (getline(enabledGlitchStringStream, enabledGlitchString, ',')) {
+        if (!enabledGlitchString.empty()) {
+            enabledGlitches.insert((RandomizerTrick)std::stoi(enabledGlitchString));
+        }
+    }
+}
+
 void DrawTricksMenu(WidgetInfo& info) {
     auto ctx = OTRGlobals::Instance->gRandoContext;
     auto randoSettings = Rando::Settings::GetInstance();
@@ -165,95 +367,82 @@ void DrawTricksMenu(WidgetInfo& info) {
     bool disableEditingRandoSettings = generating || CVarGetInteger(CVAR_GENERAL("OnFileSelectNameEntry"), 0);
     if (tricksDirty) {
         tricksDirty = false;
-        // RandomizerTricks::UpdateImGuiVisibility();
-        //  todo: this efficently when we build out cvar array support
-        std::stringstream enabledTrickStringStream(CVarGetString(CVAR_RANDOMIZER_SETTING("EnabledTricks"), ""));
-        std::string enabledTrickString;
-        enabledTricks.clear();
-        while (getline(enabledTrickStringStream, enabledTrickString, ',')) {
-            enabledTricks.insert((RandomizerTrick)std::stoi(enabledTrickString));
-        }
-        std::stringstream enabledGlitchStringStream(CVarGetString(CVAR_RANDOMIZER_SETTING("EnabledGlitches"), ""));
-        std::string enabledGlitchString;
-        enabledGlitches.clear();
-        while (getline(enabledGlitchStringStream, enabledGlitchString, ',')) {
-            enabledGlitches.insert((RandomizerTrick)std::stoi(enabledGlitchString));
-        }
+        UpdateMenuTricks();
     }
 
     ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
     ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0) || disableEditingRandoSettings);
 
     // Tricks
-    static std::unordered_map<RandomizerArea, bool> areaTreeDisabled{
-        { RA_NONE, true },
-        { RA_KOKIRI_FOREST, true },
-        { RA_THE_LOST_WOODS, true },
-        { RA_SACRED_FOREST_MEADOW, true },
-        { RA_HYRULE_FIELD, true },
-        { RA_LAKE_HYLIA, true },
-        { RA_GERUDO_VALLEY, true },
-        { RA_GERUDO_FORTRESS, true },
-        { RA_HAUNTED_WASTELAND, true },
-        { RA_DESERT_COLOSSUS, true },
-        { RA_THE_MARKET, true },
-        { RA_HYRULE_CASTLE, true },
-        { RA_KAKARIKO_VILLAGE, true },
-        { RA_THE_GRAVEYARD, true },
-        { RA_DEATH_MOUNTAIN_TRAIL, true },
-        { RA_GORON_CITY, true },
-        { RA_DEATH_MOUNTAIN_CRATER, true },
-        { RA_ZORAS_RIVER, true },
-        { RA_ZORAS_DOMAIN, true },
-        { RA_ZORAS_FOUNTAIN, true },
-        { RA_LON_LON_RANCH, true },
-        { RA_DEKU_TREE, true },
-        { RA_DODONGOS_CAVERN, true },
-        { RA_JABU_JABUS_BELLY, true },
-        { RA_FOREST_TEMPLE, true },
-        { RA_FIRE_TEMPLE, true },
-        { RA_WATER_TEMPLE, true },
-        { RA_SPIRIT_TEMPLE, true },
-        { RA_SHADOW_TEMPLE, true },
-        { RA_BOTTOM_OF_THE_WELL, true },
-        { RA_ICE_CAVERN, true },
-        { RA_GERUDO_TRAINING_GROUND, true },
-        { RA_GANONS_CASTLE, true },
+    static std::unordered_set<RandomizerArea> areaTreeDisabled{
+        RA_NONE,
+        RA_KOKIRI_FOREST,
+        RA_THE_LOST_WOODS,
+        RA_SACRED_FOREST_MEADOW,
+        RA_HYRULE_FIELD,
+        RA_LAKE_HYLIA,
+        RA_GERUDO_VALLEY,
+        RA_GERUDO_FORTRESS,
+        RA_HAUNTED_WASTELAND,
+        RA_DESERT_COLOSSUS,
+        RA_THE_MARKET,
+        RA_HYRULE_CASTLE,
+        RA_KAKARIKO_VILLAGE,
+        RA_THE_GRAVEYARD,
+        RA_DEATH_MOUNTAIN_TRAIL,
+        RA_GORON_CITY,
+        RA_DEATH_MOUNTAIN_CRATER,
+        RA_ZORAS_RIVER,
+        RA_ZORAS_DOMAIN,
+        RA_ZORAS_FOUNTAIN,
+        RA_LON_LON_RANCH,
+        RA_DEKU_TREE,
+        RA_DODONGOS_CAVERN,
+        RA_JABU_JABUS_BELLY,
+        RA_FOREST_TEMPLE,
+        RA_FIRE_TEMPLE,
+        RA_WATER_TEMPLE,
+        RA_SPIRIT_TEMPLE,
+        RA_SHADOW_TEMPLE,
+        RA_BOTTOM_OF_THE_WELL,
+        RA_ICE_CAVERN,
+        RA_GERUDO_TRAINING_GROUND,
+        RA_GANONS_CASTLE,
     };
-    static std::unordered_map<RandomizerArea, bool> areaTreeEnabled{
-        { RA_NONE, true },
-        { RA_KOKIRI_FOREST, true },
-        { RA_THE_LOST_WOODS, true },
-        { RA_SACRED_FOREST_MEADOW, true },
-        { RA_HYRULE_FIELD, true },
-        { RA_LAKE_HYLIA, true },
-        { RA_GERUDO_VALLEY, true },
-        { RA_GERUDO_FORTRESS, true },
-        { RA_HAUNTED_WASTELAND, true },
-        { RA_DESERT_COLOSSUS, true },
-        { RA_THE_MARKET, true },
-        { RA_HYRULE_CASTLE, true },
-        { RA_KAKARIKO_VILLAGE, true },
-        { RA_THE_GRAVEYARD, true },
-        { RA_DEATH_MOUNTAIN_TRAIL, true },
-        { RA_GORON_CITY, true },
-        { RA_DEATH_MOUNTAIN_CRATER, true },
-        { RA_ZORAS_RIVER, true },
-        { RA_ZORAS_DOMAIN, true },
-        { RA_ZORAS_FOUNTAIN, true },
-        { RA_LON_LON_RANCH, true },
-        { RA_DEKU_TREE, true },
-        { RA_DODONGOS_CAVERN, true },
-        { RA_JABU_JABUS_BELLY, true },
-        { RA_FOREST_TEMPLE, true },
-        { RA_FIRE_TEMPLE, true },
-        { RA_WATER_TEMPLE, true },
-        { RA_SPIRIT_TEMPLE, true },
-        { RA_SHADOW_TEMPLE, true },
-        { RA_BOTTOM_OF_THE_WELL, true },
-        { RA_ICE_CAVERN, true },
-        { RA_GERUDO_TRAINING_GROUND, true },
-        { RA_GANONS_CASTLE, true },
+    static std::unordered_set<RandomizerArea> areaTreeEnabled{
+        RA_NONE,
+        RA_KOKIRI_FOREST,
+        RA_THE_LOST_WOODS,
+        RA_SACRED_FOREST_MEADOW,
+        RA_HYRULE_FIELD,
+        RA_LAKE_HYLIA,
+        RA_GERUDO_VALLEY,
+        RA_GERUDO_FORTRESS,
+        RA_HAUNTED_WASTELAND,
+        RA_DESERT_COLOSSUS,
+        RA_THE_MARKET,
+        RA_HYRULE_CASTLE,
+        RA_KAKARIKO_VILLAGE,
+        RA_THE_GRAVEYARD,
+        RA_DEATH_MOUNTAIN_TRAIL,
+        RA_GORON_CITY,
+        RA_DEATH_MOUNTAIN_CRATER,
+        RA_ZORAS_RIVER,
+        RA_ZORAS_DOMAIN,
+        RA_ZORAS_FOUNTAIN,
+        RA_LON_LON_RANCH,
+        RA_DEKU_TREE,
+        RA_DODONGOS_CAVERN,
+        RA_JABU_JABUS_BELLY,
+        RA_FOREST_TEMPLE,
+        RA_FIRE_TEMPLE,
+        RA_WATER_TEMPLE,
+        RA_SPIRIT_TEMPLE,
+        RA_SHADOW_TEMPLE,
+        RA_BOTTOM_OF_THE_WELL,
+        RA_ICE_CAVERN,
+        RA_GERUDO_TRAINING_GROUND,
+        RA_GANONS_CASTLE,
     };
 
     static std::map<Rando::Tricks::Tag, bool> showTag{
@@ -262,6 +451,7 @@ void DrawTricksMenu(WidgetInfo& info) {
         { Rando::Tricks::Tag::EXTREME, true },  { Rando::Tricks::Tag::EXPERIMENTAL, true },
         { Rando::Tricks::Tag::GLITCH, false },
     };
+
     static ImGuiTextFilter trickSearch;
     UIWidgets::PushStyleInput(THEME_COLOR);
     trickSearch.Draw("Filter (inc,-exc)", 490.0f);
@@ -275,14 +465,7 @@ void DrawTricksMenu(WidgetInfo& info) {
                     enabledTricks.erase(etfound);
                 }
             }
-            std::string enabledTrickString = "";
-            for (auto enabledTrickIt : enabledTricks) {
-                enabledTrickString += std::to_string(enabledTrickIt);
-                enabledTrickString += ",";
-            }
-            CVarClear(CVAR_RANDOMIZER_SETTING("EnabledTricks"));
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-            tricksDirty = true;
+            SaveEnabledTricks();
         }
         ImGui::SameLine();
         if (UIWidgets::Button("Enable All", UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(ImVec2(250.f, 0.f)))) {
@@ -291,14 +474,7 @@ void DrawTricksMenu(WidgetInfo& info) {
                     enabledTricks.insert(static_cast<RandomizerTrick>(i));
                 }
             }
-            std::string enabledTrickString = "";
-            for (auto enabledTrickIt : enabledTricks) {
-                enabledTrickString += std::to_string(enabledTrickIt);
-                enabledTrickString += ",";
-            }
-            CVarSetString(CVAR_RANDOMIZER_SETTING("EnabledTricks"), enabledTrickString.c_str());
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-            tricksDirty = true;
+            SaveEnabledTricks();
         }
     }
     if (ImGui::BeginTable("trickTags", static_cast<int>(showTag.size()),
@@ -333,35 +509,29 @@ void DrawTricksMenu(WidgetInfo& info) {
             if (UIWidgets::Button("Collapse All##disabled",
                                   UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(ImVec2(0.f, 0.f)))) {
                 for (int i = 0; i < RA_MAX; i++) {
-                    areaTreeDisabled[static_cast<RandomizerArea>(i)] = false;
+                    areaTreeDisabled.erase(static_cast<RandomizerArea>(i));
                 }
             }
             ImGui::SameLine();
             if (UIWidgets::Button("Open All##disabled",
                                   UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(ImVec2(0.f, 0.f)))) {
                 for (int i = 0; i < RA_MAX; i++) {
-                    areaTreeDisabled[static_cast<RandomizerArea>(i)] = true;
+                    areaTreeDisabled.insert(static_cast<RandomizerArea>(i));
                 }
             }
             ImGui::SameLine();
             if (UIWidgets::Button("Enable Visible",
                                   UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(ImVec2(0.f, 0.f)))) {
                 for (int i = 0; i < RT_MAX; i++) {
-                    auto option = randoSettings->GetTrickOption(static_cast<RandomizerTrick>(i));
+                    auto option = randoSettings->GetTrickSetting(static_cast<RandomizerTrick>(i));
                     if (!enabledTricks.count(static_cast<RandomizerTrick>(i)) &&
-                        trickSearch.PassFilter(option.GetName().c_str()) && areaTreeDisabled[option.GetArea()] &&
+                        trickSearch.PassFilter(option.GetName().c_str()) &&
+                        areaTreeDisabled.contains(option.GetArea()) &&
                         Rando::Tricks::CheckTags(showTag, option.GetTags())) {
                         enabledTricks.insert(static_cast<RandomizerTrick>(i));
                     }
                 }
-                std::string enabledTrickString = "";
-                for (auto enabledTrickIt : enabledTricks) {
-                    enabledTrickString += std::to_string(enabledTrickIt);
-                    enabledTrickString += ",";
-                }
-                CVarSetString(CVAR_RANDOMIZER_SETTING("EnabledTricks"), enabledTrickString.c_str());
-                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-                tricksDirty = true;
+                SaveEnabledTricks();
             }
 
             ImGui::BeginChild("ChildTricksDisabled", ImVec2(0, -8), false, ImGuiWindowFlags_HorizontalScrollbar);
@@ -369,7 +539,7 @@ void DrawTricksMenu(WidgetInfo& info) {
             for (auto [area, trickIds] : randoSettings->mTricksByArea) {
                 bool hasTricks = false;
                 for (auto rt : trickIds) {
-                    auto option = randoSettings->GetTrickOption(rt);
+                    auto option = randoSettings->GetTrickSetting(rt);
                     if (!option.IsHidden() && trickSearch.PassFilter(option.GetName().c_str()) &&
                         !enabledTricks.count(rt) && Rando::Tricks::CheckTags(showTag, option.GetTags())) {
                         hasTricks = true;
@@ -377,32 +547,18 @@ void DrawTricksMenu(WidgetInfo& info) {
                     }
                 }
                 if (hasTricks) {
-                    ImGui::TreeNodeSetOpen(ImGui::GetID((Rando::Tricks::GetAreaName(area) + "##disabled").c_str()),
-                                           areaTreeDisabled[area]);
+                    std::string areaLabel = Rando::Tricks::GetAreaName(area) + "##disabled";
+                    ImGui::TreeNodeSetOpen(ImGui::GetID(areaLabel.c_str()), areaTreeDisabled.contains(area));
                     ImGui::SetNextItemOpen(true, ImGuiCond_Once);
-                    if (ImGui::TreeNode((Rando::Tricks::GetAreaName(area) + "##disabled").c_str())) {
+                    if (ImGui::TreeNode(areaLabel.c_str())) {
                         for (auto rt : trickIds) {
-                            auto option = randoSettings->GetTrickOption(rt);
+                            auto option = randoSettings->GetTrickSetting(rt);
                             if (!option.IsHidden() && trickSearch.PassFilter(option.GetName().c_str()) &&
                                 !enabledTricks.count(rt) && Rando::Tricks::CheckTags(showTag, option.GetTags())) {
-                                ImGui::TreeNodeSetOpen(
-                                    ImGui::GetID((Rando::Tricks::GetAreaName(option.GetArea()) + "##disabled").c_str()),
-                                    areaTreeDisabled[option.GetArea()]);
-                                ImGui::SetNextItemOpen(true, ImGuiCond_Once);
                                 UIWidgets::PushStyleButton(THEME_COLOR, ImVec2(7.f, 5.f));
                                 if (ImGui::ArrowButton(std::to_string(rt).c_str(), ImGuiDir_Right)) {
                                     enabledTricks.insert(rt);
-                                    std::string enabledTrickString = "";
-                                    for (auto enabledTrickIt : enabledTricks) {
-                                        enabledTrickString += std::to_string(enabledTrickIt);
-                                        enabledTrickString += ",";
-                                    }
-                                    CVarSetString(CVAR_RANDOMIZER_SETTING("EnabledTricks"), enabledTrickString.c_str());
-                                    Ship::Context::GetInstance()
-                                        ->GetWindow()
-                                        ->GetGui()
-                                        ->SaveConsoleVariablesNextFrame();
-                                    tricksDirty = true;
+                                    SaveEnabledTricks();
                                 }
                                 UIWidgets::PopStyleButton();
                                 Rando::Tricks::DrawTagChips(option.GetTags(), option.GetName());
@@ -411,10 +567,10 @@ void DrawTricksMenu(WidgetInfo& info) {
                                 UIWidgets::Tooltip(option.GetDescription().c_str());
                             }
                         }
-                        areaTreeDisabled[area] = true;
+                        areaTreeDisabled.insert(area);
                         ImGui::TreePop();
                     } else {
-                        areaTreeDisabled[area] = false;
+                        areaTreeDisabled.erase(area);
                     }
                 }
             }
@@ -427,39 +583,29 @@ void DrawTricksMenu(WidgetInfo& info) {
             if (UIWidgets::Button("Collapse All##enabled",
                                   UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(ImVec2(0.f, 0.f)))) {
                 for (int i = 0; i < RA_MAX; i++) {
-                    areaTreeEnabled[static_cast<RandomizerArea>(i)] = false;
+                    areaTreeEnabled.erase(static_cast<RandomizerArea>(i));
                 }
             }
             ImGui::SameLine();
             if (UIWidgets::Button("Open All##enabled",
                                   UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(ImVec2(0.f, 0.f)))) {
                 for (int i = 0; i < RA_MAX; i++) {
-                    areaTreeEnabled[static_cast<RandomizerArea>(i)] = true;
+                    areaTreeEnabled.insert(static_cast<RandomizerArea>(i));
                 }
             }
             ImGui::SameLine();
             if (UIWidgets::Button("Disable Visible",
                                   UIWidgets::ButtonOptions().Color(THEME_COLOR).Size(ImVec2(0.f, 0.f)))) {
                 for (int i = 0; i < RT_MAX; i++) {
-                    auto option = randoSettings->GetTrickOption(static_cast<RandomizerTrick>(i));
+                    auto option = randoSettings->GetTrickSetting(static_cast<RandomizerTrick>(i));
                     if (enabledTricks.count(static_cast<RandomizerTrick>(i)) &&
-                        trickSearch.PassFilter(option.GetName().c_str()) && areaTreeEnabled[option.GetArea()] &&
+                        trickSearch.PassFilter(option.GetName().c_str()) &&
+                        areaTreeEnabled.contains(option.GetArea()) &&
                         Rando::Tricks::CheckTags(showTag, option.GetTags())) {
                         enabledTricks.erase(static_cast<RandomizerTrick>(i));
                     }
                 }
-                std::string enabledTrickString = "";
-                for (auto enabledTrickIt : enabledTricks) {
-                    enabledTrickString += std::to_string(enabledTrickIt);
-                    enabledTrickString += ",";
-                }
-                if (enabledTricks.size() == 0) {
-                    CVarClear(CVAR_RANDOMIZER_SETTING("EnabledTricks"));
-                } else {
-                    CVarSetString(CVAR_RANDOMIZER_SETTING("EnabledTricks"), enabledTrickString.c_str());
-                }
-                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-                tricksDirty = true;
+                SaveEnabledTricks();
             }
 
             ImGui::BeginChild("ChildTricksEnabled", ImVec2(0, -8), false, ImGuiWindowFlags_HorizontalScrollbar);
@@ -467,7 +613,7 @@ void DrawTricksMenu(WidgetInfo& info) {
             for (auto [area, trickIds] : randoSettings->mTricksByArea) {
                 bool hasTricks = false;
                 for (auto rt : trickIds) {
-                    auto option = randoSettings->GetTrickOption(rt);
+                    auto option = randoSettings->GetTrickSetting(rt);
                     if (!option.IsHidden() && trickSearch.PassFilter(option.GetName().c_str()) &&
                         enabledTricks.count(rt) && Rando::Tricks::CheckTags(showTag, option.GetTags())) {
                         hasTricks = true;
@@ -475,37 +621,18 @@ void DrawTricksMenu(WidgetInfo& info) {
                     }
                 }
                 if (hasTricks) {
-                    ImGui::TreeNodeSetOpen(ImGui::GetID((Rando::Tricks::GetAreaName(area) + "##enabled").c_str()),
-                                           areaTreeEnabled[area]);
+                    std::string areaLabel = Rando::Tricks::GetAreaName(area) + "##enabled";
+                    ImGui::TreeNodeSetOpen(ImGui::GetID(areaLabel.c_str()), areaTreeEnabled.contains(area));
                     ImGui::SetNextItemOpen(true, ImGuiCond_Once);
-                    if (ImGui::TreeNode((Rando::Tricks::GetAreaName(area) + "##enabled").c_str())) {
+                    if (ImGui::TreeNode(areaLabel.c_str())) {
                         for (auto rt : trickIds) {
-                            auto option = randoSettings->GetTrickOption(rt);
+                            auto option = randoSettings->GetTrickSetting(rt);
                             if (!option.IsHidden() && trickSearch.PassFilter(option.GetName().c_str()) &&
                                 enabledTricks.count(rt) && Rando::Tricks::CheckTags(showTag, option.GetTags())) {
-                                ImGui::TreeNodeSetOpen(
-                                    ImGui::GetID((Rando::Tricks::GetAreaName(option.GetArea()) + "##enabled").c_str()),
-                                    areaTreeEnabled[option.GetArea()]);
-                                ImGui::SetNextItemOpen(true, ImGuiCond_Once);
                                 UIWidgets::PushStyleButton(THEME_COLOR, ImVec2(7.f, 5.f));
                                 if (ImGui::ArrowButton(std::to_string(rt).c_str(), ImGuiDir_Left)) {
                                     enabledTricks.erase(rt);
-                                    std::string enabledTrickString = "";
-                                    for (auto enabledTrickIt : enabledTricks) {
-                                        enabledTrickString += std::to_string(enabledTrickIt);
-                                        enabledTrickString += ",";
-                                    }
-                                    if (enabledTrickString == "") {
-                                        CVarClear(CVAR_RANDOMIZER_SETTING("EnabledTricks"));
-                                    } else {
-                                        CVarSetString(CVAR_RANDOMIZER_SETTING("EnabledTricks"),
-                                                      enabledTrickString.c_str());
-                                    }
-                                    Ship::Context::GetInstance()
-                                        ->GetWindow()
-                                        ->GetGui()
-                                        ->SaveConsoleVariablesNextFrame();
-                                    tricksDirty = true;
+                                    SaveEnabledTricks();
                                 }
                                 UIWidgets::PopStyleButton();
                                 Rando::Tricks::DrawTagChips(option.GetTags(), option.GetName());
@@ -514,10 +641,10 @@ void DrawTricksMenu(WidgetInfo& info) {
                                 UIWidgets::Tooltip(option.GetDescription().c_str());
                             }
                         }
-                        areaTreeEnabled[area] = true;
+                        areaTreeEnabled.insert(area);
                         ImGui::TreePop();
                     } else {
-                        areaTreeEnabled[area] = false;
+                        areaTreeEnabled.erase(area);
                     }
                 }
             }
@@ -540,7 +667,6 @@ void DrawTricksMenu(WidgetInfo& info) {
 }
 
 void SohMenu::AddMenuRandomizer() {
-    Randomizer::CreateCustomMessages();
     // Add Randomizer Menu
     AddMenuEntry("Randomizer", CVAR_SETTING("Menu.RandomizerSidebarSection"));
 
@@ -561,7 +687,7 @@ void SohMenu::AddMenuRandomizer() {
             ImGui::InputText("##RandomizerSeed", seedString, MAX_SEED_STRING_SIZE,
                              ImGuiInputTextFlags_CallbackCharFilter, UIWidgets::TextFilters::FilterAlphaNum);
             UIWidgets::Tooltip("Characters from a-z, A-Z, and 0-9 are supported.\n"
-                               "Character limit is 1023, after which the seed will be truncated.\n");
+                               "Character limit is 1023, after which the seed will be truncated.");
             ImGui::SameLine();
             if (UIWidgets::Button(
                     ICON_FA_RANDOM,
@@ -570,16 +696,19 @@ void SohMenu::AddMenuRandomizer() {
                         .Color(THEME_COLOR)
                         .Padding(ImVec2(10.f, 6.f))
                         .Tooltip("Creates a new random seed value to be used when generating a randomizer"))) {
-                SohUtils::CopyStringToCharArray(seedString, std::to_string(rand() & 0xFFFFFFFF), MAX_SEED_STRING_SIZE);
+                for (size_t i = 0; i < 10; i++) {
+                    seedString[i] = '0' + ShipUtils::Random(0, 10);
+                }
+                seedString[10] = '\0';
             }
             ImGui::SameLine();
             if (UIWidgets::Button(ICON_FA_ERASER, UIWidgets::ButtonOptions()
                                                       .Size(UIWidgets::Sizes::Inline)
                                                       .Color(THEME_COLOR)
                                                       .Padding(ImVec2(10.f, 6.f)))) {
-                memset(seedString, 0, MAX_SEED_STRING_SIZE);
+                seedString[0] = 0;
             }
-            if (strnlen(seedString, MAX_SEED_STRING_SIZE) == 0) {
+            if (seedString[0] == 0) {
                 ImGui::SameLine(17.0f);
                 ImGui::TextColored(ImVec4(1.0f, 1.0f, 1.0f, 0.4f), "Leave blank for random seed");
             }
@@ -592,20 +721,28 @@ void SohMenu::AddMenuRandomizer() {
             GenerateRandomizer(CVarGetInteger(CVAR_RANDOMIZER_SETTING("ManualSeedEntry"), 0) ? seedString : "");
         })
         .PreFunc([](WidgetInfo& info) {
-            info.options->Disabled((gSaveContext.gameMode != GAMEMODE_FILE_SELECT) || GameInteractor::IsSaveLoaded());
+            info.options->disabled = (gSaveContext.gameMode != GAMEMODE_FILE_SELECT) || GameInteractor::IsSaveLoaded();
         })
         .Options(ButtonOptions()
                      .Size(ImVec2(250.f, 0.f))
                      .DisabledTooltip("Must be on File Select to generate a randomizer seed."));
-    AddWidget(path, "Spoiler File", WIDGET_CUSTOM)
-        .CustomFunction([](WidgetInfo& info) {
-            JoinRandoGenerationThread();
-            if (!CVarGetInteger(CVAR_RANDOMIZER_SETTING("DontGenerateSpoiler"), 0)) {
-                std::string spoilerfilepath = CVarGetString(CVAR_GENERAL("SpoilerLog"), "");
-                ImGui::Text("Spoiler File: %s", spoilerfilepath.c_str());
-            }
+    AddWidget(path, "Randomize All Settings", WIDGET_BUTTON)
+        .Callback([](WidgetInfo& info) { Rando::Settings::GetInstance()->RandomizeAllSettings(); })
+        .PreFunc([](WidgetInfo& info) {
+            info.options->disabled = CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0) ||
+                                     CVarGetInteger(CVAR_GENERAL("OnFileSelectNameEntry"), 0);
         })
+        .Options(ButtonOptions()
+                     .Size(ImVec2(250.f, 0.f))
+                     .Tooltip("Randomizes all randomizer settings to random valid values (excludes tricks)."))
         .SameLine(true);
+    AddWidget(path, "Spoiler File", WIDGET_CUSTOM).CustomFunction([](WidgetInfo& info) {
+        JoinRandoGenerationThread();
+        if (!CVarGetInteger(CVAR_RANDOMIZER_SETTING("DontGenerateSpoiler"), 0)) {
+            std::string spoilerfilepath = CVarGetString(CVAR_GENERAL("SpoilerLog"), "");
+            ImGui::Text("Spoiler File: %s", spoilerfilepath.c_str());
+        }
+    });
 
     // Enhancements
     AddWidget(path, "Enhancements", WIDGET_SEPARATOR_TEXT);
@@ -631,17 +768,6 @@ void SohMenu::AddMenuRandomizer() {
                 .DefaultValue(true));
     AddWidget(path, "Map & Compass Colors Match Dungeon", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_RANDOMIZER_ENHANCEMENT("ColoredMapsAndCompasses"))
-        .PreFunc([](WidgetInfo& info) {
-            info.options->disabled = !(OTRGlobals::Instance->gRandoContext->GetOption(RSK_SHUFFLE_MAPANDCOMPASS)
-                                           .IsNot(RO_DUNGEON_ITEM_LOC_STARTWITH) &&
-                                       OTRGlobals::Instance->gRandoContext->GetOption(RSK_SHUFFLE_MAPANDCOMPASS)
-                                           .IsNot(RO_DUNGEON_ITEM_LOC_VANILLA) &&
-                                       OTRGlobals::Instance->gRandoContext->GetOption(RSK_SHUFFLE_MAPANDCOMPASS)
-                                           .IsNot(RO_DUNGEON_ITEM_LOC_OWN_DUNGEON));
-            info.options->disabledTooltip =
-                "This setting is disabled because a savefile is loaded without the map & compass.\n"
-                "Shuffle settings set to \"Any Dungeon\", \"Overworld\" or \"Anywhere\".";
-        })
         .Options(
             CheckboxOptions()
                 .Tooltip("Matches the color of maps & compasses to the dungeon they belong to. "
@@ -649,6 +775,12 @@ void SohMenu::AddMenuRandomizer() {
                          "applies to seeds with maps & compasses shuffled to \"Any Dungeon\", \"Overworld\", or "
                          "\"Anywhere\".")
                 .DefaultValue(true));
+    AddWidget(path, "Jabber Nut Colors Match Kind", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_RANDOMIZER_ENHANCEMENT("GenericJabberNutModel"))
+        .RaceDisable(false)
+        .Options(CheckboxOptions()
+                     .Tooltip("With Shuffle Speak, jabber nut model & color will be generic.")
+                     .DefaultValue(true));
     AddWidget(path, "Quest Item Fanfares", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_RANDOMIZER_ENHANCEMENT("QuestItemFanfares"))
         .RaceDisable(false)
@@ -680,6 +812,9 @@ void SohMenu::AddMenuRandomizer() {
         })
         .Options(FloatSliderOptions().Min(5.0f).Max(15.0f).Format("%.2f").DefaultValue(10.0f).Tooltip(
             "The size of the item when it is picked up."));
+    AddWidget(path, "Signs Hint Entrances", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_RANDOMIZER_ENHANCEMENT("EntrancesOnSigns"))
+        .Options(CheckboxOptions().Tooltip("If enabled, signs near loading zones will tell you where they lead to."));
 
     auto randoSettings = Rando::Settings::GetInstance();
     randoSettings->CreateOptions();
@@ -687,7 +822,9 @@ void SohMenu::AddMenuRandomizer() {
     randoSettings->GetOptionGroup(RSG_MENU_SIDEBAR_DUNGEONS).AddWidgets(path);
     randoSettings->GetOptionGroup(RSG_MENU_SIDEBAR_SHUFFLES).AddWidgets(path);
     randoSettings->GetOptionGroup(RSG_MENU_SIDEBAR_HINTS_TRAPS).AddWidgets(path);
-    randoSettings->GetOptionGroup(RSG_MENU_SIDEBAR_STARTING_ITEMS).AddWidgets(path);
+    path.sidebarName = "Starting Items";
+    AddSidebarEntry("Randomizer", path.sidebarName, 1);
+    AddWidget(path, "Starting Items", WIDGET_CUSTOM).CustomFunction(DrawStartingItemsMenu);
     path.sidebarName = "Locations";
     AddSidebarEntry("Randomizer", path.sidebarName, 1);
     AddWidget(path, "Excluded Locations", WIDGET_CUSTOM).CustomFunction(DrawLocationsMenu);
@@ -764,6 +901,26 @@ void SohMenu::AddMenuRandomizer() {
         .WindowName("Check Tracker Settings")
         .HideInSearch(true)
         .Options(WindowButtonOptions().Tooltip("Enables the separate Check Tracker Settings Window."));
+
+    // Hint Tracker
+    path.sidebarName = "Hint Tracker";
+    AddSidebarEntry("Randomizer", path.sidebarName, 1);
+
+    AddWidget(path, "Hint Tracker", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Toggle Hint Tracker", WIDGET_WINDOW_BUTTON)
+        .CVar(CVAR_WINDOW("HintTracker"))
+        .RaceDisable(false)
+        .WindowName("Hint Tracker")
+        .HideInSearch(true)
+        .Options(WindowButtonOptions().Tooltip("Toggles the Hint Tracker.").EmbedWindow(false));
+
+    AddWidget(path, "Hint Tracker Settings", WIDGET_SEPARATOR_TEXT);
+    AddWidget(path, "Popout Hint Tracker Settings", WIDGET_WINDOW_BUTTON)
+        .CVar(CVAR_WINDOW("HintTrackerSettings"))
+        .RaceDisable(false)
+        .WindowName("Hint Tracker Settings")
+        .HideInSearch(true)
+        .Options(WindowButtonOptions().Tooltip("Enables the separate Hint Tracker Settings Window."));
 }
 
 } // namespace SohGui

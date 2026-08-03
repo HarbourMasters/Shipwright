@@ -1,8 +1,8 @@
 #include <soh/OTRGlobals.h>
+#include "soh/Enhancements/randomizer/randomizer.h"
 
 extern "C" {
 #include "variables.h"
-#include "functions.h"
 extern PlayState* gPlayState;
 }
 
@@ -27,11 +27,11 @@ void RegisterShuffleFreestanding() {
             return;
         }
         uint8_t isDungeon = loc->IsDungeon();
-        uint8_t freestandingSetting = RAND_GET_OPTION(RSK_SHUFFLE_FREESTANDING);
+        auto freestandingSetting = RAND_GET_OPTION(RSK_SHUFFLE_FREESTANDING);
 
         // Don't change to randomized item if current freestanding item isn't shuffled or already obtained.
-        if ((freestandingSetting == RO_SHUFFLE_FREESTANDING_OVERWORLD && isDungeon) ||
-            (freestandingSetting == RO_SHUFFLE_FREESTANDING_DUNGEONS && !isDungeon) ||
+        if ((freestandingSetting.Is(RO_SHUFFLE_FREESTANDING_OVERWORLD) && isDungeon) ||
+            (freestandingSetting.Is(RO_SHUFFLE_FREESTANDING_DUNGEONS) && !isDungeon) ||
             randomizerCheck == RC_UNKNOWN_CHECK) {
             return;
         }

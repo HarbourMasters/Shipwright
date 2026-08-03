@@ -1,0 +1,44 @@
+:config:
+  segments:
+    - [ 6, 0x0124C650 ]
+    - [ 4, 0x00D3AED0 ]
+    - [ 8, 0x0124C650 ]
+    - [ 9, 0x0124C650 ]
+    - [ 10, 0x0124C650 ]
+    - [ 11, 0x0124C650 ]
+    - [ 12, 0x0124C650 ]
+    - [ 13, 0x0124C650 ]
+  external_files:
+    - ntsc_1-2/objects/gameplay_keep.yml
+
+object_bombiwa_DL_0009E0:
+  type: GFX
+  offset: 0x9E0
+  symbol: object_bombiwa_DL_0009E0
+
+object_bombiwa_TLUT_000000:
+  type: TEXTURE
+  offset: 0x0
+  symbol: object_bombiwa_TLUT_000000
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_bombiwa_Tex_000020:
+  type: TEXTURE
+  offset: 0x20
+  symbol: object_bombiwa_Tex_000020
+  format: CI4
+  width: 64
+  height: 64
+  tlut: 0x0
+
+
+object_bombiwaVtx_000820:
+  type: OOT:ARRAY
+  offset: 0x000820
+  symbol: object_bombiwaVtx_000820
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

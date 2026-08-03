@@ -5,8 +5,6 @@
 
 #include "soh/Enhancements/gameconsole.h"
 #include "soh/frame_interpolation.h"
-#include "soh/Enhancements/debugconsole.h"
-#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include <overlays/actors/ovl_En_Niw/z_en_niw.h>
 #include <overlays/misc/ovl_kaleido_scope/z_kaleido_scope.h>
 #include "soh/Enhancements/enhancementTypes.h"
@@ -15,8 +13,6 @@
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/SaveManager.h"
 #include "soh/framebuffer_effects.h"
-
-#include <libultraship/libultraship.h>
 
 #include <time.h>
 #include <assert.h>
@@ -37,7 +33,6 @@ Input* D_8012D1F8 = NULL;
 
 PlayState* gPlayState;
 s16 firstInit = 0;
-s16 gEnPartnerId;
 
 void Play_SpawnScene(PlayState* play, s32 sceneId, s32 spawn);
 
@@ -332,6 +327,10 @@ u8 CheckDungeonCount() {
         dungeonCount++;
     }
 
+    if (Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_GANONS_TOWER)) {
+        dungeonCount++;
+    }
+
     return dungeonCount;
 }
 
@@ -351,24 +350,6 @@ u8 CheckBridgeRewardCount() {
             break;
     }
     return bridgeRewardCount;
-}
-
-u8 CheckLACSRewardCount() {
-    u8 lacsRewardCount = 0;
-
-    switch (Randomizer_GetSettingValue(RSK_LACS_OPTIONS)) {
-        case RO_LACS_WILDCARD_REWARD:
-            if (Flags_GetRandomizerInf(RAND_INF_GREG_FOUND)) {
-                lacsRewardCount += 1;
-            }
-            break;
-        case RO_LACS_GREG_REWARD:
-            if (Flags_GetRandomizerInf(RAND_INF_GREG_FOUND)) {
-                lacsRewardCount += 1;
-            }
-            break;
-    }
-    return lacsRewardCount;
 }
 
 void Play_Init(GameState* thisx) {
@@ -425,9 +406,9 @@ void Play_Init(GameState* thisx) {
         Camera_ChangeStatus(&play->subCameras[i], CAM_STAT_UNK100);
     }
 
-    play->cameraPtrs[MAIN_CAM] = &play->mainCamera;
-    play->cameraPtrs[MAIN_CAM]->uid = 0;
-    play->activeCamera = MAIN_CAM;
+    play->cameraPtrs[CAM_ID_MAIN] = &play->mainCamera;
+    play->cameraPtrs[CAM_ID_MAIN]->uid = 0;
+    play->activeCamera = CAM_ID_MAIN;
     func_8005AC48(&play->mainCamera, 0xFF);
     // Sram_Init(this, &this->sramCtx);
     Regs_InitData(play);
@@ -465,38 +446,38 @@ void Play_Init(GameState* thisx) {
     if (gSaveContext.gameMode != GAMEMODE_NORMAL || gSaveContext.cutsceneIndex >= 0xFFF0) {
         gSaveContext.nayrusLoveTimer = 0;
         Magic_Reset(play);
-        gSaveContext.sceneSetupIndex = SCENE_LAYER_CUTSCENE_FIRST + (gSaveContext.cutsceneIndex & 0xF);
+        gSaveContext.sceneLayer = SCENE_LAYER_CUTSCENE_FIRST + (gSaveContext.cutsceneIndex & 0xF);
     } else if (!LINK_IS_ADULT && IS_DAY) {
-        gSaveContext.sceneSetupIndex = SCENE_LAYER_CHILD_DAY;
+        gSaveContext.sceneLayer = SCENE_LAYER_CHILD_DAY;
     } else if (!LINK_IS_ADULT && !IS_DAY) {
-        gSaveContext.sceneSetupIndex = SCENE_LAYER_CHILD_NIGHT;
+        gSaveContext.sceneLayer = SCENE_LAYER_CHILD_NIGHT;
     } else if (LINK_IS_ADULT && IS_DAY) {
-        gSaveContext.sceneSetupIndex = SCENE_LAYER_ADULT_DAY;
+        gSaveContext.sceneLayer = SCENE_LAYER_ADULT_DAY;
     } else {
-        gSaveContext.sceneSetupIndex = SCENE_LAYER_ADULT_NIGHT;
+        gSaveContext.sceneLayer = SCENE_LAYER_ADULT_NIGHT;
     }
 
     // save the base scene layer (before accounting for the special cases below) to use later for the transition type
-    baseSceneLayer = gSaveContext.sceneSetupIndex;
+    baseSceneLayer = gSaveContext.sceneLayer;
 
     if ((gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_HYRULE_FIELD) && !LINK_IS_ADULT &&
         !IS_CUTSCENE_LAYER) {
         if (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD) && CHECK_QUEST_ITEM(QUEST_GORON_RUBY) &&
             CHECK_QUEST_ITEM(QUEST_ZORA_SAPPHIRE)) {
-            gSaveContext.sceneSetupIndex = 1;
+            gSaveContext.sceneLayer = 1;
         } else {
-            gSaveContext.sceneSetupIndex = 0;
+            gSaveContext.sceneLayer = 0;
         }
     } else if ((gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_KOKIRI_FOREST) && LINK_IS_ADULT &&
                !IS_CUTSCENE_LAYER) {
-        gSaveContext.sceneSetupIndex = (Flags_GetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP)) ? 3 : 2;
+        gSaveContext.sceneLayer = (Flags_GetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP)) ? 3 : 2;
     }
 
-    Play_SpawnScene(
-        play, gEntranceTable[((void)0, gSaveContext.entranceIndex) + ((void)0, gSaveContext.sceneSetupIndex)].scene,
-        gEntranceTable[((void)0, gSaveContext.sceneSetupIndex) + ((void)0, gSaveContext.entranceIndex)].spawn);
+    Play_SpawnScene(play,
+                    gEntranceTable[((void)0, gSaveContext.entranceIndex) + ((void)0, gSaveContext.sceneLayer)].scene,
+                    gEntranceTable[((void)0, gSaveContext.sceneLayer) + ((void)0, gSaveContext.entranceIndex)].spawn);
 
-    osSyncPrintf("\nSCENE_NO=%d COUNTER=%d\n", ((void)0, gSaveContext.entranceIndex), gSaveContext.sceneSetupIndex);
+    osSyncPrintf("\nSCENE_NO=%d COUNTER=%d\n", ((void)0, gSaveContext.entranceIndex), gSaveContext.sceneLayer);
 
 #if 0
     // When entering Gerudo Valley in the credits, trigger the GC emulator to play the ending movie.
@@ -519,8 +500,7 @@ void Play_Init(GameState* thisx) {
             gSaveContext.bgsDayCount++;
             gSaveContext.dogIsLost = true;
 
-            if (Inventory_ReplaceItem(play, ITEM_WEIRD_EGG, ITEM_CHICKEN) || Inventory_HatchPocketCucco(play)) {
-                GameInteractor_ExecuteOnCuccoOrChickenHatch();
+            if (Inventory_HatchWeirdEgg(play) || Inventory_HatchPocketCucco(play)) {
                 Message_StartTextbox(play, 0x3066, NULL);
             }
 
@@ -544,8 +524,8 @@ void Play_Init(GameState* thisx) {
     play->state.destroy = Play_Destroy;
     play->transitionTrigger = TRANS_TRIGGER_END;
     play->unk_11E16 = 0xFF;
-    play->unk_11E18 = 0;
-    play->unk_11DE9 = false;
+    play->bgCoverAlpha = 0;
+    play->haltAllActors = false;
 
     if (gSaveContext.gameMode != GAMEMODE_TITLE_SCREEN) {
         if (gSaveContext.nextTransitionType == TRANS_NEXT_TYPE_DEFAULT) {
@@ -594,7 +574,11 @@ void Play_Init(GameState* thisx) {
         gSlotAgeReqs[SLOT_TRADE_CHILD] = AGE_REQ_CHILD;
     }
 
-    func_800304DC(play, &play->actorCtx, play->linkActorEntry);
+    // Handle Rocs Feather requirement
+    gItemAgeReqs[ITEM_ROCS_FEATHER] = AGE_REQ_NONE;
+    gSlotAgeReqs[SLOT_NAYRUS_LOVE] = AGE_REQ_NONE;
+
+    Actor_InitContext(play, &play->actorCtx, play->linkActorEntry);
 
     while (!func_800973FC(play, &play->roomCtx)) {
         ; // Empty Loop
@@ -635,7 +619,7 @@ void Play_Init(GameState* thisx) {
     Environment_PlaySceneSequence(play);
     gSaveContext.seqId = play->sequenceCtx.seqId;
     gSaveContext.natureAmbienceId = play->sequenceCtx.natureAmbienceId;
-    func_8002DF18(play, GET_PLAYER(play));
+    Actor_InitPlayerHorse(play, GET_PLAYER(play));
     AnimationContext_Update(play, &play->animationCtx);
     gSaveContext.respawnFlag = 0;
 
@@ -681,11 +665,8 @@ void Play_Init(GameState* thisx) {
     }
 #endif
 
-    if (CVarGetInteger(CVAR_ENHANCEMENT("IvanCoopModeEnabled"), 0)) {
-        Actor_Spawn(&play->actorCtx, play, gEnPartnerId, GET_PLAYER(play)->actor.world.pos.x,
-                    GET_PLAYER(play)->actor.world.pos.y + Player_GetHeight(GET_PLAYER(play)) + 5.0f,
-                    GET_PLAYER(play)->actor.world.pos.z, 0, 0, 0, 1, true);
-    }
+    // nextEntranceIndex was not initialized, so the previous value was carried over during soft resets.
+    gPlayState->nextEntranceIndex = gSaveContext.entranceIndex;
 }
 
 void Play_Update(PlayState* play) {
@@ -811,7 +792,7 @@ void Play_Update(PlayState* play) {
                 case TRANS_MODE_SETUP:
                     if (play->transitionTrigger != TRANS_TRIGGER_END) {
                         s16 sceneLayer = 0;
-                        Interface_ChangeAlpha(1);
+                        Interface_ChangeHudVisibilityMode(1);
 
                         if (gSaveContext.cutsceneIndex >= 0xFFF0) {
                             sceneLayer = SCENE_LAYER_CUTSCENE_FIRST + (gSaveContext.cutsceneIndex & 0xF);
@@ -1209,7 +1190,7 @@ void Play_Update(PlayState* play) {
 
                     PLAY_LOG(3637);
 
-                    if (!play->unk_11DE9) {
+                    if (!play->haltAllActors) {
                         Actor_UpdateAll(play, &play->actorCtx);
                     }
 
@@ -1560,11 +1541,11 @@ void Play_Draw(PlayState* play) {
         }
 
         if ((HREG(80) != 10) || (HREG(84) != 0)) {
-            Environment_FillScreen(gfxCtx, 0, 0, 0, play->unk_11E18, FILL_SCREEN_OPA);
+            Environment_FillScreen(gfxCtx, 0, 0, 0, play->bgCoverAlpha, FILL_SCREEN_OPA);
         }
 
         if ((HREG(80) != 10) || (HREG(85) != 0)) {
-            func_800315AC(play, &play->actorCtx);
+            Actor_DrawAll(play, &play->actorCtx);
         }
 
         if ((HREG(80) != 10) || (HREG(86) != 0)) {
@@ -1695,7 +1676,7 @@ void Play_Main(GameState* thisx) {
 
     if (play->envCtx.unk_EE[2] == 0 && CVarGetInteger(CVAR_GENERAL("LetItSnow"), 0)) {
         play->envCtx.unk_EE[3] = 64;
-        Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_OBJECT_KANKYO, 0, 0, 0, 0, 0, 0, 3, 0);
+        Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_OBJECT_KANKYO, 0, 0, 0, 0, 0, 0, 3);
     }
 
     D_8012D1F8 = &play->state.input[0];
@@ -1881,7 +1862,7 @@ void func_800C016C(PlayState* play, Vec3f* src, Vec3f* dest) {
 s16 Play_CreateSubCamera(PlayState* play) {
     s16 i;
 
-    for (i = SUBCAM_FIRST; i < NUM_CAMS; i++) {
+    for (i = CAM_ID_SUB_FIRST; i < NUM_CAMS; i++) {
         if (play->cameraPtrs[i] == NULL) {
             break;
         }
@@ -1896,7 +1877,7 @@ s16 Play_CreateSubCamera(PlayState* play) {
                      CYAN) " " VT_RST "\n",
                  i);
 
-    play->cameraPtrs[i] = &play->subCameras[i - SUBCAM_FIRST];
+    play->cameraPtrs[i] = &play->subCameras[i - CAM_ID_SUB_FIRST];
     Camera_Init(play->cameraPtrs[i], &play->view, &play->colCtx, play);
     play->cameraPtrs[i]->thisIdx = i;
 
@@ -1920,7 +1901,7 @@ s16 Play_ChangeCameraStatus(PlayState* play, s16 camId, s16 status) {
 void Play_ClearCamera(PlayState* play, s16 camId) {
     s16 camIdx = (camId == SUBCAM_ACTIVE) ? play->activeCamera : camId;
 
-    if (camIdx == MAIN_CAM) {
+    if (camIdx == CAM_ID_MAIN) {
         osSyncPrintf(VT_COL(RED, WHITE) "camera control: error: never clear camera !!\n" VT_RST);
     }
 
@@ -1938,13 +1919,13 @@ void Play_ClearCamera(PlayState* play, s16 camId) {
 void Play_ClearAllSubCameras(PlayState* play) {
     s16 i;
 
-    for (i = SUBCAM_FIRST; i < NUM_CAMS; i++) {
+    for (i = CAM_ID_SUB_FIRST; i < NUM_CAMS; i++) {
         if (play->cameraPtrs[i] != NULL) {
             Play_ClearCamera(play, i);
         }
     }
 
-    play->activeCamera = MAIN_CAM;
+    play->activeCamera = CAM_ID_MAIN;
 }
 
 Camera* Play_GetCamera(PlayState* play, s16 camId) {
@@ -2035,11 +2016,11 @@ s32 func_800C0808(PlayState* play, s16 camId, Player* player, s16 setting) {
 
     camera = play->cameraPtrs[camIdx];
     Camera_InitPlayerSettings(camera, player);
-    return Camera_ChangeSetting(camera, setting);
+    return Camera_RequestSetting(camera, setting);
 }
 
 s32 Play_CameraChangeSetting(PlayState* play, s16 camId, s16 setting) {
-    return Camera_ChangeSetting(Play_GetCamera(play, camId), setting);
+    return Camera_RequestSetting(Play_GetCamera(play, camId), setting);
 }
 
 void func_800C08AC(PlayState* play, s16 camId, s16 arg2) {
@@ -2048,7 +2029,7 @@ void func_800C08AC(PlayState* play, s16 camId, s16 arg2) {
 
     Play_ClearCamera(play, camIdx);
 
-    for (i = SUBCAM_FIRST; i < NUM_CAMS; i++) {
+    for (i = CAM_ID_SUB_FIRST; i < NUM_CAMS; i++) {
         if (play->cameraPtrs[i] != NULL) {
             osSyncPrintf(
                 VT_COL(RED, WHITE) "camera control: error: return to main, other camera left. %d cleared!!\n" VT_RST,
@@ -2058,10 +2039,10 @@ void func_800C08AC(PlayState* play, s16 camId, s16 arg2) {
     }
 
     if (arg2 <= 0) {
-        Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_ACTIVE);
-        play->cameraPtrs[MAIN_CAM]->childCamIdx = play->cameraPtrs[MAIN_CAM]->parentCamIdx = SUBCAM_FREE;
+        Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_ACTIVE);
+        play->cameraPtrs[CAM_ID_MAIN]->childCamIdx = play->cameraPtrs[CAM_ID_MAIN]->parentCamIdx = SUBCAM_FREE;
     } else {
-        OnePointCutscene_Init(play, 1020, arg2, NULL, MAIN_CAM);
+        OnePointCutscene_Init(play, 1020, arg2, NULL, CAM_ID_MAIN);
     }
 }
 
@@ -2159,7 +2140,7 @@ void Play_TriggerRespawn(PlayState* play) {
     Play_LoadToLastEntrance(play);
 }
 
-s32 func_800C0CB8(PlayState* play) {
+s32 Play_CamIsNotFixed(PlayState* play) {
     return (play->roomCtx.curRoom.meshHeader->base.type != 1) && (YREG(15) != 0x20) && (YREG(15) != 0x30) &&
            (YREG(15) != 0x40) && (play->sceneNum != SCENE_CASTLE_COURTYARD_GUARDS_DAY);
 }
@@ -2226,7 +2207,7 @@ void Play_PerformSave(PlayState* play) {
             (gSaveContext.equips.buttonItems[0] == ITEM_NONE && !Flags_GetInfTable(INFTABLE_SWORDLESS))) {
 
             gSaveContext.equips.buttonItems[0] = gSaveContext.buttonStatus[0];
-            Interface_RandoRestoreSwordless();
+            GameInteractor_Should(VB_TEMP_B_RESTORE_SWORDLESS, true);
         }
 
         Save_SaveFile();

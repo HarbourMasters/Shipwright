@@ -97,7 +97,7 @@ void BgTokiSwd_Init(Actor* thisx, PlayState* play) {
         }
     }
 
-    if (gSaveContext.sceneSetupIndex == 5) {
+    if (gSaveContext.sceneLayer == 5) {
         play->roomCtx.unk_74[0] = 0xFF;
     }
 
@@ -114,7 +114,7 @@ void BgTokiSwd_Destroy(Actor* thisx, PlayState* play) {
 }
 
 void func_808BAF40(BgTokiSwd* this, PlayState* play) {
-    if (((Flags_GetEventChkInf(EVENTCHKINF_ENTERED_MASTER_SWORD_CHAMBER)) == 0) && (gSaveContext.sceneSetupIndex < 4) &&
+    if (((Flags_GetEventChkInf(EVENTCHKINF_ENTERED_MASTER_SWORD_CHAMBER)) == 0) && (gSaveContext.sceneLayer < 4) &&
         Actor_IsFacingAndNearPlayer(&this->actor, 800.0f, 0x7530) && !Play_InCsMode(play)) {
         Flags_SetEventChkInf(EVENTCHKINF_ENTERED_MASTER_SWORD_CHAMBER);
         if (GameInteractor_Should(VB_PLAY_ENTRANCE_CS, true, EVENTCHKINF_ENTERED_MASTER_SWORD_CHAMBER,
@@ -152,7 +152,7 @@ void func_808BAF40(BgTokiSwd* this, PlayState* play) {
             }
         }
     }
-    if (gSaveContext.sceneSetupIndex == 5) {
+    if (gSaveContext.sceneLayer == 5) {
         if (play->roomCtx.unk_74[0] > 0) {
             play->roomCtx.unk_74[0]--;
         } else {
@@ -209,7 +209,8 @@ void BgTokiSwd_Draw(Actor* thisx, PlayState* play2) {
 
     func_8002EBCC(&this->actor, play, 0);
 
-    gSPSegment(POLY_OPA_DISP++, 0x08, Gfx_TexScroll(play->state.gfxCtx, 0, -(play->gameplayFrames % 0x80), 32, 32));
+    gSPSegment(POLY_OPA_DISP++, 0x08,
+               Gfx_TexScrollEx(play->state.gfxCtx, 0, -(play->gameplayFrames % 0x80), 32, 32, 0, -1));
     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, object_toki_objects_DL_001BD0);
 
