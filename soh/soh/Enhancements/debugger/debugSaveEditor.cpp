@@ -522,11 +522,8 @@ void DrawBGSItemFlag(uint8_t itemID) {
                  ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1));
 }
 
-// A C/D-pad item button mirrors the inventory slot it points at: buttonItems[i] == items[cButtonSlots[i-1]].
-// The pickers below write inventory.items[] raw, so re-sync any button aimed at the edited slot; otherwise the
-// button keeps a stale id (e.g. an emptied bottle still showing its old contents), a desync the game trips on
-// at the next age swap or bottle update. Equipment buttons hold an equipment-page index in cButtonSlots (>= 24),
-// so they never match an inventory slot here and are left alone.
+// Re-sync any C/D-pad button that mirrors an edited inventory slot (buttonItems[i] == items[cButtonSlots[i-1]]),
+// so a raw item edit doesn't leave the button showing stale contents.
 static void SyncButtonItemsForSlot(uint8_t slot) {
     for (size_t i = 1; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
         if (gSaveContext.equips.cButtonSlots[i - 1] == slot) {
@@ -544,6 +541,11 @@ void DrawInventoryTab() {
     Checkbox(
         "Restrict to valid items", &restrictToValid,
         checkboxOptionsBase.Tooltip("Restricts items and ammo to only what is possible to legally acquire in-game"));
+
+    static bool syncButtons = true;
+    Checkbox("Keep C/D-pad buttons in sync", &syncButtons,
+             checkboxOptionsBase.Tooltip("Refresh a C or D-pad button when its inventory slot is edited. Disable to "
+                                         "leave a slot and its button out of sync (e.g. to set up RBA)."));
 
     for (int y = 0; y < 4; y++) {
         for (int x = 0; x < 6; x++) {
@@ -597,7 +599,9 @@ void DrawInventoryTab() {
                                   ImVec2(IMAGE_SIZE, IMAGE_SIZE) + ImGui::GetStyle().FramePadding * 2)) {
                     if (selectedIndex != SLOT_NONE) {
                         gSaveContext.inventory.items[selectedIndex] = ITEM_NONE;
-                        SyncButtonItemsForSlot(selectedIndex);
+                        if (syncButtons) {
+                            SyncButtonItemsForSlot(selectedIndex);
+                        }
                     }
                     ImGui::CloseCurrentPopup();
                 }
@@ -637,7 +641,9 @@ void DrawInventoryTab() {
                     PopStyleButton();
                     if (ret) {
                         gSaveContext.inventory.items[selectedIndex] = slotEntry.id;
-                        SyncButtonItemsForSlot(selectedIndex);
+                        if (syncButtons) {
+                            SyncButtonItemsForSlot(selectedIndex);
+                        }
                         ImGui::CloseCurrentPopup();
                     }
                     UIWidgets::Tooltip(SohUtils::GetItemName(slotEntry.id).c_str());
