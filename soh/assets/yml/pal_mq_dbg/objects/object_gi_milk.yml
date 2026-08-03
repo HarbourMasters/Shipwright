@@ -1,0 +1,49 @@
+:config:
+  segments:
+    - [ 6, 0x0161E000 ]
+    - [ 4, 0x00F5E000 ]
+    - [ 8, 0x0161E000 ]
+    - [ 9, 0x0161E000 ]
+    - [ 10, 0x0161E000 ]
+    - [ 11, 0x0161E000 ]
+    - [ 12, 0x0161E000 ]
+    - [ 13, 0x0161E000 ]
+  external_files:
+    - pal_mq_dbg/objects/gameplay_keep.yml
+
+gGiMilkBottleContentsDL:
+  type: GFX
+  offset: 0x1060
+  symbol: gGiMilkBottleContentsDL
+
+gGiMilkBottleDL:
+  type: GFX
+  offset: 0x1288
+  symbol: gGiMilkBottleDL
+
+object_gi_milkTex_000000:
+  type: TEXTURE
+  offset: 0x0
+  symbol: object_gi_milkTex_000000
+  format: I8
+  width: 72
+  height: 24
+
+
+object_gi_milkVtx_0006C0:
+  type: OOT:ARRAY
+  offset: 0x0006C0
+  symbol: object_gi_milkVtx_0006C0
+  count: 63
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_milkVtx_000AB0:
+  type: OOT:ARRAY
+  offset: 0x000AB0
+  symbol: object_gi_milkVtx_000AB0
+  count: 91
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

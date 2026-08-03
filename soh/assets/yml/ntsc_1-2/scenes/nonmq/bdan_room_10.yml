@@ -1,0 +1,357 @@
+:config:
+  segments:
+    - [ 3, 0x01ADD6E0 ]
+    - [ 2, 0x01AB53D0 ]
+  directory: scenes/nonmq/bdan_scene
+  external_files:
+    - ntsc_1-2/scenes/nonmq/bdan_scene.yml
+    - ntsc_1-2/code/sys_matrix.yml
+    - ntsc_1-2/scenes/nonmq/bdan_room_10Set_0000B0.yml
+
+bdan_room_10:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: bdan_room_10
+
+
+bdan_room_10Vtx_000120:
+  type: OOT:ARRAY
+  offset: 0x000120
+  symbol: bdan_room_10Vtx_000120
+  count: 86
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+bdan_room_10DL_000680:
+  type: GFX
+  offset: 0x000680
+  symbol: bdan_room_10DL_000680
+
+bdan_room_10Vtx_000898:
+  type: OOT:ARRAY
+  offset: 0x000898
+  symbol: bdan_room_10Vtx_000898
+  count: 57
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+bdan_room_10DL_000C68Mtx_000000:
+  type: OOT:MTX
+  offset: 0xC28
+  symbol: bdan_room_10DL_000C68Mtx_000000
+
+bdan_room_10DL_000C68:
+  type: GFX
+  offset: 0x000C68
+  symbol: bdan_room_10DL_000C68
+
+bdan_room_10Vtx_000E60:
+  type: OOT:ARRAY
+  offset: 0x000E60
+  symbol: bdan_room_10Vtx_000E60
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+bdan_room_10DL_000FE0Mtx_000000:
+  type: OOT:MTX
+  offset: 0xFA0
+  symbol: bdan_room_10DL_000FE0Mtx_000000
+
+bdan_room_10DL_000FE0:
+  type: GFX
+  offset: 0x000FE0
+  symbol: bdan_room_10DL_000FE0
+
+bdan_room_10Vtx_001120:
+  type: OOT:ARRAY
+  offset: 0x001120
+  symbol: bdan_room_10Vtx_001120
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+bdan_room_10DL_0012E0Mtx_000000:
+  type: OOT:MTX
+  offset: 0x12A0
+  symbol: bdan_room_10DL_0012E0Mtx_000000
+
+bdan_room_10DL_0012E0:
+  type: GFX
+  offset: 0x0012E0
+  symbol: bdan_room_10DL_0012E0
+
+bdan_room_10Vtx_001438:
+  type: OOT:ARRAY
+  offset: 0x001438
+  symbol: bdan_room_10Vtx_001438
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+bdan_room_10DL_0015B8Mtx_000000:
+  type: OOT:MTX
+  offset: 0x1578
+  symbol: bdan_room_10DL_0015B8Mtx_000000
+
+bdan_room_10DL_0015B8:
+  type: GFX
+  offset: 0x0015B8
+  symbol: bdan_room_10DL_0015B8
+
+bdan_room_10Vtx_0016F8:
+  type: OOT:ARRAY
+  offset: 0x0016F8
+  symbol: bdan_room_10Vtx_0016F8
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+bdan_room_10DL_0018B8Mtx_000000:
+  type: OOT:MTX
+  offset: 0x1878
+  symbol: bdan_room_10DL_0018B8Mtx_000000
+
+bdan_room_10DL_0018B8:
+  type: GFX
+  offset: 0x0018B8
+  symbol: bdan_room_10DL_0018B8
+
+bdan_room_10Vtx_001A10:
+  type: OOT:ARRAY
+  offset: 0x001A10
+  symbol: bdan_room_10Vtx_001A10
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+bdan_room_10DL_001B90Mtx_000000:
+  type: OOT:MTX
+  offset: 0x1B50
+  symbol: bdan_room_10DL_001B90Mtx_000000
+
+bdan_room_10DL_001B90:
+  type: GFX
+  offset: 0x001B90
+  symbol: bdan_room_10DL_001B90
+
+bdan_room_10Vtx_001CD0:
+  type: OOT:ARRAY
+  offset: 0x001CD0
+  symbol: bdan_room_10Vtx_001CD0
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+bdan_room_10DL_001F00Mtx_000000:
+  type: OOT:MTX
+  offset: 0x1EC0
+  symbol: bdan_room_10DL_001F00Mtx_000000
+
+bdan_room_10DL_001F00:
+  type: GFX
+  offset: 0x001F00
+  symbol: bdan_room_10DL_001F00
+
+bdan_room_10Vtx_002058:
+  type: OOT:ARRAY
+  offset: 0x002058
+  symbol: bdan_room_10Vtx_002058
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+bdan_room_10DL_0021D8Mtx_000000:
+  type: OOT:MTX
+  offset: 0x2198
+  symbol: bdan_room_10DL_0021D8Mtx_000000
+
+bdan_room_10DL_0021D8:
+  type: GFX
+  offset: 0x0021D8
+  symbol: bdan_room_10DL_0021D8
+
+bdan_room_10Vtx_002318:
+  type: OOT:ARRAY
+  offset: 0x002318
+  symbol: bdan_room_10Vtx_002318
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+bdan_room_10DL_002428Mtx_000000:
+  type: OOT:MTX
+  offset: 0x23E8
+  symbol: bdan_room_10DL_002428Mtx_000000
+
+bdan_room_10DL_002428:
+  type: GFX
+  offset: 0x002428
+  symbol: bdan_room_10DL_002428
+
+bdan_room_10Vtx_002530:
+  type: OOT:ARRAY
+  offset: 0x002530
+  symbol: bdan_room_10Vtx_002530
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+bdan_room_10DL_002670Mtx_000000:
+  type: OOT:MTX
+  offset: 0x2630
+  symbol: bdan_room_10DL_002670Mtx_000000
+
+bdan_room_10DL_002670:
+  type: GFX
+  offset: 0x002670
+  symbol: bdan_room_10DL_002670
+
+bdan_room_10Vtx_002788:
+  type: OOT:ARRAY
+  offset: 0x002788
+  symbol: bdan_room_10Vtx_002788
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+bdan_room_10DL_002898Mtx_000000:
+  type: OOT:MTX
+  offset: 0x2858
+  symbol: bdan_room_10DL_002898Mtx_000000
+
+bdan_room_10DL_002898:
+  type: GFX
+  offset: 0x002898
+  symbol: bdan_room_10DL_002898
+
+bdan_room_10Vtx_0029A0:
+  type: OOT:ARRAY
+  offset: 0x0029A0
+  symbol: bdan_room_10Vtx_0029A0
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+bdan_room_10DL_002AE0Mtx_000000:
+  type: OOT:MTX
+  offset: 0x2AA0
+  symbol: bdan_room_10DL_002AE0Mtx_000000
+
+bdan_room_10DL_002AE0:
+  type: GFX
+  offset: 0x002AE0
+  symbol: bdan_room_10DL_002AE0
+
+bdan_room_10Vtx_002BF8:
+  type: OOT:ARRAY
+  offset: 0x002BF8
+  symbol: bdan_room_10Vtx_002BF8
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+bdan_room_10DL_002D08Mtx_000000:
+  type: OOT:MTX
+  offset: 0x2CC8
+  symbol: bdan_room_10DL_002D08Mtx_000000
+
+bdan_room_10DL_002D08:
+  type: GFX
+  offset: 0x002D08
+  symbol: bdan_room_10DL_002D08
+
+bdan_room_10Vtx_002E10:
+  type: OOT:ARRAY
+  offset: 0x002E10
+  symbol: bdan_room_10Vtx_002E10
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+bdan_room_10DL_002F50Mtx_000000:
+  type: OOT:MTX
+  offset: 0x2F10
+  symbol: bdan_room_10DL_002F50Mtx_000000
+
+bdan_room_10DL_002F50:
+  type: GFX
+  offset: 0x002F50
+  symbol: bdan_room_10DL_002F50
+
+bdan_room_10Vtx_003068:
+  type: OOT:ARRAY
+  offset: 0x003068
+  symbol: bdan_room_10Vtx_003068
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+bdan_room_10DL_003178Mtx_000000:
+  type: OOT:MTX
+  offset: 0x3138
+  symbol: bdan_room_10DL_003178Mtx_000000
+
+bdan_room_10DL_003178:
+  type: GFX
+  offset: 0x003178
+  symbol: bdan_room_10DL_003178
+
+bdan_room_10Vtx_003280:
+  type: OOT:ARRAY
+  offset: 0x003280
+  symbol: bdan_room_10Vtx_003280
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+bdan_room_10DL_0033C0Mtx_000000:
+  type: OOT:MTX
+  offset: 0x3380
+  symbol: bdan_room_10DL_0033C0Mtx_000000
+
+bdan_room_10DL_0033C0:
+  type: GFX
+  offset: 0x0033C0
+  symbol: bdan_room_10DL_0033C0
+
+bdan_room_10Vtx_0034D8:
+  type: OOT:ARRAY
+  offset: 0x0034D8
+  symbol: bdan_room_10Vtx_0034D8
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+bdan_room_10DL_003668Mtx_000000:
+  type: OOT:MTX
+  offset: 0x3628
+  symbol: bdan_room_10DL_003668Mtx_000000
+
+bdan_room_10DL_003668:
+  type: GFX
+  offset: 0x003668
+  symbol: bdan_room_10DL_003668
+
+bdan_room_10DL_003790:
+  type: GFX
+  offset: 0x003790
+  symbol: bdan_room_10DL_003790

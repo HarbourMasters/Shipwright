@@ -1,0 +1,528 @@
+:config:
+  segments:
+    - [ 6, 0x00EEDB30 ]
+    - [ 4, 0x00D30F80 ]
+    - [ 8, 0x00EEDB30 ]
+    - [ 9, 0x00EEDB30 ]
+    - [ 10, 0x00EEDB30 ]
+    - [ 11, 0x00EEDB30 ]
+    - [ 12, 0x00EEDB30 ]
+    - [ 13, 0x00EEDB30 ]
+  external_files:
+    - ntsc_u_mq/objects/gameplay_keep.yml
+
+object_oA10_DL_00001878:
+  type: GFX
+  offset: 0x1878
+  symbol: object_oA10_DL_00001878
+
+object_oA10_DL_00001990:
+  type: GFX
+  offset: 0x1990
+  symbol: object_oA10_DL_00001990
+
+object_oA10_DL_00001AE0:
+  type: GFX
+  offset: 0x1AE0
+  symbol: object_oA10_DL_00001AE0
+
+object_oA10_DL_00001D48:
+  type: GFX
+  offset: 0x1D48
+  symbol: object_oA10_DL_00001D48
+
+object_oA10_DL_00001E68:
+  type: GFX
+  offset: 0x1E68
+  symbol: object_oA10_DL_00001E68
+
+object_oA10_DL_00001F50:
+  type: GFX
+  offset: 0x1F50
+  symbol: object_oA10_DL_00001F50
+
+object_oA10_DL_00001FF8:
+  type: GFX
+  offset: 0x1FF8
+  symbol: object_oA10_DL_00001FF8
+
+object_oA10_DL_00002088:
+  type: GFX
+  offset: 0x2088
+  symbol: object_oA10_DL_00002088
+
+object_oA10_DL_00002170:
+  type: GFX
+  offset: 0x2170
+  symbol: object_oA10_DL_00002170
+
+object_oA10_DL_00002220:
+  type: GFX
+  offset: 0x2220
+  symbol: object_oA10_DL_00002220
+
+object_oA10_DL_000022B8:
+  type: GFX
+  offset: 0x22B8
+  symbol: object_oA10_DL_000022B8
+
+object_oA10_DL_000023A0:
+  type: GFX
+  offset: 0x23A0
+  symbol: object_oA10_DL_000023A0
+
+object_oA10_DL_00002448:
+  type: GFX
+  offset: 0x2448
+  symbol: object_oA10_DL_00002448
+
+object_oA10_DL_000024D8:
+  type: GFX
+  offset: 0x24D8
+  symbol: object_oA10_DL_000024D8
+
+object_oA10_DL_000025C0:
+  type: GFX
+  offset: 0x25C0
+  symbol: object_oA10_DL_000025C0
+
+object_oA10_Limb_00000000:
+  type: OOT:LIMB
+  offset: 0x0
+  symbol: object_oA10_Limb_00000000
+  limb_type: Standard
+
+object_oA10_Limb_0000000C:
+  type: OOT:LIMB
+  offset: 0xC
+  symbol: object_oA10_Limb_0000000C
+  limb_type: Standard
+
+object_oA10_Limb_00000018:
+  type: OOT:LIMB
+  offset: 0x18
+  symbol: object_oA10_Limb_00000018
+  limb_type: Standard
+
+object_oA10_Limb_00000024:
+  type: OOT:LIMB
+  offset: 0x24
+  symbol: object_oA10_Limb_00000024
+  limb_type: Standard
+
+object_oA10_Limb_00000030:
+  type: OOT:LIMB
+  offset: 0x30
+  symbol: object_oA10_Limb_00000030
+  limb_type: Standard
+
+object_oA10_Limb_0000003C:
+  type: OOT:LIMB
+  offset: 0x3C
+  symbol: object_oA10_Limb_0000003C
+  limb_type: Standard
+
+object_oA10_Limb_00000048:
+  type: OOT:LIMB
+  offset: 0x48
+  symbol: object_oA10_Limb_00000048
+  limb_type: Standard
+
+object_oA10_Limb_00000054:
+  type: OOT:LIMB
+  offset: 0x54
+  symbol: object_oA10_Limb_00000054
+  limb_type: Standard
+
+object_oA10_Limb_00000060:
+  type: OOT:LIMB
+  offset: 0x60
+  symbol: object_oA10_Limb_00000060
+  limb_type: Standard
+
+object_oA10_Limb_0000006C:
+  type: OOT:LIMB
+  offset: 0x6C
+  symbol: object_oA10_Limb_0000006C
+  limb_type: Standard
+
+object_oA10_Limb_00000078:
+  type: OOT:LIMB
+  offset: 0x78
+  symbol: object_oA10_Limb_00000078
+  limb_type: Standard
+
+object_oA10_Limb_00000084:
+  type: OOT:LIMB
+  offset: 0x84
+  symbol: object_oA10_Limb_00000084
+  limb_type: Standard
+
+object_oA10_Limb_00000090:
+  type: OOT:LIMB
+  offset: 0x90
+  symbol: object_oA10_Limb_00000090
+  limb_type: Standard
+
+object_oA10_Limb_0000009C:
+  type: OOT:LIMB
+  offset: 0x9C
+  symbol: object_oA10_Limb_0000009C
+  limb_type: Standard
+
+object_oA10_Limb_000000A8:
+  type: OOT:LIMB
+  offset: 0xA8
+  symbol: object_oA10_Limb_000000A8
+  limb_type: Standard
+
+object_oA10_Limb_000000B4:
+  type: OOT:LIMB
+  offset: 0xB4
+  symbol: object_oA10_Limb_000000B4
+  limb_type: Standard
+
+object_oA10_Limb_000000C0:
+  type: OOT:LIMB
+  offset: 0xC0
+  symbol: object_oA10_Limb_000000C0
+  limb_type: Standard
+
+object_oA10_Limb_000000CC:
+  type: OOT:LIMB
+  offset: 0xCC
+  symbol: object_oA10_Limb_000000CC
+  limb_type: Standard
+
+object_oA10_Limb_000000D8:
+  type: OOT:LIMB
+  offset: 0xD8
+  symbol: object_oA10_Limb_000000D8
+  limb_type: Standard
+
+object_oA10_Limb_000000E4:
+  type: OOT:LIMB
+  offset: 0xE4
+  symbol: object_oA10_Limb_000000E4
+  limb_type: Standard
+
+object_oA10_Limb_000000F0:
+  type: OOT:LIMB
+  offset: 0xF0
+  symbol: object_oA10_Limb_000000F0
+  limb_type: Standard
+
+object_oA10_Limb_000000FC:
+  type: OOT:LIMB
+  offset: 0xFC
+  symbol: object_oA10_Limb_000000FC
+  limb_type: Standard
+
+object_oA10_Limb_00000108:
+  type: OOT:LIMB
+  offset: 0x108
+  symbol: object_oA10_Limb_00000108
+  limb_type: Standard
+
+object_oA10_Limb_00000114:
+  type: OOT:LIMB
+  offset: 0x114
+  symbol: object_oA10_Limb_00000114
+  limb_type: Standard
+
+object_oA10_Limb_00000120:
+  type: OOT:LIMB
+  offset: 0x120
+  symbol: object_oA10_Limb_00000120
+  limb_type: Standard
+
+object_oA10_Limb_0000012C:
+  type: OOT:LIMB
+  offset: 0x12C
+  symbol: object_oA10_Limb_0000012C
+  limb_type: Standard
+
+object_oA10_Limb_00000138:
+  type: OOT:LIMB
+  offset: 0x138
+  symbol: object_oA10_Limb_00000138
+  limb_type: Standard
+
+object_oA10_Limb_00000144:
+  type: OOT:LIMB
+  offset: 0x144
+  symbol: object_oA10_Limb_00000144
+  limb_type: Standard
+
+object_oA10_Limb_00000150:
+  type: OOT:LIMB
+  offset: 0x150
+  symbol: object_oA10_Limb_00000150
+  limb_type: Standard
+
+object_oA10_Limb_0000015C:
+  type: OOT:LIMB
+  offset: 0x15C
+  symbol: object_oA10_Limb_0000015C
+  limb_type: Standard
+
+object_oA10_Limb_00000168:
+  type: OOT:LIMB
+  offset: 0x168
+  symbol: object_oA10_Limb_00000168
+  limb_type: Standard
+
+object_oA10_Limb_00000174:
+  type: OOT:LIMB
+  offset: 0x174
+  symbol: object_oA10_Limb_00000174
+  limb_type: Standard
+
+object_oA10_Limb_00000180:
+  type: OOT:LIMB
+  offset: 0x180
+  symbol: object_oA10_Limb_00000180
+  limb_type: Standard
+
+object_oA10_Limb_0000018C:
+  type: OOT:LIMB
+  offset: 0x18C
+  symbol: object_oA10_Limb_0000018C
+  limb_type: Standard
+
+object_oA10_Limb_00000198:
+  type: OOT:LIMB
+  offset: 0x198
+  symbol: object_oA10_Limb_00000198
+  limb_type: Standard
+
+object_oA10_Limb_000001A4:
+  type: OOT:LIMB
+  offset: 0x1A4
+  symbol: object_oA10_Limb_000001A4
+  limb_type: Standard
+
+object_oA10_Limb_000001B0:
+  type: OOT:LIMB
+  offset: 0x1B0
+  symbol: object_oA10_Limb_000001B0
+  limb_type: Standard
+
+object_oA10_Limb_000001BC:
+  type: OOT:LIMB
+  offset: 0x1BC
+  symbol: object_oA10_Limb_000001BC
+  limb_type: Standard
+
+object_oA10_Skel_00000260:
+  type: OOT:SKELETON
+  offset: 0x260
+  symbol: object_oA10_Skel_00000260
+  limb_type: Standard
+  skel_type: Normal
+
+object_oA10_Tex_00002670:
+  type: TEXTURE
+  offset: 0x2670
+  symbol: object_oA10_Tex_00002670
+  format: RGBA16
+  width: 8
+  height: 16
+
+object_oA10_Tex_00002770:
+  type: TEXTURE
+  offset: 0x2770
+  symbol: object_oA10_Tex_00002770
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_oA10_Tex_000027F0:
+  type: TEXTURE
+  offset: 0x27F0
+  symbol: object_oA10_Tex_000027F0
+  format: I4
+  width: 16
+  height: 8
+
+object_oA10_Tex_00002830:
+  type: TEXTURE
+  offset: 0x2830
+  symbol: object_oA10_Tex_00002830
+  format: RGBA16
+  width: 16
+  height: 8
+
+object_oA10_Tex_00002930:
+  type: TEXTURE
+  offset: 0x2930
+  symbol: object_oA10_Tex_00002930
+  format: RGBA16
+  width: 16
+  height: 32
+
+object_oA10_Tex_00002D30:
+  type: TEXTURE
+  offset: 0x2D30
+  symbol: object_oA10_Tex_00002D30
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_oA10_Tex_00002DB0:
+  type: TEXTURE
+  offset: 0x2DB0
+  symbol: object_oA10_Tex_00002DB0
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_oA10_Tex_00002E30:
+  type: TEXTURE
+  offset: 0x2E30
+  symbol: object_oA10_Tex_00002E30
+  format: RGBA16
+  width: 8
+  height: 8
+
+
+object_oA10_Skel_00000260Limbs:
+  type: BLOB
+  offset: 0x1C8
+  symbol: object_oA10_Skel_00000260Limbs
+  size: 0
+
+object_oA10Vtx_000268:
+  type: OOT:ARRAY
+  offset: 0x000268
+  symbol: object_oA10Vtx_000268
+  count: 37
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_oA10Vtx_0004B8:
+  type: OOT:ARRAY
+  offset: 0x0004B8
+  symbol: object_oA10Vtx_0004B8
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_oA10Vtx_000668:
+  type: OOT:ARRAY
+  offset: 0x000668
+  symbol: object_oA10Vtx_000668
+  count: 104
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_oA10Vtx_000CE8:
+  type: OOT:ARRAY
+  offset: 0x000CE8
+  symbol: object_oA10Vtx_000CE8
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_oA10Vtx_000E68:
+  type: OOT:ARRAY
+  offset: 0x000E68
+  symbol: object_oA10Vtx_000E68
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_oA10Vtx_000F28:
+  type: OOT:ARRAY
+  offset: 0x000F28
+  symbol: object_oA10Vtx_000F28
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_oA10Vtx_001068:
+  type: OOT:ARRAY
+  offset: 0x001068
+  symbol: object_oA10Vtx_001068
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_oA10Vtx_0010C8:
+  type: OOT:ARRAY
+  offset: 0x0010C8
+  symbol: object_oA10Vtx_0010C8
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_oA10Vtx_0011E8:
+  type: OOT:ARRAY
+  offset: 0x0011E8
+  symbol: object_oA10Vtx_0011E8
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_oA10Vtx_001328:
+  type: OOT:ARRAY
+  offset: 0x001328
+  symbol: object_oA10Vtx_001328
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_oA10Vtx_0013E8:
+  type: OOT:ARRAY
+  offset: 0x0013E8
+  symbol: object_oA10Vtx_0013E8
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_oA10Vtx_0014A8:
+  type: OOT:ARRAY
+  offset: 0x0014A8
+  symbol: object_oA10Vtx_0014A8
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_oA10Vtx_0015E8:
+  type: OOT:ARRAY
+  offset: 0x0015E8
+  symbol: object_oA10Vtx_0015E8
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_oA10Vtx_001648:
+  type: OOT:ARRAY
+  offset: 0x001648
+  symbol: object_oA10Vtx_001648
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_oA10Vtx_001768:
+  type: OOT:ARRAY
+  offset: 0x001768
+  symbol: object_oA10Vtx_001768
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

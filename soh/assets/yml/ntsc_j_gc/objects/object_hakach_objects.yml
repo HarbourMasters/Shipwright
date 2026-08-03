@@ -1,0 +1,239 @@
+:config:
+  segments:
+    - [ 6, 0x00F8FEF0 ]
+    - [ 4, 0x00D31090 ]
+    - [ 8, 0x00F8FEF0 ]
+    - [ 9, 0x00F8FEF0 ]
+    - [ 10, 0x00F8FEF0 ]
+    - [ 11, 0x00F8FEF0 ]
+    - [ 12, 0x00F8FEF0 ]
+    - [ 13, 0x00F8FEF0 ]
+  external_files:
+    - ntsc_j_gc/objects/gameplay_keep.yml
+
+gBotw1Col:
+  type: OOT:COLLISION
+  offset: 0x1830
+  symbol: gBotw1Col
+
+gBotw2Col:
+  type: OOT:COLLISION
+  offset: 0x1AB8
+  symbol: gBotw2Col
+
+gBotwBloodSplatterDL:
+  type: GFX
+  offset: 0x1250
+  symbol: gBotwBloodSplatterDL
+
+gBotwBloodSplatterTex:
+  type: TEXTURE
+  offset: 0x38F0
+  symbol: gBotwBloodSplatterTex
+  format: IA16
+  width: 32
+  height: 32
+
+gBotwBombSpotCol:
+  type: OOT:COLLISION
+  offset: 0x0C2C
+  symbol: gBotwBombSpotCol
+
+gBotwBombSpotDL:
+  type: GFX
+  offset: 0x0A10
+  symbol: gBotwBombSpotDL
+
+gBotwCoffinLidCol:
+  type: OOT:COLLISION
+  offset: 0x0870
+  symbol: gBotwCoffinLidCol
+
+gBotwCoffinLidDL:
+  type: GFX
+  offset: 0x06B0
+  symbol: gBotwCoffinLidDL
+
+gBotwFakeWallsAndFloorsDL:
+  type: GFX
+  offset: 0x1060
+  symbol: gBotwFakeWallsAndFloorsDL
+
+gBotwHoleTrap1DL:
+  type: GFX
+  offset: 0x01B0
+  symbol: gBotwHoleTrap1DL
+
+gBotwHoleTrap2DL:
+  type: GFX
+  offset: 0x03F0
+  symbol: gBotwHoleTrap2DL
+
+gBotwTex_0030F0:
+  type: TEXTURE
+  offset: 0x30F0
+  symbol: gBotwTex_0030F0
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBotwTex_0040F0:
+  type: TEXTURE
+  offset: 0x40F0
+  symbol: gBotwTex_0040F0
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBotwTex_0048F0:
+  type: TEXTURE
+  offset: 0x48F0
+  symbol: gBotwTex_0048F0
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBotwTex_0050F0:
+  type: TEXTURE
+  offset: 0x50F0
+  symbol: gBotwTex_0050F0
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBotwTex_0058F0:
+  type: TEXTURE
+  offset: 0x58F0
+  symbol: gBotwTex_0058F0
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBotwTex_0060F0:
+  type: TEXTURE
+  offset: 0x60F0
+  symbol: gBotwTex_0060F0
+  format: I4
+  width: 32
+  height: 32
+
+gBotwThreeFakeFloorsDL:
+  type: GFX
+  offset: 0x1920
+  symbol: gBotwThreeFakeFloorsDL
+
+gBotwWater1Tex:
+  type: TEXTURE
+  offset: 0x028F0
+  symbol: gBotwWater1Tex
+  format: IA16
+  width: 32
+  height: 32
+
+gBotwWater2Tex:
+  type: TEXTURE
+  offset: 0x020F0
+  symbol: gBotwWater2Tex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBotwWaterFallDL:
+  type: GFX
+  offset: 0x2010
+  symbol: gBotwWaterFallDL
+
+gBotwWaterRingDL:
+  type: GFX
+  offset: 0x1E50
+  symbol: gBotwWaterRingDL
+
+object_hakach_objectsTex_0062F0:
+  type: TEXTURE
+  offset: 0x62F0
+  symbol: object_hakach_objectsTex_0062F0
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+object_hakach_objectsVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_hakach_objectsVtx_000000
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hakach_objectsVtx_0002C0:
+  type: OOT:ARRAY
+  offset: 0x0002C0
+  symbol: object_hakach_objectsVtx_0002C0
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hakach_objectsVtx_000540:
+  type: OOT:ARRAY
+  offset: 0x000540
+  symbol: object_hakach_objectsVtx_000540
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hakach_objectsVtx_0008A0:
+  type: OOT:ARRAY
+  offset: 0x0008A0
+  symbol: object_hakach_objectsVtx_0008A0
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hakach_objectsVtx_000C60:
+  type: OOT:ARRAY
+  offset: 0x000C60
+  symbol: object_hakach_objectsVtx_000C60
+  count: 60
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hakach_objectsVtx_001020:
+  type: OOT:ARRAY
+  offset: 0x001020
+  symbol: object_hakach_objectsVtx_001020
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hakach_objectsVtx_001860:
+  type: OOT:ARRAY
+  offset: 0x001860
+  symbol: object_hakach_objectsVtx_001860
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hakach_objectsVtx_001AF0:
+  type: OOT:ARRAY
+  offset: 0x001AF0
+  symbol: object_hakach_objectsVtx_001AF0
+  count: 54
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_hakach_objectsVtx_001FB0:
+  type: OOT:ARRAY
+  offset: 0x001FB0
+  symbol: object_hakach_objectsVtx_001FB0
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

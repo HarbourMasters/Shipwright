@@ -992,6 +992,19 @@ void DrawBGSItemFlag(uint8_t itemID) {
                  ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1));
 }
 
+// Re-sync any C/D-pad button that mirrors an edited inventory slot (buttonItems[i] == items[cButtonSlots[i-1]]),
+// so a raw item edit doesn't leave the button showing stale contents.
+static void SyncButtonItemsForSlot(uint8_t slot) {
+    for (size_t i = 1; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
+        if (gSaveContext.equips.cButtonSlots[i - 1] == slot) {
+            gSaveContext.equips.buttonItems[i] = gSaveContext.inventory.items[slot];
+            if (gPlayState != nullptr) {
+                Interface_LoadItemIcon1(gPlayState, static_cast<u16>(i));
+            }
+        }
+    }
+}
+
 void DrawInventoryTab() {
     ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 3.0f);
     ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(8.0f, 8.0f));
@@ -1005,16 +1018,22 @@ void DrawInventoryTab() {
     ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "Items");
     ImGui::Spacing();
 
-    static int32_t selectedIndex = -1;
+    static InventorySlot selectedIndex = SLOT_NONE;
     static const char* itemPopupPicker = "itemPopupPicker";
     static bool restrictToValid = true;
 
     // Check if D-pad is enabled for border coloring
     bool dpadEnabled = CVarGetInteger(CVAR_ENHANCEMENT("DpadEquips"), 0);
 
-    for (int32_t y = 0; y < 4; y++) {
-        for (int32_t x = 0; x < 6; x++) {
-            int32_t index = x + y * 6;
+    static bool syncButtons = true;
+    Checkbox("Keep C/D-pad buttons in sync", &syncButtons,
+             checkboxOptionsBase.Tooltip("Refresh a C or D-pad button when its inventory slot is edited. Disable to "
+                                         "leave a slot and its button out of sync (e.g. to set up RBA)."));
+
+    for (int y = 0; y < 4; y++) {
+        for (int x = 0; x < 6; x++) {
+            static_assert(5 + 3 * 6 < sizeof(gSaveContext.inventory.items) / sizeof(gSaveContext.inventory.items[0]));
+            InventorySlot index = static_cast<InventorySlot>(x + y * 6);
 
             ImGui::PushID(index);
 
@@ -1138,8 +1157,12 @@ void DrawInventoryTab() {
                 PushStyleButton(Colors::DarkGray);
                 if (ImGui::Button("##itemNonePicker",
                                   ImVec2(IMAGE_SIZE, IMAGE_SIZE) + ImGui::GetStyle().FramePadding * 2)) {
-                    if (selectedIndex != SLOT_NONE)
+                    if (selectedIndex != SLOT_NONE) {
                         gSaveContext.inventory.items[selectedIndex] = ITEM_NONE;
+                        if (syncButtons) {
+                            SyncButtonItemsForSlot(selectedIndex);
+                        }
+                    }
                     ImGui::CloseCurrentPopup();
                 }
                 PopStyleButton();
@@ -1185,6 +1208,9 @@ void DrawInventoryTab() {
                     PopStyleButton();
                     if (ret) {
                         gSaveContext.inventory.items[selectedIndex] = slotEntry.id;
+                        if (syncButtons) {
+                            SyncButtonItemsForSlot(selectedIndex);
+                        }
                         ImGui::CloseCurrentPopup();
                     }
                     UIWidgets::Tooltip(GetItemDisplayName(slotEntry.id));

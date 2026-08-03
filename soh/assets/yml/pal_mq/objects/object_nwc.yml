@@ -1,0 +1,113 @@
+:config:
+  segments:
+    - [ 6, 0x0117DBD0 ]
+    - [ 4, 0x00D250B0 ]
+    - [ 8, 0x0117DBD0 ]
+    - [ 9, 0x0117DBD0 ]
+    - [ 10, 0x0117DBD0 ]
+    - [ 11, 0x0117DBD0 ]
+    - [ 12, 0x0117DBD0 ]
+    - [ 13, 0x0117DBD0 ]
+  external_files:
+    - pal_mq/objects/gameplay_keep.yml
+
+gCuccoChickBeakDL:
+  type: GFX
+  offset: 0xCE0
+  symbol: gCuccoChickBeakDL
+
+gCuccoChickBeakTex:
+  type: TEXTURE
+  offset: 0xAE0
+  symbol: gCuccoChickBeakTex
+  format: RGBA16
+  width: 4
+  height: 4
+
+gCuccoChickBodyDL:
+  type: GFX
+  offset: 0x8B0
+  symbol: gCuccoChickBodyDL
+
+gCuccoChickBodyTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gCuccoChickBodyTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gCuccoChickEyeTex:
+  type: TEXTURE
+  offset: 0x8E0
+  symbol: gCuccoChickEyeTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gCuccoChickEyesDL:
+  type: GFX
+  offset: 0xC68
+  symbol: gCuccoChickEyesDL
+
+gCuccoChickSetupBeakDL:
+  type: GFX
+  offset: 0xC88
+  symbol: gCuccoChickSetupBeakDL
+
+gCuccoChickSetupBodyDL:
+  type: GFX
+  offset: 0x840
+  symbol: gCuccoChickSetupBodyDL
+
+gCuccoChickSetupEyeDL:
+  type: GFX
+  offset: 0xBF0
+  symbol: gCuccoChickSetupEyeDL
+
+gCuccoChickSetupShadowDL:
+  type: GFX
+  offset: 0xD10
+  symbol: gCuccoChickSetupShadowDL
+
+gCuccoChickShadowDL:
+  type: GFX
+  offset: 0xD50
+  symbol: gCuccoChickShadowDL
+
+
+object_nwcVtx_000800:
+  type: OOT:ARRAY
+  offset: 0x000800
+  symbol: object_nwcVtx_000800
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_nwcVtx_000B00:
+  type: OOT:ARRAY
+  offset: 0x000B00
+  symbol: object_nwcVtx_000B00
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_nwcVtx_000B90:
+  type: OOT:ARRAY
+  offset: 0x000B90
+  symbol: object_nwcVtx_000B90
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_nwcVtx_000D68:
+  type: OOT:ARRAY
+  offset: 0x000D68
+  symbol: object_nwcVtx_000D68
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

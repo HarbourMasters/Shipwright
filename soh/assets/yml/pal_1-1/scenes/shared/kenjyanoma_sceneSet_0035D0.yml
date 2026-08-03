@@ -1,0 +1,12 @@
+:config:
+  segments:
+    - [ 2, 0x019D7320 ]
+  directory: scenes/shared/kenjyanoma_scene
+  external_files:
+    - pal_1-1/scenes/shared/kenjyanoma_scene.yml
+
+kenjyanoma_sceneSet_0035D0:
+  type: OOT:SCENE
+  offset: 0x35D0
+  symbol: kenjyanoma_sceneSet_0035D0
+  base_name: kenjyanoma_scene

@@ -1,0 +1,747 @@
+:config:
+  segments:
+    - [ 6, 0x010565C0 ]
+    - [ 4, 0x00D30380 ]
+    - [ 8, 0x010565C0 ]
+    - [ 9, 0x010565C0 ]
+    - [ 10, 0x010565C0 ]
+    - [ 11, 0x010565C0 ]
+    - [ 12, 0x010565C0 ]
+    - [ 13, 0x010565C0 ]
+  external_files:
+    - pal_1-0/objects/gameplay_keep.yml
+
+gSariaBeltTex:
+  type: TEXTURE
+  offset: 0x2770
+  symbol: gSariaBeltTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x21F0
+
+gSariaBootsTex:
+  type: TEXTURE
+  offset: 0x23F0
+  symbol: gSariaBootsTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x21F0
+
+gSariaChestDL:
+  type: GFX
+  offset: 0x9918
+  symbol: gSariaChestDL
+
+gSariaClothesTLUT:
+  type: TEXTURE
+  offset: 0x21F0
+  symbol: gSariaClothesTLUT
+  format: RGBA16
+  width: 18
+  height: 6
+
+gSariaCollarTex:
+  type: TEXTURE
+  offset: 0x37C8
+  symbol: gSariaCollarTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x2A70
+
+gSariaEarTex:
+  type: TEXTURE
+  offset: 0x3788
+  symbol: gSariaEarTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x2A70
+
+gSariaExtendRightArmAnim:
+  type: OOT:ANIMATION
+  offset: 0x14850
+  symbol: gSariaExtendRightArmAnim
+
+gSariaEyeClosedTex:
+  type: TEXTURE
+  offset: 0x3848
+  symbol: gSariaEyeClosedTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x2B00
+
+gSariaEyeHalfTex:
+  type: TEXTURE
+  offset: 0x3C48
+  symbol: gSariaEyeHalfTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x2B00
+
+gSariaEyeOpenTex:
+  type: TEXTURE
+  offset: 0x2F48
+  symbol: gSariaEyeOpenTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x2B00
+
+gSariaEyeSadTex:
+  type: TEXTURE
+  offset: 0x4E48
+  symbol: gSariaEyeSadTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x2B00
+
+gSariaEyeSuprisedTex:
+  type: TEXTURE
+  offset: 0x4848
+  symbol: gSariaEyeSuprisedTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x2B00
+
+gSariaEyeTLUT:
+  type: TEXTURE
+  offset: 0x2B00
+  symbol: gSariaEyeTLUT
+  format: RGBA16
+  width: 63
+  height: 4
+
+gSariaFairyOcarinaTex:
+  type: TEXTURE
+  offset: 0x4048
+  symbol: gSariaFairyOcarinaTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gSariaGiveForestMedallionAnim:
+  type: OOT:ANIMATION
+  offset: 0xDF80
+  symbol: gSariaGiveForestMedallionAnim
+
+gSariaGiveForestMedallionStandAnim:
+  type: OOT:ANIMATION
+  offset: 0xE500
+  symbol: gSariaGiveForestMedallionStandAnim
+
+gSariaGiveLinkOcarinaAnim:
+  type: OOT:ANIMATION
+  offset: 0x135EC
+  symbol: gSariaGiveLinkOcarinaAnim
+
+gSariaGreenTex:
+  type: TEXTURE
+  offset: 0x24F0
+  symbol: gSariaGreenTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x21F0
+
+gSariaHairTex:
+  type: TEXTURE
+  offset: 0x2EC8
+  symbol: gSariaHairTex
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0x2A70
+
+gSariaHandTex:
+  type: TEXTURE
+  offset: 0x3808
+  symbol: gSariaHandTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x2A70
+
+gSariaHandsBehindBackWaitAnim:
+  type: OOT:ANIMATION
+  offset: 0x12100
+  symbol: gSariaHandsBehindBackWaitAnim
+
+gSariaHandsOnFaceAnim:
+  type: OOT:ANIMATION
+  offset: 0x15220
+  symbol: gSariaHandsOnFaceAnim
+
+gSariaHandsOutAnim:
+  type: OOT:ANIMATION
+  offset: 0x1186C
+  symbol: gSariaHandsOutAnim
+
+gSariaHeadDL:
+  type: GFX
+  offset: 0x6BF8
+  symbol: gSariaHeadDL
+
+gSariaHeadLimb:
+  type: OOT:LIMB
+  offset: 0xB154
+  symbol: gSariaHeadLimb
+  limb_type: Standard
+
+gSariaHoldOcarinaAnim:
+  type: OOT:ANIMATION
+  offset: 0x140BC
+  symbol: gSariaHoldOcarinaAnim
+
+gSariaHoldOutOcarinaAnim:
+  type: OOT:ANIMATION
+  offset: 0x13CD8
+  symbol: gSariaHoldOutOcarinaAnim
+
+gSariaKneeTex:
+  type: TEXTURE
+  offset: 0x2570
+  symbol: gSariaKneeTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x21F0
+
+gSariaLeftArmDL:
+  type: GFX
+  offset: 0x9F70
+  symbol: gSariaLeftArmDL
+
+gSariaLeftArmLimb:
+  type: OOT:LIMB
+  offset: 0xB118
+  symbol: gSariaLeftArmLimb
+  limb_type: Standard
+
+gSariaLeftFootDL:
+  type: GFX
+  offset: 0xAEE0
+  symbol: gSariaLeftFootDL
+
+gSariaLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0xB0D0
+  symbol: gSariaLeftFootLimb
+  limb_type: Standard
+
+gSariaLeftHandDL:
+  type: GFX
+  offset: 0x7900
+  symbol: gSariaLeftHandDL
+
+gSariaLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0xB124
+  symbol: gSariaLeftHandLimb
+  limb_type: Standard
+
+gSariaLeftShinDL:
+  type: GFX
+  offset: 0xAC20
+  symbol: gSariaLeftShinDL
+
+gSariaLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0xB0C4
+  symbol: gSariaLeftShinLimb
+  limb_type: Standard
+
+gSariaLeftShoulderDL:
+  type: GFX
+  offset: 0x9DA8
+  symbol: gSariaLeftShoulderDL
+
+gSariaLeftShoulderLimb:
+  type: OOT:LIMB
+  offset: 0xB10C
+  symbol: gSariaLeftShoulderLimb
+  limb_type: Standard
+
+gSariaLeftThighDL:
+  type: GFX
+  offset: 0xA9D0
+  symbol: gSariaLeftThighDL
+
+gSariaLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0xB0B8
+  symbol: gSariaLeftThighLimb
+  limb_type: Standard
+
+gSariaLinkLearnedSariasSongAnim:
+  type: OOT:ANIMATION
+  offset: 0xCFD8
+  symbol: gSariaLinkLearnedSariasSongAnim
+
+gSariaLookOverShoulderAnim:
+  type: OOT:ANIMATION
+  offset: 0x10C44
+  symbol: gSariaLookOverShoulderAnim
+
+gSariaLookUpArmExtendedAnim:
+  type: OOT:ANIMATION
+  offset: 0xE908
+  symbol: gSariaLookUpArmExtendedAnim
+
+gSariaMouthClosed2Tex:
+  type: TEXTURE
+  offset: 0x3588
+  symbol: gSariaMouthClosed2Tex
+  format: CI8
+  width: 32
+  height: 16
+  tlut: 0x2CF8
+
+gSariaMouthClosedTex:
+  type: TEXTURE
+  offset: 0x3348
+  symbol: gSariaMouthClosedTex
+  format: CI8
+  width: 32
+  height: 16
+  tlut: 0x2CF8
+
+gSariaMouthFrowningTex:
+  type: TEXTURE
+  offset: 0x4648
+  symbol: gSariaMouthFrowningTex
+  format: CI8
+  width: 32
+  height: 16
+  tlut: 0x2CF8
+
+gSariaMouthSmilingOpenTex:
+  type: TEXTURE
+  offset: 0x4448
+  symbol: gSariaMouthSmilingOpenTex
+  format: CI8
+  width: 32
+  height: 16
+  tlut: 0x2CF8
+
+gSariaMouthSuprisedTex:
+  type: TEXTURE
+  offset: 0x4C48
+  symbol: gSariaMouthSuprisedTex
+  format: CI8
+  width: 32
+  height: 16
+  tlut: 0x2CF8
+
+gSariaMouthTLUT:
+  type: TEXTURE
+  offset: 0x2CF8
+  symbol: gSariaMouthTLUT
+  format: RGBA16
+  width: 29
+  height: 8
+
+gSariaOcarinaToMouthAnim:
+  type: OOT:ANIMATION
+  offset: 0x1D50
+  symbol: gSariaOcarinaToMouthAnim
+
+gSariaPlayingOcarinaAnim:
+  type: OOT:ANIMATION
+  offset: 0xBAEC
+  symbol: gSariaPlayingOcarinaAnim
+
+gSariaReturnToOcarinaAnim:
+  type: OOT:ANIMATION
+  offset: 0xD7E8
+  symbol: gSariaReturnToOcarinaAnim
+
+gSariaRightArmDL:
+  type: GFX
+  offset: 0x9C70
+  symbol: gSariaRightArmDL
+
+gSariaRightArmExtendedWaitAnim:
+  type: OOT:ANIMATION
+  offset: 0x13008
+  symbol: gSariaRightArmExtendedWaitAnim
+
+gSariaRightArmLimb:
+  type: OOT:LIMB
+  offset: 0xB13C
+  symbol: gSariaRightArmLimb
+  limb_type: Standard
+
+gSariaRightChestLimb:
+  type: OOT:LIMB
+  offset: 0xB100
+  symbol: gSariaRightChestLimb
+  limb_type: Standard
+
+gSariaRightFootDL:
+  type: GFX
+  offset: 0xA810
+  symbol: gSariaRightFootDL
+
+gSariaRightFootLimb:
+  type: OOT:LIMB
+  offset: 0xB0F4
+  symbol: gSariaRightFootLimb
+  limb_type: Standard
+
+gSariaRightHandAndOcarinaDL:
+  type: GFX
+  offset: 0x7B80
+  symbol: gSariaRightHandAndOcarinaDL
+
+gSariaRightHandDL:
+  type: GFX
+  offset: 0x7A40
+  symbol: gSariaRightHandDL
+
+gSariaRightHandLimb:
+  type: OOT:LIMB
+  offset: 0xB148
+  symbol: gSariaRightHandLimb
+  limb_type: Standard
+
+gSariaRightShinDL:
+  type: GFX
+  offset: 0xA550
+  symbol: gSariaRightShinDL
+
+gSariaRightShinLimb:
+  type: OOT:LIMB
+  offset: 0xB0E8
+  symbol: gSariaRightShinLimb
+  limb_type: Standard
+
+gSariaRightShoulderDL:
+  type: GFX
+  offset: 0x9AA8
+  symbol: gSariaRightShoulderDL
+
+gSariaRightShoulderLimb:
+  type: OOT:LIMB
+  offset: 0xB130
+  symbol: gSariaRightShoulderLimb
+  limb_type: Standard
+
+gSariaRightThighDL:
+  type: GFX
+  offset: 0xA300
+  symbol: gSariaRightThighDL
+
+gSariaRightThighLimb:
+  type: OOT:LIMB
+  offset: 0xB0DC
+  symbol: gSariaRightThighLimb
+  limb_type: Standard
+
+gSariaRootLimb:
+  type: OOT:LIMB
+  offset: 0xB0A0
+  symbol: gSariaRootLimb
+  limb_type: Standard
+
+gSariaRunAnim:
+  type: OOT:ANIMATION
+  offset: 0xEBB0
+  symbol: gSariaRunAnim
+
+gSariaSealGanonAnim:
+  type: OOT:ANIMATION
+  offset: 0x1334
+  symbol: gSariaSealGanonAnim
+
+gSariaSitting1Anim:
+  type: OOT:ANIMATION
+  offset: 0xF580
+  symbol: gSariaSitting1Anim
+
+gSariaSitting2Anim:
+  type: OOT:ANIMATION
+  offset: 0xFCE0
+  symbol: gSariaSitting2Anim
+
+gSariaSitting3Anim:
+  type: OOT:ANIMATION
+  offset: 0xFFD4
+  symbol: gSariaSitting3Anim
+
+gSariaSkel:
+  type: OOT:SKELETON
+  offset: 0xB1A0
+  symbol: gSariaSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gSariaSkinTLUT:
+  type: TEXTURE
+  offset: 0x2A70
+  symbol: gSariaSkinTLUT
+  format: RGBA16
+  width: 8
+  height: 9
+
+gSariaSkinTex:
+  type: TEXTURE
+  offset: 0x3548
+  symbol: gSariaSkinTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x2A70
+
+gSariaSleeveTex:
+  type: TEXTURE
+  offset: 0x29F0
+  symbol: gSariaSleeveTex
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0x21F0
+
+gSariaStandHandsOnHipsAnim:
+  type: OOT:ANIMATION
+  offset: 0x14470
+  symbol: gSariaStandHandsOnHipsAnim
+
+gSariaStopPlayingOcarinaAnim:
+  type: OOT:ANIMATION
+  offset: 0xC500
+  symbol: gSariaStopPlayingOcarinaAnim
+
+gSariaTorsoTex:
+  type: TEXTURE
+  offset: 0x2670
+  symbol: gSariaTorsoTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x21F0
+
+gSariaTransitionHandsSideToBackAnim:
+  type: OOT:ANIMATION
+  offset: 0x11580
+  symbol: gSariaTransitionHandsSideToBackAnim
+
+gSariaTransitionHandsSideToChestToSideAnim:
+  type: OOT:ANIMATION
+  offset: 0x1291C
+  symbol: gSariaTransitionHandsSideToChestToSideAnim
+
+gSariaTransitionHandsSideToHipsAnim:
+  type: OOT:ANIMATION
+  offset: 0x11C38
+  symbol: gSariaTransitionHandsSideToHipsAnim
+
+gSariaUnkGreenTex:
+  type: TEXTURE
+  offset: 0x2870
+  symbol: gSariaUnkGreenTex
+  format: CI8
+  width: 16
+  height: 8
+  tlut: 0x21F0
+
+gSariaUnusedHandTex:
+  type: TEXTURE
+  offset: 0x28F0
+  symbol: gSariaUnusedHandTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x21F0
+
+gSariaWaistDL:
+  type: GFX
+  offset: 0xA0A8
+  symbol: gSariaWaistDL
+
+gSariaWaistLimb:
+  type: OOT:LIMB
+  offset: 0xB0AC
+  symbol: gSariaWaistLimb
+  limb_type: Standard
+
+gSariaWaitArmsToSideAnim:
+  type: OOT:ANIMATION
+  offset: 0x21D8
+  symbol: gSariaWaitArmsToSideAnim
+
+gSariaWaitOnBridgeAnim:
+  type: OOT:ANIMATION
+  offset: 0x1113C
+  symbol: gSariaWaitOnBridgeAnim
+
+gSariaWaveAnim:
+  type: OOT:ANIMATION
+  offset: 0xF1D4
+  symbol: gSariaWaveAnim
+
+object_saTex_002530:
+  type: TEXTURE
+  offset: 0x2530
+  symbol: object_saTex_002530
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x21F0
+
+
+object_saVtx_005248:
+  type: OOT:ARRAY
+  offset: 0x005248
+  symbol: object_saVtx_005248
+  count: 310
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_saVtx_0065A8:
+  type: OOT:ARRAY
+  offset: 0x0065A8
+  symbol: object_saVtx_0065A8
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_saVtx_006778:
+  type: OOT:ARRAY
+  offset: 0x006778
+  symbol: object_saVtx_006778
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_saVtx_006948:
+  type: OOT:ARRAY
+  offset: 0x006948
+  symbol: object_saVtx_006948
+  count: 43
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_saVtx_007DB8:
+  type: OOT:ARRAY
+  offset: 0x007DB8
+  symbol: object_saVtx_007DB8
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_saVtx_007F88:
+  type: OOT:ARRAY
+  offset: 0x007F88
+  symbol: object_saVtx_007F88
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_saVtx_0081A8:
+  type: OOT:ARRAY
+  offset: 0x0081A8
+  symbol: object_saVtx_0081A8
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_saVtx_0083D8:
+  type: OOT:ARRAY
+  offset: 0x0083D8
+  symbol: object_saVtx_0083D8
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_saVtx_0085A8:
+  type: OOT:ARRAY
+  offset: 0x0085A8
+  symbol: object_saVtx_0085A8
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_saVtx_0087C8:
+  type: OOT:ARRAY
+  offset: 0x0087C8
+  symbol: object_saVtx_0087C8
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_saVtx_0089F8:
+  type: OOT:ARRAY
+  offset: 0x0089F8
+  symbol: object_saVtx_0089F8
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_saVtx_008C78:
+  type: OOT:ARRAY
+  offset: 0x008C78
+  symbol: object_saVtx_008C78
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_saVtx_008EB8:
+  type: OOT:ARRAY
+  offset: 0x008EB8
+  symbol: object_saVtx_008EB8
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_saVtx_0090D8:
+  type: OOT:ARRAY
+  offset: 0x0090D8
+  symbol: object_saVtx_0090D8
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_saVtx_009318:
+  type: OOT:ARRAY
+  offset: 0x009318
+  symbol: object_saVtx_009318
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_saVtx_009578:
+  type: OOT:ARRAY
+  offset: 0x009578
+  symbol: object_saVtx_009578
+  count: 58
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gSariaSkelLimbs:
+  type: BLOB
+  offset: 0xB160
+  symbol: gSariaSkelLimbs
+  size: 0

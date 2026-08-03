@@ -1,0 +1,181 @@
+:config:
+  segments:
+    - [ 6, 0x00F52790 ]
+    - [ 4, 0x00D3A8E0 ]
+    - [ 8, 0x00F52790 ]
+    - [ 9, 0x00F52790 ]
+    - [ 10, 0x00F52790 ]
+    - [ 11, 0x00F52790 ]
+    - [ 12, 0x00F52790 ]
+    - [ 13, 0x00F52790 ]
+  external_files:
+    - ntsc_1-1/objects/gameplay_keep.yml
+
+gBirdBodyDL:
+  type: GFX
+  offset: 0x280
+  symbol: gBirdBodyDL
+
+gBirdBodyLimb:
+  type: OOT:LIMB
+  offset: 0x2160
+  symbol: gBirdBodyLimb
+  limb_type: Standard
+
+gBirdBodyWrapper1DL:
+  type: GFX
+  offset: 0x3D0
+  symbol: gBirdBodyWrapper1DL
+
+gBirdBodyWrapper2DL:
+  type: GFX
+  offset: 0x3E0
+  symbol: gBirdBodyWrapper2DL
+
+gBirdFaceTex:
+  type: TEXTURE
+  offset: 0x500
+  symbol: gBirdFaceTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBirdFlyAnim:
+  type: OOT:ANIMATION
+  offset: 0x6C
+  symbol: gBirdFlyAnim
+
+gBirdLeftWingDL:
+  type: GFX
+  offset: 0x80
+  symbol: gBirdLeftWingDL
+
+gBirdLeftWingLimb:
+  type: OOT:LIMB
+  offset: 0x2130
+  symbol: gBirdLeftWingLimb
+  limb_type: Standard
+
+gBirdLeftWingWrapper1DL:
+  type: GFX
+  offset: 0x120
+  symbol: gBirdLeftWingWrapper1DL
+
+gBirdLeftWingWrapper2DL:
+  type: GFX
+  offset: 0x130
+  symbol: gBirdLeftWingWrapper2DL
+
+gBirdLimb_002100:
+  type: OOT:LIMB
+  offset: 0x2100
+  symbol: gBirdLimb_002100
+  limb_type: Standard
+
+gBirdLimb_00210C:
+  type: OOT:LIMB
+  offset: 0x210C
+  symbol: gBirdLimb_00210C
+  limb_type: Standard
+
+gBirdLimb_002118:
+  type: OOT:LIMB
+  offset: 0x2118
+  symbol: gBirdLimb_002118
+  limb_type: Standard
+
+gBirdLimb_002124:
+  type: OOT:LIMB
+  offset: 0x2124
+  symbol: gBirdLimb_002124
+  limb_type: Standard
+
+gBirdLimb_00213C:
+  type: OOT:LIMB
+  offset: 0x213C
+  symbol: gBirdLimb_00213C
+  limb_type: Standard
+
+gBirdLimb_002148:
+  type: OOT:LIMB
+  offset: 0x2148
+  symbol: gBirdLimb_002148
+  limb_type: Standard
+
+gBirdRightWingDL:
+  type: GFX
+  offset: 0x180
+  symbol: gBirdRightWingDL
+
+gBirdRightWingLimb:
+  type: OOT:LIMB
+  offset: 0x2154
+  symbol: gBirdRightWingLimb
+  limb_type: Standard
+
+gBirdRightWingWrapper1DL:
+  type: GFX
+  offset: 0x220
+  symbol: gBirdRightWingWrapper1DL
+
+gBirdRightWingWrapper2DL:
+  type: GFX
+  offset: 0x230
+  symbol: gBirdRightWingWrapper2DL
+
+gBirdSkel:
+  type: OOT:SKELETON
+  offset: 0x2190
+  symbol: gBirdSkel
+  limb_type: Standard
+  skel_type: Normal
+
+gBirdTailTex:
+  type: TEXTURE
+  offset: 0xD00
+  symbol: gBirdTailTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gBirdWingTex:
+  type: TEXTURE
+  offset: 0x1100
+  symbol: gBirdWingTex
+  format: RGBA16
+  width: 64
+  height: 32
+
+
+object_birdVtx_000140:
+  type: OOT:ARRAY
+  offset: 0x000140
+  symbol: object_birdVtx_000140
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_birdVtx_000240:
+  type: OOT:ARRAY
+  offset: 0x000240
+  symbol: object_birdVtx_000240
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_birdVtx_0003F0:
+  type: OOT:ARRAY
+  offset: 0x0003F0
+  symbol: object_birdVtx_0003F0
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gBirdSkelLimbs:
+  type: BLOB
+  offset: 0x216C
+  symbol: gBirdSkelLimbs
+  size: 0

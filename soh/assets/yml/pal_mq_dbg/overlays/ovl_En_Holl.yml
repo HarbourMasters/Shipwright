@@ -1,0 +1,26 @@
+:config:
+  segments:
+    - [ 128, 0x00E0F7F0 ]
+    - [ 4, 0x00F5E000 ]
+    - [ 8, 0x00E0F7F0 ]
+    - [ 9, 0x00E0F7F0 ]
+    - [ 10, 0x00E0F7F0 ]
+    - [ 11, 0x00E0F7F0 ]
+    - [ 12, 0x00E0F7F0 ]
+    - [ 13, 0x00E0F7F0 ]
+  virtual: [ 0x80A58C10, 0x00E0F7F0 ]
+  external_files:
+    - pal_mq_dbg/objects/gameplay_keep.yml
+
+sPlaneDL:
+  type: GFX
+  offset: 0xEB8
+  symbol: sPlaneDL
+
+sPlaneVtx:
+  type: OOT:ARRAY
+  offset: 0xE78
+  symbol: sPlaneVtx
+  count: 4
+  array_type: VTX
+

@@ -185,7 +185,7 @@ void func_80B4B010(EnZl1* this, PlayState* play) {
         Play_CameraSetAtEye(play, this->subCamId, &vec1, &vec2);
         Play_CameraSetFov(play, this->subCamId, 30.0f);
         Letterbox_SetSizeTarget(0x20);
-        Interface_ChangeHudVisibilityMode(2);
+        Interface_ChangeHudVisibilityMode(HUD_VISIBILITY_NOTHING_ALT);
         player->actor.world.pos = playerPos;
         player->actor.speedXZ = 0.0f;
         this->unk_1E2 = 0;

@@ -1,0 +1,328 @@
+:config:
+  segments:
+    - [ 6, 0x012CF340 ]
+    - [ 4, 0x00D30F00 ]
+    - [ 8, 0x012CF340 ]
+    - [ 9, 0x012CF340 ]
+    - [ 10, 0x012CF340 ]
+    - [ 11, 0x012CF340 ]
+    - [ 12, 0x012CF340 ]
+    - [ 13, 0x012CF340 ]
+  external_files:
+    - ntsc_u_gc/objects/gameplay_keep.yml
+
+gCowBodyChewAnim:
+  type: OOT:ANIMATION
+  offset: 0x01CC
+  symbol: gCowBodyChewAnim
+
+gCowBodyMoveHeadAnim:
+  type: OOT:ANIMATION
+  offset: 0x4264
+  symbol: gCowBodyMoveHeadAnim
+
+gCowBodySkel:
+  type: OOT:SKELETON
+  offset: 0x4010
+  symbol: gCowBodySkel
+  limb_type: Standard
+  skel_type: Flex
+
+gCowEarTex:
+  type: TEXTURE
+  offset: 0x3CC0
+  symbol: gCowEarTex
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0x2880
+
+gCowEyelidTex:
+  type: TEXTURE
+  offset: 0x3D40
+  symbol: gCowEyelidTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gCowHeadDL:
+  type: GFX
+  offset: 0x1FE8
+  symbol: gCowHeadDL
+
+gCowHeadLimb:
+  type: OOT:LIMB
+  offset: 0x3FCC
+  symbol: gCowHeadLimb
+  limb_type: Standard
+
+gCowJawDL:
+  type: GFX
+  offset: 0x2760
+  symbol: gCowJawDL
+
+gCowJawLimb:
+  type: OOT:LIMB
+  offset: 0x3FD8
+  symbol: gCowJawLimb
+  limb_type: Standard
+
+gCowNoseDL:
+  type: GFX
+  offset: 0x2368
+  symbol: gCowNoseDL
+
+gCowNoseLimb:
+  type: OOT:LIMB
+  offset: 0x3FE4
+  symbol: gCowNoseLimb
+  limb_type: Standard
+
+gCowNoseRingDL:
+  type: GFX
+  offset: 0x2628
+  symbol: gCowNoseRingDL
+
+gCowNoseRingLimb:
+  type: OOT:LIMB
+  offset: 0x3FF0
+  symbol: gCowNoseRingLimb
+  limb_type: Standard
+
+gCowNoseRingTex:
+  type: TEXTURE
+  offset: 0x2B80
+  symbol: gCowNoseRingTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x2880
+
+gCowNoseTex:
+  type: TEXTURE
+  offset: 0x2BC0
+  symbol: gCowNoseTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x2880
+
+gCowRootLimb:
+  type: OOT:LIMB
+  offset: 0x3FC0
+  symbol: gCowRootLimb
+  limb_type: Standard
+
+gCowSpottedPatternTex:
+  type: TEXTURE
+  offset: 0x2CC0
+  symbol: gCowSpottedPatternTex
+  format: I8
+  width: 64
+  height: 64
+
+gCowTLUT:
+  type: TEXTURE
+  offset: 0x2880
+  symbol: gCowTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gCowTailConnectionDL:
+  type: GFX
+  offset: 0x46F0
+  symbol: gCowTailConnectionDL
+
+gCowTailEndDL:
+  type: GFX
+  offset: 0x4AD0
+  symbol: gCowTailEndDL
+
+gCowTailEndLimb:
+  type: OOT:LIMB
+  offset: 0x4C10
+  symbol: gCowTailEndLimb
+  limb_type: Standard
+
+gCowTailIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x4348
+  symbol: gCowTailIdleAnim
+
+gCowTailLowerDL:
+  type: GFX
+  offset: 0x49D0
+  symbol: gCowTailLowerDL
+
+gCowTailLowerLimb:
+  type: OOT:LIMB
+  offset: 0x4C04
+  symbol: gCowTailLowerLimb
+  limb_type: Standard
+
+gCowTailMiddleDL:
+  type: GFX
+  offset: 0x48D0
+  symbol: gCowTailMiddleDL
+
+gCowTailMiddleLimb:
+  type: OOT:LIMB
+  offset: 0x4BF8
+  symbol: gCowTailMiddleLimb
+  limb_type: Standard
+
+gCowTailRootLimb:
+  type: OOT:LIMB
+  offset: 0x4BE0
+  symbol: gCowTailRootLimb
+  limb_type: Standard
+
+gCowTailSkel:
+  type: OOT:SKELETON
+  offset: 0x4C30
+  symbol: gCowTailSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gCowTailSwishAnim:
+  type: OOT:ANIMATION
+  offset: 0x4E98
+  symbol: gCowTailSwishAnim
+
+gCowTailTex:
+  type: TEXTURE
+  offset: 0x3F40
+  symbol: gCowTailTex
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0x2880
+
+gCowTailUpperDL:
+  type: GFX
+  offset: 0x47D0
+  symbol: gCowTailUpperDL
+
+gCowTailUpperLimb:
+  type: OOT:LIMB
+  offset: 0x4BEC
+  symbol: gCowTailUpperLimb
+  limb_type: Standard
+
+gCowTorsoDL:
+  type: GFX
+  offset: 0x1A80
+  symbol: gCowTorsoDL
+
+gCowUdderTex:
+  type: TEXTURE
+  offset: 0x2A80
+  symbol: gCowUdderTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x2880
+
+
+object_cowVtx_0001E0:
+  type: OOT:ARRAY
+  offset: 0x0001E0
+  symbol: object_cowVtx_0001E0
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_cowVtx_000330:
+  type: OOT:ARRAY
+  offset: 0x000330
+  symbol: object_cowVtx_000330
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_cowVtx_000440:
+  type: OOT:ARRAY
+  offset: 0x000440
+  symbol: object_cowVtx_000440
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_cowVtx_000680:
+  type: OOT:ARRAY
+  offset: 0x000680
+  symbol: object_cowVtx_000680
+  count: 129
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_cowVtx_000E90:
+  type: OOT:ARRAY
+  offset: 0x000E90
+  symbol: object_cowVtx_000E90
+  count: 191
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gCowBodySkelLimbs:
+  type: BLOB
+  offset: 0x3FFC
+  symbol: gCowBodySkelLimbs
+  size: 0
+
+object_cowVtx_004360:
+  type: OOT:ARRAY
+  offset: 0x004360
+  symbol: object_cowVtx_004360
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_cowVtx_004450:
+  type: OOT:ARRAY
+  offset: 0x004450
+  symbol: object_cowVtx_004450
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_cowVtx_004510:
+  type: OOT:ARRAY
+  offset: 0x004510
+  symbol: object_cowVtx_004510
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_cowVtx_0045D0:
+  type: OOT:ARRAY
+  offset: 0x0045D0
+  symbol: object_cowVtx_0045D0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_cowVtx_004690:
+  type: OOT:ARRAY
+  offset: 0x004690
+  symbol: object_cowVtx_004690
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gCowTailSkelLimbs:
+  type: BLOB
+  offset: 0x4C1C
+  symbol: gCowTailSkelLimbs
+  size: 0

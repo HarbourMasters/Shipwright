@@ -1,0 +1,795 @@
+:config:
+  segments:
+    - [ 6, 0x00EAA6E0 ]
+    - [ 4, 0x00D3AED0 ]
+    - [ 8, 0x00EAA6E0 ]
+    - [ 9, 0x00EAA6E0 ]
+    - [ 10, 0x00EAA6E0 ]
+    - [ 11, 0x00EAA6E0 ]
+    - [ 12, 0x00EAA6E0 ]
+    - [ 13, 0x00EAA6E0 ]
+  external_files:
+    - ntsc_1-2/objects/gameplay_keep.yml
+
+gPhantomGanonAirDamageAnim:
+  type: OOT:ANIMATION
+  offset: 0x108D8
+  symbol: gPhantomGanonAirDamageAnim
+
+gPhantomGanonAnim_003854:
+  type: OOT:ANIMATION
+  offset: 0x3854
+  symbol: gPhantomGanonAnim_003854
+
+gPhantomGanonAnim_00CC84:
+  type: OOT:ANIMATION
+  offset: 0xCC84
+  symbol: gPhantomGanonAnim_00CC84
+
+gPhantomGanonAnim_00D398:
+  type: OOT:ANIMATION
+  offset: 0xD398
+  symbol: gPhantomGanonAnim_00D398
+
+gPhantomGanonAnim_012320:
+  type: OOT:ANIMATION
+  offset: 0x12320
+  symbol: gPhantomGanonAnim_012320
+
+gPhantomGanonBarsCol:
+  type: OOT:COLLISION
+  offset: 0x12FD0
+  symbol: gPhantomGanonBarsCol
+
+gPhantomGanonBarsDL:
+  type: GFX
+  offset: 0x12AB0
+  symbol: gPhantomGanonBarsDL
+
+gPhantomGanonBlockAnim:
+  type: OOT:ANIMATION
+  offset: 0x10344
+  symbol: gPhantomGanonBlockAnim
+
+gPhantomGanonChargeAnim:
+  type: OOT:ANIMATION
+  offset: 0x1267C
+  symbol: gPhantomGanonChargeAnim
+
+gPhantomGanonChargeStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x11F44
+  symbol: gPhantomGanonChargeStartAnim
+
+gPhantomGanonChargeWindupAnim:
+  type: OOT:ANIMATION
+  offset: 0x129E0
+  symbol: gPhantomGanonChargeWindupAnim
+
+gPhantomGanonDeathBlowAnim:
+  type: OOT:ANIMATION
+  offset: 0x90C
+  symbol: gPhantomGanonDeathBlowAnim
+
+gPhantomGanonEyeTLUT:
+  type: TEXTURE
+  offset: 0x3CC0
+  symbol: gPhantomGanonEyeTLUT
+  format: RGBA16
+  width: 16
+  height: 5
+
+gPhantomGanonEyeTex:
+  type: TEXTURE
+  offset: 0x3DB0
+  symbol: gPhantomGanonEyeTex
+  format: CI8
+  width: 32
+  height: 16
+  tlut: 0x3CC0
+
+gPhantomGanonFaceDL:
+  type: GFX
+  offset: 0x4EC0
+  symbol: gPhantomGanonFaceDL
+
+gPhantomGanonGroundDamageAnim:
+  type: OOT:ANIMATION
+  offset: 0xFAC8
+  symbol: gPhantomGanonGroundDamageAnim
+
+gPhantomGanonHorseRearingAnim:
+  type: OOT:ANIMATION
+  offset: 0x2684
+  symbol: gPhantomGanonHorseRearingAnim
+
+gPhantomGanonLastPoseAnim:
+  type: OOT:ANIMATION
+  offset: 0x1AB0
+  symbol: gPhantomGanonLastPoseAnim
+
+gPhantomGanonLimbTex_00A000:
+  type: TEXTURE
+  offset: 0xA000
+  symbol: gPhantomGanonLimbTex_00A000
+  format: RGBA16
+  width: 16
+  height: 16
+
+gPhantomGanonLimbTex_00A200:
+  type: TEXTURE
+  offset: 0xA200
+  symbol: gPhantomGanonLimbTex_00A200
+  format: RGBA16
+  width: 16
+  height: 16
+
+gPhantomGanonLimbTex_00A400:
+  type: TEXTURE
+  offset: 0xA400
+  symbol: gPhantomGanonLimbTex_00A400
+  format: RGBA16
+  width: 16
+  height: 16
+
+gPhantomGanonLimbTex_00A600:
+  type: TEXTURE
+  offset: 0xA600
+  symbol: gPhantomGanonLimbTex_00A600
+  format: RGBA16
+  width: 16
+  height: 16
+
+gPhantomGanonLimbTex_00A800:
+  type: TEXTURE
+  offset: 0xA800
+  symbol: gPhantomGanonLimbTex_00A800
+  format: RGBA16
+  width: 8
+  height: 8
+
+gPhantomGanonLimbTex_00A880:
+  type: TEXTURE
+  offset: 0xA880
+  symbol: gPhantomGanonLimbTex_00A880
+  format: RGBA16
+  width: 16
+  height: 16
+
+gPhantomGanonLimbTex_00AA80:
+  type: TEXTURE
+  offset: 0xAA80
+  symbol: gPhantomGanonLimbTex_00AA80
+  format: RGBA16
+  width: 32
+  height: 16
+
+gPhantomGanonLimbTex_00AE80:
+  type: TEXTURE
+  offset: 0xAE80
+  symbol: gPhantomGanonLimbTex_00AE80
+  format: RGBA16
+  width: 8
+  height: 8
+
+gPhantomGanonLimbTex_00AF00:
+  type: TEXTURE
+  offset: 0xAF00
+  symbol: gPhantomGanonLimbTex_00AF00
+  format: RGBA16
+  width: 8
+  height: 8
+
+gPhantomGanonLimbTex_00AF80:
+  type: TEXTURE
+  offset: 0xAF80
+  symbol: gPhantomGanonLimbTex_00AF80
+  format: RGBA16
+  width: 32
+  height: 16
+
+gPhantomGanonLimbTex_00B380:
+  type: TEXTURE
+  offset: 0xB380
+  symbol: gPhantomGanonLimbTex_00B380
+  format: RGBA16
+  width: 16
+  height: 32
+
+gPhantomGanonLimbTex_00B780:
+  type: TEXTURE
+  offset: 0xB780
+  symbol: gPhantomGanonLimbTex_00B780
+  format: RGBA16
+  width: 16
+  height: 16
+
+gPhantomGanonLimbTex_00B980:
+  type: TEXTURE
+  offset: 0xB980
+  symbol: gPhantomGanonLimbTex_00B980
+  format: RGBA16
+  width: 16
+  height: 8
+
+gPhantomGanonLimbTex_00BA80:
+  type: TEXTURE
+  offset: 0xBA80
+  symbol: gPhantomGanonLimbTex_00BA80
+  format: RGBA16
+  width: 16
+  height: 16
+
+gPhantomGanonLimbTex_00BC80:
+  type: TEXTURE
+  offset: 0xBC80
+  symbol: gPhantomGanonLimbTex_00BC80
+  format: RGBA16
+  width: 16
+  height: 8
+
+gPhantomGanonLimbTex_00BD80:
+  type: TEXTURE
+  offset: 0xBD80
+  symbol: gPhantomGanonLimbTex_00BD80
+  format: RGBA16
+  width: 16
+  height: 8
+
+gPhantomGanonLimbTex_00BE80:
+  type: TEXTURE
+  offset: 0xBE80
+  symbol: gPhantomGanonLimbTex_00BE80
+  format: RGBA16
+  width: 16
+  height: 16
+
+gPhantomGanonLimbTex_00C080:
+  type: TEXTURE
+  offset: 0xC080
+  symbol: gPhantomGanonLimbTex_00C080
+  format: RGBA16
+  width: 16
+  height: 8
+
+gPhantomGanonLimbTex_00C180:
+  type: TEXTURE
+  offset: 0xC180
+  symbol: gPhantomGanonLimbTex_00C180
+  format: RGBA16
+  width: 8
+  height: 8
+
+gPhantomGanonLimbTex_00C200:
+  type: TEXTURE
+  offset: 0xC200
+  symbol: gPhantomGanonLimbTex_00C200
+  format: RGBA16
+  width: 16
+  height: 16
+
+gPhantomGanonLimbTex_00C400:
+  type: TEXTURE
+  offset: 0xC400
+  symbol: gPhantomGanonLimbTex_00C400
+  format: RGBA16
+  width: 8
+  height: 8
+
+gPhantomGanonLimbTex_00C480:
+  type: TEXTURE
+  offset: 0xC480
+  symbol: gPhantomGanonLimbTex_00C480
+  format: RGBA16
+  width: 16
+  height: 8
+
+gPhantomGanonLimpAnim:
+  type: OOT:ANIMATION
+  offset: 0xD84
+  symbol: gPhantomGanonLimpAnim
+
+gPhantomGanonMaskOnAnim:
+  type: OOT:ANIMATION
+  offset: 0x1144
+  symbol: gPhantomGanonMaskOnAnim
+
+gPhantomGanonMouthTLUT:
+  type: TEXTURE
+  offset: 0x3D60
+  symbol: gPhantomGanonMouthTLUT
+  format: RGBA16
+  width: 8
+  height: 5
+
+gPhantomGanonMouthTex:
+  type: TEXTURE
+  offset: 0x40B0
+  symbol: gPhantomGanonMouthTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x3D60
+
+gPhantomGanonNeutralAnim:
+  type: OOT:ANIMATION
+  offset: 0x10060
+  symbol: gPhantomGanonNeutralAnim
+
+gPhantomGanonReturn1Anim:
+  type: OOT:ANIMATION
+  offset: 0x10FD4
+  symbol: gPhantomGanonReturn1Anim
+
+gPhantomGanonReturn2Anim:
+  type: OOT:ANIMATION
+  offset: 0x11800
+  symbol: gPhantomGanonReturn2Anim
+
+gPhantomGanonRideAnim:
+  type: OOT:ANIMATION
+  offset: 0x3CA4
+  symbol: gPhantomGanonRideAnim
+
+gPhantomGanonRidePoseAnim:
+  type: OOT:ANIMATION
+  offset: 0x19A4
+  symbol: gPhantomGanonRidePoseAnim
+
+gPhantomGanonRideSpearRaiseAnim:
+  type: OOT:ANIMATION
+  offset: 0xD99C
+  symbol: gPhantomGanonRideSpearRaiseAnim
+
+gPhantomGanonRideSpearResetAnim:
+  type: OOT:ANIMATION
+  offset: 0xDF80
+  symbol: gPhantomGanonRideSpearResetAnim
+
+gPhantomGanonRideSpearStrikeAnim:
+  type: OOT:ANIMATION
+  offset: 0x3080
+  symbol: gPhantomGanonRideSpearStrikeAnim
+
+gPhantomGanonScreamAnim:
+  type: OOT:ANIMATION
+  offset: 0x189C
+  symbol: gPhantomGanonScreamAnim
+
+gPhantomGanonSkel:
+  type: OOT:SKELETON
+  offset: 0xC710
+  symbol: gPhantomGanonSkel
+  limb_type: Standard
+  skel_type: Normal
+
+gPhantomGanonSmileTex:
+  type: TEXTURE
+  offset: 0x3FB0
+  symbol: gPhantomGanonSmileTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x3D60
+
+gPhantomGanonStunnedAnim:
+  type: OOT:ANIMATION
+  offset: 0x11BCC
+  symbol: gPhantomGanonStunnedAnim
+
+gPhantomGanonThrowAnim:
+  type: OOT:ANIMATION
+  offset: 0xEC94
+  symbol: gPhantomGanonThrowAnim
+
+gPhantomGanonThrowEndAnim:
+  type: OOT:ANIMATION
+  offset: 0xF48C
+  symbol: gPhantomGanonThrowEndAnim
+
+object_gndTex_012B50:
+  type: TEXTURE
+  offset: 0x12B50
+  symbol: object_gndTex_012B50
+  format: RGBA16
+  width: 16
+  height: 32
+
+
+object_gndVtx_0041B0:
+  type: OOT:ARRAY
+  offset: 0x0041B0
+  symbol: object_gndVtx_0041B0
+  count: 209
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gndVtx_005548:
+  type: OOT:ARRAY
+  offset: 0x005548
+  symbol: object_gndVtx_005548
+  count: 188
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gndVtx_006108:
+  type: OOT:ARRAY
+  offset: 0x006108
+  symbol: object_gndVtx_006108
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gndVtx_006338:
+  type: OOT:ARRAY
+  offset: 0x006338
+  symbol: object_gndVtx_006338
+  count: 11
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gndVtx_0063E8:
+  type: OOT:ARRAY
+  offset: 0x0063E8
+  symbol: object_gndVtx_0063E8
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gndVtx_0065C8:
+  type: OOT:ARRAY
+  offset: 0x0065C8
+  symbol: object_gndVtx_0065C8
+  count: 147
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gndVtx_006EF8:
+  type: OOT:ARRAY
+  offset: 0x006EF8
+  symbol: object_gndVtx_006EF8
+  count: 61
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gndVtx_0072C8:
+  type: OOT:ARRAY
+  offset: 0x0072C8
+  symbol: object_gndVtx_0072C8
+  count: 47
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gndVtx_0075B8:
+  type: OOT:ARRAY
+  offset: 0x0075B8
+  symbol: object_gndVtx_0075B8
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gndVtx_0076A8:
+  type: OOT:ARRAY
+  offset: 0x0076A8
+  symbol: object_gndVtx_0076A8
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gndVtx_0077B8:
+  type: OOT:ARRAY
+  offset: 0x0077B8
+  symbol: object_gndVtx_0077B8
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gndVtx_0078F8:
+  type: OOT:ARRAY
+  offset: 0x0078F8
+  symbol: object_gndVtx_0078F8
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gndVtx_007AD8:
+  type: OOT:ARRAY
+  offset: 0x007AD8
+  symbol: object_gndVtx_007AD8
+  count: 11
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gndVtx_007B88:
+  type: OOT:ARRAY
+  offset: 0x007B88
+  symbol: object_gndVtx_007B88
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gndVtx_007DB8:
+  type: OOT:ARRAY
+  offset: 0x007DB8
+  symbol: object_gndVtx_007DB8
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gndVtx_007EA8:
+  type: OOT:ARRAY
+  offset: 0x007EA8
+  symbol: object_gndVtx_007EA8
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gndVtx_007FE8:
+  type: OOT:ARRAY
+  offset: 0x007FE8
+  symbol: object_gndVtx_007FE8
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gPhantomGanonSkelLimbsLimb_00C628DL_0080F8:
+  type: GFX
+  offset: 0x0080F8
+  symbol: gPhantomGanonSkelLimbsLimb_00C628DL_0080F8
+
+gPhantomGanonSkelLimbsLimb_00C5B0DL_0086F0:
+  type: GFX
+  offset: 0x0086F0
+  symbol: gPhantomGanonSkelLimbsLimb_00C5B0DL_0086F0
+
+gPhantomGanonSkelLimbsLimb_00C5BCDL_008918:
+  type: GFX
+  offset: 0x008918
+  symbol: gPhantomGanonSkelLimbsLimb_00C5BCDL_008918
+
+gPhantomGanonSkelLimbsLimb_00C5C8DL_0089F0:
+  type: GFX
+  offset: 0x0089F0
+  symbol: gPhantomGanonSkelLimbsLimb_00C5C8DL_0089F0
+
+gPhantomGanonSkelLimbsLimb_00C61CDL_008BE0:
+  type: GFX
+  offset: 0x008BE0
+  symbol: gPhantomGanonSkelLimbsLimb_00C61CDL_008BE0
+
+gPhantomGanonSkelLimbsLimb_00C640DL_009038:
+  type: GFX
+  offset: 0x009038
+  symbol: gPhantomGanonSkelLimbsLimb_00C640DL_009038
+
+gPhantomGanonSkelLimbsLimb_00C610DL_009298:
+  type: GFX
+  offset: 0x009298
+  symbol: gPhantomGanonSkelLimbsLimb_00C610DL_009298
+
+gPhantomGanonSkelLimbsLimb_00C670DL_009460:
+  type: GFX
+  offset: 0x009460
+  symbol: gPhantomGanonSkelLimbsLimb_00C670DL_009460
+
+gPhantomGanonSkelLimbsLimb_00C658DL_009520:
+  type: GFX
+  offset: 0x009520
+  symbol: gPhantomGanonSkelLimbsLimb_00C658DL_009520
+
+gPhantomGanonSkelLimbsLimb_00C664DL_009650:
+  type: GFX
+  offset: 0x009650
+  symbol: gPhantomGanonSkelLimbsLimb_00C664DL_009650
+
+gPhantomGanonSkelLimbsLimb_00C5F8DL_0097B8:
+  type: GFX
+  offset: 0x0097B8
+  symbol: gPhantomGanonSkelLimbsLimb_00C5F8DL_0097B8
+
+gPhantomGanonSkelLimbsLimb_00C5ECDL_0099A8:
+  type: GFX
+  offset: 0x0099A8
+  symbol: gPhantomGanonSkelLimbsLimb_00C5ECDL_0099A8
+
+gPhantomGanonSkelLimbsLimb_00C5E0DL_009A80:
+  type: GFX
+  offset: 0x009A80
+  symbol: gPhantomGanonSkelLimbsLimb_00C5E0DL_009A80
+
+gPhantomGanonSkelLimbsLimb_00C6A0DL_009CA8:
+  type: GFX
+  offset: 0x009CA8
+  symbol: gPhantomGanonSkelLimbsLimb_00C6A0DL_009CA8
+
+gPhantomGanonSkelLimbsLimb_00C694DL_009D68:
+  type: GFX
+  offset: 0x009D68
+  symbol: gPhantomGanonSkelLimbsLimb_00C694DL_009D68
+
+gPhantomGanonSkelLimbsLimb_00C688DL_009ED0:
+  type: GFX
+  offset: 0x009ED0
+  symbol: gPhantomGanonSkelLimbsLimb_00C688DL_009ED0
+
+gPhantomGanonSkelLimbsLimb_00C580:
+  type: OOT:LIMB
+  offset: 0x00C580
+  symbol: gPhantomGanonSkelLimbsLimb_00C580
+  limb_type: Standard
+
+gPhantomGanonSkelLimbsLimb_00C58C:
+  type: OOT:LIMB
+  offset: 0x00C58C
+  symbol: gPhantomGanonSkelLimbsLimb_00C58C
+  limb_type: Standard
+
+gPhantomGanonSkelLimbsLimb_00C598:
+  type: OOT:LIMB
+  offset: 0x00C598
+  symbol: gPhantomGanonSkelLimbsLimb_00C598
+  limb_type: Standard
+
+gPhantomGanonSkelLimbsLimb_00C5A4:
+  type: OOT:LIMB
+  offset: 0x00C5A4
+  symbol: gPhantomGanonSkelLimbsLimb_00C5A4
+  limb_type: Standard
+
+gPhantomGanonSkelLimbsLimb_00C5B0:
+  type: OOT:LIMB
+  offset: 0x00C5B0
+  symbol: gPhantomGanonSkelLimbsLimb_00C5B0
+  limb_type: Standard
+
+gPhantomGanonSkelLimbsLimb_00C5BC:
+  type: OOT:LIMB
+  offset: 0x00C5BC
+  symbol: gPhantomGanonSkelLimbsLimb_00C5BC
+  limb_type: Standard
+
+gPhantomGanonSkelLimbsLimb_00C5C8:
+  type: OOT:LIMB
+  offset: 0x00C5C8
+  symbol: gPhantomGanonSkelLimbsLimb_00C5C8
+  limb_type: Standard
+
+gPhantomGanonSkelLimbsLimb_00C5D4:
+  type: OOT:LIMB
+  offset: 0x00C5D4
+  symbol: gPhantomGanonSkelLimbsLimb_00C5D4
+  limb_type: Standard
+
+gPhantomGanonSkelLimbsLimb_00C5E0:
+  type: OOT:LIMB
+  offset: 0x00C5E0
+  symbol: gPhantomGanonSkelLimbsLimb_00C5E0
+  limb_type: Standard
+
+gPhantomGanonSkelLimbsLimb_00C5EC:
+  type: OOT:LIMB
+  offset: 0x00C5EC
+  symbol: gPhantomGanonSkelLimbsLimb_00C5EC
+  limb_type: Standard
+
+gPhantomGanonSkelLimbsLimb_00C5F8:
+  type: OOT:LIMB
+  offset: 0x00C5F8
+  symbol: gPhantomGanonSkelLimbsLimb_00C5F8
+  limb_type: Standard
+
+gPhantomGanonSkelLimbsLimb_00C604:
+  type: OOT:LIMB
+  offset: 0x00C604
+  symbol: gPhantomGanonSkelLimbsLimb_00C604
+  limb_type: Standard
+
+gPhantomGanonSkelLimbsLimb_00C610:
+  type: OOT:LIMB
+  offset: 0x00C610
+  symbol: gPhantomGanonSkelLimbsLimb_00C610
+  limb_type: Standard
+
+gPhantomGanonSkelLimbsLimb_00C61C:
+  type: OOT:LIMB
+  offset: 0x00C61C
+  symbol: gPhantomGanonSkelLimbsLimb_00C61C
+  limb_type: Standard
+
+gPhantomGanonSkelLimbsLimb_00C628:
+  type: OOT:LIMB
+  offset: 0x00C628
+  symbol: gPhantomGanonSkelLimbsLimb_00C628
+  limb_type: Standard
+
+gPhantomGanonSkelLimbsLimb_00C634:
+  type: OOT:LIMB
+  offset: 0x00C634
+  symbol: gPhantomGanonSkelLimbsLimb_00C634
+  limb_type: Standard
+
+gPhantomGanonSkelLimbsLimb_00C640:
+  type: OOT:LIMB
+  offset: 0x00C640
+  symbol: gPhantomGanonSkelLimbsLimb_00C640
+  limb_type: Standard
+
+gPhantomGanonSkelLimbsLimb_00C64C:
+  type: OOT:LIMB
+  offset: 0x00C64C
+  symbol: gPhantomGanonSkelLimbsLimb_00C64C
+  limb_type: Standard
+
+gPhantomGanonSkelLimbsLimb_00C658:
+  type: OOT:LIMB
+  offset: 0x00C658
+  symbol: gPhantomGanonSkelLimbsLimb_00C658
+  limb_type: Standard
+
+gPhantomGanonSkelLimbsLimb_00C664:
+  type: OOT:LIMB
+  offset: 0x00C664
+  symbol: gPhantomGanonSkelLimbsLimb_00C664
+  limb_type: Standard
+
+gPhantomGanonSkelLimbsLimb_00C670:
+  type: OOT:LIMB
+  offset: 0x00C670
+  symbol: gPhantomGanonSkelLimbsLimb_00C670
+  limb_type: Standard
+
+gPhantomGanonSkelLimbsLimb_00C67C:
+  type: OOT:LIMB
+  offset: 0x00C67C
+  symbol: gPhantomGanonSkelLimbsLimb_00C67C
+  limb_type: Standard
+
+gPhantomGanonSkelLimbsLimb_00C688:
+  type: OOT:LIMB
+  offset: 0x00C688
+  symbol: gPhantomGanonSkelLimbsLimb_00C688
+  limb_type: Standard
+
+gPhantomGanonSkelLimbsLimb_00C694:
+  type: OOT:LIMB
+  offset: 0x00C694
+  symbol: gPhantomGanonSkelLimbsLimb_00C694
+  limb_type: Standard
+
+gPhantomGanonSkelLimbsLimb_00C6A0:
+  type: OOT:LIMB
+  offset: 0x00C6A0
+  symbol: gPhantomGanonSkelLimbsLimb_00C6A0
+  limb_type: Standard
+
+gPhantomGanonSkelLimbs:
+  type: BLOB
+  offset: 0xC6AC
+  symbol: gPhantomGanonSkelLimbs
+  size: 0
+
+object_gndVtx_0129F0:
+  type: OOT:ARRAY
+  offset: 0x0129F0
+  symbol: object_gndVtx_0129F0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

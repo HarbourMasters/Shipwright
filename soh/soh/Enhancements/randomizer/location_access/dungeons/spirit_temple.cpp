@@ -688,7 +688,10 @@ void RegionTable_Init_SpiritTemple() {
         //Exits
         ENTRANCE(RR_SPIRIT_TEMPLE_MQ_CHILD_SIDE_HUB,  logic->CanUse(RG_CRAWL) && logic->Get(LOGIC_SPIRIT_MQ_CRAWL_BOULDER)),
         //This tracks possible child access, if adult has not entered STATUE_ROOM. Certain Child Access is checked for separately as 7 Keys
-        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_UNDER_LIKE_LIKE, logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 1)),
+        //Needs 2 keys if hover recoils are on because you can recoil past the jet and waste a key without having Statue Room Access.
+        //If the clip through the grate in 3 suns room is added to logic, being able to perform that will reduce the requirement as well.
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_UNDER_LIKE_LIKE, logic->SmallKeys(SCENE_SPIRIT_TEMPLE,
+                                                                           (ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && !((logic->Get(LOGIC_SPIRIT_MQ_3SUNS_ENEMIES) && (logic->CanUse(RG_CLIMB) || logic->CanUse(RG_LONGSHOT))) || logic->Get(LOGIC_REVERSE_SPIRIT_ADULT))) ? 2 : 1)),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_UNDER_LIKE_LIKE] = Region("Spirit Temple MQ Under Like Like", SCENE_SPIRIT_TEMPLE, {}, {
@@ -711,7 +714,8 @@ void RegionTable_Init_SpiritTemple() {
         //Exits
         ENTRANCE(RR_SPIRIT_TEMPLE_MQ_UNDER_LIKE_LIKE,  logic->CanHitSwitch()),
         //This exit only governs child forwards access, adult and reverse access starts on the other side so never checks this
-        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_STATUE_ROOM_CHILD, logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 2)),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_STATUE_ROOM_CHILD, logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 
+                                                                           (ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && !((logic->Get(LOGIC_SPIRIT_MQ_3SUNS_ENEMIES) && (logic->CanUse(RG_CLIMB) || logic->CanUse(RG_LONGSHOT))) || logic->Get(LOGIC_REVERSE_SPIRIT_ADULT))) ? 3 : 2)),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_STATUE_ROOM_CHILD] = Region("Spirit Temple MQ Statue Room Child", SCENE_SPIRIT_TEMPLE, {}, {

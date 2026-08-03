@@ -1,0 +1,15 @@
+:config:
+  segments:
+    - [ 3, 0x01ACC280 ]
+    - [ 2, 0x01AB4A10 ]
+  directory: scenes/nonmq/bdan_scene
+  external_files:
+    - ntsc_1-1/scenes/nonmq/bdan_room_3.yml
+    - ntsc_1-1/scenes/nonmq/bdan_scene.yml
+    - ntsc_1-1/code/sys_matrix.yml
+
+bdan_room_3Set_000110:
+  type: OOT:ROOM
+  offset: 0x110
+  symbol: bdan_room_3Set_000110
+  base_name: bdan_room_3

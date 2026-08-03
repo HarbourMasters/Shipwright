@@ -1,0 +1,54 @@
+:config:
+  segments:
+    - [ 128, 0x0132C590 ]
+
+gSunriseSkybox1Tex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gSunriseSkybox1Tex
+  format: CI8
+  width: 128
+  height: 64
+  external_tlut: vr_fine0_pal_static
+  external_tlut_offset: 0x000
+
+gSunriseSkybox2Tex:
+  type: TEXTURE
+  offset: 0x2000
+  symbol: gSunriseSkybox2Tex
+  format: CI8
+  width: 128
+  height: 64
+  external_tlut: vr_fine0_pal_static
+  external_tlut_offset: 0x000
+
+gSunriseSkybox3Tex:
+  type: TEXTURE
+  offset: 0x4000
+  symbol: gSunriseSkybox3Tex
+  format: CI8
+  width: 128
+  height: 64
+  external_tlut: vr_fine0_pal_static
+  external_tlut_offset: 0x000
+
+gSunriseSkybox4Tex:
+  type: TEXTURE
+  offset: 0x6000
+  symbol: gSunriseSkybox4Tex
+  format: CI8
+  width: 128
+  height: 64
+  external_tlut: vr_fine0_pal_static
+  external_tlut_offset: 0x000
+
+gSunriseSkybox5Tex:
+  type: TEXTURE
+  offset: 0x8000
+  symbol: gSunriseSkybox5Tex
+  format: CI8
+  width: 128
+  height: 128
+  external_tlut: vr_fine0_pal_static
+  external_tlut_offset: 0x000
+

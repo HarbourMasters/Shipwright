@@ -1,0 +1,538 @@
+:config:
+  segments:
+    - [ 6, 0x010E89B0 ]
+    - [ 4, 0x00D30660 ]
+    - [ 8, 0x010E89B0 ]
+    - [ 9, 0x010E89B0 ]
+    - [ 10, 0x010E89B0 ]
+    - [ 11, 0x010E89B0 ]
+    - [ 12, 0x010E89B0 ]
+    - [ 13, 0x010E89B0 ]
+  external_files:
+    - pal_1-1/objects/gameplay_keep.yml
+
+gMalonChildBootTex:
+  type: TEXTURE
+  offset: 0x10F0
+  symbol: gMalonChildBootTex
+  format: CI8
+  width: 64
+  height: 16
+  tlut: 0x830
+
+gMalonChildBowserTex:
+  type: TEXTURE
+  offset: 0xCB0
+  symbol: gMalonChildBowserTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gMalonChildBrownCircleTex:
+  type: TEXTURE
+  offset: 0x1798
+  symbol: gMalonChildBrownCircleTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gMalonChildChestDL:
+  type: GFX
+  offset: 0x6F10
+  symbol: gMalonChildChestDL
+
+gMalonChildChestLimb:
+  type: OOT:LIMB
+  offset: 0x8394
+  symbol: gMalonChildChestLimb
+  limb_type: Standard
+
+gMalonChildDressDesignTex:
+  type: TEXTURE
+  offset: 0xA30
+  symbol: gMalonChildDressDesignTex
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0x830
+
+gMalonChildDressLowerDL:
+  type: GFX
+  offset: 0x6C68
+  symbol: gMalonChildDressLowerDL
+
+gMalonChildDressLowerLimb:
+  type: OOT:LIMB
+  offset: 0x840C
+  symbol: gMalonChildDressLowerLimb
+  limb_type: Standard
+
+gMalonChildDressMiddleDL:
+  type: GFX
+  offset: 0x6DD8
+  symbol: gMalonChildDressMiddleDL
+
+gMalonChildDressMiddleLimb:
+  type: OOT:LIMB
+  offset: 0x8400
+  symbol: gMalonChildDressMiddleLimb
+  limb_type: Standard
+
+gMalonChildDressTLUT:
+  type: TEXTURE
+  offset: 0x830
+  symbol: gMalonChildDressTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gMalonChildDressUpperDL:
+  type: GFX
+  offset: 0x7C40
+  symbol: gMalonChildDressUpperDL
+
+gMalonChildEarTex:
+  type: TEXTURE
+  offset: 0x1818
+  symbol: gMalonChildEarTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gMalonChildEyeClosedTex:
+  type: TEXTURE
+  offset: 0x2718
+  symbol: gMalonChildEyeClosedTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x15B0
+
+gMalonChildEyeHalfTex:
+  type: TEXTURE
+  offset: 0x2318
+  symbol: gMalonChildEyeHalfTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x15B0
+
+gMalonChildEyeOpenTex:
+  type: TEXTURE
+  offset: 0x1B18
+  symbol: gMalonChildEyeOpenTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x15B0
+
+gMalonChildEyeTLUT:
+  type: TEXTURE
+  offset: 0x15B0
+  symbol: gMalonChildEyeTLUT
+  format: RGBA16
+  width: 15
+  height: 12
+
+gMalonChildFingersTex:
+  type: TEXTURE
+  offset: 0xAB0
+  symbol: gMalonChildFingersTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gMalonChildHairTLUT:
+  type: TEXTURE
+  offset: 0x14F0
+  symbol: gMalonChildHairTLUT
+  format: RGBA16
+  width: 96
+  height: 1
+
+gMalonChildHairTex:
+  type: TEXTURE
+  offset: 0x1A18
+  symbol: gMalonChildHairTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x14F0
+
+gMalonChildHeadDL:
+  type: GFX
+  offset: 0x4148
+  symbol: gMalonChildHeadDL
+
+gMalonChildHeadLimb:
+  type: OOT:LIMB
+  offset: 0x83E8
+  symbol: gMalonChildHeadLimb
+  limb_type: Standard
+
+gMalonChildIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x820
+  symbol: gMalonChildIdleAnim
+
+gMalonChildLeftArmDL:
+  type: GFX
+  offset: 0x7988
+  symbol: gMalonChildLeftArmDL
+
+gMalonChildLeftArmLimb:
+  type: OOT:LIMB
+  offset: 0x83AC
+  symbol: gMalonChildLeftArmLimb
+  limb_type: Standard
+
+gMalonChildLeftFootDL:
+  type: GFX
+  offset: 0x81F8
+  symbol: gMalonChildLeftFootDL
+
+gMalonChildLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x8364
+  symbol: gMalonChildLeftFootLimb
+  limb_type: Standard
+
+gMalonChildLeftHandDL:
+  type: GFX
+  offset: 0x7A98
+  symbol: gMalonChildLeftHandDL
+
+gMalonChildLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x83B8
+  symbol: gMalonChildLeftHandLimb
+  limb_type: Standard
+
+gMalonChildLeftShinDL:
+  type: GFX
+  offset: 0x8098
+  symbol: gMalonChildLeftShinDL
+
+gMalonChildLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0x8358
+  symbol: gMalonChildLeftShinLimb
+  limb_type: Standard
+
+gMalonChildLeftShoulderDL:
+  type: GFX
+  offset: 0x77D0
+  symbol: gMalonChildLeftShoulderDL
+
+gMalonChildLeftShoulderLimb:
+  type: OOT:LIMB
+  offset: 0x83A0
+  symbol: gMalonChildLeftShoulderLimb
+  limb_type: Standard
+
+gMalonChildLeftThighDL:
+  type: GFX
+  offset: 0x8040
+  symbol: gMalonChildLeftThighDL
+
+gMalonChildLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0x834C
+  symbol: gMalonChildLeftThighLimb
+  limb_type: Standard
+
+gMalonChildLimb_0083F4:
+  type: OOT:LIMB
+  offset: 0x83F4
+  symbol: gMalonChildLimb_0083F4
+  limb_type: Standard
+
+gMalonChildNeutralMouthTex:
+  type: TEXTURE
+  offset: 0x1F18
+  symbol: gMalonChildNeutralMouthTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gMalonChildRaiseHandsAnim:
+  type: OOT:ANIMATION
+  offset: 0x244
+  symbol: gMalonChildRaiseHandsAnim
+
+gMalonChildRightArmDL:
+  type: GFX
+  offset: 0x7518
+  symbol: gMalonChildRightArmDL
+
+gMalonChildRightArmLimb:
+  type: OOT:LIMB
+  offset: 0x83D0
+  symbol: gMalonChildRightArmLimb
+  limb_type: Standard
+
+gMalonChildRightFoorDL:
+  type: GFX
+  offset: 0x7EF8
+  symbol: gMalonChildRightFoorDL
+
+gMalonChildRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x8388
+  symbol: gMalonChildRightFootLimb
+  limb_type: Standard
+
+gMalonChildRightHandDL:
+  type: GFX
+  offset: 0x7628
+  symbol: gMalonChildRightHandDL
+
+gMalonChildRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x83DC
+  symbol: gMalonChildRightHandLimb
+  limb_type: Standard
+
+gMalonChildRightShinDL:
+  type: GFX
+  offset: 0x7D98
+  symbol: gMalonChildRightShinDL
+
+gMalonChildRightShinLimb:
+  type: OOT:LIMB
+  offset: 0x837C
+  symbol: gMalonChildRightShinLimb
+  limb_type: Standard
+
+gMalonChildRightShoulderDL:
+  type: GFX
+  offset: 0x7360
+  symbol: gMalonChildRightShoulderDL
+
+gMalonChildRightShoulderLimb:
+  type: OOT:LIMB
+  offset: 0x83C4
+  symbol: gMalonChildRightShoulderLimb
+  limb_type: Standard
+
+gMalonChildRightThighDL:
+  type: GFX
+  offset: 0x7D40
+  symbol: gMalonChildRightThighDL
+
+gMalonChildRightThighLimb:
+  type: OOT:LIMB
+  offset: 0x8370
+  symbol: gMalonChildRightThighLimb
+  limb_type: Standard
+
+gMalonChildRootLimb:
+  type: OOT:LIMB
+  offset: 0x8340
+  symbol: gMalonChildRootLimb
+  limb_type: Standard
+
+gMalonChildScarfTex:
+  type: TEXTURE
+  offset: 0x10B0
+  symbol: gMalonChildScarfTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x830
+
+gMalonChildSingAnim:
+  type: OOT:ANIMATION
+  offset: 0x8D64
+  symbol: gMalonChildSingAnim
+
+gMalonChildSkel:
+  type: OOT:SKELETON
+  offset: 0x8460
+  symbol: gMalonChildSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gMalonChildSkinGradientTex:
+  type: TEXTURE
+  offset: 0x1718
+  symbol: gMalonChildSkinGradientTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gMalonChildSmilingMouthTex:
+  type: TEXTURE
+  offset: 0x2B18
+  symbol: gMalonChildSmilingMouthTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gMalonChildTalkingMouthTex:
+  type: TEXTURE
+  offset: 0x2F18
+  symbol: gMalonChildTalkingMouthTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+
+object_ma1Vtx_003318:
+  type: OOT:ARRAY
+  offset: 0x003318
+  symbol: object_ma1Vtx_003318
+  count: 227
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma1Vtx_004B18:
+  type: OOT:ARRAY
+  offset: 0x004B18
+  symbol: object_ma1Vtx_004B18
+  count: 52
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma1Vtx_004E58:
+  type: OOT:ARRAY
+  offset: 0x004E58
+  symbol: object_ma1Vtx_004E58
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma1Vtx_005088:
+  type: OOT:ARRAY
+  offset: 0x005088
+  symbol: object_ma1Vtx_005088
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma1Vtx_005308:
+  type: OOT:ARRAY
+  offset: 0x005308
+  symbol: object_ma1Vtx_005308
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma1Vtx_005488:
+  type: OOT:ARRAY
+  offset: 0x005488
+  symbol: object_ma1Vtx_005488
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma1Vtx_005708:
+  type: OOT:ARRAY
+  offset: 0x005708
+  symbol: object_ma1Vtx_005708
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma1Vtx_005988:
+  type: OOT:ARRAY
+  offset: 0x005988
+  symbol: object_ma1Vtx_005988
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma1Vtx_005B08:
+  type: OOT:ARRAY
+  offset: 0x005B08
+  symbol: object_ma1Vtx_005B08
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma1Vtx_005D88:
+  type: OOT:ARRAY
+  offset: 0x005D88
+  symbol: object_ma1Vtx_005D88
+  count: 120
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma1Vtx_006508:
+  type: OOT:ARRAY
+  offset: 0x006508
+  symbol: object_ma1Vtx_006508
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma1Vtx_0066D8:
+  type: OOT:ARRAY
+  offset: 0x0066D8
+  symbol: object_ma1Vtx_0066D8
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma1Vtx_0067E8:
+  type: OOT:ARRAY
+  offset: 0x0067E8
+  symbol: object_ma1Vtx_0067E8
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma1Vtx_006818:
+  type: OOT:ARRAY
+  offset: 0x006818
+  symbol: object_ma1Vtx_006818
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma1Vtx_0069E8:
+  type: OOT:ARRAY
+  offset: 0x0069E8
+  symbol: object_ma1Vtx_0069E8
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma1Vtx_006AF8:
+  type: OOT:ARRAY
+  offset: 0x006AF8
+  symbol: object_ma1Vtx_006AF8
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ma1Vtx_006B28:
+  type: OOT:ARRAY
+  offset: 0x006B28
+  symbol: object_ma1Vtx_006B28
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gMalonChildSkelLimbs:
+  type: BLOB
+  offset: 0x8418
+  symbol: gMalonChildSkelLimbs
+  size: 0

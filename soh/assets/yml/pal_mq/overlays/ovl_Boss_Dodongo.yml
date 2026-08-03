@@ -1,0 +1,21 @@
+:config:
+  segments:
+    - [ 128, 0x00B695A0 ]
+  virtual: [ 0x808B7370, 0x00B695A0 ]
+
+sLavaFloorLavaTex:
+  type: TEXTURE
+  offset: 0x61E8
+  symbol: sLavaFloorLavaTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+sLavaFloorRockTex:
+  type: TEXTURE
+  offset: 0x81E8
+  symbol: sLavaFloorRockTex
+  format: RGBA16
+  width: 32
+  height: 64
+

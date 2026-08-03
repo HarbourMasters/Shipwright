@@ -3,6 +3,7 @@
 
 extern "C" {
 #include "functions.h"
+#include "z64bgcheck.h"
 }
 
 static void RegisterFixVineFall() {
@@ -22,7 +23,7 @@ static void RegisterFixVineFall() {
              * margin to make sure it still hits a climbable poly. Then update the flags
              * in touchedWallFlags again and proceed as normal.
              */
-            if (*touchedWallFlags & 8) {
+            if (*touchedWallFlags & WALL_FLAG_CLIMBABLE) {
                 Vec3f checkPosA;
                 Vec3f checkPosB;
                 Vec3f raycastResult;
@@ -62,7 +63,8 @@ static void RegisterFixVineFall() {
                     player->actor.wallYaw = Math_Atan2S(wallPoly->normal.z, wallPoly->normal.x);
                     *yawDiff = player->actor.shape.rot.y - (s16)(player->actor.wallYaw + 0x8000);
 
-                    *touchedWallFlags = func_80041DB8(&play->colCtx, player->actor.wallPoly, player->actor.wallBgId);
+                    *touchedWallFlags =
+                        SurfaceType_GetWallFlags(&play->colCtx, player->actor.wallPoly, player->actor.wallBgId);
                 }
             }
         });

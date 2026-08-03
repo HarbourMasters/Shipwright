@@ -1,0 +1,27 @@
+:config:
+  segments:
+    - [ 6, 0x0110C900 ]
+    - [ 4, 0x00D3A8E0 ]
+    - [ 8, 0x0110C900 ]
+    - [ 9, 0x0110C900 ]
+    - [ 10, 0x0110C900 ]
+    - [ 11, 0x0110C900 ]
+    - [ 12, 0x0110C900 ]
+    - [ 13, 0x0110C900 ]
+  external_files:
+    - ntsc_1-1/objects/gameplay_keep.yml
+
+gGiSlingshotDL:
+  type: GFX
+  offset: 0x0940
+  symbol: gGiSlingshotDL
+
+
+object_gi_pachinkoVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_gi_pachinkoVtx_000000
+  count: 148
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

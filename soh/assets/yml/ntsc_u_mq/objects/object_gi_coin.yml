@@ -1,0 +1,61 @@
+:config:
+  segments:
+    - [ 6, 0x0119D8C0 ]
+    - [ 4, 0x00D30F80 ]
+    - [ 8, 0x0119D8C0 ]
+    - [ 9, 0x0119D8C0 ]
+    - [ 10, 0x0119D8C0 ]
+    - [ 11, 0x0119D8C0 ]
+    - [ 12, 0x0119D8C0 ]
+    - [ 13, 0x0119D8C0 ]
+  external_files:
+    - ntsc_u_mq/objects/gameplay_keep.yml
+
+gGiBlueCoinColorDL:
+  type: GFX
+  offset: 0x05C0
+  symbol: gGiBlueCoinColorDL
+
+gGiCoinDL:
+  type: GFX
+  offset: 0x05E0
+  symbol: gGiCoinDL
+
+gGiGreenCoinColorDL:
+  type: GFX
+  offset: 0x05A0
+  symbol: gGiGreenCoinColorDL
+
+gGiNDL:
+  type: GFX
+  offset: 0x0768
+  symbol: gGiNDL
+
+gGiRedCoinColorDL:
+  type: GFX
+  offset: 0x0580
+  symbol: gGiRedCoinColorDL
+
+gGiYellowCoinColorDL:
+  type: GFX
+  offset: 0x0560
+  symbol: gGiYellowCoinColorDL
+
+
+object_gi_coinVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_gi_coinVtx_000000
+  count: 64
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_coinVtx_000400:
+  type: OOT:ARRAY
+  offset: 0x000400
+  symbol: object_gi_coinVtx_000400
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

@@ -336,7 +336,7 @@ s32 EnZl4_SetupFromLegendCs(EnZl4* this, PlayState* play) {
 
     EnZl4_SetCsCameraMove(play, 5);
     Letterbox_SetSizeTarget(0x20);
-    Interface_ChangeHudVisibilityMode(2);
+    Interface_ChangeHudVisibilityMode(HUD_VISIBILITY_NOTHING_ALT);
     this->talkTimer2 = 0;
     return true;
 }
@@ -1147,7 +1147,7 @@ void EnZl4_Cutscene(EnZl4* this, PlayState* play) {
             this->mouthExpression = ZL4_MOUTH_SURPRISED;
             Audio_PlayFanfare(NA_BGM_APPEAR);
             EnZl4_SetCsCameraAngle(play, 0);
-            Interface_ChangeHudVisibilityMode(2);
+            Interface_ChangeHudVisibilityMode(HUD_VISIBILITY_NOTHING_ALT);
             Letterbox_SetSizeTarget(0x20);
             this->talkState = 0;
             this->csState++;

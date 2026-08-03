@@ -1,0 +1,12 @@
+:config:
+  segments:
+    - [ 2, 0x02D7F000 ]
+  directory: scenes/shared/spot20_scene
+  external_files:
+    - pal_mq_dbg/scenes/shared/spot20_scene.yml
+
+spot20_sceneSet_005960:
+  type: OOT:SCENE
+  offset: 0x5960
+  symbol: spot20_sceneSet_005960
+  base_name: spot20_scene

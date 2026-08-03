@@ -20,7 +20,7 @@ It is recommended that you install Python and Git standalone, the install proces
 
 1. Clone the Ship of Harkinian repository
 
-_Note: Be sure to either clone with the ``--recursive`` flag or do ``git submodule update --init`` after cloning to pull in the libultraship submodule!_
+_Note: Be sure to either clone with the ``--recursive`` flag or do ``git submodule update --init`` after cloning to pull in the libultraship and torch submodules!_
 
 2. After setup and initial build, use the built-in OTR extraction to make your oot.o2r/oot-mq.o2r files.
 
@@ -80,6 +80,10 @@ C:\Program Files\CMake\bin\cmake.exe --build build-cmake --target clean
 ```
 
 #### Regenerate Asset Headers
+> **Currently unavailable.** The Torch migration removed the ZAPD-based header
+> generator, and Torch does not emit OoT asset headers yet. The checked-in headers
+> under `soh/assets` are unaffected; only regenerating them is.
+
 ```powershell
 # If you need to regenerate the asset headers to check them into source
 C:\Program Files\CMake\bin\cmake.exe --build build-cmake --target ExtractAssetHeaders
@@ -221,6 +225,10 @@ cpack -G External (creates appimage)
 cmake --build build-cmake --target clean
 ```
 #### Regenerate Asset Headers
+> **Currently unavailable.** The Torch migration removed the ZAPD-based header
+> generator, and Torch does not emit OoT asset headers yet. The checked-in headers
+> under `soh/assets` are unaffected; only regenerating them is.
+
 ```bash
 # If you need to regenerate the asset headers to check them into source
 cmake --build build-cmake --target ExtractAssetHeaders
@@ -238,7 +246,7 @@ _Note: If you're using Visual Studio Code, the [CMake Tools plugin](https://mark
 git clone https://github.com/HarbourMasters/Shipwright.git
 cd ShipWright
 
-# Clone the submodule libultraship
+# Clone the submodules
 git submodule update --init
 
 # Install development dependencies (assuming homebrew)
@@ -278,6 +286,10 @@ cmake --build build-cmake --target clean
 ```
 
 #### Regenerate Asset Headers
+> **Currently unavailable.** The Torch migration removed the ZAPD-based header
+> generator, and Torch does not emit OoT asset headers yet. The checked-in headers
+> under `soh/assets` are unaffected; only regenerating them is.
+
 ```bash
 # If you need to regenerate the asset headers to check them into source
 cmake --build build-cmake --target ExtractAssetHeaders
@@ -287,7 +299,7 @@ cmake --build build-cmake --target ExtractAssetHeaders
 1. Requires that your build machine is setup with the tools necessary for your platform above
 2. Requires that you have the switch build tools installed
 3. Clone the Ship of Harkinian repository
-4. Place one or more [compatible](#compatible-roms) roms in the `OTRExporter` directory with namings of your choice
+4. Place one or more [compatible](#compatible-roms) roms in the `roms` directory with namings of your choice
 
 ```bash
 cd Shipwright
@@ -308,7 +320,7 @@ cmake --build build-switch --target soh_nro
 1. Requires that your build machine is setup with the tools necessary for your platform above
 2. Requires that you have the Wii U build tools installed
 3. Clone the Ship of Harkinian repository
-4. Place one or more [compatible](#compatible-roms) roms in the `OTRExporter` directory with namings of your choice
+4. Place one or more [compatible](#compatible-roms) roms in the `roms` directory with namings of your choice
 
 ```bash
 cd Shipwright

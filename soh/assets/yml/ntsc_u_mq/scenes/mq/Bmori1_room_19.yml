@@ -1,0 +1,33 @@
+:config:
+  segments:
+    - [ 3, 0x017BDD70 ]
+    - [ 2, 0x01760310 ]
+  directory: scenes/mq/Bmori1_scene
+  external_files:
+    - ntsc_u_mq/scenes/mq/Bmori1_scene.yml
+    - ntsc_u_mq/code/sys_matrix.yml
+
+Bmori1_room_19:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: Bmori1_room_19
+
+
+Bmori1_room_19Vtx_0000C0:
+  type: OOT:ARRAY
+  offset: 0x0000C0
+  symbol: Bmori1_room_19Vtx_0000C0
+  count: 47
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Bmori1_room_19DL_0003B0:
+  type: GFX
+  offset: 0x0003B0
+  symbol: Bmori1_room_19DL_0003B0
+
+Bmori1_room_19DL_0004F0:
+  type: GFX
+  offset: 0x0004F0
+  symbol: Bmori1_room_19DL_0004F0

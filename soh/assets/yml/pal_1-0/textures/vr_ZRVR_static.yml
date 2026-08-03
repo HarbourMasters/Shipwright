@@ -1,0 +1,24 @@
+:config:
+  segments:
+    - [ 128, 0x015E0090 ]
+
+gZoraShop2BgTex:
+  type: TEXTURE
+  offset: 0x10000
+  symbol: gZoraShop2BgTex
+  format: CI8
+  width: 256
+  height: 256
+  external_tlut: vr_ZRVR_pal_static
+  external_tlut_offset: 0x200
+
+gZoraShopBgTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gZoraShopBgTex
+  format: CI8
+  width: 256
+  height: 256
+  external_tlut: vr_ZRVR_pal_static
+  external_tlut_offset: 0x000
+

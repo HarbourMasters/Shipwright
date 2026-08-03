@@ -1,0 +1,194 @@
+:config:
+  segments:
+    - [ 6, 0x01193BC0 ]
+    - [ 4, 0x00D24FC0 ]
+    - [ 8, 0x01193BC0 ]
+    - [ 9, 0x01193BC0 ]
+    - [ 10, 0x01193BC0 ]
+    - [ 11, 0x01193BC0 ]
+    - [ 12, 0x01193BC0 ]
+    - [ 13, 0x01193BC0 ]
+  external_files:
+    - pal_gc/objects/gameplay_keep.yml
+
+object_kanban_DL_000C30:
+  type: GFX
+  offset: 0xC30
+  symbol: object_kanban_DL_000C30
+
+object_kanban_DL_000CB0:
+  type: GFX
+  offset: 0xCB0
+  symbol: object_kanban_DL_000CB0
+
+object_kanban_DL_000DB8:
+  type: GFX
+  offset: 0xDB8
+  symbol: object_kanban_DL_000DB8
+
+object_kanban_DL_000E78:
+  type: GFX
+  offset: 0xE78
+  symbol: object_kanban_DL_000E78
+
+object_kanban_DL_000F38:
+  type: GFX
+  offset: 0xF38
+  symbol: object_kanban_DL_000F38
+
+object_kanban_DL_000FF8:
+  type: GFX
+  offset: 0xFF8
+  symbol: object_kanban_DL_000FF8
+
+object_kanban_DL_0010B8:
+  type: GFX
+  offset: 0x10B8
+  symbol: object_kanban_DL_0010B8
+
+object_kanban_DL_0011C0:
+  type: GFX
+  offset: 0x11C0
+  symbol: object_kanban_DL_0011C0
+
+object_kanban_DL_0012C8:
+  type: GFX
+  offset: 0x12C8
+  symbol: object_kanban_DL_0012C8
+
+object_kanban_DL_0013D0:
+  type: GFX
+  offset: 0x13D0
+  symbol: object_kanban_DL_0013D0
+
+object_kanban_DL_001488:
+  type: GFX
+  offset: 0x1488
+  symbol: object_kanban_DL_001488
+
+object_kanban_DL_001540:
+  type: GFX
+  offset: 0x1540
+  symbol: object_kanban_DL_001540
+
+object_kanban_DL_001630:
+  type: GFX
+  offset: 0x1630
+  symbol: object_kanban_DL_001630
+
+object_kanban_Tex_0016B0:
+  type: TEXTURE
+  offset: 0x16B0
+  symbol: object_kanban_Tex_0016B0
+  format: I8
+  width: 16
+  height: 16
+
+
+object_kanbanVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_kanbanVtx_000000
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kanbanVtx_000120:
+  type: OOT:ARRAY
+  offset: 0x000120
+  symbol: object_kanbanVtx_000120
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kanbanVtx_000240:
+  type: OOT:ARRAY
+  offset: 0x000240
+  symbol: object_kanbanVtx_000240
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kanbanVtx_000360:
+  type: OOT:ARRAY
+  offset: 0x000360
+  symbol: object_kanbanVtx_000360
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kanbanVtx_000480:
+  type: OOT:ARRAY
+  offset: 0x000480
+  symbol: object_kanbanVtx_000480
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kanbanVtx_0005A0:
+  type: OOT:ARRAY
+  offset: 0x0005A0
+  symbol: object_kanbanVtx_0005A0
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kanbanVtx_0006C0:
+  type: OOT:ARRAY
+  offset: 0x0006C0
+  symbol: object_kanbanVtx_0006C0
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kanbanVtx_0007E0:
+  type: OOT:ARRAY
+  offset: 0x0007E0
+  symbol: object_kanbanVtx_0007E0
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kanbanVtx_000900:
+  type: OOT:ARRAY
+  offset: 0x000900
+  symbol: object_kanbanVtx_000900
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kanbanVtx_000A20:
+  type: OOT:ARRAY
+  offset: 0x000A20
+  symbol: object_kanbanVtx_000A20
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kanbanVtx_000B40:
+  type: OOT:ARRAY
+  offset: 0x000B40
+  symbol: object_kanbanVtx_000B40
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_kanbanVtx_001600:
+  type: OOT:ARRAY
+  offset: 0x001600
+  symbol: object_kanbanVtx_001600
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

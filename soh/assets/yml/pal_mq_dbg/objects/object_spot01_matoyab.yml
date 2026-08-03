@@ -1,0 +1,103 @@
+:config:
+  segments:
+    - [ 6, 0x01982000 ]
+    - [ 4, 0x00F5E000 ]
+    - [ 8, 0x01982000 ]
+    - [ 9, 0x01982000 ]
+    - [ 10, 0x01982000 ]
+    - [ 11, 0x01982000 ]
+    - [ 12, 0x01982000 ]
+    - [ 13, 0x01982000 ]
+  external_files:
+    - pal_mq_dbg/objects/gameplay_keep.yml
+
+gKakarikoConstructionSitRailingTex:
+  type: TEXTURE
+  offset: 0x0608
+  symbol: gKakarikoConstructionSitRailingTex
+  format: CI8
+  width: 16
+  height: 8
+  tlut: 0x0
+
+gKakarikoConstructionSiteBrickTex:
+  type: TEXTURE
+  offset: 0x0408
+  symbol: gKakarikoConstructionSiteBrickTex
+  format: CI8
+  width: 16
+  height: 32
+  tlut: 0x0
+
+gKakarikoConstructionSiteBrickWithGrassTex:
+  type: TEXTURE
+  offset: 0x0208
+  symbol: gKakarikoConstructionSiteBrickWithGrassTex
+  format: CI8
+  width: 16
+  height: 32
+  tlut: 0x0
+
+gKakarikoConstructionSiteDL:
+  type: GFX
+  offset: 0x1228
+  symbol: gKakarikoConstructionSiteDL
+
+gKakarikoConstructionSiteTLUT:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gKakarikoConstructionSiteTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gKakarikoConstructionSiteWoodTex:
+  type: TEXTURE
+  offset: 0x0688
+  symbol: gKakarikoConstructionSiteWoodTex
+  format: CI8
+  width: 16
+  height: 32
+  tlut: 0x0
+
+gKakarikoGuardGateCol:
+  type: OOT:COLLISION
+  offset: 0x1DA8
+  symbol: gKakarikoGuardGateCol
+
+gKakarikoGuardGateDL:
+  type: GFX
+  offset: 0x1CD0
+  symbol: gKakarikoGuardGateDL
+
+gKakarikoGuardGateMetalSidebarDL:
+  type: TEXTURE
+  offset: 0x1DE0
+  symbol: gKakarikoGuardGateMetalSidebarDL
+  format: RGBA16
+  width: 8
+  height: 64
+
+object_spot01_matoyab_col:
+  type: OOT:COLLISION
+  offset: 0x1C58
+  symbol: object_spot01_matoyab_col
+
+
+object_spot01_matoyabVtx_000888:
+  type: OOT:ARRAY
+  offset: 0x000888
+  symbol: object_spot01_matoyabVtx_000888
+  count: 154
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_spot01_matoyabVtx_001C90:
+  type: OOT:ARRAY
+  offset: 0x001C90
+  symbol: object_spot01_matoyabVtx_001C90
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

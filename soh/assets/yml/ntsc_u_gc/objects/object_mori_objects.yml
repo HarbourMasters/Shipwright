@@ -1,0 +1,209 @@
+:config:
+  segments:
+    - [ 6, 0x00F3A180 ]
+    - [ 8, 0x00F3E3A0 ]
+    - [ 4, 0x00D30F00 ]
+    - [ 9, 0x00F3A180 ]
+    - [ 10, 0x00F3A180 ]
+    - [ 11, 0x00F3A180 ]
+    - [ 12, 0x00F3A180 ]
+    - [ 13, 0x00F3A180 ]
+  external_files:
+    - ntsc_u_gc/objects/object_mori_tex.yml
+    - ntsc_u_gc/objects/gameplay_keep.yml
+
+gMoriBigstCol:
+  type: OOT:COLLISION
+  offset: 0x221C
+  symbol: gMoriBigstCol
+
+gMoriBigstDL:
+  type: GFX
+  offset: 0x1E50
+  symbol: gMoriBigstDL
+
+gMoriElevatorCol:
+  type: OOT:COLLISION
+  offset: 0x35F8
+  symbol: gMoriElevatorCol
+
+gMoriElevatorDL:
+  type: GFX
+  offset: 0x2AD0
+  symbol: gMoriElevatorDL
+
+gMoriHashigoClaspDL:
+  type: GFX
+  offset: 0x4770
+  symbol: gMoriHashigoClaspDL
+
+gMoriHashigoClaspTLUT:
+  type: TEXTURE
+  offset: 0x3810
+  symbol: gMoriHashigoClaspTLUT
+  format: RGBA16
+  width: 112
+  height: 1
+
+gMoriHashigoClaspTex:
+  type: TEXTURE
+  offset: 0x38F0
+  symbol: gMoriHashigoClaspTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x3810
+
+gMoriHashigoCol:
+  type: OOT:COLLISION
+  offset: 0x37D8
+  symbol: gMoriHashigoCol
+
+gMoriHashigoLadderDL:
+  type: GFX
+  offset: 0x36B0
+  symbol: gMoriHashigoLadderDL
+
+gMoriHashira1Col:
+  type: OOT:COLLISION
+  offset: 0x1AF8
+  symbol: gMoriHashira1Col
+
+gMoriHashira2Col:
+  type: OOT:COLLISION
+  offset: 0x89E0
+  symbol: gMoriHashira2Col
+
+gMoriHashiraGateDL:
+  type: GFX
+  offset: 0x8840
+  symbol: gMoriHashiraGateDL
+
+gMoriHashiraPlatformsDL:
+  type: GFX
+  offset: 0x1300
+  symbol: gMoriHashiraPlatformsDL
+
+gMoriHashiraTLUT:
+  type: TEXTURE
+  offset: 0x0000
+  symbol: gMoriHashiraTLUT
+  format: RGBA16
+  width: 112
+  height: 1
+
+gMoriHashiraTex:
+  type: TEXTURE
+  offset: 0x00E0
+  symbol: gMoriHashiraTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x0000
+
+gMoriIdomizuWaterDL:
+  type: GFX
+  offset: 0x49D0
+  symbol: gMoriIdomizuWaterDL
+
+gMoriKaitenkabeCol:
+  type: OOT:COLLISION
+  offset: 0x63B8
+  symbol: gMoriKaitenkabeCol
+
+gMoriKaitenkabeDL:
+  type: GFX
+  offset: 0x56B0
+  symbol: gMoriKaitenkabeDL
+
+gMoriRakkatenjoCol:
+  type: OOT:COLLISION
+  offset: 0x87AC
+  symbol: gMoriRakkatenjoCol
+
+gMoriRakkatenjoDL:
+  type: GFX
+  offset: 0x7690
+  symbol: gMoriRakkatenjoDL
+
+
+object_mori_objectsVtx_0004E0:
+  type: OOT:ARRAY
+  offset: 0x0004E0
+  symbol: object_mori_objectsVtx_0004E0
+  count: 226
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mori_objectsVtx_001B30:
+  type: OOT:ARRAY
+  offset: 0x001B30
+  symbol: object_mori_objectsVtx_001B30
+  count: 50
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mori_objectsVtx_002250:
+  type: OOT:ARRAY
+  offset: 0x002250
+  symbol: object_mori_objectsVtx_002250
+  count: 136
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mori_objectsVtx_003630:
+  type: OOT:ARRAY
+  offset: 0x003630
+  symbol: object_mori_objectsVtx_003630
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mori_objectsVtx_003CF0:
+  type: OOT:ARRAY
+  offset: 0x003CF0
+  symbol: object_mori_objectsVtx_003CF0
+  count: 168
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mori_objectsVtx_004990:
+  type: OOT:ARRAY
+  offset: 0x004990
+  symbol: object_mori_objectsVtx_004990
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mori_objectsVtx_004A80:
+  type: OOT:ARRAY
+  offset: 0x004A80
+  symbol: object_mori_objectsVtx_004A80
+  count: 195
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mori_objectsVtx_0063F0:
+  type: OOT:ARRAY
+  offset: 0x0063F0
+  symbol: object_mori_objectsVtx_0063F0
+  count: 298
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mori_objectsVtx_0087E0:
+  type: OOT:ARRAY
+  offset: 0x0087E0
+  symbol: object_mori_objectsVtx_0087E0
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

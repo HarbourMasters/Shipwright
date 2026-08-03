@@ -1,0 +1,244 @@
+:config:
+  segments:
+    - [ 3, 0x01D510A0 ]
+    - [ 2, 0x01D4BA70 ]
+  directory: scenes/shared/FIRE_bs_scene
+  external_files:
+    - ntsc_u_mq/scenes/shared/FIRE_bs_scene.yml
+    - ntsc_u_mq/code/sys_matrix.yml
+
+FIRE_bs_room_1:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: FIRE_bs_room_1
+
+FIRE_bs_room_1TLUT_004998:
+  type: TEXTURE
+  offset: 0x4998
+  symbol: FIRE_bs_room_1TLUT_004998
+  format: RGBA16
+  width: 4
+  height: 4
+
+FIRE_bs_room_1TLUT_0049B8:
+  type: TEXTURE
+  offset: 0x49B8
+  symbol: FIRE_bs_room_1TLUT_0049B8
+  format: RGBA16
+  width: 4
+  height: 4
+
+FIRE_bs_room_1Tex_0049D8:
+  type: TEXTURE
+  offset: 0x49D8
+  symbol: FIRE_bs_room_1Tex_0049D8
+  format: CI4
+  width: 32
+  height: 32
+  tlut: 0x49B8
+
+FIRE_bs_room_1Tex_004BD8:
+  type: TEXTURE
+  offset: 0x4BD8
+  symbol: FIRE_bs_room_1Tex_004BD8
+  format: RGBA16
+  width: 32
+  height: 32
+
+FIRE_bs_room_1Tex_0053D8:
+  type: TEXTURE
+  offset: 0x53D8
+  symbol: FIRE_bs_room_1Tex_0053D8
+  format: RGBA16
+  width: 32
+  height: 32
+
+FIRE_bs_room_1Tex_005BD8:
+  type: TEXTURE
+  offset: 0x5BD8
+  symbol: FIRE_bs_room_1Tex_005BD8
+  format: CI4
+  width: 64
+  height: 32
+  tlut: 0x4998
+
+FIRE_bs_room_1Tex_005FD8:
+  type: TEXTURE
+  offset: 0x5FD8
+  symbol: FIRE_bs_room_1Tex_005FD8
+  format: CI4
+  width: 32
+  height: 32
+  tlut: 0x4998
+
+FIRE_bs_room_1Tex_0061D8:
+  type: TEXTURE
+  offset: 0x61D8
+  symbol: FIRE_bs_room_1Tex_0061D8
+  format: CI4
+  width: 32
+  height: 64
+  tlut: 0x49B8
+
+FIRE_bs_room_1Tex_0065D8:
+  type: TEXTURE
+  offset: 0x65D8
+  symbol: FIRE_bs_room_1Tex_0065D8
+  format: RGBA16
+  width: 32
+  height: 32
+
+FIRE_bs_room_1Tex_006DD8:
+  type: TEXTURE
+  offset: 0x6DD8
+  symbol: FIRE_bs_room_1Tex_006DD8
+  format: CI4
+  width: 32
+  height: 32
+  tlut: 0x49B8
+
+
+FIRE_bs_room_1Vtx_000090:
+  type: OOT:ARRAY
+  offset: 0x000090
+  symbol: FIRE_bs_room_1Vtx_000090
+  count: 181
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+FIRE_bs_room_1DL_000BE0:
+  type: GFX
+  offset: 0x000BE0
+  symbol: FIRE_bs_room_1DL_000BE0
+
+FIRE_bs_room_1Vtx_0010E0:
+  type: OOT:ARRAY
+  offset: 0x0010E0
+  symbol: FIRE_bs_room_1Vtx_0010E0
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+FIRE_bs_room_1DL_001460:
+  type: GFX
+  offset: 0x001460
+  symbol: FIRE_bs_room_1DL_001460
+
+FIRE_bs_room_1Vtx_0016A8:
+  type: OOT:ARRAY
+  offset: 0x0016A8
+  symbol: FIRE_bs_room_1Vtx_0016A8
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+FIRE_bs_room_1DL_001A28:
+  type: GFX
+  offset: 0x001A28
+  symbol: FIRE_bs_room_1DL_001A28
+
+FIRE_bs_room_1Vtx_001C70:
+  type: OOT:ARRAY
+  offset: 0x001C70
+  symbol: FIRE_bs_room_1Vtx_001C70
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+FIRE_bs_room_1DL_001FF0:
+  type: GFX
+  offset: 0x001FF0
+  symbol: FIRE_bs_room_1DL_001FF0
+
+FIRE_bs_room_1Vtx_002238:
+  type: OOT:ARRAY
+  offset: 0x002238
+  symbol: FIRE_bs_room_1Vtx_002238
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+FIRE_bs_room_1DL_002338:
+  type: GFX
+  offset: 0x002338
+  symbol: FIRE_bs_room_1DL_002338
+
+FIRE_bs_room_1Vtx_002400:
+  type: OOT:ARRAY
+  offset: 0x002400
+  symbol: FIRE_bs_room_1Vtx_002400
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+FIRE_bs_room_1DL_002600:
+  type: GFX
+  offset: 0x002600
+  symbol: FIRE_bs_room_1DL_002600
+
+FIRE_bs_room_1Vtx_0026F0:
+  type: OOT:ARRAY
+  offset: 0x0026F0
+  symbol: FIRE_bs_room_1Vtx_0026F0
+  count: 152
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+FIRE_bs_room_1DL_003070:
+  type: GFX
+  offset: 0x003070
+  symbol: FIRE_bs_room_1DL_003070
+
+FIRE_bs_room_1Vtx_003380:
+  type: OOT:ARRAY
+  offset: 0x003380
+  symbol: FIRE_bs_room_1Vtx_003380
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+FIRE_bs_room_1DL_003480:
+  type: GFX
+  offset: 0x003480
+  symbol: FIRE_bs_room_1DL_003480
+
+FIRE_bs_room_1Vtx_003588:
+  type: OOT:ARRAY
+  offset: 0x003588
+  symbol: FIRE_bs_room_1Vtx_003588
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+FIRE_bs_room_1DL_003698:
+  type: GFX
+  offset: 0x003698
+  symbol: FIRE_bs_room_1DL_003698
+
+FIRE_bs_room_1Vtx_0037A8:
+  type: OOT:ARRAY
+  offset: 0x0037A8
+  symbol: FIRE_bs_room_1Vtx_0037A8
+  count: 225
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+FIRE_bs_room_1DL_0045B8:
+  type: GFX
+  offset: 0x0045B8
+  symbol: FIRE_bs_room_1DL_0045B8
+
+FIRE_bs_room_1DL_004940:
+  type: GFX
+  offset: 0x004940
+  symbol: FIRE_bs_room_1DL_004940

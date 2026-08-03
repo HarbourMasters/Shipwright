@@ -176,7 +176,7 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 # Set LUS vars
 ################################################################################
 
-# Enable the Gfx debugger in LUS to use libgfxd from ZAPDTR
+# Enable the Gfx debugger in LUS, which fetches its own libgfxd
 set(GFX_DEBUG_DISASSEMBLER ON)
 
 # Tell LUS we're using F3DEX_GBI_2 (in a way that doesn't break libgfxd)
@@ -192,13 +192,118 @@ set(INCLUDE_MPQ_SUPPORT ON)
 add_compile_definitions(CONTROLLERBUTTONS_T=uint32_t)
 
 ################################################################################
+# Torch (ROM asset extraction)
+################################################################################
+find_package(ZLIB REQUIRED)
+
+include(FetchContent)
+
+# Workaround: torch declares spdlog without OVERRIDE_FIND_PACKAGE and the first declaration
+# wins, which leaves libultraship's find_package(spdlog REQUIRED) with no config to find.
+# Declaring it here first keeps that working. See HarbourMasters/Torch#233.
+find_package(spdlog QUIET)
+if(NOT spdlog_FOUND)
+    FetchContent_Declare(
+        spdlog
+        GIT_REPOSITORY https://github.com/gabime/spdlog.git
+        GIT_TAG v1.16.0
+        OVERRIDE_FIND_PACKAGE
+    )
+    FetchContent_MakeAvailable(spdlog)
+endif()
+
+set(USE_STANDALONE          OFF CACHE BOOL "" FORCE)  # static lib, no CLI
+set(PORT_VERSION_ENDIANNESS ON  CACHE BOOL "" FORCE)  # 7-byte portVersion
+set(ROM_CRC_BSWAP           OFF CACHE BOOL "" FORCE)
+set(BUILD_UI                OFF CACHE BOOL "" FORCE)  # would fetch a 2nd libultraship
+set(BUILD_STORMLIB          OFF CACHE BOOL "" FORCE)  # target name clashes with LUS's `storm`
+set(BUILD_NAUDIO            OFF CACHE BOOL "" FORCE)
+
+set(BUILD_OOT               ON  CACHE BOOL "" FORCE)
+foreach(_torch_game SM64 MK64 SF64 PM64 FZERO BK64 MARIO_ARTIST)
+    set(BUILD_${_torch_game} OFF CACHE BOOL "" FORCE)
+endforeach()
+
+add_subdirectory(torch)
+
+# Build-time ROM extraction. soh links torch as a static library, which compiles out torch's
+# own CLI, so this supplies an entry point around the same code the game runs.
+add_executable(soh-torch EXCLUDE_FROM_ALL
+    ${CMAKE_CURRENT_SOURCE_DIR}/soh/assets/tools/torch-cli/main.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/soh/soh/Extractor/TorchExtract.cpp
+)
+target_include_directories(soh-torch PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/soh/soh/Extractor)
+target_link_libraries(soh-torch PRIVATE torch)
+
+add_executable(soh-o2r-packer EXCLUDE_FROM_ALL
+    ${CMAKE_CURRENT_SOURCE_DIR}/soh/assets/tools/soh-o2r-packer/main.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/soh/assets/tools/soh-o2r-packer/PngTexture.cpp
+)
+target_link_libraries(soh-o2r-packer PRIVATE torch)
+
+# Target to generate OTRs. SOH_ROM_PATH takes roms and/or directories of roms; torch names each
+# archive (oot.o2r or oot-mq.o2r) from its hash, so a vanilla and a master quest rom produce both
+# in one run. soh.o2r comes from GenerateSohOtr, chained below.
+set(SOH_ROM_PATH "${CMAKE_SOURCE_DIR}/roms" CACHE STRING "Roms, or directories of roms, to extract")
+add_custom_target(
+    ExtractAssets
+    COMMAND ${CMAKE_COMMAND} -E rm -f ${CMAKE_BINARY_DIR}/soh/oot.o2r ${CMAKE_BINARY_DIR}/soh/oot-mq.o2r
+    COMMAND $<TARGET_FILE:soh-torch>
+            --src ${CMAKE_CURRENT_SOURCE_DIR}/soh/assets/yml
+            --dest ${CMAKE_BINARY_DIR}/soh
+            --version ${CMAKE_PROJECT_VERSION}
+            ${SOH_ROM_PATH}
+    # torch caches extraction state next to the archive; drop it so the game's directory stays clean
+    COMMAND ${CMAKE_COMMAND} -E rm -f ${CMAKE_BINARY_DIR}/soh/torch.hash.yml
+    COMMENT "Running asset extraction..."
+    DEPENDS soh-torch
+    BYPRODUCTS ${CMAKE_BINARY_DIR}/soh/oot.o2r ${CMAKE_BINARY_DIR}/soh/oot-mq.o2r
+)
+
+# Target to generate headers. Torch has no OoT header exporter yet -- every REGISTER in
+# src/factories/oot/ is REGISTER(Binary, ...) -- and it emits no `#define d<sym>` line, which
+# soh source references ~24k times. Kept so the failure explains itself.
+add_custom_target(
+    ExtractAssetHeaders
+    COMMAND ${CMAKE_COMMAND} -E echo "ExtractAssetHeaders is currently unavailable: torch does not emit OoT asset headers yet."
+    COMMAND ${CMAKE_COMMAND} -E echo "The checked-in headers under soh/assets are unaffected. See docs/BUILDING.md."
+    COMMAND ${CMAKE_COMMAND} -E false
+)
+
+# Target to generate only soh.o2r
+add_custom_target(
+    GenerateSohOtr
+    # copy LUS default shaders into assets/custom
+    COMMAND ${CMAKE_COMMAND} -E rm -r -f ${CMAKE_CURRENT_SOURCE_DIR}/soh/assets/custom/shaders/
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/libultraship/src/fast/shaders/ ${CMAKE_CURRENT_SOURCE_DIR}/soh/assets/custom/shaders/
+
+    COMMAND $<TARGET_FILE:soh-o2r-packer>
+            ${CMAKE_CURRENT_SOURCE_DIR}/soh/assets/custom
+            ${CMAKE_BINARY_DIR}/soh/soh.o2r
+            ${CMAKE_PROJECT_VERSION}
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_BINARY_DIR}/soh/soh.o2r ${CMAKE_CURRENT_SOURCE_DIR}/soh.o2r
+    COMMENT "Generating soh.o2r..."
+    DEPENDS soh-o2r-packer
+    BYPRODUCTS ${CMAKE_SOURCE_DIR}/soh.o2r ${CMAKE_BINARY_DIR}/soh/soh.o2r
+)
+
+# ExtractAssets produced soh.o2r as well as the rom archives, so keep doing that.
+add_dependencies(ExtractAssets GenerateSohOtr)
+
+# The asset tools only need torch, so a tools-only configure can skip libultraship and soh
+# entirely -- that is all CI needs to produce soh.o2r.
+option(SOH_TOOLS_ONLY "Configure only the asset tools, skipping libultraship and soh" OFF)
+if(SOH_TOOLS_ONLY)
+    file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/soh)
+    return()
+endif()
+
+################################################################################
 # Sub-projects
 ################################################################################
 add_subdirectory(libultraship ${CMAKE_BINARY_DIR}/libultraship)
 target_compile_options(libultraship PRIVATE "${WARNING_OVERRIDE}")
 target_compile_definitions(libultraship PUBLIC INCLUDE_MPQ_SUPPORT)
-add_subdirectory(ZAPDTR/ZAPD ${CMAKE_BINARY_DIR}/ZAPD)
-add_subdirectory(OTRExporter)
 add_subdirectory(soh)
 
 set_property(TARGET soh PROPERTY APPIMAGE_DESKTOP_FILE_TERMINAL YES)
@@ -207,59 +312,12 @@ set_property(TARGET soh PROPERTY APPIMAGE_ICON_FILE "${CMAKE_BINARY_DIR}/sohIcon
 
 if("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
 install(FILES "${CMAKE_BINARY_DIR}/soh/soh.o2r" DESTINATION . COMPONENT ship)
-install(TARGETS ZAPD DESTINATION ./assets/extractor COMPONENT extractor)
-install(DIRECTORY "${CMAKE_SOURCE_DIR}/soh/assets/extractor/" DESTINATION ./assets COMPONENT extractor)
-install(DIRECTORY "${CMAKE_SOURCE_DIR}/soh/assets/xml/" DESTINATION ./assets/xml COMPONENT extractor)
+install(DIRECTORY "${CMAKE_SOURCE_DIR}/soh/assets/yml/" DESTINATION ./assets COMPONENT ship)
 endif()
 
 if ("${CMAKE_SYSTEM_NAME}" STREQUAL "Windows")
-install(DIRECTORY "${CMAKE_SOURCE_DIR}/soh/assets/extractor/" DESTINATION ./assets/ COMPONENT ship)
-install(DIRECTORY "${CMAKE_SOURCE_DIR}/soh/assets/xml/" DESTINATION ./assets/xml COMPONENT ship)
+install(DIRECTORY "${CMAKE_SOURCE_DIR}/soh/assets/yml/" DESTINATION ./assets COMPONENT ship)
 endif()
-
-find_package(Python3 COMPONENTS Interpreter)
-
-# Target to generate OTRs
-add_custom_target(
-    ExtractAssets
-    COMMAND ${CMAKE_COMMAND} -E rm -f oot.o2r oot-mq.o2r soh.o2r
-
-    # copy LUS default shaders into assets/custom
-    COMMAND ${CMAKE_COMMAND} -E rm -r -f ${CMAKE_CURRENT_SOURCE_DIR}/soh/assets/custom/shaders/
-    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/libultraship/src/fast/shaders/ ${CMAKE_CURRENT_SOURCE_DIR}/soh/assets/custom/shaders/
-
-    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/OTRExporter/extract_assets.py -z "$<TARGET_FILE:ZAPD>" --non-interactive --xml-root assets/xml --custom-otr-file soh.o2r "--custom-assets-path" ${CMAKE_CURRENT_SOURCE_DIR}/soh/assets/custom --port-ver "${CMAKE_PROJECT_VERSION}"
-    COMMAND ${CMAKE_COMMAND} -DSYSTEM_NAME=${CMAKE_SYSTEM_NAME} -DTARGET_DIR="$<TARGET_FILE_DIR:ZAPD>" -DSOURCE_DIR=${CMAKE_CURRENT_SOURCE_DIR} -DBINARY_DIR=${CMAKE_BINARY_DIR} -P ${CMAKE_CURRENT_SOURCE_DIR}/copy-existing-otrs.cmake
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/soh
-    COMMENT "Running asset extraction..."
-    DEPENDS ZAPD
-    BYPRODUCTS oot.o2r ${CMAKE_SOURCE_DIR}/oot.o2r oot-mq.o2r ${CMAKE_SOURCE_DIR}/oot-mq.o2r ${CMAKE_SOURCE_DIR}/soh.o2r
-)
-
-# Target to generate headers
-add_custom_target(
-    ExtractAssetHeaders
-    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/OTRExporter/extract_assets.py -z "$<TARGET_FILE:ZAPD>" --non-interactive --xml-root assets/xml --gen-headers
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/soh
-    COMMENT "Generating asset headers..."
-    DEPENDS ZAPD
-)
-
-# Target to generate only soh.o2r
-add_custom_target(
-    GenerateSohOtr
-    COMMAND ${CMAKE_COMMAND} -E rm -f soh.o2r
-
-    # copy LUS default shaders into assets/custom
-    COMMAND ${CMAKE_COMMAND} -E rm -r -f ${CMAKE_CURRENT_SOURCE_DIR}/soh/assets/custom/shaders/
-    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/libultraship/src/fast/shaders/ ${CMAKE_CURRENT_SOURCE_DIR}/soh/assets/custom/shaders/
-
-    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/OTRExporter/extract_assets.py -z "$<TARGET_FILE:ZAPD>" --norom --custom-otr-file soh.o2r "--custom-assets-path" ${CMAKE_CURRENT_SOURCE_DIR}/soh/assets/custom --port-ver "${CMAKE_PROJECT_VERSION}"
-    COMMAND ${CMAKE_COMMAND} -DSYSTEM_NAME=${CMAKE_SYSTEM_NAME} -DTARGET_DIR="$<TARGET_FILE_DIR:ZAPD>" -DSOURCE_DIR=${CMAKE_CURRENT_SOURCE_DIR} -DBINARY_DIR=${CMAKE_BINARY_DIR} -DONLYSOHOTR=On -P ${CMAKE_CURRENT_SOURCE_DIR}/copy-existing-otrs.cmake
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/soh
-    COMMENT "Generating soh.o2r..."
-    DEPENDS ZAPD
-)
 
 if(CMAKE_SYSTEM_NAME MATCHES "Linux")
     find_package(ImageMagick COMPONENTS convert)
@@ -290,12 +348,9 @@ add_custom_target(CreateOSXIcons
     )
 add_dependencies(soh CreateOSXIcons)
 
-install(TARGETS ZAPD DESTINATION ${CMAKE_BINARY_DIR}/assets)
-
 set(PROGRAM_PERMISSIONS_EXECUTE OWNER_EXECUTE OWNER_WRITE OWNER_READ GROUP_EXECUTE GROUP_READ WORLD_EXECUTE WORLD_READ)
 
-install(DIRECTORY "${CMAKE_SOURCE_DIR}/soh/assets/extractor/" DESTINATION ./assets/)
-install(DIRECTORY "${CMAKE_SOURCE_DIR}/soh/assets/xml/" DESTINATION ./assets/xml)
+install(DIRECTORY "${CMAKE_SOURCE_DIR}/soh/assets/yml/" DESTINATION ./assets)
 
 # Rename the installed soh binary to drop the macos suffix
 INSTALL(CODE "FILE(RENAME \${CMAKE_INSTALL_PREFIX}/../MacOS/soh-macos \${CMAKE_INSTALL_PREFIX}/../MacOS/soh)")

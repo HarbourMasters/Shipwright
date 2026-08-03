@@ -1,0 +1,1248 @@
+:config:
+  segments:
+    - [ 6, 0x00FC6860 ]
+    - [ 4, 0x00D30660 ]
+    - [ 8, 0x00FC6860 ]
+    - [ 9, 0x00FC6860 ]
+    - [ 10, 0x00FC6860 ]
+    - [ 11, 0x00FC6860 ]
+    - [ 12, 0x00FC6860 ]
+    - [ 13, 0x00FC6860 ]
+  external_files:
+    - pal_1-1/objects/gameplay_keep.yml
+
+gVolvagiaBodySeg10DL:
+  type: GFX
+  offset: 0x7E10
+  symbol: gVolvagiaBodySeg10DL
+
+gVolvagiaBodySeg11DL:
+  type: GFX
+  offset: 0x7E70
+  symbol: gVolvagiaBodySeg11DL
+
+gVolvagiaBodySeg12DL:
+  type: GFX
+  offset: 0x7ED0
+  symbol: gVolvagiaBodySeg12DL
+
+gVolvagiaBodySeg13DL:
+  type: GFX
+  offset: 0x7F30
+  symbol: gVolvagiaBodySeg13DL
+
+gVolvagiaBodySeg14DL:
+  type: GFX
+  offset: 0x7F90
+  symbol: gVolvagiaBodySeg14DL
+
+gVolvagiaBodySeg15DL:
+  type: GFX
+  offset: 0x7FF0
+  symbol: gVolvagiaBodySeg15DL
+
+gVolvagiaBodySeg16DL:
+  type: GFX
+  offset: 0x8038
+  symbol: gVolvagiaBodySeg16DL
+
+gVolvagiaBodySeg17DL:
+  type: GFX
+  offset: 0x8080
+  symbol: gVolvagiaBodySeg17DL
+
+gVolvagiaBodySeg18DL:
+  type: GFX
+  offset: 0x80D8
+  symbol: gVolvagiaBodySeg18DL
+
+gVolvagiaBodySeg1DL:
+  type: GFX
+  offset: 0x79A0
+  symbol: gVolvagiaBodySeg1DL
+
+gVolvagiaBodySeg2DL:
+  type: GFX
+  offset: 0x7AC0
+  symbol: gVolvagiaBodySeg2DL
+
+gVolvagiaBodySeg3DL:
+  type: GFX
+  offset: 0x7B70
+  symbol: gVolvagiaBodySeg3DL
+
+gVolvagiaBodySeg4DL:
+  type: GFX
+  offset: 0x7BD0
+  symbol: gVolvagiaBodySeg4DL
+
+gVolvagiaBodySeg5DL:
+  type: GFX
+  offset: 0x7C30
+  symbol: gVolvagiaBodySeg5DL
+
+gVolvagiaBodySeg6DL:
+  type: GFX
+  offset: 0x7C90
+  symbol: gVolvagiaBodySeg6DL
+
+gVolvagiaBodySeg7DL:
+  type: GFX
+  offset: 0x7CF0
+  symbol: gVolvagiaBodySeg7DL
+
+gVolvagiaBodySeg8DL:
+  type: GFX
+  offset: 0x7D50
+  symbol: gVolvagiaBodySeg8DL
+
+gVolvagiaBodySeg9DL:
+  type: GFX
+  offset: 0x7DB0
+  symbol: gVolvagiaBodySeg9DL
+
+gVolvagiaBodySkel:
+  type: OOT:SKELETON
+  offset: 0x11420
+  symbol: gVolvagiaBodySkel
+  limb_type: Standard
+  skel_type: Flex
+
+gVolvagiaBodyStaticAnim:
+  type: OOT:ANIMATION
+  offset: 0x61D8
+  symbol: gVolvagiaBodyStaticAnim
+
+gVolvagiaBodyTex:
+  type: TEXTURE
+  offset: 0x8128
+  symbol: gVolvagiaBodyTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gVolvagiaBrokenFaceDL:
+  type: GFX
+  offset: 0x59F8
+  symbol: gVolvagiaBrokenFaceDL
+
+gVolvagiaDL_009668:
+  type: GFX
+  offset: 0x9668
+  symbol: gVolvagiaDL_009668
+
+gVolvagiaDebrisMaterialDL:
+  type: GFX
+  offset: 0xD3A0
+  symbol: gVolvagiaDebrisMaterialDL
+
+gVolvagiaDebrisModelDL:
+  type: GFX
+  offset: 0xD420
+  symbol: gVolvagiaDebrisModelDL
+
+gVolvagiaDustMaterialDL:
+  type: GFX
+  offset: 0xB3A8
+  symbol: gVolvagiaDustMaterialDL
+
+gVolvagiaDustModelDL:
+  type: GFX
+  offset: 0xB3C8
+  symbol: gVolvagiaDustModelDL
+
+gVolvagiaEmberMaterialDL:
+  type: GFX
+  offset: 0xA880
+  symbol: gVolvagiaEmberMaterialDL
+
+gVolvagiaEmberModelDL:
+  type: GFX
+  offset: 0xA900
+  symbol: gVolvagiaEmberModelDL
+
+gVolvagiaEyeClosedTex:
+  type: TEXTURE
+  offset: 0x3CA8
+  symbol: gVolvagiaEyeClosedTex
+  format: I8
+  width: 32
+  height: 32
+
+gVolvagiaEyeHalfTex:
+  type: TEXTURE
+  offset: 0x34A8
+  symbol: gVolvagiaEyeHalfTex
+  format: I8
+  width: 32
+  height: 32
+
+gVolvagiaEyeOpenTex:
+  type: TEXTURE
+  offset: 0x38A8
+  symbol: gVolvagiaEyeOpenTex
+  format: I8
+  width: 32
+  height: 32
+
+gVolvagiaHeadEmergeAnim:
+  type: OOT:ANIMATION
+  offset: 0x115E4
+  symbol: gVolvagiaHeadEmergeAnim
+
+gVolvagiaHeadSkel:
+  type: OOT:SKELETON
+  offset: 0x11660
+  symbol: gVolvagiaHeadSkel
+  limb_type: Standard
+  skel_type: Normal
+
+gVolvagiaJawboneDL:
+  type: GFX
+  offset: 0xD0A0
+  symbol: gVolvagiaJawboneDL
+
+gVolvagiaLeftArmEmergeAnim:
+  type: OOT:ANIMATION
+  offset: 0x11464
+  symbol: gVolvagiaLeftArmEmergeAnim
+
+gVolvagiaLeftArmSkel:
+  type: OOT:SKELETON
+  offset: 0x114E0
+  symbol: gVolvagiaLeftArmSkel
+  limb_type: Standard
+  skel_type: Normal
+
+gVolvagiaManeMaterialDL:
+  type: GFX
+  offset: 0x9168
+  symbol: gVolvagiaManeMaterialDL
+
+gVolvagiaManeModelDL:
+  type: GFX
+  offset: 0x91E8
+  symbol: gVolvagiaManeModelDL
+
+gVolvagiaPlatformCol:
+  type: OOT:COLLISION
+  offset: 0xD68
+  symbol: gVolvagiaPlatformCol
+
+gVolvagiaPlatformDL:
+  type: GFX
+  offset: 0x240
+  symbol: gVolvagiaPlatformDL
+
+gVolvagiaRibsDL:
+  type: GFX
+  offset: 0xB2F8
+  symbol: gVolvagiaRibsDL
+
+gVolvagiaRightArmEmergeAnim:
+  type: OOT:ANIMATION
+  offset: 0x11524
+  symbol: gVolvagiaRightArmEmergeAnim
+
+gVolvagiaRightArmSkel:
+  type: OOT:SKELETON
+  offset: 0x115A0
+  symbol: gVolvagiaRightArmSkel
+  limb_type: Standard
+  skel_type: Normal
+
+gVolvagiaRockDL:
+  type: GFX
+  offset: 0x9F20
+  symbol: gVolvagiaRockDL
+
+gVolvagiaSkullDL:
+  type: GFX
+  offset: 0xCBC8
+  symbol: gVolvagiaSkullDL
+
+gVolvagiaSkullPieceMaterialDL:
+  type: GFX
+  offset: 0xD668
+  symbol: gVolvagiaSkullPieceMaterialDL
+
+gVolvagiaSkullPieceModelDL:
+  type: GFX
+  offset: 0xD6E8
+  symbol: gVolvagiaSkullPieceModelDL
+
+gVolvagiaTitleCardTex:
+  type: TEXTURE
+  offset: 0xD700
+  symbol: gVolvagiaTitleCardTex
+  format: IA8
+  width: 128
+  height: 120
+
+object_fdTLUT_000438:
+  type: TEXTURE
+  offset: 0x438
+  symbol: object_fdTLUT_000438
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_fdTLUT_000A58:
+  type: TEXTURE
+  offset: 0xA58
+  symbol: object_fdTLUT_000A58
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_fdTLUT_0032A8:
+  type: TEXTURE
+  offset: 0x32A8
+  symbol: object_fdTLUT_0032A8
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_fdTex_000458:
+  type: TEXTURE
+  offset: 0x458
+  symbol: object_fdTex_000458
+  format: CI4
+  width: 32
+  height: 32
+  tlut: 0x438
+
+object_fdTex_000658:
+  type: TEXTURE
+  offset: 0x658
+  symbol: object_fdTex_000658
+  format: CI4
+  width: 32
+  height: 64
+  tlut: 0x438
+
+object_fdTex_000A78:
+  type: TEXTURE
+  offset: 0xA78
+  symbol: object_fdTex_000A78
+  format: CI4
+  width: 32
+  height: 32
+  tlut: 0xA58
+
+object_fdTex_0040A8:
+  type: TEXTURE
+  offset: 0x40A8
+  symbol: object_fdTex_0040A8
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_fdTex_0048A8:
+  type: TEXTURE
+  offset: 0x48A8
+  symbol: object_fdTex_0048A8
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_fdTex_0050A8:
+  type: TEXTURE
+  offset: 0x50A8
+  symbol: object_fdTex_0050A8
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_fdTex_0052A8:
+  type: TEXTURE
+  offset: 0x52A8
+  symbol: object_fdTex_0052A8
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_fdTex_0054A8:
+  type: TEXTURE
+  offset: 0x54A8
+  symbol: object_fdTex_0054A8
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_fdTex_0056A8:
+  type: TEXTURE
+  offset: 0x56A8
+  symbol: object_fdTex_0056A8
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_fdTex_005B60:
+  type: TEXTURE
+  offset: 0x5B60
+  symbol: object_fdTex_005B60
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_fdTex_005D60:
+  type: TEXTURE
+  offset: 0x5D60
+  symbol: object_fdTex_005D60
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_fdTex_005F60:
+  type: TEXTURE
+  offset: 0x5F60
+  symbol: object_fdTex_005F60
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_fdTex_009208:
+  type: TEXTURE
+  offset: 0x9208
+  symbol: object_fdTex_009208
+  format: I8
+  width: 16
+  height: 16
+
+object_fdTex_009780:
+  type: TEXTURE
+  offset: 0x9780
+  symbol: object_fdTex_009780
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_fdTex_009980:
+  type: TEXTURE
+  offset: 0x9980
+  symbol: object_fdTex_009980
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_fdTex_00A050:
+  type: TEXTURE
+  offset: 0xA050
+  symbol: object_fdTex_00A050
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_fdTex_00A918:
+  type: TEXTURE
+  offset: 0xA918
+  symbol: object_fdTex_00A918
+  format: I8
+  width: 16
+  height: 16
+
+object_fdTex_00AA18:
+  type: TEXTURE
+  offset: 0xAA18
+  symbol: object_fdTex_00AA18
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_fdTex_00B458:
+  type: TEXTURE
+  offset: 0xB458
+  symbol: object_fdTex_00B458
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_fdTex_00BC58:
+  type: TEXTURE
+  offset: 0xBC58
+  symbol: object_fdTex_00BC58
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_fdTex_00BE58:
+  type: TEXTURE
+  offset: 0xBE58
+  symbol: object_fdTex_00BE58
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_fdTex_00C058:
+  type: TEXTURE
+  offset: 0xC058
+  symbol: object_fdTex_00C058
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_fdTex_00D170:
+  type: TEXTURE
+  offset: 0xD170
+  symbol: object_fdTex_00D170
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_fdTex_00D438:
+  type: TEXTURE
+  offset: 0xD438
+  symbol: object_fdTex_00D438
+  format: RGBA16
+  width: 16
+  height: 16
+
+
+object_fdVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_fdVtx_000000
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fdVtx_000DA0:
+  type: OOT:ARRAY
+  offset: 0x000DA0
+  symbol: object_fdVtx_000DA0
+  count: 67
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fdVtx_0011D0:
+  type: OOT:ARRAY
+  offset: 0x0011D0
+  symbol: object_fdVtx_0011D0
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fdVtx_001340:
+  type: OOT:ARRAY
+  offset: 0x001340
+  symbol: object_fdVtx_001340
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fdVtx_001540:
+  type: OOT:ARRAY
+  offset: 0x001540
+  symbol: object_fdVtx_001540
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fdVtx_001680:
+  type: OOT:ARRAY
+  offset: 0x001680
+  symbol: object_fdVtx_001680
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fdVtx_0017C0:
+  type: OOT:ARRAY
+  offset: 0x0017C0
+  symbol: object_fdVtx_0017C0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fdVtx_001880:
+  type: OOT:ARRAY
+  offset: 0x001880
+  symbol: object_fdVtx_001880
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fdVtx_001900:
+  type: OOT:ARRAY
+  offset: 0x001900
+  symbol: object_fdVtx_001900
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fdVtx_001950:
+  type: OOT:ARRAY
+  offset: 0x001950
+  symbol: object_fdVtx_001950
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fdVtx_0019D0:
+  type: OOT:ARRAY
+  offset: 0x0019D0
+  symbol: object_fdVtx_0019D0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fdVtx_001A50:
+  type: OOT:ARRAY
+  offset: 0x001A50
+  symbol: object_fdVtx_001A50
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fdVtx_001AD0:
+  type: OOT:ARRAY
+  offset: 0x001AD0
+  symbol: object_fdVtx_001AD0
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fdVtx_001B60:
+  type: OOT:ARRAY
+  offset: 0x001B60
+  symbol: object_fdVtx_001B60
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fdVtx_001BE0:
+  type: OOT:ARRAY
+  offset: 0x001BE0
+  symbol: object_fdVtx_001BE0
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fdVtx_001C30:
+  type: OOT:ARRAY
+  offset: 0x001C30
+  symbol: object_fdVtx_001C30
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fdVtx_001CB0:
+  type: OOT:ARRAY
+  offset: 0x001CB0
+  symbol: object_fdVtx_001CB0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fdVtx_001D30:
+  type: OOT:ARRAY
+  offset: 0x001D30
+  symbol: object_fdVtx_001D30
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gVolvagiaHeadSkelLimbsLimb_01163CDL_001DB0:
+  type: GFX
+  offset: 0x001DB0
+  symbol: gVolvagiaHeadSkelLimbsLimb_01163CDL_001DB0
+
+gVolvagiaHeadSkelLimbsLimb_011630DL_0020A8:
+  type: GFX
+  offset: 0x0020A8
+  symbol: gVolvagiaHeadSkelLimbsLimb_011630DL_0020A8
+
+gVolvagiaHeadSkelLimbsLimb_01160CDL_002180:
+  type: GFX
+  offset: 0x002180
+  symbol: gVolvagiaHeadSkelLimbsLimb_01160CDL_002180
+
+gVolvagiaHeadSkelLimbsLimb_011618DL_002358:
+  type: GFX
+  offset: 0x002358
+  symbol: gVolvagiaHeadSkelLimbsLimb_011618DL_002358
+
+gVolvagiaHeadSkelLimbsLimb_011624DL_002420:
+  type: GFX
+  offset: 0x002420
+  symbol: gVolvagiaHeadSkelLimbsLimb_011624DL_002420
+
+gVolvagiaLeftArmSkelLimbsLimb_011480DL_0024E8:
+  type: GFX
+  offset: 0x0024E8
+  symbol: gVolvagiaLeftArmSkelLimbsLimb_011480DL_0024E8
+
+gVolvagiaLeftArmSkelLimbsLimb_01148CDL_002678:
+  type: GFX
+  offset: 0x002678
+  symbol: gVolvagiaLeftArmSkelLimbsLimb_01148CDL_002678
+
+gVolvagiaLeftArmSkelLimbsLimb_011498DL_002770:
+  type: GFX
+  offset: 0x002770
+  symbol: gVolvagiaLeftArmSkelLimbsLimb_011498DL_002770
+
+gVolvagiaLeftArmSkelLimbsLimb_0114A4DL_002850:
+  type: GFX
+  offset: 0x002850
+  symbol: gVolvagiaLeftArmSkelLimbsLimb_0114A4DL_002850
+
+gVolvagiaLeftArmSkelLimbsLimb_0114BCDL_002990:
+  type: GFX
+  offset: 0x002990
+  symbol: gVolvagiaLeftArmSkelLimbsLimb_0114BCDL_002990
+
+gVolvagiaLeftArmSkelLimbsLimb_0114B0DL_002AD0:
+  type: GFX
+  offset: 0x002AD0
+  symbol: gVolvagiaLeftArmSkelLimbsLimb_0114B0DL_002AD0
+
+gVolvagiaRightArmSkelLimbsLimb_011540DL_002C10:
+  type: GFX
+  offset: 0x002C10
+  symbol: gVolvagiaRightArmSkelLimbsLimb_011540DL_002C10
+
+gVolvagiaRightArmSkelLimbsLimb_01154CDL_002D10:
+  type: GFX
+  offset: 0x002D10
+  symbol: gVolvagiaRightArmSkelLimbsLimb_01154CDL_002D10
+
+gVolvagiaRightArmSkelLimbsLimb_011558DL_002E08:
+  type: GFX
+  offset: 0x002E08
+  symbol: gVolvagiaRightArmSkelLimbsLimb_011558DL_002E08
+
+gVolvagiaRightArmSkelLimbsLimb_011570DL_002EE8:
+  type: GFX
+  offset: 0x002EE8
+  symbol: gVolvagiaRightArmSkelLimbsLimb_011570DL_002EE8
+
+gVolvagiaRightArmSkelLimbsLimb_011564DL_003028:
+  type: GFX
+  offset: 0x003028
+  symbol: gVolvagiaRightArmSkelLimbsLimb_011564DL_003028
+
+gVolvagiaRightArmSkelLimbsLimb_01157CDL_003168:
+  type: GFX
+  offset: 0x003168
+  symbol: gVolvagiaRightArmSkelLimbsLimb_01157CDL_003168
+
+object_fdVtx_0058A8:
+  type: OOT:ARRAY
+  offset: 0x0058A8
+  symbol: object_fdVtx_0058A8
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fdVtx_0061F0:
+  type: OOT:ARRAY
+  offset: 0x0061F0
+  symbol: object_fdVtx_0061F0
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fdVtx_0062E0:
+  type: OOT:ARRAY
+  offset: 0x0062E0
+  symbol: object_fdVtx_0062E0
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fdVtx_0063D0:
+  type: OOT:ARRAY
+  offset: 0x0063D0
+  symbol: object_fdVtx_0063D0
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fdVtx_0064D0:
+  type: OOT:ARRAY
+  offset: 0x0064D0
+  symbol: object_fdVtx_0064D0
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fdVtx_0065B0:
+  type: OOT:ARRAY
+  offset: 0x0065B0
+  symbol: object_fdVtx_0065B0
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fdVtx_0066E0:
+  type: OOT:ARRAY
+  offset: 0x0066E0
+  symbol: object_fdVtx_0066E0
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fdVtx_006840:
+  type: OOT:ARRAY
+  offset: 0x006840
+  symbol: object_fdVtx_006840
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fdVtx_006980:
+  type: OOT:ARRAY
+  offset: 0x006980
+  symbol: object_fdVtx_006980
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fdVtx_006AC0:
+  type: OOT:ARRAY
+  offset: 0x006AC0
+  symbol: object_fdVtx_006AC0
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fdVtx_006BF0:
+  type: OOT:ARRAY
+  offset: 0x006BF0
+  symbol: object_fdVtx_006BF0
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fdVtx_006D20:
+  type: OOT:ARRAY
+  offset: 0x006D20
+  symbol: object_fdVtx_006D20
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fdVtx_006E50:
+  type: OOT:ARRAY
+  offset: 0x006E50
+  symbol: object_fdVtx_006E50
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fdVtx_006F70:
+  type: OOT:ARRAY
+  offset: 0x006F70
+  symbol: object_fdVtx_006F70
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fdVtx_007080:
+  type: OOT:ARRAY
+  offset: 0x007080
+  symbol: object_fdVtx_007080
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fdVtx_0071A0:
+  type: OOT:ARRAY
+  offset: 0x0071A0
+  symbol: object_fdVtx_0071A0
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fdVtx_0072B0:
+  type: OOT:ARRAY
+  offset: 0x0072B0
+  symbol: object_fdVtx_0072B0
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fdVtx_0073E0:
+  type: OOT:ARRAY
+  offset: 0x0073E0
+  symbol: object_fdVtx_0073E0
+  count: 58
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fdVtx_007780:
+  type: OOT:ARRAY
+  offset: 0x007780
+  symbol: object_fdVtx_007780
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fdVtx_009128:
+  type: OOT:ARRAY
+  offset: 0x009128
+  symbol: object_fdVtx_009128
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fdVtx_009308:
+  type: OOT:ARRAY
+  offset: 0x009308
+  symbol: object_fdVtx_009308
+  count: 54
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fdVtx_009B80:
+  type: OOT:ARRAY
+  offset: 0x009B80
+  symbol: object_fdVtx_009B80
+  count: 58
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fdVtx_00A850:
+  type: OOT:ARRAY
+  offset: 0x00A850
+  symbol: object_fdVtx_00A850
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fdVtx_00B218:
+  type: OOT:ARRAY
+  offset: 0x00B218
+  symbol: object_fdVtx_00B218
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fdVtx_00B418:
+  type: OOT:ARRAY
+  offset: 0x00B418
+  symbol: object_fdVtx_00B418
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fdVtx_00C258:
+  type: OOT:ARRAY
+  offset: 0x00C258
+  symbol: object_fdVtx_00C258
+  count: 151
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fdVtx_00CF60:
+  type: OOT:ARRAY
+  offset: 0x00CF60
+  symbol: object_fdVtx_00CF60
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fdVtx_00D370:
+  type: OOT:ARRAY
+  offset: 0x00D370
+  symbol: object_fdVtx_00D370
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fdVtx_00D638:
+  type: OOT:ARRAY
+  offset: 0x00D638
+  symbol: object_fdVtx_00D638
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gVolvagiaBodySkelLimbsLimb_011300:
+  type: OOT:LIMB
+  offset: 0x011300
+  symbol: gVolvagiaBodySkelLimbsLimb_011300
+  limb_type: Standard
+
+gVolvagiaBodySkelLimbsLimb_01130C:
+  type: OOT:LIMB
+  offset: 0x01130C
+  symbol: gVolvagiaBodySkelLimbsLimb_01130C
+  limb_type: Standard
+
+gVolvagiaBodySkelLimbsLimb_011318:
+  type: OOT:LIMB
+  offset: 0x011318
+  symbol: gVolvagiaBodySkelLimbsLimb_011318
+  limb_type: Standard
+
+gVolvagiaBodySkelLimbsLimb_011324:
+  type: OOT:LIMB
+  offset: 0x011324
+  symbol: gVolvagiaBodySkelLimbsLimb_011324
+  limb_type: Standard
+
+gVolvagiaBodySkelLimbsLimb_011330:
+  type: OOT:LIMB
+  offset: 0x011330
+  symbol: gVolvagiaBodySkelLimbsLimb_011330
+  limb_type: Standard
+
+gVolvagiaBodySkelLimbsLimb_01133C:
+  type: OOT:LIMB
+  offset: 0x01133C
+  symbol: gVolvagiaBodySkelLimbsLimb_01133C
+  limb_type: Standard
+
+gVolvagiaBodySkelLimbsLimb_011348:
+  type: OOT:LIMB
+  offset: 0x011348
+  symbol: gVolvagiaBodySkelLimbsLimb_011348
+  limb_type: Standard
+
+gVolvagiaBodySkelLimbsLimb_011354:
+  type: OOT:LIMB
+  offset: 0x011354
+  symbol: gVolvagiaBodySkelLimbsLimb_011354
+  limb_type: Standard
+
+gVolvagiaBodySkelLimbsLimb_011360:
+  type: OOT:LIMB
+  offset: 0x011360
+  symbol: gVolvagiaBodySkelLimbsLimb_011360
+  limb_type: Standard
+
+gVolvagiaBodySkelLimbsLimb_01136C:
+  type: OOT:LIMB
+  offset: 0x01136C
+  symbol: gVolvagiaBodySkelLimbsLimb_01136C
+  limb_type: Standard
+
+gVolvagiaBodySkelLimbsLimb_011378:
+  type: OOT:LIMB
+  offset: 0x011378
+  symbol: gVolvagiaBodySkelLimbsLimb_011378
+  limb_type: Standard
+
+gVolvagiaBodySkelLimbsLimb_011384:
+  type: OOT:LIMB
+  offset: 0x011384
+  symbol: gVolvagiaBodySkelLimbsLimb_011384
+  limb_type: Standard
+
+gVolvagiaBodySkelLimbsLimb_011390:
+  type: OOT:LIMB
+  offset: 0x011390
+  symbol: gVolvagiaBodySkelLimbsLimb_011390
+  limb_type: Standard
+
+gVolvagiaBodySkelLimbsLimb_01139C:
+  type: OOT:LIMB
+  offset: 0x01139C
+  symbol: gVolvagiaBodySkelLimbsLimb_01139C
+  limb_type: Standard
+
+gVolvagiaBodySkelLimbsLimb_0113A8:
+  type: OOT:LIMB
+  offset: 0x0113A8
+  symbol: gVolvagiaBodySkelLimbsLimb_0113A8
+  limb_type: Standard
+
+gVolvagiaBodySkelLimbsLimb_0113B4:
+  type: OOT:LIMB
+  offset: 0x0113B4
+  symbol: gVolvagiaBodySkelLimbsLimb_0113B4
+  limb_type: Standard
+
+gVolvagiaBodySkelLimbsLimb_0113C0:
+  type: OOT:LIMB
+  offset: 0x0113C0
+  symbol: gVolvagiaBodySkelLimbsLimb_0113C0
+  limb_type: Standard
+
+gVolvagiaBodySkelLimbsLimb_0113CC:
+  type: OOT:LIMB
+  offset: 0x0113CC
+  symbol: gVolvagiaBodySkelLimbsLimb_0113CC
+  limb_type: Standard
+
+gVolvagiaBodySkelLimbs:
+  type: BLOB
+  offset: 0x113D8
+  symbol: gVolvagiaBodySkelLimbs
+  size: 0
+
+gVolvagiaLeftArmSkelLimbsLimb_011480:
+  type: OOT:LIMB
+  offset: 0x011480
+  symbol: gVolvagiaLeftArmSkelLimbsLimb_011480
+  limb_type: Standard
+
+gVolvagiaLeftArmSkelLimbsLimb_01148C:
+  type: OOT:LIMB
+  offset: 0x01148C
+  symbol: gVolvagiaLeftArmSkelLimbsLimb_01148C
+  limb_type: Standard
+
+gVolvagiaLeftArmSkelLimbsLimb_011498:
+  type: OOT:LIMB
+  offset: 0x011498
+  symbol: gVolvagiaLeftArmSkelLimbsLimb_011498
+  limb_type: Standard
+
+gVolvagiaLeftArmSkelLimbsLimb_0114A4:
+  type: OOT:LIMB
+  offset: 0x0114A4
+  symbol: gVolvagiaLeftArmSkelLimbsLimb_0114A4
+  limb_type: Standard
+
+gVolvagiaLeftArmSkelLimbsLimb_0114B0:
+  type: OOT:LIMB
+  offset: 0x0114B0
+  symbol: gVolvagiaLeftArmSkelLimbsLimb_0114B0
+  limb_type: Standard
+
+gVolvagiaLeftArmSkelLimbsLimb_0114BC:
+  type: OOT:LIMB
+  offset: 0x0114BC
+  symbol: gVolvagiaLeftArmSkelLimbsLimb_0114BC
+  limb_type: Standard
+
+gVolvagiaLeftArmSkelLimbs:
+  type: BLOB
+  offset: 0x114C8
+  symbol: gVolvagiaLeftArmSkelLimbs
+  size: 0
+
+gVolvagiaRightArmSkelLimbsLimb_011540:
+  type: OOT:LIMB
+  offset: 0x011540
+  symbol: gVolvagiaRightArmSkelLimbsLimb_011540
+  limb_type: Standard
+
+gVolvagiaRightArmSkelLimbsLimb_01154C:
+  type: OOT:LIMB
+  offset: 0x01154C
+  symbol: gVolvagiaRightArmSkelLimbsLimb_01154C
+  limb_type: Standard
+
+gVolvagiaRightArmSkelLimbsLimb_011558:
+  type: OOT:LIMB
+  offset: 0x011558
+  symbol: gVolvagiaRightArmSkelLimbsLimb_011558
+  limb_type: Standard
+
+gVolvagiaRightArmSkelLimbsLimb_011564:
+  type: OOT:LIMB
+  offset: 0x011564
+  symbol: gVolvagiaRightArmSkelLimbsLimb_011564
+  limb_type: Standard
+
+gVolvagiaRightArmSkelLimbsLimb_011570:
+  type: OOT:LIMB
+  offset: 0x011570
+  symbol: gVolvagiaRightArmSkelLimbsLimb_011570
+  limb_type: Standard
+
+gVolvagiaRightArmSkelLimbsLimb_01157C:
+  type: OOT:LIMB
+  offset: 0x01157C
+  symbol: gVolvagiaRightArmSkelLimbsLimb_01157C
+  limb_type: Standard
+
+gVolvagiaRightArmSkelLimbs:
+  type: BLOB
+  offset: 0x11588
+  symbol: gVolvagiaRightArmSkelLimbs
+  size: 0
+
+gVolvagiaHeadSkelLimbsLimb_011600:
+  type: OOT:LIMB
+  offset: 0x011600
+  symbol: gVolvagiaHeadSkelLimbsLimb_011600
+  limb_type: Standard
+
+gVolvagiaHeadSkelLimbsLimb_01160C:
+  type: OOT:LIMB
+  offset: 0x01160C
+  symbol: gVolvagiaHeadSkelLimbsLimb_01160C
+  limb_type: Standard
+
+gVolvagiaHeadSkelLimbsLimb_011618:
+  type: OOT:LIMB
+  offset: 0x011618
+  symbol: gVolvagiaHeadSkelLimbsLimb_011618
+  limb_type: Standard
+
+gVolvagiaHeadSkelLimbsLimb_011624:
+  type: OOT:LIMB
+  offset: 0x011624
+  symbol: gVolvagiaHeadSkelLimbsLimb_011624
+  limb_type: Standard
+
+gVolvagiaHeadSkelLimbsLimb_011630:
+  type: OOT:LIMB
+  offset: 0x011630
+  symbol: gVolvagiaHeadSkelLimbsLimb_011630
+  limb_type: Standard
+
+gVolvagiaHeadSkelLimbsLimb_01163C:
+  type: OOT:LIMB
+  offset: 0x01163C
+  symbol: gVolvagiaHeadSkelLimbsLimb_01163C
+  limb_type: Standard
+
+gVolvagiaHeadSkelLimbs:
+  type: BLOB
+  offset: 0x11648
+  symbol: gVolvagiaHeadSkelLimbs
+  size: 0

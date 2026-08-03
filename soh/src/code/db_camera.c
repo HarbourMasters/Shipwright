@@ -2065,14 +2065,14 @@ s32 DbCamera_UpdateDemoControl(DbCamera* dbCamera, Camera* cam) {
                     sDbCamAnim.unk_04 = 0;
                 } else if (CHECK_BTN_ALL(sPlayState->state.input[2].press.button, BTN_CLEFT)) {
                     sDbCamAnim.unk_0A = 0;
-                    Interface_ChangeHudVisibilityMode(2);
+                    Interface_ChangeHudVisibilityMode(HUD_VISIBILITY_NOTHING_ALT);
                     Letterbox_SetSizeTarget(0);
                     D_8016110C = 0;
                     return 2;
                 }
 
                 if (func_800B91B0(cam, dbCamera) == 0) {
-                    Interface_ChangeHudVisibilityMode(2);
+                    Interface_ChangeHudVisibilityMode(HUD_VISIBILITY_NOTHING_ALT);
                     Letterbox_SetSizeTarget(0);
                     Audio_PlaySoundGeneral(NA_SE_SY_GET_RUPY, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
                                            &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);

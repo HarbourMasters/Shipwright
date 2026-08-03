@@ -1,0 +1,28 @@
+:config:
+  segments:
+    - [ 128, 0x012FAE40 ]
+
+gGERudoValleyTitleCardENGTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gGERudoValleyTitleCardENGTex
+  format: IA8
+  width: 144
+  height: 24
+
+gGERudoValleyTitleCardFRATex:
+  type: TEXTURE
+  offset: 0x1B00
+  symbol: gGERudoValleyTitleCardFRATex
+  format: IA8
+  width: 144
+  height: 24
+
+gGERudoValleyTitleCardGERTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gGERudoValleyTitleCardGERTex
+  format: IA8
+  width: 144
+  height: 24
+

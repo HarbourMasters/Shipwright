@@ -1,0 +1,101 @@
+:config:
+  segments:
+    - [ 6, 0x00EDFB30 ]
+    - [ 4, 0x00D30380 ]
+    - [ 8, 0x00EDFB30 ]
+    - [ 9, 0x00EDFB30 ]
+    - [ 10, 0x00EDFB30 ]
+    - [ 11, 0x00EDFB30 ]
+    - [ 12, 0x00EDFB30 ]
+    - [ 13, 0x00EDFB30 ]
+  external_files:
+    - pal_1-0/objects/gameplay_keep.yml
+
+object_oE7_Blob_001858:
+  type: BLOB
+  offset: 0x1858
+  size: 0x800
+  symbol: object_oE7_Blob_001858
+
+object_oE7_DL_0006B0:
+  type: GFX
+  offset: 0x6B0
+  symbol: object_oE7_DL_0006B0
+
+object_oE7_TLUT_000B18:
+  type: TEXTURE
+  offset: 0xB18
+  symbol: object_oE7_TLUT_000B18
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_oE7_TLUT_001258:
+  type: TEXTURE
+  offset: 0x1258
+  symbol: object_oE7_TLUT_001258
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_oE7_Tex_000D18:
+  type: TEXTURE
+  offset: 0xD18
+  symbol: object_oE7_Tex_000D18
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0xB18
+
+object_oE7_Tex_001118:
+  type: TEXTURE
+  offset: 0x1118
+  symbol: object_oE7_Tex_001118
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0xB18
+
+object_oE7_Tex_001158:
+  type: TEXTURE
+  offset: 0x1158
+  symbol: object_oE7_Tex_001158
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0xB18
+
+object_oE7_Tex_001458:
+  type: TEXTURE
+  offset: 0x1458
+  symbol: object_oE7_Tex_001458
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x1258
+
+object_oE7_Tex_002058:
+  type: TEXTURE
+  offset: 0x2058
+  symbol: object_oE7_Tex_002058
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_oE7_Tex_002858:
+  type: TEXTURE
+  offset: 0x2858
+  symbol: object_oE7_Tex_002858
+  format: RGBA16
+  width: 16
+  height: 16
+
+
+object_oE7Vtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_oE7Vtx_000000
+  count: 107
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

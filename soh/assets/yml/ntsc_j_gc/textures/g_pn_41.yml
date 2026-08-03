@@ -1,0 +1,20 @@
+:config:
+  segments:
+    - [ 128, 0x012FF1D0 ]
+
+gGoronCityTitleCardENGTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gGoronCityTitleCardENGTex
+  format: IA8
+  width: 144
+  height: 24
+
+gGoronCityTitleCardJPNTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gGoronCityTitleCardJPNTex
+  format: IA8
+  width: 144
+  height: 24
+

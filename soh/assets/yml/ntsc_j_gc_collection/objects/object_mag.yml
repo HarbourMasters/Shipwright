@@ -1,0 +1,140 @@
+:config:
+  segments:
+    - [ 6, 0x011C3CF0 ]
+
+gTitleCopyright19982004EngTex:
+  type: TEXTURE
+  offset: 0x19A00
+  symbol: gTitleCopyright19982004EngTex
+  format: IA8
+  width: 160
+  height: 16
+
+gTitleCopyright19982004JpnTex:
+  type: TEXTURE
+  offset: 0x19000
+  symbol: gTitleCopyright19982004JpnTex
+  format: IA8
+  width: 160
+  height: 16
+
+gTitleDiskTex:
+  type: TEXTURE
+  offset: 0x1A400
+  symbol: gTitleDiskTex
+  format: IA8
+  width: 48
+  height: 16
+
+gTitleEffectMask00Tex:
+  type: TEXTURE
+  offset: 0x1A700
+  symbol: gTitleEffectMask00Tex
+  format: I4
+  width: 64
+  height: 64
+
+gTitleEffectMask01Tex:
+  type: TEXTURE
+  offset: 0x1AF00
+  symbol: gTitleEffectMask01Tex
+  format: I4
+  width: 64
+  height: 64
+
+gTitleEffectMask02Tex:
+  type: TEXTURE
+  offset: 0x1B700
+  symbol: gTitleEffectMask02Tex
+  format: I4
+  width: 64
+  height: 64
+
+gTitleEffectMask10Tex:
+  type: TEXTURE
+  offset: 0x1BF00
+  symbol: gTitleEffectMask10Tex
+  format: I4
+  width: 64
+  height: 64
+
+gTitleEffectMask11Tex:
+  type: TEXTURE
+  offset: 0x1C700
+  symbol: gTitleEffectMask11Tex
+  format: I4
+  width: 64
+  height: 64
+
+gTitleEffectMask12Tex:
+  type: TEXTURE
+  offset: 0x1CF00
+  symbol: gTitleEffectMask12Tex
+  format: I4
+  width: 64
+  height: 64
+
+gTitleEffectMask20Tex:
+  type: TEXTURE
+  offset: 0x1D700
+  symbol: gTitleEffectMask20Tex
+  format: I4
+  width: 64
+  height: 64
+
+gTitleEffectMask21Tex:
+  type: TEXTURE
+  offset: 0x1DF00
+  symbol: gTitleEffectMask21Tex
+  format: I4
+  width: 64
+  height: 64
+
+gTitleEffectMask22Tex:
+  type: TEXTURE
+  offset: 0x1E700
+  symbol: gTitleEffectMask22Tex
+  format: I4
+  width: 64
+  height: 64
+
+gTitleFlameEffectTex:
+  type: TEXTURE
+  offset: 0x1EF00
+  symbol: gTitleFlameEffectTex
+  format: I8
+  width: 32
+  height: 32
+
+gTitleOcarinaOfTimeTMTextTex:
+  type: TEXTURE
+  offset: 0x1F540
+  symbol: gTitleOcarinaOfTimeTMTextTex
+  format: I8
+  width: 96
+  height: 8
+
+gTitleTheLegendOfTextTex:
+  type: TEXTURE
+  offset: 0x1F300
+  symbol: gTitleTheLegendOfTextTex
+  format: I8
+  width: 72
+  height: 8
+
+gTitleTitleJPNTex:
+  type: TEXTURE
+  offset: 0x1F840
+  symbol: gTitleTitleJPNTex
+  format: I8
+  width: 128
+  height: 16
+
+gTitleZeldaShieldLogoTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gTitleZeldaShieldLogoTex
+  format: RGBA32
+  width: 160
+  height: 160
+

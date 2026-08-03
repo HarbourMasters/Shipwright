@@ -1,0 +1,72 @@
+:config:
+  segments:
+    - [ 6, 0x013CF000 ]
+    - [ 4, 0x00F5E000 ]
+    - [ 8, 0x013CF000 ]
+    - [ 9, 0x013CF000 ]
+    - [ 10, 0x013CF000 ]
+    - [ 11, 0x013CF000 ]
+    - [ 12, 0x013CF000 ]
+    - [ 13, 0x013CF000 ]
+  external_files:
+    - pal_mq_dbg/objects/gameplay_keep.yml
+
+gTriforceColumnSide1Tex:
+  type: TEXTURE
+  offset: 0x1910
+  symbol: gTriforceColumnSide1Tex
+  format: I8
+  width: 64
+  height: 32
+
+gTriforceColumnSide2Tex:
+  type: TEXTURE
+  offset: 0x2110
+  symbol: gTriforceColumnSide2Tex
+  format: I8
+  width: 64
+  height: 32
+
+gTriforceDL:
+  type: GFX
+  offset: 0x0600
+  symbol: gTriforceDL
+
+gTriforceLightColumnDL:
+  type: GFX
+  offset: 0x0840
+  symbol: gTriforceLightColumnDL
+
+gTriforceTex:
+  type: TEXTURE
+  offset: 0x0910
+  symbol: gTriforceTex
+  format: I8
+  width: 64
+  height: 64
+
+gTriforceVtx:
+  type: OOT:ARRAY
+  offset: 0x0000
+  symbol: gTriforceVtx
+  count: 32
+  array_type: VTX
+
+
+object_triforce_spotVtx_000200:
+  type: OOT:ARRAY
+  offset: 0x000200
+  symbol: object_triforce_spotVtx_000200
+  count: 54
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_triforce_spotVtx_000560:
+  type: OOT:ARRAY
+  offset: 0x000560
+  symbol: object_triforce_spotVtx_000560
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

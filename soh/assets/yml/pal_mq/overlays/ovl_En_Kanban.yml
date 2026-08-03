@@ -1,0 +1,26 @@
+:config:
+  segments:
+    - [ 128, 0x00C76CA0 ]
+    - [ 4, 0x00D250B0 ]
+    - [ 8, 0x00C76CA0 ]
+    - [ 9, 0x00C76CA0 ]
+    - [ 10, 0x00C76CA0 ]
+    - [ 11, 0x00C76CA0 ]
+    - [ 12, 0x00C76CA0 ]
+    - [ 13, 0x00C76CA0 ]
+  virtual: [ 0x80A76040, 0x00C76CA0 ]
+  external_files:
+    - pal_mq/objects/gameplay_keep.yml
+
+sShadowDL:
+  type: GFX
+  offset: 0x2EB0
+  symbol: sShadowDL
+
+sShadowVtx:
+  type: OOT:ARRAY
+  offset: 0x2E70
+  symbol: sShadowVtx
+  count: 4
+  array_type: VTX
+

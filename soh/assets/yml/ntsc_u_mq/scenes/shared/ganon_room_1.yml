@@ -1,0 +1,81 @@
+:config:
+  segments:
+    - [ 3, 0x01DE5840 ]
+    - [ 2, 0x01DD84E0 ]
+  directory: scenes/shared/ganon_scene
+  external_files:
+    - ntsc_u_mq/scenes/shared/ganon_scene.yml
+    - ntsc_u_mq/code/sys_matrix.yml
+
+ganon_room_1:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: ganon_room_1
+
+ganon_room_1Tex_005370:
+  type: TEXTURE
+  offset: 0x5370
+  symbol: ganon_room_1Tex_005370
+  format: CI8
+  width: 64
+  height: 32
+  external_tlut: ganon_scene
+  external_tlut_offset: 0xE7D0
+
+ganon_room_1Tex_005B70:
+  type: TEXTURE
+  offset: 0x5B70
+  symbol: ganon_room_1Tex_005B70
+  format: CI8
+  width: 32
+  height: 32
+  external_tlut: ganon_scene
+  external_tlut_offset: 0xE7D0
+
+ganon_room_1Tex_005F70:
+  type: TEXTURE
+  offset: 0x5F70
+  symbol: ganon_room_1Tex_005F70
+  format: CI8
+  width: 32
+  height: 32
+  external_tlut: ganon_scene
+  external_tlut_offset: 0xEDA0
+
+ganon_room_1Tex_006370:
+  type: TEXTURE
+  offset: 0x6370
+  symbol: ganon_room_1Tex_006370
+  format: CI8
+  width: 32
+  height: 32
+  external_tlut: ganon_scene
+  external_tlut_offset: 0xEDA0
+
+ganon_room_1Tex_006770:
+  type: TEXTURE
+  offset: 0x6770
+  symbol: ganon_room_1Tex_006770
+  format: RGBA16
+  width: 32
+  height: 64
+
+
+ganon_room_1Vtx_0000C0:
+  type: OOT:ARRAY
+  offset: 0x0000C0
+  symbol: ganon_room_1Vtx_0000C0
+  count: 766
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganon_room_1DL_0030A0:
+  type: GFX
+  offset: 0x0030A0
+  symbol: ganon_room_1DL_0030A0
+
+ganon_room_1DL_005360:
+  type: GFX
+  offset: 0x005360
+  symbol: ganon_room_1DL_005360

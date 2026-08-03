@@ -1,0 +1,895 @@
+:config:
+  segments:
+    - [ 6, 0x012D5D10 ]
+    - [ 4, 0x00D30F80 ]
+    - [ 8, 0x012D5D10 ]
+    - [ 9, 0x012D5D10 ]
+    - [ 10, 0x012D5D10 ]
+    - [ 11, 0x012D5D10 ]
+    - [ 12, 0x012D5D10 ]
+    - [ 13, 0x012D5D10 ]
+  external_files:
+    - ntsc_u_mq/objects/gameplay_keep.yml
+
+gChildZeldaAnim_000654:
+  type: OOT:ANIMATION
+  offset: 0x654
+  symbol: gChildZeldaAnim_000654
+
+gChildZeldaAnim_00E5C8:
+  type: OOT:ANIMATION
+  offset: 0xE5C8
+  symbol: gChildZeldaAnim_00E5C8
+
+gChildZeldaAnim_00EBC4:
+  type: OOT:ANIMATION
+  offset: 0xEBC4
+  symbol: gChildZeldaAnim_00EBC4
+
+gChildZeldaAnim_00F0A4:
+  type: OOT:ANIMATION
+  offset: 0xF0A4
+  symbol: gChildZeldaAnim_00F0A4
+
+gChildZeldaAnim_00F894:
+  type: OOT:ANIMATION
+  offset: 0xF894
+  symbol: gChildZeldaAnim_00F894
+
+gChildZeldaAnim_010DF8:
+  type: OOT:ANIMATION
+  offset: 0x10DF8
+  symbol: gChildZeldaAnim_010DF8
+
+gChildZeldaAnim_011248:
+  type: OOT:ANIMATION
+  offset: 0x11248
+  symbol: gChildZeldaAnim_011248
+
+gChildZeldaAnim_011698:
+  type: OOT:ANIMATION
+  offset: 0x11698
+  symbol: gChildZeldaAnim_011698
+
+gChildZeldaAnim_011B34:
+  type: OOT:ANIMATION
+  offset: 0x11B34
+  symbol: gChildZeldaAnim_011B34
+
+gChildZeldaAnim_0125E4:
+  type: OOT:ANIMATION
+  offset: 0x125E4
+  symbol: gChildZeldaAnim_0125E4
+
+gChildZeldaAnim_012E58:
+  type: OOT:ANIMATION
+  offset: 0x12E58
+  symbol: gChildZeldaAnim_012E58
+
+gChildZeldaAnim_013280:
+  type: OOT:ANIMATION
+  offset: 0x13280
+  symbol: gChildZeldaAnim_013280
+
+gChildZeldaAnim_013628:
+  type: OOT:ANIMATION
+  offset: 0x13628
+  symbol: gChildZeldaAnim_013628
+
+gChildZeldaAnim_013A50:
+  type: OOT:ANIMATION
+  offset: 0x13A50
+  symbol: gChildZeldaAnim_013A50
+
+gChildZeldaAnim_013EA0:
+  type: OOT:ANIMATION
+  offset: 0x13EA0
+  symbol: gChildZeldaAnim_013EA0
+
+gChildZeldaAnim_015F14:
+  type: OOT:ANIMATION
+  offset: 0x15F14
+  symbol: gChildZeldaAnim_015F14
+
+gChildZeldaAnim_0169B4:
+  type: OOT:ANIMATION
+  offset: 0x169B4
+  symbol: gChildZeldaAnim_0169B4
+
+gChildZeldaAnim_016D08:
+  type: OOT:ANIMATION
+  offset: 0x16D08
+  symbol: gChildZeldaAnim_016D08
+
+gChildZeldaAnim_01726C:
+  type: OOT:ANIMATION
+  offset: 0x1726C
+  symbol: gChildZeldaAnim_01726C
+
+gChildZeldaAnim_017818:
+  type: OOT:ANIMATION
+  offset: 0x17818
+  symbol: gChildZeldaAnim_017818
+
+gChildZeldaAnim_01805C:
+  type: OOT:ANIMATION
+  offset: 0x1805C
+  symbol: gChildZeldaAnim_01805C
+
+gChildZeldaAnim_018898:
+  type: OOT:ANIMATION
+  offset: 0x18898
+  symbol: gChildZeldaAnim_018898
+
+gChildZeldaAnim_01910C:
+  type: OOT:ANIMATION
+  offset: 0x1910C
+  symbol: gChildZeldaAnim_01910C
+
+gChildZeldaAnim_019600:
+  type: OOT:ANIMATION
+  offset: 0x19600
+  symbol: gChildZeldaAnim_019600
+
+gChildZeldaAnim_01991C:
+  type: OOT:ANIMATION
+  offset: 0x1991C
+  symbol: gChildZeldaAnim_01991C
+
+gChildZeldaAnim_01A2FC:
+  type: OOT:ANIMATION
+  offset: 0x1A2FC
+  symbol: gChildZeldaAnim_01A2FC
+
+gChildZeldaAnim_01AAE0:
+  type: OOT:ANIMATION
+  offset: 0x1AAE0
+  symbol: gChildZeldaAnim_01AAE0
+
+gChildZeldaAnim_01AE88:
+  type: OOT:ANIMATION
+  offset: 0x1AE88
+  symbol: gChildZeldaAnim_01AE88
+
+gChildZeldaAnim_01B874:
+  type: OOT:ANIMATION
+  offset: 0x1B874
+  symbol: gChildZeldaAnim_01B874
+
+gChildZeldaAnim_01BCF0:
+  type: OOT:ANIMATION
+  offset: 0x1BCF0
+  symbol: gChildZeldaAnim_01BCF0
+
+gChildZeldaAnim_01C494:
+  type: OOT:ANIMATION
+  offset: 0x1C494
+  symbol: gChildZeldaAnim_01C494
+
+gChildZeldaAnim_01C7B0:
+  type: OOT:ANIMATION
+  offset: 0x1C7B0
+  symbol: gChildZeldaAnim_01C7B0
+
+gChildZeldaAnim_01CE08:
+  type: OOT:ANIMATION
+  offset: 0x1CE08
+  symbol: gChildZeldaAnim_01CE08
+
+gChildZeldaCutsceneDressDL:
+  type: GFX
+  offset: 0xC410
+  symbol: gChildZeldaCutsceneDressDL
+
+gChildZeldaEyeBlinkTex:
+  type: TEXTURE
+  offset: 0x2EF0
+  symbol: gChildZeldaEyeBlinkTex
+  format: I8
+  width: 32
+  height: 32
+
+gChildZeldaEyeInTex:
+  type: TEXTURE
+  offset: 0x42F0
+  symbol: gChildZeldaEyeInTex
+  format: I8
+  width: 32
+  height: 32
+
+gChildZeldaEyeOpenTex:
+  type: TEXTURE
+  offset: 0x2AF0
+  symbol: gChildZeldaEyeOpenTex
+  format: I8
+  width: 32
+  height: 32
+
+gChildZeldaEyeOutTex:
+  type: TEXTURE
+  offset: 0x3EF0
+  symbol: gChildZeldaEyeOutTex
+  format: I8
+  width: 32
+  height: 32
+
+gChildZeldaEyeShutTex:
+  type: TEXTURE
+  offset: 0x32F0
+  symbol: gChildZeldaEyeShutTex
+  format: I8
+  width: 32
+  height: 32
+
+gChildZeldaEyeSquintTex:
+  type: TEXTURE
+  offset: 0x3AF0
+  symbol: gChildZeldaEyeSquintTex
+  format: I8
+  width: 32
+  height: 32
+
+gChildZeldaEyeWideTex:
+  type: TEXTURE
+  offset: 0x36F0
+  symbol: gChildZeldaEyeWideTex
+  format: I8
+  width: 32
+  height: 32
+
+gChildZeldaMouthHappyTex:
+  type: TEXTURE
+  offset: 0x4AF0
+  symbol: gChildZeldaMouthHappyTex
+  format: I8
+  width: 32
+  height: 32
+
+gChildZeldaMouthNeutralTex:
+  type: TEXTURE
+  offset: 0x46F0
+  symbol: gChildZeldaMouthNeutralTex
+  format: I8
+  width: 32
+  height: 32
+
+gChildZeldaMouthSurprisedTex:
+  type: TEXTURE
+  offset: 0x52F0
+  symbol: gChildZeldaMouthSurprisedTex
+  format: I8
+  width: 32
+  height: 32
+
+gChildZeldaMouthWorriedTex:
+  type: TEXTURE
+  offset: 0x4EF0
+  symbol: gChildZeldaMouthWorriedTex
+  format: I8
+  width: 32
+  height: 32
+
+gChildZeldaOcarinaOfTimeDL:
+  type: GFX
+  offset: 0xDE08
+  symbol: gChildZeldaOcarinaOfTimeDL
+
+gChildZeldaSkel:
+  type: OOT:SKELETON
+  offset: 0xE038
+  symbol: gChildZeldaSkel
+  limb_type: Standard
+  skel_type: Flex
+
+object_zl4TLUT_000670:
+  type: TEXTURE
+  offset: 0x670
+  symbol: object_zl4TLUT_000670
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_zl4TLUT_000870:
+  type: TEXTURE
+  offset: 0x870
+  symbol: object_zl4TLUT_000870
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_zl4TLUT_000A70:
+  type: TEXTURE
+  offset: 0xA70
+  symbol: object_zl4TLUT_000A70
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_zl4Tex_000C70:
+  type: TEXTURE
+  offset: 0xC70
+  symbol: object_zl4Tex_000C70
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x670
+
+object_zl4Tex_000CB0:
+  type: TEXTURE
+  offset: 0xCB0
+  symbol: object_zl4Tex_000CB0
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x670
+
+object_zl4Tex_000DB0:
+  type: TEXTURE
+  offset: 0xDB0
+  symbol: object_zl4Tex_000DB0
+  format: CI8
+  width: 32
+  height: 64
+  tlut: 0x670
+
+object_zl4Tex_0015B0:
+  type: TEXTURE
+  offset: 0x15B0
+  symbol: object_zl4Tex_0015B0
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_zl4Tex_001630:
+  type: TEXTURE
+  offset: 0x1630
+  symbol: object_zl4Tex_001630
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_zl4Tex_0016B0:
+  type: TEXTURE
+  offset: 0x16B0
+  symbol: object_zl4Tex_0016B0
+  format: CI8
+  width: 32
+  height: 8
+  tlut: 0x670
+
+object_zl4Tex_0017B0:
+  type: TEXTURE
+  offset: 0x17B0
+  symbol: object_zl4Tex_0017B0
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x670
+
+object_zl4Tex_0017F0:
+  type: TEXTURE
+  offset: 0x17F0
+  symbol: object_zl4Tex_0017F0
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x670
+
+object_zl4Tex_001BF0:
+  type: TEXTURE
+  offset: 0x1BF0
+  symbol: object_zl4Tex_001BF0
+  format: RGBA16
+  width: 8
+  height: 16
+
+object_zl4Tex_001CF0:
+  type: TEXTURE
+  offset: 0x1CF0
+  symbol: object_zl4Tex_001CF0
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x670
+
+object_zl4Tex_001DF0:
+  type: TEXTURE
+  offset: 0x1DF0
+  symbol: object_zl4Tex_001DF0
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x670
+
+object_zl4Tex_001E30:
+  type: TEXTURE
+  offset: 0x1E30
+  symbol: object_zl4Tex_001E30
+  format: RGBA16
+  width: 16
+  height: 32
+
+object_zl4Tex_002230:
+  type: TEXTURE
+  offset: 0x2230
+  symbol: object_zl4Tex_002230
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x670
+
+object_zl4Tex_002270:
+  type: TEXTURE
+  offset: 0x2270
+  symbol: object_zl4Tex_002270
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0x670
+
+object_zl4Tex_0022F0:
+  type: TEXTURE
+  offset: 0x22F0
+  symbol: object_zl4Tex_0022F0
+  format: CI8
+  width: 16
+  height: 32
+  tlut: 0x670
+
+object_zl4Tex_0024F0:
+  type: TEXTURE
+  offset: 0x24F0
+  symbol: object_zl4Tex_0024F0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_zl4Tex_0026F0:
+  type: TEXTURE
+  offset: 0x26F0
+  symbol: object_zl4Tex_0026F0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_zl4Tex_0028F0:
+  type: TEXTURE
+  offset: 0x28F0
+  symbol: object_zl4Tex_0028F0
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_zl4Tex_002970:
+  type: TEXTURE
+  offset: 0x2970
+  symbol: object_zl4Tex_002970
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_zl4Tex_0029F0:
+  type: TEXTURE
+  offset: 0x29F0
+  symbol: object_zl4Tex_0029F0
+  format: RGBA16
+  width: 16
+  height: 8
+
+object_zl4Tex_0056F0:
+  type: TEXTURE
+  offset: 0x56F0
+  symbol: object_zl4Tex_0056F0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_zl4Tex_0058F0:
+  type: TEXTURE
+  offset: 0x58F0
+  symbol: object_zl4Tex_0058F0
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x670
+
+object_zl4Tex_0059F0:
+  type: TEXTURE
+  offset: 0x59F0
+  symbol: object_zl4Tex_0059F0
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_zl4Tex_005A70:
+  type: TEXTURE
+  offset: 0x5A70
+  symbol: object_zl4Tex_005A70
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_zl4Tex_005C70:
+  type: TEXTURE
+  offset: 0x5C70
+  symbol: object_zl4Tex_005C70
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x670
+
+object_zl4Tex_005CB0:
+  type: TEXTURE
+  offset: 0x5CB0
+  symbol: object_zl4Tex_005CB0
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x670
+
+object_zl4Tex_005DB0:
+  type: TEXTURE
+  offset: 0x5DB0
+  symbol: object_zl4Tex_005DB0
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_zl4Tex_00D8B8:
+  type: TEXTURE
+  offset: 0xD8B8
+  symbol: object_zl4Tex_00D8B8
+  format: RGBA16
+  width: 32
+  height: 16
+
+
+object_zl4Vtx_0065B0:
+  type: OOT:ARRAY
+  offset: 0x0065B0
+  symbol: object_zl4Vtx_0065B0
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zl4Vtx_0067C0:
+  type: OOT:ARRAY
+  offset: 0x0067C0
+  symbol: object_zl4Vtx_0067C0
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zl4Vtx_006A20:
+  type: OOT:ARRAY
+  offset: 0x006A20
+  symbol: object_zl4Vtx_006A20
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zl4Vtx_006C60:
+  type: OOT:ARRAY
+  offset: 0x006C60
+  symbol: object_zl4Vtx_006C60
+  count: 37
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zl4Vtx_006EB0:
+  type: OOT:ARRAY
+  offset: 0x006EB0
+  symbol: object_zl4Vtx_006EB0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zl4Vtx_006EE0:
+  type: OOT:ARRAY
+  offset: 0x006EE0
+  symbol: object_zl4Vtx_006EE0
+  count: 37
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zl4Vtx_007130:
+  type: OOT:ARRAY
+  offset: 0x007130
+  symbol: object_zl4Vtx_007130
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zl4Vtx_007160:
+  type: OOT:ARRAY
+  offset: 0x007160
+  symbol: object_zl4Vtx_007160
+  count: 85
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zl4Vtx_0076B0:
+  type: OOT:ARRAY
+  offset: 0x0076B0
+  symbol: object_zl4Vtx_0076B0
+  count: 128
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zl4Vtx_007EB0:
+  type: OOT:ARRAY
+  offset: 0x007EB0
+  symbol: object_zl4Vtx_007EB0
+  count: 191
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zl4Vtx_008AA0:
+  type: OOT:ARRAY
+  offset: 0x008AA0
+  symbol: object_zl4Vtx_008AA0
+  count: 45
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zl4Vtx_008D70:
+  type: OOT:ARRAY
+  offset: 0x008D70
+  symbol: object_zl4Vtx_008D70
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zl4Vtx_008FB0:
+  type: OOT:ARRAY
+  offset: 0x008FB0
+  symbol: object_zl4Vtx_008FB0
+  count: 62
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zl4Vtx_009390:
+  type: OOT:ARRAY
+  offset: 0x009390
+  symbol: object_zl4Vtx_009390
+  count: 45
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zl4Vtx_009660:
+  type: OOT:ARRAY
+  offset: 0x009660
+  symbol: object_zl4Vtx_009660
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zl4Vtx_0098A0:
+  type: OOT:ARRAY
+  offset: 0x0098A0
+  symbol: object_zl4Vtx_0098A0
+  count: 62
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zl4Vtx_009C80:
+  type: OOT:ARRAY
+  offset: 0x009C80
+  symbol: object_zl4Vtx_009C80
+  count: 155
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gChildZeldaSkelLimbsLimb_00DF94DL_00A630:
+  type: GFX
+  offset: 0x00A630
+  symbol: gChildZeldaSkelLimbsLimb_00DF94DL_00A630
+
+gChildZeldaSkelLimbsLimb_00DFE8DL_00AFC8:
+  type: GFX
+  offset: 0x00AFC8
+  symbol: gChildZeldaSkelLimbsLimb_00DFE8DL_00AFC8
+
+gChildZeldaSkelLimbsLimb_00DFC4DL_00B8D8:
+  type: GFX
+  offset: 0x00B8D8
+  symbol: gChildZeldaSkelLimbsLimb_00DFC4DL_00B8D8
+
+gChildZeldaSkelLimbsLimb_00DFD0DL_00BB40:
+  type: GFX
+  offset: 0x00BB40
+  symbol: gChildZeldaSkelLimbsLimb_00DFD0DL_00BB40
+
+gChildZeldaSkelLimbsLimb_00DFDCDL_00BC90:
+  type: GFX
+  offset: 0x00BC90
+  symbol: gChildZeldaSkelLimbsLimb_00DFDCDL_00BC90
+
+gChildZeldaSkelLimbsLimb_00DFA0DL_00BE70:
+  type: GFX
+  offset: 0x00BE70
+  symbol: gChildZeldaSkelLimbsLimb_00DFA0DL_00BE70
+
+gChildZeldaSkelLimbsLimb_00DFACDL_00C0E0:
+  type: GFX
+  offset: 0x00C0E0
+  symbol: gChildZeldaSkelLimbsLimb_00DFACDL_00C0E0
+
+gChildZeldaSkelLimbsLimb_00DFB8DL_00C230:
+  type: GFX
+  offset: 0x00C230
+  symbol: gChildZeldaSkelLimbsLimb_00DFB8DL_00C230
+
+gChildZeldaSkelLimbsLimb_00DF34DL_00C8D0:
+  type: GFX
+  offset: 0x00C8D0
+  symbol: gChildZeldaSkelLimbsLimb_00DF34DL_00C8D0
+
+gChildZeldaSkelLimbsLimb_00DF70DL_00D0E8:
+  type: GFX
+  offset: 0x00D0E8
+  symbol: gChildZeldaSkelLimbsLimb_00DF70DL_00D0E8
+
+gChildZeldaSkelLimbsLimb_00DF7CDL_00D2A0:
+  type: GFX
+  offset: 0x00D2A0
+  symbol: gChildZeldaSkelLimbsLimb_00DF7CDL_00D2A0
+
+gChildZeldaSkelLimbsLimb_00DF88DL_00D460:
+  type: GFX
+  offset: 0x00D460
+  symbol: gChildZeldaSkelLimbsLimb_00DF88DL_00D460
+
+gChildZeldaSkelLimbsLimb_00DF58DL_00D598:
+  type: GFX
+  offset: 0x00D598
+  symbol: gChildZeldaSkelLimbsLimb_00DF58DL_00D598
+
+gChildZeldaSkelLimbsLimb_00DF64DL_00D5E8:
+  type: GFX
+  offset: 0x00D5E8
+  symbol: gChildZeldaSkelLimbsLimb_00DF64DL_00D5E8
+
+gChildZeldaSkelLimbsLimb_00DF40DL_00D728:
+  type: GFX
+  offset: 0x00D728
+  symbol: gChildZeldaSkelLimbsLimb_00DF40DL_00D728
+
+gChildZeldaSkelLimbsLimb_00DF4CDL_00D778:
+  type: GFX
+  offset: 0x00D778
+  symbol: gChildZeldaSkelLimbsLimb_00DF4CDL_00D778
+
+object_zl4Vtx_00DCB8:
+  type: OOT:ARRAY
+  offset: 0x00DCB8
+  symbol: object_zl4Vtx_00DCB8
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gChildZeldaSkelLimbsLimb_00DF28:
+  type: OOT:LIMB
+  offset: 0x00DF28
+  symbol: gChildZeldaSkelLimbsLimb_00DF28
+  limb_type: Standard
+
+gChildZeldaSkelLimbsLimb_00DF34:
+  type: OOT:LIMB
+  offset: 0x00DF34
+  symbol: gChildZeldaSkelLimbsLimb_00DF34
+  limb_type: Standard
+
+gChildZeldaSkelLimbsLimb_00DF40:
+  type: OOT:LIMB
+  offset: 0x00DF40
+  symbol: gChildZeldaSkelLimbsLimb_00DF40
+  limb_type: Standard
+
+gChildZeldaSkelLimbsLimb_00DF4C:
+  type: OOT:LIMB
+  offset: 0x00DF4C
+  symbol: gChildZeldaSkelLimbsLimb_00DF4C
+  limb_type: Standard
+
+gChildZeldaSkelLimbsLimb_00DF58:
+  type: OOT:LIMB
+  offset: 0x00DF58
+  symbol: gChildZeldaSkelLimbsLimb_00DF58
+  limb_type: Standard
+
+gChildZeldaSkelLimbsLimb_00DF64:
+  type: OOT:LIMB
+  offset: 0x00DF64
+  symbol: gChildZeldaSkelLimbsLimb_00DF64
+  limb_type: Standard
+
+gChildZeldaSkelLimbsLimb_00DF70:
+  type: OOT:LIMB
+  offset: 0x00DF70
+  symbol: gChildZeldaSkelLimbsLimb_00DF70
+  limb_type: Standard
+
+gChildZeldaSkelLimbsLimb_00DF7C:
+  type: OOT:LIMB
+  offset: 0x00DF7C
+  symbol: gChildZeldaSkelLimbsLimb_00DF7C
+  limb_type: Standard
+
+gChildZeldaSkelLimbsLimb_00DF88:
+  type: OOT:LIMB
+  offset: 0x00DF88
+  symbol: gChildZeldaSkelLimbsLimb_00DF88
+  limb_type: Standard
+
+gChildZeldaSkelLimbsLimb_00DF94:
+  type: OOT:LIMB
+  offset: 0x00DF94
+  symbol: gChildZeldaSkelLimbsLimb_00DF94
+  limb_type: Standard
+
+gChildZeldaSkelLimbsLimb_00DFA0:
+  type: OOT:LIMB
+  offset: 0x00DFA0
+  symbol: gChildZeldaSkelLimbsLimb_00DFA0
+  limb_type: Standard
+
+gChildZeldaSkelLimbsLimb_00DFAC:
+  type: OOT:LIMB
+  offset: 0x00DFAC
+  symbol: gChildZeldaSkelLimbsLimb_00DFAC
+  limb_type: Standard
+
+gChildZeldaSkelLimbsLimb_00DFB8:
+  type: OOT:LIMB
+  offset: 0x00DFB8
+  symbol: gChildZeldaSkelLimbsLimb_00DFB8
+  limb_type: Standard
+
+gChildZeldaSkelLimbsLimb_00DFC4:
+  type: OOT:LIMB
+  offset: 0x00DFC4
+  symbol: gChildZeldaSkelLimbsLimb_00DFC4
+  limb_type: Standard
+
+gChildZeldaSkelLimbsLimb_00DFD0:
+  type: OOT:LIMB
+  offset: 0x00DFD0
+  symbol: gChildZeldaSkelLimbsLimb_00DFD0
+  limb_type: Standard
+
+gChildZeldaSkelLimbsLimb_00DFDC:
+  type: OOT:LIMB
+  offset: 0x00DFDC
+  symbol: gChildZeldaSkelLimbsLimb_00DFDC
+  limb_type: Standard
+
+gChildZeldaSkelLimbsLimb_00DFE8:
+  type: OOT:LIMB
+  offset: 0x00DFE8
+  symbol: gChildZeldaSkelLimbsLimb_00DFE8
+  limb_type: Standard
+
+gChildZeldaSkelLimbs:
+  type: BLOB
+  offset: 0xDFF4
+  symbol: gChildZeldaSkelLimbs
+  size: 0

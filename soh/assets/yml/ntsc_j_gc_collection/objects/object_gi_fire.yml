@@ -1,0 +1,57 @@
+:config:
+  segments:
+    - [ 6, 0x01267FC0 ]
+    - [ 4, 0x00D30E00 ]
+    - [ 8, 0x01267FC0 ]
+    - [ 9, 0x01267FC0 ]
+    - [ 10, 0x01267FC0 ]
+    - [ 11, 0x01267FC0 ]
+    - [ 12, 0x01267FC0 ]
+    - [ 13, 0x01267FC0 ]
+  external_files:
+    - ntsc_j_gc_collection/objects/gameplay_keep.yml
+
+gGiBlueFireChamberstickDL:
+  type: GFX
+  offset: 0x0C60
+  symbol: gGiBlueFireChamberstickDL
+
+gGiBlueFireFlameDL:
+  type: GFX
+  offset: 0x0F08
+  symbol: gGiBlueFireFlameDL
+
+object_gi_fireTex_000000:
+  type: TEXTURE
+  offset: 0x0
+  symbol: object_gi_fireTex_000000
+  format: I8
+  width: 16
+  height: 32
+
+object_gi_fireTex_000200:
+  type: TEXTURE
+  offset: 0x200
+  symbol: object_gi_fireTex_000200
+  format: I8
+  width: 16
+  height: 32
+
+
+object_gi_fireVtx_000400:
+  type: OOT:ARRAY
+  offset: 0x000400
+  symbol: object_gi_fireVtx_000400
+  count: 130
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_fireVtx_000C20:
+  type: OOT:ARRAY
+  offset: 0x000C20
+  symbol: object_gi_fireVtx_000C20
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

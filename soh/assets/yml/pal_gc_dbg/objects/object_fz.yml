@@ -1,0 +1,110 @@
+:config:
+  segments:
+    - [ 6, 0x0173D000 ]
+    - [ 4, 0x00F5E000 ]
+    - [ 8, 0x0173D000 ]
+    - [ 9, 0x0173D000 ]
+    - [ 10, 0x0173D000 ]
+    - [ 11, 0x0173D000 ]
+    - [ 12, 0x0173D000 ]
+    - [ 13, 0x0173D000 ]
+  external_files:
+    - pal_gc_dbg/objects/gameplay_keep.yml
+
+gFreezardHeadChippedDL:
+  type: GFX
+  offset: 0x2CA0
+  symbol: gFreezardHeadChippedDL
+
+gFreezardIceRockDL:
+  type: GFX
+  offset: 0x33F0
+  symbol: gFreezardIceRockDL
+
+gFreezardIceTriangleDL:
+  type: GFX
+  offset: 0x3260
+  symbol: gFreezardIceTriangleDL
+
+gFreezardIntactDL:
+  type: GFX
+  offset: 0x1130
+  symbol: gFreezardIntactDL
+
+gFreezardSteamDL:
+  type: GFX
+  offset: 0x3158
+  symbol: gFreezardSteamDL
+
+gFreezardSteamStartDL:
+  type: GFX
+  offset: 0x30A0
+  symbol: gFreezardSteamStartDL
+
+gFreezardSteamTex:
+  type: TEXTURE
+  offset: 0x2E70
+  symbol: gFreezardSteamTex
+  format: I4
+  width: 32
+  height: 32
+
+gFreezardTopRightHornChippedDL:
+  type: GFX
+  offset: 0x21A0
+  symbol: gFreezardTopRightHornChippedDL
+
+
+object_fzVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_fzVtx_000000
+  count: 275
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fzVtx_0013F0:
+  type: OOT:ARRAY
+  offset: 0x0013F0
+  symbol: object_fzVtx_0013F0
+  count: 219
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fzVtx_0023F0:
+  type: OOT:ARRAY
+  offset: 0x0023F0
+  symbol: object_fzVtx_0023F0
+  count: 139
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fzVtx_003070:
+  type: OOT:ARRAY
+  offset: 0x003070
+  symbol: object_fzVtx_003070
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fzVtx_003180:
+  type: OOT:ARRAY
+  offset: 0x003180
+  symbol: object_fzVtx_003180
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fzVtx_003310:
+  type: OOT:ARRAY
+  offset: 0x003310
+  symbol: object_fzVtx_003310
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

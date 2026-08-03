@@ -29,9 +29,16 @@
 #define COLPOLY_IGNORE_ENTITY (1 << 1)
 #define COLPOLY_IGNORE_PROJECTILES (1 << 2)
 
-// func_80041DB8, SurfaceType wall properties
-s32 D_80119D90[32] = {
-    0, 1, 3, 5, 8, 16, 32, 64, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+// SurfaceType_GetWallFlags, SurfaceType wall types
+s32 D_80119D90[WALL_TYPE_MAX] = {
+    0,                                  // WALL_TYPE_0
+    WALL_FLAG_0,                        // WALL_TYPE_1
+    WALL_FLAG_0 | WALL_FLAG_LADDER,     // WALL_TYPE_2
+    WALL_FLAG_0 | WALL_FLAG_LADDER_TOP, // WALL_TYPE_3
+    WALL_FLAG_CLIMBABLE,                // WALL_TYPE_4
+    WALL_FLAG_CRAWLSPACE_1,             // WALL_TYPE_5
+    WALL_FLAG_CRAWLSPACE_2,             // WALL_TYPE_6
+    WALL_FLAG_GRABBABLE,                // WALL_TYPE_7
 };
 
 // SurfaceType_GetSfx
@@ -4002,7 +4009,7 @@ u32 func_80041D70(CollisionContext* colCtx, CollisionPoly* poly, s32 bgId) {
 }
 
 /**
- * SurfaceType Get Wall Property (Internal)
+ * SurfaceType Get Wall Type (Internal)
  */
 u32 func_80041D94(CollisionContext* colCtx, CollisionPoly* poly, s32 bgId) {
     return SurfaceType_GetData(colCtx, poly, bgId, 0) >> 21 & 0x1F;
@@ -4011,9 +4018,9 @@ u32 func_80041D94(CollisionContext* colCtx, CollisionPoly* poly, s32 bgId) {
 /**
  * SurfaceType Get Wall Flags
  */
-s32 func_80041DB8(CollisionContext* colCtx, CollisionPoly* poly, s32 bgId) {
+s32 SurfaceType_GetWallFlags(CollisionContext* colCtx, CollisionPoly* poly, s32 bgId) {
     if (GameInteractor_Should(VB_SURFACE_IS_CLIMBABLE, false)) {
-        return (1 << 3) | D_80119D90[func_80041D94(colCtx, poly, bgId)];
+        return WALL_FLAG_CLIMBABLE | D_80119D90[func_80041D94(colCtx, poly, bgId)];
     } else {
         return D_80119D90[func_80041D94(colCtx, poly, bgId)];
     }
@@ -4023,21 +4030,21 @@ s32 func_80041DB8(CollisionContext* colCtx, CollisionPoly* poly, s32 bgId) {
  * SurfaceType Is Wall Flag (1 << 0) Set
  */
 s32 func_80041DE4(CollisionContext* colCtx, CollisionPoly* poly, s32 bgId) {
-    return (func_80041DB8(colCtx, poly, bgId) & 1) ? true : false;
+    return (SurfaceType_GetWallFlags(colCtx, poly, bgId) & WALL_FLAG_0) ? true : false;
 }
 
 /**
  * SurfaceType Is Wall Flag (1 << 1) Set
  */
 s32 func_80041E18(CollisionContext* colCtx, CollisionPoly* poly, s32 bgId) {
-    return (func_80041DB8(colCtx, poly, bgId) & 2) ? true : false;
+    return (SurfaceType_GetWallFlags(colCtx, poly, bgId) & WALL_FLAG_LADDER) ? true : false;
 }
 
 /**
  * SurfaceType Is Wall Flag (1 << 2) Set
  */
 s32 func_80041E4C(CollisionContext* colCtx, CollisionPoly* poly, s32 bgId) {
-    return (func_80041DB8(colCtx, poly, bgId) & 4) ? true : false;
+    return (SurfaceType_GetWallFlags(colCtx, poly, bgId) & WALL_FLAG_LADDER_TOP) ? true : false;
 }
 
 /**
@@ -4085,7 +4092,7 @@ u16 SurfaceType_GetSfx(CollisionContext* colCtx, CollisionPoly* poly, s32 bgId) 
 }
 
 /**
- * SurfaceType get terrain slope surface
+ * SurfaceType get terrain slope surface or transition
  */
 u32 SurfaceType_GetFloorEffect(CollisionContext* colCtx, CollisionPoly* poly, s32 bgId) {
     return SurfaceType_GetData(colCtx, poly, bgId, 1) >> 4 & 3;
