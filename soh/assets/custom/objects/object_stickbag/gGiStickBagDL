@@ -1,0 +1,17 @@
+<DisplayList Version="0">
+    <Matrix Path="objects/gameplay_keep/gGiScaleMtx" Param="G_MTX_PUSH"/>
+	<CallDisplayList Path="objects/object_stickbag/mat_gGiStickBagDL_Stick_layerOpaque"/>
+	<CallDisplayList Path="objects/object_stickbag/gGiStickBagDL_tri_0"/>
+	<CallDisplayList Path="objects/object_stickbag/mat_gGiStickBagDL_Leaf_layerOpaque"/>
+	<CallDisplayList Path="objects/object_stickbag/gGiStickBagDL_tri_1"/>
+	<CallDisplayList Path="objects/object_stickbag/mat_gGiStickBagDL_UpgradeColor_layerOpaque"/>
+	<CallDisplayList Path="objects/object_stickbag/gGiStickBagDL_tri_2"/>
+	<CallDisplayList Path="objects/object_stickbag/mat_gGiStickBagDL_Inside_layerOpaque"/>
+	<CallDisplayList Path="objects/object_stickbag/gGiStickBagDL_tri_3"/>
+	<CallDisplayList Path="objects/object_stickbag/mat_gGiStickBagDL_Wrap_layerOpaque"/>
+	<CallDisplayList Path="objects/object_stickbag/gGiStickBagDL_tri_4"/>
+	<CallDisplayList Path="objects/object_stickbag/mat_gGiStickBagDL_StickTX_layerOpaque"/>
+	<CallDisplayList Path="objects/object_stickbag/gGiStickBagDL_tri_5"/>
+	<EndDisplayList/>
+</DisplayList>
+
