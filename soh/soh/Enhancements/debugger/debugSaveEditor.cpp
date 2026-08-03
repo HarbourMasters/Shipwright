@@ -1,6 +1,10 @@
 #include "debugSaveEditor.h"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
+#include "soh/Enhancements/randomizer/static_data.h"
+#include "soh/Enhancements/randomizer/item.h"
+#include "soh/Enhancements/randomizer/randomizerEnums/RandomizerGet.h"
+#include "soh/Enhancements/randomizer/randomizerEnums/RandomizerInf.h"
 #include "soh/util.h"
 #include "soh/SohGui/ImGuiUtils.h"
 #include "soh/OTRGlobals.h"
@@ -10,6 +14,7 @@
 #include "soh/ResourceManagerHelpers.h"
 
 #include <spdlog/fmt/fmt.h>
+#include <algorithm>
 #include <array>
 #include <bit>
 #include <map>
@@ -871,14 +876,7 @@ void DrawGeneralTab() {
     Combobox("Z Target Mode", &gSaveContext.zTargetSetting, zTargetMap,
              comboboxOptionsBase.Tooltip("Z-Targeting behavior"));
 
-    if (IS_RANDO && (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_TOTAL) > 0)) {
-        ImGui::Text("Triforce Pieces");
-        PushStyleInput(Colors::Purple);
-        ImGui::InputScalar("##TriforcePieces", ImGuiDataType_U8,
-                           &gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected);
-        Tooltip("Currently obtained Triforce Pieces. For Triforce Hunt.");
-        PopStyleInput();
-    }
+    // Triforce Pieces editor moved to the "Randomizer Specific" card in DrawEquipmentTab().
     UIWidgets::EndCard();
 
     UIWidgets::BeginCard("minigamesCard");
@@ -2038,6 +2036,40 @@ void DrawEquipmentTab() {
         }
 
         ImGui::PopID();
+
+        // After the 4th sword, append the Fishing Pole as a 5th B-button sword option.
+        // Only relevant in rando saves that shuffle the pole into the pool
+        // (RSK_SHUFFLE_FISHING_POLE -> RG_FISHING_POLE in item_pool.cpp).
+        if (i == 3 && IS_RANDO &&
+            OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_FISHING_POLE) &&
+            gPlayState != nullptr) {
+            ImGui::SameLine();
+            Player* player = GET_PLAYER(gPlayState);
+            const ItemMapEntry& poleEntry = itemMapping[ITEM_FISHING_POLE];
+            bool poleEquipped = (player->currentSwordItemId == ITEM_FISHING_POLE);
+            ImGui::PushID(static_cast<int>(ITEM_FISHING_POLE));
+            PushStyleButton(Colors::DarkGray);
+            if (ImGui::ImageButton(
+                    poleEntry.name.c_str(),
+                    std::dynamic_pointer_cast<Fast::Fast3dGui>(
+                        Ship::Context::GetRawInstance()->GetWindow()->GetGui())
+                        ->GetTextureByName(poleEquipped ? poleEntry.name : poleEntry.nameFaded),
+                    ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1))) {
+                player->currentSwordItemId = static_cast<s8>(ITEM_FISHING_POLE);
+                gSaveContext.equips.buttonItems[0] = static_cast<u8>(ITEM_FISHING_POLE);
+                Inventory_ChangeEquipment(EQUIP_TYPE_SWORD, EQUIP_VALUE_SWORD_MASTER);
+            }
+            PopStyleButton();
+            Tooltip("Fishing Pole");
+            if (poleEquipped) {
+                ImVec2 itemMin = ImGui::GetItemRectMin();
+                ImVec2 itemMax = ImGui::GetItemRectMax();
+                ImGui::GetWindowDrawList()->AddRect(ImVec2(itemMin.x - 2, itemMin.y - 2),
+                                                    ImVec2(itemMax.x + 2, itemMax.y + 2),
+                                                    IM_COL32(255, 255, 255, 255), 0.0f, 0, 2.0f);
+            }
+            ImGui::PopID();
+        }
     }
 
     UIWidgets::EndCard();
@@ -2129,40 +2161,132 @@ void DrawEquipmentTab() {
     PopStyleSlider();
     Tooltip("Maximum number of Deku Nuts Link can carry");
 
-    if (IS_RANDO &&
-        OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_BOMBCHU_BAG) == RO_BOMBCHU_BAG_PROGRESSIVE) {
-        const std::vector<std::string> bombchuNames = {
-            "None",
-            "20",
-            "30",
-            "50",
-        };
-        ImGui::Text("%s", "Bombchu Bag Capacity");
-        ImGui::SameLine();
-        ImGui::PushID("Bombchu Bag Capacity");
-        PushStyleCombobox(THEME_COLOR);
-        ImGui::AlignTextToFramePadding();
-        auto value = gSaveContext.ship.quest.data.randomizer.bombchuUpgradeLevel;
-        auto name = value < bombchuNames.size() ? bombchuNames[value].c_str() : "Glitched";
-        if (ImGui::BeginCombo("##upgrade", name)) {
-            for (size_t i = 0; i < bombchuNames.size(); i++) {
-                if (ImGui::Selectable(bombchuNames[i].c_str())) {
-                    gSaveContext.ship.quest.data.randomizer.bombchuUpgradeLevel = static_cast<u8>(i);
-                    if (i > 0) {
-                        INV_CONTENT(ITEM_BOMBCHU) = ITEM_BOMBCHU;
-                    } else {
-                        INV_CONTENT(ITEM_BOMBCHU) = ITEM_NONE;
+    UIWidgets::EndCard();
+
+    // "Randomizer Specific" — rando-only editors grouped under the upgrades. Bombchu Bag
+    // Capacity and Triforce Pieces were moved here (from this card and the General settings
+    // card respectively), and ability-shuffle toggles are added below. Only rendered when the
+    // seed actually uses at least one of these features (no empty card on vanilla-ish saves).
+    if (IS_RANDO) {
+        auto& randomizer = *OTRGlobals::Instance->gRandomizer;
+        bool bombchuProgressive =
+            randomizer.GetRandoSettingValue(RSK_BOMBCHU_BAG) == RO_BOMBCHU_BAG_PROGRESSIVE;
+        bool triforceHunt = randomizer.GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_TOTAL) > 0;
+        bool anyAbilityShuffle = randomizer.GetRandoSettingValue(RSK_SHUFFLE_SWIM) ||
+                                 randomizer.GetRandoSettingValue(RSK_SHUFFLE_GRAB) ||
+                                 randomizer.GetRandoSettingValue(RSK_SHUFFLE_CLIMB) ||
+                                 randomizer.GetRandoSettingValue(RSK_SHUFFLE_CRAWL) ||
+                                 randomizer.GetRandoSettingValue(RSK_SHUFFLE_OPEN_CHEST) ||
+                                 randomizer.GetRandoSettingValue(RSK_SHUFFLE_SPEAK) ||
+                                 randomizer.GetRandoSettingValue(RSK_SHUFFLE_OCARINA_BUTTONS) ||
+                                 randomizer.GetRandoSettingValue(RSK_ROCS_FEATHER);
+
+        if (bombchuProgressive || triforceHunt || anyAbilityShuffle) {
+            UIWidgets::BeginCard("randomizerSpecificCard", 0);
+            ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "Randomizer Specific");
+            ImGui::Spacing();
+
+            // (a) Bombchu Bag Capacity
+            if (bombchuProgressive) {
+                const std::vector<std::string> bombchuNames = { "None", "20", "30", "50" };
+                ImGui::Text("%s", "Bombchu Bag Capacity");
+                ImGui::SameLine();
+                ImGui::PushID("Bombchu Bag Capacity");
+                PushStyleCombobox(THEME_COLOR);
+                ImGui::AlignTextToFramePadding();
+                auto value = gSaveContext.ship.quest.data.randomizer.bombchuUpgradeLevel;
+                auto name = value < bombchuNames.size() ? bombchuNames[value].c_str() : "Glitched";
+                if (ImGui::BeginCombo("##upgrade", name)) {
+                    for (size_t i = 0; i < bombchuNames.size(); i++) {
+                        if (ImGui::Selectable(bombchuNames[i].c_str())) {
+                            gSaveContext.ship.quest.data.randomizer.bombchuUpgradeLevel = static_cast<u8>(i);
+                            if (i > 0) {
+                                INV_CONTENT(ITEM_BOMBCHU) = ITEM_BOMBCHU;
+                            } else {
+                                INV_CONTENT(ITEM_BOMBCHU) = ITEM_NONE;
+                            }
+                        }
+                    }
+                    ImGui::EndCombo();
+                }
+                PopStyleCombobox();
+                ImGui::PopID();
+                Tooltip("Bombchu Bag Capacity");
+            }
+
+            // (b) Triforce Pieces (moved from the General settings card)
+            if (triforceHunt) {
+                ImGui::Text("Triforce Pieces");
+                PushStyleInput(Colors::Purple);
+                ImGui::InputScalar("##TriforcePieces", ImGuiDataType_U8,
+                                   &gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected);
+                Tooltip("Currently obtained Triforce Pieces. For Triforce Hunt.");
+                PopStyleInput();
+            }
+
+            // (c) Ability-shuffle items: one labeled checkbox per item that's in the pool,
+            // one per line, alphabetically by name. Visibility derives from RSK_SHUFFLE_*
+            // (the pool isn't queryable at runtime); the checked state is the RAND_INF_ flag.
+            {
+                struct AbilityEntry {
+                    std::string label;
+                    RandomizerInf flag;
+                };
+                std::vector<AbilityEntry> abilities;
+                auto add = [&](RandomizerGet rg, RandomizerInf flag) {
+                    abilities.push_back(
+                        { Rando::StaticData::RetrieveItem(rg).GetName().english, flag });
+                };
+
+                if (randomizer.GetRandoSettingValue(RSK_SHUFFLE_SWIM))
+                    add(RG_BRONZE_SCALE, RAND_INF_CAN_SWIM);
+                if (randomizer.GetRandoSettingValue(RSK_SHUFFLE_GRAB))
+                    add(RG_POWER_BRACELET, RAND_INF_CAN_GRAB);
+                if (randomizer.GetRandoSettingValue(RSK_SHUFFLE_CLIMB))
+                    add(RG_CLIMB, RAND_INF_CAN_CLIMB);
+                if (randomizer.GetRandoSettingValue(RSK_SHUFFLE_CRAWL))
+                    add(RG_CRAWL, RAND_INF_CAN_CRAWL);
+                if (randomizer.GetRandoSettingValue(RSK_SHUFFLE_OPEN_CHEST)) {
+                    add(RG_OPEN_CHEST, RAND_INF_CAN_OPEN_CHEST);
+                    if (randomizer.GetRandoSettingValue(RSK_SHUFFLE_OPEN_CHEST) == RO_OPEN_CHEST_PROGRESSIVE) {
+                        abilities.push_back({ "Large Chest", RAND_INF_CAN_OPEN_LARGE_CHEST }); // no RG_ item
                     }
                 }
-            }
-            ImGui::EndCombo();
-        }
-        PopStyleCombobox();
-        ImGui::PopID();
-        UIWidgets::Tooltip("Bombchu Bag Capacity");
-    }
+                if (randomizer.GetRandoSettingValue(RSK_SHUFFLE_SPEAK)) {
+                    for (int i = 0; i <= (RG_SPEAK_ZORA - RG_SPEAK_DEKU); i++) {
+                        add(static_cast<RandomizerGet>(RG_SPEAK_DEKU + i),
+                            static_cast<RandomizerInf>(RAND_INF_CAN_SPEAK_DEKU + i));
+                    }
+                }
+                if (randomizer.GetRandoSettingValue(RSK_SHUFFLE_OCARINA_BUTTONS)) {
+                    for (int i = 0; i <= (RG_OCARINA_C_RIGHT_BUTTON - RG_OCARINA_A_BUTTON); i++) {
+                        add(static_cast<RandomizerGet>(RG_OCARINA_A_BUTTON + i),
+                            static_cast<RandomizerInf>(RAND_INF_HAS_OCARINA_A + i));
+                    }
+                }
+                if (randomizer.GetRandoSettingValue(RSK_ROCS_FEATHER))
+                    add(RG_ROCS_FEATHER, RAND_INF_OBTAINED_ROCS_FEATHER);
 
-    UIWidgets::EndCard();
+                std::sort(abilities.begin(), abilities.end(),
+                          [](const AbilityEntry& a, const AbilityEntry& b) { return a.label < b.label; });
+
+                for (const auto& entry : abilities) {
+                    ImGui::PushID(static_cast<int>(entry.flag));
+                    bool has = Flags_GetRandomizerInf(entry.flag) != 0;
+                    if (Checkbox(entry.label.c_str(), &has, CheckboxOptions().Color(THEME_COLOR))) {
+                        if (has) {
+                            Flags_SetRandomizerInf(entry.flag);
+                        } else {
+                            Flags_UnsetRandomizerInf(entry.flag);
+                        }
+                    }
+                    ImGui::PopID();
+                }
+            }
+
+            UIWidgets::EndCard();
+        }
+    }
 
     UIWidgets::EndCardLayout();
 
