@@ -141,11 +141,11 @@ void RegionTable_Init_LakeHylia() {
         //Locations
         //Assumes RR_LH_LAB access
         LOCATION(RC_LH_LAB_DIVE,        (ctx->GetTrickOption(RT_LH_LAB_DIVING) && logic->CanUse(RG_HOOKSHOT) && logic->HasItem(RG_BRONZE_SCALE)) && logic->HasItem(RG_SPEAK_HYLIAN)),
-        LOCATION(RC_LH_GS_LAB_CRATE,    logic->CanUse(RG_HOOKSHOT) && logic->CanBreakCrates()),
+        LOCATION(RC_LH_GS_LAB_CRATE,    logic->CanUse(RG_HOOKSHOT) && logic->HasItem(RG_ROLL)),
         LOCATION(RC_LH_LAB_FRONT_RUPEE, true),
         LOCATION(RC_LH_LAB_LEFT_RUPEE,  true),
         LOCATION(RC_LH_LAB_RIGHT_RUPEE, true),
-        LOCATION(RC_LH_LAB_CRATE,       logic->CanBreakCrates()),
+        LOCATION(RC_LH_LAB_CRATE,       logic->HasItem(RG_ROLL)),
     }, {
         //Exits
         ENTRANCE(RR_LH_LAB, logic->HasItem(RG_BRONZE_SCALE)),

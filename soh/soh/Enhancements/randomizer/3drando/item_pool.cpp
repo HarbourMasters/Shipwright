@@ -448,6 +448,10 @@ void GenerateItemPool() {
         AddItemToPool(RG_OPEN_CHEST, 2, 1, 1, 1);
     }
 
+        if (ctx->GetOption(RSK_SHUFFLE_ROLL)) {
+        AddItemToPool(RG_ROLL, 2, 1, 1, 1);
+    }
+
     if (ctx->GetOption(RSK_SHUFFLE_SPEAK)) {
         AddItemToPool(RG_SPEAK_DEKU, 2, 1, 1, 1);
         AddItemToPool(RG_SPEAK_GERUDO, 2, 1, 1, 1);

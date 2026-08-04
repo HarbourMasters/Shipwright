@@ -1,4 +1,5 @@
-﻿#include "soh/OTRGlobals.h"
+﻿#include <libultraship/bridge.h>
+#include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/custom-message/CustomMessageTypes.h"
@@ -1043,6 +1044,9 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             break;
         case VB_CRAWL:
             *should = *should && Flags_GetRandomizerInf(RAND_INF_CAN_CRAWL);
+            break;
+        case VB_ROLL:
+            *should = !RAND_GET_OPTION(RSK_SHUFFLE_ROLL) || Flags_GetRandomizerInf(RAND_INF_CAN_ROLL);
             break;
         case VB_CAN_BUY_SHOP_SHIELD_OR_TUNIC: {
             // Gate non-randomized shop shields/tunics behind finding a non-shop copy.

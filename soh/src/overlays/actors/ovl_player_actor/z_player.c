@@ -6306,11 +6306,13 @@ s32 func_8083BBA0(Player* this, PlayState* play) {
 }
 
 void Player_SetupRoll(Player* this, PlayState* play) {
-    Player_SetupAction(play, this, Player_Action_Roll, 0);
-    LinkAnimation_PlayOnceSetSpeed(play, &this->skelAnime,
-                                   GET_PLAYER_ANIM(PLAYER_ANIMGROUP_landing_roll, this->modelAnimType),
-                                   1.25f * sWaterSpeedFactor);
-    gSaveContext.ship.stats.count[COUNT_ROLLS]++;
+    if (GameInteractor_Should(VB_ROLL, true)) {
+        Player_SetupAction(play, this, Player_Action_Roll, 0);
+        LinkAnimation_PlayOnceSetSpeed(play, &this->skelAnime,
+                                       GET_PLAYER_ANIM(PLAYER_ANIMGROUP_landing_roll, this->modelAnimType),
+                                       1.25f * sWaterSpeedFactor);
+        gSaveContext.ship.stats.count[COUNT_ROLLS]++;
+    }
 }
 
 s32 Player_TryRoll(Player* this, PlayState* play) {

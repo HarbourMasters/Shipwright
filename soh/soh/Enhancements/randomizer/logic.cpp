@@ -147,6 +147,7 @@ bool Logic::HasItem(RandomizerGet itemName) {
         case RG_BRONZE_SCALE:
         case RG_CLIMB:
         case RG_CRAWL:
+        case RG_ROLL:
         case RG_OPEN_CHEST:
         case RG_ZELDAS_LETTER:
         case RG_WEIRD_EGG:
@@ -326,6 +327,7 @@ bool Logic::ItemUseAllowed(RandomizerGet itemName) {
         case RG_SERENADE_OF_WATER:
         case RG_NOCTURNE_OF_SHADOW:
         case RG_CRAWL:
+        case RG_ROLL:
             return true;
         default:
             break;
@@ -625,10 +627,11 @@ bool Logic::CanUse(RandomizerGet itemName) {
             return HasItem(RG_CHILD_WALLET); // as long as you have enough rubies
         case RG_CRAWL:
             return IsChild;
+        case RG_ROLL:
+            return true,
 
-        // Bottle Items
-        case RG_BOTTLE_WITH_BUGS:
-            return Get(LOGIC_BUG_ACCESS);
+                   // Bottle Items
+                   case RG_BOTTLE_WITH_BUGS : return Get(LOGIC_BUG_ACCESS);
         case RG_BOTTLE_WITH_FISH:
             return Get(LOGIC_FISH_ACCESS);
         case RG_BOTTLE_WITH_BLUE_FIRE:
@@ -1522,7 +1525,7 @@ bool Logic::CanBreakPots(EnemyDistance distance, bool wallOrFloor, bool inWater)
 }
 
 bool Logic::CanBreakCrates() {
-    return true;
+    return HasItem(RG_ROLL) || CanUse(RG_MEGATON_HAMMER) || CanUse(RG_BOMB_BAG) || CanUse(RG_BOMBCHU_5);
 }
 
 bool Logic::CanBreakSmallCrates() {
@@ -1534,7 +1537,7 @@ bool Logic::CanBreakRocks() {
 }
 
 bool Logic::CanBonkTrees() {
-    return true;
+    return HasItem(RG_ROLL);
 }
 
 bool Logic::CanRead() {
@@ -1820,6 +1823,7 @@ std::map<RandomizerGet, uint32_t> StaticData::RandoGetToRandInf = {
     { RG_ZELDAS_LETTER, RAND_INF_ZELDAS_LETTER },
     { RG_CLIMB, RAND_INF_CAN_CLIMB },
     { RG_CRAWL, RAND_INF_CAN_CRAWL },
+    { RG_ROLL, RAND_INF_CAN_ROLL },
     { RG_OPEN_CHEST, RAND_INF_CAN_OPEN_CHEST },
     { RG_CHILD_WALLET, RAND_INF_HAS_WALLET },
     { RG_QUIVER_INF, RAND_INF_HAS_INFINITE_QUIVER },
@@ -2087,6 +2091,9 @@ void Logic::ApplyItemEffect(Item& item, bool state) {
                     break;
                 case RG_CRAWL:
                     SetRandoInf(RAND_INF_CAN_CRAWL, state);
+                    break;
+                case RG_ROLL:
+                    SetRandoInf(RAND_INF_CAN_ROLL, state);
                     break;
                 case RG_OPEN_CHEST:
                     if (ctx->GetOption(RSK_SHUFFLE_OPEN_CHEST).Is(RO_OPEN_CHEST_PROGRESSIVE)) {
@@ -2951,6 +2958,11 @@ void Logic::Reset(bool resetSaveContext /*= true*/) {
 
         if (ctx->GetOption(RSK_SHUFFLE_CRAWL).Is(false)) {
             SetRandoInf(RAND_INF_CAN_CRAWL, true);
+        }
+
+        // If we're not shuffling roll, we start with it
+        if (ctx->GetOption(RSK_SHUFFLE_ROLL).Is(false)) {
+            SetRandoInf(RAND_INF_CAN_ROLL, true);
         }
 
         if (ctx->GetOption(RSK_SHUFFLE_OPEN_CHEST).Is(false)) {

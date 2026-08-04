@@ -157,6 +157,7 @@ std::map<uint32_t, ItemMapEntry> customItemsMapping = {
     { RG_GANON_SOUL, { RG_GANON_SOUL, "RG_GANON_SOUL", "RG_GANON_SOUL_Faded", gBossSoulTex } },
     { RG_OPEN_CHEST, { RG_OPEN_CHEST, "RG_OPEN_CHEST", "RG_OPEN_CHEST_Faded", gOpenChestsTex } },
     { RG_CRAWL, { RG_CRAWL, "RG_CRAWL", "RG_CRAWL_Faded", gCrawlTex } },
+    { RG_ROLL, { RG_ROLL, "RG_ROLL", "RG_ROLL_Faded", gRollTex } },
     { RG_CLIMB, { RG_CLIMB, "RG_CLIMB", "RG_CLIMB_Faded", gClimbTex } },
     {
         RG_POWER_BRACELET,
