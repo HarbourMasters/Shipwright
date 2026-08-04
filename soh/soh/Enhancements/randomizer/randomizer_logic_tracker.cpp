@@ -40,7 +40,7 @@ struct LogicTrackerNode {
 
     std::string NodeName;
     std::vector<Connection> Connections;
-    int NodeId = -1;
+    size_t NodeId = -1;
     RandomizerRegion RandomizerRegion = RR_NONE;
 };
 
@@ -153,8 +153,8 @@ static std::vector<RegionAccessFlags> CalculateAccessFromRoot(RandomizerRegion e
 std::unordered_map<std::string, std::vector<RandomizerEventInfo>> randomizerEventMap;
 
 bool expandingNode = false;
-int expandNodeId = -1;
-int clearNodesAfterNodeID = -1;
+size_t expandNodeId = -1;
+size_t clearNodesAfterNodeID = -1;
 std::vector<LogicTrackerNode> nodes;
 
 static ExpressionTable::ExpressionRow CreateExpressionRows(const std::shared_ptr<LogicExpression>& expression) {
@@ -286,7 +286,7 @@ RandomizerCheck showRandomizerCheck = RC_UNKNOWN_CHECK;
 void LogicTrackerWindow::ShowRandomizerCheck(RandomizerCheck randomizerCheck) {
     showRandomizerCheck = randomizerCheck;
 
-    auto window = Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Logic Tracker");
+    auto window = Ship::Context::GetRawInstance()->GetWindow()->GetGui()->GetGuiWindow("Logic Tracker");
     window->Show();
     ImGui::SetWindowFocus(window->GetName().c_str());
 }
@@ -753,7 +753,7 @@ static std::string GetAvailableString(const LogicTrackerNode::Connection& connec
 }
 
 static void DrawNode(LogicTrackerNode& node) {
-    ImGui::PushID(node.NodeId);
+    ImGui::PushID(static_cast<int>(node.NodeId));
 
     if (expandingNode) {
         ImGui::SetNextItemOpen(expandNodeId == node.NodeId, ImGuiCond_Always);

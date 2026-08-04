@@ -8,6 +8,7 @@
 #include <fstream>
 #include <libultraship/log/luslog.h>
 #include <soh/OTRGlobals.h>
+#include <spdlog/spdlog.h>
 
 #include "3drando/shops.hpp"
 #include "logic_expression/logic_expression.h"
