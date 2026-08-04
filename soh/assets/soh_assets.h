@@ -200,6 +200,9 @@ static const ALIGN_ASSET(2) char gGiClimbDL[] = dgGiClimbDL;
 #define dgGiCrawlDL "__OTR__objects/object_gi_crawl/gGiCrawlDL"
 static const ALIGN_ASSET(2) char gGiCrawlDL[] = dgGiCrawlDL;
 
+#define dgGiRollDL "__OTR__objects/object_gi_roll/gGiRollDL"
+static const ALIGN_ASSET(2) char gGiRollDL[] = dgGiRollDL;
+
 #define dgGiOpenChestsDL "__OTR__objects/object_gi_chest/gGiOpenChestsDL"
 static const ALIGN_ASSET(2) char gGiOpenChestsDL[] = dgGiOpenChestsDL;
 
@@ -511,6 +514,9 @@ static const ALIGN_ASSET(2) char gRocsFeatherTex[] = dgRocsFeatherTex;
 
 #define dgCrawlTex "__OTR__textures/icon_item_static/gCrawlTex"
 static const ALIGN_ASSET(2) char gCrawlTex[] = dgCrawlTex;
+
+#define dgRollTex "__OTR__textures/icon_item_static/gRollTex"
+static const ALIGN_ASSET(2) char gRollTex[] = dgRollTex;
 
 #define dgClimbTex "__OTR__textures/icon_item_static/gClimbTex"
 static const ALIGN_ASSET(2) char gClimbTex[] = dgClimbTex;
