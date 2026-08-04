@@ -1,0 +1,20 @@
+:config:
+  segments:
+    - [ 2, 0x018A63A0 ]
+
+market_day_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: market_day_scene
+
+gMarketDayPath_00330:
+  type: OOT:PATH
+  offset: 0x330
+  symbol: gMarketDayPath_00330
+  num_paths: 4
+
+
+market_day_sceneCollisionHeader_002640:
+  type: OOT:COLLISION
+  offset: 0x002640
+  symbol: market_day_sceneCollisionHeader_002640

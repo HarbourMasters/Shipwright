@@ -7,10 +7,7 @@
 
 #include "SohGui.hpp"
 
-#include <spdlog/spdlog.h>
 #include <imgui.h>
-#include <imgui_internal.h>
-#include <libultraship/libultraship.h>
 
 #ifdef __APPLE__
 #include <fast/backends/gfx_metal.h>
@@ -19,17 +16,8 @@
 #ifdef __SWITCH__
 #include <port/switch/SwitchImpl.h>
 #endif
-#include "SohMenu.h"
 #include "include/global.h"
-#include "include/z64audio.h"
-#include "soh/SaveManager.h"
-#include "soh/OTRGlobals.h"
-#include "soh/Enhancements/Presets/Presets.h"
-#include "soh/resource/type/Skeleton.h"
-#include "libultraship/libultraship.h"
 
-#include "soh/Enhancements/game-interactor/GameInteractor.h"
-#include "soh/Enhancements/cosmetics/authenticGfxPatches.h"
 #include "soh/Enhancements/debugger/MessageViewer.h"
 #include "soh/Notification/Notification.h"
 #include "soh/Enhancements/TimeDisplay/TimeDisplay.h"
@@ -47,6 +35,9 @@ static const inline std::vector<std::pair<const char*, const char*>> audioBacken
 #endif
 #if defined(__linux)
     { "pulse", "PulseAudio" },
+#endif
+#ifdef __APPLE__
+    { "coreaudio", "Core Audio" },
 #endif
     { "sdl", "SDL Audio" }
 };
@@ -66,8 +57,6 @@ std::string GetWindowButtonText(const char* text, bool menuOpen) {
 }
 
 // MARK: - Delegates
-
-std::shared_ptr<SohMenuBar> mSohMenuBar;
 
 std::shared_ptr<Ship::GuiWindow> mConsoleWindow;
 std::shared_ptr<SohStatsWindow> mStatsWindow;
@@ -89,8 +78,10 @@ std::shared_ptr<MessageViewer> mMessageViewerWindow;
 std::shared_ptr<GameplayStatsWindow> mGameplayStatsWindow;
 std::shared_ptr<CheckTracker::CheckTrackerSettingsWindow> mCheckTrackerSettingsWindow;
 std::shared_ptr<CheckTracker::CheckTrackerWindow> mCheckTrackerWindow;
-std::shared_ptr<EntranceTrackerSettingsWindow> mEntranceTrackerSettingsWindow;
-std::shared_ptr<EntranceTrackerWindow> mEntranceTrackerWindow;
+std::shared_ptr<EntranceTracker::EntranceTrackerSettingsWindow> mEntranceTrackerSettingsWindow;
+std::shared_ptr<EntranceTracker::EntranceTrackerWindow> mEntranceTrackerWindow;
+std::shared_ptr<HintTracker::HintTrackerSettingsWindow> mHintTrackerSettingsWindow;
+std::shared_ptr<HintTracker::HintTrackerWindow> mHintTrackerWindow;
 std::shared_ptr<ItemTrackerSettingsWindow> mItemTrackerSettingsWindow;
 std::shared_ptr<ItemTrackerWindow> mItemTrackerWindow;
 std::shared_ptr<TimeSplitWindow> mTimeSplitWindow;
@@ -104,8 +95,12 @@ UIWidgets::Colors GetMenuThemeColor() {
     return mSohMenu->GetMenuThemeColor();
 }
 
+std::shared_ptr<SohMenu> GetSohMenu() {
+    return mSohMenu;
+}
+
 void SetupMenu() {
-    auto gui = Ship::Context::GetInstance()->GetWindow()->GetGui();
+    auto gui = Ship::Context::GetRawInstance()->GetWindow()->GetGui();
     mSohMenu = std::make_shared<SohMenu>(CVAR_WINDOW("Menu"), "Port Menu");
     gui->SetMenu(mSohMenu);
 
@@ -119,7 +114,7 @@ void SetupMenuElements() {
 }
 
 void SetupGuiElements() {
-    auto gui = Ship::Context::GetInstance()->GetWindow()->GetGui();
+    auto gui = Ship::Context::GetRawInstance()->GetWindow()->GetGui();
 
     mConsoleWindow = std::make_shared<SohConsoleWindow>(CVAR_WINDOW("SohConsole"), "Console##SoH", ImVec2(820, 630));
     gui->AddGuiWindow(mConsoleWindow);
@@ -177,12 +172,18 @@ void SetupGuiElements() {
     mCheckTrackerSettingsWindow = std::make_shared<CheckTracker::CheckTrackerSettingsWindow>(
         CVAR_WINDOW("CheckTrackerSettings"), "Check Tracker Settings", ImVec2(600, 375));
     gui->AddGuiWindow(mCheckTrackerSettingsWindow);
-    mEntranceTrackerWindow =
-        std::make_shared<EntranceTrackerWindow>(CVAR_WINDOW("EntranceTracker"), "Entrance Tracker", ImVec2(500, 750));
+    mEntranceTrackerWindow = std::make_shared<EntranceTracker::EntranceTrackerWindow>(
+        CVAR_WINDOW("EntranceTracker"), "Entrance Tracker", ImVec2(500, 750));
     gui->AddGuiWindow(mEntranceTrackerWindow);
-    mEntranceTrackerSettingsWindow = std::make_shared<EntranceTrackerSettingsWindow>(
+    mEntranceTrackerSettingsWindow = std::make_shared<EntranceTracker::EntranceTrackerSettingsWindow>(
         CVAR_WINDOW("EntranceTrackerSettings"), "Entrance Tracker Settings", ImVec2(600, 375));
     gui->AddGuiWindow(mEntranceTrackerSettingsWindow);
+    mHintTrackerWindow =
+        std::make_shared<HintTracker::HintTrackerWindow>(CVAR_WINDOW("HintTracker"), "Hint Tracker", ImVec2(500, 600));
+    gui->AddGuiWindow(mHintTrackerWindow);
+    mHintTrackerSettingsWindow = std::make_shared<HintTracker::HintTrackerSettingsWindow>(
+        CVAR_WINDOW("HintTrackerSettings"), "Hint Tracker Settings", ImVec2(600, 375));
+    gui->AddGuiWindow(mHintTrackerSettingsWindow);
     mItemTrackerWindow =
         std::make_shared<ItemTrackerWindow>(CVAR_WINDOW("ItemTracker"), "Item Tracker", ImVec2(350, 600));
     gui->AddGuiWindow(mItemTrackerWindow);
@@ -204,7 +205,7 @@ void SetupGuiElements() {
 }
 
 void Destroy() {
-    auto gui = Ship::Context::GetInstance()->GetWindow()->GetGui();
+    auto gui = Ship::Context::GetRawInstance()->GetWindow()->GetGui();
     gui->RemoveAllGuiWindows();
 
     mNotificationWindow = nullptr;
@@ -215,6 +216,8 @@ void Destroy() {
     mEntranceTrackerSettingsWindow = nullptr;
     mCheckTrackerWindow = nullptr;
     mCheckTrackerSettingsWindow = nullptr;
+    mHintTrackerWindow = nullptr;
+    mHintTrackerSettingsWindow = nullptr;
     mGameplayStatsWindow = nullptr;
     mDLViewerWindow = nullptr;
     mValueViewerWindow = nullptr;
@@ -229,7 +232,6 @@ void Destroy() {
     mStatsWindow = nullptr;
     mConsoleWindow = nullptr;
     mGfxDebuggerWindow = nullptr;
-    mSohMenuBar = nullptr;
     mInputViewer = nullptr;
     mInputViewerSettings = nullptr;
     mTimeSplitWindow = nullptr;

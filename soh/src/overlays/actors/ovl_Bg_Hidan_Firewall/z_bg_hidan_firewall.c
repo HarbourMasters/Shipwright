@@ -134,7 +134,7 @@ void BgHidanFirewall_Collide(BgHidanFirewall* this, PlayState* play) {
         phi_a3 = this->actor.shape.rot.y + 0x8000;
     }
 
-    func_8002F71C(play, &this->actor, 5.0f, phi_a3, 1.0f);
+    Actor_SetPlayerKnockbackLargeNoDamage(play, &this->actor, 5.0f, phi_a3, 1.0f);
 }
 
 void BgHidanFirewall_ColliderFollowPlayer(BgHidanFirewall* this, PlayState* play) {
@@ -190,7 +190,7 @@ void BgHidanFirewall_Update(Actor* thisx, PlayState* play) {
         BgHidanFirewall_ColliderFollowPlayer(this, play);
         CollisionCheck_SetAT(play, &play->colChkCtx, &this->collider.base);
         CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider.base);
-        func_8002F974(&this->actor, NA_SE_EV_FIRE_PLATE - SFX_FLAG);
+        Actor_PlaySfx_Flagged(&this->actor, NA_SE_EV_FIRE_PLATE - SFX_FLAG);
     }
 }
 

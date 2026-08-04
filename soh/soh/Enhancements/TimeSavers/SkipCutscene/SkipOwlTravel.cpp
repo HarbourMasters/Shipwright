@@ -4,7 +4,9 @@
 #include <cassert>
 
 extern "C" {
+#include "z64.h"
 #include "z64save.h"
+#include "z64scene.h"
 extern PlayState* gPlayState;
 extern SaveContext gSaveContext;
 

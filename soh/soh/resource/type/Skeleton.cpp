@@ -1,15 +1,15 @@
-#include <ship/resource/ResourceManager.h>
 #include "Skeleton.h"
 #include "soh/OTRGlobals.h"
-#include "libultraship/libultraship.h"
 #include <soh_assets.h>
 #include <objects/object_link_child/object_link_child.h>
 #include <objects/object_link_boy/object_link_boy.h>
-#include "macros.h"
+#include <ship/Context.h>
+#include <ship/resource/ResourceManager.h>
 
 extern "C" {
 #include "variables.h"
 #include "z64.h"
+#include "macros.h"
 #include "z64player.h"
 extern PlayState* gPlayState;
 }
@@ -106,9 +106,9 @@ void SkeletonPatcher::ClearSkeletons() {
 }
 
 void SkeletonPatcher::UpdateSkeletons() {
-    auto resourceMgr = Ship::Context::GetInstance()->GetResourceManager();
+    auto resourceMgr = Ship::Context::GetRawInstance()->GetResourceManager();
     bool isAlt = resourceMgr->IsAltAssetsEnabled();
-    for (auto skel : skeletons) {
+    for (auto& skel : skeletons) {
         Skeleton* newSkel =
             (Skeleton*)resourceMgr
                 ->LoadResource((isAlt ? Ship::IResource::gAltAssetPrefix : "") + skel.vanillaSkeletonPath, true)
@@ -124,7 +124,7 @@ void SkeletonPatcher::UpdateSkeletons() {
 }
 
 void SkeletonPatcher::UpdateCustomSkeletons() {
-    for (auto skel : skeletons) {
+    for (auto& skel : skeletons) {
         if (!skel.isLocalPlayer) {
             continue;
         }
@@ -135,11 +135,31 @@ void SkeletonPatcher::UpdateCustomSkeletons() {
 
 void SkeletonPatcher::UpdateTunicSkeletons(SkeletonPatchInfo& skel) {
     std::string skeletonPath = "";
+    s32 tunicID = TUNIC_EQUIP_TO_PLAYER(CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC));
+    s32 ageID = 0;
 
     // Check if this is one of Link's skeletons
     if (sOtr + skel.vanillaSkeletonPath == std::string(gLinkAdultSkel)) {
+        // Adult skeleton
+        ageID = 2;
+    } else if (sOtr + skel.vanillaSkeletonPath == std::string(gLinkChildSkel)) {
+        // Child skeleton
+        ageID = 1;
+    } else {
+        // Incompatible?
+        return;
+    }
+
+    // Check if we even need updating
+    s32 skelID = ageID << 4 | tunicID;
+    if (skelID == skel.lastSkeletonId) {
+        return;
+    }
+
+    // Check if this is one of Link's skeletons
+    if (ageID == 2) {
         // Check what Link's current tunic is
-        switch (TUNIC_EQUIP_TO_PLAYER(CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC))) {
+        switch (tunicID) {
             case PLAYER_TUNIC_KOKIRI:
                 skeletonPath = std::string(gLinkAdultKokiriTunicSkel).substr(sOtr.length());
                 break;
@@ -152,11 +172,9 @@ void SkeletonPatcher::UpdateTunicSkeletons(SkeletonPatchInfo& skel) {
             default:
                 return;
         }
-
-        UpdateCustomSkeletonFromPath(skeletonPath, skel);
-    } else if (sOtr + skel.vanillaSkeletonPath == std::string(gLinkChildSkel)) {
+    } else if (ageID == 1) {
         // Check what Link's current tunic is
-        switch (TUNIC_EQUIP_TO_PLAYER(CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC))) {
+        switch (tunicID) {
             case PLAYER_TUNIC_KOKIRI:
                 skeletonPath = std::string(gLinkChildKokiriTunicSkel).substr(sOtr.length());
                 break;
@@ -169,20 +187,21 @@ void SkeletonPatcher::UpdateTunicSkeletons(SkeletonPatchInfo& skel) {
             default:
                 return;
         }
-
-        UpdateCustomSkeletonFromPath(skeletonPath, skel);
     }
+
+    UpdateCustomSkeletonFromPath(skeletonPath, skel);
+    skel.lastSkeletonId = skelID;
 }
 
 void SkeletonPatcher::UpdateCustomSkeletonFromPath(const std::string& skeletonPath, SkeletonPatchInfo& skel) {
     Skeleton* newSkel = nullptr;
     Skeleton* altSkel = nullptr;
-    auto resourceMgr = Ship::Context::GetInstance()->GetResourceManager();
+    auto resourceMgr = Ship::Context::GetRawInstance()->GetResourceManager();
     bool isAlt = resourceMgr->IsAltAssetsEnabled();
 
     // If alt assets are on, look for alt tagged skeletons
     if (isAlt) {
-        altSkel = (Skeleton*)Ship::Context::GetInstance()
+        altSkel = (Skeleton*)Ship::Context::GetRawInstance()
                       ->GetResourceManager()
                       ->LoadResource(Ship::IResource::gAltAssetPrefix + skeletonPath, true)
                       .get();
@@ -195,7 +214,8 @@ void SkeletonPatcher::UpdateCustomSkeletonFromPath(const std::string& skeletonPa
 
     // Load new skeleton based on the custom model if it exists
     if (altSkel == nullptr) {
-        newSkel = (Skeleton*)Ship::Context::GetInstance()->GetResourceManager()->LoadResource(skeletonPath, true).get();
+        newSkel =
+            (Skeleton*)Ship::Context::GetRawInstance()->GetResourceManager()->LoadResource(skeletonPath, true).get();
     }
 
     // Change back to the original skeleton if no skeleton's were found

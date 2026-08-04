@@ -72,7 +72,7 @@ Congratulations, you are now sailing with the Ship of Harkinian! Have fun!
 | Ctrl+R | Reset |
 
 # Project Overview
-Ship of Harkinian (SOH) is built atop a custom library dubbed libultraship (LUS). Back in the N64 days, there was an SDK distributed to developers named libultra; LUS is designed to mimic the functionality of libultra on modern hardware. In addition, we are dependant on the source code provided by the OOT decompilation project.
+Ship of Harkinian (SOH) is built atop a custom library dubbed libultraship (LUS). Back in the N64 days, there was an SDK distributed to developers named libultra; LUS is designed to mimic the functionality of libultra on modern hardware. In addition, we are dependent on the source code provided by the OOT decompilation project.
 
 In order for the game to function, you will require a **legally acquired** ROM for Ocarina of Time. Click [here](https://ship.equipment/) to check the compatibility of your specific rom. Any copyrighted assets are extracted from the ROM and reformatted as a .o2r archive file which the code uses.
 
@@ -104,6 +104,7 @@ More detailed documentation can be found in the 'docs' directory, including the 
 
 * [Credits](docs/CREDITS.md)
 * [Custom Music](docs/CUSTOM_MUSIC.md)
+* [Formatting](docs/FORMATTING.md)
 * [Controller Mapping](docs/GAME_CONTROLLER_DB.md)
 * [Modding](docs/MODDING.md)
 * [Versioning](docs/VERSIONING.md)

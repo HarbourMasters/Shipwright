@@ -1,6 +1,5 @@
 #include "location.h"
 #include "static_data.h"
-#include <algorithm>
 #include <assert.h>
 #include "option.h"
 
@@ -65,7 +64,7 @@ bool Rando::Location::IsOverworld() const {
 }
 
 bool Rando::Location::IsShop() const {
-    return scene >= SCENE_BAZAAR && scene <= SCENE_BOMBCHU_SHOP;
+    return (scene >= SCENE_BAZAAR && scene <= SCENE_BOMBCHU_SHOP) || scene == SCENE_TEST01;
 }
 
 bool Rando::Location::IsVanillaCompletion() const {
@@ -563,6 +562,23 @@ Rando::Location Rando::Location::SmallCrate(RandomizerCheck rc, RandomizerCheckQ
              false,  collectionCheck };
 }
 
+Rando::Location Rando::Location::Rock(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_,
+                                      SceneID scene_, int32_t actorParams_, std::string&& shortName_,
+                                      RandomizerHintTextKey hintKey, RandomizerGet vanillaItem,
+                                      SpoilerCollectionCheck collectionCheck) {
+    return { rc,     quest_,         RCTYPE_ROCK,           area_,   ACTOR_EN_ISHI,
+             scene_, actorParams_,   std::move(shortName_), hintKey, vanillaItem,
+             false,  collectionCheck };
+}
+
+Rando::Location Rando::Location::Boulder(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_,
+                                         SceneID scene_, int32_t actorParams_, std::string&& shortName_,
+                                         RandomizerHintTextKey hintKey, SpoilerCollectionCheck collectionCheck) {
+    return { rc,     quest_,         RCTYPE_BOULDER,        area_,   ACTOR_EN_ISHI,
+             scene_, actorParams_,   std::move(shortName_), hintKey, RG_BOMBS_5,
+             false,  collectionCheck };
+}
+
 Rando::Location Rando::Location::Tree(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_,
                                       SceneID scene_, int32_t actorParams_, std::string&& shortName_,
                                       RandomizerHintTextKey hintKey, RandomizerGet vanillaItem,
@@ -586,6 +602,15 @@ Rando::Location Rando::Location::Bush(RandomizerCheck rc, RandomizerCheckQuest q
                                       RandomizerHintTextKey hintKey, RandomizerGet vanillaItem,
                                       SpoilerCollectionCheck collectionCheck) {
     return { rc,     quest_,         RCTYPE_BUSH,           area_,   ACTOR_EN_WOOD02,
+             scene_, actorParams_,   std::move(shortName_), hintKey, vanillaItem,
+             false,  collectionCheck };
+}
+
+Rando::Location Rando::Location::WonderItem(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_,
+                                            SceneID scene_, int32_t actorParams_, std::string&& shortName_,
+                                            RandomizerHintTextKey hintKey, RandomizerGet vanillaItem,
+                                            SpoilerCollectionCheck collectionCheck) {
+    return { rc,     quest_,         RCTYPE_WONDER_ITEM,    area_,   ACTOR_EN_WONDER_ITEM,
              scene_, actorParams_,   std::move(shortName_), hintKey, vanillaItem,
              false,  collectionCheck };
 }
@@ -630,11 +655,44 @@ Rando::Location Rando::Location::SongFairy(RandomizerCheck rc, RandomizerCheckQu
              false,  collectionCheck };
 }
 
+Rando::Location Rando::Location::ButterflyFairy(RandomizerCheck rc, RandomizerCheckQuest quest_,
+                                                RandomizerCheckArea area_, SceneID scene_, int32_t actorParams_,
+                                                std::string&& shortName_, RandomizerHintTextKey hintKey,
+                                                SpoilerCollectionCheck collectionCheck) {
+    return { rc,     quest_,         RCTYPE_BUTTERFLY_FAIRY, area_,   ACTOR_EN_BUTTE,
+             scene_, actorParams_,   std::move(shortName_),  hintKey, RG_NONE,
+             false,  collectionCheck };
+}
+
 Rando::Location Rando::Location::Grass(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_,
                                        SceneID scene_, int32_t actorParams_, std::string&& shortName_,
                                        RandomizerHintTextKey hintKey, RandomizerGet vanillaItem,
                                        SpoilerCollectionCheck collectionCheck) {
     return { rc,     quest_,         RCTYPE_GRASS,          area_,   ACTOR_EN_KUSA,
              scene_, actorParams_,   std::move(shortName_), hintKey, vanillaItem,
+             false,  collectionCheck };
+}
+
+Rando::Location Rando::Location::Sign(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_,
+                                      SceneID scene_, int32_t actorParams_, std::string&& shortName_,
+                                      RandomizerHintTextKey hintKey, ActorID actorId,
+                                      SpoilerCollectionCheck collectionCheck) {
+    return { rc,      quest_,  RCTYPE_SIGN, area_,          actorId, scene_, actorParams_, std::move(shortName_),
+             hintKey, RG_NONE, false,       collectionCheck };
+}
+
+Rando::Location Rando::Location::Icicle(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_,
+                                        SceneID scene_, int32_t actorParams_, std::string&& shortName_,
+                                        RandomizerHintTextKey hintKey, SpoilerCollectionCheck collectionCheck) {
+    return { rc,     quest_,         RCTYPE_ICICLE,         area_,   ACTOR_BG_ICE_TURARA,
+             scene_, actorParams_,   std::move(shortName_), hintKey, RG_NONE,
+             false,  collectionCheck };
+}
+
+Rando::Location Rando::Location::RedIce(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_,
+                                        SceneID scene_, int32_t actorParams_, std::string&& shortName_,
+                                        RandomizerHintTextKey hintKey, SpoilerCollectionCheck collectionCheck) {
+    return { rc,     quest_,         RCTYPE_RED_ICE,        area_,   ACTOR_BG_ICE_SHELTER,
+             scene_, actorParams_,   std::move(shortName_), hintKey, RG_NONE,
              false,  collectionCheck };
 }

@@ -8,8 +8,7 @@
 #ifndef SohGui_hpp
 #define SohGui_hpp
 
-#include <stdio.h>
-#include "SohMenuBar.h"
+#include "SohMenu.h"
 #include "soh/Enhancements/audio/AudioEditor.h"
 #include "soh/Enhancements/controls/InputViewer.h"
 #include "soh/Enhancements/cosmetics/CosmeticsEditor.h"
@@ -25,6 +24,7 @@
 #include "soh/Enhancements/gameplaystatswindow.h"
 #include "soh/Enhancements/randomizer/randomizer_check_tracker.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance_tracker.h"
+#include "soh/Enhancements/randomizer/randomizer_hint_tracker.h"
 #include "soh/Enhancements/randomizer/randomizer_item_tracker.h"
 #include "soh/Enhancements/timesplits/TimeSplits.h"
 #include "soh/Enhancements/randomizer/Plandomizer.h"
@@ -44,6 +44,8 @@ bool DismissPopup(std::string title);
 void ShowRandomizerSettingsMenu();
 void ShowEscMenu();
 UIWidgets::Colors GetMenuThemeColor();
+std::shared_ptr<SohMenu> GetSohMenu();
+void DrawStartingItemsMenu(WidgetInfo& info);
 } // namespace SohGui
 
 #define THEME_COLOR SohGui::GetMenuThemeColor()

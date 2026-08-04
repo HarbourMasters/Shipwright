@@ -2,11 +2,11 @@
 #include "soh/Enhancements/speechsynthesizer/SpeechSynthesizer.h"
 
 #include <cassert>
+#include <ship/Context.h>
 #include <ship/resource/File.h>
+#include <ship/resource/ResourceManager.h>
 #include <ship/resource/type/Json.h>
-#include <libultraship/classes.h>
 #include <nlohmann/json.hpp>
-#include <spdlog/fmt/fmt.h>
 
 #include "soh/ShipInit.hpp"
 #include "message_data_static.h"
@@ -37,11 +37,10 @@ nlohmann::json fileChooseMap = nullptr;
 std::string GetParameritizedText(std::string key, TextBank bank, const char* arg) {
     switch (bank) {
         case TEXT_BANK_SCENES: {
-            return sceneMap[key].get<std::string>();
-            break;
+            return sceneMap.value(key, "unknown");
         }
         case TEXT_BANK_MISC: {
-            auto value = miscMap[key].get<std::string>();
+            auto value = miscMap.value(key, "unknown");
 
             std::string searchString = "$0";
             size_t index = value.find(searchString);
@@ -49,15 +48,11 @@ std::string GetParameritizedText(std::string key, TextBank bank, const char* arg
             if (index != std::string::npos) {
                 assert(arg != nullptr);
                 value.replace(index, searchString.size(), std::string(arg));
-                return value;
-            } else {
-                return value;
             }
-
-            break;
+            return value;
         }
         case TEXT_BANK_KALEIDO: {
-            auto value = kaleidoMap[key].get<std::string>();
+            auto value = kaleidoMap.value(key, "unknown");
 
             std::string searchString = "$0";
             size_t index = value.find(searchString);
@@ -65,15 +60,11 @@ std::string GetParameritizedText(std::string key, TextBank bank, const char* arg
             if (index != std::string::npos) {
                 assert(arg != nullptr);
                 value.replace(index, searchString.size(), std::string(arg));
-                return value;
-            } else {
-                return value;
             }
-
-            break;
+            return value;
         }
         case TEXT_BANK_FILECHOOSE: {
-            auto value = fileChooseMap[key].get<std::string>();
+            auto value = fileChooseMap.value(key, "unknown");
 
             std::string searchString = "$0";
             size_t index = value.find(searchString);
@@ -81,14 +72,11 @@ std::string GetParameritizedText(std::string key, TextBank bank, const char* arg
             if (index != std::string::npos) {
                 assert(arg != nullptr);
                 value.replace(index, searchString.size(), std::string(arg));
-                return value;
-            } else {
-                return value;
             }
-
-            break;
+            return value;
         }
     }
+    return "unknown";
 }
 
 const char* GetLanguageCode() {
@@ -357,7 +345,7 @@ void RegisterOnKaleidoscopeUpdateHook() {
                 // Normalize hearts to fractional count similar to z_lifemeter
                 int curHeartFraction = gSaveContext.health % 16;
                 int fullHearts = gSaveContext.health / 16;
-                float fraction = ceilf((float)curHeartFraction / 5) * 0.25;
+                float fraction = ceilf(static_cast<f32>(curHeartFraction / 5.0f)) * 0.25f;
                 float health = (float)fullHearts + fraction;
                 snprintf(arg, sizeof(arg), "%g", health);
                 auto translation = GetParameritizedText("health", TEXT_BANK_KALEIDO, arg);
@@ -432,7 +420,7 @@ void RegisterOnKaleidoscopeUpdateHook() {
                 // Check if item is assigned to a button
                 for (size_t i = 0; i < ARRAY_COUNT(gSaveContext.equips.cButtonSlots); i++) {
                     if (gSaveContext.equips.buttonItems[i + 1] == pauseCtx->cursorItem[PAUSE_ITEM]) {
-                        assignedTo = i;
+                        assignedTo = static_cast<s8>(i);
                         break;
                     }
                 }
@@ -513,7 +501,7 @@ void RegisterOnKaleidoscopeUpdateHook() {
 
                 std::string key = std::to_string(pauseCtx->cursorItem[PAUSE_EQUIP]);
                 auto itemTranslation = GetParameritizedText(key, TEXT_BANK_KALEIDO, nullptr);
-                uint8_t checkEquipItem = pauseCtx->namedItem;
+                uint16_t checkEquipItem = pauseCtx->namedItem;
 
                 // BGS from kaleido reports as ITEM_HEART_PIECE_2 (122)
                 // remap BGS and broken knife to be the BGS item for the current equip check
@@ -532,7 +520,7 @@ void RegisterOnKaleidoscopeUpdateHook() {
 
                     for (size_t i = 0; i < ARRAY_COUNT(gSaveContext.equips.cButtonSlots); i++) {
                         if (gSaveContext.equips.buttonItems[i + 1] == checkEquipItem) {
-                            assignedTo = i;
+                            assignedTo = static_cast<s8>(i);
                             break;
                         }
                     }
@@ -881,7 +869,7 @@ void RegisterOnUpdateMainMenuSelection() {
         } else if (charCode == 0xF0 + FS_KBD_BTN_END) {
             translation = GetParameritizedText("end", TEXT_BANK_FILECHOOSE, nullptr);
         } else {
-            charVal[0] = charCode;
+            charVal[0] = static_cast<char>(charCode);
         }
 
         if (translation.empty()) {
@@ -1137,21 +1125,21 @@ void InitTTSBank() {
     initData->Type = static_cast<uint32_t>(Ship::ResourceType::Json);
     initData->ResourceVersion = 0;
 
-    sceneMap = std::static_pointer_cast<Ship::Json>(Ship::Context::GetInstance()->GetResourceManager()->LoadResource(
+    sceneMap = std::static_pointer_cast<Ship::Json>(Ship::Context::GetRawInstance()->GetResourceManager()->LoadResource(
                                                         "accessibility/texts/scenes" + languageSuffix, true, initData))
                    ->Data;
 
-    miscMap = std::static_pointer_cast<Ship::Json>(Ship::Context::GetInstance()->GetResourceManager()->LoadResource(
+    miscMap = std::static_pointer_cast<Ship::Json>(Ship::Context::GetRawInstance()->GetResourceManager()->LoadResource(
                                                        "accessibility/texts/misc" + languageSuffix, true, initData))
                   ->Data;
 
     kaleidoMap =
-        std::static_pointer_cast<Ship::Json>(Ship::Context::GetInstance()->GetResourceManager()->LoadResource(
+        std::static_pointer_cast<Ship::Json>(Ship::Context::GetRawInstance()->GetResourceManager()->LoadResource(
                                                  "accessibility/texts/kaleidoscope" + languageSuffix, true, initData))
             ->Data;
 
     fileChooseMap =
-        std::static_pointer_cast<Ship::Json>(Ship::Context::GetInstance()->GetResourceManager()->LoadResource(
+        std::static_pointer_cast<Ship::Json>(Ship::Context::GetRawInstance()->GetResourceManager()->LoadResource(
                                                  "accessibility/texts/filechoose" + languageSuffix, true, initData))
             ->Data;
 }

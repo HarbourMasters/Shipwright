@@ -1,0 +1,28 @@
+:config:
+  segments:
+    - [ 128, 0x01A48000 ]
+
+gKokiriForestTitleCardENGTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gKokiriForestTitleCardENGTex
+  format: IA8
+  width: 144
+  height: 24
+
+gKokiriForestTitleCardFRATex:
+  type: TEXTURE
+  offset: 0x1B00
+  symbol: gKokiriForestTitleCardFRATex
+  format: IA8
+  width: 144
+  height: 24
+
+gKokiriForestTitleCardGERTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gKokiriForestTitleCardGERTex
+  format: IA8
+  width: 144
+  height: 24
+

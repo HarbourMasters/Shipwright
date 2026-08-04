@@ -120,10 +120,9 @@ void SohMenu::AddMenuDevTools() {
                      .ComboMap(logLevels)
                      .DefaultIndex(defaultLogLevel))
         .Callback([](WidgetInfo& info) {
-            Ship::Context::GetInstance()->GetLogger()->set_level(
+            Ship::Context::GetRawInstance()->GetLogger()->set_level(
                 (spdlog::level::level_enum)CVarGetInteger(CVAR_DEVELOPER_TOOLS("LogLevel"), defaultLogLevel));
-        })
-        .PreFunc([](WidgetInfo& info) { info.isHidden = mSohMenu->disabledMap.at(DISABLE_FOR_DEBUG_MODE_OFF).active; });
+        });
 
     path.column = SECTION_COLUMN_2;
     AddWidget(path, "Warping", WIDGET_SEPARATOR_TEXT);

@@ -1,0 +1,122 @@
+:config:
+  segments:
+    - [ 6, 0x01136220 ]
+    - [ 4, 0x00D31090 ]
+    - [ 8, 0x01136220 ]
+    - [ 9, 0x01136220 ]
+    - [ 10, 0x01136220 ]
+    - [ 11, 0x01136220 ]
+    - [ 12, 0x01136220 ]
+    - [ 13, 0x01136220 ]
+  external_files:
+    - ntsc_j_gc/objects/gameplay_keep.yml
+
+gKokiriShopkeeperEarTex:
+  type: TEXTURE
+  offset: 0x1470
+  symbol: gKokiriShopkeeperEarTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x0
+
+gKokiriShopkeeperEyeDefaultTex:
+  type: TEXTURE
+  offset: 0x1570
+  symbol: gKokiriShopkeeperEyeDefaultTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gKokiriShopkeeperEyeHalfTex:
+  type: TEXTURE
+  offset: 0x1F0
+  symbol: gKokiriShopkeeperEyeHalfTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gKokiriShopkeeperEyeOpenTex:
+  type: TEXTURE
+  offset: 0xB30
+  symbol: gKokiriShopkeeperEyeOpenTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gKokiriShopkeeperHairTex:
+  type: TEXTURE
+  offset: 0x1330
+  symbol: gKokiriShopkeeperHairTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x0
+
+gKokiriShopkeeperHatTex:
+  type: TEXTURE
+  offset: 0x1D70
+  symbol: gKokiriShopkeeperHatTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x0
+
+gKokiriShopkeeperHeadDL:
+  type: GFX
+  offset: 0x2820
+  symbol: gKokiriShopkeeperHeadDL
+
+gKokiriShopkeeperMouthAndNoseTex:
+  type: TEXTURE
+  offset: 0x1DB0
+  symbol: gKokiriShopkeeperMouthAndNoseTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x0
+
+gKokiriShopkeeperNoseTex:
+  type: TEXTURE
+  offset: 0x1430
+  symbol: gKokiriShopkeeperNoseTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x0
+
+gKokiriShopkeeperTLUT:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gKokiriShopkeeperTLUT
+  format: RGBA16
+  width: 248
+  height: 1
+
+object_masterkokiriheadTex_0009F0:
+  type: TEXTURE
+  offset: 0x9F0
+  symbol: object_masterkokiriheadTex_0009F0
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x0
+
+object_masterkokiriheadTex_000A30:
+  type: TEXTURE
+  offset: 0xA30
+  symbol: object_masterkokiriheadTex_000A30
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x0
+
+
+object_masterkokiriheadVtx_0021B0:
+  type: OOT:ARRAY
+  offset: 0x0021B0
+  symbol: object_masterkokiriheadVtx_0021B0
+  count: 103
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

@@ -1,12 +1,8 @@
 #include "soh/Network/Anchor/Anchor.h"
-#include "soh/Network/Anchor/JsonConversions.hpp"
 #include <nlohmann/json.hpp>
-#include <libultraship/libultraship.h>
 
 extern "C" {
-#include "macros.h"
 #include "functions.h"
-#include "variables.h"
 extern PlayState* gPlayState;
 }
 
@@ -36,8 +32,8 @@ void Anchor::SendPacket_PlayerSfx(u16 sfxId) {
 }
 
 void Anchor::HandlePacket_PlayerSfx(nlohmann::json payload) {
-    uint32_t clientId = payload["clientId"].get<uint32_t>();
-    u16 sfxId = payload["sfxId"].get<u16>();
+    uint32_t clientId = payload.at("clientId").get<uint32_t>();
+    u16 sfxId = payload.at("sfxId").get<u16>();
 
     if (!clients.contains(clientId) || !clients[clientId].player) {
         return;

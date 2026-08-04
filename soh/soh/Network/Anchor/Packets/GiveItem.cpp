@@ -1,6 +1,5 @@
 #include "soh/Network/Anchor/Anchor.h"
 #include <nlohmann/json.hpp>
-#include <libultraship/libultraship.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Notification/Notification.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
@@ -49,10 +48,10 @@ void Anchor::HandlePacket_GiveItem(nlohmann::json payload) {
         return;
     }
 
-    uint32_t clientId = payload["clientId"].get<uint32_t>();
+    uint32_t clientId = payload.at("clientId").get<uint32_t>();
     AnchorClient& client = clients[clientId];
-    u16 modId = payload["modId"].get<u16>();
-    u16 getItemId = payload["getItemId"].get<u16>();
+    u16 modId = payload.at("modId").get<u16>();
+    u16 getItemId = payload.at("getItemId").get<u16>();
 
     GetItemEntry getItemEntry;
     if (modId == MOD_NONE) {
@@ -65,7 +64,7 @@ void Anchor::HandlePacket_GiveItem(nlohmann::json payload) {
         if (getItemEntry.getItemId == GI_SWORD_BGS) {
             gSaveContext.bgsFlag = true;
         }
-        Item_Give(gPlayState, getItemEntry.itemId);
+        Item_Give(gPlayState, static_cast<u8>(getItemEntry.itemId));
     } else if (getItemEntry.modIndex == MOD_RANDOMIZER) {
         if (getItemEntry.getItemId == RG_ICE_TRAP) {
             gSaveContext.ship.pendingIceTrapCount++;

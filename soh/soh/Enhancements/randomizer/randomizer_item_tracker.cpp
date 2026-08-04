@@ -3,13 +3,11 @@
 #include <string>
 #include <vector>
 
-#include <libultraship/libultraship.h>
 #include <libultraship/controller/controldeck/ControlDeck.h>
 
+#include "randomizer_check_objects.h"
 #include "randomizer_check_tracker.h"
 #include "randomizer_item_tracker.h"
-#include "randomizerTypes.h"
-#include "soh/cvar_prefixes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
@@ -18,6 +16,10 @@
 #include "soh/SohGui/SohMenu.h"
 #include "soh/SohGui/UIWidgets.hpp"
 #include "soh/util.h"
+#include "soh/Enhancements/randomizer/randomizer.h"
+#include "soh/Enhancements/randomizer/dungeon.h"
+
+#include <fast/Fast3dGui.h>
 
 extern "C" {
 #include <z64.h>
@@ -25,9 +27,6 @@ extern "C" {
 #include "functions.h"
 #include "macros.h"
 extern PlayState* gPlayState;
-
-#include "textures/icon_item_static/icon_item_static.h"
-#include "textures/icon_item_24_static/icon_item_24_static.h"
 }
 
 void DrawEquip(ItemTrackerItem item);
@@ -57,11 +56,13 @@ static WidgetInfo gregTracking;
 static WidgetInfo triforcePieceTracking;
 static WidgetInfo beanSoulsTracking;
 static WidgetInfo bossSoulsTracking;
+static WidgetInfo jabberNutsTracking;
 static WidgetInfo ocarinaButtonTracking;
 static WidgetInfo overworldKeysTracking;
 static WidgetInfo fishingPoleTracking;
 static WidgetInfo personalNotesWiget;
 static WidgetInfo hookshotIdentWidget;
+static WidgetInfo openChestIdentWidget;
 
 namespace SohGui {
 extern std::shared_ptr<SohMenu> mSohMenu;
@@ -186,6 +187,12 @@ std::vector<ItemTrackerItem> bossSoulItems = {
     ITEM_TRACKER_ITEM(RG_GANON_SOUL, 0, DrawItem),
 };
 
+std::vector<ItemTrackerItem> jabbernutItems = {
+    ITEM_TRACKER_ITEM(RG_SPEAK_DEKU, 0, DrawItem),   ITEM_TRACKER_ITEM(RG_SPEAK_GERUDO, 0, DrawItem),
+    ITEM_TRACKER_ITEM(RG_SPEAK_GORON, 0, DrawItem),  ITEM_TRACKER_ITEM(RG_SPEAK_HYLIAN, 0, DrawItem),
+    ITEM_TRACKER_ITEM(RG_SPEAK_KOKIRI, 0, DrawItem), ITEM_TRACKER_ITEM(RG_SPEAK_ZORA, 0, DrawItem),
+};
+
 std::vector<ItemTrackerItem> ocarinaButtonItems = {
     // Hack for right now, just gonna draw ocarina buttons as ocarinas.
     // Will replace with other macro once we have a custom texture
@@ -295,7 +302,7 @@ std::map<uint16_t, std::string> itemTrackerBeanShortNames = {
     { RG_GERUDO_VALLEY_BEAN_SOUL, "GV" },
     { RG_GRAVEYARD_BEAN_SOUL, "GY" },
     { RG_KOKIRI_FOREST_BEAN_SOUL, "KF" },
-    { RG_LAKE_HYLIA_BEAN_SOUL, "LA" },
+    { RG_LAKE_HYLIA_BEAN_SOUL, "LH" },
     { RG_LOST_WOODS_BRIDGE_BEAN_SOUL, "LWB" },
     { RG_LOST_WOODS_BEAN_SOUL, "LWT" },
     { RG_ZORAS_RIVER_BEAN_SOUL, "ZR" },
@@ -305,6 +312,11 @@ std::map<uint16_t, std::string> itemTrackerBossShortNames = {
     { RG_GOHMA_SOUL, "GOHMA" },       { RG_KING_DODONGO_SOUL, "KD" }, { RG_BARINADE_SOUL, "BARI" },
     { RG_PHANTOM_GANON_SOUL, "PG" },  { RG_VOLVAGIA_SOUL, "VOLV" },   { RG_MORPHA_SOUL, "MORPH" },
     { RG_BONGO_BONGO_SOUL, "BONGO" }, { RG_TWINROVA_SOUL, "TWIN" },   { RG_GANON_SOUL, "GANON" },
+};
+
+std::map<uint16_t, std::string> itemTrackerJabberNutShortNames = {
+    { RG_SPEAK_DEKU, "DEKU" },     { RG_SPEAK_GERUDO, "GERUDO" }, { RG_SPEAK_GORON, "GORON" },
+    { RG_SPEAK_HYLIAN, "HYLIAN" }, { RG_SPEAK_KOKIRI, "KOKIRI" }, { RG_SPEAK_ZORA, "ZORA" },
 };
 
 std::map<uint16_t, std::string> itemTrackerOcarinaButtonShortNames = {
@@ -481,12 +493,13 @@ bool HasEquipment(ItemTrackerItem item) {
     return GameInteractor::IsSaveLoaded() ? (item.data & gSaveContext.inventory.equipment) : false;
 }
 
-void ItemTracker_LoadFromPreset(nlohmann::json trackerInfo) {
+void ItemTracker_LoadFromPreset(const nlohmann::json& trackerInfo) {
     presetLoaded = true;
     for (auto window : itemTrackerWindowIDs) {
         if (trackerInfo.contains(window)) {
-            presetPos[window] = { trackerInfo[window]["pos"]["x"], trackerInfo[window]["pos"]["y"] };
-            presetSize[window] = { trackerInfo[window]["size"]["width"], trackerInfo[window]["size"]["height"] };
+            const nlohmann::json& windowInfo = trackerInfo.at(window);
+            presetPos[window] = { windowInfo.at("pos").at("x"), windowInfo.at("pos").at("y") };
+            presetSize[window] = { windowInfo.at("size").at("width"), windowInfo.at("size").at("height") };
         }
     }
 }
@@ -532,11 +545,24 @@ ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
                                                                                                                : 500;
             result.currentAmmo = gSaveContext.rupees;
             break;
-        case ITEM_BOMBCHU:
-            result.currentCapacity = INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU ? 50 : 0;
+        case ITEM_BOMBCHU: {
+            auto bombchuBag = RAND_GET_OPTION(RSK_BOMBCHU_BAG);
+
+            uint8_t capacity = 0;
+
+            if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_BOMBCHU) {
+                if (bombchuBag.Is(RO_BOMBCHU_BAG_PROGRESSIVE)) {
+                    capacity = OTRGlobals::Instance->gRandoContext->GetBombchuCapacity();
+                } else {
+                    capacity = 50;
+                }
+            }
+
+            result.currentCapacity = capacity;
             result.maxCapacity = 50;
             result.currentAmmo = AMMO(ITEM_BOMBCHU);
             break;
+        }
         case ITEM_BEAN:
             result.currentCapacity = INV_CONTENT(ITEM_BEAN) == ITEM_BEAN ? 10 : 0;
             result.maxCapacity = 10;
@@ -558,56 +584,50 @@ ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
             // Though the ammo/capacity naming doesn't really make sense for keys, we are
             // hijacking the same system to display key counts as there are enough similarities
             result.currentAmmo = MAX(gSaveContext.inventory.dungeonKeys[item.data], 0);
-            result.currentCapacity = gSaveContext.ship.stats.dungeonKeys[item.data];
-            switch (item.data) {
-                case SCENE_FOREST_TEMPLE:
-                    result.maxCapacity = FOREST_TEMPLE_SMALL_KEY_MAX;
-                    break;
-                case SCENE_FIRE_TEMPLE:
-                    result.maxCapacity = FIRE_TEMPLE_SMALL_KEY_MAX;
-                    break;
-                case SCENE_WATER_TEMPLE:
-                    result.maxCapacity = WATER_TEMPLE_SMALL_KEY_MAX;
-                    break;
-                case SCENE_SPIRIT_TEMPLE:
-                    result.maxCapacity = SPIRIT_TEMPLE_SMALL_KEY_MAX;
-                    break;
-                case SCENE_SHADOW_TEMPLE:
-                    result.maxCapacity = SHADOW_TEMPLE_SMALL_KEY_MAX;
-                    break;
-                case SCENE_BOTTOM_OF_THE_WELL:
-                    result.maxCapacity = BOTTOM_OF_THE_WELL_SMALL_KEY_MAX;
-                    break;
-                case SCENE_GERUDO_TRAINING_GROUND:
-                    result.maxCapacity = GERUDO_TRAINING_GROUND_SMALL_KEY_MAX;
-                    break;
-                case SCENE_THIEVES_HIDEOUT:
-                    if (IS_RANDO) {
-                        switch (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GERUDO_FORTRESS)) {
-                            case RO_GF_CARPENTERS_NORMAL:
-                                result.maxCapacity = GERUDO_FORTRESS_SMALL_KEY_MAX;
-                                break;
-                            case RO_GF_CARPENTERS_FAST:
-                                result.maxCapacity = 1;
-                                break;
-                            case RO_GF_CARPENTERS_FREE:
-                                result.maxCapacity = 0;
-                                break;
-                            default:
-                                result.maxCapacity = 0;
-                                SPDLOG_ERROR(
-                                    "Invalid value for RSK_GERUDO_FORTRESS: {}",
-                                    OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GERUDO_FORTRESS));
-                                assert(false);
-                                break;
+            if (item.data == SCENE_THIEVES_HIDEOUT) {
+                std::vector<uint8_t> DoorFlags = THIEVES_HIDEOUT_DOOR_FLAGS;
+                result.currentCapacity = Rando::FindTotalSmallKeys(&gSaveContext, SCENE_THIEVES_HIDEOUT, &DoorFlags);
+                result.maxCapacity = GERUDO_FORTRESS_SMALL_KEY_MAX;
+            } else {
+                result.currentCapacity = OTRGlobals::Instance->gRandoContext->GetDungeons()
+                                             ->GetDungeonFromScene(item.data)
+                                             ->GetTotalSmallKeys(&gSaveContext);
+                switch (item.data) {
+                    case SCENE_FOREST_TEMPLE:
+                        result.maxCapacity = FOREST_TEMPLE_SMALL_KEY_MAX;
+                        break;
+                    case SCENE_FIRE_TEMPLE:
+                        result.maxCapacity = FIRE_TEMPLE_SMALL_KEY_MAX;
+                        if (IS_RANDO &&
+                            !(OTRGlobals::Instance->gRandoContext->GetOption(RSK_KEYSANITY)
+                                  .Is(RO_DUNGEON_ITEM_LOC_ANYWHERE) ||
+                              OTRGlobals::Instance->gRandoContext->GetOption(RSK_KEYSANITY)
+                                  .Is(RO_DUNGEON_ITEM_LOC_OVERWORLD) ||
+                              OTRGlobals::Instance->gRandoContext->GetOption(RSK_KEYSANITY)
+                                  .Is(RO_DUNGEON_ITEM_LOC_ANY_DUNGEON)) &&
+                            OTRGlobals::Instance->gRandoContext->GetDungeon(Rando::FIRE_TEMPLE)->IsVanilla()) {
+                            result.currentCapacity = result.currentCapacity - 1;
                         }
-                    } else {
-                        result.maxCapacity = GERUDO_FORTRESS_SMALL_KEY_MAX;
-                    }
-                    break;
-                case SCENE_INSIDE_GANONS_CASTLE:
-                    result.maxCapacity = GANONS_CASTLE_SMALL_KEY_MAX;
-                    break;
+                        break;
+                    case SCENE_WATER_TEMPLE:
+                        result.maxCapacity = WATER_TEMPLE_SMALL_KEY_MAX;
+                        break;
+                    case SCENE_SPIRIT_TEMPLE:
+                        result.maxCapacity = SPIRIT_TEMPLE_SMALL_KEY_MAX;
+                        break;
+                    case SCENE_SHADOW_TEMPLE:
+                        result.maxCapacity = SHADOW_TEMPLE_SMALL_KEY_MAX;
+                        break;
+                    case SCENE_BOTTOM_OF_THE_WELL:
+                        result.maxCapacity = BOTTOM_OF_THE_WELL_SMALL_KEY_MAX;
+                        break;
+                    case SCENE_GERUDO_TRAINING_GROUND:
+                        result.maxCapacity = GERUDO_TRAINING_GROUND_SMALL_KEY_MAX;
+                        break;
+                    case SCENE_INSIDE_GANONS_CASTLE:
+                        result.maxCapacity = GANONS_CASTLE_SMALL_KEY_MAX;
+                        break;
+                }
             }
             break;
     }
@@ -655,6 +675,23 @@ void DrawItemCount(ItemTrackerItem item, bool hideMax) {
         }
     }
 
+    // progressive open chest: 'S' for small chests only, 'B' once big chests can be opened too
+    if (item.id == RG_OPEN_CHEST && CVarGetInteger(CVAR_TRACKER_ITEM("OpenChestIdentifier"), 0) && IS_RANDO &&
+        RAND_GET_OPTION(RSK_SHUFFLE_OPEN_CHEST).Is(RO_OPEN_CHEST_PROGRESSIVE) &&
+        Flags_GetRandomizerInf(RAND_INF_CAN_OPEN_CHEST)) {
+        const char* ident = Flags_GetRandomizerInf(RAND_INF_CAN_OPEN_LARGE_CHEST) ? "B" : "S";
+
+        ImVec2 textPos = ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize(ident).x * textScalingFactor / 2) +
+                                    8 * textScalingFactor,
+                                p.y - 22 * textScalingFactor);
+
+        ImGui::SetCursorScreenPos(textPos);
+        ImGui::SetWindowFontScale(textScalingFactor);
+
+        ImGui::Text("%s", ident);
+        ImGui::SetWindowFontScale(1.0f);
+    }
+
     ImGui::SetWindowFontScale(textSize / 13.0f);
 
     if (item.id == ITEM_KEY_SMALL && IsValidSaveFile()) {
@@ -697,7 +734,7 @@ void DrawItemCount(ItemTrackerItem item, bool hideMax) {
         bool shouldDisplayAmmo = trackerNumberDisplayMode == ITEM_TRACKER_NUMBER_AMMO ||
                                  trackerNumberDisplayMode == ITEM_TRACKER_NUMBER_CURRENT_AMMO_ONLY ||
                                  // These items have a static capacity, so display ammo instead
-                                 item.id == ITEM_BOMBCHU || item.id == ITEM_BEAN || item.id == QUEST_SKULL_TOKEN ||
+                                 item.id == ITEM_BEAN || item.id == QUEST_SKULL_TOKEN ||
                                  item.id == ITEM_HEART_CONTAINER || item.id == ITEM_HEART_PIECE;
 
         bool shouldDisplayMax = !(trackerNumberDisplayMode == ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY ||
@@ -742,15 +779,17 @@ void DrawItemCount(ItemTrackerItem item, bool hideMax) {
         ImGui::Text("%s", maxString.c_str());
         ImGui::PopStyleColor();
     } else if (item.id == RG_TRIFORCE_PIECE && IS_RANDO &&
-               (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT) != RO_TRIFORCE_HUNT_OFF) &&
+               (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_TOTAL) > 0) &&
                IsValidSaveFile()) {
         std::string currentString = "";
         std::string requiredString = "";
         std::string maxString = "";
-        uint8_t piecesRequired =
-            (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED) + 1);
-        uint8_t piecesTotal =
-            (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_TOTAL) + 1);
+        uint8_t piecesTotal = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_TOTAL);
+        uint8_t piecesRequired = OTRGlobals::Instance->gRandomizer->GetTriforcePiecesRequired();
+        // If no trigger uses Triforce Pieces they're just filler; gauge progress against the whole pool.
+        if (piecesRequired == 0) {
+            piecesRequired = piecesTotal;
+        }
         ImU32 currentColor = gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected >= piecesRequired
                                  ? IM_COL_GREEN
                                  : IM_COL_WHITE;
@@ -787,8 +826,8 @@ void DrawItemCount(ItemTrackerItem item, bool hideMax) {
 void DrawEquip(ItemTrackerItem item) {
     bool hasEquip = HasEquipment(item);
     float iconSize = static_cast<float>(CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36));
-    ImGui::Image(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
-                     hasEquip && IsValidSaveFile() ? item.name : item.nameFaded),
+    ImGui::Image(std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
+                     ->GetTextureByName(hasEquip && IsValidSaveFile() ? item.name : item.nameFaded),
                  ImVec2(iconSize, iconSize), ImVec2(0.0f, 0.0f), ImVec2(1, 1));
 
     Tooltip(SohUtils::GetItemName(item.id).c_str());
@@ -798,9 +837,10 @@ void DrawQuest(ItemTrackerItem item) {
     bool hasQuestItem = HasQuestItem(item);
     float iconSize = static_cast<float>(CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36));
     ImGui::BeginGroup();
-    ImGui::ImageWithBg(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
-                           hasQuestItem && IsValidSaveFile() ? item.name : item.nameFaded),
-                       ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
+    ImGui::ImageWithBg(
+        std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
+            ->GetTextureByName(hasQuestItem && IsValidSaveFile() ? item.name : item.nameFaded),
+        ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
     if (item.id == QUEST_SKULL_TOKEN) {
         DrawItemCount(item, false);
@@ -812,11 +852,15 @@ void DrawQuest(ItemTrackerItem item) {
 };
 
 bool HasBossSoul(RandomizerInf bossSoul) {
-    uint8_t soulSetting = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_BOSS_SOULS);
-    bool isSoulRandomized = IS_RANDO && (soulSetting == RO_BOSS_SOULS_ON_PLUS_GANON ||
-                                         (soulSetting == RO_BOSS_SOULS_ON && bossSoul != RAND_INF_GANON_SOUL));
-
-    return isSoulRandomized ? Flags_GetRandomizerInf(bossSoul) : true;
+    if (!IS_RANDO) {
+        return false;
+    } else if (bossSoul == RAND_INF_GANON_SOUL) {
+        return OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GANONS_SOUL) == RO_GANONS_SOUL_STARTWITH ||
+               Flags_GetRandomizerInf(RAND_INF_GANON_SOUL);
+    } else {
+        return OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_BOSS_SOULS) &&
+               Flags_GetRandomizerInf(bossSoul);
+    }
 }
 
 void DrawItem(ItemTrackerItem item) {
@@ -854,7 +898,7 @@ void DrawItem(ItemTrackerItem item) {
         case ITEM_BRACELET:
         case ITEM_GAUNTLETS_SILVER:
         case ITEM_GAUNTLETS_GOLD:
-            actualItemId = CUR_UPG_VALUE(UPG_STRENGTH) == 3   ? ITEM_GAUNTLETS_GOLD
+            actualItemId = CUR_UPG_VALUE(UPG_STRENGTH) >= 3   ? ITEM_GAUNTLETS_GOLD
                            : CUR_UPG_VALUE(UPG_STRENGTH) == 2 ? ITEM_GAUNTLETS_SILVER
                                                               : ITEM_BRACELET;
             hasItem = CUR_UPG_VALUE(UPG_STRENGTH) > 0;
@@ -870,8 +914,8 @@ void DrawItem(ItemTrackerItem item) {
             break;
         case RG_TRIFORCE_PIECE:
             actualItemId = item.id;
-            hasItem = IS_RANDO && (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT) !=
-                                   RO_TRIFORCE_HUNT_OFF);
+            hasItem = IS_RANDO &&
+                      (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_TOTAL) > 0);
             itemName = "Triforce Piece";
             break;
         case ITEM_NAYRUS_LOVE:
@@ -978,6 +1022,37 @@ void DrawItem(ItemTrackerItem item) {
             actualItemId = item.id;
             hasItem = HasBossSoul(RAND_INF_GANON_SOUL);
             itemName = "Ganon's Soul";
+            break;
+
+        case RG_SPEAK_DEKU:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_CAN_SPEAK_DEKU);
+            itemName = "Deku Jabber Nut";
+            break;
+        case RG_SPEAK_GERUDO:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_CAN_SPEAK_GERUDO);
+            itemName = "Gerudo Jabber Nut";
+            break;
+        case RG_SPEAK_GORON:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_CAN_SPEAK_GORON);
+            itemName = "Goron Jabber Nut";
+            break;
+        case RG_SPEAK_HYLIAN:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_CAN_SPEAK_HYLIAN);
+            itemName = "Hylian Jabber Nut";
+            break;
+        case RG_SPEAK_KOKIRI:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_CAN_SPEAK_KOKIRI);
+            itemName = "Kokiri Jabber Nut";
+            break;
+        case RG_SPEAK_ZORA:
+            actualItemId = item.id;
+            hasItem = Flags_GetRandomizerInf(RAND_INF_CAN_SPEAK_ZORA);
+            itemName = "Zora Jabber Nut";
             break;
 
         case RG_OCARINA_A_BUTTON:
@@ -1171,8 +1246,8 @@ void DrawItem(ItemTrackerItem item) {
 
     ImGui::BeginGroup();
 
-    ImGui::Image(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
-                     hasItem && IsValidSaveFile() ? item.name : item.nameFaded),
+    ImGui::Image(std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
+                     ->GetTextureByName(hasItem && IsValidSaveFile() ? item.name : item.nameFaded),
                  ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
     DrawItemCount(item, false);
@@ -1197,6 +1272,16 @@ void DrawItem(ItemTrackerItem item) {
         ImGui::PopStyleColor();
     }
 
+    if (item.id >= RG_SPEAK_DEKU && item.id <= RG_SPEAK_ZORA) {
+        ImVec2 p = ImGui::GetCursorScreenPos();
+        std::string name = itemTrackerJabberNutShortNames[item.id];
+        ImGui::SetCursorScreenPos(
+            ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize(name.c_str()).x / 2), p.y - (iconSize + 13)));
+        ImGui::PushStyleColor(ImGuiCol_Text, IM_COL_WHITE);
+        ImGui::Text("%s", name.c_str());
+        ImGui::PopStyleColor();
+    }
+
     if (item.id >= RG_OCARINA_A_BUTTON && item.id <= RG_OCARINA_C_RIGHT_BUTTON) {
         ImVec2 p = ImGui::GetCursorScreenPos();
         std::string ocarinaButtonName = itemTrackerOcarinaButtonShortNames[item.id];
@@ -1217,7 +1302,7 @@ void DrawItem(ItemTrackerItem item) {
         ImGui::PopStyleColor();
     }
 
-    if (item.id >= RG_BRONZE_SCALE && item.id <= RG_OPEN_CHEST) {
+    if (item.id == RG_BRONZE_SCALE) {
         ImVec2 p = ImGui::GetCursorScreenPos();
         ImGui::SetCursorScreenPos(
             ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize(itemName.c_str()).x / 2), p.y - (iconSize + 2)));
@@ -1247,8 +1332,8 @@ void DrawBottle(ItemTrackerItem item) {
     }
 
     float iconSize = static_cast<float>(CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36));
-    ImGui::Image(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
-                     hasItem && IsValidSaveFile() ? item.name : item.nameFaded),
+    ImGui::Image(std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
+                     ->GetTextureByName(hasItem && IsValidSaveFile() ? item.name : item.nameFaded),
                  ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
     Tooltip(SohUtils::GetItemName(item.id).c_str());
@@ -1263,12 +1348,12 @@ void DrawDungeonItem(ItemTrackerItem item) {
     bool hasSmallKey = GameInteractor::IsSaveLoaded() ? ((gSaveContext.inventory.dungeonKeys[item.data]) >= 0) : false;
     ImGui::BeginGroup();
     if (itemId == ITEM_KEY_SMALL) {
-        ImGui::Image(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
-                         hasSmallKey && IsValidSaveFile() ? item.name : item.nameFaded),
+        ImGui::Image(std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
+                         ->GetTextureByName(hasSmallKey && IsValidSaveFile() ? item.name : item.nameFaded),
                      ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
     } else {
-        ImGui::Image(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
-                         hasItem && IsValidSaveFile() ? item.name : item.nameFaded),
+        ImGui::Image(std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
+                         ->GetTextureByName(hasItem && IsValidSaveFile() ? item.name : item.nameFaded),
                      ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
     }
 
@@ -1313,8 +1398,8 @@ void DrawSong(ItemTrackerItem item) {
     ImVec2 p = ImGui::GetCursorScreenPos();
     bool hasSong = HasSong(item);
     ImGui::SetCursorScreenPos(ImVec2(p.x + 6, p.y));
-    ImGui::Image(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
-                     hasSong && IsValidSaveFile() ? item.name : item.nameFaded),
+    ImGui::Image(std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
+                     ->GetTextureByName(hasSong && IsValidSaveFile() ? item.name : item.nameFaded),
                  ImVec2(iconSize / 1.5f, iconSize), ImVec2(0, 0), ImVec2(1, 1));
     Tooltip(SohUtils::GetQuestItemName(item.id).c_str());
 }
@@ -1686,8 +1771,8 @@ void UpdateVectors() {
     // If we're adding boss souls to the main window...
     if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.BossSouls"), SECTION_DISPLAY_HIDDEN) ==
         SECTION_DISPLAY_MAIN_WINDOW) {
-        //...add empty items on the main window to get the souls on their own row. (Too many to sit with Greg/Triforce
-        // pieces)
+        //...add empty items on the main window to get the souls on their own row
+        // (Too many to sit with Greg/Triforce pieces)
         while (mainWindowItems.size() % 6) {
             mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
         }
@@ -1696,11 +1781,23 @@ void UpdateVectors() {
         mainWindowItems.insert(mainWindowItems.end(), bossSoulItems.begin(), bossSoulItems.end());
     }
 
+    // If we're adding jabbernuts to the main window...
+    if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.JabberNuts"), SECTION_DISPLAY_HIDDEN) ==
+        SECTION_DISPLAY_MAIN_WINDOW) {
+        // there are 6 jabbernuts, perfect for a row
+        while (mainWindowItems.size() % 6) {
+            mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
+        }
+
+        // Add jabbernuts
+        mainWindowItems.insert(mainWindowItems.end(), jabbernutItems.begin(), jabbernutItems.end());
+    }
+
     // If we're adding ocarina buttons to the main window...
     if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.OcarinaButtons"), SECTION_DISPLAY_HIDDEN) ==
         SECTION_DISPLAY_MAIN_WINDOW) {
-        //...add empty items on the main window to get the buttons on their own row. (Too many to sit with Greg/Triforce
-        // pieces/boss souls)
+        //...add empty items on the main window to get the buttons on their own row.
+        // (Too many to sit with Greg/Triforce pieces/boss souls)
         while (mainWindowItems.size() % 6) {
             mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
         }
@@ -1712,8 +1809,8 @@ void UpdateVectors() {
     // If we're adding overworld keys to the main window...
     if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.OverworldKeys"), SECTION_DISPLAY_HIDDEN) ==
         SECTION_DISPLAY_MAIN_WINDOW) {
-        //...add empty items on the main window to get the keys on their own row. (Too many to sit with Greg/Triforce
-        // pieces/boss souls/ocarina buttons)
+        //...add empty items on the main window to get the keys on their own row.
+        // (Too many to sit with Greg/Triforce pieces/boss souls/ocarina buttons)
         while (mainWindowItems.size() % 6) {
             mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
         }
@@ -1765,7 +1862,7 @@ void ItemTrackerWindow::DrawElement() {
     int comboButton1Mask = buttonMap[CVarGetInteger(CVAR_TRACKER_ITEM("ComboButton1"), TRACKER_COMBO_BUTTON_L)];
     int comboButton2Mask = buttonMap[CVarGetInteger(CVAR_TRACKER_ITEM("ComboButton2"), TRACKER_COMBO_BUTTON_R)];
     OSContPad* buttonsPressed =
-        std::dynamic_pointer_cast<LUS::ControlDeck>(Ship::Context::GetInstance()->GetControlDeck())->GetPads();
+        std::dynamic_pointer_cast<LUS::ControlDeck>(Ship::Context::GetRawInstance()->GetControlDeck())->GetPads();
     bool comboButtonsHeld = buttonsPressed != nullptr && buttonsPressed[0].button & comboButton1Mask &&
                             buttonsPressed[0].button & comboButton2Mask;
     bool isPaused = CVarGetInteger(CVAR_TRACKER_ITEM("ShowOnlyPaused"), 0) == 0 ||
@@ -1893,6 +1990,13 @@ void ItemTrackerWindow::DrawElement() {
             EndFloatingWindows();
         }
 
+        if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.JabberNuts"), SECTION_DISPLAY_HIDDEN) ==
+            SECTION_DISPLAY_SEPARATE) {
+            BeginFloatingWindows("Jabber Nut Tracker");
+            DrawItemsInRows(jabbernutItems);
+            EndFloatingWindows();
+        }
+
         if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.OcarinaButtons"), SECTION_DISPLAY_HIDDEN) ==
             SECTION_DISPLAY_SEPARATE) {
             BeginFloatingWindows("Ocarina Button Tracker");
@@ -1956,23 +2060,6 @@ static std::map<int32_t, const char*> itemTrackerTriforcePieceTrackOptions = {
     { TRIFORCE_PIECE_COLLECTED_REQUIRED, "Collected / Required" },
     { TRIFORCE_PIECE_COLLECTED_REQUIRED_MAX, "Collected / Required / Max" },
 };
-static std::map<int32_t, const char*> windowTypes = {
-    { TRACKER_WINDOW_FLOATING, "Floating" },
-    { TRACKER_WINDOW_WINDOW, "Window" },
-};
-static std::map<int32_t, const char*> displayModes = {
-    { TRACKER_DISPLAY_ALWAYS, "Always" },
-    { TRACKER_DISPLAY_COMBO_BUTTON, "Combo Button Hold" },
-};
-static std::map<int32_t, const char*> buttons = {
-    { TRACKER_COMBO_BUTTON_A, "A" },           { TRACKER_COMBO_BUTTON_B, "B" },
-    { TRACKER_COMBO_BUTTON_C_UP, "C-Up" },     { TRACKER_COMBO_BUTTON_C_DOWN, "C-Down" },
-    { TRACKER_COMBO_BUTTON_C_LEFT, "C-Left" }, { TRACKER_COMBO_BUTTON_C_RIGHT, "C-Right" },
-    { TRACKER_COMBO_BUTTON_L, "L" },           { TRACKER_COMBO_BUTTON_Z, "Z" },
-    { TRACKER_COMBO_BUTTON_R, "R" },           { TRACKER_COMBO_BUTTON_START, "Start" },
-    { TRACKER_COMBO_BUTTON_D_UP, "D-Up" },     { TRACKER_COMBO_BUTTON_D_DOWN, "D-Down" },
-    { TRACKER_COMBO_BUTTON_D_LEFT, "D-Left" }, { TRACKER_COMBO_BUTTON_D_RIGHT, "D-Right" },
-};
 static std::map<int32_t, const char*> displayTypes = {
     { SECTION_DISPLAY_HIDDEN, "Hidden" },
     { SECTION_DISPLAY_MAIN_WINDOW, "Main Window" },
@@ -2008,7 +2095,7 @@ void ItemTrackerSettingsWindow::DrawElement() {
                              CheckboxOptions().Color(THEME_COLOR))) {
                 shouldUpdateVectors = true;
             }
-            if (CVarCombobox("Display Mode", CVAR_TRACKER_ITEM("DisplayType.Main"), displayModes,
+            if (CVarCombobox("Display Mode", CVAR_TRACKER_ITEM("DisplayType.Main"), showMode,
                              ComboboxOptions()
                                  .DefaultIndex(TRACKER_DISPLAY_ALWAYS)
                                  .ComponentAlignment(ComponentAlignments::Right)
@@ -2018,7 +2105,7 @@ void ItemTrackerSettingsWindow::DrawElement() {
             }
             if (CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Main"), TRACKER_DISPLAY_ALWAYS) ==
                 TRACKER_DISPLAY_COMBO_BUTTON) {
-                if (CVarCombobox("Combo Button 1", CVAR_TRACKER_ITEM("ComboButton1"), buttons,
+                if (CVarCombobox("Combo Button 1", CVAR_TRACKER_ITEM("ComboButton1"), buttonStrings,
                                  ComboboxOptions()
                                      .DefaultIndex(TRACKER_COMBO_BUTTON_L)
                                      .ComponentAlignment(ComponentAlignments::Right)
@@ -2026,7 +2113,7 @@ void ItemTrackerSettingsWindow::DrawElement() {
                                      .Color(THEME_COLOR))) {
                     shouldUpdateVectors = true;
                 }
-                if (CVarCombobox("Combo Button 2", CVAR_TRACKER_ITEM("ComboButton2"), buttons,
+                if (CVarCombobox("Combo Button 2", CVAR_TRACKER_ITEM("ComboButton2"), buttonStrings,
                                  ComboboxOptions()
                                      .DefaultIndex(TRACKER_COMBO_BUTTON_R)
                                      .ComponentAlignment(ComponentAlignments::Right)
@@ -2127,6 +2214,7 @@ void ItemTrackerSettingsWindow::DrawElement() {
         SohGui::mSohMenu->MenuDrawItem(triforcePieceTracking, 250, THEME_COLOR);
         SohGui::mSohMenu->MenuDrawItem(beanSoulsTracking, 250, THEME_COLOR);
         SohGui::mSohMenu->MenuDrawItem(bossSoulsTracking, 250, THEME_COLOR);
+        SohGui::mSohMenu->MenuDrawItem(jabberNutsTracking, 250, THEME_COLOR);
         SohGui::mSohMenu->MenuDrawItem(ocarinaButtonTracking, 250, THEME_COLOR);
         SohGui::mSohMenu->MenuDrawItem(overworldKeysTracking, 250, THEME_COLOR);
         SohGui::mSohMenu->MenuDrawItem(fishingPoleTracking, 250, THEME_COLOR);
@@ -2142,6 +2230,7 @@ void ItemTrackerSettingsWindow::DrawElement() {
 
         SohGui::mSohMenu->MenuDrawItem(personalNotesWiget, 250, THEME_COLOR);
         SohGui::mSohMenu->MenuDrawItem(hookshotIdentWidget, 250, THEME_COLOR);
+        SohGui::mSohMenu->MenuDrawItem(openChestIdentWidget, 250, THEME_COLOR);
 
         ImGui::PopStyleVar(1);
         ImGui::EndTable();
@@ -2162,20 +2251,20 @@ void ItemTrackerWindow::InitElement() {
 }
 
 void RegisterItemTrackerWidgets() {
-    backgroundColor = { .name = "Background Color##gItemTrackerBgColor", .type = WidgetType::WIDGET_CVAR_COLOR_PICKER };
+    backgroundColor = { .name = "Background Color##ItemTracker", .type = WidgetType::WIDGET_CVAR_COLOR_PICKER };
     backgroundColor.CVar(CVAR_TRACKER_ITEM("BgColor"))
         .Options(
             ColorPickerOptions().Color(THEME_COLOR).DefaultValue({ 0, 0, 0, 0 }).UseAlpha().ShowReset().ShowRandom());
     SohGui::mSohMenu->AddSearchWidget({ backgroundColor, "Randomizer", "Item Tracker", "General Settings" });
 
-    windowTypeWidget = { .name = "Window Type", .type = WidgetType::WIDGET_CVAR_COMBOBOX };
+    windowTypeWidget = { .name = "Window Type##ItemTracker", .type = WidgetType::WIDGET_CVAR_COMBOBOX };
     windowTypeWidget.CVar(CVAR_TRACKER_ITEM("WindowType"))
         .Options(ComboboxOptions()
                      .DefaultIndex(TRACKER_WINDOW_FLOATING)
                      .ComponentAlignment(ComponentAlignments::Right)
                      .LabelPosition(LabelPositions::Far)
                      .Color(THEME_COLOR)
-                     .ComboMap(windowTypes))
+                     .ComboMap(windowType))
         .Callback([](WidgetInfo& info) { shouldUpdateVectors = true; });
     SohGui::mSohMenu->AddSearchWidget({ windowTypeWidget, "Randomizer", "Item Tracker", "General Settings" });
     enableDraggingWidget;
@@ -2264,6 +2353,18 @@ void RegisterItemTrackerWidgets() {
     ;
     SohGui::mSohMenu->AddSearchWidget({ bossSoulsTracking, "Randomizer", "Item Tracker", "General Settings", "icon" });
 
+    jabberNutsTracking = { .name = "Jabber Nuts", .type = WidgetType::WIDGET_CVAR_COMBOBOX };
+    jabberNutsTracking.CVar(CVAR_TRACKER_ITEM("DisplayType.JabberNuts"))
+        .Options(ComboboxOptions()
+                     .DefaultIndex(SECTION_DISPLAY_HIDDEN)
+                     .ComponentAlignment(ComponentAlignments::Right)
+                     .LabelPosition(LabelPositions::Far)
+                     .Color(THEME_COLOR)
+                     .ComboMap(displayTypes))
+        .Callback([](WidgetInfo& info) { shouldUpdateVectors = true; });
+    ;
+    SohGui::mSohMenu->AddSearchWidget({ jabberNutsTracking, "Randomizer", "Item Tracker", "General Settings", "icon" });
+
     triforcePieceCount = { .name = "Triforce Piece Count Tracking", .type = WidgetType::WIDGET_CVAR_COMBOBOX };
     triforcePieceCount.CVar(CVAR_TRACKER_ITEM("TriforcePieceCounts"))
         .Options(ComboboxOptions()
@@ -2324,14 +2425,6 @@ void RegisterItemTrackerWidgets() {
                      .LabelPosition(LabelPositions::Far)
                      .Color(THEME_COLOR)
                      .ComboMap(displayTypes))
-        .PreFunc([&](WidgetInfo& info) {
-            if (CVarGetInteger(CVAR_TRACKER_ITEM("WindowType"), TRACKER_WINDOW_FLOATING) == TRACKER_WINDOW_FLOATING &&
-                CVarGetInteger(CVAR_TRACKER_ITEM("DisplayType.Main"), TRACKER_DISPLAY_ALWAYS) ==
-                    TRACKER_DISPLAY_COMBO_BUTTON) {
-                info.options.get()->disabled = true;
-                info.options.get()->disabledTooltip = notesDisabledTooltip;
-            }
-        })
         .Callback([](WidgetInfo& info) { shouldUpdateVectors = true; });
     ;
     SohGui::mSohMenu->AddSearchWidget({ personalNotesWiget, "Randomizer", "Item Tracker", "General Settings" });
@@ -2342,6 +2435,14 @@ void RegisterItemTrackerWidgets() {
                      .Color(THEME_COLOR)
                      .Tooltip("Shows an 'H' or an 'L' to more easily distinguish between Hookshot and Longshot."));
     SohGui::mSohMenu->AddSearchWidget({ hookshotIdentWidget, "Randomizer", "Item Tracker", "General Settings" });
+
+    openChestIdentWidget = { .name = "Show Open Chest Identifiers", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
+    openChestIdentWidget.CVar(CVAR_TRACKER_ITEM("OpenChestIdentifier"))
+        .Options(CheckboxOptions()
+                     .Color(THEME_COLOR)
+                     .Tooltip("With progressive Shuffle Open Chest, shows an 'S' when only small chests can be "
+                              "opened and a 'B' once big chests can be opened too."));
+    SohGui::mSohMenu->AddSearchWidget({ openChestIdentWidget, "Randomizer", "Item Tracker", "General Settings" });
 }
 
 void RegisterItemTracker() {

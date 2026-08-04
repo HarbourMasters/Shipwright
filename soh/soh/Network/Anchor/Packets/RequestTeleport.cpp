@@ -1,6 +1,5 @@
 #include "soh/Network/Anchor/Anchor.h"
 #include <nlohmann/json.hpp>
-#include <libultraship/libultraship.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 /**
@@ -27,7 +26,7 @@ void Anchor::HandlePacket_RequestTeleport(nlohmann::json payload) {
         return;
     }
 
-    uint32_t clientId = payload["clientId"].get<uint32_t>();
+    uint32_t clientId = payload.at("clientId").get<uint32_t>();
     SendPacket_TeleportTo(clientId);
 }
 

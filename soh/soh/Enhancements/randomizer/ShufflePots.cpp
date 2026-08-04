@@ -1,7 +1,10 @@
 #include "soh/OTRGlobals.h"
 #include "soh_assets.h"
 #include "static_data.h"
+#include "item_category_adj.h"
 #include "soh/ObjectExtension/ObjectExtension.h"
+#include "soh/Enhancements/randomizer/randomizer.h"
+#include "soh/Enhancements/randomizer/RCToRandInf.h"
 
 extern "C" {
 #include "overlays/actors/ovl_Obj_Tsubo/z_obj_tsubo.h"
@@ -28,7 +31,7 @@ extern "C" void ObjTsubo_RandomizerDraw(Actor* thisx, PlayState* play) {
         if (csmc && (!requiresStoneAgony || (requiresStoneAgony && CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY)))) {
             auto itemEntry =
                 Rando::Context::GetInstance()->GetFinalGIEntry(potIdentity->randomizerCheck, true, GI_NONE);
-            GetItemCategory getItemCategory = itemEntry.getItemCategory;
+            GetItemCategory getItemCategory = Randomizer_AdjustItemCategory(itemEntry);
 
             switch (getItemCategory) {
                 case ITEM_CATEGORY_LESSER:
@@ -54,7 +57,7 @@ extern "C" void ObjTsubo_RandomizerDraw(Actor* thisx, PlayState* play) {
                     break;
             }
         } else {
-            gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gPotStandardDL);
+            gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gPotMajorDL);
         }
     } else {
         gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gPotDL);
@@ -98,6 +101,32 @@ void ObjTsubo_RandomizerSpawnCollectible(ObjTsubo* potActor, PlayState* play) {
     item00->actor.world.rot.y = static_cast<int16_t>(Rand_CenteredFloat(65536.0f));
 }
 
+static CheckIdentity IdentifyPot(s32 sceneNum, s32 posX, s32 posZ) {
+    CheckIdentity potIdentity;
+    uint32_t potSceneNum = sceneNum;
+
+    if (sceneNum == SCENE_GANONDORF_BOSS) {
+        potSceneNum = SCENE_GANONS_TOWER;
+    }
+
+    potIdentity.randomizerInf = RAND_INF_MAX;
+    potIdentity.randomizerCheck = RC_UNKNOWN_CHECK;
+
+    s32 actorParams = TWO_ACTOR_PARAMS(posX, posZ);
+
+    Rando::Location* location =
+        OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_OBJ_TSUBO, potSceneNum, actorParams);
+
+    if (location->GetRandomizerCheck() == RC_UNKNOWN_CHECK) {
+        LUSLOG_WARN("IdentifyPot did not receive a valid RC value (%d).", location->GetRandomizerCheck());
+    } else {
+        potIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
+        potIdentity.randomizerCheck = location->GetRandomizerCheck();
+    }
+
+    return potIdentity;
+}
+
 void RegisterShufflePots() {
     bool shouldRegister = IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_POTS);
 
@@ -105,8 +134,7 @@ void RegisterShufflePots() {
         Actor* actor = static_cast<Actor*>(actorRef);
         ObjTsubo* potActor = static_cast<ObjTsubo*>(actorRef);
 
-        auto potIdentity = OTRGlobals::Instance->gRandomizer->IdentifyPot(gPlayState->sceneNum, (s16)actor->world.pos.x,
-                                                                          (s16)actor->world.pos.z);
+        auto potIdentity = IdentifyPot(gPlayState->sceneNum, (s16)actor->world.pos.x, (s16)actor->world.pos.z);
         ObjectExtension::GetInstance().Set<CheckIdentity>(actor, std::move(potIdentity));
     });
 

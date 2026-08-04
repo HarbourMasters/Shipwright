@@ -1,0 +1,114 @@
+:config:
+  segments:
+    - [ 6, 0x00F4F3D0 ]
+    - [ 4, 0x00D30F00 ]
+    - [ 8, 0x00F4F3D0 ]
+    - [ 9, 0x00F4F3D0 ]
+    - [ 10, 0x00F4F3D0 ]
+    - [ 11, 0x00F4F3D0 ]
+    - [ 12, 0x00F4F3D0 ]
+    - [ 13, 0x00F4F3D0 ]
+  external_files:
+    - ntsc_u_gc/objects/gameplay_keep.yml
+
+object_lightbox_Blob_000000:
+  type: BLOB
+  offset: 0x0
+  size: 0x8
+  symbol: object_lightbox_Blob_000000
+
+object_lightbox_Blob_0002A0:
+  type: BLOB
+  offset: 0x2A0
+  size: 0x130
+  symbol: object_lightbox_Blob_0002A0
+
+object_lightbox_Blob_000670:
+  type: BLOB
+  offset: 0x670
+  size: 0x130
+  symbol: object_lightbox_Blob_000670
+
+object_lightbox_Blob_000A40:
+  type: BLOB
+  offset: 0xA40
+  size: 0x130
+  symbol: object_lightbox_Blob_000A40
+
+object_lightbox_Col_001F10:
+  type: OOT:COLLISION
+  offset: 0x1F10
+  symbol: object_lightbox_Col_001F10
+
+object_lightbox_DL_000008:
+  type: GFX
+  offset: 0x8
+  symbol: object_lightbox_DL_000008
+
+object_lightbox_DL_0003D0:
+  type: GFX
+  offset: 0x3D0
+  symbol: object_lightbox_DL_0003D0
+
+object_lightbox_DL_0007A0:
+  type: GFX
+  offset: 0x7A0
+  symbol: object_lightbox_DL_0007A0
+
+object_lightbox_DL_000B70:
+  type: GFX
+  offset: 0xB70
+  symbol: object_lightbox_DL_000B70
+
+object_lightbox_Tex_000E10:
+  type: TEXTURE
+  offset: 0xE10
+  symbol: object_lightbox_Tex_000E10
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_lightbox_Tex_001610:
+  type: TEXTURE
+  offset: 0x1610
+  symbol: object_lightbox_Tex_001610
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+object_lightboxVtx_000120:
+  type: OOT:ARRAY
+  offset: 0x000120
+  symbol: object_lightboxVtx_000120
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_lightboxVtx_0004F0:
+  type: OOT:ARRAY
+  offset: 0x0004F0
+  symbol: object_lightboxVtx_0004F0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_lightboxVtx_0008C0:
+  type: OOT:ARRAY
+  offset: 0x0008C0
+  symbol: object_lightboxVtx_0008C0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_lightboxVtx_000C90:
+  type: OOT:ARRAY
+  offset: 0x000C90
+  symbol: object_lightboxVtx_000C90
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

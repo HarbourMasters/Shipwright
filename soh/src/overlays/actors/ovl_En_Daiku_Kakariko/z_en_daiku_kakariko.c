@@ -242,7 +242,7 @@ void EnDaikuKakariko_HandleTalking(EnDaikuKakariko* this, PlayState* play) {
         Actor_GetScreenPos(play, &this->actor, &sp26, &sp24);
 
         if ((sp26 >= 0) && (sp26 <= 320) && (sp24 >= 0) && (sp24 <= 240) && (this->talkState == 0) &&
-            (func_8002F2CC(&this->actor, play, 100.0f) == 1)) {
+            (Actor_OfferTalk(&this->actor, play, 100.0f) == 1)) {
             this->actor.textId = Text_GetFaceReaction(play, maskReactionSets[this->actor.params & 3]);
 
             if (this->actor.textId == 0) {

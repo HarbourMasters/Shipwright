@@ -1,0 +1,14 @@
+:config:
+  segments:
+    - [ 2, 0x01BB83B0 ]
+
+market_alley_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: market_alley_scene
+
+
+market_alley_sceneCollisionHeader_001218:
+  type: OOT:COLLISION
+  offset: 0x001218
+  symbol: market_alley_sceneCollisionHeader_001218

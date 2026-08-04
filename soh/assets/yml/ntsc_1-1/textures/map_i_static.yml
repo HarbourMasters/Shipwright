@@ -1,0 +1,1916 @@
+:config:
+  segments:
+    - [ 11, 0x00952920 ]
+
+gBlankSpiritTempleRoom11MinimapTex:
+  type: TEXTURE
+  offset: 0xA8570
+  symbol: gBlankSpiritTempleRoom11MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gBottomOfTheWellRoom0Basement1MinimapTex:
+  type: TEXTURE
+  offset: 0xD8270
+  symbol: gBottomOfTheWellRoom0Basement1MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gBottomOfTheWellRoom0Basement2MinimapTex:
+  type: TEXTURE
+  offset: 0xDF200
+  symbol: gBottomOfTheWellRoom0Basement2MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gBottomOfTheWellRoom1Basement1MinimapTex:
+  type: TEXTURE
+  offset: 0xD9260
+  symbol: gBottomOfTheWellRoom1Basement1MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gBottomOfTheWellRoom1Basement2MinimapTex:
+  type: TEXTURE
+  offset: 0xE01F0
+  symbol: gBottomOfTheWellRoom1Basement2MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gBottomOfTheWellRoom1Basement3MinimapTex:
+  type: TEXTURE
+  offset: 0xE11E0
+  symbol: gBottomOfTheWellRoom1Basement3MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gBottomOfTheWellRoom2MinimapTex:
+  type: TEXTURE
+  offset: 0xDA250
+  symbol: gBottomOfTheWellRoom2MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gBottomOfTheWellRoom3MinimapTex:
+  type: TEXTURE
+  offset: 0xDB240
+  symbol: gBottomOfTheWellRoom3MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gBottomOfTheWellRoom4MinimapTex:
+  type: TEXTURE
+  offset: 0xDC230
+  symbol: gBottomOfTheWellRoom4MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gBottomOfTheWellRoom5MinimapTex:
+  type: TEXTURE
+  offset: 0xDD220
+  symbol: gBottomOfTheWellRoom5MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gBottomOfTheWellRoom6MinimapTex:
+  type: TEXTURE
+  offset: 0xDE210
+  symbol: gBottomOfTheWellRoom6MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gDekuTreeRoom0Floor1MinimapTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gDekuTreeRoom0Floor1MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gDekuTreeRoom0Floor2MinimapTex:
+  type: TEXTURE
+  offset: 0xAF50
+  symbol: gDekuTreeRoom0Floor2MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gDekuTreeRoom0Floor3MinimapTex:
+  type: TEXTURE
+  offset: 0xBF40
+  symbol: gDekuTreeRoom0Floor3MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gDekuTreeRoom10MinimapTex:
+  type: TEXTURE
+  offset: 0x9F60
+  symbol: gDekuTreeRoom10MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gDekuTreeRoom1MinimapTex:
+  type: TEXTURE
+  offset: 0xFF0
+  symbol: gDekuTreeRoom1MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gDekuTreeRoom2MinimapTex:
+  type: TEXTURE
+  offset: 0x1FE0
+  symbol: gDekuTreeRoom2MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gDekuTreeRoom3MinimapTex:
+  type: TEXTURE
+  offset: 0x2FD0
+  symbol: gDekuTreeRoom3MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gDekuTreeRoom4MinimapTex:
+  type: TEXTURE
+  offset: 0x3FC0
+  symbol: gDekuTreeRoom4MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gDekuTreeRoom5MinimapTex:
+  type: TEXTURE
+  offset: 0x4FB0
+  symbol: gDekuTreeRoom5MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gDekuTreeRoom6MinimapTex:
+  type: TEXTURE
+  offset: 0x5FA0
+  symbol: gDekuTreeRoom6MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gDekuTreeRoom7MinimapTex:
+  type: TEXTURE
+  offset: 0x6F90
+  symbol: gDekuTreeRoom7MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gDekuTreeRoom8MinimapTex:
+  type: TEXTURE
+  offset: 0x7F80
+  symbol: gDekuTreeRoom8MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gDekuTreeRoom9MinimapTex:
+  type: TEXTURE
+  offset: 0x8F70
+  symbol: gDekuTreeRoom9MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gDodongosCavernRoom0Floor3MinimapTex:
+  type: TEXTURE
+  offset: 0x1CE30
+  symbol: gDodongosCavernRoom0Floor3MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gDodongosCavernRoom0MinimapTex:
+  type: TEXTURE
+  offset: 0xCF30
+  symbol: gDodongosCavernRoom0MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gDodongosCavernRoom10MinimapTex:
+  type: TEXTURE
+  offset: 0x16E90
+  symbol: gDodongosCavernRoom10MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gDodongosCavernRoom11MinimapTex:
+  type: TEXTURE
+  offset: 0x17E80
+  symbol: gDodongosCavernRoom11MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gDodongosCavernRoom12MinimapTex:
+  type: TEXTURE
+  offset: 0x18E70
+  symbol: gDodongosCavernRoom12MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gDodongosCavernRoom13MinimapTex:
+  type: TEXTURE
+  offset: 0x19E60
+  symbol: gDodongosCavernRoom13MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gDodongosCavernRoom14MinimapTex:
+  type: TEXTURE
+  offset: 0x1AE50
+  symbol: gDodongosCavernRoom14MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gDodongosCavernRoom15MinimapTex:
+  type: TEXTURE
+  offset: 0x1BE40
+  symbol: gDodongosCavernRoom15MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gDodongosCavernRoom1MinimapTex:
+  type: TEXTURE
+  offset: 0xDF20
+  symbol: gDodongosCavernRoom1MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gDodongosCavernRoom2Floor3MinimapTex:
+  type: TEXTURE
+  offset: 0x1DE20
+  symbol: gDodongosCavernRoom2Floor3MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gDodongosCavernRoom2MinimapTex:
+  type: TEXTURE
+  offset: 0xEF10
+  symbol: gDodongosCavernRoom2MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gDodongosCavernRoom3Floor3MinimapTex:
+  type: TEXTURE
+  offset: 0x1EE10
+  symbol: gDodongosCavernRoom3Floor3MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gDodongosCavernRoom3MinimapTex:
+  type: TEXTURE
+  offset: 0xFF00
+  symbol: gDodongosCavernRoom3MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gDodongosCavernRoom4MinimapTex:
+  type: TEXTURE
+  offset: 0x10EF0
+  symbol: gDodongosCavernRoom4MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gDodongosCavernRoom5MinimapTex:
+  type: TEXTURE
+  offset: 0x11EE0
+  symbol: gDodongosCavernRoom5MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gDodongosCavernRoom6MinimapTex:
+  type: TEXTURE
+  offset: 0x12ED0
+  symbol: gDodongosCavernRoom6MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gDodongosCavernRoom7MinimapTex:
+  type: TEXTURE
+  offset: 0x13EC0
+  symbol: gDodongosCavernRoom7MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gDodongosCavernRoom8MinimapTex:
+  type: TEXTURE
+  offset: 0x14EB0
+  symbol: gDodongosCavernRoom8MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gDodongosCavernRoom9MinimapTex:
+  type: TEXTURE
+  offset: 0x15EA0
+  symbol: gDodongosCavernRoom9MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gFireTempleRoom0MinimapTex:
+  type: TEXTURE
+  offset: 0x4BB40
+  symbol: gFireTempleRoom0MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gFireTempleRoom10Floor1MinimapTex:
+  type: TEXTURE
+  offset: 0x55AA0
+  symbol: gFireTempleRoom10Floor1MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gFireTempleRoom10Floor2MinimapTex:
+  type: TEXTURE
+  offset: 0x6A950
+  symbol: gFireTempleRoom10Floor2MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gFireTempleRoom10Floor3MinimapTex:
+  type: TEXTURE
+  offset: 0x6B940
+  symbol: gFireTempleRoom10Floor3MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gFireTempleRoom11Floor1MinimapTex:
+  type: TEXTURE
+  offset: 0x56A90
+  symbol: gFireTempleRoom11Floor1MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gFireTempleRoom11Floor3MinimapTex:
+  type: TEXTURE
+  offset: 0x6C930
+  symbol: gFireTempleRoom11Floor3MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gFireTempleRoom12Floor1MinimapTex:
+  type: TEXTURE
+  offset: 0x57A80
+  symbol: gFireTempleRoom12Floor1MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gFireTempleRoom12Floor3MinimapTex:
+  type: TEXTURE
+  offset: 0x6D920
+  symbol: gFireTempleRoom12Floor3MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gFireTempleRoom13Floor1MinimapTex:
+  type: TEXTURE
+  offset: 0x58A70
+  symbol: gFireTempleRoom13Floor1MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gFireTempleRoom13Floor3MinimapTex:
+  type: TEXTURE
+  offset: 0x6E910
+  symbol: gFireTempleRoom13Floor3MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gFireTempleRoom14MinimapTex:
+  type: TEXTURE
+  offset: 0x59A60
+  symbol: gFireTempleRoom14MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gFireTempleRoom15MinimapTex:
+  type: TEXTURE
+  offset: 0x5AA50
+  symbol: gFireTempleRoom15MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gFireTempleRoom16MinimapTex:
+  type: TEXTURE
+  offset: 0x5BA40
+  symbol: gFireTempleRoom16MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gFireTempleRoom17MinimapTex:
+  type: TEXTURE
+  offset: 0x5CA30
+  symbol: gFireTempleRoom17MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gFireTempleRoom18MinimapTex:
+  type: TEXTURE
+  offset: 0x5DA20
+  symbol: gFireTempleRoom18MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gFireTempleRoom19MinimapTex:
+  type: TEXTURE
+  offset: 0x5EA10
+  symbol: gFireTempleRoom19MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gFireTempleRoom1MinimapTex:
+  type: TEXTURE
+  offset: 0x4CB30
+  symbol: gFireTempleRoom1MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gFireTempleRoom20MinimapTex:
+  type: TEXTURE
+  offset: 0x5FA00
+  symbol: gFireTempleRoom20MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gFireTempleRoom21Floor1MinimapTex:
+  type: TEXTURE
+  offset: 0x609F0
+  symbol: gFireTempleRoom21Floor1MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gFireTempleRoom21Floor3MinimapTex:
+  type: TEXTURE
+  offset: 0x6F900
+  symbol: gFireTempleRoom21Floor3MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gFireTempleRoom22MinimapTex:
+  type: TEXTURE
+  offset: 0x619E0
+  symbol: gFireTempleRoom22MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gFireTempleRoom23MinimapTex:
+  type: TEXTURE
+  offset: 0x629D0
+  symbol: gFireTempleRoom23MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gFireTempleRoom24Floor1MinimapTex:
+  type: TEXTURE
+  offset: 0x639C0
+  symbol: gFireTempleRoom24Floor1MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gFireTempleRoom24Floor3MinimapTex:
+  type: TEXTURE
+  offset: 0x708F0
+  symbol: gFireTempleRoom24Floor3MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gFireTempleRoom25MinimapTex:
+  type: TEXTURE
+  offset: 0x649B0
+  symbol: gFireTempleRoom25MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gFireTempleRoom2MinimapTex:
+  type: TEXTURE
+  offset: 0x4DB20
+  symbol: gFireTempleRoom2MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gFireTempleRoom3MinimapTex:
+  type: TEXTURE
+  offset: 0x4EB10
+  symbol: gFireTempleRoom3MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gFireTempleRoom4Floor1MinimapTex:
+  type: TEXTURE
+  offset: 0x4FB00
+  symbol: gFireTempleRoom4Floor1MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gFireTempleRoom4Floor3MinimapTex:
+  type: TEXTURE
+  offset: 0x659A0
+  symbol: gFireTempleRoom4Floor3MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gFireTempleRoom5Floor1MinimapTex:
+  type: TEXTURE
+  offset: 0x50AF0
+  symbol: gFireTempleRoom5Floor1MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gFireTempleRoom5Floor3MinimapTex:
+  type: TEXTURE
+  offset: 0x66990
+  symbol: gFireTempleRoom5Floor3MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gFireTempleRoom6Floor1MinimapTex:
+  type: TEXTURE
+  offset: 0x51AE0
+  symbol: gFireTempleRoom6Floor1MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gFireTempleRoom6Floor2MinimapTex:
+  type: TEXTURE
+  offset: 0x67980
+  symbol: gFireTempleRoom6Floor2MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gFireTempleRoom6Floor3MinimapTex:
+  type: TEXTURE
+  offset: 0x68970
+  symbol: gFireTempleRoom6Floor3MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gFireTempleRoom7Floor1MinimapTex:
+  type: TEXTURE
+  offset: 0x52AD0
+  symbol: gFireTempleRoom7Floor1MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gFireTempleRoom7Floor3MinimapTex:
+  type: TEXTURE
+  offset: 0x69960
+  symbol: gFireTempleRoom7Floor3MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gFireTempleRoom8MinimapTex:
+  type: TEXTURE
+  offset: 0x53AC0
+  symbol: gFireTempleRoom8MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gFireTempleRoom9MinimapTex:
+  type: TEXTURE
+  offset: 0x54AB0
+  symbol: gFireTempleRoom9MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gForestTempleRoom0Floor1MinimapTex:
+  type: TEXTURE
+  offset: 0x30CF0
+  symbol: gForestTempleRoom0Floor1MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gForestTempleRoom0Floor3MinimapTex:
+  type: TEXTURE
+  offset: 0x46B90
+  symbol: gForestTempleRoom0Floor3MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gForestTempleRoom10MinimapTex:
+  type: TEXTURE
+  offset: 0x3AC50
+  symbol: gForestTempleRoom10MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gForestTempleRoom11Floor1MinimapTex:
+  type: TEXTURE
+  offset: 0x3BC40
+  symbol: gForestTempleRoom11Floor1MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gForestTempleRoom11Floor3MinimapTex:
+  type: TEXTURE
+  offset: 0x4AB50
+  symbol: gForestTempleRoom11Floor3MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gForestTempleRoom12MinimapTex:
+  type: TEXTURE
+  offset: 0x3CC30
+  symbol: gForestTempleRoom12MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gForestTempleRoom13MinimapTex:
+  type: TEXTURE
+  offset: 0x3DC20
+  symbol: gForestTempleRoom13MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gForestTempleRoom14MinimapTex:
+  type: TEXTURE
+  offset: 0x3EC10
+  symbol: gForestTempleRoom14MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gForestTempleRoom15MinimapTex:
+  type: TEXTURE
+  offset: 0x3FC00
+  symbol: gForestTempleRoom15MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gForestTempleRoom16MinimapTex:
+  type: TEXTURE
+  offset: 0x40BF0
+  symbol: gForestTempleRoom16MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gForestTempleRoom17MinimapTex:
+  type: TEXTURE
+  offset: 0x41BE0
+  symbol: gForestTempleRoom17MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gForestTempleRoom18MinimapTex:
+  type: TEXTURE
+  offset: 0x42BD0
+  symbol: gForestTempleRoom18MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gForestTempleRoom19MinimapTex:
+  type: TEXTURE
+  offset: 0x43BC0
+  symbol: gForestTempleRoom19MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gForestTempleRoom1MinimapTex:
+  type: TEXTURE
+  offset: 0x31CE0
+  symbol: gForestTempleRoom1MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gForestTempleRoom20MinimapTex:
+  type: TEXTURE
+  offset: 0x44BB0
+  symbol: gForestTempleRoom20MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gForestTempleRoom21MinimapTex:
+  type: TEXTURE
+  offset: 0x45BA0
+  symbol: gForestTempleRoom21MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gForestTempleRoom2MinimapTex:
+  type: TEXTURE
+  offset: 0x32CD0
+  symbol: gForestTempleRoom2MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gForestTempleRoom3MinimapTex:
+  type: TEXTURE
+  offset: 0x33CC0
+  symbol: gForestTempleRoom3MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gForestTempleRoom4MinimapTex:
+  type: TEXTURE
+  offset: 0x34CB0
+  symbol: gForestTempleRoom4MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gForestTempleRoom5MinimapTex:
+  type: TEXTURE
+  offset: 0x35CA0
+  symbol: gForestTempleRoom5MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gForestTempleRoom6Floor1MinimapTex:
+  type: TEXTURE
+  offset: 0x36C90
+  symbol: gForestTempleRoom6Floor1MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gForestTempleRoom6Floor3MinimapTex:
+  type: TEXTURE
+  offset: 0x47B80
+  symbol: gForestTempleRoom6Floor3MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gForestTempleRoom7Floor1MinimapTex:
+  type: TEXTURE
+  offset: 0x37C80
+  symbol: gForestTempleRoom7Floor1MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gForestTempleRoom7Floor3MinimapTex:
+  type: TEXTURE
+  offset: 0x48B70
+  symbol: gForestTempleRoom7Floor3MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gForestTempleRoom8Floor1MinimapTex:
+  type: TEXTURE
+  offset: 0x38C70
+  symbol: gForestTempleRoom8Floor1MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gForestTempleRoom8Floor3MinimapTex:
+  type: TEXTURE
+  offset: 0x49B60
+  symbol: gForestTempleRoom8Floor3MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gForestTempleRoom9MinimapTex:
+  type: TEXTURE
+  offset: 0x39C60
+  symbol: gForestTempleRoom9MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gIceCavernRoom0MinimapTex:
+  type: TEXTURE
+  offset: 0xE21D0
+  symbol: gIceCavernRoom0MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gIceCavernRoom10MinimapTex:
+  type: TEXTURE
+  offset: 0xEC130
+  symbol: gIceCavernRoom10MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gIceCavernRoom11MinimapTex:
+  type: TEXTURE
+  offset: 0xED120
+  symbol: gIceCavernRoom11MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gIceCavernRoom1MinimapTex:
+  type: TEXTURE
+  offset: 0xE31C0
+  symbol: gIceCavernRoom1MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gIceCavernRoom2MinimapTex:
+  type: TEXTURE
+  offset: 0xE41B0
+  symbol: gIceCavernRoom2MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gIceCavernRoom3MinimapTex:
+  type: TEXTURE
+  offset: 0xE51A0
+  symbol: gIceCavernRoom3MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gIceCavernRoom4MinimapTex:
+  type: TEXTURE
+  offset: 0xE6190
+  symbol: gIceCavernRoom4MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gIceCavernRoom5MinimapTex:
+  type: TEXTURE
+  offset: 0xE7180
+  symbol: gIceCavernRoom5MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gIceCavernRoom6MinimapTex:
+  type: TEXTURE
+  offset: 0xE8170
+  symbol: gIceCavernRoom6MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gIceCavernRoom7MinimapTex:
+  type: TEXTURE
+  offset: 0xE9160
+  symbol: gIceCavernRoom7MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gIceCavernRoom8MinimapTex:
+  type: TEXTURE
+  offset: 0xEA150
+  symbol: gIceCavernRoom8MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gIceCavernRoom9MinimapTex:
+  type: TEXTURE
+  offset: 0xEB140
+  symbol: gIceCavernRoom9MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gJabuRoom0MinimapTex:
+  type: TEXTURE
+  offset: 0x1FE00
+  symbol: gJabuRoom0MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gJabuRoom10MinimapTex:
+  type: TEXTURE
+  offset: 0x29D60
+  symbol: gJabuRoom10MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gJabuRoom11MinimapTex:
+  type: TEXTURE
+  offset: 0x2AD50
+  symbol: gJabuRoom11MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gJabuRoom12MinimapTex:
+  type: TEXTURE
+  offset: 0x2BD40
+  symbol: gJabuRoom12MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gJabuRoom13MinimapTex:
+  type: TEXTURE
+  offset: 0x2CD30
+  symbol: gJabuRoom13MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gJabuRoom14MinimapTex:
+  type: TEXTURE
+  offset: 0x2DD20
+  symbol: gJabuRoom14MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gJabuRoom1Basement1MinimapTex:
+  type: TEXTURE
+  offset: 0x2ED10
+  symbol: gJabuRoom1Basement1MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gJabuRoom1MinimapTex:
+  type: TEXTURE
+  offset: 0x20DF0
+  symbol: gJabuRoom1MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gJabuRoom2MinimapTex:
+  type: TEXTURE
+  offset: 0x21DE0
+  symbol: gJabuRoom2MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gJabuRoom3MinimapTex:
+  type: TEXTURE
+  offset: 0x22DD0
+  symbol: gJabuRoom3MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gJabuRoom4MinimapTex:
+  type: TEXTURE
+  offset: 0x23DC0
+  symbol: gJabuRoom4MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gJabuRoom5MinimapTex:
+  type: TEXTURE
+  offset: 0x24DB0
+  symbol: gJabuRoom5MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gJabuRoom6Basement1MinimapTex:
+  type: TEXTURE
+  offset: 0x2FD00
+  symbol: gJabuRoom6Basement1MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gJabuRoom6MinimapTex:
+  type: TEXTURE
+  offset: 0x25DA0
+  symbol: gJabuRoom6MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gJabuRoom7MinimapTex:
+  type: TEXTURE
+  offset: 0x26D90
+  symbol: gJabuRoom7MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gJabuRoom8MinimapTex:
+  type: TEXTURE
+  offset: 0x27D80
+  symbol: gJabuRoom8MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gJabuRoom9MinimapTex:
+  type: TEXTURE
+  offset: 0x28D70
+  symbol: gJabuRoom9MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gShadowTempleRoom0MinimapTex:
+  type: TEXTURE
+  offset: 0xBD420
+  symbol: gShadowTempleRoom0MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gShadowTempleRoom10MinimapTex:
+  type: TEXTURE
+  offset: 0xC7380
+  symbol: gShadowTempleRoom10MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gShadowTempleRoom11MinimapTex:
+  type: TEXTURE
+  offset: 0xC8370
+  symbol: gShadowTempleRoom11MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gShadowTempleRoom12Basement3MinimapTex:
+  type: TEXTURE
+  offset: 0xC9360
+  symbol: gShadowTempleRoom12Basement3MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gShadowTempleRoom12Basement4MinimapTex:
+  type: TEXTURE
+  offset: 0xD52A0
+  symbol: gShadowTempleRoom12Basement4MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gShadowTempleRoom13MinimapTex:
+  type: TEXTURE
+  offset: 0xCA350
+  symbol: gShadowTempleRoom13MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gShadowTempleRoom14Basement3MinimapTex:
+  type: TEXTURE
+  offset: 0xCB340
+  symbol: gShadowTempleRoom14Basement3MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gShadowTempleRoom14Basement4MinimapTex:
+  type: TEXTURE
+  offset: 0xD6290
+  symbol: gShadowTempleRoom14Basement4MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gShadowTempleRoom15MinimapTex:
+  type: TEXTURE
+  offset: 0xCC330
+  symbol: gShadowTempleRoom15MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gShadowTempleRoom16MinimapTex:
+  type: TEXTURE
+  offset: 0xCD320
+  symbol: gShadowTempleRoom16MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gShadowTempleRoom17MinimapTex:
+  type: TEXTURE
+  offset: 0xCE310
+  symbol: gShadowTempleRoom17MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gShadowTempleRoom18MinimapTex:
+  type: TEXTURE
+  offset: 0xCF300
+  symbol: gShadowTempleRoom18MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gShadowTempleRoom19MinimapTex:
+  type: TEXTURE
+  offset: 0xD02F0
+  symbol: gShadowTempleRoom19MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gShadowTempleRoom1MinimapTex:
+  type: TEXTURE
+  offset: 0xBE410
+  symbol: gShadowTempleRoom1MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gShadowTempleRoom20MinimapTex:
+  type: TEXTURE
+  offset: 0xD12E0
+  symbol: gShadowTempleRoom20MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gShadowTempleRoom21Basement3MinimapTex:
+  type: TEXTURE
+  offset: 0xD22D0
+  symbol: gShadowTempleRoom21Basement3MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gShadowTempleRoom21Basement4MinimapTex:
+  type: TEXTURE
+  offset: 0xD7280
+  symbol: gShadowTempleRoom21Basement4MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gShadowTempleRoom2MinimapTex:
+  type: TEXTURE
+  offset: 0xBF400
+  symbol: gShadowTempleRoom2MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gShadowTempleRoom3MinimapTex:
+  type: TEXTURE
+  offset: 0xC03F0
+  symbol: gShadowTempleRoom3MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gShadowTempleRoom4MinimapTex:
+  type: TEXTURE
+  offset: 0xC13E0
+  symbol: gShadowTempleRoom4MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gShadowTempleRoom5MinimapTex:
+  type: TEXTURE
+  offset: 0xC23D0
+  symbol: gShadowTempleRoom5MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gShadowTempleRoom6MinimapTex:
+  type: TEXTURE
+  offset: 0xC33C0
+  symbol: gShadowTempleRoom6MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gShadowTempleRoom7MinimapTex:
+  type: TEXTURE
+  offset: 0xC43B0
+  symbol: gShadowTempleRoom7MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gShadowTempleRoom8Basement2MinimapTex:
+  type: TEXTURE
+  offset: 0xC53A0
+  symbol: gShadowTempleRoom8Basement2MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gShadowTempleRoom8Basement3MinimapTex:
+  type: TEXTURE
+  offset: 0xD32C0
+  symbol: gShadowTempleRoom8Basement3MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gShadowTempleRoom9Basement3MinimapTex:
+  type: TEXTURE
+  offset: 0xC6390
+  symbol: gShadowTempleRoom9Basement3MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gShadowTempleRoom9Basement4MinimapTex:
+  type: TEXTURE
+  offset: 0xD42B0
+  symbol: gShadowTempleRoom9Basement4MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gSpiritTempleRoom0MinimapTex:
+  type: TEXTURE
+  offset: 0x9D620
+  symbol: gSpiritTempleRoom0MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gSpiritTempleRoom10MinimapTex:
+  type: TEXTURE
+  offset: 0xA7580
+  symbol: gSpiritTempleRoom10MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gSpiritTempleRoom12MinimapTex:
+  type: TEXTURE
+  offset: 0xA9560
+  symbol: gSpiritTempleRoom12MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gSpiritTempleRoom13MinimapTex:
+  type: TEXTURE
+  offset: 0xAA550
+  symbol: gSpiritTempleRoom13MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gSpiritTempleRoom14MinimapTex:
+  type: TEXTURE
+  offset: 0xAB540
+  symbol: gSpiritTempleRoom14MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gSpiritTempleRoom15Floor1MinimapTex:
+  type: TEXTURE
+  offset: 0xAC530
+  symbol: gSpiritTempleRoom15Floor1MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gSpiritTempleRoom15Floor2MinimapTex:
+  type: TEXTURE
+  offset: 0xBB440
+  symbol: gSpiritTempleRoom15Floor2MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gSpiritTempleRoom16MinimapTex:
+  type: TEXTURE
+  offset: 0xAD520
+  symbol: gSpiritTempleRoom16MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gSpiritTempleRoom17MinimapTex:
+  type: TEXTURE
+  offset: 0xAE510
+  symbol: gSpiritTempleRoom17MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gSpiritTempleRoom18MinimapTex:
+  type: TEXTURE
+  offset: 0xAF500
+  symbol: gSpiritTempleRoom18MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gSpiritTempleRoom19MinimapTex:
+  type: TEXTURE
+  offset: 0xB04F0
+  symbol: gSpiritTempleRoom19MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gSpiritTempleRoom1MinimapTex:
+  type: TEXTURE
+  offset: 0x9E610
+  symbol: gSpiritTempleRoom1MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gSpiritTempleRoom20MinimapTex:
+  type: TEXTURE
+  offset: 0xB14E0
+  symbol: gSpiritTempleRoom20MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gSpiritTempleRoom21MinimapTex:
+  type: TEXTURE
+  offset: 0xB24D0
+  symbol: gSpiritTempleRoom21MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gSpiritTempleRoom22MinimapTex:
+  type: TEXTURE
+  offset: 0xB34C0
+  symbol: gSpiritTempleRoom22MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gSpiritTempleRoom23Floor3MinimapTex:
+  type: TEXTURE
+  offset: 0xB44B0
+  symbol: gSpiritTempleRoom23Floor3MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gSpiritTempleRoom23Floor4MinimapTex:
+  type: TEXTURE
+  offset: 0xBC430
+  symbol: gSpiritTempleRoom23Floor4MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gSpiritTempleRoom24MinimapTex:
+  type: TEXTURE
+  offset: 0xB54A0
+  symbol: gSpiritTempleRoom24MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gSpiritTempleRoom25MinimapTex:
+  type: TEXTURE
+  offset: 0xB6490
+  symbol: gSpiritTempleRoom25MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gSpiritTempleRoom26MinimapTex:
+  type: TEXTURE
+  offset: 0xB7480
+  symbol: gSpiritTempleRoom26MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gSpiritTempleRoom27MinimapTex:
+  type: TEXTURE
+  offset: 0xB8470
+  symbol: gSpiritTempleRoom27MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gSpiritTempleRoom2MinimapTex:
+  type: TEXTURE
+  offset: 0x9F600
+  symbol: gSpiritTempleRoom2MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gSpiritTempleRoom3MinimapTex:
+  type: TEXTURE
+  offset: 0xA05F0
+  symbol: gSpiritTempleRoom3MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gSpiritTempleRoom4Floor1MinimapTex:
+  type: TEXTURE
+  offset: 0xA15E0
+  symbol: gSpiritTempleRoom4Floor1MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gSpiritTempleRoom4Floor2MinimapTex:
+  type: TEXTURE
+  offset: 0xB9460
+  symbol: gSpiritTempleRoom4Floor2MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gSpiritTempleRoom5Floor2MinimapTex:
+  type: TEXTURE
+  offset: 0xA25D0
+  symbol: gSpiritTempleRoom5Floor2MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gSpiritTempleRoom5Floor3MinimapTex:
+  type: TEXTURE
+  offset: 0xBA450
+  symbol: gSpiritTempleRoom5Floor3MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gSpiritTempleRoom6MinimapTex:
+  type: TEXTURE
+  offset: 0xA35C0
+  symbol: gSpiritTempleRoom6MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gSpiritTempleRoom7MinimapTex:
+  type: TEXTURE
+  offset: 0xA45B0
+  symbol: gSpiritTempleRoom7MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gSpiritTempleRoom8MinimapTex:
+  type: TEXTURE
+  offset: 0xA55A0
+  symbol: gSpiritTempleRoom8MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gSpiritTempleRoom9MinimapTex:
+  type: TEXTURE
+  offset: 0xA6590
+  symbol: gSpiritTempleRoom9MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gWaterTempleRoom0Basement1MinimapTex:
+  type: TEXTURE
+  offset: 0x89760
+  symbol: gWaterTempleRoom0Basement1MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gWaterTempleRoom0Floor1MinimapTex:
+  type: TEXTURE
+  offset: 0x88770
+  symbol: gWaterTempleRoom0Floor1MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gWaterTempleRoom0Floor2MinimapTex:
+  type: TEXTURE
+  offset: 0x87780
+  symbol: gWaterTempleRoom0Floor2MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gWaterTempleRoom0Floor3MinimapTex:
+  type: TEXTURE
+  offset: 0x718E0
+  symbol: gWaterTempleRoom0Floor3MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gWaterTempleRoom10Floor2MinimapTex:
+  type: TEXTURE
+  offset: 0x946B0
+  symbol: gWaterTempleRoom10Floor2MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gWaterTempleRoom10Floor3MinimapTex:
+  type: TEXTURE
+  offset: 0x7B840
+  symbol: gWaterTempleRoom10Floor3MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gWaterTempleRoom11MinimapTex:
+  type: TEXTURE
+  offset: 0x7C830
+  symbol: gWaterTempleRoom11MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gWaterTempleRoom12Basement1MinimapTex:
+  type: TEXTURE
+  offset: 0x956A0
+  symbol: gWaterTempleRoom12Basement1MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gWaterTempleRoom12Floor3MinimapTex:
+  type: TEXTURE
+  offset: 0x7D820
+  symbol: gWaterTempleRoom12Floor3MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gWaterTempleRoom13MinimapTex:
+  type: TEXTURE
+  offset: 0x7E810
+  symbol: gWaterTempleRoom13MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gWaterTempleRoom14Basement1MinimapTex:
+  type: TEXTURE
+  offset: 0x96690
+  symbol: gWaterTempleRoom14Basement1MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gWaterTempleRoom14Floor3MinimapTex:
+  type: TEXTURE
+  offset: 0x7F800
+  symbol: gWaterTempleRoom14Floor3MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gWaterTempleRoom15Basement1MinimapTex:
+  type: TEXTURE
+  offset: 0x97680
+  symbol: gWaterTempleRoom15Basement1MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gWaterTempleRoom15Floor3MinimapTex:
+  type: TEXTURE
+  offset: 0x807F0
+  symbol: gWaterTempleRoom15Floor3MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gWaterTempleRoom16MinimapTex:
+  type: TEXTURE
+  offset: 0x817E0
+  symbol: gWaterTempleRoom16MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gWaterTempleRoom17Floor1MinimapTex:
+  type: TEXTURE
+  offset: 0x99660
+  symbol: gWaterTempleRoom17Floor1MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gWaterTempleRoom17Floor2MinimapTex:
+  type: TEXTURE
+  offset: 0x98670
+  symbol: gWaterTempleRoom17Floor2MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gWaterTempleRoom17Floor3MinimapTex:
+  type: TEXTURE
+  offset: 0x827D0
+  symbol: gWaterTempleRoom17Floor3MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gWaterTempleRoom18MinimapTex:
+  type: TEXTURE
+  offset: 0x837C0
+  symbol: gWaterTempleRoom18MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gWaterTempleRoom19MinimapTex:
+  type: TEXTURE
+  offset: 0x847B0
+  symbol: gWaterTempleRoom19MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gWaterTempleRoom1Basement1MinimapTex:
+  type: TEXTURE
+  offset: 0x8C730
+  symbol: gWaterTempleRoom1Basement1MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gWaterTempleRoom1Floor1MinimapTex:
+  type: TEXTURE
+  offset: 0x8B740
+  symbol: gWaterTempleRoom1Floor1MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gWaterTempleRoom1Floor2MinimapTex:
+  type: TEXTURE
+  offset: 0x8A750
+  symbol: gWaterTempleRoom1Floor2MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gWaterTempleRoom1Floor3MinimapTex:
+  type: TEXTURE
+  offset: 0x728D0
+  symbol: gWaterTempleRoom1Floor3MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gWaterTempleRoom20Floor2MinimapTex:
+  type: TEXTURE
+  offset: 0x9A650
+  symbol: gWaterTempleRoom20Floor2MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gWaterTempleRoom20Floor3MinimapTex:
+  type: TEXTURE
+  offset: 0x857A0
+  symbol: gWaterTempleRoom20Floor3MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gWaterTempleRoom21Floor1MinimapTex:
+  type: TEXTURE
+  offset: 0x9B640
+  symbol: gWaterTempleRoom21Floor1MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gWaterTempleRoom21Floor3MinimapTex:
+  type: TEXTURE
+  offset: 0x86790
+  symbol: gWaterTempleRoom21Floor3MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gWaterTempleRoom2MinimapTex:
+  type: TEXTURE
+  offset: 0x738C0
+  symbol: gWaterTempleRoom2MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gWaterTempleRoom3Basement1MinimapTex:
+  type: TEXTURE
+  offset: 0x8D720
+  symbol: gWaterTempleRoom3Basement1MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gWaterTempleRoom3Floor3MinimapTex:
+  type: TEXTURE
+  offset: 0x748B0
+  symbol: gWaterTempleRoom3Floor3MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gWaterTempleRoom4Floor2MinimapTex:
+  type: TEXTURE
+  offset: 0x8E710
+  symbol: gWaterTempleRoom4Floor2MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gWaterTempleRoom4Floor3MinimapTex:
+  type: TEXTURE
+  offset: 0x758A0
+  symbol: gWaterTempleRoom4Floor3MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gWaterTempleRoom5Basement1MinimapTex:
+  type: TEXTURE
+  offset: 0x9C630
+  symbol: gWaterTempleRoom5Basement1MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gWaterTempleRoom5Floor1MinimapTex:
+  type: TEXTURE
+  offset: 0x906F0
+  symbol: gWaterTempleRoom5Floor1MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gWaterTempleRoom5Floor2MinimapTex:
+  type: TEXTURE
+  offset: 0x8F700
+  symbol: gWaterTempleRoom5Floor2MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gWaterTempleRoom5Floor3MinimapTex:
+  type: TEXTURE
+  offset: 0x76890
+  symbol: gWaterTempleRoom5Floor3MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gWaterTempleRoom6Floor2MinimapTex:
+  type: TEXTURE
+  offset: 0x916E0
+  symbol: gWaterTempleRoom6Floor2MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gWaterTempleRoom6MinimapTex:
+  type: TEXTURE
+  offset: 0x77880
+  symbol: gWaterTempleRoom6MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gWaterTempleRoom7MinimapTex:
+  type: TEXTURE
+  offset: 0x78870
+  symbol: gWaterTempleRoom7MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gWaterTempleRoom8Basement1MinimapTex:
+  type: TEXTURE
+  offset: 0x926D0
+  symbol: gWaterTempleRoom8Basement1MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gWaterTempleRoom8Floor3MinimapTex:
+  type: TEXTURE
+  offset: 0x79860
+  symbol: gWaterTempleRoom8Floor3MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gWaterTempleRoom9Basement1MinimapTex:
+  type: TEXTURE
+  offset: 0x936C0
+  symbol: gWaterTempleRoom9Basement1MinimapTex
+  format: I4
+  width: 96
+  height: 85
+
+gWaterTempleRoom9Floor3MinimapTex:
+  type: TEXTURE
+  offset: 0x7A850
+  symbol: gWaterTempleRoom9Floor3MinimapTex
+  format: I4
+  width: 96
+  height: 85
+

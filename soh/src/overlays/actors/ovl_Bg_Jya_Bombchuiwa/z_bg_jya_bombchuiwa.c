@@ -144,7 +144,7 @@ void BgJyaBombchuiwa_SetupWaitForExplosion(BgJyaBombchuiwa* this, PlayState* pla
 void BgJyaBombchuiwa_WaitForExplosion(BgJyaBombchuiwa* this, PlayState* play) {
     if ((this->collider.base.acFlags & AC_HIT) || (this->timer > 0)) {
         if (this->timer == 0) {
-            OnePointCutscene_Init(play, 3410, -99, &this->actor, MAIN_CAM);
+            OnePointCutscene_Init(play, 3410, -99, &this->actor, CAM_ID_MAIN);
         }
         this->timer++;
         if (this->timer > 10) {
@@ -181,7 +181,7 @@ void BgJyaBombchuiwa_SpawnLightRay(BgJyaBombchuiwa* this, PlayState* play) {
     this->lightRayIntensity = 153.0f;
     BgJyaBombchuiwa_SetDrawFlags(this, 4);
     if (Actor_Spawn(&play->actorCtx, play, ACTOR_MIR_RAY, this->actor.world.pos.x, this->actor.world.pos.y,
-                    this->actor.world.pos.z, 0, 0, 0, 0, true) == NULL) {
+                    this->actor.world.pos.z, 0, 0, 0, 0) == NULL) {
         // "Occurrence failure"
         osSyncPrintf("Ｅｒｒｏｒ : Mir_Ray 発生失敗(%s %d)(arg_data 0x%04x)\n", __FILE__, __LINE__, this->actor.params);
     }

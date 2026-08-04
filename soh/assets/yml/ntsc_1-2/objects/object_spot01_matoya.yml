@@ -1,0 +1,178 @@
+:config:
+  segments:
+    - [ 6, 0x012AE950 ]
+    - [ 4, 0x00D3AED0 ]
+    - [ 8, 0x012AE950 ]
+    - [ 9, 0x012AE950 ]
+    - [ 10, 0x012AE950 ]
+    - [ 11, 0x012AE950 ]
+    - [ 12, 0x012AE950 ]
+    - [ 13, 0x012AE950 ]
+  external_files:
+    - ntsc_1-2/objects/gameplay_keep.yml
+
+gKakarikoBOTWStoneCol:
+  type: OOT:COLLISION
+  offset: 0x3C64
+  symbol: gKakarikoBOTWStoneCol
+
+gKakarikoBOTWStoneDL:
+  type: GFX
+  offset: 0x3B20
+  symbol: gKakarikoBOTWStoneDL
+
+gKakarikoBOTWStoneTex:
+  type: TEXTURE
+  offset: 0x3140
+  symbol: gKakarikoBOTWStoneTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gKakarikoBazaarSignDL:
+  type: GFX
+  offset: 0x3078
+  symbol: gKakarikoBazaarSignDL
+
+gKakarikoBazaarSignTLUT:
+  type: TEXTURE
+  offset: 0x2810
+  symbol: gKakarikoBazaarSignTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gKakarikoBazaarSignTex:
+  type: TEXTURE
+  offset: 0x2838
+  symbol: gKakarikoBazaarSignTex
+  format: CI4
+  width: 64
+  height: 64
+  tlut: 0x2810
+
+gKakarikoPotionShopSignDL:
+  type: GFX
+  offset: 0x1EB0
+  symbol: gKakarikoPotionShopSignDL
+
+gKakarikoPotionShopSignTex:
+  type: TEXTURE
+  offset: 0x1A70
+  symbol: gKakarikoPotionShopSignTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gKakarikoShootingGalleryCol:
+  type: OOT:COLLISION
+  offset: 0x1A38
+  symbol: gKakarikoShootingGalleryCol
+
+gKakarikoShootingGalleryDL:
+  type: GFX
+  offset: 0x1528
+  symbol: gKakarikoShootingGalleryDL
+
+gKakarikoShootingGalleryDoorShadowTex:
+  type: TEXTURE
+  offset: 0x808
+  symbol: gKakarikoShootingGalleryDoorShadowTex
+  format: CI8
+  width: 16
+  height: 32
+  tlut: 0x0
+
+gKakarikoShootingGalleryRoofEdgeTex:
+  type: TEXTURE
+  offset: 0x208
+  symbol: gKakarikoShootingGalleryRoofEdgeTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x0
+
+gKakarikoShootingGalleryRoofTex:
+  type: TEXTURE
+  offset: 0x608
+  symbol: gKakarikoShootingGalleryRoofTex
+  format: CI8
+  width: 16
+  height: 32
+  tlut: 0x0
+
+gKakarikoShootingGallerySignDL:
+  type: GFX
+  offset: 0x2780
+  symbol: gKakarikoShootingGallerySignDL
+
+gKakarikoShootingGallerySignTex:
+  type: TEXTURE
+  offset: 0x1F40
+  symbol: gKakarikoShootingGallerySignTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gKakarikoShootingGalleryTLUT:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gKakarikoShootingGalleryTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gKakarikoShootingGalleryWallTex:
+  type: TEXTURE
+  offset: 0xA08
+  symbol: gKakarikoShootingGalleryWallTex
+  format: CI8
+  width: 32
+  height: 64
+  tlut: 0x0
+
+
+object_spot01_matoyaVtx_001208:
+  type: OOT:ARRAY
+  offset: 0x001208
+  symbol: object_spot01_matoyaVtx_001208
+  count: 50
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_spot01_matoyaVtx_001E70:
+  type: OOT:ARRAY
+  offset: 0x001E70
+  symbol: object_spot01_matoyaVtx_001E70
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_spot01_matoyaVtx_002740:
+  type: OOT:ARRAY
+  offset: 0x002740
+  symbol: object_spot01_matoyaVtx_002740
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_spot01_matoyaVtx_003038:
+  type: OOT:ARRAY
+  offset: 0x003038
+  symbol: object_spot01_matoyaVtx_003038
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_spot01_matoyaVtx_003940:
+  type: OOT:ARRAY
+  offset: 0x003940
+  symbol: object_spot01_matoyaVtx_003940
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

@@ -1,0 +1,14 @@
+:config:
+  segments:
+    - [ 2, 0x01D42230 ]
+
+malon_stable_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: malon_stable_scene
+
+
+malon_stable_sceneCollisionHeader_000644:
+  type: OOT:COLLISION
+  offset: 0x000644
+  symbol: malon_stable_sceneCollisionHeader_000644

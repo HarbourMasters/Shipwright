@@ -152,7 +152,7 @@ void EnBombf_GrowBomb(EnBombf* this, PlayState* play) {
     if (this->flowerBombScale >= 1.0f) {
         if (Actor_HasParent(&this->actor, play)) {
             bombFlower = (EnBombf*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOMBF, this->actor.world.pos.x,
-                                               this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0, true);
+                                               this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0);
             if (bombFlower != NULL) {
                 func_8002F5C4(&this->actor, &bombFlower->actor, play);
                 this->timer = 180;
@@ -171,7 +171,7 @@ void EnBombf_GrowBomb(EnBombf* this, PlayState* play) {
 
             if (this->bombCollider.base.ac->category != ACTORCAT_BOSS) {
                 bombFlower = (EnBombf*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOMBF, this->actor.world.pos.x,
-                                                   this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0, true);
+                                                   this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0);
                 if (bombFlower != NULL) {
                     bombFlower->isFuseEnabled = 1;
                     bombFlower->timer = 0;
@@ -183,7 +183,7 @@ void EnBombf_GrowBomb(EnBombf* this, PlayState* play) {
         } else {
             if (Player_IsBurningStickInRange(play, &this->actor.world.pos, 30.0f, 50.0f)) {
                 bombFlower = (EnBombf*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOMBF, this->actor.world.pos.x,
-                                                   this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0, true);
+                                                   this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0);
                 if (bombFlower != NULL) {
                     bombFlower->timer = 100;
                     this->timer = 180;
@@ -234,12 +234,12 @@ void EnBombf_Move(EnBombf* this, PlayState* play) {
 
     this->flowerBombScale = 1.0f;
 
-    if (!(this->actor.bgCheckFlags & 1)) {
+    if (!(this->actor.bgCheckFlags & BGCHECKFLAG_GROUND)) {
         Math_SmoothStepToF(&this->actor.speedXZ, 0.0f, 1.0f, 0.025f, 0.0f);
     } else {
         Math_SmoothStepToF(&this->actor.speedXZ, 0.0f, 1.0f, 1.5f, 0.0f);
-        if ((this->actor.bgCheckFlags & 2) && (this->actor.velocity.y < -6.0f)) {
-            func_8002F850(play, &this->actor);
+        if ((this->actor.bgCheckFlags & BGCHECKFLAG_GROUND_TOUCH) && (this->actor.velocity.y < -6.0f)) {
+            Actor_PlaySfx_SurfaceBomb(play, &this->actor);
             this->actor.velocity.y *= -0.5f;
         } else if (this->timer >= 4) {
             Actor_OfferCarry(&this->actor, play);
@@ -262,7 +262,7 @@ void EnBombf_Explode(EnBombf* this, PlayState* play) {
 
     if (this->explosionCollider.elements[0].dim.modelSphere.radius == 0) {
         this->actor.flags |= ACTOR_FLAG_DRAW_CULLING_DISABLED;
-        func_800AA000(this->actor.xzDistToPlayer, 0xFF, 0x14, 0x96);
+        Rumble_Request(this->actor.xzDistToPlayer, 0xFF, 0x14, 0x96);
     }
 
     this->explosionCollider.elements[0].dim.modelSphere.radius += 8;

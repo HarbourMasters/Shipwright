@@ -1,0 +1,18 @@
+:config:
+  segments:
+    - [ 2, 0x02CF4000 ]
+
+  external_files:
+    - pal_gc_dbg/scenes/shared/sasatest_sceneSet_002870.yml
+    - pal_gc_dbg/scenes/shared/sasatest_sceneSet_002940.yml
+    - pal_gc_dbg/scenes/shared/sasatest_sceneSet_002A60.yml
+sasatest_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: sasatest_scene
+
+
+sasatest_sceneCollisionHeader_002838:
+  type: OOT:COLLISION
+  offset: 0x002838
+  symbol: sasatest_sceneCollisionHeader_002838

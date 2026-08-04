@@ -1,0 +1,110 @@
+:config:
+  segments:
+    - [ 3, 0x01E6AD20 ]
+    - [ 2, 0x01E4C750 ]
+  directory: scenes/shared/hakasitarelay_scene
+  external_files:
+    - ntsc_j_gc/scenes/shared/hakasitarelay_scene.yml
+    - ntsc_j_gc/code/sys_matrix.yml
+
+hakasitarelay_room_5:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: hakasitarelay_room_5
+
+hakasitarelay_room_5TLUT_001C28:
+  type: TEXTURE
+  offset: 0x1C28
+  symbol: hakasitarelay_room_5TLUT_001C28
+  format: RGBA16
+  width: 4
+  height: 4
+
+hakasitarelay_room_5Tex_001C48:
+  type: TEXTURE
+  offset: 0x1C48
+  symbol: hakasitarelay_room_5Tex_001C48
+  format: RGBA16
+  width: 32
+  height: 32
+
+hakasitarelay_room_5Tex_002448:
+  type: TEXTURE
+  offset: 0x2448
+  symbol: hakasitarelay_room_5Tex_002448
+  format: CI4
+  width: 64
+  height: 64
+  tlut: 0x1C28
+
+hakasitarelay_room_5Tex_002C48:
+  type: TEXTURE
+  offset: 0x2C48
+  symbol: hakasitarelay_room_5Tex_002C48
+  format: I8
+  width: 64
+  height: 32
+
+hakasitarelay_room_5Tex_003448:
+  type: TEXTURE
+  offset: 0x3448
+  symbol: hakasitarelay_room_5Tex_003448
+  format: I4
+  width: 64
+  height: 64
+
+hakasitarelay_room_5Tex_003C48:
+  type: TEXTURE
+  offset: 0x3C48
+  symbol: hakasitarelay_room_5Tex_003C48
+  format: I4
+  width: 64
+  height: 64
+
+
+hakasitarelay_room_5Vtx_0000B0:
+  type: OOT:ARRAY
+  offset: 0x0000B0
+  symbol: hakasitarelay_room_5Vtx_0000B0
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+hakasitarelay_room_5DL_000330:
+  type: GFX
+  offset: 0x000330
+  symbol: hakasitarelay_room_5DL_000330
+
+hakasitarelay_room_5Vtx_000510:
+  type: OOT:ARRAY
+  offset: 0x000510
+  symbol: hakasitarelay_room_5Vtx_000510
+  count: 165
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+hakasitarelay_room_5DL_000F60:
+  type: GFX
+  offset: 0x000F60
+  symbol: hakasitarelay_room_5DL_000F60
+
+hakasitarelay_room_5Vtx_001318:
+  type: OOT:ARRAY
+  offset: 0x001318
+  symbol: hakasitarelay_room_5Vtx_001318
+  count: 81
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+hakasitarelay_room_5DL_001828:
+  type: GFX
+  offset: 0x001828
+  symbol: hakasitarelay_room_5DL_001828
+
+hakasitarelay_room_5DL_001C08:
+  type: GFX
+  offset: 0x001C08
+  symbol: hakasitarelay_room_5DL_001C08

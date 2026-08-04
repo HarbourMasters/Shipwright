@@ -1,0 +1,35 @@
+:config:
+  segments:
+    - [ 6, 0x011A5480 ]
+    - [ 4, 0x00D24FC0 ]
+    - [ 8, 0x011A5480 ]
+    - [ 9, 0x011A5480 ]
+    - [ 10, 0x011A5480 ]
+    - [ 11, 0x011A5480 ]
+    - [ 12, 0x011A5480 ]
+    - [ 13, 0x011A5480 ]
+  external_files:
+    - pal_gc/objects/gameplay_keep.yml
+
+object_ganon_objects_DL_0000C0:
+  type: GFX
+  offset: 0xC0
+  symbol: object_ganon_objects_DL_0000C0
+
+object_ganon_objects_Tex_000170:
+  type: TEXTURE
+  offset: 0x170
+  symbol: object_ganon_objects_Tex_000170
+  format: RGBA16
+  width: 32
+  height: 64
+
+
+object_ganon_objectsVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_ganon_objectsVtx_000000
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

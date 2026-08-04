@@ -193,11 +193,11 @@ void EnFireRock_Fall(EnFireRock* this, PlayState* play) {
             }
             break;
     }
-    if ((this->actor.bgCheckFlags & 1) && (this->timer == 0)) {
+    if ((this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) && (this->timer == 0)) {
         switch (this->type) {
             case FIRE_ROCK_SPAWNED_FALLING1:
             case FIRE_ROCK_SPAWNED_FALLING2:
-                func_80033E88(&this->actor, play, 5, 2);
+                Actor_RequestQuakeAndRumble(&this->actor, play, 5, 2);
             case FIRE_ROCK_BROKEN_PIECE1:
                 Actor_SpawnFloorDustRing(play, &this->actor, &this->actor.world.pos, this->actor.shape.shadowScale, 1,
                                          8.0f, 500, 10, false);
@@ -244,7 +244,7 @@ void EnFireRock_SpawnMoreBrokenPieces(EnFireRock* this, PlayState* play) {
             spawnedFireRock = (EnFireRock*)Actor_Spawn(
                 &play->actorCtx, play, ACTOR_EN_FIRE_ROCK, Rand_CenteredFloat(3.0f) + this->actor.world.pos.x,
                 Rand_CenteredFloat(3.0f) + (this->actor.world.pos.y + 10.0f),
-                Rand_CenteredFloat(3.0f) + this->actor.world.pos.z, 0, 0, 0, nextRockType, true);
+                Rand_CenteredFloat(3.0f) + this->actor.world.pos.z, 0, 0, 0, nextRockType);
             if (spawnedFireRock != NULL) {
                 spawnedFireRock->actor.world.rot.y = this->actor.world.rot.y;
                 if (i == 0) {
@@ -269,7 +269,7 @@ void FireRock_WaitSpawnRocksFromCeiling(EnFireRock* this, PlayState* play) {
             spawnedFireRock = (EnFireRock*)Actor_Spawn(
                 &play->actorCtx, play, ACTOR_EN_FIRE_ROCK, Rand_CenteredFloat(3.0f) + this->actor.world.pos.x,
                 this->actor.world.pos.y + 10.0f, Rand_CenteredFloat(3.0f) + this->actor.world.pos.z, 0, 0, 0,
-                FIRE_ROCK_SPAWNED_FALLING2, true);
+                FIRE_ROCK_SPAWNED_FALLING2);
             if (spawnedFireRock != NULL) {
                 spawnedFireRock->timer = 10;
             } else {
@@ -363,7 +363,7 @@ void EnFireRock_Update(Actor* thisx, PlayState* play) {
                 this->collider.base.atFlags &= ~2;
                 if (this->collider.base.at == playerActor) {
                     if (!(player->stateFlags1 & PLAYER_STATE1_DAMAGED)) {
-                        func_8002F758(play, thisx, 2.0f, -player->actor.world.rot.y, 3.0f, 4);
+                        Actor_SetPlayerKnockbackSmall(play, thisx, 2.0f, -player->actor.world.rot.y, 3.0f, 4);
                     }
                     return;
                 }

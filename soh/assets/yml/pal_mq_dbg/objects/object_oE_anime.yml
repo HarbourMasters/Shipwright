@@ -1,0 +1,34 @@
+:config:
+  segments:
+    - [ 6, 0x011D7000 ]
+
+object_oE_anime_Anim_00001034:
+  type: OOT:ANIMATION
+  offset: 0x1034
+  symbol: object_oE_anime_Anim_00001034
+
+object_oE_anime_Anim_000019BC:
+  type: OOT:ANIMATION
+  offset: 0x19BC
+  symbol: object_oE_anime_Anim_000019BC
+
+object_oE_anime_Anim_0000242C:
+  type: OOT:ANIMATION
+  offset: 0x242C
+  symbol: object_oE_anime_Anim_0000242C
+
+object_oE_anime_Anim_00002DC8:
+  type: OOT:ANIMATION
+  offset: 0x2DC8
+  symbol: object_oE_anime_Anim_00002DC8
+
+object_oE_anime_Anim_000047D4:
+  type: OOT:ANIMATION
+  offset: 0x47D4
+  symbol: object_oE_anime_Anim_000047D4
+
+object_oE_anime_Anim_00005044:
+  type: OOT:ANIMATION
+  offset: 0x5044
+  symbol: object_oE_anime_Anim_00005044
+

@@ -1,0 +1,308 @@
+:config:
+  segments:
+    - [ 3, 0x03485000 ]
+    - [ 2, 0x03473000 ]
+  directory: scenes/shared/hylia_labo_scene
+  external_files:
+    - pal_gc_dbg/scenes/shared/hylia_labo_scene.yml
+    - pal_gc_dbg/code/sys_matrix.yml
+
+hylia_labo_room_0:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: hylia_labo_room_0
+
+
+hylia_labo_room_0Vtx_000200:
+  type: OOT:ARRAY
+  offset: 0x000200
+  symbol: hylia_labo_room_0Vtx_000200
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+hylia_labo_room_0DL_0002C0:
+  type: GFX
+  offset: 0x0002C0
+  symbol: hylia_labo_room_0DL_0002C0
+
+hylia_labo_room_0Vtx_000340:
+  type: OOT:ARRAY
+  offset: 0x000340
+  symbol: hylia_labo_room_0Vtx_000340
+  count: 120
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+hylia_labo_room_0DL_000AC0:
+  type: GFX
+  offset: 0x000AC0
+  symbol: hylia_labo_room_0DL_000AC0
+
+hylia_labo_room_0Vtx_000FD8:
+  type: OOT:ARRAY
+  offset: 0x000FD8
+  symbol: hylia_labo_room_0Vtx_000FD8
+  count: 52
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+hylia_labo_room_0DL_001318:
+  type: GFX
+  offset: 0x001318
+  symbol: hylia_labo_room_0DL_001318
+
+hylia_labo_room_0Vtx_001440:
+  type: OOT:ARRAY
+  offset: 0x001440
+  symbol: hylia_labo_room_0Vtx_001440
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+hylia_labo_room_0DL_001500:
+  type: GFX
+  offset: 0x001500
+  symbol: hylia_labo_room_0DL_001500
+
+hylia_labo_room_0Vtx_0015B8:
+  type: OOT:ARRAY
+  offset: 0x0015B8
+  symbol: hylia_labo_room_0Vtx_0015B8
+  count: 80
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+hylia_labo_room_0DL_001AB8:
+  type: GFX
+  offset: 0x001AB8
+  symbol: hylia_labo_room_0DL_001AB8
+
+hylia_labo_room_0Vtx_001CC0:
+  type: OOT:ARRAY
+  offset: 0x001CC0
+  symbol: hylia_labo_room_0Vtx_001CC0
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+hylia_labo_room_0DL_001E10:
+  type: GFX
+  offset: 0x001E10
+  symbol: hylia_labo_room_0DL_001E10
+
+hylia_labo_room_0Vtx_001EE8:
+  type: OOT:ARRAY
+  offset: 0x001EE8
+  symbol: hylia_labo_room_0Vtx_001EE8
+  count: 67
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+hylia_labo_room_0DL_002318:
+  type: GFX
+  offset: 0x002318
+  symbol: hylia_labo_room_0DL_002318
+
+hylia_labo_room_0Vtx_002620:
+  type: OOT:ARRAY
+  offset: 0x002620
+  symbol: hylia_labo_room_0Vtx_002620
+  count: 65
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+hylia_labo_room_0DL_002A30:
+  type: GFX
+  offset: 0x002A30
+  symbol: hylia_labo_room_0DL_002A30
+
+hylia_labo_room_0Vtx_002C20:
+  type: OOT:ARRAY
+  offset: 0x002C20
+  symbol: hylia_labo_room_0Vtx_002C20
+  count: 142
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+hylia_labo_room_0DL_003500:
+  type: GFX
+  offset: 0x003500
+  symbol: hylia_labo_room_0DL_003500
+
+hylia_labo_room_0Vtx_0037C0:
+  type: OOT:ARRAY
+  offset: 0x0037C0
+  symbol: hylia_labo_room_0Vtx_0037C0
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+hylia_labo_room_0DL_0039F0:
+  type: GFX
+  offset: 0x0039F0
+  symbol: hylia_labo_room_0DL_0039F0
+
+hylia_labo_room_0Vtx_003AE0:
+  type: OOT:ARRAY
+  offset: 0x003AE0
+  symbol: hylia_labo_room_0Vtx_003AE0
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+hylia_labo_room_0DL_003C80:
+  type: GFX
+  offset: 0x003C80
+  symbol: hylia_labo_room_0DL_003C80
+
+hylia_labo_room_0Vtx_003D80:
+  type: OOT:ARRAY
+  offset: 0x003D80
+  symbol: hylia_labo_room_0Vtx_003D80
+  count: 54
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+hylia_labo_room_0DL_0040E0:
+  type: GFX
+  offset: 0x0040E0
+  symbol: hylia_labo_room_0DL_0040E0
+
+hylia_labo_room_0Vtx_004200:
+  type: OOT:ARRAY
+  offset: 0x004200
+  symbol: hylia_labo_room_0Vtx_004200
+  count: 65
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+hylia_labo_room_0DL_004610:
+  type: GFX
+  offset: 0x004610
+  symbol: hylia_labo_room_0DL_004610
+
+hylia_labo_room_0Vtx_004790:
+  type: OOT:ARRAY
+  offset: 0x004790
+  symbol: hylia_labo_room_0Vtx_004790
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+hylia_labo_room_0DL_0048B0:
+  type: GFX
+  offset: 0x0048B0
+  symbol: hylia_labo_room_0DL_0048B0
+
+hylia_labo_room_0Vtx_0049C0:
+  type: OOT:ARRAY
+  offset: 0x0049C0
+  symbol: hylia_labo_room_0Vtx_0049C0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+hylia_labo_room_0DL_004A80:
+  type: GFX
+  offset: 0x004A80
+  symbol: hylia_labo_room_0DL_004A80
+
+hylia_labo_room_0Vtx_004C00:
+  type: OOT:ARRAY
+  offset: 0x004C00
+  symbol: hylia_labo_room_0Vtx_004C00
+  count: 82
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+hylia_labo_room_0DL_005120:
+  type: GFX
+  offset: 0x005120
+  symbol: hylia_labo_room_0DL_005120
+
+hylia_labo_room_0Vtx_0053B8:
+  type: OOT:ARRAY
+  offset: 0x0053B8
+  symbol: hylia_labo_room_0Vtx_0053B8
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+hylia_labo_room_0DL_005738:
+  type: GFX
+  offset: 0x005738
+  symbol: hylia_labo_room_0DL_005738
+
+hylia_labo_room_0Vtx_0058A8:
+  type: OOT:ARRAY
+  offset: 0x0058A8
+  symbol: hylia_labo_room_0Vtx_0058A8
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+hylia_labo_room_0DL_005A38:
+  type: GFX
+  offset: 0x005A38
+  symbol: hylia_labo_room_0DL_005A38
+
+hylia_labo_room_0Vtx_005B60:
+  type: OOT:ARRAY
+  offset: 0x005B60
+  symbol: hylia_labo_room_0Vtx_005B60
+  count: 60
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+hylia_labo_room_0DL_005F20:
+  type: GFX
+  offset: 0x005F20
+  symbol: hylia_labo_room_0DL_005F20
+
+hylia_labo_room_0Vtx_006070:
+  type: OOT:ARRAY
+  offset: 0x006070
+  symbol: hylia_labo_room_0Vtx_006070
+  count: 199
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+hylia_labo_room_0DL_006CE0:
+  type: GFX
+  offset: 0x006CE0
+  symbol: hylia_labo_room_0DL_006CE0
+
+hylia_labo_room_0Vtx_007020:
+  type: OOT:ARRAY
+  offset: 0x007020
+  symbol: hylia_labo_room_0Vtx_007020
+  count: 68
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+hylia_labo_room_0DL_007460:
+  type: GFX
+  offset: 0x007460
+  symbol: hylia_labo_room_0DL_007460

@@ -1,0 +1,36 @@
+:config:
+  segments:
+    - [ 128, 0x0165A640 ]
+
+gCowHouseBg2TLUT:
+  type: TEXTURE
+  offset: 0x200
+  symbol: gCowHouseBg2TLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gCowHouseBg3TLUT:
+  type: TEXTURE
+  offset: 0x400
+  symbol: gCowHouseBg3TLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gCowHouseBg4TLUT:
+  type: TEXTURE
+  offset: 0x600
+  symbol: gCowHouseBg4TLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gCowHouseBgTLUT:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gCowHouseBgTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+

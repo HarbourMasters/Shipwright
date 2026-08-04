@@ -1,4 +1,3 @@
-#include <libultraship/libultraship.h>
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ShipInit.hpp"
 

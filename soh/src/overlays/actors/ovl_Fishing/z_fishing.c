@@ -11,7 +11,6 @@
 #include "vt.h"
 
 #include "soh/frame_interpolation.h"
-#include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
@@ -432,6 +431,8 @@ static f32 sFishGroupAngle3;
 static FishingEffect sFishingEffects[FISHING_EFFECT_COUNT];
 static Vec3f sStreamSoundProjectedPos;
 static s16 sFishOnHandParams;
+
+f32 Fishing_GetMinimumRequiredScore();
 
 u8 AllHyruleLoaches() {
     return CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFishing"), 0) &&
@@ -896,7 +897,7 @@ void Fishing_Init(Actor* thisx, PlayState* play2) {
 
         sOwnerTheftTimer = 20;
         play->specialEffects = sFishingEffects;
-        gTimeIncrement = 1;
+        gTimeSpeed = 1;
         sFishingPlayingState = 0;
         sFishingMusicDelay = 10;
 
@@ -905,12 +906,16 @@ void Fishing_Init(Actor* thisx, PlayState* play2) {
         if (sLinkAge == LINK_AGE_CHILD) {
             if ((HIGH_SCORE(HS_FISHING) & HS_FISH_LENGTH_CHILD) != 0) {
                 sFishingRecordLength = HIGH_SCORE(HS_FISHING) & HS_FISH_LENGTH_CHILD;
+            } else if (CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFishing"), 0)) {
+                sFishingRecordLength = Fishing_GetMinimumRequiredScore();
             } else {
                 sFishingRecordLength = 40.0f; // 6 lbs
             }
         } else {
             if ((HIGH_SCORE(HS_FISHING) & HS_FISH_LENGTH_ADULT) != 0) {
                 sFishingRecordLength = (HIGH_SCORE(HS_FISHING) & HS_FISH_LENGTH_ADULT) >> 0x18;
+            } else if (CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFishing"), 0)) {
+                sFishingRecordLength = Fishing_GetMinimumRequiredScore();
             } else {
                 sFishingRecordLength = 45.0f; // 7 lbs
             }
@@ -984,7 +989,7 @@ void Fishing_Init(Actor* thisx, PlayState* play2) {
         Fishing_InitPondProps(this, play);
         Actor_SpawnAsChild(&play->actorCtx, thisx, play, ACTOR_EN_KANBAN, 53.0f, -17.0f, 982.0f, 0, 0, 0,
                            ENKANBAN_FISHING);
-        Actor_Spawn(&play->actorCtx, play, ACTOR_FISHING, 0.0f, 0.0f, 0.0f, 0, 0, 0, 200, true);
+        Actor_Spawn(&play->actorCtx, play, ACTOR_FISHING, 0.0f, 0.0f, 0.0f, 0, 0, 0, 200);
 
         // Loach(es) will spawn every fourth game, or if "Loaches Always Appear" is enabled
         if (getShouldSpawnLoaches()) {
@@ -1000,7 +1005,7 @@ void Fishing_Init(Actor* thisx, PlayState* play2) {
 
         for (i = 0; i < fishCount; i++) {
             Actor_Spawn(&play->actorCtx, play, ACTOR_FISHING, sFishInits[i].pos.x, sFishInits[i].pos.y,
-                        sFishInits[i].pos.z, 0, Rand_ZeroFloat(0x10000), 0, 100 + i, true);
+                        sFishInits[i].pos.z, 0, Rand_ZeroFloat(0x10000), 0, 100 + i);
         }
     } else {
         if ((thisx->params < (EN_FISH_PARAM + 15) && !AllHyruleLoaches()) || (thisx->params == EN_FISH_AQUARIUM)) {
@@ -1279,8 +1284,8 @@ void Fishing_DrawEffects(FishingEffect* effect, PlayState* play) {
             gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 40, 90, 80, effect->alpha);
 
             gSPSegment(POLY_OPA_DISP++, 0x08,
-                       Gfx_TwoTexScroll(play->state.gfxCtx, 0, effect->timer + (i * 3), (effect->timer + (i * 3)) * 5,
-                                        32, 64, 1, 0, 0, 32, 32));
+                       Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, effect->timer + (i * 3), (effect->timer + (i * 3)) * 5,
+                                          32, 64, 1, 0, 0, 32, 32, 1, 5, 0, 0));
 
             Matrix_Translate(effect->pos.x, effect->pos.y, effect->pos.z, MTXMODE_NEW);
             Matrix_ReplaceRotation(&play->billboardMtxF);
@@ -1426,8 +1431,8 @@ void Fishing_DrawStreamSplash(PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
 
     gSPSegment(POLY_XLU_DISP++, 0x09,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, play->gameplayFrames * 1, play->gameplayFrames * 8, 32, 64, 1,
-                                -(play->gameplayFrames * 2), 0, 16, 16));
+               Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, play->gameplayFrames * 1, play->gameplayFrames * 8, 32, 64, 1,
+                                  -(play->gameplayFrames * 2), 0, 16, 16, 1, 8, -2, 0));
 
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 195, 225, 235, 50);
 
@@ -2326,7 +2331,7 @@ void Fishing_UpdateLure(Fishing* this, PlayState* play) {
                     if (this->actor.bgCheckFlags & 0x10) {
                         sLurePosDelta.y = -0.5f;
                     }
-                    if (this->actor.bgCheckFlags & 8) {
+                    if (this->actor.bgCheckFlags & BGCHECKFLAG_WALL) {
                         if (sLurePosDelta.y > 0.0f) {
                             sLurePosDelta.y = 0.0f;
                         }
@@ -2893,7 +2898,7 @@ void Fishing_HandleAquariumDialog(Fishing* this, PlayState* play) {
                 sFishLengthToWeigh = sFishingRecordLength;
                 this->isAquariumMessage = true;
             } else {
-                func_8002F2F4(&this->actor, play);
+                Actor_OfferTalkNearColChkInfoCylinder(&this->actor, play);
             }
         } else {
             this->aquariumWaitTimer--;
@@ -4225,11 +4230,11 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
 
             this->actor.velocity.y = velocityY;
 
-            if (this->actor.bgCheckFlags & 8) {
+            if (this->actor.bgCheckFlags & BGCHECKFLAG_WALL) {
                 this->bumpTimer = 20;
             }
 
-            if (this->actor.bgCheckFlags & 1) {
+            if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
                 if (this->actor.world.pos.y > WATER_SURFACE_Y(play)) {
                     this->unk_184 = Rand_ZeroFloat(3.0f) + 3.0f;
                     this->actor.velocity.x = this->actor.world.pos.x * -0.003f;
@@ -4840,7 +4845,7 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
                     this->stateAndTimer = 10;
                 }
             } else {
-                func_8002F2CC(&this->actor, play, 100.0f);
+                Actor_OfferTalk(&this->actor, play, 100.0f);
             }
             break;
 
@@ -5391,9 +5396,9 @@ void Fishing_UpdateOwner(Actor* thisx, PlayState* play2) {
             Camera* mainCam;
 
             sSubCamId = Play_CreateSubCamera(play);
-            Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+            Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_WAIT);
             Play_ChangeCameraStatus(play, sSubCamId, CAM_STAT_ACTIVE);
-            mainCam = Play_GetCamera(play, MAIN_CAM);
+            mainCam = Play_GetCamera(play, CAM_ID_MAIN);
             sCameraEye.x = mainCam->eye.x;
             sCameraEye.y = mainCam->eye.y;
             sCameraEye.z = mainCam->eye.z;
@@ -5401,13 +5406,13 @@ void Fishing_UpdateOwner(Actor* thisx, PlayState* play2) {
             sCameraAt.y = mainCam->at.y;
             sCameraAt.z = mainCam->at.z;
             sFishingPlayerCinematicState = 2;
-            Interface_ChangeAlpha(12);
+            Interface_ChangeHudVisibilityMode(12);
             sSubCamVelFactor = 0.0f;
             // fallthrough
         }
 
         case 2:
-            ShrinkWindow_SetVal(0x1B);
+            Letterbox_SetSizeTarget(0x1B);
 
             lureDist.x = sLurePos.x - player->actor.world.pos.x;
             lureDist.z = sLurePos.z - player->actor.world.pos.z;
@@ -5501,7 +5506,7 @@ void Fishing_UpdateOwner(Actor* thisx, PlayState* play2) {
             break;
 
         case 3: {
-            Camera* mainCam = Play_GetCamera(play, MAIN_CAM);
+            Camera* mainCam = Play_GetCamera(play, CAM_ID_MAIN);
 
             mainCam->eye = sCameraEye;
             mainCam->eyeNext = sCameraEye;
@@ -5522,10 +5527,10 @@ void Fishing_UpdateOwner(Actor* thisx, PlayState* play2) {
 
             func_80064520(play, &play->csCtx);
             sSubCamId = Play_CreateSubCamera(play);
-            Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+            Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_WAIT);
             Play_ChangeCameraStatus(play, sSubCamId, CAM_STAT_ACTIVE);
             Player_SetCsActionWithHaltedActors(play, &this->actor, 5);
-            mainCam = Play_GetCamera(play, MAIN_CAM);
+            mainCam = Play_GetCamera(play, CAM_ID_MAIN);
             sCameraEye.x = mainCam->eye.x;
             sCameraEye.y = mainCam->eye.y;
             sCameraEye.z = mainCam->eye.z;
@@ -5549,7 +5554,7 @@ void Fishing_UpdateOwner(Actor* thisx, PlayState* play2) {
             // #endregion
 
             if (Message_GetState(&play->msgCtx) == TEXT_STATE_NONE) {
-                Camera* mainCam = Play_GetCamera(play, MAIN_CAM);
+                Camera* mainCam = Play_GetCamera(play, CAM_ID_MAIN);
 
                 mainCam->eye = sCameraEye;
                 mainCam->eyeNext = sCameraEye;
@@ -5570,10 +5575,10 @@ void Fishing_UpdateOwner(Actor* thisx, PlayState* play2) {
 
             func_80064520(play, &play->csCtx);
             sSubCamId = Play_CreateSubCamera(play);
-            Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+            Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_WAIT);
             Play_ChangeCameraStatus(play, sSubCamId, CAM_STAT_ACTIVE);
             Player_SetCsActionWithHaltedActors(play, &this->actor, 5);
-            mainCam = Play_GetCamera(play, MAIN_CAM);
+            mainCam = Play_GetCamera(play, CAM_ID_MAIN);
             sCameraEye.x = mainCam->eye.x;
             sCameraEye.y = mainCam->eye.y;
             sCameraEye.z = mainCam->eye.z;
@@ -5647,7 +5652,7 @@ void Fishing_UpdateOwner(Actor* thisx, PlayState* play2) {
                 if ((Message_GetState(&play->msgCtx) == TEXT_STATE_CHOICE) ||
                     (Message_GetState(&play->msgCtx) == TEXT_STATE_NONE)) {
                     if (Message_ShouldAdvance(play)) {
-                        Camera* mainCam = Play_GetCamera(play, MAIN_CAM);
+                        Camera* mainCam = Play_GetCamera(play, CAM_ID_MAIN);
 
                         Message_CloseTextbox(play);
                         if (play->msgCtx.choiceIndex == 0) {
@@ -5805,7 +5810,7 @@ void Fishing_UpdateOwner(Actor* thisx, PlayState* play2) {
 
     if ((u8)sStormStrength > 0) {
         s32 pad;
-        Camera* mainCam = Play_GetCamera(play, MAIN_CAM);
+        Camera* mainCam = Play_GetCamera(play, CAM_ID_MAIN);
         s16 i;
         s32 pad1;
         Vec3f pos;

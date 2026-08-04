@@ -19,15 +19,26 @@ set (BUILD_SHARED_LIBS OFF CACHE STRING "install/link shared instead of static l
 # Set target arch type if empty. Visual studio solution generator provides it.
 ################################################################################
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
-	if(NOT CMAKE_VS_PLATFORM_NAME)
-		set(CMAKE_VS_PLATFORM_NAME "x64")
-	endif()
-	message("${CMAKE_VS_PLATFORM_NAME} architecture in use")
+    if(NOT CMAKE_VS_PLATFORM_NAME)
+        set(CMAKE_VS_PLATFORM_NAME "x64")
+    endif()
+    if("${CMAKE_VS_PLATFORM_NAME}" MATCHES "^[Aa][Rr][Mm]64$")
+        set(SOH_WINDOWS_ARM64 TRUE)
+    else()
+        set(SOH_WINDOWS_ARM64 FALSE)
+    endif()
+    if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64" OR SOH_WINDOWS_ARM64)
+        set(SOH_WINDOWS_64BIT TRUE)
+    else()
+        set(SOH_WINDOWS_64BIT FALSE)
+    endif()
+    message("${CMAKE_VS_PLATFORM_NAME} architecture in use")
 
-	if(NOT ("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64"
-		OR "${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32"))
-		message(FATAL_ERROR "${CMAKE_VS_PLATFORM_NAME} arch is not supported!")
-	endif()
+    if(NOT ("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64"
+        OR "${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32"
+        OR SOH_WINDOWS_ARM64))
+        message(FATAL_ERROR "${CMAKE_VS_PLATFORM_NAME} arch is not supported!")
+    endif()
 endif()
 
 ################################################################################
@@ -93,10 +104,6 @@ if (NOT TARGET libultraship)
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../libultraship ${CMAKE_BINARY_DIR}/libultraship)
 endif()
 
-if (NOT TARGET ZAPDLib)
-    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../ZAPDTR/ZAPD ${CMAKE_BINARY_DIR}/ZAPD)
-endif()
-
 set(PROJECT_NAME soh)
 
 ################################################################################
@@ -124,7 +131,6 @@ source_group("include" FILES ${Header_Files__include})
 file(GLOB_RECURSE soh__ RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "soh/*.c" "soh/*.cpp" "soh/*.h" "soh/*.hpp")
 
 # Add specific files that don't match the pattern
-list(APPEND soh__ ${CMAKE_CURRENT_SOURCE_DIR}/soh/Enhancements/savestates_extern.inc)
 list(APPEND soh__ ${CMAKE_CURRENT_SOURCE_DIR}/soh/Enhancements/speechsynthesizer/DarwinSpeechSynthesizer.mm)
 
 # Create source groups that match the real file directory paths
@@ -140,11 +146,6 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     set_source_files_properties(soh/Enhancements/tts/tts.cpp PROPERTIES COMPILE_FLAGS "/utf-8")
     set_source_files_properties(soh/Enhancements/custom-message/CustomMessageManager.cpp PROPERTIES COMPILE_FLAGS "/utf-8")
     set_source_files_properties(soh/Enhancements/custom-message/CustomMessageManager.h PROPERTIES COMPILE_FLAGS "/utf-8")
-endif()
-
-# handle Network removals
-if (!BUILD_REMOTE_CONTROL)
-    list(FILTER soh__ EXCLUDE REGEX "soh/Enhancements/crowd-control/")
 endif()
 
 # handle speechsynthesizer removals
@@ -225,6 +226,12 @@ set(ALL_FILES
 ################################################################################
 add_executable(${PROJECT_NAME} ${ALL_FILES})
 
+if(MSVC)
+    # yaml-cpp, reached through torch's headers, trips the dll-interface warnings, and soh
+    # builds with /WX.
+    set_source_files_properties(soh/Extractor/TorchExtract.cpp PROPERTIES COMPILE_OPTIONS "/wd4251;/wd4275")
+endif()
+
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 use_props(${PROJECT_NAME} "${CMAKE_CONFIGURATION_TYPES}" "${DEFAULT_CXX_PROPS}")
 endif()
@@ -232,55 +239,55 @@ endif()
 set(ROOT_NAMESPACE soh)
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
-	set_target_properties(${PROJECT_NAME} PROPERTIES
-		VS_GLOBAL_KEYWORD "Win32Proj"
-	)
-	if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
-		set_target_properties(${PROJECT_NAME} PROPERTIES
-			INTERPROCEDURAL_OPTIMIZATION_RELEASE "TRUE"
-		)
-	elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
-		set_target_properties(${PROJECT_NAME} PROPERTIES
-			INTERPROCEDURAL_OPTIMIZATION_RELEASE "TRUE"
-		)
-	endif()
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+        VS_GLOBAL_KEYWORD "Win32Proj"
+    )
+    if(SOH_WINDOWS_64BIT)
+        set_target_properties(${PROJECT_NAME} PROPERTIES
+            INTERPROCEDURAL_OPTIMIZATION_RELEASE "TRUE"
+        )
+    elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
+        set_target_properties(${PROJECT_NAME} PROPERTIES
+            INTERPROCEDURAL_OPTIMIZATION_RELEASE "TRUE"
+        )
+    endif()
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
     set_target_properties(${PROJECT_NAME} PROPERTIES
         XCODE_ATTRIBUTE_CLANG_ENABLE_OBJC_ARC YES
         OUTPUT_NAME "soh-macos"
     )
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-	set_target_properties(${PROJECT_NAME} PROPERTIES
-	OUTPUT_NAME "soh.elf"
-	)
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+    OUTPUT_NAME "soh.elf"
+    )
 endif()
 ################################################################################
 # MSVC runtime library
 ################################################################################
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
-	get_property(MSVC_RUNTIME_LIBRARY_DEFAULT TARGET ${PROJECT_NAME} PROPERTY MSVC_RUNTIME_LIBRARY)
-	if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
-		string(CONCAT "MSVC_RUNTIME_LIBRARY_STR"
-			$<$<CONFIG:Debug>:
-				MultiThreadedDebug
-			>
-			$<$<CONFIG:Release>:
-				MultiThreaded
-			>
-			$<$<NOT:$<OR:$<CONFIG:Debug>,$<CONFIG:Release>>>:${MSVC_RUNTIME_LIBRARY_DEFAULT}>
-		)
-	elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
-		string(CONCAT "MSVC_RUNTIME_LIBRARY_STR"
-			$<$<CONFIG:Debug>:
-				MultiThreadedDebug
-			>
-			$<$<CONFIG:Release>:
-				MultiThreaded
-			>
-			$<$<NOT:$<OR:$<CONFIG:Debug>,$<CONFIG:Release>>>:${MSVC_RUNTIME_LIBRARY_DEFAULT}>
-		)
-	endif()
-	set_target_properties(${PROJECT_NAME} PROPERTIES MSVC_RUNTIME_LIBRARY ${MSVC_RUNTIME_LIBRARY_STR})
+    get_property(MSVC_RUNTIME_LIBRARY_DEFAULT TARGET ${PROJECT_NAME} PROPERTY MSVC_RUNTIME_LIBRARY)
+    if(SOH_WINDOWS_64BIT)
+        string(CONCAT "MSVC_RUNTIME_LIBRARY_STR"
+            $<$<CONFIG:Debug>:
+                MultiThreadedDebug
+            >
+            $<$<CONFIG:Release>:
+                MultiThreaded
+            >
+            $<$<NOT:$<OR:$<CONFIG:Debug>,$<CONFIG:Release>>>:${MSVC_RUNTIME_LIBRARY_DEFAULT}>
+        )
+    elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
+        string(CONCAT "MSVC_RUNTIME_LIBRARY_STR"
+            $<$<CONFIG:Debug>:
+                MultiThreadedDebug
+            >
+            $<$<CONFIG:Release>:
+                MultiThreaded
+            >
+            $<$<NOT:$<OR:$<CONFIG:Debug>,$<CONFIG:Release>>>:${MSVC_RUNTIME_LIBRARY_DEFAULT}>
+        )
+    endif()
+    set_target_properties(${PROJECT_NAME} PROPERTIES MSVC_RUNTIME_LIBRARY ${MSVC_RUNTIME_LIBRARY_STR})
 endif()
 ################################################################################
 # Find/download Dr Libs (For custom audio)
@@ -297,15 +304,12 @@ FetchContent_MakeAvailable(dr_libs)
 find_package(SDL2)
 set(SDL2-INCLUDE ${SDL2_INCLUDE_DIRS})
 
-if (BUILD_REMOTE_CONTROL)
-    find_package(SDL2_net)
+find_package(SDL2_net)
 
-    if(NOT SDL2_net_FOUND)
-        message(STATUS "SDL2_net not found (it's possible the version installed is too old). Disabling BUILD_REMOTE_CONTROL.")
-        set(BUILD_REMOTE_CONTROL 0)
-    else()
-        set(SDL2-NET-INCLUDE ${SDL_NET_INCLUDE_DIRS})
-    endif()
+if(NOT SDL2_net_FOUND)
+    message(STATUS "SDL2_net not found (it's possible the version installed is too old).")
+else()
+    set(SDL2-NET-INCLUDE ${SDL_NET_INCLUDE_DIRS})
 endif()
 
 if (ESPEAK)
@@ -317,110 +321,107 @@ endif()
 ################################################################################
 
 target_include_directories(${PROJECT_NAME} PRIVATE assets
-	${CMAKE_CURRENT_SOURCE_DIR}/include/
-	${CMAKE_CURRENT_SOURCE_DIR}/src/
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/
     ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/include
-    ${CMAKE_CURRENT_SOURCE_DIR}/../ZAPDTR/ZAPD/resource/type
-	${SDL2-INCLUDE}
+    ${SDL2-INCLUDE}
     ${SDL2-NET-INCLUDE}
-	${CMAKE_CURRENT_SOURCE_DIR}/assets/
-	${dr_libs_SOURCE_DIR}
-	.
+    ${CMAKE_CURRENT_SOURCE_DIR}/assets/
+    ${dr_libs_SOURCE_DIR}
+    .
 )
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
-	if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
-		target_compile_definitions(${PROJECT_NAME} PRIVATE
-			"$<$<CONFIG:Debug>:"
-				"_DEBUG;"
-				"_CRT_SECURE_NO_WARNINGS;"
-				"ENABLE_DX11;"
-			">"
-			"$<$<CONFIG:Release>:"
-				"NDEBUG;"
-			">"
-            "$<$<BOOL:${BUILD_REMOTE_CONTROL}>:ENABLE_REMOTE_CONTROL>"
-			"INCLUDE_GAME_PRINTF;"
+    if(SOH_WINDOWS_64BIT)
+        target_compile_definitions(${PROJECT_NAME} PRIVATE
+            "$<$<CONFIG:Debug>:"
+                "_DEBUG;"
+                "_CRT_SECURE_NO_WARNINGS;"
+                "ENABLE_DX11;"
+            ">"
+            "$<$<CONFIG:Release>:"
+                "NDEBUG;"
+            ">"
+            "INCLUDE_GAME_PRINTF;"
             "F3DEX_GBI_2"
-			"UNICODE;"
-			"_UNICODE"
+            "UNICODE;"
+            "_UNICODE"
             SPDLOG_ACTIVE_LEVEL=${SPDLOG_MIN_CUTOFF}
             LOG_LEVEL_GAME_PRINTS=${SPDLOG_LEVEL_OFF}
-			STORMLIB_NO_AUTO_LINK
-			"_CRT_SECURE_NO_WARNINGS;"
+            STORMLIB_NO_AUTO_LINK
+            "_CRT_SECURE_NO_WARNINGS;"
             NOMINMAX
-		)
-	elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
-		target_compile_definitions(${PROJECT_NAME} PRIVATE
-			"$<$<CONFIG:Debug>:"
-				"NOINCLUDE_GAME_PRINTF;"
-				"_DEBUG;"
-				"_CRT_SECURE_NO_WARNINGS;"
-				"ENABLE_OPENGL;"
-			">"
-			"$<$<CONFIG:Release>:"
-				"NDEBUG;"
-			">"
-			"INCLUDE_GAME_PRINTF;"
+        )
+    elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
+        target_compile_definitions(${PROJECT_NAME} PRIVATE
+            "$<$<CONFIG:Debug>:"
+                "NOINCLUDE_GAME_PRINTF;"
+                "_DEBUG;"
+                "_CRT_SECURE_NO_WARNINGS;"
+                "ENABLE_OPENGL;"
+            ">"
+            "$<$<CONFIG:Release>:"
+                "NDEBUG;"
+            ">"
+            "INCLUDE_GAME_PRINTF;"
             "F3DEX_GBI_2"
-			"WIN32;"
-			"UNICODE;"
-			"_UNICODE;"
+            "WIN32;"
+            "UNICODE;"
+            "_UNICODE;"
             SPDLOG_ACTIVE_LEVEL=${SPDLOG_MIN_CUTOFF}
             LOG_LEVEL_GAME_PRINTS=${SPDLOG_LEVEL_OFF}
-			STORMLIB_NO_AUTO_LINK
+            STORMLIB_NO_AUTO_LINK
             NOMINMAX
-		)
-	endif()
+        )
+    endif()
 elseif (CMAKE_SYSTEM_NAME STREQUAL "CafeOS")
-	target_compile_definitions(${PROJECT_NAME} PRIVATE
-		"$<$<CONFIG:Debug>:"
-			"_DEBUG;"
-		">"
-		"$<$<CONFIG:Release>:"
-			"NDEBUG;"
-		">"
+    target_compile_definitions(${PROJECT_NAME} PRIVATE
+        "$<$<CONFIG:Debug>:"
+            "_DEBUG;"
+        ">"
+        "$<$<CONFIG:Release>:"
+            "NDEBUG;"
+        ">"
         "F3DEX_GBI_2;"
-		"SPDLOG_NO_THREAD_ID;"
+        "SPDLOG_NO_THREAD_ID;"
         "SPDLOG_NO_TLS;"
-		"STBI_NO_THREAD_LOCALS;"
+        "STBI_NO_THREAD_LOCALS;"
         SPDLOG_ACTIVE_LEVEL=${SPDLOG_MIN_CUTOFF}
         LOG_LEVEL_GAME_PRINTS=${SPDLOG_LEVEL_OFF}
-	)
+    )
 elseif ("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU|Clang|AppleClang")
-	target_compile_definitions(${PROJECT_NAME} PRIVATE
-		"$<$<CONFIG:Debug>:"
-			"_DEBUG;"
-		">"
-		"$<$<CONFIG:Release>:"
-			"NDEBUG;"
-		">"
+    target_compile_definitions(${PROJECT_NAME} PRIVATE
+        "$<$<CONFIG:Debug>:"
+            "_DEBUG;"
+        ">"
+        "$<$<CONFIG:Release>:"
+            "NDEBUG;"
+        ">"
         "F3DEX_GBI_2;"
-        "$<$<BOOL:${BUILD_REMOTE_CONTROL}>:ENABLE_REMOTE_CONTROL>;"
-		"_CONSOLE;"
-		"_CRT_SECURE_NO_WARNINGS;"
-		"ENABLE_OPENGL;"
-		"UNICODE;"
-		"_UNICODE;"
+        "_CONSOLE;"
+        "_CRT_SECURE_NO_WARNINGS;"
+        "ENABLE_OPENGL;"
+        "UNICODE;"
+        "_UNICODE;"
         SPDLOG_ACTIVE_LEVEL=${SPDLOG_MIN_CUTOFF}
         LOG_LEVEL_GAME_PRINTS=${SPDLOG_LEVEL_OFF}
-	)
+    )
 endif()
 ################################################################################
 # Compile and link options
 ################################################################################
 if(MSVC)
-    if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
+    if(SOH_WINDOWS_64BIT)
         target_compile_options(${PROJECT_NAME} PRIVATE
             $<$<CONFIG:Debug>:
-                /w;
                 /Od
             >
             $<$<CONFIG:Release>:
                 /Oi;
                 /Gy;
-                /W3
             >
+            /W3;
+            /WX;
             /bigobj;
             /sdl-;
             /permissive-;
@@ -442,12 +443,13 @@ if(MSVC)
             /permissive-;
             /MP;
             /sdl-;
-            /w;
+            /W3;
+            /WX;
             ${DEFAULT_CXX_DEBUG_INFORMATION_FORMAT};
             ${DEFAULT_CXX_EXCEPTION_HANDLING}
         )
     endif()
-    if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
+    if(SOH_WINDOWS_64BIT)
         target_link_options(${PROJECT_NAME} PRIVATE
             $<$<CONFIG:Debug>:
                 /INCREMENTAL
@@ -558,7 +560,7 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang|AppleClang")
         )
     else()
         if(CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64")
-		set(CPU_OPTION -msse2 -mfpmath=sse)
+        set(CPU_OPTION -msse2 -mfpmath=sse)
         endif()
 
         target_compile_options(${PROJECT_NAME} PRIVATE
@@ -580,12 +582,12 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang|AppleClang")
             $<$<COMPILE_LANGUAGE:CXX>:-fpermissive>
             $<$<COMPILE_LANGUAGE:CXX>:-Wno-deprecated-enum-enum-conversion>
             -pthread
-	    ${CPU_OPTION}
+        ${CPU_OPTION}
         )
 
         target_link_options(${PROJECT_NAME} PRIVATE
             -pthread
-				#-fsanitize=address
+                #-fsanitize=address
             -Wl,-export-dynamic
         )
     endif()
@@ -594,81 +596,71 @@ endif()
 # Pre build events
 ################################################################################
 if (CMAKE_GENERATOR MATCHES "Visual Studio")
-	add_custom_command(
-    TARGET ${PROJECT_NAME}
-	POST_BUILD
-	COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different ${CMAKE_SOURCE_DIR}/soh/assets/extractor ${CMAKE_BINARY_DIR}/soh/assets
-    COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different ${CMAKE_SOURCE_DIR}/soh/assets/xml ${CMAKE_BINARY_DIR}/soh/assets/xml
-    )
-endif()
-if(NOT CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch|CafeOS")
     add_custom_command(
-		TARGET ${PROJECT_NAME}
-		POST_BUILD
-		COMMENT "Copying asset xmls..."
-        COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different ${CMAKE_SOURCE_DIR}/soh/assets/extractor $<TARGET_FILE_DIR:soh>/assets
-		COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different ${CMAKE_SOURCE_DIR}/soh/assets/xml $<TARGET_FILE_DIR:soh>/assets/xml
-        COMMAND ${CMAKE_COMMAND} -E make_directory $<TARGET_FILE_DIR:soh>/assets/symbols
-	#	COMMAND ${VS_COPY_ASSETS_CMD}
+    TARGET ${PROJECT_NAME}
+    POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different ${CMAKE_SOURCE_DIR}/soh/assets/yml ${CMAKE_BINARY_DIR}/soh/assets
     )
 endif()
+add_custom_command(
+    TARGET ${PROJECT_NAME}
+    POST_BUILD
+    COMMENT "Copying asset ymls..."
+    COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different ${CMAKE_SOURCE_DIR}/soh/assets/yml $<TARGET_FILE_DIR:soh>/assets
+)
 ################################################################################
 # Dependencies
 ################################################################################
 add_dependencies(${PROJECT_NAME}
     libultraship
+    torch
 )
-if(NOT CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch|CafeOS")
-add_dependencies(${PROJECT_NAME}
-    ZAPDLib
-)
-endif()
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
     find_package(glfw3 REQUIRED)
-	find_package(Ogg CONFIG REQUIRED)
-	link_libraries(Ogg::ogg)
+    find_package(Ogg CONFIG REQUIRED)
+    link_libraries(Ogg::ogg)
 
-	find_package(Vorbis CONFIG REQUIRED)
-	link_libraries(Vorbis::vorbisfile)
-	find_package(Opus CONFIG REQUIRED)
-	link_libraries(Opus::opus)
-	find_package(OpusFile CONFIG REQUIRED)
-	link_libraries(OpusFile::opusfile CONFIG REQUIRED)
-	if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
-		set(ADDITIONAL_LIBRARY_DEPENDENCIES
-			"libultraship;"
-			"ZAPDLib;"
-			"glu32;"
-			"SDL2::SDL2;"
-			"SDL2::SDL2main;"
-            "$<$<BOOL:${BUILD_REMOTE_CONTROL}>:SDL2_net::SDL2_net-static>"
-			"glfw;"
-			"winmm;"
-			"imm32;"
-			"version;"
-			"setupapi"
-			"Ogg::ogg"
-			"Opus::opus"
-			"Vorbis::vorbis"
-			"Vorbis::vorbisenc"
-			"Vorbis::vorbisfile"
-			"OpusFile::opusfile"
-		)
-	elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
-		set(ADDITIONAL_LIBRARY_DEPENDENCIES
-			"libultraship;"
-			"ZAPDLib;"
-			"glu32;"
-			"SDL2::SDL2;"
-			"SDL2::SDL2main;"
-			"glfw;"
-			"winmm;"
-			"imm32;"
-			"version;"
-			"setupapi"
-		)
-	endif()
+    find_package(Vorbis CONFIG REQUIRED)
+    link_libraries(Vorbis::vorbisfile)
+    find_package(Opus CONFIG REQUIRED)
+    link_libraries(Opus::opus)
+    find_package(OpusFile CONFIG REQUIRED)
+    link_libraries(OpusFile::opusfile CONFIG REQUIRED)
+    if(SOH_WINDOWS_64BIT)
+        set(ADDITIONAL_LIBRARY_DEPENDENCIES
+            "libultraship;"
+            "torch;"
+            "glu32;"
+            "SDL2::SDL2;"
+            "SDL2::SDL2main;"
+            "SDL2_net::SDL2_net-static"
+            "glfw;"
+            "winmm;"
+            "imm32;"
+            "version;"
+            "setupapi"
+            "Ogg::ogg"
+            "Opus::opus"
+            "Vorbis::vorbis"
+            "Vorbis::vorbisenc"
+            "Vorbis::vorbisfile"
+            "OpusFile::opusfile"
+        )
+    elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
+        set(ADDITIONAL_LIBRARY_DEPENDENCIES
+            "libultraship;"
+            "torch;"
+            "glu32;"
+            "SDL2::SDL2;"
+            "SDL2::SDL2main;"
+            "glfw;"
+            "winmm;"
+            "imm32;"
+            "version;"
+            "setupapi"
+        )
+    endif()
 elseif(CMAKE_SYSTEM_NAME STREQUAL "NintendoSwitch")
     find_package(SDL2)
     set(THREADS_PREFER_PTHREAD_FLAG ON)
@@ -694,26 +686,52 @@ else()
     find_package(SDL2)
     set(THREADS_PREFER_PTHREAD_FLAG ON)
     find_package(Threads REQUIRED)
-	find_package(Threads REQUIRED)
-	find_package(Ogg REQUIRED)
-	find_package(Vorbis REQUIRED)
-	find_package(Opus REQUIRED)
-	find_package(OpusFile REQUIRED)
- 	set(ADDITIONAL_LIBRARY_DEPENDENCIES
-        "libultraship;"
-		"ZAPDLib;"
-		SDL2::SDL2
-		"Ogg::ogg"
-		"Vorbis::vorbis"
-		"Vorbis::vorbisenc"
-		"Vorbis::vorbisfile"
-		"Opus::opus"
-		"Opusfile::Opusfile"
-        "$<$<BOOL:${BUILD_REMOTE_CONTROL}>:SDL2_net::SDL2_net>"
-		${CMAKE_DL_LIBS}
-		Threads::Threads
-	)
+    find_package(Ogg REQUIRED)
+    find_package(Vorbis REQUIRED)
+    find_package(Opus REQUIRED)
+    find_package(OpusFile REQUIRED)
+     set(ADDITIONAL_LIBRARY_DEPENDENCIES
+    "libultraship;"
+        "torch;"
+        SDL2::SDL2
+        "Ogg::ogg"
+        "Vorbis::vorbis"
+        "Vorbis::vorbisenc"
+        "Vorbis::vorbisfile"
+        "Opus::opus"
+        "Opusfile::Opusfile"
+        "SDL2_net::SDL2_net"
+        ${CMAKE_DL_LIBS}
+        Threads::Threads
+    )
 endif()
+
+if(USE_ASAN)
+    target_compile_options(libultraship PRIVATE -fsanitize=address)
+    target_link_options(libultraship PRIVATE -fsanitize=address)
+    target_compile_options(soh PRIVATE -fsanitize=address)
+    target_link_options(soh PRIVATE -fsanitize=address)
+    target_link_options(ZAPD PRIVATE -fsanitize=address)
+    target_link_options(OTRExporter PRIVATE -fsanitize=address)
+    target_compile_options(ZAPD PRIVATE -fsanitize=address)
+    target_compile_options(OTRExporter PRIVATE -fsanitize=address)
+    if (MSVC)
+        target_compile_definitions(ImGui PRIVATE _DISABLE_VECTOR_ANNOTATION)
+        target_compile_definitions(ImGui PRIVATE _DISABLE_STRING_ANNOTATION)
+        target_compile_definitions(libultraship PRIVATE _DISABLE_VECTOR_ANNOTATION)
+        target_compile_definitions(libultraship PRIVATE _DISABLE_STRING_ANNOTATION)
+
+        target_compile_definitions(soh PRIVATE _DISABLE_VECTOR_ANNOTATION)
+        target_compile_definitions(soh PRIVATE _DISABLE_STRING_ANNOTATION)
+        target_compile_options(libultraship PRIVATE $<$<CONFIG:Debug>:/Zi;>)
+        target_compile_options(soh PRIVATE $<$<CONFIG:Debug>:/Zi;>)
+        # The default stack size on Windows is 1MB. ASAN uses a lot more stack so boost it to 16
+        set_target_properties(soh PROPERTIES
+                LINK_FLAGS "/STACK:16777216"
+        )
+    endif()
+endif()
+
 
 if(NOT CMAKE_SYSTEM_NAME MATCHES "Darwin|NintendoSwitch|CafeOS")
 INSTALL(TARGETS soh DESTINATION . COMPONENT ship)
@@ -765,10 +783,10 @@ elseif(CMAKE_SYSTEM_NAME MATCHES "CafeOS")
 wut_create_rpx(${PROJECT_NAME})
 
 wut_create_wuhb(${PROJECT_NAME}
-	NAME       "Ship of Harkinian"
-	SHORTNAME  "SoH"
-	AUTHOR     "${PROJECT_TEAM}"
-	ICON       ${CMAKE_CURRENT_SOURCE_DIR}/icon.jpg
+    NAME       "Ship of Harkinian"
+    SHORTNAME  "SoH"
+    AUTHOR     "${PROJECT_TEAM}"
+    ICON       ${CMAKE_CURRENT_SOURCE_DIR}/icon.jpg
 )
 
 INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/soh.rpx ${CMAKE_CURRENT_BINARY_DIR}/soh.wuhb DESTINATION . COMPONENT ship)

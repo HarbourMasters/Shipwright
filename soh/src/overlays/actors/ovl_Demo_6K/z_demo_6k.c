@@ -13,6 +13,7 @@
 #include "soh/frame_interpolation.h"
 #include <assert.h>
 #include "soh/ResourceManagerHelpers.h"
+#include "soh/Enhancements/savestate_serialize.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
@@ -21,7 +22,7 @@ void Demo6K_Destroy(Actor* thisx, PlayState* play);
 void Demo6K_Update(Actor* thisx, PlayState* play);
 void Demo6K_Reset(void);
 
-void func_80966DB0(Demo6K* this, PlayState* play);
+void Demo6K_WaitForObject(Demo6K* this, PlayState* play);
 void func_80966E04(Demo6K* this, PlayState* play);
 void func_80966E98(Demo6K* this, PlayState* play);
 void func_80966F84(Demo6K* this, PlayState* play);
@@ -93,7 +94,7 @@ void Demo6K_Init(Actor* thisx, PlayState* play) {
         this->objBankIndex = objBankIndex;
     }
 
-    Demo6K_SetupAction(this, func_80966DB0);
+    Demo6K_SetupAction(this, Demo6K_WaitForObject);
     this->timer1 = 0;
     this->flags = 0;
     this->timer2 = 0;
@@ -202,7 +203,7 @@ void Demo6K_Destroy(Actor* thisx, PlayState* play) {
     LightContext_RemoveLight(play, &play->lightCtx, this->lightNode);
 }
 
-void func_80966DB0(Demo6K* this, PlayState* play) {
+void Demo6K_WaitForObject(Demo6K* this, PlayState* play) {
     if (Object_IsLoaded(&play->objectCtx, this->objBankIndex)) {
         this->actor.objBankIndex = this->objBankIndex;
         this->actor.draw = this->drawFunc;
@@ -212,11 +213,11 @@ void func_80966DB0(Demo6K* this, PlayState* play) {
 
 void func_80966E04(Demo6K* this, PlayState* play) {
     if (play->csCtx.frames > 214) {
-        func_8002F948(&this->actor, NA_SE_EV_LIGHT_GATHER - SFX_FLAG);
+        Actor_PlaySfx_FlaggedCentered2(&this->actor, NA_SE_EV_LIGHT_GATHER - SFX_FLAG);
     }
 
     if (play->csCtx.frames > 264) {
-        func_8002F948(&this->actor, NA_SE_EV_GOD_LIGHTBALL_2 - SFX_FLAG);
+        Actor_PlaySfx_FlaggedCentered2(&this->actor, NA_SE_EV_GOD_LIGHTBALL_2 - SFX_FLAG);
     }
 
     if ((play->csCtx.state != CS_STATE_IDLE) && (play->csCtx.npcActions[6] != NULL) &&
@@ -227,8 +228,8 @@ void func_80966E04(Demo6K* this, PlayState* play) {
 
 void func_80966E98(Demo6K* this, PlayState* play) {
     if (play->csCtx.frames < 353) {
-        func_8002F948(&this->actor, NA_SE_EV_LIGHT_GATHER - SFX_FLAG);
-        func_8002F948(&this->actor, NA_SE_EV_GOD_LIGHTBALL_2 - SFX_FLAG);
+        Actor_PlaySfx_FlaggedCentered2(&this->actor, NA_SE_EV_LIGHT_GATHER - SFX_FLAG);
+        Actor_PlaySfx_FlaggedCentered2(&this->actor, NA_SE_EV_GOD_LIGHTBALL_2 - SFX_FLAG);
     }
 
     if (play->csCtx.frames == 342) {
@@ -238,7 +239,7 @@ void func_80966E98(Demo6K* this, PlayState* play) {
     if (this->timer1 == 39) {
         Sfx_PlaySfxCentered2(NA_SE_EV_CONSENTRATION);
         Actor_Spawn(&play->actorCtx, play, ACTOR_DEMO_6K, this->actor.world.pos.x, this->actor.world.pos.y + 10.0f,
-                    this->actor.world.pos.z, 0, 0, 0, 2, true);
+                    this->actor.world.pos.z, 0, 0, 0, 2);
     }
 
     if (this->timer1 == 64) {
@@ -305,11 +306,15 @@ void func_8096712C(Demo6K* this, PlayState* play) {
     this->timer2++;
 
     if ((play->sceneNum == SCENE_INSIDE_GANONS_CASTLE) && (play->csCtx.frames < D_8096932C[this->actor.params - 3])) {
-        func_8002F974(&this->actor, NA_SE_EV_LIGHT_GATHER - SFX_FLAG);
+        Actor_PlaySfx_Flagged(&this->actor, NA_SE_EV_LIGHT_GATHER - SFX_FLAG);
     }
 }
 
-Vec3f sDemo6kVelocity = { 0.0f, 0.0f, 0.0f };
+static Vec3f sDemo6kVelocity = { 0.0f, 0.0f, 0.0f };
+
+#define DEMO_6K_SHIP_SAVESTATE_FIELDS(F) F(sDemo6kVelocity)
+
+SHIP_SAVESTATE_DEFINE(Demo6k, DEMO_6K_SHIP_SAVESTATE_FIELDS)
 void func_80967244(Demo6K* this, PlayState* play) {
     static Vec3f accel = { 0.0f, 0.0f, 0.0f };
     static Color_RGBA8 primColor = { 255, 255, 255, 0 };
@@ -470,7 +475,7 @@ void func_80967AD0(Demo6K* this, PlayState* play) {
     if ((play->csCtx.state != CS_STATE_IDLE) && (play->csCtx.npcActions[1] != NULL)) {
         if (play->csCtx.npcActions[1]->action == 2) {
             this->unk_170++;
-            func_8002F948(&this->actor, NA_SE_EV_RAINBOW_SHOWER - SFX_FLAG);
+            Actor_PlaySfx_FlaggedCentered2(&this->actor, NA_SE_EV_RAINBOW_SHOWER - SFX_FLAG);
         }
 
         func_809691BC(this, play, 1);
@@ -543,7 +548,7 @@ void func_80967DBC(Demo6K* this, PlayState* play) {
 void func_80967F10(Demo6K* this, PlayState* play) {
     if (this->timer2 == 0) {
         Actor_Spawn(&play->actorCtx, play, ACTOR_DEMO_6K, this->actor.world.pos.x, this->actor.world.pos.y,
-                    this->actor.world.pos.z, 0, 0, 0, 13, true);
+                    this->actor.world.pos.z, 0, 0, 0, 13);
     }
 
     this->timer2++;
@@ -570,8 +575,8 @@ void func_80967FFC(Actor* thisx, PlayState* play) {
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     Matrix_RotateX(-M_PI / 2, MTXMODE_APPLY);
     gSPSegment(POLY_XLU_DISP++, 0x08,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0x7FFF - ((timer1 * 8) & 0x7FFF), 16, 512, 1, 0,
-                                0x7FFF - ((timer1 * 8) & 0x7FFF), 16, 32));
+               Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 0, 0x7FFF - ((timer1 * 8) & 0x7FFF), 16, 512, 1, 0,
+                                  0x7FFF - ((timer1 * 8) & 0x7FFF), 16, 32, 0, -8, 0, -8));
 
     {
         s32 i;
@@ -639,8 +644,8 @@ void func_80968298(Actor* thisx, PlayState* play) {
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, 210, 210, 210, 255);
     gDPSetEnvColor(POLY_XLU_DISP++, 100, 100, 100, 255);
     gSPSegment(POLY_XLU_DISP++, 0x08,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, (0xFFF - (timer1 * 6)) & 0xFFF, (timer1 * 12) & 0xFFF, 128, 64,
-                                1, (0xFFF - (timer1 * 6)) & 0xFFF, (timer1 * 12) & 0xFFF, 64, 32));
+               Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, (0xFFF - (timer1 * 6)) & 0xFFF, (timer1 * 12) & 0xFFF, 128, 64,
+                                  1, (0xFFF - (timer1 * 6)) & 0xFFF, (timer1 * 12) & 0xFFF, 64, 32, -6, 12, -6, 12));
     gSPDisplayList(POLY_XLU_DISP++, object_demo_6k_DL_0039D0);
     Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
@@ -737,8 +742,8 @@ void func_80968B70(Actor* thisx, PlayState* play) {
     Matrix_RotateX(M_PI / 2, MTXMODE_APPLY);
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPSegment(POLY_XLU_DISP++, 0x08,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0xFF - ((timer2 * 2) & 0xFF), 0, 32, 32, 1,
-                                0xFF - ((timer2 * 2) & 0xFF), (timer2 * 15) & 0x3FF, 16, 64));
+               Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 0xFF - ((timer2 * 2) & 0xFF), 0, 32, 32, 1,
+                                  0xFF - ((timer2 * 2) & 0xFF), (timer2 * 15) & 0x3FF, 16, 64, -2, 0, -2, 15));
 
     if (this->timer2 < 40) {
         primColor[0] = primColor[2] = 100 - (this->timer2 * 2.5f);

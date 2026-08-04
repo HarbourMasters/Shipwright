@@ -229,7 +229,7 @@ void BossFd_Init(Actor* thisx, PlayState* play) {
         Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, 0.0f, 100.0f, 0.0f, 0, 0, 0,
                            WARP_DUNGEON_ADULT);
         if (GameInteractor_Should(VB_SPAWN_HEART_CONTAINER, true)) {
-            Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, 0.0f, 100.0f, 200.0f, 0, 0, 0, 0, true);
+            Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, 0.0f, 100.0f, 200.0f, 0, 0, 0, 0);
         }
     } else {
         Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_BOSS_FD2, this->actor.world.pos.x,
@@ -311,7 +311,7 @@ void BossFd_Fly(BossFd* this, PlayState* play) {
 
     if (this->introState != BFD_CS_NONE) {
         Player* player2 = GET_PLAYER(play);
-        Camera* mainCam = Play_GetCamera(play, MAIN_CAM);
+        Camera* mainCam = Play_GetCamera(play, CAM_ID_MAIN);
 
         switch (this->introState) {
             case BFD_CS_WAIT:
@@ -328,7 +328,7 @@ void BossFd_Fly(BossFd* this, PlayState* play) {
                     func_80064520(play, &play->csCtx);
                     Player_SetCsActionWithHaltedActors(play, &this->actor, 8);
                     this->introCamera = Play_CreateSubCamera(play);
-                    Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+                    Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_WAIT);
                     Play_ChangeCameraStatus(play, this->introCamera, CAM_STAT_ACTIVE);
                     player2->actor.world.pos.x = 380.0f;
                     player2->actor.world.pos.y = 100.0f;
@@ -642,7 +642,7 @@ void BossFd_Fly(BossFd* this, PlayState* play) {
                 this->holePosition.x = this->targetPosition.x;
                 this->holePosition.z = this->targetPosition.z;
 
-                func_80033E1C(play, 1, 0x50, 0x5000);
+                Actor_RequestQuakeWithSpeed(play, 1, 0x50, 0x5000);
                 if (this->introState != BFD_CS_NONE) {
                     this->timers[0] = 50;
                 } else {
@@ -687,7 +687,7 @@ void BossFd_Fly(BossFd* this, PlayState* play) {
                     Audio_PlaySoundGeneral(NA_SE_EV_EXPLOSION, &this->actor.projectedPos, 4,
                                            &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
                                            &gSfxDefaultReverb);
-                    func_80033E1C(play, 3, 0xA, 0x7530);
+                    Actor_RequestQuakeWithSpeed(play, 3, 0xA, 0x7530);
                     this->work[BFD_ROCK_TIMER] = 300;
                 }
             } else {
@@ -923,7 +923,7 @@ void BossFd_Fly(BossFd* this, PlayState* play) {
             }
             if (GameInteractor_Should(VB_SPAWN_HEART_CONTAINER, this->timers[0] == 7)) {
                 Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, this->actor.world.pos.x, this->actor.world.pos.y,
-                            this->actor.world.pos.z, 0, 0, 0, 0, true);
+                            this->actor.world.pos.z, 0, 0, 0, 0);
             }
             break;
         case BOSSFD_WAIT_INTRO:
@@ -994,14 +994,14 @@ void BossFd_Fly(BossFd* this, PlayState* play) {
         if (this->work[BFD_ACTION_STATE] < BOSSFD_SKULL_FALL) {
             if ((this->actor.prevPos.y < 90.0f) && (90.0f <= this->actor.world.pos.y)) {
                 this->timers[4] = 80;
-                func_80033E1C(play, 1, 80, 0x5000);
+                Actor_RequestQuakeWithSpeed(play, 1, 80, 0x5000);
                 this->work[BFD_ROAR_TIMER] = 40;
                 this->work[BFD_MANE_EMBERS_TIMER] = 30;
                 this->work[BFD_SPLASH_TIMER] = 10;
             }
             if ((this->actor.prevPos.y > 90.0f) && (90.0f >= this->actor.world.pos.y)) {
                 this->timers[4] = 80;
-                func_80033E1C(play, 1, 80, 0x5000);
+                Actor_RequestQuakeWithSpeed(play, 1, 80, 0x5000);
                 this->work[BFD_MANE_EMBERS_TIMER] = 30;
                 this->work[BFD_SPLASH_TIMER] = 10;
             }
@@ -1486,7 +1486,7 @@ void BossFd_UpdateEffects(BossFd* this, PlayState* play) {
                 diff.z = player->actor.world.pos.z - effect->pos.z;
                 if ((this->timers[3] == 0) && (sqrtf(SQ(diff.x) + SQ(diff.y) + SQ(diff.z)) < 20.0f)) {
                     this->timers[3] = 50;
-                    func_8002F6D4(play, NULL, 5.0f, effect->kbAngle, 0.0f, 0x30);
+                    Actor_SetPlayerKnockbackLarge(play, NULL, 5.0f, effect->kbAngle, 0.0f, 0x30);
                     if (player->bodyIsBurning == false) {
                         for (i2 = 0; i2 < ARRAY_COUNT(player->bodyFlameTimers); i2++) {
                             player->bodyFlameTimers[i2] = Rand_S16Offset(0, 200);
@@ -1841,9 +1841,10 @@ void BossFd_DrawBody(PlayState* play, BossFd* this) {
         gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(sEyeTextures[this->eyeState]));
     }
     gSPSegment(POLY_OPA_DISP++, 0x08,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, (s16)this->fwork[BFD_TEX1_SCROLL_X],
-                                (s16)this->fwork[BFD_TEX1_SCROLL_Y], 0x20, 0x20, 1, (s16)this->fwork[BFD_TEX2_SCROLL_X],
-                                (s16)this->fwork[BFD_TEX2_SCROLL_Y], 0x20, 0x20));
+               Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, (s16)this->fwork[BFD_TEX1_SCROLL_X],
+                                  (s16)this->fwork[BFD_TEX1_SCROLL_Y], 0x20, 0x20, 1,
+                                  (s16)this->fwork[BFD_TEX2_SCROLL_X], (s16)this->fwork[BFD_TEX2_SCROLL_Y], 0x20, 0x20,
+                                  4, 1, 3, -2));
     gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, 255);
     gDPSetEnvColor(POLY_OPA_DISP++, 255, 255, 255, (s8)this->fwork[BFD_BODY_TEX2_ALPHA]);
 

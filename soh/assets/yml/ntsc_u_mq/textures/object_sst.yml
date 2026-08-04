@@ -1,0 +1,20 @@
+:config:
+  segments:
+    - [ 6, 0x010F4400 ]
+
+gBongoTitleCardENGTex:
+  type: TEXTURE
+  offset: 0x15180
+  symbol: gBongoTitleCardENGTex
+  format: IA8
+  width: 128
+  height: 40
+
+gBongoTitleCardJPNTex:
+  type: TEXTURE
+  offset: 0x13d80
+  symbol: gBongoTitleCardJPNTex
+  format: IA8
+  width: 128
+  height: 40
+

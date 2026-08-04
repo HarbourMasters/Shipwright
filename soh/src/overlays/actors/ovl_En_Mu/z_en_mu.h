@@ -15,8 +15,8 @@ typedef struct EnMu {
     /* 0x0194 */ ColliderCylinder collider;
     /* 0x01E0 */ NpcInteractInfo npcInfo;
     /* 0x0208 */ u16 defFaceReaction;
-    /* 0x020A */ s16 unk_20A[16];
-    /* 0x022A */ s16 unk_22A[17];
+    /* 0x020A */ s16 fidgetTableY[16];
+    /* 0x022A */ s16 fidgetTableZ[17];
 } EnMu; // size = 0x024C
 
 #endif

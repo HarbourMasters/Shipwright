@@ -1,0 +1,124 @@
+:config:
+  segments:
+    - [ 6, 0x0166A000 ]
+    - [ 4, 0x00F5E000 ]
+    - [ 8, 0x0166A000 ]
+    - [ 9, 0x0166A000 ]
+    - [ 10, 0x0166A000 ]
+    - [ 11, 0x0166A000 ]
+    - [ 12, 0x0166A000 ]
+    - [ 13, 0x0166A000 ]
+  external_files:
+    - pal_gc_dbg/objects/gameplay_keep.yml
+
+gGiBlueLiquidColorDL:
+  type: GFX
+  offset: 0x1310
+  symbol: gGiBlueLiquidColorDL
+
+gGiBluePatternColorDL:
+  type: GFX
+  offset: 0x13E0
+  symbol: gGiBluePatternColorDL
+
+gGiBluePotColorDL:
+  type: GFX
+  offset: 0x12B0
+  symbol: gGiBluePotColorDL
+
+gGiGreenLiquidColorDL:
+  type: GFX
+  offset: 0x12D0
+  symbol: gGiGreenLiquidColorDL
+
+gGiGreenPatternColorDL:
+  type: GFX
+  offset: 0x1330
+  symbol: gGiGreenPatternColorDL
+
+gGiGreenPotColorDL:
+  type: GFX
+  offset: 0x1270
+  symbol: gGiGreenPotColorDL
+
+gGiPotionLiquidDL:
+  type: GFX
+  offset: 0x1790
+  symbol: gGiPotionLiquidDL
+
+gGiPotionPatternDL:
+  type: GFX
+  offset: 0x1848
+  symbol: gGiPotionPatternDL
+
+gGiPotionPotDL:
+  type: GFX
+  offset: 0x1438
+  symbol: gGiPotionPotDL
+
+gGiRedLiquidColorDL:
+  type: GFX
+  offset: 0x12F0
+  symbol: gGiRedLiquidColorDL
+
+gGiRedPatternColorDL:
+  type: GFX
+  offset: 0x1388
+  symbol: gGiRedPatternColorDL
+
+gGiRedPotColorDL:
+  type: GFX
+  offset: 0x1290
+  symbol: gGiRedPotColorDL
+
+object_gi_liquidTex_000000:
+  type: TEXTURE
+  offset: 0x0
+  symbol: object_gi_liquidTex_000000
+  format: IA8
+  width: 16
+  height: 32
+
+object_gi_liquidTex_000200:
+  type: TEXTURE
+  offset: 0x200
+  symbol: object_gi_liquidTex_000200
+  format: IA8
+  width: 16
+  height: 32
+
+object_gi_liquidTex_000400:
+  type: TEXTURE
+  offset: 0x400
+  symbol: object_gi_liquidTex_000400
+  format: IA8
+  width: 16
+  height: 32
+
+
+object_gi_liquidVtx_000600:
+  type: OOT:ARRAY
+  offset: 0x000600
+  symbol: object_gi_liquidVtx_000600
+  count: 176
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_liquidVtx_001100:
+  type: OOT:ARRAY
+  offset: 0x001100
+  symbol: object_gi_liquidVtx_001100
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_liquidVtx_001170:
+  type: OOT:ARRAY
+  offset: 0x001170
+  symbol: object_gi_liquidVtx_001170
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

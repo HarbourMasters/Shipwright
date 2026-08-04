@@ -1,11 +1,9 @@
 #include "soh/Network/Anchor/Anchor.h"
 #include "soh/Network/Anchor/JsonConversions.hpp"
 #include <nlohmann/json.hpp>
-#include <libultraship/libultraship.h>
-#include "soh/Enhancements/randomizer/entrance.h"
-#include "soh/Enhancements/randomizer/dungeon.h"
 #include "soh/OTRGlobals.h"
 #include "soh/Notification/Notification.h"
+#include "soh/Enhancements/randomizer/randomizer.h"
 
 extern "C" {
 #include "variables.h"
@@ -125,8 +123,9 @@ void Anchor::HandlePacket_UpdateTeamState(nlohmann::json payload) {
     }
 
     isHandlingUpdateTeamState = true;
-    // This can happen in between file select and the game starting, so we cant use this check, but we need to ensure we
-    // be careful to wrap PlayState usage in this check
+    // This can happen in between file select and the game starting, so we can't use this check, but we need to ensure
+    // we be careful to wrap PlayState usage in this check
+    //
     // if (!IsSaveLoaded()) {
     //     return;
     // }
@@ -136,7 +135,8 @@ void Anchor::HandlePacket_UpdateTeamState(nlohmann::json payload) {
 
         gSaveContext.healthCapacity = loadedData.healthCapacity;
         gSaveContext.magicLevel = loadedData.magicLevel;
-        gSaveContext.magicCapacity = gSaveContext.magic = loadedData.magicCapacity;
+        gSaveContext.magicCapacity = loadedData.magicCapacity;
+        gSaveContext.magic = static_cast<s8>(loadedData.magicCapacity);
         gSaveContext.isMagicAcquired = loadedData.isMagicAcquired;
         gSaveContext.isDoubleMagicAcquired = loadedData.isDoubleMagicAcquired;
         gSaveContext.isDoubleDefenseAcquired = loadedData.isDoubleDefenseAcquired;
@@ -159,6 +159,13 @@ void Anchor::HandlePacket_UpdateTeamState(nlohmann::json payload) {
                     (loadedData.sceneFlags[i].swch & ~mask) | (gSaveContext.sceneFlags[i].swch & mask);
             }
 
+            if (i == SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR) {
+                // Keep collapse timer flag
+                u32 mask = (1 << 0x17);
+                loadedData.sceneFlags[i].swch =
+                    (loadedData.sceneFlags[i].swch & ~mask) | (gSaveContext.sceneFlags[i].swch & mask);
+            }
+
             gSaveContext.sceneFlags[i] = loadedData.sceneFlags[i];
             if (IsSaveLoaded() && gPlayState->sceneNum == i) {
                 gPlayState->actorCtx.flags.chest = loadedData.sceneFlags[i].chest;
@@ -169,28 +176,33 @@ void Anchor::HandlePacket_UpdateTeamState(nlohmann::json payload) {
         }
 
         for (int i = 0; i < 14; i++) {
-            gSaveContext.eventChkInf[i] = loadedData.eventChkInf[i];
+            gSaveContext.eventChkInf[i] |= loadedData.eventChkInf[i];
         }
 
         for (int i = 0; i < 4; i++) {
-            gSaveContext.itemGetInf[i] = loadedData.itemGetInf[i];
+            gSaveContext.itemGetInf[i] |= loadedData.itemGetInf[i];
         }
 
         // Skip last row of infTable, don't want to sync swordless flag
         for (int i = 0; i < 29; i++) {
-            gSaveContext.infTable[i] = loadedData.infTable[i];
+            gSaveContext.infTable[i] |= loadedData.infTable[i];
         }
 
         for (int i = 0; i < ceil((RAND_INF_MAX + 15) / 16); i++) {
-            gSaveContext.ship.randomizerInf[i] = loadedData.ship.randomizerInf[i];
+            gSaveContext.ship.randomizerInf[i] |= loadedData.ship.randomizerInf[i];
         }
 
         for (int i = 0; i < 6; i++) {
-            gSaveContext.gsFlags[i] = loadedData.gsFlags[i];
+            gSaveContext.gsFlags[i] |= loadedData.gsFlags[i];
         }
 
         gSaveContext.ship.stats.firstInput = loadedData.ship.stats.firstInput;
         gSaveContext.ship.stats.fileCreatedAt = loadedData.ship.stats.fileCreatedAt;
+
+        // Ensure ganon barrier state matches trials
+        if (gSaveContext.eventChkInf[10] & 0x2000 && gSaveContext.eventChkInf[11] & 0xFC00) {
+            gSaveContext.eventChkInf[12] |= 0x8;
+        }
 
         // Restore master sword state
         // Disabling this for now, not really sure I understand why I did this in the past
@@ -224,24 +236,24 @@ void Anchor::HandlePacket_UpdateTeamState(nlohmann::json payload) {
             auto randoContext = Rando::Context::GetInstance();
 
             for (int i = 0; i < RC_MAX; i++) {
+                auto itemLocation = payload["state"]["rando"].at("itemLocations").at(i);
                 // randoContext->GetItemLocation(i)->RefPlacedItem() =
-                // payload["state"]["rando"]["itemLocations"][i]["rgID"].get<RandomizerGet>();
+                // itemLocation.at("rgID").get<RandomizerGet>();
                 OTRGlobals::Instance->gRandoContext->GetItemLocation(i)->SetCheckStatus(
-                    payload["state"]["rando"]["itemLocations"][i][0].get<RandomizerCheckStatus>());
-                OTRGlobals::Instance->gRandoContext->GetItemLocation(i)->SetIsSkipped(
-                    payload["state"]["rando"]["itemLocations"][i][1].get<u8>());
+                    itemLocation.at(0).get<RandomizerCheckStatus>());
+                OTRGlobals::Instance->gRandoContext->GetItemLocation(i)->SetIsSkipped(itemLocation.at(1).get<u8>());
 
-                // if (payload["state"]["rando"]["itemLocations"][i].contains("fakeRgID")) {
+                // if (itemLocation.contains("fakeRgID")) {
                 //     randoContext->overrides.emplace(static_cast<RandomizerCheck>(i),
                 //     Rando::ItemOverride(static_cast<RandomizerCheck>(i),
-                //     payload["state"]["rando"]["itemLocations"][i]["fakeRgID"].get<RandomizerGet>()));
+                //     itemLocation.at("fakeRgID").get<RandomizerGet>()));
                 //     randoContext->GetItemOverride(i).GetTrickName().english =
-                //     payload["state"]["rando"]["itemLocations"][i]["trickName"]["english"].get<std::string>();
+                //     itemLocation.at("trickName").at("english").get<std::string>();
                 //     randoContext->GetItemOverride(i).GetTrickName().french =
-                //     payload["state"]["rando"]["itemLocations"][i]["trickName"]["french"].get<std::string>();
+                //     itemLocation.at("trickName").at("french").get<std::string>();
                 // }
-                // if (payload["state"]["rando"]["itemLocations"][i].contains("price")) {
-                //     u16 price = payload["state"]["rando"]["itemLocations"][i]["price"].get<u16>();
+                // if (itemLocation.contains("price")) {
+                //     u16 price = itemLocation.at("price"].get<u16>();
                 //     if (price > 0) {
                 //         randoContext->GetItemLocation(i)->SetCustomPrice(price);
                 //     }

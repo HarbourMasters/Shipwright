@@ -3,6 +3,8 @@
  * hints.
  */
 #include <soh/OTRGlobals.h>
+#include "soh/Enhancements/randomizer/randomizer.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 extern "C" {
 extern PlayState* gPlayState;
@@ -11,9 +13,16 @@ extern PlayState* gPlayState;
 #include <variables.h>
 }
 
+// Resolves a hint's message for textbox display, firing OnRandoHintRevealed so
+// observers such as the Hint Tracker know the player has seen the hint.
+static CustomMessage ReadHintMessage(RandomizerHint rh, MessageFormat format = MF_AUTO_FORMAT, size_t id = 0) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnRandoHintRevealed>(rh);
+    return OTRGlobals::Instance->gRandoContext->GetHint(rh)->GetHintMessage(format, id);
+}
+
 void BuildHintStoneMessage(uint16_t* textId, bool* loadFromMessageTable) {
     if ((RAND_GET_OPTION(RSK_GOSSIP_STONE_HINTS).Is(RO_GOSSIP_STONES_NEED_TRUTH) &&
-         Player_GetMask(gPlayState) == PLAYER_MASK_TRUTH) ||
+         Player_GetMask(gPlayState) != PLAYER_MASK_TRUTH) ||
         (RAND_GET_OPTION(RSK_GOSSIP_STONE_HINTS).Is(RO_GOSSIP_STONES_NEED_STONE) &&
          CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY) == 0)) {
         return;
@@ -40,7 +49,7 @@ void BuildHintStoneMessage(uint16_t* textId, bool* loadFromMessageTable) {
     if (stoneHint == RH_NONE) {
         msg = CustomMessage("INVALID STONE. PARAMS: " + std::to_string(hintParams));
     } else {
-        msg = OTRGlobals::Instance->gRandoContext->GetHint(stoneHint)->GetHintMessage(MF_AUTO_FORMAT);
+        msg = ReadHintMessage(stoneHint, MF_AUTO_FORMAT);
     }
     // Remove "Buy " if present.
     msg.Replace("Buy ", "");

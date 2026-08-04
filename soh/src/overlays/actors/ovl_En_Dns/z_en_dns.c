@@ -321,8 +321,8 @@ void EnDns_Idle(EnDns* this, PlayState* play) {
         } else {
             this->actor.flags &= ~ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
         }
-        if (this->actor.xzDistToPlayer < 130.0f) {
-            func_8002F2F4(&this->actor, play);
+        if (GameInteractor_Should(VB_BUSINESS_SCRUB_SPEAK, this->actor.xzDistToPlayer < 130.0f)) {
+            Actor_OfferTalkNearColChkInfoCylinder(&this->actor, play);
         }
     }
 }

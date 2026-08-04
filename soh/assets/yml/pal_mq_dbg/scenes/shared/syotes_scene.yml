@@ -1,0 +1,14 @@
+:config:
+  segments:
+    - [ 2, 0x02793000 ]
+
+syotes_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: syotes_scene
+
+
+syotes_sceneCollisionHeader_001BD4:
+  type: OOT:COLLISION
+  offset: 0x001BD4
+  symbol: syotes_sceneCollisionHeader_001BD4

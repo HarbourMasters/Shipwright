@@ -1,4 +1,3 @@
-#include <libultraship/bridge.h>
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ShipInit.hpp"
 #include "functions.h"
@@ -29,7 +28,7 @@ static void OnPlayerUpdateShadowTag() {
     }
 
     if (shouldSpawn && (delayTimer <= 0)) {
-        Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_WALLMAS, 0, 0, 0, 0, 0, 0, 3, false);
+        Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_WALLMAS, 0, 0, 0, 0, 0, 0, 3);
         shouldSpawn = false;
     } else {
         delayTimer--;

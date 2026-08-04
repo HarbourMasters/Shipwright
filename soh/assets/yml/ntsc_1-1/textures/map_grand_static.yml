@@ -1,0 +1,196 @@
+:config:
+  segments:
+    - [ 11, 0x009445D0 ]
+
+gDeathMountainCraterMinimapTex:
+  type: TEXTURE
+  offset: 0x9408
+  symbol: gDeathMountainCraterMinimapTex
+  format: IA4
+  width: 80
+  height: 78
+
+gDeathMountainTrailMinimapTex:
+  type: TEXTURE
+  offset: 0x8C10
+  symbol: gDeathMountainTrailMinimapTex
+  format: IA4
+  width: 48
+  height: 85
+
+gDesertColossusMinimapTex:
+  type: TEXTURE
+  offset: 0x6908
+  symbol: gDesertColossusMinimapTex
+  format: IA4
+  width: 64
+  height: 59
+
+gDrainedLakeHyliaMinimapTex:
+  type: TEXTURE
+  offset: 0xBF30
+  symbol: gDrainedLakeHyliaMinimapTex
+  format: IA4
+  width: 80
+  height: 81
+
+gExploredShadowGraveyardMinimapTex:
+  type: TEXTURE
+  offset: 0xB918
+  symbol: gExploredShadowGraveyardMinimapTex
+  format: IA4
+  width: 80
+  height: 39
+
+gGerudoValleyMinimapTex:
+  type: TEXTURE
+  offset: 0x57E0
+  symbol: gGerudoValleyMinimapTex
+  format: IA4
+  width: 80
+  height: 65
+
+gGerudoValleyWithBrokenBridgeMinimapTex:
+  type: TEXTURE
+  offset: 0xCBD8
+  symbol: gGerudoValleyWithBrokenBridgeMinimapTex
+  format: IA4
+  width: 80
+  height: 65
+
+gGerudosFortessMinimapTex:
+  type: TEXTURE
+  offset: 0x7068
+  symbol: gGerudosFortessMinimapTex
+  format: IA4
+  width: 80
+  height: 85
+
+gGerudosFortressMinimapTex:
+  type: TEXTURE
+  offset: 0xD600
+  symbol: gGerudosFortressMinimapTex
+  format: IA4
+  width: 80
+  height: 85
+
+gGoronCityMinimapTex:
+  type: TEXTURE
+  offset: 0xA038
+  symbol: gGoronCityMinimapTex
+  format: IA4
+  width: 64
+  height: 72
+
+gGraveyardMinimapTex:
+  type: TEXTURE
+  offset: 0x1568
+  symbol: gGraveyardMinimapTex
+  format: IA4
+  width: 80
+  height: 39
+
+gHauntedWastelandMinimapTex:
+  type: TEXTURE
+  offset: 0x6208
+  symbol: gHauntedWastelandMinimapTex
+  format: IA4
+  width: 64
+  height: 56
+
+gHyruleCastleAreaMinimapTex:
+  type: TEXTURE
+  offset: 0x84B0
+  symbol: gHyruleCastleAreaMinimapTex
+  format: IA4
+  width: 64
+  height: 59
+
+gHyruleFieldMinimapTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gHyruleFieldMinimapTex
+  format: IA4
+  width: 80
+  height: 73
+
+gKakarikoVillageMinimapTex:
+  type: TEXTURE
+  offset: 0xB68
+  symbol: gKakarikoVillageMinimapTex
+  format: IA4
+  width: 80
+  height: 64
+
+gKokiriForestMinimapTex:
+  type: TEXTURE
+  offset: 0x2660
+  symbol: gKokiriForestMinimapTex
+  format: IA4
+  width: 96
+  height: 62
+
+gLakeHyliaMinimapTex:
+  type: TEXTURE
+  offset: 0x39F8
+  symbol: gLakeHyliaMinimapTex
+  format: IA4
+  width: 80
+  height: 81
+
+gLonLonRanchMinimapTex:
+  type: TEXTURE
+  offset: 0xA938
+  symbol: gLonLonRanchMinimapTex
+  format: IA4
+  width: 64
+  height: 68
+
+gLostWoodsMinimapTex:
+  type: TEXTURE
+  offset: 0x7DB0
+  symbol: gLostWoodsMinimapTex
+  format: IA4
+  width: 64
+  height: 56
+
+gOutsideGanonsCastleMinimapTex:
+  type: TEXTURE
+  offset: 0xB1B8
+  symbol: gOutsideGanonsCastleMinimapTex
+  format: IA4
+  width: 64
+  height: 59
+
+gSacredMeadowMinimapTex:
+  type: TEXTURE
+  offset: 0x3200
+  symbol: gSacredMeadowMinimapTex
+  format: IA4
+  width: 48
+  height: 85
+
+gZorasDomainMinimapTex:
+  type: TEXTURE
+  offset: 0x46A0
+  symbol: gZorasDomainMinimapTex
+  format: IA4
+  width: 64
+  height: 73
+
+gZorasFountainMinimapTex:
+  type: TEXTURE
+  offset: 0x4FC0
+  symbol: gZorasFountainMinimapTex
+  format: IA4
+  width: 64
+  height: 65
+
+gZorasRiverMinimapTex:
+  type: TEXTURE
+  offset: 0x1B80
+  symbol: gZorasRiverMinimapTex
+  format: IA4
+  width: 96
+  height: 58
+

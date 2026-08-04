@@ -3,6 +3,7 @@
 #include "AudioCollection.h"
 #include <soh/Notification/Notification.h>
 #include <soh/SohGui/ImGuiUtils.h>
+#include <ship/window/gui/IconsFontAwesome4.h>
 
 extern "C" {
 #include "variables.h"

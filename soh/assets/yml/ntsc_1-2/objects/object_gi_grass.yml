@@ -1,0 +1,27 @@
+:config:
+  segments:
+    - [ 6, 0x01127C10 ]
+    - [ 4, 0x00D3AED0 ]
+    - [ 8, 0x01127C10 ]
+    - [ 9, 0x01127C10 ]
+    - [ 10, 0x01127C10 ]
+    - [ 11, 0x01127C10 ]
+    - [ 12, 0x01127C10 ]
+    - [ 13, 0x01127C10 ]
+  external_files:
+    - ntsc_1-2/objects/gameplay_keep.yml
+
+gGiGrassDL:
+  type: GFX
+  offset: 0x08E0
+  symbol: gGiGrassDL
+
+
+object_gi_grassVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_gi_grassVtx_000000
+  count: 142
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

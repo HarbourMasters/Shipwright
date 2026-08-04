@@ -1,0 +1,12 @@
+:config:
+  segments:
+    - [ 2, 0x01CE6A90 ]
+  directory: scenes/shared/daiyousei_izumi_scene
+  external_files:
+    - pal_1-0/scenes/shared/daiyousei_izumi_scene.yml
+
+daiyousei_izumi_sceneSet_0045C0:
+  type: OOT:SCENE
+  offset: 0x45C0
+  symbol: daiyousei_izumi_sceneSet_0045C0
+  base_name: daiyousei_izumi_scene

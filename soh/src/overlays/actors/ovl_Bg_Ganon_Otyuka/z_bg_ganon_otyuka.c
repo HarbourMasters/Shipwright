@@ -214,7 +214,7 @@ void BgGanonOtyuka_Fall(BgGanonOtyuka* this, PlayState* play) {
                                   (s16)Rand_ZeroFloat(100.0f) + 250, 5, (s16)Rand_ZeroFloat(5.0f) + 15);
                 }
 
-                func_80033DB8(play, 10, 15);
+                Actor_RequestQuake(play, 10, 15);
                 SoundSource_PlaySfxAtFixedWorldPos(play, &this->dyna.actor.world.pos, 40, NA_SE_EV_BOX_BREAK);
             }
             Actor_Kill(&this->dyna.actor);
@@ -338,8 +338,8 @@ void BgGanonOtyuka_Draw(Actor* thisx, PlayState* play) {
             if ((platform->dyna.actor.projectedPos.z > -30.0f) && (platform->flashState != FLASH_NONE)) {
                 FrameInterpolation_RecordOpenChild(platform, 0);
                 gSPSegment(POLY_XLU_DISP++, 0x08,
-                           Gfx_TwoTexScroll(play->state.gfxCtx, 0, platform->flashTimer * 4, 0, 32, 64, 1,
-                                            platform->flashTimer * 4, 0, 32, 64));
+                           Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, platform->flashTimer * 4, 0, 32, 64, 1,
+                                              platform->flashTimer * 4, 0, 32, 64, 4, 0, 4, 0));
                 gDPPipeSync(POLY_XLU_DISP++);
                 gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, platform->flashPrimColorR, platform->flashPrimColorG,
                                 platform->flashPrimColorB, 0);

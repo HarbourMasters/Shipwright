@@ -213,16 +213,16 @@ void DoorKiller_Destroy(Actor* thisx, PlayState* play) {
 void DoorKiller_SpawnRubble(Actor* thisx, PlayState* play) {
     Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_KILLER, thisx->world.pos.x, thisx->world.pos.y + 9.0f,
                 thisx->world.pos.z, thisx->shape.rot.x, thisx->shape.rot.y, thisx->shape.rot.z,
-                DOOR_KILLER_RUBBLE_PIECE_1, true);
+                DOOR_KILLER_RUBBLE_PIECE_1);
     Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_KILLER, thisx->world.pos.x + 7.88f, thisx->world.pos.y + 39.8f,
                 thisx->world.pos.z, thisx->shape.rot.x, thisx->shape.rot.y, thisx->shape.rot.z,
-                DOOR_KILLER_RUBBLE_PIECE_2, true);
+                DOOR_KILLER_RUBBLE_PIECE_2);
     Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_KILLER, thisx->world.pos.x - 15.86f, thisx->world.pos.y + 61.98f,
                 thisx->world.pos.z, thisx->shape.rot.x, thisx->shape.rot.y, thisx->shape.rot.z,
-                DOOR_KILLER_RUBBLE_PIECE_3, true);
+                DOOR_KILLER_RUBBLE_PIECE_3);
     Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_KILLER, thisx->world.pos.x + 3.72f, thisx->world.pos.y + 85.1f,
                 thisx->world.pos.z, thisx->shape.rot.x, thisx->shape.rot.y, thisx->shape.rot.z,
-                DOOR_KILLER_RUBBLE_PIECE_4, true);
+                DOOR_KILLER_RUBBLE_PIECE_4);
 }
 
 /**
@@ -378,7 +378,7 @@ void DoorKiller_FallOver(DoorKiller* this, PlayState* play) {
         if ((fabsf(playerPosRelToDoor.y) < 20.0f) && (fabsf(playerPosRelToDoor.x) < 20.0f) &&
             (playerPosRelToDoor.z < 100.0f) && (playerPosRelToDoor.z > 0.0f)) {
             this->hasHitPlayerOrGround |= 1;
-            func_8002F6D4(play, &this->actor, 6.0f, this->actor.yawTowardsPlayer, 6.0f, 16);
+            Actor_SetPlayerKnockbackLarge(play, &this->actor, 6.0f, this->actor.yawTowardsPlayer, 6.0f, 16);
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_KDOOR_HIT);
             Player_PlaySfx(&player->actor, NA_SE_PL_BODY_HIT);
         }

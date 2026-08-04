@@ -1,0 +1,12 @@
+:config:
+  segments:
+    - [ 2, 0x0186C370 ]
+  directory: scenes/shared/spot17_scene
+  external_files:
+    - pal_1-0/scenes/shared/spot17_scene.yml
+
+spot17_sceneSet_007230:
+  type: OOT:SCENE
+  offset: 0x7230
+  symbol: spot17_sceneSet_007230
+  base_name: spot17_scene

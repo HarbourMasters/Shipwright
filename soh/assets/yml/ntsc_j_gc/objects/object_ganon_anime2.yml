@@ -1,0 +1,89 @@
+:config:
+  segments:
+    - [ 6, 0x01285D90 ]
+
+gGanondorfCollapseAnim:
+  type: OOT:ANIMATION
+  offset: 0xADDC
+  symbol: gGanondorfCollapseAnim
+
+gGanondorfDefeatedLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0xF19C
+  symbol: gGanondorfDefeatedLoopAnim
+
+gGanondorfDefeatedStartAnim:
+  type: OOT:ANIMATION
+  offset: 0xEA00
+  symbol: gGanondorfDefeatedStartAnim
+
+gGanondorfLaughWhileLeaningAnim:
+  type: OOT:ANIMATION
+  offset: 0x9AE0
+  symbol: gGanondorfLaughWhileLeaningAnim
+
+gGanondorfLeanOnOrganAnim:
+  type: OOT:ANIMATION
+  offset: 0x6AF4
+  symbol: gGanondorfLeanOnOrganAnim
+
+gGanondorfPlayOrganAnim:
+  type: OOT:ANIMATION
+  offset: 0x5FFC
+  symbol: gGanondorfPlayOrganAnim
+
+gGanondorfRaiseHandLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x7A64
+  symbol: gGanondorfRaiseHandLoopAnim
+
+gGanondorfRaiseHandStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x7268
+  symbol: gGanondorfRaiseHandStartAnim
+
+gGanondorfStandBackwardsAnim:
+  type: OOT:ANIMATION
+  offset: 0x89F8
+  symbol: gGanondorfStandBackwardsAnim
+
+gGanondorfStandIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x3018
+  symbol: gGanondorfStandIdleAnim
+
+gGanondorfStandUpFromOrganAnim:
+  type: OOT:ANIMATION
+  offset: 0x4304
+  symbol: gGanondorfStandUpFromOrganAnim
+
+gGanondorfStopPlayingOrganAnim:
+  type: OOT:ANIMATION
+  offset: 0x4F64
+  symbol: gGanondorfStopPlayingOrganAnim
+
+gGanondorfTurnAroundAnim:
+  type: OOT:ANIMATION
+  offset: 0x1F58
+  symbol: gGanondorfTurnAroundAnim
+
+gGanondorfVomitLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0xBE38
+  symbol: gGanondorfVomitLoopAnim
+
+gGanondorfVomitStartAnim:
+  type: OOT:ANIMATION
+  offset: 0xB668
+  symbol: gGanondorfVomitStartAnim
+
+gGanondorfYellLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x10514
+  symbol: gGanondorfYellLoopAnim
+
+gGanondorfYellStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x10298
+  symbol: gGanondorfYellStartAnim
+

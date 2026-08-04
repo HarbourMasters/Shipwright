@@ -50,7 +50,7 @@ const ActorInit Demo_Go_InitVars = {
     NULL,
 };
 
-s32 func_8097C870(DemoGo* this) {
+s32 DemoGo_GetCueChannel(DemoGo* this) {
     s32 ret;
 
     switch (this->actor.params) {
@@ -134,7 +134,7 @@ void func_8097CB0C(DemoGo* this, PlayState* play) {
     Vec3f endPos;
 
     if (play->csCtx.state != CS_STATE_IDLE) {
-        npcAction = csCtx->npcActions[func_8097C870(this)];
+        npcAction = csCtx->npcActions[DemoGo_GetCueChannel(this)];
         if (npcAction != NULL) {
             temp_ret = Environment_LerpWeight(npcAction->endFrame, npcAction->startFrame, csCtx->frames);
             startPos.x = npcAction->startPos.x;
@@ -174,7 +174,7 @@ void func_8097CCE0(DemoGo* this, PlayState* play) {
     s32 thisRotY;
 
     if (play->csCtx.state != CS_STATE_IDLE) {
-        npcAction = play->csCtx.npcActions[func_8097C870(this)];
+        npcAction = play->csCtx.npcActions[DemoGo_GetCueChannel(this)];
         if (npcAction != NULL) {
             thisRotY = thisx->world.rot.y;
             rotYDelta = npcAction->rot.y - thisRotY;
@@ -197,7 +197,7 @@ s32 DemoGo_UpdateSkelAnime(DemoGo* this) {
 
 s32 func_8097CDB0(DemoGo* this, PlayState* play, u16 npcAction) {
     CutsceneContext* csCtx = &play->csCtx;
-    s32 actionIdx = func_8097C870(this);
+    s32 actionIdx = DemoGo_GetCueChannel(this);
 
     if ((csCtx->state != CS_STATE_IDLE) && (csCtx->npcActions[actionIdx] != NULL) &&
         (csCtx->npcActions[actionIdx]->action == npcAction)) {
@@ -224,7 +224,7 @@ void func_8097CE78(DemoGo* this, PlayState* play) {
     CsCmdActorCue* npcAction;
 
     if (play->csCtx.state != CS_STATE_IDLE) {
-        npcAction = csCtx->npcActions[func_8097C870(this)];
+        npcAction = csCtx->npcActions[DemoGo_GetCueChannel(this)];
         if (npcAction != NULL && csCtx->frames >= npcAction->endFrame) {
             func_8097CA78(this, play);
             this->action = 3;

@@ -1,0 +1,34 @@
+:config:
+  segments:
+    - [ 2, 0x01CE28B0 ]
+
+  external_files:
+    - ntsc_u_mq/scenes/shared/ganon_tou_sceneSet_003180.yml
+ganon_tou_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: ganon_tou_scene
+
+gGanonsCastleIntroCs:
+  type: OOT:CUTSCENE
+  offset: 0x4280
+  symbol: gGanonsCastleIntroCs
+
+gRainbowBridgeCs:
+  type: OOT:CUTSCENE
+  offset: 0x2640
+  symbol: gRainbowBridgeCs
+
+ganon_tou_sceneTex_003280:
+  type: TEXTURE
+  offset: 0x3280
+  symbol: ganon_tou_sceneTex_003280
+  format: I8
+  width: 64
+  height: 64
+
+
+ganon_tou_sceneCollisionHeader_002610:
+  type: OOT:COLLISION
+  offset: 0x002610
+  symbol: ganon_tou_sceneCollisionHeader_002610

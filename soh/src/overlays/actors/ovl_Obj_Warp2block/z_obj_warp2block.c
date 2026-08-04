@@ -6,6 +6,7 @@
 
 #include "z_obj_warp2block.h"
 #include "objects/object_timeblock/object_timeblock.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "vt.h"
 
 #define FLAGS                                                                                               \
@@ -69,11 +70,11 @@ static Color_RGB8 sColors[] = {
 
 void ObjWarp2block_Spawn(ObjWarp2block* this, PlayState* play) {
     Actor_Spawn(&play->actorCtx, play, ACTOR_DEMO_EFFECT, this->dyna.actor.world.pos.x, this->dyna.actor.world.pos.y,
-                this->dyna.actor.world.pos.z, 0, 0, 0, sSpawnData[(this->dyna.actor.params >> 8) & 1].params, true);
+                this->dyna.actor.world.pos.z, 0, 0, 0, sSpawnData[(this->dyna.actor.params >> 8) & 1].params);
 
     Actor_Spawn(&play->actorCtx, play, ACTOR_DEMO_EFFECT, this->dyna.actor.child->world.pos.x,
                 this->dyna.actor.child->world.pos.y, this->dyna.actor.child->world.pos.z, 0, 0, 0,
-                sSpawnData[(this->dyna.actor.child->params >> 8) & 1].params, true);
+                sSpawnData[(this->dyna.actor.child->params >> 8) & 1].params);
 }
 
 s32 func_80BA1ECC(ObjWarp2block* this, PlayState* play) {
@@ -280,7 +281,9 @@ void func_80BA2610(ObjWarp2block* this, PlayState* play) {
     if ((func_80BA2304(this, play) != 0) && (this->unk_16C <= 0)) {
         ObjWarp2block_Spawn(this, play);
         this->unk_16C = 0xA0;
-        OnePointCutscene_Attention(play, &this->dyna.actor);
+        if (GameInteractor_Should(VB_PLAY_TIMEBLOCK_CS, true, this)) {
+            OnePointCutscene_Attention(play, &this->dyna.actor);
+        }
         this->unk_170 = 0xC;
     }
 

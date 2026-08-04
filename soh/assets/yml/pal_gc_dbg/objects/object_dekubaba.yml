@@ -1,0 +1,224 @@
+:config:
+  segments:
+    - [ 6, 0x01206000 ]
+    - [ 4, 0x00F5E000 ]
+    - [ 8, 0x01206000 ]
+    - [ 9, 0x01206000 ]
+    - [ 10, 0x01206000 ]
+    - [ 11, 0x01206000 ]
+    - [ 12, 0x01206000 ]
+    - [ 13, 0x01206000 ]
+  external_files:
+    - pal_gc_dbg/objects/gameplay_keep.yml
+
+gDekuBabaBaseLeavesDL:
+  type: GFX
+  offset: 0x10F0
+  symbol: gDekuBabaBaseLeavesDL
+
+gDekuBabaBulbTex:
+  type: TEXTURE
+  offset: 0x28D0
+  symbol: gDekuBabaBulbTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gDekuBabaFastChompAnim:
+  type: OOT:ANIMATION
+  offset: 0x2B8
+  symbol: gDekuBabaFastChompAnim
+
+gDekuBabaJawInnerTex:
+  type: TEXTURE
+  offset: 0x1CD0
+  symbol: gDekuBabaJawInnerTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gDekuBabaJawOuterTex:
+  type: TEXTURE
+  offset: 0x18D0
+  symbol: gDekuBabaJawOuterTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gDekuBabaLeafTex:
+  type: TEXTURE
+  offset: 0x24D0
+  symbol: gDekuBabaLeafTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gDekuBabaLowerJawDL:
+  type: GFX
+  offset: 0x580
+  symbol: gDekuBabaLowerJawDL
+
+gDekuBabaPauseChompAnim:
+  type: OOT:ANIMATION
+  offset: 0x208
+  symbol: gDekuBabaPauseChompAnim
+
+gDekuBabaSkel:
+  type: OOT:SKELETON
+  offset: 0x2A40
+  symbol: gDekuBabaSkel
+  limb_type: Standard
+  skel_type: Normal
+
+gDekuBabaStemBaseDL:
+  type: GFX
+  offset: 0x1828
+  symbol: gDekuBabaStemBaseDL
+
+gDekuBabaStemMiddleDL:
+  type: GFX
+  offset: 0x1628
+  symbol: gDekuBabaStemMiddleDL
+
+gDekuBabaStemTex:
+  type: TEXTURE
+  offset: 0x2950
+  symbol: gDekuBabaStemTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gDekuBabaStemTopDL:
+  type: GFX
+  offset: 0x1330
+  symbol: gDekuBabaStemTopDL
+
+gDekuBabaStickDropDL:
+  type: GFX
+  offset: 0x3070
+  symbol: gDekuBabaStickDropDL
+
+gDekuBabaStickDropTex:
+  type: TEXTURE
+  offset: 0x31C0
+  symbol: gDekuBabaStickDropTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gDekuBabaUpperJawDL:
+  type: GFX
+  offset: 0xB68
+  symbol: gDekuBabaUpperJawDL
+
+object_dekubaba_Limb_0029D0:
+  type: OOT:LIMB
+  offset: 0x29D0
+  symbol: object_dekubaba_Limb_0029D0
+  limb_type: Standard
+
+object_dekubaba_Limb_0029DC:
+  type: OOT:LIMB
+  offset: 0x29DC
+  symbol: object_dekubaba_Limb_0029DC
+  limb_type: Standard
+
+object_dekubaba_Limb_0029E8:
+  type: OOT:LIMB
+  offset: 0x29E8
+  symbol: object_dekubaba_Limb_0029E8
+  limb_type: Standard
+
+object_dekubaba_Limb_0029F4:
+  type: OOT:LIMB
+  offset: 0x29F4
+  symbol: object_dekubaba_Limb_0029F4
+  limb_type: Standard
+
+object_dekubaba_Limb_002A00:
+  type: OOT:LIMB
+  offset: 0x2A00
+  symbol: object_dekubaba_Limb_002A00
+  limb_type: Standard
+
+object_dekubaba_Limb_002A0C:
+  type: OOT:LIMB
+  offset: 0x2A0C
+  symbol: object_dekubaba_Limb_002A0C
+  limb_type: Standard
+
+object_dekubaba_Limb_002A18:
+  type: OOT:LIMB
+  offset: 0x2A18
+  symbol: object_dekubaba_Limb_002A18
+  limb_type: Standard
+
+
+object_dekubabaVtx_0002D0:
+  type: OOT:ARRAY
+  offset: 0x0002D0
+  symbol: object_dekubabaVtx_0002D0
+  count: 43
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dekubabaVtx_0006A8:
+  type: OOT:ARRAY
+  offset: 0x0006A8
+  symbol: object_dekubabaVtx_0006A8
+  count: 76
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dekubabaVtx_000D00:
+  type: OOT:ARRAY
+  offset: 0x000D00
+  symbol: object_dekubabaVtx_000D00
+  count: 63
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dekubabaVtx_001230:
+  type: OOT:ARRAY
+  offset: 0x001230
+  symbol: object_dekubabaVtx_001230
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dekubabaVtx_0013E8:
+  type: OOT:ARRAY
+  offset: 0x0013E8
+  symbol: object_dekubabaVtx_0013E8
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dekubabaVtx_001728:
+  type: OOT:ARRAY
+  offset: 0x001728
+  symbol: object_dekubabaVtx_001728
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gDekuBabaSkelLimbs:
+  type: BLOB
+  offset: 0x2A24
+  symbol: gDekuBabaSkelLimbs
+  size: 0
+
+object_dekubabaVtx_002A50:
+  type: OOT:ARRAY
+  offset: 0x002A50
+  symbol: object_dekubabaVtx_002A50
+  count: 98
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

@@ -1,0 +1,160 @@
+:config:
+  segments:
+    - [ 2, 0x01F0D3E0 ]
+
+  external_files:
+    - ntsc_u_mq/scenes/shared/miharigoya_sceneSet_000B60.yml
+miharigoya_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: miharigoya_scene
+
+gGuardHouseOutSideView1DayTex:
+  type: TEXTURE
+  offset: 0x6550
+  symbol: gGuardHouseOutSideView1DayTex
+  format: RGBA16
+  width: 64
+  height: 32
+
+gGuardHouseOutSideView1NightTex:
+  type: TEXTURE
+  offset: 0x3550
+  symbol: gGuardHouseOutSideView1NightTex
+  format: RGBA16
+  width: 64
+  height: 32
+
+gGuardHouseOutSideView2DayTex:
+  type: TEXTURE
+  offset: 0x2350
+  symbol: gGuardHouseOutSideView2DayTex
+  format: RGBA16
+  width: 64
+  height: 32
+
+gGuardHouseOutSideView2NightTex:
+  type: TEXTURE
+  offset: 0x1350
+  symbol: gGuardHouseOutSideView2NightTex
+  format: RGBA16
+  width: 64
+  height: 32
+
+miharigoya_sceneTex_000C50:
+  type: TEXTURE
+  offset: 0xC50
+  symbol: miharigoya_sceneTex_000C50
+  format: IA8
+  width: 64
+  height: 16
+
+miharigoya_sceneTex_001050:
+  type: TEXTURE
+  offset: 0x1050
+  symbol: miharigoya_sceneTex_001050
+  format: RGBA16
+  width: 32
+  height: 4
+
+miharigoya_sceneTex_001150:
+  type: TEXTURE
+  offset: 0x1150
+  symbol: miharigoya_sceneTex_001150
+  format: IA8
+  width: 32
+  height: 16
+
+miharigoya_sceneTex_003350:
+  type: TEXTURE
+  offset: 0x3350
+  symbol: miharigoya_sceneTex_003350
+  format: RGBA16
+  width: 32
+  height: 8
+
+miharigoya_sceneTex_004550:
+  type: TEXTURE
+  offset: 0x4550
+  symbol: miharigoya_sceneTex_004550
+  format: I8
+  width: 32
+  height: 32
+
+miharigoya_sceneTex_004950:
+  type: TEXTURE
+  offset: 0x4950
+  symbol: miharigoya_sceneTex_004950
+  format: RGBA16
+  width: 64
+  height: 32
+
+miharigoya_sceneTex_005950:
+  type: TEXTURE
+  offset: 0x5950
+  symbol: miharigoya_sceneTex_005950
+  format: I8
+  width: 32
+  height: 32
+
+miharigoya_sceneTex_005D50:
+  type: TEXTURE
+  offset: 0x5D50
+  symbol: miharigoya_sceneTex_005D50
+  format: RGBA16
+  width: 64
+  height: 16
+
+miharigoya_sceneTex_007550:
+  type: TEXTURE
+  offset: 0x7550
+  symbol: miharigoya_sceneTex_007550
+  format: RGBA16
+  width: 32
+  height: 64
+
+miharigoya_sceneTex_008550:
+  type: TEXTURE
+  offset: 0x8550
+  symbol: miharigoya_sceneTex_008550
+  format: I4
+  width: 64
+  height: 64
+
+miharigoya_sceneTex_008D50:
+  type: TEXTURE
+  offset: 0x8D50
+  symbol: miharigoya_sceneTex_008D50
+  format: I8
+  width: 64
+  height: 64
+
+miharigoya_sceneTex_009D50:
+  type: TEXTURE
+  offset: 0x9D50
+  symbol: miharigoya_sceneTex_009D50
+  format: RGBA16
+  width: 32
+  height: 64
+
+miharigoya_sceneTex_00AD50:
+  type: TEXTURE
+  offset: 0xAD50
+  symbol: miharigoya_sceneTex_00AD50
+  format: I8
+  width: 64
+  height: 64
+
+miharigoya_sceneTex_00BD50:
+  type: TEXTURE
+  offset: 0xBD50
+  symbol: miharigoya_sceneTex_00BD50
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+miharigoya_sceneCollisionHeader_000B28:
+  type: OOT:COLLISION
+  offset: 0x000B28
+  symbol: miharigoya_sceneCollisionHeader_000B28

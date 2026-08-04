@@ -1,6 +1,5 @@
 #pragma once
 
-#include "3drando/text.hpp"
 #include "3drando/hints.hpp"
 #include "../custom-message/CustomMessageManager.h"
 #include "randomizerTypes.h"
@@ -35,6 +34,8 @@ class Hint {
     const CustomMessage GetAreaName(uint8_t slot) const;
     static CustomMessage GetBridgeReqsText();
     static CustomMessage GetGanonBossKeyText();
+    static CustomMessage GetGanonsSoulText();
+    static CustomMessage GetWinconText();
     void AddHintedLocation(RandomizerCheck location);
     std::vector<RandomizerCheck> GetHintedLocations() const;
     void SetHintType(HintType type);

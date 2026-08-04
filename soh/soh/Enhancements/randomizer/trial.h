@@ -1,6 +1,5 @@
 #pragma once
 
-#include "randomizerTypes.h"
 #include "../custom-message/CustomMessageManager.h"
 #include <nlohmann/json.hpp>
 #include "static_data.h"
@@ -36,7 +35,7 @@ class Trials {
     void RequireAll();
     std::vector<TrialInfo*> GetTrialList();
     size_t GetTrialListSize() const;
-    void ParseJson(nlohmann::json spoilerFileJson);
+    void ParseJson(const nlohmann::json& spoilerFileJson);
     std::unordered_map<uint32_t, RandomizerHintTextKey> GetAllTrialHintHeys() const;
 
   private:

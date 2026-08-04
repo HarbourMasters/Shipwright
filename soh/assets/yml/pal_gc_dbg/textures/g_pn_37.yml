@@ -1,0 +1,28 @@
+:config:
+  segments:
+    - [ 128, 0x01A5A000 ]
+
+gHauntedWastelandTitleCardENGTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gHauntedWastelandTitleCardENGTex
+  format: IA8
+  width: 144
+  height: 24
+
+gHauntedWastelandTitleCardFRATex:
+  type: TEXTURE
+  offset: 0x1B00
+  symbol: gHauntedWastelandTitleCardFRATex
+  format: IA8
+  width: 144
+  height: 24
+
+gHauntedWastelandTitleCardGERTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gHauntedWastelandTitleCardGERTex
+  format: IA8
+  width: 144
+  height: 24
+
