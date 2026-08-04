@@ -15,11 +15,6 @@ void Settings::CreateOptionDescriptions() {
         "\n"
         "Off - Mido no longer blocks the path to the Deku Tree. Kokiri "
         "boy no longer blocks the path out of the forest.";
-    mOptionDescriptions[RSK_KAK_GATE] = "Closed - The gate will remain closed until Zelda's Letter "
-                                        "is shown to the guard.\n"
-                                        "\n"
-                                        "Open - The gate is always open. The Happy Mask Shop "
-                                        "will open immediately after obtaining Zelda's Letter.";
     mOptionDescriptions[RSK_DOOR_OF_TIME] = "Closed - The Ocarina of Time, the Song of Time and all "
                                             "three Spiritual Stones are required to open the Door of Time.\n"
                                             "\n"
@@ -50,18 +45,17 @@ void Settings::CreateOptionDescriptions() {
         "Choose which age Link will start as.\n\n"
         "Starting as adult means you start with the Master Sword in your inventory.\n"
         "The child option is forcefully set if it would conflict with other options.";
-    mOptionDescriptions[RSK_GERUDO_FORTRESS] =
-        "Sets the state of the carpenters captured by Gerudo "
-        "in Gerudo Fortress, and with it the number of guards that spawn.\n"
-        "\n"
-        "Normal - All 4 carpenters are required to be saved.\n"
-        "\n"
-        "Fast - Only the bottom left carpenter requires rescuing.\n"
-        "\n"
-        "Free - The bridge is repaired from the start, and Nabooru cannot spawn.\n"
-        "If the Gerudo Membership Card isn't shuffled, you start with it.\n"
-        "\n"
-        "Only \"Normal\" is compatible with Gerudo Fortress Key Rings.";
+    mOptionDescriptions[RSK_GERUDO_FORTRESS] = "Sets the state of the carpenters captured by Gerudo "
+                                               "in Gerudo Fortress, and with it the number of guards that spawn.\n"
+                                               "\n"
+                                               "Normal - All 4 carpenters are required to be saved.\n"
+                                               "\n"
+                                               "Fast - Only the bottom left carpenter requires rescuing.\n"
+                                               "\n"
+                                               "Free - Bridge is repaired from start, and Nabooru cannot spawn.\n"
+                                               "If the Gerudo Membership Card isn't shuffled, you start with it.\n"
+                                               "\n"
+                                               "Only \"Normal\" is compatible with Gerudo Fortress Key Rings.";
     mOptionDescriptions[RSK_RAINBOW_BRIDGE] =
         "Alters the requirements to open the bridge to Ganon's Castle.\n"
         "\n"
@@ -125,16 +119,19 @@ void Settings::CreateOptionDescriptions() {
         "here will be guaranteed to be Vanilla. If Set Number is higher than the amount of dungeons "
         "set to either MQ or Random here, you will have fewer MQ Dungeons than the number you "
         "set.";
-    mOptionDescriptions[RSK_TRIFORCE_HUNT] =
-        "Pieces of the Triforce of Courage have been scattered across the world. Find them all to finish the game!\n"
-        "\n"
-        "If set to Win: the game is saved and the credits roll, though you can load back in to receive Ganon's "
-        "Castle Boss Key. Keep in mind that Ganon might not be logically reachable when \"All Locations Reachable\" "
-        "is disabled.";
     mOptionDescriptions[RSK_TRIFORCE_HUNT_PIECES_TOTAL] =
-        "The amount of Triforce pieces that will be placed in the world. "
-        "Keep in mind seed generation can fail if more pieces are placed than there are junk items in the item pool.";
-    mOptionDescriptions[RSK_TRIFORCE_HUNT_PIECES_REQUIRED] = "The amount of Triforce pieces required to win the game.";
+        "The amount of Triforce pieces that will be placed in the world. Set to 0 to disable Triforce Hunt.\n"
+        "\n"
+        "Triforce Pieces can be used as a requirement for the Rainbow Bridge, Ganon's Boss Key, Ganon's Soul, or the "
+        "win condition. Keep in mind seed generation can fail if more pieces are placed than there are junk items in "
+        "the item pool.";
+    mOptionDescriptions[RSK_WINCON_TRIFORCE_COUNT] = "The amount of Triforce pieces required to win the game.";
+    mOptionDescriptions[RSK_TRIFORCE_HUNT_PIECES_LOCATION] =
+        "Any dungeon - Triforce pieces can only appear inside of any dungeon.\n"
+        "\n"
+        "Overworld - Triforce pieces can only appear outside of dungeons.\n"
+        "\n"
+        "Anywhere - Triforce pieces can appear anywhere in the world.";
     mOptionDescriptions[RSK_SHUFFLE_DUNGEON_ENTRANCES] =
         "Shuffle the pool of dungeon entrances, including Bottom of the Well, Ice Cavern and Gerudo Training Ground.\n"
         "\n"
@@ -238,6 +235,12 @@ void Settings::CreateOptionDescriptions() {
         "\n"
         "Adult Link will start with a second free item instead of the Master Sword.\n"
         "If you haven't found the Master Sword before facing Ganon, you won't receive it during the fight.";
+    mOptionDescriptions[RSK_SWORDLESS_EPONA_ITEMS] =
+        "Restores the vanilla glitch that lets a swordless player use C-button items (bottles, bombs, "
+        "magic, etc.) while riding Epona.\n"
+        "\n"
+        "When disabled, the B button is forced to the bow and the C buttons are disabled while swordless "
+        "on Epona, blocking the glitch.";
     mOptionDescriptions[RSK_SHUFFLE_CHILD_WALLET] = "Enabling this shuffles the Child's Wallet into the item pool.\n"
                                                     "\n"
                                                     "You will not be able to carry any rupees until you find a wallet.";
@@ -265,16 +268,24 @@ void Settings::CreateOptionDescriptions() {
     mOptionDescriptions[RSK_SHUFFLE_SPEAK] =
         "Shuffle ability to speak to NPCs. 6 jabbernuts will be shuffled:\nDeku, Gerudo, Goron, Hylian, Kokiri, "
         "Zora\nKaepora Gaebora speaks any language.";
-    mOptionDescriptions[RSK_SHUFFLE_OPEN_CHEST] = "Shuffles the ability to open chests into the item pool.";
-    mOptionDescriptions[RSK_SHUFFLE_WEIRD_EGG] = "Shuffles the Weird Egg from Malon in to the item pool. Enabling "
-                                                 "\"Skip Child Zelda\" disables this feature.\n"
-                                                 "\n"
-                                                 "The Weird Egg is required to unlock several events:\n"
-                                                 "  - Zelda's Lullaby from Impa\n"
-                                                 "  - Saria's Song in Sacred Forest Meadow\n"
-                                                 "  - Epona's Song and chicken minigame at Lon Lon Ranch\n"
-                                                 "  - Zelda's Letter for Kakariko gate (if set to closed)\n"
-                                                 "  - Happy Mask Shop sidequest\n";
+    mOptionDescriptions[RSK_SHUFFLE_OPEN_CHEST] =
+        "Shuffles the ability to open chests into the item pool.\n"
+        "\n"
+        "Progressive shuffles two copies: first only opens small chests, second also opens big chests.";
+    mOptionDescriptions[RSK_SHUFFLE_WEIRD_EGG] =
+        "Vanilla: Malon gives the Weird Egg at Hyrule Castle.\n"
+        "\n"
+        "Shuffled: shuffles Weird Egg into item pool.\n"
+        "\n"
+        "Skip Waking Talon: Talon already woken and back at Lon Lon Ranch with Malon.";
+    mOptionDescriptions[RSK_SHUFFLE_ZELDAS_LETTER] =
+        "Shuffles Zelda's Letter into the item pool, meeting Zelda gives a random item instead.\n"
+        "\n"
+        "Required to open Kakariko gate and Happy Mask Shop. Starting with letter starts with gate opened.\n"
+        "\n"
+        "Meeting Zelda still triggers Saria at Sacred Forest Meadow.\n"
+        "\n"
+        "When disabled, \"Start with Zelda's Letter\" skips child Zelda: you also get item Impa would give.";
     mOptionDescriptions[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD] =
         "Shuffles the Gerudo Membership Card into the item pool.\n"
         "\n"
@@ -308,7 +319,7 @@ void Settings::CreateOptionDescriptions() {
     mOptionDescriptions[RSK_SHUFFLE_TREES] =
         "Trees will contain randomized items which are dropped the first time the player rolls into one.\n"
         "Trees will have a special appearance when carrying randomized items.\n"
-        "\nSome trees are dependant on Link's age, such as some trees in Hyrule Field.\nTwo trees at Hyrule Castle are "
+        "\nSome trees are dependent on Link's age, such as some trees in Hyrule Field.\nTwo trees at Hyrule Castle are "
         "only shuffle with No Logic.";
     mOptionDescriptions[RSK_SHUFFLE_BUSHES] =
         "Bushes in Hyrule Field & Zora's Fountain will contain randomized items when first walked through.";
@@ -369,11 +380,9 @@ void Settings::CreateOptionDescriptions() {
         "\n"
         "1-7 Items - Vanilla shop items will be shuffled among different shops, and "
         "each shop will contain 1-7 non-vanilla shop items.\n"
-        /*
         "\n"
-        "8 Items - All shops will contain 8 non-vanilla shop items.\n"
-        */
-        ;
+        "8 Items - All shops will contain 8 non-vanilla shop items. "
+        "Only available with No Logic, since logic otherwise requires at least one buyable refill per shop.\n";
     mOptionDescriptions[RSK_SHOPSANITY_PRICES] =
         "Vanilla - The same price as the item it replaced.\n"
         "Cheap Balanced - Prices will range between 0 to 95 rupees, favoring lower numbers.\n"
@@ -400,6 +409,10 @@ void Settings::CreateOptionDescriptions() {
         "After choosing a price, set it to the affordable amount based on the wallet required.\n\n"
         "Affordable prices per tier: starter = 1, adult = 100, giant = 201, tycoon = 501\n\n"
         "Use this to enable wallet tier locking, but make shop items not as expensive as they could be.";
+    mOptionDescriptions[RSK_SHOP_SHIELDS_AND_TUNICS_ONLY_REFILL] =
+        "Non-randomized shields and tunics sold in shops cannot be purchased until you have first found a shield "
+        "elsewhere. "
+        "Regions containing a shield or tunic will not be hinted foolish.";
     mOptionDescriptions[RSK_FISHSANITY] =
         "Off - Fish will not be shuffled. No changes will be made to fishing behavior.\n\n"
         "Shuffle only Hyrule Loach - Allows you to earn an item by catching the Hyrule Loach at the fishing pond and "
@@ -513,6 +526,11 @@ void Settings::CreateOptionDescriptions() {
         "D-pad.\n"
         "\n"
         "If disabled, only the Claim Check will be found in the pool.";
+    mOptionDescriptions[RSK_EARLY_GRANNYS_SHOP] =
+        "Makes Granny's Potion Shop available from start, rather than requiring Claim Check to be found first.\n"
+        "\n"
+        "This only applies when Shuffle Adult Trade is disabled. With Shuffle Adult "
+        "Trade enabled, Granny still requires trading the Odd Mushroom as usual.";
     mOptionDescriptions[RSK_SHUFFLE_100_GS_REWARD] =
         "Shuffle the item the cursed rich man in the House of Skulltula gives when you "
         "have collected all 100 Gold Skulltula Tokens.\n"
@@ -639,19 +657,15 @@ void Settings::CreateOptionDescriptions() {
         "\n"
         "Anywhere - Ganon's Boss Key Key can appear anywhere in the world.\n"
         "\n"
-        "LACS - These settings put the boss key on the Light Arrow Cutscene location, from Zelda in Temple of Time as "
-        "adult, with differing requirements:\n"
-        "- Vanilla: Obtain the Shadow Medallion and Spirit Medallion\n"
+        "Trigger - These settings put the boss key on a trigger, "
+        "granting key once requirements met:\n"
         "- Stones: Obtain the specified amount of Spiritual Stones.\n"
         "- Medallions: Obtain the specified amount of medallions.\n"
         "- Dungeon rewards: Obtain the specified total sum of Spiritual Stones or medallions.\n"
         "- Dungeons: Complete the specified amount of dungeons. Dungeons are considered complete after stepping in to "
         "the blue warp after the boss.\n"
-        "- Tokens: Obtain the specified amount of Skulltula tokens.\n"
-        "\n"
-        "100 GS Reward - Ganon's Boss Key will be awarded by the cursed rich man after you collect 100 Gold Skulltula "
-        "Tokens.";
-    mOptionDescriptions[RSK_LACS_OPTIONS] =
+        "- Tokens: Obtain the specified amount of Skulltula tokens.";
+    mOptionDescriptions[RSK_GBK_OPTIONS] =
         "Standard Rewards - Greg does not change logic, Greg does not help obtain GBK, max "
         "number of rewards on slider does not change.\n"
         "\n"
@@ -661,12 +675,19 @@ void Settings::CreateOptionDescriptions() {
         "\n"
         "Greg as Wildcard - Greg does not change logic, Greg helps obtain GBK, max number of "
         "rewards on slider does not change.";
+    mOptionDescriptions[RSK_GANONS_SOUL_OPTIONS] =
+        "Standard Rewards - Greg does not change logic, Greg does not help obtain Ganon's Soul, max "
+        "number of rewards on slider does not change.\n"
+        "\n"
+        "Greg as Reward - Greg does change logic (can be part of expected path for obtaining "
+        "Ganon's Soul), Greg helps obtain Ganon's Soul, max number of rewards on slider increases by 1 to "
+        "account for Greg. \n"
+        "\n"
+        "Greg as Wildcard - Greg does not change logic, Greg helps obtain Ganon's Soul, max number of "
+        "rewards on slider does not change.";
     mOptionDescriptions[RSK_BIG_POE_COUNT] = "The Poe collector will give a reward for turning in this many Big Poes.";
     mOptionDescriptions[RSK_SKIP_CHILD_STEALTH] =
         "The crawlspace into Hyrule Castle goes straight to Zelda, skipping the guards.";
-    mOptionDescriptions[RSK_SKIP_CHILD_ZELDA] =
-        "Start with Zelda's Letter and the item Impa would normally give you and skip the sequence up "
-        "until after meeting Zelda. Disables the ability to shuffle Weird Egg.";
     mOptionDescriptions[RSK_SKIP_EPONA_RACE] = "Epona can be summoned with Epona's Song without needing to race Ingo.";
     mOptionDescriptions[RSK_MASK_QUEST] =
         "How masks are acquired.\n"
@@ -848,7 +869,6 @@ void Settings::CreateOptionDescriptions() {
         "Shuffle 10 bean souls which must be found to spawn corresponding soil / plant.";
     mOptionDescriptions[RSK_SHUFFLE_BOSS_SOULS] =
         "Shuffles 8 boss souls (one for each blue warp dungeon). A boss will not appear until you collect its "
-        "respective soul."
-        "\n\"On + Ganon\" will also hide Ganon and Ganondorf behind a boss soul.";
+        "respective soul.";
 }
 } // namespace Rando

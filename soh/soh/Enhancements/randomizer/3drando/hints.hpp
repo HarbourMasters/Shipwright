@@ -5,7 +5,6 @@
 #include <variant>
 
 #include <functional>
-#include "../randomizerTypes.h"
 #include "../../custom-message/CustomMessageManager.h"
 
 struct HintDistributionSetting {

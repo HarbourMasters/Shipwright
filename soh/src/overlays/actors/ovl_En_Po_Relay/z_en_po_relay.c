@@ -175,9 +175,9 @@ void EnPoRelay_Idle(EnPoRelay* this, PlayState* play) {
     } else if (this->actor.xzDistToPlayer < 250.0f) {
         this->actor.flags |= ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
         this->actor.textId = this->textId;
-        func_8002F2CC(&this->actor, play, 250.0f);
+        Actor_OfferTalk(&this->actor, play, 250.0f);
     }
-    func_8002F974(&this->actor, NA_SE_EN_PO_FLY - SFX_FLAG);
+    Actor_PlaySfx_Flagged(&this->actor, NA_SE_EN_PO_FLY - SFX_FLAG);
 }
 
 void EnPoRelay_Talk(EnPoRelay* this, PlayState* play) {
@@ -187,7 +187,7 @@ void EnPoRelay_Talk(EnPoRelay* this, PlayState* play) {
         this->textId = this->actor.textId;
         EnPoRelay_SetupRace(this);
     }
-    func_8002F974(&this->actor, NA_SE_EN_PO_FLY - SFX_FLAG);
+    Actor_PlaySfx_Flagged(&this->actor, NA_SE_EN_PO_FLY - SFX_FLAG);
 }
 
 void EnPoRelay_Race(EnPoRelay* this, PlayState* play) {
@@ -239,9 +239,7 @@ void EnPoRelay_Race(EnPoRelay* this, PlayState* play) {
             speed = 3.5f;
         }
 
-        if (CVarGetInteger(CVAR_ENHANCEMENT("FixDampeGoingBackwards"), false)) {
-            speed = ABS(speed);
-        }
+        GameInteractor_Should(VB_DAMPE_GO_BACKWARDS, true, &speed);
 
         multiplier = 250.0f - this->actor.xzDistToPlayer;
         multiplier = CLAMP_MIN(multiplier, 0.0f);
@@ -265,7 +263,7 @@ void EnPoRelay_Race(EnPoRelay* this, PlayState* play) {
         }
     }
     this->yawTowardsPathPoint = Actor_WorldYawTowardPoint(&this->actor, &vec);
-    func_8002F974(&this->actor, NA_SE_EN_PO_AWAY - SFX_FLAG);
+    Actor_PlaySfx_Flagged(&this->actor, NA_SE_EN_PO_AWAY - SFX_FLAG);
 }
 
 void EnPoRelay_EndRace(EnPoRelay* this, PlayState* play) {
@@ -277,9 +275,9 @@ void EnPoRelay_EndRace(EnPoRelay* this, PlayState* play) {
         gSaveContext.timerState = TIMER_STATE_OFF;
     } else if (Actor_IsFacingAndNearPlayer(&this->actor, 150.0f, 0x3000)) {
         this->actor.textId = this->textId;
-        func_8002F2CC(&this->actor, play, 250.0f);
+        Actor_OfferTalk(&this->actor, play, 250.0f);
     }
-    func_8002F974(&this->actor, NA_SE_EN_PO_FLY - SFX_FLAG);
+    Actor_PlaySfx_Flagged(&this->actor, NA_SE_EN_PO_FLY - SFX_FLAG);
 }
 
 void EnPoRelay_Talk2(EnPoRelay* this, PlayState* play) {
@@ -299,7 +297,7 @@ void EnPoRelay_Talk2(EnPoRelay* this, PlayState* play) {
         this->actionTimer = 0;
         this->actionFunc = EnPoRelay_DisappearAndReward;
     }
-    func_8002F974(&this->actor, NA_SE_EN_PO_FLY - SFX_FLAG);
+    Actor_PlaySfx_Flagged(&this->actor, NA_SE_EN_PO_FLY - SFX_FLAG);
 }
 
 void EnPoRelay_DisappearAndReward(EnPoRelay* this, PlayState* play) {
@@ -338,42 +336,21 @@ void EnPoRelay_DisappearAndReward(EnPoRelay* this, PlayState* play) {
         }
     }
     if (Math_StepToF(&this->actor.scale.x, 0.0f, 0.001f) != 0) {
-        if (!IS_RANDO) {
-            if (this->hookshotSlotFull != 0) {
-                sp60.x = this->actor.world.pos.x;
-                sp60.y = this->actor.floorHeight;
-                sp60.z = this->actor.world.pos.z;
-                if (gSaveContext.timerSeconds < HIGH_SCORE(HS_DAMPE_RACE)) {
-                    HIGH_SCORE(HS_DAMPE_RACE) = gSaveContext.timerSeconds;
-                }
-                if (Flags_GetCollectible(play, this->actor.params) == 0 && gSaveContext.timerSeconds <= 60) {
-                    Item_DropCollectible2(play, &sp60, (this->actor.params << 8) + (0x4000 | ITEM00_HEART_PIECE));
-                } else {
-                    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ITEM00, sp60.x, sp60.y, sp60.z, 0, 0, 0, 2);
-                }
-            } else {
-                Flags_SetTempClear(play, 4);
-                HIGH_SCORE(HS_DAMPE_RACE) = gSaveContext.timerSeconds;
-            }
-        } else {
+        if (GameInteractor_Should(VB_DAMPE_AWARD_SECOND_PRIZE, this->hookshotSlotFull != 0)) {
             sp60.x = this->actor.world.pos.x;
             sp60.y = this->actor.floorHeight;
             sp60.z = this->actor.world.pos.z;
-
-            if (this->hookshotSlotFull == 0) {
-                Flags_SetTempClear(play, 4);
-                Flags_SetTreasure(gPlayState, 0x1E);
-                HIGH_SCORE(HS_DAMPE_RACE) = gSaveContext.timerSeconds;
-            }
-
             if (gSaveContext.timerSeconds < HIGH_SCORE(HS_DAMPE_RACE)) {
                 HIGH_SCORE(HS_DAMPE_RACE) = gSaveContext.timerSeconds;
             }
             if (Flags_GetCollectible(play, this->actor.params) == 0 && gSaveContext.timerSeconds <= 60) {
                 Item_DropCollectible2(play, &sp60, (this->actor.params << 8) + (0x4000 | ITEM00_HEART_PIECE));
-            } else if (Flags_GetCollectible(play, this->actor.params) != 0) {
+            } else {
                 Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ITEM00, sp60.x, sp60.y, sp60.z, 0, 0, 0, 2);
             }
+        } else {
+            Flags_SetTempClear(play, 4);
+            HIGH_SCORE(HS_DAMPE_RACE) = gSaveContext.timerSeconds;
         }
         Actor_Kill(&this->actor);
     }

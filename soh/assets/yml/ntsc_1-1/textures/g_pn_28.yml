@@ -1,0 +1,20 @@
+:config:
+  segments:
+    - [ 128, 0x013010C0 ]
+
+gKakarikoVillageTitleCardENGTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gKakarikoVillageTitleCardENGTex
+  format: IA8
+  width: 144
+  height: 24
+
+gKakarikoVillageTitleCardJPNTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gKakarikoVillageTitleCardJPNTex
+  format: IA8
+  width: 144
+  height: 24
+

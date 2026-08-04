@@ -1,0 +1,269 @@
+:config:
+  segments:
+    - [ 6, 0x012BC210 ]
+    - [ 4, 0x00D30E00 ]
+    - [ 8, 0x012BC210 ]
+    - [ 9, 0x012BC210 ]
+    - [ 10, 0x012BC210 ]
+    - [ 11, 0x012BC210 ]
+    - [ 12, 0x012BC210 ]
+    - [ 13, 0x012BC210 ]
+  external_files:
+    - ntsc_j_gc_collection/objects/gameplay_keep.yml
+
+gGanonsCastleRubble2Col:
+  type: OOT:COLLISION
+  offset: 0x1F70
+  symbol: gGanonsCastleRubble2Col
+
+gGanonsCastleRubble2DL:
+  type: GFX
+  offset: 0x1D20
+  symbol: gGanonsCastleRubble2DL
+
+gGanonsCastleRubble3Col:
+  type: OOT:COLLISION
+  offset: 0x2448
+  symbol: gGanonsCastleRubble3Col
+
+gGanonsCastleRubble3DL:
+  type: GFX
+  offset: 0x2160
+  symbol: gGanonsCastleRubble3DL
+
+gGanonsCastleRubble4Col:
+  type: OOT:COLLISION
+  offset: 0x2850
+  symbol: gGanonsCastleRubble4Col
+
+gGanonsCastleRubble4DL:
+  type: GFX
+  offset: 0x2600
+  symbol: gGanonsCastleRubble4DL
+
+gGanonsCastleRubble5Col:
+  type: OOT:COLLISION
+  offset: 0x2D28
+  symbol: gGanonsCastleRubble5Col
+
+gGanonsCastleRubble5DL:
+  type: GFX
+  offset: 0x2A40
+  symbol: gGanonsCastleRubble5DL
+
+gGanonsCastleRubble6Col:
+  type: OOT:COLLISION
+  offset: 0x2FE4
+  symbol: gGanonsCastleRubble6Col
+
+gGanonsCastleRubble6DL:
+  type: GFX
+  offset: 0x2E80
+  symbol: gGanonsCastleRubble6DL
+
+gGanonsCastleRubble7Col:
+  type: OOT:COLLISION
+  offset: 0x33E0
+  symbol: gGanonsCastleRubble7Col
+
+gGanonsCastleRubble7DL:
+  type: GFX
+  offset: 0x3190
+  symbol: gGanonsCastleRubble7DL
+
+gGanonsCastleRubbleAroundArenaCol:
+  type: OOT:COLLISION
+  offset: 0x1B70
+  symbol: gGanonsCastleRubbleAroundArenaCol
+
+gGanonsCastleRubbleAroundArenaDL:
+  type: GFX
+  offset: 0xDC0
+  symbol: gGanonsCastleRubbleAroundArenaDL
+
+gGanonsCastleRubbleTallCol:
+  type: OOT:COLLISION
+  offset: 0x3AF0
+  symbol: gGanonsCastleRubbleTallCol
+
+gGanonsCastleRubbleTallDL:
+  type: GFX
+  offset: 0x3710
+  symbol: gGanonsCastleRubbleTallDL
+
+gGanonsCastleUnusedSpikeVariantTex:
+  type: TEXTURE
+  offset: 0x8B20
+  symbol: gGanonsCastleUnusedSpikeVariantTex
+  format: IA16
+  width: 64
+  height: 32
+
+gGanonsCastleUnusedTex_00A320:
+  type: TEXTURE
+  offset: 0xA320
+  symbol: gGanonsCastleUnusedTex_00A320
+  format: IA16
+  width: 16
+  height: 32
+
+gGanonsCastleUnusedWallTex:
+  type: TEXTURE
+  offset: 0x9B20
+  symbol: gGanonsCastleUnusedWallTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_gjTex_003B20:
+  type: TEXTURE
+  offset: 0x3B20
+  symbol: object_gjTex_003B20
+  format: IA8
+  width: 16
+  height: 16
+
+object_gjTex_003C20:
+  type: TEXTURE
+  offset: 0x3C20
+  symbol: object_gjTex_003C20
+  format: I4
+  width: 16
+  height: 32
+
+object_gjTex_003D20:
+  type: TEXTURE
+  offset: 0x3D20
+  symbol: object_gjTex_003D20
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_gjTex_003F20:
+  type: TEXTURE
+  offset: 0x3F20
+  symbol: object_gjTex_003F20
+  format: I8
+  width: 64
+  height: 64
+
+object_gjTex_004F20:
+  type: TEXTURE
+  offset: 0x4F20
+  symbol: object_gjTex_004F20
+  format: I8
+  width: 64
+  height: 64
+
+object_gjTex_005F20:
+  type: TEXTURE
+  offset: 0x5F20
+  symbol: object_gjTex_005F20
+  format: I8
+  width: 64
+  height: 64
+
+object_gjTex_006F20:
+  type: TEXTURE
+  offset: 0x6F20
+  symbol: object_gjTex_006F20
+  format: I4
+  width: 32
+  height: 64
+
+object_gjTex_007320:
+  type: TEXTURE
+  offset: 0x7320
+  symbol: object_gjTex_007320
+  format: I8
+  width: 64
+  height: 16
+
+object_gjTex_007720:
+  type: TEXTURE
+  offset: 0x7720
+  symbol: object_gjTex_007720
+  format: IA8
+  width: 32
+  height: 32
+
+object_gjTex_007B20:
+  type: TEXTURE
+  offset: 0x7B20
+  symbol: object_gjTex_007B20
+  format: I8
+  width: 128
+  height: 32
+
+
+object_gjVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_gjVtx_000000
+  count: 220
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gjVtx_001BA0:
+  type: OOT:ARRAY
+  offset: 0x001BA0
+  symbol: object_gjVtx_001BA0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gjVtx_001FA0:
+  type: OOT:ARRAY
+  offset: 0x001FA0
+  symbol: object_gjVtx_001FA0
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gjVtx_002480:
+  type: OOT:ARRAY
+  offset: 0x002480
+  symbol: object_gjVtx_002480
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gjVtx_002880:
+  type: OOT:ARRAY
+  offset: 0x002880
+  symbol: object_gjVtx_002880
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gjVtx_002D60:
+  type: OOT:ARRAY
+  offset: 0x002D60
+  symbol: object_gjVtx_002D60
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gjVtx_003010:
+  type: OOT:ARRAY
+  offset: 0x003010
+  symbol: object_gjVtx_003010
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gjVtx_003410:
+  type: OOT:ARRAY
+  offset: 0x003410
+  symbol: object_gjVtx_003410
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

@@ -13,6 +13,7 @@
 #include "objects/object_zl2_anime2/object_zl2_anime2.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/savestate_serialize.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
@@ -47,7 +48,7 @@ static void* sEyeTextures[] = { gZelda2EyeOpenTex, gZelda2EyeHalfTex, gZelda2Eye
 
 static void* sMouthTextures[] = { gZelda2MouthSeriousTex, gZelda2MouthHappyTex, gZelda2MouthOpenTex };
 
-s32 D_80B5A468 = 0;
+static s32 D_80B5A468 = 0;
 
 static Vec3f D_80B5A46C = { 0.0f, 0.0f, 0.0f };
 
@@ -57,7 +58,7 @@ static f32 D_80B5A484 = 0.0f;
 
 static Vec3f D_80B5A488 = { 0.0f, 0.0f, 0.0f };
 
-s32 D_80B5A494 = -1;
+static s32 D_80B5A494 = -1;
 
 static Vec3f D_80B5A498 = { 148.0f, 260.0f, -87.0f };
 
@@ -65,7 +66,14 @@ static Vec3f D_80B5A4A4 = { -12.0f, 260.0f, -147.0f };
 
 static Vec3f D_80B5A4B0 = { 42.0f, 260.0f, 13.0f };
 
-u32 D_80B5A4BC = 0;
+static u32 D_80B5A4BC = 0;
+
+#define EN_ZL3_SHIP_SAVESTATE_FIELDS(F) \
+    F(D_80B5A468)                       \
+    F(D_80B5A494)                       \
+    F(D_80B5A4BC)
+
+SHIP_SAVESTATE_DEFINE(EnZl3, EN_ZL3_SHIP_SAVESTATE_FIELDS)
 
 void func_80B533B0(Actor* thisx, PlayState* play) {
     EnZl3* this = (EnZl3*)thisx;
@@ -1052,7 +1060,7 @@ void func_80B559C4(EnZl3* this) {
 }
 
 void func_80B55A58(EnZl3* this, PlayState* play) {
-    if (play->activeCamera == MAIN_CAM) {
+    if (play->activeCamera == CAM_ID_MAIN) {
         func_80B537E8(this);
     }
 }
@@ -1123,7 +1131,7 @@ void func_80B55D00(EnZl3* this, PlayState* play) {
         this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY;
         this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
         this->actor.textId = 0x70D5;
-        func_8002F2F4(&this->actor, play);
+        Actor_OfferTalkNearColChkInfoCylinder(&this->actor, play);
     } else {
         this->actor.flags &= ~(ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY);
         this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
@@ -1182,7 +1190,7 @@ void func_80B55F6C(EnZl3* this, PlayState* play) {
             this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY;
             this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
             this->actor.textId = 0x7059;
-            func_8002F2F4(&this->actor, play);
+            Actor_OfferTalkNearColChkInfoCylinder(&this->actor, play);
         }
     } else {
         this->actor.flags &= ~(ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY);
@@ -1244,7 +1252,7 @@ void func_80B56214(EnZl3* this, PlayState* play) {
                 this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY;
                 this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
                 this->actor.textId = 0x7059;
-                func_8002F2F4(&this->actor, play);
+                Actor_OfferTalkNearColChkInfoCylinder(&this->actor, play);
             }
         }
     } else {
@@ -1555,7 +1563,8 @@ void func_80B56E38(EnZl3* this, PlayState* play) {
     s32 sfxId;
     SkelAnime* sp20 = &this->skelAnime;
 
-    if ((Animation_OnFrame(sp20, 6.0f) || Animation_OnFrame(sp20, 0.0f)) && (this->actor.bgCheckFlags & 1)) {
+    if ((Animation_OnFrame(sp20, 6.0f) || Animation_OnFrame(sp20, 0.0f)) &&
+        (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND)) {
         sfxId = 0x800;
         sfxId += SurfaceType_GetSfx(&play->colCtx, this->actor.floorPoly, this->actor.floorBgId);
         Sfx_PlaySfxAtPos(&this->actor.projectedPos, sfxId);
@@ -1698,7 +1707,7 @@ void func_80B57350(EnZl3* this, PlayState* play) {
     if (ABS(temp_v0) <= 0x4300) {
         this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY;
         this->actor.textId = func_80B572F0(play);
-        func_8002F2F4(&this->actor, play);
+        Actor_OfferTalkNearColChkInfoCylinder(&this->actor, play);
     }
 }
 
@@ -1786,7 +1795,7 @@ void func_80B5764C(EnZl3* this, PlayState* play) {
         s32 unk_314 = this->unk_314 + 1;
 
         if ((unk_314 == 1) && !Play_InCsMode(play)) {
-            OnePointCutscene_Init(play, 1000, 40, &this->actor, MAIN_CAM);
+            OnePointCutscene_Init(play, 1000, 40, &this->actor, CAM_ID_MAIN);
         }
     }
 }
@@ -2041,14 +2050,14 @@ void func_80B58014(EnZl3* this, PlayState* play) {
         this->action = 29;
         func_80B538B0(this);
     } else if (func_80B57C8C(this) && func_80B57F84(this, play)) {
-        OnePointCutscene_Init(play, 4000, -99, &this->actor, MAIN_CAM);
+        OnePointCutscene_Init(play, 4000, -99, &this->actor, CAM_ID_MAIN);
         this->unk_3D0 = 0;
     } else if (func_80B576C8(this, play) && func_80B575B0(this, play) && !Play_InCsMode(play)) {
         this->action = 0x1F;
         this->unk_3CC = 0.0f;
         func_80B537E8(this);
         this->unk_3D8 = 1;
-        OnePointCutscene_Init(play, 4010, -99, &this->actor, MAIN_CAM);
+        OnePointCutscene_Init(play, 4010, -99, &this->actor, CAM_ID_MAIN);
     } else if (!func_80B57C8C(this) && !func_80B576C8(this, play) && func_80B57564(this, play)) {
         func_80B54E14(this, &gZelda2Anime2Anim_009BE4, 0, -8.0f, 0);
         func_80B5764C(this, play);
@@ -2120,7 +2129,7 @@ void func_80B584B4(EnZl3* this, PlayState* play) {
     if (D_80B5A4BC == 0) {
         if ((nearbyEnTest == NULL) && (!Play_InCsMode(play))) {
             this->action = 33;
-            OnePointCutscene_Init(play, 4011, -99, &this->actor, MAIN_CAM);
+            OnePointCutscene_Init(play, 4011, -99, &this->actor, CAM_ID_MAIN);
         } else if (invincibilityTimer > 0) {
             func_80B54E14(this, &gZelda2Anime2Anim_003FF8, 0, -12.0f, 0);
             D_80B5A4BC = 1;
@@ -2131,7 +2140,7 @@ void func_80B584B4(EnZl3* this, PlayState* play) {
             func_80B54E14(this, &gZelda2Anime2Anim_007664, 0, -12.0f, 0);
             D_80B5A4BC = 0;
             this->action = 33;
-            OnePointCutscene_Init(play, 4011, -99, &this->actor, MAIN_CAM);
+            OnePointCutscene_Init(play, 4011, -99, &this->actor, CAM_ID_MAIN);
         } else if (invincibilityTimer <= 0) {
             func_80B54E14(this, &gZelda2Anime2Anim_007664, 0, -12.0f, 0);
             D_80B5A4BC = 0;
@@ -2202,7 +2211,7 @@ s32 func_80B58938(EnZl3* this, PlayState* play) {
 }
 
 s32 func_80B5899C(EnZl3* this, PlayState* play) {
-    if ((this->actor.bgCheckFlags & 1)) {
+    if ((this->actor.bgCheckFlags & BGCHECKFLAG_GROUND)) {
         Player* player = GET_PLAYER(play);
         s8 invincibilityTimer = player->invincibilityTimer;
 

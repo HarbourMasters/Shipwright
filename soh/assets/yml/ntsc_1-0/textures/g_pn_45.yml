@@ -1,0 +1,20 @@
+:config:
+  segments:
+    - [ 128, 0x0130A660 ]
+
+gFairysFountainTitleCardENGTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gFairysFountainTitleCardENGTex
+  format: IA8
+  width: 144
+  height: 24
+
+gFairysFountainTitleCardJPNTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gFairysFountainTitleCardJPNTex
+  format: IA8
+  width: 144
+  height: 24
+

@@ -1,0 +1,946 @@
+:config:
+  segments:
+    - [ 6, 0x0148B000 ]
+    - [ 4, 0x00F5E000 ]
+    - [ 8, 0x0148B000 ]
+    - [ 9, 0x0148B000 ]
+    - [ 10, 0x0148B000 ]
+    - [ 11, 0x0148B000 ]
+    - [ 12, 0x0148B000 ]
+    - [ 13, 0x0148B000 ]
+  external_files:
+    - pal_mq_dbg/objects/gameplay_keep.yml
+
+gHoleVolvagiaAnim_00CDAC:
+  type: OOT:ANIMATION
+  offset: 0xCDAC
+  symbol: gHoleVolvagiaAnim_00CDAC
+
+gHoleVolvagiaBreatheFireAnim:
+  type: OOT:ANIMATION
+  offset: 0x73CC
+  symbol: gHoleVolvagiaBreatheFireAnim
+
+gHoleVolvagiaBrokenFaceDL:
+  type: GFX
+  offset: 0x4E38
+  symbol: gHoleVolvagiaBrokenFaceDL
+
+gHoleVolvagiaBurrowAnim:
+  type: OOT:ANIMATION
+  offset: 0x9194
+  symbol: gHoleVolvagiaBurrowAnim
+
+gHoleVolvagiaClawSwipeAnim:
+  type: OOT:ANIMATION
+  offset: 0xB7A4
+  symbol: gHoleVolvagiaClawSwipeAnim
+
+gHoleVolvagiaDamagedAnim:
+  type: OOT:ANIMATION
+  offset: 0x89DC
+  symbol: gHoleVolvagiaDamagedAnim
+
+gHoleVolvagiaEmergeAnim:
+  type: OOT:ANIMATION
+  offset: 0xC1D0
+  symbol: gHoleVolvagiaEmergeAnim
+
+gHoleVolvagiaEyeClosedTex:
+  type: TEXTURE
+  offset: 0x2F08
+  symbol: gHoleVolvagiaEyeClosedTex
+  format: I8
+  width: 32
+  height: 32
+
+gHoleVolvagiaEyeHalfTex:
+  type: TEXTURE
+  offset: 0x2708
+  symbol: gHoleVolvagiaEyeHalfTex
+  format: I8
+  width: 32
+  height: 32
+
+gHoleVolvagiaEyeOpenTex:
+  type: TEXTURE
+  offset: 0x2B08
+  symbol: gHoleVolvagiaEyeOpenTex
+  format: I8
+  width: 32
+  height: 32
+
+gHoleVolvagiaHitAnim:
+  type: OOT:ANIMATION
+  offset: 0x7850
+  symbol: gHoleVolvagiaHitAnim
+
+gHoleVolvagiaIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0xC8EC
+  symbol: gHoleVolvagiaIdleAnim
+
+gHoleVolvagiaKnockoutAnim:
+  type: OOT:ANIMATION
+  offset: 0xA31C
+  symbol: gHoleVolvagiaKnockoutAnim
+
+gHoleVolvagiaManeMaterialDL:
+  type: GFX
+  offset: 0x4B48
+  symbol: gHoleVolvagiaManeMaterialDL
+
+gHoleVolvagiaManeModelDL:
+  type: GFX
+  offset: 0x4BC8
+  symbol: gHoleVolvagiaManeModelDL
+
+gHoleVolvagiaSkel:
+  type: OOT:SKELETON
+  offset: 0x11A78
+  symbol: gHoleVolvagiaSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gHoleVolvagiaTurnAnim:
+  type: OOT:ANIMATION
+  offset: 0xAE90
+  symbol: gHoleVolvagiaTurnAnim
+
+gHoleVolvagiaVtx_00D000:
+  type: OOT:ARRAY
+  offset: 0xD000
+  symbol: gHoleVolvagiaVtx_00D000
+  count: 150
+  array_type: VTX
+
+gHoleVolvagiaVtx_00DD80:
+  type: OOT:ARRAY
+  offset: 0xDD80
+  symbol: gHoleVolvagiaVtx_00DD80
+  count: 154
+  array_type: VTX
+
+gHoleVolvagiaVulnerableAnim:
+  type: OOT:ANIMATION
+  offset: 0xA86C
+  symbol: gHoleVolvagiaVulnerableAnim
+
+object_fd2TLUT_002508:
+  type: TEXTURE
+  offset: 0x2508
+  symbol: object_fd2TLUT_002508
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_fd2Tex_003308:
+  type: TEXTURE
+  offset: 0x3308
+  symbol: object_fd2Tex_003308
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_fd2Tex_003B08:
+  type: TEXTURE
+  offset: 0x3B08
+  symbol: object_fd2Tex_003B08
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_fd2Tex_004308:
+  type: TEXTURE
+  offset: 0x4308
+  symbol: object_fd2Tex_004308
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_fd2Tex_004508:
+  type: TEXTURE
+  offset: 0x4508
+  symbol: object_fd2Tex_004508
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_fd2Tex_004708:
+  type: TEXTURE
+  offset: 0x4708
+  symbol: object_fd2Tex_004708
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_fd2Tex_004908:
+  type: TEXTURE
+  offset: 0x4908
+  symbol: object_fd2Tex_004908
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_fd2Tex_004BE8:
+  type: TEXTURE
+  offset: 0x4BE8
+  symbol: object_fd2Tex_004BE8
+  format: I8
+  width: 16
+  height: 16
+
+object_fd2Tex_004FA0:
+  type: TEXTURE
+  offset: 0x4FA0
+  symbol: object_fd2Tex_004FA0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_fd2Tex_0051A0:
+  type: TEXTURE
+  offset: 0x51A0
+  symbol: object_fd2Tex_0051A0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_fd2Tex_0053A0:
+  type: TEXTURE
+  offset: 0x53A0
+  symbol: object_fd2Tex_0053A0
+  format: RGBA16
+  width: 16
+  height: 16
+
+
+object_fd2Vtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_fd2Vtx_000000
+  count: 67
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fd2Vtx_000430:
+  type: OOT:ARRAY
+  offset: 0x000430
+  symbol: object_fd2Vtx_000430
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fd2Vtx_0005A0:
+  type: OOT:ARRAY
+  offset: 0x0005A0
+  symbol: object_fd2Vtx_0005A0
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fd2Vtx_0007A0:
+  type: OOT:ARRAY
+  offset: 0x0007A0
+  symbol: object_fd2Vtx_0007A0
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fd2Vtx_0008E0:
+  type: OOT:ARRAY
+  offset: 0x0008E0
+  symbol: object_fd2Vtx_0008E0
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fd2Vtx_000A20:
+  type: OOT:ARRAY
+  offset: 0x000A20
+  symbol: object_fd2Vtx_000A20
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fd2Vtx_000AE0:
+  type: OOT:ARRAY
+  offset: 0x000AE0
+  symbol: object_fd2Vtx_000AE0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fd2Vtx_000B60:
+  type: OOT:ARRAY
+  offset: 0x000B60
+  symbol: object_fd2Vtx_000B60
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fd2Vtx_000BB0:
+  type: OOT:ARRAY
+  offset: 0x000BB0
+  symbol: object_fd2Vtx_000BB0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fd2Vtx_000C30:
+  type: OOT:ARRAY
+  offset: 0x000C30
+  symbol: object_fd2Vtx_000C30
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fd2Vtx_000CB0:
+  type: OOT:ARRAY
+  offset: 0x000CB0
+  symbol: object_fd2Vtx_000CB0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fd2Vtx_000D30:
+  type: OOT:ARRAY
+  offset: 0x000D30
+  symbol: object_fd2Vtx_000D30
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fd2Vtx_000DC0:
+  type: OOT:ARRAY
+  offset: 0x000DC0
+  symbol: object_fd2Vtx_000DC0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fd2Vtx_000E40:
+  type: OOT:ARRAY
+  offset: 0x000E40
+  symbol: object_fd2Vtx_000E40
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fd2Vtx_000E90:
+  type: OOT:ARRAY
+  offset: 0x000E90
+  symbol: object_fd2Vtx_000E90
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fd2Vtx_000F10:
+  type: OOT:ARRAY
+  offset: 0x000F10
+  symbol: object_fd2Vtx_000F10
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fd2Vtx_000F90:
+  type: OOT:ARRAY
+  offset: 0x000F90
+  symbol: object_fd2Vtx_000F90
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gHoleVolvagiaSkelLimbsLimb_0119DCDL_001010:
+  type: GFX
+  offset: 0x001010
+  symbol: gHoleVolvagiaSkelLimbsLimb_0119DCDL_001010
+
+gHoleVolvagiaSkelLimbsLimb_0119D0DL_001308:
+  type: GFX
+  offset: 0x001308
+  symbol: gHoleVolvagiaSkelLimbsLimb_0119D0DL_001308
+
+gHoleVolvagiaSkelLimbsLimb_0119ACDL_0013E0:
+  type: GFX
+  offset: 0x0013E0
+  symbol: gHoleVolvagiaSkelLimbsLimb_0119ACDL_0013E0
+
+gHoleVolvagiaSkelLimbsLimb_0119B8DL_0015B8:
+  type: GFX
+  offset: 0x0015B8
+  symbol: gHoleVolvagiaSkelLimbsLimb_0119B8DL_0015B8
+
+gHoleVolvagiaSkelLimbsLimb_0119C4DL_001680:
+  type: GFX
+  offset: 0x001680
+  symbol: gHoleVolvagiaSkelLimbsLimb_0119C4DL_001680
+
+gHoleVolvagiaSkelLimbsLimb_011904DL_001748:
+  type: GFX
+  offset: 0x001748
+  symbol: gHoleVolvagiaSkelLimbsLimb_011904DL_001748
+
+gHoleVolvagiaSkelLimbsLimb_011910DL_0018D8:
+  type: GFX
+  offset: 0x0018D8
+  symbol: gHoleVolvagiaSkelLimbsLimb_011910DL_0018D8
+
+gHoleVolvagiaSkelLimbsLimb_01191CDL_0019D0:
+  type: GFX
+  offset: 0x0019D0
+  symbol: gHoleVolvagiaSkelLimbsLimb_01191CDL_0019D0
+
+gHoleVolvagiaSkelLimbsLimb_011928DL_001AB0:
+  type: GFX
+  offset: 0x001AB0
+  symbol: gHoleVolvagiaSkelLimbsLimb_011928DL_001AB0
+
+gHoleVolvagiaSkelLimbsLimb_011940DL_001BF0:
+  type: GFX
+  offset: 0x001BF0
+  symbol: gHoleVolvagiaSkelLimbsLimb_011940DL_001BF0
+
+gHoleVolvagiaSkelLimbsLimb_011934DL_001D30:
+  type: GFX
+  offset: 0x001D30
+  symbol: gHoleVolvagiaSkelLimbsLimb_011934DL_001D30
+
+gHoleVolvagiaSkelLimbsLimb_01194CDL_001E70:
+  type: GFX
+  offset: 0x001E70
+  symbol: gHoleVolvagiaSkelLimbsLimb_01194CDL_001E70
+
+gHoleVolvagiaSkelLimbsLimb_011958DL_001F70:
+  type: GFX
+  offset: 0x001F70
+  symbol: gHoleVolvagiaSkelLimbsLimb_011958DL_001F70
+
+gHoleVolvagiaSkelLimbsLimb_011964DL_002068:
+  type: GFX
+  offset: 0x002068
+  symbol: gHoleVolvagiaSkelLimbsLimb_011964DL_002068
+
+gHoleVolvagiaSkelLimbsLimb_01197CDL_002148:
+  type: GFX
+  offset: 0x002148
+  symbol: gHoleVolvagiaSkelLimbsLimb_01197CDL_002148
+
+gHoleVolvagiaSkelLimbsLimb_011970DL_002288:
+  type: GFX
+  offset: 0x002288
+  symbol: gHoleVolvagiaSkelLimbsLimb_011970DL_002288
+
+gHoleVolvagiaSkelLimbsLimb_011988DL_0023C8:
+  type: GFX
+  offset: 0x0023C8
+  symbol: gHoleVolvagiaSkelLimbsLimb_011988DL_0023C8
+
+object_fd2Vtx_004B08:
+  type: OOT:ARRAY
+  offset: 0x004B08
+  symbol: object_fd2Vtx_004B08
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fd2Vtx_004CE8:
+  type: OOT:ARRAY
+  offset: 0x004CE8
+  symbol: object_fd2Vtx_004CE8
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fd2Vtx_00CDC0:
+  type: OOT:ARRAY
+  offset: 0x00CDC0
+  symbol: object_fd2Vtx_00CDC0
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fd2Vtx_00D960:
+  type: OOT:ARRAY
+  offset: 0x00D960
+  symbol: object_fd2Vtx_00D960
+  count: 66
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fd2Vtx_00E720:
+  type: OOT:ARRAY
+  offset: 0x00E720
+  symbol: object_fd2Vtx_00E720
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fd2Vtx_00E8B0:
+  type: OOT:ARRAY
+  offset: 0x00E8B0
+  symbol: object_fd2Vtx_00E8B0
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fd2Vtx_00EA40:
+  type: OOT:ARRAY
+  offset: 0x00EA40
+  symbol: object_fd2Vtx_00EA40
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fd2Vtx_00EBD0:
+  type: OOT:ARRAY
+  offset: 0x00EBD0
+  symbol: object_fd2Vtx_00EBD0
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fd2Vtx_00ED70:
+  type: OOT:ARRAY
+  offset: 0x00ED70
+  symbol: object_fd2Vtx_00ED70
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fd2Vtx_00EF00:
+  type: OOT:ARRAY
+  offset: 0x00EF00
+  symbol: object_fd2Vtx_00EF00
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fd2Vtx_00F090:
+  type: OOT:ARRAY
+  offset: 0x00F090
+  symbol: object_fd2Vtx_00F090
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fd2Vtx_00F220:
+  type: OOT:ARRAY
+  offset: 0x00F220
+  symbol: object_fd2Vtx_00F220
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fd2Vtx_00F360:
+  type: OOT:ARRAY
+  offset: 0x00F360
+  symbol: object_fd2Vtx_00F360
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fd2Vtx_00F4F0:
+  type: OOT:ARRAY
+  offset: 0x00F4F0
+  symbol: object_fd2Vtx_00F4F0
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fd2Vtx_00F690:
+  type: OOT:ARRAY
+  offset: 0x00F690
+  symbol: object_fd2Vtx_00F690
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fd2Vtx_00F7D0:
+  type: OOT:ARRAY
+  offset: 0x00F7D0
+  symbol: object_fd2Vtx_00F7D0
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fd2Vtx_00F920:
+  type: OOT:ARRAY
+  offset: 0x00F920
+  symbol: object_fd2Vtx_00F920
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fd2Vtx_00FAB0:
+  type: OOT:ARRAY
+  offset: 0x00FAB0
+  symbol: object_fd2Vtx_00FAB0
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fd2Vtx_00FC50:
+  type: OOT:ARRAY
+  offset: 0x00FC50
+  symbol: object_fd2Vtx_00FC50
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fd2Vtx_00FDE0:
+  type: OOT:ARRAY
+  offset: 0x00FDE0
+  symbol: object_fd2Vtx_00FDE0
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gHoleVolvagiaSkelLimbsLimb_011838DL_00FF70:
+  type: GFX
+  offset: 0x00FF70
+  symbol: gHoleVolvagiaSkelLimbsLimb_011838DL_00FF70
+
+gHoleVolvagiaSkelLimbsLimb_0118A4DL_010070:
+  type: GFX
+  offset: 0x010070
+  symbol: gHoleVolvagiaSkelLimbsLimb_0118A4DL_010070
+
+gHoleVolvagiaSkelLimbsLimb_0118B0DL_0101D0:
+  type: GFX
+  offset: 0x0101D0
+  symbol: gHoleVolvagiaSkelLimbsLimb_0118B0DL_0101D0
+
+gHoleVolvagiaSkelLimbsLimb_0118BCDL_010330:
+  type: GFX
+  offset: 0x010330
+  symbol: gHoleVolvagiaSkelLimbsLimb_0118BCDL_010330
+
+gHoleVolvagiaSkelLimbsLimb_0118C8DL_010490:
+  type: GFX
+  offset: 0x010490
+  symbol: gHoleVolvagiaSkelLimbsLimb_0118C8DL_010490
+
+gHoleVolvagiaSkelLimbsLimb_0118D4DL_0105F8:
+  type: GFX
+  offset: 0x0105F8
+  symbol: gHoleVolvagiaSkelLimbsLimb_0118D4DL_0105F8
+
+gHoleVolvagiaSkelLimbsLimb_0118E0DL_010758:
+  type: GFX
+  offset: 0x010758
+  symbol: gHoleVolvagiaSkelLimbsLimb_0118E0DL_010758
+
+gHoleVolvagiaSkelLimbsLimb_0118ECDL_0108B0:
+  type: GFX
+  offset: 0x0108B0
+  symbol: gHoleVolvagiaSkelLimbsLimb_0118ECDL_0108B0
+
+gHoleVolvagiaSkelLimbsLimb_0118F8DL_010A10:
+  type: GFX
+  offset: 0x010A10
+  symbol: gHoleVolvagiaSkelLimbsLimb_0118F8DL_010A10
+
+gHoleVolvagiaSkelLimbsLimb_011994DL_010BC8:
+  type: GFX
+  offset: 0x010BC8
+  symbol: gHoleVolvagiaSkelLimbsLimb_011994DL_010BC8
+
+gHoleVolvagiaSkelLimbsLimb_011844DL_010D40:
+  type: GFX
+  offset: 0x010D40
+  symbol: gHoleVolvagiaSkelLimbsLimb_011844DL_010D40
+
+gHoleVolvagiaSkelLimbsLimb_011850DL_010E98:
+  type: GFX
+  offset: 0x010E98
+  symbol: gHoleVolvagiaSkelLimbsLimb_011850DL_010E98
+
+gHoleVolvagiaSkelLimbsLimb_01185CDL_010FF8:
+  type: GFX
+  offset: 0x010FF8
+  symbol: gHoleVolvagiaSkelLimbsLimb_01185CDL_010FF8
+
+gHoleVolvagiaSkelLimbsLimb_011868DL_011160:
+  type: GFX
+  offset: 0x011160
+  symbol: gHoleVolvagiaSkelLimbsLimb_011868DL_011160
+
+gHoleVolvagiaSkelLimbsLimb_011874DL_0112C0:
+  type: GFX
+  offset: 0x0112C0
+  symbol: gHoleVolvagiaSkelLimbsLimb_011874DL_0112C0
+
+gHoleVolvagiaSkelLimbsLimb_011880DL_011410:
+  type: GFX
+  offset: 0x011410
+  symbol: gHoleVolvagiaSkelLimbsLimb_011880DL_011410
+
+gHoleVolvagiaSkelLimbsLimb_01188CDL_011560:
+  type: GFX
+  offset: 0x011560
+  symbol: gHoleVolvagiaSkelLimbsLimb_01188CDL_011560
+
+gHoleVolvagiaSkelLimbsLimb_011898DL_0116B8:
+  type: GFX
+  offset: 0x0116B8
+  symbol: gHoleVolvagiaSkelLimbsLimb_011898DL_0116B8
+
+gHoleVolvagiaSkelLimbsLimb_011838:
+  type: OOT:LIMB
+  offset: 0x011838
+  symbol: gHoleVolvagiaSkelLimbsLimb_011838
+  limb_type: Standard
+
+gHoleVolvagiaSkelLimbsLimb_011844:
+  type: OOT:LIMB
+  offset: 0x011844
+  symbol: gHoleVolvagiaSkelLimbsLimb_011844
+  limb_type: Standard
+
+gHoleVolvagiaSkelLimbsLimb_011850:
+  type: OOT:LIMB
+  offset: 0x011850
+  symbol: gHoleVolvagiaSkelLimbsLimb_011850
+  limb_type: Standard
+
+gHoleVolvagiaSkelLimbsLimb_01185C:
+  type: OOT:LIMB
+  offset: 0x01185C
+  symbol: gHoleVolvagiaSkelLimbsLimb_01185C
+  limb_type: Standard
+
+gHoleVolvagiaSkelLimbsLimb_011868:
+  type: OOT:LIMB
+  offset: 0x011868
+  symbol: gHoleVolvagiaSkelLimbsLimb_011868
+  limb_type: Standard
+
+gHoleVolvagiaSkelLimbsLimb_011874:
+  type: OOT:LIMB
+  offset: 0x011874
+  symbol: gHoleVolvagiaSkelLimbsLimb_011874
+  limb_type: Standard
+
+gHoleVolvagiaSkelLimbsLimb_011880:
+  type: OOT:LIMB
+  offset: 0x011880
+  symbol: gHoleVolvagiaSkelLimbsLimb_011880
+  limb_type: Standard
+
+gHoleVolvagiaSkelLimbsLimb_01188C:
+  type: OOT:LIMB
+  offset: 0x01188C
+  symbol: gHoleVolvagiaSkelLimbsLimb_01188C
+  limb_type: Standard
+
+gHoleVolvagiaSkelLimbsLimb_011898:
+  type: OOT:LIMB
+  offset: 0x011898
+  symbol: gHoleVolvagiaSkelLimbsLimb_011898
+  limb_type: Standard
+
+gHoleVolvagiaSkelLimbsLimb_0118A4:
+  type: OOT:LIMB
+  offset: 0x0118A4
+  symbol: gHoleVolvagiaSkelLimbsLimb_0118A4
+  limb_type: Standard
+
+gHoleVolvagiaSkelLimbsLimb_0118B0:
+  type: OOT:LIMB
+  offset: 0x0118B0
+  symbol: gHoleVolvagiaSkelLimbsLimb_0118B0
+  limb_type: Standard
+
+gHoleVolvagiaSkelLimbsLimb_0118BC:
+  type: OOT:LIMB
+  offset: 0x0118BC
+  symbol: gHoleVolvagiaSkelLimbsLimb_0118BC
+  limb_type: Standard
+
+gHoleVolvagiaSkelLimbsLimb_0118C8:
+  type: OOT:LIMB
+  offset: 0x0118C8
+  symbol: gHoleVolvagiaSkelLimbsLimb_0118C8
+  limb_type: Standard
+
+gHoleVolvagiaSkelLimbsLimb_0118D4:
+  type: OOT:LIMB
+  offset: 0x0118D4
+  symbol: gHoleVolvagiaSkelLimbsLimb_0118D4
+  limb_type: Standard
+
+gHoleVolvagiaSkelLimbsLimb_0118E0:
+  type: OOT:LIMB
+  offset: 0x0118E0
+  symbol: gHoleVolvagiaSkelLimbsLimb_0118E0
+  limb_type: Standard
+
+gHoleVolvagiaSkelLimbsLimb_0118EC:
+  type: OOT:LIMB
+  offset: 0x0118EC
+  symbol: gHoleVolvagiaSkelLimbsLimb_0118EC
+  limb_type: Standard
+
+gHoleVolvagiaSkelLimbsLimb_0118F8:
+  type: OOT:LIMB
+  offset: 0x0118F8
+  symbol: gHoleVolvagiaSkelLimbsLimb_0118F8
+  limb_type: Standard
+
+gHoleVolvagiaSkelLimbsLimb_011904:
+  type: OOT:LIMB
+  offset: 0x011904
+  symbol: gHoleVolvagiaSkelLimbsLimb_011904
+  limb_type: Standard
+
+gHoleVolvagiaSkelLimbsLimb_011910:
+  type: OOT:LIMB
+  offset: 0x011910
+  symbol: gHoleVolvagiaSkelLimbsLimb_011910
+  limb_type: Standard
+
+gHoleVolvagiaSkelLimbsLimb_01191C:
+  type: OOT:LIMB
+  offset: 0x01191C
+  symbol: gHoleVolvagiaSkelLimbsLimb_01191C
+  limb_type: Standard
+
+gHoleVolvagiaSkelLimbsLimb_011928:
+  type: OOT:LIMB
+  offset: 0x011928
+  symbol: gHoleVolvagiaSkelLimbsLimb_011928
+  limb_type: Standard
+
+gHoleVolvagiaSkelLimbsLimb_011934:
+  type: OOT:LIMB
+  offset: 0x011934
+  symbol: gHoleVolvagiaSkelLimbsLimb_011934
+  limb_type: Standard
+
+gHoleVolvagiaSkelLimbsLimb_011940:
+  type: OOT:LIMB
+  offset: 0x011940
+  symbol: gHoleVolvagiaSkelLimbsLimb_011940
+  limb_type: Standard
+
+gHoleVolvagiaSkelLimbsLimb_01194C:
+  type: OOT:LIMB
+  offset: 0x01194C
+  symbol: gHoleVolvagiaSkelLimbsLimb_01194C
+  limb_type: Standard
+
+gHoleVolvagiaSkelLimbsLimb_011958:
+  type: OOT:LIMB
+  offset: 0x011958
+  symbol: gHoleVolvagiaSkelLimbsLimb_011958
+  limb_type: Standard
+
+gHoleVolvagiaSkelLimbsLimb_011964:
+  type: OOT:LIMB
+  offset: 0x011964
+  symbol: gHoleVolvagiaSkelLimbsLimb_011964
+  limb_type: Standard
+
+gHoleVolvagiaSkelLimbsLimb_011970:
+  type: OOT:LIMB
+  offset: 0x011970
+  symbol: gHoleVolvagiaSkelLimbsLimb_011970
+  limb_type: Standard
+
+gHoleVolvagiaSkelLimbsLimb_01197C:
+  type: OOT:LIMB
+  offset: 0x01197C
+  symbol: gHoleVolvagiaSkelLimbsLimb_01197C
+  limb_type: Standard
+
+gHoleVolvagiaSkelLimbsLimb_011988:
+  type: OOT:LIMB
+  offset: 0x011988
+  symbol: gHoleVolvagiaSkelLimbsLimb_011988
+  limb_type: Standard
+
+gHoleVolvagiaSkelLimbsLimb_011994:
+  type: OOT:LIMB
+  offset: 0x011994
+  symbol: gHoleVolvagiaSkelLimbsLimb_011994
+  limb_type: Standard
+
+gHoleVolvagiaSkelLimbsLimb_0119A0:
+  type: OOT:LIMB
+  offset: 0x0119A0
+  symbol: gHoleVolvagiaSkelLimbsLimb_0119A0
+  limb_type: Standard
+
+gHoleVolvagiaSkelLimbsLimb_0119AC:
+  type: OOT:LIMB
+  offset: 0x0119AC
+  symbol: gHoleVolvagiaSkelLimbsLimb_0119AC
+  limb_type: Standard
+
+gHoleVolvagiaSkelLimbsLimb_0119B8:
+  type: OOT:LIMB
+  offset: 0x0119B8
+  symbol: gHoleVolvagiaSkelLimbsLimb_0119B8
+  limb_type: Standard
+
+gHoleVolvagiaSkelLimbsLimb_0119C4:
+  type: OOT:LIMB
+  offset: 0x0119C4
+  symbol: gHoleVolvagiaSkelLimbsLimb_0119C4
+  limb_type: Standard
+
+gHoleVolvagiaSkelLimbsLimb_0119D0:
+  type: OOT:LIMB
+  offset: 0x0119D0
+  symbol: gHoleVolvagiaSkelLimbsLimb_0119D0
+  limb_type: Standard
+
+gHoleVolvagiaSkelLimbsLimb_0119DC:
+  type: OOT:LIMB
+  offset: 0x0119DC
+  symbol: gHoleVolvagiaSkelLimbsLimb_0119DC
+  limb_type: Standard
+
+gHoleVolvagiaSkelLimbs:
+  type: BLOB
+  offset: 0x119E8
+  symbol: gHoleVolvagiaSkelLimbs
+  size: 0

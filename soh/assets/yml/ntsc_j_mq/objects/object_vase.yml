@@ -1,0 +1,43 @@
+:config:
+  segments:
+    - [ 6, 0x00F52490 ]
+    - [ 4, 0x00D310D0 ]
+    - [ 8, 0x00F52490 ]
+    - [ 9, 0x00F52490 ]
+    - [ 10, 0x00F52490 ]
+    - [ 11, 0x00F52490 ]
+    - [ 12, 0x00F52490 ]
+    - [ 13, 0x00F52490 ]
+  external_files:
+    - ntsc_j_mq/objects/gameplay_keep.yml
+
+gUnusedVaseBodyTex:
+  type: TEXTURE
+  offset: 0x590
+  symbol: gUnusedVaseBodyTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gUnusedVaseDL:
+  type: GFX
+  offset: 0x0
+  symbol: gUnusedVaseDL
+
+gUnusedVaseTopTex:
+  type: TEXTURE
+  offset: 0xD90
+  symbol: gUnusedVaseTopTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+object_vaseVtx_0001A0:
+  type: OOT:ARRAY
+  offset: 0x0001A0
+  symbol: object_vaseVtx_0001A0
+  count: 63
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

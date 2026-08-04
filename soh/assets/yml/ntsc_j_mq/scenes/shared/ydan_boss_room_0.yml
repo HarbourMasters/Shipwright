@@ -1,0 +1,138 @@
+:config:
+  segments:
+    - [ 3, 0x01DBD110 ]
+    - [ 2, 0x01DBBDD0 ]
+  directory: scenes/shared/ydan_boss_scene
+  external_files:
+    - ntsc_j_mq/scenes/shared/ydan_boss_scene.yml
+    - ntsc_j_mq/code/sys_matrix.yml
+
+ydan_boss_room_0:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: ydan_boss_room_0
+
+ydan_boss_room_0Tex_001790:
+  type: TEXTURE
+  offset: 0x1790
+  symbol: ydan_boss_room_0Tex_001790
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: ydan_boss_scene
+  external_tlut_offset: 0xD30
+
+ydan_boss_room_0Tex_001F90:
+  type: TEXTURE
+  offset: 0x1F90
+  symbol: ydan_boss_room_0Tex_001F90
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: ydan_boss_scene
+  external_tlut_offset: 0xD30
+
+ydan_boss_room_0Tex_002790:
+  type: TEXTURE
+  offset: 0x2790
+  symbol: ydan_boss_room_0Tex_002790
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: ydan_boss_scene
+  external_tlut_offset: 0xD30
+
+ydan_boss_room_0Tex_002F90:
+  type: TEXTURE
+  offset: 0x2F90
+  symbol: ydan_boss_room_0Tex_002F90
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: ydan_boss_scene
+  external_tlut_offset: 0xD30
+
+ydan_boss_room_0Tex_003790:
+  type: TEXTURE
+  offset: 0x3790
+  symbol: ydan_boss_room_0Tex_003790
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: ydan_boss_scene
+  external_tlut_offset: 0xD30
+
+ydan_boss_room_0Tex_003F90:
+  type: TEXTURE
+  offset: 0x3F90
+  symbol: ydan_boss_room_0Tex_003F90
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: ydan_boss_scene
+  external_tlut_offset: 0xD30
+
+ydan_boss_room_0Tex_004BF0:
+  type: TEXTURE
+  offset: 0x4BF0
+  symbol: ydan_boss_room_0Tex_004BF0
+  format: RGBA16
+  width: 32
+  height: 64
+
+ydan_boss_room_0Tex_005BF0:
+  type: TEXTURE
+  offset: 0x5BF0
+  symbol: ydan_boss_room_0Tex_005BF0
+  format: CI8
+  width: 32
+  height: 32
+  external_tlut: ydan_boss_scene
+  external_tlut_offset: 0xD30
+
+ydan_boss_room_0Tex_005FF0:
+  type: TEXTURE
+  offset: 0x5FF0
+  symbol: ydan_boss_room_0Tex_005FF0
+  format: IA16
+  width: 32
+  height: 64
+
+
+ydan_boss_room_0Vtx_000070:
+  type: OOT:ARRAY
+  offset: 0x000070
+  symbol: ydan_boss_room_0Vtx_000070
+  count: 270
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ydan_boss_room_0DL_001150:
+  type: GFX
+  offset: 0x001150
+  symbol: ydan_boss_room_0DL_001150
+
+ydan_boss_room_0DL_001780:
+  type: GFX
+  offset: 0x001780
+  symbol: ydan_boss_room_0DL_001780
+
+ydan_boss_room_0Vtx_004790:
+  type: OOT:ARRAY
+  offset: 0x004790
+  symbol: ydan_boss_room_0Vtx_004790
+  count: 37
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ydan_boss_room_0DL_0049E0:
+  type: GFX
+  offset: 0x0049E0
+  symbol: ydan_boss_room_0DL_0049E0
+
+ydan_boss_room_0DL_004BE0:
+  type: GFX
+  offset: 0x004BE0
+  symbol: ydan_boss_room_0DL_004BE0

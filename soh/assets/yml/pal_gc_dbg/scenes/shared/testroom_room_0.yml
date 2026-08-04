@@ -1,0 +1,68 @@
+:config:
+  segments:
+    - [ 3, 0x02AEF000 ]
+    - [ 2, 0x02AEA000 ]
+  directory: scenes/shared/testroom_scene
+  external_files:
+    - pal_gc_dbg/scenes/shared/testroom_scene.yml
+    - pal_gc_dbg/code/sys_matrix.yml
+
+testroom_room_0:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: testroom_room_0
+
+testroom_room_0Tex_000E00:
+  type: TEXTURE
+  offset: 0xE00
+  symbol: testroom_room_0Tex_000E00
+  format: RGBA16
+  width: 32
+  height: 32
+
+testroom_room_0Tex_001600:
+  type: TEXTURE
+  offset: 0x1600
+  symbol: testroom_room_0Tex_001600
+  format: RGBA16
+  width: 32
+  height: 64
+
+testroom_room_0Tex_002600:
+  type: TEXTURE
+  offset: 0x2600
+  symbol: testroom_room_0Tex_002600
+  format: RGBA16
+  width: 32
+  height: 32
+
+testroom_room_0Tex_002E00:
+  type: TEXTURE
+  offset: 0x2E00
+  symbol: testroom_room_0Tex_002E00
+  format: RGBA16
+  width: 32
+  height: 64
+
+testroom_room_0Tex_003E00:
+  type: TEXTURE
+  offset: 0x3E00
+  symbol: testroom_room_0Tex_003E00
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+testroom_room_0Vtx_000200:
+  type: OOT:ARRAY
+  offset: 0x000200
+  symbol: testroom_room_0Vtx_000200
+  count: 133
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+testroom_room_0DL_000A50:
+  type: GFX
+  offset: 0x000A50
+  symbol: testroom_room_0DL_000A50

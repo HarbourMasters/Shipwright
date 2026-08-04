@@ -2,8 +2,8 @@
 #include "soh/ShipInit.hpp"
 
 extern "C" {
+#include "z64.h"
 extern PlayState* gPlayState;
-extern SaveContext gSaveContext;
 #include "macros.h"
 #include "functions.h"
 #include "objects/object_link_boy/object_link_boy.h"

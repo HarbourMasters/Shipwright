@@ -1,0 +1,279 @@
+:config:
+  segments:
+    - [ 6, 0x01246FB0 ]
+    - [ 4, 0x00D30660 ]
+    - [ 8, 0x01246FB0 ]
+    - [ 9, 0x01246FB0 ]
+    - [ 10, 0x01246FB0 ]
+    - [ 11, 0x01246FB0 ]
+    - [ 12, 0x01246FB0 ]
+    - [ 13, 0x01246FB0 ]
+  external_files:
+    - pal_1-1/objects/gameplay_keep.yml
+
+gBombchuShopkeeperEarTex:
+  type: TEXTURE
+  offset: 0x3128
+  symbol: gBombchuShopkeeperEarTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x2EE8
+
+gBombchuShopkeeperEyeClosedTex:
+  type: TEXTURE
+  offset: 0x4168
+  symbol: gBombchuShopkeeperEyeClosedTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x2EE8
+
+gBombchuShopkeeperEyeHalfTex:
+  type: TEXTURE
+  offset: 0x3D68
+  symbol: gBombchuShopkeeperEyeHalfTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x2EE8
+
+gBombchuShopkeeperEyeOpenTex:
+  type: TEXTURE
+  offset: 0x3968
+  symbol: gBombchuShopkeeperEyeOpenTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x2EE8
+
+gBombchuShopkeeperFingersTex:
+  type: TEXTURE
+  offset: 0x4568
+  symbol: gBombchuShopkeeperFingersTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x2EE8
+
+gBombchuShopkeeperHeadDL:
+  type: GFX
+  offset: 0x21F8
+  symbol: gBombchuShopkeeperHeadDL
+
+gBombchuShopkeeperHeadLimb:
+  type: OOT:LIMB
+  offset: 0x483C
+  symbol: gBombchuShopkeeperHeadLimb
+  limb_type: Standard
+
+gBombchuShopkeeperIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0x65C
+  symbol: gBombchuShopkeeperIdleAnim
+
+gBombchuShopkeeperLeftForearmDL:
+  type: GFX
+  offset: 0x2BA8
+  symbol: gBombchuShopkeeperLeftForearmDL
+
+gBombchuShopkeeperLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0x4800
+  symbol: gBombchuShopkeeperLeftForearmLimb
+  limb_type: Standard
+
+gBombchuShopkeeperLeftHandDL:
+  type: GFX
+  offset: 0x2CD8
+  symbol: gBombchuShopkeeperLeftHandDL
+
+gBombchuShopkeeperLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x480C
+  symbol: gBombchuShopkeeperLeftHandLimb
+  limb_type: Standard
+
+gBombchuShopkeeperLeftUpperArmDL:
+  type: GFX
+  offset: 0x2A70
+  symbol: gBombchuShopkeeperLeftUpperArmDL
+
+gBombchuShopkeeperLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x47F4
+  symbol: gBombchuShopkeeperLeftUpperArmLimb
+  limb_type: Standard
+
+gBombchuShopkeeperRightForearmDL:
+  type: GFX
+  offset: 0x2730
+  symbol: gBombchuShopkeeperRightForearmDL
+
+gBombchuShopkeeperRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0x4824
+  symbol: gBombchuShopkeeperRightForearmLimb
+  limb_type: Standard
+
+gBombchuShopkeeperRightHandDL:
+  type: GFX
+  offset: 0x2860
+  symbol: gBombchuShopkeeperRightHandDL
+
+gBombchuShopkeeperRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x4830
+  symbol: gBombchuShopkeeperRightHandLimb
+  limb_type: Standard
+
+gBombchuShopkeeperRightUpperArmDL:
+  type: GFX
+  offset: 0x25F8
+  symbol: gBombchuShopkeeperRightUpperArmDL
+
+gBombchuShopkeeperRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x4818
+  symbol: gBombchuShopkeeperRightUpperArmLimb
+  limb_type: Standard
+
+gBombchuShopkeeperSkel:
+  type: OOT:SKELETON
+  offset: 0x4868
+  symbol: gBombchuShopkeeperSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gBombchuShopkeeperSkinTex:
+  type: TEXTURE
+  offset: 0x30E8
+  symbol: gBombchuShopkeeperSkinTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x2EE8
+
+gBombchuShopkeeperTLUT:
+  type: TEXTURE
+  offset: 0x2EE8
+  symbol: gBombchuShopkeeperTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gBombchuShopkeeperTattooTex:
+  type: TEXTURE
+  offset: 0x3168
+  symbol: gBombchuShopkeeperTattooTex
+  format: CI8
+  width: 32
+  height: 64
+  tlut: 0x2EE8
+
+gBombchuShopkeeperTorsoDL:
+  type: GFX
+  offset: 0x1FA0
+  symbol: gBombchuShopkeeperTorsoDL
+
+gBombchuShopkeeperTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x47E8
+  symbol: gBombchuShopkeeperTorsoLimb
+  limb_type: Standard
+
+gBombchuShopkeeperTorsoTex:
+  type: TEXTURE
+  offset: 0x46E8
+  symbol: gBombchuShopkeeperTorsoTex
+  format: CI8
+  width: 8
+  height: 32
+  tlut: 0x2EE8
+
+gBombchuShopkeeperVestTex:
+  type: TEXTURE
+  offset: 0x4668
+  symbol: gBombchuShopkeeperVestTex
+  format: I8
+  width: 8
+  height: 16
+
+
+object_rsVtx_000670:
+  type: OOT:ARRAY
+  offset: 0x000670
+  symbol: object_rsVtx_000670
+  count: 163
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rsVtx_0010A0:
+  type: OOT:ARRAY
+  offset: 0x0010A0
+  symbol: object_rsVtx_0010A0
+  count: 47
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rsVtx_001390:
+  type: OOT:ARRAY
+  offset: 0x001390
+  symbol: object_rsVtx_001390
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rsVtx_001540:
+  type: OOT:ARRAY
+  offset: 0x001540
+  symbol: object_rsVtx_001540
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rsVtx_0016E0:
+  type: OOT:ARRAY
+  offset: 0x0016E0
+  symbol: object_rsVtx_0016E0
+  count: 47
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rsVtx_0019D0:
+  type: OOT:ARRAY
+  offset: 0x0019D0
+  symbol: object_rsVtx_0019D0
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rsVtx_001B80:
+  type: OOT:ARRAY
+  offset: 0x001B80
+  symbol: object_rsVtx_001B80
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_rsVtx_001D20:
+  type: OOT:ARRAY
+  offset: 0x001D20
+  symbol: object_rsVtx_001D20
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gBombchuShopkeeperSkelLimbs:
+  type: BLOB
+  offset: 0x4848
+  symbol: gBombchuShopkeeperSkelLimbs
+  size: 0

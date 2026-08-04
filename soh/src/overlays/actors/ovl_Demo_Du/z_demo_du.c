@@ -4,6 +4,7 @@
 #include "overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
 #include "vt.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/savestate_serialize.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
@@ -79,7 +80,12 @@ void DemoDu_CsAfterGanon_Reset(DemoDu* this) {
     this->unk_1A4 = 0.0f;
 }
 
-s32 D_8096CE94 = false;
+static s32 D_8096CE94 = false;
+
+#define DEMO_DU_SHIP_SAVESTATE_FIELDS(F) F(D_8096CE94)
+
+SHIP_SAVESTATE_DEFINE(DemoDu, DEMO_DU_SHIP_SAVESTATE_FIELDS)
+
 void DemoDu_CsAfterGanon_CheckIfShouldReset(DemoDu* this, PlayState* play) {
 
     if (play->csCtx.state == CS_STATE_IDLE) {
@@ -197,7 +203,7 @@ void func_80969FB4(DemoDu* this, PlayState* play) {
 void DemoDu_CsFireMedallion_AdvanceTo01(DemoDu* this, PlayState* play) {
     s32 pad[2];
 
-    if ((gSaveContext.chamberCutsceneNum == 1) && (gSaveContext.sceneSetupIndex < 4)) {
+    if ((gSaveContext.chamberCutsceneNum == 1) && (gSaveContext.sceneLayer < 4)) {
         Player* player = GET_PLAYER(play);
 
         this->updateIndex = CS_FIREMEDALLION_SUBSCENE(1);

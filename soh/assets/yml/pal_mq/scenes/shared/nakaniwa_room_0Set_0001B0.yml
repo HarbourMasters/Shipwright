@@ -1,0 +1,15 @@
+:config:
+  segments:
+    - [ 3, 0x01DB1A10 ]
+    - [ 2, 0x01DB0100 ]
+  directory: scenes/shared/nakaniwa_scene
+  external_files:
+    - pal_mq/scenes/shared/nakaniwa_room_0.yml
+    - pal_mq/scenes/shared/nakaniwa_scene.yml
+    - pal_mq/code/sys_matrix.yml
+
+nakaniwa_room_0Set_0001B0:
+  type: OOT:ROOM
+  offset: 0x1B0
+  symbol: nakaniwa_room_0Set_0001B0
+  base_name: nakaniwa_room_0

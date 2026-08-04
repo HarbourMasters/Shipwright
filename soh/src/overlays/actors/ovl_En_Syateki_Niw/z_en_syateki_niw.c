@@ -233,7 +233,7 @@ void EnSyatekiNiw_Default(EnSyatekiNiw* this, PlayState* play) {
     f32 tmpf1;
     s16 sp4A;
 
-    if ((this->archeryState != 0) && (this->minigameType == 0) && (this->actor.bgCheckFlags & 1)) {
+    if ((this->archeryState != 0) && (this->minigameType == 0) && (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND)) {
         this->archeryState = 0;
         this->actionFunc = EnSyatekiNiw_SetupArchery;
         return;
@@ -303,7 +303,7 @@ void EnSyatekiNiw_Default(EnSyatekiNiw* this, PlayState* play) {
             }
         } else {
             this->hopTimer = 4;
-            if (this->actor.bgCheckFlags & 1) {
+            if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
                 this->actor.velocity.y = 2.5f;
                 if ((Rand_ZeroFloat(10.0f) < 1.0f) && (this->minigameType == 0)) {
                     this->hopTimer = 0xC;
@@ -407,7 +407,7 @@ void EnSyatekiNiw_Archery(EnSyatekiNiw* this, PlayState* play) {
                 this->actor.speedXZ = 0.0f;
             }
 
-            if ((this->actor.bgCheckFlags & 1) && (this->actor.world.pos.z > 110.0f)) {
+            if ((this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) && (this->actor.world.pos.z > 110.0f)) {
                 this->actor.velocity.y = 0.0f;
                 this->actor.gravity = 0.0f;
                 this->leftWingRotZTarget = 0.0f;
@@ -537,7 +537,7 @@ void EnSyatekiNiw_Remove(EnSyatekiNiw* this, PlayState* play) {
         this->rotYFlip++;
         this->rotYFlip &= 1;
         this->hopTimer = (s16)Rand_CenteredFloat(4.0f) + 5;
-        if ((Rand_ZeroFloat(5.0f) < 1.0f) && (this->actor.bgCheckFlags & 1)) {
+        if ((Rand_ZeroFloat(5.0f) < 1.0f) && (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND)) {
             this->actor.velocity.y = 4.0f;
         }
     }

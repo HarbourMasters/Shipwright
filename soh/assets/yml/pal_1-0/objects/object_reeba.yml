@@ -1,0 +1,301 @@
+:config:
+  segments:
+    - [ 6, 0x00DDA4C0 ]
+    - [ 4, 0x00D30380 ]
+    - [ 8, 0x00DDA4C0 ]
+    - [ 9, 0x00DDA4C0 ]
+    - [ 10, 0x00DDA4C0 ]
+    - [ 11, 0x00DDA4C0 ]
+    - [ 12, 0x00DDA4C0 ]
+    - [ 13, 0x00DDA4C0 ]
+  external_files:
+    - pal_1-0/objects/gameplay_keep.yml
+
+object_reeba_Anim_0001E4:
+  type: OOT:ANIMATION
+  offset: 0x1E4
+  symbol: object_reeba_Anim_0001E4
+
+object_reeba_DL_000200:
+  type: GFX
+  offset: 0x200
+  symbol: object_reeba_DL_000200
+
+object_reeba_DL_0002D0:
+  type: GFX
+  offset: 0x2D0
+  symbol: object_reeba_DL_0002D0
+
+object_reeba_DL_0002E0:
+  type: GFX
+  offset: 0x2E0
+  symbol: object_reeba_DL_0002E0
+
+object_reeba_DL_000430:
+  type: GFX
+  offset: 0x430
+  symbol: object_reeba_DL_000430
+
+object_reeba_DL_000570:
+  type: GFX
+  offset: 0x570
+  symbol: object_reeba_DL_000570
+
+object_reeba_DL_000580:
+  type: GFX
+  offset: 0x580
+  symbol: object_reeba_DL_000580
+
+object_reeba_DL_000760:
+  type: GFX
+  offset: 0x760
+  symbol: object_reeba_DL_000760
+
+object_reeba_DL_0007F8:
+  type: GFX
+  offset: 0x7F8
+  symbol: object_reeba_DL_0007F8
+
+object_reeba_DL_000808:
+  type: GFX
+  offset: 0x808
+  symbol: object_reeba_DL_000808
+
+object_reeba_DL_0008B8:
+  type: GFX
+  offset: 0x8B8
+  symbol: object_reeba_DL_0008B8
+
+object_reeba_DL_000950:
+  type: GFX
+  offset: 0x950
+  symbol: object_reeba_DL_000950
+
+object_reeba_DL_000960:
+  type: GFX
+  offset: 0x960
+  symbol: object_reeba_DL_000960
+
+object_reeba_DL_000A10:
+  type: GFX
+  offset: 0xA10
+  symbol: object_reeba_DL_000A10
+
+object_reeba_DL_000AB0:
+  type: GFX
+  offset: 0xAB0
+  symbol: object_reeba_DL_000AB0
+
+object_reeba_DL_000AC0:
+  type: GFX
+  offset: 0xAC0
+  symbol: object_reeba_DL_000AC0
+
+object_reeba_DL_000B80:
+  type: GFX
+  offset: 0xB80
+  symbol: object_reeba_DL_000B80
+
+object_reeba_DL_000C18:
+  type: GFX
+  offset: 0xC18
+  symbol: object_reeba_DL_000C18
+
+object_reeba_DL_000C28:
+  type: GFX
+  offset: 0xC28
+  symbol: object_reeba_DL_000C28
+
+object_reeba_Skel_001EE8:
+  type: OOT:SKELETON
+  offset: 0x1EE8
+  symbol: object_reeba_Skel_001EE8
+  limb_type: Standard
+  skel_type: Normal
+
+object_reeba_Tex_000CD8:
+  type: TEXTURE
+  offset: 0xCD8
+  symbol: object_reeba_Tex_000CD8
+  format: RGBA16
+  width: 8
+  height: 16
+
+object_reeba_Tex_000DD8:
+  type: TEXTURE
+  offset: 0xDD8
+  symbol: object_reeba_Tex_000DD8
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_reeba_Tex_0015D8:
+  type: TEXTURE
+  offset: 0x15D8
+  symbol: object_reeba_Tex_0015D8
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+object_reebaVtx_0002F0:
+  type: OOT:ARRAY
+  offset: 0x0002F0
+  symbol: object_reebaVtx_0002F0
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_reebaVtx_000590:
+  type: OOT:ARRAY
+  offset: 0x000590
+  symbol: object_reebaVtx_000590
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_reebaVtx_000818:
+  type: OOT:ARRAY
+  offset: 0x000818
+  symbol: object_reebaVtx_000818
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_reebaVtx_000970:
+  type: OOT:ARRAY
+  offset: 0x000970
+  symbol: object_reebaVtx_000970
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_reebaVtx_000AD0:
+  type: OOT:ARRAY
+  offset: 0x000AD0
+  symbol: object_reebaVtx_000AD0
+  count: 11
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_reebaVtx_000C38:
+  type: OOT:ARRAY
+  offset: 0x000C38
+  symbol: object_reebaVtx_000C38
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_reeba_Skel_001EE8LimbsLimb_001DD8:
+  type: OOT:LIMB
+  offset: 0x001DD8
+  symbol: object_reeba_Skel_001EE8LimbsLimb_001DD8
+  limb_type: Standard
+
+object_reeba_Skel_001EE8LimbsLimb_001DE4:
+  type: OOT:LIMB
+  offset: 0x001DE4
+  symbol: object_reeba_Skel_001EE8LimbsLimb_001DE4
+  limb_type: Standard
+
+object_reeba_Skel_001EE8LimbsLimb_001DF0:
+  type: OOT:LIMB
+  offset: 0x001DF0
+  symbol: object_reeba_Skel_001EE8LimbsLimb_001DF0
+  limb_type: Standard
+
+object_reeba_Skel_001EE8LimbsLimb_001DFC:
+  type: OOT:LIMB
+  offset: 0x001DFC
+  symbol: object_reeba_Skel_001EE8LimbsLimb_001DFC
+  limb_type: Standard
+
+object_reeba_Skel_001EE8LimbsLimb_001E08:
+  type: OOT:LIMB
+  offset: 0x001E08
+  symbol: object_reeba_Skel_001EE8LimbsLimb_001E08
+  limb_type: Standard
+
+object_reeba_Skel_001EE8LimbsLimb_001E14:
+  type: OOT:LIMB
+  offset: 0x001E14
+  symbol: object_reeba_Skel_001EE8LimbsLimb_001E14
+  limb_type: Standard
+
+object_reeba_Skel_001EE8LimbsLimb_001E20:
+  type: OOT:LIMB
+  offset: 0x001E20
+  symbol: object_reeba_Skel_001EE8LimbsLimb_001E20
+  limb_type: Standard
+
+object_reeba_Skel_001EE8LimbsLimb_001E2C:
+  type: OOT:LIMB
+  offset: 0x001E2C
+  symbol: object_reeba_Skel_001EE8LimbsLimb_001E2C
+  limb_type: Standard
+
+object_reeba_Skel_001EE8LimbsLimb_001E38:
+  type: OOT:LIMB
+  offset: 0x001E38
+  symbol: object_reeba_Skel_001EE8LimbsLimb_001E38
+  limb_type: Standard
+
+object_reeba_Skel_001EE8LimbsLimb_001E44:
+  type: OOT:LIMB
+  offset: 0x001E44
+  symbol: object_reeba_Skel_001EE8LimbsLimb_001E44
+  limb_type: Standard
+
+object_reeba_Skel_001EE8LimbsLimb_001E50:
+  type: OOT:LIMB
+  offset: 0x001E50
+  symbol: object_reeba_Skel_001EE8LimbsLimb_001E50
+  limb_type: Standard
+
+object_reeba_Skel_001EE8LimbsLimb_001E5C:
+  type: OOT:LIMB
+  offset: 0x001E5C
+  symbol: object_reeba_Skel_001EE8LimbsLimb_001E5C
+  limb_type: Standard
+
+object_reeba_Skel_001EE8LimbsLimb_001E68:
+  type: OOT:LIMB
+  offset: 0x001E68
+  symbol: object_reeba_Skel_001EE8LimbsLimb_001E68
+  limb_type: Standard
+
+object_reeba_Skel_001EE8LimbsLimb_001E74:
+  type: OOT:LIMB
+  offset: 0x001E74
+  symbol: object_reeba_Skel_001EE8LimbsLimb_001E74
+  limb_type: Standard
+
+object_reeba_Skel_001EE8LimbsLimb_001E80:
+  type: OOT:LIMB
+  offset: 0x001E80
+  symbol: object_reeba_Skel_001EE8LimbsLimb_001E80
+  limb_type: Standard
+
+object_reeba_Skel_001EE8LimbsLimb_001E8C:
+  type: OOT:LIMB
+  offset: 0x001E8C
+  symbol: object_reeba_Skel_001EE8LimbsLimb_001E8C
+  limb_type: Standard
+
+object_reeba_Skel_001EE8LimbsLimb_001E98:
+  type: OOT:LIMB
+  offset: 0x001E98
+  symbol: object_reeba_Skel_001EE8LimbsLimb_001E98
+  limb_type: Standard
+
+object_reeba_Skel_001EE8Limbs:
+  type: BLOB
+  offset: 0x1EA4
+  symbol: object_reeba_Skel_001EE8Limbs
+  size: 0

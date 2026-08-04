@@ -1,0 +1,36 @@
+:config:
+  segments:
+    - [ 128, 0x0159E4E0 ]
+
+gRichardsHouseBg2TLUT:
+  type: TEXTURE
+  offset: 0x200
+  symbol: gRichardsHouseBg2TLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gRichardsHouseBg3TLUT:
+  type: TEXTURE
+  offset: 0x400
+  symbol: gRichardsHouseBg3TLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gRichardsHouseBg4TLUT:
+  type: TEXTURE
+  offset: 0x600
+  symbol: gRichardsHouseBg4TLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gRichardsHouseBgTLUT:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gRichardsHouseBgTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+

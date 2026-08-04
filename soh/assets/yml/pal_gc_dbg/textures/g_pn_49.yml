@@ -1,0 +1,28 @@
+:config:
+  segments:
+    - [ 128, 0x01A7E000 ]
+
+gThievesHideoutTitleCardENGTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gThievesHideoutTitleCardENGTex
+  format: IA8
+  width: 144
+  height: 24
+
+gThievesHideoutTitleCardFRATex:
+  type: TEXTURE
+  offset: 0x1B00
+  symbol: gThievesHideoutTitleCardFRATex
+  format: IA8
+  width: 144
+  height: 24
+
+gThievesHideoutTitleCardGERTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gThievesHideoutTitleCardGERTex
+  format: IA8
+  width: 144
+  height: 24
+

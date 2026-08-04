@@ -1,0 +1,44 @@
+:config:
+  segments:
+    - [ 128, 0x013EF4E0 ]
+
+gLinksHouse2BgTex:
+  type: TEXTURE
+  offset: 0x10000
+  symbol: gLinksHouse2BgTex
+  format: CI8
+  width: 256
+  height: 256
+  external_tlut: vr_LHVR_pal_static
+  external_tlut_offset: 0x200
+
+gLinksHouse3BgTex:
+  type: TEXTURE
+  offset: 0x20000
+  symbol: gLinksHouse3BgTex
+  format: CI8
+  width: 256
+  height: 256
+  external_tlut: vr_LHVR_pal_static
+  external_tlut_offset: 0x400
+
+gLinksHouse4BgTex:
+  type: TEXTURE
+  offset: 0x30000
+  symbol: gLinksHouse4BgTex
+  format: CI8
+  width: 256
+  height: 256
+  external_tlut: vr_LHVR_pal_static
+  external_tlut_offset: 0x600
+
+gLinksHouseBgTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gLinksHouseBgTex
+  format: CI8
+  width: 256
+  height: 256
+  external_tlut: vr_LHVR_pal_static
+  external_tlut_offset: 0x000
+

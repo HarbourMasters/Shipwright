@@ -1,0 +1,68 @@
+:config:
+  segments:
+    - [ 128, 0x00BB1800 ]
+    - [ 4, 0x00D30F80 ]
+    - [ 8, 0x00BB1800 ]
+    - [ 9, 0x00BB1800 ]
+    - [ 10, 0x00BB1800 ]
+    - [ 11, 0x00BB1800 ]
+    - [ 12, 0x00BB1800 ]
+    - [ 13, 0x00BB1800 ]
+  virtual: [ 0x80920FC0, 0x00BB1800 ]
+  external_files:
+    - ntsc_u_mq/objects/gameplay_keep.yml
+
+ovl_Boss_SstTex_00A438:
+  type: TEXTURE
+  offset: 0xA3F8
+  symbol: ovl_Boss_SstTex_00A438
+  format: I8
+  width: 16
+  height: 64
+
+ovl_Boss_SstTex_00A8F0:
+  type: TEXTURE
+  offset: 0xA8B0
+  symbol: ovl_Boss_SstTex_00A8F0
+  format: I8
+  width: 32
+  height: 32
+
+sBodyStaticDList:
+  type: GFX
+  offset: 0xA380
+  symbol: sBodyStaticDList
+
+sHandTrailDList:
+  type: GFX
+  offset: 0xA398
+  symbol: sHandTrailDList
+
+sIntroVanishDList:
+  type: GFX
+  offset: 0xA7F8
+  symbol: sIntroVanishDList
+
+sShadowDList:
+  type: GFX
+  offset: 0xACB0
+  symbol: sShadowDList
+
+
+ovl_Boss_SstVtx_00A3B8:
+  type: OOT:ARRAY
+  offset: 0x00A3B8
+  symbol: ovl_Boss_SstVtx_00A3B8
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ovl_Boss_SstVtx_00A880:
+  type: OOT:ARRAY
+  offset: 0x00A880
+  symbol: ovl_Boss_SstVtx_00A880
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

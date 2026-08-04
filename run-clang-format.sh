@@ -1,3 +1,7 @@
+# Default to clang-format-14; override CLANG_FORMAT to use another 14.x binary
+# (distro pkg, muttleyxd static binary, uvx clang-format@14, ...). See docs/FORMATTING.md.
+CLANG_FORMAT="${CLANG_FORMAT:-clang-format-14}"
+
 # this line does quite a bit, so let's break it down
 #
 # find soh
@@ -21,9 +25,12 @@
 # -print0
 # separate paths with NUL bytes, avoiding issues with spaces in paths
 #
-# | xargs -0 clang-format-14 -i -verbose
+# | eval "xargs -0 $CLANG_FORMAT -i --verbose"
 # use xargs to take each path we've found
 # and pass it as an argument to clang-format
 # verbose to print files being formatted and X out of Y status
+# eval so CLANG_FORMAT can carry arguments ("uvx clang-format@14")
+# or a quoted path with spaces; the NUL-separated file list reaches
+# xargs over the pipe, so it never passes through eval
 
-find soh -type f \( -name "*.c" -o -name "*.cpp" -o \( \( -name "*.h" -o -name "*.hpp" \) ! -path "soh/src/*" ! -path "soh/include/*" \) \) ! -path "soh/assets/*" -print0 | xargs -0 clang-format-14 -i --verbose
+find soh -type f \( -name "*.c" -o -name "*.cpp" -o \( \( -name "*.h" -o -name "*.hpp" \) ! -path "soh/src/*" ! -path "soh/include/*" \) \) ! -path "soh/assets/*" -print0 | eval "xargs -0 $CLANG_FORMAT -i --verbose"

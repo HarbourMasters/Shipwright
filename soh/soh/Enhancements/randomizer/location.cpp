@@ -64,7 +64,7 @@ bool Rando::Location::IsOverworld() const {
 }
 
 bool Rando::Location::IsShop() const {
-    return scene >= SCENE_BAZAAR && scene <= SCENE_BOMBCHU_SHOP;
+    return (scene >= SCENE_BAZAAR && scene <= SCENE_BOMBCHU_SHOP) || scene == SCENE_TEST01;
 }
 
 bool Rando::Location::IsVanillaCompletion() const {

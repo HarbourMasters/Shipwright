@@ -1,0 +1,20 @@
+:config:
+  segments:
+    - [ 128, 0x012FE550 ]
+
+gHyruleCastleTitleCardENGTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gHyruleCastleTitleCardENGTex
+  format: IA8
+  width: 144
+  height: 24
+
+gHyruleCastleTitleCardJPNTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gHyruleCastleTitleCardJPNTex
+  format: IA8
+  width: 144
+  height: 24
+

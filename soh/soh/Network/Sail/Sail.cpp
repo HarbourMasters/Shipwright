@@ -1,10 +1,11 @@
 #include "Sail.h"
-#include <libultraship/bridge.h>
-#include <libultraship/libultraship.h>
 #include <nlohmann/json.hpp>
-#include "soh/OTRGlobals.h"
-#include "soh/util.h"
+#include <ship/Context.h>
+#include <ship/window/Window.h>
+#include <ship/window/gui/ConsoleWindow.h>
+#include <spdlog/spdlog.h>
 #include "soh/ShipUtils.h"
+#include "soh/cvar_prefixes.h"
 
 template <class DstType, class SrcType> bool IsType(const SrcType* src) {
     return dynamic_cast<const DstType*>(src) != nullptr;
@@ -56,7 +57,7 @@ void Sail::OnIncomingJson(nlohmann::json payload) {
 
             std::string command = payload["command"].get<std::string>();
             std::reinterpret_pointer_cast<Ship::ConsoleWindow>(
-                Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))
+                Ship::Context::GetRawInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))
                 ->Dispatch(command);
             responsePayload["status"] = "success";
             SendJsonToRemote(responsePayload);
@@ -80,7 +81,7 @@ void Sail::OnIncomingJson(nlohmann::json payload) {
 
                 std::string command = payload["effect"]["command"].get<std::string>();
                 std::reinterpret_pointer_cast<Ship::ConsoleWindow>(
-                    Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))
+                    Ship::Context::GetRawInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))
                     ->Dispatch(command);
                 responsePayload["status"] = "success";
                 SendJsonToRemote(responsePayload);
@@ -99,12 +100,12 @@ void Sail::OnIncomingJson(nlohmann::json payload) {
                 return;
             }
 
-            GameInteractionEffectBase* giEffect = EffectFromJson(payload["effect"]);
+            auto giEffect = EffectFromJson(payload["effect"]);
             if (giEffect) {
                 GameInteractionEffectQueryResult result;
                 if (effectType == "remove") {
-                    if (IsType<RemovableGameInteractionEffect>(giEffect)) {
-                        result = dynamic_cast<RemovableGameInteractionEffect*>(giEffect)->Remove();
+                    if (IsType<RemovableGameInteractionEffect>(giEffect.get())) {
+                        result = dynamic_cast<RemovableGameInteractionEffect*>(giEffect.get())->Remove();
                     } else {
                         result = GameInteractionEffectQueryResult::NotPossible;
                     }
@@ -134,7 +135,7 @@ void Sail::OnIncomingJson(nlohmann::json payload) {
     } catch (...) { SPDLOG_ERROR("[Sail] Unknown exception handling remote JSON"); }
 }
 
-GameInteractionEffectBase* Sail::EffectFromJson(nlohmann::json payload) {
+std::unique_ptr<GameInteractionEffectBase> Sail::EffectFromJson(nlohmann::json payload) {
     if (!payload.contains("name")) {
         return nullptr;
     }
@@ -142,7 +143,7 @@ GameInteractionEffectBase* Sail::EffectFromJson(nlohmann::json payload) {
     std::string name = payload["name"].get<std::string>();
 
     if (name == "SetSceneFlag") {
-        auto effect = new GameInteractionEffect::SetSceneFlag();
+        auto effect = std::make_unique<GameInteractionEffect::SetSceneFlag>();
         if (payload.contains("parameters")) {
             effect->parameters[0] = payload["parameters"][0].get<int32_t>();
             effect->parameters[1] = payload["parameters"][1].get<int32_t>();
@@ -150,7 +151,7 @@ GameInteractionEffectBase* Sail::EffectFromJson(nlohmann::json payload) {
         }
         return effect;
     } else if (name == "UnsetSceneFlag") {
-        auto effect = new GameInteractionEffect::UnsetSceneFlag();
+        auto effect = std::make_unique<GameInteractionEffect::UnsetSceneFlag>();
         if (payload.contains("parameters")) {
             effect->parameters[0] = payload["parameters"][0].get<int32_t>();
             effect->parameters[1] = payload["parameters"][1].get<int32_t>();
@@ -158,171 +159,171 @@ GameInteractionEffectBase* Sail::EffectFromJson(nlohmann::json payload) {
         }
         return effect;
     } else if (name == "SetFlag") {
-        auto effect = new GameInteractionEffect::SetFlag();
+        auto effect = std::make_unique<GameInteractionEffect::SetFlag>();
         if (payload.contains("parameters")) {
             effect->parameters[0] = payload["parameters"][0].get<int32_t>();
             effect->parameters[1] = payload["parameters"][1].get<int32_t>();
         }
         return effect;
     } else if (name == "UnsetFlag") {
-        auto effect = new GameInteractionEffect::UnsetFlag();
+        auto effect = std::make_unique<GameInteractionEffect::UnsetFlag>();
         if (payload.contains("parameters")) {
             effect->parameters[0] = payload["parameters"][0].get<int32_t>();
             effect->parameters[1] = payload["parameters"][1].get<int32_t>();
         }
         return effect;
     } else if (name == "ModifyHeartContainers") {
-        auto effect = new GameInteractionEffect::ModifyHeartContainers();
+        auto effect = std::make_unique<GameInteractionEffect::ModifyHeartContainers>();
         if (payload.contains("parameters")) {
             effect->parameters[0] = payload["parameters"][0].get<int32_t>();
         }
         return effect;
     } else if (name == "FillMagic") {
-        return new GameInteractionEffect::FillMagic();
+        return std::make_unique<GameInteractionEffect::FillMagic>();
     } else if (name == "EmptyMagic") {
-        return new GameInteractionEffect::EmptyMagic();
+        return std::make_unique<GameInteractionEffect::EmptyMagic>();
     } else if (name == "ModifyRupees") {
-        auto effect = new GameInteractionEffect::ModifyRupees();
+        auto effect = std::make_unique<GameInteractionEffect::ModifyRupees>();
         if (payload.contains("parameters")) {
             effect->parameters[0] = payload["parameters"][0].get<int32_t>();
         }
         return effect;
     } else if (name == "NoUI") {
-        return new GameInteractionEffect::NoUI();
+        return std::make_unique<GameInteractionEffect::NoUI>();
     } else if (name == "ModifyGravity") {
-        auto effect = new GameInteractionEffect::ModifyGravity();
+        auto effect = std::make_unique<GameInteractionEffect::ModifyGravity>();
         if (payload.contains("parameters")) {
             effect->parameters[0] = payload["parameters"][0].get<int32_t>();
         }
         return effect;
     } else if (name == "ModifyHealth") {
-        auto effect = new GameInteractionEffect::ModifyHealth();
+        auto effect = std::make_unique<GameInteractionEffect::ModifyHealth>();
         if (payload.contains("parameters")) {
             effect->parameters[0] = payload["parameters"][0].get<int32_t>();
         }
         return effect;
     } else if (name == "SetPlayerHealth") {
-        auto effect = new GameInteractionEffect::SetPlayerHealth();
+        auto effect = std::make_unique<GameInteractionEffect::SetPlayerHealth>();
         if (payload.contains("parameters")) {
             effect->parameters[0] = payload["parameters"][0].get<int32_t>();
         }
         return effect;
     } else if (name == "FreezePlayer") {
-        return new GameInteractionEffect::FreezePlayer();
+        return std::make_unique<GameInteractionEffect::FreezePlayer>();
     } else if (name == "BurnPlayer") {
-        return new GameInteractionEffect::BurnPlayer();
+        return std::make_unique<GameInteractionEffect::BurnPlayer>();
     } else if (name == "ElectrocutePlayer") {
-        return new GameInteractionEffect::ElectrocutePlayer();
+        return std::make_unique<GameInteractionEffect::ElectrocutePlayer>();
     } else if (name == "KnockbackPlayer") {
-        auto effect = new GameInteractionEffect::KnockbackPlayer();
+        auto effect = std::make_unique<GameInteractionEffect::KnockbackPlayer>();
         if (payload.contains("parameters")) {
             effect->parameters[0] = payload["parameters"][0].get<int32_t>();
         }
         return effect;
     } else if (name == "ModifyLinkSize") {
-        auto effect = new GameInteractionEffect::ModifyLinkSize();
+        auto effect = std::make_unique<GameInteractionEffect::ModifyLinkSize>();
         if (payload.contains("parameters")) {
             effect->parameters[0] = payload["parameters"][0].get<int32_t>();
         }
         return effect;
     } else if (name == "InvisibleLink") {
-        return new GameInteractionEffect::InvisibleLink();
+        return std::make_unique<GameInteractionEffect::InvisibleLink>();
     } else if (name == "PacifistMode") {
-        return new GameInteractionEffect::PacifistMode();
+        return std::make_unique<GameInteractionEffect::PacifistMode>();
     } else if (name == "DisableZTargeting") {
-        return new GameInteractionEffect::DisableZTargeting();
+        return std::make_unique<GameInteractionEffect::DisableZTargeting>();
     } else if (name == "WeatherRainstorm") {
-        return new GameInteractionEffect::WeatherRainstorm();
+        return std::make_unique<GameInteractionEffect::WeatherRainstorm>();
     } else if (name == "ReverseControls") {
-        return new GameInteractionEffect::ReverseControls();
+        return std::make_unique<GameInteractionEffect::ReverseControls>();
     } else if (name == "ForceEquipBoots") {
-        auto effect = new GameInteractionEffect::ForceEquipBoots();
+        auto effect = std::make_unique<GameInteractionEffect::ForceEquipBoots>();
         if (payload.contains("parameters")) {
             effect->parameters[0] = payload["parameters"][0].get<int32_t>();
         }
         return effect;
     } else if (name == "ModifyMovementSpeedMultiplier") {
-        auto effect = new GameInteractionEffect::ModifyMovementSpeedMultiplier();
+        auto effect = std::make_unique<GameInteractionEffect::ModifyMovementSpeedMultiplier>();
         if (payload.contains("parameters")) {
             effect->parameters[0] = payload["parameters"][0].get<int32_t>();
         }
         return effect;
     } else if (name == "OneHitKO") {
-        return new GameInteractionEffect::OneHitKO();
+        return std::make_unique<GameInteractionEffect::OneHitKO>();
     } else if (name == "ModifyDefenseModifier") {
-        auto effect = new GameInteractionEffect::ModifyDefenseModifier();
+        auto effect = std::make_unique<GameInteractionEffect::ModifyDefenseModifier>();
         if (payload.contains("parameters")) {
             effect->parameters[0] = payload["parameters"][0].get<int32_t>();
         }
         return effect;
     } else if (name == "GiveOrTakeShield") {
-        auto effect = new GameInteractionEffect::GiveOrTakeShield();
+        auto effect = std::make_unique<GameInteractionEffect::GiveOrTakeShield>();
         if (payload.contains("parameters")) {
             effect->parameters[0] = payload["parameters"][0].get<int32_t>();
         }
         return effect;
     } else if (name == "TeleportPlayer") {
-        auto effect = new GameInteractionEffect::TeleportPlayer();
+        auto effect = std::make_unique<GameInteractionEffect::TeleportPlayer>();
         if (payload.contains("parameters")) {
             effect->parameters[0] = payload["parameters"][0].get<int32_t>();
         }
         return effect;
     } else if (name == "ClearAssignedButtons") {
-        auto effect = new GameInteractionEffect::ClearAssignedButtons();
+        auto effect = std::make_unique<GameInteractionEffect::ClearAssignedButtons>();
         if (payload.contains("parameters")) {
             effect->parameters[0] = payload["parameters"][0].get<int32_t>();
         }
         return effect;
     } else if (name == "SetTimeOfDay") {
-        auto effect = new GameInteractionEffect::SetTimeOfDay();
+        auto effect = std::make_unique<GameInteractionEffect::SetTimeOfDay>();
         if (payload.contains("parameters")) {
             effect->parameters[0] = payload["parameters"][0].get<int32_t>();
         }
         return effect;
     } else if (name == "SetCollisionViewer") {
-        return new GameInteractionEffect::SetCollisionViewer();
+        return std::make_unique<GameInteractionEffect::SetCollisionViewer>();
     } else if (name == "RandomizeCosmetics") {
-        return new GameInteractionEffect::RandomizeCosmetics();
+        return std::make_unique<GameInteractionEffect::RandomizeCosmetics>();
     } else if (name == "PressButton") {
-        auto effect = new GameInteractionEffect::PressButton();
+        auto effect = std::make_unique<GameInteractionEffect::PressButton>();
         if (payload.contains("parameters")) {
             effect->parameters[0] = payload["parameters"][0].get<int32_t>();
         }
         return effect;
     } else if (name == "PressRandomButton") {
-        auto effect = new GameInteractionEffect::PressRandomButton();
+        auto effect = std::make_unique<GameInteractionEffect::PressRandomButton>();
         if (payload.contains("parameters")) {
             effect->parameters[0] = payload["parameters"][0].get<int32_t>();
         }
         return effect;
     } else if (name == "AddOrTakeAmmo") {
-        auto effect = new GameInteractionEffect::AddOrTakeAmmo();
+        auto effect = std::make_unique<GameInteractionEffect::AddOrTakeAmmo>();
         if (payload.contains("parameters")) {
             effect->parameters[0] = payload["parameters"][0].get<int32_t>();
             effect->parameters[1] = payload["parameters"][1].get<int32_t>();
         }
         return effect;
     } else if (name == "RandomBombFuseTimer") {
-        return new GameInteractionEffect::RandomBombFuseTimer();
+        return std::make_unique<GameInteractionEffect::RandomBombFuseTimer>();
     } else if (name == "DisableLedgeGrabs") {
-        return new GameInteractionEffect::DisableLedgeGrabs();
+        return std::make_unique<GameInteractionEffect::DisableLedgeGrabs>();
     } else if (name == "RandomWind") {
-        return new GameInteractionEffect::RandomWind();
+        return std::make_unique<GameInteractionEffect::RandomWind>();
     } else if (name == "RandomBonks") {
-        return new GameInteractionEffect::RandomBonks();
+        return std::make_unique<GameInteractionEffect::RandomBonks>();
     } else if (name == "PlayerInvincibility") {
-        return new GameInteractionEffect::PlayerInvincibility();
+        return std::make_unique<GameInteractionEffect::PlayerInvincibility>();
     } else if (name == "SlipperyFloor") {
-        return new GameInteractionEffect::SlipperyFloor();
+        return std::make_unique<GameInteractionEffect::SlipperyFloor>();
     } else if (name == "SpawnEnemyWithOffset") {
-        auto effect = new GameInteractionEffect::SpawnEnemyWithOffset();
+        auto effect = std::make_unique<GameInteractionEffect::SpawnEnemyWithOffset>();
         if (payload.contains("parameters")) {
             effect->parameters[0] = payload["parameters"][0].get<int32_t>();
             effect->parameters[1] = payload["parameters"][1].get<int32_t>();
         }
         return effect;
     } else if (name == "SpawnActor") {
-        auto effect = new GameInteractionEffect::SpawnActor();
+        auto effect = std::make_unique<GameInteractionEffect::SpawnActor>();
         if (payload.contains("parameters")) {
             effect->parameters[0] = payload["parameters"][0].get<int32_t>();
             effect->parameters[1] = payload["parameters"][1].get<int32_t>();
@@ -336,7 +337,7 @@ GameInteractionEffectBase* Sail::EffectFromJson(nlohmann::json payload) {
 
 void Sail::RegisterHooks() {
     COND_HOOK(OnTransitionEnd, isConnected, [&](int32_t sceneNum) {
-        if (!isConnected || !GameInteractor::IsSaveLoaded())
+        if (!GameInteractor::IsSaveLoaded())
             return;
 
         nlohmann::json payload;
@@ -349,9 +350,6 @@ void Sail::RegisterHooks() {
     });
 
     COND_HOOK(OnLoadGame, isConnected, [&](int32_t fileNum) {
-        if (!isConnected || !GameInteractor::IsSaveLoaded())
-            return;
-
         nlohmann::json payload;
         payload["id"] = ShipUtils::Random(0, UINT32_MAX);
         payload["type"] = "hook";
@@ -362,9 +360,6 @@ void Sail::RegisterHooks() {
     });
 
     COND_HOOK(OnExitGame, isConnected, [&](int32_t fileNum) {
-        if (!isConnected || !GameInteractor::IsSaveLoaded())
-            return;
-
         nlohmann::json payload;
         payload["id"] = ShipUtils::Random(0, UINT32_MAX);
         payload["type"] = "hook";
@@ -375,7 +370,7 @@ void Sail::RegisterHooks() {
     });
 
     COND_HOOK(OnItemReceive, isConnected, [&](GetItemEntry itemEntry) {
-        if (!isConnected || !GameInteractor::IsSaveLoaded())
+        if (!GameInteractor::IsSaveLoaded())
             return;
         nlohmann::json payload;
         payload["id"] = ShipUtils::Random(0, UINT32_MAX);
@@ -388,7 +383,7 @@ void Sail::RegisterHooks() {
     });
 
     COND_HOOK(OnEnemyDefeat, isConnected, [&](void* refActor) {
-        if (!isConnected || !GameInteractor::IsSaveLoaded())
+        if (!GameInteractor::IsSaveLoaded())
             return;
 
         Actor* actor = (Actor*)refActor;
@@ -403,7 +398,7 @@ void Sail::RegisterHooks() {
     });
 
     COND_HOOK(OnActorInit, isConnected, [&](void* refActor) {
-        if (!isConnected || !GameInteractor::IsSaveLoaded())
+        if (!GameInteractor::IsSaveLoaded())
             return;
 
         Actor* actor = (Actor*)refActor;
@@ -418,7 +413,7 @@ void Sail::RegisterHooks() {
     });
 
     COND_HOOK(OnFlagSet, isConnected, [&](int16_t flagType, int16_t flag) {
-        if (!isConnected || !GameInteractor::IsSaveLoaded())
+        if (!GameInteractor::IsSaveLoaded())
             return;
         nlohmann::json payload;
         payload["id"] = ShipUtils::Random(0, UINT32_MAX);
@@ -431,7 +426,7 @@ void Sail::RegisterHooks() {
     });
 
     COND_HOOK(OnFlagUnset, isConnected, [&](int16_t flagType, int16_t flag) {
-        if (!isConnected || !GameInteractor::IsSaveLoaded())
+        if (!GameInteractor::IsSaveLoaded())
             return;
         nlohmann::json payload;
         payload["id"] = ShipUtils::Random(0, UINT32_MAX);
@@ -444,7 +439,7 @@ void Sail::RegisterHooks() {
     });
 
     COND_HOOK(OnSceneFlagSet, isConnected, [&](int16_t sceneNum, int16_t flagType, int16_t flag) {
-        if (!isConnected || !GameInteractor::IsSaveLoaded())
+        if (!GameInteractor::IsSaveLoaded())
             return;
         nlohmann::json payload;
         payload["id"] = ShipUtils::Random(0, UINT32_MAX);
@@ -458,7 +453,7 @@ void Sail::RegisterHooks() {
     });
 
     COND_HOOK(OnSceneFlagUnset, isConnected, [&](int16_t sceneNum, int16_t flagType, int16_t flag) {
-        if (!isConnected || !GameInteractor::IsSaveLoaded())
+        if (!GameInteractor::IsSaveLoaded())
             return;
         nlohmann::json payload;
         payload["id"] = ShipUtils::Random(0, UINT32_MAX);

@@ -1,0 +1,43 @@
+:config:
+  segments:
+    - [ 6, 0x00F953E0 ]
+    - [ 4, 0x00D30F00 ]
+    - [ 8, 0x00F953E0 ]
+    - [ 9, 0x00F953E0 ]
+    - [ 10, 0x00F953E0 ]
+    - [ 11, 0x00F953E0 ]
+    - [ 12, 0x00F953E0 ]
+    - [ 13, 0x00F953E0 ]
+  external_files:
+    - ntsc_u_gc/objects/gameplay_keep.yml
+
+gCreationFireBallDL:
+  type: GFX
+  offset: 0x0040
+  symbol: gCreationFireBallDL
+
+gCreationFireBallFlameEffectTex:
+  type: TEXTURE
+  offset: 0x0500
+  symbol: gCreationFireBallFlameEffectTex
+  format: I8
+  width: 32
+  height: 64
+
+gCreationFireBallMaskTex:
+  type: TEXTURE
+  offset: 0x0100
+  symbol: gCreationFireBallMaskTex
+  format: I8
+  width: 32
+  height: 32
+
+
+object_efc_fire_ballVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_efc_fire_ballVtx_000000
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

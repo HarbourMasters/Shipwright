@@ -1,8 +1,10 @@
-#include <libultraship/bridge.h>
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ShipInit.hpp"
 
-extern "C" PlayState* gPlayState;
+extern "C" {
+extern PlayState* gPlayState;
+#include "z64.h"
+}
 
 #define CVAR_UNRESTRICTED_ITEMS_NAME CVAR_CHEAT("NoRestrictItems")
 #define CVAR_UNRESTRICTED_ITEMS_DEFAULT 0
@@ -21,12 +23,6 @@ void OnGameFrameUpdateUnrestrictedItems() {
 
 void RegisterUnrestrictedItems() {
     COND_HOOK(OnGameFrameUpdate, CVAR_UNRESTRICTED_ITEMS_VALUE, OnGameFrameUpdateUnrestrictedItems);
-    COND_VB_SHOULD(VB_SHOULD_LOAD_BG_IMAGE, CVAR_UNRESTRICTED_ITEMS_VALUE, {
-        int32_t* camId = va_arg(args, int*);
-        if (*camId == -1) {
-            *should = false;
-        }
-    });
 }
 
 static RegisterShipInitFunc initFunc(RegisterUnrestrictedItems, { CVAR_UNRESTRICTED_ITEMS_NAME });

@@ -1,0 +1,14 @@
+:config:
+  segments:
+    - [ 2, 0x01D92C70 ]
+
+labo_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: labo_scene
+
+
+labo_sceneCollisionHeader_000EC4:
+  type: OOT:COLLISION
+  offset: 0x000EC4
+  symbol: labo_sceneCollisionHeader_000EC4

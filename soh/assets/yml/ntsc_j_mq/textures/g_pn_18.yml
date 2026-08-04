@@ -1,0 +1,20 @@
+:config:
+  segments:
+    - [ 128, 0x012F1ED0 ]
+
+gBackAlleyTitleCardENGTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gBackAlleyTitleCardENGTex
+  format: IA8
+  width: 144
+  height: 24
+
+gBackAlleyTitleCardJPNTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gBackAlleyTitleCardJPNTex
+  format: IA8
+  width: 144
+  height: 24
+

@@ -1,8 +1,8 @@
 #include "soh/resource/importer/SkeletonLimbFactory.h"
 #include "soh/resource/type/SkeletonLimb.h"
-#include "spdlog/spdlog.h"
+#include <ship/Context.h>
+#include <ship/resource/ResourceManager.h>
 #include <tinyxml2.h>
-#include "libultraship/libultraship.h"
 
 namespace SOH {
 std::shared_ptr<Ship::IResource>
@@ -172,12 +172,12 @@ ResourceFactoryBinarySkeletonLimbV0::ReadResource(std::shared_ptr<Ship::File> fi
 
             for (size_t i = 0; i < skeletonLimb->skinLimbModifArray.size(); i++) {
                 skeletonLimb->skinAnimLimbData.limbModifications[i].vtxCount =
-                    skeletonLimb->skinLimbModifVertexArrays[i].size();
+                    static_cast<u16>(skeletonLimb->skinLimbModifVertexArrays[i].size());
                 skeletonLimb->skinAnimLimbData.limbModifications[i].skinVertices =
                     skeletonLimb->skinLimbModifVertexArrays[i].data();
 
                 skeletonLimb->skinAnimLimbData.limbModifications[i].transformCount =
-                    skeletonLimb->skinLimbModifTransformationArrays[i].size();
+                    static_cast<u16>(skeletonLimb->skinLimbModifTransformationArrays[i].size());
                 skeletonLimb->skinAnimLimbData.limbModifications[i].limbTransformations =
                     skeletonLimb->skinLimbModifTransformationArrays[i].data();
 

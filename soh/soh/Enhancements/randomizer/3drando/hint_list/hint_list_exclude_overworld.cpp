@@ -1557,7 +1557,7 @@ void StaticData::HintTable_Init_Exclude_Overworld() {
                                                   /*french*/ "Selon moi, une #jarre dans le Village de Cocorico# contient #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_POT_DAMPE] = HintText(CustomMessage("They say that a #pot in gravekeeper's tomb# contains #[[1]]#.",
-                                                         //TODO_TRANSLATE check these to make sure they refernce dampe's tomb not the graveyard area
+                                                         //TODO_TRANSLATE check these to make sure they reference dampe's tomb not the graveyard area
                                                    /*german*/ "Man erzählt sich, daß ein #Krug auf dem Friedhof# #[[1]]# enthielte.",
                                                    /*french*/ "Selon moi, une #jarre dans le Cimetière# contient #[[1]]#.", {QM_RED, QM_GREEN}));
 
@@ -2249,7 +2249,7 @@ void StaticData::HintTable_Init_Exclude_Overworld() {
                                /*french*/ "Selon moi, un #arbre au Ranch Lon Lon# cache #[[1]]#.", { QM_RED, QM_GREEN }));
 
     hintTextTable[RHT_BUSH_HYRULE_FIELD] =
-        HintText(CustomMessage("They say that a #bush in Hyrle Field# contains #[[1]]#.",
+        HintText(CustomMessage("They say that a #bush in Hyrule Field# contains #[[1]]#.",
                                /*german*/ TODO_TRANSLATE,
                                /*french*/ "Selon moi, un #buisson dans la Plaine d'Hyrule# cache #[[1]]#.", { QM_RED, QM_GREEN }));
     hintTextTable[RHT_BUSH_ZORAS_FOUNTAIN] =
@@ -2264,6 +2264,10 @@ void StaticData::HintTable_Init_Exclude_Overworld() {
     hintTextTable[RHT_BUTTERFLY_FAIRY_LOST_WOODS] = HintText(CustomMessage("They say that a #butterfly in the woods# reveals #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß ein #Schmetterling im Wald# #[[1]]# enthülle.",
                                             /*french*/ "Selon moi, #un papillon dans les bois# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
+
+    hintTextTable[RHT_BUTTERFLY_FAIRY_KAKARIKO_VILLAGE] = HintText(CustomMessage("They say that a #butterfly on a watchtower# reveals #[[1]]#.",
+                                            /*german*/ "Man erzählt sich, daß ein #Schmetterling auf einem Wachturm# #[[1]]# enthülle.",
+                                            /*french*/ "Selon moi, #un papillon sur une tour de guet# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
 
     hintTextTable[RHT_BUTTERFLY_FAIRY_GRAVEYARD] = HintText(CustomMessage("They say that a #butterfly in the graveyard# reveals #[[1]]#.",
                                             /*german*/ "Man erzählt sich, daß ein #Schmetterling auf dem Friedhof# #[[1]]# enthülle.",

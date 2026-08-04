@@ -5,7 +5,7 @@
 #include <vector>
 #include <stdint.h>
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
-#include <libultraship/libultraship.h>
+#include <ship/window/gui/GuiWindow.h>
 
 typedef enum {
     EVENT_CHECK_INF,

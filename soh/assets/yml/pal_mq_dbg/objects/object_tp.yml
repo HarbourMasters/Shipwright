@@ -1,0 +1,100 @@
+:config:
+  segments:
+    - [ 6, 0x0114A000 ]
+    - [ 4, 0x00F5E000 ]
+    - [ 8, 0x0114A000 ]
+    - [ 9, 0x0114A000 ]
+    - [ 10, 0x0114A000 ]
+    - [ 11, 0x0114A000 ]
+    - [ 12, 0x0114A000 ]
+    - [ 13, 0x0114A000 ]
+  external_files:
+    - pal_mq_dbg/objects/gameplay_keep.yml
+
+gTailpasaranHeadClawBaseTex:
+  type: TEXTURE
+  offset: 0x09E8
+  symbol: gTailpasaranHeadClawBaseTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gTailpasaranHeadClawDL:
+  type: GFX
+  offset: 0x0690
+  symbol: gTailpasaranHeadClawDL
+
+gTailpasaranHeadClawTex:
+  type: TEXTURE
+  offset: 0x0A68
+  symbol: gTailpasaranHeadClawTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gTailpasaranHeadDL:
+  type: GFX
+  offset: 0x08D0
+  symbol: gTailpasaranHeadDL
+
+gTailpasaranHeadMouthpartsDL:
+  type: GFX
+  offset: 0x0840
+  symbol: gTailpasaranHeadMouthpartsDL
+
+gTailpasaranHeadMouthpartsTex:
+  type: TEXTURE
+  offset: 0x1C68
+  symbol: gTailpasaranHeadMouthpartsTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gTailpasaranHeadRearTex:
+  type: TEXTURE
+  offset: 0x08E8
+  symbol: gTailpasaranHeadRearTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gTailpasaranTailSegmentDL:
+  type: GFX
+  offset: 0x0000
+  symbol: gTailpasaranTailSegmentDL
+
+gTailpasaranTailSegmentTex:
+  type: TEXTURE
+  offset: 0x0C68
+  symbol: gTailpasaranTailSegmentTex
+  format: IA8
+  width: 64
+  height: 64
+
+
+object_tpVtx_000070:
+  type: OOT:ARRAY
+  offset: 0x000070
+  symbol: object_tpVtx_000070
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tpVtx_0000B0:
+  type: OOT:ARRAY
+  offset: 0x0000B0
+  symbol: object_tpVtx_0000B0
+  count: 70
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tpVtx_000510:
+  type: OOT:ARRAY
+  offset: 0x000510
+  symbol: object_tpVtx_000510
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

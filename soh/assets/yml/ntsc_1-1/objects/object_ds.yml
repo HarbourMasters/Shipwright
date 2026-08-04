@@ -1,0 +1,224 @@
+:config:
+  segments:
+    - [ 6, 0x0116A1B0 ]
+    - [ 4, 0x00D3A8E0 ]
+    - [ 8, 0x0116A1B0 ]
+    - [ 9, 0x0116A1B0 ]
+    - [ 10, 0x0116A1B0 ]
+    - [ 11, 0x0116A1B0 ]
+    - [ 12, 0x0116A1B0 ]
+    - [ 13, 0x0116A1B0 ]
+  external_files:
+    - ntsc_1-1/objects/gameplay_keep.yml
+
+gPotionShopLadyAnim:
+  type: OOT:ANIMATION
+  offset: 0x39C
+  symbol: gPotionShopLadyAnim
+
+gPotionShopLadyArmDL:
+  type: GFX
+  offset: 0x3440
+  symbol: gPotionShopLadyArmDL
+
+gPotionShopLadyArmGradientTex:
+  type: TEXTURE
+  offset: 0x40D8
+  symbol: gPotionShopLadyArmGradientTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x3918
+
+gPotionShopLadyArmLimb:
+  type: OOT:LIMB
+  offset: 0x473C
+  symbol: gPotionShopLadyArmLimb
+  limb_type: Standard
+
+gPotionShopLadyCatDL:
+  type: GFX
+  offset: 0x36C0
+  symbol: gPotionShopLadyCatDL
+
+gPotionShopLadyCatLimb:
+  type: OOT:LIMB
+  offset: 0x4724
+  symbol: gPotionShopLadyCatLimb
+  limb_type: Standard
+
+gPotionShopLadyCatPattern1Tex:
+  type: TEXTURE
+  offset: 0x4218
+  symbol: gPotionShopLadyCatPattern1Tex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x3918
+
+gPotionShopLadyCatPattern2Tex:
+  type: TEXTURE
+  offset: 0x4618
+  symbol: gPotionShopLadyCatPattern2Tex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x3918
+
+gPotionShopLadyEar1Tex:
+  type: TEXTURE
+  offset: 0x3C58
+  symbol: gPotionShopLadyEar1Tex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x3918
+
+gPotionShopLadyEar2Tex:
+  type: TEXTURE
+  offset: 0x3FD8
+  symbol: gPotionShopLadyEar2Tex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x3918
+
+gPotionShopLadyEyeTex:
+  type: TEXTURE
+  offset: 0x3F58
+  symbol: gPotionShopLadyEyeTex
+  format: CI8
+  width: 16
+  height: 8
+  tlut: 0x3918
+
+gPotionShopLadyEyelashBottomTex:
+  type: TEXTURE
+  offset: 0x3B58
+  symbol: gPotionShopLadyEyelashBottomTex
+  format: CI8
+  width: 16
+  height: 8
+  tlut: 0x3918
+
+gPotionShopLadyEyelashTopTex:
+  type: TEXTURE
+  offset: 0x3BD8
+  symbol: gPotionShopLadyEyelashTopTex
+  format: CI8
+  width: 16
+  height: 8
+  tlut: 0x3918
+
+gPotionShopLadyHairTex:
+  type: TEXTURE
+  offset: 0x3D58
+  symbol: gPotionShopLadyHairTex
+  format: CI8
+  width: 16
+  height: 32
+  tlut: 0x3918
+
+gPotionShopLadyHeadDL:
+  type: GFX
+  offset: 0x2C00
+  symbol: gPotionShopLadyHeadDL
+
+gPotionShopLadyHeadLimb:
+  type: OOT:LIMB
+  offset: 0x4748
+  symbol: gPotionShopLadyHeadLimb
+  limb_type: Standard
+
+gPotionShopLadyRootLimb:
+  type: OOT:LIMB
+  offset: 0x4718
+  symbol: gPotionShopLadyRootLimb
+  limb_type: Standard
+
+gPotionShopLadyShirtPatternTex:
+  type: TEXTURE
+  offset: 0x4118
+  symbol: gPotionShopLadyShirtPatternTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x3918
+
+gPotionShopLadySkel:
+  type: OOT:SKELETON
+  offset: 0x4768
+  symbol: gPotionShopLadySkel
+  limb_type: Standard
+  skel_type: Flex
+
+gPotionShopLadySkinGradientTex:
+  type: TEXTURE
+  offset: 0x3B18
+  symbol: gPotionShopLadySkinGradientTex
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x3918
+
+gPotionShopLadyTLUT:
+  type: TEXTURE
+  offset: 0x3918
+  symbol: gPotionShopLadyTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gPotionShopLadyTorsoDL:
+  type: GFX
+  offset: 0x2A40
+  symbol: gPotionShopLadyTorsoDL
+
+gPotionShopLadyTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x4730
+  symbol: gPotionShopLadyTorsoLimb
+  limb_type: Standard
+
+
+object_dsVtx_0003B0:
+  type: OOT:ARRAY
+  offset: 0x0003B0
+  symbol: object_dsVtx_0003B0
+  count: 315
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dsVtx_001760:
+  type: OOT:ARRAY
+  offset: 0x001760
+  symbol: object_dsVtx_001760
+  count: 141
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dsVtx_002030:
+  type: OOT:ARRAY
+  offset: 0x002030
+  symbol: object_dsVtx_002030
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dsVtx_0022B0:
+  type: OOT:ARRAY
+  offset: 0x0022B0
+  symbol: object_dsVtx_0022B0
+  count: 121
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gPotionShopLadySkelLimbs:
+  type: BLOB
+  offset: 0x4754
+  symbol: gPotionShopLadySkelLimbs
+  size: 0

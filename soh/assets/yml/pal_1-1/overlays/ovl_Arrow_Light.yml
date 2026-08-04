@@ -1,0 +1,47 @@
+:config:
+  segments:
+    - [ 128, 0x00C78470 ]
+    - [ 4, 0x00D30660 ]
+    - [ 8, 0x00C78470 ]
+    - [ 9, 0x00C78470 ]
+    - [ 10, 0x00C78470 ]
+    - [ 11, 0x00C78470 ]
+    - [ 12, 0x00C78470 ]
+    - [ 13, 0x00C78470 ]
+  virtual: [ 0x80A635E0, 0x00C78470 ]
+  external_files:
+    - pal_1-1/objects/gameplay_keep.yml
+
+s1Tex:
+  type: TEXTURE
+  offset: 0x990
+  symbol: s1Tex
+  format: I8
+  width: 32
+  height: 64
+
+s2Tex:
+  type: TEXTURE
+  offset: 0x1190
+  symbol: s2Tex
+  format: I8
+  width: 32
+  height: 64
+
+sMaterialDL:
+  type: GFX
+  offset: 0x1C40
+  symbol: sMaterialDL
+
+sModelDL:
+  type: GFX
+  offset: 0x1CF0
+  symbol: sModelDL
+
+sVtx:
+  type: OOT:ARRAY
+  offset: 0x1990
+  symbol: sVtx
+  count: 43
+  array_type: VTX
+

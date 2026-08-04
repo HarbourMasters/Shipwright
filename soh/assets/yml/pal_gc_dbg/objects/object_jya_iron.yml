@@ -1,0 +1,109 @@
+:config:
+  segments:
+    - [ 6, 0x01911000 ]
+    - [ 4, 0x00F5E000 ]
+    - [ 8, 0x01911000 ]
+    - [ 9, 0x01911000 ]
+    - [ 10, 0x01911000 ]
+    - [ 11, 0x01911000 ]
+    - [ 12, 0x01911000 ]
+    - [ 13, 0x01911000 ]
+  external_files:
+    - pal_gc_dbg/objects/gameplay_keep.yml
+
+gObjectJyaIronDL_000600:
+  type: GFX
+  offset: 0x0600
+  symbol: gObjectJyaIronDL_000600
+
+gObjectJyaIronDL_000880:
+  type: GFX
+  offset: 0x0880
+  symbol: gObjectJyaIronDL_000880
+
+gObjectJyaIronDL_000AE0:
+  type: GFX
+  offset: 0x0AE0
+  symbol: gObjectJyaIronDL_000AE0
+
+gPillarCol:
+  type: OOT:COLLISION
+  offset: 0x0D48
+  symbol: gPillarCol
+
+gPillarDL:
+  type: GFX
+  offset: 0x0240
+  symbol: gPillarDL
+
+gPillarSideTex:
+  type: TEXTURE
+  offset: 0x1460
+  symbol: gPillarSideTex
+  format: RGBA16
+  width: 16
+  height: 128
+
+gPillarTopTex:
+  type: TEXTURE
+  offset: 0x2460
+  symbol: gPillarTopTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gThroneCol:
+  type: OOT:COLLISION
+  offset: 0x1430
+  symbol: gThroneCol
+
+gThroneDL:
+  type: GFX
+  offset: 0x1050
+  symbol: gThroneDL
+
+
+object_jya_ironVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_jya_ironVtx_000000
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jya_ironVtx_000360:
+  type: OOT:ARRAY
+  offset: 0x000360
+  symbol: object_jya_ironVtx_000360
+  count: 42
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jya_ironVtx_000700:
+  type: OOT:ARRAY
+  offset: 0x000700
+  symbol: object_jya_ironVtx_000700
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jya_ironVtx_000940:
+  type: OOT:ARRAY
+  offset: 0x000940
+  symbol: object_jya_ironVtx_000940
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_jya_ironVtx_000D80:
+  type: OOT:ARRAY
+  offset: 0x000D80
+  symbol: object_jya_ironVtx_000D80
+  count: 45
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

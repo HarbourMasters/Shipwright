@@ -81,7 +81,7 @@ void func_80899880(BgJyaKanaami* this) {
 void func_80899894(BgJyaKanaami* this, PlayState* play) {
     if (Flags_GetSwitch(play, this->dyna.actor.params & 0x3F) || this->unk_16A > 0) {
         if (this->dyna.actor.world.pos.x > -1000.0f && this->unk_16A == 0) {
-            OnePointCutscene_Init(play, 3450, -99, &this->dyna.actor, MAIN_CAM);
+            OnePointCutscene_Init(play, 3450, -99, &this->dyna.actor, CAM_ID_MAIN);
         }
         this->unk_16A += 1;
         if (this->unk_16A >= 0xA) {

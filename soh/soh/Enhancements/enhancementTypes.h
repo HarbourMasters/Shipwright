@@ -119,6 +119,12 @@ typedef enum {
 } SleepingWaterfallType;
 
 typedef enum {
+    INGO_RACE_TWICE,
+    INGO_RACE_ONCE,
+    INGO_RACE_NONE,
+} IngoRaceType;
+
+typedef enum {
     RANDOMIZE_OFF,
     RANDOMIZE_ON_NEW_SCENE,
     RANDOMIZE_ON_RANDO_GEN_ONLY,

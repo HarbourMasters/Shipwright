@@ -126,7 +126,7 @@ void func_80889C18(BgHidanKousi* this, PlayState* play) {
         BgHidanKousi_SetupAction(this, func_80889C90);
     }
     Actor_MoveXZGravity(&this->dyna.actor);
-    func_8002F974(&this->dyna.actor, NA_SE_EV_METALDOOR_SLIDE - SFX_FLAG);
+    Actor_PlaySfx_Flagged(&this->dyna.actor, NA_SE_EV_METALDOOR_SLIDE - SFX_FLAG);
 }
 
 void func_80889C90(BgHidanKousi* this, PlayState* play) {
@@ -137,7 +137,7 @@ void func_80889C90(BgHidanKousi* this, PlayState* play) {
         BgHidanKousi_SetupAction(this, func_80889D28);
         Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_METALDOOR_STOP);
     } else {
-        func_8002F974(&this->dyna.actor, NA_SE_EV_METALDOOR_SLIDE - SFX_FLAG);
+        Actor_PlaySfx_Flagged(&this->dyna.actor, NA_SE_EV_METALDOOR_SLIDE - SFX_FLAG);
     }
 }
 

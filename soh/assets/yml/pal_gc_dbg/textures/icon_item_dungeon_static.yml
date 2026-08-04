@@ -1,0 +1,156 @@
+:config:
+  segments:
+    - [ 12, 0x007EE000 ]
+
+gDungeonMap1FButtonTex:
+  type: TEXTURE
+  offset: 0x180
+  symbol: gDungeonMap1FButtonTex
+  format: IA8
+  width: 24
+  height: 16
+
+gDungeonMap2FButtonTex:
+  type: TEXTURE
+  offset: 0x300
+  symbol: gDungeonMap2FButtonTex
+  format: IA8
+  width: 24
+  height: 16
+
+gDungeonMap3FButtonTex:
+  type: TEXTURE
+  offset: 0x480
+  symbol: gDungeonMap3FButtonTex
+  format: IA8
+  width: 24
+  height: 16
+
+gDungeonMap4FButtonTex:
+  type: TEXTURE
+  offset: 0x600
+  symbol: gDungeonMap4FButtonTex
+  format: IA8
+  width: 24
+  height: 16
+
+gDungeonMap5FButtonTex:
+  type: TEXTURE
+  offset: 0x780
+  symbol: gDungeonMap5FButtonTex
+  format: IA8
+  width: 24
+  height: 16
+
+gDungeonMap6FButtonTex:
+  type: TEXTURE
+  offset: 0x900
+  symbol: gDungeonMap6FButtonTex
+  format: IA8
+  width: 24
+  height: 16
+
+gDungeonMap7FButtonTex:
+  type: TEXTURE
+  offset: 0xA80
+  symbol: gDungeonMap7FButtonTex
+  format: IA8
+  width: 24
+  height: 16
+
+gDungeonMap8FButtonTex:
+  type: TEXTURE
+  offset: 0xC00
+  symbol: gDungeonMap8FButtonTex
+  format: IA8
+  width: 24
+  height: 16
+
+gDungeonMapB1ButtonTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gDungeonMapB1ButtonTex
+  format: IA8
+  width: 24
+  height: 16
+
+gDungeonMapB2ButtonTex:
+  type: TEXTURE
+  offset: 0xF00
+  symbol: gDungeonMapB2ButtonTex
+  format: IA8
+  width: 24
+  height: 16
+
+gDungeonMapB3ButtonTex:
+  type: TEXTURE
+  offset: 0x1080
+  symbol: gDungeonMapB3ButtonTex
+  format: IA8
+  width: 24
+  height: 16
+
+gDungeonMapB4ButtonTex:
+  type: TEXTURE
+  offset: 0x1200
+  symbol: gDungeonMapB4ButtonTex
+  format: IA8
+  width: 24
+  height: 16
+
+gDungeonMapB5ButtonTex:
+  type: TEXTURE
+  offset: 0x1380
+  symbol: gDungeonMapB5ButtonTex
+  format: IA8
+  width: 24
+  height: 16
+
+gDungeonMapB6ButtonTex:
+  type: TEXTURE
+  offset: 0x1500
+  symbol: gDungeonMapB6ButtonTex
+  format: IA8
+  width: 24
+  height: 16
+
+gDungeonMapB7ButtonTex:
+  type: TEXTURE
+  offset: 0x1680
+  symbol: gDungeonMapB7ButtonTex
+  format: IA8
+  width: 24
+  height: 16
+
+gDungeonMapB8ButtonTex:
+  type: TEXTURE
+  offset: 0x1800
+  symbol: gDungeonMapB8ButtonTex
+  format: IA8
+  width: 24
+  height: 16
+
+gDungeonMapBlankFloorButtonTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gDungeonMapBlankFloorButtonTex
+  format: IA8
+  width: 24
+  height: 16
+
+gDungeonMapLinkHeadTex:
+  type: TEXTURE
+  offset: 0x1980
+  symbol: gDungeonMapLinkHeadTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gDungeonMapSkullTex:
+  type: TEXTURE
+  offset: 0x1B80
+  symbol: gDungeonMapSkullTex
+  format: RGBA16
+  width: 16
+  height: 16
+

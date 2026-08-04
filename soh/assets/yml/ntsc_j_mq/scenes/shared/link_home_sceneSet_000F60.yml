@@ -1,0 +1,12 @@
+:config:
+  segments:
+    - [ 2, 0x01C55F20 ]
+  directory: scenes/shared/link_home_scene
+  external_files:
+    - ntsc_j_mq/scenes/shared/link_home_scene.yml
+
+link_home_sceneSet_000F60:
+  type: OOT:SCENE
+  offset: 0xF60
+  symbol: link_home_sceneSet_000F60
+  base_name: link_home_scene

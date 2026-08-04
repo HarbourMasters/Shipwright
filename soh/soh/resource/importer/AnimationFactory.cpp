@@ -87,17 +87,17 @@ ResourceFactoryBinaryAnimationV0::ReadResource(std::shared_ptr<Ship::File> file,
         // Read the segment pointer (always 32 bit, doesn't adjust for system pointer size)
         std::string path = reader->ReadString();
         auto animData = std::static_pointer_cast<Animation>(
-            Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(path.c_str()));
+            Ship::Context::GetRawInstance()->GetResourceManager()->LoadResourceProcess(path.c_str()));
 
         // If direct load failed and alt assets are enabled, try with alt/ prefix
-        if (animData == nullptr && Ship::Context::GetInstance()->GetResourceManager()->IsAltAssetsEnabled()) {
+        if (animData == nullptr && Ship::Context::GetRawInstance()->GetResourceManager()->IsAltAssetsEnabled()) {
             std::string altPath = path;
             if (altPath.find("__OTR__") == 0) {
                 altPath = altPath.substr(7); // Strip __OTR__
             }
             altPath = "alt/" + altPath;
             animData = std::static_pointer_cast<Animation>(
-                Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(altPath.c_str()));
+                Ship::Context::GetRawInstance()->GetResourceManager()->LoadResourceProcess(altPath.c_str()));
         }
 
         if (animData != nullptr) {

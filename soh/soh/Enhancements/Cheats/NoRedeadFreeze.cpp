@@ -1,10 +1,6 @@
-#include <libultraship/bridge.h>
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ShipInit.hpp"
-
-extern "C" {
-#include "macros.h"
-}
+#include "soh/cvar_prefixes.h"
 
 static constexpr int32_t CVAR_NOREDEADFREEZE_DEFAULT = 0;
 #define CVAR_NOREDEADFREEZE_NAME CVAR_CHEAT("NoRedeadFreeze")

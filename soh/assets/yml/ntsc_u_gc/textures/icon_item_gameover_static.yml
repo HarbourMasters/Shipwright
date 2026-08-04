@@ -1,0 +1,52 @@
+:config:
+  segments:
+    - [ 12, 0x008568E0 ]
+
+gContinuePlayingENGTex:
+  type: TEXTURE
+  offset: 0x2980
+  symbol: gContinuePlayingENGTex
+  format: IA8
+  width: 152
+  height: 16
+
+gContinuePlayingJPNTex:
+  type: TEXTURE
+  offset: 0x2000
+  symbol: gContinuePlayingJPNTex
+  format: IA8
+  width: 152
+  height: 16
+
+gGameOverMaskTex:
+  type: TEXTURE
+  offset: 0x1800
+  symbol: gGameOverMaskTex
+  format: IA8
+  width: 64
+  height: 32
+
+gGameOverP1Tex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gGameOverP1Tex
+  format: IA8
+  width: 64
+  height: 32
+
+gGameOverP2Tex:
+  type: TEXTURE
+  offset: 0x800
+  symbol: gGameOverP2Tex
+  format: IA8
+  width: 64
+  height: 32
+
+gGameOverP3Tex:
+  type: TEXTURE
+  offset: 0x1000
+  symbol: gGameOverP3Tex
+  format: IA8
+  width: 64
+  height: 32
+

@@ -1,0 +1,123 @@
+:config:
+  segments:
+    - [ 2, 0x017214F0 ]
+
+  external_files:
+    - ntsc_1-2/scenes/shared/spot02_sceneSet_0061D0.yml
+    - ntsc_1-2/scenes/shared/spot02_sceneSet_006550.yml
+    - ntsc_1-2/scenes/shared/spot02_sceneSet_0068D0.yml
+    - ntsc_1-2/scenes/shared/spot02_sceneSet_006C10.yml
+    - ntsc_1-2/scenes/shared/spot02_sceneSet_006EC0.yml
+spot02_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: spot02_scene
+
+gGraveyardIntroCs:
+  type: OOT:CUTSCENE
+  offset: 0x70C0
+  symbol: gGraveyardIntroCs
+
+spot02_sceneTex_007280:
+  type: TEXTURE
+  offset: 0x7280
+  symbol: spot02_sceneTex_007280
+  format: RGBA16
+  width: 32
+  height: 32
+
+spot02_sceneTex_007A80:
+  type: TEXTURE
+  offset: 0x7A80
+  symbol: spot02_sceneTex_007A80
+  format: RGBA16
+  width: 32
+  height: 16
+
+spot02_sceneTex_007E80:
+  type: TEXTURE
+  offset: 0x7E80
+  symbol: spot02_sceneTex_007E80
+  format: RGBA16
+  width: 32
+  height: 32
+
+spot02_sceneTex_008680:
+  type: TEXTURE
+  offset: 0x8680
+  symbol: spot02_sceneTex_008680
+  format: RGBA16
+  width: 16
+  height: 64
+
+spot02_sceneTex_008E80:
+  type: TEXTURE
+  offset: 0x8E80
+  symbol: spot02_sceneTex_008E80
+  format: I8
+  width: 64
+  height: 64
+
+spot02_sceneTex_009E80:
+  type: TEXTURE
+  offset: 0x9E80
+  symbol: spot02_sceneTex_009E80
+  format: IA4
+  width: 32
+  height: 64
+
+spot02_sceneTex_00A280:
+  type: TEXTURE
+  offset: 0xA280
+  symbol: spot02_sceneTex_00A280
+  format: RGBA16
+  width: 32
+  height: 32
+
+spot02_sceneTex_00AA80:
+  type: TEXTURE
+  offset: 0xAA80
+  symbol: spot02_sceneTex_00AA80
+  format: RGBA16
+  width: 32
+  height: 16
+
+spot02_sceneTex_00AE80:
+  type: TEXTURE
+  offset: 0xAE80
+  symbol: spot02_sceneTex_00AE80
+  format: I4
+  width: 32
+  height: 32
+
+spot02_sceneTex_00B080:
+  type: TEXTURE
+  offset: 0xB080
+  symbol: spot02_sceneTex_00B080
+  format: RGBA16
+  width: 32
+  height: 32
+
+spot02_sceneTex_00B880:
+  type: TEXTURE
+  offset: 0xB880
+  symbol: spot02_sceneTex_00B880
+  format: RGBA16
+  width: 16
+  height: 32
+
+spot02_scene_Cs_003C80:
+  type: OOT:CUTSCENE
+  offset: 0x3C80
+  symbol: spot02_scene_Cs_003C80
+
+spot02_scene_Cs_005020:
+  type: OOT:CUTSCENE
+  offset: 0x5020
+  symbol: spot02_scene_Cs_005020
+
+
+spot02_sceneCollisionHeader_003C54:
+  type: OOT:COLLISION
+  offset: 0x003C54
+  symbol: spot02_sceneCollisionHeader_003C54

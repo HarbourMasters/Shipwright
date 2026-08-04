@@ -1,9 +1,7 @@
 #include "option.h"
-#include "libultraship/bridge.h"
 #include <ship/Context.h>
 #include <imgui.h>
 #include "soh/Enhancements/randomizer/settings.h"
-#include "soh/SohGui/SohGui.hpp"
 #include "soh/SohGui/SohMenu.h"
 #include "soh/SohGui/UIWidgets.hpp"
 #include "soh/Enhancements/Lang/Lang.h"
@@ -94,20 +92,19 @@ uint8_t Option::GetOptionIndex() const {
     return CVarGetInteger(cvarName.c_str(), defaultOption);
 }
 
+uint8_t Option::GetMenuOptionDefault() const {
+    return defaultOption;
+}
+
 const std::string& Option::GetOptionText(size_t index) const {
+    if (index >= options.size()) {
+        index = options.size() - 1;
+    }
     return options[index];
 }
 
 const std::string& Option::GetCVarName() const {
     return cvarName;
-}
-
-void Option::SetDelayedOption() {
-    delayedSelection = contextSelection;
-}
-
-void Option::RestoreDelayedOption() {
-    contextSelection = delayedSelection;
 }
 
 void Option::SetContextIndex(uint8_t idx) {
@@ -152,16 +149,8 @@ bool Option::IsCategory(const OptionCategory category) const {
     return category == this->category;
 }
 
-bool Option::HasFlag(const int imFlag_) const {
-    return imFlag_ & imFlags;
-}
-
 void Option::AddFlag(const int imFlag_) {
     imFlags |= imFlag_;
-}
-
-void Option::SetFlag(const int imFlag_) {
-    imFlags = imFlag_;
 }
 
 void Option::RemoveFlag(const int imFlag_) {
@@ -176,15 +165,6 @@ uint8_t Option::GetValueFromText(const std::string text) {
         assert(false);
     }
     return defaultOption;
-}
-
-void Option::SetContextIndexFromText(const std::string text) {
-    if (optionsTextToVar.contains(text)) {
-        SetContextIndex(optionsTextToVar[text]);
-    } else {
-        SPDLOG_ERROR("Option {} does not have a var named {}.", name, text);
-        assert(false);
-    }
 }
 
 Option::Option(size_t key_, std::string name_, std::vector<std::string> options_, OptionCategory category_,
@@ -224,13 +204,14 @@ Option::Option(size_t key_, std::string name_, std::vector<std::string> options_
             if (imFlags_ & IMFLAG_LABEL_INLINE) {
                 labelPosition = UIWidgets::LabelPositions::Near;
             }
-            widgetOptions = std::make_shared<UIWidgets::IntSliderOptions>(UIWidgets::IntSliderOptions()
-                                                                              .DefaultValue(defaultOption)
-                                                                              .Tooltip(description.c_str())
-                                                                              .Min(0)
-                                                                              .Max(options.size() - 1)
-                                                                              .Format(options[defaultOption].c_str())
-                                                                              .LabelPosition(labelPosition));
+            widgetOptions =
+                std::make_shared<UIWidgets::IntSliderOptions>(UIWidgets::IntSliderOptions()
+                                                                  .DefaultValue(defaultOption)
+                                                                  .Tooltip(description.c_str())
+                                                                  .Min(0)
+                                                                  .Max(static_cast<int32_t>(options.size() - 1))
+                                                                  .Format(options[defaultOption].c_str())
+                                                                  .LabelPosition(labelPosition));
             break;
         default:
             break;
@@ -238,79 +219,8 @@ Option::Option(size_t key_, std::string name_, std::vector<std::string> options_
     PopulateTextToNum();
 }
 
-bool Option::RenderCheckbox() {
-    bool changed = false;
-    bool val = static_cast<bool>(CVarGetInteger(cvarName.c_str(), defaultOption));
-    UIWidgets::CheckboxOptions widgetOptions = static_cast<UIWidgets::CheckboxOptions>(
-        UIWidgets::CheckboxOptions().Color(THEME_COLOR).Tooltip(description.c_str()));
-    widgetOptions.disabled = disabled;
-    if (UIWidgets::Checkbox(name.c_str(), &val, widgetOptions)) {
-        CVarSetInteger(cvarName.c_str(), val);
-        changed = true;
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-    }
-    return changed;
-}
-
-bool Option::RenderCombobox() {
-    bool changed = false;
-    uint8_t selected = CVarGetInteger(cvarName.c_str(), defaultOption);
-    if (selected >= static_cast<uint8_t>(options.size())) {
-        selected = static_cast<uint8_t>(options.size());
-        CVarSetInteger(cvarName.c_str(), selected);
-        changed = true;
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-    }
-    UIWidgets::ComboboxOptions widgetOptions =
-        UIWidgets::ComboboxOptions().Color(THEME_COLOR).Tooltip(description.c_str());
-    if (this->GetKey() == RSK_LOGIC_RULES) {
-        widgetOptions = widgetOptions.LabelPosition(UIWidgets::LabelPositions::None)
-                            .ComponentAlignment(UIWidgets::ComponentAlignments::Right);
-    }
-    widgetOptions.disabled = disabled;
-    if (UIWidgets::Combobox(name.c_str(), &selected, options, widgetOptions)) {
-        CVarSetInteger(cvarName.c_str(), static_cast<int>(selected));
-        changed = true;
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-    }
-    return changed;
-}
-
-bool Option::RenderSlider() {
-    bool changed = false;
-    int val = CVarGetInteger(cvarName.c_str(), defaultOption);
-    if (val > options.size() - 1) {
-        val = static_cast<int>(options.size()) - 1;
-        changed = true;
-    }
-    UIWidgets::IntSliderOptions widgetOptions = UIWidgets::IntSliderOptions()
-                                                    .Color(THEME_COLOR)
-                                                    .Min(0)
-                                                    .Max(static_cast<uint8_t>(options.size() - 1))
-                                                    .Tooltip(description.c_str())
-                                                    .Format(options[val].c_str())
-                                                    .DefaultValue(defaultOption);
-    widgetOptions.disabled = disabled;
-    if (UIWidgets::SliderInt(name.c_str(), &val, widgetOptions)) {
-        changed = true;
-    }
-    if (val < 0) {
-        val = 0;
-        changed = true;
-    }
-    if (val > options.size() - 1) {
-        val = static_cast<int>(options.size() - 1);
-        changed = true;
-    }
-    if (changed) {
-        CVarSetInteger(cvarName.c_str(), val);
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
-    }
-    return changed;
-}
-
 void Option::AddWidget(WidgetPath& path) {
-    auto widget = SohGui::mSohMenu->AddWidget(path, name, widgetType)
+    auto widget = SohGui::mSohMenu->AddWidget(path, name + "##Randomizer", widgetType)
                       .Callback(callback)
                       .PreFunc([this](WidgetInfo& info) {
                           info.isHidden = this->IsHidden();
@@ -320,8 +230,17 @@ void Option::AddWidget(WidgetPath& path) {
                           if (info.type == WIDGET_CVAR_SLIDER_INT) {
                               UIWidgets::IntSliderOptions* sliderOpts =
                                   (UIWidgets::IntSliderOptions*)info.options.get();
+                              size_t maxIndex = this->options.size() - 1;
+                              if (this->GetKey() == RSK_SHOPSANITY_COUNT && maxIndex > 7 &&
+                                  CVarGetInteger(CVAR_RANDOMIZER_SETTING("LogicRules"), RO_LOGIC_GLITCHLESS) !=
+                                      RO_LOGIC_NO_LOGIC) {
+                                  maxIndex = 7;
+                              }
+                              sliderOpts->Max(static_cast<int32_t>(maxIndex));
+                              if (this->GetOptionIndex() > maxIndex) {
+                                  CVarSetInteger(cvarName.c_str(), static_cast<int32_t>(maxIndex));
+                              }
                               sliderOpts->Format(this->GetOptionText(this->GetOptionIndex()).c_str());
-                              sliderOpts->Max(this->options.size() - 1);
                           }
                       })
                       .CVar(cvarName.c_str())
@@ -482,7 +401,7 @@ void OptionGroup::AddWidgets(WidgetPath& path) const {
     if (mContainerType == WidgetContainerType::TABLE) {
         path.column = SECTION_COLUMN_1;
         path.sidebarName = mName;
-        SohGui::mSohMenu->AddSidebarEntry("Randomizer", path.sidebarName, mSubGroups.size());
+        SohGui::mSohMenu->AddSidebarEntry("Randomizer", path.sidebarName, static_cast<uint32_t>(mSubGroups.size()));
     }
     if (mContainerType == WidgetContainerType::SECTION || mContainerType == WidgetContainerType::COLUMN) {
         if (!mName.empty()) {

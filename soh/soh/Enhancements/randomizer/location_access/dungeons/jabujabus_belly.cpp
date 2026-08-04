@@ -135,14 +135,14 @@ void RegionTable_Init_JabuJabusBelly() {
         EVENT_ACCESS(LOGIC_JABU_WEST_TENTACLE, logic->CanKillEnemy(RE_TENTACLE, ED_BOOMERANG)),
     }, {
         //Locations
-        LOCATION(RC_JABU_JABUS_BELLY_MAP_CHEST, logic->Get(LOGIC_JABU_WEST_TENTACLE) && logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_JABU_JABUS_BELLY_MAP_CHEST, logic->Get(LOGIC_JABU_WEST_TENTACLE) && logic->CanOpenLargeChest()),
     }, {
         //Exits
         ENTRANCE(RR_JABU_JABUS_BELLY_FORKED_CORRIDOR, true),
     });
 
     // this handles spawning in tentacle
-    areaTable[RR_JABU_JABUS_BELLY_TO_FORK_NORTH_WEST] = Region("Jabu Jabus Belly To Fork West", SCENE_JABU_JABU, {}, {}, {
+    areaTable[RR_JABU_JABUS_BELLY_TO_FORK_NORTH_WEST] = Region("Jabu Jabus Belly To Fork North West", SCENE_JABU_JABU, {}, {}, {
         //Exits
         ENTRANCE(RR_JABU_JABUS_BELLY_FORKED_CORRIDOR, logic->Get(LOGIC_JABU_WEST_TENTACLE) || logic->TakeDamage()),
         ENTRANCE(RR_JABU_JABUS_BELLY_FORK_NORTH_WEST, logic->Get(LOGIC_JABU_WEST_TENTACLE)),
@@ -151,7 +151,7 @@ void RegionTable_Init_JabuJabusBelly() {
     areaTable[RR_JABU_JABUS_BELLY_FORK_NORTH_WEST] = Region("Jabu Jabus Belly Fork North West", SCENE_JABU_JABU, {}, {
         //Locations
         //ruto could theoretically clear this room, but it's hard because of the timer and she doesn't appear with you when you respawn after failing, which would force a savewarp
-        LOCATION(RC_JABU_JABUS_BELLY_COMPASS_CHEST, logic->CanKillEnemy(RE_SHABOM, ED_CLOSE, false, 9) && logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_JABU_JABUS_BELLY_COMPASS_CHEST, logic->CanKillEnemy(RE_SHABOM, ED_CLOSE, false, 9) && logic->CanOpenLargeChest()),
     }, {
         //Exits
         ENTRANCE(RR_JABU_JABUS_BELLY_TO_FORK_NORTH_WEST, AnyAgeTime([]{return logic->CanKillEnemy(RE_SHABOM, ED_CLOSE, false, 9);})),
@@ -174,7 +174,7 @@ void RegionTable_Init_JabuJabusBelly() {
     });
 
     // this handles spawning in tentacle
-    areaTable[RR_JABU_JABUS_BELLY_TO_FORK_NORTH_EAST] = Region("Jabu Jabus Belly MQ To Fork West", SCENE_JABU_JABU, {}, {}, {
+    areaTable[RR_JABU_JABUS_BELLY_TO_FORK_NORTH_EAST] = Region("Jabu Jabus Belly To Fork North East", SCENE_JABU_JABU, {}, {}, {
         //Exits
         ENTRANCE(RR_JABU_JABUS_BELLY_FORKED_CORRIDOR, logic->Get(LOGIC_JABU_WEST_TENTACLE) || logic->TakeDamage()),
         ENTRANCE(RR_JABU_JABUS_BELLY_FORK_NORTH_EAST, logic->Get(LOGIC_JABU_WEST_TENTACLE)),
@@ -191,7 +191,7 @@ void RegionTable_Init_JabuJabusBelly() {
     areaTable[RR_JABU_JABUS_BELLY_FORK_EAST] = Region("Jabu Jabus Belly Fork East", SCENE_JABU_JABU, {}, {
         //Locations
         //We can kill the Stingers with ruto
-        LOCATION(RC_JABU_JABUS_BELLY_BOOMERANG_CHEST, (logic->Get(LOGIC_JABU_RUTO_IN_1F) || logic->CanKillEnemy(RE_STINGER, ED_CLOSE, true, 4)) && logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_JABU_JABUS_BELLY_BOOMERANG_CHEST, (logic->Get(LOGIC_JABU_RUTO_IN_1F) || logic->CanKillEnemy(RE_STINGER, ED_CLOSE, true, 4)) && logic->CanOpenLargeChest()),
     }, {
         //Exits
         ENTRANCE(RR_JABU_JABUS_BELLY_FORKED_CORRIDOR, true),
@@ -266,7 +266,7 @@ void RegionTable_Init_JabuJabusBelly() {
         EVENT_ACCESS(LOGIC_NUT_ACCESS, logic->CanBreakPots()),
     }, {
         //Locations
-        LOCATION(RC_JABU_JABUS_BELLY_MQ_MAP_CHEST,                 logic->BlastOrSmash() && logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_MAP_CHEST,                 logic->BlastOrSmash() && logic->CanOpenLargeChest()),
         LOCATION(RC_JABU_JABUS_BELLY_MQ_FIRST_ROOM_SIDE_CHEST,     logic->CanUse(RG_FAIRY_SLINGSHOT) && logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_JABU_JABUS_BELLY_MQ_ENTRANCE_POT_1,            logic->CanBreakPots()),
         LOCATION(RC_JABU_JABUS_BELLY_MQ_ENTRANCE_POT_2,            logic->CanBreakPots()),
@@ -307,7 +307,7 @@ void RegionTable_Init_JabuJabusBelly() {
         EVENT_ACCESS(LOGIC_JABU_MQ_HOLES_ROOM_DOOR, true),
     }, {
         //Locations
-        LOCATION(RC_JABU_JABUS_BELLY_MQ_COMPASS_CHEST, (logic->CanHitSwitch(ED_HOOKSHOT, true) || (ctx->GetTrickOption(RT_JABU_MQ_RANG_JUMP) && logic->CanUse(RG_BOOMERANG) && logic->HasItem(RG_BRONZE_SCALE))) && logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_COMPASS_CHEST, (logic->CanHitSwitch(ED_HOOKSHOT, true) || (ctx->GetTrickOption(RT_JABU_MQ_RANG_JUMP) && logic->CanUse(RG_BOOMERANG) && logic->HasItem(RG_BRONZE_SCALE))) && logic->CanOpenLargeChest()),
         LOCATION(RC_JABU_JABUS_BELLY_MQ_GEYSER_POT_1,  logic->CanBreakPots()),
         LOCATION(RC_JABU_JABUS_BELLY_MQ_GEYSER_POT_2,  logic->CanBreakPots()),
         //Getting the ones closest to the ledge with rang may be a trick due to the awkward angle without blind shooting through the flesh
@@ -375,7 +375,7 @@ void RegionTable_Init_JabuJabusBelly() {
     }, {
         //Locations
         LOCATION(RC_JABU_JABUS_BELLY_MQ_BOOMERANG_ROOM_SMALL_CHEST, logic->HasItem(RG_OPEN_CHEST)),
-        LOCATION(RC_JABU_JABUS_BELLY_MQ_BOOMERANG_CHEST,            (logic->IsAdult || logic->HasItem(RG_CLIMB)) && logic->CanKillEnemy(RE_LIZALFOS) && logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_JABU_JABUS_BELLY_MQ_BOOMERANG_CHEST,            (logic->IsAdult || logic->HasItem(RG_CLIMB)) && logic->CanKillEnemy(RE_LIZALFOS) && logic->CanOpenLargeChest()),
         LOCATION(RC_JABU_JABUS_BELLY_MQ_GS_BOOMERANG_CHEST_ROOM,    (logic->CanUse(RG_SONG_OF_TIME) && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA)) || (ctx->GetTrickOption(RT_JABU_MQ_SOT_GS) && logic->CanUse(RG_BOOMERANG))),
         LOCATION(RC_JABU_JABUS_BELLY_MQ_TIME_BLOCK_POT_1,           logic->CanBreakPots()),
         LOCATION(RC_JABU_JABUS_BELLY_MQ_TIME_BLOCK_POT_2,           logic->CanBreakPots()),

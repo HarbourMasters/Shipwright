@@ -1,0 +1,114 @@
+:config:
+  segments:
+    - [ 3, 0x01C8C1C0 ]
+    - [ 2, 0x01C7A010 ]
+  directory: scenes/shared/kakusiana_scene
+  external_files:
+    - pal_mq/scenes/shared/kakusiana_scene.yml
+    - pal_mq/code/sys_matrix.yml
+
+kakusiana_room_2:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: kakusiana_room_2
+
+kakusiana_room_2Tex_001448:
+  type: TEXTURE
+  offset: 0x1448
+  symbol: kakusiana_room_2Tex_001448
+  format: RGBA16
+  width: 32
+  height: 32
+
+kakusiana_room_2Tex_001C48:
+  type: TEXTURE
+  offset: 0x1C48
+  symbol: kakusiana_room_2Tex_001C48
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+kakusiana_room_2Vtx_0000E0:
+  type: OOT:ARRAY
+  offset: 0x0000E0
+  symbol: kakusiana_room_2Vtx_0000E0
+  count: 148
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+kakusiana_room_2DL_000A20:
+  type: GFX
+  offset: 0x000A20
+  symbol: kakusiana_room_2DL_000A20
+
+kakusiana_room_2Vtx_000C90:
+  type: OOT:ARRAY
+  offset: 0x000C90
+  symbol: kakusiana_room_2Vtx_000C90
+  count: 46
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+kakusiana_room_2DL_000F70:
+  type: GFX
+  offset: 0x000F70
+  symbol: kakusiana_room_2DL_000F70
+
+kakusiana_room_2Vtx_0010D0:
+  type: OOT:ARRAY
+  offset: 0x0010D0
+  symbol: kakusiana_room_2Vtx_0010D0
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+kakusiana_room_2DL_0011B0:
+  type: GFX
+  offset: 0x0011B0
+  symbol: kakusiana_room_2DL_0011B0
+
+kakusiana_room_2Vtx_001238:
+  type: OOT:ARRAY
+  offset: 0x001238
+  symbol: kakusiana_room_2Vtx_001238
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+kakusiana_room_2DL_001378:
+  type: GFX
+  offset: 0x001378
+  symbol: kakusiana_room_2DL_001378
+
+kakusiana_room_2Vtx_002450:
+  type: OOT:ARRAY
+  offset: 0x002450
+  symbol: kakusiana_room_2Vtx_002450
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+kakusiana_room_2DL_002650:
+  type: GFX
+  offset: 0x002650
+  symbol: kakusiana_room_2DL_002650
+
+kakusiana_room_2Vtx_002738:
+  type: OOT:ARRAY
+  offset: 0x002738
+  symbol: kakusiana_room_2Vtx_002738
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+kakusiana_room_2DL_002818:
+  type: GFX
+  offset: 0x002818
+  symbol: kakusiana_room_2DL_002818

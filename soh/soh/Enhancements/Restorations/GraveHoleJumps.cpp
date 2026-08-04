@@ -1,11 +1,11 @@
-#include <libultraship/bridge/consolevariablebridge.h>
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ShipInit.hpp"
 #include "functions.h"
-#include "soh/Enhancements/enhancementTypes.h"
 #include "soh/resource/type/Scene.h"
 #include "soh/resource/type/scenecommand/SceneCommand.h"
 #include "soh/resource/type/scenecommand/SetCollisionHeader.h"
+#include <ship/Context.h>
+#include <ship/resource/ResourceManager.h>
 
 #define CVAR_GRAVE_HOLE_NAME CVAR_ENHANCEMENT("GraveHoles")
 #define GRAVE_HOLES_DEFAULT 0
@@ -29,8 +29,10 @@ CollisionHeader* getGraveyardCollisionHeader() {
      * dspot02_sceneCollisionHeader_003C54. We have to scroll through the scene cmds to get the header the same way the
      * game does.
      */
-    SOH::Scene* scene =
-        (SOH::Scene*)Ship::Context::GetInstance()->GetResourceManager()->LoadResource(GRAVEYARD_SCENE_FILEPATH).get();
+    SOH::Scene* scene = (SOH::Scene*)Ship::Context::GetRawInstance()
+                            ->GetResourceManager()
+                            ->LoadResource(GRAVEYARD_SCENE_FILEPATH)
+                            .get();
     SOH::SetCollisionHeader* sceneCmd = nullptr;
     for (size_t i = 0; i < scene->commands.size(); i++) {
         auto cmd = scene->commands[i];

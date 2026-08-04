@@ -1,7 +1,6 @@
 #pragma once
 
 #include <string>
-#include <variant>
 #include <memory>
 
 #include "soh/Enhancements/custom-message/text.h"
@@ -60,6 +59,7 @@ class Item {
     bool IsPlaythrough() const;
     bool IsBottleItem() const;
     bool IsMajorItem() const;
+    bool IsShieldOrTunic() const;
     RandomizerHintTextKey GetHintKey() const;
     const HintText& GetHint() const;
     GetItemCategory GetCategory();

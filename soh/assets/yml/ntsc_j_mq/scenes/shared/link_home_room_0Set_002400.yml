@@ -1,0 +1,15 @@
+:config:
+  segments:
+    - [ 3, 0x01C56B90 ]
+    - [ 2, 0x01C55F20 ]
+  directory: scenes/shared/link_home_scene
+  external_files:
+    - ntsc_j_mq/scenes/shared/link_home_room_0.yml
+    - ntsc_j_mq/scenes/shared/link_home_scene.yml
+    - ntsc_j_mq/code/sys_matrix.yml
+
+link_home_room_0Set_002400:
+  type: OOT:ROOM
+  offset: 0x2400
+  symbol: link_home_room_0Set_002400
+  base_name: link_home_room_0

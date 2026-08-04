@@ -2,8 +2,7 @@
 #ifndef TIMESPLITS_H
 #define TIMESPLITS_H
 
-#include <stdint.h>
-#include <libultraship/libultraship.h>
+#include <ship/window/gui/GuiWindow.h>
 
 #ifdef __cplusplus
 class TimeSplitWindow final : public Ship::GuiWindow {

@@ -95,6 +95,7 @@ static s16 grottoLoadList[NUM_GROTTOS] = { 0 };
 static s8 grottoId = 0xFF;
 static s8 lastEntranceType = NOT_GROTTO;
 static bool overridingNextEntrance = false;
+static bool grottoEnteredViaDoorAna = false;
 
 // Initialize both lists so that each index refers to itself. An index referring
 // to itself means that the entrance is not shuffled. Indices will be overwritten
@@ -110,6 +111,13 @@ void Grotto_InitExitAndLoadLists(void) {
     grottoId = 0xFF;
     lastEntranceType = NOT_GROTTO;
     overridingNextEntrance = false;
+    grottoEnteredViaDoorAna = false;
+}
+
+static bool Grotto_ShouldSetLastEntrance(void) {
+    return Randomizer_GetSettingValue(RSK_SHUFFLE_GROTTO_ENTRANCES) &&
+           (Randomizer_GetSettingValue(RSK_MIX_GROTTO_ENTRANCES) ||
+            Randomizer_GetSettingValue(RSK_DECOUPLED_ENTRANCES));
 }
 
 void Grotto_SetExitOverride(s16 originalIndex, s16 overrideIndex) {
@@ -193,9 +201,13 @@ s16 Grotto_OverrideSpecialEntrance(s16 nextEntranceIndex) {
         return nextEntranceIndex;
     }
 
+    // ENTR_RETURN_GROTTO means Link physically left a grotto. Any other way (warp song / owl / spawn)
+    // arrives as a concrete grotto-exit index.
+    bool grottoExit = nextEntranceIndex == ENTR_RETURN_GROTTO;
+
     // If Link hits a grotto exit, load the entrance index from the grotto exit list
     // based on the current grotto ID
-    if (nextEntranceIndex == ENTR_RETURN_GROTTO) {
+    if (grottoExit) {
         Entrance_SetEntranceDiscovered(ENTRANCE_GROTTO_EXIT_START + grottoId, false);
         EntranceTracker_SetLastEntranceOverride(ENTRANCE_GROTTO_EXIT_START + grottoId);
         nextEntranceIndex = grottoExitList[grottoId];
@@ -207,17 +219,27 @@ s16 Grotto_OverrideSpecialEntrance(s16 nextEntranceIndex) {
     // Grotto Returns
     if (nextEntranceIndex >= ENTRANCE_GROTTO_EXIT_START &&
         nextEntranceIndex < ENTRANCE_GROTTO_EXIT_START + NUM_GROTTOS) {
-
         GrottoReturnInfo grotto = grottoReturnTable[grottoId];
-        Grotto_SetupReturnInfo(grotto, RESPAWN_MODE_RETURN);
-        Grotto_SetupReturnInfo(grotto, RESPAWN_MODE_DOWN);
+
+        // Normally grotto exit leaves pre-grotto respawn data that Door_Ana set on entry alone,
+        // so void-out returns to other last entrance. This is only when leaving grotto entered through
+        // Door_Ana (grottoExit && grottoEnteredViaDoorAna): only then does RESPAWN_MODE_RETURN hold
+        // valid pre-grotto data. A warp song or spawn shuffled onto a grotto load point enters without
+        // Door_Ana (so RETURN is stale), those must set up the grotto's own return data to position Link.
+        bool normalGrottoExit = !Grotto_ShouldSetLastEntrance() && grottoExit && grottoEnteredViaDoorAna;
+
+        if (!normalGrottoExit) {
+            Grotto_SetupReturnInfo(grotto, RESPAWN_MODE_RETURN);
+            Grotto_SetupReturnInfo(grotto, RESPAWN_MODE_DOWN);
+        }
 
         // When the nextEntranceIndex is determined by a dynamic exit,
         // or set by Entrance_OverrideBlueWarp to mark a blue warp entrance,
         // we have to set the respawn information and nextEntranceIndex manually
         if (gPlayState != NULL && gPlayState->nextEntranceIndex != ENTR_LOAD_OPENING) {
             gSaveContext.respawnFlag = 2;
-            nextEntranceIndex = grotto.entranceIndex;
+            nextEntranceIndex =
+                normalGrottoExit ? gSaveContext.respawn[RESPAWN_MODE_RETURN].entranceIndex : grotto.entranceIndex;
             gPlayState->transitionType = TRANS_TYPE_FADE_WHITE;
             gSaveContext.nextTransitionType = TRANS_TYPE_FADE_WHITE;
         } else if (gPlayState == NULL) { // Handle spawn position when loading from a save file
@@ -229,7 +251,7 @@ s16 Grotto_OverrideSpecialEntrance(s16 nextEntranceIndex) {
             nextEntranceIndex = ENTR_RETURN_GROTTO;
         }
 
-        lastEntranceType = GROTTO_RETURN;
+        lastEntranceType = normalGrottoExit ? NOT_GROTTO : GROTTO_RETURN;
         // Grotto Loads
     } else if (nextEntranceIndex >= ENTRANCE_GROTTO_LOAD_START && nextEntranceIndex < ENTRANCE_GROTTO_EXIT_START) {
         // Set the respawn data to load the correct grotto
@@ -240,6 +262,7 @@ s16 Grotto_OverrideSpecialEntrance(s16 nextEntranceIndex) {
         EntranceTracker_SetCurrentGrottoID(grottoId);
 
         lastEntranceType = NOT_GROTTO;
+        grottoEnteredViaDoorAna = false;
         // Otherwise just unset the current grotto ID
     } else {
         grottoId = 0xFF;
@@ -275,6 +298,7 @@ void Grotto_OverrideActorEntrance(Actor* thisx) {
             // Run the index through the special entrances override check
             lastEntranceType = GROTTO_LOAD;
             gPlayState->nextEntranceIndex = Grotto_OverrideSpecialEntrance(index);
+            grottoEnteredViaDoorAna = true;
             return;
         }
     }

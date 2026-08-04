@@ -1,0 +1,14 @@
+:config:
+  segments:
+    - [ 2, 0x01F603E0 ]
+
+kinsuta_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: kinsuta_scene
+
+
+kinsuta_sceneCollisionHeader_0015E4:
+  type: OOT:COLLISION
+  offset: 0x0015E4
+  symbol: kinsuta_sceneCollisionHeader_0015E4
