@@ -215,6 +215,12 @@ static const ALIGN_ASSET(2) char gBombchuBagBodyDL[] = dgBombchuBagBodyDL;
 #define dgBombchuBagMaskDL "__OTR__objects/object_bombchubag/gBombchuBagMaskDL"
 static const ALIGN_ASSET(2) char gBombchuBagMaskDL[] = dgBombchuBagMaskDL;
 
+#define dgGiNutBagDL "__OTR__objects/object_nutbag/gGiNutBagDL"
+static const ALIGN_ASSET(2) char gGiNutBagDL[] = dgGiNutBagDL;
+
+#define dgGiStickBagDL "__OTR__objects/object_stickbag/gGiStickBagDL"
+static const ALIGN_ASSET(2) char gGiStickBagDL[] = dgGiStickBagDL;
+
 #define dgLargeMajorCrateDL "__OTR__objects/object_kibako2/gLargeMajorCrateDL"
 static const ALIGN_ASSET(2) char gLargeMajorCrateDL[] = dgLargeMajorCrateDL;
 
