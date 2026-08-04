@@ -1,0 +1,5 @@
+<Root>
+    <File Name="object_gi_bomb_2" Segment="6">
+        <DList Name="gGiBombchuDL" Offset="0x04B0"/>
+    </File>
+</Root>

@@ -6,7 +6,6 @@
 
 #include "z_en_yabusame_mark.h"
 #include "vt.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS 0
 
@@ -107,7 +106,7 @@ void EnYabusameMark_Init(Actor* thisx, PlayState* play) {
     Collider_SetQuad(play, &this->collider, &this->actor, &sQuadInit);
     this->worldPos = this->actor.world.pos;
     this->actor.flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED;
-    if (gSaveContext.sceneLayer != 4) {
+    if (gSaveContext.sceneSetupIndex != 4) {
         Actor_Kill(&this->actor);
         return;
     }
@@ -160,8 +159,6 @@ void func_80B42F74(EnYabusameMark* this, PlayState* play) {
                 return;
             }
         }
-
-        GameInteractor_Should(VB_SCORE_HORSEBACK_ARCHERY_TARGET, true, &scoreIndex);
 
         osSyncPrintf("\n\n");
         osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ posＸ ☆☆☆☆☆ %f\n" VT_RST, arrowHitPos.x);

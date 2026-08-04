@@ -1,5 +1,5 @@
 #include "BossRush.h"
-#include "soh/ShipInit.hpp"
+#include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh_assets.h"
@@ -8,7 +8,6 @@
 #include <array>
 #include <string>
 #include <vector>
-#include <spdlog/spdlog.h>
 
 extern "C" {
 #include "functions.h"
@@ -303,7 +302,7 @@ void FileChoose_DrawBossRushMenuWindowContents(FileChooseContext* fileChooseCont
 
     uint8_t language = (gSaveContext.language == LANGUAGE_JPN) ? LANGUAGE_ENG : gSaveContext.language;
     uint8_t listOffset = fileChooseContext->bossRushOffset;
-    int16_t textAlpha = fileChooseContext->bossRushUIAlpha;
+    uint8_t textAlpha = fileChooseContext->bossRushUIAlpha;
 
     // Draw arrows to indicate that the list can scroll up or down.
     // Arrow up
@@ -352,13 +351,12 @@ void FileChoose_DrawBossRushMenuWindowContents(FileChooseContext* fileChooseCont
                                 G_TX_NOLOD);
             FileChoose_DrawTextRec(fileChooseContext->state.gfxCtx, fileChooseContext->stickLeftPrompt.arrowColorR,
                                    fileChooseContext->stickLeftPrompt.arrowColorG,
-                                   fileChooseContext->stickLeftPrompt.arrowColorB, textAlpha, 160.0f,
-                                   static_cast<f32>(92 + textYOffset), 0.42f, 0, 0, -1.0f, 1.0f);
+                                   fileChooseContext->stickLeftPrompt.arrowColorB, textAlpha, 160, (92 + textYOffset),
+                                   0.42f, 0, 0, -1.0f, 1.0f);
             FileChoose_DrawTextRec(fileChooseContext->state.gfxCtx, fileChooseContext->stickRightPrompt.arrowColorR,
                                    fileChooseContext->stickRightPrompt.arrowColorG,
-                                   fileChooseContext->stickRightPrompt.arrowColorB, textAlpha,
-                                   static_cast<f32>(171 + finalKerning), static_cast<f32>(92 + textYOffset), 0.42f, 0,
-                                   0, 1.0f, 1.0f);
+                                   fileChooseContext->stickRightPrompt.arrowColorB, textAlpha, (171 + finalKerning),
+                                   (92 + textYOffset), 0.42f, 0, 0, 1.0f, 1.0f);
         }
     }
 
@@ -371,40 +369,40 @@ void BossRush_SpawnBlueWarps(PlayState* play) {
     if (gSaveContext.linkAge == LINK_AGE_CHILD) {
         // Forest Medallion (Gohma)
         if (!Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP)) {
-            Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, -100, 6, -170, 0, 0, 0, -1);
+            Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, -100, 6, -170, 0, 0, 0, -1, false);
         }
         // Fire Medallion (King Dodongo)
         if (!Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP)) {
-            Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, 100, 6, -170, 0, 0, 0, -1);
+            Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, 100, 6, -170, 0, 0, 0, -1, false);
         }
         // Water Medallion (Barinade)
         if (!Flags_GetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP)) {
-            Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, 199, 6, 0, 0, 0, 0, -1);
+            Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, 199, 6, 0, 0, 0, 0, -1, false);
         }
     } else {
         // Light Medallion (Ganondorf)
         if (CheckDungeonCount() == 8) {
-            Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, -199, 6, 0, 0, 0, 0, -1);
+            Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, -199, 6, 0, 0, 0, 0, -1, false);
         }
         // Forest Medallion (Phantom Ganondorf)
         if (!Flags_GetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP)) {
-            Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, -100, 6, -170, 0, 0, 0, -1);
+            Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, -100, 6, -170, 0, 0, 0, -1, false);
         }
         // Fire Medallion (Volvagia)
         if (!Flags_GetEventChkInf(EVENTCHKINF_USED_FIRE_TEMPLE_BLUE_WARP)) {
-            Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, 100, 6, -170, 0, 0, 0, -1);
+            Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, 100, 6, -170, 0, 0, 0, -1, false);
         }
         // Water Medallion (Morpha)
         if (!Flags_GetEventChkInf(EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP)) {
-            Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, 199, 6, 0, 0, 0, 0, -1);
+            Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, 199, 6, 0, 0, 0, 0, -1, false);
         }
         // Spirit Medallion (Twinrova)
         if (!Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_SPIRIT_TEMPLE)) {
-            Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, 100, 6, 170, 0, 0, 0, -1);
+            Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, 100, 6, 170, 0, 0, 0, -1, false);
         }
         // Shadow Medallion (Bongo Bongo)
         if (!Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_SHADOW_TEMPLE)) {
-            Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, -100, 6, 170, 0, 0, 0, -1);
+            Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, -100, 6, 170, 0, 0, 0, -1, false);
         }
     }
 }
@@ -777,12 +775,12 @@ void BossRush_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                         }
                     }
                     Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, childPos.x,
-                                bossGoma->actor.world.pos.y, childPos.z, 0, 0, 0, WARP_DUNGEON_ADULT);
+                                bossGoma->actor.world.pos.y, childPos.z, 0, 0, 0, WARP_DUNGEON_ADULT, false);
                     break;
                 }
                 case SCENE_DODONGOS_CAVERN_BOSS: {
                     Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, -890.0f, -1523.76f, -3304.0f, 0, 0,
-                                0, WARP_DUNGEON_ADULT);
+                                0, WARP_DUNGEON_ADULT, false);
                     break;
                 }
                 case SCENE_JABU_JABU_BOSS: {
@@ -801,33 +799,33 @@ void BossRush_OnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                     }
 
                     Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, sWarpPos[sp7C].x, sWarpPos[sp7C].y,
-                                sWarpPos[sp7C].z, 0, 0, 0, WARP_DUNGEON_ADULT);
+                                sWarpPos[sp7C].z, 0, 0, 0, WARP_DUNGEON_ADULT, false);
                     break;
                 }
                 case SCENE_FOREST_TEMPLE_BOSS: {
                     Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, 14.0f, -33.0f, -3315.0f, 0, 0, 0,
-                                WARP_DUNGEON_ADULT);
+                                WARP_DUNGEON_ADULT, true);
                     break;
                 }
                 case SCENE_FIRE_TEMPLE_BOSS: {
                     Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, 0.0f, 100.0f, 0.0f, 0, 0, 0,
-                                WARP_DUNGEON_ADULT);
+                                WARP_DUNGEON_ADULT, true);
                     break;
                 }
                 case SCENE_WATER_TEMPLE_BOSS: {
                     BossMo* bossMo = va_arg(args, BossMo*);
                     Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, bossMo->actor.world.pos.x, -280.0f,
-                                bossMo->actor.world.pos.z, 0, 0, 0, WARP_DUNGEON_ADULT);
+                                bossMo->actor.world.pos.z, 0, 0, 0, WARP_DUNGEON_ADULT, true);
                     break;
                 }
                 case SCENE_SPIRIT_TEMPLE_BOSS: {
                     Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, 600.0f, 230.0f, 0.0f, 0, 0, 0,
-                                WARP_DUNGEON_ADULT);
+                                WARP_DUNGEON_ADULT, true);
                     break;
                 }
                 case SCENE_SHADOW_TEMPLE_BOSS: {
                     Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_DOOR_WARP1, -50.0f, 0.0f, 400.0f, 0, 0, 0,
-                                WARP_DUNGEON_ADULT);
+                                WARP_DUNGEON_ADULT, true);
                     break;
                 }
                 default: {

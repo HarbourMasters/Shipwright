@@ -6,7 +6,6 @@
 
 #include "z_obj_timeblock.h"
 #include "objects/object_timeblock/object_timeblock.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS                                                                                               \
     (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_UPDATE_DURING_OCARINA | \
@@ -89,7 +88,7 @@ u32 ObjTimeblock_CalculateIsVisible(ObjTimeblock* this) {
 void ObjTimeblock_SpawnDemoEffect(ObjTimeblock* this, PlayState* play) {
     Actor_Spawn(&play->actorCtx, play, ACTOR_DEMO_EFFECT, this->dyna.actor.world.pos.x, this->dyna.actor.world.pos.y,
                 this->dyna.actor.world.pos.z, 0, 0, 0,
-                sSizeOptions[(this->dyna.actor.params >> 8) & 1].demoEffectParams);
+                sSizeOptions[(this->dyna.actor.params >> 8) & 1].demoEffectParams, true);
 }
 
 void ObjTimeblock_ToggleSwitchFlag(PlayState* play, s32 flag) {
@@ -219,11 +218,8 @@ void ObjTimeblock_Normal(ObjTimeblock* this, PlayState* play) {
         ObjTimeblock_SpawnDemoEffect(this, play);
         this->demoEffectTimer = 160;
 
-        if (GameInteractor_Should(VB_PLAY_TIMEBLOCK_CS, true, this)) {
-            // Possibly points the camera to this actor
-            OnePointCutscene_Attention(play, &this->dyna.actor);
-        }
-
+        // Possibly points the camera to this actor
+        OnePointCutscene_Attention(play, &this->dyna.actor);
         // "◯◯◯◯ Time Block Attention Camera (frame counter  %d)\n"
         osSyncPrintf("◯◯◯◯ Time Block 注目カメラ (frame counter  %d)\n", play->state.frames);
 
@@ -281,11 +277,7 @@ void ObjTimeblock_AltBehaviorVisible(ObjTimeblock* this, PlayState* play) {
         this->demoEffectFirstPartTimer = 12;
         ObjTimeblock_SpawnDemoEffect(this, play);
         this->demoEffectTimer = 160;
-
-        if (GameInteractor_Should(VB_PLAY_TIMEBLOCK_CS, true, this)) {
-            OnePointCutscene_Attention(play, &this->dyna.actor);
-        }
-
+        OnePointCutscene_Attention(play, &this->dyna.actor);
         // "Time Block Attention Camera (frame counter)"
         osSyncPrintf("◯◯◯◯ Time Block 注目カメラ (frame counter  %d)\n", play->state.frames);
         ObjTimeblock_ToggleSwitchFlag(play, this->dyna.actor.params & 0x3F);

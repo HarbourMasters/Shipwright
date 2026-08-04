@@ -159,9 +159,9 @@ void Sram_OpenSave() {
         osSyncPrintf(VT_FGCOL(BLUE));
         osSyncPrintf("\n====================================================================\n");
 
-        memcpy(gScarecrowLongSongPtr, gSaveContext.scarecrowLongSong, sizeof(gSaveContext.scarecrowLongSong));
+        memcpy(gScarecrowCustomSongPtr, gSaveContext.scarecrowLongSong, sizeof(gSaveContext.scarecrowLongSong));
 
-        ptr = (u8*)gScarecrowLongSongPtr;
+        ptr = (u8*)gScarecrowCustomSongPtr;
         for (i = 0; i < ARRAY_COUNT(gSaveContext.scarecrowLongSong); i++, ptr++) {
             osSyncPrintf("%d, ", *ptr);
         }
@@ -276,5 +276,5 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
 void Sram_InitSram(GameState* gameState) {
     Save_Init();
 
-    Audio_SetSoundOutputMode(gSaveContext.audioSetting);
+    func_800F6700(gSaveContext.audioSetting);
 }

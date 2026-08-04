@@ -1,0 +1,14 @@
+<Root>
+    <File Name="object_spot00_objects" Segment="6">
+        <!-- Hyrule Field Castle Drawbridge -->
+        <DList Name="gHyruleFieldCastleDrawbridgeDL" Offset="0x0430"/>
+        <Texture Name="gHyruleFieldCastleDrawbridgeWoodTex" OutName="drawbridge_wood" Format="rgba16" Width="32" Height="64" Offset="0x0610"/>
+        <Texture Name="gHyruleFieldCastleDrawbridgeBoltDL" OutName="drawbridge_bolt" Format="rgba16" Width="16" Height="16" Offset="0x1A10"/>
+        <Collision Name="gHyruleFieldCastleDrawbridgeCol" Offset="0x05E0"/>
+
+        <!-- Hyrule Field Castle Drawbridge Chains -->
+        <DList Name="gHyruleFieldCastleDrawbridgeChainsDL" Offset="0x00C0"/>
+        <Texture Name="gHyruleFieldCastleDrawbridgeChainsTex" OutName="drawbridge_chains" Format="rgba16" Width="16" Height="32" Offset="0x1610"/>
+        <Collision Name="gHyruleFieldCastleDrawbridgeChainsCol" Offset="0x0280"/>
+    </File>
+</Root>

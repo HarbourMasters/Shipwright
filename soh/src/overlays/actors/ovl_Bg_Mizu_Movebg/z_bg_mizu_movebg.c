@@ -21,9 +21,9 @@ void BgMizuMovebg_Destroy(Actor* thisx, PlayState* play);
 void BgMizuMovebg_Update(Actor* thisx, PlayState* play);
 void BgMizuMovebg_Draw(Actor* thisx, PlayState* play);
 
-void BgMizuMovebg_UpdateMain(BgMizuMovebg* this, PlayState* play);
-void BgMizuMovebg_UpdateHookshotPlatform(BgMizuMovebg* this, PlayState* play);
-s32 BgMizuMovebg_SetPosFromPath(Path* pathList, Vec3f* pos, s32 pathId, s32 pointId);
+void func_8089E318(BgMizuMovebg* this, PlayState* play);
+void func_8089E650(BgMizuMovebg* this, PlayState* play);
+s32 func_8089E108(Path* pathList, Vec3f* pos, s32 pathId, s32 pointId);
 
 const ActorInit Bg_Mizu_Movebg_InitVars = {
     ACTOR_BG_MIZU_MOVEBG,
@@ -64,7 +64,7 @@ static Vec3f D_8089EBAC = { 0.0f, 80.0f, 23.0f };
 
 static u8 D_8089EE40;
 
-s32 BgMizuMovebg_GetDragonStatueBossRoomOffsetIndex(PlayState* play) {
+s32 func_8089DC30(PlayState* play) {
     s32 result;
 
     if (Flags_GetSwitch(play, WATER_TEMPLE_WATER_F1_FLAG)) {
@@ -103,7 +103,7 @@ void BgMizuMovebg_Init(Actor* thisx, PlayState* play) {
             } else {
                 thisx->world.pos.y = temp;
             }
-            ((BgMizuMovebg*)thisx)->actionFunc = BgMizuMovebg_UpdateMain;
+            ((BgMizuMovebg*)thisx)->actionFunc = func_8089E318;
             break;
         case 1:
             temp = waterBoxes[2].ySurface + 15.0f;
@@ -112,7 +112,7 @@ void BgMizuMovebg_Init(Actor* thisx, PlayState* play) {
             } else {
                 thisx->world.pos.y = temp;
             }
-            ((BgMizuMovebg*)thisx)->actionFunc = BgMizuMovebg_UpdateMain;
+            ((BgMizuMovebg*)thisx)->actionFunc = func_8089E318;
             break;
         case 2:
             temp = waterBoxes[2].ySurface + 15.0f;
@@ -121,12 +121,11 @@ void BgMizuMovebg_Init(Actor* thisx, PlayState* play) {
             } else {
                 thisx->world.pos.y = temp;
             }
-            ((BgMizuMovebg*)thisx)->actionFunc = BgMizuMovebg_UpdateMain;
+            ((BgMizuMovebg*)thisx)->actionFunc = func_8089E318;
             break;
         case 3:
-            thisx->world.pos.y =
-                ((BgMizuMovebg*)thisx)->homeY + D_8089EB40[BgMizuMovebg_GetDragonStatueBossRoomOffsetIndex(play)];
-            ((BgMizuMovebg*)thisx)->actionFunc = BgMizuMovebg_UpdateMain;
+            thisx->world.pos.y = ((BgMizuMovebg*)thisx)->homeY + D_8089EB40[func_8089DC30(play)];
+            ((BgMizuMovebg*)thisx)->actionFunc = func_8089E318;
             break;
         case 4:
         case 5:
@@ -136,7 +135,7 @@ void BgMizuMovebg_Init(Actor* thisx, PlayState* play) {
             } else {
                 thisx->world.pos.y = ((BgMizuMovebg*)thisx)->homeY;
             }
-            ((BgMizuMovebg*)thisx)->actionFunc = BgMizuMovebg_UpdateMain;
+            ((BgMizuMovebg*)thisx)->actionFunc = func_8089E318;
             break;
         case 7:
             ((BgMizuMovebg*)thisx)->scrollAlpha1 = 160;
@@ -145,9 +144,8 @@ void BgMizuMovebg_Init(Actor* thisx, PlayState* play) {
             ((BgMizuMovebg*)thisx)->scrollAlpha4 = 160;
             waypointId = MOVEBG_POINT_ID(thisx->params);
             ((BgMizuMovebg*)thisx)->waypointId = waypointId;
-            BgMizuMovebg_SetPosFromPath(play->setupPathList, &thisx->world.pos, MOVEBG_PATH_ID(thisx->params),
-                                        waypointId);
-            ((BgMizuMovebg*)thisx)->actionFunc = BgMizuMovebg_UpdateHookshotPlatform;
+            func_8089E108(play->setupPathList, &thisx->world.pos, MOVEBG_PATH_ID(thisx->params), waypointId);
+            ((BgMizuMovebg*)thisx)->actionFunc = func_8089E650;
             break;
     }
 
@@ -190,7 +188,7 @@ void BgMizuMovebg_Destroy(Actor* thisx, PlayState* play) {
     }
 }
 
-s32 BgMizuMovebg_SetPosFromPath(Path* pathList, Vec3f* pos, s32 pathId, s32 pointId) {
+s32 func_8089E108(Path* pathList, Vec3f* pos, s32 pathId, s32 pointId) {
     Path* path = pathList;
     Vec3s* point;
 
@@ -204,7 +202,7 @@ s32 BgMizuMovebg_SetPosFromPath(Path* pathList, Vec3f* pos, s32 pathId, s32 poin
     return 0;
 }
 
-void BgMizuMovebg_SetScrollAlphas(BgMizuMovebg* this, PlayState* play) {
+void func_8089E198(BgMizuMovebg* this, PlayState* play) {
     f32 waterLevel = play->colCtx.colHeader->waterBoxes[2].ySurface;
 
     if (waterLevel < WATER_TEMPLE_WATER_F1_Y) {
@@ -237,13 +235,13 @@ void BgMizuMovebg_SetScrollAlphas(BgMizuMovebg* this, PlayState* play) {
     this->scrollAlpha4 = this->scrollAlpha3;
 }
 
-void BgMizuMovebg_UpdateMain(BgMizuMovebg* this, PlayState* play) {
+void func_8089E318(BgMizuMovebg* this, PlayState* play) {
     WaterBox* waterBoxes = play->colCtx.colHeader->waterBoxes;
     f32 phi_f0;
     s32 type;
     Vec3f sp28;
 
-    BgMizuMovebg_SetScrollAlphas(this, play);
+    func_8089E198(this, play);
 
     type = MOVEBG_TYPE(this->dyna.actor.params);
     switch (type) {
@@ -265,7 +263,7 @@ void BgMizuMovebg_UpdateMain(BgMizuMovebg* this, PlayState* play) {
             }
             break;
         case 3:
-            phi_f0 = this->homeY + D_8089EB40[BgMizuMovebg_GetDragonStatueBossRoomOffsetIndex(play)];
+            phi_f0 = this->homeY + D_8089EB40[func_8089DC30(play)];
             if (!Math_StepToF(&this->dyna.actor.world.pos.y, phi_f0, 1.0f)) {
                 if (!(D_8089EE40 & 2) && MOVEBG_SPEED(this->dyna.actor.params) != 0) {
                     D_8089EE40 |= 2;
@@ -273,9 +271,9 @@ void BgMizuMovebg_UpdateMain(BgMizuMovebg* this, PlayState* play) {
                 }
                 if (this->sfxFlags & 2) {
                     if (this->dyna.actor.room == 0) {
-                        Actor_PlaySfx_Flagged(&this->dyna.actor, NA_SE_EV_ELEVATOR_MOVE - SFX_FLAG);
+                        func_8002F974(&this->dyna.actor, NA_SE_EV_ELEVATOR_MOVE - SFX_FLAG);
                     } else {
-                        Actor_PlaySfx_FlaggedCentered2(&this->dyna.actor, NA_SE_EV_ELEVATOR_MOVE - SFX_FLAG);
+                        func_8002F948(&this->dyna.actor, NA_SE_EV_ELEVATOR_MOVE - SFX_FLAG);
                     }
                 }
             }
@@ -294,7 +292,7 @@ void BgMizuMovebg_UpdateMain(BgMizuMovebg* this, PlayState* play) {
                     this->sfxFlags |= 2;
                 }
                 if (this->sfxFlags & 2) {
-                    Actor_PlaySfx_FlaggedCentered2(&this->dyna.actor, NA_SE_EV_ELEVATOR_MOVE - SFX_FLAG);
+                    func_8002F948(&this->dyna.actor, NA_SE_EV_ELEVATOR_MOVE - SFX_FLAG);
                 }
             }
             break;
@@ -318,7 +316,7 @@ void BgMizuMovebg_UpdateMain(BgMizuMovebg* this, PlayState* play) {
     }
 }
 
-void BgMizuMovebg_UpdateHookshotPlatform(BgMizuMovebg* this, PlayState* play) {
+void func_8089E650(BgMizuMovebg* this, PlayState* play) {
     Vec3f waypoint;
     f32 dist;
     f32 dx;
@@ -326,8 +324,7 @@ void BgMizuMovebg_UpdateHookshotPlatform(BgMizuMovebg* this, PlayState* play) {
     f32 dz;
 
     this->dyna.actor.speedXZ = MOVEBG_SPEED(this->dyna.actor.params) * 0.1f;
-    BgMizuMovebg_SetPosFromPath(play->setupPathList, &waypoint, MOVEBG_PATH_ID(this->dyna.actor.params),
-                                this->waypointId);
+    func_8089E108(play->setupPathList, &waypoint, MOVEBG_PATH_ID(this->dyna.actor.params), this->waypointId);
     dist = Actor_WorldDistXYZToPoint(&this->dyna.actor, &waypoint);
     if (dist < this->dyna.actor.speedXZ) {
         this->dyna.actor.speedXZ = dist;
@@ -341,8 +338,7 @@ void BgMizuMovebg_UpdateHookshotPlatform(BgMizuMovebg* this, PlayState* play) {
         this->waypointId++;
         if (this->waypointId >= play->setupPathList[MOVEBG_PATH_ID(this->dyna.actor.params)].count) {
             this->waypointId = 0;
-            BgMizuMovebg_SetPosFromPath(play->setupPathList, &this->dyna.actor.world.pos,
-                                        MOVEBG_PATH_ID(this->dyna.actor.params), 0);
+            func_8089E108(play->setupPathList, &this->dyna.actor.world.pos, MOVEBG_PATH_ID(this->dyna.actor.params), 0);
         }
     }
     if (!(D_8089EE40 & 1) && MOVEBG_SPEED(this->dyna.actor.params) != 0) {
@@ -350,7 +346,7 @@ void BgMizuMovebg_UpdateHookshotPlatform(BgMizuMovebg* this, PlayState* play) {
         this->sfxFlags |= 1;
     }
     if (this->sfxFlags & 1) {
-        Actor_PlaySfx_FlaggedCentered2(&this->dyna.actor, NA_SE_EV_ROLL_STAND_2 - SFX_FLAG);
+        func_8002F948(&this->dyna.actor, NA_SE_EV_ROLL_STAND_2 - SFX_FLAG);
     }
 }
 
@@ -371,20 +367,20 @@ void BgMizuMovebg_Draw(Actor* thisx, PlayState* play2) {
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     gSPSegment(POLY_OPA_DISP++, 0x08,
-               Gfx_TwoTexScrollEnvColorEx(play->state.gfxCtx, 0, frames * 1, 0, 32, 32, 1, 0, 0, 32, 32, 0, 0, 0,
-                                          this->scrollAlpha1, 1, 0, 0, 0));
+               Gfx_TwoTexScrollEnvColor(play->state.gfxCtx, 0, frames * 1, 0, 32, 32, 1, 0, 0, 32, 32, 0, 0, 0,
+                                        this->scrollAlpha1));
 
     gSPSegment(POLY_OPA_DISP++, 0x09,
-               Gfx_TwoTexScrollEnvColorEx(play->state.gfxCtx, 0, frames * 1, 0, 32, 32, 1, 0, 0, 32, 32, 0, 0, 0,
-                                          this->scrollAlpha2, 1, 0, 0, 0));
+               Gfx_TwoTexScrollEnvColor(play->state.gfxCtx, 0, frames * 1, 0, 32, 32, 1, 0, 0, 32, 32, 0, 0, 0,
+                                        this->scrollAlpha2));
 
     gSPSegment(POLY_OPA_DISP++, 0x0A,
-               Gfx_TwoTexScrollEnvColorEx(play->state.gfxCtx, 0, frames * 1, 0, 32, 32, 1, 0, 0, 32, 32, 0, 0, 0,
-                                          this->scrollAlpha3, 1, 0, 0, 0));
+               Gfx_TwoTexScrollEnvColor(play->state.gfxCtx, 0, frames * 1, 0, 32, 32, 1, 0, 0, 32, 32, 0, 0, 0,
+                                        this->scrollAlpha3));
 
     gSPSegment(POLY_OPA_DISP++, 0x0B,
-               Gfx_TwoTexScrollEnvColorEx(play->state.gfxCtx, 0, frames * 3, 0, 32, 32, 1, 0, 0, 32, 32, 0, 0, 0,
-                                          this->scrollAlpha4, 3, 0, 0, 0));
+               Gfx_TwoTexScrollEnvColor(play->state.gfxCtx, 0, frames * 3, 0, 32, 32, 1, 0, 0, 32, 32, 0, 0, 0,
+                                        this->scrollAlpha4));
 
     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 

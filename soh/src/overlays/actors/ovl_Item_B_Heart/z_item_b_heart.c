@@ -6,6 +6,7 @@
 
 #include "z_item_b_heart.h"
 #include "objects/object_gi_hearts/object_gi_hearts.h"
+#include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS 0

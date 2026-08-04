@@ -119,7 +119,7 @@ void EnBubble_DamagePlayer(EnBubble* this, PlayState* play) {
     s32 damage = -this->colliderSphere.elements[0].info.toucher.damage;
 
     play->damagePlayer(play, damage);
-    Actor_SetPlayerKnockbackSmallNoDamage(play, &this->actor, 6.0f, this->actor.yawTowardsPlayer, 6.0f);
+    func_8002F7A0(play, &this->actor, 6.0f, this->actor.yawTowardsPlayer, 6.0f);
 }
 
 s32 EnBubble_Explosion(EnBubble* this, PlayState* play) {

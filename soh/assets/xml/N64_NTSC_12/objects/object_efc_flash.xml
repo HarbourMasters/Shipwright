@@ -1,0 +1,6 @@
+<Root>
+    <File Name="object_efc_flash" Segment="6">
+        <!-- This file is empty -->
+        <Blob Name="gEfcFlashBlob_000000" Size="0x10" Offset="0x0"/>
+    </File>
+</Root>

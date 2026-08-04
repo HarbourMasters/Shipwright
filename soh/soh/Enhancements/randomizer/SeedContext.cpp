@@ -2,6 +2,7 @@
 #include "static_data.h"
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/item-tables/ItemTableManager.h"
+#include "3drando/shops.hpp"
 #include "dungeon.h"
 #include "logic.h"
 #include "entrance.h"
@@ -12,17 +13,11 @@
 #include "3drando/hints.hpp"
 #include "soh/util.h"
 #include "../kaleido.h"
-#include "soh/Enhancements/randomizer/Traps.h"
-#include "soh/Enhancements/randomizer/rng.h"
-#include "soh/Enhancements/randomizer/randomizer.h"
-
-#include <vector>
 
 #include <fstream>
 #include <spdlog/spdlog.h>
 extern "C" {
 #include <functions.h>
-#include <variables.h>
 }
 
 namespace Rando {
@@ -38,6 +33,34 @@ Context::Context() {
     mLogic = std::make_shared<Logic>();
     mTrials = std::make_shared<Trials>();
     mFishsanity = std::make_shared<Fishsanity>();
+    VanillaLogicDefaults = {
+        // RANDOTODO check what this does
+        &mOptions[RSK_LINKS_POCKET],
+        &mOptions[RSK_SHUFFLE_DUNGEON_REWARDS],
+        &mOptions[RSK_SHUFFLE_SONGS],
+        &mOptions[RSK_SHOPSANITY],
+        &mOptions[RSK_SHOPSANITY_COUNT],
+        &mOptions[RSK_SHOPSANITY_PRICES],
+        &mOptions[RSK_SHOPSANITY_PRICES_AFFORDABLE],
+        &mOptions[RSK_FISHSANITY],
+        &mOptions[RSK_FISHSANITY_POND_COUNT],
+        &mOptions[RSK_FISHSANITY_AGE_SPLIT],
+        &mOptions[RSK_SHUFFLE_SCRUBS],
+        &mOptions[RSK_SHUFFLE_BEEHIVES],
+        &mOptions[RSK_SHUFFLE_COWS],
+        &mOptions[RSK_SHUFFLE_POTS],
+        &mOptions[RSK_SHUFFLE_CRATES],
+        &mOptions[RSK_SHUFFLE_FREESTANDING],
+        &mOptions[RSK_SHUFFLE_MERCHANTS],
+        &mOptions[RSK_SHUFFLE_FROG_SONG_RUPEES],
+        &mOptions[RSK_SHUFFLE_ADULT_TRADE],
+        &mOptions[RSK_SHUFFLE_100_GS_REWARD],
+        &mOptions[RSK_SHUFFLE_FOUNTAIN_FAIRIES],
+        &mOptions[RSK_SHUFFLE_STONE_FAIRIES],
+        &mOptions[RSK_SHUFFLE_BEAN_FAIRIES],
+        &mOptions[RSK_SHUFFLE_SONG_FAIRIES],
+        &mOptions[RSK_GOSSIP_STONE_HINTS],
+    };
 }
 
 RandomizerArea Context::GetAreaFromString(std::string str) {
@@ -46,10 +69,10 @@ RandomizerArea Context::GetAreaFromString(std::string str) {
 
 int Context::CountEmptyLocations(const bool countShops) {
     auto ctx = Rando::Context::GetInstance();
-    return static_cast<int>(count_if(allLocations.begin(), allLocations.end(), [ctx, countShops](const auto loc) {
+    return count_if(allLocations.begin(), allLocations.end(), [ctx, countShops](const auto loc) {
         return ctx->GetItemLocation(loc)->GetPlacedRandomizerGet() == RG_NONE &&
                (countShops || Rando::StaticData::GetLocation(loc)->GetRCType() != RCTYPE_SHOP);
-    }));
+    });
 }
 
 void Context::InitStaticData() {
@@ -112,8 +135,8 @@ ItemOverride& Context::GetItemOverride(size_t locKey) {
 void Context::PlaceItemInLocation(const RandomizerCheck locKey, const RandomizerGet item,
                                   const bool applyEffectImmediately, const bool setHidden) {
     const auto loc = GetItemLocation(locKey);
-    SPDLOG_DEBUG("{} placed at {}", StaticData::RetrieveItem(item).GetName().GetEnglish(),
-                 StaticData::GetLocation(locKey)->GetName());
+    SPDLOG_DEBUG(StaticData::RetrieveItem(item).GetName().GetEnglish() + " placed at " +
+                 StaticData::GetLocation(locKey)->GetName() + "\n");
 
     if (applyEffectImmediately || mOptions[RSK_LOGIC_RULES].Is(RO_LOGIC_GLITCHLESS)) {
         StaticData::RetrieveItem(item).ApplyEffect();
@@ -152,10 +175,6 @@ bool Context::IsQuestOfLocationActive(RandomizerCheck rc) {
 void Context::GenerateLocationPool() {
     allLocations.clear();
     overworldLocations.clear();
-    // add wincon here so it is properly logged
-    if (ctx->GetOption(RSK_WINCON).Get() > RO_WINCON_ANYWHERE) {
-        AddLocation(RC_WINCON);
-    }
     for (auto dungeon : ctx->GetDungeons()->GetDungeonList()) {
         dungeon->locations.clear();
     }
@@ -163,9 +182,7 @@ void Context::GenerateLocationPool() {
         // skip RCs that shouldn't be in the pool for any reason (i.e. settings, unsupported check type, etc.)
         // TODO: Exclude checks for some of the older shuffles from the pool too i.e. Frog Songs, Scrubs, etc.)
         if (location.GetRandomizerCheck() == RC_UNKNOWN_CHECK ||
-            location.GetRandomizerCheck() == RC_WINCON || // already in pool
-            (location.GetRandomizerCheck() == RC_GANONS_BOSS_KEY && mGBKCondition == RO_CHECK_TRIGGER_NONE) ||
-            (location.GetRandomizerCheck() == RC_GANON_SOUL && mGanonsSoulCondition == RO_CHECK_TRIGGER_NONE) ||
+            location.GetRandomizerCheck() == RC_TRIFORCE_COMPLETED || // already in pool
             (location.GetRandomizerCheck() == RC_TOT_MASTER_SWORD &&
              mOptions[RSK_SHUFFLE_MASTER_SWORD].Is(RO_GENERIC_OFF)) ||
             (location.GetRandomizerCheck() == RC_KAK_100_GOLD_SKULLTULA_REWARD &&
@@ -179,7 +196,6 @@ void Context::GenerateLocationPool() {
              !(location.GetRandomizerCheck() == RC_LW_DEKU_SCRUB_GROTTO_FRONT ||
                location.GetRandomizerCheck() == RC_LW_DEKU_SCRUB_NEAR_BRIDGE ||
                location.GetRandomizerCheck() == RC_HF_DEKU_SCRUB_GROTTO)) ||
-            (location.GetRCType() == RCTYPE_BEGGAR && mOptions[RSK_SHUFFLE_BEGGAR].Is(RO_GENERIC_OFF)) ||
             (location.GetRCType() == RCTYPE_ADULT_TRADE && mOptions[RSK_SHUFFLE_ADULT_TRADE].Is(RO_GENERIC_OFF)) ||
             (location.GetRCType() == RCTYPE_COW && mOptions[RSK_SHUFFLE_COWS].Is(RO_GENERIC_OFF)) ||
             (location.GetRandomizerCheck() == RC_LH_HYRULE_LOACH &&
@@ -191,22 +207,14 @@ void Context::GenerateLocationPool() {
             (location.GetRCType() == RCTYPE_NLCRATE && (mOptions[RSK_SHUFFLE_CRATES].Is(RO_SHUFFLE_CRATES_OFF) ||
                                                         mOptions[RSK_LOGIC_RULES].IsNot(RO_LOGIC_NO_LOGIC))) ||
             (location.GetRCType() == RCTYPE_SMALL_CRATE && mOptions[RSK_SHUFFLE_CRATES].Is(RO_SHUFFLE_CRATES_OFF)) ||
-            (location.GetRCType() == RCTYPE_ROCK && !mOptions[RSK_SHUFFLE_ROCKS]) ||
-            (location.GetRCType() == RCTYPE_BOULDER && mOptions[RSK_SHUFFLE_BOULDERS].Is(RO_SHUFFLE_BOULDERS_OFF)) ||
             (location.GetRCType() == RCTYPE_FOUNTAIN_FAIRY && !mOptions[RSK_SHUFFLE_FOUNTAIN_FAIRIES]) ||
             (location.GetRCType() == RCTYPE_STONE_FAIRY && !mOptions[RSK_SHUFFLE_STONE_FAIRIES]) ||
             (location.GetRCType() == RCTYPE_BEAN_FAIRY && !mOptions[RSK_SHUFFLE_BEAN_FAIRIES]) ||
             (location.GetRCType() == RCTYPE_SONG_FAIRY && !mOptions[RSK_SHUFFLE_SONG_FAIRIES]) ||
-            (location.GetRCType() == RCTYPE_BUTTERFLY_FAIRY && !mOptions[RSK_SHUFFLE_BUTTERFLY_FAIRIES]) ||
             (location.GetRCType() == RCTYPE_TREE && !mOptions[RSK_SHUFFLE_TREES]) ||
             (location.GetRCType() == RCTYPE_NLTREE &&
              (!mOptions[RSK_SHUFFLE_TREES] || mOptions[RSK_LOGIC_RULES].IsNot(RO_LOGIC_NO_LOGIC))) ||
             (location.GetRCType() == RCTYPE_BUSH && !mOptions[RSK_SHUFFLE_BUSHES]) ||
-            (location.GetRCType() == RCTYPE_ICICLE && !mOptions[RSK_SHUFFLE_ICICLES]) ||
-            (location.GetRCType() == RCTYPE_RED_ICE && !mOptions[RSK_SHUFFLE_RED_ICE]) ||
-            (location.GetRCType() == RCTYPE_SIGN && mOptions[RSK_SHUFFLE_SIGNS].Is(RO_SHUFFLE_SIGNS_OFF)) ||
-            (location.GetRCType() == RCTYPE_WONDER_ITEM &&
-             mOptions[RSK_SHUFFLE_WONDER_ITEMS].Is(RO_SHUFFLE_WONDER_ITEMS_OFF)) ||
             (location.GetRCType() == RCTYPE_FREESTANDING &&
              mOptions[RSK_SHUFFLE_FREESTANDING].Is(RO_SHUFFLE_FREESTANDING_OFF)) ||
             (location.GetRCType() == RCTYPE_BEEHIVE && !mOptions[RSK_SHUFFLE_BEEHIVES])) {
@@ -219,17 +227,12 @@ void Context::GenerateLocationPool() {
                  mOptions[RSK_SHUFFLE_FREESTANDING].Is(RO_SHUFFLE_FREESTANDING_DUNGEONS)) ||
                 (location.GetRCType() == RCTYPE_POT && mOptions[RSK_SHUFFLE_POTS].Is(RO_SHUFFLE_POTS_DUNGEONS)) ||
                 (location.GetRCType() == RCTYPE_GRASS && mOptions[RSK_SHUFFLE_GRASS].Is(RO_SHUFFLE_GRASS_DUNGEONS)) ||
-                (location.GetRCType() == RCTYPE_WONDER_ITEM &&
-                 mOptions[RSK_SHUFFLE_WONDER_ITEMS].Is(RO_SHUFFLE_WONDER_ITEMS_DUNGEONS)) ||
                 (location.GetRCType() == RCTYPE_CRATE && mOptions[RSK_SHUFFLE_CRATES].Is(RO_SHUFFLE_CRATES_DUNGEONS)) ||
                 (location.GetRCType() == RCTYPE_NLCRATE &&
                  mOptions[RSK_SHUFFLE_CRATES].Is(RO_SHUFFLE_CRATES_DUNGEONS) &&
                  mOptions[RSK_LOGIC_RULES].Is(RO_LOGIC_NO_LOGIC)) ||
                 (location.GetRCType() == RCTYPE_SMALL_CRATE &&
-                 mOptions[RSK_SHUFFLE_CRATES].Is(RO_SHUFFLE_CRATES_DUNGEONS)) ||
-                (location.GetRCType() == RCTYPE_BOULDER &&
-                 mOptions[RSK_SHUFFLE_BOULDERS].Is(RO_SHUFFLE_BOULDERS_DUNGEONS)) ||
-                (location.GetRCType() == RCTYPE_SIGN && mOptions[RSK_SHUFFLE_SIGNS].Is(RO_SHUFFLE_SIGNS_DUNGEONS))) {
+                 mOptions[RSK_SHUFFLE_CRATES].Is(RO_SHUFFLE_CRATES_DUNGEONS))) {
                 continue;
             }
             // If we've gotten past all the conditions where an overworld location should not be
@@ -244,19 +247,13 @@ void Context::GenerateLocationPool() {
                     (location.GetRCType() == RCTYPE_POT && mOptions[RSK_SHUFFLE_POTS].Is(RO_SHUFFLE_POTS_OVERWORLD)) ||
                     (location.GetRCType() == RCTYPE_GRASS &&
                      mOptions[RSK_SHUFFLE_GRASS].Is(RO_SHUFFLE_GRASS_OVERWORLD)) ||
-                    (location.GetRCType() == RCTYPE_WONDER_ITEM &&
-                     mOptions[RSK_SHUFFLE_WONDER_ITEMS].Is(RO_SHUFFLE_WONDER_ITEMS_OVERWORLD)) ||
                     (location.GetRCType() == RCTYPE_CRATE &&
                      mOptions[RSK_SHUFFLE_CRATES].Is(RO_SHUFFLE_CRATES_OVERWORLD)) ||
                     (location.GetRCType() == RCTYPE_NLCRATE &&
                      mOptions[RSK_SHUFFLE_CRATES].Is(RO_SHUFFLE_CRATES_OVERWORLD) &&
                      mOptions[RSK_LOGIC_RULES].Is(RO_LOGIC_NO_LOGIC)) ||
                     (location.GetRCType() == RCTYPE_SMALL_CRATE &&
-                     mOptions[RSK_SHUFFLE_CRATES].Is(RO_SHUFFLE_CRATES_OVERWORLD)) ||
-                    (location.GetRCType() == RCTYPE_BOULDER &&
-                     mOptions[RSK_SHUFFLE_BOULDERS].Is(RO_SHUFFLE_BOULDERS_OVERWORLD)) ||
-                    (location.GetRCType() == RCTYPE_SIGN &&
-                     mOptions[RSK_SHUFFLE_SIGNS].Is(RO_SHUFFLE_SIGNS_OVERWORLD))) {
+                     mOptions[RSK_SHUFFLE_CRATES].Is(RO_SHUFFLE_CRATES_OVERWORLD))) {
                     continue;
                 }
                 // also add to that dungeon's location list.
@@ -270,7 +267,7 @@ void Context::GenerateLocationPool() {
 void Context::AddExcludedOptions() {
     for (auto& loc : StaticData::GetLocationTable()) {
         // Checks of these types don't have items, skip them.
-        if (loc.GetRandomizerCheck() == RC_UNKNOWN_CHECK || loc.GetRandomizerCheck() == RC_WINCON ||
+        if (loc.GetRandomizerCheck() == RC_UNKNOWN_CHECK || loc.GetRandomizerCheck() == RC_TRIFORCE_COMPLETED ||
             loc.GetRCType() == RCTYPE_CHEST_GAME || loc.GetRCType() == RCTYPE_STATIC_HINT ||
             loc.GetRCType() == RCTYPE_GOSSIP_STONE) {
             continue;
@@ -334,21 +331,35 @@ void Context::HintReset() {
 }
 
 void Context::CreateItemOverrides() {
-    SPDLOG_DEBUG("NOW CREATING OVERRIDES");
+    SPDLOG_DEBUG("NOW CREATING OVERRIDES\n\n");
     for (RandomizerCheck locKey : allLocations) {
         const auto loc = StaticData::GetLocation(locKey);
         // If this is an ice trap, store the disguise model in iceTrapModels
         const auto itemLoc = GetItemLocation(locKey);
         if (itemLoc->GetPlacedRandomizerGet() == RG_ICE_TRAP) {
-            ItemOverride val(locKey, Traps::GetTrapTrickModel(&rando_state));
+            RandomizerGet trickModel = RandomElementFromSet(possibleIceTrapModels);
+            if (trickModel == RG_EMPTY_BOTTLE) {
+                trickModel = RandomElement(StaticData::normalBottles);
+            }
+            if (trickModel == RG_GUARD_HOUSE_KEY) {
+                trickModel = RandomElement(StaticData::overworldKeys);
+            }
+            if (trickModel == RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL) {
+                trickModel = RandomElement(StaticData::beanSouls);
+            }
+            ItemOverride val(locKey, trickModel);
             iceTrapModels[locKey] = val.LooksLike();
-            val.SetTrickName(Traps::GetTrapName(val.LooksLike(), &rando_state));
+            val.SetTrickName(GetIceTrapName(val.LooksLike()));
             // If this is ice trap is in a shop, change the name based on what the model will look like
             overrides[locKey] = val;
         }
-        SPDLOG_DEBUG("{}: {}", loc->GetName(), itemLoc->GetPlacedItemName().GetEnglish());
+        SPDLOG_DEBUG(loc->GetName());
+        SPDLOG_DEBUG(": ");
+        SPDLOG_DEBUG(itemLoc->GetPlacedItemName().GetEnglish());
+        SPDLOG_DEBUG("\n");
     }
-    SPDLOG_DEBUG("Overrides Created: {}", std::to_string(overrides.size()));
+    SPDLOG_DEBUG("Overrides Created: ");
+    SPDLOG_DEBUG(std::to_string(overrides.size()));
 }
 
 bool Context::IsSeedGenerated() const {
@@ -417,8 +428,8 @@ void Context::ParseSpoiler(const char* spoilerFileName) {
     } catch (...) { LUSLOG_ERROR("Failed to load Spoiler File: %s", spoilerFileName); }
 }
 
-void Context::ParseHashIconIndexesJson(const nlohmann::json& spoilerFileJson) {
-    nlohmann::json hashJson = spoilerFileJson.value("file_hash", nlohmann::json());
+void Context::ParseHashIconIndexesJson(nlohmann::json spoilerFileJson) {
+    nlohmann::json hashJson = spoilerFileJson["file_hash"];
     int index = 0;
     for (auto it = hashJson.begin(); it != hashJson.end(); ++it) {
         hashIconIndexes[index] = gSeedTextures[it.value()].id;
@@ -426,8 +437,8 @@ void Context::ParseHashIconIndexesJson(const nlohmann::json& spoilerFileJson) {
     }
 }
 
-void Context::ParseItemLocationsJson(const nlohmann::json& spoilerFileJson) {
-    nlohmann::json locationsJson = spoilerFileJson.value("locations", nlohmann::json());
+void Context::ParseItemLocationsJson(nlohmann::json spoilerFileJson) {
+    nlohmann::json locationsJson = spoilerFileJson["locations"];
     for (auto it = locationsJson.begin(); it != locationsJson.end(); ++it) {
         RandomizerCheck rc = StaticData::locationNameToEnum[it.key()];
         if (it->is_structured()) {
@@ -455,22 +466,30 @@ void Context::WriteHintJson(nlohmann::ordered_json& spoilerFileJson) {
     }
 }
 
-void Context::ParseHintJson(const nlohmann::json& spoilerFileJson) {
-    nlohmann::json gossipHintsJson = spoilerFileJson.value("Gossip Stone Hints", nlohmann::json());
-    for (auto hintData : gossipHintsJson.items()) {
+nlohmann::json getValueForMessage(std::unordered_map<std::string, nlohmann::json> map, CustomMessage message) {
+    std::vector<std::string> strings = message.GetAllMessages();
+    for (uint8_t language = 0; language < LANGUAGE_MAX; language++) {
+        if (map.contains(strings[language])) {
+            return strings[language];
+        }
+    }
+    return {};
+}
+
+void Context::ParseHintJson(nlohmann::json spoilerFileJson) {
+    for (auto hintData : spoilerFileJson["Gossip Stone Hints"].items()) {
         RandomizerHint hint = (RandomizerHint)StaticData::hintNameToEnum[hintData.key()];
         AddHint(hint, Hint(hint, hintData.value()));
     }
-    nlohmann::json staticHintsJson = spoilerFileJson.value("Static Hints", nlohmann::json());
-    for (auto hintData : staticHintsJson.items()) {
+    for (auto hintData : spoilerFileJson["Static Hints"].items()) {
         RandomizerHint hint = (RandomizerHint)StaticData::hintNameToEnum[hintData.key()];
         AddHint(hint, Hint(hint, hintData.value()));
     }
     CreateStaticHints();
 }
 
-void Context::ParseTricksJson(const nlohmann::json& spoilerFileJson) {
-    nlohmann::json enabledTricksJson = spoilerFileJson.value("enabledTricks", nlohmann::json());
+void Context::ParseTricksJson(nlohmann::json spoilerFileJson) {
+    nlohmann::json enabledTricksJson = spoilerFileJson["enabledTricks"];
     const auto& settings = Rando::Settings::GetInstance();
     for (auto it : enabledTricksJson) {
         int rt = settings->GetRandomizerTrickByName(it);
@@ -531,28 +550,12 @@ OptionValue& Context::GetLocationOption(const RandomizerCheck key) {
     return itemLocationTable[key].GetExcludedOption();
 }
 
-RandoOptionCheckTrigger Context::GBKCondition() const {
-    return mGBKCondition;
+RandoOptionLACSCondition Context::LACSCondition() const {
+    return mLACSCondition;
 }
 
-void Context::GBKCondition(RandoOptionCheckTrigger condition) {
-    mGBKCondition = condition;
-}
-
-RandoOptionCheckTrigger Context::GanonsSoulCondition() const {
-    return mGanonsSoulCondition;
-}
-
-void Context::GanonsSoulCondition(RandoOptionCheckTrigger condition) {
-    mGanonsSoulCondition = condition;
-}
-
-RandoOptionWincon Context::WinCondition() const {
-    return mWinCondition;
-}
-
-void Context::WinCondition(RandoOptionWincon condition) {
-    mWinCondition = condition;
+void Context::LACSCondition(RandoOptionLACSCondition lacsCondition) {
+    mLACSCondition = lacsCondition;
 }
 
 std::shared_ptr<Kaleido> Context::GetKaleido() {

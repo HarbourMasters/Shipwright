@@ -1,0 +1,116 @@
+<Root>
+    <File Name="object_bv" Segment="6">
+        <Texture Name="object_bvTex_000040" OutName="object_bvTex_000040" Format="ia16" Width="16" Height="64" Offset="0x40" AddedByScript="true"/>
+        <Texture Name="object_bvTex_000840" OutName="object_bvTex_000840" Format="ia16" Width="16" Height="16" Offset="0x840" AddedByScript="true"/>
+        <Texture Name="object_bvTex_000A40" OutName="object_bvTex_000A40" Format="i8" Width="16" Height="32" Offset="0xA40" AddedByScript="true"/>
+        <Texture Name="object_bvTex_0051A0" OutName="object_bvTex_0051A0" Format="rgba16" Width="8" Height="16" Offset="0x3DA0" AddedByScript="true"/>
+        <Texture Name="object_bvTex_0052A0" OutName="object_bvTex_0052A0" Format="rgba16" Width="8" Height="16" Offset="0x3EA0" AddedByScript="true"/>
+        <Texture Name="object_bvTex_0053A0" OutName="object_bvTex_0053A0" Format="rgba16" Width="16" Height="16" Offset="0x3FA0" AddedByScript="true"/>
+        <Texture Name="object_bvTex_0055A0" OutName="object_bvTex_0055A0" Format="ia16" Width="16" Height="32" Offset="0x41A0" AddedByScript="true"/>
+        <Texture Name="object_bvTex_0059A0" OutName="object_bvTex_0059A0" Format="ia16" Width="16" Height="32" Offset="0x45A0" AddedByScript="true"/>
+        <Texture Name="object_bvTex_005DA0" OutName="object_bvTex_005DA0" Format="ia16" Width="16" Height="64" Offset="0x49A0" AddedByScript="true"/>
+        <Texture Name="object_bvTex_0065A0" OutName="object_bvTex_0065A0" Format="i8" Width="16" Height="32" Offset="0x51A0" AddedByScript="true"/>
+        <Texture Name="object_bvTex_008F88" OutName="object_bvTex_008F88" Format="i8" Width="32" Height="32" Offset="0x7B88" AddedByScript="true"/>
+        <Texture Name="object_bvTex_0117B8" OutName="object_bvTex_0117B8" Format="rgba16" Width="16" Height="16" Offset="0x103B8" AddedByScript="true"/>
+        <Texture Name="object_bvTex_0119B8" OutName="object_bvTex_0119B8" Format="rgba16" Width="16" Height="16" Offset="0x105B8" AddedByScript="true"/>
+        <Texture Name="object_bvTex_011BB8" OutName="object_bvTex_011BB8" Format="rgba16" Width="16" Height="16" Offset="0x107B8" AddedByScript="true"/>
+        <Texture Name="object_bvTex_012CE0" OutName="object_bvTex_012CE0" Format="i8" Width="64" Height="32" Offset="0x118E0" AddedByScript="true"/>
+        <Texture Name="object_bvTex_013660" OutName="object_bvTex_013660" Format="ia16" Width="64" Height="64" Offset="0x12260" AddedByScript="true"/>
+        <Texture Name="object_bvTex_0170D8" OutName="object_bvTex_0170D8" Format="rgba16" Width="16" Height="8" Offset="0x15CD8" AddedByScript="true"/>
+        <Texture Name="object_bvTex_0171D8" OutName="object_bvTex_0171D8" Format="rgba16" Width="16" Height="16" Offset="0x15DD8" AddedByScript="true"/>
+        <Texture Name="object_bvTex_018770" OutName="object_bvTex_018770" Format="rgba16" Width="8" Height="8" Offset="0x17370" AddedByScript="true"/>
+        <Texture Name="object_bvTex_018D30" OutName="object_bvTex_018D30" Format="rgba16" Width="16" Height="8" Offset="0x17930" AddedByScript="true"/>
+        <Texture Name="object_bvTex_018E30" OutName="object_bvTex_018E30" Format="rgba16" Width="16" Height="16" Offset="0x17A30" AddedByScript="true"/>
+        <Texture Name="object_bvTex_019BB8" OutName="object_bvTex_019BB8" Format="ci8" Width="32" Height="64" Offset="0x187B8" TlutOffset="0x185B0" AddedByScript="true"/>
+        <Texture Name="object_bvTex_01A6B8" OutName="object_bvTex_01A6B8" Format="ci8" Width="32" Height="64" Offset="0x192B8" TlutOffset="0x190B0" AddedByScript="true"/>
+        <Texture Name="object_bvTex_01B1B8" OutName="object_bvTex_01B1B8" Format="ci8" Width="32" Height="64" Offset="0x19DB8" TlutOffset="0x19BB0" AddedByScript="true"/>
+        <Texture Name="object_bvTex_01BCB8" OutName="object_bvTex_01BCB8" Format="ci8" Width="32" Height="64" Offset="0x1A8B8" TlutOffset="0x1A6B0" AddedByScript="true"/>
+        <Texture Name="object_bvTex_01C7B8" OutName="object_bvTex_01C7B8" Format="ci8" Width="32" Height="64" Offset="0x1B3B8" TlutOffset="0x1B1B0" AddedByScript="true"/>
+        <Texture Name="object_bvTex_01D2B8" OutName="object_bvTex_01D2B8" Format="ci8" Width="32" Height="64" Offset="0x1BEB8" TlutOffset="0x1BCB0" AddedByScript="true"/>
+        <Texture Name="object_bvTex_01DDB8" OutName="object_bvTex_01DDB8" Format="ci8" Width="32" Height="64" Offset="0x1C9B8" TlutOffset="0x1C7B0" AddedByScript="true"/>
+        <Texture Name="object_bvTex_01E8B8" OutName="object_bvTex_01E8B8" Format="ci8" Width="32" Height="64" Offset="0x1D4B8" TlutOffset="0x1D2B0" AddedByScript="true"/>
+        <Texture Name="object_bvTLUT_0199B0" OutName="object_bvTLUT_0199B0" Format="rgba16" Width="16" Height="16" Offset="0x185B0" AddedByScript="true"/>
+        <Texture Name="object_bvTLUT_01A4B0" OutName="object_bvTLUT_01A4B0" Format="rgba16" Width="16" Height="16" Offset="0x190B0" AddedByScript="true"/>
+        <Texture Name="object_bvTLUT_01AFB0" OutName="object_bvTLUT_01AFB0" Format="rgba16" Width="16" Height="16" Offset="0x19BB0" AddedByScript="true"/>
+        <Texture Name="object_bvTLUT_01BAB0" OutName="object_bvTLUT_01BAB0" Format="rgba16" Width="16" Height="16" Offset="0x1A6B0" AddedByScript="true"/>
+        <Texture Name="object_bvTLUT_01C5B0" OutName="object_bvTLUT_01C5B0" Format="rgba16" Width="16" Height="16" Offset="0x1B1B0" AddedByScript="true"/>
+        <Texture Name="object_bvTLUT_01D0B0" OutName="object_bvTLUT_01D0B0" Format="rgba16" Width="16" Height="16" Offset="0x1BCB0" AddedByScript="true"/>
+        <Texture Name="object_bvTLUT_01DBB0" OutName="object_bvTLUT_01DBB0" Format="rgba16" Width="16" Height="16" Offset="0x1C7B0" AddedByScript="true"/>
+        <Texture Name="object_bvTLUT_01E6B0" OutName="object_bvTLUT_01E6B0" Format="rgba16" Width="16" Height="16" Offset="0x1D2B0" AddedByScript="true"/>
+        <!-- Boss title card -->
+        <Texture Name="gBarinadeTitleCardTex" OutName="barinade_title_card" Format="i8" Width="128" Height="80" Offset="0x1230"/>
+
+        <Skeleton Name="gBarinadeBodySkel" Type="Normal" LimbType="Standard" Offset="0x14718"/>
+        <Skeleton Name="gBarinadeSupportSkel" Type="Flex" LimbType="Standard" Offset="0x16098"/>
+        <Skeleton Name="gBarinadeZapperSkel" Type="Flex" LimbType="Standard" Offset="0x185A0"/>
+        <Skeleton Name="gBarinadeStumpSkel" Type="Flex" LimbType="Standard" Offset="0x17470"/>
+        <Skeleton Name="gBarinadeBariSkel" Type="Normal" LimbType="Standard" Offset="0x3A70"/>
+        <Skeleton Name="gBarinadeCutSupportSkel" Type="Flex" LimbType="Standard" Offset="0x16BC8"/>
+        
+        <Animation Name="gBarinadeBodyAnim" Offset="0x3D84"/> <!-- Body anim 1-->
+        <Animation Name="gBarinadeSupportAttachedAnim" Offset="0x152A8"/> <!-- Support anim 1 -->
+        <Animation Name="gBarinadeZapperIdleAnim" Offset="0x17918"/> <!-- Zapper anim 1 -->
+        <Animation Name="gBarinadeStumpAnim" Offset="0x16D50"/> <!-- Stump anim 1 -->
+        <Animation Name="gBarinadeBariAnim" Offset="0x24"/> <!-- Bari anim -->
+        <Animation Name="gBarinadeSupportDamage1Anim" Offset="0x14EAC"/> <!-- Support damaged anim 1 -->
+        <Animation Name="gBarinadeSupportDamage2Anim" Offset="0x150B0"/> <!-- Support damaged anim 2 -->
+        <Animation Name="gBarinadeSupportCutAnim" Offset="0x16294"/> <!-- Support cut init anim -->
+        <Animation Name="gBarinadeSupportDetachedAnim" Offset="0x163F4"/> <!-- Support cut idle anim -->
+        <Animation Name="gBarinadeZapperDamage1Anim" Offset="0x17668"/> <!-- Zapper damaged anim 1 -->
+        <Animation Name="gBarinadeZapperDamage2Anim" Offset="0x17790"/> <!-- Zapper damaged anim 2 -->
+
+        <!-- body overrides -->
+        <DList Name="gBarinadeDL_008D70" Offset="0x7970"/>
+        <DList Name="gBarinadeDL_008BB8" Offset="0x77B8"/>
+        <!-- Bari something -->
+        <DList Name="gBarinadeDL_000FA0" Offset="0xFA0"/>
+        <!-- large spark -->
+        <DList Name="gBarinadeDL_0156A0" Offset="0x142A0"/>
+        <DList Name="gBarinadeDL_015710" Offset="0x14310"/>
+        <!-- spark ball -->
+        <DList Name="gBarinadeDL_011738" Offset="0x10338"/>
+        <DList Name="gBarinadeDL_011768" Offset="0x10368"/>
+        <!-- blood -->
+        <DList Name="gBarinadeDL_009430" Offset="0x8030"/>
+        <DList Name="gBarinadeDL_009468" Offset="0x8068"/>
+        <!-- tumor -->
+        <DList Name="gBarinadeDL_0128B8" Offset="0x114B8"/>
+        <DList Name="gBarinadeDL_012948" Offset="0x11548"/>
+        <!-- gore -->
+        <DList Name="gBarinadeDL_012BA0" Offset="0x117A0"/>
+        <DList Name="gBarinadeDL_012C50" Offset="0x11850"/>
+        <!-- zapper charge -->
+        <DList Name="gBarinadeDL_0135B0" Offset="0x121B0"/>
+        <DList Name="gBarinadeDL_013638" Offset="0x12238"/>
+        <!-- small spark -->
+        <DList Name="gBarinadeDL_008F08" Offset="0x7B08"/>
+        <DList Name="gBarinadeDL_008F70" Offset="0x7B70"/>
+        
+        <Texture Name="gBarinadeSparkBall1Tex" Format="i8" Width="64" Height="64" Offset="0x82F8"/>
+        <Texture Name="gBarinadeSparkBall2Tex" Format="i8" Width="64" Height="64" Offset="0x92F8"/>
+        <Texture Name="gBarinadeSparkBall3Tex" Format="i8" Width="64" Height="64" Offset="0xA2F8"/>
+        <Texture Name="gBarinadeSparkBall4Tex" Format="i8" Width="64" Height="64" Offset="0xB2F8"/>
+        <Texture Name="gBarinadeSparkBall5Tex" Format="i8" Width="64" Height="64" Offset="0xC2F8"/>
+        <Texture Name="gBarinadeSparkBall6Tex" Format="i8" Width="64" Height="64" Offset="0xD2F8"/>
+        <Texture Name="gBarinadeSparkBall7Tex" Format="i8" Width="64" Height="64" Offset="0xE2F8"/>
+        <Texture Name="gBarinadeSparkBall8Tex" Format="i8" Width="64" Height="64" Offset="0xF2F8"/>
+        <DList Name="gBarinadeDoorPiece1DL" Offset="0x18FE8"/>
+        <DList Name="gBarinadeDoorPiece2DL" Offset="0x19AE8"/>
+        <DList Name="gBarinadeDoorPiece3DL" Offset="0x1A5E8"/>
+        <DList Name="gBarinadeDoorPiece4DL" Offset="0x1B0E8"/>
+        <DList Name="gBarinadeDoorPiece5DL" Offset="0x1BBE8"/>
+        <DList Name="gBarinadeDoorPiece6DL" Offset="0x1C6E8"/>
+        <DList Name="gBarinadeDoorPiece7DL" Offset="0x1D1E8"/>
+        <DList Name="gBarinadeDoorPiece8DL" Offset="0x1DCE8"/>
+
+        <Animation Name="gBarinadeAnim_018A00" Offset="0x17600"/>
+        <Animation Name="gBarinadeAnim_015F10" Offset="0x14B10"/>
+        <Animation Name="gBarinadeAnim_015D10" Offset="0x14910"/>
+        <DList Name="gBarinadeDL_008E88" Offset="0x7A88"/>
+        <DList Name="gBarinadeDL_008EF0" Offset="0x7AF0"/>
+        <DList Name="gBarinadeDL_009388" Offset="0x7F88"/>
+        <DList Name="gBarinadeDL_0093A0" Offset="0x7FA0"/>
+        <DList Name="gBarinadeDL_0094F8" Offset="0x80F8"/>
+        <DList Name="gBarinadeDL_0095B0" Offset="0x81B0"/>
+    </File>
+</Root>

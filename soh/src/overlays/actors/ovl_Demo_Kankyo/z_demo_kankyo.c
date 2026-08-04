@@ -5,6 +5,7 @@
 #include "objects/object_toki_objects/object_toki_objects.h"
 #include "soh/frame_interpolation.h"
 #include <assert.h>
+#include "soh/OTRGlobals.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
@@ -336,7 +337,7 @@ void DemoKankyo_SetupType(DemoKankyo* this, PlayState* play) {
                             play->csCtx.segment = gAdultWarpInCS;
                         }
                     }
-                    if (Play_CamIsNotFixed(play) != 0) {
+                    if (func_800C0CB8(play) != 0) {
                         gSaveContext.cutsceneTrigger = 1;
                     }
                     DemoKankyo_SetupAction(this, DemoKankyo_DoNothing);
@@ -716,11 +717,10 @@ void DemoKankyo_DrawLightPlane(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    if (play->csCtx.state == CS_STATE_IDLE || gSaveContext.sceneLayer >= 4) {
+    if (play->csCtx.state == CS_STATE_IDLE || gSaveContext.sceneSetupIndex >= 4) {
         Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
-        gSPSegment(POLY_XLU_DISP++, 0x08,
-                   Gfx_TexScrollEx(play->state.gfxCtx, 0, play->state.frames & 0x7F, 64, 32, 0, 1));
+        gSPSegment(POLY_XLU_DISP++, 0x08, Gfx_TexScroll(play->state.gfxCtx, 0, play->state.frames & 0x7F, 64, 32));
         gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, object_toki_objects_DL_008390);
     }

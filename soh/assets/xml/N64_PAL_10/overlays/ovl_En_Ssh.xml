@@ -1,0 +1,8 @@
+<Root>
+    <File Name="ovl_En_Ssh" BaseAddress="0x80B26110" RangeStart="0x2150" RangeEnd="0x21E0">
+        <Array Name="D_80B043C0" Count="4" Offset="0x2150">
+            <Vtx/>
+        </Array>
+        <DList Name="D_80B04400" Offset="0x2190"/>
+    </File>
+</Root>

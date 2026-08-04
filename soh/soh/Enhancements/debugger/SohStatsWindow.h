@@ -1,7 +1,7 @@
 #ifndef SOH_STATS_H
 #define SOH_STATS_H
 
-#include <ship/window/gui/GuiWindow.h>
+#include <libultraship/libultraship.h>
 
 class SohStatsWindow final : public Ship::GuiWindow {
   public:

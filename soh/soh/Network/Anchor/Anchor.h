@@ -3,9 +3,7 @@
 #ifdef __cplusplus
 
 #include "soh/Network/Network.h"
-#include <libultraship/bridge/consolevariablebridge.h>
-#include <ship/window/gui/GuiWindow.h>
-#include <spdlog/spdlog.h>
+#include <libultraship/libultraship.h>
 #include <queue>
 #include <mutex>
 
@@ -31,7 +29,6 @@ typedef struct {
     bool isSaveLoaded;
     bool isGameComplete;
     s16 sceneNum;
-    s8 curRoomNum;
     s32 entranceIndex;
 
     // Only available in PLAYER_UPDATE packets

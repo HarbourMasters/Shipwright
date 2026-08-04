@@ -1,6 +1,6 @@
 #pragma once
 
-#include <stdint.h>
+#include <cstdint>
 #include <vector>
 #include <ship/resource/Resource.h>
 #include "soh/resource/type/AudioSample.h"

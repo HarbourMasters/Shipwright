@@ -12,7 +12,7 @@ extern "C" {
 
 #endif // PLANDOMIZER_H
 
-#include <ship/window/gui/GuiWindow.h>
+#include <libultraship/libultraship.h>
 #include "soh/Enhancements/randomizer/item.h"
 
 #ifdef __cplusplus

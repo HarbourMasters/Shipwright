@@ -1,0 +1,105 @@
+<Root>
+    <File Name="spot18_scene" Segment="2">
+        <Texture Name="spot18_sceneTex_0087C8" OutName="spot18_sceneTex_0087C8" Format="rgba16" Width="32" Height="32" Offset="0x8748" AddedByScript="true"/>
+        <Texture Name="spot18_sceneTex_009008" OutName="spot18_sceneTex_009008" Format="ci8" Width="64" Height="32" Offset="0x8F88" TlutOffset="0x8540" AddedByScript="true"/>
+        <Texture Name="spot18_sceneTex_009848" OutName="spot18_sceneTex_009848" Format="rgba16" Width="16" Height="32" Offset="0x97C8" AddedByScript="true"/>
+        <Texture Name="spot18_sceneTex_009C48" OutName="spot18_sceneTex_009C48" Format="ci8" Width="64" Height="32" Offset="0x9BC8" TlutOffset="0x8540" AddedByScript="true"/>
+        <Texture Name="spot18_sceneTLUT_0085C0" OutName="spot18_sceneTLUT_0085C0" Format="rgba16" Width="16" Height="16" Offset="0x8540" AddedByScript="true"/>
+        <Cutscene Name="gGoronCityDaruniaCorrectCs" Offset="0x59E0"/>
+        <Cutscene Name="gGoronCityDarunia01Cs" Offset="0x6930"/>
+        <Cutscene Name="gGoronCityDaruniaWrongCs" Offset="0x7DF4"/>
+        <Cutscene Name="gGoronCityIntroCs" Offset="0x8380"/>
+        <Texture Name="gGoronCityNightEntranceTex" OutName="night_entrance" Format="ia8" Width="8" Height="8" Offset="0x8F48"/>
+        <Texture Name="gGoronCityDayEntranceTex" OutName="day_entrance" Format="ia8" Width="8" Height="8" Offset="0x9788"/>
+        <Scene Name="spot18_scene" Offset="0x0"/>
+    </File>
+    <File Name="spot18_room_0" Segment="3">
+        <Texture Name="spot18_room_0Tex_004960" OutName="spot18_room_0Tex_004960" Format="rgba16" Width="32" Height="32" Offset="0x4960" AddedByScript="true"/>
+        <Texture Name="spot18_room_0Tex_005160" OutName="spot18_room_0Tex_005160" Format="rgba16" Width="16" Height="32" Offset="0x5160" AddedByScript="true"/>
+        <Texture Name="spot18_room_0Tex_005560" OutName="spot18_room_0Tex_005560" Format="rgba16" Width="16" Height="32" Offset="0x5560" AddedByScript="true"/>
+        <Texture Name="spot18_room_0Tex_005960" OutName="spot18_room_0Tex_005960" Format="rgba16" Width="32" Height="64" Offset="0x5960" AddedByScript="true"/>
+        <Texture Name="spot18_room_0Tex_006960" OutName="spot18_room_0Tex_006960" Format="ci8" Width="32" Height="64" Offset="0x6960" ExternalTlut="spot18_scene" ExternalTlutOffset="0x8540" AddedByScript="true"/>
+        <Texture Name="spot18_room_0Tex_007160" OutName="spot18_room_0Tex_007160" Format="rgba16" Width="32" Height="32" Offset="0x7160" AddedByScript="true"/>
+        <Texture Name="spot18_room_0Tex_007960" OutName="spot18_room_0Tex_007960" Format="rgba16" Width="32" Height="32" Offset="0x7960" AddedByScript="true"/>
+        <Texture Name="spot18_room_0Tex_008160" OutName="spot18_room_0Tex_008160" Format="rgba16" Width="32" Height="32" Offset="0x8160" AddedByScript="true"/>
+        <Texture Name="spot18_room_0Tex_008960" OutName="spot18_room_0Tex_008960" Format="ci8" Width="32" Height="64" Offset="0x8960" ExternalTlut="spot18_scene" ExternalTlutOffset="0x8540" AddedByScript="true"/>
+        <Texture Name="spot18_room_0Tex_009160" OutName="spot18_room_0Tex_009160" Format="ci8" Width="32" Height="64" Offset="0x9160" ExternalTlut="spot18_scene" ExternalTlutOffset="0x8540" AddedByScript="true"/>
+        <Texture Name="spot18_room_0Tex_009960" OutName="spot18_room_0Tex_009960" Format="rgba16" Width="32" Height="32" Offset="0x9960" AddedByScript="true"/>
+        <Texture Name="spot18_room_0Tex_00A160" OutName="spot18_room_0Tex_00A160" Format="ci8" Width="64" Height="32" Offset="0xA160" ExternalTlut="spot18_scene" ExternalTlutOffset="0x8540" AddedByScript="true"/>
+        <Texture Name="spot18_room_0Tex_00A960" OutName="spot18_room_0Tex_00A960" Format="ci8" Width="32" Height="64" Offset="0xA960" ExternalTlut="spot18_scene" ExternalTlutOffset="0x8540" AddedByScript="true"/>
+        <Texture Name="spot18_room_0Tex_00B160" OutName="spot18_room_0Tex_00B160" Format="ci8" Width="32" Height="64" Offset="0xB160" ExternalTlut="spot18_scene" ExternalTlutOffset="0x8540" AddedByScript="true"/>
+        <Texture Name="spot18_room_0Tex_00B960" OutName="spot18_room_0Tex_00B960" Format="ci8" Width="32" Height="64" Offset="0xB960" ExternalTlut="spot18_scene" ExternalTlutOffset="0x8540" AddedByScript="true"/>
+        <Texture Name="spot18_room_0Tex_00C160" OutName="spot18_room_0Tex_00C160" Format="ci8" Width="32" Height="64" Offset="0xC160" ExternalTlut="spot18_scene" ExternalTlutOffset="0x8540" AddedByScript="true"/>
+        <Texture Name="spot18_room_0Tex_00C960" OutName="spot18_room_0Tex_00C960" Format="ia8" Width="64" Height="64" Offset="0xC960" AddedByScript="true"/>
+        <Texture Name="spot18_room_0Tex_00DFC8" OutName="spot18_room_0Tex_00DFC8" Format="rgba16" Width="32" Height="64" Offset="0xDFC8" AddedByScript="true"/>
+        <Texture Name="spot18_room_0Tex_00EFC8" OutName="spot18_room_0Tex_00EFC8" Format="rgba16" Width="64" Height="32" Offset="0xEFC8" AddedByScript="true"/>
+        <Texture Name="spot18_room_0Tex_00FFC8" OutName="spot18_room_0Tex_00FFC8" Format="rgba16" Width="32" Height="32" Offset="0xFFC8" AddedByScript="true"/>
+        <Texture Name="spot18_room_0Tex_0107C8" OutName="spot18_room_0Tex_0107C8" Format="rgba16" Width="64" Height="32" Offset="0x107C8" AddedByScript="true"/>
+        <Texture Name="spot18_room_0Tex_0117C8" OutName="spot18_room_0Tex_0117C8" Format="rgba16" Width="64" Height="32" Offset="0x117C8" AddedByScript="true"/>
+        <Room Name="spot18_room_0" Offset="0x0"/>
+    </File>
+    <File Name="spot18_room_1" Segment="3">
+        <Texture Name="spot18_room_1Tex_002868" OutName="spot18_room_1Tex_002868" Format="rgba16" Width="32" Height="32" Offset="0x2868" AddedByScript="true"/>
+        <Texture Name="spot18_room_1Tex_003068" OutName="spot18_room_1Tex_003068" Format="i4" Width="128" Height="64" Offset="0x3068" AddedByScript="true"/>
+        <Texture Name="spot18_room_1Tex_004068" OutName="spot18_room_1Tex_004068" Format="ci8" Width="64" Height="32" Offset="0x4068" ExternalTlut="spot18_scene" ExternalTlutOffset="0x8540" AddedByScript="true"/>
+        <Texture Name="spot18_room_1Tex_004868" OutName="spot18_room_1Tex_004868" Format="rgba16" Width="32" Height="64" Offset="0x4868" AddedByScript="true"/>
+        <Texture Name="spot18_room_1Tex_005E00" OutName="spot18_room_1Tex_005E00" Format="ia4" Width="32" Height="64" Offset="0x5E00" AddedByScript="true"/>
+        <Room Name="spot18_room_1" Offset="0x0"/>
+    </File>
+    <File Name="spot18_room_2" Segment="3">
+        <Texture Name="spot18_room_2Tex_004818" OutName="spot18_room_2Tex_004818" Format="rgba16" Width="32" Height="64" Offset="0x4818" AddedByScript="true"/>
+        <Texture Name="spot18_room_2Tex_005818" OutName="spot18_room_2Tex_005818" Format="rgba16" Width="32" Height="32" Offset="0x5818" AddedByScript="true"/>
+        <Texture Name="spot18_room_2Tex_006018" OutName="spot18_room_2Tex_006018" Format="rgba16" Width="32" Height="32" Offset="0x6018" AddedByScript="true"/>
+        <Texture Name="spot18_room_2Tex_006818" OutName="spot18_room_2Tex_006818" Format="rgba16" Width="32" Height="32" Offset="0x6818" AddedByScript="true"/>
+        <Texture Name="spot18_room_2Tex_007018" OutName="spot18_room_2Tex_007018" Format="ci8" Width="32" Height="64" Offset="0x7018" ExternalTlut="spot18_scene" ExternalTlutOffset="0x8540" AddedByScript="true"/>
+        <Texture Name="spot18_room_2Tex_007818" OutName="spot18_room_2Tex_007818" Format="rgba16" Width="32" Height="32" Offset="0x7818" AddedByScript="true"/>
+        <Texture Name="spot18_room_2Tex_008018" OutName="spot18_room_2Tex_008018" Format="rgba16" Width="32" Height="32" Offset="0x8018" AddedByScript="true"/>
+        <Texture Name="spot18_room_2Tex_008818" OutName="spot18_room_2Tex_008818" Format="ci8" Width="32" Height="64" Offset="0x8818" ExternalTlut="spot18_scene" ExternalTlutOffset="0x8540" AddedByScript="true"/>
+        <Texture Name="spot18_room_2Tex_009018" OutName="spot18_room_2Tex_009018" Format="ci8" Width="32" Height="64" Offset="0x9018" ExternalTlut="spot18_scene" ExternalTlutOffset="0x8540" AddedByScript="true"/>
+        <Texture Name="spot18_room_2Tex_009818" OutName="spot18_room_2Tex_009818" Format="ci8" Width="32" Height="64" Offset="0x9818" ExternalTlut="spot18_scene" ExternalTlutOffset="0x8540" AddedByScript="true"/>
+        <Texture Name="spot18_room_2Tex_00A018" OutName="spot18_room_2Tex_00A018" Format="ci8" Width="32" Height="64" Offset="0xA018" ExternalTlut="spot18_scene" ExternalTlutOffset="0x8540" AddedByScript="true"/>
+        <Texture Name="spot18_room_2Tex_00A818" OutName="spot18_room_2Tex_00A818" Format="ci8" Width="32" Height="64" Offset="0xA818" ExternalTlut="spot18_scene" ExternalTlutOffset="0x8540" AddedByScript="true"/>
+        <Texture Name="spot18_room_2Tex_00B018" OutName="spot18_room_2Tex_00B018" Format="ci8" Width="32" Height="64" Offset="0xB018" ExternalTlut="spot18_scene" ExternalTlutOffset="0x8540" AddedByScript="true"/>
+        <Texture Name="spot18_room_2Tex_00B818" OutName="spot18_room_2Tex_00B818" Format="ia8" Width="64" Height="64" Offset="0xB818" AddedByScript="true"/>
+        <Texture Name="spot18_room_2Tex_00D1A8" OutName="spot18_room_2Tex_00D1A8" Format="rgba16" Width="32" Height="64" Offset="0xD1A8" AddedByScript="true"/>
+        <Texture Name="spot18_room_2Tex_00E1A8" OutName="spot18_room_2Tex_00E1A8" Format="rgba16" Width="64" Height="32" Offset="0xE1A8" AddedByScript="true"/>
+        <Texture Name="spot18_room_2Tex_00F1A8" OutName="spot18_room_2Tex_00F1A8" Format="rgba16" Width="32" Height="32" Offset="0xF1A8" AddedByScript="true"/>
+        <Texture Name="spot18_room_2Tex_00F9A8" OutName="spot18_room_2Tex_00F9A8" Format="rgba16" Width="64" Height="32" Offset="0xF9A8" AddedByScript="true"/>
+        <Texture Name="spot18_room_2Tex_0109A8" OutName="spot18_room_2Tex_0109A8" Format="rgba16" Width="64" Height="32" Offset="0x109A8" AddedByScript="true"/>
+        <Room Name="spot18_room_2" Offset="0x0"/>
+    </File>
+    <File Name="spot18_room_3" Segment="3">
+        <Texture Name="spot18_room_3Tex_00B448" OutName="spot18_room_3Tex_00B448" Format="rgba16" Width="32" Height="32" Offset="0xB448" AddedByScript="true"/>
+        <Texture Name="spot18_room_3Tex_00BC48" OutName="spot18_room_3Tex_00BC48" Format="rgba16" Width="16" Height="32" Offset="0xBC48" AddedByScript="true"/>
+        <Texture Name="spot18_room_3Tex_00C048" OutName="spot18_room_3Tex_00C048" Format="rgba16" Width="16" Height="32" Offset="0xC048" AddedByScript="true"/>
+        <Texture Name="spot18_room_3Tex_00C448" OutName="spot18_room_3Tex_00C448" Format="rgba16" Width="16" Height="32" Offset="0xC448" AddedByScript="true"/>
+        <Texture Name="spot18_room_3Tex_00C848" OutName="spot18_room_3Tex_00C848" Format="rgba16" Width="32" Height="64" Offset="0xC848" AddedByScript="true"/>
+        <Texture Name="spot18_room_3Tex_00D848" OutName="spot18_room_3Tex_00D848" Format="rgba16" Width="16" Height="32" Offset="0xD848" AddedByScript="true"/>
+        <Texture Name="spot18_room_3Tex_00DC48" OutName="spot18_room_3Tex_00DC48" Format="ci8" Width="32" Height="64" Offset="0xDC48" ExternalTlut="spot18_scene" ExternalTlutOffset="0x8540" AddedByScript="true"/>
+        <Texture Name="spot18_room_3Tex_00E448" OutName="spot18_room_3Tex_00E448" Format="ci8" Width="32" Height="64" Offset="0xE448" ExternalTlut="spot18_scene" ExternalTlutOffset="0x8540" AddedByScript="true"/>
+        <Texture Name="spot18_room_3Tex_00EC48" OutName="spot18_room_3Tex_00EC48" Format="rgba16" Width="32" Height="32" Offset="0xEC48" AddedByScript="true"/>
+        <Texture Name="spot18_room_3Tex_00F448" OutName="spot18_room_3Tex_00F448" Format="rgba16" Width="64" Height="32" Offset="0xF448" AddedByScript="true"/>
+        <Texture Name="spot18_room_3Tex_010448" OutName="spot18_room_3Tex_010448" Format="rgba16" Width="32" Height="32" Offset="0x10448" AddedByScript="true"/>
+        <Texture Name="spot18_room_3Tex_010C48" OutName="spot18_room_3Tex_010C48" Format="rgba16" Width="32" Height="32" Offset="0x10C48" AddedByScript="true"/>
+        <Texture Name="spot18_room_3Tex_011448" OutName="spot18_room_3Tex_011448" Format="ci8" Width="32" Height="64" Offset="0x11448" ExternalTlut="spot18_scene" ExternalTlutOffset="0x8540" AddedByScript="true"/>
+        <Texture Name="spot18_room_3Tex_011C48" OutName="spot18_room_3Tex_011C48" Format="ci8" Width="32" Height="64" Offset="0x11C48" ExternalTlut="spot18_scene" ExternalTlutOffset="0x8540" AddedByScript="true"/>
+        <Texture Name="spot18_room_3Tex_012448" OutName="spot18_room_3Tex_012448" Format="rgba16" Width="16" Height="16" Offset="0x12448" AddedByScript="true"/>
+        <Texture Name="spot18_room_3Tex_012648" OutName="spot18_room_3Tex_012648" Format="rgba16" Width="16" Height="16" Offset="0x12648" AddedByScript="true"/>
+        <Texture Name="spot18_room_3Tex_012848" OutName="spot18_room_3Tex_012848" Format="i4" Width="128" Height="64" Offset="0x12848" AddedByScript="true"/>
+        <Texture Name="spot18_room_3Tex_013848" OutName="spot18_room_3Tex_013848" Format="ci8" Width="64" Height="32" Offset="0x13848" ExternalTlut="spot18_scene" ExternalTlutOffset="0x8540" AddedByScript="true"/>
+        <Texture Name="spot18_room_3Tex_014048" OutName="spot18_room_3Tex_014048" Format="rgba16" Width="32" Height="32" Offset="0x14048" AddedByScript="true"/>
+        <Texture Name="spot18_room_3Tex_014848" OutName="spot18_room_3Tex_014848" Format="ci8" Width="32" Height="64" Offset="0x14848" ExternalTlut="spot18_scene" ExternalTlutOffset="0x8540" AddedByScript="true"/>
+        <Texture Name="spot18_room_3Tex_015048" OutName="spot18_room_3Tex_015048" Format="ci8" Width="32" Height="64" Offset="0x15048" ExternalTlut="spot18_scene" ExternalTlutOffset="0x8540" AddedByScript="true"/>
+        <Texture Name="spot18_room_3Tex_015848" OutName="spot18_room_3Tex_015848" Format="ci8" Width="32" Height="64" Offset="0x15848" ExternalTlut="spot18_scene" ExternalTlutOffset="0x8540" AddedByScript="true"/>
+        <Texture Name="spot18_room_3Tex_016048" OutName="spot18_room_3Tex_016048" Format="ci8" Width="32" Height="64" Offset="0x16048" ExternalTlut="spot18_scene" ExternalTlutOffset="0x8540" AddedByScript="true"/>
+        <Texture Name="spot18_room_3Tex_016848" OutName="spot18_room_3Tex_016848" Format="ci8" Width="32" Height="32" Offset="0x16848" ExternalTlut="spot18_scene" ExternalTlutOffset="0x8540" AddedByScript="true"/>
+        <Texture Name="spot18_room_3Tex_016C48" OutName="spot18_room_3Tex_016C48" Format="rgba16" Width="32" Height="32" Offset="0x16C48" AddedByScript="true"/>
+        <Texture Name="spot18_room_3Tex_017448" OutName="spot18_room_3Tex_017448" Format="ia8" Width="64" Height="64" Offset="0x17448" AddedByScript="true"/>
+        <Texture Name="spot18_room_3Tex_0194E8" OutName="spot18_room_3Tex_0194E8" Format="rgba16" Width="32" Height="64" Offset="0x194E8" AddedByScript="true"/>
+        <Texture Name="spot18_room_3Tex_01A4E8" OutName="spot18_room_3Tex_01A4E8" Format="rgba16" Width="64" Height="32" Offset="0x1A4E8" AddedByScript="true"/>
+        <Texture Name="spot18_room_3Tex_01B4E8" OutName="spot18_room_3Tex_01B4E8" Format="rgba16" Width="32" Height="32" Offset="0x1B4E8" AddedByScript="true"/>
+        <Texture Name="spot18_room_3Tex_01BCE8" OutName="spot18_room_3Tex_01BCE8" Format="rgba16" Width="64" Height="32" Offset="0x1BCE8" AddedByScript="true"/>
+        <Texture Name="spot18_room_3Tex_01CCE8" OutName="spot18_room_3Tex_01CCE8" Format="rgba16" Width="64" Height="32" Offset="0x1CCE8" AddedByScript="true"/>
+        <Room Name="spot18_room_3" Offset="0x0"/>
+    </File>
+</Root>

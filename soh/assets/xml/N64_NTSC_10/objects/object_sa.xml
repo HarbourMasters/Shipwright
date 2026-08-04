@@ -1,0 +1,100 @@
+<Root>
+    <File Name="object_sa" Segment="6">
+        <Texture Name="object_saTex_002530" OutName="object_saTex_002530" Format="ci8" Width="8" Height="8" Offset="0x2530" TlutOffset="0x21F0" AddedByScript="true"/>
+        <Skeleton Name="gSariaSkel" Type="Flex" LimbType="Standard" Offset="0xB1A0"/>
+        
+        <Limb Name="gSariaRootLimb" LimbType="Standard" Offset="0xB0A0"/>
+        <Limb Name="gSariaWaistLimb" LimbType="Standard" Offset="0xB0AC"/>
+        <Limb Name="gSariaLeftThighLimb" LimbType="Standard" Offset="0xB0B8"/>
+        <Limb Name="gSariaLeftShinLimb" LimbType="Standard" Offset="0xB0C4"/>
+        <Limb Name="gSariaLeftFootLimb" LimbType="Standard" Offset="0xB0D0"/>
+        <Limb Name="gSariaRightThighLimb" LimbType="Standard" Offset="0xB0DC"/>
+        <Limb Name="gSariaRightShinLimb" LimbType="Standard" Offset="0xB0E8"/>
+        <Limb Name="gSariaRightFootLimb" LimbType="Standard" Offset="0xB0F4"/>
+        <Limb Name="gSariaRightChestLimb" LimbType="Standard" Offset="0xB100"/>
+        <Limb Name="gSariaLeftShoulderLimb" LimbType="Standard" Offset="0xB10C"/>
+        <Limb Name="gSariaLeftArmLimb" LimbType="Standard" Offset="0xB118"/>
+        <Limb Name="gSariaLeftHandLimb" LimbType="Standard" Offset="0xB124"/>
+        <Limb Name="gSariaRightShoulderLimb" LimbType="Standard" Offset="0xB130"/>
+        <Limb Name="gSariaRightArmLimb" LimbType="Standard" Offset="0xB13C"/>
+        <Limb Name="gSariaRightHandLimb" LimbType="Standard" Offset="0xB148"/>
+        <Limb Name="gSariaHeadLimb" LimbType="Standard" Offset="0xB154"/>
+
+        <Animation Name="gSariaSealGanonAnim" Offset="0x1334"/>
+        <Animation Name="gSariaOcarinaToMouthAnim" Offset="0x1D50"/>
+        <Animation Name="gSariaWaitArmsToSideAnim" Offset="0x21D8"/>
+        <Animation Name="gSariaPlayingOcarinaAnim" Offset="0xBAEC"/>
+        <Animation Name="gSariaStopPlayingOcarinaAnim" Offset="0xC500"/>
+        <Animation Name="gSariaLinkLearnedSariasSongAnim" Offset="0xCFD8"/>
+        <Animation Name="gSariaReturnToOcarinaAnim" Offset="0xD7E8"/>
+        <Animation Name="gSariaGiveForestMedallionAnim" Offset="0xDF80"/>
+        <Animation Name="gSariaGiveForestMedallionStandAnim" Offset="0xE500"/>
+        <Animation Name="gSariaLookUpArmExtendedAnim" Offset="0xE908"/>
+        <Animation Name="gSariaRunAnim" Offset="0xEBB0"/>
+        <Animation Name="gSariaWaveAnim" Offset="0xF1D4"/>
+        <Animation Name="gSariaSitting1Anim" Offset="0xF580"/>
+        <Animation Name="gSariaSitting2Anim" Offset="0xFCE0"/>
+        <Animation Name="gSariaSitting3Anim" Offset="0xFFD4"/>
+        <Animation Name="gSariaLookOverShoulderAnim" Offset="0x10C44"/>
+        <Animation Name="gSariaWaitOnBridgeAnim" Offset="0x1113C"/>
+        <Animation Name="gSariaTransitionHandsSideToBackAnim" Offset="0x11580"/>
+        <Animation Name="gSariaHandsOutAnim" Offset="0x1186C"/>
+        <Animation Name="gSariaTransitionHandsSideToHipsAnim" Offset="0x11C38"/>
+        <Animation Name="gSariaHandsBehindBackWaitAnim" Offset="0x12100"/>
+        <Animation Name="gSariaTransitionHandsSideToChestToSideAnim" Offset="0x1291C"/>
+        <Animation Name="gSariaRightArmExtendedWaitAnim" Offset="0x13008"/>
+        <Animation Name="gSariaGiveLinkOcarinaAnim" Offset="0x135EC"/>
+        <Animation Name="gSariaHoldOutOcarinaAnim" Offset="0x13CD8"/>
+        <Animation Name="gSariaHoldOcarinaAnim" Offset="0x140BC"/>
+        <Animation Name="gSariaStandHandsOnHipsAnim" Offset="0x14470"/>
+        <Animation Name="gSariaExtendRightArmAnim" Offset="0x14850"/>
+        <Animation Name="gSariaHandsOnFaceAnim" Offset="0x15220"/>
+
+        <DList Name="gSariaHeadDL" Offset="0x6BF8"/>
+        <DList Name="gSariaLeftHandDL" Offset="0x7900"/>
+        <DList Name="gSariaRightHandDL" Offset="0x7A40"/>
+        <DList Name="gSariaRightHandAndOcarinaDL" Offset="0x7B80"/>
+        <DList Name="gSariaChestDL" Offset="0x9918"/>
+        <DList Name="gSariaRightShoulderDL" Offset="0x9AA8"/>
+        <DList Name="gSariaRightArmDL" Offset="0x9C70"/>
+        <DList Name="gSariaLeftShoulderDL" Offset="0x9DA8"/>
+        <DList Name="gSariaLeftArmDL" Offset="0x9F70"/>
+        <DList Name="gSariaWaistDL" Offset="0xA0A8"/>
+        <DList Name="gSariaRightThighDL" Offset="0xA300"/>
+        <DList Name="gSariaRightShinDL" Offset="0xA550"/>
+        <DList Name="gSariaRightFootDL" Offset="0xA810"/>
+        <DList Name="gSariaLeftThighDL" Offset="0xA9D0"/>
+        <DList Name="gSariaLeftShinDL" Offset="0xAC20"/>
+        <DList Name="gSariaLeftFootDL" Offset="0xAEE0"/>
+
+        <Texture Name="gSariaClothesTLUT" OutName="clothes_tlut" Format="rgba16" Width="18" Height="6" Offset="0x21F0"/>
+        <Texture Name="gSariaMouthTLUT" OutName="mouth_tlut" Format="rgba16" Width="29" Height="8" Offset="0x2CF8"/>
+        <Texture Name="gSariaEyeTLUT" OutName="eye_tlut" Format="rgba16" Width="63" Height="4" Offset="0x2B00"/>
+        <Texture Name="gSariaSkinTLUT" OutName="skin_tlut" Format="rgba16" Width="8" Height="9" Offset="0x2A70"/>
+
+        <Texture Name="gSariaBootsTex" OutName="boots" Format="ci8" Width="16" Height="16" Offset="0x23F0" TlutOffset="0x21F0"/>
+        <Texture Name="gSariaGreenTex" OutName="green" Format="ci8" Width="8" Height="8" Offset="0x24F0" TlutOffset="0x21F0"/> 
+        <Texture Name="gSariaKneeTex" OutName="knee" Format="ci8" Width="16" Height="16" Offset="0x2570" TlutOffset="0x21F0"/>
+        <Texture Name="gSariaTorsoTex" OutName="torso" Format="ci8" Width="16" Height="16" Offset="0x2670" TlutOffset="0x21F0"/>
+        <Texture Name="gSariaBeltTex" OutName="belt" Format="ci8" Width="16" Height="16" Offset="0x2770" TlutOffset="0x21F0"/>
+        <Texture Name="gSariaUnkGreenTex" Format="ci8" Width="16" Height="8" Offset="0x2870" TlutOffset="0x21F0"/>
+        <Texture Name="gSariaUnusedHandTex" OutName="unused_hand" Format="ci8" Width="16" Height="16" Offset="0x28F0" TlutOffset="0x21F0"/>
+        <Texture Name="gSariaSleeveTex" OutName="sleeve" Format="ci8" Width="8" Height="16" Offset="0x29F0" TlutOffset="0x21F0"/>
+        <Texture Name="gSariaHairTex" OutName="hair" Format="ci8" Width="8" Height="16" Offset="0x2EC8" TlutOffset="0x2A70"/>
+        <Texture Name="gSariaEyeOpenTex" OutName="eye_open" Format="ci8" Width="32" Height="32" Offset="0x2F48" TlutOffset="0x2B00"/>
+        <Texture Name="gSariaMouthClosedTex" OutName="mouth_closed" Format="ci8" Width="32" Height="16" Offset="0x3348" TlutOffset="0x2CF8"/>
+        <Texture Name="gSariaSkinTex" OutName="skin" Format="ci8" Width="8" Height="8" Offset="0x3548" TlutOffset="0x2A70"/>
+        <Texture Name="gSariaMouthClosed2Tex" OutName="mouth_closed2" Format="ci8" Width="32" Height="16" Offset="0x3588" TlutOffset="0x2CF8"/>
+        <Texture Name="gSariaEarTex" OutName="ear" Format="ci8" Width="8" Height="8" Offset="0x3788" TlutOffset="0x2A70"/>
+        <Texture Name="gSariaCollarTex" OutName="collar" Format="ci8" Width="8" Height="8" Offset="0x37C8" TlutOffset="0x2A70"/>
+        <Texture Name="gSariaHandTex" OutName="hand" Format="ci8" Width="8" Height="8" Offset="0x3808" TlutOffset="0x2A70"/>
+        <Texture Name="gSariaEyeClosedTex" OutName="eye_closed" Format="ci8" Width="32" Height="32" Offset="0x3848" TlutOffset="0x2B00"/>
+        <Texture Name="gSariaEyeHalfTex" OutName="eye_half" Format="ci8" Width="32" Height="32" Offset="0x3C48" TlutOffset="0x2B00"/>
+        <Texture Name="gSariaFairyOcarinaTex" OutName="fairy_ocarina" Format="rgba16" Width="32" Height="16" Offset="0x4048"/>
+        <Texture Name="gSariaMouthSmilingOpenTex" OutName="mouth_smiling_open" Format="ci8" Width="32" Height="16" Offset="0x4448" TlutOffset="0x2CF8"/>
+        <Texture Name="gSariaMouthFrowningTex" OutName="mouth_frowning" Format="ci8" Width="32" Height="16" Offset="0x4648" TlutOffset="0x2CF8"/>
+        <Texture Name="gSariaEyeSuprisedTex" OutName="eye_suprised" Format="ci8" Width="32" Height="32" Offset="0x4848" TlutOffset="0x2B00"/>
+        <Texture Name="gSariaMouthSuprisedTex" OutName="mouth_suprised" Format="ci8" Width="32" Height="16" Offset="0x4C48" TlutOffset="0x2CF8"/>
+        <Texture Name="gSariaEyeSadTex" OutName="eye_sad" Format="ci8" Width="32" Height="32" Offset="0x4E48" TlutOffset="0x2B00"/>
+    </File>
+</Root>

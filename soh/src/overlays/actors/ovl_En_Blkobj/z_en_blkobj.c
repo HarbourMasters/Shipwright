@@ -6,7 +6,7 @@
 
 #include "z_en_blkobj.h"
 #include "objects/object_blkobj/object_blkobj.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
 
@@ -89,10 +89,9 @@ void EnBlkobj_Wait(EnBlkobj* this, PlayState* play) {
 }
 
 void EnBlkobj_SpawnDarkLink(EnBlkobj* this, PlayState* play) {
-    if (GameInteractor_Should(VB_BLKOBJ_SPAWN_DARK_LINK, !(this->dyna.actor.flags & ACTOR_FLAG_INSIDE_CULLING_VOLUME),
-                              this, play)) {
+    if (!(this->dyna.actor.flags & ACTOR_FLAG_INSIDE_CULLING_VOLUME)) {
         Actor_Spawn(&play->actorCtx, play, ACTOR_EN_TORCH2, this->dyna.actor.world.pos.x, this->dyna.actor.world.pos.y,
-                    this->dyna.actor.world.pos.z, 0, this->dyna.actor.yawTowardsPlayer, 0, 0);
+                    this->dyna.actor.world.pos.z, 0, this->dyna.actor.yawTowardsPlayer, 0, 0, true);
         EnBlkobj_SetupAction(this, EnBlkobj_DarkLinkFight);
     }
 }
@@ -168,9 +167,8 @@ void EnBlkobj_Draw(Actor* thisx, PlayState* play) {
 
     gameplayFrames = play->gameplayFrames % 128;
 
-    gSPSegment(
-        POLY_XLU_DISP++, 0x0D,
-        Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, gameplayFrames, 0, 32, 32, 1, gameplayFrames, 0, 32, 32, 1, 0, 1, 0));
+    gSPSegment(POLY_XLU_DISP++, 0x0D,
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, gameplayFrames, 0, 32, 32, 1, gameplayFrames, 0, 32, 32));
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     if (this->alpha != 0) {

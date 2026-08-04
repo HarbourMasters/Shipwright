@@ -1,0 +1,7 @@
+<Root>
+    
+    <File Name="object_kusa" Segment="6">
+        <DList Name="object_kusa_DL_000140" Offset="0x140"/>
+        <DList Name="object_kusa_DL_0002E0" Offset="0x2E0"/>
+    </File>
+</Root>

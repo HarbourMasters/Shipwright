@@ -3,6 +3,7 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "overlays/effects/ovl_Effect_Ss_Dead_Sound/z_eff_ss_dead_sound.h"
 #include "textures/icon_item_static/icon_item_static.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/OTRGlobals.h"
 
@@ -780,8 +781,11 @@ void EnItem00_Update(Actor* thisx, PlayState* play) {
         }
     }
 
-    if (GameInteractor_Should(VB_ITEM00_TIMER_TICK, this->unk_15A > 0, this)) {
+    if (this->unk_15A > 0) {
         this->unk_15A--;
+        if (CVarGetInteger(CVAR_CHEAT("DropsDontDie"), 0) && (this->unk_154 <= 0)) {
+            this->unk_15A++;
+        }
     }
 
     if ((this->unk_15A > 0) && (this->unk_15A < 41) && (this->unk_154 <= 0)) {
@@ -823,7 +827,7 @@ void EnItem00_Update(Actor* thisx, PlayState* play) {
         if (sp3A || D_80157D94[0]) {
             Actor_UpdateBgCheckInfo(play, &this->actor, 10.0f, 15.0f, 15.0f, 0x1D);
 
-            if (GameInteractor_Should(VB_ITEM00_KILL, this->actor.floorHeight <= -10000.0f, this)) {
+            if (this->actor.floorHeight <= -10000.0f) {
                 Actor_Kill(&this->actor);
                 return;
             }
@@ -1585,7 +1589,7 @@ EnItem00* Item_DropCollectible(PlayState* play, Vec3f* spawnPos, s16 params) {
     if (((params & 0x00FF) == ITEM00_FLEXIBLE) && !param4000) {
         // TODO: Prevent the cast to EnItem00 here since this is a different actor (En_Elf)
         spawnedActor = (EnItem00*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ELF, spawnPos->x, spawnPos->y + 40.0f,
-                                              spawnPos->z, 0, 0, 0, FAIRY_HEAL_TIMED);
+                                              spawnPos->z, 0, 0, 0, FAIRY_HEAL_TIMED, true);
         EffectSsDeadSound_SpawnStationary(play, spawnPos, NA_SE_EV_BUTTERFRY_TO_FAIRY, true, DEADSOUND_REPEAT_MODE_OFF,
                                           40);
     } else {
@@ -1595,7 +1599,7 @@ EnItem00* Item_DropCollectible(PlayState* play, Vec3f* spawnPos, s16 params) {
 
         if (params != -1) {
             spawnedActor = (EnItem00*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ITEM00, spawnPos->x, spawnPos->y,
-                                                  spawnPos->z, 0, 0, 0, params | param8000 | param3F00);
+                                                  spawnPos->z, 0, 0, 0, params | param8000 | param3F00, true);
             if ((spawnedActor != NULL) && !param8000) {
                 spawnedActor->actor.velocity.y = !param4000 ? 8.0f : -2.0f;
                 spawnedActor->actor.speedXZ = 2.0f;
@@ -1632,14 +1636,14 @@ EnItem00* Item_DropCollectible2(PlayState* play, Vec3f* spawnPos, s16 params) {
     if (((params & 0x00FF) == ITEM00_FLEXIBLE) && !param4000) {
         // TODO: Prevent the cast to EnItem00 here since this is a different actor (En_Elf)
         spawnedActor = (EnItem00*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ELF, spawnPos->x, spawnPos->y + 40.0f,
-                                              spawnPos->z, 0, 0, 0, FAIRY_HEAL_TIMED);
+                                              spawnPos->z, 0, 0, 0, FAIRY_HEAL_TIMED, true);
         EffectSsDeadSound_SpawnStationary(play, spawnPos, NA_SE_EV_BUTTERFRY_TO_FAIRY, true, DEADSOUND_REPEAT_MODE_OFF,
                                           40);
     } else {
         params = func_8001F404(params & 0x00FF);
         if (params != -1) {
             spawnedActor = (EnItem00*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ITEM00, spawnPos->x, spawnPos->y,
-                                                  spawnPos->z, 0, 0, 0, params | param8000 | param3F00);
+                                                  spawnPos->z, 0, 0, 0, params | param8000 | param3F00, true);
             if ((spawnedActor != NULL) && !param8000) {
                 spawnedActor->actor.velocity.y = 0.0f;
                 spawnedActor->actor.speedXZ = 0.0f;
@@ -1705,7 +1709,7 @@ void Item_DropCollectibleRandom(PlayState* play, Actor* fromActor, Vec3f* spawnP
     if (dropId == ITEM00_FLEXIBLE) {
         if (gSaveContext.health <= FULL_HEART_HEALTH) { // 1 heart or less
             Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ELF, spawnPos->x, spawnPos->y + 40.0f, spawnPos->z, 0, 0, 0,
-                        FAIRY_HEAL_TIMED);
+                        FAIRY_HEAL_TIMED, true);
             EffectSsDeadSound_SpawnStationary(play, spawnPos, NA_SE_EV_BUTTERFRY_TO_FAIRY, true,
                                               DEADSOUND_REPEAT_MODE_OFF, 40);
             return;
@@ -1755,7 +1759,7 @@ void Item_DropCollectibleRandom(PlayState* play, Actor* fromActor, Vec3f* spawnP
                 dropId = func_8001F404(dropId);
                 if (dropId != 0xFF) {
                     spawnedActor = (EnItem00*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ITEM00, spawnPos->x,
-                                                          spawnPos->y, spawnPos->z, 0, 0, 0, dropId);
+                                                          spawnPos->y, spawnPos->z, 0, 0, 0, dropId, true);
                     if ((spawnedActor != NULL) && (dropId != 0xFF)) {
                         spawnedActor->actor.velocity.y = 8.0f;
                         spawnedActor->actor.speedXZ = 2.0f;

@@ -1,6 +1,5 @@
 #include "soh/Enhancements/randomizer/entrance.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance_tracker.h"
-#include "soh/Enhancements/randomizer/randomizer.h"
 #include <soh/OTRGlobals.h>
 
 extern "C" {
@@ -58,7 +57,7 @@ void BuildEntranceHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
             entrance = ENTR_GROTTOS_13;
             break;
         case TEXT_DMT_DC_SIGN:
-            entrance = ENTR_DODONGOS_CAVERN_ENTRANCE;
+            entrance = ENTR_DEATH_MOUNTAIN_TRAIL_OUTSIDE_DODONGOS_CAVERN;
             break;
         case TEXT_DMT_GC_SIGN:
             entrance = ENTR_GORON_CITY_UPPER_EXIT;
@@ -155,7 +154,7 @@ void BuildEntranceHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
             if (entranceCtx->entranceOverrides[i].index == entrance) {
                 s16 overrideIndex = entranceCtx->entranceOverrides[i].override;
                 Entrance_SetEntranceDiscovered(entrance, false);
-                auto data = EntranceTracker::GetEntranceData(overrideIndex);
+                auto data = GetEntranceData(overrideIndex);
                 CustomMessage msg = CustomMessage("[[name]]");
                 msg.Replace("[[name]]", data->destination);
                 msg.SetTextBoxType(TEXTBOX_TYPE_WOODEN);

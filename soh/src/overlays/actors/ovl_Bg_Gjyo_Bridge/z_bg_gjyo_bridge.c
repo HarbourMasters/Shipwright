@@ -7,6 +7,7 @@
 #include "z_bg_gjyo_bridge.h"
 #include "objects/object_gjyo_objects/object_gjyo_objects.h"
 #include "scenes/dungeons/ganon_tou/ganon_tou_scene.h"
+#include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS 0
@@ -120,12 +121,11 @@ void BgGjyoBridge_Draw(Actor* thisx, PlayState* play) {
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     gSPSegment(POLY_XLU_DISP++, 8,
-               Gfx_TexScrollEx(play->state.gfxCtx, play->gameplayFrames & 127, play->gameplayFrames * -3 & 127, 32, 32,
-                               1, -3));
+               Gfx_TexScroll(play->state.gfxCtx, play->gameplayFrames & 127, play->gameplayFrames * -3 & 127, 32, 32));
 
     gSPSegment(POLY_XLU_DISP++, 9,
-               Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 0, -play->gameplayFrames & 127, 32, 32, 1, 0,
-                                  play->gameplayFrames & 127, 32, 32, 0, -1, 0, 1));
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, -play->gameplayFrames & 127, 32, 32, 1, 0,
+                                play->gameplayFrames & 127, 32, 32));
 
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 

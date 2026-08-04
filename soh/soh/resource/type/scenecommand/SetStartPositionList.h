@@ -1,7 +1,10 @@
 #pragma once
 
-#include <stdint.h>
+#include <cstdint>
 #include <vector>
+#include <memory>
+#include <string>
+#include <ship/resource/Resource.h>
 #include "SceneCommand.h"
 #include "soh/resource/type/scenecommand/SetActorList.h"
 // #include <libultraship/libultra/types.h>

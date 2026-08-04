@@ -2,6 +2,7 @@
 #include "variables.h"
 #include "z64.h"
 #include "z64actor.h"
+#include <string.h>
 #include <stdio.h>
 #include <array>
 #include "soh/ActorDB.h"
@@ -40,6 +41,7 @@ static void append_line(char* buf, size_t* len, const char* str) {
 }
 
 static void CrashHandler_WriteActorData(char* buffer, size_t* pos) {
+    char intCharBuffer[16];
     for (unsigned int i = 0; i < ACTORCAT_MAX; i++) {
 
         ActorListEntry* entry = &gPlayState->actorCtx.actorLists[i];

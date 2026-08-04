@@ -2,6 +2,7 @@
 #include "objects/object_fz/object_fz.h"
 #include "soh/frame_interpolation.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/ObjectExtension/ActorMaximumHealth.h"
 
 #define FLAGS                                                                                 \
     (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED | \
@@ -326,7 +327,7 @@ void EnFz_SpawnIceSmokeActiveState(EnFz* this) {
 void EnFz_ApplyDamage(EnFz* this, PlayState* play) {
     Vec3f vec;
 
-    if (this->isMoving && ((this->actor.bgCheckFlags & BGCHECKFLAG_WALL) ||
+    if (this->isMoving && ((this->actor.bgCheckFlags & 8) ||
                            (Actor_TestFloorInDirection(&this->actor, play, 60.0f, this->actor.world.rot.y) == 0))) {
         this->actor.bgCheckFlags &= ~8;
         this->isMoving = false;
@@ -511,7 +512,7 @@ void EnFz_BlowSmoke(EnFz* this, PlayState* play) {
     } else if (this->timer >= 11) {
         isTimerMod8 = false;
         primAlpha = 150;
-        Actor_PlaySfx_Flagged(&this->actor, NA_SE_EN_FREEZAD_BREATH - SFX_FLAG);
+        func_8002F974(&this->actor, NA_SE_EN_FREEZAD_BREATH - SFX_FLAG);
 
         if ((this->timer - 10) < 16) { // t < 26
             primAlpha = (this->timer * 10) - 100;
@@ -623,7 +624,7 @@ void EnFz_BlowSmokeStationary(EnFz* this, PlayState* play) {
     } else {
         isTimerMod8 = false;
         primAlpha = 150;
-        Actor_PlaySfx_Flagged(&this->actor, NA_SE_EN_FREEZAD_BREATH - SFX_FLAG);
+        func_8002F974(&this->actor, NA_SE_EN_FREEZAD_BREATH - SFX_FLAG);
 
         if ((this->counter & 0x3F) >= 48) {
             primAlpha = 630 - ((this->counter & 0x3F) * 10);
@@ -736,8 +737,8 @@ void EnFz_Draw(Actor* thisx, PlayState* play) {
         func_8002ED80(&this->actor, play, 0);
         Gfx_SetupDL_25Xlu(play->state.gfxCtx);
         gSPSegment(POLY_XLU_DISP++, 0x08,
-                   Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 0, play->state.frames & 0x7F, 32, 32, 1, 0,
-                                      (2 * play->state.frames) & 0x7F, 32, 32, 0, 1, 0, 2));
+                   Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, play->state.frames & 0x7F, 32, 32, 1, 0,
+                                    (2 * play->state.frames) & 0x7F, 32, 32));
         gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gDPSetCombineLERP(POLY_XLU_DISP++, TEXEL1, PRIMITIVE, PRIM_LOD_FRAC, TEXEL0, TEXEL1, TEXEL0, PRIMITIVE, TEXEL0,
                           PRIMITIVE, ENVIRONMENT, COMBINED, ENVIRONMENT, COMBINED, 0, ENVIRONMENT, 0);
@@ -886,8 +887,8 @@ void EnFz_DrawIceSmoke(EnFz* this, PlayState* play) {
 
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 195, 225, 235, iceSmoke->primAlpha);
             gSPSegment(POLY_XLU_DISP++, 0x08,
-                       Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 3 * (iceSmoke->timer + (3 * i)),
-                                          15 * (iceSmoke->timer + (3 * i)), 32, 64, 1, 0, 0, 32, 32, 3, 15, 0, 0));
+                       Gfx_TwoTexScroll(play->state.gfxCtx, 0, 3 * (iceSmoke->timer + (3 * i)),
+                                        15 * (iceSmoke->timer + (3 * i)), 32, 64, 1, 0, 0, 32, 32));
             Matrix_Translate(iceSmoke->pos.x, iceSmoke->pos.y, iceSmoke->pos.z, MTXMODE_NEW);
             Matrix_ReplaceRotation(&play->billboardMtxF);
             Matrix_Scale(iceSmoke->xyScale, iceSmoke->xyScale, 1.0f, MTXMODE_APPLY);

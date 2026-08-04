@@ -1,6 +1,6 @@
 #pragma once
 
-#include <ship/window/gui/GuiWindow.h>
+#include <libultraship/libultraship.h>
 
 #define CVAR_INPUT_VIEWER(var) "gInputViewer." var
 

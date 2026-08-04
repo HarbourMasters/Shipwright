@@ -1,13 +1,18 @@
 #include "CrowdControl.h"
 #include "CrowdControlTypes.h"
+#include <libultraship/bridge.h>
+#include <libultraship/libultraship.h>
 #include <nlohmann/json.hpp>
 #include <spdlog/spdlog.h>
 #include <spdlog/fmt/fmt.h>
-#include "soh/ShipInit.hpp"
+#include <regex>
+#include "soh/OTRGlobals.h"
 
 extern "C" {
 #include <z64.h>
+#include "variables.h"
 #include "functions.h"
+#include "macros.h"
 extern PlayState* gPlayState;
 }
 
@@ -25,19 +30,19 @@ void CrowdControl::OnDisconnected() {
 }
 
 void CrowdControl::OnIncomingJson(nlohmann::json payload) {
-    std::unique_ptr<Effect> incomingEffect = ParseMessage(payload);
+    Effect* incomingEffect = ParseMessage(payload);
     if (!incomingEffect) {
         return;
     }
 
     // If effect is not a timed effect, execute and return result.
     if (!incomingEffect->timeRemaining) {
-        EffectResult result = CrowdControl::ExecuteEffect(incomingEffect.get());
+        EffectResult result = CrowdControl::ExecuteEffect(incomingEffect);
         EmitMessage(incomingEffect->id, incomingEffect->timeRemaining, result);
     } else {
         // If another timed effect is already active that conflicts with the incoming effect.
         bool isConflictingEffectActive = false;
-        for (const auto& effect : activeEffects) {
+        for (Effect* effect : activeEffects) {
             if (effect != incomingEffect && effect->category == incomingEffect->category &&
                 effect->id < incomingEffect->id) {
                 isConflictingEffectActive = true;
@@ -48,14 +53,14 @@ void CrowdControl::OnIncomingJson(nlohmann::json payload) {
 
         if (!isConflictingEffectActive) {
             // Check if effect can be applied, if it can't, let CC know.
-            EffectResult result = CrowdControl::CanApplyEffect(incomingEffect.get());
+            EffectResult result = CrowdControl::CanApplyEffect(incomingEffect);
             if (result == EffectResult::Retry || result == EffectResult::Failure) {
                 EmitMessage(incomingEffect->id, incomingEffect->timeRemaining, result);
                 return;
             }
 
             activeEffectsMutex.lock();
-            activeEffects.push_back(std::move(incomingEffect));
+            activeEffects.push_back(incomingEffect);
             activeEffectsMutex.unlock();
         }
     }
@@ -70,15 +75,16 @@ void CrowdControl::ProcessActiveEffects() {
         auto it = activeEffects.begin();
 
         while (it != activeEffects.end()) {
-            Effect* effect = it->get();
+            Effect* effect = *it;
             EffectResult result = CrowdControl::ExecuteEffect(effect);
 
             if (result == EffectResult::Success) {
                 // If time remaining has reached 0, we have finished the effect.
                 if (effect->timeRemaining <= 0) {
-                    GameInteractor::RemoveEffect(
-                        *dynamic_cast<RemovableGameInteractionEffect*>(effect->giEffect.get()));
-                    it = activeEffects.erase(it);
+                    it = activeEffects.erase(std::remove(activeEffects.begin(), activeEffects.end(), effect),
+                                             activeEffects.end());
+                    GameInteractor::RemoveEffect(dynamic_cast<RemovableGameInteractionEffect*>(effect->giEffect));
+                    delete effect;
                 } else {
                     // If we have a success after previously being paused, tell CC to resume timer.
                     if (effect->isPaused) {
@@ -126,10 +132,6 @@ void CrowdControl::EmitMessage(uint32_t eventId, long timeRemaining, EffectResul
 }
 
 CrowdControl::EffectResult CrowdControl::ExecuteEffect(Effect* effect) {
-    if (!GameInteractor::IsPlayerInControl()) {
-        return EffectResult::Retry;
-    }
-
     GameInteractionEffectQueryResult giResult;
     if (effect->category == kEffectCatSpawnEnemy) {
         giResult = GameInteractor::RawAction::SpawnEnemyWithOffset(effect->spawnParams[0], effect->spawnParams[1],
@@ -138,7 +140,7 @@ CrowdControl::EffectResult CrowdControl::ExecuteEffect(Effect* effect) {
         giResult =
             GameInteractor::RawAction::SpawnActor(effect->spawnParams[0], effect->spawnParams[1], effect->viewerName);
     } else {
-        giResult = GameInteractor::ApplyEffect(*effect->giEffect.get());
+        giResult = GameInteractor::ApplyEffect(effect->giEffect);
     }
 
     return TranslateGiEnum(giResult);
@@ -147,11 +149,7 @@ CrowdControl::EffectResult CrowdControl::ExecuteEffect(Effect* effect) {
 /// Checks if effect can be applied -- should not be used to check for spawn enemy effects.
 CrowdControl::EffectResult CrowdControl::CanApplyEffect(Effect* effect) {
     assert(effect->category != kEffectCatSpawnEnemy || effect->category != kEffectCatSpawnActor);
-    if (!GameInteractor::IsPlayerInControl()) {
-        return EffectResult::Retry;
-    }
-
-    GameInteractionEffectQueryResult giResult = GameInteractor::CanApplyEffect(*effect->giEffect.get());
+    GameInteractionEffectQueryResult giResult = GameInteractor::CanApplyEffect(effect->giEffect);
 
     return TranslateGiEnum(giResult);
 }
@@ -170,7 +168,7 @@ CrowdControl::EffectResult CrowdControl::TranslateGiEnum(GameInteractionEffectQu
     return result;
 }
 
-std::unique_ptr<CrowdControl::Effect> CrowdControl::ParseMessage(nlohmann::json dataReceived) {
+CrowdControl::Effect* CrowdControl::ParseMessage(nlohmann::json dataReceived) {
     if (!dataReceived.contains("id") || !dataReceived.contains("type")) {
         SPDLOG_ERROR("[CrowdControl] Invalid payload received:\n{}", dataReceived.dump());
         return nullptr;
@@ -178,16 +176,13 @@ std::unique_ptr<CrowdControl::Effect> CrowdControl::ParseMessage(nlohmann::json 
 
     SPDLOG_INFO("[CrowdControl] Received payload:\n{}", dataReceived.dump());
 
-    // "parameters" is intentionally not required: most effects (spawn enemies, teleports, status
-    // effects, etc.) carry no parameters. Its absence is handled safely below, and any type error
-    // is caught by the guard in Network::HandleRemoteJson.
-    if (!dataReceived.contains("code") || !dataReceived.contains("viewer")) {
+    if (!dataReceived.contains("code")) {
         // This seems to happen when the CC session ends
-        SPDLOG_ERROR("[CrowdControl] Payload does not contain code or viewer, ignoring.");
+        SPDLOG_ERROR("[CrowdControl] Payload does not contain code, ignoring.");
         return nullptr;
     }
 
-    auto effect = std::make_unique<Effect>();
+    Effect* effect = new Effect();
     effect->lastExecutionResult = EffectResult::Initiate;
     effect->id = dataReceived["id"];
     effect->viewerName = dataReceived["viewer"];
@@ -199,15 +194,9 @@ std::unique_ptr<CrowdControl::Effect> CrowdControl::ParseMessage(nlohmann::json 
         receivedParameter = dataReceived["parameters"][0];
     }
 
-    auto it = effectStringToEnum.find(effectName);
-    if (it == effectStringToEnum.end()) {
-        SPDLOG_ERROR("[CrowdControl] Unknown effect code: {}", effectName);
-        return nullptr;
-    }
-
     // Assign GameInteractionEffect + values to CC effect.
     // Categories are mostly used for checking for conflicting timed effects.
-    switch (it->second) {
+    switch (effectStringToEnum[effectName]) {
 
         // Spawn Enemies and Objects
         case kEffectSpawnCuccoStorm:
@@ -279,9 +268,6 @@ std::unique_ptr<CrowdControl::Effect> CrowdControl::ParseMessage(nlohmann::json 
             break;
         case kEffectSpawnWolfos:
             effect->spawnParams[0] = ACTOR_EN_WF;
-            // Match EnEncount1 wolfos spawner (0xFF00): high byte must be 0xFF so EnWf_Init does not treat
-            // switchFlag 0; Flags_GetSwitch(play, 0) is true in many scenes and would instantly kill the actor.
-            effect->spawnParams[1] = (0xFF << 8) | 0x00; // normal Wolfos; high byte 0xFF = no switch (vanilla encount)
             effect->category = kEffectCatSpawnEnemy;
             break;
         case kEffectSpawnWallmaster:
@@ -293,382 +279,346 @@ std::unique_ptr<CrowdControl::Effect> CrowdControl::ParseMessage(nlohmann::json 
         case kEffectTakeHalfDamage:
             effect->category = kEffectCatDamageTaken;
             effect->timeRemaining = 30000;
-            effect->giEffect = std::make_unique<GameInteractionEffect::ModifyDefenseModifier>();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[0] = 2;
+            effect->giEffect = new GameInteractionEffect::ModifyDefenseModifier();
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = 2;
             break;
         case kEffectTakeDoubleDamage:
             effect->category = kEffectCatDamageTaken;
             effect->timeRemaining = 30000;
-            effect->giEffect = std::make_unique<GameInteractionEffect::ModifyDefenseModifier>();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[0] = -2;
+            effect->giEffect = new GameInteractionEffect::ModifyDefenseModifier();
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = -2;
             break;
         case kEffectOneHitKo:
             effect->category = kEffectCatDamageTaken;
             effect->timeRemaining = 30000;
-            effect->giEffect = std::make_unique<GameInteractionEffect::OneHitKO>();
+            effect->giEffect = new GameInteractionEffect::OneHitKO();
             break;
         case kEffectInvincibility:
             effect->category = kEffectCatDamageTaken;
             effect->timeRemaining = 15000;
-            effect->giEffect = std::make_unique<GameInteractionEffect::PlayerInvincibility>();
+            effect->giEffect = new GameInteractionEffect::PlayerInvincibility();
             break;
             break;
         case kEffectIncreaseSpeed:
             effect->category = kEffectCatSpeed;
             effect->timeRemaining = 30000;
-            effect->giEffect = std::make_unique<GameInteractionEffect::ModifyMovementSpeedMultiplier>();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[0] = 2;
+            effect->giEffect = new GameInteractionEffect::ModifyMovementSpeedMultiplier();
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = 2;
             break;
         case kEffectDecreaseSpeed:
             effect->category = kEffectCatSpeed;
             effect->timeRemaining = 30000;
-            effect->giEffect = std::make_unique<GameInteractionEffect::ModifyMovementSpeedMultiplier>();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[0] = -2;
+            effect->giEffect = new GameInteractionEffect::ModifyMovementSpeedMultiplier();
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = -2;
             break;
         case kEffectLowGravity:
             effect->category = kEffectCatGravity;
             effect->timeRemaining = 30000;
-            effect->giEffect = std::make_unique<GameInteractionEffect::ModifyGravity>();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[0] =
-                GI_GRAVITY_LEVEL_LIGHT;
+            effect->giEffect = new GameInteractionEffect::ModifyGravity();
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_GRAVITY_LEVEL_LIGHT;
             break;
         case kEffectHighGravity:
             effect->category = kEffectCatGravity;
             effect->timeRemaining = 30000;
-            effect->giEffect = std::make_unique<GameInteractionEffect::ModifyGravity>();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[0] =
-                GI_GRAVITY_LEVEL_HEAVY;
+            effect->giEffect = new GameInteractionEffect::ModifyGravity();
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_GRAVITY_LEVEL_HEAVY;
             break;
         case kEffectForceIronBoots:
             effect->category = kEffectCatBoots;
             effect->timeRemaining = 30000;
-            effect->giEffect = std::make_unique<GameInteractionEffect::ForceEquipBoots>();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[0] =
-                EQUIP_VALUE_BOOTS_IRON;
+            effect->giEffect = new GameInteractionEffect::ForceEquipBoots();
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = EQUIP_VALUE_BOOTS_IRON;
             break;
         case kEffectForceHoverBoots:
             effect->category = kEffectCatBoots;
             effect->timeRemaining = 30000;
-            effect->giEffect = std::make_unique<GameInteractionEffect::ForceEquipBoots>();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[0] =
+            effect->giEffect = new GameInteractionEffect::ForceEquipBoots();
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] =
                 EQUIP_VALUE_BOOTS_HOVER;
             break;
         case kEffectSlipperyFloor:
             effect->category = kEffectCatSlipperyFloor;
             effect->timeRemaining = 30000;
-            effect->giEffect = std::make_unique<GameInteractionEffect::SlipperyFloor>();
+            effect->giEffect = new GameInteractionEffect::SlipperyFloor();
             break;
         case kEffectNoLedgeGrabs:
             effect->category = kEffectCatNoLedgeGrabs;
             effect->timeRemaining = 30000;
-            effect->giEffect = std::make_unique<GameInteractionEffect::DisableLedgeGrabs>();
+            effect->giEffect = new GameInteractionEffect::DisableLedgeGrabs();
             break;
         case kEffectRandomWind:
             effect->category = kEffectCatRandomWind;
             effect->timeRemaining = 30000;
-            effect->giEffect = std::make_unique<GameInteractionEffect::RandomWind>();
+            effect->giEffect = new GameInteractionEffect::RandomWind();
             break;
         case kEffectRandomBonks:
             effect->category = kEffectCatRandomBonks;
             effect->timeRemaining = 60000;
-            effect->giEffect = std::make_unique<GameInteractionEffect::RandomBonks>();
+            effect->giEffect = new GameInteractionEffect::RandomBonks();
             break;
 
         // Hurt or Heal Link
         case kEffectEmptyHeart:
-            effect->giEffect = std::make_unique<GameInteractionEffect::ModifyHealth>();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[0] =
-                receivedParameter * -1;
+            effect->giEffect = new GameInteractionEffect::ModifyHealth();
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = receivedParameter * -1;
             break;
         case kEffectFillHeart:
-            effect->giEffect = std::make_unique<GameInteractionEffect::ModifyHealth>();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[0] =
-                receivedParameter;
+            effect->giEffect = new GameInteractionEffect::ModifyHealth();
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = receivedParameter;
             break;
         case kEffectKnockbackLinkWeak:
-            effect->giEffect = std::make_unique<GameInteractionEffect::KnockbackPlayer>();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[0] = 1;
+            effect->giEffect = new GameInteractionEffect::KnockbackPlayer();
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = 1;
             break;
         case kEffectKnockbackLinkStrong:
-            effect->giEffect = std::make_unique<GameInteractionEffect::KnockbackPlayer>();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[0] = 3;
+            effect->giEffect = new GameInteractionEffect::KnockbackPlayer();
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = 3;
             break;
         case kEffectKnockbackLinkMega:
-            effect->giEffect = std::make_unique<GameInteractionEffect::KnockbackPlayer>();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[0] = 6;
+            effect->giEffect = new GameInteractionEffect::KnockbackPlayer();
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = 6;
             break;
         case kEffectBurnLink:
-            effect->giEffect = std::make_unique<GameInteractionEffect::BurnPlayer>();
+            effect->giEffect = new GameInteractionEffect::BurnPlayer();
             break;
         case kEffectFreezeLink:
-            effect->giEffect = std::make_unique<GameInteractionEffect::FreezePlayer>();
+            effect->giEffect = new GameInteractionEffect::FreezePlayer();
             break;
         case kEffectElectrocuteLink:
-            effect->giEffect = std::make_unique<GameInteractionEffect::ElectrocutePlayer>();
+            effect->giEffect = new GameInteractionEffect::ElectrocutePlayer();
             break;
         case kEffectKillLink:
-            effect->giEffect = std::make_unique<GameInteractionEffect::SetPlayerHealth>();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[0] = 0;
+            effect->giEffect = new GameInteractionEffect::SetPlayerHealth();
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = 0;
             break;
 
         // Give Items and Consumables
         case kEffectAddHeartContainer:
-            effect->giEffect = std::make_unique<GameInteractionEffect::ModifyHeartContainers>();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[0] = 1;
+            effect->giEffect = new GameInteractionEffect::ModifyHeartContainers();
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = 1;
             break;
         case kEffectFillMagic:
-            effect->giEffect = std::make_unique<GameInteractionEffect::FillMagic>();
+            effect->giEffect = new GameInteractionEffect::FillMagic();
             break;
         case kEffectAddRupees:
-            effect->giEffect = std::make_unique<GameInteractionEffect::ModifyRupees>();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[0] =
-                receivedParameter;
+            effect->giEffect = new GameInteractionEffect::ModifyRupees();
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = receivedParameter;
             break;
         case kEffectGiveDekuShield:
-            effect->giEffect = std::make_unique<GameInteractionEffect::GiveOrTakeShield>();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[0] = ITEM_SHIELD_DEKU;
+            effect->giEffect = new GameInteractionEffect::GiveOrTakeShield();
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = ITEM_SHIELD_DEKU;
             break;
         case kEffectGiveHylianShield:
-            effect->giEffect = std::make_unique<GameInteractionEffect::GiveOrTakeShield>();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[0] =
-                ITEM_SHIELD_HYLIAN;
+            effect->giEffect = new GameInteractionEffect::GiveOrTakeShield();
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = ITEM_SHIELD_HYLIAN;
             break;
         case kEffectRefillSticks:
-            effect->giEffect = std::make_unique<GameInteractionEffect::AddOrTakeAmmo>();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[0] =
-                receivedParameter;
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[1] = ITEM_STICK;
+            effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = receivedParameter;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = ITEM_STICK;
             break;
         case kEffectRefillNuts:
-            effect->giEffect = std::make_unique<GameInteractionEffect::AddOrTakeAmmo>();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[0] =
-                receivedParameter;
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[1] = ITEM_NUT;
+            effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = receivedParameter;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = ITEM_NUT;
             break;
         case kEffectRefillBombs:
-            effect->giEffect = std::make_unique<GameInteractionEffect::AddOrTakeAmmo>();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[0] =
-                receivedParameter;
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[1] = ITEM_BOMB;
+            effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = receivedParameter;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = ITEM_BOMB;
             break;
         case kEffectRefillSeeds:
-            effect->giEffect = std::make_unique<GameInteractionEffect::AddOrTakeAmmo>();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[0] =
-                receivedParameter;
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[1] = ITEM_SLINGSHOT;
+            effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = receivedParameter;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = ITEM_SLINGSHOT;
             break;
         case kEffectRefillArrows:
-            effect->giEffect = std::make_unique<GameInteractionEffect::AddOrTakeAmmo>();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[0] =
-                receivedParameter;
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[1] = ITEM_BOW;
+            effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = receivedParameter;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = ITEM_BOW;
             break;
         case kEffectRefillBombchus:
-            effect->giEffect = std::make_unique<GameInteractionEffect::AddOrTakeAmmo>();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[0] =
-                receivedParameter;
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[1] = ITEM_BOMBCHU;
+            effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = receivedParameter;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = ITEM_BOMBCHU;
             break;
 
         // Take Items and Consumables
         case kEffectRemoveHeartContainer:
-            effect->giEffect = std::make_unique<GameInteractionEffect::ModifyHeartContainers>();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[0] = -1;
+            effect->giEffect = new GameInteractionEffect::ModifyHeartContainers();
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = -1;
             break;
         case kEffectEmptyMagic:
-            effect->giEffect = std::make_unique<GameInteractionEffect::EmptyMagic>();
+            effect->giEffect = new GameInteractionEffect::EmptyMagic();
             break;
         case kEffectRemoveRupees:
-            effect->giEffect = std::make_unique<GameInteractionEffect::ModifyRupees>();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[0] =
-                receivedParameter * -1;
+            effect->giEffect = new GameInteractionEffect::ModifyRupees();
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = receivedParameter * -1;
             break;
         case kEffectTakeDekuShield:
-            effect->giEffect = std::make_unique<GameInteractionEffect::GiveOrTakeShield>();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[0] =
-                -ITEM_SHIELD_DEKU;
+            effect->giEffect = new GameInteractionEffect::GiveOrTakeShield();
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = -ITEM_SHIELD_DEKU;
             break;
         case kEffectTakeHylianShield:
-            effect->giEffect = std::make_unique<GameInteractionEffect::GiveOrTakeShield>();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[0] =
-                -ITEM_SHIELD_HYLIAN;
+            effect->giEffect = new GameInteractionEffect::GiveOrTakeShield();
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = -ITEM_SHIELD_HYLIAN;
             break;
         case kEffectTakeSticks:
-            effect->giEffect = std::make_unique<GameInteractionEffect::AddOrTakeAmmo>();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[0] =
-                receivedParameter * -1;
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[1] = ITEM_STICK;
+            effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = receivedParameter * -1;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = ITEM_STICK;
             break;
         case kEffectTakeNuts:
-            effect->giEffect = std::make_unique<GameInteractionEffect::AddOrTakeAmmo>();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[0] =
-                receivedParameter * -1;
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[1] = ITEM_NUT;
+            effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = receivedParameter * -1;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = ITEM_NUT;
             break;
         case kEffectTakeBombs:
-            effect->giEffect = std::make_unique<GameInteractionEffect::AddOrTakeAmmo>();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[0] =
-                receivedParameter * -1;
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[1] = ITEM_BOMB;
+            effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = receivedParameter * -1;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = ITEM_BOMB;
             break;
         case kEffectTakeSeeds:
-            effect->giEffect = std::make_unique<GameInteractionEffect::AddOrTakeAmmo>();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[0] =
-                receivedParameter * -1;
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[1] = ITEM_SLINGSHOT;
+            effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = receivedParameter * -1;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = ITEM_SLINGSHOT;
             break;
         case kEffectTakeArrows:
-            effect->giEffect = std::make_unique<GameInteractionEffect::AddOrTakeAmmo>();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[0] =
-                receivedParameter * -1;
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[1] = ITEM_BOW;
+            effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = receivedParameter * -1;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = ITEM_BOW;
             break;
         case kEffectTakeBombchus:
-            effect->giEffect = std::make_unique<GameInteractionEffect::AddOrTakeAmmo>();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[0] =
-                receivedParameter * -1;
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[1] = ITEM_BOMBCHU;
+            effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = receivedParameter * -1;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = ITEM_BOMBCHU;
             break;
 
         // Link Size Modifiers
         case kEffectGiantLink:
             effect->category = kEffectCatLinkSize;
             effect->timeRemaining = 30000;
-            effect->giEffect = std::make_unique<GameInteractionEffect::ModifyLinkSize>();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[0] =
-                GI_LINK_SIZE_GIANT;
+            effect->giEffect = new GameInteractionEffect::ModifyLinkSize();
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_LINK_SIZE_GIANT;
             break;
         case kEffectMinishLink:
             effect->category = kEffectCatLinkSize;
             effect->timeRemaining = 30000;
-            effect->giEffect = std::make_unique<GameInteractionEffect::ModifyLinkSize>();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[0] =
-                GI_LINK_SIZE_MINISH;
+            effect->giEffect = new GameInteractionEffect::ModifyLinkSize();
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_LINK_SIZE_MINISH;
             break;
         case kEffectPaperLink:
             effect->category = kEffectCatLinkSize;
             effect->timeRemaining = 30000;
-            effect->giEffect = std::make_unique<GameInteractionEffect::ModifyLinkSize>();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[0] =
-                GI_LINK_SIZE_PAPER;
+            effect->giEffect = new GameInteractionEffect::ModifyLinkSize();
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_LINK_SIZE_PAPER;
             break;
         case kEffectSquishedLink:
             effect->category = kEffectCatLinkSize;
             effect->timeRemaining = 30000;
-            effect->giEffect = std::make_unique<GameInteractionEffect::ModifyLinkSize>();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[0] =
-                GI_LINK_SIZE_SQUISHED;
+            effect->giEffect = new GameInteractionEffect::ModifyLinkSize();
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_LINK_SIZE_SQUISHED;
             break;
         case kEffectInvisibleLink:
             effect->category = kEffectCatLinkSize;
             effect->timeRemaining = 30000;
-            effect->giEffect = std::make_unique<GameInteractionEffect::InvisibleLink>();
+            effect->giEffect = new GameInteractionEffect::InvisibleLink();
             break;
 
         // Generic Effects
         case kEffectRandomBombTimer:
             effect->category = kEffectCatRandomBombFuseTimer;
             effect->timeRemaining = 60000;
-            effect->giEffect = std::make_unique<GameInteractionEffect::RandomBombFuseTimer>();
+            effect->giEffect = new GameInteractionEffect::RandomBombFuseTimer();
             break;
         case kEffectSetTimeToDawn:
-            effect->giEffect = std::make_unique<GameInteractionEffect::SetTimeOfDay>();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[0] =
-                GI_TIMEOFDAY_DAWN;
+            effect->giEffect = new GameInteractionEffect::SetTimeOfDay();
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_TIMEOFDAY_DAWN;
             break;
         case kEffectSetTimeToDusk:
-            effect->giEffect = std::make_unique<GameInteractionEffect::SetTimeOfDay>();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[0] =
-                GI_TIMEOFDAY_DUSK;
+            effect->giEffect = new GameInteractionEffect::SetTimeOfDay();
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_TIMEOFDAY_DUSK;
             break;
 
         // Visual Effects
         case kEffectNoUi:
             effect->category = kEffectCatUi;
             effect->timeRemaining = 60000;
-            effect->giEffect = std::make_unique<GameInteractionEffect::NoUI>();
+            effect->giEffect = new GameInteractionEffect::NoUI();
             break;
         case kEffectRainstorm:
             effect->category = kEffectCatWeather;
             effect->timeRemaining = 30000;
-            effect->giEffect = std::make_unique<GameInteractionEffect::WeatherRainstorm>();
+            effect->giEffect = new GameInteractionEffect::WeatherRainstorm();
             break;
         case kEffectDebugMode:
             effect->category = kEffectCatDebugMode;
             effect->timeRemaining = 30000;
-            effect->giEffect = std::make_unique<GameInteractionEffect::SetCollisionViewer>();
+            effect->giEffect = new GameInteractionEffect::SetCollisionViewer();
             break;
         case kEffectRandomCosmetics:
-            effect->giEffect = std::make_unique<GameInteractionEffect::RandomizeCosmetics>();
+            effect->giEffect = new GameInteractionEffect::RandomizeCosmetics();
             break;
 
         // Controls
         case kEffectNoZButton:
             effect->category = kEffectCatNoZ;
             effect->timeRemaining = 30000;
-            effect->giEffect = std::make_unique<GameInteractionEffect::DisableZTargeting>();
+            effect->giEffect = new GameInteractionEffect::DisableZTargeting();
             break;
         case kEffectReverseControls:
             effect->category = kEffectCatReverseControls;
             effect->timeRemaining = 60000;
-            effect->giEffect = std::make_unique<GameInteractionEffect::ReverseControls>();
+            effect->giEffect = new GameInteractionEffect::ReverseControls();
             break;
         case kEffectPacifistMode:
             effect->category = kEffectCatPacifist;
             effect->timeRemaining = 15000;
-            effect->giEffect = std::make_unique<GameInteractionEffect::PacifistMode>();
+            effect->giEffect = new GameInteractionEffect::PacifistMode();
             break;
         case kEffectPressRandomButtons:
             effect->category = kEffectCatRandomButtons;
             effect->timeRemaining = 30000;
-            effect->giEffect = std::make_unique<GameInteractionEffect::PressRandomButton>();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[0] = 30;
+            effect->giEffect = new GameInteractionEffect::PressRandomButton();
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = 30;
             break;
         case kEffectClearCbuttons:
-            effect->giEffect = std::make_unique<GameInteractionEffect::ClearAssignedButtons>();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[0] =
-                GI_BUTTONS_CBUTTONS;
+            effect->giEffect = new GameInteractionEffect::ClearAssignedButtons();
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_BUTTONS_CBUTTONS;
             break;
         case kEffectClearDpad:
-            effect->giEffect = std::make_unique<GameInteractionEffect::ClearAssignedButtons>();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[0] = GI_BUTTONS_DPAD;
+            effect->giEffect = new GameInteractionEffect::ClearAssignedButtons();
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_BUTTONS_DPAD;
             break;
 
         // Teleport Player
         case kEffectTpLinksHouse:
-            effect->giEffect = std::make_unique<GameInteractionEffect::TeleportPlayer>();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[0] =
-                ENTR_LINKS_HOUSE_CHILD_SPAWN;
+            effect->giEffect = new GameInteractionEffect::TeleportPlayer();
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_TP_DEST_LINKSHOUSE;
             break;
         case kEffectTpMinuet:
-            effect->giEffect = std::make_unique<GameInteractionEffect::TeleportPlayer>();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[0] =
-                ENTR_SACRED_FOREST_MEADOW_WARP_PAD;
+            effect->giEffect = new GameInteractionEffect::TeleportPlayer();
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_TP_DEST_MINUET;
             break;
         case kEffectTpBolero:
-            effect->giEffect = std::make_unique<GameInteractionEffect::TeleportPlayer>();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[0] =
-                ENTR_DEATH_MOUNTAIN_CRATER_WARP_PAD;
+            effect->giEffect = new GameInteractionEffect::TeleportPlayer();
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_TP_DEST_BOLERO;
             break;
         case kEffectTpSerenade:
-            effect->giEffect = std::make_unique<GameInteractionEffect::TeleportPlayer>();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[0] =
-                ENTR_LAKE_HYLIA_WARP_PAD;
+            effect->giEffect = new GameInteractionEffect::TeleportPlayer();
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_TP_DEST_SERENADE;
             break;
         case kEffectTpRequiem:
-            effect->giEffect = std::make_unique<GameInteractionEffect::TeleportPlayer>();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[0] =
-                ENTR_DESERT_COLOSSUS_WARP_PAD;
+            effect->giEffect = new GameInteractionEffect::TeleportPlayer();
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_TP_DEST_REQUIEM;
             break;
         case kEffectTpNocturne:
-            effect->giEffect = std::make_unique<GameInteractionEffect::TeleportPlayer>();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[0] =
-                ENTR_GRAVEYARD_WARP_PAD;
+            effect->giEffect = new GameInteractionEffect::TeleportPlayer();
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_TP_DEST_NOCTURNE;
             break;
         case kEffectTpPrelude:
-            effect->giEffect = std::make_unique<GameInteractionEffect::TeleportPlayer>();
-            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect.get())->parameters[0] =
-                ENTR_TEMPLE_OF_TIME_WARP_PAD;
+            effect->giEffect = new GameInteractionEffect::TeleportPlayer();
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_TP_DEST_PRELUDE;
             break;
 
         default:

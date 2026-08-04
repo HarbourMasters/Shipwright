@@ -1,6 +1,8 @@
 #include "soh/Network/Anchor/Anchor.h"
 #include <nlohmann/json.hpp>
+#include <libultraship/libultraship.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/OTRGlobals.h"
 
 extern "C" {
 #include "functions.h"
@@ -35,16 +37,9 @@ void Anchor::HandlePacket_UnsetFlag(nlohmann::json payload) {
         return;
     }
 
-    s16 sceneNum = payload.at("sceneNum").get<s16>();
-    s16 flagType = payload.at("flagType").get<s16>();
-    s16 flag = payload.at("flag").get<s16>();
-
-    // sceneNum == SCENE_ID_MAX is a sentinel meaning "global flag" (handled below); only larger
-    // values would index gSaveContext.sceneFlags out of bounds.
-    if (sceneNum < 0 || sceneNum > SCENE_ID_MAX) {
-        SPDLOG_ERROR("[Anchor] UNSET_FLAG: sceneNum {} out of range", sceneNum);
-        return;
-    }
+    s16 sceneNum = payload["sceneNum"].get<s16>();
+    s16 flagType = payload["flagType"].get<s16>();
+    s16 flag = payload["flag"].get<s16>();
 
     if (sceneNum == SCENE_ID_MAX) {
         auto effect = new GameInteractionEffect::UnsetFlag();

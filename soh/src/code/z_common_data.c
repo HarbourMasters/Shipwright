@@ -15,5 +15,5 @@ void SaveContext_Init(void) {
     gSaveContext.skyboxTime = 0;
     gSaveContext.dogIsLost = true;
     gSaveContext.nextTransitionType = TRANS_NEXT_TYPE_DEFAULT;
-    gSaveContext.prevHudVisibilityMode = 50;
+    gSaveContext.unk_13EE = 50;
 }

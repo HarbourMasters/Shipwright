@@ -62,6 +62,8 @@ class ActorDB {
     Entry& RetrieveEntry(const int id);
     int RetrieveId(const std::string& name);
 
+    static void AddBuiltInCustomActors();
+
     int GetEntryCount();
 
   private:

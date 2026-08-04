@@ -1,5 +1,6 @@
 #include "GameInteractor.h"
-#include "soh/ShipUtils.h"
+#include <libultraship/bridge.h>
+#include "soh/Enhancements/randomizer/3drando/random.hpp"
 #include <math.h>
 #include "soh/Enhancements/debugger/colViewer.h"
 #include "soh/Enhancements/nametag.h"
@@ -7,6 +8,7 @@
 extern "C" {
 #include "variables.h"
 #include "macros.h"
+#include "soh/cvar_prefixes.h"
 #include "functions.h"
 extern PlayState* gPlayState;
 }
@@ -123,8 +125,7 @@ void GameInteractor::RawAction::ElectrocutePlayer() {
 
 void GameInteractor::RawAction::KnockbackPlayer(float strength) {
     Player* player = GET_PLAYER(gPlayState);
-    Actor_SetPlayerKnockbackLargeNoDamage(gPlayState, &player->actor, strength * 5, player->actor.world.rot.y + 0x8000,
-                                          strength * 5);
+    func_8002F71C(gPlayState, &player->actor, strength * 5, player->actor.world.rot.y + 0x8000, strength * 5);
 }
 
 void GameInteractor::RawAction::SetSceneFlag(int16_t sceneNum, int16_t flagType, int16_t flag) {
@@ -244,6 +245,11 @@ void GameInteractor::RawAction::SetFlag(int16_t flagType, int16_t flag) {
             gSaveContext.eventInf[flag >> 4] |= (1 << (flag & 0xF));
             break;
         case FlagType::FLAG_RANDOMIZER_INF:
+            if (!IS_RANDO) {
+                LUSLOG_ERROR("Tried to set randomizerInf flag outside of rando (%d)", flag);
+                assert(false);
+                break;
+            }
             gSaveContext.ship.randomizerInf[flag >> 4] |= (1 << (flag & 0xF));
             break;
         case FlagType::FLAG_GS_TOKEN:
@@ -327,7 +333,7 @@ void GameInteractor::RawAction::GiveOrTakeShield(int32_t shield) {
 }
 
 void GameInteractor::RawAction::ForceInterfaceUpdate() {
-    gSaveContext.nextHudVisibilityMode = 50;
+    gSaveContext.unk_13E8 = 50;
     Interface_Update(gPlayState);
 }
 
@@ -404,11 +410,15 @@ void GameInteractor::RawAction::EmulateButtonPress(int32_t button) {
 }
 
 void GameInteractor::RawAction::EmulateRandomButtonPress(uint32_t chancePercentage) {
-    uint32_t randomNumber = ShipUtils::Random(0, 1400);
+    uint32_t emulatedButton;
+    uint32_t randomNumber = rand();
     uint32_t possibleButtons[14] = { BTN_CRIGHT, BTN_CLEFT, BTN_CDOWN, BTN_CUP,   BTN_R, BTN_L, BTN_DRIGHT,
                                      BTN_DLEFT,  BTN_DDOWN, BTN_DUP,   BTN_START, BTN_Z, BTN_B, BTN_A };
+
+    emulatedButton = possibleButtons[randomNumber % 14];
+
     if (randomNumber % 100 < chancePercentage) {
-        GameInteractor::State::EmulatedButtons |= possibleButtons[randomNumber / 100];
+        GameInteractor::State::EmulatedButtons |= emulatedButton;
     }
 }
 
@@ -421,7 +431,7 @@ void GameInteractor::RawAction::SetRandomWind(bool active) {
     if (active) {
         GameInteractor::State::RandomWindActive = 1;
         if (GameInteractor::State::RandomWindSecondsSinceLastDirectionChange == 0) {
-            player->pushedYaw = ShipUtils::Random(0, 0xc000) - 0x8000;
+            player->pushedYaw = (rand() % 49152) - 32767;
             GameInteractor::State::RandomWindSecondsSinceLastDirectionChange = 5;
         } else {
             GameInteractor::State::RandomWindSecondsSinceLastDirectionChange--;
@@ -488,7 +498,7 @@ GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnEnemyWithOffset
     }
 
     // Generate point in random angle with a radius.
-    float angle = static_cast<float>(ShipUtils::RandomDouble() * 2 * M_PI);
+    float angle = static_cast<float>(RandomDouble() * 2 * M_PI);
     float radius = 150;
     float posXOffset = radius * cos(angle);
     float posZOffset = radius * sin(angle);
@@ -523,7 +533,7 @@ GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnEnemyWithOffset
             pos.y += 10;
             pos.z += 10;
             Actor* actor =
-                Actor_Spawn(&gPlayState->actorCtx, gPlayState, enemyId, pos.x, pos.y, pos.z, 0, 0, 0, enemyParams);
+                Actor_Spawn(&gPlayState->actorCtx, gPlayState, enemyId, pos.x, pos.y, pos.z, 0, 0, 0, enemyParams, 0);
             if (actor == NULL) {
                 return GameInteractionEffectQueryResult::TemporarilyNotPossible;
             }
@@ -537,7 +547,7 @@ GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnEnemyWithOffset
         return GameInteractionEffectQueryResult::Possible;
     } else {
         Actor* actor =
-            Actor_Spawn(&gPlayState->actorCtx, gPlayState, enemyId, pos.x, pos.y, pos.z, 0, 0, 0, enemyParams);
+            Actor_Spawn(&gPlayState->actorCtx, gPlayState, enemyId, pos.x, pos.y, pos.z, 0, 0, 0, enemyParams, 0);
         if (actor != NULL) {
             if (nameTag != "" && CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("EnemyNameTags"), 0)) {
                 NameTag_RegisterForActor(actor, nameTag.c_str());
@@ -565,7 +575,7 @@ GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnActor(uint32_t 
         // Spawn Cucco and make it angry
         EnNiw* cucco =
             (EnNiw*)Actor_Spawn(&gPlayState->actorCtx, gPlayState, actorId, player->actor.world.pos.x,
-                                player->actor.world.pos.y + 2200, player->actor.world.pos.z, 0, 0, 0, actorParams);
+                                player->actor.world.pos.y + 2200, player->actor.world.pos.z, 0, 0, 0, actorParams, 0);
         if (cucco == NULL) {
             return GameInteractionEffectQueryResult::TemporarilyNotPossible;
         }
@@ -579,7 +589,7 @@ GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnActor(uint32_t 
         // Spawn a bomb, make it explode instantly when params is set to 1 to emulate spawning an explosion
         EnBom* bomb =
             (EnBom*)Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_BOM, player->actor.world.pos.x,
-                                player->actor.world.pos.y + 30, player->actor.world.pos.z, 0, 0, 0, BOMB_BODY);
+                                player->actor.world.pos.y + 30, player->actor.world.pos.z, 0, 0, 0, BOMB_BODY, true);
 
         if (bomb == NULL) {
             return GameInteractionEffectQueryResult::TemporarilyNotPossible;
@@ -593,7 +603,7 @@ GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnActor(uint32_t 
     } else {
         // Generic spawn an actor at Link's position
         Actor* actor = Actor_Spawn(&gPlayState->actorCtx, gPlayState, actorId, player->actor.world.pos.x,
-                                   player->actor.world.pos.y, player->actor.world.pos.z, 0, 0, 0, actorParams);
+                                   player->actor.world.pos.y, player->actor.world.pos.z, 0, 0, 0, actorParams, 0);
         if (actor != NULL) {
             if (nameTag != "" && CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("EnemyNameTags"), 0)) {
                 NameTag_RegisterForActor((Actor*)actor, nameTag.c_str());

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <ship/window/gui/GuiWindow.h>
+#include <libultraship/libultraship.h>
 
 typedef enum { COLVIEW_DISABLED, COLVIEW_SOLID, COLVIEW_TRANSPARENT } ColViewerRenderSetting;
 

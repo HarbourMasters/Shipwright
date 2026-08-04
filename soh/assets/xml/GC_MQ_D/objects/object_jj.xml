@@ -1,0 +1,77 @@
+<Root>
+    <File Name="object_jj" Segment="6">
+
+        <!-- Jabu Jabu animation (waggling fins etc.) -->
+        <Animation Name="gJabuJabuAnim" Offset="0x1F4C"/>
+
+        <!-- Jabu Jabu eye textures -->
+        <Texture Name="gJabuJabuEyeOpenTex" OutName="jabu_jabu_eye_open" Format="rgba16" Width="16" Height="32" Offset="0x7698"/>
+        <Texture Name="gJabuJabuEyeHalfTex" OutName="jabu_jabu_eye_half" Format="rgba16" Width="16" Height="32" Offset="0x7A98"/>
+        <Texture Name="gJabuJabuEyeClosedTex" OutName="jabu_jabu_eye_closed" Format="rgba16" Width="16" Height="32" Offset="0x7E98"/>
+
+        <!-- Jabu Jabu skeleton -->
+        <Skeleton Name="gJabuJabuSkel" Type="Flex" LimbType="Standard" Offset="0xB9A8"/>
+
+        <!-- Jabu Jabu limb displaylists -->
+        <DList Name="gJabuJabuBodyDL" Offset="0x5690"/>
+        <DList Name="gJabuJabuLeftUpperFlipperDL" Offset="0x55B0"/>
+        <DList Name="gJabuJabuLeftMidFlipperDL" Offset="0x54D0"/>
+        <DList Name="gJabuJabuLeftLowerFlipperDL" Offset="0x5400"/>
+        <DList Name="gJabuJabuHeadDL" Offset="0x4920"/>
+        <DList Name="gJabuJabuLeftFrillDL" Offset="0x4880"/>
+        <DList Name="gJabuJabuRightFrillDL" Offset="0x47E0"/>
+        <DList Name="gJabuJabuRightUpperFlipperDL" Offset="0x4700"/>
+        <DList Name="gJabuJabuRightMidFlipperDL" Offset="0x4648"/>
+        <DList Name="gJabuJabuRightLowerFlipperDL" Offset="0x4578"/>
+        <DList Name="gJabuJabuFlukeDL" Offset="0x44A0"/>
+
+        <!-- Jabu Jabu limbs -->
+        <!-- Only limbs with attached dLists are included for now; others are indicated by spaces -->
+
+
+
+        <Limb Name="gJabuJabuBodyLimb" LimbType="Standard" Offset="0xB87C"/><!-- Limb 4 -->
+
+        <Limb Name="gJabuJabuLeftUpperFlipperLimb" LimbType="Standard" Offset="0xB894"/><!-- Limb 6 -->
+
+        <Limb Name="gJabuJabuLeftMidFlipperLimb" LimbType="Standard" Offset="0xB8AC"/><!-- Limb 8 -->
+        <Limb Name="gJabuJabuLeftLowerFlipperLimb" LimbType="Standard" Offset="0xB8B8"/><!-- Limb 9 -->
+        <Limb Name="gJabuJabuHeadLimb" LimbType="Standard" Offset="0xB8C4"/><!-- Limb 10 -->
+
+        <Limb Name="gJabuJabuLeftFrillLimb" LimbType="Standard" Offset="0xB8DC"/><!-- Limb 12 -->
+
+        <Limb Name="gJabuJabuRightFrillLimb" LimbType="Standard" Offset="0xB8F4"/><!-- Limb 14 -->
+
+        <Limb Name="gJabuJabuRightUpperFlipperLimb" LimbType="Standard" Offset="0xB90C"/><!-- Limb 16 -->
+
+        <Limb Name="gJabuJabuRightMidFlipperLimb" LimbType="Standard" Offset="0xB924"/><!-- Limb 18 -->
+        <Limb Name="gJabuJabuRightLowerFlipperLimb" LimbType="Standard" Offset="0xB930"/><!-- Limb 19 -->
+
+        <Limb Name="gJabuJabuFlukeLimb" LimbType="Standard" Offset="0xB948"/><!-- Limb 21 -->
+
+        <!-- Jabu Jabu Limb textures -->
+        <Texture Name="gJabuJabuFrillTex" OutName="jabu_jabu_frill" Format="rgba16" Width="32" Height="32" Offset="0x5B58"/>
+        <Texture Name="gJabuJabuNostrilTex" OutName="jabu_jabu_nostril" Format="rgba16" Width="32" Height="16" Offset="0x6358"/>
+        <Texture Name="gJabuJabuNoseDecorationTex" OutName="jabu_jabu_nose_decoration" Format="rgba16" Width="8" Height="32" Offset="0x6758"/>
+        <Texture Name="gJabuJabuToothTex" OutName="jabu_jabu_tooth" Format="rgba16" Width="8" Height="16" Offset="0x6958"/>
+        <Texture Name="gJabuJabuLipTex" OutName="jabu_jabu_lip" Format="rgba16" Width="8" Height="16" Offset="0x6A58"/>
+        <Texture Name="gJabuJabuLipMouthCornerTex" OutName="jabu_jabu_lip_mouth_corner" Format="rgba16" Width="16" Height="16" Offset="0x6B58"/>
+        <Texture Name="gJabuJabuDiademSideTex" OutName="jabu_jabu_diadem_side" Format="rgba16" Width="8" Height="16" Offset="0x6D58"/>
+        <Texture Name="gJabuJabuLateralTex" OutName="jabu_jabu_lateral" Format="rgba16" Width="16" Height="64" Offset="0x6E58"/>
+        <Texture Name="gJabuJabuEyeOrbitTex" OutName="jabu_jabu_eye_orbit" Format="rgba16" Width="4" Height="8" Offset="0x7658"/>
+        <Texture Name="gJabuJabuDorsalTex" OutName="jabu_jabu_dorsal" Format="rgba16" Width="32" Height="64" Offset="0x8298"/>
+        <Texture Name="gJabuJabuCapOuterTex" OutName="jabu_jabu_cap_outer" Format="rgba16" Width="4" Height="8" Offset="0x9298"/>
+        <Texture Name="gJabuJabuCapInnerTex" OutName="jabu_jabu_cap_inner" Format="rgba16" Width="8" Height="8" Offset="0x92D8"/>
+        <Texture Name="gJabuJabuMouthRoofTex" OutName="jabu_jabu_mouth_roof" Format="rgba16" Width="32" Height="64" Offset="0x9358"/>
+        <Texture Name="gJabuJabuDiademCenterTex" OutName="jabu_jabu_diadem_center" Format="rgba16" Width="16" Height="32" Offset="0xA358"/>
+        <Texture Name="gJabuJabuFinTex" OutName="jabu_jabu_fin" Format="rgba16" Width="16" Height="8" Offset="0xA758"/>
+        <Texture Name="gJabuJabuMouthFloorTex" OutName="jabu_jabu_mouth_floor" Format="rgba16" Width="32" Height="64" Offset="0xA858"/>
+
+        <!-- Jabu Jabu collision -->
+        <Collision Name="gJabuJabuHeadCol" Offset="0x0A1C"/>
+        <Collision Name="gJabuJabuBodyCol" Offset="0x1830"/>
+        <Collision Name="gJabuJabuUnusedCol" Offset="0xBA8C"/>
+
+
+    </File>
+</Root>

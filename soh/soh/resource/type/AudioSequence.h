@@ -1,6 +1,6 @@
 #pragma once
 
-#include <stdint.h>
+#include <cstdint>
 #include <ship/resource/Resource.h>
 
 namespace SOH {

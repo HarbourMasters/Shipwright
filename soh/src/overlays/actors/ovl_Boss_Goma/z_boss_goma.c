@@ -348,7 +348,7 @@ void BossGoma_Init(Actor* thisx, PlayState* play) {
                                WARP_DUNGEON_CHILD);
         }
         if (GameInteractor_Should(VB_SPAWN_HEART_CONTAINER, true)) {
-            Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, 141.0f, -640.0f, -84.0f, 0, 0, 0, 0);
+            Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, 141.0f, -640.0f, -84.0f, 0, 0, 0, 0, true);
         }
     }
 
@@ -889,7 +889,7 @@ void BossGoma_Encounter(BossGoma* this, PlayState* play) {
             Math_ApproachS(&this->actor.world.rot.y, Actor_WorldYawTowardActor(&this->actor, &GET_PLAYER(play)->actor),
                            2, 0x7D0);
 
-            if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
+            if (this->actor.bgCheckFlags & 1) {
                 this->actionState = 130;
                 this->actor.velocity.y = 0.0f;
                 Animation_Change(&this->skelanime, &gGohmaInitialLandingAnim, 1.0f, 0.0f,
@@ -1126,7 +1126,7 @@ void BossGoma_Defeated(BossGoma* this, PlayState* play) {
                 this->subCameraFollowSpeed = 0.0f;
                 if (GameInteractor_Should(VB_SPAWN_HEART_CONTAINER, true)) {
                     Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, this->actor.world.pos.x,
-                                this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0);
+                                this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0, true);
                 }
             }
             break;
@@ -1320,7 +1320,7 @@ void BossGoma_FloorAttack(BossGoma* this, PlayState* play) {
 
             if (Animation_OnFrame(&this->skelanime, 10.0f)) {
                 BossGoma_PlayEffectsAndSfx(this, play, 3, 5);
-                Actor_RequestQuakeAndRumble(&this->actor, play, 5, 15);
+                func_80033E88(&this->actor, play, 5, 15);
             }
 
             if (Animation_OnFrame(&this->skelanime, Animation_GetLastFrame(&gGohmaAttackAnim))) {
@@ -1441,11 +1441,11 @@ void BossGoma_FallJump(BossGoma* this, PlayState* play) {
     Math_ApproachS(&this->actor.world.rot.y, Actor_WorldYawTowardActor(&this->actor, &GET_PLAYER(play)->actor), 2,
                    0x7D0);
 
-    if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
+    if (this->actor.bgCheckFlags & 1) {
         BossGoma_SetupFloorLand(this);
         this->actor.velocity.y = 0.0f;
         BossGoma_PlayEffectsAndSfx(this, play, 0, 8);
-        Actor_RequestQuakeAndRumble(&this->actor, play, 5, 0xF);
+        func_80033E88(&this->actor, play, 5, 0xF);
     }
 }
 
@@ -1458,11 +1458,11 @@ void BossGoma_FallStruckDown(BossGoma* this, PlayState* play) {
     Math_ApproachS(&this->actor.world.rot.y, Actor_WorldYawTowardActor(&this->actor, &GET_PLAYER(play)->actor), 3,
                    0x7D0);
 
-    if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
+    if (this->actor.bgCheckFlags & 1) {
         BossGoma_SetupFloorLandStruckDown(this);
         this->actor.velocity.y = 0.0f;
         BossGoma_PlayEffectsAndSfx(this, play, 0, 8);
-        Actor_RequestQuakeAndRumble(&this->actor, play, 0xA, 0xF);
+        func_80033E88(&this->actor, play, 0xA, 0xF);
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_GOMA_DAM1);
     }
 }
@@ -1651,11 +1651,11 @@ void BossGoma_FloorMain(BossGoma* this, PlayState* play) {
         }
     }
 
-    if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
+    if (this->actor.bgCheckFlags & 1) {
         this->actor.velocity.y = 0.0f;
     }
 
-    if (this->actor.bgCheckFlags & BGCHECKFLAG_WALL) {
+    if (this->actor.bgCheckFlags & 8) {
         BossGoma_SetupWallClimb(this);
     }
 
@@ -1702,7 +1702,7 @@ void BossGoma_CeilingMoveToCenter(BossGoma* this, PlayState* play) {
     Math_ApproachS(&this->actor.shape.rot.x, -0x8000, 3, 0x3E8);
 
     // avoid walking into a wall?
-    if (this->actor.bgCheckFlags & BGCHECKFLAG_WALL) {
+    if (this->actor.bgCheckFlags & 8) {
         angle = this->actor.shape.rot.y + 0x8000;
 
         if (angle < this->actor.wallYaw) {
@@ -1865,7 +1865,7 @@ void BossGoma_UpdateHit(BossGoma* this, PlayState* play) {
                 }
 
                 this->timer = 4;
-                Actor_RequestQuakeAndRumble(&this->actor, play, 4, 0xC);
+                func_80033E88(&this->actor, play, 4, 0xC);
             }
         }
     }

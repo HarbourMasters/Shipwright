@@ -330,15 +330,14 @@ void EnKarebaba_Dying(EnKarebaba* this, PlayState* play) {
         Math_ScaledStepToS(&this->actor.shape.rot.x, 0x4800, 0x71C);
         EffectSsHahen_SpawnBurst(play, &this->actor.world.pos, 3.0f, 0, 12, 5, 1, HAHEN_OBJECT_DEFAULT, 10, NULL);
 
-        if (this->actor.scale.x > 0.005f &&
-            ((this->actor.bgCheckFlags & BGCHECKFLAG_GROUND_TOUCH) || (this->actor.bgCheckFlags & BGCHECKFLAG_WALL))) {
+        if (this->actor.scale.x > 0.005f && ((this->actor.bgCheckFlags & 2) || (this->actor.bgCheckFlags & 8))) {
             this->actor.scale.x = this->actor.scale.y = this->actor.scale.z = 0.0f;
             this->actor.speedXZ = 0.0f;
             this->actor.flags &= ~(ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE);
             EffectSsHahen_SpawnBurst(play, &this->actor.world.pos, 3.0f, 0, 12, 5, 15, HAHEN_OBJECT_DEFAULT, 10, NULL);
         }
 
-        if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND_TOUCH) {
+        if (this->actor.bgCheckFlags & 2) {
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_DODO_M_GND);
             this->actor.params = 1;
         }

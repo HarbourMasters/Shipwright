@@ -2,14 +2,14 @@
 #include "soh/resource/type/Cutscene.h"
 #include "spdlog/spdlog.h"
 
-static uint32_t read_CMD_BBBB(Ship::BinaryReader* reader) {
+static inline uint32_t read_CMD_BBBB(std::shared_ptr<Ship::BinaryReader> reader) {
     uint32_t v;
     reader->Read((char*)&v, sizeof(uint32_t));
 
     return v;
 }
 
-static uint32_t read_CMD_BBH(Ship::BinaryReader* reader) {
+static inline uint32_t read_CMD_BBH(std::shared_ptr<Ship::BinaryReader> reader) {
     uint32_t v;
     reader->Read((char*)&v, sizeof(uint32_t));
 
@@ -24,7 +24,7 @@ static uint32_t read_CMD_BBH(Ship::BinaryReader* reader) {
     return v;
 }
 
-static uint32_t read_CMD_HBB(Ship::BinaryReader* reader) {
+static inline uint32_t read_CMD_HBB(std::shared_ptr<Ship::BinaryReader> reader) {
     uint32_t v;
     reader->Read((char*)&v, sizeof(uint32_t));
 
@@ -39,7 +39,7 @@ static uint32_t read_CMD_HBB(Ship::BinaryReader* reader) {
     return v;
 }
 
-static uint32_t read_CMD_HH(Ship::BinaryReader* reader) {
+static inline uint32_t read_CMD_HH(std::shared_ptr<Ship::BinaryReader> reader) {
     uint32_t v;
     reader->Read((char*)&v, sizeof(uint32_t));
 
@@ -66,8 +66,7 @@ ResourceFactoryBinaryCutsceneV0::ReadResource(std::shared_ptr<Ship::File> file,
     }
 
     auto cutscene = std::make_shared<Cutscene>(initData);
-    const auto readerShared = std::get<std::shared_ptr<Ship::BinaryReader>>(file->Reader);
-    const auto reader = readerShared.get();
+    auto reader = std::get<std::shared_ptr<Ship::BinaryReader>>(file->Reader);
 
     uint32_t numEntries = reader->ReadUInt32();
     cutscene->commands.reserve(numEntries);

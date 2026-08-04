@@ -1,6 +1,8 @@
 #include "soh/Network/Anchor/Anchor.h"
 #include <nlohmann/json.hpp>
+#include <libultraship/libultraship.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/OTRGlobals.h"
 
 extern "C" {
 #include "macros.h"
@@ -32,6 +34,6 @@ void Anchor::HandlePacket_UpdateBeansCount(nlohmann::json payload) {
         return;
     }
 
-    AMMO(ITEM_BEAN) = payload.at("amount").get<s8>();
-    BEANS_BOUGHT = payload.at("amountBought").get<s8>();
+    AMMO(ITEM_BEAN) = payload["amount"].get<s8>();
+    BEANS_BOUGHT = payload["amountBought"].get<s8>();
 }

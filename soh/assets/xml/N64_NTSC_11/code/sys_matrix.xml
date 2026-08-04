@@ -1,0 +1,5 @@
+<Root>
+    <File Name="code" OutName="sys_matrix" BaseAddress="0x800110A0" RangeStart="0xEDED0" RangeEnd="0xEDF10">
+        <Mtx Name="gMtxClear"  Offset="0xEDED0"/>
+    </File>
+</Root>

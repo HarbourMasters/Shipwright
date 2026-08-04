@@ -1,0 +1,83 @@
+<Root>
+    <File Name="object_ru1" Segment="6">
+        <Animation Name="gRutoChildWaitHandsBehindBackAnim" Offset="0x690"/>
+        <Animation Name="gRutoChildWaitHandsOnHipsAnim" Offset="0xE54"/>
+        <Animation Name="gRutoChildTransitionHandsOnHipToCrossArmsAndLegsAnim" Offset="0x1488"/>
+        <Animation Name="gRutoChildWaitSittingAnim" Offset="0x2058"/>
+        <Animation Name="gRutoChildWaitInBlueWarpAnim" Offset="0x2990"/>
+        <Animation Name="gRutoChildBringHandsDownAnim" Offset="0x2EC0"/>
+        <Animation Name="gRutoChildHoldArmsUpAnim" Offset="0x3608"/>
+        <Animation Name="gRutoChildBringArmsUpAnim" Offset="0x3784"/>
+        <Animation Name="gRutoChildTurnAroundAnim" Offset="0x4074"/>
+        <Animation Name="gRutoChildSquirmAnim" Offset="0x4350"/>
+        <Animation Name="gRutoChildSeesSapphireAnim" Offset="0x4648"/>
+        <Animation Name="gRutoChildShutterAnim" Offset="0x4BF0"/>
+        <Animation Name="gRutoChildWalkToAndHoldUpSapphireAnim" Offset="0x63F4"/>
+        <Animation Name="gRutoChildSittingAnim" Offset="0x6B9C"/>
+        <Animation Name="gRutoChildSitAnim" Offset="0x7534"/>
+        <Animation Name="gRutoChildWalkAnim" Offset="0x78E4"/>
+        <Animation Name="gRutoChildTransitionFromSwimOnBackAnim" Offset="0x8100"/>
+        <Animation Name="gRutoChildTransitionToSwimOnBackAnim" Offset="0x8AA8"/>
+        <Animation Name="gRutoChildAnim_009060" Offset="0x9060"/>
+        <Animation Name="gRutoChildWait2Anim" Offset="0x97B8"/>
+        <Animation Name="gRutoChildSwimOnBackAnim" Offset="0x12E94"/>
+        <Animation Name="gRutoChildTreadWaterAnim" Offset="0x13A64"/>
+
+        <DList Name="gRutoChildTorsoDL" Offset="0xC0A0"/>
+        <DList Name="gRutoChildLeftThighDL" Offset="0xC188"/>
+        <DList Name="gRutoChildLeftShinDL" Offset="0xC3D8"/>
+        <DList Name="gRutoChildLeftFootDL" Offset="0xC630"/>
+        <DList Name="gRutoChildRightThighDL" Offset="0xC7D0"/>
+        <DList Name="gRutoChildRightShinDL" Offset="0xCA20"/>
+        <DList Name="gRutoChildRightFootDL" Offset="0xCC78"/>
+        <DList Name="gRutoChildChestDL" Offset="0xCE18"/>
+        <DList Name="gRutoChildRightUpperArmDL" Offset="0xD0B8"/>
+        <DList Name="gRutoChildRightFinDL" Offset="0xD308"/>
+        <DList Name="gRutoChildRightHandDL" Offset="0xD5E0"/>
+        <DList Name="gRutoChildLeftUpperArmDL" Offset="0xD870"/>
+        <DList Name="gRutoChildLeftFinDL" Offset="0xDAC0"/>
+        <DList Name="gRutoChildLeftHandDL" Offset="0xDDA8"/>
+        <DList Name="gRutoChildHeadDL" Offset="0x119F8"/>
+        
+        <Texture Name="gRutoChildEyeTLUT" OutName="eye_tlut" Format="rgba16" Width="16" Height="16" Offset="0xE038"/>
+        <Texture Name="gRutoChildMouthTLUT" OutName="mouth_tlut" Format="rgba16" Width="16" Height="12" Offset="0xE238"/>
+        
+        <Texture Name="gRutoChildEyeOpenTex" OutName="eye_open" Format="ci8" Width="32" Height="32" Offset="0xE3B8" TlutOffset="0xE038"/>
+        <Texture Name="gRutoChildEyeHalfTex" OutName="eye_half" Format="ci8" Width="32" Height="32" Offset="0xF238" TlutOffset="0xE038"/>
+        <Texture Name="gRutoChildEyeClosedTex" OutName="eye_closed" Format="ci8" Width="32" Height="32" Offset="0xF638" TlutOffset="0xE038"/>
+        <Texture Name="gRutoChildEyeRollLeftTex" OutName="eye_roll_left" Format="ci8" Width="32" Height="32" Offset="0xFE38" TlutOffset="0xE038"/>
+        <Texture Name="gRutoChildEyeHalf2Tex" OutName="eye_half_2" Format="ci8" Width="32" Height="32" Offset="0x10238" TlutOffset="0xE038"/>
+        <Texture Name="gRutoChildEyeHalfWithBlushTex" OutName="eye_half_with_blush" Format="ci8" Width="32" Height="32" Offset="0x10A38" TlutOffset="0xE038"/>
+
+        <Texture Name="gRutoChildBlueSkinGradientTex" OutName="blue_skin_gradient" Format="rgba16" Width="8" Height="8" Offset="0xE7B8"/>
+
+        <Texture Name="gRutoChildMouthClosedTex" OutName="mouth_closed" Format="ci8" Width="32" Height="32" Offset="0xE838" TlutOffset="0xE238"/>
+        <Texture Name="gRutoChildMouthFrownTex" OutName="mouth_frown" Format="ci8" Width="32" Height="32" Offset="0xFA38" TlutOffset="0xE238"/>
+        <Texture Name="gRutoChildMouthOpenTex" OutName="mouth_open" Format="ci8" Width="32" Height="32" Offset="0x10638" TlutOffset="0xE238"/>
+
+        <Texture Name="gRutoChildEarTex" OutName="ear" Format="rgba16" Width="16" Height="16" Offset="0xEC38"/>
+        <Texture Name="gRutoChildBlueSkinPatchesTex" OutName="blue_skin_patches" Format="rgba16" Width="16" Height="16" Offset="0xEE38"/>
+        <Texture Name="gRutoChildUnkHeadCircleTex" OutName="tex_0000F038" Format="rgba16" Width="16" Height="16" Offset="0xF038"/> <!-- TODO rename me-->
+        <Texture Name="gRutoChildFingersTex" OutName="fingers" Format="rgba16" Width="16" Height="16" Offset="0x12200"/>
+        <Texture Name="gRutoChildCircleGradientTex" OutName="circle_gradient" Format="rgba16" Width="16" Height="16" Offset="0x12400"/>
+        
+        <Skeleton Name="gRutoChildSkel" Type="Flex" LimbType="Standard" Offset="0x12700"/>
+        
+        <Limb Name="gRutoChildRootLimb" LimbType="Standard" Offset="0x12600"/>
+        <Limb Name="gRutoChildLeftThighLimb" LimbType="Standard" Offset="0x1260C"/>
+        <Limb Name="gRutoChildLeftShinLimb" LimbType="Standard" Offset="0x12618"/>
+        <Limb Name="gRutoChildLeftFootLimb" LimbType="Standard" Offset="0x12624"/>
+        <Limb Name="gRutoChildRightThighLimb" LimbType="Standard" Offset="0x12630"/>
+        <Limb Name="gRutoChildRightShinLimb" LimbType="Standard" Offset="0x1263C"/>
+        <Limb Name="gRutoChildRightFootLimb" LimbType="Standard" Offset="0x12648"/>
+        <Limb Name="gRutoChildChestLimb" LimbType="Standard" Offset="0x12654"/>
+        <Limb Name="gRutoChildLeftUpperArmLimb" LimbType="Standard" Offset="0x12660"/>
+        <Limb Name="gRutoChildLeftFinLimb" LimbType="Standard" Offset="0x1266C"/>
+        <Limb Name="gRutoChildLeftHandLimb" LimbType="Standard" Offset="0x12678"/>
+        <Limb Name="gRutoChildRightUpperArmLimb" LimbType="Standard" Offset="0x12684"/>
+        <Limb Name="gRutoChildRightFinLimb" LimbType="Standard" Offset="0x12690"/>
+        <Limb Name="gRutoChildRightHandLimb" LimbType="Standard" Offset="0x1269C"/>
+        <Limb Name="gRutoChildHeadLimb" LimbType="Standard" Offset="0x126A8"/>
+        <Limb Name="gRutoChildTorsoLimb" LimbType="Standard" Offset="0x126B4"/>
+    </File>
+</Root>

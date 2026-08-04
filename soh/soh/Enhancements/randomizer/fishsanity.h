@@ -25,8 +25,6 @@ typedef enum {
 } FishsanityCheckType;
 
 #ifdef __cplusplus
-#include "soh/Enhancements/randomizer/location.h"
-
 namespace Rando {
 
 /**
@@ -82,7 +80,7 @@ class Fishsanity {
 
     /**
      * @brief Returns the identity for a caught pond fish given its params.
-     * Not for use externally from rando
+     * Not for use externally from rando, use Randomizer::IdentifyFish
      *
      * @param fishParams Actor parameters for the fish to identify
      */

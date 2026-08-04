@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <string>
 #include <ship/resource/Resource.h>
 
 namespace SOH {

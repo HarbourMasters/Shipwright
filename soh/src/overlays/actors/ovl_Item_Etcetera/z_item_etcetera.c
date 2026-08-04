@@ -6,6 +6,7 @@
 
 #include "z_item_etcetera.h"
 #include <assert.h>
+#include "soh/OTRGlobals.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
@@ -15,7 +16,7 @@ void ItemEtcetera_Update(Actor* thisx, PlayState* play);
 void ItemEtcetera_DrawThroughLens(Actor* thisx, PlayState* play);
 void ItemEtcetera_Draw(Actor* thisx, PlayState* play);
 
-void ItemEtcetera_WaitForObject(ItemEtcetera* this, PlayState* play);
+void func_80B857D0(ItemEtcetera* this, PlayState* play);
 void func_80B85824(ItemEtcetera* this, PlayState* play);
 void func_80B858B4(ItemEtcetera* this, PlayState* play);
 void ItemEtcetera_SpawnSparkles(ItemEtcetera* this, PlayState* play);
@@ -78,7 +79,7 @@ void ItemEtcetera_Init(Actor* thisx, PlayState* play) {
     this->futureActionFunc = func_80B85824;
     this->drawFunc = ItemEtcetera_Draw;
     Actor_SetScale(&this->actor, 0.25f);
-    ItemEtcetera_SetupAction(this, ItemEtcetera_WaitForObject);
+    ItemEtcetera_SetupAction(this, func_80B857D0);
     switch (type) {
         case ITEM_ETC_LETTER:
             Actor_SetScale(&this->actor, 0.5f);
@@ -110,7 +111,7 @@ void ItemEtcetera_Init(Actor* thisx, PlayState* play) {
 void ItemEtcetera_Destroy(Actor* thisx, PlayState* play) {
 }
 
-void ItemEtcetera_WaitForObject(ItemEtcetera* this, PlayState* play) {
+void func_80B857D0(ItemEtcetera* this, PlayState* play) {
     if (Object_IsLoaded(&play->objectCtx, this->objBankIndex)) {
         this->actor.objBankIndex = this->objBankIndex;
         this->actor.draw = this->drawFunc;
@@ -167,7 +168,7 @@ void ItemEtcetera_SpawnSparkles(ItemEtcetera* this, PlayState* play) {
 void ItemEtcetera_MoveFireArrowDown(ItemEtcetera* this, PlayState* play) {
     Actor_UpdateBgCheckInfo(play, &this->actor, 10.0f, 10.0f, 0.0f, 5);
     Actor_MoveXZGravity(&this->actor);
-    if (!(this->actor.bgCheckFlags & BGCHECKFLAG_GROUND)) {
+    if (!(this->actor.bgCheckFlags & 1)) {
         ItemEtcetera_SpawnSparkles(this, play);
     }
     this->actor.shape.rot.y += 0x400;

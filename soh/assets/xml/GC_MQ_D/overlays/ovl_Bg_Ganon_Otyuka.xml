@@ -1,0 +1,29 @@
+<Root>
+    <File Name="ovl_Bg_Ganon_Otyuka" BaseAddress="0x80875920" RangeStart="0x11C0" RangeEnd="0x259C">
+        <Texture Name="sPlatformTex" OutName="platform_tex" Format="rgba16" Width="32" Height="32" Offset="0x11C0"/>
+
+        <Array Name="sPlatformTopVtx" Count="4" Offset="0x19C8">
+            <Vtx/>
+        </Array>
+        <DList Name="sPlatformMaterialDL" Offset="0x1A08"/>
+        <DList Name="sPlatformTopDL" Offset="0x1A90"/>
+
+        <Array Name="sPlatformBottomVtx" Count="4" Offset="0x1AA8">
+            <Vtx/>
+        </Array>
+        <DList Name="sPlatformBottomDL" Offset="0x1AE8"/>
+
+        <Array Name="sPlatformSideVtx" Count="4" Offset="0x01B00">
+            <Vtx/>
+        </Array>
+        <DList Name="sPlatformSideDL" Offset="0x1B40"/>
+
+        <Texture Name="sFlashTex" OutName="flash_tex" Format="i8" Width="32" Height="64" Offset="0x1B58"/>
+        <Array Name="sFlashVtx" Count="8" Offset="0x2358">
+            <Vtx/>
+        </Array>
+        <DList Name="sFlashDL" Offset="0x23D8"/>
+
+        <Collision Name="sCol" Offset="0x2570"/>
+    </File>
+</Root>

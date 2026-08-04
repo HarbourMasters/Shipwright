@@ -1,0 +1,288 @@
+<Root>
+    <File Name="HIDAN_scene" Segment="2">
+        <Texture Name="HIDAN_sceneTex_0189D0" OutName="HIDAN_sceneTex_0189D0" Format="ci4" Width="32" Height="32" Offset="0x189D0" TlutOffset="0x189B0" AddedByScript="true"/>
+        <Texture Name="HIDAN_sceneTex_018BD0" OutName="HIDAN_sceneTex_018BD0" Format="ci4" Width="32" Height="32" Offset="0x18BD0" TlutOffset="0x189B0" AddedByScript="true"/>
+        <Texture Name="HIDAN_sceneTex_018DD0" OutName="HIDAN_sceneTex_018DD0" Format="rgba16" Width="32" Height="32" Offset="0x18DD0" AddedByScript="true"/>
+        <Texture Name="HIDAN_sceneTex_0195D0" OutName="HIDAN_sceneTex_0195D0" Format="rgba16" Width="32" Height="32" Offset="0x195D0" AddedByScript="true"/>
+        <Texture Name="HIDAN_sceneTex_019DD0" OutName="HIDAN_sceneTex_019DD0" Format="ci4" Width="32" Height="32" Offset="0x19DD0" TlutOffset="0x189B0" AddedByScript="true"/>
+        <Texture Name="HIDAN_sceneTex_019FD0" OutName="HIDAN_sceneTex_019FD0" Format="rgba16" Width="32" Height="32" Offset="0x19FD0" AddedByScript="true"/>
+        <Texture Name="HIDAN_sceneTLUT_018990" OutName="HIDAN_sceneTLUT_018990" Format="rgba16" Width="4" Height="4" Offset="0x18990" AddedByScript="true"/>
+        <Texture Name="HIDAN_sceneTLUT_0189B0" OutName="HIDAN_sceneTLUT_0189B0" Format="rgba16" Width="4" Height="4" Offset="0x189B0" AddedByScript="true"/>
+        <Path Name="HIDAN_scenePathList_000440" Offset="0x0440" NumPaths="4"/>
+        <Scene Name="HIDAN_scene" Offset="0x0"/>
+    </File>
+    <File Name="HIDAN_room_0" Segment="3">
+        <Texture Name="HIDAN_room_0Tex_004EF0" OutName="HIDAN_room_0Tex_004EF0" Format="ci4" Width="64" Height="32" Offset="0x4EF0" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x18990" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_0Tex_0052F0" OutName="HIDAN_room_0Tex_0052F0" Format="ci4" Width="64" Height="32" Offset="0x52F0" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x18990" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_0Tex_0056F0" OutName="HIDAN_room_0Tex_0056F0" Format="ci4" Width="64" Height="32" Offset="0x56F0" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x18990" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_0Tex_005AF0" OutName="HIDAN_room_0Tex_005AF0" Format="ci4" Width="32" Height="32" Offset="0x5AF0" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x18990" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_0Tex_005CF0" OutName="HIDAN_room_0Tex_005CF0" Format="ci4" Width="32" Height="32" Offset="0x5CF0" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x18990" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_0Tex_005EF0" OutName="HIDAN_room_0Tex_005EF0" Format="ci4" Width="32" Height="64" Offset="0x5EF0" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x189B0" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_0Tex_0062F0" OutName="HIDAN_room_0Tex_0062F0" Format="rgba16" Width="32" Height="64" Offset="0x62F0" AddedByScript="true"/>
+        <Room Name="HIDAN_room_0" Offset="0x0"/>
+    </File>
+    <File Name="HIDAN_room_1" Segment="3">
+        <Texture Name="HIDAN_room_1Tex_008730" OutName="HIDAN_room_1Tex_008730" Format="rgba16" Width="16" Height="16" Offset="0x8730" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_1Tex_008930" OutName="HIDAN_room_1Tex_008930" Format="rgba16" Width="32" Height="32" Offset="0x8930" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_1Tex_009130" OutName="HIDAN_room_1Tex_009130" Format="rgba16" Width="32" Height="32" Offset="0x9130" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_1Tex_009930" OutName="HIDAN_room_1Tex_009930" Format="rgba16" Width="32" Height="32" Offset="0x9930" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_1Tex_00A130" OutName="HIDAN_room_1Tex_00A130" Format="ci4" Width="64" Height="32" Offset="0xA130" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x18990" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_1Tex_00A530" OutName="HIDAN_room_1Tex_00A530" Format="rgba16" Width="64" Height="32" Offset="0xA530" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_1Tex_00B530" OutName="HIDAN_room_1Tex_00B530" Format="rgba16" Width="32" Height="32" Offset="0xB530" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_1Tex_00BD30" OutName="HIDAN_room_1Tex_00BD30" Format="ci4" Width="32" Height="64" Offset="0xBD30" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x189B0" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_1Tex_00C130" OutName="HIDAN_room_1Tex_00C130" Format="rgba16" Width="32" Height="32" Offset="0xC130" AddedByScript="true"/>
+        <Room Name="HIDAN_room_1" Offset="0x0"/>
+    </File>
+    <File Name="HIDAN_room_2" Segment="3">
+        <Texture Name="HIDAN_room_2Tex_009628" OutName="HIDAN_room_2Tex_009628" Format="rgba16" Width="32" Height="8" Offset="0x9628" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_2Tex_009828" OutName="HIDAN_room_2Tex_009828" Format="rgba16" Width="32" Height="32" Offset="0x9828" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_2Tex_00A028" OutName="HIDAN_room_2Tex_00A028" Format="rgba16" Width="32" Height="32" Offset="0xA028" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_2Tex_00A828" OutName="HIDAN_room_2Tex_00A828" Format="ci4" Width="64" Height="32" Offset="0xA828" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x18990" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_2Tex_00AC28" OutName="HIDAN_room_2Tex_00AC28" Format="rgba16" Width="64" Height="32" Offset="0xAC28" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_2Tex_00BC28" OutName="HIDAN_room_2Tex_00BC28" Format="rgba16" Width="64" Height="32" Offset="0xBC28" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_2Tex_00CC28" OutName="HIDAN_room_2Tex_00CC28" Format="ci4" Width="32" Height="32" Offset="0xCC28" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x18990" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_2Tex_00CE28" OutName="HIDAN_room_2Tex_00CE28" Format="rgba16" Width="64" Height="32" Offset="0xCE28" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_2Tex_00DE28" OutName="HIDAN_room_2Tex_00DE28" Format="ci4" Width="32" Height="32" Offset="0xDE28" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x18990" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_2Tex_00E028" OutName="HIDAN_room_2Tex_00E028" Format="ci4" Width="32" Height="64" Offset="0xE028" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x189B0" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_2Tex_00E428" OutName="HIDAN_room_2Tex_00E428" Format="rgba16" Width="32" Height="32" Offset="0xE428" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_2Tex_00EC28" OutName="HIDAN_room_2Tex_00EC28" Format="ci4" Width="32" Height="64" Offset="0xEC28" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x189B0" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_2Tex_00F028" OutName="HIDAN_room_2Tex_00F028" Format="rgba16" Width="32" Height="32" Offset="0xF028" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_2Tex_00F828" OutName="HIDAN_room_2Tex_00F828" Format="rgba16" Width="32" Height="32" Offset="0xF828" AddedByScript="true"/>
+        <Room Name="HIDAN_room_2" Offset="0x0"/>
+    </File>
+    <File Name="HIDAN_room_3" Segment="3">
+        <Texture Name="HIDAN_room_3Tex_001AC8" OutName="HIDAN_room_3Tex_001AC8" Format="ci4" Width="32" Height="64" Offset="0x1AC8" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x189B0" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_3Tex_001EC8" OutName="HIDAN_room_3Tex_001EC8" Format="ci4" Width="64" Height="32" Offset="0x1EC8" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x18990" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_3Tex_0022C8" OutName="HIDAN_room_3Tex_0022C8" Format="ci4" Width="32" Height="32" Offset="0x22C8" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x18990" AddedByScript="true"/>
+        <Room Name="HIDAN_room_3" Offset="0x0"/>
+    </File>
+    <File Name="HIDAN_room_4" Segment="3">
+        <Texture Name="HIDAN_room_4Tex_0050F0" OutName="HIDAN_room_4Tex_0050F0" Format="rgba16" Width="32" Height="8" Offset="0x50F0" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_4Tex_0052F0" OutName="HIDAN_room_4Tex_0052F0" Format="rgba16" Width="32" Height="32" Offset="0x52F0" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_4Tex_005AF0" OutName="HIDAN_room_4Tex_005AF0" Format="rgba16" Width="32" Height="32" Offset="0x5AF0" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_4Tex_0062F0" OutName="HIDAN_room_4Tex_0062F0" Format="ci4" Width="32" Height="64" Offset="0x62F0" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x189B0" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_4Tex_0066F0" OutName="HIDAN_room_4Tex_0066F0" Format="ci4" Width="32" Height="32" Offset="0x66F0" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x18990" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_4Tex_0068F0" OutName="HIDAN_room_4Tex_0068F0" Format="ci4" Width="32" Height="64" Offset="0x68F0" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x189B0" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_4Tex_006CF0" OutName="HIDAN_room_4Tex_006CF0" Format="ci4" Width="32" Height="64" Offset="0x6CF0" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x189B0" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_4Tex_0070F0" OutName="HIDAN_room_4Tex_0070F0" Format="rgba16" Width="32" Height="32" Offset="0x70F0" AddedByScript="true"/>
+        <Room Name="HIDAN_room_4" Offset="0x0"/>
+    </File>
+    <File Name="HIDAN_room_5" Segment="3">
+        <Texture Name="HIDAN_room_5Tex_007EE0" OutName="HIDAN_room_5Tex_007EE0" Format="rgba16" Width="32" Height="8" Offset="0x7EE0" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_5Tex_0080E0" OutName="HIDAN_room_5Tex_0080E0" Format="rgba16" Width="32" Height="32" Offset="0x80E0" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_5Tex_0088E0" OutName="HIDAN_room_5Tex_0088E0" Format="ci4" Width="32" Height="64" Offset="0x88E0" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x189B0" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_5Tex_008CE0" OutName="HIDAN_room_5Tex_008CE0" Format="rgba16" Width="32" Height="32" Offset="0x8CE0" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_5Tex_0094E0" OutName="HIDAN_room_5Tex_0094E0" Format="ci4" Width="32" Height="32" Offset="0x94E0" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x18990" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_5Tex_0096E0" OutName="HIDAN_room_5Tex_0096E0" Format="ci4" Width="32" Height="64" Offset="0x96E0" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x189B0" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_5Tex_009AE0" OutName="HIDAN_room_5Tex_009AE0" Format="ci4" Width="32" Height="64" Offset="0x9AE0" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x189B0" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_5Tex_009EE0" OutName="HIDAN_room_5Tex_009EE0" Format="ci4" Width="32" Height="64" Offset="0x9EE0" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x189B0" AddedByScript="true"/>
+        <Room Name="HIDAN_room_5" Offset="0x0"/>
+    </File>
+    <File Name="HIDAN_room_6" Segment="3">
+        <Texture Name="HIDAN_room_6Tex_003990" OutName="HIDAN_room_6Tex_003990" Format="rgba16" Width="16" Height="16" Offset="0x3990" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_6Tex_003B90" OutName="HIDAN_room_6Tex_003B90" Format="rgba16" Width="32" Height="32" Offset="0x3B90" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_6Tex_004390" OutName="HIDAN_room_6Tex_004390" Format="rgba16" Width="32" Height="32" Offset="0x4390" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_6Tex_004B90" OutName="HIDAN_room_6Tex_004B90" Format="rgba16" Width="64" Height="32" Offset="0x4B90" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_6Tex_005B90" OutName="HIDAN_room_6Tex_005B90" Format="rgba16" Width="32" Height="32" Offset="0x5B90" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_6Tex_006390" OutName="HIDAN_room_6Tex_006390" Format="ci4" Width="32" Height="64" Offset="0x6390" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x189B0" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_6Tex_006790" OutName="HIDAN_room_6Tex_006790" Format="rgba16" Width="32" Height="32" Offset="0x6790" AddedByScript="true"/>
+        <Room Name="HIDAN_room_6" Offset="0x0"/>
+    </File>
+    <File Name="HIDAN_room_7" Segment="3">
+        <Texture Name="HIDAN_room_7Tex_001C48" OutName="HIDAN_room_7Tex_001C48" Format="rgba16" Width="32" Height="8" Offset="0x1C48" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_7Tex_001E48" OutName="HIDAN_room_7Tex_001E48" Format="rgba16" Width="32" Height="32" Offset="0x1E48" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_7Tex_002648" OutName="HIDAN_room_7Tex_002648" Format="ci4" Width="32" Height="64" Offset="0x2648" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x189B0" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_7Tex_002A48" OutName="HIDAN_room_7Tex_002A48" Format="rgba16" Width="32" Height="64" Offset="0x2A48" AddedByScript="true"/>
+        <Room Name="HIDAN_room_7" Offset="0x0"/>
+    </File>
+    <File Name="HIDAN_room_8" Segment="3">
+        <Texture Name="HIDAN_room_8Tex_0050D8" OutName="HIDAN_room_8Tex_0050D8" Format="rgba16" Width="16" Height="16" Offset="0x50D8" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_8Tex_0052D8" OutName="HIDAN_room_8Tex_0052D8" Format="rgba16" Width="32" Height="32" Offset="0x52D8" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_8Tex_005AD8" OutName="HIDAN_room_8Tex_005AD8" Format="rgba16" Width="32" Height="32" Offset="0x5AD8" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_8Tex_0062D8" OutName="HIDAN_room_8Tex_0062D8" Format="rgba16" Width="32" Height="32" Offset="0x62D8" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_8Tex_006AD8" OutName="HIDAN_room_8Tex_006AD8" Format="rgba16" Width="64" Height="32" Offset="0x6AD8" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_8Tex_007AD8" OutName="HIDAN_room_8Tex_007AD8" Format="rgba16" Width="32" Height="32" Offset="0x7AD8" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_8Tex_0082D8" OutName="HIDAN_room_8Tex_0082D8" Format="ci4" Width="32" Height="64" Offset="0x82D8" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x189B0" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_8Tex_0086D8" OutName="HIDAN_room_8Tex_0086D8" Format="ci4" Width="32" Height="64" Offset="0x86D8" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x189B0" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_8Tex_008AD8" OutName="HIDAN_room_8Tex_008AD8" Format="rgba16" Width="32" Height="32" Offset="0x8AD8" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_8Tex_0092D8" OutName="HIDAN_room_8Tex_0092D8" Format="rgba16" Width="32" Height="32" Offset="0x92D8" AddedByScript="true"/>
+        <Room Name="HIDAN_room_8" Offset="0x0"/>
+    </File>
+    <File Name="HIDAN_room_9" Segment="3">
+        <Texture Name="HIDAN_room_9Tex_004768" OutName="HIDAN_room_9Tex_004768" Format="rgba16" Width="32" Height="32" Offset="0x4768" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_9Tex_004F68" OutName="HIDAN_room_9Tex_004F68" Format="rgba16" Width="32" Height="32" Offset="0x4F68" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_9Tex_005768" OutName="HIDAN_room_9Tex_005768" Format="rgba16" Width="32" Height="32" Offset="0x5768" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_9Tex_005F68" OutName="HIDAN_room_9Tex_005F68" Format="rgba16" Width="32" Height="32" Offset="0x5F68" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_9Tex_006768" OutName="HIDAN_room_9Tex_006768" Format="rgba16" Width="32" Height="32" Offset="0x6768" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_9Tex_006F68" OutName="HIDAN_room_9Tex_006F68" Format="rgba16" Width="32" Height="32" Offset="0x6F68" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_9Tex_007768" OutName="HIDAN_room_9Tex_007768" Format="rgba16" Width="32" Height="32" Offset="0x7768" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_9Tex_007F68" OutName="HIDAN_room_9Tex_007F68" Format="rgba16" Width="32" Height="32" Offset="0x7F68" AddedByScript="true"/>
+        <Room Name="HIDAN_room_9" Offset="0x0"/>
+    </File>
+    <File Name="HIDAN_room_10" Segment="3">
+        <Texture Name="HIDAN_room_10Tex_011818" OutName="HIDAN_room_10Tex_011818" Format="rgba16" Width="32" Height="8" Offset="0x11818" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_10Tex_011A18" OutName="HIDAN_room_10Tex_011A18" Format="rgba16" Width="32" Height="32" Offset="0x11A18" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_10Tex_012218" OutName="HIDAN_room_10Tex_012218" Format="ci4" Width="32" Height="64" Offset="0x12218" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x189B0" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_10Tex_012618" OutName="HIDAN_room_10Tex_012618" Format="rgba16" Width="32" Height="32" Offset="0x12618" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_10Tex_012E18" OutName="HIDAN_room_10Tex_012E18" Format="ci4" Width="64" Height="32" Offset="0x12E18" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x18990" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_10Tex_013218" OutName="HIDAN_room_10Tex_013218" Format="ci4" Width="32" Height="32" Offset="0x13218" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x189B0" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_10Tex_013418" OutName="HIDAN_room_10Tex_013418" Format="rgba16" Width="64" Height="32" Offset="0x13418" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_10Tex_014418" OutName="HIDAN_room_10Tex_014418" Format="rgba16" Width="64" Height="32" Offset="0x14418" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_10Tex_015418" OutName="HIDAN_room_10Tex_015418" Format="ci4" Width="64" Height="32" Offset="0x15418" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x18990" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_10Tex_015818" OutName="HIDAN_room_10Tex_015818" Format="ci4" Width="32" Height="32" Offset="0x15818" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x18990" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_10Tex_015A18" OutName="HIDAN_room_10Tex_015A18" Format="rgba16" Width="64" Height="32" Offset="0x15A18" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_10Tex_016A18" OutName="HIDAN_room_10Tex_016A18" Format="ci4" Width="32" Height="32" Offset="0x16A18" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x18990" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_10Tex_016C18" OutName="HIDAN_room_10Tex_016C18" Format="ci4" Width="32" Height="64" Offset="0x16C18" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x189B0" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_10Tex_017018" OutName="HIDAN_room_10Tex_017018" Format="rgba16" Width="32" Height="32" Offset="0x17018" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_10Tex_017818" OutName="HIDAN_room_10Tex_017818" Format="ci4" Width="32" Height="64" Offset="0x17818" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x189B0" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_10Tex_017C18" OutName="HIDAN_room_10Tex_017C18" Format="rgba16" Width="32" Height="32" Offset="0x17C18" AddedByScript="true"/>
+        <Room Name="HIDAN_room_10" Offset="0x0"/>
+    </File>
+    <File Name="HIDAN_room_11" Segment="3">
+        <Texture Name="HIDAN_room_11Tex_0027D8" OutName="HIDAN_room_11Tex_0027D8" Format="rgba16" Width="32" Height="32" Offset="0x27D8" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_11Tex_002FD8" OutName="HIDAN_room_11Tex_002FD8" Format="ci4" Width="32" Height="64" Offset="0x2FD8" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x189B0" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_11Tex_0033D8" OutName="HIDAN_room_11Tex_0033D8" Format="ci4" Width="32" Height="64" Offset="0x33D8" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x189B0" AddedByScript="true"/>
+        <Room Name="HIDAN_room_11" Offset="0x0"/>
+    </File>
+    <File Name="HIDAN_room_12" Segment="3">
+        <Texture Name="HIDAN_room_12Tex_001D68" OutName="HIDAN_room_12Tex_001D68" Format="rgba16" Width="32" Height="8" Offset="0x1D68" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_12Tex_001F68" OutName="HIDAN_room_12Tex_001F68" Format="rgba16" Width="32" Height="32" Offset="0x1F68" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_12Tex_002768" OutName="HIDAN_room_12Tex_002768" Format="ci4" Width="32" Height="64" Offset="0x2768" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x189B0" AddedByScript="true"/>
+        <Room Name="HIDAN_room_12" Offset="0x0"/>
+    </File>
+    <File Name="HIDAN_room_13" Segment="3">
+        <Texture Name="HIDAN_room_13Tex_00A788" OutName="HIDAN_room_13Tex_00A788" Format="rgba16" Width="32" Height="32" Offset="0xA788" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_13Tex_00AF88" OutName="HIDAN_room_13Tex_00AF88" Format="ci4" Width="64" Height="32" Offset="0xAF88" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x18990" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_13Tex_00B388" OutName="HIDAN_room_13Tex_00B388" Format="ci4" Width="32" Height="64" Offset="0xB388" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x189B0" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_13Tex_00B788" OutName="HIDAN_room_13Tex_00B788" Format="ci4" Width="32" Height="64" Offset="0xB788" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x189B0" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_13Tex_00BB88" OutName="HIDAN_room_13Tex_00BB88" Format="rgba16" Width="32" Height="32" Offset="0xBB88" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_13Tex_00C388" OutName="HIDAN_room_13Tex_00C388" Format="rgba16" Width="32" Height="32" Offset="0xC388" AddedByScript="true"/>
+        <Room Name="HIDAN_room_13" Offset="0x0"/>
+    </File>
+    <File Name="HIDAN_room_14" Segment="3">
+        <Texture Name="HIDAN_room_14Tex_0019F8" OutName="HIDAN_room_14Tex_0019F8" Format="ci4" Width="32" Height="64" Offset="0x19F8" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x189B0" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_14Tex_001DF8" OutName="HIDAN_room_14Tex_001DF8" Format="ci4" Width="32" Height="64" Offset="0x1DF8" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x189B0" AddedByScript="true"/>
+        <Room Name="HIDAN_room_14" Offset="0x0"/>
+    </File>
+    <File Name="HIDAN_room_15" Segment="3">
+        <Texture Name="HIDAN_room_15Tex_000D88" OutName="HIDAN_room_15Tex_000D88" Format="ci4" Width="32" Height="64" Offset="0xD88" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x189B0" AddedByScript="true"/>
+        <Room Name="HIDAN_room_15" Offset="0x0"/>
+    </File>
+    <File Name="HIDAN_room_16" Segment="3">
+        <Texture Name="HIDAN_room_16Tex_006DE0" OutName="HIDAN_room_16Tex_006DE0" Format="rgba16" Width="32" Height="8" Offset="0x6DE0" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_16Tex_006FE0" OutName="HIDAN_room_16Tex_006FE0" Format="rgba16" Width="32" Height="32" Offset="0x6FE0" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_16Tex_0077E0" OutName="HIDAN_room_16Tex_0077E0" Format="rgba16" Width="32" Height="32" Offset="0x77E0" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_16Tex_007FE0" OutName="HIDAN_room_16Tex_007FE0" Format="ci4" Width="32" Height="64" Offset="0x7FE0" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x189B0" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_16Tex_0083E0" OutName="HIDAN_room_16Tex_0083E0" Format="ci4" Width="32" Height="32" Offset="0x83E0" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x189B0" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_16Tex_0085E0" OutName="HIDAN_room_16Tex_0085E0" Format="rgba16" Width="32" Height="32" Offset="0x85E0" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_16Tex_008DE0" OutName="HIDAN_room_16Tex_008DE0" Format="ci4" Width="32" Height="64" Offset="0x8DE0" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x189B0" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_16Tex_0091E0" OutName="HIDAN_room_16Tex_0091E0" Format="ci4" Width="32" Height="64" Offset="0x91E0" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x189B0" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_16Tex_0095E0" OutName="HIDAN_room_16Tex_0095E0" Format="rgba16" Width="16" Height="64" Offset="0x95E0" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_16Tex_009DE0" OutName="HIDAN_room_16Tex_009DE0" Format="rgba16" Width="32" Height="32" Offset="0x9DE0" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_16Tex_00A5E0" OutName="HIDAN_room_16Tex_00A5E0" Format="ci4" Width="32" Height="64" Offset="0xA5E0" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x189B0" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_16Tex_00A9E0" OutName="HIDAN_room_16Tex_00A9E0" Format="rgba16" Width="32" Height="32" Offset="0xA9E0" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_16Tex_00B1E0" OutName="HIDAN_room_16Tex_00B1E0" Format="rgba16" Width="32" Height="32" Offset="0xB1E0" AddedByScript="true"/>
+        <Room Name="HIDAN_room_16" Offset="0x0"/>
+    </File>
+    <File Name="HIDAN_room_17" Segment="3">
+        <Texture Name="HIDAN_room_17Tex_005168" OutName="HIDAN_room_17Tex_005168" Format="rgba16" Width="32" Height="32" Offset="0x5168" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_17Tex_005968" OutName="HIDAN_room_17Tex_005968" Format="rgba16" Width="32" Height="32" Offset="0x5968" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_17Tex_006168" OutName="HIDAN_room_17Tex_006168" Format="rgba16" Width="32" Height="32" Offset="0x6168" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_17Tex_006968" OutName="HIDAN_room_17Tex_006968" Format="rgba16" Width="32" Height="32" Offset="0x6968" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_17Tex_007168" OutName="HIDAN_room_17Tex_007168" Format="rgba16" Width="32" Height="32" Offset="0x7168" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_17Tex_007968" OutName="HIDAN_room_17Tex_007968" Format="rgba16" Width="32" Height="32" Offset="0x7968" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_17Tex_008168" OutName="HIDAN_room_17Tex_008168" Format="rgba16" Width="32" Height="32" Offset="0x8168" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_17Tex_008968" OutName="HIDAN_room_17Tex_008968" Format="rgba16" Width="32" Height="32" Offset="0x8968" AddedByScript="true"/>
+        <Room Name="HIDAN_room_17" Offset="0x0"/>
+    </File>
+    <File Name="HIDAN_room_18" Segment="3">
+        <Texture Name="HIDAN_room_18Tex_0027F8" OutName="HIDAN_room_18Tex_0027F8" Format="rgba16" Width="32" Height="32" Offset="0x27F8" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_18Tex_002FF8" OutName="HIDAN_room_18Tex_002FF8" Format="ci4" Width="32" Height="64" Offset="0x2FF8" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x189B0" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_18Tex_0033F8" OutName="HIDAN_room_18Tex_0033F8" Format="ci4" Width="64" Height="32" Offset="0x33F8" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x18990" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_18Tex_0037F8" OutName="HIDAN_room_18Tex_0037F8" Format="ci4" Width="32" Height="32" Offset="0x37F8" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x18990" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_18Tex_0039F8" OutName="HIDAN_room_18Tex_0039F8" Format="ci4" Width="32" Height="32" Offset="0x39F8" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x18990" AddedByScript="true"/>
+        <Room Name="HIDAN_room_18" Offset="0x0"/>
+    </File>
+    <File Name="HIDAN_room_19" Segment="3">
+        <Texture Name="HIDAN_room_19Tex_002E28" OutName="HIDAN_room_19Tex_002E28" Format="rgba16" Width="32" Height="32" Offset="0x2E28" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_19Tex_003628" OutName="HIDAN_room_19Tex_003628" Format="ci4" Width="32" Height="64" Offset="0x3628" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x189B0" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_19Tex_003A28" OutName="HIDAN_room_19Tex_003A28" Format="ci4" Width="64" Height="32" Offset="0x3A28" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x18990" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_19Tex_003E28" OutName="HIDAN_room_19Tex_003E28" Format="ci4" Width="32" Height="32" Offset="0x3E28" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x18990" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_19Tex_004028" OutName="HIDAN_room_19Tex_004028" Format="ci4" Width="32" Height="32" Offset="0x4028" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x18990" AddedByScript="true"/>
+        <Room Name="HIDAN_room_19" Offset="0x0"/>
+    </File>
+    <File Name="HIDAN_room_20" Segment="3">
+        <Texture Name="HIDAN_room_20Tex_002D08" OutName="HIDAN_room_20Tex_002D08" Format="rgba16" Width="32" Height="32" Offset="0x2D08" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_20Tex_003508" OutName="HIDAN_room_20Tex_003508" Format="rgba16" Width="32" Height="32" Offset="0x3508" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_20Tex_003D08" OutName="HIDAN_room_20Tex_003D08" Format="rgba16" Width="32" Height="32" Offset="0x3D08" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_20Tex_004508" OutName="HIDAN_room_20Tex_004508" Format="rgba16" Width="32" Height="32" Offset="0x4508" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_20Tex_004D08" OutName="HIDAN_room_20Tex_004D08" Format="rgba16" Width="32" Height="32" Offset="0x4D08" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_20Tex_005508" OutName="HIDAN_room_20Tex_005508" Format="rgba16" Width="32" Height="32" Offset="0x5508" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_20Tex_005D08" OutName="HIDAN_room_20Tex_005D08" Format="rgba16" Width="32" Height="32" Offset="0x5D08" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_20Tex_006508" OutName="HIDAN_room_20Tex_006508" Format="rgba16" Width="32" Height="32" Offset="0x6508" AddedByScript="true"/>
+        <Room Name="HIDAN_room_20" Offset="0x0"/>
+    </File>
+    <File Name="HIDAN_room_21" Segment="3">
+        <Texture Name="HIDAN_room_21Tex_004478" OutName="HIDAN_room_21Tex_004478" Format="rgba16" Width="32" Height="8" Offset="0x4478" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_21Tex_004678" OutName="HIDAN_room_21Tex_004678" Format="rgba16" Width="32" Height="32" Offset="0x4678" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_21Tex_004E78" OutName="HIDAN_room_21Tex_004E78" Format="rgba16" Width="32" Height="32" Offset="0x4E78" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_21Tex_005678" OutName="HIDAN_room_21Tex_005678" Format="rgba16" Width="32" Height="32" Offset="0x5678" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_21Tex_005E78" OutName="HIDAN_room_21Tex_005E78" Format="rgba16" Width="32" Height="32" Offset="0x5E78" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_21Tex_006678" OutName="HIDAN_room_21Tex_006678" Format="ci4" Width="64" Height="32" Offset="0x6678" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x18990" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_21Tex_006A78" OutName="HIDAN_room_21Tex_006A78" Format="rgba16" Width="32" Height="32" Offset="0x6A78" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_21Tex_007278" OutName="HIDAN_room_21Tex_007278" Format="ci4" Width="32" Height="32" Offset="0x7278" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x18990" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_21Tex_007478" OutName="HIDAN_room_21Tex_007478" Format="rgba16" Width="32" Height="32" Offset="0x7478" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_21Tex_007C78" OutName="HIDAN_room_21Tex_007C78" Format="rgba16" Width="32" Height="32" Offset="0x7C78" AddedByScript="true"/>
+        <Room Name="HIDAN_room_21" Offset="0x0"/>
+    </File>
+    <File Name="HIDAN_room_22" Segment="3">
+        <Texture Name="HIDAN_room_22Tex_002AE8" OutName="HIDAN_room_22Tex_002AE8" Format="rgba16" Width="32" Height="32" Offset="0x2AE8" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_22Tex_0032E8" OutName="HIDAN_room_22Tex_0032E8" Format="rgba16" Width="32" Height="32" Offset="0x32E8" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_22Tex_003AE8" OutName="HIDAN_room_22Tex_003AE8" Format="rgba16" Width="32" Height="32" Offset="0x3AE8" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_22Tex_0042E8" OutName="HIDAN_room_22Tex_0042E8" Format="rgba16" Width="32" Height="32" Offset="0x42E8" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_22Tex_004AE8" OutName="HIDAN_room_22Tex_004AE8" Format="rgba16" Width="32" Height="32" Offset="0x4AE8" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_22Tex_0052E8" OutName="HIDAN_room_22Tex_0052E8" Format="rgba16" Width="32" Height="32" Offset="0x52E8" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_22Tex_005AE8" OutName="HIDAN_room_22Tex_005AE8" Format="rgba16" Width="32" Height="32" Offset="0x5AE8" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_22Tex_0062E8" OutName="HIDAN_room_22Tex_0062E8" Format="rgba16" Width="32" Height="32" Offset="0x62E8" AddedByScript="true"/>
+        <Room Name="HIDAN_room_22" Offset="0x0"/>
+    </File>
+    <File Name="HIDAN_room_23" Segment="3">
+        <Texture Name="HIDAN_room_23Tex_002D18" OutName="HIDAN_room_23Tex_002D18" Format="rgba16" Width="32" Height="32" Offset="0x2D18" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_23Tex_003518" OutName="HIDAN_room_23Tex_003518" Format="rgba16" Width="32" Height="32" Offset="0x3518" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_23Tex_003D18" OutName="HIDAN_room_23Tex_003D18" Format="rgba16" Width="32" Height="32" Offset="0x3D18" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_23Tex_004518" OutName="HIDAN_room_23Tex_004518" Format="rgba16" Width="32" Height="32" Offset="0x4518" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_23Tex_004D18" OutName="HIDAN_room_23Tex_004D18" Format="rgba16" Width="32" Height="32" Offset="0x4D18" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_23Tex_005518" OutName="HIDAN_room_23Tex_005518" Format="rgba16" Width="32" Height="32" Offset="0x5518" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_23Tex_005D18" OutName="HIDAN_room_23Tex_005D18" Format="rgba16" Width="32" Height="32" Offset="0x5D18" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_23Tex_006518" OutName="HIDAN_room_23Tex_006518" Format="rgba16" Width="32" Height="32" Offset="0x6518" AddedByScript="true"/>
+        <Room Name="HIDAN_room_23" Offset="0x0"/>
+    </File>
+    <File Name="HIDAN_room_24" Segment="3">
+        <Texture Name="HIDAN_room_24Tex_003B38" OutName="HIDAN_room_24Tex_003B38" Format="ci4" Width="32" Height="64" Offset="0x3B38" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x189B0" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_24Tex_003F38" OutName="HIDAN_room_24Tex_003F38" Format="ci4" Width="64" Height="32" Offset="0x3F38" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x18990" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_24Tex_004338" OutName="HIDAN_room_24Tex_004338" Format="ci4" Width="64" Height="32" Offset="0x4338" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x18990" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_24Tex_004738" OutName="HIDAN_room_24Tex_004738" Format="ci4" Width="32" Height="32" Offset="0x4738" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x18990" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_24Tex_004938" OutName="HIDAN_room_24Tex_004938" Format="ci4" Width="32" Height="64" Offset="0x4938" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x189B0" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_24Tex_004D38" OutName="HIDAN_room_24Tex_004D38" Format="rgba16" Width="32" Height="32" Offset="0x4D38" AddedByScript="true"/>
+        <Room Name="HIDAN_room_24" Offset="0x0"/>
+    </File>
+    <File Name="HIDAN_room_25" Segment="3">
+        <Texture Name="HIDAN_room_25Tex_002AD8" OutName="HIDAN_room_25Tex_002AD8" Format="rgba16" Width="32" Height="32" Offset="0x2AD8" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_25Tex_0032D8" OutName="HIDAN_room_25Tex_0032D8" Format="rgba16" Width="32" Height="32" Offset="0x32D8" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_25Tex_003AD8" OutName="HIDAN_room_25Tex_003AD8" Format="rgba16" Width="32" Height="32" Offset="0x3AD8" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_25Tex_0042D8" OutName="HIDAN_room_25Tex_0042D8" Format="rgba16" Width="32" Height="32" Offset="0x42D8" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_25Tex_004AD8" OutName="HIDAN_room_25Tex_004AD8" Format="rgba16" Width="32" Height="32" Offset="0x4AD8" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_25Tex_0052D8" OutName="HIDAN_room_25Tex_0052D8" Format="rgba16" Width="32" Height="32" Offset="0x52D8" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_25Tex_005AD8" OutName="HIDAN_room_25Tex_005AD8" Format="rgba16" Width="32" Height="32" Offset="0x5AD8" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_25Tex_0062D8" OutName="HIDAN_room_25Tex_0062D8" Format="rgba16" Width="32" Height="32" Offset="0x62D8" AddedByScript="true"/>
+        <Room Name="HIDAN_room_25" Offset="0x0"/>
+    </File>
+    <File Name="HIDAN_room_26" Segment="3">
+        <Texture Name="HIDAN_room_26Tex_004A98" OutName="HIDAN_room_26Tex_004A98" Format="rgba16" Width="32" Height="32" Offset="0x4A98" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_26Tex_005298" OutName="HIDAN_room_26Tex_005298" Format="ci4" Width="64" Height="32" Offset="0x5298" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x18990" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_26Tex_005698" OutName="HIDAN_room_26Tex_005698" Format="ci4" Width="32" Height="32" Offset="0x5698" ExternalTlut="HIDAN_scene" ExternalTlutOffset="0x18990" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_26Tex_005898" OutName="HIDAN_room_26Tex_005898" Format="rgba16" Width="32" Height="32" Offset="0x5898" AddedByScript="true"/>
+        <Texture Name="HIDAN_room_26Tex_006098" OutName="HIDAN_room_26Tex_006098" Format="rgba16" Width="32" Height="32" Offset="0x6098" AddedByScript="true"/>
+        <Room Name="HIDAN_room_26" Offset="0x0"/>
+    </File>
+</Root>

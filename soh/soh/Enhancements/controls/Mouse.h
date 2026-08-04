@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <libultraship/libultra.h>
+#include <libultraship/libultraship.h>
 
 struct Player;
 

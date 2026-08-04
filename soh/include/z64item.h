@@ -309,8 +309,7 @@ typedef enum {
     /* 0x99 */ ITEM_STICK_UPGRADE_30,
     /* 0x9A */ ITEM_NUT_UPGRADE_30,
     /* 0x9B */ ITEM_NUT_UPGRADE_40,
-    /* 0x9C */ ITEM_CUSTOM,
-    /* 0x9D */ ITEM_ROCS_FEATHER,
+    /*      */ ITEM_ROCS_FEATHER,
     /* 0xFC */ ITEM_LAST_USED = 0xFC,
     /* 0xFE */ ITEM_NONE_FE = 0xFE,
     /* 0xFF */ ITEM_NONE = 0xFF
@@ -594,8 +593,9 @@ typedef enum {
     /* 0x7A */ GID_SONG_TIME,
     /* 0x7B */ GID_SONG_STORM,
     /* 0x7C */ GID_TRIFORCE_PIECE,
-    /* 0x7D */ GID_FISHING_POLE,
-    /* 0x7E */ GID_MAXIMUM
+    /* 0x7C */ GID_ROCS_FEATHER,
+    /*      */ GID_FISHING_POLE,
+    /* 0x7C */ GID_MAXIMUM
 
 } GetItemDrawID;
 

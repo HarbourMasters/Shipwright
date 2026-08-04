@@ -6,7 +6,6 @@
 
 #include "z_bg_haka.h"
 #include "objects/object_haka/object_haka.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS 0
 
@@ -15,11 +14,11 @@ void BgHaka_Destroy(Actor* thisx, PlayState* play);
 void BgHaka_Update(Actor* thisx, PlayState* play);
 void BgHaka_Draw(Actor* thisx, PlayState* play);
 
-void BgHaka_CheckPlayerOnDirtPatch(BgHaka* this, Player* player);
-void BgHaka_IdleClosed(BgHaka* this, PlayState* play);
-void BgHaka_Pull(BgHaka* this, PlayState* play);
-void BgHaka_IdleOpened(BgHaka* this, PlayState* play);
-void BgHaka_IdleLockedClosed(BgHaka* this, PlayState* play);
+void func_8087B758(BgHaka* this, Player* player);
+void func_8087B7E8(BgHaka* this, PlayState* play);
+void func_8087B938(BgHaka* this, PlayState* play);
+void func_8087BAAC(BgHaka* this, PlayState* play);
+void func_8087BAE4(BgHaka* this, PlayState* play);
 
 const ActorInit Bg_Haka_InitVars = {
     ACTOR_BG_HAKA,
@@ -48,7 +47,7 @@ void BgHaka_Init(Actor* thisx, PlayState* play) {
     DynaPolyActor_Init(&this->dyna, DPM_UNK);
     CollisionHeader_GetVirtual(&gGravestoneCol, &colHeader);
     this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, &this->dyna.actor, colHeader);
-    this->actionFunc = BgHaka_IdleClosed;
+    this->actionFunc = func_8087B7E8;
 }
 
 void BgHaka_Destroy(Actor* thisx, PlayState* play) {
@@ -57,7 +56,7 @@ void BgHaka_Destroy(Actor* thisx, PlayState* play) {
     DynaPoly_DeleteBgActor(play, &play->colCtx.dyna, this->dyna.bgId);
 }
 
-void BgHaka_CheckPlayerOnDirtPatch(BgHaka* this, Player* player) {
+void func_8087B758(BgHaka* this, Player* player) {
     Vec3f sp1C;
 
     Actor_WorldToActorCoords(&this->dyna.actor, &sp1C, &player->actor.world.pos);
@@ -66,7 +65,7 @@ void BgHaka_CheckPlayerOnDirtPatch(BgHaka* this, Player* player) {
     }
 }
 
-void BgHaka_IdleClosed(BgHaka* this, PlayState* play) {
+void func_8087B7E8(BgHaka* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
     if (this->dyna.unk_150 != 0.0f) {
@@ -77,7 +76,7 @@ void BgHaka_IdleClosed(BgHaka* this, PlayState* play) {
             if (!Play_InCsMode(play)) {
                 Message_StartTextbox(play, 0x5073, NULL);
                 this->dyna.actor.params = 100;
-                this->actionFunc = BgHaka_IdleLockedClosed;
+                this->actionFunc = func_8087BAE4;
             }
         } else if (0.0f < this->dyna.unk_150 ||
                    (play->sceneNum == SCENE_LAKE_HYLIA && !LINK_IS_ADULT && !Flags_GetSwitch(play, 0x23))) {
@@ -85,13 +84,13 @@ void BgHaka_IdleClosed(BgHaka* this, PlayState* play) {
             player->stateFlags2 &= ~PLAYER_STATE2_MOVING_DYNAPOLY;
         } else {
             this->dyna.actor.world.rot.y = this->dyna.actor.shape.rot.y + 0x8000;
-            this->actionFunc = BgHaka_Pull;
+            this->actionFunc = func_8087B938;
         }
     }
-    BgHaka_CheckPlayerOnDirtPatch(this, player);
+    func_8087B758(this, player);
 }
 
-void BgHaka_Pull(BgHaka* this, PlayState* play) {
+void func_8087B938(BgHaka* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
     s32 sp38;
 
@@ -118,9 +117,9 @@ void BgHaka_Pull(BgHaka* this, PlayState* play) {
 
         if (this->dyna.actor.params == 1) {
             Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
-        } else if (GameInteractor_Should(VB_HAKA_SPAWN_POE, !IS_DAY && play->sceneNum == SCENE_GRAVEYARD, this, play)) {
+        } else if (!IS_DAY && play->sceneNum == SCENE_GRAVEYARD) {
             Actor_Spawn(&play->actorCtx, play, ACTOR_EN_POH, this->dyna.actor.home.pos.x, this->dyna.actor.home.pos.y,
-                        this->dyna.actor.home.pos.z, 0, this->dyna.actor.shape.rot.y, 0, 1);
+                        this->dyna.actor.home.pos.z, 0, this->dyna.actor.shape.rot.y, 0, 1, true);
         }
 
         // un tss un tss
@@ -137,12 +136,12 @@ void BgHaka_Pull(BgHaka* this, PlayState* play) {
             }
         }
 
-        this->actionFunc = BgHaka_IdleOpened;
+        this->actionFunc = func_8087BAAC;
     }
-    Actor_PlaySfx_Flagged(&this->dyna.actor, NA_SE_EV_ROCK_SLIDE - SFX_FLAG);
+    func_8002F974(&this->dyna.actor, NA_SE_EV_ROCK_SLIDE - SFX_FLAG);
 }
 
-void BgHaka_IdleOpened(BgHaka* this, PlayState* play) {
+void func_8087BAAC(BgHaka* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
     if (this->dyna.unk_150 != 0.0f) {
@@ -151,7 +150,7 @@ void BgHaka_IdleOpened(BgHaka* this, PlayState* play) {
     }
 }
 
-void BgHaka_IdleLockedClosed(BgHaka* this, PlayState* play) {
+void func_8087BAE4(BgHaka* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
     s32 pad;
 
@@ -163,9 +162,9 @@ void BgHaka_IdleLockedClosed(BgHaka* this, PlayState* play) {
         player->stateFlags2 &= ~PLAYER_STATE2_MOVING_DYNAPOLY;
     }
     if (this->dyna.actor.params == 0) {
-        this->actionFunc = BgHaka_IdleClosed;
+        this->actionFunc = func_8087B7E8;
     }
-    BgHaka_CheckPlayerOnDirtPatch(this, player);
+    func_8087B758(this, player);
 }
 
 void BgHaka_Update(Actor* thisx, PlayState* play) {

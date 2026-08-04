@@ -1,0 +1,11 @@
+<Root>
+    <File Name="object_gi_melody" Segment="6">
+        <DList Name="gGiMinuetColorDL" Offset="0x0A80"/>
+        <DList Name="gGiBoleroColorDL" Offset="0x0A90"/>
+        <DList Name="gGiSerenadeColorDL" Offset="0x0AA0"/>
+        <DList Name="gGiRequiemColorDL" Offset="0x0AB0"/>
+        <DList Name="gGiNocturneColorDL" Offset="0x0AC0"/>
+        <DList Name="gGiPreludeColorDL" Offset="0x0AD0"/>
+        <DList Name="gGiSongNoteDL" Offset="0x0AE0"/>
+    </File>
+</Root>

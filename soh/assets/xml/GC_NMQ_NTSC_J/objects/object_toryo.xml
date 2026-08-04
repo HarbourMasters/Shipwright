@@ -1,0 +1,53 @@
+<Root>
+    <File Name="object_toryo" Segment="6">
+        <Animation Name="object_toryo_Anim_000E50" Offset="0xE50"/>
+        <Texture Name="object_toryo_TLUT_000E60" OutName="tlut_00000E60" Format="rgba16" Width="16" Height="16" Offset="0xE60"/>
+        <Texture Name="object_toryo_Tex_001060" OutName="tex_00001060" Format="ci8" Width="16" Height="16" Offset="0x1060" TlutOffset="0xE60"/>
+        <Texture Name="object_toryo_Tex_001160" OutName="tex_00001160" Format="ci8" Width="8" Height="4" Offset="0x1160" TlutOffset="0xE60"/>
+        <Texture Name="object_toryo_Tex_001180" OutName="tex_00001180" Format="ci8" Width="8" Height="8" Offset="0x1180" TlutOffset="0xE60"/>
+        <Texture Name="object_toryo_Tex_0011C0" OutName="tex_000011C0" Format="ci8" Width="8" Height="8" Offset="0x11C0" TlutOffset="0xE60"/>
+        <Texture Name="object_toryo_Tex_001200" OutName="tex_00001200" Format="ci8" Width="8" Height="8" Offset="0x1200" TlutOffset="0xE60"/>
+        <Texture Name="object_toryo_Tex_001240" OutName="tex_00001240" Format="ci8" Width="8" Height="16" Offset="0x1240" TlutOffset="0xE60"/>
+        <Texture Name="object_toryo_Tex_0012C0" OutName="tex_000012C0" Format="rgba16" Width="32" Height="16" Offset="0x12C0"/>
+        <Texture Name="object_toryo_Tex_0016C0" OutName="tex_000016C0" Format="ci8" Width="16" Height="16" Offset="0x16C0" TlutOffset="0xE60"/>
+        <Texture Name="object_toryo_Tex_0017C0" OutName="tex_000017C0" Format="ci8" Width="16" Height="16" Offset="0x17C0" TlutOffset="0xE60"/>
+        <Texture Name="object_toryo_Tex_0018C0" OutName="tex_000018C0" Format="ci8" Width="16" Height="16" Offset="0x18C0" TlutOffset="0xE60"/>
+        <Texture Name="object_toryo_Tex_0019C0" OutName="tex_000019C0" Format="ci8" Width="8" Height="8" Offset="0x19C0" TlutOffset="0xE60"/>
+        <Texture Name="object_toryo_Tex_001A00" OutName="tex_00001A00" Format="ci8" Width="8" Height="16" Offset="0x1A00" TlutOffset="0xE60"/>
+        <Texture Name="object_toryo_Tex_001A80" OutName="tex_00001A80" Format="ci8" Width="16" Height="16" Offset="0x1A80" TlutOffset="0xE60"/>
+        <Texture Name="object_toryo_Tex_001B80" OutName="tex_00001B80" Format="ci8" Width="16" Height="16" Offset="0x1B80" TlutOffset="0xE60"/>
+        <DList Name="object_toryo_DL_004B20" Offset="0x4B20"/>
+        <DList Name="object_toryo_DL_004F20" Offset="0x4F20"/>
+        <DList Name="object_toryo_DL_005438" Offset="0x5438"/>
+        <DList Name="object_toryo_DL_005720" Offset="0x5720"/>
+        <DList Name="object_toryo_DL_005958" Offset="0x5958"/>
+        <DList Name="object_toryo_DL_005BA0" Offset="0x5BA0"/>
+        <DList Name="object_toryo_DL_005D10" Offset="0x5D10"/>
+        <DList Name="object_toryo_DL_005EC8" Offset="0x5EC8"/>
+        <DList Name="object_toryo_DL_006110" Offset="0x6110"/>
+        <DList Name="object_toryo_DL_006280" Offset="0x6280"/>
+        <DList Name="object_toryo_DL_0064B8" Offset="0x64B8"/>
+        <DList Name="object_toryo_DL_0067E0" Offset="0x67E0"/>
+        <DList Name="object_toryo_DL_0068E8" Offset="0x68E8"/>
+        <DList Name="object_toryo_DL_006A88" Offset="0x6A88"/>
+        <DList Name="object_toryo_DL_006DA8" Offset="0x6DA8"/>
+        <DList Name="object_toryo_DL_006EB0" Offset="0x6EB0"/>
+        <Limb Name="object_toryo_Limb_007050" LimbType="Standard" Offset="0x7050"/>
+        <Limb Name="object_toryo_Limb_00705C" LimbType="Standard" Offset="0x705C"/>
+        <Limb Name="object_toryo_Limb_007068" LimbType="Standard" Offset="0x7068"/>
+        <Limb Name="object_toryo_Limb_007074" LimbType="Standard" Offset="0x7074"/>
+        <Limb Name="object_toryo_Limb_007080" LimbType="Standard" Offset="0x7080"/>
+        <Limb Name="object_toryo_Limb_00708C" LimbType="Standard" Offset="0x708C"/>
+        <Limb Name="object_toryo_Limb_007098" LimbType="Standard" Offset="0x7098"/>
+        <Limb Name="object_toryo_Limb_0070A4" LimbType="Standard" Offset="0x70A4"/>
+        <Limb Name="object_toryo_Limb_0070B0" LimbType="Standard" Offset="0x70B0"/>
+        <Limb Name="object_toryo_Limb_0070BC" LimbType="Standard" Offset="0x70BC"/>
+        <Limb Name="object_toryo_Limb_0070C8" LimbType="Standard" Offset="0x70C8"/>
+        <Limb Name="object_toryo_Limb_0070D4" LimbType="Standard" Offset="0x70D4"/>
+        <Limb Name="object_toryo_Limb_0070E0" LimbType="Standard" Offset="0x70E0"/>
+        <Limb Name="object_toryo_Limb_0070EC" LimbType="Standard" Offset="0x70EC"/>
+        <Limb Name="object_toryo_Limb_0070F8" LimbType="Standard" Offset="0x70F8"/>
+        <Limb Name="object_toryo_Limb_007104" LimbType="Standard" Offset="0x7104"/>
+        <Skeleton Name="object_toryo_Skel_007150" Type="Flex" LimbType="Standard" Offset="0x7150"/>
+    </File>
+</Root>

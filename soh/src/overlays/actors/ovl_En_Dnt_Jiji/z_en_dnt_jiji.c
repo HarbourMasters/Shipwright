@@ -10,7 +10,6 @@
 #include "overlays/effects/ovl_Effect_Ss_Hahen/z_eff_ss_hahen.h"
 #include "vt.h"
 #include "soh/ResourceManagerHelpers.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
 
@@ -102,7 +101,7 @@ void EnDntJiji_Destroy(Actor* thisx, PlayState* play) {
 }
 
 void EnDntJiji_SetFlower(EnDntJiji* this, PlayState* play) {
-    if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
+    if (this->actor.bgCheckFlags & 1) {
         this->flowerPos = this->actor.world.pos;
         this->actionFunc = EnDntJiji_SetupWait;
     }
@@ -122,7 +121,7 @@ void EnDntJiji_Wait(EnDntJiji* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
     if ((this->timer == 1) && (this->actor.xzDistToPlayer < 150.0f) && !Play_InCsMode(play) &&
         !(player->stateFlags1 & PLAYER_STATE1_CARRYING_ACTOR)) {
-        OnePointCutscene_Init(play, 2230, -99, &this->actor, CAM_ID_MAIN);
+        OnePointCutscene_Init(play, 2230, -99, &this->actor, MAIN_CAM);
         this->timer = 0;
         Player_SetCsActionWithHaltedActors(play, NULL, 8);
         this->actionFunc = EnDntJiji_SetupUnburrow;
@@ -184,7 +183,7 @@ void EnDntJiji_Walk(EnDntJiji* this, PlayState* play) {
         this->sfxTimer = 5;
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_NUTS_WALK);
     }
-    if ((this->actor.bgCheckFlags & BGCHECKFLAG_WALL) && (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND)) {
+    if ((this->actor.bgCheckFlags & 8) && (this->actor.bgCheckFlags & 1)) {
         this->actor.velocity.y = 9.0f;
         this->actor.speedXZ = 3.0f;
     }
@@ -241,7 +240,7 @@ void EnDntJiji_Cower(EnDntJiji* this, PlayState* play) {
         if (Actor_ProcessTalkRequest(&this->actor, play)) {
             this->actionFunc = EnDntJiji_SetupTalk;
         } else {
-            Actor_OfferTalk(&this->actor, play, 100.0f);
+            func_8002F2CC(&this->actor, play, 100.0f);
         }
     }
 }
@@ -260,10 +259,8 @@ void EnDntJiji_Talk(EnDntJiji* this, PlayState* play) {
         Message_CloseTextbox(play);
         Player_SetCsActionWithHaltedActors(play, NULL, 7);
         this->actor.parent = NULL;
-        if (GameInteractor_Should(VB_GIVE_ITEM_FROM_DEKU_THEATER, true, this)) {
-            Actor_OfferGetItem(&this->actor, play, this->getItemId, 400.0f, 200.0f);
-            this->actionFunc = EnDntJiji_SetupGivePrize;
-        }
+        Actor_OfferGetItem(&this->actor, play, this->getItemId, 400.0f, 200.0f);
+        this->actionFunc = EnDntJiji_SetupGivePrize;
     }
 }
 
@@ -278,8 +275,7 @@ void EnDntJiji_SetupGivePrize(EnDntJiji* this, PlayState* play) {
 
 void EnDntJiji_GivePrize(EnDntJiji* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
-    if (GameInteractor_Should(VB_DEKU_THEATER_FINISH_GIVING_PRIZE,
-                              (Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play))) {
+    if ((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play)) {
         if ((this->getItemId == GI_NUT_UPGRADE_30) || (this->getItemId == GI_NUT_UPGRADE_40)) {
             // "nut"
             osSyncPrintf("実 \n");
@@ -351,7 +347,7 @@ void EnDntJiji_Return(EnDntJiji* this, PlayState* play) {
     dz = this->flowerPos.z - this->actor.world.pos.z;
     Math_SmoothStepToS(&this->actor.shape.rot.y, Math_FAtan2F(dx, dz) * (0x8000 / M_PI), 1, 0xBB8, 0);
     this->actor.world.rot.y = this->actor.shape.rot.y;
-    if ((this->actor.bgCheckFlags & BGCHECKFLAG_WALL) && (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND)) {
+    if ((this->actor.bgCheckFlags & 8) && (this->actor.bgCheckFlags & 1)) {
         this->actor.velocity.y = 9.0f;
         this->actor.speedXZ = 3.0f;
     }

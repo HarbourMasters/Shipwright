@@ -3,7 +3,6 @@
  * trapped Gorons have when you free them.
  */
 #include <soh/OTRGlobals.h>
-#include "soh/Enhancements/randomizer/randomizer.h"
 
 extern "C" {
 #include <variables.h>
@@ -87,7 +86,7 @@ void BuildGoronMessage(uint16_t* textId, bool* loadFromMessageTable) {
     CustomMessage msg = ShipUtils::RandomElement(FireTempleGoronMessages);
     msg.Replace("[[days]]", std::to_string(gSaveContext.totalDays));
     msg.Replace("[[a_btn]]", std::to_string(gSaveContext.ship.stats.count[COUNT_BUTTON_PRESSES_A]));
-    msg.Format();
+    msg.AutoFormat();
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
 }

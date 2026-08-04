@@ -6,9 +6,10 @@
 #include "global.h"
 #include "vt.h"
 #include "stdio.h"
-#include <libultraship/bridge/crashhandlerbridge.h>
 #include <soh/Enhancements/bootcommands.h>
 #include "soh/OTRGlobals.h"
+
+#include <libultraship/bridge.h>
 #include "soh/CrashHandlerExt.h"
 
 s32 gScreenWidth = SCREEN_WIDTH;

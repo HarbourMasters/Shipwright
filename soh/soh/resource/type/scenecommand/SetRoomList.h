@@ -1,11 +1,13 @@
 #pragma once
 
-#include <stdint.h>
+#include <cstdint>
 #include <vector>
 #include <memory>
 #include <string>
+#include <ship/resource/Resource.h>
 #include "SceneCommand.h"
 #include "RomFile.h"
+#include <libultraship/libultra/types.h>
 
 namespace SOH {
 // typedef struct {

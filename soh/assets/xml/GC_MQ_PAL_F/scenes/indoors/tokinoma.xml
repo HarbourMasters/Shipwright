@@ -1,0 +1,47 @@
+<Root>
+    <File Name="tokinoma_scene" Segment="2">
+        <Texture Name="tokinoma_sceneTex_00CFA0" OutName="tokinoma_sceneTex_00CFA0" Format="rgba16" Width="32" Height="32" Offset="0xCFA0" AddedByScript="true"/>
+        <Texture Name="tokinoma_sceneTex_00D7A0" OutName="tokinoma_sceneTex_00D7A0" Format="rgba16" Width="32" Height="32" Offset="0xD7A0" AddedByScript="true"/>
+        <Texture Name="tokinoma_sceneTex_00DFA0" OutName="tokinoma_sceneTex_00DFA0" Format="rgba16" Width="32" Height="64" Offset="0xDFA0" AddedByScript="true"/>
+        <Texture Name="tokinoma_sceneTex_00EFA0" OutName="tokinoma_sceneTex_00EFA0" Format="rgba16" Width="32" Height="64" Offset="0xEFA0" AddedByScript="true"/>
+        <Texture Name="tokinoma_sceneTex_00FFA0" OutName="tokinoma_sceneTex_00FFA0" Format="rgba16" Width="32" Height="32" Offset="0xFFA0" AddedByScript="true"/>
+        <Texture Name="tokinoma_sceneTex_0107A0" OutName="tokinoma_sceneTex_0107A0" Format="rgba16" Width="32" Height="32" Offset="0x107A0" AddedByScript="true"/>
+        <Texture Name="tokinoma_sceneTex_010FA0" OutName="tokinoma_sceneTex_010FA0" Format="rgba16" Width="32" Height="32" Offset="0x10FA0" AddedByScript="true"/>
+        <Texture Name="tokinoma_sceneTex_0117A0" OutName="tokinoma_sceneTex_0117A0" Format="rgba16" Width="32" Height="32" Offset="0x117A0" AddedByScript="true"/>
+        <Texture Name="tokinoma_sceneTex_011FA0" OutName="tokinoma_sceneTex_011FA0" Format="rgba16" Width="32" Height="32" Offset="0x11FA0" AddedByScript="true"/>
+        <Cutscene Name="gTempleOfTimeFirstAdultCs" Offset="0x46F0"/>
+        <Cutscene Name="gTempleOfTimePreludeCs" Offset="0x6D20"/>
+        <Cutscene Name="gTempleOfTimeIntroCs" Offset="0xCE00"/>
+        <Scene Name="tokinoma_scene" Offset="0x0"/>
+    </File>
+    <File Name="tokinoma_room_0" Segment="3">
+        <Texture Name="tokinoma_room_0Tex_0081D8" OutName="tokinoma_room_0Tex_0081D8" Format="rgba16" Width="64" Height="32" Offset="0x81D8" AddedByScript="true"/>
+        <Texture Name="tokinoma_room_0Tex_0091D8" OutName="tokinoma_room_0Tex_0091D8" Format="rgba16" Width="64" Height="32" Offset="0x91D8" AddedByScript="true"/>
+        <Texture Name="tokinoma_room_0Tex_00A1D8" OutName="tokinoma_room_0Tex_00A1D8" Format="rgba16" Width="64" Height="32" Offset="0xA1D8" AddedByScript="true"/>
+        <Texture Name="tokinoma_room_0Tex_00B1D8" OutName="tokinoma_room_0Tex_00B1D8" Format="rgba16" Width="64" Height="32" Offset="0xB1D8" AddedByScript="true"/>
+        <Texture Name="tokinoma_room_0Tex_00C1D8" OutName="tokinoma_room_0Tex_00C1D8" Format="rgba16" Width="64" Height="32" Offset="0xC1D8" AddedByScript="true"/>
+        <Texture Name="tokinoma_room_0Tex_00D1D8" OutName="tokinoma_room_0Tex_00D1D8" Format="rgba16" Width="64" Height="32" Offset="0xD1D8" AddedByScript="true"/>
+        <Texture Name="tokinoma_room_0Tex_00E1D8" OutName="tokinoma_room_0Tex_00E1D8" Format="rgba16" Width="64" Height="32" Offset="0xE1D8" AddedByScript="true"/>
+        <Texture Name="tokinoma_room_0Tex_00F1D8" OutName="tokinoma_room_0Tex_00F1D8" Format="rgba16" Width="64" Height="32" Offset="0xF1D8" AddedByScript="true"/>
+        <Texture Name="tokinoma_room_0Tex_0101D8" OutName="tokinoma_room_0Tex_0101D8" Format="rgba16" Width="64" Height="32" Offset="0x101D8" AddedByScript="true"/>
+        <Texture Name="tokinoma_room_0Tex_0111D8" OutName="tokinoma_room_0Tex_0111D8" Format="rgba16" Width="64" Height="32" Offset="0x111D8" AddedByScript="true"/>
+        <Texture Name="tokinoma_room_0Tex_0121D8" OutName="tokinoma_room_0Tex_0121D8" Format="rgba16" Width="64" Height="32" Offset="0x121D8" AddedByScript="true"/>
+        <Texture Name="tokinoma_room_0Tex_0131D8" OutName="tokinoma_room_0Tex_0131D8" Format="rgba16" Width="64" Height="32" Offset="0x131D8" AddedByScript="true"/>
+        <Texture Name="tokinoma_room_0Tex_0141D8" OutName="tokinoma_room_0Tex_0141D8" Format="rgba16" Width="32" Height="32" Offset="0x141D8" AddedByScript="true"/>
+        <Texture Name="tokinoma_room_0Tex_0149D8" OutName="tokinoma_room_0Tex_0149D8" Format="rgba16" Width="32" Height="32" Offset="0x149D8" AddedByScript="true"/>
+        <Texture Name="tokinoma_room_0Tex_0151D8" OutName="tokinoma_room_0Tex_0151D8" Format="rgba16" Width="32" Height="32" Offset="0x151D8" AddedByScript="true"/>
+        <Texture Name="tokinoma_room_0Tex_0159D8" OutName="tokinoma_room_0Tex_0159D8" Format="rgba16" Width="32" Height="32" Offset="0x159D8" AddedByScript="true"/>
+        <Texture Name="tokinoma_room_0Tex_0161D8" OutName="tokinoma_room_0Tex_0161D8" Format="rgba16" Width="32" Height="32" Offset="0x161D8" AddedByScript="true"/>
+        <Texture Name="tokinoma_room_0Tex_0169D8" OutName="tokinoma_room_0Tex_0169D8" Format="rgba16" Width="32" Height="32" Offset="0x169D8" AddedByScript="true"/>
+        <Room Name="tokinoma_room_0" Offset="0x0"/>
+    </File>
+    <File Name="tokinoma_room_1" Segment="3">
+        <Texture Name="tokinoma_room_1Tex_005458" OutName="tokinoma_room_1Tex_005458" Format="rgba16" Width="16" Height="16" Offset="0x5458" AddedByScript="true"/>
+        <Texture Name="tokinoma_room_1Tex_005658" OutName="tokinoma_room_1Tex_005658" Format="rgba16" Width="16" Height="16" Offset="0x5658" AddedByScript="true"/>
+        <Texture Name="tokinoma_room_1Tex_005858" OutName="tokinoma_room_1Tex_005858" Format="rgba16" Width="32" Height="32" Offset="0x5858" AddedByScript="true"/>
+        <Texture Name="tokinoma_room_1Tex_006488" OutName="tokinoma_room_1Tex_006488" Format="i8" Width="8" Height="8" Offset="0x6488" AddedByScript="true"/>
+        <Texture Name="tokinoma_room_1Tex_0064C8" OutName="tokinoma_room_1Tex_0064C8" Format="ia4" Width="128" Height="16" Offset="0x64C8" AddedByScript="true"/>
+        <Texture Name="tokinoma_room_1Tex_0068C8" OutName="tokinoma_room_1Tex_0068C8" Format="ia8" Width="64" Height="32" Offset="0x68C8" AddedByScript="true"/>
+        <Room Name="tokinoma_room_1" Offset="0x0"/>
+    </File>
+</Root>

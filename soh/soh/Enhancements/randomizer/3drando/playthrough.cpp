@@ -1,10 +1,11 @@
 #include "playthrough.hpp"
 
-#include <spdlog/spdlog.h>
+#include <libultraship/libultraship.h>
 #include "fill.hpp"
 #include "../location_access.h"
-#include "../rng.h"
+#include "random.hpp"
 #include "spoiler_log.hpp"
+#include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "soh/Enhancements/randomizer/settings.h"
 #include "variables.h"
 #include "soh/cvar_prefixes.h"
@@ -46,7 +47,7 @@ int Playthrough_Init(uint32_t seed, std::set<RandomizerCheck> excludedLocations,
                         auto locationOption = static_cast<Rando::LocationOption*>(option);
                         settingsStr += option->GetOptionText(ctx->GetLocationOption(locationOption->GetKey()).Get());
                     } else if (i == RSG_TRICKS) {
-                        auto trickOption = static_cast<Rando::TrickSetting*>(option);
+                        auto trickOption = static_cast<Rando::TrickOption*>(option);
                         settingsStr += option->GetOptionText(ctx->GetTrickOption(trickOption->GetKey()).Get());
                     } else {
                         settingsStr += option->GetOptionText(ctx->GetOption(option->GetKey()).Get());
@@ -93,12 +94,7 @@ int Playthrough_Repeat(std::set<RandomizerCheck> excludedLocations, std::set<Ran
     auto ctx = Rando::Context::GetInstance();
     uint32_t repeatedSeed = 0;
     for (int i = 0; i < count; i++) {
-        char seedString[11];
-        for (size_t i = 0; i < 10; i++) {
-            seedString[i] = '0' + ShipUtils::Random(0, 10);
-        }
-        seedString[10] = '\0';
-        ctx->SetSeedString(std::string(seedString));
+        ctx->SetSeedString(std::to_string(rand()));
         repeatedSeed = SohUtils::Hash(ctx->GetSeedString());
         ctx->SetSeed(repeatedSeed);
         SPDLOG_DEBUG("testing seed: %d", repeatedSeed);

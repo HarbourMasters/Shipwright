@@ -10,7 +10,6 @@ enum GameInteractionEffectQueryResult { Possible = 0x00, TemporarilyNotPossible 
 
 class GameInteractionEffectBase {
   public:
-    virtual ~GameInteractionEffectBase() = default;
     virtual GameInteractionEffectQueryResult CanBeApplied() = 0;
     GameInteractionEffectQueryResult Apply();
 

@@ -3,7 +3,6 @@
 #include <soh/Network/Network.h>
 #include "SohGui.hpp"
 #include "soh/OTRGlobals.h"
-#include "soh/util.h"
 #include <soh/Network/Sail/Sail.h>
 #include <soh/Network/CrowdControl/CrowdControl.h>
 
@@ -16,6 +15,18 @@ void SohMenu::AddMenuNetwork() {
     // Add Network Menu
     AddMenuEntry("Network", CVAR_SETTING("Menu.NetworkSidebarSection"));
     WidgetPath path;
+
+#ifndef ENABLE_REMOTE_CONTROL
+    path = { "Network", "Info", SECTION_COLUMN_1 };
+    AddSidebarEntry("Network", path.sidebarName, 2);
+
+    AddWidget(path,
+              ICON_FA_EXCLAMATION_TRIANGLE " The Network features are unavailable because SoH was compiled without "
+                                           "network support (\"ENABLE_REMOTE_CONTROL\" build flag).",
+              WIDGET_TEXT)
+        .Options(TextOptions().Color(Colors::Orange));
+    return;
+#endif
 
     // Sail
     path = { "Network", "Sail", SECTION_COLUMN_1 };
@@ -76,11 +87,11 @@ void SohMenu::AddMenuNetwork() {
         .Callback([](WidgetInfo& info) {
             if (Sail::Instance->isEnabled) {
                 CVarClear(CVAR_REMOTE_SAIL("Enabled"));
-                Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
                 Sail::Instance->Disable();
             } else {
                 CVarSetInteger(CVAR_REMOTE_SAIL("Enabled"), 1);
-                Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
                 Sail::Instance->Enable();
             }
         });
@@ -142,11 +153,11 @@ void SohMenu::AddMenuNetwork() {
         .Callback([](WidgetInfo& info) {
             if (CrowdControl::Instance->isEnabled) {
                 CVarClear(CVAR_REMOTE_CROWD_CONTROL("Enabled"));
-                Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
                 CrowdControl::Instance->Disable();
             } else {
                 CVarSetInteger(CVAR_REMOTE_CROWD_CONTROL("Enabled"), 1);
-                Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
                 CrowdControl::Instance->Enable();
             }
         });

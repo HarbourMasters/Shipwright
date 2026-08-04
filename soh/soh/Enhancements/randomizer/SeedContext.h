@@ -2,7 +2,9 @@
 
 #include "randomizerTypes.h"
 #include "z64save.h"
+#include "item_location.h"
 #include "item_override.h"
+#include "3drando/text.hpp"
 #include "hint.h"
 #include "fishsanity.h"
 #include "trial.h"
@@ -31,7 +33,6 @@ class DungeonInfo;
 class TrialInfo;
 class Trials;
 class Kaleido;
-class ItemLocation;
 
 class Context {
   public:
@@ -100,37 +101,34 @@ class Context {
     OptionValue& GetLocationOption(RandomizerCheck key);
 
     /**
-     * @brief Gets the resolved GBK check condition.
+     * @brief Gets the resolved Light Arrow CutScene check condition.
      * There is no direct option for this, it is inferred based on the value of a few other options.
      *
-     * @return RandoOptionCheckTriggerCondition
+     * @return RandoOptionLACSCondition
      */
-    RandoOptionCheckTrigger GBKCondition() const;
-    RandoOptionCheckTrigger GanonsSoulCondition() const;
-    RandoOptionWincon WinCondition() const;
+    RandoOptionLACSCondition LACSCondition() const;
 
     /**
-     * @brief Sets the resolved GBK check condition.
+     * @brief Sets the resolved Light Arrow CutScene check condition.
      * There is no direct option for this, it is inferred based on the value of a few other options.
      *
-     * @param condition
+     * @param lacsCondition
      */
-    void GBKCondition(RandoOptionCheckTrigger condition);
-    void GanonsSoulCondition(RandoOptionCheckTrigger condition);
-    void WinCondition(RandoOptionWincon condition);
+    void LACSCondition(RandoOptionLACSCondition lacsCondition);
 
     GetItemEntry GetFinalGIEntry(RandomizerCheck rc, bool checkObtainability = true, GetItemID ogItemId = GI_NONE);
     void ParseSpoiler(const char* spoilerFileName);
-    void ParseHashIconIndexesJson(const nlohmann::json& spoilerFileJson);
-    void ParseItemLocationsJson(const nlohmann::json& spoilerFileJson);
+    void ParseHashIconIndexesJson(nlohmann::json spoilerFileJson);
+    void ParseItemLocationsJson(nlohmann::json spoilerFileJson);
     void WriteHintJson(nlohmann::ordered_json& spoilerFileJson);
-    void ParseHintJson(const nlohmann::json& spoilerFileJson);
-    void ParseTricksJson(const nlohmann::json& spoilerFileJson);
+    void ParseHintJson(nlohmann::json spoilerFileJson);
+    void ParseTricksJson(nlohmann::json spoilerFileJson);
     std::map<RandomizerCheck, ItemOverride> overrides = {};
     std::vector<std::vector<RandomizerCheck>> playthroughLocations = {};
     std::vector<RandomizerCheck> everyPossibleLocation = {};
     std::set<RandomizerGet> possibleIceTrapModels = {};
     std::unordered_map<RandomizerCheck, RandomizerGet> iceTrapModels = {};
+    std::vector<OptionValue*> VanillaLogicDefaults = {};
     std::array<uint8_t, 5> hashIconIndexes = {};
     bool playthroughBeatable = false;
     bool allLocationsReachable = false;
@@ -187,9 +185,7 @@ class Context {
     std::array<ItemLocation, RC_MAX> itemLocationTable = {};
     std::array<OptionValue, RSK_MAX> mOptions;
     std::array<OptionValue, RT_MAX> mTrickOptions;
-    RandoOptionCheckTrigger mGBKCondition = RO_CHECK_TRIGGER_NONE;
-    RandoOptionCheckTrigger mGanonsSoulCondition = RO_CHECK_TRIGGER_NONE;
-    RandoOptionWincon mWinCondition = RO_WINCON_DEFEAT_GANON;
+    RandoOptionLACSCondition mLACSCondition = RO_LACS_VANILLA;
     std::shared_ptr<EntranceShuffler> mEntranceShuffler;
     std::shared_ptr<Dungeons> mDungeons;
     std::shared_ptr<Logic> mLogic;

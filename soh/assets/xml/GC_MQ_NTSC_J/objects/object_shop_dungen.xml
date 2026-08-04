@@ -1,0 +1,10 @@
+<Root>
+    <File Name="object_shop_dungen" Segment="6">
+        <DList Name="gShopDungenWoodenShelvesDL" Offset="0xB80"/>
+        <Texture Name="gShopDungenStoneTLUT" OutName="stone_tlut" Format="rgba16" Width="16" Height="1" Offset="0xDE0"/>
+        <Texture Name="gShopDungenStone1Tex" OutName="stone1_tex" Format="ci4" Width="64" Height="64" Offset="0xE08"/>
+        <Texture Name="gShopDungenStone2Tex" OutName="stone2_tex" Format="ci4" Width="64" Height="64" Offset="0x1608"/>
+        <DList Name="gShopDungenStoneShelvesDL" Offset="0x27E8"/>
+        <Texture Name="gShopDungenWoodPlankTex" OutName="wood_plank_tex" Format="rgba16" Width="64" Height="32" Offset="0x2A20"/>
+    </File>
+</Root>

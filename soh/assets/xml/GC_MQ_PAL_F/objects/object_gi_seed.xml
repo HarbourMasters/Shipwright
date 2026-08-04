@@ -1,0 +1,5 @@
+<Root>
+    <File Name="object_gi_seed" Segment="6">
+        <DList Name="gGiSeedDL" Offset="0x0810"/>
+    </File>
+</Root>

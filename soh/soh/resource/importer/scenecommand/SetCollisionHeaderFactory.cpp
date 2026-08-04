@@ -1,8 +1,8 @@
 #include "soh/resource/importer/scenecommand/SetCollisionHeaderFactory.h"
 #include "soh/resource/type/scenecommand/SetCollisionHeader.h"
 #include "soh/resource/logging/SceneCommandLoggers.h"
-#include <ship/Context.h>
-#include <ship/resource/ResourceManager.h>
+#include "libultraship/libultraship.h"
+#include "spdlog/spdlog.h"
 #include <tinyxml2.h>
 
 namespace SOH {
@@ -15,8 +15,7 @@ SetCollisionHeaderFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> 
 
     setCollisionHeader->fileName = reader->ReadString();
     setCollisionHeader->collisionHeader = std::static_pointer_cast<CollisionHeader>(
-        Ship::Context::GetRawInstance()->GetResourceManager()->LoadResourceProcess(
-            setCollisionHeader->fileName.c_str()));
+        Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(setCollisionHeader->fileName.c_str()));
 
     if (CVarGetInteger(CVAR_DEVELOPER_TOOLS("ResourceLogging"), 0)) {
         LogSetCollisionHeaderAsXML(setCollisionHeader);
@@ -34,8 +33,7 @@ SetCollisionHeaderFactoryXML::ReadResource(std::shared_ptr<Ship::ResourceInitDat
 
     setCollisionHeader->fileName = reader->Attribute("FileName");
     setCollisionHeader->collisionHeader = std::static_pointer_cast<CollisionHeader>(
-        Ship::Context::GetRawInstance()->GetResourceManager()->LoadResourceProcess(
-            setCollisionHeader->fileName.c_str()));
+        Ship::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(setCollisionHeader->fileName.c_str()));
 
     return setCollisionHeader;
 }

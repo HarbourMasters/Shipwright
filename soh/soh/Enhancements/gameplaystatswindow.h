@@ -1,4 +1,4 @@
-#include <ship/window/gui/GuiWindow.h>
+#include <libultraship/libultraship.h>
 
 class GameplayStatsWindow final : public Ship::GuiWindow {
   public:

@@ -11,39 +11,30 @@ void RegionTable_Init_CastleGrounds() {
     //Temporarily uses SCENE_OUTSIDE_GANONS_CASTLE to avoid self connection between ages
     areaTable[RR_CASTLE_GROUNDS] = Region("Castle Grounds", SCENE_OUTSIDE_GANONS_CASTLE, TIME_DOESNT_PASS, {RA_CASTLE_GROUNDS}, {}, {}, {
         //Exits
-        ENTRANCE(RR_THE_MARKET,            true),
-        ENTRANCE(RR_HC_GATE,               logic->IsChild),
-        ENTRANCE(RR_GANONS_CASTLE_GROUNDS, logic->IsAdult),
-    });
-
-    areaTable[RR_CASTLE_GROUNDS_FROM_GREAT_FAIRY] = Region("Castle Grounds From Great Fairy", SCENE_OUTSIDE_GANONS_CASTLE, TIME_DOESNT_PASS, {RA_CASTLE_GROUNDS}, {}, {}, {
-        ENTRANCE(RR_HC_PAST_GATE,          logic->IsChild),
-        ENTRANCE(RR_GANONS_CASTLE_GROUNDS, logic->IsAdult),
+        Entrance(RR_THE_MARKET,            []{return true;}),
+        Entrance(RR_HC_GATE,               []{return logic->IsChild;}),
+        Entrance(RR_GANONS_CASTLE_GROUNDS, []{return logic->IsAdult;}),
     });
 
     areaTable[RR_HC_GATE] = Region("Hyrule Castle Gate", SCENE_HYRULE_CASTLE, {
         //Events
-        EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->CallGossipFairy() || logic->CanUse(RG_STICKS)),
-        EVENT_ACCESS(LOGIC_BUG_ACCESS,   logic->HasItem(RG_POWER_BRACELET)),
-        EVENT_ACCESS(LOGIC_MALON_RETURNED_FROM_CASTLE, logic->Get(LOGIC_TALON_RETURNED_FROM_CASTLE) && logic->HasItem(RG_SPEAK_HYLIAN)),
+        EventAccess(LOGIC_FAIRY_ACCESS, []{return logic->CallGossipFairy() || logic->CanUse(RG_STICKS);}),
+        EventAccess(LOGIC_BUG_ACCESS,   []{return logic->HasItem(RG_POWER_BRACELET);}),
     }, {
         //Locations
-        LOCATION(RC_HC_MALON_EGG,      logic->HasItem(RG_SPEAK_HYLIAN)),
-        LOCATION(RC_HC_ROCK_1,         logic->CanBreakRocks()),
-        LOCATION(RC_HC_ROCK_2,         logic->CanBreakRocks()),
-        LOCATION(RC_HC_ROCK_3,         logic->CanBreakRocks()),
+        LOCATION(RC_HC_MALON_EGG,      true),
         LOCATION(RC_HC_GS_TREE,        logic->CanBonkTrees() && logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_CLOSE)),
         LOCATION(RC_HC_SKULLTULA_TREE, logic->CanBonkTrees()),
     }, {
         //Exits
-        ENTRANCE(RR_CASTLE_GROUNDS, true),
-        ENTRANCE(RR_HC_ABOVE_VINE,  logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT)),
-        ENTRANCE(RR_HC_PAST_GATE,   logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_SPEAK_HYLIAN)),
+        Entrance(RR_CASTLE_GROUNDS, []{return true;}),
+        Entrance(RR_HC_ABOVE_VINE,  []{return logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT);}),
+        Entrance(RR_HC_PAST_GATE,   []{return logic->HasItem(RG_CHILD_WALLET);}),
     });
 
     areaTable[RR_HC_ABOVE_VINE] = Region("Hyrule Castle Above Vine", SCENE_HYRULE_CASTLE, {
         //Events
-        EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->CallGossipFairy()),
+        EventAccess(LOGIC_FAIRY_ACCESS, []{return logic->CallGossipFairy();}),
     }, {
         //Locations
         LOCATION(RC_HC_MALON_GOSSIP_STONE_FAIRY,     logic->CallGossipFairy()),
@@ -51,40 +42,34 @@ void RegionTable_Init_CastleGrounds() {
         LOCATION(RC_HC_MALON_GOSSIP_STONE,           true),
     }, {
         //Exits
-        ENTRANCE(RR_HC_GATE,      true),
-        ENTRANCE(RR_HC_PAST_GATE, true),
+        Entrance(RR_HC_GATE,      []{return true;}),
+        Entrance(RR_HC_PAST_GATE, []{return true;}),
     });
 
     areaTable[RR_HC_PAST_GATE] = Region("Hyrule Castle Past Gate", SCENE_HYRULE_CASTLE, {
         //Events
-        EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->CanUse(RG_STICKS)),
+        EventAccess(LOGIC_FAIRY_ACCESS, []{return logic->CanUse(RG_STICKS);}),
     }, {
         //Locations
-        LOCATION(RC_HC_BOULDER,                           logic->BlastOrSmash()),
-        LOCATION(RC_HC_NEAR_GUARDS_TREE_1,                logic->CanBonkTrees()),
-        LOCATION(RC_HC_NEAR_GUARDS_TREE_2,                logic->CanBonkTrees()),
-        LOCATION(RC_HC_NEAR_GUARDS_TREE_3,                logic->CanBonkTrees()),
-        LOCATION(RC_HC_NEAR_GUARDS_TREE_4,                logic->CanBonkTrees()),
-        LOCATION(RC_HC_NEAR_GUARDS_TREE_5,                logic->CanBonkTrees()),
-        LOCATION(RC_HC_NEAR_GUARDS_TREE_6,                logic->CanBonkTrees()),
-        LOCATION(RC_HC_NL_TREE_1,                         false),
-        LOCATION(RC_HC_NL_TREE_2,                         false),
-        LOCATION(RC_HC_NEAR_WALL_BUTTERFLY_FAIRY,         logic->CanUse(RG_STICKS)),
-        LOCATION(RC_HC_NEAR_STAIRS_BUTTERFLY_FAIRY,       logic->CanUse(RG_STICKS)),
-        LOCATION(RC_HC_NEAR_BOULDER_PATH_BUTTERFLY_FAIRY, logic->CanUse(RG_STICKS)),
-        LOCATION(RC_HC_NEAR_ARCHWAY_BUTTERFLY_FAIRY,      logic->CanUse(RG_STICKS)),
-        LOCATION(RC_HC_DEAD_END_RECTANGLE_SIGN,           logic->CanRead()),
+        LOCATION(RC_HC_NEAR_GUARDS_TREE_1, logic->CanBonkTrees()),
+        LOCATION(RC_HC_NEAR_GUARDS_TREE_2, logic->CanBonkTrees()),
+        LOCATION(RC_HC_NEAR_GUARDS_TREE_3, logic->CanBonkTrees()),
+        LOCATION(RC_HC_NEAR_GUARDS_TREE_4, logic->CanBonkTrees()),
+        LOCATION(RC_HC_NEAR_GUARDS_TREE_5, logic->CanBonkTrees()),
+        LOCATION(RC_HC_NEAR_GUARDS_TREE_6, logic->CanBonkTrees()),
+        LOCATION(RC_HC_NL_TREE_1,          false),
+        LOCATION(RC_HC_NL_TREE_2,          false),
     }, {
         //Exits
-        ENTRANCE(RR_HC_GATE,                  true),
-        ENTRANCE(RR_HC_ABOVE_VINE,            logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT)),
-        ENTRANCE(RR_HC_ABOVE_CLIMBABLE_ROCKS, logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT)),
-        ENTRANCE(RR_HC_GREAT_FAIRY_FOUNTAIN,  logic->BlastOrSmash() && logic->CanUse(RG_CRAWL)),
+        Entrance(RR_HC_GATE,                  []{return true;}),
+        Entrance(RR_HC_ABOVE_VINE,            []{return logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT);}),
+        Entrance(RR_HC_ABOVE_CLIMBABLE_ROCKS, []{return logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT);}),
+        Entrance(RR_HC_GREAT_FAIRY_FOUNTAIN,  []{return logic->BlastOrSmash() && logic->CanUse(RG_CRAWL);}),
     });
 
     areaTable[RR_HC_ABOVE_CLIMBABLE_ROCKS] = Region("Hyrule Castle Above Climbable Rocks", SCENE_HYRULE_CASTLE, {
         //Events
-        EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->CallGossipFairy()),
+        EventAccess(LOGIC_FAIRY_ACCESS, []{return logic->CallGossipFairy();}),
     }, {
         //Locations
         LOCATION(RC_HC_ROCK_WALL_GOSSIP_STONE,           true),
@@ -92,56 +77,35 @@ void RegionTable_Init_CastleGrounds() {
         LOCATION(RC_HC_ROCK_WALL_GOSSIP_STONE_FAIRY_BIG, logic->CanUse(RG_SONG_OF_STORMS)),
     }, {
         //Exits
-        ENTRANCE(RR_HC_PAST_GATE, true),
-        ENTRANCE(RR_HC_MOAT,      true),
+        Entrance(RR_HC_PAST_GATE, []{return true;}),
+        Entrance(RR_HC_MOAT,      []{return true;}),
     });
 
-    areaTable[RR_HC_MOAT] = Region("Hyrule Castle Moat", SCENE_HYRULE_CASTLE, {
-        //Events
-        EVENT_ACCESS(LOGIC_TALON_RETURNED_FROM_CASTLE, logic->CanUse(RG_WEIRD_EGG) && logic->HasItem(RG_SPEAK_HYLIAN)),
-    }, {
+    areaTable[RR_HC_MOAT] = Region("Hyrule Castle Grounds", SCENE_HYRULE_CASTLE, {}, {
         //Locations
-        LOCATION(RC_HC_GRASS_1,             logic->CanCutShrubs()),
-        LOCATION(RC_HC_GRASS_2,             logic->CanCutShrubs()),
-        LOCATION(RC_HC_GROTTO_TREE,         logic->CanBonkTrees()),
-        LOCATION(RC_HC_WONDER_LEFT_TORCH,   logic->CanUse(RG_FAIRY_SLINGSHOT) && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_BOOMERANG) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
-        LOCATION(RC_HC_WONDER_RIGHT_TORCH,  logic->CanUse(RG_FAIRY_SLINGSHOT) && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_BOOMERANG) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
-        LOCATION(RC_HC_WONDER_MOAT_1,       logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION)),
-        LOCATION(RC_HC_WONDER_MOAT_2,       logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION)), // Requires backflip with Iron Boots
-        LOCATION(RC_HC_WONDER_MOAT_3,       logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION)), // Requires backflip with Iron Boots
-        LOCATION(RC_HC_WONDER_MOAT_4,       logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION)),
-        LOCATION(RC_HC_WONDER_MOAT_5,       logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION)), // Requires backflip with Iron Boots
-        LOCATION(RC_HC_WONDER_MOAT_6,       logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION)), // Requires backflip with Iron Boots
-        LOCATION(RC_HC_WONDER_MOAT_7,       logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION)), // Requires backflip with Iron Boots
-        LOCATION(RC_HC_WONDER_MOAT_8,       logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION)), // Requires backflip with Iron Boots
-        LOCATION(RC_HC_WONDER_MOAT_9,       logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION)), // Requires backflip with Iron Boots
-        LOCATION(RC_HC_WONDER_MOAT_10,      logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION)), // Requires backflip with Iron Boots
+        LOCATION(RC_HC_GRASS_1,     logic->CanCutShrubs()),
+        LOCATION(RC_HC_GRASS_2,     logic->CanCutShrubs()),
+        LOCATION(RC_HC_GROTTO_TREE, logic->CanBonkTrees()),
     }, {
         //Exits
-        ENTRANCE(RR_HC_GATE,          true),
-        ENTRANCE(RR_HC_STORMS_GROTTO, logic->CanOpenStormsGrotto()),
-        ENTRANCE(RR_HC_DRAIN_LEDGE,   (logic->Get(LOGIC_TALON_RETURNED_FROM_CASTLE) && logic->HasItem(RG_POWER_BRACELET)) ||
-                                      (ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->TakeDamage() && logic->HasExplosives() && logic->CanJumpslash())),
+        Entrance(RR_HC_GATE,          []{return true;}),
+        Entrance(RR_HC_STORMS_GROTTO, []{return logic->CanOpenStormsGrotto();}),
+        Entrance(RR_HC_GARDEN,        []{return (logic->CanUse(RG_WEIRD_EGG) && logic->HasItem(RG_POWER_BRACELET)) || (ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->TakeDamage() && logic->HasExplosives() && logic->CanJumpslash());}),
     });
 
     areaTable[RR_HC_DRAIN_LEDGE] = Region("Hyrule Castle Drain Ledge", SCENE_HYRULE_CASTLE, {}, {}, {
         //Exits
-        ENTRANCE(RR_HC_MOAT,   true),
-        ENTRANCE(RR_HC_GARDEN, logic->CanUse(RG_CRAWL)),
+        Entrance(RR_HC_MOAT,   []{return true;}),
+        Entrance(RR_HC_GARDEN, []{return logic->CanUse(RG_CRAWL);}),
     });
 
-    areaTable[RR_HC_GARDEN] = Region("HC Garden", SCENE_CASTLE_COURTYARD_ZELDA, {
-        //Events
-        EVENT_ACCESS(LOGIC_MET_ZELDA, logic->HasItem(RG_SPEAK_HYLIAN)),
-    }, {
+    areaTable[RR_HC_GARDEN] = Region("HC Garden", SCENE_CASTLE_COURTYARD_ZELDA, {}, {
         //Locations
-        LOCATION(RC_HC_ZELDAS_LETTER,                 logic->Get(LOGIC_MET_ZELDA)),
-        LOCATION(RC_SONG_FROM_IMPA,                   logic->Get(LOGIC_MET_ZELDA)),
-        LOCATION(RC_HC_WONDER_COURTYARD_RIGHT_WINDOW, logic->CanUse(RG_FAIRY_SLINGSHOT)),
-        LOCATION(RC_HC_WONDER_COURTYARD_LEFT_WINDOW,  logic->CanUse(RG_FAIRY_SLINGSHOT)),
+        LOCATION(RC_HC_ZELDAS_LETTER, true),
+        LOCATION(RC_SONG_FROM_IMPA,   true),
     }, {
         //Exits
-        ENTRANCE(RR_HC_DRAIN_LEDGE, true), // if this ever gets shuffled leaving garden area should come out crawlspace
+        Entrance(RR_HC_DRAIN_LEDGE, []{return true;}), // if this ever gets shuffled leaving garden area should come out crawlspace
     });
 
     areaTable[RR_HC_GREAT_FAIRY_FOUNTAIN] = Region("HC Great Fairy Fountain", SCENE_GREAT_FAIRYS_FOUNTAIN_SPELLS, {}, {
@@ -149,7 +113,7 @@ void RegionTable_Init_CastleGrounds() {
         LOCATION(RC_HC_GREAT_FAIRY_REWARD, logic->CanUse(RG_ZELDAS_LULLABY)),
     }, {
         //Exits
-        ENTRANCE(RR_CASTLE_GROUNDS_FROM_GREAT_FAIRY, true),
+        Entrance(RR_HC_PAST_GATE, []{return true;}),
     });
 
     areaTable[RR_HC_STORMS_GROTTO] = Region("HC Storms Grotto", SCENE_GROTTOS, {}, {
@@ -157,15 +121,15 @@ void RegionTable_Init_CastleGrounds() {
         LOCATION(RC_HC_GS_STORMS_GROTTO, logic->CanUse(RG_BOOMERANG) && ctx->GetTrickOption(RT_HC_STORMS_GS)),
     }, {
         //Exits
-        ENTRANCE(RR_CASTLE_GROUNDS_FROM_GROTTO,    true),
-        ENTRANCE(RR_HC_STORMS_GROTTO_BEHIND_WALLS, logic->CanBreakMudWalls()),
+        Entrance(RR_HC_MOAT,                       []{return true;}),
+        Entrance(RR_HC_STORMS_GROTTO_BEHIND_WALLS, []{return logic->CanBreakMudWalls();}),
     });
 
     areaTable[RR_HC_STORMS_GROTTO_BEHIND_WALLS] = Region("HC Storms Grotto Behind Walls", SCENE_GROTTOS, {
         //Events
-        EVENT_ACCESS(LOGIC_NUT_ACCESS,   logic->CanBreakPots()),
-        EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->CallGossipFairy()),
-        EVENT_ACCESS(LOGIC_BUG_ACCESS,   true), // wandering bugs
+        EventAccess(LOGIC_NUT_ACCESS,   []{return logic->CanBreakPots();}),
+        EventAccess(LOGIC_FAIRY_ACCESS, []{return logic->CallGossipFairy();}),
+        EventAccess(LOGIC_BUG_ACCESS,   []{return true;}), // wandering bugs
     }, {
         //Locations
         LOCATION(RC_HC_GS_STORMS_GROTTO,                     logic->HookshotOrBoomerang()),
@@ -176,42 +140,22 @@ void RegionTable_Init_CastleGrounds() {
         LOCATION(RC_HC_STORMS_GROTTO_POT_2,                  logic->CanBreakPots()),
         LOCATION(RC_HC_STORMS_GROTTO_POT_3,                  logic->CanBreakPots()),
         LOCATION(RC_HC_STORMS_GROTTO_POT_4,                  logic->CanBreakPots()),
-        LOCATION(RC_HC_STORMS_GROTTO_ROCK_1,                 logic->CanBreakRocks()),
-        LOCATION(RC_HC_STORMS_GROTTO_ROCK_2,                 logic->CanBreakRocks()),
-        LOCATION(RC_HC_STORMS_GROTTO_ROCK_3,                 logic->CanBreakRocks()),
-        LOCATION(RC_HC_STORMS_GROTTO_ROCK_4,                 logic->CanBreakRocks()),
-        LOCATION(RC_HC_STORMS_GROTTO_ROCK_5,                 logic->CanBreakRocks()),
-        LOCATION(RC_HC_STORMS_GROTTO_ROCK_6,                 logic->CanBreakRocks()),
-        LOCATION(RC_HC_STORMS_GROTTO_ROCK_7,                 logic->CanBreakRocks()),
-        LOCATION(RC_HC_STORMS_GROTTO_ROCK_8,                 logic->CanBreakRocks()),
     }, {
         //Exits
-        ENTRANCE(RR_HC_STORMS_GROTTO, true),
-    });
-
-    areaTable[RR_CASTLE_GROUNDS_FROM_GROTTO] = Region("Castle Grounds From Grotto", SCENE_OUTSIDE_GANONS_CASTLE, TIME_DOESNT_PASS, {RA_CASTLE_GROUNDS}, {}, {}, {
-        ENTRANCE(RR_HC_MOAT,               logic->IsChild),
-        ENTRANCE(RR_GANONS_CASTLE_GROUNDS, logic->IsAdult),
+        Entrance(RR_HC_STORMS_GROTTO, []{return true;}),
     });
 
     areaTable[RR_GANONS_CASTLE_GROUNDS] = Region("Ganon's Castle Grounds", SCENE_OUTSIDE_GANONS_CASTLE, {
         //Events
-        EVENT_ACCESS(LOGIC_BUILD_RAINBOW_BRIDGE, logic->CanBuildRainbowBridge()),
+        EventAccess(LOGIC_BUILD_RAINBOW_BRIDGE, []{return logic->CanBuildRainbowBridge();}),
     }, {
         //Locations
-        LOCATION(RC_OGC_GS,               logic->HookshotOrBoomerang() || ((logic->CanJumpslashExceptHammer() || logic->CanUseProjectile() || (logic->CanShield() && logic->CanUse(RG_MEGATON_HAMMER)) || logic->CanUse(RG_DINS_FIRE)) && ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))) ,
-        LOCATION(RC_OGC_BRONZE_BOULDER_1, logic->CanUse(RG_MEGATON_HAMMER)),
-        LOCATION(RC_OGC_BRONZE_BOULDER_2, logic->CanUse(RG_MEGATON_HAMMER)),
-        LOCATION(RC_OGC_BRONZE_BOULDER_3, logic->CanUse(RG_MEGATON_HAMMER)),
-        LOCATION(RC_OGC_SILVER_BOULDER_1, logic->CanUse(RG_SILVER_GAUNTLETS)),
-        LOCATION(RC_OGC_SILVER_BOULDER_2, logic->CanUse(RG_SILVER_GAUNTLETS)),
-        LOCATION(RC_OGC_SILVER_BOULDER_3, logic->CanUse(RG_SILVER_GAUNTLETS)),
-        LOCATION(RC_OGC_SILVER_BOULDER_4, logic->CanUse(RG_SILVER_GAUNTLETS)),
+        LOCATION(RC_OGC_GS, logic->CanJumpslashExceptHammer() || logic->CanUseProjectile() || (logic->CanShield() && logic->CanUse(RG_MEGATON_HAMMER)) || logic->CanUse(RG_DINS_FIRE)),
     }, {
         //Exits
-        ENTRANCE(RR_CASTLE_GROUNDS,           logic->AtNight),
-        ENTRANCE(RR_OGC_GREAT_FAIRY_FOUNTAIN, logic->CanUse(RG_GOLDEN_GAUNTLETS) && logic->AtNight),
-        ENTRANCE(RR_GANONS_CASTLE_LEDGE,      logic->Get(LOGIC_BUILD_RAINBOW_BRIDGE)),
+        Entrance(RR_CASTLE_GROUNDS,           []{return logic->AtNight;}),
+        Entrance(RR_OGC_GREAT_FAIRY_FOUNTAIN, []{return logic->CanUse(RG_GOLDEN_GAUNTLETS) && logic->AtNight;}),
+        Entrance(RR_GANONS_CASTLE_LEDGE,      []{return logic->Get(LOGIC_BUILD_RAINBOW_BRIDGE);}),
     });
 
     areaTable[RR_OGC_GREAT_FAIRY_FOUNTAIN] = Region("OGC Great Fairy Fountain", SCENE_GREAT_FAIRYS_FOUNTAIN_MAGIC, {}, {
@@ -219,19 +163,19 @@ void RegionTable_Init_CastleGrounds() {
         LOCATION(RC_OGC_GREAT_FAIRY_REWARD, logic->CanUse(RG_ZELDAS_LULLABY)),
     }, {
         //Exits
-        ENTRANCE(RR_CASTLE_GROUNDS_FROM_GREAT_FAIRY, true),
+        Entrance(RR_CASTLE_GROUNDS, []{return true;}),
     });
 
     areaTable[RR_CASTLE_GROUNDS_FROM_GANONS_CASTLE] = Region("Castle Grounds From Ganon's Castle", SCENE_OUTSIDE_GANONS_CASTLE, {}, {}, {
         // Exits
-        ENTRANCE(RR_HC_DRAIN_LEDGE,      logic->IsChild),
-        ENTRANCE(RR_GANONS_CASTLE_LEDGE, logic->IsAdult),
+        Entrance(RR_HC_DRAIN_LEDGE,      []{return logic->IsChild;}),
+        Entrance(RR_GANONS_CASTLE_LEDGE, []{return logic->IsAdult;}),
     });
 
     areaTable[RR_GANONS_CASTLE_LEDGE] = Region("Ganon's Castle Ledge", SCENE_OUTSIDE_GANONS_CASTLE, {}, {}, {
         // Exits
-        ENTRANCE(RR_GANONS_CASTLE_GROUNDS,  logic->Get(LOGIC_BUILD_RAINBOW_BRIDGE)),
-        ENTRANCE(RR_GANONS_CASTLE_ENTRYWAY, logic->IsAdult),
+        Entrance(RR_GANONS_CASTLE_GROUNDS,  []{return logic->Get(LOGIC_BUILD_RAINBOW_BRIDGE);}),
+        Entrance(RR_GANONS_CASTLE_ENTRYWAY, []{return logic->IsAdult;}),
     });
 
     // clang-format on

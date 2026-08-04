@@ -161,7 +161,7 @@ u8 WeatherTag_CheckEnableWeatherEffect(EnWeatherTag* this, PlayState* play, u8 a
                 ret = true;
             }
         } else {
-            if (gTimeSpeed != 0) {
+            if (gTimeIncrement != 0) {
                 gSaveContext.dayTime += 0x14;
             }
         }
@@ -196,7 +196,7 @@ u8 WeatherTag_CheckRestoreWeather(EnWeatherTag* this, PlayState* play, u8 arg2, 
 
                 ret = true;
             }
-        } else if (gTimeSpeed != 0) {
+        } else if (gTimeIncrement != 0) {
             gSaveContext.dayTime += 0x14;
         }
     }

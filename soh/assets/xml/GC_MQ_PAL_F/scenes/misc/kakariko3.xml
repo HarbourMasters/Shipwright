@@ -1,0 +1,8 @@
+<Root>
+    <File Name="kakariko3_scene" Segment="2">
+        <Scene Name="kakariko3_scene" Offset="0x0"/>
+    </File>
+    <File Name="kakariko3_room_0" Segment="3">
+        <Room Name="kakariko3_room_0" Offset="0x0"/>
+    </File>
+</Root>

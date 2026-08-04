@@ -1,0 +1,216 @@
+<Root>
+    <File Name="object_human" Segment="6">
+        <!-- Facial textures -->
+        <Texture Name="gHumanEyeLookForwardOpenTex" OutName="eye_look_forward_open" Format="ci8" Width="32" Height="32" Offset="0x0" TlutOffset="0x7A00"/>
+        <Texture Name="gHumanEyeLookForwardHalfTex" OutName="eye_look_forward_half" Format="ci8" Width="32" Height="32" Offset="0x400" TlutOffset="0x7A00"/>
+        <Texture Name="gHumanEyeLookForwardClosedTex" OutName="eye_look_forward_closed" Format="ci8" Width="32" Height="32" Offset="0x800" TlutOffset="0x7A00"/>
+
+        <Texture Name="gHumanEyeLookRightOpenTex" OutName="eye_look_right_open" Format="ci8" Width="32" Height="32" Offset="0xC00" TlutOffset="0x7A00"/>
+        <Texture Name="gHumanEyeLookRightHalfTex" OutName="eye_look_right_half" Format="ci8" Width="32" Height="32" Offset="0x1000" TlutOffset="0x7A00"/>
+
+        <Texture Name="gHumanEyeLookLeftOpenTex" OutName="eye_look_left_open" Format="ci8" Width="32" Height="32" Offset="0x1400" TlutOffset="0x7A00"/>
+        <Texture Name="gHumanEyeLookLeftHalfTex" OutName="eye_look_left_half" Format="ci8" Width="32" Height="32" Offset="0x1800" TlutOffset="0x7A00"/>
+
+        <Texture Name="gHumanEyeLookUpOpenTex" OutName="eye_look_up_open" Format="ci8" Width="32" Height="32" Offset="0x1C00" TlutOffset="0x7A00"/>
+        <Texture Name="gHumanEyeLookDownOpenTex" OutName="eye_look_down_open" Format="ci8" Width="32" Height="32" Offset="0x2000" TlutOffset="0x7A00"/>
+
+        <Texture Name="gHumanEyebrowNormalTex" OutName="eyebrow_normal" Format="ci8" Width="32" Height="16" Offset="0x2400" TlutOffset="0x7A00"/>
+        <Texture Name="gHumanEyebrowSurprisedTex" OutName="eyebrow_surprised" Format="ci8" Width="32" Height="16" Offset="0x2600" TlutOffset="0x7A00"/>
+        <Texture Name="gHumanEyebrowSadTex" OutName="eyebrow_sad" Format="ci8" Width="32" Height="16" Offset="0x2800" TlutOffset="0x7A00"/>
+
+        <!-- Those are exactly the same as above eye textures -->
+        <Texture Name="gHumanEyeLookForwardOpen2Tex" OutName="eye_look_forward_open_2" Format="ci8" Width="32" Height="32" Offset="0x2A00" TlutOffset="0x7A00"/>
+        <Texture Name="gHumanEyeLookForwardHalf2Tex" OutName="eye_look_forward_half_2" Format="ci8" Width="32" Height="32" Offset="0x2E00" TlutOffset="0x7A00"/>
+        <Texture Name="gHumanEyeLookForwardClosed2Tex" OutName="eye_look_forward_closed_2" Format="ci8" Width="32" Height="32" Offset="0x3200" TlutOffset="0x7A00"/>
+
+        <Texture Name="gHumanEyeLookLeftOpen2Tex" OutName="eye_look_left_open_2" Format="ci8" Width="32" Height="32" Offset="0x3600" TlutOffset="0x7A00"/>
+        <Texture Name="gHumanEyeLookLeftHalf2Tex" OutName="eye_look_left_half_2" Format="ci8" Width="32" Height="32" Offset="0x3A00" TlutOffset="0x7A00"/>
+
+        <Texture Name="gHumanEyeLookRightOpen2Tex" OutName="eye_look_right_open_2" Format="ci8" Width="32" Height="32" Offset="0x3E00" TlutOffset="0x7A00"/>
+        <Texture Name="gHumanEyeLookRightHalf2Tex" OutName="eye_look_right_half_2" Format="ci8" Width="32" Height="32" Offset="0x4200" TlutOffset="0x7A00"/>
+
+        <Texture Name="gHumanEyeLookUpOpen2Tex" OutName="eye_look_up_open_2" Format="ci8" Width="32" Height="32" Offset="0x4600" TlutOffset="0x7A00"/>
+        <Texture Name="gHumanEyeLookDownOpen2Tex" OutName="eye_look_down_open_2" Format="ci8" Width="32" Height="32" Offset="0x4A00" TlutOffset="0x7A00"/>
+
+        <!-- Those are exactly the same as above eyebrow textures -->
+        <Texture Name="gHumanEyebrowNormal2Tex" OutName="eyebrow_normal_2" Format="ci8" Width="32" Height="16" Offset="0x4E00" TlutOffset="0x7A00"/>
+        <Texture Name="gHumanEyebrowSurprised2Tex" OutName="eyebrow_surprised_2" Format="ci8" Width="32" Height="16" Offset="0x5000" TlutOffset="0x7A00"/>
+        <Texture Name="gHumanEyebrowSad2Tex" OutName="eyebrow_sad_2" Format="ci8" Width="32" Height="16" Offset="0x5200" TlutOffset="0x7A00"/>
+
+        <Texture Name="object_human_Tex_005400" OutName="object_human_Tex_005400" Format="ci8" Width="16" Height="16" Offset="0x5400" TlutOffset="0x7A00"/>
+        <Texture Name="object_human_Tex_005500" OutName="object_human_Tex_005500" Format="ci8" Width="16" Height="16" Offset="0x5500" TlutOffset="0x7A00"/>
+
+        <!-- Mouths -->
+        <Texture Name="gHumanMouthClosed1Tex" OutName="mouth_closed_1" Format="ci8" Width="32" Height="32" Offset="0x5600" TlutOffset="0x7A00"/>
+        <Texture Name="gHumanMouthOpen1Tex" OutName="mouth_open_1" Format="ci8" Width="32" Height="32" Offset="0x5A00" TlutOffset="0x7A00"/>
+        <Texture Name="gHumanMouthOpen2Tex" OutName="mouth_open_2" Format="ci8" Width="32" Height="32" Offset="0x5E00" TlutOffset="0x7A00"/>
+        <Texture Name="gHumanMouthClosed2Tex" OutName="mouth_closed_2" Format="ci8" Width="32" Height="32" Offset="0x6200" TlutOffset="0x7A00"/>
+        <Texture Name="gHumanMouthOpen3Tex" OutName="mouth_open_3" Format="ci8" Width="32" Height="32" Offset="0x6600" TlutOffset="0x7A00"/>
+        <Texture Name="gHumanMouthOpen4Tex" OutName="mouth_open_4" Format="ci8" Width="32" Height="32" Offset="0x6A00" TlutOffset="0x7A00"/>
+        <Texture Name="gHumanMouthClosed3Tex" OutName="mouth_closed_3" Format="ci8" Width="32" Height="32" Offset="0x6E00" TlutOffset="0x7A00"/>
+        <Texture Name="gHumanMouthOpen5Tex" OutName="mouth_open_5" Format="ci8" Width="32" Height="32" Offset="0x7200" TlutOffset="0x7A00"/>
+        <Texture Name="gHumanMouthOpen6Tex" OutName="mouth_open_6" Format="ci8" Width="32" Height="32" Offset="0x7600" TlutOffset="0x7A00"/>
+
+        <!-- TLUT -->
+        <Texture Name="gHumanTLUT" OutName="face_tlut" Format="rgba16" Width="16" Height="16" Offset="0x7A00"/>
+
+        <LegacyAnimation Name="gHumanLookingBackAnim" Offset="0x8354"/>
+
+        <LegacyAnimation Name="gHumanLookingBackStartsAnim" Offset="0x8784"/>
+
+        <LegacyAnimation Name="gHumanTiltHeadAnim" Offset="0x8CE0"/>
+
+        <LegacyAnimation Name="gHumanLookingAroundAnim" Offset="0x990C"/>
+
+        <LegacyAnimation Name="gHumanLookingBackEndsAnim" Offset="0x9C2C"/>
+
+        <LegacyAnimation Name="gHumanThinkingEndAnim" Offset="0xA044"/>
+
+        <LegacyAnimation Name="gHumanThinkingStartsAnim" Offset="0xA8B4"/>
+
+        <LegacyAnimation Name="gHumanThinkingAnim" Offset="0xAF30"/>
+
+        <!-- Left arm -->
+        <DList Name="gHumanArmLeftDL" Offset="0xAF40"/>
+        <DList Name="gHumanArmLeftWrapperDL" Offset="0xB040"/>
+        <DList Name="gHumanArmLeftWrapperWrapperDL" Offset="0xB050"/>
+
+        <!-- Left forearm -->
+        <DList Name="gHumanForearmLeftDL" Offset="0xB1A8"/>
+        <DList Name="gHumanForearmLeftWrapperDL" Offset="0xB288"/>
+        <DList Name="gHumanForearmLeftWrapperWrapperDL" Offset="0xB298"/>
+
+        <!-- Left foot -->
+        <DList Name="gHumanFootLeftDL" Offset="0xB3B0"/>
+        <DList Name="gHumanFootLeftWrapperDL" Offset="0xB488"/>
+        <DList Name="gHumanFootLeftWrapperWrapperDL" Offset="0xB498"/>
+
+        <!-- Left hand -->
+        <DList Name="gHumanHandLeftDL" Offset="0xB610"/>
+        <DList Name="gHumanHandLeftWrapperDL" Offset="0xB750"/>
+        <DList Name="gHumanHandLeftWrapperWrapperDL" Offset="0xB760"/>
+
+        <!-- Left leg -->
+        <DList Name="gHumanLegLeftDL" Offset="0xB918"/>
+        <DList Name="gHumanLegLeftWrapperDL" Offset="0xB9E0"/>
+        <DList Name="gHumanLegLeftWrapperWrapperDL" Offset="0xB9F0"/>
+
+        <!-- Right arm -->
+        <DList Name="gHumanArmRightDL" Offset="0xBAF8"/>
+        <DList Name="gHumanArmRightWrapperDL" Offset="0xBBF8"/>
+        <DList Name="gHumanArmRightWrapperWrapperDL" Offset="0xBC08"/>
+
+        <!-- Right forearm -->
+        <DList Name="gHumanForearmRightDL" Offset="0xBD40"/>
+        <DList Name="gHumanForearmRightWrapperDL" Offset="0xBE20"/>
+        <DList Name="gHumanForearmRightWrapperWrapperDL" Offset="0xBE30"/>
+
+        <!-- Right foot -->
+        <DList Name="gHumanFootRightDL" Offset="0xBF38"/>
+        <DList Name="gHumanFootRightWrapperDL" Offset="0xC010"/>
+        <DList Name="gHumanFootRightWrapperWrapperDL" Offset="0xC020"/>
+
+        <!-- Right hand -->
+        <DList Name="gHumanHandRightDL" Offset="0xC178"/>
+        <DList Name="gHumanHandRightWrapperDL" Offset="0xC2B8"/>
+        <DList Name="gHumanHandRightWrapperWrapperDL" Offset="0xC2C8"/>
+
+        <!-- Right leg -->
+        <DList Name="gHumanLegRightDL" Offset="0xC450"/>
+        <DList Name="gHumanLegRightWrapperDL" Offset="0xC518"/>
+        <DList Name="gHumanLegRightWrapperWrapperDL" Offset="0xC528"/>
+
+        <!-- Torso -->
+        <DList Name="gHumanTorsoDL" Offset="0xC620"/>
+        <DList Name="gHumanTorsoWrapperDL" Offset="0xC8B0"/>
+        <DList Name="gHumanTorsoWrapperWrapperDL" Offset="0xC8C0"/>
+
+        <!-- Hair -->
+        <DList Name="gHumanHairDL" Offset="0xCCF8"/>
+        <DList Name="gHumanHairWrapperDL" Offset="0xCDC8"/>
+        <DList Name="gHumanHairWrapperWrapperDL" Offset="0xCDD8"/>
+
+        <!-- Head -->
+        <DList Name="gHumanHeadDL" Offset="0xCED0"/>
+        <DList Name="gHumanHeadWrapperDL" Offset="0xD500"/>
+        <DList Name="gHumanHeadWrapperWrapperDL" Offset="0xD510"/>
+
+        <!-- Waist -->
+        <DList Name="gHumanWaistDL" Offset="0xE0B8"/>
+        <DList Name="gHumanWaistWrapperDL" Offset="0xE218"/>
+        <DList Name="gHumanWaistWrapperWrapperDL" Offset="0xE228"/>
+
+        <!-- Lower half of the dress -->
+        <DList Name="gHumanDressLowerDL" Offset="0xE3A0"/>
+        <DList Name="gHumanDressLowerWrapperDL" Offset="0xE480"/>
+        <DList Name="gHumanDressLowerWrapperWrapperDL" Offset="0xE490"/>
+
+        <Texture Name="gHumanEarTex" OutName="ear" Format="rgba16" Width="16" Height="32" Offset="0xE5A8"/>
+
+        <Texture Name="gHumanDressOrnamentsTex" OutName="dress_ornaments" Format="rgba16" Width="32" Height="32" Offset="0xE9A8"/>
+        <Texture Name="gHumanBeltTex" OutName="belt" Format="rgba16" Width="8" Height="8" Offset="0xF1A8"/>
+
+        <Texture Name="gHumanFingersTex" OutName="fingers" Format="rgba16" Width="16" Height="8" Offset="0xF228"/>
+        <Texture Name="gHumanNeckTex" OutName="neck" Format="rgba16" Width="16" Height="8" Offset="0xF328"/>
+        <Texture Name="gHumanHairSideTex" OutName="hair_side" Format="rgba16" Width="32" Height="32" Offset="0xF428"/>
+        <Texture Name="gHumanHairTex" OutName="hair" Format="rgba16" Width="64" Height="32" Offset="0xFC28"/>
+
+        <!-- Looks like skin -->
+        <Texture Name="object_human_Tex_010C28" OutName="object_human_Tex_010C28" Format="rgba16" Width="16" Height="16" Offset="0x10C28"/>
+
+        <Texture Name="gHumanSkinTex" OutName="skin" Format="rgba16" Width="16" Height="16" Offset="0x10E28"/>
+        <Texture Name="gHumanShoeTex" OutName="shoe" Format="rgba16" Width="16" Height="32" Offset="0x11028"/>
+
+        <LegacyAnimation Name="gHumanIdleAnim" Offset="0x11A9C"/>
+
+        <Limb Name="gHumanDressLowerLimb" LimbType="Legacy" Offset="0x11AA8"/>
+        <Limb Name="gHumanWaistLimb" LimbType="Legacy" Offset="0x11AC8"/>
+        <Limb Name="gHumanHairLimb" LimbType="Legacy" Offset="0x11AE8"/>
+        <Limb Name="gHumanHandRightLimb" LimbType="Legacy" Offset="0x11B08"/>
+        <Limb Name="gHumanForearmRightLimb" LimbType="Legacy" Offset="0x11B28"/>
+        <Limb Name="gHumanArmRightLimb" LimbType="Legacy" Offset="0x11B48"/>
+        <Limb Name="gHumanHandLeftLimb" LimbType="Legacy" Offset="0x11B68"/>
+        <Limb Name="gHumanForearmLeftLimb" LimbType="Legacy" Offset="0x11B88"/>
+        <Limb Name="gHumanArmLeftLimb" LimbType="Legacy" Offset="0x11BA8"/>
+        <Limb Name="gHumanFootLeftLimb" LimbType="Legacy" Offset="0x11BC8"/>
+        <Limb Name="gHumanLegLeftLimb" LimbType="Legacy" Offset="0x11BE8"/>
+        <Limb Name="gHumanFootRightLimb" LimbType="Legacy" Offset="0x11C08"/>
+        <Limb Name="gHumanLegRightLimb" LimbType="Legacy" Offset="0x11C28"/>
+        <Limb Name="object_human_Limb_011C48" LimbType="Legacy" Offset="0x11C48"/>
+        <Limb Name="object_human_Limb_011C68" LimbType="Legacy" Offset="0x11C68"/>
+        <Limb Name="object_human_Limb_011C88" LimbType="Legacy" Offset="0x11C88"/>
+        <Limb Name="object_human_Limb_011CA8" LimbType="Legacy" Offset="0x11CA8"/>
+        <Limb Name="object_human_Limb_011CC8" LimbType="Legacy" Offset="0x11CC8"/>
+        <Limb Name="object_human_Limb_011CE8" LimbType="Legacy" Offset="0x11CE8"/>
+        <Limb Name="object_human_Limb_011D08" LimbType="Legacy" Offset="0x11D08"/>
+        <Limb Name="object_human_Limb_011D28" LimbType="Legacy" Offset="0x11D28"/>
+        <Limb Name="object_human_Limb_011D48" LimbType="Legacy" Offset="0x11D48"/>
+        <Limb Name="object_human_Limb_011D68" LimbType="Legacy" Offset="0x11D68"/>
+        <Limb Name="object_human_Limb_011D88" LimbType="Legacy" Offset="0x11D88"/>
+        <Limb Name="object_human_Limb_011DA8" LimbType="Legacy" Offset="0x11DA8"/>
+        <Limb Name="object_human_Limb_011DC8" LimbType="Legacy" Offset="0x11DC8"/>
+        <Limb Name="gHumanHeadLimb" LimbType="Legacy" Offset="0x11DE8"/>
+        <Limb Name="object_human_Limb_011E08" LimbType="Legacy" Offset="0x11E08"/>
+        <Limb Name="object_human_Limb_011E28" LimbType="Legacy" Offset="0x11E28"/>
+        <Limb Name="object_human_Limb_011E48" LimbType="Legacy" Offset="0x11E48"/>
+        <Limb Name="object_human_Limb_011E68" LimbType="Legacy" Offset="0x11E68"/>
+        <Limb Name="object_human_Limb_011E88" LimbType="Legacy" Offset="0x11E88"/>
+        <Limb Name="object_human_Limb_011EA8" LimbType="Legacy" Offset="0x11EA8"/>
+        <Limb Name="object_human_Limb_011EC8" LimbType="Legacy" Offset="0x11EC8"/>
+        <Limb Name="object_human_Limb_011EE8" LimbType="Legacy" Offset="0x11EE8"/>
+        <Limb Name="gHumanTorsoLimb" LimbType="Legacy" Offset="0x11F08"/>
+        <Limb Name="object_human_Limb_011F28" LimbType="Legacy" Offset="0x11F28"/>
+        <Limb Name="object_human_Limb_011F48" LimbType="Legacy" Offset="0x11F48"/>
+        <Limb Name="object_human_Limb_011F68" LimbType="Legacy" Offset="0x11F68"/>
+        <Limb Name="object_human_Limb_011F88" LimbType="Legacy" Offset="0x11F88"/>
+        <Limb Name="gHumanRootLimb" LimbType="Legacy" Offset="0x11FA8"/>
+
+        <LimbTable Name="gHumanLimbTable" LimbType="Legacy" Count="41" Offset="0x11FC8"/>
+
+        <LegacyAnimation Name="gHumanWalkingAnim" Offset="0x1291C"/>
+
+        <LegacyAnimation Name="gHumanWalkingEndAnim" Offset="0x12D18"/>
+
+        <LegacyAnimation Name="gHumanWalkingStartAnim" Offset="0x1316C"/>
+    </File>
+</Root>

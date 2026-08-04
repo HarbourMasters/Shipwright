@@ -1,0 +1,38 @@
+<Root>
+    <File Name="object_gt" Segment="6">
+        <!-- Tower Collapse Textures -->
+        <Texture Name="gTowerCollapseCsFlameSmokeTex" OutName="flame_smoke" Format="i8" Width="16" Height="256" Offset="0x9C70"/>
+        <Texture Name="gTowerCollapseCsGrayStoneTex" OutName="gray_stone" Format="i8" Width="32" Height="32" Offset="0xAC70"/>
+        <Texture Name="gTowerCollapseCsExteriorBlackStoneTex" OutName="exterior_black_stone" Format="i4" Width="64" Height="64" Offset="0xB070"/>
+        <Texture Name="gTowerCollapseCsTex_B870" OutName="tex_B870" Format="i4" Width="32" Height="8" Offset="0xB870"/>
+        <Texture Name="gTowerCollapseCsRaftersTex" OutName="rafters" Format="ia8" Width="32" Height="32" Offset="0xB8F0"/>
+        <Texture Name="gTowerCollapseCsBrownPaneledFloor1Tex" OutName="brown_paneled_floor_1" Format="rgba16" Width="32" Height="64" Offset="0xBCF0"/>
+        <Texture Name="gTowerCollapseCsBrownPaneledFloor2Tex" OutName="brown_paneled_floor_2" Format="rgba16" Width="32" Height="64" Offset="0xCCF0"/>
+        <Texture Name="gTowerCollapseCsExteriorPillarStoneTex" OutName="exterior_pillar_stone" Format="i4" Width="64" Height="128" Offset="0xDCF0"/>
+        <Texture Name="gTowerCollapseCsRailingTex" OutName="railing" Format="ia8" Width="32" Height="16" Offset="0xECF0"/>
+        <Texture Name="gTowerCollapseCsTex_EEF0" OutName="tex_EEF0" Format="i4" Width="32" Height="64" Offset="0xEEF0"/>
+        <Texture Name="gTowerCollapseCsTex_F2F0" OutName="tex_F2F0" Format="i8" Width="16" Height="32" Offset="0xF2F0"/>
+        <Texture Name="gTowerCollapseCsGrayFloorTex" OutName="gray_floor" Format="i8" Width="16" Height="32" Offset="0xF4F0"/>
+        <Texture Name="gTowerCollapseCsTex_F6F0" OutName="tex_F6F0" Format="i4" Width="64" Height="64" Offset="0xF6F0"/>
+        <Texture Name="gTowerCollapseCsBoltedSidesTex" OutName="bolted_sides" Format="i8" Width="64" Height="64" Offset="0xFEF0"/>
+        <Texture Name="gTowerCollapseCsSpikeTex" OutName="spike" Format="ia8" Width="16" Height="16" Offset="0x10EF0"/>
+        <Texture Name="gTowerCollapseCsCollapsedCastleEdgeTex" OutName="collapsed_castle_edge" Format="i8" Width="64" Height="64" Offset="0x10FF0"/>
+        <Texture Name="gTowerCollapseCsTex_11FF0" OutName="tex_11FF0" Format="i8" Width="32" Height="32" Offset="0x11FF0"/>
+        <Texture Name="gTowerCollapseCsTex_123F0" OutName="tex_123F0" Format="rgba16" Width="16" Height="16" Offset="0x123F0"/>
+        <Texture Name="gTowerCollapseCsTex_125F0" OutName="tex_125F0" Format="i8" Width="64" Height="64" Offset="0x125F0"/>
+
+        <!-- Tower Collapse DisplayLists -->
+        <DList Name="gTowerCollapseCsExteriorStructureDL" Offset="0x2910"/>
+        <DList Name="gTowerCollapseCsFlameSmokeDL" Offset="0x41A0"/>
+        <DList Name="gTowerCollapseCsCollapsedStructureInnerDL" Offset="0x4F90"/>
+        <DList Name="gTowerCollapseCsCollapsedStructureOuterDL" Offset="0x7630"/>
+        <DList Name="gTowerCollapseCsStandalonePillarDL" Offset="0x9610"/>
+        <DList Name="gTowerCollapseCsWalkwayDL" Offset="0x9970"/>
+        <DList Name="gTowerCollapseCsAlternativeWalkwayDL" Offset="0x9B80"/>
+
+        <!-- Tower Collapse Collision -->
+        <Collision Name="gTowerCollapseCsCollapsedStructureInnerCol" Offset="0x5CB8"/>
+        <Collision Name="gTowerCollapseCsCollapsedStructureOuterCol" Offset="0x91E4"/>
+
+    </File>
+</Root>

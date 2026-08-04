@@ -1,5 +1,6 @@
 #include "Anchor.h"
 #include "soh/Enhancements/nametag.h"
+#include "soh/frame_interpolation.h"
 
 extern "C" {
 #include "macros.h"
@@ -24,14 +25,14 @@ static DamageTable DummyPlayerDamageTable = {
     /* Master sword  */ DMG_ENTRY(2, DUMMY_PLAYER_HIT_RESPONSE_NORMAL),
     /* Giant's Knife */ DMG_ENTRY(4, DUMMY_PLAYER_HIT_RESPONSE_NORMAL),
     /* Fire arrow    */ DMG_ENTRY(2, DUMMY_PLAYER_HIT_RESPONSE_FIRE),
-    /* Ice arrow     */ DMG_ENTRY(4, PLAYER_HIT_RESPONSE_FROZEN),
-    /* Light arrow   */ DMG_ENTRY(2, PLAYER_HIT_RESPONSE_ELECTRIFIED),
+    /* Ice arrow     */ DMG_ENTRY(4, PLAYER_HIT_RESPONSE_ICE_TRAP),
+    /* Light arrow   */ DMG_ENTRY(2, PLAYER_HIT_RESPONSE_ELECTRIC_SHOCK),
     /* Unk arrow 1   */ DMG_ENTRY(2, PLAYER_HIT_RESPONSE_NONE),
     /* Unk arrow 2   */ DMG_ENTRY(2, PLAYER_HIT_RESPONSE_NONE),
     /* Unk arrow 3   */ DMG_ENTRY(2, PLAYER_HIT_RESPONSE_NONE),
     /* Fire magic    */ DMG_ENTRY(0, DUMMY_PLAYER_HIT_RESPONSE_FIRE),
-    /* Ice magic     */ DMG_ENTRY(3, PLAYER_HIT_RESPONSE_FROZEN),
-    /* Light magic   */ DMG_ENTRY(0, PLAYER_HIT_RESPONSE_ELECTRIFIED),
+    /* Ice magic     */ DMG_ENTRY(3, PLAYER_HIT_RESPONSE_ICE_TRAP),
+    /* Light magic   */ DMG_ENTRY(0, PLAYER_HIT_RESPONSE_ELECTRIC_SHOCK),
     /* Shield        */ DMG_ENTRY(0, PLAYER_HIT_RESPONSE_NONE),
     /* Mirror Ray    */ DMG_ENTRY(0, PLAYER_HIT_RESPONSE_NONE),
     /* Kokiri spin   */ DMG_ENTRY(1, DUMMY_PLAYER_HIT_RESPONSE_NORMAL),
@@ -69,10 +70,6 @@ void DummyPlayer_Init(Actor* actor, PlayState* play) {
     Player_UseItem(play, player, ITEM_NONE);
     Player_SetModelGroup(player, Player_ActionToModelGroup(player, player->heldItemAction));
     play->playerInit(player, play, gPlayerSkelHeaders[client.linkAge]);
-
-    // Prevent dummy players from holding a weapon trail effect slot, as they don't use it anyway
-    Effect_Delete(play, player->meleeWeaponEffectIndex);
-    player->meleeWeaponEffectIndex = TOTAL_EFFECT_COUNT;
 
     play->func_11D54(player, play);
     // #endregion
@@ -129,15 +126,13 @@ void DummyPlayer_Update(Actor* actor, PlayState* play) {
     Math_Vec3s_Copy(&player->skelAnime.prevTransl, &client.prevTransl);
     player->currentBoots = client.currentBoots;
     player->currentShield = client.currentShield;
-    player->heldItemId = client.buttonItem0;
     player->currentTunic = client.currentTunic;
     player->stateFlags1 = client.stateFlags1;
     player->stateFlags2 = client.stateFlags2;
     player->itemAction = client.itemAction;
     player->heldItemAction = client.heldItemAction;
     player->invincibilityTimer = client.invincibilityTimer;
-    player->unk_862 =
-        (client.unk_862 > (s16)GID_MAXIMUM) ? (s16)GID_STONE_OF_AGONY : client.unk_862; // prevent OOB, show SoA if OOB
+    player->unk_862 = client.unk_862;
     player->unk_85C = client.unk_85C;
     player->av1.actionVar1 = client.actionVar1;
 
@@ -248,10 +243,4 @@ void DummyPlayer_Draw(Actor* actor, PlayState* play) {
 }
 
 void DummyPlayer_Destroy(Actor* actor, PlayState* play) {
-    // DummyPlayer Actors are initially spawned as ACTOR_PLAYER, but change their
-    // ID shortly afterwards to ACTOR_EN_OE2. This would cause ACTOR_PLAYER's
-    // ActorDB Entry's `numLoaded` to leak, which is mostly harmless but hits debug
-    // asserts. Set the id back to ACTOR_PLAYER so that `numLoaded` will be decremented
-    // correctly.
-    actor->id = ACTOR_PLAYER;
 }

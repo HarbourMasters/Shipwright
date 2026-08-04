@@ -1,0 +1,89 @@
+<Root>
+    
+    <File Name="object_zo" Segment="6">
+        <Skeleton Name="gZoraSkel" Type="Flex" LimbType="Standard" Offset="0xBFA8"/>
+
+        <Limb Name="gZoraPelvisLimb" LimbType="Standard" Offset="0xBE78"/>
+        <DList Name="gZoraPelvisDL" Offset="0x9040"/>
+
+        <!-- Left leg -->
+        <Limb Name="gZoraLeftThighsLimb" LimbType="Standard" Offset="0xBE84"/>
+        <DList Name="gZoraLeftThighsDL" Offset="0xB5F8"/>
+        <Limb Name="gZoraLeftShinLimb" LimbType="Standard" Offset="0xBE90"/>
+        <DList Name="gZoraLeftShinDL" Offset="0xB8D8"/>
+        <Limb Name="gZoraLeftFootLimb" LimbType="Standard" Offset="0xBE9C"/>
+        <DList Name="gZoraLeftFootDL" Offset="0xBBB0"/>
+
+        <!-- Right leg -->
+        <Limb Name="gZoraRightThighsLimb" LimbType="Standard" Offset="0xBEA8"/>
+        <DList Name="gZoraRightThighsDL" Offset="0xAD78"/>
+        <Limb Name="gZoraRightShinLimb" LimbType="Standard" Offset="0xBEB4"/>
+        <DList Name="gZoraRightShinDL" Offset="0xB058"/>
+        <Limb Name="gZoraRightFootLimb" LimbType="Standard" Offset="0xBEC0"/>
+        <DList Name="gZoraRightFootDL" Offset="0xB330"/>
+
+        <Limb Name="gZoraTorsoLimb" LimbType="Standard" Offset="0xBECC"/>
+        <DList Name="gZoraTorsoDL" Offset="0x91E8"/>
+
+        <!-- Left arm -->
+        <Limb Name="gZoraLeftArmLimb" LimbType="Standard" Offset="0xBED8"/>
+        <DList Name="gZoraLeftArmDL" Offset="0xA630"/>
+        <Limb Name="gZoraLeftForearmLimb" LimbType="Standard" Offset="0xBEE4"/>
+        <DList Name="gZoraLeftForearmDL" Offset="0xA890"/>
+        <Limb Name="gZoraLeftHandLimb" LimbType="Standard" Offset="0xBEF0"/>
+        <DList Name="gZoraLeftHandDL" Offset="0xAB70"/>
+
+        <!-- Right arm -->
+        <Limb Name="gZoraRightArmLimb" LimbType="Standard" Offset="0xBEFC"/>
+        <DList Name="gZoraRightArmDL" Offset="0x9EE8"/>
+        <Limb Name="gZoraRightForearmLimb" LimbType="Standard" Offset="0xBF08"/>
+        <DList Name="gZoraRightForearmDL" Offset="0xA148"/>
+        <Limb Name="gZoraRightHandLimb" LimbType="Standard" Offset="0xBF14"/>
+        <DList Name="gZoraRightHandDL" Offset="0xA428"/>
+
+        <!-- Head and head tail -->
+        <Limb Name="gZoraHeadLimb" LimbType="Standard" Offset="0xBF20"/>
+        <DList Name="gZoraHeadDL" Offset="0x9560"/>
+        <Limb Name="gZoraHeadTail1Limb" LimbType="Standard" Offset="0xBF2C"/>
+        <DList Name="gZoraHeadTail1DL" Offset="0x97D8"/>
+        <Limb Name="gZoraHeadTail2Limb" LimbType="Standard" Offset="0xBF38"/>
+        <DList Name="gZoraHeadTail2DL" Offset="0x9978"/>
+        <Limb Name="gZoraHeadTail3Limb" LimbType="Standard" Offset="0xBF44"/>
+        <DList Name="gZoraHeadTail3DL" Offset="0x9B10"/>
+        <Limb Name="gZoraHeadTailFinLimb" LimbType="Standard" Offset="0xBF50"/>
+        <DList Name="gZoraHeadTailFinDL" Offset="0x9CA8"/>
+
+        <Animation Name="gZoraIdleAnim" Offset="0x2FE8"/>
+        <Animation Name="gZoraSurfaceAnim" Offset="0x2F10"/>
+        <Animation Name="gZoraThrowRupeesAnim" Offset="0x219C"/>
+        <Animation Name="gZoraHandsOnHipsTappingFootAnim" Offset="0x598"/>
+        <Animation Name="gZoraOpenArmsAnim" Offset="0xD48"/>
+
+        <!-- Eyes textures -->
+        <Texture Name="gZoraEyeOpenTex" OutName="eye_open" Format="rgba16" Width="32" Height="32" Offset="0x3E40"/>
+        <Texture Name="gZoraEyeHalfTex" OutName="eye_half" Format="rgba16" Width="32" Height="32" Offset="0x4640"/>
+        <Texture Name="gZoraEyeClosedTex" OutName="eye_closed" Format="rgba16" Width="32" Height="32" Offset="0x4E40"/>
+
+        <!-- Other body parts textures -->
+        <Texture Name="gZoraMouthTex" OutName="mouth" Format="rgba16" Width="32" Height="32" Offset="0x5640"/>
+        <Texture Name="gZoraHeadTailTex" OutName="head_tail" Format="ci8" Width="32" Height="64" Offset="0x3600" TlutOffset="0x3000"/>
+        <Texture Name="gZoraHandTex" OutName="hand" Format="ci8" Width="16" Height="16" Offset="0x5E40" TlutOffset="0x3000"/>
+        <Texture Name="gZoraKneeTex" OutName="knee" Format="ci8" Width="8" Height="8" Offset="0x5F40" TlutOffset="0x3000"/>
+        <Texture Name="gZoraHeadTex" OutName="head" Format="ci8" Width="8" Height="8" Offset="0x3E00" TlutOffset="0x3000"/>
+        <Texture Name="gZoraFinTex" OutName="fin" Format="ci8" Width="32" Height="32" Offset="0x3200" TlutOffset="0x3000"/>
+
+        <!-- Palette / Tlut -->
+        <Texture Name="gZoraTLUT" OutName="tlut" Format="rgba16" Width="16" Height="16" Offset="0x3000"/>
+
+        <Texture Name="gZoraBubblesTex" OutName="bubbles" Format="ia8" Width="16" Height="16" Offset="0x21B0"/>
+        <DList Name="gZoraBubblesMaterialDL" Offset="0x22F0"/>
+        <DList Name="gZoraBubblesModelDL" Offset="0x2350"/>
+
+        <Texture Name="gZoraSplashesTex" OutName="splashes" Format="i8" Width="16" Height="16" Offset="0x2370"/>
+        <DList Name="gZoraSplashesMaterialDL" Offset="0x24A0"/>
+        <DList Name="gZoraSplashesModelDL" Offset="0x2510"/>
+
+        <DList Name="gZoraRipplesMaterialDL" Offset="0xBFC0"/>
+        <DList Name="gZoraRipplesModelDL" Offset="0xC028"/>
+    </File>
+</Root>

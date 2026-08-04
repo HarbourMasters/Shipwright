@@ -2,6 +2,7 @@
 #include "soh/resource/type/scenecommand/SetCsCamera.h"
 #include "soh/resource/logging/SceneCommandLoggers.h"
 #include "spdlog/spdlog.h"
+#include <tinyxml2.h>
 
 namespace SOH {
 std::shared_ptr<Ship::IResource> SetCsCameraFactory::ReadResource(std::shared_ptr<Ship::ResourceInitData> initData,

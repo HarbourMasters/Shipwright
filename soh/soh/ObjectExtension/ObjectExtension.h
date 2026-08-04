@@ -2,8 +2,9 @@
 
 #ifdef __cplusplus
 
+#include <libultraship/libultraship.h>
+
 #include <any>
-#include <cassert>
 #include <limits>
 #include <stdint.h>
 #include <unordered_map>

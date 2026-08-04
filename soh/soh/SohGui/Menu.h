@@ -1,10 +1,8 @@
 #ifndef MENU_H
 #define MENU_H
 
-#include <libultraship/libultra.h>
-#include <ship/audio/Audio.h>
-#include <ship/window/gui/GuiWindow.h>
-#include <fast/Fast3dWindow.h>
+#include <libultraship/libultraship.h>
+#include <fast/backends/gfx_rendering_api.h>
 #include "MenuTypes.h"
 
 namespace Ship {
@@ -22,7 +20,6 @@ class Menu : public GuiWindow {
     void Draw() override;
     void InsertSidebarSearch();
     void RemoveSidebarSearch();
-    void UpdateAudioBackendObjects();
     void UpdateWindowBackendObjects();
     bool IsMenuPopped();
     UIWidgets::Colors GetMenuThemeColor();
@@ -42,11 +39,9 @@ class Menu : public GuiWindow {
     ImGuiTextFilter menuSearch;
     uint8_t searchSidebarIndex;
     UIWidgets::Colors defaultThemeIndex;
-    std::shared_ptr<std::vector<int32_t>> availableWindowBackends;
-    std::map<Fast::WindowBackend, const char*> availableWindowBackendsMap;
-    Fast::WindowBackend configWindowBackend;
-    std::shared_ptr<std::vector<Ship::AudioBackend>> availableAudioBackends;
-    std::map<Ship::AudioBackend, const char*> availableAudioBackendsMap;
+    std::shared_ptr<std::vector<Ship::WindowBackend>> availableWindowBackends;
+    std::map<Ship::WindowBackend, const char*> availableWindowBackendsMap;
+    Ship::WindowBackend configWindowBackend;
 
     std::unordered_map<uint32_t, disabledInfo> disabledMap;
     std::vector<disabledInfo> disabledVector;

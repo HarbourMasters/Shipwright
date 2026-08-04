@@ -13,7 +13,7 @@ void func_801109B0(PlayState* play) {
     u8 timerId;
 
     gSaveContext.sunsSongState = SUNSSONG_INACTIVE;
-    gSaveContext.nextHudVisibilityMode = gSaveContext.hudVisibilityMode = 0;
+    gSaveContext.unk_13E8 = gSaveContext.unk_13EA = 0;
 
     View_Init(&interfaceCtx->view, play->state.gfxCtx);
 

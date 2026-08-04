@@ -1,0 +1,10 @@
+<Root>
+    <File Name="object_gi_golonmask" Segment="6">
+        <Texture Name="object_gi_golonmaskTex_000208" OutName="object_gi_golonmaskTex_000208" Format="ci8" Width="8" Height="8" Offset="0x208" TlutOffset="0x0" AddedByScript="true"/>
+        <Texture Name="object_gi_golonmaskTex_000248" OutName="object_gi_golonmaskTex_000248" Format="ci8" Width="16" Height="16" Offset="0x248" TlutOffset="0x0" AddedByScript="true"/>
+        <Texture Name="object_gi_golonmaskTex_000348" OutName="object_gi_golonmaskTex_000348" Format="ci8" Width="32" Height="32" Offset="0x348" TlutOffset="0x0" AddedByScript="true"/>
+        <Texture Name="object_gi_golonmaskTex_000748" OutName="object_gi_golonmaskTex_000748" Format="ci8" Width="64" Height="32" Offset="0x748" TlutOffset="0x0" AddedByScript="true"/>
+        <Texture Name="object_gi_golonmaskTLUT_000000" OutName="object_gi_golonmaskTLUT_000000" Format="rgba16" Width="16" Height="16" Offset="0x0" AddedByScript="true"/>
+        <DList Name="gGiGoronMaskDL" Offset="0x14F8"/>
+    </File>
+</Root>

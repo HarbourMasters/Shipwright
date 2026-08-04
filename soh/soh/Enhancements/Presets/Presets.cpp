@@ -2,46 +2,19 @@
 #include <string>
 #include <fstream>
 #include <ship/config/Config.h>
+#include <libultraship/classes.h>
 #include <nlohmann/json.hpp>
+#include <libultraship/libultraship.h>
 #include <ship/resource/type/Json.h>
 #include "soh/OTRGlobals.h"
-#include "soh/util.h"
 #include "soh/SohGui/MenuTypes.h"
 #include "soh/SohGui/SohMenu.h"
 #include "soh/SohGui/SohGui.hpp"
 #include "soh/Enhancements/randomizer/randomizer_check_tracker.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance_tracker.h"
 #include "soh/Enhancements/randomizer/randomizer_item_tracker.h"
-#include "soh/Enhancements/randomizer/settings.h"
 
 namespace fs = std::filesystem;
-
-/**
- * Replace characters to prevent crashes from invalid paths (e.g, "test :)" creating an NTFS Alternate Data Stream
- * instead of a regular file).
- */
-static std::string SanitizeFilename(const std::string& name) {
-    std::string result;
-    result.reserve(name.size());
-    for (const char c : name) {
-        if (c == '<' || c == '>' || c == ':' || c == '"' || c == '/' || c == '\\' || c == '|' || c == '?' || c == '*' ||
-            c < 32) {
-            result += '_';
-        } else {
-            result += c;
-        }
-    }
-
-    while (!result.empty() && (result.back() == '.' || result.back() == ' ')) {
-        result.pop_back();
-    }
-
-    if (result.empty()) {
-        result = "Unnamed";
-    }
-
-    return result;
-}
 
 namespace SohGui {
 extern std::shared_ptr<SohMenu> mSohMenu;
@@ -99,24 +72,25 @@ static BlockInfo blockInfo[PRESET_SECTION_MAX] = {
 };
 
 std::string FormatPresetPath(std::string name) {
-    return fmt::format("{}/{}.json", presetFolder, SanitizeFilename(name));
+    return fmt::format("{}/{}.json", presetFolder, name);
 }
 
 void applyPreset(std::string presetName, std::vector<PresetSection> includeSections) {
     auto& info = presets[presetName];
     for (int i = PRESET_SECTION_SETTINGS; i < PRESET_SECTION_MAX; i++) {
         if (info.apply[i] && info.presetValues["blocks"].contains(blockInfo[i].names[1])) {
-            if (!includeSections.empty() && !SohUtils::Contains(i, includeSections)) {
+            if (!includeSections.empty() &&
+                std::find(includeSections.begin(), includeSections.end(), i) == includeSections.end()) {
                 continue;
             }
             if (i == PRESET_SECTION_TRACKERS) {
                 ItemTracker_LoadFromPreset(info.presetValues["blocks"][blockInfo[i].names[1]]["windows"]);
                 if (info.presetValues["blocks"][blockInfo[i].names[1]]["windows"].contains("Check Tracker")) {
-                    CheckTracker::LoadFromPreset(
+                    CheckTracker::CheckTracker_LoadFromPreset(
                         info.presetValues["blocks"][blockInfo[i].names[1]]["windows"]["Check Tracker"]);
                 }
                 if (info.presetValues["blocks"][blockInfo[i].names[1]]["windows"].contains("Entrance Tracker")) {
-                    EntranceTracker::LoadFromPreset(
+                    EntranceTracker_LoadFromPreset(
                         info.presetValues["blocks"][blockInfo[i].names[1]]["windows"]["Entrance Tracker"]);
                 }
             }
@@ -133,7 +107,7 @@ void applyPreset(std::string presetName, std::vector<PresetSection> includeSecti
                 } else {
                     auto block = item.value();
                     if (sectionStrategy == "merge") {
-                        auto currentJson = Ship::Context::GetRawInstance()->GetConfig()->GetNestedJson();
+                        auto currentJson = Ship::Context::GetInstance()->GetConfig()->GetNestedJson();
                         if (currentJson.contains("CVars") && currentJson["CVars"].contains(item.key())) {
                             block = currentJson["CVars"][item.key()];
                             // Recursively merge the two json objects
@@ -141,15 +115,13 @@ void applyPreset(std::string presetName, std::vector<PresetSection> includeSecti
                         }
                     }
 
-                    Ship::Context::GetRawInstance()->GetConfig()->SetBlock(fmt::format("{}.{}", "CVars", item.key()),
-                                                                           block);
-                    Ship::Context::GetRawInstance()->GetConsoleVariables()->Load();
+                    Ship::Context::GetInstance()->GetConfig()->SetBlock(fmt::format("{}.{}", "CVars", item.key()),
+                                                                        block);
+                    Ship::Context::GetInstance()->GetConsoleVariables()->Load();
                 }
             }
             if (i == PRESET_SECTION_RANDOMIZER) {
                 Rando::Settings::GetInstance()->UpdateAllOptions();
-                SohGui::UpdateMenuTricks();
-                SohGui::UpdateMenuLocations();
             }
         }
     }
@@ -185,7 +157,7 @@ void DrawPresetSelector(std::vector<PresetSection> includeSections, std::string 
             if (ImGui::Selectable(iter->c_str(), *iter == currentIndex)) {
                 CVarSetString(selectorCvar.c_str(), iter->c_str());
                 currentIndex = *iter;
-                Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
             }
         }
 
@@ -243,19 +215,16 @@ void LoadPresets() {
     }
     if (fs::exists(presetFolder)) {
         for (auto const& preset : fs::directory_iterator(presetFolder)) {
-            try {
-                std::ifstream ifs(preset.path());
-                if (auto json = nlohmann::json::parse(ifs); !json.contains("presetName")) {
-                    spdlog::error(fmt::format("Attempted to load file {} as a preset, but was not a preset file.",
-                                              preset.path().filename().string()));
-                } else {
-                    ParsePreset(json, preset.path().filename().stem().string());
-                }
+            std::ifstream ifs(preset.path());
 
-                ifs.close();
-            } catch (const std::exception& e) {
-                spdlog::error("Failed to load preset {}: {}", preset.path().filename().string(), e.what());
+            auto json = nlohmann::json::parse(ifs);
+            if (!json.contains("presetName")) {
+                spdlog::error(fmt::format("Attempted to load file {} as a preset, but was not a preset file.",
+                                          preset.path().filename().string()));
+            } else {
+                ParsePreset(json, preset.path().filename().stem().string());
             }
+            ifs.close();
         }
     }
     auto initData = std::make_shared<Ship::ResourceInitData>();
@@ -263,12 +232,12 @@ void LoadPresets() {
     initData->Type = static_cast<uint32_t>(Ship::ResourceType::Json);
     initData->ResourceVersion = 0;
     std::string folder = "presets/*";
-    auto builtIns = Ship::Context::GetRawInstance()->GetResourceManager()->GetArchiveManager()->ListFiles(folder);
+    auto builtIns = Ship::Context::GetInstance()->GetResourceManager()->GetArchiveManager()->ListFiles(folder);
     size_t start = std::string(folder).size() - 1;
     for (size_t i = 0; i < builtIns->size(); i++) {
         std::string filePath = builtIns->at(i);
         auto json = std::static_pointer_cast<Ship::Json>(
-            Ship::Context::GetRawInstance()->GetResourceManager()->LoadResource(filePath, true, initData));
+            Ship::Context::GetInstance()->GetResourceManager()->LoadResource(filePath, true, initData));
 
         std::string fileName = filePath.substr(start, filePath.size() - start - 5); // 5 for length of ".json"
         ParsePreset(json->Data, fileName);
@@ -281,16 +250,8 @@ void SavePreset(std::string& presetName) {
     }
     presets[presetName].presetValues["presetName"] = presetName;
     presets[presetName].presetValues["fileType"] = FILE_TYPE_PRESET;
-
-    std::string safeFilename = SanitizeFilename(presetName);
     std::ofstream file(
-        fmt::format("{}/{}.json", Ship::Context::GetRawInstance()->LocateFileAcrossAppDirs("presets"), safeFilename));
-
-    if (!file.is_open()) {
-        spdlog::error("Failed to save preset '{}': Could not create file", presetName);
-        return;
-    }
-
+        fmt::format("{}/{}.json", Ship::Context::GetInstance()->LocateFileAcrossAppDirs("presets"), presetName));
     file << presets[presetName].presetValues.dump(4);
     file.close();
     LoadPresets();
@@ -330,7 +291,7 @@ void DrawNewPresetPopup() {
                         .Padding({ 6.0f, 6.0f })
                         .Color(THEME_COLOR))) {
         presets[newPresetName] = {};
-        auto config = Ship::Context::GetRawInstance()->GetConfig()->GetNestedJson();
+        auto config = Ship::Context::GetInstance()->GetConfig()->GetNestedJson();
         for (int i = PRESET_SECTION_SETTINGS; i < PRESET_SECTION_MAX; i++) {
             if (saveSection[i]) {
                 for (size_t j = 0; j < blockInfo[i].sections.size(); j++) {
@@ -496,7 +457,7 @@ void RegisterPresetsWidgets() {
     SohGui::mSohMenu->AddWidget(path, "PresetsWidget", WIDGET_CUSTOM)
         .CustomFunction(PresetsCustomWidget)
         .HideInSearch(true);
-    presetFolder = Ship::Context::GetRawInstance()->GetPathRelativeToAppDirectory("presets");
+    presetFolder = Ship::Context::GetInstance()->GetPathRelativeToAppDirectory("presets");
     std::fill_n(saveSection, PRESET_SECTION_MAX, true);
     LoadPresets();
 }

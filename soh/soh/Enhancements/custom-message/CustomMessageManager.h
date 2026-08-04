@@ -1,6 +1,6 @@
 #pragma once
 #include <unordered_map>
-#include <stdint.h>
+#include <cstdint>
 #include <exception>
 #include <vector>
 #include <string>
@@ -8,7 +8,7 @@
 #include "../../../include/z64item.h"
 #include "../../../include/z64.h"
 #include "../../../include/message_data_textbox_types.h"
-#include "text.h"
+#include "../randomizer/3drando/text.hpp"
 
 #undef MESSAGE_END
 
@@ -62,7 +62,6 @@ class CustomMessage {
     static std::string WAIT_FOR_INPUT();
     static std::string PLAYER_NAME();
     static std::string TWO_WAY_CHOICE();
-    static std::string THREE_WAY_CHOICE();
 
     const std::string GetEnglish(MessageFormat format = MF_FORMATTED) const;
     const std::string GetFrench(MessageFormat format = MF_FORMATTED) const;
@@ -248,7 +247,7 @@ class CustomMessageManager {
   private:
     std::unordered_map<std::string, CustomMessageTable> messageTables;
 
-    bool InsertCustomMessage(const std::string& tableID, uint16_t textID, CustomMessage message);
+    bool InsertCustomMessage(std::string tableID, uint16_t textID, CustomMessage message);
 
   public:
     static CustomMessageManager* Instance;
@@ -267,7 +266,7 @@ class CustomMessageManager {
      * @return true if adding the custom message succeeds, or
      * @return false if it does not.
      */
-    bool CreateGetItemMessage(const std::string& tableID, uint16_t giid, ItemID iid, CustomMessage message);
+    bool CreateGetItemMessage(std::string tableID, uint16_t giid, ItemID iid, CustomMessage message);
 
     /**
      * @brief Formats the provided Custom Message Entry and inserts it into the table with the provided tableID,
@@ -279,7 +278,7 @@ class CustomMessageManager {
      * @return true if adding the custom message succeeds, or
      * @return false if it does not.
      */
-    bool CreateMessage(const std::string& tableID, uint16_t textID, CustomMessage message);
+    bool CreateMessage(std::string tableID, uint16_t textID, CustomMessage message);
 
     /**
      * @brief Retrieves a message from the table with id tableID with the provided textID.
@@ -293,7 +292,7 @@ class CustomMessageManager {
      * @param format the type of formatting to apply to the retrieved message
      * @return CustomMessage
      */
-    CustomMessage RetrieveMessage(const std::string& tableID, uint16_t textID, MessageFormat format = MF_RAW);
+    CustomMessage RetrieveMessage(std::string tableID, uint16_t textID, MessageFormat format = MF_RAW);
 
     /**
      * @brief Empties out the message table identified by tableID.
@@ -302,7 +301,7 @@ class CustomMessageManager {
      * @return true if it was cleared successfully, or
      * @return false if the table did not exist
      */
-    bool ClearMessageTable(const std::string& tableID);
+    bool ClearMessageTable(std::string tableID);
 
     /**
      * @brief Creates an empty CustomMessageTable accessible at the provided tableID
@@ -312,7 +311,7 @@ class CustomMessageManager {
      * @return false if not (i.e. because a table with that ID
      * already exists.)
      */
-    bool AddCustomMessageTable(const std::string& tableID);
+    bool AddCustomMessageTable(std::string tableID);
 };
 
 class MessageNotFoundException : public std::exception {

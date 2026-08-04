@@ -5,9 +5,7 @@
 #pragma comment(lib, "Shlwapi.lib")
 #endif
 #include "Extract.h"
-#include "TorchExtract.h"
 #include "portable-file-dialogs.h"
-#include "spdlog/spdlog.h"
 #include <ship/utils/binarytools/BitConverter.h>
 #include "soh/ShipUtils.h"
 #include "variables.h"
@@ -75,7 +73,7 @@ static const std::unordered_map<uint32_t, const char*> verMap = {
     { OOT_PAL_GC_MQ_DBG, "PAL MQ Debug" },  { OOT_PAL_10, "PAL N64 1.0" },
     { OOT_PAL_11, "PAL N64 1.1" },          { OOT_NTSC_US_GC, "NTSC Gamecube US" },
     { OOT_NTSC_JP_GC, "NTSC Gamecube JP" }, { OOT_NTSC_JP_GC_CE, "NTSC Gamecube JP (Collector's Edition)" },
-    { OOT_NTSC_US_MQ, "NTSC MQ US" },       { OOT_NTSC_JP_MQ, "NTSC MQ JP" },
+    { OOT_NTSC_US_GC, "NTSC MQ US" },       { OOT_NTSC_JP_GC, "NTSC MQ JP" },
     { OOT_NTSC_10, "NTSC N64 1.0" },        { OOT_NTSC_11, "NTSC N64 1.1" },
     { OOT_NTSC_12, "NTSC N64 1.2" },
 };
@@ -231,8 +229,7 @@ void Extractor::FilterRoms(std::vector<std::string>& roms, RomSearchMode searchM
 void Extractor::GetRoms(std::vector<std::string>& roms) {
 #ifdef _WIN32
     WIN32_FIND_DATAA ffd;
-    std::string search = std::string(mSearchPath + "\\*");
-    HANDLE h = FindFirstFileA(search.c_str(), &ffd);
+    HANDLE h = FindFirstFileA(".\\*", &ffd);
 
     do {
         if (!(ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)) {
@@ -240,7 +237,7 @@ void Extractor::GetRoms(std::vector<std::string>& roms) {
 
             // Check for any standard N64 rom file extensions.
             if ((strcmp(ext, ".z64") == 0) || (strcmp(ext, ".n64") == 0) || (strcmp(ext, ".v64") == 0))
-                roms.push_back(mSearchPath + "\\" + ffd.cFileName);
+                roms.push_back(ffd.cFileName);
         }
     } while (FindNextFileA(h, &ffd) != 0);
     // if (h != nullptr) {
@@ -583,38 +580,36 @@ bool Extractor::IsMasterQuest() const {
     }
 }
 
-// Version directories in the asset yml tree, matching the `path` torch resolves each ROM
-// hash to in config.yml.
-const char* Extractor::GetTorchVersionDir() const {
+const char* Extractor::GetZapdVerStr() const {
     switch (GetRomVerCrc()) {
         case OOT_PAL_GC:
-            return "pal_gc";
+            return "GC_NMQ_PAL_F";
         case OOT_PAL_MQ:
-            return "pal_mq";
+            return "GC_MQ_PAL_F";
         case OOT_PAL_GC_DBG1:
-            return "pal_gc_dbg";
+            return "GC_NMQ_D";
         case OOT_PAL_GC_MQ_DBG:
-            return "pal_mq_dbg";
+            return "GC_MQ_D";
         case OOT_PAL_10:
-            return "pal_1-0";
+            return "N64_PAL_10";
         case OOT_PAL_11:
-            return "pal_1-1";
+            return "N64_PAL_11";
         case OOT_NTSC_US_GC:
-            return "ntsc_u_gc";
+            return "GC_NMQ_NTSC_U";
         case OOT_NTSC_JP_GC:
-            return "ntsc_j_gc";
+            return "GC_NMQ_NTSC_J";
         case OOT_NTSC_JP_GC_CE:
-            return "ntsc_j_gc_collection";
+            return "GC_NMQ_NTSC_J_CE";
         case OOT_NTSC_US_MQ:
-            return "ntsc_u_mq";
+            return "GC_MQ_NTSC_U";
         case OOT_NTSC_JP_MQ:
-            return "ntsc_j_mq";
+            return "GC_MQ_NTSC_J";
         case OOT_NTSC_10:
-            return "ntsc_1-0";
+            return "N64_NTSC_10";
         case OOT_NTSC_11:
-            return "ntsc_1-1";
+            return "N64_NTSC_11";
         case OOT_NTSC_12:
-            return "ntsc_1-2";
+            return "N64_NTSC_12";
         default:
             // We should never be in a state where this path happens.
             UNREACHABLE;
@@ -639,39 +634,70 @@ std::string Extractor::Mkdtemp() {
     return tmppath;
 }
 
+extern "C" int zapd_report(int argc, char** argv, std::atomic<size_t>* extractCount, std::atomic<size_t>* totalExtract);
 static void MessageboxWorker();
 
-bool Extractor::CallTorch(std::string installPath, std::string exportdir, std::atomic<size_t>* extractCount,
-                          std::atomic<size_t>* totalExtract) {
+bool Extractor::CallZapd(std::string installPath, std::string exportdir, std::atomic<size_t>* extractCount,
+                         std::atomic<size_t>* totalExtract) {
+    constexpr int argc = 22;
+    char xmlPath[1024];
+    char confPath[1024];
     char portVersion[18]; // 5 digits for int16_max (x3) + separators + terminator
-    snprintf(portVersion, 18, "%d.%d.%d", gBuildVersionMajor, gBuildVersionMinor, gBuildVersionPatch);
+    std::array<const char*, argc> argv;
+    const char* version = GetZapdVerStr();
+    const char* otrFile = IsMasterQuest() ? "oot-mq.o2r" : "oot.o2r";
 
     std::string romPath = std::filesystem::absolute(mCurrentRomPath).string();
-    std::string srcDir = std::filesystem::absolute(installPath).string() + "/assets";
+    installPath = std::filesystem::absolute(installPath).string();
     exportdir = std::filesystem::absolute(exportdir).string();
     // Work this out in the temporary folder
     std::string tempdir = Mkdtemp();
+    std::string curdir = std::filesystem::current_path().string();
+#ifdef _WIN32
+    std::filesystem::copy(installPath + "/assets", tempdir + "/assets",
+                          std::filesystem::copy_options::recursive | std::filesystem::copy_options::update_existing);
+#else
+    std::filesystem::create_symlink(installPath + "/assets", tempdir + "/assets");
+#endif
 
-    *totalExtract = SohTorch::CountAssetFiles(srcDir + "/" + GetTorchVersionDir());
-    *extractCount = 0;
+    std::filesystem::current_path(tempdir);
 
-    // config.yml decides whether this is oot.o2r or oot-mq.o2r.
-    std::string archiveName = SohTorch::Extract(romPath, srcDir, tempdir, portVersion, extractCount);
-    bool success = !archiveName.empty();
+    snprintf(xmlPath, 1024, "assets/xml/%s", version);
+    snprintf(confPath, 1024, "assets/Config_%s.xml", version);
+    snprintf(portVersion, 18, "%d.%d.%d", gBuildVersionMajor, gBuildVersionMinor, gBuildVersionPatch);
 
-    std::error_code ec;
-    if (success) {
-        std::filesystem::copy(tempdir + "/" + archiveName, exportdir + "/" + archiveName,
-                              std::filesystem::copy_options::overwrite_existing, ec);
-        if (ec) {
-            SPDLOG_ERROR("Failed to copy {} to {}: {}", archiveName, exportdir, ec.message());
-            success = false;
-        }
-    }
+    argv[0] = "ZAPD";
+    argv[1] = "ed";
+    argv[2] = "-i";
+    argv[3] = xmlPath;
+    argv[4] = "-b";
+    argv[5] = romPath.c_str();
+    argv[6] = "-fl";
+    argv[7] = "assets/filelists";
+    argv[8] = "-gsf";
+    argv[9] = "0";
+    argv[10] = "-rconf";
+    argv[11] = confPath;
+    argv[12] = "-se";
+    argv[13] = "OTR";
+    argv[14] = "--otrfile";
+    argv[15] = otrFile;
+    argv[16] = "--portVer";
+    argv[17] = portVersion;
+    argv[18] = "-o";
+    argv[19] = "placeholder";
+    argv[20] = "-osf";
+    argv[21] = "placeholder";
 
-    std::filesystem::remove_all(tempdir, ec);
+    zapd_report(argc, (char**)argv.data(), extractCount, totalExtract);
 
-    return success;
+    std::filesystem::copy(otrFile, exportdir + "/" + otrFile, std::filesystem::copy_options::overwrite_existing);
+
+    // Go back to where this game was executed from
+    std::filesystem::current_path(curdir);
+    std::filesystem::remove_all(tempdir);
+
+    return false;
 }
 
 static void MessageboxWorker() {

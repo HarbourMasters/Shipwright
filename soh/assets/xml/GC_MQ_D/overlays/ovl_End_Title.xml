@@ -1,0 +1,17 @@
+<Root>
+    <File Name="ovl_End_Title" BaseAddress="0x80B65720" RangeStart="0x780" RangeEnd="0x4128">
+        <Texture Name="sTheLegendOfZeldaTex" OutName="the_legend_of_zelda" Format="ia8" Width="120" Height="24" Offset="0x780"/>
+        <Texture Name="sOcarinaOfTimeTex" OutName="ocarina_of_time" Format="ia8" Width="112" Height="16" Offset="0x12C0"/>
+        <Texture Name="sTheEndTex" OutName="the_end" Format="ia8" Width="80" Height="24" Offset="0x19C0"/>
+        <Texture Name="sNintendoLeftTex" OutName="nintendo_left" Format="ia8" Width="64" Height="48" Offset="0x2140"/>
+        <Texture Name="sNintendoRightTex" OutName="nintendo_right" Format="ia8" Width="64" Height="48" Offset="0x2D40"/>
+        <Texture Name="sPresentedByTex" OutName="presented_by" Format="ia8" Width="96" Height="16" Offset="0x3940"/>
+
+        <Array Name="sTriforceVtx" Count="6" Offset="0x3F40">
+            <Vtx/>
+        </Array>
+        <DList Name="sTriforceDL" Offset="0x3FA0"/>
+
+        <DList Name="sPresentedByNintendoDL" Offset="0x4000"/>
+    </File>
+</Root>

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "randomizerTypes.h"
-#include "soh/Enhancements/custom-message/text.h"
+#include "3drando/text.hpp"
 
 namespace Rando {
 /// @brief Class representing overrides of individual items. Used for trick names and models for ice traps.

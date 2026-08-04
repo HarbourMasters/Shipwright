@@ -1,6 +1,7 @@
 #pragma once
 
-#include "soh/Enhancements/custom-message/text.h"
+#include "randomizerTypes.h"
+#include "3drando/text.hpp"
 #include "static_data.h"
 #include "option.h"
 
@@ -32,7 +33,6 @@ class ItemLocation {
     void SetPrice(uint16_t price_);
     bool HasCustomPrice() const;
     void SetCustomPrice(uint16_t price_);
-    bool CanBePurchased() const;
     bool HasObtained() const;
     void SetCheckStatus(RandomizerCheckStatus status_);
     RandomizerCheckStatus GetCheckStatus();

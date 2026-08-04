@@ -1,0 +1,11 @@
+<Root>
+    <File Name="object_crow" Segment="6">
+        <Animation Name="gGuayFlyAnim" Offset="0xF0"/>
+
+        <Texture Name="gGuayEyeTex" OutName="eye" Format="rgba16" Width="16" Height="16" Offset="0xC40"/>
+        <Texture Name="gGuayBodyTex" OutName="body" Format="rgba16" Width="16" Height="16" Offset="0xA40"/>
+        <Texture Name="gGuayTailTex" OutName="tail" Format="rgba16" Width="16" Height="16" Offset="0xE40"/>
+
+        <Skeleton Name="gGuaySkel" Type="Flex" LimbType="Standard" Offset="0x10C0"/>
+    </File>
+</Root>

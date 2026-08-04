@@ -2,6 +2,7 @@
 #include "soh/ShipInit.hpp"
 
 extern "C" {
+#include "macros.h"
 #include "src/overlays/actors/ovl_Obj_Switch/z_obj_switch.h"
 }
 

@@ -1,0 +1,32 @@
+<Root>
+    <File Name="object_dekunuts" Segment="6">
+        <!-- Deku Scrub skeleton -->
+        <Skeleton Name="gDekuNutsSkel" Type="Normal" LimbType="Standard" Offset="0x3268"/>
+
+        <!-- Deku Scrub animations -->
+        <Animation Name="gDekuNutsSpitAnim" Offset="0x1C4"/>
+        <Animation Name="gDekuNutsDamageAnim" Offset="0x368"/>
+        <Animation Name="gDekuNutsBurrowAnim" Offset="0x4D8"/>
+        <Animation Name="gDekuNutsDieAnim" Offset="0x6B0"/>
+        <Animation Name="gDekuNutsUnburrowAnim" Offset="0x8C4"/>
+        <Animation Name="gDekuNutsLookAroundAnim" Offset="0xAF0"/>
+        <Animation Name="gDekuNutsUpAnim" Offset="0xD1C"/>
+        <Animation Name="gDekuNutsStandAnim" Offset="0xE6C"/>
+        <Animation Name="gDekuNutsGaspAnim" Offset="0x1024"/>
+        <Animation Name="gDekuNutsRunAnim" Offset="0x3650"/>
+
+        <!-- Deku Scrub textures -->
+        <Texture Name="gDekuNutsLeafTex" OutName="leaf" Format="rgba16" Width="32" Height="32" Offset="0x2368"/>
+        <Texture Name="gDekuNutsBodyTex" OutName="body" Format="rgba16" Width="16" Height="16" Offset="0x2B68"/>
+        <Texture Name="gDekuNutsEyeTex" OutName="eye" Format="rgba16" Width="8" Height="8" Offset="0x2D68"/>
+        <Texture Name="gDekuNutsSnoutTex" OutName="snout" Format="rgba16" Width="8" Height="8" Offset="0x2DE8"/>
+        <Texture Name="gDekuNutsMouthTex" OutName="mouth" Format="rgba16" Width="8" Height="8" Offset="0x2E68"/>
+
+        <!-- Deku Scrub flower -->
+        <DList Name="gDekuNutsFlowerDL" Offset="0x2298"/>
+
+        <!-- Deku Nut -->
+        <DList Name="gDekuNutsDekuNutDL" Offset="0x2028"/>
+        <Texture Name="gDekuNutsDekuNutTex" OutName="deku_nut" Format="rgba16" Width="16" Height="16" Offset="0x2EE8"/>
+    </File>
+</Root>

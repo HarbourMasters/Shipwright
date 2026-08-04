@@ -10,6 +10,7 @@
 #include "vt.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include <assert.h>
+#include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
@@ -187,7 +188,7 @@ void func_80A3DB04(EnGm* this, PlayState* play) {
         this->actionFunc = func_80A3DBF4;
     } else if ((this->collider.base.ocFlags1 & OC1_HIT) || (SQ(dx) + SQ(dz)) < SQ(100.0f)) {
         this->collider.base.acFlags &= ~AC_HIT;
-        Actor_OfferTalk(&this->actor, play, 415.0f);
+        func_8002F2CC(&this->actor, play, 415.0f);
     }
 }
 
@@ -227,7 +228,7 @@ void func_80A3DC44(EnGm* this, PlayState* play) {
     }
     if ((this->collider.base.ocFlags1 & OC1_HIT) || (SQ(dx) + SQ(dz)) < SQ(100.0f)) {
         this->collider.base.acFlags &= ~AC_HIT;
-        Actor_OfferTalk(&this->actor, play, 415.0f);
+        func_8002F2CC(&this->actor, play, 415.0f);
     }
 }
 

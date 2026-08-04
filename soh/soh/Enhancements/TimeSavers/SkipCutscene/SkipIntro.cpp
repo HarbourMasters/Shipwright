@@ -41,8 +41,6 @@ void RegisterSkipIntro() {
             // Skip the intro cutscene for whatever the spawnEntrance is calculated to be.
             if (gSaveContext.entranceIndex == spawnEntrance) {
                 gSaveContext.cutsceneIndex = 0;
-                if (!IS_RANDO)
-                    gSaveContext.dayTime = 0x8000;
                 *should = false;
             }
         }

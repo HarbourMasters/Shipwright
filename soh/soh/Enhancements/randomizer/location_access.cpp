@@ -6,7 +6,6 @@
 #include "soh/Enhancements/debugger/performanceTimer.h"
 
 #include <fstream>
-#include <libultraship/log/luslog.h>
 #include <soh/OTRGlobals.h>
 
 #include "3drando/shops.hpp"
@@ -469,9 +468,8 @@ bool Region::UpdateEvents() {
     return eventsUpdated;
 }
 
-void Region::AddExit(RandomizerRegion parentKey, RandomizerRegion newExitKey, ConditionFn condition,
-                     std::string conditionStr) {
-    Rando::Entrance newExit = Rando::Entrance(newExitKey, condition, conditionStr);
+void Region::AddExit(RandomizerRegion parentKey, RandomizerRegion newExitKey, ConditionFn condition) {
+    Rando::Entrance newExit = Rando::Entrance(newExitKey, condition);
     newExit.SetParentRegion(parentKey);
     exits.push_front(newExit);
 }
@@ -757,7 +755,7 @@ bool SpiritCertainAccess(RandomizerRegion region) {
         // If we have enough keys that an age cannot be kept out, we have Certain Access
         // otherwise if we have entered in reverse and can reach from the face, we have Certain Access
         return ((knownFrontAccess && curRegionData.adultAccess()) && logic->SmallKeys(SCENE_SPIRIT_TEMPLE, keys)) ||
-               ((logic->Get(LOGIC_REVERSE_SPIRIT_ADULT) && curRegionData.reverseAccess()) &&
+               ((logic->Get(LOGIC_FORWARDS_SPIRIT_ADULT) && curRegionData.reverseAccess()) &&
                 logic->SmallKeys(SCENE_SPIRIT_TEMPLE, revKeys)) ||
                (curRegionData.adultAccess() && curRegionData.reverseAccess() &&
                 logic->SmallKeys(SCENE_SPIRIT_TEMPLE, keys > revKeys ? keys : revKeys));
@@ -768,7 +766,7 @@ bool SpiritCertainAccess(RandomizerRegion region) {
     Spirit Shared can take up to 3 regions, this is because checks can exist in many regions at the same time
     and the logic needs to be able to check the access logic from those regions to check the other universes properly.
 
-    anyAge is equivalent to a self referencing Here, used for events and any check where that is relevant.
+    anyAge is equivalent to a self referencing Here, used for events and any check where that is relevent.
 */
 
 bool SpiritShared(RandomizerRegion region, ConditionFn condition, bool anyAge, RandomizerRegion otherRegion,
@@ -874,7 +872,7 @@ bool BeanPlanted(const RandomizerGet bean) {
     }
 
     // swchFlag found using the Actor Viewer to get the Obj_Bean parameters & 0x3F
-    // not tested with multiple OTRs, but can be automated similarly to GetUsedSmallKeys
+    // not tested with multiple OTRs, but can be automated similarly to GetDungeonSmallKeyDoors
     SceneID sceneID;
     uint8_t swchFlag;
     switch (bean) {
@@ -962,9 +960,9 @@ void RegionTable_Init() {
     ctx = Context::GetInstance().get();
     logic = ctx->GetLogic(); // RANDOTODO do not hardcode, instead allow accepting a Logic class somehow
     grottoEvents = {
-        EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->CallGossipFairy() || logic->CanUse(RG_STICKS)),
-        EVENT_ACCESS(LOGIC_BUG_ACCESS, logic->CanCutShrubs()),
-        EVENT_ACCESS(LOGIC_FISH_ACCESS, true),
+        EventAccess(LOGIC_FAIRY_ACCESS, [] { return logic->CallGossipFairy() || logic->CanUse(RG_STICKS); }),
+        EventAccess(LOGIC_BUG_ACCESS, [] { return logic->CanCutShrubs(); }),
+        EventAccess(LOGIC_FISH_ACCESS, [] { return true; }),
     };
     // Clear the array from any previous playthrough attempts. This is important so that
     // locations which appear in both MQ and Vanilla dungeons don't get set in both areas.
@@ -1053,7 +1051,7 @@ void ReplaceAllInString(std::string& s, std::string const& toReplace, std::strin
     s.swap(buf);
 }
 
-std::string CleanConditionString(std::string condition) {
+std::string CleanCheckConditionString(std::string condition) {
     ReplaceAllInString(condition, "logic->", "");
     ReplaceAllInString(condition, "ctx->", "");
     ReplaceAllInString(condition, ".Get()", "");
@@ -1189,8 +1187,10 @@ void DumpWorldGraph(std::string str) {
 } // namespace Regions
 
 Region* RegionTable(const RandomizerRegion regionKey) {
-    assert(regionKey < RR_MAX);
-    return &areaTable[regionKey];
+    if (regionKey > RR_MAX) {
+        printf("\x1b[1;1HERROR: AREAKEY TOO BIG");
+    }
+    return &(areaTable[regionKey]);
 }
 
 // Retrieve all the shuffable entrances of a specific type

@@ -4,7 +4,6 @@
 #include <libultraship/libultra.h>
 #include "global.h"
 #include <overlays/actors/ovl_En_Boom/z_en_boom.h>
-#include <overlays/actors/ovl_Demo_Effect/z_demo_effect.h>
 
 struct EnPartner;
 
@@ -19,7 +18,6 @@ typedef struct EnPartner {
     Vec3s morphTable[15];
 
     ColliderCylinder collider;
-    ColliderCylinder weaponCollider;
 
     Color_RGBAf innerColor;
     Color_RGBAf outerColor;
@@ -45,7 +43,6 @@ typedef struct EnPartner {
 
     EnBoom* boomerangActor;
     Actor* hookshotTarget;
-    DemoEffect* windEffect;
 } EnPartner;
 
 #ifdef __cplusplus

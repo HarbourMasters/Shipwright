@@ -75,7 +75,7 @@ std::shared_ptr<Ship::IResource> SetLightListFactoryXML::ReadResource(std::share
         child = child->NextSiblingElement();
     }
 
-    setLightList->numLights = static_cast<u32>(setLightList->lightList.size());
+    setLightList->numLights = setLightList->lightList.size();
 
     return setLightList;
 }

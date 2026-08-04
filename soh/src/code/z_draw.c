@@ -391,7 +391,7 @@ DrawItemTableEntry sDrawItemTable[] = {
     { GetItem_DrawGenericMusicNote, { gGiSongNoteDL } },  // Song of time
     { GetItem_DrawGenericMusicNote, { gGiSongNoteDL } },  // Song of storms
     { GetItem_DrawTriforcePiece, { gTriforcePiece0DL } }, // Triforce Piece
-    { GetItem_DrawFishingPole, { gGiFishingPoleDL } },    // Fishing Pole
+    { GetItem_DrawFishingPole, { gFishingPoleGiDL } },    // Fishing Pole
 };
 
 /**
@@ -476,10 +476,10 @@ void GetItem_DrawJewel(PlayState* play, s16 drawId) {
     OPEN_DISPS(play->state.gfxCtx);
 
     gSPSegment(POLY_XLU_DISP++, 9,
-               Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 0 % 256, (256 - (0 % 256)) - 1, 64, 64, 1, 0 % 256,
-                                  (256 - (0 % 256)) - 1, 16, 16, 0, 0, 0, 0));
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0 % 256, (256 - (0 % 256)) - 1, 64, 64, 1, 0 % 256,
+                                (256 - (0 % 256)) - 1, 16, 16));
 
-    gSPSegment(POLY_OPA_DISP++, 8, Gfx_TexScrollEx(play->state.gfxCtx, (u8)0, (u8)0, 16, 16, 0, 0));
+    gSPSegment(POLY_OPA_DISP++, 8, Gfx_TexScroll(play->state.gfxCtx, (u8)0, (u8)0, 16, 16));
 
     Matrix_Push();
     Matrix_RotateZYX(0, -0x4000, 0x4000, MTXMODE_APPLY);
@@ -541,9 +541,8 @@ void GetItem_DrawBlueFire(PlayState* play, s16 drawId) {
 
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     gSPSegment(POLY_XLU_DISP++, 0x08,
-               Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 0 * (play->state.frames * 0), 0 * (play->state.frames * 0), 16,
-                                  32, 1, 1 * (play->state.frames * 1), 1 * -(play->state.frames * 8), 16, 32, 0, 0, 1,
-                                  -8));
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0 * (play->state.frames * 0), 0 * (play->state.frames * 0), 16,
+                                32, 1, 1 * (play->state.frames * 1), 1 * -(play->state.frames * 8), 16, 32));
     Matrix_Push();
     Matrix_Translate(-8.0f, -2.0f, 0.0f, MTXMODE_APPLY);
     Matrix_ReplaceRotation(&play->billboardMtxF);
@@ -567,9 +566,8 @@ void GetItem_DrawPoes(PlayState* play, s16 drawId) {
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
     gSPDisplayList(POLY_XLU_DISP++, sDrawItemTable[drawId].dlists[1]);
     gSPSegment(POLY_XLU_DISP++, 0x08,
-               Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 0 * (play->state.frames * 0), 0 * (play->state.frames * 0), 16,
-                                  32, 1, 1 * (play->state.frames * 1), 1 * -(play->state.frames * 6), 16, 32, 0, 0, 1,
-                                  -6));
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0 * (play->state.frames * 0), 0 * (play->state.frames * 0), 16,
+                                32, 1, 1 * (play->state.frames * 1), 1 * -(play->state.frames * 6), 16, 32));
     Matrix_Push();
     Matrix_ReplaceRotation(&play->billboardMtxF);
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
@@ -593,9 +591,8 @@ void GetItem_DrawFairy(PlayState* play, s16 drawId) {
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
     gSPDisplayList(POLY_XLU_DISP++, sDrawItemTable[drawId].dlists[1]);
     gSPSegment(POLY_XLU_DISP++, 0x08,
-               Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 0 * (play->state.frames * 0), 0 * (play->state.frames * 0), 32,
-                                  32, 1, 1 * (play->state.frames * 1), 1 * -(play->state.frames * 6), 32, 32, 0, 0, 1,
-                                  -6));
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0 * (play->state.frames * 0), 0 * (play->state.frames * 0), 32,
+                                32, 1, 1 * (play->state.frames * 1), 1 * -(play->state.frames * 6), 32, 32));
     Matrix_Push();
     Matrix_ReplaceRotation(&play->billboardMtxF);
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
@@ -612,9 +609,9 @@ void GetItem_DrawMirrorShield(PlayState* play, s16 drawId) {
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08,
-               Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 0 * (play->state.frames * 0) % 256,
-                                  1 * (play->state.frames * 2) % 256, 64, 64, 1, 0 * (play->state.frames * 0) % 128,
-                                  1 * (play->state.frames * 1) % 128, 32, 32, 0, 2, 0, 1));
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0 * (play->state.frames * 0) % 256,
+                                1 * (play->state.frames * 2) % 256, 64, 64, 1, 0 * (play->state.frames * 0) % 128,
+                                1 * (play->state.frames * 1) % 128, 32, 32));
     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
     gSPDisplayList(POLY_OPA_DISP++, sDrawItemTable[drawId].dlists[0]);
 
@@ -636,9 +633,8 @@ void GetItem_DrawSkullToken(PlayState* play, s16 drawId) {
 
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     gSPSegment(POLY_XLU_DISP++, 0x08,
-               Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 0 * (play->state.frames * 0), 1 * -(play->state.frames * 5),
-                                  32, 32, 1, 0 * (play->state.frames * 0), 0 * (play->state.frames * 0), 32, 64, 0, -5,
-                                  0, 0));
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0 * (play->state.frames * 0), 1 * -(play->state.frames * 5), 32,
+                                32, 1, 0 * (play->state.frames * 0), 0 * (play->state.frames * 0), 32, 64));
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
     gSPDisplayList(POLY_XLU_DISP++, sDrawItemTable[drawId].dlists[1]);
 
@@ -681,9 +677,8 @@ void GetItem_DrawPotion(PlayState* play, s16 drawId) {
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08,
-               Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, -1 * (play->state.frames * 1), 1 * (play->state.frames * 1),
-                                  32, 32, 1, -1 * (play->state.frames * 1), 1 * (play->state.frames * 1), 32, 32, -1, 1,
-                                  -1, 1));
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, -1 * (play->state.frames * 1), 1 * (play->state.frames * 1), 32,
+                                32, 1, -1 * (play->state.frames * 1), 1 * (play->state.frames * 1), 32, 32));
     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
     gSPDisplayList(POLY_OPA_DISP++, sDrawItemTable[drawId].dlists[1]);
     gSPDisplayList(POLY_OPA_DISP++, sDrawItemTable[drawId].dlists[0]);
@@ -705,9 +700,8 @@ void GetItem_DrawGoronSword(PlayState* play, s16 drawId) {
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08,
-               Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 1 * (play->state.frames * 1), 0 * (play->state.frames * 1), 32,
-                                  32, 1, 0 * (play->state.frames * 1), 0 * (play->state.frames * 1), 32, 32, 1, 0, 0,
-                                  0));
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 1 * (play->state.frames * 1), 0 * (play->state.frames * 1), 32,
+                                32, 1, 0 * (play->state.frames * 1), 0 * (play->state.frames * 1), 32, 32));
     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
     gSPDisplayList(POLY_OPA_DISP++, sDrawItemTable[drawId].dlists[0]);
 
@@ -721,9 +715,8 @@ void GetItem_DrawDekuNuts(PlayState* play, s16 drawId) {
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08,
-               Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 1 * (play->state.frames * 6), 1 * (play->state.frames * 6), 32,
-                                  32, 1, 1 * (play->state.frames * 6), 1 * (play->state.frames * 6), 32, 32, 6, 6, 6,
-                                  6));
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 1 * (play->state.frames * 6), 1 * (play->state.frames * 6), 32,
+                                32, 1, 1 * (play->state.frames * 6), 1 * (play->state.frames * 6), 32, 32));
     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
     gSPDisplayList(POLY_OPA_DISP++, sDrawItemTable[drawId].dlists[0]);
 
@@ -737,9 +730,8 @@ void GetItem_DrawRecoveryHeart(PlayState* play, s16 drawId) {
 
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     gSPSegment(POLY_XLU_DISP++, 0x08,
-               Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 0 * (play->state.frames * 1), 1 * -(play->state.frames * 3),
-                                  32, 32, 1, 0 * (play->state.frames * 1), 1 * -(play->state.frames * 2), 32, 32, 0, -3,
-                                  0, -2));
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0 * (play->state.frames * 1), 1 * -(play->state.frames * 3), 32,
+                                32, 1, 0 * (play->state.frames * 1), 1 * -(play->state.frames * 2), 32, 32));
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
     if (CVarGetInteger(CVAR_COSMETIC("Consumable.Hearts.Changed"), 0)) {
         Color_RGB8 color = CVarGetColor24(CVAR_COSMETIC("Consumable.Hearts.Value"), (Color_RGB8){ 255, 70, 50 });
@@ -760,9 +752,8 @@ void GetItem_DrawFish(PlayState* play, s16 drawId) {
 
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     gSPSegment(POLY_XLU_DISP++, 0x08,
-               Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 0 * (play->state.frames * 0), 1 * (play->state.frames * 1), 32,
-                                  32, 1, 0 * (play->state.frames * 0), 1 * (play->state.frames * 1), 32, 32, 0, 1, 0,
-                                  1));
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0 * (play->state.frames * 0), 1 * (play->state.frames * 1), 32,
+                                32, 1, 0 * (play->state.frames * 0), 1 * (play->state.frames * 1), 32, 32));
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
     gSPDisplayList(POLY_XLU_DISP++, sDrawItemTable[drawId].dlists[0]);
 
@@ -876,9 +867,8 @@ void GetItem_DrawMagicSpell(PlayState* play, s16 drawId) {
 
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     gSPSegment(POLY_XLU_DISP++, 0x08,
-               Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 1 * (play->state.frames * 2), 1 * -(play->state.frames * 6),
-                                  32, 32, 1, 1 * (play->state.frames * 1), -1 * (play->state.frames * 2), 32, 32, 2, -6,
-                                  1, -2));
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 1 * (play->state.frames * 2), 1 * -(play->state.frames * 6), 32,
+                                32, 1, 1 * (play->state.frames * 1), -1 * (play->state.frames * 2), 32, 32));
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
     gSPDisplayList(POLY_XLU_DISP++, sDrawItemTable[drawId].dlists[0]);
     gSPDisplayList(POLY_XLU_DISP++, sDrawItemTable[drawId].dlists[1]);
@@ -947,9 +937,8 @@ void GetItem_DrawScale(PlayState* play, s16 drawId) {
 
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     gSPSegment(POLY_XLU_DISP++, 0x08,
-               Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 1 * (play->state.frames * 2), -1 * (play->state.frames * 2),
-                                  64, 64, 1, 1 * (play->state.frames * 4), 1 * -(play->state.frames * 4), 32, 32, 2, -2,
-                                  4, -4));
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 1 * (play->state.frames * 2), -1 * (play->state.frames * 2), 64,
+                                64, 1, 1 * (play->state.frames * 4), 1 * -(play->state.frames * 4), 32, 32));
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
     gSPDisplayList(POLY_XLU_DISP++, sDrawItemTable[drawId].dlists[2]);
     gSPDisplayList(POLY_XLU_DISP++, sDrawItemTable[drawId].dlists[3]);
@@ -1036,7 +1025,7 @@ void GetItem_DrawFishingPole(PlayState* play, s16 drawId) {
     Matrix_Scale(0.2, 0.2, 0.2, MTXMODE_APPLY);
     gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
               G_MTX_MODELVIEW | G_MTX_LOAD);
-    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiFishingPoleDL);
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gFishingPoleGiDL);
 
     // Draw lure
     Matrix_Push();

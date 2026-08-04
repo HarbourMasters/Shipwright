@@ -1,0 +1,9 @@
+<Root>
+    <File Name="object_gi_m_arrow" Segment="6">
+        <DList Name="gGiMagicArrowDL" Offset="0x0AE0"/>
+        <DList Name="gGiFireArrowColorDL" Offset="0x0CA0"/>
+        <DList Name="gGiIceArrowColorDL" Offset="0x0CC0"/>
+        <DList Name="gGiLightArrowColorDL" Offset="0x0CE0"/>
+        <DList Name="gGiArrowMagicDL" Offset="0x0D00"/>
+    </File>
+</Root>

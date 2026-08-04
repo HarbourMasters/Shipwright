@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <ship/resource/Resource.h>
+#include <ship/resource/ResourceFactory.h>
 #include "soh/resource/type/scenecommand/SceneCommand.h"
 #include <libultraship/bridge/consolevariablebridge.h>
 

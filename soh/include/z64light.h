@@ -4,6 +4,7 @@
 #include <libultraship/libultra.h>
 #include <libultraship/libultra/gbi.h>
 #include "z64math.h"
+#include <libultraship/color.h>
 
 typedef struct {
     /* 0x0 */ s16 x;

@@ -21,15 +21,10 @@ extern std::shared_ptr<Rando::Logic> logic;
 
 class Region;
 
-#define EVENT_ACCESS(event, condition) \
-    EventAccess(                       \
-        event, #event, [] { return condition; }, CleanConditionString(#condition))
-
 class EventAccess {
   public:
-    explicit EventAccess(LogicVal event_, std::string event_str_, ConditionFn condition_function_,
-                         std::string condition_str_)
-        : event(event_), event_str(event_str_), condition_function(condition_function_), condition_str(condition_str_) {
+    explicit EventAccess(LogicVal event_, ConditionFn condition_function_)
+        : event(event_), condition_function(condition_function_) {
     }
 
     bool ConditionsMet() const {
@@ -50,26 +45,16 @@ class EventAccess {
         return logic->Get(event);
     }
 
-    const std::string& GetEventStr() const {
-        return event_str;
-    }
-
-    const std::string& GetConditionStr() const {
-        return condition_str;
-    }
-
   private:
     LogicVal event;
-    std::string event_str;
     ConditionFn condition_function;
-    std::string condition_str;
 };
 
-std::string CleanConditionString(std::string condition);
+std::string CleanCheckConditionString(std::string condition);
 
 #define LOCATION(check, condition) \
     LocationAccess(                \
-        check, [] { return condition; }, CleanConditionString(#condition))
+        check, [] { return condition; }, CleanCheckConditionString(#condition))
 
 // this class is meant to hold an item location with a boolean function to determine its accessibility from a specific
 // area
@@ -175,8 +160,7 @@ class Region {
 
     bool UpdateEvents();
 
-    void AddExit(RandomizerRegion parentKey, RandomizerRegion newExitKey, ConditionFn condition,
-                 std::string conditionStr);
+    void AddExit(RandomizerRegion parentKey, RandomizerRegion newExitKey, ConditionFn condition);
 
     void RemoveExit(Rando::Entrance* exitToRemove);
 
@@ -265,7 +249,6 @@ bool SpiritShared(
     ConditionFn otherCondition = [] { return false; }, RandomizerRegion thirdRegion = RR_NONE,
     ConditionFn thirdCondition = [] { return false; });
 bool SpiritCertainAccess(RandomizerRegion region);
-bool DMCPadToPots();
 bool CanPlantBean(const RandomizerRegion region, RandomizerGet bean);
 bool BothAges(const RandomizerRegion region);
 bool ChildCanAccess(const RandomizerRegion region);

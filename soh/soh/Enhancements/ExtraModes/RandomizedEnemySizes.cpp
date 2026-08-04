@@ -1,7 +1,6 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ObjectExtension/ActorMaximumHealth.h"
 #include "soh/ShipInit.hpp"
-#include "soh/ShipUtils.h"
 
 extern "C" {
 #include "functions.h"
@@ -31,17 +30,25 @@ static void RandomizedEnemySizes(void* refActor) {
         return;
     }
 
+    float randomNumber;
+    float randomScale;
+
     // Dodongo, Volvagia and Dead Hand are always smaller because they're impossible when bigger.
     bool smallOnlyEnemy = actor->id == ACTOR_BOSS_DODONGO || actor->id == ACTOR_BOSS_FD ||
                           actor->id == ACTOR_BOSS_FD2 || actor->id == ACTOR_EN_DH;
 
-    bool bigActor = !smallOnlyEnemy && ShipUtils::Random(0, 2) == 0;
+    bool bigActor = !smallOnlyEnemy && (rand() % 2);
 
-    float randomScale;
+    // Big actor
     if (bigActor) {
-        randomScale = static_cast<float>(1.0f + ShipUtils::RandomDouble() * 2.0f);
+        randomNumber = rand() % 200;
+        // Between 100% and 300% size.
+        randomScale = 1.0f + (randomNumber / 100);
     } else {
-        randomScale = static_cast<float>(0.1f + ShipUtils::RandomDouble() * 0.9f);
+        // Small actor
+        randomNumber = rand() % 90;
+        // Between 10% and 100% size.
+        randomScale = 0.1f + (randomNumber / 100);
     }
 
     Actor_SetScale(actor, actor->scale.z * randomScale);
@@ -52,7 +59,7 @@ static void RandomizedEnemySizes(void* refActor) {
         float scaledHealth = actor->colChkInfo.health * (randomScale * healthScalingFactor);
 
         // Ensure the scaled health doesn't go below zero
-        actor->colChkInfo.health = static_cast<u8>(fmax(scaledHealth, 1.0f));
+        actor->colChkInfo.health = fmax(scaledHealth, 1.0f);
 
         // Ensure maximum health gets set
         SetActorMaximumHealth(actor, actor->colChkInfo.health);

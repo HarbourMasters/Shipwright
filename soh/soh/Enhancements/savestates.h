@@ -1,7 +1,7 @@
 #ifndef SAVE_STATES_H
 #define SAVE_STATES_H
 
-#include <stdint.h>
+#include <cstdint>
 #include <queue>
 #include <unordered_map>
 #include <memory>

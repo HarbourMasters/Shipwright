@@ -1,5 +1,6 @@
 #include "global.h"
 #include "soh/ResourceManagerHelpers.h"
+#include <libultraship/bridge.h>
 
 extern bool gUseLegacySD;
 
@@ -121,11 +122,7 @@ void Audio_NoteSetResamplingRate(NoteSubEu* noteSubEu, f32 resamplingRateInput) 
         noteSubEu->bitField1.hasTwoParts = true;
         if (3.99996f < resamplingRateInput) {
             if (CVarGetInteger(CVAR_AUDIO("ExperimentalOctaveDrop"), 0) || noteSubEu->bitField1.isSyntheticWave) {
-                resamplingRate = resamplingRateInput * 0.5f;
-
-                while (resamplingRate > 1.99998f) {
-                    resamplingRate *= 0.5f;
-                }
+                resamplingRate = resamplingRateInput * 0.25;
             } else {
                 resamplingRate = 1.99998f;
             }

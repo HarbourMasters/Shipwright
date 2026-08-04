@@ -1,0 +1,23 @@
+<Root>
+    <File Name="HAKAdan_bs_scene" Segment="2">
+        <Texture Name="HAKAdan_bs_sceneTex_001380" OutName="HAKAdan_bs_sceneTex_001380" Format="i4" Width="32" Height="32" Offset="0x1380" AddedByScript="true"/>
+        <Texture Name="HAKAdan_bs_sceneTex_001580" OutName="HAKAdan_bs_sceneTex_001580" Format="rgba16" Width="32" Height="8" Offset="0x1580" AddedByScript="true"/>
+        <Texture Name="HAKAdan_bs_sceneTex_001780" OutName="HAKAdan_bs_sceneTex_001780" Format="rgba16" Width="32" Height="32" Offset="0x1780" AddedByScript="true"/>
+        <Texture Name="HAKAdan_bs_sceneTex_001F80" OutName="HAKAdan_bs_sceneTex_001F80" Format="rgba16" Width="32" Height="32" Offset="0x1F80" AddedByScript="true"/>
+        <Scene Name="HAKAdan_bs_scene" Offset="0x0"/>
+    </File>
+    <File Name="HAKAdan_bs_room_0" Segment="3">
+        <Texture Name="HAKAdan_bs_room_0Tex_0021E0" OutName="HAKAdan_bs_room_0Tex_0021E0" Format="i4" Width="32" Height="32" Offset="0x21E0" AddedByScript="true"/>
+        <Texture Name="HAKAdan_bs_room_0Tex_0023E0" OutName="HAKAdan_bs_room_0Tex_0023E0" Format="rgba16" Width="32" Height="16" Offset="0x23E0" AddedByScript="true"/>
+        <Texture Name="HAKAdan_bs_room_0Tex_0027E0" OutName="HAKAdan_bs_room_0Tex_0027E0" Format="i4" Width="32" Height="32" Offset="0x27E0" AddedByScript="true"/>
+        <Room Name="HAKAdan_bs_room_0" Offset="0x0"/>
+    </File>
+    <File Name="HAKAdan_bs_room_1" Segment="3">
+        <Texture Name="HAKAdan_bs_room_1Tex_002D50" OutName="HAKAdan_bs_room_1Tex_002D50" Format="i4" Width="32" Height="32" Offset="0x2D50" AddedByScript="true"/>
+        <Texture Name="HAKAdan_bs_room_1Tex_002F50" OutName="HAKAdan_bs_room_1Tex_002F50" Format="rgba16" Width="32" Height="32" Offset="0x2F50" AddedByScript="true"/>
+        <Texture Name="HAKAdan_bs_room_1Tex_003750" OutName="HAKAdan_bs_room_1Tex_003750" Format="rgba16" Width="32" Height="32" Offset="0x3750" AddedByScript="true"/>
+        <Texture Name="HAKAdan_bs_room_1Tex_003F50" OutName="HAKAdan_bs_room_1Tex_003F50" Format="rgba16" Width="32" Height="64" Offset="0x3F50" AddedByScript="true"/>
+        <Texture Name="HAKAdan_bs_room_1Tex_004F50" OutName="HAKAdan_bs_room_1Tex_004F50" Format="rgba16" Width="32" Height="64" Offset="0x4F50" AddedByScript="true"/>
+        <Room Name="HAKAdan_bs_room_1" Offset="0x0"/>
+    </File>
+</Root>

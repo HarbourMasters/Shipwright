@@ -1964,11 +1964,11 @@ void StaticData::HintTable_Init_Item() {
                                                  CustomMessage("a gold fragment", /*german*/"ein Goldfragment", /*french*/"un fragment d'or")});
                                                   // /*spanish*/un fragmento dorado
 
-    hintTextTable[RHT_ROCS_FEATHER] = HintText(CustomMessage("Roc's Feather", /*german*/"Greifenfeder", /*french*/"Plume de Roc"),
+    hintTextTable[RHT_ROCS_FEATHER] = HintText(CustomMessage("Roc's Feather", /*german*/"Roc's Feather", /*french*/"Roc's Feather"),
                                                  {}, {
-                                                 CustomMessage("a feather", /*german*/TODO_TRANSLATE, /*french*/"une plume"),
-                                                 CustomMessage("a chicken wing", /*german*/TODO_TRANSLATE, /*french*/"une aile de poulet"),
-                                                 CustomMessage("a blue wing", /*german*/TODO_TRANSLATE, /*french*/"une aile bleue")});
+                                                 CustomMessage("a feather", /*german*/"a feather", /*french*/"a feather"),
+                                                 CustomMessage("a chicken wing", /*german*/"a chicken wing", /*french*/"a chicken wing"),
+                                                 CustomMessage("a blue wing", /*german*/"a blue wing", /*french*/"a blue wing")});
      
     hintTextTable[RHT_BEAN_SOUL] = HintText(CustomMessage("a bean soul", /*german*/"eine bohnenseele", /*french*/"une âme de haricot"));
 
@@ -2117,12 +2117,13 @@ void StaticData::HintTable_Init_Item() {
                                                { CustomMessage("a master unlocker", /*german*/ "ein Meisterentsperrer", /*french*/ "un Kit de Déverrouillage") });
                                                 // /*spanish*/un desbloqueador maestro
 
-    //RANDOTODO if these are ever used for anything other than name, they want abscure and ambiguous hints
+    //RANDOTODO if these are ever used for anything other than name, they want obscure and ambiguous hints
     hintTextTable[RHT_CLIMB] = HintText(CustomMessage("the ability to climb", /*german*/TODO_TRANSLATE, /*french*/"la capacité de grimper"));
     hintTextTable[RHT_CRAWL] = HintText(CustomMessage("the ability to crawl", /*german*/TODO_TRANSLATE, /*french*/"la capacité de ramper"));
     hintTextTable[RHT_OPEN_CHEST] = HintText(CustomMessage("the ability to open chests", /*german*/TODO_TRANSLATE, /*french*/TODO_TRANSLATE));
-    hintTextTable[RHT_SPEAK] = HintText(CustomMessage("the ability to speak",  /*german*/TODO_TRANSLATE, /*french*/"la faculté de parler"));
     hintTextTable[RHT_ROLL] = HintText(CustomMessage("the ability to roll", /*german*/"die Fähigkeit zu rollen", /*french*/"la capacité de faire des roulades"));
+  
+    //RANDOTODO if these are ever used for anything other than name, they want abscure and ambiguous hints
 
     hintTextTable[RHT_QUIVER_INF] = HintText(CustomMessage("an infinite Quiver", /*german*/"der unendliche Köcher", /*french*/"un Carquois Infini"));
 

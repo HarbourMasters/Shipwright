@@ -3,7 +3,6 @@
 #include "overlays/actors/ovl_En_Syateki_Man/z_en_syateki_man.h"
 #include "overlays/actors/ovl_En_Ex_Ruppy/z_en_ex_ruppy.h"
 #include "overlays/actors/ovl_En_G_Switch/z_en_g_switch.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
@@ -111,7 +110,11 @@ void EnSyatekiItm_Idle(EnSyatekiItm* this, PlayState* play) {
         player->actor.world.rot.x = player->actor.shape.rot.x = player->actor.world.rot.z = player->actor.shape.rot.z =
             0;
         s32 ammunition = 15;
-        GameInteractor_Should(VB_SET_SHOOTING_GALLERY_AMMO, true, &ammunition);
+        if (CVarGetInteger(CVAR_ENHANCEMENT("CustomizeShootingGallery"), 0)) {
+            ammunition = CVarGetInteger(LINK_IS_ADULT ? CVAR_ENHANCEMENT("ShootingGalleryAmmoAdult")
+                                                      : CVAR_ENHANCEMENT("ShootingGalleryAmmoChild"),
+                                        15);
+        }
         func_8008EF44(play, ammunition);
         this->roundNum = this->hitCount = 0;
         for (i = 0; i < 6; i++) {
@@ -130,7 +133,8 @@ void EnSyatekiItm_StartRound(EnSyatekiItm* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
     if (this->unkTimer == 0) {
-        if (GameInteractor_Should(VB_SHOOTING_GALLERY_SHUFFLE_ADULT_RUPEES, LINK_IS_ADULT)) {
+        if (LINK_IS_ADULT && !(CVarGetInteger(CVAR_ENHANCEMENT("CustomizeShootingGallery"), 0) &&
+                               CVarGetInteger(CVAR_ENHANCEMENT("ConstantAdultGallery"), 0))) {
             for (i = 0, j = 0; i < SYATEKI_ROUND_MAX; i++) {
                 if (this->roundFlags[i]) {
                     j++;

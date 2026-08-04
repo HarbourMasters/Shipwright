@@ -1,0 +1,10 @@
+<Root>
+    <File Name="object_gi_zoramask" Segment="6">
+        <Texture Name="object_gi_zoramaskTex_000208" OutName="object_gi_zoramaskTex_000208" Format="ci8" Width="8" Height="8" Offset="0x208" TlutOffset="0x0" AddedByScript="true"/>
+        <Texture Name="object_gi_zoramaskTex_000248" OutName="object_gi_zoramaskTex_000248" Format="ci8" Width="32" Height="32" Offset="0x248" TlutOffset="0x0" AddedByScript="true"/>
+        <Texture Name="object_gi_zoramaskTex_000648" OutName="object_gi_zoramaskTex_000648" Format="ci8" Width="32" Height="32" Offset="0x648" TlutOffset="0x0" AddedByScript="true"/>
+        <Texture Name="object_gi_zoramaskTex_000A48" OutName="object_gi_zoramaskTex_000A48" Format="ci8" Width="32" Height="32" Offset="0xA48" TlutOffset="0x0" AddedByScript="true"/>
+        <Texture Name="object_gi_zoramaskTLUT_000000" OutName="object_gi_zoramaskTLUT_000000" Format="rgba16" Width="16" Height="16" Offset="0x0" AddedByScript="true"/>
+        <DList Name="gGiZoraMaskDL" Offset="0x1398"/>
+    </File>
+</Root>

@@ -6,7 +6,6 @@
 
 #include "soh/frame_interpolation.h"
 #include "soh/OTRGlobals.h"
-#include "soh/Enhancements/savestate_serialize.h"
 
 #define LIGHTS_BUFFER_SIZE 32
 //#define LIGHTS_BUFFER_SIZE 1024 // Kill me
@@ -17,10 +16,7 @@ typedef struct {
     /* 0x008 */ LightNode buf[LIGHTS_BUFFER_SIZE];
 } LightsBuffer; // size = 0x188
 
-static LightsBuffer sLightsBuffer;
-
-#define LIGHTS_SHIP_SAVESTATE_FIELDS(F) F(sLightsBuffer)
-SHIP_SAVESTATE_DEFINE(Lights, LIGHTS_SHIP_SAVESTATE_FIELDS)
+LightsBuffer sLightsBuffer;
 
 void Lights_PointSetInfo(LightInfo* info, s16 x, s16 y, s16 z, u8 r, u8 g, u8 b, s16 radius, s32 type) {
     info->type = type;
@@ -349,7 +345,7 @@ void Lights_GlowCheckPrepare(PlayState* play) {
             pos.x = params->x;
             pos.y = params->y;
             pos.z = params->z;
-            Actor_ProjectPos(play, &pos, &multDest, &wDest);
+            func_8002BE04(play, &pos, &multDest, &wDest);
             wX = multDest.x * wDest;
             wY = multDest.y * wDest;
 
@@ -389,7 +385,7 @@ void Lights_GlowCheck(PlayState* play) {
             pos.x = params->x;
             pos.y = params->y;
             pos.z = params->z;
-            Actor_ProjectPos(play, &pos, &multDest, &wDest);
+            func_8002BE04(play, &pos, &multDest, &wDest);
             params->drawGlow = false;
             wX = multDest.x * wDest;
             wY = multDest.y * wDest;

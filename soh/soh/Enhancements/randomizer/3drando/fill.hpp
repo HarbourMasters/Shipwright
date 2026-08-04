@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../randomizerTypes.h"
 #include "../location_access.h"
 #include "../entrance.h"
 
@@ -65,8 +66,7 @@ void ProcessRegion(Region* region, GetAccessibleLocationsStruct& gals, Randomize
 
 std::vector<RandomizerCheck> ReachabilitySearch(const std::vector<RandomizerCheck>& allowedLocations,
                                                 RandomizerGet ignore = RG_NONE, bool calculatingAvailableChecks = false,
-                                                RandomizerRegion startingRegion = RR_ROOT,
-                                                RandoAgeTime startingAgeTime = RAT_NONE);
+                                                RandomizerRegion startingRegion = RR_ROOT);
 
 void GeneratePlaythrough();
 

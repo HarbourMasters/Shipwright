@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <unordered_map>
 #include <set>
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 

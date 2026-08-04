@@ -9,7 +9,6 @@
 #include "objects/object_ts/object_ts.h"
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
-#include "soh/Enhancements/savestate_serialize.h"
 
 #define FLAGS                                                                                  \
     (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED | \
@@ -41,11 +40,7 @@ const ActorInit En_Takara_Man_InitVars = {
     (ActorResetFunc)EnTakaraMan_Reset,
 };
 
-static u8 sTakaraIsInitialized = false;
-
-#define EN_TAKARA_MAN_SHIP_SAVESTATE_FIELDS(F) F(sTakaraIsInitialized)
-
-SHIP_SAVESTATE_DEFINE(EnTakaraMan, EN_TAKARA_MAN_SHIP_SAVESTATE_FIELDS)
+u8 sTakaraIsInitialized = false;
 
 void EnTakaraMan_Reset(Actor* thisx, PlayState* play) {
     sTakaraIsInitialized = false;
@@ -141,7 +136,7 @@ void func_80B1778C(EnTakaraMan* this, PlayState* play) {
                     this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
                     this->unk_218 = 1;
                 }
-                Actor_OfferTalk(&this->actor, play, 100.0f);
+                func_8002F2CC(&this->actor, play, 100.0f);
             }
         }
     }
@@ -206,7 +201,7 @@ void EnTakaraMan_Update(Actor* thisx, PlayState* play) {
     }
 
     Actor_SetFocus(&this->actor, this->height);
-    Actor_TrackPlayer(play, &this->actor, &this->unk_22C, &this->unk_232, this->actor.focus.pos);
+    func_80038290(play, &this->actor, &this->unk_22C, &this->unk_232, this->actor.focus.pos);
     if (this->eyeTimer == 0) {
         this->eyeTextureIdx++;
         if (this->eyeTextureIdx >= 2) {

@@ -67,7 +67,7 @@ SetTransitionActorListFactoryXML::ReadResource(std::shared_ptr<Ship::ResourceIni
         child = child->NextSiblingElement();
     }
 
-    setTransitionActorList->numTransitionActors = static_cast<u32>(setTransitionActorList->transitionActorList.size());
+    setTransitionActorList->numTransitionActors = setTransitionActorList->transitionActorList.size();
 
     return setTransitionActorList;
 }

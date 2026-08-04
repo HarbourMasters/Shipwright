@@ -212,10 +212,8 @@ void EnDoor_Idle(EnDoor* this, PlayState* play) {
             GameInteractor_ExecuteOnDungeonKeyUsedHooks(gSaveContext.mapIndex);
         }
     } else if (!Player_InCsMode(play)) {
-        if (GameInteractor_Should(VB_EN_DOOR_OFFER_OPEN,
-                                  (fabsf(playerPosRelToDoor.y) < 20.0f && fabsf(playerPosRelToDoor.x) < 20.0f &&
-                                   fabsf(playerPosRelToDoor.z) < 50.0f),
-                                  &playerPosRelToDoor)) {
+        if (fabsf(playerPosRelToDoor.y) < 20.0f && fabsf(playerPosRelToDoor.x) < 20.0f &&
+            fabsf(playerPosRelToDoor.z) < 50.0f) {
             phi_v0 = player->actor.shape.rot.y - this->actor.shape.rot.y;
             if (playerPosRelToDoor.z > 0.0f) {
                 phi_v0 = 0x8000 - phi_v0;
@@ -246,7 +244,7 @@ void EnDoor_WaitForCheck(EnDoor* this, PlayState* play) {
     if (Actor_ProcessTalkRequest(&this->actor, play)) {
         this->actionFunc = EnDoor_Check;
     } else {
-        Actor_OfferTalk(&this->actor, play, DOOR_CHECK_RANGE);
+        func_8002F2CC(&this->actor, play, DOOR_CHECK_RANGE);
     }
 }
 

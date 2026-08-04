@@ -2,7 +2,6 @@
 #include "overlays/actors/ovl_En_Horse/z_en_horse.h"
 #include "objects/object_in/object_in.h"
 #include "soh/ResourceManagerHelpers.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
 
@@ -12,7 +11,7 @@ void EnIn_Update(Actor* thisx, PlayState* play);
 void EnIn_Draw(Actor* thisx, PlayState* play);
 void EnIn_Reset(void);
 
-void EnIn_WaitForObject(EnIn* this, PlayState* play);
+void func_80A79FB0(EnIn* this, PlayState* play);
 void func_80A7A304(EnIn* this, PlayState* play);
 void func_80A7A4C8(EnIn* this, PlayState* play);
 void func_80A7A568(EnIn* this, PlayState* play);
@@ -113,7 +112,7 @@ static Gfx* sAdultEraDLs[] = {
     gIngoAdultEraMustacheDL,
 };
 
-u16 EnIn_GetTextIdChild(PlayState* play) {
+u16 func_80A78FB0(PlayState* play) {
     if (Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE)) {
         if (Flags_GetInfTable(INFTABLE_97)) {
             return 0x2046;
@@ -128,7 +127,7 @@ u16 EnIn_GetTextIdChild(PlayState* play) {
     }
 }
 
-u16 EnIn_GetTextIdAdult(PlayState* play) {
+u16 func_80A79010(PlayState* play) {
     Player* player = GET_PLAYER(play);
     u16 temp_v0 = Text_GetFaceReaction(play, 25);
 
@@ -181,20 +180,20 @@ u16 EnIn_GetTextIdAdult(PlayState* play) {
     }
 }
 
-u16 EnIn_GetTextId(PlayState* play, Actor* thisx) {
+u16 func_80A79168(PlayState* play, Actor* thisx) {
     u16 temp_v0 = Text_GetFaceReaction(play, 25);
 
     if (temp_v0 != 0) {
         return temp_v0;
     }
     if (!LINK_IS_ADULT) {
-        return EnIn_GetTextIdChild(play);
+        return func_80A78FB0(play);
     } else {
-        return EnIn_GetTextIdAdult(play);
+        return func_80A79010(play);
     }
 }
 
-s16 EnIn_UpdateTalkStateOnClosing(PlayState* play, Actor* thisx) {
+s16 func_80A791CC(PlayState* play, Actor* thisx) {
     s32 ret = NPC_TALK_STATE_IDLE;
 
     switch (thisx->textId) {
@@ -212,7 +211,7 @@ s16 EnIn_UpdateTalkStateOnClosing(PlayState* play, Actor* thisx) {
     return ret;
 }
 
-s16 EnIn_UpdateTalkStateOnChoice(PlayState* play, Actor* thisx) {
+s16 func_80A7924C(PlayState* play, Actor* thisx) {
     EnIn* this = (EnIn*)thisx;
     s32 sp18 = NPC_TALK_STATE_TALKING;
 
@@ -273,7 +272,7 @@ s16 EnIn_UpdateTalkStateOnChoice(PlayState* play, Actor* thisx) {
     return sp18;
 }
 
-s16 EnIn_UpdateTalkStateOnEvent(PlayState* play, Actor* thisx) {
+s16 func_80A7949C(PlayState* play, Actor* thisx) {
     s32 phi_v1 = NPC_TALK_STATE_TALKING;
 
     if (thisx->textId == 0x2035) {
@@ -286,7 +285,7 @@ s16 EnIn_UpdateTalkStateOnEvent(PlayState* play, Actor* thisx) {
     return phi_v1;
 }
 
-s16 EnIn_UpdateTalkState(PlayState* play, Actor* thisx) {
+s16 func_80A79500(PlayState* play, Actor* thisx) {
     s16 sp1E = NPC_TALK_STATE_TALKING;
 
     osSyncPrintf("message_check->(%d[%x])\n", Message_GetState(&play->msgCtx), thisx->textId);
@@ -295,18 +294,18 @@ s16 EnIn_UpdateTalkState(PlayState* play, Actor* thisx) {
         case TEXT_STATE_DONE_HAS_NEXT:
             break;
         case TEXT_STATE_CLOSING:
-            sp1E = EnIn_UpdateTalkStateOnClosing(play, thisx);
+            sp1E = func_80A791CC(play, thisx);
             break;
         case TEXT_STATE_DONE_FADING:
             break;
         case TEXT_STATE_CHOICE:
             if (Message_ShouldAdvance(play)) {
-                sp1E = EnIn_UpdateTalkStateOnChoice(play, thisx);
+                sp1E = func_80A7924C(play, thisx);
             }
             break;
         case TEXT_STATE_EVENT:
             if (Message_ShouldAdvance(play)) {
-                sp1E = EnIn_UpdateTalkStateOnEvent(play, thisx);
+                sp1E = func_80A7949C(play, thisx);
             }
             break;
         case TEXT_STATE_DONE:
@@ -366,7 +365,7 @@ s32 func_80A7975C(EnIn* this, PlayState* play) {
     return 1;
 }
 
-s32 EnIn_GetStartMode(EnIn* this, PlayState* play) {
+s32 func_80A79830(EnIn* this, PlayState* play) {
     if (play->sceneNum == SCENE_LON_LON_RANCH && LINK_IS_CHILD && IS_DAY && this->actor.shape.rot.z == 1 &&
         !Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE)) {
         return 1;
@@ -437,7 +436,7 @@ void func_80A79BAC(EnIn* this, PlayState* play, s32 index, u32 transitionType) {
     play->transitionType = transitionType;
     play->transitionTrigger = TRANS_TRIGGER_START;
     Player_SetCsActionWithHaltedActors(play, &this->actor, 8);
-    Interface_ChangeHudVisibilityMode(1);
+    Interface_ChangeAlpha(1);
     if (index == 0) {
         AREG(6) = 0;
     }
@@ -451,7 +450,7 @@ void func_80A79C78(EnIn* this, PlayState* play) {
     Vec3s zeroVec = { 0, 0, 0 };
 
     this->camId = Play_CreateSubCamera(play);
-    Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_WAIT);
+    Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
     Play_ChangeCameraStatus(play, this->camId, CAM_STAT_ACTIVE);
     sp48.x = this->actor.world.pos.x;
     sp48.y = this->actor.world.pos.y + 60.0f;
@@ -474,8 +473,8 @@ void func_80A79C78(EnIn* this, PlayState* play) {
     }
     player->actor.freezeTimer = 10;
     this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
-    Letterbox_SetSizeTarget(0x20);
-    Interface_ChangeHudVisibilityMode(HUD_VISIBILITY_NOTHING_ALT);
+    ShrinkWindow_SetVal(0x20);
+    Interface_ChangeAlpha(2);
 }
 
 static s32 D_80A7B998 = 0;
@@ -497,20 +496,20 @@ void EnIn_Init(Actor* thisx, PlayState* play) {
         gSaveContext.eventInf[0] = 0;
         D_80A7B998 = 1;
     }
-    this->actionFunc = EnIn_WaitForObject;
+    this->actionFunc = func_80A79FB0;
 }
 
 void EnIn_Destroy(Actor* thisx, PlayState* play) {
     EnIn* this = (EnIn*)thisx;
 
-    if (this->actionFunc != NULL && this->actionFunc != EnIn_WaitForObject) {
+    if (this->actionFunc != NULL && this->actionFunc != func_80A79FB0) {
         Collider_DestroyCylinder(play, &this->collider);
 
         ResourceMgr_UnregisterSkeleton(&this->skelAnime);
     }
 }
 
-void EnIn_WaitForObject(EnIn* this, PlayState* play) {
+void func_80A79FB0(EnIn* this, PlayState* play) {
     s32 sp3C = 0;
 
     if (Object_IsLoaded(&play->objectCtx, this->ingoObjBankIndex) || this->actor.params <= 0) {
@@ -528,7 +527,7 @@ void EnIn_WaitForObject(EnIn* this, PlayState* play) {
         this->interactInfo.talkState = NPC_TALK_STATE_IDLE;
         this->actionFunc = func_80A7A4BC;
 
-        switch (EnIn_GetStartMode(this, play)) {
+        switch (func_80A79830(this, play)) {
             case 1:
                 EnIn_ChangeAnim(this, ENIN_ANIM_9);
                 this->actionFunc = func_80A7A4BC;
@@ -695,9 +694,7 @@ void func_80A7A568(EnIn* this, PlayState* play) {
             phi_a2 = 0;
             transitionType = TRANS_TYPE_CIRCLE(TCA_NORMAL, TCC_BLACK, TCS_FAST);
         }
-        if (GameInteractor_Should(VB_RACE_INGO, true, phi_a2)) {
-            func_80A79BAC(this, play, phi_a2, transitionType);
-        }
+        func_80A79BAC(this, play, phi_a2, transitionType);
         play->msgCtx.stateTimer = 0;
         gSaveContext.eventInf[0] = (gSaveContext.eventInf[0] & ~0x8000) | 0x8000;
         play->msgCtx.msgMode = MSGMODE_TEXT_CLOSING;
@@ -729,19 +726,15 @@ void func_80A7A848(EnIn* this, PlayState* play) {
             gSaveContext.eventInf[0] &= ~0xF;
             this->actionFunc = func_80A7A4C8;
         } else {
-            if (GameInteractor_Should(VB_RACE_INGO, true, 2)) {
-                func_80A79BAC(this, play, 2, TRANS_TYPE_CIRCLE(TCA_STARBURST, TCC_BLACK, TCS_FAST));
-            }
+            func_80A79BAC(this, play, 2, TRANS_TYPE_CIRCLE(TCA_STARBURST, TCC_BLACK, TCS_FAST));
             gSaveContext.eventInf[0] = (gSaveContext.eventInf[0] & ~0xF) | 2;
             gSaveContext.eventInf[0] = (gSaveContext.eventInf[0] & ~0x8000) | 0x8000;
             play->msgCtx.stateTimer = 0;
             play->msgCtx.msgMode = MSGMODE_TEXT_CLOSING;
         }
         this->interactInfo.talkState = NPC_TALK_STATE_IDLE;
-        if (GameInteractor_Should(VB_RACE_INGO, true, 2)) {
-            gSaveContext.eventInf[0] &= ~0x20;
-            gSaveContext.eventInf[0] &= ~0x40;
-        }
+        gSaveContext.eventInf[0] &= ~0x20;
+        gSaveContext.eventInf[0] &= ~0x40;
     }
 }
 
@@ -778,21 +771,21 @@ void func_80A7AA40(EnIn* this, PlayState* play) {
     Play_ChangeCameraStatus(play, this->activeCamId, CAM_STAT_WAIT);
     Play_ChangeCameraStatus(play, this->camId, CAM_STAT_ACTIVE);
 
-    this->subCamAtOffset = 0.0f;
+    this->unk_2F0 = 0.0f;
     this->unk_2F4 = 50.0f;
     this->unk_2F8 = 0.0f;
-    this->subCamEyeOffset = 0.0f;
+    this->unk_2FC = 0.0f;
     this->unk_300 = 50.0f;
     this->unk_304 = 50.0f;
 
     sp30 = this->actor.world.pos;
     sp24 = this->actor.world.pos;
 
-    sp30.x += this->subCamAtOffset;
+    sp30.x += this->unk_2F0;
     sp30.y += this->unk_2F4;
     sp30.z += this->unk_2F8;
 
-    sp24.x += this->subCamEyeOffset;
+    sp24.x += this->unk_2FC;
     sp24.y += this->unk_300;
     sp24.z += this->unk_304;
 
@@ -802,8 +795,8 @@ void func_80A7AA40(EnIn* this, PlayState* play) {
     this->interactInfo.talkState = NPC_TALK_STATE_TALKING;
     this->unk_1FC = 0;
     play->csCtx.frames = 0;
-    Letterbox_SetSizeTarget(0x20);
-    Interface_ChangeHudVisibilityMode(HUD_VISIBILITY_NOTHING_ALT);
+    ShrinkWindow_SetVal(0x20);
+    Interface_ChangeAlpha(2);
     this->actionFunc = func_80A7ABD4;
 }
 
@@ -844,20 +837,20 @@ void func_80A7ABD4(EnIn* this, PlayState* play) {
         if (play->csCtx.frames == 44) {
             Audio_PlayActorSound2(&this->actor, NA_SE_EV_RONRON_DOOR_CLOSE);
         }
-        Math_SmoothStepToF(&this->subCamAtOffset, 0.0f, 0.06f, 10000.0f, 0.0f);
+        Math_SmoothStepToF(&this->unk_2F0, 0.0f, 0.06f, 10000.0f, 0.0f);
         Math_SmoothStepToF(&this->unk_2F4, 50.0f, 0.06f, 10000.0f, 0.0f);
         Math_SmoothStepToF(&this->unk_2F8, 0.0f, 0.06f, 10000.0f, 0.0f);
-        Math_SmoothStepToF(&this->subCamEyeOffset, 0.0f, 0.06f, 10000.0f, 0.0f);
+        Math_SmoothStepToF(&this->unk_2FC, 0.0f, 0.06f, 10000.0f, 0.0f);
         Math_SmoothStepToF(&this->unk_300, 150.0f, 0.06f, 10000.0f, 0.0f);
         Math_SmoothStepToF(&this->unk_304, 300.0f, 0.06f, 10000.0f, 0.0f);
 
         sp48 = this->actor.world.pos;
         sp3C = this->actor.world.pos;
 
-        sp48.x += this->subCamAtOffset;
+        sp48.x += this->unk_2F0;
         sp48.y += this->unk_2F4;
         sp48.z += this->unk_2F8;
-        sp3C.x += this->subCamEyeOffset;
+        sp3C.x += this->unk_2FC;
         sp3C.y += this->unk_300;
         sp3C.z += this->unk_304;
         Play_CameraSetAtEye(play, this->camId, &sp48, &sp3C);
@@ -868,7 +861,7 @@ void func_80A7AE84(EnIn* this, PlayState* play) {
     Play_ChangeCameraStatus(play, this->activeCamId, CAM_STAT_ACTIVE);
     Play_ClearCamera(play, this->camId);
     Player_SetCsActionWithHaltedActors(play, &this->actor, 7);
-    Interface_ChangeHudVisibilityMode(0x32);
+    Interface_ChangeAlpha(0x32);
     this->actionFunc = func_80A7AEF0;
 }
 
@@ -920,7 +913,7 @@ void EnIn_Update(Actor* thisx, PlayState* play) {
     ColliderCylinder* collider;
     EnIn* this = (EnIn*)thisx;
 
-    if (this->actionFunc == EnIn_WaitForObject) {
+    if (this->actionFunc == func_80A79FB0) {
         this->actionFunc(this, play);
         return;
     }
@@ -944,7 +937,7 @@ void EnIn_Update(Actor* thisx, PlayState* play) {
         } else {
             Npc_UpdateTalking(play, &this->actor, &this->interactInfo.talkState,
                               ((this->actor.targetMode == 6) ? 80.0f : 320.0f) + this->collider.dim.radius,
-                              EnIn_GetTextId, EnIn_UpdateTalkState);
+                              func_80A79168, func_80A79500);
             if (this->interactInfo.talkState != NPC_TALK_STATE_IDLE) {
                 this->unk_1FA = this->unk_1F8;
                 this->unk_1F8 = Message_GetState(&play->msgCtx);
@@ -1008,7 +1001,7 @@ void EnIn_Draw(Actor* thisx, PlayState* play) {
     EnIn* this = (EnIn*)thisx;
 
     OPEN_DISPS(play->state.gfxCtx);
-    if (this->actionFunc != EnIn_WaitForObject) {
+    if (this->actionFunc != func_80A79FB0) {
         Gfx_SetupDL_25Opa(play->state.gfxCtx);
         gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTextures[this->eyeIndex]));
         gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(gIngoHeadGradient2Tex));

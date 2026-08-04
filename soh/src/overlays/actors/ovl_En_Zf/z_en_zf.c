@@ -8,7 +8,6 @@
 #include "objects/object_zf/object_zf.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ResourceManagerHelpers.h"
-#include "soh/Enhancements/savestate_serialize.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
 
@@ -100,14 +99,8 @@ static Vec3f sPlatformPositions[] = {
 };
 
 // These seem to relate to the tagging in/out the minibosses do
-static s16 D_80B4A1B0 = 0;
-static s16 D_80B4A1B4 = 1;
-
-#define EN_ZF_SHIP_SAVESTATE_FIELDS(F) \
-    F(D_80B4A1B0)                      \
-    F(D_80B4A1B4)
-
-SHIP_SAVESTATE_DEFINE(EnZf, EN_ZF_SHIP_SAVESTATE_FIELDS)
+s16 D_80B4A1B0 = 0;
+s16 D_80B4A1B4 = 1;
 
 const ActorInit En_Zf_InitVars = {
     ACTOR_EN_ZF,
@@ -247,7 +240,7 @@ s32 EnZf_PrimaryFloorCheck(EnZf* this, PlayState* play, f32 dist) {
 
     Actor_UpdateBgCheckInfo(play, &this->actor, 0.0f, 0.0f, 0.0f, 0x1C);
     this->actor.world.pos = curPos;
-    ret = !(this->actor.bgCheckFlags & BGCHECKFLAG_GROUND);
+    ret = !(this->actor.bgCheckFlags & 1);
     this->actor.bgCheckFlags = curBgCheckFlags;
     return ret;
 }
@@ -278,7 +271,7 @@ s16 EnZf_SecondaryFloorCheck(EnZf* this, PlayState* play, f32 dist) {
 
     Actor_UpdateBgCheckInfo(play, &this->actor, 0.0f, 0.0f, 0.0f, 0x1C);
     this->actor.world.pos = curPos;
-    ret = !(this->actor.bgCheckFlags & BGCHECKFLAG_GROUND);
+    ret = !(this->actor.bgCheckFlags & 1);
     this->actor.bgCheckFlags = curBgCheckFlags;
     return ret;
 }
@@ -596,8 +589,7 @@ s32 EnZf_ChooseAction(PlayState* play, EnZf* this) {
     if (func_800354B4(play, &this->actor, 100.0f, 0x5DC0, 0x2AA8, this->actor.shape.rot.y)) {
         this->actor.shape.rot.y = this->actor.world.rot.y = this->actor.yawTowardsPlayer;
 
-        if ((this->actor.bgCheckFlags & BGCHECKFLAG_WALL) && (ABS(angleToWall) < 0x2EE0) &&
-            (this->actor.xzDistToPlayer < 80.0f)) {
+        if ((this->actor.bgCheckFlags & 8) && (ABS(angleToWall) < 0x2EE0) && (this->actor.xzDistToPlayer < 80.0f)) {
             EnZf_SetupJumpUp(this);
             return true;
         } else if ((this->actor.xzDistToPlayer < 90.0f) && ((play->gameplayFrames % 2) != 0)) {
@@ -613,8 +605,7 @@ s32 EnZf_ChooseAction(PlayState* play, EnZf* this) {
 
     if (explosive != NULL) {
         this->actor.shape.rot.y = this->actor.world.rot.y = this->actor.yawTowardsPlayer;
-        if (((this->actor.bgCheckFlags & BGCHECKFLAG_WALL) && (angleToWall < 0x2EE0)) ||
-            (explosive->id == ACTOR_EN_BOM_CHU)) {
+        if (((this->actor.bgCheckFlags & 8) && (angleToWall < 0x2EE0)) || (explosive->id == ACTOR_EN_BOM_CHU)) {
             if ((explosive->id == ACTOR_EN_BOM_CHU) && (Actor_WorldDistXYZToActor(&this->actor, explosive) < 80.0f) &&
                 ((s16)((this->actor.shape.rot.y - explosive->world.rot.y) + 0x8000) < 0x3E80)) {
                 EnZf_SetupJumpUp(this);
@@ -813,12 +804,12 @@ void EnZf_ApproachPlayer(EnZf* this, PlayState* play) {
                 temp_v1 = ABS(temp_v1);
 
                 if ((this->unk_3F8 && (this->actor.speedXZ > 0.0f)) ||
-                    ((this->actor.bgCheckFlags & BGCHECKFLAG_WALL) && (temp_v1 >= 0x5C19))) {
+                    ((this->actor.bgCheckFlags & 8) && (temp_v1 >= 0x5C19))) {
                     if ((Actor_WorldDistXZToPoint(&this->actor, &sPlatformPositions[this->nextPlatform]) < sp44) &&
                         !EnZf_PrimaryFloorCheck(this, play, 191.9956f)) {
                         EnZf_SetupJumpForward(this);
 
-                        if (this->actor.bgCheckFlags & BGCHECKFLAG_WALL) {
+                        if (this->actor.bgCheckFlags & 8) {
                             this->actor.velocity.y = 20.0f;
                         }
 
@@ -1085,10 +1076,10 @@ void func_80B463E4(EnZf* this, PlayState* play) {
             if (this->unk_3F8) {
                 this->actor.speedXZ = -this->actor.speedXZ;
             }
-        } else if ((this->actor.bgCheckFlags & BGCHECKFLAG_WALL) ||
+        } else if ((this->actor.bgCheckFlags & 8) ||
                    !Actor_TestFloorInDirection(&this->actor, play, this->actor.speedXZ,
                                                this->actor.shape.rot.y + 0x3FFF)) {
-            if (this->actor.bgCheckFlags & BGCHECKFLAG_WALL) {
+            if (this->actor.bgCheckFlags & 8) {
                 if (this->actor.speedXZ >= 0.0f) {
                     phi_v0_3 = this->actor.shape.rot.y + 0x3FFF;
                 } else {
@@ -1294,8 +1285,7 @@ void EnZf_JumpBack(EnZf* this, PlayState* play) {
 }
 
 void EnZf_SetupStunned(EnZf* this) {
-    if ((this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) &&
-        ((this->actor.velocity.y == 0.0f) || (this->actor.velocity.y == -4.0f))) {
+    if ((this->actor.bgCheckFlags & 1) && ((this->actor.velocity.y == 0.0f) || (this->actor.velocity.y == -4.0f))) {
         this->actor.speedXZ = 0.0f;
         this->hopAnimIndex = 0;
     } else {
@@ -1316,18 +1306,18 @@ void EnZf_SetupStunned(EnZf* this) {
 void EnZf_Stunned(EnZf* this, PlayState* play) {
     s16 angleToWall;
 
-    if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND_TOUCH) {
+    if (this->actor.bgCheckFlags & 2) {
         this->actor.speedXZ = 0.0f;
     }
 
-    if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
+    if (this->actor.bgCheckFlags & 1) {
         if (this->actor.speedXZ < 0.0f) {
             this->actor.speedXZ += 0.05f;
         }
         this->hopAnimIndex = 0;
     }
 
-    if ((this->actor.colorFilterTimer == 0) && (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND)) {
+    if ((this->actor.colorFilterTimer == 0) && (this->actor.bgCheckFlags & 1)) {
         if (this->actor.colChkInfo.health == 0) {
             EnZf_SetupDie(this);
         } else if ((this->actor.params != ENZF_TYPE_DINOLFOS) || !EnZf_ChooseAction(play, this)) {
@@ -1337,7 +1327,7 @@ void EnZf_Stunned(EnZf* this, PlayState* play) {
                 angleToWall = this->actor.wallYaw - this->actor.shape.rot.y;
                 angleToWall = ABS(angleToWall);
 
-                if ((this->actor.params == ENZF_TYPE_DINOLFOS) && (this->actor.bgCheckFlags & BGCHECKFLAG_WALL) &&
+                if ((this->actor.params == ENZF_TYPE_DINOLFOS) && (this->actor.bgCheckFlags & 8) &&
                     (ABS(angleToWall) < 0x2EE0) && (this->actor.xzDistToPlayer < 90.0f)) {
                     this->actor.world.rot.y = this->actor.shape.rot.y;
                     EnZf_SetupJumpUp(this);
@@ -1515,7 +1505,7 @@ void EnZf_HopAway(EnZf* this, PlayState* play) {
                 case 1:
                 case 1 | 2:
                     this->actor.velocity.y = 12.0f;
-                    if (this->actor.bgCheckFlags & BGCHECKFLAG_WALL) {
+                    if (this->actor.bgCheckFlags & 8) {
                         this->actor.velocity.y += 8.0f;
                     }
 
@@ -1548,8 +1538,7 @@ void EnZf_HopAway(EnZf* this, PlayState* play) {
             break;
 
         case 1:
-            if ((this->actor.bgCheckFlags & BGCHECKFLAG_GROUND_TOUCH) ||
-                (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND)) {
+            if ((this->actor.bgCheckFlags & 2) || (this->actor.bgCheckFlags & 1)) {
                 Audio_PlayActorSound2(&this->actor, NA_SE_EN_RIZA_ONGND);
                 this->actor.velocity.y = 0.0f;
                 this->actor.world.pos.y = this->actor.floorHeight;
@@ -1622,8 +1611,7 @@ void EnZf_SetupDamaged(EnZf* this) {
     Animation_Change(&this->skelAnime, &gZfKnockedBackAnim, 1.5f, 0.0f, Animation_GetLastFrame(&gZfKnockedBackAnim),
                      ANIMMODE_ONCE, -4.0f);
 
-    if ((this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) &&
-        ((this->actor.velocity.y == 0.0f) || (this->actor.velocity.y == -4.0f))) {
+    if ((this->actor.bgCheckFlags & 1) && ((this->actor.velocity.y == 0.0f) || (this->actor.velocity.y == -4.0f))) {
         this->actor.speedXZ = -4.0f;
         this->hopAnimIndex = 0;
     } else {
@@ -1646,11 +1634,11 @@ void EnZf_SetupDamaged(EnZf* this) {
 void EnZf_Damaged(EnZf* this, PlayState* play) {
     s16 wallYawDiff;
 
-    if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND_TOUCH) {
+    if (this->actor.bgCheckFlags & 2) {
         this->actor.speedXZ = 0.0f;
     }
 
-    if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
+    if (this->actor.bgCheckFlags & 1) {
         if (this->actor.speedXZ < 0.0f) {
             this->actor.speedXZ += 0.05f;
         }
@@ -1660,7 +1648,7 @@ void EnZf_Damaged(EnZf* this, PlayState* play) {
     Math_SmoothStepToS(&this->actor.shape.rot.y, this->actor.yawTowardsPlayer, 1, 4500, 0);
 
     if (((this->actor.params != ENZF_TYPE_DINOLFOS) || !EnZf_ChooseAction(play, this)) &&
-        SkelAnime_Update(&this->skelAnime) && (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND)) {
+        SkelAnime_Update(&this->skelAnime) && (this->actor.bgCheckFlags & 1)) {
 
         if (D_80B4A1B4 != -1) {
             if (this->damageEffect == ENZF_DMGEFF_PROJECTILE) {
@@ -1681,7 +1669,7 @@ void EnZf_Damaged(EnZf* this, PlayState* play) {
             wallYawDiff = this->actor.wallYaw - this->actor.shape.rot.y;
             wallYawDiff = ABS(wallYawDiff);
 
-            if ((this->actor.params == ENZF_TYPE_DINOLFOS) && (this->actor.bgCheckFlags & BGCHECKFLAG_WALL) &&
+            if ((this->actor.params == ENZF_TYPE_DINOLFOS) && (this->actor.bgCheckFlags & 8) &&
                 (ABS(wallYawDiff) < 12000) && (this->actor.xzDistToPlayer < 90.0f)) {
                 EnZf_SetupJumpUp(this);
             } else if (!EnZf_DodgeRangedEngaging(play, this)) {
@@ -1787,9 +1775,9 @@ void EnZf_CircleAroundPlayer(EnZf* this, PlayState* play) {
         if (this->unk_3F8) {
             this->actor.speedXZ = -this->actor.speedXZ;
         }
-    } else if ((this->actor.bgCheckFlags & BGCHECKFLAG_WALL) ||
+    } else if ((this->actor.bgCheckFlags & 8) ||
                !Actor_TestFloorInDirection(&this->actor, play, this->actor.speedXZ, this->actor.shape.rot.y + 0x3FFF)) {
-        if (this->actor.bgCheckFlags & BGCHECKFLAG_WALL) {
+        if (this->actor.bgCheckFlags & 8) {
             if (this->actor.speedXZ >= 0.0f) {
                 phi_v0_4 = this->actor.shape.rot.y + 0x3FFF;
             } else {
@@ -1908,8 +1896,7 @@ void EnZf_SetupDie(EnZf* this) {
     Animation_Change(&this->skelAnime, &gZfDyingAnim, 1.5f, 0.0f, Animation_GetLastFrame(&gZfDyingAnim), ANIMMODE_ONCE,
                      -4.0f);
 
-    if ((this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) &&
-        ((this->actor.velocity.y == 0.0f) || (this->actor.velocity.y == -4.0f))) {
+    if ((this->actor.bgCheckFlags & 1) && ((this->actor.velocity.y == 0.0f) || (this->actor.velocity.y == -4.0f))) {
         this->actor.speedXZ = 0.0f;
         this->hopAnimIndex = 0;
     } else {
@@ -1944,11 +1931,11 @@ void EnZf_SetupDie(EnZf* this) {
 
 void EnZf_Die(EnZf* this, PlayState* play) {
 
-    if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND_TOUCH) {
+    if (this->actor.bgCheckFlags & 2) {
         this->actor.speedXZ = 0.0f;
     }
 
-    if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
+    if (this->actor.bgCheckFlags & 1) {
         Math_SmoothStepToF(&this->actor.speedXZ, 0.0f, 1.0f, 0.15f, 0.0f);
         this->hopAnimIndex = 0;
     }
@@ -2063,7 +2050,7 @@ void EnZf_Update(Actor* thisx, PlayState* play) {
 
         Actor_UpdateBgCheckInfo(play, &this->actor, 25.0f, 30.0f, 60.0f, 0x1D);
 
-        if (!(this->actor.bgCheckFlags & BGCHECKFLAG_GROUND)) {
+        if (!(this->actor.bgCheckFlags & 1)) {
             this->hopAnimIndex = 1;
         }
 
@@ -2092,7 +2079,7 @@ void EnZf_Update(Actor* thisx, PlayState* play) {
         Math_SmoothStepToS(&this->headRot, 0, 1, 2000, 0);
 
         if (this->action <= ENZF_ACTION_HOP_AND_TAUNT) {
-            if ((this->unk_3F4 == 1) && (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND)) {
+            if ((this->unk_3F4 == 1) && (this->actor.bgCheckFlags & 1)) {
                 if (this->actor.colChkInfo.health > 0) {
                     EnZf_SetupDrawSword(this, play);
                 }
