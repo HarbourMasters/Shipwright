@@ -630,8 +630,9 @@ bool Logic::CanUse(RandomizerGet itemName) {
         case RG_ROLL:
             return true;
 
-                   // Bottle Items
-                   case RG_BOTTLE_WITH_BUGS : return Get(LOGIC_BUG_ACCESS);
+        // Bottle Items
+        case RG_BOTTLE_WITH_BUGS:
+            return Get(LOGIC_BUG_ACCESS);
         case RG_BOTTLE_WITH_FISH:
             return Get(LOGIC_FISH_ACCESS);
         case RG_BOTTLE_WITH_BLUE_FIRE:
