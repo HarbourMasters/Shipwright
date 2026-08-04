@@ -156,6 +156,18 @@ static const std::map<int32_t, const char*> mirroredWorldModes = {
     { MIRRORED_WORLD_DUNGEONS_RANDOM_SEEDED, "Dungeons Random (Seeded)" },
 };
 
+static const std::map<int32_t, const char*> enemyRandomizerModes = {
+    { ENEMY_RANDOMIZER_OFF, "Disabled" },
+    { ENEMY_RANDOMIZER_RANDOM, "Random" },
+    { ENEMY_RANDOMIZER_RANDOM_SEEDED, "Random (Seeded)" },
+};
+
+static const std::map<int32_t, const char*> containerMatchContentsModes = {
+    { CONTAINER_MATCH_CONTENTS_OFF, "Off" },
+    { CONTAINER_MATCH_CONTENTS_UNCHECKED, "Unchecked only" },
+    { CONTAINER_MATCH_CONTENTS_ON, "On" },
+};
+
 void SohMenu::AddMenuEnhancements() {
     // Add Enhancements Menu
     AddMenuEntry("Enhancements", CVAR_SETTING("Menu.EnhancementsSidebarSection"));
@@ -193,20 +205,29 @@ void SohMenu::AddMenuEnhancements() {
             "then asks if you want to Continue, Reset, or Reset to Spawn."));
 
     AddWidget(path, "Containers Match Contents", WIDGET_SEPARATOR_TEXT);
-    AddWidget(path, "Containers Match Contents", WIDGET_CVAR_CHECKBOX)
+    AddWidget(path, "Containers Match Contents", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"))
         .Callback([](WidgetInfo& info) {
-            if (!CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), 0)) {
+            if (CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), 0) ==
+                CONTAINER_MATCH_CONTENTS_OFF) {
                 CVarSetInteger(CVAR_ENHANCEMENT("ChestSizeDependsStoneOfAgony"), 0);
             }
         })
-        .Options(CheckboxOptions().DefaultValue(false).Tooltip(
-            "Toggle to change container textures to match their contents in randomizer games.\n"
-            "Categories: Major items, Lesser items, Junk items, Small keys, Boss keys, Skulltula Tokens."));
+        .Options(
+            ComboboxOptions()
+                .ComboMap(containerMatchContentsModes)
+                .DefaultIndex(CONTAINER_MATCH_CONTENTS_OFF)
+                .Tooltip(
+                    "Change container textures in randomizer games:\n"
+                    "Off: Use vanilla textures\n"
+                    "Unchecked only: Show that the check is uncollected but not what's inside\n"
+                    "On: Show textures based on contents\n"
+                    "Categories: Major items, Lesser items, Junk items, Small keys, Boss keys, Skulltula Tokens."));
     AddWidget(path, "Containers of Agony", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("ChestSizeDependsStoneOfAgony"))
         .PreFunc([](WidgetInfo& info) {
-            info.isHidden = !CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), 0);
+            info.isHidden =
+                CVarGetInteger(CVAR_ENHANCEMENT("ChestSizeAndTextureMatchContents"), 0) != CONTAINER_MATCH_CONTENTS_ON;
         })
         .Options(CheckboxOptions().Tooltip("Only change the texture of containers if you have the Stone of Agony."));
 
