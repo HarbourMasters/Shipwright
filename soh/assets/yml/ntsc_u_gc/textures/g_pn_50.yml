@@ -1,0 +1,20 @@
+:config:
+  segments:
+    - [ 128, 0x013046A0 ]
+
+gHappyMaskShopTitleCardENGTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gHappyMaskShopTitleCardENGTex
+  format: IA8
+  width: 144
+  height: 24
+
+gHappyMaskShopTitleCardJPNTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gHappyMaskShopTitleCardJPNTex
+  format: IA8
+  width: 144
+  height: 24
+

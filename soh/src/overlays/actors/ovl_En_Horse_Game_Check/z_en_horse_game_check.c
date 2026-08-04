@@ -6,6 +6,7 @@
 
 #include "z_en_horse_game_check.h"
 #include "overlays/actors/ovl_En_Horse/z_en_horse.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
@@ -110,7 +111,7 @@ void EnHorseGameCheck_FinishIngoRace(EnHorseGameCheckIngoRace* this, PlayState* 
     gSaveContext.cutsceneIndex = 0;
     if (this->result == INGORACE_PLAYER_WIN) {
         play->nextEntranceIndex = ENTR_LON_LON_RANCH_7;
-        if (gSaveContext.eventInf[0] & 0x40) {
+        if (GameInteractor_Should(VB_LINK_WIN_EPONA, gSaveContext.eventInf[0] & 0x40)) {
             gSaveContext.eventInf[0] = (gSaveContext.eventInf[0] & ~0xF) | 6;
             gSaveContext.eventInf[0] = (gSaveContext.eventInf[0] & ~0x8000) | 0x8000;
             play->transitionType = TRANS_TYPE_FADE_WHITE;
@@ -231,7 +232,7 @@ s32 EnHorseGameCheck_InitGerudoArchery(EnHorseGameCheckBase* base, PlayState* pl
     EnHorseGameCheckGerudoArchery* this = (EnHorseGameCheckGerudoArchery*)base;
 
     this->base.type = HORSEGAME_GERUDO_ARCHERY;
-    this->unk_150 = 0;
+    this->startFlags = 0;
     this->startTimer = 0;
     return true;
 }
@@ -261,7 +262,7 @@ s32 EnHorseGameCheck_InitType3(EnHorseGameCheckBase* base, PlayState* play) {
     EnHorseGameCheck3* this = (EnHorseGameCheck3*)base;
 
     this->base.type = HORSEGAME_TYPE3;
-    this->unk_150 = 0;
+    this->startFlags = 0;
     return true;
 }
 

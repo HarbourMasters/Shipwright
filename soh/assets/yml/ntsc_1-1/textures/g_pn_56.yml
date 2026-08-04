@@ -1,0 +1,20 @@
+:config:
+  segments:
+    - [ 128, 0x013111B0 ]
+
+gBombchuShopTitleCardENGTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gBombchuShopTitleCardENGTex
+  format: IA8
+  width: 144
+  height: 24
+
+gBombchuShopTitleCardJPNTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gBombchuShopTitleCardJPNTex
+  format: IA8
+  width: 144
+  height: 24
+

@@ -97,7 +97,7 @@ u8 gAudioSfxSwapOff = 0;
 
 u8 D_801333F8 = 0;
 
-void Audio_SetSoundBanksMute(u16 muteMask) {
+void Audio_SetSfxBanksMute(u16 muteMask) {
     u8 bankId;
 
     for (bankId = 0; bankId < ARRAY_COUNT(gSoundBanks); bankId++) {
@@ -527,7 +527,7 @@ void Audio_PlayActiveSounds(u8 bankId) {
                             break;
                     }
                 }
-                Audio_SetSoundProperties(bankId, entryIndex, sCurSfxPlayerChannelIdx);
+                Audio_SetSfxProperties(bankId, entryIndex, sCurSfxPlayerChannelIdx);
                 Audio_QueueCmdS8(0x6 << 24 | SEQ_PLAYER_SFX << 16 | ((sCurSfxPlayerChannelIdx & 0xFF) << 8), 1);
                 Audio_QueueCmdS8(0x6 << 24 | SEQ_PLAYER_SFX << 16 | ((sCurSfxPlayerChannelIdx & 0xFF) << 8) | 4,
                                  entry->sfxId & 0xFF);
@@ -543,7 +543,7 @@ void Audio_PlayActiveSounds(u8 bankId) {
             } else if ((u8)channel->soundScriptIO[1] == 0xFF) {
                 Audio_RemoveSoundBankEntry(bankId, entryIndex);
             } else if (entry->state == SFX_STATE_PLAYING_REFRESH) {
-                Audio_SetSoundProperties(bankId, entryIndex, sCurSfxPlayerChannelIdx);
+                Audio_SetSfxProperties(bankId, entryIndex, sCurSfxPlayerChannelIdx);
                 if (entry->sfxId & 0xC00) {
                     entry->state = SFX_STATE_PLAYING_1;
                 } else {

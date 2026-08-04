@@ -1,0 +1,8 @@
+<DisplayList Version="0">
+	<CallDisplayList Path="objects/object_gi_climb/mat_gGiClimbDL_ladder_layerOpaque"/>
+	<CallDisplayList Path="objects/object_gi_climb/gGiClimbDL_layer_Opaque_tri_0"/>
+	<ClearGeometryMode G_LIGHTING="1"/>
+	<SetGeometryMode G_LIGHTING="1"/>
+	<EndDisplayList/>
+</DisplayList>
+

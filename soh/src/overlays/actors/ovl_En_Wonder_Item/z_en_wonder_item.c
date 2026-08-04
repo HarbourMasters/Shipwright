@@ -6,6 +6,7 @@
 
 #include "z_en_wonder_item.h"
 #include "vt.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS 0
 
@@ -54,8 +55,8 @@ const ActorInit En_Wonder_Item_InitVars = {
     NULL,
 };
 
-static Vec3f sTagPointsFree[9];
-static Vec3f sTagPointsOrdered[9];
+Vec3f sTagPointsFree[9];    // SOH [Randomizer] remove static to use in ShuffleWonderItems
+Vec3f sTagPointsOrdered[9]; // SOH [Randomizer] remove static to use in ShuffleWonderItems
 
 void EnWonderItem_Destroy(Actor* thisx, PlayState* play) {
     s32 pad;
@@ -75,24 +76,26 @@ void EnWonderItem_DropCollectible(EnWonderItem* this, PlayState* play, s32 autoC
     s32 i;
     s32 randomDrop;
 
-    Sfx_PlaySfxCentered(NA_SE_SY_GET_ITEM);
+    if (GameInteractor_Should(VB_WONDER_DROP_ITEM, true, this)) {
+        Sfx_PlaySfxCentered(NA_SE_SY_GET_ITEM);
 
-    if (this->dropCount == 0) {
-        this->dropCount++;
-    }
-    for (i = this->dropCount; i > 0; i--) {
-        if (this->itemDrop < WONDERITEM_DROP_RANDOM) {
-            if ((this->itemDrop == WONDERITEM_DROP_FLEXIBLE) || !autoCollect) {
-                Item_DropCollectible(play, &this->actor.world.pos, dropTable[this->itemDrop]);
+        if (this->dropCount == 0) {
+            this->dropCount++;
+        }
+        for (i = this->dropCount; i > 0; i--) {
+            if (this->itemDrop < WONDERITEM_DROP_RANDOM) {
+                if ((this->itemDrop == WONDERITEM_DROP_FLEXIBLE) || !autoCollect) {
+                    Item_DropCollectible(play, &this->actor.world.pos, dropTable[this->itemDrop]);
+                } else {
+                    Item_DropCollectible(play, &this->actor.world.pos, dropTable[this->itemDrop] | 0x8000);
+                }
             } else {
-                Item_DropCollectible(play, &this->actor.world.pos, dropTable[this->itemDrop] | 0x8000);
-            }
-        } else {
-            randomDrop = this->itemDrop - WONDERITEM_DROP_RANDOM;
-            if (!autoCollect) {
-                Item_DropCollectibleRandom(play, NULL, &this->actor.world.pos, randomDrop);
-            } else {
-                Item_DropCollectibleRandom(play, NULL, &this->actor.world.pos, randomDrop | 0x8000);
+                randomDrop = this->itemDrop - WONDERITEM_DROP_RANDOM;
+                if (!autoCollect) {
+                    Item_DropCollectibleRandom(play, NULL, &this->actor.world.pos, randomDrop);
+                } else {
+                    Item_DropCollectibleRandom(play, NULL, &this->actor.world.pos, randomDrop | 0x8000);
+                }
             }
         }
     }
@@ -104,9 +107,10 @@ void EnWonderItem_DropCollectible(EnWonderItem* this, PlayState* play, s32 autoC
 
 void EnWonderItem_Init(Actor* thisx, PlayState* play) {
     static u32 collisionTypes[] = {
-        0x00000702 /* sword slash */, 0x0001F820 /* arrow */,     0x00000040 /* hammer */,   0x00000008 /* bomb */,
-        0x00000004 /* slingshot */,   0x00000010 /* boomerang */, 0x00000080 /* hookshot */,
-    };
+        0x00000702 /* sword slash */, 0x0001F820 /* arrow */,     0x00000040 /* hammer */,
+        0x00000008 /* bomb */,        0x00000004 /* slingshot */, 0x00000010 /* boomerang */,
+        0x00000080 /* hookshot */,    0x0001F820 | 0x00000080 /* arrow or hookshot */
+    }; // SOH [Port] add final array entry to avoid OOB behavior on Water MQ Torches room wonder item
     s32 pad;
     s16 colTypeIndex;
     EnWonderItem* this = (EnWonderItem*)thisx;
@@ -125,7 +129,7 @@ void EnWonderItem_Init(Actor* thisx, PlayState* play) {
         this->switchFlag = -1;
     }
     this->actor.targetMode = 1;
-    if ((this->switchFlag >= 0) && Flags_GetSwitch(play, this->switchFlag)) {
+    if (GameInteractor_Should(VB_WONDER_SPAWN, (this->switchFlag >= 0) && Flags_GetSwitch(play, this->switchFlag))) {
         osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ Ｙｏｕ ａｒｅ Ｓｈｏｃｋ！  ☆☆☆☆☆ %d\n" VT_RST, this->switchFlag);
         Actor_Kill(&this->actor);
         return;
@@ -312,7 +316,7 @@ void EnWonderItem_BombSoldier(EnWonderItem* this, PlayState* play) {
             // "Careless soldier spawned"
             osSyncPrintf(VT_FGCOL(YELLOW) "☆☆☆☆☆ うっかり兵セット完了 ☆☆☆☆☆ \n" VT_RST);
         }
-        if (this->switchFlag >= 0) {
+        if (GameInteractor_Should(VB_WONDER_DROP_ITEM, this->switchFlag >= 0, this)) {
             Flags_SetSwitch(play, this->switchFlag);
         }
         Actor_Kill(&this->actor);

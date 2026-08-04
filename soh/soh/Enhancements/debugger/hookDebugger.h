@@ -1,7 +1,7 @@
 #ifndef hookDebugger_h
 #define hookDebugger_h
 
-#include <libultraship/libultraship.h>
+#include <ship/window/gui/GuiWindow.h>
 
 class HookDebuggerWindow final : public Ship::GuiWindow {
   public:

@@ -1,0 +1,16 @@
+:config:
+  segments:
+    - [ 3, 0x01F27A80 ]
+    - [ 2, 0x01F205C0 ]
+  directory: scenes/shared/miharigoya_scene
+  external_files:
+    - pal_1-0/scenes/shared/miharigoya_room_0.yml
+    - pal_1-0/objects/gameplay_keep.yml
+    - pal_1-0/scenes/shared/miharigoya_scene.yml
+    - pal_1-0/code/sys_matrix.yml
+
+miharigoya_room_0Set_000470:
+  type: OOT:ROOM
+  offset: 0x470
+  symbol: miharigoya_room_0Set_000470
+  base_name: miharigoya_room_0

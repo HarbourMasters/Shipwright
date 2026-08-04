@@ -1,0 +1,15 @@
+:config:
+  segments:
+    - [ 3, 0x01C8FA60 ]
+    - [ 2, 0x01C72270 ]
+  directory: scenes/nonmq/ice_doukutu_scene
+  external_files:
+    - ntsc_1-0/scenes/nonmq/ice_doukutu_room_2.yml
+    - ntsc_1-0/scenes/nonmq/ice_doukutu_scene.yml
+    - ntsc_1-0/code/sys_matrix.yml
+
+ice_doukutu_room_2Set_0000F0:
+  type: OOT:ROOM
+  offset: 0xF0
+  symbol: ice_doukutu_room_2Set_0000F0
+  base_name: ice_doukutu_room_2

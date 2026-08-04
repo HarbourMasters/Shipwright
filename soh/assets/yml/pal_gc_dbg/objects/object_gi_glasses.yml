@@ -1,0 +1,41 @@
+:config:
+  segments:
+    - [ 6, 0x01668000 ]
+    - [ 4, 0x00F5E000 ]
+    - [ 8, 0x01668000 ]
+    - [ 9, 0x01668000 ]
+    - [ 10, 0x01668000 ]
+    - [ 11, 0x01668000 ]
+    - [ 12, 0x01668000 ]
+    - [ 13, 0x01668000 ]
+  external_files:
+    - pal_gc_dbg/objects/gameplay_keep.yml
+
+gGiLensDL:
+  type: GFX
+  offset: 0x0D80
+  symbol: gGiLensDL
+
+gGiLensGlassDL:
+  type: GFX
+  offset: 0x1010
+  symbol: gGiLensGlassDL
+
+
+object_gi_glassesVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_gi_glassesVtx_000000
+  count: 181
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_glassesVtx_000B50:
+  type: OOT:ARRAY
+  offset: 0x000B50
+  symbol: object_gi_glassesVtx_000B50
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

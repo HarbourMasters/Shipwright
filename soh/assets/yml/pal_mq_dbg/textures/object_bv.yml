@@ -1,0 +1,28 @@
+:config:
+  segments:
+    - [ 6, 0x0139A000 ]
+
+gBarinadeTitleCardENGTex:
+  type: TEXTURE
+  offset: 0x1230
+  symbol: gBarinadeTitleCardENGTex
+  format: IA8
+  width: 128
+  height: 40
+
+gBarinadeTitleCardFRATex:
+  type: TEXTURE
+  offset: 0x3a30
+  symbol: gBarinadeTitleCardFRATex
+  format: IA8
+  width: 128
+  height: 40
+
+gBarinadeTitleCardGERTex:
+  type: TEXTURE
+  offset: 0x2630
+  symbol: gBarinadeTitleCardGERTex
+  format: IA8
+  width: 128
+  height: 40
+

@@ -1,0 +1,15 @@
+:config:
+  segments:
+    - [ 3, 0x0174E290 ]
+    - [ 2, 0x01736790 ]
+  directory: scenes/mq/bdan_scene
+  external_files:
+    - pal_mq/scenes/mq/bdan_room_3.yml
+    - pal_mq/scenes/mq/bdan_scene.yml
+    - pal_mq/code/sys_matrix.yml
+
+bdan_room_3Set_000210:
+  type: OOT:ROOM
+  offset: 0x210
+  symbol: bdan_room_3Set_000210
+  base_name: bdan_room_3

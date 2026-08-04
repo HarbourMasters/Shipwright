@@ -2220,16 +2220,16 @@ s32 (*sCameraFunctions[])(Camera*) = {
     Camera_Special9,
 };
 
-s32 sInitRegs = 1;
+static s32 sInitRegs = 1;
 
 s32 gDbgCamEnabled = 0;
-s32 sDbgModeIdx = -1;
-s16 sNextUID = 0;
+static s32 sDbgModeIdx = -1;
+static s16 sNextUID = 0;
 
-s32 sCameraInterfaceFlags = 1;
+static s32 sCameraInterfaceFlags = 1;
 
-s32 sCameraInterfaceAlpha = 0x02;
-s32 sCameraShrinkWindowVal = 0x20;
+static s32 sCameraInterfaceAlpha = 0x02;
+static s32 sCameraShrinkWindowVal = 0x20;
 s32 D_8011D3AC = -1;
 
 s16 D_8011D3B0[] = {
@@ -2242,9 +2242,9 @@ s16 D_8011D3CC[] = {
 
 s32 sUpdateCameraDirection = 0;
 s32 D_8011D3EC = 0;
-s32 D_8011D3F0 = 0;
+static s32 D_8011D3F0 = 0;
 
-s32 sDemo5PrevAction12Frame = -16;
+static s32 sDemo5PrevAction12Frame = -16;
 
 char sCameraFunctionNames[][8] = {
     "NONE   ", "NORM0()", "NORM1()", "NORM2()", "NORM3()", "NORM4()", "PARA0()", "PARA1()", "PARA2()", "PARA3()",
@@ -2274,10 +2274,10 @@ Vec3f D_8011D678[] = {
 /*******************************************************
  * OnePoint initalization values for Demo5
  ********************************************************/
-s32 sDemo5PrevSfxFrame = -200;
+static s32 sDemo5PrevSfxFrame = -200;
 
 // target is player, far from eye
-OnePointCsFull D_8011D6AC[] = {
+static OnePointCsFull D_8011D6AC[] = {
     { // initflags & 0x00FF (at): 2, atTarget is view lookAt + atInit
       // initFlags & 0xFF00 (eye): none
       // action: 15, copy at, eye, roll, fov to camera
@@ -2319,14 +2319,14 @@ OnePointCsFull D_8011D6AC[] = {
 };
 
 // target is player close to current eye
-OnePointCsFull D_8011D724[] = {
+static OnePointCsFull D_8011D724[] = {
     { 0x8F, 0xFF, 0x2424, 0x0001, 0x0000, 60.0f, 1.0f, { 0.0f, 0.0f, 0.0f }, { 0.0f, 10.0f, -20.0f } },
     { 0x81, 0xFF, 0x2121, 0x0013, 0x0000, 50.0f, 1.0f, { 0.0f, -10.0f, 0.0f }, { 0.0f, 0.0f, 60.0f } },
     { 0x12, 0xFF, 0x0000, 0x0001, 0x0000, 60.0f, 1.0f, { -1.0f, -1.0f, -1.0f }, { -1.0f, -1.0f, -1.0f } },
 };
 
 // target is close to player
-OnePointCsFull D_8011D79C[] = {
+static OnePointCsFull D_8011D79C[] = {
     { 0xCF, 0xFF, 0x0002, 0x0001, 0x0000, 60.0f, 1.0f, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } },
     { 0xC1, 0xFF, 0x0303, 0x0013, 0x0000, 45.0f, 1.0f, { 0.0f, -20.0f, 0.0f }, { 0.0f, -10.0f, 5.0f } },
     {
@@ -2344,7 +2344,7 @@ OnePointCsFull D_8011D79C[] = {
 };
 
 // target is within 300 units of eye, and player is within 30 units of eye
-OnePointCsFull D_8011D83C[] = {
+static OnePointCsFull D_8011D83C[] = {
     { 0x83, 0xFF, 0x2141, 0x0014, 0x0000, 45.0f, 0.2f, { 0.0f, 0.0f, 10.0f }, { 0.0f, 0.0f, 10.0f } },
     { 0x12, 0xFF, 0x0000, 0x0001, 0x0000, 60.0f, 1.0f, { -1.0f, -1.0f, -1.0f }, { -1.0f, -1.0f, -1.0f } },
 };
@@ -2352,20 +2352,20 @@ OnePointCsFull D_8011D83C[] = {
 // target is within 700 units of eye, angle between player/eye and target/eye is less than
 // 76.9 degrees.  The x/y coordinates of the target on screen is between (21, 41) and (300, 200),
 // and the player is farther than 30 units of the eye
-OnePointCsFull D_8011D88C[] = {
+static OnePointCsFull D_8011D88C[] = {
     { 0x81, 0xFF, 0x0303, 0x0014, 0x0000, 45.0f, 1.0f, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } },
     { 0x12, 0xFF, 0x0000, 0x0001, 0x0000, 60.0f, 1.0f, { -1.0f, -1.0f, -1.0f }, { -1.0f, -1.0f, -1.0f } },
 };
 
 // same as above, but the target is NOT within the screen area.
-OnePointCsFull D_8011D8DC[] = {
+static OnePointCsFull D_8011D8DC[] = {
     { 0x8F, 0xFF, 0x0404, 0x0014, 0x0001, 50.0f, 1.0f, { 0.0f, 5.0f, 10.0f }, { 0.0f, 10.0f, -80.0f } },
     { 0x82, 0xFF, 0x2121, 0x0005, 0x0000, 60.0f, 1.0f, { 0.0f, 5.0f, 0.0f }, { 5.0f, 5.0f, -200.0f } },
     { 0x12, 0xFF, 0x0000, 0x0001, 0x0000, 60.0f, 1.0f, { -1.0f, -1.0f, -1.0f }, { -1.0f, -1.0f, -1.0f } },
 };
 
 // target is a door.
-OnePointCsFull D_8011D954[] = {
+static OnePointCsFull D_8011D954[] = {
     { 0x0F, 0xFF, 0xC1C1, 0x0014, 0x0000, 60.0f, 1.0f, { 0.0f, 0.0f, 50.0f }, { 0.0f, 0.0f, 250.0f } },
     { 0x83, 0xFF, 0x05B1, 0x0005, 0x0000, 60.0f, 0.1f, { 0.0f, 10.0f, 50.0f }, { 0.0f, 10.0f, 100.0f } },
     { 0x82, 0xFF, 0x2121, 0x0005, 0x0002, 60.0f, 1.0f, { 0.0f, 10.0f, 0.0f }, { 0.0f, 20.0f, -150.0f } },
@@ -2373,7 +2373,7 @@ OnePointCsFull D_8011D954[] = {
 };
 
 // otherwise
-OnePointCsFull D_8011D9F4[] = {
+static OnePointCsFull D_8011D9F4[] = {
     { 0x8F, 0xFF, 0x0504, 0x0014, 0x0002, 60.0f, 1.0f, { 0.0f, 5.0f, 50.0f }, { 0.0f, 20.0f, 300.0f } },
     { 0x82, 0xFF, 0x2121, 0x0005, 0x0002, 60.0f, 1.0f, { 0.0f, 10.0f, 0.0f }, { 0.0f, 20.0f, -150.0f } },
     { 0x12, 0xFF, 0x0000, 0x0001, 0x0000, 60.0f, 1.0f, { -1.0f, -1.0f, -1.0f }, { -1.0f, -1.0f, -1.0f } },

@@ -1,0 +1,12 @@
+:config:
+  segments:
+    - [ 2, 0x01CCD910 ]
+  directory: scenes/shared/syatekijyou_scene
+  external_files:
+    - pal_mq/scenes/shared/syatekijyou_scene.yml
+
+syatekijyou_sceneSet_001AC0:
+  type: OOT:SCENE
+  offset: 0x1AC0
+  symbol: syatekijyou_sceneSet_001AC0
+  base_name: syatekijyou_scene

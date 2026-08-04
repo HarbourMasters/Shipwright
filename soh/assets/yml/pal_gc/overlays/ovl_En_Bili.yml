@@ -1,0 +1,24 @@
+:config:
+  segments:
+    - [ 128, 0x00BF9E10 ]
+    - [ 4, 0x00D24FC0 ]
+    - [ 8, 0x00BF9E10 ]
+    - [ 9, 0x00BF9E10 ]
+    - [ 10, 0x00BF9E10 ]
+    - [ 11, 0x00BF9E10 ]
+    - [ 12, 0x00BF9E10 ]
+    - [ 13, 0x00BF9E10 ]
+  virtual: [ 0x809AC710, 0x00BF9E10 ]
+  external_files:
+    - pal_gc/objects/gameplay_keep.yml
+
+D_809C16F0:
+  type: GFX
+  offset: 0x1E40
+  symbol: D_809C16F0
+
+D_809C1700:
+  type: GFX
+  offset: 0x1E50
+  symbol: D_809C1700
+

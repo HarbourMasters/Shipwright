@@ -1,0 +1,103 @@
+:config:
+  segments:
+    - [ 6, 0x010DF970 ]
+    - [ 4, 0x00D30E00 ]
+    - [ 8, 0x010DF970 ]
+    - [ 9, 0x010DF970 ]
+    - [ 10, 0x010DF970 ]
+    - [ 11, 0x010DF970 ]
+    - [ 12, 0x010DF970 ]
+    - [ 13, 0x010DF970 ]
+  external_files:
+    - ntsc_j_gc_collection/objects/gameplay_keep.yml
+
+object_bxa_DL_000890:
+  type: GFX
+  offset: 0x890
+  symbol: object_bxa_DL_000890
+
+object_bxa_DL_001D80:
+  type: GFX
+  offset: 0x1D80
+  symbol: object_bxa_DL_001D80
+
+object_bxa_DL_0022F0:
+  type: GFX
+  offset: 0x22F0
+  symbol: object_bxa_DL_0022F0
+
+object_bxa_Tex_000C40:
+  type: TEXTURE
+  offset: 0xC40
+  symbol: object_bxa_Tex_000C40
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_bxa_Tex_001440:
+  type: TEXTURE
+  offset: 0x1440
+  symbol: object_bxa_Tex_001440
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_bxa_Tex_0024F0:
+  type: TEXTURE
+  offset: 0x24F0
+  symbol: object_bxa_Tex_0024F0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_bxa_Tex_0026F0:
+  type: TEXTURE
+  offset: 0x26F0
+  symbol: object_bxa_Tex_0026F0
+  format: I8
+  width: 16
+  height: 16
+
+object_bxa_Tex_0027F0:
+  type: TEXTURE
+  offset: 0x27F0
+  symbol: object_bxa_Tex_0027F0
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_bxa_Tex_0029F0:
+  type: TEXTURE
+  offset: 0x29F0
+  symbol: object_bxa_Tex_0029F0
+  format: RGBA16
+  width: 16
+  height: 16
+
+
+object_bxaVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_bxaVtx_000000
+  count: 137
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bxaVtx_001C40:
+  type: OOT:ARRAY
+  offset: 0x001C40
+  symbol: object_bxaVtx_001C40
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bxaVtx_001E90:
+  type: OOT:ARRAY
+  offset: 0x001E90
+  symbol: object_bxaVtx_001E90
+  count: 70
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

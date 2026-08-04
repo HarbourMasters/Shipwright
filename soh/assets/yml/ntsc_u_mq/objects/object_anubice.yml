@@ -1,0 +1,382 @@
+:config:
+  segments:
+    - [ 6, 0x010E1930 ]
+    - [ 4, 0x00D30F80 ]
+    - [ 8, 0x010E1930 ]
+    - [ 9, 0x010E1930 ]
+    - [ 10, 0x010E1930 ]
+    - [ 11, 0x010E1930 ]
+    - [ 12, 0x010E1930 ]
+    - [ 13, 0x010E1930 ]
+  external_files:
+    - ntsc_u_mq/objects/gameplay_keep.yml
+
+gAnubiceAnim_000A48:
+  type: OOT:ANIMATION
+  offset: 0xA48
+  symbol: gAnubiceAnim_000A48
+
+gAnubiceAnim_000BAC:
+  type: OOT:ANIMATION
+  offset: 0xBAC
+  symbol: gAnubiceAnim_000BAC
+
+gAnubiceAttackingAnim:
+  type: OOT:ANIMATION
+  offset: 0x78C
+  symbol: gAnubiceAttackingAnim
+
+gAnubiceEyesDL:
+  type: GFX
+  offset: 0x3468
+  symbol: gAnubiceEyesDL
+
+gAnubiceFallDownAnim:
+  type: OOT:ANIMATION
+  offset: 0x348
+  symbol: gAnubiceFallDownAnim
+
+gAnubiceFireAttackDL:
+  type: GFX
+  offset: 0x3510
+  symbol: gAnubiceFireAttackDL
+
+gAnubiceIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0xF74
+  symbol: gAnubiceIdleAnim
+
+gAnubiceLaughingAnim:
+  type: OOT:ANIMATION
+  offset: 0x144
+  symbol: gAnubiceLaughingAnim
+
+gAnubiceSkel:
+  type: OOT:SKELETON
+  offset: 0x3990
+  symbol: gAnubiceSkel
+  limb_type: Standard
+  skel_type: Normal
+
+gAnubiceStandUpAnim:
+  type: OOT:ANIMATION
+  offset: 0x930
+  symbol: gAnubiceStandUpAnim
+
+gAnubiceUnusedParticleMaterialDL:
+  type: GFX
+  offset: 0x3610
+  symbol: gAnubiceUnusedParticleMaterialDL
+
+gAnubiceUnusedParticleModelDL:
+  type: GFX
+  offset: 0x3688
+  symbol: gAnubiceUnusedParticleModelDL
+
+object_anubiceTex_000F90:
+  type: TEXTURE
+  offset: 0xF90
+  symbol: object_anubiceTex_000F90
+  format: RGBA16
+  width: 8
+  height: 16
+
+object_anubiceTex_001090:
+  type: TEXTURE
+  offset: 0x1090
+  symbol: object_anubiceTex_001090
+  format: RGBA16
+  width: 4
+  height: 16
+
+object_anubiceTex_001110:
+  type: TEXTURE
+  offset: 0x1110
+  symbol: object_anubiceTex_001110
+  format: RGBA16
+  width: 16
+  height: 32
+
+object_anubiceTex_001510:
+  type: TEXTURE
+  offset: 0x1510
+  symbol: object_anubiceTex_001510
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_anubiceTex_001590:
+  type: TEXTURE
+  offset: 0x1590
+  symbol: object_anubiceTex_001590
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_anubiceTex_001610:
+  type: TEXTURE
+  offset: 0x1610
+  symbol: object_anubiceTex_001610
+  format: RGBA16
+  width: 4
+  height: 16
+
+object_anubiceTex_001690:
+  type: TEXTURE
+  offset: 0x1690
+  symbol: object_anubiceTex_001690
+  format: IA16
+  width: 32
+  height: 16
+
+object_anubiceTex_001A90:
+  type: TEXTURE
+  offset: 0x1A90
+  symbol: object_anubiceTex_001A90
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_anubiceTex_0036A0:
+  type: TEXTURE
+  offset: 0x36A0
+  symbol: object_anubiceTex_0036A0
+  format: I4
+  width: 32
+  height: 32
+
+
+object_anubiceVtx_001B10:
+  type: OOT:ARRAY
+  offset: 0x001B10
+  symbol: object_anubiceVtx_001B10
+  count: 62
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_anubiceVtx_001EF0:
+  type: OOT:ARRAY
+  offset: 0x001EF0
+  symbol: object_anubiceVtx_001EF0
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_anubiceVtx_002030:
+  type: OOT:ARRAY
+  offset: 0x002030
+  symbol: object_anubiceVtx_002030
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_anubiceVtx_002170:
+  type: OOT:ARRAY
+  offset: 0x002170
+  symbol: object_anubiceVtx_002170
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_anubiceVtx_0022B0:
+  type: OOT:ARRAY
+  offset: 0x0022B0
+  symbol: object_anubiceVtx_0022B0
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_anubiceVtx_0023C0:
+  type: OOT:ARRAY
+  offset: 0x0023C0
+  symbol: object_anubiceVtx_0023C0
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_anubiceVtx_002410:
+  type: OOT:ARRAY
+  offset: 0x002410
+  symbol: object_anubiceVtx_002410
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_anubiceVtx_002510:
+  type: OOT:ARRAY
+  offset: 0x002510
+  symbol: object_anubiceVtx_002510
+  count: 115
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_anubiceVtx_002C40:
+  type: OOT:ARRAY
+  offset: 0x002C40
+  symbol: object_anubiceVtx_002C40
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gAnubiceSkelLimbsLimb_0038B8DL_002CE0:
+  type: GFX
+  offset: 0x002CE0
+  symbol: gAnubiceSkelLimbsLimb_0038B8DL_002CE0
+
+gAnubiceSkelLimbsLimb_0038D0DL_002E30:
+  type: GFX
+  offset: 0x002E30
+  symbol: gAnubiceSkelLimbsLimb_0038D0DL_002E30
+
+gAnubiceSkelLimbsLimb_0038DCDL_002EE0:
+  type: GFX
+  offset: 0x002EE0
+  symbol: gAnubiceSkelLimbsLimb_0038DCDL_002EE0
+
+gAnubiceSkelLimbsLimb_0038F4DL_002F90:
+  type: GFX
+  offset: 0x002F90
+  symbol: gAnubiceSkelLimbsLimb_0038F4DL_002F90
+
+gAnubiceSkelLimbsLimb_003900DL_003040:
+  type: GFX
+  offset: 0x003040
+  symbol: gAnubiceSkelLimbsLimb_003900DL_003040
+
+gAnubiceSkelLimbsLimb_003918DL_003108:
+  type: GFX
+  offset: 0x003108
+  symbol: gAnubiceSkelLimbsLimb_003918DL_003108
+
+gAnubiceSkelLimbsLimb_003948DL_0031A0:
+  type: GFX
+  offset: 0x0031A0
+  symbol: gAnubiceSkelLimbsLimb_003948DL_0031A0
+
+gAnubiceSkelLimbsLimb_003930DL_003288:
+  type: GFX
+  offset: 0x003288
+  symbol: gAnubiceSkelLimbsLimb_003930DL_003288
+
+object_anubiceVtx_003590:
+  type: OOT:ARRAY
+  offset: 0x003590
+  symbol: object_anubiceVtx_003590
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_anubiceVtx_0035D0:
+  type: OOT:ARRAY
+  offset: 0x0035D0
+  symbol: object_anubiceVtx_0035D0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gAnubiceSkelLimbsLimb_0038A0:
+  type: OOT:LIMB
+  offset: 0x0038A0
+  symbol: gAnubiceSkelLimbsLimb_0038A0
+  limb_type: Standard
+
+gAnubiceSkelLimbsLimb_0038AC:
+  type: OOT:LIMB
+  offset: 0x0038AC
+  symbol: gAnubiceSkelLimbsLimb_0038AC
+  limb_type: Standard
+
+gAnubiceSkelLimbsLimb_0038B8:
+  type: OOT:LIMB
+  offset: 0x0038B8
+  symbol: gAnubiceSkelLimbsLimb_0038B8
+  limb_type: Standard
+
+gAnubiceSkelLimbsLimb_0038C4:
+  type: OOT:LIMB
+  offset: 0x0038C4
+  symbol: gAnubiceSkelLimbsLimb_0038C4
+  limb_type: Standard
+
+gAnubiceSkelLimbsLimb_0038D0:
+  type: OOT:LIMB
+  offset: 0x0038D0
+  symbol: gAnubiceSkelLimbsLimb_0038D0
+  limb_type: Standard
+
+gAnubiceSkelLimbsLimb_0038DC:
+  type: OOT:LIMB
+  offset: 0x0038DC
+  symbol: gAnubiceSkelLimbsLimb_0038DC
+  limb_type: Standard
+
+gAnubiceSkelLimbsLimb_0038E8:
+  type: OOT:LIMB
+  offset: 0x0038E8
+  symbol: gAnubiceSkelLimbsLimb_0038E8
+  limb_type: Standard
+
+gAnubiceSkelLimbsLimb_0038F4:
+  type: OOT:LIMB
+  offset: 0x0038F4
+  symbol: gAnubiceSkelLimbsLimb_0038F4
+  limb_type: Standard
+
+gAnubiceSkelLimbsLimb_003900:
+  type: OOT:LIMB
+  offset: 0x003900
+  symbol: gAnubiceSkelLimbsLimb_003900
+  limb_type: Standard
+
+gAnubiceSkelLimbsLimb_00390C:
+  type: OOT:LIMB
+  offset: 0x00390C
+  symbol: gAnubiceSkelLimbsLimb_00390C
+  limb_type: Standard
+
+gAnubiceSkelLimbsLimb_003918:
+  type: OOT:LIMB
+  offset: 0x003918
+  symbol: gAnubiceSkelLimbsLimb_003918
+  limb_type: Standard
+
+gAnubiceSkelLimbsLimb_003924:
+  type: OOT:LIMB
+  offset: 0x003924
+  symbol: gAnubiceSkelLimbsLimb_003924
+  limb_type: Standard
+
+gAnubiceSkelLimbsLimb_003930:
+  type: OOT:LIMB
+  offset: 0x003930
+  symbol: gAnubiceSkelLimbsLimb_003930
+  limb_type: Standard
+
+gAnubiceSkelLimbsLimb_00393C:
+  type: OOT:LIMB
+  offset: 0x00393C
+  symbol: gAnubiceSkelLimbsLimb_00393C
+  limb_type: Standard
+
+gAnubiceSkelLimbsLimb_003948:
+  type: OOT:LIMB
+  offset: 0x003948
+  symbol: gAnubiceSkelLimbsLimb_003948
+  limb_type: Standard
+
+gAnubiceSkelLimbs:
+  type: BLOB
+  offset: 0x3954
+  symbol: gAnubiceSkelLimbs
+  size: 0

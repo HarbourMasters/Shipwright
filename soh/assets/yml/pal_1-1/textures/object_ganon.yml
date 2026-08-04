@@ -1,0 +1,28 @@
+:config:
+  segments:
+    - [ 6, 0x010ED0C0 ]
+
+gGanondorfTitleCardENGTex:
+  type: TEXTURE
+  offset: 0xcf00
+  symbol: gGanondorfTitleCardENGTex
+  format: IA8
+  width: 128
+  height: 40
+
+gGanondorfTitleCardFRATex:
+  type: TEXTURE
+  offset: 0xf700
+  symbol: gGanondorfTitleCardFRATex
+  format: IA8
+  width: 128
+  height: 40
+
+gGanondorfTitleCardGERTex:
+  type: TEXTURE
+  offset: 0xe300
+  symbol: gGanondorfTitleCardGERTex
+  format: IA8
+  width: 128
+  height: 40
+

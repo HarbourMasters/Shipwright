@@ -136,7 +136,7 @@ class EntranceShuffler {
     int ShuffleAllEntrances();
     void CreateEntranceOverrides();
     void UnshuffleAllEntrances();
-    void ParseJson(nlohmann::json spoilerFileJson);
+    void ParseJson(const nlohmann::json& spoilerFileJson);
     void ApplyEntranceOverrides();
 
     static const Entrance* GetEntranceByIndex(int16_t index);

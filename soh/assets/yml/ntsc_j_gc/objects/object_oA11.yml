@@ -1,0 +1,323 @@
+:config:
+  segments:
+    - [ 6, 0x00EEF250 ]
+    - [ 4, 0x00D31090 ]
+    - [ 8, 0x00EEF250 ]
+    - [ 9, 0x00EEF250 ]
+    - [ 10, 0x00EEF250 ]
+    - [ 11, 0x00EEF250 ]
+    - [ 12, 0x00EEF250 ]
+    - [ 13, 0x00EEF250 ]
+  external_files:
+    - ntsc_j_gc/objects/gameplay_keep.yml
+
+object_oA11_DL_000A58:
+  type: GFX
+  offset: 0xA58
+  symbol: object_oA11_DL_000A58
+
+object_oA11_DL_000BA8:
+  type: GFX
+  offset: 0xBA8
+  symbol: object_oA11_DL_000BA8
+
+object_oA11_DL_000C40:
+  type: GFX
+  offset: 0xC40
+  symbol: object_oA11_DL_000C40
+
+object_oA11_DL_000D28:
+  type: GFX
+  offset: 0xD28
+  symbol: object_oA11_DL_000D28
+
+object_oA11_DL_000DD0:
+  type: GFX
+  offset: 0xDD0
+  symbol: object_oA11_DL_000DD0
+
+object_oA11_DL_000EF0:
+  type: GFX
+  offset: 0xEF0
+  symbol: object_oA11_DL_000EF0
+
+object_oA11_DL_000FD8:
+  type: GFX
+  offset: 0xFD8
+  symbol: object_oA11_DL_000FD8
+
+object_oA11_Limb_000000:
+  type: OOT:LIMB
+  offset: 0x0
+  symbol: object_oA11_Limb_000000
+  limb_type: Standard
+
+object_oA11_Limb_00000C:
+  type: OOT:LIMB
+  offset: 0xC
+  symbol: object_oA11_Limb_00000C
+  limb_type: Standard
+
+object_oA11_Limb_000018:
+  type: OOT:LIMB
+  offset: 0x18
+  symbol: object_oA11_Limb_000018
+  limb_type: Standard
+
+object_oA11_Limb_000024:
+  type: OOT:LIMB
+  offset: 0x24
+  symbol: object_oA11_Limb_000024
+  limb_type: Standard
+
+object_oA11_Limb_000030:
+  type: OOT:LIMB
+  offset: 0x30
+  symbol: object_oA11_Limb_000030
+  limb_type: Standard
+
+object_oA11_Limb_00003C:
+  type: OOT:LIMB
+  offset: 0x3C
+  symbol: object_oA11_Limb_00003C
+  limb_type: Standard
+
+object_oA11_Limb_000048:
+  type: OOT:LIMB
+  offset: 0x48
+  symbol: object_oA11_Limb_000048
+  limb_type: Standard
+
+object_oA11_Limb_000054:
+  type: OOT:LIMB
+  offset: 0x54
+  symbol: object_oA11_Limb_000054
+  limb_type: Standard
+
+object_oA11_Limb_000084:
+  type: OOT:LIMB
+  offset: 0x84
+  symbol: object_oA11_Limb_000084
+  limb_type: Standard
+
+object_oA11_Limb_000090:
+  type: OOT:LIMB
+  offset: 0x90
+  symbol: object_oA11_Limb_000090
+  limb_type: Standard
+
+object_oA11_Limb_00009C:
+  type: OOT:LIMB
+  offset: 0x9C
+  symbol: object_oA11_Limb_00009C
+  limb_type: Standard
+
+object_oA11_Limb_0000A8:
+  type: OOT:LIMB
+  offset: 0xA8
+  symbol: object_oA11_Limb_0000A8
+  limb_type: Standard
+
+object_oA11_Limb_0000E4:
+  type: OOT:LIMB
+  offset: 0xE4
+  symbol: object_oA11_Limb_0000E4
+  limb_type: Standard
+
+object_oA11_Limb_0000F0:
+  type: OOT:LIMB
+  offset: 0xF0
+  symbol: object_oA11_Limb_0000F0
+  limb_type: Standard
+
+object_oA11_Limb_0000FC:
+  type: OOT:LIMB
+  offset: 0xFC
+  symbol: object_oA11_Limb_0000FC
+  limb_type: Standard
+
+object_oA11_Limb_000114:
+  type: OOT:LIMB
+  offset: 0x114
+  symbol: object_oA11_Limb_000114
+  limb_type: Standard
+
+object_oA11_Limb_000120:
+  type: OOT:LIMB
+  offset: 0x120
+  symbol: object_oA11_Limb_000120
+  limb_type: Standard
+
+object_oA11_Limb_00012C:
+  type: OOT:LIMB
+  offset: 0x12C
+  symbol: object_oA11_Limb_00012C
+  limb_type: Standard
+
+object_oA11_Limb_000138:
+  type: OOT:LIMB
+  offset: 0x138
+  symbol: object_oA11_Limb_000138
+  limb_type: Standard
+
+object_oA11_Limb_000144:
+  type: OOT:LIMB
+  offset: 0x144
+  symbol: object_oA11_Limb_000144
+  limb_type: Standard
+
+object_oA11_Limb_000150:
+  type: OOT:LIMB
+  offset: 0x150
+  symbol: object_oA11_Limb_000150
+  limb_type: Standard
+
+object_oA11_Limb_00015C:
+  type: OOT:LIMB
+  offset: 0x15C
+  symbol: object_oA11_Limb_00015C
+  limb_type: Standard
+
+object_oA11_Limb_000168:
+  type: OOT:LIMB
+  offset: 0x168
+  symbol: object_oA11_Limb_000168
+  limb_type: Standard
+
+object_oA11_Limb_000174:
+  type: OOT:LIMB
+  offset: 0x174
+  symbol: object_oA11_Limb_000174
+  limb_type: Standard
+
+object_oA11_Limb_000180:
+  type: OOT:LIMB
+  offset: 0x180
+  symbol: object_oA11_Limb_000180
+  limb_type: Standard
+
+object_oA11_Limb_00018C:
+  type: OOT:LIMB
+  offset: 0x18C
+  symbol: object_oA11_Limb_00018C
+  limb_type: Standard
+
+object_oA11_Limb_000198:
+  type: OOT:LIMB
+  offset: 0x198
+  symbol: object_oA11_Limb_000198
+  limb_type: Standard
+
+object_oA11_Limb_0001A4:
+  type: OOT:LIMB
+  offset: 0x1A4
+  symbol: object_oA11_Limb_0001A4
+  limb_type: Standard
+
+object_oA11_Limb_0001B0:
+  type: OOT:LIMB
+  offset: 0x1B0
+  symbol: object_oA11_Limb_0001B0
+  limb_type: Standard
+
+object_oA11_Limb_0001BC:
+  type: OOT:LIMB
+  offset: 0x1BC
+  symbol: object_oA11_Limb_0001BC
+  limb_type: Standard
+
+object_oA11_Tex_001080:
+  type: TEXTURE
+  offset: 0x1080
+  symbol: object_oA11_Tex_001080
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_oA11_Tex_001100:
+  type: TEXTURE
+  offset: 0x1100
+  symbol: object_oA11_Tex_001100
+  format: I4
+  width: 16
+  height: 8
+
+object_oA11_Tex_001140:
+  type: TEXTURE
+  offset: 0x1140
+  symbol: object_oA11_Tex_001140
+  format: RGBA16
+  width: 16
+  height: 32
+
+object_oA11_Tex_001540:
+  type: TEXTURE
+  offset: 0x1540
+  symbol: object_oA11_Tex_001540
+  format: RGBA16
+  width: 8
+  height: 8
+
+
+object_oA11Vtx_000268:
+  type: OOT:ARRAY
+  offset: 0x000268
+  symbol: object_oA11Vtx_000268
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_oA11Vtx_000418:
+  type: OOT:ARRAY
+  offset: 0x000418
+  symbol: object_oA11Vtx_000418
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_oA11Vtx_0004D8:
+  type: OOT:ARRAY
+  offset: 0x0004D8
+  symbol: object_oA11Vtx_0004D8
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_oA11Vtx_000598:
+  type: OOT:ARRAY
+  offset: 0x000598
+  symbol: object_oA11Vtx_000598
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_oA11Vtx_0006D8:
+  type: OOT:ARRAY
+  offset: 0x0006D8
+  symbol: object_oA11Vtx_0006D8
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_oA11Vtx_000858:
+  type: OOT:ARRAY
+  offset: 0x000858
+  symbol: object_oA11Vtx_000858
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_oA11Vtx_000918:
+  type: OOT:ARRAY
+  offset: 0x000918
+  symbol: object_oA11Vtx_000918
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

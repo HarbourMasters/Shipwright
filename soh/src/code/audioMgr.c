@@ -1,6 +1,5 @@
 #include "global.h"
 #include <string.h>
-#include "soh/OTRGlobals.h"
 
 void func_800C3C80(AudioMgr* audioMgr) {
     AudioTask* task;

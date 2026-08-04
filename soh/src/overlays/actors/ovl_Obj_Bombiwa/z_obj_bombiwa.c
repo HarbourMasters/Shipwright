@@ -7,6 +7,7 @@
 #include "z_obj_bombiwa.h"
 #include "overlays/effects/ovl_Effect_Ss_Kakera/z_eff_ss_kakera.h"
 #include "objects/object_bombiwa/object_bombiwa.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS 0
 
@@ -75,7 +76,7 @@ void ObjBombiwa_InitCollision(Actor* thisx, PlayState* play) {
 void ObjBombiwa_Init(Actor* thisx, PlayState* play) {
     Actor_ProcessInitChain(thisx, sInitChain);
     ObjBombiwa_InitCollision(thisx, play);
-    if ((Flags_GetSwitch(play, thisx->params & 0x3F) != 0)) {
+    if (GameInteractor_Should(VB_BOULDER_BREAK_FLAG, Flags_GetSwitch(play, thisx->params & 0x3F), thisx)) {
         Actor_Kill(thisx);
     } else {
         CollisionCheck_SetInfo(&thisx->colChkInfo, NULL, &sColChkInfoInit);
@@ -133,6 +134,7 @@ void ObjBombiwa_Update(Actor* thisx, PlayState* play) {
         if (((this->actor.params >> 0xF) & 1) != 0) {
             Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
         }
+        GameInteractor_Should(VB_ROCK_DROP_ITEM, false, this);
         Actor_Kill(&this->actor);
     } else {
         this->collider.base.acFlags &= ~AC_HIT;

@@ -1,0 +1,127 @@
+:config:
+  segments:
+    - [ 3, 0x01749EF0 ]
+    - [ 2, 0x0172B9B0 ]
+  directory: scenes/mq/bdan_scene
+  external_files:
+    - ntsc_j_mq/scenes/mq/bdan_scene.yml
+    - ntsc_j_mq/code/sys_matrix.yml
+    - ntsc_j_mq/scenes/mq/bdan_room_5Set_000180.yml
+
+bdan_room_5:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: bdan_room_5
+
+bdan_room_5Tex_0024A8:
+  type: TEXTURE
+  offset: 0x24A8
+  symbol: bdan_room_5Tex_0024A8
+  format: CI8
+  width: 32
+  height: 32
+  external_tlut: bdan_scene
+  external_tlut_offset: 0x139F0
+
+bdan_room_5Tex_0028A8:
+  type: TEXTURE
+  offset: 0x28A8
+  symbol: bdan_room_5Tex_0028A8
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: bdan_scene
+  external_tlut_offset: 0x139F0
+
+bdan_room_5Tex_0030A8:
+  type: TEXTURE
+  offset: 0x30A8
+  symbol: bdan_room_5Tex_0030A8
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: bdan_scene
+  external_tlut_offset: 0x139F0
+
+bdan_room_5Tex_004090:
+  type: TEXTURE
+  offset: 0x4090
+  symbol: bdan_room_5Tex_004090
+  format: RGBA16
+  width: 32
+  height: 64
+
+bdan_room_5Tex_005090:
+  type: TEXTURE
+  offset: 0x5090
+  symbol: bdan_room_5Tex_005090
+  format: IA16
+  width: 32
+  height: 64
+
+
+bdan_room_5Vtx_000210:
+  type: OOT:ARRAY
+  offset: 0x000210
+  symbol: bdan_room_5Vtx_000210
+  count: 363
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+bdan_room_5DL_0018C0:
+  type: GFX
+  offset: 0x0018C0
+  symbol: bdan_room_5DL_0018C0
+
+bdan_room_5DL_002498:
+  type: GFX
+  offset: 0x002498
+  symbol: bdan_room_5DL_002498
+
+bdan_room_5Vtx_0038B0:
+  type: OOT:ARRAY
+  offset: 0x0038B0
+  symbol: bdan_room_5Vtx_0038B0
+  count: 39
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+bdan_room_5DL_003B20:
+  type: GFX
+  offset: 0x003B20
+  symbol: bdan_room_5DL_003B20
+
+bdan_room_5Vtx_003C40:
+  type: OOT:ARRAY
+  offset: 0x003C40
+  symbol: bdan_room_5Vtx_003C40
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+bdan_room_5DL_003D10:
+  type: GFX
+  offset: 0x003D10
+  symbol: bdan_room_5DL_003D10
+
+bdan_room_5Vtx_003E00:
+  type: OOT:ARRAY
+  offset: 0x003E00
+  symbol: bdan_room_5Vtx_003E00
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+bdan_room_5DL_003F80:
+  type: GFX
+  offset: 0x003F80
+  symbol: bdan_room_5DL_003F80
+
+bdan_room_5DL_004070:
+  type: GFX
+  offset: 0x004070
+  symbol: bdan_room_5DL_004070

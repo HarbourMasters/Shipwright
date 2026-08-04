@@ -1,5 +1,8 @@
 #include "ConfigUpdaters.h"
 
+#include <libultraship/bridge/consolevariablebridge.h>
+#include "soh/Enhancements/randomizer/randomizerEnums.h"
+
 namespace SOH {
 struct Migration {
     const char* from;
@@ -1445,6 +1448,16 @@ static const Migration version6Migrations[] = {
     { nullptr, nullptr },
 };
 
+static const Migration version7Migrations[] = {
+    { "gRandoSettings.LacsStoneCount", "gRandoSettings.GbkStoneCount" },
+    { "gRandoSettings.LacsMedallionCount", "gRandoSettings.GbkMedallionCount" },
+    { "gRandoSettings.LacsRewardCount", "gRandoSettings.GbkRewardCount" },
+    { "gRandoSettings.LacsDungeonCount", "gRandoSettings.GbkDungeonCount" },
+    { "gRandoSettings.LacsTokenCount", "gRandoSettings.GbkTokenCount" },
+    { "gRandoSettings.LacsRewardOptions", "gRandoSettings.GbkRewardOptions" },
+    { nullptr, nullptr },
+};
+
 static void ApplyMigrationActions(const Migration* migrations) {
     while (migrations->from != nullptr) {
         if (migrations->to != nullptr) {
@@ -1466,6 +1479,8 @@ ConfigVersion4Updater::ConfigVersion4Updater() : ConfigVersionUpdater(4) {
 ConfigVersion5Updater::ConfigVersion5Updater() : ConfigVersionUpdater(5) {
 }
 ConfigVersion6Updater::ConfigVersion6Updater() : ConfigVersionUpdater(6) {
+}
+ConfigVersion7Updater::ConfigVersion7Updater() : ConfigVersionUpdater(7) {
 }
 
 void ConfigVersion1Updater::Update(Ship::Config* conf) {
@@ -1578,5 +1593,81 @@ void ConfigVersion5Updater::Update(Ship::Config* conf) {
 
 void ConfigVersion6Updater::Update(Ship::Config* conf) {
     ApplyMigrationActions(version6Migrations);
+}
+
+void ConfigVersion7Updater::Update(Ship::Config* conf) {
+    ApplyMigrationActions(version7Migrations);
+
+    // Ganon's Boss Key: the LACS-* values were replaced by generic Trigger-* values
+    switch (CVarGetInteger("gRandoSettings.ShuffleGanonBossKey", 0)) {
+        case 6: // LACS-Vanilla (Shadow and Spirit Medallions)
+            CVarSetInteger("gRandoSettings.ShuffleGanonBossKey", RO_GANON_BOSS_KEY_MEDALLIONS);
+            CVarSetInteger("gRandoSettings.GbkMedallionCount", 2);
+            break;
+        case 7: // LACS-Stones
+            CVarSetInteger("gRandoSettings.ShuffleGanonBossKey", RO_GANON_BOSS_KEY_STONES);
+            break;
+        case 8: // LACS-Medallions
+            CVarSetInteger("gRandoSettings.ShuffleGanonBossKey", RO_GANON_BOSS_KEY_MEDALLIONS);
+            break;
+        case 9: // LACS-Rewards
+            CVarSetInteger("gRandoSettings.ShuffleGanonBossKey", RO_GANON_BOSS_KEY_REWARDS);
+            break;
+        case 10: // LACS-Dungeons
+            CVarSetInteger("gRandoSettings.ShuffleGanonBossKey", RO_GANON_BOSS_KEY_DUNGEONS);
+            break;
+        case 11: // LACS-Tokens
+            CVarSetInteger("gRandoSettings.ShuffleGanonBossKey", RO_GANON_BOSS_KEY_TOKENS);
+            break;
+        case 12: // 100 GS Reward
+            CVarSetInteger("gRandoSettings.ShuffleGanonBossKey", RO_GANON_BOSS_KEY_TOKENS);
+            CVarSetInteger("gRandoSettings.GbkTokenCount", 100);
+            break;
+    }
+
+    // Triforce Hunt: the Off/Win/GBK combobox was folded into TriforceHuntTotalPieces (0 = off)
+    // and the required piece count moved to the Wincon/GBK trigger counts
+    switch (CVarGetInteger("gRandoSettings.TriforceHunt", 0)) {
+        case 1: // Win
+            CVarSetInteger("gRandoSettings.ShuffleWincon", RO_WINCON_TRIFORCE_PIECES);
+            CVarSetInteger("gRandoSettings.WinconTriforceCount",
+                           CVarGetInteger("gRandoSettings.TriforceHuntRequiredPieces", 19));
+            CVarSetInteger("gRandoSettings.TriforceHuntTotalPieces",
+                           CVarGetInteger("gRandoSettings.TriforceHuntTotalPieces", 29));
+            break;
+        case 2: // Ganon's Boss Key
+            CVarSetInteger("gRandoSettings.ShuffleGanonBossKey", RO_GANON_BOSS_KEY_TRIFORCE_PIECES);
+            CVarSetInteger("gRandoSettings.GbkTriforceCount",
+                           CVarGetInteger("gRandoSettings.TriforceHuntRequiredPieces", 19));
+            CVarSetInteger("gRandoSettings.TriforceHuntTotalPieces",
+                           CVarGetInteger("gRandoSettings.TriforceHuntTotalPieces", 29));
+            break;
+        default: // Off; a leftover total would now silently enable the hunt
+            CVarClear("gRandoSettings.TriforceHuntTotalPieces");
+            break;
+    }
+    CVarClear("gRandoSettings.TriforceHunt");
+    CVarClear("gRandoSettings.TriforceHuntRequiredPieces");
+
+    // Rainbow Bridge: Triforce Pieces was inserted at 7, shifting Greg from 7 to 8
+    if (CVarGetInteger("gRandoSettings.RainbowBridge", 0) == 7) {
+        CVarSetInteger("gRandoSettings.RainbowBridge", RO_BRIDGE_GREG);
+    }
+
+    // Boss Souls: On + Ganon was split into On plus the standalone Ganon's Soul setting
+    if (CVarGetInteger("gRandoSettings.ShuffleBossSouls", 0) == 2) {
+        CVarSetInteger("gRandoSettings.ShuffleBossSouls", RO_BOSS_SOULS_ON);
+        CVarSetInteger("gRandoSettings.ShuffleGanonsSoul", RO_GANONS_SOUL_ANYWHERE);
+    }
+
+    // Skip Child Zelda split into starting with unshuffled Zelda's Letter & Skip Waking Talon
+    if (CVarGetInteger("gRandoSettings.SkipChildZelda", 0)) {
+        CVarSetInteger("gRandoSettings.StartingZeldasLetter", 1);
+        CVarSetInteger("gRandoSettings.ShuffleWeirdEgg", RO_WEIRD_EGG_SKIP_TALON);
+    }
+    CVarClear("gRandoSettings.SkipChildZelda");
+
+    // Kakariko Gate setting removed; the gate opens when starting with an unshuffled letter
+    CVarClear("gRandoSettings.KakarikoGate");
 }
 } // namespace SOH

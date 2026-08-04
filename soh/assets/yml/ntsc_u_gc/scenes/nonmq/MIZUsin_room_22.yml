@@ -1,0 +1,234 @@
+:config:
+  segments:
+    - [ 3, 0x01895DD0 ]
+    - [ 2, 0x0182ED00 ]
+  directory: scenes/nonmq/MIZUsin_scene
+  external_files:
+    - ntsc_u_gc/scenes/nonmq/MIZUsin_scene.yml
+    - ntsc_u_gc/code/sys_matrix.yml
+
+MIZUsin_room_22:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: MIZUsin_room_22
+
+MIZUsin_room_22Tex_0044E8:
+  type: TEXTURE
+  offset: 0x44E8
+  symbol: MIZUsin_room_22Tex_0044E8
+  format: RGBA16
+  width: 32
+  height: 16
+
+MIZUsin_room_22Tex_0048E8:
+  type: TEXTURE
+  offset: 0x48E8
+  symbol: MIZUsin_room_22Tex_0048E8
+  format: RGBA16
+  width: 32
+  height: 32
+
+MIZUsin_room_22Tex_0050E8:
+  type: TEXTURE
+  offset: 0x50E8
+  symbol: MIZUsin_room_22Tex_0050E8
+  format: RGBA16
+  width: 32
+  height: 32
+
+MIZUsin_room_22Tex_0058E8:
+  type: TEXTURE
+  offset: 0x58E8
+  symbol: MIZUsin_room_22Tex_0058E8
+  format: RGBA16
+  width: 32
+  height: 32
+
+MIZUsin_room_22Tex_0060E8:
+  type: TEXTURE
+  offset: 0x60E8
+  symbol: MIZUsin_room_22Tex_0060E8
+  format: RGBA16
+  width: 32
+  height: 32
+
+MIZUsin_room_22Tex_0068E8:
+  type: TEXTURE
+  offset: 0x68E8
+  symbol: MIZUsin_room_22Tex_0068E8
+  format: RGBA16
+  width: 32
+  height: 32
+
+MIZUsin_room_22Tex_0070E8:
+  type: TEXTURE
+  offset: 0x70E8
+  symbol: MIZUsin_room_22Tex_0070E8
+  format: RGBA16
+  width: 32
+  height: 32
+
+MIZUsin_room_22Tex_0078E8:
+  type: TEXTURE
+  offset: 0x78E8
+  symbol: MIZUsin_room_22Tex_0078E8
+  format: RGBA16
+  width: 32
+  height: 32
+
+MIZUsin_room_22Tex_0080E8:
+  type: TEXTURE
+  offset: 0x80E8
+  symbol: MIZUsin_room_22Tex_0080E8
+  format: RGBA16
+  width: 32
+  height: 32
+
+MIZUsin_room_22Tex_0088E8:
+  type: TEXTURE
+  offset: 0x88E8
+  symbol: MIZUsin_room_22Tex_0088E8
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+MIZUsin_room_22Vtx_000100:
+  type: OOT:ARRAY
+  offset: 0x000100
+  symbol: MIZUsin_room_22Vtx_000100
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+MIZUsin_room_22DL_000380:
+  type: GFX
+  offset: 0x000380
+  symbol: MIZUsin_room_22DL_000380
+
+MIZUsin_room_22Vtx_000470:
+  type: OOT:ARRAY
+  offset: 0x000470
+  symbol: MIZUsin_room_22Vtx_000470
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+MIZUsin_room_22DL_0006D0:
+  type: GFX
+  offset: 0x0006D0
+  symbol: MIZUsin_room_22DL_0006D0
+
+MIZUsin_room_22Vtx_0007E0:
+  type: OOT:ARRAY
+  offset: 0x0007E0
+  symbol: MIZUsin_room_22Vtx_0007E0
+  count: 398
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+MIZUsin_room_22DL_0020C0:
+  type: GFX
+  offset: 0x0020C0
+  symbol: MIZUsin_room_22DL_0020C0
+
+MIZUsin_room_22Vtx_002508:
+  type: OOT:ARRAY
+  offset: 0x002508
+  symbol: MIZUsin_room_22Vtx_002508
+  count: 97
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+MIZUsin_room_22DL_002B18:
+  type: GFX
+  offset: 0x002B18
+  symbol: MIZUsin_room_22DL_002B18
+
+MIZUsin_room_22Vtx_002D70:
+  type: OOT:ARRAY
+  offset: 0x002D70
+  symbol: MIZUsin_room_22Vtx_002D70
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+MIZUsin_room_22DL_002E40:
+  type: GFX
+  offset: 0x002E40
+  symbol: MIZUsin_room_22DL_002E40
+
+MIZUsin_room_22Vtx_002F40:
+  type: OOT:ARRAY
+  offset: 0x002F40
+  symbol: MIZUsin_room_22Vtx_002F40
+  count: 70
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+MIZUsin_room_22DL_0033A0:
+  type: GFX
+  offset: 0x0033A0
+  symbol: MIZUsin_room_22DL_0033A0
+
+MIZUsin_room_22Vtx_003518:
+  type: OOT:ARRAY
+  offset: 0x003518
+  symbol: MIZUsin_room_22Vtx_003518
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+MIZUsin_room_22DL_003778:
+  type: GFX
+  offset: 0x003778
+  symbol: MIZUsin_room_22DL_003778
+
+MIZUsin_room_22Vtx_0038C8:
+  type: OOT:ARRAY
+  offset: 0x0038C8
+  symbol: MIZUsin_room_22Vtx_0038C8
+  count: 84
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+MIZUsin_room_22DL_003E08:
+  type: GFX
+  offset: 0x003E08
+  symbol: MIZUsin_room_22DL_003E08
+
+MIZUsin_room_22Vtx_003FA8:
+  type: OOT:ARRAY
+  offset: 0x003FA8
+  symbol: MIZUsin_room_22Vtx_003FA8
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+MIZUsin_room_22DL_0040C8:
+  type: GFX
+  offset: 0x0040C8
+  symbol: MIZUsin_room_22DL_0040C8
+
+MIZUsin_room_22Vtx_0041D0:
+  type: OOT:ARRAY
+  offset: 0x0041D0
+  symbol: MIZUsin_room_22Vtx_0041D0
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+MIZUsin_room_22DL_004370:
+  type: GFX
+  offset: 0x004370
+  symbol: MIZUsin_room_22DL_004370

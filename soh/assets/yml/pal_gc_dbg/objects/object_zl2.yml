@@ -1,0 +1,815 @@
+:config:
+  segments:
+    - [ 6, 0x012C0000 ]
+    - [ 4, 0x00F5E000 ]
+    - [ 8, 0x012C0000 ]
+    - [ 9, 0x012C0000 ]
+    - [ 10, 0x012C0000 ]
+    - [ 11, 0x012C0000 ]
+    - [ 12, 0x012C0000 ]
+    - [ 13, 0x012C0000 ]
+  external_files:
+    - pal_gc_dbg/objects/gameplay_keep.yml
+
+gZelda2Eye03Tex:
+  type: TEXTURE
+  offset: 0x4548
+  symbol: gZelda2Eye03Tex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x2B00
+
+gZelda2Eye04Tex:
+  type: TEXTURE
+  offset: 0x4948
+  symbol: gZelda2Eye04Tex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x2B00
+
+gZelda2Eye05Tex:
+  type: TEXTURE
+  offset: 0x4D48
+  symbol: gZelda2Eye05Tex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x2B00
+
+gZelda2Eye06Tex:
+  type: TEXTURE
+  offset: 0x5148
+  symbol: gZelda2Eye06Tex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x2B00
+
+gZelda2Eye07Tex:
+  type: TEXTURE
+  offset: 0x5D48
+  symbol: gZelda2Eye07Tex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x2B00
+
+gZelda2Eye08Tex:
+  type: TEXTURE
+  offset: 0x6148
+  symbol: gZelda2Eye08Tex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x2B00
+
+gZelda2EyeHalfTex:
+  type: TEXTURE
+  offset: 0x3C48
+  symbol: gZelda2EyeHalfTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x2B00
+
+gZelda2EyeOpenTex:
+  type: TEXTURE
+  offset: 0x30C8
+  symbol: gZelda2EyeOpenTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x2B00
+
+gZelda2EyeShutTex:
+  type: TEXTURE
+  offset: 0x4048
+  symbol: gZelda2EyeShutTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x2B00
+
+gZelda2EyeUnusedTex:
+  type: TEXTURE
+  offset: 0x600
+  symbol: gZelda2EyeUnusedTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gZelda2EyesTLUT:
+  type: TEXTURE
+  offset: 0x2B00
+  symbol: gZelda2EyesTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gZelda2MouthHappyTex:
+  type: TEXTURE
+  offset: 0x5548
+  symbol: gZelda2MouthHappyTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x2D90
+
+gZelda2MouthOpenTex:
+  type: TEXTURE
+  offset: 0x5948
+  symbol: gZelda2MouthOpenTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x2D90
+
+gZelda2MouthSeriousTex:
+  type: TEXTURE
+  offset: 0x3508
+  symbol: gZelda2MouthSeriousTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x2D90
+
+gZelda2MouthTLUT:
+  type: TEXTURE
+  offset: 0x2D90
+  symbol: gZelda2MouthTLUT
+  format: RGBA16
+  width: 16
+  height: 14
+
+gZelda2OcarinaDL:
+  type: GFX
+  offset: 0xBAE8
+  symbol: gZelda2OcarinaDL
+
+gZelda2OcarinaTex:
+  type: TEXTURE
+  offset: 0xB598
+  symbol: gZelda2OcarinaTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gZelda2Skel:
+  type: OOT:SKELETON
+  offset: 0x10D70
+  symbol: gZelda2Skel
+  limb_type: Standard
+  skel_type: Flex
+
+gZelda2TriforceTex:
+  type: TEXTURE
+  offset: 0x2900
+  symbol: gZelda2TriforceTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gZelda2_0TLUT:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gZelda2_0TLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gZelda2_1TLUT:
+  type: TEXTURE
+  offset: 0x200
+  symbol: gZelda2_1TLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gZelda2_2TLUT:
+  type: TEXTURE
+  offset: 0x400
+  symbol: gZelda2_2TLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gZelda2_3TLUT:
+  type: TEXTURE
+  offset: 0x2D00
+  symbol: gZelda2_3TLUT
+  format: RGBA16
+  width: 9
+  height: 8
+
+gZelda2_4TLUT:
+  type: TEXTURE
+  offset: 0x2F50
+  symbol: gZelda2_4TLUT
+  format: RGBA16
+  width: 47
+  height: 4
+
+gZelda2_5TLUT:
+  type: TEXTURE
+  offset: 0x9490
+  symbol: gZelda2_5TLUT
+  format: RGBA16
+  width: 17
+  height: 8
+
+gZelda2_6TLUT:
+  type: TEXTURE
+  offset: 0x95A0
+  symbol: gZelda2_6TLUT
+  format: RGBA16
+  width: 15
+  height: 12
+
+gZelda2_7TLUT:
+  type: TEXTURE
+  offset: 0x9708
+  symbol: gZelda2_7TLUT
+  format: RGBA16
+  width: 6
+  height: 4
+
+object_zl2Tex_000E00:
+  type: TEXTURE
+  offset: 0xE00
+  symbol: object_zl2Tex_000E00
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x0
+
+object_zl2Tex_000F00:
+  type: TEXTURE
+  offset: 0xF00
+  symbol: object_zl2Tex_000F00
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x0
+
+object_zl2Tex_000F40:
+  type: TEXTURE
+  offset: 0xF40
+  symbol: object_zl2Tex_000F40
+  format: CI8
+  width: 16
+  height: 32
+  tlut: 0x0
+
+object_zl2Tex_001140:
+  type: TEXTURE
+  offset: 0x1140
+  symbol: object_zl2Tex_001140
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x0
+
+object_zl2Tex_001180:
+  type: TEXTURE
+  offset: 0x1180
+  symbol: object_zl2Tex_001180
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x200
+
+object_zl2Tex_001280:
+  type: TEXTURE
+  offset: 0x1280
+  symbol: object_zl2Tex_001280
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x200
+
+object_zl2Tex_0012C0:
+  type: TEXTURE
+  offset: 0x12C0
+  symbol: object_zl2Tex_0012C0
+  format: CI8
+  width: 16
+  height: 64
+  tlut: 0x0
+
+object_zl2Tex_0016C0:
+  type: TEXTURE
+  offset: 0x16C0
+  symbol: object_zl2Tex_0016C0
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x400
+
+object_zl2Tex_001AC0:
+  type: TEXTURE
+  offset: 0x1AC0
+  symbol: object_zl2Tex_001AC0
+  format: CI8
+  width: 32
+  height: 16
+  tlut: 0x400
+
+object_zl2Tex_001CC0:
+  type: TEXTURE
+  offset: 0x1CC0
+  symbol: object_zl2Tex_001CC0
+  format: CI8
+  width: 32
+  height: 64
+  tlut: 0x400
+
+object_zl2Tex_0024C0:
+  type: TEXTURE
+  offset: 0x24C0
+  symbol: object_zl2Tex_0024C0
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x200
+
+object_zl2Tex_002500:
+  type: TEXTURE
+  offset: 0x2500
+  symbol: object_zl2Tex_002500
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x200
+
+object_zl2Tex_002600:
+  type: TEXTURE
+  offset: 0x2600
+  symbol: object_zl2Tex_002600
+  format: CI8
+  width: 32
+  height: 8
+  tlut: 0x400
+
+object_zl2Tex_002700:
+  type: TEXTURE
+  offset: 0x2700
+  symbol: object_zl2Tex_002700
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x400
+
+object_zl2Tex_002740:
+  type: TEXTURE
+  offset: 0x2740
+  symbol: object_zl2Tex_002740
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x400
+
+object_zl2Tex_002780:
+  type: TEXTURE
+  offset: 0x2780
+  symbol: object_zl2Tex_002780
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x400
+
+object_zl2Tex_002880:
+  type: TEXTURE
+  offset: 0x2880
+  symbol: object_zl2Tex_002880
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0x200
+
+object_zl2Tex_0034C8:
+  type: TEXTURE
+  offset: 0x34C8
+  symbol: object_zl2Tex_0034C8
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x2D00
+
+object_zl2Tex_003908:
+  type: TEXTURE
+  offset: 0x3908
+  symbol: object_zl2Tex_003908
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x2D00
+
+object_zl2Tex_003A08:
+  type: TEXTURE
+  offset: 0x3A08
+  symbol: object_zl2Tex_003A08
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x9490
+
+object_zl2Tex_003A48:
+  type: TEXTURE
+  offset: 0x3A48
+  symbol: object_zl2Tex_003A48
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0x2F50
+
+object_zl2Tex_003AC8:
+  type: TEXTURE
+  offset: 0x3AC8
+  symbol: object_zl2Tex_003AC8
+  format: CI8
+  width: 16
+  height: 8
+  tlut: 0x2F50
+
+object_zl2Tex_003B48:
+  type: TEXTURE
+  offset: 0x3B48
+  symbol: object_zl2Tex_003B48
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x2F50
+
+object_zl2Tex_004448:
+  type: TEXTURE
+  offset: 0x4448
+  symbol: object_zl2Tex_004448
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x2F50
+
+object_zl2Tex_006548:
+  type: TEXTURE
+  offset: 0x6548
+  symbol: object_zl2Tex_006548
+  format: CI8
+  width: 32
+  height: 16
+  tlut: 0x2F50
+
+object_zl2Tex_009738:
+  type: TEXTURE
+  offset: 0x9738
+  symbol: object_zl2Tex_009738
+  format: CI8
+  width: 16
+  height: 32
+  tlut: 0x95A0
+
+object_zl2Tex_009938:
+  type: TEXTURE
+  offset: 0x9938
+  symbol: object_zl2Tex_009938
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x9490
+
+object_zl2Tex_009A38:
+  type: TEXTURE
+  offset: 0x9A38
+  symbol: object_zl2Tex_009A38
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x9490
+
+object_zl2Tex_009A78:
+  type: TEXTURE
+  offset: 0x9A78
+  symbol: object_zl2Tex_009A78
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x9490
+
+object_zl2Tex_009E78:
+  type: TEXTURE
+  offset: 0x9E78
+  symbol: object_zl2Tex_009E78
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x95A0
+
+object_zl2Tex_009F78:
+  type: TEXTURE
+  offset: 0x9F78
+  symbol: object_zl2Tex_009F78
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0x95A0
+
+object_zl2Tex_009FF8:
+  type: TEXTURE
+  offset: 0x9FF8
+  symbol: object_zl2Tex_009FF8
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x9708
+
+object_zl2Tex_00A0F8:
+  type: TEXTURE
+  offset: 0xA0F8
+  symbol: object_zl2Tex_00A0F8
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x9708
+
+
+object_zl2Vtx_006748:
+  type: OOT:ARRAY
+  offset: 0x006748
+  symbol: object_zl2Vtx_006748
+  count: 360
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gZelda2SkelLimbsLimb_010D2CDL_007DC8:
+  type: GFX
+  offset: 0x007DC8
+  symbol: gZelda2SkelLimbsLimb_010D2CDL_007DC8
+
+object_zl2Vtx_00A4F8:
+  type: OOT:ARRAY
+  offset: 0x00A4F8
+  symbol: object_zl2Vtx_00A4F8
+  count: 183
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gZelda2SkelLimbsLimb_010CD8DL_00B068:
+  type: GFX
+  offset: 0x00B068
+  symbol: gZelda2SkelLimbsLimb_010CD8DL_00B068
+
+object_zl2Vtx_00B998:
+  type: OOT:ARRAY
+  offset: 0x00B998
+  symbol: object_zl2Vtx_00B998
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zl2Vtx_00BC10:
+  type: OOT:ARRAY
+  offset: 0x00BC10
+  symbol: object_zl2Vtx_00BC10
+  count: 90
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zl2Vtx_00C1B0:
+  type: OOT:ARRAY
+  offset: 0x00C1B0
+  symbol: object_zl2Vtx_00C1B0
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zl2Vtx_00C370:
+  type: OOT:ARRAY
+  offset: 0x00C370
+  symbol: object_zl2Vtx_00C370
+  count: 64
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zl2Vtx_00C770:
+  type: OOT:ARRAY
+  offset: 0x00C770
+  symbol: object_zl2Vtx_00C770
+  count: 90
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zl2Vtx_00CD10:
+  type: OOT:ARRAY
+  offset: 0x00CD10
+  symbol: object_zl2Vtx_00CD10
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zl2Vtx_00CED0:
+  type: OOT:ARRAY
+  offset: 0x00CED0
+  symbol: object_zl2Vtx_00CED0
+  count: 64
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zl2Vtx_00D2D0:
+  type: OOT:ARRAY
+  offset: 0x00D2D0
+  symbol: object_zl2Vtx_00D2D0
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zl2Vtx_00D530:
+  type: OOT:ARRAY
+  offset: 0x00D530
+  symbol: object_zl2Vtx_00D530
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zl2Vtx_00D790:
+  type: OOT:ARRAY
+  offset: 0x00D790
+  symbol: object_zl2Vtx_00D790
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zl2Vtx_00D9F0:
+  type: OOT:ARRAY
+  offset: 0x00D9F0
+  symbol: object_zl2Vtx_00D9F0
+  count: 65
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_zl2Vtx_00DE00:
+  type: OOT:ARRAY
+  offset: 0x00DE00
+  symbol: object_zl2Vtx_00DE00
+  count: 121
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gZelda2SkelLimbsLimb_010D08DL_00E590:
+  type: GFX
+  offset: 0x00E590
+  symbol: gZelda2SkelLimbsLimb_010D08DL_00E590
+
+gZelda2SkelLimbsLimb_010D14DL_00E910:
+  type: GFX
+  offset: 0x00E910
+  symbol: gZelda2SkelLimbsLimb_010D14DL_00E910
+
+gZelda2SkelLimbsLimb_010D20DL_00EA58:
+  type: GFX
+  offset: 0x00EA58
+  symbol: gZelda2SkelLimbsLimb_010D20DL_00EA58
+
+gZelda2SkelLimbsLimb_010CE4DL_00ED60:
+  type: GFX
+  offset: 0x00ED60
+  symbol: gZelda2SkelLimbsLimb_010CE4DL_00ED60
+
+gZelda2SkelLimbsLimb_010CF0DL_00F0E0:
+  type: GFX
+  offset: 0x00F0E0
+  symbol: gZelda2SkelLimbsLimb_010CF0DL_00F0E0
+
+gZelda2SkelLimbsLimb_010CFCDL_00F228:
+  type: GFX
+  offset: 0x00F228
+  symbol: gZelda2SkelLimbsLimb_010CFCDL_00F228
+
+gZelda2SkelLimbsLimb_010C9CDL_00F530:
+  type: GFX
+  offset: 0x00F530
+  symbol: gZelda2SkelLimbsLimb_010C9CDL_00F530
+
+gZelda2SkelLimbsLimb_010CA8DL_0102D8:
+  type: GFX
+  offset: 0x0102D8
+  symbol: gZelda2SkelLimbsLimb_010CA8DL_0102D8
+
+gZelda2SkelLimbsLimb_010CB4DL_0108E8:
+  type: GFX
+  offset: 0x0108E8
+  symbol: gZelda2SkelLimbsLimb_010CB4DL_0108E8
+
+gZelda2SkelLimbsLimb_010CC0DL_010A20:
+  type: GFX
+  offset: 0x010A20
+  symbol: gZelda2SkelLimbsLimb_010CC0DL_010A20
+
+gZelda2SkelLimbsLimb_010CCCDL_010B58:
+  type: GFX
+  offset: 0x010B58
+  symbol: gZelda2SkelLimbsLimb_010CCCDL_010B58
+
+gZelda2SkelLimbsLimb_010C90:
+  type: OOT:LIMB
+  offset: 0x010C90
+  symbol: gZelda2SkelLimbsLimb_010C90
+  limb_type: Standard
+
+gZelda2SkelLimbsLimb_010C9C:
+  type: OOT:LIMB
+  offset: 0x010C9C
+  symbol: gZelda2SkelLimbsLimb_010C9C
+  limb_type: Standard
+
+gZelda2SkelLimbsLimb_010CA8:
+  type: OOT:LIMB
+  offset: 0x010CA8
+  symbol: gZelda2SkelLimbsLimb_010CA8
+  limb_type: Standard
+
+gZelda2SkelLimbsLimb_010CB4:
+  type: OOT:LIMB
+  offset: 0x010CB4
+  symbol: gZelda2SkelLimbsLimb_010CB4
+  limb_type: Standard
+
+gZelda2SkelLimbsLimb_010CC0:
+  type: OOT:LIMB
+  offset: 0x010CC0
+  symbol: gZelda2SkelLimbsLimb_010CC0
+  limb_type: Standard
+
+gZelda2SkelLimbsLimb_010CCC:
+  type: OOT:LIMB
+  offset: 0x010CCC
+  symbol: gZelda2SkelLimbsLimb_010CCC
+  limb_type: Standard
+
+gZelda2SkelLimbsLimb_010CD8:
+  type: OOT:LIMB
+  offset: 0x010CD8
+  symbol: gZelda2SkelLimbsLimb_010CD8
+  limb_type: Standard
+
+gZelda2SkelLimbsLimb_010CE4:
+  type: OOT:LIMB
+  offset: 0x010CE4
+  symbol: gZelda2SkelLimbsLimb_010CE4
+  limb_type: Standard
+
+gZelda2SkelLimbsLimb_010CF0:
+  type: OOT:LIMB
+  offset: 0x010CF0
+  symbol: gZelda2SkelLimbsLimb_010CF0
+  limb_type: Standard
+
+gZelda2SkelLimbsLimb_010CFC:
+  type: OOT:LIMB
+  offset: 0x010CFC
+  symbol: gZelda2SkelLimbsLimb_010CFC
+  limb_type: Standard
+
+gZelda2SkelLimbsLimb_010D08:
+  type: OOT:LIMB
+  offset: 0x010D08
+  symbol: gZelda2SkelLimbsLimb_010D08
+  limb_type: Standard
+
+gZelda2SkelLimbsLimb_010D14:
+  type: OOT:LIMB
+  offset: 0x010D14
+  symbol: gZelda2SkelLimbsLimb_010D14
+  limb_type: Standard
+
+gZelda2SkelLimbsLimb_010D20:
+  type: OOT:LIMB
+  offset: 0x010D20
+  symbol: gZelda2SkelLimbsLimb_010D20
+  limb_type: Standard
+
+gZelda2SkelLimbsLimb_010D2C:
+  type: OOT:LIMB
+  offset: 0x010D2C
+  symbol: gZelda2SkelLimbsLimb_010D2C
+  limb_type: Standard
+
+gZelda2SkelLimbs:
+  type: BLOB
+  offset: 0x10D38
+  symbol: gZelda2SkelLimbs
+  size: 0

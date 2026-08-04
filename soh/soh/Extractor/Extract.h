@@ -41,7 +41,7 @@ class Extractor {
 
     bool ValidateRom(bool skipCrcBox = false);
     bool ValidateNotCompressed() const;
-    const char* GetZapdVerStr() const;
+    const char* GetTorchVersionDir() const;
 
     void SetRomInfo(const std::string& path);
 
@@ -63,9 +63,8 @@ class Extractor {
     void GetRoms(std::vector<std::string>& roms);
     bool RunFileStandalone(std::string file);
     bool Run(std::string searchPath, RomSearchMode searchMode = RomSearchMode::Both);
-    bool CallZapd(std::string installPath, std::string exportdir, std::atomic<size_t>* extractCount,
-                  std::atomic<size_t>* totalExtract);
-    const char* GetZapdStr();
+    bool CallTorch(std::string installPath, std::string exportdir, std::atomic<size_t>* extractCount,
+                   std::atomic<size_t>* totalExtract);
     std::string Mkdtemp();
 };
 #endif

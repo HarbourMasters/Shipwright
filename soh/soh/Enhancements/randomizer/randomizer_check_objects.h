@@ -1,7 +1,6 @@
 #pragma once
 
 #include "randomizerTypes.h"
-#include "z64actor_enum.h"
 #include "z64scene.h"
 #include <string>
 #include <vector>

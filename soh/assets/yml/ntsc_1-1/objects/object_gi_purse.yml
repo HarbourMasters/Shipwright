@@ -1,0 +1,117 @@
+:config:
+  segments:
+    - [ 6, 0x010B9C40 ]
+    - [ 4, 0x00D3A8E0 ]
+    - [ 8, 0x010B9C40 ]
+    - [ 9, 0x010B9C40 ]
+    - [ 10, 0x010B9C40 ]
+    - [ 11, 0x010B9C40 ]
+    - [ 12, 0x010B9C40 ]
+    - [ 13, 0x010B9C40 ]
+  external_files:
+    - ntsc_1-1/objects/gameplay_keep.yml
+
+gGiAdultWalletColorDL:
+  type: GFX
+  offset: 0x1750
+  symbol: gGiAdultWalletColorDL
+
+gGiAdultWalletRupeeInnerColorDL:
+  type: GFX
+  offset: 0x17D0
+  symbol: gGiAdultWalletRupeeInnerColorDL
+
+gGiAdultWalletRupeeOuterColorDL:
+  type: GFX
+  offset: 0x1790
+  symbol: gGiAdultWalletRupeeOuterColorDL
+
+gGiAdultWalletStringColorDL:
+  type: GFX
+  offset: 0x17B0
+  symbol: gGiAdultWalletStringColorDL
+
+gGiGiantsWalletColorDL:
+  type: GFX
+  offset: 0x1770
+  symbol: gGiGiantsWalletColorDL
+
+gGiGiantsWalletRupeeInnerColorDL:
+  type: GFX
+  offset: 0x1830
+  symbol: gGiGiantsWalletRupeeInnerColorDL
+
+gGiGiantsWalletRupeeOuterColorDL:
+  type: GFX
+  offset: 0x17F0
+  symbol: gGiGiantsWalletRupeeOuterColorDL
+
+gGiGiantsWalletStringColorDL:
+  type: GFX
+  offset: 0x1810
+  symbol: gGiGiantsWalletStringColorDL
+
+gGiWalletDL:
+  type: GFX
+  offset: 0x1850
+  symbol: gGiWalletDL
+
+gGiWalletRupeeInnerDL:
+  type: GFX
+  offset: 0x1AD8
+  symbol: gGiWalletRupeeInnerDL
+
+gGiWalletRupeeOuterDL:
+  type: GFX
+  offset: 0x19A0
+  symbol: gGiWalletRupeeOuterDL
+
+gGiWalletStringDL:
+  type: GFX
+  offset: 0x1A28
+  symbol: gGiWalletStringDL
+
+object_gi_purseTex_000000:
+  type: TEXTURE
+  offset: 0x0
+  symbol: object_gi_purseTex_000000
+  format: I8
+  width: 64
+  height: 64
+
+
+object_gi_purseVtx_001000:
+  type: OOT:ARRAY
+  offset: 0x001000
+  symbol: object_gi_purseVtx_001000
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_purseVtx_001200:
+  type: OOT:ARRAY
+  offset: 0x001200
+  symbol: object_gi_purseVtx_001200
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_purseVtx_001360:
+  type: OOT:ARRAY
+  offset: 0x001360
+  symbol: object_gi_purseVtx_001360
+  count: 53
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_purseVtx_0016B0:
+  type: OOT:ARRAY
+  offset: 0x0016B0
+  symbol: object_gi_purseVtx_0016B0
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

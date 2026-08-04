@@ -339,7 +339,7 @@ void EnNb_SetupChamberCsImpl(EnNb* this, PlayState* play) {
     s32 pad[2];
     Player* player;
 
-    if ((gSaveContext.chamberCutsceneNum == 3) && (gSaveContext.sceneSetupIndex < 4)) {
+    if ((gSaveContext.chamberCutsceneNum == 3) && (gSaveContext.sceneLayer < 4)) {
         player = GET_PLAYER(play);
         this->action = NB_CHAMBER_UNDERGROUND;
         play->csCtx.segment = &D_80AB431C;
@@ -1211,7 +1211,7 @@ void func_80AB3838(EnNb* this, PlayState* play) {
             this->actor.textId = 0x6024;
         }
 
-        func_8002F2F4(&this->actor, play);
+        Actor_OfferTalkNearColChkInfoCylinder(&this->actor, play);
     }
 }
 
@@ -1302,7 +1302,7 @@ void func_80AB3B04(EnNb* this, PlayState* play) {
             this->actor.textId = 0x6026;
         }
 
-        func_8002F2F4(&this->actor, play);
+        Actor_OfferTalkNearColChkInfoCylinder(&this->actor, play);
     }
 }
 

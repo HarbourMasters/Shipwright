@@ -61,7 +61,7 @@ std::shared_ptr<Ship::IResource> SetActorListFactoryXML::ReadResource(std::share
         child = child->NextSiblingElement();
     }
 
-    setActorList->numActors = setActorList->actorList.size();
+    setActorList->numActors = static_cast<u32>(setActorList->actorList.size());
 
     return setActorList;
 }

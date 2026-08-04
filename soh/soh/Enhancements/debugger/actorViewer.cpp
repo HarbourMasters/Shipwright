@@ -9,12 +9,8 @@
 
 #include <algorithm>
 #include <array>
-#include <bit>
-#include <map>
 #include <unordered_map>
 #include <string>
-#include <libultraship/bridge.h>
-#include <libultraship/libultraship.h>
 #include <spdlog/fmt/fmt.h>
 #include "soh/OTRGlobals.h"
 #include "soh/cvar_prefixes.h"
@@ -23,13 +19,9 @@
 extern "C" {
 #include <z64.h>
 #include "z64math.h"
-#include "variables.h"
 #include "functions.h"
 #include "macros.h"
 extern PlayState* gPlayState;
-
-#include "textures/icon_item_static/icon_item_static.h"
-#include "textures/icon_item_24_static/icon_item_24_static.h"
 }
 
 #define DEKUNUTS_FLOWER 10
@@ -48,7 +40,7 @@ typedef struct {
 
 std::array<const char*, 12> acMapping = {
     "Switch",      "Background (Prop type 1)",
-    "Player",      "Bomb",
+    "Player",      "Bomb/Bombchu",
     "NPC",         "Enemy",
     "Prop type 2", "Item/Action",
     "Misc.",       "Boss",
@@ -614,7 +606,7 @@ void CreateActorSpecificData() {
     };
 
     actorSpecificData[ACTOR_EN_SKB] = [](s16 params) -> s16 {
-        u8 size = params;
+        u8 size = static_cast<u8>(params);
         ImGui::InputScalar("Size", ImGuiDataType_U8, &size);
 
         return size;
@@ -753,7 +745,7 @@ void CreateActorSpecificData() {
             piece = false;
         }
 
-        u8 textId = params;
+        u8 textId = static_cast<u8>(params);
         if (!piece && !fishingSign) {
             if (ImGui::InputScalar("Text ID", ImGuiDataType_U8, &textId)) {
                 textId |= 0x300;
@@ -966,9 +958,9 @@ void ActorViewerWindow::DrawElement() {
                     [&]() {
                         ImGui::Text("Name: %s", ActorDB::Instance->RetrieveEntry(display->id).name.c_str());
                         ImGui::Text("Description: %s", GetActorDescription(display->id).c_str());
-                        ImGui::Text("Category: %s", acMapping[display->category]);
-                        ImGui::Text("ID: %d", display->id);
-                        ImGui::Text("Parameters: %d", display->params);
+                        ImGui::Text("Category: %s (%d)", acMapping[display->category], display->category);
+                        ImGui::Text("ID: %d (0x%x)", display->id, display->id);
+                        ImGui::Text("Parameters: %d (0x%x)", display->params, display->params);
                         ImGui::Text("Actor List Index: %d", GetActorListIndex(display));
                     },
                     "Selected Actor");
@@ -1105,7 +1097,7 @@ void ActorViewerWindow::DrawElement() {
                 PushStyleInput(THEME_COLOR);
                 ImGui::InputScalar("params", ImGuiDataType_S16, &newActor.params, &one);
                 PopStyleInput();
-            } else if (std::find(noParamsActors.begin(), noParamsActors.end(), newActor.id) == noParamsActors.end()) {
+            } else if (!SohUtils::Contains(newActor.id, noParamsActors)) {
                 CreateActorSpecificData();
                 if (actorSpecificData.find(newActor.id) == actorSpecificData.end()) {
                     PushStyleInput(THEME_COLOR);

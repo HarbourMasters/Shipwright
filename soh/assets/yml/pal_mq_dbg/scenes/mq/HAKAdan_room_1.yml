@@ -1,0 +1,64 @@
+:config:
+  segments:
+    - [ 3, 0x0250F000 ]
+    - [ 2, 0x024EA000 ]
+  directory: scenes/mq/HAKAdan_scene
+  external_files:
+    - pal_mq_dbg/scenes/mq/HAKAdan_scene.yml
+    - pal_mq_dbg/code/sys_matrix.yml
+
+HAKAdan_room_1:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: HAKAdan_room_1
+
+HAKAdan_room_1Tex_0012E8:
+  type: TEXTURE
+  offset: 0x12E8
+  symbol: HAKAdan_room_1Tex_0012E8
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+HAKAdan_room_1Vtx_000100:
+  type: OOT:ARRAY
+  offset: 0x000100
+  symbol: HAKAdan_room_1Vtx_000100
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdan_room_1DL_000270:
+  type: GFX
+  offset: 0x000270
+  symbol: HAKAdan_room_1DL_000270
+
+HAKAdan_room_1Vtx_0003A8:
+  type: OOT:ARRAY
+  offset: 0x0003A8
+  symbol: HAKAdan_room_1Vtx_0003A8
+  count: 85
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdan_room_1DL_0008F8:
+  type: GFX
+  offset: 0x0008F8
+  symbol: HAKAdan_room_1DL_0008F8
+
+HAKAdan_room_1Vtx_000AB0:
+  type: OOT:ARRAY
+  offset: 0x000AB0
+  symbol: HAKAdan_room_1Vtx_000AB0
+  count: 102
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdan_room_1DL_001110:
+  type: GFX
+  offset: 0x001110
+  symbol: HAKAdan_room_1DL_001110

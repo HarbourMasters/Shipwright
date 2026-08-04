@@ -1,0 +1,43 @@
+:config:
+  segments:
+    - [ 2, 0x01FC2000 ]
+
+ydan_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: ydan_scene
+
+gDekuTreeIntroCs:
+  type: OOT:CUTSCENE
+  offset: 0xB650
+  symbol: gDekuTreeIntroCs
+
+gYdanTex_00BA18:
+  type: TEXTURE
+  offset: 0xBA18
+  symbol: gYdanTex_00BA18
+  format: RGBA16
+  width: 32
+  height: 64
+
+gYdanTex_00CA18:
+  type: TEXTURE
+  offset: 0xCA18
+  symbol: gYdanTex_00CA18
+  format: RGBA16
+  width: 32
+  height: 64
+
+ydan_sceneTLUT_00B810:
+  type: TEXTURE
+  offset: 0xB810
+  symbol: ydan_sceneTLUT_00B810
+  format: RGBA16
+  width: 16
+  height: 16
+
+
+ydan_sceneCollisionHeader_00B618:
+  type: OOT:COLLISION
+  offset: 0x00B618
+  symbol: ydan_sceneCollisionHeader_00B618

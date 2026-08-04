@@ -1,0 +1,47 @@
+:config:
+  segments:
+    - [ 128, 0x00B382C0 ]
+    - [ 4, 0x00D30E00 ]
+    - [ 8, 0x00B382C0 ]
+    - [ 9, 0x00B382C0 ]
+    - [ 10, 0x00B382C0 ]
+    - [ 11, 0x00B382C0 ]
+    - [ 12, 0x00B382C0 ]
+    - [ 13, 0x00B382C0 ]
+  virtual: [ 0x808674D0, 0x00B382C0 ]
+  external_files:
+    - ntsc_j_gc_collection/objects/gameplay_keep.yml
+
+s1Tex:
+  type: TEXTURE
+  offset: 0x9B0
+  symbol: s1Tex
+  format: I8
+  width: 32
+  height: 64
+
+s2Tex:
+  type: TEXTURE
+  offset: 0x11B0
+  symbol: s2Tex
+  format: I8
+  width: 32
+  height: 64
+
+sMaterialDL:
+  type: GFX
+  offset: 0x1C60
+  symbol: sMaterialDL
+
+sModelDL:
+  type: GFX
+  offset: 0x1D10
+  symbol: sModelDL
+
+sVtx:
+  type: OOT:ARRAY
+  offset: 0x19B0
+  symbol: sVtx
+  count: 43
+  array_type: VTX
+

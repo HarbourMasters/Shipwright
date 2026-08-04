@@ -28,13 +28,13 @@ typedef struct EnHorseGameCheckIngoRace {
 
 typedef struct EnHorseGameCheckGerudoArchery {
     /* 0x0000 */ EnHorseGameCheckBase base;
-    /* 0x0150 */ s32 unk_150;
+    /* 0x0150 */ s32 startFlags;
     /* 0x0154 */ u32 startTimer;
 } EnHorseGameCheckGerudoArchery; // size = 0x0158
 
 typedef struct EnHorseGameCheck3 {
     /* 0x0000 */ EnHorseGameCheckBase base;
-    /* 0x0150 */ s32 unk_150;
+    /* 0x0150 */ s32 startFlags;
 } EnHorseGameCheck3; // size = 0x0154
 
 typedef struct EnHorseGameCheckMalonRace {

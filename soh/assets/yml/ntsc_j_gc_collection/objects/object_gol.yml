@@ -1,0 +1,399 @@
+:config:
+  segments:
+    - [ 6, 0x00E393B0 ]
+    - [ 4, 0x00D30E00 ]
+    - [ 8, 0x00E393B0 ]
+    - [ 9, 0x00E393B0 ]
+    - [ 10, 0x00E393B0 ]
+    - [ 11, 0x00E393B0 ]
+    - [ 12, 0x00E393B0 ]
+    - [ 13, 0x00E393B0 ]
+  external_files:
+    - ntsc_j_gc_collection/objects/gameplay_keep.yml
+
+gObjectGolAntennaDL:
+  type: GFX
+  offset: 0x2EB8
+  symbol: gObjectGolAntennaDL
+
+gObjectGolAntennaLimb:
+  type: OOT:LIMB
+  offset: 0x3A0C
+  symbol: gObjectGolAntennaLimb
+  limb_type: Standard
+
+gObjectGolAntennaRoot1Limb:
+  type: OOT:LIMB
+  offset: 0x39F4
+  symbol: gObjectGolAntennaRoot1Limb
+  limb_type: Standard
+
+gObjectGolAntennaRoot2Limb:
+  type: OOT:LIMB
+  offset: 0x3A00
+  symbol: gObjectGolAntennaRoot2Limb
+  limb_type: Standard
+
+gObjectGolBodyDL:
+  type: GFX
+  offset: 0x24E0
+  symbol: gObjectGolBodyDL
+
+gObjectGolBodyLimb:
+  type: OOT:LIMB
+  offset: 0x39E8
+  symbol: gObjectGolBodyLimb
+  limb_type: Standard
+
+gObjectGolDamagedAnim:
+  type: OOT:ANIMATION
+  offset: 0x838
+  symbol: gObjectGolDamagedAnim
+
+gObjectGolDeadTwitchingAnim:
+  type: OOT:ANIMATION
+  offset: 0x334
+  symbol: gObjectGolDeadTwitchingAnim
+
+gObjectGolDeathAnim:
+  type: OOT:ANIMATION
+  offset: 0xB78
+  symbol: gObjectGolDeathAnim
+
+gObjectGolEggDL:
+  type: GFX
+  offset: 0x2A70
+  symbol: gObjectGolEggDL
+
+gObjectGolEggTex:
+  type: TEXTURE
+  offset: 0x37D0
+  symbol: gObjectGolEggTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gObjectGolEyeIrisDL:
+  type: GFX
+  offset: 0x2C10
+  symbol: gObjectGolEyeIrisDL
+
+gObjectGolEyeIrisLimb:
+  type: OOT:LIMB
+  offset: 0x3A30
+  symbol: gObjectGolEyeIrisLimb
+  limb_type: Standard
+
+gObjectGolEyeIrisRoot1Limb:
+  type: OOT:LIMB
+  offset: 0x3A18
+  symbol: gObjectGolEyeIrisRoot1Limb
+  limb_type: Standard
+
+gObjectGolEyeIrisRoot2Limb:
+  type: OOT:LIMB
+  offset: 0x3A24
+  symbol: gObjectGolEyeIrisRoot2Limb
+  limb_type: Standard
+
+gObjectGolEyeIrisTex:
+  type: TEXTURE
+  offset: 0x35D0
+  symbol: gObjectGolEyeIrisTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gObjectGolEyeWhiteTex:
+  type: TEXTURE
+  offset: 0x33D0
+  symbol: gObjectGolEyeWhiteTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gObjectGolJumpHeadbuttAnim:
+  type: OOT:ANIMATION
+  offset: 0x544
+  symbol: gObjectGolJumpHeadbuttAnim
+
+gObjectGolLandFromJumpAnim:
+  type: OOT:ANIMATION
+  offset: 0x17C
+  symbol: gObjectGolLandFromJumpAnim
+
+gObjectGolLeftFootDL:
+  type: GFX
+  offset: 0x1600
+  symbol: gObjectGolLeftFootDL
+
+gObjectGolLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x3A6C
+  symbol: gObjectGolLeftFootLimb
+  limb_type: Standard
+
+gObjectGolLeftFootRootLimb:
+  type: OOT:LIMB
+  offset: 0x3A60
+  symbol: gObjectGolLeftFootRootLimb
+  limb_type: Standard
+
+gObjectGolLeftLegRoot1Limb:
+  type: OOT:LIMB
+  offset: 0x3A3C
+  symbol: gObjectGolLeftLegRoot1Limb
+  limb_type: Standard
+
+gObjectGolLeftLegRoot2Limb:
+  type: OOT:LIMB
+  offset: 0x3A48
+  symbol: gObjectGolLeftLegRoot2Limb
+  limb_type: Standard
+
+gObjectGolLeftShinDL:
+  type: GFX
+  offset: 0x19F8
+  symbol: gObjectGolLeftShinDL
+
+gObjectGolLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0x3A78
+  symbol: gObjectGolLeftShinLimb
+  limb_type: Standard
+
+gObjectGolLeftShinRootLimb:
+  type: OOT:LIMB
+  offset: 0x3A54
+  symbol: gObjectGolLeftShinRootLimb
+  limb_type: Standard
+
+gObjectGolLeftThighDL:
+  type: GFX
+  offset: 0x1860
+  symbol: gObjectGolLeftThighDL
+
+gObjectGolLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0x3A84
+  symbol: gObjectGolLeftThighLimb
+  limb_type: Standard
+
+gObjectGolPrepareJumpAnim:
+  type: OOT:ANIMATION
+  offset: 0xE4C
+  symbol: gObjectGolPrepareJumpAnim
+
+gObjectGolRightFootDL:
+  type: GFX
+  offset: 0x1B28
+  symbol: gObjectGolRightFootDL
+
+gObjectGolRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x3AC0
+  symbol: gObjectGolRightFootLimb
+  limb_type: Standard
+
+gObjectGolRightFootRootLimb:
+  type: OOT:LIMB
+  offset: 0x3AB4
+  symbol: gObjectGolRightFootRootLimb
+  limb_type: Standard
+
+gObjectGolRightLegRoot1Limb:
+  type: OOT:LIMB
+  offset: 0x3A90
+  symbol: gObjectGolRightLegRoot1Limb
+  limb_type: Standard
+
+gObjectGolRightLegRoot2Limb:
+  type: OOT:LIMB
+  offset: 0x3A9C
+  symbol: gObjectGolRightLegRoot2Limb
+  limb_type: Standard
+
+gObjectGolRightShinDL:
+  type: GFX
+  offset: 0x1F10
+  symbol: gObjectGolRightShinDL
+
+gObjectGolRightShinLimb:
+  type: OOT:LIMB
+  offset: 0x3ACC
+  symbol: gObjectGolRightShinLimb
+  limb_type: Standard
+
+gObjectGolRightShinRootLimb:
+  type: OOT:LIMB
+  offset: 0x3AA8
+  symbol: gObjectGolRightShinRootLimb
+  limb_type: Standard
+
+gObjectGolRightThighDL:
+  type: GFX
+  offset: 0x1D78
+  symbol: gObjectGolRightThighDL
+
+gObjectGolRightThighLimb:
+  type: OOT:LIMB
+  offset: 0x3AD8
+  symbol: gObjectGolRightThighLimb
+  limb_type: Standard
+
+gObjectGolRoot1Limb:
+  type: OOT:LIMB
+  offset: 0x39D0
+  symbol: gObjectGolRoot1Limb
+  limb_type: Standard
+
+gObjectGolRoot2Limb:
+  type: OOT:LIMB
+  offset: 0x39DC
+  symbol: gObjectGolRoot2Limb
+  limb_type: Standard
+
+gObjectGolRunningAnim:
+  type: OOT:ANIMATION
+  offset: 0x3D78
+  symbol: gObjectGolRunningAnim
+
+gObjectGolShellTex:
+  type: TEXTURE
+  offset: 0x2FD0
+  symbol: gObjectGolShellTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gObjectGolSkel:
+  type: OOT:SKELETON
+  offset: 0x3B40
+  symbol: gObjectGolSkel
+  limb_type: Standard
+  skel_type: Normal
+
+gObjectGolSkinTex:
+  type: TEXTURE
+  offset: 0x31D0
+  symbol: gObjectGolSkinTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gObjectGolStandAnim:
+  type: OOT:ANIMATION
+  offset: 0x1548
+  symbol: gObjectGolStandAnim
+
+gObjectGolStartRunningAnim:
+  type: OOT:ANIMATION
+  offset: 0x4204
+  symbol: gObjectGolStartRunningAnim
+
+gObjectGolStopRunningAnim:
+  type: OOT:ANIMATION
+  offset: 0x3FF0
+  symbol: gObjectGolStopRunningAnim
+
+gObjectGolWalkAnim:
+  type: OOT:ANIMATION
+  offset: 0x11B4
+  symbol: gObjectGolWalkAnim
+
+
+object_golVtx_001560:
+  type: OOT:ARRAY
+  offset: 0x001560
+  symbol: object_golVtx_001560
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_golVtx_0016C0:
+  type: OOT:ARRAY
+  offset: 0x0016C0
+  symbol: object_golVtx_0016C0
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_golVtx_001958:
+  type: OOT:ARRAY
+  offset: 0x001958
+  symbol: object_golVtx_001958
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_golVtx_001A88:
+  type: OOT:ARRAY
+  offset: 0x001A88
+  symbol: object_golVtx_001A88
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_golVtx_001BE8:
+  type: OOT:ARRAY
+  offset: 0x001BE8
+  symbol: object_golVtx_001BE8
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_golVtx_001E70:
+  type: OOT:ARRAY
+  offset: 0x001E70
+  symbol: object_golVtx_001E70
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_golVtx_001FA0:
+  type: OOT:ARRAY
+  offset: 0x001FA0
+  symbol: object_golVtx_001FA0
+  count: 84
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_golVtx_0026C0:
+  type: OOT:ARRAY
+  offset: 0x0026C0
+  symbol: object_golVtx_0026C0
+  count: 59
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_golVtx_002BE0:
+  type: OOT:ARRAY
+  offset: 0x002BE0
+  symbol: object_golVtx_002BE0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_golVtx_002C98:
+  type: OOT:ARRAY
+  offset: 0x002C98
+  symbol: object_golVtx_002C98
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gObjectGolSkelLimbs:
+  type: BLOB
+  offset: 0x3AE4
+  symbol: gObjectGolSkelLimbs
+  size: 0

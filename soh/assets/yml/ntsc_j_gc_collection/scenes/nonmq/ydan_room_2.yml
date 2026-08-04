@@ -1,0 +1,110 @@
+:config:
+  segments:
+    - [ 3, 0x0169D8A0 ]
+    - [ 2, 0x01684F80 ]
+  directory: scenes/nonmq/ydan_scene
+  external_files:
+    - ntsc_j_gc_collection/scenes/nonmq/ydan_scene.yml
+    - ntsc_j_gc_collection/code/sys_matrix.yml
+
+ydan_room_2:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: ydan_room_2
+
+ydan_room_2Tex_001D08:
+  type: TEXTURE
+  offset: 0x1C08
+  symbol: ydan_room_2Tex_001D08
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: ydan_scene
+  external_tlut_offset: 0xB800
+
+ydan_room_2Tex_002508:
+  type: TEXTURE
+  offset: 0x2408
+  symbol: ydan_room_2Tex_002508
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: ydan_scene
+  external_tlut_offset: 0xB800
+
+ydan_room_2Tex_002D08:
+  type: TEXTURE
+  offset: 0x2C08
+  symbol: ydan_room_2Tex_002D08
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: ydan_scene
+  external_tlut_offset: 0xB800
+
+ydan_room_2Tex_003508:
+  type: TEXTURE
+  offset: 0x3408
+  symbol: ydan_room_2Tex_003508
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: ydan_scene
+  external_tlut_offset: 0xB800
+
+ydan_room_2Tex_003D08:
+  type: TEXTURE
+  offset: 0x3C08
+  symbol: ydan_room_2Tex_003D08
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: ydan_scene
+  external_tlut_offset: 0xB800
+
+ydan_room_2Tex_004508:
+  type: TEXTURE
+  offset: 0x4408
+  symbol: ydan_room_2Tex_004508
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: ydan_scene
+  external_tlut_offset: 0xB800
+
+ydan_room_2Tex_004F28:
+  type: TEXTURE
+  offset: 0x4E28
+  symbol: ydan_room_2Tex_004F28
+  format: RGBA16
+  width: 32
+  height: 64
+
+
+ydan_room_2Vtx_000120:
+  type: OOT:ARRAY
+  offset: 0x000120
+  symbol: ydan_room_2Vtx_000120
+  count: 244
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ydan_room_2DL_001060:
+  type: GFX
+  offset: 0x001060
+  symbol: ydan_room_2DL_001060
+
+ydan_room_2Vtx_004C10:
+  type: OOT:ARRAY
+  offset: 0x004C10
+  symbol: ydan_room_2Vtx_004C10
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ydan_room_2DL_004D50:
+  type: GFX
+  offset: 0x004D50
+  symbol: ydan_room_2DL_004D50

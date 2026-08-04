@@ -1,0 +1,112 @@
+:config:
+  segments:
+    - [ 3, 0x018DD1F0 ]
+    - [ 2, 0x0189A770 ]
+  directory: scenes/nonmq/jyasinzou_scene
+  external_files:
+    - ntsc_j_gc/scenes/nonmq/jyasinzou_scene.yml
+    - ntsc_j_gc/code/sys_matrix.yml
+
+jyasinzou_room_13:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: jyasinzou_room_13
+
+jyasinzou_room_13Tex_0028A8:
+  type: TEXTURE
+  offset: 0x2848
+  symbol: jyasinzou_room_13Tex_0028A8
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: jyasinzou_scene
+  external_tlut_offset: 0x17C00
+
+jyasinzou_room_13Tex_0030A8:
+  type: TEXTURE
+  offset: 0x3048
+  symbol: jyasinzou_room_13Tex_0030A8
+  format: CI8
+  width: 64
+  height: 32
+  external_tlut: jyasinzou_scene
+  external_tlut_offset: 0x17C00
+
+jyasinzou_room_13Tex_0038A8:
+  type: TEXTURE
+  offset: 0x3848
+  symbol: jyasinzou_room_13Tex_0038A8
+  format: CI8
+  width: 32
+  height: 32
+  external_tlut: jyasinzou_scene
+  external_tlut_offset: 0x17C00
+
+jyasinzou_room_13Tex_003CA8:
+  type: TEXTURE
+  offset: 0x3C48
+  symbol: jyasinzou_room_13Tex_003CA8
+  format: CI8
+  width: 64
+  height: 32
+  external_tlut: jyasinzou_scene
+  external_tlut_offset: 0x17C00
+
+jyasinzou_room_13Tex_0044A8:
+  type: TEXTURE
+  offset: 0x4448
+  symbol: jyasinzou_room_13Tex_0044A8
+  format: CI8
+  width: 64
+  height: 32
+  external_tlut: jyasinzou_scene
+  external_tlut_offset: 0x17C00
+
+jyasinzou_room_13Tex_004CA8:
+  type: TEXTURE
+  offset: 0x4C48
+  symbol: jyasinzou_room_13Tex_004CA8
+  format: CI8
+  width: 32
+  height: 32
+  external_tlut: jyasinzou_scene
+  external_tlut_offset: 0x17E00
+
+jyasinzou_room_13Tex_0050A8:
+  type: TEXTURE
+  offset: 0x5048
+  symbol: jyasinzou_room_13Tex_0050A8
+  format: CI4
+  width: 64
+  height: 64
+  external_tlut: jyasinzou_scene
+  external_tlut_offset: 0x18020
+
+
+jyasinzou_room_13Vtx_0001A0:
+  type: OOT:ARRAY
+  offset: 0x0001A0
+  symbol: jyasinzou_room_13Vtx_0001A0
+  count: 406
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+jyasinzou_room_13DL_001B00:
+  type: GFX
+  offset: 0x001B00
+  symbol: jyasinzou_room_13DL_001B00
+
+jyasinzou_room_13Vtx_002520:
+  type: OOT:ARRAY
+  offset: 0x002520
+  symbol: jyasinzou_room_13Vtx_002520
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+jyasinzou_room_13DL_0026B0:
+  type: GFX
+  offset: 0x0026B0
+  symbol: jyasinzou_room_13DL_0026B0

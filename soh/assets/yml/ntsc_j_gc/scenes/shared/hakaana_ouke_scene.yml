@@ -1,0 +1,67 @@
+:config:
+  segments:
+    - [ 2, 0x01EDD1F0 ]
+
+  external_files:
+    - ntsc_j_gc/scenes/shared/hakaana_ouke_sceneSet_002280.yml
+    - ntsc_j_gc/scenes/shared/hakaana_ouke_sceneSet_002390.yml
+hakaana_ouke_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: hakaana_ouke_scene
+
+gSunSongGraveSunSongTeachCs:
+  type: OOT:CUTSCENE
+  offset: 0x24A0
+  symbol: gSunSongGraveSunSongTeachCs
+
+gSunSongGraveSunSongTeachPart2Cs:
+  type: OOT:CUTSCENE
+  offset: 0x28E0
+  symbol: gSunSongGraveSunSongTeachPart2Cs
+
+hakaana_ouke_sceneTex_002AE0:
+  type: TEXTURE
+  offset: 0x2AE0
+  symbol: hakaana_ouke_sceneTex_002AE0
+  format: RGBA16
+  width: 32
+  height: 16
+
+hakaana_ouke_sceneTex_002EE0:
+  type: TEXTURE
+  offset: 0x2EE0
+  symbol: hakaana_ouke_sceneTex_002EE0
+  format: RGBA16
+  width: 32
+  height: 16
+
+hakaana_ouke_sceneTex_0032E0:
+  type: TEXTURE
+  offset: 0x32E0
+  symbol: hakaana_ouke_sceneTex_0032E0
+  format: RGBA16
+  width: 32
+  height: 32
+
+hakaana_ouke_sceneTex_003AE0:
+  type: TEXTURE
+  offset: 0x3AE0
+  symbol: hakaana_ouke_sceneTex_003AE0
+  format: I4
+  width: 64
+  height: 64
+
+hakaana_ouke_sceneTex_0042E0:
+  type: TEXTURE
+  offset: 0x42E0
+  symbol: hakaana_ouke_sceneTex_0042E0
+  format: I4
+  width: 64
+  height: 64
+
+
+hakaana_ouke_sceneCollisionHeader_002250:
+  type: OOT:COLLISION
+  offset: 0x002250
+  symbol: hakaana_ouke_sceneCollisionHeader_002250

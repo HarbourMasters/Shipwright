@@ -192,7 +192,7 @@ void BgHeavyBlock_MovePiece(BgHeavyBlock* this, PlayState* play) {
             thisx->velocity.z = Rand_CenteredFloat(8.0f);
             BgHeavyBlock_SetPieceRandRot(this, 1.0f);
             Audio_PlayActorSound2(thisx, NA_SE_EV_ROCK_BROKEN);
-            func_800AA000(thisx->xzDistToPlayer, 0x96, 0xA, 8);
+            Rumble_Request(thisx->xzDistToPlayer, 0x96, 0xA, 8);
         }
     }
 
@@ -324,13 +324,13 @@ void BgHeavyBlock_Wait(BgHeavyBlock* this, PlayState* play) {
 
         switch (this->dyna.actor.params & 0xFF) {
             case HEAVYBLOCK_BREAKABLE:
-                OnePointCutscene_Init(play, 4020, 270, &this->dyna.actor, MAIN_CAM);
+                OnePointCutscene_Init(play, 4020, 270, &this->dyna.actor, CAM_ID_MAIN);
                 break;
             case HEAVYBLOCK_UNBREAKABLE:
-                OnePointCutscene_Init(play, 4021, 220, &this->dyna.actor, MAIN_CAM);
+                OnePointCutscene_Init(play, 4021, 220, &this->dyna.actor, CAM_ID_MAIN);
                 break;
             case HEAVYBLOCK_UNBREAKABLE_OUTSIDE_CASTLE:
-                OnePointCutscene_Init(play, 4022, 210, &this->dyna.actor, MAIN_CAM);
+                OnePointCutscene_Init(play, 4022, 210, &this->dyna.actor, CAM_ID_MAIN);
                 break;
         }
 
@@ -351,7 +351,7 @@ void BgHeavyBlock_LiftedUp(BgHeavyBlock* this, PlayState* play) {
     f32 xOffset;
 
     if (this->timer == 11) {
-        func_800AA000(0.0f, 0xFF, 0x14, 0x14);
+        Rumble_Request(0.0f, 0xFF, 0x14, 0x14);
         Player_PlaySfx(&player->actor, NA_SE_PL_PULL_UP_BIGROCK);
         LOG_STRING("NA_SE_PL_PULL_UP_BIGROCK");
     }
@@ -395,7 +395,7 @@ void BgHeavyBlock_Fly(BgHeavyBlock* this, PlayState* play) {
     this->dyna.actor.floorHeight = raycastResult;
 
     if (this->dyna.actor.home.pos.y <= raycastResult) {
-        func_800AA000(0.0f, 0xFF, 0x3C, 4);
+        Rumble_Request(0.0f, 0xFF, 0x3C, 4);
 
         switch (this->dyna.actor.params & 0xFF) {
             case HEAVYBLOCK_BREAKABLE:

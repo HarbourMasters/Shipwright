@@ -1,0 +1,237 @@
+:config:
+  segments:
+    - [ 6, 0x00E3A330 ]
+    - [ 4, 0x00D30660 ]
+    - [ 8, 0x00E3A330 ]
+    - [ 9, 0x00E3A330 ]
+    - [ 10, 0x00E3A330 ]
+    - [ 11, 0x00E3A330 ]
+    - [ 12, 0x00E3A330 ]
+    - [ 13, 0x00E3A330 ]
+  external_files:
+    - pal_1-1/objects/gameplay_keep.yml
+
+object_dodojr_Anim_0004A0:
+  type: OOT:ANIMATION
+  offset: 0x4A0
+  symbol: object_dodojr_Anim_0004A0
+
+object_dodojr_Anim_0005F0:
+  type: OOT:ANIMATION
+  offset: 0x5F0
+  symbol: object_dodojr_Anim_0005F0
+
+object_dodojr_Anim_000724:
+  type: OOT:ANIMATION
+  offset: 0x724
+  symbol: object_dodojr_Anim_000724
+
+object_dodojr_Anim_000860:
+  type: OOT:ANIMATION
+  offset: 0x860
+  symbol: object_dodojr_Anim_000860
+
+object_dodojr_Anim_0009D4:
+  type: OOT:ANIMATION
+  offset: 0x9D4
+  symbol: object_dodojr_Anim_0009D4
+
+object_dodojr_DL_001180:
+  type: GFX
+  offset: 0x1180
+  symbol: object_dodojr_DL_001180
+
+object_dodojr_DL_0012E0:
+  type: GFX
+  offset: 0x12E0
+  symbol: object_dodojr_DL_0012E0
+
+object_dodojr_DL_0013E8:
+  type: GFX
+  offset: 0x13E8
+  symbol: object_dodojr_DL_0013E8
+
+object_dodojr_DL_001508:
+  type: GFX
+  offset: 0x1508
+  symbol: object_dodojr_DL_001508
+
+object_dodojr_DL_001618:
+  type: GFX
+  offset: 0x1618
+  symbol: object_dodojr_DL_001618
+
+object_dodojr_Limb_002000:
+  type: OOT:LIMB
+  offset: 0x2000
+  symbol: object_dodojr_Limb_002000
+  limb_type: Standard
+
+object_dodojr_Limb_00200C:
+  type: OOT:LIMB
+  offset: 0x200C
+  symbol: object_dodojr_Limb_00200C
+  limb_type: Standard
+
+object_dodojr_Limb_002018:
+  type: OOT:LIMB
+  offset: 0x2018
+  symbol: object_dodojr_Limb_002018
+  limb_type: Standard
+
+object_dodojr_Limb_002024:
+  type: OOT:LIMB
+  offset: 0x2024
+  symbol: object_dodojr_Limb_002024
+  limb_type: Standard
+
+object_dodojr_Limb_002030:
+  type: OOT:LIMB
+  offset: 0x2030
+  symbol: object_dodojr_Limb_002030
+  limb_type: Standard
+
+object_dodojr_Limb_00203C:
+  type: OOT:LIMB
+  offset: 0x203C
+  symbol: object_dodojr_Limb_00203C
+  limb_type: Standard
+
+object_dodojr_Limb_002048:
+  type: OOT:LIMB
+  offset: 0x2048
+  symbol: object_dodojr_Limb_002048
+  limb_type: Standard
+
+object_dodojr_Limb_002054:
+  type: OOT:LIMB
+  offset: 0x2054
+  symbol: object_dodojr_Limb_002054
+  limb_type: Standard
+
+object_dodojr_Limb_002060:
+  type: OOT:LIMB
+  offset: 0x2060
+  symbol: object_dodojr_Limb_002060
+  limb_type: Standard
+
+object_dodojr_Limb_00206C:
+  type: OOT:LIMB
+  offset: 0x206C
+  symbol: object_dodojr_Limb_00206C
+  limb_type: Standard
+
+object_dodojr_Limb_002078:
+  type: OOT:LIMB
+  offset: 0x2078
+  symbol: object_dodojr_Limb_002078
+  limb_type: Standard
+
+object_dodojr_Limb_002084:
+  type: OOT:LIMB
+  offset: 0x2084
+  symbol: object_dodojr_Limb_002084
+  limb_type: Standard
+
+object_dodojr_Limb_002090:
+  type: OOT:LIMB
+  offset: 0x2090
+  symbol: object_dodojr_Limb_002090
+  limb_type: Standard
+
+object_dodojr_Limb_00209C:
+  type: OOT:LIMB
+  offset: 0x209C
+  symbol: object_dodojr_Limb_00209C
+  limb_type: Standard
+
+object_dodojr_Skel_0020E0:
+  type: OOT:SKELETON
+  offset: 0x20E0
+  symbol: object_dodojr_Skel_0020E0
+  limb_type: Standard
+  skel_type: Normal
+
+object_dodojr_Tex_001700:
+  type: TEXTURE
+  offset: 0x1700
+  symbol: object_dodojr_Tex_001700
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_dodojr_Tex_001900:
+  type: TEXTURE
+  offset: 0x1900
+  symbol: object_dodojr_Tex_001900
+  format: RGBA16
+  width: 8
+  height: 16
+
+object_dodojr_Tex_001A00:
+  type: TEXTURE
+  offset: 0x1A00
+  symbol: object_dodojr_Tex_001A00
+  format: RGBA16
+  width: 32
+  height: 8
+
+object_dodojr_Tex_001C00:
+  type: TEXTURE
+  offset: 0x1C00
+  symbol: object_dodojr_Tex_001C00
+  format: RGBA16
+  width: 16
+  height: 32
+
+
+object_dodojrVtx_0009F0:
+  type: OOT:ARRAY
+  offset: 0x0009F0
+  symbol: object_dodojrVtx_0009F0
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dodojrVtx_000C10:
+  type: OOT:ARRAY
+  offset: 0x000C10
+  symbol: object_dodojrVtx_000C10
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dodojrVtx_000D00:
+  type: OOT:ARRAY
+  offset: 0x000D00
+  symbol: object_dodojrVtx_000D00
+  count: 37
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dodojrVtx_000F50:
+  type: OOT:ARRAY
+  offset: 0x000F50
+  symbol: object_dodojrVtx_000F50
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dodojrVtx_0010C0:
+  type: OOT:ARRAY
+  offset: 0x0010C0
+  symbol: object_dodojrVtx_0010C0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_dodojr_Skel_0020E0Limbs:
+  type: BLOB
+  offset: 0x20A8
+  symbol: object_dodojr_Skel_0020E0Limbs
+  size: 0

@@ -1,0 +1,92 @@
+:config:
+  segments:
+    - [ 6, 0x011DA6B0 ]
+    - [ 4, 0x00D30E00 ]
+    - [ 8, 0x011DA6B0 ]
+    - [ 9, 0x011DA6B0 ]
+    - [ 10, 0x011DA6B0 ]
+    - [ 11, 0x011DA6B0 ]
+    - [ 12, 0x011DA6B0 ]
+    - [ 13, 0x011DA6B0 ]
+  external_files:
+    - ntsc_j_gc_collection/objects/gameplay_keep.yml
+
+object_efc_erupc_DL_001720:
+  type: GFX
+  offset: 0x1720
+  symbol: object_efc_erupc_DL_001720
+
+object_efc_erupc_DL_002570:
+  type: GFX
+  offset: 0x2570
+  symbol: object_efc_erupc_DL_002570
+
+object_efc_erupc_DL_002760:
+  type: GFX
+  offset: 0x2760
+  symbol: object_efc_erupc_DL_002760
+
+object_efc_erupc_DL_0027D8:
+  type: GFX
+  offset: 0x27D8
+  symbol: object_efc_erupc_DL_0027D8
+
+object_efc_erupc_Tex_000000:
+  type: TEXTURE
+  offset: 0x0
+  symbol: object_efc_erupc_Tex_000000
+  format: I8
+  width: 32
+  height: 64
+
+object_efc_erupc_Tex_000800:
+  type: TEXTURE
+  offset: 0x800
+  symbol: object_efc_erupc_Tex_000800
+  format: I4
+  width: 64
+  height: 64
+
+object_efc_erupc_Tex_001A30:
+  type: TEXTURE
+  offset: 0x1A30
+  symbol: object_efc_erupc_Tex_001A30
+  format: I8
+  width: 16
+  height: 128
+
+object_efc_erupc_Tex_0027F0:
+  type: TEXTURE
+  offset: 0x27F0
+  symbol: object_efc_erupc_Tex_0027F0
+  format: I8
+  width: 16
+  height: 16
+
+
+object_efc_erupcVtx_001000:
+  type: OOT:ARRAY
+  offset: 0x001000
+  symbol: object_efc_erupcVtx_001000
+  count: 114
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_efc_erupcVtx_002230:
+  type: OOT:ARRAY
+  offset: 0x002230
+  symbol: object_efc_erupcVtx_002230
+  count: 52
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_efc_erupcVtx_002730:
+  type: OOT:ARRAY
+  offset: 0x002730
+  symbol: object_efc_erupcVtx_002730
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

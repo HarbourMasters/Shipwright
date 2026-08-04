@@ -3,6 +3,7 @@
 #include "soh/ShipInit.hpp"
 
 extern "C" {
+#include "z64.h"
 #include "align_asset_macro.h"
 #include "macros.h"
 #include "variables.h"
@@ -18,7 +19,7 @@ static constexpr int32_t CVAR_TOT_MEDALLION_COLORS_DEFAULT = 0;
 #define dgEndGrayscaleAndEndDlistDL "__OTR__helpers/cosmetics/gEndGrayscaleAndEndDlistDL"
 static const ALIGN_ASSET(2) char gEndGrayscaleAndEndDlistDL[] = dgEndGrayscaleAndEndDlistDL;
 
-// This is used for the Temple of Time Medalions' color
+// This is used for the Temple of Time Medallions' color
 #define dtokinoma_room_0DL_007A70 "__OTR__scenes/shared/tokinoma_scene/tokinoma_room_0DL_007A70"
 static const ALIGN_ASSET(2) char tokinoma_room_0DL_007A70[] = dtokinoma_room_0DL_007A70;
 #define dtokinoma_room_0DL_007FD0 "__OTR__scenes/shared/tokinoma_scene/tokinoma_room_0DL_007FD0"

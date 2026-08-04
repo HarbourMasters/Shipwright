@@ -1,0 +1,65 @@
+:config:
+  segments:
+    - [ 6, 0x011A4D40 ]
+    - [ 4, 0x00D3A8E0 ]
+    - [ 8, 0x011A4D40 ]
+    - [ 9, 0x011A4D40 ]
+    - [ 10, 0x011A4D40 ]
+    - [ 11, 0x011A4D40 ]
+    - [ 12, 0x011A4D40 ]
+    - [ 13, 0x011A4D40 ]
+  external_files:
+    - ntsc_1-1/objects/gameplay_keep.yml
+
+object_tsubo_DL_0017C0:
+  type: GFX
+  offset: 0x17C0
+  symbol: object_tsubo_DL_0017C0
+
+object_tsubo_DL_001960:
+  type: GFX
+  offset: 0x1960
+  symbol: object_tsubo_DL_001960
+
+object_tsubo_Tex_000000:
+  type: TEXTURE
+  offset: 0x0
+  symbol: object_tsubo_Tex_000000
+  format: RGBA16
+  width: 32
+  height: 64
+
+object_tsubo_Tex_001000:
+  type: TEXTURE
+  offset: 0x1000
+  symbol: object_tsubo_Tex_001000
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_tsubo_Tex_001200:
+  type: TEXTURE
+  offset: 0x1200
+  symbol: object_tsubo_Tex_001200
+  format: RGBA16
+  width: 16
+  height: 16
+
+
+object_tsuboVtx_001400:
+  type: OOT:ARRAY
+  offset: 0x001400
+  symbol: object_tsuboVtx_001400
+  count: 60
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_tsuboVtx_001930:
+  type: OOT:ARRAY
+  offset: 0x001930
+  symbol: object_tsuboVtx_001930
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

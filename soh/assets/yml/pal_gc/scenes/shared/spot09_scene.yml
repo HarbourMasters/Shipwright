@@ -1,0 +1,209 @@
+:config:
+  segments:
+    - [ 2, 0x01B51D30 ]
+
+  external_files:
+    - pal_gc/scenes/shared/spot09_sceneSet_002C80.yml
+    - pal_gc/scenes/shared/spot09_sceneSet_002F70.yml
+    - pal_gc/scenes/shared/spot09_sceneSet_003060.yml
+    - pal_gc/scenes/shared/spot09_sceneSet_003140.yml
+spot09_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: spot09_scene
+
+gGerudoValleyBridgeJumpFieldFortressCs:
+  type: OOT:CUTSCENE
+  offset: 0x2AC0
+  symbol: gGerudoValleyBridgeJumpFieldFortressCs
+
+gGerudoValleyBridgeJumpFortressToFieldCs:
+  type: OOT:CUTSCENE
+  offset: 0x230
+  symbol: gGerudoValleyBridgeJumpFortressToFieldCs
+
+gGerudoValleyIntroCs:
+  type: OOT:CUTSCENE
+  offset: 0x31E0
+  symbol: gGerudoValleyIntroCs
+
+gSpot09Path_002F58:
+  type: OOT:PATH
+  offset: 0x2F58
+  symbol: gSpot09Path_002F58
+  num_paths: 3
+
+spot09_sceneTLUT_003440:
+  type: TEXTURE
+  offset: 0x3440
+  symbol: spot09_sceneTLUT_003440
+  format: RGBA16
+  width: 4
+  height: 4
+
+spot09_sceneTex_003460:
+  type: TEXTURE
+  offset: 0x3460
+  symbol: spot09_sceneTex_003460
+  format: RGBA16
+  width: 32
+  height: 64
+
+spot09_sceneTex_004460:
+  type: TEXTURE
+  offset: 0x4460
+  symbol: spot09_sceneTex_004460
+  format: RGBA16
+  width: 64
+  height: 32
+
+spot09_sceneTex_005460:
+  type: TEXTURE
+  offset: 0x5460
+  symbol: spot09_sceneTex_005460
+  format: CI4
+  width: 32
+  height: 128
+  tlut: 0x3440
+
+spot09_sceneTex_005C60:
+  type: TEXTURE
+  offset: 0x5C60
+  symbol: spot09_sceneTex_005C60
+  format: RGBA16
+  width: 32
+  height: 32
+
+spot09_sceneTex_006460:
+  type: TEXTURE
+  offset: 0x6460
+  symbol: spot09_sceneTex_006460
+  format: RGBA16
+  width: 32
+  height: 32
+
+spot09_sceneTex_006C60:
+  type: TEXTURE
+  offset: 0x6C60
+  symbol: spot09_sceneTex_006C60
+  format: I8
+  width: 16
+  height: 16
+
+spot09_sceneTex_006D60:
+  type: TEXTURE
+  offset: 0x6D60
+  symbol: spot09_sceneTex_006D60
+  format: RGBA16
+  width: 16
+  height: 32
+
+spot09_sceneTex_007160:
+  type: TEXTURE
+  offset: 0x7160
+  symbol: spot09_sceneTex_007160
+  format: RGBA16
+  width: 64
+  height: 32
+
+spot09_sceneTex_008160:
+  type: TEXTURE
+  offset: 0x8160
+  symbol: spot09_sceneTex_008160
+  format: RGBA16
+  width: 64
+  height: 32
+
+spot09_sceneTex_009160:
+  type: TEXTURE
+  offset: 0x9160
+  symbol: spot09_sceneTex_009160
+  format: RGBA16
+  width: 32
+  height: 64
+
+spot09_sceneTex_00A160:
+  type: TEXTURE
+  offset: 0xA160
+  symbol: spot09_sceneTex_00A160
+  format: RGBA16
+  width: 32
+  height: 32
+
+spot09_sceneTex_00A960:
+  type: TEXTURE
+  offset: 0xA960
+  symbol: spot09_sceneTex_00A960
+  format: RGBA16
+  width: 32
+  height: 64
+
+spot09_sceneTex_00B960:
+  type: TEXTURE
+  offset: 0xB960
+  symbol: spot09_sceneTex_00B960
+  format: RGBA16
+  width: 32
+  height: 32
+
+spot09_sceneTex_00C160:
+  type: TEXTURE
+  offset: 0xC160
+  symbol: spot09_sceneTex_00C160
+  format: RGBA16
+  width: 64
+  height: 32
+
+spot09_sceneTex_00D160:
+  type: TEXTURE
+  offset: 0xD160
+  symbol: spot09_sceneTex_00D160
+  format: RGBA16
+  width: 128
+  height: 16
+
+spot09_sceneTex_00E160:
+  type: TEXTURE
+  offset: 0xE160
+  symbol: spot09_sceneTex_00E160
+  format: RGBA16
+  width: 32
+  height: 32
+
+spot09_sceneTex_00E960:
+  type: TEXTURE
+  offset: 0xE960
+  symbol: spot09_sceneTex_00E960
+  format: I4
+  width: 64
+  height: 64
+
+spot09_sceneTex_00F160:
+  type: TEXTURE
+  offset: 0xF160
+  symbol: spot09_sceneTex_00F160
+  format: I4
+  width: 32
+  height: 128
+
+spot09_sceneTex_00F960:
+  type: TEXTURE
+  offset: 0xF960
+  symbol: spot09_sceneTex_00F960
+  format: RGBA16
+  width: 64
+  height: 32
+
+spot09_sceneTex_010960:
+  type: TEXTURE
+  offset: 0x10960
+  symbol: spot09_sceneTex_010960
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+spot09_sceneCollisionHeader_002128:
+  type: OOT:COLLISION
+  offset: 0x002128
+  symbol: spot09_sceneCollisionHeader_002128

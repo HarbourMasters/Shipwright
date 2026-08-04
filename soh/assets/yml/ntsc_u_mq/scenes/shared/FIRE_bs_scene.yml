@@ -1,0 +1,46 @@
+:config:
+  segments:
+    - [ 2, 0x01D4BA70 ]
+
+FIRE_bs_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: FIRE_bs_scene
+
+FIRE_bs_sceneTex_002C00:
+  type: TEXTURE
+  offset: 0x2C00
+  symbol: FIRE_bs_sceneTex_002C00
+  format: RGBA16
+  width: 32
+  height: 32
+
+FIRE_bs_sceneTex_003400:
+  type: TEXTURE
+  offset: 0x3400
+  symbol: FIRE_bs_sceneTex_003400
+  format: RGBA16
+  width: 32
+  height: 32
+
+FIRE_bs_sceneTex_003C00:
+  type: TEXTURE
+  offset: 0x3C00
+  symbol: FIRE_bs_sceneTex_003C00
+  format: RGBA16
+  width: 32
+  height: 32
+
+FIRE_bs_sceneTex_004400:
+  type: TEXTURE
+  offset: 0x4400
+  symbol: FIRE_bs_sceneTex_004400
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+FIRE_bs_sceneCollisionHeader_002BCC:
+  type: OOT:COLLISION
+  offset: 0x002BCC
+  symbol: FIRE_bs_sceneCollisionHeader_002BCC

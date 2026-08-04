@@ -334,7 +334,7 @@ s32 EnTk_Orient(EnTk* this, PlayState* play) {
     }
 }
 
-u16 func_80B1C54C(PlayState* play, Actor* thisx) {
+u16 EnTk_GetTextId(PlayState* play, Actor* thisx) {
     u16 ret;
 
     ret = Text_GetFaceReaction(play, 14);
@@ -351,7 +351,7 @@ u16 func_80B1C54C(PlayState* play, Actor* thisx) {
     }
 }
 
-s16 func_80B1C5A0(PlayState* play, Actor* thisx) {
+s16 EnTk_UpdateTalkState(PlayState* play, Actor* thisx) {
     s32 ret = NPC_TALK_STATE_TALKING;
 
     switch (Message_GetState(&play->msgCtx)) {
@@ -537,7 +537,7 @@ void EnTk_Rest(EnTk* this, PlayState* play) {
         }
 
         Npc_UpdateTalking(play, &this->actor, &this->interactInfo.talkState, this->collider.dim.radius + 30.0f,
-                          func_80B1C54C, func_80B1C5A0);
+                          EnTk_GetTextId, EnTk_UpdateTalkState);
     } else if (EnTk_CheckFacingPlayer(this)) {
         v1 = this->actor.shape.rot.y;
         v1 -= this->h_21E;
@@ -545,7 +545,7 @@ void EnTk_Rest(EnTk* this, PlayState* play) {
 
         this->actionCountdown = 0;
         Npc_UpdateTalking(play, &this->actor, &this->interactInfo.talkState, this->collider.dim.radius + 30.0f,
-                          func_80B1C54C, func_80B1C5A0);
+                          EnTk_GetTextId, EnTk_UpdateTalkState);
     } else if (Actor_ProcessTalkRequest(&this->actor, play)) {
         v1 = this->actor.shape.rot.y;
         v1 -= this->h_21E;

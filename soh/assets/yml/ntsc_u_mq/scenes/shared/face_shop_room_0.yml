@@ -1,0 +1,111 @@
+:config:
+  segments:
+    - [ 3, 0x01F50DC0 ]
+    - [ 2, 0x01F50B90 ]
+  directory: scenes/shared/face_shop_scene
+  external_files:
+    - ntsc_u_mq/scenes/shared/face_shop_scene.yml
+    - ntsc_u_mq/code/sys_matrix.yml
+
+face_shop_room_0:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: face_shop_room_0
+
+
+face_shop_room_0Vtx_0000D0:
+  type: OOT:ARRAY
+  offset: 0x0000D0
+  symbol: face_shop_room_0Vtx_0000D0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+face_shop_room_0Vtx_000190:
+  type: OOT:ARRAY
+  offset: 0x000190
+  symbol: face_shop_room_0Vtx_000190
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+face_shop_room_0Vtx_000310:
+  type: OOT:ARRAY
+  offset: 0x000310
+  symbol: face_shop_room_0Vtx_000310
+  count: 1743
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+face_shop_room_0Vtx_007000:
+  type: OOT:ARRAY
+  offset: 0x007000
+  symbol: face_shop_room_0Vtx_007000
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+face_shop_room_0Vtx_007040:
+  type: OOT:ARRAY
+  offset: 0x007040
+  symbol: face_shop_room_0Vtx_007040
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+face_shop_room_0Vtx_0070C0:
+  type: OOT:ARRAY
+  offset: 0x0070C0
+  symbol: face_shop_room_0Vtx_0070C0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+face_shop_room_0Vtx_007140:
+  type: OOT:ARRAY
+  offset: 0x007140
+  symbol: face_shop_room_0Vtx_007140
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+face_shop_room_0Vtx_0071C0:
+  type: OOT:ARRAY
+  offset: 0x0071C0
+  symbol: face_shop_room_0Vtx_0071C0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+face_shop_room_0DL_007240:
+  type: GFX
+  offset: 0x007240
+  symbol: face_shop_room_0DL_007240
+
+face_shop_room_0DL_0072D0:
+  type: GFX
+  offset: 0x0072D0
+  symbol: face_shop_room_0DL_0072D0
+
+face_shop_room_0DL_007390:
+  type: GFX
+  offset: 0x007390
+  symbol: face_shop_room_0DL_007390
+
+face_shop_room_0DL_008D88:
+  type: GFX
+  offset: 0x008D88
+  symbol: face_shop_room_0DL_008D88
+
+face_shop_room_0DL_008E08:
+  type: GFX
+  offset: 0x008E08
+  symbol: face_shop_room_0DL_008E08

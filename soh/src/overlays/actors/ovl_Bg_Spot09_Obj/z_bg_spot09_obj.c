@@ -60,7 +60,7 @@ static Gfx* sDLists[] = {
 s32 func_808B1AE0(BgSpot09Obj* this, PlayState* play) {
     s32 carpentersRescued;
 
-    if (gSaveContext.sceneSetupIndex >= 4) {
+    if (gSaveContext.sceneLayer >= 4) {
         return this->dyna.actor.params == 0;
     }
 

@@ -32,13 +32,20 @@ void RegionTable_Init_Graveyard() {
         LOCATION(RC_GY_GRASS_11,                       logic->CanCutShrubs()),
         LOCATION(RC_GY_GRASS_12,                       logic->CanCutShrubs()),
         LOCATION(RC_GRAVEYARD_CRATE,                   ((logic->IsAdult && CanPlantBean(RR_THE_GRAVEYARD, RG_GRAVEYARD_BEAN_SOUL)) || logic->CanUse(RG_LONGSHOT)) && logic->CanBreakCrates()),
+        LOCATION(RC_GY_ROCK,                           logic->CanBreakRocks()),
+        LOCATION(RC_GY_NEAR_HUT_GRAVE_BUTTERFLY_FAIRY, logic->IsChild && logic->AtDay && logic->CanUse(RG_STICKS)),
+        LOCATION(RC_GY_ENTRANCE_RECTANGLE_SIGN,        logic->CanRead()),
+        LOCATION(RC_GY_ENTRANCE_PLINTH,                logic->CanRead()),
+        LOCATION(RC_GY_RIGHT_OF_ROYAL_TOMB_GRAVE,      logic->CanRead()),
+        LOCATION(RC_GY_LEFT_OF_ROYAL_TOMB_GRAVE,       logic->CanRead()),
+        LOCATION(RC_GY_ROYAL_TOMB_GRAVE,               logic->CanRead() || logic->CanUse(RG_ZELDAS_LULLABY)),
     }, {
         //Exits
         ENTRANCE(RR_GRAVEYARD_SHIELD_GRAVE,       (logic->IsAdult || logic->AtNight) && logic->HasItem(RG_POWER_BRACELET)),
         ENTRANCE(RR_GRAVEYARD_COMPOSERS_GRAVE,    logic->CanUse(RG_ZELDAS_LULLABY)),
         ENTRANCE(RR_GRAVEYARD_HEART_PIECE_GRAVE,  (logic->IsAdult || logic->AtNight) && logic->HasItem(RG_POWER_BRACELET)),
         ENTRANCE(RR_GRAVEYARD_DAMPES_GRAVE,       logic->IsAdult && logic->HasItem(RG_POWER_BRACELET)),
-        ENTRANCE(RR_GRAVEYARD_DAMPES_HOUSE,       logic->IsAdult && logic->CanOpenOverworldDoor(RG_DAMPES_HUT_KEY) /*|| logic->AtDampeTime*/), //TODO: This needs to be handled in ToD rework
+        ENTRANCE(RR_GRAVEYARD_DAMPES_HOUSE,       logic->IsAdult && logic->HasItem(RG_DAMPES_HUT_KEY) /*|| logic->AtDampeTime*/), //TODO: This needs to be handled in ToD rework
         ENTRANCE(RR_KAKARIKO_VILLAGE,             true),
         ENTRANCE(RR_GRAVEYARD_WARP_PAD_REGION,    false),
     });
@@ -69,7 +76,7 @@ void RegionTable_Init_Graveyard() {
 
     areaTable[RR_GRAVEYARD_HEART_PIECE_GRAVE] = Region("Graveyard Heart Piece Grave", SCENE_REDEAD_GRAVE, {}, {
         //Locations
-        LOCATION(RC_GRAVEYARD_HEART_PIECE_GRAVE_CHEST, logic->CanUse(RG_SUNS_SONG) && logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_GRAVEYARD_HEART_PIECE_GRAVE_CHEST, logic->CanUse(RG_SUNS_SONG) && logic->CanOpenLargeChest()),
     }, {
         //Exits
         ENTRANCE(RR_THE_GRAVEYARD, true),
@@ -90,7 +97,7 @@ void RegionTable_Init_Graveyard() {
         EVENT_ACCESS(LOGIC_NUT_ACCESS, logic->CanBreakPots()),
     }, {
         //Locations
-        LOCATION(RC_GRAVEYARD_HOOKSHOT_CHEST,              logic->HasItem(RG_SPEAK_HYLIAN) && logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_GRAVEYARD_HOOKSHOT_CHEST,              logic->HasItem(RG_SPEAK_HYLIAN) && logic->CanOpenLargeChest()),
         LOCATION(RC_GRAVEYARD_DAMPE_RACE_FREESTANDING_POH, (logic->IsAdult || ctx->GetTrickOption(RT_GY_CHILD_DAMPE_RACE_POH)) && logic->HasItem(RG_SPEAK_HYLIAN)),
         LOCATION(RC_GY_DAMPES_GRAVE_POT_1,                 logic->CanBreakPots()),
         LOCATION(RC_GY_DAMPES_GRAVE_POT_2,                 logic->CanBreakPots()),
@@ -106,6 +113,21 @@ void RegionTable_Init_Graveyard() {
         LOCATION(RC_GRAVEYARD_DAMPE_RACE_RUPEE_6,          true),
         LOCATION(RC_GRAVEYARD_DAMPE_RACE_RUPEE_7,          true),
         LOCATION(RC_GRAVEYARD_DAMPE_RACE_RUPEE_8,          true),
+        LOCATION(RC_GY_WONDER_DAMPE_RACE_1,                true),
+        LOCATION(RC_GY_WONDER_DAMPE_RACE_2,                true),
+        LOCATION(RC_GY_WONDER_DAMPE_RACE_3,                true),
+        LOCATION(RC_GY_WONDER_DAMPE_RACE_4,                true),
+        LOCATION(RC_GY_WONDER_DAMPE_RACE_5,                true),
+        LOCATION(RC_GY_WONDER_DAMPE_RACE_6,                true),
+        LOCATION(RC_GY_WONDER_DAMPE_RACE_7,                true),
+        LOCATION(RC_GY_WONDER_DAMPE_RACE_8,                true),
+        LOCATION(RC_GY_WONDER_DAMPE_RACE_9,                true),
+        LOCATION(RC_GY_WONDER_DAMPE_RACE_10,               true),
+        LOCATION(RC_GY_WONDER_DAMPE_RACE_11,               true),
+        LOCATION(RC_GY_WONDER_DAMPE_RACE_12,               true),
+        LOCATION(RC_GY_WONDER_DAMPE_RACE_13,               true),
+        LOCATION(RC_GY_WONDER_DAMPE_RACE_14,               true),
+        LOCATION(RC_GY_WONDER_DAMPE_RACE_15,               true),
     }, {
         //Exits
         ENTRANCE(RR_THE_GRAVEYARD,      true),

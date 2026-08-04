@@ -1,0 +1,418 @@
+:config:
+  segments:
+    - [ 6, 0x00DB4FB0 ]
+    - [ 4, 0x00D310D0 ]
+    - [ 8, 0x00DB4FB0 ]
+    - [ 9, 0x00DB4FB0 ]
+    - [ 10, 0x00DB4FB0 ]
+    - [ 11, 0x00DB4FB0 ]
+    - [ 12, 0x00DB4FB0 ]
+    - [ 13, 0x00DB4FB0 ]
+  external_files:
+    - ntsc_j_mq/objects/gameplay_keep.yml
+
+gPoeAppearAnim:
+  type: OOT:ANIMATION
+  offset: 0x11C4
+  symbol: gPoeAppearAnim
+
+gPoeAttackAnim:
+  type: OOT:ANIMATION
+  offset: 0x01A8
+  symbol: gPoeAttackAnim
+
+gPoeBurnDL:
+  type: GFX
+  offset: 0x2608
+  symbol: gPoeBurnDL
+
+gPoeDamagedAnim:
+  type: OOT:ANIMATION
+  offset: 0x04EC
+  symbol: gPoeDamagedAnim
+
+gPoeDisappearAnim:
+  type: OOT:ANIMATION
+  offset: 0x15B0
+  symbol: gPoeDisappearAnim
+
+gPoeFleeAnim:
+  type: OOT:ANIMATION
+  offset: 0x06E0
+  symbol: gPoeFleeAnim
+
+gPoeFloatAnim:
+  type: OOT:ANIMATION
+  offset: 0x0A60
+  symbol: gPoeFloatAnim
+
+gPoeLanternDL:
+  type: GFX
+  offset: 0x2D28
+  symbol: gPoeLanternDL
+
+gPoeSkel:
+  type: OOT:SKELETON
+  offset: 0x50D0
+  symbol: gPoeSkel
+  limb_type: Standard
+  skel_type: Normal
+
+gPoeSoulDL:
+  type: GFX
+  offset: 0x3850
+  symbol: gPoeSoulDL
+
+object_pohTex_003010:
+  type: TEXTURE
+  offset: 0x3010
+  symbol: object_pohTex_003010
+  format: I8
+  width: 32
+  height: 64
+
+object_pohTex_003910:
+  type: TEXTURE
+  offset: 0x3910
+  symbol: object_pohTex_003910
+  format: RGBA16
+  width: 32
+  height: 16
+
+object_pohTex_003D10:
+  type: TEXTURE
+  offset: 0x3D10
+  symbol: object_pohTex_003D10
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_pohTex_004510:
+  type: TEXTURE
+  offset: 0x4510
+  symbol: object_pohTex_004510
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_pohTex_004710:
+  type: TEXTURE
+  offset: 0x4710
+  symbol: object_pohTex_004710
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_pohTex_004790:
+  type: TEXTURE
+  offset: 0x4790
+  symbol: object_pohTex_004790
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_pohTex_004990:
+  type: TEXTURE
+  offset: 0x4990
+  symbol: object_pohTex_004990
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_pohTex_004A10:
+  type: TEXTURE
+  offset: 0x4A10
+  symbol: object_pohTex_004A10
+  format: RGBA16
+  width: 8
+  height: 16
+
+object_pohTex_004B10:
+  type: TEXTURE
+  offset: 0x4B10
+  symbol: object_pohTex_004B10
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_pohTex_004D10:
+  type: TEXTURE
+  offset: 0x4D10
+  symbol: object_pohTex_004D10
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_pohTex_004F10:
+  type: TEXTURE
+  offset: 0x4F10
+  symbol: object_pohTex_004F10
+  format: RGBA16
+  width: 8
+  height: 8
+
+
+object_pohVtx_0015C0:
+  type: OOT:ARRAY
+  offset: 0x0015C0
+  symbol: object_pohVtx_0015C0
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gPoeSkelLimbsLimb_004FFCDL_001620:
+  type: GFX
+  offset: 0x001620
+  symbol: gPoeSkelLimbsLimb_004FFCDL_001620
+
+object_pohVtx_0016B8:
+  type: OOT:ARRAY
+  offset: 0x0016B8
+  symbol: object_pohVtx_0016B8
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gPoeSkelLimbsLimb_004FF0DL_001898:
+  type: GFX
+  offset: 0x001898
+  symbol: gPoeSkelLimbsLimb_004FF0DL_001898
+
+object_pohVtx_001A18:
+  type: OOT:ARRAY
+  offset: 0x001A18
+  symbol: object_pohVtx_001A18
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gPoeSkelLimbsLimb_005074DL_001A78:
+  type: GFX
+  offset: 0x001A78
+  symbol: gPoeSkelLimbsLimb_005074DL_001A78
+
+object_pohVtx_001B10:
+  type: OOT:ARRAY
+  offset: 0x001B10
+  symbol: object_pohVtx_001B10
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gPoeSkelLimbsLimb_005068DL_001B70:
+  type: GFX
+  offset: 0x001B70
+  symbol: gPoeSkelLimbsLimb_005068DL_001B70
+
+object_pohVtx_001C08:
+  type: OOT:ARRAY
+  offset: 0x001C08
+  symbol: object_pohVtx_001C08
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gPoeSkelLimbsLimb_005044DL_001C68:
+  type: GFX
+  offset: 0x001C68
+  symbol: gPoeSkelLimbsLimb_005044DL_001C68
+
+object_pohVtx_001CE0:
+  type: OOT:ARRAY
+  offset: 0x001CE0
+  symbol: object_pohVtx_001CE0
+  count: 45
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gPoeSkelLimbsLimb_004FC0DL_001FB0:
+  type: GFX
+  offset: 0x001FB0
+  symbol: gPoeSkelLimbsLimb_004FC0DL_001FB0
+
+object_pohVtx_002158:
+  type: OOT:ARRAY
+  offset: 0x002158
+  symbol: object_pohVtx_002158
+  count: 75
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_pohVtx_0027C0:
+  type: OOT:ARRAY
+  offset: 0x0027C0
+  symbol: object_pohVtx_0027C0
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gPoeSkelLimbsLimb_005008DL_002910:
+  type: GFX
+  offset: 0x002910
+  symbol: gPoeSkelLimbsLimb_005008DL_002910
+
+object_pohVtx_0029D8:
+  type: OOT:ARRAY
+  offset: 0x0029D8
+  symbol: object_pohVtx_0029D8
+  count: 53
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_pohVtx_002EB8:
+  type: OOT:ARRAY
+  offset: 0x002EB8
+  symbol: object_pohVtx_002EB8
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gPoeSkelLimbsLimb_004FB4DL_002F58:
+  type: GFX
+  offset: 0x002F58
+  symbol: gPoeSkelLimbsLimb_004FB4DL_002F58
+
+object_pohVtx_003810:
+  type: OOT:ARRAY
+  offset: 0x003810
+  symbol: object_pohVtx_003810
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gPoeSkelLimbsLimb_004F90:
+  type: OOT:LIMB
+  offset: 0x004F90
+  symbol: gPoeSkelLimbsLimb_004F90
+  limb_type: Standard
+
+gPoeSkelLimbsLimb_004F9C:
+  type: OOT:LIMB
+  offset: 0x004F9C
+  symbol: gPoeSkelLimbsLimb_004F9C
+  limb_type: Standard
+
+gPoeSkelLimbsLimb_004FA8:
+  type: OOT:LIMB
+  offset: 0x004FA8
+  symbol: gPoeSkelLimbsLimb_004FA8
+  limb_type: Standard
+
+gPoeSkelLimbsLimb_004FB4:
+  type: OOT:LIMB
+  offset: 0x004FB4
+  symbol: gPoeSkelLimbsLimb_004FB4
+  limb_type: Standard
+
+gPoeSkelLimbsLimb_004FC0:
+  type: OOT:LIMB
+  offset: 0x004FC0
+  symbol: gPoeSkelLimbsLimb_004FC0
+  limb_type: Standard
+
+gPoeSkelLimbsLimb_004FCC:
+  type: OOT:LIMB
+  offset: 0x004FCC
+  symbol: gPoeSkelLimbsLimb_004FCC
+  limb_type: Standard
+
+gPoeSkelLimbsLimb_004FD8:
+  type: OOT:LIMB
+  offset: 0x004FD8
+  symbol: gPoeSkelLimbsLimb_004FD8
+  limb_type: Standard
+
+gPoeSkelLimbsLimb_004FE4:
+  type: OOT:LIMB
+  offset: 0x004FE4
+  symbol: gPoeSkelLimbsLimb_004FE4
+  limb_type: Standard
+
+gPoeSkelLimbsLimb_004FF0:
+  type: OOT:LIMB
+  offset: 0x004FF0
+  symbol: gPoeSkelLimbsLimb_004FF0
+  limb_type: Standard
+
+gPoeSkelLimbsLimb_004FFC:
+  type: OOT:LIMB
+  offset: 0x004FFC
+  symbol: gPoeSkelLimbsLimb_004FFC
+  limb_type: Standard
+
+gPoeSkelLimbsLimb_005008:
+  type: OOT:LIMB
+  offset: 0x005008
+  symbol: gPoeSkelLimbsLimb_005008
+  limb_type: Standard
+
+gPoeSkelLimbsLimb_005014:
+  type: OOT:LIMB
+  offset: 0x005014
+  symbol: gPoeSkelLimbsLimb_005014
+  limb_type: Standard
+
+gPoeSkelLimbsLimb_005020:
+  type: OOT:LIMB
+  offset: 0x005020
+  symbol: gPoeSkelLimbsLimb_005020
+  limb_type: Standard
+
+gPoeSkelLimbsLimb_00502C:
+  type: OOT:LIMB
+  offset: 0x00502C
+  symbol: gPoeSkelLimbsLimb_00502C
+  limb_type: Standard
+
+gPoeSkelLimbsLimb_005038:
+  type: OOT:LIMB
+  offset: 0x005038
+  symbol: gPoeSkelLimbsLimb_005038
+  limb_type: Standard
+
+gPoeSkelLimbsLimb_005044:
+  type: OOT:LIMB
+  offset: 0x005044
+  symbol: gPoeSkelLimbsLimb_005044
+  limb_type: Standard
+
+gPoeSkelLimbsLimb_005050:
+  type: OOT:LIMB
+  offset: 0x005050
+  symbol: gPoeSkelLimbsLimb_005050
+  limb_type: Standard
+
+gPoeSkelLimbsLimb_00505C:
+  type: OOT:LIMB
+  offset: 0x00505C
+  symbol: gPoeSkelLimbsLimb_00505C
+  limb_type: Standard
+
+gPoeSkelLimbsLimb_005068:
+  type: OOT:LIMB
+  offset: 0x005068
+  symbol: gPoeSkelLimbsLimb_005068
+  limb_type: Standard
+
+gPoeSkelLimbsLimb_005074:
+  type: OOT:LIMB
+  offset: 0x005074
+  symbol: gPoeSkelLimbsLimb_005074
+  limb_type: Standard
+
+gPoeSkelLimbs:
+  type: BLOB
+  offset: 0x5080
+  symbol: gPoeSkelLimbs
+  size: 0

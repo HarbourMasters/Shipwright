@@ -1,0 +1,10 @@
+:config:
+  segments:
+    - [ 128, 0x01685140 ]
+
+elf_message_ydan:
+  type: BLOB
+  offset: 0x0
+  size: 0x10
+  symbol: elf_message_ydan
+

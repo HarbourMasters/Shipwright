@@ -1,0 +1,35 @@
+:config:
+  segments:
+    - [ 6, 0x013CD000 ]
+    - [ 4, 0x00F5E000 ]
+    - [ 8, 0x013CD000 ]
+    - [ 9, 0x013CD000 ]
+    - [ 10, 0x013CD000 ]
+    - [ 11, 0x013CD000 ]
+    - [ 12, 0x013CD000 ]
+    - [ 13, 0x013CD000 ]
+  external_files:
+    - pal_mq_dbg/objects/gameplay_keep.yml
+
+gGoldenGoddessLightRingDL:
+  type: GFX
+  offset: 0x0190
+  symbol: gGoldenGoddessLightRingDL
+
+gGoldenGoddessLightRingTex:
+  type: TEXTURE
+  offset: 0x0278
+  symbol: gGoldenGoddessLightRingTex
+  format: I8
+  width: 32
+  height: 128
+
+
+object_light_ringVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_light_ringVtx_000000
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

@@ -270,7 +270,7 @@ void EnDaiku_UpdateText(EnDaiku* this, PlayState* play) {
     } else {
         Actor_GetScreenPos(play, &this->actor, &sp2E, &sp2C);
         if (sp2E >= 0 && sp2E <= 320 && sp2C >= 0 && sp2C <= 240 && this->talkState == ENDAIKU_STATE_CAN_TALK &&
-            func_8002F2CC(&this->actor, play, 100.0f) == 1) {
+            Actor_OfferTalk(&this->actor, play, 100.0f) == 1) {
             if (play->sceneNum == SCENE_THIEVES_HIDEOUT) {
                 if (this->stateFlags & ENDAIKU_STATEFLAG_GERUDODEFEATED) {
                     freedCount = 0;
@@ -473,7 +473,7 @@ void EnDaiku_InitSubCamera(EnDaiku* this, PlayState* play) {
     this->subCamAtTarget.z = this->subCamAt.z = this->actor.world.pos.z;
 
     this->subCamId = Play_CreateSubCamera(play);
-    Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+    Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_WAIT);
     Play_ChangeCameraStatus(play, this->subCamId, CAM_STAT_ACTIVE);
 
     Play_CameraSetAtEye(play, this->subCamId, &this->subCamAt, &this->subCamEye);
@@ -506,7 +506,7 @@ void EnDaiku_EscapeSuccess(EnDaiku* this, PlayState* play) {
 
     if (GameInteractor_Should(VB_PLAY_CARPENTER_FREE_CS, true, this)) {
         Play_ClearCamera(play, this->subCamId);
-        Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_ACTIVE);
+        Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_ACTIVE);
     }
     this->subCamActive = false;
 

@@ -1,8 +1,8 @@
 #pragma once
 
-#include <libultraship/libultraship.h>
+#include <functional>
+#include <ship/window/gui/GuiWindow.h>
 #include <ship/window/gui/GuiMenuBar.h>
-#include <ship/window/gui/GuiElement.h>
 
 class SohModalWindow final : public Ship::GuiWindow {
   public:

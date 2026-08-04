@@ -6,6 +6,7 @@
 #include "soh/Enhancements/debugger/performanceTimer.h"
 
 #include <fstream>
+#include <libultraship/log/luslog.h>
 #include <soh/OTRGlobals.h>
 
 #include "3drando/shops.hpp"
@@ -767,7 +768,7 @@ bool SpiritCertainAccess(RandomizerRegion region) {
     Spirit Shared can take up to 3 regions, this is because checks can exist in many regions at the same time
     and the logic needs to be able to check the access logic from those regions to check the other universes properly.
 
-    anyAge is equivalent to a self referencing Here, used for events and any check where that is relevent.
+    anyAge is equivalent to a self referencing Here, used for events and any check where that is relevant.
 */
 
 bool SpiritShared(RandomizerRegion region, ConditionFn condition, bool anyAge, RandomizerRegion otherRegion,
@@ -873,7 +874,7 @@ bool BeanPlanted(const RandomizerGet bean) {
     }
 
     // swchFlag found using the Actor Viewer to get the Obj_Bean parameters & 0x3F
-    // not tested with multiple OTRs, but can be automated similarly to GetDungeonSmallKeyDoors
+    // not tested with multiple OTRs, but can be automated similarly to GetUsedSmallKeys
     SceneID sceneID;
     uint8_t swchFlag;
     switch (bean) {

@@ -1,0 +1,923 @@
+:config:
+  segments:
+    - [ 6, 0x00E83DC0 ]
+    - [ 4, 0x00D30F00 ]
+    - [ 8, 0x00E83DC0 ]
+    - [ 9, 0x00E83DC0 ]
+    - [ 10, 0x00E83DC0 ]
+    - [ 11, 0x00E83DC0 ]
+    - [ 12, 0x00E83DC0 ]
+    - [ 13, 0x00E83DC0 ]
+  external_files:
+    - ntsc_u_gc/objects/gameplay_keep.yml
+
+gStalfosArmorBackTex:
+  type: TEXTURE
+  offset: 0x7748
+  symbol: gStalfosArmorBackTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gStalfosBlockWithShieldAnim:
+  type: OOT:ANIMATION
+  offset: 0x1C20
+  symbol: gStalfosBlockWithShieldAnim
+
+gStalfosBoneDetailTex:
+  type: TEXTURE
+  offset: 0x6EC8
+  symbol: gStalfosBoneDetailTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gStalfosBoneGradientTex:
+  type: TEXTURE
+  offset: 0x6E28
+  symbol: gStalfosBoneGradientTex
+  format: RGBA16
+  width: 4
+  height: 4
+
+gStalfosChestDL:
+  type: GFX
+  offset: 0x5AD8
+  symbol: gStalfosChestDL
+
+gStalfosChestLimb:
+  type: OOT:LIMB
+  offset: 0x7910
+  symbol: gStalfosChestLimb
+  limb_type: Standard
+
+gStalfosDownSlashAnim:
+  type: OOT:ANIMATION
+  offset: 0xB00C
+  symbol: gStalfosDownSlashAnim
+
+gStalfosEyeSocketTex:
+  type: TEXTURE
+  offset: 0x6BA8
+  symbol: gStalfosEyeSocketTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gStalfosEyeTex:
+  type: TEXTURE
+  offset: 0x6DA8
+  symbol: gStalfosEyeTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gStalfosFallOverBackwardsAnim:
+  type: OOT:ANIMATION
+  offset: 0x1420
+  symbol: gStalfosFallOverBackwardsAnim
+
+gStalfosFallOverForwardsAnim:
+  type: OOT:ANIMATION
+  offset: 0x9A90
+  symbol: gStalfosFallOverForwardsAnim
+
+gStalfosFastAdvanceAnim:
+  type: OOT:ANIMATION
+  offset: 0x26D4
+  symbol: gStalfosFastAdvanceAnim
+
+gStalfosFlinchFromHitBehindAnim:
+  type: OOT:ANIMATION
+  offset: 0x444
+  symbol: gStalfosFlinchFromHitBehindAnim
+
+gStalfosFlinchFromHitFrontAnim:
+  type: OOT:ANIMATION
+  offset: 0x8604
+  symbol: gStalfosFlinchFromHitFrontAnim
+
+gStalfosJawDL:
+  type: GFX
+  offset: 0x5B90
+  symbol: gStalfosJawDL
+
+gStalfosJawLimb:
+  type: OOT:LIMB
+  offset: 0x78D4
+  symbol: gStalfosJawLimb
+  limb_type: Standard
+
+gStalfosJawRootLimb:
+  type: OOT:LIMB
+  offset: 0x78C8
+  symbol: gStalfosJawRootLimb
+  limb_type: Standard
+
+gStalfosJumpAnim:
+  type: OOT:ANIMATION
+  offset: 0xA324
+  symbol: gStalfosJumpAnim
+
+gStalfosJumpBackwardsAnim:
+  type: OOT:ANIMATION
+  offset: 0x1978
+  symbol: gStalfosJumpBackwardsAnim
+
+gStalfosJumpslashAnim:
+  type: OOT:ANIMATION
+  offset: 0xA99C
+  symbol: gStalfosJumpslashAnim
+
+gStalfosLandFromLeapAnim:
+  type: OOT:ANIMATION
+  offset: 0xC438
+  symbol: gStalfosLandFromLeapAnim
+
+gStalfosLaughAnim:
+  type: OOT:ANIMATION
+  offset: 0xC8A0
+  symbol: gStalfosLaughAnim
+
+gStalfosLeapAnim:
+  type: OOT:ANIMATION
+  offset: 0x9E50
+  symbol: gStalfosLeapAnim
+
+gStalfosLeftAnkleLimb:
+  type: OOT:LIMB
+  offset: 0x7A84
+  symbol: gStalfosLeftAnkleLimb
+  limb_type: Standard
+
+gStalfosLeftAnkleRootLimb:
+  type: OOT:LIMB
+  offset: 0x7A78
+  symbol: gStalfosLeftAnkleRootLimb
+  limb_type: Standard
+
+gStalfosLeftArmRootLimb:
+  type: OOT:LIMB
+  offset: 0x7964
+  symbol: gStalfosLeftArmRootLimb
+  limb_type: Standard
+
+gStalfosLeftFootDL:
+  type: GFX
+  offset: 0x6580
+  symbol: gStalfosLeftFootDL
+
+gStalfosLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x7A9C
+  symbol: gStalfosLeftFootLimb
+  limb_type: Standard
+
+gStalfosLeftFootRootLimb:
+  type: OOT:LIMB
+  offset: 0x7A90
+  symbol: gStalfosLeftFootRootLimb
+  limb_type: Standard
+
+gStalfosLeftForearmDL:
+  type: GFX
+  offset: 0x6680
+  symbol: gStalfosLeftForearmDL
+
+gStalfosLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0x79AC
+  symbol: gStalfosLeftForearmLimb
+  limb_type: Standard
+
+gStalfosLeftForearmRootLimb:
+  type: OOT:LIMB
+  offset: 0x797C
+  symbol: gStalfosLeftForearmRootLimb
+  limb_type: Standard
+
+gStalfosLeftHandDL:
+  type: GFX
+  offset: 0x6988
+  symbol: gStalfosLeftHandDL
+
+gStalfosLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x7994
+  symbol: gStalfosLeftHandLimb
+  limb_type: Standard
+
+gStalfosLeftHandRootLimb:
+  type: OOT:LIMB
+  offset: 0x7988
+  symbol: gStalfosLeftHandRootLimb
+  limb_type: Standard
+
+gStalfosLeftLegRootLimb:
+  type: OOT:LIMB
+  offset: 0x7A54
+  symbol: gStalfosLeftLegRootLimb
+  limb_type: Standard
+
+gStalfosLeftLowerLegDL:
+  type: GFX
+  offset: 0x6778
+  symbol: gStalfosLeftLowerLegDL
+
+gStalfosLeftLowerLegLimb:
+  type: OOT:LIMB
+  offset: 0x7AA8
+  symbol: gStalfosLeftLowerLegLimb
+  limb_type: Standard
+
+gStalfosLeftLowerLegRootLimb:
+  type: OOT:LIMB
+  offset: 0x7A6C
+  symbol: gStalfosLeftLowerLegRootLimb
+  limb_type: Standard
+
+gStalfosLeftShoulderArmorDL:
+  type: GFX
+  offset: 0x64B0
+  symbol: gStalfosLeftShoulderArmorDL
+
+gStalfosLeftShoulderArmorLimb:
+  type: OOT:LIMB
+  offset: 0x7958
+  symbol: gStalfosLeftShoulderArmorLimb
+  limb_type: Standard
+
+gStalfosLeftShoulderArmorRootLimb:
+  type: OOT:LIMB
+  offset: 0x794C
+  symbol: gStalfosLeftShoulderArmorRootLimb
+  limb_type: Standard
+
+gStalfosLeftShoulderRootLimb:
+  type: OOT:LIMB
+  offset: 0x7940
+  symbol: gStalfosLeftShoulderRootLimb
+  limb_type: Standard
+
+gStalfosLeftThighDL:
+  type: GFX
+  offset: 0x68E0
+  symbol: gStalfosLeftThighDL
+
+gStalfosLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0x7AB4
+  symbol: gStalfosLeftThighLimb
+  limb_type: Standard
+
+gStalfosLeftThighRootLimb:
+  type: OOT:LIMB
+  offset: 0x7A60
+  symbol: gStalfosLeftThighRootLimb
+  limb_type: Standard
+
+gStalfosLeftUpperArmDL:
+  type: GFX
+  offset: 0x63D8
+  symbol: gStalfosLeftUpperArmDL
+
+gStalfosLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x79B8
+  symbol: gStalfosLeftUpperArmLimb
+  limb_type: Standard
+
+gStalfosLeftUpperArmRootLimb:
+  type: OOT:LIMB
+  offset: 0x7970
+  symbol: gStalfosLeftUpperArmRootLimb
+  limb_type: Standard
+
+gStalfosLegsRootLimb:
+  type: OOT:LIMB
+  offset: 0x7A48
+  symbol: gStalfosLegsRootLimb
+  limb_type: Standard
+
+gStalfosLimb7Limb:
+  type: OOT:LIMB
+  offset: 0x78B0
+  symbol: gStalfosLimb7Limb
+  limb_type: Standard
+
+gStalfosLimb8Limb:
+  type: OOT:LIMB
+  offset: 0x78BC
+  symbol: gStalfosLimb8Limb
+  limb_type: Standard
+
+gStalfosLimbArmorTex:
+  type: TEXTURE
+  offset: 0x7548
+  symbol: gStalfosLimbArmorTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gStalfosLookAroundAnim:
+  type: OOT:ANIMATION
+  offset: 0xDCF0
+  symbol: gStalfosLookAroundAnim
+
+gStalfosLowerBodyRootLimb:
+  type: OOT:LIMB
+  offset: 0x7A30
+  symbol: gStalfosLowerBodyRootLimb
+  limb_type: Standard
+
+gStalfosLowerCoreDL:
+  type: GFX
+  offset: 0x5890
+  symbol: gStalfosLowerCoreDL
+
+gStalfosLowerCoreLimb:
+  type: OOT:LIMB
+  offset: 0x7A24
+  symbol: gStalfosLowerCoreLimb
+  limb_type: Standard
+
+gStalfosLowerCoreRootLimb:
+  type: OOT:LIMB
+  offset: 0x7880
+  symbol: gStalfosLowerCoreRootLimb
+  limb_type: Standard
+
+gStalfosLowerNeckDL:
+  type: GFX
+  offset: 0x5D08
+  symbol: gStalfosLowerNeckDL
+
+gStalfosLowerNeckLimb:
+  type: OOT:LIMB
+  offset: 0x78F8
+  symbol: gStalfosLowerNeckLimb
+  limb_type: Standard
+
+gStalfosLowerNeckRootLimb:
+  type: OOT:LIMB
+  offset: 0x7898
+  symbol: gStalfosLowerNeckRootLimb
+  limb_type: Standard
+
+gStalfosMiddleGuardAnim:
+  type: OOT:ANIMATION
+  offset: 0x316C
+  symbol: gStalfosMiddleGuardAnim
+
+gStalfosNostrilTex:
+  type: TEXTURE
+  offset: 0x6E48
+  symbol: gStalfosNostrilTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gStalfosRecoverFromDownSlashAnim:
+  type: OOT:ANIMATION
+  offset: 0xB4E4
+  symbol: gStalfosRecoverFromDownSlashAnim
+
+gStalfosReleaseAttentionAnim:
+  type: OOT:ANIMATION
+  offset: 0xE7E4
+  symbol: gStalfosReleaseAttentionAnim
+
+gStalfosRibTex:
+  type: TEXTURE
+  offset: 0x6F48
+  symbol: gStalfosRibTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gStalfosRightAnkleLimb:
+  type: OOT:LIMB
+  offset: 0x7AF0
+  symbol: gStalfosRightAnkleLimb
+  limb_type: Standard
+
+gStalfosRightAnkleRootLimb:
+  type: OOT:LIMB
+  offset: 0x7AE4
+  symbol: gStalfosRightAnkleRootLimb
+  limb_type: Standard
+
+gStalfosRightArmRootLimb:
+  type: OOT:LIMB
+  offset: 0x79C4
+  symbol: gStalfosRightArmRootLimb
+  limb_type: Standard
+
+gStalfosRightFootDL:
+  type: GFX
+  offset: 0x6208
+  symbol: gStalfosRightFootDL
+
+gStalfosRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x7B08
+  symbol: gStalfosRightFootLimb
+  limb_type: Standard
+
+gStalfosRightFootRootLimb:
+  type: OOT:LIMB
+  offset: 0x7AFC
+  symbol: gStalfosRightFootRootLimb
+  limb_type: Standard
+
+gStalfosRightForearmDL:
+  type: GFX
+  offset: 0x6110
+  symbol: gStalfosRightForearmDL
+
+gStalfosRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0x7A0C
+  symbol: gStalfosRightForearmLimb
+  limb_type: Standard
+
+gStalfosRightForearmRootLimb:
+  type: OOT:LIMB
+  offset: 0x79DC
+  symbol: gStalfosRightForearmRootLimb
+  limb_type: Standard
+
+gStalfosRightHandDL:
+  type: GFX
+  offset: 0x5A18
+  symbol: gStalfosRightHandDL
+
+gStalfosRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x7A00
+  symbol: gStalfosRightHandLimb
+  limb_type: Standard
+
+gStalfosRightHandRootLimb:
+  type: OOT:LIMB
+  offset: 0x79E8
+  symbol: gStalfosRightHandRootLimb
+  limb_type: Standard
+
+gStalfosRightLegRootLimb:
+  type: OOT:LIMB
+  offset: 0x7AC0
+  symbol: gStalfosRightLegRootLimb
+  limb_type: Standard
+
+gStalfosRightLowerLegDL:
+  type: GFX
+  offset: 0x5FA8
+  symbol: gStalfosRightLowerLegDL
+
+gStalfosRightLowerLegLimb:
+  type: OOT:LIMB
+  offset: 0x7B14
+  symbol: gStalfosRightLowerLegLimb
+  limb_type: Standard
+
+gStalfosRightLowerLegRootLimb:
+  type: OOT:LIMB
+  offset: 0x7AD8
+  symbol: gStalfosRightLowerLegRootLimb
+  limb_type: Standard
+
+gStalfosRightShoulderArmorDL:
+  type: GFX
+  offset: 0x6308
+  symbol: gStalfosRightShoulderArmorDL
+
+gStalfosRightShoulderArmorLimb:
+  type: OOT:LIMB
+  offset: 0x7934
+  symbol: gStalfosRightShoulderArmorLimb
+  limb_type: Standard
+
+gStalfosRightShoulderArmorRootLimb:
+  type: OOT:LIMB
+  offset: 0x7928
+  symbol: gStalfosRightShoulderArmorRootLimb
+  limb_type: Standard
+
+gStalfosRightShoulderRootLimb:
+  type: OOT:LIMB
+  offset: 0x791C
+  symbol: gStalfosRightShoulderRootLimb
+  limb_type: Standard
+
+gStalfosRightThighDL:
+  type: GFX
+  offset: 0x5970
+  symbol: gStalfosRightThighDL
+
+gStalfosRightThighLimb:
+  type: OOT:LIMB
+  offset: 0x7B20
+  symbol: gStalfosRightThighLimb
+  limb_type: Standard
+
+gStalfosRightThighRootLimb:
+  type: OOT:LIMB
+  offset: 0x7ACC
+  symbol: gStalfosRightThighRootLimb
+  limb_type: Standard
+
+gStalfosRightUpperArmDL:
+  type: GFX
+  offset: 0x57B8
+  symbol: gStalfosRightUpperArmDL
+
+gStalfosRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x7A18
+  symbol: gStalfosRightUpperArmLimb
+  limb_type: Standard
+
+gStalfosRightUpperArmRootLimb:
+  type: OOT:LIMB
+  offset: 0x79D0
+  symbol: gStalfosRightUpperArmRootLimb
+  limb_type: Standard
+
+gStalfosRootLimb:
+  type: OOT:LIMB
+  offset: 0x7868
+  symbol: gStalfosRootLimb
+  limb_type: Standard
+
+gStalfosShieldDL:
+  type: GFX
+  offset: 0x5DA0
+  symbol: gStalfosShieldDL
+
+gStalfosShieldLimb:
+  type: OOT:LIMB
+  offset: 0x79A0
+  symbol: gStalfosShieldLimb
+  limb_type: Standard
+
+gStalfosShieldTex:
+  type: TEXTURE
+  offset: 0x7348
+  symbol: gStalfosShieldTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gStalfosSidestepAnim:
+  type: OOT:ANIMATION
+  offset: 0xE2B0
+  symbol: gStalfosSidestepAnim
+
+gStalfosSkel:
+  type: OOT:SKELETON
+  offset: 0x7C28
+  symbol: gStalfosSkel
+  limb_type: Standard
+  skel_type: Normal
+
+gStalfosSkullDL:
+  type: GFX
+  offset: 0x53D0
+  symbol: gStalfosSkullDL
+
+gStalfosSkullLimb:
+  type: OOT:LIMB
+  offset: 0x78E0
+  symbol: gStalfosSkullLimb
+  limb_type: Standard
+
+gStalfosSkullRootLimb:
+  type: OOT:LIMB
+  offset: 0x78A4
+  symbol: gStalfosSkullRootLimb
+  limb_type: Standard
+
+gStalfosSlowAdvanceAnim:
+  type: OOT:ANIMATION
+  offset: 0x81B4
+  symbol: gStalfosSlowAdvanceAnim
+
+gStalfosStandAttentionAnim:
+  type: OOT:ANIMATION
+  offset: 0x2188
+  symbol: gStalfosStandAttentionAnim
+
+gStalfosSwordBladeTex:
+  type: TEXTURE
+  offset: 0x77C8
+  symbol: gStalfosSwordBladeTex
+  format: RGBA16
+  width: 4
+  height: 4
+
+gStalfosSwordDL:
+  type: GFX
+  offset: 0x6A48
+  symbol: gStalfosSwordDL
+
+gStalfosSwordLimb:
+  type: OOT:LIMB
+  offset: 0x79F4
+  symbol: gStalfosSwordLimb
+  limb_type: Standard
+
+gStalfosTrousersSideTex:
+  type: TEXTURE
+  offset: 0x7148
+  symbol: gStalfosTrousersSideTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gStalfosTrousersTopTex:
+  type: TEXTURE
+  offset: 0x77E8
+  symbol: gStalfosTrousersTopTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gStalfosUpSlashAnim:
+  type: OOT:ANIMATION
+  offset: 0xBE4C
+  symbol: gStalfosUpSlashAnim
+
+gStalfosUpperBodyRootLimb:
+  type: OOT:LIMB
+  offset: 0x7874
+  symbol: gStalfosUpperBodyRootLimb
+  limb_type: Standard
+
+gStalfosUpperCoreDL:
+  type: GFX
+  offset: 0x5720
+  symbol: gStalfosUpperCoreDL
+
+gStalfosUpperCoreLimb:
+  type: OOT:LIMB
+  offset: 0x7904
+  symbol: gStalfosUpperCoreLimb
+  limb_type: Standard
+
+gStalfosUpperCoreRootLimb:
+  type: OOT:LIMB
+  offset: 0x788C
+  symbol: gStalfosUpperCoreRootLimb
+  limb_type: Standard
+
+gStalfosUpperNeckDL:
+  type: GFX
+  offset: 0x5C78
+  symbol: gStalfosUpperNeckDL
+
+gStalfosUpperNeckLimb:
+  type: OOT:LIMB
+  offset: 0x78EC
+  symbol: gStalfosUpperNeckLimb
+  limb_type: Standard
+
+gStalfosWaistDL:
+  type: GFX
+  offset: 0x5EA0
+  symbol: gStalfosWaistDL
+
+gStalfosWaistLimb:
+  type: OOT:LIMB
+  offset: 0x7B2C
+  symbol: gStalfosWaistLimb
+  limb_type: Standard
+
+gStalfosWaistRootLimb:
+  type: OOT:LIMB
+  offset: 0x7A3C
+  symbol: gStalfosWaistRootLimb
+  limb_type: Standard
+
+
+object_sk2Vtx_003180:
+  type: OOT:ARRAY
+  offset: 0x003180
+  symbol: object_sk2Vtx_003180
+  count: 114
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sk2Vtx_0038A0:
+  type: OOT:ARRAY
+  offset: 0x0038A0
+  symbol: object_sk2Vtx_0038A0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sk2Vtx_003920:
+  type: OOT:ARRAY
+  offset: 0x003920
+  symbol: object_sk2Vtx_003920
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sk2Vtx_003A30:
+  type: OOT:ARRAY
+  offset: 0x003A30
+  symbol: object_sk2Vtx_003A30
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sk2Vtx_003AB0:
+  type: OOT:ARRAY
+  offset: 0x003AB0
+  symbol: object_sk2Vtx_003AB0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sk2Vtx_003B30:
+  type: OOT:ARRAY
+  offset: 0x003B30
+  symbol: object_sk2Vtx_003B30
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sk2Vtx_003C30:
+  type: OOT:ARRAY
+  offset: 0x003C30
+  symbol: object_sk2Vtx_003C30
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sk2Vtx_003DA0:
+  type: OOT:ARRAY
+  offset: 0x003DA0
+  symbol: object_sk2Vtx_003DA0
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sk2Vtx_003F90:
+  type: OOT:ARRAY
+  offset: 0x003F90
+  symbol: object_sk2Vtx_003F90
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sk2Vtx_003FF0:
+  type: OOT:ARRAY
+  offset: 0x003FF0
+  symbol: object_sk2Vtx_003FF0
+  count: 7
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sk2Vtx_004060:
+  type: OOT:ARRAY
+  offset: 0x004060
+  symbol: object_sk2Vtx_004060
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sk2Vtx_004260:
+  type: OOT:ARRAY
+  offset: 0x004260
+  symbol: object_sk2Vtx_004260
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sk2Vtx_0043D0:
+  type: OOT:ARRAY
+  offset: 0x0043D0
+  symbol: object_sk2Vtx_0043D0
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sk2Vtx_004560:
+  type: OOT:ARRAY
+  offset: 0x004560
+  symbol: object_sk2Vtx_004560
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sk2Vtx_0046A0:
+  type: OOT:ARRAY
+  offset: 0x0046A0
+  symbol: object_sk2Vtx_0046A0
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sk2Vtx_0047B0:
+  type: OOT:ARRAY
+  offset: 0x0047B0
+  symbol: object_sk2Vtx_0047B0
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sk2Vtx_0048E0:
+  type: OOT:ARRAY
+  offset: 0x0048E0
+  symbol: object_sk2Vtx_0048E0
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sk2Vtx_0049F0:
+  type: OOT:ARRAY
+  offset: 0x0049F0
+  symbol: object_sk2Vtx_0049F0
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sk2Vtx_004B20:
+  type: OOT:ARRAY
+  offset: 0x004B20
+  symbol: object_sk2Vtx_004B20
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sk2Vtx_004C30:
+  type: OOT:ARRAY
+  offset: 0x004C30
+  symbol: object_sk2Vtx_004C30
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sk2Vtx_004D70:
+  type: OOT:ARRAY
+  offset: 0x004D70
+  symbol: object_sk2Vtx_004D70
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sk2Vtx_004F00:
+  type: OOT:ARRAY
+  offset: 0x004F00
+  symbol: object_sk2Vtx_004F00
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sk2Vtx_004F80:
+  type: OOT:ARRAY
+  offset: 0x004F80
+  symbol: object_sk2Vtx_004F80
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_sk2Vtx_005080:
+  type: OOT:ARRAY
+  offset: 0x005080
+  symbol: object_sk2Vtx_005080
+  count: 53
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gStalfosSkelLimbs:
+  type: BLOB
+  offset: 0x7B38
+  symbol: gStalfosSkelLimbs
+  size: 0

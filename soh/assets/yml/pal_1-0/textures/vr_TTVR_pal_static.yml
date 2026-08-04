@@ -1,0 +1,28 @@
+:config:
+  segments:
+    - [ 128, 0x01687DA0 ]
+
+gCarpentersTentBg2TLUT:
+  type: TEXTURE
+  offset: 0x200
+  symbol: gCarpentersTentBg2TLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gCarpentersTentBg3TLUT:
+  type: TEXTURE
+  offset: 0x400
+  symbol: gCarpentersTentBg3TLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gCarpentersTentBgTLUT:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gCarpentersTentBgTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+

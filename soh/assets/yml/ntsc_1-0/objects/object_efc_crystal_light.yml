@@ -1,0 +1,35 @@
+:config:
+  segments:
+    - [ 6, 0x00F9DEC0 ]
+    - [ 4, 0x00D3A4E0 ]
+    - [ 8, 0x00F9DEC0 ]
+    - [ 9, 0x00F9DEC0 ]
+    - [ 10, 0x00F9DEC0 ]
+    - [ 11, 0x00F9DEC0 ]
+    - [ 12, 0x00F9DEC0 ]
+    - [ 13, 0x00F9DEC0 ]
+  external_files:
+    - ntsc_1-0/objects/gameplay_keep.yml
+
+gCrystalLightDL:
+  type: GFX
+  offset: 0x0980
+  symbol: gCrystalLightDL
+
+gCrystalLightTex:
+  type: TEXTURE
+  offset: 0x0000
+  symbol: gCrystalLightTex
+  format: I4
+  width: 64
+  height: 64
+
+
+object_efc_crystal_lightVtx_000800:
+  type: OOT:ARRAY
+  offset: 0x000800
+  symbol: object_efc_crystal_lightVtx_000800
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

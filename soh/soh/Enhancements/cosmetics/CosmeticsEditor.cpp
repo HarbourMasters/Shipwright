@@ -3,10 +3,8 @@
 #include "authenticGfxPatches.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 
+#include <ship/controller/controldeck/ControlDeck.h>
 #include <string>
-#include <libultraship/bridge.h>
-#include <math.h>
-#include <libultraship/libultraship.h>
 
 #include "soh/SohGui/UIWidgets.hpp"
 #include "soh/SohGui/SohMenu.h"
@@ -14,6 +12,7 @@
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/enhancementTypes.h"
+#include "soh/Enhancements/randomizer/SeedContext.h"
 
 extern "C" {
 #include "z64.h"
@@ -107,36 +106,10 @@ static const std::map<int32_t, const char*> cosmeticsRandomizerModes = {
     { RANDOMIZE_ON_FILE_LOAD_SEEDED, "On File Load (Seeded)" },
 };
 
-typedef struct {
-    const char* cvar;
-    const char* valuesCvar;
-    const char* rainbowCvar;
-    const char* lockedCvar;
-    const char* changedCvar;
-    std::string label;
-    CosmeticGroup group;
-    ImVec4 currentColor;
-    Color_RGBA8 defaultColor;
-    bool supportsAlpha;
-    bool supportsRainbow;
-    bool advancedOption;
-} CosmeticOption;
-
 Color_RGBA8 ColorRGBA8(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
     Color_RGBA8 color = { r, g, b, a };
     return color;
 }
-
-#define COSMETIC_OPTION(id, label, group, defaultColor, supportsAlpha, supportsRainbow, advancedOption)               \
-    {                                                                                                                 \
-        id, {                                                                                                         \
-            CVAR_COSMETIC(id), CVAR_COSMETIC(id ".Value"), CVAR_COSMETIC(id ".Rainbow"), CVAR_COSMETIC(id ".Locked"), \
-                CVAR_COSMETIC(id ".Changed"), label, group,                                                           \
-                ImVec4(defaultColor.r / 255.0f, defaultColor.g / 255.0f, defaultColor.b / 255.0f,                     \
-                       defaultColor.a / 255.0f),                                                                      \
-                defaultColor, supportsAlpha, supportsRainbow, advancedOption                                          \
-        }                                                                                                             \
-    }
 
 // clang-format off
 /*
@@ -212,7 +185,7 @@ Color_RGBA8 ColorRGBA8(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
     in the moon cosmetic, where for the gDPSetEnvColor color we are halving the RGB values, to make them a bit darker similar to how the original
     colors were darker than the gDPSetPrimColor. You will see many more examples of this below in the `ApplyOrResetCustomGfxPatches` method
 */
-static std::map<std::string, CosmeticOption> cosmeticOptions = {
+std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("Link.KokiriTunic",             "Kokiri Tunic",             COSMETICS_GROUP_LINK,         ColorRGBA8( 30, 105,  27, 255), false, true, false),
     COSMETIC_OPTION("Link.GoronTunic",              "Goron Tunic",              COSMETICS_GROUP_LINK,         ColorRGBA8(100,  20,   0, 255), false, true, false),
     COSMETIC_OPTION("Link.ZoraTunic",               "Zora Tunic",               COSMETICS_GROUP_LINK,         ColorRGBA8(  0,  60, 100, 255), false, true, false),
@@ -495,13 +468,13 @@ void SetMarginAll(const char* ButtonName, bool SetActivated, const char* tooltip
                         CVarSetInteger(cvarNameMargins.c_str(), false); // force set off
                     } else if ((strcmp(cvarName, MarginCvarNonAnchor[i]) == 0) &&
                                (CVarGetInteger(cvarPosType.c_str(), 0) !=
-                                ORIGINAL_LOCATION)) { // Our element is not in original position regarless it has no
-                                                      // anchor by default since player made it anchored we can toggle
+                                ORIGINAL_LOCATION)) { // Element not in original position, regardless. It has no
+                                                      // anchor by default; since player made it anchored we can toggle
                                                       // margins
                         CVarSetInteger(cvarNameMargins.c_str(), SetActivated);
                     } else if (strcmp(cvarName, MarginCvarNonAnchor[i]) !=
-                               0) { // Our elements has an anchor by default so regarless of it's position right now
-                                    // that okay to toggle margins.
+                               0) { // Our element has an anchor by default, so regardless of its position right now
+                                    // it's okay to toggle margins.
                         CVarSetInteger(cvarNameMargins.c_str(), SetActivated);
                     }
                 }
@@ -561,7 +534,10 @@ void CosmeticsUpdateTick() {
             index += static_cast<int>(60 * rainbowSpeed);
         }
     }
+    UpdateCustomCosmeticsRainbow(hue, rainbowSpeed, index);
+
     ApplyOrResetCustomGfxPatches(false);
+    ApplyCustomCosmetics();
     hue++;
     if (hue >= (360 * rainbowSpeed)) {
         hue = 0;
@@ -1524,7 +1500,7 @@ void Table_InitHeader(bool has_header = true) {
     }
     ImGui::TableNextRow();
     ImGui::TableNextColumn();
-    ImGui::AlignTextToFramePadding(); // This is to adjust Vertical pos of item in a cell to be normlized.
+    ImGui::AlignTextToFramePadding(); // This is to adjust Vertical pos of item in a cell to be normalized.
     ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 2);
     ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x - 60);
 }
@@ -1638,7 +1614,7 @@ void C_Button_Dropdown(const char* Header_Title, const char* Table_ID, const cha
             ImGui::EndTable();
         }
         std::shared_ptr<Ship::Controller> controller =
-            Ship::Context::GetInstance()->GetControlDeck()->GetControllerByPort(0);
+            Ship::Context::GetRawInstance()->GetControlDeck()->GetControllerByPort(0);
         for (auto [id, mapping] : controller->GetButton(BTN_DDOWN)->GetAllButtonMappings()) {
             controller->GetButton(BTN_CUSTOM_OCARINA_NOTE_F4)->AddButtonMapping(mapping);
         }
@@ -1889,11 +1865,11 @@ void DrawSillyTab() {
 
     UIWidgets::Separator(true, true, 2.0f, 2.0f);
 
-    UIWidgets::CVarCheckbox("Let It Snow", CVAR_GENERAL("LetItSnow"),
-                            UIWidgets::CheckboxOptions()
-                                .Color(THEME_COLOR)
-                                .Tooltip("Makes snow fall, changes chest texture colors to red and green, etc, for "
-                                         "December holidays.\nWill reset on restart outside of December 23-25."));
+    UIWidgets::CVarCheckbox(
+        "Let It Snow", CVAR_GENERAL("LetItSnow"),
+        UIWidgets::CheckboxOptions()
+            .Color(THEME_COLOR)
+            .Tooltip("Makes snow fall for December holidays.\nWill reset on restart outside of December 23-25."));
 
     UIWidgets::Separator(true, true, 2.0f, 2.0f);
 
@@ -1979,7 +1955,7 @@ void DrawSillyTab() {
 
     UIWidgets::Separator(true, true, 2.0f, 2.0f);
 
-    SohGui::mSohMenu->MenuDrawItem(goronNeck, ImGui::GetContentRegionAvail().x, THEME_COLOR);
+    SohGui::mSohMenu->MenuDrawItem(goronNeck, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x), THEME_COLOR);
     Reset_Option_Single("Reset##Goron_NeckLength", CVAR_COSMETIC("Goron.NeckLength"));
 
     UIWidgets::Separator(true, true, 2.0f, 2.0f);
@@ -2104,24 +2080,28 @@ void ApplySideEffects(CosmeticOption& cosmeticOption) {
     }
 }
 
-static uint64_t seeded_cosmetics_state = 0;
-
 void RandomizeColor(CosmeticOption& cosmeticOption, bool manual = true) {
     ImVec4 randomColor;
 
-    if (!manual && CVarGetInteger(CVAR_COSMETIC("RandomizeCosmeticsGenModes"), 0) == RANDOMIZE_ON_FILE_LOAD_SEEDED ||
-        !manual && CVarGetInteger(CVAR_COSMETIC("RandomizeCosmeticsGenModes"), 0) == RANDOMIZE_ON_RANDO_GEN_ONLY) {
+    uint64_t local_seed_state = 0;
+    uint64_t* randomState = nullptr;
 
-        uint32_t finalSeed = cosmeticOption.defaultColor.r + cosmeticOption.defaultColor.g +
-                             cosmeticOption.defaultColor.b + cosmeticOption.defaultColor.a +
-                             (IS_RANDO ? Rando::Context::GetInstance()->GetSeed()
-                                       : static_cast<uint32_t>(gSaveContext.ship.stats.fileCreatedAt));
+    if (!manual) {
+        int randomizeMode = CVarGetInteger(CVAR_COSMETIC("RandomizeCosmeticsGenModes"), 0);
+        if (randomizeMode == RANDOMIZE_ON_FILE_LOAD_SEEDED || randomizeMode == RANDOMIZE_ON_RANDO_GEN_ONLY) {
 
-        randomColor = GetRandomValue(finalSeed, &seeded_cosmetics_state);
-    } else {
-        randomColor = GetRandomValue();
+            uint32_t finalSeed = cosmeticOption.defaultColor.r + cosmeticOption.defaultColor.g +
+                                 cosmeticOption.defaultColor.b + cosmeticOption.defaultColor.a +
+                                 (IS_RANDO ? Rando::Context::GetInstance()->GetSeed()
+                                           : static_cast<uint32_t>(gSaveContext.ship.stats.fileCreatedAt));
+
+            randomState = &local_seed_state;
+            ShipUtils::RandInit(finalSeed, randomState);
+        }
+        // For RANDOMIZE_ON_NEW_SCENE, randomState remains nullptr, which uses the global RNG
     }
 
+    randomColor = GetRandomValue(randomState);
     Color_RGBA8 newColor;
     newColor.r = static_cast<uint8_t>(randomColor.x * 255.0f);
     newColor.g = static_cast<uint8_t>(randomColor.y * 255.0f);
@@ -2143,68 +2123,6 @@ void RandomizeColor(CosmeticOption& cosmeticOption, bool manual = true) {
     ApplySideEffects(cosmeticOption);
 }
 
-void ResetColor(CosmeticOption& cosmeticOption) {
-    Color_RGBA8 defaultColor = { cosmeticOption.defaultColor.r, cosmeticOption.defaultColor.g,
-                                 cosmeticOption.defaultColor.b, cosmeticOption.defaultColor.a };
-    cosmeticOption.currentColor.x = defaultColor.r / 255.0f;
-    cosmeticOption.currentColor.y = defaultColor.g / 255.0f;
-    cosmeticOption.currentColor.z = defaultColor.b / 255.0f;
-    cosmeticOption.currentColor.w = defaultColor.a / 255.0f;
-
-    CVarClear(cosmeticOption.changedCvar);
-    CVarClear(cosmeticOption.rainbowCvar);
-    CVarClear(cosmeticOption.lockedCvar);
-    CVarClear(cosmeticOption.valuesCvar);
-    CVarClear((std::string(cosmeticOption.valuesCvar) + ".R").c_str());
-    CVarClear((std::string(cosmeticOption.valuesCvar) + ".G").c_str());
-    CVarClear((std::string(cosmeticOption.valuesCvar) + ".B").c_str());
-    CVarClear((std::string(cosmeticOption.valuesCvar) + ".A").c_str());
-    CVarClear((std::string(cosmeticOption.valuesCvar) + ".Type").c_str());
-
-    // This portion should match 1:1 the multiplied colors in `ApplySideEffect()`
-    if (cosmeticOption.label == "Bow Body") {
-        ResetColor(cosmeticOptions.at("Equipment.BowTips"));
-        ResetColor(cosmeticOptions.at("Equipment.BowHandle"));
-    } else if (cosmeticOption.label == "Idle Primary") {
-        ResetColor(cosmeticOptions.at("Navi.IdleSecondary"));
-    } else if (cosmeticOption.label == "Enemy Primary") {
-        ResetColor(cosmeticOptions.at("Navi.EnemySecondary"));
-    } else if (cosmeticOption.label == "NPC Primary") {
-        ResetColor(cosmeticOptions.at("Navi.NPCSecondary"));
-    } else if (cosmeticOption.label == "Props Primary") {
-        ResetColor(cosmeticOptions.at("Navi.PropsSecondary"));
-    } else if (cosmeticOption.label == "Level 1 Secondary") {
-        ResetColor(cosmeticOptions.at("SpinAttack.Level1Primary"));
-    } else if (cosmeticOption.label == "Level 2 Secondary") {
-        ResetColor(cosmeticOptions.at("SpinAttack.Level2Primary"));
-    } else if (cosmeticOption.label == "Item Select Color") {
-        ResetColor(cosmeticOptions.at("Kaleido.ItemSelB"));
-        ResetColor(cosmeticOptions.at("Kaleido.ItemSelC"));
-        ResetColor(cosmeticOptions.at("Kaleido.ItemSelD"));
-    } else if (cosmeticOption.label == "Equip Select Color") {
-        ResetColor(cosmeticOptions.at("Kaleido.EquipSelB"));
-        ResetColor(cosmeticOptions.at("Kaleido.EquipSelC"));
-        ResetColor(cosmeticOptions.at("Kaleido.EquipSelD"));
-    } else if (cosmeticOption.label == "Map Dungeon Color") {
-        ResetColor(cosmeticOptions.at("Kaleido.MapSelDunB"));
-        ResetColor(cosmeticOptions.at("Kaleido.MapSelDunC"));
-        ResetColor(cosmeticOptions.at("Kaleido.MapSelDunD"));
-    } else if (cosmeticOption.label == "Quest Status Color") {
-        ResetColor(cosmeticOptions.at("Kaleido.QuestStatusB"));
-        ResetColor(cosmeticOptions.at("Kaleido.QuestStatusC"));
-        ResetColor(cosmeticOptions.at("Kaleido.QuestStatusD"));
-    } else if (cosmeticOption.label == "Map Color") {
-        ResetColor(cosmeticOptions.at("Kaleido.MapSelectB"));
-        ResetColor(cosmeticOptions.at("Kaleido.MapSelectC"));
-        ResetColor(cosmeticOptions.at("Kaleido.MapSelectD"));
-    } else if (cosmeticOption.label == "Save Color") {
-        ResetColor(cosmeticOptions.at("Kaleido.SaveB"));
-        ResetColor(cosmeticOptions.at("Kaleido.SaveC"));
-        ResetColor(cosmeticOptions.at("Kaleido.SaveD"));
-    }
-    ShipInit::Init(cosmeticOption.valuesCvar);
-}
-
 void DrawCosmeticRow(CosmeticOption& cosmeticOption) {
     if (UIWidgets::CVarColorPicker(cosmeticOption.label.c_str(), cosmeticOption.cvar, cosmeticOption.defaultColor,
                                    cosmeticOption.supportsAlpha, 0, THEME_COLOR)) {
@@ -2212,7 +2130,7 @@ void DrawCosmeticRow(CosmeticOption& cosmeticOption) {
         CVarSetInteger((cosmeticOption.changedCvar), 1);
         ApplySideEffects(cosmeticOption);
         ApplyOrResetCustomGfxPatches();
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     }
     // the longest option name
     ImGui::SameLine((ImGui::CalcTextSize("Message Light Blue (None No Shadow)").x * 1.0f) + 60.0f);
@@ -2221,7 +2139,7 @@ void DrawCosmeticRow(CosmeticOption& cosmeticOption) {
             UIWidgets::ButtonOptions().Size(ImVec2(80, 31)).Padding(ImVec2(2.0f, 0.0f)).Color(THEME_COLOR))) {
         RandomizeColor(cosmeticOption);
         ApplyOrResetCustomGfxPatches();
-        Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+        Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     }
     if (cosmeticOption.supportsRainbow) {
         ImGui::SameLine();
@@ -2230,7 +2148,7 @@ void DrawCosmeticRow(CosmeticOption& cosmeticOption) {
             CVarSetInteger((cosmeticOption.changedCvar), 1);
             ApplySideEffects(cosmeticOption);
             ApplyOrResetCustomGfxPatches();
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+            Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         }
     }
     ImGui::SameLine();
@@ -2244,7 +2162,7 @@ void DrawCosmeticRow(CosmeticOption& cosmeticOption) {
                               UIWidgets::ButtonOptions().Size(ImVec2(80, 31)).Padding(ImVec2(2.0f, 0.0f)))) {
             ResetColor(cosmeticOption);
             ApplyOrResetCustomGfxPatches();
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+            Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
         }
     }
 }
@@ -2504,6 +2422,14 @@ void CosmeticsEditorWindow::DrawElement() {
             ImGui::EndTabItem();
         }
 
+        if (HasCustomCosmetics() && ImGui::BeginTabItem("Mods")) {
+
+            UIWidgets::Separator(true, true, 2.0f, 2.0f);
+
+            DrawCustomCosmetics();
+            ImGui::EndTabItem();
+        }
+
         if (ImGui::BeginTabItem("Keys")) {
 
             ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0));
@@ -2617,9 +2543,11 @@ void CosmeticsEditorWindow::InitElement() {
         cosmeticOption.currentColor.z = cvarColor.b / 255.0f;
         cosmeticOption.currentColor.w = cvarColor.a / 255.0f;
     }
-    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+    Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+    ScanCustomCosmetics();
     ApplyOrResetCustomGfxPatches();
     ApplyAuthenticGfxPatches();
+    ApplyCustomCosmetics();
 }
 
 void CosmeticsEditor_RandomizeAll() {
@@ -2630,7 +2558,7 @@ void CosmeticsEditor_RandomizeAll() {
         }
     }
 
-    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+    Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     ApplyOrResetCustomGfxPatches();
 }
 
@@ -2642,8 +2570,9 @@ void CosmeticsEditor_AutoRandomizeAll() {
         }
     }
 
-    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+    Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     ApplyOrResetCustomGfxPatches();
+    ApplyCustomCosmetics();
 }
 
 void CosmeticsEditor_RandomizeGroup(CosmeticGroup group) {
@@ -2655,7 +2584,7 @@ void CosmeticsEditor_RandomizeGroup(CosmeticGroup group) {
         }
     }
 
-    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+    Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     ApplyOrResetCustomGfxPatches();
 }
 
@@ -2666,7 +2595,7 @@ void CosmeticsEditor_ResetAll() {
         }
     }
 
-    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+    Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     ApplyOrResetCustomGfxPatches();
 }
 
@@ -2677,7 +2606,7 @@ void CosmeticsEditor_ResetGroup(CosmeticGroup group) {
         }
     }
 
-    Ship::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
+    Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     ApplyOrResetCustomGfxPatches();
 }
 
@@ -2687,7 +2616,10 @@ void RegisterCosmeticHooks() {
               []() { CosmeticsEditor_AutoRandomizeAll(); });
 
     COND_HOOK(OnLoadGame, CVarGetInteger(CVAR_COSMETIC("RandomizeCosmeticsGenModes"), RANDOMIZE_OFF) == RANDOMIZE_OFF,
-              [](s32 fileNum) { ApplyOrResetCustomGfxPatches(); });
+              [](s32 fileNum) {
+                  ApplyOrResetCustomGfxPatches();
+                  ApplyCustomCosmetics();
+              });
 
     COND_HOOK(OnLoadGame,
               CVarGetInteger(CVAR_COSMETIC("RandomizeCosmeticsGenModes"), RANDOMIZE_OFF) == RANDOMIZE_ON_FILE_LOAD,
@@ -2703,6 +2635,7 @@ void RegisterCosmeticHooks() {
               [](s16 sceneNum) { CosmeticsEditor_AutoRandomizeAll(); });
 
     COND_HOOK(OnGameFrameUpdate, true, CosmeticsUpdateTick);
+    COND_HOOK(OnAssetAltChange, true, []() { ApplyOrResetCustomGfxPatches(true); });
 }
 
 void RegisterCosmeticWidgets() {

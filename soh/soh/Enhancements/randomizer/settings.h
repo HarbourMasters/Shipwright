@@ -2,11 +2,8 @@
 
 #include "SeedContext.h"
 #include "option.h"
-#include "randomizerTypes.h"
-#include "3drando/spoiler_log.hpp"
 
 #include <array>
-#include <set>
 #include <unordered_map>
 #include <nlohmann/json.hpp>
 
@@ -118,7 +115,7 @@ class Settings {
      *
      * @param spoilerFileJson
      */
-    void ParseJson(nlohmann::json spoilerFileJson);
+    void ParseJson(const nlohmann::json& spoilerFileJson);
     std::map<RandomizerArea, std::vector<RandomizerTrick>> mTricksByArea = {};
 
     /**
@@ -134,6 +131,13 @@ class Settings {
      * @brief Sets all the currently selected MenuIndexes to the currently assigned Rando::Context.
      */
     void SetAllToContext();
+
+    /**
+     * @brief Randomizes all randomizer settings (excluding tricks) to random valid values.
+     * This function iterates through all options and sets them to a random index within
+     * their valid range.
+     */
+    void RandomizeAllSettings();
 
     static std::shared_ptr<Settings> GetInstance();
 
