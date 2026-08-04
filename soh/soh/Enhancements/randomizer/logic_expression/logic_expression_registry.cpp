@@ -160,6 +160,11 @@ void LogicExpression::Impl::PopulateFunctionAdapters() {
         REGISTER_LOGIC_FUNCTION(DMCPadToPots),
         REGISTER_LOGIC_FUNCTION(CanBreakRocks),
         REGISTER_LOGIC_FUNCTION(CanRead),
+        REGISTER_LOGIC_FUNCTION(CanOpenLargeChest),
+        REGISTER_LOGIC_FUNCTION(CanTriggerWincon),
+        REGISTER_LOGIC_FUNCTION(CanTriggerGanonsSoul),
+        REGISTER_LOGIC_FUNCTION(CanTriggerGBK),
+        REGISTER_LOGIC_FUNCTION(DMCUpperToPad),
     };
 }
 
