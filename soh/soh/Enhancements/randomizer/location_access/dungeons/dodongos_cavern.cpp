@@ -604,7 +604,7 @@ void RegionTable_Init_DodongosCavern() {
         //This may be trickworthy, but it can only come up with doorsanity or decoupled boss door rando, making it too niche to be it's own trick
         LOCATION(RC_DODONGOS_CAVERN_MQ_GS_BACK_AREA,       logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG) || 
                                                            (logic->IsAdult && logic->HasItem(RG_POWER_BRACELET) && 
-                                                           (logic->CanPassEnemy(RE_ARMOS) || logic->CanUse(RG_HOVER_BOOTS) || (ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) && logic->HasItem(Roll))/* || bunny jumps*/))),
+                                                           (logic->CanPassEnemy(RE_ARMOS) || logic->CanUse(RG_HOVER_BOOTS) || (ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) && logic->HasItem(RG_ROLL))/* || bunny jumps*/))),
         LOCATION(RC_DODONGOS_CAVERN_MQ_BEFORE_BOSS_SW_POT, logic->CanBreakPots()),
         LOCATION(RC_DODONGOS_CAVERN_MQ_BEFORE_BOSS_NE_POT, logic->CanBreakPots()),
         LOCATION(RC_DODONGOS_CAVERN_MQ_ARMOS_ROOM_SE_POT,  logic->CanBreakPots()),
