@@ -2839,7 +2839,8 @@ bool Logic::SpiritExplosiveKeyLogic() {
 }
 
 bool Logic::SpiritWestToSkull() {
-    return (IsAdult && ctx->GetTrickOption(RT_SPIRIT_STATUE_JUMP)) || (CanUse(RG_HOVER_BOOTS) && HasItem(RG_ROLL)) || ReachScarecrow();
+    return (IsAdult && ctx->GetTrickOption(RT_SPIRIT_STATUE_JUMP)) || (CanUse(RG_HOVER_BOOTS) && HasItem(RG_ROLL)) ||
+           ReachScarecrow();
 }
 
 bool Logic::SpiritSunBlockSouthLedge() {
