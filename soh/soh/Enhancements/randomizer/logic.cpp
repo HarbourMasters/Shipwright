@@ -2699,7 +2699,11 @@ int8_t Logic::GetSmallKeyCount(SceneID sceneId) {
         return FindTotalSmallKeys(mSaveContext, SCENE_THIEVES_HIDEOUT, &DoorFlags);
     }
 
-    return Rando::Context::GetInstance()->GetDungeons()->GetDungeonFromScene(sceneId)->GetTotalSmallKeys(mSaveContext);
+    if (auto* dungeon = Rando::Context::GetInstance()->GetDungeons()->GetDungeonFromScene(sceneId)) {
+        return dungeon->GetTotalSmallKeys(mSaveContext);
+    }
+
+    return FindTotalSmallKeys(mSaveContext, sceneId, nullptr);
 }
 
 void Logic::SetSmallKeyCount(uint32_t dungeonIndex, uint8_t count) {
