@@ -1967,9 +1967,9 @@ void StaticData::HintTable_Init_Item() {
     hintTextTable[RHT_ROCS_FEATHER] = HintText(CustomMessage("Roc's Feather", /*german*/"Greifenfeder", /*french*/"Plume de Roc"),
                                                  {}, {
                                                  CustomMessage("a feather", /*german*/TODO_TRANSLATE, /*french*/"une plume"),
-                                                 CustomMessage("a chicken wing", /*german*/TODO_TRANSLATE, /*french*/"une aile de poulet"),
-                                                 CustomMessage("a blue wing", /*german*/TODO_TRANSLATE, /*french*/"une aile bleue")});
-     
+                                                 CustomMessage("a blue wing", /*german*/TODO_TRANSLATE, /*french*/"une aile bleue"),
+                                                 CustomMessage("a chicken wing", /*german*/TODO_TRANSLATE, /*french*/"une aile de poulet")});
+                                                 
     hintTextTable[RHT_BEAN_SOUL] = HintText(CustomMessage("a bean soul", /*german*/"eine bohnenseele", /*french*/"une âme de haricot"));
 
     hintTextTable[RHT_GOHMA_SOUL] = HintText(CustomMessage("the soul of Gohma", /*german*/"Gohmas Seele", /*french*/"l'Âme de Gohma"),
