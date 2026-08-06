@@ -2575,6 +2575,23 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // !(this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) || (this->actor.world.pos.z > 1300.0f) ||
+    // BgCheck_SphVsFirstPoly(&play->colCtx, &rodCheckPos, 20.0f)
+    // ```
+    // #### `args`
+    // - `*f32`
+    VB_NOT_CAST_FISHING,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
+    VB_FISHING_ZERO_XZ,
+
+    // #### `result`
+    // ```c
     // false
     // ```
     // #### `args`
