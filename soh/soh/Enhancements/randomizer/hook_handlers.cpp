@@ -1,5 +1,4 @@
-﻿#include <libultraship/bridge.h>
-#include "soh/OTRGlobals.h"
+﻿#include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/custom-message/CustomMessageTypes.h"

@@ -31,8 +31,6 @@ extern "C" {
 #include "overlays/actors/ovl_Boss_Goma/z_boss_goma.h"
 #include "objects/object_tw/object_tw.h"
 #include "objects/object_ganon2/object_ganon2.h"
-#include "objects/object_link_child/object_link_child.h"
-#include "roll_animation_data.h"
 extern PlayState* gPlayState;
 extern SaveContext gSaveContext;
 }
