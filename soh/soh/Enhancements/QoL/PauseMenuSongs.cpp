@@ -381,15 +381,16 @@ static void PauseSong_Execute() {
         if (gPlayState->msgCtx.msgMode == MSGMODE_PAUSED) {
             gPlayState->msgCtx.msgMode = MSGMODE_NONE;
         }
-        return;
-    }
-
-    // Otherwise hand the song to a deferred actor: a Song of Time block / Great Fairy spawner (MODE_04), or
-    // a matching NPC (MODE_03). Either holds the mode for the actor to poll next frame; AdvancePending then
-    // finishes the hand-off and restores state.
-    if (!PauseSong_ActivateSongEventActors()) {
+    } else if (!PauseSong_ActivateSongEventActors()) {
+        // Otherwise hand the song to a deferred actor: a Song of Time block / Great Fairy spawner (MODE_04),
+        // or a matching NPC (MODE_03). Either holds the mode for the actor to poll next frame; AdvancePending
+        // then finishes the hand-off and restores state.
         PauseSong_ActivateNpcActors();
     }
+
+    // Vanilla ends a played song with this hook (z_message_PAL.c, MSGMODE_SONG_PLAYED_ACT), which is what
+    // Time Travel with Song of Time listens on. Warp songs run it from StartWarpPlayback instead.
+    GameInteractor_ExecuteOnOcarinaSongAction();
 }
 
 // Start the pause-menu close/hand-off, the way vanilla does when a song is played from the quest screen.
@@ -411,6 +412,8 @@ static void StartWarpPlayback(int song) {
     Message_StartTextbox(gPlayState, songMessageMap[idx], NULL);
     GET_PLAYER(gPlayState)->stateFlags1 |= PLAYER_STATE1_IN_CUTSCENE;
     isWarpActive = true;
+    // Same spot vanilla runs it in: right after the warp prompt opens (z_message_PAL.c, MSGMODE_SONG_PLAYED_ACT).
+    GameInteractor_ExecuteOnOcarinaSongAction();
 }
 
 // Only play when Link is in a normal, grounded, controllable state -- the footing the vanilla ocarina
