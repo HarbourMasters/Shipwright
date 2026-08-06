@@ -1177,9 +1177,9 @@ extern "C" void Randomizer_DrawRollAbility(PlayState* play, GetItemEntry* getIte
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
-    // rotation lente pour le faire tourner comme un get-item
+    // slow rotation to make it rotate like a get-item
     Matrix_RotateY(play->gameplayFrames * 0.05f, MTXMODE_APPLY);
-    // à ajuster : échelle + position de ton modèle
+    // to adjust: scale + position of your model
     Matrix_Scale(10.00f, 10.00f, 10.00f, MTXMODE_APPLY);
 
     gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
