@@ -163,7 +163,7 @@ std::vector<ItemTrackerItem> crawlItems = {
 };
 
 std::vector<ItemTrackerItem> rollItems = {
-    ITEM_TRACKER_ITEM(RG_ROLL, 0, DrawItem),
+    ITEM_TRACKER_RG(RG_ROLL, "", 0, DrawItem),
 };
 
 std::vector<ItemTrackerItem> climbItems = {
