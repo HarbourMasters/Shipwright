@@ -227,6 +227,28 @@ typedef struct {
 typedef struct ShipRandomizerSaveContextData {
     u8 triforcePiecesCollected;
     u8 bombchuUpgradeLevel;
+    s8 silverShadowBlades;
+    s8 silverShadowPit;
+    s8 silverShadowSpikes;
+    s8 silverSpiritChild;
+    s8 silverSpiritSun;
+    s8 silverSpiritBoulders;
+    s8 silverBotw;
+    s8 silverIceCavernBlades;
+    s8 silverIceCavernBlock;
+    s8 silverGtgSlope;
+    s8 silverGtgLava;
+    s8 silverGtgWater;
+    s8 silverGanonLight;
+    s8 silverGanonForest;
+    s8 silverGanonFire;
+    s8 silverGanonSpirit;
+    s8 silverMqDodongosCavern;
+    s8 silverMqShadowInvisibleBlades;
+    s8 silverMqSpiritLobby;
+    s8 silverMqSpiritBigWall;
+    s8 silverMqGanonWater;
+    s8 silverMqGanonShadow;
 } ShipRandomizerSaveContextData;
 
 typedef struct ShipBossRushSaveContextData {

@@ -408,6 +408,12 @@ void SetStartingItems() {
         }
     }
 
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_SILVER) == RO_SHUFFLE_SILVER_STARTWITH) {
+        for (int rg = (int)RG_SHADOW_SILVER_BLADES; rg <= (int)RG_GANONS_CASTLE_MQ_SILVER_SHADOW; rg++) {
+            *Randomizer::SilverFieldFromSaveContext(&gSaveContext, (RandomizerGet)rg) = 10;
+        }
+    }
+
     if (Randomizer_GetSettingValue(RSK_BOSS_KEYSANITY) == RO_DUNGEON_ITEM_LOC_STARTWITH) {
         gSaveContext.inventory.dungeonItems[SCENE_FOREST_TEMPLE] |= 1; // Forest
         gSaveContext.inventory.dungeonItems[SCENE_FIRE_TEMPLE] |= 1;   // Fire

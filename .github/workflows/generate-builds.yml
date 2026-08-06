@@ -210,7 +210,9 @@ jobs:
           ${{ runner.os }}-vcpkg-
         path: vcpkg
     - name: Configure Developer Command Prompt
-      uses: ilammy/msvc-dev-cmd@v1
+      uses: TheMrMilchmann/setup-msvc-dev@v4
+      with:
+        arch: x64
     - name: Download soh.o2r
       uses: actions/download-artifact@v8
       with:

@@ -127,6 +127,7 @@ RANDO_ENUM_ITEM(RCTYPE_OCARINA)                    // Ocarina locations
 RANDO_ENUM_ITEM(RCTYPE_BEEHIVE)                    // Beehives
 RANDO_ENUM_ITEM(RCTYPE_FISH)                       // Fishes
 RANDO_ENUM_ITEM(RCTYPE_FREESTANDING)               // Freestanding rupees and hearts
+RANDO_ENUM_ITEM(RCTYPE_SILVER)                     // Silver rupees
 RANDO_ENUM_ITEM(RCTYPE_FOUNTAIN_FAIRY)             // Fairies in Fountains
 RANDO_ENUM_ITEM(RCTYPE_STONE_FAIRY)                // Fairies from Gossip Stones
 RANDO_ENUM_ITEM(RCTYPE_BEAN_FAIRY)                 // Fairies from Beans
