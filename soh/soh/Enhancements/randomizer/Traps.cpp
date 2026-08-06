@@ -670,7 +670,7 @@ static void InitTrickNames() {
     trickNameTable[RG_ROCS_FEATHER] = {
         Text{ "Chicken Wing", "Chicken Wing", "Chicken Wing" }, // "Chicken Wing"
         Text{ "Roc's Leg", "Roc's Leg", "Roc's Leg" },          // "Roc's Leg"
-        Text{ "Roc's Fapper", "Roc's Fapper", "Roc's Fapper" }, // "Roc's Fapper"
+        Text{ "Roc's Flapper", "Roc's Flapper", "Roc's Flapper" }, // "Roc's Flapper"
     };
     trickNameTable[RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL] = {
         // TODO_TRANSLATE
