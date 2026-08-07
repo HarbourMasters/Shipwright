@@ -1,6 +1,7 @@
 #include "Presets.h"
 #include <string>
 #include <fstream>
+#include <spdlog/common.h>
 #include <ship/config/Config.h>
 #include <nlohmann/json.hpp>
 #include <ship/resource/type/Json.h>
@@ -99,7 +100,7 @@ static BlockInfo blockInfo[PRESET_SECTION_MAX] = {
 };
 
 std::string FormatPresetPath(std::string name) {
-    return fmt::format("{}/{}.json", presetFolder, SanitizeFilename(name));
+    return spdlog::fmt_lib::format("{}/{}.json", presetFolder, SanitizeFilename(name));
 }
 
 void applyPreset(std::string presetName, std::vector<PresetSection> includeSections) {
@@ -141,8 +142,8 @@ void applyPreset(std::string presetName, std::vector<PresetSection> includeSecti
                         }
                     }
 
-                    Ship::Context::GetRawInstance()->GetConfig()->SetBlock(fmt::format("{}.{}", "CVars", item.key()),
-                                                                           block);
+                    Ship::Context::GetRawInstance()->GetConfig()->SetBlock(
+                        spdlog::fmt_lib::format("{}.{}", "CVars", item.key()), block);
                     Ship::Context::GetRawInstance()->GetConsoleVariables()->Load();
                 }
             }
@@ -173,7 +174,7 @@ void DrawPresetSelector(std::vector<PresetSection> includeSections, std::string 
         ImGui::PopStyleColor();
         return;
     }
-    std::string selectorCvar = fmt::format(CVAR_GENERAL("{}SelectedPreset"), presetLoc);
+    std::string selectorCvar = spdlog::fmt_lib::format(CVAR_GENERAL("{}SelectedPreset"), presetLoc);
     std::string currentIndex = CVarGetString(selectorCvar.c_str(), includedPresets[0].c_str());
     if (!presets.contains(currentIndex)) {
         currentIndex = *includedPresets.begin();
@@ -246,8 +247,8 @@ void LoadPresets() {
             try {
                 std::ifstream ifs(preset.path());
                 if (auto json = nlohmann::json::parse(ifs); !json.contains("presetName")) {
-                    spdlog::error(fmt::format("Attempted to load file {} as a preset, but was not a preset file.",
-                                              preset.path().filename().string()));
+                    spdlog::error("Attempted to load file {} as a preset, but was not a preset file.",
+                                  preset.path().filename().string());
                 } else {
                     ParsePreset(json, preset.path().filename().stem().string());
                 }
@@ -282,10 +283,7 @@ void SavePreset(std::string& presetName) {
     presets[presetName].presetValues["presetName"] = presetName;
     presets[presetName].presetValues["fileType"] = FILE_TYPE_PRESET;
 
-    std::string safeFilename = SanitizeFilename(presetName);
-    std::ofstream file(
-        fmt::format("{}/{}.json", Ship::Context::GetRawInstance()->LocateFileAcrossAppDirs("presets"), safeFilename));
-
+    std::ofstream file(FormatPresetPath(presetName));
     if (!file.is_open()) {
         spdlog::error("Failed to save preset '{}': Could not create file", presetName);
         return;
@@ -296,11 +294,19 @@ void SavePreset(std::string& presetName) {
     LoadPresets();
 }
 
-static std::string newPresetName;
+void DeletePreset(std::string& presetName) {
+    std::string presetPath = FormatPresetPath(presetName);
+    if (fs::exists(presetPath)) {
+        fs::remove(presetPath);
+    }
+    presets.erase(presetName);
+}
+
+static std::string newPresetName, oldPresetName;
 static bool saveSection[PRESET_SECTION_MAX];
 
-void DrawNewPresetPopup() {
-    bool nameExists = presets.contains(newPresetName);
+void DrawEditPresetPopup() {
+    bool nameExists = presets.contains(newPresetName) && newPresetName != oldPresetName;
     UIWidgets::InputString("Preset Name", &newPresetName,
                            UIWidgets::InputOptions()
                                .Color(THEME_COLOR)
@@ -309,7 +315,7 @@ void DrawNewPresetPopup() {
                                .LabelPosition(UIWidgets::LabelPositions::Near)
                                .ErrorText("Preset name already exists")
                                .HasError(nameExists));
-    nameExists = presets.contains(newPresetName);
+    nameExists = presets.contains(newPresetName) && newPresetName != oldPresetName;
     bool noneSelected = true;
     for (int i = PRESET_SECTION_SETTINGS; i < PRESET_SECTION_MAX; i++) {
         if (saveSection[i]) {
@@ -321,7 +327,7 @@ void DrawNewPresetPopup() {
         (newPresetName.empty() ? "Preset name is empty"
                                : (noneSelected ? "No sections selected" : "Preset name already exists"));
     for (int i = PRESET_SECTION_SETTINGS; i < PRESET_SECTION_MAX; i++) {
-        UIWidgets::Checkbox(fmt::format("Save {}", blockInfo[i].names[0]).c_str(), &saveSection[i],
+        UIWidgets::Checkbox(spdlog::fmt_lib::format("Save {}", blockInfo[i].names[0]).c_str(), &saveSection[i],
                             UIWidgets::CheckboxOptions().Color(THEME_COLOR).Padding({ 6.0f, 6.0f }));
     }
     if (UIWidgets::Button(
@@ -387,10 +393,15 @@ void DrawNewPresetPopup() {
         presets[newPresetName].fileName = newPresetName;
         std::fill_n(presets[newPresetName].apply, PRESET_SECTION_MAX, true);
         SavePreset(newPresetName);
+        if (newPresetName != oldPresetName) {
+            DeletePreset(oldPresetName);
+        }
         newPresetName = "";
+        oldPresetName = "";
         ImGui::CloseCurrentPopup();
     }
     if (UIWidgets::Button("Cancel", UIWidgets::ButtonOptions().Padding({ 6.0f, 6.0f }).Color(THEME_COLOR))) {
+        oldPresetName = "";
         ImGui::CloseCurrentPopup();
     }
     ImGui::EndPopup();
@@ -403,25 +414,32 @@ void PresetsCustomWidget(WidgetInfo& info) {
                                                 .disabledTooltip = "Disabled because of race lockout" } })
                                             .Size(UIWidgets::Sizes::Inline)
                                             .Color(THEME_COLOR))) {
-        ImGui::OpenPopup("newPreset");
+        oldPresetName = "";
+        newPresetName = "";
+        std::fill_n(saveSection, PRESET_SECTION_MAX, true);
+        ImGui::OpenPopup("editPreset");
+    } else if (oldPresetName != "") {
+        ImGui::OpenPopup("editPreset");
     }
-    if (ImGui::BeginPopup("newPreset", ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize |
-                                           ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollbar |
-                                           ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoTitleBar)) {
-        DrawNewPresetPopup();
+    if (ImGui::BeginPopup("editPreset", ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize |
+                                            ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollbar |
+                                            ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoTitleBar)) {
+        DrawEditPresetPopup();
     }
     ImGui::SameLine();
     UIWidgets::CVarCheckbox("Hide built-in presets", CVAR_GENERAL("HideBuiltInPresets"),
                             UIWidgets::CheckboxOptions().Color(THEME_COLOR));
     bool hideBuiltIn = CVarGetInteger(CVAR_GENERAL("HideBuiltInPresets"), 0);
     UIWidgets::PushStyleTabs(THEME_COLOR);
-    if (ImGui::BeginTable("PresetWidgetTable", PRESET_SECTION_MAX + 3)) {
+    if (ImGui::BeginTable("PresetWidgetTable", PRESET_SECTION_MAX + 4)) {
         ImGui::TableSetupColumn("Name", ImGuiTableColumnFlags_WidthFixed, 400);
         for (int i = PRESET_SECTION_SETTINGS; i < PRESET_SECTION_MAX; i++) {
             ImGui::TableSetupColumn(blockInfo[i].names[0].c_str());
         }
         ImGui::TableSetupColumn("Apply", ImGuiTableColumnFlags_WidthFixed,
                                 ImGui::CalcTextSize("Apply").x + ImGui::GetStyle().FramePadding.x * 2);
+        ImGui::TableSetupColumn("Edit", ImGuiTableColumnFlags_WidthFixed,
+                                ImGui::CalcTextSize("Edit").x + ImGui::GetStyle().FramePadding.x * 2);
         ImGui::TableSetupColumn("Delete", ImGuiTableColumnFlags_WidthFixed,
                                 ImGui::CalcTextSize("Delete").x + ImGui::GetStyle().FramePadding.x * 2);
         BlankButton();
@@ -429,7 +447,7 @@ void PresetsCustomWidget(WidgetInfo& info) {
         ImGui::TableNextColumn();
         for (int i = PRESET_SECTION_SETTINGS; i < PRESET_SECTION_MAX; i++) {
             ImGui::TableNextColumn();
-            ImGui::Button(fmt::format("{}##header{}", blockInfo[i].icon, blockInfo[i].names[1]).c_str());
+            ImGui::Button(spdlog::fmt_lib::format("{}##header{}", blockInfo[i].icon, blockInfo[i].names[1]).c_str());
             UIWidgets::Tooltip(blockInfo[i].names[0].c_str());
         }
         UIWidgets::PopStyleButton();
@@ -470,13 +488,17 @@ void PresetsCustomWidget(WidgetInfo& info) {
             ImGui::TableNextColumn();
             UIWidgets::PushStyleButton(THEME_COLOR);
             if (!info.isBuiltIn) {
+                if (UIWidgets::Button(("Edit##" + name).c_str(), UIWidgets::ButtonOptions().Padding({ 6.0f, 6.0f }))) {
+                    std::copy(info.apply, info.apply + PRESET_SECTION_MAX, saveSection);
+                    newPresetName = name;
+                    oldPresetName = name;
+                }
+                UIWidgets::PopStyleButton();
+                ImGui::TableNextColumn();
+                UIWidgets::PushStyleButton(THEME_COLOR);
                 if (UIWidgets::Button(("Delete##" + name).c_str(),
                                       UIWidgets::ButtonOptions().Padding({ 6.0f, 6.0f }))) {
-                    auto path = FormatPresetPath(info.fileName);
-                    if (fs::exists(path)) {
-                        fs::remove(path);
-                    }
-                    presets.erase(name);
+                    DeletePreset(info.fileName);
                     UIWidgets::PopStyleButton();
                     break;
                 }

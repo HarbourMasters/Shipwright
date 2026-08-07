@@ -89,6 +89,7 @@ class Context {
     std::shared_ptr<Dungeons> GetDungeons();
     std::shared_ptr<Fishsanity> GetFishsanity();
     DungeonInfo* GetDungeon(size_t key) const;
+    DungeonInfo* GetDungeonFromScene(SceneID key) const;
     std::shared_ptr<Logic> GetLogic();
     std::shared_ptr<Trials> GetTrials();
     std::shared_ptr<Kaleido> GetKaleido();
@@ -119,7 +120,8 @@ class Context {
     void GanonsSoulCondition(RandoOptionCheckTrigger condition);
     void WinCondition(RandoOptionWincon condition);
 
-    GetItemEntry GetFinalGIEntry(RandomizerCheck rc, bool checkObtainability = true, GetItemID ogItemId = GI_NONE);
+    GetItemEntry GetFinalGIEntry(RandomizerCheck rc, bool checkObtainability = true, GetItemID ogItemId = GI_NONE,
+                                 bool spoilAreas = false);
     void ParseSpoiler(const char* spoilerFileName);
     void ParseHashIconIndexesJson(const nlohmann::json& spoilerFileJson);
     void ParseItemLocationsJson(const nlohmann::json& spoilerFileJson);

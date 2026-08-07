@@ -62,6 +62,7 @@ class StaticData {
     static void RegisterFairyLocations();
     static void RegisterPotLocations();
     static void RegisterFreestandingLocations();
+    static void RegisterSilverLocations();
     static void RegisterGrassLocations();
     static void RegisterCrateLocations();
     static void RegisterRockLocations();
@@ -91,11 +92,14 @@ class StaticData {
     static std::unordered_map<RandomizerHint, StaticHintInfo> staticHintInfoMap;
     static std::unordered_map<u32, RandomizerHint> stoneParamsToHint;
     static std::unordered_map<u32, RandomizerHint> grottoChestParamsToHint;
+    static std::unordered_map<RandomizerGet, RandomizerCheckArea> silverToArea;
+    static std::set<RandomizerGet> constantSilvers;
     static std::unordered_map<std::string, RandomizerTrick> trickToEnum;
     static std::array<HintText, RHT_MAX> hintTextTable;
     static std::vector<RandomizerGet> normalBottles;
     static std::vector<RandomizerGet> beanSouls;
     static std::vector<RandomizerGet> overworldKeys;
+    static std::vector<RandomizerGet> silverRupees;
     static std::map<RandomizerGet, uint32_t> RandoGetToRandInf;
     static std::unordered_map<SceneID, std::set<RandomizerGet>> itemRestrictions;
     static std::set<RandomizerGet> restrictFW;

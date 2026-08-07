@@ -12,6 +12,7 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_tsubo/object_tsubo.h"
 #include "objects/object_gi_rupy/object_gi_rupy.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/frame_interpolation.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED)
@@ -101,7 +102,7 @@ void EnGSwitch_Init(Actor* thisx, PlayState* play) {
             // "maximum number of checks"
             osSyncPrintf(VT_FGCOL(PURPLE) "☆☆☆☆☆ 最大チェック数 ☆☆☆☆☆ %d\n" VT_RST, this->silverCount);
             osSyncPrintf("\n\n");
-            if (Flags_GetSwitch(play, this->switchFlag)) {
+            if (GameInteractor_Should(VB_SILVER_DESPAWN, Flags_GetSwitch(play, this->switchFlag), this)) {
                 // This is a reference to Hokuto no Ken
                 osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ Ｙｏｕ ａｒｅ Ｓｈｏｃｋ！  ☆☆☆☆☆ %d\n" VT_RST, this->switchFlag);
                 Actor_Kill(&this->actor);
@@ -119,7 +120,7 @@ void EnGSwitch_Init(Actor* thisx, PlayState* play) {
             Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
             this->actor.draw = EnGSwitch_DrawRupee;
             this->actor.shape.yOffset = 700.0f;
-            if (Flags_GetSwitch(play, this->switchFlag)) {
+            if (GameInteractor_Should(VB_SILVER_DESPAWN, Flags_GetSwitch(play, this->switchFlag), this)) {
                 osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ Ｙｏｕ ａｒｅ Ｓｈｏｃｋ！  ☆☆☆☆☆ %d\n" VT_RST, this->switchFlag);
                 Actor_Kill(&this->actor);
             } else {
@@ -211,28 +212,30 @@ void EnGSwitch_WaitForObject(EnGSwitch* this, PlayState* play) {
 void EnGSwitch_SilverRupeeTracker(EnGSwitch* this, PlayState* play) {
     static s8 majorScale[] = { 0, 2, 4, 5, 7, 9, 11, 13, 15, 17 };
 
-    if (this->noteIndex < sCollectedCount) {
-        if (sCollectedCount < (CVarGetInteger(CVAR_ENHANCEMENT("SilverRupeeJingleExtend"), 0) ? 10 : 5)) {
-            // "sound?"
-            osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ 音？ ☆☆☆☆☆ %d\n" VT_RST, this->noteIndex);
-            Audio_PlaySoundTransposed(&gSfxDefaultPos, NA_SE_EV_FIVE_COUNT_LUPY, majorScale[this->noteIndex]);
-            this->noteIndex = sCollectedCount;
+    if (GameInteractor_Should(VB_SILVER_COUNT_CHECK, true, this)) {
+        if (this->noteIndex < sCollectedCount) {
+            if (sCollectedCount < (CVarGetInteger(CVAR_ENHANCEMENT("SilverRupeeJingleExtend"), 0) ? 10 : 5)) {
+                // "sound?"
+                osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ 音？ ☆☆☆☆☆ %d\n" VT_RST, this->noteIndex);
+                Audio_PlaySoundTransposed(&gSfxDefaultPos, NA_SE_EV_FIVE_COUNT_LUPY, majorScale[this->noteIndex]);
+                this->noteIndex = sCollectedCount;
+            }
         }
-    }
-    if (sCollectedCount >= this->silverCount) {
-        // "It is now the end of the century."
-        // This another reference to Hokuto no Ken.
-        osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ 時はまさに世紀末〜  ☆☆☆☆☆ %d\n" VT_RST, this->switchFlag);
-        // "Last!"
-        osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ らすとぉ！          ☆☆☆☆☆ \n" VT_RST);
-        if ((play->sceneNum == SCENE_GERUDO_TRAINING_GROUND) && (this->actor.room == 2)) {
-            Flags_SetTempClear(play, this->actor.room);
-        } else {
-            Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
-            Flags_SetSwitch(play, this->switchFlag);
+        if (sCollectedCount >= this->silverCount) {
+            // "It is now the end of the century."
+            // This another reference to Hokuto no Ken.
+            osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ 時はまさに世紀末〜  ☆☆☆☆☆ %d\n" VT_RST, this->switchFlag);
+            // "Last!"
+            osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ らすとぉ！          ☆☆☆☆☆ \n" VT_RST);
+            if ((play->sceneNum == SCENE_GERUDO_TRAINING_GROUND) && (this->actor.room == 2)) {
+                Flags_SetTempClear(play, this->actor.room);
+            } else {
+                Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
+                Flags_SetSwitch(play, this->switchFlag);
+            }
+            Sfx_PlaySfxCentered(NA_SE_SY_GET_RUPY);
+            Actor_Kill(&this->actor);
         }
-        Sfx_PlaySfxCentered(NA_SE_SY_GET_RUPY);
-        Actor_Kill(&this->actor);
     }
 }
 
@@ -240,7 +243,7 @@ void EnGSwitch_SilverRupeeIdle(EnGSwitch* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
     this->actor.shape.rot.y += 0x800;
-    if (this->actor.xyzDistToPlayerSq < 900.0f) {
+    if (GameInteractor_Should(VB_SILVER_COLLECT, this->actor.xyzDistToPlayerSq < 900.0f, this)) {
         Rupees_ChangeBy(5);
         sCollectedCount++;
         Sfx_PlaySfxCentered(NA_SE_SY_GET_RUPY);

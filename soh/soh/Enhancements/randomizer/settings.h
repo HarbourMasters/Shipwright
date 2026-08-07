@@ -23,6 +23,11 @@ class Settings {
     void HandleMixedEntrancePoolsUI();
 
     /**
+     * @brief Hides or Unhides the UI of the keyring options, and updates the max keyring count.
+     */
+    void HandleKeyringUI();
+
+    /**
      * @brief UI Callback for handling UI state of Starting Age shuffle.
      */
     void HandleStartingAgeUI();

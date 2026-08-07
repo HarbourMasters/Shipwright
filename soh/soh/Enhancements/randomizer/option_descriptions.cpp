@@ -55,7 +55,7 @@ void Settings::CreateOptionDescriptions() {
                                                "Free - Bridge is repaired from start, and Nabooru cannot spawn.\n"
                                                "If the Gerudo Membership Card isn't shuffled, you start with it.\n"
                                                "\n"
-                                               "Only \"Normal\" is compatible with Gerudo Fortress Key Rings.";
+                                               "Only \"Normal\" is compatible with Gerudo Fortress Keyrings.";
     mOptionDescriptions[RSK_RAINBOW_BRIDGE] =
         "Alters the requirements to open the bridge to Ganon's Castle.\n"
         "\n"
@@ -526,6 +526,13 @@ void Settings::CreateOptionDescriptions() {
         "D-pad.\n"
         "\n"
         "If disabled, only the Claim Check will be found in the pool.";
+    mOptionDescriptions[RSK_SHUFFLE_CHEST_MINIGAME] =
+        "Shuffles the contents of the Market Treasure Chest Game, including the item you pay "
+        "the host for. Both chests in every room can be opened, and the locked doors are opened "
+        "with keys found elsewhere instead of keys won in the game.\n"
+        "\n"
+        "Six Chest Game Small Keys are added to the pool, or a single keyring holding all six "
+        "if the Chest Minigame Keyring is selected under Keyrings.";
     mOptionDescriptions[RSK_EARLY_GRANNYS_SHOP] =
         "Makes Granny's Potion Shop available from start, rather than requiring Claim Check to be found first.\n"
         "\n"
@@ -547,6 +554,17 @@ void Settings::CreateOptionDescriptions() {
         "Overworld - Only freestanding rupees & hearts that are outside of dungeons.\n"
         "\n"
         "All Items - Shuffle all freestanding rupees & hearts.";
+    mOptionDescriptions[RSK_SHUFFLE_SILVER] =
+        "Silver rupees will be shuffled.\n"
+        "Items will be added to pool which completes the silver rupee puzzles,\n"
+        "while silver rupee locations will be random items.\n"
+        "Off - silver rupees won't be shuffled."
+        "\n"
+        "On - silver rupees will be individually spread out."
+        "\n"
+        "Wallet - silver rupees are shuffled as wallets, a single check to set flag for collecting them."
+        "\n"
+        "Start With - Silver rupees are still replaced with items, but all silver rupee flags start set.";
     mOptionDescriptions[RSK_SHUFFLE_FOUNTAIN_FAIRIES] =
         "Shuffle fairies in fountain locations. "
         "This includes the sets of fairies found in Ganon's Castle and the Desert Oasis.";
@@ -614,18 +632,18 @@ void Settings::CreateOptionDescriptions() {
         "\n"
         "Off - No dungeons will have their keys replaced with keyrings.\n"
         "\n"
-        "Random - A random amount of dungeons (0-8 or 9) will have their keys replaced with keyrings.\n"
+        "Random - A random amount of dungeons will have their keys replaced with keyrings.\n"
         "\n"
         "Count - A specified amount of randomly selected dungeons will have their keys replaced with keyrings.\n"
         "\n"
         "Selection - Hand select which dungeons will have their keys replaced with keyrings\n"
         "(can also be left as random, in which case each one will have a 50% chance of being a keyring).\n"
         "\n"
-        "Selecting key ring for dungeons will have no effect if Small Keys are set to Start With or Vanilla.\n"
+        "Selecting keyring for dungeons will have no effect if Small Keys are set to Start With or Vanilla.\n"
         "\n"
-        "If Gerudo Fortress Carpenters is set to Normal, and Gerudo Fortress Keys is set to anything "
-        "other than Vanilla, then the maximum amount of Key Rings that can be selected by Random or "
-        "Count will be 9. Otherwise, the maximum amount of Key Rings will be 8.";
+        "The maximum amount of Keyrings that can be selected by Random or Count is 8, plus one if "
+        "Gerudo Fortress Carpenters is set to Normal and Gerudo Fortress Keys is set to anything "
+        "other than Vanilla, plus one if Shuffle Chest Minigame is on.";
     mOptionDescriptions[RSK_GERUDO_KEYS] = "Vanilla - Thieves' Hideout Keys will appear in their vanilla locations.\n"
                                            "\n"
                                            "Any dungeon - Thieves' Hideout Keys can only appear inside of any dungon.\n"

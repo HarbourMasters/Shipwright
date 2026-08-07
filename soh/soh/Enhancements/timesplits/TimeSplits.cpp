@@ -1,5 +1,6 @@
 #include <vector>
 #include <fstream>
+#include <spdlog/common.h>
 
 #include <ship/Context.h>
 #include "TimeSplits.h"
@@ -252,7 +253,7 @@ std::string formatTimestampTimeSplit(uint32_t value) {
     uint32_t mm = (sec - hh * 3600) / 60;
     uint32_t ss = sec - hh * 3600 - mm * 60;
     uint32_t ds = value % 10;
-    return fmt::format("{}:{:0>2}:{:0>2}.{}", hh, mm, ss, ds);
+    return spdlog::fmt_lib::format("{}:{:0>2}:{:0>2}.{}", hh, mm, ss, ds);
 }
 
 nlohmann::json ImVec4_to_json(const ImVec4& vec) {

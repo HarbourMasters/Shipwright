@@ -1,3 +1,4 @@
+// vim: ft=cpp
 #pragma once
 
 #define BTN_CUSTOM_MODIFIER1 0x0040
