@@ -28,26 +28,26 @@ bool IsSilverInPool(RandomizerGet rg) {
         case RG_SPIRIT_SILVER_CHILD:
         case RG_SPIRIT_SILVER_SUN:
         case RG_SPIRIT_SILVER_BOULDERS:
-            return ctx->GetDungeon(Rando::SPIRIT_TEMPLE)->IsVanilla();
+            return ctx->GetDungeon(SPIRIT_TEMPLE)->IsVanilla();
         case RG_BOTW_SILVER:
-            return ctx->GetDungeon(Rando::BOTTOM_OF_THE_WELL)->IsVanilla();
+            return ctx->GetDungeon(BOTTOM_OF_THE_WELL)->IsVanilla();
         case RG_ICE_CAVERN_SILVER_BLADES:
         case RG_ICE_CAVERN_SILVER_BLOCK:
-            return ctx->GetDungeon(Rando::ICE_CAVERN)->IsVanilla();
+            return ctx->GetDungeon(ICE_CAVERN)->IsVanilla();
         case RG_GANONS_CASTLE_SILVER_LIGHT:
         case RG_GANONS_CASTLE_SILVER_FOREST:
         case RG_GANONS_CASTLE_SILVER_SPIRIT:
-            return ctx->GetDungeon(Rando::GANONS_CASTLE)->IsVanilla();
+            return ctx->GetDungeon(GANONS_CASTLE)->IsVanilla();
         case RG_DODONGOS_CAVERN_MQ_SILVER:
-            return ctx->GetDungeon(Rando::DODONGOS_CAVERN)->IsMQ();
+            return ctx->GetDungeon(DODONGOS_CAVERN)->IsMQ();
         case RG_SHADOW_MQ_SILVER_INVISIBLE_BLADES:
-            return ctx->GetDungeon(Rando::SHADOW_TEMPLE)->IsMQ();
+            return ctx->GetDungeon(SHADOW_TEMPLE)->IsMQ();
         case RG_SPIRIT_MQ_SILVER_LOBBY:
         case RG_SPIRIT_MQ_SILVER_BIG_WALL:
-            return ctx->GetDungeon(Rando::SPIRIT_TEMPLE)->IsMQ();
+            return ctx->GetDungeon(SPIRIT_TEMPLE)->IsMQ();
         case RG_GANONS_CASTLE_MQ_SILVER_WATER:
         case RG_GANONS_CASTLE_MQ_SILVER_SHADOW:
-            return ctx->GetDungeon(Rando::GANONS_CASTLE)->IsMQ();
+            return ctx->GetDungeon(GANONS_CASTLE)->IsMQ();
         default:
             assert(false);
             return false;
@@ -214,11 +214,11 @@ s8* Randomizer::SilverFieldFromSaveContext(SaveContext* saveContext, RandomizerG
 s8 Randomizer::SilverTotal(RandomizerGet rg) {
     auto ctx = Rando::Context::GetInstance();
     return rg == RG_SHADOW_MQ_SILVER_INVISIBLE_BLADES ||
-                   (rg == RG_SHADOW_SILVER_SPIKES && ctx->GetDungeon(Rando::SHADOW_TEMPLE)->IsMQ())
+                   (rg == RG_SHADOW_SILVER_SPIKES && ctx->GetDungeon(SHADOW_TEMPLE)->IsMQ())
                ? 10
-           : (rg == RG_GTG_SILVER_LAVA && ctx->GetDungeon(Rando::GERUDO_TRAINING_GROUND)->IsMQ())  ? 6
-           : (rg == RG_GTG_SILVER_WATER && ctx->GetDungeon(Rando::GERUDO_TRAINING_GROUND)->IsMQ()) ? 3
-                                                                                                   : 5;
+           : (rg == RG_GTG_SILVER_LAVA && ctx->GetDungeon(GERUDO_TRAINING_GROUND)->IsMQ())  ? 6
+           : (rg == RG_GTG_SILVER_WATER && ctx->GetDungeon(GERUDO_TRAINING_GROUND)->IsMQ()) ? 3
+                                                                                            : 5;
 }
 
 bool IsSilverCleared(s16 switchFlag) {
