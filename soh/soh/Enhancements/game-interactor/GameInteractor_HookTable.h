@@ -63,6 +63,7 @@ DEFINE_HOOK(OnDeleteFile, (int32_t fileNum));
 DEFINE_HOOK(OnDialogMessage, ());
 DEFINE_HOOK(OnPresentTitleCard, ());
 DEFINE_HOOK(OnInterfaceUpdate, ());
+DEFINE_HOOK(OnInterfaceDraw, ());
 DEFINE_HOOK(OnKaleidoscopeUpdate, (int16_t inDungeonScene));
 DEFINE_HOOK(OnMinimapDrawCompassIcons, ());
 
