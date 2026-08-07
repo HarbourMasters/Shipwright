@@ -198,10 +198,26 @@ find_package(ZLIB REQUIRED)
 
 include(FetchContent)
 
+# spdlog runs fmt's consteval format check in every log macro, and clang >= 21 rejects it as
+# not constant with fmt < 11.1: FMT_STRING's compile string converts to two distinct literal
+# objects, so the pointer subtraction fmt does while parsing crosses objects (#7017). Ignore a
+# system spdlog built against such an fmt; the fetched one bundles fmt 12.
+set(_use_system_spdlog ON)
+if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang"
+   AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL "21.0")
+    find_package(fmt QUIET)
+    if(fmt_FOUND AND fmt_VERSION VERSION_LESS "11.1")
+        message(STATUS "clang ${CMAKE_CXX_COMPILER_VERSION} can't build against fmt ${fmt_VERSION}, fetching spdlog")
+        set(_use_system_spdlog OFF)
+    endif()
+endif()
+
 # Workaround: torch declares spdlog without OVERRIDE_FIND_PACKAGE and the first declaration
 # wins, which leaves libultraship's find_package(spdlog REQUIRED) with no config to find.
 # Declaring it here first keeps that working. See HarbourMasters/Torch#233.
-find_package(spdlog QUIET)
+if(_use_system_spdlog)
+    find_package(spdlog QUIET)
+endif()
 if(NOT spdlog_FOUND)
     FetchContent_Declare(
         spdlog

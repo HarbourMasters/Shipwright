@@ -975,8 +975,13 @@ void StaticData::HintTable_Init() {
 
     hintTextTable[RHT_GERUDO_FORTRESS] = HintText(CustomMessage("Gerudo's Fortress",
                                                      /*german*/ "in der Gerudo-Festung",
-                                                     /*french*/ "le Repaire des Voleurs"));
+                                                     /*french*/ "la Forteresse Gerudo"));
                                                   // /*spanish*/la Fortaleza Gerudo
+
+    hintTextTable[RHT_THIEVES_HIDEOUT] = HintText(CustomMessage("the Thieves' Hideout",
+                                                     /*german*/ "im Diebesversteck",
+                                                     /*french*/ "le Repaire des Voleurs"));
+                                                  // /*spanish*/la Guarida de los Ladrones
 
     hintTextTable[RHT_HAUNTED_WASTELAND] = HintText(CustomMessage("Haunted Wasteland",
                                                        /*german*/ "in der Gespensterwüste",

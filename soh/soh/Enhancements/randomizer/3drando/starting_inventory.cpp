@@ -54,6 +54,12 @@ void GenerateStartingInventory() {
         AddItemToInventory(RG_SHADOW_TEMPLE_BOSS_KEY);
     }
 
+    if (ctx->GetOption(RSK_SHUFFLE_SILVER).Is(RO_SHUFFLE_SILVER_STARTWITH)) {
+        for (int rg = (int)RG_SHADOW_SILVER_BLADES; rg <= (int)RG_GANONS_CASTLE_MQ_SILVER_SHADOW; rg++) {
+            AddItemToInventory((RandomizerGet)rg);
+        }
+    }
+
     if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_STARTWITH)) {
         AddItemToInventory(RG_GANONS_CASTLE_BOSS_KEY);
     }

@@ -170,6 +170,18 @@ static s16 sExtraItemBases[] = {
     ITEM_BOW,   ITEM_BOW,   ITEM_SEEDS, ITEM_BOMBCHU, ITEM_BOMBCHU, ITEM_STICK, ITEM_STICK, ITEM_NUT,  ITEM_NUT,
 };
 
+// These tables only cover the item IDs that live in the inventory, so anything else (quest items, songs,
+// medallions) must report SLOT_NONE rather than read past their end.
+static s16 Item_GetSlot(u8 item) {
+    if ((item >= ITEM_STICKS_5) && (item < ITEM_STICKS_5 + ARRAY_COUNT(sExtraItemBases))) {
+        return SLOT(sExtraItemBases[item - ITEM_STICKS_5]);
+    }
+    if (item < ARRAY_COUNT(gItemSlots)) {
+        return SLOT(item);
+    }
+    return SLOT_NONE;
+}
+
 static s16 sEnvHazard = PLAYER_ENV_HAZARD_NONE;
 static s16 sEnvHazardActive = false;
 
@@ -1870,13 +1882,11 @@ u8 Item_Give(PlayState* play, u8 item) {
     // Gameplay stats: Update the time the item was obtained
     GameplayStats_SetTimestamp(play, item);
 
-    slot = SLOT(item);
-    if (item >= ITEM_STICKS_5) {
-        slot = SLOT(sExtraItemBases[item - ITEM_STICKS_5]);
-    }
+    slot = Item_GetSlot(item);
 
     osSyncPrintf(VT_FGCOL(YELLOW));
-    osSyncPrintf("item_get_setting=%d  pt=%d  z=%x\n", item, slot, gSaveContext.inventory.items[slot]);
+    osSyncPrintf("item_get_setting=%d  pt=%d  z=%x\n", item, slot,
+                 (slot != SLOT_NONE) ? gSaveContext.inventory.items[slot] : ITEM_NONE);
     osSyncPrintf(VT_RST);
 
     if ((item >= ITEM_MEDALLION_FOREST) && (item <= ITEM_MEDALLION_LIGHT)) {
@@ -2450,23 +2460,25 @@ u8 Item_Give(PlayState* play, u8 item) {
         }
         return Return_Item(item, MOD_NONE, ITEM_NONE);
     }
+    if (slot == SLOT_NONE) {
+        // Nothing to store: writing would land on an unrelated slot instead.
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
+    }
+
     returnItem = gSaveContext.inventory.items[slot];
     osSyncPrintf("Item_Register(%d)=%d  %d\n", slot, item, returnItem);
-    INV_CONTENT(item) = item;
+    gSaveContext.inventory.items[slot] = item;
     return Return_Item(item, MOD_NONE, returnItem);
 }
 
 u8 Item_CheckObtainability(u8 item) {
     s16 i;
-    s16 slot = SLOT(item);
+    s16 slot = Item_GetSlot(item);
     s32 temp;
 
-    if (item >= ITEM_STICKS_5) {
-        slot = SLOT(sExtraItemBases[item - ITEM_STICKS_5]);
-    }
-
     osSyncPrintf(VT_FGCOL(GREEN));
-    osSyncPrintf("item_get_non_setting=%d  pt=%d  z=%x\n", item, slot, gSaveContext.inventory.items[slot]);
+    osSyncPrintf("item_get_non_setting=%d  pt=%d  z=%x\n", item, slot,
+                 (slot != SLOT_NONE) ? gSaveContext.inventory.items[slot] : ITEM_NONE);
     osSyncPrintf(VT_RST);
 
     if (IS_RANDO) {
@@ -2588,7 +2600,7 @@ u8 Item_CheckObtainability(u8 item) {
         return ITEM_NONE;
     }
 
-    return gSaveContext.inventory.items[slot];
+    return (slot != SLOT_NONE) ? gSaveContext.inventory.items[slot] : ITEM_NONE;
 }
 
 void Inventory_DeleteItem(u16 item, u16 invSlot) {

@@ -1231,6 +1231,94 @@ static void InitTrickNames() {
         Text{ "Squid-Hunt Key", "Squid-Hunt Key", "Squid-Hunt Key" },
     };
 
+    trickNameTable[RG_SHADOW_SILVER_BLADES] = {
+        // TODO_TRANSLATE
+        Text{ "Shadow Silver: Bladders" },
+    };
+    trickNameTable[RG_SHADOW_SILVER_PIT] = {
+        // TODO_TRANSLATE
+        Text{ "Shadow Silver: Bit" },
+    };
+    trickNameTable[RG_SHADOW_SILVER_SPIKES] = {
+        // TODO_TRANSLATE
+        Text{ "Shadow Silver: Spines" },
+    };
+    trickNameTable[RG_SPIRIT_SILVER_CHILD] = {
+        // TODO_TRANSLATE
+        Text{ "Spirit Silver: Chill" },
+    };
+    trickNameTable[RG_SPIRIT_SILVER_SUN] = {
+        // TODO_TRANSLATE
+        Text{ "Spirit Silver: Son" },
+    };
+    trickNameTable[RG_SPIRIT_SILVER_BOULDERS] = {
+        // TODO_TRANSLATE
+        Text{ "Spirit Silver: Bounders" },
+    };
+    trickNameTable[RG_BOTW_SILVER] = {
+        // TODO_TRANSLATE
+        Text{ "Bottom of the Well Slipper" },
+    };
+    trickNameTable[RG_ICE_CAVERN_SILVER_BLADES] = {
+        // TODO_TRANSLATE
+        Text{ "Ice Cavern Silver: Blaze" },
+    };
+    trickNameTable[RG_ICE_CAVERN_SILVER_BLOCK] = {
+        // TODO_TRANSLATE
+        Text{ "Ice Cavern Silver: Black" },
+    };
+    trickNameTable[RG_GTG_SILVER_SLOPE] = {
+        // TODO_TRANSLATE
+        Text{ "Training Ground Silver: Snope" },
+    };
+    trickNameTable[RG_GTG_SILVER_LAVA] = {
+        // TODO_TRANSLATE
+        Text{ "Traning Ground Silver: Love" },
+    };
+    trickNameTable[RG_GTG_SILVER_WATER] = {
+        // TODO_TRANSLATE
+        Text{ "Training Pound Silver: Water" },
+    };
+    trickNameTable[RG_GANONS_CASTLE_SILVER_LIGHT] = {
+        // TODO_TRANSLATE
+        Text{ "Ganon's Castle Silver: Lighter" },
+    };
+    trickNameTable[RG_GANONS_CASTLE_SILVER_FOREST] = {
+        // TODO_TRANSLATE
+        Text{ "Ganon's Castle Silver: Frost" },
+    };
+    trickNameTable[RG_GANONS_CASTLE_SILVER_FIRE] = {
+        // TODO_TRANSLATE
+        Text{ "Ganon's Castle Silver: Free" },
+    };
+    trickNameTable[RG_GANONS_CASTLE_SILVER_SPIRIT] = {
+        // TODO_TRANSLATE
+        Text{ "Ganon's Castle Silver: Sprite" },
+    };
+    trickNameTable[RG_DODONGOS_CAVERN_MQ_SILVER] = {
+        // TODO_TRANSLATE
+        Text{ "Dodongo's Cave Silver" },
+    };
+    trickNameTable[RG_SHADOW_MQ_SILVER_INVISIBLE_BLADES] = {
+        // TODO_TRANSLATE
+        Text{ "Shadow Silver: Invisible" },
+    };
+    trickNameTable[RG_SPIRIT_MQ_SILVER_LOBBY] = {
+        // TODO_TRANSLATE
+        Text{ "Spirit Silver: Foyer" },
+    };
+    trickNameTable[RG_SPIRIT_MQ_SILVER_BIG_WALL] = {
+        // TODO_TRANSLATE
+        Text{ "Spirit Silver: Brick" },
+    };
+    trickNameTable[RG_GANONS_CASTLE_MQ_SILVER_WATER] = {
+        // TODO_TRANSLATE
+        Text{ "Ganon's Castle Silver: Wheat" },
+    };
+    trickNameTable[RG_GANONS_CASTLE_MQ_SILVER_SHADOW] = {
+        // TODO_TRANSLATE
+        Text{ "Ganon's Castle Silver: Shabom" },
+    };
     /*
     //Names for individual upgrades, in case progressive names are replaced
     trickNameTable[GI_HOOKSHOT] = {
@@ -1451,6 +1539,8 @@ RandomizerGet Rando::Traps::GetTrapTrickModel(uint64_t* state) {
         trickModel = ShipUtils::RandomElement(Rando::StaticData::overworldKeys, state);
     } else if (trickModel == RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL) {
         trickModel = ShipUtils::RandomElement(Rando::StaticData::beanSouls, state);
+    } else if (trickModel == RG_SHADOW_SILVER_BLADES) {
+        trickModel = ShipUtils::RandomElement(Rando::StaticData::silverRupees);
     }
 
     return trickModel;

@@ -547,6 +547,17 @@ void Settings::CreateOptionDescriptions() {
         "Overworld - Only freestanding rupees & hearts that are outside of dungeons.\n"
         "\n"
         "All Items - Shuffle all freestanding rupees & hearts.";
+    mOptionDescriptions[RSK_SHUFFLE_SILVER] =
+        "Silver rupees will be shuffled.\n"
+        "Items will be added to pool which completes the silver rupee puzzles,\n"
+        "while silver rupee locations will be random items.\n"
+        "Off - silver rupees won't be shuffled."
+        "\n"
+        "On - silver rupees will be individually spread out."
+        "\n"
+        "Wallet - silver rupees are shuffled as wallets, a single check to set flag for collecting them."
+        "\n"
+        "Start With - Silver rupees are still replaced with items, but all silver rupee flags start set.";
     mOptionDescriptions[RSK_SHUFFLE_FOUNTAIN_FAIRIES] =
         "Shuffle fairies in fountain locations. "
         "This includes the sets of fairies found in Ganon's Castle and the Desert Oasis.";

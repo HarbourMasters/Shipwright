@@ -2108,6 +2108,14 @@ void StaticData::HintTable_Init_Item() {
                                               }, {
                                               CustomMessage("sack of mice", /*german*/"ein Sack Mäuse", /*french*/"un Sac rempli de souris")});
 
+    hintTextTable[RHT_SILVER_RUPEE_DODONGOS_CAVERN] = HintText(CustomMessage("a Dodongo's Cavern Silver Rupee", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE));
+    hintTextTable[RHT_SILVER_RUPEE_SHADOW_TEMPLE] = HintText(CustomMessage("a Shadow Temple Silver Rupee", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE));
+    hintTextTable[RHT_SILVER_RUPEE_SPIRIT_TEMPLE] = HintText(CustomMessage("a Spirit Temple Silver Rupee", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE));
+    hintTextTable[RHT_SILVER_RUPEE_BOTW] = HintText(CustomMessage("a Bottom of the Well Silver Rupee", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE));
+    hintTextTable[RHT_SILVER_RUPEE_ICE_CAVERN] = HintText(CustomMessage("an Ice Cavern Silver Rupee", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE));
+    hintTextTable[RHT_SILVER_RUPEE_GTG] = HintText(CustomMessage("a Gerudo Training Ground Silver Rupee", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE));
+    hintTextTable[RHT_SILVER_RUPEE_GANONS_CASTLE] = HintText(CustomMessage("a Ganon's Castle Silver Rupee", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE));
+
     hintTextTable[RHT_SKELETON_KEY] = HintText(CustomMessage("a Skeleton Key", /*german*/ "der Skelettschlüssel", /*french*/ "une Clé Squelette"),
                                                // /*spanish*/una Llave Maestra
                                                {
