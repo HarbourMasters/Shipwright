@@ -216,7 +216,8 @@ endif()
 # wins, which leaves libultraship's find_package(spdlog REQUIRED) with no config to find.
 # Declaring it here first keeps that working. See HarbourMasters/Torch#233.
 if(_use_system_spdlog)
-    find_package(spdlog QUIET)
+    # 1.10 is minimum for spdlog::fmt_lib
+    find_package(spdlog 1.10 QUIET)
 endif()
 if(NOT spdlog_FOUND)
     FetchContent_Declare(

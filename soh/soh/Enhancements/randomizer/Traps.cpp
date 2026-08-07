@@ -668,9 +668,9 @@ static void InitTrickNames() {
         Text{ "Force Gem" },
     };
     trickNameTable[RG_ROCS_FEATHER] = {
-        Text{ "Chicken Wing", "Chicken Wing", "Chicken Wing" }, // "Chicken Wing"
-        Text{ "Roc's Leg", "Roc's Leg", "Roc's Leg" },          // "Roc's Leg"
-        Text{ "Roc's Fapper", "Roc's Fapper", "Roc's Fapper" }, // "Roc's Fapper"
+        Text{ "Chicken Wing", "Chicken Wing", "Chicken Wing" },    // "Chicken Wing"
+        Text{ "Roc's Leg", "Roc's Leg", "Roc's Leg" },             // "Roc's Leg"
+        Text{ "Roc's Flapper", "Roc's Flapper", "Roc's Flapper" }, // "Roc's Flapper"
     };
     trickNameTable[RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL] = {
         // TODO_TRANSLATE
@@ -889,6 +889,13 @@ static void InitTrickNames() {
         Text{ "Vaati's Palace Small Key", "Vaati's Palace Small Key", "Vaati's Palace Small Key" },
     };
 
+    trickNameTable[RG_TREASURE_GAME_SMALL_KEY] = {
+        // TODO_TRANSALTE
+        Text{ "Chest Game Salmon Koi", "Chest Game Salmon Koi", "Chest Game Salmon Koi" },
+        Text{ "Shell Game Small Key", "Shell Game Small Key", "Shell Game Small Key" },
+        Text{ "Treasure Hunt Small Key", "Treasure Hunt Small Key", "Treasure Hunt Small Key" },
+    };
+
     trickNameTable[RG_FOREST_TEMPLE_KEY_RING] = {
         // TODO_TRANSALTE
         Text{ "Wind Temple Key Ring", "Wind Temple Key Ring", "Wind Temple Key Ring" },
@@ -945,6 +952,13 @@ static void InitTrickNames() {
         Text{ "Hyrule Castle Koi Ray", "Hyrule Castle Koi Ray", "Hyrule Castle Koi Ray" },
         Text{ "Onox's Castle Key Ring", "Onox's Castle Key Ring", "Onox's Castle Key Ring" },
         Text{ "Vaati's Palace Key Ring", "Vaati's Palace Key Ring", "Vaati's Palace Key Ring" },
+    };
+
+    trickNameTable[RG_TREASURE_GAME_KEY_RING] = {
+        // TODO_TRANSALTE
+        Text{ "Chest Game Koi Ray", "Chest Game Koi Ray", "Chest Game Koi Ray" },
+        Text{ "Shell Game Key Ring", "Shell Game Key Ring", "Shell Game Key Ring" },
+        Text{ "Treasure Hunt Key Ring", "Treasure Hunt Key Ring", "Treasure Hunt Key Ring" },
     };
 
     trickNameTable[RG_FOREST_TEMPLE_BOSS_KEY] = {

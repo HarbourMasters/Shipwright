@@ -1,6 +1,7 @@
 #include "Presets.h"
 #include <string>
 #include <fstream>
+#include <spdlog/common.h>
 #include <ship/config/Config.h>
 #include <nlohmann/json.hpp>
 #include <ship/resource/type/Json.h>
@@ -99,7 +100,7 @@ static BlockInfo blockInfo[PRESET_SECTION_MAX] = {
 };
 
 std::string FormatPresetPath(std::string name) {
-    return fmt::format("{}/{}.json", presetFolder, SanitizeFilename(name));
+    return spdlog::fmt_lib::format("{}/{}.json", presetFolder, SanitizeFilename(name));
 }
 
 void applyPreset(std::string presetName, std::vector<PresetSection> includeSections) {
@@ -141,8 +142,8 @@ void applyPreset(std::string presetName, std::vector<PresetSection> includeSecti
                         }
                     }
 
-                    Ship::Context::GetRawInstance()->GetConfig()->SetBlock(fmt::format("{}.{}", "CVars", item.key()),
-                                                                           block);
+                    Ship::Context::GetRawInstance()->GetConfig()->SetBlock(
+                        spdlog::fmt_lib::format("{}.{}", "CVars", item.key()), block);
                     Ship::Context::GetRawInstance()->GetConsoleVariables()->Load();
                 }
             }
@@ -173,7 +174,7 @@ void DrawPresetSelector(std::vector<PresetSection> includeSections, std::string 
         ImGui::PopStyleColor();
         return;
     }
-    std::string selectorCvar = fmt::format(CVAR_GENERAL("{}SelectedPreset"), presetLoc);
+    std::string selectorCvar = spdlog::fmt_lib::format(CVAR_GENERAL("{}SelectedPreset"), presetLoc);
     std::string currentIndex = CVarGetString(selectorCvar.c_str(), includedPresets[0].c_str());
     if (!presets.contains(currentIndex)) {
         currentIndex = *includedPresets.begin();
@@ -246,8 +247,8 @@ void LoadPresets() {
             try {
                 std::ifstream ifs(preset.path());
                 if (auto json = nlohmann::json::parse(ifs); !json.contains("presetName")) {
-                    spdlog::error(fmt::format("Attempted to load file {} as a preset, but was not a preset file.",
-                                              preset.path().filename().string()));
+                    spdlog::error("Attempted to load file {} as a preset, but was not a preset file.",
+                                  preset.path().filename().string());
                 } else {
                     ParsePreset(json, preset.path().filename().stem().string());
                 }
@@ -326,7 +327,7 @@ void DrawEditPresetPopup() {
         (newPresetName.empty() ? "Preset name is empty"
                                : (noneSelected ? "No sections selected" : "Preset name already exists"));
     for (int i = PRESET_SECTION_SETTINGS; i < PRESET_SECTION_MAX; i++) {
-        UIWidgets::Checkbox(fmt::format("Save {}", blockInfo[i].names[0]).c_str(), &saveSection[i],
+        UIWidgets::Checkbox(spdlog::fmt_lib::format("Save {}", blockInfo[i].names[0]).c_str(), &saveSection[i],
                             UIWidgets::CheckboxOptions().Color(THEME_COLOR).Padding({ 6.0f, 6.0f }));
     }
     if (UIWidgets::Button(
@@ -446,7 +447,7 @@ void PresetsCustomWidget(WidgetInfo& info) {
         ImGui::TableNextColumn();
         for (int i = PRESET_SECTION_SETTINGS; i < PRESET_SECTION_MAX; i++) {
             ImGui::TableNextColumn();
-            ImGui::Button(fmt::format("{}##header{}", blockInfo[i].icon, blockInfo[i].names[1]).c_str());
+            ImGui::Button(spdlog::fmt_lib::format("{}##header{}", blockInfo[i].icon, blockInfo[i].names[1]).c_str());
             UIWidgets::Tooltip(blockInfo[i].names[0].c_str());
         }
         UIWidgets::PopStyleButton();

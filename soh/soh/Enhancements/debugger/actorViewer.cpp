@@ -11,7 +11,7 @@
 #include <array>
 #include <unordered_map>
 #include <string>
-#include <spdlog/fmt/fmt.h>
+#include <spdlog/common.h>
 #include "soh/OTRGlobals.h"
 #include "soh/cvar_prefixes.h"
 #include "soh/ObjectExtension/ActorListIndex.h"
@@ -825,7 +825,7 @@ void ActorViewer_AddTagForActor(Actor* actor) {
         parts.push_back(acMapping[actor->category]);
     }
     if (CVarGetInteger(CVAR_ACTOR_NAME_TAGS("DisplayParams"), 0)) {
-        parts.push_back(fmt::format("0x{:04X} ({})", (u16)actor->params, actor->params));
+        parts.push_back(spdlog::fmt_lib::format("0x{:04X} ({})", (u16)actor->params, actor->params));
     }
 
     std::string tag = "";

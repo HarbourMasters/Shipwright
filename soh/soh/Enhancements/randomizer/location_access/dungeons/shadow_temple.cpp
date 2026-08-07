@@ -222,7 +222,7 @@ void RegionTable_Init_ShadowTemple() {
     }, {
         //Exits
         ENTRANCE(RR_SHADOW_TEMPLE_LOWER_HUGE_PIT_DOOR_LEDGE, logic->SmallKeys(SCENE_SHADOW_TEMPLE, 2)),
-ENTRANCE(RR_SHADOW_TEMPLE_FLOOR_SPIKES_ROOM,         ctx->GetTrickOption(RT_LENS_SHADOW) || logic->CanUse(RG_LENS_OF_TRUTH) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_GORON_TUNIC) || logic->TakeDamage()),
+        ENTRANCE(RR_SHADOW_TEMPLE_FLOOR_SPIKES_ROOM,         ctx->GetTrickOption(RT_LENS_SHADOW) || logic->CanUse(RG_LENS_OF_TRUTH) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_GORON_TUNIC) || logic->TakeDamage()),
     });
 
     //Assumes logic for navigating around spikes is checked on entry
@@ -241,7 +241,7 @@ ENTRANCE(RR_SHADOW_TEMPLE_FLOOR_SPIKES_ROOM,         ctx->GetTrickOption(RT_LENS
         ENTRANCE(RR_SHADOW_TEMPLE_FLOOR_SPIKES_W_DOOR,    true),
         ENTRANCE(RR_SHADOW_TEMPLE_SPIKES_CORNER_PLATFORM, (ctx->GetTrickOption(RT_LENS_SHADOW) || logic->CanUse(RG_LENS_OF_TRUTH)) && ((logic->IsAdult && logic->CanMiddairGroundJump() && logic->HasItem(RG_ROLL)) || logic->CanUse(RG_HOOKSHOT))),
         ENTRANCE(RR_SHADOW_TEMPLE_SPIKES_DOOR_PLATFORM,   (ctx->GetTrickOption(RT_LENS_SHADOW) || logic->CanUse(RG_LENS_OF_TRUTH)) && ((logic->IsAdult && logic->CanMiddairGroundJump() && logic->HasItem(RG_ROLL)) || 
-                                                           (logic->CanUse(logic->IsAdult && AnyAgeTime([]{return logic->CanKillEnemy(RE_REDEAD);}) ? RG_HOOKSHOT : RG_LONGSHOT)))),
+                                                          (logic->CanUse(logic->IsAdult && AnyAgeTime([]{return logic->CanKillEnemy(RE_REDEAD);}) ? RG_HOOKSHOT : RG_LONGSHOT)))),
     });
 
     areaTable[RR_SHADOW_TEMPLE_FLOOR_SPIKES_W_DOOR] = Region("Shadow Temple Floor Spikes West Door", SCENE_SHADOW_TEMPLE, {}, {

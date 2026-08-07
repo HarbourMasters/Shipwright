@@ -1,5 +1,6 @@
 #include "ResolutionEditor.h"
 #include <imgui.h>
+#include <spdlog/common.h>
 
 #include "soh/SohGui/UIWidgets.hpp"
 #include <fast/Fast3dWindow.h>
@@ -195,7 +196,7 @@ void ResolutionCustomWidget(WidgetInfo& info) {
 
         // Integer Scaling
         UIWidgets::CVarSliderInt(
-            fmt::format("Integer scale factor: {}", max_integerScaleFactor).c_str(),
+            spdlog::fmt_lib::format("Integer scale factor: {}", max_integerScaleFactor).c_str(),
             CVAR_PREFIX_ADVANCED_RESOLUTION ".IntegerScale.Factor",
             UIWidgets::IntSliderOptions(
                 { { .disabled = disabled_pixelPerfectMode ||
@@ -388,15 +389,15 @@ void RegisterResolutionWidgets() {
         .RaceDisable(false)
         .PreFunc([](WidgetInfo& info) {
             auto gfx_current_game_window_viewport = GetInterpreter().get()->mGameWindowViewport;
-            info.name = fmt::format("Viewport dimensions: {} x {}", gfx_current_game_window_viewport.width,
-                                    gfx_current_game_window_viewport.height);
+            info.name = spdlog::fmt_lib::format("Viewport dimensions: {} x {}", gfx_current_game_window_viewport.width,
+                                                gfx_current_game_window_viewport.height);
         });
     mSohMenu->AddWidget(path, "Internal resolution: {} x {}", WIDGET_TEXT)
         .RaceDisable(false)
         .PreFunc([](WidgetInfo& info) {
             auto gfx_current_dimensions = GetInterpreter().get()->mCurDimensions;
-            info.name = fmt::format("Internal resolution: {} x {}", gfx_current_dimensions.width,
-                                    gfx_current_dimensions.height);
+            info.name = spdlog::fmt_lib::format("Internal resolution: {} x {}", gfx_current_dimensions.width,
+                                                gfx_current_dimensions.height);
         });
 
     //  Activator

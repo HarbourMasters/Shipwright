@@ -722,7 +722,7 @@ void RegionTable_Init_GanonsCastle() {
         //A torch run from RR_GANONS_CASTLE_MQ_SHADOW_TRIAL_STARTING_LEDGE is possible but very tight, so would be a trick
         //The bow trick assumes RR_GANONS_CASTLE_MQ_SHADOW_TRIAL_STARTING_LEDGE access, if you can somehow void warp directly here it will need handling properly
         //Hovers is possible as child but a bit tight, requires good rolls
-        ENTRANCE(RR_GANONS_CASTLE_MQ_SHADOW_TRIAL_BEAMOS_TORCH, logic->CanUse(RG_FIRE_ARROWS) || (logic->CanUse(RG_HOVER_BOOTS) && logic->HasItem(RG_ROLL))),
+        ENTRANCE(RR_GANONS_CASTLE_MQ_SHADOW_TRIAL_BEAMOS_CHEST,    logic->HasFireSource() || (logic->CanUse(RG_HOVER_BOOTS) && logic->HasItem(RG_ROLL) || (logic->IsAdult && ctx->GetTrickOption(RT_GANON_MQ_SHADOW_TRIAL) && logic->CanUse(RG_FAIRY_BOW))),
     });
 
     areaTable[RR_GANONS_CASTLE_MQ_SHADOW_TRIAL_BEAMOS_CHEST] = Region("Ganon's Castle MQ Shadow Trial Beamos Chest", SCENE_INSIDE_GANONS_CASTLE, {}, {
@@ -733,11 +733,6 @@ void RegionTable_Init_GanonsCastle() {
     }, {
         //Exits
         ENTRANCE(RR_GANONS_CASTLE_MQ_SHADOW_TRIAL_BEAMOS_TORCH, logic->CanUse(RG_FIRE_ARROWS) || (logic->CanUse(RG_HOVER_BOOTS) && logic->HasItem(RG_ROLL))),
-        //Modelling the silver rupees properly will require a way to check temp flags in different regions.
-        //It may be tempting to use a Here-like command for this but it could cause sphere skipping in playthroughs
-        //So a system like event access which sets based on TimeAge would be preferable, as the application of these can be tracked and accounted for, unlike Here-like commands
-        //For Now I am assuming the player has made it all the way from RR_GANONS_CASTLE_MQ_SHADOW_TRIAL_STARTING_LEDGE, which logically means every rupee is available
-        //with no extra requirements except the lens logic needed to reach the door, which also enables the beamos-platform rupee
         ENTRANCE(RR_GANONS_CASTLE_MQ_SHADOW_TRIAL_FINAL_ROOM,   (ctx->GetTrickOption(RT_LENS_GANON_MQ) || logic->CanUse(RG_LENS_OF_TRUTH))),
     });
 

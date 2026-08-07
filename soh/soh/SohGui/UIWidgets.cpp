@@ -4,7 +4,7 @@
 #include <string>
 #include <unordered_map>
 #include <libultraship/libultra/types.h>
-#include <spdlog/fmt/fmt.h>
+#include <spdlog/common.h>
 #include "soh/OTRGlobals.h"
 
 namespace UIWidgets {
@@ -1065,7 +1065,7 @@ void DrawFlagArray32(const std::string& name, uint32_t& flags, Colors color) {
         bool flag = (flags & bitMask) != 0;
         PushStyleCheckbox(color);
         ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(4.0f, 3.0f));
-        std::string id = fmt::format("##{}{}", name, flagIndex);
+        std::string id = spdlog::fmt_lib::format("##{}{}", name, flagIndex);
         if (ImGui::Checkbox(id.c_str(), &flag)) {
             if (flag) {
                 flags |= bitMask;
@@ -1091,7 +1091,7 @@ void DrawFlagArray16(const std::string& name, uint16_t& flags, Colors color) {
         bool flag = (flags & bitMask) != 0;
         PushStyleCheckbox(color);
         ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(4.0f, 3.0f));
-        std::string id = fmt::format("##{}{}", name, flagIndex);
+        std::string id = spdlog::fmt_lib::format("##{}{}", name, flagIndex);
         if (ImGui::Checkbox(id.c_str(), &flag)) {
             if (flag) {
                 flags |= bitMask;
@@ -1117,7 +1117,7 @@ void DrawFlagArray8(const std::string& name, uint8_t& flags, Colors color) {
         bool flag = (flags & bitMask) != 0;
         PushStyleCheckbox(color);
         ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(4.0f, 3.0f));
-        std::string id = fmt::format("##{}{}", name, flagIndex);
+        std::string id = spdlog::fmt_lib::format("##{}{}", name, flagIndex);
         if (ImGui::Checkbox(id.c_str(), &flag)) {
             if (flag) {
                 flags |= bitMask;
@@ -1143,7 +1143,7 @@ void DrawFlagArray8Mask(const std::string& name, uint8_t& flags, Colors color) {
         bool flag = (flags & bitMask) != 0;
         PushStyleCheckbox(color);
         ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(4.0f, 3.0f));
-        std::string id = fmt::format("##{}{}", name, flagIndex);
+        std::string id = spdlog::fmt_lib::format("##{}{}", name, flagIndex);
         if (ImGui::Checkbox(id.c_str(), &flag)) {
             if (flag) {
                 flags |= bitMask;

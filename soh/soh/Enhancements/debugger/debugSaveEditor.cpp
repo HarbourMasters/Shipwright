@@ -8,7 +8,7 @@
 #include "soh/SohGui/SohGui.hpp"
 #include "soh/SaveManager.h"
 
-#include <spdlog/fmt/fmt.h>
+#include <spdlog/common.h>
 #include <array>
 #include <bit>
 #include <map>
@@ -764,7 +764,7 @@ static void DrawFlagTableSearchResults(const FlagTable& flagTable, ImGuiTextFilt
             uint16_t index = static_cast<uint16_t>(row * 16 + flagIndex);
             auto descIt = flagTable.flagDescriptions.find(index);
             const char* desc = descIt != flagTable.flagDescriptions.end() ? descIt->second : "";
-            std::string searchable = fmt::format("0x{:02X} {}", index, desc);
+            std::string searchable = spdlog::fmt_lib::format("0x{:02X} {}", index, desc);
             if (!filter.PassFilter(searchable.c_str())) {
                 continue;
             }
@@ -1171,7 +1171,7 @@ void DrawFlagsTab() {
                                 }
                             }
 
-                            ImGui::Text("%s", fmt::format("{:<2X}", j).c_str());
+                            ImGui::Text("%s", spdlog::fmt_lib::format("{:<2X}", j).c_str());
 
                             switch (flagTable.flagTableType) {
                                 case EVENT_CHECK_INF:
@@ -1925,7 +1925,7 @@ void DrawPlayerTab() {
         std::vector<std::vector<std::string>> flag_strs = { state1, state2, state3 };
 
         for (int j = 0; j <= 2; j++) {
-            std::string label = fmt::format("State Flags {}", j + 1);
+            std::string label = spdlog::fmt_lib::format("State Flags {}", j + 1);
             DrawGroupWithBorder(
                 [&]() {
                     ImGui::Text("%s", label.c_str());

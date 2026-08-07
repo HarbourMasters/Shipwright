@@ -460,6 +460,14 @@ void StaticData::HintTable_Init() {
                                                                         /*french*/ "Selon moi, le #neuvième ou dixième coffre à jeu# contient #[[1]]#.", {QM_RED, QM_GREEN})});
                                                                      // /*spanish*/#el noveno o décimo cofre del azar# revela #[[1]]#.
 
+    hintTextTable[RHT_MARKET_TREASURE_CHEST_GAME_SHOPKEEPER] = HintText(CustomMessage("They say that the #chest game host# is holding on to #[[1]]#.",
+                                                                           /*german*/ "Man erzählt sich, daß der #Truhenlotterie-Veranstalter# #[[1]]# bereithielte.",
+                                                                           /*french*/ "Selon moi, l'#hôte de la Chasse-aux-Trésors# détient #[[1]]#.", {QM_RED, QM_GREEN}),
+                                                                        {},
+                                                                        {CustomMessage("They say that #paying to play the chest game# grants #[[1]]#.",
+                                                                            /*german*/ "Man erzählt sich, daß #ein Spiel der Truhenlotterie# #[[1]]# gewähre.",
+                                                                            /*french*/ "Selon moi, #payer pour la Chasse-aux-Trésors# donne #[[1]]#.", {QM_RED, QM_GREEN})});
+
     hintTextTable[RHT_GF_HBA_1500_POINTS] = HintText(CustomMessage("They say that scoring 1500 in #horseback archery# grants #[[1]]#.",
                                                         /*german*/ "Man erzählt sich, daß das Erzielen von 1.500 Punkten beim #Bogenschießen zu Pferde# #[[1]]# gewähre.",
                                                         /*french*/ "Selon moi, obtenir 1500 points dans l'#archerie équestre# donne #[[1]]#.", {QM_RED, QM_GREEN}),
@@ -975,8 +983,13 @@ void StaticData::HintTable_Init() {
 
     hintTextTable[RHT_GERUDO_FORTRESS] = HintText(CustomMessage("Gerudo's Fortress",
                                                      /*german*/ "in der Gerudo-Festung",
-                                                     /*french*/ "le Repaire des Voleurs"));
+                                                     /*french*/ "la Forteresse Gerudo"));
                                                   // /*spanish*/la Fortaleza Gerudo
+
+    hintTextTable[RHT_THIEVES_HIDEOUT] = HintText(CustomMessage("the Thieves' Hideout",
+                                                     /*german*/ "im Diebesversteck",
+                                                     /*french*/ "le Repaire des Voleurs"));
+                                                  // /*spanish*/la Guarida de los Ladrones
 
     hintTextTable[RHT_HAUNTED_WASTELAND] = HintText(CustomMessage("Haunted Wasteland",
                                                        /*german*/ "in der Gespensterwüste",

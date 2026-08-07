@@ -154,6 +154,7 @@ std::set<RandomizerArea> CalculateAreas(SceneID scene) {
         case SCENE_GERUDO_TRAINING_GROUND:
             return { RA_GERUDO_TRAINING_GROUND };
         case SCENE_THIEVES_HIDEOUT:
+            return { RA_THIEVES_HIDEOUT };
         case SCENE_GERUDOS_FORTRESS:
             return { RA_GERUDO_FORTRESS };
         case SCENE_MARKET_ENTRANCE_DAY:

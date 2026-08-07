@@ -1992,7 +1992,8 @@ std::map<uint32_t, SceneID> Logic::RandoGetToDungeonScene = {
     { RG_SHADOW_TEMPLE_COMPASS, SCENE_SHADOW_TEMPLE },
     { RG_BOTTOM_OF_THE_WELL_COMPASS, SCENE_BOTTOM_OF_THE_WELL },
     { RG_ICE_CAVERN_COMPASS, SCENE_ICE_CAVERN },
-    { RG_TREASURE_GAME_SMALL_KEY, SCENE_TREASURE_BOX_SHOP }
+    { RG_TREASURE_GAME_SMALL_KEY, SCENE_TREASURE_BOX_SHOP },
+    { RG_TREASURE_GAME_KEY_RING, SCENE_TREASURE_BOX_SHOP }
 };
 
 std::map<uint32_t, uint32_t> Logic::RandoGetToQuestItem = {
@@ -2493,7 +2494,7 @@ void Logic::ApplyItemEffect(Item& item, bool state) {
         case ITEMTYPE_FORTRESS_SMALLKEY:
         case ITEMTYPE_SMALLKEY: {
             auto randoGet = item.GetRandomizerGet();
-            auto keyring = randoGet >= RG_FOREST_TEMPLE_KEY_RING && randoGet <= RG_GANONS_CASTLE_KEY_RING;
+            auto keyring = randoGet >= RG_FOREST_TEMPLE_KEY_RING && randoGet <= RG_TREASURE_GAME_KEY_RING;
             auto dungeonIndex = RandoGetToDungeonScene.find(randoGet)->second;
             auto count = GetSmallKeyCount(dungeonIndex);
             if (!state) {
