@@ -75,21 +75,6 @@ int8_t FindUsedSmallKeys(const SaveContext* saveContext, const SceneID scene, co
 int8_t FindCurrentSmallKeys(const SaveContext* saveContext, const SceneID scene);
 int8_t FindTotalSmallKeys(const SaveContext* saveContext, const SceneID scene, const std::vector<uint8_t>* DoorFlags);
 
-typedef enum {
-    DEKU_TREE,
-    DODONGOS_CAVERN,
-    JABU_JABUS_BELLY,
-    FOREST_TEMPLE,
-    FIRE_TEMPLE,
-    WATER_TEMPLE,
-    SPIRIT_TEMPLE,
-    SHADOW_TEMPLE,
-    BOTTOM_OF_THE_WELL,
-    ICE_CAVERN,
-    GERUDO_TRAINING_GROUND,
-    GANONS_CASTLE
-} DungeonKey;
-
 class Dungeons {
   public:
     Dungeons();

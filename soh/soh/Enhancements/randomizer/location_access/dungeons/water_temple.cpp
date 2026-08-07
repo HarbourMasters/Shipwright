@@ -397,7 +397,7 @@ void RegionTable_Init_WaterTemple() {
         EVENT_ACCESS(LOGIC_WATER_COULD_MIDDLE, true),
     }, {
         //Locations
-        LOCATION(RC_WATER_TEMPLE_GS_CENTRAL_PILLAR, logic->CanUse(RG_LONGSHOT);),
+        LOCATION(RC_WATER_TEMPLE_GS_CENTRAL_PILLAR, logic->CanUse(RG_LONGSHOT)),
     }, {
         //Exits
         ENTRANCE(RR_WATER_TEMPLE_2F_CENTRAL_LM, true),

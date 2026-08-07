@@ -616,7 +616,7 @@ ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
                                       .Is(RO_DUNGEON_ITEM_LOC_OVERWORLD) ||
                                   OTRGlobals::Instance->gRandoContext->GetOption(RSK_KEYSANITY)
                                       .Is(RO_DUNGEON_ITEM_LOC_ANY_DUNGEON)) &&
-                                OTRGlobals::Instance->gRandoContext->GetDungeon(Rando::FIRE_TEMPLE)->IsVanilla()) {
+                                OTRGlobals::Instance->gRandoContext->GetDungeon(FIRE_TEMPLE)->IsVanilla()) {
                                 result.currentCapacity = result.currentCapacity - 1;
                             }
                             break;

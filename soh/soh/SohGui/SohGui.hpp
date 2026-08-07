@@ -26,6 +26,7 @@
 #include "soh/Enhancements/randomizer/randomizer_entrance_tracker.h"
 #include "soh/Enhancements/randomizer/randomizer_hint_tracker.h"
 #include "soh/Enhancements/randomizer/randomizer_item_tracker.h"
+#include "soh/Enhancements/randomizer/randomizer_logic_tracker.h"
 #include "soh/Enhancements/timesplits/TimeSplits.h"
 #include "soh/Enhancements/randomizer/Plandomizer.h"
 #include "SohModals.h"

@@ -13,7 +13,7 @@
 #define TIME_PASSES true
 #define TIME_DOESNT_PASS false
 
-typedef bool (*ConditionFn)();
+using ConditionFn = std::function<bool()>;
 
 // I hate this but every alternative I can think of right now is worse
 extern Rando::Context* ctx;
@@ -65,7 +65,7 @@ class EventAccess {
     std::string condition_str;
 };
 
-std::string CleanConditionString(std::string condition);
+constexpr std::string CleanConditionString(std::string condition);
 
 #define LOCATION(check, condition) \
     LocationAccess(                \
@@ -169,7 +169,7 @@ class Region {
 
     RandomizerRegion randomizerRegionKey = RR_NONE;
 
-    bool TimePass();
+    bool TimePass() const;
 
     void ApplyTimePass();
 

@@ -1,6 +1,7 @@
 #include "randomizer_check_tracker.h"
 #include "randomizer_entrance_tracker.h"
 #include "randomizer_item_tracker.h"
+#include "randomizer_logic_tracker.h"
 #include "randomizerTypes.h"
 #include "soh/Enhancements/randomizer/randomizerEnums.h"
 #include "soh/Enhancements/randomizer/static_data.h"
@@ -207,7 +208,7 @@ bool hideSaved = false;
 bool hideCollected = false;
 bool showHidden = true;
 bool mystery = false;
-bool showLogicTooltip = false;
+bool showLogicButton = false;
 bool enableAvailableChecks = false;
 bool onlyShowAvailable = false;
 
@@ -405,43 +406,43 @@ void SpoilAreaFromCheck(RandomizerCheck rc) {
     } else if (itemLoc->GetPlacedItem().GetItemType() == ItemType::ITEMTYPE_SMALLKEY) {
         switch (itemLoc->GetPlacedRandomizerGet()) {
             case RG_FOREST_TEMPLE_SMALL_KEY:
-                if (OTRGlobals::Instance->gRandoContext->GetDungeon(Rando::FOREST_TEMPLE)
-                        ->GetTotalSmallKeys(&gSaveContext) >= 6) {
+                if (OTRGlobals::Instance->gRandoContext->GetDungeon(FOREST_TEMPLE)->GetTotalSmallKeys(&gSaveContext) >=
+                    6) {
                     SetAreaSpoiled(RCAREA_FOREST_TEMPLE);
                 }
                 break;
             case RG_FIRE_TEMPLE_SMALL_KEY:
-                if (OTRGlobals::Instance->gRandoContext->GetDungeon(Rando::FIRE_TEMPLE)
-                        ->GetTotalSmallKeys(&gSaveContext) >= 6) {
+                if (OTRGlobals::Instance->gRandoContext->GetDungeon(FIRE_TEMPLE)->GetTotalSmallKeys(&gSaveContext) >=
+                    6) {
                     SetAreaSpoiled(RCAREA_FIRE_TEMPLE);
                 }
                 break;
             case RG_WATER_TEMPLE_SMALL_KEY:
-                if (OTRGlobals::Instance->gRandoContext->GetDungeon(Rando::WATER_TEMPLE)
-                        ->GetTotalSmallKeys(&gSaveContext) >= 3) {
+                if (OTRGlobals::Instance->gRandoContext->GetDungeon(WATER_TEMPLE)->GetTotalSmallKeys(&gSaveContext) >=
+                    3) {
                     SetAreaSpoiled(RCAREA_WATER_TEMPLE);
                 }
                 break;
             case RG_SPIRIT_TEMPLE_SMALL_KEY:
-                if (OTRGlobals::Instance->gRandoContext->GetDungeon(Rando::SPIRIT_TEMPLE)
-                        ->GetTotalSmallKeys(&gSaveContext) >= 6) {
+                if (OTRGlobals::Instance->gRandoContext->GetDungeon(SPIRIT_TEMPLE)->GetTotalSmallKeys(&gSaveContext) >=
+                    6) {
                     SetAreaSpoiled(RCAREA_SPIRIT_TEMPLE);
                 }
                 break;
             case RG_SHADOW_TEMPLE_SMALL_KEY:
-                if (OTRGlobals::Instance->gRandoContext->GetDungeon(Rando::SHADOW_TEMPLE)
-                        ->GetTotalSmallKeys(&gSaveContext) >= 6) {
+                if (OTRGlobals::Instance->gRandoContext->GetDungeon(SHADOW_TEMPLE)->GetTotalSmallKeys(&gSaveContext) >=
+                    6) {
                     SetAreaSpoiled(RCAREA_SHADOW_TEMPLE);
                 }
                 break;
             case RG_BOTTOM_OF_THE_WELL_SMALL_KEY:
-                if (OTRGlobals::Instance->gRandoContext->GetDungeon(Rando::BOTTOM_OF_THE_WELL)
+                if (OTRGlobals::Instance->gRandoContext->GetDungeon(BOTTOM_OF_THE_WELL)
                         ->GetTotalSmallKeys(&gSaveContext) >= 3) {
                     SetAreaSpoiled(RCAREA_BOTTOM_OF_THE_WELL);
                 }
                 break;
             case RG_GERUDO_TRAINING_GROUND_SMALL_KEY:
-                if (OTRGlobals::Instance->gRandoContext->GetDungeon(Rando::GERUDO_TRAINING_GROUND)
+                if (OTRGlobals::Instance->gRandoContext->GetDungeon(GERUDO_TRAINING_GROUND)
                         ->GetTotalSmallKeys(&gSaveContext) >= 4) {
                     SetAreaSpoiled(RCAREA_GERUDO_TRAINING_GROUND);
                 }
@@ -480,43 +481,38 @@ void SpoilAreaFromCantObtain(RandomizerGet rg) {
     // only spoil if it wouldn't transform anyway, in case someone manages to glitch this value
     switch (rg) {
         case RG_FOREST_TEMPLE_SMALL_KEY:
-            if (OTRGlobals::Instance->gRandoContext->GetDungeon(Rando::FOREST_TEMPLE)
-                    ->GetTotalSmallKeys(&gSaveContext) < 6) {
+            if (OTRGlobals::Instance->gRandoContext->GetDungeon(FOREST_TEMPLE)->GetTotalSmallKeys(&gSaveContext) < 6) {
                 SetAreaSpoiled(RCAREA_FOREST_TEMPLE);
             }
             break;
         case RG_FIRE_TEMPLE_SMALL_KEY:
-            if (OTRGlobals::Instance->gRandoContext->GetDungeon(Rando::FIRE_TEMPLE)->GetTotalSmallKeys(&gSaveContext) <
-                8) {
+            if (OTRGlobals::Instance->gRandoContext->GetDungeon(FIRE_TEMPLE)->GetTotalSmallKeys(&gSaveContext) < 8) {
                 SetAreaSpoiled(RCAREA_FIRE_TEMPLE);
             }
             break;
         case RG_WATER_TEMPLE_SMALL_KEY:
-            if (OTRGlobals::Instance->gRandoContext->GetDungeon(Rando::WATER_TEMPLE)->GetTotalSmallKeys(&gSaveContext) <
-                6) {
+            if (OTRGlobals::Instance->gRandoContext->GetDungeon(WATER_TEMPLE)->GetTotalSmallKeys(&gSaveContext) < 6) {
                 SetAreaSpoiled(RCAREA_WATER_TEMPLE);
             }
             break;
         case RG_SPIRIT_TEMPLE_SMALL_KEY:
-            if (OTRGlobals::Instance->gRandoContext->GetDungeon(Rando::SPIRIT_TEMPLE)
-                    ->GetTotalSmallKeys(&gSaveContext) < 7) {
+            if (OTRGlobals::Instance->gRandoContext->GetDungeon(SPIRIT_TEMPLE)->GetTotalSmallKeys(&gSaveContext) < 7) {
                 SetAreaSpoiled(RCAREA_SPIRIT_TEMPLE);
             }
             break;
         case RG_SHADOW_TEMPLE_SMALL_KEY:
-            if (OTRGlobals::Instance->gRandoContext->GetDungeon(Rando::SHADOW_TEMPLE)
-                    ->GetTotalSmallKeys(&gSaveContext) < 6) {
+            if (OTRGlobals::Instance->gRandoContext->GetDungeon(SHADOW_TEMPLE)->GetTotalSmallKeys(&gSaveContext) < 6) {
                 SetAreaSpoiled(RCAREA_SHADOW_TEMPLE);
             }
             break;
         case RG_BOTTOM_OF_THE_WELL_SMALL_KEY:
-            if (OTRGlobals::Instance->gRandoContext->GetDungeon(Rando::BOTTOM_OF_THE_WELL)
-                    ->GetTotalSmallKeys(&gSaveContext) < 3) {
+            if (OTRGlobals::Instance->gRandoContext->GetDungeon(BOTTOM_OF_THE_WELL)->GetTotalSmallKeys(&gSaveContext) <
+                3) {
                 SetAreaSpoiled(RCAREA_BOTTOM_OF_THE_WELL);
             }
             break;
         case RG_GERUDO_TRAINING_GROUND_SMALL_KEY:
-            if (OTRGlobals::Instance->gRandoContext->GetDungeon(Rando::GERUDO_TRAINING_GROUND)
+            if (OTRGlobals::Instance->gRandoContext->GetDungeon(GERUDO_TRAINING_GROUND)
                     ->GetTotalSmallKeys(&gSaveContext) < 9) {
                 SetAreaSpoiled(RCAREA_GERUDO_TRAINING_GROUND);
             }
@@ -1263,7 +1259,7 @@ void CheckTrackerWindow::DrawElement() {
     hideCollected = CVarGetInteger(CVAR_TRACKER_CHECK("Collected.Hide"), 0);
     showHidden = CVarGetInteger(CVAR_TRACKER_CHECK("ShowHidden"), 0);
     mystery = CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("MysteriousShuffle"), 0);
-    showLogicTooltip = CVarGetInteger(CVAR_TRACKER_CHECK("ShowLogic"), 0);
+    showLogicButton = CVarGetInteger(CVAR_TRACKER_CHECK("ShowLogic"), 0);
     enableAvailableChecks = CVarGetInteger(CVAR_TRACKER_CHECK("EnableAvailableChecks"), 0);
     onlyShowAvailable = CVarGetInteger(CVAR_TRACKER_CHECK("OnlyShowAvailable"), 0);
 
@@ -2357,15 +2353,13 @@ void DrawLocation(RandomizerCheck rc) {
         ImGui::PopStyleColor();
     }
 
-    if (showLogicTooltip) {
-        for (auto& locationInRegion : areaTable[itemLoc->GetParentRegionKey()].locations) {
-            if (locationInRegion.GetLocation() == rc) {
-                std::string conditionStr = locationInRegion.GetConditionStr();
-                if (conditionStr != "true") {
-                    UIWidgets::Tooltip(conditionStr.c_str());
-                }
-                break;
-            }
+    if (showLogicButton && enableAvailableChecks) {
+        ImGui::SameLine();
+        if (ImGui::Button((std::string(ICON_FA_COGS) + "##" + std::to_string(rc)).c_str())) {
+            LogicTrackerWindow::ShowRandomizerCheck(rc);
+        }
+        if (ImGui::IsItemHovered()) {
+            ImGui::SetTooltip("Show Check Logic");
         }
     }
 }
@@ -2751,11 +2745,11 @@ void RegisterCheckTrackerWidgets() {
         });
     SohGui::GetSohMenu()->AddSearchWidget({ showGSWidget, "Randomizer", "Check Tracker", "General Settings" });
 
+    // RANDOTODO: Only allow if Available Checks is enabled
     showLogicWidget = { .name = "Show Logic", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
     showLogicWidget.CVar(CVAR_TRACKER_CHECK("ShowLogic"))
-        .Options(CheckboxOptions()
-                     .Color(THEME_COLOR)
-                     .Tooltip("If enabled, will show a check's logic when hovering over it."));
+        .Options(
+            CheckboxOptions().Color(THEME_COLOR).Tooltip("If enabled, will add a button to show a check's logic."));
     SohGui::GetSohMenu()->AddSearchWidget({ showLogicWidget, "Randomizer", "Check Tracker", "General Settings" });
 
     checkAvailabilityWidget = { .name = "Enable Available Checks", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
