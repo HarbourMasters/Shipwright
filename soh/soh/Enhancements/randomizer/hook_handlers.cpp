@@ -2639,10 +2639,12 @@ void RandomizerOnActorUpdateHandler(void* refActor) {
             Flags_UnsetRandomizerInf(RAND_INF_SPIRIT_BIG_MIRROR_STATUE_TURNED);
         }
     }
+}
 
-    // In ER, override the warp song locations. Also removes the warp song cutscene
-    if (RAND_GET_OPTION(RSK_SHUFFLE_ENTRANCES) && actor->id == ACTOR_DEMO_KANKYO &&
-        actor->params == 0x000F) { // Warp Song particles
+// In ER, warp songs lead to their shuffled entrance rather than their warp pad. Every warp path commits its
+// destination through Environment_WarpSongLeave, so that is the one place the override has to happen.
+void RandomizerOnWarpSongLeaveHandler() {
+    if (RAND_GET_OPTION(RSK_SHUFFLE_ENTRANCES)) {
         Entrance_SetWarpSongEntrance();
     }
 }
@@ -2809,6 +2811,7 @@ static void RandomizerRegisterHooks() {
     static uint32_t afterSceneCommandsHook = 0;
     static uint32_t onActorInitHook = 0;
     static uint32_t onActorUpdateHook = 0;
+    static uint32_t onWarpSongLeaveHook = 0;
     static uint32_t onPlayerUpdateHook = 0;
     static uint32_t onGameFrameUpdateHook = 0;
     static uint32_t onSceneSpawnActorsHook = 0;
@@ -2841,6 +2844,7 @@ static void RandomizerRegisterHooks() {
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::AfterSceneCommands>(afterSceneCommandsHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorInit>(onActorInitHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(onActorUpdateHook);
+        GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnWarpSongLeave>(onWarpSongLeaveHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnPlayerUpdate>(onPlayerUpdateHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnGameFrameUpdate>(onGameFrameUpdateHook);
         GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneSpawnActors>(onSceneSpawnActorsHook);
@@ -2859,6 +2863,7 @@ static void RandomizerRegisterHooks() {
         afterSceneCommandsHook = 0;
         onActorInitHook = 0;
         onActorUpdateHook = 0;
+        onWarpSongLeaveHook = 0;
         onPlayerUpdateHook = 0;
         onGameFrameUpdateHook = 0;
         onSceneSpawnActorsHook = 0;
@@ -2900,6 +2905,8 @@ static void RandomizerRegisterHooks() {
             GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>(RandomizerOnActorInitHandler);
         onActorUpdateHook =
             GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>(RandomizerOnActorUpdateHandler);
+        onWarpSongLeaveHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnWarpSongLeave>(
+            RandomizerOnWarpSongLeaveHandler);
         onPlayerUpdateHook =
             GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>(RandomizerOnPlayerUpdateHandler);
         onGameFrameUpdateHook = GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>(
