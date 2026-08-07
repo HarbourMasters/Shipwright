@@ -201,8 +201,11 @@ void* gItemIcons[] = {
     gRocsFeatherTex,
 };
 
-// Used to map item IDs to inventory slots
-u8 gItemSlots[] = {
+// Used to map item IDs to inventory slots.
+// Only ITEM_STICK through ITEM_CLAIM_CHECK live in the inventory, but Item_Give and
+// Item_CheckObtainability index this with any item ID, so the rest of the ID space is
+// padded with SLOT_NONE instead of being read past the end of the table.
+u8 gItemSlots[256] = {
     SLOT_STICK,       SLOT_NUT,          SLOT_BOMB,        SLOT_BOW,         SLOT_ARROW_FIRE,  SLOT_DINS_FIRE,
     SLOT_SLINGSHOT,   SLOT_OCARINA,      SLOT_OCARINA,     SLOT_BOMBCHU,     SLOT_HOOKSHOT,    SLOT_HOOKSHOT,
     SLOT_ARROW_ICE,   SLOT_FARORES_WIND, SLOT_BOOMERANG,   SLOT_LENS,        SLOT_BEAN,        SLOT_HAMMER,
@@ -212,7 +215,40 @@ u8 gItemSlots[] = {
     SLOT_TRADE_CHILD, SLOT_TRADE_CHILD,  SLOT_TRADE_CHILD, SLOT_TRADE_CHILD, SLOT_TRADE_CHILD, SLOT_TRADE_CHILD,
     SLOT_TRADE_CHILD, SLOT_TRADE_CHILD,  SLOT_TRADE_CHILD, SLOT_TRADE_ADULT, SLOT_TRADE_ADULT, SLOT_TRADE_ADULT,
     SLOT_TRADE_ADULT, SLOT_TRADE_ADULT,  SLOT_TRADE_ADULT, SLOT_TRADE_ADULT, SLOT_TRADE_ADULT, SLOT_TRADE_ADULT,
-    SLOT_TRADE_ADULT, SLOT_TRADE_ADULT,
+    SLOT_TRADE_ADULT, SLOT_TRADE_ADULT,  SLOT_NONE,        SLOT_NONE,        SLOT_NONE,        SLOT_NONE,
+    SLOT_NONE,        SLOT_NONE,         SLOT_NONE,        SLOT_NONE,        SLOT_NONE,        SLOT_NONE,
+    SLOT_NONE,        SLOT_NONE,         SLOT_NONE,        SLOT_NONE,        SLOT_NONE,        SLOT_NONE,
+    SLOT_NONE,        SLOT_NONE,         SLOT_NONE,        SLOT_NONE,        SLOT_NONE,        SLOT_NONE,
+    SLOT_NONE,        SLOT_NONE,         SLOT_NONE,        SLOT_NONE,        SLOT_NONE,        SLOT_NONE,
+    SLOT_NONE,        SLOT_NONE,         SLOT_NONE,        SLOT_NONE,        SLOT_NONE,        SLOT_NONE,
+    SLOT_NONE,        SLOT_NONE,         SLOT_NONE,        SLOT_NONE,        SLOT_NONE,        SLOT_NONE,
+    SLOT_NONE,        SLOT_NONE,         SLOT_NONE,        SLOT_NONE,        SLOT_NONE,        SLOT_NONE,
+    SLOT_NONE,        SLOT_NONE,         SLOT_NONE,        SLOT_NONE,        SLOT_NONE,        SLOT_NONE,
+    SLOT_NONE,        SLOT_NONE,         SLOT_NONE,        SLOT_NONE,        SLOT_NONE,        SLOT_NONE,
+    SLOT_NONE,        SLOT_NONE,         SLOT_NONE,        SLOT_NONE,        SLOT_NONE,        SLOT_NONE,
+    SLOT_NONE,        SLOT_NONE,         SLOT_NONE,        SLOT_NONE,        SLOT_NONE,        SLOT_NONE,
+    SLOT_NONE,        SLOT_NONE,         SLOT_NONE,        SLOT_NONE,        SLOT_NONE,        SLOT_NONE,
+    SLOT_NONE,        SLOT_NONE,         SLOT_NONE,        SLOT_NONE,        SLOT_NONE,        SLOT_NONE,
+    SLOT_NONE,        SLOT_NONE,         SLOT_NONE,        SLOT_NONE,        SLOT_NONE,        SLOT_NONE,
+    SLOT_NONE,        SLOT_NONE,         SLOT_NONE,        SLOT_NONE,        SLOT_NONE,        SLOT_NONE,
+    SLOT_NONE,        SLOT_NONE,         SLOT_NONE,        SLOT_NONE,        SLOT_NONE,        SLOT_NONE,
+    SLOT_NONE,        SLOT_NONE,         SLOT_NONE,        SLOT_NONE,        SLOT_NONE,        SLOT_NONE,
+    SLOT_NONE,        SLOT_NONE,         SLOT_NONE,        SLOT_NONE,        SLOT_NONE,        SLOT_NONE,
+    SLOT_NONE,        SLOT_NONE,         SLOT_NONE,        SLOT_NONE,        SLOT_NONE,        SLOT_NONE,
+    SLOT_NONE,        SLOT_NONE,         SLOT_NONE,        SLOT_NONE,        SLOT_NONE,        SLOT_NONE,
+    SLOT_NONE,        SLOT_NONE,         SLOT_NONE,        SLOT_NONE,        SLOT_NONE,        SLOT_NONE,
+    SLOT_NONE,        SLOT_NONE,         SLOT_NONE,        SLOT_NONE,        SLOT_NONE,        SLOT_NONE,
+    SLOT_NONE,        SLOT_NONE,         SLOT_NONE,        SLOT_NONE,        SLOT_NONE,        SLOT_NONE,
+    SLOT_NONE,        SLOT_NONE,         SLOT_NONE,        SLOT_NONE,        SLOT_NONE,        SLOT_NONE,
+    SLOT_NONE,        SLOT_NONE,         SLOT_NONE,        SLOT_NONE,        SLOT_NONE,        SLOT_NONE,
+    SLOT_NONE,        SLOT_NONE,         SLOT_NONE,        SLOT_NONE,        SLOT_NONE,        SLOT_NONE,
+    SLOT_NONE,        SLOT_NONE,         SLOT_NONE,        SLOT_NONE,        SLOT_NONE,        SLOT_NONE,
+    SLOT_NONE,        SLOT_NONE,         SLOT_NONE,        SLOT_NONE,        SLOT_NONE,        SLOT_NONE,
+    SLOT_NONE,        SLOT_NONE,         SLOT_NONE,        SLOT_NONE,        SLOT_NONE,        SLOT_NONE,
+    SLOT_NONE,        SLOT_NONE,         SLOT_NONE,        SLOT_NONE,        SLOT_NONE,        SLOT_NONE,
+    SLOT_NONE,        SLOT_NONE,         SLOT_NONE,        SLOT_NONE,        SLOT_NONE,        SLOT_NONE,
+    SLOT_NONE,        SLOT_NONE,         SLOT_NONE,        SLOT_NONE,        SLOT_NONE,        SLOT_NONE,
+    SLOT_NONE,        SLOT_NONE,         SLOT_NONE,        SLOT_NONE,
 };
 
 void Inventory_ChangeEquipment(s16 equipment, u16 value) {

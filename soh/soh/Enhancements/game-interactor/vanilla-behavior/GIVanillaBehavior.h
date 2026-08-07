@@ -3639,6 +3639,50 @@ typedef enum {
     // a textbox can be rendered instead. Pause screen only, Game Over version left
     // intact.
     VB_DRAW_SAVE_MENU,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // Whether `Item_Give` should run at all. Returning `false` makes it a no-op that hands
+    // the item back untouched, without firing `OnItemReceive`.
+    // #### `args`
+    // - `u8` item
+    VB_ITEM_GIVE,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // Whether `Item_CheckObtainability` should run at all. Returning `false` reports the
+    // item as not obtainable (`ITEM_NONE`).
+    // #### `args`
+    // - `u8` item
+    VB_ITEM_CHECK_OBTAINABILITY,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // Whether `Item_Give` should store the item in the inventory slot it computed for it. Items
+    // with no inventory slot (quest items, songs, upgrades, ...) resolve to `SLOT_NONE`, which
+    // indexes out of bounds.
+    // #### `args`
+    // - `u8` item
+    // - `s16` slot
+    VB_ITEM_GIVE_USE_INVENTORY_SLOT,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // Whether `Item_CheckObtainability` should report the contents of the inventory slot it
+    // computed for the item. Returning `false` reports `ITEM_NONE` instead, which is what items
+    // with no inventory slot (resolving to `SLOT_NONE`) need.
+    // #### `args`
+    // - `u8` item
+    // - `s16` slot
+    VB_ITEM_OBTAINABILITY_USE_INVENTORY_SLOT,
 } GIVanillaBehavior;
 
 #endif

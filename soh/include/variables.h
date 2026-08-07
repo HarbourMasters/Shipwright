@@ -106,7 +106,7 @@ extern "C"
 	extern void* gItemIcons[158];
 	extern u8 gItemAgeReqs[];
 	extern u8 gSlotAgeReqs[];
-	extern u8 gItemSlots[56];
+	extern u8 gItemSlots[256];
 	extern void (*gSceneCmdHandlers[SCENE_CMD_ID_MAX])(PlayState*, SceneCmd*);
 	extern s16 gLinkObjectIds[2];
 	extern u32 gObjectTableSize;

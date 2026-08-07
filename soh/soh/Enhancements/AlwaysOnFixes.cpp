@@ -38,6 +38,24 @@ void RegisterAlwaysOnFixes() {
         }
     });
 
+    COND_VB_SHOULD(VB_ITEM_GIVE_USE_INVENTORY_SLOT, true, {
+        va_arg(args, int); // item
+        s16 slot = (s16)va_arg(args, int);
+
+        if (slot == SLOT_NONE) {
+            *should = false;
+        }
+    });
+
+    COND_VB_SHOULD(VB_ITEM_OBTAINABILITY_USE_INVENTORY_SLOT, true, {
+        va_arg(args, int); // item
+        s16 slot = (s16)va_arg(args, int);
+
+        if (slot == SLOT_NONE) {
+            *should = false;
+        }
+    });
+
     // Actor_Item_Shield (dropped Deku Shield) assumes segment 12 still holds Link's
     // gCullBackDList; an intermediate actor using segment 12 (e.g. Jabu tentacles)
     // overwrites it and crashes. Re-set segment 12 before drawing.
@@ -131,4 +149,4 @@ void RegisterAlwaysOnFixes() {
     });
 }
 
-static RegisterShipInitFunc initAlwaysOnFixes(RegisterAlwaysOnFixes, { "" });
+static RegisterShipInitFunc initAlwaysOnFixes(RegisterAlwaysOnFixes);

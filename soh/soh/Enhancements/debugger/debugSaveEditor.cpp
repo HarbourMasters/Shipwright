@@ -611,7 +611,8 @@ void DrawInventoryTab() {
                 std::vector<ItemMapEntry> possibleItems;
                 if (restrictToValid) {
                     // Scan gItemSlots to find legal items for this slot. Bottles are a special case
-                    for (int slotIndex = 0; slotIndex < 56; slotIndex++) {
+                    // Only ITEM_STICK through ITEM_CLAIM_CHECK map to a slot, the rest of gItemSlots is SLOT_NONE
+                    for (int slotIndex = 0; slotIndex <= ITEM_CLAIM_CHECK; slotIndex++) {
                         int testIndex = (selectedIndex == SLOT_BOTTLE_1 || selectedIndex == SLOT_BOTTLE_2 ||
                                          selectedIndex == SLOT_BOTTLE_3 || selectedIndex == SLOT_BOTTLE_4)
                                             ? SLOT_BOTTLE_1

@@ -165,22 +165,24 @@ s16 gSpoilingItemReverts[] = { ITEM_COJIRO, ITEM_PRESCRIPTION, ITEM_PRESCRIPTION
 static Color_RGB8 sMagicBorder = { 255, 255, 255 };
 static Color_RGB8 sMagicBorder_ori = { 255, 255, 255 };
 
+// Indexed by item ID starting at ITEM_STICKS_5. The last two entries cover ITEM_CUSTOM and
+// ITEM_ROCS_FEATHER, which are [SOH] additions that would otherwise read past the table.
 static s16 sExtraItemBases[] = {
-    ITEM_STICK, ITEM_STICK, ITEM_NUT,   ITEM_NUT,     ITEM_BOMB,    ITEM_BOMB,  ITEM_BOMB,  ITEM_BOMB, ITEM_BOW,
-    ITEM_BOW,   ITEM_BOW,   ITEM_SEEDS, ITEM_BOMBCHU, ITEM_BOMBCHU, ITEM_STICK, ITEM_STICK, ITEM_NUT,  ITEM_NUT,
+    ITEM_STICK, ITEM_STICK,       ITEM_NUT,   ITEM_NUT,     ITEM_BOMB,    ITEM_BOMB,  ITEM_BOMB,  ITEM_BOMB, ITEM_BOW,
+    ITEM_BOW,   ITEM_BOW,         ITEM_SEEDS, ITEM_BOMBCHU, ITEM_BOMBCHU, ITEM_STICK, ITEM_STICK, ITEM_NUT,  ITEM_NUT,
+    ITEM_NONE,  ITEM_NAYRUS_LOVE, ITEM_NONE,  ITEM_NONE,    ITEM_NONE,    ITEM_NONE,  ITEM_NONE,  ITEM_NONE, ITEM_NONE,
+    ITEM_NONE,  ITEM_NONE,        ITEM_NONE,  ITEM_NONE,    ITEM_NONE,    ITEM_NONE,  ITEM_NONE,  ITEM_NONE, ITEM_NONE,
+    ITEM_NONE,  ITEM_NONE,        ITEM_NONE,  ITEM_NONE,    ITEM_NONE,    ITEM_NONE,  ITEM_NONE,  ITEM_NONE, ITEM_NONE,
+    ITEM_NONE,  ITEM_NONE,        ITEM_NONE,  ITEM_NONE,    ITEM_NONE,    ITEM_NONE,  ITEM_NONE,  ITEM_NONE, ITEM_NONE,
+    ITEM_NONE,  ITEM_NONE,        ITEM_NONE,  ITEM_NONE,    ITEM_NONE,    ITEM_NONE,  ITEM_NONE,  ITEM_NONE, ITEM_NONE,
+    ITEM_NONE,  ITEM_NONE,        ITEM_NONE,  ITEM_NONE,    ITEM_NONE,    ITEM_NONE,  ITEM_NONE,  ITEM_NONE, ITEM_NONE,
+    ITEM_NONE,  ITEM_NONE,        ITEM_NONE,  ITEM_NONE,    ITEM_NONE,    ITEM_NONE,  ITEM_NONE,  ITEM_NONE, ITEM_NONE,
+    ITEM_NONE,  ITEM_NONE,        ITEM_NONE,  ITEM_NONE,    ITEM_NONE,    ITEM_NONE,  ITEM_NONE,  ITEM_NONE, ITEM_NONE,
+    ITEM_NONE,  ITEM_NONE,        ITEM_NONE,  ITEM_NONE,    ITEM_NONE,    ITEM_NONE,  ITEM_NONE,  ITEM_NONE, ITEM_NONE,
+    ITEM_NONE,  ITEM_NONE,        ITEM_NONE,  ITEM_NONE,    ITEM_NONE,    ITEM_NONE,  ITEM_NONE,  ITEM_NONE, ITEM_NONE,
+    ITEM_NONE,  ITEM_NONE,        ITEM_NONE,  ITEM_NONE,    ITEM_NONE,    ITEM_NONE,  ITEM_NONE,  ITEM_NONE, ITEM_NONE,
+    ITEM_NONE,
 };
-
-// These tables only cover the item IDs that live in the inventory, so anything else (quest items, songs,
-// medallions) must report SLOT_NONE rather than read past their end.
-static s16 Item_GetSlot(u8 item) {
-    if ((item >= ITEM_STICKS_5) && (item < ITEM_STICKS_5 + ARRAY_COUNT(sExtraItemBases))) {
-        return SLOT(sExtraItemBases[item - ITEM_STICKS_5]);
-    }
-    if (item < ARRAY_COUNT(gItemSlots)) {
-        return SLOT(item);
-    }
-    return SLOT_NONE;
-}
 
 static s16 sEnvHazard = PLAYER_ENV_HAZARD_NONE;
 static s16 sEnvHazardActive = false;
@@ -1859,32 +1861,32 @@ u8 Return_Item(u8 itemID, ModIndex modId, ItemID returnItem) {
  * @return u8
  */
 u8 Item_Give(PlayState* play, u8 item) {
-    // prevents getting sticks without the bag in case something got missed
-    if (IS_RANDO && (item == ITEM_STICK || item == ITEM_STICKS_5 || item == ITEM_STICKS_10) &&
-        Randomizer_GetSettingValue(RSK_SHUFFLE_DEKU_STICK_BAG) && CUR_UPG_VALUE(UPG_STICKS) == 0) {
-        return item;
-    }
+    static s16 sAmmoRefillCounts[] = { 5, 10, 20, 30 }; // Sticks, nuts, bombs
+    static s16 sArrowRefillCounts[] = { 5, 10, 30 };
+    static s16 sBombchuRefillCounts[] = { 5, 20 };
+    static s16 sRupeeRefillCounts[] = { 1, 5, 20, 50, 200, 10 };
+    s16 i;
+    s16 slot;
+    s16 temp;
+    // [SOH] The item the caller asked for, kept for the OnItemReceive hook after `item` is remapped
+    u8 giveItem = item;
 
-    // prevents getting nuts without the bag in case something got missed
-    if (IS_RANDO && (item == ITEM_NUT || item == ITEM_NUTS_5 || item == ITEM_NUTS_10) &&
-        Randomizer_GetSettingValue(RSK_SHUFFLE_DEKU_NUT_BAG) && CUR_UPG_VALUE(UPG_NUTS) == 0) {
+    if (!GameInteractor_Should(VB_ITEM_GIVE, true, item)) {
         return item;
     }
 
     lusprintf(__FILE__, __LINE__, 2, "Item Give - item: %#x", item);
-    static s16 sAmmoRefillCounts[] = { 5, 10, 20, 30, 5, 10, 30, 0, 5, 20, 1, 5, 20, 50, 200, 10 };
-    s16 i;
-    s16 slot;
-    s16 temp;
-
-    GetItemID returnItem = ITEM_NONE;
 
     // Gameplay stats: Update the time the item was obtained
     GameplayStats_SetTimestamp(play, item);
 
-    slot = Item_GetSlot(item);
+    slot = SLOT(item);
+    if (item >= ITEM_STICKS_5) {
+        slot = SLOT(sExtraItemBases[item - ITEM_STICKS_5]);
+    }
 
     osSyncPrintf(VT_FGCOL(YELLOW));
+    // [SOH] Items without an inventory slot resolve to SLOT_NONE, which would index out of bounds
     osSyncPrintf("item_get_setting=%d  pt=%d  z=%x\n", item, slot,
                  (slot != SLOT_NONE) ? gSaveContext.inventory.items[slot] : ITEM_NONE);
     osSyncPrintf(VT_RST);
@@ -2056,15 +2058,9 @@ u8 Item_Give(PlayState* play, u8 item) {
         return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_WALLET_ADULT) {
         Inventory_ChangeUpgrade(UPG_WALLET, 1);
-        if (IS_RANDO && Randomizer_GetSettingValue(RSK_FULL_WALLETS)) {
-            Rupees_ChangeBy(200);
-        }
         return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_WALLET_GIANT) {
         Inventory_ChangeUpgrade(UPG_WALLET, 2);
-        if (IS_RANDO && Randomizer_GetSettingValue(RSK_FULL_WALLETS)) {
-            Rupees_ChangeBy(500);
-        }
         return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_STICK_UPGRADE_20) {
         if (gSaveContext.inventory.items[slot] == ITEM_NONE) {
@@ -2105,27 +2101,6 @@ u8 Item_Give(PlayState* play, u8 item) {
                 }
             }
         }
-        // update the adult/child equips when rando'd (accounting for equip swapped hookshot as child)
-        if (IS_RANDO && LINK_IS_CHILD) {
-            for (i = 1; i < ARRAY_COUNT(gSaveContext.adultEquips.buttonItems); i++) {
-                if (gSaveContext.adultEquips.buttonItems[i] == ITEM_HOOKSHOT) {
-                    gSaveContext.adultEquips.buttonItems[i] = ITEM_LONGSHOT;
-                    if (play != NULL) {
-                        Interface_LoadItemIcon1(play, i);
-                    }
-                }
-            }
-        }
-        if (IS_RANDO && LINK_IS_ADULT) {
-            for (i = 1; i < ARRAY_COUNT(gSaveContext.childEquips.buttonItems); i++) {
-                if (gSaveContext.childEquips.buttonItems[i] == ITEM_HOOKSHOT) {
-                    gSaveContext.childEquips.buttonItems[i] = ITEM_LONGSHOT;
-                    if (play != NULL) {
-                        Interface_LoadItemIcon1(play, i);
-                    }
-                }
-            }
-        }
         return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_STICK) {
         if (gSaveContext.inventory.items[slot] == ITEM_NONE) {
@@ -2147,10 +2122,7 @@ u8 Item_Give(PlayState* play, u8 item) {
                 AMMO(ITEM_STICK) = CUR_CAPACITY(UPG_STICKS);
             }
         }
-        // [SOH] This results in the same behavior as the original code, but also allows us to get an accurate
-        // ReceivedItemEntry hook
-        INV_CONTENT(ITEM_STICK) = ITEM_STICK;
-        return Return_Item(item, MOD_NONE, returnItem);
+        item = ITEM_STICK;
     } else if (item == ITEM_NUT) {
         if (gSaveContext.inventory.items[slot] == ITEM_NONE) {
             Inventory_ChangeUpgrade(UPG_NUTS, 1);
@@ -2174,10 +2146,7 @@ u8 Item_Give(PlayState* play, u8 item) {
                 AMMO(ITEM_NUT) = CUR_CAPACITY(UPG_NUTS);
             }
         }
-        // [SOH] This results in the same behavior as the original code, but also allows us to get an accurate
-        // ReceivedItemEntry hook
-        INV_CONTENT(ITEM_NUT) = ITEM_NUT;
-        return Return_Item(item, MOD_NONE, returnItem);
+        item = ITEM_NUT;
     } else if (item == ITEM_BOMB) {
         // "Bomb  Bomb  Bomb  Bomb Bomb   Bomb Bomb"
         osSyncPrintf(" 爆弾  爆弾  爆弾  爆弾 爆弾   爆弾 爆弾 \n");
@@ -2206,9 +2175,9 @@ u8 Item_Give(PlayState* play, u8 item) {
     } else if ((item == ITEM_BOMBCHUS_5) || (item == ITEM_BOMBCHUS_20)) {
         if (gSaveContext.inventory.items[slot] == ITEM_NONE) {
             INV_CONTENT(ITEM_BOMBCHU) = ITEM_BOMBCHU;
-            AMMO(ITEM_BOMBCHU) += sAmmoRefillCounts[item - ITEM_BOMBCHUS_5 + 8];
+            AMMO(ITEM_BOMBCHU) += sBombchuRefillCounts[item - ITEM_BOMBCHUS_5];
         } else {
-            AMMO(ITEM_BOMBCHU) += sAmmoRefillCounts[item - ITEM_BOMBCHUS_5 + 8];
+            AMMO(ITEM_BOMBCHU) += sBombchuRefillCounts[item - ITEM_BOMBCHUS_5];
             if (GameInteractor_Should(VB_CHECK_BOMBCHU_CAPACITY, true)) {
                 if (AMMO(ITEM_BOMBCHU) > 50) {
                     AMMO(ITEM_BOMBCHU) = 50;
@@ -2217,7 +2186,7 @@ u8 Item_Give(PlayState* play, u8 item) {
         }
         return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if ((item >= ITEM_ARROWS_SMALL) && (item <= ITEM_ARROWS_LARGE)) {
-        AMMO(ITEM_BOW) += sAmmoRefillCounts[item - ITEM_ARROWS_SMALL + 4];
+        AMMO(ITEM_BOW) += sArrowRefillCounts[item - ITEM_ARROWS_SMALL];
 
         if ((AMMO(ITEM_BOW) >= CUR_CAPACITY(UPG_QUIVER)) || (AMMO(ITEM_BOW) < 0)) {
             AMMO(ITEM_BOW) = CUR_CAPACITY(UPG_QUIVER);
@@ -2267,28 +2236,6 @@ u8 Item_Give(PlayState* play, u8 item) {
             if (gSaveContext.equips.buttonItems[i] == ITEM_OCARINA_FAIRY) {
                 gSaveContext.equips.buttonItems[i] = ITEM_OCARINA_TIME;
                 Interface_LoadItemIcon1(play, i);
-            }
-        }
-
-        // update the adult/child equips when rando'd
-        if (IS_RANDO && LINK_IS_CHILD) {
-            for (i = 1; i < ARRAY_COUNT(gSaveContext.adultEquips.buttonItems); i++) {
-                if (gSaveContext.adultEquips.buttonItems[i] == ITEM_OCARINA_FAIRY) {
-                    gSaveContext.adultEquips.buttonItems[i] = ITEM_OCARINA_TIME;
-                    if (play != NULL) {
-                        Interface_LoadItemIcon1(play, i);
-                    }
-                }
-            }
-        }
-        if (IS_RANDO && LINK_IS_ADULT) {
-            for (i = 1; i < ARRAY_COUNT(gSaveContext.childEquips.buttonItems); i++) {
-                if (gSaveContext.childEquips.buttonItems[i] == ITEM_OCARINA_FAIRY) {
-                    gSaveContext.childEquips.buttonItems[i] = ITEM_OCARINA_TIME;
-                    if (play != NULL) {
-                        Interface_LoadItemIcon1(play, i);
-                    }
-                }
             }
         }
         return Return_Item(item, MOD_NONE, ITEM_NONE);
@@ -2353,7 +2300,7 @@ u8 Item_Give(PlayState* play, u8 item) {
 
         return Return_Item(item, MOD_NONE, item);
     } else if ((item >= ITEM_RUPEE_GREEN) && (item <= ITEM_INVALID_8)) {
-        Rupees_ChangeBy(sAmmoRefillCounts[item - ITEM_RUPEE_GREEN + 10]);
+        Rupees_ChangeBy(sRupeeRefillCounts[item - ITEM_RUPEE_GREEN]);
         return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_BOTTLE) {
         temp = SLOT(item);
@@ -2370,6 +2317,7 @@ u8 Item_Give(PlayState* play, u8 item) {
         if ((item != ITEM_MILK_BOTTLE) && (item != ITEM_LETTER_RUTO)) {
             if (item == ITEM_MILK) {
                 item = ITEM_MILK_BOTTLE;
+                giveItem = item;
                 temp = SLOT(item);
             }
 
@@ -2397,9 +2345,6 @@ u8 Item_Give(PlayState* play, u8 item) {
                 }
             }
         } else {
-            if (item == ITEM_LETTER_RUTO) {
-                Flags_SetRandomizerInf(RAND_INF_OBTAINED_RUTOS_LETTER);
-            }
             for (i = 0; i < 4; i++) {
                 if (gSaveContext.inventory.items[temp + i] == ITEM_NONE) {
                     gSaveContext.inventory.items[temp + i] = item;
@@ -2407,30 +2352,9 @@ u8 Item_Give(PlayState* play, u8 item) {
                 }
             }
         }
-
-        if (IS_RANDO) {
-            return Return_Item(item, MOD_NONE, ITEM_NONE);
-        }
     } else if ((item >= ITEM_WEIRD_EGG) && (item <= ITEM_CLAIM_CHECK)) {
         if (GameInteractor_Should(VB_POACHERS_SAW_SET_DEKU_NUT_UPGRADE_FLAG, item == ITEM_SAW)) {
             Flags_SetItemGetInf(ITEMGETINF_OBTAINED_NUT_UPGRADE_FROM_STAGE);
-        }
-
-        if (IS_RANDO) {
-            if (item >= ITEM_POCKET_EGG) {
-                Flags_SetRandomizerInf(item - ITEM_POCKET_EGG + RAND_INF_ADULT_TRADES_HAS_POCKET_EGG);
-            } else if (item == ITEM_LETTER_ZELDA) {
-                Flags_SetRandomizerInf(RAND_INF_ZELDAS_LETTER);
-                // don't care about zelda's letter if it's already been shown to the guard
-                if (!Flags_GetInfTable(INFTABLE_SHOWED_ZELDAS_LETTER_TO_GATE_GUARD)) {
-                    Flags_SetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_LETTER_ZELDA);
-                }
-            } else {
-                Flags_SetRandomizerInf(item - ITEM_WEIRD_EGG + RAND_INF_CHILD_TRADES_HAS_WEIRD_EGG);
-                if (item == ITEM_WEIRD_EGG) {
-                    Flags_SetRandomizerInf(RAND_INF_WEIRD_EGG);
-                }
-            }
         }
 
         temp = INV_CONTENT(item);
@@ -2453,43 +2377,38 @@ u8 Item_Give(PlayState* play, u8 item) {
         }
 
         return Return_Item(item, MOD_NONE, ITEM_NONE);
-    } else if (item == ITEM_NAYRUS_LOVE && Randomizer_GetSettingValue(RSK_ROCS_FEATHER)) {
-        Flags_SetRandomizerInf(RAND_INF_OBTAINED_NAYRUS_LOVE);
-        if (INV_CONTENT(ITEM_NAYRUS_LOVE) == ITEM_NONE) {
-            INV_CONTENT(ITEM_NAYRUS_LOVE) = ITEM_NAYRUS_LOVE;
-        }
-        return Return_Item(item, MOD_NONE, ITEM_NONE);
-    }
-    if (slot == SLOT_NONE) {
-        // Nothing to store: writing would land on an unrelated slot instead.
-        return Return_Item(item, MOD_NONE, ITEM_NONE);
     }
 
-    returnItem = gSaveContext.inventory.items[slot];
-    osSyncPrintf("Item_Register(%d)=%d  %d\n", slot, item, returnItem);
-    gSaveContext.inventory.items[slot] = item;
-    return Return_Item(item, MOD_NONE, returnItem);
+    temp = ITEM_NONE;
+    if (GameInteractor_Should(VB_ITEM_GIVE_USE_INVENTORY_SLOT, true, item, slot)) {
+        temp = gSaveContext.inventory.items[slot];
+        osSyncPrintf("Item_Register(%d)=%d  %d\n", slot, item, temp);
+        INV_CONTENT(item) = item;
+    }
+
+    return Return_Item(giveItem, MOD_NONE, temp);
 }
 
 u8 Item_CheckObtainability(u8 item) {
     s16 i;
-    s16 slot = Item_GetSlot(item);
-    s32 temp;
+    s16 slot = SLOT(item);
+    s16 temp;
+
+    if (item >= ITEM_STICKS_5) {
+        slot = SLOT(sExtraItemBases[item - ITEM_STICKS_5]);
+    }
+
+    if (!GameInteractor_Should(VB_ITEM_CHECK_OBTAINABILITY, true, item)) {
+        return ITEM_NONE;
+    }
 
     osSyncPrintf(VT_FGCOL(GREEN));
+    // [SOH] Items without an inventory slot resolve to SLOT_NONE, which would index out of bounds
     osSyncPrintf("item_get_non_setting=%d  pt=%d  z=%x\n", item, slot,
                  (slot != SLOT_NONE) ? gSaveContext.inventory.items[slot] : ITEM_NONE);
     osSyncPrintf(VT_RST);
 
-    if (IS_RANDO) {
-        if (item == ITEM_SINGLE_MAGIC || item == ITEM_DOUBLE_MAGIC || item == ITEM_DOUBLE_DEFENSE) {
-            return ITEM_NONE;
-        }
-    }
-
-    if ((item >= ITEM_SONG_MINUET) && (item <= ITEM_SONG_STORMS)) {
-        return ITEM_NONE;
-    } else if ((item >= ITEM_MEDALLION_FOREST) && (item <= ITEM_MEDALLION_LIGHT)) {
+    if ((item >= ITEM_MEDALLION_FOREST) && (item <= ITEM_MEDALLION_LIGHT)) {
         return ITEM_NONE;
     } else if ((item >= ITEM_KOKIRI_EMERALD) && (item <= ITEM_SKULL_TOKEN)) {
         return ITEM_NONE;
@@ -2497,25 +2416,25 @@ u8 Item_CheckObtainability(u8 item) {
         if (item == ITEM_SWORD_BGS) {
             return ITEM_NONE;
         } else if (CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, item - ITEM_SWORD_KOKIRI + EQUIP_INV_SWORD_KOKIRI)) {
-            return IS_RANDO ? ITEM_NONE : item;
+            return item;
         } else {
             return ITEM_NONE;
         }
     } else if ((item >= ITEM_SHIELD_DEKU) && (item <= ITEM_SHIELD_MIRROR)) {
         if (CHECK_OWNED_EQUIP(EQUIP_TYPE_SHIELD, item - ITEM_SHIELD_DEKU + EQUIP_INV_SHIELD_DEKU)) {
-            return IS_RANDO ? ITEM_NONE : item;
+            return item;
         } else {
             return ITEM_NONE;
         }
     } else if ((item >= ITEM_TUNIC_KOKIRI) && (item <= ITEM_TUNIC_ZORA)) {
         if (CHECK_OWNED_EQUIP(EQUIP_TYPE_TUNIC, item - ITEM_TUNIC_KOKIRI + EQUIP_INV_TUNIC_KOKIRI)) {
-            return IS_RANDO ? ITEM_NONE : item;
+            return item;
         } else {
             return ITEM_NONE;
         }
     } else if ((item >= ITEM_BOOTS_KOKIRI) && (item <= ITEM_BOOTS_HOVER)) {
         if (CHECK_OWNED_EQUIP(EQUIP_TYPE_BOOTS, item - ITEM_BOOTS_KOKIRI + EQUIP_INV_BOOTS_KOKIRI)) {
-            return IS_RANDO ? ITEM_NONE : item;
+            return item;
         } else {
             return ITEM_NONE;
         }
@@ -2600,7 +2519,9 @@ u8 Item_CheckObtainability(u8 item) {
         return ITEM_NONE;
     }
 
-    return (slot != SLOT_NONE) ? gSaveContext.inventory.items[slot] : ITEM_NONE;
+    return GameInteractor_Should(VB_ITEM_OBTAINABILITY_USE_INVENTORY_SLOT, true, item, slot)
+               ? gSaveContext.inventory.items[slot]
+               : ITEM_NONE;
 }
 
 void Inventory_DeleteItem(u16 item, u16 invSlot) {

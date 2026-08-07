@@ -97,6 +97,26 @@ void RegisterRocsFeather() {
             memcpy(gPlayState->pauseCtx.nameSegment, textureName, strlen(textureName) + 1);
         }
     });
+
+    // Registered on boot rather than with `shouldRegister`, because Nayru's Love can be a starting
+    // item, which is handed out when the file is created, before OnLoadGame fires
+    COND_HOOK(OnItemReceive, true, [](GetItemEntry itemEntry) {
+        if (itemEntry.modIndex == MOD_NONE && itemEntry.itemId == ITEM_NAYRUS_LOVE && IS_RANDO &&
+            RAND_GET_OPTION(RSK_ROCS_FEATHER)) {
+            Flags_SetRandomizerInf(RAND_INF_OBTAINED_NAYRUS_LOVE);
+        }
+    });
+
+    // Nayru's Love shares its slot with Roc's Feather, so it must not overwrite the feather when
+    // that is what the slot is currently cycled to
+    COND_VB_SHOULD(VB_ITEM_GIVE_USE_INVENTORY_SLOT, true, {
+        uint8_t item = va_arg(args, int);
+
+        if (item == ITEM_NAYRUS_LOVE && IS_RANDO && RAND_GET_OPTION(RSK_ROCS_FEATHER) &&
+            INV_CONTENT(ITEM_NAYRUS_LOVE) != ITEM_NONE) {
+            *should = false;
+        }
+    });
 }
 
 static RegisterShipInitFunc registerRocsFeather(RegisterRocsFeather, { "IS_RANDO" });
