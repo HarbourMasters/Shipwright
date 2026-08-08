@@ -4731,8 +4731,10 @@ s32 func_808382DC(Player* this, PlayState* play) {
     } else {
         sp68 = ((Player_GetHeight(this) - 8.0f) < (this->unk_6C4 * this->actor.scale.y));
 
-        if (sp68 || (this->actor.bgCheckFlags & BGCHECKFLAG_CRUSHED) || (sFloorType == 9) ||
-            (this->stateFlags2 & PLAYER_STATE2_FORCED_VOID_OUT)) {
+        if (GameInteractor_Should(VB_QUICKSAND_CRUSH_WHIRLPOOL_VOIDOUT,
+                                  (sp68 || (this->actor.bgCheckFlags & BGCHECKFLAG_CRUSHED) || (sFloorType == 9) ||
+                                   (this->stateFlags2 & PLAYER_STATE2_FORCED_VOID_OUT)),
+                                  &this->actor)) {
             Player_PlayVoiceSfx(this, NA_SE_VO_LI_DAMAGE_S);
 
             if (sp68) {
@@ -4758,9 +4760,7 @@ s32 func_808382DC(Player* this, PlayState* play) {
                     gSaveContext.respawn[RESPAWN_MODE_DOWN].yaw = respawnInfo->yaw;
                 }
 
-                if (GameInteractor_Should(VB_TRIGGER_VOIDOUT, true, this)) {
-                    Play_TriggerVoidOut(play);
-                }
+                Play_TriggerVoidOut(play);
             }
 
             Player_PlayVoiceSfx(this, NA_SE_VO_LI_TAKEN_AWAY);

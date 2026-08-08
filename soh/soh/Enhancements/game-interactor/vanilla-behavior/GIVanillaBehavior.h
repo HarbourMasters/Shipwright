@@ -2579,7 +2579,7 @@ typedef enum {
     // BgCheck_SphVsFirstPoly(&play->colCtx, &rodCheckPos, 20.0f)
     // ```
     // #### `args`
-    // - `*f32`
+    // - `*Vec3f`
     VB_NOT_CAST_FISHING,
 
     // #### `result`
@@ -3081,6 +3081,15 @@ typedef enum {
     // #### `args`
     // - `*Actor`
     VB_TRIGGER_VOIDOUT,
+
+    // #### `result`
+    // ```c
+    // (sp68 || (this->actor.bgCheckFlags & BGCHECKFLAG_CRUSHED) || (sFloorType == 9) ||
+    // (this->stateFlags2 & PLAYER_STATE2_FORCED_VOID_OUT))
+    // ```
+    // #### `args`
+    // - `*Actor`
+    VB_QUICKSAND_CRUSH_WHIRLPOOL_VOIDOUT,
 
     // #### `result`
     // ```c
