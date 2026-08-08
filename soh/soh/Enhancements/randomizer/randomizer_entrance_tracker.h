@@ -9,7 +9,7 @@
 #include <libultraship/color.h>
 #include <libultraship/libultra.h>
 #include <ship/window/gui/GuiWindow.h>
-#include "randomizerEnums.h"
+#include "randomizerTypes.h"
 
 typedef enum {
     // ENTRANCE_GROUP_NO_GROUP,

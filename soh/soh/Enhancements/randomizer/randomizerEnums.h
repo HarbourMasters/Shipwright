@@ -1,4 +1,4 @@
-#pragma once
+// Use #include "randomizerTypes.h" for a pragma once guard.
 // Default expansion: real enums
 
 #if !defined(RANDO_ENUM_BEGIN) && !defined(RANDO_ENUM_ITEM) && !defined(RANDO_ENUM_END)

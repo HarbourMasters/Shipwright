@@ -3,7 +3,6 @@
 #include "randomizer_item_tracker.h"
 #include "randomizer_logic_tracker.h"
 #include "randomizerTypes.h"
-#include "soh/Enhancements/randomizer/randomizerEnums.h"
 #include "soh/Enhancements/randomizer/static_data.h"
 #include "soh/OTRGlobals.h"
 #include "soh/SaveManager.h"

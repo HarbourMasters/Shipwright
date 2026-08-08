@@ -1,7 +1,7 @@
 #include "soh/Enhancements/randomizer/location_access.h"
 #include "soh/Enhancements/randomizer/entrance.h"
 #include "soh/Enhancements/randomizer/dungeon.h"
-#include "soh/Enhancements/randomizer/randomizerEnums.h"
+#include "soh/Enhancements/randomizer/randomizerTypes.h"
 
 using namespace Rando;
 

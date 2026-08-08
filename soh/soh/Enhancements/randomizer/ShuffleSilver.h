@@ -1,7 +1,7 @@
 #pragma once
 
 #include <stdint.h>
-#include "randomizerEnums.h"
+#include "randomizerTypes.h"
 #include <stdint.h>
 #include <libultraship/libultra.h>
 
