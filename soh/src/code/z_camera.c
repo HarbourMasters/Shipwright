@@ -7934,8 +7934,8 @@ s32 Camera_RequestModeImpl(Camera* camera, s16 requestedMode, u8 forceModeChange
         // Clear free look if an action is performed that would move the camera (targeting, first person, talking)
         if (CVarGetInteger(CVAR_SETTING("FreeLook.Enabled"), 0) && SetCameraManual(camera) == 1 &&
             ((requestedMode >= CAM_MODE_TARGET && requestedMode <= CAM_MODE_BATTLE) ||
-             (requestedMode >= CAM_MODE_FIRST_PERSON && requestedMode <= CAM_MODE_CLIMBZ) || requestedMode == CAM_MODE_HANGZ ||
-             requestedMode == CAM_MODE_FOLLOWBOOMERANG)) {
+             (requestedMode >= CAM_MODE_FIRST_PERSON && requestedMode <= CAM_MODE_CLIMBZ) ||
+             requestedMode == CAM_MODE_HANGZ || requestedMode == CAM_MODE_FOLLOWBOOMERANG)) {
             camera->play->manualCamera = false;
         }
 
