@@ -1270,7 +1270,9 @@ void Actor_Init(Actor* actor, PlayState* play) {
 
 void Actor_Destroy(Actor* actor, PlayState* play) {
     if (actor->destroy != NULL) {
-        actor->destroy(actor, play);
+        if (GameInteractor_ShouldActorDestroy(actor)) {
+            actor->destroy(actor, play);
+        }
         actor->destroy = NULL;
     } else {
         // "No Actor class destruct [%s]"

@@ -20,6 +20,7 @@
 #include "src/overlays/actors/ovl_En_Bili/z_en_bili.h"
 #include "src/overlays/actors/ovl_En_Bird/z_en_bird.h"
 #include "src/overlays/actors/ovl_En_Bom_Bowl_Man/z_en_bom_bowl_man.h"
+#include "src/overlays/actors/ovl_En_Box/z_en_box.h"
 #include "src/overlays/actors/ovl_En_Brob/z_en_brob.h"
 #include "src/overlays/actors/ovl_En_Butte/z_en_butte.h"
 #include "src/overlays/actors/ovl_En_Bw/z_en_bw.h"
@@ -87,6 +88,7 @@
 #include "src/overlays/actors/ovl_En_Niw_Lady/z_en_niw_lady.h"
 #include "src/overlays/actors/ovl_En_Okuta/z_en_okuta.h"
 #include "src/overlays/actors/ovl_En_Owl/z_en_owl.h"
+#include "src/overlays/actors/ovl_En_Partner/z_en_partner.h"
 #include "src/overlays/actors/ovl_En_Peehat/z_en_peehat.h"
 #include "src/overlays/actors/ovl_En_Po_Desert/z_en_po_desert.h"
 #include "src/overlays/actors/ovl_En_Po_Field/z_en_po_field.h"
@@ -126,6 +128,9 @@
 #include "src/overlays/actors/ovl_En_Zl4/z_en_zl4.h"
 #include "src/overlays/actors/ovl_En_Zo/z_en_zo.h"
 
+// Use SkelAnime_Free only for the actors that pass NULL joint/morph tables to SkelAnime_Init, so the
+// tables really are arena allocations. Everything else keeps its tables inside the actor struct, and
+// freeing those interior pointers corrupts the zelda arena. Those actors want UNREGISTER_SKEL.
 #define UNREGISTER_SKEL(type, field) \
     ResourceMgr_UnregisterSkeleton((SkelAnime*)((uintptr_t)(actor) + offsetof(type, field)))
 
@@ -185,6 +190,9 @@ void UnregisterActorSkeletons(Actor* actor) {
             break;
         case ACTOR_EN_BOM_BOWL_MAN:
             UNREGISTER_SKEL(EnBomBowlMan, skelAnime);
+            break;
+        case ACTOR_EN_BOX:
+            UNREGISTER_SKEL(EnBox, skelanime);
             break;
         case ACTOR_EN_BROB:
             UNREGISTER_SKEL(EnBrob, skelAnime);
@@ -390,6 +398,9 @@ void UnregisterActorSkeletons(Actor* actor) {
         case ACTOR_EN_OWL:
             UNREGISTER_SKEL(EnOwl, skelAnime);
             UNREGISTER_SKEL(EnOwl, skelAnime2);
+            break;
+        case ACTOR_EN_PARTNER:
+            UNREGISTER_SKEL(EnPartner, skelAnime);
             break;
         case ACTOR_EN_PEEHAT:
             UNREGISTER_SKEL(EnPeehat, skelAnime);

@@ -797,6 +797,9 @@ std::vector<u16> GetActorsWithDescriptionContainingString(std::string s) {
     std::vector<u16> actors;
     for (int i = 0; i < ActorDB::Instance->GetEntryCount(); i += 1) {
         ActorDB::Entry actorEntry = ActorDB::Instance->RetrieveEntry(i);
+        if (!actorEntry.entry.valid) {
+            continue;
+        }
         std::string desc = actorEntry.desc;
         for (size_t j = 0; j < desc.length(); j += 1) {
             desc[j] = std::tolower(desc[j], loc);
@@ -1161,8 +1164,7 @@ void ActorViewerWindow::DrawElement() {
             if (Button("Spawn as Child", ButtonOptions().Color(THEME_COLOR))) {
                 Actor* parent = display;
                 if (parent != NULL) {
-                    if (newActor.id >= 0 && newActor.id < ACTOR_ID_MAX &&
-                        ActorDB::Instance->RetrieveEntry(newActor.id).entry.valid) {
+                    if (ActorDB::Instance->RetrieveEntry(newActor.id).entry.valid) {
                         Actor_SpawnAsChild(&gPlayState->actorCtx, parent, gPlayState, newActor.id, newActor.pos.x,
                                            newActor.pos.y, newActor.pos.z, newActor.rot.x, newActor.rot.y,
                                            newActor.rot.z, newActor.params);

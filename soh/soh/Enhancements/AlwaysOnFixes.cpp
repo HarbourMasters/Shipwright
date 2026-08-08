@@ -98,8 +98,10 @@ void RegisterAlwaysOnFixes() {
         }
     });
 
-    COND_HOOK(OnActorDestroy, true,
-              [](void* refActor) { UnregisterActorSkeletons(reinterpret_cast<Actor*>(refActor)); });
+    // ShouldActorDestroy rather than OnActorDestroy: the latter only fires from Actor_Delete, but
+    // Actor_UpdateAll and func_80031B14 both run Actor_Destroy without deleting.
+    COND_HOOK(ShouldActorDestroy, true,
+              [](void* refActor, bool* result) { UnregisterActorSkeletons(reinterpret_cast<Actor*>(refActor)); });
 
     COND_ID_HOOK(OnActorDestroy, ACTOR_EN_TEST, true, [](void* refActor) {
         Actor* actor = reinterpret_cast<Actor*>(refActor);
