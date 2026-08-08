@@ -3084,15 +3084,6 @@ typedef enum {
 
     // #### `result`
     // ```c
-    // (sp68 || (this->actor.bgCheckFlags & BGCHECKFLAG_CRUSHED) || (sFloorType == 9) ||
-    // (this->stateFlags2 & PLAYER_STATE2_FORCED_VOID_OUT))
-    // ```
-    // #### `args`
-    // - `*Actor`
-    VB_QUICKSAND_CRUSH_WHIRLPOOL_VOIDOUT,
-
-    // #### `result`
-    // ```c
     // true
     // ```
     // #### `args`
