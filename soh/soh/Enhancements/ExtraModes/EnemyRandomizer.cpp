@@ -656,16 +656,6 @@ void RegisterEnemyRandomizer() {
     COND_VB_SHOULD(VB_TRIGGER_VOIDOUT, ENEMY_RANDOMIZER_ENABLED, {
         Actor* actor = va_arg(args, Actor*);
 
-        if (actor->category != ACTORCAT_PLAYER) {
-            *should = false;
-            Actor_Kill(actor);
-        }
-    });
-
-    // prevent Dark Link from triggering a voidout from quicksand, crushing, floortype 9, whirlpools
-    COND_VB_SHOULD(VB_QUICKSAND_CRUSH_WHIRLPOOL_VOIDOUT, ENEMY_RANDOMIZER_ENABLED, {
-        Actor* actor = va_arg(args, Actor*);
-
         if (*should == true && actor->category != ACTORCAT_PLAYER) {
             // Improvement opportunity: Play sfx
             *should = false;

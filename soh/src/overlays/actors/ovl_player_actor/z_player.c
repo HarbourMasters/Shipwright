@@ -4731,7 +4731,7 @@ s32 func_808382DC(Player* this, PlayState* play) {
     } else {
         sp68 = ((Player_GetHeight(this) - 8.0f) < (this->unk_6C4 * this->actor.scale.y));
 
-        if (GameInteractor_Should(VB_QUICKSAND_CRUSH_WHIRLPOOL_VOIDOUT,
+        if (GameInteractor_Should(VB_TRIGGER_VOIDOUT,
                                   (sp68 || (this->actor.bgCheckFlags & BGCHECKFLAG_CRUSHED) || (sFloorType == 9) ||
                                    (this->stateFlags2 & PLAYER_STATE2_FORCED_VOID_OUT)),
                                   &this->actor)) {
