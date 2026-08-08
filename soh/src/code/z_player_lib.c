@@ -746,8 +746,8 @@ void Player_SetAutoLockOnActor(PlayState* play, Actor* actor) {
     this->focusActor = actor;
     this->autoLockOnActor = actor;
     this->stateFlags1 |= PLAYER_STATE1_FRIENDLY_ACTOR_FOCUS;
-    Camera_SetParam(Play_GetCamera(play, 0), 8, actor);
-    Camera_ChangeMode(Play_GetCamera(play, 0), 2);
+    Camera_SetParam(Play_GetCamera(play, CAM_ID_MAIN), 8, actor);
+    Camera_RequestMode(Play_GetCamera(play, CAM_ID_MAIN), 2);
 }
 
 s32 func_8008EF30(PlayState* play) {

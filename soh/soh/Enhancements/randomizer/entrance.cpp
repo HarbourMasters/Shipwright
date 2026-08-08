@@ -1749,7 +1749,7 @@ void RegisterEntranceShuffleHooks() {
                 return;
             }
             memcpy(camera, &backupCamera, sizeof(Camera));
-            Camera_ChangeMode(camera, CAM_MODE_TALK);
+            Camera_RequestMode(camera, CAM_MODE_TALK);
             *should = false;
         } else if (backedUpScene != gPlayState->sceneNum) {
             memcpy(&backupCamera, camera, sizeof(Camera));

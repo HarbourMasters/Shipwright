@@ -5870,7 +5870,7 @@ s32 func_8083AD4C(PlayState* play, Player* this) {
     // Check if aiming camera mode should be overridden due to player settings
     GameInteractor_Should(VB_CHANGE_AIMING_CAMERA, true, &this->heldItemAction, &camMode);
 
-    return Camera_ChangeMode(Play_GetCamera(play, CAM_ID_MAIN), camMode);
+    return Camera_RequestMode(Play_GetCamera(play, CAM_ID_MAIN), camMode);
 }
 
 /**
@@ -11469,11 +11469,11 @@ void Player_UpdateCamAndSeqModes(PlayState* play, Player* this) {
         seqMode = SEQ_MODE_DEFAULT;
 
         if (this->csAction != 0) {
-            Camera_ChangeMode(Play_GetCamera(play, 0), CAM_MODE_NORMAL);
+            Camera_RequestMode(Play_GetCamera(play, CAM_ID_MAIN), CAM_MODE_NORMAL);
         } else if (!(this->stateFlags1 & PLAYER_STATE1_FIRST_PERSON)) {
             if ((this->actor.parent != NULL) && (this->stateFlags3 & PLAYER_STATE3_FLYING_WITH_HOOKSHOT)) {
                 camMode = CAM_MODE_HOOKSHOT;
-                Camera_SetParam(Play_GetCamera(play, 0), 8, this->actor.parent);
+                Camera_SetParam(Play_GetCamera(play, CAM_ID_MAIN), 8, this->actor.parent);
             } else if (Player_Action_8084377C == this->actionFunc) {
                 camMode = CAM_MODE_STILL;
             } else if (this->stateFlags2 & PLAYER_STATE2_GRABBING_DYNAPOLY) {
@@ -11490,7 +11490,7 @@ void Player_UpdateCamAndSeqModes(PlayState* play, Player* this) {
                 } else {
                     camMode = CAM_MODE_BATTLE;
                 }
-                Camera_SetParam(Play_GetCamera(play, 0), 8, focusActor);
+                Camera_SetParam(Play_GetCamera(play, CAM_ID_MAIN), 8, focusActor);
             } else if (this->stateFlags1 & PLAYER_STATE1_CHARGING_SPIN_ATTACK) {
                 camMode = CAM_MODE_CHARGE;
             } else if (this->stateFlags1 & PLAYER_STATE1_BOOMERANG_THROWN) {
@@ -11498,7 +11498,7 @@ void Player_UpdateCamAndSeqModes(PlayState* play, Player* this) {
                 if (CVarGetInteger(CVAR_ENHANCEMENT("BoomerangFirstPerson"), 0)) {
                     // Avoid camera jumps by switching  to normal cam to exit the first person camera,
                     // before following the boomerang
-                    if (Play_GetCamera(play, 0)->mode == CAM_MODE_FIRST_PERSON) {
+                    if (Play_GetCamera(play, CAM_ID_MAIN)->mode == CAM_MODE_FIRST_PERSON) {
                         camMode = CAM_MODE_NORMAL;
                     } else {
                         camMode = CAM_MODE_FOLLOWBOOMERANG;
@@ -11507,7 +11507,7 @@ void Player_UpdateCamAndSeqModes(PlayState* play, Player* this) {
                 } else {
                     camMode = CAM_MODE_FOLLOWBOOMERANG;
                 }
-                Camera_SetParam(Play_GetCamera(play, 0), 8, this->boomerangActor);
+                Camera_SetParam(Play_GetCamera(play, CAM_ID_MAIN), 8, this->boomerangActor);
             } else if (this->stateFlags1 & (PLAYER_STATE1_HANGING_OFF_LEDGE | PLAYER_STATE1_CLIMBING_LEDGE)) {
                 if (Player_FriendlyLockOnOrParallel(this)) {
                     camMode = CAM_MODE_HANGZ;
@@ -11543,7 +11543,7 @@ void Player_UpdateCamAndSeqModes(PlayState* play, Player* this) {
                 }
             }
 
-            Camera_ChangeMode(Play_GetCamera(play, 0), camMode);
+            Camera_RequestMode(Play_GetCamera(play, CAM_ID_MAIN), camMode);
         } else {
             // First person mode
             seqMode = SEQ_MODE_STILL;
@@ -14939,7 +14939,7 @@ s32 Player_UpdateNoclip(Player* this, PlayState* play) {
         sNoclipEnabled ^= 1;
 
         if (sNoclipEnabled) {
-            Camera_ChangeMode(Play_GetCamera(play, CAM_ID_MAIN), CAM_MODE_Z_AIM);
+            Camera_RequestMode(Play_GetCamera(play, CAM_ID_MAIN), CAM_MODE_Z_AIM);
         }
     }
 
