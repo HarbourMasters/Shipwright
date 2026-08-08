@@ -409,9 +409,14 @@ static void StartWarpPlayback(int song) {
     gPlayState->msgCtx.lastPlayedSong = ocarinaSongMap[idx];
     Audio_SetSfxBanksMute(0x20);
     Audio_PlayFanfare(songAudioMap[idx]);
-    Message_StartTextbox(gPlayState, songMessageMap[idx], NULL);
-    GET_PLAYER(gPlayState)->stateFlags1 |= PLAYER_STATE1_IN_CUTSCENE;
-    isWarpActive = true;
+    // Places that block warping still let the song play, then refuse the warp instead of prompting.
+    if (gPlayState->msgCtx.disableWarpSongs || (gPlayState->interfaceCtx.restrictions.warpSongs == 3 && !IS_RANDO)) {
+        Message_StartTextbox(gPlayState, TEXT_CANNOT_WARP_HERE, NULL);
+    } else {
+        Message_StartTextbox(gPlayState, songMessageMap[idx], NULL);
+        GET_PLAYER(gPlayState)->stateFlags1 |= PLAYER_STATE1_IN_CUTSCENE;
+        isWarpActive = true;
+    }
     // Same spot vanilla runs it in: right after the warp prompt opens (z_message_PAL.c, MSGMODE_SONG_PLAYED_ACT).
     GameInteractor_ExecuteOnOcarinaSongAction();
 }
@@ -424,8 +429,16 @@ static bool PauseSong_CanPlayOcarina() {
     if (gPlayState->msgCtx.msgMode != MSGMODE_NONE || gPlayState->msgCtx.ocarinaMode != OCARINA_MODE_00) {
         return false;
     }
+    // The scene restriction that greys out the Ocarina on its C-button (Interface_SetSceneRestrictions).
+    if (gPlayState->interfaceCtx.restrictions.ocarina != 0) {
+        return false;
+    }
+    // Songs can be learned before an Ocarina is found (Randomizer); there is nothing to play them on.
+    if (gSaveContext.inventory.items[SLOT_OCARINA] == ITEM_NONE) {
+        return false;
+    }
     if (player->stateFlags1 & (PLAYER_STATE1_DEAD | PLAYER_STATE1_IN_ITEM_CS | PLAYER_STATE1_IN_CUTSCENE |
-                               PLAYER_STATE1_TALKING | PLAYER_STATE1_ON_HORSE)) {
+                               PLAYER_STATE1_TALKING | PLAYER_STATE1_ON_HORSE | PLAYER_STATE1_CARRYING_ACTOR)) {
         return false;
     }
     if (player->stateFlags2 & PLAYER_STATE2_OCARINA_PLAYING) {
@@ -528,6 +541,7 @@ static void PauseCannotPlay_Execute() {
 }
 
 static void PauseMenuSongs_HandleSelection() {
+    // Also checked here so a song picked with no Ocarina leaves the menu open instead of closing it to fail.
     if (gSaveContext.inventory.items[SLOT_OCARINA] == ITEM_NONE) {
         return;
     }
