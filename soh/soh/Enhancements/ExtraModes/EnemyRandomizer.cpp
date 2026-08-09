@@ -620,8 +620,7 @@ void EnemyRando_SetColliderPosSkb(void* ptr) {
     EnSkb* enSkb = (EnSkb*)ptr;
     u8 i;
 
-    // EnSkb doesn't set collider for element 0
-    for (i = 1; i < 20; i++) {
+    for (i = 0; i < 2; i++) {
         enSkb->collider.elements[i].dim.worldSphere.center.x = (s16)enSkb->actor.world.pos.x;
         enSkb->collider.elements[i].dim.worldSphere.center.y = (s16)enSkb->actor.world.pos.y;
         enSkb->collider.elements[i].dim.worldSphere.center.z = (s16)enSkb->actor.world.pos.z;
