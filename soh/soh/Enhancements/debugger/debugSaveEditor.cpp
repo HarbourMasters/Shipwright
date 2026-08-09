@@ -2035,38 +2035,6 @@ void DrawEquipmentTab() {
         }
 
         ImGui::PopID();
-
-        // After the 4th sword, append the Fishing Pole as a 5th B-button sword option.
-        // Only relevant in rando saves that shuffle the pole into the pool
-        // (RSK_SHUFFLE_FISHING_POLE -> RG_FISHING_POLE in item_pool.cpp).
-        if (i == 3 && IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_FISHING_POLE) &&
-            gPlayState != nullptr) {
-            ImGui::SameLine();
-            Player* player = GET_PLAYER(gPlayState);
-            const ItemMapEntry& poleEntry = itemMapping[ITEM_FISHING_POLE];
-            bool poleEquipped = (player->currentSwordItemId == ITEM_FISHING_POLE);
-            ImGui::PushID(static_cast<int>(ITEM_FISHING_POLE));
-            PushStyleButton(Colors::DarkGray);
-            if (ImGui::ImageButton(
-                    poleEntry.name.c_str(),
-                    std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                        ->GetTextureByName(poleEquipped ? poleEntry.name : poleEntry.nameFaded),
-                    ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1))) {
-                player->currentSwordItemId = static_cast<s8>(ITEM_FISHING_POLE);
-                gSaveContext.equips.buttonItems[0] = static_cast<u8>(ITEM_FISHING_POLE);
-                Inventory_ChangeEquipment(EQUIP_TYPE_SWORD, EQUIP_VALUE_SWORD_MASTER);
-            }
-            PopStyleButton();
-            Tooltip("Fishing Pole");
-            if (poleEquipped) {
-                ImVec2 itemMin = ImGui::GetItemRectMin();
-                ImVec2 itemMax = ImGui::GetItemRectMax();
-                ImGui::GetWindowDrawList()->AddRect(ImVec2(itemMin.x - 2, itemMin.y - 2),
-                                                    ImVec2(itemMax.x + 2, itemMax.y + 2), IM_COL32(255, 255, 255, 255),
-                                                    0.0f, 0, 2.0f);
-            }
-            ImGui::PopID();
-        }
     }
 
     UIWidgets::EndCard();
@@ -2260,6 +2228,8 @@ void DrawEquipmentTab() {
                 }
                 if (randomizer.GetRandoSettingValue(RSK_ROCS_FEATHER))
                     add(RG_ROCS_FEATHER, RAND_INF_OBTAINED_ROCS_FEATHER);
+                if (randomizer.GetRandoSettingValue(RSK_SHUFFLE_FISHING_POLE))
+                    add(RG_FISHING_POLE, RAND_INF_FISHING_POLE_FOUND);
 
                 std::sort(abilities.begin(), abilities.end(),
                           [](const AbilityEntry& a, const AbilityEntry& b) { return a.label < b.label; });
