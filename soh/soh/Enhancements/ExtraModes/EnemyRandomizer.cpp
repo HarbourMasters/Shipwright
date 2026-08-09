@@ -21,6 +21,8 @@ extern "C" {
 #include "src/overlays/actors/ovl_En_Peehat/z_en_peehat.h"
 #include "src/overlays/actors/ovl_En_Rr/z_en_rr.h"
 #include "src/overlays/actors/ovl_En_Vali/z_en_vali.h"
+#include "src/overlays/actors/ovl_En_Skb/z_en_skb.h"
+#include "src/overlays/actors/ovl_En_Tp/z_en_tp.h"
 
 extern PlayState* gPlayState;
 }
@@ -602,6 +604,46 @@ void FixClubMoblinScale(void* ptr) {
     }
 }
 
+// EnTp, EnSkb and EnPeehat update collider position only in their draw functions,
+// causes 0,0,0 issues, so set their collider positions once on actor init
+void EnemyRando_SetColliderPosTp(void* ptr) {
+    EnTp* enTp = (EnTp*)ptr;
+
+    enTp->collider.elements[0].dim.worldSphere.center.x = (s16)enTp->actor.world.pos.x;
+    enTp->collider.elements[0].dim.worldSphere.center.y = (s16)enTp->actor.world.pos.y;
+    enTp->collider.elements[0].dim.worldSphere.center.z = (s16)enTp->actor.world.pos.z;
+    enTp->collider.elements[0].dim.worldSphere.radius =
+        (s16)(enTp->collider.elements[0].dim.modelSphere.radius * enTp->collider.elements[0].dim.scale);
+}
+
+void EnemyRando_SetColliderPosSkb(void* ptr) {
+    EnSkb* enSkb = (EnSkb*)ptr;
+    u8 i;
+
+    // EnSkb doesn't set collider for element 0
+    for (i = 1; i < 20; i++) {
+        enSkb->collider.elements[i].dim.worldSphere.center.x = (s16)enSkb->actor.world.pos.x;
+        enSkb->collider.elements[i].dim.worldSphere.center.y = (s16)enSkb->actor.world.pos.y;
+        enSkb->collider.elements[i].dim.worldSphere.center.z = (s16)enSkb->actor.world.pos.z;
+        enSkb->collider.elements[i].dim.worldSphere.radius =
+            (s16)(enSkb->collider.elements[i].dim.modelSphere.radius * enSkb->collider.elements[i].dim.scale);
+    }
+}
+
+void EnemyRando_SetColliderPosPeehat(void* ptr) {
+    EnPeehat* enPeehat = (EnPeehat*)ptr;
+    u8 i;
+
+    for (i = 0; i < 4; i++) {
+        enPeehat->colliderQuad.dim.quad[i].x = enPeehat->actor.world.pos.x + (f32)i;
+        enPeehat->colliderQuad.dim.quad[i].y = enPeehat->actor.world.pos.y + (f32)i;
+        enPeehat->colliderQuad.dim.quad[i].z = enPeehat->actor.world.pos.z + (f32)i;
+    }
+    Collider_SetQuadVertices(&enPeehat->colliderQuad, &enPeehat->colliderQuad.dim.quad[0],
+                             &enPeehat->colliderQuad.dim.quad[1], &enPeehat->colliderQuad.dim.quad[2],
+                             &enPeehat->colliderQuad.dim.quad[3]);
+}
+
 static void OnGerudoFighterDefeat(void* refActor) {
     EnGeldB* enGeldB = reinterpret_cast<EnGeldB*>(refActor);
 
@@ -651,6 +693,9 @@ void CustomPeehatLarvaDestroy(Actor* thisx, PlayState* play) {
 
 void RegisterEnemyRandomizer() {
     COND_ID_HOOK(OnActorInit, ACTOR_EN_MB, ENEMY_RANDOMIZER_ENABLED, FixClubMoblinScale);
+    COND_ID_HOOK(OnActorInit, ACTOR_EN_TP, ENEMY_RANDOMIZER_ENABLED, EnemyRando_SetColliderPosTp);
+    COND_ID_HOOK(OnActorInit, ACTOR_EN_SKB, ENEMY_RANDOMIZER_ENABLED, EnemyRando_SetColliderPosSkb);
+    COND_ID_HOOK(OnActorInit, ACTOR_EN_PEEHAT, ENEMY_RANDOMIZER_ENABLED, EnemyRando_SetColliderPosPeehat);
 
     // prevent dark link from triggering a voidout
     COND_VB_SHOULD(VB_TRIGGER_VOIDOUT, ENEMY_RANDOMIZER_ENABLED, {
