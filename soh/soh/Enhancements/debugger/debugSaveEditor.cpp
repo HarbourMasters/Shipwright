@@ -3,6 +3,7 @@
 #include "soh/Enhancements/randomizer/randomizer.h"
 #include "soh/Enhancements/randomizer/static_data.h"
 #include "soh/Enhancements/randomizer/item.h"
+#include "soh/Enhancements/randomizer/dungeon.h"
 #include "soh/Enhancements/randomizer/randomizerEnums/RandomizerGet.h"
 #include "soh/Enhancements/randomizer/randomizerEnums/RandomizerInf.h"
 #include "soh/util.h"
@@ -142,49 +143,20 @@ template <typename T> void DrawGroupWithBorder(T&& drawFunc, std::string section
     ImGui::EndChild();
 }
 
-// Get the maximum small keys obtainable for each dungeon (Vanilla or MQ based on save)
+// Maximum small keys obtainable per dungeon. Delegates to the rando DungeonInfo
+// for vanilla/MQ small key counts (synced to the loaded save on load via SaveManager).
+// Returns 0 for dungeons without small keys (e.g. Deku Tree, Ganon's Tower).
 static int8_t GetMaxKeysForDungeon(int32_t dungeonIndex) {
-    // Check if this specific dungeon is MQ (handles both vanilla/MQ saves and randomizer per-dungeon MQ)
-    bool isMQ = ResourceMgr_IsSceneMasterQuest(dungeonIndex);
-
-    switch (dungeonIndex) {
-        case SCENE_DEKU_TREE:
-            return 5;
-        case SCENE_DODONGOS_CAVERN:
-            return 5;
-        case SCENE_JABU_JABU:
-            return -1; // No keys
-        case SCENE_FOREST_TEMPLE:
-            return isMQ ? 6 : 5;
-        case SCENE_FIRE_TEMPLE:
-            return isMQ ? 5 : 8;
-        case SCENE_WATER_TEMPLE:
-            return isMQ ? 2 : 6;
-        case SCENE_SPIRIT_TEMPLE:
-            return isMQ ? 7 : 5;
-        case SCENE_SHADOW_TEMPLE:
-            return isMQ ? 6 : 5;
-        case SCENE_BOTTOM_OF_THE_WELL:
-            return isMQ ? 2 : 3;
-        case SCENE_ICE_CAVERN:
-            return -1; // No keys
-        case SCENE_GANONS_TOWER:
-            return -1; // No keys
-        case SCENE_GERUDO_TRAINING_GROUND:
-            return isMQ ? 3 : 9;
-        case SCENE_INSIDE_GANONS_CASTLE:
-            return isMQ ? 3 : 2;
-        default:
-            return -1; // No keys by default
+    Rando::DungeonInfo* dungeon = Rando::Context::GetInstance()->GetDungeons()->GetDungeonFromScene(dungeonIndex);
+    if (dungeon == nullptr) {
+        return 0; // Not a tracked key dungeon — no small keys.
     }
+    return static_cast<int8_t>(dungeon->GetSmallKeyCount());
 }
 
 // Check if a dungeon has a boss key
 static bool DungeonHasBossKey(int32_t dungeonIndex) {
     switch (dungeonIndex) {
-        case SCENE_DEKU_TREE:
-        case SCENE_DODONGOS_CAVERN:
-        case SCENE_JABU_JABU:
         case SCENE_FOREST_TEMPLE:
         case SCENE_FIRE_TEMPLE:
         case SCENE_WATER_TEMPLE:
