@@ -11,7 +11,6 @@
 #include "scenes/indoors/yousei_izumi_yoko/yousei_izumi_yoko_scene.h"
 #include "scenes/indoors/daiyousei_izumi/daiyousei_izumi_scene.h"
 #include "soh/frame_interpolation.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_DRAW_CULLING_DISABLED | ACTOR_FLAG_UPDATE_DURING_OCARINA)
@@ -99,8 +98,6 @@ void BgDyYoseizo_Init(Actor* thisx, PlayState* play2) {
 }
 
 void BgDyYoseizo_Destroy(Actor* thisx, PlayState* play) {
-    BgDyYoseizo* this = (BgDyYoseizo*)thisx;
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 static Color_RGB8 sParticlePrimColors[] = {

@@ -2,7 +2,6 @@
 #include "CrowdControlTypes.h"
 #include <nlohmann/json.hpp>
 #include <spdlog/spdlog.h>
-#include <spdlog/fmt/fmt.h>
 #include "soh/ShipInit.hpp"
 
 extern "C" {

@@ -656,7 +656,8 @@ void RegisterEnemyRandomizer() {
     COND_VB_SHOULD(VB_TRIGGER_VOIDOUT, ENEMY_RANDOMIZER_ENABLED, {
         Actor* actor = va_arg(args, Actor*);
 
-        if (actor->category != ACTORCAT_PLAYER) {
+        if (*should == true && actor->category != ACTORCAT_PLAYER) {
+            // Improvement opportunity: Play sfx
             *should = false;
             Actor_Kill(actor);
         }

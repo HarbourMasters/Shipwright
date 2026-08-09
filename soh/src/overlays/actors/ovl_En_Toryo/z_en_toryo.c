@@ -6,7 +6,6 @@
 
 #include "z_en_toryo.h"
 #include "objects/object_toryo/object_toryo.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY)
@@ -138,8 +137,6 @@ void EnToryo_Destroy(Actor* thisx, PlayState* play) {
     EnToryo* this = (EnToryo*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 s32 EnToryo_TalkRespond(EnToryo* this, PlayState* play) {

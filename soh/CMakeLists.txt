@@ -4,6 +4,7 @@ set(CMAKE_SYSTEM_VERSION 10.0 CACHE STRING "" FORCE)
 
 project(soh LANGUAGES C CXX)
 set(CMAKE_CXX_STANDARD 20 CACHE STRING "The C++ standard to use")
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_C_STANDARD 23 CACHE STRING "The C standard to use")
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
@@ -690,7 +691,9 @@ else()
     find_package(Vorbis REQUIRED)
     find_package(Opus REQUIRED)
     find_package(OpusFile REQUIRED)
-     set(ADDITIONAL_LIBRARY_DEPENDENCIES
+    # clang doesn't pull libm in transitively the way gcc does, link it explicitly
+    find_library(MATH_LIBRARY m)
+    set(ADDITIONAL_LIBRARY_DEPENDENCIES
     "libultraship;"
         "torch;"
         SDL2::SDL2
@@ -704,6 +707,9 @@ else()
         ${CMAKE_DL_LIBS}
         Threads::Threads
     )
+    if(MATH_LIBRARY)
+        list(APPEND ADDITIONAL_LIBRARY_DEPENDENCIES ${MATH_LIBRARY})
+    endif()
 endif()
 
 if(USE_ASAN)

@@ -2,7 +2,6 @@
 #include "overlays/actors/ovl_En_Encount1/z_en_encount1.h"
 #include "objects/object_skb/object_skb.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
 
@@ -187,8 +186,6 @@ void EnSkb_Destroy(Actor* thisx, PlayState* play) {
         }
     }
     Collider_DestroyJntSph(play, &this->collider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void func_80AFCD60(EnSkb* this) {

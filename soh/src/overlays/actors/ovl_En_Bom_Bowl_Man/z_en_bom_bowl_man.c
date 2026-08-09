@@ -4,7 +4,6 @@
 #include "overlays/actors/ovl_En_Ex_Item/z_en_ex_item.h"
 #include "objects/object_bg/object_bg.h"
 #include "soh/OTRGlobals.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
@@ -95,9 +94,6 @@ void EnBomBowlMan_Init(Actor* thisx, PlayState* play2) {
 }
 
 void EnBomBowlMan_Destroy(Actor* thisx, PlayState* play) {
-    EnBomBowlMan* this = (EnBomBowlMan*)thisx;
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnBomBowMan_SetupWaitAsleep(EnBomBowlMan* this, PlayState* play) {

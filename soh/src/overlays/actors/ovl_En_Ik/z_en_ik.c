@@ -9,7 +9,6 @@
 #include "objects/object_ik/object_ik.h"
 #include "vt.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
@@ -177,8 +176,6 @@ void EnIk_Destroy(Actor* thisx, PlayState* play) {
     Collider_DestroyTris(play, &this->shieldCollider);
     Collider_DestroyCylinder(play, &this->bodyCollider);
     Collider_DestroyQuad(play, &this->axeCollider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnIk_SetupAction(EnIk* this, EnIkActionFunc actionFunc) {

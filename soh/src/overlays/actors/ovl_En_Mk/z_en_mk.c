@@ -6,7 +6,6 @@
 
 #include "z_en_mk.h"
 #include "objects/object_mk/object_mk.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
@@ -80,8 +79,6 @@ void EnMk_Destroy(Actor* thisx, PlayState* play) {
     EnMk* this = (EnMk*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void func_80AACA40(EnMk* this, PlayState* play) {

@@ -32,4 +32,12 @@ Text& ItemOverride::GetTrickName() {
 void ItemOverride::SetTrickName(Text trickName) {
     mTrickName = std::move(trickName);
 }
+
+Text& ItemOverride::GetTrickArticle() {
+    return mTrickArticle;
+}
+
+void ItemOverride::SetTrickArticle(Text trickArticle) {
+    mTrickArticle = std::move(trickArticle);
+}
 } // namespace Rando

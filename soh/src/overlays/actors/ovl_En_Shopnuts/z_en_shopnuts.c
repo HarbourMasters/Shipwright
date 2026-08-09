@@ -1,7 +1,6 @@
 #include "z_en_shopnuts.h"
 #include "objects/object_shopnuts/object_shopnuts.h"
 #include "overlays/actors/ovl_En_Dns/z_en_dns.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE)
@@ -90,8 +89,6 @@ void EnShopnuts_Destroy(Actor* thisx, PlayState* play) {
     EnShopnuts* this = (EnShopnuts*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnShopnuts_SetupWait(EnShopnuts* this) {

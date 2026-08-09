@@ -7,7 +7,6 @@
 #include "z_en_hs2.h"
 #include "vt.h"
 #include "objects/object_hs/object_hs.h"
-#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY)
 
@@ -72,8 +71,6 @@ void EnHs2_Destroy(Actor* thisx, PlayState* play) {
     EnHs2* this = (EnHs2*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 s32 func_80A6F0B4(EnHs2* this, PlayState* play, u16 textId, EnHs2ActionFunc actionFunc) {

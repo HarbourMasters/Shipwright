@@ -888,7 +888,7 @@ void PlandomizerDrawIceTrapSetup(uint32_t index) {
                                                            .Padding(ImVec2(10.f, 6.f)))) {
             plandoLogData[index].iceTrapName =
                 Rando::Traps::GetTrapName(plandoLogData[index].iceTrapModel.GetRandomizerGet())
-                    .GetForLanguage(CVarGetInteger(CVAR_SETTING("Languages"), 0))
+                    .name.GetForLanguage(CVarGetInteger(CVAR_SETTING("Languages"), 0))
                     .c_str();
         }
         ImGui::SameLine();

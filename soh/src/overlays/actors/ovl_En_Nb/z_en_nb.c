@@ -8,7 +8,6 @@
 #include "vt.h"
 #include "objects/object_nb/object_nb.h"
 #include "overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
@@ -149,8 +148,6 @@ void EnNb_Destroy(Actor* thisx, PlayState* play) {
 
     D_80AB4318 = 0;
     Collider_DestroyCylinder(play, &this->collider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void func_80AB0FBC(EnNb* this, PlayState* play) {

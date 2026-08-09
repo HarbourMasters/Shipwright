@@ -8,7 +8,6 @@
 #include "objects/object_niw/object_niw.h"
 #include "vt.h"
 #include "soh/frame_interpolation.h"
-#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
@@ -104,8 +103,6 @@ void EnSyatekiNiw_Destroy(Actor* thisx, PlayState* play) {
     EnSyatekiNiw* this = (EnSyatekiNiw*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnSyatekiNiw_UpdateRotations(EnSyatekiNiw* this, PlayState* play, s16 arg2) {

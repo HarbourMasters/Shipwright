@@ -462,7 +462,7 @@ typedef enum {
 
     // #### `result`
     // ```c
-    // this->hookshotSlotFull != 0
+    // this->hookshotSlotFull
     // ```
     // #### `args`
     // - None
@@ -2010,6 +2010,31 @@ typedef enum {
     // true
     // ```
     // #### `args`
+    // - `*BossTw`
+    // - `*PlayState`
+    VB_PLAY_TWINROVA_INTRO_CS,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
+    VB_TWINROVA_SPAWN_PORTAL_TRANSLATION_KOTAKE,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
+    VB_TWINROVA_SPAWN_PORTAL_TRANSLATION_KOUME,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
     // - `*Actor`
     VB_PLAY_ONEPOINT_ACTOR_CS,
 
@@ -2575,6 +2600,23 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // !(this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) || (this->actor.world.pos.z > 1300.0f) ||
+    // BgCheck_SphVsFirstPoly(&play->colCtx, &rodCheckPos, 20.0f)
+    // ```
+    // #### `args`
+    // - `*Vec3f`
+    VB_NOT_CAST_FISHING,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - None
+    VB_FISHING_ZERO_XZ,
+
+    // #### `result`
+    // ```c
     // false
     // ```
     // #### `args`
@@ -2597,6 +2639,30 @@ typedef enum {
     // #### `args`
     // - None
     VB_SHOW_TITLE_CARD,
+
+    // #### `result`
+    // ```c
+    // this->actor.xyzDistToPlayerSq < 900.0f
+    // ```
+    // #### `args`
+    // - *EnGSwitch
+    VB_SILVER_COLLECT,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - *EnGSwitch
+    VB_SILVER_COUNT_CHECK,
+
+    // #### `result`
+    // ```c
+    // Flags_GetSwitch(play, this->switchFlag)
+    // ```
+    // #### `args`
+    // - *EnGSwitch
+    VB_SILVER_DESPAWN,
 
     // #### `result`
     // ```c
@@ -2849,6 +2915,14 @@ typedef enum {
     // true
     // ```
     // #### `args`
+    // - `*Actor`
+    VB_ON_ACTOR_THROW_ONLY_CHECK,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
     // - `*EnHs`
     VB_TRADE_COJIRO,
 
@@ -3027,7 +3101,7 @@ typedef enum {
 
     // #### `result`
     // ```c
-    // true
+    // varies
     // ```
     // #### `args`
     // - `*Actor`
@@ -3590,6 +3664,51 @@ typedef enum {
     // a textbox can be rendered instead. Pause screen only, Game Over version left
     // intact.
     VB_DRAW_SAVE_MENU,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // Whether the chest game shopkeeper wipes the scene's chest flags and keys on spawn.
+    // #### `args`
+    // - `*EnTakaraMan`
+    VB_TAKARA_MAN_RESET_CHESTS_AND_KEYS,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // Whether the chest game shopkeeper hands over a small key after being paid.
+    // #### `args`
+    // - `*EnTakaraMan`
+    VB_TAKARA_MAN_OFFER_GET_ITEM,
+
+    // #### `result`
+    // ```c
+    // Rand_ZeroFloat(1.99f) < 1.0f
+    // ```
+    // Whether the chest game swaps which side of the room holds the key chest.
+    // #### `args`
+    // - `*EnChanger`
+    VB_EN_CHANGER_SWAP_CHESTS,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // Whether opening a chest sets its treasure flag.
+    // #### `args`
+    // - `*EnBox`
+    VB_CHEST_SET_TREASURE_FLAG,
+
+    // #### `result`
+    // ```c
+    // Flags_GetTreasure(play, this->dyna.actor.params & 0x1F)
+    // ```
+    // Whether a chest counts as already opened.
+    // #### `args`
+    // - `*EnBox`
+    VB_CHEST_CONSIDER_CHEST_OPEN,
 } GIVanillaBehavior;
 
 #endif

@@ -2,7 +2,6 @@
 #include "overlays/actors/ovl_En_GeldB/z_en_geldb.h"
 #include "objects/object_daiku/object_daiku.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
 
@@ -220,8 +219,6 @@ void EnDaiku_Destroy(Actor* thisx, PlayState* play) {
     EnDaiku* this = (EnDaiku*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 s32 EnDaiku_UpdateTalking(EnDaiku* this, PlayState* play) {

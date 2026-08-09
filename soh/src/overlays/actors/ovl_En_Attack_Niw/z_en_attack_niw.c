@@ -7,7 +7,6 @@
 #include "z_en_attack_niw.h"
 #include "objects/object_niw/object_niw.h"
 #include "overlays/actors/ovl_En_Niw/z_en_niw.h"
-#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
@@ -74,8 +73,6 @@ void EnAttackNiw_Destroy(Actor* thisx, PlayState* play) {
             cucco->unk_296--;
         }
     }
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void func_809B5268(EnAttackNiw* this, PlayState* play, s16 arg2) {

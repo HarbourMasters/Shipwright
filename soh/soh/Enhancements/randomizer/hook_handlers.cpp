@@ -86,7 +86,7 @@ bool LocMatchesQuest(Rando::Location loc) {
     if (loc.GetQuest() == RCQUEST_BOTH) {
         return true;
     } else {
-        auto dungeon = OTRGlobals::Instance->gRandoContext->GetDungeons()->GetDungeonFromScene(loc.GetScene());
+        auto dungeon = OTRGlobals::Instance->gRandoContext->GetDungeonFromScene(loc.GetScene());
         return (dungeon->IsMQ() && loc.GetQuest() == RCQUEST_MQ) ||
                (dungeon->IsVanilla() && loc.GetQuest() == RCQUEST_VANILLA);
     }
@@ -324,7 +324,7 @@ void RandomizerOnFlagSetHandler(int16_t flagType, int16_t flag) {
 
 void RandomizerOnSceneFlagSetHandler(int16_t sceneNum, int16_t flagType, int16_t flag) {
     if (flagType == FLAG_SCENE_SWITCH) {
-        auto dungeonInfo = Rando::Context::GetInstance()->GetDungeons()->GetDungeonFromScene(sceneNum);
+        auto dungeonInfo = Rando::Context::GetInstance()->GetDungeonFromScene((SceneID)sceneNum);
         bool isVanilla = dungeonInfo == nullptr || dungeonInfo->IsVanilla();
 
         switch (sceneNum) {
@@ -414,7 +414,7 @@ void RandomizerOnPlayerUpdateForRCQueueHandler() {
     RandomizerGet vanillaRandomizerGet = Rando::StaticData::GetLocation(rc)->GetVanillaItem();
     GetItemID vanillaItem = (GetItemID)Rando::StaticData::RetrieveItem(vanillaRandomizerGet).GetItemID();
     GetItemEntry getItemEntry =
-        Rando::Context::GetInstance()->GetFinalGIEntry(rc, true, (GetItemID)vanillaRandomizerGet);
+        Rando::Context::GetInstance()->GetFinalGIEntry(rc, true, (GetItemID)vanillaRandomizerGet, true);
     GetItemCategory getItemCategory = Randomizer_AdjustItemCategory(getItemEntry);
 
     if (loc->HasObtained()) {
@@ -1495,6 +1495,9 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
                     Flags_UnsetInfTable(INFTABLE_B1);
                     *should = true;
                 }
+            } else if (id == VB_BE_ELIGIBLE_FOR_GIANTS_KNIFE_PURCHASE && RAND_GET_OPTION(RSK_PROGRESSIVE_GORON_SWORD)) {
+                // the progressive sword carries the first knife, leaving Medigoron to replace broken ones
+                *should = false;
             }
             break;
         }
@@ -1535,12 +1538,6 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
         }
         case VB_DEKU_THEATER_FINISH_GIVING_PRIZE:
             *should = true;
-            break;
-        case VB_DAMPE_AWARD_SECOND_PRIZE:
-            if (!*should) {
-                Flags_SetTreasure(gPlayState, 0x1E);
-                *should = true;
-            }
             break;
         case VB_FROGS_GO_TO_IDLE: {
             EnFr* enFr = va_arg(args, EnFr*);
@@ -1711,8 +1708,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
         }
         case VB_OKARINA_TAG_COMPLETE: {
             if (gPlayState->sceneNum == SCENE_BOTTOM_OF_THE_WELL) {
-                auto dungeon =
-                    OTRGlobals::Instance->gRandoContext->GetDungeons()->GetDungeonFromScene(SCENE_BOTTOM_OF_THE_WELL);
+                auto dungeon = OTRGlobals::Instance->gRandoContext->GetDungeonFromScene(SCENE_BOTTOM_OF_THE_WELL);
                 if (dungeon->IsVanilla()) {
                     EnOkarinaTag* enOkarinaTag = va_arg(args, EnOkarinaTag*);
                     if (enOkarinaTag->switchFlag >= 0 && Flags_GetSwitch(gPlayState, enOkarinaTag->switchFlag)) {
@@ -1725,8 +1721,7 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
         }
         case VB_OKARINA_TAG_COMPLETED: {
             if (gPlayState->sceneNum == SCENE_BOTTOM_OF_THE_WELL) {
-                auto dungeon =
-                    OTRGlobals::Instance->gRandoContext->GetDungeons()->GetDungeonFromScene(SCENE_BOTTOM_OF_THE_WELL);
+                auto dungeon = OTRGlobals::Instance->gRandoContext->GetDungeonFromScene(SCENE_BOTTOM_OF_THE_WELL);
                 if (dungeon->IsVanilla()) {
                     *should = false;
                 }
@@ -2145,53 +2140,6 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
 }
 
 void RandomizerOnSceneInitHandler(int16_t sceneNum) {
-    // Treasure Chest Game
-    // todo: for now we're just unsetting all of them, we will
-    //       probably need to do something different when we implement shuffle
-    if (sceneNum == SCENE_TREASURE_BOX_SHOP) {
-        Flags_UnsetRandomizerInf(RAND_INF_MARKET_TREASURE_CHEST_GAME_ITEM_1);
-        Rando::Context::GetInstance()
-            ->GetItemLocation(RC_MARKET_TREASURE_CHEST_GAME_ITEM_1)
-            ->SetCheckStatus(RCSHOW_UNCHECKED);
-        Flags_UnsetRandomizerInf(RAND_INF_MARKET_TREASURE_CHEST_GAME_ITEM_2);
-        Rando::Context::GetInstance()
-            ->GetItemLocation(RC_MARKET_TREASURE_CHEST_GAME_ITEM_2)
-            ->SetCheckStatus(RCSHOW_UNCHECKED);
-        Flags_UnsetRandomizerInf(RAND_INF_MARKET_TREASURE_CHEST_GAME_ITEM_3);
-        Rando::Context::GetInstance()
-            ->GetItemLocation(RC_MARKET_TREASURE_CHEST_GAME_ITEM_3)
-            ->SetCheckStatus(RCSHOW_UNCHECKED);
-        Flags_UnsetRandomizerInf(RAND_INF_MARKET_TREASURE_CHEST_GAME_ITEM_4);
-        Rando::Context::GetInstance()
-            ->GetItemLocation(RC_MARKET_TREASURE_CHEST_GAME_ITEM_4)
-            ->SetCheckStatus(RCSHOW_UNCHECKED);
-        Flags_UnsetRandomizerInf(RAND_INF_MARKET_TREASURE_CHEST_GAME_ITEM_5);
-        Rando::Context::GetInstance()
-            ->GetItemLocation(RC_MARKET_TREASURE_CHEST_GAME_ITEM_5)
-            ->SetCheckStatus(RCSHOW_UNCHECKED);
-        Flags_UnsetRandomizerInf(RAND_INF_MARKET_TREASURE_CHEST_GAME_KEY_1);
-        Rando::Context::GetInstance()
-            ->GetItemLocation(RC_MARKET_TREASURE_CHEST_GAME_KEY_1)
-            ->SetCheckStatus(RCSHOW_UNCHECKED);
-        Flags_UnsetRandomizerInf(RAND_INF_MARKET_TREASURE_CHEST_GAME_KEY_2);
-        Rando::Context::GetInstance()
-            ->GetItemLocation(RC_MARKET_TREASURE_CHEST_GAME_KEY_2)
-            ->SetCheckStatus(RCSHOW_UNCHECKED);
-        Flags_UnsetRandomizerInf(RAND_INF_MARKET_TREASURE_CHEST_GAME_KEY_3);
-        Rando::Context::GetInstance()
-            ->GetItemLocation(RC_MARKET_TREASURE_CHEST_GAME_KEY_3)
-            ->SetCheckStatus(RCSHOW_UNCHECKED);
-        Flags_UnsetRandomizerInf(RAND_INF_MARKET_TREASURE_CHEST_GAME_KEY_4);
-        Rando::Context::GetInstance()
-            ->GetItemLocation(RC_MARKET_TREASURE_CHEST_GAME_KEY_4)
-            ->SetCheckStatus(RCSHOW_UNCHECKED);
-        Flags_UnsetRandomizerInf(RAND_INF_MARKET_TREASURE_CHEST_GAME_KEY_5);
-        Rando::Context::GetInstance()
-            ->GetItemLocation(RC_MARKET_TREASURE_CHEST_GAME_KEY_5)
-            ->SetCheckStatus(RCSHOW_UNCHECKED);
-        CheckTracker::RecalculateAllAreaTotals();
-    }
-
     // ENTRTODO: Move all entrance rando handling to a dedicated file
     if (RAND_GET_OPTION(RSK_SHUFFLE_ENTRANCES)) {
         // In ER, override roomNum to load based on scene and spawn during scene init
@@ -2293,7 +2241,7 @@ void RandomizerOnActorInitHandler(void* actorRef) {
     Actor* actor = static_cast<Actor*>(actorRef);
 
     if (actor->id == ACTOR_PLAYER) {
-        auto dungeonInfo = Rando::Context::GetInstance()->GetDungeons()->GetDungeonFromScene(gPlayState->sceneNum);
+        auto dungeonInfo = Rando::Context::GetInstance()->GetDungeonFromScene((SceneID)gPlayState->sceneNum);
         bool isVanilla = dungeonInfo == nullptr || dungeonInfo->IsVanilla();
         switch (gPlayState->sceneNum) {
             case SCENE_DEKU_TREE:
@@ -2682,8 +2630,7 @@ void RandomizerOnActorInitHandler(void* actorRef) {
     // Turn MQ switch into toggle
     if (actor->id == ACTOR_OBJ_SWITCH && gPlayState->sceneNum == SCENE_BOTTOM_OF_THE_WELL &&
         (actor->params & 0x3f07) == 0x303) {
-        auto dungeon =
-            OTRGlobals::Instance->gRandoContext->GetDungeons()->GetDungeonFromScene(SCENE_BOTTOM_OF_THE_WELL);
+        auto dungeon = OTRGlobals::Instance->gRandoContext->GetDungeonFromScene(SCENE_BOTTOM_OF_THE_WELL);
         if (dungeon->IsMQ()) {
             actor->params |= 0x10;
         }

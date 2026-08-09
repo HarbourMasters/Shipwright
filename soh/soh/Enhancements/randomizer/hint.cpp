@@ -516,7 +516,9 @@ const HintText Hint::GetItemHintText(uint8_t slot, bool mysterious) const {
     if (mysterious) {
         return StaticData::hintTextTable[RHT_MYSTERIOUS_ITEM];
     } else if (targetRG == RG_ICE_TRAP) { // RANDOTODO store in item hint instead of item
-        return HintText(CustomMessage({ ctx->overrides[hintedCheck].GetTrickName() }));
+        // item hints read as sentences, so the fake name needs its article like a real item's hint has
+        return HintText(CustomMessage(
+            { ctx->overrides[hintedCheck].GetTrickArticle() + ctx->overrides[hintedCheck].GetTrickName() }));
     } else {
         return ctx->GetItemLocation(hintedCheck)->GetPlacedItem().GetHint();
     }

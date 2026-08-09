@@ -8,6 +8,7 @@ extern "C" {
 #include "include/z64camera.h"
 #include "src/overlays/actors/ovl_En_Test/z_en_test.h"
 #include "src/overlays/actors/ovl_En_Horse/z_en_horse.h"
+void UnregisterActorSkeletons(struct Actor* actor);
 extern void Player_UseItem(PlayState*, Player*, s32);
 extern PlayState* gPlayState;
 }
@@ -96,6 +97,11 @@ void RegisterAlwaysOnFixes() {
             *should = true;
         }
     });
+
+    // ShouldActorDestroy rather than OnActorDestroy: the latter only fires from Actor_Delete, but
+    // Actor_UpdateAll and func_80031B14 both run Actor_Destroy without deleting.
+    COND_HOOK(ShouldActorDestroy, true,
+              [](void* refActor, bool* result) { UnregisterActorSkeletons(reinterpret_cast<Actor*>(refActor)); });
 
     COND_ID_HOOK(OnActorDestroy, ACTOR_EN_TEST, true, [](void* refActor) {
         Actor* actor = reinterpret_cast<Actor*>(refActor);

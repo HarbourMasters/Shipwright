@@ -6,7 +6,6 @@
 
 #include "z_en_ani.h"
 #include "objects/object_ani/object_ani.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY)
@@ -97,8 +96,6 @@ void EnAni_Destroy(Actor* thisx, PlayState* play) {
     EnAni* this = (EnAni*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 s32 EnAni_SetText(EnAni* this, PlayState* play, u16 textId) {

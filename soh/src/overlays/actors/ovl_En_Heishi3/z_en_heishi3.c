@@ -7,7 +7,6 @@
 #include "z_en_heishi3.h"
 #include "objects/object_sd/object_sd.h"
 #include "vt.h"
-#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS 0
 
@@ -90,8 +89,6 @@ void EnHeishi3_Destroy(Actor* thisx, PlayState* play) {
     EnHeishi3* this = (EnHeishi3*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnHeishi3_SetupGuardType(EnHeishi3* this, PlayState* play) {

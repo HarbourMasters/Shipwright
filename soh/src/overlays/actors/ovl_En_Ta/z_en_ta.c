@@ -8,7 +8,6 @@
 #include "vt.h"
 #include "objects/object_ta/object_ta.h"
 #include "soh/OTRGlobals.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY)
@@ -245,8 +244,6 @@ void EnTa_Destroy(Actor* thisx, PlayState* play) {
     if (this->stateFlags & 0x200) {
         func_800F5B58();
     }
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 s32 EnTa_RequestTalk(EnTa* this, PlayState* play, u16 textId) {

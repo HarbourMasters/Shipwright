@@ -6,7 +6,6 @@
 
 #include "z_en_ms.h"
 #include "objects/object_ms/object_ms.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY)
@@ -101,8 +100,6 @@ void EnMs_Destroy(Actor* thisx, PlayState* play) {
     EnMs* this = (EnMs*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnMs_Wait(EnMs* this, PlayState* play) {

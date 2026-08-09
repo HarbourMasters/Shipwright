@@ -26,10 +26,10 @@ void RegionTable_Init_ZoraRiver() {
         LOCATION(RC_ZR_BOULDER_4,            logic->IsChild && logic->BlastOrSmash()),
         LOCATION(RC_ZR_TREE,                 logic->IsChild && logic->CanBonkTrees()),
         // Require backflip with Iron Boots
-        LOCATION(RC_ZR_WONDER_LOWER_RIVER_1, logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
-        LOCATION(RC_ZR_WONDER_LOWER_RIVER_2, logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
-        LOCATION(RC_ZR_WONDER_LOWER_RIVER_3, logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
-        LOCATION(RC_ZR_WONDER_LOWER_RIVER_4, logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
+        LOCATION(RC_ZR_WONDER_LOWER_RIVER_1, logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()))),
+        LOCATION(RC_ZR_WONDER_LOWER_RIVER_2, logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()))),
+        LOCATION(RC_ZR_WONDER_LOWER_RIVER_3, logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()))),
+        LOCATION(RC_ZR_WONDER_LOWER_RIVER_4, logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()))),
     }, {
         //Exits
         ENTRANCE(RR_ZORAS_RIVER,  logic->IsAdult || logic->BlastOrSmash() || logic->CanUse(RG_HOVER_BOOTS)),
@@ -59,10 +59,10 @@ void RegionTable_Init_ZoraRiver() {
         LOCATION(RC_ZR_BEAN_SPROUT_FAIRY_3,                  logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_ZORAS_RIVER_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_ZR_NEAR_DOMAIN_GOSSIP_STONE_FAIRY,       logic->CallGossipFairy()),
         LOCATION(RC_ZR_NEAR_DOMAIN_GOSSIP_STONE_FAIRY_BIG,   logic->CanUse(RG_SONG_OF_STORMS)),
-        LOCATION(RC_ZR_BENEATH_WATERFALL_LEFT_RUPEE,         logic->IsAdult && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
-        LOCATION(RC_ZR_BENEATH_WATERFALL_MIDDLE_LEFT_RUPEE,  logic->IsAdult && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
-        LOCATION(RC_ZR_BENEATH_WATERFALL_MIDDLE_RIGHT_RUPEE, logic->IsAdult && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
-        LOCATION(RC_ZR_BENEATH_WATERFALL_RIGHT_RUPEE,        logic->IsAdult && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
+        LOCATION(RC_ZR_BENEATH_WATERFALL_LEFT_RUPEE,         logic->IsAdult && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()))),
+        LOCATION(RC_ZR_BENEATH_WATERFALL_MIDDLE_LEFT_RUPEE,  logic->IsAdult && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()))),
+        LOCATION(RC_ZR_BENEATH_WATERFALL_MIDDLE_RIGHT_RUPEE, logic->IsAdult && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()))),
+        LOCATION(RC_ZR_BENEATH_WATERFALL_RIGHT_RUPEE,        logic->IsAdult && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()))),
         LOCATION(RC_ZR_CIRCLE_ROCK_1,                        logic->CanBreakRocks()),
         LOCATION(RC_ZR_CIRCLE_ROCK_2,                        logic->CanBreakRocks()),
         LOCATION(RC_ZR_CIRCLE_ROCK_3,                        logic->CanBreakRocks()),
@@ -73,44 +73,44 @@ void RegionTable_Init_ZoraRiver() {
         LOCATION(RC_ZR_CIRCLE_ROCK_8,                        logic->CanBreakRocks()),
         LOCATION(RC_ZR_ROCK,                                 logic->CanBreakRocks()),
         LOCATION(RC_ZR_UNDERWATER_ROCK_1,                    (logic->CanUse(RG_BOMBCHU_5) || (logic->CanUse(RG_BOMB_BAG) && ctx->GetTrickOption(RT_BOMB_DETONATION)) || (logic->IsAdult && logic->HasItem(RG_POWER_BRACELET))) && 
-                                                             (logic->IsAdult || logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_BOOMERANG) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
+                                                             (logic->IsAdult || logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_BOOMERANG) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()))),
         LOCATION(RC_ZR_UNDERWATER_ROCK_2,                    (logic->CanUse(RG_BOMBCHU_5) || (logic->CanUse(RG_BOMB_BAG) && ctx->GetTrickOption(RT_BOMB_DETONATION)) || (logic->IsAdult && logic->HasItem(RG_POWER_BRACELET))) && 
-                                                             (logic->IsAdult || logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_BOOMERANG) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
+                                                             (logic->IsAdult || logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_BOOMERANG) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()))),
         LOCATION(RC_ZR_UNDERWATER_ROCK_3,                    (logic->CanUse(RG_BOMBCHU_5) || (logic->CanUse(RG_BOMB_BAG) && ctx->GetTrickOption(RT_BOMB_DETONATION)) || (logic->IsAdult && logic->HasItem(RG_POWER_BRACELET))) && 
-                                                             (logic->IsAdult || logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_BOOMERANG) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
+                                                             (logic->IsAdult || logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_BOOMERANG) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()))),
         LOCATION(RC_ZR_UNDERWATER_ROCK_4,                    (logic->CanUse(RG_BOMBCHU_5) || (logic->CanUse(RG_BOMB_BAG) && ctx->GetTrickOption(RT_BOMB_DETONATION)) || (logic->IsAdult && logic->HasItem(RG_POWER_BRACELET))) && 
-                                                             (logic->IsAdult || logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_BOOMERANG) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
+                                                             (logic->IsAdult || logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_BOOMERANG) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()))),
         LOCATION(RC_ZR_NEAR_FREESTANDING_POH_GRASS,          logic->CanUse(RG_BOOMERANG)),
         LOCATION(RC_ZR_NEAR_ROCK_CIRCLE_BUTTERFLY_FAIRY,     logic->IsChild && logic->CanUse(RG_STICKS)),
         LOCATION(RC_ZR_WATERFALL_BUTTERFLY_FAIRY,            logic->IsChild && logic->CanUse(RG_STICKS)),
         LOCATION(RC_ZR_SLEEPLESS_WATERFALL_PLAQUE,           logic->CanRead()),
-        LOCATION(RC_ZR_WONDER_NEAR_DOMAIN_1,                 logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
-        LOCATION(RC_ZR_WONDER_NEAR_DOMAIN_2,                 logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
-        LOCATION(RC_ZR_WONDER_NEAR_DOMAIN_3,                 logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
-        LOCATION(RC_ZR_WONDER_NEAR_DOMAIN_4,                 logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
-        LOCATION(RC_ZR_WONDER_BEFORE_LADDER_1,               logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
-        LOCATION(RC_ZR_WONDER_BEFORE_LADDER_2,               logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
-        LOCATION(RC_ZR_WONDER_BEFORE_LADDER_3,               logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
-        LOCATION(RC_ZR_WONDER_BEFORE_LADDER_4,               logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
-        LOCATION(RC_ZR_WONDER_BEFORE_LADDER_5,               logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
-        LOCATION(RC_ZR_WONDER_BEFORE_LADDER_6,               logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
-        LOCATION(RC_ZR_WONDER_AFTER_LADDER_1,                logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
-        LOCATION(RC_ZR_WONDER_AFTER_LADDER_2,                logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
-        LOCATION(RC_ZR_WONDER_AFTER_LADDER_3,                logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
-        LOCATION(RC_ZR_WONDER_FROG_BRIDGE_1,                 logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
-        LOCATION(RC_ZR_WONDER_FROG_BRIDGE_2,                 logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
-        LOCATION(RC_ZR_WONDER_FROG_BRIDGE_3,                 logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
-        LOCATION(RC_ZR_WONDER_PILLARS_1,                     logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
-        LOCATION(RC_ZR_WONDER_PILLARS_2,                     logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
-        LOCATION(RC_ZR_WONDER_PILLARS_3,                     logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
-        LOCATION(RC_ZR_WONDER_PILLARS_4,                     logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
-        LOCATION(RC_ZR_WONDER_LOWER_LAND_BRIDGE_1,           logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))), // Requires backflip with Iron Boots
-        LOCATION(RC_ZR_WONDER_LOWER_LAND_BRIDGE_2,           logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
-        LOCATION(RC_ZR_WONDER_LOWER_LAND_BRIDGE_3,           logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
-        LOCATION(RC_ZR_WONDER_LOWER_LAND_BRIDGE_4,           logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
-        LOCATION(RC_ZR_WONDER_NEAR_CUCCO_1,                  logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))), // Requires backflip with Iron Boots
-        LOCATION(RC_ZR_WONDER_NEAR_CUCCO_2,                  logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))), // Requires backflip with Iron Boots
-        LOCATION(RC_ZR_WONDER_NEAR_CUCCO_3,                  logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
+        LOCATION(RC_ZR_WONDER_NEAR_DOMAIN_1,                 logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()))),
+        LOCATION(RC_ZR_WONDER_NEAR_DOMAIN_2,                 logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()))),
+        LOCATION(RC_ZR_WONDER_NEAR_DOMAIN_3,                 logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()))),
+        LOCATION(RC_ZR_WONDER_NEAR_DOMAIN_4,                 logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()))),
+        LOCATION(RC_ZR_WONDER_BEFORE_LADDER_1,               logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()))),
+        LOCATION(RC_ZR_WONDER_BEFORE_LADDER_2,               logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()))),
+        LOCATION(RC_ZR_WONDER_BEFORE_LADDER_3,               logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()))),
+        LOCATION(RC_ZR_WONDER_BEFORE_LADDER_4,               logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()))),
+        LOCATION(RC_ZR_WONDER_BEFORE_LADDER_5,               logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()))),
+        LOCATION(RC_ZR_WONDER_BEFORE_LADDER_6,               logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()))),
+        LOCATION(RC_ZR_WONDER_AFTER_LADDER_1,                logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()))),
+        LOCATION(RC_ZR_WONDER_AFTER_LADDER_2,                logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()))),
+        LOCATION(RC_ZR_WONDER_AFTER_LADDER_3,                logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()))),
+        LOCATION(RC_ZR_WONDER_FROG_BRIDGE_1,                 logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()))),
+        LOCATION(RC_ZR_WONDER_FROG_BRIDGE_2,                 logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()))),
+        LOCATION(RC_ZR_WONDER_FROG_BRIDGE_3,                 logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()))),
+        LOCATION(RC_ZR_WONDER_PILLARS_1,                     logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()))),
+        LOCATION(RC_ZR_WONDER_PILLARS_2,                     logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()))),
+        LOCATION(RC_ZR_WONDER_PILLARS_3,                     logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()))),
+        LOCATION(RC_ZR_WONDER_PILLARS_4,                     logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()))),
+        LOCATION(RC_ZR_WONDER_LOWER_LAND_BRIDGE_1,           logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()))), // Requires backflip with Iron Boots
+        LOCATION(RC_ZR_WONDER_LOWER_LAND_BRIDGE_2,           logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()))),
+        LOCATION(RC_ZR_WONDER_LOWER_LAND_BRIDGE_3,           logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()))),
+        LOCATION(RC_ZR_WONDER_LOWER_LAND_BRIDGE_4,           logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()))),
+        LOCATION(RC_ZR_WONDER_NEAR_CUCCO_1,                  logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()))), // Requires backflip with Iron Boots
+        LOCATION(RC_ZR_WONDER_NEAR_CUCCO_2,                  logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()))), // Requires backflip with Iron Boots
+        LOCATION(RC_ZR_WONDER_NEAR_CUCCO_3,                  logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()))),
         LOCATION(RC_ZR_NEAR_DOMAIN_GOSSIP_STONE,             true),
     }, {
         //Exits
@@ -162,7 +162,7 @@ void RegionTable_Init_ZoraRiver() {
 
     areaTable[RR_ZR_FROM_SHORTCUT] = Region("ZR From Shortcut", SCENE_ZORAS_RIVER, {}, {}, {
         //Exits
-        ENTRANCE(RR_ZORAS_RIVER,    logic->Hearts() > 1 || logic->HasItem(RG_BOTTLE_WITH_FAIRY) || logic->HasItem(RG_BRONZE_SCALE)),
+        ENTRANCE(RR_ZORAS_RIVER,    logic->CanVoid() || logic->HasItem(RG_BRONZE_SCALE)),
         ENTRANCE(RR_THE_LOST_WOODS, logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS)),
     });
 

@@ -14,6 +14,7 @@
 #include "soh/SaveManager.h"
 #include "soh/ResourceManagerHelpers.h"
 
+#include <spdlog/common.h>
 #include <spdlog/fmt/fmt.h>
 #include <algorithm>
 #include <array>
@@ -1502,7 +1503,7 @@ static void DrawFlagTableSearchResults(const FlagTable& flagTable, ImGuiTextFilt
             uint16_t index = static_cast<uint16_t>(row * 16 + flagIndex);
             auto descIt = flagTable.flagDescriptions.find(index);
             const char* desc = descIt != flagTable.flagDescriptions.end() ? descIt->second : "";
-            std::string searchable = fmt::format("0x{:02X} {}", index, desc);
+            std::string searchable = spdlog::fmt_lib::format("0x{:02X} {}", index, desc);
             if (!filter.PassFilter(searchable.c_str())) {
                 continue;
             }
@@ -1593,7 +1594,7 @@ void DrawFlagsTab() {
                                 }
                             }
 
-                            ImGui::Text("%s", fmt::format("{:<2X}", j).c_str());
+                            ImGui::Text("%s", spdlog::fmt_lib::format("{:<2X}", j).c_str());
 
                             switch (flagTable.flagTableType) {
                                 case EVENT_CHECK_INF:

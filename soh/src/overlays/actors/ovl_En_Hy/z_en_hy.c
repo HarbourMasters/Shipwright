@@ -14,7 +14,6 @@
 #include "objects/object_cne/object_cne.h"
 #include "objects/object_cob/object_cob.h"
 #include "objects/object_os_anime/object_os_anime.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
@@ -917,8 +916,6 @@ void EnHy_Destroy(Actor* thisx, PlayState* play) {
     EnHy* this = (EnHy*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnHy_InitImpl(EnHy* this, PlayState* play) {

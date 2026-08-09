@@ -7,7 +7,6 @@
 #include "z_en_floormas.h"
 #include "objects/object_wallmaster/object_wallmaster.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_HOOKSHOT_PULLS_PLAYER)
 
@@ -181,8 +180,6 @@ void EnFloormas_Destroy(Actor* thisx, PlayState* play) {
     EnFloormas* this = (EnFloormas*)thisx;
     ColliderCylinder* col = &this->collider;
     Collider_DestroyCylinder(play, col);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnFloormas_MakeInvulnerable(EnFloormas* this) {

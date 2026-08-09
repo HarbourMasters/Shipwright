@@ -40,12 +40,15 @@ class Randomizer {
     ~Randomizer();
     bool SpoilerFileExists(const char* spoilerFileName);
     bool IsTrialRequired(s32 trialFlag);
+    static s8 SilverTotal(RandomizerGet rg);
+    static s8* SilverFieldFromSaveContext(SaveContext* saveContext, RandomizerGet rg);
     u8 GetRandoSettingValue(RandomizerSettingKey randoSettingKey);
     u8 GetTriforcePiecesRequired();
     RandomizerCheck GetCheckFromRandomizerInf(RandomizerInf randomizerInf);
     RandomizerInf GetRandomizerInfFromCheck(RandomizerCheck rc);
     Rando::Location* GetCheckObjectFromActor(s16 actorId, s16 sceneNum, s32 actorParams);
     ShopItemIdentity IdentifyShopItem(s32 sceneNum, u8 slotIndex);
+    CheckIdentity IdentifySilver(s32 sceneNum, Vec3f pos);
     GetItemEntry GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogItemId,
                                        bool checkObtainability = true);
     GetItemEntry GetItemFromActor(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogItemId,

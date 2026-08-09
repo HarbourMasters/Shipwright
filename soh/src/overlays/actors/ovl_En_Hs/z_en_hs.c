@@ -7,7 +7,6 @@
 #include "z_en_hs.h"
 #include "vt.h"
 #include "objects/object_hs/object_hs.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY)
@@ -99,8 +98,6 @@ void EnHs_Destroy(Actor* thisx, PlayState* play) {
     EnHs* this = (EnHs*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 s32 func_80A6E53C(EnHs* this, PlayState* play, u16 textId, EnHsActionFunc actionFunc) {

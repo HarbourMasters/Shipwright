@@ -416,7 +416,7 @@ BgImage* func_80096A74(PolygonType1* polygon1, PlayState* play) {
     camId = camera->camDataIdx;
     if (GameInteractor_Should(VB_SHOULD_LOAD_BG_IMAGE, true, &camId)) {
         // jfifid
-        camId2 = func_80041C10(&play->colCtx, camId, BGCHECK_SCENE)[2].y;
+        camId2 = BgCheck_GetBgCamFuncDataImpl(&play->colCtx, camId, BGCHECK_SCENE)[2].y;
         if (camId2 >= 0) {
             camId = camId2;
         }

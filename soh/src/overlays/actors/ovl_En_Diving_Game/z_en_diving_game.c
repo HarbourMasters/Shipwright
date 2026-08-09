@@ -8,7 +8,6 @@
 #include "overlays/actors/ovl_En_Ex_Ruppy/z_en_ex_ruppy.h"
 #include "objects/object_zo/object_zo.h"
 #include "vt.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
@@ -110,8 +109,6 @@ void EnDivingGame_Destroy(Actor* thisx, PlayState* play) {
         gSaveContext.timerState = TIMER_STATE_OFF;
     }
     Collider_DestroyCylinder(play, &this->collider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnDivingGame_SpawnRuppy(EnDivingGame* this, PlayState* play) {

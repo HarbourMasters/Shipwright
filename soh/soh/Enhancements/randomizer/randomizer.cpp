@@ -472,7 +472,10 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
             return Inventory_HasEmptyBottle() ? CAN_OBTAIN : CANT_OBTAIN_NEED_EMPTY_BOTTLE;
 
         // Trade Items
-        // case RG_PROGRESSIVE_GORONSWORD:
+        // Giant's Knife and Biggoron's Sword share a slot, bgsFlag marks the final upgrade.
+        // Giant's Knife itself stays obtainable, Medigoron replaces broken ones.
+        case RG_PROGRESSIVE_GORONSWORD:
+            return !gSaveContext.bgsFlag ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         // case RG_GIANTS_KNIFE:
 
         // Misc Items
@@ -658,6 +661,33 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
         case RG_LIGHT_MEDALLION:
             return !CHECK_QUEST_ITEM(QUEST_MEDALLION_LIGHT) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
 
+        // silver rupees
+        case RG_SHADOW_SILVER_BLADES:
+        case RG_SHADOW_SILVER_PIT:
+        case RG_SHADOW_SILVER_SPIKES:
+        case RG_SPIRIT_SILVER_CHILD:
+        case RG_SPIRIT_SILVER_SUN:
+        case RG_SPIRIT_SILVER_BOULDERS:
+        case RG_BOTW_SILVER:
+        case RG_ICE_CAVERN_SILVER_BLADES:
+        case RG_ICE_CAVERN_SILVER_BLOCK:
+        case RG_GTG_SILVER_SLOPE:
+        case RG_GTG_SILVER_LAVA:
+        case RG_GTG_SILVER_WATER:
+        case RG_GANONS_CASTLE_SILVER_LIGHT:
+        case RG_GANONS_CASTLE_SILVER_FOREST:
+        case RG_GANONS_CASTLE_SILVER_FIRE:
+        case RG_GANONS_CASTLE_SILVER_SPIRIT:
+        case RG_DODONGOS_CAVERN_MQ_SILVER:
+        case RG_SHADOW_MQ_SILVER_INVISIBLE_BLADES:
+        case RG_SPIRIT_MQ_SILVER_LOBBY:
+        case RG_SPIRIT_MQ_SILVER_BIG_WALL:
+        case RG_GANONS_CASTLE_MQ_SILVER_WATER:
+        case RG_GANONS_CASTLE_MQ_SILVER_SHADOW:
+            return *Randomizer::SilverFieldFromSaveContext(&gSaveContext, randoGet) < Randomizer::SilverTotal(randoGet)
+                       ? CAN_OBTAIN
+                       : CANT_OBTAIN_ALREADY_HAVE;
+
         case RG_RECOVERY_HEART:
         case RG_GREEN_RUPEE:
         case RG_GREG_RUPEE:
@@ -688,7 +718,7 @@ Rando::Location* Randomizer::GetCheckObjectFromActor(s16 actorId, s16 sceneNum, 
                 specialRc = RC_MARKET_TREASURE_CHEST_GAME_REWARD;
             }
 
-            // todo: handle the itemetc part of this so drawing works when we implement shuffle
+            // the low bits of a game chest's params are its treasure flag, odd for the key chest
             if (actorId == ACTOR_EN_BOX) {
                 bool isAKey = (actorParams & 0x60) == 0x20;
                 if ((actorParams & 0xF) < 2) {
@@ -861,6 +891,27 @@ ShopItemIdentity Randomizer::IdentifyShopItem(s32 sceneNum, u8 slotIndex) {
     }
 
     return shopItemIdentity;
+}
+
+CheckIdentity Randomizer::IdentifySilver(s32 sceneNum, Vec3f pos) {
+    struct CheckIdentity silverIdentity;
+
+    silverIdentity.randomizerInf = RAND_INF_MAX;
+    silverIdentity.randomizerCheck = RC_UNKNOWN_CHECK;
+
+    s32 actorParams = TWO_ACTOR_PARAMS((s16)pos.x, (s16)pos.z);
+    if (sceneNum == SCENE_SHADOW_TEMPLE && actorParams == TWO_ACTOR_PARAMS(2110, 3372)) {
+        actorParams = TWO_ACTOR_PARAMS((s16)pos.x, (s16)pos.y);
+    }
+
+    Rando::Location* location = GetCheckObjectFromActor(ACTOR_EN_G_SWITCH, sceneNum, actorParams);
+
+    if (location->GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
+        silverIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
+        silverIdentity.randomizerCheck = location->GetRandomizerCheck();
+    }
+
+    return silverIdentity;
 }
 
 u8 Randomizer::GetRandoSettingValue(RandomizerSettingKey randoSettingKey) {
@@ -1229,8 +1280,8 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
     }
 
     // dungeon items
-    if ((item >= RG_FOREST_TEMPLE_SMALL_KEY && item <= RG_GANONS_CASTLE_SMALL_KEY) ||
-        (item >= RG_FOREST_TEMPLE_KEY_RING && item <= RG_GANONS_CASTLE_KEY_RING) ||
+    if ((item >= RG_FOREST_TEMPLE_SMALL_KEY && item <= RG_TREASURE_GAME_SMALL_KEY) ||
+        (item >= RG_FOREST_TEMPLE_KEY_RING && item <= RG_TREASURE_GAME_KEY_RING) ||
         (item >= RG_FOREST_TEMPLE_BOSS_KEY && item <= RG_GANONS_CASTLE_BOSS_KEY) ||
         (item >= RG_DEKU_TREE_MAP && item <= RG_ICE_CAVERN_MAP) ||
         (item >= RG_DEKU_TREE_COMPASS && item <= RG_ICE_CAVERN_COMPASS)) {
@@ -1318,11 +1369,16 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
                 mapIndex = SCENE_INSIDE_GANONS_CASTLE;
                 numOfKeysOnKeyring = GANONS_CASTLE_SMALL_KEY_MAX;
                 break;
+            case RG_TREASURE_GAME_SMALL_KEY:
+            case RG_TREASURE_GAME_KEY_RING:
+                mapIndex = SCENE_TREASURE_BOX_SHOP;
+                numOfKeysOnKeyring = TREASURE_GAME_SMALL_KEY_MAX;
+                break;
             default:
                 break;
         }
 
-        if ((item >= RG_FOREST_TEMPLE_SMALL_KEY) && (item <= RG_GANONS_CASTLE_SMALL_KEY)) {
+        if ((item >= RG_FOREST_TEMPLE_SMALL_KEY) && (item <= RG_TREASURE_GAME_SMALL_KEY)) {
             gSaveContext.ship.stats.dungeonKeys[mapIndex]++;
             if (gSaveContext.inventory.dungeonKeys[mapIndex] < 0) {
                 gSaveContext.inventory.dungeonKeys[mapIndex] = 1;
@@ -1332,7 +1388,7 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
             return Return_Item_Entry(giEntry, RG_NONE);
         }
 
-        if ((item >= RG_FOREST_TEMPLE_KEY_RING) && (item <= RG_GANONS_CASTLE_KEY_RING)) {
+        if ((item >= RG_FOREST_TEMPLE_KEY_RING) && (item <= RG_TREASURE_GAME_KEY_RING)) {
             gSaveContext.ship.stats.dungeonKeys[mapIndex] = numOfKeysOnKeyring;
             gSaveContext.inventory.dungeonKeys[mapIndex] = numOfKeysOnKeyring;
             return Return_Item_Entry(giEntry, RG_NONE);
@@ -1416,6 +1472,41 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
                 INV_CONTENT(ITEM_NAYRUS_LOVE) = ITEM_ROCS_FEATHER;
             }
             break;
+        case RG_SHADOW_SILVER_BLADES:
+        case RG_SHADOW_SILVER_PIT:
+        case RG_SHADOW_SILVER_SPIKES:
+        case RG_SPIRIT_SILVER_CHILD:
+        case RG_SPIRIT_SILVER_SUN:
+        case RG_SPIRIT_SILVER_BOULDERS:
+        case RG_BOTW_SILVER:
+        case RG_ICE_CAVERN_SILVER_BLADES:
+        case RG_ICE_CAVERN_SILVER_BLOCK:
+        case RG_GTG_SILVER_SLOPE:
+        case RG_GTG_SILVER_LAVA:
+        case RG_GTG_SILVER_WATER:
+        case RG_GANONS_CASTLE_SILVER_LIGHT:
+        case RG_GANONS_CASTLE_SILVER_FOREST:
+        case RG_GANONS_CASTLE_SILVER_FIRE:
+        case RG_GANONS_CASTLE_SILVER_SPIRIT:
+        case RG_DODONGOS_CAVERN_MQ_SILVER:
+        case RG_SHADOW_MQ_SILVER_INVISIBLE_BLADES:
+        case RG_SPIRIT_MQ_SILVER_LOBBY:
+        case RG_SPIRIT_MQ_SILVER_BIG_WALL:
+        case RG_GANONS_CASTLE_MQ_SILVER_WATER:
+        case RG_GANONS_CASTLE_MQ_SILVER_SHADOW: {
+            s8* field = Randomizer::SilverFieldFromSaveContext(&gSaveContext, item);
+            if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_SILVER) ==
+                RO_SHUFFLE_SILVER_WALLET) {
+                *field = 10;
+                // this spoils MQ in theory, but will not update trackers because it's subtle and there's too many edge
+                // cases where this does not apply
+                Rupees_ChangeBy(Randomizer::SilverTotal(item) * 5);
+            } else {
+                *field += 1;
+                Rupees_ChangeBy(5);
+            }
+            break;
+        }
         default:
             LUSLOG_WARN("Randomizer_Item_Give didn't have behaviour specified for getItemId=%d", item);
             assert(false);

@@ -160,8 +160,8 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
              RCTYPE_GOSSIP_STONE) && // don't show gossip stones (maybe gossipsanity will be a thing eventually?)
             (location.GetRCType() != RCTYPE_STATIC_HINT) &&  // don't show static hints
             (location.GetRCType() != RCTYPE_LINKS_POCKET) && // links pocket can be set to nothing if needed
-            (location.GetRCType() !=
-             RCTYPE_CHEST_GAME) && // don't show non final reward chest game checks until we support shuffling them
+            (location.GetRCType() != RCTYPE_CHEST_GAME ||
+             CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleChestMinigame"), RO_GENERIC_OFF)) &&
             (location.GetRCType() != RCTYPE_SKULL_TOKEN ||
              (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleTokens"), RO_TOKENSANITY_OFF) == RO_TOKENSANITY_ALL) ||
              ((CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleTokens"), RO_TOKENSANITY_OFF) ==
@@ -179,6 +179,8 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
              ((CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleFreestanding"), RO_SHUFFLE_FREESTANDING_OFF) ==
                RO_SHUFFLE_FREESTANDING_DUNGEONS) &&
               RandomizerCheckObjects::AreaIsDungeon(location.GetArea()))) &&
+            (location.GetRCType() != RCTYPE_SILVER ||
+             CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleSilver"), RO_GENERIC_NO)) &&
             (location.GetRCType() != RCTYPE_BEEHIVE ||
              CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleBeehives"), RO_GENERIC_NO)) &&
             (location.GetRCType() != RCTYPE_COW ||

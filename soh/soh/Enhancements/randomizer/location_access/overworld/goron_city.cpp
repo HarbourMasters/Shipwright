@@ -94,7 +94,8 @@ void RegionTable_Init_GoronCity() {
         ENTRANCE(RR_GC_WOODS_WARP,        logic->Get(LOGIC_GORON_CITY_WOODS_WARP_OPEN)),
         ENTRANCE(RR_GC_SHOP,              (logic->IsAdult && logic->Get(LOGIC_GORON_CITY_STOP_ROLLING_GORON_AS_ADULT)) || (logic->IsChild && (logic->BlastOrSmash() || logic->HasItem(RG_GORONS_BRACELET) || logic->Get(LOGIC_GORON_CITY_CHILD_FIRE) || logic->CanUse(RG_FAIRY_BOW)))),
         ENTRANCE(RR_GC_DARUNIAS_CHAMBER,  (logic->IsAdult && logic->Get(LOGIC_GORON_CITY_STOP_ROLLING_GORON_AS_ADULT)) || (logic->IsChild && logic->Get(LOGIC_GORON_CITY_DARUNIAS_DOOR_OPEN_CHILD))),
-        ENTRANCE(RR_GC_GROTTO_PLATFORM,   logic->IsAdult && ((logic->CanUse(RG_SONG_OF_TIME) && ((logic->EffectiveHealth() > 2) || logic->CanUse(RG_GORON_TUNIC) || logic->CanUse(RG_LONGSHOT) || logic->CanUse(RG_NAYRUS_LOVE))) || (logic->EffectiveHealth() > 1 && logic->CanUse(RG_GORON_TUNIC) && logic->CanUse(RG_HOOKSHOT)) || (logic->CanUse(RG_NAYRUS_LOVE) && logic->CanUse(RG_HOOKSHOT)) || (logic->EffectiveHealth() > 2 && logic->CanUse(RG_HOOKSHOT) && ctx->GetTrickOption(RT_GC_GROTTO)))),
+        //the lava dive costs a heart, half a heart if we can climb out with the hookshot
+        ENTRANCE(RR_GC_GROTTO_PLATFORM,   logic->IsAdult && ((logic->CanUse(RG_SONG_OF_TIME) && ((logic->EffectiveHealth() > 16) || logic->CanUse(RG_GORON_TUNIC) || logic->CanUse(RG_LONGSHOT) || logic->CanUse(RG_NAYRUS_LOVE))) || (logic->EffectiveHealth() > 8 && logic->CanUse(RG_GORON_TUNIC) && logic->CanUse(RG_HOOKSHOT)) || (logic->CanUse(RG_NAYRUS_LOVE) && logic->CanUse(RG_HOOKSHOT)) || (logic->EffectiveHealth() > 16 && logic->CanUse(RG_HOOKSHOT) && ctx->GetTrickOption(RT_GC_GROTTO)))),
     });
 
     areaTable[RR_GC_MEDIGORON] = Region("GC Medigoron", SCENE_GORON_CITY, {
@@ -139,7 +140,7 @@ void RegionTable_Init_GoronCity() {
     areaTable[RR_GC_GROTTO_PLATFORM] = Region("GC Grotto Platform", SCENE_GORON_CITY, {}, {}, {
         //Exits
         ENTRANCE(RR_GC_GROTTO,  true),
-        ENTRANCE(RR_GORON_CITY, logic->EffectiveHealth() > 2 || logic->CanUse(RG_GORON_TUNIC) || logic->CanUse(RG_NAYRUS_LOVE) || ((logic->IsChild || logic->CanUse(RG_SONG_OF_TIME)) && logic->CanUse(RG_LONGSHOT))),
+        ENTRANCE(RR_GORON_CITY, logic->EffectiveHealth() > 16 || logic->CanUse(RG_GORON_TUNIC) || logic->CanUse(RG_NAYRUS_LOVE) || ((logic->IsChild || logic->CanUse(RG_SONG_OF_TIME)) && logic->CanUse(RG_LONGSHOT))),
     });
 
     areaTable[RR_GC_SHOP] = Region("GC Shop", SCENE_GORON_SHOP, {}, {
