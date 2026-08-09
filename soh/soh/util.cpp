@@ -282,6 +282,8 @@ std::vector<std::string> itemNamesEng = {
     "Deku Stick Upgrade (30)",
     "Deku Nut Upgrade (30)",
     "Deku Nut Upgrade (40)",
+    "[Removed]", // ITEM_CUSTOM
+    "Roc's Feather",
 };
 
 std::vector<std::string> itemNamesFra = {
@@ -441,6 +443,8 @@ std::vector<std::string> itemNamesFra = {
     "Amélioration des Bâtons Mojo (30)",
     "Amélioration des Noix Mojo (30)",
     "Amélioration des Noix Mojo (40)",
+    "[Retiré]", // ITEM_CUSTOM
+    "Plume de Roc",
 };
 
 std::vector<std::string> itemNamesGer = {
@@ -600,6 +604,8 @@ std::vector<std::string> itemNamesGer = {
     "Deku-Stab-Kapazität (30)",
     "Deku-Nuß-Kapazität (30)",
     "Deku-Nuß-Kapazität (40)",
+    "[Entfernt]", // ITEM_CUSTOM
+    "Greifenfeder",
 };
 
 std::vector<std::string> questItemNamesEng = {

@@ -100,20 +100,15 @@ using namespace UIWidgets;
 
 // Helper function to get the correct display name for items, including rando items
 static const char* GetItemDisplayName(int32_t item) {
-    if (item == ITEM_ROCS_FEATHER) {
-        return "Roc's Feather";
-    }
     if (item == ITEM_NONE) {
         return "None";
     }
-    // Check if item exists in itemMapping to avoid assertion on unknown items
-    if (itemMapping.find(item) != itemMapping.end()) {
-        return SohUtils::GetItemName(item).c_str();
+    if (item < 0 || item > ITEM_ROCS_FEATHER) {
+        static char unknownName[32];
+        snprintf(unknownName, sizeof(unknownName), "Unknown (0x%02X)", item);
+        return unknownName;
     }
-    // Fallback for unknown items
-    static char unknownName[32];
-    snprintf(unknownName, sizeof(unknownName), "Unknown (0x%02X)", item);
-    return unknownName;
+    return SohUtils::GetItemName(item).c_str();
 }
 
 IntSliderOptions intSliderOptionsBase;
@@ -1100,7 +1095,7 @@ void DrawInventoryTab() {
 
             // Tooltip (after button, before popup)
             if (item != ITEM_NONE) {
-                Tooltip(SohUtils::GetItemName(item).c_str());
+                Tooltip(GetItemDisplayName(item));
             }
 
             // Show ammo input below items that have ammo
