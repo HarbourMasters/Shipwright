@@ -102,7 +102,9 @@ void HandleModSelection(size_t index, const std::string& file) {
     const ImGuiIO& io = ImGui::GetIO();
 
     if (io.KeyShift && lastSelectedModIndex >= 0 && lastSelectedModIndex < static_cast<int>(enabledModFiles.size())) {
-        auto [startIndex, endIndex] = std::minmax(static_cast<size_t>(lastSelectedModIndex), index);
+        const size_t lastIndex = static_cast<size_t>(lastSelectedModIndex);
+        const size_t startIndex = std::min(lastIndex, index);
+        const size_t endIndex = std::max(lastIndex, index);
         selectedEnabledModFiles.clear();
         for (size_t i = startIndex; i <= endIndex; i++)
             selectedEnabledModFiles.insert(enabledModFiles[i]);

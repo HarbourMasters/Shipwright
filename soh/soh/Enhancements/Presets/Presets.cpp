@@ -18,7 +18,7 @@
 namespace fs = std::filesystem;
 
 /**
- * Replace characters to prevent crashes from invalid paths (e.g, "test :)" creating an NTFS Alternate Data Stream
+ * Replace characters to prevent crashes from invalid paths (e.g., "test :)" creating an NTFS Alternate Data Stream
  * instead of a regular file).
  */
 static std::string SanitizeFilename(const std::string& name) {

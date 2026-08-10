@@ -16,6 +16,7 @@ class Sail : public Network {
     static Sail* Instance;
 
     void Enable();
+    void Disable();
     void OnIncomingJson(nlohmann::json payload);
     void OnConnected();
     void OnDisconnected();

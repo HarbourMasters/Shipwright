@@ -226,8 +226,8 @@ uint32_t Menu::DrawSearchResults(std::string& menuSearchText) {
                         std::transform(widgetStr.begin(), widgetStr.end(), widgetStr.begin(), ::tolower);
                         widgetStr.erase(std::remove(widgetStr.begin(), widgetStr.end(), ' '), widgetStr.end());
                         if (widgetStr.find(menuSearchText) != std::string::npos) {
-                            UIWidgets::ComponentAlignments backupAlignment;
-                            UIWidgets::LabelPositions backupLabelPos;
+                            UIWidgets::ComponentAlignments backupAlignment = UIWidgets::ComponentAlignments::Left;
+                            UIWidgets::LabelPositions backupLabelPos = UIWidgets::LabelPositions::Above;
                             if (info.type == WIDGET_COMBOBOX || info.type == WIDGET_CVAR_COMBOBOX) {
                                 backupAlignment =
                                     std::static_pointer_cast<UIWidgets::ComboboxOptions>(info.options)->alignment;
@@ -697,7 +697,7 @@ void Menu::DrawElement() {
                       ImGuiChildFlags_AutoResizeX | ImGuiChildFlags_AutoResizeY | ImGuiChildFlags_AlwaysAutoResize,
                       ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoScrollbar);
 
-    std::unordered_map<std::string, SidebarEntry>* sidebar;
+    std::unordered_map<std::string, SidebarEntry>* sidebar = nullptr;
     float headerHeight = headerSizes.at(0).y + style.FramePadding.y * 2;
     ImVec2 buttonSize = ImGui::CalcTextSize(ICON_FA_TIMES_CIRCLE) + style.FramePadding * 2;
     bool scrollbar = false;
@@ -744,6 +744,9 @@ void Menu::DrawElement() {
             headerIndex = nextIndex;
         }
         curIndex++;
+    }
+    if (sidebar == nullptr) { // headerIndex wasn't in menuOrder
+        sidebar = &menuEntries.at(headerIndex).sidebars;
     }
     std::string menuSearchText = "";
     if (headerSearch) {

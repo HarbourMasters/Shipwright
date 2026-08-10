@@ -586,7 +586,7 @@ void Play_Init(GameState* thisx) {
 
     player = GET_PLAYER(play);
     Camera_InitPlayerSettings(&play->mainCamera, player);
-    Camera_ChangeMode(&play->mainCamera, CAM_MODE_NORMAL);
+    Camera_RequestMode(&play->mainCamera, CAM_MODE_NORMAL);
 
     // OTRTODO: Bounds check cameraDataList to guard against scenes spawning the player with
     // an out of bounds background camera index. This requires adding an extra field to the

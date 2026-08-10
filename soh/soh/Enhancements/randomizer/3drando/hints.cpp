@@ -480,8 +480,8 @@ static void CreateTrialHints(uint8_t copies) {
                 ctx->GetTrials()->GetTrialList();             // there's probably a way to remove this assignment
             if (ctx->GetOption(RSK_TRIAL_COUNT).Get() >= 4) { // 4 or 5 required trials, get skipped trials
                 trials = FilterFromPool(trials, [](TrialInfo* trial) { return trial->IsSkipped(); });
-            } else { // 1 to 3 trials, get requried trials
-                auto requiredTrials = FilterFromPool(trials, [](TrialInfo* trial) { return trial->IsRequired(); });
+            } else { // 1 to 3 trials, get required trials
+                trials = FilterFromPool(trials, [](TrialInfo* trial) { return trial->IsRequired(); });
             }
             for (auto& trial : trials) { // create a hint for each hinted trial
                 AddGossipStoneHintCopies(copies, HINT_TYPE_TRIAL, "Trial", {}, {}, {}, { trial->GetTrialKey() });

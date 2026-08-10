@@ -155,7 +155,7 @@ bool Scene_CommandObjectList(PlayState* play, SOH::ISceneCommand* cmd) {
     // Loop until a mismatch in the object lists
     // Then clear all object ids past that in the context object list and kill actors for those objects
     for (i = play->objectCtx.unk_09, k = 0; i < play->objectCtx.num; i++, k++) {
-        if (k >= cmdObj->objects.size() || play->objectCtx.status[i].id != cmdObj->objects[k]) {
+        if (static_cast<size_t>(k) >= cmdObj->objects.size() || play->objectCtx.status[i].id != cmdObj->objects[k]) {
             for (j = i; j < play->objectCtx.num; j++) {
                 play->objectCtx.status[j].id = OBJECT_INVALID;
             }
@@ -165,7 +165,7 @@ bool Scene_CommandObjectList(PlayState* play, SOH::ISceneCommand* cmd) {
     }
 
     // Continuing from the last index, add the remaining object ids from the command object list
-    for (; k < cmdObj->objects.size(); k++, i++) {
+    for (; static_cast<size_t>(k) < cmdObj->objects.size(); k++, i++) {
         if (i < OBJECT_EXCHANGE_BANK_MAX - 1) {
             OTRfunc_800982FC(&play->objectCtx, i, cmdObj->objects[k]);
         }
@@ -435,7 +435,7 @@ bool (*sceneCommands[])(PlayState*, SOH::ISceneCommand*) = {
 s32 OTRScene_ExecuteCommands(PlayState* play, SOH::Scene* scene) {
     SOH::SceneCommandID cmdCode;
 
-    for (int i = 0; i < scene->commands.size(); i++) {
+    for (size_t i = 0; i < scene->commands.size(); i++) {
         auto sceneCmd = scene->commands[i];
 
         if (sceneCmd == nullptr) // UH OH

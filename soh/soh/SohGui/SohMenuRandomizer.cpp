@@ -674,7 +674,7 @@ void SohMenu::AddMenuRandomizer() {
     WidgetPath path = { "Randomizer", "General", SECTION_COLUMN_1 };
     AddSidebarEntry("Randomizer", path.sidebarName, 2);
     AddWidget(path,
-              "Be sure to explore the Presets and Enhancements Menus for various Speedups and Quality of life changes!",
+              "Be sure to explore the Presets and Enhancements Menus for various Speedups and Quality of Life changes!",
               WIDGET_TEXT)
         .Options(TextOptions().Color(UIWidgets::Colors::Gray));
     AddWidget(path, "Seed Entry", WIDGET_SEPARATOR_TEXT);
@@ -764,7 +764,7 @@ void SohMenu::AddMenuRandomizer() {
         .CVar(CVAR_RANDOMIZER_ENHANCEMENT("CustomKeyModels"))
         .Options(
             CheckboxOptions()
-                .Tooltip("Use Custom graphics for Dungeon Keys, Big and Small, so that they can be easily told apart.")
+                .Tooltip("Use custom graphics for Dungeon Keys, Big and Small, so that they can be easily told apart.")
                 .DefaultValue(true));
     AddWidget(path, "Map & Compass Colors Match Dungeon", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_RANDOMIZER_ENHANCEMENT("ColoredMapsAndCompasses"))
@@ -779,7 +779,7 @@ void SohMenu::AddMenuRandomizer() {
         .CVar(CVAR_RANDOMIZER_ENHANCEMENT("GenericJabberNutModel"))
         .RaceDisable(false)
         .Options(CheckboxOptions()
-                     .Tooltip("With Shuffle Speak, jabber nut model & color will be generic.")
+                     .Tooltip("With Shuffle Speak, the jabber nut model & color will be generic.")
                      .DefaultValue(true));
     AddWidget(path, "Quest Item Fanfares", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_RANDOMIZER_ENHANCEMENT("QuestItemFanfares"))
@@ -797,7 +797,7 @@ void SohMenu::AddMenuRandomizer() {
         .CVar(CVAR_RANDOMIZER_ENHANCEMENT("SimplerBossSoulModels"))
         .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip(
-            "When shuffling boss souls, they'll appear as a simpler model instead of showing the boss' models."
+            "When shuffling boss souls, they'll appear as a simpler model instead of showing the bosses' models. "
             "This might make boss souls more distinguishable from a distance, and can help with performance."));
     AddWidget(path, "Skip Get Item Animations", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_RANDOMIZER_ENHANCEMENT("TimeSavers.SkipGetItemAnimation"))
@@ -814,7 +814,7 @@ void SohMenu::AddMenuRandomizer() {
             "The size of the item when it is picked up."));
     AddWidget(path, "Signs Hint Entrances", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_RANDOMIZER_ENHANCEMENT("EntrancesOnSigns"))
-        .Options(CheckboxOptions().Tooltip("If enabled, signs near loading zones will tell you where they lead to."));
+        .Options(CheckboxOptions().Tooltip("If enabled, signs near loading zones will tell you where they lead."));
 
     auto randoSettings = Rando::Settings::GetInstance();
     randoSettings->CreateOptions();

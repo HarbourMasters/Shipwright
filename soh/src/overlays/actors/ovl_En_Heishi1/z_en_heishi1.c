@@ -7,7 +7,6 @@
 #include "z_en_heishi1.h"
 #include "objects/object_sd/object_sd.h"
 #include "vt.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/savestate_serialize.h"
 
@@ -153,9 +152,6 @@ void EnHeishi1_Init(Actor* thisx, PlayState* play) {
 }
 
 void EnHeishi1_Destroy(Actor* thisx, PlayState* play) {
-    EnHeishi1* this = (EnHeishi1*)thisx;
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnHeishi1_SetupWalk(EnHeishi1* this, PlayState* play) {

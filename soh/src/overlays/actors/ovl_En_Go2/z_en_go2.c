@@ -3,7 +3,6 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_oF1d_map/object_oF1d_map.h"
 #include "soh/frame_interpolation.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS                                                                                  \
@@ -1639,9 +1638,6 @@ void EnGo2_Init(Actor* thisx, PlayState* play) {
 }
 
 void EnGo2_Destroy(Actor* thisx, PlayState* play) {
-    EnGo2* this = (EnGo2*)thisx;
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnGo2_CurledUp(EnGo2* this, PlayState* play) {

@@ -172,11 +172,11 @@ Option::Option(size_t key_, std::string name_, std::vector<std::string> options_
                bool defaultHidden_, WidgetFunc callback_, int imFlags_)
     : key(key_), name(std::move(name_)), options(std::move(options_)), category(category_),
       cvarName(std::move(cvarName_)), description(std::move(description_)), widgetType(widgetType_),
-      defaultOption(defaultOption_), defaultHidden(defaultHidden_), callback(callback_), imFlags(imFlags_) {
+      defaultOption(defaultOption_), defaultHidden(defaultHidden_), imFlags(imFlags_), callback(callback_) {
     contextSelection = defaultOption;
     hidden = defaultHidden;
-    for (int i = 0; i < options.size(); i++) {
-        optionsMap.emplace(i, options[i].c_str());
+    for (size_t i = 0; i < options.size(); i++) {
+        optionsMap.emplace(static_cast<int32_t>(i), options[i].c_str());
     }
     UIWidgets::LabelPositions labelPosition;
     switch (widgetType) {
@@ -305,8 +305,8 @@ static std::string MakeTrickDescription(RandomizerTrick key) {
 
 TrickSetting::TrickSetting(RandomizerTrick key_, const RandomizerCheckQuest quest_, const RandomizerArea area_,
                            std::set<Tricks::Tag> tags_, const std::string nameTag_)
-    : Option(key_, std::move(MakeTrickName(key_)), { "Disabled", "Enabled" }, OptionCategory::Setting, "",
-             std::move(MakeTrickDescription(key_)), WIDGET_CVAR_CHECKBOX, 0, false, nullptr, IMFLAG_NONE),
+    : Option(key_, MakeTrickName(key_), { "Disabled", "Enabled" }, OptionCategory::Setting, "",
+             MakeTrickDescription(key_), WIDGET_CVAR_CHECKBOX, 0, false, nullptr, IMFLAG_NONE),
       mQuest(quest_), mArea(area_), mNameTag(nameTag_), mTags(std::move(tags_)) {
 }
 

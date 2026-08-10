@@ -143,7 +143,7 @@ extern "C" void DisableFixedCamera_SetNormalCamera(PlayState* play) {
         play->mainCamera.prevSetting = CAM_SET_NORMAL0;
     }
     Camera_RequestSetting(&play->mainCamera, CAM_SET_NORMAL0);
-    Camera_ChangeMode(&play->mainCamera, CAM_MODE_NORMAL);
+    Camera_RequestMode(&play->mainCamera, CAM_MODE_NORMAL);
 }
 
 extern "C" void DisableFixedCamera_CheckCameraState(PlayState* play) {
@@ -225,7 +225,7 @@ extern "C" void DisableFixedCamera_CheckCameraState(PlayState* play) {
             sStoreLastCamType = play->mainCamera.camDataIdx;
         }
         Camera_RequestSetting(&play->mainCamera, CAM_SET_TURN_AROUND);
-        Camera_ChangeMode(&play->mainCamera, CAM_MODE_NORMAL);
+        Camera_RequestMode(&play->mainCamera, CAM_MODE_NORMAL);
         if (sStoreLastCamType >= 0) {
             play->mainCamera.camDataIdx = sStoreLastCamType;
         }

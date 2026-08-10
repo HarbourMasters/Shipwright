@@ -140,7 +140,7 @@ void BuildSkulltulaPeopleMessage(uint16_t* textId, bool* loadFromMessageTable) {
     }
     Rando::Item& item = Rando::StaticData::RetrieveItem(RAND_GET_ITEM_LOC(rc)->GetPlacedRandomizerGet());
     CustomMessage msg = CustomMessage("Yeaaarrgh! I'm cursed!!^Please save me by destroying %y[[d]] Spiders of the "
-                                      "Curse%w and I will give you my [[color]][[1]]%w!",
+                                      "Curse%w and I will give you [[color]][[1]]%w!",
                                       /*german*/
                                       "Yeaaarrgh! Ich bin verflucht!^Bitte rette mich, indem Du %y[[d]] Skulltulas%w "
                                       "zerstörst und ich werde Dir dafür [[color]][[1]]%w geben!",
@@ -157,7 +157,7 @@ void BuildSkulltulaPeopleMessage(uint16_t* textId, bool* loadFromMessageTable) {
 
 void Build100SkullsHintMessage(uint16_t* textId, bool* loadFromMessageTable) {
     CustomMessage msg = CustomMessage("Yeaaarrgh! I'm cursed!!^Please save me by destroying %y100 Spiders of the "
-                                      "Curse%w and I will give you my [[color]][[1]]%w!",
+                                      "Curse%w and I will give you [[color]][[1]]%w!",
                                       /*german*/
                                       "Yeaaarrgh! Ich bin verflucht!^Bitte rette mich, indem Du %y100 Skulltulas%w "
                                       "zerstörst und ich werde Dir dafür [[color]][[1]]%w geben!",

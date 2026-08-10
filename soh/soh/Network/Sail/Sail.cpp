@@ -4,6 +4,7 @@
 #include <ship/window/Window.h>
 #include <ship/window/gui/ConsoleWindow.h>
 #include <spdlog/spdlog.h>
+#include "soh/ShipInit.hpp"
 #include "soh/ShipUtils.h"
 #include "soh/cvar_prefixes.h"
 
@@ -14,6 +15,12 @@ template <class DstType, class SrcType> bool IsType(const SrcType* src) {
 void Sail::Enable() {
     Network::Enable(CVarGetString(CVAR_REMOTE_SAIL("Host"), "127.0.0.1"),
                     CVarGetInteger(CVAR_REMOTE_SAIL("Port"), 43384));
+    ShipInit::Init(CVAR_REMOTE_SAIL("Enabled"));
+}
+
+void Sail::Disable() {
+    Network::Disable();
+    ShipInit::Init(CVAR_REMOTE_SAIL("Enabled"));
 }
 
 void Sail::OnConnected() {

@@ -139,7 +139,7 @@ void RegisterOnInterfaceUpdateHook() {
             uint32_t minutes = timer / 60;
             uint32_t seconds = timer % 60;
             char* announceBuf = ttsAnnounceBuf;
-            char arg[8]; // at least big enough where no s8 string will overflow
+            char arg[16]; // big enough for any number formatted below
             if (minutes > 0) {
                 snprintf(arg, sizeof(arg), "%d", minutes);
                 auto translation =
@@ -340,7 +340,7 @@ void RegisterOnKaleidoscopeUpdateHook() {
         }
 
         if ((pauseCtx->debugState != 1) && (pauseCtx->debugState != 2)) {
-            char arg[8];
+            char arg[16];
             if (CHECK_BTN_ALL(input->press.button, BTN_DUP)) {
                 // Normalize hearts to fractional count similar to z_lifemeter
                 int curHeartFraction = gSaveContext.health % 16;
@@ -373,7 +373,7 @@ void RegisterOnKaleidoscopeUpdateHook() {
         }
 
         uint16_t cursorIndex =
-            (pauseCtx->pageIndex == PAUSE_MAP && !inDungeonScene) ? PAUSE_WORLD_MAP : pauseCtx->pageIndex;
+            (pauseCtx->pageIndex == PAUSE_MAP && !inDungeonScene) ? (uint16_t)PAUSE_WORLD_MAP : pauseCtx->pageIndex;
         if (prevCursorIndex == cursorIndex && prevCursorSpecialPos == pauseCtx->cursorSpecialPos &&
             prevCursorPoint[cursorIndex] == pauseCtx->cursorPoint[cursorIndex]) {
             return;
@@ -393,7 +393,7 @@ void RegisterOnKaleidoscopeUpdateHook() {
 
         switch (pauseCtx->pageIndex) {
             case PAUSE_ITEM: {
-                char arg[8]; // at least big enough where no s8 string will overflow
+                char arg[16]; // big enough for any number formatted below
                 switch (pauseCtx->cursorItem[PAUSE_ITEM]) {
                     case ITEM_STICK:
                     case ITEM_NUT:
@@ -444,7 +444,7 @@ void RegisterOnKaleidoscopeUpdateHook() {
                         SpeechSynthesizer::Instance->Speak(translation.c_str(), GetLanguageCode());
                     } else {
                         // Dungeon map floor numbers
-                        char arg[8];
+                        char arg[16];
                         int cursorPoint = pauseCtx->cursorPoint[PAUSE_MAP];
 
                         // Cursor is on a dungeon floor position
@@ -471,7 +471,7 @@ void RegisterOnKaleidoscopeUpdateHook() {
                 }
                 break;
             case PAUSE_QUEST: {
-                char arg[8]; // at least big enough where no s8 string will overflow
+                char arg[16]; // big enough for any number formatted below
                 switch (pauseCtx->cursorItem[PAUSE_QUEST]) {
                     case ITEM_SKULL_TOKEN:
                         snprintf(arg, sizeof(arg), "%d", gSaveContext.inventory.gsTokens);
@@ -826,7 +826,7 @@ void RegisterOnUpdateMainMenuSelection() {
         [](uint8_t optionIndex, uint8_t optionValue) {
             if (!CVarGetInteger(CVAR_SETTING("A11yTTS"), 0))
                 return;
-            uint8_t language = (gSaveContext.language == LANGUAGE_JPN) ? LANGUAGE_ENG : gSaveContext.language;
+            uint8_t language = (gSaveContext.language == LANGUAGE_JPN) ? (uint8_t)LANGUAGE_ENG : gSaveContext.language;
 
             auto optionName = BossRush_GetSettingName(optionIndex, language);
             auto optionValueName = BossRush_GetSettingChoiceName(optionIndex, optionValue, language);
@@ -838,7 +838,7 @@ void RegisterOnUpdateMainMenuSelection() {
         [](uint8_t optionIndex) {
             if (!CVarGetInteger(CVAR_SETTING("A11yTTS"), 0))
                 return;
-            uint8_t language = (gSaveContext.language == LANGUAGE_JPN) ? LANGUAGE_ENG : gSaveContext.language;
+            uint8_t language = (gSaveContext.language == LANGUAGE_JPN) ? (uint8_t)LANGUAGE_ENG : gSaveContext.language;
 
             auto optionName = SohFileSelect_GetSettingText(optionIndex, language);
             SpeechSynthesizer::Instance->Speak(optionName, GetLanguageCode());

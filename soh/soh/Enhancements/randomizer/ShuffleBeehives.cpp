@@ -25,7 +25,9 @@ void ObjComb_RandomizerChooseItemDrop(ObjComb* objComb, PlayState* play) {
         return;
     }
 
-    if ((params > 0) || (params < 0x1A)) {
+    // Vanilla is `(params > 0) || (params < 0x1A)`, which is always true; kept as-is to match
+    // ObjComb_ChooseItemDrop in soh/src/overlays/actors/ovl_Obj_Comb/z_obj_comb.c.
+    if (true) {
         if (params == 6) {
             if (Flags_GetCollectible(play, (objComb->actor.params >> 8) & 0x3F)) {
                 params = -1;

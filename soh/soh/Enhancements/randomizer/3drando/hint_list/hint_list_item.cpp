@@ -1967,9 +1967,9 @@ void StaticData::HintTable_Init_Item() {
     hintTextTable[RHT_ROCS_FEATHER] = HintText(CustomMessage("Roc's Feather", /*german*/"Greifenfeder", /*french*/"Plume de Roc"),
                                                  {}, {
                                                  CustomMessage("a feather", /*german*/TODO_TRANSLATE, /*french*/"une plume"),
-                                                 CustomMessage("a blue wing", /*german*/TODO_TRANSLATE, /*french*/"une aile bleue"),
-                                                 CustomMessage("a chicken wing", /*german*/TODO_TRANSLATE, /*french*/"une aile de poulet")});
-                                                 
+                                                 CustomMessage("a chicken wing", /*german*/TODO_TRANSLATE, /*french*/"une aile de poulet"),
+                                                 CustomMessage("a blue wing", /*german*/TODO_TRANSLATE, /*french*/"une aile bleue")});
+     
     hintTextTable[RHT_BEAN_SOUL] = HintText(CustomMessage("a bean soul", /*german*/"eine bohnenseele", /*french*/"une âme de haricot"));
 
     hintTextTable[RHT_GOHMA_SOUL] = HintText(CustomMessage("the soul of Gohma", /*german*/"Gohmas Seele", /*french*/"l'Âme de Gohma"),
@@ -2167,7 +2167,7 @@ void StaticData::HintTable_Init_Item() {
     hintTextTable[RHT_HINT_MYSTERIOUS] = HintText(CustomMessage("something mysterious", /*german*/"etwas Mysteriöses", /*french*/"un sacré mystère"));
                                                   // /*spanish*/algo misterioso
 
-    hintTextTable[RHT_MYSTERIOUS_ITEM] = HintText(CustomMessage("mysterious item", /*german*/"ein mysteriöser Gegenstand", /*french*/"objet mystérieux"));
+    hintTextTable[RHT_MYSTERIOUS_ITEM] = HintText(CustomMessage("a mysterious item", /*german*/"ein mysteriöser Gegenstand", /*french*/"un objet mystérieux"));
                                                   // /*spanish*/algo misterioso
 
      hintTextTable[RHT_MYSTERIOUS_ITEM_CAPITAL] = HintText(CustomMessage("Mysterious Item", /*german*/"Mysteriöser Gegenstand", /*french*/"Objet Mystérieux"));

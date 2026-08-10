@@ -171,7 +171,7 @@ std::vector<std::string> commandNames = {
 };
 
 SceneCommandID GetCommandID(std::string commandName) {
-    for (int i = 0; i < commandNames.size(); i++) {
+    for (size_t i = 0; i < commandNames.size(); i++) {
         if (commandNames[i] == commandName) {
             return (SceneCommandID)i;
         }

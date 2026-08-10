@@ -159,7 +159,7 @@ void CalcTriNorm(const Vec3f& v1, const Vec3f& v2, const Vec3f& v3, Vec3f& norm)
     }
 }
 
-// Various macros used for creating verticies and rendering that aren't in gbi.h
+// Various macros used for creating vertices and rendering that aren't in gbi.h
 #define G_CC_MODULATERGB_PRIM_ENVA PRIMITIVE, 0, SHADE, 0, 0, 0, 0, ENVIRONMENT
 #define G_CC_PRIMITIVE_ENVA 0, 0, 0, PRIMITIVE, 0, 0, 0, ENVIRONMENT
 #define qs105(n) ((int16_t)((n)*0x0020))
@@ -216,8 +216,8 @@ void CreateCylinderData() {
     cylinderGfx.push_back(gsSPEndDisplayList());
 }
 
-// This subdivides a face into four tris by placing new verticies at the midpoints of the sides (Like a triforce!), then
-// blowing up the verticies so they are on the unit sphere
+// This subdivides a face into four tris by placing new vertices at the midpoints of the sides (Like a triforce!), then
+// blowing up the vertices so they are on the unit sphere
 void CreateSphereFace(std::vector<std::tuple<size_t, size_t, size_t>>& faces, int32_t v0Index, int32_t v1Index,
                       int32_t v2Index) {
     size_t nextIndex = sphereVtx.size();
@@ -235,7 +235,7 @@ void CreateSphereFace(std::vector<std::tuple<size_t, size_t, size_t>>& faces, in
     const Vtx& v1 = sphereVtx[v1Index];
     const Vtx& v2 = sphereVtx[v2Index];
 
-    // Create 3 new verticies at the midpoints
+    // Create 3 new vertices at the midpoints
     Vec3f vs[3] = {
         Vec3f{ (v0.n.ob[0] + v1.n.ob[0]) / 2.0f, (v0.n.ob[1] + v1.n.ob[1]) / 2.0f, (v0.n.ob[2] + v1.n.ob[2]) / 2.0f },
         Vec3f{ (v1.n.ob[0] + v2.n.ob[0]) / 2.0f, (v1.n.ob[1] + v2.n.ob[1]) / 2.0f, (v1.n.ob[2] + v2.n.ob[2]) / 2.0f },
@@ -256,14 +256,14 @@ void CreateSphereFace(std::vector<std::tuple<size_t, size_t, size_t>>& faces, in
 }
 
 // Creates a sphere following the idea in here:
-// http://blog.andreaskahler.com/2009/06/creating-icosphere-mesh-in-code.html Spcifically, create a icosahedron by
+// http://blog.andreaskahler.com/2009/06/creating-icosphere-mesh-in-code.html Specifically, create an icosahedron by
 // realizing that the points can be placed on 3 rectangles that are on each unit plane. Then, subdividing each face.
 void CreateSphereData() {
     std::vector<Vec3f> base;
 
     float d = (1.0f + sqrtf(5.0f)) / 2.0f;
 
-    // Create the 12 starting verticies, 4 on each rectangle
+    // Create the 12 starting vertices, 4 on each rectangle
     base.emplace_back(Vec3f({ -1, d, 0 }));
     base.emplace_back(Vec3f({ 1, d, 0 }));
     base.emplace_back(Vec3f({ -1, -d, 0 }));
@@ -279,7 +279,7 @@ void CreateSphereData() {
     base.emplace_back(Vec3f({ -d, 0, -1 }));
     base.emplace_back(Vec3f({ -d, 0, 1 }));
 
-    // Normalize verticies so they are on the unit sphere
+    // Normalize vertices so they are on the unit sphere
     for (Vec3f& v : base) {
         float mag = sqrtf(v.x * v.x + v.y * v.y + v.z * v.z);
         v.x /= mag;

@@ -6,7 +6,6 @@
 
 #include "z_en_kz.h"
 #include "objects/object_kz/object_kz.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY)
@@ -406,8 +405,6 @@ void EnKz_Destroy(Actor* thisx, PlayState* play) {
     EnKz* this = (EnKz*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelanime);
 }
 
 void EnKz_PreMweepWait(EnKz* this, PlayState* play) {

@@ -8,7 +8,6 @@
 #include "vt.h"
 #include "objects/object_ts/object_ts.h"
 #include "soh/OTRGlobals.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/savestate_serialize.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
@@ -86,9 +85,6 @@ void EnTakaraMan_Init(Actor* thisx, PlayState* play) {
 }
 
 void EnTakaraMan_Destroy(Actor* thisx, PlayState* play) {
-    EnTakaraMan* this = (EnTakaraMan*)thisx;
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void func_80B176E0(EnTakaraMan* this, PlayState* play) {

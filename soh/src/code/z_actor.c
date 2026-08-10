@@ -1270,7 +1270,9 @@ void Actor_Init(Actor* actor, PlayState* play) {
 
 void Actor_Destroy(Actor* actor, PlayState* play) {
     if (actor->destroy != NULL) {
-        actor->destroy(actor, play);
+        if (GameInteractor_ShouldActorDestroy(actor)) {
+            actor->destroy(actor, play);
+        }
         actor->destroy = NULL;
     } else {
         // "No Actor class destruct [%s]"
@@ -3497,7 +3499,7 @@ Actor* Actor_Delete(ActorContext* actorCtx, Actor* actor, PlayState* play) {
 
     if ((player != NULL) && (actor == player->focusActor)) {
         Player_ReleaseLockOn(player);
-        Camera_ChangeMode(Play_GetCamera(play, Play_GetActiveCamId(play)), 0);
+        Camera_RequestMode(Play_GetCamera(play, Play_GetActiveCamId(play)), CAM_MODE_NORMAL);
     }
 
     if (actor == actorCtx->targetCtx.arrowPointedActor) {

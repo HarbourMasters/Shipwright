@@ -51,8 +51,6 @@ std::vector<ItemTrackerItem> mainWindowItems = {};
 
 static WidgetInfo backgroundColor;
 static WidgetInfo windowTypeWidget;
-static WidgetInfo enableDraggingWidget;
-static WidgetInfo onlyPausedWidget;
 static WidgetInfo ammoTracking;
 static WidgetInfo keyTracking;
 static WidgetInfo triforcePieceCount;
@@ -880,19 +878,21 @@ void DrawItemCount(ItemTrackerItem item, bool hideMax) {
         ImGui::PopStyleColor();
     } else {
         ImGui::SetCursorScreenPos(ImVec2(p.x, p.y - 14));
-        ImGui::Text("");
+        ImGui::TextUnformatted("");
     }
 }
 
 void DrawEquip(ItemTrackerItem item) {
     assert(item.kind == ITEM_KIND_ITEM);
-    bool hasEquip = HasEquipment(item);
+    bool hasEquip = HasEquipment(item) && IsValidSaveFile();
+    bool giantsKnife = item.id == ITEM_SWORD_BGS && hasEquip && !gSaveContext.bgsFlag;
+    std::string iconName = giantsKnife ? "ITEM_SWORD_KNIFE" : hasEquip ? item.iconName : item.fadedIconName;
     float iconSize = static_cast<float>(CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36));
     ImGui::Image(std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                     ->GetTextureByName(hasEquip && IsValidSaveFile() ? item.iconName : item.fadedIconName),
+                     ->GetTextureByName(iconName),
                  ImVec2(iconSize, iconSize), ImVec2(0.0f, 0.0f), ImVec2(1, 1));
 
-    Tooltip(SohUtils::GetItemName(item.id).c_str());
+    Tooltip(giantsKnife ? "Giant's Knife" : SohUtils::GetItemName(item.id).c_str());
 }
 
 void DrawQuest(ItemTrackerItem item) {
@@ -928,7 +928,7 @@ bool HasBossSoul(RandomizerInf bossSoul) {
 
 void DrawItem(ItemTrackerItem item) {
     uint32_t actualItemId =
-        GameInteractor::IsSaveLoaded() && item.kind == ITEM_KIND_ITEM ? INV_CONTENT(item.id) : ITEM_NONE;
+        GameInteractor::IsSaveLoaded() && item.kind == ITEM_KIND_ITEM ? INV_CONTENT(item.id) : (uint8_t)ITEM_NONE;
     float iconSize = static_cast<float>(CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36));
     bool hasItem = actualItemId != ITEM_NONE;
     bool hideMax = false;
@@ -991,6 +991,14 @@ void DrawItem(ItemTrackerItem item) {
             case ITEM_NAYRUS_LOVE:
                 if (IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_ROCS_FEATHER)) {
                     hasItem = Flags_GetRandomizerInf(RAND_INF_OBTAINED_NAYRUS_LOVE);
+                } else if (!IS_RANDO) {
+                    // In non-rando, check if player has Roc's Feather in inventory
+                    for (int i = 0; i < 24; i++) {
+                        if (gSaveContext.inventory.items[i] == ITEM_ROCS_FEATHER) {
+                            hasItem = true;
+                            break;
+                        }
+                    }
                 }
                 break;
             case RG_ROCS_FEATHER:
@@ -2235,8 +2243,6 @@ void RegisterItemTrackerWidgets() {
                      .ComboMap(windowType))
         .Callback([](WidgetInfo& info) { RefreshItemTrackerMainWindow(); });
     SohGui::mSohMenu->AddSearchWidget({ windowTypeWidget, "Randomizer", "Item Tracker", "General Settings" });
-    enableDraggingWidget;
-    onlyPausedWidget;
 
     ammoTracking = { .name = "Ammo/Capacity Tracking", .type = WidgetType::WIDGET_CVAR_COMBOBOX };
     ammoTracking.CVar(CVAR_TRACKER_ITEM("ItemCountType"))

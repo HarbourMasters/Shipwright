@@ -4,7 +4,6 @@
 #include "objects/object_fr/object_fr.h"
 #include <assert.h>
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/savestate_serialize.h"
 
 #define FLAGS                                                                                  \
@@ -328,9 +327,6 @@ void EnFr_Destroy(Actor* thisx, PlayState* play) {
     EnFr* this = (EnFr*)thisx;
 
     LightContext_RemoveLight(play, &play->lightCtx, this->lightNode);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
-    ResourceMgr_UnregisterSkeleton(&this->skelAnimeButterfly);
 }
 
 void EnFr_IsDivingIntoWater(EnFr* this, PlayState* play) {

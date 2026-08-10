@@ -19,6 +19,7 @@
 #include <unistd.h>
 #endif
 
+#ifndef BSWAP32
 #ifdef _MSC_VER
 #define BSWAP32 _byteswap_ulong
 #define BSWAP16 _byteswap_ushort
@@ -31,6 +32,7 @@
 
 #define BSWAP32(value) \
     (((uint32_t)BSWAP16((uint16_t)((value)&0xffff)) << 16) | (uint32_t)BSWAP16((uint16_t)((value) >> 16)))
+#endif
 #endif
 
 #if defined(_MSC_VER)

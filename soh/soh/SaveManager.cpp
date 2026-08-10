@@ -173,6 +173,12 @@ void SaveManager::LoadRandomizer() {
                     SaveManager::Instance->LoadData("german", randoContext->GetItemOverride(i).GetTrickName().german);
                     SaveManager::Instance->LoadData("french", randoContext->GetItemOverride(i).GetTrickName().french);
                 });
+                SaveManager::Instance->LoadStruct("trickArticle", [&]() {
+                    Text& article = randoContext->GetItemOverride(i).GetTrickArticle();
+                    SaveManager::Instance->LoadData("english", article.english);
+                    SaveManager::Instance->LoadData("german", article.german);
+                    SaveManager::Instance->LoadData("french", article.french);
+                });
             }
             uint16_t price = 0;
             SaveManager::Instance->LoadData("price", price, (uint16_t)0);
@@ -305,6 +311,14 @@ void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool f
                                                     randoContext->GetItemOverride(i).GetTrickName().GetGerman());
                     SaveManager::Instance->SaveData("french",
                                                     randoContext->GetItemOverride(i).GetTrickName().GetFrench());
+                });
+                SaveManager::Instance->SaveStruct("trickArticle", [&]() {
+                    SaveManager::Instance->SaveData("english",
+                                                    randoContext->GetItemOverride(i).GetTrickArticle().GetEnglish());
+                    SaveManager::Instance->SaveData("german",
+                                                    randoContext->GetItemOverride(i).GetTrickArticle().GetGerman());
+                    SaveManager::Instance->SaveData("french",
+                                                    randoContext->GetItemOverride(i).GetTrickArticle().GetFrench());
                 });
             }
             if (randoContext->GetItemLocation(i)->IsExcluded()) {

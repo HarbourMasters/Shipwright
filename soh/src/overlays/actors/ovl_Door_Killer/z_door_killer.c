@@ -11,7 +11,6 @@
 #include "objects/object_haka_door/object_haka_door.h"
 #include "objects/object_door_killer/object_door_killer.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
@@ -205,8 +204,6 @@ void DoorKiller_Destroy(Actor* thisx, PlayState* play) {
     if ((thisx->params & 0xFF) == DOOR_KILLER_DOOR) {
         Collider_DestroyCylinder(play, &this->colliderCylinder);
         Collider_DestroyJntSph(play, &this->colliderJntSph);
-
-        ResourceMgr_UnregisterSkeleton(&this->skelAnime);
     }
 }
 

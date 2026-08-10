@@ -200,9 +200,9 @@ bool Randomizer_GetOverworldFishShuffled();
 bool Randomizer_IsAdultPond();
 /// Custom shadow draw function to add effect to uncollected fish
 void Fishsanity_DrawEffShadow(Actor* actor, Lights* lights, PlayState* play);
-/// Overriden actor draw function for bottleable fish
+/// Overridden actor draw function for bottleable fish
 void Fishsanity_DrawEnFish(struct Actor* actor, struct PlayState* play);
-/// Overriden actor draw function for the fishing pond
+/// Overridden actor draw function for the fishing pond
 void Fishsanity_DrawFishing(struct Actor* actor, struct PlayState* play);
 void Fishsanity_OpenGreyscaleColor(PlayState* play, Color_RGB8* color, int16_t frameOffset);
 void Fishsanity_CloseGreyscaleColor(PlayState* play);

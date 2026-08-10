@@ -107,7 +107,7 @@ std::unordered_map<std::string, SceneID> spoilerFileDungeonToScene = {
 
 #ifdef _MSC_VER
 #pragma optimize("", off)
-#else
+#elif defined(__GNUC__) && !defined(__clang__)
 #pragma GCC push_options
 #pragma GCC optimize("O0")
 #endif
@@ -183,7 +183,7 @@ bool Randomizer::SpoilerFileExists(const char* spoilerFileName) {
 }
 #ifdef _MSC_VER
 #pragma optimize("", on)
-#else
+#elif defined(__GNUC__) && !defined(__clang__)
 #pragma GCC pop_options
 #endif
 
@@ -472,7 +472,10 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
             return Inventory_HasEmptyBottle() ? CAN_OBTAIN : CANT_OBTAIN_NEED_EMPTY_BOTTLE;
 
         // Trade Items
-        // case RG_PROGRESSIVE_GORONSWORD:
+        // Giant's Knife and Biggoron's Sword share a slot, bgsFlag marks the final upgrade.
+        // Giant's Knife itself stays obtainable, Medigoron replaces broken ones.
+        case RG_PROGRESSIVE_GORONSWORD:
+            return !gSaveContext.bgsFlag ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         // case RG_GIANTS_KNIFE:
 
         // Misc Items
@@ -1030,14 +1033,16 @@ void JoinRandoGenerationThread() {
 
 class ExtendedVanillaTableInvalidItemIdException : public std::exception {
   private:
-    s16 itemID;
+    std::string message;
 
   public:
-    ExtendedVanillaTableInvalidItemIdException(s16 itemID) : itemID(itemID) {
+    ExtendedVanillaTableInvalidItemIdException(s16 itemID)
+        : message(std::to_string(itemID) +
+                  " is not a valid ItemID for the extendedVanillaGetItemTable. If you are adding a new "
+                  "item, try adding it to randoGetItemTable instead.") {
     }
-    std::string what() {
-        return itemID + " is not a valid ItemID for the extendedVanillaGetItemTable. If you are adding a new"
-                        "item, try adding it to randoGetItemTable instead.";
+    const char* what() const noexcept override {
+        return message.c_str();
     }
 };
 
