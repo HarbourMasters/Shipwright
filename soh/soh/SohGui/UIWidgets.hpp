@@ -107,6 +107,18 @@ template <typename T>
 bool Combobox(std::string label, T* value, const std::map<T, const char*>& comboMap,
               const ComboboxOptions& options = {}) {
     bool dirty = false;
+
+    if (comboMap.empty()) {
+        return dirty;
+    }
+    // A value with no entry (a stale config, a map that has since changed) must not throw out of at() below.
+    if (!comboMap.contains(*value)) {
+        SPDLOG_WARN("Combobox \"{}\" holds unlisted value {}, showing the default instead", label,
+                    static_cast<int32_t>(*value));
+        T fallback = static_cast<T>(options.defaultIndex);
+        *value = comboMap.contains(fallback) ? fallback : comboMap.begin()->first;
+    }
+
     float startX = ImGui::GetCursorPosX();
     std::string invisibleLabelStr = "##" + std::string(label);
     const char* invisibleLabel = invisibleLabelStr.c_str();
