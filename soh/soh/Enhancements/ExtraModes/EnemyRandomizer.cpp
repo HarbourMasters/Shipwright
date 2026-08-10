@@ -587,6 +587,10 @@ static u8 GetRandomizedEnemy(PlayState* play, s16* actorId, s16* posX, s16* posY
             case ACTOR_EN_CROW:
                 *posY = *posY + 75;
                 break;
+            // Remove switch flag setting from Wolfos
+            case ACTOR_EN_WF:
+                *params |= 0xFF00;
+                break;
             default:
                 break;
         }
