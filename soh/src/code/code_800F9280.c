@@ -3,6 +3,7 @@
 #include "soh/mixer.h"
 
 #include "soh/Enhancements/audio/AudioEditor.h"
+extern bool freezeGame;
 
 typedef struct {
     u8 unk_0;
@@ -381,6 +382,9 @@ void Audio_ProcessSeqCmd(u32 cmd) {
 }
 
 void Audio_QueueSeqCmd(u32 cmd) {
+    if (freezeGame)
+        return; // No music during SFX rip.
+
     // Replacement is resolved per-command in Audio_StartSequence().
     sAudioSeqCmds[sSeqCmdWrPos++] = cmd;
 }

@@ -243,6 +243,12 @@ void SohMenu::AddMenuSettings() {
         .CVar(CVAR_SETTING("A11yDisableIdleCam"))
         .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip("Disables the automatic re-centering of the camera when idle."));
+
+    AddWidget(path, "Accessible Audio Cues", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_SETTING("A11yAudioInteraction"))
+        .RaceDisable(false)
+        .Options(CheckboxOptions().Tooltip("Enables accessibility audio cues"));
+
     AddWidget(path, "Disable Screen Flash for Finishing Blow", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_SETTING("A11yNoScreenFlashForFinishingBlow"))
         .RaceDisable(false)

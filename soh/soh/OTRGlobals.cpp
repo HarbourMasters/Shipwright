@@ -117,6 +117,9 @@
 
 #include "soh/config/ConfigUpdaters.h"
 #include "soh/ShipInit.hpp"
+#if !defined(__SWITCH__) && !defined(__WIIU__)
+#include "Enhancements/accessible-actors/ActorAccessibility.h"
+#endif
 
 #ifdef _MSC_VER
 #define strdup _strdup
@@ -798,6 +801,11 @@ void OTRGlobals::Initialize() {
         context->GetResourceManager()->GetArchiveManager()->AddArchive(ootPath);
     }
 
+    std::string sohAccessibilityPath = Ship::Context::GetPathRelativeToAppBundle("accessibility.o2r");
+    if (std::filesystem::exists(sohAccessibilityPath)) {
+        context->GetResourceManager()->GetArchiveManager()->AddArchive(sohAccessibilityPath);
+    }
+
     std::unordered_set<uint32_t> ValidHashes = {
         OOT_PAL_MQ,     OOT_NTSC_JP_MQ, OOT_NTSC_US_MQ, OOT_PAL_GC_MQ_DBG, OOT_NTSC_US_10,
         OOT_NTSC_US_11, OOT_NTSC_US_12, OOT_PAL_10,     OOT_PAL_11,        OOT_NTSC_JP_GC_CE,
@@ -1050,6 +1058,11 @@ void OTRAudio_Thread() {
         for (int i = 0; i < AUDIO_FRAMES_PER_UPDATE; i++) {
             AudioMgr_CreateNextAudioBuffer(audio_buffer + i * (num_audio_samples * NUM_AUDIO_CHANNELS),
                                            num_audio_samples);
+#if !defined(__SWITCH__) && !defined(__WIIU__)
+            // Give accessibility a chance to merge its own audio in.
+            ActorAccessibility_MixAccessibleAudioWithGameAudio(
+                audio_buffer + i * (num_audio_samples * NUM_AUDIO_CHANNELS), num_audio_samples);
+#endif
         }
 
         AudioPlayer_Play(reinterpret_cast<u8*>(audio_buffer), total_samples * sizeof(int16_t));
@@ -1567,6 +1580,9 @@ extern "C" void InitOTR(int argc, char* argv[]) {
     Anchor::Instance = new Anchor();
 
     OTRMessage_Init();
+#if !defined(__SWITCH__) && !defined(__WIIU__)
+    ActorAccessibility_Init();
+#endif
     OTRAudio_Init();
     OTRExtScanner();
     VanillaItemTable_Init();
@@ -1622,6 +1638,9 @@ extern "C" void DeinitOTR() {
         Anchor::Instance->Disable();
     }
     SDLNet_Quit();
+#if !defined(__SWITCH__) && !defined(__WIIU__)
+    ActorAccessibility_Shutdown();
+#endif
 
     // Destroying gui here because we have shared ptrs to LUS objects which output to SPDLOG which is destroyed before
     // these shared ptrs.
@@ -2426,6 +2445,39 @@ extern "C" void Gfx_RegisterBlendedTexture(const char* name, u8* mask, u8* repla
     } else {
         assert(false && "Lost reference to Fast::Interpreter");
     }
+}
+
+void OTRAudio_SfxCaptureThread() {
+    while (audio.running) {
+        // This entire body is expected to be atomic; Don't try to narrow the scope of this lock please!
+        // Todo: remove the thread altogether as we don't actually need or want parallelism here.
+        std::unique_lock<std::mutex> Lock(audio.mutex);
+        while (!audio.processing && audio.running) {
+            audio.cv_to_thread.wait(Lock);
+        }
+
+        if (!audio.running) {
+            break;
+        }
+#if !defined(__SWITCH__) && !defined(__WIIU__)
+        ActorAccessibility_DoSoundExtractionStep();
+#endif
+        audio.processing = false;
+    }
+}
+
+extern "C" void OTRAudio_InstallSfxCaptureThread() {
+    OTRAudio_Exit();
+    audio.running = true;
+    audio.thread = std::thread(OTRAudio_SfxCaptureThread);
+}
+extern "C" void OTRAudio_UninstallSfxCaptureThread() {
+    OTRAudio_Exit();
+    audio.running = true;
+    audio.thread = std::thread(OTRAudio_Thread);
+}
+std::unique_lock<std::mutex> OTRAudio_Lock() {
+    return std::unique_lock<std::mutex>(audio.mutex);
 }
 
 extern "C" void Gfx_UnregisterBlendedTexture(const char* name) {

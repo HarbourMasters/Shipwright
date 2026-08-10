@@ -83,6 +83,7 @@ DEFINE_HOOK(OnFileChooseMain, (void* gameState));
 DEFINE_HOOK(OnGenerationCompletion, ());
 
 DEFINE_HOOK(OnSetGameLanguage, ());
+DEFINE_HOOK(OnGameStillFrozen, ());
 DEFINE_HOOK(OnAssetAltChange, ());
 DEFINE_HOOK(OnKaleidoUpdate, ());
 

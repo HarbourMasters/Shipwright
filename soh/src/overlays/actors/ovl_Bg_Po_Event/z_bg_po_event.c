@@ -89,6 +89,11 @@ static Vec3f sZeroVec = { 0.0f, 0.0f, 0.0f };
 
 static u8 sPuzzleState;
 
+// Accessibility needs to know which painting is the active one.
+u8 Ship_BgPoEvent_GetPuzzleState(void) {
+    return sPuzzleState;
+}
+
 void BgPoEvent_InitPaintings(BgPoEvent* this, PlayState* play) {
     static s16 paintingPosX[] = { -1302, -866, 1421, 985 };
     static s16 paintingPosY[] = { 1107, 1091 };

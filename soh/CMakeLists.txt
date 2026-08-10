@@ -163,6 +163,11 @@ if (NOT ESPEAK)
     list(FILTER soh__ EXCLUDE REGEX "soh/Enhancements/speechsynthesizer/ESpeak")
 endif()
 
+# handle accessible audio engine removals
+if (CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch|CafeOS")
+    list(FILTER soh__Enhancements EXCLUDE REGEX "soh/Enhancements/accessible-actors/")
+endif()
+
 # soh/Extractor {{{
 list(FILTER ship__ EXCLUDE REGEX "soh/Extractor/*")
 
@@ -302,6 +307,14 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(dr_libs)
 
+FetchContent_Declare(
+        miniaudio
+        GIT_REPOSITORY https://github.com/mackron/miniaudio.git
+        GIT_TAG 350784a9467a79d0fa65802132668e5afbcf3777 
+	SOURCE_SUBDIR "ignore CMakeLists.txt"
+)
+FetchContent_MakeAvailable(miniaudio)
+
 find_package(SDL2)
 set(SDL2-INCLUDE ${SDL2_INCLUDE_DIRS})
 
@@ -329,6 +342,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE assets
     ${SDL2-NET-INCLUDE}
     ${CMAKE_CURRENT_SOURCE_DIR}/assets/
     ${dr_libs_SOURCE_DIR}
+    ${miniaudio_SOURCE_DIR}
     .
 )
 

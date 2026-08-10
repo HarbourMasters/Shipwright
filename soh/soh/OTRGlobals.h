@@ -19,6 +19,7 @@
 #ifdef __cplusplus
 #include <stdint.h>
 #include <memory>
+#include <mutex>
 #include <string>
 #include <unordered_map>
 
@@ -142,6 +143,10 @@ void Messagebox_ShowErrorBox(char* title, char* body);
 extern "C" {
 #endif
 uint64_t GetUnixTimestamp();
+void OTRAudio_InstallSfxCaptureThread();
+void OTRAudio_UninstallSfxCaptureThread();
 #ifdef __cplusplus
 };
+std::unique_lock<std::mutex> OTRAudio_Lock();
+
 #endif

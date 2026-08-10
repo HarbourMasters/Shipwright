@@ -17,6 +17,7 @@
 #include <time.h>
 #include <assert.h>
 
+bool freezeGame = false; // Used for SFX ripper.
 TransitionUnk sTrnsnUnk;
 s32 gTrnsnUnkState;
 VisMono gPlayVisMono;
@@ -673,6 +674,11 @@ void Play_Update(PlayState* play) {
     Input* input = play->state.input;
     s32 isPaused;
     s32 pad1;
+
+    if (freezeGame) {
+        GameInteractor_ExecuteOnGameStillFrozen();
+        return;
+    }
 
     if ((SREG(1) < 0) || (DREG(0) != 0)) {
         SREG(1) = 0;

@@ -81,6 +81,7 @@
 #include "textures/place_title_cards/g_pn_56.h"
 #include "textures/place_title_cards/g_pn_57.h"
 #endif
+bool freezeActors = false;
 
 static CollisionPoly* sCurCeilingPoly;
 static s32 sCurCeilingBgId;
@@ -1269,6 +1270,7 @@ void Actor_Init(Actor* actor, PlayState* play) {
 }
 
 void Actor_Destroy(Actor* actor, PlayState* play) {
+    GameInteractor_ExecuteOnActorDestroy(actor);
     if (actor->destroy != NULL) {
         if (GameInteractor_ShouldActorDestroy(actor)) {
             actor->destroy(actor, play);
@@ -2574,6 +2576,7 @@ u32 D_80116068[ACTORCAT_MAX] = {
 };
 
 void Actor_UpdateAll(PlayState* play, ActorContext* actorCtx) {
+
     Actor* refActor;
     Actor* actor;
     Player* player;
@@ -2588,6 +2591,11 @@ void Actor_UpdateAll(PlayState* play, ActorContext* actorCtx) {
 
     sp74 = NULL;
     unkFlag = 0;
+
+    if (freezeActors) {
+        GameInteractor_ExecuteOnPlayerUpdate();
+        return; // for AudioGlossary
+    }
 
     if (play->numSetupActors != 0) {
         actorEntry = &play->setupActorList[0];
