@@ -716,6 +716,9 @@ else()
     endif()
 endif()
 
+find_package(libzip REQUIRED)
+list(APPEND ADDITIONAL_LIBRARY_DEPENDENCIES libzip::zip)
+
 if(USE_ASAN)
     target_compile_options(libultraship PRIVATE -fsanitize=address)
     target_link_options(libultraship PRIVATE -fsanitize=address)

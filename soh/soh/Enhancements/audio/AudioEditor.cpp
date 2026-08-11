@@ -12,6 +12,7 @@
 #include "soh/SohGui/SohMenu.h"
 #include "soh/SohGui/SohGui.hpp"
 #include "AudioCollection.h"
+#include "OotrsArchive.h"
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/randomizer/SeedContext.h"
@@ -572,6 +573,22 @@ void AudioEditor::DrawElement() {
                                                    .Tooltip("Unlocks all music and sound effects across tab groups"))) {
         AudioEditor_UnlockAll();
     }
+
+    const std::vector<std::string>& skippedMusic = SOH::GetOotrsSkippedForCustomBank();
+    if (!skippedMusic.empty()) {
+        UIWidgets::Separator();
+        ImGui::TextColored(UIWidgets::ColorValues.at(UIWidgets::Colors::Yellow),
+                           "%zu custom music file(s) were skipped: custom soundbanks are not supported yet.",
+                           skippedMusic.size());
+        if (ImGui::IsItemHovered()) {
+            ImGui::BeginTooltip();
+            for (const std::string& file : skippedMusic) {
+                ImGui::BulletText("%s", file.c_str());
+            }
+            ImGui::EndTooltip();
+        }
+    }
+
     UIWidgets::Separator();
 
     UIWidgets::PushStyleTabs(THEME_COLOR);
