@@ -9,6 +9,7 @@
 #include "textures/icon_item_24_static/icon_item_24_static.h"
 #include <ship/Context.h>
 #include <ship/controller/controldeck/ControlDeck.h>
+#include <fast/Fast3dGui.h>
 #include <spdlog/fmt/fmt.h>
 
 extern "C" {
@@ -480,8 +481,9 @@ void SohMenu::AddMenuSettings() {
         ImGui::SeparatorText("Thank You");
         ImGui::PopStyleColor();
         ImGui::SameLine();
-        ImTextureID heartTextureId = Ship::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
-            (const char*)gQuestIconHeartContainerTex);
+        ImTextureID heartTextureId = std::dynamic_pointer_cast<Fast::Fast3dGui>(
+                                         Ship::Context::GetRawInstance()->GetWindow()->GetGui())
+                                         ->GetTextureByName((const char*)gQuestIconHeartContainerTex);
         ImGui::Image(heartTextureId, ImVec2(25.0f, 25.0f));
         ImGui::TextWrapped("Special thanks to our contributors, playtesters, artists, moderators, helpers, and "
                            "everyone in the larger decomp & N64 communities who make this project possible.\n\n");
@@ -498,7 +500,7 @@ void SohMenu::AddMenuSettings() {
             (contributors.size() / numColumns + (contributors.size() % numColumns != 0 ? 1 : 0)) * lineHeight;
 
         double scrollPosition = fmod((GetUnixTimestamp() % 18446744000000000000) * scrollSpeed, singleListHeight);
-        ImGui::SetScrollY(scrollPosition);
+        ImGui::SetScrollY(static_cast<float>(scrollPosition));
 
         // Render twice for infinite scroll
         for (int iteration = 0; iteration < 2; iteration++) {
