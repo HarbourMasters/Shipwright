@@ -241,6 +241,8 @@ foreach(_torch_game SM64 MK64 SF64 PM64 FZERO BK64 MARIO_ARTIST)
     set(BUILD_${_torch_game} OFF CACHE BOOL "" FORCE)
 endforeach()
 
+add_compile_definitions(YAML_CPP_STATIC_DEFINE)
+
 add_subdirectory(torch)
 
 # Build-time ROM extraction. soh links torch as a static library, which compiles out torch's

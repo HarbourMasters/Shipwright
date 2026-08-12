@@ -227,12 +227,6 @@ set(ALL_FILES
 ################################################################################
 add_executable(${PROJECT_NAME} ${ALL_FILES})
 
-if(MSVC)
-    # yaml-cpp, reached through torch's headers, trips the dll-interface warnings, and soh
-    # builds with /WX.
-    set_source_files_properties(soh/Extractor/TorchExtract.cpp PROPERTIES COMPILE_OPTIONS "/wd4251;/wd4275")
-endif()
-
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 use_props(${PROJECT_NAME} "${CMAKE_CONFIGURATION_TYPES}" "${DEFAULT_CXX_PROPS}")
 endif()
