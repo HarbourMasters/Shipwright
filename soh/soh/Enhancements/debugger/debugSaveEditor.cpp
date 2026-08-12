@@ -2683,7 +2683,7 @@ void DrawPlayerTab() {
         ImGui::Spacing();
         ImGui::Text("Sword State");
         PushStyleCombobox(THEME_COLOR);
-        const char* currentSword = "None";
+        std::string currentSword = "None";
         switch (player->meleeWeaponState) {
             case 0:
                 currentSword = "None";
@@ -2701,10 +2701,10 @@ void DrawPlayerTab() {
                 currentSword = "Broken Giant's Knife";
                 break;
             default:
-                currentSword = fmt::format("Unknown ({})", player->meleeWeaponState).c_str();
+                currentSword = fmt::format("Unknown ({})", player->meleeWeaponState);
                 break;
         }
-        if (ImGui::BeginCombo("##SwordState", currentSword)) {
+        if (ImGui::BeginCombo("##SwordState", currentSword.c_str())) {
             if (ImGui::Selectable("None"))
                 player->meleeWeaponState = 0;
             if (ImGui::Selectable("Kokiri Sword"))
