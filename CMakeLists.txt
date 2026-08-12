@@ -6,7 +6,7 @@ set(CMAKE_C_STANDARD 23 CACHE STRING "The C standard to use")
 
 set(CMAKE_OSX_DEPLOYMENT_TARGET "10.15" CACHE STRING "Minimum OS X deployment version")
 
-project(Ship VERSION 9.2.3 LANGUAGES C CXX)
+project(Ship VERSION 9.3.0 LANGUAGES C CXX)
 include(CMake/soh-cvars.cmake)
 include(CMake/lus-cvars.cmake)
 set(SPDLOG_LEVEL_TRACE 0)
@@ -259,6 +259,11 @@ add_executable(soh-o2r-packer EXCLUDE_FROM_ALL
     ${CMAKE_CURRENT_SOURCE_DIR}/soh/assets/tools/soh-o2r-packer/PngTexture.cpp
 )
 target_link_libraries(soh-o2r-packer PRIVATE torch)
+
+if(MSVC)
+    set_target_properties(soh-torch soh-o2r-packer PROPERTIES
+        MSVC_RUNTIME_LIBRARY "$<IF:$<CONFIG:Debug>,MultiThreadedDebug,MultiThreaded>")
+endif()
 
 # Target to generate OTRs. SOH_ROM_PATH takes roms and/or directories of roms; torch names each
 # archive (oot.o2r or oot-mq.o2r) from its hash, so a vanilla and a master quest rom produce both
