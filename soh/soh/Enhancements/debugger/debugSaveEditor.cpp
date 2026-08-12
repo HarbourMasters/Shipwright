@@ -1374,7 +1374,7 @@ void DrawFlagArrayWithTooltips(const std::string& name, T& flags, Colors color, 
         bool flag = (flags & bitMask) != 0;
         PushStyleCheckbox(color);
         ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(4.0f, 3.0f));
-        std::string id = fmt::format("##{}{}", name, flagIndex);
+        std::string id = spdlog::fmt_lib::format("##{}{}", name, flagIndex);
         if (ImGui::Checkbox(id.c_str(), &flag)) {
             if (flag) {
                 flags |= bitMask;
@@ -1440,12 +1440,12 @@ void DrawFlagTableArray16(const FlagTable& flagTable, uint16_t row, uint16_t& fl
 
 // Helper to draw "Set All / Clear All" button pair with flag array
 void DrawFlagButtons(const char* name, uint32_t& flags, UIWidgets::Colors color) {
-    if (UIWidgets::Button(fmt::format("Set All##{}", name).c_str(),
+    if (UIWidgets::Button(spdlog::fmt_lib::format("Set All##{}", name).c_str(),
                           UIWidgets::ButtonOptions().Size(ImVec2(0, 0)).Color(Colors::Green))) {
         flags = UINT32_MAX;
     }
     ImGui::SameLine();
-    if (UIWidgets::Button(fmt::format("Clear All##{}", name).c_str(),
+    if (UIWidgets::Button(spdlog::fmt_lib::format("Clear All##{}", name).c_str(),
                           UIWidgets::ButtonOptions().Size(ImVec2(0, 0)).Color(Colors::Red))) {
         flags = 0;
     }
@@ -2454,8 +2454,8 @@ void DrawDungeonItemsTab() {
             ImVec2 smallKeyCursor = ImGui::GetCursorScreenPos();
 
             uint8_t keyCount = gSaveContext.inventory.dungeonKeys[dungeonIndex];
-            std::string keyPopupId = fmt::format("##SmallKeyPopup_{}", dungeonIndex);
-            std::string keySliderId = fmt::format("##KeySlider_{}", dungeonIndex);
+            std::string keyPopupId = spdlog::fmt_lib::format("##SmallKeyPopup_{}", dungeonIndex);
+            std::string keySliderId = spdlog::fmt_lib::format("##KeySlider_{}", dungeonIndex);
             PushStyleButton(Colors::DarkGray);
             // keyCount is uint8_t, so -1 becomes 255. Only gray out when exactly 255 (-1)
             bool showNormal = (keyCount != 255);
@@ -2475,16 +2475,16 @@ void DrawDungeonItemsTab() {
             if (showCount) {
                 ImVec2 buttonMax = ImGui::GetItemRectMax();
                 ImVec2 framePadding = ImGui::GetStyle().FramePadding;
-                ImVec2 textSize = ImGui::CalcTextSize(fmt::format("{}", keyCount).c_str());
+                ImVec2 textSize = ImGui::CalcTextSize(spdlog::fmt_lib::format("{}", keyCount).c_str());
                 // Position text inside the button, accounting for frame padding
                 float textX = buttonMax.x - textSize.x - framePadding.x;
                 float textY = buttonMax.y - textSize.y - framePadding.y;
                 // Draw text directly without affecting cursor position
                 ImGui::GetForegroundDrawList()->AddText(ImVec2(textX, textY), IM_COL32(255, 255, 255, 255),
-                                                        fmt::format("{}", keyCount).c_str());
+                                                        spdlog::fmt_lib::format("{}", keyCount).c_str());
             }
 
-            Tooltip(fmt::format("Keys: {}", keyCount == 255 ? -1 : keyCount).c_str());
+            Tooltip(spdlog::fmt_lib::format("Keys: {}", keyCount == 255 ? -1 : keyCount).c_str());
 
             // Small key popup
             if (ImGui::BeginPopup(keyPopupId.c_str())) {
@@ -2701,7 +2701,7 @@ void DrawPlayerTab() {
                 currentSword = "Broken Giant's Knife";
                 break;
             default:
-                currentSword = fmt::format("Unknown ({})", player->meleeWeaponState);
+                currentSword = spdlog::fmt_lib::format("Unknown ({})", player->meleeWeaponState);
                 break;
         }
         if (ImGui::BeginCombo("##SwordState", currentSword.c_str())) {
