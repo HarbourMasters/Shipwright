@@ -1,0 +1,27 @@
+:config:
+  segments:
+    - [ 6, 0x01754000 ]
+    - [ 4, 0x00F5E000 ]
+    - [ 8, 0x01754000 ]
+    - [ 9, 0x01754000 ]
+    - [ 10, 0x01754000 ]
+    - [ 11, 0x01754000 ]
+    - [ 12, 0x01754000 ]
+    - [ 13, 0x01754000 ]
+  external_files:
+    - pal_mq_dbg/objects/gameplay_keep.yml
+
+gGiSeedDL:
+  type: GFX
+  offset: 0x0810
+  symbol: gGiSeedDL
+
+
+object_gi_seedVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_gi_seedVtx_000000
+  count: 129
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

@@ -1,0 +1,1027 @@
+:config:
+  segments:
+    - [ 6, 0x012A9730 ]
+    - [ 4, 0x00D24FC0 ]
+    - [ 8, 0x012A9730 ]
+    - [ 9, 0x012A9730 ]
+    - [ 10, 0x012A9730 ]
+    - [ 11, 0x012A9730 ]
+    - [ 12, 0x012A9730 ]
+    - [ 13, 0x012A9730 ]
+  external_files:
+    - pal_gc/objects/gameplay_keep.yml
+
+gWolfosBackflippingAnim:
+  type: OOT:ANIMATION
+  offset: 0x4AD0
+  symbol: gWolfosBackflippingAnim
+
+gWolfosBlockingAnim:
+  type: OOT:ANIMATION
+  offset: 0x4CA4
+  symbol: gWolfosBlockingAnim
+
+gWolfosDamagedAnim:
+  type: OOT:ANIMATION
+  offset: 0x9B20
+  symbol: gWolfosDamagedAnim
+
+gWolfosNormalAbdomenDL:
+  type: GFX
+  offset: 0x6DD0
+  symbol: gWolfosNormalAbdomenDL
+
+gWolfosNormalAbdomenLimb:
+  type: OOT:LIMB
+  offset: 0x9588
+  symbol: gWolfosNormalAbdomenLimb
+  limb_type: Standard
+
+gWolfosNormalBackLeftPasternDL:
+  type: GFX
+  offset: 0x7428
+  symbol: gWolfosNormalBackLeftPasternDL
+
+gWolfosNormalBackLeftPasternLimb:
+  type: OOT:LIMB
+  offset: 0x9564
+  symbol: gWolfosNormalBackLeftPasternLimb
+  limb_type: Standard
+
+gWolfosNormalBackLeftPawDL:
+  type: GFX
+  offset: 0x74F8
+  symbol: gWolfosNormalBackLeftPawDL
+
+gWolfosNormalBackLeftPawLimb:
+  type: OOT:LIMB
+  offset: 0x9570
+  symbol: gWolfosNormalBackLeftPawLimb
+  limb_type: Standard
+
+gWolfosNormalBackLeftShinDL:
+  type: GFX
+  offset: 0x7338
+  symbol: gWolfosNormalBackLeftShinDL
+
+gWolfosNormalBackLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0x9558
+  symbol: gWolfosNormalBackLeftShinLimb
+  limb_type: Standard
+
+gWolfosNormalBackLeftThighDL:
+  type: GFX
+  offset: 0x7248
+  symbol: gWolfosNormalBackLeftThighDL
+
+gWolfosNormalBackLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0x954C
+  symbol: gWolfosNormalBackLeftThighLimb
+  limb_type: Standard
+
+gWolfosNormalBackRightPasternDL:
+  type: GFX
+  offset: 0x7078
+  symbol: gWolfosNormalBackRightPasternDL
+
+gWolfosNormalBackRightPasternLimb:
+  type: OOT:LIMB
+  offset: 0x95AC
+  symbol: gWolfosNormalBackRightPasternLimb
+  limb_type: Standard
+
+gWolfosNormalBackRightPawDL:
+  type: GFX
+  offset: 0x7148
+  symbol: gWolfosNormalBackRightPawDL
+
+gWolfosNormalBackRightPawLimb:
+  type: OOT:LIMB
+  offset: 0x95B8
+  symbol: gWolfosNormalBackRightPawLimb
+  limb_type: Standard
+
+gWolfosNormalBackRightShinDL:
+  type: GFX
+  offset: 0x6F88
+  symbol: gWolfosNormalBackRightShinDL
+
+gWolfosNormalBackRightShinLimb:
+  type: OOT:LIMB
+  offset: 0x95A0
+  symbol: gWolfosNormalBackRightShinLimb
+  limb_type: Standard
+
+gWolfosNormalBackRightThighDL:
+  type: GFX
+  offset: 0x6E98
+  symbol: gWolfosNormalBackRightThighDL
+
+gWolfosNormalBackRightThighLimb:
+  type: OOT:LIMB
+  offset: 0x9594
+  symbol: gWolfosNormalBackRightThighLimb
+  limb_type: Standard
+
+gWolfosNormalEyeHalfTex:
+  type: TEXTURE
+  offset: 0x8368
+  symbol: gWolfosNormalEyeHalfTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gWolfosNormalEyeNarrowTex:
+  type: TEXTURE
+  offset: 0x8568
+  symbol: gWolfosNormalEyeNarrowTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gWolfosNormalEyeOpenTex:
+  type: TEXTURE
+  offset: 0x7B68
+  symbol: gWolfosNormalEyeOpenTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gWolfosNormalEyesDL:
+  type: GFX
+  offset: 0x94A8
+  symbol: gWolfosNormalEyesDL
+
+gWolfosNormalEyesLimb:
+  type: OOT:LIMB
+  offset: 0x960C
+  symbol: gWolfosNormalEyesLimb
+  limb_type: Standard
+
+gWolfosNormalFrontLeftClawDL:
+  type: GFX
+  offset: 0x8FF8
+  symbol: gWolfosNormalFrontLeftClawDL
+
+gWolfosNormalFrontLeftClawLimb:
+  type: OOT:LIMB
+  offset: 0x9630
+  symbol: gWolfosNormalFrontLeftClawLimb
+  limb_type: Standard
+
+gWolfosNormalFrontLeftLowerLegDL:
+  type: GFX
+  offset: 0x7830
+  symbol: gWolfosNormalFrontLeftLowerLegDL
+
+gWolfosNormalFrontLeftLowerLegLimb:
+  type: OOT:LIMB
+  offset: 0x9624
+  symbol: gWolfosNormalFrontLeftLowerLegLimb
+  limb_type: Standard
+
+gWolfosNormalFrontLeftUpperLegDL:
+  type: GFX
+  offset: 0x7718
+  symbol: gWolfosNormalFrontLeftUpperLegDL
+
+gWolfosNormalFrontLeftUpperLegLimb:
+  type: OOT:LIMB
+  offset: 0x9618
+  symbol: gWolfosNormalFrontLeftUpperLegLimb
+  limb_type: Standard
+
+gWolfosNormalFrontRightClawDL:
+  type: GFX
+  offset: 0x90C0
+  symbol: gWolfosNormalFrontRightClawDL
+
+gWolfosNormalFrontRightClawLimb:
+  type: OOT:LIMB
+  offset: 0x95E8
+  symbol: gWolfosNormalFrontRightClawLimb
+  limb_type: Standard
+
+gWolfosNormalFrontRightLowerLegDL:
+  type: GFX
+  offset: 0x7A58
+  symbol: gWolfosNormalFrontRightLowerLegDL
+
+gWolfosNormalFrontRightLowerLegLimb:
+  type: OOT:LIMB
+  offset: 0x95DC
+  symbol: gWolfosNormalFrontRightLowerLegLimb
+  limb_type: Standard
+
+gWolfosNormalFrontRightUpperLegDL:
+  type: GFX
+  offset: 0x7940
+  symbol: gWolfosNormalFrontRightUpperLegDL
+
+gWolfosNormalFrontRightUpperLegLimb:
+  type: OOT:LIMB
+  offset: 0x95D0
+  symbol: gWolfosNormalFrontRightUpperLegLimb
+  limb_type: Standard
+
+gWolfosNormalFurTex:
+  type: TEXTURE
+  offset: 0x7D68
+  symbol: gWolfosNormalFurTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gWolfosNormalHeadDL:
+  type: GFX
+  offset: 0x9188
+  symbol: gWolfosNormalHeadDL
+
+gWolfosNormalHeadLimb:
+  type: OOT:LIMB
+  offset: 0x9600
+  symbol: gWolfosNormalHeadLimb
+  limb_type: Standard
+
+gWolfosNormalHeadRootLimb:
+  type: OOT:LIMB
+  offset: 0x95F4
+  symbol: gWolfosNormalHeadRootLimb
+  limb_type: Standard
+
+gWolfosNormalMouthTex:
+  type: TEXTURE
+  offset: 0x8168
+  symbol: gWolfosNormalMouthTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gWolfosNormalNostrilTex:
+  type: TEXTURE
+  offset: 0x82E8
+  symbol: gWolfosNormalNostrilTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gWolfosNormalRootLimb:
+  type: OOT:LIMB
+  offset: 0x9540
+  symbol: gWolfosNormalRootLimb
+  limb_type: Standard
+
+gWolfosNormalSkel:
+  type: OOT:SKELETON
+  offset: 0x9690
+  symbol: gWolfosNormalSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gWolfosNormalTailDL:
+  type: GFX
+  offset: 0x8F58
+  symbol: gWolfosNormalTailDL
+
+gWolfosNormalTailLimb:
+  type: OOT:LIMB
+  offset: 0x957C
+  symbol: gWolfosNormalTailLimb
+  limb_type: Standard
+
+gWolfosNormalThoraxDL:
+  type: GFX
+  offset: 0x75F8
+  symbol: gWolfosNormalThoraxDL
+
+gWolfosNormalThoraxLimb:
+  type: OOT:LIMB
+  offset: 0x95C4
+  symbol: gWolfosNormalThoraxLimb
+  limb_type: Standard
+
+gWolfosNormalTongueTex:
+  type: TEXTURE
+  offset: 0x81E8
+  symbol: gWolfosNormalTongueTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gWolfosNormalToothClawTex:
+  type: TEXTURE
+  offset: 0x8268
+  symbol: gWolfosNormalToothClawTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gWolfosRearingUpFallingOverAnim:
+  type: OOT:ANIMATION
+  offset: 0x5430
+  symbol: gWolfosRearingUpFallingOverAnim
+
+gWolfosRunningAnim:
+  type: OOT:ANIMATION
+  offset: 0x57A0
+  symbol: gWolfosRunningAnim
+
+gWolfosSidesteppingAnim:
+  type: OOT:ANIMATION
+  offset: 0x98C8
+  symbol: gWolfosSidesteppingAnim
+
+gWolfosSlashingAnim:
+  type: OOT:ANIMATION
+  offset: 0x4638
+  symbol: gWolfosSlashingAnim
+
+gWolfosWaitingAnim:
+  type: OOT:ANIMATION
+  offset: 0xA4AC
+  symbol: gWolfosWaitingAnim
+
+gWolfosWhiteAbdomenDL:
+  type: GFX
+  offset: 0x1A20
+  symbol: gWolfosWhiteAbdomenDL
+
+gWolfosWhiteAbdomenLimb:
+  type: OOT:LIMB
+  offset: 0x3AB8
+  symbol: gWolfosWhiteAbdomenLimb
+  limb_type: Standard
+
+gWolfosWhiteBackLeftPasternDL:
+  type: GFX
+  offset: 0x2078
+  symbol: gWolfosWhiteBackLeftPasternDL
+
+gWolfosWhiteBackLeftPasternLimb:
+  type: OOT:LIMB
+  offset: 0x3A94
+  symbol: gWolfosWhiteBackLeftPasternLimb
+  limb_type: Standard
+
+gWolfosWhiteBackLeftPawDL:
+  type: GFX
+  offset: 0x2148
+  symbol: gWolfosWhiteBackLeftPawDL
+
+gWolfosWhiteBackLeftPawLimb:
+  type: OOT:LIMB
+  offset: 0x3AA0
+  symbol: gWolfosWhiteBackLeftPawLimb
+  limb_type: Standard
+
+gWolfosWhiteBackLeftShinDL:
+  type: GFX
+  offset: 0x1F88
+  symbol: gWolfosWhiteBackLeftShinDL
+
+gWolfosWhiteBackLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0x3A88
+  symbol: gWolfosWhiteBackLeftShinLimb
+  limb_type: Standard
+
+gWolfosWhiteBackLeftThighDL:
+  type: GFX
+  offset: 0x1E98
+  symbol: gWolfosWhiteBackLeftThighDL
+
+gWolfosWhiteBackLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0x3A7C
+  symbol: gWolfosWhiteBackLeftThighLimb
+  limb_type: Standard
+
+gWolfosWhiteBackRightPasternDL:
+  type: GFX
+  offset: 0x1CC8
+  symbol: gWolfosWhiteBackRightPasternDL
+
+gWolfosWhiteBackRightPasternLimb:
+  type: OOT:LIMB
+  offset: 0x3ADC
+  symbol: gWolfosWhiteBackRightPasternLimb
+  limb_type: Standard
+
+gWolfosWhiteBackRightPawDL:
+  type: GFX
+  offset: 0x1D98
+  symbol: gWolfosWhiteBackRightPawDL
+
+gWolfosWhiteBackRightPawLimb:
+  type: OOT:LIMB
+  offset: 0x3AE8
+  symbol: gWolfosWhiteBackRightPawLimb
+  limb_type: Standard
+
+gWolfosWhiteBackRightShinDL:
+  type: GFX
+  offset: 0x1BD8
+  symbol: gWolfosWhiteBackRightShinDL
+
+gWolfosWhiteBackRightShinLimb:
+  type: OOT:LIMB
+  offset: 0x3AD0
+  symbol: gWolfosWhiteBackRightShinLimb
+  limb_type: Standard
+
+gWolfosWhiteBackRightThighDL:
+  type: GFX
+  offset: 0x1AE8
+  symbol: gWolfosWhiteBackRightThighDL
+
+gWolfosWhiteBackRightThighLimb:
+  type: OOT:LIMB
+  offset: 0x3AC4
+  symbol: gWolfosWhiteBackRightThighLimb
+  limb_type: Standard
+
+gWolfosWhiteEyeHalfTex:
+  type: TEXTURE
+  offset: 0x27D8
+  symbol: gWolfosWhiteEyeHalfTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gWolfosWhiteEyeNarrowTex:
+  type: TEXTURE
+  offset: 0x29D8
+  symbol: gWolfosWhiteEyeNarrowTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gWolfosWhiteEyeOpenTex:
+  type: TEXTURE
+  offset: 0x300
+  symbol: gWolfosWhiteEyeOpenTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gWolfosWhiteEyesDL:
+  type: GFX
+  offset: 0x39D8
+  symbol: gWolfosWhiteEyesDL
+
+gWolfosWhiteEyesLimb:
+  type: OOT:LIMB
+  offset: 0x3B3C
+  symbol: gWolfosWhiteEyesLimb
+  limb_type: Standard
+
+gWolfosWhiteFrontLeftClawDL:
+  type: GFX
+  offset: 0x3528
+  symbol: gWolfosWhiteFrontLeftClawDL
+
+gWolfosWhiteFrontLeftClawLimb:
+  type: OOT:LIMB
+  offset: 0x3B60
+  symbol: gWolfosWhiteFrontLeftClawLimb
+  limb_type: Standard
+
+gWolfosWhiteFrontLeftLowerLegDL:
+  type: GFX
+  offset: 0x2490
+  symbol: gWolfosWhiteFrontLeftLowerLegDL
+
+gWolfosWhiteFrontLeftLowerLegLimb:
+  type: OOT:LIMB
+  offset: 0x3B54
+  symbol: gWolfosWhiteFrontLeftLowerLegLimb
+  limb_type: Standard
+
+gWolfosWhiteFrontLeftUpperLegDL:
+  type: GFX
+  offset: 0x2368
+  symbol: gWolfosWhiteFrontLeftUpperLegDL
+
+gWolfosWhiteFrontLeftUpperLegLimb:
+  type: OOT:LIMB
+  offset: 0x3B48
+  symbol: gWolfosWhiteFrontLeftUpperLegLimb
+  limb_type: Standard
+
+gWolfosWhiteFrontRightClawDL:
+  type: GFX
+  offset: 0x35F0
+  symbol: gWolfosWhiteFrontRightClawDL
+
+gWolfosWhiteFrontRightClawLimb:
+  type: OOT:LIMB
+  offset: 0x3B18
+  symbol: gWolfosWhiteFrontRightClawLimb
+  limb_type: Standard
+
+gWolfosWhiteFrontRightLowerLegDL:
+  type: GFX
+  offset: 0x26C8
+  symbol: gWolfosWhiteFrontRightLowerLegDL
+
+gWolfosWhiteFrontRightLowerLegLimb:
+  type: OOT:LIMB
+  offset: 0x3B0C
+  symbol: gWolfosWhiteFrontRightLowerLegLimb
+  limb_type: Standard
+
+gWolfosWhiteFrontRightUpperLegDL:
+  type: GFX
+  offset: 0x25A0
+  symbol: gWolfosWhiteFrontRightUpperLegDL
+
+gWolfosWhiteFrontRightUpperLegLimb:
+  type: OOT:LIMB
+  offset: 0x3B00
+  symbol: gWolfosWhiteFrontRightUpperLegLimb
+  limb_type: Standard
+
+gWolfosWhiteFurTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gWolfosWhiteFurTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gWolfosWhiteHeadDL:
+  type: GFX
+  offset: 0x36B8
+  symbol: gWolfosWhiteHeadDL
+
+gWolfosWhiteHeadLimb:
+  type: OOT:LIMB
+  offset: 0x3B30
+  symbol: gWolfosWhiteHeadLimb
+  limb_type: Standard
+
+gWolfosWhiteHeadRootLimb:
+  type: OOT:LIMB
+  offset: 0x3B24
+  symbol: gWolfosWhiteHeadRootLimb
+  limb_type: Standard
+
+gWolfosWhiteMouthTex:
+  type: TEXTURE
+  offset: 0x180
+  symbol: gWolfosWhiteMouthTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gWolfosWhiteNostrilTex:
+  type: TEXTURE
+  offset: 0x280
+  symbol: gWolfosWhiteNostrilTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gWolfosWhiteRootLimb:
+  type: OOT:LIMB
+  offset: 0x3A70
+  symbol: gWolfosWhiteRootLimb
+  limb_type: Standard
+
+gWolfosWhiteSkel:
+  type: OOT:SKELETON
+  offset: 0x3BC0
+  symbol: gWolfosWhiteSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gWolfosWhiteTailDL:
+  type: GFX
+  offset: 0x3488
+  symbol: gWolfosWhiteTailDL
+
+gWolfosWhiteTailLimb:
+  type: OOT:LIMB
+  offset: 0x3AAC
+  symbol: gWolfosWhiteTailLimb
+  limb_type: Standard
+
+gWolfosWhiteThoraxDL:
+  type: GFX
+  offset: 0x2248
+  symbol: gWolfosWhiteThoraxDL
+
+gWolfosWhiteThoraxLimb:
+  type: OOT:LIMB
+  offset: 0x3AF4
+  symbol: gWolfosWhiteThoraxLimb
+  limb_type: Standard
+
+gWolfosWhiteTongueTex:
+  type: TEXTURE
+  offset: 0x200
+  symbol: gWolfosWhiteTongueTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gWolfosWhiteToothClawTex:
+  type: TEXTURE
+  offset: 0x100
+  symbol: gWolfosWhiteToothClawTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_wf_zeroes_Blob_004648:
+  type: BLOB
+  offset: 0x4648
+  size: 0x48
+  symbol: object_wf_zeroes_Blob_004648
+
+object_wf_zeroes_Blob_004AE0:
+  type: BLOB
+  offset: 0x4AE0
+  size: 0x20
+  symbol: object_wf_zeroes_Blob_004AE0
+
+object_wf_zeroes_Blob_005440:
+  type: BLOB
+  offset: 0x5440
+  size: 0x40
+  symbol: object_wf_zeroes_Blob_005440
+
+object_wf_zeroes_Blob_0057B0:
+  type: BLOB
+  offset: 0x57B0
+  size: 0x20
+  symbol: object_wf_zeroes_Blob_0057B0
+
+object_wf_zeroes_Blob_0098D8:
+  type: BLOB
+  offset: 0x98D8
+  size: 0x18
+  symbol: object_wf_zeroes_Blob_0098D8
+
+object_wf_zeroes_Blob_00A4BC:
+  type: BLOB
+  offset: 0xA4BC
+  size: 0x44
+  symbol: object_wf_zeroes_Blob_00A4BC
+
+
+object_wfVtx_000500:
+  type: OOT:ARRAY
+  offset: 0x000500
+  symbol: object_wfVtx_000500
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wfVtx_000630:
+  type: OOT:ARRAY
+  offset: 0x000630
+  symbol: object_wfVtx_000630
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wfVtx_0006F0:
+  type: OOT:ARRAY
+  offset: 0x0006F0
+  symbol: object_wfVtx_0006F0
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wfVtx_000840:
+  type: OOT:ARRAY
+  offset: 0x000840
+  symbol: object_wfVtx_000840
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wfVtx_0009B0:
+  type: OOT:ARRAY
+  offset: 0x0009B0
+  symbol: object_wfVtx_0009B0
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wfVtx_000AE0:
+  type: OOT:ARRAY
+  offset: 0x000AE0
+  symbol: object_wfVtx_000AE0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wfVtx_000BA0:
+  type: OOT:ARRAY
+  offset: 0x000BA0
+  symbol: object_wfVtx_000BA0
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wfVtx_000CF0:
+  type: OOT:ARRAY
+  offset: 0x000CF0
+  symbol: object_wfVtx_000CF0
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wfVtx_000E60:
+  type: OOT:ARRAY
+  offset: 0x000E60
+  symbol: object_wfVtx_000E60
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wfVtx_001030:
+  type: OOT:ARRAY
+  offset: 0x001030
+  symbol: object_wfVtx_001030
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wfVtx_001260:
+  type: OOT:ARRAY
+  offset: 0x001260
+  symbol: object_wfVtx_001260
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wfVtx_001430:
+  type: OOT:ARRAY
+  offset: 0x001430
+  symbol: object_wfVtx_001430
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wfVtx_001660:
+  type: OOT:ARRAY
+  offset: 0x001660
+  symbol: object_wfVtx_001660
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wfVtx_001880:
+  type: OOT:ARRAY
+  offset: 0x001880
+  symbol: object_wfVtx_001880
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wfVtx_002BD8:
+  type: OOT:ARRAY
+  offset: 0x002BD8
+  symbol: object_wfVtx_002BD8
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wfVtx_002C28:
+  type: OOT:ARRAY
+  offset: 0x002C28
+  symbol: object_wfVtx_002C28
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wfVtx_002D48:
+  type: OOT:ARRAY
+  offset: 0x002D48
+  symbol: object_wfVtx_002D48
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wfVtx_002E68:
+  type: OOT:ARRAY
+  offset: 0x002E68
+  symbol: object_wfVtx_002E68
+  count: 90
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wfVtx_003408:
+  type: OOT:ARRAY
+  offset: 0x003408
+  symbol: object_wfVtx_003408
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gWolfosWhiteSkelLimbs:
+  type: BLOB
+  offset: 0x3B6C
+  symbol: gWolfosWhiteSkelLimbs
+  size: 0
+
+object_wfVtx_0057D0:
+  type: OOT:ARRAY
+  offset: 0x0057D0
+  symbol: object_wfVtx_0057D0
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wfVtx_005900:
+  type: OOT:ARRAY
+  offset: 0x005900
+  symbol: object_wfVtx_005900
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wfVtx_0059C0:
+  type: OOT:ARRAY
+  offset: 0x0059C0
+  symbol: object_wfVtx_0059C0
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wfVtx_005B30:
+  type: OOT:ARRAY
+  offset: 0x005B30
+  symbol: object_wfVtx_005B30
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wfVtx_005CD0:
+  type: OOT:ARRAY
+  offset: 0x005CD0
+  symbol: object_wfVtx_005CD0
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wfVtx_005E00:
+  type: OOT:ARRAY
+  offset: 0x005E00
+  symbol: object_wfVtx_005E00
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wfVtx_005EC0:
+  type: OOT:ARRAY
+  offset: 0x005EC0
+  symbol: object_wfVtx_005EC0
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wfVtx_006030:
+  type: OOT:ARRAY
+  offset: 0x006030
+  symbol: object_wfVtx_006030
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wfVtx_0061D0:
+  type: OOT:ARRAY
+  offset: 0x0061D0
+  symbol: object_wfVtx_0061D0
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wfVtx_006450:
+  type: OOT:ARRAY
+  offset: 0x006450
+  symbol: object_wfVtx_006450
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wfVtx_0065F0:
+  type: OOT:ARRAY
+  offset: 0x0065F0
+  symbol: object_wfVtx_0065F0
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wfVtx_006870:
+  type: OOT:ARRAY
+  offset: 0x006870
+  symbol: object_wfVtx_006870
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wfVtx_006A10:
+  type: OOT:ARRAY
+  offset: 0x006A10
+  symbol: object_wfVtx_006A10
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wfVtx_006C30:
+  type: OOT:ARRAY
+  offset: 0x006C30
+  symbol: object_wfVtx_006C30
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wfVtx_008768:
+  type: OOT:ARRAY
+  offset: 0x008768
+  symbol: object_wfVtx_008768
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wfVtx_0087B8:
+  type: OOT:ARRAY
+  offset: 0x0087B8
+  symbol: object_wfVtx_0087B8
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wfVtx_008878:
+  type: OOT:ARRAY
+  offset: 0x008878
+  symbol: object_wfVtx_008878
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wfVtx_008938:
+  type: OOT:ARRAY
+  offset: 0x008938
+  symbol: object_wfVtx_008938
+  count: 90
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_wfVtx_008ED8:
+  type: OOT:ARRAY
+  offset: 0x008ED8
+  symbol: object_wfVtx_008ED8
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gWolfosNormalSkelLimbs:
+  type: BLOB
+  offset: 0x963C
+  symbol: gWolfosNormalSkelLimbs
+  size: 0

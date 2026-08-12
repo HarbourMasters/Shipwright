@@ -1,0 +1,20 @@
+:config:
+  segments:
+    - [ 128, 0x013026E0 ]
+
+gBombchuBowlingAlleyCardENGTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gBombchuBowlingAlleyCardENGTex
+  format: IA8
+  width: 144
+  height: 24
+
+gBombchuBowlingAlleyCardJPNTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gBombchuBowlingAlleyCardJPNTex
+  format: IA8
+  width: 144
+  height: 24
+

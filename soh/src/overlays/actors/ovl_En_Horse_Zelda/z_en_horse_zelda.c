@@ -14,9 +14,9 @@ void EnHorseZelda_Destroy(Actor* thisx, PlayState* play);
 void EnHorseZelda_Update(Actor* thisx, PlayState* play);
 void EnHorseZelda_Draw(Actor* thisx, PlayState* play);
 
-void func_80A6DCCC(EnHorseZelda* this, PlayState* play);
-void func_80A6DDFC(EnHorseZelda* this, PlayState* play);
-void func_80A6DC7C(EnHorseZelda* this);
+void EnHorseZelda_Stop(EnHorseZelda* this, PlayState* play);
+void EnHorseZelda_Gallop(EnHorseZelda* this, PlayState* play);
+void EnHorseZelda_SetupStop(EnHorseZelda* this);
 
 const ActorInit En_Horse_Zelda_InitVars = {
     ACTOR_EN_HORSE_ZELDA,
@@ -101,27 +101,27 @@ static InitChainEntry sInitChain[] = {
 };
 
 static EnHorseZeldaActionFunc sActionFuncs[] = {
-    func_80A6DCCC,
-    func_80A6DDFC,
+    EnHorseZelda_Stop,
+    EnHorseZelda_Gallop,
 };
 
-void func_80A6D8D0(unknownStruct* data, s32 index, Vec3f* vec) {
+void EnHorseZelda_GetFieldPosition(unknownStruct* data, s32 index, Vec3f* vec) {
     vec->x = data[index].unk_0.x;
     vec->y = data[index].unk_0.y;
     vec->z = data[index].unk_0.z;
 }
 
-void func_80A6D918(EnHorseZelda* this, PlayState* play) {
+void EnHorseZelda_Move(EnHorseZelda* this, PlayState* play) {
     s32 pad;
     Vec3f sp28;
     s16 yawDiff;
 
-    func_80A6D8D0(D_80A6E240, this->fieldPosIndex, &sp28);
+    EnHorseZelda_GetFieldPosition(D_80A6E240, this->fieldPosIndex, &sp28);
     if (Math3D_Vec3f_DistXYZ(&sp28, &this->actor.world.pos) <= 400.0f) {
         this->fieldPosIndex++;
         if (this->fieldPosIndex >= 14) {
             this->fieldPosIndex = 0;
-            func_80A6D8D0(D_80A6E240, 0, &sp28);
+            EnHorseZelda_GetFieldPosition(D_80A6E240, 0, &sp28);
         }
     }
     yawDiff = Math_Vec3f_Yaw(&this->actor.world.pos, &sp28) - this->actor.world.rot.y;
@@ -167,7 +167,7 @@ void EnHorseZelda_Init(Actor* thisx, PlayState* play) {
     Collider_SetJntSph(play, &this->colliderSphere, &this->actor, &sJntSphInit, &this->colliderSphereItem);
     CollisionCheck_SetInfo(&this->actor.colChkInfo, NULL, &sColChkInfoInit);
     this->animationIndex = 0;
-    func_80A6DC7C(this);
+    EnHorseZelda_SetupStop(this);
 }
 
 void EnHorseZelda_Destroy(Actor* thisx, PlayState* play) {
@@ -178,7 +178,7 @@ void EnHorseZelda_Destroy(Actor* thisx, PlayState* play) {
     Skin_Free(play, &this->skin);
 }
 
-void func_80A6DC7C(EnHorseZelda* this) {
+void EnHorseZelda_SetupStop(EnHorseZelda* this) {
     this->action = 0;
     this->animationIndex++;
     if (this->animationIndex > 0) {
@@ -187,14 +187,14 @@ void func_80A6DC7C(EnHorseZelda* this) {
     Animation_PlayOnce(&this->skin.skelAnime, sAnimationHeaders[this->animationIndex]);
 }
 
-void func_80A6DCCC(EnHorseZelda* this, PlayState* play) {
+void EnHorseZelda_Stop(EnHorseZelda* this, PlayState* play) {
     this->actor.speedXZ = 0.0f;
     if (SkelAnime_Update(&this->skin.skelAnime)) {
-        func_80A6DC7C(this);
+        EnHorseZelda_SetupStop(this);
     }
 }
 
-void func_80A6DD14(EnHorseZelda* this) {
+void EnHorseZelda_Spur(EnHorseZelda* this) {
     f32 sp34;
 
     this->action = 1;
@@ -207,14 +207,14 @@ void func_80A6DD14(EnHorseZelda* this) {
                      Animation_GetLastFrame(sAnimationHeaders[this->animationIndex]), ANIMMODE_ONCE, 0.0f);
 }
 
-void func_80A6DDFC(EnHorseZelda* this, PlayState* play) {
-    func_80A6D918(this, play);
+void EnHorseZelda_Gallop(EnHorseZelda* this, PlayState* play) {
+    EnHorseZelda_Move(this, play);
     if (SkelAnime_Update(&this->skin.skelAnime)) {
-        func_80A6DD14(this);
+        EnHorseZelda_Spur(this);
     }
 }
 
-void func_80A6DE38(EnHorseZelda* this, PlayState* play) {
+void EnHorseZelda_SetRotate(EnHorseZelda* this, PlayState* play) {
     s32 pad;
     CollisionPoly* poly;
     s32 pad2;
@@ -270,7 +270,7 @@ void EnHorseZelda_PostDraw(Actor* thisx, PlayState* play, Skin* skin) {
 void EnHorseZelda_Draw(Actor* thisx, PlayState* play) {
     EnHorseZelda* this = (EnHorseZelda*)thisx;
 
-    func_80A6DE38(this, play);
+    EnHorseZelda_SetRotate(this, play);
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
     func_800A6330(&this->actor, play, &this->skin, EnHorseZelda_PostDraw, true);
 }

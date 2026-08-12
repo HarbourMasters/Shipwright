@@ -1,0 +1,28 @@
+:config:
+  segments:
+    - [ 128, 0x01A0F000 ]
+
+gCastleCourtyardTitleCardENGTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gCastleCourtyardTitleCardENGTex
+  format: IA8
+  width: 144
+  height: 24
+
+gCastleCourtyardTitleCardFRATex:
+  type: TEXTURE
+  offset: 0x1B00
+  symbol: gCastleCourtyardTitleCardFRATex
+  format: IA8
+  width: 144
+  height: 24
+
+gCastleCourtyardTitleCardGERTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gCastleCourtyardTitleCardGERTex
+  format: IA8
+  width: 144
+  height: 24
+

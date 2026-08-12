@@ -1,11 +1,11 @@
 #include "ShipUtils.h"
-#include <libultraship/libultraship.h>
+#include <cassert>
 #include <random>
 #include "soh_assets.h"
+#include <libultraship/bridge/consolevariablebridge.h>
 
 extern "C" {
 #include "z64.h"
-#include "functions.h"
 #include "macros.h"
 
 extern float OTRGetAspectRatio();

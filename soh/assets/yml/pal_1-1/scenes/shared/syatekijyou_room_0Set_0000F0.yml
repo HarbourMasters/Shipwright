@@ -1,0 +1,15 @@
+:config:
+  segments:
+    - [ 3, 0x01B52EF0 ]
+    - [ 2, 0x01B4B9E0 ]
+  directory: scenes/shared/syatekijyou_scene
+  external_files:
+    - pal_1-1/scenes/shared/syatekijyou_room_0.yml
+    - pal_1-1/scenes/shared/syatekijyou_scene.yml
+    - pal_1-1/code/sys_matrix.yml
+
+syatekijyou_room_0Set_0000F0:
+  type: OOT:ROOM
+  offset: 0xF0
+  symbol: syatekijyou_room_0Set_0000F0
+  base_name: syatekijyou_room_0

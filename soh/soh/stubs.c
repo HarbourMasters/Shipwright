@@ -3,8 +3,6 @@
 #include <stdio.h>
 #include <string.h>
 #include "z64.h"
-#include "OTRGlobals.h"
-//#include <math.h>
 
 u32 osResetType;
 u32 osTvType = OS_TV_NTSC;
@@ -31,15 +29,23 @@ u8 osAppNmiBuffer[2048];
 
 f32 qNaN0x10000 = 0x7F810000;
 
+// disable "must return a value" warnings
+// TODO: Actually fix all of this
+#if _MSC_VER
+#pragma warning(disable : 4716)
+#endif
+
 // void gSPTextureRectangle(Gfx* pkt, s32 xl, s32 yl, s32 xh, s32 yh, u32 tile, u32 s, s32 t, u32 dsdx, u32 dtdy)
 //{
 //	__gSPTextureRectangle(pkt, xl, yl, xh, yh, tile, s, t, dsdx, dtdy);
 // }
 
 OSId osGetThreadId(OSThread* thread) {
+    return 0;
 }
 
 OSPri osGetThreadPri(OSThread* thread) {
+    return 0;
 }
 
 void osSetThreadPri(OSThread* thread, OSPri pri) {
@@ -49,33 +55,43 @@ void osCreatePiManager(OSPri pri, OSMesgQueue* cmdQ, OSMesg* cmdBuf, s32 cmdMsgC
 }
 
 s32 osPfsFreeBlocks(OSPfs* pfs, s32* leftoverBytes) {
+    return 0;
 }
 
 s32 osEPiWriteIo(OSPiHandle* handle, u32 devAddr, u32 data) {
+    return 0;
 }
 
 s32 osPfsReadWriteFile(OSPfs* pfs, s32 fileNo, u8 flag, s32 offset, ptrdiff_t size, u8* data) {
+    return 0;
 }
 
 s32 osPfsDeleteFile(OSPfs* pfs, u16 companyCode, u32 gameCode, u8* gameName, u8* extName) {
+    return 0;
 }
 
 s32 osPfsFileState(OSPfs* pfs, s32 fileNo, OSPfsState* state) {
+    return 0;
 }
 
 s32 osPfsInitPak(OSMesgQueue* mq, OSPfs* pfs, s32 channel) {
+    return 0;
 }
 
 s32 __osPfsCheckRamArea(OSPfs* pfs) {
+    return 0;
 }
 
 s32 osPfsChecker(OSPfs* pfs) {
+    return 0;
 }
 
 s32 osPfsFindFile(OSPfs* pfs, u16 companyCode, u32 gameCode, u8* gameName, u8* extName, s32* fileNo) {
+    return 0;
 }
 
 s32 osPfsAllocateFile(OSPfs* pfs, u16 companyCode, u32 gameCode, u8* gameName, u8* extName, s32 length, s32* fileNo) {
+    return 0;
 }
 
 OSIntMask osSetIntMask(OSIntMask a) {
@@ -87,6 +103,7 @@ s32 osAfterPreNMI(void) {
 }
 
 s32 osProbeRumblePak(OSMesgQueue* ctrlrqueue, OSPfs* pfs, u32 channel) {
+    return 0;
 }
 
 s32 osSetRumble(OSPfs* pfs, u32 vibrate) {
@@ -112,6 +129,7 @@ void osInvalICache(void* vaddr, s32 nbytes) {
 }
 
 s32 osContStartQuery(OSMesgQueue* mq) {
+    return 0;
 }
 
 void osContGetQuery(OSContStatus* data) {
@@ -125,15 +143,18 @@ void __osSetFpcCsr(u32 a0) {
 }
 
 s32 __osDisableInt(void) {
+    return 0;
 }
 
 void __osRestoreInt(s32 a0) {
 }
 
 OSThread* __osGetActiveQueue(void) {
+    return NULL;
 }
 
 OSThread* __osGetCurrFaultedThread(void) {
+    return NULL;
 }
 
 u32 osMemSize = 1024 * 1024 * 1024;
@@ -198,21 +219,25 @@ void Audio_SetBGM(u32 bgmId) {
 }
 
 s32 osContSetCh(u8 ch) {
+    return 0;
 }
 
 u32 osDpGetStatus(void) {
+    return 0;
 }
 
 void osDpSetStatus(u32 status) {
 }
 
 u32 __osSpGetStatus() {
+    return 0;
 }
 
 void __osSpSetStatus(u32 status) {
 }
 
 OSPiHandle* osDriveRomInit() {
+    return NULL;
 }
 
 void __osInitialize_common(void) {
@@ -228,10 +253,12 @@ void __osCleanupThread(void) {
 }
 
 s32 _Printf(PrintCallback a, void* arg, const char* fmt, va_list ap) {
-    unsigned char buffer[4096];
+    char buffer[4096];
 
     vsnprintf(buffer, sizeof(buffer), fmt, ap);
-    a(arg, buffer, strlen(buffer));
+    u32 len = (u32)strlen(buffer);
+    a(arg, buffer, len);
+    return len;
 }
 
 void osSpTaskLoad(OSTask* task) {
@@ -255,9 +282,11 @@ void osSpTaskYield(void) {
 }
 
 s32 osStopTimer(OSTimer* timer) {
+    return 0;
 }
 
 OSYieldResult osSpTaskYielded(OSTask* task) {
+    return 0;
 }
 
 void osViExtendVStart(u32 arg0) {

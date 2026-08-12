@@ -1,11 +1,10 @@
 #include "playthrough.hpp"
 
-#include <libultraship/libultraship.h>
+#include <spdlog/spdlog.h>
 #include "fill.hpp"
 #include "../location_access.h"
-#include "random.hpp"
+#include "../rng.h"
 #include "spoiler_log.hpp"
-#include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "soh/Enhancements/randomizer/settings.h"
 #include "variables.h"
 #include "soh/cvar_prefixes.h"
@@ -72,14 +71,12 @@ int Playthrough_Init(uint32_t seed, std::set<RandomizerCheck> excludedLocations,
 
     GenerateHash();
 
-    if (true) {
-        // TODO: Handle different types of file output (Spoiler Log, Plando Template, Patch Files, Race Files, etc.)
-        SPDLOG_INFO("Writing Spoiler Log...");
-        StartPerformanceTimer(PT_SPOILER_LOG);
-        SpoilerLog_Write();
-        StopPerformanceTimer(PT_SPOILER_LOG);
-        SPDLOG_INFO("Writing Spoiler Log Done");
-    }
+    // TODO: Handle different types of file output (Spoiler Log, Plando Template, Patch Files, Race Files, etc.)
+    SPDLOG_INFO("Writing Spoiler Log...");
+    StartPerformanceTimer(PT_SPOILER_LOG);
+    SpoilerLog_Write();
+    StopPerformanceTimer(PT_SPOILER_LOG);
+    SPDLOG_INFO("Writing Spoiler Log Done");
 
     ctx->playthroughLocations.clear();
     ctx->playthroughBeatable = false;
@@ -94,7 +91,12 @@ int Playthrough_Repeat(std::set<RandomizerCheck> excludedLocations, std::set<Ran
     auto ctx = Rando::Context::GetInstance();
     uint32_t repeatedSeed = 0;
     for (int i = 0; i < count; i++) {
-        ctx->SetSeedString(std::to_string(rand()));
+        char seedString[11];
+        for (size_t i = 0; i < 10; i++) {
+            seedString[i] = '0' + ShipUtils::Random(0, 10);
+        }
+        seedString[10] = '\0';
+        ctx->SetSeedString(std::string(seedString));
         repeatedSeed = SohUtils::Hash(ctx->GetSeedString());
         ctx->SetSeed(repeatedSeed);
         SPDLOG_DEBUG("testing seed: %d", repeatedSeed);

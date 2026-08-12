@@ -1,0 +1,149 @@
+:config:
+  segments:
+    - [ 3, 0x01A48C30 ]
+    - [ 2, 0x01A0AC30 ]
+  directory: scenes/mq/ganontika_scene
+  external_files:
+    - ntsc_j_mq/scenes/mq/ganontika_scene.yml
+    - ntsc_j_mq/code/sys_matrix.yml
+
+ganontika_room_8:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: ganontika_room_8
+
+ganontika_room_8TLUT_003498:
+  type: TEXTURE
+  offset: 0x3498
+  symbol: ganontika_room_8TLUT_003498
+  format: RGBA16
+  width: 4
+  height: 4
+
+ganontika_room_8Tex_0034B8:
+  type: TEXTURE
+  offset: 0x34B8
+  symbol: ganontika_room_8Tex_0034B8
+  format: RGBA16
+  width: 32
+  height: 64
+
+ganontika_room_8Tex_0044B8:
+  type: TEXTURE
+  offset: 0x44B8
+  symbol: ganontika_room_8Tex_0044B8
+  format: RGBA16
+  width: 32
+  height: 64
+
+ganontika_room_8Tex_0054B8:
+  type: TEXTURE
+  offset: 0x54B8
+  symbol: ganontika_room_8Tex_0054B8
+  format: RGBA16
+  width: 32
+  height: 32
+
+ganontika_room_8Tex_005CB8:
+  type: TEXTURE
+  offset: 0x5CB8
+  symbol: ganontika_room_8Tex_005CB8
+  format: RGBA16
+  width: 32
+  height: 64
+
+ganontika_room_8Tex_006CB8:
+  type: TEXTURE
+  offset: 0x6CB8
+  symbol: ganontika_room_8Tex_006CB8
+  format: RGBA16
+  width: 32
+  height: 32
+
+ganontika_room_8Tex_0074B8:
+  type: TEXTURE
+  offset: 0x74B8
+  symbol: ganontika_room_8Tex_0074B8
+  format: CI4
+  width: 64
+  height: 64
+  tlut: 0x3498
+
+ganontika_room_8Tex_008018:
+  type: TEXTURE
+  offset: 0x8018
+  symbol: ganontika_room_8Tex_008018
+  format: IA8
+  width: 64
+  height: 64
+
+
+ganontika_room_8Vtx_000110:
+  type: OOT:ARRAY
+  offset: 0x000110
+  symbol: ganontika_room_8Vtx_000110
+  count: 461
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganontika_room_8DL_001DE0:
+  type: GFX
+  offset: 0x001DE0
+  symbol: ganontika_room_8DL_001DE0
+
+ganontika_room_8Vtx_002DA8:
+  type: OOT:ARRAY
+  offset: 0x002DA8
+  symbol: ganontika_room_8Vtx_002DA8
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganontika_room_8DL_002EE8:
+  type: GFX
+  offset: 0x002EE8
+  symbol: ganontika_room_8DL_002EE8
+
+ganontika_room_8Vtx_002FE0:
+  type: OOT:ARRAY
+  offset: 0x002FE0
+  symbol: ganontika_room_8Vtx_002FE0
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganontika_room_8DL_0030B0:
+  type: GFX
+  offset: 0x0030B0
+  symbol: ganontika_room_8DL_0030B0
+
+ganontika_room_8Vtx_0031A0:
+  type: OOT:ARRAY
+  offset: 0x0031A0
+  symbol: ganontika_room_8Vtx_0031A0
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganontika_room_8DL_003360:
+  type: GFX
+  offset: 0x003360
+  symbol: ganontika_room_8DL_003360
+
+ganontika_room_8Vtx_007CC0:
+  type: OOT:ARRAY
+  offset: 0x007CC0
+  symbol: ganontika_room_8Vtx_007CC0
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ganontika_room_8DL_007EF0:
+  type: GFX
+  offset: 0x007EF0
+  symbol: ganontika_room_8DL_007EF0

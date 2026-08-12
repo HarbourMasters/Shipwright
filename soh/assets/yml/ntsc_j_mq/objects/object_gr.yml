@@ -1,0 +1,503 @@
+:config:
+  segments:
+    - [ 6, 0x01258DA0 ]
+
+gNiwGirlDress1Tex:
+  type: TEXTURE
+  offset: 0x5FF8
+  symbol: gNiwGirlDress1Tex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gNiwGirlDress2Tex:
+  type: TEXTURE
+  offset: 0x6FF8
+  symbol: gNiwGirlDress2Tex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gNiwGirlDress3Tex:
+  type: TEXTURE
+  offset: 0x8FF8
+  symbol: gNiwGirlDress3Tex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gNiwGirlDress4Tex:
+  type: TEXTURE
+  offset: 0x67F8
+  symbol: gNiwGirlDress4Tex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gNiwGirlDress5Tex:
+  type: TEXTURE
+  offset: 0x87F8
+  symbol: gNiwGirlDress5Tex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gNiwGirlEyeClosedTex:
+  type: TEXTURE
+  offset: 0x5178
+  symbol: gNiwGirlEyeClosedTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gNiwGirlEyeHalfTex:
+  type: TEXTURE
+  offset: 0x4978
+  symbol: gNiwGirlEyeHalfTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gNiwGirlEyeOpenTex:
+  type: TEXTURE
+  offset: 0x4178
+  symbol: gNiwGirlEyeOpenTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gNiwGirlJumpAnim:
+  type: OOT:ANIMATION
+  offset: 0x9C78
+  symbol: gNiwGirlJumpAnim
+
+gNiwGirlMouthTex:
+  type: TEXTURE
+  offset: 0x5978
+  symbol: gNiwGirlMouthTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gNiwGirlRunAnim:
+  type: OOT:ANIMATION
+  offset: 0x0378
+  symbol: gNiwGirlRunAnim
+
+gNiwGirlSkel:
+  type: OOT:SKELETON
+  offset: 0x9948
+  symbol: gNiwGirlSkel
+  limb_type: Standard
+  skel_type: Flex
+
+object_grTLUT_003F78:
+  type: TEXTURE
+  offset: 0x3F78
+  symbol: object_grTLUT_003F78
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_grTex_005D78:
+  type: TEXTURE
+  offset: 0x5D78
+  symbol: object_grTex_005D78
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x3F78
+
+object_grTex_005E78:
+  type: TEXTURE
+  offset: 0x5E78
+  symbol: object_grTex_005E78
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x3F78
+
+object_grTex_005EB8:
+  type: TEXTURE
+  offset: 0x5EB8
+  symbol: object_grTex_005EB8
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x3F78
+
+object_grTex_005EF8:
+  type: TEXTURE
+  offset: 0x5EF8
+  symbol: object_grTex_005EF8
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x3F78
+
+object_grTex_0077F8:
+  type: TEXTURE
+  offset: 0x77F8
+  symbol: object_grTex_0077F8
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x3F78
+
+object_grTex_007BF8:
+  type: TEXTURE
+  offset: 0x7BF8
+  symbol: object_grTex_007BF8
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x3F78
+
+object_grTex_007FF8:
+  type: TEXTURE
+  offset: 0x7FF8
+  symbol: object_grTex_007FF8
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x3F78
+
+object_grTex_0083F8:
+  type: TEXTURE
+  offset: 0x83F8
+  symbol: object_grTex_0083F8
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x3F78
+
+object_grTex_0097F8:
+  type: TEXTURE
+  offset: 0x97F8
+  symbol: object_grTex_0097F8
+  format: CI8
+  width: 4
+  height: 4
+  tlut: 0x3F78
+
+object_grTex_009808:
+  type: TEXTURE
+  offset: 0x9808
+  symbol: object_grTex_009808
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x3F78
+
+
+object_grVtx_000390:
+  type: OOT:ARRAY
+  offset: 0x000390
+  symbol: object_grVtx_000390
+  count: 125
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_grVtx_000B60:
+  type: OOT:ARRAY
+  offset: 0x000B60
+  symbol: object_grVtx_000B60
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_grVtx_000C80:
+  type: OOT:ARRAY
+  offset: 0x000C80
+  symbol: object_grVtx_000C80
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_grVtx_000DC0:
+  type: OOT:ARRAY
+  offset: 0x000DC0
+  symbol: object_grVtx_000DC0
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_grVtx_000F70:
+  type: OOT:ARRAY
+  offset: 0x000F70
+  symbol: object_grVtx_000F70
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_grVtx_0011F0:
+  type: OOT:ARRAY
+  offset: 0x0011F0
+  symbol: object_grVtx_0011F0
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_grVtx_0013A0:
+  type: OOT:ARRAY
+  offset: 0x0013A0
+  symbol: object_grVtx_0013A0
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_grVtx_001620:
+  type: OOT:ARRAY
+  offset: 0x001620
+  symbol: object_grVtx_001620
+  count: 50
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_grVtx_001940:
+  type: OOT:ARRAY
+  offset: 0x001940
+  symbol: object_grVtx_001940
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_grVtx_001B20:
+  type: OOT:ARRAY
+  offset: 0x001B20
+  symbol: object_grVtx_001B20
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_grVtx_001CF0:
+  type: OOT:ARRAY
+  offset: 0x001CF0
+  symbol: object_grVtx_001CF0
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_grVtx_001E10:
+  type: OOT:ARRAY
+  offset: 0x001E10
+  symbol: object_grVtx_001E10
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_grVtx_001E70:
+  type: OOT:ARRAY
+  offset: 0x001E70
+  symbol: object_grVtx_001E70
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_grVtx_002040:
+  type: OOT:ARRAY
+  offset: 0x002040
+  symbol: object_grVtx_002040
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_grVtx_002160:
+  type: OOT:ARRAY
+  offset: 0x002160
+  symbol: object_grVtx_002160
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gNiwGirlSkelLimbsLimb_009878DL_0021C0:
+  type: GFX
+  offset: 0x0021C0
+  symbol: gNiwGirlSkelLimbsLimb_009878DL_0021C0
+
+gNiwGirlSkelLimbsLimb_009884DL_0022E0:
+  type: GFX
+  offset: 0x0022E0
+  symbol: gNiwGirlSkelLimbsLimb_009884DL_0022E0
+
+gNiwGirlSkelLimbsLimb_00986CDL_002400:
+  type: GFX
+  offset: 0x002400
+  symbol: gNiwGirlSkelLimbsLimb_00986CDL_002400
+
+gNiwGirlSkelLimbsLimb_009860DL_002C18:
+  type: GFX
+  offset: 0x002C18
+  symbol: gNiwGirlSkelLimbsLimb_009860DL_002C18
+
+gNiwGirlSkelLimbsLimb_00989CDL_002EA8:
+  type: GFX
+  offset: 0x002EA8
+  symbol: gNiwGirlSkelLimbsLimb_00989CDL_002EA8
+
+gNiwGirlSkelLimbsLimb_009890DL_003068:
+  type: GFX
+  offset: 0x003068
+  symbol: gNiwGirlSkelLimbsLimb_009890DL_003068
+
+gNiwGirlSkelLimbsLimb_0098B4DL_003270:
+  type: GFX
+  offset: 0x003270
+  symbol: gNiwGirlSkelLimbsLimb_0098B4DL_003270
+
+gNiwGirlSkelLimbsLimb_0098A8DL_003430:
+  type: GFX
+  offset: 0x003430
+  symbol: gNiwGirlSkelLimbsLimb_0098A8DL_003430
+
+gNiwGirlSkelLimbsLimb_009854DL_003638:
+  type: GFX
+  offset: 0x003638
+  symbol: gNiwGirlSkelLimbsLimb_009854DL_003638
+
+gNiwGirlSkelLimbsLimb_0098D8DL_0037C8:
+  type: GFX
+  offset: 0x0037C8
+  symbol: gNiwGirlSkelLimbsLimb_0098D8DL_0037C8
+
+gNiwGirlSkelLimbsLimb_0098CCDL_0039A0:
+  type: GFX
+  offset: 0x0039A0
+  symbol: gNiwGirlSkelLimbsLimb_0098CCDL_0039A0
+
+gNiwGirlSkelLimbsLimb_0098C0DL_003AC0:
+  type: GFX
+  offset: 0x003AC0
+  symbol: gNiwGirlSkelLimbsLimb_0098C0DL_003AC0
+
+gNiwGirlSkelLimbsLimb_0098FCDL_003BA0:
+  type: GFX
+  offset: 0x003BA0
+  symbol: gNiwGirlSkelLimbsLimb_0098FCDL_003BA0
+
+gNiwGirlSkelLimbsLimb_0098F0DL_003D78:
+  type: GFX
+  offset: 0x003D78
+  symbol: gNiwGirlSkelLimbsLimb_0098F0DL_003D78
+
+gNiwGirlSkelLimbsLimb_0098E4DL_003E98:
+  type: GFX
+  offset: 0x003E98
+  symbol: gNiwGirlSkelLimbsLimb_0098E4DL_003E98
+
+gNiwGirlSkelLimbsLimb_009848:
+  type: OOT:LIMB
+  offset: 0x009848
+  symbol: gNiwGirlSkelLimbsLimb_009848
+  limb_type: Standard
+
+gNiwGirlSkelLimbsLimb_009854:
+  type: OOT:LIMB
+  offset: 0x009854
+  symbol: gNiwGirlSkelLimbsLimb_009854
+  limb_type: Standard
+
+gNiwGirlSkelLimbsLimb_009860:
+  type: OOT:LIMB
+  offset: 0x009860
+  symbol: gNiwGirlSkelLimbsLimb_009860
+  limb_type: Standard
+
+gNiwGirlSkelLimbsLimb_00986C:
+  type: OOT:LIMB
+  offset: 0x00986C
+  symbol: gNiwGirlSkelLimbsLimb_00986C
+  limb_type: Standard
+
+gNiwGirlSkelLimbsLimb_009878:
+  type: OOT:LIMB
+  offset: 0x009878
+  symbol: gNiwGirlSkelLimbsLimb_009878
+  limb_type: Standard
+
+gNiwGirlSkelLimbsLimb_009884:
+  type: OOT:LIMB
+  offset: 0x009884
+  symbol: gNiwGirlSkelLimbsLimb_009884
+  limb_type: Standard
+
+gNiwGirlSkelLimbsLimb_009890:
+  type: OOT:LIMB
+  offset: 0x009890
+  symbol: gNiwGirlSkelLimbsLimb_009890
+  limb_type: Standard
+
+gNiwGirlSkelLimbsLimb_00989C:
+  type: OOT:LIMB
+  offset: 0x00989C
+  symbol: gNiwGirlSkelLimbsLimb_00989C
+  limb_type: Standard
+
+gNiwGirlSkelLimbsLimb_0098A8:
+  type: OOT:LIMB
+  offset: 0x0098A8
+  symbol: gNiwGirlSkelLimbsLimb_0098A8
+  limb_type: Standard
+
+gNiwGirlSkelLimbsLimb_0098B4:
+  type: OOT:LIMB
+  offset: 0x0098B4
+  symbol: gNiwGirlSkelLimbsLimb_0098B4
+  limb_type: Standard
+
+gNiwGirlSkelLimbsLimb_0098C0:
+  type: OOT:LIMB
+  offset: 0x0098C0
+  symbol: gNiwGirlSkelLimbsLimb_0098C0
+  limb_type: Standard
+
+gNiwGirlSkelLimbsLimb_0098CC:
+  type: OOT:LIMB
+  offset: 0x0098CC
+  symbol: gNiwGirlSkelLimbsLimb_0098CC
+  limb_type: Standard
+
+gNiwGirlSkelLimbsLimb_0098D8:
+  type: OOT:LIMB
+  offset: 0x0098D8
+  symbol: gNiwGirlSkelLimbsLimb_0098D8
+  limb_type: Standard
+
+gNiwGirlSkelLimbsLimb_0098E4:
+  type: OOT:LIMB
+  offset: 0x0098E4
+  symbol: gNiwGirlSkelLimbsLimb_0098E4
+  limb_type: Standard
+
+gNiwGirlSkelLimbsLimb_0098F0:
+  type: OOT:LIMB
+  offset: 0x0098F0
+  symbol: gNiwGirlSkelLimbsLimb_0098F0
+  limb_type: Standard
+
+gNiwGirlSkelLimbsLimb_0098FC:
+  type: OOT:LIMB
+  offset: 0x0098FC
+  symbol: gNiwGirlSkelLimbsLimb_0098FC
+  limb_type: Standard
+
+gNiwGirlSkelLimbs:
+  type: BLOB
+  offset: 0x9908
+  symbol: gNiwGirlSkelLimbs
+  size: 0

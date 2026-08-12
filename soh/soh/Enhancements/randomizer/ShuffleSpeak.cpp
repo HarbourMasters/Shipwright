@@ -1,8 +1,10 @@
 #include <soh/OTRGlobals.h>
+#include "z64.h"
+#include "functions.h"
+#include "soh/Enhancements/randomizer/SeedContext.h"
+#include "overlays/actors/ovl_En_Ossan/z_en_ossan.h"
 extern "C" {
 extern PlayState* gPlayState;
-#include "functions.h"
-#include "overlays/actors/ovl_En_Ossan/z_en_ossan.h"
 }
 
 void RegisterShuffleSpeak() {

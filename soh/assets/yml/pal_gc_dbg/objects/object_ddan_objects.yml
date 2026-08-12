@@ -1,0 +1,207 @@
+:config:
+  segments:
+    - [ 6, 0x01174000 ]
+    - [ 4, 0x00F5E000 ]
+    - [ 8, 0x01174000 ]
+    - [ 9, 0x01174000 ]
+    - [ 10, 0x01174000 ]
+    - [ 11, 0x01174000 ]
+    - [ 12, 0x01174000 ]
+    - [ 13, 0x01174000 ]
+  external_files:
+    - pal_gc_dbg/objects/gameplay_keep.yml
+
+gDodongo1TLUT:
+  type: TEXTURE
+  offset: 0x02D0
+  symbol: gDodongo1TLUT
+  format: RGBA16
+  width: 160
+  height: 1
+
+gDodongo2TLUT:
+  type: TEXTURE
+  offset: 0x1E10
+  symbol: gDodongo2TLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gDodongo3TLUT:
+  type: TEXTURE
+  offset: 0x3D10
+  symbol: gDodongo3TLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gDodongoBarsBottomTex:
+  type: TEXTURE
+  offset: 0x6760
+  symbol: gDodongoBarsBottomTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gDodongoBarsDL:
+  type: GFX
+  offset: 0x1F0
+  symbol: gDodongoBarsDL
+
+gDodongoBarsTex:
+  type: TEXTURE
+  offset: 0x5F60
+  symbol: gDodongoBarsTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gDodongoDoorDL:
+  type: GFX
+  offset: 0xC0
+  symbol: gDodongoDoorDL
+
+gDodongoDoorLeftSideTex:
+  type: TEXTURE
+  offset: 0x4F60
+  symbol: gDodongoDoorLeftSideTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gDodongoFallingStairsCol:
+  type: OOT:COLLISION
+  offset: 0x4F30
+  symbol: gDodongoFallingStairsCol
+
+gDodongoFallingStairsDL:
+  type: GFX
+  offset: 0x48A8
+  symbol: gDodongoFallingStairsDL
+
+gDodongoFallingStairsTex:
+  type: TEXTURE
+  offset: 0x3F18
+  symbol: gDodongoFallingStairsTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x3D10
+
+gDodongoFallingStairsVinesTex:
+  type: TEXTURE
+  offset: 0x7760
+  symbol: gDodongoFallingStairsVinesTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gDodongoLowerJawCol:
+  type: OOT:COLLISION
+  offset: 0x1DDC
+  symbol: gDodongoLowerJawCol
+
+gDodongoLowerJawDL:
+  type: GFX
+  offset: 0x1350
+  symbol: gDodongoLowerJawDL
+
+gDodongoRisingPlatformCol:
+  type: OOT:COLLISION
+  offset: 0x3CE0
+  symbol: gDodongoRisingPlatformCol
+
+gDodongoRisingPlatformDL:
+  type: GFX
+  offset: 0x37B8
+  symbol: gDodongoRisingPlatformDL
+
+gDodongoRisingPlatformSide1Tex:
+  type: TEXTURE
+  offset: 0x2018
+  symbol: gDodongoRisingPlatformSide1Tex
+  format: CI8
+  width: 32
+  height: 64
+  tlut: 0x1E10
+
+gDodongoRisingPlatformSide2Tex:
+  type: TEXTURE
+  offset: 0x2C18
+  symbol: gDodongoRisingPlatformSide2Tex
+  format: CI8
+  width: 32
+  height: 64
+  tlut: 0x1E10
+
+gDodongoRisingPlatformTopTex:
+  type: TEXTURE
+  offset: 0x2818
+  symbol: gDodongoRisingPlatformTopTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x1E10
+
+gDodongoTex_0410:
+  type: TEXTURE
+  offset: 0x0410
+  symbol: gDodongoTex_0410
+  format: CI8
+  width: 32
+  height: 64
+  tlut: 0x02D0
+
+gDodongoTex_6F60:
+  type: TEXTURE
+  offset: 0x6F60
+  symbol: gDodongoTex_6F60
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+object_ddan_objectsVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_ddan_objectsVtx_000000
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ddan_objectsVtx_000170:
+  type: OOT:ARRAY
+  offset: 0x000170
+  symbol: object_ddan_objectsVtx_000170
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ddan_objectsVtx_000C10:
+  type: OOT:ARRAY
+  offset: 0x000C10
+  symbol: object_ddan_objectsVtx_000C10
+  count: 116
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ddan_objectsVtx_003418:
+  type: OOT:ARRAY
+  offset: 0x003418
+  symbol: object_ddan_objectsVtx_003418
+  count: 58
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ddan_objectsVtx_004318:
+  type: OOT:ARRAY
+  offset: 0x004318
+  symbol: object_ddan_objectsVtx_004318
+  count: 89
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

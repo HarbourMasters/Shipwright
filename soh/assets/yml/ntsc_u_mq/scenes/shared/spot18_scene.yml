@@ -1,0 +1,96 @@
+:config:
+  segments:
+    - [ 2, 0x01C05630 ]
+
+  external_files:
+    - ntsc_u_mq/scenes/shared/spot18_sceneSet_007A30.yml
+    - ntsc_u_mq/scenes/shared/spot18_sceneSet_007BA0.yml
+    - ntsc_u_mq/scenes/shared/spot18_sceneSet_007CF0.yml
+spot18_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: spot18_scene
+
+gGoronCityDarunia01Cs:
+  type: OOT:CUTSCENE
+  offset: 0x6930
+  symbol: gGoronCityDarunia01Cs
+
+gGoronCityDaruniaCorrectCs:
+  type: OOT:CUTSCENE
+  offset: 0x59E0
+  symbol: gGoronCityDaruniaCorrectCs
+
+gGoronCityDaruniaWrongCs:
+  type: OOT:CUTSCENE
+  offset: 0x7DE0
+  symbol: gGoronCityDaruniaWrongCs
+
+gGoronCityDayEntranceTex:
+  type: TEXTURE
+  offset: 0x9808
+  symbol: gGoronCityDayEntranceTex
+  format: IA8
+  width: 8
+  height: 8
+
+gGoronCityIntroCs:
+  type: OOT:CUTSCENE
+  offset: 0x8400
+  symbol: gGoronCityIntroCs
+
+gGoronCityNightEntranceTex:
+  type: TEXTURE
+  offset: 0x8FC8
+  symbol: gGoronCityNightEntranceTex
+  format: IA8
+  width: 8
+  height: 8
+
+spot18_sceneTLUT_0085C0:
+  type: TEXTURE
+  offset: 0x85C0
+  symbol: spot18_sceneTLUT_0085C0
+  format: RGBA16
+  width: 16
+  height: 16
+
+spot18_sceneTex_0087C8:
+  type: TEXTURE
+  offset: 0x87C8
+  symbol: spot18_sceneTex_0087C8
+  format: RGBA16
+  width: 32
+  height: 32
+
+spot18_sceneTex_009008:
+  type: TEXTURE
+  offset: 0x9008
+  symbol: spot18_sceneTex_009008
+  format: CI8
+  width: 64
+  height: 32
+  tlut: 0x85C0
+
+spot18_sceneTex_009848:
+  type: TEXTURE
+  offset: 0x9848
+  symbol: spot18_sceneTex_009848
+  format: RGBA16
+  width: 16
+  height: 32
+
+spot18_sceneTex_009C48:
+  type: TEXTURE
+  offset: 0x9C48
+  symbol: spot18_sceneTex_009C48
+  format: CI8
+  width: 64
+  height: 32
+  tlut: 0x85C0
+
+
+spot18_sceneCollisionHeader_0059AC:
+  type: OOT:COLLISION
+  offset: 0x0059AC
+  symbol: spot18_sceneCollisionHeader_0059AC

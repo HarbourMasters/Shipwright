@@ -6,7 +6,6 @@
 
 #include "z_en_toryo.h"
 #include "objects/object_toryo/object_toryo.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY)
@@ -16,7 +15,7 @@ void EnToryo_Destroy(Actor* thisx, PlayState* play);
 void EnToryo_Update(Actor* thisx, PlayState* play);
 void EnToryo_Draw(Actor* thisx, PlayState* play);
 
-void func_80B20914(EnToryo* this, PlayState* play);
+void EnToryo_Idle(EnToryo* this, PlayState* play);
 s32 EnToryo_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx);
 void EnToryo_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx);
 
@@ -131,18 +130,16 @@ void EnToryo_Init(Actor* thisx, PlayState* play) {
                      sEnToryoAnimation.morphFrames);
     this->stateFlags |= 8;
     this->actor.targetMode = 6;
-    this->actionFunc = func_80B20914;
+    this->actionFunc = EnToryo_Idle;
 }
 
 void EnToryo_Destroy(Actor* thisx, PlayState* play) {
     EnToryo* this = (EnToryo*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
-s32 func_80B203D8(EnToryo* this, PlayState* play) {
+s32 EnToryo_TalkRespond(EnToryo* this, PlayState* play) {
     s32 pad;
     Player* player = GET_PLAYER(play);
     s32 ret = 1;
@@ -215,7 +212,7 @@ s32 func_80B203D8(EnToryo* this, PlayState* play) {
     return ret;
 }
 
-s32 func_80B205CC(EnToryo* this, PlayState* play) {
+s32 EnToryo_DoneTalking(EnToryo* this, PlayState* play) {
     s32 pad;
     Player* player = GET_PLAYER(play);
     s32 ret = 5;
@@ -238,7 +235,7 @@ s32 func_80B205CC(EnToryo* this, PlayState* play) {
     return ret;
 }
 
-u32 func_80B20634(EnToryo* this, PlayState* play) {
+u32 EnToryo_ReactToExchangeItem(EnToryo* this, PlayState* play) {
     u32 ret;
 
     if (this->exchangeItemId != 0) {
@@ -257,7 +254,7 @@ u32 func_80B20634(EnToryo* this, PlayState* play) {
     return ret;
 }
 
-s32 func_80B206A0(EnToryo* this, PlayState* play) {
+s32 EnToryo_GetTextId(EnToryo* this, PlayState* play) {
     s32 textId = Text_GetFaceReaction(play, 0);
     s32 ret = textId;
 
@@ -286,7 +283,7 @@ s32 func_80B206A0(EnToryo* this, PlayState* play) {
     return ret;
 }
 
-void func_80B20768(EnToryo* this, PlayState* play) {
+void EnToryo_HandleTalking(EnToryo* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
     s16 sp32;
     s16 sp30;
@@ -298,11 +295,11 @@ void func_80B20768(EnToryo* this, PlayState* play) {
     }
 
     if (this->messageState == 1) {
-        this->messageState = func_80B203D8(this, play);
+        this->messageState = EnToryo_TalkRespond(this, play);
     }
 
     if (this->messageState == 5) {
-        this->messageState = func_80B205CC(this, play);
+        this->messageState = EnToryo_DoneTalking(this, play);
         return;
     }
 
@@ -324,9 +321,9 @@ void func_80B20768(EnToryo* this, PlayState* play) {
 
     if (this->messageState == 0) {
         if (Actor_ProcessTalkRequest(&this->actor, play)) {
-            this->exchangeItemId = func_8002F368(play);
+            this->exchangeItemId = Actor_GetPlayerExchangeItemId(play);
             if (this->exchangeItemId != 0) {
-                player->actor.textId = func_80B20634(this, play);
+                player->actor.textId = EnToryo_ReactToExchangeItem(this, play);
                 this->actor.textId = player->actor.textId;
             }
             this->messageState = 1;
@@ -335,15 +332,15 @@ void func_80B20768(EnToryo* this, PlayState* play) {
 
         Actor_GetScreenPos(play, &this->actor, &sp32, &sp30);
         if ((sp32 >= 0) && (sp32 < 0x141) && (sp30 >= 0) && (sp30 < 0xF1)) {
-            this->actor.textId = func_80B206A0(this, play);
-            func_8002F298(&this->actor, play, 100.0f, 10);
+            this->actor.textId = EnToryo_GetTextId(this, play);
+            Actor_OfferTalkExchangeEquiCylinder(&this->actor, play, 100.0f, 10);
         }
     }
 }
 
-void func_80B20914(EnToryo* this, PlayState* play) {
+void EnToryo_Idle(EnToryo* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
-    func_80B20768(this, play);
+    EnToryo_HandleTalking(this, play);
     if (this->messageState != 0) {
         this->stateFlags |= 0x10;
     } else {

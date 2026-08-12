@@ -1,0 +1,28 @@
+:config:
+  segments:
+    - [ 128, 0x0157BC30 ]
+
+gBackAlleyHouseBg2TLUT:
+  type: TEXTURE
+  offset: 0x200
+  symbol: gBackAlleyHouseBg2TLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gBackAlleyHouseBg3TLUT:
+  type: TEXTURE
+  offset: 0x400
+  symbol: gBackAlleyHouseBg3TLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gBackAlleyHouseBgTLUT:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gBackAlleyHouseBgTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+

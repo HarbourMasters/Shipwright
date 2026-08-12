@@ -10,7 +10,6 @@
 #include "objects/object_hidan_objects/object_hidan_objects.h"
 #include "objects/object_mizu_objects/object_mizu_objects.h"
 #include "objects/object_haka_door/object_haka_door.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
@@ -147,8 +146,6 @@ void EnDoor_Destroy(Actor* thisx, PlayState* play) {
     if (transitionEntry->id < 0) {
         transitionEntry->id = -transitionEntry->id;
     }
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnDoor_SetupType(EnDoor* this, PlayState* play) {
@@ -212,8 +209,10 @@ void EnDoor_Idle(EnDoor* this, PlayState* play) {
             GameInteractor_ExecuteOnDungeonKeyUsedHooks(gSaveContext.mapIndex);
         }
     } else if (!Player_InCsMode(play)) {
-        if (fabsf(playerPosRelToDoor.y) < 20.0f && fabsf(playerPosRelToDoor.x) < 20.0f &&
-            fabsf(playerPosRelToDoor.z) < 50.0f) {
+        if (GameInteractor_Should(VB_EN_DOOR_OFFER_OPEN,
+                                  (fabsf(playerPosRelToDoor.y) < 20.0f && fabsf(playerPosRelToDoor.x) < 20.0f &&
+                                   fabsf(playerPosRelToDoor.z) < 50.0f),
+                                  &playerPosRelToDoor)) {
             phi_v0 = player->actor.shape.rot.y - this->actor.shape.rot.y;
             if (playerPosRelToDoor.z > 0.0f) {
                 phi_v0 = 0x8000 - phi_v0;
@@ -244,7 +243,7 @@ void EnDoor_WaitForCheck(EnDoor* this, PlayState* play) {
     if (Actor_ProcessTalkRequest(&this->actor, play)) {
         this->actionFunc = EnDoor_Check;
     } else {
-        func_8002F2CC(&this->actor, play, DOOR_CHECK_RANGE);
+        Actor_OfferTalk(&this->actor, play, DOOR_CHECK_RANGE);
     }
 }
 

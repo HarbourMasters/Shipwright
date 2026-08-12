@@ -1,8 +1,10 @@
 #include "valueViewer.h"
+#include <ship/config/Config.h>
 #include "soh/SohGui/UIWidgets.hpp"
 #include "soh/SohGui/SohGui.hpp"
 #include "soh/OTRGlobals.h"
 #include "soh/ShipInit.hpp"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 extern "C" {
 #include <spdlog/spdlog.h>
@@ -10,7 +12,6 @@ extern "C" {
 #include "variables.h"
 #include "functions.h"
 #include "macros.h"
-#include "soh/cvar_prefixes.h"
 #include "overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
 
 extern PlayState* gPlayState;
@@ -57,7 +58,7 @@ std::array<ValueTableElement, VVE_MAX> valueTable = {{
     { "Frame Counter",      "play->state.frames",             "FRAM:",   TYPE_S32,   true,  []() -> void* { return &gPlayState->state.frames; }},
     { "Cutscene Pointer",   "play->csCtx.segment",            "CSP:",    TYPE_PTR,   true,  []() -> void* { return &gPlayState->csCtx.segment; }},
     { "Framerate Divisor",  "R_UPDATE_RATE",                  "FRDV:",   TYPE_S16,   false, []() -> void* { return &R_UPDATE_RATE; }},
-    { "Next HUD mode",      "gSaveContext.nextHudMode",       "HUD:",    TYPE_S16,   false, []() -> void* { return &gSaveContext.unk_13E8; }},
+    { "Next HUD mode",      "gSaveContext.nextHudMode",       "HUD:",    TYPE_S16,   false, []() -> void* { return &gSaveContext.nextHudVisibilityMode; }},
     { "Temp B Value",       "gSaveContext.buttonStatus[0]",   "TEMPB:",  TYPE_U8,    false, []() -> void* { return &gSaveContext.buttonStatus[0]; }},
     { "Blue Warp Timer",    "DoorWarp1->warpTimer",           "WARPT:",  TYPE_U16,   true,  []() -> void* { DoorWarp1 *actor = (DoorWarp1 *)Actor_Find(&gPlayState->actorCtx, ACTOR_DOOR_WARP1 ,ACTORCAT_ITEMACTION); if(actor) { return &actor->warpTimer; } else { return nullptr; }}},
     /* TODO: Find these (from GZ)
@@ -68,7 +69,7 @@ std::array<ValueTableElement, VVE_MAX> valueTable = {{
 // clang-format on
 
 void LoadValueConfig() {
-    auto allConfig = Ship::Context::GetInstance()->GetConfig()->GetNestedJson();
+    auto allConfig = Ship::Context::GetRawInstance()->GetConfig()->GetNestedJson();
     if (allConfig.find("ValueViewer") == allConfig.end() || !allConfig["ValueViewer"].is_array()) {
         allConfig["ValueViewer"] = nlohmann::json::array();
     }
@@ -76,10 +77,10 @@ void LoadValueConfig() {
 }
 
 void SaveValueConfig() {
-    auto allConfig = Ship::Context::GetInstance()->GetConfig()->GetNestedJson();
+    auto allConfig = Ship::Context::GetRawInstance()->GetConfig()->GetNestedJson();
     allConfig["ValueViewer"] = valueViewerSettings;
-    Ship::Context::GetInstance()->GetConfig()->SetBlock("ValueViewer", valueViewerSettings);
-    Ship::Context::GetInstance()->GetConfig()->Save();
+    Ship::Context::GetRawInstance()->GetConfig()->SetBlock("ValueViewer", valueViewerSettings);
+    Ship::Context::GetRawInstance()->GetConfig()->Save();
 }
 
 extern "C" void ValueViewer_Draw(GfxPrint* printer) {
@@ -93,8 +94,8 @@ extern "C" void ValueViewer_Draw(GfxPrint* printer) {
         void* elementValue = element.valueFn();
         if (elementValue == NULL)
             continue;
-        GfxPrint_SetColor(printer, setting.color.x * 255, setting.color.y * 255, setting.color.z * 255,
-                          setting.color.w * 255);
+        GfxPrint_SetColor(printer, static_cast<u32>(setting.color.x * 255), static_cast<u32>(setting.color.y * 255),
+                          static_cast<u32>(setting.color.z * 255), static_cast<u32>(setting.color.w * 255));
         GfxPrint_SetPos(printer, setting.x, setting.y);
         switch (element.type) {
             case TYPE_S8:
@@ -178,10 +179,11 @@ void ValueViewerWindow::DrawElement() {
     UIWidgets::CVarCheckbox("Enable Printing", CVAR_NAME, UIWidgets::CheckboxOptions().Color(THEME_COLOR));
 
     ImGui::BeginGroup();
-    static size_t selectedElement = -1;
-    std::string selectedElementText = (selectedElement == -1) ? "Select a value"
-                                                              : (std::string(valueTable[selectedElement].name) + " (" +
-                                                                 std::string(valueTable[selectedElement].path) + ")");
+    static size_t selectedElement = SIZE_MAX;
+    std::string selectedElementText = (selectedElement == SIZE_MAX)
+                                          ? "Select a value"
+                                          : (std::string(valueTable[selectedElement].name) + " (" +
+                                             std::string(valueTable[selectedElement].path) + ")");
     UIWidgets::PushStyleCombobox(THEME_COLOR);
     if (ImGui::BeginCombo("##valueViewerElement", selectedElementText.c_str())) {
         for (size_t i = 0; i < valueTable.size(); i++) {
@@ -201,11 +203,11 @@ void ValueViewerWindow::DrawElement() {
     UIWidgets::PopStyleCombobox();
     ImGui::SameLine();
     UIWidgets::PushStyleButton(THEME_COLOR);
-    if (selectedElement != -1 && ImGui::Button("+")) {
+    if (selectedElement != SIZE_MAX && ImGui::Button("+")) {
         valueViewerSettings.insert(
             { (ValueViewerEntry)selectedElement,
               { valueTable[selectedElement].prefix, ImVec4(1.0f, 1.0f, 1.0f, 1.0f), false, false, 0, 0 } });
-        selectedElement = -1;
+        selectedElement = SIZE_MAX;
         SaveValueConfig();
     }
     UIWidgets::PopStyleButton();

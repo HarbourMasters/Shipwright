@@ -1,0 +1,285 @@
+:config:
+  segments:
+    - [ 6, 0x0102A000 ]
+    - [ 4, 0x00D3A4E0 ]
+    - [ 8, 0x0102A000 ]
+    - [ 9, 0x0102A000 ]
+    - [ 10, 0x0102A000 ]
+    - [ 11, 0x0102A000 ]
+    - [ 12, 0x0102A000 ]
+    - [ 13, 0x0102A000 ]
+  external_files:
+    - ntsc_1-0/objects/gameplay_keep.yml
+
+gCarpentersTentDL:
+  type: GFX
+  offset: 0x7D40
+  symbol: gCarpentersTentDL
+
+gCarpentersTentEntranceDL:
+  type: GFX
+  offset: 0x8010
+  symbol: gCarpentersTentEntranceDL
+
+gValleyBridgeChildDL:
+  type: GFX
+  offset: 0x1120
+  symbol: gValleyBridgeChildDL
+
+gValleyBridgeSidesDL:
+  type: GFX
+  offset: 0x100
+  symbol: gValleyBridgeSidesDL
+
+gValleyBrokenBridgeDL:
+  type: GFX
+  offset: 0x3970
+  symbol: gValleyBrokenBridgeDL
+
+gValleyObjects1Col:
+  type: OOT:COLLISION
+  offset: 0x5520
+  symbol: gValleyObjects1Col
+
+gValleyObjects2Col:
+  type: OOT:COLLISION
+  offset: 0x283C
+  symbol: gValleyObjects2Col
+
+gValleyObjects3Col:
+  type: OOT:COLLISION
+  offset: 0x8458
+  symbol: gValleyObjects3Col
+
+gValleyObjects4Col:
+  type: OOT:COLLISION
+  offset: 0x7580
+  symbol: gValleyObjects4Col
+
+gValleyRepairedBridgeDL:
+  type: GFX
+  offset: 0x6210
+  symbol: gValleyRepairedBridgeDL
+
+object_spot09_objTex_008490:
+  type: TEXTURE
+  offset: 0x8490
+  symbol: object_spot09_objTex_008490
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_spot09_objTex_008C90:
+  type: TEXTURE
+  offset: 0x8C90
+  symbol: object_spot09_objTex_008C90
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_spot09_objTex_009490:
+  type: TEXTURE
+  offset: 0x9490
+  symbol: object_spot09_objTex_009490
+  format: RGBA16
+  width: 64
+  height: 32
+
+object_spot09_objTex_00A490:
+  type: TEXTURE
+  offset: 0xA490
+  symbol: object_spot09_objTex_00A490
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_spot09_objTex_00AC90:
+  type: TEXTURE
+  offset: 0xAC90
+  symbol: object_spot09_objTex_00AC90
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_spot09_objTex_00B490:
+  type: TEXTURE
+  offset: 0xB490
+  symbol: object_spot09_objTex_00B490
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_spot09_objTex_00BC90:
+  type: TEXTURE
+  offset: 0xBC90
+  symbol: object_spot09_objTex_00BC90
+  format: RGBA16
+  width: 32
+  height: 64
+
+object_spot09_objTex_00CC90:
+  type: TEXTURE
+  offset: 0xCC90
+  symbol: object_spot09_objTex_00CC90
+  format: RGBA16
+  width: 64
+  height: 32
+
+object_spot09_objTex_00DC90:
+  type: TEXTURE
+  offset: 0xDC90
+  symbol: object_spot09_objTex_00DC90
+  format: RGBA16
+  width: 32
+  height: 64
+
+object_spot09_objTex_00EC90:
+  type: TEXTURE
+  offset: 0xEC90
+  symbol: object_spot09_objTex_00EC90
+  format: RGBA16
+  width: 64
+  height: 32
+
+object_spot09_objTex_00FC90:
+  type: TEXTURE
+  offset: 0xFC90
+  symbol: object_spot09_objTex_00FC90
+  format: RGBA16
+  width: 16
+  height: 32
+
+object_spot09_objTex_010090:
+  type: TEXTURE
+  offset: 0x10090
+  symbol: object_spot09_objTex_010090
+  format: RGBA16
+  width: 64
+  height: 32
+
+object_spot09_objTex_011090:
+  type: TEXTURE
+  offset: 0x11090
+  symbol: object_spot09_objTex_011090
+  format: RGBA16
+  width: 32
+  height: 64
+
+object_spot09_objTex_012090:
+  type: TEXTURE
+  offset: 0x12090
+  symbol: object_spot09_objTex_012090
+  format: RGBA16
+  width: 64
+  height: 32
+
+object_spot09_objTex_013090:
+  type: TEXTURE
+  offset: 0x13090
+  symbol: object_spot09_objTex_013090
+  format: RGBA16
+  width: 64
+  height: 32
+
+object_spot09_objTex_014090:
+  type: TEXTURE
+  offset: 0x14090
+  symbol: object_spot09_objTex_014090
+  format: RGBA16
+  width: 64
+  height: 32
+
+object_spot09_objTex_015090:
+  type: TEXTURE
+  offset: 0x15090
+  symbol: object_spot09_objTex_015090
+  format: RGBA16
+  width: 32
+  height: 64
+
+object_spot09_objTex_016090:
+  type: TEXTURE
+  offset: 0x16090
+  symbol: object_spot09_objTex_016090
+  format: RGBA16
+  width: 32
+  height: 64
+
+object_spot09_objTex_017090:
+  type: TEXTURE
+  offset: 0x17090
+  symbol: object_spot09_objTex_017090
+  format: I8
+  width: 32
+  height: 32
+
+object_spot09_objTex_017490:
+  type: TEXTURE
+  offset: 0x17490
+  symbol: object_spot09_objTex_017490
+  format: I8
+  width: 32
+  height: 32
+
+object_spot09_objTex_017890:
+  type: TEXTURE
+  offset: 0x17890
+  symbol: object_spot09_objTex_017890
+  format: I4
+  width: 128
+  height: 64
+
+
+object_spot09_objVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_spot09_objVtx_000000
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_spot09_objVtx_000280:
+  type: OOT:ARRAY
+  offset: 0x000280
+  symbol: object_spot09_objVtx_000280
+  count: 234
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_spot09_objVtx_002870:
+  type: OOT:ARRAY
+  offset: 0x002870
+  symbol: object_spot09_objVtx_002870
+  count: 272
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_spot09_objVtx_005550:
+  type: OOT:ARRAY
+  offset: 0x005550
+  symbol: object_spot09_objVtx_005550
+  count: 204
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_spot09_objVtx_0075B0:
+  type: OOT:ARRAY
+  offset: 0x0075B0
+  symbol: object_spot09_objVtx_0075B0
+  count: 105
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_spot09_objVtx_007C40:
+  type: OOT:ARRAY
+  offset: 0x007C40
+  symbol: object_spot09_objVtx_007C40
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

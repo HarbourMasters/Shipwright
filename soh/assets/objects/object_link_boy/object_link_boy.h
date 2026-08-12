@@ -510,5 +510,30 @@ static const ALIGN_ASSET(2) char gLinkAdultVtx_0340A0[] = dgLinkAdultVtx_0340A0;
 #define dgLinkAdultVtx_02E7E0 "__OTR__objects/object_link_boy/gLinkAdultVtx_02E7E0"
 static const ALIGN_ASSET(2) char gLinkAdultVtx_02E7E0[] = dgLinkAdultVtx_02E7E0;
 
+// Adult-fitted mask display lists (for use when adult Link wears child masks via the AdultMasks enhancement)
+#define dgLinkAdultKeatonMaskDL "__OTR__objects/object_link_boy/gLinkAdultKeatonMaskDL"
+static const ALIGN_ASSET(2) char gLinkAdultKeatonMaskDL[] = dgLinkAdultKeatonMaskDL;
+
+#define dgLinkAdultSkullMaskDL "__OTR__objects/object_link_boy/gLinkAdultSkullMaskDL"
+static const ALIGN_ASSET(2) char gLinkAdultSkullMaskDL[] = dgLinkAdultSkullMaskDL;
+
+#define dgLinkAdultSpookyMaskDL "__OTR__objects/object_link_boy/gLinkAdultSpookyMaskDL"
+static const ALIGN_ASSET(2) char gLinkAdultSpookyMaskDL[] = dgLinkAdultSpookyMaskDL;
+
+#define dgLinkAdultBunnyHoodDL "__OTR__objects/object_link_boy/gLinkAdultBunnyHoodDL"
+static const ALIGN_ASSET(2) char gLinkAdultBunnyHoodDL[] = dgLinkAdultBunnyHoodDL;
+
+#define dgLinkAdultGoronMaskDL "__OTR__objects/object_link_boy/gLinkAdultGoronMaskDL"
+static const ALIGN_ASSET(2) char gLinkAdultGoronMaskDL[] = dgLinkAdultGoronMaskDL;
+
+#define dgLinkAdultZoraMaskDL "__OTR__objects/object_link_boy/gLinkAdultZoraMaskDL"
+static const ALIGN_ASSET(2) char gLinkAdultZoraMaskDL[] = dgLinkAdultZoraMaskDL;
+
+#define dgLinkAdultGerudoMaskDL "__OTR__objects/object_link_boy/gLinkAdultGerudoMaskDL"
+static const ALIGN_ASSET(2) char gLinkAdultGerudoMaskDL[] = dgLinkAdultGerudoMaskDL;
+
+#define dgLinkAdultMaskOfTruthDL "__OTR__objects/object_link_boy/gLinkAdultMaskOfTruthDL"
+static const ALIGN_ASSET(2) char gLinkAdultMaskOfTruthDL[] = dgLinkAdultMaskOfTruthDL;
+
 
 #endif // OBJECTS_OBJECT_LINK_BOY_H

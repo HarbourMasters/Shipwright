@@ -1,0 +1,69 @@
+:config:
+  segments:
+    - [ 3, 0x01B2A5F0 ]
+    - [ 2, 0x01AE7450 ]
+  directory: scenes/nonmq/HAKAdan_scene
+  external_files:
+    - ntsc_1-1/scenes/nonmq/HAKAdan_scene.yml
+    - ntsc_1-1/code/sys_matrix.yml
+
+HAKAdan_room_20:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: HAKAdan_room_20
+
+HAKAdan_room_20Tex_001640:
+  type: TEXTURE
+  offset: 0x1620
+  symbol: HAKAdan_room_20Tex_001640
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+HAKAdan_room_20Vtx_000120:
+  type: OOT:ARRAY
+  offset: 0x000120
+  symbol: HAKAdan_room_20Vtx_000120
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdan_room_20DL_000290:
+  type: GFX
+  offset: 0x000290
+  symbol: HAKAdan_room_20DL_000290
+
+HAKAdan_room_20Vtx_0003C8:
+  type: OOT:ARRAY
+  offset: 0x0003C8
+  symbol: HAKAdan_room_20Vtx_0003C8
+  count: 67
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdan_room_20DL_0007F8:
+  type: GFX
+  offset: 0x0007F8
+  symbol: HAKAdan_room_20DL_0007F8
+
+HAKAdan_room_20Vtx_000980:
+  type: OOT:ARRAY
+  offset: 0x000980
+  symbol: HAKAdan_room_20Vtx_000980
+  count: 163
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+HAKAdan_room_20DL_0013B0:
+  type: GFX
+  offset: 0x0013B0
+  symbol: HAKAdan_room_20DL_0013B0
+
+HAKAdan_room_20DL_001600:
+  type: GFX
+  offset: 0x001600
+  symbol: HAKAdan_room_20DL_001600

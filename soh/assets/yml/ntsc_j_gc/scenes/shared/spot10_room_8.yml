@@ -1,0 +1,105 @@
+:config:
+  segments:
+    - [ 3, 0x01B74590 ]
+    - [ 2, 0x01B57760 ]
+  directory: scenes/shared/spot10_scene
+  external_files:
+    - ntsc_j_gc/scenes/shared/spot10_scene.yml
+    - ntsc_j_gc/code/sys_matrix.yml
+    - ntsc_j_gc/scenes/shared/spot10_room_8Set_000120.yml
+    - ntsc_j_gc/scenes/shared/spot10_room_8Set_000200.yml
+
+spot10_room_8:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: spot10_room_8
+
+
+spot10_room_8Vtx_000230:
+  type: OOT:ARRAY
+  offset: 0x000230
+  symbol: spot10_room_8Vtx_000230
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot10_room_8DL_0002F0:
+  type: GFX
+  offset: 0x0002F0
+  symbol: spot10_room_8DL_0002F0
+
+spot10_room_8Vtx_0003E0:
+  type: OOT:ARRAY
+  offset: 0x0003E0
+  symbol: spot10_room_8Vtx_0003E0
+  count: 73
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot10_room_8DL_000870:
+  type: GFX
+  offset: 0x000870
+  symbol: spot10_room_8DL_000870
+
+spot10_room_8Vtx_000B40:
+  type: OOT:ARRAY
+  offset: 0x000B40
+  symbol: spot10_room_8Vtx_000B40
+  count: 77
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot10_room_8DL_001010:
+  type: GFX
+  offset: 0x001010
+  symbol: spot10_room_8DL_001010
+
+spot10_room_8Vtx_0012F8:
+  type: OOT:ARRAY
+  offset: 0x0012F8
+  symbol: spot10_room_8Vtx_0012F8
+  count: 77
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot10_room_8DL_0017C8:
+  type: GFX
+  offset: 0x0017C8
+  symbol: spot10_room_8DL_0017C8
+
+spot10_room_8Vtx_001AB0:
+  type: OOT:ARRAY
+  offset: 0x001AB0
+  symbol: spot10_room_8Vtx_001AB0
+  count: 77
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot10_room_8DL_001F80:
+  type: GFX
+  offset: 0x001F80
+  symbol: spot10_room_8DL_001F80
+
+spot10_room_8Vtx_002268:
+  type: OOT:ARRAY
+  offset: 0x002268
+  symbol: spot10_room_8Vtx_002268
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot10_room_8DL_0024E8:
+  type: GFX
+  offset: 0x0024E8
+  symbol: spot10_room_8DL_0024E8
+
+spot10_room_8DL_002630:
+  type: GFX
+  offset: 0x002630
+  symbol: spot10_room_8DL_002630

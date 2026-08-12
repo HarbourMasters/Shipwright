@@ -1,0 +1,1379 @@
+:config:
+  segments:
+    - [ 6, 0x011F0430 ]
+    - [ 4, 0x00D30E00 ]
+    - [ 8, 0x011F0430 ]
+    - [ 9, 0x011F0430 ]
+    - [ 10, 0x011F0430 ]
+    - [ 11, 0x011F0430 ]
+    - [ 12, 0x011F0430 ]
+    - [ 13, 0x011F0430 ]
+  external_files:
+    - ntsc_j_gc_collection/objects/gameplay_keep.yml
+
+gGanonBlackLeatherAndPauldronTLUT:
+  type: TEXTURE
+  offset: 0x1B980
+  symbol: gGanonBlackLeatherAndPauldronTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGanonBlackLeatherTex:
+  type: TEXTURE
+  offset: 0x1D200
+  symbol: gGanonBlackLeatherTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x1B980
+
+gGanonBodyTLUT:
+  type: TEXTURE
+  offset: 0x1AF80
+  symbol: gGanonBodyTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGanonBodyTex:
+  type: TEXTURE
+  offset: 0x1C400
+  symbol: gGanonBodyTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x1AF80
+
+gGanonCapeFasteningTex:
+  type: TEXTURE
+  offset: 0x1D100
+  symbol: gGanonCapeFasteningTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x1B780
+
+gGanonClawAndTeethTex:
+  type: TEXTURE
+  offset: 0x1E108
+  symbol: gGanonClawAndTeethTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gGanonDamageAnim:
+  type: OOT:ANIMATION
+  offset: 0xDFF0
+  symbol: gGanonDamageAnim
+
+gGanonDeadLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x8EB8
+  symbol: gGanonDeadLoopAnim
+
+gGanonDeadStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x7288
+  symbol: gGanonDeadStartAnim
+
+gGanonDownedLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x32E78
+  symbol: gGanonDownedLoopAnim
+
+gGanonDownedStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x29448
+  symbol: gGanonDownedStartAnim
+
+gGanonDuplicateStunLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x2B2B4
+  symbol: gGanonDuplicateStunLoopAnim
+
+gGanonDuplicateStunStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x2ACD0
+  symbol: gGanonDuplicateStunStartAnim
+
+gGanonEyeClosedTex:
+  type: TEXTURE
+  offset: 0x1EA08
+  symbol: gGanonEyeClosedTex
+  format: CI4
+  width: 16
+  height: 16
+  tlut: 0x1D780
+
+gGanonEyeHalfTex:
+  type: TEXTURE
+  offset: 0x1E988
+  symbol: gGanonEyeHalfTex
+  format: CI4
+  width: 16
+  height: 16
+  tlut: 0x1D780
+
+gGanonEyeOpenTex:
+  type: TEXTURE
+  offset: 0x1E188
+  symbol: gGanonEyeOpenTex
+  format: CI4
+  width: 16
+  height: 16
+  tlut: 0x1D780
+
+gGanonEyesDL:
+  type: GFX
+  offset: 0x20B18
+  symbol: gGanonEyesDL
+
+gGanonEyesLimb:
+  type: OOT:LIMB
+  offset: 0x243F8
+  symbol: gGanonEyesLimb
+  limb_type: Standard
+
+gGanonEyesTLUT:
+  type: TEXTURE
+  offset: 0x1D780
+  symbol: gGanonEyesTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gGanonFacialHairTex:
+  type: TEXTURE
+  offset: 0x1C380
+  symbol: gGanonFacialHairTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gGanonFinalBlowAnim:
+  type: OOT:ANIMATION
+  offset: 0x3B1C
+  symbol: gGanonFinalBlowAnim
+
+gGanonFurTuftTex:
+  type: TEXTURE
+  offset: 0x1CD00
+  symbol: gGanonFurTuftTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGanonGerudoFabricTLUT:
+  type: TEXTURE
+  offset: 0x1B580
+  symbol: gGanonGerudoFabricTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGanonGerudoFabricTex:
+  type: TEXTURE
+  offset: 0x1CC00
+  symbol: gGanonGerudoFabricTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x1B580
+
+gGanonGetUpAnim:
+  type: OOT:ANIMATION
+  offset: 0x320F8
+  symbol: gGanonGetUpAnim
+
+gGanonGuardIdleAnim:
+  type: OOT:ANIMATION
+  offset: 0xFFE4
+  symbol: gGanonGuardIdleAnim
+
+gGanonGuardSidestepAnim:
+  type: OOT:ANIMATION
+  offset: 0xF1D0
+  symbol: gGanonGuardSidestepAnim
+
+gGanonGuardToWalk:
+  type: OOT:ANIMATION
+  offset: 0x9654
+  symbol: gGanonGuardToWalk
+
+gGanonGuardWalkAnim:
+  type: OOT:ANIMATION
+  offset: 0xE8EC
+  symbol: gGanonGuardWalkAnim
+
+gGanonHairFringeTLUT:
+  type: TEXTURE
+  offset: 0x1B180
+  symbol: gGanonHairFringeTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGanonHairFringeTex:
+  type: TEXTURE
+  offset: 0x1CA00
+  symbol: gGanonHairFringeTex
+  format: CI8
+  width: 32
+  height: 16
+  tlut: 0x1B180
+
+gGanonHairTex:
+  type: TEXTURE
+  offset: 0x1C180
+  symbol: gGanonHairTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gGanonHandTLUT:
+  type: TEXTURE
+  offset: 0x1D7A8
+  symbol: gGanonHandTLUT
+  format: RGBA16
+  width: 16
+  height: 11
+
+gGanonHandTex:
+  type: TEXTURE
+  offset: 0x1D908
+  symbol: gGanonHandTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x1D7A8
+
+gGanonHeadDL:
+  type: GFX
+  offset: 0x180E0
+  symbol: gGanonHeadDL
+
+gGanonHeadLimb:
+  type: OOT:LIMB
+  offset: 0x24404
+  symbol: gGanonHeadLimb
+  limb_type: Standard
+
+gGanonHoofTLUT:
+  type: TEXTURE
+  offset: 0x1BD80
+  symbol: gGanonHoofTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGanonHoofTex:
+  type: TEXTURE
+  offset: 0x1D400
+  symbol: gGanonHoofTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x1BD80
+
+gGanonHornBaseTex:
+  type: TEXTURE
+  offset: 0x1E288
+  symbol: gGanonHornBaseTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGanonHornTex:
+  type: TEXTURE
+  offset: 0x1E488
+  symbol: gGanonHornTex
+  format: RGBA16
+  width: 16
+  height: 8
+
+gGanonInnerTeethDL:
+  type: GFX
+  offset: 0x219D8
+  symbol: gGanonInnerTeethDL
+
+gGanonInnerTeethLimb:
+  type: OOT:LIMB
+  offset: 0x24374
+  symbol: gGanonInnerTeethLimb
+  limb_type: Standard
+
+gGanonJawDL:
+  type: GFX
+  offset: 0x18B60
+  symbol: gGanonJawDL
+
+gGanonJawLimb:
+  type: OOT:LIMB
+  offset: 0x24380
+  symbol: gGanonJawLimb
+  limb_type: Standard
+
+gGanonJewelDL:
+  type: GFX
+  offset: 0x20BE0
+  symbol: gGanonJewelDL
+
+gGanonJewelLimb:
+  type: OOT:LIMB
+  offset: 0x24344
+  symbol: gGanonJewelLimb
+  limb_type: Standard
+
+gGanonJewelTex:
+  type: TEXTURE
+  offset: 0x1DD08
+  symbol: gGanonJewelTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gGanonLeatherTLUT:
+  type: TEXTURE
+  offset: 0x1BB80
+  symbol: gGanonLeatherTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGanonLeatherTex:
+  type: TEXTURE
+  offset: 0x1D300
+  symbol: gGanonLeatherTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x1BB80
+
+gGanonLeftFootDL:
+  type: GFX
+  offset: 0x17910
+  symbol: gGanonLeftFootDL
+
+gGanonLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x2444C
+  symbol: gGanonLeftFootLimb
+  limb_type: Standard
+
+gGanonLeftForearmDL:
+  type: GFX
+  offset: 0x1A708
+  symbol: gGanonLeftForearmDL
+
+gGanonLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0x242C0
+  symbol: gGanonLeftForearmLimb
+  limb_type: Standard
+
+gGanonLeftHair1DL:
+  type: GFX
+  offset: 0x18AB0
+  symbol: gGanonLeftHair1DL
+
+gGanonLeftHair1Limb:
+  type: OOT:LIMB
+  offset: 0x243B0
+  symbol: gGanonLeftHair1Limb
+  limb_type: Standard
+
+gGanonLeftHair2DL:
+  type: GFX
+  offset: 0x189C8
+  symbol: gGanonLeftHair2DL
+
+gGanonLeftHair2Limb:
+  type: OOT:LIMB
+  offset: 0x243BC
+  symbol: gGanonLeftHair2Limb
+  limb_type: Standard
+
+gGanonLeftHair3DL:
+  type: GFX
+  offset: 0x188D8
+  symbol: gGanonLeftHair3DL
+
+gGanonLeftHair3Limb:
+  type: OOT:LIMB
+  offset: 0x243C8
+  symbol: gGanonLeftHair3Limb
+  limb_type: Standard
+
+gGanonLeftHandDL:
+  type: GFX
+  offset: 0x21120
+  symbol: gGanonLeftHandDL
+
+gGanonLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x242E4
+  symbol: gGanonLeftHandLimb
+  limb_type: Standard
+
+gGanonLeftHornDL:
+  type: GFX
+  offset: 0x20DE8
+  symbol: gGanonLeftHornDL
+
+gGanonLeftHornLimb:
+  type: OOT:LIMB
+  offset: 0x24410
+  symbol: gGanonLeftHornLimb
+  limb_type: Standard
+
+gGanonLeftShinDL:
+  type: GFX
+  offset: 0x17620
+  symbol: gGanonLeftShinDL
+
+gGanonLeftShinLimb:
+  type: OOT:LIMB
+  offset: 0x24440
+  symbol: gGanonLeftShinLimb
+  limb_type: Standard
+
+gGanonLeftShoulderDL:
+  type: GFX
+  offset: 0x1A4E0
+  symbol: gGanonLeftShoulderDL
+
+gGanonLeftShoulderLimb:
+  type: OOT:LIMB
+  offset: 0x242A8
+  symbol: gGanonLeftShoulderLimb
+  limb_type: Standard
+
+gGanonLeftSwordDL:
+  type: GFX
+  offset: 0x215D0
+  symbol: gGanonLeftSwordDL
+
+gGanonLeftSwordLimb:
+  type: OOT:LIMB
+  offset: 0x242D8
+  symbol: gGanonLeftSwordLimb
+  limb_type: Standard
+
+gGanonLeftSwordSwingAnim:
+  type: OOT:ANIMATION
+  offset: 0xADD0
+  symbol: gGanonLeftSwordSwingAnim
+
+gGanonLeftThighDL:
+  type: GFX
+  offset: 0x17AF0
+  symbol: gGanonLeftThighDL
+
+gGanonLeftThighLimb:
+  type: OOT:LIMB
+  offset: 0x24434
+  symbol: gGanonLeftThighLimb
+  limb_type: Standard
+
+gGanonLeftUpperArmDL:
+  type: GFX
+  offset: 0x1AAF0
+  symbol: gGanonLeftUpperArmDL
+
+gGanonLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x242B4
+  symbol: gGanonLeftUpperArmLimb
+  limb_type: Standard
+
+gGanonLeftWristDL:
+  type: GFX
+  offset: 0x1A9E8
+  symbol: gGanonLeftWristDL
+
+gGanonLeftWristLimb:
+  type: OOT:LIMB
+  offset: 0x242CC
+  symbol: gGanonLeftWristLimb
+  limb_type: Standard
+
+gGanonLipsTex:
+  type: TEXTURE
+  offset: 0x1E208
+  symbol: gGanonLipsTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gGanonMiddleHair1DL:
+  type: GFX
+  offset: 0x19510
+  symbol: gGanonMiddleHair1DL
+
+gGanonMiddleHair1Limb:
+  type: OOT:LIMB
+  offset: 0x2438C
+  symbol: gGanonMiddleHair1Limb
+  limb_type: Standard
+
+gGanonMiddleHair2DL:
+  type: GFX
+  offset: 0x19420
+  symbol: gGanonMiddleHair2DL
+
+gGanonMiddleHair2Limb:
+  type: OOT:LIMB
+  offset: 0x24398
+  symbol: gGanonMiddleHair2Limb
+  limb_type: Standard
+
+gGanonMiddleHair3DL:
+  type: GFX
+  offset: 0x19330
+  symbol: gGanonMiddleHair3DL
+
+gGanonMiddleHair3Limb:
+  type: OOT:LIMB
+  offset: 0x243A4
+  symbol: gGanonMiddleHair3Limb
+  limb_type: Standard
+
+gGanonMouthDL:
+  type: GFX
+  offset: 0x18EA0
+  symbol: gGanonMouthDL
+
+gGanonMouthLimb:
+  type: OOT:LIMB
+  offset: 0x24368
+  symbol: gGanonMouthLimb
+  limb_type: Standard
+
+gGanonMouthTex:
+  type: TEXTURE
+  offset: 0x1C280
+  symbol: gGanonMouthTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gGanonNeckDL:
+  type: GFX
+  offset: 0x17FB0
+  symbol: gGanonNeckDL
+
+gGanonNeckLimb:
+  type: OOT:LIMB
+  offset: 0x24338
+  symbol: gGanonNeckLimb
+  limb_type: Standard
+
+gGanonOuterTeethDL:
+  type: GFX
+  offset: 0x218B8
+  symbol: gGanonOuterTeethDL
+
+gGanonOuterTeethLimb:
+  type: OOT:LIMB
+  offset: 0x2435C
+  symbol: gGanonOuterTeethLimb
+  limb_type: Standard
+
+gGanonPauldronTex:
+  type: TEXTURE
+  offset: 0x1D000
+  symbol: gGanonPauldronTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x1B980
+
+gGanonPelvisDL:
+  type: GFX
+  offset: 0x163F0
+  symbol: gGanonPelvisDL
+
+gGanonPelvisLimb:
+  type: OOT:LIMB
+  offset: 0x24428
+  symbol: gGanonPelvisLimb
+  limb_type: Standard
+
+gGanonRedFabricTLUT:
+  type: TEXTURE
+  offset: 0x1B780
+  symbol: gGanonRedFabricTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGanonRedFabricTex:
+  type: TEXTURE
+  offset: 0x1CF00
+  symbol: gGanonRedFabricTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x1B780
+
+gGanonRightFootDL:
+  type: GFX
+  offset: 0x16F80
+  symbol: gGanonRightFootDL
+
+gGanonRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x24470
+  symbol: gGanonRightFootLimb
+  limb_type: Standard
+
+gGanonRightForearmDL:
+  type: GFX
+  offset: 0x19C68
+  symbol: gGanonRightForearmDL
+
+gGanonRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0x24308
+  symbol: gGanonRightForearmLimb
+  limb_type: Standard
+
+gGanonRightHair1DL:
+  type: GFX
+  offset: 0x18828
+  symbol: gGanonRightHair1DL
+
+gGanonRightHair1Limb:
+  type: OOT:LIMB
+  offset: 0x243D4
+  symbol: gGanonRightHair1Limb
+  limb_type: Standard
+
+gGanonRightHair2DL:
+  type: GFX
+  offset: 0x18740
+  symbol: gGanonRightHair2DL
+
+gGanonRightHair2Limb:
+  type: OOT:LIMB
+  offset: 0x243E0
+  symbol: gGanonRightHair2Limb
+  limb_type: Standard
+
+gGanonRightHair3DL:
+  type: GFX
+  offset: 0x18650
+  symbol: gGanonRightHair3DL
+
+gGanonRightHair3Limb:
+  type: OOT:LIMB
+  offset: 0x243EC
+  symbol: gGanonRightHair3Limb
+  limb_type: Standard
+
+gGanonRightHandDL:
+  type: GFX
+  offset: 0x20F50
+  symbol: gGanonRightHandDL
+
+gGanonRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x2432C
+  symbol: gGanonRightHandLimb
+  limb_type: Standard
+
+gGanonRightHornDL:
+  type: GFX
+  offset: 0x20C80
+  symbol: gGanonRightHornDL
+
+gGanonRightHornLimb:
+  type: OOT:LIMB
+  offset: 0x2441C
+  symbol: gGanonRightHornLimb
+  limb_type: Standard
+
+gGanonRightShinDL:
+  type: GFX
+  offset: 0x16D10
+  symbol: gGanonRightShinDL
+
+gGanonRightShinLimb:
+  type: OOT:LIMB
+  offset: 0x24464
+  symbol: gGanonRightShinLimb
+  limb_type: Standard
+
+gGanonRightShoulderDL:
+  type: GFX
+  offset: 0x19A40
+  symbol: gGanonRightShoulderDL
+
+gGanonRightShoulderLimb:
+  type: OOT:LIMB
+  offset: 0x242F0
+  symbol: gGanonRightShoulderLimb
+  limb_type: Standard
+
+gGanonRightSwordDL:
+  type: GFX
+  offset: 0x212F0
+  symbol: gGanonRightSwordDL
+
+gGanonRightSwordLimb:
+  type: OOT:LIMB
+  offset: 0x24320
+  symbol: gGanonRightSwordLimb
+  limb_type: Standard
+
+gGanonRightSwordSwingAnim:
+  type: OOT:ANIMATION
+  offset: 0xCAF8
+  symbol: gGanonRightSwordSwingAnim
+
+gGanonRightThighDL:
+  type: GFX
+  offset: 0x17160
+  symbol: gGanonRightThighDL
+
+gGanonRightThighLimb:
+  type: OOT:LIMB
+  offset: 0x24458
+  symbol: gGanonRightThighLimb
+  limb_type: Standard
+
+gGanonRightUpperArmDL:
+  type: GFX
+  offset: 0x1A050
+  symbol: gGanonRightUpperArmDL
+
+gGanonRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x242FC
+  symbol: gGanonRightUpperArmLimb
+  limb_type: Standard
+
+gGanonRightWristDL:
+  type: GFX
+  offset: 0x19F48
+  symbol: gGanonRightWristDL
+
+gGanonRightWristLimb:
+  type: OOT:LIMB
+  offset: 0x24314
+  symbol: gGanonRightWristLimb
+  limb_type: Standard
+
+gGanonRootLimb:
+  type: OOT:LIMB
+  offset: 0x24290
+  symbol: gGanonRootLimb
+  limb_type: Standard
+
+gGanonSkel:
+  type: OOT:SKELETON
+  offset: 0x24570
+  symbol: gGanonSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gGanonSnoutDL:
+  type: GFX
+  offset: 0x19210
+  symbol: gGanonSnoutDL
+
+gGanonSnoutFrontTex:
+  type: TEXTURE
+  offset: 0x1C800
+  symbol: gGanonSnoutFrontTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gGanonSnoutLimb:
+  type: OOT:LIMB
+  offset: 0x24350
+  symbol: gGanonSnoutLimb
+  limb_type: Standard
+
+gGanonSnoutSideTex:
+  type: TEXTURE
+  offset: 0x1C900
+  symbol: gGanonSnoutSideTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gGanonStunEndAnim:
+  type: OOT:ANIMATION
+  offset: 0x26424
+  symbol: gGanonStunEndAnim
+
+gGanonStunEndToWalkAnim:
+  type: OOT:ANIMATION
+  offset: 0x2A128
+  symbol: gGanonStunEndToWalkAnim
+
+gGanonStunLoopAnim:
+  type: OOT:ANIMATION
+  offset: 0x256F4
+  symbol: gGanonStunLoopAnim
+
+gGanonStunStartAnim:
+  type: OOT:ANIMATION
+  offset: 0x25110
+  symbol: gGanonStunStartAnim
+
+gGanonSwordBladeTex:
+  type: TEXTURE
+  offset: 0x1E588
+  symbol: gGanonSwordBladeTex
+  format: I4
+  width: 32
+  height: 32
+
+gGanonSwordGripTex:
+  type: TEXTURE
+  offset: 0x1E888
+  symbol: gGanonSwordGripTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gGanonSwordGuardTex:
+  type: TEXTURE
+  offset: 0x1E788
+  symbol: gGanonSwordGuardTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gGanonTail1DL:
+  type: GFX
+  offset: 0x16630
+  symbol: gGanonTail1DL
+
+gGanonTail1Limb:
+  type: OOT:LIMB
+  offset: 0x2447C
+  symbol: gGanonTail1Limb
+  limb_type: Standard
+
+gGanonTail2DL:
+  type: GFX
+  offset: 0x16740
+  symbol: gGanonTail2DL
+
+gGanonTail2Limb:
+  type: OOT:LIMB
+  offset: 0x24488
+  symbol: gGanonTail2Limb
+  limb_type: Standard
+
+gGanonTail3DL:
+  type: GFX
+  offset: 0x168E0
+  symbol: gGanonTail3DL
+
+gGanonTail3Limb:
+  type: OOT:LIMB
+  offset: 0x24494
+  symbol: gGanonTail3Limb
+  limb_type: Standard
+
+gGanonTail4DL:
+  type: GFX
+  offset: 0x16AA8
+  symbol: gGanonTail4DL
+
+gGanonTail4Limb:
+  type: OOT:LIMB
+  offset: 0x244A0
+  symbol: gGanonTail4Limb
+  limb_type: Standard
+
+gGanonTail5DL:
+  type: GFX
+  offset: 0x16BE8
+  symbol: gGanonTail5DL
+
+gGanonTail5Limb:
+  type: OOT:LIMB
+  offset: 0x244AC
+  symbol: gGanonTail5Limb
+  limb_type: Standard
+
+gGanonTailTLUT:
+  type: TEXTURE
+  offset: 0x1BF80
+  symbol: gGanonTailTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGanonTailTex:
+  type: TEXTURE
+  offset: 0x1D580
+  symbol: gGanonTailTex
+  format: CI8
+  width: 16
+  height: 32
+  tlut: 0x1BF80
+
+gGanonTitleCardTex:
+  type: TEXTURE
+  offset: 0x21A90
+  symbol: gGanonTitleCardTex
+  format: IA8
+  width: 128
+  height: 120
+
+gGanonTorsoDL:
+  type: GFX
+  offset: 0x195C0
+  symbol: gGanonTorsoDL
+
+gGanonTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x2429C
+  symbol: gGanonTorsoLimb
+  limb_type: Standard
+
+gGanonUnderSkirtTex:
+  type: TEXTURE
+  offset: 0x1D500
+  symbol: gGanonUnderSkirtTex
+  format: RGBA16
+  width: 4
+  height: 16
+
+gGanonUnusedTLUT:
+  type: TEXTURE
+  offset: 0x1B380
+  symbol: gGanonUnusedTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGanonWalkAnim:
+  type: OOT:ANIMATION
+  offset: 0x33FC0
+  symbol: gGanonWalkAnim
+
+gGanonWalkToGuardAnim:
+  type: OOT:ANIMATION
+  offset: 0x347DC
+  symbol: gGanonWalkToGuardAnim
+
+
+object_ganon2Vtx_010000:
+  type: OOT:ARRAY
+  offset: 0x010000
+  symbol: object_ganon2Vtx_010000
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganon2Vtx_010130:
+  type: OOT:ARRAY
+  offset: 0x010130
+  symbol: object_ganon2Vtx_010130
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganon2Vtx_010240:
+  type: OOT:ARRAY
+  offset: 0x010240
+  symbol: object_ganon2Vtx_010240
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganon2Vtx_010290:
+  type: OOT:ARRAY
+  offset: 0x010290
+  symbol: object_ganon2Vtx_010290
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganon2Vtx_0103C0:
+  type: OOT:ARRAY
+  offset: 0x0103C0
+  symbol: object_ganon2Vtx_0103C0
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganon2Vtx_0104D0:
+  type: OOT:ARRAY
+  offset: 0x0104D0
+  symbol: object_ganon2Vtx_0104D0
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganon2Vtx_010520:
+  type: OOT:ARRAY
+  offset: 0x010520
+  symbol: object_ganon2Vtx_010520
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganon2Vtx_010700:
+  type: OOT:ARRAY
+  offset: 0x010700
+  symbol: object_ganon2Vtx_010700
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganon2Vtx_010890:
+  type: OOT:ARRAY
+  offset: 0x010890
+  symbol: object_ganon2Vtx_010890
+  count: 11
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganon2Vtx_010940:
+  type: OOT:ARRAY
+  offset: 0x010940
+  symbol: object_ganon2Vtx_010940
+  count: 60
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganon2Vtx_010D00:
+  type: OOT:ARRAY
+  offset: 0x010D00
+  symbol: object_ganon2Vtx_010D00
+  count: 62
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganon2Vtx_0110E0:
+  type: OOT:ARRAY
+  offset: 0x0110E0
+  symbol: object_ganon2Vtx_0110E0
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganon2Vtx_0111D0:
+  type: OOT:ARRAY
+  offset: 0x0111D0
+  symbol: object_ganon2Vtx_0111D0
+  count: 204
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganon2Vtx_011E90:
+  type: OOT:ARRAY
+  offset: 0x011E90
+  symbol: object_ganon2Vtx_011E90
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganon2Vtx_012090:
+  type: OOT:ARRAY
+  offset: 0x012090
+  symbol: object_ganon2Vtx_012090
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganon2Vtx_012190:
+  type: OOT:ARRAY
+  offset: 0x012190
+  symbol: object_ganon2Vtx_012190
+  count: 45
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganon2Vtx_012460:
+  type: OOT:ARRAY
+  offset: 0x012460
+  symbol: object_ganon2Vtx_012460
+  count: 71
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganon2Vtx_0128D0:
+  type: OOT:ARRAY
+  offset: 0x0128D0
+  symbol: object_ganon2Vtx_0128D0
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganon2Vtx_012B00:
+  type: OOT:ARRAY
+  offset: 0x012B00
+  symbol: object_ganon2Vtx_012B00
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganon2Vtx_012C00:
+  type: OOT:ARRAY
+  offset: 0x012C00
+  symbol: object_ganon2Vtx_012C00
+  count: 45
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganon2Vtx_012ED0:
+  type: OOT:ARRAY
+  offset: 0x012ED0
+  symbol: object_ganon2Vtx_012ED0
+  count: 71
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganon2Vtx_013340:
+  type: OOT:ARRAY
+  offset: 0x013340
+  symbol: object_ganon2Vtx_013340
+  count: 35
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganon2Vtx_013570:
+  type: OOT:ARRAY
+  offset: 0x013570
+  symbol: object_ganon2Vtx_013570
+  count: 130
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganon2Vtx_013D90:
+  type: OOT:ARRAY
+  offset: 0x013D90
+  symbol: object_ganon2Vtx_013D90
+  count: 55
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganon2Vtx_014100:
+  type: OOT:ARRAY
+  offset: 0x014100
+  symbol: object_ganon2Vtx_014100
+  count: 70
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganon2Vtx_014560:
+  type: OOT:ARRAY
+  offset: 0x014560
+  symbol: object_ganon2Vtx_014560
+  count: 79
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganon2Vtx_014A50:
+  type: OOT:ARRAY
+  offset: 0x014A50
+  symbol: object_ganon2Vtx_014A50
+  count: 55
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganon2Vtx_014DC0:
+  type: OOT:ARRAY
+  offset: 0x014DC0
+  symbol: object_ganon2Vtx_014DC0
+  count: 69
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganon2Vtx_015210:
+  type: OOT:ARRAY
+  offset: 0x015210
+  symbol: object_ganon2Vtx_015210
+  count: 79
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganon2Vtx_015700:
+  type: OOT:ARRAY
+  offset: 0x015700
+  symbol: object_ganon2Vtx_015700
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganon2Vtx_015820:
+  type: OOT:ARRAY
+  offset: 0x015820
+  symbol: object_ganon2Vtx_015820
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganon2Vtx_015940:
+  type: OOT:ARRAY
+  offset: 0x015940
+  symbol: object_ganon2Vtx_015940
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganon2Vtx_015AC0:
+  type: OOT:ARRAY
+  offset: 0x015AC0
+  symbol: object_ganon2Vtx_015AC0
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganon2Vtx_015D00:
+  type: OOT:ARRAY
+  offset: 0x015D00
+  symbol: object_ganon2Vtx_015D00
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganon2Vtx_015F00:
+  type: OOT:ARRAY
+  offset: 0x015F00
+  symbol: object_ganon2Vtx_015F00
+  count: 79
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganon2Vtx_01EA88:
+  type: OOT:ARRAY
+  offset: 0x01EA88
+  symbol: object_ganon2Vtx_01EA88
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganon2Vtx_01EB28:
+  type: OOT:ARRAY
+  offset: 0x01EB28
+  symbol: object_ganon2Vtx_01EB28
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganon2Vtx_01EBC8:
+  type: OOT:ARRAY
+  offset: 0x01EBC8
+  symbol: object_ganon2Vtx_01EBC8
+  count: 58
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganon2Vtx_01EF68:
+  type: OOT:ARRAY
+  offset: 0x01EF68
+  symbol: object_ganon2Vtx_01EF68
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganon2Vtx_01F2E8:
+  type: OOT:ARRAY
+  offset: 0x01F2E8
+  symbol: object_ganon2Vtx_01F2E8
+  count: 79
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganon2Vtx_01F7D8:
+  type: OOT:ARRAY
+  offset: 0x01F7D8
+  symbol: object_ganon2Vtx_01F7D8
+  count: 79
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganon2Vtx_01FCC8:
+  type: OOT:ARRAY
+  offset: 0x01FCC8
+  symbol: object_ganon2Vtx_01FCC8
+  count: 100
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganon2Vtx_020308:
+  type: OOT:ARRAY
+  offset: 0x020308
+  symbol: object_ganon2Vtx_020308
+  count: 97
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganon2Vtx_020918:
+  type: OOT:ARRAY
+  offset: 0x020918
+  symbol: object_ganon2Vtx_020918
+  count: 22
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ganon2Vtx_020A78:
+  type: OOT:ARRAY
+  offset: 0x020A78
+  symbol: object_ganon2Vtx_020A78
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gGanonSkelLimbs:
+  type: BLOB
+  offset: 0x244B8
+  symbol: gGanonSkelLimbs
+  size: 0

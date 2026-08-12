@@ -1,11 +1,12 @@
 #include "Menu.h"
+#include "BackendTypes.h"
 #include "UIWidgets.hpp"
 #include "soh/OTRGlobals.h"
-#include <ship/window/gui/GuiMenuBar.h>
+#include <ship/config/Config.h>
 #include <ship/window/gui/GuiElement.h>
 #include "SohModals.h"
 #include <variant>
-#include <spdlog/fmt/fmt.h>
+#include <spdlog/common.h>
 #include <tuple>
 
 extern "C" {
@@ -66,7 +67,7 @@ bool operator>(Color_RGBA8 const& l, Color_RGBA8 const& r) noexcept {
 }
 
 uint32_t GetVectorIndexOf(std::vector<std::string>& vector, std::string value) {
-    return std::distance(vector.begin(), std::find(vector.begin(), vector.end(), value));
+    return static_cast<u32>(std::distance(vector.begin(), std::find(vector.begin(), vector.end(), value)));
 }
 
 static bool raceDisableActive = false;
@@ -93,23 +94,36 @@ void Menu::RemoveSidebarSearch() {
     if (curIndex > searchSidebarIndex) {
         curIndex--;
     } else if (curIndex >= menuEntries["Settings"].sidebarOrder.size()) {
-        curIndex = menuEntries["Settings"].sidebarOrder.size() - 1;
+        curIndex = static_cast<u32>(menuEntries["Settings"].sidebarOrder.size() - 1);
     }
     CVarSetString(menuEntries["Settings"].sidebarCvar, menuEntries["Settings"].sidebarOrder.at(curIndex).c_str());
 }
 
+void Menu::UpdateAudioBackendObjects() {
+    availableAudioBackends = Ship::Context::GetRawInstance()->GetAudio()->GetAvailableAudioBackends();
+    for (auto& backend : *availableAudioBackends) {
+        if (auto it = audioBackendsMap.find(backend); it != audioBackendsMap.end()) {
+            availableAudioBackendsMap[backend] = it->second;
+        }
+    }
+}
+
 void Menu::UpdateWindowBackendObjects() {
-    Ship::WindowBackend runningWindowBackend = Ship::Context::GetInstance()->GetWindow()->GetWindowBackend();
-    int32_t configWindowBackendId = Ship::Context::GetInstance()->GetConfig()->GetInt("Window.Backend.Id", -1);
-    if (Ship::Context::GetInstance()->GetWindow()->IsAvailableWindowBackend(configWindowBackendId)) {
-        configWindowBackend = static_cast<Ship::WindowBackend>(configWindowBackendId);
+    Fast::WindowBackend runningWindowBackend =
+        (Fast::WindowBackend)Ship::Context::GetRawInstance()->GetWindow()->GetWindowBackend();
+    int32_t configWindowBackendId = Ship::Context::GetRawInstance()->GetConfig()->GetInt("Window.Backend.Id", -1);
+    if (Ship::Context::GetRawInstance()->GetWindow()->IsAvailableWindowBackend(configWindowBackendId)) {
+        configWindowBackend = static_cast<Fast::WindowBackend>(configWindowBackendId);
     } else {
         configWindowBackend = runningWindowBackend;
     }
 
-    availableWindowBackends = Ship::Context::GetInstance()->GetWindow()->GetAvailableWindowBackends();
+    availableWindowBackends = Ship::Context::GetRawInstance()->GetWindow()->GetAvailableWindowBackends();
     for (auto& backend : *availableWindowBackends) {
-        availableWindowBackendsMap[backend] = windowBackendsMap.at(backend);
+        auto windowBackend = (Fast::WindowBackend)backend;
+        if (auto it = windowBackendsMap.find(windowBackend); it != windowBackendsMap.end()) {
+            availableWindowBackendsMap[windowBackend] = it->second;
+        }
     }
 }
 
@@ -128,10 +142,10 @@ Menu::Menu(const std::string& cVar, const std::string& name, uint8_t searchSideb
 
 void Menu::InitElement() {
     popped = CVarGetInteger(CVAR_SETTING("Menu.Popout"), 0);
-    poppedSize.x = CVarGetInteger(CVAR_SETTING("Menu.PoppedWidth"), 1280);
-    poppedSize.y = CVarGetInteger(CVAR_SETTING("Menu.PoppedHeight"), 800);
-    poppedPos.x = CVarGetInteger(CVAR_SETTING("Menu.PoppedPos.x"), 0);
-    poppedPos.y = CVarGetInteger(CVAR_SETTING("Menu.PoppedPos.y"), 0);
+    poppedSize.x = static_cast<f32>(CVarGetInteger(CVAR_SETTING("Menu.PoppedWidth"), 1280));
+    poppedSize.y = static_cast<f32>(CVarGetInteger(CVAR_SETTING("Menu.PoppedHeight"), 800));
+    poppedPos.x = static_cast<f32>(CVarGetInteger(CVAR_SETTING("Menu.PoppedPos.x"), 0));
+    poppedPos.y = static_cast<f32>(CVarGetInteger(CVAR_SETTING("Menu.PoppedPos.y"), 0));
     menuThemeIndex = static_cast<UIWidgets::Colors>(CVarGetInteger(CVAR_SETTING("Menu.Theme"), defaultThemeIndex));
 
     UpdateWindowBackendObjects();
@@ -212,8 +226,8 @@ uint32_t Menu::DrawSearchResults(std::string& menuSearchText) {
                         std::transform(widgetStr.begin(), widgetStr.end(), widgetStr.begin(), ::tolower);
                         widgetStr.erase(std::remove(widgetStr.begin(), widgetStr.end(), ' '), widgetStr.end());
                         if (widgetStr.find(menuSearchText) != std::string::npos) {
-                            UIWidgets::ComponentAlignments backupAlignment;
-                            UIWidgets::LabelPositions backupLabelPos;
+                            UIWidgets::ComponentAlignments backupAlignment = UIWidgets::ComponentAlignments::Left;
+                            UIWidgets::LabelPositions backupLabelPos = UIWidgets::LabelPositions::Above;
                             if (info.type == WIDGET_COMBOBOX || info.type == WIDGET_CVAR_COMBOBOX) {
                                 backupAlignment =
                                     std::static_pointer_cast<UIWidgets::ComboboxOptions>(info.options)->alignment;
@@ -227,7 +241,7 @@ uint32_t Menu::DrawSearchResults(std::string& menuSearchText) {
                             MenuDrawItem(info, 400, menuThemeIndex);
                             ImGui::PushStyleColor(ImGuiCol_Text, UIWidgets::ColorValues.at(UIWidgets::Colors::Gray));
                             std::string origin =
-                                fmt::format("  ({} -> {}, Col {})", menuEntry.label, sidebarLabel, i + 1);
+                                spdlog::fmt_lib::format("  ({} -> {}, Col {})", menuEntry.label, sidebarLabel, i + 1);
                             ImGui::Text("%s", origin.c_str());
                             ImGui::PopStyleColor();
                             searchCount++;
@@ -254,7 +268,8 @@ uint32_t Menu::DrawSearchResults(std::string& menuSearchText) {
             if (widgetStr.find(menuSearchText) != std::string::npos) {
                 MenuDrawItem(entry.info, 400, menuThemeIndex);
                 ImGui::PushStyleColor(ImGuiCol_Text, UIWidgets::ColorValues.at(UIWidgets::Colors::Gray));
-                std::string origin = fmt::format("  ({} -> {}, {})", entry.menuName, entry.sidebarName, entry.location);
+                std::string origin =
+                    spdlog::fmt_lib::format("  ({} -> {}, {})", entry.menuName, entry.sidebarName, entry.location);
                 ImGui::Text("%s", origin.c_str());
                 ImGui::PopStyleColor();
                 searchCount++;
@@ -336,14 +351,14 @@ void Menu::MenuDrawItem(WidgetInfo& widget, uint32_t width, UIWidgets::Colors me
                 };
             } break;
             case WIDGET_AUDIO_BACKEND: {
-                auto currentAudioBackend = Ship::Context::GetInstance()->GetAudio()->GetCurrentAudioBackend();
+                auto currentAudioBackend = Ship::Context::GetRawInstance()->GetAudio()->GetCurrentAudioBackend();
                 UIWidgets::ComboboxOptions options = {};
                 options.color = menuThemeIndex;
                 options.tooltip = "Sets the audio API used by the game. Requires a relaunch to take effect.";
-                options.disabled = Ship::Context::GetInstance()->GetAudio()->GetAvailableAudioBackends()->size() <= 1;
+                options.disabled = availableAudioBackends->size() <= 1;
                 options.disabledTooltip = "Only one audio API is available on this platform.";
-                if (UIWidgets::Combobox("Audio API", &currentAudioBackend, audioBackendsMap, options)) {
-                    Ship::Context::GetInstance()->GetAudio()->SetCurrentAudioBackend(currentAudioBackend);
+                if (UIWidgets::Combobox("Audio API", &currentAudioBackend, availableAudioBackendsMap, options)) {
+                    Ship::Context::GetRawInstance()->GetAudio()->SetCurrentAudioBackend(currentAudioBackend);
                 }
             } break;
             case WIDGET_VIDEO_BACKEND: {
@@ -354,11 +369,11 @@ void Menu::MenuDrawItem(WidgetInfo& widget, uint32_t width, UIWidgets::Colors me
                 options.disabledTooltip = "Only one renderer API is available on this platform.";
                 if (UIWidgets::Combobox("Renderer API (Needs reload)", &configWindowBackend, availableWindowBackendsMap,
                                         options)) {
-                    Ship::Context::GetInstance()->GetConfig()->SetInt("Window.Backend.Id",
-                                                                      (int32_t)(configWindowBackend));
-                    Ship::Context::GetInstance()->GetConfig()->SetString("Window.Backend.Name",
-                                                                         windowBackendsMap.at(configWindowBackend));
-                    Ship::Context::GetInstance()->GetConfig()->Save();
+                    Ship::Context::GetRawInstance()->GetConfig()->SetInt("Window.Backend.Id",
+                                                                         (int32_t)(configWindowBackend));
+                    Ship::Context::GetRawInstance()->GetConfig()->SetString("Window.Backend.Name",
+                                                                            windowBackendsMap.at(configWindowBackend));
+                    Ship::Context::GetRawInstance()->GetConfig()->Save();
                     UpdateWindowBackendObjects();
                 }
             } break;
@@ -484,16 +499,12 @@ void Menu::MenuDrawItem(WidgetInfo& widget, uint32_t width, UIWidgets::Colors me
             } break;
             case WIDGET_WINDOW_BUTTON: {
                 if (widget.windowName == nullptr || widget.windowName[0] == '\0') {
-                    std::string msg =
-                        fmt::format("Error drawing window contents for {}: windowName not defined", widget.name);
-                    SPDLOG_ERROR(msg.c_str());
+                    SPDLOG_ERROR("Error drawing window contents for {}: windowName not defined", widget.name);
                     break;
                 }
-                auto window = Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow(widget.windowName);
+                auto window = Ship::Context::GetRawInstance()->GetWindow()->GetGui()->GetGuiWindow(widget.windowName);
                 if (!window) {
-                    std::string msg =
-                        fmt::format("Error drawing window contents: windowName {} does not exist", widget.windowName);
-                    SPDLOG_ERROR(msg.c_str());
+                    SPDLOG_ERROR("Error drawing window contents: windowName {} does not exist", widget.windowName);
                     break;
                 }
                 auto options = std::static_pointer_cast<UIWidgets::WindowButtonOptions>(widget.options);
@@ -686,7 +697,7 @@ void Menu::DrawElement() {
                       ImGuiChildFlags_AutoResizeX | ImGuiChildFlags_AutoResizeY | ImGuiChildFlags_AlwaysAutoResize,
                       ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoScrollbar);
 
-    std::unordered_map<std::string, SidebarEntry>* sidebar;
+    std::unordered_map<std::string, SidebarEntry>* sidebar = nullptr;
     float headerHeight = headerSizes.at(0).y + style.FramePadding.y * 2;
     ImVec2 buttonSize = ImGui::CalcTextSize(ICON_FA_TIMES_CIRCLE) + style.FramePadding * 2;
     bool scrollbar = false;
@@ -734,6 +745,9 @@ void Menu::DrawElement() {
         }
         curIndex++;
     }
+    if (sidebar == nullptr) { // headerIndex wasn't in menuOrder
+        sidebar = &menuEntries.at(headerIndex).sidebars;
+    }
     std::string menuSearchText = "";
     if (headerSearch) {
         ImGui::SameLine();
@@ -765,11 +779,11 @@ void Menu::DrawElement() {
             "Quit SoH", "Are you sure you want to quit SoH?", "Quit", "Cancel",
             []() {
                 std::shared_ptr<Menu> menu =
-                    static_pointer_cast<Menu>(Ship::Context::GetInstance()->GetWindow()->GetGui()->GetMenu());
+                    static_pointer_cast<Menu>(Ship::Context::GetRawInstance()->GetWindow()->GetGui()->GetMenu());
                 if (!menu->IsMenuPopped()) {
                     menu->ToggleVisibility();
                 }
-                Ship::Context::GetInstance()->GetWindow()->Close();
+                Ship::Context::GetRawInstance()->GetWindow()->Close();
             },
             nullptr);
     }
@@ -789,7 +803,7 @@ void Menu::DrawElement() {
         ;
     if (UIWidgets::Button(ICON_FA_UNDO, options2)) {
         std::reinterpret_pointer_cast<Ship::ConsoleWindow>(
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))
+            Ship::Context::GetRawInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))
             ->Dispatch("reset");
     }
     ImGui::SameLine();
@@ -802,7 +816,7 @@ void Menu::DrawElement() {
         // Update gamepad navigation after close based on if other menus are still visible
         auto mImGuiIo = &ImGui::GetIO();
         if (CVarGetInteger(CVAR_IMGUI_CONTROLLER_NAV, 0) &&
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->GetMenuOrMenubarVisible()) {
+            Ship::Context::GetRawInstance()->GetWindow()->GetGui()->GetMenuOrMenubarVisible()) {
             mImGuiIo->ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
         } else {
             mImGuiIo->ConfigFlags &= ~ImGuiConfigFlags_NavEnableGamepad;
@@ -812,13 +826,13 @@ void Menu::DrawElement() {
     pos.y += headerHeight + style.ItemSpacing.y;
     pos.x = centerX - menuSize.x / 2 + (style.ItemSpacing.x * (menuEntries.size() + 1));
     window->DrawList->AddRectFilled(pos, pos + ImVec2{ menuSize.x, 4 }, ImGui::GetColorU32({ 255, 255, 255, 255 }),
-                                    true, style.WindowRounding);
+                                    style.WindowRounding);
     pos.y += style.ItemSpacing.y;
     float sectionHeight = menuSize.y - headerHeight - 4 - style.ItemSpacing.y * 2;
     float columnHeight = sectionHeight - style.ItemSpacing.y * 4;
     ImGui::SetNextWindowPos(pos + style.ItemSpacing * 2);
 
-    // Increase sidebar width on larger screens to accomodate people scaling their menus.
+    // Increase sidebar width on larger screens to accommodate people scaling their menus.
     float sidebarWidth = 200 - style.ItemSpacing.x;
     if (menuSize.x > 1600) {
         sidebarWidth = menuSize.x * 0.15f;
@@ -862,7 +876,7 @@ void Menu::DrawElement() {
 
     pos = ImVec2{ sectionCenterX + (sidebarWidth / 2), topY } + style.ItemSpacing * 2;
     window->DrawList->AddRectFilled(pos, pos + ImVec2{ 4, sectionHeight - style.FramePadding.y * 2 },
-                                    ImGui::GetColorU32({ 255, 255, 255, 255 }), true, style.WindowRounding);
+                                    ImGui::GetColorU32({ 255, 255, 255, 255 }), style.WindowRounding);
     pos.x += 4 + style.ItemSpacing.x;
     ImGui::SetNextWindowPos(pos + style.ItemSpacing);
     float sectionWidth = menuSize.x - sidebarWidth - 4 - style.ItemSpacing.x * 4;
@@ -911,7 +925,7 @@ void Menu::DrawElement() {
             }
         }
         for (size_t i = 0; i < columnFuncs; i++) {
-            std::string sectionId = fmt::format("{} Column {}", sectionMenuId, i);
+            std::string sectionId = spdlog::fmt_lib::format("{} Column {}", sectionMenuId, i);
             if (useColumns) {
                 ImGui::SetNextWindowSizeConstraints({ columnWidth, 0 }, { columnWidth, columnHeight });
                 ImGui::BeginChild(sectionId.c_str(), { columnWidth, windowHeight * 4 }, ImGuiChildFlags_AutoResizeY,

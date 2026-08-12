@@ -1,0 +1,341 @@
+:config:
+  segments:
+    - [ 6, 0x00F01590 ]
+    - [ 4, 0x00D30F80 ]
+    - [ 8, 0x00F01590 ]
+    - [ 9, 0x00F01590 ]
+    - [ 10, 0x00F01590 ]
+    - [ 11, 0x00F01590 ]
+    - [ 12, 0x00F01590 ]
+    - [ 13, 0x00F01590 ]
+  external_files:
+    - ntsc_u_mq/objects/gameplay_keep.yml
+
+gObjectOssanAnim_000338:
+  type: OOT:ANIMATION
+  offset: 0x338
+  symbol: gObjectOssanAnim_000338
+
+gObjectOssanEnSyatekiManDL_007E28:
+  type: GFX
+  offset: 0x7E28
+  symbol: gObjectOssanEnSyatekiManDL_007E28
+
+gObjectOssanSkel:
+  type: OOT:SKELETON
+  offset: 0x9B38
+  symbol: gObjectOssanSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gOssanBeardTex:
+  type: TEXTURE
+  offset: 0x4C78
+  symbol: gOssanBeardTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x4728
+
+gOssanEyeClosedTex:
+  type: TEXTURE
+  offset: 0x56B8
+  symbol: gOssanEyeClosedTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x4530
+
+gOssanEyeHalfTex:
+  type: TEXTURE
+  offset: 0x52B8
+  symbol: gOssanEyeHalfTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x4530
+
+gOssanEyeOpenTex:
+  type: TEXTURE
+  offset: 0x4878
+  symbol: gOssanEyeOpenTex
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x4530
+
+gOssanEyesTLUT:
+  type: TEXTURE
+  offset: 0x4530
+  symbol: gOssanEyesTLUT
+  format: RGBA16
+  width: 63
+  height: 4
+
+gOssanTLUT:
+  type: TEXTURE
+  offset: 0x4728
+  symbol: gOssanTLUT
+  format: RGBA16
+  width: 168
+  height: 1
+
+object_ossanTex_005078:
+  type: TEXTURE
+  offset: 0x5078
+  symbol: object_ossanTex_005078
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x4728
+
+object_ossanTex_005178:
+  type: TEXTURE
+  offset: 0x5178
+  symbol: object_ossanTex_005178
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x4728
+
+object_ossanTex_005278:
+  type: TEXTURE
+  offset: 0x5278
+  symbol: object_ossanTex_005278
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x4728
+
+object_ossanTex_005AB8:
+  type: TEXTURE
+  offset: 0x5AB8
+  symbol: object_ossanTex_005AB8
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x4728
+
+object_ossanTex_008A38:
+  type: TEXTURE
+  offset: 0x8A38
+  symbol: object_ossanTex_008A38
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_ossanTex_008AB8:
+  type: TEXTURE
+  offset: 0x8AB8
+  symbol: object_ossanTex_008AB8
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_ossanTex_008CB8:
+  type: TEXTURE
+  offset: 0x8CB8
+  symbol: object_ossanTex_008CB8
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_ossanTex_008EB8:
+  type: TEXTURE
+  offset: 0x8EB8
+  symbol: object_ossanTex_008EB8
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_ossanTex_0096B8:
+  type: TEXTURE
+  offset: 0x96B8
+  symbol: object_ossanTex_0096B8
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_ossanTex_0098B8:
+  type: TEXTURE
+  offset: 0x98B8
+  symbol: object_ossanTex_0098B8
+  format: RGBA16
+  width: 16
+  height: 16
+
+
+object_ossanVtx_000960:
+  type: OOT:ARRAY
+  offset: 0x000960
+  symbol: object_ossanVtx_000960
+  count: 117
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ossanVtx_0010B0:
+  type: OOT:ARRAY
+  offset: 0x0010B0
+  symbol: object_ossanVtx_0010B0
+  count: 42
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ossanVtx_001350:
+  type: OOT:ARRAY
+  offset: 0x001350
+  symbol: object_ossanVtx_001350
+  count: 61
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ossanVtx_001720:
+  type: OOT:ARRAY
+  offset: 0x001720
+  symbol: object_ossanVtx_001720
+  count: 117
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ossanVtx_001E70:
+  type: OOT:ARRAY
+  offset: 0x001E70
+  symbol: object_ossanVtx_001E70
+  count: 42
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ossanVtx_002110:
+  type: OOT:ARRAY
+  offset: 0x002110
+  symbol: object_ossanVtx_002110
+  count: 61
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ossanVtx_0024E0:
+  type: OOT:ARRAY
+  offset: 0x0024E0
+  symbol: object_ossanVtx_0024E0
+  count: 149
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gObjectOssanSkelLimbsLimb_009AB8DL_002E30:
+  type: GFX
+  offset: 0x002E30
+  symbol: gObjectOssanSkelLimbsLimb_009AB8DL_002E30
+
+gObjectOssanSkelLimbsLimb_009AE8DL_003130:
+  type: GFX
+  offset: 0x003130
+  symbol: gObjectOssanSkelLimbsLimb_009AE8DL_003130
+
+gObjectOssanSkelLimbsLimb_009AF4DL_003318:
+  type: GFX
+  offset: 0x003318
+  symbol: gObjectOssanSkelLimbsLimb_009AF4DL_003318
+
+gObjectOssanSkelLimbsLimb_009B00DL_003708:
+  type: GFX
+  offset: 0x003708
+  symbol: gObjectOssanSkelLimbsLimb_009B00DL_003708
+
+gObjectOssanSkelLimbsLimb_009AC4DL_003B30:
+  type: GFX
+  offset: 0x003B30
+  symbol: gObjectOssanSkelLimbsLimb_009AC4DL_003B30
+
+gObjectOssanSkelLimbsLimb_009AD0DL_003D18:
+  type: GFX
+  offset: 0x003D18
+  symbol: gObjectOssanSkelLimbsLimb_009AD0DL_003D18
+
+gObjectOssanSkelLimbsLimb_009ADCDL_004108:
+  type: GFX
+  offset: 0x004108
+  symbol: gObjectOssanSkelLimbsLimb_009ADCDL_004108
+
+object_ossanVtx_005AF8:
+  type: OOT:ARRAY
+  offset: 0x005AF8
+  symbol: object_ossanVtx_005AF8
+  count: 169
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ossanVtx_006588:
+  type: OOT:ARRAY
+  offset: 0x006588
+  symbol: object_ossanVtx_006588
+  count: 234
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gObjectOssanSkelLimbsLimb_009B0CDL_007428:
+  type: GFX
+  offset: 0x007428
+  symbol: gObjectOssanSkelLimbsLimb_009B0CDL_007428
+
+gObjectOssanSkelLimbsLimb_009AB8:
+  type: OOT:LIMB
+  offset: 0x009AB8
+  symbol: gObjectOssanSkelLimbsLimb_009AB8
+  limb_type: Standard
+
+gObjectOssanSkelLimbsLimb_009AC4:
+  type: OOT:LIMB
+  offset: 0x009AC4
+  symbol: gObjectOssanSkelLimbsLimb_009AC4
+  limb_type: Standard
+
+gObjectOssanSkelLimbsLimb_009AD0:
+  type: OOT:LIMB
+  offset: 0x009AD0
+  symbol: gObjectOssanSkelLimbsLimb_009AD0
+  limb_type: Standard
+
+gObjectOssanSkelLimbsLimb_009ADC:
+  type: OOT:LIMB
+  offset: 0x009ADC
+  symbol: gObjectOssanSkelLimbsLimb_009ADC
+  limb_type: Standard
+
+gObjectOssanSkelLimbsLimb_009AE8:
+  type: OOT:LIMB
+  offset: 0x009AE8
+  symbol: gObjectOssanSkelLimbsLimb_009AE8
+  limb_type: Standard
+
+gObjectOssanSkelLimbsLimb_009AF4:
+  type: OOT:LIMB
+  offset: 0x009AF4
+  symbol: gObjectOssanSkelLimbsLimb_009AF4
+  limb_type: Standard
+
+gObjectOssanSkelLimbsLimb_009B00:
+  type: OOT:LIMB
+  offset: 0x009B00
+  symbol: gObjectOssanSkelLimbsLimb_009B00
+  limb_type: Standard
+
+gObjectOssanSkelLimbsLimb_009B0C:
+  type: OOT:LIMB
+  offset: 0x009B0C
+  symbol: gObjectOssanSkelLimbsLimb_009B0C
+  limb_type: Standard
+
+gObjectOssanSkelLimbs:
+  type: BLOB
+  offset: 0x9B18
+  symbol: gObjectOssanSkelLimbs
+  size: 0

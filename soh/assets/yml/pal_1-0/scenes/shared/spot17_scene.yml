@@ -1,0 +1,211 @@
+:config:
+  segments:
+    - [ 2, 0x0186C370 ]
+
+  external_files:
+    - pal_1-0/scenes/shared/spot17_sceneSet_007230.yml
+    - pal_1-0/scenes/shared/spot17_sceneSet_0074E0.yml
+    - pal_1-0/scenes/shared/spot17_sceneSet_0075E0.yml
+spot17_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: spot17_scene
+
+gDeathMountainCraterBoleroCs:
+  type: OOT:CUTSCENE
+  offset: 0x45D4
+  symbol: gDeathMountainCraterBoleroCs
+
+gDeathMountainCraterIntroCs:
+  type: OOT:CUTSCENE
+  offset: 0x76E0
+  symbol: gDeathMountainCraterIntroCs
+
+spot17_sceneTLUT_007890:
+  type: TEXTURE
+  offset: 0x78A0
+  symbol: spot17_sceneTLUT_007890
+  format: RGBA16
+  width: 16
+  height: 16
+
+spot17_sceneTLUT_007A98:
+  type: TEXTURE
+  offset: 0x7AA8
+  symbol: spot17_sceneTLUT_007A98
+  format: RGBA16
+  width: 4
+  height: 4
+
+spot17_sceneTLUT_007AB8:
+  type: TEXTURE
+  offset: 0x7AC8
+  symbol: spot17_sceneTLUT_007AB8
+  format: RGBA16
+  width: 4
+  height: 4
+
+spot17_sceneTex_007AD8:
+  type: TEXTURE
+  offset: 0x7AE8
+  symbol: spot17_sceneTex_007AD8
+  format: CI8
+  width: 16
+  height: 128
+  tlut: 0x78A0
+
+spot17_sceneTex_0082D8:
+  type: TEXTURE
+  offset: 0x82E8
+  symbol: spot17_sceneTex_0082D8
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x78A0
+
+spot17_sceneTex_0086D8:
+  type: TEXTURE
+  offset: 0x86E8
+  symbol: spot17_sceneTex_0086D8
+  format: CI8
+  width: 64
+  height: 32
+  tlut: 0x78A0
+
+spot17_sceneTex_008ED8:
+  type: TEXTURE
+  offset: 0x8EE8
+  symbol: spot17_sceneTex_008ED8
+  format: CI8
+  width: 64
+  height: 32
+  tlut: 0x78A0
+
+spot17_sceneTex_0096D8:
+  type: TEXTURE
+  offset: 0x96E8
+  symbol: spot17_sceneTex_0096D8
+  format: CI8
+  width: 64
+  height: 32
+  tlut: 0x78A0
+
+spot17_sceneTex_009ED8:
+  type: TEXTURE
+  offset: 0x9EE8
+  symbol: spot17_sceneTex_009ED8
+  format: RGBA16
+  width: 32
+  height: 32
+
+spot17_sceneTex_00A6D8:
+  type: TEXTURE
+  offset: 0xA6E8
+  symbol: spot17_sceneTex_00A6D8
+  format: RGBA16
+  width: 32
+  height: 32
+
+spot17_sceneTex_00AED8:
+  type: TEXTURE
+  offset: 0xAEE8
+  symbol: spot17_sceneTex_00AED8
+  format: CI4
+  width: 64
+  height: 64
+  tlut: 0x7AA8
+
+spot17_sceneTex_00B6D8:
+  type: TEXTURE
+  offset: 0xB6E8
+  symbol: spot17_sceneTex_00B6D8
+  format: CI8
+  width: 64
+  height: 32
+  tlut: 0x78A0
+
+spot17_sceneTex_00BED8:
+  type: TEXTURE
+  offset: 0xBEE8
+  symbol: spot17_sceneTex_00BED8
+  format: CI8
+  width: 32
+  height: 64
+  tlut: 0x78A0
+
+spot17_sceneTex_00C6D8:
+  type: TEXTURE
+  offset: 0xC6E8
+  symbol: spot17_sceneTex_00C6D8
+  format: RGBA16
+  width: 32
+  height: 64
+
+spot17_sceneTex_00D6D8:
+  type: TEXTURE
+  offset: 0xD6E8
+  symbol: spot17_sceneTex_00D6D8
+  format: CI8
+  width: 16
+  height: 32
+  tlut: 0x78A0
+
+spot17_sceneTex_00D8D8:
+  type: TEXTURE
+  offset: 0xD8E8
+  symbol: spot17_sceneTex_00D8D8
+  format: CI8
+  width: 16
+  height: 128
+  tlut: 0x78A0
+
+spot17_sceneTex_00E0D8:
+  type: TEXTURE
+  offset: 0xE0E8
+  symbol: spot17_sceneTex_00E0D8
+  format: CI4
+  width: 64
+  height: 64
+  tlut: 0x7AC8
+
+spot17_sceneTex_00E8D8:
+  type: TEXTURE
+  offset: 0xE8E8
+  symbol: spot17_sceneTex_00E8D8
+  format: CI8
+  width: 32
+  height: 64
+  tlut: 0x78A0
+
+spot17_sceneTex_00F0D8:
+  type: TEXTURE
+  offset: 0xF0E8
+  symbol: spot17_sceneTex_00F0D8
+  format: CI8
+  width: 32
+  height: 64
+  tlut: 0x78A0
+
+spot17_sceneTex_00F8D8:
+  type: TEXTURE
+  offset: 0xF8E8
+  symbol: spot17_sceneTex_00F8D8
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x78A0
+
+spot17_sceneTex_00FCD8:
+  type: TEXTURE
+  offset: 0xFCE8
+  symbol: spot17_sceneTex_00FCD8
+  format: CI8
+  width: 16
+  height: 32
+  tlut: 0x78A0
+
+
+spot17_sceneCollisionHeader_0045A4:
+  type: OOT:COLLISION
+  offset: 0x0045A4
+  symbol: spot17_sceneCollisionHeader_0045A4

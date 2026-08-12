@@ -1,0 +1,305 @@
+:config:
+  segments:
+    - [ 6, 0x01246460 ]
+    - [ 4, 0x00D3A8E0 ]
+    - [ 8, 0x01246460 ]
+    - [ 9, 0x01246460 ]
+    - [ 10, 0x01246460 ]
+    - [ 11, 0x01246460 ]
+    - [ 12, 0x01246460 ]
+    - [ 13, 0x01246460 ]
+  external_files:
+    - ntsc_1-1/objects/gameplay_keep.yml
+
+gChuGirlEyeClosedTex:
+  type: TEXTURE
+  offset: 0x5110
+  symbol: gChuGirlEyeClosedTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gChuGirlEyeHalfTex:
+  type: TEXTURE
+  offset: 0x4910
+  symbol: gChuGirlEyeHalfTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gChuGirlEyeOpenTex:
+  type: TEXTURE
+  offset: 0x4110
+  symbol: gChuGirlEyeOpenTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gChuGirlHairTex:
+  type: TEXTURE
+  offset: 0x6D10
+  symbol: gChuGirlHairTex
+  format: RGBA16
+  width: 8
+  height: 16
+
+gChuGirlHeadDL:
+  type: GFX
+  offset: 0x2EE0
+  symbol: gChuGirlHeadDL
+
+gChuGirlHeadLimb:
+  type: OOT:LIMB
+  offset: 0x6E34
+  symbol: gChuGirlHeadLimb
+  limb_type: Standard
+
+gChuGirlLeanOverCounterAnim:
+  type: OOT:ANIMATION
+  offset: 0x72AC
+  symbol: gChuGirlLeanOverCounterAnim
+
+gChuGirlLeftForearmDL:
+  type: GFX
+  offset: 0x3670
+  symbol: gChuGirlLeftForearmDL
+
+gChuGirlLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0x6E4C
+  symbol: gChuGirlLeftForearmLimb
+  limb_type: Standard
+
+gChuGirlLeftHandDL:
+  type: GFX
+  offset: 0x3520
+  symbol: gChuGirlLeftHandDL
+
+gChuGirlLeftHandLimb:
+  type: OOT:LIMB
+  offset: 0x6E58
+  symbol: gChuGirlLeftHandLimb
+  limb_type: Standard
+
+gChuGirlLeftUpperArmDL:
+  type: GFX
+  offset: 0x3780
+  symbol: gChuGirlLeftUpperArmDL
+
+gChuGirlLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x6E40
+  symbol: gChuGirlLeftUpperArmLimb
+  limb_type: Standard
+
+gChuGirlMouthTex:
+  type: TEXTURE
+  offset: 0x5910
+  symbol: gChuGirlMouthTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gChuGirlNeckDL:
+  type: GFX
+  offset: 0x33C8
+  symbol: gChuGirlNeckDL
+
+gChuGirlNeckLimb:
+  type: OOT:LIMB
+  offset: 0x6E28
+  symbol: gChuGirlNeckLimb
+  limb_type: Standard
+
+gChuGirlNoddingOffAnim:
+  type: OOT:ANIMATION
+  offset: 0x710
+  symbol: gChuGirlNoddingOffAnim
+
+gChuGirlRightForearmDL:
+  type: GFX
+  offset: 0x3AB8
+  symbol: gChuGirlRightForearmDL
+
+gChuGirlRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0x6E70
+  symbol: gChuGirlRightForearmLimb
+  limb_type: Standard
+
+gChuGirlRightHandDL:
+  type: GFX
+  offset: 0x3968
+  symbol: gChuGirlRightHandDL
+
+gChuGirlRightHandLimb:
+  type: OOT:LIMB
+  offset: 0x6E7C
+  symbol: gChuGirlRightHandLimb
+  limb_type: Standard
+
+gChuGirlRightUpperArmDL:
+  type: GFX
+  offset: 0x3BC8
+  symbol: gChuGirlRightUpperArmDL
+
+gChuGirlRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x6E64
+  symbol: gChuGirlRightUpperArmLimb
+  limb_type: Standard
+
+gChuGirlSkel:
+  type: OOT:SKELETON
+  offset: 0x6EB0
+  symbol: gChuGirlSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gChuGirlSkinGradientTex:
+  type: TEXTURE
+  offset: 0x6110
+  symbol: gChuGirlSkinGradientTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gChuGirlSweaterTex:
+  type: TEXTURE
+  offset: 0x6510
+  symbol: gChuGirlSweaterTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gChuGirlTorsoDL:
+  type: GFX
+  offset: 0x3DB0
+  symbol: gChuGirlTorsoDL
+
+gChuGirlTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x6E1C
+  symbol: gChuGirlTorsoLimb
+  limb_type: Standard
+
+gChuGirlUmbEarLicusTex:
+  type: TEXTURE
+  offset: 0x6310
+  symbol: gChuGirlUmbEarLicusTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gChuGirlWaistDL:
+  type: GFX
+  offset: 0x4038
+  symbol: gChuGirlWaistDL
+
+gChuGirlWaistLimb:
+  type: OOT:LIMB
+  offset: 0x6E10
+  symbol: gChuGirlWaistLimb
+  limb_type: Standard
+
+gChuGirlWakeUpAnim:
+  type: OOT:ANIMATION
+  offset: 0x80
+  symbol: gChuGirlWakeUpAnim
+
+
+object_bgVtx_000720:
+  type: OOT:ARRAY
+  offset: 0x000720
+  symbol: object_bgVtx_000720
+  count: 221
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bgVtx_0014F0:
+  type: OOT:ARRAY
+  offset: 0x0014F0
+  symbol: object_bgVtx_0014F0
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bgVtx_0016E0:
+  type: OOT:ARRAY
+  offset: 0x0016E0
+  symbol: object_bgVtx_0016E0
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bgVtx_001940:
+  type: OOT:ARRAY
+  offset: 0x001940
+  symbol: object_bgVtx_001940
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bgVtx_001B10:
+  type: OOT:ARRAY
+  offset: 0x001B10
+  symbol: object_bgVtx_001B10
+  count: 53
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bgVtx_001E60:
+  type: OOT:ARRAY
+  offset: 0x001E60
+  symbol: object_bgVtx_001E60
+  count: 36
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bgVtx_0020A0:
+  type: OOT:ARRAY
+  offset: 0x0020A0
+  symbol: object_bgVtx_0020A0
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bgVtx_002270:
+  type: OOT:ARRAY
+  offset: 0x002270
+  symbol: object_bgVtx_002270
+  count: 49
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bgVtx_002580:
+  type: OOT:ARRAY
+  offset: 0x002580
+  symbol: object_bgVtx_002580
+  count: 137
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bgVtx_002E10:
+  type: OOT:ARRAY
+  offset: 0x002E10
+  symbol: object_bgVtx_002E10
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gChuGirlSkelLimbs:
+  type: BLOB
+  offset: 0x6E88
+  symbol: gChuGirlSkelLimbs
+  size: 0

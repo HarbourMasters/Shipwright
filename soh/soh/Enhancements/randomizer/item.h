@@ -1,10 +1,9 @@
 #pragma once
 
 #include <string>
-#include <variant>
 #include <memory>
 
-#include "3drando/text.hpp"
+#include "soh/Enhancements/custom-message/text.h"
 #include "randomizerTypes.h"
 #include "soh/Enhancements/item-tables/ItemTableTypes.h"
 #include "3drando/hints.hpp"
@@ -18,6 +17,7 @@ enum ItemType {
     ITEMTYPE_SMALLKEY,
     ITEMTYPE_TOKEN,
     ITEMTYPE_FORTRESS_SMALLKEY,
+    ITEMTYPE_SILVER,
     ITEMTYPE_EVENT,
     ITEMTYPE_DROP,
     ITEMTYPE_REFILL,
@@ -60,6 +60,7 @@ class Item {
     bool IsPlaythrough() const;
     bool IsBottleItem() const;
     bool IsMajorItem() const;
+    bool IsShieldOrTunic() const;
     RandomizerHintTextKey GetHintKey() const;
     const HintText& GetHint() const;
     GetItemCategory GetCategory();

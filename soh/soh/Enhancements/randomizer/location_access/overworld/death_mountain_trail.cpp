@@ -7,23 +7,48 @@ void RegionTable_Init_DeathMountainTrail() {
     // clang-format off
     areaTable[RR_DEATH_MOUNTAIN_TRAIL] = Region("Death Mountain Trail", SCENE_DEATH_MOUNTAIN_TRAIL, {
         //Events
-        EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS) && (logic->HasExplosives() || logic->HasItem(RG_GORONS_BRACELET))),
+        EVENT_ACCESS(LOGIC_PLANT_DEATH_MOUNTAIN_TRAIL_BEAN, CanPlantBean(RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL) && (logic->HasExplosives() || logic->HasItem(RG_GORONS_BRACELET))),
+        EVENT_ACCESS(LOGIC_FAIRY_ACCESS,                    logic->IsChild && logic->BeanPlanted(LOGIC_PLANT_DEATH_MOUNTAIN_TRAIL_BEAN) && logic->CanUse(RG_SONG_OF_STORMS) && (logic->HasExplosives() || logic->HasItem(RG_GORONS_BRACELET))),
     }, {
         //Locations
-        LOCATION(RC_DMT_CHEST,                    		  (logic->BlastOrSmash() || (ctx->GetTrickOption(RT_DMT_BOMBABLE) && logic->IsChild && logic->HasItem(RG_GORONS_BRACELET))) && logic->HasItem(RG_OPEN_CHEST)),
-        LOCATION(RC_DMT_FREESTANDING_POH,         		  logic->TakeDamage() || logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && CanPlantBean(RR_DEATH_MOUNTAIN_TRAIL, RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL) && (logic->HasExplosives() || logic->HasItem(RG_GORONS_BRACELET)))),
-        LOCATION(RC_DMT_GS_BEAN_PATCH,            		  logic->CanSpawnSoilSkull(RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL) && (logic->HasExplosives() || logic->HasItem(RG_GORONS_BRACELET) || (ctx->GetTrickOption(RT_DMT_SOIL_GS) && (logic->TakeDamage() || logic->CanUse(RG_HOVER_BOOTS)) && logic->CanUse(RG_BOOMERANG)))),
-        LOCATION(RC_DMT_GS_NEAR_KAK,              		  logic->BlastOrSmash() && (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_BOOMERANG))),
-        LOCATION(RC_DMT_GS_ABOVE_DODONGOS_CAVERN, 		  logic->IsAdult && logic->CanGetNightTimeGS() && 
-														  ((logic->CanUse(RG_MEGATON_HAMMER) || (ctx->GetTrickOption(RT_ITEM_EXTENSION) && logic->CanUse(RG_HOOKSHOT)) || (ctx->GetTrickOption(RT_BOULDER_COLLISION) && logic->CanUse(RG_LONGSHOT)) || (ctx->GetTrickOption(RT_DMT_JS_LOWER_GS) && logic->CanJumpslash())) || 
-														  ((ctx->GetTrickOption(RT_DMT_BEAN_LOWER_GS) && CanPlantBean(RR_DEATH_MOUNTAIN_TRAIL, RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL)) || (ctx->GetTrickOption(RT_DMT_HOVERS_LOWER_GS) && logic->CanUse(RG_HOVER_BOOTS)) &&
-															  (logic->HasExplosives() || logic->CanUse(RG_DINS_FIRE) || ((ctx->GetTrickOption(RT_BOULDER_COLLISION) || ctx->GetTrickOption(RT_ITEM_EXTENSION)) && (logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_FAIRY_SLINGSHOT))) || logic->CanJumpslash())))),
-        LOCATION(RC_DMT_BLUE_RUPEE,               		  logic->IsChild && logic->BlastOrSmash()),
-        LOCATION(RC_DMT_RED_RUPEE,                		  logic->IsChild && logic->BlastOrSmash()),
-        LOCATION(RC_DMT_BEAN_SPROUT_FAIRY_1,      		  logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS) && (logic->HasExplosives() || logic->HasItem(RG_GORONS_BRACELET))),
-        LOCATION(RC_DMT_BEAN_SPROUT_FAIRY_2,      		  logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS) && (logic->HasExplosives() || logic->HasItem(RG_GORONS_BRACELET))),
-        LOCATION(RC_DMT_BEAN_SPROUT_FAIRY_3,      		  logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS) && (logic->HasExplosives() || logic->HasItem(RG_GORONS_BRACELET))),
-        LOCATION(RC_DMT_FLAG_SUN_FAIRY,           		  logic->CanUse(RG_SUNS_SONG)),
+        LOCATION(RC_DMT_CHEST,                    	  (logic->BlastOrSmash() || (ctx->GetTrickOption(RT_DMT_BOMBABLE) && logic->IsChild && logic->HasItem(RG_GORONS_BRACELET))) && logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION(RC_DMT_FREESTANDING_POH,         	  logic->TakeDamage() || logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && logic->BeanPlanted(LOGIC_PLANT_DEATH_MOUNTAIN_TRAIL_BEAN) && (logic->HasExplosives() || logic->HasItem(RG_GORONS_BRACELET)))),
+        LOCATION(RC_DMT_GS_BEAN_PATCH,            	  logic->CanSpawnSoilSkull(RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL) && (logic->HasExplosives() || logic->HasItem(RG_GORONS_BRACELET) || (ctx->GetTrickOption(RT_DMT_SOIL_GS) && (logic->TakeDamage() || logic->CanUse(RG_HOVER_BOOTS)) && logic->CanUse(RG_BOOMERANG)))),
+        LOCATION(RC_DMT_GS_NEAR_KAK,              	  logic->BlastOrSmash() && (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_BOOMERANG))),
+        LOCATION(RC_DMT_GS_ABOVE_DODONGOS_CAVERN, 	  logic->IsAdult && logic->CanGetNightTimeGS() && 
+							        					  ((logic->CanUse(RG_MEGATON_HAMMER) || (ctx->GetTrickOption(RT_ITEM_EXTENSION) && logic->CanUse(RG_HOOKSHOT)) || (ctx->GetTrickOption(RT_BOULDER_COLLISION) && logic->CanUse(RG_LONGSHOT)) || (ctx->GetTrickOption(RT_DMT_JS_LOWER_GS) && logic->CanJumpslash())) || 
+							        					  ((ctx->GetTrickOption(RT_DMT_BEAN_LOWER_GS) && logic->BeanPlanted(LOGIC_PLANT_DEATH_MOUNTAIN_TRAIL_BEAN)) || (ctx->GetTrickOption(RT_DMT_HOVERS_LOWER_GS) && logic->CanUse(RG_HOVER_BOOTS)) &&
+							        						  (logic->HasExplosives() || logic->CanUse(RG_DINS_FIRE) || ((ctx->GetTrickOption(RT_BOULDER_COLLISION) || ctx->GetTrickOption(RT_ITEM_EXTENSION)) && (logic->CanUse(RG_FAIRY_BOW) || logic->CanUse(RG_FAIRY_SLINGSHOT))) || logic->CanJumpslash())))),
+        LOCATION(RC_DMT_BLUE_RUPEE,               	  logic->IsChild && logic->BlastOrSmash()),
+        LOCATION(RC_DMT_RED_RUPEE,                	  logic->IsChild && logic->BlastOrSmash()),
+        LOCATION(RC_DMT_BEAN_SPROUT_FAIRY_1,      	  logic->IsChild && logic->BeanPlanted(LOGIC_PLANT_DEATH_MOUNTAIN_TRAIL_BEAN) && logic->CanUse(RG_SONG_OF_STORMS) && (logic->HasExplosives() || logic->HasItem(RG_GORONS_BRACELET))),
+        LOCATION(RC_DMT_BEAN_SPROUT_FAIRY_2,      	  logic->IsChild && logic->BeanPlanted(LOGIC_PLANT_DEATH_MOUNTAIN_TRAIL_BEAN) && logic->CanUse(RG_SONG_OF_STORMS) && (logic->HasExplosives() || logic->HasItem(RG_GORONS_BRACELET))),
+        LOCATION(RC_DMT_BEAN_SPROUT_FAIRY_3,      	  logic->IsChild && logic->BeanPlanted(LOGIC_PLANT_DEATH_MOUNTAIN_TRAIL_BEAN) && logic->CanUse(RG_SONG_OF_STORMS) && (logic->HasExplosives() || logic->HasItem(RG_GORONS_BRACELET))),
+        LOCATION(RC_DMT_FLAG_SUN_FAIRY,           	  logic->CanUse(RG_SUNS_SONG)),
+        LOCATION(RC_DMT_ROCK_1,                           logic->CanBreakRocks()),
+        LOCATION(RC_DMT_ROCK_2,                           logic->CanBreakRocks()),
+        LOCATION(RC_DMT_ROCK_3,                           logic->CanBreakRocks()),
+        LOCATION(RC_DMT_ROCK_4,                           logic->CanBreakRocks()),
+        LOCATION(RC_DMT_ROCK_5,                           logic->CanBreakRocks()),
+        LOCATION(RC_DMT_CIRCLE_ROCK_1,                    logic->CanBreakRocks()),
+        LOCATION(RC_DMT_CIRCLE_ROCK_2,                    logic->CanBreakRocks()),
+        LOCATION(RC_DMT_CIRCLE_ROCK_3,                    logic->CanBreakRocks()),
+        LOCATION(RC_DMT_CIRCLE_ROCK_4,                    logic->CanBreakRocks()),
+        LOCATION(RC_DMT_CIRCLE_ROCK_5,                    logic->CanBreakRocks()),
+        LOCATION(RC_DMT_CIRCLE_ROCK_6,                    logic->CanBreakRocks()),
+        LOCATION(RC_DMT_CIRCLE_ROCK_7,                    logic->CanBreakRocks()),
+        LOCATION(RC_DMT_CIRCLE_ROCK_8,                    logic->CanBreakRocks()),
+        LOCATION(RC_DMT_CHILD_BOULDER,                    logic->IsChild && logic->BlastOrSmash()),
+        LOCATION(RC_DMT_BOULDER_1,                        logic->BlastOrSmash()),
+        LOCATION(RC_DMT_BOULDER_2,                        logic->BlastOrSmash()),
+        LOCATION(RC_DMT_BRONZE_BOULDER_1,                 logic->IsAdult && logic->CanUse(RG_MEGATON_HAMMER)),
+        LOCATION(RC_DMT_BRONZE_BOULDER_2,                 logic->IsAdult && logic->CanUse(RG_MEGATON_HAMMER)),
+        LOCATION(RC_DMT_BRONZE_BOULDER_3,                 logic->IsAdult && logic->CanUse(RG_MEGATON_HAMMER)),
+        LOCATION(RC_DMT_BRONZE_BOULDER_4,                 logic->IsAdult && logic->CanUse(RG_MEGATON_HAMMER)),
+        LOCATION(RC_DMT_BRONZE_BOULDER_5,                 logic->IsAdult && logic->CanUse(RG_MEGATON_HAMMER)),
+        LOCATION(RC_DMT_BRONZE_BOULDER_6,                 logic->IsAdult && logic->CanUse(RG_MEGATON_HAMMER)),
+        LOCATION(RC_DMT_BRONZE_BOULDER_7,                 logic->IsAdult && logic->CanUse(RG_MEGATON_HAMMER)),
+        LOCATION(RC_DMT_BRONZE_BOULDER_11,                logic->IsAdult && logic->CanUse(RG_MEGATON_HAMMER)),
         LOCATION(RC_DMT_ABOVE_DODONGO_RECTANGLE_SIGN,     logic->IsChild && logic->CanRead()),
         LOCATION(RC_DMT_ADULT_CENTER_EXIT_ARROW_SIGN,     logic->IsAdult && logic->CanRead()),
         LOCATION(RC_DMT_CHILD_CENTER_EXIT_RECTANGLE_SIGN, logic->IsChild && logic->CanRead()),
@@ -36,7 +61,7 @@ void RegionTable_Init_DeathMountainTrail() {
         //Exits
         ENTRANCE(RR_KAK_BEHIND_GATE,          true),
         ENTRANCE(RR_GORON_CITY,               true),
-        ENTRANCE(RR_DEATH_MOUNTAIN_ROCKFALL,  AnyAgeTime([]{return logic->BlastOrSmash();}) || (logic->IsAdult && ((CanPlantBean(RR_DEATH_MOUNTAIN_TRAIL, RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL) && logic->HasItem(RG_GORONS_BRACELET)) || (logic->CanUse(RG_HOVER_BOOTS) && ctx->GetTrickOption(RT_DMT_CLIMB_HOVERS))))),
+        ENTRANCE(RR_DEATH_MOUNTAIN_ROCKFALL,  AnyAgeTime([]{return logic->BlastOrSmash();}) || (logic->IsAdult && ((logic->BeanPlanted(LOGIC_PLANT_DEATH_MOUNTAIN_TRAIL_BEAN) && logic->HasItem(RG_GORONS_BRACELET)) || (logic->CanUse(RG_HOVER_BOOTS) && ctx->GetTrickOption(RT_DMT_CLIMB_HOVERS))))),
         ENTRANCE(RR_DODONGOS_CAVERN_ENTRYWAY, logic->HasExplosives() || logic->HasItem(RG_GORONS_BRACELET) || logic->IsAdult),
         ENTRANCE(RR_DMT_STORMS_GROTTO,        logic->CanOpenStormsGrotto()),
     });
@@ -47,6 +72,10 @@ void RegionTable_Init_DeathMountainTrail() {
                                                (logic->CanUse(RG_MEGATON_HAMMER) || (ctx->GetTrickOption(RT_BOULDER_COLLISION) && logic->CanUse(RG_LONGSHOT)) || (ctx->GetTrickOption(RT_ITEM_EXTENSION) && logic->CanUse(RG_HOOKSHOT)) || 
                                                 (ctx->GetTrickOption(RT_DMT_UPPER_GS) && (logic->CanJumpslash() || logic->CanUse(RG_DINS_FIRE) || logic->HasExplosives() || (ctx->GetTrickOption(RT_ITEM_EXTENSION) && logic->CanUse(RG_FAIRY_SLINGSHOT)) || 
                                                                                           (ctx->GetTrickOption(RT_BOULDER_COLLISION) && logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_LONGSHOT)))))),
+        LOCATION(RC_DMT_BRONZE_BOULDER_8,      logic->IsAdult && logic->CanUse(RG_MEGATON_HAMMER)),
+        LOCATION(RC_DMT_BRONZE_BOULDER_9,      logic->IsAdult && logic->CanUse(RG_MEGATON_HAMMER)),
+        LOCATION(RC_DMT_BRONZE_BOULDER_10,     logic->IsAdult && logic->CanUse(RG_MEGATON_HAMMER)),
+        LOCATION(RC_DMT_COW_BOULDER,           logic->BlastOrSmash()),
     }, {
         //Exits
         ENTRANCE(RR_DEATH_MOUNTAIN_TRAIL,  true),
@@ -66,6 +95,7 @@ void RegionTable_Init_DeathMountainTrail() {
         LOCATION(RC_DMT_TRADE_CLAIM_CHECK,      logic->IsAdult && logic->CanUse(RG_CLAIM_CHECK)),
         LOCATION(RC_DMT_GOSSIP_STONE_FAIRY,     logic->CallGossipFairy()),
         LOCATION(RC_DMT_GOSSIP_STONE_FAIRY_BIG, logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION(RC_DMT_SUMMIT_ROCK,            logic->IsChild && logic->CanBreakRocks()),
         LOCATION(RC_DMT_GOSSIP_STONE,           true),
         LOCATION(RC_BIGGORON_HINT,              logic->IsAdult && logic->HasItem(RG_SPEAK_GORON)),
         LOCATION(RC_DMT_UPPER_EXIT_ARROW_SIGN,  logic->CanRead()),
@@ -73,7 +103,7 @@ void RegionTable_Init_DeathMountainTrail() {
         //Exits
         ENTRANCE(RR_DEATH_MOUNTAIN_ROCKFALL,  true),
         ENTRANCE(RR_DMC_UPPER_ENTRY,          true),
-        ENTRANCE(RR_DMT_OWL_FLIGHT,           logic->IsChild && (logic->HasItem(RG_SPEAK_DEKU) || logic->HasItem(RG_SPEAK_GERUDO) || logic->HasItem(RG_SPEAK_GORON) || logic->HasItem(RG_SPEAK_HYLIAN) || logic->HasItem(RG_SPEAK_ZORA))),
+        ENTRANCE(RR_DMT_OWL_FLIGHT,           logic->IsChild && (logic->HasItem(RG_SPEAK_DEKU) || logic->HasItem(RG_SPEAK_GERUDO) || logic->HasItem(RG_SPEAK_GORON) || logic->HasItem(RG_SPEAK_KOKIRI) || logic->HasItem(RG_SPEAK_HYLIAN) || logic->HasItem(RG_SPEAK_ZORA))),
         ENTRANCE(RR_DMT_GREAT_FAIRY_FOUNTAIN, AnyAgeTime([]{return logic->BlastOrSmash();})),
     });
 
@@ -118,6 +148,7 @@ void RegionTable_Init_DeathMountainTrail() {
         LOCATION(RC_DMT_STORMS_GROTTO_GRASS_2,                logic->CanCutShrubs()),
         LOCATION(RC_DMT_STORMS_GROTTO_GRASS_3,                logic->CanCutShrubs()),
         LOCATION(RC_DMT_STORMS_GROTTO_GRASS_4,                logic->CanCutShrubs()),
+        LOCATION(RC_DMT_STORMS_GROTTO_BUTTERFLY_FAIRY,        logic->CanUse(RG_STICKS)),
     }, {
         //Exits
         ENTRANCE(RR_DEATH_MOUNTAIN_TRAIL, true),

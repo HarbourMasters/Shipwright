@@ -99,7 +99,7 @@ void RegionTable_Init_ThievesHideout() {
         ENTRANCE(RR_TH_KITCHEN_MAIN, logic->CanPassEnemy(RE_GERUDO_GUARD)),
     });
 
-    areaTable[RR_TH_KITCHEN_MAIN] = Region("Thieves Hideout Kitchen Bottom", SCENE_THIEVES_HIDEOUT, {}, {
+    areaTable[RR_TH_KITCHEN_MAIN] = Region("Thieves Hideout Kitchen Main", SCENE_THIEVES_HIDEOUT, {}, {
         //Locations
         LOCATION(RC_TH_KITCHEN_POT_1,        logic->CanBreakPots() && logic->CanPassEnemy(RE_GERUDO_GUARD)),
         LOCATION(RC_TH_KITCHEN_POT_2,        logic->CanBreakPots() && logic->CanPassEnemy(RE_GERUDO_GUARD)),
@@ -156,7 +156,7 @@ void RegionTable_Init_ThievesHideout() {
         ENTRANCE(RR_TH_BREAK_ROOM_LOWER_CORRIDOR, logic->CanPassEnemy(RE_GERUDO_GUARD)),
     });
 
-    areaTable[RR_TH_BREAK_ROOM_LOWER_CORRIDOR] = Region("Thieves Hideout Break Room", SCENE_THIEVES_HIDEOUT, {}, {
+    areaTable[RR_TH_BREAK_ROOM_LOWER_CORRIDOR] = Region("Thieves Hideout Break Room Lower Corridor", SCENE_THIEVES_HIDEOUT, {}, {
     //Locations
         LOCATION(RC_TH_WONDER_BREAK_ROOM_BOTTOM_SKULL, logic->CanUse(RG_FAIRY_BOW)),
     }, {
@@ -165,7 +165,7 @@ void RegionTable_Init_ThievesHideout() {
         ENTRANCE(RR_TH_BREAK_ROOM_UPPER_CORRIDOR, logic->CanUse(RG_HOOKSHOT)),
     });
 
-    areaTable[RR_TH_BREAK_ROOM_UPPER_CORRIDOR] = Region("Thieves Hideout Break Room", SCENE_THIEVES_HIDEOUT, {}, {
+    areaTable[RR_TH_BREAK_ROOM_UPPER_CORRIDOR] = Region("Thieves Hideout Break Room Upper Corridor", SCENE_THIEVES_HIDEOUT, {}, {
         //Locations
         LOCATION(RC_TH_WONDER_BREAK_ROOM_TOP_SKULL, logic->CanUse(RG_FAIRY_BOW)),
     }, {

@@ -1,0 +1,28 @@
+:config:
+  segments:
+    - [ 128, 0x0130A2C0 ]
+
+gDeathMountainCraterTitleCardENGTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gDeathMountainCraterTitleCardENGTex
+  format: IA8
+  width: 144
+  height: 24
+
+gDeathMountainCraterTitleCardFRATex:
+  type: TEXTURE
+  offset: 0x1B00
+  symbol: gDeathMountainCraterTitleCardFRATex
+  format: IA8
+  width: 144
+  height: 24
+
+gDeathMountainCraterTitleCardGERTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gDeathMountainCraterTitleCardGERTex
+  format: IA8
+  width: 144
+  height: 24
+

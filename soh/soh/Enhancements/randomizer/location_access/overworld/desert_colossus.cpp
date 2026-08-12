@@ -7,28 +7,47 @@ void RegionTable_Init_DesertColossus() {
     // clang-format off
     areaTable[RR_DESERT_COLOSSUS] = Region("Desert Colossus", SCENE_DESERT_COLOSSUS, {
         //Events
-        EVENT_ACCESS(LOGIC_BUG_ACCESS, logic->HasItem(RG_POWER_BRACELET)),
+        EVENT_ACCESS(LOGIC_PLANT_DESERT_COLOSSUS_BEAN, CanPlantBean(RG_DESERT_COLOSSUS_BEAN_SOUL)),
+        EVENT_ACCESS(LOGIC_BUG_ACCESS,                logic->HasItem(RG_POWER_BRACELET)),
     }, {
         //Locations
-        LOCATION(RC_COLOSSUS_FREESTANDING_POH,        logic->IsAdult && CanPlantBean(RR_DESERT_COLOSSUS, RG_DESERT_COLOSSUS_BEAN_SOUL)),
+        LOCATION(RC_COLOSSUS_FREESTANDING_POH,        logic->IsAdult && logic->BeanPlanted(LOGIC_PLANT_DESERT_COLOSSUS_BEAN)),
         LOCATION(RC_COLOSSUS_GS_BEAN_PATCH,           logic->CanSpawnSoilSkull(RG_DESERT_COLOSSUS_BEAN_SOUL) && logic->CanAttack()),
         LOCATION(RC_COLOSSUS_GS_TREE,                 logic->IsAdult && logic->HookshotOrBoomerang() && logic->CanGetNightTimeGS()),
-        LOCATION(RC_COLOSSUS_GS_HILL,                 logic->IsAdult && ((CanPlantBean(RR_DESERT_COLOSSUS, RG_DESERT_COLOSSUS_BEAN_SOUL) && logic->CanAttack()) || logic->CanUse(RG_LONGSHOT) || (ctx->GetTrickOption(RT_COLOSSUS_GS) && logic->CanUse(RG_HOOKSHOT))) && logic->CanGetNightTimeGS()),
-        LOCATION(RC_COLOSSUS_BEAN_SPROUT_FAIRY_1,     logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_DESERT_COLOSSUS_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS)),
-        LOCATION(RC_COLOSSUS_BEAN_SPROUT_FAIRY_2,     logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_DESERT_COLOSSUS_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS)),
-        LOCATION(RC_COLOSSUS_BEAN_SPROUT_FAIRY_3,     logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_DESERT_COLOSSUS_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION(RC_COLOSSUS_GS_HILL,                 logic->IsAdult && ((logic->BeanPlanted(LOGIC_PLANT_DESERT_COLOSSUS_BEAN) && logic->CanAttack()) || logic->CanUse(RG_LONGSHOT) || (ctx->GetTrickOption(RT_COLOSSUS_GS) && logic->CanUse(RG_HOOKSHOT))) && logic->CanGetNightTimeGS()),
+        LOCATION(RC_COLOSSUS_BEAN_SPROUT_FAIRY_1,     logic->IsChild && logic->BeanPlanted(LOGIC_PLANT_DESERT_COLOSSUS_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION(RC_COLOSSUS_BEAN_SPROUT_FAIRY_2,     logic->IsChild && logic->BeanPlanted(LOGIC_PLANT_DESERT_COLOSSUS_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION(RC_COLOSSUS_BEAN_SPROUT_FAIRY_3,     logic->IsChild && logic->BeanPlanted(LOGIC_PLANT_DESERT_COLOSSUS_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_COLOSSUS_GOSSIP_STONE_FAIRY,      logic->CallGossipFairy()),
         LOCATION(RC_COLOSSUS_GOSSIP_STONE_FAIRY_BIG,  logic->CanUse(RG_SONG_OF_STORMS)),
-        LOCATION(RC_COLOSSUS_GOSSIP_STONE,            true),
+        LOCATION(RC_COLOSSUS_SILVER_BOULDER,          logic->CanUse(RG_SILVER_GAUNTLETS)),
+        LOCATION(RC_COLOSSUS_ROCK,                    logic->CanBreakRocks()),
+        LOCATION(RC_COLOSSUS_CIRCLE_1_ROCK_1,         logic->CanBreakRocks()),
+        LOCATION(RC_COLOSSUS_CIRCLE_1_ROCK_2,         logic->CanBreakRocks()),
+        LOCATION(RC_COLOSSUS_CIRCLE_1_ROCK_3,         logic->CanBreakRocks()),
+        LOCATION(RC_COLOSSUS_CIRCLE_1_ROCK_4,         logic->CanBreakRocks()),
+        LOCATION(RC_COLOSSUS_CIRCLE_1_ROCK_5,         logic->CanBreakRocks()),
+        LOCATION(RC_COLOSSUS_CIRCLE_1_ROCK_6,         logic->CanBreakRocks()),
+        LOCATION(RC_COLOSSUS_CIRCLE_1_ROCK_7,         logic->CanBreakRocks()),
+        LOCATION(RC_COLOSSUS_CIRCLE_1_ROCK_8,         logic->CanBreakRocks()),
+        LOCATION(RC_COLOSSUS_CIRCLE_2_ROCK_1,         logic->CanBreakRocks()),
+        LOCATION(RC_COLOSSUS_CIRCLE_2_ROCK_2,         logic->CanBreakRocks()),
+        LOCATION(RC_COLOSSUS_CIRCLE_2_ROCK_3,         logic->CanBreakRocks()),
+        LOCATION(RC_COLOSSUS_CIRCLE_2_ROCK_4,         logic->CanBreakRocks()),
+        LOCATION(RC_COLOSSUS_CIRCLE_2_ROCK_5,         logic->CanBreakRocks()),
+        LOCATION(RC_COLOSSUS_CIRCLE_2_ROCK_6,         logic->CanBreakRocks()),
+        LOCATION(RC_COLOSSUS_CIRCLE_2_ROCK_7,         logic->CanBreakRocks()),
+        LOCATION(RC_COLOSSUS_CIRCLE_2_ROCK_8,         logic->CanBreakRocks()),
         LOCATION(RC_COLOSSUS_WONDER_OASIS_TREE_1,     (logic->IsAdult && logic->CanUse(RG_FAIRY_BOW)) || (logic->IsChild && logic->CanUse(RG_FAIRY_SLINGSHOT))),
         LOCATION(RC_COLOSSUS_WONDER_OASIS_TREE_2,     (logic->IsAdult && logic->CanUse(RG_FAIRY_BOW)) || (logic->IsChild && logic->CanUse(RG_FAIRY_SLINGSHOT))),
         LOCATION(RC_COLOSSUS_WONDER_OASIS_CHILD_TREE, logic->IsChild && logic->CanUse(RG_FAIRY_SLINGSHOT)),
         LOCATION(RC_COLOSSUS_WONDER_GF_TREE_1,        (logic->IsAdult && logic->CanUse(RG_FAIRY_BOW)) || (logic->IsChild && logic->CanUse(RG_FAIRY_SLINGSHOT))),
         LOCATION(RC_COLOSSUS_WONDER_GF_TREE_2,        (logic->IsAdult && logic->CanUse(RG_FAIRY_BOW)) || (logic->IsChild && logic->CanUse(RG_FAIRY_SLINGSHOT))),
+        LOCATION(RC_COLOSSUS_GOSSIP_STONE,            true),
     }, {
         //Exits
         //You can kinda get the fairies without entering the water, but it relies on them cooperating and leevers are jerks. should be a trick
-        ENTRANCE(RR_DESERT_COLOSSUS_OASIS,         logic->CanUse(RG_SONG_OF_STORMS) && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->HasBottle() || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
+        ENTRANCE(RR_DESERT_COLOSSUS_OASIS,         logic->CanUse(RG_SONG_OF_STORMS) && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->HasBottle() || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()))),
         ENTRANCE(RR_COLOSSUS_GREAT_FAIRY_FOUNTAIN, logic->HasExplosives()),
         ENTRANCE(RR_SPIRIT_TEMPLE_ENTRYWAY,        true),
         ENTRANCE(RR_WASTELAND_NEAR_COLOSSUS,       true),
@@ -72,9 +91,9 @@ void RegionTable_Init_DesertColossus() {
 
     areaTable[RR_COLOSSUS_GROTTO] = Region("Colossus Grotto", SCENE_GROTTOS, {}, {
         //Locations
-        LOCATION(RC_COLOSSUS_DEKU_SCRUB_GROTTO_REAR,  logic->CanStunDeku() && logic->HasItem(RG_SPEAK_DEKU) && GetCheckPrice() <= GetWalletCapacity()),
-        LOCATION(RC_COLOSSUS_DEKU_SCRUB_GROTTO_FRONT, logic->CanStunDeku() && logic->HasItem(RG_SPEAK_DEKU) && GetCheckPrice() <= GetWalletCapacity()),
-        LOCATION(RC_COLOSSUS_GROTTO_BEEHIVE,          logic->CanBreakUpperBeehives()),
+        LOCATION(RC_COLOSSUS_DEKU_SCRUB_GROTTO_REAR,    logic->CanStunDeku() && logic->HasItem(RG_SPEAK_DEKU) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_COLOSSUS_DEKU_SCRUB_GROTTO_FRONT,   logic->CanStunDeku() && logic->HasItem(RG_SPEAK_DEKU) && GetCheckPrice() <= GetWalletCapacity()),
+        LOCATION(RC_COLOSSUS_DEKU_SCRUB_GROTTO_BEEHIVE, logic->CanBreakUpperBeehives()),
     }, {
         //Exits
         ENTRANCE(RR_DESERT_COLOSSUS, true),

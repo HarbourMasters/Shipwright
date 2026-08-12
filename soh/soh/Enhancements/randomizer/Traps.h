@@ -5,14 +5,17 @@
 #endif
 
 #include "soh/Enhancements/custom-message/CustomMessageManager.h"
-#include "soh/Enhancements/randomizer/randomizerTypes.h"
-#include "soh/Enhancements/randomizer/3drando/text.hpp"
-#include "libultraship/libultra/types.h"
+#include "soh/Enhancements/custom-message/text.h"
 
 namespace Rando {
 namespace Traps {
-Text GetTrapName(uint16_t id);
-RandomizerGet GetTrapTrickModel();
+/// @brief A fake item name for an ice trap, with the article to use when it appears in a sentence
+struct TrickName {
+    Text name;
+    Text article;
+};
+TrickName GetTrapName(uint16_t id, uint64_t* state = nullptr);
+RandomizerGet GetTrapTrickModel(uint64_t* state = nullptr);
 bool ShouldJunkItemBeTrap();
 void BuildIceTrapMessage(CustomMessage& msg, GetItemEntry getItemEntry);
 } // namespace Traps

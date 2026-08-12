@@ -77,8 +77,8 @@ static DungeonEntranceInfo dungeons[] = {
     // clang-format on
 };
 
-static s8 hasCopiedEntranceTable = 0;
-static s8 hasModifiedEntranceTable = 0;
+static bool hasCopiedEntranceTable = false;
+static bool hasModifiedEntranceTable = false;
 
 void Entrance_SetEntranceDiscovered(u16 entranceIndex, u8 isReversedEntrance);
 
@@ -130,20 +130,19 @@ static void Entrance_ReplaceChildTempleWarps() {
 void Entrance_CopyOriginalEntranceTable(void) {
     if (!hasCopiedEntranceTable) {
         memcpy(originalEntranceTable, gEntranceTable, sizeof(EntranceInfo) * ENTRANCE_TABLE_SIZE);
-        hasCopiedEntranceTable = 1;
+        hasCopiedEntranceTable = true;
     }
 }
 
 void Entrance_ResetEntranceTable(void) {
     if (hasCopiedEntranceTable && hasModifiedEntranceTable) {
         memcpy(gEntranceTable, originalEntranceTable, sizeof(EntranceInfo) * ENTRANCE_TABLE_SIZE);
-        hasModifiedEntranceTable = 0;
+        hasModifiedEntranceTable = false;
     }
 }
 
 void Entrance_Init(void) {
     EntranceOverride* entranceOverrides = Randomizer_GetEntranceOverrides();
-    s32 index;
 
     Entrance_CopyOriginalEntranceTable();
 
@@ -156,7 +155,7 @@ void Entrance_Init(void) {
     }
 
     // Delete the title card and add a fade in for Hyrule Field from Ocarina of Time cutscene
-    for (index = ENTR_HYRULE_FIELD_16; index <= ENTR_HYRULE_FIELD_16_3; ++index) {
+    for (s32 index = ENTR_HYRULE_FIELD_16; index <= ENTR_HYRULE_FIELD_16_3; ++index) {
         gEntranceTable[index].field = ENTRANCE_INFO_FIELD(false, false, TRANS_TYPE_FADE_BLACK, TRANS_TYPE_INSTANT);
     }
 
@@ -199,7 +198,7 @@ void Entrance_Init(void) {
                 bossScene = dungeons[j].bossScene;
             }
 
-            if (index == dungeons[j].bossDoor) {
+            if (originalIndex == dungeons[j].bossDoor) {
                 saveWarpEntrance = dungeons[j].entryway;
             }
         }
@@ -258,7 +257,7 @@ void Entrance_Init(void) {
         }
     }
 
-    hasModifiedEntranceTable = 1;
+    hasModifiedEntranceTable = true;
 }
 
 s16 Entrance_GetOverride(s16 index) {
@@ -499,32 +498,6 @@ void Entrance_OverrideBlueWarp(void) {
     }
 }
 
-void Entrance_EnableFW(void) {
-    Player* player = GET_PLAYER(gPlayState);
-    // Leave restriction in Tower Collapse Interior, Castle Collapse, Treasure Box Shop, Tower Collapse Exterior,
-    // Grottos area, Fishing Pond, Ganon Battle and for states that disable buttons.
-    if (!false /* farores wind anywhere */ || gPlayState->sceneNum == SCENE_GANONS_TOWER_COLLAPSE_INTERIOR ||
-        gPlayState->sceneNum == SCENE_INSIDE_GANONS_CASTLE_COLLAPSE ||
-        (gPlayState->sceneNum == SCENE_TREASURE_BOX_SHOP && !false /* shuffled chest mini game */) ||
-        gPlayState->sceneNum == SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR || gPlayState->sceneNum == SCENE_GROTTOS ||
-        gPlayState->sceneNum == SCENE_FISHING_POND || gPlayState->sceneNum == SCENE_GANON_BOSS ||
-        gSaveContext.eventInf[0] & 0x1 || // Ingo's Minigame state
-        player->stateFlags1 &
-            (PLAYER_STATE1_HANGING_OFF_LEDGE | PLAYER_STATE1_CLIMBING_LADDER | PLAYER_STATE1_ON_HORSE |
-             PLAYER_STATE1_IN_WATER) ||              // Swimming, riding horse, Down A, hanging from a ledge
-        player->stateFlags2 & PLAYER_STATE2_CRAWLING // Blank A
-        // Shielding, spinning and getting skull tokens still disable buttons automatically
-    ) {
-        return;
-    }
-
-    for (size_t i = 1; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
-        if (gSaveContext.equips.buttonItems[i] == ITEM_FARORES_WIND) {
-            gSaveContext.buttonStatus[i] = BTN_ENABLED;
-        }
-    }
-}
-
 // Check if Link should still be riding epona after changing entrances
 void Entrance_HandleEponaState(void) {
     s32 entrance = gPlayState->nextEntranceIndex;
@@ -580,7 +553,7 @@ void Entrance_HandleEponaState(void) {
         player->actor.parent = NULL;
         AREG(6) = 0;
         gSaveContext.equips.buttonItems[0] = gSaveContext.buttonStatus[0]; //"temp B"
-        Interface_RandoRestoreSwordless();
+        GameInteractor_Should(VB_TEMP_B_RESTORE_SWORDLESS, true);
     }
 }
 
@@ -591,7 +564,7 @@ void Entrance_OverrideWeatherState() {
     gPlayState->envCtx.gloomySkyMode = 0;
 
     // Weather only applyies to adult link
-    if (LINK_IS_CHILD || gSaveContext.sceneSetupIndex >= 4) {
+    if (LINK_IS_CHILD || gSaveContext.sceneLayer >= 4) {
         return;
     }
 
@@ -700,17 +673,18 @@ void Entrance_OverrideSpawnScene(s32 sceneNum, s32 spawn) {
     modifiedLinkActorEntry.rot = gPlayState->linkActorEntry->rot;
     modifiedLinkActorEntry.params = gPlayState->linkActorEntry->params;
 
-    if (Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEON_ENTRANCES) == RO_DUNGEON_ENTRANCE_SHUFFLE_ON_PLUS_GANON) {
-        // Move Ganon's Castle exit spawn to be on the small ledge near the castle and not over the void
-        // to prevent Link from falling if the bridge isn't spawned
-        if (sceneNum == SCENE_OUTSIDE_GANONS_CASTLE && spawn == 1) {
-            modifiedLinkActorEntry.pos.x = 0xFEA8;
-            modifiedLinkActorEntry.pos.y = 0x065C;
-            modifiedLinkActorEntry.pos.z = 0x0290;
-            modifiedLinkActorEntry.rot.y = 0x0700;
-            modifiedLinkActorEntry.params = 0x0DFF; // stationary spawn
-            gPlayState->linkActorEntry = &modifiedLinkActorEntry;
-        }
+    // Move Ganon's Castle exit spawn to be on the small ledge near the castle and not over the void
+    // to prevent Link from falling if the bridge isn't spawned
+    if (sceneNum == SCENE_OUTSIDE_GANONS_CASTLE && spawn == 1 &&
+        (Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEON_ENTRANCES) == RO_DUNGEON_ENTRANCE_SHUFFLE_ON_PLUS_GANON ||
+         Randomizer_GetSettingValue(RSK_SHUFFLE_BOSS_ENTRANCES) != RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF ||
+         Randomizer_GetSettingValue(RSK_SHUFFLE_GANONS_TOWER_ENTRANCE))) {
+        modifiedLinkActorEntry.pos.x = 0xFEA8;
+        modifiedLinkActorEntry.pos.y = 0x065C;
+        modifiedLinkActorEntry.pos.z = 0x0290;
+        modifiedLinkActorEntry.rot.y = 0x0700;
+        modifiedLinkActorEntry.params = 0x0DFF; // stationary spawn
+        gPlayState->linkActorEntry = &modifiedLinkActorEntry;
     }
 
     if (Randomizer_GetSettingValue(RSK_SHUFFLE_BOSS_ENTRANCES) != RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF) {

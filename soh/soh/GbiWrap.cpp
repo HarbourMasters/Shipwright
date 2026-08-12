@@ -1,5 +1,7 @@
 #include "z64.h"
 
+#include <bit>
+
 // OTRTODO - this is awful
 
 extern "C" {
@@ -82,13 +84,18 @@ extern "C" void gDPSetTileSizeInterp(Gfx* pkt, int t, float uls, float ult, floa
     pkt->words.w0 = _SHIFTL(G_SETTILESIZE_INTERP, 24, 8);
     pkt++;
 
-    pkt->words.w0 = *(u32*)&uls;
-    pkt->words.w1 = *(u32*)&ult;
+    pkt->words.w0 = std::bit_cast<u32>(uls);
+    pkt->words.w1 = std::bit_cast<u32>(ult);
     pkt++;
 
-    pkt->words.w0 = *(u32*)&lrs;
-    pkt->words.w1 = *(u32*)&lrt;
+    pkt->words.w0 = std::bit_cast<u32>(lrs);
+    pkt->words.w1 = std::bit_cast<u32>(lrt);
     pkt++;
+}
+
+extern "C" void gDPSetTileSizeLerp(Gfx* pkt, int t, float uls0, float ult0, float lrs0, float lrt0, float uls1,
+                                   float ult1, float lrs1, float lrt1) {
+    __gDPSetTileSizeLerp(pkt, t, uls0, ult0, lrs0, lrt0, uls1, ult1, lrs1, lrt1);
 }
 
 extern "C" void gSPDisplayListOffset(Gfx* pkt, Gfx* dl, int offset) {

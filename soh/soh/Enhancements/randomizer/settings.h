@@ -2,11 +2,8 @@
 
 #include "SeedContext.h"
 #include "option.h"
-#include "randomizerTypes.h"
-#include "3drando/spoiler_log.hpp"
 
 #include <array>
-#include <set>
 #include <unordered_map>
 #include <nlohmann/json.hpp>
 
@@ -24,6 +21,11 @@ class Settings {
      * @brief Hides or Unhides the UI of Mixed Entrance Pools
      */
     void HandleMixedEntrancePoolsUI();
+
+    /**
+     * @brief Hides or Unhides the UI of the keyring options, and updates the max keyring count.
+     */
+    void HandleKeyringUI();
 
     /**
      * @brief UI Callback for handling UI state of Starting Age shuffle.
@@ -118,7 +120,7 @@ class Settings {
      *
      * @param spoilerFileJson
      */
-    void ParseJson(nlohmann::json spoilerFileJson);
+    void ParseJson(const nlohmann::json& spoilerFileJson);
     std::map<RandomizerArea, std::vector<RandomizerTrick>> mTricksByArea = {};
 
     /**

@@ -6,6 +6,7 @@
 
 #include "z_bg_hidan_rock.h"
 #include "objects/object_hidan_objects/object_hidan_objects.h"
+#include "soh/Enhancements/savestate_serialize.h"
 
 #define FLAGS 0
 
@@ -120,7 +121,12 @@ void func_8088B24C(BgHidanRock* this) {
     this->actionFunc = func_8088B990;
 }
 
-f32 D_8088BFC0 = 0.0f;
+static f32 D_8088BFC0 = 0.0f;
+
+#define BG_HIDAN_ROCK_SHIP_SAVESTATE_FIELDS(F) F(D_8088BFC0)
+
+SHIP_SAVESTATE_DEFINE(BgHidanRock, BG_HIDAN_ROCK_SHIP_SAVESTATE_FIELDS)
+
 void func_8088B268(BgHidanRock* this, PlayState* play) {
     f32 sp2C;
     s32 temp_v1;
@@ -161,7 +167,7 @@ void func_8088B268(BgHidanRock* this, PlayState* play) {
                 this->timer = 5 - ((CVarGetInteger(CVAR_ENHANCEMENT("FasterBlockPush"), 0) * 3) / 5);
             }
 
-            func_8002F974(&this->dyna.actor, NA_SE_EV_ROCK_SLIDE - SFX_FLAG);
+            Actor_PlaySfx_Flagged(&this->dyna.actor, NA_SE_EV_ROCK_SLIDE - SFX_FLAG);
         } else {
             player->stateFlags2 &= ~PLAYER_STATE2_MOVING_DYNAPOLY;
             this->dyna.unk_150 = 0.0f;
@@ -237,7 +243,7 @@ void func_8088B69C(BgHidanRock* this, PlayState* play) {
     }
 
     if (!(this->timer % 4)) {
-        func_800AA000(this->dyna.actor.xyzDistToPlayerSq, 0xB4, 0x0A, 0x64);
+        Rumble_Request(this->dyna.actor.xyzDistToPlayerSq, 0xB4, 0x0A, 0x64);
         Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_BLOCK_SHAKE);
     }
 }
@@ -268,10 +274,10 @@ void func_8088B79C(BgHidanRock* this, PlayState* play) {
             if (this->unk_169 == 0) {
                 this->unk_169 = 3;
             }
-            Camera_ChangeSetting(play->cameraPtrs[MAIN_CAM], CAM_SET_FIRE_PLATFORM);
+            Camera_RequestSetting(play->cameraPtrs[CAM_ID_MAIN], CAM_SET_FIRE_PLATFORM);
         } else if (!DynaPolyActor_IsPlayerOnTop(&this->dyna)) {
             if (this->unk_169 != 0) {
-                Camera_ChangeSetting(play->cameraPtrs[MAIN_CAM], CAM_SET_DUNGEON0);
+                Camera_RequestSetting(play->cameraPtrs[CAM_ID_MAIN], CAM_SET_DUNGEON0);
             }
             this->unk_169 = 0;
         }
@@ -321,10 +327,10 @@ void func_8088B990(BgHidanRock* this, PlayState* play) {
             if (this->unk_169 == 0) {
                 this->unk_169 = 3;
             }
-            Camera_ChangeSetting(play->cameraPtrs[MAIN_CAM], CAM_SET_FIRE_PLATFORM);
+            Camera_RequestSetting(play->cameraPtrs[CAM_ID_MAIN], CAM_SET_FIRE_PLATFORM);
         } else if (!DynaPolyActor_IsPlayerOnTop(&this->dyna)) {
             if (this->unk_169 != 0) {
-                Camera_ChangeSetting(play->cameraPtrs[MAIN_CAM], CAM_SET_DUNGEON0);
+                Camera_RequestSetting(play->cameraPtrs[CAM_ID_MAIN], CAM_SET_DUNGEON0);
             }
             this->unk_169 = 0;
         }

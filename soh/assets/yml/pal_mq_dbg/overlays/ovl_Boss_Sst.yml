@@ -1,0 +1,68 @@
+:config:
+  segments:
+    - [ 128, 0x00CF1120 ]
+    - [ 4, 0x00F5E000 ]
+    - [ 8, 0x00CF1120 ]
+    - [ 9, 0x00CF1120 ]
+    - [ 10, 0x00CF1120 ]
+    - [ 11, 0x00CF1120 ]
+    - [ 12, 0x00CF1120 ]
+    - [ 13, 0x00CF1120 ]
+  virtual: [ 0x8092C5D0, 0x00CF1120 ]
+  external_files:
+    - pal_mq_dbg/objects/gameplay_keep.yml
+
+ovl_Boss_SstTex_00A438:
+  type: TEXTURE
+  offset: 0xA438
+  symbol: ovl_Boss_SstTex_00A438
+  format: I8
+  width: 16
+  height: 64
+
+ovl_Boss_SstTex_00A8F0:
+  type: TEXTURE
+  offset: 0xA8F0
+  symbol: ovl_Boss_SstTex_00A8F0
+  format: I8
+  width: 32
+  height: 32
+
+sBodyStaticDList:
+  type: GFX
+  offset: 0xA3C0
+  symbol: sBodyStaticDList
+
+sHandTrailDList:
+  type: GFX
+  offset: 0xA3D8
+  symbol: sHandTrailDList
+
+sIntroVanishDList:
+  type: GFX
+  offset: 0xA838
+  symbol: sIntroVanishDList
+
+sShadowDList:
+  type: GFX
+  offset: 0xACF0
+  symbol: sShadowDList
+
+
+ovl_Boss_SstVtx_00A3F8:
+  type: OOT:ARRAY
+  offset: 0x00A3F8
+  symbol: ovl_Boss_SstVtx_00A3F8
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ovl_Boss_SstVtx_00A8C0:
+  type: OOT:ARRAY
+  offset: 0x00A8C0
+  symbol: ovl_Boss_SstVtx_00A8C0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

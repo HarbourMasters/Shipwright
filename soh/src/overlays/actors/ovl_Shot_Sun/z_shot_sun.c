@@ -18,7 +18,7 @@ void ShotSun_Update(Actor* thisx, PlayState* play);
 
 void ShotSun_SpawnFairy(ShotSun* this, PlayState* play);
 void ShotSun_TriggerFairy(ShotSun* this, PlayState* play);
-void func_80BADF0C(ShotSun* this, PlayState* play);
+void ShotSun_UpdateFairySpawner(ShotSun* this, PlayState* play);
 void ShotSun_UpdateHyliaSun(ShotSun* this, PlayState* play);
 
 const ActorInit Shot_Sun_InitVars = {
@@ -65,7 +65,7 @@ void ShotSun_Init(Actor* thisx, PlayState* play) {
         this->fairySpawnerState = 0;
         this->actor.flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED;
         this->actor.flags |= ACTOR_FLAG_UPDATE_DURING_OCARINA;
-        this->actionFunc = func_80BADF0C;
+        this->actionFunc = ShotSun_UpdateFairySpawner;
         this->actor.flags |= ACTOR_FLAG_LOCK_ON_DISABLED;
     } else {
         Collider_InitCylinder(play, &this->collider);
@@ -122,7 +122,7 @@ void ShotSun_TriggerFairy(ShotSun* this, PlayState* play) {
     }
 }
 
-void func_80BADF0C(ShotSun* this, PlayState* play) {
+void ShotSun_UpdateFairySpawner(ShotSun* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
     s32 pad;
     s32 params = this->actor.params & 0xFF;

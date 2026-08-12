@@ -1,0 +1,20 @@
+:config:
+  segments:
+    - [ 128, 0x01303CC0 ]
+
+gZorasFountainTitleCardENGTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gZorasFountainTitleCardENGTex
+  format: IA8
+  width: 144
+  height: 24
+
+gZorasFountainTitleCardJPNTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gZorasFountainTitleCardJPNTex
+  format: IA8
+  width: 144
+  height: 24
+

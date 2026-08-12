@@ -1,0 +1,14 @@
+:config:
+  segments:
+    - [ 2, 0x01D5F010 ]
+
+hakaana_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: hakaana_scene
+
+
+hakaana_sceneCollisionHeader_000A60:
+  type: OOT:COLLISION
+  offset: 0x000A60
+  symbol: hakaana_sceneCollisionHeader_000A60

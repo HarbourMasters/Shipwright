@@ -1,0 +1,48 @@
+:config:
+  segments:
+    - [ 6, 0x01135090 ]
+    - [ 4, 0x00D30F00 ]
+    - [ 8, 0x01135090 ]
+    - [ 9, 0x01135090 ]
+    - [ 10, 0x01135090 ]
+    - [ 11, 0x01135090 ]
+    - [ 12, 0x01135090 ]
+    - [ 13, 0x01135090 ]
+  external_files:
+    - ntsc_u_gc/objects/gameplay_keep.yml
+
+gJumpableHorseFenceBrickTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gJumpableHorseFenceBrickTex
+  format: RGBA16
+  width: 16
+  height: 64
+
+gJumpableHorseFenceCol:
+  type: OOT:COLLISION
+  offset: 0x1438
+  symbol: gJumpableHorseFenceCol
+
+gJumpableHorseFenceDL:
+  type: GFX
+  offset: 0x1220
+  symbol: gJumpableHorseFenceDL
+
+gJumpableHorseFenceMetalBarTex:
+  type: TEXTURE
+  offset: 0x800
+  symbol: gJumpableHorseFenceMetalBarTex
+  format: RGBA16
+  width: 16
+  height: 64
+
+
+object_umajumpVtx_001000:
+  type: OOT:ARRAY
+  offset: 0x001000
+  symbol: object_umajumpVtx_001000
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

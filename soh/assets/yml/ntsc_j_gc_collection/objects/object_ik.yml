@@ -1,0 +1,1373 @@
+:config:
+  segments:
+    - [ 6, 0x01139DC0 ]
+    - [ 4, 0x00D30E00 ]
+    - [ 8, 0x01139DC0 ]
+    - [ 9, 0x01139DC0 ]
+    - [ 10, 0x01139DC0 ]
+    - [ 11, 0x01139DC0 ]
+    - [ 12, 0x01139DC0 ]
+    - [ 13, 0x01139DC0 ]
+  external_files:
+    - ntsc_j_gc_collection/objects/gameplay_keep.yml
+
+gIronKnuckleArmorRivetAndSymbolDL:
+  type: GFX
+  offset: 0x16BE0
+  symbol: gIronKnuckleArmorRivetAndSymbolDL
+
+gIronKnuckleAxeDL:
+  type: GFX
+  offset: 0x15840
+  symbol: gIronKnuckleAxeDL
+
+gIronKnuckleAxeStuckAnim:
+  type: OOT:ANIMATION
+  offset: 0x29FC
+  symbol: gIronKnuckleAxeStuckAnim
+
+gIronKnuckleBackHitAnim:
+  type: OOT:ANIMATION
+  offset: 0x45BC
+  symbol: gIronKnuckleBackHitAnim
+
+gIronKnuckleBigRivetTex:
+  type: TEXTURE
+  offset: 0xFBA0
+  symbol: gIronKnuckleBigRivetTex
+  format: IA8
+  width: 32
+  height: 32
+
+gIronKnuckleBlockAnim:
+  type: OOT:ANIMATION
+  offset: 0x485C
+  symbol: gIronKnuckleBlockAnim
+
+gIronKnuckleBlockPatternTex:
+  type: TEXTURE
+  offset: 0xFFA0
+  symbol: gIronKnuckleBlockPatternTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gIronKnuckleChainMailTex:
+  type: TEXTURE
+  offset: 0x101A0
+  symbol: gIronKnuckleChainMailTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gIronKnuckleDeathAnim:
+  type: OOT:ANIMATION
+  offset: 0x5944
+  symbol: gIronKnuckleDeathAnim
+
+gIronKnuckleDefeatSkel:
+  type: OOT:SKELETON
+  offset: 0x205C0
+  symbol: gIronKnuckleDefeatSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gIronKnuckleFrontHitAnim:
+  type: OOT:ANIMATION
+  offset: 0x6194
+  symbol: gIronKnuckleFrontHitAnim
+
+gIronKnuckleGerudoEyeTex:
+  type: TEXTURE
+  offset: 0x10BA0
+  symbol: gIronKnuckleGerudoEyeTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gIronKnuckleGerudoHeadDL:
+  type: GFX
+  offset: 0x19100
+  symbol: gIronKnuckleGerudoHeadDL
+
+gIronKnuckleHair2Tex:
+  type: TEXTURE
+  offset: 0x174B8
+  symbol: gIronKnuckleHair2Tex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x17288
+
+gIronKnuckleHair3Tex:
+  type: TEXTURE
+  offset: 0x1DDA8
+  symbol: gIronKnuckleHair3Tex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x1D9A8
+
+gIronKnuckleHelmetDL:
+  type: GFX
+  offset: 0x18E78
+  symbol: gIronKnuckleHelmetDL
+
+gIronKnuckleHelmetMarkingDL:
+  type: GFX
+  offset: 0x19E08
+  symbol: gIronKnuckleHelmetMarkingDL
+
+gIronKnuckleHorizontalAttackAnim:
+  type: OOT:ANIMATION
+  offset: 0x33C4
+  symbol: gIronKnuckleHorizontalAttackAnim
+
+gIronKnuckleJewelTex:
+  type: TEXTURE
+  offset: 0x11420
+  symbol: gIronKnuckleJewelTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0xf630
+
+gIronKnuckleMetalOverflowTex:
+  type: TEXTURE
+  offset: 0xF79F
+  symbol: gIronKnuckleMetalOverflowTex
+  format: I8
+  width: 32
+  height: 64
+
+gIronKnuckleMetalTex:
+  type: TEXTURE
+  offset: 0xF7A0
+  symbol: gIronKnuckleMetalTex
+  format: I4
+  width: 32
+  height: 64
+
+gIronKnuckleNabooruChestJewelTex:
+  type: TEXTURE
+  offset: 0x1DEA8
+  symbol: gIronKnuckleNabooruChestJewelTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x1D9A8
+
+gIronKnuckleNabooruDeathAnim:
+  type: OOT:ANIMATION
+  offset: 0x203D8
+  symbol: gIronKnuckleNabooruDeathAnim
+
+gIronKnuckleNabooruForeheadJewelTex:
+  type: TEXTURE
+  offset: 0x11520
+  symbol: gIronKnuckleNabooruForeheadJewelTex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0xf630
+
+gIronKnuckleNabooruHair1Tex:
+  type: TEXTURE
+  offset: 0x11660
+  symbol: gIronKnuckleNabooruHair1Tex
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0xf630
+
+gIronKnuckleNabooruHelmetDL:
+  type: GFX
+  offset: 0x154E0
+  symbol: gIronKnuckleNabooruHelmetDL
+
+gIronKnuckleNabooruLipTex:
+  type: TEXTURE
+  offset: 0x113A0
+  symbol: gIronKnuckleNabooruLipTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gIronKnuckleNabooruSummonAxeAnim:
+  type: OOT:ANIMATION
+  offset: 0xC114
+  symbol: gIronKnuckleNabooruSummonAxeAnim
+
+gIronKnuckleRecoverFromHorizontalAttackAnim:
+  type: OOT:ANIMATION
+  offset: 0x3DBC
+  symbol: gIronKnuckleRecoverFromHorizontalAttackAnim
+
+gIronKnuckleRecoverFromVerticalAttackAnim:
+  type: OOT:ANIMATION
+  offset: 0x2538
+  symbol: gIronKnuckleRecoverFromVerticalAttackAnim
+
+gIronKnuckleRunAnim:
+  type: OOT:ANIMATION
+  offset: 0x6734
+  symbol: gIronKnuckleRunAnim
+
+gIronKnuckleShockedNabooruHeadDL:
+  type: GFX
+  offset: 0x15B00
+  symbol: gIronKnuckleShockedNabooruHeadDL
+
+gIronKnuckleSkel:
+  type: OOT:SKELETON
+  offset: 0x1E178
+  symbol: gIronKnuckleSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gIronKnuckleSplitHelmetLeftDL:
+  type: GFX
+  offset: 0x16748
+  symbol: gIronKnuckleSplitHelmetLeftDL
+
+gIronKnuckleSplitHelmetRightDL:
+  type: GFX
+  offset: 0x169E8
+  symbol: gIronKnuckleSplitHelmetRightDL
+
+gIronKnuckleStandUpAnim:
+  type: OOT:ANIMATION
+  offset: 0xCD70
+  symbol: gIronKnuckleStandUpAnim
+
+gIronKnuckleTorsoDL:
+  type: GFX
+  offset: 0x1BA78
+  symbol: gIronKnuckleTorsoDL
+
+gIronKnuckleVerticalAttackAnim:
+  type: OOT:ANIMATION
+  offset: 0x1C28
+  symbol: gIronKnuckleVerticalAttackAnim
+
+gIronKnuckleWalkAnim:
+  type: OOT:ANIMATION
+  offset: 0xED24
+  symbol: gIronKnuckleWalkAnim
+
+object_ik_Anim_00035C:
+  type: OOT:ANIMATION
+  offset: 0x35C
+  symbol: object_ik_Anim_00035C
+
+object_ik_Anim_000634:
+  type: OOT:ANIMATION
+  offset: 0x634
+  symbol: object_ik_Anim_000634
+
+object_ik_Anim_0008DC:
+  type: OOT:ANIMATION
+  offset: 0x8DC
+  symbol: object_ik_Anim_0008DC
+
+object_ik_Anim_000C6C:
+  type: OOT:ANIMATION
+  offset: 0xC6C
+  symbol: object_ik_Anim_000C6C
+
+object_ik_Anim_000F0C:
+  type: OOT:ANIMATION
+  offset: 0xF0C
+  symbol: object_ik_Anim_000F0C
+
+object_ik_Anim_00DD50:
+  type: OOT:ANIMATION
+  offset: 0xDD50
+  symbol: object_ik_Anim_00DD50
+
+object_ik_Anim_01EB14:
+  type: OOT:ANIMATION
+  offset: 0x1EB14
+  symbol: object_ik_Anim_01EB14
+
+object_ik_Anim_01EE34:
+  type: OOT:ANIMATION
+  offset: 0x1EE34
+  symbol: object_ik_Anim_01EE34
+
+object_ik_DL_0151F0:
+  type: GFX
+  offset: 0x151F0
+  symbol: object_ik_DL_0151F0
+
+object_ik_DL_015380:
+  type: GFX
+  offset: 0x15380
+  symbol: object_ik_DL_015380
+
+object_ik_DL_016118:
+  type: GFX
+  offset: 0x16118
+  symbol: object_ik_DL_016118
+
+object_ik_DL_016278:
+  type: GFX
+  offset: 0x16278
+  symbol: object_ik_DL_016278
+
+object_ik_DL_016340:
+  type: GFX
+  offset: 0x16340
+  symbol: object_ik_DL_016340
+
+object_ik_DL_0164A0:
+  type: GFX
+  offset: 0x164A0
+  symbol: object_ik_DL_0164A0
+
+object_ik_DL_016568:
+  type: GFX
+  offset: 0x16568
+  symbol: object_ik_DL_016568
+
+object_ik_DL_016658:
+  type: GFX
+  offset: 0x16658
+  symbol: object_ik_DL_016658
+
+object_ik_DL_016CD8:
+  type: GFX
+  offset: 0x16CD8
+  symbol: object_ik_DL_016CD8
+
+object_ik_DL_016D88:
+  type: GFX
+  offset: 0x16D88
+  symbol: object_ik_DL_016D88
+
+object_ik_DL_016EE8:
+  type: GFX
+  offset: 0x16EE8
+  symbol: object_ik_DL_016EE8
+
+object_ik_DL_016F88:
+  type: GFX
+  offset: 0x16F88
+  symbol: object_ik_DL_016F88
+
+object_ik_DL_017028:
+  type: GFX
+  offset: 0x17028
+  symbol: object_ik_DL_017028
+
+object_ik_DL_017170:
+  type: GFX
+  offset: 0x17170
+  symbol: object_ik_DL_017170
+
+object_ik_DL_01BE98:
+  type: GFX
+  offset: 0x1BE98
+  symbol: object_ik_DL_01BE98
+
+object_ik_DL_01C130:
+  type: GFX
+  offset: 0x1C130
+  symbol: object_ik_DL_01C130
+
+object_ik_DL_01C2B8:
+  type: GFX
+  offset: 0x1C2B8
+  symbol: object_ik_DL_01C2B8
+
+object_ik_DL_01C550:
+  type: GFX
+  offset: 0x1C550
+  symbol: object_ik_DL_01C550
+
+object_ik_DL_01C6D8:
+  type: GFX
+  offset: 0x1C6D8
+  symbol: object_ik_DL_01C6D8
+
+object_ik_DL_01C7B8:
+  type: GFX
+  offset: 0x1C7B8
+  symbol: object_ik_DL_01C7B8
+
+object_ik_DL_01CB58:
+  type: GFX
+  offset: 0x1CB58
+  symbol: object_ik_DL_01CB58
+
+object_ik_DL_01CCA0:
+  type: GFX
+  offset: 0x1CCA0
+  symbol: object_ik_DL_01CCA0
+
+object_ik_DL_01CEE0:
+  type: GFX
+  offset: 0x1CEE0
+  symbol: object_ik_DL_01CEE0
+
+object_ik_DL_01D2B0:
+  type: GFX
+  offset: 0x1D2B0
+  symbol: object_ik_DL_01D2B0
+
+object_ik_DL_01D3F8:
+  type: GFX
+  offset: 0x1D3F8
+  symbol: object_ik_DL_01D3F8
+
+object_ik_DL_01D638:
+  type: GFX
+  offset: 0x1D638
+  symbol: object_ik_DL_01D638
+
+object_ik_Skel_000380:
+  type: OOT:SKELETON
+  offset: 0x380
+  symbol: object_ik_Skel_000380
+  limb_type: Standard
+  skel_type: Normal
+
+object_ik_Skel_000660:
+  type: OOT:SKELETON
+  offset: 0x660
+  symbol: object_ik_Skel_000660
+  limb_type: Standard
+  skel_type: Normal
+
+object_ik_Skel_000900:
+  type: OOT:SKELETON
+  offset: 0x900
+  symbol: object_ik_Skel_000900
+  limb_type: Standard
+  skel_type: Flex
+
+object_ik_Skel_000C90:
+  type: OOT:SKELETON
+  offset: 0xC90
+  symbol: object_ik_Skel_000C90
+  limb_type: Standard
+  skel_type: Normal
+
+object_ik_Skel_000F30:
+  type: OOT:SKELETON
+  offset: 0xF30
+  symbol: object_ik_Skel_000F30
+  limb_type: Standard
+  skel_type: Flex
+
+object_ik_Skel_01EB40:
+  type: OOT:SKELETON
+  offset: 0x1EB40
+  symbol: object_ik_Skel_01EB40
+  limb_type: Standard
+  skel_type: Flex
+
+object_ik_Skel_01EE60:
+  type: OOT:SKELETON
+  offset: 0x1EE60
+  symbol: object_ik_Skel_01EE60
+  limb_type: Standard
+  skel_type: Flex
+
+object_ik_Tex_0103A0:
+  type: TEXTURE
+  offset: 0x103A0
+  symbol: object_ik_Tex_0103A0
+  format: IA16
+  width: 32
+  height: 32
+
+object_ik_Tex_011620:
+  type: TEXTURE
+  offset: 0x11620
+  symbol: object_ik_Tex_011620
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0xf630
+
+object_ik_Tex_011760:
+  type: TEXTURE
+  offset: 0x11760
+  symbol: object_ik_Tex_011760
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0xf630
+
+object_ik_Tex_0117E0:
+  type: TEXTURE
+  offset: 0x117E0
+  symbol: object_ik_Tex_0117E0
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0xf630
+
+object_ik_Tex_011860:
+  type: TEXTURE
+  offset: 0x11860
+  symbol: object_ik_Tex_011860
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0xf630
+
+object_ik_Tex_011960:
+  type: TEXTURE
+  offset: 0x11960
+  symbol: object_ik_Tex_011960
+  format: IA8
+  width: 16
+  height: 16
+
+object_ik_Tex_017378:
+  type: TEXTURE
+  offset: 0x17378
+  symbol: object_ik_Tex_017378
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x17288
+
+object_ik_Tex_017478:
+  type: TEXTURE
+  offset: 0x17478
+  symbol: object_ik_Tex_017478
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x17288
+
+object_ik_Tex_0175B8:
+  type: TEXTURE
+  offset: 0x175B8
+  symbol: object_ik_Tex_0175B8
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0x17288
+
+object_ik_Tex_017638:
+  type: TEXTURE
+  offset: 0x17638
+  symbol: object_ik_Tex_017638
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0x17288
+
+object_ik_Tex_0176B8:
+  type: TEXTURE
+  offset: 0x176B8
+  symbol: object_ik_Tex_0176B8
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x17288
+
+object_ik_Tex_01DBA8:
+  type: TEXTURE
+  offset: 0x1DBA8
+  symbol: object_ik_Tex_01DBA8
+  format: IA16
+  width: 16
+  height: 16
+
+object_ik_Tlut_00F630:
+  type: TEXTURE
+  offset: 0xf630
+  symbol: object_ik_Tlut_00F630
+  format: RGBA16
+  width: 23
+  height: 8
+
+object_ik_Tlut_017288:
+  type: TEXTURE
+  offset: 0x17288
+  symbol: object_ik_Tlut_017288
+  format: RGBA16
+  width: 15
+  height: 8
+
+object_ik_Tlut_01D9A8:
+  type: TEXTURE
+  offset: 0x1D9A8
+  symbol: object_ik_Tlut_01D9A8
+  format: RGBA16
+  width: 16
+  height: 16
+
+
+object_ik_Skel_000380LimbsLimb_000370:
+  type: OOT:LIMB
+  offset: 0x000370
+  symbol: object_ik_Skel_000380LimbsLimb_000370
+  limb_type: Standard
+
+object_ik_Skel_000380Limbs:
+  type: BLOB
+  offset: 0x37C
+  symbol: object_ik_Skel_000380Limbs
+  size: 0
+
+object_ik_Skel_000660LimbsLimb_000650:
+  type: OOT:LIMB
+  offset: 0x000650
+  symbol: object_ik_Skel_000660LimbsLimb_000650
+  limb_type: Standard
+
+object_ik_Skel_000660Limbs:
+  type: BLOB
+  offset: 0x65C
+  symbol: object_ik_Skel_000660Limbs
+  size: 0
+
+object_ik_Skel_000900LimbsLimb_0008F0:
+  type: OOT:LIMB
+  offset: 0x0008F0
+  symbol: object_ik_Skel_000900LimbsLimb_0008F0
+  limb_type: Standard
+
+object_ik_Skel_000900Limbs:
+  type: BLOB
+  offset: 0x8FC
+  symbol: object_ik_Skel_000900Limbs
+  size: 0
+
+object_ik_Skel_000C90LimbsLimb_000C80:
+  type: OOT:LIMB
+  offset: 0x000C80
+  symbol: object_ik_Skel_000C90LimbsLimb_000C80
+  limb_type: Standard
+
+object_ik_Skel_000C90Limbs:
+  type: BLOB
+  offset: 0xC8C
+  symbol: object_ik_Skel_000C90Limbs
+  size: 0
+
+object_ik_Skel_000F30LimbsLimb_000F20:
+  type: OOT:LIMB
+  offset: 0x000F20
+  symbol: object_ik_Skel_000F30LimbsLimb_000F20
+  limb_type: Standard
+
+object_ik_Skel_000F30Limbs:
+  type: BLOB
+  offset: 0xF2C
+  symbol: object_ik_Skel_000F30Limbs
+  size: 0
+
+object_ikVtx_011A60:
+  type: OOT:ARRAY
+  offset: 0x011A60
+  symbol: object_ikVtx_011A60
+  count: 44
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikVtx_011D20:
+  type: OOT:ARRAY
+  offset: 0x011D20
+  symbol: object_ikVtx_011D20
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikVtx_011EE0:
+  type: OOT:ARRAY
+  offset: 0x011EE0
+  symbol: object_ikVtx_011EE0
+  count: 90
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikVtx_012480:
+  type: OOT:ARRAY
+  offset: 0x012480
+  symbol: object_ikVtx_012480
+  count: 69
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikVtx_0128D0:
+  type: OOT:ARRAY
+  offset: 0x0128D0
+  symbol: object_ikVtx_0128D0
+  count: 282
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikVtx_013A70:
+  type: OOT:ARRAY
+  offset: 0x013A70
+  symbol: object_ikVtx_013A70
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikVtx_013C40:
+  type: OOT:ARRAY
+  offset: 0x013C40
+  symbol: object_ikVtx_013C40
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikVtx_013D20:
+  type: OOT:ARRAY
+  offset: 0x013D20
+  symbol: object_ikVtx_013D20
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikVtx_013F10:
+  type: OOT:ARRAY
+  offset: 0x013F10
+  symbol: object_ikVtx_013F10
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikVtx_013FF0:
+  type: OOT:ARRAY
+  offset: 0x013FF0
+  symbol: object_ikVtx_013FF0
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikVtx_014140:
+  type: OOT:ARRAY
+  offset: 0x014140
+  symbol: object_ikVtx_014140
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikVtx_014290:
+  type: OOT:ARRAY
+  offset: 0x014290
+  symbol: object_ikVtx_014290
+  count: 55
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikVtx_014600:
+  type: OOT:ARRAY
+  offset: 0x014600
+  symbol: object_ikVtx_014600
+  count: 44
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikVtx_0148C0:
+  type: OOT:ARRAY
+  offset: 0x0148C0
+  symbol: object_ikVtx_0148C0
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikVtx_0149A0:
+  type: OOT:ARRAY
+  offset: 0x0149A0
+  symbol: object_ikVtx_0149A0
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikVtx_014A40:
+  type: OOT:ARRAY
+  offset: 0x014A40
+  symbol: object_ikVtx_014A40
+  count: 47
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikVtx_014D30:
+  type: OOT:ARRAY
+  offset: 0x014D30
+  symbol: object_ikVtx_014D30
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikVtx_014E10:
+  type: OOT:ARRAY
+  offset: 0x014E10
+  symbol: object_ikVtx_014E10
+  count: 14
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikVtx_014EF0:
+  type: OOT:ARRAY
+  offset: 0x014EF0
+  symbol: object_ikVtx_014EF0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikVtx_015070:
+  type: OOT:ARRAY
+  offset: 0x015070
+  symbol: object_ikVtx_015070
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikVtx_0177B8:
+  type: OOT:ARRAY
+  offset: 0x0177B8
+  symbol: object_ikVtx_0177B8
+  count: 105
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikVtx_017E48:
+  type: OOT:ARRAY
+  offset: 0x017E48
+  symbol: object_ikVtx_017E48
+  count: 208
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikVtx_018B48:
+  type: OOT:ARRAY
+  offset: 0x018B48
+  symbol: object_ikVtx_018B48
+  count: 51
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikVtx_019F38:
+  type: OOT:ARRAY
+  offset: 0x019F38
+  symbol: object_ikVtx_019F38
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikVtx_01A0F8:
+  type: OOT:ARRAY
+  offset: 0x01A0F8
+  symbol: object_ikVtx_01A0F8
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikVtx_01A1E8:
+  type: OOT:ARRAY
+  offset: 0x01A1E8
+  symbol: object_ikVtx_01A1E8
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikVtx_01A3F8:
+  type: OOT:ARRAY
+  offset: 0x01A3F8
+  symbol: object_ikVtx_01A3F8
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikVtx_01A5B8:
+  type: OOT:ARRAY
+  offset: 0x01A5B8
+  symbol: object_ikVtx_01A5B8
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikVtx_01A6A8:
+  type: OOT:ARRAY
+  offset: 0x01A6A8
+  symbol: object_ikVtx_01A6A8
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikVtx_01A8C8:
+  type: OOT:ARRAY
+  offset: 0x01A8C8
+  symbol: object_ikVtx_01A8C8
+  count: 62
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikVtx_01ACA8:
+  type: OOT:ARRAY
+  offset: 0x01ACA8
+  symbol: object_ikVtx_01ACA8
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikVtx_01AEB8:
+  type: OOT:ARRAY
+  offset: 0x01AEB8
+  symbol: object_ikVtx_01AEB8
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikVtx_01B048:
+  type: OOT:ARRAY
+  offset: 0x01B048
+  symbol: object_ikVtx_01B048
+  count: 33
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikVtx_01B258:
+  type: OOT:ARRAY
+  offset: 0x01B258
+  symbol: object_ikVtx_01B258
+  count: 25
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikVtx_01B3E8:
+  type: OOT:ARRAY
+  offset: 0x01B3E8
+  symbol: object_ikVtx_01B3E8
+  count: 79
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_ikVtx_01B8D8:
+  type: OOT:ARRAY
+  offset: 0x01B8D8
+  symbol: object_ikVtx_01B8D8
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gIronKnuckleSkelLimbsLimb_01DFA8:
+  type: OOT:LIMB
+  offset: 0x01DFA8
+  symbol: gIronKnuckleSkelLimbsLimb_01DFA8
+  limb_type: Standard
+
+gIronKnuckleSkelLimbsLimb_01DFB4:
+  type: OOT:LIMB
+  offset: 0x01DFB4
+  symbol: gIronKnuckleSkelLimbsLimb_01DFB4
+  limb_type: Standard
+
+gIronKnuckleSkelLimbsLimb_01DFC0:
+  type: OOT:LIMB
+  offset: 0x01DFC0
+  symbol: gIronKnuckleSkelLimbsLimb_01DFC0
+  limb_type: Standard
+
+gIronKnuckleSkelLimbsLimb_01DFCC:
+  type: OOT:LIMB
+  offset: 0x01DFCC
+  symbol: gIronKnuckleSkelLimbsLimb_01DFCC
+  limb_type: Standard
+
+gIronKnuckleSkelLimbsLimb_01DFD8:
+  type: OOT:LIMB
+  offset: 0x01DFD8
+  symbol: gIronKnuckleSkelLimbsLimb_01DFD8
+  limb_type: Standard
+
+gIronKnuckleSkelLimbsLimb_01DFE4:
+  type: OOT:LIMB
+  offset: 0x01DFE4
+  symbol: gIronKnuckleSkelLimbsLimb_01DFE4
+  limb_type: Standard
+
+gIronKnuckleSkelLimbsLimb_01DFF0:
+  type: OOT:LIMB
+  offset: 0x01DFF0
+  symbol: gIronKnuckleSkelLimbsLimb_01DFF0
+  limb_type: Standard
+
+gIronKnuckleSkelLimbsLimb_01DFFC:
+  type: OOT:LIMB
+  offset: 0x01DFFC
+  symbol: gIronKnuckleSkelLimbsLimb_01DFFC
+  limb_type: Standard
+
+gIronKnuckleSkelLimbsLimb_01E008:
+  type: OOT:LIMB
+  offset: 0x01E008
+  symbol: gIronKnuckleSkelLimbsLimb_01E008
+  limb_type: Standard
+
+gIronKnuckleSkelLimbsLimb_01E014:
+  type: OOT:LIMB
+  offset: 0x01E014
+  symbol: gIronKnuckleSkelLimbsLimb_01E014
+  limb_type: Standard
+
+gIronKnuckleSkelLimbsLimb_01E020:
+  type: OOT:LIMB
+  offset: 0x01E020
+  symbol: gIronKnuckleSkelLimbsLimb_01E020
+  limb_type: Standard
+
+gIronKnuckleSkelLimbsLimb_01E02C:
+  type: OOT:LIMB
+  offset: 0x01E02C
+  symbol: gIronKnuckleSkelLimbsLimb_01E02C
+  limb_type: Standard
+
+gIronKnuckleSkelLimbsLimb_01E038:
+  type: OOT:LIMB
+  offset: 0x01E038
+  symbol: gIronKnuckleSkelLimbsLimb_01E038
+  limb_type: Standard
+
+gIronKnuckleSkelLimbsLimb_01E044:
+  type: OOT:LIMB
+  offset: 0x01E044
+  symbol: gIronKnuckleSkelLimbsLimb_01E044
+  limb_type: Standard
+
+gIronKnuckleSkelLimbsLimb_01E050:
+  type: OOT:LIMB
+  offset: 0x01E050
+  symbol: gIronKnuckleSkelLimbsLimb_01E050
+  limb_type: Standard
+
+gIronKnuckleSkelLimbsLimb_01E05C:
+  type: OOT:LIMB
+  offset: 0x01E05C
+  symbol: gIronKnuckleSkelLimbsLimb_01E05C
+  limb_type: Standard
+
+gIronKnuckleSkelLimbsLimb_01E068:
+  type: OOT:LIMB
+  offset: 0x01E068
+  symbol: gIronKnuckleSkelLimbsLimb_01E068
+  limb_type: Standard
+
+gIronKnuckleSkelLimbsLimb_01E074:
+  type: OOT:LIMB
+  offset: 0x01E074
+  symbol: gIronKnuckleSkelLimbsLimb_01E074
+  limb_type: Standard
+
+gIronKnuckleSkelLimbsLimb_01E080:
+  type: OOT:LIMB
+  offset: 0x01E080
+  symbol: gIronKnuckleSkelLimbsLimb_01E080
+  limb_type: Standard
+
+gIronKnuckleSkelLimbsLimb_01E08C:
+  type: OOT:LIMB
+  offset: 0x01E08C
+  symbol: gIronKnuckleSkelLimbsLimb_01E08C
+  limb_type: Standard
+
+gIronKnuckleSkelLimbsLimb_01E098:
+  type: OOT:LIMB
+  offset: 0x01E098
+  symbol: gIronKnuckleSkelLimbsLimb_01E098
+  limb_type: Standard
+
+gIronKnuckleSkelLimbsLimb_01E0A4:
+  type: OOT:LIMB
+  offset: 0x01E0A4
+  symbol: gIronKnuckleSkelLimbsLimb_01E0A4
+  limb_type: Standard
+
+gIronKnuckleSkelLimbsLimb_01E0B0:
+  type: OOT:LIMB
+  offset: 0x01E0B0
+  symbol: gIronKnuckleSkelLimbsLimb_01E0B0
+  limb_type: Standard
+
+gIronKnuckleSkelLimbsLimb_01E0BC:
+  type: OOT:LIMB
+  offset: 0x01E0BC
+  symbol: gIronKnuckleSkelLimbsLimb_01E0BC
+  limb_type: Standard
+
+gIronKnuckleSkelLimbsLimb_01E0C8:
+  type: OOT:LIMB
+  offset: 0x01E0C8
+  symbol: gIronKnuckleSkelLimbsLimb_01E0C8
+  limb_type: Standard
+
+gIronKnuckleSkelLimbsLimb_01E0D4:
+  type: OOT:LIMB
+  offset: 0x01E0D4
+  symbol: gIronKnuckleSkelLimbsLimb_01E0D4
+  limb_type: Standard
+
+gIronKnuckleSkelLimbsLimb_01E0E0:
+  type: OOT:LIMB
+  offset: 0x01E0E0
+  symbol: gIronKnuckleSkelLimbsLimb_01E0E0
+  limb_type: Standard
+
+gIronKnuckleSkelLimbsLimb_01E0EC:
+  type: OOT:LIMB
+  offset: 0x01E0EC
+  symbol: gIronKnuckleSkelLimbsLimb_01E0EC
+  limb_type: Standard
+
+gIronKnuckleSkelLimbsLimb_01E0F8:
+  type: OOT:LIMB
+  offset: 0x01E0F8
+  symbol: gIronKnuckleSkelLimbsLimb_01E0F8
+  limb_type: Standard
+
+gIronKnuckleSkelLimbs:
+  type: BLOB
+  offset: 0x1E104
+  symbol: gIronKnuckleSkelLimbs
+  size: 0
+
+object_ik_Skel_01EB40LimbsLimb_01EB30:
+  type: OOT:LIMB
+  offset: 0x01EB30
+  symbol: object_ik_Skel_01EB40LimbsLimb_01EB30
+  limb_type: Standard
+
+object_ik_Skel_01EB40Limbs:
+  type: BLOB
+  offset: 0x1EB3C
+  symbol: object_ik_Skel_01EB40Limbs
+  size: 0
+
+object_ik_Skel_01EE60LimbsLimb_01EE50:
+  type: OOT:LIMB
+  offset: 0x01EE50
+  symbol: object_ik_Skel_01EE60LimbsLimb_01EE50
+  limb_type: Standard
+
+object_ik_Skel_01EE60Limbs:
+  type: BLOB
+  offset: 0x1EE5C
+  symbol: object_ik_Skel_01EE60Limbs
+  size: 0
+
+gIronKnuckleDefeatSkelLimbsLimb_0203F0:
+  type: OOT:LIMB
+  offset: 0x0203F0
+  symbol: gIronKnuckleDefeatSkelLimbsLimb_0203F0
+  limb_type: Standard
+
+gIronKnuckleDefeatSkelLimbsLimb_0203FC:
+  type: OOT:LIMB
+  offset: 0x0203FC
+  symbol: gIronKnuckleDefeatSkelLimbsLimb_0203FC
+  limb_type: Standard
+
+gIronKnuckleDefeatSkelLimbsLimb_020408:
+  type: OOT:LIMB
+  offset: 0x020408
+  symbol: gIronKnuckleDefeatSkelLimbsLimb_020408
+  limb_type: Standard
+
+gIronKnuckleDefeatSkelLimbsLimb_020414:
+  type: OOT:LIMB
+  offset: 0x020414
+  symbol: gIronKnuckleDefeatSkelLimbsLimb_020414
+  limb_type: Standard
+
+gIronKnuckleDefeatSkelLimbsLimb_020420:
+  type: OOT:LIMB
+  offset: 0x020420
+  symbol: gIronKnuckleDefeatSkelLimbsLimb_020420
+  limb_type: Standard
+
+gIronKnuckleDefeatSkelLimbsLimb_02042C:
+  type: OOT:LIMB
+  offset: 0x02042C
+  symbol: gIronKnuckleDefeatSkelLimbsLimb_02042C
+  limb_type: Standard
+
+gIronKnuckleDefeatSkelLimbsLimb_020438:
+  type: OOT:LIMB
+  offset: 0x020438
+  symbol: gIronKnuckleDefeatSkelLimbsLimb_020438
+  limb_type: Standard
+
+gIronKnuckleDefeatSkelLimbsLimb_020444:
+  type: OOT:LIMB
+  offset: 0x020444
+  symbol: gIronKnuckleDefeatSkelLimbsLimb_020444
+  limb_type: Standard
+
+gIronKnuckleDefeatSkelLimbsLimb_020450:
+  type: OOT:LIMB
+  offset: 0x020450
+  symbol: gIronKnuckleDefeatSkelLimbsLimb_020450
+  limb_type: Standard
+
+gIronKnuckleDefeatSkelLimbsLimb_02045C:
+  type: OOT:LIMB
+  offset: 0x02045C
+  symbol: gIronKnuckleDefeatSkelLimbsLimb_02045C
+  limb_type: Standard
+
+gIronKnuckleDefeatSkelLimbsLimb_020468:
+  type: OOT:LIMB
+  offset: 0x020468
+  symbol: gIronKnuckleDefeatSkelLimbsLimb_020468
+  limb_type: Standard
+
+gIronKnuckleDefeatSkelLimbsLimb_020474:
+  type: OOT:LIMB
+  offset: 0x020474
+  symbol: gIronKnuckleDefeatSkelLimbsLimb_020474
+  limb_type: Standard
+
+gIronKnuckleDefeatSkelLimbsLimb_020480:
+  type: OOT:LIMB
+  offset: 0x020480
+  symbol: gIronKnuckleDefeatSkelLimbsLimb_020480
+  limb_type: Standard
+
+gIronKnuckleDefeatSkelLimbsLimb_02048C:
+  type: OOT:LIMB
+  offset: 0x02048C
+  symbol: gIronKnuckleDefeatSkelLimbsLimb_02048C
+  limb_type: Standard
+
+gIronKnuckleDefeatSkelLimbsLimb_020498:
+  type: OOT:LIMB
+  offset: 0x020498
+  symbol: gIronKnuckleDefeatSkelLimbsLimb_020498
+  limb_type: Standard
+
+gIronKnuckleDefeatSkelLimbsLimb_0204A4:
+  type: OOT:LIMB
+  offset: 0x0204A4
+  symbol: gIronKnuckleDefeatSkelLimbsLimb_0204A4
+  limb_type: Standard
+
+gIronKnuckleDefeatSkelLimbsLimb_0204B0:
+  type: OOT:LIMB
+  offset: 0x0204B0
+  symbol: gIronKnuckleDefeatSkelLimbsLimb_0204B0
+  limb_type: Standard
+
+gIronKnuckleDefeatSkelLimbsLimb_0204BC:
+  type: OOT:LIMB
+  offset: 0x0204BC
+  symbol: gIronKnuckleDefeatSkelLimbsLimb_0204BC
+  limb_type: Standard
+
+gIronKnuckleDefeatSkelLimbsLimb_0204C8:
+  type: OOT:LIMB
+  offset: 0x0204C8
+  symbol: gIronKnuckleDefeatSkelLimbsLimb_0204C8
+  limb_type: Standard
+
+gIronKnuckleDefeatSkelLimbsLimb_0204D4:
+  type: OOT:LIMB
+  offset: 0x0204D4
+  symbol: gIronKnuckleDefeatSkelLimbsLimb_0204D4
+  limb_type: Standard
+
+gIronKnuckleDefeatSkelLimbsLimb_0204E0:
+  type: OOT:LIMB
+  offset: 0x0204E0
+  symbol: gIronKnuckleDefeatSkelLimbsLimb_0204E0
+  limb_type: Standard
+
+gIronKnuckleDefeatSkelLimbsLimb_0204EC:
+  type: OOT:LIMB
+  offset: 0x0204EC
+  symbol: gIronKnuckleDefeatSkelLimbsLimb_0204EC
+  limb_type: Standard
+
+gIronKnuckleDefeatSkelLimbsLimb_0204F8:
+  type: OOT:LIMB
+  offset: 0x0204F8
+  symbol: gIronKnuckleDefeatSkelLimbsLimb_0204F8
+  limb_type: Standard
+
+gIronKnuckleDefeatSkelLimbsLimb_020504:
+  type: OOT:LIMB
+  offset: 0x020504
+  symbol: gIronKnuckleDefeatSkelLimbsLimb_020504
+  limb_type: Standard
+
+gIronKnuckleDefeatSkelLimbsLimb_020510:
+  type: OOT:LIMB
+  offset: 0x020510
+  symbol: gIronKnuckleDefeatSkelLimbsLimb_020510
+  limb_type: Standard
+
+gIronKnuckleDefeatSkelLimbsLimb_02051C:
+  type: OOT:LIMB
+  offset: 0x02051C
+  symbol: gIronKnuckleDefeatSkelLimbsLimb_02051C
+  limb_type: Standard
+
+gIronKnuckleDefeatSkelLimbsLimb_020528:
+  type: OOT:LIMB
+  offset: 0x020528
+  symbol: gIronKnuckleDefeatSkelLimbsLimb_020528
+  limb_type: Standard
+
+gIronKnuckleDefeatSkelLimbsLimb_020534:
+  type: OOT:LIMB
+  offset: 0x020534
+  symbol: gIronKnuckleDefeatSkelLimbsLimb_020534
+  limb_type: Standard
+
+gIronKnuckleDefeatSkelLimbsLimb_020540:
+  type: OOT:LIMB
+  offset: 0x020540
+  symbol: gIronKnuckleDefeatSkelLimbsLimb_020540
+  limb_type: Standard
+
+gIronKnuckleDefeatSkelLimbs:
+  type: BLOB
+  offset: 0x2054C
+  symbol: gIronKnuckleDefeatSkelLimbs
+  size: 0

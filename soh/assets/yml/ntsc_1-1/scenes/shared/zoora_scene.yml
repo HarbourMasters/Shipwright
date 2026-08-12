@@ -1,0 +1,14 @@
+:config:
+  segments:
+    - [ 2, 0x01CFA8F0 ]
+
+zoora_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: zoora_scene
+
+
+zoora_sceneCollisionHeader_000360:
+  type: OOT:COLLISION
+  offset: 0x000360
+  symbol: zoora_sceneCollisionHeader_000360

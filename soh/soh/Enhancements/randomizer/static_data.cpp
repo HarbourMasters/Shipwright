@@ -150,6 +150,7 @@ std::unordered_map<uint32_t, RandomizerHintTextKey> StaticData::areaNames = {
     { RA_LAKE_HYLIA, RHT_LAKE_HYLIA },
     { RA_GERUDO_VALLEY, RHT_GERUDO_VALLEY },
     { RA_GERUDO_FORTRESS, RHT_GERUDO_FORTRESS },
+    { RA_THIEVES_HIDEOUT, RHT_THIEVES_HIDEOUT },
     { RA_HAUNTED_WASTELAND, RHT_HAUNTED_WASTELAND },
     { RA_DESERT_COLOSSUS, RHT_DESERT_COLOSSUS },
     { RA_THE_MARKET, RHT_THE_MARKET },
@@ -192,16 +193,16 @@ std::unordered_map<RandomizerHint, StaticHintInfo> StaticData::staticHintInfoMap
   // warp song hints are special cased due to entrances not being done properly yet
   // Ganondorf Joke is special cased as the text is random
   {RH_SHEIK_HINT,           StaticHintInfo(HINT_TYPE_AREA,     {RHT_SHEIK_HINT_LA_ONLY},            RSK_SHEIK_LA_HINT,       true, {}, {RG_LIGHT_ARROWS},            {RC_SHEIK_HINT_GC, RC_SHEIK_HINT_MQ_GC}, true)},
-  {RH_FOREST_BOSS_KEY_HINT, StaticHintInfo(HINT_TYPE_AREA,     {RHT_BOSS_KEY_HINT},                 RSK_BOSS_KEY_HINT,       true, {}, {RG_FOREST_TEMPLE_BOSS_KEY},  {}, true)},
-  {RH_FIRE_BOSS_KEY_HINT,   StaticHintInfo(HINT_TYPE_AREA,     {RHT_BOSS_KEY_HINT},                 RSK_BOSS_KEY_HINT,       true, {}, {RG_FIRE_TEMPLE_BOSS_KEY},    {}, true)},
-  {RH_WATER_BOSS_KEY_HINT,  StaticHintInfo(HINT_TYPE_AREA,     {RHT_BOSS_KEY_HINT},                 RSK_BOSS_KEY_HINT,       true, {}, {RG_WATER_TEMPLE_BOSS_KEY},   {}, true)},
-  {RH_SPIRIT_BOSS_KEY_HINT, StaticHintInfo(HINT_TYPE_AREA,     {RHT_BOSS_KEY_HINT},                 RSK_BOSS_KEY_HINT,       true, {}, {RG_SPIRIT_TEMPLE_BOSS_KEY},  {}, true)},
-  {RH_SHADOW_BOSS_KEY_HINT, StaticHintInfo(HINT_TYPE_AREA,     {RHT_BOSS_KEY_HINT},                 RSK_BOSS_KEY_HINT,       true, {}, {RG_SHADOW_TEMPLE_BOSS_KEY},  {}, true)},
-  {RH_GANONS_BOSS_KEY_HINT, StaticHintInfo(HINT_TYPE_AREA,     {RHT_BOSS_KEY_HINT},                 RSK_BOSS_KEY_HINT,       true, {}, {RG_GANONS_CASTLE_BOSS_KEY},  {}, true)},
+  {RH_FOREST_BOSS_KEY_HINT, StaticHintInfo(HINT_TYPE_AREA,     {RHT_BOSS_KEY_HINT},                 RSK_BOSS_KEY_HINT,       true, {}, {RG_FOREST_TEMPLE_BOSS_KEY},  {RC_FOREST_BOSS_KEY_HINT}, true)},
+  {RH_FIRE_BOSS_KEY_HINT,   StaticHintInfo(HINT_TYPE_AREA,     {RHT_BOSS_KEY_HINT},                 RSK_BOSS_KEY_HINT,       true, {}, {RG_FIRE_TEMPLE_BOSS_KEY},    {RC_FIRE_BOSS_KEY_HINT}, true)},
+  {RH_WATER_BOSS_KEY_HINT,  StaticHintInfo(HINT_TYPE_AREA,     {RHT_BOSS_KEY_HINT},                 RSK_BOSS_KEY_HINT,       true, {}, {RG_WATER_TEMPLE_BOSS_KEY},   {RC_WATER_BOSS_KEY_HINT}, true)},
+  {RH_SPIRIT_BOSS_KEY_HINT, StaticHintInfo(HINT_TYPE_AREA,     {RHT_BOSS_KEY_HINT},                 RSK_BOSS_KEY_HINT,       true, {}, {RG_SPIRIT_TEMPLE_BOSS_KEY},  {RC_SPIRIT_BOSS_KEY_HINT}, true)},
+  {RH_SHADOW_BOSS_KEY_HINT, StaticHintInfo(HINT_TYPE_AREA,     {RHT_BOSS_KEY_HINT},                 RSK_BOSS_KEY_HINT,       true, {}, {RG_SHADOW_TEMPLE_BOSS_KEY},  {RC_SHADOW_BOSS_KEY_HINT}, true)},
+  {RH_GANONS_BOSS_KEY_HINT, StaticHintInfo(HINT_TYPE_AREA,     {RHT_BOSS_KEY_HINT},                 RSK_BOSS_KEY_HINT,       true, {}, {RG_GANONS_CASTLE_BOSS_KEY},  {RC_GANONS_BOSS_KEY_HINT}, true)},
   {RH_DAMPES_DIARY,         StaticHintInfo(HINT_TYPE_AREA,     {RHT_DAMPE_DIARY},                   RSK_DAMPES_DIARY_HINT,   true, {}, {RG_PROGRESSIVE_HOOKSHOT},    {RC_DAMPE_HINT})},
   {RH_GREG_RUPEE,           StaticHintInfo(HINT_TYPE_AREA,     {RHT_GREG_HINT},                     RSK_GREG_HINT,           true, {}, {RG_GREG_RUPEE},              {RC_GREG_HINT})},
   {RH_SARIA_HINT,           StaticHintInfo(HINT_TYPE_AREA,     {RHT_SARIA_TALK_HINT, RHT_SARIA_SONG_HINT}, RSK_SARIA_HINT,   true, {}, {RG_PROGRESSIVE_MAGIC_METER}, {RC_SARIA_SONG_HINT, RC_SONG_FROM_SARIA}, true)},
-  {RH_MIDO_HINT,            StaticHintInfo(HINT_TYPE_AREA,     {RHT_MIDO_HINT},                     RSK_MIDO_HINT,           true, {}, {RG_KOKIRI_SWORD},            {}, true)},
+  {RH_MIDO_HINT,            StaticHintInfo(HINT_TYPE_AREA,     {RHT_MIDO_HINT},                     RSK_MIDO_HINT,           true, {}, {RG_KOKIRI_SWORD},            {RC_MIDO_HINT}, true)},
   {RH_LOACH_HINT,           StaticHintInfo(HINT_TYPE_ITEM,     {RHT_LOACH_HINT},                    RSK_LOACH_HINT,          true, {RC_LH_HYRULE_LOACH})},
   {RH_FISHING_POLE,         StaticHintInfo(HINT_TYPE_AREA,     {RHT_FISHING_POLE_HINT},             RSK_FISHING_POLE_HINT,   true, {}, {RG_FISHING_POLE},            {RC_FISHING_POLE_HINT}, true)},
   {RH_HBA_HINT,             StaticHintInfo(HINT_TYPE_ITEM,     {RHT_HBA_HINT_SIGN, RHT_HBA_HINT_NOT_ON_HORSE, RHT_HBA_HINT_INITIAL, RHT_HBA_HINT_HAVE_1000}, RSK_HBA_HINT, true, {RC_GF_HBA_1000_POINTS, RC_GF_HBA_1500_POINTS})},
@@ -216,11 +217,11 @@ std::unordered_map<RandomizerHint, StaticHintInfo> StaticData::staticHintInfoMap
 };
 
 std::unordered_map<std::string, uint32_t>
-StaticData::PopulateTranslationMap(std::unordered_map<uint32_t, CustomMessage> input) {
+StaticData::PopulateTranslationMap(const std::unordered_map<uint32_t, CustomMessage>& input) {
     std::unordered_map<std::string, uint32_t> output = {};
     for (const auto& [key, message] : input) {
-        std::vector<std::string> strings = message.GetAllMessages();
-        for (std::string string : strings) {
+        std::vector<std::string> strings = message.GetAllMessages(MF_CLEAN);
+        for (const std::string& string : strings) {
             if (output.contains(string)) {
                 if (output[string] != key) {
                     // RANDOTODO should this cause an error of some kind?
@@ -235,11 +236,11 @@ StaticData::PopulateTranslationMap(std::unordered_map<uint32_t, CustomMessage> i
 }
 
 std::unordered_map<std::string, uint32_t>
-StaticData::PopulateTranslationMap(std::unordered_map<uint32_t, RandomizerHintTextKey> input) {
+StaticData::PopulateTranslationMap(const std::unordered_map<uint32_t, RandomizerHintTextKey>& input) {
     std::unordered_map<std::string, uint32_t> output = {};
     for (const auto& [key, text] : input) {
-        std::vector<std::string> strings = hintTextTable[text].GetClear().GetAllMessages();
-        for (std::string string : strings) {
+        std::vector<std::string> strings = hintTextTable[text].GetClear().GetAllMessages(MF_CLEAN);
+        for (const std::string& string : strings) {
             if (output.contains(string)) {
                 if (output[string] != key) {
                     // RANDOTODO should this cause an error of some kind?
@@ -536,5 +537,30 @@ std::vector<RandomizerGet> StaticData::overworldKeys = {
     RG_BACK_TOWER_KEY,
     RG_HYLIA_LAB_KEY,
     RG_FISHING_HOLE_KEY,
+};
+
+std::vector<RandomizerGet> StaticData::silverRupees = {
+    RG_SHADOW_SILVER_BLADES,
+    RG_SHADOW_SILVER_PIT,
+    RG_SHADOW_SILVER_SPIKES,
+    RG_SPIRIT_SILVER_CHILD,
+    RG_SPIRIT_SILVER_SUN,
+    RG_SPIRIT_SILVER_BOULDERS,
+    RG_BOTW_SILVER,
+    RG_ICE_CAVERN_SILVER_BLADES,
+    RG_ICE_CAVERN_SILVER_BLOCK,
+    RG_GTG_SILVER_SLOPE,
+    RG_GTG_SILVER_LAVA,
+    RG_GTG_SILVER_WATER,
+    RG_GANONS_CASTLE_SILVER_LIGHT,
+    RG_GANONS_CASTLE_SILVER_FOREST,
+    RG_GANONS_CASTLE_SILVER_FIRE,
+    RG_GANONS_CASTLE_SILVER_SPIRIT,
+    RG_DODONGOS_CAVERN_MQ_SILVER,
+    RG_SHADOW_MQ_SILVER_INVISIBLE_BLADES,
+    RG_SPIRIT_MQ_SILVER_LOBBY,
+    RG_SPIRIT_MQ_SILVER_BIG_WALL,
+    RG_GANONS_CASTLE_MQ_SILVER_WATER,
+    RG_GANONS_CASTLE_MQ_SILVER_SHADOW,
 };
 } // namespace Rando

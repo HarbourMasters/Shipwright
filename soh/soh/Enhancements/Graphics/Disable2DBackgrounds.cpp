@@ -1,13 +1,11 @@
-#include <libultraship/bridge.h>
-#include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
+#include "variables.h"
+#include "z64save.h"
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
-#include "macros.h"
-#include "variables.h"
 }
 
 #define CVAR_NAME CVAR_ENHANCEMENT("3DSceneRender")
@@ -87,8 +85,12 @@ std::set<SkyboxId> skyboxIdControlList = {
 };
 
 void Register3DPreRenderedScenes() {
+    // Runs after the scene commands have set play->skyboxId, but before Play_InitEnvironment builds the
+    // skybox. Overriding the id here means Skybox_Setup loads a real sky; overriding it any later would
+    // leave the display lists pointing at the pre-rendered skybox's texture slots.
     COND_HOOK(AfterSceneCommands, CVAR_VALUE, [](int16_t sceneNum) {
-        if (!skyboxSceneControlList.contains(static_cast<SceneID>(sceneNum))) {
+        if (!skyboxSceneControlList.contains(static_cast<SceneID>(sceneNum)) &&
+            !skyboxIdControlList.contains(static_cast<SkyboxId>(gPlayState->skyboxId))) {
             return;
         }
 
@@ -122,15 +124,6 @@ void Register3DPreRenderedScenes() {
     });
 
     COND_VB_SHOULD(VB_DRAW_2D_BACKGROUND, CVAR_VALUE, { *should = false; });
-
-    COND_VB_SHOULD(VB_LOAD_SKYBOX, CVAR_VALUE, {
-        if (!gPlayState || !skyboxIdControlList.contains(static_cast<SkyboxId>(gPlayState->skyboxCtx.skyboxId))) {
-            return;
-        }
-
-        gPlayState->skyboxCtx.unk_140 = 0;
-        *should = false;
-    });
 }
 
 static RegisterShipInitFunc initFunc(Register3DPreRenderedScenes, { CVAR_NAME });

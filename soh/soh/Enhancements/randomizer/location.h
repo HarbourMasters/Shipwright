@@ -1,12 +1,10 @@
 #pragma once
 
 #include <utility>
-#include <vector>
 
 #include "3drando/spoiler_log.hpp"
 #include "3drando/hints.hpp"
 
-#include "randomizerTypes.h"
 #include "z64actor_enum.h"
 #include "z64scene.h"
 #include "../../util.h"
@@ -67,15 +65,7 @@ class Location {
           actorParams(actorParams_), shortName(std::move(shortName_)), spoilerName(std::move(spoilerName_)),
           hintKey(hintKey_), vanillaItem(vanillaItem_), isVanillaCompletion(isVanillaCompletion_),
           collectionCheck(collectionCheck_), vanillaPrice(vanillaPrice_) {
-        if (spoilerName.length() < 23) {
-            excludedOption = LocationOption(rc, spoilerName);
-        } else {
-            const size_t lastSpace = spoilerName.rfind(' ', 23);
-            std::string settingText = spoilerName;
-            settingText.replace(lastSpace, 1, "\n ");
-
-            excludedOption = LocationOption(rc, spoilerName);
-        }
+        excludedOption = LocationOption(rc, spoilerName);
     }
 
     Location(const RandomizerCheck rc_, const RandomizerCheckQuest quest_, const RandomizerCheckType checkType_,
@@ -87,15 +77,7 @@ class Location {
           actorParams(actorParams_), shortName(shortName_), spoilerName(SpoilerNameFromShortName(shortName_, area_)),
           hintKey(hintKey_), vanillaItem(vanillaItem_), isVanillaCompletion(isVanillaCompletion_),
           collectionCheck(collectionCheck_), vanillaPrice(vanillaPrice_) {
-        if (spoilerName.length() < 23) {
-            excludedOption = LocationOption(rc, spoilerName);
-        } else {
-            const size_t lastSpace = spoilerName.rfind(' ', 23);
-            std::string settingText = spoilerName;
-            settingText.replace(lastSpace, 1, "\n ");
-
-            excludedOption = LocationOption(rc, spoilerName);
-        }
+        excludedOption = LocationOption(rc, spoilerName);
     }
 
     static std::string SpoilerNameFromShortName(std::string shortName, RandomizerCheckArea area) {
@@ -245,6 +227,14 @@ class Location {
                                RandomizerHintTextKey hintKey, RandomizerGet vanillaItem,
                                SpoilerCollectionCheck collectionCheck);
 
+    static Location Rock(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_, SceneID scene_,
+                         int32_t actorParams_, std::string&& shortName_, RandomizerHintTextKey hintKey,
+                         RandomizerGet vanillaItem, SpoilerCollectionCheck collectionCheck);
+
+    static Location Boulder(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_, SceneID scene_,
+                            int32_t actorParams_, std::string&& shortName_, RandomizerHintTextKey hintKey,
+                            SpoilerCollectionCheck collectionCheck);
+
     static Location Tree(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_, SceneID scene_,
                          int32_t actorParams_, std::string&& shortName_, RandomizerHintTextKey hintKey,
                          RandomizerGet vanillaItem, SpoilerCollectionCheck collectionCheck);
@@ -317,7 +307,6 @@ class Location {
     ActorID actorId;
     SceneID scene;
     int32_t actorParams;
-    bool checked = false;
     std::string shortName;
     std::string spoilerName;
     RandomizerHintTextKey hintKey;
@@ -325,7 +314,6 @@ class Location {
     bool isVanillaCompletion;
     SpoilerCollectionCheck collectionCheck;
     int16_t vanillaPrice;
-    bool isHintable = false;
     Option excludedOption;
 };
 } // namespace Rando

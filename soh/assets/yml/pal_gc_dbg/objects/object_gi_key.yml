@@ -1,0 +1,27 @@
+:config:
+  segments:
+    - [ 6, 0x014B2000 ]
+    - [ 4, 0x00F5E000 ]
+    - [ 8, 0x014B2000 ]
+    - [ 9, 0x014B2000 ]
+    - [ 10, 0x014B2000 ]
+    - [ 11, 0x014B2000 ]
+    - [ 12, 0x014B2000 ]
+    - [ 13, 0x014B2000 ]
+  external_files:
+    - pal_gc_dbg/objects/gameplay_keep.yml
+
+gGiSmallKeyDL:
+  type: GFX
+  offset: 0x0800
+  symbol: gGiSmallKeyDL
+
+
+object_gi_keyVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_gi_keyVtx_000000
+  count: 128
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

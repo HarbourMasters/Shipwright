@@ -1,0 +1,795 @@
+:config:
+  segments:
+    - [ 6, 0x00FE6320 ]
+    - [ 4, 0x00D3A8E0 ]
+    - [ 8, 0x00FE6320 ]
+    - [ 9, 0x00FE6320 ]
+    - [ 10, 0x00FE6320 ]
+    - [ 11, 0x00FE6320 ]
+    - [ 12, 0x00FE6320 ]
+    - [ 13, 0x00FE6320 ]
+  external_files:
+    - ntsc_1-1/objects/gameplay_keep.yml
+
+gFlareDancerBackflipAnim:
+  type: OOT:ANIMATION
+  offset: 0x5C64
+  symbol: gFlareDancerBackflipAnim
+
+gFlareDancerBlueFlameTex:
+  type: TEXTURE
+  offset: 0x10D0
+  symbol: gFlareDancerBlueFlameTex
+  format: RGBA16
+  width: 4
+  height: 4
+
+gFlareDancerCastingFireAnim:
+  type: OOT:ANIMATION
+  offset: 0x10B4
+  symbol: gFlareDancerCastingFireAnim
+
+gFlareDancerChasingAnim:
+  type: OOT:ANIMATION
+  offset: 0x6A18
+  symbol: gFlareDancerChasingAnim
+
+gFlareDancerCoreBodyDL:
+  type: GFX
+  offset: 0x7410
+  symbol: gFlareDancerCoreBodyDL
+
+gFlareDancerCoreBodyLimb:
+  type: OOT:LIMB
+  offset: 0x7B9C
+  symbol: gFlareDancerCoreBodyLimb
+  limb_type: Standard
+
+gFlareDancerCoreBodyTex:
+  type: TEXTURE
+  offset: 0x26F0
+  symbol: gFlareDancerCoreBodyTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gFlareDancerCoreEndRunCycleAnim:
+  type: OOT:ANIMATION
+  offset: 0x7DC8
+  symbol: gFlareDancerCoreEndRunCycleAnim
+
+gFlareDancerCoreFuseDL:
+  type: GFX
+  offset: 0x7510
+  symbol: gFlareDancerCoreFuseDL
+
+gFlareDancerCoreFuseLimb:
+  type: OOT:LIMB
+  offset: 0x7BA8
+  symbol: gFlareDancerCoreFuseLimb
+  limb_type: Standard
+
+gFlareDancerCoreInitRunCycleAnim:
+  type: OOT:ANIMATION
+  offset: 0x6CF8
+  symbol: gFlareDancerCoreInitRunCycleAnim
+
+gFlareDancerCoreLeftFootDL:
+  type: GFX
+  offset: 0x7880
+  symbol: gFlareDancerCoreLeftFootDL
+
+gFlareDancerCoreLeftFootLimb:
+  type: OOT:LIMB
+  offset: 0x7BFC
+  symbol: gFlareDancerCoreLeftFootLimb
+  limb_type: Standard
+
+gFlareDancerCoreLegsRootLimb:
+  type: OOT:LIMB
+  offset: 0x7BB4
+  symbol: gFlareDancerCoreLegsRootLimb
+  limb_type: Standard
+
+gFlareDancerCoreLowerLeftLegDL:
+  type: GFX
+  offset: 0x77F8
+  symbol: gFlareDancerCoreLowerLeftLegDL
+
+gFlareDancerCoreLowerLeftLegLimb:
+  type: OOT:LIMB
+  offset: 0x7BF0
+  symbol: gFlareDancerCoreLowerLeftLegLimb
+  limb_type: Standard
+
+gFlareDancerCoreLowerRightLegDL:
+  type: GFX
+  offset: 0x7680
+  symbol: gFlareDancerCoreLowerRightLegDL
+
+gFlareDancerCoreLowerRightLegLimb:
+  type: OOT:LIMB
+  offset: 0x7BCC
+  symbol: gFlareDancerCoreLowerRightLegLimb
+  limb_type: Standard
+
+gFlareDancerCoreRightFootDL:
+  type: GFX
+  offset: 0x7708
+  symbol: gFlareDancerCoreRightFootDL
+
+gFlareDancerCoreRightFootLimb:
+  type: OOT:LIMB
+  offset: 0x7BD8
+  symbol: gFlareDancerCoreRightFootLimb
+  limb_type: Standard
+
+gFlareDancerCoreRootLimb:
+  type: OOT:LIMB
+  offset: 0x7B90
+  symbol: gFlareDancerCoreRootLimb
+  limb_type: Standard
+
+gFlareDancerCoreRunCycleAnim:
+  type: OOT:ANIMATION
+  offset: 0x7CD0
+  symbol: gFlareDancerCoreRunCycleAnim
+
+gFlareDancerCoreSkel:
+  type: OOT:SKELETON
+  offset: 0x7C30
+  symbol: gFlareDancerCoreSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gFlareDancerCoreUpperLeftLegDL:
+  type: GFX
+  offset: 0x7790
+  symbol: gFlareDancerCoreUpperLeftLegDL
+
+gFlareDancerCoreUpperLeftLegLimb:
+  type: OOT:LIMB
+  offset: 0x7BE4
+  symbol: gFlareDancerCoreUpperLeftLegLimb
+  limb_type: Standard
+
+gFlareDancerCoreUpperRightLegDL:
+  type: GFX
+  offset: 0x7618
+  symbol: gFlareDancerCoreUpperRightLegDL
+
+gFlareDancerCoreUpperRightLegLimb:
+  type: OOT:LIMB
+  offset: 0x7BC0
+  symbol: gFlareDancerCoreUpperRightLegLimb
+  limb_type: Standard
+
+gFlareDancerDL_7928:
+  type: GFX
+  offset: 0x7928
+  symbol: gFlareDancerDL_7928
+
+gFlareDancerDL_79F8:
+  type: GFX
+  offset: 0x79F8
+  symbol: gFlareDancerDL_79F8
+
+gFlareDancerDressDL:
+  type: GFX
+  offset: 0x4640
+  symbol: gFlareDancerDressDL
+
+gFlareDancerDressLimb:
+  type: OOT:LIMB
+  offset: 0x56F4
+  symbol: gFlareDancerDressLimb
+  limb_type: Standard
+
+gFlareDancerFirePatternTex:
+  type: TEXTURE
+  offset: 0x18F0
+  symbol: gFlareDancerFirePatternTex
+  format: I8
+  width: 32
+  height: 64
+
+gFlareDancerFireTex:
+  type: TEXTURE
+  offset: 0x10F0
+  symbol: gFlareDancerFireTex
+  format: I8
+  width: 32
+  height: 64
+
+gFlareDancerFuseDL:
+  type: GFX
+  offset: 0x47B8
+  symbol: gFlareDancerFuseDL
+
+gFlareDancerFuseLimb:
+  type: OOT:LIMB
+  offset: 0x5700
+  symbol: gFlareDancerFuseLimb
+  limb_type: Standard
+
+gFlareDancerFuseTex:
+  type: TEXTURE
+  offset: 0x20F0
+  symbol: gFlareDancerFuseTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gFlareDancerGettingUpAnim:
+  type: OOT:ANIMATION
+  offset: 0x6044
+  symbol: gFlareDancerGettingUpAnim
+
+gFlareDancerHeadDL:
+  type: GFX
+  offset: 0x5058
+  symbol: gFlareDancerHeadDL
+
+gFlareDancerHeadLimb:
+  type: OOT:LIMB
+  offset: 0x5754
+  symbol: gFlareDancerHeadLimb
+  limb_type: Standard
+
+gFlareDancerLeftForearmDL:
+  type: GFX
+  offset: 0x4DD8
+  symbol: gFlareDancerLeftForearmDL
+
+gFlareDancerLeftForearmLimb:
+  type: OOT:LIMB
+  offset: 0x573C
+  symbol: gFlareDancerLeftForearmLimb
+  limb_type: Standard
+
+gFlareDancerLeftStiltDL:
+  type: GFX
+  offset: 0x4498
+  symbol: gFlareDancerLeftStiltDL
+
+gFlareDancerLeftStiltLimb:
+  type: OOT:LIMB
+  offset: 0x56D0
+  symbol: gFlareDancerLeftStiltLimb
+  limb_type: Standard
+
+gFlareDancerLeftSwordDL:
+  type: GFX
+  offset: 0x4F08
+  symbol: gFlareDancerLeftSwordDL
+
+gFlareDancerLeftSwordLimb:
+  type: OOT:LIMB
+  offset: 0x5748
+  symbol: gFlareDancerLeftSwordLimb
+  limb_type: Standard
+
+gFlareDancerLeftUpperArmDL:
+  type: GFX
+  offset: 0x4C98
+  symbol: gFlareDancerLeftUpperArmDL
+
+gFlareDancerLeftUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x5730
+  symbol: gFlareDancerLeftUpperArmLimb
+  limb_type: Standard
+
+gFlareDancerLowerBodyRootLimb:
+  type: OOT:LIMB
+  offset: 0x567C
+  symbol: gFlareDancerLowerBodyRootLimb
+  limb_type: Standard
+
+gFlareDancerLowerFireHairDL:
+  type: GFX
+  offset: 0x5548
+  symbol: gFlareDancerLowerFireHairDL
+
+gFlareDancerLowerFireHairLimb:
+  type: OOT:LIMB
+  offset: 0x579C
+  symbol: gFlareDancerLowerFireHairLimb
+  limb_type: Standard
+
+gFlareDancerLowerLeftLegBaseLimb:
+  type: OOT:LIMB
+  offset: 0x56C4
+  symbol: gFlareDancerLowerLeftLegBaseLimb
+  limb_type: Standard
+
+gFlareDancerLowerLeftLegDL:
+  type: GFX
+  offset: 0x4368
+  symbol: gFlareDancerLowerLeftLegDL
+
+gFlareDancerLowerLeftLegLimb:
+  type: OOT:LIMB
+  offset: 0x56DC
+  symbol: gFlareDancerLowerLeftLegLimb
+  limb_type: Standard
+
+gFlareDancerLowerRightLegBaseLimb:
+  type: OOT:LIMB
+  offset: 0x5694
+  symbol: gFlareDancerLowerRightLegBaseLimb
+  limb_type: Standard
+
+gFlareDancerLowerRightLegDL:
+  type: GFX
+  offset: 0x40C8
+  symbol: gFlareDancerLowerRightLegDL
+
+gFlareDancerLowerRightLegLimb:
+  type: OOT:LIMB
+  offset: 0x56AC
+  symbol: gFlareDancerLowerRightLegLimb
+  limb_type: Standard
+
+gFlareDancerMiddleFireHair1DL:
+  type: GFX
+  offset: 0x5248
+  symbol: gFlareDancerMiddleFireHair1DL
+
+gFlareDancerMiddleFireHair1Limb:
+  type: OOT:LIMB
+  offset: 0x5778
+  symbol: gFlareDancerMiddleFireHair1Limb
+  limb_type: Standard
+
+gFlareDancerMiddleFireHair2DL:
+  type: GFX
+  offset: 0x5348
+  symbol: gFlareDancerMiddleFireHair2DL
+
+gFlareDancerMiddleFireHair2Limb:
+  type: OOT:LIMB
+  offset: 0x5784
+  symbol: gFlareDancerMiddleFireHair2Limb
+  limb_type: Standard
+
+gFlareDancerMiddleFireHair3DL:
+  type: GFX
+  offset: 0x5448
+  symbol: gFlareDancerMiddleFireHair3DL
+
+gFlareDancerMiddleFireHair3Limb:
+  type: OOT:LIMB
+  offset: 0x5790
+  symbol: gFlareDancerMiddleFireHair3Limb
+  limb_type: Standard
+
+gFlareDancerRightForearmDL:
+  type: GFX
+  offset: 0x4A00
+  symbol: gFlareDancerRightForearmDL
+
+gFlareDancerRightForearmLimb:
+  type: OOT:LIMB
+  offset: 0x5718
+  symbol: gFlareDancerRightForearmLimb
+  limb_type: Standard
+
+gFlareDancerRightStiltDL:
+  type: GFX
+  offset: 0x41B8
+  symbol: gFlareDancerRightStiltDL
+
+gFlareDancerRightStiltLimb:
+  type: OOT:LIMB
+  offset: 0x56A0
+  symbol: gFlareDancerRightStiltLimb
+  limb_type: Standard
+
+gFlareDancerRightSwordDL:
+  type: GFX
+  offset: 0x4B38
+  symbol: gFlareDancerRightSwordDL
+
+gFlareDancerRightSwordLimb:
+  type: OOT:LIMB
+  offset: 0x5724
+  symbol: gFlareDancerRightSwordLimb
+  limb_type: Standard
+
+gFlareDancerRightUpperArmDL:
+  type: GFX
+  offset: 0x48C0
+  symbol: gFlareDancerRightUpperArmDL
+
+gFlareDancerRightUpperArmLimb:
+  type: OOT:LIMB
+  offset: 0x570C
+  symbol: gFlareDancerRightUpperArmLimb
+  limb_type: Standard
+
+gFlareDancerRootLimb:
+  type: OOT:LIMB
+  offset: 0x5670
+  symbol: gFlareDancerRootLimb
+  limb_type: Standard
+
+gFlareDancerSkel:
+  type: OOT:SKELETON
+  offset: 0x5810
+  symbol: gFlareDancerSkel
+  limb_type: Standard
+  skel_type: Flex
+
+gFlareDancerSquareParticleDL:
+  type: GFX
+  offset: 0x7938
+  symbol: gFlareDancerSquareParticleDL
+
+gFlareDancerSwordHiltTex:
+  type: TEXTURE
+  offset: 0x24F0
+  symbol: gFlareDancerSwordHiltTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gFlareDancerTorsoDL:
+  type: GFX
+  offset: 0x4540
+  symbol: gFlareDancerTorsoDL
+
+gFlareDancerTorsoLimb:
+  type: OOT:LIMB
+  offset: 0x5760
+  symbol: gFlareDancerTorsoLimb
+  limb_type: Standard
+
+gFlareDancerTriangleParticleDL:
+  type: GFX
+  offset: 0x7A78
+  symbol: gFlareDancerTriangleParticleDL
+
+gFlareDancerTwirlAnim:
+  type: OOT:ANIMATION
+  offset: 0x6B64
+  symbol: gFlareDancerTwirlAnim
+
+gFlareDancerUpperBodyRootLimb:
+  type: OOT:LIMB
+  offset: 0x56E8
+  symbol: gFlareDancerUpperBodyRootLimb
+  limb_type: Standard
+
+gFlareDancerUpperFireHairDL:
+  type: GFX
+  offset: 0x5160
+  symbol: gFlareDancerUpperFireHairDL
+
+gFlareDancerUpperFireHairLimb:
+  type: OOT:LIMB
+  offset: 0x576C
+  symbol: gFlareDancerUpperFireHairLimb
+  limb_type: Standard
+
+gFlareDancerUpperLeftLegDL:
+  type: GFX
+  offset: 0x4260
+  symbol: gFlareDancerUpperLeftLegDL
+
+gFlareDancerUpperLeftLegLimb:
+  type: OOT:LIMB
+  offset: 0x56B8
+  symbol: gFlareDancerUpperLeftLegLimb
+  limb_type: Standard
+
+gFlareDancerUpperRightLegDL:
+  type: GFX
+  offset: 0x3FC0
+  symbol: gFlareDancerUpperRightLegDL
+
+gFlareDancerUpperRightLegLimb:
+  type: OOT:LIMB
+  offset: 0x5688
+  symbol: gFlareDancerUpperRightLegLimb
+  limb_type: Standard
+
+object_fwTex_007A90:
+  type: TEXTURE
+  offset: 0x7A90
+  symbol: object_fwTex_007A90
+  format: I8
+  width: 16
+  height: 16
+
+
+object_fwVtx_002AF0:
+  type: OOT:ARRAY
+  offset: 0x002AF0
+  symbol: object_fwVtx_002AF0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fwVtx_002BB0:
+  type: OOT:ARRAY
+  offset: 0x002BB0
+  symbol: object_fwVtx_002BB0
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fwVtx_002C40:
+  type: OOT:ARRAY
+  offset: 0x002C40
+  symbol: object_fwVtx_002C40
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fwVtx_002D00:
+  type: OOT:ARRAY
+  offset: 0x002D00
+  symbol: object_fwVtx_002D00
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fwVtx_002DC0:
+  type: OOT:ARRAY
+  offset: 0x002DC0
+  symbol: object_fwVtx_002DC0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fwVtx_002E80:
+  type: OOT:ARRAY
+  offset: 0x002E80
+  symbol: object_fwVtx_002E80
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fwVtx_002F40:
+  type: OOT:ARRAY
+  offset: 0x002F40
+  symbol: object_fwVtx_002F40
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fwVtx_003120:
+  type: OOT:ARRAY
+  offset: 0x003120
+  symbol: object_fwVtx_003120
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fwVtx_003290:
+  type: OOT:ARRAY
+  offset: 0x003290
+  symbol: object_fwVtx_003290
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fwVtx_003510:
+  type: OOT:ARRAY
+  offset: 0x003510
+  symbol: object_fwVtx_003510
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fwVtx_003610:
+  type: OOT:ARRAY
+  offset: 0x003610
+  symbol: object_fwVtx_003610
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fwVtx_003710:
+  type: OOT:ARRAY
+  offset: 0x003710
+  symbol: object_fwVtx_003710
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fwVtx_003990:
+  type: OOT:ARRAY
+  offset: 0x003990
+  symbol: object_fwVtx_003990
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fwVtx_003A60:
+  type: OOT:ARRAY
+  offset: 0x003A60
+  symbol: object_fwVtx_003A60
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fwVtx_003B60:
+  type: OOT:ARRAY
+  offset: 0x003B60
+  symbol: object_fwVtx_003B60
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fwVtx_003C60:
+  type: OOT:ARRAY
+  offset: 0x003C60
+  symbol: object_fwVtx_003C60
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fwVtx_003DA0:
+  type: OOT:ARRAY
+  offset: 0x003DA0
+  symbol: object_fwVtx_003DA0
+  count: 10
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fwVtx_003E40:
+  type: OOT:ARRAY
+  offset: 0x003E40
+  symbol: object_fwVtx_003E40
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fwVtx_003EA0:
+  type: OOT:ARRAY
+  offset: 0x003EA0
+  symbol: object_fwVtx_003EA0
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fwVtx_003F00:
+  type: OOT:ARRAY
+  offset: 0x003F00
+  symbol: object_fwVtx_003F00
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fwVtx_003F60:
+  type: OOT:ARRAY
+  offset: 0x003F60
+  symbol: object_fwVtx_003F60
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gFlareDancerSkelLimbs:
+  type: BLOB
+  offset: 0x57A8
+  symbol: gFlareDancerSkelLimbs
+  size: 0
+
+object_fwVtx_006D10:
+  type: OOT:ARRAY
+  offset: 0x006D10
+  symbol: object_fwVtx_006D10
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fwVtx_006E80:
+  type: OOT:ARRAY
+  offset: 0x006E80
+  symbol: object_fwVtx_006E80
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fwVtx_006FC0:
+  type: OOT:ARRAY
+  offset: 0x006FC0
+  symbol: object_fwVtx_006FC0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fwVtx_007080:
+  type: OOT:ARRAY
+  offset: 0x007080
+  symbol: object_fwVtx_007080
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fwVtx_007140:
+  type: OOT:ARRAY
+  offset: 0x007140
+  symbol: object_fwVtx_007140
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fwVtx_0071C0:
+  type: OOT:ARRAY
+  offset: 0x0071C0
+  symbol: object_fwVtx_0071C0
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fwVtx_0072D0:
+  type: OOT:ARRAY
+  offset: 0x0072D0
+  symbol: object_fwVtx_0072D0
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fwVtx_007390:
+  type: OOT:ARRAY
+  offset: 0x007390
+  symbol: object_fwVtx_007390
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fwVtx_007988:
+  type: OOT:ARRAY
+  offset: 0x007988
+  symbol: object_fwVtx_007988
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_fwVtx_0079C8:
+  type: OOT:ARRAY
+  offset: 0x0079C8
+  symbol: object_fwVtx_0079C8
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gFlareDancerCoreSkelLimbs:
+  type: BLOB
+  offset: 0x7C08
+  symbol: gFlareDancerCoreSkelLimbs
+  size: 0

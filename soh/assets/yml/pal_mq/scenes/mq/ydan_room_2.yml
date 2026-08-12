@@ -1,0 +1,110 @@
+:config:
+  segments:
+    - [ 3, 0x016A8390 ]
+    - [ 2, 0x0168F9B0 ]
+  directory: scenes/mq/ydan_scene
+  external_files:
+    - pal_mq/scenes/mq/ydan_scene.yml
+    - pal_mq/code/sys_matrix.yml
+
+ydan_room_2:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: ydan_room_2
+
+ydan_room_2Tex_001D08:
+  type: TEXTURE
+  offset: 0x1D08
+  symbol: ydan_room_2Tex_001D08
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: ydan_scene
+  external_tlut_offset: 0xB810
+
+ydan_room_2Tex_002508:
+  type: TEXTURE
+  offset: 0x2508
+  symbol: ydan_room_2Tex_002508
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: ydan_scene
+  external_tlut_offset: 0xB810
+
+ydan_room_2Tex_002D08:
+  type: TEXTURE
+  offset: 0x2D08
+  symbol: ydan_room_2Tex_002D08
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: ydan_scene
+  external_tlut_offset: 0xB810
+
+ydan_room_2Tex_003508:
+  type: TEXTURE
+  offset: 0x3508
+  symbol: ydan_room_2Tex_003508
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: ydan_scene
+  external_tlut_offset: 0xB810
+
+ydan_room_2Tex_003D08:
+  type: TEXTURE
+  offset: 0x3D08
+  symbol: ydan_room_2Tex_003D08
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: ydan_scene
+  external_tlut_offset: 0xB810
+
+ydan_room_2Tex_004508:
+  type: TEXTURE
+  offset: 0x4508
+  symbol: ydan_room_2Tex_004508
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: ydan_scene
+  external_tlut_offset: 0xB810
+
+ydan_room_2Tex_004F28:
+  type: TEXTURE
+  offset: 0x4F28
+  symbol: ydan_room_2Tex_004F28
+  format: RGBA16
+  width: 32
+  height: 64
+
+
+ydan_room_2Vtx_000220:
+  type: OOT:ARRAY
+  offset: 0x000220
+  symbol: ydan_room_2Vtx_000220
+  count: 244
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ydan_room_2DL_001160:
+  type: GFX
+  offset: 0x001160
+  symbol: ydan_room_2DL_001160
+
+ydan_room_2Vtx_004D10:
+  type: OOT:ARRAY
+  offset: 0x004D10
+  symbol: ydan_room_2Vtx_004D10
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ydan_room_2DL_004E50:
+  type: GFX
+  offset: 0x004E50
+  symbol: ydan_room_2DL_004E50

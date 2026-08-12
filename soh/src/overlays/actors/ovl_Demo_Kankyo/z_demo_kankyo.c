@@ -336,7 +336,7 @@ void DemoKankyo_SetupType(DemoKankyo* this, PlayState* play) {
                             play->csCtx.segment = gAdultWarpInCS;
                         }
                     }
-                    if (func_800C0CB8(play) != 0) {
+                    if (Play_CamIsNotFixed(play) != 0) {
                         gSaveContext.cutsceneTrigger = 1;
                     }
                     DemoKankyo_SetupAction(this, DemoKankyo_DoNothing);
@@ -716,7 +716,7 @@ void DemoKankyo_DrawLightPlane(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    if (play->csCtx.state == CS_STATE_IDLE || gSaveContext.sceneSetupIndex >= 4) {
+    if (play->csCtx.state == CS_STATE_IDLE || gSaveContext.sceneLayer >= 4) {
         Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
         gSPSegment(POLY_XLU_DISP++, 0x08,

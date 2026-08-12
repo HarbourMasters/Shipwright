@@ -1,6 +1,5 @@
 #include "location.h"
 #include "static_data.h"
-#include <algorithm>
 #include <assert.h>
 #include "option.h"
 
@@ -65,7 +64,7 @@ bool Rando::Location::IsOverworld() const {
 }
 
 bool Rando::Location::IsShop() const {
-    return scene >= SCENE_BAZAAR && scene <= SCENE_BOMBCHU_SHOP;
+    return (scene >= SCENE_BAZAAR && scene <= SCENE_BOMBCHU_SHOP) || scene == SCENE_TEST01;
 }
 
 bool Rando::Location::IsVanillaCompletion() const {
@@ -560,6 +559,23 @@ Rando::Location Rando::Location::SmallCrate(RandomizerCheck rc, RandomizerCheckQ
                                             SpoilerCollectionCheck collectionCheck) {
     return { rc,     quest_,         RCTYPE_SMALL_CRATE,    area_,   ACTOR_OBJ_KIBAKO,
              scene_, actorParams_,   std::move(shortName_), hintKey, vanillaItem,
+             false,  collectionCheck };
+}
+
+Rando::Location Rando::Location::Rock(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_,
+                                      SceneID scene_, int32_t actorParams_, std::string&& shortName_,
+                                      RandomizerHintTextKey hintKey, RandomizerGet vanillaItem,
+                                      SpoilerCollectionCheck collectionCheck) {
+    return { rc,     quest_,         RCTYPE_ROCK,           area_,   ACTOR_EN_ISHI,
+             scene_, actorParams_,   std::move(shortName_), hintKey, vanillaItem,
+             false,  collectionCheck };
+}
+
+Rando::Location Rando::Location::Boulder(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckArea area_,
+                                         SceneID scene_, int32_t actorParams_, std::string&& shortName_,
+                                         RandomizerHintTextKey hintKey, SpoilerCollectionCheck collectionCheck) {
+    return { rc,     quest_,         RCTYPE_BOULDER,        area_,   ACTOR_EN_ISHI,
+             scene_, actorParams_,   std::move(shortName_), hintKey, RG_BOMBS_5,
              false,  collectionCheck };
 }
 

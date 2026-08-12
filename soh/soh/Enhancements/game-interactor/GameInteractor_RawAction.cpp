@@ -1,6 +1,5 @@
 #include "GameInteractor.h"
-#include <libultraship/bridge.h>
-#include "soh/Enhancements/randomizer/3drando/random.hpp"
+#include "soh/ShipUtils.h"
 #include <math.h>
 #include "soh/Enhancements/debugger/colViewer.h"
 #include "soh/Enhancements/nametag.h"
@@ -8,7 +7,6 @@
 extern "C" {
 #include "variables.h"
 #include "macros.h"
-#include "soh/cvar_prefixes.h"
 #include "functions.h"
 extern PlayState* gPlayState;
 }
@@ -125,7 +123,8 @@ void GameInteractor::RawAction::ElectrocutePlayer() {
 
 void GameInteractor::RawAction::KnockbackPlayer(float strength) {
     Player* player = GET_PLAYER(gPlayState);
-    func_8002F71C(gPlayState, &player->actor, strength * 5, player->actor.world.rot.y + 0x8000, strength * 5);
+    Actor_SetPlayerKnockbackLargeNoDamage(gPlayState, &player->actor, strength * 5, player->actor.world.rot.y + 0x8000,
+                                          strength * 5);
 }
 
 void GameInteractor::RawAction::SetSceneFlag(int16_t sceneNum, int16_t flagType, int16_t flag) {
@@ -245,11 +244,6 @@ void GameInteractor::RawAction::SetFlag(int16_t flagType, int16_t flag) {
             gSaveContext.eventInf[flag >> 4] |= (1 << (flag & 0xF));
             break;
         case FlagType::FLAG_RANDOMIZER_INF:
-            if (!IS_RANDO) {
-                LUSLOG_ERROR("Tried to set randomizerInf flag outside of rando (%d)", flag);
-                assert(false);
-                break;
-            }
             gSaveContext.ship.randomizerInf[flag >> 4] |= (1 << (flag & 0xF));
             break;
         case FlagType::FLAG_GS_TOKEN:
@@ -333,7 +327,7 @@ void GameInteractor::RawAction::GiveOrTakeShield(int32_t shield) {
 }
 
 void GameInteractor::RawAction::ForceInterfaceUpdate() {
-    gSaveContext.unk_13E8 = 50;
+    gSaveContext.nextHudVisibilityMode = 50;
     Interface_Update(gPlayState);
 }
 
@@ -410,15 +404,11 @@ void GameInteractor::RawAction::EmulateButtonPress(int32_t button) {
 }
 
 void GameInteractor::RawAction::EmulateRandomButtonPress(uint32_t chancePercentage) {
-    uint32_t emulatedButton;
-    uint32_t randomNumber = rand();
+    uint32_t randomNumber = ShipUtils::Random(0, 1400);
     uint32_t possibleButtons[14] = { BTN_CRIGHT, BTN_CLEFT, BTN_CDOWN, BTN_CUP,   BTN_R, BTN_L, BTN_DRIGHT,
                                      BTN_DLEFT,  BTN_DDOWN, BTN_DUP,   BTN_START, BTN_Z, BTN_B, BTN_A };
-
-    emulatedButton = possibleButtons[randomNumber % 14];
-
     if (randomNumber % 100 < chancePercentage) {
-        GameInteractor::State::EmulatedButtons |= emulatedButton;
+        GameInteractor::State::EmulatedButtons |= possibleButtons[randomNumber / 100];
     }
 }
 
@@ -431,7 +421,7 @@ void GameInteractor::RawAction::SetRandomWind(bool active) {
     if (active) {
         GameInteractor::State::RandomWindActive = 1;
         if (GameInteractor::State::RandomWindSecondsSinceLastDirectionChange == 0) {
-            player->pushedYaw = (rand() % 49152) - 32767;
+            player->pushedYaw = ShipUtils::Random(0, 0xc000) - 0x8000;
             GameInteractor::State::RandomWindSecondsSinceLastDirectionChange = 5;
         } else {
             GameInteractor::State::RandomWindSecondsSinceLastDirectionChange--;
@@ -498,7 +488,7 @@ GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnEnemyWithOffset
     }
 
     // Generate point in random angle with a radius.
-    float angle = static_cast<float>(RandomDouble() * 2 * M_PI);
+    float angle = static_cast<float>(ShipUtils::RandomDouble() * 2 * M_PI);
     float radius = 150;
     float posXOffset = radius * cos(angle);
     float posZOffset = radius * sin(angle);

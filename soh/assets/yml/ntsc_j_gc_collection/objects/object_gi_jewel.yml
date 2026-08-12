@@ -1,0 +1,121 @@
+:config:
+  segments:
+    - [ 6, 0x0101EBC0 ]
+    - [ 4, 0x00D30E00 ]
+    - [ 8, 0x0101EBC0 ]
+    - [ 9, 0x0101EBC0 ]
+    - [ 10, 0x0101EBC0 ]
+    - [ 11, 0x0101EBC0 ]
+    - [ 12, 0x0101EBC0 ]
+    - [ 13, 0x0101EBC0 ]
+  external_files:
+    - ntsc_j_gc_collection/objects/gameplay_keep.yml
+
+gGiGoronRubyGemDL:
+  type: GFX
+  offset: 0x20A0
+  symbol: gGiGoronRubyGemDL
+
+gGiGoronRubyScintillationTex:
+  type: TEXTURE
+  offset: 0x13E0
+  symbol: gGiGoronRubyScintillationTex
+  format: I8
+  width: 32
+  height: 64
+
+gGiGoronRubySettingDL:
+  type: GFX
+  offset: 0x1FB0
+  symbol: gGiGoronRubySettingDL
+
+gGiKokiriEmeraldGemDL:
+  type: GFX
+  offset: 0x1240
+  symbol: gGiKokiriEmeraldGemDL
+
+gGiKokiriEmeraldScintillationTex:
+  type: TEXTURE
+  offset: 0x0000
+  symbol: gGiKokiriEmeraldScintillationTex
+  format: I4
+  width: 64
+  height: 64
+
+gGiKokiriEmeraldSettingDL:
+  type: GFX
+  offset: 0x10E0
+  symbol: gGiKokiriEmeraldSettingDL
+
+gGiZoraSapphireGemDL:
+  type: GFX
+  offset: 0x3530
+  symbol: gGiZoraSapphireGemDL
+
+gGiZoraSapphireScintillationTex:
+  type: TEXTURE
+  offset: 0x21F0
+  symbol: gGiZoraSapphireScintillationTex
+  format: I4
+  width: 64
+  height: 64
+
+gGiZoraSapphireSettingDL:
+  type: GFX
+  offset: 0x3370
+  symbol: gGiZoraSapphireSettingDL
+
+
+object_gi_jewelVtx_000800:
+  type: OOT:ARRAY
+  offset: 0x000800
+  symbol: object_gi_jewelVtx_000800
+  count: 89
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_jewelVtx_000D90:
+  type: OOT:ARRAY
+  offset: 0x000D90
+  symbol: object_gi_jewelVtx_000D90
+  count: 53
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_jewelVtx_001BE0:
+  type: OOT:ARRAY
+  offset: 0x001BE0
+  symbol: object_gi_jewelVtx_001BE0
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_jewelVtx_001D90:
+  type: OOT:ARRAY
+  offset: 0x001D90
+  symbol: object_gi_jewelVtx_001D90
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_jewelVtx_0029F0:
+  type: OOT:ARRAY
+  offset: 0x0029F0
+  symbol: object_gi_jewelVtx_0029F0
+  count: 104
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_jewelVtx_003070:
+  type: OOT:ARRAY
+  offset: 0x003070
+  symbol: object_gi_jewelVtx_003070
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

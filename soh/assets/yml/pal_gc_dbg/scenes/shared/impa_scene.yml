@@ -1,0 +1,14 @@
+:config:
+  segments:
+    - [ 2, 0x03042000 ]
+
+impa_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: impa_scene
+
+
+impa_sceneCollisionHeader_000CE0:
+  type: OOT:COLLISION
+  offset: 0x000CE0
+  symbol: impa_sceneCollisionHeader_000CE0

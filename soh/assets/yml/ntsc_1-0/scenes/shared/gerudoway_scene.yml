@@ -1,0 +1,108 @@
+:config:
+  segments:
+    - [ 2, 0x01E9E6B0 ]
+
+gerudoway_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: gerudoway_scene
+
+gGerudowayPath_002AC:
+  type: OOT:PATH
+  offset: 0x2AC
+  symbol: gGerudowayPath_002AC
+  num_paths: 4
+
+gThievesHideoutDayEntranceTex:
+  type: TEXTURE
+  offset: 0xBD20
+  symbol: gThievesHideoutDayEntranceTex
+  format: IA16
+  width: 128
+  height: 4
+
+gThievesHideoutNightEntranceTex:
+  type: TEXTURE
+  offset: 0xB920
+  symbol: gThievesHideoutNightEntranceTex
+  format: IA16
+  width: 128
+  height: 4
+
+gerudoway_sceneTex_007520:
+  type: TEXTURE
+  offset: 0x7520
+  symbol: gerudoway_sceneTex_007520
+  format: RGBA16
+  width: 32
+  height: 64
+
+gerudoway_sceneTex_008520:
+  type: TEXTURE
+  offset: 0x8520
+  symbol: gerudoway_sceneTex_008520
+  format: IA4
+  width: 128
+  height: 32
+
+gerudoway_sceneTex_008D20:
+  type: TEXTURE
+  offset: 0x8D20
+  symbol: gerudoway_sceneTex_008D20
+  format: IA8
+  width: 64
+  height: 32
+
+gerudoway_sceneTex_009520:
+  type: TEXTURE
+  offset: 0x9520
+  symbol: gerudoway_sceneTex_009520
+  format: IA8
+  width: 32
+  height: 64
+
+gerudoway_sceneTex_009D20:
+  type: TEXTURE
+  offset: 0x9D20
+  symbol: gerudoway_sceneTex_009D20
+  format: RGBA16
+  width: 32
+  height: 32
+
+gerudoway_sceneTex_00A520:
+  type: TEXTURE
+  offset: 0xA520
+  symbol: gerudoway_sceneTex_00A520
+  format: RGBA16
+  width: 32
+  height: 16
+
+gerudoway_sceneTex_00A920:
+  type: TEXTURE
+  offset: 0xA920
+  symbol: gerudoway_sceneTex_00A920
+  format: RGBA16
+  width: 32
+  height: 64
+
+gerudoway_sceneTex_00C120:
+  type: TEXTURE
+  offset: 0xC120
+  symbol: gerudoway_sceneTex_00C120
+  format: RGBA16
+  width: 64
+  height: 32
+
+gerudoway_sceneTex_00D120:
+  type: TEXTURE
+  offset: 0xD120
+  symbol: gerudoway_sceneTex_00D120
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+gerudoway_sceneCollisionHeader_0074EC:
+  type: OOT:COLLISION
+  offset: 0x0074EC
+  symbol: gerudoway_sceneCollisionHeader_0074EC

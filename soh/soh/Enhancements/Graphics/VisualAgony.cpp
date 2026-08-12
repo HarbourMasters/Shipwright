@@ -5,6 +5,7 @@
 #include "textures/icon_item_24_static/icon_item_24_static.h"
 
 extern "C" {
+#include "z64.h"
 #include "macros.h"
 #include "variables.h"
 #include "functions.h"
@@ -58,14 +59,14 @@ void DrawVisualAgony(Player* player, double temp) {
             if (CVarGetInteger(CVAR_COSMETIC("HUD.VisualSoA.UseMargins"), 0) != 0) {
                 X_Margins_VSOA = Left_Margins;
             };
-            PosX_VSOA =
-                OTRGetDimensionFromLeftEdge(CVarGetInteger(CVAR_COSMETIC("HUD.VisualSoA.PosX"), 0) + X_Margins_VSOA);
+            PosX_VSOA = static_cast<s16>(OTRGetDimensionFromLeftEdge(
+                static_cast<float>(CVarGetInteger(CVAR_COSMETIC("HUD.VisualSoA.PosX"), 0) + X_Margins_VSOA)));
         } else if (CVarGetInteger(CVAR_COSMETIC("HUD.VisualSoA.PosType"), 0) == ANCHOR_RIGHT) {
             if (CVarGetInteger(CVAR_COSMETIC("HUD.VisualSoA.UseMargins"), 0) != 0) {
                 X_Margins_VSOA = Right_Margins;
             }
-            PosX_VSOA =
-                OTRGetDimensionFromRightEdge(CVarGetInteger(CVAR_COSMETIC("HUD.VisualSoA.PosX"), 0) + X_Margins_VSOA);
+            PosX_VSOA = static_cast<s16>(OTRGetDimensionFromRightEdge(
+                static_cast<float>(CVarGetInteger(CVAR_COSMETIC("HUD.VisualSoA.PosX"), 0) + X_Margins_VSOA)));
         } else if (CVarGetInteger(CVAR_COSMETIC("HUD.VisualSoA.PosType"), 0) == ANCHOR_NONE) {
             PosX_VSOA = CVarGetInteger(CVAR_COSMETIC("HUD.VisualSoA.PosX"), 0);
         } else if (CVarGetInteger(CVAR_COSMETIC("HUD.VisualSoA.PosType"), 0) == HIDDEN) {
@@ -99,7 +100,7 @@ void DrawVisualAgony(Player* player, double temp) {
     }
     if (temp == 0 || temp <= 0.1f) {
         /*Fail check, it is used to draw off the icon when
-        link is standing out range but do not refresh unk_6A0.
+        Link is standing out of range but do not refresh unk_6A0.
         Also used to make a default value in my case.*/
         gDPSetPrimColor(OVERLAY_DISP++, 0, 0, stoneOfAgonyColor.r, stoneOfAgonyColor.g, stoneOfAgonyColor.b,
                         DefaultIconA);

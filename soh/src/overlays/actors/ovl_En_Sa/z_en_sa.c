@@ -4,7 +4,6 @@
 #include "scenes/overworld/spot04/spot04_scene.h"
 #include "scenes/overworld/spot05/spot05_scene.h"
 #include "soh/OTRGlobals.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS                                                                                  \
@@ -144,7 +143,7 @@ s16 func_80AF5560(EnSa* this, PlayState* play) {
     return textState;
 }
 
-u16 func_80AF55E0(PlayState* play, Actor* thisx) {
+u16 EnSa_GetTextId(PlayState* play, Actor* thisx) {
     EnSa* this = (EnSa*)thisx;
     u16 reaction = Text_GetFaceReaction(play, 0x10);
 
@@ -187,7 +186,7 @@ u16 func_80AF55E0(PlayState* play, Actor* thisx) {
     return 0x1001;
 }
 
-s16 func_80AF56F4(PlayState* play, Actor* thisx) {
+s16 EnSa_UpdateTalkState(PlayState* play, Actor* thisx) {
     s16 ret = NPC_TALK_STATE_TALKING;
     EnSa* this = (EnSa*)thisx;
 
@@ -230,7 +229,7 @@ void func_80AF57D8(EnSa* this, PlayState* play) {
         ABS((s16)(this->actor.yawTowardsPlayer - this->actor.shape.rot.y)) < 0x1555 ||
         this->interactInfo.talkState != NPC_TALK_STATE_IDLE) {
         Npc_UpdateTalking(play, &this->actor, &this->interactInfo.talkState, this->collider.dim.radius + 30.0f,
-                          func_80AF55E0, func_80AF56F4);
+                          EnSa_GetTextId, EnSa_UpdateTalkState);
     }
 }
 
@@ -539,12 +538,10 @@ void EnSa_Destroy(Actor* thisx, PlayState* play) {
     EnSa* this = (EnSa*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void func_80AF6448(EnSa* this, PlayState* play) {
-    if (play->sceneNum == SCENE_KOKIRI_FOREST) {
+    if (GameInteractor_Should(VB_SARIA_GESTURE, play->sceneNum == SCENE_KOKIRI_FOREST, this)) {
         if (this->interactInfo.talkState != NPC_TALK_STATE_IDLE) {
             switch (this->actor.textId) {
                 case 0x1002:

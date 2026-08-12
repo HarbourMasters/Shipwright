@@ -253,7 +253,7 @@ void ObjSyokudai_Update(Actor* thisx, PlayState* play2) {
             lightRadius = (this->litTimer * 200.0f) / 20.0f;
         }
         brightness = (u8)(Rand_ZeroOne() * 127.0f) + 128;
-        func_8002F974(&this->actor, NA_SE_EV_TORCH - SFX_FLAG);
+        Actor_PlaySfx_Flagged(&this->actor, NA_SE_EV_TORCH - SFX_FLAG);
     }
     Lights_PointSetColorAndRadius(&this->lightInfo, brightness, brightness, 0, lightRadius);
     this->flameTexScroll++;

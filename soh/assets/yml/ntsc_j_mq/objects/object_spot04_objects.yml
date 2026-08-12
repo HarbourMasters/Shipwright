@@ -1,0 +1,64 @@
+:config:
+  segments:
+    - [ 6, 0x00E58FB0 ]
+    - [ 4, 0x00D310D0 ]
+    - [ 8, 0x00E58FB0 ]
+    - [ 9, 0x00E58FB0 ]
+    - [ 10, 0x00E58FB0 ]
+    - [ 11, 0x00E58FB0 ]
+    - [ 12, 0x00E58FB0 ]
+    - [ 13, 0x00E58FB0 ]
+  external_files:
+    - ntsc_j_mq/objects/gameplay_keep.yml
+
+gDekuTreeMouthCol:
+  type: OOT:COLLISION
+  offset: 0x0E94
+  symbol: gDekuTreeMouthCol
+
+gDekuTreeMouthDL:
+  type: GFX
+  offset: 0x09D0
+  symbol: gDekuTreeMouthDL
+
+gDekuTreeMouthTex_0000:
+  type: TEXTURE
+  offset: 0x0000
+  symbol: gDekuTreeMouthTex_0000
+  format: RGBA16
+  width: 32
+  height: 16
+
+gDekuTreeMouthTex_0400:
+  type: TEXTURE
+  offset: 0x0400
+  symbol: gDekuTreeMouthTex_0400
+  format: RGBA16
+  width: 32
+  height: 16
+
+gDekuTreeUnusedMouthTex_0EC0:
+  type: TEXTURE
+  offset: 0x0EC0
+  symbol: gDekuTreeUnusedMouthTex_0EC0
+  format: RGBA16
+  width: 32
+  height: 16
+
+gDekuTreeUnusedMouthTex_12C0:
+  type: TEXTURE
+  offset: 0x12C0
+  symbol: gDekuTreeUnusedMouthTex_12C0
+  format: RGBA16
+  width: 32
+  height: 16
+
+
+object_spot04_objectsVtx_000800:
+  type: OOT:ARRAY
+  offset: 0x000800
+  symbol: object_spot04_objectsVtx_000800
+  count: 29
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

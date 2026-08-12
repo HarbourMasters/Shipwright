@@ -22,6 +22,9 @@ void RegionTable_Init_ZorasFountain() {
         LOCATION(RC_ZF_NEAR_JABU_POT_2,              	  logic->IsChild && logic->CanBreakPots()),
         LOCATION(RC_ZF_NEAR_JABU_POT_3,              	  logic->IsChild && logic->CanBreakPots()),
         LOCATION(RC_ZF_NEAR_JABU_POT_4,              	  logic->IsChild && logic->CanBreakPots()),
+        LOCATION(RC_ZF_BOULDER,                           logic->BlastOrSmash()),
+        LOCATION(RC_ZF_SILVER_BOULDER,                    logic->CanUse(RG_SILVER_GAUNTLETS)),
+        LOCATION(RC_ZF_UNDERGROUND_BOULDER,               logic->CanUse(RG_SILVER_GAUNTLETS) && logic->BlastOrSmash()),
         LOCATION(RC_ZF_TREE,                         	  logic->IsChild && logic->CanBonkTrees()),
         LOCATION(RC_ZF_BUSH_1,                       	  logic->IsChild),
         LOCATION(RC_ZF_BUSH_2,                       	  logic->IsChild),
@@ -107,7 +110,7 @@ void RegionTable_Init_ZorasFountain() {
         LOCATION(RC_ZF_GS_HIDDEN_CAVE, logic->IsAdult && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOMB_THROW) && logic->CanGetNightTimeGS()),
     }, {
         //Exits
-        //It is possible to avoid fall damage by jumping towards the right and landing in deeper water, but this is basically never relevent
+        //It is possible to avoid fall damage by jumping towards the right and landing in deeper water, but this is basically never relevant
         ENTRANCE(RR_ZORAS_FOUNTAIN, logic->HasItem(RG_BRONZE_SCALE) || logic->TakeDamage()),
         ENTRANCE(RR_ZF_HIDDEN_CAVE, true),
     });

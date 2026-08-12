@@ -71,7 +71,7 @@ void func_808B3960(BgSpot15Rrbox* this, PlayState* play, CollisionHeader* collis
     }
 }
 
-void func_808B39E8(Vec3f* arg0, Vec3f* arg1, f32 arg2, f32 arg3) {
+void BgSpot15Rrbox_RotatePoint(Vec3f* arg0, Vec3f* arg1, f32 arg2, f32 arg3) {
     arg0->x = (arg1->z * arg2) + (arg1->x * arg3);
     arg0->y = arg1->y;
     arg0->z = (arg1->z * arg3) - (arg1->x * arg2);
@@ -141,7 +141,7 @@ void BgSpot15Rrbox_Destroy(Actor* thisx, PlayState* play) {
     D_808B4590 = 0;
 }
 
-s32 func_808B3CA0(BgSpot15Rrbox* this, PlayState* play, s32 arg2) {
+s32 BgSpot15Rrbox_TrySnapToCheckedPoint(BgSpot15Rrbox* this, PlayState* play, s32 arg2) {
     f32 chkDist = 0.0f;
     Vec3f actorPosition;
     Vec3f actorScale;
@@ -152,7 +152,7 @@ s32 func_808B3CA0(BgSpot15Rrbox* this, PlayState* play, s32 arg2) {
     actorScale.y = D_808B45DC[arg2].y * (this->dyna.actor.scale.y * 10.0f);
     actorScale.z = D_808B45DC[arg2].z * (this->dyna.actor.scale.z * 10.0f);
 
-    func_808B39E8(&actorPosition, &actorScale, this->unk_16C, this->unk_170);
+    BgSpot15Rrbox_RotatePoint(&actorPosition, &actorScale, this->unk_16C, this->unk_170);
 
     actorPosition.x += this->dyna.actor.world.pos.x;
     actorPosition.y += this->dyna.actor.prevPos.y;
@@ -168,7 +168,7 @@ s32 func_808B3CA0(BgSpot15Rrbox* this, PlayState* play, s32 arg2) {
     return false;
 }
 
-f32 func_808B3DDC(BgSpot15Rrbox* this, PlayState* play) {
+f32 BgSpot15Rrbox_GetFloorHeight(BgSpot15Rrbox* this, PlayState* play) {
     s32 i;
     Vec3f position;
     Vec3f scale;
@@ -183,7 +183,7 @@ f32 func_808B3DDC(BgSpot15Rrbox* this, PlayState* play) {
         scale.y = D_808B45DC[i].y * (actor->scale.y * 10.0f);
         scale.z = D_808B45DC[i].z * (actor->scale.z * 10.0f);
 
-        func_808B39E8(&position, &scale, this->unk_16C, this->unk_170);
+        BgSpot15Rrbox_RotatePoint(&position, &scale, this->unk_16C, this->unk_170);
 
         position.x += actor->world.pos.x;
         position.y += actor->prevPos.y;
@@ -199,20 +199,20 @@ f32 func_808B3DDC(BgSpot15Rrbox* this, PlayState* play) {
     return returnValue;
 }
 
-s32 func_808B3F58(BgSpot15Rrbox* this, PlayState* play) {
-    if (func_808B3CA0(this, play, 0)) {
+s32 BgSpot15Rrbox_TrySnapToFloor(BgSpot15Rrbox* this, PlayState* play) {
+    if (BgSpot15Rrbox_TrySnapToCheckedPoint(this, play, 0)) {
         return true;
     }
-    if (func_808B3CA0(this, play, 1)) {
+    if (BgSpot15Rrbox_TrySnapToCheckedPoint(this, play, 1)) {
         return true;
     }
-    if (func_808B3CA0(this, play, 2)) {
+    if (BgSpot15Rrbox_TrySnapToCheckedPoint(this, play, 2)) {
         return true;
     }
-    if (func_808B3CA0(this, play, 3)) {
+    if (BgSpot15Rrbox_TrySnapToCheckedPoint(this, play, 3)) {
         return true;
     }
-    if (func_808B3CA0(this, play, 4)) {
+    if (BgSpot15Rrbox_TrySnapToCheckedPoint(this, play, 4)) {
         return true;
     }
     return false;
@@ -272,7 +272,7 @@ void func_808B4194(BgSpot15Rrbox* this, PlayState* play) {
     actor->world.pos.x = actor->home.pos.x + (tempUnk178 * this->unk_16C);
     actor->world.pos.z = actor->home.pos.z + (tempUnk178 * this->unk_170);
 
-    if (!func_808B3F58(this, play)) {
+    if (!BgSpot15Rrbox_TrySnapToFloor(this, play)) {
         actor->home.pos.x = actor->world.pos.x;
         actor->home.pos.z = actor->world.pos.z;
         player->stateFlags2 &= ~PLAYER_STATE2_MOVING_DYNAPOLY;
@@ -305,7 +305,7 @@ void func_808B4380(BgSpot15Rrbox* this, PlayState* play) {
     this->dyna.actor.velocity.y = 0.0f;
     this->dyna.actor.velocity.z = 0.0f;
     this->dyna.actor.gravity = -1.0f;
-    this->dyna.actor.floorHeight = func_808B3DDC(this, play);
+    this->dyna.actor.floorHeight = BgSpot15Rrbox_GetFloorHeight(this, play);
     this->actionFunc = func_808B43D0;
 }
 

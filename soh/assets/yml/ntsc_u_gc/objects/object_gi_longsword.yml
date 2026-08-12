@@ -1,0 +1,27 @@
+:config:
+  segments:
+    - [ 6, 0x0111E6A0 ]
+    - [ 4, 0x00D30F00 ]
+    - [ 8, 0x0111E6A0 ]
+    - [ 9, 0x0111E6A0 ]
+    - [ 10, 0x0111E6A0 ]
+    - [ 11, 0x0111E6A0 ]
+    - [ 12, 0x0111E6A0 ]
+    - [ 13, 0x0111E6A0 ]
+  external_files:
+    - ntsc_u_gc/objects/gameplay_keep.yml
+
+gGiBiggoronSwordDL:
+  type: GFX
+  offset: 0x0600
+  symbol: gGiBiggoronSwordDL
+
+
+object_gi_longswordVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_gi_longswordVtx_000000
+  count: 96
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

@@ -1,0 +1,228 @@
+:config:
+  segments:
+    - [ 12, 0x00850060 ]
+
+gWorldMapAreaBox1Tex:
+  type: TEXTURE
+  offset: 0x6E40
+  symbol: gWorldMapAreaBox1Tex
+  format: IA4
+  width: 32
+  height: 19
+
+gWorldMapAreaBox2Tex:
+  type: TEXTURE
+  offset: 0x6F70
+  symbol: gWorldMapAreaBox2Tex
+  format: IA4
+  width: 48
+  height: 38
+
+gWorldMapAreaBox3Tex:
+  type: TEXTURE
+  offset: 0x7300
+  symbol: gWorldMapAreaBox3Tex
+  format: IA4
+  width: 32
+  height: 17
+
+gWorldMapAreaBox4Tex:
+  type: TEXTURE
+  offset: 0x7410
+  symbol: gWorldMapAreaBox4Tex
+  format: IA4
+  width: 32
+  height: 13
+
+gWorldMapAreaBox5Tex:
+  type: TEXTURE
+  offset: 0x74E0
+  symbol: gWorldMapAreaBox5Tex
+  format: IA4
+  width: 32
+  height: 26
+
+gWorldMapAreaBox6Tex:
+  type: TEXTURE
+  offset: 0x7680
+  symbol: gWorldMapAreaBox6Tex
+  format: IA4
+  width: 48
+  height: 19
+
+gWorldMapAreaBox7Tex:
+  type: TEXTURE
+  offset: 0x7848
+  symbol: gWorldMapAreaBox7Tex
+  format: IA4
+  width: 96
+  height: 59
+
+gWorldMapAreaBox8Tex:
+  type: TEXTURE
+  offset: 0x8358
+  symbol: gWorldMapAreaBox8Tex
+  format: IA4
+  width: 16
+  height: 16
+
+gWorldMapArrowTex:
+  type: TEXTURE
+  offset: 0x83D8
+  symbol: gWorldMapArrowTex
+  format: IA8
+  width: 8
+  height: 8
+
+gWorldMapCloud10Tex:
+  type: TEXTURE
+  offset: 0xA168
+  symbol: gWorldMapCloud10Tex
+  format: I4
+  width: 32
+  height: 19
+
+gWorldMapCloud11Tex:
+  type: TEXTURE
+  offset: 0xA298
+  symbol: gWorldMapCloud11Tex
+  format: I4
+  width: 32
+  height: 20
+
+gWorldMapCloud12Tex:
+  type: TEXTURE
+  offset: 0xA3D8
+  symbol: gWorldMapCloud12Tex
+  format: I4
+  width: 32
+  height: 19
+
+gWorldMapCloud13Tex:
+  type: TEXTURE
+  offset: 0xA508
+  symbol: gWorldMapCloud13Tex
+  format: I4
+  width: 48
+  height: 22
+
+gWorldMapCloud14Tex:
+  type: TEXTURE
+  offset: 0xA718
+  symbol: gWorldMapCloud14Tex
+  format: I4
+  width: 32
+  height: 13
+
+gWorldMapCloud15Tex:
+  type: TEXTURE
+  offset: 0xA7E8
+  symbol: gWorldMapCloud15Tex
+  format: I4
+  width: 112
+  height: 72
+
+gWorldMapCloud16Tex:
+  type: TEXTURE
+  offset: 0xB7A8
+  symbol: gWorldMapCloud16Tex
+  format: I4
+  width: 32
+  height: 24
+
+gWorldMapCloud1Tex:
+  type: TEXTURE
+  offset: 0x8418
+  symbol: gWorldMapCloud1Tex
+  format: I4
+  width: 64
+  height: 60
+
+gWorldMapCloud2Tex:
+  type: TEXTURE
+  offset: 0x8B98
+  symbol: gWorldMapCloud2Tex
+  format: I4
+  width: 48
+  height: 45
+
+gWorldMapCloud3Tex:
+  type: TEXTURE
+  offset: 0x8FD0
+  symbol: gWorldMapCloud3Tex
+  format: I4
+  width: 48
+  height: 32
+
+gWorldMapCloud4Tex:
+  type: TEXTURE
+  offset: 0x92D0
+  symbol: gWorldMapCloud4Tex
+  format: I4
+  width: 48
+  height: 49
+
+gWorldMapCloud5Tex:
+  type: TEXTURE
+  offset: 0x9768
+  symbol: gWorldMapCloud5Tex
+  format: I4
+  width: 48
+  height: 21
+
+gWorldMapCloud6Tex:
+  type: TEXTURE
+  offset: 0x9960
+  symbol: gWorldMapCloud6Tex
+  format: I4
+  width: 32
+  height: 22
+
+gWorldMapCloud7Tex:
+  type: TEXTURE
+  offset: 0x9AC0
+  symbol: gWorldMapCloud7Tex
+  format: I4
+  width: 64
+  height: 26
+
+gWorldMapCloud8Tex:
+  type: TEXTURE
+  offset: 0x9E00
+  symbol: gWorldMapCloud8Tex
+  format: I4
+  width: 32
+  height: 14
+
+gWorldMapCloud9Tex:
+  type: TEXTURE
+  offset: 0x9EE0
+  symbol: gWorldMapCloud9Tex
+  format: I4
+  width: 48
+  height: 27
+
+gWorldMapDotTex:
+  type: TEXTURE
+  offset: 0x6E00
+  symbol: gWorldMapDotTex
+  format: IA8
+  width: 8
+  height: 8
+
+gWorldMapImageTLUT:
+  type: TEXTURE
+  offset: 0x6C00
+  symbol: gWorldMapImageTLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gWorldMapImageTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gWorldMapImageTex
+  format: CI8
+  width: 216
+  height: 128
+

@@ -1,0 +1,481 @@
+:config:
+  segments:
+    - [ 3, 0x02ABA000 ]
+    - [ 2, 0x02A83000 ]
+  directory: scenes/shared/spot18_scene
+  external_files:
+    - pal_gc_dbg/scenes/shared/spot18_scene.yml
+    - pal_gc_dbg/code/sys_matrix.yml
+    - pal_gc_dbg/scenes/shared/spot18_room_3Set_000400.yml
+    - pal_gc_dbg/scenes/shared/spot18_room_3Set_0006C0.yml
+    - pal_gc_dbg/scenes/shared/spot18_room_3Set_000800.yml
+
+spot18_room_3:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: spot18_room_3
+
+spot18_room_3Tex_00B448:
+  type: TEXTURE
+  offset: 0xB448
+  symbol: spot18_room_3Tex_00B448
+  format: RGBA16
+  width: 32
+  height: 32
+
+spot18_room_3Tex_00BC48:
+  type: TEXTURE
+  offset: 0xBC48
+  symbol: spot18_room_3Tex_00BC48
+  format: RGBA16
+  width: 16
+  height: 32
+
+spot18_room_3Tex_00C048:
+  type: TEXTURE
+  offset: 0xC048
+  symbol: spot18_room_3Tex_00C048
+  format: RGBA16
+  width: 16
+  height: 32
+
+spot18_room_3Tex_00C448:
+  type: TEXTURE
+  offset: 0xC448
+  symbol: spot18_room_3Tex_00C448
+  format: RGBA16
+  width: 16
+  height: 32
+
+spot18_room_3Tex_00C848:
+  type: TEXTURE
+  offset: 0xC848
+  symbol: spot18_room_3Tex_00C848
+  format: RGBA16
+  width: 32
+  height: 64
+
+spot18_room_3Tex_00D848:
+  type: TEXTURE
+  offset: 0xD848
+  symbol: spot18_room_3Tex_00D848
+  format: RGBA16
+  width: 16
+  height: 32
+
+spot18_room_3Tex_00DC48:
+  type: TEXTURE
+  offset: 0xDC48
+  symbol: spot18_room_3Tex_00DC48
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: spot18_scene
+  external_tlut_offset: 0x85C0
+
+spot18_room_3Tex_00E448:
+  type: TEXTURE
+  offset: 0xE448
+  symbol: spot18_room_3Tex_00E448
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: spot18_scene
+  external_tlut_offset: 0x85C0
+
+spot18_room_3Tex_00EC48:
+  type: TEXTURE
+  offset: 0xEC48
+  symbol: spot18_room_3Tex_00EC48
+  format: RGBA16
+  width: 32
+  height: 32
+
+spot18_room_3Tex_00F448:
+  type: TEXTURE
+  offset: 0xF448
+  symbol: spot18_room_3Tex_00F448
+  format: RGBA16
+  width: 64
+  height: 32
+
+spot18_room_3Tex_010448:
+  type: TEXTURE
+  offset: 0x10448
+  symbol: spot18_room_3Tex_010448
+  format: RGBA16
+  width: 32
+  height: 32
+
+spot18_room_3Tex_010C48:
+  type: TEXTURE
+  offset: 0x10C48
+  symbol: spot18_room_3Tex_010C48
+  format: RGBA16
+  width: 32
+  height: 32
+
+spot18_room_3Tex_011448:
+  type: TEXTURE
+  offset: 0x11448
+  symbol: spot18_room_3Tex_011448
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: spot18_scene
+  external_tlut_offset: 0x85C0
+
+spot18_room_3Tex_011C48:
+  type: TEXTURE
+  offset: 0x11C48
+  symbol: spot18_room_3Tex_011C48
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: spot18_scene
+  external_tlut_offset: 0x85C0
+
+spot18_room_3Tex_012448:
+  type: TEXTURE
+  offset: 0x12448
+  symbol: spot18_room_3Tex_012448
+  format: RGBA16
+  width: 16
+  height: 16
+
+spot18_room_3Tex_012648:
+  type: TEXTURE
+  offset: 0x12648
+  symbol: spot18_room_3Tex_012648
+  format: RGBA16
+  width: 16
+  height: 16
+
+spot18_room_3Tex_012848:
+  type: TEXTURE
+  offset: 0x12848
+  symbol: spot18_room_3Tex_012848
+  format: I4
+  width: 128
+  height: 64
+
+spot18_room_3Tex_013848:
+  type: TEXTURE
+  offset: 0x13848
+  symbol: spot18_room_3Tex_013848
+  format: CI8
+  width: 64
+  height: 32
+  external_tlut: spot18_scene
+  external_tlut_offset: 0x85C0
+
+spot18_room_3Tex_014048:
+  type: TEXTURE
+  offset: 0x14048
+  symbol: spot18_room_3Tex_014048
+  format: RGBA16
+  width: 32
+  height: 32
+
+spot18_room_3Tex_014848:
+  type: TEXTURE
+  offset: 0x14848
+  symbol: spot18_room_3Tex_014848
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: spot18_scene
+  external_tlut_offset: 0x85C0
+
+spot18_room_3Tex_015048:
+  type: TEXTURE
+  offset: 0x15048
+  symbol: spot18_room_3Tex_015048
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: spot18_scene
+  external_tlut_offset: 0x85C0
+
+spot18_room_3Tex_015848:
+  type: TEXTURE
+  offset: 0x15848
+  symbol: spot18_room_3Tex_015848
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: spot18_scene
+  external_tlut_offset: 0x85C0
+
+spot18_room_3Tex_016048:
+  type: TEXTURE
+  offset: 0x16048
+  symbol: spot18_room_3Tex_016048
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: spot18_scene
+  external_tlut_offset: 0x85C0
+
+spot18_room_3Tex_016848:
+  type: TEXTURE
+  offset: 0x16848
+  symbol: spot18_room_3Tex_016848
+  format: CI8
+  width: 32
+  height: 32
+  external_tlut: spot18_scene
+  external_tlut_offset: 0x85C0
+
+spot18_room_3Tex_016C48:
+  type: TEXTURE
+  offset: 0x16C48
+  symbol: spot18_room_3Tex_016C48
+  format: RGBA16
+  width: 32
+  height: 32
+
+spot18_room_3Tex_017448:
+  type: TEXTURE
+  offset: 0x17448
+  symbol: spot18_room_3Tex_017448
+  format: IA8
+  width: 64
+  height: 64
+
+spot18_room_3Tex_0194E8:
+  type: TEXTURE
+  offset: 0x194E8
+  symbol: spot18_room_3Tex_0194E8
+  format: RGBA16
+  width: 32
+  height: 64
+
+spot18_room_3Tex_01A4E8:
+  type: TEXTURE
+  offset: 0x1A4E8
+  symbol: spot18_room_3Tex_01A4E8
+  format: RGBA16
+  width: 64
+  height: 32
+
+spot18_room_3Tex_01B4E8:
+  type: TEXTURE
+  offset: 0x1B4E8
+  symbol: spot18_room_3Tex_01B4E8
+  format: RGBA16
+  width: 32
+  height: 32
+
+spot18_room_3Tex_01BCE8:
+  type: TEXTURE
+  offset: 0x1BCE8
+  symbol: spot18_room_3Tex_01BCE8
+  format: RGBA16
+  width: 64
+  height: 32
+
+spot18_room_3Tex_01CCE8:
+  type: TEXTURE
+  offset: 0x1CCE8
+  symbol: spot18_room_3Tex_01CCE8
+  format: RGBA16
+  width: 64
+  height: 32
+
+
+spot18_room_3Vtx_000830:
+  type: OOT:ARRAY
+  offset: 0x000830
+  symbol: spot18_room_3Vtx_000830
+  count: 201
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot18_room_3DL_0014C0:
+  type: GFX
+  offset: 0x0014C0
+  symbol: spot18_room_3DL_0014C0
+
+spot18_room_3Vtx_0020C0:
+  type: OOT:ARRAY
+  offset: 0x0020C0
+  symbol: spot18_room_3Vtx_0020C0
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot18_room_3DL_002230:
+  type: GFX
+  offset: 0x002230
+  symbol: spot18_room_3DL_002230
+
+spot18_room_3Vtx_002348:
+  type: OOT:ARRAY
+  offset: 0x002348
+  symbol: spot18_room_3Vtx_002348
+  count: 126
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot18_room_3DL_002B28:
+  type: GFX
+  offset: 0x002B28
+  symbol: spot18_room_3DL_002B28
+
+spot18_room_3Vtx_0033A0:
+  type: OOT:ARRAY
+  offset: 0x0033A0
+  symbol: spot18_room_3Vtx_0033A0
+  count: 462
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot18_room_3DL_005080:
+  type: GFX
+  offset: 0x005080
+  symbol: spot18_room_3DL_005080
+
+spot18_room_3Vtx_006A58:
+  type: OOT:ARRAY
+  offset: 0x006A58
+  symbol: spot18_room_3Vtx_006A58
+  count: 380
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot18_room_3DL_008218:
+  type: GFX
+  offset: 0x008218
+  symbol: spot18_room_3DL_008218
+
+spot18_room_3Vtx_0098E0:
+  type: OOT:ARRAY
+  offset: 0x0098E0
+  symbol: spot18_room_3Vtx_0098E0
+  count: 127
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot18_room_3DL_00A0D0:
+  type: GFX
+  offset: 0x00A0D0
+  symbol: spot18_room_3DL_00A0D0
+
+spot18_room_3Vtx_00A720:
+  type: OOT:ARRAY
+  offset: 0x00A720
+  symbol: spot18_room_3Vtx_00A720
+  count: 107
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot18_room_3DL_00ADD0:
+  type: GFX
+  offset: 0x00ADD0
+  symbol: spot18_room_3DL_00ADD0
+
+spot18_room_3Vtx_00B108:
+  type: OOT:ARRAY
+  offset: 0x00B108
+  symbol: spot18_room_3Vtx_00B108
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot18_room_3DL_00B288:
+  type: GFX
+  offset: 0x00B288
+  symbol: spot18_room_3DL_00B288
+
+spot18_room_3Vtx_018450:
+  type: OOT:ARRAY
+  offset: 0x018450
+  symbol: spot18_room_3Vtx_018450
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot18_room_3DL_018610:
+  type: GFX
+  offset: 0x018610
+  symbol: spot18_room_3DL_018610
+
+spot18_room_3Vtx_018788:
+  type: OOT:ARRAY
+  offset: 0x018788
+  symbol: spot18_room_3Vtx_018788
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot18_room_3DL_018948:
+  type: GFX
+  offset: 0x018948
+  symbol: spot18_room_3DL_018948
+
+spot18_room_3Vtx_018A78:
+  type: OOT:ARRAY
+  offset: 0x018A78
+  symbol: spot18_room_3Vtx_018A78
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot18_room_3DL_018BF8:
+  type: GFX
+  offset: 0x018BF8
+  symbol: spot18_room_3DL_018BF8
+
+spot18_room_3Vtx_018D68:
+  type: OOT:ARRAY
+  offset: 0x018D68
+  symbol: spot18_room_3Vtx_018D68
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot18_room_3DL_018F48:
+  type: GFX
+  offset: 0x018F48
+  symbol: spot18_room_3DL_018F48
+
+spot18_room_3Vtx_019158:
+  type: OOT:ARRAY
+  offset: 0x019158
+  symbol: spot18_room_3Vtx_019158
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot18_room_3DL_019218:
+  type: GFX
+  offset: 0x019218
+  symbol: spot18_room_3DL_019218
+
+spot18_room_3Vtx_0192D8:
+  type: OOT:ARRAY
+  offset: 0x0192D8
+  symbol: spot18_room_3Vtx_0192D8
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+spot18_room_3DL_0193D8:
+  type: GFX
+  offset: 0x0193D8
+  symbol: spot18_room_3DL_0193D8

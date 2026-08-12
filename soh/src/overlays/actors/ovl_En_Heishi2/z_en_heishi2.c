@@ -11,7 +11,6 @@
 #include "overlays/actors/ovl_Bg_Gate_Shutter/z_bg_gate_shutter.h"
 #include "overlays/actors/ovl_En_Bom/z_en_bom.h"
 #include "overlays/actors/ovl_Bg_Spot15_Saku/z_bg_spot15_saku.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
@@ -169,8 +168,6 @@ void EnHeishi2_Destroy(Actor* thisx, PlayState* play) {
     if ((this->collider.dim.radius != 0) || (this->collider.dim.height != 0)) {
         Collider_DestroyCylinder(play, &this->collider);
     }
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnHeishi2_DoNothing1(EnHeishi2* this, PlayState* play) {
@@ -319,7 +316,7 @@ void func_80A5372C(EnHeishi2* this, PlayState* play) {
     if (GameInteractor_Should(VB_PLAY_GATE_OPENING_OR_CLOSING_CS, true, this, false)) {
         this->unk_2F2[0] = 200;
         this->cameraId = Play_CreateSubCamera(play);
-        Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+        Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_WAIT);
         Play_ChangeCameraStatus(play, this->cameraId, CAM_STAT_ACTIVE);
         this->subCamEye.x = 947.0f;
         this->subCamEye.y = 1195.0f;
@@ -345,7 +342,7 @@ void func_80A53850(EnHeishi2* this, PlayState* play) {
     if ((this->unk_2F2[0] == 0) || (gate->unk_168 == 0)) {
         if (GameInteractor_Should(VB_PLAY_GATE_OPENING_OR_CLOSING_CS, true, this, true)) {
             Play_ClearCamera(play, this->cameraId);
-            Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_ACTIVE);
+            Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_ACTIVE);
         }
         Message_CloseTextbox(play);
         this->unk_30C = 1;
@@ -417,7 +414,7 @@ void func_80A53AD4(EnHeishi2* this, PlayState* play) {
     }
     this->unk_300 = TEXT_STATE_DONE;
     if (Actor_ProcessTalkRequest(&this->actor, play)) {
-        exchangeItemId = func_8002F368(play);
+        exchangeItemId = Actor_GetPlayerExchangeItemId(play);
         if (GameInteractor_Should(VB_HEISHI2_ACCEPT_ITEM_AS_ZELDAS_LETTER, exchangeItemId == EXCH_ITEM_LETTER_ZELDA,
                                   exchangeItemId)) {
             Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
@@ -431,7 +428,7 @@ void func_80A53AD4(EnHeishi2* this, PlayState* play) {
         yawDiffTemp = this->actor.yawTowardsPlayer - this->actor.shape.rot.y;
         yawDiff = ABS(yawDiffTemp);
         if (!(120.0f < this->actor.xzDistToPlayer) && (yawDiff < 0x4300)) {
-            func_8002F298(&this->actor, play, 100.0f, EXCH_ITEM_LETTER_ZELDA);
+            Actor_OfferTalkExchangeEquiCylinder(&this->actor, play, 100.0f, EXCH_ITEM_LETTER_ZELDA);
         }
     }
 }
@@ -490,7 +487,7 @@ void func_80A53DF8(EnHeishi2* this, PlayState* play) {
     if (GameInteractor_Should(VB_PLAY_GATE_OPENING_OR_CLOSING_CS, true, this, false)) {
         this->unk_2F2[0] = 200;
         this->cameraId = Play_CreateSubCamera(play);
-        Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+        Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_WAIT);
         Play_ChangeCameraStatus(play, this->cameraId, CAM_STAT_ACTIVE);
         this->subCamEyeInit.x = -71.0f;
         this->subCamEye.x = -71.0f;
@@ -520,7 +517,7 @@ void func_80A53F30(EnHeishi2* this, PlayState* play) {
     if ((this->unk_2F2[0] == 0) || (gate->openingState == 0)) {
         if (GameInteractor_Should(VB_PLAY_GATE_OPENING_OR_CLOSING_CS, true, this, true)) {
             Play_ClearCamera(play, this->cameraId);
-            Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_ACTIVE);
+            Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_ACTIVE);
         }
         if ((this->unk_30A != 2)) {
             if (this->unk_30A == 0) {
@@ -760,7 +757,7 @@ void func_80A5475C(EnHeishi2* this, PlayState* play) {
         ((yawDiff = ABS((s16)(this->actor.yawTowardsPlayer - this->actor.shape.rot.y)),
           !(this->actor.xzDistToPlayer > 120.0f)) &&
          (yawDiff < 0x4300))) {
-        func_8002F2F4(&this->actor, play);
+        Actor_OfferTalkNearColChkInfoCylinder(&this->actor, play);
     }
 }
 
@@ -793,7 +790,7 @@ void EnHeishi2_Update(Actor* thisx, PlayState* play) {
     if ((this->type == 2) || (this->type == 5)) {
         this->actor.focus.pos.y = 70.0f;
         Actor_SetFocus(&this->actor, 70.0f);
-        func_80038290(play, &this->actor, &this->unk_260, &this->unk_26C, this->actor.focus.pos);
+        Actor_TrackPlayer(play, &this->actor, &this->unk_260, &this->unk_26C, this->actor.focus.pos);
     }
 
     this->unk_2FC++;

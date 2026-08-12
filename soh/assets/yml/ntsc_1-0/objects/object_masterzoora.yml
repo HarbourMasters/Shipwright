@@ -1,0 +1,9 @@
+:config:
+  segments:
+    - [ 6, 0x01140940 ]
+
+gZoraShopkeeperAnim:
+  type: OOT:ANIMATION
+  offset: 0x78C
+  symbol: gZoraShopkeeperAnim
+

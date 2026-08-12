@@ -1,10 +1,9 @@
 #include "draw.h"
 #include "soh/OTRGlobals.h"
-#include "soh/cvar_prefixes.h"
-#include "randomizerTypes.h"
 #include "soh_assets.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
+#include "soh/Enhancements/randomizer/randomizer.h"
 
 extern "C" {
 #include "z64.h"
@@ -12,16 +11,15 @@ extern "C" {
 #include "functions.h"
 #include "variables.h"
 #include "dungeon.h"
-#include "objects/object_box/object_box.h"
+#include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_gi_key/object_gi_key.h"
 #include "objects/object_gi_bosskey/object_gi_bosskey.h"
-#include "objects/object_gi_bracelet/object_gi_bracelet.h"
 #include "objects/object_gi_compass/object_gi_compass.h"
 #include "objects/object_gi_map/object_gi_map.h"
 #include "objects/object_gi_hearts/object_gi_hearts.h"
+#include "objects/object_gi_rupy/object_gi_rupy.h"
 #include "objects/object_gi_scale/object_gi_scale.h"
 #include "objects/object_gi_fire/object_gi_fire.h"
-#include "objects/object_fish/object_fish.h"
 #include "objects/object_toki_objects/object_toki_objects.h"
 #include "objects/object_gi_bomb_2/object_gi_bomb_2.h"
 #include "objects/object_goma/object_goma.h"
@@ -31,12 +29,11 @@ extern "C" {
 #include "objects/object_fd/object_fd.h"
 #include "objects/object_mamenoki/object_mamenoki.h"
 #include "objects/object_mo/object_mo.h"
-#include "objects/object_mori_objects/object_mori_objects.h"
 #include "objects/object_sst/object_sst.h"
-#include "overlays/actors/ovl_Boss_Goma/z_boss_goma.h"
 #include "objects/object_tw/object_tw.h"
 #include "objects/object_ganon2/object_ganon2.h"
-#include "objects/object_gi_shield_1/object_gi_shield_1.h"
+#include "objects/object_mo/object_mo.h"
+#include "overlays/actors/ovl_Boss_Goma/z_boss_goma.h"
 extern PlayState* gPlayState;
 extern SaveContext gSaveContext;
 }
@@ -86,7 +83,7 @@ Color_RGB8 MapOrCompassColor[10] = {
 extern "C" u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 
 extern "C" void Randomizer_DrawSmallKey(PlayState* play, GetItemEntry* getItemEntry) {
-    s8 isCustomKeysEnabled = CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("CustomKeyModels"), 1);
+    bool isCustomKeysEnabled = CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("CustomKeyModels"), 1);
     int slot = getItemEntry->drawItemId - RG_FOREST_TEMPLE_SMALL_KEY;
 
     Gfx* customIconDLs[] = {
@@ -171,7 +168,7 @@ extern "C" void Randomizer_DrawCompass(PlayState* play, GetItemEntry* getItemEnt
 }
 
 extern "C" void Randomizer_DrawBossKey(PlayState* play, GetItemEntry* getItemEntry) {
-    s8 isCustomKeysEnabled = CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("CustomKeyModels"), 1);
+    bool isCustomKeysEnabled = CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("CustomKeyModels"), 1);
     s16 slot = getItemEntry->drawItemId - RG_FOREST_TEMPLE_BOSS_KEY;
 
     std::string CvarValue[6] = {
@@ -235,7 +232,7 @@ extern "C" void Randomizer_DrawBossKey(PlayState* play, GetItemEntry* getItemEnt
 }
 
 extern "C" void Randomizer_DrawKeyRing(PlayState* play, GetItemEntry* getItemEntry) {
-    s8 isCustomKeysEnabled = CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("CustomKeyModels"), 1);
+    bool isCustomKeysEnabled = CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("CustomKeyModels"), 1);
     int slot = getItemEntry->drawItemId - RG_FOREST_TEMPLE_KEY_RING;
 
     Gfx* CustomIconDLs[] = {
@@ -414,8 +411,21 @@ extern "C" void Randomizer_DrawTriforcePieceGI(PlayState* play, GetItemEntry get
 
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
+    auto rando = OTRGlobals::Instance->gRandomizer;
     uint8_t current = gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected;
-    uint8_t required = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED) + 1;
+    bool fullTriforce = false;
+    if (rando->GetRandoSettingValue(RSK_RAINBOW_BRIDGE) == RO_BRIDGE_TRIFORCE_PIECES) {
+        fullTriforce = rando->GetRandoSettingValue(RSK_RAINBOW_BRIDGE_TRIFORCE_COUNT) == current;
+    }
+    if (rando->GetRandoSettingValue(RSK_WINCON) == RO_WINCON_TRIFORCE_PIECES) {
+        fullTriforce = fullTriforce || (rando->GetRandoSettingValue(RSK_WINCON_TRIFORCE_COUNT) == current);
+    }
+    if (rando->GetRandoSettingValue(RSK_GANONS_BOSS_KEY) == RO_GANON_BOSS_KEY_TRIFORCE_PIECES) {
+        fullTriforce = fullTriforce || (rando->GetRandoSettingValue(RSK_GBK_TRIFORCE_COUNT) == current);
+    }
+    if (rando->GetRandoSettingValue(RSK_GANONS_SOUL) == RO_GANONS_SOUL_TRIFORCE_PIECES) {
+        fullTriforce = fullTriforce || (rando->GetRandoSettingValue(RSK_GANONS_SOUL_TRIFORCE_COUNT) == current);
+    }
 
     Matrix_Scale(triforcePieceScale, triforcePieceScale, triforcePieceScale, MTXMODE_APPLY);
 
@@ -427,7 +437,7 @@ extern "C" void Randomizer_DrawTriforcePieceGI(PlayState* play, GetItemEntry get
 
     // Animation. When not the completed triforce, create delay before showing the piece to bypass interpolation.
     // If the completed triforce, make it grow slowly.
-    if (current != required) {
+    if (!fullTriforce) {
         if (triforcePieceScale > 0.00008f && triforcePieceScale < 0.034f) {
             triforcePieceScale = 0.034f;
         } else if (triforcePieceScale < 0.035f) {
@@ -442,13 +452,13 @@ extern "C" void Randomizer_DrawTriforcePieceGI(PlayState* play, GetItemEntry get
 
     // Show piece when not currently completing the triforce. Use the scale to create a delay so interpolation doesn't
     // make the triforce twitch when the size is set to a higher value.
-    if (current != required && triforcePieceScale > 0.035f) {
+    if (!fullTriforce && triforcePieceScale > 0.035f) {
         // Get shard DL. Remove one before division to account for triforce piece given in the textbox
         // to match up the shard from the overworld model.
         Gfx* triforcePieceDL = Randomizer_GetTriforcePieceDL((current - 1) % 3);
 
         gSPDisplayList(POLY_XLU_DISP++, triforcePieceDL);
-    } else if (current == required && triforcePieceScale > 0.00008f) {
+    } else if (fullTriforce && triforcePieceScale > 0.00008f) {
         gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gTriforcePieceCompletedDL);
     }
 
@@ -1134,10 +1144,7 @@ extern "C" void Randomizer_DrawPowerBracelet(PlayState* play, GetItemEntry* getI
     gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
               G_MTX_MODELVIEW | G_MTX_LOAD);
 
-    gSPGrayscale(POLY_OPA_DISP++, true);
-    gDPSetGrayscaleColor(POLY_OPA_DISP++, 80, 80, 80, 255);
-    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiGoronBraceletDL);
-    gSPGrayscale(POLY_OPA_DISP++, false);
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiGrabDL);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
@@ -1146,16 +1153,11 @@ extern "C" void Randomizer_DrawLadder(PlayState* play, GetItemEntry* getItemEntr
     OPEN_DISPS(play->state.gfxCtx);
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    gSPSegment(POLY_OPA_DISP++, 0x08, (uintptr_t)gMoriHashiraTex);
-    Matrix_Translate(0, -30, 0, MTXMODE_APPLY);
-    Matrix_Scale(1.0f, 0.25f, 1.0f, MTXMODE_APPLY);
 
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gMoriHashigoLadderDL);
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_MODELVIEW | G_MTX_LOAD);
 
-    Matrix_RotateY(M_PIf, MTXMODE_APPLY);
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gMoriHashigoLadderDL);
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiClimbDL);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
@@ -1164,15 +1166,11 @@ extern "C" void Randomizer_DrawKneePads(PlayState* play, GetItemEntry* getItemEn
     OPEN_DISPS(play->state.gfxCtx);
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    Matrix_Translate(-35, -5, 0, MTXMODE_APPLY);
-    Matrix_Scale(0.4f, 0.8f, 1.2f, MTXMODE_APPLY);
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
-    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiDekuShieldDL);
 
-    Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    Matrix_Translate(35, -7, 4, MTXMODE_APPLY);
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
-    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiDekuShieldDL);
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_MODELVIEW | G_MTX_LOAD);
+
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiCrawlDL);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
@@ -1227,103 +1225,68 @@ extern "C" void Randomizer_DrawJabberNut(PlayState* play, GetItemEntry* getItemE
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
-static Gfx* boxLidDL;
-static Gfx* boxBodyDL;
-extern "C" void EnBox_PostLimbDrawOverride(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
-    Gfx** gfx = (Gfx**)thisx;
-    if (limbIndex == 1) {
-        gSPMatrix((*gfx)++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        gSPDisplayList((*gfx)++, boxBodyDL);
-    } else if (limbIndex == 3) {
-        gSPMatrix((*gfx)++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        gSPDisplayList((*gfx)++, boxLidDL);
-    }
-}
-
-extern "C" Gfx* EnBox_EmptyDList(GraphicsContext* gfxCtx);
-#define LIMB_COUNT_CHEST 5
 extern "C" void Randomizer_DrawOpenChest(PlayState* play, GetItemEntry* getItemEntry) {
-    static bool initialized = false;
-    static SkelAnime skelAnime;
-    static Vec3s jointTable[LIMB_COUNT_CHEST];
-    static Vec3s otherTable[LIMB_COUNT_CHEST];
-    static u32 lastUpdate = 0;
-
-    if (!initialized) {
-        initialized = true;
-        boxBodyDL = ResourceMgr_LoadGfxByName((const char*)gTreasureChestChestFrontDL);
-        boxLidDL = ResourceMgr_LoadGfxByName((const char*)gTreasureChestChestSideAndLidDL);
-        SkelAnime_Init(play, &skelAnime, (SkeletonHeader*)&gTreasureChestSkel,
-                       (AnimationHeader*)&gTreasureChestAnim_00024C, jointTable, otherTable, LIMB_COUNT_CHEST);
-
-        // no closing animation to loop, so play animation back & forth for smooth loop
-        Animation_PlayOnce(&skelAnime, (AnimationHeader*)&gTreasureChestAnim_00043C);
-    }
-
-    if (lastUpdate != play->state.frames) {
-        lastUpdate = play->state.frames;
-        if (SkelAnime_Update(&skelAnime)) {
-            Animation_Reverse(&skelAnime);
-        }
-    }
-
     OPEN_DISPS(play->state.gfxCtx);
-    Matrix_Scale(0.01f, 0.01f, 0.01f, MTXMODE_APPLY);
 
-    gDPPipeSync(POLY_OPA_DISP++);
-    gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 255);
-    gSPSegment(POLY_OPA_DISP++, 0x08, (uintptr_t)EnBox_EmptyDList(play->state.gfxCtx));
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    SkelAnime_DrawSkeletonOpa(play, &skelAnime, nullptr, (PostLimbDrawOpa)EnBox_PostLimbDrawOverride, &POLY_OPA_DISP);
+
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_MODELVIEW | G_MTX_LOAD);
+
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiOpenChestsDL);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
+extern "C" void Randomizer_DrawSilverRupee(PlayState* play, GetItemEntry* getItemEntry) {
+    OPEN_DISPS(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+    Color_RGB8 defaultColor = { 255, 255, 255 };
+    if (CVarGetInteger("gEnhancements.NewDrops", 0) != 0) {
+        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+                  G_MTX_MODELVIEW | G_MTX_LOAD);
+        Color_RGB8 silverRupeeColor = CVarGetColor24("gCosmetics.Consumable_SilverRupee.Value", defaultColor);
+        Gfx_SetupDL_25Opa(play->state.gfxCtx);
+        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+                  G_MTX_MODELVIEW | G_MTX_LOAD);
+        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0x80, silverRupeeColor.r, silverRupeeColor.g, silverRupeeColor.b, 255);
+        gDPSetEnvColor(POLY_OPA_DISP++, silverRupeeColor.r / 5, silverRupeeColor.g / 5, silverRupeeColor.b / 5, 255);
+        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiRupeeInnerDL);
+        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
+        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+                  G_MTX_MODELVIEW | G_MTX_LOAD);
+        gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, 255, 255, 255, 255);
+        gDPSetEnvColor(POLY_XLU_DISP++, silverRupeeColor.r * 0.75f, silverRupeeColor.g * 0.75f,
+                       silverRupeeColor.b * 0.75f, 255);
+        gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiRupeeOuterDL);
+    } else {
+        Matrix_Scale(0.05f, 0.05f, 0.05f, MTXMODE_APPLY);
+        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        if (CVarGetInteger("gCosmetics.Consumable_SilverRupee.Changed", 0)) {
+            Color_RGB8 rupeeColor = CVarGetColor24("gCosmetics.Consumable_SilverRupee.Value", defaultColor);
+            gDPSetGrayscaleColor(POLY_OPA_DISP++, rupeeColor.r, rupeeColor.g, rupeeColor.b, 255);
+            gSPGrayscale(POLY_OPA_DISP++, true);
+            gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL((uintptr_t)gRupeeSilverTex));
+            gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gRupeeDL);
+            gSPGrayscale(POLY_OPA_DISP++, false);
+        } else {
+            gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL((uintptr_t)gRupeeSilverTex));
+            gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gRupeeDL);
+        }
+    }
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
 extern "C" void Randomizer_DrawFishingPoleGI(PlayState* play, GetItemEntry* getItemEntry) {
-    Vec3f pos;
     OPEN_DISPS(play->state.gfxCtx);
 
-    // Draw rod
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    Matrix_Scale(0.2f, 0.2f, 0.2f, MTXMODE_APPLY);
+
     gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
               G_MTX_MODELVIEW | G_MTX_LOAD);
-    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gFishingPoleGiDL);
 
-    // Draw lure
-    Matrix_Push();
-    Matrix_Scale(5.0f, 5.0f, 5.0f, MTXMODE_APPLY);
-    pos = { 0.0f, -25.5f, -4.0f };
-    Matrix_Translate(pos.x, pos.y, pos.z, MTXMODE_APPLY);
-    Matrix_RotateZ(-M_PI_2f, MTXMODE_APPLY);
-    Matrix_RotateY(-M_PI_2f - 0.2f, MTXMODE_APPLY);
-    Matrix_Scale(0.006f, 0.006f, 0.006f, MTXMODE_APPLY);
-    Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
-              G_MTX_NOPUSH | G_MTX_MODELVIEW | G_MTX_LOAD);
-    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gFishingLureFloatDL);
-
-    // Draw hooks
-    Matrix_RotateY(0.2f, MTXMODE_APPLY);
-    Matrix_Translate(0.0f, 0.0f, -300.0f, MTXMODE_APPLY);
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gFishingLureHookDL);
-    Matrix_RotateZ(M_PI_2f, MTXMODE_APPLY);
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gFishingLureHookDL);
-
-    Matrix_Translate(0.0f, -2200.0f, 700.0f, MTXMODE_APPLY);
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gFishingLureHookDL);
-    Matrix_RotateZ(M_PIf / 2.0f, MTXMODE_APPLY);
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gFishingLureHookDL);
-
-    Matrix_Pop();
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiFishingPoleDL);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
@@ -1365,19 +1328,6 @@ extern "C" void Randomizer_DrawBombchuBag(PlayState* play, GetItemEntry* getItem
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
-extern "C" void Randomizer_DrawBombchuBagInLogic(PlayState* play, GetItemEntry* getItemEntry) {
-    if (IS_RANDO && OTRGlobals::Instance->gRandoContext->GetOption(RSK_BOMBCHU_BAG).IsNot(RO_BOMBCHU_BAG_NONE)) {
-        Randomizer_DrawBombchuBag(play, getItemEntry);
-    } else {
-        OPEN_DISPS(play->state.gfxCtx);
-        Gfx_SetupDL_26Opa(play->state.gfxCtx);
-        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
-                  G_MTX_MODELVIEW | G_MTX_LOAD);
-        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiBombchuDL);
-        CLOSE_DISPS(play->state.gfxCtx);
-    }
-}
-
 extern "C" void Randomizer_DrawOverworldKey(PlayState* play, GetItemEntry* getItemEntry) {
     OPEN_DISPS(play->state.gfxCtx);
 
@@ -1389,6 +1339,34 @@ extern "C" void Randomizer_DrawOverworldKey(PlayState* play, GetItemEntry* getIt
               G_MTX_MODELVIEW | G_MTX_LOAD);
 
     gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gHouseKeyDL);
+
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
+extern "C" void Randomizer_DrawNutBag(PlayState* play, GetItemEntry* getItemEntry) {
+    OPEN_DISPS(play->state.gfxCtx);
+
+    Gfx_SetupDL_26Opa(play->state.gfxCtx);
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_MODELVIEW | G_MTX_LOAD);
+    gSPSegment(POLY_OPA_DISP++, 0x08,
+               (uintptr_t)Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 1 * (play->state.frames * 6),
+                                             1 * (play->state.frames * 6), 32, 32, 1, 1 * (play->state.frames * 6),
+                                             1 * (play->state.frames * 6), 32, 32, 6, 6, 6, 6));
+
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiNutBagDL);
+
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
+extern "C" void Randomizer_DrawStickBag(PlayState* play, GetItemEntry* getItemEntry) {
+    OPEN_DISPS(play->state.gfxCtx);
+
+    Gfx_SetupDL_26Opa(play->state.gfxCtx);
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_MODELVIEW | G_MTX_LOAD);
+
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiStickBagDL);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

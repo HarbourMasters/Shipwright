@@ -1,0 +1,85 @@
+:config:
+  segments:
+    - [ 2, 0x01C7F750 ]
+
+  external_files:
+    - pal_1-1/scenes/nonmq/ice_doukutu_sceneSet_00F5E0.yml
+ice_doukutu_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: ice_doukutu_scene
+
+gIceCavernDayEntranceTex:
+  type: TEXTURE
+  offset: 0xFA00
+  symbol: gIceCavernDayEntranceTex
+  format: IA16
+  width: 64
+  height: 4
+
+gIceCavernNightEntranceTex:
+  type: TEXTURE
+  offset: 0xF800
+  symbol: gIceCavernNightEntranceTex
+  format: IA16
+  width: 64
+  height: 4
+
+gIceCavernSerenadeCs:
+  type: OOT:CUTSCENE
+  offset: 0x254
+  symbol: gIceCavernSerenadeCs
+
+ice_doukutu_sceneTLUT_00F8A0:
+  type: TEXTURE
+  offset: 0xF7E0
+  symbol: ice_doukutu_sceneTLUT_00F8A0
+  format: RGBA16
+  width: 4
+  height: 4
+
+ice_doukutu_sceneTex_00FCC0:
+  type: TEXTURE
+  offset: 0xFC00
+  symbol: ice_doukutu_sceneTex_00FCC0
+  format: I8
+  width: 32
+  height: 32
+
+ice_doukutu_sceneTex_0100C0:
+  type: TEXTURE
+  offset: 0x10000
+  symbol: ice_doukutu_sceneTex_0100C0
+  format: RGBA16
+  width: 32
+  height: 32
+
+ice_doukutu_sceneTex_0108C0:
+  type: TEXTURE
+  offset: 0x10800
+  symbol: ice_doukutu_sceneTex_0108C0
+  format: RGBA16
+  width: 16
+  height: 16
+
+ice_doukutu_sceneTex_010AC0:
+  type: TEXTURE
+  offset: 0x10A00
+  symbol: ice_doukutu_sceneTex_010AC0
+  format: I8
+  width: 32
+  height: 32
+
+ice_doukutu_sceneTex_010EC0:
+  type: TEXTURE
+  offset: 0x10E00
+  symbol: ice_doukutu_sceneTex_010EC0
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+ice_doukutu_sceneCollisionHeader_00F5A8:
+  type: OOT:COLLISION
+  offset: 0x00F5A8
+  symbol: ice_doukutu_sceneCollisionHeader_00F5A8

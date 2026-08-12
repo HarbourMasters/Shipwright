@@ -1,0 +1,168 @@
+:config:
+  segments:
+    - [ 3, 0x02795000 ]
+    - [ 2, 0x02793000 ]
+  directory: scenes/shared/syotes_scene
+  external_files:
+    - pal_mq_dbg/scenes/shared/syotes_scene.yml
+    - pal_mq_dbg/code/sys_matrix.yml
+
+syotes_room_0:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: syotes_room_0
+
+syotes_room_0Tex_0031E8:
+  type: TEXTURE
+  offset: 0x31E8
+  symbol: syotes_room_0Tex_0031E8
+  format: RGBA16
+  width: 32
+  height: 32
+
+syotes_room_0Tex_0039E8:
+  type: TEXTURE
+  offset: 0x39E8
+  symbol: syotes_room_0Tex_0039E8
+  format: RGBA16
+  width: 32
+  height: 32
+
+syotes_room_0Tex_0041E8:
+  type: TEXTURE
+  offset: 0x41E8
+  symbol: syotes_room_0Tex_0041E8
+  format: RGBA16
+  width: 32
+  height: 64
+
+syotes_room_0Tex_0051E8:
+  type: TEXTURE
+  offset: 0x51E8
+  symbol: syotes_room_0Tex_0051E8
+  format: RGBA16
+  width: 32
+  height: 64
+
+syotes_room_0Tex_0061E8:
+  type: TEXTURE
+  offset: 0x61E8
+  symbol: syotes_room_0Tex_0061E8
+  format: RGBA16
+  width: 32
+  height: 32
+
+syotes_room_0Tex_0069E8:
+  type: TEXTURE
+  offset: 0x69E8
+  symbol: syotes_room_0Tex_0069E8
+  format: RGBA16
+  width: 64
+  height: 32
+
+syotes_room_0Tex_0079E8:
+  type: TEXTURE
+  offset: 0x79E8
+  symbol: syotes_room_0Tex_0079E8
+  format: RGBA16
+  width: 64
+  height: 32
+
+syotes_room_0Tex_0089E8:
+  type: TEXTURE
+  offset: 0x89E8
+  symbol: syotes_room_0Tex_0089E8
+  format: RGBA16
+  width: 32
+  height: 64
+
+syotes_room_0Tex_0099E8:
+  type: TEXTURE
+  offset: 0x99E8
+  symbol: syotes_room_0Tex_0099E8
+  format: RGBA16
+  width: 64
+  height: 32
+
+syotes_room_0Tex_00A9E8:
+  type: TEXTURE
+  offset: 0xA9E8
+  symbol: syotes_room_0Tex_00A9E8
+  format: RGBA16
+  width: 32
+  height: 64
+
+syotes_room_0Tex_00BF80:
+  type: TEXTURE
+  offset: 0xBF80
+  symbol: syotes_room_0Tex_00BF80
+  format: IA16
+  width: 32
+  height: 64
+
+
+syotes_room_0Vtx_000020:
+  type: OOT:ARRAY
+  offset: 0x000020
+  symbol: syotes_room_0Vtx_000020
+  count: 374
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+syotes_room_0DL_001780:
+  type: GFX
+  offset: 0x001780
+  symbol: syotes_room_0DL_001780
+
+syotes_room_0Vtx_002260:
+  type: OOT:ARRAY
+  offset: 0x002260
+  symbol: syotes_room_0Vtx_002260
+  count: 108
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+syotes_room_0DL_002920:
+  type: GFX
+  offset: 0x002920
+  symbol: syotes_room_0DL_002920
+
+syotes_room_0Vtx_002C00:
+  type: OOT:ARRAY
+  offset: 0x002C00
+  symbol: syotes_room_0Vtx_002C00
+  count: 64
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+syotes_room_0DL_003000:
+  type: GFX
+  offset: 0x003000
+  symbol: syotes_room_0DL_003000
+
+syotes_room_0DL_0031C8:
+  type: GFX
+  offset: 0x0031C8
+  symbol: syotes_room_0DL_0031C8
+
+syotes_room_0Vtx_00B9F0:
+  type: OOT:ARRAY
+  offset: 0x00B9F0
+  symbol: syotes_room_0Vtx_00B9F0
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+syotes_room_0DL_00BCF0:
+  type: GFX
+  offset: 0x00BCF0
+  symbol: syotes_room_0DL_00BCF0
+
+syotes_room_0DL_00BF70:
+  type: GFX
+  offset: 0x00BF70
+  symbol: syotes_room_0DL_00BF70

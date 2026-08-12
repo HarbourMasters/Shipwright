@@ -1,0 +1,468 @@
+:config:
+  segments:
+    - [ 7, 0x008C2220 ]
+
+gAttackDoActionENGTex:
+  type: TEXTURE
+  offset: 0x2B80
+  symbol: gAttackDoActionENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gAttackDoActionJPNTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gAttackDoActionJPNTex
+  format: IA4
+  width: 48
+  height: 16
+
+gCheckDoActionENGTex:
+  type: TEXTURE
+  offset: 0x2D00
+  symbol: gCheckDoActionENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gCheckDoActionJPNTex:
+  type: TEXTURE
+  offset: 0x180
+  symbol: gCheckDoActionJPNTex
+  format: IA4
+  width: 48
+  height: 16
+
+gClimbDoActionENGTex:
+  type: TEXTURE
+  offset: 0x3C00
+  symbol: gClimbDoActionENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gClimbDoActionJPNTex:
+  type: TEXTURE
+  offset: 0x1080
+  symbol: gClimbDoActionJPNTex
+  format: IA4
+  width: 48
+  height: 16
+
+gDecideDoActionENGTex:
+  type: TEXTURE
+  offset: 0x3480
+  symbol: gDecideDoActionENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gDecideDoActionJPNTex:
+  type: TEXTURE
+  offset: 0x900
+  symbol: gDecideDoActionJPNTex
+  format: IA4
+  width: 48
+  height: 16
+
+gDiveDoActionENGTex:
+  type: TEXTURE
+  offset: 0x3600
+  symbol: gDiveDoActionENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gDiveDoActionJPNTex:
+  type: TEXTURE
+  offset: 0xA80
+  symbol: gDiveDoActionJPNTex
+  format: IA4
+  width: 48
+  height: 16
+
+gDownDoActionENGTex:
+  type: TEXTURE
+  offset: 0x3F00
+  symbol: gDownDoActionENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gDownDoActionJPNTex:
+  type: TEXTURE
+  offset: 0x1380
+  symbol: gDownDoActionJPNTex
+  format: IA4
+  width: 48
+  height: 16
+
+gDropDoActionENGTex:
+  type: TEXTURE
+  offset: 0x3D80
+  symbol: gDropDoActionENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gDropDoActionJPNTex:
+  type: TEXTURE
+  offset: 0x1200
+  symbol: gDropDoActionJPNTex
+  format: IA4
+  width: 48
+  height: 16
+
+gEnterDoActionENGTex:
+  type: TEXTURE
+  offset: 0x2E80
+  symbol: gEnterDoActionENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gEnterDoActionJPNTex:
+  type: TEXTURE
+  offset: 0x300
+  symbol: gEnterDoActionJPNTex
+  format: IA4
+  width: 48
+  height: 16
+
+gFasterDoActionENGTex:
+  type: TEXTURE
+  offset: 0x3780
+  symbol: gFasterDoActionENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gFasterDoActionJPNTex:
+  type: TEXTURE
+  offset: 0xC00
+  symbol: gFasterDoActionJPNTex
+  format: IA4
+  width: 48
+  height: 16
+
+gGrabDoActionENGTex:
+  type: TEXTURE
+  offset: 0x4500
+  symbol: gGrabDoActionENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gGrabDoActionJPNTex:
+  type: TEXTURE
+  offset: 0x1980
+  symbol: gGrabDoActionJPNTex
+  format: IA4
+  width: 48
+  height: 16
+
+gJumpDoActionENGTex:
+  type: TEXTURE
+  offset: 0x3300
+  symbol: gJumpDoActionENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gJumpDoActionJPNTex:
+  type: TEXTURE
+  offset: 0x780
+  symbol: gJumpDoActionJPNTex
+  format: IA4
+  width: 48
+  height: 16
+
+gNextDoActionENGTex:
+  type: TEXTURE
+  offset: 0x4380
+  symbol: gNextDoActionENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gNextDoActionJPNTex:
+  type: TEXTURE
+  offset: 0x1800
+  symbol: gNextDoActionJPNTex
+  format: IA4
+  width: 48
+  height: 16
+
+gNum1DoActionENGTex:
+  type: TEXTURE
+  offset: 0x4B00
+  symbol: gNum1DoActionENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gNum1DoActionJPNTex:
+  type: TEXTURE
+  offset: 0x1F80
+  symbol: gNum1DoActionJPNTex
+  format: IA4
+  width: 48
+  height: 16
+
+gNum2DoActionENGTex:
+  type: TEXTURE
+  offset: 0x4C80
+  symbol: gNum2DoActionENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gNum2DoActionJPNTex:
+  type: TEXTURE
+  offset: 0x2100
+  symbol: gNum2DoActionJPNTex
+  format: IA4
+  width: 48
+  height: 16
+
+gNum3DoActionENGTex:
+  type: TEXTURE
+  offset: 0x4E00
+  symbol: gNum3DoActionENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gNum3DoActionJPNTex:
+  type: TEXTURE
+  offset: 0x2280
+  symbol: gNum3DoActionJPNTex
+  format: IA4
+  width: 48
+  height: 16
+
+gNum4DoActionENGTex:
+  type: TEXTURE
+  offset: 0x4F80
+  symbol: gNum4DoActionENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gNum4DoActionJPNTex:
+  type: TEXTURE
+  offset: 0x2400
+  symbol: gNum4DoActionJPNTex
+  format: IA4
+  width: 48
+  height: 16
+
+gNum5DoActionENGTex:
+  type: TEXTURE
+  offset: 0x5100
+  symbol: gNum5DoActionENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gNum5DoActionJPNTex:
+  type: TEXTURE
+  offset: 0x2580
+  symbol: gNum5DoActionJPNTex
+  format: IA4
+  width: 48
+  height: 16
+
+gNum6DoActionENGTex:
+  type: TEXTURE
+  offset: 0x5280
+  symbol: gNum6DoActionENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gNum6DoActionJPNTex:
+  type: TEXTURE
+  offset: 0x2700
+  symbol: gNum6DoActionJPNTex
+  format: IA4
+  width: 48
+  height: 16
+
+gNum7DoActionENGTex:
+  type: TEXTURE
+  offset: 0x5400
+  symbol: gNum7DoActionENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gNum7DoActionJPNTex:
+  type: TEXTURE
+  offset: 0x2880
+  symbol: gNum7DoActionJPNTex
+  format: IA4
+  width: 48
+  height: 16
+
+gNum8DoActionENGTex:
+  type: TEXTURE
+  offset: 0x5580
+  symbol: gNum8DoActionENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gNum8DoActionJPNTex:
+  type: TEXTURE
+  offset: 0x2A00
+  symbol: gNum8DoActionJPNTex
+  format: IA4
+  width: 48
+  height: 16
+
+gOpenDoActionENGTex:
+  type: TEXTURE
+  offset: 0x3180
+  symbol: gOpenDoActionENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gOpenDoActionJPNTex:
+  type: TEXTURE
+  offset: 0x600
+  symbol: gOpenDoActionJPNTex
+  format: IA4
+  width: 48
+  height: 16
+
+gPutAwayDoActionENGTex:
+  type: TEXTURE
+  offset: 0x4800
+  symbol: gPutAwayDoActionENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gPutAwayDoActionJPNTex:
+  type: TEXTURE
+  offset: 0x1C80
+  symbol: gPutAwayDoActionJPNTex
+  format: IA4
+  width: 48
+  height: 16
+
+gReelDoActionENGTex:
+  type: TEXTURE
+  offset: 0x4980
+  symbol: gReelDoActionENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gReelDoActionJPNTex:
+  type: TEXTURE
+  offset: 0x1E00
+  symbol: gReelDoActionJPNTex
+  format: IA4
+  width: 48
+  height: 16
+
+gReturnDoActionENGTex:
+  type: TEXTURE
+  offset: 0x3000
+  symbol: gReturnDoActionENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gReturnDoActionJPNTex:
+  type: TEXTURE
+  offset: 0x480
+  symbol: gReturnDoActionJPNTex
+  format: IA4
+  width: 48
+  height: 16
+
+gSaveDoActionENGTex:
+  type: TEXTURE
+  offset: 0x4080
+  symbol: gSaveDoActionENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gSaveDoActionJPNTex:
+  type: TEXTURE
+  offset: 0x1500
+  symbol: gSaveDoActionJPNTex
+  format: IA4
+  width: 48
+  height: 16
+
+gSpeakDoActionENGTex:
+  type: TEXTURE
+  offset: 0x4200
+  symbol: gSpeakDoActionENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gSpeakDoActionJPNTex:
+  type: TEXTURE
+  offset: 0x1680
+  symbol: gSpeakDoActionJPNTex
+  format: IA4
+  width: 48
+  height: 16
+
+gStopDoActionENGTex:
+  type: TEXTURE
+  offset: 0x4680
+  symbol: gStopDoActionENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gStopDoActionJPNTex:
+  type: TEXTURE
+  offset: 0x1B00
+  symbol: gStopDoActionJPNTex
+  format: IA4
+  width: 48
+  height: 16
+
+gThrowDoActionENGTex:
+  type: TEXTURE
+  offset: 0x3900
+  symbol: gThrowDoActionENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gThrowDoActionJPNTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gThrowDoActionJPNTex
+  format: IA4
+  width: 48
+  height: 16
+
+gUnusedNaviDoActionENGTex:
+  type: TEXTURE
+  offset: 0x3A80
+  symbol: gUnusedNaviDoActionENGTex
+  format: IA4
+  width: 48
+  height: 16
+
+gUnusedNaviDoActionJPNTex:
+  type: TEXTURE
+  offset: 0xF00
+  symbol: gUnusedNaviDoActionJPNTex
+  format: IA4
+  width: 48
+  height: 16
+

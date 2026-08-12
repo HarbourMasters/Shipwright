@@ -1,0 +1,20 @@
+:config:
+  segments:
+    - [ 6, 0x00DE0130 ]
+
+gKingDodongoTitleCardENGTex:
+  type: TEXTURE
+  offset: 0x18810
+  symbol: gKingDodongoTitleCardENGTex
+  format: IA8
+  width: 128
+  height: 40
+
+gKingDodongoTitleCardJPNTex:
+  type: TEXTURE
+  offset: 0x17410
+  symbol: gKingDodongoTitleCardJPNTex
+  format: IA8
+  width: 128
+  height: 40
+

@@ -88,7 +88,7 @@ void EnZl1_Init(Actor* thisx, PlayState* play) {
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 24.0f);
     this->actor.targetMode = 0;
 
-    if (gSaveContext.sceneSetupIndex >= 4) {
+    if (gSaveContext.sceneLayer >= 4) {
         frameCount = Animation_GetLastFrame(&gChildZelda1Anim_00438);
         Animation_Change(&this->skelAnime, &gChildZelda1Anim_00438, 1.0f, 0.0f, frameCount, ANIMMODE_LOOP, 0.0f);
         this->unk_1E6 = 0;
@@ -144,7 +144,7 @@ void func_80B4AF18(EnZl1* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
     s32 pad;
 
-    func_80038290(play, &this->actor, &this->unk_200, &this->unk_206, this->actor.focus.pos);
+    Actor_TrackPlayer(play, &this->actor, &this->unk_200, &this->unk_206, this->actor.focus.pos);
 
     if (this->unk_1E6 != 0) {
         if (Actor_TextboxIsClosing(&this->actor, play)) {
@@ -153,7 +153,7 @@ void func_80B4AF18(EnZl1* this, PlayState* play) {
     } else if (Actor_ProcessTalkRequest(&this->actor, play)) {
         this->unk_1E6 = 1;
     } else if (this->actor.world.pos.y <= player->actor.world.pos.y) {
-        func_8002F2F4(&this->actor, play);
+        Actor_OfferTalkNearColChkInfoCylinder(&this->actor, play);
     }
 
     Collider_UpdateCylinder(&this->actor, &this->collider);
@@ -174,7 +174,7 @@ void func_80B4B010(EnZl1* this, PlayState* play) {
         Animation_Change(&this->skelAnime, &gChildZelda1Anim_10B38, 1.0f, 0.0f,
                          Animation_GetLastFrame(&gChildZelda1Anim_10B38), ANIMMODE_ONCE_INTERP, -10.0f);
         this->subCamId = Play_CreateSubCamera(play);
-        Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
+        Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_WAIT);
         Play_ChangeCameraStatus(play, this->subCamId, CAM_STAT_ACTIVE);
         func_800C0808(play, this->subCamId, player, CAM_SET_FREE0);
         play->envCtx.screenFillColor[0] = 255;
@@ -184,8 +184,8 @@ void func_80B4B010(EnZl1* this, PlayState* play) {
         play->envCtx.fillScreen = true;
         Play_CameraSetAtEye(play, this->subCamId, &vec1, &vec2);
         Play_CameraSetFov(play, this->subCamId, 30.0f);
-        ShrinkWindow_SetVal(0x20);
-        Interface_ChangeAlpha(2);
+        Letterbox_SetSizeTarget(0x20);
+        Interface_ChangeHudVisibilityMode(HUD_VISIBILITY_NOTHING_ALT);
         player->actor.world.pos = playerPos;
         player->actor.speedXZ = 0.0f;
         this->unk_1E2 = 0;
@@ -194,7 +194,7 @@ void func_80B4B010(EnZl1* this, PlayState* play) {
     } else {
         rotDiff = ABS(this->actor.yawTowardsPlayer - this->actor.shape.rot.y);
         if ((rotDiff < 0x238E) && !(player->actor.world.pos.y < this->actor.world.pos.y)) {
-            func_8002F2F4(&this->actor, play);
+            Actor_OfferTalkNearColChkInfoCylinder(&this->actor, play);
         }
     }
 }
@@ -332,7 +332,7 @@ void func_80B4B240(EnZl1* this, PlayState* play) {
         frameCount = Animation_GetLastFrame(animHeaderSeg);
         Animation_Change(&this->skelAnime, animHeaderSeg, 1.0f, 0.0f, frameCount, sp54[sp3C], -10.0f);
     }
-    func_80038290(play, &this->actor, &this->unk_200, &this->unk_206, this->actor.focus.pos);
+    Actor_TrackPlayer(play, &this->actor, &this->unk_200, &this->unk_206, this->actor.focus.pos);
 }
 
 void func_80B4B7F4(CsCmdActorCue* npcAction, Vec3f* pos) {
@@ -413,7 +413,7 @@ void func_80B4B8B4(EnZl1* this, PlayState* play) {
             }
             this->actor.velocity.z = (sp68.z - sp74.z) / actionLength;
         }
-        func_80038290(play, &this->actor, &this->unk_200, &this->unk_206, this->actor.focus.pos);
+        Actor_TrackPlayer(play, &this->actor, &this->unk_200, &this->unk_206, this->actor.focus.pos);
         Play_CameraSetAtEye(play, this->subCamId, &sp98, &sp8C);
         Play_CameraSetFov(play, this->subCamId, 70.0f);
     }
@@ -523,8 +523,8 @@ void func_80B4BF2C(EnZl1* this, PlayState* play) {
             }
         case 2:
             if (Actor_HasParent(&this->actor, play)) {
-                Play_CopyCamera(play, MAIN_CAM, this->subCamId);
-                Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_ACTIVE);
+                Play_CopyCamera(play, CAM_ID_MAIN, this->subCamId);
+                Play_ChangeCameraStatus(play, CAM_ID_MAIN, CAM_STAT_ACTIVE);
                 Play_ClearCamera(play, this->subCamId);
                 this->actor.parent = NULL;
                 this->unk_1E2++;
@@ -547,7 +547,7 @@ void func_80B4BF2C(EnZl1* this, PlayState* play) {
                 if (Actor_ProcessTalkRequest(&this->actor, play)) {
                     this->unk_1E2++;
                 } else {
-                    func_8002F2F4(&this->actor, play);
+                    Actor_OfferTalkNearColChkInfoCylinder(&this->actor, play);
                 }
             }
             break;
@@ -559,13 +559,13 @@ void func_80B4BF2C(EnZl1* this, PlayState* play) {
         case 6:
             if (Actor_TextboxIsClosing(&this->actor, play)) {
                 Player_SetCsActionWithHaltedActors(play, &this->actor, 7);
-                Interface_ChangeAlpha(50);
+                Interface_ChangeHudVisibilityMode(50);
                 this->actor.flags &= ~ACTOR_FLAG_TALK;
                 this->unk_1E2 = 4;
             }
             break;
     }
-    func_80038290(play, &this->actor, &this->unk_200, &this->unk_206, this->actor.focus.pos);
+    Actor_TrackPlayer(play, &this->actor, &this->unk_200, &this->unk_206, this->actor.focus.pos);
 }
 
 void EnZl1_Update(Actor* thisx, PlayState* play) {

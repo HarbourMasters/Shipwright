@@ -2,7 +2,8 @@
 
 #ifdef __cplusplus
 
-#include <libultraship/libultraship.h>
+#include <nlohmann/json.hpp>
+#include <ship/window/gui/GuiWindow.h>
 
 typedef enum {
     TYPE_S8,

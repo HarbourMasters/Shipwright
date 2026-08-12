@@ -256,9 +256,8 @@ void ObjSwitch_SetOn(ObjSwitch* this, PlayState* play) {
             } else {
                 OnePointCutscene_AttentionSetSfx(play, &this->dyna.actor, NA_SE_SY_TRE_BOX_APPEAR);
             }
+            this->cooldownOn = true;
         }
-
-        this->cooldownOn = true;
     }
 }
 
@@ -271,8 +270,8 @@ void ObjSwitch_SetOff(ObjSwitch* this, PlayState* play) {
         if ((this->dyna.actor.params >> 4 & 7) == 1) {
             if (GameInteractor_Should(VB_PLAY_ONEPOINT_ACTOR_CS, true, this)) {
                 OnePointCutscene_AttentionSetSfx(play, &this->dyna.actor, NA_SE_SY_TRE_BOX_APPEAR);
+                this->cooldownOn = true;
             }
-            this->cooldownOn = true;
         }
     }
 }
@@ -430,7 +429,7 @@ void ObjSwitch_FloorPress(ObjSwitch* this, PlayState* play) {
         if (this->dyna.actor.scale.y <= 33.0f / 2000.0f) {
             ObjSwitch_FloorDownInit(this);
             Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_FOOT_SWITCH);
-            func_800AA000(this->dyna.actor.xyzDistToPlayerSq, 120, 20, 10);
+            Rumble_Request(this->dyna.actor.xyzDistToPlayerSq, 120, 20, 10);
         }
     }
 }
@@ -488,7 +487,7 @@ void ObjSwitch_FloorRelease(ObjSwitch* this, PlayState* play) {
             ObjSwitch_FloorUpInit(this);
             Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_FOOT_SWITCH);
             if (subType == OBJSWITCH_SUBTYPE_FLOOR_1) {
-                func_800AA000(this->dyna.actor.xyzDistToPlayerSq, 120, 20, 10);
+                Rumble_Request(this->dyna.actor.xyzDistToPlayerSq, 120, 20, 10);
             }
         }
     }

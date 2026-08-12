@@ -12,7 +12,6 @@ extern "C" {
 #include "variables.h"
 #include "functions.h"
 #include "macros.h"
-#include "soh/cvar_prefixes.h"
 #include "overlays/actors/ovl_En_Kakasi2/z_en_kakasi2.h"
 extern PlayState* gPlayState;
 }
@@ -69,7 +68,7 @@ void ColViewerWindow::DrawElement() {
 
     CVarCheckbox("Apply as decal", CVAR_DEVELOPER_TOOLS("ColViewer.Decal"),
                  checkOpt.DefaultValue(true).Tooltip(
-                     "Applies the collision as a decal display. This can be useful if there is z-fighting occuring "
+                     "Applies the collision as a decal display. This can be useful if there is z-fighting occurring "
                      "with the scene geometry, but can cause other artifacts."));
     CVarCheckbox("Shaded", CVAR_DEVELOPER_TOOLS("ColViewer.Shaded"),
                  checkOpt.DefaultValue(false).Tooltip("Applies the scene's shading to the collision display."));
@@ -160,7 +159,7 @@ void CalcTriNorm(const Vec3f& v1, const Vec3f& v2, const Vec3f& v3, Vec3f& norm)
     }
 }
 
-// Various macros used for creating verticies and rendering that aren't in gbi.h
+// Various macros used for creating vertices and rendering that aren't in gbi.h
 #define G_CC_MODULATERGB_PRIM_ENVA PRIMITIVE, 0, SHADE, 0, 0, 0, 0, ENVIRONMENT
 #define G_CC_PRIMITIVE_ENVA 0, 0, 0, PRIMITIVE, 0, 0, 0, ENVIRONMENT
 #define qs105(n) ((int16_t)((n)*0x0020))
@@ -178,10 +177,10 @@ void CreateCylinderData() {
     cylinderVtx.push_back(gdSPDefVtxN(0, 128, 0, 0, 0, 0, 127, 0, 0xFF)); // Top center vertex
     // Create two rings of vertices
     for (int i = 0; i < CYL_DIVS; ++i) {
-        short vtx_x = floorf(0.5f + cosf(2.f * M_PI * i / CYL_DIVS) * 128.f);
-        short vtx_z = floorf(0.5f - sinf(2.f * M_PI * i / CYL_DIVS) * 128.f);
-        signed char norm_x = cosf(2.f * M_PI * i / CYL_DIVS) * 127.f;
-        signed char norm_z = -sinf(2.f * M_PI * i / CYL_DIVS) * 127.f;
+        short vtx_x = static_cast<short>(floorf(0.5f + cosf(static_cast<f32>(2.f * M_PI * i / CYL_DIVS)) * 128.f));
+        short vtx_z = static_cast<short>(floorf(0.5f - sinf(static_cast<f32>(2.f * M_PI * i / CYL_DIVS)) * 128.f));
+        signed char norm_x = static_cast<signed char>(cosf(static_cast<f32>(2.f * M_PI * i / CYL_DIVS)) * 127.f);
+        signed char norm_z = static_cast<signed char>(-sinf(static_cast<f32>(2.f * M_PI * i / CYL_DIVS)) * 127.f);
         cylinderVtx.push_back(gdSPDefVtxN(vtx_x, 0, vtx_z, 0, 0, norm_x, 0, norm_z, 0xFF));
         cylinderVtx.push_back(gdSPDefVtxN(vtx_x, 128, vtx_z, 0, 0, norm_x, 0, norm_z, 0xFF));
     }
@@ -217,8 +216,8 @@ void CreateCylinderData() {
     cylinderGfx.push_back(gsSPEndDisplayList());
 }
 
-// This subdivides a face into four tris by placing new verticies at the midpoints of the sides (Like a triforce!), then
-// blowing up the verticies so they are on the unit sphere
+// This subdivides a face into four tris by placing new vertices at the midpoints of the sides (Like a triforce!), then
+// blowing up the vertices so they are on the unit sphere
 void CreateSphereFace(std::vector<std::tuple<size_t, size_t, size_t>>& faces, int32_t v0Index, int32_t v1Index,
                       int32_t v2Index) {
     size_t nextIndex = sphereVtx.size();
@@ -236,7 +235,7 @@ void CreateSphereFace(std::vector<std::tuple<size_t, size_t, size_t>>& faces, in
     const Vtx& v1 = sphereVtx[v1Index];
     const Vtx& v2 = sphereVtx[v2Index];
 
-    // Create 3 new verticies at the midpoints
+    // Create 3 new vertices at the midpoints
     Vec3f vs[3] = {
         Vec3f{ (v0.n.ob[0] + v1.n.ob[0]) / 2.0f, (v0.n.ob[1] + v1.n.ob[1]) / 2.0f, (v0.n.ob[2] + v1.n.ob[2]) / 2.0f },
         Vec3f{ (v1.n.ob[0] + v2.n.ob[0]) / 2.0f, (v1.n.ob[1] + v2.n.ob[1]) / 2.0f, (v1.n.ob[2] + v2.n.ob[2]) / 2.0f },
@@ -257,14 +256,14 @@ void CreateSphereFace(std::vector<std::tuple<size_t, size_t, size_t>>& faces, in
 }
 
 // Creates a sphere following the idea in here:
-// http://blog.andreaskahler.com/2009/06/creating-icosphere-mesh-in-code.html Spcifically, create a icosahedron by
+// http://blog.andreaskahler.com/2009/06/creating-icosphere-mesh-in-code.html Specifically, create an icosahedron by
 // realizing that the points can be placed on 3 rectangles that are on each unit plane. Then, subdividing each face.
 void CreateSphereData() {
     std::vector<Vec3f> base;
 
     float d = (1.0f + sqrtf(5.0f)) / 2.0f;
 
-    // Create the 12 starting verticies, 4 on each rectangle
+    // Create the 12 starting vertices, 4 on each rectangle
     base.emplace_back(Vec3f({ -1, d, 0 }));
     base.emplace_back(Vec3f({ 1, d, 0 }));
     base.emplace_back(Vec3f({ -1, -d, 0 }));
@@ -280,7 +279,7 @@ void CreateSphereData() {
     base.emplace_back(Vec3f({ -d, 0, -1 }));
     base.emplace_back(Vec3f({ -d, 0, 1 }));
 
-    // Normalize verticies so they are on the unit sphere
+    // Normalize vertices so they are on the unit sphere
     for (Vec3f& v : base) {
         float mag = sqrtf(v.x * v.x + v.y * v.y + v.z * v.z);
         v.x /= mag;
@@ -337,8 +336,6 @@ void InitGfx(std::vector<Gfx>& gfx, ColRenderSetting setting) {
     uint32_t blc1;
     uint32_t blc2;
     uint8_t alpha;
-    uint64_t cm;
-    uint32_t gm;
 
     if (setting == ColRenderTransparent) {
         rm = Z_CMP | IM_RD | CVG_DST_FULL | FORCE_BL;
@@ -401,10 +398,10 @@ void DrawDynapoly(std::vector<Gfx>& dl, CollisionHeader* col, int32_t bgId) {
         } else if (SurfaceType_GetSceneExitIndex(&gPlayState->colCtx, poly, bgId) ||
                    func_80041E80(&gPlayState->colCtx, poly, bgId) == 0x05) {
             color = CVarGetColor(CVAR_DEVELOPER_TOOLS("ColViewer.ColorEntrance.Value"), { 0, 255, 0, 255 });
-        } else if (func_80041D4C(&gPlayState->colCtx, poly, bgId) != 0 ||
+        } else if (SurfaceType_GetFloorType(&gPlayState->colCtx, poly, bgId) != 0 ||
                    SurfaceType_IsWallDamage(&gPlayState->colCtx, poly, bgId)) {
             color = CVarGetColor(CVAR_DEVELOPER_TOOLS("ColViewer.ColorSpecialSurface.Value"), { 192, 255, 192, 255 });
-        } else if (SurfaceType_GetSlope(&gPlayState->colCtx, poly, bgId) == 0x01) {
+        } else if (SurfaceType_GetFloorEffect(&gPlayState->colCtx, poly, bgId) == FLOOR_EFFECT_1) {
             color = CVarGetColor(CVAR_DEVELOPER_TOOLS("ColViewer.ColorSlope.Value"), { 255, 255, 128, 255 });
         } else {
             color = CVarGetColor(CVAR_DEVELOPER_TOOLS("ColViewer.ColorNormal.Value"), { 255, 255, 255, 255 });
@@ -608,7 +605,9 @@ void DrawColCheckList(std::vector<Gfx>& dl, Collider** objects, int32_t count) {
 
                 Mtx m;
                 MtxF mt;
-                SkinMatrix_SetTranslate(&mt, cyl->dim.pos.x, cyl->dim.pos.y + cyl->dim.yShift, cyl->dim.pos.z);
+                SkinMatrix_SetTranslate(&mt, static_cast<f32>(cyl->dim.pos.x),
+                                        static_cast<f32>(cyl->dim.pos.y + cyl->dim.yShift),
+                                        static_cast<f32>(cyl->dim.pos.z));
                 MtxF ms;
                 int32_t radius = cyl->dim.radius == 0 ? 1 : cyl->dim.radius;
                 SkinMatrix_SetScale(&ms, radius / 128.0f, cyl->dim.height / 128.0f, radius / 128.0f);
@@ -686,14 +685,20 @@ void DrawWaterbox(std::vector<Gfx>& dl, WaterBox* water, float water_max_depth =
     }
 
     Vec3f vtx[] = {
-        { water->xMin, water->ySurface, water->zMin + water->zLength },
-        { water->xMin + water->xLength, water->ySurface, water->zMin + water->zLength },
-        { water->xMin + water->xLength, water->ySurface, water->zMin },
-        { water->xMin, water->ySurface, water->zMin },
-        { water->xMin, water_max_depth, water->zMin + water->zLength },
-        { water->xMin + water->xLength, water_max_depth, water->zMin + water->zLength },
-        { water->xMin + water->xLength, water_max_depth, water->zMin },
-        { water->xMin, water_max_depth, water->zMin },
+        { static_cast<f32>(water->xMin), static_cast<f32>(water->ySurface),
+          static_cast<f32>(water->zMin + water->zLength) },
+        { static_cast<f32>(water->xMin + water->xLength), static_cast<f32>(water->ySurface),
+          static_cast<f32>(water->zMin + water->zLength) },
+        { static_cast<f32>(water->xMin + water->xLength), static_cast<f32>(water->ySurface),
+          static_cast<f32>(water->zMin) },
+        { static_cast<f32>(water->xMin), static_cast<f32>(water->ySurface), static_cast<f32>(water->zMin) },
+        { static_cast<f32>(water->xMin), static_cast<f32>(water_max_depth),
+          static_cast<f32>(water->zMin + water->zLength) },
+        { static_cast<f32>(water->xMin + water->xLength), static_cast<f32>(water_max_depth),
+          static_cast<f32>(water->zMin + water->zLength) },
+        { static_cast<f32>(water->xMin + water->xLength), static_cast<f32>(water_max_depth),
+          static_cast<f32>(water->zMin) },
+        { static_cast<f32>(water->xMin), static_cast<f32>(water_max_depth), static_cast<f32>(water->zMin) },
     };
     DrawQuad(dl, vtx[0], vtx[1], vtx[2], vtx[3]);
     DrawQuad(dl, vtx[0], vtx[3], vtx[7], vtx[4]);
@@ -738,7 +743,7 @@ template <typename T> size_t ResetVector(T& vec) {
     size_t oldSize = vec.size();
     vec.clear();
     // Reserve slightly more space than last frame to account for variance (such as different amounts of bg actors)
-    vec.reserve(oldSize * 1.2);
+    vec.reserve(static_cast<size_t>(oldSize * 1.2f));
     return vec.capacity();
 }
 

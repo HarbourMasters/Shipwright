@@ -1,0 +1,81 @@
+:config:
+  segments:
+    - [ 3, 0x01DCC980 ]
+    - [ 2, 0x01DCBB40 ]
+  directory: scenes/shared/MIZUsin_bs_scene
+  external_files:
+    - ntsc_j_gc/scenes/shared/MIZUsin_bs_scene.yml
+    - ntsc_j_gc/code/sys_matrix.yml
+
+MIZUsin_bs_room_0:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: MIZUsin_bs_room_0
+
+MIZUsin_bs_room_0Tex_001470:
+  type: TEXTURE
+  offset: 0x1470
+  symbol: MIZUsin_bs_room_0Tex_001470
+  format: RGBA16
+  width: 32
+  height: 32
+
+MIZUsin_bs_room_0Tex_001C70:
+  type: TEXTURE
+  offset: 0x1C70
+  symbol: MIZUsin_bs_room_0Tex_001C70
+  format: RGBA16
+  width: 32
+  height: 32
+
+MIZUsin_bs_room_0Tex_002470:
+  type: TEXTURE
+  offset: 0x2470
+  symbol: MIZUsin_bs_room_0Tex_002470
+  format: RGBA16
+  width: 32
+  height: 32
+
+MIZUsin_bs_room_0Tex_002C70:
+  type: TEXTURE
+  offset: 0x2C70
+  symbol: MIZUsin_bs_room_0Tex_002C70
+  format: RGBA16
+  width: 32
+  height: 32
+
+MIZUsin_bs_room_0Tex_003470:
+  type: TEXTURE
+  offset: 0x3470
+  symbol: MIZUsin_bs_room_0Tex_003470
+  format: RGBA16
+  width: 32
+  height: 32
+
+MIZUsin_bs_room_0Tex_003C70:
+  type: TEXTURE
+  offset: 0x3C70
+  symbol: MIZUsin_bs_room_0Tex_003C70
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+MIZUsin_bs_room_0Vtx_000070:
+  type: OOT:ARRAY
+  offset: 0x000070
+  symbol: MIZUsin_bs_room_0Vtx_000070
+  count: 246
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+MIZUsin_bs_room_0DL_000FD0:
+  type: GFX
+  offset: 0x000FD0
+  symbol: MIZUsin_bs_room_0DL_000FD0
+
+MIZUsin_bs_room_0DL_001460:
+  type: GFX
+  offset: 0x001460
+  symbol: MIZUsin_bs_room_0DL_001460
