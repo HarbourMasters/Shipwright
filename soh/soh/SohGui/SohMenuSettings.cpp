@@ -7,6 +7,7 @@
 #include "soh/ResourceManagerHelpers.h"
 #include "UIWidgets.hpp"
 #include "textures/icon_item_24_static/icon_item_24_static.h"
+#include <ship/Context.h>
 #include <ship/controller/controldeck/ControlDeck.h>
 #include <spdlog/fmt/fmt.h>
 
