@@ -27,6 +27,9 @@ docs/doxygen/
 *.v64
 *.map
 *.dump
+*.wuhb
+*.rpx
+wiiu-staging*/
 out.txt
 *.sln
 *.vcxproj
