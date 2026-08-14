@@ -98,6 +98,48 @@ std::shared_ptr<SohMenu> GetSohMenu() {
     return mSohMenu;
 }
 
+std::vector<std::shared_ptr<Ship::GuiWindow>> GetAllGuiWindows() {
+    auto gui = Ship::Context::GetRawInstance()->GetWindow()->GetGui();
+    return {
+        mConsoleWindow,
+        mStatsWindow,
+        mGfxDebuggerWindow,
+        mModMenuWindow,
+        mAudioEditorWindow,
+        mInputViewer,
+        mInputViewerSettings,
+        mCosmeticsEditorWindow,
+        mActorViewerWindow,
+        mColViewerWindow,
+        mSaveEditorWindow,
+        mHookDebuggerWindow,
+        mDLViewerWindow,
+        mValueViewerWindow,
+        mMessageViewerWindow,
+        mGameplayStatsWindow,
+        mCheckTrackerWindow,
+        mCheckTrackerSettingsWindow,
+        mEntranceTrackerWindow,
+        mEntranceTrackerSettingsWindow,
+        mHintTrackerWindow,
+        mHintTrackerSettingsWindow,
+        mItemTrackerWindow,
+        mItemTrackerSettingsWindow,
+        mTimeSplitWindow,
+        mPlandomizerWindow,
+        mModalWindow,
+        mNotificationWindow,
+        mTimeDisplayWindow,
+        mAnchorRoomWindow,
+        // Registered outside SohGui.
+        gui->GetGuiWindow("Configure Controller"),
+        gui->GetGuiWindow("Console"),
+        gui->GetGuiWindow("Stats"),
+        gui->GetGuiWindow("FileBrowser"),
+        gui->GetGuiWindow("SDLAddRemoveDeviceEventHandler"),
+    };
+}
+
 void SetupMenu() {
     auto gui = Ship::Context::GetRawInstance()->GetWindow()->GetGui();
     mSohMenu = std::make_shared<SohMenu>(CVAR_WINDOW("Menu"), "Port Menu");

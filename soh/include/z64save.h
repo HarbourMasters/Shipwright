@@ -403,12 +403,18 @@ typedef enum {
     /* 01 */ QUEST_MASTER,
     /* 02 */ QUEST_RANDOMIZER,
     /* 03 */ QUEST_BOSSRUSH,
+    /* 04 */ QUEST_SPEEDRUN,
+    /* 05 */ QUEST_SPEEDRUN_MASTER,
 } Quest;
 
-#define IS_VANILLA (gSaveContext.ship.quest.id == QUEST_NORMAL)
-#define IS_MASTER_QUEST (gSaveContext.ship.quest.id == QUEST_MASTER)
+// Speedrun plays the same dungeons as the quest it mirrors, so it counts as vanilla/master quest respectively.
+#define IS_VANILLA (gSaveContext.ship.quest.id == QUEST_NORMAL || gSaveContext.ship.quest.id == QUEST_SPEEDRUN)
+#define IS_MASTER_QUEST \
+    (gSaveContext.ship.quest.id == QUEST_MASTER || gSaveContext.ship.quest.id == QUEST_SPEEDRUN_MASTER)
 #define IS_RANDO (gSaveContext.ship.quest.id == QUEST_RANDOMIZER)
 #define IS_BOSS_RUSH (gSaveContext.ship.quest.id == QUEST_BOSSRUSH)
+#define IS_SPEEDRUN \
+    (gSaveContext.ship.quest.id == QUEST_SPEEDRUN || gSaveContext.ship.quest.id == QUEST_SPEEDRUN_MASTER)
 
 typedef enum {
     /* 0x00 */ BTN_ENABLED,

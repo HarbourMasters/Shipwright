@@ -1,5 +1,9 @@
 #include "Presets.h"
+#include <algorithm>
+#include <cctype>
+#include <climits>
 #include <string>
+#include <tuple>
 #include <fstream>
 #include <spdlog/common.h>
 #include <ship/config/Config.h>
@@ -156,6 +160,75 @@ void applyPreset(std::string presetName, std::vector<PresetSection> includeSecti
     }
     ShipInit::InitAll();
     OTRGlobals::Instance->ScaleImGui();
+}
+
+nlohmann::json applyPresetToBlocks(std::string presetName, nlohmann::json blocks,
+                                   std::vector<PresetSection> includeSections) {
+    auto entry = presets.find(presetName);
+    if (entry == presets.end()) {
+        return blocks;
+    }
+    auto& info = entry->second;
+
+    for (int i = PRESET_SECTION_SETTINGS; i < PRESET_SECTION_MAX; i++) {
+        if (!info.apply[i] || !info.presetValues["blocks"].contains(blockInfo[i].names[1])) {
+            continue;
+        }
+        if (!includeSections.empty() && !SohUtils::Contains(i, includeSections)) {
+            continue;
+        }
+
+        auto section = info.presetValues["blocks"][blockInfo[i].names[1]];
+        std::string sectionStrategy = "overwrite";
+        if (info.presetValues.contains("blockStrategy") &&
+            info.presetValues["blockStrategy"].contains(blockInfo[i].names[1])) {
+            sectionStrategy = info.presetValues["blockStrategy"][blockInfo[i].names[1]];
+        }
+
+        for (auto& item : section.items()) {
+            if (!blocks.contains(item.key())) {
+                continue;
+            }
+            if (item.value().is_null()) {
+                blocks[item.key()] = nlohmann::json::object();
+            } else if (sectionStrategy == "merge") {
+                blocks[item.key()].update(item.value(), true);
+            } else {
+                blocks[item.key()] = item.value();
+            }
+        }
+    }
+
+    return blocks;
+}
+
+std::vector<std::pair<std::string, std::string>> GetSpeedrunPresets() {
+    static const std::string prefix = "Speedrun - ";
+    // {order, display name, preset name}
+    std::vector<std::tuple<int, std::string, std::string>> found;
+
+    for (auto& [name, info] : presets) {
+        if (info.fileName.rfind(prefix, 0) == 0) {
+            std::string display = info.fileName.substr(prefix.size());
+            // A leading digit orders the list and is hidden, so "Speedrun - 1 Base" shows as "Base". Presets without
+            // a digit sort last, by name.
+            int order = INT_MAX;
+            if (!display.empty() && isdigit((unsigned char)display[0])) {
+                order = display[0] - '0';
+                display.erase(0, 2);
+            }
+            found.emplace_back(order, display, name);
+        }
+    }
+
+    std::sort(found.begin(), found.end());
+
+    std::vector<std::pair<std::string, std::string>> result;
+    for (auto& [order, display, name] : found) {
+        result.emplace_back(display, name);
+    }
+
+    return result;
 }
 
 void DrawPresetSelector(std::vector<PresetSection> includeSections, std::string presetLoc, bool disabled) {

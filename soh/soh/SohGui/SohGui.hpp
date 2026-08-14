@@ -44,6 +44,8 @@ void ShowRandomizerSettingsMenu();
 void ShowEscMenu();
 UIWidgets::Colors GetMenuThemeColor();
 std::shared_ptr<SohMenu> GetSohMenu();
+// Every window registered with the Gui, the ones LUS registers itself included. May contain nulls before setup.
+std::vector<std::shared_ptr<Ship::GuiWindow>> GetAllGuiWindows();
 void DrawStartingItemsMenu(WidgetInfo& info);
 } // namespace SohGui
 

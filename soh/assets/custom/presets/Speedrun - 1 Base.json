@@ -1,0 +1,106 @@
+{
+    "blocks": {
+        "enhancements": {
+            "gCheats": {
+                "HookshotReachMultiplier": 1.0,
+                "MoonJumpOnL": 0,
+                "SpeedModifier": {
+                    "Value": 1.0
+                }
+            },
+            "gDeveloperTools": null,
+            "gEnhancements": {
+                "3DSceneRender": 0,
+                "AlwaysShowDungeonMinimapIcon": 0,
+                "AskToEquip": 0,
+                "AssignableTunicsAndBoots": 0,
+                "Autosave": 0,
+                "BetterAmmoRendering": 0,
+                "BetterFarore": 0,
+                "BombchuBowlingFirstPrize": 4,
+                "BombchusOOB": 1,
+                "BowArrowCycle": 1,
+                "CustomizeBombchuBowling": 1,
+                "CustomizeFishing": 1,
+                "CustomizeOcarinaGame": 0,
+                "DampeWin": 1,
+                "DisableBlackBars": 0,
+                "DisableBombBillboarding": 0,
+                "DisableCritWiggle": 1,
+                "DisableFixedCamera": 0,
+                "DisableGrottoRotation": 0,
+                "DisableLOD": 1,
+                "DisableLinkSwordTrail": 0,
+                "DpadEquips": 0,
+                "DpadNoDropOcarinaInput": 1,
+                "DrawLineupTick": 0,
+                "DynamicWalletIcon": 1,
+                "EarlyEyeballFrog": 1,
+                "EquipmentAlwaysVisible": 0,
+                "EquipmentCanBeRemoved": 0,
+                "FastBoomerang": 0,
+                "FasterPauseMenu": 0,
+                "FileSelectMoreInfo": 1,
+                "FirstPersonGauntlets": 0,
+                "FishNeverEscape": 1,
+                "FixDampeGoingBackwards": 1,
+                "FixDaruniaDanceSpeed": 1,
+                "FixSawSoftlock": 1,
+                "FixVineFall": 0,
+                "GravediggingTourFix": 1,
+                "HoverFishing": 1,
+                "HyperBosses": 0,
+                "HyperEnemies": 0,
+                "IncludeHeldInputsBufferWindow": 1,
+                "InjectItemCounts": {
+                    "GoldSkulltula": 1,
+                    "HeartContainer": 1,
+                    "HeartPiece": 1
+                },
+                "ItemUnequip": 0,
+                "MinimalUI": 0,
+                "MweepSpeed": 1.0,
+                "N64WeirdFrames": 1,
+                "NewDrops": 0,
+                "NoHUDHeartAnimation": 0,
+                "NoInputForCredits": 1,
+                "OcarinaGame": {
+                    "StartingNotes": 8
+                },
+                "PauseAnyCursor": 2,
+                "PauseBufferWindow": 5,
+                "PauseMenuAnimatedLink": 0,
+                "QuickBongoKill": 1,
+                "QuickPutaway": 1,
+                "RedGanonBlood": 1,
+                "RememberMapToggleState": 0,
+                "ReworkedTargeting": {
+                    "Enabled": 0
+                },
+                "ScaleAdultEquipmentAsChild": 1,
+                "SceneSpecificDirtPathFix": 1,
+                "ShowDoorLocksOnBothSides": 0,
+                "SkipArrowAnimation": 1,
+                "SkipText": 0,
+                "SlowTextSpeed": 1,
+                "StaticExplosionRadius": 0,
+                "StrengthDisabled": 0,
+                "SwordToggle": 0,
+                "TextSpeed": 1,
+                "TimeFlowFileSelect": 0,
+                "TimeSavers": {
+                    "SkipCutscene": {
+                        "Intro": 1
+                    }
+                },
+                "ToTMedallionsColors": 0,
+                "ToggleStrength": 0,
+                "VisualAgony": 0,
+                "WideShutterDoorRange": 1
+            },
+            "gRandoEnhancements": null
+        }
+    },
+    "fileType": 2,
+    "presetName": "Speedrun - Base"
+}

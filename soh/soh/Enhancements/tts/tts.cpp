@@ -817,6 +817,16 @@ void RegisterOnUpdateMainMenuSelection() {
                 SpeechSynthesizer::Instance->Speak(translation.c_str(), GetLanguageCode());
                 break;
             }
+            case QUEST_SPEEDRUN: {
+                auto translation = GetParameritizedText("quest_sel_speedrun", TEXT_BANK_FILECHOOSE, nullptr);
+                SpeechSynthesizer::Instance->Speak(translation.c_str(), GetLanguageCode());
+                break;
+            }
+            case QUEST_SPEEDRUN_MASTER: {
+                auto translation = GetParameritizedText("quest_sel_speedrun_mq", TEXT_BANK_FILECHOOSE, nullptr);
+                SpeechSynthesizer::Instance->Speak(translation.c_str(), GetLanguageCode());
+                break;
+            }
             default:
                 break;
         }
