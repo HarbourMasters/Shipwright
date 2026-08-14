@@ -189,7 +189,7 @@ void ObjSyokudai_Update(Actor* thisx, PlayState* play2) {
                 if (interactionType < 0) {
                     if (player->unk_860 == 0) {
                         player->unk_860 = 210;
-                        Audio_PlaySoundGeneral(NA_SE_EV_FLAME_IGNITION, &this->actor.projectedPos, 4,
+                        Audio_PlaySfxGeneral(NA_SE_EV_FLAME_IGNITION, &this->actor.projectedPos, 4,
                                                &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
                                                &gSfxDefaultReverb);
                     } else if (player->unk_860 < 200) {
@@ -227,7 +227,7 @@ void ObjSyokudai_Update(Actor* thisx, PlayState* play2) {
                         this->litTimer = (litTimeScale * 50) + 110;
                     }
                 }
-                Audio_PlaySoundGeneral(NA_SE_EV_FLAME_IGNITION, &this->actor.projectedPos, 4,
+                Audio_PlaySfxGeneral(NA_SE_EV_FLAME_IGNITION, &this->actor.projectedPos, 4,
                                        &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             }
         }

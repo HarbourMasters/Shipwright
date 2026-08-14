@@ -151,7 +151,7 @@ void func_80A6B250(EnHorseNormal* this) {
 
     if (D_80A6D4C0[this->unk_200] < this->skin.skelAnime.curFrame &&
         ((this->unk_200 != 0) || !(D_80A6D4C0[1] < this->skin.skelAnime.curFrame))) {
-        Audio_PlaySoundGeneral(NA_SE_EV_HORSE_WALK, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
+        Audio_PlaySfxGeneral(NA_SE_EV_HORSE_WALK, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
                                &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         this->unk_200++;
         if (this->unk_200 >= ARRAY_COUNT(D_80A6D4C0)) {
@@ -344,10 +344,10 @@ void func_80A6BC48(EnHorseNormal* this) {
 
 void func_80A6BCEC(EnHorseNormal* this) {
     if (this->animationIdx == 5) {
-        Audio_PlaySoundGeneral(NA_SE_EV_HORSE_RUN, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
+        Audio_PlaySfxGeneral(NA_SE_EV_HORSE_RUN, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
                                &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     } else if (this->animationIdx == 6) {
-        Audio_PlaySoundGeneral(NA_SE_EV_HORSE_RUN, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
+        Audio_PlaySfxGeneral(NA_SE_EV_HORSE_RUN, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
                                &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     }
 }
@@ -357,11 +357,11 @@ void func_80A6BD7C(EnHorseNormal* this) {
 
     if (this->animationIdx == 0 && frame > 28.0f && !(this->unk_1E4 & 1)) {
         this->unk_1E4 |= 1;
-        Audio_PlaySoundGeneral(NA_SE_EV_HORSE_SANDDUST, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
+        Audio_PlaySfxGeneral(NA_SE_EV_HORSE_SANDDUST, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
                                &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     } else if (this->animationIdx == 3 && frame > 25.0f && !(this->unk_1E4 & 2)) {
         this->unk_1E4 |= 2;
-        Audio_PlaySoundGeneral(NA_SE_EV_HORSE_LAND2, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
+        Audio_PlaySfxGeneral(NA_SE_EV_HORSE_LAND2, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
                                &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     }
 }
@@ -431,10 +431,10 @@ void EnHorseNormal_Wander(EnHorseNormal* this, PlayState* play) {
             this->unk_1E4 &= ~1;
             this->unk_1E4 &= ~2;
             if (phi_t0 == 1) {
-                Audio_PlaySoundGeneral(NA_SE_EV_HORSE_GROAN, &this->unk_204, 4, &gSfxDefaultFreqAndVolScale,
+                Audio_PlaySfxGeneral(NA_SE_EV_HORSE_GROAN, &this->unk_204, 4, &gSfxDefaultFreqAndVolScale,
                                        &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             } else if (phi_t0 == 3) {
-                Audio_PlaySoundGeneral(NA_SE_EV_HORSE_NEIGH, &this->unk_204, 4, &gSfxDefaultFreqAndVolScale,
+                Audio_PlaySfxGeneral(NA_SE_EV_HORSE_NEIGH, &this->unk_204, 4, &gSfxDefaultFreqAndVolScale,
                                        &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             } else {
                 func_80A6BCEC(this);
@@ -462,10 +462,10 @@ void EnHorseNormal_Wander(EnHorseNormal* this, PlayState* play) {
             this->unk_1E4 &= ~1;
             this->unk_1E4 &= ~2;
             if (phi_t0 == 1) {
-                Audio_PlaySoundGeneral(NA_SE_EV_HORSE_GROAN, &this->unk_204, 4, &gSfxDefaultFreqAndVolScale,
+                Audio_PlaySfxGeneral(NA_SE_EV_HORSE_GROAN, &this->unk_204, 4, &gSfxDefaultFreqAndVolScale,
                                        &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             } else if (phi_t0 == 3) {
-                Audio_PlaySoundGeneral(NA_SE_EV_HORSE_NEIGH, &this->unk_204, 4, &gSfxDefaultFreqAndVolScale,
+                Audio_PlaySfxGeneral(NA_SE_EV_HORSE_NEIGH, &this->unk_204, 4, &gSfxDefaultFreqAndVolScale,
                                        &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             } else {
                 func_80A6BCEC(this);
@@ -501,11 +501,11 @@ void EnHorseNormal_Wait(EnHorseNormal* this, PlayState* play) {
             this->animationIdx = 0;
         } else if (rand < 0.8f) {
             this->animationIdx = 1;
-            Audio_PlaySoundGeneral(NA_SE_EV_HORSE_GROAN, &this->unk_204, 4, &gSfxDefaultFreqAndVolScale,
+            Audio_PlaySfxGeneral(NA_SE_EV_HORSE_GROAN, &this->unk_204, 4, &gSfxDefaultFreqAndVolScale,
                                    &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         } else {
             this->animationIdx = 3;
-            Audio_PlaySoundGeneral(NA_SE_EV_HORSE_NEIGH, &this->unk_204, 4, &gSfxDefaultFreqAndVolScale,
+            Audio_PlaySfxGeneral(NA_SE_EV_HORSE_NEIGH, &this->unk_204, 4, &gSfxDefaultFreqAndVolScale,
                                    &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         }
 
@@ -537,12 +537,12 @@ void EnHorseNormal_WaitClone(EnHorseNormal* this, PlayState* play) {
         } else if (rand < 0.8f) {
             this->animationIdx = 1;
             this->unk_1E4 |= 0x20;
-            Audio_PlaySoundGeneral(NA_SE_EV_HORSE_GROAN, &this->unk_204, 4, &gSfxDefaultFreqAndVolScale,
+            Audio_PlaySfxGeneral(NA_SE_EV_HORSE_GROAN, &this->unk_204, 4, &gSfxDefaultFreqAndVolScale,
                                    &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         } else {
             this->animationIdx = 3;
             this->unk_1E4 |= 0x20;
-            Audio_PlaySoundGeneral(NA_SE_EV_HORSE_NEIGH, &this->unk_204, 4, &gSfxDefaultFreqAndVolScale,
+            Audio_PlaySfxGeneral(NA_SE_EV_HORSE_NEIGH, &this->unk_204, 4, &gSfxDefaultFreqAndVolScale,
                                    &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         }
 
@@ -630,19 +630,19 @@ void func_80A6CC88(PlayState* play, EnHorseNormal* this, Vec3f* arg2) {
 
     if (this->animationIdx == 0 && curFrame > 28.0f && !(this->unk_1E4 & 8)) {
         this->unk_1E4 |= 8;
-        Audio_PlaySoundGeneral(NA_SE_EV_HORSE_SANDDUST, &this->unk_1E8, 4, &gSfxDefaultFreqAndVolScale,
+        Audio_PlaySfxGeneral(NA_SE_EV_HORSE_SANDDUST, &this->unk_1E8, 4, &gSfxDefaultFreqAndVolScale,
                                &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     } else if (this->animationIdx == 3 && curFrame > 25.0f && !(this->unk_1E4 & 0x10)) {
         this->unk_1E4 |= 0x10;
-        Audio_PlaySoundGeneral(NA_SE_EV_HORSE_LAND2, &this->unk_1E8, 4, &gSfxDefaultFreqAndVolScale,
+        Audio_PlaySfxGeneral(NA_SE_EV_HORSE_LAND2, &this->unk_1E8, 4, &gSfxDefaultFreqAndVolScale,
                                &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     } else if (this->animationIdx == 3 && this->unk_1E4 & 0x20) {
         this->unk_1E4 &= ~0x20;
-        Audio_PlaySoundGeneral(NA_SE_EV_HORSE_NEIGH, &this->unk_1F4, 4, &gSfxDefaultFreqAndVolScale,
+        Audio_PlaySfxGeneral(NA_SE_EV_HORSE_NEIGH, &this->unk_1F4, 4, &gSfxDefaultFreqAndVolScale,
                                &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     } else if (this->animationIdx == 1 && this->unk_1E4 & 0x20) {
         this->unk_1E4 &= ~0x20;
-        Audio_PlaySoundGeneral(NA_SE_EV_HORSE_GROAN, &this->unk_1F4, 4, &gSfxDefaultFreqAndVolScale,
+        Audio_PlaySfxGeneral(NA_SE_EV_HORSE_GROAN, &this->unk_1F4, 4, &gSfxDefaultFreqAndVolScale,
                                &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     }
 }

@@ -73,7 +73,7 @@ void HandleSaveMenu(bool* should, PlayState* play) {
             *should = false;
             if (Message_GetState(&play->msgCtx) == TEXT_STATE_CHOICE && Message_ShouldAdvance(play)) {
                 if (play->msgCtx.choiceIndex == 0) {
-                    Audio_PlaySoundGeneral(NA_SE_SY_PIECE_OF_HEART, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                    Audio_PlaySfxGeneral(NA_SE_SY_PIECE_OF_HEART, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
                                            &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                     Play_PerformSave(play);
                     pauseCtx->unk_1EC = 4;
@@ -118,7 +118,7 @@ void HandleSaveMenu(bool* should, PlayState* play) {
                         break;
                     case 1:
                         // Reset (Dungeon) / Return to Spawn (Overworld)
-                        Audio_PlaySoundGeneral(NA_SE_SY_PIECE_OF_HEART, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                        Audio_PlaySfxGeneral(NA_SE_SY_PIECE_OF_HEART, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
                                                &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                         Play_SaveSceneFlags(play);
                         Sram_OpenSave();
@@ -127,7 +127,7 @@ void HandleSaveMenu(bool* should, PlayState* play) {
                         break;
                     case 2:
                         // Reset to Spawn (Dungeon)
-                        Audio_PlaySoundGeneral(NA_SE_SY_PIECE_OF_HEART, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                        Audio_PlaySfxGeneral(NA_SE_SY_PIECE_OF_HEART, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
                                                &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                         Play_SaveSceneFlags(play);
                         Sram_OpenSave();

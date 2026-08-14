@@ -771,7 +771,7 @@ void EnGo_FireGenericActionFunc(EnGo* this, PlayState* play) {
 
 void EnGo_CurledUp(EnGo* this, PlayState* play) {
     if ((DECR(this->unk_210) == 0) && EnGo_IsCameraModified(this, play)) {
-        Audio_PlaySoundGeneral(NA_SE_EN_GOLON_WAKE_UP, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
+        Audio_PlaySfxGeneral(NA_SE_EN_GOLON_WAKE_UP, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
                                &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
 
         this->skelAnime.playSpeed = 0.1f;
@@ -806,7 +806,7 @@ void EnGo_WakeUp(EnGo* this, PlayState* play) {
     }
 
     if (DECR(this->unk_212) == 0) {
-        Audio_PlaySoundGeneral(NA_SE_EN_GOLON_SIT_DOWN, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
+        Audio_PlaySfxGeneral(NA_SE_EN_GOLON_SIT_DOWN, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
                                &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         EnGo_SetupAction(this, func_80A405CC);
     } else if (!EnGo_IsCameraModified(this, play)) {
@@ -825,7 +825,7 @@ void func_80A40494(EnGo* this, PlayState* play) {
     frame += this->skelAnime.playSpeed;
 
     if (!(frame >= 0.0f)) {
-        Audio_PlaySoundGeneral(NA_SE_EN_DODO_M_GND, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
+        Audio_PlaySfxGeneral(NA_SE_EN_DODO_M_GND, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
                                &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         EnGo_SpawnDust(this, 10, 0.4f, 0.1f, 16, 26.0f, 2.0f);
         EnGo_ReverseAnimation(this);
@@ -917,7 +917,7 @@ void func_80A408D8(EnGo* this, PlayState* play) {
         EnGo_SetupAction(this, func_80A40494);
     } else if (EnGo_IsCameraModified(this, play)) {
         EnGo_ReverseAnimation(this);
-        Audio_PlaySoundGeneral(NA_SE_EN_GOLON_SIT_DOWN, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
+        Audio_PlaySfxGeneral(NA_SE_EN_GOLON_SIT_DOWN, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
                                &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         this->skelAnime.playSpeed = 0.0f;
         EnGo_SetupAction(this, func_80A405CC);

@@ -128,7 +128,7 @@ void RegisterVisualAgony() {
         double temp = va_arg(args, double);
         DrawVisualAgony(player, temp);
         if (*should == true && !SHOULD_HIDE_VISUAL_AGONY) {
-            Audio_PlaySoundGeneral(NA_SE_SY_MESSAGE_WOMAN, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+            Audio_PlaySfxGeneral(NA_SE_SY_MESSAGE_WOMAN, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
                                    &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         }
     });

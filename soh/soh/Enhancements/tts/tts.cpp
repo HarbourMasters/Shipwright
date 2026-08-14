@@ -170,7 +170,7 @@ void RegisterOnInterfaceUpdateHook() {
 
         if (gPlayState->state.frames % 7 == 0) {
             if (lostHealth >= 16) {
-                Audio_PlaySoundGeneral(NA_SE_SY_CANCEL, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                Audio_PlaySfxGeneral(NA_SE_SY_CANCEL, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
                                        &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 lostHealth -= 16;
             }

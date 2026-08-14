@@ -237,7 +237,7 @@ void DrawPreviewButton(uint16_t sequenceId, std::string sfxKey, SeqType sequence
                 CVarSetInteger(CVAR_AUDIO("Playing"), 0);
             } else {
                 if (sequenceType == SEQ_SFX || sequenceType == SEQ_VOICE) {
-                    Audio_PlaySoundGeneral(sequenceId, &pos, 4, &freqScale, &freqScale, &reverbAdd);
+                    Audio_PlaySfxGeneral(sequenceId, &pos, 4, &freqScale, &freqScale, &reverbAdd);
                 } else if (sequenceType == SEQ_INSTRUMENT) {
                     AudioOcarina_SetInstrument(sequenceId - INSTRUMENT_OFFSET);
                     AudioOcarina_SetPlaybackSong(9, 1);
