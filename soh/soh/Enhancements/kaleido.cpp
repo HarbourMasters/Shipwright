@@ -279,7 +279,7 @@ void Kaleido::Draw(PlayState* play) {
                     if (mCursorPos > 0) {
                         mCursorPos--;
                         Audio_PlaySfxGeneral(NA_SE_SY_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                     }
                     if (mCursorPos < mTopIndex) {
                         mTopIndex = mCursorPos;
@@ -288,7 +288,7 @@ void Kaleido::Draw(PlayState* play) {
                     if (mCursorPos < static_cast<int>(mEntries.size() - 1)) {
                         mCursorPos++;
                         Audio_PlaySfxGeneral(NA_SE_SY_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                     }
                     if (mCursorPos >= mTopIndex + mNumVisible &&
                         mTopIndex + mNumVisible < static_cast<int>(mEntries.size())) {
@@ -301,7 +301,7 @@ void Kaleido::Draw(PlayState* play) {
                             mCursorPos = 0;
                         }
                         Audio_PlaySfxGeneral(NA_SE_SY_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                     }
                     if (mCursorPos < mTopIndex) {
                         mTopIndex = mCursorPos;
@@ -313,7 +313,7 @@ void Kaleido::Draw(PlayState* play) {
                             mCursorPos = static_cast<int>(mEntries.size() - 1);
                         }
                         Audio_PlaySfxGeneral(NA_SE_SY_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                     }
                     if (mCursorPos >= mTopIndex + mNumVisible &&
                         mTopIndex + mNumVisible < static_cast<int>(mEntries.size())) {
@@ -330,13 +330,13 @@ void Kaleido::Draw(PlayState* play) {
                 if ((pauseCtx->stickRelX > 30) || CHECK_BTN_ALL(input->press.button, BTN_DRIGHT)) {
                     pauseCtx->cursorSpecialPos = 0;
                     Audio_PlaySfxGeneral(NA_SE_SY_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                           &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                                         &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 }
             } else if (pauseCtx->cursorSpecialPos == PAUSE_CURSOR_PAGE_RIGHT) {
                 if ((pauseCtx->stickRelX < -30) || CHECK_BTN_ALL(input->press.button, BTN_DLEFT)) {
                     pauseCtx->cursorSpecialPos = 0;
                     Audio_PlaySfxGeneral(NA_SE_SY_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                           &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                                         &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 }
             }
         } else if (pauseCtx->cursorSpecialPos != 0 && pauseCtx->state == 7) {

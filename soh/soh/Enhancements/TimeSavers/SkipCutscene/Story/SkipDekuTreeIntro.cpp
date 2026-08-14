@@ -14,7 +14,7 @@ void RegisterSkipDekuTreeIntro() {
                        BgTreemouth* treeMouth = va_arg(args, BgTreemouth*);
                        Flags_SetEventChkInf(EVENTCHKINF_DEKU_TREE_OPENED_MOUTH);
                        Audio_PlaySfxGeneral(NA_SE_EV_WOODDOOR_OPEN, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                              &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                                            &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                        BgTreemouth_SetupAction(treeMouth, func_808BC6F8);
                        *should = false;
                    });

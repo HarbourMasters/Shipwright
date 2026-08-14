@@ -327,7 +327,7 @@ void BgSpot06Objects_LockWait(BgSpot06Objects* this, PlayState* play) {
         this->collider.elements->dim.worldSphere.radius = 45;
         this->actionFunc = BgSpot06Objects_LockPullOutward;
         Audio_PlaySfxGeneral(NA_SE_SY_CORRECT_CHIME, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         Flags_SetSwitch(play, this->switchFlag);
         OnePointCutscene_Init(play, 4120, 170, &this->dyna.actor, CAM_ID_MAIN);
     } else {

@@ -285,7 +285,7 @@ void EnMa2_WaitForEponasSong(EnMa2* this, PlayState* play) {
         play->msgCtx.ocarinaMode = OCARINA_MODE_04;
     } else if (play->msgCtx.ocarinaMode == OCARINA_MODE_03) {
         Audio_PlaySfxGeneral(NA_SE_SY_CORRECT_CHIME, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         this->timer = 0x1E;
         Flags_SetInfTable(INFTABLE_8E);
         this->actionFunc = EnMa2_ForceTalkAfterSong;

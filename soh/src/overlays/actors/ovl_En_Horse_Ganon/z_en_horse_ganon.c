@@ -156,7 +156,7 @@ void func_80A68870(EnHorseGanon* this) {
     if ((this->skin.skelAnime.curFrame > D_80A692B8[this->soundCount]) &&
         (this->soundCount != 0 || !(this->skin.skelAnime.curFrame > D_80A692B8[1]))) {
         Audio_PlaySfxGeneral(NA_SE_EV_HORSE_WALK, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
-                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
 
         this->soundCount++;
         if (this->soundCount >= 2) {
@@ -237,11 +237,11 @@ void func_80A68B20(EnHorseGanon* this) {
     } else if (this->currentAnimation == 3) {
         sp30 = this->actor.speedXZ / 5.0f;
         Audio_PlaySfxGeneral(NA_SE_EV_HORSE_RUN, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
-                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     } else if (this->currentAnimation == 4) {
         sp30 = this->actor.speedXZ / 7.0f;
         Audio_PlaySfxGeneral(NA_SE_EV_HORSE_RUN, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
-                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     } else {
         sp30 = 1.0f;
     }

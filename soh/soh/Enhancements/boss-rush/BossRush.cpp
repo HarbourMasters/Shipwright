@@ -244,7 +244,7 @@ void FileChoose_UpdateBossRushMenu(GameState* gameState) {
         }
 
         Audio_PlaySfxGeneral(NA_SE_SY_FSEL_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     }
 
     // Cycle through choices for currently selected option.
@@ -269,7 +269,7 @@ void FileChoose_UpdateBossRushMenu(GameState* gameState) {
         }
 
         Audio_PlaySfxGeneral(NA_SE_SY_FSEL_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     }
 
     if (sLastBossRushOptionIndex != fileChooseContext->bossRushIndex ||
@@ -289,7 +289,7 @@ void FileChoose_UpdateBossRushMenu(GameState* gameState) {
     // Load into the game.
     if (CHECK_BTN_ALL(input->press.button, BTN_START) || CHECK_BTN_ALL(input->press.button, BTN_A)) {
         Audio_PlaySfxGeneral(NA_SE_SY_FSEL_DECIDE_L, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         fileChooseContext->buttonIndex = 0xFE;
         fileChooseContext->menuMode = FS_MENU_MODE_SELECT;
         fileChooseContext->selectMode = SM_FADE_OUT;

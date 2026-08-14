@@ -76,7 +76,7 @@ void RegisterItemUnequip() {
             Interface_LoadItemIcon1(play, targetButton);
 
             Audio_PlaySfxGeneral(NA_SE_SY_DECIDE, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                   &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                                 &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
 
             *should = false;
         }

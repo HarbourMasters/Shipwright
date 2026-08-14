@@ -530,7 +530,7 @@ void FileChoose_DrawNameEntryNES(GameState* thisx) {
     if (this->configMode == CM_NAME_ENTRY) {
         if (CHECK_BTN_ALL(input->press.button, BTN_START)) {
             Audio_PlaySfxGeneral(NA_SE_SY_FSEL_DECIDE_L, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                   &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                                 &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             this->kbdY = 5;
             this->kbdX = 4;
         } else if (CHECK_BTN_ALL(input->press.button, BTN_B)) {
@@ -540,7 +540,7 @@ void FileChoose_DrawNameEntryNES(GameState* thisx) {
                 }
                 filename[i] = 0xDF;
                 Audio_PlaySfxGeneral(NA_SE_SY_FSEL_DECIDE_S, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                       &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                                     &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
             } else {
                 this->newFileNameCharCount--;
                 if (this->newFileNameCharCount < 0) {
@@ -561,7 +561,7 @@ void FileChoose_DrawNameEntryNES(GameState* thisx) {
                     }
                     filename[i] = 0xDF;
                     Audio_PlaySfxGeneral(NA_SE_SY_FSEL_DECIDE_S, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                           &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                                         &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 }
             }
         } else {
@@ -580,17 +580,17 @@ void FileChoose_DrawNameEntryNES(GameState* thisx) {
                                 if (func_80808688_ne0(&this->state, gKeyboardCharactersHiragana[this->charIndex]) ==
                                     0) {
                                     Audio_PlaySfxGeneral(NA_SE_SY_FSEL_ERROR, &gSfxDefaultPos, 4,
-                                                           &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
-                                                           &gSfxDefaultReverb);
+                                                         &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                                                         &gSfxDefaultReverb);
                                 } else {
                                     Audio_PlaySfxGeneral(NA_SE_SY_FSEL_DECIDE_S, &gSfxDefaultPos, 4,
-                                                           &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
-                                                           &gSfxDefaultReverb);
+                                                         &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                                                         &gSfxDefaultReverb);
                                 }
                             } else {
                                 Audio_PlaySfxGeneral(NA_SE_SY_FSEL_DECIDE_S, &gSfxDefaultPos, 4,
-                                                       &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
-                                                       &gSfxDefaultReverb);
+                                                     &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                                                     &gSfxDefaultReverb);
                                 filename[this->newFileNameCharCount] = gKeyboardCharactersHiragana[this->charIndex];
                                 this->newFileNameCharCount++;
                                 if (this->newFileNameCharCount >= 8) {
@@ -609,17 +609,17 @@ void FileChoose_DrawNameEntryNES(GameState* thisx) {
                                 if (func_80808688_ne0(&this->state, gKeyboardCharactersHiragana[this->charIndex]) ==
                                     0) {
                                     Audio_PlaySfxGeneral(NA_SE_SY_FSEL_ERROR, &gSfxDefaultPos, 4,
-                                                           &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
-                                                           &gSfxDefaultReverb);
+                                                         &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                                                         &gSfxDefaultReverb);
                                 } else {
                                     Audio_PlaySfxGeneral(NA_SE_SY_FSEL_DECIDE_S, &gSfxDefaultPos, 4,
-                                                           &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
-                                                           &gSfxDefaultReverb);
+                                                         &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                                                         &gSfxDefaultReverb);
                                 }
                             } else {
                                 Audio_PlaySfxGeneral(NA_SE_SY_FSEL_DECIDE_S, &gSfxDefaultPos, 4,
-                                                       &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
-                                                       &gSfxDefaultReverb);
+                                                     &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                                                     &gSfxDefaultReverb);
                                 filename[this->newFileNameCharCount] = gKeyboardCharactersKatakana[this->charIndex];
                                 this->newFileNameCharCount++;
                                 if (this->newFileNameCharCount >= 8) {
@@ -634,8 +634,8 @@ void FileChoose_DrawNameEntryNES(GameState* thisx) {
                             font->fontBuf + gKeyboardCharactersAlphanumeric[this->charIndex] * FONT_CHAR_TEX_SIZE, 0);
                         if (CHECK_BTN_ALL(input->press.button, BTN_A)) {
                             Audio_PlaySfxGeneral(NA_SE_SY_FSEL_DECIDE_S, &gSfxDefaultPos, 4,
-                                                   &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
-                                                   &gSfxDefaultReverb);
+                                                 &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                                                 &gSfxDefaultReverb);
                             filename[this->newFileNameCharCount] = gKeyboardCharactersAlphanumeric[this->charIndex];
                             this->newFileNameCharCount++;
                             if (this->newFileNameCharCount >= 8) {
@@ -652,7 +652,7 @@ void FileChoose_DrawNameEntryNES(GameState* thisx) {
                                 this->charPage = 6;
                             }
                             Audio_PlaySfxGeneral(NA_SE_SY_WIN_OPEN, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                                   &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                                                 &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                         } else if (this->kbdButton == 1) {
                             if (this->charPage == 0) {
                                 this->charPage = 3;
@@ -660,7 +660,7 @@ void FileChoose_DrawNameEntryNES(GameState* thisx) {
                                 this->charPage = 8;
                             }
                             Audio_PlaySfxGeneral(NA_SE_SY_WIN_OPEN, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                                   &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                                                 &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                         } else if (this->kbdButton == 2) {
                             if (this->charPage == 0) {
                                 this->charPage = 5;
@@ -668,7 +668,7 @@ void FileChoose_DrawNameEntryNES(GameState* thisx) {
                                 this->charPage = 7;
                             }
                             Audio_PlaySfxGeneral(NA_SE_SY_WIN_OPEN, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                                   &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                                                 &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                         } else if (this->kbdButton == 3) {
                             if (this->newFileNameCharCount == 7 && filename[7] != 0xDF) {
                                 for (i = this->newFileNameCharCount; i < 7; i++) {
@@ -676,8 +676,8 @@ void FileChoose_DrawNameEntryNES(GameState* thisx) {
                                 }
                                 filename[i] = 0xDF;
                                 Audio_PlaySfxGeneral(NA_SE_SY_FSEL_DECIDE_S, &gSfxDefaultPos, 4,
-                                                       &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
-                                                       &gSfxDefaultReverb);
+                                                     &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                                                     &gSfxDefaultReverb);
                             } else {
                                 this->newFileNameCharCount--;
                                 if (this->newFileNameCharCount < 0) {
@@ -688,8 +688,8 @@ void FileChoose_DrawNameEntryNES(GameState* thisx) {
                                 }
                                 filename[i] = 0xDF;
                                 Audio_PlaySfxGeneral(NA_SE_SY_FSEL_DECIDE_S, &gSfxDefaultPos, 4,
-                                                       &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
-                                                       &gSfxDefaultReverb);
+                                                     &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                                                     &gSfxDefaultReverb);
                             }
                         } else if (this->kbdButton == 4) {
                             validName = false;
@@ -702,8 +702,8 @@ void FileChoose_DrawNameEntryNES(GameState* thisx) {
 
                             if (validName) {
                                 Audio_PlaySfxGeneral(NA_SE_SY_FSEL_DECIDE_L, &gSfxDefaultPos, 4,
-                                                       &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
-                                                       &gSfxDefaultReverb);
+                                                     &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                                                     &gSfxDefaultReverb);
                                 gSaveContext.fileNum = this->buttonIndex;
                                 dayTime = ((void)0, gSaveContext.dayTime);
                                 Sram_InitSave(this);
@@ -716,22 +716,22 @@ void FileChoose_DrawNameEntryNES(GameState* thisx) {
                                 Rumble_Request(300.0f, 180, 20, 100);
                             } else {
                                 Audio_PlaySfxGeneral(NA_SE_SY_FSEL_ERROR, &gSfxDefaultPos, 4,
-                                                       &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
-                                                       &gSfxDefaultReverb);
+                                                     &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                                                     &gSfxDefaultReverb);
                             }
                         }
                     }
                 }
                 if (CHECK_BTN_ALL(input->press.button, BTN_CRIGHT)) {
                     Audio_PlaySfxGeneral(NA_SE_SY_FSEL_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                           &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                                         &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                     this->newFileNameCharCount++;
                     if (this->newFileNameCharCount >= 8) {
                         this->newFileNameCharCount = 7;
                     }
                 } else if (CHECK_BTN_ALL(input->press.button, BTN_CLEFT)) {
                     Audio_PlaySfxGeneral(NA_SE_SY_FSEL_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                           &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                                         &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                     this->newFileNameCharCount--;
                     if (this->newFileNameCharCount < 0) {
                         this->newFileNameCharCount = 0;
@@ -739,7 +739,7 @@ void FileChoose_DrawNameEntryNES(GameState* thisx) {
                 } else if (CHECK_BTN_ALL(input->press.button, BTN_Z)) {
                     if (func_80808688_ne0(&this->state, 0xDF) != 0) {
                         Audio_PlaySfxGeneral(NA_SE_SY_FSEL_DECIDE_S, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                     }
                 }
             }
@@ -786,15 +786,15 @@ void FileChoose_UpdateKeyboardCursorNES(GameState* thisx) {
                 if (this->charPage == 0) {
                     this->charPage = 3;
                     Audio_PlaySfxGeneral(NA_SE_SY_WIN_OPEN, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                           &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                                         &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 } else if (this->charPage == 1) {
                     this->charPage = 7;
                     Audio_PlaySfxGeneral(NA_SE_SY_WIN_OPEN, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                           &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                                         &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 } else if (this->charPage == 2) {
                     this->charPage = 6;
                     Audio_PlaySfxGeneral(NA_SE_SY_WIN_OPEN, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                           &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                                         &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 }
             }
         } else {
@@ -802,7 +802,7 @@ void FileChoose_UpdateKeyboardCursorNES(GameState* thisx) {
             if (this->kbdY != 5) {
                 if ((this->stickRelX < -30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DLEFT))) {
                     Audio_PlaySfxGeneral(NA_SE_SY_FSEL_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                           &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                                         &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                     this->charIndex--;
                     this->kbdX--;
                     if (this->kbdX < 0) {
@@ -811,7 +811,7 @@ void FileChoose_UpdateKeyboardCursorNES(GameState* thisx) {
                     }
                 } else if ((this->stickRelX > 30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DRIGHT))) {
                     Audio_PlaySfxGeneral(NA_SE_SY_FSEL_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                           &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                                         &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                     this->charIndex++;
                     this->kbdX++;
                     if (this->kbdX >= 13) {
@@ -822,14 +822,14 @@ void FileChoose_UpdateKeyboardCursorNES(GameState* thisx) {
             } else if (gSaveContext.language == LANGUAGE_JPN) {
                 if ((this->stickRelX < -30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DLEFT))) {
                     Audio_PlaySfxGeneral(NA_SE_SY_FSEL_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                           &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                                         &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                     this->kbdX--;
                     if (this->kbdX < 0) {
                         this->kbdX = 4;
                     }
                 } else if ((this->stickRelX > 30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DRIGHT))) {
                     Audio_PlaySfxGeneral(NA_SE_SY_FSEL_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                           &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                                         &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                     this->kbdX++;
                     if (this->kbdX >= 5) {
                         this->kbdX = 0;
@@ -838,14 +838,14 @@ void FileChoose_UpdateKeyboardCursorNES(GameState* thisx) {
             } else {
                 if ((this->stickRelX < -30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DLEFT))) {
                     Audio_PlaySfxGeneral(NA_SE_SY_FSEL_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                           &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                                         &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                     this->kbdX--;
                     if (this->kbdX < 3) {
                         this->kbdX = 4;
                     }
                 } else if ((this->stickRelX > 30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DRIGHT))) {
                     Audio_PlaySfxGeneral(NA_SE_SY_FSEL_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                           &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                                         &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                     this->kbdX++;
                     if (this->kbdX >= 5) {
                         this->kbdX = 3;
@@ -855,7 +855,7 @@ void FileChoose_UpdateKeyboardCursorNES(GameState* thisx) {
 
             if ((this->stickRelY > 30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DUP))) {
                 Audio_PlaySfxGeneral(NA_SE_SY_FSEL_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                       &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                                     &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 this->kbdY--;
                 if (this->kbdY < 0) {
                     if (gSaveContext.language == LANGUAGE_JPN) {
@@ -900,7 +900,7 @@ void FileChoose_UpdateKeyboardCursorNES(GameState* thisx) {
                 }
             } else if ((this->stickRelY < -30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DDOWN))) {
                 Audio_PlaySfxGeneral(NA_SE_SY_FSEL_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                       &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                                     &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 this->kbdY++;
                 if (this->kbdY >= 6) {
                     this->kbdY = 0;
@@ -1000,7 +1000,7 @@ void FileChoose_UpdateOptionsMenuNES(GameState* thisx) {
 
     if (CHECK_BTN_ALL(input->press.button, BTN_B)) {
         Audio_PlaySfxGeneral(NA_SE_SY_FSEL_DECIDE_L, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         this->prevConfigMode = this->configMode;
         this->configMode = CM_OPTIONS_TO_MAIN;
         sLastOptionButtonIndex = -1;
@@ -1024,7 +1024,7 @@ void FileChoose_UpdateOptionsMenuNES(GameState* thisx) {
 
     if ((this->stickRelX < -30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DLEFT))) {
         Audio_PlaySfxGeneral(NA_SE_SY_FSEL_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
 
         if (sSelectedSetting == FS_SETTING_AUDIO) {
             gSaveContext.audioSetting--;
@@ -1038,7 +1038,7 @@ void FileChoose_UpdateOptionsMenuNES(GameState* thisx) {
         }
     } else if ((this->stickRelX > 30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DRIGHT))) {
         Audio_PlaySfxGeneral(NA_SE_SY_FSEL_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
 
         if (sSelectedSetting == FS_SETTING_AUDIO) {
             gSaveContext.audioSetting++;
@@ -1054,11 +1054,11 @@ void FileChoose_UpdateOptionsMenuNES(GameState* thisx) {
     if ((this->stickRelY < -30) || (this->stickRelY > 30) ||
         (dpad && CHECK_BTN_ANY(input->press.button, BTN_DDOWN | BTN_DUP))) {
         Audio_PlaySfxGeneral(NA_SE_SY_FSEL_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         sSelectedSetting ^= 1;
     } else if (CHECK_BTN_ALL(input->press.button, BTN_A)) {
         Audio_PlaySfxGeneral(NA_SE_SY_FSEL_DECIDE_L, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         sSelectedSetting ^= 1;
     }
 

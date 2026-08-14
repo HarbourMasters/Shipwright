@@ -430,7 +430,7 @@ void EnGoma_Dead(EnGoma* this, PlayState* play) {
             parent->childrenGohmaState[this->actor.params] = -1;
         }
         Audio_PlaySfxGeneral(NA_SE_EN_EXTINCT, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
-                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         Actor_Kill(&this->actor);
         Item_DropCollectibleRandom(play, NULL, &this->actor.world.pos, 0x30);
     }

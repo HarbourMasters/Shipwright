@@ -129,7 +129,7 @@ void RegisterVisualAgony() {
         DrawVisualAgony(player, temp);
         if (*should == true && !SHOULD_HIDE_VISUAL_AGONY) {
             Audio_PlaySfxGeneral(NA_SE_SY_MESSAGE_WOMAN, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                   &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                                 &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         }
     });
 }

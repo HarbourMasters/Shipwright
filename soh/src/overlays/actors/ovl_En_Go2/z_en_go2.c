@@ -622,7 +622,7 @@ s16 EnGo2_UpdateTalkStateGoronDmtBiggoron(PlayState* play, EnGo2* this) {
                 case 0x3054:
                     if (dialogState == TEXT_STATE_NONE) {
                         Audio_PlaySfxGeneral(NA_SE_SY_TRE_BOX_APPEAR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                     }
             }
             return 1;
@@ -894,7 +894,7 @@ s32 func_80A44AB0(EnGo2* this, PlayState* play) {
         } else {
             if (this->collider.base.acFlags & 2) {
                 Audio_PlaySfxGeneral(NA_SE_SY_CORRECT_CHIME, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                       &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                                     &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 this->actor.flags &= ~ACTOR_FLAG_SFX_FOR_PLAYER_BODY_HIT;
                 this->collider.base.acFlags &= ~0x2;
                 EnGo2_StopRolling(this, play);

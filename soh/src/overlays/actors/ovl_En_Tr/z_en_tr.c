@@ -128,7 +128,7 @@ void EnTr_CrySpellcast(EnTr* this, PlayState* play) {
         // Both cry in the title screen cutscene, but only Kotake in the in-game cutscene
         if ((this->actor.params != TR_KOUME) || (gSaveContext.sceneLayer == 6)) {
             Audio_PlaySfxGeneral(NA_SE_EN_TWINROBA_SHOOT_VOICE, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                   &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                                 &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         }
     }
 

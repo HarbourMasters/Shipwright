@@ -181,7 +181,7 @@ void BgDdanKd_LowerStairs(BgDdanKd* this, PlayState* play) {
         }
         Camera_AddQuake(&play->mainCamera, 0, effectStrength * 0.6f, 3);
         Audio_PlaySfxGeneral(NA_SE_EV_PILLAR_SINK - SFX_FLAG, &this->dyna.actor.projectedPos, 4,
-                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     }
 }
 

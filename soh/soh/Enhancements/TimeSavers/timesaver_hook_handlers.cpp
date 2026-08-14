@@ -605,8 +605,8 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
 
                             if (Animation_OnFrame(&demoIm->skelAnime, 25.0f)) {
                                 Audio_PlaySfxGeneral(NA_SE_IT_DEKU, &demoIm->actor.projectedPos, 4,
-                                                       &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
-                                                       &gSfxDefaultReverb);
+                                                     &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                                                     &gSfxDefaultReverb);
                                 GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(
                                     demoImUpdateHook);
                                 GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(

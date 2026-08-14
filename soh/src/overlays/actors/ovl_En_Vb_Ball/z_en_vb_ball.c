@@ -137,7 +137,7 @@ void EnVbBall_UpdateBones(EnVbBall* this, PlayState* play) {
         this->actor.velocity.y *= -0.5f;
         if (this->actor.params & 1) {
             Audio_PlaySfxGeneral(NA_SE_EN_VALVAISA_LAND, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
-                                   &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                                 &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         }
         for (i = 0; i < 10; i++) {
             Vec3f dustVel = { 0.0f, 0.0f, 0.0f };
@@ -220,8 +220,8 @@ void EnVbBall_Update(Actor* thisx, PlayState* play2) {
                     if (newActor != NULL) {
                         if ((i == 0) && (this->actor.params == 100)) {
                             Audio_PlaySfxGeneral(NA_SE_EN_VALVAISA_ROCK, &newActor->actor.projectedPos, 4,
-                                                   &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
-                                                   &gSfxDefaultReverb);
+                                                 &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                                                 &gSfxDefaultReverb);
                         }
                         newActor->actor.parent = this->actor.parent;
                         newActor->actor.velocity = spawnOffset;

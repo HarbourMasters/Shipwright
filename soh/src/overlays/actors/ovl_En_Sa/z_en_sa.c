@@ -684,7 +684,7 @@ void func_80AF68E4(EnSa* this, PlayState* play) {
             }
             if (phi_v0 == 0) {
                 Audio_PlaySfxGeneral(NA_SE_PL_WALK_GROUND, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
-                                       &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                                     &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 this->unk_20C = 8;
             }
         }
