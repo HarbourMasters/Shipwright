@@ -1,4 +1,10 @@
 #include "SaveManager.h"
+
+#if defined(__WIIU__) || defined(__SWITCH__)
+// Defined near the platform-specific file helpers below.  It must be visible
+// before the save-migration path that uses it.
+int copy_file(const char* src, const char* dst);
+#endif
 #include "OTRGlobals.h"
 #include "Enhancements/game-interactor/GameInteractor.h"
 #include "Enhancements/randomizer/SeedContext.h"

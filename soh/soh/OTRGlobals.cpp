@@ -388,6 +388,14 @@ extern std::shared_ptr<SohGui::SohMenu> mSohMenu;
 }
 
 void OTRGlobals::RunExtract(int argc, char* argv[]) {
+#if defined(__WIIU__)
+    // Wii U builds intentionally ship without the desktop extractor.  The user
+    // supplies a compatible, pre-generated O2R archive in the app directory.
+    // Archive validation continues in Initialize().
+    (void)argc;
+    (void)argv;
+    return;
+#else
     bool extractDone = false;
     ExtractSteps extractStep = ES_PORT_ARCHIVE;
     WindowsSteps windowsStep = WS_TEMP;
@@ -421,13 +429,6 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
                           "\x1b[4;2HPlease regenerate a new ROM O2R and relaunch."
                           "\x1b[6;2HPress the Home button to exit...",
                           "OK", "", [&]() { exit(1); });
-#elif defined(__WIIU__)
-    SohGui::RegisterPopup("Outdated ROM Archives",
-                          "You've launched the Ship with an old a ROM O2R file.\n\n"
-                          "Please generate a ROM O2R and relaunch.\n\n"
-                          "Press and hold the Power button to shutdown...",
-                          "OK", "", [&]() { exit(1); });
-    OSFatal();
 #endif
 
     if (!std::filesystem::exists(installPath + "/assets")) {
@@ -758,9 +759,8 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
 
 #ifdef __SWITCH__
     Ship::Switch::Init(Ship::PreInitPhase);
-#elif defined(__WIIU__)
-    Ship::WiiU::Init(appShortName);
 #endif
+#endif // !__WIIU__
 }
 
 void OTRGlobals::Initialize() {
@@ -1445,7 +1445,12 @@ OTRVersion DetectOTRVersion(std::string fileName, bool isMQ) {
 }
 
 extern "C" void Messagebox_ShowErrorBox(char* title, char* body) {
+#if defined(__WIIU__)
+    (void)title;
+    OSFatal(body);
+#else
     Extractor::ShowErrorBox(title, body);
+#endif
 }
 
 bool VerifyArchiveVersion(OTRVersion version) {
@@ -1453,6 +1458,12 @@ bool VerifyArchiveVersion(OTRVersion version) {
 }
 
 extern "C" void InitOTR(int argc, char* argv[]) {
+#ifdef __WIIU__
+    // Aroma does not promise a particular current directory.  Establish the
+    // app directory before configuration, archive lookup, logging, or the
+    // window backend are initialized.
+    Ship::WiiU::Init(appShortName);
+#endif
     OTRGlobals::Instance = new OTRGlobals();
     OTRGlobals::Instance->RunExtract(argc, argv);
 

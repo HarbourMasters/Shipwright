@@ -6,6 +6,13 @@
 #define COLLISION_CHECK_OC_MAX 50
 #define COLLISION_CHECK_OC_LINE_MAX 3
 
+// newlib exposes `quad` as a legacy alias for `quad_t`.  global.h removes
+// that macro after this header has been parsed, which otherwise leaves the
+// ColliderQuadDim member with a different preprocessed name on CaféOS.
+#ifdef quad
+#undef quad
+#endif
+
 // From z64.h
 struct Actor;
 

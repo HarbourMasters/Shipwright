@@ -681,15 +681,34 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "NintendoSwitch")
     )
 elseif(CMAKE_SYSTEM_NAME STREQUAL "CafeOS")
     find_package(SDL2 REQUIRED)
+    set(SOH_WIIU_PORTLIBS_PREFIX "${CMAKE_BINARY_DIR}/local-portlibs" CACHE PATH
+        "Optional prefix containing Wii U portlibs built for this tree")
     set(ADDITIONAL_LIBRARY_DEPENDENCIES
         "libultraship;"
         SDL2::SDL2-static
+        vorbisfile
+        vorbisenc
+        vorbis
+        opusfile
+        opus
+        ogg
+        m
 
         "$<$<CONFIG:Debug>:-Wl,--wrap=abort>"
     )
     target_include_directories(${PROJECT_NAME} PRIVATE
         ${DEVKITPRO}/portlibs/wiiu/include/
     )
+    if(EXISTS "${SOH_WIIU_PORTLIBS_PREFIX}/include")
+        target_include_directories(${PROJECT_NAME} PRIVATE
+            "${SOH_WIIU_PORTLIBS_PREFIX}/include"
+            # opusfile.h uses the legacy unprefixed Opus public includes.
+            "${SOH_WIIU_PORTLIBS_PREFIX}/include/opus"
+        )
+        target_link_directories(${PROJECT_NAME} PRIVATE
+            "${SOH_WIIU_PORTLIBS_PREFIX}/lib"
+        )
+    endif()
 else()
     find_package(SDL2)
     set(THREADS_PREFER_PTHREAD_FLAG ON)

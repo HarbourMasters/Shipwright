@@ -7,6 +7,18 @@ set(CMAKE_C_STANDARD 23 CACHE STRING "The C standard to use")
 set(CMAKE_OSX_DEPLOYMENT_TARGET "10.15" CACHE STRING "Minimum OS X deployment version")
 
 project(Ship VERSION 9.2.3 LANGUAGES C CXX)
+
+# devkitPro's WiiU.cmake does not currently declare CMake's WHOLE_ARCHIVE
+# feature.  SoH uses it for the static StormLib dependency on CafeOS.
+if(CMAKE_SYSTEM_NAME STREQUAL "CafeOS")
+    set(CMAKE_C_LINK_LIBRARY_USING_WHOLE_ARCHIVE_SUPPORTED TRUE)
+    set(CMAKE_C_LINK_LIBRARY_USING_WHOLE_ARCHIVE
+        "LINKER:--whole-archive" "<LINK_ITEM>" "LINKER:--no-whole-archive")
+    set(CMAKE_CXX_LINK_LIBRARY_USING_WHOLE_ARCHIVE_SUPPORTED TRUE)
+    set(CMAKE_CXX_LINK_LIBRARY_USING_WHOLE_ARCHIVE
+        "LINKER:--whole-archive" "<LINK_ITEM>" "LINKER:--no-whole-archive")
+endif()
+
 include(CMake/soh-cvars.cmake)
 include(CMake/lus-cvars.cmake)
 set(SPDLOG_LEVEL_TRACE 0)
