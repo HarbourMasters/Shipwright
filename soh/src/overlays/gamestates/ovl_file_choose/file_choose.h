@@ -65,11 +65,11 @@ typedef enum {
     CM_BOSS_RUSH_MENU,
     CM_START_BOSS_RUSH_MENU,
     CM_BOSS_RUSH_TO_QUEST,
-    CM_ROTATE_TO_RANDOMIZER_SETTINGS_MENU,
-    CM_RANDOMIZER_SETTINGS_MENU,
-    CM_START_RANDOMIZER_SETTINGS_MENU,
-    CM_RANDOMIZER_SETTINGS_MENU_TO_QUEST,
-    CM_NAME_ENTRY_TO_RANDOMIZER_SETTINGS_MENU,
+    CM_ROTATE_TO_SETTINGS_MENU,
+    CM_SETTINGS_MENU,
+    CM_START_SETTINGS_MENU,
+    CM_SETTINGS_MENU_TO_QUEST,
+    CM_NAME_ENTRY_TO_SETTINGS_MENU,
 } ConfigMode;
 
 typedef enum {
@@ -215,6 +215,20 @@ void FileChoose_ExitEraseToMain(GameState* thisx);
 
 void FileChoose_UpdateKeyboardCursor(GameState* thisx);
 void FileChoose_StartNameEntry(GameState* thisx);
+void FileChoose_StartNameEntryFromMenu(FileChooseContext* fileChooseContext);
+
+// Helpers for the scrolling option lists in the boss rush, randomizer and speedrun menus.
+// Fades in the menu text and bobs the scroll arrows. Call once per frame.
+void FileChoose_UpdateListMenuAnim(int16_t* uiAlpha, uint16_t* arrowOffset);
+// Moves the cursor through count options with the stick or d-pad, wrapping at both ends. When offset is given it is the
+// first option on screen, and is scrolled to keep the cursor among the visible ones. Returns true if the cursor moved.
+bool FileChoose_MoveListCursor(FileChooseContext* fileChooseContext, uint8_t* index, uint8_t* offset, uint8_t count,
+                               uint8_t visible);
+// Draws arrows above and below the list when there are options off screen that way.
+void FileChoose_DrawListScrollArrows(FileChooseContext* fileChooseContext, uint8_t offset, uint8_t count,
+                                     uint8_t visible, uint16_t arrowOffset);
+// Draws one cursor arrow next to the selected option.
+void FileChoose_DrawListCursorArrow(FileChooseContext* fileChooseContext, int16_t alpha, f32 x, f32 y, bool pointLeft);
 void FileChoose_UpdateOptionsMenu(GameState* thisx);
 void FileChoose_StartOptions(GameState* thisx);
 
