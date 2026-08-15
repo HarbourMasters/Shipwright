@@ -181,6 +181,8 @@ static bool IsExcludedFromClearRooms(s16 enemyId, s16 enemyParams) {
         case ACTOR_EN_FD:
         // Anubis - Needs fire
         case ACTOR_EN_ANUBICE_TAG:
+        // Withered Deku Baba - Stationary, can get stuck in air/on chests, softlock risk
+        case ACTOR_EN_KAREBABA:
             return true;
         case ACTOR_EN_MB:
             return enemyParams == 0;
