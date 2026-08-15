@@ -63,7 +63,7 @@ static const std::map<int32_t, const char*> bootSequenceLabels = {
     { BOOTSEQUENCE_WARPPOINT, "Warp Point" },
 };
 
-static std::vector<std::string> contributors = {
+static const char*[] contributors = {
     // Contributors sorted by commit count (GitHub handle preferred; real name where no handle is known)
     "briaguya",
     "serprex",
