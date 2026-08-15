@@ -498,8 +498,8 @@ void SohMenu::AddMenuSettings() {
         float singleListHeight =
             (contributors.size() / numColumns + (contributors.size() % numColumns != 0 ? 1 : 0)) * lineHeight;
 
-        double scrollPosition = fmod((GetUnixTimestamp() % 18446744000000000000) * scrollSpeed, singleListHeight);
-        ImGui::SetScrollY(static_cast<float>(scrollPosition));
+        float scrollPosition = fmodf((GetUnixTimestamp() % 18446744000000000000) * scrollSpeed, singleListHeight);
+        ImGui::SetScrollY(scrollPosition);
 
         // Render twice for infinite scroll
         for (int iteration = 0; iteration < 2; iteration++) {
