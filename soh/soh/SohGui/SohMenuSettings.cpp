@@ -492,7 +492,7 @@ void SohMenu::AddMenuSettings() {
         ImGui::BeginChild("contributors", ImVec2(0, 0), 0,
                           ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
         static double scrollSpeed = 1.5f * (ImGui::GetFontSize() / 1000.0f);
-        static int numColumns = 2;
+        static const int numColumns = 2;
 
         float lineHeight = ImGui::GetTextLineHeightWithSpacing();
         float singleListHeight =
