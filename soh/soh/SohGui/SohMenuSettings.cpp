@@ -475,8 +475,7 @@ void SohMenu::AddMenuSettings() {
         AddWidget(path, GetGameVersionString(i), WIDGET_TEXT);
     }
 
-    // Contributors section
-    AddWidget(path, "contributors", WIDGET_CUSTOM).CustomFunction([](WidgetInfo& info) {
+    AddWidget(path, "Contributors", WIDGET_CUSTOM).CustomFunction([](WidgetInfo& info) {
         ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 0.5f, 0.5f, 1.0f));
         ImGui::SeparatorText("Thank You");
         ImGui::PopStyleColor();
