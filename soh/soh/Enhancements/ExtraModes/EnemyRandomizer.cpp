@@ -528,6 +528,11 @@ static u8 GetRandomizedEnemy(PlayState* play, s16* actorId, s16* posX, s16* posY
             *posY = *posY - 200;
         }
 
+        // One enemy in GTG hammer room doesn't raycast properly, move it slightly
+        if (*posY == 117 && play->sceneNum == SCENE_GERUDO_TRAINING_GROUND && play->roomCtx.curRoom.num == 5) {
+            *posY = 118;
+        }
+
         // Do a raycast from the original position of the actor to find the ground below it, then try to place
         // the new actor on the ground. This way enemies don't spawn very high in the sky, and gives us control
         // over height offsets per enemy from a proven grounded position.
