@@ -1012,13 +1012,14 @@ void RegisterEnemyRandomizer() {
                 }
             }
             // Backup. If player really above enemy, probably fallen out of bounds
-            // Extra distance for Flare Dancer elevator platform room
-            f32 voidoutHeight = (gPlayState->sceneNum == SCENE_FIRE_TEMPLE && gPlayState->roomCtx.curRoom.num == 24)
-                                    ? (player->actor.world.pos.y - 1500.0f)
-                                    : (player->actor.world.pos.y - 1000.0f);
-            if (enemy->world.pos.y < voidoutHeight) {
-                LUSLOG_INFO("AfterActorUpdateBgCheckInfo: Killing enemy, out of bounds (id 0x%x, pos x %.1f y %.1f z %.1f)",
-                            enemy->id, enemy->world.pos.x, enemy->world.pos.y, enemy->world.pos.z,);
+            // Extra distance for Flare Dancer elevator platform room (if spawning top in doorsanity)
+            f32 killHeight = (gPlayState->sceneNum == SCENE_FIRE_TEMPLE && gPlayState->roomCtx.curRoom.num == 24)
+                                 ? (player->actor.world.pos.y - 1500.0f)
+                                 : (player->actor.world.pos.y - 1000.0f);
+            if (enemy->world.pos.y < killHeight) {
+                LUSLOG_INFO(
+                    "AfterActorUpdateBgCheckInfo: Killing enemy, out of bounds (id 0x%x, pos x %.1f y %.1f z %.1f)",
+                    enemy->id, enemy->world.pos.x, enemy->world.pos.y, enemy->world.pos.z, );
                 Actor_Kill(enemy);
             }
         }
