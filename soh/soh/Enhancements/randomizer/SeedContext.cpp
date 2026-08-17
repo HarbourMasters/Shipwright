@@ -30,7 +30,6 @@ namespace Rando {
 std::weak_ptr<Context> Context::mContext;
 
 Context::Context() {
-
     for (int i = 0; i < RC_MAX; i++) {
         itemLocationTable[i] = ItemLocation(static_cast<RandomizerCheck>(i));
     }
@@ -74,6 +73,10 @@ std::shared_ptr<Context> Context::CreateInstance() {
 
 std::shared_ptr<Context> Context::GetInstance() {
     return mContext.lock();
+}
+
+const Door* Context::MapDoor(s16 scene, s8 transitionIdx, s8 frontRoom) {
+    return GetEntranceShuffler()->MapDoor(scene, transitionIdx, frontRoom);
 }
 
 Hint* Context::GetHint(const RandomizerHint hintKey) {

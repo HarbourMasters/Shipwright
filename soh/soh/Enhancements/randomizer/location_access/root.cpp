@@ -18,6 +18,7 @@ void RegionTable_Init_Root() {
         EVENT_ACCESS(LOGIC_MET_ZELDA,                           ctx->GetOption(RSK_STARTING_ZELDAS_LETTER) && !ctx->GetOption(RSK_SHUFFLE_ZELDAS_LETTER)),
         EVENT_ACCESS(LOGIC_MALON_RETURNED_FROM_CASTLE,          ctx->GetOption(RSK_SHUFFLE_WEIRD_EGG).Is(RO_WEIRD_EGG_SKIP_TALON)),
         EVENT_ACCESS(LOGIC_TALON_RETURNED_FROM_CASTLE,          ctx->GetOption(RSK_SHUFFLE_WEIRD_EGG).Is(RO_WEIRD_EGG_SKIP_TALON)),
+        EVENT_ACCESS(LOGIC_JABU_RUTO_IN_1F,                     ctx->GetOption(RSK_SHUFFLE_DUNGEON_DOORS).IsNot(RO_SHUFFLE_DUNGEON_DOORS_OFF)),
     }, {
         //Locations
         LOCATION(RC_LINKS_POCKET,       true),

@@ -381,7 +381,7 @@ void RegionTable_Init_FireTemple() {
 
     areaTable[RR_FIRE_TEMPLE_ABOVE_3F_FLARE_DANCER] = Region("Fire Temple Above 3F Flare Dancer", SCENE_FIRE_TEMPLE, {}, {}, {
         //Exits
-        ENTRANCE(RR_FIRE_TEMPLE_3F_FLARE_DANCER, true),
+        ENTRANCE(RR_FIRE_TEMPLE_3F_FLARE_DANCER, logic->TakeDamage()),
         ENTRANCE(RR_FIRE_TEMPLE_SWITCH_CLIMB,    true),
     });
 

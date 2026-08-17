@@ -44,7 +44,7 @@ bool GenerateRandomizer(std::set<RandomizerCheck> excludedLocations, std::set<Ra
     int ret = Playthrough::Playthrough_Init(ctx->GetSeed(), excludedLocations, enabledTricks);
     if (ret < 0) {
         if (ret == -1) {
-            SPDLOG_ERROR("Failed to generate after 5 tries.");
+            SPDLOG_ERROR("Failed to generate after 10 tries.");
             return false;
         } else {
             SPDLOG_ERROR("Error {} with fill.", ret);

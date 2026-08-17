@@ -562,14 +562,16 @@ void DoorShutter_SetupClosed(DoorShutter* this, PlayState* play) {
         Vec3f vec;
 
         Actor_WorldToActorCoords(&this->dyna.actor, &vec, &player->actor.world.pos);
-        this->dyna.actor.room =
-            play->transiActorCtx.list[(u16)this->dyna.actor.params >> 0xA].sides[(vec.z < 0.0f) ? 0 : 1].room;
-        if (room != this->dyna.actor.room) {
-            Room tempRoom = play->roomCtx.curRoom;
+        if (GameInteractor_Should(VB_DOOR_SHUTTER_HANDLE_ROOM_TRANSITION, true, this, &vec)) {
+            this->dyna.actor.room =
+                play->transiActorCtx.list[(u16)this->dyna.actor.params >> 0xA].sides[(vec.z < 0.0f) ? 0 : 1].room;
+            if (room != this->dyna.actor.room) {
+                Room tempRoom = play->roomCtx.curRoom;
 
-            play->roomCtx.curRoom = play->roomCtx.prevRoom;
-            play->roomCtx.prevRoom = tempRoom;
-            play->roomCtx.activeBufPage ^= 1;
+                play->roomCtx.curRoom = play->roomCtx.prevRoom;
+                play->roomCtx.prevRoom = tempRoom;
+                play->roomCtx.activeBufPage ^= 1;
+            }
         }
         Room_FinishRoomChange(play, &play->roomCtx);
         Play_SetupRespawnPoint(play, RESPAWN_MODE_DOWN, 0x0EFF);
@@ -577,8 +579,10 @@ void DoorShutter_SetupClosed(DoorShutter* this, PlayState* play) {
     this->unk_164 = 0;
     this->dyna.actor.velocity.y = 0.0f;
     if (DoorShutter_SetupDoor(this, play) && !(player->stateFlags1 & PLAYER_STATE1_CARRYING_ACTOR)) {
-        DoorShutter_SetupAction(this, DoorShutter_WaitPlayerSurprised);
-        Player_SetCsActionWithHaltedActors(play, NULL, 2);
+        if (GameInteractor_Should(VB_DOOR_SHUTTER_WALK_THROUGH_CS, true, this)) {
+            DoorShutter_SetupAction(this, DoorShutter_WaitPlayerSurprised);
+            Player_SetCsActionWithHaltedActors(play, NULL, 2);
+        }
     }
 }
 

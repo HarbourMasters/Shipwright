@@ -6,6 +6,7 @@
 #include "location_access.h"
 
 #include <nlohmann/json.hpp>
+#include <unordered_map>
 
 #define ENTRANCE_SHUFFLE_SUCCESS 0
 #define ENTRANCE_SHUFFLE_FAILURE 1
@@ -35,6 +36,19 @@ enum class EntranceType {
     GrottoGrave,
     GrottoGraveReverse,
     Overworld,
+    DoorDekuTree,
+    DoorDodongosCavern,
+    DoorJabuJabu,
+    DoorForest,
+    DoorFire,
+    DoorWater,
+    DoorShadow,
+    DoorSpirit,
+    DoorBottomOfTheWell,
+    DoorIceCavern,
+    DoorGerudoTrainingGround,
+    DoorGanonsCastle,
+    DoorGanonsTower,
     Extra,
     Mixed,
     All,
@@ -135,6 +149,7 @@ class EntranceShuffler {
     void SetNoRandomEntrances(bool noRandomEntrances);
     int ShuffleAllEntrances();
     void CreateEntranceOverrides();
+    const Door* MapDoor(s16 scene, s8 transitionIdx, s8 frontRoom);
     void UnshuffleAllEntrances();
     void ParseJson(const nlohmann::json& spoilerFileJson);
     void ApplyEntranceOverrides();
@@ -151,19 +166,23 @@ class EntranceShuffler {
                                      EntrancePools oneWayEntrancePools, EntrancePools oneWayTargetEntrancePools);
     bool ReplaceEntrance(Entrance* entrance, Entrance* target, std::vector<EntrancePair>& rollbacks);
     void ShuffleEntrancePool(std::vector<Entrance*>& entrancePool, std::vector<Entrance*>& targetEntrances,
-                             int retryCount = 20);
+                             int retryCount = 50);
     bool ShuffleEntrances(std::vector<Entrance*>& entrances, std::vector<Entrance*>& targetEntrances,
                           std::vector<EntrancePair>& rollbacks);
     bool mNoRandomEntrances;
     int mTotalRandomizableEntrances = 0;
     int mCurNumRandomizedEntrances = 0;
     bool mEntranceShuffleFailure = false;
+    std::vector<int16_t> mDoorTable;
+    // (scene, transition actor index) -> index of the first of the door's two DoorsList entries
+    std::unordered_map<int32_t, int16_t> mDoorLookup;
 };
 } // namespace Rando
 
 extern "C" {
 #endif
 EntranceOverride* Randomizer_GetEntranceOverrides();
+void Randomizer_SetDoorOverride(int, int);
 #ifdef __cplusplus
 }
 #endif

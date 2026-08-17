@@ -8,7 +8,8 @@
 #define ENTRANCE_TABLE_SIZE ENTR_MAX
 
 #define MAX_ENTRANCE_RANDO_USED_INDEX 0x0820
-#define ENTRANCE_OVERRIDES_MAX_COUNT 296 // 20 one-way entrances + 125 two-way entrances (x2) + 26 Thieves' Hideout
+#define ENTRANCE_OVERRIDES_MAX_COUNT \
+    696 // 20 one-way entrances + 125 two-way entrances (x2) + 26 Thieves' Hideout + ~200 doors (x2)
 #define SHUFFLEABLE_BOSS_COUNT 8
 
 #define SAVEFILE_ENTRANCES_DISCOVERED_IDX_COUNT 66 // Max entrance rando index is 0x0820, (2080 / 32 == 65) + 1

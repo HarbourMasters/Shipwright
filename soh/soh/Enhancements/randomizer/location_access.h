@@ -229,7 +229,7 @@ class Region {
         bool pastAdult = logic->IsAdult;
         bool pastChild = logic->IsChild;
 
-        // set age access as this areas ages
+        // set age access as this area's ages
         logic->IsChild = Child();
         logic->IsAdult = Adult();
 

@@ -376,6 +376,7 @@ void Settings::CreateOptions() {
     OPT_CALLBACK(RSK_SHUFFLE_OVERWORLD_SPAWNS, {
         HandleStartingAgeUI();
     });
+    OPT_U8(RSK_SHUFFLE_DUNGEON_DOORS, "Dungeon Doors", {"Off", "On", "Mix"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ShuffleDungeonDoors"), mOptionDescriptions[RSK_SHUFFLE_DUNGEON_DOORS], WIDGET_CVAR_COMBOBOX, RO_SHUFFLE_DUNGEON_DOORS_OFF);
     OPT_BOOL(RSK_MIXED_ENTRANCE_POOLS, "Mixed Entrance Pools", CVAR_RANDOMIZER_SETTING("MixedEntrances"), mOptionDescriptions[RSK_MIXED_ENTRANCE_POOLS]);
     OPT_CALLBACK(RSK_MIXED_ENTRANCE_POOLS, {
         // Show mixed entrance pool options if mixed entrance pools are enabled, but only the ones that aren't off
@@ -1950,10 +1951,11 @@ void Settings::CreateOptions() {
           &mOptions[RSK_SHUFFLE_GANONS_TOWER_ENTRANCE], &mOptions[RSK_SHUFFLE_OVERWORLD_ENTRANCES],
           &mOptions[RSK_SHUFFLE_INTERIOR_ENTRANCES], &mOptions[RSK_SHUFFLE_THIEVES_HIDEOUT_ENTRANCES],
           &mOptions[RSK_SHUFFLE_GROTTO_ENTRANCES], &mOptions[RSK_SHUFFLE_OWL_DROPS], &mOptions[RSK_SHUFFLE_WARP_SONGS],
-          &mOptions[RSK_SHUFFLE_OVERWORLD_SPAWNS], &mOptions[RSK_DECOUPLED_ENTRANCES],
-          &mOptions[RSK_MIXED_ENTRANCE_POOLS], &mOptions[RSK_MIX_DUNGEON_ENTRANCES], &mOptions[RSK_MIX_BOSS_ENTRANCES],
-          &mOptions[RSK_MIX_OVERWORLD_ENTRANCES], &mOptions[RSK_MIX_INTERIOR_ENTRANCES],
-          &mOptions[RSK_MIX_THIEVES_HIDEOUT_ENTRANCES], &mOptions[RSK_MIX_GROTTO_ENTRANCES] },
+          &mOptions[RSK_SHUFFLE_DUNGEON_DOORS], &mOptions[RSK_SHUFFLE_OVERWORLD_SPAWNS],
+          &mOptions[RSK_DECOUPLED_ENTRANCES], &mOptions[RSK_MIXED_ENTRANCE_POOLS], &mOptions[RSK_MIX_DUNGEON_ENTRANCES],
+          &mOptions[RSK_MIX_BOSS_ENTRANCES], &mOptions[RSK_MIX_OVERWORLD_ENTRANCES],
+          &mOptions[RSK_MIX_INTERIOR_ENTRANCES], &mOptions[RSK_MIX_THIEVES_HIDEOUT_ENTRANCES],
+          &mOptions[RSK_MIX_GROTTO_ENTRANCES] },
         WidgetContainerType::SECTION);
     mOptionGroups[RSG_MENU_COLUMN_ENTRANCES] =
         OptionGroup::SubGroup("", { &mOptionGroups[RSG_MENU_SECTION_ENTRANCES] }, WidgetContainerType::COLUMN);
@@ -2209,6 +2211,7 @@ void Settings::CreateOptions() {
                                                                  &mOptions[RSK_SHUFFLE_OWL_DROPS],
                                                                  &mOptions[RSK_SHUFFLE_WARP_SONGS],
                                                                  &mOptions[RSK_SHUFFLE_OVERWORLD_SPAWNS],
+                                                                 &mOptions[RSK_SHUFFLE_DUNGEON_DOORS],
                                                                  &mOptions[RSK_MIXED_ENTRANCE_POOLS],
                                                                  &mOptions[RSK_MIX_DUNGEON_ENTRANCES],
                                                                  &mOptions[RSK_MIX_BOSS_ENTRANCES],
@@ -2658,7 +2661,8 @@ void Context::FinalizeSettings(const std::set<RandomizerCheck>& excludedLocation
         mOptions[RSK_SHUFFLE_OVERWORLD_ENTRANCES] ||
         mOptions[RSK_SHUFFLE_INTERIOR_ENTRANCES].IsNot(RO_INTERIOR_ENTRANCE_SHUFFLE_OFF) ||
         mOptions[RSK_SHUFFLE_THIEVES_HIDEOUT_ENTRANCES] || mOptions[RSK_SHUFFLE_GROTTO_ENTRANCES] ||
-        mOptions[RSK_SHUFFLE_OWL_DROPS] || mOptions[RSK_SHUFFLE_WARP_SONGS] || mOptions[RSK_SHUFFLE_OVERWORLD_SPAWNS]) {
+        mOptions[RSK_SHUFFLE_OWL_DROPS] || mOptions[RSK_SHUFFLE_WARP_SONGS] || mOptions[RSK_SHUFFLE_OVERWORLD_SPAWNS] ||
+        mOptions[RSK_SHUFFLE_DUNGEON_DOORS]) {
         mOptions[RSK_SHUFFLE_ENTRANCES].Set(RO_GENERIC_ON);
     } else {
         mOptions[RSK_SHUFFLE_ENTRANCES].Set(RO_GENERIC_OFF);

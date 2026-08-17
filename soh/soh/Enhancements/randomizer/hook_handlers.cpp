@@ -1252,8 +1252,10 @@ void RandomizerOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_l
             // Don't let player carry Ruto through doors 21 and 3 to Bigocto room if Ruto abducted flag set
             Player* player = va_arg(args, Player*);
             Actor* doorActor = va_arg(args, Actor*);
-            if (gPlayState->sceneNum == SCENE_JABU_JABU && GET_INFTABLE(INFTABLE_146) &&
-                (GET_TRANSITION_ACTOR_INDEX(doorActor) == 21 || GET_TRANSITION_ACTOR_INDEX(doorActor) == 3) &&
+            if (gPlayState->sceneNum == SCENE_JABU_JABU &&
+                (RAND_GET_OPTION(RSK_SHUFFLE_DUNGEON_DOORS).IsNot(RO_SHUFFLE_DUNGEON_DOORS_OFF) ||
+                 (GET_INFTABLE(INFTABLE_146) &&
+                  (GET_TRANSITION_ACTOR_INDEX(doorActor) == 21 || GET_TRANSITION_ACTOR_INDEX(doorActor) == 3))) &&
                 player->heldActor != NULL && player->heldActor->id == ACTOR_EN_RU1) {
                 *should = false;
             }

@@ -1123,8 +1123,9 @@ void TimeSaverOnActorInitHandler(void* actorRef) {
     // So for now we're just going to set the flag before they get to the room the cutscene is in
     if (gPlayState->sceneNum == SCENE_FOREST_TEMPLE && actor->id == ACTOR_EN_DOOR &&
         !Flags_GetSwitch(gPlayState, 0x1B) && !Flags_GetSwitch(gPlayState, 0x1C)) {
-        if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO) &&
-            !CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.GlitchAiding"), 0)) {
+        if ((IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_DUNGEON_DOORS)) ||
+            (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), IS_RANDO) &&
+             !CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.GlitchAiding"), 0))) {
             Flags_SetSwitch(gPlayState, 0x1B);
         }
     }

@@ -3755,4 +3755,31 @@ typedef enum {
     // #### `args`
     // - `*EnBox`
     VB_CHEST_CONSIDER_CHEST_OPEN,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*DoorShutter`
+    // - `*Vec3f (relPlayerPos)`
+    VB_DOOR_SHUTTER_HANDLE_ROOM_TRANSITION,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*DoorShutter`
+    VB_DOOR_SHUTTER_WALK_THROUGH_CS,
+
+    // #### `result`
+    // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `*Player`
+    // - `*Actor (doorActor: DoorShutter, EnDoor)`
+    // - `s32 (doorDirection)`
+    VB_PLAYER_DOOR_SETUP
 } GIVanillaBehavior;

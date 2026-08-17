@@ -5337,6 +5337,12 @@ s32 Player_ActionHandler_1(Player* this, PlayState* play) {
             }
 
             doorDirection = this->doorDirection;
+
+            if (this->doorType != PLAYER_DOORTYPE_FAKE &&
+                !GameInteractor_Should(VB_PLAYER_DOOR_SETUP, true, this, doorActor, doorDirection)) {
+                return 1;
+            }
+
             sp78 = Math_CosS(doorActor->shape.rot.y);
             sp74 = Math_SinS(doorActor->shape.rot.y);
 

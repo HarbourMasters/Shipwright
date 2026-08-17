@@ -183,6 +183,7 @@ void Settings::CreateOptionDescriptions() {
         "\n"
         "Keep in mind you may need to temporarily disable the \"Remember Save Location\" time saver to "
         "be able to use the spawn positions, especially if they are the only logical way to get to certain areas.";
+    mOptionDescriptions[RSK_SHUFFLE_DUNGEON_DOORS] = "Shuffle where doors lead to in dungeons.";
     mOptionDescriptions[RSK_DECOUPLED_ENTRANCES] =
         "Decouple entrances when shuffling them. This means you are no longer guaranteed "
         "to end up back where you came from when you go back through an entrance.\n"

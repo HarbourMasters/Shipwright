@@ -34,6 +34,8 @@ class Logic {
     bool CalculatingAvailableChecks = false;
     bool ACProcessUndiscoveredExits = false;
 
+    /* --- END OF HELPERS AND LOCATION ACCESS --- */
+
     SaveContext* mSaveContext = nullptr;
     Logic();
     bool CanUse(RandomizerGet itemName);

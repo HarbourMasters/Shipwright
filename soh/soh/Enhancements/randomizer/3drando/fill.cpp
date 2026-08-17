@@ -1275,7 +1275,7 @@ int Fill() {
     auto ctx = Rando::Context::GetInstance();
     int retries = 0;
     SPDLOG_INFO("Starting seed generation...");
-    while (retries < 5) {
+    while (retries < 10) {
         SPDLOG_INFO("Attempt {}...", retries + 1);
         placementFailure = false;
         // showItemProgress = false;
@@ -1490,7 +1490,7 @@ int Fill() {
             return 1;
         }
         // Unsuccessful placement
-        if (retries < 4) {
+        if (retries < 9) {
             SPDLOG_DEBUG("Failed to generate a beatable seed. Retrying...");
             Regions::ResetAllLocations();
             logic->Reset();

@@ -219,6 +219,10 @@ void Entrance_Init(void) {
             continue;
         }
 
+        if (originalIndex >= ENTRANCE_DOOR_START && originalIndex < ENTRANCE_DOOR_START + 512) {
+            continue;
+        }
+
         // Overwrite the indices which we want to shuffle, leaving the rest as they are
         entranceOverrideTable[originalIndex] = overrideIndex;
 
