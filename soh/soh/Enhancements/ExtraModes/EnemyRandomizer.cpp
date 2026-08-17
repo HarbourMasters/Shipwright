@@ -1019,7 +1019,7 @@ void RegisterEnemyRandomizer() {
             if (enemy->world.pos.y < killHeight) {
                 LUSLOG_INFO(
                     "AfterActorUpdateBgCheckInfo: Killing enemy, out of bounds (id 0x%x, pos x %.1f y %.1f z %.1f)",
-                    enemy->id, enemy->world.pos.x, enemy->world.pos.y, enemy->world.pos.z, );
+                    enemy->id, enemy->world.pos.x, enemy->world.pos.y, enemy->world.pos.z);
                 Actor_Kill(enemy);
             }
         }
