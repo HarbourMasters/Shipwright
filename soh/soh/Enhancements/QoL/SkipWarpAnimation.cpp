@@ -30,7 +30,6 @@ static void RegisterSkipWarpHooks() {
         if (((respawn->playerParams & 0xF00) >> 8) == PLAYER_START_MODE_WARP_SONG) {
             respawn->playerParams = (respawn->playerParams & ~0xF00) | (PLAYER_START_MODE_IDLE << 8);
         }
-        // Refusing the init kills the actor and skips its departure sparkle sfx, which running it would start.
         *should = false;
     });
 }
