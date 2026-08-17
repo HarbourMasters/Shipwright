@@ -347,6 +347,18 @@ void InputViewer::DrawElement() {
             const bool analogStickIsInDeadzone = !pads[0].stick_x && !pads[0].stick_y;
             const bool rightStickIsInDeadzone = !pads[0].right_stick_x && !pads[0].right_stick_y;
 
+            const int essValue = 18;
+            int stickX = pads[0].stick_x;
+            int stickY = pads[0].stick_y;
+            if ((pads[0].button & BTN_CUSTOM_MODIFIER1) && CVarGetInteger(CVAR_CHEAT("EasyESS"), 0)) {
+                int magSq = stickX * stickX + stickY * stickY;
+                if (magSq > essValue * essValue) {
+                    float mag = sqrtf(static_cast<float>(magSq));
+                    stickX = static_cast<int>((stickX / mag) * essValue);
+                    stickY = static_cast<int>((stickY / mag) * essValue);
+                }
+            }
+
             // Analog Stick
             const int analogOutlineMode =
                 CVarGetInteger(CVAR_INPUT_VIEWER("AnalogStick.OutlineMode"), STICK_MODE_ALWAYS_SHOWN);
@@ -366,8 +378,8 @@ void InputViewer::DrawElement() {
                 (analogStickMode == STICK_MODE_HIDDEN_IN_DEADZONE && !analogStickIsInDeadzone)) {
                 ImGui::SetNextItemAllowOverlap();
                 ImGui::SetCursorPos(
-                    ImVec2(aPos.x + maxStickDistance * ((float)(pads[0].stick_x) / MAX_AXIS_RANGE) * scale,
-                           aPos.y - maxStickDistance * ((float)(pads[0].stick_y) / MAX_AXIS_RANGE) * scale));
+                    ImVec2(aPos.x + maxStickDistance * ((float)(stickX) / MAX_AXIS_RANGE) * scale,
+                           aPos.y - maxStickDistance * ((float)(stickY) / MAX_AXIS_RANGE) * scale));
                 ImGui::Image(
                     std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
                         ->GetTextureByName("Analog-Stick"),
@@ -412,7 +424,7 @@ void InputViewer::DrawElement() {
                 ImGui::PushFont(ImGui::GetFont());
 
                 // Calculate polar R coordinate from X and Y angles, squared to avoid sqrt
-                const int32_t rSquared = pads[0].stick_x * pads[0].stick_x + pads[0].stick_y * pads[0].stick_y;
+                const int32_t rSquared = stickX * stickX + stickY * stickY;
 
                 // ESS range
                 const int range1Min = CVarGetInteger(CVAR_INPUT_VIEWER("AnalogAngles.Range1.Min"), 8);
@@ -439,7 +451,7 @@ void InputViewer::DrawElement() {
                 }
 
                 // Render text
-                ImGui::Text("X: %-3d  Y: %-3d", pads[0].stick_x, pads[0].stick_y);
+                ImGui::Text("X: %-3d  Y: %-3d", stickX, stickY);
                 // Restore original color
                 ImGui::PopStyleColor();
                 // Restore original font scale
