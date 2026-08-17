@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef GameInteractionEffect_h
-#define GameInteractionEffect_h
-
 #include <stdint.h>
 
 #ifdef __cplusplus
@@ -267,4 +264,3 @@ class SpawnActor : public GameInteractionEffectBase, public ParameterizedGameInt
 } // namespace GameInteractionEffect
 
 #endif /* __cplusplus */
-#endif /* GameInteractionEffect_h */

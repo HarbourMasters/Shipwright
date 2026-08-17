@@ -16,11 +16,11 @@ void RegionTable_Init_GerudoValley() {
         LOCATION(RC_GV_ROCK_2,                logic->CanBreakRocks()),
         LOCATION(RC_GV_ROCK_3,                logic->CanBreakRocks()),
         LOCATION(RC_GV_UNDERWATER_ROCK_1,     (logic->CanUse(RG_BOMBCHU_5) || (logic->CanUse(RG_BOMB_BAG) && ctx->GetTrickOption(RT_BOMB_DETONATION)) || (logic->IsAdult && logic->HasItem(RG_POWER_BRACELET))) && 
-                                              (logic->IsAdult || logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_BOOMERANG) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->HasItem(RG_POWER_BRACELET)))),
+                                              (logic->IsAdult || logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_BOOMERANG) || ((ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()) && logic->HasItem(RG_POWER_BRACELET)))),
         LOCATION(RC_GV_UNDERWATER_ROCK_2,     (logic->CanUse(RG_BOMBCHU_5) || (logic->CanUse(RG_BOMB_BAG) && ctx->GetTrickOption(RT_BOMB_DETONATION)) || (logic->IsAdult && logic->HasItem(RG_POWER_BRACELET))) && 
-                                              (logic->IsAdult || logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_BOOMERANG) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->HasItem(RG_POWER_BRACELET)))),
+                                              (logic->IsAdult || logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_BOOMERANG) || ((ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()) && logic->HasItem(RG_POWER_BRACELET)))),
         LOCATION(RC_GV_UNDERWATER_ROCK_3,     (logic->CanUse(RG_BOMBCHU_5) || (logic->CanUse(RG_BOMB_BAG) && ctx->GetTrickOption(RT_BOMB_DETONATION)) || (logic->IsAdult && logic->HasItem(RG_POWER_BRACELET))) && 
-                                              (logic->IsAdult || logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_BOOMERANG) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->HasItem(RG_POWER_BRACELET)))),
+                                              (logic->IsAdult || logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_BOOMERANG) || ((ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()) && logic->HasItem(RG_POWER_BRACELET)))),
         LOCATION(RC_GV_BOULDER_1,             logic->IsAdult && logic->BlastOrSmash()),
         LOCATION(RC_GV_BOULDER_2,             logic->IsAdult && logic->BlastOrSmash()),
         LOCATION(RC_GV_BRONZE_BOULDER_1,      logic->IsAdult && logic->CanUse(RG_MEGATON_HAMMER)),
@@ -42,24 +42,25 @@ void RegionTable_Init_GerudoValley() {
 
     areaTable[RR_GV_UPPER_STREAM] = Region("GV Upper Stream", SCENE_GERUDO_VALLEY, {
         //Events
-        EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->CallGossipFairy() || (logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_GERUDO_VALLEY_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS))),
+        EVENT_ACCESS(LOGIC_PLANT_GERUDO_VALLEY_BEAN, CanPlantBean(RG_GERUDO_VALLEY_BEAN_SOUL)),
+        EVENT_ACCESS(LOGIC_FAIRY_ACCESS,             logic->CallGossipFairy() || (logic->IsChild && logic->BeanPlanted(LOGIC_PLANT_GERUDO_VALLEY_BEAN) && logic->CanUse(RG_SONG_OF_STORMS))),
     }, {
         //Locations
         LOCATION(RC_GV_GS_BEAN_PATCH,          logic->CanSpawnSoilSkull(RG_GERUDO_VALLEY_BEAN_SOUL) && logic->CanAttack()),
         LOCATION(RC_GV_COW,                    logic->IsChild && logic->CanUse(RG_EPONAS_SONG)),
-        LOCATION(RC_GV_BEAN_SPROUT_FAIRY_1,    logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_GERUDO_VALLEY_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS)),
-        LOCATION(RC_GV_BEAN_SPROUT_FAIRY_2,    logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_GERUDO_VALLEY_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS)),
-        LOCATION(RC_GV_BEAN_SPROUT_FAIRY_3,    logic->IsChild && logic->CanUse(RG_MAGIC_BEAN) && logic->HasItem(RG_GERUDO_VALLEY_BEAN_SOUL) && logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION(RC_GV_BEAN_SPROUT_FAIRY_1,    logic->IsChild && logic->BeanPlanted(LOGIC_PLANT_GERUDO_VALLEY_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION(RC_GV_BEAN_SPROUT_FAIRY_2,    logic->IsChild && logic->BeanPlanted(LOGIC_PLANT_GERUDO_VALLEY_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
+        LOCATION(RC_GV_BEAN_SPROUT_FAIRY_3,    logic->IsChild && logic->BeanPlanted(LOGIC_PLANT_GERUDO_VALLEY_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_GV_GOSSIP_STONE_FAIRY,     logic->CallGossipFairy()),
         LOCATION(RC_GV_GOSSIP_STONE_FAIRY_BIG, logic->CanUse(RG_SONG_OF_STORMS)),
         LOCATION(RC_GV_GOSSIP_STONE,           true),
         LOCATION(RC_GV_NEAR_COW_CRATE,         logic->IsChild && logic->CanBreakCrates()),
-        LOCATION(RC_GV_WONDER_LOWER_WATERFALL, logic->IsAdult && (CanPlantBean(RR_GV_UPPER_STREAM, RG_GERUDO_VALLEY_BEAN_SOUL) || logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
-        LOCATION(RC_GV_WONDER_UPPER_WATERFALL, logic->IsAdult && CanPlantBean(RR_GV_UPPER_STREAM, RG_GERUDO_VALLEY_BEAN_SOUL)),
+        LOCATION(RC_GV_WONDER_LOWER_WATERFALL, logic->IsAdult && (logic->BeanPlanted(LOGIC_PLANT_GERUDO_VALLEY_BEAN) || logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()))),
+        LOCATION(RC_GV_WONDER_UPPER_WATERFALL, logic->IsAdult && logic->BeanPlanted(LOGIC_PLANT_GERUDO_VALLEY_BEAN)),
     }, {
         //Exits
         ENTRANCE(RR_GV_UPPER_STREAM_WATER, true),
-        ENTRANCE(RR_GV_WATERFALL_ALCOVE,   (logic->CanUse(RG_LONGSHOT) && (logic->CanUse(RG_CLIMB) || ctx->GetTrickOption(RT_HOOKSHOT_LADDERS))) || CanPlantBean(RR_GV_UPPER_STREAM, RG_GERUDO_VALLEY_BEAN_SOUL)),
+        ENTRANCE(RR_GV_WATERFALL_ALCOVE,   (logic->CanUse(RG_LONGSHOT) && (logic->HasItem(RG_CLIMB) || ctx->GetTrickOption(RT_HOOKSHOT_LADDERS))) || logic->BeanPlanted(LOGIC_PLANT_GERUDO_VALLEY_BEAN)),
     });
 
     areaTable[RR_GV_UPPER_STREAM_WATER] = Region("GV Upper Stream Water", SCENE_GERUDO_VALLEY, {}, {}, {
@@ -78,7 +79,7 @@ void RegionTable_Init_GerudoValley() {
     areaTable[RR_GV_WATERFALL_ALCOVE] = Region("GV Waterfall Alcove", SCENE_GERUDO_VALLEY, {}, {
         //Locations
         LOCATION(RC_GV_WATERFALL_FREESTANDING_POH, true),
-        LOCATION(RC_GV_WONDER_UPPER_WATERFALL,     logic->IsAdult && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
+        LOCATION(RC_GV_WONDER_UPPER_WATERFALL,     logic->IsAdult && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()))),
     }, {
         //Exits
         ENTRANCE(RR_GV_UPPER_STREAM,       logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS)),
@@ -145,14 +146,14 @@ void RegionTable_Init_GerudoValley() {
 
     areaTable[RR_GV_OCTOROK_GROTTO] = Region("GV Octorok Grotto", SCENE_GROTTOS, {}, {
         //Locations
-        LOCATION(RC_GV_OCTOROK_GROTTO_FRONT_LEFT_BLUE_RUPEE,   logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG) || (logic->IsAdult && ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
-        LOCATION(RC_GV_OCTOROK_GROTTO_FRONT_RIGHT_BLUE_RUPEE,  logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG) || (logic->IsAdult && ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
-        LOCATION(RC_GV_OCTOROK_GROTTO_BACK_BLUE_RUPEE,         logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG) || (logic->IsAdult && ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanUse(RG_HOVER_BOOTS))),
-        LOCATION(RC_GV_OCTOROK_GROTTO_FRONT_LEFT_GREEN_RUPEE,  logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG) || (logic->IsAdult && ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanUse(RG_HOVER_BOOTS))),
-        LOCATION(RC_GV_OCTOROK_GROTTO_FRONT_RIGHT_GREEN_RUPEE, logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG) || (logic->IsAdult && ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
-        LOCATION(RC_GV_OCTOROK_GROTTO_BACK_LEFT_GREEN_RUPEE,   logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG) || (logic->IsAdult && ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanUse(RG_HOVER_BOOTS))),
-        LOCATION(RC_GV_OCTOROK_GROTTO_BACK_RIGHT_GREEN_RUPEE,  logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG) || (logic->IsAdult && ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanUse(RG_HOVER_BOOTS))),
-        LOCATION(RC_GV_OCTOROK_GROTTO_RED_RUPEE,               logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG) || (logic->IsAdult && ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanUse(RG_HOVER_BOOTS))),
+        LOCATION(RC_GV_OCTOROK_GROTTO_FRONT_LEFT_BLUE_RUPEE,   logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG) || (logic->IsAdult && (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()))),
+        LOCATION(RC_GV_OCTOROK_GROTTO_FRONT_RIGHT_BLUE_RUPEE,  logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG) || (logic->IsAdult && (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()))),
+        LOCATION(RC_GV_OCTOROK_GROTTO_BACK_BLUE_RUPEE,         logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG) || (logic->IsAdult && (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()) && logic->CanUse(RG_HOVER_BOOTS))),
+        LOCATION(RC_GV_OCTOROK_GROTTO_FRONT_LEFT_GREEN_RUPEE,  logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG) || (logic->IsAdult && (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()) && logic->CanUse(RG_HOVER_BOOTS))),
+        LOCATION(RC_GV_OCTOROK_GROTTO_FRONT_RIGHT_GREEN_RUPEE, logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG) || (logic->IsAdult && (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()))),
+        LOCATION(RC_GV_OCTOROK_GROTTO_BACK_LEFT_GREEN_RUPEE,   logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG) || (logic->IsAdult && (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()) && logic->CanUse(RG_HOVER_BOOTS))),
+        LOCATION(RC_GV_OCTOROK_GROTTO_BACK_RIGHT_GREEN_RUPEE,  logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG) || (logic->IsAdult && (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()) && logic->CanUse(RG_HOVER_BOOTS))),
+        LOCATION(RC_GV_OCTOROK_GROTTO_RED_RUPEE,               logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_BOOMERANG) || (logic->IsAdult && (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()) && logic->CanUse(RG_HOVER_BOOTS))),
     }, {
         //Exits
         ENTRANCE(RR_GV_GROTTO_LEDGE, true),

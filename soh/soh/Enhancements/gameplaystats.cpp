@@ -9,6 +9,7 @@
 #include "soh/util.h"
 
 #include <string>
+#include <spdlog/common.h>
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/OTRGlobals.h"
 
@@ -260,19 +261,19 @@ std::string formatTimestampGameplayStat(uint32_t value) {
     uint32_t mm = (sec - hh * 3600) / 60;
     uint32_t ss = sec - hh * 3600 - mm * 60;
     uint32_t ds = value % 10;
-    return fmt::format("{}:{:0>2}:{:0>2}.{}", hh, mm, ss, ds);
+    return spdlog::fmt_lib::format("{}:{:0>2}:{:0>2}.{}", hh, mm, ss, ds);
 }
 
 std::string formatIntGameplayStat(uint32_t value) {
-    return fmt::format("{}", value);
+    return spdlog::fmt_lib::format("{}", value);
 }
 
 std::string formatHexGameplayStat(uint32_t value) {
-    return fmt::format("{:#x} ({:d})", value, value);
+    return spdlog::fmt_lib::format("{:#x} ({:d})", value, value);
 }
 
 std::string formatHexOnlyGameplayStat(uint32_t value) {
-    return fmt::format("{:#x}", value, value);
+    return spdlog::fmt_lib::format("{:#x}", value, value);
 }
 
 extern "C" char* GameplayStats_GetCurrentTime() {
@@ -387,7 +388,7 @@ void GameplayStatsRow(const char* label, const std::string& value, ImVec4 color 
     ImGui::SameLine(ImGui::GetContentRegionAvail().x - (ImGui::CalcTextSize(value.c_str()).x));
     ImGui::Text("%s", value.c_str());
     ImGui::PopStyleColor();
-    if (tooltip != "" && ImGui::IsItemHovered()) {
+    if (tooltip[0] != '\0' && ImGui::IsItemHovered()) {
         ImGui::SetTooltip("%s", tooltip);
     }
 }
@@ -595,7 +596,8 @@ void DrawGameplayStatsBreakdownTab() {
         std::string name;
         if (CVarGetInteger(CVAR_GAMEPLAY_STATS("RoomBreakdown"), 0) &&
             gSaveContext.ship.stats.sceneTimestamps[i].scene != SCENE_GROTTOS) {
-            name = fmt::format("{:s} Room {:d}", sceneName, gSaveContext.ship.stats.sceneTimestamps[i].room);
+            name =
+                spdlog::fmt_lib::format("{:s} Room {:d}", sceneName, gSaveContext.ship.stats.sceneTimestamps[i].room);
         } else {
             name = sceneName;
         }
@@ -619,9 +621,9 @@ void DrawGameplayStatsBreakdownTab() {
     }
     std::string toPass;
     if (CVarGetInteger(CVAR_GAMEPLAY_STATS("RoomBreakdown"), 0) && gSaveContext.ship.stats.sceneNum != SCENE_GROTTOS) {
-        toPass = fmt::format("{:s} Room {:d}",
-                             ResolveSceneID(gSaveContext.ship.stats.sceneNum, gSaveContext.ship.stats.roomNum),
-                             gSaveContext.ship.stats.roomNum);
+        toPass = spdlog::fmt_lib::format(
+            "{:s} Room {:d}", ResolveSceneID(gSaveContext.ship.stats.sceneNum, gSaveContext.ship.stats.roomNum),
+            gSaveContext.ship.stats.roomNum);
     } else {
         toPass = ResolveSceneID(gSaveContext.ship.stats.sceneNum, gSaveContext.ship.stats.roomNum);
     }

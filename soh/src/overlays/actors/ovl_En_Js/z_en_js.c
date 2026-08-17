@@ -7,7 +7,6 @@
 #include "z_en_js.h"
 #include "objects/object_js/object_js.h"
 #include "soh/OTRGlobals.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY)
@@ -79,8 +78,6 @@ void EnJs_Destroy(Actor* thisx, PlayState* play) {
     EnJs* this = (EnJs*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 u8 func_80A88F64(EnJs* this, PlayState* play, u16 textId) {

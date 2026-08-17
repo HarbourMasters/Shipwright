@@ -13,7 +13,6 @@
 #include <overlays/actors/ovl_Obj_Switch/z_obj_switch.h>
 #include <overlays/effects/ovl_Effect_Ss_HitMark/z_eff_ss_hitmark.h>
 #include "soh/OTRGlobals.h"
-#include "soh/ResourceManagerHelpers.h"
 #include <assets/objects/object_efc_tw/object_efc_tw.h>
 
 #define FLAGS                                                                                                   \
@@ -157,8 +156,6 @@ void EnPartner_Destroy(Actor* thisx, PlayState* play) {
 
     Collider_DestroyCylinder(play, &this->collider);
     Collider_DestroyCylinder(play, &this->weaponCollider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnPartner_UpdateLights(EnPartner* this, PlayState* play) {

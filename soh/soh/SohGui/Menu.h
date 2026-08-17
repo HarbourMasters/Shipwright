@@ -1,5 +1,4 @@
-#ifndef MENU_H
-#define MENU_H
+#pragma once
 
 #include <libultraship/libultra.h>
 #include <ship/audio/Audio.h>
@@ -68,5 +67,3 @@ class Menu : public GuiWindow {
     UIWidgets::Colors menuThemeIndex;
 };
 } // namespace Ship
-
-#endif // MENU_H

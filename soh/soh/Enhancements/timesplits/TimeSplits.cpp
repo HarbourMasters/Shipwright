@@ -1,5 +1,6 @@
 #include <vector>
 #include <fstream>
+#include <spdlog/common.h>
 
 #include <ship/Context.h>
 #include "TimeSplits.h"
@@ -252,7 +253,7 @@ std::string formatTimestampTimeSplit(uint32_t value) {
     uint32_t mm = (sec - hh * 3600) / 60;
     uint32_t ss = sec - hh * 3600 - mm * 60;
     uint32_t ds = value % 10;
-    return fmt::format("{}:{:0>2}:{:0>2}.{}", hh, mm, ss, ds);
+    return spdlog::fmt_lib::format("{}:{:0>2}:{:0>2}.{}", hh, mm, ss, ds);
 }
 
 nlohmann::json ImVec4_to_json(const ImVec4& vec) {
@@ -509,9 +510,7 @@ void TimeSplitsPopUpContext() {
 
                 if (popupObject.splitType == SPLIT_TYPE_UPGRADE) {
                     if (popupID <= ITEM_SLINGSHOT && popupID != -1) {
-                        ImVec2 imageMin = ImGui::GetItemRectMin();
                         ImVec2 imageMax = ImGui::GetItemRectMax();
-                        // ImVec2 imageSize = ImVec2(imageMax.x - imageMin.x, imageMax.y - imageMin.y); UNUSED
                         ImVec2 textPos = ImVec2(imageMax.x - ImGui::CalcTextSize("00").x - 5,
                                                 imageMax.y - ImGui::CalcTextSize("00").y - 5);
 
@@ -562,7 +561,7 @@ void TimeSplitsItemSplitEvent(uint32_t type, u8 item) {
         }
         if (item == ITEM_SKULL_TOKEN) {
             auto it = std::find_if(splitList.begin(), splitList.end(), [item](const SplitObject& split) {
-                if (split.splitSkullTokenCount == gSaveContext.inventory.gsTokens) {
+                if (split.splitSkullTokenCount == static_cast<uint32_t>(gSaveContext.inventory.gsTokens)) {
                     return split.splitID == item;
                 } else {
                     return split.splitID == ITEM_NONE;
@@ -1004,7 +1003,6 @@ void TimeSplitWindow::InitElement() {
     });
 
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnItemReceive>([](GetItemEntry itemEntry) {
-        GetItemEntry testItem = itemEntry;
         if (itemEntry.itemId == ITEM_SKULL_TOKEN || itemEntry.itemId == ITEM_BOTTLE || itemEntry.itemId == ITEM_POE ||
             itemEntry.itemId == ITEM_BIG_POE) {
             uint32_t tempType = SPLIT_TYPE_ITEM;

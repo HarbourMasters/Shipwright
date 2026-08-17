@@ -19,8 +19,9 @@ extern "C" {
 #include "src/overlays/actors/ovl_En_Encount1/z_en_encount1.h"
 #include "src/overlays/actors/ovl_En_GeldB/z_en_geldb.h"
 #include "src/overlays/actors/ovl_En_Peehat/z_en_peehat.h"
-#include "src/overlays/actors/ovl_En_Rr/z_en_rr.h"
 #include "src/overlays/actors/ovl_En_Vali/z_en_vali.h"
+#include "src/overlays/actors/ovl_En_Skb/z_en_skb.h"
+#include "src/overlays/actors/ovl_En_Tp/z_en_tp.h"
 
 extern PlayState* gPlayState;
 }
@@ -180,6 +181,8 @@ static bool IsExcludedFromClearRooms(s16 enemyId, s16 enemyParams) {
         case ACTOR_EN_FD:
         // Anubis - Needs fire
         case ACTOR_EN_ANUBICE_TAG:
+        // Withered Deku Baba - Stationary, can get stuck in air/on chests, softlock risk
+        case ACTOR_EN_KAREBABA:
             return true;
         case ACTOR_EN_MB:
             return enemyParams == 0;
@@ -525,6 +528,11 @@ static u8 GetRandomizedEnemy(PlayState* play, s16* actorId, s16* posX, s16* posY
             *posY = *posY - 200;
         }
 
+        // One enemy in GTG hammer room doesn't raycast properly, move it slightly
+        if (*posY == 117 && play->sceneNum == SCENE_GERUDO_TRAINING_GROUND && play->roomCtx.curRoom.num == 5) {
+            *posY = 118;
+        }
+
         // Do a raycast from the original position of the actor to find the ground below it, then try to place
         // the new actor on the ground. This way enemies don't spawn very high in the sky, and gives us control
         // over height offsets per enemy from a proven grounded position.
@@ -586,6 +594,10 @@ static u8 GetRandomizedEnemy(PlayState* play, s16* actorId, s16* posX, s16* posY
             case ACTOR_EN_CROW:
                 *posY = *posY + 75;
                 break;
+            // Remove switch flag setting from Wolfos
+            case ACTOR_EN_WF:
+                *params |= 0xFF00;
+                break;
             default:
                 break;
         }
@@ -600,6 +612,45 @@ void FixClubMoblinScale(void* ptr) {
     if (actor->params == -1) {
         Actor_SetScale(actor, 0.014f);
     }
+}
+
+// EnTp, EnSkb and EnPeehat update collider position only in their draw functions,
+// causes 0,0,0 issues, so set their collider positions once on actor init
+void EnemyRando_SetColliderPosTp(void* ptr) {
+    EnTp* enTp = (EnTp*)ptr;
+
+    enTp->collider.elements[0].dim.worldSphere.center.x = (s16)enTp->actor.world.pos.x;
+    enTp->collider.elements[0].dim.worldSphere.center.y = (s16)enTp->actor.world.pos.y;
+    enTp->collider.elements[0].dim.worldSphere.center.z = (s16)enTp->actor.world.pos.z;
+    enTp->collider.elements[0].dim.worldSphere.radius =
+        (s16)(enTp->collider.elements[0].dim.modelSphere.radius * enTp->collider.elements[0].dim.scale);
+}
+
+void EnemyRando_SetColliderPosSkb(void* ptr) {
+    EnSkb* enSkb = (EnSkb*)ptr;
+    u8 i;
+
+    for (i = 0; i < 2; i++) {
+        enSkb->collider.elements[i].dim.worldSphere.center.x = (s16)enSkb->actor.world.pos.x;
+        enSkb->collider.elements[i].dim.worldSphere.center.y = (s16)enSkb->actor.world.pos.y;
+        enSkb->collider.elements[i].dim.worldSphere.center.z = (s16)enSkb->actor.world.pos.z;
+        enSkb->collider.elements[i].dim.worldSphere.radius =
+            (s16)(enSkb->collider.elements[i].dim.modelSphere.radius * enSkb->collider.elements[i].dim.scale);
+    }
+}
+
+void EnemyRando_SetColliderPosPeehat(void* ptr) {
+    EnPeehat* enPeehat = (EnPeehat*)ptr;
+    u8 i;
+
+    for (i = 0; i < 4; i++) {
+        enPeehat->colliderQuad.dim.quad[i].x = enPeehat->actor.world.pos.x + (f32)i;
+        enPeehat->colliderQuad.dim.quad[i].y = enPeehat->actor.world.pos.y + (f32)i;
+        enPeehat->colliderQuad.dim.quad[i].z = enPeehat->actor.world.pos.z + (f32)i;
+    }
+    Collider_SetQuadVertices(&enPeehat->colliderQuad, &enPeehat->colliderQuad.dim.quad[0],
+                             &enPeehat->colliderQuad.dim.quad[1], &enPeehat->colliderQuad.dim.quad[2],
+                             &enPeehat->colliderQuad.dim.quad[3]);
 }
 
 static void OnGerudoFighterDefeat(void* refActor) {
@@ -651,62 +702,9 @@ void CustomPeehatLarvaDestroy(Actor* thisx, PlayState* play) {
 
 void RegisterEnemyRandomizer() {
     COND_ID_HOOK(OnActorInit, ACTOR_EN_MB, ENEMY_RANDOMIZER_ENABLED, FixClubMoblinScale);
-
-    // prevent dark link from triggering a voidout
-    COND_VB_SHOULD(VB_TRIGGER_VOIDOUT, ENEMY_RANDOMIZER_ENABLED, {
-        Actor* actor = va_arg(args, Actor*);
-
-        if (actor->category != ACTORCAT_PLAYER) {
-            *should = false;
-            Actor_Kill(actor);
-        }
-    });
-
-    // prevent dark link dealing fall damage to the player
-    COND_VB_SHOULD(VB_RECIEVE_FALL_DAMAGE, ENEMY_RANDOMIZER_ENABLED, {
-        Actor* actor = va_arg(args, Actor*);
-
-        if (actor->category != ACTORCAT_PLAYER) {
-            *should = false;
-        }
-    });
-
-    // prevent dark link from interfering with HESS/recoil/etc when at more than 100 away from him
-    COND_VB_SHOULD(VB_TORCH2_HANDLE_CLANKING, ENEMY_RANDOMIZER_ENABLED, {
-        Actor* darkLink = va_arg(args, Actor*);
-
-        if (darkLink->xzDistToPlayer > 100.0f) {
-            *should = false;
-        }
-    });
-
-    // prevent dark link from interfering with ice floors
-    COND_VB_SHOULD(VB_SET_STATIC_PREV_FLOOR_TYPE, ENEMY_RANDOMIZER_ENABLED, {
-        Player* playerOrDarkLink = va_arg(args, Player*);
-
-        if (playerOrDarkLink->actor.id != ACTOR_PLAYER) {
-            *should = false;
-        }
-    });
-
-    // prevent dark link from interfering with ice floors
-    COND_VB_SHOULD(VB_SET_STATIC_FLOOR_TYPE, ENEMY_RANDOMIZER_ENABLED, {
-        Player* playerOrDarkLink = va_arg(args, Player*);
-
-        if (playerOrDarkLink->actor.id != ACTOR_PLAYER) {
-            *should = false;
-        }
-    });
-
-    // prevent dark link from being grabbed by like likes and therefore grabbing the player
-    COND_VB_SHOULD(VB_LIKE_LIKE_GRAB_PLAYER, ENEMY_RANDOMIZER_ENABLED, {
-        EnRr* likeLike = va_arg(args, EnRr*);
-
-        if (!(likeLike->collider1.base.oc != NULL && likeLike->collider1.base.oc->category == ACTORCAT_PLAYER) &&
-            !(likeLike->collider2.base.oc != NULL && likeLike->collider2.base.oc->category == ACTORCAT_PLAYER)) {
-            *should = false;
-        }
-    });
+    COND_ID_HOOK(OnActorInit, ACTOR_EN_TP, ENEMY_RANDOMIZER_ENABLED, EnemyRando_SetColliderPosTp);
+    COND_ID_HOOK(OnActorInit, ACTOR_EN_SKB, ENEMY_RANDOMIZER_ENABLED, EnemyRando_SetColliderPosSkb);
+    COND_ID_HOOK(OnActorInit, ACTOR_EN_PEEHAT, ENEMY_RANDOMIZER_ENABLED, EnemyRando_SetColliderPosPeehat);
 
     // Allow Random Gerudo Fighters (contain no keys) to spawn without any switch flags
     COND_VB_SHOULD(VB_GERUDO_FIGHTER_CONTINUE_WAITING, ENEMY_RANDOMIZER_ENABLED, {

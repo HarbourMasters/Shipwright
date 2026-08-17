@@ -26,7 +26,10 @@ class DungeonInfo {
     void ClearKeyRing();
     bool HasKeyRing() const;
     bool IsVanilla() const;
+    SceneID GetScene() const;
+    /// Key count for the seed's own layout. Use GetSceneSmallKeyMax for what the player will actually walk into.
     uint8_t GetSmallKeyCount() const;
+    uint8_t GetSmallKeyCountForQuest(bool masterQuest) const;
     RandomizerHintTextKey GetHintKey() const;
     RandomizerArea GetArea() const;
     RandomizerGet GetSmallKey() const;
@@ -74,6 +77,11 @@ class DungeonInfo {
 int8_t FindUsedSmallKeys(const SaveContext* saveContext, const SceneID scene, const std::vector<uint8_t>* DoorFlags);
 int8_t FindCurrentSmallKeys(const SaveContext* saveContext, const SceneID scene);
 int8_t FindTotalSmallKeys(const SaveContext* saveContext, const SceneID scene, const std::vector<uint8_t>* DoorFlags);
+
+/// How many small keys the scene takes in total. Covers dungeons, Thieves' Hideout and the chest game.
+uint8_t GetSceneSmallKeyMax(SceneID scene);
+/// Small keys held for the scene plus the ones already spent there.
+int8_t GetSceneTotalSmallKeys(const SaveContext* saveContext, SceneID scene);
 
 typedef enum {
     DEKU_TREE,

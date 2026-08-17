@@ -4,18 +4,21 @@
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
+#include "dungeon.h"
+#include "logic.h"
 
 extern "C" {
 #include "z64.h"
 #include "macros.h"
 #include "functions.h"
 #include "variables.h"
-#include "dungeon.h"
+#include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_gi_key/object_gi_key.h"
 #include "objects/object_gi_bosskey/object_gi_bosskey.h"
 #include "objects/object_gi_compass/object_gi_compass.h"
 #include "objects/object_gi_map/object_gi_map.h"
 #include "objects/object_gi_hearts/object_gi_hearts.h"
+#include "objects/object_gi_rupy/object_gi_rupy.h"
 #include "objects/object_gi_scale/object_gi_scale.h"
 #include "objects/object_gi_fire/object_gi_fire.h"
 #include "objects/object_toki_objects/object_toki_objects.h"
@@ -28,9 +31,10 @@ extern "C" {
 #include "objects/object_mamenoki/object_mamenoki.h"
 #include "objects/object_mo/object_mo.h"
 #include "objects/object_sst/object_sst.h"
-#include "overlays/actors/ovl_Boss_Goma/z_boss_goma.h"
 #include "objects/object_tw/object_tw.h"
 #include "objects/object_ganon2/object_ganon2.h"
+#include "objects/object_mo/object_mo.h"
+#include "overlays/actors/ovl_Boss_Goma/z_boss_goma.h"
 extern PlayState* gPlayState;
 extern SaveContext gSaveContext;
 }
@@ -80,7 +84,6 @@ Color_RGB8 MapOrCompassColor[10] = {
 extern "C" u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 
 extern "C" void Randomizer_DrawSmallKey(PlayState* play, GetItemEntry* getItemEntry) {
-    bool isCustomKeysEnabled = CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("CustomKeyModels"), 1);
     int slot = getItemEntry->drawItemId - RG_FOREST_TEMPLE_SMALL_KEY;
 
     Gfx* customIconDLs[] = {
@@ -101,27 +104,19 @@ extern "C" void Randomizer_DrawSmallKey(PlayState* play, GetItemEntry* getItemEn
     Color_RGB8 keyColor = { 255, 255, 255 };
     keyColor = CVarGetColor24(SmallBodyCvarValue[slot], keyColor);
 
-    if (isCustomKeysEnabled) {
-        gDPSetEnvColor(POLY_OPA_DISP++, keyColor.r, keyColor.g, keyColor.b, 255);
-        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gSmallKeyCustomDL);
+    gDPSetEnvColor(POLY_OPA_DISP++, keyColor.r, keyColor.g, keyColor.b, 255);
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gSmallKeyCustomDL);
 
-        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
-        Color_RGB8 emblemColor = SmallEmblemDefaultValue[slot];
-        emblemColor = CVarGetColor24(SmallEmblemCvarValue[slot], emblemColor);
+    Color_RGB8 emblemColor = SmallEmblemDefaultValue[slot];
+    emblemColor = CVarGetColor24(SmallEmblemCvarValue[slot], emblemColor);
 
-        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
-                  G_MTX_MODELVIEW | G_MTX_LOAD);
-        gDPSetEnvColor(POLY_XLU_DISP++, emblemColor.r, emblemColor.g, emblemColor.b, 255);
+    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_MODELVIEW | G_MTX_LOAD);
+    gDPSetEnvColor(POLY_XLU_DISP++, emblemColor.r, emblemColor.g, emblemColor.b, 255);
 
-        gSPDisplayList(POLY_XLU_DISP++, customIconDLs[slot]);
-
-    } else {
-        gDPSetGrayscaleColor(POLY_OPA_DISP++, keyColor.r, keyColor.g, keyColor.b, 255);
-        gSPGrayscale(POLY_OPA_DISP++, true);
-        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiSmallKeyDL);
-        gSPGrayscale(POLY_OPA_DISP++, false);
-    }
+    gSPDisplayList(POLY_XLU_DISP++, customIconDLs[slot]);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
@@ -165,7 +160,6 @@ extern "C" void Randomizer_DrawCompass(PlayState* play, GetItemEntry* getItemEnt
 }
 
 extern "C" void Randomizer_DrawBossKey(PlayState* play, GetItemEntry* getItemEntry) {
-    bool isCustomKeysEnabled = CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("CustomKeyModels"), 1);
     s16 slot = getItemEntry->drawItemId - RG_FOREST_TEMPLE_BOSS_KEY;
 
     std::string CvarValue[6] = {
@@ -189,19 +183,8 @@ extern "C" void Randomizer_DrawBossKey(PlayState* play, GetItemEntry* getItemEnt
     // Supposed to use CVAR_COSMETIC but I can't figure out the syntax
     keyColor = CVarGetColor24((CvarValue[slot] + "Body.Value").c_str(), keyColor);
 
-    if (isCustomKeysEnabled) {
-        gDPSetEnvColor(POLY_OPA_DISP++, keyColor.r, keyColor.g, keyColor.b, 255);
-        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gBossKeyCustomDL);
-    } else {
-        if (CVarGetInteger((CvarValue[slot] + "Body.Changed").c_str(), false)) {
-            gDPSetGrayscaleColor(POLY_OPA_DISP++, keyColor.r, keyColor.g, keyColor.b, 255);
-            gSPGrayscale(POLY_OPA_DISP++, true);
-            gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiBossKeyDL);
-            gSPGrayscale(POLY_OPA_DISP++, false);
-        } else {
-            gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiBossKeyDL);
-        }
-    }
+    gDPSetEnvColor(POLY_OPA_DISP++, keyColor.r, keyColor.g, keyColor.b, 255);
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gBossKeyCustomDL);
 
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
@@ -211,25 +194,25 @@ extern "C" void Randomizer_DrawBossKey(PlayState* play, GetItemEntry* getItemEnt
     Color_RGB8 gemColor = { 255, 0, 0 };
     gemColor = CVarGetColor24((CvarValue[slot] + "Gem.Value").c_str(), gemColor);
 
-    if (isCustomKeysEnabled) {
-        gDPSetEnvColor(POLY_XLU_DISP++, gemColor.r, gemColor.g, gemColor.b, 255);
-        gSPDisplayList(POLY_XLU_DISP++, CustomdLists[slot]);
-    } else {
-        if (CVarGetInteger((CvarValue[slot] + "Gem.Changed").c_str(), false)) {
-            gDPSetGrayscaleColor(POLY_XLU_DISP++, gemColor.r, gemColor.g, gemColor.b, 255);
-            gSPGrayscale(POLY_XLU_DISP++, true);
-            gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiBossKeyGemDL);
-            gSPGrayscale(POLY_XLU_DISP++, false);
-        } else {
-            gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiBossKeyGemDL);
-        }
-    }
+    gDPSetEnvColor(POLY_XLU_DISP++, gemColor.r, gemColor.g, gemColor.b, 255);
+    gSPDisplayList(POLY_XLU_DISP++, CustomdLists[slot]);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
+// The key ring holds one key mesh repeated around the ring, so a slot is just a rotation about the
+// ring's axis. Slot 0 is where gKeyringKeyDL sits; fractional slots let an even count straddle it.
+static void KeyRing_RotateToSlot(f32 slot) {
+    static Vec3f axis = { 0.0455f, -0.3020f, 0.9522f };
+    static const f32 pivotX = -2.012f, pivotY = 16.440f, pivotZ = -4.871f;
+    static const f32 slotAngle = 0.17374f; // 9.95 degrees
+
+    Matrix_Translate(pivotX, pivotY, pivotZ, MTXMODE_APPLY);
+    Matrix_RotateAxis(slot * slotAngle, &axis, MTXMODE_APPLY);
+    Matrix_Translate(-pivotX, -pivotY, -pivotZ, MTXMODE_APPLY);
+}
+
 extern "C" void Randomizer_DrawKeyRing(PlayState* play, GetItemEntry* getItemEntry) {
-    bool isCustomKeysEnabled = CVarGetInteger(CVAR_RANDOMIZER_ENHANCEMENT("CustomKeyModels"), 1);
     int slot = getItemEntry->drawItemId - RG_FOREST_TEMPLE_KEY_RING;
 
     Gfx* CustomIconDLs[] = {
@@ -240,32 +223,8 @@ extern "C" void Randomizer_DrawKeyRing(PlayState* play, GetItemEntry* getItemEnt
         (Gfx*)gKeyringIconGanonsCastleDL,         (Gfx*)gKeyringIconTreasureChestGameDL,
     };
 
-    Gfx* CustomKeysDLs[] = {
-        (Gfx*)gKeyringKeysForestTempleDL,         (Gfx*)gKeyringKeysFireTempleDL,
-        (Gfx*)gKeyringKeysWaterTempleDL,          (Gfx*)gKeyringKeysSpiritTempleDL,
-        (Gfx*)gKeyringKeysShadowTempleDL,         (Gfx*)gKeyringKeysBottomoftheWellDL,
-        (Gfx*)gKeyringKeysGerudoTrainingGroundDL, (Gfx*)gKeyringKeysGerudoFortressDL,
-        (Gfx*)gKeyringKeysGanonsCastleDL,         (Gfx*)gKeyringKeysTreasureChestGameDL,
-    };
-
-    Gfx* CustomKeysMQDLs[] = {
-        (Gfx*)gKeyringKeysForestTempleMQDL,         (Gfx*)gKeyringKeysFireTempleMQDL,
-        (Gfx*)gKeyringKeysWaterTempleMQDL,          (Gfx*)gKeyringKeysSpiritTempleMQDL,
-        (Gfx*)gKeyringKeysShadowTempleMQDL,         (Gfx*)gKeyringKeysBottomoftheWellMQDL,
-        (Gfx*)gKeyringKeysGerudoTrainingGroundMQDL, (Gfx*)gKeyringKeysGerudoFortressDL,
-        (Gfx*)gKeyringKeysGanonsCastleMQDL,         (Gfx*)gKeyringKeysTreasureChestGameDL,
-    };
-
-    // RANDOTODO make DungeonInfo static and vanilla accessible to allow all these key model data vars to be stored
-    // there. (Rando::DungeonKey)0 means the keyring is not tied to a dungeon and should not be checked for an MQ
-    // variant
-    Rando::DungeonKey SlotToDungeon[10] = {
-        Rando::FOREST_TEMPLE, Rando::FIRE_TEMPLE,        Rando::WATER_TEMPLE,           Rando::SPIRIT_TEMPLE,
-        Rando::SHADOW_TEMPLE, Rando::BOTTOM_OF_THE_WELL, Rando::GERUDO_TRAINING_GROUND,
-        (Rando::DungeonKey)0, // Gerudo Fortress
-        Rando::GANONS_CASTLE,
-        (Rando::DungeonKey)0, // Treasure Chest Game
-    };
+    SceneID scene = Rando::Logic::RandoGetToDungeonScene.find(getItemEntry->drawItemId)->second;
+    uint8_t keyCount = Rando::GetSceneSmallKeyMax(scene);
 
     OPEN_DISPS(play->state.gfxCtx);
 
@@ -274,55 +233,33 @@ extern "C" void Randomizer_DrawKeyRing(PlayState* play, GetItemEntry* getItemEnt
     Color_RGB8 keyColor = { 255, 255, 255 };
     keyColor = CVarGetColor24(SmallBodyCvarValue[slot], keyColor);
 
-    if (isCustomKeysEnabled) {
+    gDPSetEnvColor(POLY_OPA_DISP++, keyColor.r, keyColor.g, keyColor.b, 255);
+    for (uint8_t i = 0; i < keyCount; i++) {
+        Matrix_Push();
+        KeyRing_RotateToSlot(i - (keyCount - 1) * 0.5f);
         gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
                   G_MTX_MODELVIEW | G_MTX_LOAD);
-
-        gDPSetEnvColor(POLY_OPA_DISP++, keyColor.r, keyColor.g, keyColor.b, 255);
-        if (SlotToDungeon[slot] != 0 && Rando::Context::GetInstance()->GetDungeon(SlotToDungeon[slot])->IsMQ()) {
-            gSPDisplayList(POLY_OPA_DISP++, (Gfx*)CustomKeysMQDLs[slot]);
-        } else {
-            gSPDisplayList(POLY_OPA_DISP++, (Gfx*)CustomKeysDLs[slot]);
-        }
-
-        Color_RGB8 ringColor = { 255, 255, 255 };
-        ringColor = CVarGetColor24(CVAR_COSMETIC("Key.KeyringRing.Value"), ringColor);
-        gDPSetEnvColor(POLY_OPA_DISP++, ringColor.r, ringColor.g, ringColor.b, 255);
-        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gKeyringRingDL);
-
-        Color_RGB8 emblemColor = SmallEmblemDefaultValue[slot];
-        emblemColor = CVarGetColor24(SmallEmblemCvarValue[slot], emblemColor);
-
-        Gfx_SetupDL_25Opa(play->state.gfxCtx);
-        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
-                  G_MTX_MODELVIEW | G_MTX_LOAD);
-        gDPSetEnvColor(POLY_OPA_DISP++, emblemColor.r, emblemColor.g, emblemColor.b, 255);
-
-        gSPDisplayList(POLY_OPA_DISP++, CustomIconDLs[slot]);
-    } else {
-        gDPSetGrayscaleColor(POLY_OPA_DISP++, keyColor.r, keyColor.g, keyColor.b, 255);
-        gSPGrayscale(POLY_OPA_DISP++, true);
-        Matrix_Scale(0.5f, 0.5f, 0.5f, MTXMODE_APPLY);
-        Matrix_RotateZ(0.8f, MTXMODE_APPLY);
-        Matrix_RotateX(-2.16f, MTXMODE_APPLY);
-        Matrix_RotateY(-0.56f, MTXMODE_APPLY);
-        Matrix_RotateZ(-0.86f, MTXMODE_APPLY);
-        Matrix_Translate(28.29f, 0, 0, MTXMODE_APPLY);
-        Matrix_Translate(-(3.12f * 2), -(-0.34f * 2), -(17.53f * 2), MTXMODE_APPLY);
-        Matrix_RotateX(-(-0.31f * 2), MTXMODE_APPLY);
-        Matrix_RotateY(-(0.19f * 2), MTXMODE_APPLY);
-        Matrix_RotateZ(-(0.20f * 2), MTXMODE_APPLY);
-        for (int i = 0; i < 5; i++) {
-            gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
-                      G_MTX_MODELVIEW | G_MTX_LOAD);
-            Matrix_Translate(3.12f, -0.34f, 17.53f, MTXMODE_APPLY);
-            Matrix_RotateX(-0.31f, MTXMODE_APPLY);
-            Matrix_RotateY(0.19f, MTXMODE_APPLY);
-            Matrix_RotateZ(0.20f, MTXMODE_APPLY);
-            gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiSmallKeyDL);
-        }
-        gSPGrayscale(POLY_OPA_DISP++, false);
+        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gKeyringKeyDL);
+        Matrix_Pop();
     }
+
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_MODELVIEW | G_MTX_LOAD);
+
+    Color_RGB8 ringColor = { 255, 255, 255 };
+    ringColor = CVarGetColor24(CVAR_COSMETIC("Key.KeyringRing.Value"), ringColor);
+    gDPSetEnvColor(POLY_OPA_DISP++, ringColor.r, ringColor.g, ringColor.b, 255);
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gKeyringRingDL);
+
+    Color_RGB8 emblemColor = SmallEmblemDefaultValue[slot];
+    emblemColor = CVarGetColor24(SmallEmblemCvarValue[slot], emblemColor);
+
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_MODELVIEW | G_MTX_LOAD);
+    gDPSetEnvColor(POLY_OPA_DISP++, emblemColor.r, emblemColor.g, emblemColor.b, 255);
+
+    gSPDisplayList(POLY_OPA_DISP++, CustomIconDLs[slot]);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
@@ -1235,6 +1172,46 @@ extern "C" void Randomizer_DrawOpenChest(PlayState* play, GetItemEntry* getItemE
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
+extern "C" void Randomizer_DrawSilverRupee(PlayState* play, GetItemEntry* getItemEntry) {
+    OPEN_DISPS(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+    Color_RGB8 defaultColor = { 255, 255, 255 };
+    if (CVarGetInteger("gEnhancements.NewDrops", 0) != 0) {
+        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+                  G_MTX_MODELVIEW | G_MTX_LOAD);
+        Color_RGB8 silverRupeeColor = CVarGetColor24("gCosmetics.Consumable_SilverRupee.Value", defaultColor);
+        Gfx_SetupDL_25Opa(play->state.gfxCtx);
+        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+                  G_MTX_MODELVIEW | G_MTX_LOAD);
+        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0x80, silverRupeeColor.r, silverRupeeColor.g, silverRupeeColor.b, 255);
+        gDPSetEnvColor(POLY_OPA_DISP++, silverRupeeColor.r / 5, silverRupeeColor.g / 5, silverRupeeColor.b / 5, 255);
+        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiRupeeInnerDL);
+        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
+        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+                  G_MTX_MODELVIEW | G_MTX_LOAD);
+        gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, 255, 255, 255, 255);
+        gDPSetEnvColor(POLY_XLU_DISP++, silverRupeeColor.r * 0.75f, silverRupeeColor.g * 0.75f,
+                       silverRupeeColor.b * 0.75f, 255);
+        gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiRupeeOuterDL);
+    } else {
+        Matrix_Scale(0.05f, 0.05f, 0.05f, MTXMODE_APPLY);
+        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        if (CVarGetInteger("gCosmetics.Consumable_SilverRupee.Changed", 0)) {
+            Color_RGB8 rupeeColor = CVarGetColor24("gCosmetics.Consumable_SilverRupee.Value", defaultColor);
+            gDPSetGrayscaleColor(POLY_OPA_DISP++, rupeeColor.r, rupeeColor.g, rupeeColor.b, 255);
+            gSPGrayscale(POLY_OPA_DISP++, true);
+            gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL((uintptr_t)gRupeeSilverTex));
+            gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gRupeeDL);
+            gSPGrayscale(POLY_OPA_DISP++, false);
+        } else {
+            gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL((uintptr_t)gRupeeSilverTex));
+            gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gRupeeDL);
+        }
+    }
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
 extern "C" void Randomizer_DrawFishingPoleGI(PlayState* play, GetItemEntry* getItemEntry) {
     OPEN_DISPS(play->state.gfxCtx);
 
@@ -1296,6 +1273,34 @@ extern "C" void Randomizer_DrawOverworldKey(PlayState* play, GetItemEntry* getIt
               G_MTX_MODELVIEW | G_MTX_LOAD);
 
     gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gHouseKeyDL);
+
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
+extern "C" void Randomizer_DrawNutBag(PlayState* play, GetItemEntry* getItemEntry) {
+    OPEN_DISPS(play->state.gfxCtx);
+
+    Gfx_SetupDL_26Opa(play->state.gfxCtx);
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_MODELVIEW | G_MTX_LOAD);
+    gSPSegment(POLY_OPA_DISP++, 0x08,
+               (uintptr_t)Gfx_TwoTexScrollEx(play->state.gfxCtx, 0, 1 * (play->state.frames * 6),
+                                             1 * (play->state.frames * 6), 32, 32, 1, 1 * (play->state.frames * 6),
+                                             1 * (play->state.frames * 6), 32, 32, 6, 6, 6, 6));
+
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiNutBagDL);
+
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
+extern "C" void Randomizer_DrawStickBag(PlayState* play, GetItemEntry* getItemEntry) {
+    OPEN_DISPS(play->state.gfxCtx);
+
+    Gfx_SetupDL_26Opa(play->state.gfxCtx);
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_MODELVIEW | G_MTX_LOAD);
+
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiStickBagDL);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

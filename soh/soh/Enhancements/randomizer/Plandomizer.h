@@ -1,6 +1,4 @@
 #pragma once
-#ifndef PLANDOMIZER_H
-#define PLANDOMIZER_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -9,8 +7,6 @@ extern "C" {
 #ifdef __cplusplus
 }
 #endif
-
-#endif // PLANDOMIZER_H
 
 #include <ship/window/gui/GuiWindow.h>
 #include "soh/Enhancements/randomizer/item.h"

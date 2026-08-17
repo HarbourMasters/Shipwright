@@ -48,9 +48,9 @@ void Window::Draw() {
     ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
     ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 4.0f);
 
-    for (int index = 0; index < notifications.size(); ++index) {
+    for (size_t index = 0; index < notifications.size(); ++index) {
         auto& notification = notifications[index];
-        int inverseIndex = ABS(index - (static_cast<int>(notifications.size()) - 1));
+        int inverseIndex = ABS(static_cast<int>(index) - (static_cast<int>(notifications.size()) - 1));
 
         ImGui::SetNextWindowViewport(vp->ID);
         if (notification.remainingTime < 4.0f) {
@@ -115,7 +115,7 @@ void Window::Draw() {
 }
 
 void Window::UpdateElement() {
-    for (int index = 0; index < notifications.size(); ++index) {
+    for (size_t index = 0; index < notifications.size(); ++index) {
         auto& notification = notifications[index];
 
         // decrement remainingTime
@@ -136,8 +136,8 @@ void Emit(Options notification) {
     }
     notifications.push_back(notification);
     if (!notification.mute && !CVarGetInteger(CVAR_SETTING("Notifications.Mute"), 0)) {
-        Audio_PlaySoundGeneral(NA_SE_SY_METRONOME, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        Audio_PlaySfxGeneral(NA_SE_SY_METRONOME, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     }
 }
 

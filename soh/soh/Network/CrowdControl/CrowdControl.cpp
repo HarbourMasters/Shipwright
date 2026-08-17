@@ -2,7 +2,6 @@
 #include "CrowdControlTypes.h"
 #include <nlohmann/json.hpp>
 #include <spdlog/spdlog.h>
-#include <spdlog/fmt/fmt.h>
 #include "soh/ShipInit.hpp"
 
 extern "C" {
@@ -14,6 +13,12 @@ extern PlayState* gPlayState;
 void CrowdControl::Enable() {
     Network::Enable(CVarGetString(CVAR_REMOTE_CROWD_CONTROL("Host"), "127.0.0.1"),
                     CVarGetInteger(CVAR_REMOTE_CROWD_CONTROL("Port"), 43384));
+    ShipInit::Init(CVAR_REMOTE_CROWD_CONTROL("Enabled"));
+}
+
+void CrowdControl::Disable() {
+    Network::Disable();
+    ShipInit::Init(CVAR_REMOTE_CROWD_CONTROL("Enabled"));
 }
 
 void CrowdControl::OnConnected() {

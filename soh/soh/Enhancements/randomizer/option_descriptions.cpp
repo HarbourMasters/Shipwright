@@ -3,7 +3,7 @@
 namespace Rando {
 void Settings::CreateOptionDescriptions() {
     mOptionDescriptions[RSK_FOREST] =
-        "Determines if Kokiri forest can be left for the Lost Woods bridge or the Deku Tree.\n"
+        "Determines if Kokiri Forest can be left for the Lost Woods bridge or the Deku Tree.\n"
         "\n"
         "On - Kokiri Sword & Deku Shield are required to access "
         "the Deku Tree, and completing the Deku Tree is required to "
@@ -55,7 +55,7 @@ void Settings::CreateOptionDescriptions() {
                                                "Free - Bridge is repaired from start, and Nabooru cannot spawn.\n"
                                                "If the Gerudo Membership Card isn't shuffled, you start with it.\n"
                                                "\n"
-                                               "Only \"Normal\" is compatible with Gerudo Fortress Key Rings.";
+                                               "Only \"Normal\" is compatible with Gerudo Fortress Keyrings.";
     mOptionDescriptions[RSK_RAINBOW_BRIDGE] =
         "Alters the requirements to open the bridge to Ganon's Castle.\n"
         "\n"
@@ -71,7 +71,7 @@ void Settings::CreateOptionDescriptions() {
         "Stones or medallions.\n"
         "\n"
         "Dungeons - Complete the specified amount of dungeons. Dungeons "
-        "are considered complete after stepping in to the blue warp after "
+        "are considered complete after stepping into the blue warp after "
         "the boss.\n"
         "\n"
         "Tokens - Obtain the specified amount of Skulltula tokens.\n"
@@ -83,7 +83,7 @@ void Settings::CreateOptionDescriptions() {
         "\n"
         "Greg as Reward - Greg does change logic (can be part of expected path for opening "
         "bridge), Greg helps open bridge, max number of rewards on slider increases by 1 to "
-        "account for Greg. \n"
+        "account for Greg.\n"
         "\n"
         "Greg as Wildcard - Greg does not change logic, Greg helps open the bridge, max number of "
         "rewards on slider does not change.";
@@ -116,16 +116,16 @@ void Settings::CreateOptionDescriptions() {
         "\n"
         "If Master Quest Dungeons is set to Set Number or Random, the dungeons chosen "
         "to be Master Quest here will count towards that total. Any Dungeons set to Vanilla "
-        "here will be guaranteed to be Vanilla. If Set Number is higher than the amount of dungeons "
+        "here will be guaranteed to be Vanilla. If Set Number is higher than the number of dungeons "
         "set to either MQ or Random here, you will have fewer MQ Dungeons than the number you "
         "set.";
     mOptionDescriptions[RSK_TRIFORCE_HUNT_PIECES_TOTAL] =
-        "The amount of Triforce pieces that will be placed in the world. Set to 0 to disable Triforce Hunt.\n"
+        "The number of Triforce pieces that will be placed in the world. Set to 0 to disable Triforce Hunt.\n"
         "\n"
         "Triforce Pieces can be used as a requirement for the Rainbow Bridge, Ganon's Boss Key, Ganon's Soul, or the "
         "win condition. Keep in mind seed generation can fail if more pieces are placed than there are junk items in "
         "the item pool.";
-    mOptionDescriptions[RSK_WINCON_TRIFORCE_COUNT] = "The amount of Triforce pieces required to win the game.";
+    mOptionDescriptions[RSK_WINCON_TRIFORCE_COUNT] = "The number of Triforce pieces required to win the game.";
     mOptionDescriptions[RSK_TRIFORCE_HUNT_PIECES_LOCATION] =
         "Any dungeon - Triforce pieces can only appear inside of any dungeon.\n"
         "\n"
@@ -172,7 +172,7 @@ void Settings::CreateOptionDescriptions() {
         "Shuffle the pool of entrances between Gerudo Fortress & Thieves' Hideout.";
     mOptionDescriptions[RSK_SHUFFLE_GROTTO_ENTRANCES] =
         "Shuffle the pool of grotto entrances, including all graves, small Fairy fountains and the Deku Theatre.";
-    mOptionDescriptions[RSK_SHUFFLE_OWL_DROPS] = "Randomize where Kaepora Gaebora (the Owl) drops you at when you talk "
+    mOptionDescriptions[RSK_SHUFFLE_OWL_DROPS] = "Randomize where Kaepora Gaebora (the Owl) drops you when you talk "
                                                  "to him at Lake Hylia or at the top of Death Mountain Trail.";
     mOptionDescriptions[RSK_SHUFFLE_WARP_SONGS] = "Randomize where each of the 6 warp songs leads to.";
     mOptionDescriptions[RSK_SHUFFLE_OVERWORLD_SPAWNS] =
@@ -182,7 +182,7 @@ void Settings::CreateOptionDescriptions() {
         "This stays consistent after saving and loading the game again.\n"
         "\n"
         "Keep in mind you may need to temporarily disable the \"Remember Save Location\" time saver to "
-        "be able use the spawn positions, especially if they are the only logical way to get to certain areas.";
+        "be able to use the spawn positions, especially if they are the only logical way to get to certain areas.";
     mOptionDescriptions[RSK_DECOUPLED_ENTRANCES] =
         "Decouple entrances when shuffling them. This means you are no longer guaranteed "
         "to end up back where you came from when you go back through an entrance.\n"
@@ -260,13 +260,13 @@ void Settings::CreateOptionDescriptions() {
         "The ability to swim has to be found as an item (you can still be underwater with iron boots).\n"
         "\n"
         "If you enter a water entrance without swim you will be respawned on land to prevent infinite death loops.\n"
-        "If you void out in Water Temple you will immediately be kicked out to prevent a softlock.";
+        "If you void out in the Water Temple you will immediately be kicked out to prevent a softlock.";
     mOptionDescriptions[RSK_SHUFFLE_GRAB] =
         "Shuffle the ability to grab as a progressive upgrade before Goron Bracelet.";
     mOptionDescriptions[RSK_SHUFFLE_CLIMB] = "Shuffle the ability to climb ladders into the item pool.";
     mOptionDescriptions[RSK_SHUFFLE_CRAWL] = "Shuffles the ability to use crawlspaces into the item pool.";
     mOptionDescriptions[RSK_SHUFFLE_SPEAK] =
-        "Shuffle ability to speak to NPCs. 6 jabbernuts will be shuffled:\nDeku, Gerudo, Goron, Hylian, Kokiri, "
+        "Shuffle the ability to speak to NPCs. 6 jabbernuts will be shuffled:\nDeku, Gerudo, Goron, Hylian, Kokiri, "
         "Zora\nKaepora Gaebora speaks any language.";
     mOptionDescriptions[RSK_SHUFFLE_OPEN_CHEST] =
         "Shuffles the ability to open chests into the item pool.\n"
@@ -277,15 +277,16 @@ void Settings::CreateOptionDescriptions() {
         "\n"
         "Shuffled: shuffles Weird Egg into item pool.\n"
         "\n"
-        "Skip Waking Talon: Talon already woken and back at Lon Lon Ranch with Malon.";
+        "Skip Waking Talon: Talon is already awake and back at Lon Lon Ranch with Malon.";
     mOptionDescriptions[RSK_SHUFFLE_ZELDAS_LETTER] =
-        "Shuffles Zelda's Letter into the item pool, meeting Zelda gives a random item instead.\n"
+        "Shuffles Zelda's Letter into the item pool; meeting Zelda gives a random item instead.\n"
         "\n"
-        "Required to open Kakariko gate and Happy Mask Shop. Starting with letter starts with gate opened.\n"
+        "Required to open the Kakariko gate and Happy Mask Shop. Starting with the letter starts with the gate "
+        "opened.\n"
         "\n"
         "Meeting Zelda still triggers Saria at Sacred Forest Meadow.\n"
         "\n"
-        "When disabled, \"Start with Zelda's Letter\" skips child Zelda: you also get item Impa would give.";
+        "When disabled, \"Start with Zelda's Letter\" skips child Zelda: you also get the item Impa would give.";
     mOptionDescriptions[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD] =
         "Shuffles the Gerudo Membership Card into the item pool.\n"
         "\n"
@@ -295,7 +296,7 @@ void Settings::CreateOptionDescriptions() {
         "Pots will drop a randomized item the first time they're broken and collected. This does not include the "
         "flying pots."
         " Pots will have a different appearance when they hold a randomized item.\n"
-        "With this option enabled, Ganon's boss key door is moved further up the stairs to\n"
+        "With this option enabled, Ganon's Boss Key door is moved further up the stairs to\n"
         "allow access to the pots before obtaining Ganon's Boss Key.\n"
         "\n"
         "Off - Pots will not be shuffled.\n"
@@ -320,11 +321,11 @@ void Settings::CreateOptionDescriptions() {
         "Trees will contain randomized items which are dropped the first time the player rolls into one.\n"
         "Trees will have a special appearance when carrying randomized items.\n"
         "\nSome trees are dependent on Link's age, such as some trees in Hyrule Field.\nTwo trees at Hyrule Castle are "
-        "only shuffle with No Logic.";
+        "only shuffled with No Logic.";
     mOptionDescriptions[RSK_SHUFFLE_BUSHES] =
         "Bushes in Hyrule Field & Zora's Fountain will contain randomized items when first walked through.";
     mOptionDescriptions[RSK_SHUFFLE_ICICLES] =
-        "Stalagmites and stalactites in Ice Cavern and Ganon's Castle will contain randomized items when broken.\n"
+        "Stalagmites and stalactites in the Ice Cavern and Ganon's Castle will contain randomized items when broken.\n"
         "Icicles will have a halo around them when carrying randomized items.";
     mOptionDescriptions[RSK_SHUFFLE_RED_ICE] =
         "Red Ice will give randomized items when melted.\n"
@@ -435,7 +436,7 @@ void Settings::CreateOptionDescriptions() {
         "Note that, as child, there is a second loach available in the pond!";
     mOptionDescriptions[RSK_SHUFFLE_SCRUBS] =
         "Off - Scrubs will not be shuffled. The 3 Scrubs that give one-time items in the "
-        "vanilla game (PoH, Deku Nut capacity, and Deku Stick capacity) will not spawn."
+        "vanilla game (PoH, Deku Nut capacity, and Deku Stick capacity) will not spawn.\n"
         "\n"
         "One-Time Only - Only the 3 Scrubs that give one-time items in the "
         "vanilla game are shuffled.\n"
@@ -476,12 +477,13 @@ void Settings::CreateOptionDescriptions() {
         "Beans Only - Only the Bean Salesman will have a check, and a pack of Magic Beans will be added "
         "to the item pool.\n"
         "All But Beans - Medigoron, Granny and the Carpet Salesman will have checks, "
-        "A Giant's Knife and a pack of Bombchus will be added to the item pool, and "
+        "a Giant's Knife and a pack of Bombchus will be added to the item pool, and "
         "one of the bottles will contain a Blue Potion.\n"
         "All - Apply both effects.\n"
         "\n"
         "Granny's item will only be offered after you have traded in the Odd Mushroom when Shuffle Adult Trade is on. "
-        "Otherwise when off, you will need to have found the Claim Check to buy her item (simulating the trade quest "
+        "Otherwise when off, you will need to have found the Claim Check to buy her item (simulating that the trade "
+        "quest "
         "is complete).";
     mOptionDescriptions[RSK_MERCHANT_PRICES] =
         "Vanilla - The same price as the Check in vanilla, 60 for the Bean Salesman.\n"
@@ -509,10 +511,10 @@ void Settings::CreateOptionDescriptions() {
         "After choosing a price, set it to the affordable amount based on the wallet required.\n\n"
         "Affordable prices per tier: starter = 1, adult = 100, giant = 201, tycoon = 501\n\n"
         "Use this to enable wallet tier locking, but make merchant items not as expensive as they could be.";
-    mOptionDescriptions[RSK_SHUFFLE_FROG_SONG_RUPEES] = "Shuffles 5 Purple Rupees into to the item pool, and allows\n"
+    mOptionDescriptions[RSK_SHUFFLE_FROG_SONG_RUPEES] = "Shuffles 5 Purple Rupees into the item pool, and allows\n"
                                                         "you to earn items by playing songs at the Frog Choir.\n"
                                                         "\n"
-                                                        "This setting does not effect the item earned from playing\n"
+                                                        "This setting does not affect the item earned from playing\n"
                                                         "the Song of Storms and the frog song minigame.";
     mOptionDescriptions[RSK_SHUFFLE_BEGGAR] =
         "Shuffle the rewards the Beggar gives for selling bugs, fish, and Blue Fire.\n"
@@ -526,8 +528,15 @@ void Settings::CreateOptionDescriptions() {
         "D-pad.\n"
         "\n"
         "If disabled, only the Claim Check will be found in the pool.";
+    mOptionDescriptions[RSK_SHUFFLE_CHEST_MINIGAME] =
+        "Shuffles the contents of the Market Treasure Chest Game, including the item you pay "
+        "the host for. Both chests in every room can be opened, and the locked doors are opened "
+        "with keys found elsewhere instead of keys won in the game.\n"
+        "\n"
+        "Six Chest Game Small Keys are added to the pool, or a single keyring holding all six "
+        "if the Chest Minigame Keyring is selected under Keyrings.";
     mOptionDescriptions[RSK_EARLY_GRANNYS_SHOP] =
-        "Makes Granny's Potion Shop available from start, rather than requiring Claim Check to be found first.\n"
+        "Makes Granny's Potion Shop available from start, rather than requiring the Claim Check to be found first.\n"
         "\n"
         "This only applies when Shuffle Adult Trade is disabled. With Shuffle Adult "
         "Trade enabled, Granny still requires trading the Odd Mushroom as usual.";
@@ -537,16 +546,27 @@ void Settings::CreateOptionDescriptions() {
         "\n"
         "You can still talk to him multiple times to get Huge Rupees.";
     mOptionDescriptions[RSK_SHUFFLE_FREESTANDING] =
-        "Freestanding rupees & hearts are shuffles to random items. "
+        "Freestanding rupees & hearts are shuffled into random items. "
         "Freestanding heart pieces and small keys are already shuffled by default.\n"
         "\n"
         "Off - freestanding rupees & hearts will not be shuffled.\n"
         "\n"
-        "Dungeons - Only freestanding rupees & hearts that are within dungeons.\n"
+        "Dungeons - Only shuffle freestanding rupees & hearts that are within dungeons.\n"
         "\n"
-        "Overworld - Only freestanding rupees & hearts that are outside of dungeons.\n"
+        "Overworld - Only shuffle freestanding rupees & hearts that are outside of dungeons.\n"
         "\n"
         "All Items - Shuffle all freestanding rupees & hearts.";
+    mOptionDescriptions[RSK_SHUFFLE_SILVER] =
+        "Silver rupees will be shuffled.\n"
+        "Items will be added to the pool, which completes the silver rupee puzzles,\n"
+        "while silver rupee locations will be random items.\n"
+        "Off - Silver rupees won't be shuffled.\n"
+        "\n"
+        "On - Silver rupees will be individually spread out.\n"
+        "\n"
+        "Wallet - Silver rupees are shuffled as wallets, a single check to set the flag for collecting them.\n"
+        "\n"
+        "Start With - Silver rupees are still replaced with items, but all silver rupee flags start set.";
     mOptionDescriptions[RSK_SHUFFLE_FOUNTAIN_FAIRIES] =
         "Shuffle fairies in fountain locations. "
         "This includes the sets of fairies found in Ganon's Castle and the Desert Oasis.";
@@ -557,22 +577,21 @@ void Settings::CreateOptionDescriptions() {
         "\n"
         "This excludes gossip stones and magic bean locations.";
     mOptionDescriptions[RSK_SHUFFLE_BUTTERFLY_FAIRIES] = "Shuffle fairies from butterfly locations.";
-    mOptionDescriptions[RSK_SHUFFLE_GRASS] =
-        "Grass will drop a randomized item the first time they're cut and collected. "
-        "Grass will have a different appearance when they hold a randomized item.\n"
-        "\n"
-        "Off - Grass will not be shuffled.\n"
-        "\n"
-        "Dungeons - Only shuffle grass that are within dungeons.\n"
-        "\n"
-        "Overworld - Only shuffle grass that are outside of dungeons.\n"
-        "\n"
-        "All Grass - Shuffle all grass.";
+    mOptionDescriptions[RSK_SHUFFLE_GRASS] = "Grass will drop a randomized item the first time it's cut and collected. "
+                                             "Grass will have a different appearance when it holds a randomized item.\n"
+                                             "\n"
+                                             "Off - Grass will not be shuffled.\n"
+                                             "\n"
+                                             "Dungeons - Only shuffle grass that is within dungeons.\n"
+                                             "\n"
+                                             "Overworld - Only shuffle grass that is outside of dungeons.\n"
+                                             "\n"
+                                             "All Grass - Shuffle all grass.";
     mOptionDescriptions[RSK_SHUFFLE_ROCKS] = "Shuffle rock locations.";
     mOptionDescriptions[RSK_SHUFFLE_BOULDERS] = "Shuffle boulder locations.";
     mOptionDescriptions[RSK_SHUFFLE_DUNGEON_REWARDS] =
         "Shuffles the location of Spiritual Stones and medallions.\n"
-        "Vanilla - Spiritual Stones and medallions will be given from their respective boss.\n"
+        "Vanilla - Spiritual Stones and medallions will be given by their respective boss.\n"
         "\n"
         "End of dungeons - Spiritual Stones and medallions will be given as rewards "
         "for beating major dungeons. Link will always start with one stone or medallion.\n"
@@ -614,26 +633,27 @@ void Settings::CreateOptionDescriptions() {
         "\n"
         "Off - No dungeons will have their keys replaced with keyrings.\n"
         "\n"
-        "Random - A random amount of dungeons (0-8 or 9) will have their keys replaced with keyrings.\n"
+        "Random - A random amount of dungeons will have their keys replaced with keyrings.\n"
         "\n"
         "Count - A specified amount of randomly selected dungeons will have their keys replaced with keyrings.\n"
         "\n"
         "Selection - Hand select which dungeons will have their keys replaced with keyrings\n"
         "(can also be left as random, in which case each one will have a 50% chance of being a keyring).\n"
         "\n"
-        "Selecting key ring for dungeons will have no effect if Small Keys are set to Start With or Vanilla.\n"
+        "Selecting keyring for dungeons will have no effect if Small Keys are set to Start With or Vanilla.\n"
         "\n"
-        "If Gerudo Fortress Carpenters is set to Normal, and Gerudo Fortress Keys is set to anything "
-        "other than Vanilla, then the maximum amount of Key Rings that can be selected by Random or "
-        "Count will be 9. Otherwise, the maximum amount of Key Rings will be 8.";
-    mOptionDescriptions[RSK_GERUDO_KEYS] = "Vanilla - Thieves' Hideout Keys will appear in their vanilla locations.\n"
-                                           "\n"
-                                           "Any dungeon - Thieves' Hideout Keys can only appear inside of any dungon.\n"
-                                           "\n"
-                                           "Overworld - Thieves' Hideout Keys can only appear outside of dungeons.\n"
-                                           "\n"
-                                           "Anywhere - Thieves' Hideout Keys can appear anywhere in the world.";
-    mOptionDescriptions[RSK_BOSS_KEYSANITY] = "Start with - You will start with Boss keys from all dungeons.\n"
+        "The maximum amount of Keyrings that can be selected by Random or Count is 8, plus one if "
+        "Gerudo Fortress Carpenters is set to Normal and Gerudo Fortress Keys is set to anything "
+        "other than Vanilla, plus one if Shuffle Chest Minigame is on.";
+    mOptionDescriptions[RSK_GERUDO_KEYS] =
+        "Vanilla - Thieves' Hideout Keys will appear in their vanilla locations.\n"
+        "\n"
+        "Any dungeon - Thieves' Hideout Keys can only appear inside of any dungeon.\n"
+        "\n"
+        "Overworld - Thieves' Hideout Keys can only appear outside of dungeons.\n"
+        "\n"
+        "Anywhere - Thieves' Hideout Keys can appear anywhere in the world.";
+    mOptionDescriptions[RSK_BOSS_KEYSANITY] = "Start with - You will start with Boss Keys from all dungeons.\n"
                                               "\n"
                                               "Vanilla - Boss Keys will appear in their vanilla locations.\n"
                                               "\n"
@@ -649,20 +669,20 @@ void Settings::CreateOptionDescriptions() {
         "\n"
         "Own dungeon - Ganon's Boss Key can appear anywhere inside Ganon's Castle.\n"
         "\n"
-        "Start with - Places Ganon's Boss Key in your starting inventory."
+        "Start with - Places Ganon's Boss Key in your starting inventory.\n"
         "\n"
-        "Any dungeon - Ganon's Boss Key Key can only appear inside of any dungeon.\n"
+        "Any dungeon - Ganon's Boss Key can only appear inside of any dungeon.\n"
         "\n"
-        "Overworld - Ganon's Boss Key Key can only appear outside of dungeons.\n"
+        "Overworld - Ganon's Boss Key can only appear outside of dungeons.\n"
         "\n"
-        "Anywhere - Ganon's Boss Key Key can appear anywhere in the world.\n"
+        "Anywhere - Ganon's Boss Key can appear anywhere in the world.\n"
         "\n"
         "Trigger - These settings put the boss key on a trigger, "
-        "granting key once requirements met:\n"
+        "granting the key once the requirements are met:\n"
         "- Stones: Obtain the specified amount of Spiritual Stones.\n"
         "- Medallions: Obtain the specified amount of medallions.\n"
         "- Dungeon rewards: Obtain the specified total sum of Spiritual Stones or medallions.\n"
-        "- Dungeons: Complete the specified amount of dungeons. Dungeons are considered complete after stepping in to "
+        "- Dungeons: Complete the specified amount of dungeons. Dungeons are considered complete after stepping into "
         "the blue warp after the boss.\n"
         "- Tokens: Obtain the specified amount of Skulltula tokens.";
     mOptionDescriptions[RSK_GBK_OPTIONS] =
@@ -671,7 +691,7 @@ void Settings::CreateOptionDescriptions() {
         "\n"
         "Greg as Reward - Greg does change logic (can be part of expected path for obtaining "
         "GBK), Greg helps obtain GBK, max number of rewards on slider increases by 1 to "
-        "account for Greg. \n"
+        "account for Greg.\n"
         "\n"
         "Greg as Wildcard - Greg does not change logic, Greg helps obtain GBK, max number of "
         "rewards on slider does not change.";
@@ -681,7 +701,7 @@ void Settings::CreateOptionDescriptions() {
         "\n"
         "Greg as Reward - Greg does change logic (can be part of expected path for obtaining "
         "Ganon's Soul), Greg helps obtain Ganon's Soul, max number of rewards on slider increases by 1 to "
-        "account for Greg. \n"
+        "account for Greg.\n"
         "\n"
         "Greg as Wildcard - Greg does not change logic, Greg helps obtain Ganon's Soul, max number of "
         "rewards on slider does not change.";
@@ -695,13 +715,13 @@ void Settings::CreateOptionDescriptions() {
         "\n"
         "Completed - Once the Happy Mask Shop is opened, all masks will be available to be borrowed.\n"
         "\n"
-        "Shuffle - Happy Mask Shop never opens, masks are shuffled with rest of items.";
+        "Shuffle - Happy Mask Shop never opens, masks are shuffled with the rest of the items.";
     mOptionDescriptions[RSK_SKIP_SCARECROWS_SONG] =
         "Start with the ability to summon Pierre the Scarecrow. Pulling out an Ocarina in the usual locations will "
         "automatically summon him.\n"
         "With \"Shuffle Ocarina Buttons\" enabled, you'll need at least two Ocarina buttons to summon him.";
     mOptionDescriptions[RSK_SKIP_PLANTING_BEANS] = "Beans will be planted once you find beans.\n"
-                                                   "If bean souls are shuffled, you must find soul still.";
+                                                   "If bean souls are shuffled, you must still find the soul.";
     mOptionDescriptions[RSK_ITEM_POOL] = "Sets how many major items appear in the item pool.\n"
                                          "\n"
                                          "Plentiful - Extra major items are added to the pool.\n"
@@ -714,11 +734,11 @@ void Settings::CreateOptionDescriptions() {
     mOptionDescriptions[RSK_BASE_ICE_TRAPS] =
         "Sets if ice traps that exist in vanilla are shuffled into the item pool.\n"
         "If this is on, 1 Trap will always be added to the pool,\n"
-        "an additional trap will be added if Gerudo Training Grounds\n"
-        "is NOT master quest,\n"
+        "an additional trap will be added if the Gerudo Training Ground\n"
+        "is NOT Master Quest,\n"
         "and 4 more will be added if Ganon's Castle is NOT Master Quest.";
     mOptionDescriptions[RSK_ADDITIONAL_ICE_TRAPS] =
-        "Sets how many more Ice Traps will be added to item pool,\n"
+        "Sets how many more Ice Traps will be added to the item pool,\n"
         "assuming there is enough space after placing Progression Items.\n\n"
         "You do not need to have base ice traps on for this setting to work.";
     mOptionDescriptions[RSK_ICE_TRAP_PERCENT] =
@@ -760,12 +780,12 @@ void Settings::CreateOptionDescriptions() {
         "Reading the Temple of Time altar as adult will tell you the locations of the medallions, as well as the "
         "conditions for building the Rainbow Bridge and getting the Boss Key for Ganon's Castle.";
     mOptionDescriptions[RSK_GANONDORF_HINT] =
-        "Talking to Ganondorf in his boss room will tell you the location of the Light Arrows and Master Sword."
+        "Talking to Ganondorf in his boss room will tell you the location of the Light Arrows and Master Sword. "
         "If this option is enabled and Ganondorf is reachable without these items, Gossip Stones will never hint the "
         "appropriate items."; // RANDOTODO make this hint text about no dupe hints a global hint for static hints. Add
                               // to navi?
     mOptionDescriptions[RSK_SHEIK_LA_HINT] =
-        "Talking to Sheik inside Ganon's Castle will tell you the location of the Light Arrows."
+        "Talking to Sheik inside Ganon's Castle will tell you the location of the Light Arrows. "
         "If this option is enabled and Sheik is reachable without Light Arrows, Gossip Stones will never hint the "
         "Light Arrows.";
     mOptionDescriptions[RSK_DAMPES_DIARY_HINT] =
@@ -773,8 +793,9 @@ void Settings::CreateOptionDescriptions() {
     mOptionDescriptions[RSK_GREG_HINT] =
         "Talking to the chest game owner after buying a key will tell you the location of Greg the Green Rupee.";
     mOptionDescriptions[RSK_LOACH_HINT] = "Talking to the fishing pond owner and asking to talk about something will "
-                                          "tell you what's the reward for the Hyrule Loach.";
-    mOptionDescriptions[RSK_BOSS_KEY_HINT] = "Navi will tell where boss key can be found when prompted at boss door.";
+                                          "tell you the reward for the Hyrule Loach.";
+    mOptionDescriptions[RSK_BOSS_KEY_HINT] =
+        "Navi will tell you where the Boss Key can be found when prompted at a boss door.";
     mOptionDescriptions[RSK_SARIA_HINT] = "Talking to Saria either in person or through Saria's Song will tell you the "
                                           "location of a progressive magic meter.";
     mOptionDescriptions[RSK_MIDO_HINT] = "Talking to Mido as child will tell you the location of the Kokiri Sword.";
@@ -793,7 +814,7 @@ void Settings::CreateOptionDescriptions() {
     mOptionDescriptions[RSK_MALON_HINT] = "Talking to Malon as adult will tell you the item on \"Link's cow\", the cow "
                                           "you win from beating her time on the Lon Lon Obstacle Course.";
     mOptionDescriptions[RSK_HBA_HINT] =
-        "Talking to the Horseback Archery gerudo in Gerudo Fortress, or the nearby sign, will tell you what you win "
+        "Talking to the Horseback Archery Gerudo in Gerudo Fortress, or the nearby sign, will tell you what you win "
         "for scoring 1000 and 1500 points on Horseback Archery.";
     mOptionDescriptions[RSK_WARP_SONG_HINTS] = "Playing a warp song will tell you where it leads. (If warp song "
                                                "destinations are vanilla, this is always enabled.)";
@@ -828,12 +849,12 @@ void Settings::CreateOptionDescriptions() {
         "usual 50.\n\n"
         "Bombchu Bowling is opened by obtaining the first Bombchu bag.";
     mOptionDescriptions[RSK_LINKS_POCKET] =
-        "Dungeon Reward - Link will start with a Spiritual Stone or Medallion, and specific options will open up\n\n"
+        "Dungeon Reward - Link will start with a Spiritual Stone or Medallion, and specific options will open up.\n\n"
         "Advancement - Link will start with a useful item.\n\n"
         "Anything - Link will start with a random item.\n\n"
         "Nothing - Link will not start with a bonus item.";
     mOptionDescriptions[RSK_LINKS_POCKET_REWARD] =
-        "Any Reward - Link starts with a random Spiritual Stone or Medallion\n\n"
+        "Any Reward - Link starts with a random Spiritual Stone or Medallion.\n\n"
         "Stone - Link starts with a random Spiritual Stone.\n\n"
         "Any Medallion - Link starts with a random Medallion.\n\n"
         "Light Medallion - Link starts with the Light Medallion.";
@@ -842,11 +863,17 @@ void Settings::CreateOptionDescriptions() {
                                                     "\n"
                                                     "If you have Bombchu Bag disabled, you will need a Bomb Bag "
                                                     "and existing Bombchus for Bombchus to drop.";
+    mOptionDescriptions[RSK_PROGRESSIVE_GORON_SWORD] =
+        "Giant's Knife and Biggoron's Sword are shuffled as one progressive item: the first copy is the "
+        "breakable Giant's Knife, the second is Biggoron's Sword.\n"
+        "\n"
+        "Starting with Biggoron's Sword still starts you with both.\n"
+        "Medigoron only repairs broken Giant's Knife.";
     mOptionDescriptions[RSK_BLUE_FIRE_ARROWS] =
         "Ice Arrows act like Blue Fire, making them able to melt red ice. "
         "Item placement logic will respect this option, so it might be required to use this to progress.";
     mOptionDescriptions[RSK_SKELETON_KEY] =
-        "Adds a new item called the \"Skeleton Key\", it unlocks every dungeon door locked by a small key.";
+        "Adds a new item called the \"Skeleton Key\"; it unlocks every dungeon door locked by a small key.";
     mOptionDescriptions[RSK_SUNLIGHT_ARROWS] =
         "Light Arrows can be used to light up the sun switches instead of using the Mirror Shield. "
         "Item placement logic will respect this option, so it might be required to use this to progress.";
@@ -866,7 +893,7 @@ void Settings::CreateOptionDescriptions() {
                                                        "required items and locations to beat the game "
                                                        "will be guaranteed reachable.";
     mOptionDescriptions[RSK_SHUFFLE_BEAN_SOULS] =
-        "Shuffle 10 bean souls which must be found to spawn corresponding soil / plant.";
+        "Shuffle 10 bean souls which must be found to spawn the corresponding soil/plant.";
     mOptionDescriptions[RSK_SHUFFLE_BOSS_SOULS] =
         "Shuffles 8 boss souls (one for each blue warp dungeon). A boss will not appear until you collect its "
         "respective soul.";

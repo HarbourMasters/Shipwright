@@ -75,8 +75,8 @@ void RegisterItemUnequip() {
             gSaveContext.equips.cButtonSlots[targetButton - 1] = SLOT_NONE;
             Interface_LoadItemIcon1(play, targetButton);
 
-            Audio_PlaySoundGeneral(NA_SE_SY_DECIDE, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                   &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+            Audio_PlaySfxGeneral(NA_SE_SY_DECIDE, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                 &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
 
             *should = false;
         }

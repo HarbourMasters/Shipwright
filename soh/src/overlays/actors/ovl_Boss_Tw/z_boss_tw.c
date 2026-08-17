@@ -178,7 +178,7 @@ static s8 sEnvType;
 static u8 sGroundBlastType;
 static BossTw* sKotakePtr;
 static BossTw* sKoumePtr;
-static BossTw* sTwinrovaPtr;
+BossTw* sTwinrovaPtr; // global for CS skip hook
 static u8 sShieldFireCharge;
 static u8 sShieldIceCharge;
 static f32 D_8094C854;
@@ -495,7 +495,7 @@ void BossTw_Init(Actor* thisx, PlayState* play2) {
             this->actor.world.pos.y = 400.0f;
             this->actor.world.pos.z = 0.0f;
             Audio_QueueSeqCmd(SEQ_PLAYER_BGM_MAIN << 24 | NA_BGM_BOSS);
-        } else {
+        } else if (GameInteractor_Should(VB_PLAY_TWINROVA_INTRO_CS, true, this, play)) {
             BossTw_SetupCSWait(this, play);
         }
 
@@ -512,7 +512,7 @@ void BossTw_Init(Actor* thisx, PlayState* play2) {
             this->actor.world.pos.x = 600.0f;
             this->actor.world.pos.y = 400.0f;
             this->actor.world.pos.z = 0.0f;
-        } else {
+        } else if (GameInteractor_Should(VB_PLAY_TWINROVA_INTRO_CS, true, this, play)) {
             BossTw_SetupCSWait(this, play);
         }
 
@@ -531,7 +531,7 @@ void BossTw_Init(Actor* thisx, PlayState* play2) {
         if (Flags_GetEventChkInf(EVENTCHKINF_BEGAN_TWINROVA_BATTLE)) {
             // began twinrova battle
             BossTw_SetupWait(this, play);
-        } else {
+        } else if (GameInteractor_Should(VB_PLAY_TWINROVA_INTRO_CS, true, this, play)) {
             BossTw_TwinrovaSetupIntroCS(this, play);
             this->actor.world.pos.x = 0.0f;
             this->actor.world.pos.y = 1000.0f;
@@ -1113,13 +1113,11 @@ void BossTw_ShootBeam(BossTw* this, PlayState* play) {
                                              &this->actor.projectedW);
 
                 if (this->actor.params == 1) {
-                    Audio_PlaySoundGeneral(NA_SE_EN_TWINROBA_SHOOT_FIRE - SFX_FLAG, &this->unk_54C, 4,
-                                           &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
-                                           &gSfxDefaultReverb);
+                    Audio_PlaySfxGeneral(NA_SE_EN_TWINROBA_SHOOT_FIRE - SFX_FLAG, &this->unk_54C, 4,
+                                         &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 } else {
-                    Audio_PlaySoundGeneral(NA_SE_EN_TWINROBA_SHOOT_FREEZE - SFX_FLAG, &this->unk_54C, 4,
-                                           &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
-                                           &gSfxDefaultReverb);
+                    Audio_PlaySfxGeneral(NA_SE_EN_TWINROBA_SHOOT_FREEZE - SFX_FLAG, &this->unk_54C, 4,
+                                         &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 }
                 break;
 
@@ -1145,19 +1143,15 @@ void BossTw_ShootBeam(BossTw* this, PlayState* play) {
                                              &this->actor.projectedW);
 
                 if (this->actor.params == 1) {
-                    Audio_PlaySoundGeneral(NA_SE_EN_TWINROBA_SHOOT_FIRE - SFX_FLAG, &this->unk_558, 4U,
-                                           &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
-                                           &gSfxDefaultReverb);
-                    Audio_PlaySoundGeneral(NA_SE_EN_TWINROBA_REFL_FIRE - SFX_FLAG, &this->unk_558, 4,
-                                           &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
-                                           &gSfxDefaultReverb);
+                    Audio_PlaySfxGeneral(NA_SE_EN_TWINROBA_SHOOT_FIRE - SFX_FLAG, &this->unk_558, 4U,
+                                         &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                    Audio_PlaySfxGeneral(NA_SE_EN_TWINROBA_REFL_FIRE - SFX_FLAG, &this->unk_558, 4,
+                                         &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 } else {
-                    Audio_PlaySoundGeneral(NA_SE_EN_TWINROBA_SHOOT_FREEZE - SFX_FLAG, &this->unk_558, 4,
-                                           &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
-                                           &gSfxDefaultReverb);
-                    Audio_PlaySoundGeneral(NA_SE_EN_TWINROBA_REFL_FREEZE - SFX_FLAG, &this->unk_558, 4,
-                                           &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
-                                           &gSfxDefaultReverb);
+                    Audio_PlaySfxGeneral(NA_SE_EN_TWINROBA_SHOOT_FREEZE - SFX_FLAG, &this->unk_558, 4,
+                                         &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                    Audio_PlaySfxGeneral(NA_SE_EN_TWINROBA_REFL_FREEZE - SFX_FLAG, &this->unk_558, 4,
+                                         &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 }
                 break;
         }
@@ -3782,7 +3776,9 @@ void BossTw_SpawnPortalDraw(BossTw* this, PlayState* play) {
 
     Matrix_Push();
 
-    Matrix_Translate(0.0f, 232.0f, -600.0f, MTXMODE_NEW);
+    if (GameInteractor_Should(VB_TWINROVA_SPAWN_PORTAL_TRANSLATION_KOTAKE, true)) {
+        Matrix_Translate(0.0f, 232.0f, -600.0f, MTXMODE_NEW);
+    }
     Matrix_Scale(this->spawnPortalScale, this->spawnPortalScale, this->spawnPortalScale, MTXMODE_APPLY);
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 0, 0, 0, (s16)this->spawnPortalAlpha);
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_LOAD | G_MTX_MODELVIEW | G_MTX_NOPUSH);
@@ -3794,7 +3790,9 @@ void BossTw_SpawnPortalDraw(BossTw* this, PlayState* play) {
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_LOAD | G_MTX_MODELVIEW | G_MTX_NOPUSH);
     gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(gTwinrovaKotakeMagicSigilDL));
 
-    Matrix_Translate(0.0f, 232.0f, 600.0f, MTXMODE_NEW);
+    if (GameInteractor_Should(VB_TWINROVA_SPAWN_PORTAL_TRANSLATION_KOUME, true)) {
+        Matrix_Translate(0.0f, 232.0f, 600.0f, MTXMODE_NEW);
+    }
     Matrix_Scale(this->spawnPortalScale, this->spawnPortalScale, this->spawnPortalScale, MTXMODE_APPLY);
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 0, 0, 0, (s16)this->spawnPortalAlpha);
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_LOAD | G_MTX_MODELVIEW | G_MTX_NOPUSH);

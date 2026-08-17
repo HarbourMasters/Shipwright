@@ -252,6 +252,14 @@ void RegisterImGuiItemIcons() {
             ->LoadGuiTexture(entry.second.nameFaded, entry.second.texturePath, "", ImVec4(1, 1, 1, 0.3f));
     }
 
+    ImVec4 silver = ImVec4(0.7f, 0.7f, 0.7f, 1.0f);
+    ImVec4 silverFaded = silver;
+    silverFaded.w = 0.3f;
+    std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
+        ->LoadGuiTexture("ITEM_RUPEE_SILVER", gRupeeCounterIconTex, "", silver);
+    std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
+        ->LoadGuiTexture("ITEM_RUPEE_SILVER_Faded", gRupeeCounterIconTex, "", silverFaded);
+
     for (const auto& entry : questMapping) {
         std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
             ->LoadGuiTexture(entry.second.name, entry.second.texturePath, "", ImVec4(1, 1, 1, 1));

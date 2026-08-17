@@ -572,7 +572,7 @@ static bool StateSlotSelectHandler(std::shared_ptr<Ship::Console> Console, const
         ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
     }
-    uint8_t slot;
+    int32_t slot;
 
     try {
         slot = std::stoi(args[1], nullptr, 10);
@@ -581,7 +581,7 @@ static bool StateSlotSelectHandler(std::shared_ptr<Ship::Console> Console, const
         return 1;
     }
 
-    if (slot < 0) {
+    if (slot < 0 || slot > 2) {
         ERROR_MESSAGE("[SOH] Invalid slot passed. Slot must be between 0 and 2");
         return 1;
     }

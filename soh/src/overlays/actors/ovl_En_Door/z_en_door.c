@@ -10,7 +10,6 @@
 #include "objects/object_hidan_objects/object_hidan_objects.h"
 #include "objects/object_mizu_objects/object_mizu_objects.h"
 #include "objects/object_haka_door/object_haka_door.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
@@ -147,8 +146,6 @@ void EnDoor_Destroy(Actor* thisx, PlayState* play) {
     if (transitionEntry->id < 0) {
         transitionEntry->id = -transitionEntry->id;
     }
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnDoor_SetupType(EnDoor* this, PlayState* play) {

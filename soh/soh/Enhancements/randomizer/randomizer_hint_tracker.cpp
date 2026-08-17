@@ -801,7 +801,7 @@ void RegisterHintTrackerWidgets() {
         .Options(ColorPickerOptions().Color(THEME_COLOR).DefaultValue(Color_ReadText_Default).UseAlpha().ShowReset());
     SohGui::GetSohMenu()->AddSearchWidget({ readTextColorWidget, "Randomizer", "Hint Tracker", "General Settings" });
 
-    unreadColorWidget = { .name = "Unread (???)##HintTracker", .type = WidgetType::WIDGET_CVAR_COLOR_PICKER };
+    unreadColorWidget = { .name = "Unread (?\?\?)##HintTracker", .type = WidgetType::WIDGET_CVAR_COLOR_PICKER };
     unreadColorWidget.CVar(CVAR_TRACKER_HINT("UnreadColor"))
         .Options(ColorPickerOptions().Color(THEME_COLOR).DefaultValue(Color_Unread_Default).UseAlpha().ShowReset());
     SohGui::GetSohMenu()->AddSearchWidget({ unreadColorWidget, "Randomizer", "Hint Tracker", "General Settings" });

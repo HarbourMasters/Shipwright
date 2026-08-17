@@ -498,32 +498,6 @@ void Entrance_OverrideBlueWarp(void) {
     }
 }
 
-void Entrance_EnableFW(void) {
-    Player* player = GET_PLAYER(gPlayState);
-    // Leave restriction in Tower Collapse Interior, Castle Collapse, Treasure Box Shop, Tower Collapse Exterior,
-    // Grottos area, Fishing Pond, Ganon Battle and for states that disable buttons.
-    if (!false /* farores wind anywhere */ || gPlayState->sceneNum == SCENE_GANONS_TOWER_COLLAPSE_INTERIOR ||
-        gPlayState->sceneNum == SCENE_INSIDE_GANONS_CASTLE_COLLAPSE ||
-        (gPlayState->sceneNum == SCENE_TREASURE_BOX_SHOP && !false /* shuffled chest mini game */) ||
-        gPlayState->sceneNum == SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR || gPlayState->sceneNum == SCENE_GROTTOS ||
-        gPlayState->sceneNum == SCENE_FISHING_POND || gPlayState->sceneNum == SCENE_GANON_BOSS ||
-        gSaveContext.eventInf[0] & 0x1 || // Ingo's Minigame state
-        player->stateFlags1 &
-            (PLAYER_STATE1_HANGING_OFF_LEDGE | PLAYER_STATE1_CLIMBING_LADDER | PLAYER_STATE1_ON_HORSE |
-             PLAYER_STATE1_IN_WATER) ||              // Swimming, riding horse, Down A, hanging from a ledge
-        player->stateFlags2 & PLAYER_STATE2_CRAWLING // Blank A
-        // Shielding, spinning and getting skull tokens still disable buttons automatically
-    ) {
-        return;
-    }
-
-    for (size_t i = 1; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
-        if (gSaveContext.equips.buttonItems[i] == ITEM_FARORES_WIND) {
-            gSaveContext.buttonStatus[i] = BTN_ENABLED;
-        }
-    }
-}
-
 // Check if Link should still be riding epona after changing entrances
 void Entrance_HandleEponaState(void) {
     s32 entrance = gPlayState->nextEntranceIndex;

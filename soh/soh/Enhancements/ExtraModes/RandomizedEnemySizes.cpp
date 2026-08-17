@@ -6,6 +6,8 @@
 extern "C" {
 #include "functions.h"
 #include "src/overlays/actors/ovl_En_Fz/z_en_fz.h"
+#include "src/overlays/actors/ovl_En_Crow/z_en_crow.h"
+extern void EnCrow_TurnAway(EnCrow*, PlayState*);
 }
 
 static constexpr int32_t CVAR_RANDO_ENEMY_SIZE_DEFAULT = 0;
@@ -61,6 +63,35 @@ static void RandomizedEnemySizes(void* refActor) {
 
 static void RegisterRandomizedEnemySizes() {
     COND_HOOK(OnActorInit, CVAR_RANDO_ENEMY_SIZE_VALUE, RandomizedEnemySizes);
+
+    // Guays try to die on any damage, but EnCrow_Update doesn't let them reach ground if health != 0
+    // Makeshift "damaged but not dead" action setup
+    COND_VB_SHOULD(VB_GUAY_SETUP_DAMAGED, CVAR_RANDO_ENEMY_SIZE_VALUE && CVAR_ENEMY_SCALE_HEALTH_VALUE, {
+        EnCrow* enCrow = va_arg(args, EnCrow*);
+
+        if (enCrow->actor.colChkInfo.damage < enCrow->actor.colChkInfo.health) {
+            *should = false;
+            Actor_ApplyDamage(&enCrow->actor);
+            enCrow->actor.colorFilterTimer = 40;
+            Actor_SetColorFilter(&enCrow->actor, 0x4000, 255, 0, 40);
+            Audio_PlayActorSound2(&enCrow->actor, NA_SE_EN_KAICHO_DEAD);
+            enCrow->timer = 50;
+            enCrow->actor.speedXZ = 3.5f;
+            enCrow->aimRotX = -0x1000;
+            enCrow->aimRotY = enCrow->actor.yawTowardsPlayer + 0x8000;
+            enCrow->skelAnime.playSpeed = 2.0f;
+            enCrow->actionFunc = EnCrow_TurnAway;
+        }
+    });
+
+    // Clamp distance from ground due to hard to hit with Kokiri
+    COND_VB_SHOULD(VB_GUAY_ALIVE_MOVE_HEIGHT_OFFSET, CVAR_RANDO_ENEMY_SIZE_VALUE && CVAR_ENEMY_SCALE_HEALTH_VALUE, {
+        f32* scale = va_arg(args, f32*);
+
+        if (*should && *scale > 2.0f) {
+            *scale = 2.0f;
+        }
+    });
 }
 
 static void RegisterFreezardHealthScale() {

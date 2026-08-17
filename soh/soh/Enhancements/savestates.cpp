@@ -16,6 +16,7 @@
 #include "savestate_serialize.h"
 
 extern "C" PlayState* gPlayState;
+extern "C" EffectContext sEffectContext;
 
 extern "C" void BgDdanKd_SaveState(SaveStateCtx* ctx);
 extern "C" void BgDodoago_SaveState(SaveStateCtx* ctx);
@@ -86,6 +87,7 @@ typedef struct SaveStateInfo {
     unsigned char audioHeapCopy[AUDIO_HEAP_SIZE];
 
     SaveContext saveContextCopy;
+    EffectContext effectContextCopy;
     GameInfo gameInfoCopy;
     AudioContext audioContextCopy;
     uint32_t rngSeed;
@@ -442,6 +444,7 @@ void SaveState::Save(void) {
 
     memcpy(&info->saveContextCopy, &gSaveContext, sizeof(gSaveContext));
     memcpy(&info->gameInfoCopy, gGameInfo, sizeof(*gGameInfo));
+    memcpy(&info->effectContextCopy, &sEffectContext, sizeof(sEffectContext));
 
     // Various static data
     SaveOverlayStaticData();
@@ -459,6 +462,7 @@ void SaveState::Load(void) {
 
     memcpy(&gSaveContext, &info->saveContextCopy, sizeof(gSaveContext));
     memcpy(gGameInfo, &info->gameInfoCopy, sizeof(*gGameInfo));
+    memcpy(&sEffectContext, &info->effectContextCopy, sizeof(sEffectContext));
 
     memcpy(gActiveSounds, info->gActiveSoundsCopy, sizeof(gActiveSounds));
     memcpy(gSoundBankMuted, &info->gSoundBankMutedCopy, sizeof(info->gSoundBankMutedCopy));

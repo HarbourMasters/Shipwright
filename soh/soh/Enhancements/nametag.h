@@ -1,5 +1,4 @@
-#ifndef NAMETAG_H
-#define NAMETAG_H
+#pragma once
 
 #include <libultraship/color.h>
 
@@ -31,5 +30,3 @@ void NameTag_RemoveAllByTag(const char* tag);
 #ifdef __cplusplus
 }
 #endif
-
-#endif // NAMETAG_H

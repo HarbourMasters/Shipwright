@@ -888,7 +888,7 @@ void PlandomizerDrawIceTrapSetup(uint32_t index) {
                                                            .Padding(ImVec2(10.f, 6.f)))) {
             plandoLogData[index].iceTrapName =
                 Rando::Traps::GetTrapName(plandoLogData[index].iceTrapModel.GetRandomizerGet())
-                    .GetForLanguage(CVarGetInteger(CVAR_SETTING("Languages"), 0))
+                    .name.GetForLanguage(CVarGetInteger(CVAR_SETTING("Languages"), 0))
                     .c_str();
         }
         ImGui::SameLine();
@@ -995,7 +995,7 @@ void PlandomizerDrawOptions() {
                                                     ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1));
                     ImGui::PopStyleVar();
                     if (upRet) {
-                        if (hash + 1 >= gSeedTextures.size()) {
+                        if (hash + 1 >= static_cast<int32_t>(gSeedTextures.size())) {
                             hash = 0;
                         } else {
                             hash++;
@@ -1017,7 +1017,7 @@ void PlandomizerDrawOptions() {
                             hash--;
                         }
                     }
-                    if (index != spoilerHash.size() - 1) {
+                    if (static_cast<size_t>(index) != spoilerHash.size() - 1) {
                         ImGui::TableNextColumn();
                     }
                     ImGui::PopID();

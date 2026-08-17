@@ -9,7 +9,7 @@ void RegionTable_Init_BottomOfTheWell() {
     // Vanilla/MQ Decider
     areaTable[RR_BOTW_ENTRYWAY] = Region("Bottom of the Well Entryway", SCENE_BOTTOM_OF_THE_WELL, {}, {}, {
         //Exits
-        //Technically involves an fake wall, but passing it lensless is intended in vanilla and it is well telegraphed
+        //Technically involves a fake wall, but passing it lensless is intended in vanilla and it is well telegraphed
         //Backshot should be implemented here, or new regions should be added
         ENTRANCE(RR_BOTW_CORRIDOR,     ctx->GetDungeon(Rando::BOTTOM_OF_THE_WELL)->IsVanilla() && logic->CanUse(RG_CRAWL)),
         ENTRANCE(RR_BOTW_MQ_PERIMETER, ctx->GetDungeon(Rando::BOTTOM_OF_THE_WELL)->IsMQ()      && logic->CanUse(RG_CRAWL)),
@@ -57,7 +57,7 @@ void RegionTable_Init_BottomOfTheWell() {
         ENTRANCE(RR_BOTW_B3_BLOCKED_GRASS,  ctx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH)),
     });
 
-    //This region combines the Middle with the perimeter's hidden areas. If a warp puts link into the middle without crossing the perimeter or using lens, it will need it's own region
+    //This region combines the Middle with the perimeter's hidden areas. If a warp puts Link into the middle without crossing the perimeter or using lens, it will need it's own region
     areaTable[RR_BOTW_MIDDLE] = Region("Bottom of the Well Middle", SCENE_BOTTOM_OF_THE_WELL, {}, {
         //Locations
         //You can just barely pass the spider on the right side without damage or items, but it's probably tight enough to count as as a trick
@@ -187,16 +187,16 @@ void RegionTable_Init_BottomOfTheWell() {
 
     areaTable[RR_BOTW_B3_OOZE] = Region("Bottom of the Well B3 Ooze", SCENE_BOTTOM_OF_THE_WELL, {}, {
         //Locations
-        LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_1,     logic->CanBreakPots()),
-        LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_2,     logic->CanBreakPots()),
-        LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_3,     logic->CanBreakPots()),
-        LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_4,     logic->CanBreakPots()),
-        LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_5,     logic->CanBreakPots()),
-        LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_6,     logic->CanBreakPots()),
-        LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_7,     logic->CanBreakPots()),
-        LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_8,     logic->CanBreakPots()),
-        LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_9,     logic->CanBreakPots()),
-        LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_10,    logic->CanBreakPots()),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_1,      logic->CanBreakPots()),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_2,      logic->CanBreakPots()),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_3,      logic->CanBreakPots()),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_4,      logic->CanBreakPots()),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_5,      logic->CanBreakPots()),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_6,      logic->CanBreakPots()),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_7,      logic->CanBreakPots()),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_8,      logic->CanBreakPots()),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_9,      logic->CanBreakPots()),
+        LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_10,     logic->CanBreakPots()),
         LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_11,    logic->CanBreakPots()),
         LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_POT_12,    logic->CanBreakPots()),
         LOCATION(RC_BOTTOM_OF_THE_WELL_BASEMENT_SUN_FAIRY, logic->CanUse(RG_SUNS_SONG)),
@@ -206,18 +206,35 @@ void RegionTable_Init_BottomOfTheWell() {
         LOCATION(RC_BOTW_BOULDER_1,                        logic->BlastOrSmash()),
         LOCATION(RC_BOTW_BOULDER_2,                        logic->BlastOrSmash()),
         LOCATION(RC_BOTW_BOULDER_3,                        logic->BlastOrSmash() || logic->CanUse(RG_DINS_FIRE) || (logic->CanUse(RG_STICKS) && ctx->GetTrickOption(RT_BOTW_BASEMENT)) ||
-                                                           (ctx->GetTrickOption(RT_BOULDER_COLLISION) && logic->CanUse(RG_FAIRY_BOW))),
+                                                                          (ctx->GetTrickOption(RT_BOULDER_COLLISION) && logic->CanUse(RG_FAIRY_BOW))),
         LOCATION(RC_BOTW_BOULDER_4,                        logic->BlastOrSmash()),
         LOCATION(RC_BOTW_BOULDER_5,                        logic->BlastOrSmash()),
         LOCATION(RC_BOTW_BOULDER_6,                        logic->BlastOrSmash()),
+        LOCATION(RC_BOTW_B2_LADDER_SILVER,                 logic->CanClimbLadder()),
+        LOCATION(RC_BOTW_B3_LADDER_SILVER,                 true),
+        LOCATION(RC_BOTW_NW_OOZE_SILVER,                   true),
+        LOCATION(RC_BOTW_SE_OOZE_SILVER,                   true),
     }, {
         //Exits
-        ENTRANCE(RR_BOTW_HIDDEN_POTS,      logic->CanClimbHighLadder()),
+        ENTRANCE(RR_BOTW_LADDER_DOOR,      logic->CanClimbHighLadder()),
         //It's possible to abuse boulder's limited range of collision detection to detonate the flowers through the boulder with bow, but this is a glitch
         //the exact range is just past the furthest away plank in the green goo section
         ENTRANCE(RR_BOTW_B3_BOMB_FLOWERS,  AnyAgeTime([]{return logic->BlastOrSmash() || logic->CanUse(RG_DINS_FIRE) || (ctx->GetTrickOption(RT_BOTW_BASEMENT) && logic->CanUse(RG_STICKS)) || (ctx->GetTrickOption(RT_BOULDER_COLLISION) && logic->CanUse(RG_FAIRY_BOW));})),
         ENTRANCE(RR_BOTW_B3_BLOCKED_GRASS, AnyAgeTime([]{return logic->BlastOrSmash();})),
         ENTRANCE(RR_BOTW_B3_CHEST_AREA,    AnyAgeTime([]{return logic->BlastOrSmash();})),
+    });
+
+    areaTable[RR_BOTW_LADDER_DOOR] = Region("Bottom of the Well Ladder Door", SCENE_BOTTOM_OF_THE_WELL, {
+        // Events
+        EVENT_ACCESS(LOGIC_BOTW_SILVER, true),
+    }, {
+        //Locations
+        LOCATION(RC_BOTW_B1_LADDER_SILVER, true),
+        LOCATION(RC_BOTW_B2_LADDER_SILVER, true),
+    }, {
+        //Exits
+        ENTRANCE(RR_BOTW_B3_OOZE,     true),
+        ENTRANCE(RR_BOTW_HIDDEN_POTS, logic->HasItem(RG_BOTW_SILVER)),
     });
 
     areaTable[RR_BOTW_B3_BOMB_FLOWERS] = Region("Bottom of the Well B3 Bomb Flowers", SCENE_BOTTOM_OF_THE_WELL, {}, {

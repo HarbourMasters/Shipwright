@@ -62,9 +62,6 @@ void EnBird_Init(Actor* thisx, PlayState* play) {
 }
 
 void EnBird_Destroy(Actor* thisx, PlayState* play) {
-    EnBird* this = (EnBird*)thisx;
-
-    SkelAnime_Free(&this->skelAnime, play);
 }
 
 void EnBird_SetupIdle(EnBird* this, s16 params) {

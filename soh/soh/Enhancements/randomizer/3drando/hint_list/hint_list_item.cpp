@@ -1376,10 +1376,10 @@ void StaticData::HintTable_Init_Item() {
                                                 CustomMessage("a key to the universe", /*german*/"ein Schlüssel zum Universum", /*french*/"une clé de l'univers")});
                                                  // /*spanish*/una llave al universo
 
-    hintTextTable[RHT_FOREST_TEMPLE_KEY_RING] = HintText(CustomMessage("a Forest Temple Key Ring", /*german*/"das Schlüsselbund des Waldtempels", /*french*/"un trousseau de clés du Temple de la Forêt"),
+    hintTextTable[RHT_FOREST_TEMPLE_KEY_RING] = HintText(CustomMessage("a Forest Temple Keyring", /*german*/"das Schlüsselbund des Waldtempels", /*french*/"un trousseau de clés du Temple de la Forêt"),
                                                          // /*spanish*/un llavero del Templo del Bosque
                                                          {
-                                                         CustomMessage("a key ring", /*german*/"ein Schlüsselbund", /*french*/"un trousseau de clés")
+                                                         CustomMessage("a keyring", /*german*/"ein Schlüsselbund", /*french*/"un trousseau de clés")
                                                           // /*spanish*/un llavero
                                                          }, {
                                                          CustomMessage("a sylvan toolbox for unlocking", /*german*/"eine waldige Werkzeugkiste zur Entriegelung", /*french*/"des anti-portes sylvestres"),
@@ -1391,10 +1391,10 @@ void StaticData::HintTable_Init_Item() {
                                                          CustomMessage("a sylvan skeleton key", /*german*/"ein waldiger Skelettschlüssel", /*french*/"des crochets à porte sylvestres")});
                                                           // /*spanish*/un anillo silvestre contra cerrojos
 
-    hintTextTable[RHT_FIRE_TEMPLE_KEY_RING] = HintText(CustomMessage("a Fire Temple Key Ring", /*german*/"das Schlüsselbund des Feuertempels", /*french*/"un trousseau de clés du Temple du Feu"),
+    hintTextTable[RHT_FIRE_TEMPLE_KEY_RING] = HintText(CustomMessage("a Fire Temple Keyring", /*german*/"das Schlüsselbund des Feuertempels", /*french*/"un trousseau de clés du Temple du Feu"),
                                                        // /*spanish*/un llavero del Templo del Fuego
                                                        {
-                                                       CustomMessage("a key ring", /*german*/"ein Schlüsselbund", /*french*/"un trousseau de clés")
+                                                       CustomMessage("a keyring", /*german*/"ein Schlüsselbund", /*french*/"un trousseau de clés")
                                                         // /*spanish*/un llavero
                                                        }, {
                                                        CustomMessage("a molten toolbox for unlocking", /*german*/"eine geschmolzene Werkzeugkiste zur Entriegelung", /*french*/"des anti-portes fondus"),
@@ -1406,10 +1406,10 @@ void StaticData::HintTable_Init_Item() {
                                                        CustomMessage("a molten skeleton key", /*german*/"ein geschmolzener Skelettschlüssel", /*french*/"des crochets à porte fondus")});
                                                         // /*spanish*/un anillo fundido contra cerrojos
 
-    hintTextTable[RHT_WATER_TEMPLE_KEY_RING] = HintText(CustomMessage("a Water Temple Key Ring", /*german*/"das Schlüsselbund des Wassertempels", /*french*/"un trousseau de clés du Temple de l'Eau"),
+    hintTextTable[RHT_WATER_TEMPLE_KEY_RING] = HintText(CustomMessage("a Water Temple Keyring", /*german*/"das Schlüsselbund des Wassertempels", /*french*/"un trousseau de clés du Temple de l'Eau"),
                                                         // /*spanish*/un llavero del Templo del Agua
                                                         {
-                                                        CustomMessage("a key ring", /*german*/"ein Schlüsselbund", /*french*/"un trousseau de clés")
+                                                        CustomMessage("a keyring", /*german*/"ein Schlüsselbund", /*french*/"un trousseau de clés")
                                                          // /*spanish*/un llavero
                                                         }, {
                                                         CustomMessage("a wet toolbox for unlocking", /*german*/"eine nasse Werkzeugkiste zur Entriegelung", /*french*/"des anti-portes humides"),
@@ -1421,10 +1421,10 @@ void StaticData::HintTable_Init_Item() {
                                                         CustomMessage("a wet skeleton key", /*german*/"ein nasser Skelettschlüssel", /*french*/"des crochets à porte humides")});
                                                          // /*spanish*/un anillo abisal contra cerrojos
 
-    hintTextTable[RHT_SPIRIT_TEMPLE_KEY_RING] = HintText(CustomMessage("a Spirit Temple Key Ring", /*german*/"das Schlüsselbund des Geistertempels", /*french*/"un trousseau de clés du Temple de l'Esprit"),
+    hintTextTable[RHT_SPIRIT_TEMPLE_KEY_RING] = HintText(CustomMessage("a Spirit Temple Keyring", /*german*/"das Schlüsselbund des Geistertempels", /*french*/"un trousseau de clés du Temple de l'Esprit"),
                                                          // /*spanish*/un llavero del Templo del Espíritu
                                                          {
-                                                         CustomMessage("a key ring", /*german*/"ein Schlüsselbund", /*french*/"un trousseau de clés")
+                                                         CustomMessage("a keyring", /*german*/"ein Schlüsselbund", /*french*/"un trousseau de clés")
                                                           // /*spanish*/un llavero
                                                          }, {
                                                          CustomMessage("a sandy toolbox for unlocking", /*german*/"eine sandige Werkzeugkiste zur Entriegelung", /*french*/"des anti-portes sableux"),
@@ -1436,10 +1436,10 @@ void StaticData::HintTable_Init_Item() {
                                                          CustomMessage("a sandy skeleton key", /*german*/"ein sandiger Skelettschlüssel", /*french*/"des crochets à porte sableux")});
                                                           // /*spanish*/un anillo arenoso contra cerrojos
 
-    hintTextTable[RHT_SHADOW_TEMPLE_KEY_RING] = HintText(CustomMessage("a Shadow Temple Key Ring", /*german*/"das Schlüsselbund des Schattentempels", /*french*/"un trousseau de clés du Temple de l'Ombre"),
+    hintTextTable[RHT_SHADOW_TEMPLE_KEY_RING] = HintText(CustomMessage("a Shadow Temple Keyring", /*german*/"das Schlüsselbund des Schattentempels", /*french*/"un trousseau de clés du Temple de l'Ombre"),
                                                          // /*spanish*/un llavero del Templo de las Sombras
                                                          {
-                                                         CustomMessage("a key ring", /*german*/"ein Schlüsselbund", /*french*/"un trousseau de clés")
+                                                         CustomMessage("a keyring", /*german*/"ein Schlüsselbund", /*french*/"un trousseau de clés")
                                                           // /*spanish*/un llavero
                                                          }, {
                                                          CustomMessage("a creepy toolbox for unlocking", /*german*/"eine gruselige Werkzeugkiste zur Entriegelung", /*french*/"des anti-portes sinistres"),
@@ -1451,10 +1451,10 @@ void StaticData::HintTable_Init_Item() {
                                                          CustomMessage("a creepy skeleton key", /*german*/"ein gruseliger Skelettschlüssel", /*french*/"des crochets à porte sinistres")});
                                                           // /*spanish*/un anillo tenebroso contra cerrojos
 
-    hintTextTable[RHT_GERUDO_TRAINING_GROUND_KEY_RING] = HintText(CustomMessage("a Gerudo Training Ground Key Ring", /*german*/"das Schlüsselbund der Gerudo-Trainingsarena", /*french*/"un trousseau de clés du Gymnase Gerudo"),
+    hintTextTable[RHT_GERUDO_TRAINING_GROUND_KEY_RING] = HintText(CustomMessage("a Gerudo Training Ground Keyring", /*german*/"das Schlüsselbund der Gerudo-Trainingsarena", /*french*/"un trousseau de clés du Gymnase Gerudo"),
                                                                    // /*spanish*/un llavero del Centro de Instrucción Gerudo
                                                                    {
-                                                                   CustomMessage("a key ring", /*german*/"ein Schlüsselbund", /*french*/"un trousseau de clés")
+                                                                   CustomMessage("a keyring", /*german*/"ein Schlüsselbund", /*french*/"un trousseau de clés")
                                                                     // /*spanish*/un llavero
                                                                    }, {
                                                                    CustomMessage("a labyrinthian toolbox for unlocking", /*german*/"eine verwirrende Werkzeugkiste zur Entriegelung", /*french*/"des anti-portes labyrinthiques"),
@@ -1466,10 +1466,10 @@ void StaticData::HintTable_Init_Item() {
                                                                    CustomMessage("a labyrinthian skeleton key", /*german*/"ein verwirrender Skelettschlüssel", /*french*/"des crochets à porte labyrinthiques")});
                                                                     // /*spanish*/un anillo laberíntico contra cerrojos
 
-    hintTextTable[RHT_GERUDO_FORTRESS_KEY_RING] = HintText(CustomMessage("a Gerudo Fortress Key Ring", /*german*/"das Schlüsselbund des Diebesverstecks", /*french*/"un trousseau de clés de la Repaire des Voleurs"),
+    hintTextTable[RHT_GERUDO_FORTRESS_KEY_RING] = HintText(CustomMessage("a Gerudo Fortress Keyring", /*german*/"das Schlüsselbund des Diebesverstecks", /*french*/"un trousseau de clés de la Repaire des Voleurs"),
                                                            // /*spanish*/un llavero de la Fortaleza Gerudo
                                                            {
-                                                           CustomMessage("a key ring", /*german*/"ein Schlüsselbund", /*french*/"un trousseau de clés")
+                                                           CustomMessage("a keyring", /*german*/"ein Schlüsselbund", /*french*/"un trousseau de clés")
                                                             // /*spanish*/un llavero
                                                            }, {
                                                            CustomMessage("an imprisoned toolbox for unlocking", /*german*/"eine gefangene Werkzeugkiste zur Entriegelung", /*french*/"des anti-portes emprisonnés"),
@@ -1481,10 +1481,10 @@ void StaticData::HintTable_Init_Item() {
                                                            CustomMessage("an imprisoned skeleton key", /*german*/"ein gefangener Skelettschlüssel", /*french*/"des crochets à porte emprisonnés")});
                                                             // /*spanish*/un anillo enjaulado contra cerrojos
 
-    hintTextTable[RHT_BOTTOM_OF_THE_WELL_KEY_RING] = HintText(CustomMessage("a Bottom of the Well Key Ring", /*german*/"das Schlüsselbund vom Grund des Brunnens", /*french*/"un trousseau de clés du fond du Puits"),
+    hintTextTable[RHT_BOTTOM_OF_THE_WELL_KEY_RING] = HintText(CustomMessage("a Bottom of the Well Keyring", /*german*/"das Schlüsselbund vom Grund des Brunnens", /*french*/"un trousseau de clés du fond du Puits"),
                                                               // /*spanish*/un llavero del Fondo del pozo
                                                               {
-                                                              CustomMessage("a key ring", /*german*/"ein Schlüsselbund", /*french*/"un trousseau de clés")
+                                                              CustomMessage("a keyring", /*german*/"ein Schlüsselbund", /*french*/"un trousseau de clés")
                                                                // /*spanish*/un llavero
                                                               }, {
                                                               CustomMessage("a moldy toolbox for unlocking", /*german*/"eine schimmelige Werkzeugkiste zur Entriegelung", /*french*/"des anti-portes moisis"),
@@ -1496,10 +1496,10 @@ void StaticData::HintTable_Init_Item() {
                                                               CustomMessage("a moldy skeleton key", /*german*/"ein schimmeliger Skelettschlüssel", /*french*/"des crochets à porte moisis")});
                                                                // /*spanish*/un anillo subterráneo contra cerrojos
 
-    hintTextTable[RHT_GANONS_CASTLE_KEY_RING] = HintText(CustomMessage("a Ganon's Castle Key Ring", /*german*/"das Schlüsselbund von Ganons Schloß", /*french*/"un trousseau de clés du Château de Ganon"),
+    hintTextTable[RHT_GANONS_CASTLE_KEY_RING] = HintText(CustomMessage("a Ganon's Castle Keyring", /*german*/"das Schlüsselbund von Ganons Schloß", /*french*/"un trousseau de clés du Château de Ganon"),
                                                          // /*spanish*/un llavero del Castillo de Ganon
                                                          {
-                                                         CustomMessage("a key ring", /*german*/"ein Schlüsselbund", /*french*/"un trousseau de clés")
+                                                         CustomMessage("a keyring", /*german*/"ein Schlüsselbund", /*french*/"un trousseau de clés")
                                                           // /*spanish*/un llavero
                                                          }, {
                                                          CustomMessage("a final toolbox for unlocking", /*german*/"eine finale Werkzeugkiste zur Entriegelung", /*french*/"des anti-portes finaux"),
@@ -1526,9 +1526,9 @@ void StaticData::HintTable_Init_Item() {
                                                           CustomMessage("a gambler's lockpick", /*german*/"ein Zocker-Dietrich", /*french*/"un crochet à serrure de parieur")});
                                                            // /*spanish*/una apertura portentosa del juego de azar
 
-     hintTextTable[RHT_TREASURE_GAME_KEY_RING] = HintText(CustomMessage("a Chest Game Key Ring", /*german*/ "das Schlüsselbund der Truhenlotterie", /*french*/ "TRANSLATE THIS"),
+     hintTextTable[RHT_TREASURE_GAME_KEY_RING] = HintText(CustomMessage("a Chest Game Keyring", /*german*/ "das Schlüsselbund der Truhenlotterie", /*french*/ "TRANSLATE THIS"),
                                                          {
-                                                         CustomMessage("a key ring", /*german*/"ein Schlüsselbund", /*french*/"un trousseau de clés")
+                                                         CustomMessage("a keyring", /*german*/"ein Schlüsselbund", /*french*/"un trousseau de clés")
                                                           // /*spanish*/un llavero
                                                          }, {
                                                          CustomMessage("a gambler's toolbox for unlocking", /*german*/ "eine Zocker-Werkzeugkiste zur Entriegelung", /*french*/ "TRANSLATE THIS"),
@@ -2108,6 +2108,14 @@ void StaticData::HintTable_Init_Item() {
                                               }, {
                                               CustomMessage("sack of mice", /*german*/"ein Sack Mäuse", /*french*/"un Sac rempli de souris")});
 
+    hintTextTable[RHT_SILVER_RUPEE_DODONGOS_CAVERN] = HintText(CustomMessage("a Dodongo's Cavern Silver Rupee", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE));
+    hintTextTable[RHT_SILVER_RUPEE_SHADOW_TEMPLE] = HintText(CustomMessage("a Shadow Temple Silver Rupee", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE));
+    hintTextTable[RHT_SILVER_RUPEE_SPIRIT_TEMPLE] = HintText(CustomMessage("a Spirit Temple Silver Rupee", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE));
+    hintTextTable[RHT_SILVER_RUPEE_BOTW] = HintText(CustomMessage("a Bottom of the Well Silver Rupee", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE));
+    hintTextTable[RHT_SILVER_RUPEE_ICE_CAVERN] = HintText(CustomMessage("an Ice Cavern Silver Rupee", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE));
+    hintTextTable[RHT_SILVER_RUPEE_GTG] = HintText(CustomMessage("a Gerudo Training Ground Silver Rupee", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE));
+    hintTextTable[RHT_SILVER_RUPEE_GANONS_CASTLE] = HintText(CustomMessage("a Ganon's Castle Silver Rupee", /*german*/ TODO_TRANSLATE, /*french*/ TODO_TRANSLATE));
+
     hintTextTable[RHT_SKELETON_KEY] = HintText(CustomMessage("a Skeleton Key", /*german*/ "der Skelettschlüssel", /*french*/ "une Clé Squelette"),
                                                // /*spanish*/una Llave Maestra
                                                {
@@ -2158,7 +2166,7 @@ void StaticData::HintTable_Init_Item() {
     hintTextTable[RHT_HINT_MYSTERIOUS] = HintText(CustomMessage("something mysterious", /*german*/"etwas Mysteriöses", /*french*/"un sacré mystère"));
                                                   // /*spanish*/algo misterioso
 
-    hintTextTable[RHT_MYSTERIOUS_ITEM] = HintText(CustomMessage("mysterious item", /*german*/"ein mysteriöser Gegenstand", /*french*/"objet mystérieux"));
+    hintTextTable[RHT_MYSTERIOUS_ITEM] = HintText(CustomMessage("a mysterious item", /*german*/"ein mysteriöser Gegenstand", /*french*/"un objet mystérieux"));
                                                   // /*spanish*/algo misterioso
 
      hintTextTable[RHT_MYSTERIOUS_ITEM_CAPITAL] = HintText(CustomMessage("Mysterious Item", /*german*/"Mysteriöser Gegenstand", /*french*/"Objet Mystérieux"));

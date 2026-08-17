@@ -10,7 +10,6 @@
 #include "vt.h"
 #include "objects/object_reeba/object_reeba.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS                                                                                 \
     (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED | \
@@ -165,8 +164,6 @@ void EnReeba_Destroy(Actor* thisx, PlayState* play) {
             }
         }
     }
-
-    ResourceMgr_UnregisterSkeleton(&this->skelanime);
 }
 
 void EnReeba_SetupSurface(EnReeba* this, PlayState* play) {

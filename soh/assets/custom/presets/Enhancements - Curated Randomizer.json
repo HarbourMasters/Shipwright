@@ -16,7 +16,7 @@
                 "ClimbSpeed": 3,
                 "CrawlSpeed": 2,
                 "CreditsFix": 1,
-				"CuccosToReturn": 1,
+                "CuccosToReturn": 1,
                 "CustomizeFishing": 1,
                 "CustomizeFrogsOcarinaGame": 1,
                 "CustomizeOcarinaGame": 1,
@@ -135,5 +135,5 @@
         }
     },
     "presetName": "Enhancements - Curated Randomizer",
-	"isBuiltIn": true
+    "isBuiltIn": true
 }

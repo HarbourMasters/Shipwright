@@ -6,6 +6,15 @@ namespace Rando {
 void StaticData::HintTable_Init_Exclude_Dungeon() {
     // clang-format off
 
+    // TODO move these to region specific sections when hint text stable
+    hintTextTable[RHT_DODONGOS_CAVERN_SILVER] = HintText(CustomMessage("They say that a #silver rupee in Dodongo's Cavern# holds #[[1]]#.", TODO_TRANSLATE, TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+    hintTextTable[RHT_SHADOW_TEMPLE_SILVER]  = HintText(CustomMessage("They say that a #silver rupee in the Shadow Temple# holds #[[1]]#.", TODO_TRANSLATE, TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+    hintTextTable[RHT_SPIRIT_TEMPLE_SILVER] = HintText(CustomMessage("They say that a #silver rupee in the Spirit Temple# holds #[[1]]#.", TODO_TRANSLATE, TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+    hintTextTable[RHT_BOTW_SILVER] = HintText(CustomMessage("They say that a #silver rupee in the Bottom of the Well# holds #[[1]]#.", TODO_TRANSLATE, TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+    hintTextTable[RHT_ICE_CAVERN_SILVER] = HintText(CustomMessage("They say that a #silver rupee in the Ice Cavern# holds #[[1]]#.", TODO_TRANSLATE, TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+    hintTextTable[RHT_GTG_SILVER] = HintText(CustomMessage("They say that a #silver rupee in the Gerudo Training Ground# holds #[[1]]#.", TODO_TRANSLATE, TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+    hintTextTable[RHT_GANONS_CASTLE_SILVER] = HintText(CustomMessage("They say that a #silver rupee in Ganon's Castle# holds #[[1]]#.", TODO_TRANSLATE, TODO_TRANSLATE, {QM_RED, QM_GREEN}));
+
     /*--------------------------
     |        DEKU TREE         |
     ---------------------------*/
@@ -386,12 +395,12 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
                                                                                  /*french*/ "Selon moi, un #organe descendant# mène à #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                               // /*spanish*/ Según dicen, un #ser movedizo entre paredes# conduce a #[[1]]#.
 
-    hintTextTable[RHT_JABU_JABUS_BELLY_MQ_BASEMENT_NEAR_SWITCHES_CHEST] = HintText(CustomMessage("They say that a #pair of digested cows# hold #[[1]]#.",
+    hintTextTable[RHT_JABU_JABUS_BELLY_MQ_BASEMENT_NEAR_SWITCHES_CHEST] = HintText(CustomMessage("They say that a #pair of digested cows# holds #[[1]]#.",
                                                                                       /*german*/ "Man erzählt sich, daß ein #Paar verdauter Kühe# #[[1]]# hielte.",
                                                                                       /*french*/ "Selon moi, #deux boeufs digérés# détiennent #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                                    // /*spanish*/ Según dicen, un #par de digeridas vacas# otorgan #[[1]]#.
 
-    hintTextTable[RHT_JABU_JABUS_BELLY_MQ_BASEMENT_NEAR_VINES_CHEST] = HintText(CustomMessage("They say that a #pair of digested cows# hold #[[1]]#.",
+    hintTextTable[RHT_JABU_JABUS_BELLY_MQ_BASEMENT_NEAR_VINES_CHEST] = HintText(CustomMessage("They say that a #pair of digested cows# holds #[[1]]#.",
                                                                                    /*german*/ "Man erzählt sich, daß ein #Paar verdauter Kühe# #[[1]]# hielte.",
                                                                                    /*french*/ "Selon moi, #deux boeufs digérés# détiennent #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                                 // /*spanish*/ Según dicen, un #par de digeridas vacas# otorgan #[[1]]#.
@@ -401,27 +410,27 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
                                                                          /*french*/ "Selon moi, le #cadeau des dernières vaches# estomacales est #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                       // /*spanish*/ Según dicen, las #vacas al final# de la tripa de cierta deidad otorgan #[[1]]#.
 
-    hintTextTable[RHT_JABU_JABUS_BELLY_MQ_FALLING_LIKE_LIKE_ROOM_CHEST] = HintText(CustomMessage("They say that #cows protected by falling monsters# in a deity's belly guard hide #[[1]]#.",
+    hintTextTable[RHT_JABU_JABUS_BELLY_MQ_FALLING_LIKE_LIKE_ROOM_CHEST] = HintText(CustomMessage("They say that #cows protected by falling monsters# in a deity's belly hide #[[1]]#.",
                                                                                       /*german*/ "Man erzählt sich, daß #von fallenden Monstern bewachte Kühe# im Bauche einer Gottheit #[[1]]# verstecken würden.",
                                                                                       /*french*/ "Selon moi, des #vaches protégées par des monstres tombants# cachent #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                                    // /*spanish*/ Según dicen, unas #vacas custodiadas por monstruos del techo# de la tripa de cierta deidad otorgan #[[1]]#.
 
-    hintTextTable[RHT_JABU_JABUS_BELLY_MQ_BOOMERANG_ROOM_SMALL_CHEST] = HintText(CustomMessage("They say that a school of #stingers swallowed by Jabu-Jabu# guard #[[1]]#.",
+    hintTextTable[RHT_JABU_JABUS_BELLY_MQ_BOOMERANG_ROOM_SMALL_CHEST] = HintText(CustomMessage("They say that a school of #stingers swallowed by Jabu-Jabu# guards #[[1]]#.",
                                                                                     /*german*/ "Man erzählt sich, daß von #Jabu-Jabu verschluckte Rochen# #[[1]]# bewachen würden.",
                                                                                     /*french*/ "Selon moi, les #raies avallées par Jabu-Jabu# protègent #[[1]]#.", {QM_RED, QM_GREEN}),
                                                                                  // /*spanish*/ Según dicen, unos #stingers engullidos por Jabu-Jabu# guardan #[[1]]#.
                                                                                  {}, {
-                                                                                 CustomMessage("They say that a school of #stingers swallowed by a deity# guard #[[1]]#.",
+                                                                                 CustomMessage("They say that a school of #stingers swallowed by a deity# guards #[[1]]#.",
                                                                                      /*german*/ "Man erzählt sich, daß von #einer Gottheit verschluckte Rochen# #[[1]]# bewachen würden.",
                                                                                      /*french*/ "Selon moi, les #raies avallées par le gardien# protègent #[[1]]#.", {QM_RED, QM_GREEN})});
                                                                                   // /*spanish*/ Según dicen, unos #stingers engullidos por cierta deidad# guardan #[[1]]#.
 
-    hintTextTable[RHT_JABU_JABUS_BELLY_MQ_BOOMERANG_CHEST] = HintText(CustomMessage("They say that a school of #stingers swallowed by Jabu-Jabu# guard #[[1]]#.",
+    hintTextTable[RHT_JABU_JABUS_BELLY_MQ_BOOMERANG_CHEST] = HintText(CustomMessage("They say that a school of #stingers swallowed by Jabu-Jabu# guards #[[1]]#.",
                                                                          /*german*/ "Man erzählt sich, daß von #Jabu-Jabu verschluckte Rochen# #[[1]]# bewachen würden.",
                                                                          /*french*/ "Selon moi, les #raies avallées par Jabu-Jabu# protègent #[[1]]#.", {QM_RED, QM_GREEN}),
                                                                       // /*spanish*/ Según dicen, unos #stingers engullidos por Jabu-Jabu# guardan #[[1]]#.
                                                                       {}, {
-                                                                      CustomMessage("They say that a school of #stingers swallowed by a deity# guard #[[1]]#.",
+                                                                      CustomMessage("They say that a school of #stingers swallowed by a deity# guards #[[1]]#.",
                                                                           /*german*/ "Man erzählt sich, daß von #einer Gottheit verschluckte Rochen# #[[1]]# bewachen würden.",
                                                                           /*french*/ "Selon moi, les #raies avallées par le gardien# protègent #[[1]]#.", {QM_RED, QM_GREEN})});
                                                                        // /*spanish*/ Según dicen, unos #stingers engullidos por cierta deidad# guardan #[[1]]#.
@@ -476,7 +485,7 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
                                                                  /*french*/ "Selon moi, la #peste Mojo dans le ventre du gardien# vend #[[1]]#.", {QM_RED, QM_GREEN}));
                                                               // /*spanish*/ Según dicen, un #deku dentro de cierta deidad# vende #[[1]]#.
 
-    hintTextTable[RHT_POT_JABU_JABUS_BELLY] = HintText(CustomMessage("They say that a #pot in Jabu Jabu's Belly# contains #[[1]]#.",
+    hintTextTable[RHT_POT_JABU_JABUS_BELLY] = HintText(CustomMessage("They say that a #pot in Jabu-Jabu's Belly# contains #[[1]]#.",
                                                           /*german*/ "Man erzählt sich, daß ein #Krug in Jabu-Jabus Bauch# #[[1]]# enthielte.",
                                                           /*french*/ "Selon moi, une #jarre dans le Ventre de Jabu-Jabu# contient #[[1]]#.", {QM_RED, QM_GREEN}));
 
@@ -488,19 +497,19 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
                                                      /*german*/ "Man erzählt sich, daß sich #nahe des zentralen Aufzugs in Jabu-Jabus Bauch# #[[1]]# |befände|befänden|.",
                                                      /*french*/ "Selon moi, près d'un #ascenceur central dans le Ventre de Jabu-Jabu# se trouve #[[1]]#.", {QM_RED, QM_GREEN}));
 
-    hintTextTable[RHT_JABU_JABUS_BELLY_GRASS] = HintText(CustomMessage("They say that some #grass in Jabu Jabu's Belly# hides #[[1]]#.",
+    hintTextTable[RHT_JABU_JABUS_BELLY_GRASS] = HintText(CustomMessage("They say that some #grass in Jabu-Jabu's Belly# hides #[[1]]#.",
                                                      /*german*/ "Man erzählt sich, daß etwas #Gras in Jabu-Jabus Bauch# #[[1]]# verstecke.",
                                                      /*french*/ "Selon moi, de l'#herbe dans le Ventre de Jabu-Jabu# cache #[[1]]#.", {QM_RED, QM_GREEN}));
 
-    hintTextTable[RHT_CRATE_JABU_JABU] = HintText(CustomMessage("They say that a #crate in Jabu Jabu's Belly# contains #[[1]]#.",
+    hintTextTable[RHT_CRATE_JABU_JABU] = HintText(CustomMessage("They say that a #crate in Jabu-Jabu's Belly# contains #[[1]]#.",
                                                      /*german*/ "Man erzählt sich, daß eine #Kiste in Jabu-Jabus Bauch# #[[1]]# enthielte.",
                                                      /*french*/ "Selon moi, une #caisse dans le Ventre de Jabu-Jabu# contient #[[1]]#.", {QM_RED, QM_GREEN}));
 
-    hintTextTable[RHT_JABU_BOULDER] = HintText(CustomMessage("They say that a #boulder in Jabu Jabu's Belly# contains #[[1]]#.",
+    hintTextTable[RHT_JABU_BOULDER] = HintText(CustomMessage("They say that a #boulder in Jabu-Jabu's Belly# contains #[[1]]#.",
                                                                        /*german*/ TODO_TRANSLATE,
                                                                        /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
 
-    hintTextTable[RHT_WONDER_ITEM_JABU_JABU] = HintText(CustomMessage("They say that a #wonder item in Jabu Jabu's Belly# hides #[[1]]#.",
+    hintTextTable[RHT_WONDER_ITEM_JABU_JABU] = HintText(CustomMessage("They say that a #wonder item in Jabu-Jabu's Belly# hides #[[1]]#.",
                                                      /*german*/ "Man erzählt sich, daß sich ein #Wunder-Gegenstand in Jabu-Jabus Bauch# #[[1]]# verstecke.",
                                                      /*french*/ "Selon moi, un #objet merveilleux dans le Ventre de Jabu-Jabu# cache #[[1]]#.", {QM_RED, QM_GREEN}));
 
@@ -512,7 +521,7 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
                                                                     /*french*/ "Selon moi, sur l'#arbre dans le Temple de la Forêt# gît #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                  // /*spanish*/ Según dicen, sobre un #árbol del Templo del Bosque# yace #[[1]]#.
 
-    hintTextTable[RHT_FOREST_TEMPLE_FIRST_STALFOS_CHEST] = HintText(CustomMessage("They say that #defeating enemies beneath a falling ceiling# in Forest Temple yields #[[1]]#.",
+    hintTextTable[RHT_FOREST_TEMPLE_FIRST_STALFOS_CHEST] = HintText(CustomMessage("They say that #defeating enemies beneath a falling ceiling# in the Forest Temple yields #[[1]]#.",
                                                                        /*german*/ "Man erzählt sich, daß das #Besiegen von Gegnern, unter einer fallenden Decke# im Waldtempel, #[[1]]# einbrächte.",
                                                                        /*french*/ "Selon moi, #deux squelettes# dans le Temple de la Forêt protègent #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                     // /*spanish*/ Según dicen, #derrotar enemigos caídos de lo alto# del Templo del Bosque revela #[[1]]#.
@@ -522,7 +531,7 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
                                                               /*french*/ "Selon moi, le #coffre submergé dans la forêt# contient #[[1]]#.", {QM_RED, QM_GREEN}));
                                                            // /*spanish*/ Según dicen, un #sumergido cofre en lo profundo del bosque# contiene #[[1]]#.
 
-    hintTextTable[RHT_FOREST_TEMPLE_MAP_CHEST] = HintText(CustomMessage("They say that a #fiery skull# in Forest Temple guards #[[1]]#.",
+    hintTextTable[RHT_FOREST_TEMPLE_MAP_CHEST] = HintText(CustomMessage("They say that a #fiery skull# in the Forest Temple guards #[[1]]#.",
                                                              /*german*/ "Man erzählt sich, daß ein #feuriger Schädel# im Waldtempel #[[1]]# bewache.",
                                                              /*french*/ "Selon moi, le #crâne enflammé# dans le Temple de la Forêt protège #[[1]]#.", {QM_RED, QM_GREEN}));
                                                           // /*spanish*/ Según dicen, una #ardiente calavera# del Templo del Bosque esconde #[[1]]#.
@@ -597,7 +606,7 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
                                                                        /*french*/ "Selon moi, sur l'#arbre dans le Temple de la Forêt# gît #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                     // /*spanish*/ Según dicen, sobre un #árbol del Templo del Bosque# yace #[[1]]#.
 
-    hintTextTable[RHT_FOREST_TEMPLE_MQ_WOLFOS_CHEST] = HintText(CustomMessage("They say that #defeating enemies beneath a falling ceiling# in Forest Temple yields #[[1]]#.",
+    hintTextTable[RHT_FOREST_TEMPLE_MQ_WOLFOS_CHEST] = HintText(CustomMessage("They say that #defeating enemies beneath a falling ceiling# in the Forest Temple yields #[[1]]#.",
                                                                    /*german*/ "Man erzählt sich, daß das #Besiegen von Gegnern, unter einer fallenden Decke# im Waldtempel, #[[1]]# einbrächte.",
                                                                    /*french*/ "Selon moi, #deux squelettes# dans le Temple de la Forêt protègent #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                 // /*spanish*/ Según dicen, #derrotar enemigos caídos de lo alto# del Templo del Bosque revela #[[1]]#.
@@ -721,12 +730,12 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
                                                                                 /*german*/ "Man erzählt sich, daß eine #Spinne, auf einem Vorsprung# im Waldtempel, #[[1]]# besäße.",
                                                                                 /*french*/ "Selon moi, une #Skulltula dans le jardin du Temple de la Forêt# a #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                              // /*spanish*/ Según dicen, una #Skulltula en un borde# del Templo del Bosque otorga #[[1]]#.
-    hintTextTable[RHT_FOREST_TEMPLE_MQ_GS_WELL] = HintText(CustomMessage("They say that #draining a well# in Forest Temple uncovers a spider with #[[1]]#.",
+    hintTextTable[RHT_FOREST_TEMPLE_MQ_GS_WELL] = HintText(CustomMessage("They say that #draining a well# in the Forest Temple uncovers a spider with #[[1]]#.",
                                                               /*german*/ "Man erzählt sich, daß das #Entleeren eines Brunnens# im Waldtempel, eine Spinne enthülle, welche #[[1]]# besäße.",
                                                               /*french*/ "Selon moi, une #Skulltula au fond du Puits du Temple de la Forêt# a #[[1]]#.", {QM_RED, QM_GREEN}));
                                                            // /*spanish*/ Según dicen, #vaciar el pozo# del Templo del Bosque desvela una Skulltula que otorga #[[1]]#.
 
-    hintTextTable[RHT_POT_FOREST_TEMPLE] = HintText(CustomMessage("They say that a #pot in Forest Temple# contains #[[1]]#.",
+    hintTextTable[RHT_POT_FOREST_TEMPLE] = HintText(CustomMessage("They say that a #pot in the Forest Temple# contains #[[1]]#.",
                                                        /*german*/ "Man erzählt sich, daß ein #Krug im Waldtempel# #[[1]]# enthielte.",
                                                        /*french*/ "Selon moi, une #jarre dans le Temple de la Fôret# contient #[[1]]#.", {QM_RED, QM_GREEN}));
 
@@ -734,7 +743,7 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
                                                          /*german*/ "Man erzählt sich, daß ein #Herz im Waldtempel# #[[1]]# verstecke.",
                                                          /*french*/ "Selon moi, un #coeur dans le Temple de la Fôret# cache #[[1]]#.", {QM_RED, QM_GREEN}));
 
-    hintTextTable[RHT_CRATE_FOREST_TEMPLE] = HintText(CustomMessage("They say that a #crate in Forest Temple# contains #[[1]]#.",
+    hintTextTable[RHT_CRATE_FOREST_TEMPLE] = HintText(CustomMessage("They say that a #crate in the Forest Temple# contains #[[1]]#.",
                                                      /*german*/ "Man erzählt sich, daß eine #Kiste im Waldtempel# #[[1]]# enthielte.",
                                                      /*french*/ "Selon moi, une #caisse dans le Temple de la Fôret# contient #[[1]]#.", {QM_RED, QM_GREEN}));
 
@@ -781,7 +790,7 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
                                                                               /*french*/ "Selon moi, le #Goron caché près du labyrinthe# a #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                            // /*spanish*/ Según dicen, un #goron escondido tras un laberinto# guarda #[[1]]#.
 
-    hintTextTable[RHT_FIRE_TEMPLE_BOULDER_MAZE_SHORTCUT_CHEST] = HintText(CustomMessage("They say that a #blocked path# in Fire Temple holds #[[1]]#.",
+    hintTextTable[RHT_FIRE_TEMPLE_BOULDER_MAZE_SHORTCUT_CHEST] = HintText(CustomMessage("They say that a #blocked path# in the Fire Temple holds #[[1]]#.",
                                                                              /*german*/ "Man erzählt sich, daß ein #blockierter Pfad# im Feuertempel #[[1]]# enthielte.",
                                                                              /*french*/ "Selon moi, un #sol fragile dans le Temple du Feu# contient #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                           // /*spanish*/ Según dicen, en un #camino bloqueado# del Templo del Fuego yace #[[1]]#.
@@ -816,7 +825,7 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
                                                                           /*french*/ "Selon moi, le #Danse-Flamme au coeur du volcan# a #[[1]]#.", {QM_RED, QM_GREEN})});
                                                                        // /*spanish*/ Según dicen, el #Bailafuego en lo profundo del volcán# esconde #[[1]]#.
 
-    hintTextTable[RHT_FIRE_TEMPLE_MQ_COMPASS_CHEST] = HintText(CustomMessage("They say that a #blocked path# in Fire Temple holds #[[1]]#.",
+    hintTextTable[RHT_FIRE_TEMPLE_MQ_COMPASS_CHEST] = HintText(CustomMessage("They say that a #blocked path# in the Fire Temple holds #[[1]]#.",
                                                                   /*german*/ "Man erzählt sich, daß ein #blockierter Pfad# im Feuertempel #[[1]]# enthielte.",
                                                                   /*french*/ "Selon moi, le #chemin scellé# dans le Temple du Feu contient #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                // /*spanish*/ Según dicen, en un #camino bloqueado# del Templo del Fuego yace #[[1]]#.
@@ -926,7 +935,7 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
                                                                                 /*french*/ "Selon moi, une #Skulltula près du labyrinthe enflammé du Temple du Feu# a #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                              // /*spanish*/ Según dicen, una #Skulltula junto a un ardiente laberinto# otorga #[[1]]#.
 
-    hintTextTable[RHT_POT_FIRE_TEMPLE] = HintText(CustomMessage("They say that a #pot in Fire Temple# contains #[[1]]#.",
+    hintTextTable[RHT_POT_FIRE_TEMPLE] = HintText(CustomMessage("They say that a #pot in the Fire Temple# contains #[[1]]#.",
                                                      /*german*/ "Man erzählt sich, daß ein #Krug im Feuertempel# #[[1]]# enthielte.",
                                                      /*french*/ "Selon moi, une #jarre dans le Temple du Feu# contient #[[1]]#.", {QM_RED, QM_GREEN}));
 
@@ -942,11 +951,11 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
                                                                                 /*german*/ "Man erzählt sich, daß das #Anrufen der Sonne, hinter dem Thron eines Ritters in einem Vulkan#, #[[1]]# enthülle.",
                                                                                 /*french*/ "Selon moi, #appeler le soleil derrière le trône d’un chevalier dans un volcan# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
 
-    hintTextTable[RHT_CRATE_FIRE_TEMPLE] = HintText(CustomMessage("They say that a #crate in Fire Temple# contains #[[1]]#.",
+    hintTextTable[RHT_CRATE_FIRE_TEMPLE] = HintText(CustomMessage("They say that a #crate in the Fire Temple# contains #[[1]]#.",
                                                      /*german*/ "Man erzählt sich, daß eine #Kiste im Feuertempel# #[[1]]# enthielte.",
                                                      /*french*/ "Selon moi, une #caisse dans le Temple du Feu# contient #[[1]]#.", {QM_RED, QM_GREEN}));
 
-    hintTextTable[RHT_WONDER_ITEM_FIRE_TEMPLE] = HintText(CustomMessage("They say that a #wonder item in Fire Temple# hides #[[1]]#.",
+    hintTextTable[RHT_WONDER_ITEM_FIRE_TEMPLE] = HintText(CustomMessage("They say that a #wonder item in the Fire Temple# hides #[[1]]#.",
                                                      /*german*/ "Man erzählt sich, daß sich ein #Wunder-Gegenstand im Feuertempel# #[[1]]# verstecke.",
                                                      /*french*/ "Selon moi, un #objet merveilleux dans le Temple du Feu# cache #[[1]]#.", {QM_RED, QM_GREEN}));
 
@@ -1077,7 +1086,7 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
                                                               /*french*/ "Selon moi, une #Skulltula au dessus de la rivière du Temple de l'Eau# a #[[1]]#.", {QM_RED, QM_GREEN}));
                                                            // /*spanish*/ Según dicen, una #Skulltula sobre un río# del Templo del Agua otorga #[[1]]#.
 
-    hintTextTable[RHT_POT_WATER_TEMPLE] = HintText(CustomMessage("They say that a #pot in Water Temple# contains #[[1]]#.",
+    hintTextTable[RHT_POT_WATER_TEMPLE] = HintText(CustomMessage("They say that a #pot in the Water Temple# contains #[[1]]#.",
                                                       /*german*/ "Man erzählt sich, daß ein #Krug im Wassertempel# #[[1]]# enthielte.",
                                                       /*french*/ "Selon moi, une #jarre dans le Temple de l'Eau# contient #[[1]]#.", {QM_RED, QM_GREEN}));
 
@@ -1097,11 +1106,11 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
                                                                                /*german*/ "Man erzählt sich, daß das #Anrufen der Sonne, vor einem Duell mit seinem Schatten#, #[[1]]# enthülle.",
                                                                                /*french*/ "Selon moi, #appeler le soleil avant un duel avec son ombre# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
 
-    hintTextTable[RHT_CRATE_WATER_TEMPLE] = HintText(CustomMessage("They say that a #crate in Water Temple# contains #[[1]]#.",
+    hintTextTable[RHT_CRATE_WATER_TEMPLE] = HintText(CustomMessage("They say that a #crate in the Water Temple# contains #[[1]]#.",
                                                      /*german*/ "Man erzählt sich, daß eine #Kiste im Wassertempel# #[[1]]# enthielte.",
                                                      /*french*/ "Selon moi, une #caisse dans le Temple de l'Eau# contient #[[1]]#.", {QM_RED, QM_GREEN}));
 
-    hintTextTable[RHT_WONDER_ITEM_WATER_TEMPLE] = HintText(CustomMessage("They say that a #wonder item in Water Temple# hides #[[1]]#.",
+    hintTextTable[RHT_WONDER_ITEM_WATER_TEMPLE] = HintText(CustomMessage("They say that a #wonder item in the Water Temple# hides #[[1]]#.",
                                                      /*german*/ "Man erzählt sich, daß sich ein #Wunder-Gegenstand im Wassertempel# #[[1]]# verstecke.",
                                                      /*french*/ "Selon moi, un #objet merveilleux dans le Temple de l'Eau# cache #[[1]]#.", {QM_RED, QM_GREEN}));
 
@@ -1338,7 +1347,7 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
                                                                         /*french*/ "Selon moi, une #Skulltula sur une paroi de verre du Temple de l'Esprit# a #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                      // /*spanish*/ Según dicen, #sobre una plataforma de cristal# yace una Skulltula que otorga #[[1]]#.
 
-    hintTextTable[RHT_POT_SPIRIT_TEMPLE] = HintText(CustomMessage("They say that a #pot in Spirit Temple# contains #[[1]]#.",
+    hintTextTable[RHT_POT_SPIRIT_TEMPLE] = HintText(CustomMessage("They say that a #pot in the Spirit Temple# contains #[[1]]#.",
                                                        /*german*/ "Man erzählt sich, daß ein #Krug im Geistertempel# #[[1]]# enthielte.",
                                                        /*french*/ "Selon moi, une #jarre dans le Temple de l'Esprit# contient #[[1]]#.", {QM_RED, QM_GREEN}));
 
@@ -1350,7 +1359,7 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
                                                          /*german*/ "Man erzählt sich, daß sich bewacht von einem #Ring der Flammen#, im Geistertempel #[[1]]# |befände|befänden|.",
                                                          /*french*/ "Selon moi, protégé par un #cercle de flammes# dans le Temple de l'Esprit se trouve #[[1]]#.", {QM_RED, QM_GREEN}));
 
-    hintTextTable[RHT_SPIRIT_TEMPLE_BOULDER_ROOM_SUN_FAIRY] = HintText(CustomMessage("They say that #calling the sun past rolling boulders in Spirit Temple# reveals #[[1]]#.",
+    hintTextTable[RHT_SPIRIT_TEMPLE_BOULDER_ROOM_SUN_FAIRY] = HintText(CustomMessage("They say that #calling the sun past rolling boulders in the Spirit Temple# reveals #[[1]]#.",
                                                      /*german*/ TODO_TRANSLATE,
                                                      /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
 
@@ -1358,7 +1367,7 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
                                                      /*german*/ TODO_TRANSLATE,
                                                      /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
 
-    hintTextTable[RHT_CRATE_SPIRIT_TEMPLE] = HintText(CustomMessage("They say that a #crate in Spirit Temple# contains #[[1]]#.",
+    hintTextTable[RHT_CRATE_SPIRIT_TEMPLE] = HintText(CustomMessage("They say that a #crate in the Spirit Temple# contains #[[1]]#.",
                                                      /*german*/ "Man erzählt sich, daß eine #Kiste im Geistertempel# #[[1]]# enthielte.",
                                                      /*french*/ "Selon moi, une #caisse dans le Temple de l'Esprit# contient #[[1]]#.", {QM_RED, QM_GREEN}));
 
@@ -1366,11 +1375,11 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
                                                                        /*german*/ TODO_TRANSLATE,
                                                                        /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
 
-    hintTextTable[RHT_SIGN_SPIRIT_TEMPLE] = HintText(CustomMessage("They say that #reading a statue in Spirit Temple# reveals #[[1]]#.",
+    hintTextTable[RHT_SIGN_SPIRIT_TEMPLE] = HintText(CustomMessage("They say that #reading a statue in the Spirit Temple# reveals #[[1]]#.",
                                                      /*german*/ "Man erzählt sich, daß das #Lesen einer Statue im Geistertempel# #[[1]]# enthülle.",
                                                      /*french*/ "Selon moi, #lire une statue dans le Temple de l'Esprit# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
 
-    hintTextTable[RHT_WONDER_ITEM_SPIRIT_TEMPLE] = HintText(CustomMessage("They say that a #wonder item in Spirit Temple# hides #[[1]]#.",
+    hintTextTable[RHT_WONDER_ITEM_SPIRIT_TEMPLE] = HintText(CustomMessage("They say that a #wonder item in the Spirit Temple# hides #[[1]]#.",
                                                      /*german*/ "Man erzählt sich, daß sich ein #Wunder-Gegenstand im Geistertempel# #[[1]]# verstecke.",
                                                      /*french*/ "Selon moi, un #objet merveilleux dans le Temple de l'Esprit# cache #[[1]]#.", {QM_RED, QM_GREEN}));
 
@@ -1482,7 +1491,7 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
                                                                 /*french*/ "Selon moi, les #faucheurs danseurs# du Temple de l'Ombre protègent #[[1]]#.", {QM_RED, QM_GREEN}));
                                                              // /*spanish*/ Según dicen, las #giratorias guadañas# protegen #[[1]]#.
 
-    hintTextTable[RHT_SHADOW_TEMPLE_MQ_BEAMOS_SILVER_RUPEES_CHEST] = HintText(CustomMessage("They say that #collecting rupees in a vast cavern# with the Shadow Temple unveils #[[1]]#.",
+    hintTextTable[RHT_SHADOW_TEMPLE_MQ_BEAMOS_SILVER_RUPEES_CHEST] = HintText(CustomMessage("They say that #collecting rupees in a vast cavern# within the Shadow Temple unveils #[[1]]#.",
                                                                                  /*german*/ "Man erzählt sich, daß das #Sammeln von Rubinen in einer riesigen Kaverne# im Schattentempel #[[1]]# offenbaren würde.",
                                                                                  /*french*/ "Selon moi, les #pièces argentées dans le Temple de l'Ombre# révèlent #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                               // /*spanish*/ Según dicen, hacerte con las #rupias en una gran caverna# del Templo de las Sombras revela #[[1]]#.
@@ -1617,7 +1626,7 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
                                                                    /*french*/ "Selon moi, une #Skulltula près du repère du Temple de l'Ombre# a #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                 // /*spanish*/ Según dicen, una #Skulltula flotante# del Templo de las Sombras otorga #[[1]]#.
 
-    hintTextTable[RHT_POT_SHADOW_TEMPLE] = HintText(CustomMessage("They say that a #pot in Shadow Temple# contains #[[1]]#.",
+    hintTextTable[RHT_POT_SHADOW_TEMPLE] = HintText(CustomMessage("They say that a #pot in the Shadow Temple# contains #[[1]]#.",
                                                        /*german*/ "Man erzählt sich, daß ein #Krug im Schattentempel# #[[1]]# enthielte.",
                                                        /*french*/ "Selon moi, une #jarre dans le Temple de l'Ombre# contient #[[1]]#.", {QM_RED, QM_GREEN}));
 
@@ -1625,27 +1634,27 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
                                                          /*german*/ "Man erzählt sich, daß ein #Herz im Schattentempel# #[[1]]# verstecke.",
                                                          /*french*/ "Selon moi, un #coeur dans le Temple de l'Ombre# cache #[[1]]#.", {QM_RED, QM_GREEN}));
 
-    hintTextTable[RHT_SHADOW_TEMPLE_BEAMOS_STORM_FAIRY] = HintText(CustomMessage("They say that an #calling the rain for a sentry guarding a house of the dead# reveals #[[1]]#.",
+    hintTextTable[RHT_SHADOW_TEMPLE_BEAMOS_STORM_FAIRY] = HintText(CustomMessage("They say that #calling the rain for a sentry guarding a house of the dead# reveals #[[1]]#.",
                                                                       /*german*/ "Man erzählt sich, daß das #Anrufen des Regens, nahe eines Wachpostens des Hauses der Toten#, #[[1]]# enthülle.",
                                                                       /*french*/ "Selon moi, #appeler la pluie pour une sentinelle gardant une maison des morts# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
 
-    hintTextTable[RHT_SHADOW_TEMPLE_PIT_STORM_FAIRY] = HintText(CustomMessage("They say that an #calling the rain on a platform suspended above a bottomless pit# reveals #[[1]]#.",
+    hintTextTable[RHT_SHADOW_TEMPLE_PIT_STORM_FAIRY] = HintText(CustomMessage("They say that #calling the rain on a platform suspended above a bottomless pit# reveals #[[1]]#.",
                                                                    /*german*/ "Man erzählt sich, daß das #Anrufen des Regens, auf einer Plattform, welche über einer bodenlosen Grube schwebt#, #[[1]]# enthülle.",
                                                                    /*french*/ "Selon moi, #appeler la pluie sur une plateforme suspendue au-dessus d’un gouffre sans fond# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
 
-    hintTextTable[RHT_SHADOW_TEMPLE_WIND_HINT_SUN_FAIRY] = HintText(CustomMessage("They say that an #calling the sun near an invisible chest guarded by the dead# reveals #[[1]]#.",
+    hintTextTable[RHT_SHADOW_TEMPLE_WIND_HINT_SUN_FAIRY] = HintText(CustomMessage("They say that #calling the sun near an invisible chest guarded by the dead# reveals #[[1]]#.",
                                                                        /*german*/ "Man erzählt sich, daß das #Anrufen der Sonne, nahe einer von Toten bewachten unsichtbaren Truhe#, #[[1]]# enthülle.",
                                                                        /*french*/ "Selon moi, #appeler le soleil près d’un coffre invisible gardé par les morts# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
 
-    hintTextTable[RHT_CRATE_SHADOW_TEMPLE] = HintText(CustomMessage("They say that a #crate in Shadow Temple# contains #[[1]]#.",
+    hintTextTable[RHT_CRATE_SHADOW_TEMPLE] = HintText(CustomMessage("They say that a #crate in the Shadow Temple# contains #[[1]]#.",
                                                      /*german*/ "Man erzählt sich, daß eine #Kiste im Schattentempel# #[[1]]# enthielte.",
                                                      /*french*/ "Selon moi, une #caisse dans le Temple de l'Ombre# contient #[[1]]#.", {QM_RED, QM_GREEN}));
 
-    hintTextTable[RHT_SIGN_SHADOW_TEMPLE] = HintText(CustomMessage("They say that #reading a sign in Shadow Temple# reveals #[[1]]#.",
+    hintTextTable[RHT_SIGN_SHADOW_TEMPLE] = HintText(CustomMessage("They say that #reading a sign in the Shadow Temple# reveals #[[1]]#.",
                                                      /*german*/ "Man erzählt sich, daß das #Lesen eines Schildes im Schattentempel# #[[1]]# enthülle.",
                                                      /*french*/ "Selon moi, #lire un panneau dans le Temple de l'Ombre# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
 
-    hintTextTable[RHT_WONDER_ITEM_SHADOW_TEMPLE] = HintText(CustomMessage("They say that a #wonder item in Shadow Temple# hides #[[1]]#.",
+    hintTextTable[RHT_WONDER_ITEM_SHADOW_TEMPLE] = HintText(CustomMessage("They say that a #wonder item in the Shadow Temple# hides #[[1]]#.",
                                                      /*german*/ "Man erzählt sich, daß sich ein #Wunder-Gegenstand im Schattentempel# #[[1]]# verstecke.",
                                                      /*french*/ "Selon moi, un #objet merveilleux dans le Temple de l'Ombre# cache #[[1]]#.", {QM_RED, QM_GREEN}));
 
@@ -1767,7 +1776,7 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
                                                                               /*french*/ "Selon moi, une #Skulltula embarrée dans la crypte au fonds du Puits# a #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                            // /*spanish*/ Según dicen, una #Skulltula encerrada en una cripta# del pozo otorga #[[1]]#.
 
-    hintTextTable[RHT_POT_BOTTOM_OF_THE_WELL] = HintText(CustomMessage("They say that a #pot in Bottom of the Well# contains #[[1]]#.",
+    hintTextTable[RHT_POT_BOTTOM_OF_THE_WELL] = HintText(CustomMessage("They say that a #pot in the Bottom of the Well# contains #[[1]]#.",
                                                             /*german*/ "Man erzählt sich, daß ein #Krug auf dem Grund des Brunnens# #[[1]]# enthielte.",
                                                             /*french*/ "Selon moi, une #jarre dans le Puits# contient #[[1]]#.", {QM_RED, QM_GREEN}));
 
@@ -1779,15 +1788,15 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
                                                               /*german*/ "Man erzählt sich, daß ein #im Boden versteckter Pfad# im Brunnen #[[1]]# enthielte.",
                                                               /*french*/ "Selon moi, un #passage caché sous le sol# dans le puits mène à #[[1]]#.", {QM_RED, QM_GREEN}));
 
-    hintTextTable[RHT_BOTTOM_OF_THE_WELL_BASEMENT_SUN_FAIRY] = HintText(CustomMessage("They say that an #calling the sun a dead end# within the well reveals #[[1]]#.",
+    hintTextTable[RHT_BOTTOM_OF_THE_WELL_BASEMENT_SUN_FAIRY] = HintText(CustomMessage("They say that #calling the sun in a dead end# within the well reveals #[[1]]#.",
                                                                        /*german*/ "Man erzählt sich, daß das #Anrufen der Sonne in einer Sackgasse# innerhalb des Brunnens #[[1]]# enthülle.",
                                                                        /*french*/ "Selon moi, #appeler le soleil dans une impasse# à l’intérieur du puits révèle #[[1]]#.", {QM_RED, QM_GREEN}));
 
-    hintTextTable[RHT_BOTTOM_OF_THE_WELL_MQ_CELL_SUN_FAIRY] = HintText(CustomMessage("They say that an #calling the sun in an empty cell# within the well reveals #[[1]]#.",
+    hintTextTable[RHT_BOTTOM_OF_THE_WELL_MQ_CELL_SUN_FAIRY] = HintText(CustomMessage("They say that #calling the sun in an empty cell# within the well reveals #[[1]]#.",
                                                                        /*german*/ "Man erzählt sich, daß das #Anrufen der Sonne in einer leeren Zelle# innerhalb des Brunnens #[[1]]# enthülle.",
                                                                        /*french*/ "Selon moi, #appeler le soleil dans une cellule vide# à l’intérieur du puits révèle #[[1]]#.", {QM_RED, QM_GREEN}));
 
-    hintTextTable[RHT_BOTTOM_OF_THE_WELL_MQ_BASEMENT_SUN_FAIRY] = HintText(CustomMessage("They say that an #calling the sun a dead end# within the well reveals #[[1]]#.",
+    hintTextTable[RHT_BOTTOM_OF_THE_WELL_MQ_BASEMENT_SUN_FAIRY] = HintText(CustomMessage("They say that #calling the sun in a dead end# within the well reveals #[[1]]#.",
                                                                        /*german*/ "Man erzählt sich, daß das #Anrufen der Sonne in einer Sackgasse# innerhalb des Brunnens #[[1]]# enthülle.",
                                                                        /*french*/ "Selon moi, #appeler le soleil dans une impasse# à l’intérieur du puits révèle #[[1]]#.", {QM_RED, QM_GREEN}));
 
@@ -1795,7 +1804,7 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
                                                      /*german*/ "Man erzählt sich, daß etwas #Gras auf dem Grund des Brunnens# #[[1]]# verstecke.",
                                                      /*french*/ "Selon moi, de l'#herbe dans le Puits# cache #[[1]]#.", {QM_RED, QM_GREEN}));
 
-    hintTextTable[RHT_BOTW_BOULDER] = HintText(CustomMessage("They say that a #boulder in Bottom of the Well# contains #[[1]]#.",
+    hintTextTable[RHT_BOTW_BOULDER] = HintText(CustomMessage("They say that a #boulder in the Bottom of the Well# contains #[[1]]#.",
                                                                        /*german*/ TODO_TRANSLATE,
                                                                        /*french*/ TODO_TRANSLATE, {QM_RED, QM_GREEN}));
 
@@ -1876,11 +1885,11 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
                                                               /*french*/ "Selon moi, une #Skulltula figée dans la glace rouge# a #[[1]]#.", {QM_RED, QM_GREEN}));
                                                            // /*spanish*/ Según dicen, una #Skulltula tras un ardiente hielo# otorga #[[1]]#.
 
-    hintTextTable[RHT_POT_ICE_CAVERN] = HintText(CustomMessage("They say that a #pot in Ice Cavern# contains #[[1]]#.",
+    hintTextTable[RHT_POT_ICE_CAVERN] = HintText(CustomMessage("They say that a #pot in the Ice Cavern# contains #[[1]]#.",
                                                     /*german*/ "Man erzählt sich, daß ein #Krug in der Eishöhle# #[[1]]# enthielte.",
                                                     /*french*/ "Selon moi, une #jarre dans la Caverne Polaire# contient #[[1]]#.", { QM_RED, QM_GREEN }));
 
-    hintTextTable[RHT_ICE_CAVERN_HEART] = HintText(CustomMessage("They say that atop on a #frozen pillar# lies #[[1]]#.",
+    hintTextTable[RHT_ICE_CAVERN_HEART] = HintText(CustomMessage("They say that atop a #frozen pillar# lies #[[1]]#.",
                                                       /*german*/ "Man erzählt sich, daß auf einer #gefrorenen Säule# #[[1]]# |läge|lägen|.",
                                                       /*french*/ "Selon moi, le dessus d'un #pilier de glace# cache #[[1]]#.", {QM_RED, QM_GREEN}));
 
@@ -2083,23 +2092,23 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
                                                                                  /*french*/ "Selon moi, #derrière un bloc argent# dans le Gymnase Gerudo gît #[[1]]#.", {QM_RED, QM_GREEN}));
                                                                               // /*spanish*/ Según dicen, una #hazaña de fuerza# premia a las bandidas con #[[1]]#.
 
-    hintTextTable[RHT_GERUDO_TRAINING_GROUNDS_HEART] = HintText(CustomMessage("They say that a watching a #trial with Dinolfos# is #[[1]]#.",
+    hintTextTable[RHT_GERUDO_TRAINING_GROUNDS_HEART] = HintText(CustomMessage("They say that watching a #trial with Dinolfos# reveals #[[1]]#.",
                                                                    /*german*/ "Man erzählt sich, daß einer #Prüfung mit Dinodorus# zuzuschauen #[[1]]# enthülle.",
                                                                    /*french*/ "Selon moi, dans #une épreuve avec un Dinolfos# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
 
-    hintTextTable[RHT_CRATE_GERUDO_TRAINING_GROUND] = HintText(CustomMessage("They say that a #crate in Gerudo Training Ground# contains #[[1]]#.",
+    hintTextTable[RHT_CRATE_GERUDO_TRAINING_GROUND] = HintText(CustomMessage("They say that a #crate in the Gerudo Training Ground# contains #[[1]]#.",
                                                      /*german*/ "Man erzählt sich, daß eine #Kiste in der Gerudo-Trainingsarena# #[[1]]# enthielte.",
                                                      /*french*/ "Selon moi, une #caisse dans le Gymnase Gerudo# contient #[[1]]#.", {QM_RED, QM_GREEN}));
 
-    hintTextTable[RHT_WONDER_ITEM_GERUDO_TRAINING_GROUND] = HintText(CustomMessage("They say that a #wonder item in Gerudo Training Ground# hides #[[1]]#.",
+    hintTextTable[RHT_WONDER_ITEM_GERUDO_TRAINING_GROUND] = HintText(CustomMessage("They say that a #wonder item in the Gerudo Training Ground# hides #[[1]]#.",
                                                      /*german*/ "Man erzählt sich, daß sich ein #Wunder-Gegenstand in der Gerudo-Trainingsarena# #[[1]]# verstecke.",
                                                      /*french*/ "Selon moi, un #objet merveilleux dans le Gymnase Gerudo# cache #[[1]]#.", {QM_RED, QM_GREEN}));
 
-    hintTextTable[RHT_GERUDO_TRAINING_GROUND_ICICLE] = HintText(CustomMessage("They say that #breaking an icicle in in Gerudo Training Ground# reveals #[[1]]#.",
+    hintTextTable[RHT_GERUDO_TRAINING_GROUND_ICICLE] = HintText(CustomMessage("They say that #breaking an icicle in the Gerudo Training Ground# reveals #[[1]]#.",
                                                               /*german*/ "Man erzählt sich, daß das #Zerschlagen eines Eiszapfens in der Gerudo-Trainingsarena# #[[1]]# enthülle.",
                                                               /*french*/ "Selon moi, #briser un stalactite de glace dans le Gymnase Gerudo# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
 
-    hintTextTable[RHT_GERUDO_TRAINING_GROUND_RED_ICE] = HintText(CustomMessage("They say that #melting red ice in Gerudo Training Ground# gives #[[1]]#.",
+    hintTextTable[RHT_GERUDO_TRAINING_GROUND_RED_ICE] = HintText(CustomMessage("They say that #melting red ice in the Gerudo Training Ground# gives #[[1]]#.",
                                                         /*german*/ "Man erzählt sich, daß das #Schmelzen von rotem Eis in der Gerudo-Trainingsarena# #[[1]]# gäbe.",
                                                         /*french*/ "Selon moi, #faire fondre la glace rouge dans le Gymnase Gerudo# donne #[[1]]#.", {QM_RED, QM_GREEN}));
 
@@ -2320,7 +2329,7 @@ void StaticData::HintTable_Init_Exclude_Dungeon() {
                                                               /*german*/ "Man erzählt sich, daß das #Zerschlagen eines Eiszapfens  Ganons Schloß# #[[1]]# enthülle.",
                                                               /*french*/ "Selon moi, #briser un stalactite de glace dans le Château de Ganon# révèle #[[1]]#.", {QM_RED, QM_GREEN}));
     
-    hintTextTable[RHT_GANONS_CASTLE_RED_ICE] = HintText(CustomMessage("They say that #melting red ice in a Ganon's Castle# gives #[[1]]#.",
+    hintTextTable[RHT_GANONS_CASTLE_RED_ICE] = HintText(CustomMessage("They say that #melting red ice in Ganon's Castle# gives #[[1]]#.",
                                                         /*german*/ "Man erzählt sich, daß das #Schmelzen von rotem Eis in Ganons Schloß# #[[1]]# gäbe.",
                                                         /*french*/ "Selon moi, #faire fondre la glace rouge dans le Château de Ganon# donne #[[1]]#.", {QM_RED, QM_GREEN}));
     // clang-format on

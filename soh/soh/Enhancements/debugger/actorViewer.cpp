@@ -11,7 +11,7 @@
 #include <array>
 #include <unordered_map>
 #include <string>
-#include <spdlog/fmt/fmt.h>
+#include <spdlog/common.h>
 #include "soh/OTRGlobals.h"
 #include "soh/cvar_prefixes.h"
 #include "soh/ObjectExtension/ActorListIndex.h"
@@ -797,6 +797,9 @@ std::vector<u16> GetActorsWithDescriptionContainingString(std::string s) {
     std::vector<u16> actors;
     for (int i = 0; i < ActorDB::Instance->GetEntryCount(); i += 1) {
         ActorDB::Entry actorEntry = ActorDB::Instance->RetrieveEntry(i);
+        if (!actorEntry.entry.valid) {
+            continue;
+        }
         std::string desc = actorEntry.desc;
         for (size_t j = 0; j < desc.length(); j += 1) {
             desc[j] = std::tolower(desc[j], loc);
@@ -825,7 +828,7 @@ void ActorViewer_AddTagForActor(Actor* actor) {
         parts.push_back(acMapping[actor->category]);
     }
     if (CVarGetInteger(CVAR_ACTOR_NAME_TAGS("DisplayParams"), 0)) {
-        parts.push_back(fmt::format("0x{:04X} ({})", (u16)actor->params, actor->params));
+        parts.push_back(spdlog::fmt_lib::format("0x{:04X} ({})", (u16)actor->params, actor->params));
     }
 
     std::string tag = "";
@@ -920,9 +923,9 @@ void ActorViewerWindow::DrawElement() {
 
         PushStyleCombobox(THEME_COLOR);
         if (ImGui::BeginCombo("Actor Type", acMapping[category])) {
-            for (int i = 0; i < acMapping.size(); i++) {
+            for (size_t i = 0; i < acMapping.size(); i++) {
                 if (ImGui::Selectable(acMapping[i])) {
-                    category = i;
+                    category = static_cast<int>(i);
                     PopulateActorDropdown(category, list);
                     break;
                 }
@@ -935,7 +938,7 @@ void ActorViewerWindow::DrawElement() {
         }
 
         if (ImGui::BeginCombo("Actor", filler.c_str())) {
-            for (int i = 0; i < list.size(); i++) {
+            for (size_t i = 0; i < list.size(); i++) {
                 std::string label = std::to_string(i) + ": " + ActorDB::Instance->RetrieveEntry(list[i]->id).name;
                 std::string description = GetActorDescription(list[i]->id);
                 if (description != "")
@@ -1161,8 +1164,7 @@ void ActorViewerWindow::DrawElement() {
             if (Button("Spawn as Child", ButtonOptions().Color(THEME_COLOR))) {
                 Actor* parent = display;
                 if (parent != NULL) {
-                    if (newActor.id >= 0 && newActor.id < ACTOR_ID_MAX &&
-                        ActorDB::Instance->RetrieveEntry(newActor.id).entry.valid) {
+                    if (ActorDB::Instance->RetrieveEntry(newActor.id).entry.valid) {
                         Actor_SpawnAsChild(&gPlayState->actorCtx, parent, gPlayState, newActor.id, newActor.pos.x,
                                            newActor.pos.y, newActor.pos.z, newActor.rot.x, newActor.rot.y,
                                            newActor.rot.z, newActor.params);

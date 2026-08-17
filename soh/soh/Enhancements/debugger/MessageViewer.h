@@ -1,5 +1,5 @@
-#ifndef CUSTOMMESSAGEDEBUGGER_H
-#define CUSTOMMESSAGEDEBUGGER_H
+#pragma once
+
 #include "z64.h"
 
 #ifdef __cplusplus
@@ -56,4 +56,3 @@ class MessageViewer final : public Ship::GuiWindow {
 };
 
 #endif //__cplusplus
-#endif // CUSTOMMESSAGEDEBUGGER_H

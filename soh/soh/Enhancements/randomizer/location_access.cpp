@@ -154,6 +154,7 @@ std::set<RandomizerArea> CalculateAreas(SceneID scene) {
         case SCENE_GERUDO_TRAINING_GROUND:
             return { RA_GERUDO_TRAINING_GROUND };
         case SCENE_THIEVES_HIDEOUT:
+            return { RA_THIEVES_HIDEOUT };
         case SCENE_GERUDOS_FORTRESS:
             return { RA_GERUDO_FORTRESS };
         case SCENE_MARKET_ENTRANCE_DAY:
@@ -501,13 +502,6 @@ Rando::Entrance* Region::GetExit(RandomizerRegion exitToReturn) {
                  this->regionName.c_str());
     assert(false);
     return nullptr;
-}
-
-bool Region::CanPlantBeanCheck(RandomizerGet bean) const {
-    auto ctx = Rando::Context::GetInstance();
-    auto logic = ctx->GetLogic();
-    return logic->HasItem(bean) && logic->GetAmmo(ITEM_BEAN) > 0 &&
-           (ctx->GetOption(RSK_SKIP_PLANTING_BEANS) || BothAgesCheck());
 }
 
 bool Region::AllAccountedFor() const {
@@ -864,94 +858,11 @@ bool AnyAgeTime(ConditionFn condition) {
     return areaTable[logic->CurrentRegionKey].AnyAgeTime(condition);
 }
 
-bool BeanPlanted(const RandomizerGet bean) {
-    auto logic = Rando::Context::GetInstance()->GetLogic();
-    // flag irrelevant if plant won't spawn
-    if (!logic->HasItem(bean)) {
-        return false;
-    } else if (ctx->GetOption(RSK_SKIP_PLANTING_BEANS) && ctx->GetOption(RSK_STARTING_BEANS)) {
-        return true;
-    }
-
-    // swchFlag found using the Actor Viewer to get the Obj_Bean parameters & 0x3F
-    // not tested with multiple OTRs, but can be automated similarly to GetUsedSmallKeys
-    SceneID sceneID;
-    uint8_t swchFlag;
-    switch (bean) {
-        case RG_ZORAS_RIVER_BEAN_SOUL:
-            sceneID = SceneID::SCENE_ZORAS_RIVER;
-            swchFlag = 3;
-            break;
-        case RG_GRAVEYARD_BEAN_SOUL:
-            sceneID = SceneID::SCENE_GRAVEYARD;
-            swchFlag = 3;
-            break;
-        case RG_KOKIRI_FOREST_BEAN_SOUL:
-            sceneID = SceneID::SCENE_KOKIRI_FOREST;
-            swchFlag = 9;
-            break;
-        case RG_LOST_WOODS_BRIDGE_BEAN_SOUL:
-            sceneID = SceneID::SCENE_LOST_WOODS;
-            swchFlag = 4;
-            break;
-        case RG_LOST_WOODS_BEAN_SOUL:
-            sceneID = SceneID::SCENE_LOST_WOODS;
-            swchFlag = 18;
-            break;
-        case RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL:
-            sceneID = SceneID::SCENE_DEATH_MOUNTAIN_TRAIL;
-            swchFlag = 6;
-            break;
-        case RG_LAKE_HYLIA_BEAN_SOUL:
-            sceneID = SceneID::SCENE_LAKE_HYLIA;
-            swchFlag = 1;
-            break;
-        case RG_GERUDO_VALLEY_BEAN_SOUL:
-            sceneID = SceneID::SCENE_GERUDO_VALLEY;
-            swchFlag = 3;
-            break;
-        case RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL:
-            sceneID = SceneID::SCENE_DEATH_MOUNTAIN_CRATER;
-            swchFlag = 3;
-            break;
-        case RG_DESERT_COLOSSUS_BEAN_SOUL:
-            sceneID = SceneID::SCENE_DESERT_COLOSSUS;
-            swchFlag = 24;
-            break;
-        default:
-            sceneID = SCENE_ID_MAX;
-            swchFlag = 0;
-            assert(false);
-            break;
-    }
-
-    // Get the swch value for the scene
-    uint32_t swch;
-    if (gPlayState != nullptr && gPlayState->sceneNum == sceneID) {
-        swch = gPlayState->actorCtx.flags.swch;
-    } else if (sceneID != SCENE_ID_MAX) {
-        swch = logic->GetSaveContext()->sceneFlags[sceneID].swch;
-    } else {
-        swch = 0;
-    }
-
-    return swch >> swchFlag & 1;
-}
-
-bool CanPlantBean(const RandomizerRegion region, const RandomizerGet bean) {
-    return areaTable[region].CanPlantBeanCheck(bean) || BeanPlanted(bean);
-}
-
-bool BothAges(const RandomizerRegion region) {
-    return areaTable[region].BothAgesCheck();
-}
-
-bool ChildCanAccess(const RandomizerRegion region) {
-    return areaTable[region].Child();
-}
-
-bool AdultCanAccess(const RandomizerRegion region) {
-    return areaTable[region].Adult();
+bool CanPlantBean(const RandomizerGet bean) {
+    auto ctx = Rando::Context::GetInstance();
+    auto logic = ctx->GetLogic();
+    return logic->HasItem(bean) && logic->GetAmmo(ITEM_BEAN) > 0 &&
+           (logic->IsChild || ctx->GetOption(RSK_SKIP_PLANTING_BEANS));
 }
 
 Rando::Context* ctx;

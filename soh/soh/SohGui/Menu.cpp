@@ -6,7 +6,7 @@
 #include <ship/window/gui/GuiElement.h>
 #include "SohModals.h"
 #include <variant>
-#include <spdlog/fmt/fmt.h>
+#include <spdlog/common.h>
 #include <tuple>
 
 extern "C" {
@@ -226,8 +226,8 @@ uint32_t Menu::DrawSearchResults(std::string& menuSearchText) {
                         std::transform(widgetStr.begin(), widgetStr.end(), widgetStr.begin(), ::tolower);
                         widgetStr.erase(std::remove(widgetStr.begin(), widgetStr.end(), ' '), widgetStr.end());
                         if (widgetStr.find(menuSearchText) != std::string::npos) {
-                            UIWidgets::ComponentAlignments backupAlignment;
-                            UIWidgets::LabelPositions backupLabelPos;
+                            UIWidgets::ComponentAlignments backupAlignment = UIWidgets::ComponentAlignments::Left;
+                            UIWidgets::LabelPositions backupLabelPos = UIWidgets::LabelPositions::Above;
                             if (info.type == WIDGET_COMBOBOX || info.type == WIDGET_CVAR_COMBOBOX) {
                                 backupAlignment =
                                     std::static_pointer_cast<UIWidgets::ComboboxOptions>(info.options)->alignment;
@@ -241,7 +241,7 @@ uint32_t Menu::DrawSearchResults(std::string& menuSearchText) {
                             MenuDrawItem(info, 400, menuThemeIndex);
                             ImGui::PushStyleColor(ImGuiCol_Text, UIWidgets::ColorValues.at(UIWidgets::Colors::Gray));
                             std::string origin =
-                                fmt::format("  ({} -> {}, Col {})", menuEntry.label, sidebarLabel, i + 1);
+                                spdlog::fmt_lib::format("  ({} -> {}, Col {})", menuEntry.label, sidebarLabel, i + 1);
                             ImGui::Text("%s", origin.c_str());
                             ImGui::PopStyleColor();
                             searchCount++;
@@ -268,7 +268,8 @@ uint32_t Menu::DrawSearchResults(std::string& menuSearchText) {
             if (widgetStr.find(menuSearchText) != std::string::npos) {
                 MenuDrawItem(entry.info, 400, menuThemeIndex);
                 ImGui::PushStyleColor(ImGuiCol_Text, UIWidgets::ColorValues.at(UIWidgets::Colors::Gray));
-                std::string origin = fmt::format("  ({} -> {}, {})", entry.menuName, entry.sidebarName, entry.location);
+                std::string origin =
+                    spdlog::fmt_lib::format("  ({} -> {}, {})", entry.menuName, entry.sidebarName, entry.location);
                 ImGui::Text("%s", origin.c_str());
                 ImGui::PopStyleColor();
                 searchCount++;
@@ -498,16 +499,12 @@ void Menu::MenuDrawItem(WidgetInfo& widget, uint32_t width, UIWidgets::Colors me
             } break;
             case WIDGET_WINDOW_BUTTON: {
                 if (widget.windowName == nullptr || widget.windowName[0] == '\0') {
-                    std::string msg =
-                        fmt::format("Error drawing window contents for {}: windowName not defined", widget.name);
-                    SPDLOG_ERROR(msg.c_str());
+                    SPDLOG_ERROR("Error drawing window contents for {}: windowName not defined", widget.name);
                     break;
                 }
                 auto window = Ship::Context::GetRawInstance()->GetWindow()->GetGui()->GetGuiWindow(widget.windowName);
                 if (!window) {
-                    std::string msg =
-                        fmt::format("Error drawing window contents: windowName {} does not exist", widget.windowName);
-                    SPDLOG_ERROR(msg.c_str());
+                    SPDLOG_ERROR("Error drawing window contents: windowName {} does not exist", widget.windowName);
                     break;
                 }
                 auto options = std::static_pointer_cast<UIWidgets::WindowButtonOptions>(widget.options);
@@ -700,7 +697,7 @@ void Menu::DrawElement() {
                       ImGuiChildFlags_AutoResizeX | ImGuiChildFlags_AutoResizeY | ImGuiChildFlags_AlwaysAutoResize,
                       ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoScrollbar);
 
-    std::unordered_map<std::string, SidebarEntry>* sidebar;
+    std::unordered_map<std::string, SidebarEntry>* sidebar = nullptr;
     float headerHeight = headerSizes.at(0).y + style.FramePadding.y * 2;
     ImVec2 buttonSize = ImGui::CalcTextSize(ICON_FA_TIMES_CIRCLE) + style.FramePadding * 2;
     bool scrollbar = false;
@@ -747,6 +744,9 @@ void Menu::DrawElement() {
             headerIndex = nextIndex;
         }
         curIndex++;
+    }
+    if (sidebar == nullptr) { // headerIndex wasn't in menuOrder
+        sidebar = &menuEntries.at(headerIndex).sidebars;
     }
     std::string menuSearchText = "";
     if (headerSearch) {
@@ -925,7 +925,7 @@ void Menu::DrawElement() {
             }
         }
         for (size_t i = 0; i < columnFuncs; i++) {
-            std::string sectionId = fmt::format("{} Column {}", sectionMenuId, i);
+            std::string sectionId = spdlog::fmt_lib::format("{} Column {}", sectionMenuId, i);
             if (useColumns) {
                 ImGui::SetNextWindowSizeConstraints({ columnWidth, 0 }, { columnWidth, columnHeight });
                 ImGui::BeginChild(sectionId.c_str(), { columnWidth, windowHeight * 4 }, ImGuiChildFlags_AutoResizeY,

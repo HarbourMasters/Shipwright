@@ -10,7 +10,6 @@
 #include "objects/object_boj/object_boj.h"
 #include <assert.h>
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
 
@@ -186,8 +185,6 @@ void EnSth_Destroy(Actor* thisx, PlayState* play) {
     EnSth* this = (EnSth*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnSth_WaitForObjectLoaded(EnSth* this, PlayState* play) {

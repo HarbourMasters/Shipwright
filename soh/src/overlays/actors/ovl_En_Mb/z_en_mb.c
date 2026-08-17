@@ -7,7 +7,6 @@
 #include "z_en_mb.h"
 #include "objects/object_mb/object_mb.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/ResourceManagerHelpers.h"
 
 /*
  * This actor can have three behaviors:
@@ -338,8 +337,6 @@ void EnMb_Destroy(Actor* thisx, PlayState* play) {
     Collider_DestroyTris(play, &this->frontShielding);
     Collider_DestroyCylinder(play, &this->hitbox);
     Collider_DestroyQuad(play, &this->attackCollider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnMb_FaceWaypoint(EnMb* this, PlayState* play) {
