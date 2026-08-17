@@ -229,9 +229,9 @@ static bool IsClearRoom(bool mq, s16 sceneNum, s8 roomNum) {
             }
         case SCENE_FIRE_TEMPLE:
             if (mq) {
-                return roomNum == 15 || roomNum == 17 || roomNum == 18;
+                return roomNum == 15 || roomNum == 17 || roomNum == 18 || roomNum == 24;
             } else {
-                return roomNum == 15;
+                return roomNum == 3 || roomNum == 15 || roomNum == 24;
             }
         case SCENE_WATER_TEMPLE:
             if (mq) {
@@ -994,12 +994,14 @@ void RegisterEnemyRandomizer() {
             return;
         }
 
-        if (IsClearRoom(ResourceMgr_IsSceneMasterQuest(gPlayState->sceneNum), gPlayState->sceneNum,
-                        gPlayState->roomCtx.curRoom.num) &&
+        if ((IsClearRoom(ResourceMgr_IsSceneMasterQuest(gPlayState->sceneNum), gPlayState->sceneNum,
+                         gPlayState->roomCtx.curRoom.num) ||
+             IsTimedRoom(ResourceMgr_IsSceneMasterQuest(gPlayState->sceneNum), gPlayState->sceneNum,
+                         gPlayState->roomCtx.curRoom.num)) &&
             enemy->id != ACTOR_EN_FIREFLY && enemy->id != ACTOR_EN_CROW) {
             u32 floorProperty = func_80041EA4(&gPlayState->colCtx, enemy->floorPoly, enemy->floorBgId);
 
-            // Let ground enemies air walk above voidout floor in clear rooms
+            // Let ground enemies air walk above voidout floor in clear/timed rooms
             // and move them up if setting is enabled after they're fallen down
             if (CVarGetInteger(CVAR_ENHANCEMENT("EnemyRandomizerAirWalkVoidouts"), false) &&
                 (SurfaceType_GetFloorType(&gPlayState->colCtx, enemy->floorPoly, enemy->floorBgId) == 9 ||
@@ -1010,10 +1012,13 @@ void RegisterEnemyRandomizer() {
                 }
             }
             // Backup. If player really above enemy, probably fallen out of bounds
-            if (player->actor.world.pos.y > (enemy->world.pos.y + 1000.0f)) {
-                LUSLOG_INFO(
-                    "AfterActorUpdateBgCheckInfo: Killing enemy, out of bounds (id 0x%x, pos x %.1f y %.1f z %.1f)",
-                    enemy->id, enemy->world.pos.x, enemy->world.pos.y, enemy->world.pos.z);
+            // Extra distance for Flare Dancer elevator platform room
+            f32 voidoutHeight = (gPlayState->sceneNum == SCENE_FIRE_TEMPLE && gPlayState->roomCtx.curRoom.num == 24)
+                                    ? (player->actor.world.pos.y - 1500.0f)
+                                    : (player->actor.world.pos.y - 1000.0f);
+            if (enemy->world.pos.y < voidoutHeight) {
+                LUSLOG_INFO("AfterActorUpdateBgCheckInfo: Killing enemy, out of bounds (id 0x%x, pos x %.1f y %.1f z %.1f)",
+                            enemy->id, enemy->world.pos.x, enemy->world.pos.y, enemy->world.pos.z,);
                 Actor_Kill(enemy);
             }
         }
