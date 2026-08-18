@@ -33,13 +33,13 @@
 static bool IsQuestSkipped(uint8_t quest) {
     switch (quest) {
         case QUEST_NORMAL:
-            return CVarGetInteger(CVAR_ENHANCEMENT("HideNormalQuest"), 0);
+            return CVarGetInteger(CVAR_ENHANCEMENT("FileSelect.HideNormalQuest"), 0);
         case QUEST_MASTER:
-            return !ResourceMgr_GameHasMasterQuest() || CVarGetInteger(CVAR_ENHANCEMENT("HideMasterQuest"), 0);
+            return !ResourceMgr_GameHasMasterQuest() || CVarGetInteger(CVAR_ENHANCEMENT("FileSelect.HideMasterQuest"), 0);
         case QUEST_RANDOMIZER:
-            return CVarGetInteger(CVAR_ENHANCEMENT("HideRandomizerQuest"), 0);
+            return CVarGetInteger(CVAR_ENHANCEMENT("FileSelect.HideRandomizerQuest"), 0);
         case QUEST_BOSSRUSH:
-            return CVarGetInteger(CVAR_ENHANCEMENT("HideBossRushQuest"), 0);
+            return CVarGetInteger(CVAR_ENHANCEMENT("FileSelect.HideBossRushQuest"), 0);
         default:
             return false;
     }

@@ -1449,6 +1449,8 @@ static const Migration version6Migrations[] = {
 };
 
 static const Migration version7Migrations[] = {
+    { "gEnhancements.FileSelectMoreInfo", "gEnhancements.FileSelect.MoreInfo" },
+    { "gEnhancements.TimeFlowFileSelect", "gEnhancements.FileSelect.TimeFlow" },
     { "gRandoSettings.LacsStoneCount", "gRandoSettings.GbkStoneCount" },
     { "gRandoSettings.LacsMedallionCount", "gRandoSettings.GbkMedallionCount" },
     { "gRandoSettings.LacsRewardCount", "gRandoSettings.GbkRewardCount" },
