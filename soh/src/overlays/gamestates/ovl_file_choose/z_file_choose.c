@@ -33,7 +33,7 @@
 static bool IsQuestSkipped(uint8_t quest) {
     switch (quest) {
         case QUEST_NORMAL:
-            return CVarGetInteger(CVAR_ENHANCEMENT("FileSelect.HideNormalQuest"), 0);
+            return !ResourceMgr_GameHasOriginal() || CVarGetInteger(CVAR_ENHANCEMENT("FileSelect.HideNormalQuest"), 0);
         case QUEST_MASTER:
             return !ResourceMgr_GameHasMasterQuest() || CVarGetInteger(CVAR_ENHANCEMENT("FileSelect.HideMasterQuest"), 0);
         case QUEST_RANDOMIZER:
