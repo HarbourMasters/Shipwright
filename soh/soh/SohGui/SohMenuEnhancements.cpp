@@ -805,7 +805,8 @@ void SohMenu::AddMenuEnhancements() {
             if (!ResourceMgr_GameHasOriginal()) {
                 info.options->disabled = true;
                 info.options->disabledTooltip = "This option requires a loaded original O2R.";
-            } else if (CountVisibleFileSelectQuests() <= 1 && !CVarGetInteger(CVAR_ENHANCEMENT("FileSelect.HideNormalQuest"), 0)) {
+            } else if (CountVisibleFileSelectQuests() <= 1 &&
+                       !CVarGetInteger(CVAR_ENHANCEMENT("FileSelect.HideNormalQuest"), 0)) {
                 info.options->disabled = true;
                 info.options->disabledTooltip = "At least one quest type must remain visible.";
             }
@@ -819,7 +820,8 @@ void SohMenu::AddMenuEnhancements() {
             if (!ResourceMgr_GameHasMasterQuest()) {
                 info.options->disabled = true;
                 info.options->disabledTooltip = "This option requires a loaded Master Quest O2R.";
-            } else if (CountVisibleFileSelectQuests() <= 1 && !CVarGetInteger(CVAR_ENHANCEMENT("FileSelect.HideMasterQuest"), 0)) {
+            } else if (CountVisibleFileSelectQuests() <= 1 &&
+                       !CVarGetInteger(CVAR_ENHANCEMENT("FileSelect.HideMasterQuest"), 0)) {
                 info.options->disabled = true;
                 info.options->disabledTooltip = "At least one quest type must remain visible.";
             }
@@ -830,7 +832,8 @@ void SohMenu::AddMenuEnhancements() {
         .CVar(CVAR_ENHANCEMENT("FileSelect.HideRandomizerQuest"))
         .RaceDisable(false)
         .PreFunc([](const WidgetInfo& info) {
-            if (CountVisibleFileSelectQuests() <= 1 && !CVarGetInteger(CVAR_ENHANCEMENT("FileSelect.HideRandomizerQuest"), 0)) {
+            if (CountVisibleFileSelectQuests() <= 1 &&
+                !CVarGetInteger(CVAR_ENHANCEMENT("FileSelect.HideRandomizerQuest"), 0)) {
                 info.options->disabled = true;
                 info.options->disabledTooltip = "At least one quest type must remain visible.";
             }
@@ -841,7 +844,8 @@ void SohMenu::AddMenuEnhancements() {
         .CVar(CVAR_ENHANCEMENT("FileSelect.HideBossRushQuest"))
         .RaceDisable(false)
         .PreFunc([](const WidgetInfo& info) {
-            if (CountVisibleFileSelectQuests() <= 1 && !CVarGetInteger(CVAR_ENHANCEMENT("FileSelect.HideBossRushQuest"), 0)) {
+            if (CountVisibleFileSelectQuests() <= 1 &&
+                !CVarGetInteger(CVAR_ENHANCEMENT("FileSelect.HideBossRushQuest"), 0)) {
                 info.options->disabled = true;
                 info.options->disabledTooltip = "At least one quest type must remain visible.";
             }
