@@ -9,6 +9,7 @@ gNightOvercastSkybox1Tex:
   offset: 0x0
   symbol: gNightOvercastSkybox1Tex
   format: CI8
+  split_tlut: true
   width: 128
   height: 64
   tlut_symbol: gNightOvercastSkyboxTLUT
@@ -17,6 +18,7 @@ gNightOvercastSkybox2Tex:
   offset: 0x2000
   symbol: gNightOvercastSkybox2Tex
   format: CI8
+  split_tlut: true
   width: 128
   height: 64
   tlut_symbol: gNightOvercastSkyboxTLUT
@@ -25,6 +27,7 @@ gNightOvercastSkybox3Tex:
   offset: 0x4000
   symbol: gNightOvercastSkybox3Tex
   format: CI8
+  split_tlut: true
   width: 128
   height: 64
   tlut_symbol: gNightOvercastSkyboxTLUT
@@ -33,6 +36,7 @@ gNightOvercastSkybox4Tex:
   offset: 0x6000
   symbol: gNightOvercastSkybox4Tex
   format: CI8
+  split_tlut: true
   width: 128
   height: 64
   tlut_symbol: gNightOvercastSkyboxTLUT
@@ -41,6 +45,7 @@ gNightOvercastSkybox5Tex:
   offset: 0x8000
   symbol: gNightOvercastSkybox5Tex
   format: CI8
+  split_tlut: true
   width: 128
   height: 128
   tlut_symbol: gNightOvercastSkyboxTLUT

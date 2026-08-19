@@ -9,6 +9,7 @@ gSunsetSkybox1Tex:
   offset: 0x0
   symbol: gSunsetSkybox1Tex
   format: CI8
+  split_tlut: true
   width: 128
   height: 64
   tlut_symbol: gSunsetSkyboxTLUT
@@ -17,6 +18,7 @@ gSunsetSkybox2Tex:
   offset: 0x2000
   symbol: gSunsetSkybox2Tex
   format: CI8
+  split_tlut: true
   width: 128
   height: 64
   tlut_symbol: gSunsetSkyboxTLUT
@@ -25,6 +27,7 @@ gSunsetSkybox3Tex:
   offset: 0x4000
   symbol: gSunsetSkybox3Tex
   format: CI8
+  split_tlut: true
   width: 128
   height: 64
   tlut_symbol: gSunsetSkyboxTLUT
@@ -33,6 +36,7 @@ gSunsetSkybox4Tex:
   offset: 0x6000
   symbol: gSunsetSkybox4Tex
   format: CI8
+  split_tlut: true
   width: 128
   height: 64
   tlut_symbol: gSunsetSkyboxTLUT
@@ -41,6 +45,7 @@ gSunsetSkybox5Tex:
   offset: 0x8000
   symbol: gSunsetSkybox5Tex
   format: CI8
+  split_tlut: true
   width: 128
   height: 128
   tlut_symbol: gSunsetSkyboxTLUT

@@ -9,6 +9,7 @@ gSunsetOvercastSkybox1Tex:
   offset: 0x0
   symbol: gSunsetOvercastSkybox1Tex
   format: CI8
+  split_tlut: false
   width: 128
   height: 64
   tlut_symbol: gSunsetOvercastSkyboxTLUT
@@ -17,6 +18,7 @@ gSunsetOvercastSkybox2Tex:
   offset: 0x2000
   symbol: gSunsetOvercastSkybox2Tex
   format: CI8
+  split_tlut: false
   width: 128
   height: 64
   tlut_symbol: gSunsetOvercastSkyboxTLUT
@@ -25,6 +27,7 @@ gSunsetOvercastSkybox3Tex:
   offset: 0x4000
   symbol: gSunsetOvercastSkybox3Tex
   format: CI8
+  split_tlut: false
   width: 128
   height: 64
   tlut_symbol: gSunsetOvercastSkyboxTLUT
@@ -33,6 +36,7 @@ gSunsetOvercastSkybox4Tex:
   offset: 0x6000
   symbol: gSunsetOvercastSkybox4Tex
   format: CI8
+  split_tlut: false
   width: 128
   height: 64
   tlut_symbol: gSunsetOvercastSkyboxTLUT
@@ -41,6 +45,7 @@ gSunsetOvercastSkybox5Tex:
   offset: 0x8000
   symbol: gSunsetOvercastSkybox5Tex
   format: CI8
+  split_tlut: false
   width: 128
   height: 128
   tlut_symbol: gSunsetOvercastSkyboxTLUT

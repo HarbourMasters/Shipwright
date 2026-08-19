@@ -9,6 +9,7 @@ gDaySkybox1Tex:
   offset: 0x0
   symbol: gDaySkybox1Tex
   format: CI8
+  split_tlut: false
   width: 128
   height: 64
   tlut_symbol: gDaySkyboxTLUT
@@ -17,6 +18,7 @@ gDaySkybox2Tex:
   offset: 0x2000
   symbol: gDaySkybox2Tex
   format: CI8
+  split_tlut: false
   width: 128
   height: 64
   tlut_symbol: gDaySkyboxTLUT
@@ -25,6 +27,7 @@ gDaySkybox3Tex:
   offset: 0x4000
   symbol: gDaySkybox3Tex
   format: CI8
+  split_tlut: false
   width: 128
   height: 64
   tlut_symbol: gDaySkyboxTLUT
@@ -33,6 +36,7 @@ gDaySkybox4Tex:
   offset: 0x6000
   symbol: gDaySkybox4Tex
   format: CI8
+  split_tlut: false
   width: 128
   height: 64
   tlut_symbol: gDaySkyboxTLUT
@@ -41,6 +45,7 @@ gDaySkybox5Tex:
   offset: 0x8000
   symbol: gDaySkybox5Tex
   format: CI8
+  split_tlut: false
   width: 128
   height: 128
   tlut_symbol: gDaySkyboxTLUT
