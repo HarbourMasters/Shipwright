@@ -175,6 +175,7 @@ static bool DungeonHasBossKey(int32_t dungeonIndex) {
 // restrictToValid: pointer to shared restrict flag (nullptr = use internal static)
 static void DrawButtonItemSelector(const char* label, int buttonIndex, UIWidgets::Colors color, bool isBButton = false,
                                    const bool* restrictToValidPtr = nullptr) {
+    auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
     // Use provided restrictToValid or default to true (restricted mode)
     bool useRestriction = restrictToValidPtr ? *restrictToValidPtr : true;
     uint8_t* buttonItem = &gSaveContext.equips.buttonItems[buttonIndex];
@@ -219,22 +220,16 @@ static void DrawButtonItemSelector(const char* label, int buttonIndex, UIWidgets
 
     if (item == ITEM_ROCS_FEATHER) {
         std::string rocId = std::string("RG_ROCS_FEATHER_btn_") + label;
-        if (ImGui::ImageButton(
-                rocId.c_str(),
-                std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                    ->GetTextureByName("RG_ROCS_FEATHER"),
-                ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1))) {
+        if (ImGui::ImageButton(rocId.c_str(), gui->GetTextureByName("RG_ROCS_FEATHER"), ImVec2(IMAGE_SIZE, IMAGE_SIZE),
+                               ImVec2(0, 0), ImVec2(1, 1))) {
             ImGui::OpenPopup(label);
         }
     } else if (const auto mappedItem = itemMapping.find(item); item != ITEM_NONE && mappedItem != itemMapping.end()) {
         const ItemMapEntry& slotEntry = mappedItem->second;
         // Use label-based ID to avoid conflicts when same item is on multiple buttons
         std::string itemId = std::string("item_btn_") + label + "_" + slotEntry.name;
-        if (ImGui::ImageButton(
-                itemId.c_str(),
-                std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                    ->GetTextureByName(slotEntry.name),
-                ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1))) {
+        if (ImGui::ImageButton(itemId.c_str(), gui->GetTextureByName(slotEntry.name), ImVec2(IMAGE_SIZE, IMAGE_SIZE),
+                               ImVec2(0, 0), ImVec2(1, 1))) {
             ImGui::OpenPopup(label);
         }
     } else {
@@ -300,11 +295,8 @@ static void DrawButtonItemSelector(const char* label, int buttonIndex, UIWidgets
             const ItemMapEntry& slotEntry = possibleItems[pickerIndex];
             PushStyleButton(Colors::DarkGray);
             std::string pickerItemId = std::string("item_picker_") + label + "_" + slotEntry.name;
-            auto ret = ImGui::ImageButton(
-                pickerItemId.c_str(),
-                std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                    ->GetTextureByName(slotEntry.name),
-                ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1));
+            auto ret = ImGui::ImageButton(pickerItemId.c_str(), gui->GetTextureByName(slotEntry.name),
+                                          ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1));
             PopStyleButton();
             if (ret) {
                 *buttonItem = slotEntry.id;
@@ -361,11 +353,8 @@ static void DrawButtonItemSelector(const char* label, int buttonIndex, UIWidgets
             ImGui::SameLine();
             PushStyleButton(Colors::DarkGray);
             std::string rocPickerId = std::string("RG_ROCS_FEATHER_picker_") + label;
-            auto retRoc = ImGui::ImageButton(
-                rocPickerId.c_str(),
-                std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                    ->GetTextureByName("RG_ROCS_FEATHER"),
-                ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1));
+            auto retRoc = ImGui::ImageButton(rocPickerId.c_str(), gui->GetTextureByName("RG_ROCS_FEATHER"),
+                                             ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1));
             PopStyleButton();
             if (retRoc) {
                 *buttonItem = ITEM_ROCS_FEATHER;
@@ -955,10 +944,9 @@ void DrawGeneralTab() {
 }
 
 void DrawBGSItemFlag(uint8_t itemID) {
+    auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
     const ItemMapEntry& slotEntry = itemMapping[itemID];
-    ImGui::Image(std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                     ->GetTextureByName(slotEntry.name),
-                 ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1));
+    ImGui::Image(gui->GetTextureByName(slotEntry.name), ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1));
 }
 
 // Re-sync any C/D-pad button that mirrors an edited inventory slot (buttonItems[i] == items[cButtonSlots[i-1]]),
@@ -975,6 +963,7 @@ static void SyncButtonItemsForSlot(uint8_t slot) {
 }
 
 void DrawInventoryTab() {
+    auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
     ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 3.0f);
     ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(8.0f, 8.0f));
     ImGui::BeginChild("inventoryTab", ImVec2(0, 0), true);
@@ -1060,19 +1049,13 @@ void DrawInventoryTab() {
             PushStyleButton(Colors::DarkGray);
             bool wasClicked = false;
             if (item == ITEM_ROCS_FEATHER) {
-                wasClicked = ImGui::ImageButton(
-                    "RG_ROCS_FEATHER",
-                    std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                        ->GetTextureByName("RG_ROCS_FEATHER"),
-                    ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1));
+                wasClicked = ImGui::ImageButton("RG_ROCS_FEATHER", gui->GetTextureByName("RG_ROCS_FEATHER"),
+                                                ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1));
             } else if (const auto mappedItem = itemMapping.find(item);
                        item != ITEM_NONE && mappedItem != itemMapping.end()) {
                 const ItemMapEntry& slotEntry = mappedItem->second;
-                wasClicked = ImGui::ImageButton(
-                    slotEntry.name.c_str(),
-                    std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                        ->GetTextureByName(slotEntry.name),
-                    ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1));
+                wasClicked = ImGui::ImageButton(slotEntry.name.c_str(), gui->GetTextureByName(slotEntry.name),
+                                                ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1));
             } else {
                 wasClicked =
                     ImGui::Button("##itemNone", ImVec2(IMAGE_SIZE, IMAGE_SIZE) + ImGui::GetStyle().FramePadding * 2);
@@ -1169,10 +1152,7 @@ void DrawInventoryTab() {
                     }
                     const ItemMapEntry& slotEntry = possibleItems[pickerIndex];
                     PushStyleButton(Colors::DarkGray);
-                    auto ret = ImGui::ImageButton(slotEntry.name.c_str(),
-                                                  std::dynamic_pointer_cast<Fast::Fast3dGui>(
-                                                      Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                                                      ->GetTextureByName(slotEntry.name),
+                    auto ret = ImGui::ImageButton(slotEntry.name.c_str(), gui->GetTextureByName(slotEntry.name),
                                                   ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1));
                     PopStyleButton();
                     if (ret) {
@@ -1189,10 +1169,7 @@ void DrawInventoryTab() {
                 if (addRocsFeather) {
                     ImGui::SameLine();
                     PushStyleButton(Colors::DarkGray);
-                    auto retRoc = ImGui::ImageButton("RG_ROCS_FEATHER_PICKER",
-                                                     std::dynamic_pointer_cast<Fast::Fast3dGui>(
-                                                         Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                                                         ->GetTextureByName("RG_ROCS_FEATHER"),
+                    auto retRoc = ImGui::ImageButton("RG_ROCS_FEATHER_PICKER", gui->GetTextureByName("RG_ROCS_FEATHER"),
                                                      ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1));
                     PopStyleButton();
                     if (retRoc) {
@@ -1896,6 +1873,7 @@ void DrawUpgrade(const std::string& categoryName, int32_t categoryId, const std:
 
 // Draws a combo that lets you choose and upgrade value from a popup grid of icons
 void DrawUpgradeIcon(const std::string& categoryName, int32_t categoryId, const std::vector<uint8_t>& items) {
+    auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
     static const char* upgradePopupPicker = "upgradePopupPicker";
 
     ImGui::PushID(categoryName.c_str());
@@ -1904,11 +1882,9 @@ void DrawUpgradeIcon(const std::string& categoryName, int32_t categoryId, const 
     auto value = (size_t)CUR_UPG_VALUE(categoryId);
     uint8_t item = value < items.size() ? items[value] : (uint8_t)ITEM_NONE;
     const ItemMapEntry& slotEntry = itemMapping[item];
-    if (ImGui::ImageButton(
-            slotEntry.name.c_str(),
-            std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                ->GetTextureByName(item != ITEM_NONE ? slotEntry.name : itemMapping[items[1]].nameFaded),
-            ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1))) {
+    if (ImGui::ImageButton(slotEntry.name.c_str(),
+                           gui->GetTextureByName(item != ITEM_NONE ? slotEntry.name : itemMapping[items[1]].nameFaded),
+                           ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1))) {
         ImGui::OpenPopup(upgradePopupPicker);
     }
     PopStyleButton();
@@ -1930,11 +1906,8 @@ void DrawUpgradeIcon(const std::string& categoryName, int32_t categoryId, const 
                 Tooltip("None");
             } else {
                 const ItemMapEntry& slotEntry = itemMapping[items[pickerIndex]];
-                auto ret = ImGui::ImageButton(
-                    slotEntry.name.c_str(),
-                    std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                        ->GetTextureByName(slotEntry.name),
-                    ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1));
+                auto ret = ImGui::ImageButton(slotEntry.name.c_str(), gui->GetTextureByName(slotEntry.name),
+                                              ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1));
                 if (ret) {
                     Inventory_ChangeUpgrade(categoryId, static_cast<s16>(pickerIndex));
                     ImGui::CloseCurrentPopup();
@@ -1949,6 +1922,7 @@ void DrawUpgradeIcon(const std::string& categoryName, int32_t categoryId, const 
 }
 
 void DrawEquipmentTab() {
+    auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
     ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 3.0f);
     ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(8.0f, 8.0f));
     ImGui::BeginChild("equipmentTab", ImVec2(0, 0), true);
@@ -2005,11 +1979,9 @@ void DrawEquipmentTab() {
         }
 
         PushStyleButton(Colors::DarkGray);
-        auto ret = ImGui::ImageButton(
-            entry.name.c_str(),
-            std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                ->GetTextureByName(hasEquip ? entry.name : entry.nameFaded),
-            ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1));
+        auto ret =
+            ImGui::ImageButton(entry.name.c_str(), gui->GetTextureByName(hasEquip ? entry.name : entry.nameFaded),
+                               ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1));
         if (ret) {
             if (hasEquip) {
                 gSaveContext.inventory.equipment &= ~bitMask;
@@ -2256,15 +2228,14 @@ void DrawEquipmentTab() {
 
 // Draws a toggleable icon for a quest item that is faded when disabled
 void DrawQuestItemButton(uint32_t item) {
+    auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
     const QuestMapEntry& entry = questMapping[item];
     uint32_t bitMask = 1 << entry.id;
     bool hasQuestItem = (bitMask & gSaveContext.inventory.questItems) != 0;
     PushStyleButton(Colors::DarkGray);
-    auto ret = ImGui::ImageButton(
-        entry.name.c_str(),
-        std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-            ->GetTextureByName(hasQuestItem ? entry.name : entry.nameFaded),
-        ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1));
+    auto ret =
+        ImGui::ImageButton(entry.name.c_str(), gui->GetTextureByName(hasQuestItem ? entry.name : entry.nameFaded),
+                           ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1));
     if (ret) {
         if (hasQuestItem) {
             gSaveContext.inventory.questItems &= ~bitMask;
@@ -2278,15 +2249,13 @@ void DrawQuestItemButton(uint32_t item) {
 
 // Draws a toggleable icon for a dungeon item that is faded when disabled
 void DrawDungeonItemButton(uint32_t item, uint32_t scene) {
+    auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
     const ItemMapEntry& entry = itemMapping[item];
     uint32_t bitMask = 1 << (entry.id - ITEM_KEY_BOSS); // Bitset starts at ITEM_KEY_BOSS == 0. the rest are sequential
     bool hasItem = (bitMask & gSaveContext.inventory.dungeonItems[scene]) != 0;
     PushStyleButton(Colors::DarkGray);
-    auto ret = ImGui::ImageButton(
-        entry.name.c_str(),
-        std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-            ->GetTextureByName(hasItem ? entry.name : entry.nameFaded),
-        ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1));
+    auto ret = ImGui::ImageButton(entry.name.c_str(), gui->GetTextureByName(hasItem ? entry.name : entry.nameFaded),
+                                  ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1));
     if (ret) {
         if (hasItem) {
             gSaveContext.inventory.dungeonItems[scene] &= ~bitMask;
@@ -2299,6 +2268,7 @@ void DrawDungeonItemButton(uint32_t item, uint32_t scene) {
 }
 
 void DrawQuestStatusTab() {
+    auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
     ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 3.0f);
     ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(8.0f, 8.0f));
     ImGui::BeginChild("questStatusTab", ImVec2(0, 0), true);
@@ -2347,11 +2317,9 @@ void DrawQuestStatusTab() {
         uint32_t bitMask = 1 << entry.id;
         bool hasQuestItem = (bitMask & gSaveContext.inventory.questItems) != 0;
         PushStyleButton(Colors::DarkGray);
-        auto ret = ImGui::ImageButton(
-            entry.name.c_str(),
-            std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                ->GetTextureByName(hasQuestItem ? entry.name : entry.nameFaded),
-            ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1));
+        auto ret =
+            ImGui::ImageButton(entry.name.c_str(), gui->GetTextureByName(hasQuestItem ? entry.name : entry.nameFaded),
+                               ImVec2(IMAGE_SIZE, IMAGE_SIZE), ImVec2(0, 0), ImVec2(1, 1));
         if (ret) {
             if (hasQuestItem) {
                 gSaveContext.inventory.questItems &= ~bitMask;
@@ -2450,6 +2418,8 @@ void DrawDungeonItemsTab() {
 
         // Small keys - clickable button with popup (only for dungeons that have keys)
         if (GetMaxKeysForDungeon(dungeonIndex) > 0) {
+            auto gui =
+                std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
             // Save cursor position before small key button to restore for boss key alignment
             ImVec2 smallKeyCursor = ImGui::GetCursorScreenPos();
 
@@ -2461,12 +2431,10 @@ void DrawDungeonItemsTab() {
             bool showNormal = (keyCount != 255);
             // Show count label for any value except 255 (-1)
             bool showCount = (keyCount != 255);
-            if (ImGui::ImageButton(
-                    itemMapping[ITEM_KEY_SMALL].name.c_str(),
-                    std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                        ->GetTextureByName(showNormal ? itemMapping[ITEM_KEY_SMALL].name
-                                                      : itemMapping[ITEM_KEY_SMALL].nameFaded),
-                    ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1))) {
+            if (ImGui::ImageButton(itemMapping[ITEM_KEY_SMALL].name.c_str(),
+                                   gui->GetTextureByName(showNormal ? itemMapping[ITEM_KEY_SMALL].name
+                                                                    : itemMapping[ITEM_KEY_SMALL].nameFaded),
+                                   ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1))) {
                 ImGui::OpenPopup(keyPopupId.c_str());
             }
             PopStyleButton();

@@ -843,27 +843,25 @@ void DrawItemCount(ItemTrackerItem item, bool hideMax) {
 }
 
 void DrawEquip(ItemTrackerItem item) {
+    auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
     assert(item.kind == ITEM_KIND_ITEM);
     bool hasEquip = HasEquipment(item) && IsValidSaveFile();
     bool giantsKnife = item.id == ITEM_SWORD_BGS && hasEquip && !gSaveContext.bgsFlag;
     std::string iconName = giantsKnife ? "ITEM_SWORD_KNIFE" : hasEquip ? item.iconName : item.fadedIconName;
     float iconSize = static_cast<float>(CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36));
-    ImGui::Image(std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                     ->GetTextureByName(iconName),
-                 ImVec2(iconSize, iconSize), ImVec2(0.0f, 0.0f), ImVec2(1, 1));
+    ImGui::Image(gui->GetTextureByName(iconName), ImVec2(iconSize, iconSize), ImVec2(0.0f, 0.0f), ImVec2(1, 1));
 
     Tooltip(giantsKnife ? "Giant's Knife" : SohUtils::GetItemName(item.id).c_str());
 }
 
 void DrawQuest(ItemTrackerItem item) {
+    auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
     assert(item.kind == ITEM_KIND_QUEST);
     bool hasQuestItem = HasQuestItem(item);
     float iconSize = static_cast<float>(CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36));
     ImGui::BeginGroup();
-    ImGui::ImageWithBg(
-        std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-            ->GetTextureByName(hasQuestItem && IsValidSaveFile() ? item.iconName : item.fadedIconName),
-        ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
+    ImGui::ImageWithBg(gui->GetTextureByName(hasQuestItem && IsValidSaveFile() ? item.iconName : item.fadedIconName),
+                       ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
     if (item.id == QUEST_SKULL_TOKEN) {
         DrawItemCount(item, false);
@@ -887,6 +885,7 @@ bool HasBossSoul(RandomizerInf bossSoul) {
 }
 
 void DrawItem(ItemTrackerItem item) {
+    auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
     uint32_t actualItemId =
         GameInteractor::IsSaveLoaded() && item.kind == ITEM_KIND_ITEM ? INV_CONTENT(item.id) : (uint8_t)ITEM_NONE;
     float iconSize = static_cast<float>(CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36));
@@ -1204,8 +1203,7 @@ void DrawItem(ItemTrackerItem item) {
 
     ImGui::BeginGroup();
 
-    ImGui::Image(std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                     ->GetTextureByName(hasItem && IsValidSaveFile() ? item.iconName : item.fadedIconName),
+    ImGui::Image(gui->GetTextureByName(hasItem && IsValidSaveFile() ? item.iconName : item.fadedIconName),
                  ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
     DrawItemCount(item, hideMax);
@@ -1224,6 +1222,7 @@ void DrawItem(ItemTrackerItem item) {
 }
 
 void DrawBottle(ItemTrackerItem item) {
+    auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
     assert(item.kind == ITEM_KIND_ITEM);
     uint32_t actualItemId =
         GameInteractor::IsSaveLoaded() ? (gSaveContext.inventory.items[SLOT(item.id) + item.data]) : false;
@@ -1236,14 +1235,14 @@ void DrawBottle(ItemTrackerItem item) {
     }
 
     float iconSize = static_cast<float>(CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36));
-    ImGui::Image(std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                     ->GetTextureByName(hasItem && IsValidSaveFile() ? item.iconName : item.fadedIconName),
+    ImGui::Image(gui->GetTextureByName(hasItem && IsValidSaveFile() ? item.iconName : item.fadedIconName),
                  ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
     Tooltip(SohUtils::GetItemName(item.id).c_str());
 };
 
 void DrawDungeonItem(ItemTrackerItem item) {
+    auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
     assert(item.kind == ITEM_KIND_ITEM);
     uint32_t itemId = item.id;
     ImU32 dungeonColor = IM_COL_WHITE;
@@ -1253,12 +1252,10 @@ void DrawDungeonItem(ItemTrackerItem item) {
     bool hasSmallKey = GameInteractor::IsSaveLoaded() ? ((gSaveContext.inventory.dungeonKeys[item.data]) >= 0) : false;
     ImGui::BeginGroup();
     if (itemId == ITEM_KEY_SMALL) {
-        ImGui::Image(std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                         ->GetTextureByName(hasSmallKey && IsValidSaveFile() ? item.iconName : item.fadedIconName),
+        ImGui::Image(gui->GetTextureByName(hasSmallKey && IsValidSaveFile() ? item.iconName : item.fadedIconName),
                      ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
     } else {
-        ImGui::Image(std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                         ->GetTextureByName(hasItem && IsValidSaveFile() ? item.iconName : item.fadedIconName),
+        ImGui::Image(gui->GetTextureByName(hasItem && IsValidSaveFile() ? item.iconName : item.fadedIconName),
                      ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
     }
 
@@ -1299,13 +1296,13 @@ void DrawDungeonItem(ItemTrackerItem item) {
 }
 
 void DrawSong(ItemTrackerItem item) {
+    auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
     assert(item.kind == ITEM_KIND_QUEST);
     float iconSize = static_cast<float>(CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36));
     ImVec2 p = ImGui::GetCursorScreenPos();
     bool hasSong = HasSong(item);
     ImGui::SetCursorScreenPos(ImVec2(p.x + 6, p.y));
-    ImGui::Image(std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                     ->GetTextureByName(hasSong && IsValidSaveFile() ? item.iconName : item.fadedIconName),
+    ImGui::Image(gui->GetTextureByName(hasSong && IsValidSaveFile() ? item.iconName : item.fadedIconName),
                  ImVec2(iconSize / 1.5f, iconSize), ImVec2(0, 0), ImVec2(1, 1));
     Tooltip(SohUtils::GetQuestItemName(item.id).c_str());
 }

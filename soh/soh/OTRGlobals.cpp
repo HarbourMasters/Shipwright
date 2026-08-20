@@ -1692,6 +1692,7 @@ extern "C" uint64_t GetUnixTimestamp() {
 }
 
 extern "C" void Graph_StartFrame() {
+    auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
 #ifndef __WIIU__
     using Ship::KbScancode;
     int32_t dwScancode = OTRGlobals::Instance->context->GetWindow()->GetLastScancode();
@@ -1699,9 +1700,8 @@ extern "C" void Graph_StartFrame() {
 
     switch (dwScancode) {
         case KbScancode::LUS_KB_F1: {
-            std::shared_ptr<SohModalWindow> modal = static_pointer_cast<SohModalWindow>(
-                std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                    ->GetGuiWindow("Modal Window"));
+            std::shared_ptr<SohModalWindow> modal =
+                static_pointer_cast<SohModalWindow>(gui->GetGuiWindow("Modal Window"));
             if (modal->IsPopupOpen("Menu Moved")) {
                 modal->DismissPopup();
             } else {
@@ -1714,9 +1714,7 @@ extern "C" void Graph_StartFrame() {
         }
         case KbScancode::LUS_KB_F5: {
             if (CVarGetInteger(CVAR_CHEAT("SaveStatesEnabled"), 0) == 0) {
-                std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                    ->GetGameOverlay()
-                    ->TextDrawNotification(6.0f, true, "Save states not enabled. Check Cheats Menu.");
+                gui->GetGameOverlay()->TextDrawNotification(6.0f, true, "Save states not enabled. Check Cheats Menu.");
                 return;
             }
             const unsigned int slot = OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot();
@@ -1736,9 +1734,7 @@ extern "C" void Graph_StartFrame() {
         }
         case KbScancode::LUS_KB_F6: {
             if (CVarGetInteger(CVAR_CHEAT("SaveStatesEnabled"), 0) == 0) {
-                std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                    ->GetGameOverlay()
-                    ->TextDrawNotification(6.0f, true, "Save states not enabled. Check Cheats Menu.");
+                gui->GetGameOverlay()->TextDrawNotification(6.0f, true, "Save states not enabled. Check Cheats Menu.");
                 return;
             }
             unsigned int slot = OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot();
@@ -1752,9 +1748,7 @@ extern "C" void Graph_StartFrame() {
         }
         case KbScancode::LUS_KB_F7: {
             if (CVarGetInteger(CVAR_CHEAT("SaveStatesEnabled"), 0) == 0) {
-                std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                    ->GetGameOverlay()
-                    ->TextDrawNotification(6.0f, true, "Save states not enabled. Check Cheats Menu.");
+                gui->GetGameOverlay()->TextDrawNotification(6.0f, true, "Save states not enabled. Check Cheats Menu.");
                 return;
             }
             const unsigned int slot = OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot();
@@ -2201,9 +2195,9 @@ extern "C" void OTRControllerCallback(uint8_t rumble) {
 
     static std::shared_ptr<SohInputEditorWindow> controllerConfigWindow = nullptr;
     if (controllerConfigWindow == nullptr) {
-        controllerConfigWindow = std::dynamic_pointer_cast<SohInputEditorWindow>(
-            std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                ->GetGuiWindow("Controller Configuration"));
+        auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
+        controllerConfigWindow =
+            std::dynamic_pointer_cast<SohInputEditorWindow>(gui->GetGuiWindow("Controller Configuration"));
     } else if (controllerConfigWindow->TestingRumble()) {
         return;
     }
@@ -2485,6 +2479,7 @@ bool SoH_HandleConfigDrop(char* filePath) {
         return false;
     }
     try {
+        auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
         std::ifstream configStream(filePath);
         if (!configStream) {
             return false;
@@ -2522,17 +2517,13 @@ bool SoH_HandleConfigDrop(char* filePath) {
             }
         }
 
-        auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
         gui->GetGuiWindow("Console")->Hide();
         gui->GetGuiWindow("Actor Viewer")->Hide();
         gui->GetGuiWindow("Collision Viewer")->Hide();
         gui->GetGuiWindow("Save Editor")->Hide();
         gui->GetGuiWindow("Display List Viewer")->Hide();
         gui->GetGuiWindow("Stats")->Hide();
-        std::dynamic_pointer_cast<Ship::ConsoleWindow>(
-            std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                ->GetGuiWindow("Console"))
-            ->ClearBindings();
+        std::dynamic_pointer_cast<Ship::ConsoleWindow>(gui->GetGuiWindow("Console"))->ClearBindings();
 
         Rando::Settings::GetInstance()->UpdateAllOptions();
         SohGui::MarkRandomizerMenusDirty();
