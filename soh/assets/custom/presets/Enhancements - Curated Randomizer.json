@@ -43,8 +43,6 @@
                 "FasterHeavyBlockLift": 1,
                 "FasterRupeeAccumulator": 1,
                 "FileSelect": {
-                    "HideBossRushQuest": 1,
-                    "HideNormalQuest": 1,
                     "MoreInfo": 1,
                     "TimeFlow": 1
                 },
