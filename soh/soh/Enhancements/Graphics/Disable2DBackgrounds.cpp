@@ -1,5 +1,8 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ShipInit.hpp"
+#include "soh/resource/type/scenecommand/SetTimeSettings.h"
+
+bool Scene_CommandTimeSettings(PlayState* play, SOH::ISceneCommand* cmd);
 
 extern "C" {
 #include "variables.h"
@@ -66,17 +69,9 @@ std::set<SkyboxId> skyboxIdControlList = {
 };
 
 static void SyncSkyboxTimeToCurrentTime() {
-    gSaveContext.skyboxTime = gSaveContext.dayTime;
-
-    if ((gSaveContext.skyboxTime >= 0x2AAC) && (gSaveContext.skyboxTime < 0x4555)) {
-        gSaveContext.skyboxTime = 0x3556;
-    } else if ((gSaveContext.skyboxTime >= 0x4555) && (gSaveContext.skyboxTime < 0x5556)) {
-        gSaveContext.skyboxTime = 0x5556;
-    } else if ((gSaveContext.skyboxTime >= 0xAAAB) && (gSaveContext.skyboxTime < 0xB556)) {
-        gSaveContext.skyboxTime = 0xB556;
-    } else if ((gSaveContext.skyboxTime >= 0xC001) && (gSaveContext.skyboxTime < 0xCAAC)) {
-        gSaveContext.skyboxTime = 0xCAAC;
-    }
+    SOH::SetTimeSettings cmd;
+    cmd.settings = { 0xFF, 0xFF, static_cast<uint8_t>(gPlayState->envCtx.timeIncrement) };
+    Scene_CommandTimeSettings(gPlayState, &cmd);
 }
 
 void Register3DPreRenderedScenes() {
