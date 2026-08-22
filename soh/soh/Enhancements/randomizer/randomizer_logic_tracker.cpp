@@ -56,6 +56,29 @@ struct RegionAccessFlags {
     bool AdultNight = false;
 };
 
+class LogicStateGuard {
+  public:
+    LogicStateGuard()
+        : isChild(logic->IsChild), isAdult(logic->IsAdult), atDay(logic->AtDay), atNight(logic->AtNight),
+          currentRegionKey(logic->CurrentRegionKey) {
+    }
+
+    ~LogicStateGuard() {
+        logic->IsChild = isChild;
+        logic->IsAdult = isAdult;
+        logic->AtDay = atDay;
+        logic->AtNight = atNight;
+        logic->CurrentRegionKey = currentRegionKey;
+    }
+
+  private:
+    bool isChild;
+    bool isAdult;
+    bool atDay;
+    bool atNight;
+    RandomizerRegion currentRegionKey;
+};
+
 static bool ApplyTimePassAccess(const Region* region, RegionAccessFlags& access) {
     if (!region->TimePass()) {
         return false;
@@ -83,11 +106,7 @@ static std::vector<RegionAccessFlags> CalculateAccessFromRoot(RandomizerRegion e
         return access;
     }
 
-    bool previousIsChild = logic->IsChild;
-    bool previousIsAdult = logic->IsAdult;
-    bool previousAtDay = logic->AtDay;
-    bool previousAtNight = logic->AtNight;
-    RandomizerRegion previousRegionKey = logic->CurrentRegionKey;
+    LogicStateGuard logicStateGuard;
 
     std::deque<RandomizerRegion> queue;
     const Region* root = RegionTable(RR_ROOT);
@@ -140,12 +159,6 @@ static std::vector<RegionAccessFlags> CalculateAccessFromRoot(RandomizerRegion e
             }
         }
     }
-
-    logic->IsChild = previousIsChild;
-    logic->IsAdult = previousIsAdult;
-    logic->AtDay = previousAtDay;
-    logic->AtNight = previousAtNight;
-    logic->CurrentRegionKey = previousRegionKey;
 
     return access;
 }
@@ -219,6 +232,8 @@ static void PopulateConnectionExpression(LogicTrackerNode::Connection& connectio
         connection.ExpressionTable.CombineAll = true;
         return;
     }
+
+    LogicStateGuard logicStateGuard;
 
     try {
         logic->IsChild = false;
@@ -536,9 +551,7 @@ static void DrawCondition(const LogicExpression& expression) {
 }
 
 static void DrawExpressionRow(const LogicTrackerNode& node, const ExpressionTable& table,
-                              ExpressionTable::ExpressionRow& row, int level) {
-    const auto& expression = *row.Expression;
-
+                               ExpressionTable::ExpressionRow& row, int level) {
     ImGui::TableNextRow();
     ImGui::PushID(&row);
     ImGui::PushFont(OTRGlobals::Instance->fontMono);
@@ -547,6 +560,26 @@ static void DrawExpressionRow(const LogicTrackerNode& node, const ExpressionTabl
     }
 
     ImGui::TableNextColumn();
+    if (!row.Expression) {
+        ImGui::BeginDisabled();
+        ImGui::Button("- ");
+        ImGui::EndDisabled();
+
+        ImGui::TableNextColumn();
+        ImGui::TextWrapped("%s", row.ErrorMessage.c_str());
+
+        ImGui::TableNextColumn();
+        ImGui::TextUnformatted("");
+
+        if (level > 0) {
+            ImGui::Unindent(20.0f);
+        }
+        ImGui::PopFont();
+        ImGui::PopID();
+        return;
+    }
+
+    const auto& expression = *row.Expression;
     if (!row.Children.empty()) {
         if (ImGui::Button(std::to_string(level).c_str())) {
             row.Expanded = !row.Expanded;

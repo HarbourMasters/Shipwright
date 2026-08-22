@@ -417,8 +417,7 @@ std::shared_ptr<LogicExpression> LogicExpression::Parse(const std::string& exprS
 
     std::function<std::shared_ptr<LogicExpression>(const std::shared_ptr<LogicExpression::Impl>&)> populateChildren;
     populateChildren = [&](const std::shared_ptr<LogicExpression::Impl>& node) {
-        auto expr = std::make_shared<LogicExpression>();
-        expr->impl = node;
+        auto expr = std::shared_ptr<LogicExpression>(new LogicExpression(node));
         node->expression = expr;
         for (const auto& child : node->children) {
             expr->children.emplace_back(populateChildren(child));

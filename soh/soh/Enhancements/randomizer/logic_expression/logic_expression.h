@@ -1,8 +1,10 @@
 #pragma once
 
+#include <cstdint>
 #include <functional>
 #include <memory>
 #include <string>
+#include <type_traits>
 #include <variant>
 #include <vector>
 
@@ -32,9 +34,9 @@ class LogicExpression {
      *
      * Parameters:
      * - `std::shared_ptr<LogicExpression>`: the node being evaluated
-     * - `const std::string&`: a textual type/label for the node (implementation-defined)
+     * - `const std::string&`: traversal path to the node, such as `"0.1"`
      * - `int`: nesting depth
-     * - `const std::string&`: node-specific details (implementation-defined)
+     * - `const std::string&`: evaluated node type, optionally including evaluation details
      * - `const ValueVariant&`: the computed result for the node
      */
     using EvaluationCallback = std::function<void(const std::shared_ptr<LogicExpression>&, const std::string&, int,
@@ -153,6 +155,8 @@ class LogicExpression {
 
   private:
     struct Impl;
+
+    explicit LogicExpression(std::shared_ptr<Impl> implementation);
 
     std::shared_ptr<Impl> impl;
     std::vector<std::shared_ptr<LogicExpression>> children;

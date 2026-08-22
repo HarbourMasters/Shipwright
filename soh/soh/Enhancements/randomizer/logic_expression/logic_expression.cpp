@@ -5,7 +5,11 @@
 #include <stdexcept>
 #include <stack>
 #include <tuple>
+#include <utility>
 #include <vector>
+
+LogicExpression::LogicExpression(std::shared_ptr<LogicExpression::Impl> implementation) : impl(std::move(implementation)) {
+}
 
 const std::vector<std::shared_ptr<LogicExpression>>& LogicExpression::GetChildren() const noexcept {
     return children;
