@@ -15,7 +15,6 @@
 
 #define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 #define WATER_SURFACE_Y(play) play->colCtx.colHeader->waterBoxes->ySurface
-bool getShouldSpawnLoaches();
 
 void Fishing_Init(Actor* thisx, PlayState* play);
 void Fishing_Destroy(Actor* thisx, PlayState* play);
@@ -431,13 +430,6 @@ static f32 sFishGroupAngle3;
 static FishingEffect sFishingEffects[FISHING_EFFECT_COUNT];
 static Vec3f sStreamSoundProjectedPos;
 static s16 sFishOnHandParams;
-
-f32 Fishing_GetMinimumRequiredScore();
-
-u8 AllHyruleLoaches() {
-    return CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFishing"), 0) &&
-           CVarGetInteger(CVAR_ENHANCEMENT("AllHyruleLoaches"), 0);
-}
 
 void Fishing_SetColliderElement(s32 index, ColliderJntSph* collider, Vec3f* pos, f32 scale) {
     collider->elements[index].dim.worldSphere.center.x = pos->x;
@@ -906,17 +898,13 @@ void Fishing_Init(Actor* thisx, PlayState* play2) {
         if (sLinkAge == LINK_AGE_CHILD) {
             if ((HIGH_SCORE(HS_FISHING) & HS_FISH_LENGTH_CHILD) != 0) {
                 sFishingRecordLength = HIGH_SCORE(HS_FISHING) & HS_FISH_LENGTH_CHILD;
-            } else if (CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFishing"), 0)) {
-                sFishingRecordLength = Fishing_GetMinimumRequiredScore();
-            } else {
+            } else if (GameInteractor_Should(VB_FISHING_USE_DEFAULT_RECORD_LENGTH, true, &sFishingRecordLength)) {
                 sFishingRecordLength = 40.0f; // 6 lbs
             }
         } else {
             if ((HIGH_SCORE(HS_FISHING) & HS_FISH_LENGTH_ADULT) != 0) {
                 sFishingRecordLength = (HIGH_SCORE(HS_FISHING) & HS_FISH_LENGTH_ADULT) >> 0x18;
-            } else if (CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFishing"), 0)) {
-                sFishingRecordLength = Fishing_GetMinimumRequiredScore();
-            } else {
+            } else if (GameInteractor_Should(VB_FISHING_USE_DEFAULT_RECORD_LENGTH, true, &sFishingRecordLength)) {
                 sFishingRecordLength = 45.0f; // 7 lbs
             }
         }
@@ -991,8 +979,8 @@ void Fishing_Init(Actor* thisx, PlayState* play2) {
                            ENKANBAN_FISHING);
         Actor_Spawn(&play->actorCtx, play, ACTOR_FISHING, 0.0f, 0.0f, 0.0f, 0, 0, 0, 200);
 
-        // Loach(es) will spawn every fourth game, or if "Loaches Always Appear" is enabled
-        if (getShouldSpawnLoaches()) {
+        // Loach(es) will spawn every fourth game
+        if (GameInteractor_Should(VB_FISHING_SPAWN_LOACHES, (KREG(1) == 1) || ((sFishGameNumber & 3) == 3))) {
             // Fishes 16 and 17 are loaches. Only 16 is spawned as adult; child also spawns 17.
             if (sLinkAge != LINK_AGE_CHILD) {
                 fishCount = 16;
@@ -1008,7 +996,8 @@ void Fishing_Init(Actor* thisx, PlayState* play2) {
                         sFishInits[i].pos.z, 0, Rand_ZeroFloat(0x10000), 0, 100 + i);
         }
     } else {
-        if ((thisx->params < (EN_FISH_PARAM + 15) && !AllHyruleLoaches()) || (thisx->params == EN_FISH_AQUARIUM)) {
+        if (!GameInteractor_Should(VB_FISHING_FISH_IS_LOACH, thisx->params >= (EN_FISH_PARAM + 15)) ||
+            (thisx->params == EN_FISH_AQUARIUM)) {
             SkelAnime_InitFlex(play, &this->skelAnime, &gFishingFishSkel, &gFishingFishAnim, NULL, NULL, 0);
             Animation_MorphToLoop(&this->skelAnime, &gFishingFishAnim, 0.0f);
         } else {
@@ -1028,7 +1017,8 @@ void Fishing_Init(Actor* thisx, PlayState* play2) {
             this->fishState = 10;
             this->fishStateNext = 10;
 
-            this->isLoach = sFishInits[thisx->params - EN_FISH_PARAM].isLoach || AllHyruleLoaches();
+            this->isLoach =
+                GameInteractor_Should(VB_FISHING_FISH_IS_LOACH, sFishInits[thisx->params - EN_FISH_PARAM].isLoach);
             this->perception = sFishInits[thisx->params - EN_FISH_PARAM].perception;
             this->fishLength = sFishInits[thisx->params - EN_FISH_PARAM].baseLength;
 
@@ -2910,49 +2900,6 @@ void Fishing_HandleAquariumDialog(Fishing* this, PlayState* play) {
     }
 }
 
-f32 Fishing_GetMinimumRequiredScore() {
-    int32_t weight;
-    // RANDOTODO: update the enhancement sliders to not allow
-    // values above rando fish weight values when rando'd
-    if (sLinkAge == 1) {
-        weight = CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFishing"), 0)
-                     ? CVarGetInteger(CVAR_ENHANCEMENT("MinimumFishWeightChild"), 10)
-                     : 10;
-    } else {
-        weight = CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFishing"), 0)
-                     ? CVarGetInteger(CVAR_ENHANCEMENT("MinimumFishWeightAdult"), 13)
-                     : 13;
-    }
-
-    return sqrt(((f32)weight - 0.5f) / 0.0036f);
-}
-
-bool getInstantFish() {
-    return CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFishing"), 0) &&
-           CVarGetInteger(CVAR_ENHANCEMENT("InstantFishing"), 0);
-}
-
-bool getGuaranteeBite() {
-    return CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFishing"), 0) &&
-           CVarGetInteger(CVAR_ENHANCEMENT("GuaranteeFishingBite"), 0);
-}
-
-bool getFishNeverEscape() {
-    return CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFishing"), 0) &&
-           CVarGetInteger(CVAR_ENHANCEMENT("FishNeverEscape"), 0);
-}
-
-bool getShouldSpawnLoaches() {
-    return (CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFishing"), 0) &&
-            CVarGetInteger(CVAR_ENHANCEMENT("LoachesAlwaysAppear"), 0)) ||
-           ((KREG(1) == 1) || ((sFishGameNumber & 3) == 3));
-}
-
-bool getShouldConfirmKeep() {
-    return !CVarGetInteger(CVAR_ENHANCEMENT("CustomizeFishing"), 0) ||
-           !CVarGetInteger(CVAR_ENHANCEMENT("SkipKeepConfirmation"), 0);
-}
-
 void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
     s16 i;
     s16 rotXYScale = 10;
@@ -3451,9 +3398,9 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
             if (sLureEquipped == FS_LURE_SINKING) {
                 chance *= 5.0f;
             }
-            if (getGuaranteeBite() == 1 ||
-                ((this->timerArray[0] == 1) || (Rand_ZeroOne() < chance)) &&
-                    ((Rand_ZeroOne() < (this->perception * multiplier)) || ((this->isLoach + 1) == KREG(69)))) {
+            if (GameInteractor_Should(VB_FISHING_FISH_BITE, ((this->timerArray[0] == 1) || (Rand_ZeroOne() < chance)) &&
+                                                                ((Rand_ZeroOne() < (this->perception * multiplier)) ||
+                                                                 ((this->isLoach + 1) == KREG(69))))) {
                 if (this->isLoach == 0) {
                     this->fishState = 3;
                     this->unk_190 = 1.2f;
@@ -3866,8 +3813,9 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
 
             if ((sRodCastState < 3) || ((sReelLock != 0) && (sFishFightTime > 50)) || (sFishFightTime >= 6000) ||
                 ((sLureBitTimer == 0) && (sLineHooked == 0)) || (sRodPullback == 0) ||
-                (((sLureTimer & 0x7F) == 0) && (Rand_ZeroOne() < 0.05f) && (sLureEquipped != FS_LURE_SINKING) &&
-                 (KREG(69) == 0) && (getFishNeverEscape() == 0))) {
+                GameInteractor_Should(VB_FISHING_FISH_ESCAPE, ((sLureTimer & 0x7F) == 0) && (Rand_ZeroOne() < 0.05f) &&
+                                                                  (sLureEquipped != FS_LURE_SINKING) &&
+                                                                  (KREG(69) == 0))) {
                 sFishingCaughtTextDelay = 20;
 
                 if ((sLureBitTimer == 0) && (sLineHooked == 0)) {
@@ -3897,7 +3845,7 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
                 sFishingMusicDelay = 50;
                 sRodReelingSpeed = 0.5f;
                 this->unk_152 = 0;
-            } else if (this->actor.xzDistToPlayer < (KREG(59) + 50.0f) || getInstantFish() == 1) {
+            } else if (GameInteractor_Should(VB_FISHING_CATCH_FISH, this->actor.xzDistToPlayer < (KREG(59) + 50.0f))) {
                 this->fishState = 6;
                 this->timerArray[0] = 100;
                 player->unk_860 = 3;
@@ -3976,7 +3924,7 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
             multiVecSrc.y = -10.0f;
             multiVecSrc.z = 5.0f;
             Matrix_MultVec3f(&multiVecSrc, &targetPosOffset);
-            if (getInstantFish() == 0) {
+            if (!GameInteractor_Should(VB_FISHING_INSTANT_CATCH, false)) {
                 Math_ApproachF(&this->actor.world.pos.x, player->bodyPartsPos[15].x + targetPosOffset.x, 1.0f, 6.0f);
                 Math_ApproachF(&this->actor.world.pos.y, player->bodyPartsPos[15].y + targetPosOffset.y, 1.0f, 6.0f);
                 Math_ApproachF(&this->actor.world.pos.z, player->bodyPartsPos[15].z + targetPosOffset.z, 1.0f, 6.0f);
@@ -4000,9 +3948,10 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
                                         sFishOnHandIsLoach = this->isLoach;
                                         sLureCaughtWith = sLureEquipped;
                                         Actor_Kill(&this->actor);
-                                    } else if (getShouldConfirmKeep() && (this->isLoach == 0) &&
-                                               (sFishOnHandIsLoach == 0) &&
-                                               ((s16)this->fishLength < (s16)sFishOnHandLength)) {
+                                    } else if (GameInteractor_Should(
+                                                   VB_FISHING_CONFIRM_KEEPING_SMALLER_FISH,
+                                                   (this->isLoach == 0) && (sFishOnHandIsLoach == 0) &&
+                                                       ((s16)this->fishLength < (s16)sFishOnHandLength))) {
                                         this->keepState = 1;
                                         this->timerArray[0] = 0x3C;
                                         Message_StartTextbox(play, 0x4098, NULL);
@@ -5548,7 +5497,7 @@ void Fishing_UpdateOwner(Actor* thisx, PlayState* play2) {
             player->actor.speedXZ = 0.0f;
 
             // #region SOH [Enhancement]
-            if (CVarGetInteger(CVAR_ENHANCEMENT("QuitFishingAtDoor"), 0)) {
+            if (GameInteractor_Should(VB_FISHING_QUIT_AT_DOOR, false)) {
                 Fishing_QuitAtDoor(this, play);
             }
             // #endregion

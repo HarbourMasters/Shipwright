@@ -1,4 +1,5 @@
 #include "ResourceManagerHelpers.h"
+#include <libultraship/bridge/consolevariablebridge.h>
 #include "OTRGlobals.h"
 #include "variables.h"
 #include "z64.h"

@@ -1,4 +1,5 @@
 #include "ShuffleRocks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "static_data.h"
 #include "soh/ObjectExtension/ObjectExtension.h"
 #include "item_category_adj.h"

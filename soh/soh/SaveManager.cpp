@@ -173,6 +173,12 @@ void SaveManager::LoadRandomizer() {
                     SaveManager::Instance->LoadData("german", randoContext->GetItemOverride(i).GetTrickName().german);
                     SaveManager::Instance->LoadData("french", randoContext->GetItemOverride(i).GetTrickName().french);
                 });
+                SaveManager::Instance->LoadStruct("trickArticle", [&]() {
+                    Text& article = randoContext->GetItemOverride(i).GetTrickArticle();
+                    SaveManager::Instance->LoadData("english", article.english);
+                    SaveManager::Instance->LoadData("german", article.german);
+                    SaveManager::Instance->LoadData("french", article.french);
+                });
             }
             uint16_t price = 0;
             SaveManager::Instance->LoadData("price", price, (uint16_t)0);
@@ -305,6 +311,14 @@ void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool f
                                                     randoContext->GetItemOverride(i).GetTrickName().GetGerman());
                     SaveManager::Instance->SaveData("french",
                                                     randoContext->GetItemOverride(i).GetTrickName().GetFrench());
+                });
+                SaveManager::Instance->SaveStruct("trickArticle", [&]() {
+                    SaveManager::Instance->SaveData("english",
+                                                    randoContext->GetItemOverride(i).GetTrickArticle().GetEnglish());
+                    SaveManager::Instance->SaveData("german",
+                                                    randoContext->GetItemOverride(i).GetTrickArticle().GetGerman());
+                    SaveManager::Instance->SaveData("french",
+                                                    randoContext->GetItemOverride(i).GetTrickArticle().GetFrench());
                 });
             }
             if (randoContext->GetItemLocation(i)->IsExcluded()) {
@@ -2785,10 +2799,16 @@ void SaveManager::ConvertFromUnversioned() {
 #define SLOT_SIZE (sizeof(SaveContext_v0) + 0x28)
 #define SLOT_OFFSET(index) (SRAM_HEADER_SIZE + 0x10 + (index * SLOT_SIZE))
 
-    std::ifstream input("oot_save.sav", std::ios::binary);
+    std::ifstream input(Ship::Context::GetPathRelativeToAppDirectory("oot_save.sav"), std::ios::binary);
 
     std::vector<char> data(std::istreambuf_iterator<char>(input), {});
     input.close();
+
+    // Couldn't read the file, or it's too short to hold all three slots
+    if (data.size() < SLOT_OFFSET(3)) {
+        CreateDefaultGlobal();
+        return;
+    }
 
     for (size_t i = 0; i < ARRAY_COUNT(sZeldaMagic) - 3; i++) {
         if (sZeldaMagic[i + SRAM_HEADER_MAGIC] != data[i + SRAM_HEADER_MAGIC]) {

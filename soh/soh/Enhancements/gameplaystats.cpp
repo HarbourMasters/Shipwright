@@ -10,7 +10,7 @@
 
 #include <string>
 #include <spdlog/common.h>
-#include "soh/Enhancements/enhancementTypes.h"
+#include "soh/Enhancements/BunnyHood.h"
 #include "soh/OTRGlobals.h"
 
 extern "C" {
@@ -388,7 +388,7 @@ void GameplayStatsRow(const char* label, const std::string& value, ImVec4 color 
     ImGui::SameLine(ImGui::GetContentRegionAvail().x - (ImGui::CalcTextSize(value.c_str()).x));
     ImGui::Text("%s", value.c_str());
     ImGui::PopStyleColor();
-    if (tooltip != "" && ImGui::IsItemHovered()) {
+    if (tooltip[0] != '\0' && ImGui::IsItemHovered()) {
         ImGui::SetTooltip("%s", tooltip);
     }
 }
@@ -562,8 +562,7 @@ void DrawGameplayStatsCountsTab() {
     GameplayStatsRow("Sword Swings:", formatIntGameplayStat(gSaveContext.ship.stats.count[COUNT_SWORD_SWINGS]));
     GameplayStatsRow("Steps Taken:", formatIntGameplayStat(gSaveContext.ship.stats.count[COUNT_STEPS]));
     // If using MM Bunny Hood enhancement, show how long it's been equipped (not counting pause time)
-    if (CVarGetInteger(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA ||
-        gSaveContext.ship.stats.count[COUNT_TIME_BUNNY_HOOD] > 0) {
+    if (Ship_GetBunnyHoodMode() != BUNNY_HOOD_VANILLA || gSaveContext.ship.stats.count[COUNT_TIME_BUNNY_HOOD] > 0) {
         GameplayStatsRow("Bunny Hood Time:",
                          formatTimestampGameplayStat(gSaveContext.ship.stats.count[COUNT_TIME_BUNNY_HOOD] / 2));
     }

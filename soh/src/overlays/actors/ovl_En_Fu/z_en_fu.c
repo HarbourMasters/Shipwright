@@ -7,7 +7,6 @@
 #include "z_en_fu.h"
 #include "objects/object_fu/object_fu.h"
 #include "scenes/indoors/hakasitarelay/hakasitarelay_scene.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS                                                                                  \
@@ -103,8 +102,6 @@ void EnFu_Init(Actor* thisx, PlayState* play) {
 void EnFu_Destroy(Actor* thisx, PlayState* play) {
     EnFu* this = (EnFu*)thisx;
     Collider_DestroyCylinder(play, &this->collider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelanime);
 }
 
 s32 func_80A1D94C(EnFu* this, PlayState* play, u16 textID, EnFuActionFunc actionFunc) {

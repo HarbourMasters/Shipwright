@@ -1,5 +1,3 @@
-#ifndef RANDODRAW_H
-#define RANDODRAW_H
 #pragma once
 
 #include "../item-tables/ItemTableTypes.h"
@@ -44,6 +42,4 @@ void Randomizer_DrawStickBag(PlayState* play, GetItemEntry* getItemEntry);
     }
 #ifdef __cplusplus
 };
-#endif
-
 #endif

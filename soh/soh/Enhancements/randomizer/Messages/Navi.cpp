@@ -2,7 +2,7 @@
  * This file is responsible for the messages
  * for the Rando-Relevant Navi Hints enhancement.
  */
-#include <soh/OTRGlobals.h>
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
 
 extern "C" {

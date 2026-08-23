@@ -1,7 +1,6 @@
 #include "z_en_dh.h"
 #include "objects/object_dh/object_dh.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS                                                                                 \
     (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED | \
@@ -168,8 +167,6 @@ void EnDh_Destroy(Actor* thisx, PlayState* play) {
     func_800F5B58();
     Collider_DestroyCylinder(play, &this->collider1);
     Collider_DestroyJntSph(play, &this->collider2);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnDh_SpawnDebris(PlayState* play, EnDh* this, Vec3f* spawnPos, f32 spread, s32 arg4, f32 accelXZ, f32 scale) {

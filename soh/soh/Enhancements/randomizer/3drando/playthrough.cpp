@@ -1,6 +1,7 @@
-#include "playthrough.hpp"
-
 #include <spdlog/spdlog.h>
+#include <libultraship/bridge/consolevariablebridge.h>
+
+#include "playthrough.hpp"
 #include "fill.hpp"
 #include "../location_access.h"
 #include "../rng.h"

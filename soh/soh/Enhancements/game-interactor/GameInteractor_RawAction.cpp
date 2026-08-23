@@ -353,8 +353,8 @@ void GameInteractor::RawAction::UpdateActor(void* refActor) {
 }
 
 void GameInteractor::RawAction::TeleportPlayer(int32_t nextEntrance) {
-    Audio_PlaySoundGeneral(NA_SE_EN_GANON_LAUGH, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                           &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+    Audio_PlaySfxGeneral(NA_SE_EN_GANON_LAUGH, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                         &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     gPlayState->nextEntranceIndex = nextEntrance;
     gPlayState->transitionTrigger = TRANS_TRIGGER_START;
     gPlayState->transitionType = TRANS_TYPE_FADE_BLACK;

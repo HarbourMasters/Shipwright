@@ -1,4 +1,5 @@
 #include "soh/ObjectExtension/ObjectExtension.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "item_category_adj.h"
 #include "particle_cmc.h"
 #include "soh/frame_interpolation.h"

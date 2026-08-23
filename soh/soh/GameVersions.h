@@ -1,6 +1,3 @@
-#ifndef GAME_VERSION_H
-#define GAME_VERSION_H
-
 #pragma once
 
 #define OOT_NTSC_US_10 0xEC7011B7
@@ -24,5 +21,3 @@
 #define OOT_IQUE_TW 0x3D81FB3E
 #define OOT_IQUE_CN 0xB1E1E07B
 #define UNKNOWN_GAME_VERSION 0xFFFFFFFF
-
-#endif

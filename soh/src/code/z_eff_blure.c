@@ -73,7 +73,7 @@ void EffectBlure_AddVertex(EffectBlure* this, Vec3f* p1, Vec3f* p2) {
 }
 
 // SoH: dumb doo doo command to change the type of a weapon's blur on the fly. Link's Swords with unique trail colors.
-void EffectBlure_ChangeType(EffectBlure* this, int type) {
+void EffectBlureShip_ChangeType(EffectBlure* this, int type) {
     this->trailType = type;
 }
 
@@ -206,6 +206,7 @@ s32 EffectBlure_Update(void* thisx) {
     static u8 changed = 0;
     u8 reset = 0;
 
+    // SoH
     switch (this->trailType) {
         case TRAIL_TYPE_BOOMERANG:
             if (CVarGetInteger(CVAR_COSMETIC("Trails.Boomerang.Changed"), 0)) {
@@ -322,6 +323,7 @@ s32 EffectBlure_Update(void* thisx) {
         }
     }
 
+    // Vanilla code from here on
     if (this == NULL) {
         return 0;
     }

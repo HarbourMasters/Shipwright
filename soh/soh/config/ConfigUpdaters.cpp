@@ -1455,6 +1455,7 @@ static const Migration version7Migrations[] = {
     { "gRandoSettings.LacsDungeonCount", "gRandoSettings.GbkDungeonCount" },
     { "gRandoSettings.LacsTokenCount", "gRandoSettings.GbkTokenCount" },
     { "gRandoSettings.LacsRewardOptions", "gRandoSettings.GbkRewardOptions" },
+    { "gRandoEnhancements.CustomKeyModels", nullptr },
     { nullptr, nullptr },
 };
 

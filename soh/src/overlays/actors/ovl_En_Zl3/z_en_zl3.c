@@ -11,7 +11,6 @@
 #include "overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
 #include "objects/object_zl2/object_zl2.h"
 #include "objects/object_zl2_anime2/object_zl2_anime2.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/savestate_serialize.h"
 
@@ -94,8 +93,6 @@ void EnZl3_Destroy(Actor* thisx, PlayState* play) {
     EnZl3* this = (EnZl3*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void func_80B53468(void) {
@@ -2583,8 +2580,8 @@ void func_80B59828(EnZl3* this, PlayState* play) {
 
 void func_80B59A80(EnZl3* this, PlayState* play) {
     if (func_80B59768(this, play)) {
-        Audio_PlaySoundGeneral(NA_SE_OC_REVENGE, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        Audio_PlaySfxGeneral(NA_SE_OC_REVENGE, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     }
 }
 

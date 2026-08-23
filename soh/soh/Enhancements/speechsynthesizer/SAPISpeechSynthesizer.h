@@ -5,8 +5,7 @@
 //  Created by David Chavez on 22.11.22.
 //
 
-#ifndef SOHSAPISpeechSynthesizer_h
-#define SOHSAPISpeechSynthesizer_h
+#pragma once
 
 #include "SpeechSynthesizer.h"
 #include <stdio.h>
@@ -21,5 +20,3 @@ class SAPISpeechSynthesizer : public SpeechSynthesizer {
     bool DoInit(void);
     void DoUninitialize(void);
 };
-
-#endif /* SAPISpeechSynthesizer_h */

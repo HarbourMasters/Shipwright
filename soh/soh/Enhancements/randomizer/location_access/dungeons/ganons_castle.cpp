@@ -73,12 +73,12 @@ void RegionTable_Init_GanonsCastle() {
     });
 
     areaTable[RR_GANONS_CASTLE_FOREST_TRIAL_BEAMOS_ROOM] = Region("Ganon's Castle Forest Trial Beamos Room", SCENE_INSIDE_GANONS_CASTLE, {
-        EVENT_ACCESS(LOGIC_GANONS_CASTLE_SILVER_FOREST, logic->IsAdult || logic->CanUse(RG_HOOKSHOT) || (logic->IsChild && ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))), // child can get these by voiding after switch
+        EVENT_ACCESS(LOGIC_GANONS_CASTLE_SILVER_FOREST, logic->IsAdult || logic->CanUse(RG_HOOKSHOT) || (logic->IsChild && ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid())), // child can get these by voiding after switch
     }, {
         //Locations
         LOCATION(RC_GANONS_CASTLE_SOT_BLOCK_FOREST_SILVER, true),
         //Assumes RR_GANONS_CASTLE_FOREST_TRIAL_BEAMOS_ROOM_END access
-        LOCATION(RC_GANONS_CASTLE_ON_TARGET_FOREST_SILVER, (bool)ctx->GetTrickOption(RT_VOIDOUT_COLLECTION)),
+        LOCATION(RC_GANONS_CASTLE_ON_TARGET_FOREST_SILVER, ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()),
     }, {
         //Exits
         ENTRANCE(RR_GANONS_CASTLE_FOREST_TRIAL_WOLFOS_ROOM,        true),
@@ -89,7 +89,7 @@ void RegionTable_Init_GanonsCastle() {
         //Locations
         LOCATION(RC_GANONS_CASTLE_LARGE_PLATFORM_FOREST_SILVER, true),
         LOCATION(RC_GANONS_CASTLE_UNDER_LEDGE_FOREST_SILVER,    true),
-        LOCATION(RC_GANONS_CASTLE_ON_TARGET_FOREST_SILVER,      logic->IsAdult || logic->CanUse(RG_HOOKSHOT) || (logic->IsChild && ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
+        LOCATION(RC_GANONS_CASTLE_ON_TARGET_FOREST_SILVER,      logic->IsAdult || logic->CanUse(RG_HOOKSHOT) || (logic->IsChild && ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid())),
     }, {
         //Exits
         ENTRANCE(RR_GANONS_CASTLE_FOREST_TRIAL_BEAMOS_ROOM,            logic->CanUse(RG_LONGSHOT)),
@@ -540,12 +540,12 @@ void RegionTable_Init_GanonsCastle() {
 
     areaTable[RR_GANONS_CASTLE_MQ_FIRE_TRIAL_FROM_OPEN] = Region("Ganon's Castle MQ Fire Trial From Open Door", SCENE_INSIDE_GANONS_CASTLE, {
         //Events
-        EVENT_ACCESS(LOGIC_GANONS_CASTLE_SILVER_FIRE, logic->FireTimer() >= 80 && (logic->CanUse(RG_GOLDEN_GAUNTLETS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION));),
+        EVENT_ACCESS(LOGIC_GANONS_CASTLE_SILVER_FIRE, logic->FireTimer() >= 80 && (logic->CanUse(RG_GOLDEN_GAUNTLETS) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()));),
     }, {
         //Locations
         LOCATION(RC_GANONS_CASTLE_MQ_UNDER_PILLAR_FIRE_SILVER,    logic->FireTimer() >= 24),
         LOCATION(RC_GANONS_CASTLE_MQ_NEAR_TARGET_FIRE_SILVER,     logic->FireTimer() >= 32),
-        LOCATION(RC_GANONS_CASTLE_MQ_ON_PILLAR_FIRE_SILVER,       (logic->FireTimer() >= 48 && logic->CanUse(RG_GOLDEN_GAUNTLETS)) || (logic->FireTimer() >= 32 && ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
+        LOCATION(RC_GANONS_CASTLE_MQ_ON_PILLAR_FIRE_SILVER,       (logic->FireTimer() >= 48 && logic->CanUse(RG_GOLDEN_GAUNTLETS)) || (logic->FireTimer() >= 32 && ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid())),
         LOCATION(RC_GANONS_CASTLE_MQ_LAUNCH_PLATFORM_FIRE_SILVER, logic->FireTimer() >= 16),
         LOCATION(RC_GANONS_CASTLE_MQ_JET_PLATFORM_FIRE_SILVER,    logic->FireTimer() >= 40),
     }, {
@@ -743,7 +743,7 @@ void RegionTable_Init_GanonsCastle() {
         }, {
         //Locations
         LOCATION(RC_GANONS_CASTLE_MQ_GUILLOTINE_SHADOW_SILVER, (ctx->GetTrickOption(RT_LENS_GANON_MQ) || logic->CanUse(RG_LENS_OF_TRUTH)) ||
-                                                                   (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanUse(RG_HOVER_BOOTS))),
+                                                                   (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid() && logic->CanUse(RG_HOVER_BOOTS))),
     }, {
         //Exits
         ENTRANCE(RR_GANONS_CASTLE_MQ_SHADOW_TRIAL_BEAMOS_CHEST, (ctx->GetTrickOption(RT_LENS_GANON_MQ) || logic->CanUse(RG_LENS_OF_TRUTH))),

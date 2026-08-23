@@ -9,7 +9,6 @@
 #include "overlays/actors/ovl_En_Attack_Niw/z_en_attack_niw.h"
 #include "vt.h"
 #include "soh/frame_interpolation.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/savestate_serialize.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_THROW_ONLY)
@@ -255,8 +254,6 @@ void EnNiw_Destroy(Actor* thisx, PlayState* play) {
     EnNiw* this = (EnNiw*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void func_80AB5BF8(EnNiw* this, PlayState* play, s16 arg2) {

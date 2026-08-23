@@ -9,7 +9,7 @@ void RegionTable_Init_BottomOfTheWell() {
     // Vanilla/MQ Decider
     areaTable[RR_BOTW_ENTRYWAY] = Region("Bottom of the Well Entryway", SCENE_BOTTOM_OF_THE_WELL, {}, {}, {
         //Exits
-        //Technically involves an fake wall, but passing it lensless is intended in vanilla and it is well telegraphed
+        //Technically involves a fake wall, but passing it lensless is intended in vanilla and it is well telegraphed
         //Backshot should be implemented here, or new regions should be added
         ENTRANCE(RR_BOTW_CORRIDOR,     ctx->GetDungeon(Rando::BOTTOM_OF_THE_WELL)->IsVanilla() && logic->CanUse(RG_CRAWL)),
         ENTRANCE(RR_BOTW_MQ_PERIMETER, ctx->GetDungeon(Rando::BOTTOM_OF_THE_WELL)->IsMQ()      && logic->CanUse(RG_CRAWL)),
@@ -57,7 +57,7 @@ void RegionTable_Init_BottomOfTheWell() {
         ENTRANCE(RR_BOTW_B3_BLOCKED_GRASS,  ctx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH)),
     });
 
-    //This region combines the Middle with the perimeter's hidden areas. If a warp puts link into the middle without crossing the perimeter or using lens, it will need it's own region
+    //This region combines the Middle with the perimeter's hidden areas. If a warp puts Link into the middle without crossing the perimeter or using lens, it will need it's own region
     areaTable[RR_BOTW_MIDDLE] = Region("Bottom of the Well Middle", SCENE_BOTTOM_OF_THE_WELL, {}, {
         //Locations
         //You can just barely pass the spider on the right side without damage or items, but it's probably tight enough to count as as a trick

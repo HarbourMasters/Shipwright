@@ -12,7 +12,7 @@
 #include "soh/Enhancements/savestate_serialize.h"
 
 s16 Camera_ChangeSettingFlags(Camera* camera, s16 setting, s16 flags);
-s32 Camera_ChangeModeFlags(Camera* camera, s16 mode, u8 flags);
+s32 Camera_RequestModeImpl(Camera* camera, s16 requestedMode, u8 forceModeChange);
 s32 Camera_QRegInit(void);
 s32 Camera_UpdateWater(Camera* camera);
 
@@ -449,17 +449,17 @@ f32 Camera_GetFloorYLayer(Camera* camera, Vec3f* norm, Vec3f* pos, s32* bgId) {
 }
 
 /**
- * Returns the CameraSettingType of the camera at index `camDataIdx`
+ * Returns the CameraSettingType of the camera at index `bgCamIndex`
  */
-s16 Camera_GetCamDataSetting(Camera* camera, s32 camDataIdx) {
-    return func_80041A4C(&camera->play->colCtx, camDataIdx, BGCHECK_SCENE);
+s16 Camera_GetBgCamSetting(Camera* camera, s32 bgCamIndex) {
+    return BgCheck_GetBgCamSettingImpl(&camera->play->colCtx, bgCamIndex, BGCHECK_SCENE);
 }
 
 /**
- * Returns the scene camera info for the current camera data index
+ * Returns the bgCamFuncData using the current bgCam index
  */
 Vec3s* Camera_GetCamBGData(Camera* camera) {
-    return func_80041C10(&camera->play->colCtx, camera->camDataIdx, BGCHECK_SCENE);
+    return BgCheck_GetBgCamFuncDataImpl(&camera->play->colCtx, camera->camDataIdx, BGCHECK_SCENE);
 }
 
 /**
@@ -474,7 +474,7 @@ s32 Camera_GetDataIdxForPoly(Camera* camera, s32* bgId, CollisionPoly* poly) {
     Actor_GetWorldPosShapeRot(&playerPosRot, &camera->player->actor); // unused.
     camDataIdx = SurfaceType_GetCamDataIndex(&camera->play->colCtx, poly, *bgId);
 
-    if (func_80041A4C(&camera->play->colCtx, camDataIdx, *bgId) == CAM_SET_NONE) {
+    if (BgCheck_GetBgCamSettingImpl(&camera->play->colCtx, camDataIdx, *bgId) == CAM_SET_NONE) {
         ret = -1;
     } else {
         ret = camDataIdx;
@@ -2980,7 +2980,7 @@ s32 Camera_Battle1(Camera* camera) {
                 VT_COL(YELLOW, BLACK) "camera: warning: battle: target is not valid, change parallel\n" VT_RST);
         }
         camera->target = NULL;
-        Camera_ChangeMode(camera, CAM_MODE_TARGET);
+        Camera_RequestMode(camera, CAM_MODE_TARGET);
         return true;
     }
 
@@ -2996,7 +2996,7 @@ s32 Camera_Battle1(Camera* camera) {
         } else {
             osSyncPrintf("camera: battle: target actor name " VT_COL(RED, WHITE) "%d" VT_RST "\n", anim->target->id);
             camera->target = NULL;
-            Camera_ChangeMode(camera, CAM_MODE_TARGET);
+            Camera_RequestMode(camera, CAM_MODE_TARGET);
             return true;
         }
         anim->animTimer = OREG(23) + OREG(24);
@@ -3260,7 +3260,7 @@ s32 Camera_KeepOn1(Camera* camera) {
                 VT_COL(YELLOW, BLACK) "camera: warning: keepon: target is not valid, change parallel\n" VT_RST);
         }
         camera->target = NULL;
-        Camera_ChangeMode(camera, CAM_MODE_TARGET);
+        Camera_RequestMode(camera, CAM_MODE_TARGET);
         return 1;
     }
 
@@ -3493,7 +3493,7 @@ s32 Camera_KeepOn3(Camera* camera) {
             osSyncPrintf(VT_COL(YELLOW, BLACK) "camera: warning: talk: target is not valid, change parallel\n" VT_RST);
         }
         camera->target = NULL;
-        Camera_ChangeMode(camera, CAM_MODE_TARGET);
+        Camera_RequestMode(camera, CAM_MODE_TARGET);
         return 1;
     }
     if (camera->animState == 0 || camera->animState == 0xA || camera->animState == 0x14) {
@@ -3987,7 +3987,7 @@ s32 Camera_KeepOn0(Camera* camera) {
                 VT_COL(YELLOW, BLACK) "camera: warning: talk: target is not valid, change normal camera\n" VT_RST);
         }
         camera->target = NULL;
-        Camera_ChangeMode(camera, CAM_MODE_NORMAL);
+        Camera_RequestMode(camera, CAM_MODE_NORMAL);
         return true;
     }
 
@@ -5622,7 +5622,7 @@ s32 Camera_Unique9(Camera* camera) {
             // Change the parent camera (or default)'s mode to normal
             s32 camIdx = camera->parentCamIdx <= SUBCAM_NONE ? CAM_ID_MAIN : camera->parentCamIdx;
 
-            Camera_ChangeModeFlags(camera->play->cameraPtrs[camIdx], CAM_MODE_NORMAL, 1);
+            Camera_RequestModeImpl(camera->play->cameraPtrs[camIdx], CAM_MODE_NORMAL, true);
         }
         case 18: {
             // copy the current camera to the parent (or default)'s camera.
@@ -7810,56 +7810,56 @@ s32 func_8005A02C(Camera* camera) {
     return true;
 }
 
-s32 Camera_ChangeModeFlags(Camera* camera, s16 mode, u8 flags) {
-    static s32 modeChangeFlags = 0;
+s32 Camera_RequestModeImpl(Camera* camera, s16 requestedMode, u8 forceModeChange) {
+    static s32 sModeRequestFlags = 0;
 
     if (QREG(89)) {
-        osSyncPrintf("+=+(%d)+=+ recive request -> %s\n", camera->play->state.frames, sCameraModeNames[mode]);
+        osSyncPrintf("+=+(%d)+=+ recive request -> %s\n", camera->play->state.frames, sCameraModeNames[requestedMode]);
     }
 
-    if (camera->unk_14C & 0x20 && flags == 0) {
+    if (camera->unk_14C & 0x20 && !forceModeChange) {
         camera->unk_14A |= 0x20;
         return -1;
     }
 
-    if (!((sCameraSettings[camera->setting].unk_00 & 0x3FFFFFFF) & (1 << mode))) {
-        if (mode == CAM_MODE_FIRST_PERSON) {
+    if (!((sCameraSettings[camera->setting].unk_00 & 0x3FFFFFFF) & (1 << requestedMode))) {
+        if (requestedMode == CAM_MODE_FIRST_PERSON) {
             osSyncPrintf("camera: error sound\n");
             Sfx_PlaySfxCentered(NA_SE_SY_ERROR);
         }
 
         if (camera->mode != CAM_MODE_NORMAL) {
             osSyncPrintf(VT_COL(YELLOW, BLACK) "camera: change camera mode: force NORMAL: %s %s refused\n" VT_RST,
-                         sCameraSettingNames[camera->setting], sCameraModeNames[mode]);
+                         sCameraSettingNames[camera->setting], sCameraModeNames[requestedMode]);
             camera->mode = CAM_MODE_NORMAL;
             Camera_CopyDataToRegs(camera, camera->mode);
             func_8005A02C(camera);
-            return 0xC0000000 | mode;
+            return 0xC0000000 | requestedMode;
         } else {
             camera->unk_14A |= 0x20;
             camera->unk_14A |= 2;
             return 0;
         }
     } else {
-        if (mode == camera->mode && flags == 0) {
+        if (requestedMode == camera->mode && !forceModeChange) {
             camera->unk_14A |= 0x20;
             camera->unk_14A |= 2;
             return -1;
         }
         camera->unk_14A |= 0x20;
         camera->unk_14A |= 2;
-        Camera_CopyDataToRegs(camera, mode);
-        modeChangeFlags = 0;
-        switch (mode) {
+        Camera_CopyDataToRegs(camera, requestedMode);
+        sModeRequestFlags = 0;
+        switch (requestedMode) {
             case CAM_MODE_FIRST_PERSON:
-                modeChangeFlags = 0x20;
+                sModeRequestFlags = 0x20;
                 break;
             case CAM_MODE_BATTLE:
-                modeChangeFlags = 4;
+                sModeRequestFlags = 4;
                 break;
             case CAM_MODE_FOLLOWTARGET:
                 if (camera->target != NULL && camera->target->id != ACTOR_EN_BOOM) {
-                    modeChangeFlags = 8;
+                    sModeRequestFlags = 8;
                 }
                 break;
             case CAM_MODE_TARGET:
@@ -7867,51 +7867,51 @@ s32 Camera_ChangeModeFlags(Camera* camera, s16 mode, u8 flags) {
             case CAM_MODE_Z_AIM:
             case CAM_MODE_HANGZ:
             case CAM_MODE_PUSHPULL:
-                modeChangeFlags = 2;
+                sModeRequestFlags = 2;
                 break;
         }
 
         switch (camera->mode) {
             case CAM_MODE_FIRST_PERSON:
-                if (modeChangeFlags & 0x20) {
+                if (sModeRequestFlags & 0x20) {
                     camera->animState = 0xA;
                 }
                 break;
             case CAM_MODE_TARGET:
-                if (modeChangeFlags & 0x10) {
+                if (sModeRequestFlags & 0x10) {
                     camera->animState = 0xA;
                 }
-                modeChangeFlags |= 1;
+                sModeRequestFlags |= 1;
                 break;
             case CAM_MODE_CHARGE:
-                modeChangeFlags |= 1;
+                sModeRequestFlags |= 1;
                 break;
             case CAM_MODE_FOLLOWTARGET:
-                if (modeChangeFlags & 8) {
+                if (sModeRequestFlags & 8) {
                     camera->animState = 0xA;
                 }
-                modeChangeFlags |= 1;
+                sModeRequestFlags |= 1;
                 break;
             case CAM_MODE_BATTLE:
-                if (modeChangeFlags & 4) {
+                if (sModeRequestFlags & 4) {
                     camera->animState = 0xA;
                 }
-                modeChangeFlags |= 1;
+                sModeRequestFlags |= 1;
                 break;
             case CAM_MODE_Z_AIM:
             case CAM_MODE_HANGZ:
             case CAM_MODE_PUSHPULL:
-                modeChangeFlags |= 1;
+                sModeRequestFlags |= 1;
                 break;
             case CAM_MODE_NORMAL:
-                if (modeChangeFlags & 0x10) {
+                if (sModeRequestFlags & 0x10) {
                     camera->animState = 0xA;
                 }
                 break;
         }
-        modeChangeFlags &= ~0x10;
+        sModeRequestFlags &= ~0x10;
         if (camera->status == CAM_STAT_ACTIVE) {
-            switch (modeChangeFlags) {
+            switch (sModeRequestFlags) {
                 case 1:
                     Sfx_PlaySfxCentered(0);
                     break;
@@ -7933,20 +7933,20 @@ s32 Camera_ChangeModeFlags(Camera* camera, s16 mode, u8 flags) {
 
         // Clear free look if an action is performed that would move the camera (targeting, first person, talking)
         if (CVarGetInteger(CVAR_SETTING("FreeLook.Enabled"), 0) && SetCameraManual(camera) == 1 &&
-            ((mode >= CAM_MODE_TARGET && mode <= CAM_MODE_BATTLE) ||
-             (mode >= CAM_MODE_FIRST_PERSON && mode <= CAM_MODE_CLIMBZ) || mode == CAM_MODE_HANGZ ||
-             mode == CAM_MODE_FOLLOWBOOMERANG)) {
+            ((requestedMode >= CAM_MODE_TARGET && requestedMode <= CAM_MODE_BATTLE) ||
+             (requestedMode >= CAM_MODE_FIRST_PERSON && requestedMode <= CAM_MODE_CLIMBZ) ||
+             requestedMode == CAM_MODE_HANGZ || requestedMode == CAM_MODE_FOLLOWBOOMERANG)) {
             camera->play->manualCamera = false;
         }
 
         func_8005A02C(camera);
-        camera->mode = mode;
-        return 0x80000000 | mode;
+        camera->mode = requestedMode;
+        return 0x80000000 | requestedMode;
     }
 }
 
-s32 Camera_ChangeMode(Camera* camera, s16 mode) {
-    return Camera_ChangeModeFlags(camera, mode, 0);
+s32 Camera_RequestMode(Camera* camera, s16 mode) {
+    return Camera_RequestModeImpl(camera, mode, false);
 }
 
 s32 Camera_CheckValidMode(Camera* camera, s16 mode) {
@@ -8015,7 +8015,7 @@ s16 Camera_ChangeSettingFlags(Camera* camera, s16 setting, s16 flags) {
 
     camera->setting = setting;
 
-    if (Camera_ChangeModeFlags(camera, camera->mode, 1) >= 0) {
+    if (Camera_RequestModeImpl(camera, camera->mode, true) >= 0) {
         Camera_CopyDataToRegs(camera, camera->mode);
     }
 
@@ -8039,7 +8039,7 @@ s32 Camera_ChangeDataIdx(Camera* camera, s32 camDataIdx) {
     }
 
     if (!(camera->unk_14A & 0x40)) {
-        newCameraSetting = Camera_GetCamDataSetting(camera, camDataIdx);
+        newCameraSetting = Camera_GetBgCamSetting(camera, camDataIdx);
         camera->unk_14A |= 0x40;
         settingChangeSuccessful = Camera_ChangeSettingFlags(camera, newCameraSetting, 5) >= 0;
         if (settingChangeSuccessful || sCameraSettings[camera->setting].unk_00 & 0x80000000) {
@@ -8230,7 +8230,7 @@ s32 Camera_ChangeDoorCam(Camera* camera, Actor* doorActor, s16 camDataIdx, f32 a
         Camera_RequestSetting(camera, CAM_SET_DOORC);
         osSyncPrintf(".... change default door camera (set %d)\n", CAM_SET_DOORC);
     } else {
-        s32 setting = Camera_GetCamDataSetting(camera, camDataIdx);
+        s32 setting = Camera_GetBgCamSetting(camera, camDataIdx);
 
         camera->unk_14A |= 0x40;
 

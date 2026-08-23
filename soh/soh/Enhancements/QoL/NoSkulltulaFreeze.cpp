@@ -1,4 +1,4 @@
-#include <soh/OTRGlobals.h>
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
 
 extern "C" {

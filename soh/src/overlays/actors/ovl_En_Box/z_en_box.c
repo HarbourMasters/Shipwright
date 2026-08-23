@@ -211,8 +211,6 @@ void EnBox_Destroy(Actor* thisx, PlayState* play) {
     EnBox* this = (EnBox*)thisx;
 
     DynaPoly_DeleteBgActor(play, &play->colCtx.dyna, this->dyna.bgId);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelanime);
 }
 
 void EnBox_RandomDustKinematic(EnBox* this, Vec3f* pos, Vec3f* velocity, Vec3f* accel) {
@@ -275,8 +273,8 @@ void EnBox_Fall(EnBox* this, PlayState* play) {
                 OnePointCutscene_EndCutscene(play, this->subCamId);
             }
         }
-        Audio_PlaySoundGeneral(NA_SE_EV_COFFIN_CAP_BOUND, &this->dyna.actor.projectedPos, 4,
-                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        Audio_PlaySfxGeneral(NA_SE_EV_COFFIN_CAP_BOUND, &this->dyna.actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
+                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         EnBox_SpawnDust(this, play);
     }
     yDiff = this->dyna.actor.world.pos.y - this->dyna.actor.floorHeight;
@@ -385,8 +383,8 @@ void EnBox_AppearInit(EnBox* this, PlayState* play) {
         this->unk_1A8 = 0;
         Actor_Spawn(&play->actorCtx, play, ACTOR_DEMO_KANKYO, this->dyna.actor.home.pos.x, this->dyna.actor.home.pos.y,
                     this->dyna.actor.home.pos.z, 0, 0, 0, 0x0011);
-        Audio_PlaySoundGeneral(NA_SE_EV_TRE_BOX_APPEAR, &this->dyna.actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
-                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        Audio_PlaySfxGeneral(NA_SE_EV_TRE_BOX_APPEAR, &this->dyna.actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
+                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     }
 }
 
@@ -492,8 +490,8 @@ void EnBox_Open(EnBox* this, PlayState* play) {
         }
 
         if (sfxId != 0) {
-            Audio_PlaySoundGeneral(sfxId, &this->dyna.actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
-                                   &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+            Audio_PlaySfxGeneral(sfxId, &this->dyna.actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
+                                 &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         }
 
         if (this->skelanime.jointTable[3].z > 0) {

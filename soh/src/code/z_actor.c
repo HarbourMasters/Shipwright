@@ -1270,7 +1270,9 @@ void Actor_Init(Actor* actor, PlayState* play) {
 
 void Actor_Destroy(Actor* actor, PlayState* play) {
     if (actor->destroy != NULL) {
-        actor->destroy(actor, play);
+        if (GameInteractor_ShouldActorDestroy(actor)) {
+            actor->destroy(actor, play);
+        }
         actor->destroy = NULL;
     } else {
         // "No Actor class destruct [%s]"
@@ -1748,6 +1750,8 @@ void Actor_UpdateBgCheckInfo(PlayState* play, Actor* actor, f32 wallCheckHeight,
             actor->yDistToWater = BGCHECK_Y_MIN;
         }
     }
+
+    GameInteractor_Should(VB_AFTER_ACTOR_UPDATE_BGCHECKINFO, true, actor);
 }
 
 Mtx D_8015BBA8;
@@ -2240,17 +2244,17 @@ void Actor_SetPlayerKnockbackSmallNoDamage(PlayState* play, Actor* actor, f32 ar
 
 void Player_PlaySfx(Actor* actor, u16 sfxId) {
     if (actor->id != ACTOR_PLAYER || sfxId < NA_SE_VO_LI_SWORD_N || sfxId > NA_SE_VO_LI_ELECTRIC_SHOCK_LV_KID) {
-        Audio_PlaySoundGeneral(sfxId, &actor->projectedPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
-                               &gSfxDefaultReverb);
+        Audio_PlaySfxGeneral(sfxId, &actor->projectedPos, 4, &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                             &gSfxDefaultReverb);
     } else {
         freqMultiplier = CVarGetFloat(CVAR_AUDIO("LinkVoiceFreqMultiplier"), 1.0);
         if (freqMultiplier <= 0) {
             freqMultiplier = 1;
         }
         // Authentic behavior uses D_801333E0 for both freqScale and a4
-        // Audio_PlaySoundGeneral(sfxId, &actor->projectedPos, 4, &D_801333E0 , &D_801333E0, &D_801333E8);
-        Audio_PlaySoundGeneral(sfxId, &actor->projectedPos, 4, &freqMultiplier, &gSfxDefaultFreqAndVolScale,
-                               &gSfxDefaultReverb);
+        // Audio_PlaySfxGeneral(sfxId, &actor->projectedPos, 4, &D_801333E0 , &D_801333E0, &D_801333E8);
+        Audio_PlaySfxGeneral(sfxId, &actor->projectedPos, 4, &freqMultiplier, &gSfxDefaultFreqAndVolScale,
+                             &gSfxDefaultReverb);
     }
 
     if (actor->id == ACTOR_PLAYER) {
@@ -2818,8 +2822,8 @@ void Actor_Draw(PlayState* play, Actor* actor) {
 
 void Actor_UpdateFlaggedAudio(Actor* actor) {
     if (actor->flags & ACTOR_FLAG_SFX_ACTOR_POS_2) {
-        Audio_PlaySoundGeneral(actor->sfx, &actor->projectedPos, 4, &gSfxDefaultFreqAndVolScale,
-                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        Audio_PlaySfxGeneral(actor->sfx, &actor->projectedPos, 4, &gSfxDefaultFreqAndVolScale,
+                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     } else if (actor->flags & ACTOR_AUDIO_FLAG_SFX_CENTERED_1) {
         Sfx_PlaySfxCentered(actor->sfx);
     } else if (actor->flags & ACTOR_AUDIO_FLAG_SFX_CENTERED_2) {
@@ -3497,7 +3501,7 @@ Actor* Actor_Delete(ActorContext* actorCtx, Actor* actor, PlayState* play) {
 
     if ((player != NULL) && (actor == player->focusActor)) {
         Player_ReleaseLockOn(player);
-        Camera_ChangeMode(Play_GetCamera(play, Play_GetActiveCamId(play)), 0);
+        Camera_RequestMode(Play_GetCamera(play, Play_GetActiveCamId(play)), CAM_MODE_NORMAL);
     }
 
     if (actor == actorCtx->targetCtx.arrowPointedActor) {
@@ -5874,8 +5878,8 @@ void func_80036E50(u16 textId, s16 arg1) {
                     Flags_SetInfTable(INFTABLE_0C);
                     return;
                 case 0x1033:
-                    Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                           &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                    Audio_PlaySfxGeneral(NA_SE_SY_CORRECT_CHIME, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                         &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                     Flags_SetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD);
                     Flags_SetInfTable(INFTABLE_0E);
                     return;
@@ -6338,8 +6342,8 @@ s32 func_80037CB8(PlayState* play, Actor* actor, s16 arg2) {
         case TEXT_STATE_CHOICE:
         case TEXT_STATE_EVENT:
             if (Message_ShouldAdvance(play) && func_80037C94(play, actor, arg2)) {
-                Audio_PlaySoundGeneral(NA_SE_SY_CANCEL, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                       &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                Audio_PlaySfxGeneral(NA_SE_SY_CANCEL, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                     &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 msgCtx->msgMode = MSGMODE_TEXT_CLOSING;
                 ret = true;
             }

@@ -1,5 +1,4 @@
-#ifndef MENUTYPES_H
-#define MENUTYPES_H
+#pragma once
 
 #include <variant>
 
@@ -237,7 +236,7 @@ struct WidgetPath {
 // is run once per frame to update its status (this is done to prevent dozens of redundant CVarGets in each frame loop)
 // `evaluation` returns a bool which can be determined by whatever code you want that changes its status
 // `reason` is the text displayed in the disabledTooltip when a widget is disabled by a particular DisableReason
-// `active` is what's referenced when determining disabled status for a widget that uses this This can also be used to
+// `active` is what's referenced when determining disabled status for a widget that uses this. This can also be used to
 // hold reasons to hide widgets so that their evaluations are also only run once per frame
 struct disabledInfo {
     DisableInfoFunc evaluation;
@@ -319,5 +318,3 @@ struct RegisterMenuUpdateFunc {
         menuUpdateFuncs[sectionName][sidebarName].push_back(updateFunc);
     }
 };
-
-#endif // MENUTYPES_H

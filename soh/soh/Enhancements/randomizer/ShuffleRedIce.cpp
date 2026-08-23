@@ -1,4 +1,5 @@
 #include "soh/OTRGlobals.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ObjectExtension/ObjectExtension.h"
 #include "item_category_adj.h"
 #include "particle_cmc.h"

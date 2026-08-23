@@ -1,4 +1,5 @@
 #include "soh/OTRGlobals.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "randomizer_grotto.h"
 #include "draw.h"
 #include "static_data.h"

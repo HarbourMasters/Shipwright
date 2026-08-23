@@ -1,7 +1,6 @@
 #include "z_en_crow.h"
 #include "objects/object_crow/object_crow.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS \
     (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_IGNORE_QUAKE | ACTOR_FLAG_CAN_ATTACH_TO_ARROW)
@@ -127,8 +126,6 @@ void EnCrow_Destroy(Actor* thisx, PlayState* play) {
     EnCrow* this = (EnCrow*)thisx;
 
     Collider_DestroyJntSph(play, &this->collider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 // Setup Action functions
@@ -427,7 +424,7 @@ void EnCrow_UpdateDamage(EnCrow* this, PlayState* play) {
         if ((this->actor.colChkInfo.damageEffect != 0) || (this->actor.colChkInfo.damage != 0)) {
             if (this->actor.colChkInfo.damageEffect == 1) { // Deku Nuts
                 EnCrow_SetupTurnAway(this);
-            } else {
+            } else if (GameInteractor_Should(VB_GUAY_SETUP_DAMAGED, true, this)) {
                 Actor_ApplyDamage(&this->actor);
                 this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
                 Enemy_StartFinishingBlow(play, &this->actor);
@@ -450,7 +447,7 @@ void EnCrow_Update(Actor* thisx, PlayState* play) {
     this->actor.world.rot.x = -this->actor.shape.rot.x;
 
     if (this->actionFunc != EnCrow_Respawn) {
-        if (this->actor.colChkInfo.health != 0) {
+        if (GameInteractor_Should(VB_GUAY_ALIVE_MOVE_HEIGHT_OFFSET, this->actor.colChkInfo.health != 0, &scale)) {
             height = 20.0f * scale;
             Actor_MoveXYZ(&this->actor);
         } else {

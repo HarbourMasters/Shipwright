@@ -746,8 +746,8 @@ void Player_SetAutoLockOnActor(PlayState* play, Actor* actor) {
     this->focusActor = actor;
     this->autoLockOnActor = actor;
     this->stateFlags1 |= PLAYER_STATE1_FRIENDLY_ACTOR_FOCUS;
-    Camera_SetParam(Play_GetCamera(play, 0), 8, actor);
-    Camera_ChangeMode(Play_GetCamera(play, 0), 2);
+    Camera_SetParam(Play_GetCamera(play, CAM_ID_MAIN), 8, actor);
+    Camera_RequestMode(Play_GetCamera(play, CAM_ID_MAIN), 2);
 }
 
 s32 func_8008EF30(PlayState* play) {
@@ -782,7 +782,7 @@ s32 Player_GetStrength(void) {
         return PLAYER_STR_NONE;
     }
 
-    if (CVarGetInteger(CVAR_CHEAT("TimelessEquipment"), 0) || LINK_IS_ADULT) {
+    if (GameInteractor_Should(VB_PLAYER_MEETS_AGE_REQ, LINK_IS_ADULT, LINK_AGE_ADULT)) {
         return strengthUpgrade;
     } else if (strengthUpgrade != 0) {
         return PLAYER_STR_BRACELET;
@@ -1807,7 +1807,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                 D_80126080.x = this->unk_85C * 5000.0f;
                 func_80090A28(this, sp124);
                 if (this->meleeWeaponState != 0) {
-                    EffectBlure_ChangeType(Effect_GetByIndex(this->meleeWeaponEffectIndex), TRAIL_TYPE_STICK);
+                    EffectBlureShip_ChangeType(Effect_GetByIndex(this->meleeWeaponEffectIndex), TRAIL_TYPE_STICK);
                     func_800906D4(play, this, sp124);
                 } else {
                     Math_Vec3f_Copy(&this->meleeWeaponInfo[0].tip, &sp124[0]);
@@ -1829,8 +1829,8 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                 D_80126080.x = 1500.0f;
             } else {
                 D_80126080.x = sMeleeWeaponLengths[Player_GetMeleeWeaponHeld(this)];
-                EffectBlure_ChangeType(Effect_GetByIndex(this->meleeWeaponEffectIndex),
-                                       sSwordTypes[Player_GetMeleeWeaponHeld(this)]);
+                EffectBlureShip_ChangeType(Effect_GetByIndex(this->meleeWeaponEffectIndex),
+                                           sSwordTypes[Player_GetMeleeWeaponHeld(this)]);
             }
 
             func_80090A28(this, spE4);

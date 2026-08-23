@@ -4026,9 +4026,9 @@ void BossGanon_LightBall_Update(Actor* thisx, PlayState* play2) {
 
                     if ((hitWithBottle == false) && (acHitInfo->toucher.dmgFlags & 0x100000)) {
                         spBA = 2;
-                        Audio_PlaySoundGeneral(NA_SE_IT_SHIELD_REFLECT_MG, &player->actor.projectedPos, 4,
-                                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
-                                               &gSfxDefaultReverb);
+                        Audio_PlaySfxGeneral(NA_SE_IT_SHIELD_REFLECT_MG, &player->actor.projectedPos, 4,
+                                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                                             &gSfxDefaultReverb);
                         Rumble_Request(this->actor.xyzDistToPlayerSq, 0xFF, 0x14, 0x96);
                     } else {
                         spBA = 1;
@@ -4037,9 +4037,9 @@ void BossGanon_LightBall_Update(Actor* thisx, PlayState* play2) {
                             Math_Atan2S(sqrtf(SQ(xDistFromGanondorf) + SQ(zDistFromGanondorf)), yDistFromGanondorf);
                         this->unk_1A4++;
                         this->timers[1] = 2;
-                        Audio_PlaySoundGeneral(NA_SE_IT_SWORD_REFLECT_MG, &player->actor.projectedPos, 4,
-                                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
-                                               &gSfxDefaultReverb);
+                        Audio_PlaySfxGeneral(NA_SE_IT_SWORD_REFLECT_MG, &player->actor.projectedPos, 4,
+                                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                                             &gSfxDefaultReverb);
                         Rumble_Request(this->actor.xyzDistToPlayerSq, 0xB4, 0x14, 0x64);
 
                         if (hitWithBottle == false) {

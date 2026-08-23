@@ -1,5 +1,5 @@
-#ifndef NETWORK_CROWD_CONTROL_H
-#define NETWORK_CROWD_CONTROL_H
+#pragma once
+
 #ifdef __cplusplus
 
 #include <thread>
@@ -80,10 +80,10 @@ class CrowdControl : public Network {
   public:
     static CrowdControl* Instance;
     void Enable();
+    void Disable();
     void OnIncomingJson(nlohmann::json payload);
     void OnConnected();
     void OnDisconnected();
 };
 
 #endif // __cplusplus
-#endif // NETWORK_CROWD_CONTROL_H

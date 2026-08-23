@@ -13,7 +13,6 @@
 #include "scenes/indoors/tokinoma/tokinoma_scene.h"
 #include "scenes/dungeons/ice_doukutu/ice_doukutu_scene.h"
 #include "vt.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/savestate_serialize.h"
 
@@ -77,8 +76,6 @@ void EnXc_Destroy(Actor* thisx, PlayState* play) {
     EnXc* this = (EnXc*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnXc_CalculateHeadTurn(EnXc* this, PlayState* play) {

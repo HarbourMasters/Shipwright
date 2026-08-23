@@ -514,10 +514,10 @@ ActorDB::Entry& ActorDB::AddEntry(const std::string& name, const std::string& de
     return entry;
 }
 
-// Adds an actor with the new ActorDBInit struct. The id assigned to the actor is dynamic. Use the return Entry or
+// Adds an actor with the new ActorDBInit struct. Leaving init.id unset assigns a dynamic id, use the returned Entry or
 // RetrieveId to get it.
 ActorDB::Entry& ActorDB::AddEntry(const ActorDBInit& init) {
-    Entry& entry = AddEntry(init.name, init.desc, nextFreeId);
+    Entry& entry = AddEntry(init.name, init.desc, init.id < 0 ? nextFreeId : (size_t)init.id);
 
     entry.entry.category = init.category;
     entry.entry.flags = init.flags;
@@ -535,7 +535,7 @@ ActorDB::Entry& ActorDB::AddEntry(const ActorDBInit& init) {
 // Get the ActorDB::Entry for the given actor id.
 ActorDB::Entry& ActorDB::RetrieveEntry(const int id) {
     static Entry invalid;
-    if ((id < 0) || (id >= db.size())) {
+    if ((id < 0) || (static_cast<size_t>(id) >= db.size())) {
         return invalid;
     }
     return db[id];

@@ -396,6 +396,19 @@ namespace SohGui {
 extern std::shared_ptr<SohGui::SohMenu> mSohMenu;
 }
 
+static bool RemoveArchiveAcrossAppDirs(const std::string& fileName) {
+    for (const std::string& path : { Ship::Context::GetPathRelativeToAppDirectory(fileName, appShortName),
+                                     Ship::Context::GetPathRelativeToAppBundle(fileName), "./" + fileName }) {
+        std::error_code err;
+        if (std::filesystem::remove(path, err)) {
+            SPDLOG_INFO("Removed outdated archive {}", path);
+        } else if (err) {
+            SPDLOG_ERROR("Failed to remove outdated archive {}: {}", path, err.message());
+        }
+    }
+    return !std::filesystem::exists(Ship::Context::LocateFileAcrossAppDirs(fileName, appShortName));
+}
+
 void OTRGlobals::RunExtract(int argc, char* argv[]) {
     bool extractDone = false;
     ExtractSteps extractStep = ES_PORT_ARCHIVE;
@@ -420,8 +433,8 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
     bool generatedIsMQ = false;
     std::atomic<size_t> extractCount = 0, totalExtract = 0;
 
-    std::string installPath = Ship::Context::GetAppBundlePath();
-    std::string dataPath = Ship::Context::GetAppDirectoryPath(appShortName);
+    std::string installPath = std::filesystem::absolute(Ship::Context::GetAppBundlePath()).string();
+    std::string dataPath = std::filesystem::absolute(Ship::Context::GetAppDirectoryPath(appShortName)).string();
     std::string file;
 
 #if defined(__SWITCH__)
@@ -445,11 +458,18 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
                               "re-extract them from the download or.\n\nExiting...",
                               "OK", "", [&]() { exit(1); });
     } else if (shouldRegen) {
-        SohGui::RegisterPopup("Outdated ROM Archives",
-                              "Your oot.o2r or oot-mq.o2r were created with incompatible versions of SoH.\nYou will "
-                              "now be redirected to re-extract them.");
-        std::filesystem::remove("oot.o2r");
-        std::filesystem::remove("oot-mq.o2r");
+        if (RemoveArchiveAcrossAppDirs("oot.o2r") && RemoveArchiveAcrossAppDirs("oot-mq.o2r")) {
+            SohGui::RegisterPopup(
+                "Outdated ROM Archives",
+                "Your oot.o2r or oot-mq.o2r were created with incompatible versions of SoH.\nYou will "
+                "now be redirected to re-extract them.");
+        } else {
+            SohGui::RegisterPopup(
+                "Outdated ROM Archives",
+                "Your oot.o2r or oot-mq.o2r were created with incompatible\nversions of SoH, but they"
+                "could not be removed\nautomatically. Please delete them now and re-launch.\nExiting...",
+                "OK", "", [&]() { exit(1); });
+        }
     }
 
     std::shared_ptr<BS::thread_pool> threadPool = std::make_shared<BS::thread_pool>(1);
@@ -637,8 +657,10 @@ void OTRGlobals::RunExtract(int argc, char* argv[]) {
                         extract = Extractor();
                         extract.SetSearchPath(installPath);
                         extract.GetRoms(args);
-                        extract.SetSearchPath(dataPath);
-                        extract.GetRoms(args);
+                        if (installPath != dataPath) {
+                            extract.SetSearchPath(dataPath);
+                            extract.GetRoms(args);
+                        }
                         if (!args.empty()) {
                             promptStep = PS_WAIT;
                             SohGui::RegisterPopup(
@@ -1670,6 +1692,7 @@ extern "C" uint64_t GetUnixTimestamp() {
 }
 
 extern "C" void Graph_StartFrame() {
+    auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
 #ifndef __WIIU__
     using Ship::KbScancode;
     int32_t dwScancode = OTRGlobals::Instance->context->GetWindow()->GetLastScancode();
@@ -1677,9 +1700,8 @@ extern "C" void Graph_StartFrame() {
 
     switch (dwScancode) {
         case KbScancode::LUS_KB_F1: {
-            std::shared_ptr<SohModalWindow> modal = static_pointer_cast<SohModalWindow>(
-                std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                    ->GetGuiWindow("Modal Window"));
+            std::shared_ptr<SohModalWindow> modal =
+                static_pointer_cast<SohModalWindow>(gui->GetGuiWindow("Modal Window"));
             if (modal->IsPopupOpen("Menu Moved")) {
                 modal->DismissPopup();
             } else {
@@ -1692,9 +1714,7 @@ extern "C" void Graph_StartFrame() {
         }
         case KbScancode::LUS_KB_F5: {
             if (CVarGetInteger(CVAR_CHEAT("SaveStatesEnabled"), 0) == 0) {
-                std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                    ->GetGameOverlay()
-                    ->TextDrawNotification(6.0f, true, "Save states not enabled. Check Cheats Menu.");
+                gui->GetGameOverlay()->TextDrawNotification(6.0f, true, "Save states not enabled. Check Cheats Menu.");
                 return;
             }
             const unsigned int slot = OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot();
@@ -1714,9 +1734,7 @@ extern "C" void Graph_StartFrame() {
         }
         case KbScancode::LUS_KB_F6: {
             if (CVarGetInteger(CVAR_CHEAT("SaveStatesEnabled"), 0) == 0) {
-                std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                    ->GetGameOverlay()
-                    ->TextDrawNotification(6.0f, true, "Save states not enabled. Check Cheats Menu.");
+                gui->GetGameOverlay()->TextDrawNotification(6.0f, true, "Save states not enabled. Check Cheats Menu.");
                 return;
             }
             unsigned int slot = OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot();
@@ -1730,9 +1748,7 @@ extern "C" void Graph_StartFrame() {
         }
         case KbScancode::LUS_KB_F7: {
             if (CVarGetInteger(CVAR_CHEAT("SaveStatesEnabled"), 0) == 0) {
-                std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                    ->GetGameOverlay()
-                    ->TextDrawNotification(6.0f, true, "Save states not enabled. Check Cheats Menu.");
+                gui->GetGameOverlay()->TextDrawNotification(6.0f, true, "Save states not enabled. Check Cheats Menu.");
                 return;
             }
             const unsigned int slot = OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot();
@@ -1963,7 +1979,7 @@ std::wstring StringToU16(const std::string& s) {
     size_t i = 0;
 
     while (i < s.size()) {
-        unsigned long uni;
+        unsigned long uni = '\1'; // skipped unless a valid encoding is matched below
         size_t nbytes = 0;
         bool error = false;
         unsigned char c = s[i++];
@@ -2179,9 +2195,9 @@ extern "C" void OTRControllerCallback(uint8_t rumble) {
 
     static std::shared_ptr<SohInputEditorWindow> controllerConfigWindow = nullptr;
     if (controllerConfigWindow == nullptr) {
-        controllerConfigWindow = std::dynamic_pointer_cast<SohInputEditorWindow>(
-            std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                ->GetGuiWindow("Controller Configuration"));
+        auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
+        controllerConfigWindow =
+            std::dynamic_pointer_cast<SohInputEditorWindow>(gui->GetGuiWindow("Controller Configuration"));
     } else if (controllerConfigWindow->TestingRumble()) {
         return;
     }
@@ -2463,6 +2479,7 @@ bool SoH_HandleConfigDrop(char* filePath) {
         return false;
     }
     try {
+        auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
         std::ifstream configStream(filePath);
         if (!configStream) {
             return false;
@@ -2500,17 +2517,13 @@ bool SoH_HandleConfigDrop(char* filePath) {
             }
         }
 
-        auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
         gui->GetGuiWindow("Console")->Hide();
         gui->GetGuiWindow("Actor Viewer")->Hide();
         gui->GetGuiWindow("Collision Viewer")->Hide();
         gui->GetGuiWindow("Save Editor")->Hide();
         gui->GetGuiWindow("Display List Viewer")->Hide();
         gui->GetGuiWindow("Stats")->Hide();
-        std::dynamic_pointer_cast<Ship::ConsoleWindow>(
-            std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                ->GetGuiWindow("Console"))
-            ->ClearBindings();
+        std::dynamic_pointer_cast<Ship::ConsoleWindow>(gui->GetGuiWindow("Console"))->ClearBindings();
 
         Rando::Settings::GetInstance()->UpdateAllOptions();
         SohGui::MarkRandomizerMenusDirty();

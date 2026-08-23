@@ -2166,7 +2166,7 @@ void StaticData::HintTable_Init_Item() {
     hintTextTable[RHT_HINT_MYSTERIOUS] = HintText(CustomMessage("something mysterious", /*german*/"etwas Mysteriöses", /*french*/"un sacré mystère"));
                                                   // /*spanish*/algo misterioso
 
-    hintTextTable[RHT_MYSTERIOUS_ITEM] = HintText(CustomMessage("mysterious item", /*german*/"ein mysteriöser Gegenstand", /*french*/"objet mystérieux"));
+    hintTextTable[RHT_MYSTERIOUS_ITEM] = HintText(CustomMessage("a mysterious item", /*german*/"ein mysteriöser Gegenstand", /*french*/"un objet mystérieux"));
                                                   // /*spanish*/algo misterioso
 
      hintTextTable[RHT_MYSTERIOUS_ITEM_CAPITAL] = HintText(CustomMessage("Mysterious Item", /*german*/"Mysteriöser Gegenstand", /*french*/"Objet Mystérieux"));

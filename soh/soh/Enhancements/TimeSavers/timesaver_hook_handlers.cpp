@@ -179,6 +179,9 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                     CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) && CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) &&
                     !Flags_GetEventChkInf(EVENTCHKINF_RETURNED_TO_TEMPLE_OF_TIME_WITH_ALL_MEDALLIONS)) {
                     Flags_SetEventChkInf(EVENTCHKINF_RETURNED_TO_TEMPLE_OF_TIME_WITH_ALL_MEDALLIONS);
+                    if (!IS_RANDO) {
+                        gSaveContext.dayTime = gSaveContext.skyboxTime = 0x2aaa;
+                    }
                     if (GameInteractor_Should(VB_GIVE_ITEM_LIGHT_ARROW, true)) {
                         Item_Give(gPlayState, ITEM_ARROW_LIGHT);
                     }
@@ -513,6 +516,9 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                     Flags_SetEventChkInf(EVENTCHKINF_ENTERED_MASTER_SWORD_CHAMBER);
                     Flags_SetEventChkInf(EVENTCHKINF_SHEIK_SPAWNED_AT_MASTER_SWORD_PEDESTAL);
                     Flags_SetEventChkInf(EVENTCHKINF_TIME_TRAVELED_TO_ADULT);
+                    if (!IS_RANDO) {
+                        gSaveContext.dayTime = gSaveContext.skyboxTime = 0x8000;
+                    }
                     if (GameInteractor_Should(VB_GIVE_ITEM_LIGHT_MEDALLION, true)) {
                         Item_Give(gPlayState, ITEM_MEDALLION_LIGHT);
                     }
@@ -604,9 +610,9 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                             player->stateFlags1 |= PLAYER_STATE1_GETTING_ITEM;
 
                             if (Animation_OnFrame(&demoIm->skelAnime, 25.0f)) {
-                                Audio_PlaySoundGeneral(NA_SE_IT_DEKU, &demoIm->actor.projectedPos, 4,
-                                                       &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
-                                                       &gSfxDefaultReverb);
+                                Audio_PlaySfxGeneral(NA_SE_IT_DEKU, &demoIm->actor.projectedPos, 4,
+                                                     &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                                                     &gSfxDefaultReverb);
                                 GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(
                                     demoImUpdateHook);
                                 GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(
@@ -1266,9 +1272,9 @@ void TimeSaverOnSceneInitHandler(int16_t sceneNum) {
             }
             break;
         case SCENE_SPIRIT_TEMPLE_BOSS:
+            // For Twinrova see Twinrova.cpp
             if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.BossIntro"), IS_RANDO)) {
-                if (!Flags_GetEventChkInf(EVENTCHKINF_BEGAN_TWINROVA_BATTLE)) {
-                    Flags_SetEventChkInf(EVENTCHKINF_BEGAN_TWINROVA_BATTLE);
+                if (!Flags_GetEventChkInf(EVENTCHKINF_BEGAN_NABOORU_BATTLE)) {
                     Flags_SetEventChkInf(EVENTCHKINF_BEGAN_NABOORU_BATTLE);
                     Flags_SetEventChkInf(EVENTCHKINF_NABOORU_ORDERED_TO_FIGHT_BY_TWINROVA);
                 }

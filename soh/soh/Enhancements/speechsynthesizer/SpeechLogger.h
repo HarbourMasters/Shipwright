@@ -1,5 +1,4 @@
-#ifndef SOHSpeechLogger_h
-#define SOHSpeechLogger_h
+#pragma once
 
 #include "SpeechSynthesizer.h"
 
@@ -13,5 +12,3 @@ class SpeechLogger : public SpeechSynthesizer {
     bool DoInit(void);
     void DoUninitialize(void);
 };
-
-#endif

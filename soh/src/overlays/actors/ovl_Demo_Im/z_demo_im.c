@@ -11,7 +11,6 @@
 #include "objects/object_im/object_im.h"
 #include "vt.h"
 #include "soh/OTRGlobals.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
@@ -728,8 +727,8 @@ void func_80986570(DemoIm* this, PlayState* play) {
         u32 sfxId = SFX_FLAG;
 
         sfxId += SurfaceType_GetSfx(&play->colCtx, this->actor.floorPoly, this->actor.floorBgId);
-        Audio_PlaySoundGeneral(sfxId, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
-                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        Audio_PlaySfxGeneral(sfxId, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
+                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     }
 }
 
@@ -1149,8 +1148,6 @@ void DemoIm_Init(Actor* thisx, PlayState* play) {
 void DemoIm_Destroy(Actor* thisx, PlayState* play) {
     DemoIm* this = (DemoIm*)thisx;
     DemoIm_DestroyCollider(thisx, play);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 s32 DemoIm_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {

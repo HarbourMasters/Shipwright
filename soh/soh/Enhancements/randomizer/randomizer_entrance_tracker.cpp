@@ -316,8 +316,8 @@ const EntranceData entranceData[] = {
     { ENTRANCE_GROTTO_EXIT(GROTTO_GF_STORMS_OFFSET),        ENTRANCE_GROTTO_LOAD(GROTTO_GF_STORMS_OFFSET),        {{ SCENE_FAIRYS_FOUNTAIN, 0x00 }},               "GF Fairy Grotto",                 "GF Storms Grotto Entry",          ENTRANCE_GROUP_GERUDO_FORTRESS, ENTRANCE_GROUP_GERUDO_FORTRESS,   ENTRANCE_TYPE_GROTTO,    ""},
     { ENTR_GERUDOS_FORTRESS_OUTSIDE_GERUDO_TRAINING_GROUND, ENTR_GERUDO_TRAINING_GROUND_ENTRANCE,                 SINGLE_SCENE_INFO(SCENE_GERUDO_TRAINING_GROUND), "Gerudo Training Ground Entrance", "GF Outside Training Ground",      ENTRANCE_GROUP_GERUDO_FORTRESS, ENTRANCE_GROUP_GERUDO_FORTRESS,   ENTRANCE_TYPE_DUNGEON,   "gtg"},
     { ENTR_GERUDOS_FORTRESS_1,                              ENTR_THIEVES_HIDEOUT_0,                               {{ SCENE_THIEVES_HIDEOUT, 2 }},                  "TH 1 Torch Cell Turn",            "GF Outskirts",                    ENTRANCE_GROUP_GERUDO_FORTRESS, ENTRANCE_GROUP_GERUDO_FORTRESS,   ENTRANCE_TYPE_FORTRESS},
-    { ENTR_GERUDOS_FORTRESS_2,                              ENTR_THIEVES_HIDEOUT_1,                               {{ SCENE_THIEVES_HIDEOUT, 2 }},                  "TH 1 Torch Cell",                 "GF Near Grotto East",             ENTRANCE_GROUP_GERUDO_FORTRESS, ENTRANCE_GROUP_GERUDO_FORTRESS,   ENTRANCE_TYPE_FORTRESS},
-    { ENTR_GERUDOS_FORTRESS_3,                              ENTR_THIEVES_HIDEOUT_2,                               {{ SCENE_THIEVES_HIDEOUT, 3 }},                  "TH Kitchen Corridor Lower",       "GF Near Grotto North",            ENTRANCE_GROUP_GERUDO_FORTRESS, ENTRANCE_GROUP_GERUDO_FORTRESS,   ENTRANCE_TYPE_FORTRESS},
+    { ENTR_GERUDOS_FORTRESS_2,                              ENTR_THIEVES_HIDEOUT_1,                               {{ SCENE_THIEVES_HIDEOUT, 2 }},                  "TH 1 Torch Cell",                 "GF Near Grotto North",            ENTRANCE_GROUP_GERUDO_FORTRESS, ENTRANCE_GROUP_GERUDO_FORTRESS,   ENTRANCE_TYPE_FORTRESS},
+    { ENTR_GERUDOS_FORTRESS_3,                              ENTR_THIEVES_HIDEOUT_2,                               {{ SCENE_THIEVES_HIDEOUT, 3 }},                  "TH Kitchen Corridor Lower",       "GF Near Grotto East",             ENTRANCE_GROUP_GERUDO_FORTRESS, ENTRANCE_GROUP_GERUDO_FORTRESS,   ENTRANCE_TYPE_FORTRESS},
     { ENTR_GERUDOS_FORTRESS_4,                              ENTR_THIEVES_HIDEOUT_3,                               {{ SCENE_THIEVES_HIDEOUT, 3 }},                  "TH Kitchen Corridor Upper",       "GF Above GTG",                    ENTRANCE_GROUP_GERUDO_FORTRESS, ENTRANCE_GROUP_GERUDO_FORTRESS,   ENTRANCE_TYPE_FORTRESS},
     { ENTR_GERUDOS_FORTRESS_5,                              ENTR_THIEVES_HIDEOUT_4,                               {{ SCENE_THIEVES_HIDEOUT, 4 }},                  "TH Steep Slope Cell",             "GF Near Grotto",                  ENTRANCE_GROUP_GERUDO_FORTRESS, ENTRANCE_GROUP_GERUDO_FORTRESS,   ENTRANCE_TYPE_FORTRESS},
     { ENTR_GERUDOS_FORTRESS_6,                              ENTR_THIEVES_HIDEOUT_5,                               {{ SCENE_THIEVES_HIDEOUT, 4 }},                  "TH Steep Slope Cell Two Ramps",   "GF Bottom of Lower Vines",        ENTRANCE_GROUP_GERUDO_FORTRESS, ENTRANCE_GROUP_GERUDO_FORTRESS,   ENTRANCE_TYPE_FORTRESS},
@@ -329,8 +329,8 @@ const EntranceData entranceData[] = {
     { ENTR_GERUDOS_FORTRESS_12,                             ENTR_THIEVES_HIDEOUT_11,                              {{ SCENE_THIEVES_HIDEOUT, 0 }},                  "TH Break Room Corridor",          "GF Above Jail",                   ENTRANCE_GROUP_GERUDO_FORTRESS, ENTRANCE_GROUP_GERUDO_FORTRESS,   ENTRANCE_TYPE_FORTRESS},
     { ENTR_GERUDOS_FORTRESS_13,                             ENTR_THIEVES_HIDEOUT_12,                              {{ SCENE_THIEVES_HIDEOUT, 1 }},                  "TH Dead End Cell",                "GF Below GS",                     ENTRANCE_GROUP_GERUDO_FORTRESS, ENTRANCE_GROUP_GERUDO_FORTRESS,   ENTRANCE_TYPE_FORTRESS},
     { ENTR_THIEVES_HIDEOUT_0,                               ENTR_GERUDOS_FORTRESS_1,                              SINGLE_SCENE_INFO(SCENE_GERUDOS_FORTRESS),       "GF Outskirts",                    "TH 1 Torch Cell Turn",            ENTRANCE_GROUP_GERUDO_FORTRESS, ENTRANCE_GROUP_GERUDO_FORTRESS,   ENTRANCE_TYPE_FORTRESS},
-    { ENTR_THIEVES_HIDEOUT_1,                               ENTR_GERUDOS_FORTRESS_2,                              SINGLE_SCENE_INFO(SCENE_GERUDOS_FORTRESS),       "GF Near Grotto East",             "TH 1 Torch Cell",                 ENTRANCE_GROUP_GERUDO_FORTRESS, ENTRANCE_GROUP_GERUDO_FORTRESS,   ENTRANCE_TYPE_FORTRESS},
-    { ENTR_THIEVES_HIDEOUT_2,                               ENTR_GERUDOS_FORTRESS_3,                              SINGLE_SCENE_INFO(SCENE_GERUDOS_FORTRESS),       "GF Near Grotto North",            "TH Kitchen Corridor Lower",       ENTRANCE_GROUP_GERUDO_FORTRESS, ENTRANCE_GROUP_GERUDO_FORTRESS,   ENTRANCE_TYPE_FORTRESS},
+    { ENTR_THIEVES_HIDEOUT_1,                               ENTR_GERUDOS_FORTRESS_2,                              SINGLE_SCENE_INFO(SCENE_GERUDOS_FORTRESS),       "GF Near Grotto North",            "TH 1 Torch Cell",                 ENTRANCE_GROUP_GERUDO_FORTRESS, ENTRANCE_GROUP_GERUDO_FORTRESS,   ENTRANCE_TYPE_FORTRESS},
+    { ENTR_THIEVES_HIDEOUT_2,                               ENTR_GERUDOS_FORTRESS_3,                              SINGLE_SCENE_INFO(SCENE_GERUDOS_FORTRESS),       "GF Near Grotto East",             "TH Kitchen Corridor Lower",       ENTRANCE_GROUP_GERUDO_FORTRESS, ENTRANCE_GROUP_GERUDO_FORTRESS,   ENTRANCE_TYPE_FORTRESS},
     { ENTR_THIEVES_HIDEOUT_3,                               ENTR_GERUDOS_FORTRESS_4,                              SINGLE_SCENE_INFO(SCENE_GERUDOS_FORTRESS),       "GF Above GTG",                    "TH Kitchen Corridor Upper",       ENTRANCE_GROUP_GERUDO_FORTRESS, ENTRANCE_GROUP_GERUDO_FORTRESS,   ENTRANCE_TYPE_FORTRESS},
     { ENTR_THIEVES_HIDEOUT_4,                               ENTR_GERUDOS_FORTRESS_5,                              SINGLE_SCENE_INFO(SCENE_GERUDOS_FORTRESS),       "GF Near Grotto",                  "TH Steep Slope Cell",             ENTRANCE_GROUP_GERUDO_FORTRESS, ENTRANCE_GROUP_GERUDO_FORTRESS,   ENTRANCE_TYPE_FORTRESS},
     { ENTR_THIEVES_HIDEOUT_5,                               ENTR_GERUDOS_FORTRESS_6,                              SINGLE_SCENE_INFO(SCENE_GERUDOS_FORTRESS),       "GF Bottom of Lower Vines",        "TH Steep Slope Cell Two Ramps",   ENTRANCE_GROUP_GERUDO_FORTRESS, ENTRANCE_GROUP_GERUDO_FORTRESS,   ENTRANCE_TYPE_FORTRESS},
@@ -575,7 +575,7 @@ void SortEntranceListByArea(EntranceOverride* entranceList, u8 byDest) {
 
                     if (curEntrance->reverseIndex == curOverride->index) {
                         entranceList[idx] = tempList[j];
-                        // "Remove" this entrance from the tempList by setting it's values to zero
+                        // "Remove" this entrance from the tempList by setting its values to zero
                         tempList[j] = emptyOverride;
                         idx++;
                         break;
@@ -898,6 +898,9 @@ void EntranceTrackerWindow::DrawElement() {
             case ENTRANCE_DESTINATION_TYPE:
                 entranceList = destListSortedByType;
                 break;
+            default:
+                assert(false);
+                return;
         }
 
         // Begin tracker list

@@ -1,4 +1,5 @@
 #include "entrance.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 #include "3drando/fill.hpp"
 #include "3drando/pool_functions.hpp"
@@ -1647,10 +1648,12 @@ void EntranceShuffler::CreateEntranceOverrides() {
         int16_t destinationIndex = -1;
         int16_t replacementDestinationIndex = -1;
 
-        // Only set destination indices for two way entrances and when decouple entrances is off
-        if (entrance->GetReverse() != nullptr && !ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
-            replacementDestinationIndex = entrance->GetReplacement()->GetReverse()->GetIndex();
+        // Track the reverse destination, useful for savewarp handling
+        if (entrance->GetReverse() != nullptr) {
             destinationIndex = entrance->GetReverse()->GetIndex();
+            if (!ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
+                replacementDestinationIndex = entrance->GetReplacement()->GetReverse()->GetIndex();
+            }
         }
 
         entranceOverrides[i] = {
@@ -1749,7 +1752,7 @@ void RegisterEntranceShuffleHooks() {
                 return;
             }
             memcpy(camera, &backupCamera, sizeof(Camera));
-            Camera_ChangeMode(camera, CAM_MODE_TALK);
+            Camera_RequestMode(camera, CAM_MODE_TALK);
             *should = false;
         } else if (backedUpScene != gPlayState->sceneNum) {
             memcpy(&backupCamera, camera, sizeof(Camera));

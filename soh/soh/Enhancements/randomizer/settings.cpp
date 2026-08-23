@@ -145,7 +145,7 @@ void Settings::HandleKeyringUI() {
     const bool chestGameKeyring =
         CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleChestMinigame"), RO_GENERIC_OFF) != RO_GENERIC_OFF;
     const uint8_t maxKeyringCount = 8 + fortressKeyring + chestGameKeyring;
-    if (mOptions[RSK_KEYRINGS_RANDOM_COUNT].GetOptionCount() != maxKeyringCount + 1) {
+    if (mOptions[RSK_KEYRINGS_RANDOM_COUNT].GetOptionCount() != static_cast<size_t>(maxKeyringCount) + 1) {
         mOptions[RSK_KEYRINGS_RANDOM_COUNT].ChangeOptions(NumOpts(0, maxKeyringCount));
     }
     if (fortressKeyring) {
@@ -423,6 +423,7 @@ void Settings::CreateOptions() {
     });
     OPT_U8(RSK_BOMBCHU_BAG, "Bombchu Bag", {"None", "Single Bag", "Progressive Bags"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("BombchuBag"), mOptionDescriptions[RSK_BOMBCHU_BAG], WIDGET_CVAR_COMBOBOX, RO_BOMBCHU_BAG_NONE);
     OPT_U8(RSK_ENABLE_BOMBCHU_DROPS, "Bombchu Drops", {"No", "Yes"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("EnableBombchuDrops"), mOptionDescriptions[RSK_ENABLE_BOMBCHU_DROPS], WIDGET_CVAR_COMBOBOX, RO_AMMO_DROPS_ON);
+    OPT_BOOL(RSK_PROGRESSIVE_GORON_SWORD, "Progressive Goron Sword", CVAR_RANDOMIZER_SETTING("ProgressiveGoronSword"), mOptionDescriptions[RSK_PROGRESSIVE_GORON_SWORD]);
     // TODO: AmmoDrops and/or HeartDropRefill, combine with/separate Ammo Drops from Bombchu Drops?
     // Triforce Hunt: the total piece count is the on/off control. Zero disables the hunt entirely; any
     // positive value adds that many Triforce Pieces to the pool and unlocks the pieces-location option.
@@ -434,16 +435,16 @@ void Settings::CreateOptions() {
         } else {
             mOptions[RSK_TRIFORCE_HUNT_PIECES_LOCATION].Unhide();
         }
-        if (mOptions[RSK_RAINBOW_BRIDGE_TRIFORCE_COUNT].GetOptionCount() != triforceTotal + 1) {
+        if (mOptions[RSK_RAINBOW_BRIDGE_TRIFORCE_COUNT].GetOptionCount() != static_cast<size_t>(triforceTotal) + 1) {
             mOptions[RSK_RAINBOW_BRIDGE_TRIFORCE_COUNT].ChangeOptions(NumOpts(0, triforceTotal));
         }
-        if (mOptions[RSK_GBK_TRIFORCE_COUNT].GetOptionCount() != triforceTotal + 1) {
+        if (mOptions[RSK_GBK_TRIFORCE_COUNT].GetOptionCount() != static_cast<size_t>(triforceTotal) + 1) {
             mOptions[RSK_GBK_TRIFORCE_COUNT].ChangeOptions(NumOpts(0, triforceTotal));
         }
-        if (mOptions[RSK_GANONS_SOUL_TRIFORCE_COUNT].GetOptionCount() != triforceTotal + 1) {
+        if (mOptions[RSK_GANONS_SOUL_TRIFORCE_COUNT].GetOptionCount() != static_cast<size_t>(triforceTotal) + 1) {
             mOptions[RSK_GANONS_SOUL_TRIFORCE_COUNT].ChangeOptions(NumOpts(0, triforceTotal));
         }
-        if (mOptions[RSK_WINCON_TRIFORCE_COUNT].GetOptionCount() != triforceTotal + 1) {
+        if (mOptions[RSK_WINCON_TRIFORCE_COUNT].GetOptionCount() != static_cast<size_t>(triforceTotal) + 1) {
             mOptions[RSK_WINCON_TRIFORCE_COUNT].ChangeOptions(NumOpts(0, triforceTotal));
         }
     });
@@ -1407,7 +1408,7 @@ void Settings::CreateOptions() {
     OPT_BOOL(RSK_BASE_ICE_TRAPS, "Base Ice Traps", CVAR_RANDOMIZER_SETTING("BaseIceTraps"), mOptionDescriptions[RSK_BASE_ICE_TRAPS], IMFLAG_NONE, WIDGET_CVAR_COMBOBOX, RO_GENERIC_ON);
     OPT_U8(RSK_ADDITIONAL_ICE_TRAPS, "Additional Ice Traps", {NumOpts(0, 100)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("AdditionalIceTraps"), mOptionDescriptions[RSK_ADDITIONAL_ICE_TRAPS], WIDGET_CVAR_SLIDER_INT, 0);
     OPT_U8(RSK_ICE_TRAP_PERCENT, "Ice Trap Percent", {NumOpts(0, 100)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("IceTrapPercent"), mOptionDescriptions[RSK_ICE_TRAP_PERCENT], WIDGET_CVAR_SLIDER_INT, 0);
-    // TODO: Remove Double Defense, Progressive Goron Sword
+    // TODO: Remove Double Defense
     OPT_U8(RSK_STARTING_OCARINA, "Start with Ocarina", {"Off", "Fairy Ocarina", "Ocarina of Time"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("StartingOcarina"), "", WIDGET_CVAR_COMBOBOX, RO_STARTING_OCARINA_OFF);
     OPT_BOOL(RSK_STARTING_DEKU_SHIELD, "Start with Deku Shield", CVAR_RANDOMIZER_SETTING("StartingDekuShield"));
     OPT_BOOL(RSK_STARTING_KOKIRI_SWORD, "Start with Kokiri Sword", CVAR_RANDOMIZER_SETTING("StartingKokiriSword"));
@@ -2116,6 +2117,7 @@ void Settings::CreateOptions() {
                                                                                  &mOptions[RSK_ROCS_FEATHER],
                                                                                  &mOptions[RSK_BOMBCHU_BAG],
                                                                                  &mOptions[RSK_ENABLE_BOMBCHU_DROPS],
+                                                                                 &mOptions[RSK_PROGRESSIVE_GORON_SWORD],
                                                                                  &mOptions[RSK_INFINITE_UPGRADES],
                                                                                  &mOptions[RSK_SKELETON_KEY],
                                                                              },
@@ -2305,6 +2307,7 @@ void Settings::CreateOptions() {
                                             &mOptions[RSK_SHUFFLE_100_GS_REWARD],
                                             &mOptions[RSK_SHUFFLE_BEAN_SOULS],
                                             &mOptions[RSK_ROCS_FEATHER],
+                                            &mOptions[RSK_PROGRESSIVE_GORON_SWORD],
                                             &mOptions[RSK_SHUFFLE_BOSS_SOULS],
                                             &mOptions[RSK_SHUFFLE_DEKU_STICK_BAG],
                                             &mOptions[RSK_SHUFFLE_DEKU_NUT_BAG],

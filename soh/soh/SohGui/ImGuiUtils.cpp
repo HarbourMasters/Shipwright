@@ -221,72 +221,56 @@ const char* GetTextureForItemId(uint32_t itemId) {
 }
 
 void RegisterImGuiItemIcons() {
+    auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
     for (const auto& entry : itemMapping) {
-        std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-            ->LoadGuiTexture(entry.second.name, entry.second.texturePath, "", ImVec4(1, 1, 1, 1));
-        std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-            ->LoadGuiTexture(entry.second.nameFaded, entry.second.texturePath, "", ImVec4(1, 1, 1, 0.3f));
+        gui->LoadGuiTexture(entry.second.name, entry.second.texturePath, "", ImVec4(1, 1, 1, 1));
+        gui->LoadGuiTexture(entry.second.nameFaded, entry.second.texturePath, "", ImVec4(1, 1, 1, 0.3f));
     }
 
     for (const auto& entry : gregMapping) {
         ImVec4 gregGreen = ImVec4(42.0f / 255.0f, 169.0f / 255.0f, 40.0f / 255.0f, 1.0f);
         ImVec4 gregFadedGreen = gregGreen;
         gregFadedGreen.w = 0.3f;
-        std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-            ->LoadGuiTexture(entry.second.name, entry.second.texturePath, "", gregGreen);
-        std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-            ->LoadGuiTexture(entry.second.nameFaded, entry.second.texturePath, "", gregFadedGreen);
+        gui->LoadGuiTexture(entry.second.name, entry.second.texturePath, "", gregGreen);
+        gui->LoadGuiTexture(entry.second.nameFaded, entry.second.texturePath, "", gregFadedGreen);
     }
 
     for (const auto& entry : customItemsMapping) {
-        std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-            ->LoadGuiTexture(entry.second.name, entry.second.texturePath, "", ImVec4(1, 1, 1, 1));
-        std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-            ->LoadGuiTexture(entry.second.nameFaded, entry.second.texturePath, "", ImVec4(1, 1, 1, 0.3f));
+        gui->LoadGuiTexture(entry.second.name, entry.second.texturePath, "", ImVec4(1, 1, 1, 1));
+        gui->LoadGuiTexture(entry.second.nameFaded, entry.second.texturePath, "", ImVec4(1, 1, 1, 0.3f));
     }
 
     for (const auto& entry : jabbernutMapping) {
-        std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-            ->LoadGuiTexture(entry.second.name, entry.second.texturePath, "", ImVec4(1, 1, 1, 1));
-        std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-            ->LoadGuiTexture(entry.second.nameFaded, entry.second.texturePath, "", ImVec4(1, 1, 1, 0.3f));
+        gui->LoadGuiTexture(entry.second.name, entry.second.texturePath, "", ImVec4(1, 1, 1, 1));
+        gui->LoadGuiTexture(entry.second.nameFaded, entry.second.texturePath, "", ImVec4(1, 1, 1, 0.3f));
     }
 
     ImVec4 silver = ImVec4(0.7f, 0.7f, 0.7f, 1.0f);
     ImVec4 silverFaded = silver;
     silverFaded.w = 0.3f;
-    std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-        ->LoadGuiTexture("ITEM_RUPEE_SILVER", gRupeeCounterIconTex, "", silver);
-    std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-        ->LoadGuiTexture("ITEM_RUPEE_SILVER_Faded", gRupeeCounterIconTex, "", silverFaded);
+    gui->LoadGuiTexture("ITEM_RUPEE_SILVER", gRupeeCounterIconTex, "", silver);
+    gui->LoadGuiTexture("ITEM_RUPEE_SILVER_Faded", gRupeeCounterIconTex, "", silverFaded);
 
     for (const auto& entry : questMapping) {
-        std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-            ->LoadGuiTexture(entry.second.name, entry.second.texturePath, "", ImVec4(1, 1, 1, 1));
-        std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-            ->LoadGuiTexture(entry.second.nameFaded, entry.second.texturePath, "", ImVec4(1, 1, 1, 0.3f));
+        gui->LoadGuiTexture(entry.second.name, entry.second.texturePath, "", ImVec4(1, 1, 1, 1));
+        gui->LoadGuiTexture(entry.second.nameFaded, entry.second.texturePath, "", ImVec4(1, 1, 1, 0.3f));
     }
 
     for (const auto& [quest, entry] : songMapping) {
-        std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-            ->LoadGuiTexture(entry.name, gSongNoteTex, "", entry.color);
+        gui->LoadGuiTexture(entry.name, gSongNoteTex, "", entry.color);
         ImVec4 fadedCol = entry.color;
         fadedCol.w = 0.3f;
-        std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-            ->LoadGuiTexture(entry.nameFaded, gSongNoteTex, "", fadedCol);
+        gui->LoadGuiTexture(entry.nameFaded, gSongNoteTex, "", fadedCol);
     }
 
     for (const auto& entry : vanillaSongMapping) {
-        std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-            ->LoadGuiTexture(entry.name, gSongNoteTex, "", entry.color);
+        gui->LoadGuiTexture(entry.name, gSongNoteTex, "", entry.color);
         ImVec4 fadedCol = entry.color;
         fadedCol.w = 0.3f;
-        std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-            ->LoadGuiTexture(entry.nameFaded, gSongNoteTex, "", fadedCol);
+        gui->LoadGuiTexture(entry.nameFaded, gSongNoteTex, "", fadedCol);
     }
 
     for (const auto& entry : gSeedTextures) {
-        std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-            ->LoadGuiTexture(entry.tex, entry.tex, "", ImVec4(1, 1, 1, 1));
+        gui->LoadGuiTexture(entry.tex, entry.tex, "", ImVec4(1, 1, 1, 1));
     }
 }

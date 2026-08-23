@@ -1,4 +1,5 @@
 #include "randomizer_check_objects.h"
+#include <libultraship/bridge/consolevariablebridge.h>
 #include "static_data.h"
 #include "SeedContext.h"
 #include <map>
@@ -208,7 +209,7 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
             (location.GetRCType() != RCTYPE_RED_ICE ||
              CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleRedIce"), RO_GENERIC_NO)) &&
             (location.GetRCType() != RCTYPE_FISH ||
-             ctx->GetFishsanity()->GetFishLocationIncluded(&location, FSO_SOURCE_CVARS)) &&
+             Rando::Fishsanity::GetFishLocationIncluded(&location, FSO_SOURCE_CVARS)) &&
             (location.GetRCType() != RCTYPE_ADULT_TRADE ||
              CVarGetInteger(CVAR_RANDOMIZER_SETTING("ShuffleAdultTrade"), RO_GENERIC_NO)) &&
             (location.GetRandomizerCheck() != RC_KF_KOKIRI_SWORD_CHEST ||

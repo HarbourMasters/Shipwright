@@ -585,17 +585,17 @@ void RegionTable_Init_ShadowTemple() {
 
     areaTable[RR_SHADOW_TEMPLE_MQ_INVISIBLE_BLADES_ROOM] = Region("Shadow Temple MQ Invisible Blades Room", SCENE_SHADOW_TEMPLE, {
         //Events
-        EVENT_ACCESS(LOGIC_SHADOW_MQ_SILVER_INVISIBLE_BLADES, (logic->CanUse(RG_SONG_OF_TIME) || (ctx->GetTrickOption(RT_SHADOW_MQ_INVISIBLE_BLADES) && logic->EffectiveHealth() > 1)) &&
+        EVENT_ACCESS(LOGIC_SHADOW_MQ_SILVER_INVISIBLE_BLADES, (logic->CanUse(RG_SONG_OF_TIME) || (ctx->GetTrickOption(RT_SHADOW_MQ_INVISIBLE_BLADES) && logic->EffectiveHealth() > 8)) &&
                                                                            (ctx->GetTrickOption(RT_LENS_SHADOW_MQ_INVISIBLE_BLADES) || logic->IsChild || logic->CanUse(RG_NAYRUS_LOVE) || logic->CanUse(RG_LENS_OF_TRUTH))),
     }, {
         //Locations
         //RT_SHADOW_MQ_INVISIBLE_BLADES does not work with NL as like-likes will not swallow you, likewise like-likes will not spit you with a fairy revive
-        //you take half a heart base from a spit out, double check EffectiveHealth when damage logic gets reworked
+        //you take half a heart from a spit out
         //Child is too small to get hit by the blades doesn't need the trick or lens for dodging them
         LOCATION(RC_SHADOW_TEMPLE_MQ_INVISIBLE_BLADES_VISIBLE_CHEST,   logic->HasItem(RG_SHADOW_MQ_SILVER_INVISIBLE_BLADES) && logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_SHADOW_TEMPLE_MQ_INVISIBLE_BLADES_INVISIBLE_CHEST, logic->HasItem(RG_SHADOW_MQ_SILVER_INVISIBLE_BLADES) && (ctx->GetTrickOption(RT_LENS_SHADOW_MQ) || logic->CanUse(RG_LENS_OF_TRUTH)) && logic->HasItem(RG_OPEN_CHEST)),
-        LOCATION(RC_SHADOW_TEMPLE_MQ_INVISIBLE_BLADES_LEFT_HEART,      (logic->CanUse(RG_SONG_OF_TIME) && logic->IsAdult) || (ctx->GetTrickOption(RT_SHADOW_MQ_INVISIBLE_BLADES) && logic->EffectiveHealth() > 1) || logic->CanUse(RG_BOOMERANG)),
-        LOCATION(RC_SHADOW_TEMPLE_MQ_INVISIBLE_BLADES_RIGHT_HEART,     (logic->CanUse(RG_SONG_OF_TIME) && logic->IsAdult) || (ctx->GetTrickOption(RT_SHADOW_MQ_INVISIBLE_BLADES) && logic->EffectiveHealth() > 1) || logic->CanUse(RG_BOOMERANG)),
+        LOCATION(RC_SHADOW_TEMPLE_MQ_INVISIBLE_BLADES_LEFT_HEART,      (logic->CanUse(RG_SONG_OF_TIME) && logic->IsAdult) || (ctx->GetTrickOption(RT_SHADOW_MQ_INVISIBLE_BLADES) && logic->EffectiveHealth() > 8) || logic->CanUse(RG_BOOMERANG)),
+        LOCATION(RC_SHADOW_TEMPLE_MQ_INVISIBLE_BLADES_RIGHT_HEART,     (logic->CanUse(RG_SONG_OF_TIME) && logic->IsAdult) || (ctx->GetTrickOption(RT_SHADOW_MQ_INVISIBLE_BLADES) && logic->EffectiveHealth() > 8) || logic->CanUse(RG_BOOMERANG)),
         LOCATION(RC_SHADOW_MQ_W_INVISIBLE_BLADE_SILVER,                ctx->GetTrickOption(RT_LENS_SHADOW_MQ_INVISIBLE_BLADES) || logic->IsChild || logic->CanUse(RG_NAYRUS_LOVE) || logic->CanUse(RG_LENS_OF_TRUTH)),
         LOCATION(RC_SHADOW_MQ_SW_INVISIBLE_BLADE_SILVER,               ctx->GetTrickOption(RT_LENS_SHADOW_MQ_INVISIBLE_BLADES) || logic->IsChild || logic->CanUse(RG_NAYRUS_LOVE) || logic->CanUse(RG_LENS_OF_TRUTH)),
         LOCATION(RC_SHADOW_MQ_NW_INVISIBLE_BLADE_SILVER,               ctx->GetTrickOption(RT_LENS_SHADOW_MQ_INVISIBLE_BLADES) || logic->IsChild || logic->CanUse(RG_NAYRUS_LOVE) || logic->CanUse(RG_LENS_OF_TRUTH)),
@@ -605,7 +605,7 @@ void RegionTable_Init_ShadowTemple() {
         LOCATION(RC_SHADOW_MQ_OUTSIDE_CIRCLE_INVISIBLE_BLADE_SILVER,   ctx->GetTrickOption(RT_LENS_SHADOW_MQ_INVISIBLE_BLADES) || logic->IsChild || logic->CanUse(RG_NAYRUS_LOVE) || logic->CanUse(RG_LENS_OF_TRUTH)),
         LOCATION(RC_SHADOW_MQ_OUTER_NE_INVISIBLE_BLADE_SILVER,         ctx->GetTrickOption(RT_LENS_SHADOW_MQ_INVISIBLE_BLADES) || logic->IsChild || logic->CanUse(RG_NAYRUS_LOVE) || logic->CanUse(RG_LENS_OF_TRUTH)),
         LOCATION(RC_SHADOW_MQ_E_INVISIBLE_BLADE_SILVER,                ctx->GetTrickOption(RT_LENS_SHADOW_MQ_INVISIBLE_BLADES) || logic->IsChild || logic->CanUse(RG_NAYRUS_LOVE) || logic->CanUse(RG_LENS_OF_TRUTH)),
-        LOCATION(RC_SHADOW_MQ_SOT_BLOCK_INVISIBLE_BLADE_SILVER,        logic->CanUse(RG_SONG_OF_TIME) || (ctx->GetTrickOption(RT_SHADOW_MQ_INVISIBLE_BLADES) && logic->EffectiveHealth() > 1)),
+        LOCATION(RC_SHADOW_MQ_SOT_BLOCK_INVISIBLE_BLADE_SILVER,        logic->CanUse(RG_SONG_OF_TIME) || (ctx->GetTrickOption(RT_SHADOW_MQ_INVISIBLE_BLADES) && logic->EffectiveHealth() > 8)),
     }, {
         //Exits
         ENTRANCE(RR_SHADOW_TEMPLE_MQ_UPPER_HUGE_PIT, true),
@@ -664,7 +664,7 @@ void RegionTable_Init_ShadowTemple() {
         ENTRANCE(RR_SHADOW_TEMPLE_MQ_STONE_UMBRELLA_ROOM, true),
     });
 
-    //For this room, logic assumes you can either take damage, wear passive spike resistence (Goron tunic or hovers) or see the spikes to navigate across the floor
+    //For this room, logic assumes you can either take damage, wear passive spike resistance (Goron tunic or hovers) or see the spikes to navigate across the floor
     //As this only matters with 1 heart/OHKO logic, which is already a trick-level setting, using Hook and Longshot to reach rupees without moving is allowed
     areaTable[RR_SHADOW_TEMPLE_MQ_FLOOR_SPIKES_S_DOOR] = Region("Shadow Temple MQ Floor Spikes South Door", SCENE_SHADOW_TEMPLE, {}, {
         //Locations
@@ -817,7 +817,7 @@ void RegionTable_Init_ShadowTemple() {
         //Locations
         LOCATION(RC_SHADOW_TEMPLE_MQ_AFTER_WIND_ENEMY_CHEST,  logic->CanKillEnemy(RE_GIBDO) && logic->HasItem(RG_OPEN_CHEST)),
         LOCATION(RC_SHADOW_TEMPLE_MQ_AFTER_WIND_HIDDEN_CHEST, logic->HasExplosives() && (ctx->GetTrickOption(RT_LENS_SHADOW_MQ) || logic->CanUse(RG_LENS_OF_TRUTH)) && logic->HasItem(RG_OPEN_CHEST)),
-        //The various methods for this can be a bit specific, might be worthy of it's own trick when it becomes relevant with dungeon shortcut settings.
+        //The various methods for this can be a bit specific, might be worthy of its own trick when it becomes relevant with dungeon shortcut settings.
         LOCATION(RC_SHADOW_TEMPLE_MQ_GS_AFTER_WIND,           logic->HasExplosives() || (ctx->GetTrickOption(RT_VISIBLE_COLLISION) && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA))),
         LOCATION(RC_SHADOW_TEMPLE_MQ_BEFORE_BOAT_POT_1,       logic->CanBreakPots()),
         LOCATION(RC_SHADOW_TEMPLE_MQ_BEFORE_BOAT_POT_2,       logic->CanBreakPots()),
@@ -849,7 +849,7 @@ void RegionTable_Init_ShadowTemple() {
         //Locations
         //It's a trick on N64 to kill this and drop down to collect this with normal weapons, as doing so without the statue being dropped voids you to before the boat
         //hilariously, you can hit this with a pot before you bring down statue, but there's no great way to reset it without crossing. the statue's collision is very inconvenient afterwards
-        LOCATION(RC_SHADOW_TEMPLE_MQ_GS_AFTER_SHIP,         logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG) || (logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_BOMB_THROW) && ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
+        LOCATION(RC_SHADOW_TEMPLE_MQ_GS_AFTER_SHIP,         logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG) || (logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_BOMB_THROW) && (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()))),
         LOCATION(RC_SHADOW_TEMPLE_MQ_BEFORE_CHASM_WEST_POT, logic->CanBreakPots()),
         LOCATION(RC_SHADOW_TEMPLE_MQ_BEFORE_CHASM_EAST_POT, logic->CanBreakPots()),
     }, {
@@ -887,7 +887,7 @@ void RegionTable_Init_ShadowTemple() {
     areaTable[RR_SHADOW_TEMPLE_MQ_BOSS_DOOR] = Region("Shadow Temple MQ Boss Door", SCENE_SHADOW_TEMPLE, {}, {
         //Locations
         LOCATION(RC_SHADOW_BOSS_KEY_HINT,          true),
-        LOCATION(RC_SHADOW_TEMPLE_MQ_GS_NEAR_BOSS, (logic->HookshotOrBoomerang() || ((logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_BOMB_THROW) || logic->CanUse(RG_MEGATON_HAMMER)) && ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))) && (ctx->GetTrickOption(RT_LENS_SHADOW_MQ) || logic->CanUse(RG_LENS_OF_TRUTH))),
+        LOCATION(RC_SHADOW_TEMPLE_MQ_GS_NEAR_BOSS, (logic->HookshotOrBoomerang() || ((logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_BOMB_THROW) || logic->CanUse(RG_MEGATON_HAMMER)) && (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()))) && (ctx->GetTrickOption(RT_LENS_SHADOW_MQ) || logic->CanUse(RG_LENS_OF_TRUTH))),
     }, {
         //Exits
         ENTRANCE(RR_SHADOW_TEMPLE_MQ_PRE_BOSS_ROOM, logic->CanUse(RG_HOVER_BOOTS) && (ctx->GetTrickOption(RT_LENS_SHADOW_MQ) || logic->CanUse(RG_LENS_OF_TRUTH))),

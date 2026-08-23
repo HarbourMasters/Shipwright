@@ -1,4 +1,5 @@
 #include "item_location.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "SeedContext.h"
 #include "logic.h"
 #include "rng.h"

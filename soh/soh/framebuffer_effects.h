@@ -1,5 +1,4 @@
-#ifndef FRAMEBUFFER_EFFECTS_H
-#define FRAMEBUFFER_EFFECTS_H
+#pragma once
 
 #include <libultraship/libultra.h>
 
@@ -13,5 +12,3 @@ void FB_CopyToFramebuffer(Gfx** gfxp, s32 fb_src, s32 fb_dest, u8 oncePerFrame, 
 void FB_WriteFramebufferSliceToCPU(Gfx** gfxp, void* buffer, u8 byteSwap);
 void FB_DrawFromFramebuffer(Gfx** gfxp, s32 fb, u8 alpha);
 void FB_DrawFromFramebufferScaled(Gfx** gfxp, s32 fb, u8 alpha, float scaleX, float scaleY);
-
-#endif // FRAMEBUFFER_EFFECTS_H

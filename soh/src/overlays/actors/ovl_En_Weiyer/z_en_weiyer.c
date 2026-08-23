@@ -7,7 +7,6 @@
 #include "z_en_weiyer.h"
 #include "objects/object_ei/object_ei.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE)
 
@@ -119,8 +118,6 @@ void EnWeiyer_Destroy(Actor* thisx, PlayState* play) {
     EnWeiyer* this = (EnWeiyer*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnWeiyer_SetupFreeSwim(EnWeiyer* this) {

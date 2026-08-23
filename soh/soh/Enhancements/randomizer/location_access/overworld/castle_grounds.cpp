@@ -104,18 +104,18 @@ void RegionTable_Init_CastleGrounds() {
         LOCATION(RC_HC_GRASS_1,             logic->CanCutShrubs()),
         LOCATION(RC_HC_GRASS_2,             logic->CanCutShrubs()),
         LOCATION(RC_HC_GROTTO_TREE,         logic->CanBonkTrees()),
-        LOCATION(RC_HC_WONDER_LEFT_TORCH,   logic->CanUse(RG_FAIRY_SLINGSHOT) && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_BOOMERANG) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
-        LOCATION(RC_HC_WONDER_RIGHT_TORCH,  logic->CanUse(RG_FAIRY_SLINGSHOT) && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_BOOMERANG) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))),
-        LOCATION(RC_HC_WONDER_MOAT_1,       logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION)),
-        LOCATION(RC_HC_WONDER_MOAT_2,       logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION)), // Requires backflip with Iron Boots
-        LOCATION(RC_HC_WONDER_MOAT_3,       logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION)), // Requires backflip with Iron Boots
-        LOCATION(RC_HC_WONDER_MOAT_4,       logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION)),
-        LOCATION(RC_HC_WONDER_MOAT_5,       logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION)), // Requires backflip with Iron Boots
-        LOCATION(RC_HC_WONDER_MOAT_6,       logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION)), // Requires backflip with Iron Boots
-        LOCATION(RC_HC_WONDER_MOAT_7,       logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION)), // Requires backflip with Iron Boots
-        LOCATION(RC_HC_WONDER_MOAT_8,       logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION)), // Requires backflip with Iron Boots
-        LOCATION(RC_HC_WONDER_MOAT_9,       logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION)), // Requires backflip with Iron Boots
-        LOCATION(RC_HC_WONDER_MOAT_10,      logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || ctx->GetTrickOption(RT_VOIDOUT_COLLECTION)), // Requires backflip with Iron Boots
+        LOCATION(RC_HC_WONDER_LEFT_TORCH,   logic->CanUse(RG_FAIRY_SLINGSHOT) && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_BOOMERANG) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()))),
+        LOCATION(RC_HC_WONDER_RIGHT_TORCH,  logic->CanUse(RG_FAIRY_SLINGSHOT) && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_BOOMERANG) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()))),
+        LOCATION(RC_HC_WONDER_MOAT_1,       logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid())),
+        LOCATION(RC_HC_WONDER_MOAT_2,       logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid())), // Requires backflip with Iron Boots
+        LOCATION(RC_HC_WONDER_MOAT_3,       logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid())), // Requires backflip with Iron Boots
+        LOCATION(RC_HC_WONDER_MOAT_4,       logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid())),
+        LOCATION(RC_HC_WONDER_MOAT_5,       logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid())), // Requires backflip with Iron Boots
+        LOCATION(RC_HC_WONDER_MOAT_6,       logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid())), // Requires backflip with Iron Boots
+        LOCATION(RC_HC_WONDER_MOAT_7,       logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid())), // Requires backflip with Iron Boots
+        LOCATION(RC_HC_WONDER_MOAT_8,       logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid())), // Requires backflip with Iron Boots
+        LOCATION(RC_HC_WONDER_MOAT_9,       logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid())), // Requires backflip with Iron Boots
+        LOCATION(RC_HC_WONDER_MOAT_10,      logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid())), // Requires backflip with Iron Boots
     }, {
         //Exits
         ENTRANCE(RR_HC_GATE,          true),
@@ -199,7 +199,7 @@ void RegionTable_Init_CastleGrounds() {
         EVENT_ACCESS(LOGIC_BUILD_RAINBOW_BRIDGE, logic->CanBuildRainbowBridge()),
     }, {
         //Locations
-        LOCATION(RC_OGC_GS,               logic->HookshotOrBoomerang() || ((logic->CanJumpslashExceptHammer() || logic->CanUseProjectile() || (logic->CanShield() && logic->CanUse(RG_MEGATON_HAMMER)) || logic->CanUse(RG_DINS_FIRE)) && ctx->GetTrickOption(RT_VOIDOUT_COLLECTION))) ,
+        LOCATION(RC_OGC_GS,               logic->HookshotOrBoomerang() || ((logic->CanJumpslashExceptHammer() || logic->CanUseProjectile() || (logic->CanShield() && logic->CanUse(RG_MEGATON_HAMMER)) || logic->CanUse(RG_DINS_FIRE)) && (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()))) ,
         LOCATION(RC_OGC_BRONZE_BOULDER_1, logic->CanUse(RG_MEGATON_HAMMER)),
         LOCATION(RC_OGC_BRONZE_BOULDER_2, logic->CanUse(RG_MEGATON_HAMMER)),
         LOCATION(RC_OGC_BRONZE_BOULDER_3, logic->CanUse(RG_MEGATON_HAMMER)),

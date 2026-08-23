@@ -2,7 +2,7 @@
  * Handles the randomized silly messages that the Fire Temple
  * trapped Gorons have when you free them.
  */
-#include <soh/OTRGlobals.h>
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
 
 extern "C" {

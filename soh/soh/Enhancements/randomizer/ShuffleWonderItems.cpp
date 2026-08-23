@@ -1,4 +1,5 @@
 #include <soh/OTRGlobals.h>
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include <soh/GameVersions.h>
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/ObjectExtension/ObjectExtension.h"

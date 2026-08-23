@@ -8,7 +8,6 @@
 #include "objects/object_zo/object_zo.h"
 
 #include "soh/frame_interpolation.h"
-#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY)
 
@@ -614,9 +613,6 @@ void EnZo_Init(Actor* thisx, PlayState* play) {
 }
 
 void EnZo_Destroy(Actor* thisx, PlayState* play) {
-    EnZo* this = (EnZo*)thisx;
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnZo_Standing(EnZo* this, PlayState* play) {

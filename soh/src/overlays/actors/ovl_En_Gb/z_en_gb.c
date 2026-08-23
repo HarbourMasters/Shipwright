@@ -7,7 +7,6 @@
 #include "z_en_gb.h"
 #include "objects/object_ps/object_ps.h"
 #include "soh/frame_interpolation.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY)
@@ -226,8 +225,6 @@ void EnGb_Destroy(Actor* thisx, PlayState* play) {
     Collider_DestroyCylinder(play, &this->collider);
     LightContext_RemoveLight(play, &play->lightCtx, this->light);
     DynaPoly_DeleteBgActor(play, &play->colCtx.dyna, this->dyna.bgId);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void func_80A2F608(EnGb* this) {

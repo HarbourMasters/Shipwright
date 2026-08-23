@@ -8,7 +8,6 @@
 #include "objects/object_geldb/object_geldb.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
 
@@ -271,8 +270,6 @@ void EnGeldB_Destroy(Actor* thisx, PlayState* play) {
     Collider_DestroyTris(play, &this->blockCollider);
     Collider_DestroyCylinder(play, &this->bodyCollider);
     Collider_DestroyQuad(play, &this->swordCollider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 s32 EnGeldB_ReactToPlayer(PlayState* play, EnGeldB* this, s16 arg2) {
@@ -1389,9 +1386,9 @@ void EnGeldB_CollisionCheck(EnGeldB* this, PlayState* play) {
                         if (key != NULL) {
                             key->actor.world.rot.y = Math_Vec3f_Yaw(&key->actor.world.pos, &this->actor.home.pos);
                             key->actor.speedXZ = 6.0f;
-                            Audio_PlaySoundGeneral(NA_SE_SY_TRE_BOX_APPEAR, &gSfxDefaultPos, 4,
-                                                   &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
-                                                   &gSfxDefaultReverb);
+                            Audio_PlaySfxGeneral(NA_SE_SY_TRE_BOX_APPEAR, &gSfxDefaultPos, 4,
+                                                 &gSfxDefaultFreqAndVolScale, &gSfxDefaultFreqAndVolScale,
+                                                 &gSfxDefaultReverb);
                         }
                     }
                     EnGeldB_SetupDefeated(this);

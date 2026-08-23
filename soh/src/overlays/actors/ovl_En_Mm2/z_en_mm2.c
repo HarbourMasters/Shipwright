@@ -7,7 +7,6 @@
 #include "z_en_mm2.h"
 #include "vt.h"
 #include "objects/object_mm/object_mm.h"
-#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
 
@@ -162,8 +161,6 @@ void EnMm2_Destroy(Actor* thisx, PlayState* play) {
     EnMm2* this = (EnMm2*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 s32 func_80AAF224(EnMm2* this, PlayState* play, EnMm2ActionFunc actionFunc) {

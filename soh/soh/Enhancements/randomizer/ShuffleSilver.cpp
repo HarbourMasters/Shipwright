@@ -1,4 +1,5 @@
 #include <soh/OTRGlobals.h>
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "dungeon.h"
 #include "SeedContext.h"
 #include "draw.h"
@@ -221,14 +222,7 @@ s8 Randomizer::SilverTotal(RandomizerGet rg) {
                                                                                                    : 5;
 }
 
-bool IsSilverCleared(s16 switchFlag) {
-    RandomizerGet rg = SilverFromSwitchFlag(switchFlag);
-    return *Randomizer::SilverFieldFromSaveContext(&gSaveContext, rg) >= Randomizer::SilverTotal(rg);
-}
-
 bool IsSilverCleared(RandomizerGet rg) {
-    auto test = *Randomizer::SilverFieldFromSaveContext(&gSaveContext, rg);
-    auto test2 = Randomizer::SilverTotal(rg);
     return *Randomizer::SilverFieldFromSaveContext(&gSaveContext, rg) >= Randomizer::SilverTotal(rg);
 }
 
@@ -254,6 +248,14 @@ extern "C" void EnGSwitch_RandomizerDraw(Actor* thisx, PlayState* play) {
     }
 }
 
+static void SetSilverCleared(EnGSwitch* silver) {
+    if (gPlayState->sceneNum == SCENE_GERUDO_TRAINING_GROUND && silver->actor.room == 2) {
+        Flags_SetTempClear(gPlayState, silver->actor.room);
+        Flags_SetClear(gPlayState, silver->actor.room);
+    }
+    Flags_SetSwitch(gPlayState, silver->switchFlag);
+}
+
 void RegisterShuffleSilver() {
     bool shouldRegister = IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_SILVER);
 
@@ -271,8 +273,8 @@ void RegisterShuffleSilver() {
     COND_VB_SHOULD(VB_SILVER_COUNT_CHECK, shouldRegister, {
         EnGSwitch* silver = va_arg(args, EnGSwitch*);
         *should = false;
-        if (IsSilverCleared(silver->switchFlag)) {
-            Flags_SetSwitch(gPlayState, silver->switchFlag);
+        if (IsSilverCleared(SilverFromSwitchFlag(silver->switchFlag))) {
+            SetSilverCleared(silver);
             Actor_Kill(&silver->actor);
         }
     });
@@ -288,8 +290,9 @@ void RegisterShuffleSilver() {
                 *should = false;
                 silver->actor.draw = EnGSwitch_RandomizerDraw;
             }
-        } else if (silver->type == ENGSWITCH_SILVER_TRACKER && IsSilverCleared(silver->switchFlag)) {
-            Flags_SetSwitch(gPlayState, silver->switchFlag);
+        } else if (silver->type == ENGSWITCH_SILVER_TRACKER &&
+                   IsSilverCleared(SilverFromSwitchFlag(silver->switchFlag))) {
+            SetSilverCleared(silver);
             *should = true;
         }
     });

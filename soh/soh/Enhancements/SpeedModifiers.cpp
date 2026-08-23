@@ -1,7 +1,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
 #include "soh/OTRGlobals.h"
-#include "soh/Enhancements/enhancementTypes.h"
+#include "soh/Enhancements/BunnyHood.h"
 
 extern "C" {
 #include "z64.h"
@@ -12,7 +12,6 @@ extern PlayState* gPlayState;
 }
 
 #define CVAR_SPEED_MODIFIER_VALUE_NAME CVAR_CHEAT("SpeedModifier.Value")
-#define CVAR_BUNNY_HOOD_NAME CVAR_ENHANCEMENT("MMBunnyHood")
 
 static f32 GetSpeedModifierFactor(bool inputAvailable) {
     f32 value = CVarGetFloat(CVAR_SPEED_MODIFIER_VALUE_NAME, 1.0f);
@@ -42,29 +41,13 @@ static f32 GetSpeedModifierJumpFactor() {
     return GetSpeedModifierFactor(true);
 }
 
-static f32 GetBunnyHoodRunFactor(Player* player) {
-    if (CVarGetInteger(CVAR_BUNNY_HOOD_NAME, BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA &&
-        player->currentMask == PLAYER_MASK_BUNNY) {
-        return 1.5f;
-    }
-    return 1.0f;
-}
-
-static f32 GetBunnyHoodJumpFactor(Player* player) {
-    if (CVarGetInteger(CVAR_BUNNY_HOOD_NAME, BUNNY_HOOD_VANILLA) == BUNNY_HOOD_FAST_AND_JUMP &&
-        player->currentMask == PLAYER_MASK_BUNNY) {
-        return 1.5f;
-    }
-    return 1.0f;
-}
-
 static bool ShouldAmplifyJump(Player* player) {
-    return GetBunnyHoodJumpFactor(player) != 1.0f || GetSpeedModifierJumpFactor() != 1.0f;
+    return Ship_GetBunnyHoodJumpFactor(player) != 1.0f || GetSpeedModifierJumpFactor() != 1.0f;
 }
 
 static void RegisterSpeedModifiers() {
     bool speedModifierActive = CVarGetFloat(CVAR_SPEED_MODIFIER_VALUE_NAME, 1.0f) != 1.0f;
-    bool bunnyHoodActive = CVarGetInteger(CVAR_BUNNY_HOOD_NAME, BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA;
+    bool bunnyHoodActive = Ship_GetBunnyHoodMode() != BUNNY_HOOD_VANILLA;
 
     // Airborne (jump) velocity. z_player clamps linearVelocity to the vanilla run speed limit when this returns true;
     // skip that clamp so the amplified running velocity carries into the jump.
@@ -90,7 +73,7 @@ static void RegisterSpeedModifiers() {
     COND_VB_SHOULD(VB_PLAYER_MODIFY_RUN_SPEED, speedModifierActive || bunnyHoodActive, {
         Player* player = va_arg(args, Player*);
         f32* speedTarget = va_arg(args, f32*);
-        *speedTarget *= GetBunnyHoodRunFactor(player) * GetSpeedModifierFactor(true);
+        *speedTarget *= Ship_GetBunnyHoodRunFactor(player) * GetSpeedModifierFactor(true);
     });
 
     // Swim speed multiplied in place. Called per speed z_player scales; bunny hood does not apply underwater.

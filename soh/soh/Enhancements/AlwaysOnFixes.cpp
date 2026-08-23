@@ -8,6 +8,8 @@ extern "C" {
 #include "include/z64camera.h"
 #include "src/overlays/actors/ovl_En_Test/z_en_test.h"
 #include "src/overlays/actors/ovl_En_Horse/z_en_horse.h"
+#include "src/overlays/actors/ovl_Mir_Ray/z_mir_ray.h"
+void UnregisterActorSkeletons(struct Actor* actor);
 extern void Player_UseItem(PlayState*, Player*, s32);
 extern PlayState* gPlayState;
 }
@@ -97,10 +99,29 @@ void RegisterAlwaysOnFixes() {
         }
     });
 
+    // ShouldActorDestroy rather than OnActorDestroy: the latter only fires from Actor_Delete, but
+    // Actor_UpdateAll and func_80031B14 both run Actor_Destroy without deleting.
+    COND_HOOK(ShouldActorDestroy, true,
+              [](void* refActor, bool* result) { UnregisterActorSkeletons(reinterpret_cast<Actor*>(refActor)); });
+
     COND_ID_HOOK(OnActorDestroy, ACTOR_EN_TEST, true, [](void* refActor) {
         Actor* actor = reinterpret_cast<Actor*>(refActor);
         if (actor->params != STALFOS_TYPE_2 && !EnTest_HasLivingNearby(actor)) {
             func_800F5B58();
+        }
+    });
+
+    // Mir_Ray draws the reflection image straight on the collision poly's plane, but CollisionPoly
+    // stores that plane quantized (s16 normal, integer dist), so for about half of all walls it
+    // lands a fraction of a unit inside the drawn surface. N64 RDP's decal mode handled that,
+    // but our graphics pipeline does not. Lift the image off the plane along the poly normal.
+    COND_VB_SHOULD(VB_MIRRAY_DRAW_REFLECTION, true, {
+        if (*should) {
+            MirRayShieldReflection* reflection = va_arg(args, MirRayShieldReflection*);
+            CollisionPoly* poly = reflection->reflectionPoly;
+            reflection->pos.x += COLPOLY_GET_NORMAL(poly->normal.x);
+            reflection->pos.y += COLPOLY_GET_NORMAL(poly->normal.y);
+            reflection->pos.z += COLPOLY_GET_NORMAL(poly->normal.z);
         }
     });
 

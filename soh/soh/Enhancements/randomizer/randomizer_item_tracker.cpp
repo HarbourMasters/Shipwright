@@ -51,8 +51,6 @@ std::vector<ItemTrackerItem> mainWindowItems = {};
 
 static WidgetInfo backgroundColor;
 static WidgetInfo windowTypeWidget;
-static WidgetInfo enableDraggingWidget;
-static WidgetInfo onlyPausedWidget;
 static WidgetInfo ammoTracking;
 static WidgetInfo keyTracking;
 static WidgetInfo triforcePieceCount;
@@ -594,53 +592,17 @@ ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
                 // Though the ammo/capacity naming doesn't really make sense for keys, we are
                 // hijacking the same system to display key counts as there are enough similarities
                 result.currentAmmo = MAX(gSaveContext.inventory.dungeonKeys[item.data], 0);
-                if (item.data == SCENE_THIEVES_HIDEOUT) {
-                    std::vector<uint8_t> DoorFlags = THIEVES_HIDEOUT_DOOR_FLAGS;
-                    result.currentCapacity =
-                        Rando::FindTotalSmallKeys(&gSaveContext, SCENE_THIEVES_HIDEOUT, &DoorFlags);
-                    result.maxCapacity = GERUDO_FORTRESS_SMALL_KEY_MAX;
-                } else {
-                    result.currentCapacity = OTRGlobals::Instance->gRandoContext->GetDungeons()
-                                                 ->GetDungeonFromScene(item.data)
-                                                 ->GetTotalSmallKeys(&gSaveContext);
-                    switch (item.data) {
-                        case SCENE_FOREST_TEMPLE:
-                            result.maxCapacity = FOREST_TEMPLE_SMALL_KEY_MAX;
-                            break;
-                        case SCENE_FIRE_TEMPLE:
-                            result.maxCapacity = FIRE_TEMPLE_SMALL_KEY_MAX;
-                            if (IS_RANDO &&
-                                !(OTRGlobals::Instance->gRandoContext->GetOption(RSK_KEYSANITY)
-                                      .Is(RO_DUNGEON_ITEM_LOC_ANYWHERE) ||
-                                  OTRGlobals::Instance->gRandoContext->GetOption(RSK_KEYSANITY)
-                                      .Is(RO_DUNGEON_ITEM_LOC_OVERWORLD) ||
-                                  OTRGlobals::Instance->gRandoContext->GetOption(RSK_KEYSANITY)
-                                      .Is(RO_DUNGEON_ITEM_LOC_ANY_DUNGEON)) &&
-                                OTRGlobals::Instance->gRandoContext->GetDungeon(Rando::FIRE_TEMPLE)->IsVanilla()) {
-                                result.currentCapacity = result.currentCapacity - 1;
-                            }
-                            break;
-                        case SCENE_WATER_TEMPLE:
-                            result.maxCapacity = WATER_TEMPLE_SMALL_KEY_MAX;
-                            break;
-                        case SCENE_SPIRIT_TEMPLE:
-                            result.maxCapacity = SPIRIT_TEMPLE_SMALL_KEY_MAX;
-                            break;
-                        case SCENE_SHADOW_TEMPLE:
-                            result.maxCapacity = SHADOW_TEMPLE_SMALL_KEY_MAX;
-                            break;
-                        case SCENE_BOTTOM_OF_THE_WELL:
-                            result.maxCapacity = BOTTOM_OF_THE_WELL_SMALL_KEY_MAX;
-                            break;
-                        case SCENE_GERUDO_TRAINING_GROUND:
-                            result.maxCapacity = GERUDO_TRAINING_GROUND_SMALL_KEY_MAX;
-                            break;
-                        case SCENE_INSIDE_GANONS_CASTLE:
-                            result.maxCapacity = GANONS_CASTLE_SMALL_KEY_MAX;
-                            break;
-                    }
-                    break;
+                result.currentCapacity = Rando::GetSceneTotalSmallKeys(&gSaveContext, (SceneID)item.data);
+                result.maxCapacity = Rando::GetSceneSmallKeyMax((SceneID)item.data);
+                if (item.data == SCENE_FIRE_TEMPLE && IS_RANDO &&
+                    !(OTRGlobals::Instance->gRandoContext->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_ANYWHERE) ||
+                      OTRGlobals::Instance->gRandoContext->GetOption(RSK_KEYSANITY).Is(RO_DUNGEON_ITEM_LOC_OVERWORLD) ||
+                      OTRGlobals::Instance->gRandoContext->GetOption(RSK_KEYSANITY)
+                          .Is(RO_DUNGEON_ITEM_LOC_ANY_DUNGEON)) &&
+                    OTRGlobals::Instance->gRandoContext->GetDungeon(Rando::FIRE_TEMPLE)->IsVanilla()) {
+                    result.currentCapacity--;
                 }
+                break;
         }
     } else if (item.kind == ITEM_KIND_QUEST && item.id == QUEST_SKULL_TOKEN) {
         result.maxCapacity = result.currentCapacity = 100;
@@ -876,30 +838,30 @@ void DrawItemCount(ItemTrackerItem item, bool hideMax) {
         ImGui::PopStyleColor();
     } else {
         ImGui::SetCursorScreenPos(ImVec2(p.x, p.y - 14));
-        ImGui::Text("");
+        ImGui::TextUnformatted("");
     }
 }
 
 void DrawEquip(ItemTrackerItem item) {
+    auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
     assert(item.kind == ITEM_KIND_ITEM);
-    bool hasEquip = HasEquipment(item);
+    bool hasEquip = HasEquipment(item) && IsValidSaveFile();
+    bool giantsKnife = item.id == ITEM_SWORD_BGS && hasEquip && !gSaveContext.bgsFlag;
+    std::string iconName = giantsKnife ? "ITEM_SWORD_KNIFE" : hasEquip ? item.iconName : item.fadedIconName;
     float iconSize = static_cast<float>(CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36));
-    ImGui::Image(std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                     ->GetTextureByName(hasEquip && IsValidSaveFile() ? item.iconName : item.fadedIconName),
-                 ImVec2(iconSize, iconSize), ImVec2(0.0f, 0.0f), ImVec2(1, 1));
+    ImGui::Image(gui->GetTextureByName(iconName), ImVec2(iconSize, iconSize), ImVec2(0.0f, 0.0f), ImVec2(1, 1));
 
-    Tooltip(SohUtils::GetItemName(item.id).c_str());
+    Tooltip(giantsKnife ? "Giant's Knife" : SohUtils::GetItemName(item.id).c_str());
 }
 
 void DrawQuest(ItemTrackerItem item) {
+    auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
     assert(item.kind == ITEM_KIND_QUEST);
     bool hasQuestItem = HasQuestItem(item);
     float iconSize = static_cast<float>(CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36));
     ImGui::BeginGroup();
-    ImGui::ImageWithBg(
-        std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-            ->GetTextureByName(hasQuestItem && IsValidSaveFile() ? item.iconName : item.fadedIconName),
-        ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
+    ImGui::ImageWithBg(gui->GetTextureByName(hasQuestItem && IsValidSaveFile() ? item.iconName : item.fadedIconName),
+                       ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
     if (item.id == QUEST_SKULL_TOKEN) {
         DrawItemCount(item, false);
@@ -923,8 +885,11 @@ bool HasBossSoul(RandomizerInf bossSoul) {
 }
 
 void DrawItem(ItemTrackerItem item) {
+    auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
     uint32_t actualItemId =
-        GameInteractor::IsSaveLoaded() && item.kind == ITEM_KIND_ITEM ? INV_CONTENT(item.id) : ITEM_NONE;
+        GameInteractor::IsSaveLoaded() && item.kind == ITEM_KIND_ITEM && item.id < ARRAY_COUNT(gItemSlots)
+            ? INV_CONTENT(item.id)
+            : (uint8_t)ITEM_NONE;
     float iconSize = static_cast<float>(CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36));
     bool hasItem = actualItemId != ITEM_NONE;
     bool hideMax = false;
@@ -968,6 +933,17 @@ void DrawItem(ItemTrackerItem item) {
                 actualItemId = item.id;
                 hasItem = Flags_GetRandomizerInf(RAND_INF_GREG_FOUND);
                 break;
+            case ITEM_NAYRUS_LOVE:
+                // Roc's Feather shares this slot, so the slot being filled isn't enough
+                hasItem = IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_ROCS_FEATHER)
+                              ? Flags_GetRandomizerInf(RAND_INF_OBTAINED_NAYRUS_LOVE)
+                              : actualItemId == ITEM_NAYRUS_LOVE;
+                break;
+            case ITEM_FISHING_POLE:
+                actualItemId = item.id;
+                hasItem = IS_RANDO && Flags_GetRandomizerInf(RAND_INF_FISHING_POLE_FOUND);
+                itemName = "Fishing Pole";
+                break;
             case ITEM_NONE: // spacer, don't render
                 return;
         }
@@ -983,11 +959,6 @@ void DrawItem(ItemTrackerItem item) {
                 hasItem = IS_RANDO &&
                           (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_TOTAL) > 0);
                 itemName = "Triforce Piece";
-                break;
-            case ITEM_NAYRUS_LOVE:
-                if (IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_ROCS_FEATHER)) {
-                    hasItem = Flags_GetRandomizerInf(RAND_INF_OBTAINED_NAYRUS_LOVE);
-                }
                 break;
             case RG_ROCS_FEATHER:
                 itemName = "Roc's Feather";
@@ -1092,10 +1063,6 @@ void DrawItem(ItemTrackerItem item) {
                 break;
             case RG_OCARINA_C_RIGHT_BUTTON:
                 itemName = "Ocarina C Right Button";
-                break;
-            case ITEM_FISHING_POLE:
-                hasItem = IS_RANDO && Flags_GetRandomizerInf(RAND_INF_FISHING_POLE_FOUND);
-                itemName = "Fishing Pole";
                 break;
 
             case RG_GUARD_HOUSE_KEY:
@@ -1232,8 +1199,7 @@ void DrawItem(ItemTrackerItem item) {
 
     ImGui::BeginGroup();
 
-    ImGui::Image(std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                     ->GetTextureByName(hasItem && IsValidSaveFile() ? item.iconName : item.fadedIconName),
+    ImGui::Image(gui->GetTextureByName(hasItem && IsValidSaveFile() ? item.iconName : item.fadedIconName),
                  ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
     DrawItemCount(item, hideMax);
@@ -1252,6 +1218,7 @@ void DrawItem(ItemTrackerItem item) {
 }
 
 void DrawBottle(ItemTrackerItem item) {
+    auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
     assert(item.kind == ITEM_KIND_ITEM);
     uint32_t actualItemId =
         GameInteractor::IsSaveLoaded() ? (gSaveContext.inventory.items[SLOT(item.id) + item.data]) : false;
@@ -1264,14 +1231,14 @@ void DrawBottle(ItemTrackerItem item) {
     }
 
     float iconSize = static_cast<float>(CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36));
-    ImGui::Image(std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                     ->GetTextureByName(hasItem && IsValidSaveFile() ? item.iconName : item.fadedIconName),
+    ImGui::Image(gui->GetTextureByName(hasItem && IsValidSaveFile() ? item.iconName : item.fadedIconName),
                  ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
     Tooltip(SohUtils::GetItemName(item.id).c_str());
 };
 
 void DrawDungeonItem(ItemTrackerItem item) {
+    auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
     assert(item.kind == ITEM_KIND_ITEM);
     uint32_t itemId = item.id;
     ImU32 dungeonColor = IM_COL_WHITE;
@@ -1281,12 +1248,10 @@ void DrawDungeonItem(ItemTrackerItem item) {
     bool hasSmallKey = GameInteractor::IsSaveLoaded() ? ((gSaveContext.inventory.dungeonKeys[item.data]) >= 0) : false;
     ImGui::BeginGroup();
     if (itemId == ITEM_KEY_SMALL) {
-        ImGui::Image(std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                         ->GetTextureByName(hasSmallKey && IsValidSaveFile() ? item.iconName : item.fadedIconName),
+        ImGui::Image(gui->GetTextureByName(hasSmallKey && IsValidSaveFile() ? item.iconName : item.fadedIconName),
                      ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
     } else {
-        ImGui::Image(std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                         ->GetTextureByName(hasItem && IsValidSaveFile() ? item.iconName : item.fadedIconName),
+        ImGui::Image(gui->GetTextureByName(hasItem && IsValidSaveFile() ? item.iconName : item.fadedIconName),
                      ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
     }
 
@@ -1327,13 +1292,13 @@ void DrawDungeonItem(ItemTrackerItem item) {
 }
 
 void DrawSong(ItemTrackerItem item) {
+    auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
     assert(item.kind == ITEM_KIND_QUEST);
     float iconSize = static_cast<float>(CVarGetInteger(CVAR_TRACKER_ITEM("IconSize"), 36));
     ImVec2 p = ImGui::GetCursorScreenPos();
     bool hasSong = HasSong(item);
     ImGui::SetCursorScreenPos(ImVec2(p.x + 6, p.y));
-    ImGui::Image(std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                     ->GetTextureByName(hasSong && IsValidSaveFile() ? item.iconName : item.fadedIconName),
+    ImGui::Image(gui->GetTextureByName(hasSong && IsValidSaveFile() ? item.iconName : item.fadedIconName),
                  ImVec2(iconSize / 1.5f, iconSize), ImVec2(0, 0), ImVec2(1, 1));
     Tooltip(SohUtils::GetQuestItemName(item.id).c_str());
 }
@@ -2225,8 +2190,6 @@ void RegisterItemTrackerWidgets() {
                      .ComboMap(windowType))
         .Callback([](WidgetInfo& info) { RefreshItemTrackerMainWindow(); });
     SohGui::mSohMenu->AddSearchWidget({ windowTypeWidget, "Randomizer", "Item Tracker", "General Settings" });
-    enableDraggingWidget;
-    onlyPausedWidget;
 
     ammoTracking = { .name = "Ammo/Capacity Tracking", .type = WidgetType::WIDGET_CVAR_COMBOBOX };
     ammoTracking.CVar(CVAR_TRACKER_ITEM("ItemCountType"))

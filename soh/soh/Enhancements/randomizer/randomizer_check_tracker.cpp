@@ -12,6 +12,7 @@
 #include "soh/SohGui/SohMenu.h"
 #include "dungeon.h"
 #include "entrance.h"
+#include "fishsanity.h"
 #include "location_access.h"
 #include "3drando/fill.hpp"
 #include "soh/Enhancements/debugger/performanceTimer.h"
@@ -1888,9 +1889,6 @@ void LoadSettings() {
 
 bool IsCheckShuffled(RandomizerCheck rc) {
     Rando::Location* loc = Rando::StaticData::GetLocation(rc);
-    if (loc->GetRCType() == RCTYPE_SHOP) {
-        auto identity = OTRGlobals::Instance->gRandomizer->IdentifyShopItem(loc->GetScene(), loc->GetActorParams() + 1);
-    }
     if (IS_RANDO) {
         return (loc->GetArea() != RCAREA_INVALID) &&        // don't show Invalid locations
                (loc->GetRCType() != RCTYPE_GOSSIP_STONE) && // TODO: Don't show hints until tracker supports them
@@ -1948,8 +1946,7 @@ bool IsCheckShuffled(RandomizerCheck rc) {
                 (showDungeonWonderItems && RandomizerCheckObjects::AreaIsDungeon(loc->GetArea()))) &&
                (loc->GetRCType() != RCTYPE_ICICLE || showIcicles) &&
                (loc->GetRCType() != RCTYPE_RED_ICE || showRedIce) &&
-               (loc->GetRCType() != RCTYPE_FISH ||
-                OTRGlobals::Instance->gRandoContext->GetFishsanity()->GetFishLocationIncluded(loc)) &&
+               (loc->GetRCType() != RCTYPE_FISH || Rando::Fishsanity::GetFishLocationIncluded(loc)) &&
                (loc->GetRCType() != RCTYPE_FREESTANDING ||
                 (showOverworldFreestanding && RandomizerCheckObjects::AreaIsOverworld(loc->GetArea())) ||
                 (showDungeonFreestanding && RandomizerCheckObjects::AreaIsDungeon(loc->GetArea()))) &&
@@ -2017,7 +2014,7 @@ void UpdateAllAreas() {
 
 void UpdateAreas(RandomizerCheckArea area) {
     if (checksByArea.contains(area)) {
-        areasFullyChecked[area] = areaChecksGotten[area] == checksByArea.find(area)->second.size();
+        areasFullyChecked[area] = static_cast<size_t>(areaChecksGotten[area]) == checksByArea.find(area)->second.size();
     }
 }
 
@@ -2125,8 +2122,8 @@ bool IsMysteryShopItem(RandomizerCheck rc) {
 }
 
 void DrawLocation(RandomizerCheck rc) {
-    Color_RGBA8 mainColor;
-    Color_RGBA8 extraColor;
+    Color_RGBA8 mainColor = Color_Unchecked_Main;
+    Color_RGBA8 extraColor = Color_Unchecked_Extra;
     std::string txt;
     Rando::Location* loc = Rando::StaticData::GetLocation(rc);
     Rando::ItemLocation* itemLoc = OTRGlobals::Instance->gRandoContext->GetItemLocation(rc);
@@ -2262,6 +2259,8 @@ void DrawLocation(RandomizerCheck rc) {
 
     if (status != RCSHOW_UNCHECKED) {
         switch (status) {
+            case RCSHOW_UNCHECKED:
+                break;
             case RCSHOW_SAVED:
             case RCSHOW_COLLECTED:
             case RCSHOW_SCUMMED:

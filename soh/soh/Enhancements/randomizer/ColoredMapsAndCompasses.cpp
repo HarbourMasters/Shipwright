@@ -1,9 +1,9 @@
 #include "soh/ResourceManagerHelpers.h"
+#include <libultraship/bridge/consolevariablebridge.h>
 #include "soh/ShipInit.hpp"
 #include "z64save.h"
 #include "objects/object_gi_compass/object_gi_compass.h"
 #include "objects/object_gi_map/object_gi_map.h"
-#include "soh/OTRGlobals.h"
 #include "soh/Enhancements/randomizer/SeedContext.h"
 
 extern "C" {

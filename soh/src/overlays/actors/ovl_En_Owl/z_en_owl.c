@@ -10,7 +10,6 @@
 #include "scenes/overworld/spot16/spot16_scene.h"
 #include "vt.h"
 #include <assert.h>
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
@@ -242,9 +241,6 @@ void EnOwl_Destroy(Actor* thisx, PlayState* play) {
     EnOwl* this = (EnOwl*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime2);
 }
 
 /**

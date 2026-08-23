@@ -370,8 +370,9 @@ std::shared_ptr<GetItemEntry> Item::GetGIEntry() const { // NOLINT(*-no-recursio
                     break;
             }
             break;
-        case RG_PROGRESSIVE_GORONSWORD: // todo progressive?
-            actual = RG_BIGGORON_SWORD;
+        case RG_PROGRESSIVE_GORONSWORD:
+            // owning the slot means the knife was already given, breaking it doesn't clear the flag
+            actual = logic->CheckEquipment(EQUIP_FLAG_SWORD_BGS) ? RG_BIGGORON_SWORD : RG_GIANTS_KNIFE;
             break;
         case RG_PROGRESSIVE_BOMBCHU_BAG:
             if (OTRGlobals::Instance->gRandoContext->GetOption(RSK_BOMBCHU_BAG).Is(RO_BOMBCHU_BAG_SINGLE)) {

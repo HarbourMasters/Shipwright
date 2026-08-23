@@ -2,6 +2,7 @@
 #include "vt.h"
 
 #include <stdlib.h>
+#include <string.h>
 #include <assert.h>
 
 #include "z64environment.h"
@@ -452,23 +453,17 @@ void func_800AF178(SkyboxContext* skyboxCtx, s32 arg1) {
 
 void LoadSkyboxTex(SkyboxContext* skyboxCtx, int segmentIndex, int imageIndex, char* tex, int width, int height,
                    int offsetW, int offsetH) {
-    if (GameInteractor_Should(VB_LOAD_SKYBOX, true)) {
-        skyboxCtx->textures[segmentIndex][imageIndex] = tex;
-    }
+    skyboxCtx->textures[segmentIndex][imageIndex] = tex;
 }
 
 void LoadSkyboxTexAtOffset(SkyboxContext* skyboxCtx, int segmentIndex, int imageIndex, char* tex, int width, int height,
                            int offset) {
-    if (GameInteractor_Should(VB_LOAD_SKYBOX, true)) {
-        skyboxCtx->textures[segmentIndex][imageIndex] = tex;
-    }
+    skyboxCtx->textures[segmentIndex][imageIndex] = tex;
 }
 
 void LoadSkyboxPalette(SkyboxContext* skyboxCtx, int paletteIndex, char* palTex, int width, int height) {
-    if (GameInteractor_Should(VB_LOAD_SKYBOX, true)) {
-        skyboxCtx->palettes[paletteIndex] = palTex;
-        skyboxCtx->palette_size = width * height;
-    }
+    skyboxCtx->palettes[paletteIndex] = palTex;
+    skyboxCtx->palette_size = width * height;
 }
 
 static const char* sSBVRFine0Tex[] = { gSunriseSkybox1Tex, gSunriseSkybox2Tex, gSunriseSkybox3Tex, gSunriseSkybox4Tex,
@@ -628,6 +623,18 @@ void Skybox_Setup(PlayState* play, SkyboxContext* skyboxCtx, s16 skyboxId) {
             LoadSkyboxTexAtOffset(skyboxCtx, 0, 4, gSunsetOvercastSkybox5Tex, 128, 128, 0x8000);
 
             LoadSkyboxPalette(skyboxCtx, 0, gSunsetOvercastSkyboxTLUT, 16, 8);
+
+            // SOH [Port] This skybox is drawn by the two-segment sky path, so its display lists reference
+            // segment 1 and SkyboxDraw_Draw loads palettes[1], but vanilla only ever DMAs segment 0 here.
+            // The blend is always 0 for this skybox, so mirroring segment 0 keeps the vanilla look while
+            // giving the second segment real data to point at.
+            LoadSkyboxTexAtOffset(skyboxCtx, 1, 0, gSunsetOvercastSkybox1Tex, 128, 64, 0x0);
+            LoadSkyboxTexAtOffset(skyboxCtx, 1, 1, gSunsetOvercastSkybox2Tex, 128, 64, 0x2000);
+            LoadSkyboxTexAtOffset(skyboxCtx, 1, 2, gSunsetOvercastSkybox3Tex, 128, 64, 0x4000);
+            LoadSkyboxTexAtOffset(skyboxCtx, 1, 3, gSunsetOvercastSkybox4Tex, 128, 64, 0x6000);
+            LoadSkyboxTexAtOffset(skyboxCtx, 1, 4, gSunsetOvercastSkybox5Tex, 128, 128, 0x8000);
+
+            LoadSkyboxPalette(skyboxCtx, 1, gSunsetOvercastSkyboxTLUT, 16, 8);
             break;
         case SKYBOX_MARKET_ADULT:
             skyboxCtx->unk_140 = 1;
@@ -895,6 +902,14 @@ void Skybox_Init(GameState* state, SkyboxContext* skyboxCtx, s16 skyboxId) {
     skyboxCtx->skyboxId = skyboxId;
     skyboxCtx->unk_140 = 0;
     skyboxCtx->rot.x = skyboxCtx->rot.y = skyboxCtx->rot.z = 0.0f;
+
+    // SOH [Port] On N64 these are segment bases that are always mapped, but here they are raw texture
+    // pointers living in the PlayState. That memory is freed and re-allocated on every scene load, so any
+    // slot Skybox_Setup does not fill would otherwise be drawn from the previous scene's pointers (or from
+    // uninitialized arena memory on the first load).
+    memset(skyboxCtx->textures, 0, sizeof(skyboxCtx->textures));
+    memset(skyboxCtx->palettes, 0, sizeof(skyboxCtx->palettes));
+    skyboxCtx->palette_size = 0;
 
     Skybox_Setup(play, skyboxCtx, skyboxId);
     osSyncPrintf("\n\n\n＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊\n\n\n"

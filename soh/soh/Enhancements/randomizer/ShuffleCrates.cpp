@@ -1,4 +1,5 @@
 #include <soh/OTRGlobals.h>
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh_assets.h"
 #include "static_data.h"
 #include <libultraship/libultra.h>

@@ -3,9 +3,6 @@
 #include "overlays/actors/ovl_En_Syateki_Niw/z_en_syateki_niw.h"
 #include "overlays/actors/ovl_En_Ex_Item/z_en_ex_item.h"
 #include "objects/object_bg/object_bg.h"
-#include "soh/OTRGlobals.h"
-#include "soh/ResourceManagerHelpers.h"
-#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS                                                                                  \
@@ -89,15 +86,14 @@ void EnBomBowlMan_Init(Actor* thisx, PlayState* play2) {
         }
     }
 
-    this->prizeSelect = IS_RANDO ? 0 : (s16)Rand_ZeroFloat(4.99f);
+    if (GameInteractor_Should(VB_SET_BOMBCHU_BOWLING_PRIZE_SELECT, true, this)) {
+        this->prizeSelect = (s16)Rand_ZeroFloat(4.99f);
+    }
     this->actor.targetMode = 1;
     this->actionFunc = EnBomBowMan_SetupWaitAsleep;
 }
 
 void EnBomBowlMan_Destroy(Actor* thisx, PlayState* play) {
-    EnBomBowlMan* this = (EnBomBowlMan*)thisx;
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnBomBowMan_SetupWaitAsleep(EnBomBowlMan* this, PlayState* play) {
@@ -178,17 +174,9 @@ void EnBomBowMan_CheckBeatenDC(EnBomBowlMan* this, PlayState* play) {
         this->eyeMode = CHU_GIRL_EYES_AWAKE;
         this->blinkTimer = (s16)Rand_ZeroFloat(60.0f) + 20;
 
-        bool bombchuBowlingClosed;
-        if (IS_RANDO) {
-            // when rando'd, check if we have bombchus if chus are in logic
-            // and check if we have a bomb bag if chus aren't in logic
-            u8 explosive = Randomizer_GetSettingValue(RSK_BOMBCHU_BAG) ? ITEM_BOMBCHU : ITEM_BOMB;
-            bombchuBowlingClosed = (INV_CONTENT(explosive) == ITEM_NONE);
-        } else {
-            // if not rando'd, check if we have beaten Dodongo's Cavern
-            bombchuBowlingClosed = !((Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP)) || BREG(2));
-        }
-        if (bombchuBowlingClosed) {
+        // Check for beaten Dodongo's Cavern
+        if (!GameInteractor_Should(VB_BE_ABLE_TO_PLAY_BOMBCHU_BOWLING,
+                                   (Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP)) || BREG(2))) {
             this->actionFunc = EnBomBowMan_WaitNotBeatenDC;
         } else {
             this->actor.textId = 0x18;
@@ -411,39 +399,30 @@ void EnBomBowMan_ChooseShowPrize(EnBomBowlMan* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
 
     if (this->prizeRevealTimer == 0) {
-        switch (this->prizeSelect) {
-            case 0:
-                prizeTemp = EXITEM_BOMB_BAG_BOWLING;
-                if (Flags_GetItemGetInf(ITEMGETINF_11)) {
+        if (GameInteractor_Should(VB_SET_BOMBCHU_BOWLING_PRIZE, true, this, &prizeTemp)) {
+            switch (this->prizeSelect) {
+                case 0:
+                    prizeTemp = EXITEM_BOMB_BAG_BOWLING;
+                    if (Flags_GetItemGetInf(ITEMGETINF_11)) {
+                        prizeTemp = EXITEM_PURPLE_RUPEE_BOWLING;
+                    }
+                    break;
+                case 1:
                     prizeTemp = EXITEM_PURPLE_RUPEE_BOWLING;
-                }
-                break;
-            case 1:
-                if (!IS_RANDO) {
-                    prizeTemp = EXITEM_PURPLE_RUPEE_BOWLING;
-                } else {
+                    break;
+                case 2:
+                    prizeTemp = EXITEM_BOMBCHUS_BOWLING;
+                    break;
+                case 3:
                     prizeTemp = EXITEM_HEART_PIECE_BOWLING;
                     if (Flags_GetItemGetInf(ITEMGETINF_12)) {
                         prizeTemp = EXITEM_PURPLE_RUPEE_BOWLING;
                     }
-                }
-                break;
-            case 2:
-                prizeTemp = EXITEM_BOMBCHUS_BOWLING;
-                break;
-            case 3:
-                if (!IS_RANDO) {
-                    prizeTemp = EXITEM_HEART_PIECE_BOWLING;
-                    if (Flags_GetItemGetInf(ITEMGETINF_12)) {
-                        prizeTemp = EXITEM_PURPLE_RUPEE_BOWLING;
-                    }
-                } else {
-                    prizeTemp = EXITEM_PURPLE_RUPEE_BOWLING;
-                }
-                break;
-            case 4:
-                prizeTemp = EXITEM_BOMBS_BOWLING;
-                break;
+                    break;
+                case 4:
+                    prizeTemp = EXITEM_BOMBS_BOWLING;
+                    break;
+            }
         }
 
         this->prizeIndex = prizeTemp;

@@ -8,7 +8,6 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_bw/object_bw.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/savestate_serialize.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
@@ -168,8 +167,6 @@ void EnBw_Destroy(Actor* thisx, PlayState* play) {
 
     Collider_DestroyCylinder(play, &this->collider1);
     Collider_DestroyCylinder(play, &this->collider2);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void func_809CE884(EnBw* this, PlayState* play) {

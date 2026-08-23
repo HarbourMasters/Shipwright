@@ -80,6 +80,7 @@ set_property(DIRECTORY ${CMAKE_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT soh)
 add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/MP>)
 add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/utf-8>)
 add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/Zc:preprocessor>)
+add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/external:W0>)
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
     if(NOT CMAKE_VS_PLATFORM_NAME)
@@ -241,7 +242,46 @@ foreach(_torch_game SM64 MK64 SF64 PM64 FZERO BK64 MARIO_ARTIST)
     set(BUILD_${_torch_game} OFF CACHE BOOL "" FORCE)
 endforeach()
 
-add_subdirectory(torch)
+# SYSTEM only covers headers we include; torch and the libraries it fetches still warn while
+# compiling their own sources. None of that is ours to fix.
+if(MSVC)
+    set(DEP_WARNING_OVERRIDE /w)
+else()
+    set(DEP_WARNING_OVERRIDE -w)
+endif()
+
+# Drops the target's own warning level before adding ours: cl warns (D9025) about the
+# conflict instead of just taking the last flag. /O3 goes too, MSVC does not know it
+# (D9002) and the -O2 in CMAKE_CXX_FLAGS_RELEASE is what these actually get.
+function(quiet_target target override)
+    if(NOT override)
+        return()
+    endif()
+    get_target_property(_opts ${target} COMPILE_OPTIONS)
+    if(_opts)
+        list(REMOVE_ITEM _opts /O3 /W0 /W1 /W2 /W3 /W4 /Wall -Wall)
+        set_target_properties(${target} PROPERTIES COMPILE_OPTIONS "${_opts}")
+    endif()
+    target_compile_options(${target} PRIVATE ${override})
+endfunction()
+
+function(quiet_dependency_tree dir)
+    get_property(_targets DIRECTORY "${dir}" PROPERTY BUILDSYSTEM_TARGETS)
+    foreach(_target IN LISTS _targets)
+        get_target_property(_type ${_target} TYPE)
+        if(_type STREQUAL "INTERFACE_LIBRARY" OR _type STREQUAL "UTILITY")
+            continue()
+        endif()
+        quiet_target(${_target} "${DEP_WARNING_OVERRIDE}")
+    endforeach()
+    get_property(_subdirs DIRECTORY "${dir}" PROPERTY SUBDIRECTORIES)
+    foreach(_subdir IN LISTS _subdirs)
+        quiet_dependency_tree("${_subdir}")
+    endforeach()
+endfunction()
+
+add_subdirectory(torch SYSTEM)
+quiet_dependency_tree(${CMAKE_CURRENT_SOURCE_DIR}/torch)
 
 # Build-time ROM extraction. soh links torch as a static library, which compiles out torch's
 # own CLI, so this supplies an entry point around the same code the game runs.
@@ -257,6 +297,11 @@ add_executable(soh-o2r-packer EXCLUDE_FROM_ALL
     ${CMAKE_CURRENT_SOURCE_DIR}/soh/assets/tools/soh-o2r-packer/PngTexture.cpp
 )
 target_link_libraries(soh-o2r-packer PRIVATE torch)
+
+if(MSVC)
+    set_target_properties(soh-torch soh-o2r-packer PROPERTIES
+        MSVC_RUNTIME_LIBRARY "$<IF:$<CONFIG:Debug>,MultiThreadedDebug,MultiThreaded>")
+endif()
 
 # Target to generate OTRs. SOH_ROM_PATH takes roms and/or directories of roms; torch names each
 # archive (oot.o2r or oot-mq.o2r) from its hash, so a vanilla and a master quest rom produce both
@@ -318,8 +363,8 @@ endif()
 ################################################################################
 # Sub-projects
 ################################################################################
-add_subdirectory(libultraship ${CMAKE_BINARY_DIR}/libultraship)
-target_compile_options(libultraship PRIVATE "${WARNING_OVERRIDE}")
+add_subdirectory(libultraship ${CMAKE_BINARY_DIR}/libultraship SYSTEM)
+quiet_target(libultraship "${WARNING_OVERRIDE}")
 target_compile_definitions(libultraship PUBLIC INCLUDE_MPQ_SUPPORT)
 add_subdirectory(soh)
 
@@ -329,11 +374,11 @@ set_property(TARGET soh PROPERTY APPIMAGE_ICON_FILE "${CMAKE_BINARY_DIR}/sohIcon
 
 if("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
 install(FILES "${CMAKE_BINARY_DIR}/soh/soh.o2r" DESTINATION . COMPONENT ship)
-install(DIRECTORY "${CMAKE_SOURCE_DIR}/soh/assets/yml/" DESTINATION ./assets COMPONENT ship)
+install(DIRECTORY "${CMAKE_SOURCE_DIR}/soh/assets/yml/" DESTINATION assets COMPONENT ship)
 endif()
 
 if ("${CMAKE_SYSTEM_NAME}" STREQUAL "Windows")
-install(DIRECTORY "${CMAKE_SOURCE_DIR}/soh/assets/yml/" DESTINATION ./assets COMPONENT ship)
+install(DIRECTORY "${CMAKE_SOURCE_DIR}/soh/assets/yml/" DESTINATION assets COMPONENT ship)
 endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "Linux")
@@ -367,7 +412,7 @@ add_dependencies(soh CreateOSXIcons)
 
 set(PROGRAM_PERMISSIONS_EXECUTE OWNER_EXECUTE OWNER_WRITE OWNER_READ GROUP_EXECUTE GROUP_READ WORLD_EXECUTE WORLD_READ)
 
-install(DIRECTORY "${CMAKE_SOURCE_DIR}/soh/assets/yml/" DESTINATION ./assets)
+install(DIRECTORY "${CMAKE_SOURCE_DIR}/soh/assets/yml/" DESTINATION assets)
 
 # Rename the installed soh binary to drop the macos suffix
 INSTALL(CODE "FILE(RENAME \${CMAKE_INSTALL_PREFIX}/../MacOS/soh-macos \${CMAKE_INSTALL_PREFIX}/../MacOS/soh)")

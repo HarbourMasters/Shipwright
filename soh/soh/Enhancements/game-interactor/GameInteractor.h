@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef GameInteractor_h
-#define GameInteractor_h
-
 #include <libultraship/bridge/consolevariablebridge.h>
 #include "vanilla-behavior/GIVanillaBehavior.h"
 
@@ -578,4 +575,3 @@ class GameInteractor {
 #undef GET_CURRENT_REGISTERING_INFO
 
 #endif /* __cplusplus */
-#endif /* GameInteractor_h */

@@ -3,6 +3,7 @@
 #include "3drando/pool_functions.hpp"
 #include "static_data.h"
 #include "SeedContext.h"
+#include "soh/ResourceManagerHelpers.h"
 
 namespace Rando {
 extern "C" PlayState* gPlayState;
@@ -58,8 +59,16 @@ bool DungeonInfo::IsVanilla() const {
     return !masterQuest;
 }
 
+SceneID DungeonInfo::GetScene() const {
+    return scene;
+}
+
 uint8_t DungeonInfo::GetSmallKeyCount() const {
-    return masterQuest ? mqKeyCount : vanillaKeyCount;
+    return GetSmallKeyCountForQuest(masterQuest);
+}
+
+uint8_t DungeonInfo::GetSmallKeyCountForQuest(const bool masterQuest_) const {
+    return masterQuest_ ? mqKeyCount : vanillaKeyCount;
 }
 
 RandomizerHintTextKey DungeonInfo::GetHintKey() const {
@@ -130,6 +139,41 @@ int8_t FindCurrentSmallKeys(const SaveContext* saveContext, const SceneID scene)
 
 int8_t FindTotalSmallKeys(const SaveContext* saveContext, const SceneID scene, const std::vector<uint8_t>* DoorFlags) {
     return FindCurrentSmallKeys(saveContext, scene) + FindUsedSmallKeys(saveContext, scene, DoorFlags);
+}
+
+// Thieves' Hideout isn't a dungeon, and how many of its doors are locked depends on the carpenter setting.
+static std::vector<uint8_t> ThievesHideoutDoorFlags() {
+    if (RAND_GET_OPTION(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FAST)) {
+        return { 1 };
+    }
+    if (RAND_GET_OPTION(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE)) {
+        return {};
+    }
+    return { 1, 2, 3, 4 };
+}
+
+uint8_t GetSceneSmallKeyMax(const SceneID scene) {
+    if (scene == SCENE_THIEVES_HIDEOUT) {
+        return static_cast<uint8_t>(ThievesHideoutDoorFlags().size());
+    }
+    if (scene == SCENE_TREASURE_BOX_SHOP) {
+        return 6;
+    }
+    // ask which layout actually loads rather than what the seed asked for, so an MQ-only rom still lines up
+    const DungeonInfo* dungeon = Context::GetInstance()->GetDungeons()->GetDungeonFromScene(scene);
+    return dungeon != nullptr ? dungeon->GetSmallKeyCountForQuest(ResourceMgr_IsSceneMasterQuest(scene)) : 0;
+}
+
+int8_t GetSceneTotalSmallKeys(const SaveContext* saveContext, const SceneID scene) {
+    if (scene == SCENE_THIEVES_HIDEOUT) {
+        const std::vector<uint8_t> doorFlags = ThievesHideoutDoorFlags();
+        return FindTotalSmallKeys(saveContext, scene, &doorFlags);
+    }
+    if (const DungeonInfo* dungeon = Context::GetInstance()->GetDungeons()->GetDungeonFromScene(scene)) {
+        return FindTotalSmallKeys(saveContext, scene, dungeon->GetDoorFlags());
+    }
+    // the chest game keeps no door flags, so what you hold is all you ever got
+    return FindCurrentSmallKeys(saveContext, scene);
 }
 
 int8_t DungeonInfo::GetUsedSmallKeys(SaveContext* saveContext) const {

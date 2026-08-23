@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef RANDOPTION_H
-#define RANDOPTION_H
-
 #include <stdint.h>
 #include <set>
 #include <string>
@@ -521,5 +518,3 @@ class OptionGroup {
     bool mDisabled = false;
 };
 } // namespace Rando
-
-#endif // RANDOPTION_H

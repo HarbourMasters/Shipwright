@@ -1,17 +1,20 @@
 ﻿#include "SohMenu.h"
 #include <soh/Enhancements/enhancementTypes.h>
 #include "soh/Enhancements/SwitchAge.h"
+#include "soh/Enhancements/AdultMasks.h"
+#include "soh/Enhancements/BunnyHood.h"
 #include <soh/Enhancements/game-interactor/GameInteractor.h>
 #include <soh/OTRGlobals.h>
 #include <soh/Enhancements/cosmetics/authenticGfxPatches.h>
 #include <soh/Enhancements/TimeDisplay/TimeDisplay.h>
-#include "soh/Enhancements/randomizer/randomizer.h"
 #include "soh/Enhancements/Restorations/GetItemManipulation.h"
+#include "soh/Enhancements/randomizer/SeedContext.h"
 #include <ship/Context.h>
 
 extern "C" {
 #include "functions.h"
 #include "variables.h"
+#include "macros.h"
 extern PlayState* gPlayState;
 }
 
@@ -87,6 +90,15 @@ static const std::map<int32_t, const char*> sleepingWaterfallOptions = {
     { WATERFALL_NEVER, "Never" },
 };
 
+static const std::map<int32_t, const char*> bombchuBowlingFirstPrizeOptions = {
+    { BOWLING_FIRST_PRIZE_RANDOM, "Random" },
+    { BOWLING_FIRST_PRIZE_BOMB_BAG, "Bomb Bag" },
+    { BOWLING_FIRST_PRIZE_PURPLE_RUPEE, "Purple Rupee" },
+    { BOWLING_FIRST_PRIZE_BOMBCHUS, "Bombchus" },
+    { BOWLING_FIRST_PRIZE_HEART_PIECE, "Heart Piece" },
+    { BOWLING_FIRST_PRIZE_BOMBS, "Bombs" },
+};
+
 static const std::map<int32_t, const char*> allPowers = {
     { DAMAGE_VANILLA, "Vanilla (1x)" },      { DAMAGE_DOUBLE, "Double (2x)" },
     { DAMAGE_QUADRUPLE, "Quadruple (4x)" },  { DAMAGE_OCTUPLE, "Octuple (8x)" },
@@ -136,6 +148,12 @@ static const std::map<int32_t, const char*> zFightingOptions = {
     { ZFIGHT_FIX_DISABLED, "Disabled" },
     { ZFIGHT_FIX_CONSISTENT_VANISH, "Consistent Vanish" },
     { ZFIGHT_FIX_NO_VANISH, "No Vanish" },
+};
+
+static const std::map<int32_t, const char*> teleportTrapModes = {
+    { TELEPORT_TRAP_OFF, "Off" },
+    { TELEPORT_TRAP_SIMPLE, "Simple" },
+    { TELEPORT_TRAP_ADVANCED, "Advanced" },
 };
 
 static const std::map<int32_t, const char*> swordToggleModes = {
@@ -437,6 +455,10 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Skip Song Cutscenes", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.LearnSong"))
         .Options(CheckboxOptions().DefaultValue(IS_RANDO));
+    AddWidget(path, "Skip Warp Cutscenes", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("WarpSongSkipAnimation"))
+        .Options(CheckboxOptions().DefaultValue(IS_RANDO).Tooltip(
+            "Warp songs skip the departure and arrival cutscenes, fading immediately to the destination."));
     AddWidget(path, "Skip Boss Introductions", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.BossIntro"))
         .Options(CheckboxOptions().DefaultValue(IS_RANDO));
@@ -534,8 +556,8 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Exclude Glitch-Aiding Crawlspaces", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("GlitchAidingCrawlspaces"))
         .PreFunc([](WidgetInfo& info) { info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("CrawlSpeed"), 0) == 1; })
-        .Options(CheckboxOptions().Tooltip("Don't increase crawl speed when exiting glitch-useful crawlspaces."
-                                           "Currently it is only the BOTW crawlspace to locked door"));
+        .Options(CheckboxOptions().Tooltip("Don't increase crawl speed when exiting glitch-useful crawlspaces.\n"
+                                           "Currently it is only the BOTW crawlspace to a locked door."));
     AddWidget(path, "King Zora Speed: %.2fx", WIDGET_CVAR_SLIDER_FLOAT)
         .CVar(CVAR_ENHANCEMENT("MweepSpeed"))
         .Options(FloatSliderOptions().Min(0.1f).Max(5.0f).DefaultValue(1.0f).Format("%.2fx"));
@@ -587,7 +609,7 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Spawn Bean Skulltula Faster", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("FasterBeanSkull"))
         .Options(CheckboxOptions().Tooltip(
-            "Makes Gold Skulltulas come out of bean patches faster after bugs dig into center."));
+            "Makes Gold Skulltulas come out of bean patches faster after bugs dig into the center."));
     AddWidget(path, "Biggoron Forge Time: %d days", WIDGET_CVAR_SLIDER_INT)
         .CVar(CVAR_ENHANCEMENT("ForgeTime"))
         .Options(IntSliderOptions().Min(0).Max(3).DefaultValue(3).Format("%d days").Tooltip(
@@ -610,7 +632,7 @@ void SohMenu::AddMenuEnhancements() {
         .CVar(CVAR_ENHANCEMENT("DisableGrottoRotation"))
         .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip(
-            "Disables Grottos rotating with the Camera. To be used in conjuction with mods that want to "
+            "Disables Grottos rotating with the Camera. To be used in conjunction with mods that want to "
             "replace grottos with 3D objects."));
     AddWidget(path, "Disable Link's Sword Trail", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("DisableLinkSwordTrail"))
@@ -698,7 +720,7 @@ void SohMenu::AddMenuEnhancements() {
                                            "NOTE: Doesn't activate until scene transition."));
     AddWidget(path, "Disable Hot/Underwater Warning Text", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("DisableTunicWarningText"))
-        .Options(CheckboxOptions().Tooltip("Disables warning text when you don't have on the Goron/Zora Tunic "
+        .Options(CheckboxOptions().Tooltip("Disables warning text when you don't have the Goron/Zora Tunic on "
                                            "in Hot/Underwater conditions."));
     AddWidget(path, "Remember Minimap State Between Areas", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("RememberMapToggleState"))
@@ -795,7 +817,7 @@ void SohMenu::AddMenuEnhancements() {
             info.options->disabled = !CVarGetInteger(CVAR_ENHANCEMENT("WidescreenActorCulling"), 0) &&
                                      CVarGetInteger(CVAR_ENHANCEMENT("DisableDrawDistance"), 1) <= 1;
             info.options->disabledTooltip =
-                "Requires Actor Draw Distance to be increased or Widscreen Actor Culling to be enabled.";
+                "Requires Actor Draw Distance to be increased or Widescreen Actor Culling to be enabled.";
         })
         .Options(CheckboxOptions().Tooltip(
             "Exclude Actors that are useful for Glitches from the extended culling ranges. Some actors may still draw "
@@ -831,7 +853,7 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Equipment Toggle", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("EquipmentCanBeRemoved"))
         .Options(CheckboxOptions().Tooltip(
-            "Allows equipment to be removed by toggling it on/off\n the equipment subscreen."));
+            "Allows equipment to be removed by toggling it on/off in the equipment subscreen."));
     AddWidget(path, "Allow Strength Equipment to be Toggled", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("ToggleStrength"))
         .Callback([](WidgetInfo& info) {
@@ -845,7 +867,7 @@ void SohMenu::AddMenuEnhancements() {
             "that require the player to not have Strength."));
     AddWidget(path, "Unsheathe Sword Without Slashing", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("UnsheatheWithoutSlashing"))
-        .Options(CheckboxOptions().Tooltip("Allows Link to unsheathe sword without slashing automatically."));
+        .Options(CheckboxOptions().Tooltip("Allows Link to unsheathe the sword without slashing automatically."));
     AddWidget(path, "Sword Toggle Options", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_ENHANCEMENT("SwordToggle"))
         .PreFunc(
@@ -886,7 +908,7 @@ void SohMenu::AddMenuEnhancements() {
 
     AddWidget(path, "Masks", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Bunny Hood Effect", WIDGET_CVAR_COMBOBOX)
-        .CVar(CVAR_ENHANCEMENT("MMBunnyHood"))
+        .CVar(CVAR_BUNNY_HOOD_NAME)
         .Options(ComboboxOptions()
                      .ComboMap(bunnyHoodEffectMap)
                      .Tooltip("Wearing the Bunny Hood grants a speed and jump boost like in Majora's Mask.\n"
@@ -894,12 +916,12 @@ void SohMenu::AddMenuEnhancements() {
                               "The effects of either option are not accounted for in Randomizer logic.\n"
                               "Also disables NPC's reactions to wearing the Bunny Hood."));
     AddWidget(path, "Masks Equippable as Adult", WIDGET_CVAR_CHECKBOX)
-        .CVar(CVAR_ENHANCEMENT("AdultMasks"))
+        .CVar(CVAR_ADULT_MASKS_NAME)
         .Options(CheckboxOptions().Tooltip("Allows masks to be equipped normally from the pause menu as adult."));
     AddWidget(path, "Persistent Masks", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("PersistentMasks"))
         .Options(
-            CheckboxOptions().Tooltip("Stops masks from automatically unequipping on certain situations:\n"
+            CheckboxOptions().Tooltip("Stops masks from automatically unequipping in certain situations:\n"
                                       "- When entering a new scene\n"
                                       "- When not in any C-Button or the D-pad\n"
                                       "- When saving and quitting\n"
@@ -914,7 +936,7 @@ void SohMenu::AddMenuEnhancements() {
             info.options->disabled =
                 OTRGlobals::Instance->gRandoContext->GetOption(RSK_MASK_QUEST).IsNot(RO_MASK_QUEST_VANILLA);
             info.options->disabledTooltip =
-                "This setting is forcefully enabled when Mask Quest is Completed from the start or Shuffled";
+                "This setting is forcefully enabled when Mask Quest is Completed from the start or Shuffled.";
         })
         .Options(CheckboxOptions().Tooltip(
             "After completing the mask trading sub-quest, press A and any direction on the mask "
@@ -1038,7 +1060,7 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Bottles", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Rebottle Blue Fire", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("RebottleBlueFire"))
-        .Options(CheckboxOptions().Tooltip("Blue Fire dropped from bottle can be bottled."));
+        .Options(CheckboxOptions().Tooltip("Blue Fire dropped from a bottle can be bottled."));
 
     // Fixes
     path.sidebarName = "Fixes";
@@ -1059,13 +1081,13 @@ void SohMenu::AddMenuEnhancements() {
             "Fixes Dampé going backwards in certain circumstances when the player is going backwards."));
     AddWidget(path, "Fix Kokiri Forest Quest State", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("FixKokiriForestQuestState"))
-        .Options(CheckboxOptions().Tooltip("Fixes kokiri animation state to match their text state when getting "
+        .Options(CheckboxOptions().Tooltip("Fixes Kokiri animation state to match their text state when getting "
                                            "Zelda's Letter before Kokiri Emerald."));
     AddWidget(path, "Fix Raised Floor Switches", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("FixFloorSwitches"))
-        .Options(CheckboxOptions().Tooltip(
-            "Fixes the two raised floor switches, the one in Forest Temple Basement and the one at the top of Fire "
-            "Temple. This will lower them, making activating them easier."));
+        .Options(CheckboxOptions().Tooltip("Fixes the two raised floor switches, the one in the Forest Temple basement "
+                                           "and the one at the top of the Fire "
+                                           "Temple. This will lower them, making activating them easier."));
     AddWidget(path, "Fix Zora Hint Dialogue", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("FixZoraHintDialogue"))
         .Options(CheckboxOptions().Tooltip(
@@ -1079,6 +1101,11 @@ void SohMenu::AddMenuEnhancements() {
         .CVar(CVAR_ENHANCEMENT("BushDropFix"))
         .Options(CheckboxOptions().Tooltip(
             "Fixes the bushes to drop items correctly rather than spawning undefined items."));
+    AddWidget(path, "Fix Flex Drops", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("FixFlexDrops"))
+        .Options(CheckboxOptions().Tooltip(
+            "The flex drop gives whichever ammo you are lowest on, but doesn't check that you own the item to hold "
+            "it, so the drop is lost. This makes it skip ammo you can't carry."));
     AddWidget(path, "Fix Enemies not Spawning Near Water", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("EnemySpawnsOverWaterboxes"))
         .Options(CheckboxOptions().Tooltip(
@@ -1099,7 +1126,7 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Fix Goron City Doors After Fire Temple", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("GCDoorsAfterFireFix"))
         .Options(CheckboxOptions().Tooltip(
-            "Forces Goron City doors open if you somehow complete Fire Temple without talking to Goron Link "
+            "Forces Goron City doors open if you somehow complete Fire Temple without talking to Goron Link"
             " and receiving the Goron Tunic."));
 
     AddWidget(path, "Fix MQ Water 1F Lock", WIDGET_CVAR_CHECKBOX)
@@ -1109,8 +1136,8 @@ void SohMenu::AddMenuEnhancements() {
             info.options->disabledTooltip = "This setting is forcefully enabled when you are playing a Randomizer.";
         })
         .Options(CheckboxOptions().Tooltip(
-            "The second small key lock MQ water is removed before the player can reach it by a shared flag with some "
-            "Stalfos on the way to Dark Link.\n"
+            "The second small key lock in MQ Water Temple is removed before the player can reach it by a shared flag "
+            "with some Stalfos on the way to Dark Link.\n"
             "Enabling this will cause that lock to use a different flag, working as intended."));
 
     AddWidget(path, "Item-related Fixes", WIDGET_SEPARATOR_TEXT);
@@ -1207,7 +1234,7 @@ void SohMenu::AddMenuEnhancements() {
         .CVar(CVAR_ENHANCEMENT("FixHammerHand"))
         .RaceDisable(false)
         .Options(CheckboxOptions().Tooltip(
-            "Fixes Adult Link having a backwards Left hand when holding the Megaton Hammer."));
+            "Fixes Adult Link having a backwards left hand when holding the Megaton Hammer."));
     AddWidget(path, "Fix Vanishing Paths", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_ENHANCEMENT("SceneSpecificDirtPathFix"))
         .RaceDisable(false)
@@ -1427,7 +1454,7 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Cuccos Needed By Anju: %d", WIDGET_CVAR_SLIDER_INT)
         .CVar(CVAR_ENHANCEMENT("CuccosToReturn"))
         .Options(IntSliderOptions().Min(0).Max(7).DefaultValue(7).Format("%d").Tooltip(
-            "The amount of cuccos needed to receive bottle from Anju the Cucco Lady."));
+            "The amount of cuccos needed to receive the bottle from Anju the Cucco Lady."));
 
     path.column = SECTION_COLUMN_3;
     AddWidget(path, "Enemies", WIDGET_SEPARATOR_TEXT);
@@ -1513,6 +1540,13 @@ void SohMenu::AddMenuEnhancements() {
                      .DefaultValue(10)
                      .Format("%d bombchus")
                      .Tooltip("The number of Bombchus available at the start of the Bombchu Bowling minigame."));
+    AddWidget(path, "First Prize", WIDGET_CVAR_COMBOBOX)
+        .CVar(CVAR_ENHANCEMENT("BombchuBowlingFirstPrize"))
+        .PreFunc(bombchuBowlingDisabledFunc)
+        .Options(ComboboxOptions()
+                     .ComboMap(bombchuBowlingFirstPrizeOptions)
+                     .DefaultIndex(BOWLING_FIRST_PRIZE_RANDOM)
+                     .Tooltip("The prize the cycle starts on."));
     AddWidget(path, "Horseback Archery", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Customize Behavior##HBA", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("CustomizeHorsebackArchery"))
@@ -1630,7 +1664,7 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Forest Temple", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Solve Amy's Puzzle", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("SkipAmyPuzzle"))
-        .Options(CheckboxOptions().Tooltip("Amy's block pushing puzzle instantly solved."));
+        .Options(CheckboxOptions().Tooltip("Amy's block-pushing puzzle is instantly solved."));
 
     AddWidget(path, "Ingo's Race", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Number of Races", WIDGET_CVAR_COMBOBOX)
@@ -1662,11 +1696,11 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Guarantee Bite", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("GuaranteeFishingBite"))
         .PreFunc(fishingDisabledFunc)
-        .Options(CheckboxOptions().Tooltip("When a line is stable, guarantee bite. Otherwise use Default logic."));
+        .Options(CheckboxOptions().Tooltip("When a line is stable, guarantee a bite. Otherwise use Default logic."));
     AddWidget(path, "Fish never Escape", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("FishNeverEscape"))
         .PreFunc(fishingDisabledFunc)
-        .Options(CheckboxOptions().Tooltip("Once a hook as been set, Fish will never let go while being reeled in."));
+        .Options(CheckboxOptions().Tooltip("Once a hook has been set, Fish will never let go while being reeled in."));
     AddWidget(path, "Loaches always Appear", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("LoachesAlwaysAppear"))
         .PreFunc(fishingDisabledFunc)
@@ -1717,7 +1751,7 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Bounce off Walls", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("BounceOffWalls"))
         .Options(
-            CheckboxOptions().Tooltip("Allows Link to bounce off walls when linear velocity is high enough, this is "
+            CheckboxOptions().Tooltip("Allows Link to bounce off walls when linear velocity is high enough. This is "
                                       "relevant when frequently being knocked back by traps, CC, or in Anchor."));
     AddWidget(path, "Mirrored World", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_ENHANCEMENT("MirroredWorldMode"))
@@ -1745,12 +1779,12 @@ void SohMenu::AddMenuEnhancements() {
         .Options(CheckboxOptions().Tooltip("Allows dogs to follow you anywhere you go, even if you leave the Market."));
     AddWidget(path, "Rupee Dash Mode", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("RupeeDash"))
-        .Options(CheckboxOptions().Tooltip("Rupees reduce over time, Link suffers damage when the count hits 0."));
+        .Options(CheckboxOptions().Tooltip("Rupees reduce over time; Link suffers damage when the count hits 0."));
     AddWidget(path, "Rupee Dash Wallet Scaling", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("RupeeDashScaling"))
         .PreFunc([](WidgetInfo& info) { info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("RupeeDash"), 0) == 0; })
         .Options(CheckboxOptions().DefaultValue(true).Tooltip("The larger Link's wallet, the faster Rupees reduce."));
-    AddWidget(path, "Rupee Dash Interval %d seconds", WIDGET_CVAR_SLIDER_INT)
+    AddWidget(path, "Rupee Dash Interval: %d seconds", WIDGET_CVAR_SLIDER_INT)
         .CVar(CVAR_ENHANCEMENT("RupeeDashInterval"))
         .PreFunc([](WidgetInfo& info) { info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("RupeeDash"), 0) == 0; })
         .Options(IntSliderOptions()
@@ -1818,10 +1852,16 @@ void SohMenu::AddMenuEnhancements() {
         .CVar(CVAR_ENHANCEMENT("ExtraTraps.Kill"))
         .PreFunc(
             [](WidgetInfo& info) { info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0; });
-    AddWidget(path, "Teleport Traps", WIDGET_CVAR_CHECKBOX)
+    AddWidget(path, "Teleport Traps", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_ENHANCEMENT("ExtraTraps.Teleport"))
         .PreFunc(
-            [](WidgetInfo& info) { info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0; });
+            [](WidgetInfo& info) { info.isHidden = CVarGetInteger(CVAR_ENHANCEMENT("ExtraTraps.Enabled"), 0) == 0; })
+        .Options(ComboboxOptions()
+                     .ComboMap(teleportTrapModes)
+                     .DefaultIndex(TELEPORT_TRAP_OFF)
+                     .Tooltip("Where a Teleport Trap can send you. Off keeps them out of the trap pool.\n\n"
+                              "Simple: Link's House and the six warp song pads.\n"
+                              "Advanced: The same pool the randomizer uses when it shuffles spawns and warp songs."));
 
     // Cheats
     path.sidebarName = "Cheats";
@@ -1853,7 +1893,7 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Shield with Two-Handed Weapons", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_CHEAT("ShieldTwoHanded"))
         .Options(CheckboxOptions().Tooltip(
-            "This allows you to put up for shield with any two-handed weapon in hand except for Deku Sticks."));
+            "This allows you to put up your shield with any two-handed weapon in hand except for Deku Sticks."));
     AddWidget(path, "Deku Sticks:", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_CHEAT("DekuStick"))
         .Options(ComboboxOptions().ComboMap(dekuStickCheat).DefaultIndex(DEKU_STICK_NORMAL));

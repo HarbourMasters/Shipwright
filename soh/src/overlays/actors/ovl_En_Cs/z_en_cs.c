@@ -1,7 +1,6 @@
 #include "z_en_cs.h"
 #include "objects/object_cs/object_cs.h"
 #include "objects/object_link_child/object_link_child.h"
-#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY)
 
@@ -162,8 +161,6 @@ void EnCs_Destroy(Actor* thisx, PlayState* play) {
     EnCs* this = (EnCs*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 s32 EnCs_GetTalkState(EnCs* this, PlayState* play) {
