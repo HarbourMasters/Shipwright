@@ -208,9 +208,9 @@ void RegionTable_Init_GerudoFortress() {
         //there's a trick to reach RR_GF_LONG_ROOF
         //For some reason, you take fall damage if you backflip onto the fortress but not onto the sand
         //It's unintuitive to avoid being caught on landing, but that sends you to the same place anyway...
-        ENTRANCE(RR_GF_OUTSKIRTS,           	  ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) || logic->TakeDamage()),
+        ENTRANCE_ROUTES(RR_GF_OUTSKIRTS, ROUTE(ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS)), ROUTE(true, logic->HitCost())),
         ENTRANCE(RR_GF_NEAR_CHEST,          	  logic->CanUse(RG_LONGSHOT)),
-        ENTRANCE(RR_GF_BELOW_CHEST,         	  logic->TakeDamage()),
+        ENTRANCE_ROUTES(RR_GF_BELOW_CHEST, ROUTE(true, logic->HitCost())),
         ENTRANCE(RR_GF_JAIL_WINDOW,         	  logic->CanUse(RG_HOOKSHOT)),
         ENTRANCE(RR_TH_BREAK_ROOM_UPPER_CORRIDOR, true),
         ENTRANCE(RR_GF_TOWER,               	  ctx->GetTrickOption(RT_GF_ADULT_SKIP_WASTELAND_GATE) && logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS) && logic->CanJumpslash() && logic->HasItem(RG_GERUDO_MEMBERSHIP_CARD)),
@@ -269,7 +269,7 @@ void RegionTable_Init_GerudoFortress() {
 
     areaTable[RR_GF_STORMS_GROTTO] = Region("GF Storms Grotto", SCENE_GROTTOS, {
         //Events
-        EVENT_ACCESS(LOGIC_FAIRY_ACCESS, true),
+        FAIRY_REFILL(true),
     }, {
         //Locations
         LOCATION(RC_GF_FAIRY_GROTTO_FAIRY_1, true),

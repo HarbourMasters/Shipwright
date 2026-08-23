@@ -62,7 +62,7 @@ void RegionTable_Init_JabuJabusBelly() {
 
     areaTable[RR_JABU_JABUS_BELLY_B1_JIGGLY] = Region("Jabu Jabus Belly B1 Jiggly", SCENE_JABU_JABU, {
         //Events
-        EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->CanUse(RG_BOOMERANG) || (logic->CanBreakPots() && ctx->GetTrickOption(RT_JABU_B1_CUBE_HOVER) && logic->CanUse(RG_HOVER_BOOTS))),
+        FAIRY_REFILL(logic->CanUse(RG_BOOMERANG) || (logic->CanBreakPots() && ctx->GetTrickOption(RT_JABU_B1_CUBE_HOVER) && logic->CanUse(RG_HOVER_BOOTS))),
     }, {
         //Locations
         LOCATION(RC_JABU_JABUS_BELLY_TWO_OCTOROK_POT_1, logic->CanUse(RG_BOOMERANG) || (logic->CanBreakPots() && ctx->GetTrickOption(RT_JABU_B1_CUBE_HOVER) && logic->CanUse(RG_HOVER_BOOTS))),
@@ -102,7 +102,7 @@ void RegionTable_Init_JabuJabusBelly() {
 
     areaTable[RR_JABU_JABUS_BELLY_WATER_SWITCH_ROOM_LEDGE] = Region("Jabu Jabus Belly Water Switch Room Ledge", SCENE_JABU_JABU, {
         //Events
-        EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->CanBreakPots()),
+        FAIRY_REFILL(logic->CanBreakPots()),
     }, {
         //Locations
         //this is for climbing back and forth to use pots (or ruto) to kill skull...                                                            
@@ -144,7 +144,7 @@ void RegionTable_Init_JabuJabusBelly() {
     // this handles spawning in tentacle
     areaTable[RR_JABU_JABUS_BELLY_TO_FORK_NORTH_WEST] = Region("Jabu Jabus Belly To Fork North West", SCENE_JABU_JABU, {}, {}, {
         //Exits
-        ENTRANCE(RR_JABU_JABUS_BELLY_FORKED_CORRIDOR, logic->Get(LOGIC_JABU_WEST_TENTACLE) || logic->TakeDamage()),
+        ENTRANCE_ROUTES(RR_JABU_JABUS_BELLY_FORKED_CORRIDOR, ROUTE(logic->Get(LOGIC_JABU_WEST_TENTACLE)), ROUTE(true, logic->HitCost())),
         ENTRANCE(RR_JABU_JABUS_BELLY_FORK_NORTH_WEST, logic->Get(LOGIC_JABU_WEST_TENTACLE)),
     });
 
@@ -160,7 +160,7 @@ void RegionTable_Init_JabuJabusBelly() {
     // this handles spawning in tentacle
     areaTable[RR_JABU_JABUS_BELLY_TO_FORK_NORTH] = Region("Jabu Jabus Belly To Fork North", SCENE_JABU_JABU, {}, {}, {
         //Exits
-        ENTRANCE(RR_JABU_JABUS_BELLY_FORKED_CORRIDOR, logic->Get(LOGIC_JABU_EAST_TENTACLE) || logic->TakeDamage()),
+        ENTRANCE_ROUTES(RR_JABU_JABUS_BELLY_FORKED_CORRIDOR, ROUTE(logic->Get(LOGIC_JABU_EAST_TENTACLE)), ROUTE(true, logic->HitCost())),
         ENTRANCE(RR_JABU_JABUS_BELLY_FORK_NORTH,      logic->Get(LOGIC_JABU_EAST_TENTACLE)),
     });
 
@@ -176,7 +176,7 @@ void RegionTable_Init_JabuJabusBelly() {
     // this handles spawning in tentacle
     areaTable[RR_JABU_JABUS_BELLY_TO_FORK_NORTH_EAST] = Region("Jabu Jabus Belly To Fork North East", SCENE_JABU_JABU, {}, {}, {
         //Exits
-        ENTRANCE(RR_JABU_JABUS_BELLY_FORKED_CORRIDOR, logic->Get(LOGIC_JABU_WEST_TENTACLE) || logic->TakeDamage()),
+        ENTRANCE_ROUTES(RR_JABU_JABUS_BELLY_FORKED_CORRIDOR, ROUTE(logic->Get(LOGIC_JABU_WEST_TENTACLE)), ROUTE(true, logic->HitCost())),
         ENTRANCE(RR_JABU_JABUS_BELLY_FORK_NORTH_EAST, logic->Get(LOGIC_JABU_WEST_TENTACLE)),
     });
 
@@ -216,7 +216,7 @@ void RegionTable_Init_JabuJabusBelly() {
 
     areaTable[RR_JABU_JABUS_BELLY_ABOVE_BIGOCTO] = Region("Jabu Jabus Belly Above Big Octo", SCENE_JABU_JABU, {
         //Events
-        EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->CanBreakPots()),
+        FAIRY_REFILL(logic->CanBreakPots()),
         EVENT_ACCESS(LOGIC_NUT_ACCESS,   logic->CanBreakPots()),
     }, {
         //Locations
@@ -226,7 +226,7 @@ void RegionTable_Init_JabuJabusBelly() {
     }, {
         //Exits
         //when spawning above lift elevator is not raise. if elevator taken up access back down is irrelevant
-        ENTRANCE(RR_JABU_JABUS_BELLY_BIGOCTO,       logic->TakeDamage()),
+        ENTRANCE_ROUTES(RR_JABU_JABUS_BELLY_BIGOCTO, ROUTE(true, logic->HitCost())),
         ENTRANCE(RR_JABU_JABUS_BELLY_JIGGLIES_ROOM, true),
     });
 
@@ -411,7 +411,7 @@ void RegionTable_Init_JabuJabusBelly() {
     // this handles spawning in tentacle
     areaTable[RR_JABU_JABUS_BELLY_MQ_TO_FORK_WEST] = Region("Jabu Jabus Belly MQ To Fork West", SCENE_JABU_JABU, {}, {}, {
         //Exits
-        ENTRANCE(RR_JABU_JABUS_BELLY_MQ_FORKED_CORRIDOR, logic->Get(LOGIC_JABU_EAST_TENTACLE) || logic->TakeDamage()),
+        ENTRANCE_ROUTES(RR_JABU_JABUS_BELLY_MQ_FORKED_CORRIDOR, ROUTE(logic->Get(LOGIC_JABU_EAST_TENTACLE)), ROUTE(true, logic->HitCost())),
         ENTRANCE(RR_JABU_JABUS_BELLY_MQ_FORK_WEST,       logic->Get(LOGIC_JABU_EAST_TENTACLE)),
     });
 
@@ -426,7 +426,7 @@ void RegionTable_Init_JabuJabusBelly() {
     // this handles spawning in tentacle
     areaTable[RR_JABU_JABUS_BELLY_MQ_TO_FORK_NORTH_WEST] = Region("Jabu Jabus Belly MQ To Fork North West", SCENE_JABU_JABU, {}, {}, {
         //Exits
-        ENTRANCE(RR_JABU_JABUS_BELLY_MQ_FORKED_CORRIDOR, logic->Get(LOGIC_JABU_EAST_TENTACLE) || logic->TakeDamage()),
+        ENTRANCE_ROUTES(RR_JABU_JABUS_BELLY_MQ_FORKED_CORRIDOR, ROUTE(logic->Get(LOGIC_JABU_EAST_TENTACLE)), ROUTE(true, logic->HitCost())),
         ENTRANCE(RR_JABU_JABUS_BELLY_MQ_FORK_NORTH_WEST, logic->Get(LOGIC_JABU_EAST_TENTACLE)),
     });
 
@@ -502,13 +502,13 @@ void RegionTable_Init_JabuJabusBelly() {
                                                                         && ((logic->IsChild && logic->HasItem(RG_BRONZE_SCALE)) || (logic->IsAdult && logic->CanUse(RG_IRON_BOOTS)))))),
     }, {
         //Exits
-        ENTRANCE(RR_JABU_JABUS_BELLY_MQ_HOLES_BASEMENT, (logic->Get(LOGIC_JABU_NORTH_TENTACLE) || logic->TakeDamage()) && logic->HasItem(RG_BRONZE_SCALE)),
+        ENTRANCE_ROUTES(RR_JABU_JABUS_BELLY_MQ_HOLES_BASEMENT, ROUTE(logic->Get(LOGIC_JABU_NORTH_TENTACLE) && logic->HasItem(RG_BRONZE_SCALE)), ROUTE(logic->HasItem(RG_BRONZE_SCALE), logic->HitCost())),
     });
 
     // unlike other entrances behind tentacles, Link spawns behind the tentacle. Running into it throws him into main room still
     areaTable[RR_JABU_JABUS_BELLY_MQ_TO_BIGOCTO] = Region("Jabu Jabus Belly MQ To Big Octo", SCENE_JABU_JABU, {}, {}, {
         //Exits
-        ENTRANCE(RR_JABU_JABUS_BELLY_MQ_HOLES_BASEMENT,  logic->Get(LOGIC_JABU_WEST_TENTACLE) || logic->TakeDamage()),
+        ENTRANCE_ROUTES(RR_JABU_JABUS_BELLY_MQ_HOLES_BASEMENT, ROUTE(logic->Get(LOGIC_JABU_WEST_TENTACLE)), ROUTE(true, logic->HitCost())),
         ENTRANCE(RR_JABU_JABUS_BELLY_MQ_BIGOCTO,         true),
     });
 
@@ -527,7 +527,7 @@ void RegionTable_Init_JabuJabusBelly() {
     }, {
         //Exits
         ENTRANCE(RR_JABU_JABUS_BELLY_MQ_JIGGLIES_ROOM, true),
-        ENTRANCE(RR_JABU_JABUS_BELLY_MQ_BIGOCTO,       logic->TakeDamage() && AnyAgeTime([]{return logic->CanKillEnemy(RE_BIG_OCTO);})),
+        ENTRANCE_ROUTES(RR_JABU_JABUS_BELLY_MQ_BIGOCTO, ROUTE(AnyAgeTime([]{return logic->CanKillEnemy(RE_BIG_OCTO);}), logic->HitCost())),
     });
 
     areaTable[RR_JABU_JABUS_BELLY_MQ_JIGGLIES_ROOM] = Region("Jabu Jabus Belly MQ Jigglies Room", SCENE_JABU_JABU, {}, {
@@ -564,14 +564,14 @@ void RegionTable_Init_JabuJabusBelly() {
     // this handles spawning in tentacle
     areaTable[RR_JABU_JABUS_BELLY_MQ_TO_NEAR_BOSS_ROOM] = Region("Jabu Jabus Belly MQ To Near Boss Room", SCENE_JABU_JABU, {}, {}, {
         //Exits
-        ENTRANCE(RR_JABU_JABUS_BELLY_MQ_LIFT_ROOM_EAST_LEDGE, logic->Get(LOGIC_JABU_NORTH_TENTACLE) || logic->TakeDamage()),
+        ENTRANCE_ROUTES(RR_JABU_JABUS_BELLY_MQ_LIFT_ROOM_EAST_LEDGE, ROUTE(logic->Get(LOGIC_JABU_NORTH_TENTACLE)), ROUTE(true, logic->HitCost())),
         ENTRANCE(RR_JABU_JABUS_BELLY_MQ_NEAR_BOSS_ROOM,       logic->Get(LOGIC_JABU_NORTH_TENTACLE)),
     });
 
 
     areaTable[RR_JABU_JABUS_BELLY_MQ_NEAR_BOSS_ROOM] = Region("Jabu Jabus Belly MQ Near Boss Room", SCENE_JABU_JABU, {
         //Events
-        EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->CanBreakPots()),
+        FAIRY_REFILL(logic->CanBreakPots()),
     }, {
         //Locations
         LOCATION(RC_JABU_JABUS_BELLY_MQ_NEAR_BOSS_CHEST,                logic->CanUse(RG_FAIRY_SLINGSHOT)),

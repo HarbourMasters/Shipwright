@@ -20,7 +20,7 @@ void RegionTable_Init_SacredForestMeadow() {
 
     areaTable[RR_SFM_ABOVE_MAZE] = Region("SFM Above Maze", SCENE_SACRED_FOREST_MEADOW, {
         //Events
-        EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->CallGossipFairyExceptSuns()),
+        FAIRY_REFILL(logic->CallGossipFairyExceptSuns()),
     }, {
         //Locations
         LOCATION(RC_SFM_GS,                                logic->IsAdult && logic->HookshotOrBoomerang() && logic->CanGetNightTimeGS()),
@@ -39,7 +39,7 @@ void RegionTable_Init_SacredForestMeadow() {
 
     areaTable[RR_SACRED_FOREST_MEADOW] = Region("Sacred Forest Meadow", SCENE_SACRED_FOREST_MEADOW, {
         //Events
-        EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->CallGossipFairyExceptSuns()),
+        FAIRY_REFILL(logic->CallGossipFairyExceptSuns()),
     }, {
         //Locations
         LOCATION(RC_SONG_FROM_SARIA,                  logic->IsChild && logic->Get(LOGIC_MET_ZELDA)),
@@ -69,7 +69,7 @@ void RegionTable_Init_SacredForestMeadow() {
 
     areaTable[RR_SFM_FAIRY_GROTTO] = Region("SFM Fairy Grotto", SCENE_GROTTOS, {
         //Events
-        EVENT_ACCESS(LOGIC_FAIRY_ACCESS, true),
+        FAIRY_REFILL(true),
     }, {
         //Locations
         LOCATION(RC_SFM_FAIRY_GROTTO_FAIRY_1, true),

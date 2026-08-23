@@ -59,8 +59,7 @@ void RegionTable_Init_Kakariko() {
         LOCATION(RC_KAK_NEAR_FENCE_CHILD_CRATE,            logic->IsChild && logic->CanBreakCrates()),
         LOCATION(RC_KAK_NEAR_BOARDING_HOUSE_CHILD_CRATE,   logic->IsChild && logic->CanBreakCrates()),
         LOCATION(RC_KAK_NEAR_BAZAAR_CHILD_CRATE,           logic->IsChild && logic->CanBreakCrates()),
-        LOCATION(RC_KAK_SILVER_BOULDER,                    logic->IsAdult && logic->CanUse(RG_SILVER_GAUNTLETS) && 
-                                                           (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOVER_BOOTS) || (logic->HasItem(RG_LONGSHOT) && ((logic->AtDay && logic->HasItem(RG_POWER_BRACELET)) || (ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) && logic->CanJumpslash() && logic->TakeDamage()))))),
+        LOCATION_ROUTES(RC_KAK_SILVER_BOULDER, ROUTE(logic->IsAdult && logic->CanUse(RG_SILVER_GAUNTLETS) && (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOVER_BOOTS) || (logic->HasItem(RG_LONGSHOT) && (logic->AtDay && logic->HasItem(RG_POWER_BRACELET))))), ROUTE(logic->IsAdult && logic->CanUse(RG_SILVER_GAUNTLETS) && logic->HasItem(RG_LONGSHOT) && ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) && logic->CanJumpslash(), logic->HitCost())),
         LOCATION(RC_KAK_ROCK_1,                            logic->CanBreakRocks()),
         LOCATION(RC_KAK_ROCK_2,                            logic->CanBreakRocks()),
         LOCATION(RC_KAK_TREE,                              logic->CanBonkTrees()),

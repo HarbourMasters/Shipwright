@@ -179,7 +179,7 @@ void RegionTable_Init_ShadowTemple() {
     }, {
         //Exits
         ENTRANCE(RR_SHADOW_TEMPLE_LOWER_HUGE_PIT,       !!ctx->GetTrickOption(RT_VISIBLE_COLLISION)),
-        ENTRANCE(RR_SHADOW_TEMPLE_STONE_UMBRELLA_UPPER, ctx->GetTrickOption(RT_SHADOW_UMBRELLA_CLIP) || (ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->TakeDamage()) || (logic->IsAdult && ((ctx->GetTrickOption(RT_SHADOW_UMBRELLA_HOVER) && logic->CanUse(RG_HOVER_BOOTS)) || logic->HasItem(RG_GORONS_BRACELET)))),
+        ENTRANCE_ROUTES(RR_SHADOW_TEMPLE_STONE_UMBRELLA_UPPER, ROUTE(ctx->GetTrickOption(RT_SHADOW_UMBRELLA_CLIP) || (logic->IsAdult && ((ctx->GetTrickOption(RT_SHADOW_UMBRELLA_HOVER) && logic->CanUse(RG_HOVER_BOOTS)) || logic->HasItem(RG_GORONS_BRACELET)))), ROUTE(ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE), logic->HitCost())),
     });
 
     areaTable[RR_SHADOW_TEMPLE_STONE_UMBRELLA_UPPER] = Region("Shadow Temple Stone Umbrella Upper", SCENE_SHADOW_TEMPLE, {}, {
@@ -221,7 +221,7 @@ void RegionTable_Init_ShadowTemple() {
     }, {
         //Exits
         ENTRANCE(RR_SHADOW_TEMPLE_LOWER_HUGE_PIT_DOOR_LEDGE, logic->SmallKeys(SCENE_SHADOW_TEMPLE, 2)),
-        ENTRANCE(RR_SHADOW_TEMPLE_FLOOR_SPIKES_ROOM,         ctx->GetTrickOption(RT_LENS_SHADOW) || logic->CanUse(RG_LENS_OF_TRUTH) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_GORON_TUNIC) || logic->TakeDamage()),
+        ENTRANCE_ROUTES(RR_SHADOW_TEMPLE_FLOOR_SPIKES_ROOM, ROUTE(ctx->GetTrickOption(RT_LENS_SHADOW) || logic->CanUse(RG_LENS_OF_TRUTH) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_GORON_TUNIC)), ROUTE(true, logic->HitCost())),
     });
 
     //Assumes logic for navigating around spikes is checked on entry
@@ -249,16 +249,16 @@ void RegionTable_Init_ShadowTemple() {
     }, {
         //Exits
         ENTRANCE(RR_SHADOW_TEMPLE_SKULL_JAR,         logic->HasItem(RG_SHADOW_SILVER_SPIKES)),
-        ENTRANCE(RR_SHADOW_TEMPLE_FLOOR_SPIKES_ROOM, ctx->GetTrickOption(RT_LENS_SHADOW) || logic->CanUse(RG_LENS_OF_TRUTH) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_GORON_TUNIC) || logic->TakeDamage()),
+        ENTRANCE_ROUTES(RR_SHADOW_TEMPLE_FLOOR_SPIKES_ROOM, ROUTE(ctx->GetTrickOption(RT_LENS_SHADOW) || logic->CanUse(RG_LENS_OF_TRUTH) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_GORON_TUNIC)), ROUTE(true, logic->HitCost())),
     });
 
     areaTable[RR_SHADOW_TEMPLE_SPIKES_CORNER_PLATFORM] = Region("Shadow Temple Spikes Corner Platform", SCENE_SHADOW_TEMPLE, {}, {
         //Locations
         LOCATION(RC_SHADOW_PLATFORM_SPIKES_SILVER, true),
-        LOCATION(RC_SHADOW_AIRBORNE_SPIKES_SILVER, ctx->GetTrickOption(RT_LENS_SHADOW) || logic->CanUse(RG_LENS_OF_TRUTH) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_GORON_TUNIC) || logic->TakeDamage()),
+        LOCATION_ROUTES(RC_SHADOW_AIRBORNE_SPIKES_SILVER, ROUTE(ctx->GetTrickOption(RT_LENS_SHADOW) || logic->CanUse(RG_LENS_OF_TRUTH) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_GORON_TUNIC)), ROUTE(true, logic->HitCost())),
     }, {
         //Exits
-        ENTRANCE(RR_SHADOW_TEMPLE_FLOOR_SPIKES_ROOM, ctx->GetTrickOption(RT_LENS_SHADOW) || logic->CanUse(RG_LENS_OF_TRUTH) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_GORON_TUNIC) || logic->TakeDamage()),
+        ENTRANCE_ROUTES(RR_SHADOW_TEMPLE_FLOOR_SPIKES_ROOM, ROUTE(ctx->GetTrickOption(RT_LENS_SHADOW) || logic->CanUse(RG_LENS_OF_TRUTH) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_GORON_TUNIC)), ROUTE(true, logic->HitCost())),
     });
 
     areaTable[RR_SHADOW_TEMPLE_SPIKES_DOOR_PLATFORM] = Region("Shadow Temple Spikes Door Platform", SCENE_SHADOW_TEMPLE, {}, {
@@ -266,7 +266,7 @@ void RegionTable_Init_ShadowTemple() {
         LOCATION(RC_SHADOW_AIRBORNE_SPIKES_SILVER, true),
     }, {
         //Exits
-        ENTRANCE(RR_SHADOW_TEMPLE_FLOOR_SPIKES_ROOM,      ctx->GetTrickOption(RT_LENS_SHADOW) || logic->CanUse(RG_LENS_OF_TRUTH) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_GORON_TUNIC) || logic->TakeDamage()),
+        ENTRANCE_ROUTES(RR_SHADOW_TEMPLE_FLOOR_SPIKES_ROOM, ROUTE(ctx->GetTrickOption(RT_LENS_SHADOW) || logic->CanUse(RG_LENS_OF_TRUTH) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_GORON_TUNIC)), ROUTE(true, logic->HitCost())),
         ENTRANCE(RR_SHADOW_TEMPLE_SPIKES_CORNER_PLATFORM, logic->CanUse(RG_HOVER_BOOTS)/* && logic->CanUse(RG_ROLL)*/),
         ENTRANCE(RR_SHADOW_TEMPLE_UPPER_WIND_TUNNEL,      logic->SmallKeys(SCENE_SHADOW_TEMPLE, 3)),
     });
@@ -647,7 +647,7 @@ void RegionTable_Init_ShadowTemple() {
         //Exits
         ENTRANCE(RR_SHADOW_TEMPLE_MQ_LOWER_HUGE_PIT,       AnyAgeTime([]{return ctx->GetTrickOption(RT_VISIBLE_COLLISION) || logic->CanHitSwitch();})),
         //Assuming the known setup for RT_SHADOW_UMBRELLA, probably possible without sword + shield
-        ENTRANCE(RR_SHADOW_TEMPLE_MQ_UPPER_STONE_UMBRELLA, ctx->GetTrickOption(RT_SHADOW_UMBRELLA_CLIP) || (ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->TakeDamage()) || (logic->IsAdult && (logic->HasItem(RG_GORONS_BRACELET) || (ctx->GetTrickOption(RT_SHADOW_UMBRELLA_HOVER) && logic->CanUse(RG_HOVER_BOOTS) && logic->CanStandingShield() && logic->CanUse(RG_MASTER_SWORD))))),
+        ENTRANCE_ROUTES(RR_SHADOW_TEMPLE_MQ_UPPER_STONE_UMBRELLA, ROUTE(ctx->GetTrickOption(RT_SHADOW_UMBRELLA_CLIP) || (logic->IsAdult && (logic->HasItem(RG_GORONS_BRACELET) || (ctx->GetTrickOption(RT_SHADOW_UMBRELLA_HOVER) && logic->CanUse(RG_HOVER_BOOTS) && logic->CanStandingShield() && logic->CanUse(RG_MASTER_SWORD))))), ROUTE(ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE), logic->HitCost())),
     });
 
     areaTable[RR_SHADOW_TEMPLE_MQ_UPPER_STONE_UMBRELLA] = Region("Shadow Temple MQ Upper Stone Umbrella", SCENE_SHADOW_TEMPLE, {}, {
@@ -673,7 +673,7 @@ void RegionTable_Init_ShadowTemple() {
     }, {
         //Exits
         ENTRANCE(RR_SHADOW_TEMPLE_MQ_LOWER_HUGE_PIT,         logic->SmallKeys(SCENE_SHADOW_TEMPLE, 3)),
-        ENTRANCE(RR_SHADOW_TEMPLE_MQ_FLOOR_SPIKES_ROOM,      ctx->GetTrickOption(RT_LENS_SHADOW_MQ) || logic->CanUse(RG_LENS_OF_TRUTH) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_GORON_TUNIC) || logic->TakeDamage()),
+        ENTRANCE_ROUTES(RR_SHADOW_TEMPLE_MQ_FLOOR_SPIKES_ROOM, ROUTE(ctx->GetTrickOption(RT_LENS_SHADOW_MQ) || logic->CanUse(RG_LENS_OF_TRUTH) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_GORON_TUNIC)), ROUTE(true, logic->HitCost())),
         ENTRANCE(RR_SHADOW_TEMPLE_MQ_SPIKES_GLASS_PLATFORMS, logic->HasItem(RG_SHADOW_SILVER_SPIKES) && (ctx->GetTrickOption(RT_LENS_SHADOW_MQ) || logic->CanUse(RG_LENS_OF_TRUTH)) && logic->CanUse(RG_LONGSHOT)),
     });
 
@@ -696,7 +696,7 @@ void RegionTable_Init_ShadowTemple() {
         LOCATION(RC_SHADOW_MQ_CENTRAL_SPIKES_SILVER,         true),
         LOCATION(RC_SHADOW_MQ_CENTRAL_TARGET_SPIKES_SILVER,  logic->CanUse(logic->IsAdult ? RG_HOOKSHOT : RG_LONGSHOT)),
         LOCATION(RC_SHADOW_MQ_S_TARGET_SPIKES_SILVER,        logic->CanUse(logic->IsAdult ? RG_HOOKSHOT : RG_LONGSHOT)),
-        LOCATION(RC_SHADOW_MQ_INSIDE_SPIKES_SILVER,          logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_GORON_TUNIC) || logic->TakeDamage()),
+        LOCATION_ROUTES(RC_SHADOW_MQ_INSIDE_SPIKES_SILVER, ROUTE(logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_GORON_TUNIC)), ROUTE(true, logic->HitCost())),
         LOCATION(RC_SHADOW_MQ_E_TARGET_SPIKES_SILVER,        logic->CanUse(RG_HOOKSHOT)),
     }, {
         //Exits
@@ -720,7 +720,7 @@ void RegionTable_Init_ShadowTemple() {
         LOCATION(RC_SHADOW_MQ_S_TARGET_SPIKES_SILVER,       logic->CanUse(RG_LONGSHOT)),
     }, {
         //Exits
-        ENTRANCE(RR_SHADOW_TEMPLE_MQ_FLOOR_SPIKES_ROOM,      ctx->GetTrickOption(RT_LENS_SHADOW_MQ) || logic->CanUse(RG_LENS_OF_TRUTH) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_GORON_TUNIC) || logic->TakeDamage()),
+        ENTRANCE_ROUTES(RR_SHADOW_TEMPLE_MQ_FLOOR_SPIKES_ROOM, ROUTE(ctx->GetTrickOption(RT_LENS_SHADOW_MQ) || logic->CanUse(RG_LENS_OF_TRUTH) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_GORON_TUNIC)), ROUTE(true, logic->HitCost())),
         ENTRANCE(RR_SHADOW_TEMPLE_MQ_STALFOS_ROOM,           logic->HasItem(RG_SHADOW_SILVER_SPIKES)),
         ENTRANCE(RR_SHADOW_TEMPLE_MQ_SPIKES_GLASS_PLATFORMS, logic->HasItem(RG_SHADOW_SILVER_SPIKES) && logic->CanUse(RG_LONGSHOT)),
     });
@@ -732,7 +732,7 @@ void RegionTable_Init_ShadowTemple() {
         LOCATION(RC_SHADOW_MQ_W_AIRBORNE_SPIKES_SILVER, true),
     }, {
         //Exits
-        ENTRANCE(RR_SHADOW_TEMPLE_MQ_FLOOR_SPIKES_ROOM, ctx->GetTrickOption(RT_LENS_SHADOW_MQ) || logic->CanUse(RG_LENS_OF_TRUTH) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_GORON_TUNIC) || logic->TakeDamage()),
+        ENTRANCE_ROUTES(RR_SHADOW_TEMPLE_MQ_FLOOR_SPIKES_ROOM, ROUTE(ctx->GetTrickOption(RT_LENS_SHADOW_MQ) || logic->CanUse(RG_LENS_OF_TRUTH) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_GORON_TUNIC)), ROUTE(true, logic->HitCost())),
     });
 
     //Assumes SHADOW_SPIKES_SILVER is checked on entry
@@ -746,7 +746,7 @@ void RegionTable_Init_ShadowTemple() {
         LOCATION(RC_SHADOW_MQ_N_TARGET_SPIKES_SILVER,       (ctx->GetTrickOption(RT_LENS_SHADOW_MQ) || logic->CanUse(RG_LENS_OF_TRUTH)) && logic->CanUse(RG_HOOKSHOT)),
     }, {
         //Exits
-        ENTRANCE(RR_SHADOW_TEMPLE_MQ_FLOOR_SPIKES_ROOM,    ctx->GetTrickOption(RT_LENS_SHADOW_MQ) || logic->CanUse(RG_LENS_OF_TRUTH) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_GORON_TUNIC) || logic->TakeDamage()),
+        ENTRANCE_ROUTES(RR_SHADOW_TEMPLE_MQ_FLOOR_SPIKES_ROOM, ROUTE(ctx->GetTrickOption(RT_LENS_SHADOW_MQ) || logic->CanUse(RG_LENS_OF_TRUTH) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_GORON_TUNIC)), ROUTE(true, logic->HitCost())),
         ENTRANCE(RR_SHADOW_TEMPLE_MQ_SPIKES_DOOR_PLATFORM, logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && logic->CanJumpslash())),
     });
 
@@ -768,7 +768,7 @@ void RegionTable_Init_ShadowTemple() {
         LOCATION(RC_SHADOW_MQ_E_AIRBORNE_SPIKES_SILVER,     logic->CanUse(RG_HOVER_BOOTS) || logic->CanJumpslash()),
     }, {
         //Exits
-        ENTRANCE(RR_SHADOW_TEMPLE_MQ_FLOOR_SPIKES_ROOM,      ctx->GetTrickOption(RT_LENS_SHADOW_MQ) || logic->CanUse(RG_LENS_OF_TRUTH) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_GORON_TUNIC) || logic->TakeDamage()),
+        ENTRANCE_ROUTES(RR_SHADOW_TEMPLE_MQ_FLOOR_SPIKES_ROOM, ROUTE(ctx->GetTrickOption(RT_LENS_SHADOW_MQ) || logic->CanUse(RG_LENS_OF_TRUTH) || logic->CanUse(RG_HOVER_BOOTS) || logic->CanUse(RG_GORON_TUNIC)), ROUTE(true, logic->HitCost())),
         ENTRANCE(RR_SHADOW_TEMPLE_MQ_SPIKES_CORNER_PLATFORM, logic->CanUse(RG_HOVER_BOOTS)/* && logic->CanUse(RG_ROLL)*/),
         ENTRANCE(RR_SHADOW_TEMPLE_MQ_SPIKES_GLASS_PLATFORMS, logic->HasItem(RG_SHADOW_SILVER_SPIKES) && (logic->CanUse(RG_HOOKSHOT) || logic->CanUse(RG_HOVER_BOOTS))),
         ENTRANCE(RR_SHADOW_TEMPLE_MQ_UPPER_WIND_TUNNEL,      logic->SmallKeys(SCENE_SHADOW_TEMPLE, 4)),

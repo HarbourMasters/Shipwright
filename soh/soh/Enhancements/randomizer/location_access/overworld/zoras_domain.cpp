@@ -7,7 +7,7 @@ void RegionTable_Init_ZorasDomain() {
     // clang-format off
     areaTable[RR_ZORAS_DOMAIN] = Region("Zoras Domain", SCENE_ZORAS_DOMAIN, {
         //Events
-        EVENT_ACCESS(LOGIC_FAIRY_ACCESS,         logic->CallGossipFairyExceptSuns()),
+        FAIRY_REFILL(logic->CallGossipFairyExceptSuns()),
         EVENT_ACCESS(LOGIC_NUT_ACCESS,           logic->CanBreakPots()),
         EVENT_ACCESS(LOGIC_STICK_ACCESS,         logic->IsChild && logic->CanBreakPots()),
         EVENT_ACCESS(LOGIC_FISH_ACCESS,          logic->IsChild),
@@ -95,7 +95,7 @@ void RegionTable_Init_ZorasDomain() {
 
     areaTable[RR_ZD_STORMS_GROTTO] = Region("ZD Storms Grotto", SCENE_GROTTOS, {
         //Events
-        EVENT_ACCESS(LOGIC_FAIRY_ACCESS, true),
+        FAIRY_REFILL(true),
     }, {
         //Locations
         LOCATION(RC_ZD_FAIRY_GROTTO_FAIRY_1, true),

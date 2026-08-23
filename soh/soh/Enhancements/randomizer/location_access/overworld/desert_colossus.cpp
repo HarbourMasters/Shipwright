@@ -57,7 +57,7 @@ void RegionTable_Init_DesertColossus() {
     //specifically the full oasis, after the fairies have spawned
     areaTable[RR_DESERT_COLOSSUS_OASIS] = Region("Desert Colossus Oasis", SCENE_DESERT_COLOSSUS, {
         //Events
-        EVENT_ACCESS(LOGIC_FAIRY_ACCESS, true),
+        FAIRY_REFILL(true),
     }, {
         //Locations
         LOCATION(RC_COLOSSUS_OASIS_FAIRY_1, true),

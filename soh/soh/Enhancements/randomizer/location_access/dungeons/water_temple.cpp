@@ -108,7 +108,7 @@ void RegionTable_Init_WaterTemple() {
         //Exits
         ENTRANCE(RR_WATER_TEMPLE_MAIN,           true),
         //Implies CanAvoid(RE_STINGERS)
-        ENTRANCE(RR_WATER_TEMPLE_JET_CHEST_ROOM, (logic->CanUse(RG_HOOKSHOT) || (ctx->GetTrickOption(RT_WATER_IRON_BOOTS_LEDGE_GRAB) && logic->HasItem(RG_BRONZE_SCALE) && logic->TakeDamage())) && logic->WaterTimer() >= 48),
+        ENTRANCE_ROUTES(RR_WATER_TEMPLE_JET_CHEST_ROOM, ROUTE(logic->CanUse(RG_HOOKSHOT) && logic->WaterTimer() >= 48), ROUTE(ctx->GetTrickOption(RT_WATER_IRON_BOOTS_LEDGE_GRAB) && logic->HasItem(RG_BRONZE_SCALE) && logic->WaterTimer() >= 48, logic->HitCost())),
         ENTRANCE(RR_WATER_TEMPLE_3F_CENTRAL_H,   logic->CanUse(RG_LONGSHOT) && logic->WaterTimer() >= 40),
     });
 
@@ -319,7 +319,7 @@ void RegionTable_Init_WaterTemple() {
 
     areaTable[RR_WATER_TEMPLE_BOSS_KEY_ROOM] = Region("Water Temple Boss Key Room", SCENE_WATER_TEMPLE, {
         //Events
-        EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->CanBreakPots()),
+        FAIRY_REFILL(logic->CanBreakPots()),
     }, {
         //Locations
         LOCATION(RC_WATER_TEMPLE_BOSS_KEY_CHEST, logic->CanOpenLargeChest()),
@@ -397,7 +397,7 @@ void RegionTable_Init_WaterTemple() {
         EVENT_ACCESS(LOGIC_WATER_COULD_MIDDLE, true),
     }, {
         //Locations
-        LOCATION(RC_WATER_TEMPLE_GS_CENTRAL_PILLAR, logic->CanUse(RG_LONGSHOT);),
+        LOCATION(RC_WATER_TEMPLE_GS_CENTRAL_PILLAR, logic->CanUse(RG_LONGSHOT)),
     }, {
         //Exits
         ENTRANCE(RR_WATER_TEMPLE_2F_CENTRAL_LM, true),
@@ -612,7 +612,7 @@ void RegionTable_Init_WaterTemple() {
 
     areaTable[RR_WATER_TEMPLE_RISING_TARGET_LEDGE] = Region("Water Temple Rising Target Ledge", SCENE_WATER_TEMPLE, {
         //Events
-        EVENT_ACCESS(LOGIC_FAIRY_ACCESS,       logic->CanBreakPots()),
+        FAIRY_REFILL(logic->CanBreakPots()),
         EVENT_ACCESS(LOGIC_WATER_COULD_MIDDLE, logic->WaterRisingTargetTo3FCentral() && (logic->HasFireSourceWithTorch() || logic->CanUse(RG_FAIRY_BOW))),
     }, {
         // Locations
@@ -623,7 +623,7 @@ void RegionTable_Init_WaterTemple() {
         //As you cannot change the water level from here, we must be able to make the drop on any water level
         //Bronze scale does this alone thanks to the nearby pond cancelling fall damage
         //otherwise we need irons for high level and taking damage for low
-        ENTRANCE(RR_WATER_TEMPLE_MAIN,          logic->HasItem(RG_BRONZE_SCALE) || (logic->CanUse(RG_IRON_BOOTS) && logic->TakeDamage())),
+        ENTRANCE_ROUTES(RR_WATER_TEMPLE_MAIN, ROUTE(logic->HasItem(RG_BRONZE_SCALE)), ROUTE(logic->CanUse(RG_IRON_BOOTS), logic->HitCost())),
         ENTRANCE(RR_WATER_TEMPLE_3F_CENTRAL_A,  logic->WaterRisingTargetTo3FCentral()),
         ENTRANCE(RR_WATER_TEMPLE_3F_CENTRAL_H,  logic->WaterRisingTargetTo3FCentral() && logic->WaterLevel(WL_HIGH)),
         ENTRANCE(RR_WATER_TEMPLE_3F_CENTRAL_LM, logic->WaterRisingTargetTo3FCentral() && logic->WaterLevel(WL_LOW_OR_MID)),
@@ -758,7 +758,7 @@ void RegionTable_Init_WaterTemple() {
         //As you cannot change the water level from here, we must be able to make the drop on any water level
         //Bronze scale does this alone thanks to the nearby pond cancelling fall damage
         //otherwise we need irons for high level and taking damage for low
-        ENTRANCE(RR_WATER_TEMPLE_MQ_MAIN,           logic->HasItem(RG_BRONZE_SCALE) || (logic->CanUse(RG_IRON_BOOTS) && logic->TakeDamage())),
+        ENTRANCE_ROUTES(RR_WATER_TEMPLE_MQ_MAIN, ROUTE(logic->HasItem(RG_BRONZE_SCALE)), ROUTE(logic->CanUse(RG_IRON_BOOTS), logic->HitCost())),
         ENTRANCE(RR_WATER_TEMPLE_MQ_3F_CENTRAL_A,   logic->WaterRisingTargetTo3FCentral()),
         ENTRANCE(RR_WATER_TEMPLE_MQ_3F_CENTRAL_H,   logic->WaterRisingTargetTo3FCentral() && logic->WaterLevel(WL_HIGH)),
         ENTRANCE(RR_WATER_TEMPLE_MQ_3F_CENTRAL_LM,  logic->WaterRisingTargetTo3FCentral() && logic->WaterLevel(WL_LOW_OR_MID)),
@@ -780,7 +780,7 @@ void RegionTable_Init_WaterTemple() {
         LOCATION(RC_WATER_BOSS_KEY_HINT, true),
     }, {
         //Exits
-        ENTRANCE(RR_WATER_TEMPLE_MQ_BOSS_DOOR_RAMP, logic->CanUse(RG_ICE_ARROWS) || logic->TakeDamage()),
+        ENTRANCE_ROUTES(RR_WATER_TEMPLE_MQ_BOSS_DOOR_RAMP, ROUTE(logic->CanUse(RG_ICE_ARROWS)), ROUTE(true, logic->HitCost())),
         ENTRANCE(RR_WATER_TEMPLE_BOSS_ENTRYWAY,     true),
     });
 
@@ -1091,7 +1091,7 @@ void RegionTable_Init_WaterTemple() {
     //also includes the suns fairy in the middle
     areaTable[RR_WATER_TEMPLE_MQ_STALFOS_PIT_POTS] = Region("Water Temple MQ Stalfos Pit Pots", SCENE_WATER_TEMPLE, {
         //Events
-        EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->CanBreakPots()),
+        FAIRY_REFILL(logic->CanBreakPots()),
         EVENT_ACCESS(LOGIC_NUT_ACCESS,   logic->CanBreakPots()),
     }, {
         //Locations
@@ -1128,7 +1128,7 @@ void RegionTable_Init_WaterTemple() {
 
     areaTable[RR_WATER_TEMPLE_MQ_GATED_PIT] = Region("Water Temple MQ Gated Pit", SCENE_WATER_TEMPLE, {
         //Events
-        EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->CanBreakPots()),
+        FAIRY_REFILL(logic->CanBreakPots()),
     }, {
         //Locations
         LOCATION(RC_WATER_TEMPLE_MQ_AFTER_DARK_LINK_POT_1,  logic->CanBreakPots()),
@@ -1151,7 +1151,7 @@ void RegionTable_Init_WaterTemple() {
 
     areaTable[RR_WATER_TEMPLE_MQ_RIVER_POTS] = Region("Water Temple MQ River Pots", SCENE_WATER_TEMPLE, {
         //Events
-        EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->CanBreakPots()),
+        FAIRY_REFILL(logic->CanBreakPots()),
     }, {
         //Locations
         LOCATION(RC_WATER_TEMPLE_MQ_RIVER_POT_1, logic->CanBreakPots()),

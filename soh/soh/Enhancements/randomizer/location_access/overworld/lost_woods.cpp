@@ -13,7 +13,7 @@ void RegionTable_Init_LostWoods() {
     areaTable[RR_THE_LOST_WOODS] = Region("Lost Woods", SCENE_LOST_WOODS, {
         //Events
         EVENT_ACCESS(LOGIC_PLANT_LOST_WOODS_BRIDGE_BEAN, CanPlantBean(RG_LOST_WOODS_BRIDGE_BEAN_SOUL)),
-        EVENT_ACCESS(LOGIC_FAIRY_ACCESS,                 logic->IsChild && logic->BeanPlanted(LOGIC_PLANT_LOST_WOODS_BRIDGE_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
+        FAIRY_REFILL(logic->IsChild && logic->BeanPlanted(LOGIC_PLANT_LOST_WOODS_BRIDGE_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
         EVENT_ACCESS(LOGIC_BUG_ACCESS,                   logic->IsChild && logic->CanCutShrubs()),
         EVENT_ACCESS(LOGIC_BORROW_SPOOKY_MASK,           logic->IsChild && logic->Get(LOGIC_BORROW_SKULL_MASK) && logic->CanUse(RG_SARIAS_SONG) && logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_SPEAK_KOKIRI) && logic->HasItem(RG_SPEAK_HYLIAN)),
     }, {
@@ -66,7 +66,7 @@ void RegionTable_Init_LostWoods() {
     
     areaTable[RR_LW_UNDER_BRIDGE] = Region("Lost Woods Under the Bridge", SCENE_LOST_WOODS, {
         //Events
-        EVENT_ACCESS(LOGIC_FAIRY_ACCESS,       logic->CallGossipFairyExceptSuns()),
+        FAIRY_REFILL(logic->CallGossipFairyExceptSuns()),
     }, {
         //Locations
         LOCATION(RC_LW_DEKU_SCRUB_NEAR_BRIDGE, logic->IsChild && logic->CanStunDeku() && logic->HasItem(RG_SPEAK_DEKU) && GetCheckPrice() <= GetWalletCapacity()),
@@ -82,7 +82,7 @@ void RegionTable_Init_LostWoods() {
     areaTable[RR_LW_BEYOND_MIDO] = Region("LW Beyond Mido", SCENE_LOST_WOODS, {
         //Events
         EVENT_ACCESS(LOGIC_PLANT_LOST_WOODS_THEATER_BEAN, CanPlantBean(RG_LOST_WOODS_BEAN_SOUL)),
-        EVENT_ACCESS(LOGIC_FAIRY_ACCESS,                  logic->CanUse(RG_STICKS) || (logic->IsChild && logic->BeanPlanted(LOGIC_PLANT_LOST_WOODS_THEATER_BEAN) && logic->CanUse(RG_SONG_OF_STORMS))),
+        FAIRY_REFILL(logic->CanUse(RG_STICKS) || (logic->IsChild && logic->BeanPlanted(LOGIC_PLANT_LOST_WOODS_THEATER_BEAN) && logic->CanUse(RG_SONG_OF_STORMS))),
     }, {
         //Locations
         LOCATION(RC_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_RIGHT, logic->IsChild && logic->CanStunDeku() && logic->HasItem(RG_SPEAK_DEKU) && GetCheckPrice() <= GetWalletCapacity()),

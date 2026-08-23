@@ -8,7 +8,7 @@ void RegionTable_Init_Graveyard() {
     areaTable[RR_THE_GRAVEYARD] = Region("The Graveyard", SCENE_GRAVEYARD, {
         //Events
         EVENT_ACCESS(LOGIC_PLANT_GRAVEYARD_BEAN, CanPlantBean(RG_GRAVEYARD_BEAN_SOUL)),
-        EVENT_ACCESS(LOGIC_FAIRY_ACCESS,         (logic->AtDay && logic->CanUse(RG_STICKS)) || (logic->IsChild && logic->BeanPlanted(LOGIC_PLANT_GRAVEYARD_BEAN) && logic->CanUse(RG_SONG_OF_STORMS))),
+        FAIRY_REFILL((logic->AtDay && logic->CanUse(RG_STICKS)) || (logic->IsChild && logic->BeanPlanted(LOGIC_PLANT_GRAVEYARD_BEAN) && logic->CanUse(RG_SONG_OF_STORMS))),
         EVENT_ACCESS(LOGIC_BUG_ACCESS,           logic->HasItem(RG_POWER_BRACELET)),
         EVENT_ACCESS(LOGIC_BORROW_BUNNY_HOOD,    logic->IsChild && logic->AtDay && logic->Get(LOGIC_BORROW_SPOOKY_MASK) && logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_SPEAK_HYLIAN)),
     }, {
@@ -145,7 +145,7 @@ void RegionTable_Init_Graveyard() {
 
     areaTable[RR_GRAVEYARD_WARP_PAD_REGION] = Region("Graveyard Warp Pad Region", SCENE_GRAVEYARD, {
         //Events
-        EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->CallGossipFairyExceptSuns()),
+        FAIRY_REFILL(logic->CallGossipFairyExceptSuns()),
     }, {
         //Locations
         LOCATION(RC_GRAVEYARD_GOSSIP_STONE_FAIRY,     logic->CallGossipFairyExceptSuns()),

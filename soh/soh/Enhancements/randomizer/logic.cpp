@@ -676,7 +676,8 @@ bool Logic::CanUse(RandomizerGet itemName) {
         case RG_BOTTLE_WITH_BLUE_FIRE:
             return Get(LOGIC_BLUE_FIRE_ACCESS);
         case RG_BOTTLE_WITH_FAIRY:
-            return Get(LOGIC_FAIRY_ACCESS);
+            // Fairies are a path resource, picked up where they can be bottled and spent on the way
+            return PathFairies > 0;
 
         case RG_FAIRY_OCARINA:
         case RG_OCARINA_OF_TIME:
@@ -1446,6 +1447,12 @@ bool Logic::HasBottle() {
     return BottleCount() >= 1;
 }
 
+// Die mid hookshot and let the bottled fairy revive you, keeping the pull's momentum to be
+// launched much further than a normal jump. The fairy itself is charged as a path cost.
+bool Logic::CanHookshotJump() {
+    return ctx->GetTrickOption(RT_HOOKSHOT_JUMP) && CanUse(RG_HOOKSHOT);
+}
+
 bool Logic::CanUseSword() {
     return CanUse(RG_KOKIRI_SWORD) || CanUse(RG_MASTER_SWORD) || CanUse(RG_BIGGORON_SWORD);
 }
@@ -1646,7 +1653,12 @@ uint16_t Logic::Health() {
     return GetSaveContext()->healthCapacity;
 }
 
-// Our health pool in OoT health units (16 per heart), scaled by how much damage taking a hit costs us
+// What is left of our health after what this path already spent, in OoT health units (16 per heart)
+uint16_t Logic::HealthLeft() {
+    return Health() > PathDamage ? Health() - PathDamage : 0;
+}
+
+// The health we have left, scaled by how much damage taking a hit costs us
 uint16_t Logic::EffectiveHealth() {
     uint8_t Multiplier = ctx->GetOption(RSK_DAMAGE_MULTIPLIER).Get();
     // any damage at all is lethal on OHKO
@@ -1655,7 +1667,7 @@ uint16_t Logic::EffectiveHealth() {
     }
     // Double defense halves the damage we take, which is the same as doubling the health it has to chew through.
     // The extra shift up cancels out the -1 in the multiplier's exponent.
-    uint32_t health = Health() << (1 + HasItem(RG_DOUBLE_DEFENSE));
+    uint32_t health = HealthLeft() << (1 + HasItem(RG_DOUBLE_DEFENSE));
     // round up, as damage that leaves us on exactly 0 health still kills
     return (health + (1 << Multiplier) - 1) >> Multiplier;
 }
@@ -1686,11 +1698,20 @@ uint8_t Logic::MedallionCount() {
            HasItem(RG_SPIRIT_MEDALLION) + HasItem(RG_SHADOW_MEDALLION) + HasItem(RG_LIGHT_MEDALLION);
 }
 
+// Seconds of hot room we can survive on the path we are currently on.
+// The game seeds the timer with floor(health/2) seconds, and only starts it while health is above 1.
+// The timer does no damage, it kills outright at zero, so health is simply how long we last,
+// and a sixteenth of a heart means no timer at all.
+// Fewer tunic requirements takes the game's full health / 2, otherwise health / 3 leaves slack.
 uint16_t Logic::FireTimer() {
     if (CanUse(RG_GORON_TUNIC)) {
         return UINT16_MAX;
     }
-    return ctx->GetTrickOption(RT_FEWER_TUNIC_REQUIREMENTS) ? Health() / 2 : 0;
+    uint16_t remaining = HealthLeft();
+    if (remaining <= 1) {
+        return UINT16_MAX;
+    }
+    return remaining / (ctx->GetTrickOption(RT_FEWER_TUNIC_REQUIREMENTS) ? 2 : 3);
 }
 
 // Tunic is not required if you are using irons to do something that a simple gold scale dive could do, and you are not
@@ -1702,20 +1723,61 @@ uint16_t Logic::WaterTimer() {
     return ctx->GetTrickOption(RT_FEWER_TUNIC_REQUIREMENTS) ? Health() / 2 : 0;
 }
 
+// What one ordinary hit takes off, in OoT health units. Half a heart at default damage, scaled the
+// same way EffectiveHealth scales the pool it comes out of.
+uint16_t Logic::HitDamage() {
+    uint8_t multiplier = ctx->GetOption(RSK_DAMAGE_MULTIPLIER).Get();
+    // Any damage at all is lethal on OHKO, so no amount of health covers a hit
+    if (multiplier >= RO_DAMAGE_MULTIPLIER_OHKO) {
+        return UINT16_MAX;
+    }
+    return ((FULL_HEART_HEALTH / 2) << multiplier) >> (1 + HasItem(RG_DOUBLE_DEFENSE));
+}
+
+// What taking one hit costs the path. Nayru's Love eats it outright, otherwise it comes out of
+// health, and when that much health would kill us, out of a bottled fairy, which revives and heals.
+Cost Logic::HitCost() {
+    if (CanUse(RG_NAYRUS_LOVE)) {
+        return Cost();
+    }
+    uint16_t hit = HitDamage();
+    if (hit < HealthLeft()) {
+        return Cost().Damage(hit);
+    }
+    if (PathFairies > 0) {
+        return Cost().Fairies();
+    }
+    return Cost().Unpayable();
+}
+
 bool Logic::TakeDamage() {
-    return CanUse(RG_BOTTLE_WITH_FAIRY) || EffectiveHealth() > 8 || CanUse(RG_NAYRUS_LOVE);
+    return HitCost().payable;
 }
 
 // Voiding out, be it swimming too far or falling in a pit, costs a heart.
 // Void damage skips damage multiplier, but double defense still halves it & OHKO still kills.
 bool Logic::CanVoid() {
-    if (HasItem(RG_BOTTLE_WITH_FAIRY)) {
+    if (PathDamage == 0 && CanUse(RG_BOTTLE_WITH_FAIRY)) {
         return true;
     }
     if (ctx->GetOption(RSK_DAMAGE_MULTIPLIER).Is(RO_DAMAGE_MULTIPLIER_OHKO)) {
         return false;
     }
-    return Health() > (FULL_HEART_HEALTH >> (HasItem(RG_DOUBLE_DEFENSE) ? 1 : 0));
+    return HealthLeft() > (FULL_HEART_HEALTH >> (HasItem(RG_DOUBLE_DEFENSE) ? 1 : 0));
+}
+
+bool Logic::CanBurnToOne() {
+    if (!ctx->GetTrickOption(RT_ONE_HEALTH_TIMER)) {
+        return false;
+    }
+    switch (ctx->GetOption(RSK_DAMAGE_MULTIPLIER).Get()) {
+        case RO_DAMAGE_MULTIPLIER_DEFAULT:
+            return true;
+        case RO_DAMAGE_MULTIPLIER_DOUBLE:
+            return HasItem(RG_DOUBLE_DEFENSE);
+        default:
+            return false;
+    }
 }
 
 bool Logic::CanOpenBombGrotto() {
@@ -2908,25 +2970,6 @@ bool Logic::IsReverseAccessPossible() {
              (ctx->GetOption(RSK_MIX_OVERWORLD_ENTRANCES) || ctx->GetOption(RSK_MIX_INTERIOR_ENTRANCES))));
 }
 
-bool Logic::DMCUpperToPots() {
-    return CanUse(RG_HOVER_BOOTS) || (IsAdult && ((Get(LOGIC_DMC_BOULDER)) ||
-                                                  (ctx->GetTrickOption(RT_DMC_BOULDER_SKIP) /* && CanUse(RG_ROLL)*/)));
-}
-
-bool Logic::DMCPotsToPad() {
-    return (CanUse(RG_HOVER_BOOTS) || CanUse(RG_HOOKSHOT) ||
-            (IsAdult && CanShield() && ctx->GetTrickOption(RT_DMC_BOLERO_JUMP) && CanUse(RG_POWER_BRACELET)));
-}
-
-bool Logic::DMCPadToPots() {
-    return ((CanUse(RG_HOVER_BOOTS) && (IsAdult || (HasItem(RG_CLIMB) /*&& CanUse(RG_ROLL)*/))) || CanUse(RG_HOOKSHOT));
-}
-
-// via scarecrow
-bool Logic::DMCUpperToPad() {
-    return IsAdult && TakeDamage() && ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) && ReachDistantScarecrow();
-}
-
 bool Logic::SpiritExplosiveKeyLogic() {
     return SmallKeys(SCENE_SPIRIT_TEMPLE, HasExplosives() ? 1 : 2);
 }
@@ -3024,6 +3067,10 @@ void Logic::Reset(bool resetSaveContext /*= true*/) {
     }
     StartPerformanceTimer(PT_LOGIC_RESET);
     memset(inLogic, false, sizeof(inLogic));
+
+    PathHeat = 0;
+    PathDamage = 0;
+    PathFairies = 0;
 
     if (resetSaveContext) {
         // Ocarina C Buttons

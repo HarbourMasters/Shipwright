@@ -7,7 +7,7 @@ void RegionTable_Init_GoronCity() {
     // clang-format off
     areaTable[RR_GORON_CITY] = Region("Goron City", SCENE_GORON_CITY, {
         //Events
-        EVENT_ACCESS(LOGIC_FAIRY_ACCESS,                           logic->CallGossipFairyExceptSuns()),
+        FAIRY_REFILL(logic->CallGossipFairyExceptSuns()),
         EVENT_ACCESS(LOGIC_STICK_ACCESS,                           logic->IsChild && logic->CanBreakPots()),
         EVENT_ACCESS(LOGIC_BUG_ACCESS,                             (logic->BlastOrSmash() && logic->HasItem(RG_POWER_BRACELET)) || logic->CanUse(RG_SILVER_GAUNTLETS)),
         EVENT_ACCESS(LOGIC_GORON_CITY_CHILD_FIRE,                  logic->IsChild && logic->CanUse(RG_DINS_FIRE)),
@@ -134,7 +134,7 @@ void RegionTable_Init_GoronCity() {
     }, {
         //Exits
         ENTRANCE(RR_GORON_CITY,      true),
-        ENTRANCE(RR_DMC_POTS_ENTRY,  logic->IsAdult && logic->HasItem(RG_POWER_BRACELET)),
+        ENTRANCE(RR_DMC_POTS,  logic->IsAdult && logic->HasItem(RG_POWER_BRACELET)),
     });
 
     areaTable[RR_GC_GROTTO_PLATFORM] = Region("GC Grotto Platform", SCENE_GORON_CITY, {}, {}, {

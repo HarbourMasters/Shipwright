@@ -3,6 +3,40 @@
 #include "SeedContext.h"
 #include <stdint.h>
 
+// What crossing something spends. The setters chain, so a shortcut worth sixteen seconds of heat
+// and a bottled fairy is Cost().Heat(16).Fairies(1). Another resource is a field and a setter
+// here, rather than another macro at every place a cost can be written.
+struct Cost {
+    // Seconds of hazard exposure
+    uint16_t heat = 0;
+    // Health units spent on purpose
+    uint16_t damage = 0;
+    // Bottled fairies drunk, which also puts back the health the path spent before
+    uint8_t fairies = 0;
+    // Nothing the path could be carrying pays for this
+    bool payable = true;
+
+    Cost& Heat(uint16_t seconds) {
+        heat += seconds;
+        return *this;
+    }
+
+    Cost& Damage(uint16_t health) {
+        damage += health;
+        return *this;
+    }
+
+    Cost& Fairies(uint8_t count = 1) {
+        fairies += count;
+        return *this;
+    }
+
+    Cost& Unpayable() {
+        payable = false;
+        return *this;
+    }
+};
+
 namespace Rando {
 
 enum class HasProjectileAge {
@@ -30,6 +64,14 @@ class Logic {
     bool AtNight = false;
     RandomizerRegion CurrentRegionKey = RR_NONE;
     RandomizerCheck CurrentCheckKey = RC_UNKNOWN_CHECK;
+
+    // Resources spent on search's current path
+    // Seconds spent in hot regions since the last cool one.
+    uint16_t PathHeat = 0;
+    // Health units spent since the last heal.
+    uint16_t PathDamage = 0;
+    // Bottled fairies the path is still carrying.
+    uint8_t PathFairies = 0;
 
     bool CalculatingAvailableChecks = false;
     bool ACProcessUndiscoveredExits = false;
@@ -66,6 +108,7 @@ class Logic {
     bool WaterRisingTargetTo3FCentral();
     bool WaterLevel(RandoWaterLevel level);
     uint8_t BottleCount();
+    bool CanHookshotJump();
     uint8_t OcarinaButtons();
     bool HasBottle();
     bool CanUseSword();
@@ -90,14 +133,18 @@ class Logic {
     bool CallGossipFairy();
     bool CallGossipFairyExceptSuns();
     uint16_t Health();
+    uint16_t HealthLeft();
     uint16_t EffectiveHealth();
     uint8_t StoneCount();
     uint8_t MedallionCount();
     uint8_t DungeonCount();
     uint16_t FireTimer();
     uint16_t WaterTimer();
+    uint16_t HitDamage();
+    Cost HitCost();
     bool TakeDamage();
     bool CanVoid();
+    bool CanBurnToOne();
     bool CanOpenBombGrotto();
     bool CanOpenStormsGrotto();
     bool CanGetNightTimeGS();
@@ -159,10 +206,6 @@ class Logic {
     static std::map<uint32_t, SceneID> RandoGetToDungeonScene;
     static std::map<RandomizerGet, uint32_t> RandoGetToEquipFlag;
     bool IsReverseAccessPossible();
-    bool DMCUpperToPots();
-    bool DMCPotsToPad();
-    bool DMCPadToPots();
-    bool DMCUpperToPad();
     bool SpiritEastToSwitch();
     bool SpiritWestToSkull();
     bool SpiritSunBlockSouthLedge();

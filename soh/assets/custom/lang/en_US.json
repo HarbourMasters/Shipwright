@@ -84,11 +84,11 @@
             "fewer_tunic_requirements": {
                 "name": "Fewer Tunic Requirements",
                 "description": [
-                    "Normally the only hot area logic expects you to navigate without a Goron Tunic is Death Mountain Crater\n",
+                    "Without a Goron Tunic, hot rooms are logically worth a third of your health in seconds,\n",
                     "and you are not expected to navigate underwater sections without a Zora Tunic.\n\n",
-                    "With this trick you are expected to do any underwater area except Central Pillar,\n",
-                    "any hot area except Volvagia and the Block lift room in Fire Temple\n",
-                    "and the health needed to logically navigate Crater is decreased."
+                    "With this trick hot rooms are worth the game's own timer, half your health in seconds,\n",
+                    "and you are expected to do any underwater area except Central Pillar.\n",
+                    "Volvagia still requires goron tunic as fight logically outlasts 20 hearts."
                 ]
             },
             "unintuitive_jumps": {
@@ -145,6 +145,10 @@
             "open_underwater_chest": {
                 "name": "Open Underwater Chests",
                 "description": "Underwater chests can be opened by wearing iron boots and hookshotting the chest."
+            },
+            "one_health": {
+                "name": "One Sixteenth Timer Glitch",
+                "description": "At 1/16th heart the heat timer will not take effect. This trick enables leveraging that to bypass heat rooms"
             },
             "boulder_collision": {
                 "name": "Flawed Boulder Collision",

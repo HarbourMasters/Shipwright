@@ -1557,9 +1557,6 @@ void Settings::CreateOptions() {
     // OPT_TRICK(RT_BLANK_A, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL,
     // Tricks::Tag::GLITCH });
 
-    // OPT_TRICK(RT_DOOM_JUMP, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL,
-    // Tricks::Tag::GLITCH });
-
     // OPT_TRICK(RT_EPG, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL,
     // Tricks::Tag::GLITCH});
 
@@ -1581,17 +1578,17 @@ void Settings::CreateOptions() {
     // OPT_TRICK(RT_HOOKSHOT_CLIP, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL,
     // Tricks::Tag::GLITCH });
 
-    // OPT_TRICK(RT_HOOKSHOT_JUMP, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL,
-    // Tricks::Tag::GLITCH });
-
     // OPT_TRICK(RT_ISG, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL,
     // Tricks::Tag::GLITCH});
 
     OPT_TRICK(RT_VISIBLE_COLLISION, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE }, "VisCol");
     OPT_TRICK(RT_GROTTOS_WITHOUT_AGONY, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE }, "NoSoA");
     OPT_TRICK(RT_FEWER_TUNIC_REQUIREMENTS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::INTERMEDIATE }, "FTR");
+    OPT_TRICK(RT_ONE_HEALTH_TIMER, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::GLITCH }, "1HT");
     OPT_TRICK(RT_UNINTUITIVE_JUMPS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE }, "UnJmp");
     OPT_TRICK(RT_FIRE_RINGS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::INTERMEDIATE }, "FlaChst");
+    OPT_TRICK(RT_HOOKSHOT_JUMP, RCQUEST_BOTH, RA_DODONGOS_CAVERN, { Tricks::Tag::ADVANCED, Tricks::Tag::GLITCH },
+              "HsJmp");
 
     // disabled for now, can't check for being able to use bunny hood & bunny hood speedup is currently completely
     // decoupled from rando

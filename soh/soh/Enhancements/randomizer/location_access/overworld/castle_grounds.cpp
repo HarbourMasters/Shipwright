@@ -23,7 +23,7 @@ void RegionTable_Init_CastleGrounds() {
 
     areaTable[RR_HC_GATE] = Region("Hyrule Castle Gate", SCENE_HYRULE_CASTLE, {
         //Events
-        EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->CallGossipFairy() || logic->CanUse(RG_STICKS)),
+        FAIRY_REFILL(logic->CallGossipFairy() || logic->CanUse(RG_STICKS)),
         EVENT_ACCESS(LOGIC_BUG_ACCESS,   logic->HasItem(RG_POWER_BRACELET)),
         EVENT_ACCESS(LOGIC_MALON_RETURNED_FROM_CASTLE, logic->Get(LOGIC_TALON_RETURNED_FROM_CASTLE) && logic->HasItem(RG_SPEAK_HYLIAN)),
     }, {
@@ -43,7 +43,7 @@ void RegionTable_Init_CastleGrounds() {
 
     areaTable[RR_HC_ABOVE_VINE] = Region("Hyrule Castle Above Vine", SCENE_HYRULE_CASTLE, {
         //Events
-        EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->CallGossipFairy()),
+        FAIRY_REFILL(logic->CallGossipFairy()),
     }, {
         //Locations
         LOCATION(RC_HC_MALON_GOSSIP_STONE_FAIRY,     logic->CallGossipFairy()),
@@ -57,7 +57,7 @@ void RegionTable_Init_CastleGrounds() {
 
     areaTable[RR_HC_PAST_GATE] = Region("Hyrule Castle Past Gate", SCENE_HYRULE_CASTLE, {
         //Events
-        EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->CanUse(RG_STICKS)),
+        FAIRY_REFILL(logic->CanUse(RG_STICKS)),
     }, {
         //Locations
         LOCATION(RC_HC_BOULDER,                           logic->BlastOrSmash()),
@@ -84,7 +84,7 @@ void RegionTable_Init_CastleGrounds() {
 
     areaTable[RR_HC_ABOVE_CLIMBABLE_ROCKS] = Region("Hyrule Castle Above Climbable Rocks", SCENE_HYRULE_CASTLE, {
         //Events
-        EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->CallGossipFairy()),
+        FAIRY_REFILL(logic->CallGossipFairy()),
     }, {
         //Locations
         LOCATION(RC_HC_ROCK_WALL_GOSSIP_STONE,           true),
@@ -120,8 +120,7 @@ void RegionTable_Init_CastleGrounds() {
         //Exits
         ENTRANCE(RR_HC_GATE,          true),
         ENTRANCE(RR_HC_STORMS_GROTTO, logic->CanOpenStormsGrotto()),
-        ENTRANCE(RR_HC_DRAIN_LEDGE,   (logic->Get(LOGIC_TALON_RETURNED_FROM_CASTLE) && logic->HasItem(RG_POWER_BRACELET)) ||
-                                      (ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->TakeDamage() && logic->HasExplosives() && logic->CanJumpslash())),
+        ENTRANCE_ROUTES(RR_HC_DRAIN_LEDGE, ROUTE(logic->Get(LOGIC_TALON_RETURNED_FROM_CASTLE) && logic->HasItem(RG_POWER_BRACELET)), ROUTE(ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives() && logic->CanJumpslash(), logic->HitCost())),
     });
 
     areaTable[RR_HC_DRAIN_LEDGE] = Region("Hyrule Castle Drain Ledge", SCENE_HYRULE_CASTLE, {}, {}, {
@@ -164,7 +163,7 @@ void RegionTable_Init_CastleGrounds() {
     areaTable[RR_HC_STORMS_GROTTO_BEHIND_WALLS] = Region("HC Storms Grotto Behind Walls", SCENE_GROTTOS, {
         //Events
         EVENT_ACCESS(LOGIC_NUT_ACCESS,   logic->CanBreakPots()),
-        EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->CallGossipFairy()),
+        FAIRY_REFILL(logic->CallGossipFairy()),
         EVENT_ACCESS(LOGIC_BUG_ACCESS,   true), // wandering bugs
     }, {
         //Locations

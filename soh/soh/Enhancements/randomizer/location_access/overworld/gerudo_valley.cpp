@@ -30,7 +30,7 @@ void RegionTable_Init_GerudoValley() {
     }, {
         //Exits
         ENTRANCE(RR_HYRULE_FIELD,          true),
-        ENTRANCE(RR_GV_UPPER_STREAM,       (logic->IsChild && logic->HasItem(RG_POWER_BRACELET)) || logic->TakeDamage()),
+        ENTRANCE_ROUTES(RR_GV_UPPER_STREAM, ROUTE(logic->IsChild && logic->HasItem(RG_POWER_BRACELET)), ROUTE(true, logic->HitCost())),
         ENTRANCE(RR_GV_UPPER_STREAM_WATER, true),
         ENTRANCE(RR_GV_CRATE_LEDGE,        (logic->IsChild && logic->HasItem(RG_POWER_BRACELET)) || logic->CanUse(RG_LONGSHOT)),
         ENTRANCE(RR_GV_GROTTO_LEDGE,       true),
@@ -43,7 +43,7 @@ void RegionTable_Init_GerudoValley() {
     areaTable[RR_GV_UPPER_STREAM] = Region("GV Upper Stream", SCENE_GERUDO_VALLEY, {
         //Events
         EVENT_ACCESS(LOGIC_PLANT_GERUDO_VALLEY_BEAN, CanPlantBean(RG_GERUDO_VALLEY_BEAN_SOUL)),
-        EVENT_ACCESS(LOGIC_FAIRY_ACCESS,             logic->CallGossipFairy() || (logic->IsChild && logic->BeanPlanted(LOGIC_PLANT_GERUDO_VALLEY_BEAN) && logic->CanUse(RG_SONG_OF_STORMS))),
+        FAIRY_REFILL(logic->CallGossipFairy() || (logic->IsChild && logic->BeanPlanted(LOGIC_PLANT_GERUDO_VALLEY_BEAN) && logic->CanUse(RG_SONG_OF_STORMS))),
     }, {
         //Locations
         LOCATION(RC_GV_GS_BEAN_PATCH,          logic->CanSpawnSoilSkull(RG_GERUDO_VALLEY_BEAN_SOUL) && logic->CanAttack()),
@@ -91,7 +91,7 @@ void RegionTable_Init_GerudoValley() {
         LOCATION(RC_GV_SILVER_BOULDER, logic->CanUse(RG_SILVER_GAUNTLETS)),
     }, {
         //Exits
-        ENTRANCE(RR_GV_UPPER_STREAM,   ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives() && logic->TakeDamage()),
+        ENTRANCE_ROUTES(RR_GV_UPPER_STREAM, ROUTE(ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives(), logic->HitCost())),
         ENTRANCE(RR_GV_LOWER_STREAM,   logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS)),
         ENTRANCE(RR_GV_OCTOROK_GROTTO, logic->CanUse(RG_SILVER_GAUNTLETS)),
         ENTRANCE(RR_GV_CRATE_LEDGE,    logic->CanUse(RG_LONGSHOT)),
@@ -103,7 +103,7 @@ void RegionTable_Init_GerudoValley() {
         LOCATION(RC_GV_FREESTANDING_POH_CRATE, logic->CanBreakCrates()),
     }, {
         //Exits
-        ENTRANCE(RR_GV_UPPER_STREAM, ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives() && logic->TakeDamage()),
+        ENTRANCE_ROUTES(RR_GV_UPPER_STREAM, ROUTE(ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives(), logic->HitCost())),
         ENTRANCE(RR_GV_LOWER_STREAM, logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS)),
     });
 
@@ -131,12 +131,12 @@ void RegionTable_Init_GerudoValley() {
     }, {
         //Exits
         ENTRANCE(RR_GF_OUTSKIRTS,          true),
-        ENTRANCE(RR_GV_UPPER_STREAM,       logic->TakeDamage()),
+        ENTRANCE_ROUTES(RR_GV_UPPER_STREAM, ROUTE(true, logic->HitCost())),
         ENTRANCE(RR_GV_UPPER_STREAM_WATER, true),
         ENTRANCE(RR_GERUDO_VALLEY,         logic->IsChild || logic->SummonEpona() || logic->CanUse(RG_LONGSHOT) || ctx->GetOption(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE) || logic->Get(LOGIC_TH_RESCUED_ALL_CARPENTERS) || (ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && logic->CanUse(RG_MEGATON_HAMMER) && logic->CanUse(RG_HOVER_BOOTS))),
         ENTRANCE(RR_GV_CARPENTER_TENT,     logic->IsAdult || ctx->GetTrickOption(RT_GV_CHILD_TENT)),
         ENTRANCE(RR_GV_STORMS_GROTTO,      logic->IsAdult && logic->CanOpenStormsGrotto()),
-        ENTRANCE(RR_GV_CRATE_LEDGE,        (ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives()) || (ctx->GetTrickOption(RT_GV_CRATE_HOVERS) && logic->TakeDamage() && logic->CanUse(RG_HOVER_BOOTS) && (logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD)))),
+        ENTRANCE_ROUTES(RR_GV_CRATE_LEDGE, ROUTE(ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives()), ROUTE(ctx->GetTrickOption(RT_GV_CRATE_HOVERS) && logic->CanUse(RG_HOVER_BOOTS) && (logic->CanUse(RG_MASTER_SWORD) || logic->CanUse(RG_BIGGORON_SWORD)), logic->HitCost())),
     });
 
     areaTable[RR_GV_CARPENTER_TENT] = Region("GV Carpenter Tent", SCENE_CARPENTERS_TENT, {}, {}, {

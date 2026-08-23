@@ -69,13 +69,97 @@ static void PropagateTimeTravel(GetAccessibleLocationsStruct& gals, RandomizerGe
                 ->Child()) { // RANDOTODO: sphere weirdness, other age locations not propagated in this sphere
             RegionTable(RR_ROOT)->adultDay = RegionTable(RR_TOT_BEYOND_DOOR_OF_TIME)->childDay;
             RegionTable(RR_ROOT)->adultNight = RegionTable(RR_TOT_BEYOND_DOOR_OF_TIME)->childNight;
+            RegionTable(RR_ROOT)->adultDayCosts.Clear();
+            RegionTable(RR_ROOT)->adultNightCosts.Clear();
             ProcessRegion(RegionTable(RR_ROOT), gals, ignore, stopOnBeatable, addToPlaythrough);
         } else if (!RegionTable(RR_ROOT)->Child() && RegionTable(RR_TOT_BEYOND_DOOR_OF_TIME)->Adult()) {
             RegionTable(RR_ROOT)->childDay = RegionTable(RR_TOT_BEYOND_DOOR_OF_TIME)->adultDay;
             RegionTable(RR_ROOT)->childNight = RegionTable(RR_TOT_BEYOND_DOOR_OF_TIME)->adultNight;
+            RegionTable(RR_ROOT)->childDayCosts.Clear();
+            RegionTable(RR_ROOT)->childNightCosts.Clear();
             ProcessRegion(RegionTable(RR_ROOT), gals, ignore, stopOnBeatable, addToPlaythrough);
         }
     }
+}
+
+// Walk one edge on one path, by every route the exit offers. Each route pays its own price out of
+// what the path has left, then arrives carrying that heat if the destination is hot, or none of it
+// if the destination clears the timer. Whichever arrivals are worth keeping, the set keeps: a
+// route that costs a heart does not shut out the free route beside it, or the other way around.
+static bool WalkOnePath(Entrance* entrance, const Region* connection, const PathCost& cost, bool& access,
+                        PathCostSet& costs, bool& age, bool& time) {
+    PathCost best;
+    // A walk can only add heat and damage and only ever spends fairies, and a refill can only fill
+    // every bottle, so this is the best the destination could come out at by any route
+    best.heat = connection->hot ? cost.heat : 0;
+    best.damage = connection->heals ? 0 : cost.damage;
+    best.fairies = connection->fairyRefill ? logic->BottleCount() : cost.fairies;
+    bool burns = connection->canBurnToOne;
+    if (costs.Covers(best) && !burns) {
+        return false;
+    }
+
+    // The region's own effects read logic, so put the path in place before asking about them
+    EnterPath(cost, age, time);
+    bool heals = connection->CanHeal();
+    uint8_t refilled = connection->CanRefillFairies() ? logic->BottleCount() : 0;
+    burns = burns && logic->CanBurnToOne();
+
+    bool changed = false;
+    for (const Route& route : entrance->GetRoutes()) {
+        // Each route's own cost is worked out with logic on the path, so it can be conditional
+        EnterPath(cost, age, time);
+        Cost spend = route.GetCost();
+        if (!Payable(cost, spend)) {
+            continue;
+        }
+
+        PathCost arrival = Pay(cost, spend);
+        if (!connection->hot) {
+            arrival.heat = 0;
+        }
+        if (heals) {
+            arrival.damage = 0;
+        }
+        if (refilled > 0) {
+            arrival.fairies = refilled;
+        }
+
+        PathCost burned = arrival;
+        if (burns) {
+            burned.damage = logic->Health() - 1;
+        }
+        if (costs.Covers(arrival) && (!burns || costs.Covers(burned))) {
+            continue;
+        }
+        if (!entrance->RouteOpen(route)) {
+            continue;
+        }
+
+        changed |= costs.Insert(arrival);
+        // A fire here is an offer, not a toll, so the path that walks past it stays in the set too
+        if (burns) {
+            changed |= costs.Insert(burned);
+        }
+    }
+
+    access = access || changed;
+    return changed;
+}
+
+// Relax one edge for one agetime, over every way the path could have arrived at the parent.
+// Returns true if this agetime gained access or a cheaper way in.
+static bool RelaxAgeTime(Entrance* entrance, const PathCostSet& parentCosts, bool parentAccess,
+                         const Region* connection, bool& access, PathCostSet& costs, bool& age, bool& time) {
+    if (!parentAccess) {
+        return false;
+    }
+
+    bool changed = false;
+    for (uint8_t i = 0; i < parentCosts.Count(); i++) {
+        changed |= WalkOnePath(entrance, connection, parentCosts[i], access, costs, age, time);
+    }
+    return changed;
 }
 
 // This function will propagate Time of Day access through the entrance
@@ -85,25 +169,27 @@ static bool UpdateToDAccess(Entrance* entrance, Region* connection) {
     bool ageTimePropagated = false;
     Region* parent = entrance->GetParentRegion();
 
-    if (!connection->childDay && parent->childDay && entrance->CheckConditionAtAgeTime(logic->IsChild, logic->AtDay)) {
-        connection->childDay = true;
-        ageTimePropagated = true;
-    }
-    if (!connection->childNight && parent->childNight &&
-        entrance->CheckConditionAtAgeTime(logic->IsChild, logic->AtNight)) {
-        connection->childNight = true;
-        ageTimePropagated = true;
-    }
-    if (!connection->adultDay && parent->adultDay && entrance->CheckConditionAtAgeTime(logic->IsAdult, logic->AtDay)) {
-        connection->adultDay = true;
-        ageTimePropagated = true;
-    }
-    if (!connection->adultNight && parent->adultNight &&
-        entrance->CheckConditionAtAgeTime(logic->IsAdult, logic->AtNight)) {
-        connection->adultNight = true;
-        ageTimePropagated = true;
-    }
+    SeedPathCost(parent->childDay, parent->childDayCosts);
+    SeedPathCost(parent->childNight, parent->childNightCosts);
+    SeedPathCost(parent->adultDay, parent->adultDayCosts);
+    SeedPathCost(parent->adultNight, parent->adultNightCosts);
+    SeedPathCost(connection->childDay, connection->childDayCosts);
+    SeedPathCost(connection->childNight, connection->childNightCosts);
+    SeedPathCost(connection->adultDay, connection->adultDayCosts);
+    SeedPathCost(connection->adultNight, connection->adultNightCosts);
 
+    ageTimePropagated |= RelaxAgeTime(entrance, parent->childDayCosts, parent->childDay, connection,
+                                      connection->childDay, connection->childDayCosts, logic->IsChild, logic->AtDay);
+    ageTimePropagated |=
+        RelaxAgeTime(entrance, parent->childNightCosts, parent->childNight, connection, connection->childNight,
+                     connection->childNightCosts, logic->IsChild, logic->AtNight);
+    ageTimePropagated |= RelaxAgeTime(entrance, parent->adultDayCosts, parent->adultDay, connection,
+                                      connection->adultDay, connection->adultDayCosts, logic->IsAdult, logic->AtDay);
+    ageTimePropagated |=
+        RelaxAgeTime(entrance, parent->adultNightCosts, parent->adultNight, connection, connection->adultNight,
+                     connection->adultNightCosts, logic->IsAdult, logic->AtNight);
+
+    LeavePath();
     StopPerformanceTimer(PT_TOD_ACCESS);
     return ageTimePropagated;
 }
@@ -159,11 +245,15 @@ static void ValidateSphereZero(GetAccessibleLocationsStruct& gals) {
             for (RandomizerRegion regionKey : gals.regionPool) {
                 RegionTable(regionKey)->adultDay = false;
                 RegionTable(regionKey)->adultNight = false;
+                RegionTable(regionKey)->adultDayCosts.Clear();
+                RegionTable(regionKey)->adultNightCosts.Clear();
             }
         } else {
             for (RandomizerRegion regionKey : gals.regionPool) {
                 RegionTable(regionKey)->childDay = false;
                 RegionTable(regionKey)->childNight = false;
+                RegionTable(regionKey)->childDayCosts.Clear();
+                RegionTable(regionKey)->childNightCosts.Clear();
             }
         }
         // RANDOTODO do we want to keep the region pool after this reset?

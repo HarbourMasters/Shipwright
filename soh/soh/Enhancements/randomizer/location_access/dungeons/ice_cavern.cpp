@@ -258,7 +258,7 @@ void RegionTable_Init_IceCavern() {
 
     areaTable[RR_ICE_CAVERN_MQ_HUB] = Region("Ice Cavern MQ Hub", SCENE_ICE_CAVERN, {
         //Events
-        EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->CanBreakPots()),
+        FAIRY_REFILL(logic->CanBreakPots()),
     }, {
         //Locations
         LOCATION(RC_ICE_CAVERN_MQ_FIRST_CRYSTAL_POT_1,      logic->CanBreakPots()),
@@ -363,8 +363,7 @@ void RegionTable_Init_IceCavern() {
         LOCATION(RC_ICE_CAVERN_MQ_COMPASS_LEFT_STALAGMITE_2,  logic->CanClearStalagmite()),
         LOCATION(RC_ICE_CAVERN_MQ_COMPASS_RIGHT_STALAGMITE_1, logic->CanClearStalagmite()),
         LOCATION(RC_ICE_CAVERN_MQ_COMPASS_RIGHT_STALAGMITE_2, logic->CanClearStalagmite()),
-        LOCATION(RC_ICE_CAVERN_MQ_COMPASS_RED_ICE,            (logic->CanUse(RG_BOTTLE_WITH_BLUE_FIRE) && (logic->CanUse(RG_SONG_OF_TIME) || (logic->IsAdult && ctx->GetTrickOption(RT_ICE_MQ_RED_ICE_GS))) && (logic->CanKillEnemy(RE_GOLD_SKULLTULA) || logic->TakeDamage())) ||
-                                                              (ctx->GetOption(RSK_BLUE_FIRE_ARROWS) && logic->CanUse(RG_ICE_ARROWS))),
+        LOCATION_ROUTES(RC_ICE_CAVERN_MQ_COMPASS_RED_ICE, ROUTE((logic->CanUse(RG_BOTTLE_WITH_BLUE_FIRE) && (logic->CanUse(RG_SONG_OF_TIME) || (logic->IsAdult && ctx->GetTrickOption(RT_ICE_MQ_RED_ICE_GS))) && logic->CanKillEnemy(RE_GOLD_SKULLTULA)) || (ctx->GetOption(RSK_BLUE_FIRE_ARROWS) && logic->CanUse(RG_ICE_ARROWS))), ROUTE(logic->CanUse(RG_BOTTLE_WITH_BLUE_FIRE) && (logic->CanUse(RG_SONG_OF_TIME) || (logic->IsAdult && ctx->GetTrickOption(RT_ICE_MQ_RED_ICE_GS))), logic->HitCost())),
     }, {});
 
     areaTable[RR_ICE_CAVERN_MQ_STALFOS_ROOM] = Region("Ice Cavern MQ Stalfos Room", SCENE_ICE_CAVERN, {}, {

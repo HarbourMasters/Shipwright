@@ -39,7 +39,7 @@ void RegionTable_Init_ZoraRiver() {
     areaTable[RR_ZORAS_RIVER] = Region("Zora River", SCENE_ZORAS_RIVER, {
         //Events
         EVENT_ACCESS(LOGIC_PLANT_ZORAS_RIVER_BEAN, CanPlantBean(RG_ZORAS_RIVER_BEAN_SOUL)),
-        EVENT_ACCESS(LOGIC_FAIRY_ACCESS,           logic->CallGossipFairy() || (logic->IsChild && logic->CanUse(RG_STICKS)) || (logic->IsChild && logic->BeanPlanted(LOGIC_PLANT_ZORAS_RIVER_BEAN) && logic->CanUse(RG_SONG_OF_STORMS))),
+        FAIRY_REFILL(logic->CallGossipFairy() || (logic->IsChild && logic->CanUse(RG_STICKS)) || (logic->IsChild && logic->BeanPlanted(LOGIC_PLANT_ZORAS_RIVER_BEAN) && logic->CanUse(RG_SONG_OF_STORMS))),
     }, {
         //Locations
         LOCATION(RC_ZR_MAGIC_BEAN_SALESMAN,                  logic->IsChild && logic->HasItem(RG_SPEAK_HYLIAN) && GetCheckPrice() <= GetWalletCapacity()),
@@ -125,7 +125,7 @@ void RegionTable_Init_ZoraRiver() {
 
     areaTable[RR_ZR_ATOP_LADDER] = Region("ZR Atop Ladder", SCENE_ZORAS_RIVER, {
         //Events
-        EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->CallGossipFairy()),
+        FAIRY_REFILL(logic->CallGossipFairy()),
     }, {
         //Locations
         LOCATION(RC_ZR_GS_NEAR_RAISED_GROTTOS,              logic->IsAdult && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG) && logic->CanGetNightTimeGS()),
@@ -194,7 +194,7 @@ void RegionTable_Init_ZoraRiver() {
 
     areaTable[RR_ZR_FAIRY_GROTTO] = Region("ZR Fairy Grotto", SCENE_GROTTOS, {
         //Event
-        EVENT_ACCESS(LOGIC_FAIRY_ACCESS, true),
+        FAIRY_REFILL(true),
     }, {
         //Locations
         LOCATION(RC_ZR_FAIRY_GROTTO_FAIRY_1, true),

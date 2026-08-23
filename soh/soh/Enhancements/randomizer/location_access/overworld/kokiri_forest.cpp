@@ -8,7 +8,7 @@ void RegionTable_Init_KokiriForest() {
     areaTable[RR_KOKIRI_FOREST] = Region("Kokiri Forest", SCENE_KOKIRI_FOREST, {
         //Events
         EVENT_ACCESS(LOGIC_PLANT_KOKIRI_FOREST_BEAN,     CanPlantBean(RG_KOKIRI_FOREST_BEAN_SOUL)),
-        EVENT_ACCESS(LOGIC_FAIRY_ACCESS,                 logic->CallGossipFairyExceptSuns() || (logic->IsChild && logic->BeanPlanted(LOGIC_PLANT_KOKIRI_FOREST_BEAN) && logic->CanUse(RG_SONG_OF_STORMS))),
+        FAIRY_REFILL(logic->CallGossipFairyExceptSuns() || (logic->IsChild && logic->BeanPlanted(LOGIC_PLANT_KOKIRI_FOREST_BEAN) && logic->CanUse(RG_SONG_OF_STORMS))),
         EVENT_ACCESS(LOGIC_SHOWED_MIDO_SWORD_AND_SHIELD, logic->IsChild && logic->HasItem(RG_SPEAK_KOKIRI) && logic->CanUse(RG_KOKIRI_SWORD) && logic->CanUse(RG_DEKU_SHIELD)),
     }, {
         //Locations
@@ -174,7 +174,7 @@ void RegionTable_Init_KokiriForest() {
         //Events
         EVENT_ACCESS(LOGIC_STICK_ACCESS,                 logic->CanGetDekuBabaSticks()),
         EVENT_ACCESS(LOGIC_NUT_ACCESS,                   logic->CanGetDekuBabaNuts()),
-        EVENT_ACCESS(LOGIC_FAIRY_ACCESS,                 logic->CallGossipFairyExceptSuns()),
+        FAIRY_REFILL(logic->CallGossipFairyExceptSuns()),
         EVENT_ACCESS(LOGIC_SHOWED_MIDO_SWORD_AND_SHIELD, logic->IsChild && logic->HasItem(RG_SPEAK_KOKIRI) && logic->CanUse(RG_KOKIRI_SWORD) && logic->CanUse(RG_DEKU_SHIELD)),
     }, {
         //Locations

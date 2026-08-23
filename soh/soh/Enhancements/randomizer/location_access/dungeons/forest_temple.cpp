@@ -74,7 +74,7 @@ void RegionTable_Init_ForestTemple() {
 
     areaTable[RR_FOREST_TEMPLE_LOWER_STALFOS] = Region("Forest Temple Lower Stalfos", SCENE_FOREST_TEMPLE, {
         //Events
-        EVENT_ACCESS(LOGIC_FAIRY_ACCESS,                         logic->CanBreakPots()),
+        FAIRY_REFILL(logic->CanBreakPots()),
         EVENT_ACCESS(LOGIC_FOREST_CLEAR_BETWEEN_JOELLE_AND_BETH, logic->CanKillEnemy(RE_STALFOS, ED_CLOSE, true, 2)),
     }, {
         //Locations
@@ -475,7 +475,7 @@ void RegionTable_Init_ForestTemple() {
 
     areaTable[RR_FOREST_TEMPLE_MQ_WOLFOS_ROOM] = Region("Forest Temple MQ Wolfos Room", SCENE_FOREST_TEMPLE, {
         //Events
-        EVENT_ACCESS(LOGIC_FAIRY_ACCESS,                         logic->CanBreakPots()),
+        FAIRY_REFILL(logic->CanBreakPots()),
         EVENT_ACCESS(LOGIC_FOREST_CLEAR_BETWEEN_JOELLE_AND_BETH, logic->CanKillEnemy(RE_WOLFOS)),
     }, {
         //Locations
@@ -638,7 +638,7 @@ void RegionTable_Init_ForestTemple() {
         EVENT_ACCESS(LOGIC_FOREST_MQ_BURNED_WEB, logic->HasFireSource()),
     }, {}, {
         //Exits
-        ENTRANCE(RR_FOREST_TEMPLE_MQ_NW_COURTYARD,       logic->CanPassEnemy(RE_BIG_SKULLTULA) || logic->TakeDamage()),
+        ENTRANCE_ROUTES(RR_FOREST_TEMPLE_MQ_NW_COURTYARD, ROUTE(logic->CanPassEnemy(RE_BIG_SKULLTULA)), ROUTE(true, logic->HitCost())),
         ENTRANCE(RR_FOREST_TEMPLE_MQ_NW_COURTYARD_LEDGE, ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && logic->CanUse(RG_HOVER_BOOTS) && logic->CanUse(RG_MEGATON_HAMMER)),
         ENTRANCE(RR_FOREST_TEMPLE_MQ_NORTH_PASSAGE,      true),
     });
@@ -696,7 +696,7 @@ void RegionTable_Init_ForestTemple() {
                                                              ((ctx->GetTrickOption(RT_FOREST_DOORFRAME) && logic->CanUse(RG_HOVER_BOOTS) && logic->CanJumpslash())) ||
                                                              (logic->IsChild && (ctx->GetTrickOption(RT_FOREST_MQ_CHILD_DOORFRAME) || logic->CanMiddairGroundJump()))),
         //N64 logic doesn't check damage but I always take some so I'm adding it
-        ENTRANCE(RR_FOREST_TEMPLE_MQ_NE_COURTYARD_ISLAND,    ctx->GetTrickOption(RT_FOREST_COURTYARD_LEDGE) && logic->CanUse(RG_HOVER_BOOTS) && logic->CanJumpslash() && logic->TakeDamage()),
+        ENTRANCE_ROUTES(RR_FOREST_TEMPLE_MQ_NE_COURTYARD_ISLAND, ROUTE(ctx->GetTrickOption(RT_FOREST_COURTYARD_LEDGE) && logic->CanUse(RG_HOVER_BOOTS) && logic->CanJumpslash(), logic->HitCost())),
     });
 
     areaTable[RR_FOREST_TEMPLE_MQ_NE_COURTYARD_ISLAND] = Region("Forest Temple MQ NE Courtyard Island", SCENE_FOREST_TEMPLE, {}, {
@@ -811,7 +811,7 @@ void RegionTable_Init_ForestTemple() {
     }, {
         //Exits
         ENTRANCE(RR_FOREST_TEMPLE_MQ_LOBBY,             true),
-        ENTRANCE(RR_FOREST_TEMPLE_MQ_BASEMENT_POT_ROOM,  logic->HasItem(RG_POWER_BRACELET) && (logic->CanPassEnemy(RE_BIG_SKULLTULA) || logic->TakeDamage())),
+        ENTRANCE_ROUTES(RR_FOREST_TEMPLE_MQ_BASEMENT_POT_ROOM, ROUTE(logic->HasItem(RG_POWER_BRACELET) && logic->CanPassEnemy(RE_BIG_SKULLTULA)), ROUTE(logic->HasItem(RG_POWER_BRACELET), logic->HitCost())),
         ENTRANCE(RR_FOREST_TEMPLE_BOSS_ENTRYWAY,        logic->Get(LOGIC_FOREST_OPEN_BOSS_HALLWAY)),
     });
 

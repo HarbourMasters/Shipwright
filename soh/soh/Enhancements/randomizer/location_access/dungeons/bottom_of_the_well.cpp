@@ -61,7 +61,7 @@ void RegionTable_Init_BottomOfTheWell() {
     areaTable[RR_BOTW_MIDDLE] = Region("Bottom of the Well Middle", SCENE_BOTTOM_OF_THE_WELL, {}, {
         //Locations
         //You can just barely pass the spider on the right side without damage or items, but it's probably tight enough to count as as a trick
-        LOCATION(RC_BOTTOM_OF_THE_WELL_CENTER_SKULLTULA_CHEST, (logic->CanPassEnemy(RE_BIG_SKULLTULA) || logic->TakeDamage()) && logic->HasItem(RG_OPEN_CHEST)),
+        LOCATION_ROUTES(RC_BOTTOM_OF_THE_WELL_CENTER_SKULLTULA_CHEST, ROUTE(logic->CanPassEnemy(RE_BIG_SKULLTULA) && logic->HasItem(RG_OPEN_CHEST)), ROUTE(logic->HasItem(RG_OPEN_CHEST), logic->HitCost())),
     }, {
         //Exits
         ENTRANCE(RR_BOTW_PERIMETER,       ctx->GetTrickOption(RT_LENS_BOTW) || logic->CanUse(RG_LENS_OF_TRUTH)),
@@ -295,7 +295,7 @@ void RegionTable_Init_BottomOfTheWell() {
     areaTable[RR_BOTW_MQ_PERIMETER] = Region("Bottom of the Well MQ Perimeter", SCENE_BOTTOM_OF_THE_WELL, {
         //Events
         // Fairies are in slingshot wonder item, & pot behind grate. Pot can also be broken with boomerang trick
-        EVENT_ACCESS(LOGIC_FAIRY_ACCESS,         (logic->IsChild && logic->CanUse(RG_FAIRY_SLINGSHOT)) || 
+        FAIRY_REFILL((logic->IsChild && logic->CanUse(RG_FAIRY_SLINGSHOT)) || 
                                                  (AnyAgeTime([]{return logic->BlastOrSmash();}) && logic->CanHitEyeTargets()) ||
                                                  //Item extension can get a fairy by either shooting the pot through the grate and letting the fairy fly through the wall
                                                  //This cannot be done if the pot has an item in it, as it cannot be collected this way.
@@ -386,9 +386,7 @@ void RegionTable_Init_BottomOfTheWell() {
 
         //Without power bracelet, the skull can be killed through the Grave with any valid weapon.
         //Bow, Sling and Hammer should aim for the left side (from the door's perspective) ot eh grave, hookshot should get close to the grave and aim inside it (no extension needed).
-        LOCATION(RC_BOTTOM_OF_THE_WELL_MQ_GS_WEST_INNER_ROOM, (logic->TakeDamage() || logic->CanUse(RG_NUTS)) && 
-                                                              (logic->HasItem(RG_POWER_BRACELET) || ctx->GetTrickOption(RT_VISIBLE_COLLISION)) &&
-                                                              logic->CanKillEnemy(RE_GOLD_SKULLTULA)),
+        LOCATION_ROUTES(RC_BOTTOM_OF_THE_WELL_MQ_GS_WEST_INNER_ROOM, ROUTE(logic->CanUse(RG_NUTS) && (logic->HasItem(RG_POWER_BRACELET) || ctx->GetTrickOption(RT_VISIBLE_COLLISION)) && logic->CanKillEnemy(RE_GOLD_SKULLTULA)), ROUTE((logic->HasItem(RG_POWER_BRACELET) || ctx->GetTrickOption(RT_VISIBLE_COLLISION)) && logic->CanKillEnemy(RE_GOLD_SKULLTULA), logic->HitCost())),
     }, {
         //Exits
         ENTRANCE(RR_BOTW_MQ_MIDDLE, true),

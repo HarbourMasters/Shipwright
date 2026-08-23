@@ -8,7 +8,7 @@ void RegionTable_Init_LakeHylia() {
     areaTable[RR_LAKE_HYLIA] = Region("Lake Hylia", SCENE_LAKE_HYLIA, {
         //Events
         EVENT_ACCESS(LOGIC_PLANT_LAKE_HYLIA_BEAN, CanPlantBean(RG_LAKE_HYLIA_BEAN_SOUL)),
-        EVENT_ACCESS(LOGIC_FAIRY_ACCESS,          logic->CallGossipFairy() || logic->CanUse(RG_STICKS) || (logic->IsChild && logic->BeanPlanted(LOGIC_PLANT_LAKE_HYLIA_BEAN) && logic->CanUse(RG_SONG_OF_STORMS))),
+        FAIRY_REFILL(logic->CallGossipFairy() || logic->CanUse(RG_STICKS) || (logic->IsChild && logic->BeanPlanted(LOGIC_PLANT_LAKE_HYLIA_BEAN) && logic->CanUse(RG_SONG_OF_STORMS))),
         EVENT_ACCESS(LOGIC_BUG_ACCESS,            logic->IsChild && logic->CanCutShrubs()),
         EVENT_ACCESS(LOGIC_CHILD_SCARECROW,       logic->IsChild && logic->HasItem(RG_FAIRY_OCARINA) && logic->OcarinaButtons() >= 2),
         EVENT_ACCESS(LOGIC_ADULT_SCARECROW, logic->IsAdult && logic->HasItem(RG_FAIRY_OCARINA) && logic->OcarinaButtons() >= 2),
@@ -104,7 +104,7 @@ void RegionTable_Init_LakeHylia() {
 
     areaTable[RR_LH_FROM_WATER_TEMPLE] = Region("LH From Water Temple", SCENE_LAKE_HYLIA, TIME_DOESNT_PASS, {RA_LAKE_HYLIA}, {}, {}, {
         //Exits
-        ENTRANCE(RR_LAKE_HYLIA,            logic->HasItem(RG_BRONZE_SCALE) || logic->HasItem(RG_BOTTLE_WITH_FAIRY) || logic->CanUse(RG_IRON_BOOTS)),
+        ENTRANCE(RR_LAKE_HYLIA,            logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_BOTTLE_WITH_FAIRY) || logic->CanUse(RG_IRON_BOOTS)),
         ENTRANCE(RR_WATER_TEMPLE_ENTRYWAY, logic->CanUse(RG_HOOKSHOT) && ((logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_LH_WATER_HOOKSHOT) && logic->HasItem(RG_GOLDEN_SCALE))) || (logic->IsAdult && logic->CanUse(RG_LONGSHOT) && logic->HasItem(RG_GOLDEN_SCALE)))),
     });
 

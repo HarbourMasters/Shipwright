@@ -5,6 +5,7 @@
 #include "soh/Enhancements/randomizer/entrance.h"
 #include "soh/Enhancements/debugger/performanceTimer.h"
 
+#include <algorithm>
 #include <fstream>
 #include <libultraship/log/luslog.h>
 #include <soh/OTRGlobals.h>
@@ -17,7 +18,7 @@ extern PlayState* gPlayState;
 // generic grotto event list
 std::vector<EventAccess> grottoEvents;
 
-bool EventAccess::CheckConditionAtAgeTime(bool& age, bool& time) {
+void EnterPath(const PathCost& path, bool& age, bool& time) {
     logic->IsChild = false;
     logic->IsAdult = false;
     logic->AtDay = false;
@@ -26,20 +27,106 @@ bool EventAccess::CheckConditionAtAgeTime(bool& age, bool& time) {
     time = true;
     age = true;
 
-    return ConditionsMet();
+    logic->PathHeat = path.heat;
+    logic->PathDamage = path.damage;
+    logic->PathFairies = path.fairies;
 }
 
-// set the logic to be a specific age and time of day and see if the condition still holds
-bool LocationAccess::CheckConditionAtAgeTime(bool& age, bool& time) const {
-    logic->IsChild = false;
-    logic->IsAdult = false;
-    logic->AtDay = false;
-    logic->AtNight = false;
+void LeavePath() {
+    logic->PathHeat = 0;
+    logic->PathDamage = 0;
+    logic->PathFairies = 0;
+}
 
-    time = true;
-    age = true;
+bool Payable(const PathCost& path, const Cost& cost) {
+    // Health has to be left over, as a hit that lands us on nothing kills
+    return cost.payable && path.heat + cost.heat <= logic->FireTimer() && path.fairies >= cost.fairies &&
+           cost.damage < logic->HealthLeft();
+}
 
-    return GetConditionsMet();
+PathCost Pay(const PathCost& path, const Cost& cost) {
+    PathCost paid;
+    paid.heat = path.heat + cost.heat;
+    paid.damage = path.damage + cost.damage;
+    paid.fairies = path.fairies - cost.fairies;
+    // A fairy revives and heals, so it puts back every health unit the path spent before it
+    if (cost.fairies > 0) {
+        paid.damage = 0;
+    }
+    return paid;
+}
+
+bool RouteMet(const Route& route) {
+    auto ctx = Rando::Context::GetInstance();
+    if (ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_GLITCHLESS)) {
+        return route.condition();
+    }
+    return true;
+}
+
+bool AnyRouteMet(const std::vector<Route>& routes, const PathCost& path, bool& age, bool& time) {
+    for (const Route& route : routes) {
+        EnterPath(path, age, time);
+        if (Payable(path, route.GetCost()) && RouteMet(route)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+std::string RoutesToString(const std::vector<Route>& routes) {
+    std::string joined;
+    for (const Route& route : routes) {
+        if (!joined.empty()) {
+            joined += " || ";
+        }
+        joined += route.condition_str;
+    }
+    return joined;
+}
+
+bool PathCostSet::Insert(PathCost cost) {
+    if (Covers(cost)) {
+        return false;
+    }
+
+    std::array<PathCost, MAX_COSTS> kept{};
+    uint8_t keptCount = 0;
+    for (uint8_t i = 0; i < count; i++) {
+        if (!cost.Dominates(costs[i])) {
+            kept[keptCount++] = costs[i];
+        }
+    }
+    // Nothing gave way and there is no room, so keep what we have. Dropping the newcomer only
+    // ever makes the search stricter.
+    if (keptCount == MAX_COSTS) {
+        return false;
+    }
+
+    kept[keptCount++] = cost;
+    costs = kept;
+    count = keptCount;
+    return true;
+}
+
+// An access bool the search was seeded with has no costs behind it, which means arriving fresh.
+void SeedPathCost(bool access, PathCostSet& costs) {
+    if (access && costs.Empty()) {
+        costs.Insert(PathCost{});
+    }
+}
+
+bool EventAccess::ConditionsMet() const {
+    auto ctx = Rando::Context::GetInstance();
+    if (!ctx->GetOption(RSK_LOGIC_RULES).Is(RO_LOGIC_GLITCHLESS)) {
+        return true;
+    }
+    for (const Route& route : routes) {
+        if (route.condition()) {
+            return true;
+        }
+    }
+    return false;
 }
 
 bool LocationAccess::ConditionsMet(Region* parentRegion, bool calculatingAvailableChecks) const {
@@ -48,13 +135,31 @@ bool LocationAccess::ConditionsMet(Region* parentRegion, bool calculatingAvailab
     // have any access at all just because this is being run
     bool conditionsMet = false;
 
-    if ((parentRegion->childDay && CheckConditionAtAgeTime(logic->IsChild, logic->AtDay)) ||
-        (parentRegion->childNight && CheckConditionAtAgeTime(logic->IsChild, logic->AtNight)) ||
-        (parentRegion->adultDay && CheckConditionAtAgeTime(logic->IsAdult, logic->AtDay)) ||
-        (parentRegion->adultNight && CheckConditionAtAgeTime(logic->IsAdult, logic->AtNight))) {
+    auto reachableOn = [this](bool access, const PathCostSet& costs, bool& age, bool& time) {
+        if (!access) {
+            return false;
+        }
+        for (uint8_t i = 0; i < costs.Count(); i++) {
+            if (AnyRouteMet(routes, costs[i], age, time)) {
+                return true;
+            }
+        }
+        return false;
+    };
+
+    SeedPathCost(parentRegion->childDay, parentRegion->childDayCosts);
+    SeedPathCost(parentRegion->childNight, parentRegion->childNightCosts);
+    SeedPathCost(parentRegion->adultDay, parentRegion->adultDayCosts);
+    SeedPathCost(parentRegion->adultNight, parentRegion->adultNightCosts);
+
+    if (reachableOn(parentRegion->childDay, parentRegion->childDayCosts, logic->IsChild, logic->AtDay) ||
+        reachableOn(parentRegion->childNight, parentRegion->childNightCosts, logic->IsChild, logic->AtNight) ||
+        reachableOn(parentRegion->adultDay, parentRegion->adultDayCosts, logic->IsAdult, logic->AtDay) ||
+        reachableOn(parentRegion->adultNight, parentRegion->adultNightCosts, logic->IsAdult, logic->AtNight)) {
         conditionsMet = true;
     }
 
+    LeavePath();
     return conditionsMet;
 }
 
@@ -410,36 +515,122 @@ bool GetTimePassFromScene(SceneID scene) {
     }
 }
 
+// gameplayFlags2 & 0xFF == ROOM_BEHAVIOR_TYPE2_3 in room header
+static bool IsHotRoom(SceneID scene, uint8_t room) {
+    switch (scene) {
+        case SCENE_DEATH_MOUNTAIN_CRATER:
+        case SCENE_FIRE_TEMPLE_BOSS:
+            return true;
+        case SCENE_FIRE_TEMPLE:
+            return room == 1 || room == 2 || room == 16 || room == 21;
+        case SCENE_INSIDE_GANONS_CASTLE:
+            return room == 14;
+        default:
+            return false;
+    }
+}
+
+static bool SceneHeals(SceneID scene) {
+    switch (scene) {
+        case SCENE_FAIRYS_FOUNTAIN:
+        case SCENE_GREAT_FAIRYS_FOUNTAIN_MAGIC:
+        case SCENE_GREAT_FAIRYS_FOUNTAIN_SPELLS:
+        case SCENE_GRAVE_WITH_FAIRYS_FOUNTAIN:
+            return true;
+        default:
+            return false;
+    }
+}
+
+static bool SceneHealNeedsLullaby(SceneID scene) {
+    return scene == SCENE_GREAT_FAIRYS_FOUNTAIN_MAGIC || scene == SCENE_GREAT_FAIRYS_FOUNTAIN_SPELLS;
+}
+
 Region::Region() = default;
 Region::Region(std::string regionName_, SceneID scene_, bool timePass_, std::set<RandomizerArea> areas,
                std::vector<EventAccess> events_, std::vector<LocationAccess> locations_,
                std::list<Rando::Entrance> exits_)
     : regionName(std::move(regionName_)), scene(scene_), timePass(timePass_), areas(areas), events(std::move(events_)),
-      locations(std::move(locations_)), exits(std::move(exits_)) {
+      locations(std::move(locations_)), exits(std::move(exits_)), hot(IsHotRoom(scene_, ROOM_NONE)),
+      heals(SceneHeals(scene_)), healNeedsLullaby(SceneHealNeedsLullaby(scene_)) {
+    SetFairyRefill();
 }
 Region::Region(std::string regionName_, SceneID scene_, std::vector<EventAccess> events_,
                std::vector<LocationAccess> locations_, std::list<Rando::Entrance> exits_)
     : regionName(std::move(regionName_)), scene(scene_), timePass(GetTimePassFromScene(scene_)),
       areas(CalculateAreas(scene_)), events(std::move(events_)), locations(std::move(locations_)),
-      exits(std::move(exits_)) {
+      exits(std::move(exits_)), hot(IsHotRoom(scene_, ROOM_NONE)), heals(SceneHeals(scene_)),
+      healNeedsLullaby(SceneHealNeedsLullaby(scene_)) {
+    SetFairyRefill();
+}
+Region::Region(std::string regionName_, SceneID scene_, uint8_t room_, std::vector<EventAccess> events_,
+               std::vector<LocationAccess> locations_, std::list<Rando::Entrance> exits_)
+    : regionName(std::move(regionName_)), scene(scene_), timePass(GetTimePassFromScene(scene_)),
+      areas(CalculateAreas(scene_)), events(std::move(events_)), locations(std::move(locations_)),
+      exits(std::move(exits_)), room(room_), hot(IsHotRoom(scene_, room_)), heals(SceneHeals(scene_)),
+      healNeedsLullaby(SceneHealNeedsLullaby(scene_)) {
+    SetFairyRefill();
 }
 
 Region::~Region() = default;
+
+// Cached so the search only walks the events list for regions that actually hold a refill
+void Region::SetFairyRefill() {
+    for (const EventAccess& event : events) {
+        if (event.IsFairyRefill()) {
+            fairyRefill = true;
+            return;
+        }
+    }
+}
+
+// Does the path get its health back here? A Great Fairy wants Zelda's Lullaby first
+bool Region::CanHeal() const {
+    return heals && (!healNeedsLullaby || logic->CanUse(RG_ZELDAS_LULLABY));
+}
+
+// Can the path bottle a fairy here, filling every bottle it has?
+bool Region::CanRefillFairies() const {
+    if (!fairyRefill) {
+        return false;
+    }
+    for (const EventAccess& event : events) {
+        if (event.IsFairyRefill() && event.ConditionsMet()) {
+            return true;
+        }
+    }
+    return false;
+}
 
 bool Region::TimePass() {
     return timePass;
 }
 
+// Time passing joins two agetimes, so each ends up with every way in the other had
+static void MergeAgeTimeCosts(bool accessA, PathCostSet& a, bool accessB, PathCostSet& b) {
+    SeedPathCost(accessA, a);
+    SeedPathCost(accessB, b);
+    PathCostSet merged = a;
+    for (uint8_t i = 0; i < b.Count(); i++) {
+        merged.Insert(b[i]);
+    }
+    a = merged;
+    b = merged;
+}
+
 void Region::ApplyTimePass() {
     if (TimePass()) {
         StartPerformanceTimer(PT_TOD_ACCESS);
+        // Waiting out the day is only ever done in cool regions, so nothing here spends anything
         if (Child()) {
+            MergeAgeTimeCosts(childDay, childDayCosts, childNight, childNightCosts);
             childDay = true;
             childNight = true;
             RegionTable(RR_ROOT)->childDay = true;
             RegionTable(RR_ROOT)->childNight = true;
         }
         if (Adult()) {
+            MergeAgeTimeCosts(adultDay, adultDayCosts, adultNight, adultNightCosts);
             adultDay = true;
             adultNight = true;
             RegionTable(RR_ROOT)->adultDay = true;
@@ -453,18 +644,40 @@ bool Region::UpdateEvents() {
     bool eventsUpdated = false;
     StartPerformanceTimer(PT_EVENT_ACCESS);
     for (EventAccess& event : events) {
+        // A fairy refill is not an event, the path picks it up on arrival instead
+        if (event.IsFairyRefill()) {
+            continue;
+        }
         // If the event has already happened, there's no reason to check it
         if (event.GetEvent()) {
             continue;
         }
 
-        if ((childDay && event.CheckConditionAtAgeTime(logic->IsChild, logic->AtDay)) ||
-            (childNight && event.CheckConditionAtAgeTime(logic->IsChild, logic->AtNight)) ||
-            (adultDay && event.CheckConditionAtAgeTime(logic->IsAdult, logic->AtDay)) ||
-            (adultNight && event.CheckConditionAtAgeTime(logic->IsAdult, logic->AtNight))) {
+        auto happensAt = [&event](bool access, const PathCostSet& costs, bool& age, bool& time) {
+            if (!access) {
+                return false;
+            }
+            for (uint8_t i = 0; i < costs.Count(); i++) {
+                if (AnyRouteMet(event.GetRoutes(), costs[i], age, time)) {
+                    return true;
+                }
+            }
+            return false;
+        };
+
+        SeedPathCost(childDay, childDayCosts);
+        SeedPathCost(childNight, childNightCosts);
+        SeedPathCost(adultDay, adultDayCosts);
+        SeedPathCost(adultNight, adultNightCosts);
+
+        if (happensAt(childDay, childDayCosts, logic->IsChild, logic->AtDay) ||
+            happensAt(childNight, childNightCosts, logic->IsChild, logic->AtNight) ||
+            happensAt(adultDay, adultDayCosts, logic->IsAdult, logic->AtDay) ||
+            happensAt(adultNight, adultNightCosts, logic->IsAdult, logic->AtNight)) {
             event.EventOccurred();
             eventsUpdated = true;
         }
+        LeavePath();
     }
     StopPerformanceTimer(PT_EVENT_ACCESS);
     return eventsUpdated;
@@ -472,7 +685,7 @@ bool Region::UpdateEvents() {
 
 void Region::AddExit(RandomizerRegion parentKey, RandomizerRegion newExitKey, ConditionFn condition,
                      std::string conditionStr) {
-    Rando::Entrance newExit = Rando::Entrance(newExitKey, condition, conditionStr);
+    Rando::Entrance newExit = Rando::Entrance(newExitKey, { Route{ condition, std::move(conditionStr), nullptr } });
     newExit.SetParentRegion(parentKey);
     exits.push_front(newExit);
 }
@@ -547,6 +760,10 @@ void Region::ResetVariables() {
     childNight = false;
     adultDay = false;
     adultNight = false;
+    childDayCosts.Clear();
+    childNightCosts.Clear();
+    adultDayCosts.Clear();
+    adultNightCosts.Clear();
     addedToPool = false;
     for (auto& exit : exits) {
         exit.RemoveFromPool();
@@ -873,7 +1090,7 @@ void RegionTable_Init() {
     ctx = Context::GetInstance().get();
     logic = ctx->GetLogic(); // RANDOTODO do not hardcode, instead allow accepting a Logic class somehow
     grottoEvents = {
-        EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->CallGossipFairy() || logic->CanUse(RG_STICKS)),
+        FAIRY_REFILL(logic->CallGossipFairy() || logic->CanUse(RG_STICKS)),
         EVENT_ACCESS(LOGIC_BUG_ACCESS, logic->CanCutShrubs()),
         EVENT_ACCESS(LOGIC_FISH_ACCESS, true),
     };
@@ -918,6 +1135,22 @@ void RegionTable_Init() {
     RegionTable_Init_IceCavern();
     RegionTable_Init_GerudoTrainingGround();
     RegionTable_Init_GanonsCastle();
+
+    // Places a player can deliberately setup 1/16th health
+    for (RandomizerRegion burnRegion : {
+             RR_FIRE_TEMPLE_FOYER,
+             RR_FIRE_TEMPLE_MQ_FOYER_LOWER,
+             RR_FIRE_TEMPLE_LOOP_FLARE_DANCER,
+             RR_FIRE_TEMPLE_3F_FLARE_DANCER,
+             RR_FIRE_TEMPLE_MQ_LOOP_FLARE_DANCER,
+             RR_FIRE_TEMPLE_MQ_3F_FLARE_DANCER,
+             RR_DODONGOS_CAVERN_LOBBY,
+             RR_DODONGOS_CAVERN_MQ_LOBBY,
+             RR_GANONS_CASTLE_FIRE_TRIAL_OPEN_DOOR,
+             RR_GANONS_CASTLE_MQ_FIRE_TRIAL_OPEN_DOOR,
+         }) {
+        areaTable[burnRegion].canBurnToOne = true;
+    }
 
     // Set parent regions
     for (uint32_t i = RR_ROOT; i < RR_MAX; i++) {

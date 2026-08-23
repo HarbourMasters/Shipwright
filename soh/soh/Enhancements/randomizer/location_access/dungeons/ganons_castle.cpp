@@ -46,7 +46,7 @@ void RegionTable_Init_GanonsCastle() {
 
     areaTable[RR_GANONS_CASTLE_DEKU_SCRUBS] = Region("Ganon's Castle Deku Scrubs", SCENE_INSIDE_GANONS_CASTLE, {
         //Events
-        EVENT_ACCESS(LOGIC_FAIRY_ACCESS, true),
+        FAIRY_REFILL(true),
     }, {
         //Locations
         LOCATION(RC_GANONS_CASTLE_DEKU_SCRUB_CENTER_LEFT,  logic->CanStunDeku() && logic->HasItem(RG_SPEAK_DEKU) && GetCheckPrice() <= GetWalletCapacity()),
@@ -122,37 +122,37 @@ void RegionTable_Init_GanonsCastle() {
         ENTRANCE(RR_GANONS_CASTLE_MAIN, true),
     });
 
-    areaTable[RR_GANONS_CASTLE_FIRE_TRIAL_FROM_OPEN] = Region("Ganon's Castle Fire Trial From Open Door", SCENE_INSIDE_GANONS_CASTLE, {
+    areaTable[RR_GANONS_CASTLE_FIRE_TRIAL_FROM_OPEN] = Region("Ganon's Castle Fire Trial From Open Door", SCENE_INSIDE_GANONS_CASTLE, 14, {
         // backwalking hoverboots with backflip reaches silver rupee without needing str3
-        EVENT_ACCESS(LOGIC_GANONS_CASTLE_SILVER_FIRE, logic->FireTimer() >= 48 && logic->CanUse(RG_GOLDEN_GAUNTLETS)),
+        EVENT_ROUTES(LOGIC_GANONS_CASTLE_SILVER_FIRE, ROUTE(logic->CanUse(RG_GOLDEN_GAUNTLETS), Cost().Heat(48))),
     }, {
         //Locations
-        LOCATION(RC_GANONS_CASTLE_FIRE_TRIAL_HEART,                logic->FireTimer() >= 16),
-        LOCATION(RC_GANONS_CASTLE_TORCH_SLUG_FIRE_SILVER,          logic->FireTimer() >= 16),
-        LOCATION(RC_GANONS_CASTLE_FLAME_JETS_FIRE_SILVER,          logic->FireTimer() >= 16),
-        LOCATION(RC_GANONS_CASTLE_DISTANT_PLATFORM_FIRE_SILVER,    logic->FireTimer() >= 32 && logic->CanUse(RG_GOLDEN_GAUNTLETS)),
-        LOCATION(RC_GANONS_CASTLE_CLOSE_PLATFORM_FIRE_SILVER,      logic->FireTimer() >= 8),
-        LOCATION(RC_GANONS_GANONS_CASTLE_UNDER_PILLAR_FIRE_SILVER, logic->FireTimer() >= 24 && logic->CanUse(RG_GOLDEN_GAUNTLETS)),
+        LOCATION_ROUTES(RC_GANONS_CASTLE_FIRE_TRIAL_HEART,                ROUTE(true, Cost().Heat(16))),
+        LOCATION_ROUTES(RC_GANONS_CASTLE_TORCH_SLUG_FIRE_SILVER,          ROUTE(true, Cost().Heat(16))),
+        LOCATION_ROUTES(RC_GANONS_CASTLE_FLAME_JETS_FIRE_SILVER,          ROUTE(true, Cost().Heat(16))),
+        LOCATION_ROUTES(RC_GANONS_CASTLE_DISTANT_PLATFORM_FIRE_SILVER,    ROUTE(logic->CanUse(RG_GOLDEN_GAUNTLETS), Cost().Heat(32))),
+        LOCATION_ROUTES(RC_GANONS_CASTLE_CLOSE_PLATFORM_FIRE_SILVER,      ROUTE(true, Cost().Heat(8))),
+        LOCATION_ROUTES(RC_GANONS_GANONS_CASTLE_UNDER_PILLAR_FIRE_SILVER, ROUTE(logic->CanUse(RG_GOLDEN_GAUNTLETS), Cost().Heat(24))),
     }, {
         //Exits
         ENTRANCE(RR_GANONS_CASTLE_FIRE_TRIAL_OPEN_DOOR,   true),
-        ENTRANCE(RR_GANONS_CASTLE_FIRE_TRIAL_BARRED_DOOR, logic->CanUse(RG_LONGSHOT) && logic->FireTimer() >= 16),
+        ENTRANCE_ROUTES(RR_GANONS_CASTLE_FIRE_TRIAL_BARRED_DOOR, ROUTE(logic->CanUse(RG_LONGSHOT), Cost().Heat(16))),
     });
 
-    areaTable[RR_GANONS_CASTLE_FIRE_TRIAL_FROM_BARRED] = Region("Ganon's Castle Fire Trial From Barred Door", SCENE_INSIDE_GANONS_CASTLE, {
+    areaTable[RR_GANONS_CASTLE_FIRE_TRIAL_FROM_BARRED] = Region("Ganon's Castle Fire Trial From Barred Door", SCENE_INSIDE_GANONS_CASTLE, 14, {
         // backwalking hoverboots with backflip reaches silver rupee without needing str3
-        EVENT_ACCESS(LOGIC_GANONS_CASTLE_SILVER_FIRE, logic->CanUse(RG_LONGSHOT) && logic->FireTimer() >= 56 && logic->CanUse(RG_GOLDEN_GAUNTLETS)),
+        EVENT_ROUTES(LOGIC_GANONS_CASTLE_SILVER_FIRE, ROUTE(logic->CanUse(RG_LONGSHOT) && logic->CanUse(RG_GOLDEN_GAUNTLETS), Cost().Heat(56))),
     }, {
         //Locations
-        LOCATION(RC_GANONS_CASTLE_FIRE_TRIAL_HEART,                logic->CanUse(RG_LONGSHOT) && logic->FireTimer() >= 16),
-        LOCATION(RC_GANONS_CASTLE_TORCH_SLUG_FIRE_SILVER,          logic->CanUse(RG_LONGSHOT) && logic->FireTimer() >= 8),
-        LOCATION(RC_GANONS_CASTLE_FLAME_JETS_FIRE_SILVER,          logic->CanUse(RG_LONGSHOT) && logic->FireTimer() >= 16),
-        LOCATION(RC_GANONS_CASTLE_DISTANT_PLATFORM_FIRE_SILVER,    logic->CanUse(RG_LONGSHOT) && logic->FireTimer() >= 32 && logic->CanUse(RG_GOLDEN_GAUNTLETS)),
-        LOCATION(RC_GANONS_CASTLE_CLOSE_PLATFORM_FIRE_SILVER,      logic->CanUse(RG_LONGSHOT) && logic->FireTimer() >= 16),
-        LOCATION(RC_GANONS_GANONS_CASTLE_UNDER_PILLAR_FIRE_SILVER, logic->CanUse(RG_LONGSHOT) && logic->FireTimer() >= 24 && logic->CanUse(RG_GOLDEN_GAUNTLETS)),
+        LOCATION_ROUTES(RC_GANONS_CASTLE_FIRE_TRIAL_HEART,                ROUTE(logic->CanUse(RG_LONGSHOT), Cost().Heat(16))),
+        LOCATION_ROUTES(RC_GANONS_CASTLE_TORCH_SLUG_FIRE_SILVER,          ROUTE(logic->CanUse(RG_LONGSHOT), Cost().Heat(8))),
+        LOCATION_ROUTES(RC_GANONS_CASTLE_FLAME_JETS_FIRE_SILVER,          ROUTE(logic->CanUse(RG_LONGSHOT), Cost().Heat(16))),
+        LOCATION_ROUTES(RC_GANONS_CASTLE_DISTANT_PLATFORM_FIRE_SILVER,    ROUTE(logic->CanUse(RG_LONGSHOT) && logic->CanUse(RG_GOLDEN_GAUNTLETS), Cost().Heat(32))),
+        LOCATION_ROUTES(RC_GANONS_CASTLE_CLOSE_PLATFORM_FIRE_SILVER,      ROUTE(logic->CanUse(RG_LONGSHOT), Cost().Heat(16))),
+        LOCATION_ROUTES(RC_GANONS_GANONS_CASTLE_UNDER_PILLAR_FIRE_SILVER, ROUTE(logic->CanUse(RG_LONGSHOT) && logic->CanUse(RG_GOLDEN_GAUNTLETS), Cost().Heat(24))),
     }, {
         //Exits
-        ENTRANCE(RR_GANONS_CASTLE_FIRE_TRIAL_OPEN_DOOR,   logic->CanUse(RG_LONGSHOT) && logic->FireTimer() >= 24),
+        ENTRANCE_ROUTES(RR_GANONS_CASTLE_FIRE_TRIAL_OPEN_DOOR,   ROUTE(logic->CanUse(RG_LONGSHOT), Cost().Heat(24))),
         ENTRANCE(RR_GANONS_CASTLE_FIRE_TRIAL_BARRED_DOOR, true),
     });    
     
@@ -214,7 +214,7 @@ void RegionTable_Init_GanonsCastle() {
 
     areaTable[RR_GANONS_CASTLE_WATER_TRIAL_BLOCK_ROOM] = Region("Ganon's Castle Water Trial Block Room", SCENE_INSIDE_GANONS_CASTLE, {
         //Events
-        EVENT_ACCESS(LOGIC_FAIRY_ACCESS,              logic->CanBreakPots()),
+        FAIRY_REFILL(logic->CanBreakPots()),
     }, {
         //Locations
         LOCATION(RC_GANONS_CASTLE_WATER_TRIAL_POT_3,                 logic->CanBreakPots()),
@@ -460,7 +460,7 @@ void RegionTable_Init_GanonsCastle() {
 
     areaTable[RR_GANONS_CASTLE_MQ_DEKU_SCRUBS] = Region("Ganon's Castle MQ Deku Scrubs", SCENE_INSIDE_GANONS_CASTLE, {
         //Events
-        EVENT_ACCESS(LOGIC_FAIRY_ACCESS, true),
+        FAIRY_REFILL(true),
     }, {
         //Locations
         LOCATION(RC_GANONS_CASTLE_MQ_DEKU_SCRUB_CENTER_LEFT,  logic->CanStunDeku() && logic->HasItem(RG_SPEAK_DEKU) && GetCheckPrice() <= GetWalletCapacity()),
@@ -538,24 +538,24 @@ void RegionTable_Init_GanonsCastle() {
         ENTRANCE(RR_GANONS_CASTLE_MQ_MAIN, true),
     });
 
-    areaTable[RR_GANONS_CASTLE_MQ_FIRE_TRIAL_FROM_OPEN] = Region("Ganon's Castle MQ Fire Trial From Open Door", SCENE_INSIDE_GANONS_CASTLE, {
+    areaTable[RR_GANONS_CASTLE_MQ_FIRE_TRIAL_FROM_OPEN] = Region("Ganon's Castle MQ Fire Trial From Open Door", SCENE_INSIDE_GANONS_CASTLE, 14, {
         //Events
-        EVENT_ACCESS(LOGIC_GANONS_CASTLE_SILVER_FIRE, logic->FireTimer() >= 80 && (logic->CanUse(RG_GOLDEN_GAUNTLETS) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()));),
+        EVENT_ROUTES(LOGIC_GANONS_CASTLE_SILVER_FIRE, ROUTE(logic->CanUse(RG_GOLDEN_GAUNTLETS) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()), Cost().Heat(80))),
     }, {
         //Locations
-        LOCATION(RC_GANONS_CASTLE_MQ_UNDER_PILLAR_FIRE_SILVER,    logic->FireTimer() >= 24),
-        LOCATION(RC_GANONS_CASTLE_MQ_NEAR_TARGET_FIRE_SILVER,     logic->FireTimer() >= 32),
-        LOCATION(RC_GANONS_CASTLE_MQ_ON_PILLAR_FIRE_SILVER,       (logic->FireTimer() >= 48 && logic->CanUse(RG_GOLDEN_GAUNTLETS)) || (logic->FireTimer() >= 32 && ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid())),
-        LOCATION(RC_GANONS_CASTLE_MQ_LAUNCH_PLATFORM_FIRE_SILVER, logic->FireTimer() >= 16),
-        LOCATION(RC_GANONS_CASTLE_MQ_JET_PLATFORM_FIRE_SILVER,    logic->FireTimer() >= 40),
+        LOCATION_ROUTES(RC_GANONS_CASTLE_MQ_UNDER_PILLAR_FIRE_SILVER,    ROUTE(true, Cost().Heat(24))),
+        LOCATION_ROUTES(RC_GANONS_CASTLE_MQ_NEAR_TARGET_FIRE_SILVER,     ROUTE(true, Cost().Heat(32))),
+        LOCATION_ROUTES(RC_GANONS_CASTLE_MQ_ON_PILLAR_FIRE_SILVER,       ROUTE(logic->CanUse(RG_GOLDEN_GAUNTLETS) || (ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid()), Cost().Heat(ctx->GetTrickOption(RT_VOIDOUT_COLLECTION) && logic->CanVoid() ? 32 : 48))),
+        LOCATION_ROUTES(RC_GANONS_CASTLE_MQ_LAUNCH_PLATFORM_FIRE_SILVER, ROUTE(true, Cost().Heat(16))),
+        LOCATION_ROUTES(RC_GANONS_CASTLE_MQ_JET_PLATFORM_FIRE_SILVER,    ROUTE(true, Cost().Heat(40))),
     }, {
         //Exits
         ENTRANCE(RR_GANONS_CASTLE_MQ_FIRE_TRIAL_OPEN_DOOR,   true),
-        ENTRANCE(RR_GANONS_CASTLE_MQ_FIRE_TRIAL_BARRED_DOOR, logic->FireTimer() >= 32 && (logic->CanUse(RG_LONGSHOT) || 
-                                                                                          (logic->CanUse(RG_GOLDEN_GAUNTLETS) && (logic->CanUse(RG_HOVER_BOOTS) || (ctx->GetTrickOption(RT_GANON_MQ_FIRE_TRIAL) && logic->IsAdult && logic->CanUse(RG_HOOKSHOT)))))),
+        ENTRANCE_ROUTES(RR_GANONS_CASTLE_MQ_FIRE_TRIAL_BARRED_DOOR, ROUTE(logic->CanUse(RG_LONGSHOT) ||
+                                                                       (logic->CanUse(RG_GOLDEN_GAUNTLETS) && (logic->CanUse(RG_HOVER_BOOTS) || (ctx->GetTrickOption(RT_GANON_MQ_FIRE_TRIAL) && logic->IsAdult && logic->CanUse(RG_HOOKSHOT)))), Cost().Heat(32))),
     });
 
-    areaTable[RR_GANONS_CASTLE_MQ_FIRE_TRIAL_FROM_BARRED] = Region("Ganon's Castle MQ Fire Trial From Barred Door", SCENE_INSIDE_GANONS_CASTLE, {}, {}, {
+    areaTable[RR_GANONS_CASTLE_MQ_FIRE_TRIAL_FROM_BARRED] = Region("Ganon's Castle MQ Fire Trial From Barred Door", SCENE_INSIDE_GANONS_CASTLE, 14, {}, {}, {
         //Exits
         ENTRANCE(RR_GANONS_CASTLE_MQ_FIRE_TRIAL_BARRED_DOOR, true),
     });
@@ -703,7 +703,7 @@ void RegionTable_Init_GanonsCastle() {
                                                                 (logic->HasFireSource() || logic->CanUse(RG_HOVER_BOOTS))),
     }, {
         //Locations
-        LOCATION(RC_GANONS_CASTLE_MQ_WONDER_SHADOW_TRIAL,           (logic->CanDetonateBombFlowers() || (ctx->GetTrickOption(RT_BLUE_FIRE_MUD_WALLS) && logic->CanUse(RG_BOTTLE_WITH_BLUE_FIRE))) && (logic->TakeDamage() || logic->CanUse(RG_NAYRUS_LOVE))),
+        LOCATION_ROUTES(RC_GANONS_CASTLE_MQ_WONDER_SHADOW_TRIAL, ROUTE((logic->CanDetonateBombFlowers() || (ctx->GetTrickOption(RT_BLUE_FIRE_MUD_WALLS) && logic->CanUse(RG_BOTTLE_WITH_BLUE_FIRE))) && logic->CanUse(RG_NAYRUS_LOVE)), ROUTE(logic->CanDetonateBombFlowers() || (ctx->GetTrickOption(RT_BLUE_FIRE_MUD_WALLS) && logic->CanUse(RG_BOTTLE_WITH_BLUE_FIRE)), logic->HitCost())),
         LOCATION(RC_GANONS_CASTLE_MQ_BOMB_FLOWER_SHADOW_SILVER,     true),
         LOCATION(RC_GANONS_CASTLE_MQ_MOVING_PLATFORM_SHADOW_SILVER, true),
     }, {
@@ -935,8 +935,8 @@ void RegionTable_Init_GanonsCastle() {
         LOCATION(RC_GANONS_CASTLE_GANONS_TOWER_POT_18, logic->CanBreakPots()),
     }, {
         //Exits
-        ENTRANCE(RR_GANONS_TOWER_STAIRS_4,              true;),
-        ENTRANCE(RR_GANONS_TOWER_BEFORE_GANONDORF_LAIR, true;),
+        ENTRANCE(RR_GANONS_TOWER_STAIRS_4,              true),
+        ENTRANCE(RR_GANONS_TOWER_BEFORE_GANONDORF_LAIR, true),
     });
 
     areaTable[RR_GANONS_TOWER_BEFORE_GANONDORF_LAIR] = Region("Ganon's Tower Before Ganondorf's Lair", SCENE_GANONS_TOWER, {}, {
@@ -944,7 +944,7 @@ void RegionTable_Init_GanonsCastle() {
         LOCATION(RC_GANONS_BOSS_KEY_HINT, true),
     }, {
         //Exits
-        ENTRANCE(RR_GANONS_TOWER_POT_ROOM,       false;),
+        ENTRANCE(RR_GANONS_TOWER_POT_ROOM,       false),
         ENTRANCE(RR_GANONS_TOWER_GANONDORF_LAIR, AnyAgeTime([]{return logic->HasItem(RG_GANONS_CASTLE_BOSS_KEY);})),
     });
 
