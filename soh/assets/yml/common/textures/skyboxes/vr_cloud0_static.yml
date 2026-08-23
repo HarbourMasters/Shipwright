@@ -3,7 +3,7 @@
     - [1, vr_cloud0_static]
   directory: textures/skyboxes/
   external_files:
-    - ${VER}/textures/skyboxes/vr_cloud0_pal_static.yml
+    - ${ACTIVE_TREE}/textures/skyboxes/vr_cloud0_pal_static.yml
 gSunriseOvercastSkybox1Tex:
   type: TEXTURE
   offset: 0x0

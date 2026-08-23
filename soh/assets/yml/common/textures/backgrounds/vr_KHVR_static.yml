@@ -3,7 +3,7 @@
     - [1, vr_KHVR_static]
   directory: textures/backgrounds/
   external_files:
-     - ${VER}/textures/backgrounds/vr_KHVR_pal_static.yml
+     - ${ACTIVE_TREE}/textures/backgrounds/vr_KHVR_pal_static.yml
 gKnowItAllBrosHouse2BgTex:
   type: TEXTURE
   offset: 0x10000

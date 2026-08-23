@@ -3,7 +3,7 @@
     - [1, vr_GLVR_static]
   directory: textures/skyboxes/
   external_files:
-     - ${VER}/textures/backgrounds/vr_GLVR_pal_static.yml
+     - ${ACTIVE_TREE}/textures/backgrounds/vr_GLVR_pal_static.yml
 gGoronShop2BgTex:
   type: TEXTURE
   offset: 0x10000

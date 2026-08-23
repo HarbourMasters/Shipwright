@@ -3,7 +3,7 @@
     - [1, vr_IPVR_static]
   directory: textures/backgrounds/
   external_files:
-     - ${VER}/textures/backgrounds/vr_IPVR_pal_static.yml
+     - ${ACTIVE_TREE}/textures/backgrounds/vr_IPVR_pal_static.yml
 gRichardsHouse2BgTex:
   type: TEXTURE
   offset: 0x10000

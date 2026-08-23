@@ -3,7 +3,7 @@
     - [1, vr_holy1_static]
   directory: textures/skyboxes/
   external_files:
-    - ${VER}/textures/skyboxes/vr_holy1_pal_static.yml
+    - ${ACTIVE_TREE}/textures/skyboxes/vr_holy1_pal_static.yml
 gHoly1Skybox1Tex:
   type: TEXTURE
   offset: 0x0

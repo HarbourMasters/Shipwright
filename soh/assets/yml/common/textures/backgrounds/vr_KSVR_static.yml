@@ -3,7 +3,7 @@
     - [1, vr_KSVR_static]
   directory: textures/backgrounds/
   external_files:
-     - ${VER}/textures/backgrounds/vr_KSVR_pal_static.yml
+     - ${ACTIVE_TREE}/textures/backgrounds/vr_KSVR_pal_static.yml
 gKokiriShop2BgTex:
   type: TEXTURE
   offset: 0x10000

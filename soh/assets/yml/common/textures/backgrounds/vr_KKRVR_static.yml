@@ -3,7 +3,7 @@
     - [1, vr_KKRVR_static]
   directory: textures/backgrounds/
   external_files:
-    - ${VER}/textures/backgrounds/vr_KKRVR_pal_static.yml
+    - ${ACTIVE_TREE}/textures/backgrounds/vr_KKRVR_pal_static.yml
 gCarpentersHouse2BgTex:
   type: TEXTURE
   offset: 0x10000

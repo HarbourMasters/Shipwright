@@ -3,7 +3,7 @@
     - [1, vr_NSVR_static]
   directory: textures/backgrounds/
   external_files:
-     - ${VER}/textures/backgrounds/vr_NSVR_pal_static.yml
+     - ${ACTIVE_TREE}/textures/backgrounds/vr_NSVR_pal_static.yml
 gBombchuShop2BgTex:
   type: TEXTURE
   offset: 0x10000
