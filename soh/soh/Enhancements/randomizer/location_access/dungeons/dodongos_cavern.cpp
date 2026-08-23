@@ -61,15 +61,13 @@ void RegionTable_Init_DodongosCavern() {
         LOCATION(RC_DODONGOS_CAVERN_SIDE_ROOM_POT_2, logic->CanBreakPots()),
         LOCATION(RC_DODONGOS_CAVERN_SIDE_ROOM_POT_3, logic->CanBreakPots()),
         LOCATION(RC_DODONGOS_CAVERN_SIDE_ROOM_POT_4, logic->CanBreakPots()),
-        //Pots 5 and 6 are in seperate room that either requires moving statues on floor switch, or as adult going backwards through the lower lizalfos room
-        LOCATION(RC_DODONGOS_CAVERN_SIDE_ROOM_POT_5, logic->CanBreakPots() && (logic->HasItem(RG_POWER_BRACELET)) || (logic->IsAdult && logic->CanKillEnemy(RE_LIZALFOS))),
-        LOCATION(RC_DODONGOS_CAVERN_SIDE_ROOM_POT_6, logic->CanBreakPots() && (logic->HasItem(RG_POWER_BRACELET)) || (logic->IsAdult && logic->CanKillEnemy(RE_LIZALFOS))),
     }, {
         //Exits
         ENTRANCE(RR_DODONGOS_CAVERN_LOBBY,               true),
         //Shield seems to be in logic to drop a pot on their head as they hit you to blow up the wall
         ENTRANCE(RR_DODONGOS_CAVERN_SE_ROOM,             AnyAgeTime([]{return logic->CanBreakMudWalls() || logic->CanAttack() || (logic->TakeDamage() && logic->CanShield() && logic->HasItem(RG_POWER_BRACELET));})),
-        ENTRANCE(RR_DODONGOS_CAVERN_NEAR_LOWER_LIZALFOS, logic->HasItem(RG_POWER_BRACELET)),
+        //Account for adult going backwards through the lower lizalfos room
+        ENTRANCE(RR_DODONGOS_CAVERN_NEAR_LOWER_LIZALFOS, logic->HasItem(RG_POWER_BRACELET)) || (logic->IsAdult && logic->CanKillEnemy(RE_LIZALFOS)),
     });
 
     areaTable[RR_DODONGOS_CAVERN_SE_ROOM] = Region("Dodongos Cavern SE Room", SCENE_DODONGOS_CAVERN, {}, {
@@ -80,7 +78,11 @@ void RegionTable_Init_DodongosCavern() {
         ENTRANCE(RR_DODONGOS_CAVERN_SE_CORRIDOR, true),
     });
 
-    areaTable[RR_DODONGOS_CAVERN_NEAR_LOWER_LIZALFOS] = Region("Dodongos Cavern Near Lower Lizalfos", SCENE_DODONGOS_CAVERN, {}, {}, {
+    areaTable[RR_DODONGOS_CAVERN_NEAR_LOWER_LIZALFOS] = Region("Dodongos Cavern Near Lower Lizalfos", SCENE_DODONGOS_CAVERN, {}, {
+        //Locations
+        LOCATION(RC_DODONGOS_CAVERN_SIDE_ROOM_POT_5, logic->CanBreakPots(),
+        LOCATION(RC_DODONGOS_CAVERN_SIDE_ROOM_POT_6, logic->CanBreakPots(),
+    }, {
         //Exits
         ENTRANCE(RR_DODONGOS_CAVERN_SE_CORRIDOR,    true),
         ENTRANCE(RR_DODONGOS_CAVERN_LOWER_LIZALFOS, true),
