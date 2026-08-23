@@ -61,8 +61,9 @@ void RegionTable_Init_DodongosCavern() {
         LOCATION(RC_DODONGOS_CAVERN_SIDE_ROOM_POT_2, logic->CanBreakPots()),
         LOCATION(RC_DODONGOS_CAVERN_SIDE_ROOM_POT_3, logic->CanBreakPots()),
         LOCATION(RC_DODONGOS_CAVERN_SIDE_ROOM_POT_4, logic->CanBreakPots()),
-        LOCATION(RC_DODONGOS_CAVERN_SIDE_ROOM_POT_5, logic->CanBreakPots()),
-        LOCATION(RC_DODONGOS_CAVERN_SIDE_ROOM_POT_6, logic->CanBreakPots()),
+        //Pots 5 and 6 are in seperate room that either requires moving statues on floor switch, or as adult going backwards through the lower lizalfos room
+        LOCATION(RC_DODONGOS_CAVERN_SIDE_ROOM_POT_5, logic->CanBreakPots() && (logic->HasItem(RG_POWER_BRACELET)) || (logic->IsAdult && logic->CanKillEnemy(RE_LIZALFOS))),
+        LOCATION(RC_DODONGOS_CAVERN_SIDE_ROOM_POT_6, logic->CanBreakPots() && (logic->HasItem(RG_POWER_BRACELET)) || (logic->IsAdult && logic->CanKillEnemy(RE_LIZALFOS))),
     }, {
         //Exits
         ENTRANCE(RR_DODONGOS_CAVERN_LOBBY,               true),
