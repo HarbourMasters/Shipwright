@@ -1,13 +1,13 @@
 :config:
   segments:
-    - [ 6, object_jya_obj ]
-    - [ 4, gameplay_keep ]
-    - [ 8, object_jya_obj ]
-    - [ 9, object_jya_obj ]
-    - [ 10, object_jya_obj ]
-    - [ 11, object_jya_obj ]
-    - [ 12, object_jya_obj ]
-    - [ 13, object_jya_obj ]
+    - [ 6, 0x01117CA0 ]
+    - [ 4, 0x00D3AED0 ]
+    - [ 8, 0x01117CA0 ]
+    - [ 9, 0x01117CA0 ]
+    - [ 10, 0x01117CA0 ]
+    - [ 11, 0x01117CA0 ]
+    - [ 12, 0x01117CA0 ]
+    - [ 13, 0x01117CA0 ]
   external_files:
     - ntsc_1-2/objects/gameplay_keep.yml
 
@@ -333,8 +333,8 @@ gMegami5TLUT:
   offset: 0xAC70
   symbol: gMegami5TLUT
   format: RGBA16
-  width: 36
-  height: 1
+  width: 4
+  height: 4
 
 gMegamiCrumbleTLUT:
   type: TEXTURE
@@ -570,7 +570,7 @@ object_jya_objTex_01B740:
 
 object_jya_objVtx_000000:
   type: OOT:ARRAY
-  offset: 0x0
+  offset: 0x000000
   symbol: object_jya_objVtx_000000
   count: 31
   array_type: VTX

@@ -18,7 +18,6 @@ gShopDungenStone1Tex:
   format: CI4
   width: 64
   height: 64
-  tlut: 0xDE0
 
 gShopDungenStone2Tex:
   type: TEXTURE
@@ -27,7 +26,6 @@ gShopDungenStone2Tex:
   format: CI4
   width: 64
   height: 64
-  tlut: 0xDE0
 
 gShopDungenStoneShelvesDL:
   type: GFX
