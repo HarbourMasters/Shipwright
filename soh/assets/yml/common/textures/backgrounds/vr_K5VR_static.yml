@@ -3,7 +3,7 @@
     - [1, vr_K5VR_static]
   directory: textures/backgrounds/
   external_files:
-     - ${ACTIVE_TREE}/textures/backgrounds/vr_K5VR_pal_static.yml
+     - common/textures/backgrounds/vr_K5VR_pal_static.yml
 gSariasHouse2BgTex:
   type: TEXTURE
   offset: 0x10000

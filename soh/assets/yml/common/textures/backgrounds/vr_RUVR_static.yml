@@ -3,7 +3,7 @@
     - [1, vr_RUVR_static]
   directory: textures/backgrounds/
   external_files:
-     - ${ACTIVE_TREE}/textures/backgrounds/vr_RUVR_pal_static.yml
+     - common/textures/backgrounds/vr_RUVR_pal_static.yml
 gMarketRuins2BgTex:
   type: TEXTURE
   offset: 0x10000

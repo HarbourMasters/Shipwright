@@ -3,7 +3,7 @@
     - [1, vr_KR3VR_static]
   directory: textures/backgrounds/
   external_files:
-    - ${ACTIVE_TREE}/textures/backgrounds/vr_KR3VR_pal_static.yml
+    - common/textures/backgrounds/vr_KR3VR_pal_static.yml
 gBackAlleyHouse2BgTex:
   type: TEXTURE
   offset: 0x10000

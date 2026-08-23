@@ -3,7 +3,7 @@
     - [1, vr_FCVR_static]
   directory: textures/backgrounds/
   external_files:
-     - ${ACTIVE_TREE}/textures/backgrounds/vr_FCVR_pal_static.yml
+     - common/textures/backgrounds/vr_FCVR_pal_static.yml
 gMaskShop2BgTex:
   type: TEXTURE
   offset: 0x10000
