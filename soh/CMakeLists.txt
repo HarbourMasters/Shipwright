@@ -604,10 +604,13 @@ if (CMAKE_GENERATOR MATCHES "Visual Studio")
     )
 endif()
 add_custom_command(
-    TARGET ${PROJECT_NAME}
-    POST_BUILD
-    COMMENT "Copying asset ymls..."
-    COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different ${CMAKE_SOURCE_DIR}/soh/assets/yml $<TARGET_FILE_DIR:soh>/assets
+        TARGET ${PROJECT_NAME}
+        POST_BUILD
+        COMMENT "Copying asset ymls..."
+        COMMAND ${CMAKE_COMMAND}
+        -DSRC=${CMAKE_SOURCE_DIR}/soh/assets/yml
+        -DDST=$<TARGET_FILE_DIR:soh>/assets
+        -P ${CMAKE_SOURCE_DIR}/soh/CMake/copy_assets.cmake
 )
 ################################################################################
 # Dependencies
@@ -720,10 +723,10 @@ if(USE_ASAN)
     target_link_options(libultraship PRIVATE -fsanitize=address)
     target_compile_options(soh PRIVATE -fsanitize=address)
     target_link_options(soh PRIVATE -fsanitize=address)
-    target_link_options(ZAPD PRIVATE -fsanitize=address)
-    target_link_options(OTRExporter PRIVATE -fsanitize=address)
-    target_compile_options(ZAPD PRIVATE -fsanitize=address)
-    target_compile_options(OTRExporter PRIVATE -fsanitize=address)
+#    target_link_options(ZAPD PRIVATE -fsanitize=address)
+#    target_link_options(OTRExporter PRIVATE -fsanitize=address)
+#    target_compile_options(ZAPD PRIVATE -fsanitize=address)
+#    target_compile_options(OTRExporter PRIVATE -fsanitize=address)
     if (MSVC)
         target_compile_definitions(ImGui PRIVATE _DISABLE_VECTOR_ANNOTATION)
         target_compile_definitions(ImGui PRIVATE _DISABLE_STRING_ANNOTATION)
