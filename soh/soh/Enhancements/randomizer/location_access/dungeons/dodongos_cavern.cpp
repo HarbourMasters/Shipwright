@@ -67,7 +67,7 @@ void RegionTable_Init_DodongosCavern() {
         //Shield seems to be in logic to drop a pot on their head as they hit you to blow up the wall
         ENTRANCE(RR_DODONGOS_CAVERN_SE_ROOM,             AnyAgeTime([]{return logic->CanBreakMudWalls() || logic->CanAttack() || (logic->TakeDamage() && logic->CanShield() && logic->HasItem(RG_POWER_BRACELET));})),
         //Account for adult going backwards through the lower lizalfos room
-        ENTRANCE(RR_DODONGOS_CAVERN_NEAR_LOWER_LIZALFOS, logic->HasItem(RG_POWER_BRACELET)) || (logic->IsAdult && logic->CanKillEnemy(RE_LIZALFOS)),
+        ENTRANCE(RR_DODONGOS_CAVERN_NEAR_LOWER_LIZALFOS, logic->HasItem(RG_POWER_BRACELET)),
     });
 
     areaTable[RR_DODONGOS_CAVERN_SE_ROOM] = Region("Dodongos Cavern SE Room", SCENE_DODONGOS_CAVERN, {}, {
@@ -80,8 +80,8 @@ void RegionTable_Init_DodongosCavern() {
 
     areaTable[RR_DODONGOS_CAVERN_NEAR_LOWER_LIZALFOS] = Region("Dodongos Cavern Near Lower Lizalfos", SCENE_DODONGOS_CAVERN, {}, {
         //Locations
-        LOCATION(RC_DODONGOS_CAVERN_SIDE_ROOM_POT_5, logic->CanBreakPots(),
-        LOCATION(RC_DODONGOS_CAVERN_SIDE_ROOM_POT_6, logic->CanBreakPots(),
+        LOCATION(RC_DODONGOS_CAVERN_SIDE_ROOM_POT_5, logic->CanBreakPots()),
+        LOCATION(RC_DODONGOS_CAVERN_SIDE_ROOM_POT_6, logic->CanBreakPots()),
     }, {
         //Exits
         ENTRANCE(RR_DODONGOS_CAVERN_SE_CORRIDOR,    true),
