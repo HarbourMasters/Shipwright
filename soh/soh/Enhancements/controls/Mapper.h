@@ -61,7 +61,7 @@ struct AxisState {
 };
 
 class MappingSession {
-public:
+  public:
     static constexpr int32_t AXIS_COMMIT_DISTANCE = 16000;
     static constexpr int32_t AXIS_RETURN_DISTANCE = 10000;
     static constexpr uint32_t PENDING_ADVANCE_DELAY_MS = 100;
@@ -92,7 +92,7 @@ public:
     void SetBindings(const ExtendedBind (&bindings)[BINDING_COUNT]);
     void CopyBindingsTo(ExtendedBind (&out)[BINDING_COUNT]) const;
 
-private:
+  private:
     void ConfigureBinding(const ExtendedBind& binding);
     bool BindingContainsBinding(const ExtendedBind& a, const ExtendedBind& b) const;
 
@@ -120,16 +120,16 @@ bool SaveUserMapping(const std::string& mapping);
 bool DeleteUserMapping(const std::string& guid);
 
 class MapperWindow final : public Ship::GuiWindow {
-public:
+  public:
     using GuiWindow::GuiWindow;
     ~MapperWindow();
 
-protected:
+  protected:
     void InitElement() override;
     void UpdateElement() override;
     void DrawElement() override;
 
-private:
+  private:
     struct DeviceInfo {
         int32_t deviceIndex;
         SDL_JoystickID instanceId;

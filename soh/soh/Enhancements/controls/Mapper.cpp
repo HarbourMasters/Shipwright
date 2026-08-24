@@ -1691,7 +1691,8 @@ void MapperWindow::DrawElement() {
 // ---------------------------------------------------------------------------------------------------
 
 static void RegisterMapperWidgets() {
-    Ship::Context::GetRawInstance()->GetWindow()->GetGui()->AddGuiWindow(std::make_shared<MapperWindow>(CVAR_WINDOW("GamepadMapper"), "Gamepad Mapper", ImVec2(1280, 820)));
+    Ship::Context::GetRawInstance()->GetWindow()->GetGui()->AddGuiWindow(
+        std::make_shared<MapperWindow>(CVAR_WINDOW("GamepadMapper"), "Gamepad Mapper", ImVec2(1280, 820)));
     WidgetPath path = { "Settings", "Controls", SECTION_COLUMN_2 };
     SohGui::mSohMenu->AddWidget(path, "Gamepad Mapper", WIDGET_SEPARATOR_TEXT);
     SohGui::mSohMenu->AddWidget(path, "Open Gamepad Mapper", WIDGET_WINDOW_BUTTON)
