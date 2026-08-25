@@ -1,20 +1,19 @@
+#include <spdlog/spdlog.h>
+
 #include "logic.h"
 #include "bean_patches.h"
 #include "../debugger/performanceTimer.h"
-
-#include <vector>
-
-#include "soh/Enhancements/randomizer/randomizerEnums.h"
 #include "soh/OTRGlobals.h"
 #include "randomizer.h"
 #include "dungeon.h"
 #include "SeedContext.h"
+#include "randomizer.h"
+#include "location_access.h"
+
+extern "C" {
 #include "macros.h"
 #include "variables.h"
-#include "randomizer.h"
-#include <spdlog/spdlog.h>
-#include <ship/utils/StringHelper.h>
-#include "location_access.h"
+}
 
 extern "C" PlayState* gPlayState;
 

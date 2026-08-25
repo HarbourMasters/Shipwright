@@ -1,19 +1,19 @@
-#include "savestates.h"
-
 #include <memory>
-#include <spdlog/spdlog.h>
 
+#include <spdlog/spdlog.h>
 #include <ship/Context.h>
 #include <ship/window/Window.h>
-#include <ship/window/gui/GameOverlay.h>
+
+#include "savestates.h"
 #include <soh/OTRGlobals.h>
 #include <soh/OTRAudio.h>
+#include "savestate_serialize.h"
 
+extern "C" {
 #include "z64.h"
 #include "z64save.h"
 #include <variables.h>
-#include <functions.h>
-#include "savestate_serialize.h"
+}
 
 extern "C" PlayState* gPlayState;
 extern "C" EffectContext sEffectContext;

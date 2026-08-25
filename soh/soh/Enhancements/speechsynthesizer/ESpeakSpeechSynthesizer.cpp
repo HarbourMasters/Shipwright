@@ -1,6 +1,8 @@
-#include "ESpeakSpeechSynthesizer.h"
 #include <dlfcn.h>
-#include <libultraship/libultraship.h>
+
+#include <libultraship/log/luslog.h>
+
+#include "ESpeakSpeechSynthesizer.h"
 
 ESpeakSpeechSynthesizer::ESpeakSpeechSynthesizer() {
 }

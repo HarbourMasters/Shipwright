@@ -1,20 +1,24 @@
+#include "ship/utils/color.h"
+
+#include "soh/Enhancements/randomizer/randomizerTypes.h"
+#include "soh/SaveManager.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/ShipInit.hpp"
+#include "soh/frame_interpolation.h"
+
+extern "C" {
 #include "z64.h"
 #include "textures/icon_item_static/icon_item_static.h"
 #include "textures/icon_item_24_static/icon_item_24_static.h"
 #include "textures/icon_item_dungeon_static/icon_item_dungeon_static.h"
 #include "textures/parameter_static/parameter_static.h"
 #include "soh_assets.h"
-#include "soh/Enhancements/randomizer/randomizerTypes.h"
-#include "soh/SaveManager.h"
-#include "soh/frame_interpolation.h"
-#include "ship/utils/color.h"
 #include "functions.h"
 #include "macros.h"
 #include "variables.h"
 #include "src/overlays/gamestates/ovl_file_choose/file_choose.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/ShipInit.hpp"
 #include "assets/textures/title_static/title_static.h"
+}
 
 /*
  * TODO:

@@ -5,7 +5,6 @@
 
 #include <array>
 #include <unordered_map>
-#include <nlohmann/json.hpp>
 
 namespace Rando {
 class Settings {

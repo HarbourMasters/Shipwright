@@ -1,6 +1,6 @@
 #pragma once
 
-#include <libultraship/libultra.h>
+#include <libultraship/libultra/types.h>
 
 struct Player;
 

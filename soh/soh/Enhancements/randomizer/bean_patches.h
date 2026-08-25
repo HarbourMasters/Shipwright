@@ -2,7 +2,7 @@
 
 #include <array>
 
-#include "randomizerTypes.h"
+#include "soh/Enhancements/randomizer/randomizerEnums.h"
 #include "z64scene.h"
 
 // One row per bean patch, shared by logic, savefile setup and the actor hooks.

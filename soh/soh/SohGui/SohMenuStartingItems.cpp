@@ -1,17 +1,13 @@
+#include <vector>
+
+#include <fast/Fast3dGui.h>
+
 #include "soh/SohGui/SohGui.hpp"
 #include "soh/SohGui/UIWidgets.hpp"
 #include "soh/SohGui/ImGuiUtils.h"
 #include "soh/OTRGlobals.h"
 #include "soh/cvar_prefixes.h"
-#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/randomizer/settings.h"
-
-#include <vector>
-#include <fast/Fast3dGui.h>
-
-extern "C" {
-#include "z64.h"
-}
 
 namespace SohGui {
 

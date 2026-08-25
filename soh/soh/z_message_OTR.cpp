@@ -1,9 +1,11 @@
 #include <ship/Context.h>
 #include <ship/resource/ResourceManager.h>
-#include <ship/utils/StringHelper.h>
-#include "global.h"
+
 #include "soh/resource/type/Text.h"
+
+extern "C" {
 #include <message_data_static.h>
+}
 
 extern "C" MessageTableEntry* sNesMessageEntryTablePtr;
 extern "C" MessageTableEntry* sGerMessageEntryTablePtr;

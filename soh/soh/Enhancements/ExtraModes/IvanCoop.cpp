@@ -1,9 +1,9 @@
 #include "soh/ActorDB.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
-#include "src/overlays/actors/ovl_En_Partner/z_en_partner.h"
 
 extern "C" {
+#include "src/overlays/actors/ovl_En_Partner/z_en_partner.h"
 #include "macros.h"
 #include "functions.h"
 extern PlayState* gPlayState;

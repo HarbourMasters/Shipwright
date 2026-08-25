@@ -1,3 +1,12 @@
+#include <array>
+#include <string>
+#include <sstream>
+#include <vector>
+#include <set>
+
+#include <spdlog/common.h>
+#include <libultraship/controller/controldeck/ControlDeck.h>
+
 #include "randomizer_check_tracker.h"
 #include "randomizer_entrance_tracker.h"
 #include "randomizer_item_tracker.h"
@@ -6,10 +15,8 @@
 #include "soh/Enhancements/randomizer/static_data.h"
 #include "soh/OTRGlobals.h"
 #include "soh/SaveManager.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/SohGui/UIWidgets.hpp"
 #include "soh/SohGui/SohGui.hpp"
-#include "soh/SohGui/SohMenu.h"
 #include "dungeon.h"
 #include "entrance.h"
 #include "fishsanity.h"
@@ -18,27 +25,19 @@
 #include "soh/Enhancements/debugger/performanceTimer.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
 #include "soh/ObjectExtension/ObjectExtension.h"
-#include "overlays/actors/ovl_En_GirlA/z_en_girla.h"
-
-#include <array>
-#include <string>
-#include <sstream>
-#include <vector>
-#include <set>
-#include <spdlog/common.h>
-#include <libultraship/controller/controldeck/ControlDeck.h>
 #include "location.h"
 #include "item_location.h"
 #include "randomizer_check_objects.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
-#include "z64item.h"
 
 extern "C" {
+#include "overlays/actors/ovl_En_GirlA/z_en_girla.h"
+#include "z64item.h"
 #include "variables.h"
-#include "functions.h"
 #include "macros.h"
 extern PlayState* gPlayState;
 }
+
 extern "C" GetItemEntry ItemTable_RetrieveEntry(s16 modIndex, s16 getItemID);
 
 extern std::vector<ItemTrackerItem> dungeonRewardStones;

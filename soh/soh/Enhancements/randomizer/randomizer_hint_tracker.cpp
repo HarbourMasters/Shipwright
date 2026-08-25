@@ -1,8 +1,3 @@
-#include "randomizer_hint_tracker.h"
-#include "soh/OTRGlobals.h"
-#include "soh/SaveManager.h"
-#include "soh/SohGui/SohGui.hpp"
-
 #include <algorithm>
 #include <cctype>
 #include <map>
@@ -11,16 +6,14 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+
 #include <libultraship/controller/controldeck/ControlDeck.h>
 #include <ship/window/gui/IconsFontAwesome4.h>
 
-extern "C" {
-#include <z64.h>
-#include "macros.h"
-#include "variables.h"
-extern PlayState* gPlayState;
-}
-
+#include "randomizer_hint_tracker.h"
+#include "soh/OTRGlobals.h"
+#include "soh/SaveManager.h"
+#include "soh/SohGui/SohGui.hpp"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/randomizer/hint.h"
 #include "soh/Enhancements/randomizer/item_category_adj.h"
@@ -29,6 +22,12 @@ extern PlayState* gPlayState;
 #include "soh/Enhancements/randomizer/randomizer_entrance_tracker.h"
 #include "soh/Enhancements/randomizer/SeedContext.h"
 #include "soh/Enhancements/randomizer/static_data.h"
+
+extern "C" {
+#include <z64.h>
+#include "variables.h"
+extern PlayState* gPlayState;
+}
 
 using namespace UIWidgets;
 

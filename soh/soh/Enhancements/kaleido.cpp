@@ -1,30 +1,26 @@
-#include "kaleido.h"
+#include <sstream>
 
-#include "objects/gameplay_keep/gameplay_keep.h"
 #include "ship/utils/StringHelper.h"
-#include "soh/Enhancements/randomizer/randomizerTypes.h"
+#include <libultraship/bridge/consolevariablebridge.h>
+
+#include "kaleido.h"
 #include "soh/Enhancements/randomizer/SeedContext.h"
 #include "soh/ShipInit.hpp"
 #include "soh/ShipUtils.h"
+#include "soh/OTRGlobals.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 
 extern "C" {
+#include "objects/gameplay_keep/gameplay_keep.h"
 #include "z64.h"
 #include "functions.h"
 #include "macros.h"
 #include "variables.h"
 #include <textures/parameter_static/parameter_static.h>
-extern PlayState* gPlayState;
-}
-#include "soh/OTRGlobals.h"
-#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh_assets.h"
 #include "textures/icon_item_static/icon_item_static.h"
-#include <libultraship/bridge/consolevariablebridge.h>
-#include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
-
-#include <sstream>
-
-extern "C" {
+extern PlayState* gPlayState;
 void KaleidoScope_MoveCursorToSpecialPos(PlayState* play, u16 specialPos);
 }
 

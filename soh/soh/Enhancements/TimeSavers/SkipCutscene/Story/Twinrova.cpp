@@ -1,12 +1,9 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
-#include "variables.h"
 #include "seqcmd.h"
 #include "src/overlays/actors/ovl_Boss_Tw/z_boss_tw.h"
-#include "assets/objects/object_tw/object_tw.h"
 extern BossTw* sTwinrovaPtr;
 extern void BossTw_SetupFlyTo(BossTw*, PlayState*);
 extern void BossTw_SetupWait(BossTw*, PlayState*);

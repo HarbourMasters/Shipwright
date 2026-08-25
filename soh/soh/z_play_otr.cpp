@@ -1,11 +1,16 @@
-#include "ResourceManagerHelpers.h"
-#include "soh/resource/type/Scene.h"
 #include <ship/Context.h>
 #include <ship/resource/ResourceManager.h>
 #include <ship/utils/StringHelper.h>
 #include <spdlog/spdlog.h>
+
+#include "ResourceManagerHelpers.h"
+#include "soh/resource/type/Scene.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "global.h"
+
+extern "C" {
+#include "functions.h"
+#include "variables.h"
+}
 
 extern "C" void Play_InitScene(PlayState* play, s32 spawn);
 extern "C" void Play_InitEnvironment(PlayState* play, s16 skyboxId);

@@ -1,5 +1,5 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
-#include "soh/Enhancements/randomizer/randomizer.h"
+#include "soh/Enhancements/randomizer/SeedContext.h"
 
 extern "C" {
 #include "src/overlays/actors/ovl_Door_Shutter/z_door_shutter.h"

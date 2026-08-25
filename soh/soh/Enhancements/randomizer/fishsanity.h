@@ -1,6 +1,5 @@
 #pragma once
 
-#include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "soh/Enhancements/randomizer/location.h"
 
 typedef enum {

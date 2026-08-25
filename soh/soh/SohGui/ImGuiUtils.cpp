@@ -1,13 +1,12 @@
-#include "ImGuiUtils.h"
 #include <ship/Context.h>
-#include <ship/window/Window.h>
-#include "assets/soh_assets.h"
+#include <fast/Fast3dGui.h>
+
+#include "ImGuiUtils.h"
 #include "soh/Enhancements/randomizer/rando_hash.h"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 
-#include <fast/Fast3dGui.h>
-
 extern "C" {
+#include "assets/soh_assets.h"
 #include "textures/icon_item_static/icon_item_static.h"
 #include "textures/parameter_static/parameter_static.h"
 }

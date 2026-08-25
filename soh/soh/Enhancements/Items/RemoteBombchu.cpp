@@ -1,9 +1,9 @@
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
+#include "functions.h"
 #include "src/overlays/actors/ovl_En_Bom_Chu/z_en_bom_chu.h"
-
 void EnBomChu_Move(EnBomChu*, PlayState*);
 void EnBomChu_Explode(EnBomChu*, PlayState*);
 s32 Camera_BGCheck(Camera* camera, Vec3f* from, Vec3f* to);

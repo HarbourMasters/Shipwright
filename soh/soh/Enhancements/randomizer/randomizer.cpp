@@ -1,19 +1,16 @@
-#include "randomizer.h"
-#include <nlohmann/json.hpp>
 #include <fstream>
-#include <variables.h>
-#include <macros.h>
-#include <functions.h>
+#include <sstream>
+#include <tuple>
+
+#include <nlohmann/json.hpp>
+#include <ship/window/FileDropMgr.h>
+
+#include "randomizer.h"
 #include "3drando/menu.hpp"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/SohGui/SohGui.hpp"
-#include <imgui.h>
-#include "../../../src/overlays/actors/ovl_En_GirlA/z_en_girla.h"
 #include "randomizer_check_objects.h"
-#include <sstream>
-#include <tuple>
 #include "soh/OTRGlobals.h"
-#include <ship/window/FileDropMgr.h>
 #include "static_data.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "settings.h"
@@ -25,8 +22,11 @@
 #include "logic.h"
 
 extern "C" {
+#include <variables.h>
+#include <macros.h>
+#include <functions.h>
+#include "../../../src/overlays/actors/ovl_En_GirlA/z_en_girla.h"
 #include "src/overlays/actors/ovl_Obj_Bean/z_obj_bean.h"
-
 extern void func_80B8FE00(ObjBean*); // trigger planting
 extern PlayState* gPlayState;
 }

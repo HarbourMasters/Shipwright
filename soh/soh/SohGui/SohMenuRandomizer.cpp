@@ -1,10 +1,10 @@
 #include <unordered_set>
+
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "SohMenu.h"
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/randomizer/randomizer_check_objects.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
-#include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "soh/Enhancements/randomizer/settings.h"
 #include "soh/ShipUtils.h"
 #include "soh/SohGui/SohGui.hpp"

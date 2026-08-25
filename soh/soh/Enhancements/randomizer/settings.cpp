@@ -1,15 +1,14 @@
+#include <spdlog/spdlog.h>
+#include <libultraship/bridge/consolevariablebridge.h>
+#include <ship/Context.h>
+#include <ship/window/Window.h>
+
 #include "settings.h"
 #include "trial.h"
 #include "dungeon.h"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "soh/Enhancements/randomizer/rng.h"
 #include "soh/OTRGlobals.h"
-
-#include <spdlog/spdlog.h>
-#include <libultraship/bridge/consolevariablebridge.h>
-#include <ship/Context.h>
-#include <ship/window/Window.h>
-#include <ship/window/gui/Gui.h>
 
 namespace Rando {
 std::shared_ptr<Settings> Settings::mInstance;

@@ -1,13 +1,17 @@
-#include "SohInputEditorWindow.h"
 #include <ship/controller/controldeck/ControlDeck.h>
 #include <ship/utils/StringHelper.h>
-#include <libultraship/libultra.h>
 #include <fast/Fast3dWindow.h>
+
+#include "SohInputEditorWindow.h"
 #include "soh/OTRGlobals.h"
 #include "soh/SohGui/SohMenu.h"
 #include "soh/SohGui/SohGui.hpp"
-#include "z64.h"
 #include "soh/cvar_prefixes.h"
+
+extern "C" {
+#include "z64.h"
+}
+
 #ifndef __WIIU__
 #include <ship/controller/controldevice/controller/mapping/sdl/SDLAxisDirectionToButtonMapping.h>
 #endif

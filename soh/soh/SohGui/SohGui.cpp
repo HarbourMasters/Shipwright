@@ -5,9 +5,9 @@
 //  Created by David Chavez on 24.08.22.
 //
 
-#include "SohGui.hpp"
-
 #include <imgui.h>
+
+#include "SohGui.hpp"
 
 #ifdef __APPLE__
 #include <fast/backends/gfx_metal.h>
@@ -16,7 +16,6 @@
 #ifdef __SWITCH__
 #include <port/switch/SwitchImpl.h>
 #endif
-#include "include/global.h"
 
 #include "soh/Enhancements/debugger/MessageViewer.h"
 #include "soh/Notification/Notification.h"

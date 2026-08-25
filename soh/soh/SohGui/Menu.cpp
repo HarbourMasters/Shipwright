@@ -1,18 +1,20 @@
+#include <variant>
+#include <tuple>
+
+#include <ship/config/Config.h>
+#include <spdlog/common.h>
+
 #include "Menu.h"
 #include "BackendTypes.h"
 #include "UIWidgets.hpp"
 #include "soh/OTRGlobals.h"
-#include <ship/config/Config.h>
-#include <ship/window/gui/GuiElement.h>
 #include "SohModals.h"
-#include <variant>
-#include <spdlog/common.h>
-#include <tuple>
 
 extern "C" {
 #include "z64.h"
 extern PlayState* gPlayState;
 }
+
 std::vector<ImVec2> windowTypeSizes = { {} };
 
 extern std::unordered_map<s16, const char*> warpPointSceneList;

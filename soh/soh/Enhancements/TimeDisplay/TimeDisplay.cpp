@@ -1,19 +1,15 @@
-#include "TimeDisplay.h"
-#include "soh/Enhancements/gameplaystats.h"
-#include <global.h>
-
-#include "assets/textures/parameter_static/parameter_static.h"
-#include "assets/soh_assets.h"
-#include "soh/SohGui/ImGuiUtils.h"
-
 #include <fast/Fast3dGui.h>
 #include <libultraship/bridge/consolevariablebridge.h>
 #include <ship/Context.h>
-#include <spdlog/common.h>
+
+#include "TimeDisplay.h"
+#include "soh/Enhancements/gameplaystats.h"
+#include "soh/SohGui/ImGuiUtils.h"
 
 extern "C" {
+#include "assets/textures/parameter_static/parameter_static.h"
+#include "assets/soh_assets.h"
 #include "macros.h"
-#include "functions.h"
 #include "variables.h"
 extern PlayState* gPlayState;
 uint64_t GetUnixTimestamp();

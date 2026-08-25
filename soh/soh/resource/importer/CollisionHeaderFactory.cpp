@@ -1,7 +1,7 @@
+#include <tinyxml2.h>
+
 #include "soh/resource/importer/CollisionHeaderFactory.h"
 #include "soh/resource/type/CollisionHeader.h"
-#include "spdlog/spdlog.h"
-#include <tinyxml2.h>
 
 namespace SOH {
 std::shared_ptr<Ship::IResource>

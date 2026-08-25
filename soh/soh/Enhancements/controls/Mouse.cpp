@@ -1,11 +1,16 @@
-#include "Mouse.h"
-#include "soh/OTRGlobals.h"
-#include "z64player.h"
-#include "global.h"
 #include <ship/Context.h>
 #include <ship/window/Window.h>
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+
+#include "Mouse.h"
+#include "soh/OTRGlobals.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
+
+extern "C" {
+#include "z64player.h"
+#include "functions.h"
+#include "macros.h"
+}
 
 static Ship::Coords mouseCoord = {};
 static Ship::Coords mouseCoordRel = {};

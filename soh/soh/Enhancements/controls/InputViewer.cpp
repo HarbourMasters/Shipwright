@@ -1,18 +1,15 @@
-#include "InputViewer.h"
-
 #include <libultraship/bridge/consolevariablebridge.h>
 #include "libultraship/libultra/controller.h"
 #include <ship/Context.h>
 #include <libultraship/controller/controldeck/ControlDeck.h>
-#include "soh/OTRGlobals.h"
 #include <imgui.h>
 #include <spdlog/spdlog.h>
-#include <cmath>
+#include <fast/Fast3dGui.h>
 
+#include "InputViewer.h"
+#include "soh/OTRGlobals.h"
 #include "soh/SohGui/UIWidgets.hpp"
 #include "soh/SohGui/SohGui.hpp"
-
-#include <fast/Fast3dGui.h>
 
 using namespace UIWidgets;
 

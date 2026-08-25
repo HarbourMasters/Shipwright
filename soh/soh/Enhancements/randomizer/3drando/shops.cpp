@@ -1,12 +1,11 @@
-#include "item_pool.hpp"
-#include "../location_access.h"
+#include <array>
+#include <math.h>
+
+#include <spdlog/spdlog.h>
+
 #include "../rng.h"
 #include "shops.hpp"
 #include "../location.h"
-
-#include <array>
-#include <math.h>
-#include <spdlog/spdlog.h>
 
 PriceSettingsStruct::PriceSettingsStruct(RandomizerSettingKey _main, RandomizerSettingKey _fixedPrice,
                                          RandomizerSettingKey _range1, RandomizerSettingKey _range2,

@@ -1,14 +1,11 @@
-#include "AudioEditor.h"
-#include "sequence.h"
-
 #include <map>
 #include <set>
 #include <string>
-#include <functions.h>
+
+#include "AudioEditor.h"
 #include "soh/ShipUtils.h"
 #include "soh/OTRGlobals.h"
 #include "soh/cvar_prefixes.h"
-#include <ship/utils/StringHelper.h>
 #include "soh/SohGui/SohMenu.h"
 #include "soh/SohGui/SohGui.hpp"
 #include "AudioCollection.h"
@@ -18,6 +15,8 @@
 #include "soh/Enhancements/randomizer/SeedContext.h"
 
 extern "C" {
+#include "sequence.h"
+#include <functions.h>
 #include "z64save.h"
 extern SaveContext gSaveContext;
 }

@@ -1,5 +1,12 @@
+#include <algorithm>
+#include <array>
+#include <bit>
+#include <map>
+#include <string>
+
+#include <fast/Fast3dGui.h>
+
 #include "debugSaveEditor.h"
-#include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
 #include "soh/Enhancements/randomizer/static_data.h"
 #include "soh/Enhancements/randomizer/item.h"
@@ -12,28 +19,17 @@
 #include "soh/SohGui/UIWidgets.hpp"
 #include "soh/SohGui/SohGui.hpp"
 #include "soh/SaveManager.h"
-#include "soh/ResourceManagerHelpers.h"
-
-#include <spdlog/common.h>
-#include <spdlog/fmt/fmt.h>
-#include <algorithm>
-#include <array>
-#include <bit>
-#include <map>
-#include <string>
-#include <soh_assets.h>
-
-#include <fast/Fast3dGui.h>
 
 extern "C" {
+#include <soh_assets.h>
 #include <z64.h>
 #include "variables.h"
 #include "functions.h"
 #include "macros.h"
+#include "message_data_static.h"
 extern PlayState* gPlayState;
 }
 
-#include "message_data_static.h"
 extern "C" MessageTableEntry* sGerMessageEntryTablePtr;
 extern "C" MessageTableEntry* sFraMessageEntryTablePtr;
 extern "C" MessageTableEntry* sJpnMessageEntryTablePtr;

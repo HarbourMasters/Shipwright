@@ -1,19 +1,16 @@
-#include "Lang.h"
+#include <memory>
 
-#include "soh/SohGui/MenuTypes.h"
-#include "soh/SohGui/SohGui.hpp"
-#include "soh/SohGui/SohMenu.h"
-#include "soh/util.h"
-
+#include <libultraship/bridge/consolevariablebridge.h>
 #include "ship/Context.h"
 #include "ship/resource/File.h"
-#include "ship/resource/ResourceManager.h"
 #include "ship/resource/type/Json.h"
 #include "ship/utils/StringHelper.h"
 
+#include "Lang.h"
+#include "soh/SohGui/MenuTypes.h"
+#include "soh/SohGui/SohMenu.h"
+#include "soh/util.h"
 #include "spdlog/spdlog.h"
-
-#include <memory>
 
 namespace SohGui {
 extern std::shared_ptr<SohMenu> mSohMenu;

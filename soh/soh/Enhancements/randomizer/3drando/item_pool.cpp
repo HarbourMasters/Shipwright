@@ -1,14 +1,12 @@
-#include "item_pool.hpp"
+#include <algorithm>
 
+#include "item_pool.hpp"
 #include "../dungeon.h"
-#include "fill.hpp"
+#include "soh/Enhancements/randomizer/location_access.h"
 #include "../static_data.h"
 #include "../SeedContext.h"
 #include "../rng.h"
 #include "soh/Enhancements/randomizer/Traps.h"
-#include "soh/Enhancements/randomizer/randomizerTypes.h"
-#include <algorithm>
-#include <spdlog/spdlog.h>
 
 std::vector<RandomizerGet> itemPool = {};
 std::vector<RandomizerGet> lesserPool = {};

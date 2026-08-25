@@ -1,19 +1,17 @@
 #include <vector>
 #include <fstream>
-#include <spdlog/common.h>
 
 #include <ship/Context.h>
+#include <fast/Fast3dGui.h>
+
 #include "TimeSplits.h"
 #include "soh/Enhancements/gameplaystats.h"
-
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
-#include "soh_assets.h"
 #include <soh/SohGui/SohGui.hpp>
 #include "soh/SohGui/UIWidgets.hpp"
 
-#include <fast/Fast3dGui.h>
-
 extern "C" {
+#include "soh_assets.h"
 #include "z64item.h"
 #include "macros.h"
 extern SaveContext gSaveContext;

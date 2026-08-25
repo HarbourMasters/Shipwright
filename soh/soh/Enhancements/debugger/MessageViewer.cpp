@@ -1,18 +1,16 @@
 #include "MessageViewer.h"
-
 #include "soh/SohGui/UIWidgets.hpp"
 #include "soh/SohGui/SohGui.hpp"
 #include "soh/SohGui/SohMenu.h"
-#include "soh/OTRGlobals.h"
-
-#include <textures/message_static/message_static.h>
-
 #include "../custom-message/CustomMessageManager.h"
+#include "soh/util.h"
+
+extern "C" {
+#include <textures/message_static/message_static.h>
 #include "functions.h"
 #include "macros.h"
 #include "message_data_static.h"
-#include "variables.h"
-#include "soh/util.h"
+}
 
 extern "C" u8 sMessageHasSetSfx;
 

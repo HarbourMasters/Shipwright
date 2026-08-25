@@ -5,7 +5,6 @@
 
 extern "C" {
 #include "functions.h"
-#include "src/overlays/actors/ovl_En_Fz/z_en_fz.h"
 #include "src/overlays/actors/ovl_En_Crow/z_en_crow.h"
 #include "src/overlays/actors/ovl_En_Firefly/z_en_firefly.h"
 extern void EnCrow_TurnAway(EnCrow*, PlayState*);

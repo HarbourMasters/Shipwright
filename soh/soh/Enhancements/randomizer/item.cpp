@@ -1,14 +1,12 @@
 #include "item.h"
-#include "item_location.h"
-
 #include "SeedContext.h"
 #include "logic.h"
-#include "3drando/item_pool.hpp"
-#include "z64item.h"
-#include "variables.h"
-#include "functions.h"
 #include "../../OTRGlobals.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
+
+extern "C" {
+#include "z64item.h"
+}
 
 namespace Rando {
 Item::Item()

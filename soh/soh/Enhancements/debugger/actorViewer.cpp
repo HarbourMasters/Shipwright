@@ -1,3 +1,8 @@
+#include <algorithm>
+#include <array>
+#include <unordered_map>
+#include <string>
+
 #include "actorViewer.h"
 #include "../../util.h"
 #include "soh/SohGui/UIWidgets.hpp"
@@ -6,13 +11,6 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/nametag.h"
 #include "soh/ShipInit.hpp"
-
-#include <algorithm>
-#include <array>
-#include <unordered_map>
-#include <string>
-#include <spdlog/common.h>
-#include "soh/OTRGlobals.h"
 #include "soh/cvar_prefixes.h"
 #include "soh/ObjectExtension/ActorListIndex.h"
 

@@ -1,25 +1,22 @@
-#include "Plandomizer.h"
-#include <soh/SohGui/SohGui.hpp>
-#include "soh/SohGui/UIWidgets.hpp"
-#include "soh/util.h"
 #include <vector>
-#include "soh/Notification/Notification.h"
-#include <soh_assets.h>
-#include "soh/Enhancements/randomizer/3drando/hints.hpp"
-
 #include <fstream>
 #include <filesystem>
 
+#include <fast/Fast3dGui.h>
+
+#include "Plandomizer.h"
+#include <soh/SohGui/SohGui.hpp>
+#include "soh/SohGui/UIWidgets.hpp"
+#include "soh/Notification/Notification.h"
+#include "soh/Enhancements/randomizer/3drando/hints.hpp"
 #include "soh/OTRGlobals.h"
 #include "soh/SohGui/ImGuiUtils.h"
 #include "soh/Enhancements/randomizer/logic.h"
 #include "soh/Enhancements/randomizer/rando_hash.h"
 #include "soh/Enhancements/randomizer/Traps.h"
-#include "soh/Enhancements/randomizer/3drando/shops.hpp"
-
-#include <fast/Fast3dGui.h>
 
 extern "C" {
+#include <soh_assets.h>
 #include "include/z64item.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "textures/icon_item_static/icon_item_static.h"

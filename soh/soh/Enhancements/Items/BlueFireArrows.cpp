@@ -1,11 +1,10 @@
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/randomizer/SeedContext.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
 #include "overlays/actors/ovl_Bg_Breakwall/z_bg_breakwall.h"
 #include "overlays/actors/ovl_Bg_Ice_Shelter/z_bg_ice_shelter.h"
-
 extern PlayState* gPlayState;
 }
 

@@ -1,11 +1,10 @@
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
 #include "functions.h"
 #include "src/overlays/actors/ovl_En_Ge1/z_en_ge1.h"
 extern SaveContext gSaveContext;
-
 extern void EnGe1_TalkAfterGame_Archery(EnGe1* enGe1, PlayState* play);
 }
 

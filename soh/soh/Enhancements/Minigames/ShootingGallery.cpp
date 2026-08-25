@@ -2,7 +2,6 @@
 #include "soh/ShipInit.hpp"
 
 extern "C" {
-#include "functions.h"
 #include "src/overlays/actors/ovl_En_Syateki_Itm/z_en_syateki_itm.h"
 extern PlayState* gPlayState;
 }
