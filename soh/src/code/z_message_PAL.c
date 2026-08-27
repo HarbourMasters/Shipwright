@@ -2681,6 +2681,9 @@ void Message_Decode(PlayState* play) {
 extern const char* msgStaticTbl[];
 
 void Message_OpenText(PlayState* play, u16 textId) {
+    if (textId == 0x0000) {
+        textId = 0x0140; // Fallback to navi text to prevent assign crash
+    }
     lusprintf(__FILE__, __LINE__, 2, "Display Text - textId: %#x", textId);
     static s16 messageStaticIndices[] = { 0, 1, 3, 2 };
     MessageContext* msgCtx = &play->msgCtx;
