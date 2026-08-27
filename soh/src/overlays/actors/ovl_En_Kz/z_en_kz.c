@@ -70,7 +70,7 @@ static AnimationInfo sAnimationInfo[] = {
     { &gKzMweepAnim, 1.0f, 0.0f, -1.0f, ANIMMODE_LOOP, -10.0f },
 };
 
-u16 EnKz_GetTextNoMaskChild(PlayState* play, EnKz* this) {
+u16 EnKz_GetTextIdChild(PlayState* play, EnKz* this) {
     Player* player = GET_PLAYER(play);
 
     if (GameInteractor_Should(VB_KING_ZORA_THANK_CHILD, (CHECK_QUEST_ITEM(QUEST_ZORA_SAPPHIRE)), this)) {
@@ -83,7 +83,7 @@ u16 EnKz_GetTextNoMaskChild(PlayState* play, EnKz* this) {
     }
 }
 
-u16 EnKz_GetTextNoMaskAdult(PlayState* play, EnKz* this) {
+u16 EnKz_GetTextIdAdult(PlayState* play, EnKz* this) {
     Player* player = GET_PLAYER(play);
 
     // this works because both ITEM_NONE and later trade items are > ITEM_FROG
@@ -104,22 +104,22 @@ u16 EnKz_GetTextNoMaskAdult(PlayState* play, EnKz* this) {
     }
 }
 
-u16 EnKz_GetText(PlayState* play, Actor* thisx) {
+u16 EnKz_GetTextId(PlayState* play, Actor* thisx) {
     EnKz* this = (EnKz*)thisx;
-    u16 reactionText = Text_GetFaceReaction(play, 0x1E);
+    u16 textId = Text_GetFaceReaction(play, 0x1E);
 
-    if (reactionText != 0) {
-        return reactionText;
+    if (textId != 0) {
+        return textId;
     }
 
     if (LINK_IS_ADULT) {
-        return EnKz_GetTextNoMaskAdult(play, this);
+        return EnKz_GetTextIdAdult(play, this);
     } else {
-        return EnKz_GetTextNoMaskChild(play, this);
+        return EnKz_GetTextIdChild(play, this);
     }
 }
 
-s16 func_80A9C6C0(PlayState* play, Actor* thisx) {
+s16 EnKz_UpdateTalkState(PlayState* play, Actor* thisx) {
     EnKz* this = (EnKz*)thisx;
     s16 talkState = NPC_TALK_STATE_TALKING;
 
@@ -215,75 +215,59 @@ void EnKz_UpdateEyes(EnKz* this) {
     }
 }
 
-s32 func_80A9C95C(PlayState* play, EnKz* this, s16* talkState, f32 unkf, NpcGetTextIdFunc getTextId,
-                  NpcUpdateTalkStateFunc updateTalkState) {
+/**
+ * Custom version of Npc_UpdateTalking.
+ *
+ * @see Npc_UpdateTalking
+ */
+s32 EnKz_UpdateTalking(PlayState* play, EnKz* this, s16* talkState, f32 interactRange, NpcGetTextIdFunc getTextId,
+                       NpcUpdateTalkStateFunc updateTalkState) {
     Player* player = GET_PLAYER(play);
-    s16 sp32;
-    s16 sp30;
+    s16 x;
+    s16 y;
     f32 xzDistToPlayer;
     f32 yaw;
 
     if (Actor_ProcessTalkRequest(&this->actor, play)) {
         *talkState = NPC_TALK_STATE_TALKING;
-        return 1;
+        return true;
     }
 
-    if (!CVarGetInteger(CVAR_ENHANCEMENT("EarlyEyeballFrog"), 0)) {
-        if (*talkState != NPC_TALK_STATE_IDLE) {
-            *talkState = updateTalkState(play, &this->actor);
-            return 0;
-        }
-
-        yaw = Math_Vec3f_Yaw(&this->actor.home.pos, &player->actor.world.pos);
-        yaw -= this->actor.shape.rot.y;
-        if ((fabsf(yaw) > 1638.0f) || (this->actor.xzDistToPlayer < 265.0f)) {
-            this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
-            return 0;
-        }
-
-        this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
+    if (*talkState != NPC_TALK_STATE_IDLE) {
+        *talkState = updateTalkState(play, &this->actor);
+        return false;
     }
 
-    Actor_GetScreenPos(play, &this->actor, &sp32, &sp30);
-    if (!((sp32 >= -30) && (sp32 < 361) && (sp30 >= -10) && (sp30 < 241))) {
-        return 0;
+    yaw = Math_Vec3f_Yaw(&this->actor.home.pos, &player->actor.world.pos);
+    yaw -= this->actor.shape.rot.y;
+    if ((fabsf(yaw) > 1638.0f) || (this->actor.xzDistToPlayer < 265.0f)) {
+        this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
+        return false;
     }
 
-    if (CVarGetInteger(CVAR_ENHANCEMENT("EarlyEyeballFrog"), 0)) {
-        if (*talkState != NPC_TALK_STATE_IDLE) {
-            *talkState = updateTalkState(play, &this->actor);
-            return 0;
-        }
+    this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
+
+    Actor_GetScreenPos(play, &this->actor, &x, &y);
+    if (!((x >= -30) && (x < 361) && (y >= -10) && (y < 241))) {
+        return false;
     }
 
     xzDistToPlayer = this->actor.xzDistToPlayer;
     this->actor.xzDistToPlayer = Math_Vec3f_DistXZ(&this->actor.home.pos, &player->actor.world.pos);
-    if (Actor_OfferTalk(&this->actor, play, unkf) == 0) {
+    if (!Actor_OfferTalk(&this->actor, play, interactRange)) {
         this->actor.xzDistToPlayer = xzDistToPlayer;
-        return 0;
+        return false;
     }
     this->actor.xzDistToPlayer = xzDistToPlayer;
     this->actor.textId = getTextId(play, &this->actor);
 
-    return 0;
+    return false;
 }
 
 void func_80A9CB18(EnKz* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
-    if (CVarGetInteger(CVAR_ENHANCEMENT("EarlyEyeballFrog"), 0)) {
-        f32 yaw;
-        yaw = Math_Vec3f_Yaw(&this->actor.home.pos, &player->actor.world.pos);
-        yaw -= this->actor.shape.rot.y;
-        if ((fabsf(yaw) > 1638.0f) || (this->actor.xzDistToPlayer < 265.0f)) {
-            this->actor.flags &= ~ACTOR_FLAG_ATTENTION_ENABLED;
-            return;
-        }
-
-        this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED;
-    }
-
-    if (func_80A9C95C(play, this, &this->interactInfo.talkState, 340.0f, EnKz_GetText, func_80A9C6C0)) {
+    if (EnKz_UpdateTalking(play, this, &this->interactInfo.talkState, 340.0f, EnKz_GetTextId, EnKz_UpdateTalkState)) {
         if (GameInteractor_Should(VB_BE_ABLE_TO_EXCHANGE_RUTOS_LETTER, (this->actor.textId == 0x401A), this) &&
             !Flags_GetEventChkInf(EVENTCHKINF_KING_ZORA_MOVED)) {
             if (Actor_GetPlayerExchangeItemId(play) == EXCH_ITEM_LETTER_RUTO) {
