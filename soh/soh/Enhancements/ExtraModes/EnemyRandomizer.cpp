@@ -23,6 +23,9 @@ extern "C" {
 #include "src/overlays/actors/ovl_En_Vali/z_en_vali.h"
 #include "src/overlays/actors/ovl_En_Skb/z_en_skb.h"
 #include "src/overlays/actors/ovl_En_Tp/z_en_tp.h"
+#include "src/overlays/actors/ovl_En_Ik/z_en_ik.h"
+#include "src/overlays/actors/ovl_En_Test/z_en_test.h"
+#include "src/overlays/actors/ovl_En_Zf/z_en_zf.h"
 
 extern PlayState* gPlayState;
 }
@@ -35,6 +38,8 @@ extern std::shared_ptr<SohMenu> mSohMenu;
 #define CVAR_ENEMY_RANDOMIZER_DEFAULT ENEMY_RANDOMIZER_OFF
 #define CVAR_ENEMY_RANDOMIZER_VALUE CVarGetInteger(CVAR_ENEMY_RANDOMIZER_NAME, CVAR_ENEMY_RANDOMIZER_DEFAULT)
 #define ENEMY_RANDOMIZER_ENABLED CVAR_ENEMY_RANDOMIZER_VALUE != CVAR_ENEMY_RANDOMIZER_DEFAULT
+#define CVAR_MINIBOSS_BGM_DEFAULT false
+#define MINIBOSS_BGM_ENABLED CVarGetInteger(CVAR_ENHANCEMENT("EnemyRandoMinibossBgm"), CVAR_MINIBOSS_BGM_DEFAULT)
 
 typedef struct EnemyEntry {
     const char* cvar;
@@ -202,7 +207,7 @@ static bool IsExcludedFromTimedRooms(s16 enemyId, s16 enemyParams) {
     }
 }
 
-static bool IsClearRoom(bool mq, s16 sceneNum, s8 roomNum) {
+bool IsClearRoom(bool mq, s16 sceneNum, s8 roomNum) {
     switch (sceneNum) {
         case SCENE_DEKU_TREE:
             if (mq) {
@@ -283,7 +288,7 @@ static bool IsClearRoom(bool mq, s16 sceneNum, s8 roomNum) {
     }
 }
 
-static bool IsTimedRoom(bool mq, s16 sceneNum, s8 roomNum) {
+bool IsTimedRoom(bool mq, s16 sceneNum, s8 roomNum) {
     switch (sceneNum) {
         case SCENE_JABU_JABU:
             return !mq && roomNum == 12;
@@ -707,6 +712,85 @@ void RegisterEnemyRandomizer() {
     COND_ID_HOOK(OnActorInit, ACTOR_EN_SKB, ENEMY_RANDOMIZER_ENABLED, EnemyRando_SetColliderPosSkb);
     COND_ID_HOOK(OnActorInit, ACTOR_EN_PEEHAT, ENEMY_RANDOMIZER_ENABLED, EnemyRando_SetColliderPosPeehat);
 
+    // Don't let randomized miniboss enemy play music (if setting enabled, handled by OnPlayerUpdate hook)
+    COND_VB_SHOULD(VB_PLAY_MINIBOSS_MUSIC, ENEMY_RANDOMIZER_ENABLED, { *should = false; });
+
+    // Ensure non-randomized hooked minibosses play music
+    COND_VB_SHOULD(VB_PLAY_MINIBOSS_MUSIC_IK, ENEMY_RANDOMIZER_ENABLED, {
+        EnIk* enIk = va_arg(args, EnIk*);
+        if (enIk->actor.params == 1280 ||
+            (gPlayState->sceneNum == SCENE_INSIDE_GANONS_CASTLE &&
+             !ResourceMgr_IsSceneMasterQuest(gPlayState->sceneNum) && gPlayState->roomCtx.curRoom.num == 17)) {
+            *should = true;
+        } else {
+            *should = false;
+        }
+    });
+
+    COND_VB_SHOULD(VB_PLAY_MINIBOSS_MUSIC_GELDB, ENEMY_RANDOMIZER_ENABLED, {
+        EnGeldB* enGeldB = va_arg(args, EnGeldB*);
+        if (enGeldB->keyFlag) {
+            *should = true;
+        } else {
+            *should = false;
+        }
+    });
+
+    // Always play miniboss music for Invisible Stalfos if setting enabled
+    // (miniboss BGM setting uses own version)
+    COND_VB_SHOULD(VB_PLAY_MINIBOSS_MUSIC_TEST, ENEMY_RANDOMIZER_ENABLED, {
+        EnTest* enTest = va_arg(args, EnTest*);
+        if (!MINIBOSS_BGM_ENABLED) {
+            if (enTest->actor.params == STALFOS_TYPE_INVISIBLE &&
+                CVarGetInteger(CVAR_ENHANCEMENT("EnemyRandoInvisStalfosBgm"), false)) {
+                *should = true;
+            } else {
+                *should = false;
+            }
+        }
+    });
+
+    // Stop miniboss music on room switch. Always stop, in case cvar was toggled during miniboss music
+    COND_HOOK(AfterSceneCommands, ENEMY_RANDOMIZER_ENABLED, [](int16_t sceneId) {
+        if (Audio_GetActiveSeqId(SEQ_PLAYER_BGM_MAIN) == NA_BGM_MINI_BOSS) {
+            func_800F5B58();
+        }
+    });
+
+    // Activate Iron Knuckles
+    COND_VB_SHOULD(VB_IK_ACTIVATE, ENEMY_RANDOMIZER_ENABLED, {
+        EnIk* enIk = va_arg(args, EnIk*);
+        bool mq = ResourceMgr_IsSceneMasterQuest(gPlayState->sceneNum);
+
+        if (enIk->skelAnime.playSpeed == 1.0f) {
+            return; // Already activated, but not changed action function yet
+        }
+
+        if (enIk->actor.params != 0) {
+            *should = false;
+            enIk->skelAnime.playSpeed = 1.0f;
+
+            // Sounds and effects only for clear/timed rooms
+            if (IsClearRoom(mq, gPlayState->sceneNum, gPlayState->roomCtx.curRoom.num) ||
+                IsTimedRoom(mq, gPlayState->sceneNum, gPlayState->roomCtx.curRoom.num)) {
+                Vec3f effectPos = enIk->actor.world.pos;
+                Audio_PlayActorSound2(&enIk->actor, NA_SE_EN_IRONNACK_ARMOR_HIT);
+                effectPos.y += 30.0f;
+                func_8003424C(gPlayState, &effectPos);
+            }
+        }
+    });
+
+    // Activate Dark Link, unless in own room
+    COND_VB_SHOULD(VB_TORCH2_ACTIVATE, ENEMY_RANDOMIZER_ENABLED, {
+        Player* enTorch2 = va_arg(args, Player*);
+        Player* player = GET_PLAYER(gPlayState);
+
+        if (!(gPlayState->sceneNum == SCENE_WATER_TEMPLE && gPlayState->roomCtx.curRoom.num == 13)) {
+            *should = true;
+        }
+    });
+
     // Allow Random Gerudo Fighters (contain no keys) to spawn without any switch flags
     COND_VB_SHOULD(VB_GERUDO_FIGHTER_CONTINUE_WAITING, ENEMY_RANDOMIZER_ENABLED, {
         EnGeldB* enGeldB = va_arg(args, EnGeldB*);
@@ -715,15 +799,6 @@ void RegisterEnemyRandomizer() {
             if (!enGeldB->invisible || enGeldB->actor.xzDistToPlayer <= 300.0f) {
                 *should = false;
             }
-        }
-    });
-
-    // Don't play Miniboss music for Random Gerudo Fighters
-    COND_VB_SHOULD(VB_GERUDO_FIGHTER_PLAY_MINIBOSS_MUSIC, ENEMY_RANDOMIZER_ENABLED, {
-        EnGeldB* enGeldB = va_arg(args, EnGeldB*);
-
-        if (enGeldB->keyFlag == 0) {
-            *should = false;
         }
     });
 
@@ -1177,6 +1252,18 @@ void RegisterEnemyRandomizerWidgets() {
             UIWidgets::CheckboxOptions().Tooltip("Ground enemies will air walk over pits/floors that void out Link\n"
                                                  "to prevent softlocks. Can be toggled to make enemies fall down\n"
                                                  "or fly back up from a void pit."));
+
+    SohGui::mSohMenu->AddWidget(path, "Miniboss Music for Randomized Minibosses", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("EnemyRandoMinibossBgm"))
+        .Options(UIWidgets::CheckboxOptions().Tooltip(
+            "Play miniboss music for the following enemies when randomized into a miniboss, clear or timed room:\n"
+            "Dark Link, Iron Knuckle, Stalfos, Gerudo Fighter, Lizalfos, Dinolfos."));
+
+    SohGui::mSohMenu->AddWidget(path, "Invisible Stalfos play Miniboss Music", WIDGET_CVAR_CHECKBOX)
+        .CVar(CVAR_ENHANCEMENT("EnemyRandoInvisStalfosBgm"))
+        .Options(UIWidgets::CheckboxOptions().Tooltip(
+            "Always play miniboss music when an active Invisible Stalfos is present (i.e. not waiting in the ground) "
+            "regardless of area."));
 
     SohGui::mSohMenu->AddWidget(path, "Enemy List", WIDGET_SEPARATOR_TEXT).PreFunc([](WidgetInfo& info) {
         info.isHidden = !CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0);

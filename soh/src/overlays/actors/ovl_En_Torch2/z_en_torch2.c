@@ -173,7 +173,9 @@ void EnTorch2_Destroy(Actor* thisx, PlayState* play) {
     Player* this = (Player*)thisx;
 
     Effect_Delete(play, this->meleeWeaponEffectIndex);
-    func_800F5B58();
+    if (GameInteractor_Should(VB_STOP_MINIBOSS_MUSIC, true, &this->actor)) {
+        func_800F5B58();
+    }
     Collider_DestroyCylinder(play, &this->cylinder);
     Collider_DestroyQuad(play, &this->meleeWeaponQuads[0]);
     Collider_DestroyQuad(play, &this->meleeWeaponQuads[1]);
@@ -265,8 +267,10 @@ void EnTorch2_Update(Actor* thisx, PlayState* play2) {
             this->skelAnime.playSpeed = 0.0f;
             this->actor.world.pos.x = (Math_SinS(this->actor.world.rot.y) * 25.0f) + sSpawnPoint.x;
             this->actor.world.pos.z = (Math_CosS(this->actor.world.rot.y) * 25.0f) + sSpawnPoint.z;
-            if ((this->actor.xzDistToPlayer <= 120.0f) || Actor_IsTargeted(play, &this->actor) ||
-                (attackItem != NULL)) {
+            if (GameInteractor_Should(VB_TORCH2_ACTIVATE,
+                                      (this->actor.xzDistToPlayer <= 120.0f) || Actor_IsTargeted(play, &this->actor) ||
+                                          (attackItem != NULL),
+                                      this)) {
                 if (attackItem != NULL) {
                     sDodgeRollState = 1;
                     sStickAngle = this->actor.yawTowardsPlayer;
@@ -279,9 +283,7 @@ void EnTorch2_Update(Actor* thisx, PlayState* play2) {
                     if (stickY) {}
                     sInput.cur.stick_y = stickY;
                 }
-                // Disable miniboss music with Enemy Randomizer because the music would keep
-                // playing if the enemy was never defeated, which is common with Enemy Randomizer.
-                if (!CVarGetInteger(CVAR_ENHANCEMENT("RandomizedEnemies"), 0)) {
+                if (GameInteractor_Should(VB_PLAY_MINIBOSS_MUSIC, true)) {
                     func_800F5ACC(NA_BGM_MINI_BOSS);
                 }
                 sActionState = ENTORCH2_ATTACK;
@@ -620,7 +622,9 @@ void EnTorch2_Update(Actor* thisx, PlayState* play2) {
         !(this->meleeWeaponQuads[0].base.atFlags & AT_HIT) && !(this->meleeWeaponQuads[1].base.atFlags & AT_HIT)) {
 
         if (!Actor_ApplyDamage(&this->actor)) {
-            func_800F5B58();
+            if (GameInteractor_Should(VB_STOP_MINIBOSS_MUSIC, true, &this->actor)) {
+                func_800F5B58();
+            }
             this->actor.flags &= ~(ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE);
             this->knockbackType = 2;
             this->knockbackSpeed = 6.0f;
@@ -633,7 +637,9 @@ void EnTorch2_Update(Actor* thisx, PlayState* play2) {
             Item_DropCollectibleRandom(play, &this->actor, &thisx->world.pos, 0xC0);
             this->stateFlags3 &= ~PLAYER_STATE3_PAUSE_ACTION_FUNC;
         } else {
-            func_800F5ACC(NA_BGM_MINI_BOSS);
+            if (GameInteractor_Should(VB_PLAY_MINIBOSS_MUSIC, true)) {
+                func_800F5ACC(NA_BGM_MINI_BOSS);
+            }
             if (this->actor.colChkInfo.damageEffect == 1) {
                 if (sAlpha == 255) {
                     Actor_SetColorFilter(&this->actor, 0, 0xFF, 0, 0x50);
