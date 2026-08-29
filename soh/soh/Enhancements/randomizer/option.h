@@ -27,9 +27,9 @@ enum class OptionCategory {
     Setting, /** An option that typically affects the logic/item pool/etc. of the seed. Typically gets written out to
                 the spoiler file. */
     Trick,   /** A trick option */
-    LocationExclusion,   /** A location exclusion option */
-    Toggle,  /** An option that typically affects other options rather than affecting the seed directly. i.e. A toggle
-                for randomizing the values of other options. */
+    LocationExclusion, /** A location exclusion option */
+    Toggle, /** An option that typically affects other options rather than affecting the seed directly. i.e. A toggle
+               for randomizing the values of other options. */
 };
 
 class OptionValue {
@@ -110,11 +110,10 @@ class Option {
      * @param imFlags_ (see ImGuiMenuFlags type) flags that can modify how this option is rendered.
      * @return Option
      */
-    static Option Bool(RandomizerSettingKey key_,
-                       std::vector<std::string> options_ = { "Off", "On" },
+    static Option Bool(RandomizerSettingKey key_, std::vector<std::string> options_ = { "Off", "On" },
                        OptionCategory category_ = OptionCategory::Setting, std::string cvarName_ = "",
-                       WidgetType widgetType_ = WIDGET_CVAR_CHECKBOX,
-                       uint8_t defaultOption_ = 0, bool defaultHidden_ = false, WidgetFunc callback_ = nullptr,
+                       WidgetType widgetType_ = WIDGET_CVAR_CHECKBOX, uint8_t defaultOption_ = 0,
+                       bool defaultHidden_ = false, WidgetFunc callback_ = nullptr,
                        int imFlags_ = IMFLAG_SEPARATOR_BOTTOM);
 
     /**
@@ -132,8 +131,7 @@ class Option {
      * @param defaultOption_ The defaulted selected index for this Option.
      * @return Option
      */
-    static Option Bool(RandomizerSettingKey key_, std::string cvarName_,
-                       int imFlags_ = IMFLAG_SEPARATOR_BOTTOM,
+    static Option Bool(RandomizerSettingKey key_, std::string cvarName_, int imFlags_ = IMFLAG_SEPARATOR_BOTTOM,
                        WidgetType widgetType_ = WIDGET_CVAR_CHECKBOX, bool defaultOption_ = false,
                        WidgetFunc callback_ = nullptr);
 
@@ -157,8 +155,8 @@ class Option {
      */
     static Option U8(RandomizerSettingKey key_, std::vector<std::string> options_,
                      OptionCategory category_ = OptionCategory::Setting, std::string cvarName_ = "",
-                     WidgetType widgetType_ = WIDGET_CVAR_COMBOBOX,
-                     uint8_t defaultOption_ = 0, bool defaultHidden_ = false, WidgetFunc callback_ = nullptr,
+                     WidgetType widgetType_ = WIDGET_CVAR_COMBOBOX, uint8_t defaultOption_ = 0,
+                     bool defaultHidden_ = false, WidgetFunc callback_ = nullptr,
                      int imFlags_ = IMFLAG_SEPARATOR_BOTTOM);
 
     /**
@@ -281,9 +279,8 @@ class Option {
     void RunCallback();
 
   protected:
-    Option(size_t key_, std::vector<std::string> options_, OptionCategory category_,
-           std::string cvarName_, WidgetType widgetType_, uint8_t defaultOption_,
-           bool defaultHidden_, WidgetFunc callback_, int imFlags_);
+    Option(size_t key_, std::vector<std::string> options_, OptionCategory category_, std::string cvarName_,
+           WidgetType widgetType_, uint8_t defaultOption_, bool defaultHidden_, WidgetFunc callback_, int imFlags_);
     size_t key;
 
   private:

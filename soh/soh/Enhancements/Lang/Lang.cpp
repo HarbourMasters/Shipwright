@@ -100,7 +100,8 @@ std::variant<std::reference_wrapper<const std::string>, Lang::Error> Lang::TryTr
     return Lang::Error::PathInvalidValue;
 }
 
-const std::string errorMessage = "[ERROR] Couldn't retrieve language data for this item, check the log for more information.";
+const std::string errorMessage =
+    "[ERROR] Couldn't retrieve language data for this item, check the log for more information.";
 
 const std::string& Lang::Translate(const char* path) {
     auto value = Lang::TryTranslate(path);
@@ -110,10 +111,12 @@ const std::string& Lang::Translate(const char* path) {
     } else if (std::holds_alternative<Lang::Error>(value)) {
         switch (std::get<Lang::Error>(value)) {
             case Lang::Error::PathDataNotFound:
-                SPDLOG_WARN("Current language ({}) doesn't have data for the requested path ({})", CVarGetString(LANGUAGE_CVAR, DEFAULT_LANGUAGE), path);
+                SPDLOG_WARN("Current language ({}) doesn't have data for the requested path ({})",
+                            CVarGetString(LANGUAGE_CVAR, DEFAULT_LANGUAGE), path);
                 break;
             case Lang::Error::PathInvalidValue:
-                SPDLOG_WARN("Current language ({}) has an array with a non-string at the requested path ({})", CVarGetString(LANGUAGE_CVAR, DEFAULT_LANGUAGE), path);
+                SPDLOG_WARN("Current language ({}) has an array with a non-string at the requested path ({})",
+                            CVarGetString(LANGUAGE_CVAR, DEFAULT_LANGUAGE), path);
                 break;
             default:
                 break;

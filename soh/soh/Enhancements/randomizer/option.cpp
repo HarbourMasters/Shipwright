@@ -10,10 +10,9 @@ extern std::shared_ptr<SohMenu> mSohMenu;
 }
 
 namespace Rando {
-Option Option::Bool(RandomizerSettingKey key_, std::vector<std::string> options_,
-                    const OptionCategory category_, std::string cvarName_,
-                    WidgetType widgetType_, const uint8_t defaultOption_, const bool defaultHidden_,
-                    WidgetFunc callback_, int imFlags_) {
+Option Option::Bool(RandomizerSettingKey key_, std::vector<std::string> options_, const OptionCategory category_,
+                    std::string cvarName_, WidgetType widgetType_, const uint8_t defaultOption_,
+                    const bool defaultHidden_, WidgetFunc callback_, int imFlags_) {
     return { static_cast<size_t>(key_),
              std::move(options_),
              category_,
@@ -25,16 +24,15 @@ Option Option::Bool(RandomizerSettingKey key_, std::vector<std::string> options_
              imFlags_ };
 }
 
-Option Option::Bool(RandomizerSettingKey key_, std::string cvarName_,
-                    const int imFlags_, const WidgetType widgetType_, const bool defaultOption_, WidgetFunc callback_) {
-    return Option(key_, { "Off", "On" }, OptionCategory::Setting, std::move(cvarName_),
-                  widgetType_, defaultOption_, false, callback_, imFlags_);
+Option Option::Bool(RandomizerSettingKey key_, std::string cvarName_, const int imFlags_, const WidgetType widgetType_,
+                    const bool defaultOption_, WidgetFunc callback_) {
+    return Option(key_, { "Off", "On" }, OptionCategory::Setting, std::move(cvarName_), widgetType_, defaultOption_,
+                  false, callback_, imFlags_);
 }
 
-Option Option::U8(RandomizerSettingKey key_, std::vector<std::string> options_,
-                  const OptionCategory category_, std::string cvarName_,
-                  WidgetType widgetType_, const uint8_t defaultOption_, const bool defaultHidden_, WidgetFunc callback_,
-                  int imFlags_) {
+Option Option::U8(RandomizerSettingKey key_, std::vector<std::string> options_, const OptionCategory category_,
+                  std::string cvarName_, WidgetType widgetType_, const uint8_t defaultOption_,
+                  const bool defaultHidden_, WidgetFunc callback_, int imFlags_) {
     return { static_cast<size_t>(key_),
              std::move(options_),
              category_,
@@ -237,12 +235,11 @@ uint8_t Option::GetValueFromText(const std::string text) {
     return defaultOption;
 }
 
-Option::Option(size_t key_, std::vector<std::string> options_, OptionCategory category_,
-               std::string cvarName_, WidgetType widgetType_, uint8_t defaultOption_,
-               bool defaultHidden_, WidgetFunc callback_, int imFlags_)
-    : key(key_), options(std::move(options_)), category(category_),
-      cvarName(std::move(cvarName_)), widgetType(widgetType_),
-      defaultOption(defaultOption_), defaultHidden(defaultHidden_), imFlags(imFlags_), callback(callback_) {
+Option::Option(size_t key_, std::vector<std::string> options_, OptionCategory category_, std::string cvarName_,
+               WidgetType widgetType_, uint8_t defaultOption_, bool defaultHidden_, WidgetFunc callback_, int imFlags_)
+    : key(key_), options(std::move(options_)), category(category_), cvarName(std::move(cvarName_)),
+      widgetType(widgetType_), defaultOption(defaultOption_), defaultHidden(defaultHidden_), imFlags(imFlags_),
+      callback(callback_) {
     contextSelection = defaultOption;
     hidden = defaultHidden;
     for (size_t i = 0; i < options.size(); i++) {
@@ -349,8 +346,8 @@ RandomizerCheck LocationOption::GetKey() const {
 
 TrickSetting::TrickSetting(RandomizerTrick key_, const RandomizerCheckQuest quest_, const RandomizerArea area_,
                            std::set<Tricks::Tag> tags_, const std::string nameTag_)
-    : Option(key_, { "Disabled", "Enabled" }, OptionCategory::Trick, "",
-             WIDGET_CVAR_CHECKBOX, 0, false, nullptr, IMFLAG_NONE),
+    : Option(key_, { "Disabled", "Enabled" }, OptionCategory::Trick, "", WIDGET_CVAR_CHECKBOX, 0, false, nullptr,
+             IMFLAG_NONE),
       mQuest(quest_), mArea(area_), mNameTag(nameTag_), mTags(std::move(tags_)) {
 }
 
