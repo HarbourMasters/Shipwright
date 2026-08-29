@@ -10,16 +10,14 @@ extern std::shared_ptr<SohMenu> mSohMenu;
 }
 
 namespace Rando {
-Option Option::Bool(RandomizerSettingKey key_, std::string name_, std::vector<std::string> options_,
-                    const OptionCategory category_, std::string cvarName_, std::string description_,
+Option Option::Bool(RandomizerSettingKey key_, std::vector<std::string> options_,
+                    const OptionCategory category_, std::string cvarName_,
                     WidgetType widgetType_, const uint8_t defaultOption_, const bool defaultHidden_,
                     WidgetFunc callback_, int imFlags_) {
     return { static_cast<size_t>(key_),
-             std::move(name_),
              std::move(options_),
              category_,
              std::move(cvarName_),
-             std::move(description_),
              widgetType_,
              defaultOption_,
              defaultHidden_,
@@ -27,32 +25,25 @@ Option Option::Bool(RandomizerSettingKey key_, std::string name_, std::vector<st
              imFlags_ };
 }
 
-Option Option::Bool(RandomizerSettingKey key_, std::string name_, std::string cvarName_, std::string description_,
+Option Option::Bool(RandomizerSettingKey key_, std::string cvarName_,
                     const int imFlags_, const WidgetType widgetType_, const bool defaultOption_, WidgetFunc callback_) {
-    return Option(key_, std::move(name_), { "Off", "On" }, OptionCategory::Setting, std::move(cvarName_),
-                  std::move(description_), widgetType_, defaultOption_, false, callback_, imFlags_);
+    return Option(key_, { "Off", "On" }, OptionCategory::Setting, std::move(cvarName_),
+                  widgetType_, defaultOption_, false, callback_, imFlags_);
 }
 
-Option Option::U8(RandomizerSettingKey key_, std::string name_, std::vector<std::string> options_,
-                  const OptionCategory category_, std::string cvarName_, std::string description_,
+Option Option::U8(RandomizerSettingKey key_, std::vector<std::string> options_,
+                  const OptionCategory category_, std::string cvarName_,
                   WidgetType widgetType_, const uint8_t defaultOption_, const bool defaultHidden_, WidgetFunc callback_,
                   int imFlags_) {
     return { static_cast<size_t>(key_),
-             std::move(name_),
              std::move(options_),
              category_,
              std::move(cvarName_),
-             std::move(description_),
              widgetType_,
              defaultOption_,
              defaultHidden_,
              callback_,
              imFlags_ };
-}
-
-Option Option::LogicTrick(RandomizerTrick rt_, std::string name_) {
-    return Option(rt_, std::move(name_), { "Disabled", "Enabled" }, OptionCategory::Setting, "", "",
-                  WIDGET_CVAR_CHECKBOX, 0, false, nullptr, IMFLAG_NONE);
 }
 
 OptionValue::OptionValue(uint8_t val) : mVal(val) {
@@ -78,12 +69,93 @@ RandomizerSettingKey Option::GetKey() const {
     return static_cast<RandomizerSettingKey>(key);
 }
 
+#pragma region Lang
+
+#define RANDO_ENUM_ITEM(enum) { enum, #enum },
+
+std::unordered_map<RandomizerSettingKey, std::string> settingNames = {
+#include "randomizerEnums/RandomizerSettingKey.h"
+};
+
+std::unordered_map<RandomizerTrick, std::string> trickNames = {
+#include "randomizerEnums/RandomizerTrick.h"
+};
+
+#undef RANDO_ENUM_ITEM
+
+const static std::string namePostfix = ".name";
+const static std::string descriptionPostfix = ".description";
+
+const static std::string settingPrefix = "randomizer.settings.";
+const static std::string trickPrefix = "randomizer.tricks.";
+
+const static std::string empty = "";
+const static std::string error = "[ERROR]";
+
+static const std::string& MakeSettingName(RandomizerSettingKey key) {
+    std::string settingNamePart = settingNames[key].substr(4);
+    std::transform(settingNamePart.begin(), settingNamePart.end(), settingNamePart.begin(), ::tolower);
+    return Lang::Translate((settingPrefix + settingNamePart + namePostfix).c_str());
+}
+
+static const std::string& MakeSettingDescription(RandomizerSettingKey key) {
+    std::string settingNamePart = settingNames[key].substr(4);
+    std::transform(settingNamePart.begin(), settingNamePart.end(), settingNamePart.begin(), ::tolower);
+    auto result = Lang::TryTranslate((settingPrefix + settingNamePart + descriptionPostfix).c_str());
+    if (std::holds_alternative<std::reference_wrapper<const std::string>>(result)) {
+        return std::get<std::reference_wrapper<const std::string>>(result);
+    } else if (std::holds_alternative<Lang::Error>(result)) {
+        return empty;
+    } else {
+        assert(false);
+        return error;
+    }
+}
+
+static const std::string& MakeTrickName(RandomizerTrick key) {
+    std::string trickNamePart = trickNames[key].substr(3);
+    std::transform(trickNamePart.begin(), trickNamePart.end(), trickNamePart.begin(), ::tolower);
+    return Lang::Translate((trickPrefix + trickNamePart + namePostfix).c_str());
+}
+
+static const std::string& MakeTrickDescription(RandomizerTrick key) {
+    std::string trickNamePart = trickNames[key].substr(3);
+    std::transform(trickNamePart.begin(), trickNamePart.end(), trickNamePart.begin(), ::tolower);
+    return Lang::Translate((trickPrefix + trickNamePart + descriptionPostfix).c_str());
+}
+
+#pragma endregion
+
+const static std::string todo = "TODO";
+
 const std::string& Option::GetName() const {
-    return name;
+    switch (this->GetCategory()) {
+        case OptionCategory::Setting:
+        case OptionCategory::Toggle:
+            return MakeSettingName(static_cast<RandomizerSettingKey>(this->key));
+        case OptionCategory::Trick:
+            return MakeTrickName(static_cast<RandomizerTrick>(this->key));
+        case OptionCategory::LocationExclusion:
+            return todo;
+        default:
+            assert(false);
+            return error;
+    }
 }
 
 const std::string& Option::GetDescription() const {
-    return description;
+    switch (this->GetCategory()) {
+        case OptionCategory::Setting:
+        case OptionCategory::Toggle:
+            return MakeSettingDescription(static_cast<RandomizerSettingKey>(this->key));
+        case OptionCategory::Trick:
+            return MakeTrickDescription(static_cast<RandomizerTrick>(this->key));
+        case OptionCategory::LocationExclusion:
+            return todo;
+        default:
+            assert(false);
+            return error;
+    }
 }
 
 uint8_t Option::GetOptionIndex() const {
@@ -143,8 +215,8 @@ void Option::Disable(std::string text) {
     }
 }
 
-bool Option::IsCategory(const OptionCategory category) const {
-    return category == this->category;
+OptionCategory Option::GetCategory() const {
+    return this->category;
 }
 
 void Option::AddFlag(const int imFlag_) {
@@ -159,17 +231,17 @@ uint8_t Option::GetValueFromText(const std::string text) {
     if (optionsTextToVar.contains(text)) {
         return optionsTextToVar[text];
     } else {
-        SPDLOG_ERROR("Option {} does not have a var named {}.", name, text);
+        SPDLOG_ERROR("Option {} does not have a var named {}.", this->GetName(), text);
         assert(false);
     }
     return defaultOption;
 }
 
-Option::Option(size_t key_, std::string name_, std::vector<std::string> options_, OptionCategory category_,
-               std::string cvarName_, std::string description_, WidgetType widgetType_, uint8_t defaultOption_,
+Option::Option(size_t key_, std::vector<std::string> options_, OptionCategory category_,
+               std::string cvarName_, WidgetType widgetType_, uint8_t defaultOption_,
                bool defaultHidden_, WidgetFunc callback_, int imFlags_)
-    : key(key_), name(std::move(name_)), options(std::move(options_)), category(category_),
-      cvarName(std::move(cvarName_)), description(std::move(description_)), widgetType(widgetType_),
+    : key(key_), options(std::move(options_)), category(category_),
+      cvarName(std::move(cvarName_)), widgetType(widgetType_),
       defaultOption(defaultOption_), defaultHidden(defaultHidden_), imFlags(imFlags_), callback(callback_) {
     contextSelection = defaultOption;
     hidden = defaultHidden;
@@ -184,7 +256,7 @@ Option::Option(size_t key_, std::string name_, std::vector<std::string> options_
             //     labelPosition = UIWidgets::LabelPositions::Near;
             // }
             widgetOptions = std::make_shared<UIWidgets::CheckboxOptions>(
-                UIWidgets::CheckboxOptions().DefaultValue(defaultOption).Tooltip(description.c_str()));
+                UIWidgets::CheckboxOptions().DefaultValue(defaultOption).Tooltip(this->GetDescription()));
             break;
         case WIDGET_CVAR_COMBOBOX:
             labelPosition = UIWidgets::LabelPositions::Above;
@@ -194,7 +266,7 @@ Option::Option(size_t key_, std::string name_, std::vector<std::string> options_
             widgetOptions = std::make_shared<UIWidgets::ComboboxOptions>(UIWidgets::ComboboxOptions()
                                                                              .DefaultIndex(defaultOption)
                                                                              .ComboMap(optionsMap)
-                                                                             .Tooltip(description.c_str())
+                                                                             .Tooltip(this->GetDescription())
                                                                              .LabelPosition(labelPosition));
             break;
         case WIDGET_CVAR_SLIDER_INT:
@@ -205,7 +277,7 @@ Option::Option(size_t key_, std::string name_, std::vector<std::string> options_
             widgetOptions =
                 std::make_shared<UIWidgets::IntSliderOptions>(UIWidgets::IntSliderOptions()
                                                                   .DefaultValue(defaultOption)
-                                                                  .Tooltip(description.c_str())
+                                                                  .Tooltip(this->GetDescription())
                                                                   .Min(0)
                                                                   .Max(static_cast<int32_t>(options.size() - 1))
                                                                   .Format(options[defaultOption].c_str())
@@ -218,13 +290,13 @@ Option::Option(size_t key_, std::string name_, std::vector<std::string> options_
 }
 
 void Option::AddWidget(WidgetPath& path) {
-    auto widget = SohGui::mSohMenu->AddWidget(path, name + "##Randomizer", widgetType)
+    auto widget = SohGui::mSohMenu->AddWidget(path, this->GetName() + "##Randomizer", widgetType)
                       .Callback(callback)
                       .PreFunc([this](WidgetInfo& info) {
                           info.isHidden = this->IsHidden();
                           info.options->disabled = this->disabled;
                           info.options->disabledTooltip = this->disabledText.c_str();
-                          info.options->tooltip = this->description.c_str();
+                          info.options->tooltip = this->GetDescription();
                           if (info.type == WIDGET_CVAR_SLIDER_INT) {
                               UIWidgets::IntSliderOptions* sliderOpts =
                                   (UIWidgets::IntSliderOptions*)info.options.get();
@@ -266,8 +338,8 @@ void Option::RunCallback() {
     }
 }
 
-LocationOption::LocationOption(RandomizerCheck key_, const std::string& name_)
-    : Option(key_, name_, { "Included", "Excluded" }, OptionCategory::Setting, "", "", WIDGET_CVAR_CHECKBOX,
+LocationOption::LocationOption(RandomizerCheck key_)
+    : Option(key_, { "Included", "Excluded" }, OptionCategory::LocationExclusion, "", WIDGET_CVAR_CHECKBOX,
              RO_LOCATION_INCLUDE, false, nullptr, IMFLAG_NONE) {
 }
 
@@ -275,36 +347,10 @@ RandomizerCheck LocationOption::GetKey() const {
     return static_cast<RandomizerCheck>(key);
 }
 
-#define RANDO_ENUM_ITEM(enum) { enum, #enum },
-
-std::unordered_map<RandomizerTrick, std::string> trickNames = {
-#include "randomizerEnums/RandomizerTrick.h"
-};
-
-#undef RANDO_ENUM_ITEM
-
-const static std::string trickPrefix = "randomizer.tricks.";
-
-static std::string MakeTrickName(RandomizerTrick key) {
-    const static std::string namePostfix = ".name";
-
-    std::string trickNamePart = trickNames[key].substr(3);
-    std::transform(trickNamePart.begin(), trickNamePart.end(), trickNamePart.begin(), ::tolower);
-    return Lang::Translate((trickPrefix + trickNamePart + namePostfix).c_str());
-}
-
-static std::string MakeTrickDescription(RandomizerTrick key) {
-    const static std::string descriptionPostfix = ".description";
-
-    std::string trickNamePart = trickNames[key].substr(3);
-    std::transform(trickNamePart.begin(), trickNamePart.end(), trickNamePart.begin(), ::tolower);
-    return Lang::Translate((trickPrefix + trickNamePart + descriptionPostfix).c_str());
-}
-
 TrickSetting::TrickSetting(RandomizerTrick key_, const RandomizerCheckQuest quest_, const RandomizerArea area_,
                            std::set<Tricks::Tag> tags_, const std::string nameTag_)
-    : Option(key_, MakeTrickName(key_), { "Disabled", "Enabled" }, OptionCategory::Setting, "",
-             MakeTrickDescription(key_), WIDGET_CVAR_CHECKBOX, 0, false, nullptr, IMFLAG_NONE),
+    : Option(key_, { "Disabled", "Enabled" }, OptionCategory::Trick, "",
+             WIDGET_CVAR_CHECKBOX, 0, false, nullptr, IMFLAG_NONE),
       mQuest(quest_), mArea(area_), mNameTag(nameTag_), mTags(std::move(tags_)) {
 }
 

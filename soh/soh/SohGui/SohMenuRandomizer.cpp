@@ -564,7 +564,7 @@ void DrawTricksMenu(WidgetInfo& info) {
                                 Rando::Tricks::DrawTagChips(option.GetTags(), option.GetName());
                                 ImGui::SameLine();
                                 ImGui::Text("%s", option.GetName().c_str());
-                                UIWidgets::Tooltip(option.GetDescription().c_str());
+                                UIWidgets::Tooltip(option.GetDescription());
                             }
                         }
                         areaTreeDisabled.insert(area);
@@ -638,7 +638,7 @@ void DrawTricksMenu(WidgetInfo& info) {
                                 Rando::Tricks::DrawTagChips(option.GetTags(), option.GetName());
                                 ImGui::SameLine();
                                 ImGui::Text("%s", option.GetName().c_str());
-                                UIWidgets::Tooltip(option.GetDescription().c_str());
+                                UIWidgets::Tooltip(option.GetDescription());
                             }
                         }
                         areaTreeEnabled.insert(area);
