@@ -673,11 +673,13 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
 
     // #region SOH [Enhancement] - Hide Quest Modes
     // If the current quest type was hidden after being selected (i.e., CVar changed while on the quest menu), advance
-    // to the next visible one.
-    while (IsQuestSkipped(this->questType[this->buttonIndex])) {
-        this->questType[this->buttonIndex] += 1;
-        if (this->questType[this->buttonIndex] > MAX_QUEST) {
-            this->questType[this->buttonIndex] = MIN_QUEST;
+    // to the next visible one. 
+    if (CountVisibleQuests() > 0) {
+        while (IsQuestSkipped(this->questType[this->buttonIndex])) {
+            this->questType[this->buttonIndex]++;
+            if (this->questType[this->buttonIndex] > MAX_QUEST) {
+                this->questType[this->buttonIndex] = MIN_QUEST;
+            }
         }
     }
     // #endregion
@@ -689,14 +691,14 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
         // Randomizer/Boss Rush when their CVars are set).  Wraps around if past min/max.
         if (this->stickRelX > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DRIGHT))) {
             do {
-                this->questType[this->buttonIndex] += 1;
+                this->questType[this->buttonIndex]++;
                 if (this->questType[this->buttonIndex] > MAX_QUEST) {
                     this->questType[this->buttonIndex] = MIN_QUEST;
                 }
             } while (IsQuestSkipped(this->questType[this->buttonIndex]));
         } else if (this->stickRelX < -30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT))) {
             do {
-                this->questType[this->buttonIndex] -= 1;
+                this->questType[this->buttonIndex]--;
                 if (this->questType[this->buttonIndex] < MIN_QUEST) {
                     this->questType[this->buttonIndex] = MAX_QUEST;
                 }
