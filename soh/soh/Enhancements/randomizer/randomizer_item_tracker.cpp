@@ -161,6 +161,10 @@ std::vector<ItemTrackerItem> crawlItems = {
     ITEM_TRACKER_RG(RG_CRAWL, "", 0, DrawItem),
 };
 
+std::vector<ItemTrackerItem> rollItems = {
+    ITEM_TRACKER_RG(RG_ROLL, "", 0, DrawItem),
+};
+
 std::vector<ItemTrackerItem> climbItems = {
     ITEM_TRACKER_RG(RG_CLIMB, "", 0, DrawItem),
 };
@@ -1175,6 +1179,9 @@ void DrawItem(ItemTrackerItem item) {
             case RG_CRAWL:
                 itemName = "Crawl";
                 break;
+            case RG_ROLL:
+                itemName = "Roll";
+                break;
             case RG_CLIMB:
                 itemName = "Climb";
                 break;
@@ -1554,6 +1561,9 @@ void UpdateVectors() {
     }
     if (IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_CRAWL)) {
         mainWindowItems.insert(mainWindowItems.end(), crawlItems.begin(), crawlItems.end());
+    }
+    if (IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_ROLL)) {
+        mainWindowItems.insert(mainWindowItems.end(), rollItems.begin(), rollItems.end());
     }
     if (IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_OPEN_CHEST)) {
         mainWindowItems.insert(mainWindowItems.end(), openChestItems.begin(), openChestItems.end());

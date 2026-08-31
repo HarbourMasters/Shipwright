@@ -992,6 +992,10 @@ static void InitTrickNames() {
         // TODO_TRANSLATE
         { Text{ "Crouch" }, Text{ "" } },
     };
+    trickNameTable[RG_ROLL] = {
+        // TODO_TRANSLATE
+        { Text{ "Trip" } },
+    };
     trickNameTable[RG_OPEN_CHEST] = {
         // TODO_TRANSLATE
         { Text{ "Open Cheats" }, Text{ "" } },

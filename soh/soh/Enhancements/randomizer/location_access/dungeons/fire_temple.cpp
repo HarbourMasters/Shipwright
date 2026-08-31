@@ -454,7 +454,7 @@ void RegionTable_Init_FireTemple() {
         //Exits
         ENTRANCE(RR_FIRE_TEMPLE_ENTRYWAY,                true),
         ENTRANCE(RR_FIRE_TEMPLE_MQ_LOOP_CAGE_FOYER_SIDE, true),
-        //child can easilly pass the flame wall with a well timed sidehop, but that's a generic version of RT_FIRE_FLAME_MAZE
+        //child can easily pass the flame wall with a well timed sidehop, but that's a generic version of RT_FIRE_FLAME_MAZE
         ENTRANCE(RR_FIRE_TEMPLE_MQ_FOYER_UPPER,          logic->IsAdult || logic->CanUse(RG_HOOKSHOT) || ctx->GetTrickOption(RT_FIRE_SKIP_FLAME_WALLS)),
         ENTRANCE(RR_FIRE_TEMPLE_MQ_LOOP_HEXAGON_ROOM,    logic->SmallKeys(SCENE_FIRE_TEMPLE, 5)),
     });
@@ -742,7 +742,7 @@ void RegionTable_Init_FireTemple() {
         //Exits
         ENTRANCE(RR_FIRE_TEMPLE_MQ_LOWER_LIZALFOS_MAZE, true),
         //it's possible to make the RT_FIRE_MQ_MAZE_HOVERS as child using bunny hood jumps, but not adult as adult bonks
-        ENTRANCE(RR_FIRE_TEMPLE_MQ_UPPER_LIZALFOS_MAZE, logic->IsAdult && ((ctx->GetTrickOption(RT_FIRE_MQ_MAZE_HOVERS) && logic->CanUse(RG_HOVER_BOOTS)) || ctx->GetTrickOption(RT_FIRE_MQ_MAZE_JUMP))),
+        ENTRANCE(RR_FIRE_TEMPLE_MQ_UPPER_LIZALFOS_MAZE, logic->IsAdult && ((ctx->GetTrickOption(RT_FIRE_MQ_MAZE_HOVERS) && logic->CanUse(RG_HOVER_BOOTS)) || (ctx->GetTrickOption(RT_FIRE_MQ_MAZE_JUMP) && logic->HasItem(RG_ROLL)))),
     });
 
     areaTable[RR_FIRE_TEMPLE_MQ_UPPER_LIZALFOS_MAZE] = Region("Fire Temple MQ Upper Lizalfos Maze", SCENE_FIRE_TEMPLE, {}, {}, {

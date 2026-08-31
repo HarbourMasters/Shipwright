@@ -99,7 +99,7 @@ void RegionTable_Init_ForestTemple() {
         //Exits
         ENTRANCE(RR_FOREST_TEMPLE_LOBBY,                     true),
         ENTRANCE(RR_FOREST_TEMPLE_NW_COURTYARD_UPPER,        (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT)) && logic->CanUse(RG_HOVER_BOOTS) && 
-                                                             ((ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && (ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives())) || logic->CanMiddairGroundJump())),
+                                                             ((ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && (ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives())) || (logic->CanMiddairGroundJump() && logic->HasItem(RG_ROLL)))),
         ENTRANCE(RR_FOREST_TEMPLE_NW_COURTYARD_UPPER_ALCOVE, logic->HasItem(RG_CLIMB) || logic->CanUse(RG_LONGSHOT)),
         ENTRANCE(RR_FOREST_TEMPLE_SEWER,                     logic->HasItem(RG_GOLDEN_SCALE) || logic->CanUse(RG_IRON_BOOTS)),
         ENTRANCE(RR_FOREST_TEMPLE_DRAINED_SEWER,             logic->Get(LOGIC_FOREST_DRAINED_WELL)),
@@ -154,8 +154,8 @@ void RegionTable_Init_ForestTemple() {
     }, {}, {
         //Exits
         ENTRANCE(RR_FOREST_TEMPLE_NE_COURTYARD_LOWER,     true),
-        ENTRANCE(RR_FOREST_TEMPLE_NE_COURTYARD_ISLAND,    logic->IsAdult && ctx->GetTrickOption(RT_FOREST_COURTYARD_LEDGE) && logic->CanUse(RG_HOVER_BOOTS)),
-        ENTRANCE(RR_FOREST_TEMPLE_NE_COURTYARD_DOORFRAME, logic->CanHammerRecoilHover() || ((ctx->GetTrickOption(RT_FOREST_DOORFRAME) && logic->CanUse(RG_HOVER_BOOTS) && logic->CanJumpslash()))),
+        ENTRANCE(RR_FOREST_TEMPLE_NE_COURTYARD_ISLAND,    ctx->GetTrickOption(RT_FOREST_COURTYARD_LEDGE) && logic->CanUse(RG_HOVER_BOOTS) && (logic->HasItem(RG_ROLL) || logic->CanJumpslash())),
+        ENTRANCE(RR_FOREST_TEMPLE_NE_COURTYARD_DOORFRAME, logic->CanHammerRecoilHover() || ((ctx->GetTrickOption(RT_FOREST_DOORFRAME) && logic->CanUse(RG_HOVER_BOOTS) && logic->CanJumpslash() && logic->HasItem(RG_ROLL)))),
         ENTRANCE(RR_FOREST_TEMPLE_MAP_ROOM,               true),
     });
 
@@ -514,8 +514,8 @@ void RegionTable_Init_ForestTemple() {
         //Events
         //It is barely possible to get this as child with master + hovers, but it's tight without bunny speed
         EVENT_ACCESS(LOGIC_FOREST_CAN_TWIST_HALLWAY,     (ctx->GetTrickOption(RT_FOREST_MQ_JS_HALLWAY_SWITCH) && logic->CanUse(RG_HOVER_BOOTS) && 
-                                                          (logic->IsAdult && logic->CanJumpslash()) || 
-                                                          (logic->CanUse(RG_STICKS) || logic->CanUse(RG_BIGGORON_SWORD) || (logic->Get(LOGIC_FOREST_MQ_BLOCK_ROOM_TARGETS) && logic->CanUse(RG_MASTER_SWORD))))),
+                                                          (logic->IsAdult && logic->CanJumpslash() && logic->HasItem(RG_ROLL)) || 
+                                                          (logic->CanUse(RG_STICKS) || logic->CanUse(RG_BIGGORON_SWORD) || ((logic->Get(LOGIC_FOREST_MQ_BLOCK_ROOM_TARGETS) || logic->IsAdult) && logic->CanUse(RG_MASTER_SWORD))))),
     }, {}, {
         //Exits
         ENTRANCE(RR_FOREST_TEMPLE_MQ_BLOCK_PUZZLE_FLOOR,  true),
@@ -670,7 +670,7 @@ void RegionTable_Init_ForestTemple() {
         //Exits
         ENTRANCE(RR_FOREST_TEMPLE_MQ_LOBBY,                true),
         ENTRANCE(RR_FOREST_TEMPLE_MQ_NW_COURTYARD,         (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT)) && (((logic->CanUse(RG_IRON_BOOTS) || logic->CanUse(RG_LONGSHOT)) && logic->HasItem(RG_BRONZE_SCALE)) || logic->HasItem(RG_GOLDEN_SCALE)) && logic->WaterTimer() >= 16),
-        ENTRANCE(RR_FOREST_TEMPLE_MQ_COURTYARD_TOP_LEDGES, logic->CanUse(RG_LONGSHOT) || (ctx->GetTrickOption(RT_FOREST_VINES) && logic->CanUse(RG_HOOKSHOT) && logic->HasItem(RG_CLIMB)) || (logic->CanUse(RG_HOOKSHOT) && ((logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS) && logic->HasItem(RG_CLIMB)) || logic->CanUse(RG_SONG_OF_TIME)))),
+        ENTRANCE(RR_FOREST_TEMPLE_MQ_COURTYARD_TOP_LEDGES, logic->CanUse(RG_LONGSHOT) || (ctx->GetTrickOption(RT_FOREST_VINES) && logic->CanUse(RG_HOOKSHOT) && logic->HasItem(RG_CLIMB)) || (logic->CanUse(RG_HOOKSHOT) && ((logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS) && logic->HasItem(RG_CLIMB) && logic->HasItem(RG_ROLL)) || logic->CanUse(RG_SONG_OF_TIME)))),
         ENTRANCE(RR_FOREST_TEMPLE_MQ_NE_COURTYARD_ISLAND,  logic->CanUse(RG_LONGSHOT)),
     });
 
@@ -693,7 +693,7 @@ void RegionTable_Init_ForestTemple() {
         ENTRANCE(RR_FOREST_TEMPLE_MQ_NORTH_PASSAGE,          true),
         ENTRANCE(RR_FOREST_TEMPLE_MQ_NE_COURTYARD,           true),
         ENTRANCE(RR_FOREST_TEMPLE_MQ_NE_COURTYARD_DOORFRAME, logic->CanHammerRecoilHover() || 
-                                                             ((ctx->GetTrickOption(RT_FOREST_DOORFRAME) && logic->CanUse(RG_HOVER_BOOTS) && logic->CanJumpslash())) ||
+                                                             ((ctx->GetTrickOption(RT_FOREST_DOORFRAME) && logic->CanUse(RG_HOVER_BOOTS) && logic->CanJumpslash() && logic->HasItem(RG_ROLL))) ||
                                                              (logic->IsChild && (ctx->GetTrickOption(RT_FOREST_MQ_CHILD_DOORFRAME) || logic->CanMiddairGroundJump()))),
         //N64 logic doesn't check damage but I always take some so I'm adding it
         ENTRANCE(RR_FOREST_TEMPLE_MQ_NE_COURTYARD_ISLAND,    ctx->GetTrickOption(RT_FOREST_COURTYARD_LEDGE) && logic->CanUse(RG_HOVER_BOOTS) && logic->CanJumpslash() && logic->TakeDamage()),

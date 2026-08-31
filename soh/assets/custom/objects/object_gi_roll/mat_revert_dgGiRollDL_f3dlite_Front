@@ -1,0 +1,7 @@
+<DisplayList Version="0">
+	<PipeSync/>
+	<SetGeometryMode G_CULL_BACK="1" G_CLIPPING="1"  />
+	<ClearGeometryMode G_FOG="1"  />
+	<EndDisplayList/>
+</DisplayList>
+

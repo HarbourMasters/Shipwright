@@ -187,6 +187,11 @@ Kaleido::Kaleido() {
                                                                   32, aButtonColor, FlagType::FLAG_RANDOMIZER_INF,
                                                                   RAND_INF_CAN_CRAWL, "Crawl"));
     }
+    if (ctx->GetOption(RSK_SHUFFLE_ROLL)) {
+        mEntries.push_back(std::make_shared<KaleidoEntryIconFlag>(gButtonBackgroundTex, G_IM_FMT_IA, G_IM_SIZ_8b, 32,
+                                                                  32, aButtonColor, FlagType::FLAG_RANDOMIZER_INF,
+                                                                  RAND_INF_CAN_ROLL, "Roll"));
+    }
     if (ctx->GetOption(RSK_SHUFFLE_CLIMB)) {
         mEntries.push_back(std::make_shared<KaleidoEntryIconFlag>(gButtonBackgroundTex, G_IM_FMT_IA, G_IM_SIZ_8b, 32,
                                                                   32, aButtonColor, FlagType::FLAG_RANDOMIZER_INF,

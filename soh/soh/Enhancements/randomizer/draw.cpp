@@ -1105,6 +1105,23 @@ extern "C" void Randomizer_DrawKneePads(PlayState* play, GetItemEntry* getItemEn
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
+extern "C" void Randomizer_DrawRollAbility(PlayState* play, GetItemEntry* getItemEntry) {
+    OPEN_DISPS(play->state.gfxCtx);
+
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+
+    // slow rotation to make it rotate like a get-item
+    Matrix_RotateY(play->gameplayFrames * 0.05f, MTXMODE_APPLY);
+    // to adjust: scale + position of your model
+    Matrix_Scale(10.00f, 10.00f, 10.00f, MTXMODE_APPLY);
+
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_MODELVIEW | G_MTX_LOAD);
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiRollDL);
+
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
 extern "C" void Randomizer_DrawJabberNut(PlayState* play, GetItemEntry* getItemEntry) {
     OPEN_DISPS(play->state.gfxCtx);
 

@@ -62,7 +62,7 @@ void RegionTable_Init_JabuJabusBelly() {
 
     areaTable[RR_JABU_JABUS_BELLY_B1_JIGGLY] = Region("Jabu Jabus Belly B1 Jiggly", SCENE_JABU_JABU, {
         //Events
-        EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->CanUse(RG_BOOMERANG) || (logic->CanBreakPots() && ctx->GetTrickOption(RT_JABU_B1_CUBE_HOVER) && logic->CanUse(RG_HOVER_BOOTS))),
+        EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->CanUse(RG_BOOMERANG) || (logic->CanBreakPots() && ctx->GetTrickOption(RT_JABU_B1_CUBE_HOVER) && logic->CanUse(RG_HOVER_BOOTS) && logic->CanUse(RG_ROLL))),
     }, {
         //Locations
         LOCATION(RC_JABU_JABUS_BELLY_TWO_OCTOROK_POT_1, logic->CanUse(RG_BOOMERANG) || (logic->CanBreakPots() && ctx->GetTrickOption(RT_JABU_B1_CUBE_HOVER) && logic->CanUse(RG_HOVER_BOOTS))),
@@ -491,8 +491,8 @@ void RegionTable_Init_JabuJabusBelly() {
                                                                    logic->CanUse(RG_FIRE_ARROWS) && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_LONGSHOT) ||
                                                                    //Otherwise, we have to cross the gap and kill the skull.
                                                                    ((logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG) || (logic->IsAdult && logic->CanGroundJumpslash())) &&
-                                                                   //We can cheese the gap with hovers
-                                                                    ((logic->CanUse(RG_HOVER_BOOTS) ||
+                                                                   //We can cheese the gap with hovers and rolling
+                                                                    (((logic->CanUse(RG_HOVER_BOOTS) && logic->HasItem(RG_ROLL)) ||
                                                                    //Otherwise we have to kill the enemies to raise the platform. This persists so we can do it as the other age.
                                                                         AnyAgeTime([]{return (ctx->GetTrickOption(RT_LENS_JABU_MQ) || logic->CanUse(RG_LENS_OF_TRUTH)) &&
                                                                                                                                               logic->CanKillEnemy(RE_STINGER, ED_BOOMERANG, false, 2, false, true) && 

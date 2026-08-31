@@ -23,10 +23,10 @@ void RegionTable_Init_Market() {
         LOCATION(RC_MARKET_GRASS_6,              logic->IsChild && logic->CanCutShrubs()),
         LOCATION(RC_MARKET_GRASS_7,              logic->IsChild && logic->CanCutShrubs()),
         LOCATION(RC_MARKET_GRASS_8,              logic->IsChild && logic->CanCutShrubs()),
-        LOCATION(RC_MK_NEAR_BAZAAR_CRATE_1,      logic->IsChild && logic->CanBreakCrates()),
-        LOCATION(RC_MK_NEAR_BAZAAR_CRATE_2,      logic->IsChild && logic->CanBreakCrates()),
-        LOCATION(RC_MK_SHOOTING_GALLERY_CRATE_1, logic->IsChild && logic->CanBreakCrates()),
-        LOCATION(RC_MK_SHOOTING_GALLERY_CRATE_2, logic->IsChild && logic->CanBreakCrates()),
+        LOCATION(RC_MK_NEAR_BAZAAR_CRATE_1,      logic->IsChild && logic->HasItem(RG_ROLL)),
+        LOCATION(RC_MK_NEAR_BAZAAR_CRATE_2,      logic->IsChild && logic->HasItem(RG_ROLL)),
+        LOCATION(RC_MK_SHOOTING_GALLERY_CRATE_1, logic->IsChild && logic->HasItem(RG_ROLL)),
+        LOCATION(RC_MK_SHOOTING_GALLERY_CRATE_2, logic->IsChild && logic->HasItem(RG_ROLL)),
         LOCATION(RC_MARKET_TREE,                 logic->IsChild && logic->CanBonkTrees()),
         LOCATION(RC_MKT_WONDER_DAY_1,            logic->IsChild && logic->AtDay),
         LOCATION(RC_MKT_WONDER_DAY_2,            logic->IsChild && logic->AtDay),
@@ -240,7 +240,7 @@ void RegionTable_Init_Market() {
     areaTable[RR_MARKET_DOG_LADY_HOUSE] = Region("Market Dog Lady House", SCENE_DOG_LADY_HOUSE, {}, {
         //Locations
         LOCATION(RC_MARKET_LOST_DOG,         logic->IsChild && logic->AtNight && logic->HasItem(RG_SPEAK_HYLIAN)),
-        LOCATION(RC_MK_LOST_DOG_HOUSE_CRATE, logic->CanBreakCrates()),
+        LOCATION(RC_MK_LOST_DOG_HOUSE_CRATE, logic->HasItem(RG_ROLL)),
     }, {
         //Exits
         ENTRANCE(RR_MARKET_BACK_ALLEY, true),

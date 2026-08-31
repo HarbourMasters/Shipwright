@@ -23,6 +23,7 @@ void Randomizer_DrawBronzeScale(PlayState* play, GetItemEntry* getItemEntry);
 void Randomizer_DrawPowerBracelet(PlayState* play, GetItemEntry* getItemEntry);
 void Randomizer_DrawLadder(PlayState* play, GetItemEntry* getItemEntry);
 void Randomizer_DrawKneePads(PlayState* play, GetItemEntry* getItemEntry);
+void Randomizer_DrawRollAbility(PlayState* play, GetItemEntry* getItemEntry);
 void Randomizer_DrawJabberNut(PlayState* play, GetItemEntry* getItemEntry);
 void Randomizer_DrawOpenChest(PlayState* play, GetItemEntry* getItemEntry);
 void Randomizer_DrawSilverRupee(PlayState* play, GetItemEntry* getItemEntry);
