@@ -19,7 +19,7 @@
 #include "soh/Enhancements/randomizer/item_category_adj.h"
 #include "soh/Enhancements/randomizer/randomizer_check_objects.h"
 #include "soh/Enhancements/randomizer/randomizer_check_tracker.h"
-#include "soh/Enhancements/randomizer/randomizer_entrance_tracker.h"
+#include "soh/Enhancements/randomizer/randomizer_tracker_windows.h"
 #include "soh/Enhancements/randomizer/SeedContext.h"
 #include "soh/Enhancements/randomizer/static_data.h"
 
@@ -664,7 +664,7 @@ void HintTrackerWindow::DrawElement() {
 
     ImGui::SetNextWindowSize(ImVec2(500, 600), ImGuiCond_FirstUseEver);
     if (Trackers::BeginFloatWindows(
-            "Hint Tracker", mIsVisible, Color_Background,
+            "Hint Tracker", &mIsVisible, Color_Background,
             static_cast<TrackerWindowType>(CVarGetInteger(CVAR_TRACKER_HINT("WindowType"), TRACKER_WINDOW_WINDOW)),
             CVarGetInteger(CVAR_TRACKER_HINT("Draggable"), 1))) {
         ImGui::SetWindowFontScale(CVarGetFloat(CVAR_TRACKER_HINT("FontSize"), 1.0f));

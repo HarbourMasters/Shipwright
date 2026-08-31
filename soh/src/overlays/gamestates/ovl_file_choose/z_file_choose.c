@@ -20,6 +20,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include <assert.h>
 #include "z64save.h"
+#include "variables.h"
 #include "soh/SaveManager.h"
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
@@ -27,6 +28,35 @@
 
 #define MIN_QUEST (ResourceMgr_GameHasOriginal() ? QUEST_NORMAL : QUEST_MASTER)
 #define MAX_QUEST QUEST_BOSSRUSH
+
+// #region SOH [Enhancement] - Hide Quest Modes
+static bool IsQuestSkipped(uint8_t quest) {
+    switch (quest) {
+        case QUEST_NORMAL:
+            return !ResourceMgr_GameHasOriginal() || CVarGetInteger(CVAR_ENHANCEMENT("FileSelect.HideNormalQuest"), 0);
+        case QUEST_MASTER:
+            return !ResourceMgr_GameHasMasterQuest() ||
+                   CVarGetInteger(CVAR_ENHANCEMENT("FileSelect.HideMasterQuest"), 0);
+        case QUEST_RANDOMIZER:
+            return CVarGetInteger(CVAR_ENHANCEMENT("FileSelect.HideRandomizerQuest"), 0);
+        case QUEST_BOSSRUSH:
+            return CVarGetInteger(CVAR_ENHANCEMENT("FileSelect.HideBossRushQuest"), 0);
+        default:
+            return false;
+    }
+}
+
+static uint8_t CountVisibleQuests(void) {
+    uint8_t count = 0;
+    for (int32_t quest = MIN_QUEST; quest <= MAX_QUEST; ++quest) {
+        if (!IsQuestSkipped(quest)) {
+            count++;
+        }
+    }
+
+    return count;
+}
+// #endregion
 
 void Sram_InitDebugSave(void);
 void Sram_InitBossRushSave();
@@ -359,11 +389,11 @@ int retries = 0;
 bool fileSelectSpoilerFileLoaded = false;
 
 void FileChoose_UpdateRandomizer() {
-    if (CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0) != 0 && generating == 0) {
+    if (Randomizer_IsGenerating() && generating == 0) {
         generating = 1;
         Audio_PlaySequenceWithSeqPlayerIO(SEQ_PLAYER_BGM_MAIN, NA_BGM_HORSE, 0, 7, 1);
         return;
-    } else if (CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0) == 0 && generating) {
+    } else if (!Randomizer_IsGenerating() && generating) {
         if (Randomizer_IsSeedGenerated()) {
             Audio_PlayFanfare(NA_BGM_HORSE_GOAL);
             retries = 0;
@@ -420,11 +450,22 @@ static s16 sLastFileChooseButtonIndex;
  * Update function for `CM_MAIN_MENU`
  */
 void FileChoose_UpdateMainMenu(GameState* thisx) {
+    static u8 emptyName[] = { 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E };
+    static u8 emptyNameNES[] = { 0xDF, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF };
+    static u8 linkName[] = { 0x15, 0x2C, 0x31, 0x2E, 0x3E, 0x3E, 0x3E, 0x3E };
+    static u8 linkNameNES[] = { 0xB6, 0xCD, 0xD2, 0xCF, 0xDF, 0xDF, 0xDF, 0xDF };
+    static u8 linkNameJP[] = { 0x81, 0x87, 0x61, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF };
+
     FileChooseContext* this = (FileChooseContext*)thisx;
     Input* input = &this->state.input[0];
     bool dpad = CVarGetInteger(CVAR_SETTING("DpadInText"), 0);
+    u8* defaultName;
+    u8 isDefaultNameOptionSet;
 
     FileChoose_UpdateRandomizer();
+    if (generating) {
+        return;
+    }
 
     if (CHECK_BTN_ALL(input->press.button, BTN_START) || CHECK_BTN_ALL(input->press.button, BTN_A)) {
         if (this->buttonIndex <= FS_BTN_MAIN_FILE_3) {
@@ -434,6 +475,32 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
                 this->prevConfigMode = this->configMode;
                 this->configMode = CM_ROTATE_TO_QUEST_MENU;
                 this->logoAlpha = 0;
+                this->kbdButton = FS_KBD_BTN_NONE;
+                this->charPage = FS_CHAR_PAGE_ENG;
+                this->kbdX = 0;
+                this->kbdY = 0;
+                this->charIndex = 0;
+                this->charBgAlpha = 0;
+
+                isDefaultNameOptionSet = CVarGetInteger(CVAR_ENHANCEMENT("LinkDefaultName"), 0);
+                this->newFileNameCharCount = isDefaultNameOptionSet ? 4 : 0;
+                this->nameEntryBoxPosX = 120;
+                this->nameEntryBoxAlpha = 0;
+                if (gSaveContext.language == LANGUAGE_JPN) { // Japanese
+                    if (isDefaultNameOptionSet) {
+                        // Set player name to "リンク" ("Link" in Katakana, 3 characters long) when playing in Japanese.
+                        defaultName = &linkNameJP;
+                        this->newFileNameCharCount = 3;
+                    } else {
+                        defaultName = &emptyNameNES;
+                    }
+                    this->charPage = FS_CHAR_PAGE_HIRA; // Default to Hiragana Keyboard
+                } else if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL) {
+                    defaultName = isDefaultNameOptionSet ? &linkName : &emptyName;
+                } else { // GAME_REGION_NTSC
+                    defaultName = isDefaultNameOptionSet ? &linkNameNES : &emptyNameNES;
+                }
+                memcpy(Save_GetSaveMetaInfo(this->buttonIndex)->playerName, defaultName, 8);
             } else if (!FileChoose_IsSaveCompatible(Save_GetSaveMetaInfo(this->buttonIndex))) {
                 Audio_PlaySfxGeneral(NA_SE_SY_FSEL_ERROR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
                                      &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
@@ -626,11 +693,6 @@ void FileChoose_StartRandomizerMenu(GameState* thisx) {
 }
 
 void FileChoose_UpdateQuestMenu(GameState* thisx) {
-    static u8 emptyName[] = { 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E };
-    static u8 emptyNameNES[] = { 0xDF, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF };
-    static u8 linkName[] = { 0x15, 0x2C, 0x31, 0x2E, 0x3E, 0x3E, 0x3E, 0x3E };
-    static u8 linkNameNES[] = { 0xB6, 0xCD, 0xD2, 0xCF, 0xDF, 0xDF, 0xDF, 0xDF };
-    static u8 linkNameJP[] = { 0x81, 0x87, 0x61, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF };
     FileChoose_UpdateStickDirectionPromptAnim(thisx);
     FileChooseContext* this = (FileChooseContext*)thisx;
     Input* input = &this->state.input[0];
@@ -640,27 +702,40 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
 
     FileChoose_UpdateRandomizer();
 
-    if (ABS(this->stickRelX) > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT | BTN_DRIGHT))) {
-        if (this->stickRelX > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DRIGHT))) {
-            this->questType[this->buttonIndex] += 1;
-            while (this->questType[this->buttonIndex] == QUEST_MASTER && !ResourceMgr_GameHasMasterQuest()) {
-                // If Master Quest is selected without a Master Quest OTR present, skip past it.
-                this->questType[this->buttonIndex] += 1;
-            }
-        } else if (this->stickRelX < -30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT))) {
-            this->questType[this->buttonIndex] -= 1;
-            while (this->questType[this->buttonIndex] == QUEST_MASTER && !ResourceMgr_GameHasMasterQuest()) {
-                // If Master Quest is selected without a Master Quest OTR present, skip past it.
-                this->questType[this->buttonIndex] -= 1;
+    // #region SOH [Enhancement] - Hide Quest Modes
+    // If the current quest type was hidden after being selected (i.e., CVar changed while on the quest menu), advance
+    // to the next visible one.
+    if (CountVisibleQuests() > 0) {
+        while (IsQuestSkipped(this->questType[this->buttonIndex])) {
+            this->questType[this->buttonIndex]++;
+            if (this->questType[this->buttonIndex] > MAX_QUEST) {
+                this->questType[this->buttonIndex] = MIN_QUEST;
             }
         }
+    }
+    // #endregion
 
-        // If current buttonIndex is higher or lower than the min/max value, wrap around.
-        if (this->questType[this->buttonIndex] > MAX_QUEST) {
-            this->questType[this->buttonIndex] = MIN_QUEST;
-        } else if (this->questType[this->buttonIndex] < MIN_QUEST) {
-            this->questType[this->buttonIndex] = MAX_QUEST;
+    // #region SOH [Enhancement] - Hide Quest Modes
+    if (CountVisibleQuests() > 1 && ABS(this->stickRelX) > 30 ||
+        (dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT | BTN_DRIGHT))) {
+        // Cycle through quest types, skipping any that are hidden (i.e., Master Quest without O2R,
+        // Randomizer/Boss Rush when their CVars are set).  Wraps around if past min/max.
+        if (this->stickRelX > 30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DRIGHT))) {
+            do {
+                this->questType[this->buttonIndex]++;
+                if (this->questType[this->buttonIndex] > MAX_QUEST) {
+                    this->questType[this->buttonIndex] = MIN_QUEST;
+                }
+            } while (IsQuestSkipped(this->questType[this->buttonIndex]));
+        } else if (this->stickRelX < -30 || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT))) {
+            do {
+                this->questType[this->buttonIndex]--;
+                if (this->questType[this->buttonIndex] < MIN_QUEST) {
+                    this->questType[this->buttonIndex] = MAX_QUEST;
+                }
+            } while (IsQuestSkipped(this->questType[this->buttonIndex]));
         }
+        // #endregion
 
         Audio_PlaySfxGeneral(NA_SE_SY_FSEL_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
                              &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
@@ -689,30 +764,6 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
             this->prevConfigMode = this->configMode;
             this->configMode = CM_ROTATE_TO_NAME_ENTRY;
             this->logoAlpha = 0;
-            this->kbdButton = FS_KBD_BTN_NONE;
-            this->charPage = FS_CHAR_PAGE_ENG;
-            this->kbdX = 0;
-            this->kbdY = 0;
-            this->charIndex = 0;
-            this->charBgAlpha = 0;
-            this->newFileNameCharCount = CVarGetInteger(CVAR_ENHANCEMENT("LinkDefaultName"), 0) ? 4 : 0;
-            this->nameEntryBoxPosX = 120;
-            this->nameEntryBoxAlpha = 0;
-            if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL && gSaveContext.language != LANGUAGE_JPN) {
-                defaultName = CVarGetInteger(CVAR_ENHANCEMENT("LinkDefaultName"), 0) ? &linkName : &emptyName;
-            } else if (gSaveContext.language == LANGUAGE_JPN) { // Japanese
-                if (CVarGetInteger(CVAR_ENHANCEMENT("LinkDefaultName"), 0) != 0) {
-                    // Set player name to "リンク" ("Link" in Katakana, 3 characters long) when playing in Japanese.
-                    defaultName = &linkNameJP;
-                    this->newFileNameCharCount = 3;
-                } else {
-                    defaultName = &emptyNameNES;
-                }
-                this->charPage = FS_CHAR_PAGE_HIRA; // Default to Hiragana Keyboard
-            } else {                                // GAME_REGION_NTSC
-                defaultName = CVarGetInteger(CVAR_ENHANCEMENT("LinkDefaultName"), 0) ? &linkNameNES : &emptyNameNES;
-            }
-            memcpy(Save_GetSaveMetaInfo(this->buttonIndex)->playerName, defaultName, 8);
             return;
         }
     }
@@ -779,41 +830,10 @@ void FileChoose_UpdateRandomizerMenu(GameState* thisx) {
                 SohFileSelect_ShowPresetModal();
                 Audio_PlaySfxGeneral(NA_SE_SY_FSEL_DECIDE_L, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
                                      &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
-                static u8 emptyName[] = { 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E };
-                static u8 emptyNameNES[] = { 0xDF, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF };
-                static u8 linkName[] = { 0x15, 0x2C, 0x31, 0x2E, 0x3E, 0x3E, 0x3E, 0x3E };
-                static u8 linkNameNES[] = { 0xB6, 0xCD, 0xD2, 0xCF, 0xDF, 0xDF, 0xDF, 0xDF };
-                static u8 linkNameJP[] = { 0x81, 0x87, 0x61, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF };
-                u8* defaultName;
 
                 this->prevConfigMode = this->configMode;
                 this->configMode = CM_ROTATE_TO_NAME_ENTRY;
-                this->logoAlpha = 0;
                 CVarSetInteger(CVAR_GENERAL("OnFileSelectNameEntry"), 1);
-                this->kbdButton = FS_KBD_BTN_NONE;
-                this->charPage = FS_CHAR_PAGE_ENG;
-                this->kbdX = 0;
-                this->kbdY = 0;
-                this->charIndex = 0;
-                this->charBgAlpha = 0;
-                this->newFileNameCharCount = CVarGetInteger(CVAR_ENHANCEMENT("LinkDefaultName"), 0) ? 4 : 0;
-                this->nameEntryBoxPosX = 120;
-                this->nameEntryBoxAlpha = 0;
-                if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL && gSaveContext.language != LANGUAGE_JPN) {
-                    defaultName = CVarGetInteger(CVAR_ENHANCEMENT("LinkDefaultName"), 0) ? &linkName : &emptyName;
-                } else if (gSaveContext.language == LANGUAGE_JPN) { // Japanese
-                    if (CVarGetInteger(CVAR_ENHANCEMENT("LinkDefaultName"), 0) != 0) {
-                        // Set player name to "リンク" ("Link" in Katakana, 3 characters long) when playing in Japanese.
-                        defaultName = &linkNameJP;
-                        this->newFileNameCharCount = 3;
-                    } else {
-                        defaultName = &emptyNameNES;
-                    }
-                    this->charPage = FS_CHAR_PAGE_HIRA; // Default to Hiragana Keyboard
-                } else {                                // GAME_REGION_NTSC
-                    defaultName = CVarGetInteger(CVAR_ENHANCEMENT("LinkDefaultName"), 0) ? &linkNameNES : &emptyNameNES;
-                }
-                memcpy(Save_GetSaveMetaInfo(this->buttonIndex)->playerName, defaultName, 8);
             } else {
                 Sfx_PlaySfxCentered(NA_SE_SY_OCARINA_ERROR);
             }
@@ -895,20 +915,13 @@ void FileChoose_RotateToMain(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
     if (this->configMode == CM_QUEST_TO_MAIN || this->configMode == CM_OPTIONS_TO_MAIN) {
         this->windowRot -= VREG(16);
-
-        if (this->windowRot <= 0.0f) {
-            this->windowRot = 0.0f;
-            this->configMode = CM_MAIN_MENU;
-        }
+    } else if (this->configMode == CM_NAME_ENTRY_TO_MAIN) {
+        this->windowRot += VREG(16);
     }
 
-    if (this->configMode == CM_NAME_ENTRY_TO_MAIN && this->prevConfigMode == CM_MAIN_MENU) {
-        this->windowRot += VREG(16);
-
-        if (this->windowRot >= 942.0f) {
-            this->windowRot = 0.0f;
-            this->configMode = CM_MAIN_MENU;
-        }
+    if (this->windowRot <= 0.0f || this->windowRot >= 942.0f) {
+        this->windowRot = 0.0f;
+        this->configMode = CM_MAIN_MENU;
     }
 }
 
@@ -920,15 +933,35 @@ void FileChoose_RotateToQuest(GameState* thisx) {
         this->windowRot -= VREG(16);
 
         if (this->windowRot <= 314.0f) {
-            this->windowRot = 314.0f;
-            this->configMode = CM_START_QUEST_MENU;
+            if (CountVisibleQuests() > 1) {
+                this->windowRot = 314.0f;
+                this->configMode = CM_START_QUEST_MENU;
+            } else {
+                this->windowRot = 0.0f;
+                this->configMode = CM_MAIN_MENU;
+            }
         }
     } else {
         this->windowRot += VREG(16);
 
         if (this->windowRot >= 314.0f) {
-            this->windowRot = 314.0f;
-            this->configMode = CM_START_QUEST_MENU;
+            if (CountVisibleQuests() > 1) {
+                this->windowRot = 314.0f;
+                this->configMode = CM_START_QUEST_MENU;
+            } else {
+                this->windowRot = 628.0f;
+
+                if (!IsQuestSkipped(QUEST_RANDOMIZER)) {
+                    this->configMode = CM_START_RANDOMIZER_SETTINGS_MENU;
+                } else if (!IsQuestSkipped(QUEST_BOSSRUSH)) {
+                    this->configMode = CM_START_BOSS_RUSH_MENU;
+                } else {
+                    this->configMode = CM_START_NAME_ENTRY;
+
+                    // Needed to come back to main menu
+                    this->prevConfigMode = CM_MAIN_MENU;
+                }
+            }
         }
     }
 }
@@ -1718,31 +1751,37 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
     if ((this->configMode == CM_QUEST_MENU) || (this->configMode == CM_START_QUEST_MENU) ||
         this->configMode == CM_NAME_ENTRY_TO_QUEST_MENU ||
         this->configMode == CM_NAME_ENTRY_TO_RANDOMIZER_SETTINGS_MENU) {
-        // draw control stick prompts.
-        Gfx_SetupDL_39Opa(this->state.gfxCtx);
-        gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
-        gDPLoadTextureBlock(POLY_OPA_DISP++, gArrowCursorTex, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 24, 0,
-                            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 4, G_TX_NOMASK, G_TX_NOLOD,
-                            G_TX_NOLOD);
-        FileChoose_DrawTextRec(this->state.gfxCtx, this->stickLeftPrompt.arrowColorR, this->stickLeftPrompt.arrowColorG,
-                               this->stickLeftPrompt.arrowColorB, this->stickLeftPrompt.arrowColorA,
-                               this->stickLeftPrompt.arrowTexX, this->stickLeftPrompt.arrowTexY,
-                               this->stickLeftPrompt.z, 0, 0, -1.0f, 1.0f);
-        FileChoose_DrawTextRec(this->state.gfxCtx, this->stickRightPrompt.arrowColorR,
-                               this->stickRightPrompt.arrowColorG, this->stickRightPrompt.arrowColorB,
-                               this->stickRightPrompt.arrowColorA, this->stickRightPrompt.arrowTexX,
-                               this->stickRightPrompt.arrowTexY, this->stickRightPrompt.z, 0, 0, 1.0f, 1.0f);
-        gDPLoadTextureBlock(POLY_OPA_DISP++, gControlStickTex, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 16, 0,
-                            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 4, G_TX_NOMASK, G_TX_NOLOD,
-                            G_TX_NOLOD);
-        FileChoose_DrawTextRec(this->state.gfxCtx, this->stickLeftPrompt.stickColorR, this->stickLeftPrompt.stickColorG,
-                               this->stickLeftPrompt.stickColorB, this->stickLeftPrompt.stickColorA,
-                               this->stickLeftPrompt.stickTexX, this->stickLeftPrompt.stickTexY,
-                               this->stickLeftPrompt.z, 0, 0, -1.0f, 1.0f);
-        FileChoose_DrawTextRec(this->state.gfxCtx, this->stickRightPrompt.stickColorR,
-                               this->stickRightPrompt.stickColorG, this->stickRightPrompt.stickColorB,
-                               this->stickRightPrompt.stickColorA, this->stickRightPrompt.stickTexX,
-                               this->stickRightPrompt.stickTexY, this->stickRightPrompt.z, 0, 0, 1.0f, 1.0f);
+        // #region SOH [Enhancement] - Hide Quest Modes
+        // Only draw the control stick prompts and arrows when there's more than one quest to cycle through.
+        if (CountVisibleQuests() > 1) {
+            // #endregion
+            // draw control stick prompts.
+            Gfx_SetupDL_39Opa(this->state.gfxCtx);
+            gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
+            gDPLoadTextureBlock(POLY_OPA_DISP++, gArrowCursorTex, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 24, 0,
+                                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 4, G_TX_NOMASK, G_TX_NOLOD,
+                                G_TX_NOLOD);
+            FileChoose_DrawTextRec(this->state.gfxCtx, this->stickLeftPrompt.arrowColorR,
+                                   this->stickLeftPrompt.arrowColorG, this->stickLeftPrompt.arrowColorB,
+                                   this->stickLeftPrompt.arrowColorA, this->stickLeftPrompt.arrowTexX,
+                                   this->stickLeftPrompt.arrowTexY, this->stickLeftPrompt.z, 0, 0, -1.0f, 1.0f);
+            FileChoose_DrawTextRec(this->state.gfxCtx, this->stickRightPrompt.arrowColorR,
+                                   this->stickRightPrompt.arrowColorG, this->stickRightPrompt.arrowColorB,
+                                   this->stickRightPrompt.arrowColorA, this->stickRightPrompt.arrowTexX,
+                                   this->stickRightPrompt.arrowTexY, this->stickRightPrompt.z, 0, 0, 1.0f, 1.0f);
+            gDPLoadTextureBlock(POLY_OPA_DISP++, gControlStickTex, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 16, 0,
+                                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 4, G_TX_NOMASK, G_TX_NOLOD,
+                                G_TX_NOLOD);
+            FileChoose_DrawTextRec(this->state.gfxCtx, this->stickLeftPrompt.stickColorR,
+                                   this->stickLeftPrompt.stickColorG, this->stickLeftPrompt.stickColorB,
+                                   this->stickLeftPrompt.stickColorA, this->stickLeftPrompt.stickTexX,
+                                   this->stickLeftPrompt.stickTexY, this->stickLeftPrompt.z, 0, 0, -1.0f, 1.0f);
+            FileChoose_DrawTextRec(this->state.gfxCtx, this->stickRightPrompt.stickColorR,
+                                   this->stickRightPrompt.stickColorG, this->stickRightPrompt.stickColorB,
+                                   this->stickRightPrompt.stickColorA, this->stickRightPrompt.stickTexX,
+                                   this->stickRightPrompt.stickTexY, this->stickRightPrompt.z, 0, 0, 1.0f, 1.0f);
+        }
+
         switch (this->questType[this->buttonIndex]) {
             case QUEST_NORMAL:
             default:
@@ -2508,6 +2547,7 @@ void FileChoose_LoadGame(GameState* thisx) {
                          &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     gSaveContext.fileNum = this->buttonIndex;
     gSaveContext.gameMode = GAMEMODE_NORMAL;
+    Randomizer_WaitForGeneration();
 
     if ((this->buttonIndex == FS_BTN_SELECT_FILE_1 && CVarGetInteger(CVAR_DEVELOPER_TOOLS("DebugEnabled"), 0)) ||
         this->buttonIndex == 0xFF) {

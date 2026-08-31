@@ -2418,6 +2418,14 @@ extern "C" uint8_t Randomizer_GenerateRandomizer() {
     return GenerateRandomizer() ? 1 : 0;
 }
 
+extern "C" bool Randomizer_IsGenerating() {
+    return IsRandoGenerating();
+}
+
+extern "C" void Randomizer_WaitForGeneration() {
+    WaitForRandoGeneration();
+}
+
 extern "C" void Randomizer_ShowRandomizerMenu() {
     SohGui::ShowRandomizerSettingsMenu();
 }

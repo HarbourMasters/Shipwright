@@ -5,7 +5,6 @@
 
 void BootCommands_Init() {
     // Clears vars to prevent randomizer menu from being disabled
-    CVarClear(CVAR_GENERAL("RandoGenerating")); // Clear when a crash happened during rando seed generation
     CVarClear(CVAR_GENERAL("NewSeedGenerated"));
     CVarClear(CVAR_GENERAL("OnFileSelectNameEntry")); // Clear when soh is killed on the file name entry page
     CVarClear(CVAR_GENERAL("BetterDebugWarpScreenMQMode"));

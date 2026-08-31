@@ -415,15 +415,15 @@ void GenerateItemPool() {
         AddFixedItemToPool(RG_SKELETON_KEY, 1);
     }
 
-    if (ctx->GetOption(RSK_MASK_QUEST).Is(RO_MASK_QUEST_SHUFFLE)) {
-        AddItemToPool(RG_KEATON_MASK, 2, 1, 1, 1);
-        AddItemToPool(RG_SKULL_MASK, 2, 1, 1, 1);
-        AddItemToPool(RG_SPOOKY_MASK, 2, 1, 1, 1);
+    if (ctx->GetOption(RSK_SHUFFLE_MASKS)) {
+        if (!ctx->GetOption(RSK_STARTING_KEATON_MASK)) AddItemToPool(RG_KEATON_MASK, 2, 1, 1, 1);
+        if (!ctx->GetOption(RSK_STARTING_SKULL_MASK)) AddItemToPool(RG_SKULL_MASK, 2, 1, 1, 1);
+        if (!ctx->GetOption(RSK_STARTING_SPOOKY_MASK)) AddItemToPool(RG_SPOOKY_MASK, 2, 1, 1, 1);
         if (!ctx->GetOption(RSK_STARTING_BUNNY_HOOD)) AddItemToPool(RG_BUNNY_HOOD, 2, 1, 1, 1);
-        AddItemToPool(RG_GORON_MASK, 2, 1, 1, 1);
-        AddItemToPool(RG_ZORA_MASK, 2, 1, 1, 1);
-        AddItemToPool(RG_GERUDO_MASK, 2, 1, 1, 1);
-        AddItemToPool(RG_MASK_OF_TRUTH, 2, 1, 1, 1);
+        if (!ctx->GetOption(RSK_STARTING_GORON_MASK)) AddItemToPool(RG_GORON_MASK, 2, 1, 1, 1);
+        if (!ctx->GetOption(RSK_STARTING_ZORA_MASK)) AddItemToPool(RG_ZORA_MASK, 2, 1, 1, 1);
+        if (!ctx->GetOption(RSK_STARTING_GERUDO_MASK)) AddItemToPool(RG_GERUDO_MASK, 2, 1, 1, 1);
+        if (!ctx->GetOption(RSK_STARTING_MASK_OF_TRUTH)) AddItemToPool(RG_MASK_OF_TRUTH, 2, 1, 1, 1);
     }
 
     if (ctx->GetOption(RSK_ROCS_FEATHER)) {

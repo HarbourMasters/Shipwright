@@ -107,11 +107,7 @@ RandomizerSettingKey DungeonInfo::GetMQSetting() const {
     return mqSetting;
 }
 
-int8_t FindUsedSmallKeys(const SaveContext* saveContext, const SceneID scene, const std::vector<uint8_t>* DoorFlags) {
-    if (DoorFlags == nullptr) {
-        return 0;
-    }
-
+int8_t FindUsedSmallKeys(const SaveContext* saveContext, const SceneID scene, std::span<const uint8_t> doorFlags) {
     // Get the swch value for the scene
     uint32_t swch;
     if (gPlayState != nullptr && gPlayState->sceneNum == scene) {
@@ -122,7 +118,7 @@ int8_t FindUsedSmallKeys(const SaveContext* saveContext, const SceneID scene, co
 
     // Count the number of small keys doors unlocked
     int8_t unlockedSmallKeyDoors = 0;
-    for (auto& smallKeyDoor : *DoorFlags) {
+    for (const uint8_t smallKeyDoor : doorFlags) {
         unlockedSmallKeyDoors += swch >> smallKeyDoor & 1;
     }
     return unlockedSmallKeyDoors;
@@ -137,27 +133,31 @@ int8_t FindCurrentSmallKeys(const SaveContext* saveContext, const SceneID scene)
     return dungeonKeys;
 }
 
-int8_t FindTotalSmallKeys(const SaveContext* saveContext, const SceneID scene, const std::vector<uint8_t>* DoorFlags) {
-    return FindCurrentSmallKeys(saveContext, scene) + FindUsedSmallKeys(saveContext, scene, DoorFlags);
+int8_t FindTotalSmallKeys(const SaveContext* saveContext, const SceneID scene, std::span<const uint8_t> doorFlags) {
+    return FindCurrentSmallKeys(saveContext, scene) + FindUsedSmallKeys(saveContext, scene, doorFlags);
 }
 
-// Thieves' Hideout isn't a dungeon, and how many of its doors are locked depends on the carpenter setting.
-static std::vector<uint8_t> ThievesHideoutDoorFlags() {
+// Thieves' Hideout isn't a dungeon, and how many of its doors are locked depends on the carpenter setting
+static std::span<const uint8_t> ThievesHideoutDoorFlags() {
+    static constexpr std::array<uint8_t, 4> doorFlags = { 1, 2, 3, 4 };
     if (RAND_GET_OPTION(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FAST)) {
-        return { 1 };
+        return std::span(doorFlags).first(1);
     }
     if (RAND_GET_OPTION(RSK_GERUDO_FORTRESS).Is(RO_GF_CARPENTERS_FREE)) {
         return {};
     }
-    return { 1, 2, 3, 4 };
+    return doorFlags;
 }
+
+// Chest game's locked doors without 0x20 after rando converts to perm flags
+static constexpr std::array<uint8_t, 6> chestGameDoorFlags = { 0, 1, 2, 3, 4, 5 };
 
 uint8_t GetSceneSmallKeyMax(const SceneID scene) {
     if (scene == SCENE_THIEVES_HIDEOUT) {
         return static_cast<uint8_t>(ThievesHideoutDoorFlags().size());
     }
     if (scene == SCENE_TREASURE_BOX_SHOP) {
-        return 6;
+        return static_cast<uint8_t>(chestGameDoorFlags.size());
     }
     // ask which layout actually loads rather than what the seed asked for, so an MQ-only rom still lines up
     const DungeonInfo* dungeon = Context::GetInstance()->GetDungeons()->GetDungeonFromScene(scene);
@@ -166,13 +166,14 @@ uint8_t GetSceneSmallKeyMax(const SceneID scene) {
 
 int8_t GetSceneTotalSmallKeys(const SaveContext* saveContext, const SceneID scene) {
     if (scene == SCENE_THIEVES_HIDEOUT) {
-        const std::vector<uint8_t> doorFlags = ThievesHideoutDoorFlags();
-        return FindTotalSmallKeys(saveContext, scene, &doorFlags);
+        return FindTotalSmallKeys(saveContext, scene, ThievesHideoutDoorFlags());
+    }
+    if (scene == SCENE_TREASURE_BOX_SHOP) {
+        return FindTotalSmallKeys(saveContext, scene, chestGameDoorFlags);
     }
     if (const DungeonInfo* dungeon = Context::GetInstance()->GetDungeons()->GetDungeonFromScene(scene)) {
         return FindTotalSmallKeys(saveContext, scene, dungeon->GetDoorFlags());
     }
-    // the chest game keeps no door flags, so what you hold is all you ever got
     return FindCurrentSmallKeys(saveContext, scene);
 }
 
@@ -188,15 +189,15 @@ int8_t DungeonInfo::GetTotalSmallKeys(SaveContext* saveContext) const {
     return FindTotalSmallKeys(saveContext, scene, GetDoorFlags());
 }
 
-const std::vector<uint8_t>* DungeonInfo::GetDoorFlags() const {
+std::span<const uint8_t> DungeonInfo::GetDoorFlags() const {
     if (IsMQ()) {
-        return &MQDoorFlags;
+        return MQDoorFlags;
     }
     if (IS_RANDO) {
         // Specifically non-MQ Rando, to handle an edge case in water temple
-        return &randoDoorFlags;
+        return randoDoorFlags;
     }
-    return &vanillaDoorFlags;
+    return vanillaDoorFlags;
 }
 
 void DungeonInfo::SetDungeonKnown(bool known) {

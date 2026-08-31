@@ -1164,16 +1164,9 @@
                 "name": "Skip Epona Race",
                 "description": "Epona can be summoned with Epona's Song without needing to race Ingo."
             },
-            "mask_quest": {
-                "name": "Mask Quest",
-                "description": [
-                    "How masks are acquired.\n",
-                    "Vanilla - Mask trade quest.\n",
-                    "\n",
-                    "Completed - Once the Happy Mask Shop is opened, all masks will be available to be borrowed.\n",
-                    "\n",
-                    "Shuffle - Happy Mask Shop never opens, masks are shuffled with the rest of the items."
-                ]
+            "shuffle_masks": {
+                "name": "Shuffle Masks",
+                "description": "The Happy Mask Shop never opens, masks are shuffled with the rest of the items."
             },
             "skip_scarecrows_song": {
                 "name": "Skip Scarecrow's Song",
@@ -1839,8 +1832,29 @@
             "starting_hearts": {
                 "name": "Starting Hearts"
             },
+            "starting_keaton_mask": {
+                "name": "Start with Keaton Mask"
+            },
+            "starting_skull_mask": {
+                "name": "Start with Skull Mask"
+            },
+            "starting_spooky_mask": {
+                "name": "Start with Spooky Mask"
+            },
             "starting_bunny_hood": {
                 "name": "Start with Bunny Hood"
+            },
+            "starting_goron_mask": {
+                "name": "Start with Goron Mask"
+            },
+            "starting_zora_mask": {
+                "name": "Start with Zora Mask"
+            },
+            "starting_gerudo_mask": {
+                "name": "Start with Gerudo Mask"
+            },
+            "starting_mask_of_truth": {
+                "name": "Start with Mask of Truth"
             }
         },
         "tricks": {

@@ -15,7 +15,7 @@ void RegionTable_Init_LostWoods() {
         EVENT_ACCESS(LOGIC_PLANT_LOST_WOODS_BRIDGE_BEAN, CanPlantBean(RG_LOST_WOODS_BRIDGE_BEAN_SOUL)),
         EVENT_ACCESS(LOGIC_FAIRY_ACCESS,                 logic->IsChild && logic->BeanPlanted(LOGIC_PLANT_LOST_WOODS_BRIDGE_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
         EVENT_ACCESS(LOGIC_BUG_ACCESS,                   logic->IsChild && logic->CanCutShrubs()),
-        EVENT_ACCESS(LOGIC_BORROW_SPOOKY_MASK,           logic->IsChild && logic->Get(LOGIC_BORROW_SKULL_MASK) && logic->CanUse(RG_SARIAS_SONG) && logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_SPEAK_KOKIRI) && logic->HasItem(RG_SPEAK_HYLIAN)),
+        EVENT_ACCESS(LOGIC_SOLD_SKULL_MASK,              logic->IsChild && logic->HasItem(RG_SKULL_MASK) && logic->CanUse(RG_SARIAS_SONG) && logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_SPEAK_KOKIRI) && logic->HasItem(RG_SPEAK_HYLIAN)),
     }, {
         //Locations
         LOCATION(RC_LW_SKULL_KID,                       logic->IsChild && logic->CanUse(RG_SARIAS_SONG)),

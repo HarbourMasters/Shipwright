@@ -42,7 +42,10 @@
                 "FasterBlockPush": 5,
                 "FasterHeavyBlockLift": 1,
                 "FasterRupeeAccumulator": 1,
-                "FileSelectMoreInfo": 1,
+                "FileSelect": {
+                    "MoreInfo": 1,
+                    "TimeFlow": 1
+                },
                 "FishNeverEscape": 1,
                 "FixBrokenGiantsKnife": 1,
                 "FixDaruniaDanceSpeed": 1,
@@ -105,7 +108,6 @@
                 "SlowTextSpeed": 5,
                 "SwordToggle": 1,
                 "TextSpeed": 5,
-                "TimeFlowFileSelect": 1,
                 "TimeSavers": {
                     "DisableTitleCard": 1,
                     "SkipChildStealth": 1,

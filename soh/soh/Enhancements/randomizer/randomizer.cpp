@@ -1,3 +1,4 @@
+#include <atomic>
 #include <fstream>
 #include <sstream>
 #include <tuple>
@@ -43,7 +44,7 @@ std::unordered_map<std::string, HintType> SpoilerfileHintTypeNameToEnum;
 std::set<RandomizerCheck> excludedLocations;
 std::set<RandomizerCheck> spoilerExcludedLocations;
 
-bool generated;
+static std::atomic<bool> randoGenerating;
 
 bool Rando_HandleSpoilerDrop(char* filePath) {
     if (SohUtils::IsStringEmpty(filePath)) {
@@ -926,8 +927,6 @@ RandomizerCheck Randomizer::GetCheckFromRandomizerInf(RandomizerInf randomizerIn
 std::thread randoThread;
 
 void GenerateRandomizerImgui(std::string seed = "") {
-    CVarSetInteger(CVAR_GENERAL("RandoGenerating"), 1);
-    Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     auto ctx = Rando::Context::GetInstance();
     // RANDOTODO proper UI for selecting if a spoiler loaded should be used for settings
     Rando::Settings::GetInstance()->SetAllToContext();
@@ -963,32 +962,32 @@ void GenerateRandomizerImgui(std::string seed = "") {
     }
 
     Rando::Context::GetInstance()->SetSeedGenerated(GenerateRandomizer(excludedLocations, enabledTricks, seed));
-    CVarSetInteger(CVAR_GENERAL("RandoGenerating"), 0);
     Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
 
-    generated = true;
-
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnGenerationCompletion>();
+
+    randoGenerating = false;
+}
+
+bool IsRandoGenerating() {
+    return randoGenerating;
 }
 
 bool GenerateRandomizer(std::string seed /*= ""*/) {
-    if (generated) {
-        generated = false;
-        randoThread.join();
+    if (randoGenerating) {
+        return false;
     }
-    if (CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0) == 0) {
-        randoThread = std::thread(&GenerateRandomizerImgui, seed);
-        return true;
-    }
-    return false;
+    WaitForRandoGeneration();
+    randoGenerating = true;
+    randoThread = std::thread(&GenerateRandomizerImgui, seed);
+    return true;
 }
 
 static bool locationsTabOpen = false;
 static bool tricksTabOpen = false;
 
-void JoinRandoGenerationThread() {
-    if (generated) {
-        generated = false;
+void WaitForRandoGeneration() {
+    if (randoThread.joinable()) {
         randoThread.join();
     }
 }

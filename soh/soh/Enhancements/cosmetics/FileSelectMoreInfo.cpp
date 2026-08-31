@@ -757,7 +757,7 @@ static void DrawMoreInfo(FileChooseContext* thisx, s16 fileIndex, u8 alpha) {
 }
 
 #define CVAR_FILE_SELECT_MORE_INFO_DEFAULT false
-#define CVAR_FILE_SELECT_MORE_INFO_NAME CVAR_ENHANCEMENT("FileSelectMoreInfo")
+#define CVAR_FILE_SELECT_MORE_INFO_NAME CVAR_ENHANCEMENT("FileSelect.MoreInfo")
 #define CVAR_FILE_SELECT_MORE_INFO_VALUE \
     CVarGetInteger(CVAR_FILE_SELECT_MORE_INFO_NAME, CVAR_FILE_SELECT_MORE_INFO_DEFAULT)
 

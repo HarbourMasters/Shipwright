@@ -15,6 +15,9 @@
                 "DynamicWalletIcon": 1,
                 "EnemySpawnsOverWaterboxes": 1,
                 "FasterRupeeAccumulator": 1,
+                "FileSelect": {
+                    "TimeFlow": 1
+                },
                 "FixBrokenGiantsKnife": 1,
                 "FixDampeGoingBackwards": 1,
                 "FixDaruniaDanceSpeed": 1,
@@ -45,7 +48,6 @@
                 "SkipSaveConfirmation": 1,
                 "SkipText": 1,
                 "TextSpeed": 5,
-                "TimeFlowFileSelect": 1,
                 "TimeSavers": {
                     "SkipJabuJabuFish": 1
                 },

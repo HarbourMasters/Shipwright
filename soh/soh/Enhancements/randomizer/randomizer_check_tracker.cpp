@@ -10,6 +10,7 @@
 #include "randomizer_check_tracker.h"
 #include "randomizer_entrance_tracker.h"
 #include "randomizer_item_tracker.h"
+#include "randomizer_tracker_windows.h"
 #include "randomizerTypes.h"
 #include "soh/Enhancements/randomizer/randomizerEnums.h"
 #include "soh/Enhancements/randomizer/static_data.h"
@@ -1300,7 +1301,7 @@ void CheckTrackerWindow::DrawElement() {
         ImGui::SetNextWindowSize(ImVec2(400, 540), ImGuiCond_FirstUseEver);
     }
     if (Trackers::BeginFloatWindows(
-            "Check Tracker", mIsVisible, Color_Background,
+            "Check Tracker", &mIsVisible, Color_Background,
             static_cast<TrackerWindowType>(CVarGetInteger(CVAR_TRACKER_CHECK("WindowType"), TRACKER_WINDOW_WINDOW)),
             CVarGetInteger(CVAR_TRACKER_CHECK("Draggable"), 1), ImGuiWindowFlags_NoScrollbar)) {
         if (!GameInteractor::IsSaveLoaded() || !initialized) {

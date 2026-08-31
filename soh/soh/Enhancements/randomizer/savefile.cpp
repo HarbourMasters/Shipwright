@@ -350,10 +350,27 @@ void SetStartingItems() {
         Item_Give(NULL, ITEM_GERUDO_CARD);
     }
 
-    if (Randomizer_GetSettingValue(RSK_STARTING_BUNNY_HOOD)) {
-        Flags_SetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_MASK_BUNNY);
-        if (INV_CONTENT(ITEM_TRADE_CHILD) == ITEM_NONE) {
-            INV_CONTENT(ITEM_TRADE_CHILD) = ITEM_MASK_BUNNY;
+    struct StartingMask {
+        RandomizerSettingKey setting;
+        RandomizerInf randInf;
+        uint8_t item;
+    };
+    static const StartingMask startingMasks[] = {
+        { RSK_STARTING_KEATON_MASK, RAND_INF_CHILD_TRADES_HAS_MASK_KEATON, ITEM_MASK_KEATON },
+        { RSK_STARTING_SKULL_MASK, RAND_INF_CHILD_TRADES_HAS_MASK_SKULL, ITEM_MASK_SKULL },
+        { RSK_STARTING_SPOOKY_MASK, RAND_INF_CHILD_TRADES_HAS_MASK_SPOOKY, ITEM_MASK_SPOOKY },
+        { RSK_STARTING_BUNNY_HOOD, RAND_INF_CHILD_TRADES_HAS_MASK_BUNNY, ITEM_MASK_BUNNY },
+        { RSK_STARTING_GORON_MASK, RAND_INF_CHILD_TRADES_HAS_MASK_GORON, ITEM_MASK_GORON },
+        { RSK_STARTING_ZORA_MASK, RAND_INF_CHILD_TRADES_HAS_MASK_ZORA, ITEM_MASK_ZORA },
+        { RSK_STARTING_GERUDO_MASK, RAND_INF_CHILD_TRADES_HAS_MASK_GERUDO, ITEM_MASK_GERUDO },
+        { RSK_STARTING_MASK_OF_TRUTH, RAND_INF_CHILD_TRADES_HAS_MASK_TRUTH, ITEM_MASK_TRUTH },
+    };
+    for (const auto& mask : startingMasks) {
+        if (Randomizer_GetSettingValue(mask.setting)) {
+            Flags_SetRandomizerInf(mask.randInf);
+            if (INV_CONTENT(ITEM_TRADE_CHILD) == ITEM_NONE) {
+                INV_CONTENT(ITEM_TRADE_CHILD) = mask.item;
+            }
         }
     }
 
@@ -617,11 +634,8 @@ extern "C" void Randomizer_InitSaveFile() {
         gSaveContext.sceneFlags[SCENE_WATER_TEMPLE].swch |= (1 << 0x15);
     }
 
-    int doorOfTime = Randomizer_GetSettingValue(RSK_DOOR_OF_TIME);
-    switch (doorOfTime) {
-        case RO_DOOROFTIME_OPEN:
-            Flags_SetEventChkInf(EVENTCHKINF_OPENED_THE_DOOR_OF_TIME);
-            break;
+    if (Randomizer_GetSettingValue(RSK_DOOR_OF_TIME) == RO_DOOROFTIME_OPEN) {
+        Flags_SetEventChkInf(EVENTCHKINF_OPENED_THE_DOOR_OF_TIME);
     }
 
     if (Randomizer_GetSettingValue(RSK_GERUDO_FORTRESS) == RO_GF_CARPENTERS_FAST ||
@@ -654,26 +668,5 @@ extern "C" void Randomizer_InitSaveFile() {
         if (!Randomizer_GetSettingValue(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD)) {
             Item_Give(NULL, ITEM_GERUDO_CARD);
         }
-    }
-
-    // complete mask quest
-    if (Randomizer_GetSettingValue(RSK_MASK_QUEST) == RO_MASK_QUEST_COMPLETED) {
-        Flags_SetInfTable(INFTABLE_GATE_GUARD_PUT_ON_KEATON_MASK);
-        Flags_SetEventChkInf(EVENTCHKINF_PAID_BACK_BUNNY_HOOD_FEE);
-
-        Flags_SetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_MASK_KEATON);
-        Flags_SetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_MASK_SKULL);
-        Flags_SetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_MASK_SPOOKY);
-        Flags_SetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_MASK_BUNNY);
-        Flags_SetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_MASK_GORON);
-        Flags_SetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_MASK_ZORA);
-        Flags_SetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_MASK_GERUDO);
-        Flags_SetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_MASK_TRUTH);
-
-        gSaveContext.itemGetInf[3] |= 0x100;  // Sold Keaton Mask
-        gSaveContext.itemGetInf[3] |= 0x200;  // Sold Skull Mask
-        gSaveContext.itemGetInf[3] |= 0x400;  // Sold Spooky Mask
-        gSaveContext.itemGetInf[3] |= 0x800;  // Bunny Hood related
-        gSaveContext.itemGetInf[3] |= 0x8000; // Obtained Mask of Truth
     }
 }

@@ -302,7 +302,7 @@ struct ConditionalAlwaysHint {
 std::vector<ConditionalAlwaysHint> conditionalAlwaysHints = {
     // clang-format off
     { RC_MARKET_10_BIG_POES,            RSK_BIG_POES_HINT,       []() { return Rando::Context::GetInstance()->GetOption(RSK_BIG_POE_COUNT).Get() > 3; } },
-    { RC_DEKU_THEATER_MASK_OF_TRUTH,    RSK_MASK_SHOP_HINT,      []() { return !Rando::Context::GetInstance()->GetOption(RSK_MASK_QUEST); } },
+    { RC_DEKU_THEATER_MASK_OF_TRUTH,    RSK_MASK_SHOP_HINT,      []() { return !Rando::Context::GetInstance()->GetOption(RSK_SHUFFLE_MASKS); } },
     { RC_SONG_FROM_OCARINA_OF_TIME,     RSK_OOT_HINT,            []() { return StonesRequiredBySettings() < 2; } },
     { RC_HF_OCARINA_OF_TIME_ITEM,       RSK_OOT_HINT,            []() { return StonesRequiredBySettings() < 2; } },
     { RC_SHEIK_IN_KAKARIKO,             RSK_NONE,                []() { return MedallionsRequiredBySettings() < 5; } },

@@ -1,4 +1,5 @@
 #include "randomizer_entrance_tracker.h"
+#include "randomizer_tracker_windows.h"
 #include "soh/OTRGlobals.h"
 #include "soh/SohGui/SohGui.hpp"
 
@@ -840,7 +841,7 @@ void EntranceTrackerWindow::DrawElement() {
         ImGui::SetNextWindowSize(ImVec2(600, 375), ImGuiCond_FirstUseEver);
     }
     if (Trackers::BeginFloatWindows(
-            "Entrance Tracker", mIsVisible, Color_Background,
+            "Entrance Tracker", &mIsVisible, Color_Background,
             static_cast<TrackerWindowType>(CVarGetInteger(CVAR_TRACKER_ENTRANCE("WindowType"), TRACKER_WINDOW_WINDOW)),
             CVarGetInteger(CVAR_TRACKER_ENTRANCE("Draggable"), 1), ImGuiWindowFlags_NoScrollbar)) {
         if (!GameInteractor::IsSaveLoaded()) {
@@ -1090,43 +1091,3 @@ void RegisterCheckTrackerWidgets() {
 
 static RegisterMenuInitFunc menuInitFunc(RegisterCheckTrackerWidgets);
 } // namespace EntranceTracker
-
-namespace Trackers {
-// Windowing stuff
-bool BeginFloatWindows(std::string UniqueName, bool& open, Color_RGBA8& bgCol, TrackerWindowType windowType,
-                       bool draggable, ImGuiWindowFlags flags) {
-    ImGuiWindowFlags windowFlags = flags;
-
-    if (windowFlags == 0) {
-        windowFlags |= ImGuiWindowFlags_AlwaysVerticalScrollbar | ImGuiWindowFlags_NoFocusOnAppearing;
-    }
-
-    if (windowType == TRACKER_WINDOW_FLOATING) {
-        ImGui::SetNextWindowViewport(ImGui::GetMainViewport()->ID);
-        windowFlags |= ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoTitleBar |
-                       ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoScrollbar;
-
-        if (!draggable) {
-            windowFlags |= ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoMove;
-        }
-    }
-    auto maybeParent = ImGui::GetCurrentWindow();
-    ImGuiWindow* window = ImGui::FindWindowByName(UniqueName.c_str());
-    ImVec4 bgColVec = VecFromRGBA8(bgCol);
-    if (window != NULL && window->DockTabIsVisible && window->ParentWindow != NULL &&
-        std::string(window->ParentWindow->Name).compare(0, strlen("Main - Deck"), "Main - Deck") == 0) {
-        bgColVec.w = 1.0f;
-    }
-    ImGui::PushStyleColor(ImGuiCol_WindowBg, bgColVec);
-    ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
-    ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 4.0f);
-    return ImGui::Begin(UniqueName.c_str(), &open, windowFlags);
-}
-
-void EndFloatWindows() {
-    ImGui::PopStyleVar();
-    ImGui::PopStyleColor();
-    ImGui::PopStyleColor();
-    ImGui::End();
-} // namespace Trackers
-} // namespace Trackers

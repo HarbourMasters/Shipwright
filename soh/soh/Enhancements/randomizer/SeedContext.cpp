@@ -17,6 +17,7 @@
 #include "soh/Enhancements/randomizer/randomizer_check_tracker.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
 
+#include <algorithm>
 #include <vector>
 
 #include <fstream>
@@ -276,14 +277,13 @@ void Context::AddExcludedOptions() {
             continue;
         }
         AddLocation(loc.GetRandomizerCheck(), &everyPossibleLocation);
-        bool alreadyAdded = false;
-        for (Option* location : Rando::Settings::GetInstance()->GetExcludeOptionsForArea(loc.GetArea())) {
-            if (location->GetName() == loc.GetExcludedOption()->GetName()) {
-                alreadyAdded = true;
-            }
-        }
+        Option* excludedOption = loc.GetExcludedOption();
+        auto& areaOptions = Settings::GetInstance()->GetExcludeOptionsForArea(loc.GetArea());
+        const bool alreadyAdded = std::any_of(areaOptions.begin(), areaOptions.end(), [&](const Option* option) {
+            return option->GetName() == excludedOption->GetName();
+        });
         if (!alreadyAdded) {
-            Rando::Settings::GetInstance()->GetExcludeOptionsForArea(loc.GetArea()).push_back(loc.GetExcludedOption());
+            areaOptions.push_back(excludedOption);
         }
     }
 }

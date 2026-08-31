@@ -123,6 +123,8 @@ uint8_t Randomizer_IsSeedGenerated();
 uint8_t Randomizer_IsSpoilerLoaded();
 void Randomizer_SetSpoilerLoaded(bool spoilerLoaded);
 uint8_t Randomizer_GenerateRandomizer();
+bool Randomizer_IsGenerating();
+void Randomizer_WaitForGeneration();
 void Randomizer_ShowRandomizerMenu();
 GetItemEntry ItemTable_Retrieve(int16_t getItemID);
 GetItemEntry ItemTable_RetrieveEntry(s16 modIndex, s16 getItemID);

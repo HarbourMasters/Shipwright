@@ -2426,8 +2426,7 @@ void RandomizerOnActorInitHandler(void* actorRef) {
         }
     }
 
-    if (actor->id == ACTOR_EN_OSSAN && actor->params == OSSAN_TYPE_MASK &&
-        RAND_GET_OPTION(RSK_MASK_QUEST).Is(RO_MASK_QUEST_SHUFFLE)) {
+    if (actor->id == ACTOR_EN_OSSAN && actor->params == OSSAN_TYPE_MASK && RAND_GET_OPTION(RSK_SHUFFLE_MASKS)) {
         Actor_Kill(actor);
     }
 

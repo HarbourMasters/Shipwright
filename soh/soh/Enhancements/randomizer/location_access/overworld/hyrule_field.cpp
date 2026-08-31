@@ -8,7 +8,7 @@ void RegionTable_Init_HyruleField() {
     areaTable[RR_HYRULE_FIELD] = Region("Hyrule Field", SCENE_HYRULE_FIELD, {
         //Events
         EVENT_ACCESS(LOGIC_BIG_POE_KILL,       logic->HasBottle() && logic->CanUse(RG_FAIRY_BOW) && (logic->SummonEpona() || ctx->GetTrickOption(RT_HF_BIG_POE_WITHOUT_EPONA))),
-        EVENT_ACCESS(LOGIC_BORROW_RIGHT_MASKS, logic->IsChild && logic->Get(LOGIC_BORROW_BUNNY_HOOD) && logic->HasItem(RG_KOKIRI_EMERALD) && logic->HasItem(RG_GORON_RUBY) && logic->HasItem(RG_ZORA_SAPPHIRE) && logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_SPEAK_HYLIAN)),
+        EVENT_ACCESS(LOGIC_SOLD_BUNNY_HOOD,    logic->IsChild && logic->HasItem(RG_BUNNY_HOOD) && logic->HasItem(RG_KOKIRI_EMERALD) && logic->HasItem(RG_GORON_RUBY) && logic->HasItem(RG_ZORA_SAPPHIRE) && logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_SPEAK_HYLIAN)),
     }, {
         //Locations
         LOCATION(RC_HF_OCARINA_OF_TIME_ITEM,       logic->IsChild && logic->StoneCount() == 3 && logic->HasItem(RG_BRONZE_SCALE)),

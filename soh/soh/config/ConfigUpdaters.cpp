@@ -12,7 +12,6 @@ struct Migration {
 static const Migration version3Migrations[] = {
     { "gSwitchAge", "gGeneral.SwitchAge" },
     { "gFrameAdvance", "gDeveloperTools.FrameAdvanceTick" },
-    { "gRandoGenerating", "gGeneral.RandoGenerating" },
     { "gNewSeedGenerated", "gGeneral.NewSeedGenerated" },
     { "gOnFileSelectNameEntry", "gGeneral.OnFileSelectNameEntry" },
     { "gBetterDebugWarpScreenMQMode", "gGeneral.BetterDebugWarpScreenMQMode" },
@@ -1449,6 +1448,8 @@ static const Migration version6Migrations[] = {
 };
 
 static const Migration version7Migrations[] = {
+    { "gEnhancements.FileSelectMoreInfo", "gEnhancements.FileSelect.MoreInfo" },
+    { "gEnhancements.TimeFlowFileSelect", "gEnhancements.FileSelect.TimeFlow" },
     { "gRandoSettings.LacsStoneCount", "gRandoSettings.GbkStoneCount" },
     { "gRandoSettings.LacsMedallionCount", "gRandoSettings.GbkMedallionCount" },
     { "gRandoSettings.LacsRewardCount", "gRandoSettings.GbkRewardCount" },
@@ -1670,5 +1671,23 @@ void ConfigVersion7Updater::Update(Ship::Config* conf) {
 
     // Kakariko Gate setting removed; the gate opens when starting with an unshuffled letter
     CVarClear("gRandoSettings.KakarikoGate");
+
+    // Mask Quest: Completed was dropped, it's now starting with every mask, and the setting is Shuffle Masks
+    switch (CVarGetInteger("gRandoSettings.CompleteMaskQuest", 0)) {
+        case 1: // Completed
+            CVarSetInteger("gRandoSettings.StartingKeatonMask", 1);
+            CVarSetInteger("gRandoSettings.StartingSkullMask", 1);
+            CVarSetInteger("gRandoSettings.StartingSpookyMask", 1);
+            CVarSetInteger("gRandoSettings.StartingBunnyHood", 1);
+            CVarSetInteger("gRandoSettings.StartingGoronMask", 1);
+            CVarSetInteger("gRandoSettings.StartingZoraMask", 1);
+            CVarSetInteger("gRandoSettings.StartingGerudoMask", 1);
+            CVarSetInteger("gRandoSettings.StartingMaskOfTruth", 1);
+            [[fallthrough]];
+        case 2: // Shuffle
+            CVarSetInteger("gRandoSettings.ShuffleMasks", 1);
+            break;
+    }
+    CVarClear("gRandoSettings.CompleteMaskQuest");
 }
 } // namespace SOH

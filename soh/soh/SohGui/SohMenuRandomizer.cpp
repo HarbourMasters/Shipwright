@@ -71,7 +71,7 @@ void DrawLocationsMenu(WidgetInfo& info) {
     int32_t currMQDungeonSetting = CVarGetInteger(CVAR_RANDOMIZER_SETTING("MQDungeons"), 0) |
                                    CVarGetInteger(CVAR_RANDOMIZER_SETTING("MQDungeonCount"), 0) << 8;
     static ImVec2 cellPadding(8.0f, 8.0f);
-    bool generating = CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0);
+    bool generating = IsRandoGenerating();
     bool disableEditingRandoSettings = generating || CVarGetInteger(CVAR_GENERAL("OnFileSelectNameEntry"), 0);
     ImGui::BeginDisabled(CVarGetInteger(CVAR_SETTING("DisableChanges"), 0) || disableEditingRandoSettings);
     ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
@@ -363,7 +363,7 @@ void DrawTricksMenu(WidgetInfo& info) {
     auto ctx = Rando::Context::GetInstance();
     auto randoSettings = Rando::Settings::GetInstance();
     static ImVec2 cellPadding(8.0f, 8.0f);
-    bool generating = CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0);
+    bool generating = IsRandoGenerating();
     bool disableEditingRandoSettings = generating || CVarGetInteger(CVAR_GENERAL("OnFileSelectNameEntry"), 0);
     if (tricksDirty) {
         tricksDirty = false;
@@ -729,18 +729,15 @@ void SohMenu::AddMenuRandomizer() {
     AddWidget(path, "Randomize All Settings", WIDGET_BUTTON)
         .Callback([](WidgetInfo& info) { Rando::Settings::GetInstance()->RandomizeAllSettings(); })
         .PreFunc([](WidgetInfo& info) {
-            info.options->disabled = CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0) ||
-                                     CVarGetInteger(CVAR_GENERAL("OnFileSelectNameEntry"), 0);
+            info.options->disabled = IsRandoGenerating() || CVarGetInteger(CVAR_GENERAL("OnFileSelectNameEntry"), 0);
         })
         .Options(ButtonOptions()
                      .Size(ImVec2(250.f, 0.f))
                      .Tooltip("Randomizes all randomizer settings to random valid values (excludes tricks)."))
         .SameLine(true);
     AddWidget(path, "Spoiler File", WIDGET_CUSTOM).CustomFunction([](WidgetInfo& info) {
-        JoinRandoGenerationThread();
         if (!CVarGetInteger(CVAR_RANDOMIZER_SETTING("DontGenerateSpoiler"), 0)) {
-            std::string spoilerfilepath = CVarGetString(CVAR_GENERAL("SpoilerLog"), "");
-            ImGui::Text("Spoiler File: %s", spoilerfilepath.c_str());
+            ImGui::Text("Spoiler File: %s", CVarGetString(CVAR_GENERAL("SpoilerLog"), ""));
         }
     });
 

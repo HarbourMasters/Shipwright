@@ -124,30 +124,22 @@ bool Logic::HasItem(RandomizerGet itemName) {
         case RG_DOUBLE_DEFENSE:
             return GetSaveContext()->isDoubleDefenseAcquired;
             // Masks
+        case RG_KEATON_MASK:
+            return CheckRandoInf(RAND_INF_CHILD_TRADES_HAS_MASK_KEATON) ||
+                   (!ctx->GetOption(RSK_SHUFFLE_MASKS) && Get(LOGIC_CAN_BORROW_MASKS));
         case RG_SKULL_MASK:
-            switch (ctx->GetOption(RSK_MASK_QUEST).Get()) {
-                case RO_MASK_QUEST_VANILLA:
-                    return Get(LOGIC_BORROW_SKULL_MASK);
-                case RO_MASK_QUEST_COMPLETED:
-                    return Get(LOGIC_KAKARIKO_GATE_OPEN);
-                case RO_MASK_QUEST_SHUFFLE:
-                    return CheckRandoInf(RAND_INF_CHILD_TRADES_HAS_MASK_SKULL);
-                default:
-                    assert(false);
-                    return false;
-            }
+            return CheckRandoInf(RAND_INF_CHILD_TRADES_HAS_MASK_SKULL) ||
+                   (!ctx->GetOption(RSK_SHUFFLE_MASKS) && Get(LOGIC_CAN_BORROW_MASKS) && Get(LOGIC_SOLD_KEATON_MASK));
+        case RG_SPOOKY_MASK:
+            return CheckRandoInf(RAND_INF_CHILD_TRADES_HAS_MASK_SPOOKY) ||
+                   (!ctx->GetOption(RSK_SHUFFLE_MASKS) && Get(LOGIC_CAN_BORROW_MASKS) && Get(LOGIC_SOLD_SKULL_MASK));
+        case RG_BUNNY_HOOD:
+            return CheckRandoInf(RAND_INF_CHILD_TRADES_HAS_MASK_BUNNY) ||
+                   (!ctx->GetOption(RSK_SHUFFLE_MASKS) && Get(LOGIC_CAN_BORROW_MASKS) && Get(LOGIC_SOLD_SPOOKY_MASK));
         case RG_MASK_OF_TRUTH:
-            switch (ctx->GetOption(RSK_MASK_QUEST).Get()) {
-                case RO_MASK_QUEST_VANILLA:
-                    return Get(LOGIC_BORROW_RIGHT_MASKS);
-                case RO_MASK_QUEST_COMPLETED:
-                    return Get(LOGIC_KAKARIKO_GATE_OPEN);
-                case RO_MASK_QUEST_SHUFFLE:
-                    return CheckRandoInf(RAND_INF_CHILD_TRADES_HAS_MASK_TRUTH);
-                default:
-                    assert(false);
-                    return false;
-            }
+            return CheckRandoInf(RAND_INF_CHILD_TRADES_HAS_MASK_TRUTH) ||
+                   (!ctx->GetOption(RSK_SHUFFLE_MASKS) && Get(LOGIC_CAN_BORROW_MASKS) && Get(LOGIC_SOLD_KEATON_MASK) &&
+                    Get(LOGIC_SOLD_SKULL_MASK) && Get(LOGIC_SOLD_SPOOKY_MASK) && Get(LOGIC_SOLD_BUNNY_HOOD));
         case RG_POWER_BRACELET:
         case RG_CHILD_WALLET:
         case RG_FISHING_POLE:
@@ -2462,7 +2454,7 @@ void Logic::ApplyItemEffect(Item& item, bool state) {
                 case RG_BOMBCHU_5:
                 case RG_BOMBCHU_10:
                 case RG_BOMBCHU_20:
-                    if (ctx->GetOption(RSK_BOMBCHU_BAG).IsNot(RO_BOMBCHU_BAG_PROGRESSIVE)) {
+                    if (ctx->GetOption(RSK_BOMBCHU_BAG).Is(RO_BOMBCHU_BAG_NONE)) {
                         SetInventory(ITEM_BOMBCHU, (!state ? ITEM_NONE : ITEM_BOMBCHU));
                     }
                     break;
@@ -2592,6 +2584,7 @@ void Logic::ApplyItemEffect(Item& item, bool state) {
                     if (ctx->GetOption(RSK_BOMBCHU_BAG).Is(RO_BOMBCHU_BAG_NONE)) {
                         SetInventory(ITEM_BOMBCHU, (!state ? ITEM_NONE : ITEM_BOMBCHU));
                     }
+                    break;
                 default:
                     break;
             }

@@ -8,7 +8,7 @@ extern "C" {
 extern "C" SaveContext gSaveContext;
 
 static constexpr int32_t CVAR_TIMEFLOWFILESELECT_DEFAULT = 0;
-#define CVAR_TIMEFLOWFILESELECT_NAME CVAR_ENHANCEMENT("TimeFlowFileSelect")
+#define CVAR_TIMEFLOWFILESELECT_NAME CVAR_ENHANCEMENT("FileSelect.TimeFlow")
 #define CVAR_TIMEFLOWFILESELECT_VALUE CVarGetInteger(CVAR_TIMEFLOWFILESELECT_NAME, CVAR_TIMEFLOWFILESELECT_DEFAULT)
 
 void OnFileChooseMainTimeFlowFileSelect(void* gameState) {
