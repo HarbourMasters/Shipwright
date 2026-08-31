@@ -450,9 +450,17 @@ static s16 sLastFileChooseButtonIndex;
  * Update function for `CM_MAIN_MENU`
  */
 void FileChoose_UpdateMainMenu(GameState* thisx) {
+    static u8 emptyName[] = { 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E };
+    static u8 emptyNameNES[] = { 0xDF, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF };
+    static u8 linkName[] = { 0x15, 0x2C, 0x31, 0x2E, 0x3E, 0x3E, 0x3E, 0x3E };
+    static u8 linkNameNES[] = { 0xB6, 0xCD, 0xD2, 0xCF, 0xDF, 0xDF, 0xDF, 0xDF };
+    static u8 linkNameJP[] = { 0x81, 0x87, 0x61, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF };
+
     FileChooseContext* this = (FileChooseContext*)thisx;
     Input* input = &this->state.input[0];
     bool dpad = CVarGetInteger(CVAR_SETTING("DpadInText"), 0);
+    u8* defaultName;
+    u8 isDefaultNameOptionSet;
 
     FileChoose_UpdateRandomizer();
 
@@ -464,6 +472,32 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
                 this->prevConfigMode = this->configMode;
                 this->configMode = CM_ROTATE_TO_QUEST_MENU;
                 this->logoAlpha = 0;
+                this->kbdButton = FS_KBD_BTN_NONE;
+                this->charPage = FS_CHAR_PAGE_ENG;
+                this->kbdX = 0;
+                this->kbdY = 0;
+                this->charIndex = 0;
+                this->charBgAlpha = 0;
+
+                isDefaultNameOptionSet = CVarGetInteger(CVAR_ENHANCEMENT("LinkDefaultName"), 0);
+                this->newFileNameCharCount = isDefaultNameOptionSet ? 4 : 0;
+                this->nameEntryBoxPosX = 120;
+                this->nameEntryBoxAlpha = 0;
+                if (gSaveContext.language == LANGUAGE_JPN) { // Japanese
+                    if (isDefaultNameOptionSet) {
+                        // Set player name to "リンク" ("Link" in Katakana, 3 characters long) when playing in Japanese.
+                        defaultName = &linkNameJP;
+                        this->newFileNameCharCount = 3;
+                    } else {
+                        defaultName = &emptyNameNES;
+                    }
+                    this->charPage = FS_CHAR_PAGE_HIRA; // Default to Hiragana Keyboard
+                } else if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL) {
+                    defaultName = isDefaultNameOptionSet ? &linkName : &emptyName;
+                } else {                                // GAME_REGION_NTSC
+                    defaultName = isDefaultNameOptionSet ? &linkNameNES : &emptyNameNES;
+                }
+                memcpy(Save_GetSaveMetaInfo(this->buttonIndex)->playerName, defaultName, 8);
             } else if (!FileChoose_IsSaveCompatible(Save_GetSaveMetaInfo(this->buttonIndex))) {
                 Audio_PlaySfxGeneral(NA_SE_SY_FSEL_ERROR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
                                      &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
@@ -655,12 +689,6 @@ void FileChoose_StartRandomizerMenu(GameState* thisx) {
     }
 }
 
-static u8 emptyName[] = { 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E };
-static u8 emptyNameNES[] = { 0xDF, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF };
-static u8 linkName[] = { 0x15, 0x2C, 0x31, 0x2E, 0x3E, 0x3E, 0x3E, 0x3E };
-static u8 linkNameNES[] = { 0xB6, 0xCD, 0xD2, 0xCF, 0xDF, 0xDF, 0xDF, 0xDF };
-static u8 linkNameJP[] = { 0x81, 0x87, 0x61, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF };
-
 void FileChoose_UpdateQuestMenu(GameState* thisx) {
     FileChoose_UpdateStickDirectionPromptAnim(thisx);
     FileChooseContext* this = (FileChooseContext*)thisx;
@@ -733,30 +761,6 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
             this->prevConfigMode = this->configMode;
             this->configMode = CM_ROTATE_TO_NAME_ENTRY;
             this->logoAlpha = 0;
-            this->kbdButton = FS_KBD_BTN_NONE;
-            this->charPage = FS_CHAR_PAGE_ENG;
-            this->kbdX = 0;
-            this->kbdY = 0;
-            this->charIndex = 0;
-            this->charBgAlpha = 0;
-            this->newFileNameCharCount = CVarGetInteger(CVAR_ENHANCEMENT("LinkDefaultName"), 0) ? 4 : 0;
-            this->nameEntryBoxPosX = 120;
-            this->nameEntryBoxAlpha = 0;
-            if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL && gSaveContext.language != LANGUAGE_JPN) {
-                defaultName = CVarGetInteger(CVAR_ENHANCEMENT("LinkDefaultName"), 0) ? &linkName : &emptyName;
-            } else if (gSaveContext.language == LANGUAGE_JPN) { // Japanese
-                if (CVarGetInteger(CVAR_ENHANCEMENT("LinkDefaultName"), 0) != 0) {
-                    // Set player name to "リンク" ("Link" in Katakana, 3 characters long) when playing in Japanese.
-                    defaultName = &linkNameJP;
-                    this->newFileNameCharCount = 3;
-                } else {
-                    defaultName = &emptyNameNES;
-                }
-                this->charPage = FS_CHAR_PAGE_HIRA; // Default to Hiragana Keyboard
-            } else {                                // GAME_REGION_NTSC
-                defaultName = CVarGetInteger(CVAR_ENHANCEMENT("LinkDefaultName"), 0) ? &linkNameNES : &emptyNameNES;
-            }
-            memcpy(Save_GetSaveMetaInfo(this->buttonIndex)->playerName, defaultName, 8);
             return;
         }
     }
@@ -823,36 +827,10 @@ void FileChoose_UpdateRandomizerMenu(GameState* thisx) {
                 SohFileSelect_ShowPresetModal();
                 Audio_PlaySfxGeneral(NA_SE_SY_FSEL_DECIDE_L, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
                                      &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
-                u8* defaultName;
 
                 this->prevConfigMode = this->configMode;
                 this->configMode = CM_ROTATE_TO_NAME_ENTRY;
-                this->logoAlpha = 0;
                 CVarSetInteger(CVAR_GENERAL("OnFileSelectNameEntry"), 1);
-                this->kbdButton = FS_KBD_BTN_NONE;
-                this->charPage = FS_CHAR_PAGE_ENG;
-                this->kbdX = 0;
-                this->kbdY = 0;
-                this->charIndex = 0;
-                this->charBgAlpha = 0;
-                this->newFileNameCharCount = CVarGetInteger(CVAR_ENHANCEMENT("LinkDefaultName"), 0) ? 4 : 0;
-                this->nameEntryBoxPosX = 120;
-                this->nameEntryBoxAlpha = 0;
-                if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL && gSaveContext.language != LANGUAGE_JPN) {
-                    defaultName = CVarGetInteger(CVAR_ENHANCEMENT("LinkDefaultName"), 0) ? &linkName : &emptyName;
-                } else if (gSaveContext.language == LANGUAGE_JPN) { // Japanese
-                    if (CVarGetInteger(CVAR_ENHANCEMENT("LinkDefaultName"), 0) != 0) {
-                        // Set player name to "リンク" ("Link" in Katakana, 3 characters long) when playing in Japanese.
-                        defaultName = &linkNameJP;
-                        this->newFileNameCharCount = 3;
-                    } else {
-                        defaultName = &emptyNameNES;
-                    }
-                    this->charPage = FS_CHAR_PAGE_HIRA; // Default to Hiragana Keyboard
-                } else {                                // GAME_REGION_NTSC
-                    defaultName = CVarGetInteger(CVAR_ENHANCEMENT("LinkDefaultName"), 0) ? &linkNameNES : &emptyNameNES;
-                }
-                memcpy(Save_GetSaveMetaInfo(this->buttonIndex)->playerName, defaultName, 8);
             } else {
                 Sfx_PlaySfxCentered(NA_SE_SY_OCARINA_ERROR);
             }
@@ -979,36 +957,6 @@ void FileChoose_RotateToQuest(GameState* thisx) {
 
                     // Needed to come back to main menu
                     this->prevConfigMode = CM_MAIN_MENU;
-
-                    // Copied from `FileChoose_UpdateQuestMenu` to initialize name entry
-                    void* defaultName;
-                    this->logoAlpha = 0;
-                    this->kbdButton = FS_KBD_BTN_NONE;
-                    this->charPage = FS_CHAR_PAGE_ENG;
-                    this->kbdX = 0;
-                    this->kbdY = 0;
-                    this->charIndex = 0;
-                    this->charBgAlpha = 0;
-                    this->newFileNameCharCount = CVarGetInteger(CVAR_ENHANCEMENT("LinkDefaultName"), 0) ? 4 : 0;
-                    this->nameEntryBoxPosX = 120;
-                    this->nameEntryBoxAlpha = 0;
-                    if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL && gSaveContext.language != LANGUAGE_JPN) {
-                        defaultName = CVarGetInteger(CVAR_ENHANCEMENT("LinkDefaultName"), 0) ? &linkName : &emptyName;
-                    } else if (gSaveContext.language == LANGUAGE_JPN) { // Japanese
-                        if (CVarGetInteger(CVAR_ENHANCEMENT("LinkDefaultName"), 0) != 0) {
-                            // Set player name to "リンク" ("Link" in Katakana, 3 characters long) when playing in
-                            // Japanese.
-                            defaultName = &linkNameJP;
-                            this->newFileNameCharCount = 3;
-                        } else {
-                            defaultName = &emptyNameNES;
-                        }
-                        this->charPage = FS_CHAR_PAGE_HIRA; // Default to Hiragana Keyboard
-                    } else {                                // GAME_REGION_NTSC
-                        defaultName =
-                            CVarGetInteger(CVAR_ENHANCEMENT("LinkDefaultName"), 0) ? &linkNameNES : &emptyNameNES;
-                    }
-                    memcpy(Save_GetSaveMetaInfo(this->buttonIndex)->playerName, defaultName, 8);
                 }
             }
         }
