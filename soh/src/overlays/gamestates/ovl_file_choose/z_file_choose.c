@@ -494,7 +494,7 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
                     this->charPage = FS_CHAR_PAGE_HIRA; // Default to Hiragana Keyboard
                 } else if (ResourceMgr_GetGameRegion(0) == GAME_REGION_PAL) {
                     defaultName = isDefaultNameOptionSet ? &linkName : &emptyName;
-                } else {                                // GAME_REGION_NTSC
+                } else { // GAME_REGION_NTSC
                     defaultName = isDefaultNameOptionSet ? &linkNameNES : &emptyNameNES;
                 }
                 memcpy(Save_GetSaveMetaInfo(this->buttonIndex)->playerName, defaultName, 8);
@@ -701,7 +701,7 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
 
     // #region SOH [Enhancement] - Hide Quest Modes
     // If the current quest type was hidden after being selected (i.e., CVar changed while on the quest menu), advance
-    // to the next visible one. 
+    // to the next visible one.
     if (CountVisibleQuests() > 0) {
         while (IsQuestSkipped(this->questType[this->buttonIndex])) {
             this->questType[this->buttonIndex]++;
