@@ -1,8 +1,8 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
+#include "soh/cvar_prefixes.h"
 
 extern "C" {
-#include "z64.h"
 // Converts a drop id based on age, health and owned items. Returns -1 when the drop can't be given.
 s16 func_8001F404(s16 dropId);
 }

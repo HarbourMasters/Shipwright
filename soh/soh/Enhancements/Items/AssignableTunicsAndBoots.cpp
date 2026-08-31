@@ -1,11 +1,10 @@
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
 #include "z64.h"
 #include "macros.h"
 #include "variables.h"
-
 extern s32 Player_GetItemOnButton(PlayState*, s32);
 extern void Inventory_ChangeEquipment(s16, u16);
 extern void Player_SetEquipmentData(PlayState*, Player*);

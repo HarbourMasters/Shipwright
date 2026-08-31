@@ -1,10 +1,9 @@
-#include "ResolutionEditor.h"
 #include <imgui.h>
-#include <spdlog/common.h>
-
-#include "soh/SohGui/UIWidgets.hpp"
 #include <fast/Fast3dWindow.h>
 #include <fast/interpreter.h>
+
+#include "ResolutionEditor.h"
+#include "soh/SohGui/UIWidgets.hpp"
 #include "soh/OTRGlobals.h"
 #include "soh/SohGui/SohMenu.h"
 #include "soh/SohGui/SohGui.hpp"

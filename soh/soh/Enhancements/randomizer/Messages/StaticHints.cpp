@@ -5,17 +5,18 @@
  * File for registering hooks for "Static" hints, i.e. hints that
  * are always given by a specific NPC and/or for a specific item.
  */
-#include "soh/Enhancements/randomizer/randomizerTypes.h"
-#include "z64scene.h"
+
+#include "soh/Enhancements/custom-message/CustomMessageTypes.h"
+#include "soh/Enhancements/randomizer/SeedContext.h"
 #include <soh/OTRGlobals.h>
-#include "soh/Enhancements/randomizer/randomizer.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 extern "C" {
-extern PlayState* gPlayState;
+#include "z64scene.h"
 #include <macros.h>
 #include <functions.h>
 #include <variables.h>
+extern PlayState* gPlayState;
 }
 
 #define RAND_GET_HINT(rh) OTRGlobals::Instance->gRandoContext->GetHint(rh)

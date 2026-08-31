@@ -1,19 +1,15 @@
-#include "TimeDisplay.h"
-#include "soh/Enhancements/gameplaystats.h"
-#include <global.h>
-
-#include "assets/textures/parameter_static/parameter_static.h"
-#include "assets/soh_assets.h"
-#include "soh/SohGui/ImGuiUtils.h"
-
 #include <fast/Fast3dGui.h>
 #include <libultraship/bridge/consolevariablebridge.h>
 #include <ship/Context.h>
-#include <spdlog/common.h>
+
+#include "TimeDisplay.h"
+#include "soh/Enhancements/gameplaystats.h"
+#include "soh/SohGui/ImGuiUtils.h"
 
 extern "C" {
+#include "assets/textures/parameter_static/parameter_static.h"
+#include "assets/soh_assets.h"
 #include "macros.h"
-#include "functions.h"
 #include "variables.h"
 extern PlayState* gPlayState;
 uint64_t GetUnixTimestamp();
@@ -204,6 +200,8 @@ void TimeDisplayWindow::Draw() {
             ImGui::TableNextColumn();
 
             if (timeDisplayTime != "-:--") {
+                auto gui =
+                    std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
                 char* textToDecode = new char[timeDisplayTime.size() + 1];
                 textToDecode = std::strcpy(textToDecode, timeDisplayTime.c_str());
                 size_t textLength = timeDisplayTime.length();
@@ -217,15 +215,11 @@ void TimeDisplayWindow::Draw() {
                     }
                     if (textToDecode[i] == '.') {
                         ImGui::SetCursorPosY(ImGui::GetCursorPosY() + (8.0f * fontScale));
-                        ImGui::Image(std::dynamic_pointer_cast<Fast::Fast3dGui>(
-                                         Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                                         ->GetTextureByName(digitList[textureIndex].first),
+                        ImGui::Image(gui->GetTextureByName(digitList[textureIndex].first),
                                      ImVec2(8.0f * fontScale, 8.0f * fontScale), ImVec2(0, 0.5f), ImVec2(1, 1),
                                      textColor, ImVec4(0, 0, 0, 0));
                     } else {
-                        ImGui::Image(std::dynamic_pointer_cast<Fast::Fast3dGui>(
-                                         Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                                         ->GetTextureByName(digitList[textureIndex].first),
+                        ImGui::Image(gui->GetTextureByName(digitList[textureIndex].first),
                                      ImVec2(8.0f * fontScale, 16.0f * fontScale), ImVec2(0, 0), ImVec2(1, 1), textColor,
                                      ImVec4(0, 0, 0, 0));
                     }
@@ -263,18 +257,14 @@ static void TimeDisplayInitTimers() {
 }
 
 void TimeDisplayWindow::InitElement() {
-    std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-        ->LoadGuiTexture("GAMEPLAY_TIMER", gClockIconTex, "", ImVec4(1, 1, 1, 1));
-    std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-        ->LoadGuiTexture("DAY_TIME_TIMER", gSunIconTex, "", ImVec4(1, 1, 1, 1));
-    std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-        ->LoadGuiTexture("NIGHT_TIME_TIMER", gMoonIconTex, "", ImVec4(1, 1, 1, 1));
-    std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-        ->LoadGuiTexture("NAVI_TIMER", gNaviIconTex, "", ImVec4(1, 1, 1, 1));
+    auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
+    gui->LoadGuiTexture("GAMEPLAY_TIMER", gClockIconTex, "", ImVec4(1, 1, 1, 1));
+    gui->LoadGuiTexture("DAY_TIME_TIMER", gSunIconTex, "", ImVec4(1, 1, 1, 1));
+    gui->LoadGuiTexture("NIGHT_TIME_TIMER", gMoonIconTex, "", ImVec4(1, 1, 1, 1));
+    gui->LoadGuiTexture("NAVI_TIMER", gNaviIconTex, "", ImVec4(1, 1, 1, 1));
 
     for (auto& load : digitList) {
-        std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-            ->LoadGuiTexture(load.first.c_str(), load.second, "", ImVec4(1, 1, 1, 1));
+        gui->LoadGuiTexture(load.first.c_str(), load.second, "", ImVec4(1, 1, 1, 1));
     }
 
     TimeDisplayInitSettings();

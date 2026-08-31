@@ -2,9 +2,7 @@
 
 #include <stdint.h>
 #include <vector>
-#include <memory>
 #include "SceneCommand.h"
-#include "libultraship/libultra.h"
 #include "z64math.h"
 
 namespace SOH {

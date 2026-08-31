@@ -1,20 +1,20 @@
+#include <libultraship/bridge/consolevariablebridge.h>
+
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "../../OTRGlobals.h"
 #include "fishsanity.h"
 #include "draw.h"
-#include "soh/frame_interpolation.h"
-#include "variables.h"
-#include "functions.h"
-#include "macros.h"
-#include <libultraship/bridge/consolevariablebridge.h>
 #include "soh/Enhancements/randomizer/randomizer.h"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "soh/Enhancements/randomizer/RCToRandInf.h"
+#include "soh/frame_interpolation.h"
 
 extern "C" {
+#include "variables.h"
+#include "functions.h"
+#include "macros.h"
 #include "src/overlays/actors/ovl_Fishing/z_fishing.h"
 #include "src/overlays/actors/ovl_En_Fish/z_en_fish.h"
-
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
 }

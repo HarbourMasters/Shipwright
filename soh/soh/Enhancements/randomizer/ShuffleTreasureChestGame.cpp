@@ -1,5 +1,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
-#include "soh/Enhancements/randomizer/randomizer.h"
+#include "soh/Enhancements/randomizer/SeedContext.h"
+#include "soh/Enhancements/randomizer/item_location.h"
+#include "soh/Enhancements/randomizer/randomizer_check_tracker.h"
 
 extern "C" {
 #include "src/overlays/actors/ovl_Door_Shutter/z_door_shutter.h"
@@ -91,7 +93,13 @@ void RegisterShuffleTreasureChestGame() {
         Actor* takaraMan = va_arg(args, Actor*);
         GetItemEntry getItemEntry =
             Rando::Context::GetInstance()->GetFinalGIEntry(RC_MARKET_TREASURE_CHEST_GAME_SHOPKEEPER, true, GI_DOOR_KEY);
-        Flags_SetRandomizerInf(RAND_INF_MARKET_TREASURE_CHEST_GAME_SHOPKEEPER);
+        if (!Flags_GetRandomizerInf(RAND_INF_MARKET_TREASURE_CHEST_GAME_SHOPKEEPER)) {
+            Rando::Context::GetInstance()
+                ->GetItemLocation(RC_MARKET_TREASURE_CHEST_GAME_SHOPKEEPER)
+                ->SetCheckStatus(RCSHOW_COLLECTED);
+            CheckTracker::RecalculateAllAreaTotals();
+            Flags_SetRandomizerInf(RAND_INF_MARKET_TREASURE_CHEST_GAME_SHOPKEEPER);
+        }
         GiveItemEntryFromActor(takaraMan, gPlayState, getItemEntry, 2000.0f, 1000.0f);
         *should = false;
     });

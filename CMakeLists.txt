@@ -283,6 +283,8 @@ endfunction()
 add_subdirectory(torch SYSTEM)
 quiet_dependency_tree(${CMAKE_CURRENT_SOURCE_DIR}/torch)
 
+target_compile_definitions(torch INTERFACE YAML_CPP_STATIC_DEFINE)
+
 # Build-time ROM extraction. soh links torch as a static library, which compiles out torch's
 # own CLI, so this supplies an entry point around the same code the game runs.
 add_executable(soh-torch EXCLUDE_FROM_ALL

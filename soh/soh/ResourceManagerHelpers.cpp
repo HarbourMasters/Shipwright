@@ -1,9 +1,14 @@
-#include "ResourceManagerHelpers.h"
 #include <libultraship/bridge/consolevariablebridge.h>
+#include <fast/interpreter.h>
+#include <fast/resource/ResourceType.h>
+#include <fast/resource/type/DisplayList.h>
+#include <libultraship/bridge/resourcebridge.h>
+#include <ship/Context.h>
+#include <ship/resource/ResourceManager.h>
+#include <stb_image.h>
+
+#include "ResourceManagerHelpers.h"
 #include "OTRGlobals.h"
-#include "variables.h"
-#include "z64.h"
-#include "macros.h"
 #include "cvar_prefixes.h"
 #include "Enhancements/enhancementTypes.h"
 #include "Enhancements/randomizer/dungeon.h"
@@ -13,15 +18,12 @@
 #include "resource/type/Array.h"
 #include "resource/type/Skeleton.h"
 #include "resource/type/PlayerAnimation.h"
-#include <fast/Fast3dWindow.h>
-#include <fast/resource/ResourceType.h>
-#include <fast/resource/type/DisplayList.h>
-#include <libultraship/bridge/resourcebridge.h>
-#include <ship/Context.h>
-#include <ship/resource/ResourceManager.h>
 
-#include <stb_image.h>
-#include <spdlog/common.h>
+extern "C" {
+#include "variables.h"
+#include "z64.h"
+#include "macros.h"
+}
 
 extern "C" PlayState* gPlayState;
 

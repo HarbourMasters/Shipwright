@@ -1,8 +1,3 @@
-#include "randomizer_hint_tracker.h"
-#include "soh/OTRGlobals.h"
-#include "soh/SaveManager.h"
-#include "soh/SohGui/SohGui.hpp"
-
 #include <algorithm>
 #include <cctype>
 #include <map>
@@ -11,24 +6,28 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+
 #include <libultraship/controller/controldeck/ControlDeck.h>
 #include <ship/window/gui/IconsFontAwesome4.h>
 
-extern "C" {
-#include <z64.h>
-#include "macros.h"
-#include "variables.h"
-extern PlayState* gPlayState;
-}
-
+#include "randomizer_hint_tracker.h"
+#include "soh/OTRGlobals.h"
+#include "soh/SaveManager.h"
+#include "soh/SohGui/SohGui.hpp"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/randomizer/hint.h"
 #include "soh/Enhancements/randomizer/item_category_adj.h"
 #include "soh/Enhancements/randomizer/randomizer_check_objects.h"
 #include "soh/Enhancements/randomizer/randomizer_check_tracker.h"
-#include "soh/Enhancements/randomizer/randomizer_entrance_tracker.h"
+#include "soh/Enhancements/randomizer/randomizer_tracker_windows.h"
 #include "soh/Enhancements/randomizer/SeedContext.h"
 #include "soh/Enhancements/randomizer/static_data.h"
+
+extern "C" {
+#include <z64.h>
+#include "variables.h"
+extern PlayState* gPlayState;
+}
 
 using namespace UIWidgets;
 
@@ -665,7 +664,7 @@ void HintTrackerWindow::DrawElement() {
 
     ImGui::SetNextWindowSize(ImVec2(500, 600), ImGuiCond_FirstUseEver);
     if (Trackers::BeginFloatWindows(
-            "Hint Tracker", mIsVisible, Color_Background,
+            "Hint Tracker", &mIsVisible, Color_Background,
             static_cast<TrackerWindowType>(CVarGetInteger(CVAR_TRACKER_HINT("WindowType"), TRACKER_WINDOW_WINDOW)),
             CVarGetInteger(CVAR_TRACKER_HINT("Draggable"), 1))) {
         ImGui::SetWindowFontScale(CVarGetFloat(CVAR_TRACKER_HINT("FontSize"), 1.0f));

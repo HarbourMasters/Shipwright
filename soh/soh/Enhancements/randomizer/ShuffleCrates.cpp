@@ -1,16 +1,13 @@
 #include <soh/OTRGlobals.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
-#include "soh_assets.h"
 #include "static_data.h"
-#include <libultraship/libultra.h>
-#include "global.h"
 #include "soh/ObjectExtension/ObjectExtension.h"
 #include "item_category_adj.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
 #include "soh/Enhancements/randomizer/RCToRandInf.h"
 
 extern "C" {
-#include "variables.h"
+#include "soh_assets.h"
 #include "overlays/actors/ovl_Obj_Kibako2/z_obj_kibako2.h"
 #include "overlays/actors/ovl_Obj_Kibako/z_obj_kibako.h"
 extern PlayState* gPlayState;

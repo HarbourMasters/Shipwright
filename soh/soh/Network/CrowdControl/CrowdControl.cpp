@@ -1,12 +1,12 @@
-#include "CrowdControl.h"
-#include "CrowdControlTypes.h"
 #include <nlohmann/json.hpp>
 #include <spdlog/spdlog.h>
+
+#include "CrowdControl.h"
+#include "CrowdControlTypes.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
 #include <z64.h>
-#include "functions.h"
 extern PlayState* gPlayState;
 }
 

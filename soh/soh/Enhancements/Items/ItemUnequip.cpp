@@ -6,7 +6,6 @@ extern "C" {
 #include "functions.h"
 #include "macros.h"
 #include "variables.h"
-#include "overlays/misc/ovl_kaleido_scope/z_kaleido_scope.h"
 extern SaveContext gSaveContext;
 }
 

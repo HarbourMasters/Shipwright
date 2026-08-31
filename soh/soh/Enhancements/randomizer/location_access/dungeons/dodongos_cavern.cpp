@@ -61,8 +61,6 @@ void RegionTable_Init_DodongosCavern() {
         LOCATION(RC_DODONGOS_CAVERN_SIDE_ROOM_POT_2, logic->CanBreakPots()),
         LOCATION(RC_DODONGOS_CAVERN_SIDE_ROOM_POT_3, logic->CanBreakPots()),
         LOCATION(RC_DODONGOS_CAVERN_SIDE_ROOM_POT_4, logic->CanBreakPots()),
-        LOCATION(RC_DODONGOS_CAVERN_SIDE_ROOM_POT_5, logic->CanBreakPots()),
-        LOCATION(RC_DODONGOS_CAVERN_SIDE_ROOM_POT_6, logic->CanBreakPots()),
     }, {
         //Exits
         ENTRANCE(RR_DODONGOS_CAVERN_LOBBY,               true),
@@ -79,7 +77,11 @@ void RegionTable_Init_DodongosCavern() {
         ENTRANCE(RR_DODONGOS_CAVERN_SE_CORRIDOR, true),
     });
 
-    areaTable[RR_DODONGOS_CAVERN_NEAR_LOWER_LIZALFOS] = Region("Dodongos Cavern Near Lower Lizalfos", SCENE_DODONGOS_CAVERN, {}, {}, {
+    areaTable[RR_DODONGOS_CAVERN_NEAR_LOWER_LIZALFOS] = Region("Dodongos Cavern Near Lower Lizalfos", SCENE_DODONGOS_CAVERN, {}, {
+        //Locations
+        LOCATION(RC_DODONGOS_CAVERN_NEAR_LOWER_LIZALFOS_POT_1, logic->CanBreakPots()),
+        LOCATION(RC_DODONGOS_CAVERN_NEAR_LOWER_LIZALFOS_POT_2, logic->CanBreakPots()),
+    }, {
         //Exits
         ENTRANCE(RR_DODONGOS_CAVERN_SE_CORRIDOR,    true),
         ENTRANCE(RR_DODONGOS_CAVERN_LOWER_LIZALFOS, true),
@@ -553,7 +555,7 @@ void RegionTable_Init_DodongosCavern() {
         //Exits
         ENTRANCE(RR_DODONGOS_CAVERN_MQ_LOBBY,                  true),
         ENTRANCE(RR_DODONGOS_CAVERN_MQ_LOWER_RIGHT_SIDE_SCRUB, logic->CanBreakMudWalls() || logic->HasItem(RG_GORONS_BRACELET)),
-        ENTRANCE(RR_DODONGOS_CAVERN_MQ_LOWER_LIZALFOS,         AnyAgeTime([]{return logic->CanDetonateBombFlowers() || logic->HasItem(RG_GORONS_BRACELET);}) && logic->CanHitEyeTargets()),
+        ENTRANCE(RR_DODONGOS_CAVERN_MQ_LOWER_LIZALFOS,         AnyAgeTime([]{return logic->CanDetonateBombFlowers() || logic->HasItem(RG_GORONS_BRACELET) || ctx->GetTrickOption(RT_BOULDER_COLLISION);}) && logic->CanHitEyeTargets()),
     });
 
     areaTable[RR_DODONGOS_CAVERN_MQ_LOWER_RIGHT_SIDE_SCRUB] = Region("Dodongos Cavern MQ Lower Right Side Scrub", SCENE_DODONGOS_CAVERN, {}, {

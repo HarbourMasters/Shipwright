@@ -1,19 +1,17 @@
-#include "gameplaystats.h"
+#include <string>
 
+#include "gameplaystats.h"
 #include "soh/SaveManager.h"
-#include "functions.h"
-#include "macros.h"
 #include "soh/cvar_prefixes.h"
 #include "soh/SohGui/UIWidgets.hpp"
 #include "soh/SohGui/SohGui.hpp"
 #include "soh/util.h"
-
-#include <string>
-#include <spdlog/common.h>
 #include "soh/Enhancements/BunnyHood.h"
 #include "soh/OTRGlobals.h"
 
 extern "C" {
+#include "functions.h"
+#include "macros.h"
 #include <z64.h>
 #include "variables.h"
 extern PlayState* gPlayState;

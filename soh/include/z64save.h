@@ -4,7 +4,7 @@
 #include <libultraship/libultra.h>
 #include "z64math.h"
 #include "z64audio.h"
-#include "soh/Enhancements/randomizer/randomizerTypes.h"
+#include "soh/Enhancements/randomizer/randomizerEnums.h"
 #include "soh/Enhancements/gameplaystats.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include "soh/Enhancements/boss-rush/BossRush.h"

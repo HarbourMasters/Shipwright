@@ -315,19 +315,13 @@ s32 AudioLoad_IsFontLoadComplete(s32 fontId) {
 s32 AudioLoad_IsSeqLoadComplete(s32 seqId) {
     if (seqId == 0xFF) {
         return true;
-    }
-    if ((size_t)seqId >= sequenceMapSize) {
-        // Custom SAF sequence whose seqId exceeds the status table — not async-loading, treat as ready.
+    } else if (gAudioContext.seqLoadStatus[seqId] >= 2) {
         return true;
-    }
-    if (gAudioContext.seqLoadStatus[seqId] >= 2) {
+    } else if (gAudioContext.seqLoadStatus[AudioLoad_GetRealTableIndex(SEQUENCE_TABLE, seqId)] >= 2) {
         return true;
+    } else {
+        return false;
     }
-    s32 realId = (s32)AudioLoad_GetRealTableIndex(SEQUENCE_TABLE, seqId);
-    if ((size_t)realId < sequenceMapSize && gAudioContext.seqLoadStatus[realId] >= 2) {
-        return true;
-    }
-    return false;
 }
 
 s32 AudioLoad_IsSampleLoadComplete(s32 sampleBankId) {
@@ -349,7 +343,7 @@ void AudioLoad_SetFontLoadStatus(s32 fontId, s32 status) {
 }
 
 void AudioLoad_SetSeqLoadStatus(s32 seqId, s32 status) {
-    if ((seqId != 0xFF) && ((size_t)seqId < sequenceMapSize) && (gAudioContext.seqLoadStatus[seqId] != 5)) {
+    if ((seqId != 0xFF) && (gAudioContext.seqLoadStatus[seqId] != 5)) {
         gAudioContext.seqLoadStatus[seqId] = status;
     }
 }
@@ -643,7 +637,7 @@ u8* AudioLoad_SyncLoadSeq(s32 seqId) {
     s32 pad;
     s32 didAllocate;
 
-    if ((size_t)seqId < sequenceMapSize && gAudioContext.seqLoadStatus[seqId] == 1) {
+    if (gAudioContext.seqLoadStatus[AudioLoad_GetRealTableIndex(SEQUENCE_TABLE, seqId)] == 1) {
         return NULL;
     }
 
@@ -1012,6 +1006,7 @@ void* AudioLoad_AsyncLoadInner(s32 tableType, s32 id, s32 nChunks, s32 retData, 
     u32 temp_v0;
     u32 realId;
 
+    realId = AudioLoad_GetRealTableIndex(tableType, id);
     switch (tableType) {
         case SEQUENCE_TABLE:
             if (gAudioContext.seqLoadStatus[realId] == 1) {

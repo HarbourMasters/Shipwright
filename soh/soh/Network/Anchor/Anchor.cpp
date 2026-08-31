@@ -1,11 +1,11 @@
-#include "Anchor.h"
 #include <nlohmann/json.hpp>
-#include "soh/OTRGlobals.h"
+
+#include "Anchor.h"
 #include "soh/Enhancements/nametag.h"
 #include "soh/ObjectExtension/ObjectExtension.h"
-#include "soh/Enhancements/randomizer/randomizer.h"
 
 extern "C" {
+#include "macros.h"
 #include "variables.h"
 #include "functions.h"
 extern PlayState* gPlayState;

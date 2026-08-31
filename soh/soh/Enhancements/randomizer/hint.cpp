@@ -1,7 +1,6 @@
 #include "hint.h"
 #include "string"
 #include "SeedContext.h"
-#include <spdlog/spdlog.h>
 #include "static_data.h"
 #include "rng.h"
 

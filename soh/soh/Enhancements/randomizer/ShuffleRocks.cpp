@@ -10,7 +10,6 @@
 #include "soh/Enhancements/randomizer/RCToRandInf.h"
 
 extern "C" {
-#include "variables.h"
 #include "macros.h"
 #include "functions.h"
 #include "overlays/actors/ovl_En_Ishi/z_en_ishi.h"

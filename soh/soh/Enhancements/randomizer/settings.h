@@ -5,13 +5,10 @@
 
 #include <array>
 #include <unordered_map>
-#include <nlohmann/json.hpp>
 
 namespace Rando {
 class Settings {
   public:
-    Settings();
-
     /**
      * @brief Hides or Unhides the price UI of Shopsanity based on settings.
      */
@@ -89,9 +86,9 @@ class Settings {
     /**
      * @brief Get a reference to all of the Exclude Location `Option` lists.
      *
-     * @return const std::vector<std::vector<Option*>>&
+     * @return const std::array<std::vector<Option*>, RCAREA_INVALID>&
      */
-    const std::vector<std::vector<Option*>>& GetExcludeLocationsOptions() const;
+    const std::array<std::vector<Option*>, RCAREA_INVALID>& GetExcludeLocationsOptions() const;
 
     /**
      * @brief Get the list of `OptionGroup`s.
@@ -157,7 +154,7 @@ class Settings {
     std::array<std::string, RSK_MAX> mOptionDescriptions = {};
     std::array<OptionGroup, RSG_MAX> mOptionGroups = {};
     std::array<TrickSetting, RT_MAX> mTrickSettings = {};
-    std::vector<std::vector<Option*>> mExcludeLocationsOptionsAreas = {};
+    std::array<std::vector<Option*>, RCAREA_INVALID> mExcludeLocationsOptionsAreas = {};
     std::unordered_map<std::string, RandomizerTrick> mTrickNameToEnum;
 };
 } // namespace Rando

@@ -4,18 +4,18 @@
  * Vanilla/MQ hints when collecting Maps, Ice Trap messages,
  * etc.
  */
+
+#include <cstdarg>
+#include <algorithm>
+
 #include <soh/OTRGlobals.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/custom-message/CustomMessageTypes.h"
 #include "soh/Enhancements/randomizer/Traps.h"
 #include "soh/Enhancements/randomizer/item.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
 #include "soh/ShipInit.hpp"
 #include <soh/ResourceManagerHelpers.h>
-
-#include <cstdarg>
-#include <algorithm>
 
 extern "C" {
 #include "variables.h"

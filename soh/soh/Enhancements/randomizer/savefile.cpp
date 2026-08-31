@@ -1,20 +1,17 @@
+#include <spdlog/spdlog.h>
+
 #include "savefile.h"
 #include "soh/OTRGlobals.h"
 #include "soh/ResourceManagerHelpers.h"
-#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/randomizer/bean_patches.h"
 #include "soh/Enhancements/randomizer/dungeon.h"
 #include "soh/Enhancements/randomizer/logic.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
 
-#include <spdlog/spdlog.h>
-
 extern "C" {
-#include <z64.h>
 #include "variables.h"
 #include "functions.h"
 #include "macros.h"
-
 uint8_t Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 GetItemEntry Randomizer_GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
 }

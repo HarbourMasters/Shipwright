@@ -1,12 +1,13 @@
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/ShipInit.hpp"
-#include <spdlog/spdlog.h>
 #include <vector>
+
+#include <spdlog/spdlog.h>
+
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/ShipInit.hpp"
 
 extern "C" {
 #include "functions.h"
 #include "src/overlays/actors/ovl_En_Sw/z_en_sw.h"
-
 extern PlayState* gPlayState;
 }
 

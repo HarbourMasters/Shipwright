@@ -1,13 +1,12 @@
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include <ship/window/gui/IconsFontAwesome4.h>
+
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
 #include "AudioCollection.h"
 #include <soh/Notification/Notification.h>
-#include <soh/SohGui/ImGuiUtils.h>
-#include <ship/window/gui/IconsFontAwesome4.h>
 
 extern "C" {
 #include "variables.h"
-
 extern PlayState* gPlayState;
 }
 

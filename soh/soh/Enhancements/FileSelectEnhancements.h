@@ -1,6 +1,6 @@
 #pragma once
 
-#include "z64.h"
+#include <libultraship/libultra/types.h>
 
 #ifdef __cplusplus
 extern "C" {

@@ -1,8 +1,10 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
-#include "soh/Enhancements/randomizer/randomizer.h"
+#include "soh/Enhancements/custom-message/CustomMessageManager.h"
+#include "soh/Enhancements/custom-message/CustomMessageTypes.h"
+#include "soh/ShipInit.hpp"
 
 extern "C" {
-#include "variables.h"
+#include "functions.h"
 #include "overlays/actors/ovl_En_Po_Field/z_en_po_field.h"
 #include "overlays/actors/ovl_En_Gb/z_en_gb.h"
 extern PlayState* gPlayState;

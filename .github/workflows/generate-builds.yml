@@ -71,6 +71,9 @@ jobs:
       run: |
         cmake --no-warn-unused-cli -H. -Bbuild-cmake -GNinja -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" -DBUILD_REMOTE_CONTROL=1
         cmake --build build-cmake -j
+        # Spotlight indexing the disk image CPack just made keeps hdiutil from
+        # unmounting it, failing the build with "Resource busy"
+        sudo mdutil -a -i off || true
         (cd build-cmake && cpack)
 
         mv _packages/*.dmg SoH.dmg

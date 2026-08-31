@@ -1,7 +1,6 @@
 #pragma once
 
 #include <stdint.h>
-#include <memory>
 #include "SceneCommand.h"
 
 namespace SOH {

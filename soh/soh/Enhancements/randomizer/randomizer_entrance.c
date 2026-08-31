@@ -14,7 +14,9 @@
 #include "soh/SaveManager.h"
 #include <string.h>
 
-#include "global.h"
+#include "functions.h"
+#include "macros.h"
+#include "variables.h"
 #include "entrance.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 

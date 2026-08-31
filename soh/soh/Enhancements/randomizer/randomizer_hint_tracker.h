@@ -1,7 +1,6 @@
 #pragma once
 
 #include <ship/window/gui/GuiWindow.h>
-#include "randomizerTypes.h"
 
 typedef enum {
     // Every hint location grouped by area, with unread hint text masked.

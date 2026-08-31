@@ -7,15 +7,16 @@
 #include "Enhancements/randomizer/trial.h"
 #include "soh/util.h"
 #include "Enhancements/randomizer/hint.h"
-#include "Enhancements/randomizer/item.h"
 #include "soh/Enhancements/randomizer/settings.h"
 #include "ResourceManagerHelpers.h"
+#include "soh/SohGui/SohGui.hpp"
 
+extern "C" {
 #include "z64.h"
 #include "functions.h"
 #include "macros.h"
 #include <variables.h>
-#include "soh/SohGui/SohGui.hpp"
+}
 
 #define NOGDI // avoid various windows defines that conflict with things in z64.h
 #include <spdlog/spdlog.h>

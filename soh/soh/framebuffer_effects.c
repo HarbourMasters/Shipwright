@@ -1,5 +1,5 @@
 #include "framebuffer_effects.h"
-#include "global.h"
+#include "variables.h"
 #include "OTRGlobals.h"
 
 int gfx_create_framebuffer(uint32_t width, uint32_t height, uint32_t native_width, uint32_t native_height,

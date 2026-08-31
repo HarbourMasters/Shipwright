@@ -1,13 +1,16 @@
-#include "util.h"
-
 #include <string.h>
 #include <vector>
 #include <algorithm>
 #include <array>
 #include <assert.h>
+
 #include <spdlog/spdlog.h>
-#include "Enhancements/randomizer/randomizerTypes.h"
+
+#include "util.h"
+
+extern "C" {
 #include <variables.h>
+}
 
 std::string invalidString = "";
 

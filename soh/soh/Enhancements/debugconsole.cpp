@@ -1,10 +1,11 @@
-#include "debugconsole.h"
-#include <ship/utils/Utils.h>
-#include "savestates.h"
-#include "soh/ActorDB.h"
-
 #include <vector>
 #include <string>
+
+#include <ship/utils/Utils.h>
+
+#include "debugconsole.h"
+#include "savestates.h"
+#include "soh/ActorDB.h"
 #include "soh/OTRGlobals.h"
 #include <soh/Enhancements/item-tables/ItemTableManager.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
@@ -16,9 +17,7 @@
 
 #define Path _Path
 #define PATH_HACK
-#include <ship/utils/StringHelper.h>
 
-#include <ship/window/Window.h>
 #include <ship/Context.h>
 #undef PATH_HACK
 #undef Path

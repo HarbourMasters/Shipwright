@@ -1,7 +1,5 @@
 #include "randomizerEnumStrings.h"
 
-#include "randomizerEnums.h"
-
 // Redefine enum macros to generate string->enum maps for every enum.
 #define RANDO_ENUM_BEGIN(EnumName)                                                                     \
     template <> const std::unordered_map<std::string_view, EnumName>& GetStringToEnumMap<EnumName>() { \
@@ -16,8 +14,6 @@
     ();                          \
     return map;                  \
     }
-
-#include "randomizerEnums.h"
 
 #undef RANDO_ENUM_BEGIN
 #undef RANDO_ENUM_ITEM
@@ -37,5 +33,3 @@
     ();                          \
     return map;                  \
     }
-
-#include "randomizerEnums.h"

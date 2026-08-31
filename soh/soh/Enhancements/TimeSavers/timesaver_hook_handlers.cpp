@@ -441,7 +441,9 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
 
             // If it's near a jailed carpenter, skip it along with introduction of Gerudo mini-boss
             if (gPlayState->sceneNum == SCENE_THIEVES_HIDEOUT &&
-                CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.BossIntro"), IS_RANDO)) {
+                CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.BossIntro"), IS_RANDO) &&
+                (!IS_RANDO || !RAND_GET_OPTION(RSK_SHUFFLE_SPEAK) ||
+                 Flags_GetRandomizerInf(RAND_INF_CAN_SPEAK_HYLIAN))) {
                 EnWonderTalk2* enWonderTalk = va_arg(args, EnWonderTalk2*);
                 EnDaiku* enDaiku =
                     (EnDaiku*)Actor_FindNearby(gPlayState, &enWonderTalk->actor, ACTOR_EN_DAIKU, ACTORCAT_NPC, 999.0f);

@@ -5,9 +5,11 @@
 
 extern "C" {
 #include "functions.h"
-#include "src/overlays/actors/ovl_En_Fz/z_en_fz.h"
 #include "src/overlays/actors/ovl_En_Crow/z_en_crow.h"
+#include "src/overlays/actors/ovl_En_Firefly/z_en_firefly.h"
 extern void EnCrow_TurnAway(EnCrow*, PlayState*);
+extern void EnFirefly_SetupFlyAway(EnFirefly*);
+extern void EnFirefly_Fall(EnFirefly*, PlayState*);
 }
 
 static constexpr int32_t CVAR_RANDO_ENEMY_SIZE_DEFAULT = 0;
@@ -17,6 +19,15 @@ static constexpr int32_t CVAR_RANDO_ENEMY_SIZE_DEFAULT = 0;
 static constexpr int32_t CVAR_ENEMY_SCALE_HEALTH_DEFAULT = 0;
 #define CVAR_ENEMY_SCALE_HEALTH_NAME CVAR_ENHANCEMENT("EnemySizeScalesHealth")
 #define CVAR_ENEMY_SCALE_HEALTH_VALUE CVarGetInteger(CVAR_ENEMY_SCALE_HEALTH_NAME, CVAR_ENEMY_SCALE_HEALTH_DEFAULT)
+
+// If scale > normal, start downscaling already during death fall
+void EnemyRandoSize_KeeseFallScale(void* ptr) {
+    EnFirefly* enFirefly = (EnFirefly*)ptr;
+    if (enFirefly->actionFunc == EnFirefly_Fall && enFirefly->actor.scale.x > 0.005f) {
+        Math_StepToF(&enFirefly->actor.scale.x, 0.005f, 0.00034f);
+        enFirefly->actor.scale.y = enFirefly->actor.scale.z = enFirefly->actor.scale.x;
+    }
+}
 
 static void RandomizedEnemySizes(void* refActor) {
     // Randomized Enemy Sizes
@@ -63,6 +74,7 @@ static void RandomizedEnemySizes(void* refActor) {
 
 static void RegisterRandomizedEnemySizes() {
     COND_HOOK(OnActorInit, CVAR_RANDO_ENEMY_SIZE_VALUE, RandomizedEnemySizes);
+    COND_ID_HOOK(OnActorUpdate, ACTOR_EN_FIREFLY, CVAR_RANDO_ENEMY_SIZE_VALUE, EnemyRandoSize_KeeseFallScale);
 
     // Guays try to die on any damage, but EnCrow_Update doesn't let them reach ground if health != 0
     // Makeshift "damaged but not dead" action setup
@@ -91,6 +103,25 @@ static void RegisterRandomizedEnemySizes() {
         if (*should && *scale > 2.0f) {
             *scale = 2.0f;
         }
+    });
+
+    // Keese try to fall/die on any damage which behaves oddly if health is above normal 1
+    // Makeshift "damaged but not dead" action setup
+    COND_VB_SHOULD(VB_KEESE_SETUP_FALL, CVAR_RANDO_ENEMY_SIZE_VALUE && CVAR_ENEMY_SCALE_HEALTH_VALUE, {
+        EnFirefly* enFirefly = va_arg(args, EnFirefly*);
+
+        if (*should && enFirefly->actor.colChkInfo.health != 0) {
+            *should = false;
+            Audio_PlayActorSound2(&enFirefly->actor, NA_SE_EN_FFLY_DEAD);
+            Actor_SetColorFilter(&enFirefly->actor, 0x4000, 0xFF, 0, 40);
+            EnFirefly_SetupFlyAway(enFirefly);
+        }
+    });
+
+    // Ensure Keese just die on Ice Arrows
+    COND_VB_SHOULD(VB_KEESE_SETUP_FROZENFALL, CVAR_RANDO_ENEMY_SIZE_VALUE && CVAR_ENEMY_SCALE_HEALTH_VALUE, {
+        EnFirefly* enFirefly = va_arg(args, EnFirefly*);
+        enFirefly->actor.colChkInfo.health = 0;
     });
 }
 

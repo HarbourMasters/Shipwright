@@ -6,17 +6,17 @@
  * including both shops and one-off merchants (i.e. Medigoron, Bean Guy,
  * and Carpet Salesman)
  */
+
 #include <soh/OTRGlobals.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ObjectExtension/ObjectExtension.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
 
 extern "C" {
-extern PlayState* gPlayState;
 #include <macros.h>
 #include <functions.h>
-#include <variables.h>
 #include <overlays/actors/ovl_En_Dns/z_en_dns.h>
+extern PlayState* gPlayState;
 }
 
 #define RAND_GET_ITEM(rc) OTRGlobals::Instance->gRandoContext->GetItemLocation(rc)

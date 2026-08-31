@@ -1,4 +1,4 @@
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
@@ -7,10 +7,8 @@ extern "C" {
 #include "variables.h"
 #include "functions.h"
 #include "overlays/actors/ovl_En_Arrow/z_en_arrow.h"
-
 s32 func_808351D4(Player* thisx, PlayState* play); // Arrow nocked
 void EnArrow_Init(Actor* thisx, PlayState* play);
-
 extern PlayState* gPlayState;
 }
 

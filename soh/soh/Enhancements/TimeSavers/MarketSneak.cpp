@@ -1,4 +1,3 @@
-#include <soh/OTRGlobals.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ShipInit.hpp"
@@ -10,10 +9,8 @@ extern "C" {
 #include <variables.h>
 #include "overlays/actors/ovl_En_Heishi4/z_en_heishi4.h"
 extern PlayState* gPlayState;
-
 // the guard's idle action func, restored once the sneak prompt is answered
 void func_80A56614(EnHeishi4* heishi, PlayState* play);
-
 u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 }
 

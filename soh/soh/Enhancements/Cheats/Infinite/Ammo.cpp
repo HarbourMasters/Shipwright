@@ -1,13 +1,13 @@
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/randomizer/SeedContext.h"
 #include "soh/OTRGlobals.h"
 #include "soh/ShipInit.hpp"
-#include "z64save.h"
 
 extern "C" {
-extern SaveContext gSaveContext;
+#include "z64save.h"
 #include "variables.h"
 #include "macros.h"
+extern SaveContext gSaveContext;
 }
 
 #define CVAR_INFINITE_AMMO_NAME CVAR_CHEAT("InfiniteAmmo")

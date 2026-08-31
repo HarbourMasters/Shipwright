@@ -1,9 +1,11 @@
 //! This file is always optimized by a rule in the CMakeList. This is done because the SIMD functions are very large
 //! when unoptimized and clang does not allow optimizing a single function.
+
 #include <stdint.h>
 #include <string.h>
 
 #include "mixer.h"
+
 #ifndef __clang__
 #ifndef _MSC_VER
 #pragma GCC optimize("unroll-loops")
@@ -104,7 +106,6 @@ void aLoadBufferImpl(const void* source_addr, uint16_t dest_addr, uint16_t nbyte
 #endif
 }
 
-#include <opus/opus.h>
 #include <opusfile.h>
 
 void aOPUSdecImpl(void* source_addr, uint16_t dest_addr, uint16_t nbytes, struct OggOpusFile** decState, int32_t pos,

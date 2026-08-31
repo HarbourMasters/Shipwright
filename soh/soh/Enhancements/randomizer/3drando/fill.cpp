@@ -423,7 +423,7 @@ bool AddCheckToLogic(LocationAccess& locPair, GetAccessibleLocationsStruct& gals
                     ApplyOrStoreItem(location, gals, addToPlaythrough);
                 }
                 // If we want to ignore bombchus, only add if bombchu is not in the name
-                else if (IsBombchus(ignore) && IsBombchus(locItem, true)) {
+                else if (IsBombchus(ignore) && !IsBombchus(locItem, true)) {
                     ApplyOrStoreItem(location, gals, addToPlaythrough);
                 }
                 // We want to ignore a specific Buy item. Buy items with different RandomizerGets are recognised by a

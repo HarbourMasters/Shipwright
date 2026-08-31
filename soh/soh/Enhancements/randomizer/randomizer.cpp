@@ -1,19 +1,16 @@
-#include "randomizer.h"
-#include <nlohmann/json.hpp>
 #include <fstream>
-#include <variables.h>
-#include <macros.h>
-#include <functions.h>
+#include <sstream>
+#include <tuple>
+
+#include <nlohmann/json.hpp>
+#include <ship/window/FileDropMgr.h>
+
+#include "randomizer.h"
 #include "3drando/menu.hpp"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/SohGui/SohGui.hpp"
-#include <imgui.h>
-#include "../../../src/overlays/actors/ovl_En_GirlA/z_en_girla.h"
 #include "randomizer_check_objects.h"
-#include <sstream>
-#include <tuple>
 #include "soh/OTRGlobals.h"
-#include <ship/window/FileDropMgr.h>
 #include "static_data.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "settings.h"
@@ -25,8 +22,11 @@
 #include "logic.h"
 
 extern "C" {
+#include <variables.h>
+#include <macros.h>
+#include <functions.h>
+#include "../../../src/overlays/actors/ovl_En_GirlA/z_en_girla.h"
 #include "src/overlays/actors/ovl_Obj_Bean/z_obj_bean.h"
-
 extern void func_80B8FE00(ObjBean*); // trigger planting
 extern PlayState* gPlayState;
 }
@@ -436,8 +436,6 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
             } else {
                 return Flags_GetRandomizerInf(RAND_INF_OBTAINED_NAYRUS_LOVE) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN;
             }
-        case RG_ROCS_FEATHER:
-            return Flags_GetRandomizerInf(RAND_INF_OBTAINED_ROCS_FEATHER) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN;
 
         // Bottles
         case RG_EMPTY_BOTTLE:
@@ -1166,7 +1164,6 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
     if (Rando::StaticData::RandoGetToRandInf.find(item) != Rando::StaticData::RandoGetToRandInf.end()) {
         Flags_SetRandomizerInf((RandomizerInf)Rando::StaticData::RandoGetToRandInf.find(item)->second);
         if (item == RG_SKELETON_KEY) {
-            Flags_SetRandomizerInf(RAND_INF_HAS_SKELETON_KEY);
             // This isn't technically necessary, because keys will no longer be consumed,
             // but for the player's sanity we display that they _have_ keys.
             for (Rando::DungeonInfo* dungeon : Rando::Context::GetInstance()->GetDungeons()->GetDungeonList()) {
@@ -1190,6 +1187,10 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
             Flags_SetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_LETTER_ZELDA);
             if (!ChildTradeSlotOccupied()) {
                 INV_CONTENT(ITEM_TRADE_CHILD) = ITEM_LETTER_ZELDA;
+            }
+        } else if (item == RG_ROCS_FEATHER) {
+            if (INV_CONTENT(ITEM_NAYRUS_LOVE) == ITEM_NONE) {
+                INV_CONTENT(ITEM_NAYRUS_LOVE) = ITEM_ROCS_FEATHER;
             }
         } else if (item == RG_CHILD_WALLET &&
                    OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FULL_WALLETS)) {
@@ -1420,12 +1421,6 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
             Inventory_ChangeUpgrade(UPG_NUTS, 1);
             INV_CONTENT(ITEM_NUT) = ITEM_NUT;
             AMMO(ITEM_NUT) = static_cast<int8_t>(CUR_CAPACITY(UPG_NUTS));
-            break;
-        case RG_ROCS_FEATHER:
-            Flags_SetRandomizerInf(RAND_INF_OBTAINED_ROCS_FEATHER);
-            if (INV_CONTENT(ITEM_NAYRUS_LOVE) == ITEM_NONE) {
-                INV_CONTENT(ITEM_NAYRUS_LOVE) = ITEM_ROCS_FEATHER;
-            }
             break;
         case RG_SHADOW_SILVER_BLADES:
         case RG_SHADOW_SILVER_PIT:

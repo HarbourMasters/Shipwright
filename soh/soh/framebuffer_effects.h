@@ -1,6 +1,6 @@
 #pragma once
 
-#include <libultraship/libultra.h>
+#include <libultraship/libultra/gbi.h>
 
 extern s32 gPauseFrameBuffer;
 extern s32 gBlurFrameBuffer;

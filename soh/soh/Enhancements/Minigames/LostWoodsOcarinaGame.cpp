@@ -1,4 +1,4 @@
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
@@ -6,7 +6,6 @@ extern "C" {
 #include "variables.h"
 #include "src/overlays/actors/ovl_En_Skj/z_en_skj.h"
 extern PlayState* gPlayState;
-
 void EnSkj_WaitForPlayback(EnSkj* enSkj, PlayState* play);
 }
 

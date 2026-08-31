@@ -1,5 +1,7 @@
+#include <libultraship/bridge/consolevariablebridge.h>
+#include <ship/Context.h>
+
 #include "SohMenu.h"
-#include "SohGui.hpp"
 
 extern "C" {
 extern PlayState* gPlayState;
