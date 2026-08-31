@@ -19,7 +19,7 @@ extern std::shared_ptr<SohMenu> mSohMenu;
 static bool initialized = false;
 static std::unordered_map<std::string, nlohmann::json> langs;
 
-static std::unordered_map<size_t, std::string> cache;
+static std::unordered_map<std::string, std::string> cache;
 
 #define LANGUAGE_CVAR CVAR_SETTING("Language")
 #define DEFAULT_LANGUAGE "en_US"
@@ -50,10 +50,9 @@ std::variant<std::reference_wrapper<const std::string>, Lang::Error> Lang::TryTr
     }
 
     std::string stringPath = std::string(path);
-    auto pathHash = std::hash<std::string>{}(stringPath);
 
-    if (cache.contains(pathHash)) {
-        return cache[pathHash];
+    if (cache.contains(stringPath)) {
+        return cache[stringPath];
     }
 
     const nlohmann::json* currentLangData = &langs.at(currentLang);
@@ -78,8 +77,8 @@ std::variant<std::reference_wrapper<const std::string>, Lang::Error> Lang::TryTr
 
     if (currentLangData->at(lastSegment).is_string()) {
         const std::string& translatedString = currentLangData->at(lastSegment).get_ref<const std::string&>();
-        cache[pathHash] = translatedString;
-        return cache[pathHash];
+        cache[stringPath] = translatedString;
+        return cache[stringPath];
     }
 
     if (currentLangData->at(lastSegment).is_array()) {
@@ -93,8 +92,8 @@ std::variant<std::reference_wrapper<const std::string>, Lang::Error> Lang::TryTr
             translatedString += item.get_ref<const std::string&>();
         }
 
-        cache[pathHash] = translatedString;
-        return cache[pathHash];
+        cache[stringPath] = translatedString;
+        return cache[stringPath];
     }
 
     return Lang::Error::PathInvalidValue;
