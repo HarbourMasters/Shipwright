@@ -270,7 +270,12 @@ static CheckIdentity IdentifyFish(s32 sceneNum, s32 actorParams) {
         OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_EN_FISH, sceneNum, actorParams);
 
     if (location->GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
-        fishIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
+        if (rcToRandomizerInf.contains(location->GetRandomizerCheck())) {
+            fishIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
+        } else {
+            LUSLOG_ERROR("%d not found in rcToRandomizerInf.", location->GetRandomizerCheck());
+            assert(false);
+        }
         fishIdentity.randomizerCheck = location->GetRandomizerCheck();
     }
 

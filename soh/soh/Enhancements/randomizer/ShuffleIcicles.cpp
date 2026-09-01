@@ -108,7 +108,12 @@ static CheckIdentity IdentifyIcicle(s32 sceneNum, s32 posX, s32 posZ) {
         LUSLOG_WARN("IdentifyIcicle did not receive a valid RC value (%d).", location->GetRandomizerCheck());
         assert(false);
     } else {
-        icicleIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
+        if (rcToRandomizerInf.contains(location->GetRandomizerCheck())) {
+            icicleIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
+        } else {
+            LUSLOG_ERROR("%d not found in rcToRandomizerInf.", location->GetRandomizerCheck());
+            assert(false);
+        }
         icicleIdentity.randomizerCheck = location->GetRandomizerCheck();
     }
 

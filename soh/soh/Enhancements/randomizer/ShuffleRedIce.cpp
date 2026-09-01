@@ -146,7 +146,12 @@ static CheckIdentity IdentifyRedIce(s32 sceneNum, s32 posX, s32 posZ) {
         LUSLOG_WARN("IdentifyRedIce did not receive a valid RC value (%d).", location->GetRandomizerCheck());
         assert(false);
     } else {
-        redIceIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
+        if (rcToRandomizerInf.contains(location->GetRandomizerCheck())) {
+            redIceIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
+        } else {
+            LUSLOG_ERROR("%d not found in rcToRandomizerInf.", location->GetRandomizerCheck());
+            assert(false);
+        }
         redIceIdentity.randomizerCheck = location->GetRandomizerCheck();
     }
 

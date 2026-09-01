@@ -138,7 +138,12 @@ static CheckIdentity IdentifyTree(s32 sceneNum, s32 posX, s32 posZ) {
     if (location->GetRandomizerCheck() != RC_UNKNOWN_CHECK &&
         (location->GetRCType() != RCTYPE_NLTREE ||
          OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LOGIC_RULES) == RO_LOGIC_NO_LOGIC)) {
-        treeIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
+        if (rcToRandomizerInf.contains(location->GetRandomizerCheck())) {
+            treeIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
+        } else {
+            LUSLOG_ERROR("%d not found in rcToRandomizerInf.", location->GetRandomizerCheck());
+            assert(false);
+        }
         treeIdentity.randomizerCheck = location->GetRandomizerCheck();
         return treeIdentity;
     }

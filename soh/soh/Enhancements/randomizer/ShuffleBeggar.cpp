@@ -18,7 +18,12 @@ static CheckIdentity IdentifyBeggar(s32 sceneNum, s32 textId) {
     if (location->GetRandomizerCheck() == RC_UNKNOWN_CHECK) {
         LUSLOG_WARN("IdentifyBeggar did not receive a valid RC value (%d).", location->GetRandomizerCheck());
     } else {
-        beggarIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
+        if (rcToRandomizerInf.contains(location->GetRandomizerCheck())) {
+            beggarIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
+        } else {
+            LUSLOG_ERROR("%d not found in rcToRandomizerInf.", location->GetRandomizerCheck());
+            assert(false);
+        }
         beggarIdentity.randomizerCheck = location->GetRandomizerCheck();
     }
 

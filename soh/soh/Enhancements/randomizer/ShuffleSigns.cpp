@@ -160,7 +160,12 @@ static CheckIdentity IdentifySign(s32 sceneNum, s32 posX, s32 posZ, s32 id) {
     if (location == nullptr || location->GetRandomizerCheck() == RC_UNKNOWN_CHECK) {
         LUSLOG_WARN("IdentifySign did not receive a valid RC value (%d).", location->GetRandomizerCheck());
     } else {
-        signIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
+        if (rcToRandomizerInf.contains(location->GetRandomizerCheck())) {
+            signIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
+        } else {
+            LUSLOG_ERROR("%d not found in rcToRandomizerInf.", location->GetRandomizerCheck());
+            assert(false);
+        }
         signIdentity.randomizerCheck = location->GetRandomizerCheck();
     }
 

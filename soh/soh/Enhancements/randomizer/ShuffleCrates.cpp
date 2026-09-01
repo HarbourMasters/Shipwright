@@ -212,7 +212,12 @@ static CheckIdentity IdentifyCrate(s32 sceneNum, s32 posX, s32 posZ) {
         LUSLOG_WARN("IdentifyCrate did not receive a valid RC value (%d).", location->GetRandomizerCheck());
         assert(false);
     } else {
-        crateIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
+        if (rcToRandomizerInf.contains(location->GetRandomizerCheck())) {
+            crateIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
+        } else {
+            LUSLOG_ERROR("%d not found in rcToRandomizerInf.", location->GetRandomizerCheck());
+            assert(false);
+        }
         crateIdentity.randomizerCheck = location->GetRandomizerCheck();
     }
 
@@ -235,7 +240,12 @@ static CheckIdentity IdentifySmallCrate(s32 sceneNum, s32 posX, s32 posZ) {
         LUSLOG_WARN("IdentifyCrate did not receive a valid RC value (%d).", location->GetRandomizerCheck());
         assert(false);
     } else {
-        smallCrateIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
+        if (rcToRandomizerInf.contains(location->GetRandomizerCheck())) {
+            smallCrateIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
+        } else {
+            LUSLOG_ERROR("%d not found in rcToRandomizerInf.", location->GetRandomizerCheck());
+            assert(false);
+        }
         smallCrateIdentity.randomizerCheck = location->GetRandomizerCheck();
     }
 

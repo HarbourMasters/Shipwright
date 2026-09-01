@@ -95,7 +95,12 @@ static CheckIdentity IdentifyBeehive(s32 sceneNum, s16 xPosition, s32 respawnDat
         OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_OBJ_COMB, sceneNum, respawnData);
 
     if (location->GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
-        beehiveIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
+        if (rcToRandomizerInf.contains(location->GetRandomizerCheck())) {
+            beehiveIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
+        } else {
+            LUSLOG_ERROR("%d not found in rcToRandomizerInf.", location->GetRandomizerCheck());
+            assert(false);
+        }
         beehiveIdentity.randomizerCheck = location->GetRandomizerCheck();
     }
 
