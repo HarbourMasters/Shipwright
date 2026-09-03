@@ -901,6 +901,7 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
                         EffectSsDeadDb_Spawn(gPlayState, &pos, &sp7C, &sp7C, 100, 0, 255, 255, 255, 255, 0, 0, 255, 1,
                                              9, true);
                     }
+                    func_800F5B58(); // Restore non-miniboss music
                     Actor_Kill(&ik->actor);
                 }
                 *should = false;

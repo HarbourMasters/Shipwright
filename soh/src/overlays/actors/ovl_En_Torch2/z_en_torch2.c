@@ -283,7 +283,7 @@ void EnTorch2_Update(Actor* thisx, PlayState* play2) {
                     if (stickY) {}
                     sInput.cur.stick_y = stickY;
                 }
-                if (GameInteractor_Should(VB_PLAY_MINIBOSS_MUSIC, true)) {
+                if (GameInteractor_Should(VB_PLAY_MINIBOSS_MUSIC_TORCH2, true, this)) {
                     func_800F5ACC(NA_BGM_MINI_BOSS);
                 }
                 sActionState = ENTORCH2_ATTACK;
@@ -637,7 +637,7 @@ void EnTorch2_Update(Actor* thisx, PlayState* play2) {
             Item_DropCollectibleRandom(play, &this->actor, &thisx->world.pos, 0xC0);
             this->stateFlags3 &= ~PLAYER_STATE3_PAUSE_ACTION_FUNC;
         } else {
-            if (GameInteractor_Should(VB_PLAY_MINIBOSS_MUSIC, true)) {
+            if (GameInteractor_Should(VB_PLAY_MINIBOSS_MUSIC_TORCH2, true, this)) {
                 func_800F5ACC(NA_BGM_MINI_BOSS);
             }
             if (this->actor.colChkInfo.damageEffect == 1) {

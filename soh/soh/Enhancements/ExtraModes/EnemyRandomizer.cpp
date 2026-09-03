@@ -712,51 +712,6 @@ void RegisterEnemyRandomizer() {
     COND_ID_HOOK(OnActorInit, ACTOR_EN_SKB, ENEMY_RANDOMIZER_ENABLED, EnemyRando_SetColliderPosSkb);
     COND_ID_HOOK(OnActorInit, ACTOR_EN_PEEHAT, ENEMY_RANDOMIZER_ENABLED, EnemyRando_SetColliderPosPeehat);
 
-    // Don't let randomized miniboss enemy play music (if setting enabled, handled by OnPlayerUpdate hook)
-    COND_VB_SHOULD(VB_PLAY_MINIBOSS_MUSIC, ENEMY_RANDOMIZER_ENABLED, { *should = false; });
-
-    // Ensure non-randomized hooked minibosses play music
-    COND_VB_SHOULD(VB_PLAY_MINIBOSS_MUSIC_IK, ENEMY_RANDOMIZER_ENABLED, {
-        EnIk* enIk = va_arg(args, EnIk*);
-        if (enIk->actor.params == 1280 ||
-            (gPlayState->sceneNum == SCENE_INSIDE_GANONS_CASTLE &&
-             !ResourceMgr_IsSceneMasterQuest(gPlayState->sceneNum) && gPlayState->roomCtx.curRoom.num == 17)) {
-            *should = true;
-        } else {
-            *should = false;
-        }
-    });
-
-    COND_VB_SHOULD(VB_PLAY_MINIBOSS_MUSIC_GELDB, ENEMY_RANDOMIZER_ENABLED, {
-        EnGeldB* enGeldB = va_arg(args, EnGeldB*);
-        if (enGeldB->keyFlag) {
-            *should = true;
-        } else {
-            *should = false;
-        }
-    });
-
-    // Always play miniboss music for Invisible Stalfos if setting enabled
-    // (miniboss BGM setting uses own version)
-    COND_VB_SHOULD(VB_PLAY_MINIBOSS_MUSIC_TEST, ENEMY_RANDOMIZER_ENABLED, {
-        EnTest* enTest = va_arg(args, EnTest*);
-        if (!MINIBOSS_BGM_ENABLED) {
-            if (enTest->actor.params == STALFOS_TYPE_INVISIBLE &&
-                CVarGetInteger(CVAR_ENHANCEMENT("EnemyRandoInvisStalfosBgm"), false)) {
-                *should = true;
-            } else {
-                *should = false;
-            }
-        }
-    });
-
-    // Stop miniboss music on room switch. Always stop, in case cvar was toggled during miniboss music
-    COND_HOOK(AfterSceneCommands, ENEMY_RANDOMIZER_ENABLED, [](int16_t sceneId) {
-        if (Audio_GetActiveSeqId(SEQ_PLAYER_BGM_MAIN) == NA_BGM_MINI_BOSS) {
-            func_800F5B58();
-        }
-    });
-
     // Activate Iron Knuckles
     COND_VB_SHOULD(VB_IK_ACTIVATE, ENEMY_RANDOMIZER_ENABLED, {
         EnIk* enIk = va_arg(args, EnIk*);
@@ -784,7 +739,6 @@ void RegisterEnemyRandomizer() {
     // Activate Dark Link, unless in own room
     COND_VB_SHOULD(VB_TORCH2_ACTIVATE, ENEMY_RANDOMIZER_ENABLED, {
         Player* enTorch2 = va_arg(args, Player*);
-        Player* player = GET_PLAYER(gPlayState);
 
         if (!(gPlayState->sceneNum == SCENE_WATER_TEMPLE && gPlayState->roomCtx.curRoom.num == 13)) {
             *should = true;

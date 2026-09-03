@@ -31,17 +31,96 @@ extern bool IsTimedRoom(bool mq, s16 sceneNum, s8 roomNum);
 #define CVAR_MINIBOSS_BGM_NAME CVAR_ENHANCEMENT("EnemyRandoMinibossBgm")
 #define CVAR_MINIBOSS_BGM_DEFAULT false
 #define MINIBOSS_BGM_ENABLED CVarGetInteger(CVAR_MINIBOSS_BGM_NAME, CVAR_MINIBOSS_BGM_DEFAULT)
+#define CVAR_INVIS_STALFOS_NAME CVAR_ENHANCEMENT("EnemyRandoInvisStalfosBgm")
+#define CVAR_INVIS_STALFOS_DEFAULT false
+#define INVIS_STALFOS_ENABLED CVarGetInteger(CVAR_INVIS_STALFOS_NAME, CVAR_INVIS_STALFOS_DEFAULT)
 
-static u8 sControlMusicArea = false;
+static u8 sControlMusicArea = false; // Area that player update should control miniboss music for
 
-void RegisterEnemyRandoMinibossMusic(void) {
+// Check if active Invisible Stalfos present for stop music check.
+// Return false if any present, true if none present or setting disabled
+u8 EnemyRando_CheckInvisStalfos(Actor* actor) {
+    if (INVIS_STALFOS_ENABLED) {
+        Actor* enemy = gPlayState->actorCtx.actorLists[ACTORCAT_ENEMY].head;
+        while (enemy != NULL) {
+            if ((enemy->id == ACTOR_EN_TEST && enemy->params == STALFOS_TYPE_INVISIBLE) && enemy != actor &&
+                enemy->update != NULL && ((EnTest*)enemy)->actionFunc != EnTest_WaitGround &&
+                Actor_WorldDistXYZToActor(actor, enemy) <= 8000.0f) {
+                return false;
+            }
+            enemy = enemy->next;
+        }
+    }
+    return true;
+}
+
+// Miniboss music hooks for all enemy randomizer, regardless of music settings
+void RegisterEnemyRando_MinibossMusicGeneral(void) {
+    // Stop miniboss music on room switch. Always stop, in case any cvar was toggled during miniboss music
+    COND_HOOK(AfterSceneCommands, ENEMY_RANDOMIZER_ENABLED, [](int16_t sceneId) {
+        if (Audio_GetActiveSeqId(SEQ_PLAYER_BGM_MAIN) == NA_BGM_MINI_BOSS) {
+            func_800F5B58();
+        }
+    });
+
+    // Never let randomized miniboss enemy play music by itself, with exception below
+    COND_VB_SHOULD(VB_PLAY_MINIBOSS_MUSIC, ENEMY_RANDOMIZER_ENABLED, { *should = false; });
+
+    // Ensure non-randomized hooked minibosses play music
+    COND_VB_SHOULD(VB_PLAY_MINIBOSS_MUSIC_IK, ENEMY_RANDOMIZER_ENABLED, {
+        EnIk* enIk = va_arg(args, EnIk*);
+        if (enIk->actor.params == 1280 ||
+            (gPlayState->sceneNum == SCENE_INSIDE_GANONS_CASTLE &&
+             !ResourceMgr_IsSceneMasterQuest(gPlayState->sceneNum) && gPlayState->roomCtx.curRoom.num == 17)) {
+            *should = true;
+        } else {
+            *should = false;
+        }
+    });
+
+    COND_VB_SHOULD(VB_PLAY_MINIBOSS_MUSIC_GELDB, ENEMY_RANDOMIZER_ENABLED, {
+        EnGeldB* enGeldB = va_arg(args, EnGeldB*);
+        if (enGeldB->keyFlag) {
+            *should = true;
+        } else {
+            *should = false;
+        }
+    });
+
+    COND_VB_SHOULD(VB_PLAY_MINIBOSS_MUSIC_TORCH2, ENEMY_RANDOMIZER_ENABLED, {
+        Player* enTorch2 = va_arg(args, Player*);
+        if (!(gPlayState->sceneNum == SCENE_WATER_TEMPLE && gPlayState->roomCtx.curRoom.num == 13)) {
+            *should = false;
+        }
+    });
+
+    // Always play miniboss music for Invisible Stalfos if setting enabled
+    COND_VB_SHOULD(VB_PLAY_MINIBOSS_MUSIC_TEST, ENEMY_RANDOMIZER_ENABLED && !MINIBOSS_BGM_ENABLED, {
+        EnTest* enTest = va_arg(args, EnTest*);
+        if (enTest->actor.params == STALFOS_TYPE_INVISIBLE && INVIS_STALFOS_ENABLED) {
+            *should = true;
+        } else {
+            *should = false;
+        }
+    });
+
+    // Only let non-randomized minibosses stop miniboss music by themselves,
+    // but ensure no Invisible Stalfos active
+    COND_VB_SHOULD(VB_STOP_MINIBOSS_MUSIC, ENEMY_RANDOMIZER_ENABLED && !MINIBOSS_BGM_ENABLED, {
+        Actor* actor = va_arg(args, Actor*);
+        *should = EnemyRando_CheckInvisStalfos(actor);
+    });
+}
+
+// Hooks specific to miniboss music settings
+void RegisterEnemyRando_MinibossMusicSpecific(void) {
     // On scene/room switch, set appropriate sControlMusicArea value
     COND_HOOK(AfterSceneCommands, MINIBOSS_BGM_ENABLED, [](int16_t sceneId) {
         s8 roomNum = gPlayState->roomCtx.curRoom.num;
         bool mq = ResourceMgr_IsSceneMasterQuest(sceneId);
 
         // Control music in clear and timed rooms, but not in rooms with non-randomized minibosses
-        // Exclude Shadow room 11 as doors are not controlled by enemy death
+        // Exclude Shadow clear room 11 as doors are not controlled by enemy death
         if ((IsClearRoom(mq, sceneId, roomNum) || IsTimedRoom(mq, sceneId, roomNum)) &&
             !Flags_GetClear(gPlayState, roomNum) &&
             (!(sceneId == SCENE_BOTTOM_OF_THE_WELL && roomNum == 4) &&
@@ -56,12 +135,11 @@ void RegisterEnemyRandoMinibossMusic(void) {
         }
     });
 
-    // Always play miniboss music for Invisible Stalfos if setting enabled, but let
-    // normal hook handle it if clear/timed room
+    // Always play miniboss music for Invisible Stalfos if Stalfos setting enabled, but let
+    // player hook handle it if clear/timed room
     COND_VB_SHOULD(VB_PLAY_MINIBOSS_MUSIC_TEST, MINIBOSS_BGM_ENABLED, {
         EnTest* enTest = va_arg(args, EnTest*);
-        if (!sControlMusicArea && enTest->actor.params == STALFOS_TYPE_INVISIBLE &&
-            CVarGetInteger(CVAR_ENHANCEMENT("EnemyRandoInvisStalfosBgm"), false)) {
+        if (!sControlMusicArea && enTest->actor.params == STALFOS_TYPE_INVISIBLE && INVIS_STALFOS_ENABLED) {
             *should = true;
         } else {
             *should = false;
@@ -69,26 +147,14 @@ void RegisterEnemyRandoMinibossMusic(void) {
     });
 
     // Only let non-randomized minibosses stop miniboss music by themselves.
-    // Exception: Invisible Stalfos anywhere, if setting is enabled
+    // Exception: Invisible Stalfos anywhere, if setting is enabled and not in control area
     COND_VB_SHOULD(VB_STOP_MINIBOSS_MUSIC, MINIBOSS_BGM_ENABLED, {
         Actor* actor = va_arg(args, Actor*);
 
         if (sControlMusicArea) {
             *should = false;
-        } else if ((actor->id == ACTOR_EN_TEST && actor->params == STALFOS_TYPE_INVISIBLE) &&
-                   CVarGetInteger(CVAR_ENHANCEMENT("EnemyRandoInvisStalfosBgm"), false)) {
-            Actor* enemy = gPlayState->actorCtx.actorLists[ACTORCAT_ENEMY].head;
-            // Rerun proximity check with actor update check as per fix in AlwaysOnFixes,
-            // but also ensure the Stalfos is activated
-            while (enemy != NULL) {
-                if ((enemy->id == ACTOR_EN_TEST && enemy->params == STALFOS_TYPE_INVISIBLE) && enemy != actor &&
-                    enemy->update != NULL && ((EnTest*)enemy)->actionFunc != EnTest_WaitGround &&
-                    Actor_WorldDistXYZToActor(actor, enemy) <= 8000.0f) {
-                    *should = false; // Another active Invisible Stalfos found, continue music
-                    return;
-                }
-                enemy = enemy->next;
-            }
+        } else if (INVIS_STALFOS_ENABLED) {
+            *should = EnemyRando_CheckInvisStalfos(actor);
         }
     });
 
@@ -143,5 +209,8 @@ void RegisterEnemyRandoMinibossMusic(void) {
     });
 }
 
-static RegisterShipInitFunc initFunc(RegisterEnemyRandoMinibossMusic,
-                                     { CVAR_ENEMY_RANDOMIZER_NAME, CVAR_MINIBOSS_BGM_NAME });
+static RegisterShipInitFunc initEnemyRando_MinibossMusicGeneral(RegisterEnemyRando_MinibossMusicGeneral,
+                                                                { CVAR_ENEMY_RANDOMIZER_NAME });
+static RegisterShipInitFunc initEnemyRando_MinibossMusicSpecific(RegisterEnemyRando_MinibossMusicSpecific,
+                                                                 { CVAR_ENEMY_RANDOMIZER_NAME,
+                                                                   CVAR_MINIBOSS_BGM_NAME });

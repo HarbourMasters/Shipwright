@@ -970,6 +970,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `Player*`
+    VB_PLAY_MINIBOSS_MUSIC_TORCH2,
+
+    // #### `result`
+    // ```c
     // varies
     // ```
     // #### `args`
