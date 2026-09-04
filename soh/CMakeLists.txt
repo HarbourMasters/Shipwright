@@ -685,7 +685,6 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "CafeOS")
     )
 else()
     find_package(SDL2)
-    find_package(SDL3)
     set(THREADS_PREFER_PTHREAD_FLAG ON)
     find_package(Threads REQUIRED)
     find_package(Ogg REQUIRED)
@@ -698,7 +697,6 @@ else()
     "libultraship;"
         "torch;"
         SDL2::SDL2
-        SDL3::SDL3
         "Ogg::ogg"
         "Vorbis::vorbis"
         "Vorbis::vorbisenc"
@@ -709,6 +707,30 @@ else()
         ${CMAKE_DL_LIBS}
         Threads::Threads
     )
+    
+    set(DARWIN_SDL2_IS_COMPAT FALSE)
+
+    if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+        execute_process(
+            COMMAND brew list --versions sdl2-compat
+            RESULT_VARIABLE BREW_SDL2_COMPAT_RESULT
+            OUTPUT_QUIET
+            ERROR_QUIET
+        )
+
+        if(BREW_SDL2_COMPAT_RESULT EQUAL 0)
+            set(DARWIN_SDL2_IS_COMPAT TRUE)
+        endif()
+    endif()
+
+    if(DARWIN_SDL2_IS_COMPAT)
+        message(STATUS "SDL2 is using SDL3 compatibility layer, adding SDL3 to link dependencies")
+        find_package(SDL3)
+        list(APPEND ADDITIONAL_LIBRARY_DEPENDENCIES SDL3::SDL3)
+    endif()
+
+    set(DARWIN_SDL2_IS_COMPAT ${DARWIN_SDL2_IS_COMPAT} PARENT_SCOPE)
+
     if(MATH_LIBRARY)
         list(APPEND ADDITIONAL_LIBRARY_DEPENDENCIES ${MATH_LIBRARY})
     endif()
