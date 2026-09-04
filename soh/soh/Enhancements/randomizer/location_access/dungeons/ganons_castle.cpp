@@ -213,10 +213,10 @@ void RegionTable_Init_GanonsCastle() {
 
     areaTable[RR_GANONS_CASTLE_WATER_TRIAL_BLOCK_ROOM] = Region("Ganon's Castle Water Trial Block Room", SCENE_INSIDE_GANONS_CASTLE, {
         //Events
-        EVENT_ACCESS(LOGIC_FAIRY_ACCESS,              logic->CanBreakPots()),
+        EVENT_ACCESS(LOGIC_FAIRY_ACCESS, logic->CanBreakPots()),
     }, {
         //Locations
-        LOCATION(RC_GANONS_CASTLE_WATER_TRIAL_POT_3,                 logic->CanBreakPots()),
+        LOCATION(RC_GANONS_CASTLE_WATER_TRIAL_POT_3, logic->CanBreakPots()),
     }, {
         //Exits
         ENTRANCE(RR_GANONS_CASTLE_WATER_TRIAL_BLUE_FIRE_ROOM,    true),

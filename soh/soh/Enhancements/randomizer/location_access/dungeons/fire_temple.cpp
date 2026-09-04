@@ -1,6 +1,7 @@
 #include "soh/Enhancements/randomizer/location_access.h"
 #include "soh/Enhancements/randomizer/entrance.h"
 #include "soh/Enhancements/randomizer/dungeon.h"
+#include "soh/Enhancements/randomizer/randomizerEnums.h"
 
 using namespace Rando;
 
@@ -751,7 +752,7 @@ void RegionTable_Init_FireTemple() {
         //Exits
         ENTRANCE(RR_FIRE_TEMPLE_MQ_SHORTCUT_ROOM_LOWER, true),
         //Explosives can also reach this room. Chus is relatively simple, they need to detonate on the first horizontal bar up from the floor while horizontally near the switch, but bombs are much harder
-        ENTRANCE(RR_FIRE_TEMPLE_MQ_MAZE_CRATE_CAGE,     AnyAgeTime([]{return logic->CanJumpslash() || (ctx->GetTrickOption(RT_VISIBLE_COLLISION) && logic->CanUse(RG_BOMBCHU_5));})),
+        ENTRANCE(RR_FIRE_TEMPLE_MQ_MAZE_CRATE_CAGE,     AnyAgeTime([]{return logic->CanJumpslash() || (ctx->GetTrickOption(RT_VISIBLE_COLLISION) && logic->CanUse(RG_BOMBCHU_5)) || (ctx->GetTrickOption(RT_BOMB_DETONATION) && logic->CanUse(RG_BOMB_BAG));})),
         ENTRANCE(RR_FIRE_TEMPLE_MQ_UPPER_LIZALFOS_MAZE, (logic->HasExplosives() || ctx->GetTrickOption(RT_VISIBLE_COLLISION)) && logic->CanUse(RG_MEGATON_HAMMER) && logic->CanUse(RG_HOOKSHOT)),
         ENTRANCE(RR_FIRE_TEMPLE_MQ_MAZE_SWITCH_DOOR,    logic->HasExplosives() && ctx->GetTrickOption(RT_FIRE_MQ_MAZE_SIDE_ROOM)),
         ENTRANCE(RR_FIRE_TEMPLE_MQ_NARROW_PATH_ROOM,    false),
