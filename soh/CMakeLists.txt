@@ -685,6 +685,7 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "CafeOS")
     )
 else()
     find_package(SDL2)
+    find_package(SDL3)
     set(THREADS_PREFER_PTHREAD_FLAG ON)
     find_package(Threads REQUIRED)
     find_package(Ogg REQUIRED)
@@ -697,6 +698,7 @@ else()
     "libultraship;"
         "torch;"
         SDL2::SDL2
+        SDL3::SDL3
         "Ogg::ogg"
         "Vorbis::vorbis"
         "Vorbis::vorbisenc"

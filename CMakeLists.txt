@@ -424,6 +424,38 @@ install(CODE "
     fixup_bundle(\"\${CMAKE_INSTALL_PREFIX}/../MacOS/soh\" \"\" \"${dirs}\")
     ")
 
+# Fixup SDL3 dylib symlinks. SDL3's CMake install creates a dylib with a versioned
+# name, and symlinks to it for the unversioned and major-version names.
+# The symlinks are relative, so they break when the app bundle is relocated.
+# This creates absolute symlinks in the Frameworks directory, which is where the
+# app bundle looks for them.
+INSTALL(CODE "
+    GET_FILENAME_COMPONENT(SDL3_FILENAME \"\${SDL3_LIBRARY}\" NAME)
+
+    SET(FRAMEWORKS_DIR \"\${CMAKE_INSTALL_PREFIX}/../Frameworks\")
+    SET(SDL3_ACTUAL \"\${FRAMEWORKS_DIR}/\${SDL3_FILENAME}\")
+
+    IF(NOT SDL3_FILENAME STREQUAL \"libSDL3.dylib\")
+        IF(NOT EXISTS \"\${FRAMEWORKS_DIR}/libSDL3.dylib\")
+            FILE(CREATE_LINK
+                \"\${SDL3_FILENAME}\"
+                \"\${FRAMEWORKS_DIR}/libSDL3.dylib\"
+                SYMBOLIC
+            )
+        ENDIF()
+    ENDIF()
+
+    IF(NOT SDL3_FILENAME STREQUAL \"libSDL3.0.dylib\")
+        IF(NOT EXISTS \"\${FRAMEWORKS_DIR}/libSDL3.0.dylib\")
+            FILE(CREATE_LINK
+                \"\${SDL3_FILENAME}\"
+                \"\${FRAMEWORKS_DIR}/libSDL3.0.dylib\"
+                SYMBOLIC
+            )
+        ENDIF()
+    ENDIF()
+")
+
 endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "Windows|NintendoSwitch|CafeOS")
