@@ -37,6 +37,7 @@ static WidgetInfo ovlDuration;
 static WidgetInfo voicePitch;
 static WidgetInfo randomAudioGenModes;
 static WidgetInfo lowerOctaves;
+static WidgetInfo randomInstruments;
 
 namespace SohGui {
 extern std::shared_ptr<SohMenu> mSohMenu;
@@ -629,6 +630,8 @@ void AudioEditor::DrawElement() {
                                                static_cast<uint32_t>(ImGui::GetContentRegionAvail().x), THEME_COLOR);
                 SohGui::mSohMenu->MenuDrawItem(lowerOctaves, static_cast<uint32_t>(ImGui::GetContentRegionAvail().x),
                                                THEME_COLOR);
+                SohGui::mSohMenu->MenuDrawItem(randomInstruments,
+                                               static_cast<uint32_t>(ImGui::GetContentRegionAvail().x), THEME_COLOR);
             }
             ImGui::EndChild();
             ImGui::EndTable();
@@ -981,6 +984,11 @@ void RegisterAudioWidgets() {
                               "couple of octaves so they can still harmonize with the other notes of the "
                               "sequence."));
     SohGui::mSohMenu->AddSearchWidget({ lowerOctaves, "Enhancements", "Audio Editor", "Audio Options" });
+
+    randomInstruments = { .name = "Randomize Music Instruments", .type = WidgetType::WIDGET_CVAR_CHECKBOX };
+    randomInstruments.CVar(CVAR_AUDIO("RandomMusicInstruments"))
+        .Options(CheckboxOptions().Color(THEME_COLOR).Tooltip("Shuffles music instruments within the same music."));
+    SohGui::mSohMenu->AddSearchWidget({ randomInstruments, "Enhancements", "Audio Editor", "Audio Options" });
 }
 
 static RegisterMenuInitFunc menuInitFunc(RegisterAudioWidgets);

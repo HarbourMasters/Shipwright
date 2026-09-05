@@ -1,5 +1,7 @@
 #include "global.h"
 #include "soh/ResourceManagerHelpers.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include <libultraship/bridge.h>
 
 extern bool gUseLegacySD;
 
@@ -312,15 +314,21 @@ void Audio_ProcessNotes(void) {
 }
 
 SoundFontSound* Audio_InstrumentGetSound(Instrument* instrument, s32 semitone) {
-    SoundFontSound* sound;
-    if (semitone < instrument->normalRangeLo) {
-        sound = &instrument->lowNotesSound;
-    } else if (semitone <= instrument->normalRangeHi) {
-        sound = &instrument->normalNotesSound;
-    } else {
-        sound = &instrument->highNotesSound;
+    SoundFontSound* overrideSound = NULL;
+
+    GameInteractor_ExecuteOnSeqInstrumentGetSound(instrument, semitone, &overrideSound);
+
+    if (overrideSound != NULL) {
+        return overrideSound;
     }
-    return sound;
+
+    if (semitone < instrument->normalRangeLo) {
+        return &instrument->lowNotesSound;
+    } else if (semitone <= instrument->normalRangeHi) {
+        return &instrument->normalNotesSound;
+    } else {
+        return &instrument->highNotesSound;
+    }
 }
 
 Instrument* Audio_GetInstrumentInner(s32 fontId, s32 instId) {
