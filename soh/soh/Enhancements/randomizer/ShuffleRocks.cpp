@@ -216,8 +216,8 @@ static CheckIdentity IdentifyRock(s32 sceneNum, s32 posX, s32 posZ) {
 
     Rando::Location* location = OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(
         ACTOR_EN_ISHI, sceneNum, TWO_ACTOR_PARAMS(posX, posZ));
-    
-    if(!IdentifyCheck(&rockIdentity, location)){
+
+    if (!IdentifyCheck(&rockIdentity, location)) {
         SPDLOG_WARN("IdentifyRock did not receive a valid RC value %d,%d.", posX, posZ);
     }
 

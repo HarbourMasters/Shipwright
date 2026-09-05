@@ -1,7 +1,7 @@
 #include "./RCToRandInf.h"
 #include <spdlog/spdlog.h>
 
-bool IdentifyCheck(CheckIdentity* id, Rando::Location* loc, bool allowUnknown){
+bool IdentifyCheck(CheckIdentity* id, Rando::Location* loc, bool allowUnknown) {
     if (loc == nullptr || loc->GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
         if (rcToRandomizerInf.contains(loc->GetRandomizerCheck())) {
             id->randomizerInf = rcToRandomizerInf[loc->GetRandomizerCheck()];
@@ -12,7 +12,8 @@ bool IdentifyCheck(CheckIdentity* id, Rando::Location* loc, bool allowUnknown){
         id->randomizerCheck = loc->GetRandomizerCheck();
         return true;
     } else if (!allowUnknown) {
-        SPDLOG_WARN("IdentifyCheck did not receive a valid RC value (%d).", static_cast<int>(loc->GetRandomizerCheck()));
+        SPDLOG_WARN("IdentifyCheck did not receive a valid RC value (%d).",
+                    static_cast<int>(loc->GetRandomizerCheck()));
         assert(false);
     }
     return false;

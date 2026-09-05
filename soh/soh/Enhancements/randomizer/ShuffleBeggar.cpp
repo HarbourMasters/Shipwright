@@ -15,7 +15,7 @@ static CheckIdentity IdentifyBeggar(s32 sceneNum, s32 textId) {
 
     Rando::Location* location =
         OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_EN_HY, sceneNum, textId);
-    
+
     IdentifyCheck(&beggarIdentity, location);
 
     return beggarIdentity;
