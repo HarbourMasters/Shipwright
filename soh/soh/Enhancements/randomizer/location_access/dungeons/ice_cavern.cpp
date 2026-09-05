@@ -20,7 +20,7 @@ void RegionTable_Init_IceCavern() {
     areaTable[RR_ICE_CAVERN_BEGINNING] = Region("Ice Cavern Beginning", SCENE_ICE_CAVERN, {}, {
         //Locations
         LOCATION(RC_ICE_CAVERN_ENTRANCE_STORMS_FAIRY,      logic->CanUse(RG_SONG_OF_STORMS)),
-        LOCATION(RC_ICE_CAVERN_LOBBY_RUPEE,                logic->BlueFire()), // can get with rang trick
+        LOCATION(RC_ICE_CAVERN_LOBBY_RUPEE,                logic->BlueFire() || (ctx->GetTrickOption(RT_VISIBLE_COLLISION) && logic->CanJumpslash())), // can get with rang trick
         LOCATION(RC_ICE_CAVERN_ENTRANCE_LEFT_STALAGMITE,   logic->CanClearStalagmite()),
         LOCATION(RC_ICE_CAVERN_ENTRANCE_MIDDLE_STALAGMITE, logic->CanClearStalagmite()),
         LOCATION(RC_ICE_CAVERN_ENTRANCE_RIGHT_STALAGMITE,  logic->CanClearStalagmite()),
@@ -83,7 +83,7 @@ void RegionTable_Init_IceCavern() {
         LOCATION(RC_ICE_CAVERN_MAP_CHEST,                     logic->BlueFire() && logic->CanOpenLargeChest()),
         // Bow extension is possible, but very precise: X = 403, Z = 2062-3, Rot = -11475, needs a setup and is its own trick
         LOCATION(RC_ICE_CAVERN_FROZEN_POT_1,                  (logic->CanBreakPots() && logic->BlueFire()) || logic->HasExplosives() ||
-                                                              (ctx->GetTrickOption(RT_VISIBLE_COLLISION) && logic->CanJumpslash()) ||
+                                                              (ctx->GetTrickOption(RT_VISIBLE_COLLISION) && (logic->CanJumpslash())) ||
                                                               (ctx->GetTrickOption(RT_ITEM_EXTENSION) && logic->CanUse(RG_HOOKSHOT))),
         LOCATION(RC_ICE_CAVERN_MAP_ROOM_LEFT_HEART,           true),
         LOCATION(RC_ICE_CAVERN_MAP_ROOM_MIDDLE_HEART,         true),
@@ -141,6 +141,7 @@ void RegionTable_Init_IceCavern() {
     areaTable[RR_ICE_CAVERN_BLOCK_ROOM] = Region("Ice Cavern Block Room", SCENE_ICE_CAVERN, {}, {
         //Locations
         // trick involves backflip, could be merged into general trick
+        // is also possible with bunnyhovers and a jumpslash, but unintuitive
         LOCATION(RC_ICE_CAVERN_GS_PUSH_BLOCK_ROOM,                      logic->HookshotOrBoomerang() || (ctx->GetTrickOption(RT_ICE_BLOCK_GS) && logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS) && logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_SHORT_JUMPSLASH))),
         LOCATION(RC_ICE_CAVERN_SLIDING_BLOCK_RUPEE_1,                   logic->CanUse(RG_BOOMERANG)),
         LOCATION(RC_ICE_CAVERN_SLIDING_BLOCK_RUPEE_2,                   logic->CanUse(RG_BOOMERANG)),
@@ -154,8 +155,8 @@ void RegionTable_Init_IceCavern() {
         LOCATION(RC_ICE_CAVERN_PUSH_BLOCK_HALL_STALACTITE_2,            true),
         LOCATION(RC_ICE_CAVERN_PUSH_BLOCK_HALL_STALACTITE_3,            true),
         LOCATION(RC_ICE_CAVERN_LOWER_BLOCK_SILVER,                      true),
-        LOCATION(RC_ICE_CAVERN_NEAR_BLOCK_SILVER,                       logic->IsAdult || logic->HasItem(RG_POWER_BRACELET) || logic->CanUse(RG_HOVER_BOOTS)),
-        LOCATION(RC_ICE_CAVERN_NEAR_GS_BLOCK_SILVER,                    logic->IsAdult || logic->HasItem(RG_POWER_BRACELET) || logic->CanUse(RG_HOVER_BOOTS)),
+        LOCATION(RC_ICE_CAVERN_NEAR_BLOCK_SILVER,                       logic->IsAdult || logic->HasItem(RG_POWER_BRACELET) || logic->CanUse(RG_HOVER_BOOTS) || logic->BunnyHood()),
+        LOCATION(RC_ICE_CAVERN_NEAR_GS_BLOCK_SILVER,                    logic->IsAdult || logic->HasItem(RG_POWER_BRACELET) || logic->CanUse(RG_HOVER_BOOTS) || logic->BunnyHood()),
     }, {
         //Exits
         ENTRANCE(RR_ICE_CAVERN_HUB,              logic->CanClearStalagmite() || ctx->GetTrickOption(RT_ICE_STALAGMITE_CLIP)),
@@ -163,10 +164,12 @@ void RegionTable_Init_IceCavern() {
         ENTRANCE(RR_ICE_CAVERN_AFTER_BLOCK_ROOM, (logic->HasItem(RG_POWER_BRACELET) || (logic->IsAdult && (logic->CanGroundJump() || ctx->GetTrickOption(RT_SLIDE_JUMP)))) && logic->HasItem(RG_ICE_CAVERN_SILVER_BLOCK)),
     });
 
+    //the red ice nook can be reached with bunnyhovers from NEAR_BLOCK_SILVER, but it's unintuitive.
+    //if implimented, split this region
     areaTable[RR_ICE_CAVERN_BLOCK_ROOM_NOOKS] = Region("Ice Cavern Block Room Nooks", SCENE_ICE_CAVERN, {
         //Events
         EVENT_ACCESS(LOGIC_BLUE_FIRE_ACCESS, true),
-        EVENT_ACCESS(LOGIC_ICE_CAVERN_SILVER_BLOCK, (logic->IsAdult || logic->HasItem(RG_POWER_BRACELET) || logic->CanUse(RG_HOVER_BOOTS)) &&
+        EVENT_ACCESS(LOGIC_ICE_CAVERN_SILVER_BLOCK, (logic->IsAdult || logic->HasItem(RG_POWER_BRACELET) || logic->CanUse(RG_HOVER_BOOTS) || logic->BunnyHood()) &&
                                                         (logic->BlueFire() || (ctx->GetTrickOption(RT_VISIBLE_COLLISION) && logic->CanJumpslash()))),
     }, {
         //Locations
@@ -310,9 +313,10 @@ void RegionTable_Init_IceCavern() {
         LOCATION(RC_ICE_CAVERN_MQ_MAP_RED_ICE,                  logic->BlueFire()),
     }, {});
 
+    //RANDOTODO the default state of the toggle switchs in MQ ice are wierd, investigate for doordsanity
     areaTable[RR_ICE_CAVERN_MQ_SCARECROW_ROOM] = Region("Ice Cavern MQ Scarecrow Room", SCENE_ICE_CAVERN, {
         //Events
-        EVENT_ACCESS(LOGIC_BLUE_FIRE_ACCESS, logic->CanUse(RG_SONG_OF_TIME) || (logic->IsAdult && (logic->CanGroundJump() || ctx->GetTrickOption(RT_SLIDE_JUMP)))),
+        EVENT_ACCESS(LOGIC_BLUE_FIRE_ACCESS, logic->CanUse(RG_SONG_OF_TIME) || logic->BunnyHovers() || (logic->IsAdult && (logic->CanGroundJump() || ctx->GetTrickOption(RT_SLIDE_JUMP)))),
     }, {
         //Locations
         //Implies being able to kill the skull if you hit the switch
@@ -320,14 +324,14 @@ void RegionTable_Init_IceCavern() {
         LOCATION(RC_ICE_CAVERN_MQ_GS_SCARECROW,                logic->ReachScarecrow() || (logic->IsAdult && (logic->CanUse(RG_LONGSHOT) || logic->CanGroundJump() || ctx->GetTrickOption(RT_SLIDE_JUMP)))),
         LOCATION(RC_ICE_CAVERN_MQ_BEFORE_SCARECROW_STALAGMITE, logic->CanClearStalagmite()),
         LOCATION(RC_ICE_CAVERN_MQ_SCARECROW_ROOM_STALACTITE,   true),
-        LOCATION(RC_ICE_CAVERN_MQ_SCARECROW_LEFT_RED_ICE,      logic->IsChild && ctx->GetOption(RSK_BLUE_FIRE_ARROWS) && logic->CanUse(RG_ICE_ARROWS) && logic->CanUse(RG_BOOMERANG)),
-        LOCATION(RC_ICE_CAVERN_MQ_SCARECROW_MIDDLE_RED_ICE,    logic->IsChild && ctx->GetOption(RSK_BLUE_FIRE_ARROWS) && logic->CanUse(RG_ICE_ARROWS) && logic->CanUse(RG_BOOMERANG)),
-        LOCATION(RC_ICE_CAVERN_MQ_SCARECROW_RIGHT_RED_ICE,     logic->IsChild && ctx->GetOption(RSK_BLUE_FIRE_ARROWS) && logic->CanUse(RG_ICE_ARROWS) && logic->CanUse(RG_BOOMERANG)),
+        LOCATION(RC_ICE_CAVERN_MQ_SCARECROW_LEFT_RED_ICE,      ctx->GetOption(RSK_BLUE_FIRE_ARROWS) && logic->CanUse(RG_ICE_ARROWS) && logic->CanUse(RG_BOOMERANG)),
+        LOCATION(RC_ICE_CAVERN_MQ_SCARECROW_MIDDLE_RED_ICE,    ctx->GetOption(RSK_BLUE_FIRE_ARROWS) && logic->CanUse(RG_ICE_ARROWS) && logic->CanUse(RG_BOOMERANG)),
+        LOCATION(RC_ICE_CAVERN_MQ_SCARECROW_RIGHT_RED_ICE,     ctx->GetOption(RSK_BLUE_FIRE_ARROWS) && logic->CanUse(RG_ICE_ARROWS) && logic->CanUse(RG_BOOMERANG)),
     }, {
         //Exits
         ENTRANCE(RR_ICE_CAVERN_MQ_HUB,           logic->BlueFire()),
         //The switch defaults into the state where the block exists, and is a temp flag
-        ENTRANCE(RR_ICE_CAVERN_MQ_WEST_CORRIDOR, logic->IsAdult && logic->BlueFire()),
+        ENTRANCE(RR_ICE_CAVERN_MQ_WEST_CORRIDOR, (logic->IsAdult || logic->BunnyHovers()) && logic->BlueFire()),
     });
 
     areaTable[RR_ICE_CAVERN_MQ_WEST_CORRIDOR] = Region("Ice Cavern MQ West Corridor", SCENE_ICE_CAVERN, {}, {

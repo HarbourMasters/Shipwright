@@ -7,6 +7,7 @@
 #include "soh/Enhancements/randomizer/dungeon.h"
 #include "soh/Enhancements/randomizer/logic.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
+#include "soh/Enhancements/randomizer/randomizerEnumStrings.h"
 
 extern "C" {
 #include "variables.h"
@@ -326,7 +327,7 @@ void SetStartingItems() {
                 Item_Give(NULL, ITEM_LETTER_RUTO);
                 break;
             default:
-                SPDLOG_ERROR("[SetStartingItems] Unhandled value for bottleKey {}: {}", (int)bottleKey, bottle);
+                SPDLOG_ERROR("[SetStartingItems] Unhandled value for bottleKey {}: {}", bottleKey, bottle);
                 assert(false);
                 break;
         }

@@ -84,4 +84,5 @@ static void RegisterSpeedModifiers() {
     });
 }
 
-static RegisterShipInitFunc initFunc(RegisterSpeedModifiers, { CVAR_SPEED_MODIFIER_VALUE_NAME, CVAR_BUNNY_HOOD_NAME });
+static RegisterShipInitFunc initFunc(RegisterSpeedModifiers,
+                                     { "IS_RANDO", CVAR_SPEED_MODIFIER_VALUE_NAME, CVAR_BUNNY_HOOD_NAME });

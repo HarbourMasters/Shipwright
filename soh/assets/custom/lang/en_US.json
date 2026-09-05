@@ -1467,6 +1467,20 @@
                     "Item placement logic will respect this option, so it might be required to use this to progress."
                 ]
             },
+            "bunny_hood": {
+                "name": "Bunny Hood Effect",
+                "description": [
+                    "Wearing the Bunny Hood makes Link run 1.5x faster and jump 1.5x further, like in Majora's Mask. ",
+                    "Item placement logic will respect this option, so it might be required to use this to progress."
+                ]
+            },
+            "masks_as_adult": {
+                "name": "Masks as Adult",
+                "description": [
+                    "Masks can be equipped as adult instead of being child only. ",
+                    "Item placement logic will respect this option, so it might be required to use this to progress."
+                ]
+            },
             "rocs_feather": {
                 "name": "Roc's Feather",
                 "description": [
@@ -1973,10 +1987,6 @@
                     "letting you interact with some objects inside them such as large chests"
                 ]
             },
-            "bunny_hood_jumps": {
-                "name": "Bunny Hood Jumps",
-                "description": "Allows reaching locations using Bunny Hood's extended jumps."
-            },
             "damage_boost_simple": {
                 "name": "Simple damage boosts",
                 "description": "Allows damage boosts in order to reach further locations. Can be combined with \"Simple hover boosts\" for reaching far distances."
@@ -2068,8 +2078,8 @@
                 "description": "Can be obtained without Hookshot by using the Hover Boots off of one of the roots."
             },
             "lw_bridge": {
-                "name": "Jump onto the Lost Woods Bridge as Adult with Nothing",
-                "description": "With very precise movement it's possible for adult to jump onto the bridge without needing Longshot, Hover Boots, or Bean."
+                "name": "Jump onto the Lost Woods Bridge as Adult with a Jumpslash",
+                "description": "With very precise movement and a jumpslash it's possible for Adult to jump onto the bridge without needing Longshot, Hover Boots, or Bean."
             },
             "lw_mido_backflip": {
                 "name": "Backflip over Mido as Adult",
@@ -2080,8 +2090,8 @@
                 "description": "You need Deku Sticks or Kokiri Sword to dive with Navi for entering Zora's River."
             },
             "lw_gs_bean": {
-                "name": "Lost Woods Adult GS without Bean",
-                "description": "You can collect the token with a precise Hookshot use, as long as you can kill the Skulltula somehow first. It can be killed using Longshot, Bow, Bombchus or Din's Fire."
+                "name": "Lost Woods Adult GS with Hookshot",
+                "description": "You can collect the token with a precise Hookshot use, as long as you can kill the Skulltula somehow first. It can be killed using Bow, Bombchus or Din's Fire. Using Longshot to both kill the skull and grab the token is in default logic."
             },
             "hc_storms_gs": {
                 "name": "Hyrule Castle Storms Grotto GS with Just Boomerang",
@@ -2113,7 +2123,7 @@
             },
             "gy_child_dampe_race_poh": {
                 "name": "Second Dampe Race as Child",
-                "description": "It is possible to complete the second dampe race as child in under a minute, but it is a strict time limit."
+                "description": "It is possible to complete the second dampe race as child in under a minute, but it is a strict time limit. This is in default logic with Bunny Hood"
             },
             "gy_shadow_fire_arrows": {
                 "name": "Shadow Temple Entry with Fire Arrows",
@@ -2132,7 +2142,7 @@
             },
             "dmt_bombable": {
                 "name": "Death Mountain Trail Chest with Strength",
-                "description": "Child Link can blow up the wall using a nearby bomb flower. You must backwalk with the flower and then quickly throw it toward the wall."
+                "description": "Child Link can blow up the wall using a nearby bomb flower. You must backwalk with the flower and then quickly throw it toward the wall. This is not a trick if you have Bunny Hood."
             },
             "dmt_hovers_lower_gs": {
                 "name": "Death Mountain Trail Lower Red Rock GS with Hover Boots",
@@ -2173,7 +2183,7 @@
             },
             "gc_rolling_strength": {
                 "name": "Rolling Goron (Hot Rodder Goron) as Child with Strength",
-                "description": "Use the Bomb Flower on the stairs or near Medigoron. Timing is tight, especially without backwalking."
+                "description": "Use the Bomb Flower on the stairs or near Medigoron. Timing is tight, especially without backwalking.\nThis is in default logic with Bunny Hood."
             },
             "gc_leftmost": {
                 "name": "Goron City Maze Left Chest with Hover Boots",
@@ -2205,7 +2215,7 @@
             },
             "zr_lower": {
                 "name": "Zora's River Lower Freestanding PoH as Adult with Nothing",
-                "description": "Adult can reach this PoH with a precise jump, no Hover Boots required."
+                "description": "Adult can reach this PoH and the nearby bush with a precise jump, no Hover Boots or Bunny Hood required."
             },
             "zr_upper": {
                 "name": "Zora's River Upper Freestanding PoH as Adult with Nothing",
@@ -2356,11 +2366,11 @@
             },
             "dc_slingshot_skip": {
                 "name": "Dodongo's Cavern Child Slingshot Skips",
-                "description": "With precise platforming, child can cross the platforms while the flame circles are there. When enabling this trick, it's recommended that you also enable the Adult variant: \"Dodongo's Cavern Spike Trap Room Jump without Hover Boots\"."
+                "description": "With precise platforming, child can cross the platforms while the flame circles are there. When enabling this trick, it's recommended that you also enable Unintuitive Jumps, which enables Adult to skip this loop in an easier way."
             },
             "dc_scrub_room": {
                 "name": "Dodongo's Cavern Two Scrub Room with Strength",
-                "description": "With help from a conveniently-positioned block, Adult can quickly carry a Bomb Flower over to destroy the mud wall blocking the room with two Deku Scrubs."
+                "description": "With help from a conveniently-positioned block, Adult (or Child with Bunny Hood) can quickly carry a Bomb Flower over to destroy the mud wall blocking the room with two Deku Scrubs."
             },
             "dc_jump": {
                 "name": "Dodongo's Cavern Spike Trap Room Jump without Hover Boots",
@@ -2374,13 +2384,17 @@
                 "name": "Dodongo's Cavern Dodongo with Only Bombchus",
                 "description": "With precise timing you can feed King Dodongo a bombchu during a backflip"
             },
+            "dc_eyes_bunnyhovers": {
+                "name": "Dodongo's Cavern Dodongo with Goron Bracelet and Bunnyhovers",
+                "description": "With precisely timed movement using both Bunny Hood and Hover Boots you can use the high-rising platform to carry a Bomb Flower to the Dodongo's Head and quickly throw it close enough to the eyes to trigger them. This requires \"Bunny Hood in Logic\" to function."
+            },
             "dc_mq_stairs_with_only_strength": {
                 "name": "Dodongo's Cavern MQ Stairs With Only Strength",
                 "description": "Taking a bomb from the back can be used to lower stairs without using stick to drop bomb from wall."
             },
-            "dc_mq_child_bombs": {
-                "name": "Dodongo's Cavern MQ Early Bomb Bag Area as Child",
-                "description": "With a precise jumpslash from above, you can reach the Bomb Bag area as only child without needing a Slingshot. You will take fall damage."
+            "dc_child_lobby": {
+                "name": "Dodongo's Cavern Lobby Recoil to Ledge as Child",
+                "description": "With a precise jumpslash from above, you can reach the ledge in DC Lobby as Child from the upper area near the tablet. You will take fall damage."
             },
             "dc_mq_child_eyes": {
                 "name": "Dodongo's Cavern MQ Light the Eyes with Strength as Child",
@@ -2578,6 +2592,10 @@
                 "name": "Fire Temple MQ Above Flame Wall Maze GS from Below with Longshot",
                 "description": "The floor of the room that contains this Skulltula is only solid from above. From the maze below, the Longshot can be shot through the ceiling to obtain the token with two fewer small keys than normal."
             },
+            "water_high_emblem_jump": {
+                "name": "Water Temple Jump to High Emblem with Nothing",
+                "description": "Adult can jump directly to the Emblem that sets the water level to high from the pillar with nothing by aiming for the middle of the ledge. Child with the help of Bunny Hood can do the same, but even easier."
+            },
             "water_longshot_torch": {
                 "name": "Water Temple Torch Longshot",
                 "description": [
@@ -2627,7 +2645,7 @@
             },
             "water_dragon_jump_dive": {
                 "name": "Water Temple Dragon Statue Jump Dive",
-                "description": "If you come into the dragon statue room from the serpent river, you can sidehop down from above and get into the tunnel without needing either Iron Boots or a Scale. This trick applies to both Vanilla and Master Quest. In Vanilla, you must shoot the switch from above with the Bow, and then quickly get through the tunnel before the gate closes."
+                "description": "If you come into the dragon statue room from the serpent river, you can sidehop down from above and get into the tunnel without needing either Iron Boots or a Scale. Alternativly, you can do this while equipping irons in middair to get into the tunnel without swim. This trick applies to both Vanilla and Master Quest. In Vanilla, you must shoot the switch from above with the Bow, and then quickly get through the tunnel before the gate closes."
             },
             "water_adult_dragon": {
                 "name": "Water Temple Dragon Statue Switch from Above the Water as Adult",
@@ -2665,7 +2683,7 @@
                 "description": [
                     "Invisible hookshot geometry can be used in MQ to get over the gate that blocks you from going to this ",
                     "Skulltula early, skipping a small key as well as needing Hovers or Scarecrow to reach the locked door.\n",
-                    "In vanilla this can be used to get past without bronze scale."
+                    "In vanilla this can be used to leave the water and pass in either direction without Bronze Scale using Iron Boots and Hookshot."
                 ]
             },
             "water_morpha_without_hookshot": {
@@ -2737,7 +2755,7 @@
             },
             "shadow_mq_huge_pit": {
                 "name": "Shadow Temple MQ Lower Huge Pit without Fire Source",
-                "description": "Normally a frozen eye switch spawns some platforms that you can use to climb down, but there's actually a small piece of ground that you can stand on that you can just jump down to."
+                "description": "Normally a frozen eye switch spawns some platforms that you can use to climb down, but there's actually a small piece of ground that you can stand on that you can just jump down to. Bunny hood and Hover Boots together can solve this without the trick."
             },
             "shadow_mq_windy_walkway": {
                 "name": "Shadow Temple MQ Windy Walkway Reverse without Hover Boots",
@@ -2765,7 +2783,7 @@
             },
             "spirit_statue_jump": {
                 "name": "Spirit Temple Statue Room Jump from Hands to Upper Ledges",
-                "description": "A precise jump to obtain the following as adult without needing one of Hover Boots, or Hookshot (in Vanilla) or Song of Time (in MQ): - Spirit Temple Statue Room Northeast Chest - Spirit Temple GS Lobby - Spirit Temple MQ Central Chamber Top Left Pot (Left) - Spirit Temple MQ Central Chamber Top Left Pot (Right)"
+                "description": "A precise jump to obtain the following as Adult without needing one of Hover Boots, or Hookshot (in Vanilla) or Song of Time (in MQ). Using Bunny Hood puts this trick in default logic.: - Spirit Temple Statue Room Northeast Chest - Spirit Temple GS Lobby - Spirit Temple MQ Central Chamber Top Left Pot (Left) - Spirit Temple MQ Central Chamber Top Left Pot (Right)"
             },
             "spirit_platform_hookshot": {
                 "name": "Spirit Temple Main Room Hookshot to Boss Platform",
@@ -2843,7 +2861,7 @@
             },
             "gtg_fake_wall": {
                 "name": "Reach Gerudo Training Ground Fake Wall Ledge with Hover Boots",
-                "description": "A precise Hover Boots use from the top of the chest can allow you to grab the ledge without needing the usual requirements. In Master Quest, this always skips a Song of Time requirement. In Vanilla, this skips a Hookshot requirement, but is only relevant if \"Gerudo Training Ground Left Side Silver Rupees without Hookshot\" is enabled."
+                "description": "A precise Hover Boots use from the top of the chest can allow you to grab the ledge without needing the usual requirements. Logical Bunny Hood allows this to be done in default logic. In Master Quest, this always skips a Song of Time requirement. In Vanilla, this skips a Hookshot requirement, but is only relevant if \"Gerudo Training Ground Left Side Silver Rupees without Hookshot\" is enabled."
             },
             "gtg_lava_jump": {
                 "name": "Gerudo Training Grounds Itemless Lava Room Jump",
@@ -2867,6 +2885,13 @@
                     "After collecting the rest of the Silver Rupees in the room, you can reach the final Silver Rupee on the ceiling by being pulled up into it after getting grabbed by the Wallmaster. The Wallmaster will not track you to directly underneath the rupee. You should take the last step to be under the rupee after the Wallmaster has begun its attempt to grab you.\n",
                     "Also included with this trick is that fact that the switch that unbars the door to the final chest of GTG can be hit without a projectile, using a precise jumpslash.\n",
                     "This trick supersedes \"Gerudo Training Ground MQ Left Side Silver Rupees with Hookshot\"."
+                ]
+            },
+            "gtg_mq_lava_room": {
+                "name": "Navigate Gerudo Training Ground MQ Lava Room without Fire",
+                "description": [
+                    "It's possible to use the edges of the platforms, either with well placed jumps or Hover Boots, to cross sections of MQ GTG Lava Room without having fire to switch off the fire rings.\n",
+                    "This allows you to clear the room using a combination of Din's Fire and either Hover Boots or Bunny Hood instead of Bow and allows you to reach the right of the maze using only Hookshot if the upper switch has been hit, among other things."
                 ]
             },
             "lens_ganon": {

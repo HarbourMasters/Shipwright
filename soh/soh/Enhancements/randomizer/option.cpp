@@ -1,6 +1,7 @@
 #include <libultraship/bridge/consolevariablebridge.h>
 
 #include "option.h"
+#include "randomizerEnumStrings.h"
 #include "static_data.h"
 #include "soh/SohGui/SohMenu.h"
 #include "soh/Enhancements/Lang/Lang.h"
@@ -70,18 +71,6 @@ RandomizerSettingKey Option::GetKey() const {
 
 #pragma region Lang
 
-#define RANDO_ENUM_ITEM(enum) { enum, #enum },
-
-std::unordered_map<RandomizerSettingKey, std::string> settingNames = {
-#include "randomizerEnums/RandomizerSettingKey.h"
-};
-
-std::unordered_map<RandomizerTrick, std::string> trickNames = {
-#include "randomizerEnums/RandomizerTrick.h"
-};
-
-#undef RANDO_ENUM_ITEM
-
 const static std::string namePostfix = ".name";
 const static std::string descriptionPostfix = ".description";
 
@@ -92,13 +81,13 @@ const static std::string empty = "";
 const static std::string error = "[ERROR]";
 
 static const std::string& MakeSettingName(RandomizerSettingKey key) {
-    std::string settingNamePart = settingNames[key].substr(4);
+    std::string settingNamePart(EnumToString(key).substr(4));
     std::transform(settingNamePart.begin(), settingNamePart.end(), settingNamePart.begin(), ::tolower);
     return Lang::Translate((settingPrefix + settingNamePart + namePostfix).c_str());
 }
 
 static const std::string& MakeSettingDescription(RandomizerSettingKey key) {
-    std::string settingNamePart = settingNames[key].substr(4);
+    std::string settingNamePart(EnumToString(key).substr(4));
     std::transform(settingNamePart.begin(), settingNamePart.end(), settingNamePart.begin(), ::tolower);
     auto result = Lang::TryTranslate((settingPrefix + settingNamePart + descriptionPostfix).c_str());
     if (std::holds_alternative<std::reference_wrapper<const std::string>>(result)) {
@@ -112,13 +101,13 @@ static const std::string& MakeSettingDescription(RandomizerSettingKey key) {
 }
 
 static const std::string& MakeTrickName(RandomizerTrick key) {
-    std::string trickNamePart = trickNames[key].substr(3);
+    std::string trickNamePart(EnumToString(key).substr(3));
     std::transform(trickNamePart.begin(), trickNamePart.end(), trickNamePart.begin(), ::tolower);
     return Lang::Translate((trickPrefix + trickNamePart + namePostfix).c_str());
 }
 
 static const std::string& MakeTrickDescription(RandomizerTrick key) {
-    std::string trickNamePart = trickNames[key].substr(3);
+    std::string trickNamePart(EnumToString(key).substr(3));
     std::transform(trickNamePart.begin(), trickNamePart.end(), trickNamePart.begin(), ::tolower);
     return Lang::Translate((trickPrefix + trickNamePart + descriptionPostfix).c_str());
 }

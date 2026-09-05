@@ -2,6 +2,7 @@
 #include "soh/ShipInit.hpp"
 #include "soh/Enhancements/BunnyHood.h"
 #include "soh/Enhancements/gameplaystats.h"
+#include "soh/Enhancements/randomizer/SeedContext.h"
 
 extern "C" {
 #include "z64.h"
@@ -10,7 +11,11 @@ extern "C" {
 extern PlayState* gPlayState;
 }
 
+// rando's Bunny Hood Effect setting forces the enhancement on, as logic may require it
 BunnyHoodMode Ship_GetBunnyHoodMode() {
+    if (IS_RANDO && RAND_GET_OPTION(RSK_BUNNY_HOOD)) {
+        return BUNNY_HOOD_FAST_AND_JUMP;
+    }
     return (BunnyHoodMode)CVarGetInteger(CVAR_BUNNY_HOOD_NAME, BUNNY_HOOD_VANILLA);
 }
 
@@ -65,4 +70,4 @@ static void RegisterBunnyHood() {
     });
 }
 
-static RegisterShipInitFunc initFunc(RegisterBunnyHood, { CVAR_BUNNY_HOOD_NAME });
+static RegisterShipInitFunc initFunc(RegisterBunnyHood, { "IS_RANDO", CVAR_BUNNY_HOOD_NAME });

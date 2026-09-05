@@ -368,7 +368,7 @@ void RegionTable_Init_DeathMountainCrater() {
         LOCATION(RC_DMC_ROCK_BY_FIRE_TEMPLE_3,          logic->IsAdult),
         LOCATION(RC_DMC_ROCK_BY_FIRE_TEMPLE_4,          logic->IsAdult),
         LOCATION(RC_DMC_ROCK_BY_FIRE_TEMPLE_5,          logic->IsAdult),
-        // RANDOTODO: A number of tricks to reach this: sidehop jumpslash or hookshot + jumpslash from bridge platform, chu+shield damage boost
+        // RANDOTODO: A number of tricks to reach this: sidehop jumpslash or hookshot + jumpslash from bridge platform, chu+shield damage boost. Also does hover need roll/bunny
         LOCATION(RC_DMC_WONDER_BENEATH_BRIDGE_PLATFORM, logic->IsAdult && (logic->CanUse(RG_LONGSHOT) || logic->CanUse(RG_HOVER_BOOTS))),
     }, {});
 

@@ -990,15 +990,29 @@ void SohMenu::AddMenuEnhancements() {
     AddWidget(path, "Masks", WIDGET_SEPARATOR_TEXT);
     AddWidget(path, "Bunny Hood Effect", WIDGET_CVAR_COMBOBOX)
         .CVar(CVAR_BUNNY_HOOD_NAME)
+        .PreFunc([](WidgetInfo& info) {
+            info.options->disabled = OTRGlobals::Instance->gRandoContext->GetOption(RSK_BUNNY_HOOD).Is(RO_GENERIC_ON);
+            info.options->disabledTooltip = "This setting is forcefully enabled because a randomized savefile with "
+                                            "\"Bunny Hood Effect\" is currently loaded.";
+        })
         .Options(ComboboxOptions()
                      .ComboMap(bunnyHoodEffectMap)
                      .Tooltip("Wearing the Bunny Hood grants a speed and jump boost like in Majora's Mask.\n"
                               "Can also be limited to only the speed boost.\n"
-                              "The effects of either option are not accounted for in Randomizer logic.\n"
+                              "Randomizer logic only accounts for this when the seed's own \"Bunny Hood Effect\" "
+                              "setting is on.\n"
                               "Also disables NPC's reactions to wearing the Bunny Hood."));
     AddWidget(path, "Masks Equippable as Adult", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ADULT_MASKS_NAME)
-        .Options(CheckboxOptions().Tooltip("Allows masks to be equipped normally from the pause menu as adult."));
+        .PreFunc([](WidgetInfo& info) {
+            info.options->disabled =
+                OTRGlobals::Instance->gRandoContext->GetOption(RSK_MASKS_AS_ADULT).Is(RO_GENERIC_ON);
+            info.options->disabledTooltip = "This setting is forcefully enabled because a randomized savefile with "
+                                            "\"Masks as Adult\" is currently loaded.";
+        })
+        .Options(CheckboxOptions().Tooltip("Allows masks to be equipped normally from the pause menu as adult.\n"
+                                           "Randomizer logic only accounts for this when the seed's own "
+                                           "\"Masks as Adult\" setting is on."));
     AddWidget(path, "Persistent Masks", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_ENHANCEMENT("PersistentMasks"))
         .Options(
