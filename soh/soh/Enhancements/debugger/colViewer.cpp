@@ -670,7 +670,7 @@ void DrawColCheckCollision() {
     color = CVarGetColor(CVAR_DEVELOPER_TOOLS("ColViewer.ColorAC.Value"), { 0, 0, 255, 255 });
     dl.push_back(gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
     DrawColCheckList(dl, col.colAC, col.colACCount);
-    color = CVarGetColor(CVAR_DEVELOPER_TOOLS("ColViewer.ColorAT.Value"), { 0, 0, 255, 255 });
+    color = CVarGetColor(CVAR_DEVELOPER_TOOLS("ColViewer.ColorAT.Value"), { 255, 0, 0, 255 });
     dl.push_back(gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
 
     DrawColCheckList(dl, col.colAT, col.colATCount);

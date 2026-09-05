@@ -94,10 +94,7 @@ static CheckIdentity IdentifyBeehive(s32 sceneNum, s16 xPosition, s32 respawnDat
     Rando::Location* location =
         OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_OBJ_COMB, sceneNum, respawnData);
 
-    if (location->GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
-        beehiveIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
-        beehiveIdentity.randomizerCheck = location->GetRandomizerCheck();
-    }
+    IdentifyCheck(&beehiveIdentity, location);
 
     return beehiveIdentity;
 }

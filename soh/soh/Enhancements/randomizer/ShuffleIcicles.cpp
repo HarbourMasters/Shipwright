@@ -104,13 +104,7 @@ static CheckIdentity IdentifyIcicle(s32 sceneNum, s32 posX, s32 posZ) {
     Rando::Location* location =
         OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_BG_ICE_TURARA, icicleSceneNum, actorParams);
 
-    if (location->GetRandomizerCheck() == RC_UNKNOWN_CHECK) {
-        LUSLOG_WARN("IdentifyIcicle did not receive a valid RC value (%d).", location->GetRandomizerCheck());
-        assert(false);
-    } else {
-        icicleIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
-        icicleIdentity.randomizerCheck = location->GetRandomizerCheck();
-    }
+    IdentifyCheck(&icicleIdentity, location);
 
     return icicleIdentity;
 }

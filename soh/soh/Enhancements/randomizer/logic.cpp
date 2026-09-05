@@ -6,6 +6,7 @@
 #include "soh/Enhancements/randomizer/randomizerEnums.h"
 #include "soh/OTRGlobals.h"
 #include "randomizer.h"
+#include "randomizerEnumStrings.h"
 #include "dungeon.h"
 #include "SeedContext.h"
 #include "randomizer.h"
@@ -323,8 +324,7 @@ bool Logic::HasItem(RandomizerGet itemName) {
         default:
             break;
     }
-    SPDLOG_ERROR("HasItem reached `return false;`. Missing case for RandomizerGet of {}",
-                 static_cast<uint32_t>(itemName));
+    SPDLOG_ERROR("HasItem reached `return false;`. Missing case for RandomizerGet of {}", itemName);
     assert(false);
     return false;
 }
@@ -487,7 +487,7 @@ bool Logic::ItemUseAllowed(RandomizerGet itemName) {
         case SCENE_FISHING_POND:
             return itemName == RG_FISHING_POLE;
         default:
-            SPDLOG_INFO("ItemUseAllowed reached `default` with item {} in Scene {}.", static_cast<uint32_t>(itemName),
+            SPDLOG_INFO("ItemUseAllowed reached `default` with item {} in Scene {}.", itemName,
                         static_cast<uint32_t>(RegionTable(CurrentRegionKey)->scene));
             return true;
     }
@@ -677,8 +677,7 @@ bool Logic::CanUse(RandomizerGet itemName) {
             return true;
 
         default:
-            SPDLOG_INFO("CanUse reached `default` for {}. using HasItem is a minor Optimisation.",
-                        static_cast<uint32_t>(itemName));
+            SPDLOG_INFO("CanUse reached `default` for {}. using HasItem is a minor Optimisation.", itemName);
             return true;
     }
 }
@@ -1413,21 +1412,9 @@ bool Logic::CanRecoilHoverFromActor(ActorRecoilRequirements req, BombRecoilRequi
 }
 
 bool Logic::Water3FCentralToHighEmblem() {
-    //"Just jumping" to this ledge is complicated, as the nearest part of the ledge is janky
-    // Adult without bunny hood can airdrift left to get a clean ledge grab, however if the scarecrow has spawned (which
-    // is a perm flag that with skip scarecrow inevitably activates while setting water to high) the usable ledge area
-    // is much smaller. Unlike most jumps like this, Bunny hood does not solve the jump, at least for Adult. For child
-    // it makes this not only possible but much less prone to issues than either Adult jump. Adult can instead aim even
-    // further left to get a good ledge climb, but will almost always be blocked by the scarecrow if that exists.
-    // otherwise Adult with bunny will result in worse ledge bugging than not using bunny. You can climb up even if you
-    // start doing weird ledge things with a well timed jumpslash. Hovers are similarly unintuitive, needing the player
-    // aim for the far side of the ledge, but the scarecrow is less annoying as even if you get pushed off, hovers will
-    // save you and push you slightly right, eventually giving you a good ledge grab
-    return (IsAdult && (CanUse(RG_HOVER_BOOTS) ||
-                        (ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && CanUse(RG_BOMB_BAG) && TakeDamage()))) ||
-           CanMiddairGroundJump() ||
+    return (IsAdult && CanUse(RG_HOVER_BOOTS)) || CanMiddairGroundJump() ||
            (Get(LOGIC_WATER_SCARECROW) && CanUse(RG_HOOKSHOT) ||
-            (logic->IsChild && logic->BunnyHood() && ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS)));
+            ((logic->IsAdult || logic->BunnyHood()) && ctx->GetTrickOption(RT_WATER_HIGH_EMBLEM_JUMP)));
 }
 
 bool Logic::WaterRisingTargetTo3FCentral() {

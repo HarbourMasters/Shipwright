@@ -1,6 +1,7 @@
 #include "soh/Enhancements/randomizer/location_access.h"
 #include "soh/Enhancements/randomizer/entrance.h"
 #include "soh/Enhancements/randomizer/dungeon.h"
+#include "soh/Enhancements/randomizer/randomizerEnums.h"
 
 using namespace Rando;
 
@@ -349,9 +350,9 @@ void RegionTable_Init_GerudoTrainingGround() {
     }, {
         //Exits
         ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_STALFOS_ROOM_ALCOVE, true),
-        //implies dropping down to hit the switch. Using swords, especially master, is a bit awkward, may be trick worthy, but is only relevant with other tricks
+        //implies dropping down to hit the switch. Using swords, especially master, is a bit awkward, may be a separate trick.
         //chus work, but the aim is awkward.
-        ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_MAGENTA_FIRE_ROOM,   AnyAgeTime([]{return logic->CanHitSwitch(ctx->GetTrickOption(RT_VISIBLE_COLLISION) ? ED_MASTER_SWORD_JUMPSLASH : ED_BOOMERANG);})),
+        ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_MAGENTA_FIRE_ROOM,   AnyAgeTime([]{return logic->CanHitSwitch(!ctx->GetTrickOption(RT_VISIBLE_COLLISION) ? ED_BOMB_THROW : logic->IsAdult ? ED_MASTER_SWORD_JUMPSLASH : ED_LONG_JUMPSLASH);})),
         ENTRANCE(RR_GERUDO_TRAINING_GROUND_MQ_STATUE_ROOM,         true),
     });
 

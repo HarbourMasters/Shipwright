@@ -2078,8 +2078,8 @@
                 "description": "Can be obtained without Hookshot by using the Hover Boots off of one of the roots."
             },
             "lw_bridge": {
-                "name": "Jump onto the Lost Woods Bridge as Adult with Nothing",
-                "description": "With very precise movement it's possible for adult to jump onto the bridge without needing Longshot, Hover Boots, or Bean."
+                "name": "Jump onto the Lost Woods Bridge as Adult with a Jumpslash",
+                "description": "With very precise movement and a jumpslash it's possible for Adult to jump onto the bridge without needing Longshot, Hover Boots, or Bean."
             },
             "lw_mido_backflip": {
                 "name": "Backflip over Mido as Adult",
@@ -2090,8 +2090,8 @@
                 "description": "You need Deku Sticks or Kokiri Sword to dive with Navi for entering Zora's River."
             },
             "lw_gs_bean": {
-                "name": "Lost Woods Adult GS without Bean",
-                "description": "You can collect the token with a precise Hookshot use, as long as you can kill the Skulltula somehow first. It can be killed using Longshot, Bow, Bombchus or Din's Fire."
+                "name": "Lost Woods Adult GS with Hookshot",
+                "description": "You can collect the token with a precise Hookshot use, as long as you can kill the Skulltula somehow first. It can be killed using Bow, Bombchus or Din's Fire. Using Longshot to both kill the skull and grab the token is in default logic."
             },
             "hc_storms_gs": {
                 "name": "Hyrule Castle Storms Grotto GS with Just Boomerang",
@@ -2591,6 +2591,10 @@
             "fire_mq_above_maze_gs": {
                 "name": "Fire Temple MQ Above Flame Wall Maze GS from Below with Longshot",
                 "description": "The floor of the room that contains this Skulltula is only solid from above. From the maze below, the Longshot can be shot through the ceiling to obtain the token with two fewer small keys than normal."
+            },
+            "water_high_emblem_jump": {
+                "name": "Water Temple Jump to High Emblem with Nothing",
+                "description": "Adult can jump directly to the Emblem that sets the water level to high from the pillar with nothing by aiming for the middle of the ledge. Child with the help of Bunny Hood can do the same, but even easier."
             },
             "water_longshot_torch": {
                 "name": "Water Temple Torch Longshot",

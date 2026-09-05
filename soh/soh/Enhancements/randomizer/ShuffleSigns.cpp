@@ -1,4 +1,5 @@
 #include <soh/OTRGlobals.h>
+#include <spdlog/spdlog.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ObjectExtension/ObjectExtension.h"
 #include "item_category_adj.h"
@@ -157,12 +158,7 @@ static CheckIdentity IdentifySign(s32 sceneNum, s32 posX, s32 posZ, s32 id) {
             return signIdentity;
     }
 
-    if (location == nullptr || location->GetRandomizerCheck() == RC_UNKNOWN_CHECK) {
-        LUSLOG_WARN("IdentifySign did not receive a valid RC value (%d).", location->GetRandomizerCheck());
-    } else {
-        signIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
-        signIdentity.randomizerCheck = location->GetRandomizerCheck();
-    }
+    IdentifyCheck(&signIdentity, location);
 
     return signIdentity;
 }

@@ -51,10 +51,7 @@ static CheckIdentity IdentifyCow(s32 sceneNum, s32 posX, s32 posZ) {
     Rando::Location* location =
         OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_EN_COW, sceneNum, actorParams);
 
-    if (location->GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
-        cowIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
-        cowIdentity.randomizerCheck = location->GetRandomizerCheck();
-    }
+    IdentifyCheck(&cowIdentity, location);
 
     return cowIdentity;
 }
