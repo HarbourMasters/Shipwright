@@ -118,7 +118,7 @@ static CheckIdentity IdentifyPot(s32 sceneNum, s32 posX, s32 posZ) {
     Rando::Location* location =
         OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_OBJ_TSUBO, potSceneNum, actorParams);
 
-    IdentifyCheck(&potIdentity, location, true);
+    IdentifyCheck(&potIdentity, location);
 
     return potIdentity;
 }

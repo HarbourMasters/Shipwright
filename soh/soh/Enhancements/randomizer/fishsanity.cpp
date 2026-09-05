@@ -269,7 +269,7 @@ static CheckIdentity IdentifyFish(s32 sceneNum, s32 actorParams) {
     Rando::Location* location =
         OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_EN_FISH, sceneNum, actorParams);
 
-    IdentifyCheck(&fishIdentity, location, true);
+    IdentifyCheck(&fishIdentity, location);
 
     return fishIdentity;
 }

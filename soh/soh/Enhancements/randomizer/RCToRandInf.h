@@ -9,4 +9,4 @@
 // for now we're not going to store randomzierInf in the randomizer check objects, we're just going to map them 1:1 here
 extern std::map<RandomizerCheck, RandomizerInf> rcToRandomizerInf;
 
-bool IdentifyCheck(CheckIdentity* id, Rando::Location* loc, bool allowUnknown = false);
+bool IdentifyCheck(CheckIdentity* id, Rando::Location* loc, bool allowUnknown = true);

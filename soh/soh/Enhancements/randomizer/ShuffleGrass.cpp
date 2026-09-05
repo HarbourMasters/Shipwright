@@ -172,7 +172,7 @@ static CheckIdentity IdentifyGrass(s32 sceneNum, s32 posX, s32 posZ, s32 respawn
     Rando::Location* location =
         OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_EN_KUSA, sceneNum, respawnData);
 
-    IdentifyCheck(&grassIdentity, location, true);
+    IdentifyCheck(&grassIdentity, location);
 
     return grassIdentity;
 }

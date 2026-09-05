@@ -120,7 +120,7 @@ static CheckIdentity IdentifyWonderItem(s32 sceneNum, s32 par1, s32 par2) {
     Rando::Location* location =
         OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_EN_WONDER_ITEM, wonderSceneNum, actorParams);
 
-    IdentifyCheck(&wonderIdentity, location, true);
+    IdentifyCheck(&wonderIdentity, location);
 
     return wonderIdentity;
 }
