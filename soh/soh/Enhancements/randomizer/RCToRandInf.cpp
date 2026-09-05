@@ -6,14 +6,13 @@ bool IdentifyCheck(CheckIdentity* id, Rando::Location* loc, bool allowUnknown) {
         if (rcToRandomizerInf.contains(loc->GetRandomizerCheck())) {
             id->randomizerInf = rcToRandomizerInf[loc->GetRandomizerCheck()];
         } else {
-            SPDLOG_ERROR("%d not found in rcToRandomizerInf.", static_cast<int>(loc->GetRandomizerCheck()));
+            SPDLOG_ERROR("{} not found in rcToRandomizerInf.", loc->GetRandomizerCheck());
             assert(false);
         }
         id->randomizerCheck = loc->GetRandomizerCheck();
         return true;
     } else if (!allowUnknown) {
-        SPDLOG_WARN("IdentifyCheck did not receive a valid RC value (%d).",
-                    static_cast<int>(loc->GetRandomizerCheck()));
+        SPDLOG_WARN("IdentifyCheck did not receive a valid RC value ({}).", loc->GetRandomizerCheck());
         assert(false);
     }
     return false;
