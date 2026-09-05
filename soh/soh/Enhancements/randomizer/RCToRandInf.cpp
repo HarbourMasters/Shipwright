@@ -1,5 +1,6 @@
 #include "./RCToRandInf.h"
 #include <spdlog/spdlog.h>
+#include "randomizerEnumStrings.h"
 
 bool IdentifyCheck(CheckIdentity* id, Rando::Location* loc, bool allowUnknown) {
     if (loc == nullptr || loc->GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
