@@ -135,16 +135,12 @@ static CheckIdentity IdentifyTree(s32 sceneNum, s32 posX, s32 posZ) {
     s32 actorParams = TWO_ACTOR_PARAMS(posX, posZ);
     Rando::Location* location =
         OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_EN_WOOD02, sceneNum, actorParams);
-    if (location->GetRandomizerCheck() != RC_UNKNOWN_CHECK &&
-        (location->GetRCType() != RCTYPE_NLTREE ||
-         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LOGIC_RULES) == RO_LOGIC_NO_LOGIC)) {
-        if (rcToRandomizerInf.contains(location->GetRandomizerCheck())) {
-            treeIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
-        } else {
-            LUSLOG_ERROR("%d not found in rcToRandomizerInf.", location->GetRandomizerCheck());
-            assert(false);
-        }
-        treeIdentity.randomizerCheck = location->GetRandomizerCheck();
+    
+    IdentifyCheck(&treeIdentity, location);
+
+    if ((location->GetRCType() != RCTYPE_NLTREE ||
+         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LOGIC_RULES) == RO_LOGIC_NO_LOGIC) &&
+        IdentifyCheck(&treeIdentity, location)) {
         return treeIdentity;
     }
 

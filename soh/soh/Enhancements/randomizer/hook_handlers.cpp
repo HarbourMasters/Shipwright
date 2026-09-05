@@ -969,13 +969,9 @@ static ScrubIdentity IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respawnDat
         } else if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_SCRUBS) != RO_SCRUBS_ALL) {
             return scrubIdentity;
         }
-        if (rcToRandomizerInf.contains(location->GetRandomizerCheck())) {
-            scrubIdentity.identity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
-        } else {
-            LUSLOG_ERROR("%d not found in rcToRandomizerInf.", location->GetRandomizerCheck());
-            assert(false);
-        }
-        scrubIdentity.identity.randomizerCheck = location->GetRandomizerCheck();
+        
+        IdentifyCheck(&scrubIdentity.identity, location);
+        
         scrubIdentity.getItemId = (GetItemID)Rando::StaticData::RetrieveItem(location->GetVanillaItem()).GetItemID();
         scrubIdentity.itemPrice =
             OTRGlobals::Instance->gRandoContext->GetItemLocation(scrubIdentity.identity.randomizerCheck)->GetPrice();

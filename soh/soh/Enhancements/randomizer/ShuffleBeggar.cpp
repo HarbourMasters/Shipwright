@@ -15,17 +15,8 @@ static CheckIdentity IdentifyBeggar(s32 sceneNum, s32 textId) {
 
     Rando::Location* location =
         OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_EN_HY, sceneNum, textId);
-    if (location->GetRandomizerCheck() == RC_UNKNOWN_CHECK) {
-        LUSLOG_WARN("IdentifyBeggar did not receive a valid RC value (%d).", location->GetRandomizerCheck());
-    } else {
-        if (rcToRandomizerInf.contains(location->GetRandomizerCheck())) {
-            beggarIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
-        } else {
-            LUSLOG_ERROR("%d not found in rcToRandomizerInf.", location->GetRandomizerCheck());
-            assert(false);
-        }
-        beggarIdentity.randomizerCheck = location->GetRandomizerCheck();
-    }
+    
+    IdentifyCheck(&beggarIdentity, location);
 
     return beggarIdentity;
 }

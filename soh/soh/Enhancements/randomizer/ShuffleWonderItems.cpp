@@ -120,17 +120,7 @@ static CheckIdentity IdentifyWonderItem(s32 sceneNum, s32 par1, s32 par2) {
     Rando::Location* location =
         OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_EN_WONDER_ITEM, wonderSceneNum, actorParams);
 
-    if (location->GetRandomizerCheck() == RC_UNKNOWN_CHECK) {
-        LUSLOG_WARN("IdentifyWonderItem did not receive a valid RC value (%d).", location->GetRandomizerCheck());
-    } else {
-        if (rcToRandomizerInf.contains(location->GetRandomizerCheck())) {
-            wonderIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
-        } else {
-            LUSLOG_ERROR("%d not found in rcToRandomizerInf.", location->GetRandomizerCheck());
-            assert(false);
-        }
-        wonderIdentity.randomizerCheck = location->GetRandomizerCheck();
-    }
+    IdentifyCheck(&wonderIdentity, location, true);
 
     return wonderIdentity;
 }

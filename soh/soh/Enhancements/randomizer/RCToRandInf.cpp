@@ -1,5 +1,22 @@
 #include "./RCToRandInf.h"
-#include "soh/Enhancements/randomizer/randomizerEnums.h"
+#include <spdlog/spdlog.h>
+
+bool IdentifyCheck(CheckIdentity* id, Rando::Location* loc, bool allowUnknown){
+    if (loc == nullptr || loc->GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
+        if (rcToRandomizerInf.contains(loc->GetRandomizerCheck())) {
+            id->randomizerInf = rcToRandomizerInf[loc->GetRandomizerCheck()];
+        } else {
+            SPDLOG_ERROR("%d not found in rcToRandomizerInf.", static_cast<int>(loc->GetRandomizerCheck()));
+            assert(false);
+        }
+        id->randomizerCheck = loc->GetRandomizerCheck();
+        return true;
+    } else if (!allowUnknown) {
+        SPDLOG_WARN("IdentifyCheck did not receive a valid RC value (%d).", static_cast<int>(loc->GetRandomizerCheck()));
+        assert(false);
+    }
+    return false;
+}
 
 std::map<RandomizerCheck, RandomizerInf> rcToRandomizerInf = {
     { RC_KF_LINKS_HOUSE_COW, RAND_INF_COWS_MILKED_KF_LINKS_HOUSE_COW },
