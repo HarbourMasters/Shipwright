@@ -154,7 +154,8 @@ void RegionTable_Init_ForestTemple() {
         //Exits
         ENTRANCE(RR_FOREST_TEMPLE_NE_COURTYARD_LOWER,     true),
         ENTRANCE(RR_FOREST_TEMPLE_NE_COURTYARD_SWITCH,    logic->BunnyHood() || logic->CanUse(RG_CLIMB) || (logic->IsAdult && ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS)) || logic->CanUse(RG_HOOKSHOT) ||logic->CanUse(RG_HOVER_BOOTS)),
-        ENTRANCE(RR_FOREST_TEMPLE_NE_COURTYARD_DOORFRAME, logic->CanRecoilHover(RECOIL_HAMMER) || ((ctx->GetTrickOption(RT_FOREST_DOORFRAME) && logic->CanUse(RG_HOVER_BOOTS) && (logic->BunnyHood() || logic->CanJumpslash())))),
+        //RANDOTODO megajump is real close
+        ENTRANCE(RR_FOREST_TEMPLE_NE_COURTYARD_DOORFRAME, logic->CanRecoilHover(RECOIL_HAMMER, BRECOIL_NO) || ((ctx->GetTrickOption(RT_FOREST_DOORFRAME) && logic->CanUse(RG_HOVER_BOOTS) && (logic->BunnyHood() || logic->CanJumpslash())))),
         ENTRANCE(RR_FOREST_TEMPLE_MAP_ROOM,               true),
     });
 
@@ -166,6 +167,7 @@ void RegionTable_Init_ForestTemple() {
         ENTRANCE(RR_FOREST_TEMPLE_NE_COURTYARD_LOWER,     true),
         //child can make the jump bunnyless, but it's more awkward and precise, with a nasty reset. Said reset may be too much for adult too, but it's a much easier jump for them
         ENTRANCE(RR_FOREST_TEMPLE_NE_COURTYARD_UPPER,     logic->BunnyHood() || (logic->IsAdult && ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS)) || logic->CanUse(RG_HOOKSHOT) ||logic->CanUse(RG_HOVER_BOOTS)),
+        ENTRANCE(RR_FOREST_TEMPLE_NE_COURTYARD_DOORFRAME, logic->CanRecoilHover(RECOIL_HAMMER, BRECOIL_WITH_JUMPSLASH)),
         //Adult can make this with bunny and a jumpslash, but the jump is too awkward for unintuitive (use the north-most railing, change direction as you jump)
         ENTRANCE(RR_FOREST_TEMPLE_NE_COURTYARD_ISLAND,    ((logic->IsAdult && ctx->GetTrickOption(RT_FOREST_COURTYARD_LEDGE)) || logic->BunnyHood()) && logic->CanUse(RG_HOVER_BOOTS)),
     });
@@ -176,7 +178,7 @@ void RegionTable_Init_ForestTemple() {
     }, {}, {
         //Exits
         ENTRANCE(RR_FOREST_TEMPLE_NE_COURTYARD_LOWER,  true),
-        ENTRANCE(RR_FOREST_TEMPLE_NE_COURTYARD_ISLAND, logic->CanRecoilHover(RECOIL_HAMMER)),
+        ENTRANCE(RR_FOREST_TEMPLE_NE_COURTYARD_ISLAND, logic->CanRecoilHover(RECOIL_HAMMER, BRECOIL_WITH_JUMPSLASH)),
     });
 
     areaTable[RR_FOREST_TEMPLE_NE_COURTYARD_ISLAND] = Region("Forest Temple NE Courtyard Island", SCENE_FOREST_TEMPLE, {}, {
@@ -694,14 +696,14 @@ void RegionTable_Init_ForestTemple() {
         //Exits
         ENTRANCE(RR_FOREST_TEMPLE_MQ_NE_COURTYARD,        true),
         ENTRANCE(RR_FOREST_TEMPLE_MQ_COURTYARD_TOP_CHEST, logic->CanUse(RG_LONGSHOT) || (logic->CanUse(RG_HOOKSHOT) && ((logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS) && logic->HasItem(RG_CLIMB)/*&& (logic->CanUse(RG_ROLL) || logic->BunnyHood())*/) || logic->CanUse(RG_SONG_OF_TIME)))),
-        ENTRANCE(RR_FOREST_TEMPLE_MQ_NE_COURTYARD_ISLAND, logic->CanRecoilHover(RECOIL_HAMMER)),
+        ENTRANCE(RR_FOREST_TEMPLE_MQ_NE_COURTYARD_ISLAND, logic->CanRecoilHover(RECOIL_HAMMER, BRECOIL_WITH_JUMPSLASH)),
     });
 
     areaTable[RR_FOREST_TEMPLE_MQ_COURTYARD_TOP_DOOR] = Region("Forest Temple MQ Courtyard Top Door", SCENE_FOREST_TEMPLE, {}, {}, {
         //Exits
         ENTRANCE(RR_FOREST_TEMPLE_MQ_NORTH_PASSAGE,          true),
         ENTRANCE(RR_FOREST_TEMPLE_MQ_NE_COURTYARD,           true),
-        ENTRANCE(RR_FOREST_TEMPLE_MQ_NE_COURTYARD_DOORFRAME, logic->CanRecoilHover(RECOIL_HAMMER) || (logic->IsAdult && logic->BunnyHovers()) ||
+        ENTRANCE(RR_FOREST_TEMPLE_MQ_NE_COURTYARD_DOORFRAME, logic->CanRecoilHover(RECOIL_HAMMER, BRECOIL_NO) || (logic->IsAdult && logic->BunnyHovers()) ||
                                                              ((ctx->GetTrickOption(RT_FOREST_DOORFRAME) && logic->CanUse(RG_HOVER_BOOTS) && (logic->CanJumpslash() || logic->BunnyHood()))) ||
                                                              (logic->IsChild && (ctx->GetTrickOption(RT_FOREST_MQ_CHILD_DOORFRAME) || logic->CanMiddairGroundJump()))),
         ENTRANCE(RR_FOREST_TEMPLE_MQ_COURTYARD_TOP_CHEST,    logic->BunnyHood() || logic->CanUse(RG_CLIMB) || (logic->IsAdult && ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS)) || logic->CanUse(RG_HOOKSHOT) ||logic->CanUse(RG_HOVER_BOOTS)),
@@ -713,7 +715,7 @@ void RegionTable_Init_ForestTemple() {
     }, {
         //Exits
         ENTRANCE(RR_FOREST_TEMPLE_MQ_NE_COURTYARD,           true),
-        ENTRANCE(RR_FOREST_TEMPLE_MQ_NE_COURTYARD_DOORFRAME, logic->CanRecoilHover(RECOIL_HAMMER)),
+        ENTRANCE(RR_FOREST_TEMPLE_MQ_NE_COURTYARD_DOORFRAME, logic->CanRecoilHover(RECOIL_HAMMER, BRECOIL_WITH_JUMPSLASH)),
         ENTRANCE(RR_FOREST_TEMPLE_MQ_COURTYARD_TOP_DOOR,     logic->BunnyHood() || (logic->IsAdult && ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS)) || logic->CanUse(RG_HOOKSHOT) ||logic->CanUse(RG_HOVER_BOOTS)),
         ENTRANCE(RR_FOREST_TEMPLE_MQ_NE_COURTYARD_ISLAND,    ((logic->IsAdult && ctx->GetTrickOption(RT_FOREST_COURTYARD_LEDGE)) || logic->BunnyHood()) && logic->CanUse(RG_HOVER_BOOTS)),
     });

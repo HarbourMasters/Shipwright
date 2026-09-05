@@ -62,8 +62,8 @@ class Logic {
     bool CanDetonateBombFlowers();
     bool CanDetonateUprightBombFlower();
     bool BeanPlanted(LogicVal beanEvent);
-    bool CanRecoilHover(RecoilRequirements req);
-    bool CanRecoilHoverFromObject(TorchRecoilRequirements req);
+    bool CanRecoilHover(RecoilRequirements req, BombRecoilRequirements breq, bool bombFlower = false);
+    bool CanRecoilHoverFromActor(ActorRecoilRequirements req, BombRecoilRequirements breq);
     bool Water3FCentralToHighEmblem();
     bool WaterRisingTargetTo3FCentral();
     bool WaterLevel(RandoWaterLevel level);
@@ -98,7 +98,7 @@ class Logic {
     uint8_t DungeonCount();
     uint16_t FireTimer();
     uint16_t WaterTimer();
-    bool TakeDamage();
+    bool TakeDamage(DamageAllowance allowance = DAMAGE_ANY);
     bool CanVoid();
     bool CanOpenBombGrotto();
     bool CanOpenStormsGrotto();

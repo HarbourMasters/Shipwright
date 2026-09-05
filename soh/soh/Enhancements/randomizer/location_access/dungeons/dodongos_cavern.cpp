@@ -244,7 +244,7 @@ void RegionTable_Init_DodongosCavern() {
         ENTRANCE(RR_DODONGOS_CAVERN_UPPER_LIZALFOS,  true),
         //barely possible as adult with just hover boots and rolls, but hard enough to be a trick
         ENTRANCE(RR_DODONGOS_CAVERN_BOMB_ROOM_UPPER, logic->CanHitEyeTargets() || ctx->GetTrickOption(RT_DC_SLINGSHOT_SKIP) || (logic->IsAdult && logic->CanGroundJump()) || 
-                                                         logic->CanRecoilHover(RECOIL_SWORD_AND_SHIELD) || logic->BunnyHovers()),
+                                                         logic->CanRecoilHover(RECOIL_SWORD_AND_SHIELD, BRECOIL_YES) || logic->BunnyHovers()),
     });
 
     areaTable[RR_DODONGOS_CAVERN_BOMB_ROOM_UPPER] = Region("Dodongos Cavern Bomb Room Upper", SCENE_DODONGOS_CAVERN, {}, {
@@ -571,7 +571,7 @@ void RegionTable_Init_DodongosCavern() {
         //Exits
         ENTRANCE(RR_DODONGOS_CAVERN_MQ_TWO_FIRES_ROOM,     true),
         //barely possible as adult with just hover boots and rolls, but hard enough to be a trick
-        ENTRANCE(RR_DODONGOS_CAVERN_MQ_TORCH_PUZZLE_UPPER, logic->HasItem(RG_GORONS_BRACELET) || logic->CanRecoilHover(RECOIL_SWORD_AND_SHIELD) || logic->BunnyHovers()),
+        ENTRANCE(RR_DODONGOS_CAVERN_MQ_TORCH_PUZZLE_UPPER, logic->HasItem(RG_GORONS_BRACELET) || logic->CanRecoilHover(RECOIL_SWORD_AND_SHIELD, BRECOIL_YES) || logic->BunnyHovers()),
     });
 
     areaTable[RR_DODONGOS_CAVERN_MQ_TORCH_PUZZLE_UPPER] = Region("Dodongos Cavern MQ Torch Puzzle Upper", SCENE_DODONGOS_CAVERN, {

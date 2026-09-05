@@ -3,6 +3,7 @@
 #include "logic.h"
 #include "bean_patches.h"
 #include "../debugger/performanceTimer.h"
+#include "soh/Enhancements/randomizer/randomizerEnums.h"
 #include "soh/OTRGlobals.h"
 #include "randomizer.h"
 #include "dungeon.h"
@@ -1351,9 +1352,15 @@ bool Logic::BeanPlanted(LogicVal beanEvent) {
     return swch >> patch->swchFlag & 1;
 }
 
-bool Logic::CanRecoilHover(RecoilRequirements req) {
+bool Logic::CanRecoilHover(RecoilRequirements req, BombRecoilRequirements breq, bool bombFlower) {
     if (!(CanUse(RG_HOVER_BOOTS) && ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE))) {
         return false;
+    }
+    //Fairies kill your mementom
+    if (breq != BRECOIL_NO && ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && (HasExplosives() || bombFlower && HasItem(RG_GORONS_BRACELET)) && logic->TakeDamage(DAMAGE_NO_FAIRY)){
+        if (breq == BRECOIL_YES || logic->CanJumpslash()){
+            return true;
+        }
     }
     bool can = false;
     switch (req) {
@@ -1376,22 +1383,27 @@ bool Logic::CanRecoilHover(RecoilRequirements req) {
 }
 
 // some actors seem to normalise recoil distance, so the only thing that can matter is attack range
-bool Logic::CanRecoilHoverFromObject(TorchRecoilRequirements req) {
+bool Logic::CanRecoilHoverFromActor(ActorRecoilRequirements req, BombRecoilRequirements breq) {
     if (!(CanUse(RG_HOVER_BOOTS) && ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE))) {
         return false;
     }
+    if (breq != BRECOIL_NO && ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && HasExplosives() && logic->TakeDamage(DAMAGE_NO_FAIRY)){
+        if (breq == BRECOIL_YES || logic->CanJumpslash()){
+            return true;
+        }
+    }
     bool can = false;
     switch (req) {
-        case TRECOIL_LONG_AND_SHIELD:
+        case ARECOIL_LONG_AND_SHIELD:
             can = (CanUse(RG_STICKS) || CanUse(RG_BIGGORON_SWORD)) && CanStandingShield();
             break;
-        case TRECOIL_SHORT:
+        case ARECOIL_SHORT:
             can = CanUse(RG_MEGATON_HAMMER) || CanUse(RG_KOKIRI_SWORD);
             [[fallthrough]];
-        case TRECOIL_MASTER:
+        case ARECOIL_MASTER:
             can = can || CanUse(RG_MASTER_SWORD);
             [[fallthrough]];
-        case TRECOIL_LONG:
+        case ARECOIL_LONG:
             can = can || CanUse(RG_STICKS) || CanUse(RG_BIGGORON_SWORD);
             break;
         default:
@@ -1776,8 +1788,8 @@ uint16_t Logic::WaterTimer() {
     return ctx->GetTrickOption(RT_FEWER_TUNIC_REQUIREMENTS) ? Health() / 2 : 0;
 }
 
-bool Logic::TakeDamage() {
-    return CanUse(RG_BOTTLE_WITH_FAIRY) || EffectiveHealth() > 8 || CanUse(RG_NAYRUS_LOVE);
+bool Logic::TakeDamage(DamageAllowance allowance) {
+    return (CanUse(RG_BOTTLE_WITH_FAIRY) && allowance != DAMAGE_NO_FAIRY) || EffectiveHealth() > 8 || CanUse(RG_NAYRUS_LOVE);
 }
 
 // Voiding out, be it swimming too far or falling in a pit, costs a heart.
