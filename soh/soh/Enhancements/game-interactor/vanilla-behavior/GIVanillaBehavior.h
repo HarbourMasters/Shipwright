@@ -27,6 +27,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // false
+    // ```
+    // #### `args`
+    // - `*Actor`
+    VB_APPLY_TARGET_SCORING,
+
+    // #### `result`
+    // ```c
     // this->actor.textId == 0x401A
     // ```
     // #### `args`
@@ -1679,6 +1687,14 @@ typedef enum {
     // #### `args`
     // - `ObjLightswitch*`
     VB_LIGHTSWITCH_OFF,
+
+    // #### `result`
+    // ```c
+    // yawTempAbs > 0x4000 (or 0x2AAA)
+    // ```
+    // #### `args`
+    // - `*Actor`
+    VB_LIMIT_TARGET_FOV,
 
     // #### `result`
     // ```c
