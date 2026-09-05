@@ -11,17 +11,17 @@ void RegionTable_Init_LakeHylia() {
         EVENT_ACCESS(LOGIC_FAIRY_ACCESS,          logic->CallGossipFairy() || logic->CanUse(RG_STICKS) || (logic->IsChild && logic->BeanPlanted(LOGIC_PLANT_LAKE_HYLIA_BEAN) && logic->CanUse(RG_SONG_OF_STORMS))),
         EVENT_ACCESS(LOGIC_BUG_ACCESS,            logic->IsChild && logic->CanCutShrubs()),
         EVENT_ACCESS(LOGIC_CHILD_SCARECROW,       logic->IsChild && logic->HasItem(RG_FAIRY_OCARINA) && logic->OcarinaButtons() >= 2),
-        EVENT_ACCESS(LOGIC_ADULT_SCARECROW, logic->IsAdult && logic->HasItem(RG_FAIRY_OCARINA) && logic->OcarinaButtons() >= 2),
+        EVENT_ACCESS(LOGIC_ADULT_SCARECROW,       logic->IsAdult && logic->HasItem(RG_FAIRY_OCARINA) && logic->OcarinaButtons() >= 2),
     }, {
         //Locations
         LOCATION(RC_LH_UNDERWATER_ITEM,                  logic->IsChild && logic->HasItem(RG_SILVER_SCALE)),
         LOCATION(RC_LH_SUN,                              logic->IsAdult && ((logic->Get(LOGIC_WATER_TEMPLE_CLEAR) && logic->HasItem(RG_BRONZE_SCALE)) || logic->ReachDistantScarecrow()) && logic->CanUse(RG_FAIRY_BOW)),
-        LOCATION(RC_LH_FREESTANDING_POH,                 logic->IsAdult && (logic->ReachScarecrow() || logic->BeanPlanted(LOGIC_PLANT_LAKE_HYLIA_BEAN)) && logic->CanAvoidEnemy(RE_GUAY, false) && logic->HasItem(RG_CLIMB)),
+        LOCATION(RC_LH_FREESTANDING_POH,                 logic->IsAdult && (logic->ReachScarecrow() || logic->BeanPlanted(LOGIC_PLANT_LAKE_HYLIA_BEAN)) && logic->CanAvoidEnemy(RE_GUAY, ED_CLOSE, false) && logic->HasItem(RG_CLIMB)),
         LOCATION(RC_LH_GS_BEAN_PATCH,                    logic->CanSpawnSoilSkull(RG_LAKE_HYLIA_BEAN_SOUL) && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA)),
         LOCATION(RC_LH_GS_LAB_WALL,                      logic->IsChild && (logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA, ED_BOOMERANG) || (ctx->GetTrickOption(RT_LH_LAB_WALL_GS) && logic->CanJumpslashExceptHammer())) && logic->CanGetNightTimeGS()),
         LOCATION(RC_LH_GS_SMALL_ISLAND,                  logic->IsChild && logic->CanGetEnemyDrop(RE_GOLD_SKULLTULA) && logic->CanGetNightTimeGS() && logic->HasItem(RG_BRONZE_SCALE)),
         LOCATION(RC_LH_GS_TREE,                          logic->IsAdult && logic->CanUse(RG_LONGSHOT) && logic->CanGetNightTimeGS()),
-        LOCATION(RC_LH_FRONT_RUPEE,                      logic->IsChild && logic->HasItem(RG_BRONZE_SCALE)),
+        LOCATION(RC_LH_FRONT_RUPEE,                      logic->IsChild && (logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
         LOCATION(RC_LH_MIDDLE_RUPEE,                     logic->IsChild && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
         LOCATION(RC_LH_BACK_RUPEE,                       logic->IsChild && (logic->HasItem(RG_SILVER_SCALE) || logic->CanUse(RG_IRON_BOOTS))),
         LOCATION(RC_LH_BEAN_SPROUT_FAIRY_1,              logic->IsChild && logic->BeanPlanted(LOGIC_PLANT_LAKE_HYLIA_BEAN) && logic->CanUse(RG_SONG_OF_STORMS)),
@@ -110,12 +110,12 @@ void RegionTable_Init_LakeHylia() {
 
     areaTable[RR_LH_FISHING_ISLAND] = Region("LH Fishing Island", SCENE_LAKE_HYLIA, {}, {
         //Locations
-        LOCATION(RC_LH_ROCK,         logic->CanBreakRocks()),
-        LOCATION(RC_LH_FISHING_SIGN, logic->CanRead()),
+        LOCATION(RC_LH_ROCK,                             logic->CanBreakRocks()),
+        LOCATION(RC_LH_FISHING_SIGN,                     logic->CanRead()),
         LOCATION(RC_LH_FISHING_ISLAND_WATER_SWITCH_SIGN, logic->IsAdult && logic->CanRead()),
     }, {
         //Exits
-        ENTRANCE(RR_LAKE_HYLIA,      logic->HasItem(RG_BRONZE_SCALE)),
+        ENTRANCE(RR_LAKE_HYLIA,      logic->IsAdult || logic->HasItem(RG_BRONZE_SCALE)),
         ENTRANCE(RR_LH_FISHING_POND, logic->HasItem(RG_FISHING_HOLE_KEY)),
     });
 

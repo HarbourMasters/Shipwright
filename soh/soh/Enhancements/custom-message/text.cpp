@@ -98,30 +98,40 @@ void Text::Replace(const std::string& oldStr, const Text& newText) {
     replaceAll(spanish, oldStr, newText.GetSpanish());
 }
 
-static void replaceRandomVowel(std::string& target, uint64_t* randState) {
-    std::vector<size_t> vowelPositions;
+static bool isAsciiVowel(char c) {
+    return c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u' || c == 'A' || c == 'E' || c == 'I' || c == 'O' ||
+           c == 'U';
+}
+
+static bool isAsciiLetter(char c) {
+    return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
+}
+
+// Uniformly picks one position where pred holds, in a single pass. npos if nothing matches.
+static size_t randomMatch(const std::string& target, bool (*pred)(char), uint64_t* randState) {
+    uint32_t seen = 0;
+    size_t pos = std::string::npos;
 
     for (size_t i = 0; i < target.size(); ++i) {
-        char c = std::tolower(target[i]);
-        if (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u') {
-            vowelPositions.push_back(i);
+        if (pred(target[i]) && ShipUtils::Random(0, ++seen, randState) == 0) {
+            pos = i;
         }
     }
 
-    if (vowelPositions.empty()) {
+    return pos;
+}
+
+static void replaceRandomVowel(std::string& target, uint64_t* randState) {
+    size_t pos = randomMatch(target, isAsciiVowel, randState);
+
+    if (pos == std::string::npos) {
         return;
     }
 
-    size_t pos = ShipUtils::RandomElement(vowelPositions, randState);
-
-    const std::array<char, 5> vowels = { 'a', 'e', 'i', 'o', 'u' };
+    static constexpr char vowels[] = { 'a', 'e', 'i', 'o', 'u' };
     char newVowel = ShipUtils::RandomElement(vowels, randState);
 
-    if (std::isupper(target[pos])) {
-        newVowel = std::toupper(newVowel);
-    }
-
-    target[pos] = newVowel;
+    target[pos] = (target[pos] >= 'A' && target[pos] <= 'Z') ? newVowel - ('a' - 'A') : newVowel;
 }
 
 void Text::ReplaceRandomVowel(uint64_t* randState) {
@@ -131,23 +141,11 @@ void Text::ReplaceRandomVowel(uint64_t* randState) {
 }
 
 static void duplicateRandomLetter(std::string& target, uint64_t* randState) {
-    std::vector<size_t> letterPositions;
+    size_t pos = randomMatch(target, isAsciiLetter, randState);
 
-    for (size_t i = 0; i < target.size(); ++i) {
-        if (std::isalpha(target[i])) {
-            letterPositions.push_back(i);
-        }
+    if (pos != std::string::npos) {
+        target.insert(pos + 1, 1, target[pos]);
     }
-
-    if (letterPositions.empty()) {
-        return;
-    }
-
-    size_t pos = ShipUtils::RandomElement(letterPositions, randState);
-
-    char c = target[pos];
-
-    target.insert(target.begin() + pos + 1, c);
 }
 
 void Text::DuplicateRandomLetter(uint64_t* randState) {

@@ -1396,6 +1396,8 @@ void Settings::CreateOptions() {
     // TODO: Compasses show rewards/woth, maps show dungeon mode
     OPT_BOOL(RSK_BLUE_FIRE_ARROWS, CVAR_RANDOMIZER_SETTING("BlueFireArrows"));
     OPT_BOOL(RSK_SUNLIGHT_ARROWS, CVAR_RANDOMIZER_SETTING("SunlightArrows"));
+    OPT_BOOL(RSK_BUNNY_HOOD, CVAR_RANDOMIZER_SETTING("BunnyHood"));
+    OPT_BOOL(RSK_MASKS_AS_ADULT, CVAR_RANDOMIZER_SETTING("MasksAsAdult"));
     OPT_BOOL(RSK_ROCS_FEATHER, CVAR_RANDOMIZER_SETTING("RocsFeather"));
     OPT_U8(RSK_INFINITE_UPGRADES, {"Off", "Progressive", "Condensed Progressive"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("InfiniteUpgrades"));
     OPT_BOOL(RSK_SKELETON_KEY, CVAR_RANDOMIZER_SETTING("SkeletonKey"));
@@ -1595,11 +1597,6 @@ void Settings::CreateOptions() {
     OPT_TRICK(RT_UNINTUITIVE_JUMPS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::NOVICE }, "UnJmp");
     OPT_TRICK(RT_FIRE_RINGS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::INTERMEDIATE }, "FlaChst");
 
-    // disabled for now, can't check for being able to use bunny hood & bunny hood speedup is currently completely
-    // decoupled from rando
-
-    // OPT_TRICK(RT_BUNNY_HOOD_JUMPS, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED });
-
     OPT_TRICK(RT_DAMAGE_BOOST_SIMPLE, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::EXPERIMENTAL },
               "SDmgBoo");
     OPT_TRICK(RT_HOVER_BOOST_SIMPLE, RCQUEST_BOTH, RA_NONE, { Tricks::Tag::ADVANCED, Tricks::Tag::GLITCH }, "SHovBoo");
@@ -1678,10 +1675,8 @@ void Settings::CreateOptions() {
     OPT_TRICK(RT_GF_LEDGE_CLIP_INTO_GTG, RCQUEST_BOTH, RA_GERUDO_FORTRESS, { Tricks::Tag::NOVICE, Tricks::Tag::GLITCH },
               "GTGLdgClp");
 
-    // disabled for now, can't check for being able to use bunny hood & bunny hood speedup is currently completely
-    // decoupled from rando
-
-    // OPT_TRICK(RT_HW_BUNNY_CROSSING, RCQUEST_BOTH, RA_HAUNTED_WASTELAND, { Tricks::Tag::NOVICE });
+    // only does anything with the Bunny Hood Effect setting on
+    OPT_TRICK(RT_HW_BUNNY_CROSSING, RCQUEST_BOTH, RA_HAUNTED_WASTELAND, { Tricks::Tag::NOVICE }, "HWBun");
 
     OPT_TRICK(RT_HW_CROSSING, RCQUEST_BOTH, RA_HAUNTED_WASTELAND, { Tricks::Tag::INTERMEDIATE }, "RvrSand");
     OPT_TRICK(RT_LENS_HW, RCQUEST_BOTH, RA_HAUNTED_WASTELAND, { Tricks::Tag::INTERMEDIATE }, "HWNoLoT");
@@ -1702,10 +1697,11 @@ void Settings::CreateOptions() {
     OPT_TRICK(RT_DC_HAMMER_FLOOR, RCQUEST_BOTH, RA_DODONGOS_CAVERN, { Tricks::Tag::NOVICE }, "KDHamFl");
     OPT_TRICK(RT_DC_DODONGO_CHU, RCQUEST_BOTH, RA_DODONGOS_CAVERN, { Tricks::Tag::ADVANCED }, "KDChu");
     OPT_TRICK(RT_DC_MQ_STAIRS_WITH_ONLY_STRENGTH, RCQUEST_MQ, RA_DODONGOS_CAVERN, { Tricks::Tag::NOVICE }, "DCStaStr");
-    OPT_TRICK(RT_DC_MQ_CHILD_BOMBS, RCQUEST_MQ, RA_DODONGOS_CAVERN, { Tricks::Tag::ADVANCED }, "DCLobyJS");
+    OPT_TRICK(RT_DC_CHILD_LOBBY, RCQUEST_BOTH, RA_DODONGOS_CAVERN, { Tricks::Tag::ADVANCED }, "DCLobyJS");
     OPT_TRICK(RT_DC_MQ_CHILD_EYES, RCQUEST_MQ, RA_DODONGOS_CAVERN, { Tricks::Tag::EXPERT }, "DCEyeStrC");
     OPT_TRICK(RT_DC_MQ_ADULT_EYES, RCQUEST_MQ, RA_DODONGOS_CAVERN, { Tricks::Tag::ADVANCED }, "DCEyeStrA");
     OPT_TRICK(RT_DC_EYES_CHU, RCQUEST_BOTH, RA_DODONGOS_CAVERN, { Tricks::Tag::ADVANCED }, "DCEyeChu");
+    OPT_TRICK(RT_DC_EYES_BUNNYHOVERS, RCQUEST_BOTH, RA_DODONGOS_CAVERN, { Tricks::Tag::ADVANCED }, "DCEyeBun");
     OPT_TRICK(RT_JABU_BOSS_HOVER, RCQUEST_VANILLA, RA_JABU_JABUS_BELLY, { Tricks::Tag::INTERMEDIATE }, "JbuBoxHB");
     OPT_TRICK(RT_JABU_NEAR_BOSS_RANGED, RCQUEST_BOTH, RA_JABU_JABUS_BELLY, { Tricks::Tag::NOVICE }, "JbuBosPrj");
     OPT_TRICK(RT_JABU_NEAR_BOSS_EXPLOSIVES, RCQUEST_VANILLA, RA_JABU_JABUS_BELLY, { Tricks::Tag::INTERMEDIATE },
@@ -1754,6 +1750,7 @@ void Settings::CreateOptions() {
     OPT_TRICK(RT_FIRE_MQ_MAZE_HOVERS, RCQUEST_MQ, RA_FIRE_TEMPLE, { Tricks::Tag::NOVICE }, "FIMazHB");
     OPT_TRICK(RT_FIRE_MQ_MAZE_JUMP, RCQUEST_MQ, RA_FIRE_TEMPLE, { Tricks::Tag::INTERMEDIATE }, "FIMazJmp");
     OPT_TRICK(RT_FIRE_MQ_ABOVE_MAZE_GS, RCQUEST_MQ, RA_FIRE_TEMPLE, { Tricks::Tag::INTERMEDIATE }, "FIGSLS");
+    OPT_TRICK(RT_WATER_HIGH_EMBLEM_JUMP, RCQUEST_BOTH, RA_WATER_TEMPLE, { Tricks::Tag::NOVICE }, "WTHiJmp");
     OPT_TRICK(RT_WATER_LONGSHOT_TORCH, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::NOVICE }, "WTTorLS");
     OPT_TRICK(RT_WATER_CRACKED_WALL_HOVERS, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::NOVICE }, "WTCrkHB");
     OPT_TRICK(RT_WATER_CRACKED_WALL, RCQUEST_VANILLA, RA_WATER_TEMPLE, { Tricks::Tag::INTERMEDIATE }, "WTCrkJmp");
@@ -1829,6 +1826,7 @@ void Settings::CreateOptions() {
     OPT_TRICK(RT_GTG_MQ_WITH_HOOKSHOT, RCQUEST_MQ, RA_GERUDO_TRAINING_GROUND, { Tricks::Tag::NOVICE }, "GTGMQHS");
     OPT_TRICK(RT_GTG_MQ_WITHOUT_HOOKSHOT, RCQUEST_MQ, RA_GERUDO_TRAINING_GROUND, { Tricks::Tag::INTERMEDIATE },
               "GTGMQNoHS");
+    OPT_TRICK(RT_GTG_MQ_LAVA_ROOM, RCQUEST_MQ, RA_GERUDO_TRAINING_GROUND, { Tricks::Tag::INTERMEDIATE }, "GTGMQLava");
     OPT_TRICK(RT_LENS_GANON, RCQUEST_VANILLA, RA_GANONS_CASTLE, { Tricks::Tag::NOVICE }, "GCLoT");
     OPT_TRICK(RT_GANON_SPIRIT_TRIAL_HOOKSHOT, RCQUEST_VANILLA, RA_GANONS_CASTLE, { Tricks::Tag::NOVICE }, "GCNoHS");
     OPT_TRICK(RT_LENS_GANON_MQ, RCQUEST_MQ, RA_GANONS_CASTLE, { Tricks::Tag::NOVICE }, "GCMQLoT");
@@ -1875,6 +1873,8 @@ void Settings::CreateOptions() {
                                                                       &mOptions[RSK_BIG_POE_COUNT],
                                                                       &mOptions[RSK_BLUE_FIRE_ARROWS],
                                                                       &mOptions[RSK_SUNLIGHT_ARROWS],
+                                                                      &mOptions[RSK_BUNNY_HOOD],
+                                                                      &mOptions[RSK_MASKS_AS_ADULT],
                                                                       &mOptions[RSK_FULL_WALLETS],
                                                                       &mOptions[RSK_SLINGBOW_BREAK_BEEHIVES],
                                                                       &mOptions[RSK_SWORDLESS_EPONA_ITEMS],
@@ -2445,6 +2445,8 @@ void Settings::CreateOptions() {
                                               &mOptions[RSK_DAMAGE_MULTIPLIER],
                                               &mOptions[RSK_BLUE_FIRE_ARROWS],
                                               &mOptions[RSK_SUNLIGHT_ARROWS],
+                                              &mOptions[RSK_BUNNY_HOOD],
+                                              &mOptions[RSK_MASKS_AS_ADULT],
                                               &mOptions[RSK_INFINITE_UPGRADES],
                                               &mOptions[RSK_SKELETON_KEY],
                                               &mOptions[RSK_SLINGBOW_BREAK_BEEHIVES],
@@ -2558,7 +2560,10 @@ void Settings::CreateOptions() {
 std::unordered_map<std::string, RandomizerSettingKey> Settings::PopulateOptionNameToEnum() {
     std::unordered_map<std::string, RandomizerSettingKey> output = {};
     for (size_t count = 0; count < RSK_MAX; count++) {
-        output[mOptions[count].GetName()] = static_cast<RandomizerSettingKey>(count);
+        // skip unassigned settings (RSK_NONE)
+        if (mOptions[count].GetOptionCount() > 0) {
+            output[mOptions[count].GetName()] = static_cast<RandomizerSettingKey>(count);
+        }
     }
     return output;
 }

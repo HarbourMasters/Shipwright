@@ -5,6 +5,7 @@
 #include "soh/ShipUtils.h"
 
 #include "soh/Enhancements/randomizer/rng.h"
+#include "soh/Enhancements/randomizer/randomizerEnumStrings.h"
 
 #define NOGDI // avoid various windows defines that conflict with things in z64.h
 #include <spdlog/spdlog.h>
@@ -1869,51 +1870,33 @@ static void InitTrickNames() {
 /// @return A Text object with the selected trick name
 Rando::Traps::TrickName Rando::Traps::GetTrapName(RandomizerGet id, RandoIceTrapNames iceTrapNamesOption,
                                                   uint64_t* state) {
-    switch (iceTrapNamesOption) {
-        case RO_ICE_TRAP_NAMES_IDENTICAL: {
-            auto item = Rando::StaticData::RetrieveItem(id);
-            return { item.GetName(), item.GetArticle() };
+    if (iceTrapNamesOption == RO_ICE_TRAP_NAMES_SIMILAR) {
+        // If the trick names table has not been initialized, do so
+        if (!initTrickNames) {
+            InitTrickNames();
+            initTrickNames = true;
         }
-        case RO_ICE_TRAP_NAMES_SIMILAR: {
-            // If the trick names table has not been initialized, do so
-            if (!initTrickNames) {
-                InitTrickNames();
-                initTrickNames = true;
-            }
 
-            if (trickNameTable[id].empty()) {
-                SPDLOG_ERROR("[Rando::Traps::GetTrapName] Couldn't find entry for RG %d in trickNameTable",
-                             static_cast<u8>(id));
-                assert(false);
-                return { Text{ "Error: Couldn't get Ice Trap name" }, Text{ "Error: Couldn't get Ice Trap name" } };
-            }
-
+        if (!trickNameTable[id].empty()) {
             // Randomly get the easy, medium, or hard name for the given item id
             return ShipUtils::RandomElement(trickNameTable[id], state);
         }
-        case RO_ICE_TRAP_NAMES_MISSPELLED_CHANGED_VOWEL: {
-            auto item = Rando::StaticData::RetrieveItem(id);
-            Text name = item.GetName();
-            name.ReplaceRandomVowel(state);
-            return { name, item.GetArticle() };
-        }
-        case RO_ICE_TRAP_NAMES_MISSPELLED_DUPLICATED_LETTER: {
-            auto item = Rando::StaticData::RetrieveItem(id);
-            Text name = item.GetName();
-            name.DuplicateRandomLetter(state);
-            return { name, item.GetArticle() };
-        }
-        case RO_ICE_TRAP_NAMES_REVEALED: {
-            auto item = Rando::StaticData::RetrieveItem(RG_ICE_TRAP);
-            return { item.GetName(), item.GetArticle() };
-        }
-        default: {
-            SPDLOG_ERROR("[Rando::Traps::GetTrapName] Invalid value for RSK_ICE_TRAP_NAMES (%d)",
-                         static_cast<u8>(iceTrapNamesOption));
-            assert(false);
-            return { Text{ "Error: Couldn't get Ice Trap name" }, Text{ "Error: Couldn't get Ice Trap name" } };
-        }
+
+        // No trick name for this item, so fall through to its real name
+        SPDLOG_ERROR("[Rando::Traps::GetTrapName] Couldn't find entry for RG {} in trickNameTable", id);
     }
+
+    const Rando::Item& item =
+        Rando::StaticData::RetrieveItem(iceTrapNamesOption == RO_ICE_TRAP_NAMES_REVEALED ? RG_ICE_TRAP : id);
+    Text name = item.GetName();
+
+    if (iceTrapNamesOption == RO_ICE_TRAP_NAMES_MISSPELLED_CHANGED_VOWEL) {
+        name.ReplaceRandomVowel(state);
+    } else if (iceTrapNamesOption == RO_ICE_TRAP_NAMES_MISSPELLED_DUPLICATED_LETTER) {
+        name.DuplicateRandomLetter(state);
+    }
+
+    return { name, item.GetArticle() };
 }
 
 RandomizerGet Rando::Traps::GetTrapTrickModel(uint64_t* state) {

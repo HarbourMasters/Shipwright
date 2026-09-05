@@ -1,4 +1,23 @@
 #include "./RCToRandInf.h"
+#include <spdlog/spdlog.h>
+#include "randomizerEnumStrings.h"
+
+bool IdentifyCheck(CheckIdentity* id, Rando::Location* loc, bool allowUnknown) {
+    if (loc == nullptr || loc->GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
+        if (rcToRandomizerInf.contains(loc->GetRandomizerCheck())) {
+            id->randomizerInf = rcToRandomizerInf[loc->GetRandomizerCheck()];
+        } else {
+            SPDLOG_ERROR("{} not found in rcToRandomizerInf.", loc->GetRandomizerCheck());
+            assert(false);
+        }
+        id->randomizerCheck = loc->GetRandomizerCheck();
+        return true;
+    } else if (!allowUnknown) {
+        SPDLOG_WARN("IdentifyCheck did not receive a valid RC value ({}).", loc->GetRandomizerCheck());
+        assert(false);
+    }
+    return false;
+}
 
 std::map<RandomizerCheck, RandomizerInf> rcToRandomizerInf = {
     { RC_KF_LINKS_HOUSE_COW, RAND_INF_COWS_MILKED_KF_LINKS_HOUSE_COW },
@@ -2413,6 +2432,10 @@ std::map<RandomizerCheck, RandomizerInf> rcToRandomizerInf = {
     { RC_SPIRIT_TEMPLE_MQ_ENTRANCE_EYE_BOULDER, RAND_INF_SPIRIT_TEMPLE_MQ_ENTRANCE_EYE_BOULDER },
     { RC_SPIRIT_TEMPLE_MQ_ENTRANCE_CEILING_BOULDER, RAND_INF_SPIRIT_TEMPLE_MQ_ENTRANCE_CEILING_BOULDER },
     { RC_SPIRIT_TEMPLE_MQ_EARLY_ADULT_BOULDER, RAND_INF_SPIRIT_TEMPLE_MQ_EARLY_ADULT_BOULDER },
+    { RC_SPIRIT_TEMPLE_MQ_CRAWLSPACE_BOULDER, RAND_INF_SPIRIT_TEMPLE_MQ_CRAWLSPACE_BOULDER },
+    { RC_SPIRIT_TEMPLE_MQ_GIBDO_BOULDER, RAND_INF_SPIRIT_TEMPLE_MQ_GIBDO_BOULDER },
+    { RC_SPIRIT_TEMPLE_MQ_GIBDO_BOULDER_LOW, RAND_INF_SPIRIT_TEMPLE_MQ_GIBDO_BOULDER_LOW },
+    { RC_SPIRIT_TEMPLE_MQ_GIBDO_BOULDER_HIGH, RAND_INF_SPIRIT_TEMPLE_MQ_GIBDO_BOULDER_HIGH },
     { RC_BOTW_MQ_BOULDER_1, RAND_INF_BOTW_MQ_BOULDER_1 },
     { RC_BOTW_MQ_BOULDER_2, RAND_INF_BOTW_MQ_BOULDER_2 },
     { RC_BOTW_MQ_BOULDER_3, RAND_INF_BOTW_MQ_BOULDER_3 },

@@ -14,7 +14,6 @@ void RegionTable_Init_Market() {
 
     areaTable[RR_THE_MARKET] = Region("Market", SCENE_MARKET_DAY, {}, {
         //Locations
-        //RANDOTODO add item avalibility to regions to remove need to hardcode logic in limited item use situations
         LOCATION(RC_MARKET_GRASS_1,              logic->IsChild && logic->CanCutShrubs()),
         LOCATION(RC_MARKET_GRASS_2,              logic->IsChild && logic->CanCutShrubs()),
         LOCATION(RC_MARKET_GRASS_3,              logic->IsChild && logic->CanCutShrubs()),

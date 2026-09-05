@@ -1,35 +1,26 @@
 #include "randomizerEnumStrings.h"
 
-// Redefine enum macros to generate string->enum maps for every enum.
-#define RANDO_ENUM_BEGIN(EnumName)                                                                     \
-    template <> const std::unordered_map<std::string_view, EnumName>& GetStringToEnumMap<EnumName>() { \
-        static const std::unordered_map<std::string_view, EnumName> map = [] {         \
-            std::unordered_map<std::string_view, EnumName> m;
+static std::string NameOrValue(std::string_view name, std::string_view enumName, long long value) {
+    if (!name.empty()) {
+        return std::string(name);
+    }
+    return std::string(enumName) + '(' + std::to_string(value) + ')';
+}
 
-#define RANDO_ENUM_ITEM(name, ...) m.emplace(#name, name);
+#define RANDO_ENUM_BEGIN(EnumName)                  \
+    std::string_view EnumToString(EnumName value) { \
+        switch (value) {
 
-#define RANDO_ENUM_END(EnumName) \
-    return m;                    \
-    }                            \
-    ();                          \
-    return map;                  \
+#define RANDO_ENUM_ITEM(name, ...) \
+    case name:                     \
+        return #name;
+
+#define RANDO_ENUM_END(EnumName)                                              \
+    }                                                                         \
+    return {};                                                                \
+    }                                                                         \
+    std::string format_as(EnumName value) {                                   \
+        return NameOrValue(EnumToString(value), #EnumName, (long long)value); \
     }
 
-#undef RANDO_ENUM_BEGIN
-#undef RANDO_ENUM_ITEM
-#undef RANDO_ENUM_END
-
-// Redefine enum macros to generate enum->string maps for every enum.
-#define RANDO_ENUM_BEGIN(EnumName)                                                                     \
-    template <> const std::unordered_map<EnumName, std::string_view>& GetEnumToStringMap<EnumName>() { \
-        static const std::unordered_map<EnumName, std::string_view> map = [] {         \
-            std::unordered_map<EnumName, std::string_view> m;
-
-#define RANDO_ENUM_ITEM(name, ...) m.emplace(name, #name);
-
-#define RANDO_ENUM_END(EnumName) \
-    return m;                    \
-    }                            \
-    ();                          \
-    return map;                  \
-    }
+#include "randomizerEnumList.h"

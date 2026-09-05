@@ -146,7 +146,8 @@ static void WriteSettings() {
     auto ctx = Rando::Context::GetInstance();
     std::array<Rando::Option, RSK_MAX> options = Rando::Settings::GetInstance()->GetAllOptions();
     for (const Rando::Option& option : options) {
-        if (option.GetName() != "") {
+        // skip unassigned settings (RSK_NONE)
+        if (option.GetOptionCount() > 0) {
             jsonData["settings"][option.GetName()] = option.GetOptionText(ctx->GetOption(option.GetKey()).Get());
         }
     }

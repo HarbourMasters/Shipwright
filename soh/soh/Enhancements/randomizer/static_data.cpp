@@ -377,7 +377,7 @@ std::unordered_map<std::string, RandomizerTrick> StaticData::trickToEnum = {
     { "74", RT_DC_SCRUB_ROOM },
     { "76", RT_DC_HAMMER_FLOOR },
     { "77", RT_DC_MQ_STAIRS_WITH_ONLY_STRENGTH },
-    { "78", RT_DC_MQ_CHILD_BOMBS },
+    { "78", RT_DC_CHILD_LOBBY },
     { "79", RT_DC_MQ_CHILD_EYES },
     { "80", RT_DC_MQ_ADULT_EYES },
     { "81", RT_DC_DODONGO_CHU },
