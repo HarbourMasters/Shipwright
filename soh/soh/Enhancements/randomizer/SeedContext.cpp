@@ -420,7 +420,7 @@ void Context::ParseSpoiler(const char* spoilerFileName) {
         mTrials->ParseJson(spoilerFileJson);
         mSpoilerLoaded = true;
         mSeedGenerated = false;
-    } catch (...) { LUSLOG_ERROR("Failed to load Spoiler File: %s", spoilerFileName); }
+    } catch (...) { SPDLOG_ERROR("Failed to load Spoiler File: {}", spoilerFileName); }
 }
 
 void Context::ParseHashIconIndexesJson(const nlohmann::json& spoilerFileJson) {

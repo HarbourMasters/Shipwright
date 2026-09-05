@@ -48,8 +48,7 @@ extern "C" void OTRPlay_SpawnScene(PlayState* play, s32 sceneId, s32 spawn) {
 
     // Failed to load scene... default to doodongs cavern
     if (play->sceneSegment == nullptr) {
-        lusprintf(__FILE__, __LINE__, 2, "Unable to load scene %s... Defaulting to Doodong's Cavern!\n",
-                  scenePath.c_str());
+        SPDLOG_INFO("Unable to load scene {}... Defaulting to Doodong's Cavern!", scenePath);
         OTRPlay_SpawnScene(play, 0x01, 0);
         return;
     }

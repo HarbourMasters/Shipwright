@@ -147,8 +147,6 @@ uint8_t Rock_RandomizerHoldsItem(CheckIdentity rockIdentity, PlayState* play, bo
 }
 
 void Rock_RandomizerSpawnCollectible(Actor* actor, CheckIdentity rockIdentity, PlayState* play) {
-    LUSLOG_INFO("ROCKdrop %d\t:\t%d, %d", rockIdentity.randomizerCheck, (s16)actor->world.pos.x,
-                (s16)actor->world.pos.z);
     EnItem00* item00 = (EnItem00*)Item_DropCollectible2(play, &actor->world.pos, ITEM00_SOH_DUMMY);
     item00->randoInf = rockIdentity.randomizerInf;
     item00->itemEntry = Rando::Context::GetInstance()->GetFinalGIEntry(rockIdentity.randomizerCheck, true, GI_NONE);
@@ -228,13 +226,6 @@ void EnIshi_RandomizerInit(void* actorRef) {
     Actor* actor = static_cast<Actor*>(actorRef);
     EnIshi* rockActor = static_cast<EnIshi*>(actorRef);
     auto rockIdentity = IdentifyRock(gPlayState->sceneNum, (s16)actor->world.pos.x, (s16)actor->world.pos.z);
-    if (rockIdentity.randomizerCheck == RC_MAX) {
-        LUSLOG_WARN("ROCK ishi  %d\t:\t%d, %d", rockIdentity.randomizerCheck, actor->params & 1,
-                    (s16)actor->world.pos.x, (s16)actor->world.pos.z);
-    } else {
-        LUSLOG_INFO("ROCK ishi%d %d\t:\t%d, %d", rockIdentity.randomizerCheck, actor->params & 1,
-                    (s16)actor->world.pos.x, (s16)actor->world.pos.z);
-    }
 
     if (Rock_RandomizerHoldsItem(rockIdentity, gPlayState, actor->params & 1) && rockActor->actor.draw != nullptr) {
         ObjectExtension::GetInstance().Set<CheckIdentity>(actor, std::move(rockIdentity));
@@ -246,13 +237,7 @@ void ObjBombiwa_RandomizerInit(void* actorRef) {
     Actor* actor = static_cast<Actor*>(actorRef);
     ObjBombiwa* rockActor = static_cast<ObjBombiwa*>(actorRef);
     auto rockIdentity = IdentifyRock(gPlayState->sceneNum, (s16)actor->world.pos.x, (s16)actor->world.pos.z);
-    if (rockIdentity.randomizerCheck == RC_MAX) {
-        LUSLOG_INFO("ROCK bombiwa\t:\t%d, %d", rockIdentity.randomizerCheck, (s16)actor->world.pos.x,
-                    (s16)actor->world.pos.z);
-    } else {
-        LUSLOG_INFO("ROCK bombiwa%d\t:\t%d, %d", rockIdentity.randomizerCheck, (s16)actor->world.pos.x,
-                    (s16)actor->world.pos.z);
-    }
+
     if (Rock_RandomizerHoldsItem(rockIdentity, gPlayState, true) && rockActor->actor.draw != nullptr) {
         ObjectExtension::GetInstance().Set<CheckIdentity>(actor, std::move(rockIdentity));
         rockActor->actor.draw = ObjBombiwa_RandomizerDraw;
@@ -263,13 +248,7 @@ void ObjHamishi_RandomizerInit(void* actorRef) {
     Actor* actor = static_cast<Actor*>(actorRef);
     ObjHamishi* rockActor = static_cast<ObjHamishi*>(actorRef);
     auto rockIdentity = IdentifyRock(gPlayState->sceneNum, (s16)actor->world.pos.x, (s16)actor->world.pos.z);
-    if (rockIdentity.randomizerCheck == RC_MAX) {
-        LUSLOG_WARN("ROCK hamishi\t:\t%d, %d", rockIdentity.randomizerCheck, (s16)actor->world.pos.x,
-                    (s16)actor->world.pos.z);
-    } else {
-        LUSLOG_INFO("ROCK hamishi%d\t:\t%d, %d", rockIdentity.randomizerCheck, (s16)actor->world.pos.x,
-                    (s16)actor->world.pos.z);
-    }
+
     if (Rock_RandomizerHoldsItem(rockIdentity, gPlayState, true) && rockActor->actor.draw != nullptr) {
         ObjectExtension::GetInstance().Set<CheckIdentity>(actor, std::move(rockIdentity));
         rockActor->actor.draw = ObjHamishi_RandomizerDraw;

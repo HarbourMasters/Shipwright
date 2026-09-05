@@ -6,7 +6,7 @@
 #include "soh/Enhancements/debugger/performanceTimer.h"
 
 #include <fstream>
-#include <libultraship/log/luslog.h>
+#include <spdlog/spdlog.h>
 #include <soh/OTRGlobals.h>
 
 #include "3drando/shops.hpp"
@@ -498,8 +498,8 @@ Rando::Entrance* Region::GetExit(RandomizerRegion exitToReturn) {
         }
     }
 
-    LUSLOG_ERROR("ERROR: EXIT \"%s\" DOES NOT EXIST IN \"%s\"", RegionTable(exitToReturn)->regionName.c_str(),
-                 this->regionName.c_str());
+    SPDLOG_ERROR("ERROR: EXIT \"{}\" DOES NOT EXIST IN \"{}\"", RegionTable(exitToReturn)->regionName,
+                 this->regionName);
     assert(false);
     return nullptr;
 }
