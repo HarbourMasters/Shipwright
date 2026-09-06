@@ -1,0 +1,304 @@
+:config:
+  segments:
+    - [ 3, 0x01EE71C0 ]
+    - [ 2, 0x01EDECB0 ]
+  directory: scenes/shared/bowling_scene
+  external_files:
+    - pal_mq/scenes/shared/bowling_scene.yml
+    - pal_mq/code/sys_matrix.yml
+
+bowling_room_0:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: bowling_room_0
+
+
+bowling_room_0Vtx_0000D0:
+  type: OOT:ARRAY
+  offset: 0x0000D0
+  symbol: bowling_room_0Vtx_0000D0
+  count: 139
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+bowling_room_0DL_000980:
+  type: GFX
+  offset: 0x000980
+  symbol: bowling_room_0DL_000980
+
+bowling_room_0Vtx_000C20:
+  type: OOT:ARRAY
+  offset: 0x000C20
+  symbol: bowling_room_0Vtx_000C20
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+bowling_room_0DL_000DC0:
+  type: GFX
+  offset: 0x000DC0
+  symbol: bowling_room_0DL_000DC0
+
+bowling_room_0Vtx_000F28:
+  type: OOT:ARRAY
+  offset: 0x000F28
+  symbol: bowling_room_0Vtx_000F28
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+bowling_room_0DL_001058:
+  type: GFX
+  offset: 0x001058
+  symbol: bowling_room_0DL_001058
+
+bowling_room_0Vtx_001160:
+  type: OOT:ARRAY
+  offset: 0x001160
+  symbol: bowling_room_0Vtx_001160
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+bowling_room_0DL_0012A0:
+  type: GFX
+  offset: 0x0012A0
+  symbol: bowling_room_0DL_0012A0
+
+bowling_room_0Vtx_001370:
+  type: OOT:ARRAY
+  offset: 0x001370
+  symbol: bowling_room_0Vtx_001370
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+bowling_room_0DL_001470:
+  type: GFX
+  offset: 0x001470
+  symbol: bowling_room_0DL_001470
+
+bowling_room_0Vtx_001530:
+  type: OOT:ARRAY
+  offset: 0x001530
+  symbol: bowling_room_0Vtx_001530
+  count: 177
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+bowling_room_0DL_002040:
+  type: GFX
+  offset: 0x002040
+  symbol: bowling_room_0DL_002040
+
+bowling_room_0Vtx_0022E0:
+  type: OOT:ARRAY
+  offset: 0x0022E0
+  symbol: bowling_room_0Vtx_0022E0
+  count: 50
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+bowling_room_0DL_002600:
+  type: GFX
+  offset: 0x002600
+  symbol: bowling_room_0DL_002600
+
+bowling_room_0Vtx_0026E8:
+  type: OOT:ARRAY
+  offset: 0x0026E8
+  symbol: bowling_room_0Vtx_0026E8
+  count: 76
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+bowling_room_0DL_002BA8:
+  type: GFX
+  offset: 0x002BA8
+  symbol: bowling_room_0DL_002BA8
+
+bowling_room_0Vtx_002E30:
+  type: OOT:ARRAY
+  offset: 0x002E30
+  symbol: bowling_room_0Vtx_002E30
+  count: 52
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+bowling_room_0DL_003170:
+  type: GFX
+  offset: 0x003170
+  symbol: bowling_room_0DL_003170
+
+bowling_room_0Vtx_003288:
+  type: OOT:ARRAY
+  offset: 0x003288
+  symbol: bowling_room_0Vtx_003288
+  count: 56
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+bowling_room_0DL_003608:
+  type: GFX
+  offset: 0x003608
+  symbol: bowling_room_0DL_003608
+
+bowling_room_0Vtx_0037C0:
+  type: OOT:ARRAY
+  offset: 0x0037C0
+  symbol: bowling_room_0Vtx_0037C0
+  count: 160
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+bowling_room_0DL_0041C0:
+  type: GFX
+  offset: 0x0041C0
+  symbol: bowling_room_0DL_0041C0
+
+bowling_room_0Vtx_0043C0:
+  type: OOT:ARRAY
+  offset: 0x0043C0
+  symbol: bowling_room_0Vtx_0043C0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+bowling_room_0DL_004540:
+  type: GFX
+  offset: 0x004540
+  symbol: bowling_room_0DL_004540
+
+bowling_room_0Vtx_004618:
+  type: OOT:ARRAY
+  offset: 0x004618
+  symbol: bowling_room_0Vtx_004618
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+bowling_room_0DL_0047D8:
+  type: GFX
+  offset: 0x0047D8
+  symbol: bowling_room_0DL_0047D8
+
+bowling_room_0Vtx_004930:
+  type: OOT:ARRAY
+  offset: 0x004930
+  symbol: bowling_room_0Vtx_004930
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+bowling_room_0DL_004A30:
+  type: GFX
+  offset: 0x004A30
+  symbol: bowling_room_0DL_004A30
+
+bowling_room_0Vtx_004B08:
+  type: OOT:ARRAY
+  offset: 0x004B08
+  symbol: bowling_room_0Vtx_004B08
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+bowling_room_0DL_004C78:
+  type: GFX
+  offset: 0x004C78
+  symbol: bowling_room_0DL_004C78
+
+bowling_room_0DL_004D90:
+  type: GFX
+  offset: 0x004D90
+  symbol: bowling_room_0DL_004D90
+
+bowling_room_0Vtx_004E10:
+  type: OOT:ARRAY
+  offset: 0x004E10
+  symbol: bowling_room_0Vtx_004E10
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+bowling_room_0DL_005090:
+  type: GFX
+  offset: 0x005090
+  symbol: bowling_room_0DL_005090
+
+bowling_room_0Vtx_005260:
+  type: OOT:ARRAY
+  offset: 0x005260
+  symbol: bowling_room_0Vtx_005260
+  count: 68
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+bowling_room_0DL_0056A0:
+  type: GFX
+  offset: 0x0056A0
+  symbol: bowling_room_0DL_0056A0
+
+bowling_room_0Vtx_005838:
+  type: OOT:ARRAY
+  offset: 0x005838
+  symbol: bowling_room_0Vtx_005838
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+bowling_room_0DL_005AB8:
+  type: GFX
+  offset: 0x005AB8
+  symbol: bowling_room_0DL_005AB8
+
+bowling_room_0Vtx_005BB0:
+  type: OOT:ARRAY
+  offset: 0x005BB0
+  symbol: bowling_room_0Vtx_005BB0
+  count: 38
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+bowling_room_0DL_005E10:
+  type: GFX
+  offset: 0x005E10
+  symbol: bowling_room_0DL_005E10
+
+bowling_room_0Vtx_005FF8:
+  type: OOT:ARRAY
+  offset: 0x005FF8
+  symbol: bowling_room_0Vtx_005FF8
+  count: 15
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+bowling_room_0DL_0060E8:
+  type: GFX
+  offset: 0x0060E8
+  symbol: bowling_room_0DL_0060E8
+
+bowling_room_0DL_0061A8:
+  type: GFX
+  offset: 0x0061A8
+  symbol: bowling_room_0DL_0061A8

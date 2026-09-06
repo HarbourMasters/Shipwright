@@ -1,0 +1,14 @@
+:config:
+  segments:
+    - [ 2, 0x02FC3000 ]
+
+drag_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: drag_scene
+
+
+drag_sceneCollisionHeader_0003C0:
+  type: OOT:COLLISION
+  offset: 0x0003C0
+  symbol: drag_sceneCollisionHeader_0003C0

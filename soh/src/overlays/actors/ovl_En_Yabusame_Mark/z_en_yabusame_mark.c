@@ -107,7 +107,7 @@ void EnYabusameMark_Init(Actor* thisx, PlayState* play) {
     Collider_SetQuad(play, &this->collider, &this->actor, &sQuadInit);
     this->worldPos = this->actor.world.pos;
     this->actor.flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED;
-    if (gSaveContext.sceneSetupIndex != 4) {
+    if (gSaveContext.sceneLayer != 4) {
         Actor_Kill(&this->actor);
         return;
     }

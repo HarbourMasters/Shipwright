@@ -1,11 +1,13 @@
 #include "entrance.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 #include "3drando/fill.hpp"
 #include "3drando/pool_functions.hpp"
 #include "3drando/item_pool.hpp"
-#include "3drando/random.hpp"
+#include "rng.h"
 #include "../debugger/performanceTimer.h"
 #include "soh/Enhancements/gameconsole.h"
+#include "soh/util.h"
 #include "z64camera.h"
 #include "z64scene.h"
 
@@ -274,7 +276,7 @@ void SetAllEntrancesData() {
         { { EntranceType::Dungeon,      RR_SACRED_FOREST_MEADOW,             RR_FOREST_TEMPLE_ENTRYWAY,            ENTR_FOREST_TEMPLE_ENTRANCE },
           { EntranceType::Dungeon,      RR_FOREST_TEMPLE_ENTRYWAY,           RR_SACRED_FOREST_MEADOW,              ENTR_SACRED_FOREST_MEADOW_OUTSIDE_TEMPLE } },
         { { EntranceType::Dungeon,      RR_DMC_TEMPLE_EXIT,                  RR_FIRE_TEMPLE_ENTRYWAY,              ENTR_FIRE_TEMPLE_ENTRANCE },
-          { EntranceType::Dungeon,      RR_FIRE_TEMPLE_ENTRYWAY,             RR_DMC_TEMPLE_EXIT,                   ENTR_DEATH_MOUNTAIN_CRATER_OUTSIDE_TEMPLE } },
+          { EntranceType::Dungeon,      RR_FIRE_TEMPLE_ENTRYWAY,             RR_DMC_TEMPLE_ENTRY,                   ENTR_DEATH_MOUNTAIN_CRATER_OUTSIDE_TEMPLE } },
         { { EntranceType::Dungeon,      RR_LH_FROM_WATER_TEMPLE,             RR_WATER_TEMPLE_ENTRYWAY,             ENTR_WATER_TEMPLE_ENTRANCE },
           { EntranceType::Dungeon,      RR_WATER_TEMPLE_ENTRYWAY,            RR_LH_FROM_WATER_TEMPLE,              ENTR_LAKE_HYLIA_OUTSIDE_TEMPLE } },
         { { EntranceType::Dungeon,      RR_DESERT_COLOSSUS,                  RR_SPIRIT_TEMPLE_ENTRYWAY,            ENTR_SPIRIT_TEMPLE_ENTRANCE },
@@ -653,13 +655,13 @@ BuildOneWayTargets(std::vector<EntranceType> typesToInclude,
     std::vector<Entrance*> oneWayEntrances = {};
     // Get all entrances of the specified type
     for (EntranceType poolType : typesToInclude) {
-        AddElementsToPool(oneWayEntrances, GetShuffleableEntrances(poolType, false));
+        SohUtils::AppendVector(oneWayEntrances, GetShuffleableEntrances(poolType, false));
     }
     // Filter out any that are passed in the exclusion list
     std::erase_if(oneWayEntrances, [&exclude](Entrance* entrance) {
         std::pair<RandomizerRegion, RandomizerRegion> entranceBeingChecked(entrance->GetParentRegionKey(),
                                                                            entrance->GetConnectedRegionKey());
-        return ElementInContainer(entranceBeingChecked, exclude);
+        return SohUtils::Contains(entranceBeingChecked, exclude);
     });
 
     // The code below is part of the function in ootr, but no use of the function ever provides target_region_names
@@ -729,7 +731,7 @@ static bool AreEntrancesCompatible(Entrance* entrance, Entrance* target, std::ve
     auto type = entrance->GetType();
     const std::array<EntranceType, 3> oneWayTypes = { EntranceType::OwlDrop, EntranceType::Spawn,
                                                       EntranceType::WarpSong };
-    if (ElementInContainer(type, oneWayTypes)) {
+    if (SohUtils::Contains(type, oneWayTypes)) {
         for (auto& rollback : rollbacks) {
             if (rollback.first->GetConnectedRegion()->scene == target->GetConnectedRegion()->scene) {
                 SPDLOG_DEBUG("A one way entrance already leads to {}. Connection failed.", target->to_string());
@@ -781,7 +783,7 @@ static bool EntranceUnreachableAs(Entrance* entrance, uint8_t age, std::vector<E
     for (Entrance* parentEntrance : parentEntrances) {
 
         // if parentEntrance is in alreadyChecked, then continue
-        if (ElementInContainer(parentEntrance, alreadyChecked)) {
+        if (SohUtils::Contains(parentEntrance, alreadyChecked)) {
             continue;
         }
 
@@ -839,11 +841,11 @@ static bool ValidateWorld(Entrance* entrancePlaced) {
                     auto replacementName = entrance->GetReplacement()->GetName();
                     alreadyChecked.push_back(entrance->GetReplacement()->GetReverse());
 
-                    if (ElementInContainer(replacementName, childForbidden) &&
+                    if (SohUtils::Contains(replacementName, childForbidden) &&
                         !EntranceUnreachableAs(entrance, RO_AGE_CHILD, alreadyChecked)) {
                         SPDLOG_DEBUG("{} is replaced by an entrance with a potential child access", replacementName);
                         return false;
-                    } else if (ElementInContainer(replacementName, adultForbidden) &&
+                    } else if (SohUtils::Contains(replacementName, adultForbidden) &&
                                !EntranceUnreachableAs(entrance, RO_AGE_ADULT, alreadyChecked)) {
                         SPDLOG_DEBUG("{} is replaced by an entrance with a potential adult access", replacementName);
                         return false;
@@ -853,11 +855,11 @@ static bool ValidateWorld(Entrance* entrancePlaced) {
                 auto name = entrance->GetName();
                 alreadyChecked.push_back(entrance->GetReverse());
 
-                if (ElementInContainer(name, childForbidden) &&
+                if (SohUtils::Contains(name, childForbidden) &&
                     !EntranceUnreachableAs(entrance, RO_AGE_CHILD, alreadyChecked)) {
                     SPDLOG_DEBUG("{} is potentially accessible as child", name);
                     return false;
-                } else if (ElementInContainer(name, adultForbidden) &&
+                } else if (SohUtils::Contains(name, adultForbidden) &&
                            !EntranceUnreachableAs(entrance, RO_AGE_ADULT, alreadyChecked)) {
                     SPDLOG_DEBUG("{} is potentially accessible as adult");
                     return false;
@@ -968,8 +970,8 @@ bool EntranceShuffler::PlaceOneWayPriorityEntrance(
     std::vector<Entrance*> availPool = {};
     for (auto& pool : oneWayEntrancePools) {
         auto entranceType = pool.first;
-        if (ElementInContainer(entranceType, allowedTypes)) {
-            AddElementsToPool(availPool, pool.second);
+        if (SohUtils::Contains(entranceType, allowedTypes)) {
+            SohUtils::AppendVector(availPool, pool.second);
         }
     }
     Shuffle(availPool);
@@ -993,7 +995,7 @@ bool EntranceShuffler::PlaceOneWayPriorityEntrance(
         }
         for (Entrance* target : oneWayTargetEntrancePools[entrance->GetType()]) {
             RandomizerRegion targetRegionKey = target->GetConnectedRegionKey();
-            if (targetRegionKey != RR_NONE && ElementInContainer(targetRegionKey, allowedRegions)) {
+            if (targetRegionKey != RR_NONE && SohUtils::Contains(targetRegionKey, allowedRegions)) {
                 if (ReplaceEntrance(entrance, target, rollbacks)) {
                     // Return once the entrance has been replaced
                     return true;
@@ -1241,9 +1243,10 @@ int EntranceShuffler::ShuffleAllEntrances() {
     if (ctx->GetOption(RSK_SHUFFLE_BOSS_ENTRANCES).IsNot(RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF)) {
         if (ctx->GetOption(RSK_SHUFFLE_BOSS_ENTRANCES).Is(RO_BOSS_ROOM_ENTRANCE_SHUFFLE_FULL)) {
             entrancePools[EntranceType::Boss] = GetShuffleableEntrances(EntranceType::ChildBoss);
-            AddElementsToPool(entrancePools[EntranceType::Boss], GetShuffleableEntrances(EntranceType::AdultBoss));
+            SohUtils::AppendVector(entrancePools[EntranceType::Boss], GetShuffleableEntrances(EntranceType::AdultBoss));
             if (ctx->GetOption(RSK_SHUFFLE_GANONS_TOWER_ENTRANCE)) {
-                AddElementsToPool(entrancePools[EntranceType::Boss], GetShuffleableEntrances(EntranceType::GanonTower));
+                SohUtils::AppendVector(entrancePools[EntranceType::Boss],
+                                       GetShuffleableEntrances(EntranceType::GanonTower));
             }
 
             if (ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
@@ -1255,8 +1258,8 @@ int EntranceShuffler::ShuffleAllEntrances() {
             entrancePools[EntranceType::ChildBoss] = GetShuffleableEntrances(EntranceType::ChildBoss);
             entrancePools[EntranceType::AdultBoss] = GetShuffleableEntrances(EntranceType::AdultBoss);
             if (ctx->GetOption(RSK_SHUFFLE_GANONS_TOWER_ENTRANCE)) {
-                AddElementsToPool(entrancePools[EntranceType::AdultBoss],
-                                  GetShuffleableEntrances(EntranceType::GanonTower));
+                SohUtils::AppendVector(entrancePools[EntranceType::AdultBoss],
+                                       GetShuffleableEntrances(EntranceType::GanonTower));
             }
 
             if (ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
@@ -1275,8 +1278,8 @@ int EntranceShuffler::ShuffleAllEntrances() {
         entrancePools[EntranceType::Dungeon] = GetShuffleableEntrances(EntranceType::Dungeon);
         // Add Ganon's Castle, if set to On + Ganon
         if (ctx->GetOption(RSK_SHUFFLE_DUNGEON_ENTRANCES).Is(RO_DUNGEON_ENTRANCE_SHUFFLE_ON_PLUS_GANON)) {
-            AddElementsToPool(entrancePools[EntranceType::Dungeon],
-                              GetShuffleableEntrances(EntranceType::GanonDungeon));
+            SohUtils::AppendVector(entrancePools[EntranceType::Dungeon],
+                                   GetShuffleableEntrances(EntranceType::GanonDungeon));
         }
         if (ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
             for (Entrance* entrance : entrancePools[EntranceType::Dungeon]) {
@@ -1290,8 +1293,8 @@ int EntranceShuffler::ShuffleAllEntrances() {
         entrancePools[EntranceType::Interior] = GetShuffleableEntrances(EntranceType::Interior);
         // Special interiors
         if (ctx->GetOption(RSK_SHUFFLE_INTERIOR_ENTRANCES).Is(RO_INTERIOR_ENTRANCE_SHUFFLE_ALL)) {
-            AddElementsToPool(entrancePools[EntranceType::Interior],
-                              GetShuffleableEntrances(EntranceType::SpecialInterior));
+            SohUtils::AppendVector(entrancePools[EntranceType::Interior],
+                                   GetShuffleableEntrances(EntranceType::SpecialInterior));
         }
         if (ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
             for (Entrance* entrance : entrancePools[EntranceType::Interior]) {
@@ -1397,7 +1400,7 @@ int EntranceShuffler::ShuffleAllEntrances() {
             auto type = pool.first;
 
             if (poolsToMix.count(type) > 0) {
-                AddElementsToPool(entrancePools[EntranceType::Mixed], pool.second);
+                SohUtils::AppendVector(entrancePools[EntranceType::Mixed], pool.second);
                 entrancePools[type].clear();
             }
         }
@@ -1476,7 +1479,7 @@ int EntranceShuffler::ShuffleAllEntrances() {
     for (auto& pool : oneWayTargetEntrancePools) {
         for (Entrance* remainingTarget : pool.second) {
             auto replacement = remainingTarget->GetReplacement();
-            if (ElementInContainer(replacement, replacedEntrances)) {
+            if (SohUtils::Contains(replacement, replacedEntrances)) {
                 DeleteTargetEntrance(remainingTarget);
             }
         }
@@ -1495,7 +1498,7 @@ int EntranceShuffler::ShuffleAllEntrances() {
         for (auto& targetPool : oneWayTargetEntrancePools) {
             for (Entrance* remainingTarget : targetPool.second) {
                 auto replacement = remainingTarget->GetReplacement();
-                if (ElementInContainer(replacement, replacedEntrances)) {
+                if (SohUtils::Contains(replacement, replacedEntrances)) {
                     DeleteTargetEntrance(remainingTarget);
                 }
             }
@@ -1529,7 +1532,7 @@ int EntranceShuffler::ShuffleAllEntrances() {
             { EntranceNameByRegions(RR_FOREST_TEMPLE_BOSS_ROOM, RR_FOREST_TEMPLE_BOSS_ENTRYWAY),
               GetEntrance(RR_FOREST_TEMPLE_ENTRYWAY, RR_SACRED_FOREST_MEADOW) },
             { EntranceNameByRegions(RR_FIRE_TEMPLE_BOSS_ROOM, RR_FIRE_TEMPLE_BOSS_ENTRYWAY),
-              GetEntrance(RR_FIRE_TEMPLE_ENTRYWAY, RR_DMC_TEMPLE_EXIT) },
+              GetEntrance(RR_FIRE_TEMPLE_ENTRYWAY, RR_DMC_TEMPLE_ENTRY) },
             { EntranceNameByRegions(RR_WATER_TEMPLE_BOSS_ROOM, RR_WATER_TEMPLE_BOSS_ENTRYWAY),
               GetEntrance(RR_WATER_TEMPLE_ENTRYWAY, RR_LH_FROM_WATER_TEMPLE) },
             { EntranceNameByRegions(RR_SPIRIT_TEMPLE_BOSS_ROOM, RR_SPIRIT_TEMPLE_BOSS_ENTRYWAY),
@@ -1551,7 +1554,7 @@ int EntranceShuffler::ShuffleAllEntrances() {
               GetEntrance(RR_JABU_JABUS_BELLY_BOSS_ROOM, RR_ZORAS_FOUNTAIN) },
             { EntranceNameByRegions(RR_FOREST_TEMPLE_ENTRYWAY, RR_SACRED_FOREST_MEADOW),
               GetEntrance(RR_FOREST_TEMPLE_BOSS_ROOM, RR_SACRED_FOREST_MEADOW) },
-            { EntranceNameByRegions(RR_FIRE_TEMPLE_ENTRYWAY, RR_DMC_TEMPLE_EXIT),
+            { EntranceNameByRegions(RR_FIRE_TEMPLE_ENTRYWAY, RR_DMC_TEMPLE_ENTRY),
               GetEntrance(RR_FIRE_TEMPLE_BOSS_ROOM, RR_DMC_PAD_ENTRY) },
             { EntranceNameByRegions(RR_WATER_TEMPLE_ENTRYWAY, RR_LH_FROM_WATER_TEMPLE),
               GetEntrance(RR_WATER_TEMPLE_BOSS_ROOM, RR_LAKE_HYLIA) },
@@ -1645,10 +1648,12 @@ void EntranceShuffler::CreateEntranceOverrides() {
         int16_t destinationIndex = -1;
         int16_t replacementDestinationIndex = -1;
 
-        // Only set destination indices for two way entrances and when decouple entrances is off
-        if (entrance->GetReverse() != nullptr && !ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
-            replacementDestinationIndex = entrance->GetReplacement()->GetReverse()->GetIndex();
+        // Track the reverse destination, useful for savewarp handling
+        if (entrance->GetReverse() != nullptr) {
             destinationIndex = entrance->GetReverse()->GetIndex();
+            if (!ctx->GetOption(RSK_DECOUPLED_ENTRANCES)) {
+                replacementDestinationIndex = entrance->GetReplacement()->GetReverse()->GetIndex();
+            }
         }
 
         entranceOverrides[i] = {
@@ -1676,10 +1681,10 @@ void EntranceShuffler::UnshuffleAllEntrances() {
     }
 }
 
-void EntranceShuffler::ParseJson(nlohmann::json spoilerFileJson) {
+void EntranceShuffler::ParseJson(const nlohmann::json& spoilerFileJson) {
     UnshuffleAllEntrances();
     try {
-        nlohmann::json entrancesJson = spoilerFileJson["entrances"];
+        nlohmann::json entrancesJson = spoilerFileJson.value("entrances", nlohmann::json());
         size_t i = 0;
         for (auto it = entrancesJson.begin(); it != entrancesJson.end() && i < entranceOverrides.size(); ++it, i++) {
             nlohmann::json entranceJson = *it;
@@ -1747,7 +1752,7 @@ void RegisterEntranceShuffleHooks() {
                 return;
             }
             memcpy(camera, &backupCamera, sizeof(Camera));
-            Camera_ChangeMode(camera, CAM_MODE_TALK);
+            Camera_RequestMode(camera, CAM_MODE_TALK);
             *should = false;
         } else if (backedUpScene != gPlayState->sceneNum) {
             memcpy(&backupCamera, camera, sizeof(Camera));

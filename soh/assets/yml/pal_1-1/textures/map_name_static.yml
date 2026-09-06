@@ -1,0 +1,820 @@
+:config:
+  segments:
+    - [ 11, 0x0084AB20 ]
+
+gDeathMountainCraterPositionNameENGTex:
+  type: TEXTURE
+  offset: 0x13a00
+  symbol: gDeathMountainCraterPositionNameENGTex
+  format: IA8
+  width: 80
+  height: 32
+
+gDeathMountainCraterPositionNameFRATex:
+  type: TEXTURE
+  offset: 0x2f200
+  symbol: gDeathMountainCraterPositionNameFRATex
+  format: IA8
+  width: 80
+  height: 32
+
+gDeathMountainCraterPositionNameGERTex:
+  type: TEXTURE
+  offset: 0x21600
+  symbol: gDeathMountainCraterPositionNameGERTex
+  format: IA8
+  width: 80
+  height: 32
+
+gDeathMountainPointNameENGTex:
+  type: TEXTURE
+  offset: 0x1c00
+  symbol: gDeathMountainPointNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gDeathMountainPointNameFRATex:
+  type: TEXTURE
+  offset: 0x7c00
+  symbol: gDeathMountainPointNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gDeathMountainPointNameGERTex:
+  type: TEXTURE
+  offset: 0x4c00
+  symbol: gDeathMountainPointNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gDeathMountainTrailPositionNameENGTex:
+  type: TEXTURE
+  offset: 0x13000
+  symbol: gDeathMountainTrailPositionNameENGTex
+  format: IA8
+  width: 80
+  height: 32
+
+gDeathMountainTrailPositionNameFRATex:
+  type: TEXTURE
+  offset: 0x2e800
+  symbol: gDeathMountainTrailPositionNameFRATex
+  format: IA8
+  width: 80
+  height: 32
+
+gDeathMountainTrailPositionNameGERTex:
+  type: TEXTURE
+  offset: 0x20c00
+  symbol: gDeathMountainTrailPositionNameGERTex
+  format: IA8
+  width: 80
+  height: 32
+
+gDesertColossusPositionNameENGTex:
+  type: TEXTURE
+  offset: 0xfe00
+  symbol: gDesertColossusPositionNameENGTex
+  format: IA8
+  width: 80
+  height: 32
+
+gDesertColossusPositionNameFRATex:
+  type: TEXTURE
+  offset: 0x2b600
+  symbol: gDesertColossusPositionNameFRATex
+  format: IA8
+  width: 80
+  height: 32
+
+gDesertColossusPositionNameGERTex:
+  type: TEXTURE
+  offset: 0x1da00
+  symbol: gDesertColossusPositionNameGERTex
+  format: IA8
+  width: 80
+  height: 32
+
+gGanonsCastlePositionNameENGTex:
+  type: TEXTURE
+  offset: 0x16200
+  symbol: gGanonsCastlePositionNameENGTex
+  format: IA8
+  width: 80
+  height: 32
+
+gGanonsCastlePositionNameFRATex:
+  type: TEXTURE
+  offset: 0x31a00
+  symbol: gGanonsCastlePositionNameFRATex
+  format: IA8
+  width: 80
+  height: 32
+
+gGanonsCastlePositionNameGERTex:
+  type: TEXTURE
+  offset: 0x23e00
+  symbol: gGanonsCastlePositionNameGERTex
+  format: IA8
+  width: 80
+  height: 32
+
+gGerudoValleyPointNameENGTex:
+  type: TEXTURE
+  offset: 0x800
+  symbol: gGerudoValleyPointNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gGerudoValleyPointNameFRATex:
+  type: TEXTURE
+  offset: 0x6800
+  symbol: gGerudoValleyPointNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gGerudoValleyPointNameGERTex:
+  type: TEXTURE
+  offset: 0x3800
+  symbol: gGerudoValleyPointNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gGerudoValleyPositionNameENGTex:
+  type: TEXTURE
+  offset: 0xea00
+  symbol: gGerudoValleyPositionNameENGTex
+  format: IA8
+  width: 80
+  height: 32
+
+gGerudoValleyPositionNameFRATex:
+  type: TEXTURE
+  offset: 0x2a200
+  symbol: gGerudoValleyPositionNameFRATex
+  format: IA8
+  width: 80
+  height: 32
+
+gGerudoValleyPositionNameGERTex:
+  type: TEXTURE
+  offset: 0x1c600
+  symbol: gGerudoValleyPositionNameGERTex
+  format: IA8
+  width: 80
+  height: 32
+
+gGerudosFortressPointNameENGTex:
+  type: TEXTURE
+  offset: 0x400
+  symbol: gGerudosFortressPointNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gGerudosFortressPointNameFRATex:
+  type: TEXTURE
+  offset: 0x6400
+  symbol: gGerudosFortressPointNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gGerudosFortressPointNameGERTex:
+  type: TEXTURE
+  offset: 0x3400
+  symbol: gGerudosFortressPointNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gGerudosFortressPositionNameENGTex:
+  type: TEXTURE
+  offset: 0x10800
+  symbol: gGerudosFortressPositionNameENGTex
+  format: IA8
+  width: 80
+  height: 32
+
+gGerudosFortressPositionNameFRATex:
+  type: TEXTURE
+  offset: 0x2c000
+  symbol: gGerudosFortressPositionNameFRATex
+  format: IA8
+  width: 80
+  height: 32
+
+gGerudosFortressPositionNameGERTex:
+  type: TEXTURE
+  offset: 0x1e400
+  symbol: gGerudosFortressPositionNameGERTex
+  format: IA8
+  width: 80
+  height: 32
+
+gGoronCityPositionNameENGTex:
+  type: TEXTURE
+  offset: 0x14400
+  symbol: gGoronCityPositionNameENGTex
+  format: IA8
+  width: 80
+  height: 32
+
+gGoronCityPositionNameFRATex:
+  type: TEXTURE
+  offset: 0x2fc00
+  symbol: gGoronCityPositionNameFRATex
+  format: IA8
+  width: 80
+  height: 32
+
+gGoronCityPositionNameGERTex:
+  type: TEXTURE
+  offset: 0x22000
+  symbol: gGoronCityPositionNameGERTex
+  format: IA8
+  width: 80
+  height: 32
+
+gGraveyardPositionNameENGTex:
+  type: TEXTURE
+  offset: 0xa400
+  symbol: gGraveyardPositionNameENGTex
+  format: IA8
+  width: 80
+  height: 32
+
+gGraveyardPositionNameFRATex:
+  type: TEXTURE
+  offset: 0x25c00
+  symbol: gGraveyardPositionNameFRATex
+  format: IA8
+  width: 80
+  height: 32
+
+gGraveyardPositionNameGERTex:
+  type: TEXTURE
+  offset: 0x18000
+  symbol: gGraveyardPositionNameGERTex
+  format: IA8
+  width: 80
+  height: 32
+
+gHauntedWastelandPointNameENGTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gHauntedWastelandPointNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gHauntedWastelandPointNameFRATex:
+  type: TEXTURE
+  offset: 0x6000
+  symbol: gHauntedWastelandPointNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gHauntedWastelandPointNameGERTex:
+  type: TEXTURE
+  offset: 0x3000
+  symbol: gHauntedWastelandPointNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gHauntedWastelandPositionNameENGTex:
+  type: TEXTURE
+  offset: 0x11200
+  symbol: gHauntedWastelandPositionNameENGTex
+  format: IA8
+  width: 80
+  height: 32
+
+gHauntedWastelandPositionNameFRATex:
+  type: TEXTURE
+  offset: 0x2ca00
+  symbol: gHauntedWastelandPositionNameFRATex
+  format: IA8
+  width: 80
+  height: 32
+
+gHauntedWastelandPositionNameGERTex:
+  type: TEXTURE
+  offset: 0x1ee00
+  symbol: gHauntedWastelandPositionNameGERTex
+  format: IA8
+  width: 80
+  height: 32
+
+gHyliaLakesidePointNameENGTex:
+  type: TEXTURE
+  offset: 0xc00
+  symbol: gHyliaLakesidePointNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gHyliaLakesidePointNameFRATex:
+  type: TEXTURE
+  offset: 0x6c00
+  symbol: gHyliaLakesidePointNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gHyliaLakesidePointNameGERTex:
+  type: TEXTURE
+  offset: 0x3c00
+  symbol: gHyliaLakesidePointNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gHyruleCastlePositionNameENGTex:
+  type: TEXTURE
+  offset: 0x12600
+  symbol: gHyruleCastlePositionNameENGTex
+  format: IA8
+  width: 80
+  height: 32
+
+gHyruleCastlePositionNameFRATex:
+  type: TEXTURE
+  offset: 0x2de00
+  symbol: gHyruleCastlePositionNameFRATex
+  format: IA8
+  width: 80
+  height: 32
+
+gHyruleCastlePositionNameGERTex:
+  type: TEXTURE
+  offset: 0x20200
+  symbol: gHyruleCastlePositionNameGERTex
+  format: IA8
+  width: 80
+  height: 32
+
+gHyruleFieldPointNameENGTex:
+  type: TEXTURE
+  offset: 0x1800
+  symbol: gHyruleFieldPointNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gHyruleFieldPointNameFRATex:
+  type: TEXTURE
+  offset: 0x7800
+  symbol: gHyruleFieldPointNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gHyruleFieldPointNameGERTex:
+  type: TEXTURE
+  offset: 0x4800
+  symbol: gHyruleFieldPointNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gHyruleFieldPositionNameENGTex:
+  type: TEXTURE
+  offset: 0x9000
+  symbol: gHyruleFieldPositionNameENGTex
+  format: IA8
+  width: 80
+  height: 32
+
+gHyruleFieldPositionNameFRATex:
+  type: TEXTURE
+  offset: 0x24800
+  symbol: gHyruleFieldPositionNameFRATex
+  format: IA8
+  width: 80
+  height: 32
+
+gHyruleFieldPositionNameGERTex:
+  type: TEXTURE
+  offset: 0x16c00
+  symbol: gHyruleFieldPositionNameGERTex
+  format: IA8
+  width: 80
+  height: 32
+
+gKakarikoVillagePointNameENGTex:
+  type: TEXTURE
+  offset: 0x2000
+  symbol: gKakarikoVillagePointNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gKakarikoVillagePointNameFRATex:
+  type: TEXTURE
+  offset: 0x8000
+  symbol: gKakarikoVillagePointNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gKakarikoVillagePointNameGERTex:
+  type: TEXTURE
+  offset: 0x5000
+  symbol: gKakarikoVillagePointNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gKakarikoVillagePositionNameENGTex:
+  type: TEXTURE
+  offset: 0x9a00
+  symbol: gKakarikoVillagePositionNameENGTex
+  format: IA8
+  width: 80
+  height: 32
+
+gKakarikoVillagePositionNameFRATex:
+  type: TEXTURE
+  offset: 0x25200
+  symbol: gKakarikoVillagePositionNameFRATex
+  format: IA8
+  width: 80
+  height: 32
+
+gKakarikoVillagePositionNameGERTex:
+  type: TEXTURE
+  offset: 0x17600
+  symbol: gKakarikoVillagePositionNameGERTex
+  format: IA8
+  width: 80
+  height: 32
+
+gKokiriForestPointNameENGTex:
+  type: TEXTURE
+  offset: 0x2800
+  symbol: gKokiriForestPointNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gKokiriForestPointNameFRATex:
+  type: TEXTURE
+  offset: 0x8800
+  symbol: gKokiriForestPointNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gKokiriForestPointNameGERTex:
+  type: TEXTURE
+  offset: 0x5800
+  symbol: gKokiriForestPointNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gKokiriForestPositionNameENGTex:
+  type: TEXTURE
+  offset: 0xb800
+  symbol: gKokiriForestPositionNameENGTex
+  format: IA8
+  width: 80
+  height: 32
+
+gKokiriForestPositionNameFRATex:
+  type: TEXTURE
+  offset: 0x27000
+  symbol: gKokiriForestPositionNameFRATex
+  format: IA8
+  width: 80
+  height: 32
+
+gKokiriForestPositionNameGERTex:
+  type: TEXTURE
+  offset: 0x19400
+  symbol: gKokiriForestPositionNameGERTex
+  format: IA8
+  width: 80
+  height: 32
+
+gLakeHyliaPositionNameENGTex:
+  type: TEXTURE
+  offset: 0xcc00
+  symbol: gLakeHyliaPositionNameENGTex
+  format: IA8
+  width: 80
+  height: 32
+
+gLakeHyliaPositionNameFRATex:
+  type: TEXTURE
+  offset: 0x28400
+  symbol: gLakeHyliaPositionNameFRATex
+  format: IA8
+  width: 80
+  height: 32
+
+gLakeHyliaPositionNameGERTex:
+  type: TEXTURE
+  offset: 0x1a800
+  symbol: gLakeHyliaPositionNameGERTex
+  format: IA8
+  width: 80
+  height: 32
+
+gLonLonRanchPointNameENGTex:
+  type: TEXTURE
+  offset: 0x1000
+  symbol: gLonLonRanchPointNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gLonLonRanchPointNameFRATex:
+  type: TEXTURE
+  offset: 0x7000
+  symbol: gLonLonRanchPointNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gLonLonRanchPointNameGERTex:
+  type: TEXTURE
+  offset: 0x4000
+  symbol: gLonLonRanchPointNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gLonLonRanchPositionNameENGTex:
+  type: TEXTURE
+  offset: 0x14e00
+  symbol: gLonLonRanchPositionNameENGTex
+  format: IA8
+  width: 80
+  height: 32
+
+gLonLonRanchPositionNameFRATex:
+  type: TEXTURE
+  offset: 0x30600
+  symbol: gLonLonRanchPositionNameFRATex
+  format: IA8
+  width: 80
+  height: 32
+
+gLonLonRanchPositionNameGERTex:
+  type: TEXTURE
+  offset: 0x22a00
+  symbol: gLonLonRanchPositionNameGERTex
+  format: IA8
+  width: 80
+  height: 32
+
+gLostWoodsPointNameENGTex:
+  type: TEXTURE
+  offset: 0x2400
+  symbol: gLostWoodsPointNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gLostWoodsPointNameFRATex:
+  type: TEXTURE
+  offset: 0x8400
+  symbol: gLostWoodsPointNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gLostWoodsPointNameGERTex:
+  type: TEXTURE
+  offset: 0x5400
+  symbol: gLostWoodsPointNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gLostWoodsPositionNameENGTex:
+  type: TEXTURE
+  offset: 0xf400
+  symbol: gLostWoodsPositionNameENGTex
+  format: IA8
+  width: 80
+  height: 32
+
+gLostWoodsPositionNameFRATex:
+  type: TEXTURE
+  offset: 0x2ac00
+  symbol: gLostWoodsPositionNameFRATex
+  format: IA8
+  width: 80
+  height: 32
+
+gLostWoodsPositionNameGERTex:
+  type: TEXTURE
+  offset: 0x1d000
+  symbol: gLostWoodsPositionNameGERTex
+  format: IA8
+  width: 80
+  height: 32
+
+gMarketPointNameENGTex:
+  type: TEXTURE
+  offset: 0x1400
+  symbol: gMarketPointNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gMarketPointNameFRATex:
+  type: TEXTURE
+  offset: 0x7400
+  symbol: gMarketPointNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gMarketPointNameGERTex:
+  type: TEXTURE
+  offset: 0x4400
+  symbol: gMarketPointNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gMarketPositionNameENGTex:
+  type: TEXTURE
+  offset: 0x11c00
+  symbol: gMarketPositionNameENGTex
+  format: IA8
+  width: 80
+  height: 32
+
+gMarketPositionNameFRATex:
+  type: TEXTURE
+  offset: 0x2d400
+  symbol: gMarketPositionNameFRATex
+  format: IA8
+  width: 80
+  height: 32
+
+gMarketPositionNameGERTex:
+  type: TEXTURE
+  offset: 0x1f800
+  symbol: gMarketPositionNameGERTex
+  format: IA8
+  width: 80
+  height: 32
+
+gQuestionMarkPositionNameENGTex:
+  type: TEXTURE
+  offset: 0x15800
+  symbol: gQuestionMarkPositionNameENGTex
+  format: IA8
+  width: 80
+  height: 32
+
+gQuestionMarkPositionNameFRATex:
+  type: TEXTURE
+  offset: 0x31000
+  symbol: gQuestionMarkPositionNameFRATex
+  format: IA8
+  width: 80
+  height: 32
+
+gQuestionMarkPositionNameGERTex:
+  type: TEXTURE
+  offset: 0x23400
+  symbol: gQuestionMarkPositionNameGERTex
+  format: IA8
+  width: 80
+  height: 32
+
+gSacredForestMeadowPositionNameENGTex:
+  type: TEXTURE
+  offset: 0xc200
+  symbol: gSacredForestMeadowPositionNameENGTex
+  format: IA8
+  width: 80
+  height: 32
+
+gSacredForestMeadowPositionNameFRATex:
+  type: TEXTURE
+  offset: 0x27a00
+  symbol: gSacredForestMeadowPositionNameFRATex
+  format: IA8
+  width: 80
+  height: 32
+
+gSacredForestMeadowPositionNameGERTex:
+  type: TEXTURE
+  offset: 0x19e00
+  symbol: gSacredForestMeadowPositionNameGERTex
+  format: IA8
+  width: 80
+  height: 32
+
+gZorasDomainPointNameENGTex:
+  type: TEXTURE
+  offset: 0x2c00
+  symbol: gZorasDomainPointNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gZorasDomainPointNameFRATex:
+  type: TEXTURE
+  offset: 0x8c00
+  symbol: gZorasDomainPointNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gZorasDomainPointNameGERTex:
+  type: TEXTURE
+  offset: 0x5c00
+  symbol: gZorasDomainPointNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gZorasDomainPositionNameENGTex:
+  type: TEXTURE
+  offset: 0xd600
+  symbol: gZorasDomainPositionNameENGTex
+  format: IA8
+  width: 80
+  height: 32
+
+gZorasDomainPositionNameFRATex:
+  type: TEXTURE
+  offset: 0x28e00
+  symbol: gZorasDomainPositionNameFRATex
+  format: IA8
+  width: 80
+  height: 32
+
+gZorasDomainPositionNameGERTex:
+  type: TEXTURE
+  offset: 0x1b200
+  symbol: gZorasDomainPositionNameGERTex
+  format: IA8
+  width: 80
+  height: 32
+
+gZorasFountainPositionNameENGTex:
+  type: TEXTURE
+  offset: 0xe000
+  symbol: gZorasFountainPositionNameENGTex
+  format: IA8
+  width: 80
+  height: 32
+
+gZorasFountainPositionNameFRATex:
+  type: TEXTURE
+  offset: 0x29800
+  symbol: gZorasFountainPositionNameFRATex
+  format: IA8
+  width: 80
+  height: 32
+
+gZorasFountainPositionNameGERTex:
+  type: TEXTURE
+  offset: 0x1bc00
+  symbol: gZorasFountainPositionNameGERTex
+  format: IA8
+  width: 80
+  height: 32
+
+gZorasRiverPositionNameENGTex:
+  type: TEXTURE
+  offset: 0xae00
+  symbol: gZorasRiverPositionNameENGTex
+  format: IA8
+  width: 80
+  height: 32
+
+gZorasRiverPositionNameFRATex:
+  type: TEXTURE
+  offset: 0x26600
+  symbol: gZorasRiverPositionNameFRATex
+  format: IA8
+  width: 80
+  height: 32
+
+gZorasRiverPositionNameGERTex:
+  type: TEXTURE
+  offset: 0x18a00
+  symbol: gZorasRiverPositionNameGERTex
+  format: IA8
+  width: 80
+  height: 32
+

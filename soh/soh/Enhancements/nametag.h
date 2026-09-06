@@ -1,8 +1,6 @@
-#ifndef NAMETAG_H
-#define NAMETAG_H
+#pragma once
 
-#include <libultraship/color.h>
-#include <libultraship/libultra.h>
+#include <ship/utils/color.h>
 
 struct Actor;
 
@@ -32,5 +30,3 @@ void NameTag_RemoveAllByTag(const char* tag);
 #ifdef __cplusplus
 }
 #endif
-
-#endif // NAMETAG_H

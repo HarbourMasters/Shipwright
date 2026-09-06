@@ -1,7 +1,8 @@
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/ShipInit.hpp"
 #include <set>
 #include <unordered_map>
+
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/ShipInit.hpp"
 
 extern "C" {
 #include "functions.h"
@@ -142,8 +143,8 @@ extern "C" void DisableFixedCamera_SetNormalCamera(PlayState* play) {
         play->mainCamera.setting = CAM_SET_NORMAL0;
         play->mainCamera.prevSetting = CAM_SET_NORMAL0;
     }
-    Camera_ChangeSetting(&play->mainCamera, CAM_SET_NORMAL0);
-    Camera_ChangeMode(&play->mainCamera, CAM_MODE_NORMAL);
+    Camera_RequestSetting(&play->mainCamera, CAM_SET_NORMAL0);
+    Camera_RequestMode(&play->mainCamera, CAM_MODE_NORMAL);
 }
 
 extern "C" void DisableFixedCamera_CheckCameraState(PlayState* play) {
@@ -224,8 +225,8 @@ extern "C" void DisableFixedCamera_CheckCameraState(PlayState* play) {
         if (play->mainCamera.camDataIdx >= 0) {
             sStoreLastCamType = play->mainCamera.camDataIdx;
         }
-        Camera_ChangeSetting(&play->mainCamera, CAM_SET_TURN_AROUND);
-        Camera_ChangeMode(&play->mainCamera, CAM_MODE_NORMAL);
+        Camera_RequestSetting(&play->mainCamera, CAM_SET_TURN_AROUND);
+        Camera_RequestMode(&play->mainCamera, CAM_MODE_NORMAL);
         if (sStoreLastCamType >= 0) {
             play->mainCamera.camDataIdx = sStoreLastCamType;
         }

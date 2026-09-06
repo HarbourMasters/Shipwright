@@ -75,7 +75,7 @@ void func_8088F514(BgHidanSyoku* this, PlayState* play) {
     if (this->timer == 0) {
         func_8088F47C(this);
     } else {
-        func_8002F974(&this->dyna.actor, NA_SE_EV_ELEVATOR_MOVE3 - SFX_FLAG);
+        Actor_PlaySfx_Flagged(&this->dyna.actor, NA_SE_EV_ELEVATOR_MOVE3 - SFX_FLAG);
     }
 }
 
@@ -87,7 +87,7 @@ void func_8088F5A0(BgHidanSyoku* this, PlayState* play) {
     if (this->timer == 0) {
         func_8088F47C(this);
     } else {
-        func_8002F974(&this->dyna.actor, NA_SE_EV_ELEVATOR_MOVE3 - SFX_FLAG);
+        Actor_PlaySfx_Flagged(&this->dyna.actor, NA_SE_EV_ELEVATOR_MOVE3 - SFX_FLAG);
     }
 }
 
@@ -113,10 +113,10 @@ void BgHidanSyoku_Update(Actor* thisx, PlayState* play) {
         if (this->unk_168 == 0) {
             this->unk_168 = 3;
         }
-        Camera_ChangeSetting(play->cameraPtrs[MAIN_CAM], CAM_SET_FIRE_PLATFORM);
+        Camera_RequestSetting(play->cameraPtrs[CAM_ID_MAIN], CAM_SET_FIRE_PLATFORM);
     } else if (!DynaPolyActor_IsPlayerOnTop(&this->dyna)) {
         if (this->unk_168 != 0) {
-            Camera_ChangeSetting(play->cameraPtrs[MAIN_CAM], CAM_SET_DUNGEON0);
+            Camera_RequestSetting(play->cameraPtrs[CAM_ID_MAIN], CAM_SET_DUNGEON0);
         }
         this->unk_168 = 0;
     }

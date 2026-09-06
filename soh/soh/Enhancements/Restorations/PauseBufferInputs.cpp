@@ -1,10 +1,6 @@
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/gameconsole.h"
 #include "soh/ShipInit.hpp"
-
-extern "C" {
-#include "variables.h"
-#include "overlays/misc/ovl_kaleido_scope/z_kaleido_scope.h"
-}
 
 #define CVAR_BUFFER_NAME CVAR_ENHANCEMENT("PauseBufferWindow")
 #define CVAR_BUFFER_DEFAULT 0

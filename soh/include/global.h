@@ -17,7 +17,6 @@ extern "C++" {
 #ifdef __cplusplus
 }
 #endif
-#include <libultraship/bridge.h>
 
 #define _AudioseqSegmentRomStart "Audioseq"
 #define _AudiobankSegmentRomStart "Audiobank"

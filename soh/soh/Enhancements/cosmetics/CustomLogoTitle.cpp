@@ -4,10 +4,11 @@
 #include "textures/nintendo_rogo_static/nintendo_rogo_static.h"
 #include "assets/objects/gameplay_keep/gameplay_keep.h"
 #include "soh_assets.h"
+#include "soh/cvar_prefixes.h"
 
 extern "C" {
-#include "macros.h"
 #include "z64.h"
+#include "macros.h"
 #include "functions.h"
 #include "variables.h"
 #include "soh/Enhancements/enhancementTypes.h"
@@ -123,7 +124,7 @@ extern "C" void CustomLogoTitle_Draw(TitleContext* titleContext, uint8_t logoToD
 
 extern "C" void CustomLogoTitle_Main(TitleContext* titleContext) {
     static uint8_t logosSeen = 0;
-    uint8_t logoToDraw;
+    uint8_t logoToDraw = LOGO_TO_DRAW_N64;
 
     if (CVAR_BOOTSEQUENCE_VALUE == BOOTSEQUENCE_DEFAULT) {
         if (logosSeen == 0) {

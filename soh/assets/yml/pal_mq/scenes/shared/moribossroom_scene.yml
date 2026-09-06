@@ -1,0 +1,40 @@
+:config:
+  segments:
+    - [ 2, 0x01CC1CB0 ]
+
+moribossroom_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: moribossroom_scene
+
+moribossroom_sceneTLUT_000B50:
+  type: TEXTURE
+  offset: 0xB50
+  symbol: moribossroom_sceneTLUT_000B50
+  format: RGBA16
+  width: 16
+  height: 16
+
+moribossroom_sceneTex_000CF8:
+  type: TEXTURE
+  offset: 0xCF8
+  symbol: moribossroom_sceneTex_000CF8
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0xB50
+
+moribossroom_sceneTex_0010F8:
+  type: TEXTURE
+  offset: 0x10F8
+  symbol: moribossroom_sceneTex_0010F8
+  format: CI8
+  width: 32
+  height: 64
+  tlut: 0xB50
+
+
+moribossroom_sceneCollisionHeader_000B1C:
+  type: OOT:COLLISION
+  offset: 0x000B1C
+  symbol: moribossroom_sceneCollisionHeader_000B1C

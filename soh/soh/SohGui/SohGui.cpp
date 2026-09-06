@@ -5,12 +5,9 @@
 //  Created by David Chavez on 24.08.22.
 //
 
-#include "SohGui.hpp"
-
-#include <spdlog/spdlog.h>
 #include <imgui.h>
-#include <imgui_internal.h>
-#include <libultraship/libultraship.h>
+
+#include "SohGui.hpp"
 
 #ifdef __APPLE__
 #include <fast/backends/gfx_metal.h>
@@ -19,7 +16,6 @@
 #ifdef __SWITCH__
 #include <port/switch/SwitchImpl.h>
 #endif
-#include "include/global.h"
 
 #include "soh/Enhancements/debugger/MessageViewer.h"
 #include "soh/Notification/Notification.h"
@@ -83,6 +79,8 @@ std::shared_ptr<CheckTracker::CheckTrackerSettingsWindow> mCheckTrackerSettingsW
 std::shared_ptr<CheckTracker::CheckTrackerWindow> mCheckTrackerWindow;
 std::shared_ptr<EntranceTracker::EntranceTrackerSettingsWindow> mEntranceTrackerSettingsWindow;
 std::shared_ptr<EntranceTracker::EntranceTrackerWindow> mEntranceTrackerWindow;
+std::shared_ptr<HintTracker::HintTrackerSettingsWindow> mHintTrackerSettingsWindow;
+std::shared_ptr<HintTracker::HintTrackerWindow> mHintTrackerWindow;
 std::shared_ptr<ItemTrackerSettingsWindow> mItemTrackerSettingsWindow;
 std::shared_ptr<ItemTrackerWindow> mItemTrackerWindow;
 std::shared_ptr<TimeSplitWindow> mTimeSplitWindow;
@@ -179,6 +177,12 @@ void SetupGuiElements() {
     mEntranceTrackerSettingsWindow = std::make_shared<EntranceTracker::EntranceTrackerSettingsWindow>(
         CVAR_WINDOW("EntranceTrackerSettings"), "Entrance Tracker Settings", ImVec2(600, 375));
     gui->AddGuiWindow(mEntranceTrackerSettingsWindow);
+    mHintTrackerWindow =
+        std::make_shared<HintTracker::HintTrackerWindow>(CVAR_WINDOW("HintTracker"), "Hint Tracker", ImVec2(500, 600));
+    gui->AddGuiWindow(mHintTrackerWindow);
+    mHintTrackerSettingsWindow = std::make_shared<HintTracker::HintTrackerSettingsWindow>(
+        CVAR_WINDOW("HintTrackerSettings"), "Hint Tracker Settings", ImVec2(600, 375));
+    gui->AddGuiWindow(mHintTrackerSettingsWindow);
     mItemTrackerWindow =
         std::make_shared<ItemTrackerWindow>(CVAR_WINDOW("ItemTracker"), "Item Tracker", ImVec2(350, 600));
     gui->AddGuiWindow(mItemTrackerWindow);
@@ -211,6 +215,8 @@ void Destroy() {
     mEntranceTrackerSettingsWindow = nullptr;
     mCheckTrackerWindow = nullptr;
     mCheckTrackerSettingsWindow = nullptr;
+    mHintTrackerWindow = nullptr;
+    mHintTrackerSettingsWindow = nullptr;
     mGameplayStatsWindow = nullptr;
     mDLViewerWindow = nullptr;
     mValueViewerWindow = nullptr;

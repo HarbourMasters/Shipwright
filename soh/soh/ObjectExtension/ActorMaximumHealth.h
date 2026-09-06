@@ -1,5 +1,4 @@
-#ifndef ACTOR_MAXIMUM_HEALTH_H
-#define ACTOR_MAXIMUM_HEALTH_H
+#pragma once
 
 #ifdef __cplusplus
 extern "C" {
@@ -13,5 +12,3 @@ void SetActorMaximumHealth(const Actor* actor, u8 maximumHealth);
 #ifdef __cplusplus
 }
 #endif
-
-#endif // ACTOR_MAXIMUM_HEALTH_H

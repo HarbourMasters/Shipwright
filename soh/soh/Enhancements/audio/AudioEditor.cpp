@@ -1,23 +1,22 @@
-#include "AudioEditor.h"
-#include "sequence.h"
-
 #include <map>
 #include <set>
 #include <string>
-#include <functions.h>
+
+#include "AudioEditor.h"
 #include "soh/ShipUtils.h"
 #include "soh/OTRGlobals.h"
 #include "soh/cvar_prefixes.h"
-#include <ship/utils/StringHelper.h>
 #include "soh/SohGui/SohMenu.h"
 #include "soh/SohGui/SohGui.hpp"
 #include "AudioCollection.h"
+#include "OotrsArchive.h"
 #include "soh/Enhancements/enhancementTypes.h"
-#include "soh/ShipUtils.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/randomizer/SeedContext.h"
 
 extern "C" {
+#include "sequence.h"
+#include <functions.h>
 #include "z64save.h"
 extern SaveContext gSaveContext;
 }
@@ -237,10 +236,10 @@ void DrawPreviewButton(uint16_t sequenceId, std::string sfxKey, SeqType sequence
                 CVarSetInteger(CVAR_AUDIO("Playing"), 0);
             } else {
                 if (sequenceType == SEQ_SFX || sequenceType == SEQ_VOICE) {
-                    Audio_PlaySoundGeneral(sequenceId, &pos, 4, &freqScale, &freqScale, &reverbAdd);
+                    Audio_PlaySfxGeneral(sequenceId, &pos, 4, &freqScale, &freqScale, &reverbAdd);
                 } else if (sequenceType == SEQ_INSTRUMENT) {
-                    Audio_OcaSetInstrument(sequenceId - INSTRUMENT_OFFSET);
-                    Audio_OcaSetSongPlayback(9, 1);
+                    AudioOcarina_SetInstrument(sequenceId - INSTRUMENT_OFFSET);
+                    AudioOcarina_SetPlaybackSong(9, 1);
                 } else {
                     // TODO: Cant do both here, so have to click preview button twice
                     PreviewSequence(sequenceId);
@@ -573,6 +572,22 @@ void AudioEditor::DrawElement() {
                                                    .Tooltip("Unlocks all music and sound effects across tab groups"))) {
         AudioEditor_UnlockAll();
     }
+
+    const std::vector<std::string>& skippedMusic = SOH::GetOotrsSkippedForCustomBank();
+    if (!skippedMusic.empty()) {
+        UIWidgets::Separator();
+        ImGui::TextColored(UIWidgets::ColorValues.at(UIWidgets::Colors::Yellow),
+                           "%zu custom music file(s) were skipped: custom soundbanks are not supported yet.",
+                           skippedMusic.size());
+        if (ImGui::IsItemHovered()) {
+            ImGui::BeginTooltip();
+            for (const std::string& file : skippedMusic) {
+                ImGui::BulletText("%s", file.c_str());
+            }
+            ImGui::EndTooltip();
+        }
+    }
+
     UIWidgets::Separator();
 
     UIWidgets::PushStyleTabs(THEME_COLOR);

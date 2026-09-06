@@ -3,8 +3,8 @@
 #include "authenticGfxPatches.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 
+#include <ship/controller/controldeck/ControlDeck.h>
 #include <string>
-#include <libultraship/libultraship.h>
 
 #include "soh/SohGui/UIWidgets.hpp"
 #include "soh/SohGui/SohMenu.h"
@@ -281,8 +281,8 @@ std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("Key.FortSmallEmblem",          "Fortress Small Key Emblem",COSMETICS_GROUP_SMALL_KEYS,   ColorRGBA8(255, 255, 255, 255), false, true, false),
     COSMETIC_OPTION("Key.GTGSmallBody",             "GTG Small Key",            COSMETICS_GROUP_SMALL_KEYS,   ColorRGBA8(255, 255, 255, 255), false, true, false),
     COSMETIC_OPTION("Key.GTGSmallEmblem",           "GTG Small Key Emblem",     COSMETICS_GROUP_SMALL_KEYS,   ColorRGBA8(221, 212, 60,  255), false, true, false),
-    //COSMETIC_OPTION("Key.ChestGameSmallBody",     "Chest Game Key",           COSMETICS_GROUP_SMALL_KEYS,   ColorRGBA8(255, 255, 255, 255), false, true, false),
-    //COSMETIC_OPTION("Key.ChestGameEmblem",        "Chest Game Key Emblem",    COSMETICS_GROUP_SMALL_KEYS,   ColorRGBA8(255, 0,   0,   255), false, true, false),
+    COSMETIC_OPTION("Key.ChestGameSmallBody",       "Chest Game Key",           COSMETICS_GROUP_SMALL_KEYS,   ColorRGBA8(255, 255, 255, 255), false, true, false),
+    COSMETIC_OPTION("Key.ChestGameEmblem",          "Chest Game Key Emblem",    COSMETICS_GROUP_SMALL_KEYS,   ColorRGBA8(255, 0,   0,   255), false, true, false),
     COSMETIC_OPTION("Key.Skeleton",                 "Skeleton Key",             COSMETICS_GROUP_SMALL_KEYS,   ColorRGBA8(255, 255, 170, 255), false, true, false),
 
     COSMETIC_OPTION("HUD.AButton",                  "A Button",                 COSMETICS_GROUP_HUD,          ColorRGBA8( 90,  90, 255, 255), false, true, false),
@@ -468,13 +468,13 @@ void SetMarginAll(const char* ButtonName, bool SetActivated, const char* tooltip
                         CVarSetInteger(cvarNameMargins.c_str(), false); // force set off
                     } else if ((strcmp(cvarName, MarginCvarNonAnchor[i]) == 0) &&
                                (CVarGetInteger(cvarPosType.c_str(), 0) !=
-                                ORIGINAL_LOCATION)) { // Our element is not in original position regarless it has no
-                                                      // anchor by default since player made it anchored we can toggle
+                                ORIGINAL_LOCATION)) { // Element not in original position, regardless. It has no
+                                                      // anchor by default; since player made it anchored we can toggle
                                                       // margins
                         CVarSetInteger(cvarNameMargins.c_str(), SetActivated);
                     } else if (strcmp(cvarName, MarginCvarNonAnchor[i]) !=
-                               0) { // Our elements has an anchor by default so regarless of it's position right now
-                                    // that okay to toggle margins.
+                               0) { // Our element has an anchor by default, so regardless of its position right now
+                                    // it's okay to toggle margins.
                         CVarSetInteger(cvarNameMargins.c_str(), SetActivated);
                     }
                 }
@@ -502,7 +502,7 @@ void ResetPositionAll() {
 
 int hue = 0;
 
-// Runs every frame to update rainbow hue, a potential future optimization is to only run this a once or twice a second
+// Runs every frame to update rainbow hue, a potential future optimization is to only run this once or twice a second
 // and increase the speed of the rainbow hue rotation.
 void CosmeticsUpdateTick() {
     int index = 0;
@@ -1500,7 +1500,7 @@ void Table_InitHeader(bool has_header = true) {
     }
     ImGui::TableNextRow();
     ImGui::TableNextColumn();
-    ImGui::AlignTextToFramePadding(); // This is to adjust Vertical pos of item in a cell to be normlized.
+    ImGui::AlignTextToFramePadding(); // This is to adjust Vertical pos of item in a cell to be normalized.
     ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 2);
     ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x - 60);
 }

@@ -1,0 +1,105 @@
+:config:
+  segments:
+    - [ 3, 0x02183000 ]
+    - [ 2, 0x02149000 ]
+  directory: scenes/mq/Bmori1_scene
+  external_files:
+    - pal_mq_dbg/scenes/mq/Bmori1_scene.yml
+    - pal_mq_dbg/code/sys_matrix.yml
+
+Bmori1_room_3:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: Bmori1_room_3
+
+Bmori1_room_3Tex_0023D8:
+  type: TEXTURE
+  offset: 0x23D8
+  symbol: Bmori1_room_3Tex_0023D8
+  format: RGBA16
+  width: 32
+  height: 32
+
+Bmori1_room_3Tex_002BD8:
+  type: TEXTURE
+  offset: 0x2BD8
+  symbol: Bmori1_room_3Tex_002BD8
+  format: CI8
+  width: 16
+  height: 128
+  external_tlut: Bmori1_scene
+  external_tlut_offset: 0x14288
+
+Bmori1_room_3Tex_0033D8:
+  type: TEXTURE
+  offset: 0x33D8
+  symbol: Bmori1_room_3Tex_0033D8
+  format: CI8
+  width: 32
+  height: 32
+  external_tlut: Bmori1_scene
+  external_tlut_offset: 0x14080
+
+Bmori1_room_3Tex_0037D8:
+  type: TEXTURE
+  offset: 0x37D8
+  symbol: Bmori1_room_3Tex_0037D8
+  format: RGBA16
+  width: 8
+  height: 16
+
+Bmori1_room_3Tex_0038D8:
+  type: TEXTURE
+  offset: 0x38D8
+  symbol: Bmori1_room_3Tex_0038D8
+  format: RGBA16
+  width: 16
+  height: 8
+
+
+Bmori1_room_3Vtx_0000B0:
+  type: OOT:ARRAY
+  offset: 0x0000B0
+  symbol: Bmori1_room_3Vtx_0000B0
+  count: 132
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Bmori1_room_3DL_0008F0:
+  type: GFX
+  offset: 0x0008F0
+  symbol: Bmori1_room_3DL_0008F0
+
+Bmori1_room_3Vtx_001040:
+  type: OOT:ARRAY
+  offset: 0x001040
+  symbol: Bmori1_room_3Vtx_001040
+  count: 180
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Bmori1_room_3DL_001B80:
+  type: GFX
+  offset: 0x001B80
+  symbol: Bmori1_room_3DL_001B80
+
+Bmori1_room_3Vtx_001DE8:
+  type: OOT:ARRAY
+  offset: 0x001DE8
+  symbol: Bmori1_room_3Vtx_001DE8
+  count: 52
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+Bmori1_room_3DL_002128:
+  type: GFX
+  offset: 0x002128
+  symbol: Bmori1_room_3DL_002128
+
+Bmori1_room_3DL_0023B8:
+  type: GFX
+  offset: 0x0023B8
+  symbol: Bmori1_room_3DL_0023B8

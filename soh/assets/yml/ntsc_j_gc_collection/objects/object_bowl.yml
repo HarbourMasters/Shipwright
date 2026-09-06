@@ -1,0 +1,94 @@
+:config:
+  segments:
+    - [ 6, 0x0126A9C0 ]
+    - [ 4, 0x00D30E00 ]
+    - [ 8, 0x0126A9C0 ]
+    - [ 9, 0x0126A9C0 ]
+    - [ 10, 0x0126A9C0 ]
+    - [ 11, 0x0126A9C0 ]
+    - [ 12, 0x0126A9C0 ]
+    - [ 13, 0x0126A9C0 ]
+  external_files:
+    - ntsc_j_gc_collection/objects/gameplay_keep.yml
+
+gBowlingDL_1B80:
+  type: GFX
+  offset: 0x1B80
+  symbol: gBowlingDL_1B80
+
+gBowlingDefaultCol:
+  type: OOT:COLLISION
+  offset: 0x1C40
+  symbol: gBowlingDefaultCol
+
+gBowlingFirstAndFinalRoundCol:
+  type: OOT:COLLISION
+  offset: 0xCB8
+  symbol: gBowlingFirstAndFinalRoundCol
+
+gBowlingRound1WallDL:
+  type: GFX
+  offset: 0x610
+  symbol: gBowlingRound1WallDL
+
+gBowlingRound2WallDL:
+  type: GFX
+  offset: 0x1390
+  symbol: gBowlingRound2WallDL
+
+gBowlingSecondRoundCol:
+  type: OOT:COLLISION
+  offset: 0x1B00
+  symbol: gBowlingSecondRoundCol
+
+gBowlingStoneWallTex:
+  type: TEXTURE
+  offset: 0x2C70
+  symbol: gBowlingStoneWallTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gBowlingStripesTex:
+  type: TEXTURE
+  offset: 0x3470
+  symbol: gBowlingStripesTex
+  format: I4
+  width: 16
+  height: 16
+
+gBowlingWoodPanelTex:
+  type: TEXTURE
+  offset: 0x1C70
+  symbol: gBowlingWoodPanelTex
+  format: RGBA16
+  width: 64
+  height: 32
+
+
+object_bowlVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_bowlVtx_000000
+  count: 97
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bowlVtx_000CF0:
+  type: OOT:ARRAY
+  offset: 0x000CF0
+  symbol: object_bowlVtx_000CF0
+  count: 106
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bowlVtx_001B30:
+  type: OOT:ARRAY
+  offset: 0x001B30
+  symbol: object_bowlVtx_001B30
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

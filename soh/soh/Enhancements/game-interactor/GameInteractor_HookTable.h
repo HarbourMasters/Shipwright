@@ -29,8 +29,8 @@ DEFINE_HOOK(OnPlayerUpdate, ());
 DEFINE_HOOK(OnSetDoAction, (uint16_t action));
 DEFINE_HOOK(OnPlayerSfx, (u16 sfxId));
 DEFINE_HOOK(OnOcarinaSongAction, ());
+DEFINE_HOOK(OnWarpSongLeave, ());
 DEFINE_HOOK(OnOcarinaNote, (uint8_t note, float modulator, int8_t bend));
-DEFINE_HOOK(OnCuccoOrChickenHatch, ());
 DEFINE_HOOK(OnShopSlotChange, (uint8_t cursorIndex, int16_t price));
 DEFINE_HOOK(OnDungeonKeyUsed, (uint16_t mapIndex));
 DEFINE_HOOK(ShouldActorInit, (void* actor, bool* result));
@@ -39,6 +39,7 @@ DEFINE_HOOK(OnActorSpawn, (void* actor));
 DEFINE_HOOK(ShouldActorUpdate, (void* actor, bool* result));
 DEFINE_HOOK(OnActorUpdate, (void* actor));
 DEFINE_HOOK(OnActorKill, (void* actor));
+DEFINE_HOOK(ShouldActorDestroy, (void* actor, bool* result));
 DEFINE_HOOK(OnActorDestroy, (void* actor));
 DEFINE_HOOK(OnEnemyDefeat, (void* actor));
 DEFINE_HOOK(OnBossDefeat, (void* actor));
@@ -96,3 +97,6 @@ DEFINE_HOOK(OnSeqPlayerInit, (int32_t playerIdx, int32_t seqId));
 DEFINE_HOOK(OnRandoSetCheckStatus, (RandomizerCheck rc, RandomizerCheckStatus status));
 DEFINE_HOOK(OnRandoSetIsSkipped, (RandomizerCheck rc, bool isSkipped));
 DEFINE_HOOK(OnRandoEntranceDiscovered, (u16 entranceIndex, u8 isReversedEntrance));
+// Fires when a hint's message is resolved for textbox display. Can fire for
+// hints the seed has disabled; subscribers should check the hint is enabled.
+DEFINE_HOOK(OnRandoHintRevealed, (RandomizerHint hintKey));

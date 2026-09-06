@@ -1,6 +1,7 @@
 #include <libultraship/bridge/consolevariablebridge.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
+#include "soh/cvar_prefixes.h"
 
 #include <vector>
 #include <spdlog/spdlog.h>
@@ -8,7 +9,6 @@
 #include "WeirdAnimation.h"
 
 extern "C" {
-#include "macros.h"
 #include "z64player.h"
 
 #include "objects/gameplay_keep/gameplay_keep.h"
@@ -25,6 +25,7 @@ AnimationHeaderCommon* ResourceMgr_LoadAnimByName(const char* path);
 // the start of the animation or past the end of it. In either case you add a list of animations'
 // data that are neighboring before or after the target animation. If more weird frame data is
 // required then add more of the neighboring animations in ROM.
+// TODO use std::array, we don't need the functionality of std::vector
 static std::vector<WeirdAnimation> weirdAnimations{
     // For weirdshots.
     { gPlayerAnim_link_bow_side_walk,
@@ -134,8 +135,7 @@ void RegisterN64WeirdFrames() {
             animation = reinterpret_cast<LinkAnimationHeader*>(ResourceMgr_LoadAnimByName(*animationName));
         }
 
-        const auto playerAnimHeader =
-            static_cast<LinkAnimationHeader*>(SEGMENTED_TO_VIRTUAL(static_cast<void*>(animation)));
+        const auto playerAnimHeader = static_cast<LinkAnimationHeader*>(static_cast<void*>(animation));
 
         if (frame < 0 || frame >= playerAnimHeader->common.frameCount) {
             const auto direction = frame < 0 ? IndexDirection::BACKWARD : IndexDirection::FORWARD;

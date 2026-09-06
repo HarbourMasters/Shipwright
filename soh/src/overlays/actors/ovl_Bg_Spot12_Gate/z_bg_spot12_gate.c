@@ -84,7 +84,7 @@ void func_808B30C0(BgSpot12Gate* this) {
 void func_808B30D8(BgSpot12Gate* this, PlayState* play) {
     if (Flags_GetSwitch(play, this->dyna.actor.params & 0x3F)) {
         func_808B3134(this);
-        OnePointCutscene_Init(play, 4160, -99, &this->dyna.actor, MAIN_CAM);
+        OnePointCutscene_Init(play, 4160, -99, &this->dyna.actor, CAM_ID_MAIN);
     }
 }
 
@@ -117,7 +117,7 @@ void func_808B318C(BgSpot12Gate* this, PlayState* play) {
         Quake_SetCountdown(var, 0xC);
         Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_BRIDGE_OPEN_STOP);
     } else {
-        func_8002F974(&this->dyna.actor, NA_SE_EV_METALGATE_OPEN - SFX_FLAG);
+        Actor_PlaySfx_Flagged(&this->dyna.actor, NA_SE_EV_METALGATE_OPEN - SFX_FLAG);
     }
 }
 

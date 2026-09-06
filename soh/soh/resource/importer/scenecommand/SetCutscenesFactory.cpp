@@ -1,8 +1,8 @@
 #include "soh/resource/importer/scenecommand/SetCutscenesFactory.h"
 #include "soh/resource/type/scenecommand/SetCutscenes.h"
 #include "soh/resource/logging/SceneCommandLoggers.h"
-#include <libultraship/libultraship.h>
-#include "spdlog/spdlog.h"
+#include <ship/Context.h>
+#include <ship/resource/ResourceManager.h>
 #include <tinyxml2.h>
 
 namespace SOH {

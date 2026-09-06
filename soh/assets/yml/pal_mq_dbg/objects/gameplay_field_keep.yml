@@ -1,0 +1,691 @@
+:config:
+  segments:
+    - [ 5, 0x00FB5000 ]
+    - [ 4, 0x00F5E000 ]
+    - [ 8, 0x00FB5000 ]
+    - [ 9, 0x00FB5000 ]
+    - [ 10, 0x00FB5000 ]
+    - [ 11, 0x00FB5000 ]
+    - [ 12, 0x00FB5000 ]
+    - [ 13, 0x00FB5000 ]
+  external_files:
+    - pal_mq_dbg/objects/gameplay_keep.yml
+
+gBgBombWallBrokenTex:
+  type: TEXTURE
+  offset: 0x3B20
+  symbol: gBgBombWallBrokenTex
+  format: CI4
+  width: 32
+  height: 64
+  tlut: 0x3700
+
+gBgBombwallBrokenDL:
+  type: GFX
+  offset: 0x4088
+  symbol: gBgBombwallBrokenDL
+
+gBgBombwallCol:
+  type: OOT:COLLISION
+  offset: 0x41B0
+  symbol: gBgBombwallCol
+
+gBgBombwallNormalDL:
+  type: GFX
+  offset: 0x3FC0
+  symbol: gBgBombwallNormalDL
+
+gBgBombwallNormalTex:
+  type: TEXTURE
+  offset: 0x3720
+  symbol: gBgBombwallNormalTex
+  format: CI4
+  width: 32
+  height: 64
+  tlut: 0x3700
+
+gBgBombwallTLUT:
+  type: TEXTURE
+  offset: 0x3700
+  symbol: gBgBombwallTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gButterflyAnim:
+  type: OOT:ANIMATION
+  offset: 0x2470
+  symbol: gButterflyAnim
+
+gButterflyDL_002480:
+  type: GFX
+  offset: 0x2480
+  symbol: gButterflyDL_002480
+
+gButterflyDL_002520:
+  type: GFX
+  offset: 0x2520
+  symbol: gButterflyDL_002520
+
+gButterflyDL_002580:
+  type: GFX
+  offset: 0x2580
+  symbol: gButterflyDL_002580
+
+gButterflyDL_002620:
+  type: GFX
+  offset: 0x2620
+  symbol: gButterflyDL_002620
+
+gButterflySkel:
+  type: OOT:SKELETON
+  offset: 0x36F0
+  symbol: gButterflySkel
+  limb_type: Standard
+  skel_type: Normal
+
+gButterflyWingTex:
+  type: TEXTURE
+  offset: 0x2680
+  symbol: gButterflyWingTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gFieldBeehiveDL:
+  type: GFX
+  offset: 0x95B0
+  symbol: gFieldBeehiveDL
+
+gFieldBeehiveFragmentDL:
+  type: GFX
+  offset: 0x9940
+  symbol: gFieldBeehiveFragmentDL
+
+gFieldBeehiveFragmentTex:
+  type: TEXTURE
+  offset: 0x9710
+  symbol: gFieldBeehiveFragmentTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gFieldBeehiveTex:
+  type: TEXTURE
+  offset: 0x8900
+  symbol: gFieldBeehiveTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gFieldBushDL:
+  type: GFX
+  offset: 0xB9D0
+  symbol: gFieldBushDL
+
+gFieldBushTex:
+  type: TEXTURE
+  offset: 0xB140
+  symbol: gFieldBushTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gFieldDoor1Tex:
+  type: TEXTURE
+  offset: 0x04F50
+  symbol: gFieldDoor1Tex
+  format: I8
+  width: 32
+  height: 128
+
+gFieldDoorDL_004720:
+  type: GFX
+  offset: 0x4720
+  symbol: gFieldDoorDL_004720
+
+gFieldDoorKnobTex:
+  type: TEXTURE
+  offset: 0x4D50
+  symbol: gFieldDoorKnobTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gFieldDoorKnobTopHalfTex:
+  type: TEXTURE
+  offset: 0x4B50
+  symbol: gFieldDoorKnobTopHalfTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gFieldDoorLeftDL:
+  type: GFX
+  offset: 0x47A0
+  symbol: gFieldDoorLeftDL
+
+gFieldDoorRightDL:
+  type: GFX
+  offset: 0x4978
+  symbol: gFieldDoorRightDL
+
+gFieldKakeraDL:
+  type: GFX
+  offset: 0xA880
+  symbol: gFieldKakeraDL
+
+gFieldKakeraTex:
+  type: TEXTURE
+  offset: 0xA940
+  symbol: gFieldKakeraTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gFieldKeepTex_00CB30:
+  type: TEXTURE
+  offset: 0xCB30
+  symbol: gFieldKeepTex_00CB30
+  format: RGBA16
+  width: 32
+  height: 32
+
+gFieldSandstorm1Tex:
+  type: TEXTURE
+  offset: 0xBA70
+  symbol: gFieldSandstorm1Tex
+  format: I8
+  width: 64
+  height: 32
+
+gFieldSandstorm2Tex:
+  type: TEXTURE
+  offset: 0xC270
+  symbol: gFieldSandstorm2Tex
+  format: IA8
+  width: 64
+  height: 32
+
+gFieldSandstormDL:
+  type: GFX
+  offset: 0xCA70
+  symbol: gFieldSandstormDL
+
+gFieldSilverRockTLUT:
+  type: TEXTURE
+  offset: 0x99D0
+  symbol: gFieldSilverRockTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gFieldSilverRockTex:
+  type: TEXTURE
+  offset: 0x99F8
+  symbol: gFieldSilverRockTex
+  format: CI4
+  width: 64
+  height: 64
+  tlut: 0x99D0
+
+gFieldSkelUnusedFishDL_0061E8:
+  type: GFX
+  offset: 0x61E8
+  symbol: gFieldSkelUnusedFishDL_0061E8
+
+gFieldSkelUnusedFishDL_0063A8:
+  type: GFX
+  offset: 0x63A8
+  symbol: gFieldSkelUnusedFishDL_0063A8
+
+gFieldSkelUnusedFishDL_006448:
+  type: GFX
+  offset: 0x6448
+  symbol: gFieldSkelUnusedFishDL_006448
+
+gFieldUnusedFishAnim:
+  type: OOT:ANIMATION
+  offset: 0x5FF0
+  symbol: gFieldUnusedFishAnim
+
+gFieldUnusedFishBottomTex:
+  type: TEXTURE
+  offset: 0x074A8
+  symbol: gFieldUnusedFishBottomTex
+  format: RGBA16
+  width: 64
+  height: 32
+
+gFieldUnusedFishDL:
+  type: GFX
+  offset: 0x6000
+  symbol: gFieldUnusedFishDL
+
+gFieldUnusedFishFinTex:
+  type: TEXTURE
+  offset: 0x84A8
+  symbol: gFieldUnusedFishFinTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gFieldUnusedFishSkel:
+  type: OOT:SKELETON
+  offset: 0x088F8
+  symbol: gFieldUnusedFishSkel
+  limb_type: Standard
+  skel_type: Normal
+
+gFieldUnusedFishTex:
+  type: TEXTURE
+  offset: 0x64A8
+  symbol: gFieldUnusedFishTex
+  format: RGBA16
+  width: 64
+  height: 32
+
+gGrottoDL:
+  type: GFX
+  offset: 0x1390
+  symbol: gGrottoDL
+
+gGrottoTex:
+  type: TEXTURE
+  offset: 0x1420
+  symbol: gGrottoTex
+  format: IA16
+  width: 32
+  height: 64
+
+gHanaDL:
+  type: GFX
+  offset: 0x500
+  symbol: gHanaDL
+
+gHanaFlower1DL:
+  type: GFX
+  offset: 0x000
+  symbol: gHanaFlower1DL
+
+gHanaFlower2DL:
+  type: GFX
+  offset: 0x0A0
+  symbol: gHanaFlower2DL
+
+gHanaFlower3DL:
+  type: GFX
+  offset: 0x0140
+  symbol: gHanaFlower3DL
+
+gHanaFlowerTex:
+  type: TEXTURE
+  offset: 0x750
+  symbol: gHanaFlowerTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gHanaLeaf1DL:
+  type: GFX
+  offset: 0x01E0
+  symbol: gHanaLeaf1DL
+
+gHanaLeaf2DL:
+  type: GFX
+  offset: 0x0280
+  symbol: gHanaLeaf2DL
+
+gHanaLeaf3DL:
+  type: GFX
+  offset: 0x0320
+  symbol: gHanaLeaf3DL
+
+gHanaLeaf4DL:
+  type: GFX
+  offset: 0x03C0
+  symbol: gHanaLeaf4DL
+
+gHanaLeaf5DL:
+  type: GFX
+  offset: 0x0460
+  symbol: gHanaLeaf5DL
+
+gHanaLeafTex:
+  type: TEXTURE
+  offset: 0xB50
+  symbol: gHanaLeafTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gSilverRockDL:
+  type: GFX
+  offset: 0xA3B8
+  symbol: gSilverRockDL
+
+gSilverRockFragmentsDL:
+  type: GFX
+  offset: 0xA5E8
+  symbol: gSilverRockFragmentsDL
+
+
+gameplay_field_keepVtx_000548:
+  type: OOT:ARRAY
+  offset: 0x000548
+  symbol: gameplay_field_keepVtx_000548
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_field_keepVtx_000588:
+  type: OOT:ARRAY
+  offset: 0x000588
+  symbol: gameplay_field_keepVtx_000588
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_field_keepVtx_0005C8:
+  type: OOT:ARRAY
+  offset: 0x0005C8
+  symbol: gameplay_field_keepVtx_0005C8
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_field_keepVtx_000608:
+  type: OOT:ARRAY
+  offset: 0x000608
+  symbol: gameplay_field_keepVtx_000608
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_field_keepVtx_000648:
+  type: OOT:ARRAY
+  offset: 0x000648
+  symbol: gameplay_field_keepVtx_000648
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_field_keepVtx_000688:
+  type: OOT:ARRAY
+  offset: 0x000688
+  symbol: gameplay_field_keepVtx_000688
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_field_keepVtx_0006C8:
+  type: OOT:ARRAY
+  offset: 0x0006C8
+  symbol: gameplay_field_keepVtx_0006C8
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_field_keepVtx_000708:
+  type: OOT:ARRAY
+  offset: 0x000708
+  symbol: gameplay_field_keepVtx_000708
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_field_keepVtx_001350:
+  type: OOT:ARRAY
+  offset: 0x001350
+  symbol: gameplay_field_keepVtx_001350
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gButterflySkelLimbsLimb_0036A4DL_002530:
+  type: GFX
+  offset: 0x002530
+  symbol: gButterflySkelLimbsLimb_0036A4DL_002530
+
+gameplay_field_keepVtx_002540:
+  type: OOT:ARRAY
+  offset: 0x002540
+  symbol: gameplay_field_keepVtx_002540
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gButterflySkelLimbsLimb_0036C8DL_002630:
+  type: GFX
+  offset: 0x002630
+  symbol: gButterflySkelLimbsLimb_0036C8DL_002630
+
+gameplay_field_keepVtx_002640:
+  type: OOT:ARRAY
+  offset: 0x002640
+  symbol: gameplay_field_keepVtx_002640
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gButterflySkelLimbsLimb_003680:
+  type: OOT:LIMB
+  offset: 0x003680
+  symbol: gButterflySkelLimbsLimb_003680
+  limb_type: Standard
+
+gButterflySkelLimbsLimb_00368C:
+  type: OOT:LIMB
+  offset: 0x00368C
+  symbol: gButterflySkelLimbsLimb_00368C
+  limb_type: Standard
+
+gButterflySkelLimbsLimb_003698:
+  type: OOT:LIMB
+  offset: 0x003698
+  symbol: gButterflySkelLimbsLimb_003698
+  limb_type: Standard
+
+gButterflySkelLimbsLimb_0036A4:
+  type: OOT:LIMB
+  offset: 0x0036A4
+  symbol: gButterflySkelLimbsLimb_0036A4
+  limb_type: Standard
+
+gButterflySkelLimbsLimb_0036B0:
+  type: OOT:LIMB
+  offset: 0x0036B0
+  symbol: gButterflySkelLimbsLimb_0036B0
+  limb_type: Standard
+
+gButterflySkelLimbsLimb_0036BC:
+  type: OOT:LIMB
+  offset: 0x0036BC
+  symbol: gButterflySkelLimbsLimb_0036BC
+  limb_type: Standard
+
+gButterflySkelLimbsLimb_0036C8:
+  type: OOT:LIMB
+  offset: 0x0036C8
+  symbol: gButterflySkelLimbsLimb_0036C8
+  limb_type: Standard
+
+gButterflySkelLimbs:
+  type: BLOB
+  offset: 0x36D4
+  symbol: gButterflySkelLimbs
+  size: 0
+
+gameplay_field_keepVtx_003F20:
+  type: OOT:ARRAY
+  offset: 0x003F20
+  symbol: gameplay_field_keepVtx_003F20
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_field_keepVtx_003F70:
+  type: OOT:ARRAY
+  offset: 0x003F70
+  symbol: gameplay_field_keepVtx_003F70
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_field_keepVtx_0041E0:
+  type: OOT:ARRAY
+  offset: 0x0041E0
+  symbol: gameplay_field_keepVtx_0041E0
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_field_keepVtx_004400:
+  type: OOT:ARRAY
+  offset: 0x004400
+  symbol: gameplay_field_keepVtx_004400
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_field_keepVtx_004620:
+  type: OOT:ARRAY
+  offset: 0x004620
+  symbol: gameplay_field_keepVtx_004620
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gFieldUnusedFishSkelLimbsLimb_0088D8DL_0061F8:
+  type: GFX
+  offset: 0x0061F8
+  symbol: gFieldUnusedFishSkelLimbsLimb_0088D8DL_0061F8
+
+gameplay_field_keepVtx_006208:
+  type: OOT:ARRAY
+  offset: 0x006208
+  symbol: gameplay_field_keepVtx_006208
+  count: 26
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gFieldUnusedFishSkelLimbsLimb_0088CCDL_006458:
+  type: GFX
+  offset: 0x006458
+  symbol: gFieldUnusedFishSkelLimbsLimb_0088CCDL_006458
+
+gameplay_field_keepVtx_006468:
+  type: OOT:ARRAY
+  offset: 0x006468
+  symbol: gameplay_field_keepVtx_006468
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gFieldUnusedFishSkelLimbsLimb_0088A8:
+  type: OOT:LIMB
+  offset: 0x0088A8
+  symbol: gFieldUnusedFishSkelLimbsLimb_0088A8
+  limb_type: Standard
+
+gFieldUnusedFishSkelLimbsLimb_0088B4:
+  type: OOT:LIMB
+  offset: 0x0088B4
+  symbol: gFieldUnusedFishSkelLimbsLimb_0088B4
+  limb_type: Standard
+
+gFieldUnusedFishSkelLimbsLimb_0088C0:
+  type: OOT:LIMB
+  offset: 0x0088C0
+  symbol: gFieldUnusedFishSkelLimbsLimb_0088C0
+  limb_type: Standard
+
+gFieldUnusedFishSkelLimbsLimb_0088CC:
+  type: OOT:LIMB
+  offset: 0x0088CC
+  symbol: gFieldUnusedFishSkelLimbsLimb_0088CC
+  limb_type: Standard
+
+gFieldUnusedFishSkelLimbsLimb_0088D8:
+  type: OOT:LIMB
+  offset: 0x0088D8
+  symbol: gFieldUnusedFishSkelLimbsLimb_0088D8
+  limb_type: Standard
+
+gFieldUnusedFishSkelLimbs:
+  type: BLOB
+  offset: 0x88E4
+  symbol: gFieldUnusedFishSkelLimbs
+  size: 0
+
+gameplay_field_keepVtx_009100:
+  type: OOT:ARRAY
+  offset: 0x009100
+  symbol: gameplay_field_keepVtx_009100
+  count: 75
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_field_keepVtx_009910:
+  type: OOT:ARRAY
+  offset: 0x009910
+  symbol: gameplay_field_keepVtx_009910
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_field_keepVtx_00A1F8:
+  type: OOT:ARRAY
+  offset: 0x00A1F8
+  symbol: gameplay_field_keepVtx_00A1F8
+  count: 28
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_field_keepVtx_00A4C8:
+  type: OOT:ARRAY
+  offset: 0x00A4C8
+  symbol: gameplay_field_keepVtx_00A4C8
+  count: 18
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_field_keepVtx_00A6D0:
+  type: OOT:ARRAY
+  offset: 0x00A6D0
+  symbol: gameplay_field_keepVtx_00A6D0
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gameplay_field_keepVtx_00B940:
+  type: OOT:ARRAY
+  offset: 0x00B940
+  symbol: gameplay_field_keepVtx_00B940
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

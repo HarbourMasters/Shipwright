@@ -1,23 +1,29 @@
+#include <libultraship/bridge/consolevariablebridge.h>
+#include <fast/interpreter.h>
+#include <fast/resource/ResourceType.h>
+#include <fast/resource/type/DisplayList.h>
+#include <libultraship/bridge/resourcebridge.h>
+#include <ship/Context.h>
+#include <ship/resource/ResourceManager.h>
+#include <stb_image.h>
+
 #include "ResourceManagerHelpers.h"
 #include "OTRGlobals.h"
-#include "variables.h"
-#include "z64.h"
-#include "macros.h"
 #include "cvar_prefixes.h"
 #include "Enhancements/enhancementTypes.h"
 #include "Enhancements/randomizer/dungeon.h"
 #include "soh/Enhancements/randomizer/SeedContext.h"
-#include <libultraship/libultraship.h>
 #include <soh/GameVersions.h>
 #include "resource/type/SohResourceType.h"
 #include "resource/type/Array.h"
 #include "resource/type/Skeleton.h"
 #include "resource/type/PlayerAnimation.h"
-#include <fast/Fast3dWindow.h>
-#include <fast/resource/ResourceType.h>
-#include <fast/resource/type/DisplayList.h>
 
-#include <stb_image.h>
+extern "C" {
+#include "variables.h"
+#include "z64.h"
+#include "macros.h"
+}
 
 extern "C" PlayState* gPlayState;
 
@@ -71,11 +77,11 @@ static const char* ResourceMgr_ResolveLinkTunicDListPath(const char* path) {
         return it->second.c_str();
     }
 
-    const std::string candidate =
-        fmt::format("__OTR__objects/{}_{}/{}", objectFolder, tunicSuffix, originalPath + objectPrefix.size());
+    const std::string candidate = spdlog::fmt_lib::format("__OTR__objects/{}_{}/{}", objectFolder, tunicSuffix,
+                                                          originalPath + objectPrefix.size());
 
-    if (!ResourceGetIsCustomByName(candidate.c_str()) && !ResourceMgr_FileExists(candidate.c_str()) &&
-        !(ResourceMgr_IsAltAssetsEnabled() && ResourceMgr_FileAltExists(candidate.c_str()))) {
+    if (!ResourceMgr_IsAltAssetsEnabled() || !ResourceMgr_FileAltExists(candidate.c_str()) ||
+        !ResourceGetIsCustomByName(candidate.c_str())) {
         return path;
     }
 
@@ -173,7 +179,7 @@ u32 IsSceneMasterQuest(s16 sceneNum) {
         }
 
         if (IS_RANDO) {
-            auto dungeon = OTRGlobals::Instance->gRandoContext->GetDungeons()->GetDungeonFromScene(sceneNum);
+            auto dungeon = OTRGlobals::Instance->gRandoContext->GetDungeonFromScene((SceneID)sceneNum);
             if (dungeon != nullptr && dungeon->IsMQ()) {
                 return true;
             }
@@ -600,33 +606,36 @@ extern "C" AnimationHeaderCommon* ResourceMgr_LoadAnimByName(const char* path) {
     bool isAlt = ResourceMgr_IsAltAssetsEnabled();
 
     if (isAlt) {
-        std::string pathStr = std::string(path);
-        static const std::string sOtr = "__OTR__";
+        if (ResourceMgr_FileAltExists(path)) {
+            std::string pathStr = std::string(path);
+            static const std::string sOtr = "__OTR__";
 
-        if (pathStr.starts_with(sOtr)) {
-            pathStr = pathStr.substr(sOtr.length());
-        }
-
-        // Try alt/ first
-        pathStr = Ship::IResource::gAltAssetPrefix + pathStr;
-        AnimationHeaderCommon* animHeader = (AnimationHeaderCommon*)ResourceGetDataByName(pathStr.c_str());
-
-        // If alt loaded successfully, verify it has valid data
-        if (animHeader != NULL) {
-            // Check for valid frame count (> 0)
-            if (animHeader->frameCount > 0) {
-                // For Normal animations: check frameData (comes after frameCount in AnimationHeader)
-                // For Link animations: check segment (comes after frameCount in LinkAnimationHeader)
-                // We check both to be safe - if either is valid, the animation is usable
-                AnimationHeader* normalAnim = (AnimationHeader*)animHeader;
-                LinkAnimationHeader* linkAnim = (LinkAnimationHeader*)animHeader;
-
-                // Valid if Normal animation has frameData OR Link animation has segment
-                if (normalAnim->frameData != NULL || linkAnim->segment != NULL) {
-                    return animHeader;
-                }
+            if (pathStr.starts_with(sOtr)) {
+                pathStr = pathStr.substr(sOtr.length());
             }
-            // Alt loaded but is invalid (broken), fall through to original path
+
+            // Try alt/ first
+            pathStr = Ship::IResource::gAltAssetPrefix + pathStr;
+
+            AnimationHeaderCommon* animHeader = (AnimationHeaderCommon*)ResourceGetDataByName(pathStr.c_str());
+
+            // If alt loaded successfully, verify it has valid data
+            if (animHeader != NULL) {
+                // Check for valid frame count (> 0)
+                if (animHeader->frameCount > 0) {
+                    // For Normal animations: check frameData (comes after frameCount in AnimationHeader)
+                    // For Link animations: check segment (comes after frameCount in LinkAnimationHeader)
+                    // We check both to be safe - if either is valid, the animation is usable
+                    AnimationHeader* normalAnim = (AnimationHeader*)animHeader;
+                    LinkAnimationHeader* linkAnim = (LinkAnimationHeader*)animHeader;
+
+                    // Valid if Normal animation has frameData OR Link animation has segment
+                    if (normalAnim->frameData != NULL || linkAnim->segment != NULL) {
+                        return animHeader;
+                    }
+                }
+                // Alt loaded but is invalid (broken), fall through to original path
+            }
         }
 
         // Fall back to original path

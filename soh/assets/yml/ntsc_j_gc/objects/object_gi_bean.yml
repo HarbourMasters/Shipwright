@@ -1,0 +1,27 @@
+:config:
+  segments:
+    - [ 6, 0x0111C720 ]
+    - [ 4, 0x00D31090 ]
+    - [ 8, 0x0111C720 ]
+    - [ 9, 0x0111C720 ]
+    - [ 10, 0x0111C720 ]
+    - [ 11, 0x0111C720 ]
+    - [ 12, 0x0111C720 ]
+    - [ 13, 0x0111C720 ]
+  external_files:
+    - ntsc_j_gc/objects/gameplay_keep.yml
+
+gGiBeanDL:
+  type: GFX
+  offset: 0x0580
+  symbol: gGiBeanDL
+
+
+object_gi_beanVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_gi_beanVtx_000000
+  count: 88
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

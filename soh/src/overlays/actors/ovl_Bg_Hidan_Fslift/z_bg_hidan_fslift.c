@@ -103,7 +103,7 @@ void BgHidanFslift_Descend(BgHidanFslift* this, PlayState* play) {
         Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_BLOCK_BOUND);
         BgHidanFslift_SetupIdle(this);
     } else {
-        func_8002F974(&this->dyna.actor, NA_SE_EV_ELEVATOR_MOVE3 - SFX_FLAG);
+        Actor_PlaySfx_Flagged(&this->dyna.actor, NA_SE_EV_ELEVATOR_MOVE3 - SFX_FLAG);
     }
     BgHidanFslift_SetHookshotTargetPos(this);
 }
@@ -114,7 +114,7 @@ void BgHidanFslift_Ascend(BgHidanFslift* this, PlayState* play) {
             Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_BLOCK_BOUND);
             BgHidanFslift_SetupIdle(this);
         } else {
-            func_8002F974(&this->dyna.actor, NA_SE_EV_ELEVATOR_MOVE3 - SFX_FLAG);
+            Actor_PlaySfx_Flagged(&this->dyna.actor, NA_SE_EV_ELEVATOR_MOVE3 - SFX_FLAG);
         }
     } else {
         BgHidanFslift_SetupIdle(this);
@@ -130,10 +130,10 @@ void BgHidanFslift_Update(Actor* thisx, PlayState* play) {
         if (this->cameraSetting == 0) {
             this->cameraSetting = 3;
         }
-        Camera_ChangeSetting(play->cameraPtrs[MAIN_CAM], CAM_SET_FIRE_PLATFORM);
+        Camera_RequestSetting(play->cameraPtrs[CAM_ID_MAIN], CAM_SET_FIRE_PLATFORM);
     } else if (!DynaPolyActor_IsPlayerOnTop(&this->dyna)) {
         if (this->cameraSetting != 0) {
-            Camera_ChangeSetting(play->cameraPtrs[MAIN_CAM], CAM_SET_DUNGEON0);
+            Camera_RequestSetting(play->cameraPtrs[CAM_ID_MAIN], CAM_SET_DUNGEON0);
         }
         this->cameraSetting = 0;
     }

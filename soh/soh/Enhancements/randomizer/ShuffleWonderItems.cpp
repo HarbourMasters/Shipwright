@@ -1,4 +1,5 @@
 #include <soh/OTRGlobals.h>
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include <soh/GameVersions.h>
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/ObjectExtension/ObjectExtension.h"
@@ -119,12 +120,7 @@ static CheckIdentity IdentifyWonderItem(s32 sceneNum, s32 par1, s32 par2) {
     Rando::Location* location =
         OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_EN_WONDER_ITEM, wonderSceneNum, actorParams);
 
-    if (location->GetRandomizerCheck() == RC_UNKNOWN_CHECK) {
-        LUSLOG_WARN("IdentifyWonderItem did not receive a valid RC value (%d).", location->GetRandomizerCheck());
-    } else {
-        wonderIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
-        wonderIdentity.randomizerCheck = location->GetRandomizerCheck();
-    }
+    IdentifyCheck(&wonderIdentity, location);
 
     return wonderIdentity;
 }

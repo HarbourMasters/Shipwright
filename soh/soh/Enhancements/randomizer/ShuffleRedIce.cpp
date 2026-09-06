@@ -1,4 +1,5 @@
 #include "soh/OTRGlobals.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ObjectExtension/ObjectExtension.h"
 #include "item_category_adj.h"
 #include "particle_cmc.h"
@@ -8,7 +9,6 @@
 extern "C" {
 #include "functions.h"
 #include "overlays/actors/ovl_Bg_Ice_Shelter/z_bg_ice_shelter.h"
-#include "objects/object_ice_objects/object_ice_objects.h"
 extern PlayState* gPlayState;
 }
 
@@ -119,6 +119,12 @@ void BgIceShelter_RandomizerSpawnCollectible(Actor* actor) {
     }
 }
 
+void BgIceShelter_KingZoraSpawnCollectible(void* actor) {
+    if (!Flags_GetRandomizerInf(RAND_INF_ZD_KING_ZORA_RED_ICE) && Flags_GetInfTable(INFTABLE_138)) {
+        Flags_SetRandomizerInf(RAND_INF_ZD_KING_ZORA_RED_ICE);
+    }
+}
+
 static CheckIdentity IdentifyRedIce(s32 sceneNum, s32 posX, s32 posZ) {
     struct CheckIdentity redIceIdentity;
     uint32_t redIceSceneNum = sceneNum;
@@ -136,13 +142,7 @@ static CheckIdentity IdentifyRedIce(s32 sceneNum, s32 posX, s32 posZ) {
     Rando::Location* location =
         OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_BG_ICE_SHELTER, redIceSceneNum, actorParams);
 
-    if (location->GetRandomizerCheck() == RC_UNKNOWN_CHECK) {
-        LUSLOG_WARN("IdentifyRedIce did not receive a valid RC value (%d).", location->GetRandomizerCheck());
-        assert(false);
-    } else {
-        redIceIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
-        redIceIdentity.randomizerCheck = location->GetRandomizerCheck();
-    }
+    IdentifyCheck(&redIceIdentity, location);
 
     return redIceIdentity;
 }
@@ -177,6 +177,9 @@ void RegisterShuffleRedIce() {
             }
         }
     });
+
+    // Give King Zora red ice item if ice was removed with glitch
+    COND_ID_HOOK(OnActorInit, ACTOR_EN_KZ, shouldRegister, BgIceShelter_KingZoraSpawnCollectible);
 }
 
 void Rando::StaticData::RegisterRedIceLocations() {

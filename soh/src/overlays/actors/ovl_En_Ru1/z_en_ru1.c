@@ -7,7 +7,6 @@
 #include "z_en_ru1.h"
 #include "objects/object_ru1/object_ru1.h"
 #include "vt.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_CAN_PRESS_SWITCHES)
@@ -207,8 +206,6 @@ void EnRu1_Destroy(Actor* thisx, PlayState* play) {
 
     D_80AF1938 = 0;
     EnRu1_DestroyColliders(this, play);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnRu1_UpdateEyes(EnRu1* this) {
@@ -596,8 +593,8 @@ void func_80AEBC30(PlayState* play) {
 
     if (play->csCtx.frames == 0xCD) {
         player = GET_PLAYER(play);
-        Audio_PlaySoundGeneral(NA_SE_EV_DIVE_INTO_WATER, &player->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
-                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        Audio_PlaySfxGeneral(NA_SE_EV_DIVE_INTO_WATER, &player->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
+                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     }
 }
 
@@ -921,7 +918,7 @@ void func_80AEC9C4(EnRu1* this) {
 }
 
 void func_80AECA18(EnRu1* this) {
-    if (!(this->actor.bgCheckFlags & 1)) {
+    if (!(this->actor.bgCheckFlags & BGCHECKFLAG_GROUND)) {
         this->action = 13;
         this->walkingFrame = 0.0f;
         this->actor.velocity.y = 0.0f;
@@ -1207,8 +1204,8 @@ void func_80AED4FC(EnRu1* this) {
 void func_80AED520(EnRu1* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
-    Audio_PlaySoundGeneral(NA_SE_PL_PULL_UP_RUTO, &player->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
-                           &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+    Audio_PlaySfxGeneral(NA_SE_PL_PULL_UP_RUTO, &player->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
+                         &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     Sfx_PlaySfxAtPos(&this->actor.projectedPos, NA_SE_VO_RT_LIFT);
 }
 
@@ -1343,7 +1340,7 @@ void func_80AEDB30(EnRu1* this, PlayState* play) {
     s32 temp_a0;
     s32 phi_v1;
 
-    if (this->actor.bgCheckFlags & 1) {
+    if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
         velocityY = &this->actor.velocity.y;
         dynaPolyActor = DynaPoly_GetActor(&play->colCtx, this->actor.floorBgId);
         if (*velocityY <= 0.0f) {
@@ -1392,7 +1389,7 @@ void func_80AEDB30(EnRu1* this, PlayState* play) {
             func_80AED4FC(this);
         }
     }
-    if (this->actor.bgCheckFlags & 8) {
+    if (this->actor.bgCheckFlags & BGCHECKFLAG_WALL) {
         speedXZ = &this->actor.speedXZ;
         if (*speedXZ != 0.0f) {
             rotY = this->actor.world.rot.y;
@@ -1509,13 +1506,13 @@ s32 func_80AEE264(EnRu1* this, PlayState* play) {
         this->actor.flags |= ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY;
         if ((Flags_GetInfTable(INFTABLE_143))) {
             this->actor.textId = 0x404E;
-            func_8002F2F4(&this->actor, play);
+            Actor_OfferTalkNearColChkInfoCylinder(&this->actor, play);
         } else if (Flags_GetInfTable(INFTABLE_RUTO_IN_JJ_TALK_FIRST_TIME)) {
             this->actor.textId = 0x404D;
-            func_8002F2F4(&this->actor, play);
+            Actor_OfferTalkNearColChkInfoCylinder(&this->actor, play);
         } else {
             this->actor.textId = 0x404C;
-            func_8002F2F4(&this->actor, play);
+            Actor_OfferTalkNearColChkInfoCylinder(&this->actor, play);
         }
         return false;
     }
@@ -1526,7 +1523,7 @@ void func_80AEE2F8(EnRu1* this, PlayState* play) {
     DynaPolyActor* dynaPolyActor;
     s32 floorBgId;
 
-    if ((this->actor.bgCheckFlags & 1) && (this->actor.floorBgId != BGCHECK_SCENE)) {
+    if ((this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) && (this->actor.floorBgId != BGCHECK_SCENE)) {
         floorBgId = this->actor.floorBgId;
         dynaPolyActor = DynaPoly_GetActor(&play->colCtx, floorBgId);
         if ((dynaPolyActor != NULL) && (dynaPolyActor->actor.id == ACTOR_BG_BDAN_SWITCH)) {
@@ -1545,7 +1542,7 @@ s32 func_80AEE394(EnRu1* this, PlayState* play) {
     DynaPolyActor* dynaPolyActor;
     s32 floorBgId;
 
-    if ((this->actor.bgCheckFlags & 1) && this->actor.floorBgId != BGCHECK_SCENE) {
+    if ((this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) && this->actor.floorBgId != BGCHECK_SCENE) {
         colCtx = &play->colCtx;
         floorBgId = this->actor.floorBgId; // necessary match, can't move this out of this block unfortunately
         dynaPolyActor = DynaPoly_GetActor(colCtx, floorBgId);
@@ -1575,7 +1572,7 @@ void func_80AEE488(EnRu1* this, PlayState* play) {
         this->roomNum3 = curRoomNum;
         this->action = 31;
         func_80AED520(this, play);
-    } else if ((!func_80AEE394(this, play)) && (!(this->actor.bgCheckFlags & 1))) {
+    } else if ((!func_80AEE394(this, play)) && (!(this->actor.bgCheckFlags & BGCHECKFLAG_GROUND))) {
         this->actor.minVelocityY = -((kREG(24) * 0.01f) + 6.8f);
         this->actor.gravity = -((kREG(23) * 0.01f) + 1.3f);
         this->action = 28;
@@ -1584,7 +1581,8 @@ void func_80AEE488(EnRu1* this, PlayState* play) {
 
 void func_80AEE568(EnRu1* this, PlayState* play) {
     if (!func_80AEE394(this, play)) {
-        if ((this->actor.bgCheckFlags & 1) && (this->actor.speedXZ == 0.0f) && (this->actor.minVelocityY == 0.0f)) {
+        if ((this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) && (this->actor.speedXZ == 0.0f) &&
+            (this->actor.minVelocityY == 0.0f)) {
             func_80AEE02C(this);
             Actor_OfferCarry(&this->actor, play);
             this->action = 27;
@@ -1688,7 +1686,7 @@ void func_80AEE7C4(EnRu1* this, PlayState* play) {
 }
 
 s32 func_80AEEAC8(EnRu1* this, PlayState* play) {
-    if (this->actor.bgCheckFlags & 1) {
+    if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
         func_80AEE02C(this);
         Actor_OfferCarry(&this->actor, play);
         this->action = 27;
@@ -2018,7 +2016,7 @@ void func_80AEF890(EnRu1* this, PlayState* play) {
     s32 pad[2];
     s8 curRoomNum;
 
-    if ((gSaveContext.sceneSetupIndex < 4) && (EnRu1_IsCsStateIdle(play))) {
+    if ((gSaveContext.sceneLayer < 4) && (EnRu1_IsCsStateIdle(play))) {
         curRoomNum = play->roomCtx.curRoom.num;
         Flags_SetInfTable(INFTABLE_145);
         Flags_SetSwitch(play, func_80AEADE0(this));
@@ -2149,7 +2147,7 @@ s32 func_80AEFDC0(EnRu1* this, PlayState* play) {
         if (this->actor.textId == 0) {
             this->actor.textId = 0x402C;
         }
-        func_8002F2F4(&this->actor, play);
+        Actor_OfferTalkNearColChkInfoCylinder(&this->actor, play);
         return false;
     }
     return true;

@@ -1,0 +1,26 @@
+:config:
+  segments:
+    - [ 128, 0x00C82790 ]
+    - [ 4, 0x00D31090 ]
+    - [ 8, 0x00C82790 ]
+    - [ 9, 0x00C82790 ]
+    - [ 10, 0x00C82790 ]
+    - [ 11, 0x00C82790 ]
+    - [ 12, 0x00C82790 ]
+    - [ 13, 0x00C82790 ]
+  virtual: [ 0x80A771F0, 0x00C82790 ]
+  external_files:
+    - ntsc_j_gc/objects/gameplay_keep.yml
+
+sShadowDL:
+  type: GFX
+  offset: 0x2EB0
+  symbol: sShadowDL
+
+sShadowVtx:
+  type: OOT:ARRAY
+  offset: 0x2E70
+  symbol: sShadowVtx
+  count: 4
+  array_type: VTX
+

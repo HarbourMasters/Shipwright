@@ -1,0 +1,248 @@
+:config:
+  segments:
+    - [ 128, 0x00C13800 ]
+    - [ 4, 0x00D30F00 ]
+    - [ 8, 0x00C13800 ]
+    - [ 9, 0x00C13800 ]
+    - [ 10, 0x00C13800 ]
+    - [ 11, 0x00C13800 ]
+    - [ 12, 0x00C13800 ]
+    - [ 13, 0x00C13800 ]
+  virtual: [ 0x809C0540, 0x00C13800 ]
+  external_files:
+    - ntsc_u_gc/objects/gameplay_keep.yml
+
+gArwingBackfireDL:
+  type: GFX
+  offset: 0x6598
+  symbol: gArwingBackfireDL
+
+gArwingDL:
+  type: GFX
+  offset: 0x2600
+  symbol: gArwingDL
+
+gArwingDebrisEffectDL:
+  type: GFX
+  offset: 0x69C8
+  symbol: gArwingDebrisEffectDL
+
+gArwingDebrisEffectMaterialDL:
+  type: GFX
+  offset: 0x6948
+  symbol: gArwingDebrisEffectMaterialDL
+
+gArwingFireEffectDL:
+  type: GFX
+  offset: 0x70B8
+  symbol: gArwingFireEffectDL
+
+gArwingFireEffectMaterialDL:
+  type: GFX
+  offset: 0x7010
+  symbol: gArwingFireEffectMaterialDL
+
+gArwingFlashEffectDL:
+  type: GFX
+  offset: 0x8118
+  symbol: gArwingFlashEffectDL
+
+gArwingFlashEffectGroundDL:
+  type: GFX
+  offset: 0x83C8
+  symbol: gArwingFlashEffectGroundDL
+
+gArwingLaserDL:
+  type: GFX
+  offset: 0x6298
+  symbol: gArwingLaserDL
+
+gArwingShadowDL:
+  type: GFX
+  offset: 0x8880
+  symbol: gArwingShadowDL
+
+ovl_En_Clear_TagTex_003308:
+  type: TEXTURE
+  offset: 0x3218
+  symbol: ovl_En_Clear_TagTex_003308
+  format: RGBA16
+  width: 8
+  height: 8
+
+ovl_En_Clear_TagTex_003388:
+  type: TEXTURE
+  offset: 0x3298
+  symbol: ovl_En_Clear_TagTex_003388
+  format: RGBA16
+  width: 32
+  height: 32
+
+ovl_En_Clear_TagTex_003B88:
+  type: TEXTURE
+  offset: 0x3A98
+  symbol: ovl_En_Clear_TagTex_003B88
+  format: RGBA16
+  width: 64
+  height: 32
+
+ovl_En_Clear_TagTex_004B88:
+  type: TEXTURE
+  offset: 0x4A98
+  symbol: ovl_En_Clear_TagTex_004B88
+  format: RGBA16
+  width: 32
+  height: 32
+
+ovl_En_Clear_TagTex_005388:
+  type: TEXTURE
+  offset: 0x5298
+  symbol: ovl_En_Clear_TagTex_005388
+  format: RGBA16
+  width: 32
+  height: 32
+
+ovl_En_Clear_TagTex_005B88:
+  type: TEXTURE
+  offset: 0x5A98
+  symbol: ovl_En_Clear_TagTex_005B88
+  format: RGBA16
+  width: 32
+  height: 32
+
+ovl_En_Clear_TagTex_006458:
+  type: TEXTURE
+  offset: 0x6368
+  symbol: ovl_En_Clear_TagTex_006458
+  format: RGBA16
+  width: 16
+  height: 16
+
+ovl_En_Clear_TagTex_006708:
+  type: TEXTURE
+  offset: 0x6618
+  symbol: ovl_En_Clear_TagTex_006708
+  format: I8
+  width: 16
+  height: 16
+
+ovl_En_Clear_TagTex_006808:
+  type: TEXTURE
+  offset: 0x6718
+  symbol: ovl_En_Clear_TagTex_006808
+  format: RGBA16
+  width: 16
+  height: 16
+
+ovl_En_Clear_TagTex_006AD0:
+  type: TEXTURE
+  offset: 0x69E0
+  symbol: ovl_En_Clear_TagTex_006AD0
+  format: I4
+  width: 32
+  height: 64
+
+ovl_En_Clear_TagTex_006ED0:
+  type: TEXTURE
+  offset: 0x6DE0
+  symbol: ovl_En_Clear_TagTex_006ED0
+  format: I4
+  width: 32
+  height: 32
+
+ovl_En_Clear_TagTex_0071C8:
+  type: TEXTURE
+  offset: 0x70D8
+  symbol: ovl_En_Clear_TagTex_0071C8
+  format: I8
+  width: 64
+  height: 64
+
+ovl_En_Clear_TagTex_008288:
+  type: TEXTURE
+  offset: 0x8198
+  symbol: ovl_En_Clear_TagTex_008288
+  format: I4
+  width: 32
+  height: 32
+
+ovl_En_Clear_TagTex_008540:
+  type: TEXTURE
+  offset: 0x8450
+  symbol: ovl_En_Clear_TagTex_008540
+  format: I8
+  width: 32
+  height: 32
+
+
+ovl_En_Clear_TagVtx_0028D8:
+  type: OOT:ARRAY
+  offset: 0x0028D8
+  symbol: ovl_En_Clear_TagVtx_0028D8
+  count: 148
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ovl_En_Clear_TagVtx_006308:
+  type: OOT:ARRAY
+  offset: 0x006308
+  symbol: ovl_En_Clear_TagVtx_006308
+  count: 6
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ovl_En_Clear_TagVtx_006568:
+  type: OOT:ARRAY
+  offset: 0x006568
+  symbol: ovl_En_Clear_TagVtx_006568
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ovl_En_Clear_TagVtx_006918:
+  type: OOT:ARRAY
+  offset: 0x006918
+  symbol: ovl_En_Clear_TagVtx_006918
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ovl_En_Clear_TagVtx_006FE0:
+  type: OOT:ARRAY
+  offset: 0x006FE0
+  symbol: ovl_En_Clear_TagVtx_006FE0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ovl_En_Clear_TagVtx_0080D8:
+  type: OOT:ARRAY
+  offset: 0x0080D8
+  symbol: ovl_En_Clear_TagVtx_0080D8
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ovl_En_Clear_TagVtx_008398:
+  type: OOT:ARRAY
+  offset: 0x008398
+  symbol: ovl_En_Clear_TagVtx_008398
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ovl_En_Clear_TagVtx_008850:
+  type: OOT:ARRAY
+  offset: 0x008850
+  symbol: ovl_En_Clear_TagVtx_008850
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

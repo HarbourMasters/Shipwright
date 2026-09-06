@@ -1,4 +1,4 @@
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
@@ -15,7 +15,7 @@ static void MakeLinkFocusOnPot() {
     BgSpot18Basket* bgSpot18 =
         (BgSpot18Basket*)Actor_Find(&gPlayState->actorCtx, ACTOR_BG_SPOT18_BASKET, ACTORCAT_PROP);
     if (bgSpot18 != NULL) {
-        func_8002DF38(gPlayState, &bgSpot18->dyna.actor, 1);
+        Player_SetCsAction(gPlayState, &bgSpot18->dyna.actor, 1);
     }
 }
 

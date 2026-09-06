@@ -1,0 +1,252 @@
+:config:
+  segments:
+    - [ 13, 0x007F4000 ]
+
+gPauseBotWTitleENGTex:
+  type: TEXTURE
+  offset: 0x3000
+  symbol: gPauseBotWTitleENGTex
+  format: IA8
+  width: 96
+  height: 16
+
+gPauseCurrentPositionENGTex:
+  type: TEXTURE
+  offset: 0x8180
+  symbol: gPauseCurrentPositionENGTex
+  format: I4
+  width: 64
+  height: 8
+
+gPauseDekuTitleENGTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gPauseDekuTitleENGTex
+  format: IA8
+  width: 96
+  height: 16
+
+gPauseDodongoTitleENGTex:
+  type: TEXTURE
+  offset: 0x600
+  symbol: gPauseDodongoTitleENGTex
+  format: IA8
+  width: 96
+  height: 16
+
+gPauseEquipment10ENGTex:
+  type: TEXTURE
+  offset: 0x8280
+  symbol: gPauseEquipment10ENGTex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseFireTitleENGTex:
+  type: TEXTURE
+  offset: 0x1800
+  symbol: gPauseFireTitleENGTex
+  format: IA8
+  width: 96
+  height: 16
+
+gPauseForestTitleENGTex:
+  type: TEXTURE
+  offset: 0x1200
+  symbol: gPauseForestTitleENGTex
+  format: IA8
+  width: 96
+  height: 16
+
+gPauseIceCavernTitleENGTex:
+  type: TEXTURE
+  offset: 0x3600
+  symbol: gPauseIceCavernTitleENGTex
+  format: IA8
+  width: 96
+  height: 16
+
+gPauseJabuTitleENGTex:
+  type: TEXTURE
+  offset: 0xC00
+  symbol: gPauseJabuTitleENGTex
+  format: IA8
+  width: 96
+  height: 16
+
+gPauseMap10ENGTex:
+  type: TEXTURE
+  offset: 0xAA80
+  symbol: gPauseMap10ENGTex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseNoENGTex:
+  type: TEXTURE
+  offset: 0x7E80
+  symbol: gPauseNoENGTex
+  format: IA8
+  width: 48
+  height: 16
+
+gPauseQuestStatus00ENGTex:
+  type: TEXTURE
+  offset: 0xB480
+  symbol: gPauseQuestStatus00ENGTex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseQuestStatus10ENGTex:
+  type: TEXTURE
+  offset: 0xBE80
+  symbol: gPauseQuestStatus10ENGTex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseQuestStatus20ENGTex:
+  type: TEXTURE
+  offset: 0xC880
+  symbol: gPauseQuestStatus20ENGTex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseSave10ENGTex:
+  type: TEXTURE
+  offset: 0xD280
+  symbol: gPauseSave10ENGTex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseSaveConfirmationENGTex:
+  type: TEXTURE
+  offset: 0x7200
+  symbol: gPauseSaveConfirmationENGTex
+  format: IA8
+  width: 152
+  height: 16
+
+gPauseSavePromptENGTex:
+  type: TEXTURE
+  offset: 0x6880
+  symbol: gPauseSavePromptENGTex
+  format: IA8
+  width: 152
+  height: 16
+
+gPauseSelectItem00ENGTex:
+  type: TEXTURE
+  offset: 0x8C80
+  symbol: gPauseSelectItem00ENGTex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseSelectItem10ENGTex:
+  type: TEXTURE
+  offset: 0x9680
+  symbol: gPauseSelectItem10ENGTex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseSelectItem20ENGTex:
+  type: TEXTURE
+  offset: 0xA080
+  symbol: gPauseSelectItem20ENGTex
+  format: IA8
+  width: 80
+  height: 32
+
+gPauseShadowTitleENGTex:
+  type: TEXTURE
+  offset: 0x2A00
+  symbol: gPauseShadowTitleENGTex
+  format: IA8
+  width: 96
+  height: 16
+
+gPauseSpiritTitleENGTex:
+  type: TEXTURE
+  offset: 0x2400
+  symbol: gPauseSpiritTitleENGTex
+  format: IA8
+  width: 96
+  height: 16
+
+gPauseToDecideENGTex:
+  type: TEXTURE
+  offset: 0x3F80
+  symbol: gPauseToDecideENGTex
+  format: IA8
+  width: 64
+  height: 16
+
+gPauseToEquipENGTex:
+  type: TEXTURE
+  offset: 0x3C00
+  symbol: gPauseToEquipENGTex
+  format: IA8
+  width: 56
+  height: 16
+
+gPauseToEquipmentENGTex:
+  type: TEXTURE
+  offset: 0x6080
+  symbol: gPauseToEquipmentENGTex
+  format: IA8
+  width: 128
+  height: 16
+
+gPauseToMapENGTex:
+  type: TEXTURE
+  offset: 0x5080
+  symbol: gPauseToMapENGTex
+  format: IA8
+  width: 128
+  height: 16
+
+gPauseToPlayMelodyENGTex:
+  type: TEXTURE
+  offset: 0x4380
+  symbol: gPauseToPlayMelodyENGTex
+  format: IA8
+  width: 80
+  height: 16
+
+gPauseToQuestStatusENGTex:
+  type: TEXTURE
+  offset: 0x5880
+  symbol: gPauseToQuestStatusENGTex
+  format: IA8
+  width: 128
+  height: 16
+
+gPauseToSelectItemENGTex:
+  type: TEXTURE
+  offset: 0x4880
+  symbol: gPauseToSelectItemENGTex
+  format: IA8
+  width: 128
+  height: 16
+
+gPauseWaterTitleENGTex:
+  type: TEXTURE
+  offset: 0x1E00
+  symbol: gPauseWaterTitleENGTex
+  format: IA8
+  width: 96
+  height: 16
+
+gPauseYesENGTex:
+  type: TEXTURE
+  offset: 0x7B80
+  symbol: gPauseYesENGTex
+  format: IA8
+  width: 48
+  height: 16
+

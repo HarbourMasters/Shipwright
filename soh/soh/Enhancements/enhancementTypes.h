@@ -1,5 +1,4 @@
-#ifndef _ENHANCEMENT_TYPES_H_
-#define _ENHANCEMENT_TYPES_H_
+#pragma once
 
 typedef enum {
     WARP_MODE_OVERRIDE_OFF,
@@ -119,6 +118,22 @@ typedef enum {
 } SleepingWaterfallType;
 
 typedef enum {
+    INGO_RACE_TWICE,
+    INGO_RACE_ONCE,
+    INGO_RACE_NONE,
+} IngoRaceType;
+
+// The Bombchu Bowling prize cycle always runs in this order, only the entry it starts on is random
+typedef enum {
+    BOWLING_FIRST_PRIZE_RANDOM,
+    BOWLING_FIRST_PRIZE_BOMB_BAG,
+    BOWLING_FIRST_PRIZE_PURPLE_RUPEE,
+    BOWLING_FIRST_PRIZE_BOMBCHUS,
+    BOWLING_FIRST_PRIZE_HEART_PIECE,
+    BOWLING_FIRST_PRIZE_BOMBS,
+} BombchuBowlingFirstPrize;
+
+typedef enum {
     RANDOMIZE_OFF,
     RANDOMIZE_ON_NEW_SCENE,
     RANDOMIZE_ON_RANDO_GEN_ONLY,
@@ -126,4 +141,8 @@ typedef enum {
     RANDOMIZE_ON_FILE_LOAD_SEEDED,
 } RandomizeOnMode;
 
-#endif
+typedef enum {
+    TELEPORT_TRAP_OFF,
+    TELEPORT_TRAP_SIMPLE,
+    TELEPORT_TRAP_ADVANCED,
+} TeleportTrapMode;

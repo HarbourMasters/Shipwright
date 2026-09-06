@@ -1,0 +1,55 @@
+:config:
+  segments:
+    - [ 6, 0x010EE340 ]
+    - [ 4, 0x00D3AED0 ]
+    - [ 8, 0x010EE340 ]
+    - [ 9, 0x010EE340 ]
+    - [ 10, 0x010EE340 ]
+    - [ 11, 0x010EE340 ]
+    - [ 12, 0x010EE340 ]
+    - [ 13, 0x010EE340 ]
+  external_files:
+    - ntsc_1-2/objects/gameplay_keep.yml
+
+gGiArrowLargeDL:
+  type: GFX
+  offset: 0x1830
+  symbol: gGiArrowLargeDL
+
+gGiArrowMediumDL:
+  type: GFX
+  offset: 0x0B90
+  symbol: gGiArrowMediumDL
+
+gGiArrowSmallDL:
+  type: GFX
+  offset: 0x0340
+  symbol: gGiArrowSmallDL
+
+
+object_gi_arrowVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_gi_arrowVtx_000000
+  count: 52
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_arrowVtx_000520:
+  type: OOT:ARRAY
+  offset: 0x000520
+  symbol: object_gi_arrowVtx_000520
+  count: 103
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_arrowVtx_000DE0:
+  type: OOT:ARRAY
+  offset: 0x000DE0
+  symbol: object_gi_arrowVtx_000DE0
+  count: 165
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

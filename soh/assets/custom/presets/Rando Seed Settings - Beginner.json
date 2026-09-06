@@ -12,7 +12,6 @@
                 "BlueFireArrows": 1,
                 "BossKeysanity": 2,
                 "ClosedForest": 2,
-                "CompleteMaskQuest": 1,
                 "CuccosToReturn": 1,
                 "DampeHint": 1,
                 "DoorOfTime": 2,
@@ -25,27 +24,29 @@
                 "GregHint": 1,
                 "HBAHint": 1,
                 "IncludeTycoonWallet": 1,
-                "KakarikoGate": 1,
                 "Keysanity": 2,
-                "LacsRewardCount": 6,
+                "GbkRewardCount": 6,
                 "MalonHint": 1,
                 "MerchantText": 1,
-                "RainbowBridge": 7,
+                "RainbowBridge": 8,
                 "SariaHint": 1,
                 "SheikLAHint": 0,
-                "ShuffleGanonBossKey": 9,
+                "ShuffleGanonBossKey": 8,
+                "ShuffleMasks": 1,
                 "ShuffleOcarinas": 1,
-                "SkipChildZelda": 1,
+                "ShuffleWeirdEgg": 2,
                 "SkipEponaRace": 1,
                 "SkipScarecrowsSong": 1,
                 "StartingKokiriSword": 1,
+                "StartingBunnyHood": 1,
                 "StartingMapsCompasses": 0,
                 "StartingOcarina": 1,
+                "StartingZeldasLetter": 1,
                 "SunlightArrows": 1,
                 "ZorasFountain": 1
             }
         }
     },
     "presetName": "Rando Seed Settings - Beginner",
-	"isBuiltIn": true
+    "isBuiltIn": true
 }

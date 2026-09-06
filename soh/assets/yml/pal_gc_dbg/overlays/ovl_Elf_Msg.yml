@@ -1,0 +1,43 @@
+:config:
+  segments:
+    - [ 128, 0x00D661F0 ]
+    - [ 4, 0x00F5E000 ]
+    - [ 8, 0x00D661F0 ]
+    - [ 9, 0x00D661F0 ]
+    - [ 10, 0x00D661F0 ]
+    - [ 11, 0x00D661F0 ]
+    - [ 12, 0x00D661F0 ]
+    - [ 13, 0x00D661F0 ]
+  virtual: [ 0x809ACBA0, 0x00D661F0 ]
+  external_files:
+    - pal_gc_dbg/objects/gameplay_keep.yml
+
+D_809AD278:
+  type: GFX
+  offset: 0x758
+  symbol: D_809AD278
+
+sCubeDL:
+  type: GFX
+  offset: 0x998
+  symbol: sCubeDL
+
+sCubeVtx:
+  type: OOT:ARRAY
+  offset: 0x918
+  symbol: sCubeVtx
+  count: 8
+  array_type: VTX
+
+sCylinderDL:
+  type: GFX
+  offset: 0x898
+  symbol: sCylinderDL
+
+sCylinderVtx:
+  type: OOT:ARRAY
+  offset: 0x798
+  symbol: sCylinderVtx
+  count: 16
+  array_type: VTX
+

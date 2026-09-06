@@ -1,0 +1,24 @@
+:config:
+  segments:
+    - [ 2, 0x01BF1E40 ]
+
+  external_files:
+    - pal_1-1/scenes/shared/hiral_demo_sceneSet_0037D0.yml
+    - pal_1-1/scenes/shared/hiral_demo_sceneSet_0038A0.yml
+    - pal_1-1/scenes/shared/hiral_demo_sceneSet_003930.yml
+    - pal_1-1/scenes/shared/hiral_demo_sceneSet_0039C0.yml
+    - pal_1-1/scenes/shared/hiral_demo_sceneSet_003A70.yml
+    - pal_1-1/scenes/shared/hiral_demo_sceneSet_003B00.yml
+    - pal_1-1/scenes/shared/hiral_demo_sceneSet_003B90.yml
+    - pal_1-1/scenes/shared/hiral_demo_sceneSet_003C20.yml
+    - pal_1-1/scenes/shared/hiral_demo_sceneSet_003CB0.yml
+hiral_demo_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: hiral_demo_scene
+
+
+hiral_demo_sceneCollisionHeader_003558:
+  type: OOT:COLLISION
+  offset: 0x003558
+  symbol: hiral_demo_sceneCollisionHeader_003558

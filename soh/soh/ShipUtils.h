@@ -1,5 +1,4 @@
-#ifndef SHIP_UTILS_H
-#define SHIP_UTILS_H
+#pragma once
 
 #include <libultraship/libultra.h>
 
@@ -76,5 +75,3 @@ template <typename T, size_t size> void Shuffle(std::array<T, size>& arr, uint64
 }
 } // namespace ShipUtils
 #endif
-
-#endif // SHIP_UTILS_H

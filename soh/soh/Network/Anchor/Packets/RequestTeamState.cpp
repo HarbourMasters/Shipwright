@@ -1,6 +1,5 @@
 #include "soh/Network/Anchor/Anchor.h"
 #include <nlohmann/json.hpp>
-#include "soh/OTRGlobals.h"
 
 /**
  * REQUEST_TEAM_STATE

@@ -1,7 +1,6 @@
 #include "z_en_rd.h"
 #include "objects/object_rd/object_rd.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS                                                                                 \
     (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED | \
@@ -179,8 +178,6 @@ void EnRd_Destroy(Actor* thisx, PlayState* play) {
         gSaveContext.sunsSongState = SUNSSONG_INACTIVE;
     }
     Collider_DestroyCylinder(play, &this->collider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnRd_UpdateMourningTarget(PlayState* play, Actor* thisx, s32 arg2) {
@@ -348,7 +345,7 @@ void EnRd_WalkToPlayer(EnRd* this, PlayState* play) {
                     player->actor.freezeTimer = 40;
                     Player_SetAutoLockOnActor(play, &this->actor);
                     GET_PLAYER(play)->autoLockOnActor = &this->actor;
-                    func_800AA000(this->actor.xzDistToPlayer, 0xFF, 0x14, 0x96);
+                    Rumble_Request(this->actor.xzDistToPlayer, 0xFF, 0x14, 0x96);
                 }
                 this->playerStunWaitTimer = 0x3C;
                 Audio_PlayActorSound2(&this->actor, NA_SE_EN_REDEAD_AIM);
@@ -503,7 +500,7 @@ void EnRd_Grab(EnRd* this, PlayState* play) {
             Animation_PlayLoop(&this->skelAnime, &gGibdoRedeadGrabAttackAnim);
             this->grabState++;
             play->damagePlayer(play, -8);
-            func_800AA000(this->actor.xzDistToPlayer, 0xFF, 1, 0xC);
+            Rumble_Request(this->actor.xzDistToPlayer, 0xFF, 1, 0xC);
             this->grabDamageTimer = 20;
         case 0:
             Math_SmoothStepToS(&this->headYRotation, 0, 1, 0x5DC, 0);
@@ -537,7 +534,7 @@ void EnRd_Grab(EnRd* this, PlayState* play) {
 
             if (this->grabDamageTimer == 0) {
                 play->damagePlayer(play, -8);
-                func_800AA000(this->actor.xzDistToPlayer, 0xF0, 1, 0xC);
+                Rumble_Request(this->actor.xzDistToPlayer, 0xF0, 1, 0xC);
                 this->grabDamageTimer = 20;
                 Player_PlaySfx(&player->actor, NA_SE_VO_LI_DAMAGE_S + player->ageProperties->unk_92);
             }
@@ -578,7 +575,7 @@ void EnRd_AttemptPlayerFreeze(EnRd* this, PlayState* play) {
     if (ABS(temp_v0) < 0x2008) {
         if (!(this->rdFlags & 0x80) && GameInteractor_Should(VB_REDEAD_GIBDO_FREEZE_LINK, true, this)) {
             player->actor.freezeTimer = 60;
-            func_800AA000(this->actor.xzDistToPlayer, 0xFF, 0x14, 0x96);
+            Rumble_Request(this->actor.xzDistToPlayer, 0xFF, 0x14, 0x96);
             Player_SetAutoLockOnActor(play, &this->actor);
         }
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_REDEAD_AIM);
@@ -618,7 +615,7 @@ void EnRd_Crouch(EnRd* this, PlayState* play) {
 void EnRd_SetupDamaged(EnRd* this) {
     Animation_MorphToPlayOnce(&this->skelAnime, &gGibdoRedeadDamageAnim, -6.0f);
 
-    if (this->actor.bgCheckFlags & 1) {
+    if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
         this->actor.speedXZ = -2.0f;
     }
 

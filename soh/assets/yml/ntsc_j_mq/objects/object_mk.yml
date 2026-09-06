@@ -1,0 +1,383 @@
+:config:
+  segments:
+    - [ 6, 0x011A6860 ]
+    - [ 4, 0x00D310D0 ]
+    - [ 8, 0x011A6860 ]
+    - [ 9, 0x011A6860 ]
+    - [ 10, 0x011A6860 ]
+    - [ 11, 0x011A6860 ]
+    - [ 12, 0x011A6860 ]
+    - [ 13, 0x011A6860 ]
+  external_files:
+    - ntsc_j_mq/objects/gameplay_keep.yml
+
+object_mk_Anim_000368:
+  type: OOT:ANIMATION
+  offset: 0x368
+  symbol: object_mk_Anim_000368
+
+object_mk_Anim_000724:
+  type: OOT:ANIMATION
+  offset: 0x724
+  symbol: object_mk_Anim_000724
+
+object_mk_Anim_000AC0:
+  type: OOT:ANIMATION
+  offset: 0xAC0
+  symbol: object_mk_Anim_000AC0
+
+object_mk_Anim_000D88:
+  type: OOT:ANIMATION
+  offset: 0xD88
+  symbol: object_mk_Anim_000D88
+
+object_mk_DL_003470:
+  type: GFX
+  offset: 0x3470
+  symbol: object_mk_DL_003470
+
+object_mk_DL_003760:
+  type: GFX
+  offset: 0x3760
+  symbol: object_mk_DL_003760
+
+object_mk_DL_003AB0:
+  type: GFX
+  offset: 0x3AB0
+  symbol: object_mk_DL_003AB0
+
+object_mk_DL_003BC8:
+  type: GFX
+  offset: 0x3BC8
+  symbol: object_mk_DL_003BC8
+
+object_mk_DL_0042D0:
+  type: GFX
+  offset: 0x42D0
+  symbol: object_mk_DL_0042D0
+
+object_mk_DL_004650:
+  type: GFX
+  offset: 0x4650
+  symbol: object_mk_DL_004650
+
+object_mk_DL_004780:
+  type: GFX
+  offset: 0x4780
+  symbol: object_mk_DL_004780
+
+object_mk_DL_0048B0:
+  type: GFX
+  offset: 0x48B0
+  symbol: object_mk_DL_0048B0
+
+object_mk_DL_004A00:
+  type: GFX
+  offset: 0x4A00
+  symbol: object_mk_DL_004A00
+
+object_mk_DL_004B30:
+  type: GFX
+  offset: 0x4B30
+  symbol: object_mk_DL_004B30
+
+object_mk_DL_004C60:
+  type: GFX
+  offset: 0x4C60
+  symbol: object_mk_DL_004C60
+
+object_mk_DL_004DB0:
+  type: GFX
+  offset: 0x4DB0
+  symbol: object_mk_DL_004DB0
+
+object_mk_Limb_005D30:
+  type: OOT:LIMB
+  offset: 0x5D30
+  symbol: object_mk_Limb_005D30
+  limb_type: Standard
+
+object_mk_Limb_005D3C:
+  type: OOT:LIMB
+  offset: 0x5D3C
+  symbol: object_mk_Limb_005D3C
+  limb_type: Standard
+
+object_mk_Limb_005D48:
+  type: OOT:LIMB
+  offset: 0x5D48
+  symbol: object_mk_Limb_005D48
+  limb_type: Standard
+
+object_mk_Limb_005D54:
+  type: OOT:LIMB
+  offset: 0x5D54
+  symbol: object_mk_Limb_005D54
+  limb_type: Standard
+
+object_mk_Limb_005D60:
+  type: OOT:LIMB
+  offset: 0x5D60
+  symbol: object_mk_Limb_005D60
+  limb_type: Standard
+
+object_mk_Limb_005D6C:
+  type: OOT:LIMB
+  offset: 0x5D6C
+  symbol: object_mk_Limb_005D6C
+  limb_type: Standard
+
+object_mk_Limb_005D78:
+  type: OOT:LIMB
+  offset: 0x5D78
+  symbol: object_mk_Limb_005D78
+  limb_type: Standard
+
+object_mk_Limb_005D84:
+  type: OOT:LIMB
+  offset: 0x5D84
+  symbol: object_mk_Limb_005D84
+  limb_type: Standard
+
+object_mk_Limb_005D90:
+  type: OOT:LIMB
+  offset: 0x5D90
+  symbol: object_mk_Limb_005D90
+  limb_type: Standard
+
+object_mk_Limb_005D9C:
+  type: OOT:LIMB
+  offset: 0x5D9C
+  symbol: object_mk_Limb_005D9C
+  limb_type: Standard
+
+object_mk_Limb_005DA8:
+  type: OOT:LIMB
+  offset: 0x5DA8
+  symbol: object_mk_Limb_005DA8
+  limb_type: Standard
+
+object_mk_Limb_005DB4:
+  type: OOT:LIMB
+  offset: 0x5DB4
+  symbol: object_mk_Limb_005DB4
+  limb_type: Standard
+
+object_mk_Skel_005DF0:
+  type: OOT:SKELETON
+  offset: 0x5DF0
+  symbol: object_mk_Skel_005DF0
+  limb_type: Standard
+  skel_type: Flex
+
+object_mk_TLUT_004F30:
+  type: TEXTURE
+  offset: 0x4F30
+  symbol: object_mk_TLUT_004F30
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_mk_Tex_005130:
+  type: TEXTURE
+  offset: 0x5130
+  symbol: object_mk_Tex_005130
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x4F30
+
+object_mk_Tex_005170:
+  type: TEXTURE
+  offset: 0x5170
+  symbol: object_mk_Tex_005170
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x4F30
+
+object_mk_Tex_005270:
+  type: TEXTURE
+  offset: 0x5270
+  symbol: object_mk_Tex_005270
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x4F30
+
+object_mk_Tex_0052B0:
+  type: TEXTURE
+  offset: 0x52B0
+  symbol: object_mk_Tex_0052B0
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x4F30
+
+object_mk_Tex_0052F0:
+  type: TEXTURE
+  offset: 0x52F0
+  symbol: object_mk_Tex_0052F0
+  format: CI8
+  width: 8
+  height: 16
+  tlut: 0x4F30
+
+object_mk_Tex_005370:
+  type: TEXTURE
+  offset: 0x5370
+  symbol: object_mk_Tex_005370
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_mk_Tex_005B70:
+  type: TEXTURE
+  offset: 0x5B70
+  symbol: object_mk_Tex_005B70
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x4F30
+
+object_mk_Tex_005BB0:
+  type: TEXTURE
+  offset: 0x5BB0
+  symbol: object_mk_Tex_005BB0
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x4F30
+
+object_mk_Tex_005BF0:
+  type: TEXTURE
+  offset: 0x5BF0
+  symbol: object_mk_Tex_005BF0
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0x4F30
+
+object_mk_Tex_005C30:
+  type: TEXTURE
+  offset: 0x5C30
+  symbol: object_mk_Tex_005C30
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0x4F30
+
+
+object_mkVtx_000DA0:
+  type: OOT:ARRAY
+  offset: 0x000DA0
+  symbol: object_mkVtx_000DA0
+  count: 54
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mkVtx_001100:
+  type: OOT:ARRAY
+  offset: 0x001100
+  symbol: object_mkVtx_001100
+  count: 231
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mkVtx_001F70:
+  type: OOT:ARRAY
+  offset: 0x001F70
+  symbol: object_mkVtx_001F70
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mkVtx_0020B0:
+  type: OOT:ARRAY
+  offset: 0x0020B0
+  symbol: object_mkVtx_0020B0
+  count: 48
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mkVtx_0023B0:
+  type: OOT:ARRAY
+  offset: 0x0023B0
+  symbol: object_mkVtx_0023B0
+  count: 39
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mkVtx_002620:
+  type: OOT:ARRAY
+  offset: 0x002620
+  symbol: object_mkVtx_002620
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mkVtx_0027D0:
+  type: OOT:ARRAY
+  offset: 0x0027D0
+  symbol: object_mkVtx_0027D0
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mkVtx_002980:
+  type: OOT:ARRAY
+  offset: 0x002980
+  symbol: object_mkVtx_002980
+  count: 39
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mkVtx_002BF0:
+  type: OOT:ARRAY
+  offset: 0x002BF0
+  symbol: object_mkVtx_002BF0
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mkVtx_002DA0:
+  type: OOT:ARRAY
+  offset: 0x002DA0
+  symbol: object_mkVtx_002DA0
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mkVtx_002F50:
+  type: OOT:ARRAY
+  offset: 0x002F50
+  symbol: object_mkVtx_002F50
+  count: 65
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mkVtx_003360:
+  type: OOT:ARRAY
+  offset: 0x003360
+  symbol: object_mkVtx_003360
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_mk_Skel_005DF0Limbs:
+  type: BLOB
+  offset: 0x5DC0
+  symbol: object_mk_Skel_005DF0Limbs
+  size: 0

@@ -140,7 +140,7 @@ uint32_t CRC32C(unsigned char* data, size_t dataSize) {
         return CRC32IntrinImpl(data, dataSize);
     }
 #else
-    unsigned int cpuidData[4];
+    unsigned int cpuidData[4] = {};
 #ifdef _WIN32
     __cpuid(cpuidData, 1);
 #elif __APPLE__ || (defined(__aarch64__) && defined(__ARM_FEATURE_CRC32))

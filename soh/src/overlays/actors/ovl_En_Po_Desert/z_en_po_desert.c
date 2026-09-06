@@ -6,7 +6,6 @@
 
 #include "z_en_po_desert.h"
 #include "objects/object_po_field/object_po_field.h"
-#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_UPDATE_CULLING_DISABLED | ACTOR_FLAG_REACT_TO_LENS | ACTOR_FLAG_IGNORE_QUAKE)
 
@@ -86,8 +85,6 @@ void EnPoDesert_Destroy(Actor* thisx, PlayState* play) {
 
     LightContext_RemoveLight(play, &play->lightCtx, this->lightNode);
     Collider_DestroyCylinder(play, &this->collider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnPoDesert_SetNextPathPoint(EnPoDesert* this, PlayState* play) {
@@ -134,7 +131,7 @@ void EnPoDesert_UpdateSpeedModifier(EnPoDesert* this) {
 }
 
 void EnPoDesert_WaitForPlayer(EnPoDesert* this, PlayState* play) {
-    func_8002F974(&this->actor, NA_SE_EN_PO_FLY - SFX_FLAG);
+    Actor_PlaySfx_Flagged(&this->actor, NA_SE_EN_PO_FLY - SFX_FLAG);
     if (this->actor.xzDistToPlayer < 200.0f && (this->currentPathPoint != 2 || play->actorCtx.lensActive)) {
         if (this->currentPathPoint == 2) {
             if (Play_InCsMode(play)) {
@@ -165,7 +162,7 @@ void EnPoDesert_MoveToNextPoint(EnPoDesert* this, PlayState* play) {
     this->actor.world.rot.y = Actor_WorldYawTowardPoint(&this->actor, &this->actor.home.pos);
     Math_ApproachS(&this->actor.shape.rot.y, this->actor.world.rot.y + 0x8000, 5, 0x400);
     this->actor.speedXZ = sinf(this->speedModifier * (M_PI / 32.0f)) * 2.5f + 5.5f;
-    func_8002F974(&this->actor, NA_SE_EN_PO_FLY - SFX_FLAG);
+    Actor_PlaySfx_Flagged(&this->actor, NA_SE_EN_PO_FLY - SFX_FLAG);
     this->targetY = this->actor.home.pos.y - ((temp_f20 * this->yDiff) / this->initDistToNextPoint);
     if (temp_f20 < 40.0f) {
         if (this->currentPathPoint != 0) {

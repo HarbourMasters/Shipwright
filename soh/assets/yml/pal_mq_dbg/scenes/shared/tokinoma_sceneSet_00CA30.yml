@@ -1,0 +1,12 @@
+:config:
+  segments:
+    - [ 2, 0x02B24000 ]
+  directory: scenes/shared/tokinoma_scene
+  external_files:
+    - pal_mq_dbg/scenes/shared/tokinoma_scene.yml
+
+tokinoma_sceneSet_00CA30:
+  type: OOT:SCENE
+  offset: 0xCA30
+  symbol: tokinoma_sceneSet_00CA30
+  base_name: tokinoma_scene

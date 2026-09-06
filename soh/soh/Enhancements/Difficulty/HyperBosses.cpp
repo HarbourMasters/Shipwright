@@ -1,10 +1,12 @@
-#include <libultraship/bridge.h>
 #include "soh/ShipInit.hpp"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/boss-rush/BossRush.h"
+
+extern "C" {
 #include "functions.h"
 #include "macros.h"
 #include "variables.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/Enhancements/boss-rush/BossRush.h"
+}
 
 extern "C" PlayState* gPlayState;
 

@@ -1,6 +1,6 @@
 #include "randomizer_entrance_tracker.h"
+#include "randomizer_tracker_windows.h"
 #include "soh/OTRGlobals.h"
-#include "soh/cvar_prefixes.h"
 #include "soh/SohGui/SohGui.hpp"
 
 #include <string>
@@ -10,13 +10,10 @@
 
 extern "C" {
 #include <z64.h>
-#include "variables.h"
-#include "functions.h"
 #include "macros.h"
 extern PlayState* gPlayState;
 
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
-#include "soh/Enhancements/randomizer/randomizer_grotto.h"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 }
 
@@ -320,8 +317,8 @@ const EntranceData entranceData[] = {
     { ENTRANCE_GROTTO_EXIT(GROTTO_GF_STORMS_OFFSET),        ENTRANCE_GROTTO_LOAD(GROTTO_GF_STORMS_OFFSET),        {{ SCENE_FAIRYS_FOUNTAIN, 0x00 }},               "GF Fairy Grotto",                 "GF Storms Grotto Entry",          ENTRANCE_GROUP_GERUDO_FORTRESS, ENTRANCE_GROUP_GERUDO_FORTRESS,   ENTRANCE_TYPE_GROTTO,    ""},
     { ENTR_GERUDOS_FORTRESS_OUTSIDE_GERUDO_TRAINING_GROUND, ENTR_GERUDO_TRAINING_GROUND_ENTRANCE,                 SINGLE_SCENE_INFO(SCENE_GERUDO_TRAINING_GROUND), "Gerudo Training Ground Entrance", "GF Outside Training Ground",      ENTRANCE_GROUP_GERUDO_FORTRESS, ENTRANCE_GROUP_GERUDO_FORTRESS,   ENTRANCE_TYPE_DUNGEON,   "gtg"},
     { ENTR_GERUDOS_FORTRESS_1,                              ENTR_THIEVES_HIDEOUT_0,                               {{ SCENE_THIEVES_HIDEOUT, 2 }},                  "TH 1 Torch Cell Turn",            "GF Outskirts",                    ENTRANCE_GROUP_GERUDO_FORTRESS, ENTRANCE_GROUP_GERUDO_FORTRESS,   ENTRANCE_TYPE_FORTRESS},
-    { ENTR_GERUDOS_FORTRESS_2,                              ENTR_THIEVES_HIDEOUT_1,                               {{ SCENE_THIEVES_HIDEOUT, 2 }},                  "TH 1 Torch Cell",                 "GF Near Grotto East",             ENTRANCE_GROUP_GERUDO_FORTRESS, ENTRANCE_GROUP_GERUDO_FORTRESS,   ENTRANCE_TYPE_FORTRESS},
-    { ENTR_GERUDOS_FORTRESS_3,                              ENTR_THIEVES_HIDEOUT_2,                               {{ SCENE_THIEVES_HIDEOUT, 3 }},                  "TH Kitchen Corridor Lower",       "GF Near Grotto North",            ENTRANCE_GROUP_GERUDO_FORTRESS, ENTRANCE_GROUP_GERUDO_FORTRESS,   ENTRANCE_TYPE_FORTRESS},
+    { ENTR_GERUDOS_FORTRESS_2,                              ENTR_THIEVES_HIDEOUT_1,                               {{ SCENE_THIEVES_HIDEOUT, 2 }},                  "TH 1 Torch Cell",                 "GF Near Grotto North",            ENTRANCE_GROUP_GERUDO_FORTRESS, ENTRANCE_GROUP_GERUDO_FORTRESS,   ENTRANCE_TYPE_FORTRESS},
+    { ENTR_GERUDOS_FORTRESS_3,                              ENTR_THIEVES_HIDEOUT_2,                               {{ SCENE_THIEVES_HIDEOUT, 3 }},                  "TH Kitchen Corridor Lower",       "GF Near Grotto East",             ENTRANCE_GROUP_GERUDO_FORTRESS, ENTRANCE_GROUP_GERUDO_FORTRESS,   ENTRANCE_TYPE_FORTRESS},
     { ENTR_GERUDOS_FORTRESS_4,                              ENTR_THIEVES_HIDEOUT_3,                               {{ SCENE_THIEVES_HIDEOUT, 3 }},                  "TH Kitchen Corridor Upper",       "GF Above GTG",                    ENTRANCE_GROUP_GERUDO_FORTRESS, ENTRANCE_GROUP_GERUDO_FORTRESS,   ENTRANCE_TYPE_FORTRESS},
     { ENTR_GERUDOS_FORTRESS_5,                              ENTR_THIEVES_HIDEOUT_4,                               {{ SCENE_THIEVES_HIDEOUT, 4 }},                  "TH Steep Slope Cell",             "GF Near Grotto",                  ENTRANCE_GROUP_GERUDO_FORTRESS, ENTRANCE_GROUP_GERUDO_FORTRESS,   ENTRANCE_TYPE_FORTRESS},
     { ENTR_GERUDOS_FORTRESS_6,                              ENTR_THIEVES_HIDEOUT_5,                               {{ SCENE_THIEVES_HIDEOUT, 4 }},                  "TH Steep Slope Cell Two Ramps",   "GF Bottom of Lower Vines",        ENTRANCE_GROUP_GERUDO_FORTRESS, ENTRANCE_GROUP_GERUDO_FORTRESS,   ENTRANCE_TYPE_FORTRESS},
@@ -333,8 +330,8 @@ const EntranceData entranceData[] = {
     { ENTR_GERUDOS_FORTRESS_12,                             ENTR_THIEVES_HIDEOUT_11,                              {{ SCENE_THIEVES_HIDEOUT, 0 }},                  "TH Break Room Corridor",          "GF Above Jail",                   ENTRANCE_GROUP_GERUDO_FORTRESS, ENTRANCE_GROUP_GERUDO_FORTRESS,   ENTRANCE_TYPE_FORTRESS},
     { ENTR_GERUDOS_FORTRESS_13,                             ENTR_THIEVES_HIDEOUT_12,                              {{ SCENE_THIEVES_HIDEOUT, 1 }},                  "TH Dead End Cell",                "GF Below GS",                     ENTRANCE_GROUP_GERUDO_FORTRESS, ENTRANCE_GROUP_GERUDO_FORTRESS,   ENTRANCE_TYPE_FORTRESS},
     { ENTR_THIEVES_HIDEOUT_0,                               ENTR_GERUDOS_FORTRESS_1,                              SINGLE_SCENE_INFO(SCENE_GERUDOS_FORTRESS),       "GF Outskirts",                    "TH 1 Torch Cell Turn",            ENTRANCE_GROUP_GERUDO_FORTRESS, ENTRANCE_GROUP_GERUDO_FORTRESS,   ENTRANCE_TYPE_FORTRESS},
-    { ENTR_THIEVES_HIDEOUT_1,                               ENTR_GERUDOS_FORTRESS_2,                              SINGLE_SCENE_INFO(SCENE_GERUDOS_FORTRESS),       "GF Near Grotto East",             "TH 1 Torch Cell",                 ENTRANCE_GROUP_GERUDO_FORTRESS, ENTRANCE_GROUP_GERUDO_FORTRESS,   ENTRANCE_TYPE_FORTRESS},
-    { ENTR_THIEVES_HIDEOUT_2,                               ENTR_GERUDOS_FORTRESS_3,                              SINGLE_SCENE_INFO(SCENE_GERUDOS_FORTRESS),       "GF Near Grotto North",            "TH Kitchen Corridor Lower",       ENTRANCE_GROUP_GERUDO_FORTRESS, ENTRANCE_GROUP_GERUDO_FORTRESS,   ENTRANCE_TYPE_FORTRESS},
+    { ENTR_THIEVES_HIDEOUT_1,                               ENTR_GERUDOS_FORTRESS_2,                              SINGLE_SCENE_INFO(SCENE_GERUDOS_FORTRESS),       "GF Near Grotto North",            "TH 1 Torch Cell",                 ENTRANCE_GROUP_GERUDO_FORTRESS, ENTRANCE_GROUP_GERUDO_FORTRESS,   ENTRANCE_TYPE_FORTRESS},
+    { ENTR_THIEVES_HIDEOUT_2,                               ENTR_GERUDOS_FORTRESS_3,                              SINGLE_SCENE_INFO(SCENE_GERUDOS_FORTRESS),       "GF Near Grotto East",             "TH Kitchen Corridor Lower",       ENTRANCE_GROUP_GERUDO_FORTRESS, ENTRANCE_GROUP_GERUDO_FORTRESS,   ENTRANCE_TYPE_FORTRESS},
     { ENTR_THIEVES_HIDEOUT_3,                               ENTR_GERUDOS_FORTRESS_4,                              SINGLE_SCENE_INFO(SCENE_GERUDOS_FORTRESS),       "GF Above GTG",                    "TH Kitchen Corridor Upper",       ENTRANCE_GROUP_GERUDO_FORTRESS, ENTRANCE_GROUP_GERUDO_FORTRESS,   ENTRANCE_TYPE_FORTRESS},
     { ENTR_THIEVES_HIDEOUT_4,                               ENTR_GERUDOS_FORTRESS_5,                              SINGLE_SCENE_INFO(SCENE_GERUDOS_FORTRESS),       "GF Near Grotto",                  "TH Steep Slope Cell",             ENTRANCE_GROUP_GERUDO_FORTRESS, ENTRANCE_GROUP_GERUDO_FORTRESS,   ENTRANCE_TYPE_FORTRESS},
     { ENTR_THIEVES_HIDEOUT_5,                               ENTR_GERUDOS_FORTRESS_6,                              SINGLE_SCENE_INFO(SCENE_GERUDOS_FORTRESS),       "GF Bottom of Lower Vines",        "TH Steep Slope Cell Two Ramps",   ENTRANCE_GROUP_GERUDO_FORTRESS, ENTRANCE_GROUP_GERUDO_FORTRESS,   ENTRANCE_TYPE_FORTRESS},
@@ -471,10 +468,10 @@ const EntranceData* GetEntranceData(s16 index) {
     return nullptr;
 }
 
-void LoadFromPreset(nlohmann::json info) {
+void LoadFromPreset(const nlohmann::json& info) {
     presetLoaded = true;
-    presetPos = { info["pos"]["x"], info["pos"]["y"] };
-    presetSize = { info["size"]["width"], info["size"]["height"] };
+    presetPos = { info.at("pos").at("x"), info.at("pos").at("y") };
+    presetSize = { info.at("size").at("width"), info.at("size").at("height") };
 }
 
 // Used for verifying the names on both sides of entrance pairs match. Keeping for ease of use for further name changes
@@ -579,7 +576,7 @@ void SortEntranceListByArea(EntranceOverride* entranceList, u8 byDest) {
 
                     if (curEntrance->reverseIndex == curOverride->index) {
                         entranceList[idx] = tempList[j];
-                        // "Remove" this entrance from the tempList by setting it's values to zero
+                        // "Remove" this entrance from the tempList by setting its values to zero
                         tempList[j] = emptyOverride;
                         idx++;
                         break;
@@ -844,7 +841,7 @@ void EntranceTrackerWindow::DrawElement() {
         ImGui::SetNextWindowSize(ImVec2(600, 375), ImGuiCond_FirstUseEver);
     }
     if (Trackers::BeginFloatWindows(
-            "Entrance Tracker", mIsVisible, Color_Background,
+            "Entrance Tracker", &mIsVisible, Color_Background,
             static_cast<TrackerWindowType>(CVarGetInteger(CVAR_TRACKER_ENTRANCE("WindowType"), TRACKER_WINDOW_WINDOW)),
             CVarGetInteger(CVAR_TRACKER_ENTRANCE("Draggable"), 1), ImGuiWindowFlags_NoScrollbar)) {
         if (!GameInteractor::IsSaveLoaded()) {
@@ -902,6 +899,9 @@ void EntranceTrackerWindow::DrawElement() {
             case ENTRANCE_DESTINATION_TYPE:
                 entranceList = destListSortedByType;
                 break;
+            default:
+                assert(false);
+                return;
         }
 
         // Begin tracker list
@@ -945,8 +945,10 @@ void EntranceTrackerWindow::DrawElement() {
                     continue;
                 }
 
-                // RANDOTODO: Only show blue warps if bluewarp shuffle is on
-                if (original->metaTag.ends_with("bw") || override->metaTag.ends_with("bw")) {
+                // Only show blue warps if bluewarp shuffle is on
+                if ((original->metaTag.ends_with("bw") || override->metaTag.ends_with("bw")) &&
+                    OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_DECOUPLED_ENTRANCES) ==
+                        RO_GENERIC_OFF) {
                     continue;
                 }
 
@@ -1089,43 +1091,3 @@ void RegisterCheckTrackerWidgets() {
 
 static RegisterMenuInitFunc menuInitFunc(RegisterCheckTrackerWidgets);
 } // namespace EntranceTracker
-
-namespace Trackers {
-// Windowing stuff
-bool BeginFloatWindows(std::string UniqueName, bool& open, Color_RGBA8& bgCol, TrackerWindowType windowType,
-                       bool draggable, ImGuiWindowFlags flags) {
-    ImGuiWindowFlags windowFlags = flags;
-
-    if (windowFlags == 0) {
-        windowFlags |= ImGuiWindowFlags_AlwaysVerticalScrollbar | ImGuiWindowFlags_NoFocusOnAppearing;
-    }
-
-    if (windowType == TRACKER_WINDOW_FLOATING) {
-        ImGui::SetNextWindowViewport(ImGui::GetMainViewport()->ID);
-        windowFlags |= ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoTitleBar |
-                       ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoScrollbar;
-
-        if (!draggable) {
-            windowFlags |= ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoMove;
-        }
-    }
-    auto maybeParent = ImGui::GetCurrentWindow();
-    ImGuiWindow* window = ImGui::FindWindowByName(UniqueName.c_str());
-    ImVec4 bgColVec = VecFromRGBA8(bgCol);
-    if (window != NULL && window->DockTabIsVisible && window->ParentWindow != NULL &&
-        std::string(window->ParentWindow->Name).compare(0, strlen("Main - Deck"), "Main - Deck") == 0) {
-        bgColVec.w = 1.0f;
-    }
-    ImGui::PushStyleColor(ImGuiCol_WindowBg, bgColVec);
-    ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
-    ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 4.0f);
-    return ImGui::Begin(UniqueName.c_str(), &open, windowFlags);
-}
-
-void EndFloatWindows() {
-    ImGui::PopStyleVar();
-    ImGui::PopStyleColor();
-    ImGui::PopStyleColor();
-    ImGui::End();
-} // namespace Trackers
-} // namespace Trackers

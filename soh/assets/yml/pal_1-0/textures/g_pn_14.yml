@@ -1,0 +1,28 @@
+:config:
+  segments:
+    - [ 128, 0x012F4BA0 ]
+
+gChamberOfTheSagesTitleCardENGTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gChamberOfTheSagesTitleCardENGTex
+  format: IA8
+  width: 144
+  height: 24
+
+gChamberOfTheSagesTitleCardFRATex:
+  type: TEXTURE
+  offset: 0x1B00
+  symbol: gChamberOfTheSagesTitleCardFRATex
+  format: IA8
+  width: 144
+  height: 24
+
+gChamberOfTheSagesTitleCardGERTex:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gChamberOfTheSagesTitleCardGERTex
+  format: IA8
+  width: 144
+  height: 24
+

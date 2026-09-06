@@ -1,4 +1,3 @@
-#include <libultraship/bridge.h>
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ShipInit.hpp"
@@ -27,14 +26,14 @@ extern "C" void ExitCrawlspace(Player* player, PlayState* play) {
         LinkAnimation_Change(play, &player->skelAnime, animExit, ((CVAR_CRAWL_SPEED_VALUE + 1.0f) / 2.0f), 0.0f,
                              Animation_GetLastFrame(animExit), ANIMMODE_ONCE, 0.0f);
         Player_StartAnimMovement(play, player, 0x9D);
-        OnePointCutscene_Init(play, 9601, 999, NULL, MAIN_CAM);
+        OnePointCutscene_Init(play, 9601, 999, NULL, CAM_ID_MAIN);
     } else {
         // Leaving a crawlspace backwards
         player->actor.shape.rot.y = player->actor.wallYaw;
         LinkAnimation_Change(play, &player->skelAnime, animEnter, -1.0f * ((CVAR_CRAWL_SPEED_VALUE + 1.0f) / 2.0f),
                              Animation_GetLastFrame(animEnter), 0.0f, ANIMMODE_ONCE, 0.0f);
         Player_StartAnimMovement(play, player, 0x9D);
-        OnePointCutscene_Init(play, 9602, 999, NULL, MAIN_CAM);
+        OnePointCutscene_Init(play, 9602, 999, NULL, CAM_ID_MAIN);
     }
 }
 

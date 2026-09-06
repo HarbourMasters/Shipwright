@@ -1,0 +1,40 @@
+:config:
+  segments:
+    - [ 6, 0x0116ED80 ]
+    - [ 4, 0x00D24FC0 ]
+    - [ 8, 0x0116ED80 ]
+    - [ 9, 0x0116ED80 ]
+    - [ 10, 0x0116ED80 ]
+    - [ 11, 0x0116ED80 ]
+    - [ 12, 0x0116ED80 ]
+    - [ 13, 0x0116ED80 ]
+  external_files:
+    - pal_gc/objects/gameplay_keep.yml
+
+object_d_elevator_Col_000360:
+  type: OOT:COLLISION
+  offset: 0x360
+  symbol: object_d_elevator_Col_000360
+
+object_d_elevator_DL_000180:
+  type: GFX
+  offset: 0x180
+  symbol: object_d_elevator_DL_000180
+
+object_d_elevator_Tex_000390:
+  type: TEXTURE
+  offset: 0x390
+  symbol: object_d_elevator_Tex_000390
+  format: I8
+  width: 64
+  height: 64
+
+
+object_d_elevatorVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_d_elevatorVtx_000000
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

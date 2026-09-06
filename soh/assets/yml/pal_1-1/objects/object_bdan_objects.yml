@@ -1,0 +1,505 @@
+:config:
+  segments:
+    - [ 6, 0x00F9D110 ]
+    - [ 4, 0x00D30660 ]
+    - [ 8, 0x00F9D110 ]
+    - [ 9, 0x00F9D110 ]
+    - [ 10, 0x00F9D110 ]
+    - [ 11, 0x00F9D110 ]
+    - [ 12, 0x00F9D110 ]
+    - [ 13, 0x00F9D110 ]
+  external_files:
+    - pal_1-1/objects/gameplay_keep.yml
+
+gJabuBigOctoPlatformCol:
+  type: OOT:COLLISION
+  offset: 0x8CE0
+  symbol: gJabuBigOctoPlatformCol
+
+gJabuBlueFloorSwitchDL:
+  type: GFX
+  offset: 0x5A20
+  symbol: gJabuBlueFloorSwitchDL
+
+gJabuDoorSection1DL:
+  type: GFX
+  offset: 0x0590
+  symbol: gJabuDoorSection1DL
+
+gJabuDoorSection2DL:
+  type: GFX
+  offset: 0x0BF0
+  symbol: gJabuDoorSection2DL
+
+gJabuDoorSection3DL:
+  type: GFX
+  offset: 0x1250
+  symbol: gJabuDoorSection3DL
+
+gJabuDoorSection4DL:
+  type: GFX
+  offset: 0x18B0
+  symbol: gJabuDoorSection4DL
+
+gJabuDoorSection5DL:
+  type: GFX
+  offset: 0x1F10
+  symbol: gJabuDoorSection5DL
+
+gJabuDoorSection6DL:
+  type: GFX
+  offset: 0x2570
+  symbol: gJabuDoorSection6DL
+
+gJabuDoorSection7DL:
+  type: GFX
+  offset: 0x2BD0
+  symbol: gJabuDoorSection7DL
+
+gJabuDoorSection8DL:
+  type: GFX
+  offset: 0x3230
+  symbol: gJabuDoorSection8DL
+
+gJabuElevatorCol:
+  type: OOT:COLLISION
+  offset: 0x5048
+  symbol: gJabuElevatorCol
+
+gJabuElevatorPlatformDL:
+  type: GFX
+  offset: 0x4BE8
+  symbol: gJabuElevatorPlatformDL
+
+gJabuFallingPlatformDL:
+  type: GFX
+  offset: 0x5200
+  symbol: gJabuFallingPlatformDL
+
+gJabuFloorSwitchCol:
+  type: OOT:COLLISION
+  offset: 0x5CF8
+  symbol: gJabuFloorSwitchCol
+
+gJabuLoweringPlatformCol:
+  type: OOT:COLLISION
+  offset: 0x5580
+  symbol: gJabuLoweringPlatformCol
+
+gJabuObjects10TLUT:
+  type: TEXTURE
+  offset: 0x39B0
+  symbol: gJabuObjects10TLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gJabuObjects11TLUT:
+  type: TEXTURE
+  offset: 0x6540
+  symbol: gJabuObjects11TLUT
+  format: RGBA16
+  width: 16
+  height: 16
+
+gJabuObjects1TLUT:
+  type: TEXTURE
+  offset: 0x0000
+  symbol: gJabuObjects1TLUT
+  format: RGBA16
+  width: 160
+  height: 1
+
+gJabuObjects2TLUT:
+  type: TEXTURE
+  offset: 0x0660
+  symbol: gJabuObjects2TLUT
+  format: RGBA16
+  width: 160
+  height: 1
+
+gJabuObjects3TLUT:
+  type: TEXTURE
+  offset: 0x0CC0
+  symbol: gJabuObjects3TLUT
+  format: RGBA16
+  width: 160
+  height: 1
+
+gJabuObjects4TLUT:
+  type: TEXTURE
+  offset: 0x1320
+  symbol: gJabuObjects4TLUT
+  format: RGBA16
+  width: 160
+  height: 1
+
+gJabuObjects5TLUT:
+  type: TEXTURE
+  offset: 0x1980
+  symbol: gJabuObjects5TLUT
+  format: RGBA16
+  width: 160
+  height: 1
+
+gJabuObjects6TLUT:
+  type: TEXTURE
+  offset: 0x1FE0
+  symbol: gJabuObjects6TLUT
+  format: RGBA16
+  width: 160
+  height: 1
+
+gJabuObjects7TLUT:
+  type: TEXTURE
+  offset: 0x2640
+  symbol: gJabuObjects7TLUT
+  format: RGBA16
+  width: 160
+  height: 1
+
+gJabuObjects8TLUT:
+  type: TEXTURE
+  offset: 0x2CA0
+  symbol: gJabuObjects8TLUT
+  format: RGBA16
+  width: 160
+  height: 1
+
+gJabuObjects9TLUT:
+  type: TEXTURE
+  offset: 0x3300
+  symbol: gJabuObjects9TLUT
+  format: RGBA16
+  width: 204
+  height: 1
+
+gJabuObjectsLargeRotatingSpikePlatformDL:
+  type: GFX
+  offset: 0x8618
+  symbol: gJabuObjectsLargeRotatingSpikePlatformDL
+
+gJabuObjectsTex_00140:
+  type: TEXTURE
+  offset: 0x0140
+  symbol: gJabuObjectsTex_00140
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x0000
+
+gJabuObjectsTex_007A0:
+  type: TEXTURE
+  offset: 0x07A0
+  symbol: gJabuObjectsTex_007A0
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x0660
+
+gJabuObjectsTex_00E00:
+  type: TEXTURE
+  offset: 0x0E00
+  symbol: gJabuObjectsTex_00E00
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x0CC0
+
+gJabuObjectsTex_01460:
+  type: TEXTURE
+  offset: 0x1460
+  symbol: gJabuObjectsTex_01460
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x1320
+
+gJabuObjectsTex_01AC0:
+  type: TEXTURE
+  offset: 0x1AC0
+  symbol: gJabuObjectsTex_01AC0
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x1980
+
+gJabuObjectsTex_02120:
+  type: TEXTURE
+  offset: 0x2120
+  symbol: gJabuObjectsTex_02120
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x1FE0
+
+gJabuObjectsTex_02780:
+  type: TEXTURE
+  offset: 0x2780
+  symbol: gJabuObjectsTex_02780
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x2640
+
+gJabuObjectsTex_02DE0:
+  type: TEXTURE
+  offset: 0x2DE0
+  symbol: gJabuObjectsTex_02DE0
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x2CA0
+
+gJabuObjectsTex_03498:
+  type: TEXTURE
+  offset: 0x3498
+  symbol: gJabuObjectsTex_03498
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x3300
+
+gJabuObjectsTex_03BB8:
+  type: TEXTURE
+  offset: 0x3BB8
+  symbol: gJabuObjectsTex_03BB8
+  format: CI8
+  width: 32
+  height: 64
+  tlut: 0x39B0
+
+gJabuObjectsTex_043B8:
+  type: TEXTURE
+  offset: 0x43B8
+  symbol: gJabuObjectsTex_043B8
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x39B0
+
+gJabuObjectsTex_06748:
+  type: TEXTURE
+  offset: 0x6748
+  symbol: gJabuObjectsTex_06748
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0x6540
+
+gJabuObjectsTex_06B48:
+  type: TEXTURE
+  offset: 0x6B48
+  symbol: gJabuObjectsTex_06B48
+  format: CI8
+  width: 32
+  height: 64
+  tlut: 0x6540
+
+gJabuObjectsTex_07348:
+  type: TEXTURE
+  offset: 0x7348
+  symbol: gJabuObjectsTex_07348
+  format: CI8
+  width: 32
+  height: 64
+  tlut: 0x6540
+
+gJabuObjectsTex_08D10:
+  type: TEXTURE
+  offset: 0x8D10
+  symbol: gJabuObjectsTex_08D10
+  format: RGBA16
+  width: 32
+  height: 64
+
+gJabuObjectsTex_09D10:
+  type: TEXTURE
+  offset: 0x9D10
+  symbol: gJabuObjectsTex_09D10
+  format: RGBA16
+  width: 32
+  height: 32
+
+gJabuObjectsTex_0A510:
+  type: TEXTURE
+  offset: 0xA510
+  symbol: gJabuObjectsTex_0A510
+  format: RGBA16
+  width: 32
+  height: 64
+
+gJabuObjectsTex_0B510:
+  type: TEXTURE
+  offset: 0xB510
+  symbol: gJabuObjectsTex_0B510
+  format: RGBA16
+  width: 32
+  height: 32
+
+gJabuObjectsTex_0BD10:
+  type: TEXTURE
+  offset: 0xBD10
+  symbol: gJabuObjectsTex_0BD10
+  format: RGBA16
+  width: 32
+  height: 32
+
+gJabuObjectsTex_0C510:
+  type: TEXTURE
+  offset: 0xC510
+  symbol: gJabuObjectsTex_0C510
+  format: RGBA16
+  width: 32
+  height: 32
+
+gJabuWaterDL:
+  type: GFX
+  offset: 0x38E8
+  symbol: gJabuWaterDL
+
+gJabuWebDoorDL:
+  type: GFX
+  offset: 0x6460
+  symbol: gJabuWebDoorDL
+
+gJabuYellowFloorSwitchDL:
+  type: GFX
+  offset: 0x61A0
+  symbol: gJabuYellowFloorSwitchDL
+
+
+object_bdan_objectsVtx_000540:
+  type: OOT:ARRAY
+  offset: 0x000540
+  symbol: object_bdan_objectsVtx_000540
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bdan_objectsVtx_000BA0:
+  type: OOT:ARRAY
+  offset: 0x000BA0
+  symbol: object_bdan_objectsVtx_000BA0
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bdan_objectsVtx_001200:
+  type: OOT:ARRAY
+  offset: 0x001200
+  symbol: object_bdan_objectsVtx_001200
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bdan_objectsVtx_001860:
+  type: OOT:ARRAY
+  offset: 0x001860
+  symbol: object_bdan_objectsVtx_001860
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bdan_objectsVtx_001EC0:
+  type: OOT:ARRAY
+  offset: 0x001EC0
+  symbol: object_bdan_objectsVtx_001EC0
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bdan_objectsVtx_002520:
+  type: OOT:ARRAY
+  offset: 0x002520
+  symbol: object_bdan_objectsVtx_002520
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bdan_objectsVtx_002B80:
+  type: OOT:ARRAY
+  offset: 0x002B80
+  symbol: object_bdan_objectsVtx_002B80
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bdan_objectsVtx_0031E0:
+  type: OOT:ARRAY
+  offset: 0x0031E0
+  symbol: object_bdan_objectsVtx_0031E0
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bdan_objectsVtx_003898:
+  type: OOT:ARRAY
+  offset: 0x003898
+  symbol: object_bdan_objectsVtx_003898
+  count: 5
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bdan_objectsVtx_0047B8:
+  type: OOT:ARRAY
+  offset: 0x0047B8
+  symbol: object_bdan_objectsVtx_0047B8
+  count: 67
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bdan_objectsVtx_005080:
+  type: OOT:ARRAY
+  offset: 0x005080
+  symbol: object_bdan_objectsVtx_005080
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bdan_objectsVtx_0055B0:
+  type: OOT:ARRAY
+  offset: 0x0055B0
+  symbol: object_bdan_objectsVtx_0055B0
+  count: 71
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bdan_objectsVtx_005D30:
+  type: OOT:ARRAY
+  offset: 0x005D30
+  symbol: object_bdan_objectsVtx_005D30
+  count: 71
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bdan_objectsVtx_006360:
+  type: OOT:ARRAY
+  offset: 0x006360
+  symbol: object_bdan_objectsVtx_006360
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bdan_objectsVtx_007B48:
+  type: OOT:ARRAY
+  offset: 0x007B48
+  symbol: object_bdan_objectsVtx_007B48
+  count: 173
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

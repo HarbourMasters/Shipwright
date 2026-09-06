@@ -1,25 +1,18 @@
-#include "item_pool.hpp"
+#include <algorithm>
 
+#include "item_pool.hpp"
 #include "../dungeon.h"
-#include "fill.hpp"
+#include "soh/Enhancements/randomizer/location_access.h"
 #include "../static_data.h"
 #include "../SeedContext.h"
-#include "pool_functions.hpp"
-#include "random.hpp"
-#include "spoiler_log.hpp"
+#include "../rng.h"
 #include "soh/Enhancements/randomizer/Traps.h"
-#include "z64item.h"
-#include <algorithm>
-#include <spdlog/spdlog.h>
 
 std::vector<RandomizerGet> itemPool = {};
 std::vector<RandomizerGet> lesserPool = {};
 std::vector<RandomizerGet> plentifulPool = {};
 std::vector<RandomizerGet> junkPool = {};
-const std::array<RandomizerGet, 13> JunkPoolItems = {
-    RG_BOMBS_5,  RG_BOMBS_10,  RG_BOMBS_20,  RG_DEKU_NUTS_5, RG_DEKU_STICK_1, RG_DEKU_SEEDS_30, RG_RECOVERY_HEART,
-    RG_ARROWS_5, RG_ARROWS_10, RG_ARROWS_30, RG_BLUE_RUPEE,  RG_RED_RUPEE,    RG_DEKU_NUTS_10,
-};
+std::vector<RandomizerGet> JunkPoolItems = {};
 // RANDOTODO should probably check the same thing as check matches contents at some point
 const std::map<RandomizerGet, std::vector<RandomizerGet>*> poolForItem = {
     { RG_BOMBS_5, &junkPool },         { RG_BOMBS_10, &junkPool },     { RG_BOMBS_20, &junkPool },
@@ -131,11 +124,12 @@ static void PlaceItemsForType(RandomizerCheckType rctype, bool overworldActive =
                 if (currentQuest == RCQUEST_BOTH) {
                     AddFixedItemToPool(loc->GetVanillaItem(), 1, false);
                 } else {
-                    // Check if current item's dungeon is vanilla or MQ, and only add if quest corresponds to it.
+                    // Check if current item's dungeon is vanilla or MQ, and only add if quest corresponds to it
                     SceneID itemScene = loc->GetScene();
+                    auto dungeon = ctx->GetDungeonFromScene(itemScene);
 
-                    if (itemScene >= SCENE_DEKU_TREE && itemScene <= SCENE_GERUDO_TRAINING_GROUND) {
-                        bool isMQ = ctx->GetDungeon(itemScene)->IsMQ();
+                    if (dungeon != nullptr) {
+                        bool isMQ = dungeon->IsMQ();
 
                         if ((isMQ && currentQuest == RCQUEST_MQ) || (!isMQ && currentQuest == RCQUEST_VANILLA)) {
                             AddFixedItemToPool(loc->GetVanillaItem(), 1, false);
@@ -156,6 +150,14 @@ void GenerateItemPool() {
     plentifulPool.clear();
     lesserPool.clear();
     int reservedSlots = 0;
+    JunkPoolItems = { RG_BOMBS_5,       RG_BOMBS_10,       RG_BOMBS_20,    RG_DEKU_NUTS_5, RG_DEKU_STICK_1,
+                      RG_DEKU_SEEDS_30, RG_RECOVERY_HEART, RG_ARROWS_5,    RG_ARROWS_10,   RG_ARROWS_30,
+                      RG_BLUE_RUPEE,    RG_RED_RUPEE,      RG_DEKU_NUTS_10 };
+    if (ctx->GetOption(RSK_ENABLE_BOMBCHU_DROPS).Is(RO_GENERIC_ON) &&
+        ctx->GetOption(RSK_BOMBCHU_BAG).IsNot(RO_BOMBCHU_BAG_NONE)) {
+        JunkPoolItems.emplace_back(RG_BOMBCHU_5);
+        JunkPoolItems.emplace_back(RG_BOMBCHU_10);
+    }
 
     // clang-format off
     // Items the player can start with are removed from the pool so a started copy isn't also shuffled.
@@ -178,7 +180,11 @@ void GenerateItemPool() {
     AddFixedItemToPool(RG_PROGRESSIVE_HOOKSHOT, 2 - ctx->GetOption(RSK_STARTING_HOOKSHOT).Get());
     if (!ctx->GetOption(RSK_STARTING_HYLIAN_SHIELD)) AddItemToPool(RG_HYLIAN_SHIELD, 1, 1, 1, 1);
     AddItemToPool(RG_DOUBLE_DEFENSE, 2, 1, 0, 0);
-    if (ctx->GetOption(RSK_STARTING_BIGGORON_SWORD).IsNot(RO_STARTING_BGS_BIGGORON_SWORD)) {
+    if (ctx->GetOption(RSK_PROGRESSIVE_GORON_SWORD)) {
+        int startGoronSword = ctx->GetOption(RSK_STARTING_BIGGORON_SWORD).Get();
+        AddItemToPool(RG_PROGRESSIVE_GORONSWORD, std::max(0, 3 - startGoronSword), std::max(0, 2 - startGoronSword),
+                      std::max(0, 2 - startGoronSword), std::max(0, 1 - startGoronSword));
+    } else if (ctx->GetOption(RSK_STARTING_BIGGORON_SWORD).IsNot(RO_STARTING_BGS_BIGGORON_SWORD)) {
         AddItemToPool(RG_BIGGORON_SWORD, 2, 1, 1, 0);
     }
     bool isScrubs = ctx->GetOption(RSK_SHUFFLE_SCRUBS).Is(RO_SCRUBS_ALL);
@@ -228,7 +234,7 @@ void GenerateItemPool() {
                                               std::max(0, 1 + infiniteProgressive - startMagic));
     //clang-format on
 
-    int extraWallets =(ctx->GetOption(RSK_SHUFFLE_CHILD_WALLET) ? 1 : 0) + (ctx->GetOption(RSK_INCLUDE_TYCOON_WALLET) ? 1 : 0);
+    int extraWallets = (ctx->GetOption(RSK_SHUFFLE_CHILD_WALLET) ? 1 : 0) + (ctx->GetOption(RSK_INCLUDE_TYCOON_WALLET) ? 1 : 0);
     int startWallet = ctx->GetOption(RSK_STARTING_WALLET).Get();
     AddItemToPool(RG_PROGRESSIVE_WALLET, std::max(0, 3 + infiniteProgressive + extraWallets - startWallet),
                                          std::max(0, 2 + infiniteProgressive + extraWallets - startWallet),
@@ -329,27 +335,29 @@ void GenerateItemPool() {
     AddFixedItemToPool(RG_SHADOW_MEDALLION, 1, rewardIceTraps);
     AddFixedItemToPool(RG_LIGHT_MEDALLION, 1, rewardIceTraps);
 
-    if (ctx->GetOption(RSK_TRIFORCE_HUNT).IsNot(RO_TRIFORCE_HUNT_OFF)) {
-        AddFixedItemToPool(RG_TRIFORCE_PIECE, ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_TOTAL).Get() + 1, false);
-
-        switch (ctx->GetOption(RSK_TRIFORCE_HUNT).Get()) {
-            case RO_TRIFORCE_HUNT_OFF:
-                break;
-            case RO_TRIFORCE_HUNT_WIN:
-                ctx->PlaceItemInLocation(RC_TRIFORCE_COMPLETED, RG_TRIFORCE); // Win condition
-                ctx->PlaceItemInLocation(RC_GANON, RG_BLUE_RUPEE, false, true);
-                break;
-            case RO_TRIFORCE_HUNT_GBK:
-                ctx->PlaceItemInLocation(RC_TRIFORCE_COMPLETED, RG_GANONS_CASTLE_BOSS_KEY);
-                ctx->PlaceItemInLocation(RC_GANON, RG_TRIFORCE); // Win condition
-                break;
-        }
-    } else {
-        ctx->PlaceItemInLocation(RC_GANON, RG_TRIFORCE); // Win condition
+    if (ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_TOTAL).Get() > 0) {
+        AddFixedItemToPool(RG_TRIFORCE_PIECE, ctx->GetOption(RSK_TRIFORCE_HUNT_PIECES_TOTAL).Get(), false);
     }
 
     // Fixed item locations
-    ctx->PlaceItemInLocation(RC_HC_ZELDAS_LETTER, RG_ZELDAS_LETTER);
+    if (!ctx->GetOption(RSK_SHUFFLE_ZELDAS_LETTER)) {
+        ctx->PlaceItemInLocation(RC_HC_ZELDAS_LETTER, RG_ZELDAS_LETTER);
+    }
+    ctx->PlaceItemInLocation(RC_GANONS_BOSS_KEY, RG_BLUE_RUPEE); // placeholder, filled by setting
+    ctx->PlaceItemInLocation(RC_GANON_SOUL, RG_BLUE_RUPEE); // placeholder, filled by setting
+    ctx->PlaceItemInLocation(RC_WINCON, RG_BLUE_RUPEE); // placeholder, filled by setting
+
+    if (ctx->GetOption(RSK_WINCON).Is(RO_WINCON_DEFEAT_GANON)) {
+        ctx->PlaceItemInLocation(RC_GANON, RG_TRIFORCE); // Win condition
+    } else {
+        // Ganon isn't the win condition, so slaying him is optional and just hands out a junk reward.
+        ctx->PlaceItemInLocation(RC_GANON, RG_BLUE_RUPEE, false, true);
+        if (ctx->GetOption(RSK_WINCON).Is(RO_WINCON_ANYWHERE)) {
+            AddFixedItemToPool(RG_TRIFORCE, 1);
+        } else {
+            ctx->PlaceItemInLocation(RC_WINCON, RG_TRIFORCE);
+        }
+    }
 
     if (!ctx->GetOption(RSK_STARTING_KOKIRI_SWORD)) {
         if (ctx->GetOption(RSK_SHUFFLE_KOKIRI_SWORD)) {
@@ -367,12 +375,16 @@ void GenerateItemPool() {
         }
     }
 
-    if (ctx->GetOption(RSK_SHUFFLE_WEIRD_EGG)) {
+    if (ctx->GetOption(RSK_SHUFFLE_WEIRD_EGG).Is(RO_WEIRD_EGG_SHUFFLED)) {
         if (!ctx->GetOption(RSK_STARTING_WEIRD_EGG)) {
             AddItemToPool(RG_WEIRD_EGG, 2, 1, 1, 1);
         }
     } else {
         ctx->PlaceItemInLocation(RC_HC_MALON_EGG, RG_WEIRD_EGG, false, true);
+    }
+
+    if (ctx->GetOption(RSK_SHUFFLE_ZELDAS_LETTER) && !ctx->GetOption(RSK_STARTING_ZELDAS_LETTER)) {
+        AddItemToPool(RG_ZELDAS_LETTER, 2, 1, 1, 1);
     }
 
     if (ctx->GetOption(RSK_SHUFFLE_OCARINA)) {
@@ -403,15 +415,15 @@ void GenerateItemPool() {
         AddFixedItemToPool(RG_SKELETON_KEY, 1);
     }
 
-    if (ctx->GetOption(RSK_MASK_QUEST).Is(RO_MASK_QUEST_SHUFFLE)) {
-        AddItemToPool(RG_KEATON_MASK, 2, 1, 1, 1);
-        AddItemToPool(RG_SKULL_MASK, 2, 1, 1, 1);
-        AddItemToPool(RG_SPOOKY_MASK, 2, 1, 1, 1);
+    if (ctx->GetOption(RSK_SHUFFLE_MASKS)) {
+        if (!ctx->GetOption(RSK_STARTING_KEATON_MASK)) AddItemToPool(RG_KEATON_MASK, 2, 1, 1, 1);
+        if (!ctx->GetOption(RSK_STARTING_SKULL_MASK)) AddItemToPool(RG_SKULL_MASK, 2, 1, 1, 1);
+        if (!ctx->GetOption(RSK_STARTING_SPOOKY_MASK)) AddItemToPool(RG_SPOOKY_MASK, 2, 1, 1, 1);
         if (!ctx->GetOption(RSK_STARTING_BUNNY_HOOD)) AddItemToPool(RG_BUNNY_HOOD, 2, 1, 1, 1);
-        AddItemToPool(RG_GORON_MASK, 2, 1, 1, 1);
-        AddItemToPool(RG_ZORA_MASK, 2, 1, 1, 1);
-        AddItemToPool(RG_GERUDO_MASK, 2, 1, 1, 1);
-        AddItemToPool(RG_MASK_OF_TRUTH, 2, 1, 1, 1);
+        if (!ctx->GetOption(RSK_STARTING_GORON_MASK)) AddItemToPool(RG_GORON_MASK, 2, 1, 1, 1);
+        if (!ctx->GetOption(RSK_STARTING_ZORA_MASK)) AddItemToPool(RG_ZORA_MASK, 2, 1, 1, 1);
+        if (!ctx->GetOption(RSK_STARTING_GERUDO_MASK)) AddItemToPool(RG_GERUDO_MASK, 2, 1, 1, 1);
+        if (!ctx->GetOption(RSK_STARTING_MASK_OF_TRUTH)) AddItemToPool(RG_MASK_OF_TRUTH, 2, 1, 1, 1);
     }
 
     if (ctx->GetOption(RSK_ROCS_FEATHER)) {
@@ -433,7 +445,9 @@ void GenerateItemPool() {
     if (ctx->GetOption(RSK_SHUFFLE_CRAWL)) {
         AddItemToPool(RG_CRAWL, 2, 1, 1, 1);
     }
-    if (ctx->GetOption(RSK_SHUFFLE_OPEN_CHEST)) {
+    if (ctx->GetOption(RSK_SHUFFLE_OPEN_CHEST).Is(RO_OPEN_CHEST_PROGRESSIVE)) {
+        AddItemToPool(RG_OPEN_CHEST, 3, 2, 2, 2);
+    } else if (ctx->GetOption(RSK_SHUFFLE_OPEN_CHEST)) {
         AddItemToPool(RG_OPEN_CHEST, 2, 1, 1, 1);
     }
 
@@ -515,7 +529,7 @@ void GenerateItemPool() {
 
     if (ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ALL_BUT_BEANS) ||
         ctx->GetOption(RSK_SHUFFLE_MERCHANTS).Is(RO_SHUFFLE_MERCHANTS_ALL)) {
-        if (/*!ProgressiveGoronSword TODO: Implement Progressive Goron Sword*/
+        if (!ctx->GetOption(RSK_PROGRESSIVE_GORON_SWORD) &&
             ctx->GetOption(RSK_STARTING_BIGGORON_SWORD).Is(RO_STARTING_BGS_OFF)) {
             AddFixedItemToPool(RG_GIANTS_KNIFE, 1);
         }
@@ -526,7 +540,9 @@ void GenerateItemPool() {
         }
     } else {
         ctx->PlaceItemInLocation(RC_KAK_GRANNYS_SHOP, RG_BLUE_POTION_REFILL, false, true);
-        ctx->PlaceItemInLocation(RC_GC_MEDIGORON, RG_GIANTS_KNIFE, false, true);
+        // when progressive, Medigoron only replaces broken knives, so he never hands out a first one
+        ctx->PlaceItemInLocation(
+            RC_GC_MEDIGORON, ctx->GetOption(RSK_PROGRESSIVE_GORON_SWORD) ? RG_SOLD_OUT : RG_GIANTS_KNIFE, false, true);
         ctx->PlaceItemInLocation(RC_WASTELAND_BOMBCHU_SALESMAN, RG_BOMBCHU_10, false, true);
     }
 
@@ -559,10 +575,12 @@ void GenerateItemPool() {
         AddItemToPool(RG_CLAIM_CHECK, 2, 1, 1, 1);
     }
 
-    if (ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_SINGLE_KEYS)) {
-        AddItemToPool(RG_TREASURE_GAME_SMALL_KEY, 7, 6, 6, 6);
-    } else if (ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME).Is(RO_CHEST_GAME_PACK)) {
-        AddItemToPool(RG_TREASURE_GAME_KEY_RING, 2, 1, 1, 1);
+    if (ctx->GetOption(RSK_SHUFFLE_CHEST_MINIGAME)) {
+        if (ctx->GetOption(RSK_KEYRINGS_CHEST_GAME) && ctx->GetOption(RSK_KEYRINGS)) {
+            AddItemToPool(RG_TREASURE_GAME_KEY_RING, 2, 1, 1, 1);
+        } else {
+            AddItemToPool(RG_TREASURE_GAME_SMALL_KEY, 7, 6, 6, 6);
+        }
     }
 
     int tokensToAdd = 0;
@@ -628,9 +646,6 @@ void GenerateItemPool() {
         AddItemToPool(RG_MORPHA_SOUL, 2, 1, 1, 1);
         AddItemToPool(RG_BONGO_BONGO_SOUL, 2, 1, 1, 1);
         AddItemToPool(RG_TWINROVA_SOUL, 2, 1, 1, 1);
-        if (ctx->GetOption(RSK_SHUFFLE_BOSS_SOULS).Is(RO_BOSS_SOULS_ON_PLUS_GANON)) {
-            AddItemToPool(RG_GANON_SOUL, 2, 1, 1, 1);
-        }
     }
 
     // Gerudo Fortress
@@ -647,7 +662,7 @@ void GenerateItemPool() {
             ctx->PlaceItemInLocation(RC_TH_DOUBLE_CELL_CARPENTER, RG_RECOVERY_HEART, false, true);
             ctx->PlaceItemInLocation(RC_TH_STEEP_SLOPE_CARPENTER, RG_RECOVERY_HEART, false, true);
         } else {
-            // Only add key ring if 4 Fortress keys necessary
+            // Only add keyring if 4 Fortress keys necessary
             if (ctx->GetOption(RSK_KEYRINGS_GERUDO_FORTRESS) && ctx->GetOption(RSK_KEYRINGS)) {
                 AddItemToPool(RG_GERUDO_FORTRESS_KEY_RING, 2, 1, 1, 1);
             } else {
@@ -730,16 +745,21 @@ void GenerateItemPool() {
         AddItemToPool(RG_SHADOW_TEMPLE_BOSS_KEY, 2, 1, 1, 1);
     }
 
-    // Don't add GBK to the pool at all for Triforce Hunt or if we start with it.
-    if (!(ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_STARTWITH) || ctx->GetOption(RSK_TRIFORCE_HUNT))) {
-        if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_KAK_TOKENS)) {
-            ctx->PlaceItemInLocation(RC_KAK_100_GOLD_SKULLTULA_REWARD, RG_GANONS_CASTLE_BOSS_KEY);
-        } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Get() >= RO_GANON_BOSS_KEY_LACS_VANILLA) {
-            ctx->PlaceItemInLocation(RC_TOT_LIGHT_ARROWS_CUTSCENE, RG_GANONS_CASTLE_BOSS_KEY);
+    if (!(ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_STARTWITH))) {
+        if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Get() >= RO_GANON_BOSS_KEY_STONES) {
+            ctx->PlaceItemInLocation(RC_GANONS_BOSS_KEY, RG_GANONS_CASTLE_BOSS_KEY);
         } else if (ctx->GetOption(RSK_GANONS_BOSS_KEY).Is(RO_GANON_BOSS_KEY_VANILLA)) {
             ctx->PlaceItemInLocation(RC_GANONS_TOWER_BOSS_KEY_CHEST, RG_GANONS_CASTLE_BOSS_KEY);
         } else {
             AddItemToPool(RG_GANONS_CASTLE_BOSS_KEY, 2, 1, 1, 1);
+        }
+    }
+
+    if (!(ctx->GetOption(RSK_GANONS_SOUL).Is(RO_GANONS_SOUL_STARTWITH))) {
+        if (ctx->GetOption(RSK_GANONS_SOUL).Get() >= RO_GANONS_SOUL_STONES) {
+            ctx->PlaceItemInLocation(RC_GANON_SOUL, RG_GANON_SOUL);
+        } else {
+            AddItemToPool(RG_GANON_SOUL, 2, 1, 1, 1);
         }
     }
 
@@ -900,6 +920,122 @@ void GenerateItemPool() {
         }
     }
 
+    bool silverActive = ctx->GetOption(RSK_SHUFFLE_SILVER).Get();
+    if (silverActive) {
+        PlaceItemsForType(RCTYPE_SILVER, silverActive, silverActive);
+    }
+
+    if (ctx->GetOption(RSK_SHUFFLE_SILVER).Is(RO_SHUFFLE_SILVER_ON) ||
+        ctx->GetOption(RSK_SHUFFLE_SILVER).Is(RO_SHUFFLE_SILVER_WALLET)) {
+        ctx->possibleIceTrapModels.insert(RG_SHADOW_SILVER_BLADES); // ice traps reroll this into a random silver rupee
+        bool isWallet = ctx->GetOption(RSK_SHUFFLE_SILVER).Is(RO_SHUFFLE_SILVER_WALLET);
+        auto dungeons = ctx->GetDungeons();
+
+        if (ctx->GetOption(RSK_SHUFFLE_SILVER).Is(RO_SHUFFLE_SILVER_ON)){
+            AddItemToPool(RG_SHADOW_SILVER_BLADES, 6,5,5,5, false);
+            AddItemToPool(RG_SHADOW_SILVER_PIT, 6,5,5,5, false);
+            AddItemToPool(RG_GTG_SILVER_SLOPE, 6,5,5,5, false);
+            AddItemToPool(RG_GANONS_CASTLE_SILVER_FIRE, 6,5,5,5, false);
+
+            if (dungeons->GetDungeonFromScene(SCENE_DODONGOS_CAVERN)->IsMQ()) {
+                AddItemToPool(RG_DODONGOS_CAVERN_MQ_SILVER, 6,5,5,5, false);
+            }
+
+            if (dungeons->GetDungeonFromScene(SCENE_SHADOW_TEMPLE)->IsMQ()) {
+                AddItemToPool(RG_SHADOW_MQ_SILVER_INVISIBLE_BLADES, 11,10,10,10, false);
+                AddItemToPool(RG_SHADOW_SILVER_SPIKES, 11,10,10,10, false);
+            } else {
+                AddItemToPool(RG_SHADOW_SILVER_SPIKES, 6,5,5,5, false);
+            }
+
+            if (dungeons->GetDungeonFromScene(SCENE_SPIRIT_TEMPLE)->IsVanilla()) {
+                AddItemToPool(RG_SPIRIT_SILVER_CHILD, 6,5,5,5, false);
+                AddItemToPool(RG_SPIRIT_SILVER_SUN, 6,5,5,5, false);
+                AddItemToPool(RG_SPIRIT_SILVER_BOULDERS, 6,5,5,5, false);
+            } else {
+                AddItemToPool(RG_SPIRIT_MQ_SILVER_LOBBY, 6,5,5,5, false);
+                AddItemToPool(RG_SPIRIT_MQ_SILVER_BIG_WALL, 6,5,5,5, false);
+            }
+
+            if (dungeons->GetDungeonFromScene(SCENE_BOTTOM_OF_THE_WELL)->IsVanilla()) {
+                AddItemToPool(RG_BOTW_SILVER, 6,5,5,5, false);
+            }
+
+            if (dungeons->GetDungeonFromScene(SCENE_ICE_CAVERN)->IsVanilla()) {
+                AddItemToPool(RG_ICE_CAVERN_SILVER_BLADES, 6,5,5,5, false);
+                AddItemToPool(RG_ICE_CAVERN_SILVER_BLOCK, 6,5,5,5, false);
+            }
+
+            if (dungeons->GetDungeonFromScene(SCENE_GERUDO_TRAINING_GROUND)->IsVanilla()) {
+                AddItemToPool(RG_GTG_SILVER_LAVA, 6,5,5,5, false);
+                AddItemToPool(RG_GTG_SILVER_WATER, 6,5,5,5, false);
+            } else {
+                AddItemToPool(RG_GTG_SILVER_LAVA, 7,6,6,6, false);
+                AddItemToPool(RG_GTG_SILVER_WATER, 4,3,3,3, false);
+            }
+
+            if (dungeons->GetDungeonFromScene(SCENE_INSIDE_GANONS_CASTLE)->IsVanilla()) {
+                AddItemToPool(RG_GANONS_CASTLE_SILVER_LIGHT, 6,5,5,5, false);
+                AddItemToPool(RG_GANONS_CASTLE_SILVER_FOREST, 6,5,5,5, false);
+                AddItemToPool(RG_GANONS_CASTLE_SILVER_SPIRIT, 6,5,5,5, false);
+            } else {
+                AddItemToPool(RG_GANONS_CASTLE_MQ_SILVER_WATER, 6,5,5,5, false);
+                AddItemToPool(RG_GANONS_CASTLE_MQ_SILVER_SHADOW, 6,5,5,5, false);
+            }
+        } else {
+            AddItemToPool(RG_SHADOW_SILVER_BLADES, 2,1,1,1, false);
+            AddItemToPool(RG_SHADOW_SILVER_PIT, 2,1,1,1, false);
+            AddItemToPool(RG_GTG_SILVER_SLOPE, 2,1,1,1, false);
+            AddItemToPool(RG_GANONS_CASTLE_SILVER_FIRE, 2,1,1,1, false);
+
+            if (dungeons->GetDungeonFromScene(SCENE_DODONGOS_CAVERN)->IsMQ()) {
+                AddItemToPool(RG_DODONGOS_CAVERN_MQ_SILVER, 2,1,1,1, false);
+            }
+
+            if (dungeons->GetDungeonFromScene(SCENE_SHADOW_TEMPLE)->IsMQ()) {
+                AddItemToPool(RG_SHADOW_MQ_SILVER_INVISIBLE_BLADES, 2,1,1,1, false);
+                AddItemToPool(RG_SHADOW_SILVER_SPIKES, 2,1,1,1, false);
+            } else {
+                AddItemToPool(RG_SHADOW_SILVER_SPIKES, 2,1,1,1, false);
+            }
+
+            if (dungeons->GetDungeonFromScene(SCENE_SPIRIT_TEMPLE)->IsVanilla()) {
+                AddItemToPool(RG_SPIRIT_SILVER_CHILD, 2,1,1,1, false);
+                AddItemToPool(RG_SPIRIT_SILVER_SUN, 2,1,1,1, false);
+                AddItemToPool(RG_SPIRIT_SILVER_BOULDERS, 2,1,1,1, false);
+            } else {
+                AddItemToPool(RG_SPIRIT_MQ_SILVER_LOBBY, 2,1,1,1, false);
+                AddItemToPool(RG_SPIRIT_MQ_SILVER_BIG_WALL, 2,1,1,1, false);
+            }
+
+            if (dungeons->GetDungeonFromScene(SCENE_BOTTOM_OF_THE_WELL)->IsVanilla()) {
+                AddItemToPool(RG_BOTW_SILVER, 2,1,1,1, false);
+            }
+
+            if (dungeons->GetDungeonFromScene(SCENE_ICE_CAVERN)->IsVanilla()) {
+                AddItemToPool(RG_ICE_CAVERN_SILVER_BLADES, 2,1,1,1, false);
+                AddItemToPool(RG_ICE_CAVERN_SILVER_BLOCK, 2,1,1,1, false);
+            }
+
+            if (dungeons->GetDungeonFromScene(SCENE_GERUDO_TRAINING_GROUND)->IsVanilla()) {
+                AddItemToPool(RG_GTG_SILVER_LAVA, 2,1,1,1, false);
+                AddItemToPool(RG_GTG_SILVER_WATER, 2,1,1,1, false);
+            } else {
+                AddItemToPool(RG_GTG_SILVER_LAVA, 2,1,1,1, false);
+                AddItemToPool(RG_GTG_SILVER_WATER, 2,1,1,1, false);
+            }
+
+            if (dungeons->GetDungeonFromScene(SCENE_INSIDE_GANONS_CASTLE)->IsVanilla()) {
+                AddItemToPool(RG_GANONS_CASTLE_SILVER_LIGHT, 2,1,1,1, false);
+                AddItemToPool(RG_GANONS_CASTLE_SILVER_FOREST, 2,1,1,1, false);
+                AddItemToPool(RG_GANONS_CASTLE_SILVER_SPIRIT, 2,1,1,1, false);
+            } else {
+                AddItemToPool(RG_GANONS_CASTLE_MQ_SILVER_WATER, 2,1,1,1, false);
+                AddItemToPool(RG_GANONS_CASTLE_MQ_SILVER_SHADOW, 2,1,1,1, false);
+            }
+        }
+    }
+
     int maxHearts = 20;
     switch (ctx->GetOption(RSK_ITEM_POOL).Get()) {
         case RO_ITEM_POOL_PLENTIFUL:
@@ -979,7 +1115,7 @@ void GenerateItemPool() {
     if (junkToAdd > 0) {
         if (ctx->GetOption(RSK_ICE_TRAP_PERCENT).Is(100)) {
             iceTrapstoAdd = static_cast<int>(junkToAdd);
-        } else if (ctx->GetOption(RSK_ICE_TRAP_PERCENT).Get() >= 0) {
+        } else if (ctx->GetOption(RSK_ICE_TRAP_PERCENT).Get() > 0) {
             for (size_t count = 0; count < junkToAdd; count++) {
                 if (Random(0, 101) < ctx->GetOption(RSK_ICE_TRAP_PERCENT).Get()) {
                     iceTrapstoAdd++;

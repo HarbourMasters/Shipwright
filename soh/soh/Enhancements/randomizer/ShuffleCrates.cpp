@@ -1,15 +1,13 @@
 #include <soh/OTRGlobals.h>
-#include "soh_assets.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "static_data.h"
-#include <libultraship/libultra.h>
-#include "global.h"
 #include "soh/ObjectExtension/ObjectExtension.h"
 #include "item_category_adj.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
 #include "soh/Enhancements/randomizer/RCToRandInf.h"
 
 extern "C" {
-#include "variables.h"
+#include "soh_assets.h"
 #include "overlays/actors/ovl_Obj_Kibako2/z_obj_kibako2.h"
 #include "overlays/actors/ovl_Obj_Kibako/z_obj_kibako.h"
 extern PlayState* gPlayState;
@@ -210,13 +208,7 @@ static CheckIdentity IdentifyCrate(s32 sceneNum, s32 posX, s32 posZ) {
     Rando::Location* location =
         OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_OBJ_KIBAKO2, crateSceneNum, actorParams);
 
-    if (location->GetRandomizerCheck() == RC_UNKNOWN_CHECK) {
-        LUSLOG_WARN("IdentifyCrate did not receive a valid RC value (%d).", location->GetRandomizerCheck());
-        assert(false);
-    } else {
-        crateIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
-        crateIdentity.randomizerCheck = location->GetRandomizerCheck();
-    }
+    IdentifyCheck(&crateIdentity, location);
 
     return crateIdentity;
 }
@@ -233,13 +225,7 @@ static CheckIdentity IdentifySmallCrate(s32 sceneNum, s32 posX, s32 posZ) {
     Rando::Location* location =
         OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(ACTOR_OBJ_KIBAKO, smallCrateSceneNum, actorParams);
 
-    if (location->GetRandomizerCheck() == RC_UNKNOWN_CHECK) {
-        LUSLOG_WARN("IdentifyCrate did not receive a valid RC value (%d).", location->GetRandomizerCheck());
-        assert(false);
-    } else {
-        smallCrateIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
-        smallCrateIdentity.randomizerCheck = location->GetRandomizerCheck();
-    }
+    IdentifyCheck(&smallCrateIdentity, location);
 
     return smallCrateIdentity;
 }

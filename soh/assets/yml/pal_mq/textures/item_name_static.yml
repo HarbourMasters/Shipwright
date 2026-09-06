@@ -1,0 +1,2956 @@
+:config:
+  segments:
+    - [ 10, 0x007EDF30 ]
+
+gBigKeyItemNameGERTex:
+  type: TEXTURE
+  offset: 0x3BC00
+  symbol: gBigKeyItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gBigPoeItemNameENGTex:
+  type: TEXTURE
+  offset: 0x7800
+  symbol: gBigPoeItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gBigPoeItemNameFRATex:
+  type: TEXTURE
+  offset: 0x45000
+  symbol: gBigPoeItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gBigPoeItemNameGERTex:
+  type: TEXTURE
+  offset: 0x26400
+  symbol: gBigPoeItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gBiggoronsSwordItemNameENGTex:
+  type: TEXTURE
+  offset: 0x1E800
+  symbol: gBiggoronsSwordItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gBiggoronsSwordItemNameFRATex:
+  type: TEXTURE
+  offset: 0x5C000
+  symbol: gBiggoronsSwordItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gBiggoronsSwordItemNameGERTex:
+  type: TEXTURE
+  offset: 0x3D400
+  symbol: gBiggoronsSwordItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gBlueFireItemNameENGTex:
+  type: TEXTURE
+  offset: 0x7000
+  symbol: gBlueFireItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gBlueFireItemNameFRATex:
+  type: TEXTURE
+  offset: 0x44800
+  symbol: gBlueFireItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gBlueFireItemNameGERTex:
+  type: TEXTURE
+  offset: 0x25C00
+  symbol: gBlueFireItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gBluePotionItemNameENGTex:
+  type: TEXTURE
+  offset: 0x5C00
+  symbol: gBluePotionItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gBluePotionItemNameFRATex:
+  type: TEXTURE
+  offset: 0x43400
+  symbol: gBluePotionItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gBluePotionItemNameGERTex:
+  type: TEXTURE
+  offset: 0x24800
+  symbol: gBluePotionItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gBoleroOfFireItemNameENGTex:
+  type: TEXTURE
+  offset: 0x16C00
+  symbol: gBoleroOfFireItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gBoleroOfFireItemNameFRATex:
+  type: TEXTURE
+  offset: 0x54400
+  symbol: gBoleroOfFireItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gBoleroOfFireItemNameGERTex:
+  type: TEXTURE
+  offset: 0x35800
+  symbol: gBoleroOfFireItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gBombBag20ItemNameENGTex:
+  type: TEXTURE
+  offset: 0x13400
+  symbol: gBombBag20ItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gBombBag20ItemNameFRATex:
+  type: TEXTURE
+  offset: 0x50C00
+  symbol: gBombBag20ItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gBombBag20ItemNameGERTex:
+  type: TEXTURE
+  offset: 0x32000
+  symbol: gBombBag20ItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gBombBag30ItemNameENGTex:
+  type: TEXTURE
+  offset: 0x13800
+  symbol: gBombBag30ItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gBombBag30ItemNameFRATex:
+  type: TEXTURE
+  offset: 0x51000
+  symbol: gBombBag30ItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gBombBag30ItemNameGERTex:
+  type: TEXTURE
+  offset: 0x32400
+  symbol: gBombBag30ItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gBombBag40ItemNameENGTex:
+  type: TEXTURE
+  offset: 0x13C00
+  symbol: gBombBag40ItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gBombBag40ItemNameFRATex:
+  type: TEXTURE
+  offset: 0x51400
+  symbol: gBombBag40ItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gBombBag40ItemNameGERTex:
+  type: TEXTURE
+  offset: 0x32800
+  symbol: gBombBag40ItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gBombItemNameENGTex:
+  type: TEXTURE
+  offset: 0x800
+  symbol: gBombItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gBombItemNameFRATex:
+  type: TEXTURE
+  offset: 0x3E000
+  symbol: gBombItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gBombItemNameItemNameGERTex:
+  type: TEXTURE
+  offset: 0x1F400
+  symbol: gBombItemNameItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gBombchuItemNameENGTex:
+  type: TEXTURE
+  offset: 0x2400
+  symbol: gBombchuItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gBombchuItemNameFRATex:
+  type: TEXTURE
+  offset: 0x3FC00
+  symbol: gBombchuItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gBombchuItemNameGERTex:
+  type: TEXTURE
+  offset: 0x21000
+  symbol: gBombchuItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gBoomerangItemNameENGTex:
+  type: TEXTURE
+  offset: 0x3800
+  symbol: gBoomerangItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gBoomerangItemNameFRATex:
+  type: TEXTURE
+  offset: 0x41000
+  symbol: gBoomerangItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gBoomerangItemNameGERTex:
+  type: TEXTURE
+  offset: 0x22400
+  symbol: gBoomerangItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gBossKeyItemNameFRATex:
+  type: TEXTURE
+  offset: 0x5A800
+  symbol: gBossKeyItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gBottledFairyItemNameENGTex:
+  type: TEXTURE
+  offset: 0x6000
+  symbol: gBottledFairyItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gBottledFairyItemNameFRATex:
+  type: TEXTURE
+  offset: 0x43800
+  symbol: gBottledFairyItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gBottledFairyItemNameGERTex:
+  type: TEXTURE
+  offset: 0x24C00
+  symbol: gBottledFairyItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gBrokenGiantsKnifeItemNameENGTex:
+  type: TEXTURE
+  offset: 0x15400
+  symbol: gBrokenGiantsKnifeItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gBrokenGiantsKnifeItemNameFRATex:
+  type: TEXTURE
+  offset: 0x52C00
+  symbol: gBrokenGiantsKnifeItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gBrokenGiantsKnifeItemNameGERTex:
+  type: TEXTURE
+  offset: 0x34000
+  symbol: gBrokenGiantsKnifeItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gBrokenGoronsSwordItemNameENGTex:
+  type: TEXTURE
+  offset: 0xCC00
+  symbol: gBrokenGoronsSwordItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gBrokenGoronsSwordItemNameFRATex:
+  type: TEXTURE
+  offset: 0x4A400
+  symbol: gBrokenGoronsSwordItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gBrokenGoronsSwordItemNameGERTex:
+  type: TEXTURE
+  offset: 0x2B800
+  symbol: gBrokenGoronsSwordItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gBugItemNameENGTex:
+  type: TEXTURE
+  offset: 0x7400
+  symbol: gBugItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gBugItemNameFRATex:
+  type: TEXTURE
+  offset: 0x44C00
+  symbol: gBugItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gBugItemNameGERTex:
+  type: TEXTURE
+  offset: 0x26000
+  symbol: gBugItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gBulletBag30ItemNameENGTex:
+  type: TEXTURE
+  offset: 0x11C00
+  symbol: gBulletBag30ItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gBulletBag30ItemNameFRATex:
+  type: TEXTURE
+  offset: 0x4F400
+  symbol: gBulletBag30ItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gBulletBag30ItemNameGERTex:
+  type: TEXTURE
+  offset: 0x30800
+  symbol: gBulletBag30ItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gBulletBag40ItemNameENGTex:
+  type: TEXTURE
+  offset: 0x12000
+  symbol: gBulletBag40ItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gBulletBag40ItemNameFRATex:
+  type: TEXTURE
+  offset: 0x4F800
+  symbol: gBulletBag40ItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gBulletBag40ItemNameGERTex:
+  type: TEXTURE
+  offset: 0x30C00
+  symbol: gBulletBag40ItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gBulletBag50ItemNameENGTex:
+  type: TEXTURE
+  offset: 0x12400
+  symbol: gBulletBag50ItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gBulletBag50ItemNameFRATex:
+  type: TEXTURE
+  offset: 0x4FC00
+  symbol: gBulletBag50ItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gBulletBag50ItemNameGERTex:
+  type: TEXTURE
+  offset: 0x31000
+  symbol: gBulletBag50ItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gBunnyHoodItemNameENGTex:
+  type: TEXTURE
+  offset: 0x9C00
+  symbol: gBunnyHoodItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gBunnyHoodItemNameFRATex:
+  type: TEXTURE
+  offset: 0x47400
+  symbol: gBunnyHoodItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gBunnyHoodItemNameGERTex:
+  type: TEXTURE
+  offset: 0x28800
+  symbol: gBunnyHoodItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gClaimCheckItemNameENGTex:
+  type: TEXTURE
+  offset: 0xDC00
+  symbol: gClaimCheckItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gClaimCheckItemNameFRATex:
+  type: TEXTURE
+  offset: 0x4B400
+  symbol: gClaimCheckItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gClaimCheckItemNameGERTex:
+  type: TEXTURE
+  offset: 0x2C800
+  symbol: gClaimCheckItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gCojiroItemNameENGTex:
+  type: TEXTURE
+  offset: 0xBC00
+  symbol: gCojiroItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gCojiroItemNameFRATex:
+  type: TEXTURE
+  offset: 0x49400
+  symbol: gCojiroItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gCojiroItemNameGERTex:
+  type: TEXTURE
+  offset: 0x2A800
+  symbol: gCojiroItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gCompassItemNameENGTex:
+  type: TEXTURE
+  offset: 0x1D400
+  symbol: gCompassItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gCompassItemNameFRATex:
+  type: TEXTURE
+  offset: 0x5AC00
+  symbol: gCompassItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gCompassItemNameGERTex:
+  type: TEXTURE
+  offset: 0x3C000
+  symbol: gCompassItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gCuccoItemNameENGTex:
+  type: TEXTURE
+  offset: 0x8800
+  symbol: gCuccoItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gCuccoItemNameFRATex:
+  type: TEXTURE
+  offset: 0x46000
+  symbol: gCuccoItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gCuccoItemNameGERTex:
+  type: TEXTURE
+  offset: 0x27400
+  symbol: gCuccoItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gDekuNutItemNameENGTex:
+  type: TEXTURE
+  offset: 0x400
+  symbol: gDekuNutItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gDekuNutItemNameFRATex:
+  type: TEXTURE
+  offset: 0x3DC00
+  symbol: gDekuNutItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gDekuNutItemNameGERTex:
+  type: TEXTURE
+  offset: 0x1F000
+  symbol: gDekuNutItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gDekuShieldItemNameENGTex:
+  type: TEXTURE
+  offset: 0xF800
+  symbol: gDekuShieldItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gDekuShieldItemNameFRATex:
+  type: TEXTURE
+  offset: 0x4D000
+  symbol: gDekuShieldItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gDekuShieldItemNameGERTex:
+  type: TEXTURE
+  offset: 0x2E400
+  symbol: gDekuShieldItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gDekuStickItemNameENGTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gDekuStickItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gDekuStickItemNameFRATex:
+  type: TEXTURE
+  offset: 0x3D800
+  symbol: gDekuStickItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gDekuStickItemNameGERTex:
+  type: TEXTURE
+  offset: 0x1EC00
+  symbol: gDekuStickItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gDinsFireItemNameENGTex:
+  type: TEXTURE
+  offset: 0x1400
+  symbol: gDinsFireItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gDinsFireItemNameFRATex:
+  type: TEXTURE
+  offset: 0x3EC00
+  symbol: gDinsFireItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gDinsFireItemNameGERTex:
+  type: TEXTURE
+  offset: 0x20000
+  symbol: gDinsFireItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gDungeonMapItemNameENGTex:
+  type: TEXTURE
+  offset: 0x1D800
+  symbol: gDungeonMapItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gDungeonMapItemNameFRATex:
+  type: TEXTURE
+  offset: 0x5B000
+  symbol: gDungeonMapItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gDungeonMapItemNameGERTex:
+  type: TEXTURE
+  offset: 0x3C400
+  symbol: gDungeonMapItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gEmptyBottleItemNameENGTex:
+  type: TEXTURE
+  offset: 0x5000
+  symbol: gEmptyBottleItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gEmptyBottleItemNameFRATex:
+  type: TEXTURE
+  offset: 0x42800
+  symbol: gEmptyBottleItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gEmptyBottleItemNameGERTex:
+  type: TEXTURE
+  offset: 0x23C00
+  symbol: gEmptyBottleItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gEponasSongItemNameENGTex:
+  type: TEXTURE
+  offset: 0x18400
+  symbol: gEponasSongItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gEponasSongItemNameFRATex:
+  type: TEXTURE
+  offset: 0x55C00
+  symbol: gEponasSongItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gEponasSongItemNameGERTex:
+  type: TEXTURE
+  offset: 0x37000
+  symbol: gEponasSongItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gEyeBallFrogItemNameENGTex:
+  type: TEXTURE
+  offset: 0xD400
+  symbol: gEyeBallFrogItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gEyeBallFrogItemNameFRATex:
+  type: TEXTURE
+  offset: 0x4AC00
+  symbol: gEyeBallFrogItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gEyeBallFrogItemNameGERTex:
+  type: TEXTURE
+  offset: 0x2C000
+  symbol: gEyeBallFrogItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gEyeDropsItemNameENGTex:
+  type: TEXTURE
+  offset: 0xD800
+  symbol: gEyeDropsItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gEyeDropsItemNameFRATex:
+  type: TEXTURE
+  offset: 0x4B000
+  symbol: gEyeDropsItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gEyeDropsItemNameGERTex:
+  type: TEXTURE
+  offset: 0x2C400
+  symbol: gEyeDropsItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gFairyBowItemNameENGTex:
+  type: TEXTURE
+  offset: 0xC00
+  symbol: gFairyBowItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gFairyBowItemNameFRATex:
+  type: TEXTURE
+  offset: 0x3E400
+  symbol: gFairyBowItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gFairyBowItemNameGERTex:
+  type: TEXTURE
+  offset: 0x1F800
+  symbol: gFairyBowItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gFairyOcarinaItemNameENGTex:
+  type: TEXTURE
+  offset: 0x1C00
+  symbol: gFairyOcarinaItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gFairyOcarinaItemNameFRATex:
+  type: TEXTURE
+  offset: 0x3F400
+  symbol: gFairyOcarinaItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gFairyOcarinaItemNameGERTex:
+  type: TEXTURE
+  offset: 0x20800
+  symbol: gFairyOcarinaItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gFairySlingshotItemNameENGTex:
+  type: TEXTURE
+  offset: 0x1800
+  symbol: gFairySlingshotItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gFairySlingshotItemNameFRATex:
+  type: TEXTURE
+  offset: 0x3F000
+  symbol: gFairySlingshotItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gFairySlingshotItemNameGERTex:
+  type: TEXTURE
+  offset: 0x20400
+  symbol: gFairySlingshotItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gFaroresWindItemNameENGTex:
+  type: TEXTURE
+  offset: 0x3400
+  symbol: gFaroresWindItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gFaroresWindItemNameFRATex:
+  type: TEXTURE
+  offset: 0x40C00
+  symbol: gFaroresWindItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gFaroresWindItemNameGERTex:
+  type: TEXTURE
+  offset: 0x22000
+  symbol: gFaroresWindItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gFireArrowItemNameENGTex:
+  type: TEXTURE
+  offset: 0x1000
+  symbol: gFireArrowItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gFireArrowItemNameFRATex:
+  type: TEXTURE
+  offset: 0x3E800
+  symbol: gFireArrowItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gFireArrowItemNameUnk2GERTex:
+  type: TEXTURE
+  offset: 0x1FC00
+  symbol: gFireArrowItemNameUnk2GERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gFireMedallionItemNameENGTex:
+  type: TEXTURE
+  offset: 0x19C00
+  symbol: gFireMedallionItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gFireMedallionItemNameFRATex:
+  type: TEXTURE
+  offset: 0x57400
+  symbol: gFireMedallionItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gFireMedallionItemNameGERTex:
+  type: TEXTURE
+  offset: 0x38800
+  symbol: gFireMedallionItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gFishItemNameENGTex:
+  type: TEXTURE
+  offset: 0x6400
+  symbol: gFishItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gFishItemNameFRATex:
+  type: TEXTURE
+  offset: 0x43C00
+  symbol: gFishItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gFishItemNameGERTex:
+  type: TEXTURE
+  offset: 0x25000
+  symbol: gFishItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gForestMedallionItemNameENGTex:
+  type: TEXTURE
+  offset: 0x19800
+  symbol: gForestMedallionItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gForestMedallionItemNameFRATex:
+  type: TEXTURE
+  offset: 0x57000
+  symbol: gForestMedallionItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gForestMedallionItemNameGERTex:
+  type: TEXTURE
+  offset: 0x38400
+  symbol: gForestMedallionItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gFullMilkItemNameENGTex:
+  type: TEXTURE
+  offset: 0x6800
+  symbol: gFullMilkItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gFullMilkItemNameFRATex:
+  type: TEXTURE
+  offset: 0x44000
+  symbol: gFullMilkItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gFullMilkItemNameGERTex:
+  type: TEXTURE
+  offset: 0x25400
+  symbol: gFullMilkItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gGerudoMaskItemNameENGTex:
+  type: TEXTURE
+  offset: 0xA800
+  symbol: gGerudoMaskItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gGerudoMaskItemNameFRATex:
+  type: TEXTURE
+  offset: 0x48000
+  symbol: gGerudoMaskItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gGerudoMaskItemNameGERTex:
+  type: TEXTURE
+  offset: 0x29400
+  symbol: gGerudoMaskItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gGerudosCardItemNameENGTex:
+  type: TEXTURE
+  offset: 0x1C000
+  symbol: gGerudosCardItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gGerudosCardItemNameFRATex:
+  type: TEXTURE
+  offset: 0x59800
+  symbol: gGerudosCardItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gGerudosCardItemNameGERTex:
+  type: TEXTURE
+  offset: 0x3AC00
+  symbol: gGerudosCardItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gGiantsKnifeItemNameENGTex:
+  type: TEXTURE
+  offset: 0xF400
+  symbol: gGiantsKnifeItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gGiantsKnifeItemNameFRATex:
+  type: TEXTURE
+  offset: 0x4CC00
+  symbol: gGiantsKnifeItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gGiantsKnifeItemNameGERTex:
+  type: TEXTURE
+  offset: 0x2E000
+  symbol: gGiantsKnifeItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gGoldSkulltulaItemNameENGTex:
+  type: TEXTURE
+  offset: 0x1C400
+  symbol: gGoldSkulltulaItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gGoldSkulltulaItemNameFRATex:
+  type: TEXTURE
+  offset: 0x59C00
+  symbol: gGoldSkulltulaItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gGoldSkulltulaItemNameGERTex:
+  type: TEXTURE
+  offset: 0x3B000
+  symbol: gGoldSkulltulaItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gGoldenGauntletsItemNameENGTex:
+  type: TEXTURE
+  offset: 0x14800
+  symbol: gGoldenGauntletsItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gGoldenGauntletsItemNameFRATex:
+  type: TEXTURE
+  offset: 0x52000
+  symbol: gGoldenGauntletsItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gGoldenGauntletsItemNameGERTex:
+  type: TEXTURE
+  offset: 0x33400
+  symbol: gGoldenGauntletsItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gGoldenScaleItemNameENGTex:
+  type: TEXTURE
+  offset: 0x15000
+  symbol: gGoldenScaleItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gGoldenScaleItemNameFRATex:
+  type: TEXTURE
+  offset: 0x52800
+  symbol: gGoldenScaleItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gGoldenScaleItemNameGERTex:
+  type: TEXTURE
+  offset: 0x33C00
+  symbol: gGoldenScaleItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gGoronMaskItemNameENGTex:
+  type: TEXTURE
+  offset: 0xA000
+  symbol: gGoronMaskItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gGoronMaskItemNameFRATex:
+  type: TEXTURE
+  offset: 0x47800
+  symbol: gGoronMaskItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gGoronMaskItemNameGERTex:
+  type: TEXTURE
+  offset: 0x28C00
+  symbol: gGoronMaskItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gGoronTunicItemNameENGTex:
+  type: TEXTURE
+  offset: 0x10800
+  symbol: gGoronTunicItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gGoronTunicItemNameFRATex:
+  type: TEXTURE
+  offset: 0x4E000
+  symbol: gGoronTunicItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gGoronTunicItemNameGERTex:
+  type: TEXTURE
+  offset: 0x2F400
+  symbol: gGoronTunicItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gGoronsBraceletItemNameENGTex:
+  type: TEXTURE
+  offset: 0x14000
+  symbol: gGoronsBraceletItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gGoronsBraceletItemNameFRATex:
+  type: TEXTURE
+  offset: 0x51800
+  symbol: gGoronsBraceletItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gGoronsBraceletItemNameGERTex:
+  type: TEXTURE
+  offset: 0x32C00
+  symbol: gGoronsBraceletItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gGoronsRubyItemNameENGTex:
+  type: TEXTURE
+  offset: 0x1B400
+  symbol: gGoronsRubyItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gGoronsRubyItemNameFRATex:
+  type: TEXTURE
+  offset: 0x58C00
+  symbol: gGoronsRubyItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gGoronsRubyItemNameGERTex:
+  type: TEXTURE
+  offset: 0x3A000
+  symbol: gGoronsRubyItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gGreenPotionItemNameENGTex:
+  type: TEXTURE
+  offset: 0x5800
+  symbol: gGreenPotionItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gGreenPotionItemNameFRATex:
+  type: TEXTURE
+  offset: 0x43000
+  symbol: gGreenPotionItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gGreenPotionItemNameGERTex:
+  type: TEXTURE
+  offset: 0x24400
+  symbol: gGreenPotionItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gHalfMilkItemNameENGTex:
+  type: TEXTURE
+  offset: 0x7C00
+  symbol: gHalfMilkItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gHalfMilkItemNameFRATex:
+  type: TEXTURE
+  offset: 0x45400
+  symbol: gHalfMilkItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gHalfMilkItemNameGERTex:
+  type: TEXTURE
+  offset: 0x26800
+  symbol: gHalfMilkItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gHeartContainerItemNameFRATex:
+  type: TEXTURE
+  offset: 0x5A000
+  symbol: gHeartContainerItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gHeartContainerItemNameGERTex:
+  type: TEXTURE
+  offset: 0x3B400
+  symbol: gHeartContainerItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gHookshotItemNameENGTex:
+  type: TEXTURE
+  offset: 0x2800
+  symbol: gHookshotItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gHookshotItemNameFRATex:
+  type: TEXTURE
+  offset: 0x40000
+  symbol: gHookshotItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gHookshotItemNameGERTex:
+  type: TEXTURE
+  offset: 0x21400
+  symbol: gHookshotItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gHoverBootsItemNameENGTex:
+  type: TEXTURE
+  offset: 0x11800
+  symbol: gHoverBootsItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gHoverBootsItemNameFRATex:
+  type: TEXTURE
+  offset: 0x4F000
+  symbol: gHoverBootsItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gHoverBootsItemNameGERTex:
+  type: TEXTURE
+  offset: 0x30400
+  symbol: gHoverBootsItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gHylianShieldItemNameENGTex:
+  type: TEXTURE
+  offset: 0xFC00
+  symbol: gHylianShieldItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gHylianShieldItemNameFRATex:
+  type: TEXTURE
+  offset: 0x4D400
+  symbol: gHylianShieldItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gHylianShieldItemNameGERTex:
+  type: TEXTURE
+  offset: 0x2E800
+  symbol: gHylianShieldItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gIceArrowItemNameENGTex:
+  type: TEXTURE
+  offset: 0x3000
+  symbol: gIceArrowItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gIceArrowItemNameFRATex:
+  type: TEXTURE
+  offset: 0x40800
+  symbol: gIceArrowItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gIceArrowItemNameGERTex:
+  type: TEXTURE
+  offset: 0x21C00
+  symbol: gIceArrowItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gIronBootsItemNameENGTex:
+  type: TEXTURE
+  offset: 0x11400
+  symbol: gIronBootsItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gIronBootsItemNameFRATex:
+  type: TEXTURE
+  offset: 0x4EC00
+  symbol: gIronBootsItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gIronBootsItemNameGERTex:
+  type: TEXTURE
+  offset: 0x30000
+  symbol: gIronBootsItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gKeatonMaskItemNameENGTex:
+  type: TEXTURE
+  offset: 0x9000
+  symbol: gKeatonMaskItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gKeatonMaskItemNameFRATex:
+  type: TEXTURE
+  offset: 0x46800
+  symbol: gKeatonMaskItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gKeatonMaskItemNameGERTex:
+  type: TEXTURE
+  offset: 0x27C00
+  symbol: gKeatonMaskItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gKokiriBootsItemNameENGTex:
+  type: TEXTURE
+  offset: 0x11000
+  symbol: gKokiriBootsItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gKokiriBootsItemNameFRATex:
+  type: TEXTURE
+  offset: 0x4E800
+  symbol: gKokiriBootsItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gKokiriBootsItemNameGERTex:
+  type: TEXTURE
+  offset: 0x2FC00
+  symbol: gKokiriBootsItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gKokiriEmeraldItemNameENGTex:
+  type: TEXTURE
+  offset: 0x1B000
+  symbol: gKokiriEmeraldItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gKokiriEmeraldItemNameFRATex:
+  type: TEXTURE
+  offset: 0x58800
+  symbol: gKokiriEmeraldItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gKokiriEmeraldItemNameGERTex:
+  type: TEXTURE
+  offset: 0x39C00
+  symbol: gKokiriEmeraldItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gKokiriSwordItemNameENGTex:
+  type: TEXTURE
+  offset: 0xEC00
+  symbol: gKokiriSwordItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gKokiriSwordItemNameFRATex:
+  type: TEXTURE
+  offset: 0x4C400
+  symbol: gKokiriSwordItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gKokiriSwordItemNameGERTex:
+  type: TEXTURE
+  offset: 0x2D800
+  symbol: gKokiriSwordItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gKokiriTunicItemNameENGTex:
+  type: TEXTURE
+  offset: 0x10400
+  symbol: gKokiriTunicItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gKokiriTunicItemNameFRATex:
+  type: TEXTURE
+  offset: 0x4DC00
+  symbol: gKokiriTunicItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gKokiriTunicItemNameGERTex:
+  type: TEXTURE
+  offset: 0x2F000
+  symbol: gKokiriTunicItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gLensItemNameENGTex:
+  type: TEXTURE
+  offset: 0x3C00
+  symbol: gLensItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gLensItemNameFRATex:
+  type: TEXTURE
+  offset: 0x41400
+  symbol: gLensItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gLensItemNameGERTex:
+  type: TEXTURE
+  offset: 0x22800
+  symbol: gLensItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gLightArrowItemNameENGTex:
+  type: TEXTURE
+  offset: 0x4800
+  symbol: gLightArrowItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gLightArrowItemNameFRATex:
+  type: TEXTURE
+  offset: 0x42000
+  symbol: gLightArrowItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gLightArrowItemNameGERTex:
+  type: TEXTURE
+  offset: 0x23400
+  symbol: gLightArrowItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gLightMedallionItemNameENGTex:
+  type: TEXTURE
+  offset: 0x1AC00
+  symbol: gLightMedallionItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gLightMedallionItemNameFRATex:
+  type: TEXTURE
+  offset: 0x58400
+  symbol: gLightMedallionItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gLightMedallionItemNameGERTex:
+  type: TEXTURE
+  offset: 0x39800
+  symbol: gLightMedallionItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gLongshotItemNameENGTex:
+  type: TEXTURE
+  offset: 0x2C00
+  symbol: gLongshotItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gLongshotItemNameFRATex:
+  type: TEXTURE
+  offset: 0x40400
+  symbol: gLongshotItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gLongshotItemNameGERTex:
+  type: TEXTURE
+  offset: 0x21800
+  symbol: gLongshotItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gMagicBeansItemNameENGTex:
+  type: TEXTURE
+  offset: 0x4000
+  symbol: gMagicBeansItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gMagicBeansItemNameFRATex:
+  type: TEXTURE
+  offset: 0x41800
+  symbol: gMagicBeansItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gMagicBeansItemNameGERTex:
+  type: TEXTURE
+  offset: 0x22C00
+  symbol: gMagicBeansItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gMaskofTruthItemNameENGTex:
+  type: TEXTURE
+  offset: 0xAC00
+  symbol: gMaskofTruthItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gMaskofTruthItemNameFRATex:
+  type: TEXTURE
+  offset: 0x48400
+  symbol: gMaskofTruthItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gMaskofTruthItemNameGERTex:
+  type: TEXTURE
+  offset: 0x29800
+  symbol: gMaskofTruthItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gMasterSwordItemNameENGTex:
+  type: TEXTURE
+  offset: 0xF000
+  symbol: gMasterSwordItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gMasterSwordItemNameFRATex:
+  type: TEXTURE
+  offset: 0x4C800
+  symbol: gMasterSwordItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gMasterSwordItemNameGERTex:
+  type: TEXTURE
+  offset: 0x2DC00
+  symbol: gMasterSwordItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gMegatonHammerItemNameENGTex:
+  type: TEXTURE
+  offset: 0x4400
+  symbol: gMegatonHammerItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gMegatonHammerItemNameFRATex:
+  type: TEXTURE
+  offset: 0x41C00
+  symbol: gMegatonHammerItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gMegatonHammerItemNameGERTex:
+  type: TEXTURE
+  offset: 0x23000
+  symbol: gMegatonHammerItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gMinuetOfForestItemNameENGTex:
+  type: TEXTURE
+  offset: 0x16800
+  symbol: gMinuetOfForestItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gMinuetOfForestItemNameFRATex:
+  type: TEXTURE
+  offset: 0x54000
+  symbol: gMinuetOfForestItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gMinuetOfForestItemNameGERTex:
+  type: TEXTURE
+  offset: 0x35400
+  symbol: gMinuetOfForestItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gMirrorShieldItemNameENGTex:
+  type: TEXTURE
+  offset: 0x10000
+  symbol: gMirrorShieldItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gMirrorShieldItemNameFRATex:
+  type: TEXTURE
+  offset: 0x4D800
+  symbol: gMirrorShieldItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gMirrorShieldItemNameGERTex:
+  type: TEXTURE
+  offset: 0x2EC00
+  symbol: gMirrorShieldItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gNayrusLoveItemNameENGTex:
+  type: TEXTURE
+  offset: 0x4C00
+  symbol: gNayrusLoveItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gNayrusLoveItemNameFRATex:
+  type: TEXTURE
+  offset: 0x42400
+  symbol: gNayrusLoveItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gNayrusLoveItemNameGERTex:
+  type: TEXTURE
+  offset: 0x23800
+  symbol: gNayrusLoveItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gNocturneOfShadowItemNameENGTex:
+  type: TEXTURE
+  offset: 0x17800
+  symbol: gNocturneOfShadowItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gNocturneOfShadowItemNameFRATex:
+  type: TEXTURE
+  offset: 0x55000
+  symbol: gNocturneOfShadowItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gNocturneOfShadowItemNameGERTex:
+  type: TEXTURE
+  offset: 0x36400
+  symbol: gNocturneOfShadowItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gOcarinaOfTimeItemNameENGTex:
+  type: TEXTURE
+  offset: 0x2000
+  symbol: gOcarinaOfTimeItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gOcarinaOfTimeItemNameFRATex:
+  type: TEXTURE
+  offset: 0x3F800
+  symbol: gOcarinaOfTimeItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gOcarinaOfTimeItemNameGERTex:
+  type: TEXTURE
+  offset: 0x20C00
+  symbol: gOcarinaOfTimeItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gOddMushroomItemNameENGTex:
+  type: TEXTURE
+  offset: 0xC000
+  symbol: gOddMushroomItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gOddMushroomItemNameFRATex:
+  type: TEXTURE
+  offset: 0x49800
+  symbol: gOddMushroomItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gOddMushroomItemNameGERTex:
+  type: TEXTURE
+  offset: 0x2AC00
+  symbol: gOddMushroomItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gOddPotionItemNameENGTex:
+  type: TEXTURE
+  offset: 0xC400
+  symbol: gOddPotionItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gOddPotionItemNameFRATex:
+  type: TEXTURE
+  offset: 0x49C00
+  symbol: gOddPotionItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gOddPotionItemNameGERTex:
+  type: TEXTURE
+  offset: 0x2B000
+  symbol: gOddPotionItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gPieceOfHeartItemNameENGTex:
+  type: TEXTURE
+  offset: 0x1C800
+  symbol: gPieceOfHeartItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gPoachersSawItemNameENGTex:
+  type: TEXTURE
+  offset: 0xC800
+  symbol: gPoachersSawItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gPoachersSawItemNameFRATex:
+  type: TEXTURE
+  offset: 0x4A000
+  symbol: gPoachersSawItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gPoachersSawItemNameGERTex:
+  type: TEXTURE
+  offset: 0x2B400
+  symbol: gPoachersSawItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gPocketCuccoItemNameENGTex:
+  type: TEXTURE
+  offset: 0xB800
+  symbol: gPocketCuccoItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gPocketCuccoItemNameFRATex:
+  type: TEXTURE
+  offset: 0x49000
+  symbol: gPocketCuccoItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gPocketCuccoItemNameGERTex:
+  type: TEXTURE
+  offset: 0x2A400
+  symbol: gPocketCuccoItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gPocketEggItemNameENGTex:
+  type: TEXTURE
+  offset: 0xB400
+  symbol: gPocketEggItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gPocketEggItemNameFRATex:
+  type: TEXTURE
+  offset: 0x48C00
+  symbol: gPocketEggItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gPocketEggItemNameGERTex:
+  type: TEXTURE
+  offset: 0x2A000
+  symbol: gPocketEggItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gPoeItemNameENGTex:
+  type: TEXTURE
+  offset: 0x8000
+  symbol: gPoeItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gPoeItemNameFRATex:
+  type: TEXTURE
+  offset: 0x45800
+  symbol: gPoeItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gPoeItemNameGERTex:
+  type: TEXTURE
+  offset: 0x26C00
+  symbol: gPoeItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gPreludeOfLightItemNameENGTex:
+  type: TEXTURE
+  offset: 0x17C00
+  symbol: gPreludeOfLightItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gPreludeOfLightItemNameFRATex:
+  type: TEXTURE
+  offset: 0x55400
+  symbol: gPreludeOfLightItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gPreludeOfLightItemNameGERTex:
+  type: TEXTURE
+  offset: 0x36800
+  symbol: gPreludeOfLightItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gPrescriptionItemNameENGTex:
+  type: TEXTURE
+  offset: 0xD000
+  symbol: gPrescriptionItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gPrescriptionItemNameFRATex:
+  type: TEXTURE
+  offset: 0x4A800
+  symbol: gPrescriptionItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gPrescriptionItemNameGERTex:
+  type: TEXTURE
+  offset: 0x2BC00
+  symbol: gPrescriptionItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gQuiver30ItemNameENGTex:
+  type: TEXTURE
+  offset: 0x12800
+  symbol: gQuiver30ItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gQuiver30ItemNameFRATex:
+  type: TEXTURE
+  offset: 0x50000
+  symbol: gQuiver30ItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gQuiver30ItemNameGERTex:
+  type: TEXTURE
+  offset: 0x31400
+  symbol: gQuiver30ItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gQuiver40ItemNameENGTex:
+  type: TEXTURE
+  offset: 0x12C00
+  symbol: gQuiver40ItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gQuiver40ItemNameFRATex:
+  type: TEXTURE
+  offset: 0x50400
+  symbol: gQuiver40ItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gQuiver40ItemNameGERTex:
+  type: TEXTURE
+  offset: 0x31800
+  symbol: gQuiver40ItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gQuiver50ItemNameENGTex:
+  type: TEXTURE
+  offset: 0x13000
+  symbol: gQuiver50ItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gQuiver50ItemNameFRATex:
+  type: TEXTURE
+  offset: 0x50800
+  symbol: gQuiver50ItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gQuiver50ItemNameGERTex:
+  type: TEXTURE
+  offset: 0x31C00
+  symbol: gQuiver50ItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gRedPotionItemNameENGTex:
+  type: TEXTURE
+  offset: 0x5400
+  symbol: gRedPotionItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gRedPotionItemNameFRATex:
+  type: TEXTURE
+  offset: 0x42C00
+  symbol: gRedPotionItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gRedPotionItemNameGERTex:
+  type: TEXTURE
+  offset: 0x24000
+  symbol: gRedPotionItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gRequiemOfSpiritItemNameENGTex:
+  type: TEXTURE
+  offset: 0x17400
+  symbol: gRequiemOfSpiritItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gRequiemOfSpiritItemNameFRATex:
+  type: TEXTURE
+  offset: 0x54C00
+  symbol: gRequiemOfSpiritItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gRequiemOfSpiritItemNameGERTex:
+  type: TEXTURE
+  offset: 0x36000
+  symbol: gRequiemOfSpiritItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gRutosLetterItemNameENGTex:
+  type: TEXTURE
+  offset: 0x6C00
+  symbol: gRutosLetterItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gRutosLetterItemNameFRATex:
+  type: TEXTURE
+  offset: 0x44400
+  symbol: gRutosLetterItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gRutosLetterItemNameGERTex:
+  type: TEXTURE
+  offset: 0x25800
+  symbol: gRutosLetterItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gSOLDOUTItemNameENGTex:
+  type: TEXTURE
+  offset: 0xB000
+  symbol: gSOLDOUTItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gSOLDOUTItemNameFRATex:
+  type: TEXTURE
+  offset: 0x48800
+  symbol: gSOLDOUTItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gSOLDOUTItemNameGERTex:
+  type: TEXTURE
+  offset: 0x29C00
+  symbol: gSOLDOUTItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gSariasSongItemNameENGTex:
+  type: TEXTURE
+  offset: 0x18800
+  symbol: gSariasSongItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gSariasSongItemNameFRATex:
+  type: TEXTURE
+  offset: 0x56000
+  symbol: gSariasSongItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gSariasSongItemNameGERTex:
+  type: TEXTURE
+  offset: 0x37400
+  symbol: gSariasSongItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gSerenadeOfWaterItemNameENGTex:
+  type: TEXTURE
+  offset: 0x17000
+  symbol: gSerenadeOfWaterItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gSerenadeOfWaterItemNameFRATex:
+  type: TEXTURE
+  offset: 0x54800
+  symbol: gSerenadeOfWaterItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gSerenadeOfWaterItemNameGERTex:
+  type: TEXTURE
+  offset: 0x35C00
+  symbol: gSerenadeOfWaterItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gShadowMedallionItemNameENGTex:
+  type: TEXTURE
+  offset: 0x1A800
+  symbol: gShadowMedallionItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gShadowMedallionItemNameFRATex:
+  type: TEXTURE
+  offset: 0x58000
+  symbol: gShadowMedallionItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gShadowMedallionItemNameGERTex:
+  type: TEXTURE
+  offset: 0x39400
+  symbol: gShadowMedallionItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gSilverGauntletsItemNameENGTex:
+  type: TEXTURE
+  offset: 0x14400
+  symbol: gSilverGauntletsItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gSilverGauntletsItemNameFRATex:
+  type: TEXTURE
+  offset: 0x51C00
+  symbol: gSilverGauntletsItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gSilverGauntletsItemNameGERTex:
+  type: TEXTURE
+  offset: 0x33000
+  symbol: gSilverGauntletsItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gSilverScaleItemNameENGTex:
+  type: TEXTURE
+  offset: 0x14C00
+  symbol: gSilverScaleItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gSilverScaleItemNameFRATex:
+  type: TEXTURE
+  offset: 0x52400
+  symbol: gSilverScaleItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gSilverScaleItemNameGERTex:
+  type: TEXTURE
+  offset: 0x33800
+  symbol: gSilverScaleItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gSkullMaskItemNameENGTex:
+  type: TEXTURE
+  offset: 0x9400
+  symbol: gSkullMaskItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gSkullMaskItemNameFRATex:
+  type: TEXTURE
+  offset: 0x46C00
+  symbol: gSkullMaskItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gSkullMaskItemNameGERTex:
+  type: TEXTURE
+  offset: 0x28000
+  symbol: gSkullMaskItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gSongOfStormsItemNameENGTex:
+  type: TEXTURE
+  offset: 0x19400
+  symbol: gSongOfStormsItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gSongOfStormsItemNameFRATex:
+  type: TEXTURE
+  offset: 0x56C00
+  symbol: gSongOfStormsItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gSongOfStormsItemNameGERTex:
+  type: TEXTURE
+  offset: 0x38000
+  symbol: gSongOfStormsItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gSongOfTimeItemNameENGTex:
+  type: TEXTURE
+  offset: 0x19000
+  symbol: gSongOfTimeItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gSongOfTimeItemNameFRATex:
+  type: TEXTURE
+  offset: 0x56800
+  symbol: gSongOfTimeItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gSongOfTimeItemNameGERTex:
+  type: TEXTURE
+  offset: 0x37C00
+  symbol: gSongOfTimeItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gSpiritMedallionItemNameENGTex:
+  type: TEXTURE
+  offset: 0x1A400
+  symbol: gSpiritMedallionItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gSpiritMedallionItemNameFRATex:
+  type: TEXTURE
+  offset: 0x57C00
+  symbol: gSpiritMedallionItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gSpiritMedallionItemNameGERTex:
+  type: TEXTURE
+  offset: 0x39000
+  symbol: gSpiritMedallionItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gSpookyMaskItemNameENGTex:
+  type: TEXTURE
+  offset: 0x9800
+  symbol: gSpookyMaskItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gSpookyMaskItemNameFRATex:
+  type: TEXTURE
+  offset: 0x47000
+  symbol: gSpookyMaskItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gSpookyMaskItemNameGERTex:
+  type: TEXTURE
+  offset: 0x28400
+  symbol: gSpookyMaskItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gStoneofAgonyItemNameENGTex:
+  type: TEXTURE
+  offset: 0x1BC00
+  symbol: gStoneofAgonyItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gStoneofAgonyItemNameFRATex:
+  type: TEXTURE
+  offset: 0x59400
+  symbol: gStoneofAgonyItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gStoneofAgonyItemNameGERTex:
+  type: TEXTURE
+  offset: 0x3A800
+  symbol: gStoneofAgonyItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gSunsSongItemNameENGTex:
+  type: TEXTURE
+  offset: 0x18C00
+  symbol: gSunsSongItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gSunsSongItemNameFRATex:
+  type: TEXTURE
+  offset: 0x56400
+  symbol: gSunsSongItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gSunsSongItemNameGERTex:
+  type: TEXTURE
+  offset: 0x37800
+  symbol: gSunsSongItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gUnusedBigKeyItemNameENGTex:
+  type: TEXTURE
+  offset: 0x1D000
+  symbol: gUnusedBigKeyItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gUnusedBossKeyItemName10JPNTex:
+  type: TEXTURE
+  offset: 0x34C00
+  symbol: gUnusedBossKeyItemName10JPNTex
+  format: IA4
+  width: 128
+  height: 16
+
+gUnusedBossKeyItemName11JPNTex:
+  type: TEXTURE
+  offset: 0x35000
+  symbol: gUnusedBossKeyItemName11JPNTex
+  format: IA4
+  width: 128
+  height: 16
+
+gUnusedBossKeyItemName12JPNTex:
+  type: TEXTURE
+  offset: 0x3C800
+  symbol: gUnusedBossKeyItemName12JPNTex
+  format: IA4
+  width: 128
+  height: 16
+
+gUnusedBossKeyItemName13JPNTex:
+  type: TEXTURE
+  offset: 0x3CC00
+  symbol: gUnusedBossKeyItemName13JPNTex
+  format: IA4
+  width: 128
+  height: 16
+
+gUnusedBossKeyItemName14JPNTex:
+  type: TEXTURE
+  offset: 0x3D000
+  symbol: gUnusedBossKeyItemName14JPNTex
+  format: IA4
+  width: 128
+  height: 16
+
+gUnusedBossKeyItemName15JPNTex:
+  type: TEXTURE
+  offset: 0x53000
+  symbol: gUnusedBossKeyItemName15JPNTex
+  format: IA4
+  width: 128
+  height: 16
+
+gUnusedBossKeyItemName16JPNTex:
+  type: TEXTURE
+  offset: 0x53400
+  symbol: gUnusedBossKeyItemName16JPNTex
+  format: IA4
+  width: 128
+  height: 16
+
+gUnusedBossKeyItemName17JPNTex:
+  type: TEXTURE
+  offset: 0x53800
+  symbol: gUnusedBossKeyItemName17JPNTex
+  format: IA4
+  width: 128
+  height: 16
+
+gUnusedBossKeyItemName18JPNTex:
+  type: TEXTURE
+  offset: 0x53C00
+  symbol: gUnusedBossKeyItemName18JPNTex
+  format: IA4
+  width: 128
+  height: 16
+
+gUnusedBossKeyItemName19JPNTex:
+  type: TEXTURE
+  offset: 0x5B400
+  symbol: gUnusedBossKeyItemName19JPNTex
+  format: IA4
+  width: 128
+  height: 16
+
+gUnusedBossKeyItemName1JPNTex:
+  type: TEXTURE
+  offset: 0x15800
+  symbol: gUnusedBossKeyItemName1JPNTex
+  format: IA4
+  width: 128
+  height: 16
+
+gUnusedBossKeyItemName20JPNTex:
+  type: TEXTURE
+  offset: 0x5B800
+  symbol: gUnusedBossKeyItemName20JPNTex
+  format: IA4
+  width: 128
+  height: 16
+
+gUnusedBossKeyItemName21JPNTex:
+  type: TEXTURE
+  offset: 0x5BC00
+  symbol: gUnusedBossKeyItemName21JPNTex
+  format: IA4
+  width: 128
+  height: 16
+
+gUnusedBossKeyItemName2JPNTex:
+  type: TEXTURE
+  offset: 0x15C00
+  symbol: gUnusedBossKeyItemName2JPNTex
+  format: IA4
+  width: 128
+  height: 16
+
+gUnusedBossKeyItemName3JPNTex:
+  type: TEXTURE
+  offset: 0x16000
+  symbol: gUnusedBossKeyItemName3JPNTex
+  format: IA4
+  width: 128
+  height: 16
+
+gUnusedBossKeyItemName4JPNTex:
+  type: TEXTURE
+  offset: 0x16400
+  symbol: gUnusedBossKeyItemName4JPNTex
+  format: IA4
+  width: 128
+  height: 16
+
+gUnusedBossKeyItemName5JPNTex:
+  type: TEXTURE
+  offset: 0x1DC00
+  symbol: gUnusedBossKeyItemName5JPNTex
+  format: IA4
+  width: 128
+  height: 16
+
+gUnusedBossKeyItemName6JPNTex:
+  type: TEXTURE
+  offset: 0x1E000
+  symbol: gUnusedBossKeyItemName6JPNTex
+  format: IA4
+  width: 128
+  height: 16
+
+gUnusedBossKeyItemName7JPNTex:
+  type: TEXTURE
+  offset: 0x1E400
+  symbol: gUnusedBossKeyItemName7JPNTex
+  format: IA4
+  width: 128
+  height: 16
+
+gUnusedBossKeyItemName8JPNTex:
+  type: TEXTURE
+  offset: 0x34400
+  symbol: gUnusedBossKeyItemName8JPNTex
+  format: IA4
+  width: 128
+  height: 16
+
+gUnusedBossKeyItemName9JPNTex:
+  type: TEXTURE
+  offset: 0x34800
+  symbol: gUnusedBossKeyItemName9JPNTex
+  format: IA4
+  width: 128
+  height: 16
+
+gUnusedFireMedallionItemName1JPNTex:
+  type: TEXTURE
+  offset: 0xE400
+  symbol: gUnusedFireMedallionItemName1JPNTex
+  format: IA4
+  width: 128
+  height: 16
+
+gUnusedFireMedallionItemName2JPNTex:
+  type: TEXTURE
+  offset: 0x2D000
+  symbol: gUnusedFireMedallionItemName2JPNTex
+  format: IA4
+  width: 128
+  height: 16
+
+gUnusedFireMedallionItemName3JPNTex:
+  type: TEXTURE
+  offset: 0x4BC00
+  symbol: gUnusedFireMedallionItemName3JPNTex
+  format: IA4
+  width: 128
+  height: 16
+
+gUnusedIceMedallionItemName1JPNTex:
+  type: TEXTURE
+  offset: 0xE800
+  symbol: gUnusedIceMedallionItemName1JPNTex
+  format: IA4
+  width: 128
+  height: 16
+
+gUnusedIceMedallionItemName2JPNTex:
+  type: TEXTURE
+  offset: 0x2D400
+  symbol: gUnusedIceMedallionItemName2JPNTex
+  format: IA4
+  width: 128
+  height: 16
+
+gUnusedIceMedallionItemName3JPNTex:
+  type: TEXTURE
+  offset: 0x4C000
+  symbol: gUnusedIceMedallionItemName3JPNTex
+  format: IA4
+  width: 128
+  height: 16
+
+gUnusedPieceOfHeartItemName1JPNTex:
+  type: TEXTURE
+  offset: 0x1CC00
+  symbol: gUnusedPieceOfHeartItemName1JPNTex
+  format: IA4
+  width: 128
+  height: 16
+
+gUnusedPieceOfHeartItemName2JPNTex:
+  type: TEXTURE
+  offset: 0x3B800
+  symbol: gUnusedPieceOfHeartItemName2JPNTex
+  format: IA4
+  width: 128
+  height: 16
+
+gUnusedPieceOfHeartItemName3JPNTex:
+  type: TEXTURE
+  offset: 0x5A400
+  symbol: gUnusedPieceOfHeartItemName3JPNTex
+  format: IA4
+  width: 128
+  height: 16
+
+gUnusedWindMedallionItemName1JPNTex:
+  type: TEXTURE
+  offset: 0xE000
+  symbol: gUnusedWindMedallionItemName1JPNTex
+  format: IA4
+  width: 128
+  height: 16
+
+gUnusedWindMedallionItemName2JPNTex:
+  type: TEXTURE
+  offset: 0x2CC00
+  symbol: gUnusedWindMedallionItemName2JPNTex
+  format: IA4
+  width: 128
+  height: 16
+
+gUnusedWindMedallionItemName3JPNTex:
+  type: TEXTURE
+  offset: 0x4B800
+  symbol: gUnusedWindMedallionItemName3JPNTex
+  format: IA4
+  width: 128
+  height: 16
+
+gWaterMedallionItemNameENGTex:
+  type: TEXTURE
+  offset: 0x1A000
+  symbol: gWaterMedallionItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gWaterMedallionItemNameFRATex:
+  type: TEXTURE
+  offset: 0x57800
+  symbol: gWaterMedallionItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gWaterMedallionItemNameGERTex:
+  type: TEXTURE
+  offset: 0x38C00
+  symbol: gWaterMedallionItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gWeirdEggItemNameENGTex:
+  type: TEXTURE
+  offset: 0x8400
+  symbol: gWeirdEggItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gWeirdEggItemNameFRATex:
+  type: TEXTURE
+  offset: 0x45C00
+  symbol: gWeirdEggItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gWeirdEggItemNameGERTex:
+  type: TEXTURE
+  offset: 0x27000
+  symbol: gWeirdEggItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gZeldasLetterItemNameENGTex:
+  type: TEXTURE
+  offset: 0x8C00
+  symbol: gZeldasLetterItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gZeldasLetterItemNameFRATex:
+  type: TEXTURE
+  offset: 0x46400
+  symbol: gZeldasLetterItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gZeldasLetterItemNameGERTex:
+  type: TEXTURE
+  offset: 0x27800
+  symbol: gZeldasLetterItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gZeldasLullabyItemNameENGTex:
+  type: TEXTURE
+  offset: 0x18000
+  symbol: gZeldasLullabyItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gZeldasLullabyItemNameFRATex:
+  type: TEXTURE
+  offset: 0x55800
+  symbol: gZeldasLullabyItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gZeldasLullabyItemNameGERTex:
+  type: TEXTURE
+  offset: 0x36C00
+  symbol: gZeldasLullabyItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gZoraMaskItemNameENGTex:
+  type: TEXTURE
+  offset: 0xA400
+  symbol: gZoraMaskItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gZoraMaskItemNameFRATex:
+  type: TEXTURE
+  offset: 0x47C00
+  symbol: gZoraMaskItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gZoraMaskItemNameGERTex:
+  type: TEXTURE
+  offset: 0x29000
+  symbol: gZoraMaskItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gZoraTunicItemNameENGTex:
+  type: TEXTURE
+  offset: 0x10C00
+  symbol: gZoraTunicItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gZoraTunicItemNameFRATex:
+  type: TEXTURE
+  offset: 0x4E400
+  symbol: gZoraTunicItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gZoraTunicItemNameGERTex:
+  type: TEXTURE
+  offset: 0x2F800
+  symbol: gZoraTunicItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+
+gZorasSapphireItemNameENGTex:
+  type: TEXTURE
+  offset: 0x1B800
+  symbol: gZorasSapphireItemNameENGTex
+  format: IA4
+  width: 128
+  height: 16
+
+gZorasSapphireItemNameFRATex:
+  type: TEXTURE
+  offset: 0x59000
+  symbol: gZorasSapphireItemNameFRATex
+  format: IA4
+  width: 128
+  height: 16
+
+gZorasSapphireItemNameGERTex:
+  type: TEXTURE
+  offset: 0x3A400
+  symbol: gZorasSapphireItemNameGERTex
+  format: IA4
+  width: 128
+  height: 16
+

@@ -186,7 +186,7 @@ void func_80A4E648(EnGs* this, PlayState* play) {
     } else {
         Actor_GetScreenPos(play, &this->actor, &sp26, &sp24);
         if ((sp26 >= 0) && (sp26 <= SCREEN_WIDTH) && (sp24 >= 0) && (sp24 <= SCREEN_HEIGHT) && (this->unk_19C != 3)) {
-            if (func_8002F2CC(&this->actor, play, 40.0f) == 1) {
+            if (Actor_OfferTalk(&this->actor, play, 40.0f) == 1) {
                 if (IS_RANDO) {
                     // if we're rando'd, always use the non-mask text id
                     this->actor.textId = 0x2053;
@@ -324,14 +324,14 @@ void func_80A4ED34(EnGs* this, PlayState* play) {
             if (this->unk_200 < 20) {
                 Color_RGBA8_Copy(&this->flashColor, &flashRed);
                 if ((this->unk_200 % 20) == 7) {
-                    Audio_PlaySoundGeneral(NA_SE_SY_WARNING_COUNT_E, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                           &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                    Audio_PlaySfxGeneral(NA_SE_SY_WARNING_COUNT_E, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                         &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 }
             } else {
                 Color_RGBA8_Copy(&this->flashColor, &flashBlue);
                 if ((this->unk_200 % 20) == 7) {
-                    Audio_PlaySoundGeneral(NA_SE_SY_WARNING_COUNT_N, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                           &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                    Audio_PlaySfxGeneral(NA_SE_SY_WARNING_COUNT_N, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                         &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                 }
             }
         }
@@ -354,7 +354,7 @@ void func_80A4ED34(EnGs* this, PlayState* play) {
                           (s16)Rand_ZeroFloat(50.0f) + 200, 40, 15);
         }
 
-        func_8002F974(&this->actor, NA_SE_EV_FIRE_PILLAR - SFX_FLAG);
+        Actor_PlaySfx_Flagged(&this->actor, NA_SE_EV_FIRE_PILLAR - SFX_FLAG);
         if (this->unk_200++ >= 40) {
             this->unk_19E |= 0x10;
             this->actor.flags |= ACTOR_FLAG_UPDATE_CULLING_DISABLED;
@@ -377,7 +377,7 @@ void func_80A4ED34(EnGs* this, PlayState* play) {
             this->unk_19E |= 8;
             this->actionFunc = func_80A4F700;
         } else {
-            func_8002F974(&this->actor, NA_SE_EV_STONE_LAUNCH - SFX_FLAG);
+            Actor_PlaySfx_Flagged(&this->actor, NA_SE_EV_STONE_LAUNCH - SFX_FLAG);
         }
 
         Actor_MoveXZGravity(&this->actor);

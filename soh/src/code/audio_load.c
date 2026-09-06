@@ -2,6 +2,7 @@
 #include <string.h>
 #include <assert.h>
 
+#include <libultraship/bridge/resourcebridge.h>
 #include <libultraship/libultra.h>
 #include "global.h"
 #include "soh/OTRGlobals.h"
@@ -296,18 +297,19 @@ void AudioLoad_InitSampleDmaBuffers(s32 arg0) {
     gAudioContext.sampleDmaReuseQueue2WrPos = gAudioContext.sampleDmaCount - gAudioContext.sampleDmaListSize1;
 }
 
+// SOH [Port] Completely reworked from decomp: SAF custom fontIds can exceed the native table; bounds-check against
+// fontMapSize to avoid OOB reads.
 s32 AudioLoad_IsFontLoadComplete(s32 fontId) {
-    return true;
     if (fontId == 0xFF) {
         return true;
-
-    } else if (gAudioContext.fontLoadStatus[fontId] >= 2) {
-        return true;
-    } else if (gAudioContext.fontLoadStatus[AudioLoad_GetRealTableIndex(FONT_TABLE, fontId)] >= 2) {
-        return true;
-    } else {
-        return false;
     }
+    // Resolve indirection (identity for FONT_TABLE today, but kept for parity with other tables).
+    fontId = (s32)AudioLoad_GetRealTableIndex(FONT_TABLE, (u32)fontId);
+    if ((size_t)fontId >= fontMapSize) {
+        // No entry in the font map — SAF sequence with no associated soundfont, treat as ready.
+        return true;
+    }
+    return gAudioContext.fontLoadStatus[fontId] >= 2;
 }
 
 s32 AudioLoad_IsSeqLoadComplete(s32 seqId) {
@@ -335,7 +337,7 @@ s32 AudioLoad_IsSampleLoadComplete(s32 sampleBankId) {
 }
 
 void AudioLoad_SetFontLoadStatus(s32 fontId, s32 status) {
-    if ((fontId != 0xFF) && (gAudioContext.fontLoadStatus[fontId] != 5)) {
+    if ((fontId != 0xFF) && ((size_t)fontId < fontMapSize) && (gAudioContext.fontLoadStatus[fontId] != 5)) {
         gAudioContext.fontLoadStatus[fontId] = status;
     }
 }
@@ -1004,6 +1006,7 @@ void* AudioLoad_AsyncLoadInner(s32 tableType, s32 id, s32 nChunks, s32 retData, 
     u32 temp_v0;
     u32 realId;
 
+    realId = AudioLoad_GetRealTableIndex(tableType, id);
     switch (tableType) {
         case SEQUENCE_TABLE:
             if (gAudioContext.seqLoadStatus[realId] == 1) {
@@ -1342,8 +1345,9 @@ void AudioLoad_Init(void* heap, size_t heapSize) {
     // calloc: unassigned slots stay NULL for the guard in AudioLoad_SyncInitSeqPlayerInternal().
     sequenceMap = calloc(sequenceMapSize + 0xF, sizeof(char*));
 
-    gAudioContext.seqLoadStatus = malloc(sequenceMapSize);
-    memset(gAudioContext.seqLoadStatus, 5, sequenceMapSize);
+    // SOH [Bugfix] Size to match sequenceMap (+ 0xF); custom ids can exceed sequenceMapSize.
+    gAudioContext.seqLoadStatus = malloc(sequenceMapSize + 0xF);
+    memset(gAudioContext.seqLoadStatus, 5, sequenceMapSize + 0xF);
     for (size_t i = 0; i < seqListSize; i++) {
         SequenceData sDat = ResourceMgr_LoadSeqByName(seqList[i]);
         sequenceMap[sDat.seqNumber] = strdup(seqList[i]);

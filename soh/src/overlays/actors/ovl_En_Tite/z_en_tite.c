@@ -10,7 +10,6 @@
 #include "vt.h"
 #include "objects/object_tite/object_tite.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
 
@@ -219,8 +218,6 @@ void EnTite_Destroy(Actor* thisx, PlayState* play) {
         osSyncPrintf("\n\n");
     }
     Collider_DestroyJntSph(play, &this->collider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnTite_SetupIdle(EnTite* this) {
@@ -361,7 +358,7 @@ void EnTite_Attack(EnTite* this, PlayState* play) {
         case TEKTITE_MID_LUNGE:
             // Generate sparkles at feet upon landing, set jumping animation and hurtbox and check if hit player
             if (this->actor.velocity.y >= 5.0f) {
-                if (this->actor.bgCheckFlags & 1) {
+                if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
                     func_800355B8(play, &this->frontLeftFootPos);
                     func_800355B8(play, &this->frontRightFootPos);
                     func_800355B8(play, &this->backRightFootPos);
@@ -397,7 +394,7 @@ void EnTite_Attack(EnTite* this, PlayState* play) {
             break;
     }
     // Create ripples on water surface where tektite feet landed
-    if (this->actor.bgCheckFlags & 2) {
+    if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND_TOUCH) {
         if (!(this->actor.bgCheckFlags & 0x20)) {
             func_80033480(play, &this->frontLeftFootPos, 1.0f, 2, 80, 15, 1);
             func_80033480(play, &this->frontRightFootPos, 1.0f, 2, 80, 15, 1);
@@ -415,10 +412,10 @@ void EnTite_Attack(EnTite* this, PlayState* play) {
                 Audio_PlayActorSound2(&this->actor, NA_SE_EN_TEKU_LAND_WATER2);
             }
             this->actor.bgCheckFlags &= ~0x40;
-        } else if (this->actor.bgCheckFlags & 2) {
+        } else if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND_TOUCH) {
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_DODO_M_GND);
         }
-    } else if (this->actor.bgCheckFlags & 2) {
+    } else if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND_TOUCH) {
         this->actor.speedXZ = 0.0f;
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_DODO_M_GND);
     }
@@ -525,7 +522,8 @@ void EnTite_MoveTowardPlayer(EnTite* this, PlayState* play) {
         }
     }
 
-    if ((this->actor.bgCheckFlags & 2) || ((this->actor.params == TEKTITE_BLUE) && (this->actor.bgCheckFlags & 0x40))) {
+    if ((this->actor.bgCheckFlags & BGCHECKFLAG_GROUND_TOUCH) ||
+        ((this->actor.params == TEKTITE_BLUE) && (this->actor.bgCheckFlags & 0x40))) {
         if (this->vQueuedJumps != 0) {
             this->vQueuedJumps--;
         } else {
@@ -596,7 +594,7 @@ void EnTite_MoveTowardPlayer(EnTite* this, PlayState* play) {
         this->actor.flags |= ACTOR_FLAG_SFX_FOR_PLAYER_BODY_HIT;
         Math_SmoothStepToS(&this->actor.shape.rot.y, this->actor.yawTowardsPlayer, 1, 1000, 0);
         if (this->actor.velocity.y >= 6.0f) {
-            if (this->actor.bgCheckFlags & 1) {
+            if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
                 func_800355B8(play, &this->frontLeftFootPos);
                 func_800355B8(play, &this->frontRightFootPos);
                 func_800355B8(play, &this->backRightFootPos);
@@ -652,13 +650,14 @@ void EnTite_Recoil(EnTite* this, PlayState* play) {
 
     // If player is far away, idle. Otherwise attack or move
     angleToPlayer = (this->actor.yawTowardsPlayer - this->actor.shape.rot.y);
-    if ((this->actor.speedXZ == 0.0f) && ((this->actor.bgCheckFlags & 1) || ((this->actor.params == TEKTITE_BLUE) &&
-                                                                             (this->actor.bgCheckFlags & 0x20)))) {
+    if ((this->actor.speedXZ == 0.0f) &&
+        ((this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) ||
+         ((this->actor.params == TEKTITE_BLUE) && (this->actor.bgCheckFlags & 0x20)))) {
         this->actor.world.rot.y = this->actor.shape.rot.y;
         this->collider.base.atFlags &= ~AT_HIT;
         if ((this->actor.xzDistToPlayer > 300.0f) && (this->actor.yDistToPlayer > 80.0f) &&
             (ABS(this->actor.shape.rot.x) < 4000) && (ABS(this->actor.shape.rot.z) < 4000) &&
-            ((this->actor.bgCheckFlags & 1) ||
+            ((this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) ||
              ((this->actor.params == TEKTITE_BLUE) && (this->actor.bgCheckFlags & 0x20)))) {
             EnTite_SetupIdle(this);
         } else if ((this->actor.xzDistToPlayer < 180.0f) && (this->actor.yDistToPlayer <= 80.0f) &&
@@ -721,7 +720,7 @@ void EnTite_Stunned(EnTite* this, PlayState* play) {
     // Decide on next action based on health, flip state and player distance
     angleToPlayer = this->actor.yawTowardsPlayer - this->actor.shape.rot.y;
     if (((this->actor.colorFilterTimer == 0) && (this->actor.speedXZ == 0.0f)) &&
-        ((this->actor.bgCheckFlags & 1) ||
+        ((this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) ||
          ((this->actor.params == TEKTITE_BLUE) && (this->actor.bgCheckFlags & 0x20)))) {
         this->actor.world.rot.y = this->actor.shape.rot.y;
         if (this->actor.colChkInfo.health == 0) {
@@ -730,7 +729,7 @@ void EnTite_Stunned(EnTite* this, PlayState* play) {
             EnTite_SetupFlipUpright(this);
         } else if (((this->actor.xzDistToPlayer > 300.0f) && (this->actor.yDistToPlayer > 80.0f) &&
                     (ABS(this->actor.shape.rot.x) < 4000) && (ABS(this->actor.shape.rot.z) < 4000)) &&
-                   ((this->actor.bgCheckFlags & 1) ||
+                   ((this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) ||
                     ((this->actor.params == TEKTITE_BLUE) && (this->actor.bgCheckFlags & 0x20)))) {
             EnTite_SetupIdle(this);
         } else if ((this->actor.xzDistToPlayer < 180.0f) && (this->actor.yDistToPlayer <= 80.0f) &&
@@ -803,7 +802,7 @@ void EnTite_FlipOnBack(EnTite* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
     if (this->actor.bgCheckFlags & 3) {
         // Upon landing, spawn dust and make noise
-        if (this->actor.bgCheckFlags & 2) {
+        if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND_TOUCH) {
             Actor_SpawnFloorDustRing(play, &this->actor, &this->actor.world.pos, 20.0f, 11, 4.0f, 0, 0, false);
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_DODO_M_GND);
         }
@@ -832,7 +831,7 @@ void EnTite_FlipUpright(EnTite* this, PlayState* play) {
     Math_SmoothStepToS(&this->actor.shape.rot.z, 0, 1, 0xFA0, 0);
     SkelAnime_Update(&this->skelAnime);
     //! @bug flying tektite: the following condition is never met and tektite stays stuck in this action forever
-    if (this->actor.bgCheckFlags & 2) {
+    if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND_TOUCH) {
         func_80033480(play, &this->frontLeftFootPos, 1.0f, 2, 80, 15, 1);
         func_80033480(play, &this->frontRightFootPos, 1.0f, 2, 80, 15, 1);
         func_80033480(play, &this->backRightFootPos, 1.0f, 2, 80, 15, 1);

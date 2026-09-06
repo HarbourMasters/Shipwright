@@ -1,0 +1,28 @@
+:config:
+  segments:
+    - [ 6, 0x0184D000 ]
+
+gGanonTitleCardENGTex:
+  type: TEXTURE
+  offset: 0x21a90
+  symbol: gGanonTitleCardENGTex
+  format: IA8
+  width: 128
+  height: 40
+
+gGanonTitleCardFRATex:
+  type: TEXTURE
+  offset: 0x24290
+  symbol: gGanonTitleCardFRATex
+  format: IA8
+  width: 128
+  height: 40
+
+gGanonTitleCardGERTex:
+  type: TEXTURE
+  offset: 0x22e90
+  symbol: gGanonTitleCardGERTex
+  format: IA8
+  width: 128
+  height: 40
+

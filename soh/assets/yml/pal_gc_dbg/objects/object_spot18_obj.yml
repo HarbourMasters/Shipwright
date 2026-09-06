@@ -1,0 +1,230 @@
+:config:
+  segments:
+    - [ 6, 0x014D4000 ]
+    - [ 4, 0x00F5E000 ]
+    - [ 8, 0x014D4000 ]
+    - [ 9, 0x014D4000 ]
+    - [ 10, 0x014D4000 ]
+    - [ 11, 0x014D4000 ]
+    - [ 12, 0x014D4000 ]
+    - [ 13, 0x014D4000 ]
+  external_files:
+    - pal_gc_dbg/objects/gameplay_keep.yml
+
+gGoronCityDoorCol:
+  type: OOT:COLLISION
+  offset: 0x534
+  symbol: gGoronCityDoorCol
+
+gGoronCityDoorDL:
+  type: GFX
+  offset: 0x420
+  symbol: gGoronCityDoorDL
+
+gGoronCityDoorTex:
+  type: TEXTURE
+  offset: 0xBA10
+  symbol: gGoronCityDoorTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gGoronCitySpearHandleTex:
+  type: TEXTURE
+  offset: 0x4810
+  symbol: gGoronCitySpearHandleTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gGoronCitySpearLeafTex:
+  type: TEXTURE
+  offset: 0x3010
+  symbol: gGoronCitySpearLeafTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gGoronCitySpearTipTex:
+  type: TEXTURE
+  offset: 0x4010
+  symbol: gGoronCitySpearTipTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gGoronCityStatueAngryFaceTex:
+  type: TEXTURE
+  offset: 0x8010
+  symbol: gGoronCityStatueAngryFaceTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gGoronCityStatueCol:
+  type: OOT:COLLISION
+  offset: 0x2FE4
+  symbol: gGoronCityStatueCol
+
+gGoronCityStatueDL:
+  type: GFX
+  offset: 0x2BC0
+  symbol: gGoronCityStatueDL
+
+gGoronCityStatueHappyFaceTex:
+  type: TEXTURE
+  offset: 0xA010
+  symbol: gGoronCityStatueHappyFaceTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gGoronCityStatueNeutralFaceTex:
+  type: TEXTURE
+  offset: 0x9010
+  symbol: gGoronCityStatueNeutralFaceTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gGoronCityStatuePattern1Tex:
+  type: TEXTURE
+  offset: 0x5010
+  symbol: gGoronCityStatuePattern1Tex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gGoronCityStatuePattern2Tex:
+  type: TEXTURE
+  offset: 0x6010
+  symbol: gGoronCityStatuePattern2Tex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gGoronCityStatueSpearCol:
+  type: OOT:COLLISION
+  offset: 0x261C
+  symbol: gGoronCityStatueSpearCol
+
+gGoronCityStatueSpearDL:
+  type: GFX
+  offset: 0x2370
+  symbol: gGoronCityStatueSpearDL
+
+gGoronCityStatueTex_7010:
+  type: TEXTURE
+  offset: 0x7010
+  symbol: gGoronCityStatueTex_7010
+  format: RGBA16
+  width: 64
+  height: 32
+
+gGoronCityVaseCol:
+  type: OOT:COLLISION
+  offset: 0x2154
+  symbol: gGoronCityVaseCol
+
+gGoronCityVaseDL:
+  type: GFX
+  offset: 0x18B0
+  symbol: gGoronCityVaseDL
+
+gGoronCityVaseLidCol:
+  type: OOT:COLLISION
+  offset: 0x368
+  symbol: gGoronCityVaseLidCol
+
+gGoronCityVaseLidDL:
+  type: GFX
+  offset: 0x150
+  symbol: gGoronCityVaseLidDL
+
+gGoronCityVaseLidHandleTex:
+  type: TEXTURE
+  offset: 0xB810
+  symbol: gGoronCityVaseLidHandleTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gGoronCityVaseLidTex:
+  type: TEXTURE
+  offset: 0xB010
+  symbol: gGoronCityVaseLidTex
+  format: RGBA16
+  width: 32
+  height: 32
+
+gGoronCityVaseTLUT:
+  type: TEXTURE
+  offset: 0x560
+  symbol: gGoronCityVaseTLUT
+  format: RGBA16
+  width: 4
+  height: 4
+
+gGoronCityVaseTex_580:
+  type: TEXTURE
+  offset: 0x580
+  symbol: gGoronCityVaseTex_580
+  format: CI4
+  width: 64
+  height: 64
+  tlut: 0x560
+
+gGoronCityVaseTex_D80:
+  type: TEXTURE
+  offset: 0xD80
+  symbol: gGoronCityVaseTex_D80
+  format: CI4
+  width: 32
+  height: 32
+  tlut: 0x560
+
+
+object_spot18_objVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_spot18_objVtx_000000
+  count: 21
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_spot18_objVtx_0003A0:
+  type: OOT:ARRAY
+  offset: 0x0003A0
+  symbol: object_spot18_objVtx_0003A0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_spot18_objVtx_000F80:
+  type: OOT:ARRAY
+  offset: 0x000F80
+  symbol: object_spot18_objVtx_000F80
+  count: 147
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_spot18_objVtx_002180:
+  type: OOT:ARRAY
+  offset: 0x002180
+  symbol: object_spot18_objVtx_002180
+  count: 31
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_spot18_objVtx_002650:
+  type: OOT:ARRAY
+  offset: 0x002650
+  symbol: object_spot18_objVtx_002650
+  count: 87
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

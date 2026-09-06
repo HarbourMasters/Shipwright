@@ -1,10 +1,10 @@
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
 #include "soh/Enhancements/enhancementTypes.h"
 
 extern "C" {
-extern PlayState* gPlayState;
 #include "src/overlays/actors/ovl_En_Po_Relay/z_en_po_relay.h"
+extern PlayState* gPlayState;
 }
 
 static constexpr DampeDropRate CVAR_DAMPE_DROP_RATE_DEFAULT = DAMPE_NORMAL;

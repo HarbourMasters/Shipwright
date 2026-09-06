@@ -1,0 +1,41 @@
+:config:
+  segments:
+    - [ 6, 0x010548B0 ]
+    - [ 4, 0x00D30E00 ]
+    - [ 8, 0x010548B0 ]
+    - [ 9, 0x010548B0 ]
+    - [ 10, 0x010548B0 ]
+    - [ 11, 0x010548B0 ]
+    - [ 12, 0x010548B0 ]
+    - [ 13, 0x010548B0 ]
+  external_files:
+    - ntsc_j_gc_collection/objects/gameplay_keep.yml
+
+gGiBossKeyDL:
+  type: GFX
+  offset: 0x0CA0
+  symbol: gGiBossKeyDL
+
+gGiBossKeyGemDL:
+  type: GFX
+  offset: 0x0F08
+  symbol: gGiBossKeyGemDL
+
+
+object_gi_bosskeyVtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_gi_bosskeyVtx_000000
+  count: 179
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_gi_bosskeyVtx_000B30:
+  type: OOT:ARRAY
+  offset: 0x000B30
+  symbol: object_gi_bosskeyVtx_000B30
+  count: 23
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

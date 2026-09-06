@@ -8,7 +8,6 @@
 #include "objects/object_zo/object_zo.h"
 
 #include "soh/frame_interpolation.h"
-#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY)
 
@@ -614,15 +613,12 @@ void EnZo_Init(Actor* thisx, PlayState* play) {
 }
 
 void EnZo_Destroy(Actor* thisx, PlayState* play) {
-    EnZo* this = (EnZo*)thisx;
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnZo_Standing(EnZo* this, PlayState* play) {
     s16 angle;
 
-    func_80034F54(play, this->fidgetTableY, this->fidgetTableZ, 20);
+    Actor_UpdateFidgetTables(play, this->fidgetTableY, this->fidgetTableZ, 20);
     EnZo_SetAnimation(this);
     if (this->interactInfo.talkState != NPC_TALK_STATE_IDLE) {
         this->trackingMode = NPC_TRACKING_FULL_BODY;
@@ -664,7 +660,7 @@ void EnZo_Surface(EnZo* this, PlayState* play) {
 }
 
 void EnZo_TreadWater(EnZo* this, PlayState* play) {
-    func_80034F54(play, this->fidgetTableY, this->fidgetTableZ, 20);
+    Actor_UpdateFidgetTables(play, this->fidgetTableY, this->fidgetTableZ, 20);
     if (Animation_OnFrame(&this->skelAnime, this->skelAnime.endFrame)) {
         this->canSpeak = true;
         this->trackingMode = NPC_TRACKING_FULL_BODY;
@@ -712,7 +708,7 @@ void EnZo_Dive(EnZo* this, PlayState* play) {
         return;
     }
 
-    if (this->actor.yDistToWater > 80.0f || this->actor.bgCheckFlags & 1) {
+    if (this->actor.yDistToWater > 80.0f || this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
         Math_ApproachF(&this->actor.velocity.y, -1.0f, 0.4f, 0.6f);
         Math_ApproachF(&this->alpha, 0.0f, 0.3f, 10.0f);
     }

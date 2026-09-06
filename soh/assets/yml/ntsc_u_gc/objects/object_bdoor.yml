@@ -1,0 +1,113 @@
+:config:
+  segments:
+    - [ 6, 0x01036A30 ]
+    - [ 5, 0x00D698E0 ]
+    - [ 4, 0x00D30F00 ]
+    - [ 8, 0x01036A30 ]
+    - [ 9, 0x01036A30 ]
+    - [ 10, 0x01036A30 ]
+    - [ 11, 0x01036A30 ]
+    - [ 12, 0x01036A30 ]
+    - [ 13, 0x01036A30 ]
+  external_files:
+    - ntsc_u_gc/objects/gameplay_dangeon_keep.yml
+    - ntsc_u_gc/objects/gameplay_keep.yml
+
+gBossDoorChainDL:
+  type: GFX
+  offset: 0x1530
+  symbol: gBossDoorChainDL
+
+gBossDoorDL:
+  type: GFX
+  offset: 0x10C0
+  symbol: gBossDoorDL
+
+gBossDoorDefaultTex:
+  type: TEXTURE
+  offset: 0x65C0
+  symbol: gBossDoorDefaultTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gBossDoorFireTex:
+  type: TEXTURE
+  offset: 0x35C0
+  symbol: gBossDoorFireTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gBossDoorForestTex:
+  type: TEXTURE
+  offset: 0x25C0
+  symbol: gBossDoorForestTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gBossDoorGanonsCastleTex:
+  type: TEXTURE
+  offset: 0x0
+  symbol: gBossDoorGanonsCastleTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gBossDoorLockDL:
+  type: GFX
+  offset: 0x1400
+  symbol: gBossDoorLockDL
+
+gBossDoorShadowTex:
+  type: TEXTURE
+  offset: 0x45C0
+  symbol: gBossDoorShadowTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gBossDoorSpiritTex:
+  type: TEXTURE
+  offset: 0x15C0
+  symbol: gBossDoorSpiritTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+gBossDoorWaterTex:
+  type: TEXTURE
+  offset: 0x55C0
+  symbol: gBossDoorWaterTex
+  format: RGBA16
+  width: 32
+  height: 64
+
+
+object_bdoorVtx_001000:
+  type: OOT:ARRAY
+  offset: 0x001000
+  symbol: object_bdoorVtx_001000
+  count: 12
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bdoorVtx_001180:
+  type: OOT:ARRAY
+  offset: 0x001180
+  symbol: object_bdoorVtx_001180
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bdoorVtx_0014F0:
+  type: OOT:ARRAY
+  offset: 0x0014F0
+  symbol: object_bdoorVtx_0014F0
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

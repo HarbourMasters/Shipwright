@@ -1,7 +1,8 @@
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
+#include "functions.h"
 #include "src/overlays/actors/ovl_En_Wood02/z_en_wood02.h"
 }
 

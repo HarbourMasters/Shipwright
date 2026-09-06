@@ -1,7 +1,12 @@
 #include "Sail.h"
-#include <libultraship/libultraship.h>
 #include <nlohmann/json.hpp>
+#include <ship/Context.h>
+#include <ship/window/Window.h>
+#include <ship/window/gui/ConsoleWindow.h>
+#include <spdlog/spdlog.h>
+#include "soh/ShipInit.hpp"
 #include "soh/ShipUtils.h"
+#include "soh/cvar_prefixes.h"
 
 template <class DstType, class SrcType> bool IsType(const SrcType* src) {
     return dynamic_cast<const DstType*>(src) != nullptr;
@@ -10,6 +15,12 @@ template <class DstType, class SrcType> bool IsType(const SrcType* src) {
 void Sail::Enable() {
     Network::Enable(CVarGetString(CVAR_REMOTE_SAIL("Host"), "127.0.0.1"),
                     CVarGetInteger(CVAR_REMOTE_SAIL("Port"), 43384));
+    ShipInit::Init(CVAR_REMOTE_SAIL("Enabled"));
+}
+
+void Sail::Disable() {
+    Network::Disable();
+    ShipInit::Init(CVAR_REMOTE_SAIL("Enabled"));
 }
 
 void Sail::OnConnected() {
@@ -333,7 +344,7 @@ std::unique_ptr<GameInteractionEffectBase> Sail::EffectFromJson(nlohmann::json p
 
 void Sail::RegisterHooks() {
     COND_HOOK(OnTransitionEnd, isConnected, [&](int32_t sceneNum) {
-        if (!isConnected || !GameInteractor::IsSaveLoaded())
+        if (!GameInteractor::IsSaveLoaded())
             return;
 
         nlohmann::json payload;
@@ -346,9 +357,6 @@ void Sail::RegisterHooks() {
     });
 
     COND_HOOK(OnLoadGame, isConnected, [&](int32_t fileNum) {
-        if (!isConnected || !GameInteractor::IsSaveLoaded())
-            return;
-
         nlohmann::json payload;
         payload["id"] = ShipUtils::Random(0, UINT32_MAX);
         payload["type"] = "hook";
@@ -359,9 +367,6 @@ void Sail::RegisterHooks() {
     });
 
     COND_HOOK(OnExitGame, isConnected, [&](int32_t fileNum) {
-        if (!isConnected || !GameInteractor::IsSaveLoaded())
-            return;
-
         nlohmann::json payload;
         payload["id"] = ShipUtils::Random(0, UINT32_MAX);
         payload["type"] = "hook";
@@ -372,7 +377,7 @@ void Sail::RegisterHooks() {
     });
 
     COND_HOOK(OnItemReceive, isConnected, [&](GetItemEntry itemEntry) {
-        if (!isConnected || !GameInteractor::IsSaveLoaded())
+        if (!GameInteractor::IsSaveLoaded())
             return;
         nlohmann::json payload;
         payload["id"] = ShipUtils::Random(0, UINT32_MAX);
@@ -385,7 +390,7 @@ void Sail::RegisterHooks() {
     });
 
     COND_HOOK(OnEnemyDefeat, isConnected, [&](void* refActor) {
-        if (!isConnected || !GameInteractor::IsSaveLoaded())
+        if (!GameInteractor::IsSaveLoaded())
             return;
 
         Actor* actor = (Actor*)refActor;
@@ -400,7 +405,7 @@ void Sail::RegisterHooks() {
     });
 
     COND_HOOK(OnActorInit, isConnected, [&](void* refActor) {
-        if (!isConnected || !GameInteractor::IsSaveLoaded())
+        if (!GameInteractor::IsSaveLoaded())
             return;
 
         Actor* actor = (Actor*)refActor;
@@ -415,7 +420,7 @@ void Sail::RegisterHooks() {
     });
 
     COND_HOOK(OnFlagSet, isConnected, [&](int16_t flagType, int16_t flag) {
-        if (!isConnected || !GameInteractor::IsSaveLoaded())
+        if (!GameInteractor::IsSaveLoaded())
             return;
         nlohmann::json payload;
         payload["id"] = ShipUtils::Random(0, UINT32_MAX);
@@ -428,7 +433,7 @@ void Sail::RegisterHooks() {
     });
 
     COND_HOOK(OnFlagUnset, isConnected, [&](int16_t flagType, int16_t flag) {
-        if (!isConnected || !GameInteractor::IsSaveLoaded())
+        if (!GameInteractor::IsSaveLoaded())
             return;
         nlohmann::json payload;
         payload["id"] = ShipUtils::Random(0, UINT32_MAX);
@@ -441,7 +446,7 @@ void Sail::RegisterHooks() {
     });
 
     COND_HOOK(OnSceneFlagSet, isConnected, [&](int16_t sceneNum, int16_t flagType, int16_t flag) {
-        if (!isConnected || !GameInteractor::IsSaveLoaded())
+        if (!GameInteractor::IsSaveLoaded())
             return;
         nlohmann::json payload;
         payload["id"] = ShipUtils::Random(0, UINT32_MAX);
@@ -455,7 +460,7 @@ void Sail::RegisterHooks() {
     });
 
     COND_HOOK(OnSceneFlagUnset, isConnected, [&](int16_t sceneNum, int16_t flagType, int16_t flag) {
-        if (!isConnected || !GameInteractor::IsSaveLoaded())
+        if (!GameInteractor::IsSaveLoaded())
             return;
         nlohmann::json payload;
         payload["id"] = ShipUtils::Random(0, UINT32_MAX);

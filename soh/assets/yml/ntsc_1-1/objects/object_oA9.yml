@@ -1,0 +1,43 @@
+:config:
+  segments:
+    - [ 6, 0x00EC9490 ]
+    - [ 4, 0x00D3A8E0 ]
+    - [ 8, 0x00EC9490 ]
+    - [ 9, 0x00EC9490 ]
+    - [ 10, 0x00EC9490 ]
+    - [ 11, 0x00EC9490 ]
+    - [ 12, 0x00EC9490 ]
+    - [ 13, 0x00EC9490 ]
+  external_files:
+    - ntsc_1-1/objects/gameplay_keep.yml
+
+object_oA9_DL_00000250:
+  type: GFX
+  offset: 0x250
+  symbol: object_oA9_DL_00000250
+
+object_oA9_Tex_000003A0:
+  type: TEXTURE
+  offset: 0x3A0
+  symbol: object_oA9_Tex_000003A0
+  format: RGBA16
+  width: 8
+  height: 16
+
+object_oA9_Tex_000004A0:
+  type: TEXTURE
+  offset: 0x4A0
+  symbol: object_oA9_Tex_000004A0
+  format: RGBA16
+  width: 8
+  height: 8
+
+
+object_oA9Vtx_000000:
+  type: OOT:ARRAY
+  offset: 0x000000
+  symbol: object_oA9Vtx_000000
+  count: 37
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

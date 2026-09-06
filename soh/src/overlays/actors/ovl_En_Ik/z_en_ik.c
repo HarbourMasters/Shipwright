@@ -9,7 +9,6 @@
 #include "objects/object_ik/object_ik.h"
 #include "vt.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
@@ -177,8 +176,6 @@ void EnIk_Destroy(Actor* thisx, PlayState* play) {
     Collider_DestroyTris(play, &this->shieldCollider);
     Collider_DestroyCylinder(play, &this->bodyCollider);
     Collider_DestroyQuad(play, &this->axeCollider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnIk_SetupAction(EnIk* this, EnIkActionFunc actionFunc) {
@@ -385,7 +382,7 @@ void func_80A74BA4(EnIk* this, PlayState* play) {
         sp2E = 9;
     }
     temp_a1 = this->actor.wallYaw - this->actor.shape.rot.y;
-    if ((this->actor.bgCheckFlags & 8) && (ABS(temp_a1) >= 0x4000)) {
+    if ((this->actor.bgCheckFlags & BGCHECKFLAG_WALL) && (ABS(temp_a1) >= 0x4000)) {
         temp_a1 = (this->actor.yawTowardsPlayer > 0) ? this->actor.wallYaw - 0x4000 : this->actor.wallYaw + 0x4000;
         Math_SmoothStepToS(&this->actor.world.rot.y, temp_a1, 1, phi_a3, 0);
     } else {
@@ -444,7 +441,7 @@ void func_80A74EBC(EnIk* this, PlayState* play) {
         sp2C.y = this->actor.world.pos.y;
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_IRONNACK_HIT_GND);
         Camera_AddQuake(&play->mainCamera, 2, 0x19, 5);
-        func_800AA000(this->actor.xzDistToPlayer, 0xFF, 0x14, 0x96);
+        Rumble_Request(this->actor.xzDistToPlayer, 0xFF, 0x14, 0x96);
         CollisionCheck_SpawnShieldParticles(play, &sp2C);
     }
 
@@ -790,7 +787,7 @@ void func_80A75FA0(Actor* thisx, PlayState* play) {
                     this->unk_2FE = 0;
                 }
             }
-            func_8002F71C(play, &this->actor, 8.0f, this->actor.yawTowardsPlayer, 8.0f);
+            Actor_SetPlayerKnockbackLargeNoDamage(play, &this->actor, 8.0f, this->actor.yawTowardsPlayer, 8.0f);
             player->invincibilityTimer = prevInvincibilityTimer;
         }
     }
@@ -987,29 +984,29 @@ void EnIk_StartMusic(void) {
 
 void func_80A76C14(EnIk* this) {
     if (Animation_OnFrame(&this->skelAnime, 1.0f)) {
-        Audio_PlaySoundGeneral(NA_SE_EN_IRONNACK_WAKEUP, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
-                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        Audio_PlaySfxGeneral(NA_SE_EN_IRONNACK_WAKEUP, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
+                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     } else if (Animation_OnFrame(&this->skelAnime, 33.0f)) {
-        Audio_PlaySoundGeneral(NA_SE_EN_IRONNACK_WALK, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
-                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        Audio_PlaySfxGeneral(NA_SE_EN_IRONNACK_WALK, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
+                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     } else if (Animation_OnFrame(&this->skelAnime, 68.0f) || Animation_OnFrame(&this->skelAnime, 80.0f)) {
-        Audio_PlaySoundGeneral(NA_SE_EN_IRONNACK_ARMOR_DEMO, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
-                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        Audio_PlaySfxGeneral(NA_SE_EN_IRONNACK_ARMOR_DEMO, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
+                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     } else if (Animation_OnFrame(&this->skelAnime, 107.0f)) {
-        Audio_PlaySoundGeneral(NA_SE_EN_IRONNACK_FINGER_DEMO, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
-                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        Audio_PlaySfxGeneral(NA_SE_EN_IRONNACK_FINGER_DEMO, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
+                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     } else if (Animation_OnFrame(&this->skelAnime, 156.0f)) {
-        Audio_PlaySoundGeneral(NA_SE_EN_IRONNACK_ARMOR_DEMO, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
-                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        Audio_PlaySfxGeneral(NA_SE_EN_IRONNACK_ARMOR_DEMO, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
+                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     } else if (Animation_OnFrame(&this->skelAnime, 188.0f)) {
-        Audio_PlaySoundGeneral(NA_SE_EN_IRONNACK_WAVE_DEMO, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
-                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        Audio_PlaySfxGeneral(NA_SE_EN_IRONNACK_WAVE_DEMO, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
+                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     }
 }
 
 void func_80A76DDC(EnIk* this, PlayState* play, Vec3f* pos) {
-    Audio_PlaySoundGeneral(NA_SE_EN_TWINROBA_TRANSFORM, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
-                           &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+    Audio_PlaySfxGeneral(NA_SE_EN_TWINROBA_TRANSFORM, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
+                         &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
 }
 
 void func_80A76E2C(EnIk* this, PlayState* play, Vec3f* pos) {
@@ -1116,8 +1113,8 @@ void func_80A77264(EnIk* this, PlayState* play, s32 arg2) {
 }
 
 void func_80A772A4(EnIk* this) {
-    Audio_PlaySoundGeneral(NA_SE_EN_IRONNACK_STAGGER_DEMO, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
-                           &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+    Audio_PlaySfxGeneral(NA_SE_EN_IRONNACK_STAGGER_DEMO, &this->actor.projectedPos, 4, &gSfxDefaultFreqAndVolScale,
+                         &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
 }
 
 void func_80A772EC(EnIk* this, PlayState* play) {
@@ -1126,8 +1123,8 @@ void func_80A772EC(EnIk* this, PlayState* play) {
     f32 wDest;
 
     SkinMatrix_Vec3fMtxFMultXYZW(&play->viewProjectionMtxF, &this->actor.world.pos, &D_80A78FA0, &wDest);
-    Audio_PlaySoundGeneral(NA_SE_EN_IRONNACK_DEAD, &D_80A78FA0, 4, &gSfxDefaultFreqAndVolScale,
-                           &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+    Audio_PlaySfxGeneral(NA_SE_EN_IRONNACK_DEAD, &D_80A78FA0, 4, &gSfxDefaultFreqAndVolScale,
+                         &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
 }
 
 void func_80A7735C(EnIk* this, PlayState* play) {

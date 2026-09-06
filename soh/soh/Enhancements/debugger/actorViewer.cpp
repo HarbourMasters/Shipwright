@@ -1,3 +1,8 @@
+#include <algorithm>
+#include <array>
+#include <unordered_map>
+#include <string>
+
 #include "actorViewer.h"
 #include "../../util.h"
 #include "soh/SohGui/UIWidgets.hpp"
@@ -6,29 +11,15 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/nametag.h"
 #include "soh/ShipInit.hpp"
-
-#include <algorithm>
-#include <array>
-#include <bit>
-#include <map>
-#include <unordered_map>
-#include <string>
-#include <libultraship/bridge.h>
-#include <spdlog/fmt/fmt.h>
-#include "soh/OTRGlobals.h"
 #include "soh/cvar_prefixes.h"
 #include "soh/ObjectExtension/ActorListIndex.h"
 
 extern "C" {
 #include <z64.h>
 #include "z64math.h"
-#include "variables.h"
 #include "functions.h"
 #include "macros.h"
 extern PlayState* gPlayState;
-
-#include "textures/icon_item_static/icon_item_static.h"
-#include "textures/icon_item_24_static/icon_item_24_static.h"
 }
 
 #define DEKUNUTS_FLOWER 10
@@ -47,7 +38,7 @@ typedef struct {
 
 std::array<const char*, 12> acMapping = {
     "Switch",      "Background (Prop type 1)",
-    "Player",      "Bomb",
+    "Player",      "Bomb/Bombchu",
     "NPC",         "Enemy",
     "Prop type 2", "Item/Action",
     "Misc.",       "Boss",
@@ -804,6 +795,9 @@ std::vector<u16> GetActorsWithDescriptionContainingString(std::string s) {
     std::vector<u16> actors;
     for (int i = 0; i < ActorDB::Instance->GetEntryCount(); i += 1) {
         ActorDB::Entry actorEntry = ActorDB::Instance->RetrieveEntry(i);
+        if (!actorEntry.entry.valid) {
+            continue;
+        }
         std::string desc = actorEntry.desc;
         for (size_t j = 0; j < desc.length(); j += 1) {
             desc[j] = std::tolower(desc[j], loc);
@@ -832,7 +826,7 @@ void ActorViewer_AddTagForActor(Actor* actor) {
         parts.push_back(acMapping[actor->category]);
     }
     if (CVarGetInteger(CVAR_ACTOR_NAME_TAGS("DisplayParams"), 0)) {
-        parts.push_back(fmt::format("0x{:04X} ({})", (u16)actor->params, actor->params));
+        parts.push_back(spdlog::fmt_lib::format("0x{:04X} ({})", (u16)actor->params, actor->params));
     }
 
     std::string tag = "";
@@ -927,9 +921,9 @@ void ActorViewerWindow::DrawElement() {
 
         PushStyleCombobox(THEME_COLOR);
         if (ImGui::BeginCombo("Actor Type", acMapping[category])) {
-            for (int i = 0; i < acMapping.size(); i++) {
+            for (size_t i = 0; i < acMapping.size(); i++) {
                 if (ImGui::Selectable(acMapping[i])) {
-                    category = i;
+                    category = static_cast<int>(i);
                     PopulateActorDropdown(category, list);
                     break;
                 }
@@ -942,7 +936,7 @@ void ActorViewerWindow::DrawElement() {
         }
 
         if (ImGui::BeginCombo("Actor", filler.c_str())) {
-            for (int i = 0; i < list.size(); i++) {
+            for (size_t i = 0; i < list.size(); i++) {
                 std::string label = std::to_string(i) + ": " + ActorDB::Instance->RetrieveEntry(list[i]->id).name;
                 std::string description = GetActorDescription(list[i]->id);
                 if (description != "")
@@ -965,9 +959,9 @@ void ActorViewerWindow::DrawElement() {
                     [&]() {
                         ImGui::Text("Name: %s", ActorDB::Instance->RetrieveEntry(display->id).name.c_str());
                         ImGui::Text("Description: %s", GetActorDescription(display->id).c_str());
-                        ImGui::Text("Category: %s", acMapping[display->category]);
-                        ImGui::Text("ID: %d", display->id);
-                        ImGui::Text("Parameters: %d", display->params);
+                        ImGui::Text("Category: %s (%d)", acMapping[display->category], display->category);
+                        ImGui::Text("ID: %d (0x%x)", display->id, display->id);
+                        ImGui::Text("Parameters: %d (0x%x)", display->params, display->params);
                         ImGui::Text("Actor List Index: %d", GetActorListIndex(display));
                     },
                     "Selected Actor");
@@ -1104,7 +1098,7 @@ void ActorViewerWindow::DrawElement() {
                 PushStyleInput(THEME_COLOR);
                 ImGui::InputScalar("params", ImGuiDataType_S16, &newActor.params, &one);
                 PopStyleInput();
-            } else if (std::find(noParamsActors.begin(), noParamsActors.end(), newActor.id) == noParamsActors.end()) {
+            } else if (!SohUtils::Contains(newActor.id, noParamsActors)) {
                 CreateActorSpecificData();
                 if (actorSpecificData.find(newActor.id) == actorSpecificData.end()) {
                     PushStyleInput(THEME_COLOR);
@@ -1168,8 +1162,7 @@ void ActorViewerWindow::DrawElement() {
             if (Button("Spawn as Child", ButtonOptions().Color(THEME_COLOR))) {
                 Actor* parent = display;
                 if (parent != NULL) {
-                    if (newActor.id >= 0 && newActor.id < ACTOR_ID_MAX &&
-                        ActorDB::Instance->RetrieveEntry(newActor.id).entry.valid) {
+                    if (ActorDB::Instance->RetrieveEntry(newActor.id).entry.valid) {
                         Actor_SpawnAsChild(&gPlayState->actorCtx, parent, gPlayState, newActor.id, newActor.pos.x,
                                            newActor.pos.y, newActor.pos.z, newActor.rot.x, newActor.rot.y,
                                            newActor.rot.z, newActor.params);

@@ -961,8 +961,8 @@ void EnItem00_Update(Actor* thisx, PlayState* play) {
     }
 
     if ((*params <= ITEM00_RUPEE_RED) || (*params == ITEM00_RUPEE_ORANGE)) {
-        Audio_PlaySoundGeneral(NA_SE_SY_GET_RUPY, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        Audio_PlaySfxGeneral(NA_SE_SY_GET_RUPY, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     } else if (getItemId != GI_NONE) {
         if (Actor_HasParent(&this->actor, play)) {
             Flags_SetCollectible(play, this->collectibleFlag);
@@ -970,8 +970,8 @@ void EnItem00_Update(Actor* thisx, PlayState* play) {
         }
         return;
     } else {
-        Audio_PlaySoundGeneral(NA_SE_SY_GET_ITEM, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        Audio_PlaySfxGeneral(NA_SE_SY_GET_ITEM, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     }
 
     Flags_SetCollectible(play, this->collectibleFlag);
@@ -1727,15 +1727,17 @@ void Item_DropCollectibleRandom(PlayState* play, Actor* fromActor, Vec3f* spawnP
             params = 0xA * 0x10;
             dropTableIndex = 0x0;
             dropId = ITEM00_MAGIC_SMALL;
-        } else if (!LINK_IS_ADULT && (AMMO(ITEM_SLINGSHOT) < 6)) {
+        } else if (GameInteractor_Should(VB_FLEX_DROP_AMMO, !LINK_IS_ADULT && (AMMO(ITEM_SLINGSHOT) < 6),
+                                         ITEM00_SEEDS)) {
             params = 0xA * 0x10;
             dropTableIndex = 0x0;
             dropId = ITEM00_SEEDS;
-        } else if (LINK_IS_ADULT && (AMMO(ITEM_BOW) < 6)) {
+        } else if (GameInteractor_Should(VB_FLEX_DROP_AMMO, LINK_IS_ADULT && (AMMO(ITEM_BOW) < 6),
+                                         ITEM00_ARROWS_MEDIUM)) {
             params = 0xA * 0x10;
             dropTableIndex = 0x0;
             dropId = ITEM00_ARROWS_MEDIUM;
-        } else if (AMMO(ITEM_BOMB) < 6) {
+        } else if (GameInteractor_Should(VB_FLEX_DROP_AMMO, AMMO(ITEM_BOMB) < 6, ITEM00_BOMBS_A)) {
             params = 0xD * 0x10;
             dropTableIndex = 0x0;
             dropId = ITEM00_BOMBS_A;

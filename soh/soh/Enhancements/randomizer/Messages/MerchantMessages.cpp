@@ -6,16 +6,17 @@
  * including both shops and one-off merchants (i.e. Medigoron, Bean Guy,
  * and Carpet Salesman)
  */
+
 #include <soh/OTRGlobals.h>
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ObjectExtension/ObjectExtension.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
 
 extern "C" {
-extern PlayState* gPlayState;
 #include <macros.h>
 #include <functions.h>
-#include <variables.h>
 #include <overlays/actors/ovl_En_Dns/z_en_dns.h>
+extern PlayState* gPlayState;
 }
 
 #define RAND_GET_ITEM(rc) OTRGlobals::Instance->gRandoContext->GetItemLocation(rc)
@@ -29,20 +30,27 @@ void BuildMerchantMessage(CustomMessage& msg, RandomizerCheck rc, bool mysteriou
     RandomizerGet rgid = location->GetPlacedRandomizerGet();
     CustomMessage itemName;
     std::string color = Rando::StaticData::RetrieveItem(static_cast<RandomizerGet>(rgid)).GetColor();
+    // Shop lists want a bare name, everyone else speaks in sentences and wants an article
+    bool inShop = Rando::StaticData::GetLocation(rc)->IsShop();
     if (mysterious) {
         itemName = Rando::StaticData::hintTextTable[RHT_MYSTERIOUS_ITEM_CAPITAL].GetHintMessage();
+        if (!inShop) {
+            itemName = CustomMessage("a ", "einen ", "un ") + itemName;
+        }
         color = "%g";
     } else if (rgid == RG_ICE_TRAP) {
         rgid = RAND_GET_OVERRIDE(rc).LooksLike();
-        itemName = CustomMessage(RAND_GET_OVERRIDE(rc).GetTrickName());
-        color = "%g";
-    } else {
-        const Rando::Item& item = Rando::StaticData::RetrieveItem(rgid);
-        if (Rando::StaticData::GetLocation(rc)->IsShop()) {
-            itemName = CustomMessage(Rando::StaticData::RetrieveItem(rgid).GetName());
-        } else {
-            itemName = item.GetHint().GetHintMessage();
+        Text trickName = RAND_GET_OVERRIDE(rc).GetTrickName();
+        if (!inShop) {
+            trickName = RAND_GET_OVERRIDE(rc).GetTrickArticle() + trickName;
         }
+        itemName = CustomMessage(trickName);
+        color = "%g";
+    } else if (inShop) {
+        itemName = CustomMessage(Rando::StaticData::RetrieveItem(rgid).GetName());
+    } else {
+        // Hint text brings its own article
+        itemName = Rando::StaticData::RetrieveItem(rgid).GetHint().GetHintMessage();
     }
     msg.Replace("[[color]]", color);
     msg.InsertNames({ itemName, CustomMessage(std::to_string(location->GetPrice())) });
@@ -121,8 +129,8 @@ void BuildCarpetGuyMessage(uint16_t* textId, bool* loadFromMessageTable) {
 
 void BuildCarpetGuyFailToBuyMessage(uint16_t* textId, bool* loadFromMessageTable) {
     CustomMessage msg =
-        CustomMessage("I'm sorry I can't sell you these fine specimens, they need an %rexperienced owner%w.^"
-                      "Come back when you have had %gBombchus%w of your own.");
+        CustomMessage("I'm sorry, I can't sell you these fine specimens. They need an %rexperienced owner%w.^"
+                      "Come back when you have %gBombchus%w of your own.");
     msg.AutoFormat();
     msg.LoadIntoFont();
     *loadFromMessageTable = false;
@@ -135,23 +143,23 @@ void BuildScrubMessage(uint16_t* textId, bool* loadFromMessageTable) {
     CustomMessage msg;
     if (price == 0) {
         msg = CustomMessage("\x12\x38\x82"
-                            "All right! You win! In return for sparing me, I will give you a [[color]][[1]]%w!&Please, "
+                            "All right! You win! In return for sparing me, I will give you [[color]][[1]]%w!&Please, "
                             "take it!\x07\x10\xA3",
                             "\x12\x38\x82"
                             "In Ordnung! Du gewinnst! Im Austausch dafür, dass Du mich verschont hast, werde ich Dir "
-                            "einen [[color]][[1]]%w geben!\x07\x10\xA3",
+                            "[[color]][[1]]%w geben!\x07\x10\xA3",
                             "\x12\x38\x82"
-                            "J'me rends! Laisse-moi partir et en échange, je te donne un [[color]][[1]]%w! Vas-y "
+                            "J'me rends! Laisse-moi partir et en échange, je te donne [[color]][[1]]%w! Vas-y "
                             "prends le!\x07\x10\xA3");
     } else {
         msg = CustomMessage(
             "\x12\x38\x82"
-            "All right! You win! In return for sparing me, I will sell you a [[color]][[1]]%w! %y[[2]] Rupees%w it "
+            "All right! You win! In return for sparing me, I will sell you [[color]][[1]]%w! %y[[2]] Rupees%w it "
             "is!\x07\x10\xA3",
             "\x12\x38\x82"
-            "Ich gebe auf! Ich verkaufe Dir einen [[color]][[1]]%w für %y[[2]] Rubine%w!\x07\x10\xA3",
+            "Ich gebe auf! Ich verkaufe Dir [[color]][[1]]%w für %y[[2]] Rubine%w!\x07\x10\xA3",
             "\x12\x38\x82"
-            "J'abandonne! Tu veux bien m'acheter un [[color]][[1]]%w? Ça fera %y[[2]] Rubis%w!\x07\x10\xA3");
+            "J'abandonne! Tu veux bien m'acheter [[color]][[1]]%w? Ça fera %y[[2]] Rubis%w!\x07\x10\xA3");
     }
     BuildMerchantMessage(msg, rc,
                          !RAND_GET_OPTION(RSK_SCRUB_TEXT_HINT) ||

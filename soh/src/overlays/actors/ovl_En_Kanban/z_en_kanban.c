@@ -236,7 +236,7 @@ void EnKanban_Message(EnKanban* this, PlayState* play) {
                 if (Actor_ProcessTalkRequest(&this->actor, play)) {
                     this->msgFlag = true;
                 } else {
-                    func_8002F2CC(&this->actor, play, 68.0f);
+                    Actor_OfferTalk(&this->actor, play, 68.0f);
                 }
             }
         } else {
@@ -446,7 +446,7 @@ void EnKanban_Update(Actor* thisx, PlayState* play2) {
             this->actor.yDistToWater = tempYDistToWater;
 
             osSyncPrintf(VT_RST);
-            onGround = (this->actor.bgCheckFlags & 1);
+            onGround = (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND);
             if (this->spinXFlag) {
                 this->spinRot.x += this->spinVel.x;
                 this->spinVel.x -= 0x800;
@@ -483,7 +483,7 @@ void EnKanban_Update(Actor* thisx, PlayState* play2) {
             if (this->spinVel.z < -0xC00) {
                 this->spinVel.z = -0xC00;
             }
-            if (this->actor.bgCheckFlags & 8) {
+            if (this->actor.bgCheckFlags & BGCHECKFLAG_WALL) {
                 this->actor.speedXZ *= -0.5f;
                 Audio_PlayActorSound2(&this->actor, NA_SE_EV_WOODPLATE_BOUND);
             }
@@ -595,13 +595,13 @@ void EnKanban_Update(Actor* thisx, PlayState* play2) {
                         this->spinVel.y = this->actor.speedXZ * -1000.0f;
                     }
                 }
-                if (this->actor.bgCheckFlags & 1) {
+                if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
                     this->actor.speedXZ = 0.0f;
                 }
                 Actor_MoveXZGravity(&this->actor);
                 if (this->actor.speedXZ != 0.0f) {
                     Actor_UpdateBgCheckInfo(play, &this->actor, 10.0f, 10.0f, 50.0f, 5);
-                    if (this->actor.bgCheckFlags & 8) {
+                    if (this->actor.bgCheckFlags & BGCHECKFLAG_WALL) {
                         this->actor.speedXZ *= -0.5f;
                         if (this->spinVel.y > 0) {
                             this->spinVel.y = -0x7D0;
@@ -716,8 +716,8 @@ void EnKanban_Update(Actor* thisx, PlayState* play2) {
                         (play->msgCtx.unk_E3F2 == OCARINA_SONG_LULLABY)) {
                         this->actionState = ENKANBAN_REPAIR;
                         this->bounceX = 1;
-                        Audio_PlaySoundGeneral(NA_SE_SY_TRE_BOX_APPEAR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+                        Audio_PlaySfxGeneral(NA_SE_SY_TRE_BOX_APPEAR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
                     }
                     break;
             }

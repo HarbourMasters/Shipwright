@@ -1,30 +1,26 @@
-#include "Plandomizer.h"
-#include <soh/SohGui/SohGui.hpp>
-#include "soh/SohGui/UIWidgets.hpp"
-#include "soh/util.h"
 #include <vector>
-#include "soh/Notification/Notification.h"
-#include <soh_assets.h>
-#include "soh/Enhancements/randomizer/3drando/hints.hpp"
-
 #include <fstream>
 #include <filesystem>
 
+#include <fast/Fast3dGui.h>
+
+#include "Plandomizer.h"
+#include <soh/SohGui/SohGui.hpp>
+#include "soh/SohGui/UIWidgets.hpp"
+#include "soh/Notification/Notification.h"
+#include "soh/Enhancements/randomizer/3drando/hints.hpp"
 #include "soh/OTRGlobals.h"
 #include "soh/SohGui/ImGuiUtils.h"
 #include "soh/Enhancements/randomizer/logic.h"
-#include "soh/Enhancements/randomizer/randomizer_check_objects.h"
 #include "soh/Enhancements/randomizer/rando_hash.h"
 #include "soh/Enhancements/randomizer/Traps.h"
-#include "soh/Enhancements/randomizer/3drando/shops.hpp"
-
-#include <fast/Fast3dGui.h>
-
-#include <fast/Fast3dGui.h>
 
 extern "C" {
+#include <soh_assets.h>
 #include "include/z64item.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
+#include "textures/icon_item_static/icon_item_static.h"
+#include "textures/parameter_static/parameter_static.h"
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
 }
@@ -256,6 +252,7 @@ std::unordered_map<RandomizerGet, std::string> itemImageMap = {
     { RG_FISHING_POLE, "ITEM_FISHING_POLE" },
     { RG_SOLD_OUT, "ITEM_SOLD_OUT" },
     { RG_TRIFORCE_PIECE, "TRIFORCE_PIECE" },
+    { RG_TRIFORCE, "TRIFORCE" },
     { RG_SKELETON_KEY, "ITEM_KEY_SMALL" }
 };
 
@@ -309,9 +306,9 @@ ImVec4 plandomizerGetItemColor(Rando::Item randoItem) {
         return itemColor;
     }
     if (randoItem.GetItemType() == ITEMTYPE_SONG) {
+        auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
         uint32_t questID = Rando::Logic::RandoGetToQuestItem[randoItem.GetRandomizerGet()];
-        textureID = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                        ->GetTextureByName(songMapping.at((QuestItem)questID).name);
+        textureID = gui->GetTextureByName(songMapping.at((QuestItem)questID).name);
         itemColor = songMapping.at((QuestItem)questID).color;
         imageSize = ImVec2(24.0f, 32.0f);
         imagePadding = 6.0f;
@@ -375,6 +372,7 @@ void PlandomizerPopulateSeedList() {
 }
 
 void PlandomizerItemImageCorrection(Rando::Item randoItem) {
+    auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
     textureID = 0;
     imageSize = ImVec2(32.0f, 32.0f);
     imagePadding = 2.0f;
@@ -384,21 +382,17 @@ void PlandomizerItemImageCorrection(Rando::Item randoItem) {
     itemColor = plandomizerGetItemColor(randoItem);
 
     if (randoItem.GetItemType() == ITEMTYPE_SMALLKEY || randoItem.GetItemType() == ITEMTYPE_FORTRESS_SMALLKEY) {
-        textureID = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                        ->GetTextureByName("ITEM_KEY_SMALL");
+        textureID = gui->GetTextureByName("ITEM_KEY_SMALL");
         return;
     }
     if (randoItem.GetItemType() == ITEMTYPE_BOSSKEY) {
-        textureID = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                        ->GetTextureByName("ITEM_KEY_BOSS");
+        textureID = gui->GetTextureByName("ITEM_KEY_BOSS");
         return;
     }
 
     for (auto& map : itemImageMap) {
         if (map.first == randoItem.GetRandomizerGet()) {
-            textureID =
-                std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                    ->GetTextureByName(map.second.c_str());
+            textureID = gui->GetTextureByName(map.second.c_str());
             if (map.second.find("ITEM_ARROWS") != std::string::npos) {
                 textureUV0 = ImVec2(0, 1);
                 textureUV1 = ImVec2(1, 0);
@@ -412,19 +406,16 @@ void PlandomizerItemImageCorrection(Rando::Item randoItem) {
     }
 
     if (randoItem.GetRandomizerGet() >= RG_GOHMA_SOUL && randoItem.GetRandomizerGet() <= RG_GANON_SOUL) {
-        textureID = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                        ->GetTextureByName("BOSS_SOUL");
+        textureID = gui->GetTextureByName("BOSS_SOUL");
     }
 
     if (randoItem.GetRandomizerGet() >= RG_OCARINA_A_BUTTON &&
         randoItem.GetRandomizerGet() <= RG_OCARINA_C_RIGHT_BUTTON) {
-        textureID = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                        ->GetTextureByName("ITEM_OCARINA_TIME");
+        textureID = gui->GetTextureByName("ITEM_OCARINA_TIME");
     }
 
     if (textureID == 0) {
-        textureID = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                        ->GetTextureByName(itemMapping[randoItem.GetGIEntry()->itemId].name);
+        textureID = gui->GetTextureByName(itemMapping[randoItem.GetGIEntry()->itemId].name);
     }
 }
 
@@ -887,8 +878,9 @@ void PlandomizerDrawIceTrapSetup(uint32_t index) {
                                                            .Size(UIWidgets::Sizes::Inline)
                                                            .Padding(ImVec2(10.f, 6.f)))) {
             plandoLogData[index].iceTrapName =
-                Rando::Traps::GetTrapName(plandoLogData[index].iceTrapModel.GetRandomizerGet())
-                    .GetForLanguage(CVarGetInteger(CVAR_SETTING("Languages"), 0))
+                Rando::Traps::GetTrapName(plandoLogData[index].iceTrapModel.GetRandomizerGet(),
+                                          RO_ICE_TRAP_NAMES_SIMILAR)
+                    .name.GetForLanguage(CVarGetInteger(CVAR_SETTING("Languages"), 0))
                     .c_str();
         }
         ImGui::SameLine();
@@ -974,6 +966,8 @@ void PlandomizerDrawOptions() {
         ImGui::SetCursorPosX(ImGui::GetCursorPosX() + (ImGui::GetContentRegionAvail().x * 0.5f) - (34.0f * 5.0f));
         if (spoilerLogData.size() > 0) {
             if (ImGui::BeginTable("HashIcons", 5)) {
+                auto gui =
+                    std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
                 for (int i = 0; i < 5; i++) {
                     ImGui::TableSetupColumn("Icon", ImGuiTableColumnFlags_WidthFixed, 34.0f);
                 }
@@ -983,19 +977,14 @@ void PlandomizerDrawOptions() {
                 PlandoPushImageButtonStyle();
                 for (auto& hash : plandoHash) {
                     ImGui::PushID(index);
-                    textureID = std::dynamic_pointer_cast<Fast::Fast3dGui>(
-                                    Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                                    ->GetTextureByName(gSeedTextures[hash].tex);
+                    textureID = gui->GetTextureByName(gSeedTextures[hash].tex);
                     ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2.0f, 2.0f));
-                    auto upRet = ImGui::ImageButton("HASH_ARROW_UP",
-                                                    std::dynamic_pointer_cast<Fast::Fast3dGui>(
-                                                        Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                                                        ->GetTextureByName("HASH_ARROW_UP"),
+                    auto upRet = ImGui::ImageButton("HASH_ARROW_UP", gui->GetTextureByName("HASH_ARROW_UP"),
                                                     ImVec2(35.0f, 18.0f), ImVec2(1, 1), ImVec2(0, 0),
                                                     ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1));
                     ImGui::PopStyleVar();
                     if (upRet) {
-                        if (hash + 1 >= gSeedTextures.size()) {
+                        if (hash + 1 >= static_cast<int32_t>(gSeedTextures.size())) {
                             hash = 0;
                         } else {
                             hash++;
@@ -1003,10 +992,7 @@ void PlandomizerDrawOptions() {
                     }
                     ImGui::Image(textureID, ImVec2(35.0f, 35.0f));
                     ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2.0f, 2.0f));
-                    auto downRet = ImGui::ImageButton("HASH_ARROW_DWN",
-                                                      std::dynamic_pointer_cast<Fast::Fast3dGui>(
-                                                          Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-                                                          ->GetTextureByName("HASH_ARROW_DWN"),
+                    auto downRet = ImGui::ImageButton("HASH_ARROW_DWN", gui->GetTextureByName("HASH_ARROW_DWN"),
                                                       ImVec2(35.0f, 18.0f), ImVec2(0, 0), ImVec2(1, 1),
                                                       ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1));
                     ImGui::PopStyleVar();
@@ -1017,7 +1003,7 @@ void PlandomizerDrawOptions() {
                             hash--;
                         }
                     }
-                    if (index != spoilerHash.size() - 1) {
+                    if (static_cast<size_t>(index) != spoilerHash.size() - 1) {
                         ImGui::TableNextColumn();
                     }
                     ImGui::PopID();
@@ -1186,26 +1172,17 @@ void PlandomizerWindow::DrawElement() {
 }
 
 void PlandomizerWindow::InitElement() {
-    std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-        ->LoadGuiTexture("ITEM_RUPEE_GRAYSCALE", gRupeeCounterIconTex, ImVec4(1, 1, 1, 1));
-    std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-        ->LoadGuiTexture("ITEM_HEART_GRAYSCALE", gHeartFullTex, ImVec4(0.87f, 0.10f, 0.10f, 1));
-    std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-        ->LoadGuiTexture("ITEM_SEEDS", gItemIconDekuSeedsTex, ImVec4(1, 1, 1, 1));
-    std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-        ->LoadGuiTexture("ITEM_ARROWS_SMALL", gDropArrows1Tex, ImVec4(1, 1, 1, 1));
-    std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-        ->LoadGuiTexture("ITEM_ARROWS_MEDIUM", gDropArrows2Tex, ImVec4(1, 1, 1, 1));
-    std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-        ->LoadGuiTexture("ITEM_ARROWS_LARGE", gDropArrows3Tex, ImVec4(1, 1, 1, 1));
-    std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-        ->LoadGuiTexture("ITEM_ICE_TRAP", gMagicArrowEquipEffectTex, ImVec4(1, 1, 1, 1));
-    std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-        ->LoadGuiTexture("HASH_ARROW_UP", gEmptyCDownArrowTex, ImVec4(1, 1, 1, 1));
-    std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-        ->LoadGuiTexture("HASH_ARROW_DWN", gEmptyCDownArrowTex, ImVec4(1, 1, 1, 1));
-    std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-        ->LoadGuiTexture("BOSS_SOUL", gBossSoulTex, ImVec4(1, 1, 1, 1));
-    std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui())
-        ->LoadGuiTexture("TRIFORCE_PIECE", gTriforcePieceTex, ImVec4(1, 1, 1, 1));
+    auto gui = std::dynamic_pointer_cast<Fast::Fast3dGui>(Ship::Context::GetRawInstance()->GetWindow()->GetGui());
+    gui->LoadGuiTexture("ITEM_RUPEE_GRAYSCALE", gRupeeCounterIconTex, "", ImVec4(1, 1, 1, 1));
+    gui->LoadGuiTexture("ITEM_HEART_GRAYSCALE", gHeartFullTex, "", ImVec4(0.87f, 0.10f, 0.10f, 1));
+    gui->LoadGuiTexture("ITEM_SEEDS", gItemIconDekuSeedsTex, "", ImVec4(1, 1, 1, 1));
+    gui->LoadGuiTexture("ITEM_ARROWS_SMALL", gDropArrows1Tex, "", ImVec4(1, 1, 1, 1));
+    gui->LoadGuiTexture("ITEM_ARROWS_MEDIUM", gDropArrows2Tex, "", ImVec4(1, 1, 1, 1));
+    gui->LoadGuiTexture("ITEM_ARROWS_LARGE", gDropArrows3Tex, "", ImVec4(1, 1, 1, 1));
+    gui->LoadGuiTexture("ITEM_ICE_TRAP", gMagicArrowEquipEffectTex, "", ImVec4(1, 1, 1, 1));
+    gui->LoadGuiTexture("HASH_ARROW_UP", gEmptyCDownArrowTex, "", ImVec4(1, 1, 1, 1));
+    gui->LoadGuiTexture("HASH_ARROW_DWN", gEmptyCDownArrowTex, "", ImVec4(1, 1, 1, 1));
+    gui->LoadGuiTexture("BOSS_SOUL", gBossSoulTex, "", ImVec4(1, 1, 1, 1));
+    gui->LoadGuiTexture("TRIFORCE_PIECE", gTriforcePieceTex, "", ImVec4(1, 1, 1, 1));
+    gui->LoadGuiTexture("TRIFORCE", gTriforcePieceTex, "", ImVec4(1, 1, 1, 1));
 }

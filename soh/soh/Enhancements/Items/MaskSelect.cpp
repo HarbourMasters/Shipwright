@@ -1,4 +1,4 @@
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
@@ -8,7 +8,7 @@ extern "C" {
 
 static void RegisterMaskSelectFixes() {
     // Fix mask quest so replacing SOLD OUT with mask select doesn't break quest
-    COND_VB_SHOULD(VB_HAPPY_MASK_SHOP_CHECK_SOLD_OUT, CVarGetInteger(CVAR_ENHANCEMENT("MaskSelect"), 0), {
+    COND_VB_SHOULD(VB_HAPPY_MASK_SHOP_CHECK_SOLD_OUT, CVarGetInteger(CVAR_ENHANCEMENT("MaskSelect"), 0) || IS_RANDO, {
         Actor* actor = va_arg(args, Actor*);
         if (actor->params == OSSAN_TYPE_MASK &&
                 (Flags_GetItemGetInf(ITEMGETINF_3B) && !Flags_GetEventChkInf(EVENTCHKINF_PAID_BACK_BUNNY_HOOD_FEE)) ||
@@ -20,4 +20,4 @@ static void RegisterMaskSelectFixes() {
     });
 }
 
-static RegisterShipInitFunc initFunc(RegisterMaskSelectFixes, { CVAR_ENHANCEMENT("MaskSelect") });
+static RegisterShipInitFunc initFunc(RegisterMaskSelectFixes, { CVAR_ENHANCEMENT("MaskSelect"), "IS_RANDO" });

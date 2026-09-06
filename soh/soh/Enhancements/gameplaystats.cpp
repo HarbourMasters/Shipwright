@@ -1,20 +1,17 @@
-#include "gameplaystats.h"
+#include <string>
 
+#include "gameplaystats.h"
 #include "soh/SaveManager.h"
-#include "functions.h"
-#include "macros.h"
 #include "soh/cvar_prefixes.h"
 #include "soh/SohGui/UIWidgets.hpp"
 #include "soh/SohGui/SohGui.hpp"
 #include "soh/util.h"
-
-#include <vector>
-#include <string>
-#include <libultraship/bridge.h>
-#include "soh/Enhancements/enhancementTypes.h"
+#include "soh/Enhancements/BunnyHood.h"
 #include "soh/OTRGlobals.h"
 
 extern "C" {
+#include "functions.h"
+#include "macros.h"
 #include <z64.h>
 #include "variables.h"
 extern PlayState* gPlayState;
@@ -239,7 +236,7 @@ const char* const countMappings[] = {
 #define COLOR_LIGHT_BLUE ImVec4(0.00f, 0.88f, 1.00f, 1.00f)
 #define COLOR_GREY ImVec4(0.78f, 0.78f, 0.78f, 1.00f)
 
-char itemTimestampDisplayName[TIMESTAMP_MAX][21] = { "" };
+char itemTimestampDisplayName[TIMESTAMP_MAX][24] = { "" };
 ImVec4 itemTimestampDisplayColor[TIMESTAMP_MAX];
 
 typedef struct {
@@ -262,19 +259,19 @@ std::string formatTimestampGameplayStat(uint32_t value) {
     uint32_t mm = (sec - hh * 3600) / 60;
     uint32_t ss = sec - hh * 3600 - mm * 60;
     uint32_t ds = value % 10;
-    return fmt::format("{}:{:0>2}:{:0>2}.{}", hh, mm, ss, ds);
+    return spdlog::fmt_lib::format("{}:{:0>2}:{:0>2}.{}", hh, mm, ss, ds);
 }
 
 std::string formatIntGameplayStat(uint32_t value) {
-    return fmt::format("{}", value);
+    return spdlog::fmt_lib::format("{}", value);
 }
 
 std::string formatHexGameplayStat(uint32_t value) {
-    return fmt::format("{:#x} ({:d})", value, value);
+    return spdlog::fmt_lib::format("{:#x} ({:d})", value, value);
 }
 
 std::string formatHexOnlyGameplayStat(uint32_t value) {
-    return fmt::format("{:#x}", value, value);
+    return spdlog::fmt_lib::format("{:#x}", value, value);
 }
 
 extern "C" char* GameplayStats_GetCurrentTime() {
@@ -389,7 +386,7 @@ void GameplayStatsRow(const char* label, const std::string& value, ImVec4 color 
     ImGui::SameLine(ImGui::GetContentRegionAvail().x - (ImGui::CalcTextSize(value.c_str()).x));
     ImGui::Text("%s", value.c_str());
     ImGui::PopStyleColor();
-    if (tooltip != "" && ImGui::IsItemHovered()) {
+    if (tooltip[0] != '\0' && ImGui::IsItemHovered()) {
         ImGui::SetTooltip("%s", tooltip);
     }
 }
@@ -496,7 +493,7 @@ void DrawGameplayStatsTimestampsTab() {
     ImGui::TableSetupColumn("stat", ImGuiTableColumnFlags_WidthStretch);
     for (int i = 0; i < TIMESTAMP_MAX; i++) {
         // To be shown, the entry must have a non-zero time and a string for its display name
-        if (itemTimestampDisplay[i].time > 0 && strnlen(itemTimestampDisplay[i].name, 21) > 1) {
+        if (itemTimestampDisplay[i].time > 0 && strnlen(itemTimestampDisplay[i].name, 24) > 1) {
             GameplayStatsRow(itemTimestampDisplay[i].name, formatTimestampGameplayStat(itemTimestampDisplay[i].time),
                              itemTimestampDisplay[i].color);
         }
@@ -563,8 +560,7 @@ void DrawGameplayStatsCountsTab() {
     GameplayStatsRow("Sword Swings:", formatIntGameplayStat(gSaveContext.ship.stats.count[COUNT_SWORD_SWINGS]));
     GameplayStatsRow("Steps Taken:", formatIntGameplayStat(gSaveContext.ship.stats.count[COUNT_STEPS]));
     // If using MM Bunny Hood enhancement, show how long it's been equipped (not counting pause time)
-    if (CVarGetInteger(CVAR_ENHANCEMENT("MMBunnyHood"), BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA ||
-        gSaveContext.ship.stats.count[COUNT_TIME_BUNNY_HOOD] > 0) {
+    if (Ship_GetBunnyHoodMode() != BUNNY_HOOD_VANILLA || gSaveContext.ship.stats.count[COUNT_TIME_BUNNY_HOOD] > 0) {
         GameplayStatsRow("Bunny Hood Time:",
                          formatTimestampGameplayStat(gSaveContext.ship.stats.count[COUNT_TIME_BUNNY_HOOD] / 2));
     }
@@ -597,7 +593,8 @@ void DrawGameplayStatsBreakdownTab() {
         std::string name;
         if (CVarGetInteger(CVAR_GAMEPLAY_STATS("RoomBreakdown"), 0) &&
             gSaveContext.ship.stats.sceneTimestamps[i].scene != SCENE_GROTTOS) {
-            name = fmt::format("{:s} Room {:d}", sceneName, gSaveContext.ship.stats.sceneTimestamps[i].room);
+            name =
+                spdlog::fmt_lib::format("{:s} Room {:d}", sceneName, gSaveContext.ship.stats.sceneTimestamps[i].room);
         } else {
             name = sceneName;
         }
@@ -621,9 +618,9 @@ void DrawGameplayStatsBreakdownTab() {
     }
     std::string toPass;
     if (CVarGetInteger(CVAR_GAMEPLAY_STATS("RoomBreakdown"), 0) && gSaveContext.ship.stats.sceneNum != SCENE_GROTTOS) {
-        toPass = fmt::format("{:s} Room {:d}",
-                             ResolveSceneID(gSaveContext.ship.stats.sceneNum, gSaveContext.ship.stats.roomNum),
-                             gSaveContext.ship.stats.roomNum);
+        toPass = spdlog::fmt_lib::format(
+            "{:s} Room {:d}", ResolveSceneID(gSaveContext.ship.stats.sceneNum, gSaveContext.ship.stats.roomNum),
+            gSaveContext.ship.stats.roomNum);
     } else {
         toPass = ResolveSceneID(gSaveContext.ship.stats.sceneNum, gSaveContext.ship.stats.roomNum);
     }
@@ -833,19 +830,87 @@ void SetupDisplayNames() {
     strcpy(itemTimestampDisplayName[ITEM_DOUBLE_DEFENSE],   "Double Defense:     ");
 
     // Other events
-    strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_GOHMA],         "Gohma Defeated:     ");
-    strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_KING_DODONGO],  "KD Defeated:        ");
-    strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_BARINADE],      "Barinade Defeated:  ");
-    strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_PHANTOM_GANON], "PG Defeated:        ");
-    strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_VOLVAGIA],      "Volvagia Defeated:  ");
-    strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_MORPHA],        "Morpha Defeated:    ");
-    strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_BONGO_BONGO],   "Bongo Defeated:     ");
-    strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_TWINROVA],      "Twinrova Defeated:  ");
-    strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_GANONDORF],     "Ganondorf Defeated: ");
-    strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_GANON],         "Ganon Defeated:     ");
-    strcpy(itemTimestampDisplayName[TIMESTAMP_BOSSRUSH_FINISH],      "Boss Rush Finished: ");
-    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_GREG],           "Greg Found:         ");
-    strcpy(itemTimestampDisplayName[TIMESTAMP_TRIFORCE_COMPLETED],   "Triforce Completed: ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_GOHMA],         "Gohma Defeated:        ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_KING_DODONGO],  "KD Defeated:           ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_BARINADE],      "Barinade Defeated:     ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_PHANTOM_GANON], "PG Defeated:           ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_VOLVAGIA],      "Volvagia Defeated:     ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_MORPHA],        "Morpha Defeated:       ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_BONGO_BONGO],   "Bongo Defeated:        ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_TWINROVA],      "Twinrova Defeated:     ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_GANONDORF],     "Ganondorf Defeated:    ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_GANON],         "Ganon Defeated:        ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_BOSSRUSH_FINISH],      "Boss Rush Finished:    ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_GREG],           "Greg Found:            ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_TRIFORCE_COMPLETED],   "Triforce Completed:    ");
+
+    // Rando items
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_GOHMA_SOUL],                       "Gohma's Soul:          ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_KING_DODONGO_SOUL],                "Dodongo's Soul:        ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_BARINADE_SOUL],                    "Barinade's Soul:       ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_PHANTOM_GANON_SOUL],               "Phantom Ganon's Soul:  ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_VOLVAGIA_SOUL],                    "Volvagia's Soul:       ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_MORPHA_SOUL],                      "Morpha's Soul:         ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_BONGO_BONGO_SOUL],                 "Bongo Bongo's Soul:    ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_TWINROVA_SOUL],                    "Twinrova's Soul:       ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_GANON_SOUL],                       "Ganon's Soul:          ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_BRONZE_SCALE],                     "Bronze Scale:          ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_OCARINA_A_BUTTON],                 "Ocarina A Button:      ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_OCARINA_C_UP_BUTTON],              "Ocarina C-Up Button:   ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_OCARINA_C_DOWN_BUTTON],            "Ocarina C-Down Button: ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_OCARINA_C_LEFT_BUTTON],            "Ocarina C-Left Button: ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_OCARINA_C_RIGHT_BUTTON],           "Ocarina C-Right Button:");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_FISHING_POLE],                     "Fishing Pole:          ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_GUARD_HOUSE_KEY],                  "Guard House Key:       ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_MARKET_BAZAAR_KEY],                "MK Bazaar Key:         ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_MARKET_POTION_SHOP_KEY],           "MK Potion Shop Key:    ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_MASK_SHOP_KEY],                    "Mask Shop Key:         ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_MARKET_SHOOTING_GALLERY_KEY],      "MK Shooting Key:       ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_BOMBCHU_BOWLING_KEY],              "Bombchu Bowling Key:   ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_TREASURE_CHEST_GAME_BUILDING_KEY], "Treasure Game Key:     ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_BOMBCHU_SHOP_KEY],                 "Bombchu Shop Key:      ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_RICHARDS_HOUSE_KEY],               "Richard's House Key:   ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_ALLEY_HOUSE_KEY],                  "Alley House Key:       ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_KAK_BAZAAR_KEY],                   "Kak Bazaar Key:        ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_KAK_POTION_SHOP_KEY],              "Kak Potion Key:        ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_BOSS_HOUSE_KEY],                   "Boss's House Key:      ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_GRANNYS_POTION_SHOP_KEY],          "Granny's Shop Key:     ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_SKULLTULA_HOUSE_KEY],              "Skulltula House Key:   ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_IMPAS_HOUSE_KEY],                  "Impa's House Key:      ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_WINDMILL_KEY],                     "Windmill Key:          ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_KAK_SHOOTING_GALLERY_KEY],         "Kak Shooting Key:      ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_DAMPES_HUT_KEY],                   "Dampe's Hut Key:       ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_TALONS_HOUSE_KEY],                 "Talon's House Key:     ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_STABLES_KEY],                      "Stables Key:           ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_BACK_TOWER_KEY],                   "Back Tower Key:        ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_HYLIA_LAB_KEY],                    "Hylia Lab Key:         ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_FISHING_HOLE_KEY],                 "Fishing Hole Key:      ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_CHILD_WALLET],                     "Child's Wallet:        ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_TYCOON_WALLET],                    "Tycoon Wallet:         ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_DEKU_STICK_BAG],                   "Deku Stick Bag:        ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_DEKU_NUT_BAG],                     "Deku Nut Bag:          ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_GRAB],                             "Power Bracelet:        ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_CLIMB],                            "Climb:                 ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_CRAWL],                            "Crawl:                 ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_OPEN_CHESTS],                      "Open Chests:           ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_SPEAK_DEKU],                       "Speak Deku:            ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_SPEAK_GERUDO],                     "Speak Gerudo:          ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_SPEAK_GORON],                      "Speak Goron:           ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_SPEAK_HYLIAN],                     "Speak Hylian:          ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_SPEAK_KOKIRI],                     "Speak Kokiri:          ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_SPEAK_ZORA],                       "Speak Zora:            ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_DMC_BEAN_SOUL],                    "DMC Bean Soul:         ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_DMT_BEAN_SOUL],                    "DMT Bean Soul:         ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_COLOSSUS_BEAN_SOUL],               "Colossus Bean Soul:    ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_GV_BEAN_SOUL],                     "GV Bean Soul:          ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_GY_BEAN_SOUL],                     "GY Bean Soul:          ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_KF_BEAN_SOUL],                     "KF Bean Soul:          ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_LH_BEAN_SOUL],                     "LH Bean Soul:          ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_LW_BRIDGE_BEAN_SOUL],              "LW Bridge Bean Soul:   ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_LW_MEADOW_BEAN_SOUL],              "LW Meadow Bean Soul:   ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_ZR_BEAN_SOUL],                     "ZR Bean Soul:          ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_SKELETON_KEY],                     "Skeleton Key:          ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_ROCS_FEATHER],                     "Roc's Feather:         ");
     // clang-format on
 }
 

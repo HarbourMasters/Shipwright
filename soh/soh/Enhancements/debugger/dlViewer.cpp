@@ -1,24 +1,17 @@
-#include "actorViewer.h"
-#include "soh/util.h"
-#include "soh/SohGui/UIWidgets.hpp"
-#include "soh/SohGui/SohGui.hpp"
-#include <libultraship/bridge/resourcebridge.h>
-#include <ship/resource/ResourceManager.h>
-#include <fast/resource/ResourceType.h>
-#include <fast/resource/type/DisplayList.h>
-#include "soh/OTRGlobals.h"
-
-#include <array>
-#include <bit>
 #include <map>
 #include <string>
+
+#include <libultraship/bridge/resourcebridge.h>
+#include <fast/resource/ResourceType.h>
+#include <fast/resource/type/DisplayList.h>
+
+#include "soh/SohGui/UIWidgets.hpp"
+#include "soh/SohGui/SohGui.hpp"
+#include "soh/OTRGlobals.h"
 #include "dlViewer.h"
 
 extern "C" {
 #include <z64.h>
-#include "z64math.h"
-#include "variables.h"
-#include "functions.h"
 #include "macros.h"
 }
 

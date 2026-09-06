@@ -1,0 +1,14 @@
+:config:
+  segments:
+    - [ 2, 0x01C5C860 ]
+
+kokiri_shop_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: kokiri_shop_scene
+
+
+kokiri_shop_sceneCollisionHeader_000950:
+  type: OOT:COLLISION
+  offset: 0x000950
+  symbol: kokiri_shop_sceneCollisionHeader_000950

@@ -1,0 +1,557 @@
+:config:
+  segments:
+    - [ 6, 0x00EB7340 ]
+
+gHorseZeldaEyeTex:
+  type: TEXTURE
+  offset: 0x8
+  symbol: gHorseZeldaEyeTex
+  format: RGBA16
+  width: 32
+  height: 16
+
+gHorseZeldaGallopingAnim:
+  type: OOT:ANIMATION
+  offset: 0x7148
+  symbol: gHorseZeldaGallopingAnim
+
+gHorseZeldaHeadHairTex:
+  type: TEXTURE
+  offset: 0x688
+  symbol: gHorseZeldaHeadHairTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gHorseZeldaLegTex:
+  type: TEXTURE
+  offset: 0x9A8
+  symbol: gHorseZeldaLegTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gHorseZeldaNoseTex:
+  type: TEXTURE
+  offset: 0x488
+  symbol: gHorseZeldaNoseTex
+  format: RGBA16
+  width: 16
+  height: 16
+
+gHorseZeldaSkel:
+  type: OOT:SKELETON
+  offset: 0x6B2C
+  symbol: gHorseZeldaSkel
+  limb_type: Skin
+  skel_type: Normal
+
+object_horse_zeldaTex_000408:
+  type: TEXTURE
+  offset: 0x408
+  symbol: object_horse_zeldaTex_000408
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_horse_zeldaTex_000888:
+  type: TEXTURE
+  offset: 0x888
+  symbol: object_horse_zeldaTex_000888
+  format: RGBA16
+  width: 8
+  height: 16
+
+object_horse_zeldaTex_000988:
+  type: TEXTURE
+  offset: 0x988
+  symbol: object_horse_zeldaTex_000988
+  format: RGBA16
+  width: 4
+  height: 4
+
+object_horse_zeldaTex_002578:
+  type: TEXTURE
+  offset: 0x2578
+  symbol: object_horse_zeldaTex_002578
+  format: RGBA16
+  width: 8
+  height: 16
+
+object_horse_zeldaTex_002678:
+  type: TEXTURE
+  offset: 0x2678
+  symbol: object_horse_zeldaTex_002678
+  format: RGBA16
+  width: 16
+  height: 8
+
+object_horse_zeldaTex_002778:
+  type: TEXTURE
+  offset: 0x2778
+  symbol: object_horse_zeldaTex_002778
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_horse_zeldaTex_002978:
+  type: TEXTURE
+  offset: 0x2978
+  symbol: object_horse_zeldaTex_002978
+  format: RGBA16
+  width: 32
+  height: 32
+
+object_horse_zeldaTex_003178:
+  type: TEXTURE
+  offset: 0x3178
+  symbol: object_horse_zeldaTex_003178
+  format: RGBA16
+  width: 16
+  height: 8
+
+object_horse_zeldaTex_003278:
+  type: TEXTURE
+  offset: 0x3278
+  symbol: object_horse_zeldaTex_003278
+  format: RGBA16
+  width: 8
+  height: 16
+
+object_horse_zeldaTex_003378:
+  type: TEXTURE
+  offset: 0x3378
+  symbol: object_horse_zeldaTex_003378
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_horse_zeldaTex_0033F8:
+  type: TEXTURE
+  offset: 0x33F8
+  symbol: object_horse_zeldaTex_0033F8
+  format: RGBA16
+  width: 8
+  height: 16
+
+object_horse_zeldaTex_0034F8:
+  type: TEXTURE
+  offset: 0x34F8
+  symbol: object_horse_zeldaTex_0034F8
+  format: RGBA16
+  width: 16
+  height: 16
+
+
+object_horse_zeldaVtx_000BA8:
+  type: OOT:ARRAY
+  offset: 0x000BA8
+  symbol: object_horse_zeldaVtx_000BA8
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_horse_zeldaVtx_000C38:
+  type: OOT:ARRAY
+  offset: 0x000C38
+  symbol: object_horse_zeldaVtx_000C38
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_horse_zeldaVtx_000D38:
+  type: OOT:ARRAY
+  offset: 0x000D38
+  symbol: object_horse_zeldaVtx_000D38
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_horse_zeldaVtx_000DC8:
+  type: OOT:ARRAY
+  offset: 0x000DC8
+  symbol: object_horse_zeldaVtx_000DC8
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_horse_zeldaVtx_000EC8:
+  type: OOT:ARRAY
+  offset: 0x000EC8
+  symbol: object_horse_zeldaVtx_000EC8
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_horse_zeldaVtx_000F58:
+  type: OOT:ARRAY
+  offset: 0x000F58
+  symbol: object_horse_zeldaVtx_000F58
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_horse_zeldaVtx_001058:
+  type: OOT:ARRAY
+  offset: 0x001058
+  symbol: object_horse_zeldaVtx_001058
+  count: 9
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_horse_zeldaVtx_0010E8:
+  type: OOT:ARRAY
+  offset: 0x0010E8
+  symbol: object_horse_zeldaVtx_0010E8
+  count: 16
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_horse_zeldaVtx_0011E8:
+  type: OOT:ARRAY
+  offset: 0x0011E8
+  symbol: object_horse_zeldaVtx_0011E8
+  count: 147
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gHorseZeldaSkelLimbsLimb_0069E4DL_001B18:
+  type: GFX
+  offset: 0x001B18
+  symbol: gHorseZeldaSkelLimbsLimb_0069E4DL_001B18
+
+gHorseZeldaSkelLimbsLimb_0069D4DL_001BD0:
+  type: GFX
+  offset: 0x001BD0
+  symbol: gHorseZeldaSkelLimbsLimb_0069D4DL_001BD0
+
+gHorseZeldaSkelLimbsLimb_0068E4DL_001CE8:
+  type: GFX
+  offset: 0x001CE8
+  symbol: gHorseZeldaSkelLimbsLimb_0068E4DL_001CE8
+
+gHorseZeldaSkelLimbsLimb_0068D4DL_001DA0:
+  type: GFX
+  offset: 0x001DA0
+  symbol: gHorseZeldaSkelLimbsLimb_0068D4DL_001DA0
+
+gHorseZeldaSkelLimbsLimb_006964DL_001EB8:
+  type: GFX
+  offset: 0x001EB8
+  symbol: gHorseZeldaSkelLimbsLimb_006964DL_001EB8
+
+gHorseZeldaSkelLimbsLimb_006954DL_001F70:
+  type: GFX
+  offset: 0x001F70
+  symbol: gHorseZeldaSkelLimbsLimb_006954DL_001F70
+
+gHorseZeldaSkelLimbsLimb_006A64DL_002088:
+  type: GFX
+  offset: 0x002088
+  symbol: gHorseZeldaSkelLimbsLimb_006A64DL_002088
+
+gHorseZeldaSkelLimbsLimb_006A54DL_002140:
+  type: GFX
+  offset: 0x002140
+  symbol: gHorseZeldaSkelLimbsLimb_006A54DL_002140
+
+gHorseZeldaSkelLimbsLimb_006864DL_002258:
+  type: GFX
+  offset: 0x002258
+  symbol: gHorseZeldaSkelLimbsLimb_006864DL_002258
+
+gHorseZeldaSkelLimbsLimb_0067E4SkinLimbDL_0036F8:
+  type: GFX
+  offset: 0x0036F8
+  symbol: gHorseZeldaSkelLimbsLimb_0067E4SkinLimbDL_0036F8
+
+gHorseZeldaSkelLimbsLimb_006794:
+  type: OOT:LIMB
+  offset: 0x006794
+  symbol: gHorseZeldaSkelLimbsLimb_006794
+  limb_type: Skin
+
+gHorseZeldaSkelLimbsLimb_0067A4:
+  type: OOT:LIMB
+  offset: 0x0067A4
+  symbol: gHorseZeldaSkelLimbsLimb_0067A4
+  limb_type: Skin
+
+gHorseZeldaSkelLimbsLimb_0067B4:
+  type: OOT:LIMB
+  offset: 0x0067B4
+  symbol: gHorseZeldaSkelLimbsLimb_0067B4
+  limb_type: Skin
+
+gHorseZeldaSkelLimbsLimb_0067C4:
+  type: OOT:LIMB
+  offset: 0x0067C4
+  symbol: gHorseZeldaSkelLimbsLimb_0067C4
+  limb_type: Skin
+
+gHorseZeldaSkelLimbsLimb_0067D4:
+  type: OOT:LIMB
+  offset: 0x0067D4
+  symbol: gHorseZeldaSkelLimbsLimb_0067D4
+  limb_type: Skin
+
+gHorseZeldaSkelLimbsLimb_0067E4:
+  type: OOT:LIMB
+  offset: 0x0067E4
+  symbol: gHorseZeldaSkelLimbsLimb_0067E4
+  limb_type: Skin
+
+gHorseZeldaSkelLimbsLimb_0067F4:
+  type: OOT:LIMB
+  offset: 0x0067F4
+  symbol: gHorseZeldaSkelLimbsLimb_0067F4
+  limb_type: Skin
+
+gHorseZeldaSkelLimbsLimb_006804:
+  type: OOT:LIMB
+  offset: 0x006804
+  symbol: gHorseZeldaSkelLimbsLimb_006804
+  limb_type: Skin
+
+gHorseZeldaSkelLimbsLimb_006814:
+  type: OOT:LIMB
+  offset: 0x006814
+  symbol: gHorseZeldaSkelLimbsLimb_006814
+  limb_type: Skin
+
+gHorseZeldaSkelLimbsLimb_006824:
+  type: OOT:LIMB
+  offset: 0x006824
+  symbol: gHorseZeldaSkelLimbsLimb_006824
+  limb_type: Skin
+
+gHorseZeldaSkelLimbsLimb_006834:
+  type: OOT:LIMB
+  offset: 0x006834
+  symbol: gHorseZeldaSkelLimbsLimb_006834
+  limb_type: Skin
+
+gHorseZeldaSkelLimbsLimb_006844:
+  type: OOT:LIMB
+  offset: 0x006844
+  symbol: gHorseZeldaSkelLimbsLimb_006844
+  limb_type: Skin
+
+gHorseZeldaSkelLimbsLimb_006854:
+  type: OOT:LIMB
+  offset: 0x006854
+  symbol: gHorseZeldaSkelLimbsLimb_006854
+  limb_type: Skin
+
+gHorseZeldaSkelLimbsLimb_006864:
+  type: OOT:LIMB
+  offset: 0x006864
+  symbol: gHorseZeldaSkelLimbsLimb_006864
+  limb_type: Skin
+
+gHorseZeldaSkelLimbsLimb_006874:
+  type: OOT:LIMB
+  offset: 0x006874
+  symbol: gHorseZeldaSkelLimbsLimb_006874
+  limb_type: Skin
+
+gHorseZeldaSkelLimbsLimb_006884:
+  type: OOT:LIMB
+  offset: 0x006884
+  symbol: gHorseZeldaSkelLimbsLimb_006884
+  limb_type: Skin
+
+gHorseZeldaSkelLimbsLimb_006894:
+  type: OOT:LIMB
+  offset: 0x006894
+  symbol: gHorseZeldaSkelLimbsLimb_006894
+  limb_type: Skin
+
+gHorseZeldaSkelLimbsLimb_0068A4:
+  type: OOT:LIMB
+  offset: 0x0068A4
+  symbol: gHorseZeldaSkelLimbsLimb_0068A4
+  limb_type: Skin
+
+gHorseZeldaSkelLimbsLimb_0068B4:
+  type: OOT:LIMB
+  offset: 0x0068B4
+  symbol: gHorseZeldaSkelLimbsLimb_0068B4
+  limb_type: Skin
+
+gHorseZeldaSkelLimbsLimb_0068C4:
+  type: OOT:LIMB
+  offset: 0x0068C4
+  symbol: gHorseZeldaSkelLimbsLimb_0068C4
+  limb_type: Skin
+
+gHorseZeldaSkelLimbsLimb_0068D4:
+  type: OOT:LIMB
+  offset: 0x0068D4
+  symbol: gHorseZeldaSkelLimbsLimb_0068D4
+  limb_type: Skin
+
+gHorseZeldaSkelLimbsLimb_0068E4:
+  type: OOT:LIMB
+  offset: 0x0068E4
+  symbol: gHorseZeldaSkelLimbsLimb_0068E4
+  limb_type: Skin
+
+gHorseZeldaSkelLimbsLimb_0068F4:
+  type: OOT:LIMB
+  offset: 0x0068F4
+  symbol: gHorseZeldaSkelLimbsLimb_0068F4
+  limb_type: Skin
+
+gHorseZeldaSkelLimbsLimb_006904:
+  type: OOT:LIMB
+  offset: 0x006904
+  symbol: gHorseZeldaSkelLimbsLimb_006904
+  limb_type: Skin
+
+gHorseZeldaSkelLimbsLimb_006914:
+  type: OOT:LIMB
+  offset: 0x006914
+  symbol: gHorseZeldaSkelLimbsLimb_006914
+  limb_type: Skin
+
+gHorseZeldaSkelLimbsLimb_006924:
+  type: OOT:LIMB
+  offset: 0x006924
+  symbol: gHorseZeldaSkelLimbsLimb_006924
+  limb_type: Skin
+
+gHorseZeldaSkelLimbsLimb_006934:
+  type: OOT:LIMB
+  offset: 0x006934
+  symbol: gHorseZeldaSkelLimbsLimb_006934
+  limb_type: Skin
+
+gHorseZeldaSkelLimbsLimb_006944:
+  type: OOT:LIMB
+  offset: 0x006944
+  symbol: gHorseZeldaSkelLimbsLimb_006944
+  limb_type: Skin
+
+gHorseZeldaSkelLimbsLimb_006954:
+  type: OOT:LIMB
+  offset: 0x006954
+  symbol: gHorseZeldaSkelLimbsLimb_006954
+  limb_type: Skin
+
+gHorseZeldaSkelLimbsLimb_006964:
+  type: OOT:LIMB
+  offset: 0x006964
+  symbol: gHorseZeldaSkelLimbsLimb_006964
+  limb_type: Skin
+
+gHorseZeldaSkelLimbsLimb_006974:
+  type: OOT:LIMB
+  offset: 0x006974
+  symbol: gHorseZeldaSkelLimbsLimb_006974
+  limb_type: Skin
+
+gHorseZeldaSkelLimbsLimb_006984:
+  type: OOT:LIMB
+  offset: 0x006984
+  symbol: gHorseZeldaSkelLimbsLimb_006984
+  limb_type: Skin
+
+gHorseZeldaSkelLimbsLimb_006994:
+  type: OOT:LIMB
+  offset: 0x006994
+  symbol: gHorseZeldaSkelLimbsLimb_006994
+  limb_type: Skin
+
+gHorseZeldaSkelLimbsLimb_0069A4:
+  type: OOT:LIMB
+  offset: 0x0069A4
+  symbol: gHorseZeldaSkelLimbsLimb_0069A4
+  limb_type: Skin
+
+gHorseZeldaSkelLimbsLimb_0069B4:
+  type: OOT:LIMB
+  offset: 0x0069B4
+  symbol: gHorseZeldaSkelLimbsLimb_0069B4
+  limb_type: Skin
+
+gHorseZeldaSkelLimbsLimb_0069C4:
+  type: OOT:LIMB
+  offset: 0x0069C4
+  symbol: gHorseZeldaSkelLimbsLimb_0069C4
+  limb_type: Skin
+
+gHorseZeldaSkelLimbsLimb_0069D4:
+  type: OOT:LIMB
+  offset: 0x0069D4
+  symbol: gHorseZeldaSkelLimbsLimb_0069D4
+  limb_type: Skin
+
+gHorseZeldaSkelLimbsLimb_0069E4:
+  type: OOT:LIMB
+  offset: 0x0069E4
+  symbol: gHorseZeldaSkelLimbsLimb_0069E4
+  limb_type: Skin
+
+gHorseZeldaSkelLimbsLimb_0069F4:
+  type: OOT:LIMB
+  offset: 0x0069F4
+  symbol: gHorseZeldaSkelLimbsLimb_0069F4
+  limb_type: Skin
+
+gHorseZeldaSkelLimbsLimb_006A04:
+  type: OOT:LIMB
+  offset: 0x006A04
+  symbol: gHorseZeldaSkelLimbsLimb_006A04
+  limb_type: Skin
+
+gHorseZeldaSkelLimbsLimb_006A14:
+  type: OOT:LIMB
+  offset: 0x006A14
+  symbol: gHorseZeldaSkelLimbsLimb_006A14
+  limb_type: Skin
+
+gHorseZeldaSkelLimbsLimb_006A24:
+  type: OOT:LIMB
+  offset: 0x006A24
+  symbol: gHorseZeldaSkelLimbsLimb_006A24
+  limb_type: Skin
+
+gHorseZeldaSkelLimbsLimb_006A34:
+  type: OOT:LIMB
+  offset: 0x006A34
+  symbol: gHorseZeldaSkelLimbsLimb_006A34
+  limb_type: Skin
+
+gHorseZeldaSkelLimbsLimb_006A44:
+  type: OOT:LIMB
+  offset: 0x006A44
+  symbol: gHorseZeldaSkelLimbsLimb_006A44
+  limb_type: Skin
+
+gHorseZeldaSkelLimbsLimb_006A54:
+  type: OOT:LIMB
+  offset: 0x006A54
+  symbol: gHorseZeldaSkelLimbsLimb_006A54
+  limb_type: Skin
+
+gHorseZeldaSkelLimbsLimb_006A64:
+  type: OOT:LIMB
+  offset: 0x006A64
+  symbol: gHorseZeldaSkelLimbsLimb_006A64
+  limb_type: Skin
+
+gHorseZeldaSkelLimbs:
+  type: BLOB
+  offset: 0x6A74
+  symbol: gHorseZeldaSkelLimbs
+  size: 0

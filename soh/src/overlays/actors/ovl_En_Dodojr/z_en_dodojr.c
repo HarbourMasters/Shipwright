@@ -8,7 +8,6 @@
 #include "overlays/actors/ovl_En_Bom/z_en_bom.h"
 #include "objects/object_dodojr/object_dodojr.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE)
 
@@ -90,8 +89,6 @@ void EnDodojr_Destroy(Actor* thisx, PlayState* play) {
     EnDodojr* this = (EnDodojr*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnDodojr_DoSwallowedBombEffects(EnDodojr* this) {
@@ -149,7 +146,7 @@ s32 EnDodojr_UpdateBounces(EnDodojr* this, PlayState* play) {
         return 0;
     }
 
-    if (this->actor.bgCheckFlags & 1) {
+    if (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) {
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_DODO_M_GND);
         this->dustPos = this->actor.world.pos;
         EnDodojr_SpawnLargeDust(this, play, 10);
@@ -456,7 +453,7 @@ void EnDodojr_CrawlTowardsTarget(EnDodojr* this, PlayState* play) {
         this->actionFunc = EnDodojr_JumpAttackBounce;
     }
 
-    if (this->actor.bgCheckFlags & 8) {
+    if (this->actor.bgCheckFlags & BGCHECKFLAG_WALL) {
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_DODO_M_DOWN);
         EnDodojr_SetupDespawn(this);
         this->actionFunc = EnDodojr_Despawn;

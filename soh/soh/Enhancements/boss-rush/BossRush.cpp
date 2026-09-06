@@ -1,16 +1,17 @@
+#include <array>
+#include <string>
+#include <vector>
+
+#include <spdlog/spdlog.h>
+
 #include "BossRush.h"
 #include "soh/ShipInit.hpp"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh_assets.h"
 #include "soh/frame_interpolation.h"
 
-#include <array>
-#include <string>
-#include <vector>
-#include <spdlog/spdlog.h>
-
 extern "C" {
+#include "soh_assets.h"
 #include "functions.h"
 #include "macros.h"
 #include "variables.h"
@@ -22,9 +23,7 @@ extern "C" {
 #include "textures/icon_item_nes_static/icon_item_nes_static.h"
 #include "textures/icon_item_ger_static/icon_item_ger_static.h"
 #include "textures/icon_item_fra_static/icon_item_fra_static.h"
-
 extern PlayState* gPlayState;
-
 Gfx* KaleidoScope_QuadTextureIA8(Gfx* gfx, void* texture, s16 width, s16 height, u16 point);
 void FileChoose_UpdateStickDirectionPromptAnim(GameState* thisx);
 void FileChoose_DrawTextRec(GraphicsContext* gfxCtx, s32 r, s32 g, s32 b, s32 a, f32 x, f32 y, f32 z, s32 s, s32 t,
@@ -243,8 +242,8 @@ void FileChoose_UpdateBossRushMenu(GameState* gameState) {
             }
         }
 
-        Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        Audio_PlaySfxGeneral(NA_SE_SY_FSEL_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     }
 
     // Cycle through choices for currently selected option.
@@ -268,8 +267,8 @@ void FileChoose_UpdateBossRushMenu(GameState* gameState) {
             }
         }
 
-        Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        Audio_PlaySfxGeneral(NA_SE_SY_FSEL_CURSOR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     }
 
     if (sLastBossRushOptionIndex != fileChooseContext->bossRushIndex ||
@@ -288,8 +287,8 @@ void FileChoose_UpdateBossRushMenu(GameState* gameState) {
 
     // Load into the game.
     if (CHECK_BTN_ALL(input->press.button, BTN_START) || CHECK_BTN_ALL(input->press.button, BTN_A)) {
-        Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        Audio_PlaySfxGeneral(NA_SE_SY_FSEL_DECIDE_L, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         fileChooseContext->buttonIndex = 0xFE;
         fileChooseContext->menuMode = FS_MENU_MODE_SELECT;
         fileChooseContext->selectMode = SM_FADE_OUT;
@@ -301,7 +300,7 @@ void FileChoose_UpdateBossRushMenu(GameState* gameState) {
 void FileChoose_DrawBossRushMenuWindowContents(FileChooseContext* fileChooseContext) {
     OPEN_DISPS(fileChooseContext->state.gfxCtx);
 
-    uint8_t language = (gSaveContext.language == LANGUAGE_JPN) ? LANGUAGE_ENG : gSaveContext.language;
+    uint8_t language = (gSaveContext.language == LANGUAGE_JPN) ? (uint8_t)LANGUAGE_ENG : gSaveContext.language;
     uint8_t listOffset = fileChooseContext->bossRushOffset;
     int16_t textAlpha = fileChooseContext->bossRushUIAlpha;
 

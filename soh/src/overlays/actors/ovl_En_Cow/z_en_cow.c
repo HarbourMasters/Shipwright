@@ -6,7 +6,6 @@
 
 #include "z_en_cow.h"
 #include "objects/object_cow/object_cow.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY)
@@ -157,8 +156,6 @@ void EnCow_Destroy(Actor* thisx, PlayState* play) {
         Collider_DestroyCylinder(play, &this->colliders[0]);
         Collider_DestroyCylinder(play, &this->colliders[1]);
     }
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnCow_UpdateAnimation(EnCow* this, PlayState* play) {
@@ -246,7 +243,7 @@ void EnCow_Talk(EnCow* this, PlayState* play) {
         this->actionFunc = EnCow_CheckForEmptyBottle;
     } else {
         this->actor.flags |= ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
-        func_8002F2CC(&this->actor, play, 170.0f);
+        Actor_OfferTalk(&this->actor, play, 170.0f);
         this->actor.textId = 0x2006;
     }
     EnCow_UpdateAnimation(this, play);
@@ -265,7 +262,7 @@ void EnCow_Idle(EnCow* this, PlayState* play) {
                     if (GameInteractor_Should(VB_GIVE_ITEM_FROM_COW, true, this)) {
                         this->actionFunc = EnCow_Talk;
                         this->actor.flags |= ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
-                        func_8002F2CC(&this->actor, play, 170.0f);
+                        Actor_OfferTalk(&this->actor, play, 170.0f);
                         this->actor.textId = 0x2006;
                     } else {
                         return;

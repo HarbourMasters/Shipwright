@@ -1,0 +1,460 @@
+:config:
+  segments:
+    - [ 6, 0x0115D810 ]
+    - [ 4, 0x00D30380 ]
+    - [ 8, 0x0115D810 ]
+    - [ 9, 0x0115D810 ]
+    - [ 10, 0x0115D810 ]
+    - [ 11, 0x0115D810 ]
+    - [ 12, 0x0115D810 ]
+    - [ 13, 0x0115D810 ]
+  external_files:
+    - pal_1-0/objects/gameplay_keep.yml
+
+object_bji_DL_002560:
+  type: GFX
+  offset: 0x2560
+  symbol: object_bji_DL_002560
+
+object_bji_DL_002B88:
+  type: GFX
+  offset: 0x2B88
+  symbol: object_bji_DL_002B88
+
+object_bji_DL_002C50:
+  type: GFX
+  offset: 0x2C50
+  symbol: object_bji_DL_002C50
+
+object_bji_DL_002D40:
+  type: GFX
+  offset: 0x2D40
+  symbol: object_bji_DL_002D40
+
+object_bji_DL_002E40:
+  type: GFX
+  offset: 0x2E40
+  symbol: object_bji_DL_002E40
+
+object_bji_DL_002F08:
+  type: GFX
+  offset: 0x2F08
+  symbol: object_bji_DL_002F08
+
+object_bji_DL_002FF8:
+  type: GFX
+  offset: 0x2FF8
+  symbol: object_bji_DL_002FF8
+
+object_bji_DL_0030F8:
+  type: GFX
+  offset: 0x30F8
+  symbol: object_bji_DL_0030F8
+
+object_bji_DL_003328:
+  type: GFX
+  offset: 0x3328
+  symbol: object_bji_DL_003328
+
+object_bji_DL_0033F0:
+  type: GFX
+  offset: 0x33F0
+  symbol: object_bji_DL_0033F0
+
+object_bji_DL_0034B8:
+  type: GFX
+  offset: 0x34B8
+  symbol: object_bji_DL_0034B8
+
+object_bji_DL_003580:
+  type: GFX
+  offset: 0x3580
+  symbol: object_bji_DL_003580
+
+object_bji_DL_003648:
+  type: GFX
+  offset: 0x3648
+  symbol: object_bji_DL_003648
+
+object_bji_DL_003710:
+  type: GFX
+  offset: 0x3710
+  symbol: object_bji_DL_003710
+
+object_bji_DL_0037D8:
+  type: GFX
+  offset: 0x37D8
+  symbol: object_bji_DL_0037D8
+
+object_bji_DL_003F68:
+  type: GFX
+  offset: 0x3F68
+  symbol: object_bji_DL_003F68
+
+object_bji_Limb_000000:
+  type: OOT:LIMB
+  offset: 0x0
+  symbol: object_bji_Limb_000000
+  limb_type: Standard
+
+object_bji_Limb_00000C:
+  type: OOT:LIMB
+  offset: 0xC
+  symbol: object_bji_Limb_00000C
+  limb_type: Standard
+
+object_bji_Limb_000018:
+  type: OOT:LIMB
+  offset: 0x18
+  symbol: object_bji_Limb_000018
+  limb_type: Standard
+
+object_bji_Limb_000024:
+  type: OOT:LIMB
+  offset: 0x24
+  symbol: object_bji_Limb_000024
+  limb_type: Standard
+
+object_bji_Limb_000030:
+  type: OOT:LIMB
+  offset: 0x30
+  symbol: object_bji_Limb_000030
+  limb_type: Standard
+
+object_bji_Limb_00003C:
+  type: OOT:LIMB
+  offset: 0x3C
+  symbol: object_bji_Limb_00003C
+  limb_type: Standard
+
+object_bji_Limb_000048:
+  type: OOT:LIMB
+  offset: 0x48
+  symbol: object_bji_Limb_000048
+  limb_type: Standard
+
+object_bji_Limb_000054:
+  type: OOT:LIMB
+  offset: 0x54
+  symbol: object_bji_Limb_000054
+  limb_type: Standard
+
+object_bji_Limb_000060:
+  type: OOT:LIMB
+  offset: 0x60
+  symbol: object_bji_Limb_000060
+  limb_type: Standard
+
+object_bji_Limb_00006C:
+  type: OOT:LIMB
+  offset: 0x6C
+  symbol: object_bji_Limb_00006C
+  limb_type: Standard
+
+object_bji_Limb_000078:
+  type: OOT:LIMB
+  offset: 0x78
+  symbol: object_bji_Limb_000078
+  limb_type: Standard
+
+object_bji_Limb_000084:
+  type: OOT:LIMB
+  offset: 0x84
+  symbol: object_bji_Limb_000084
+  limb_type: Standard
+
+object_bji_Limb_000090:
+  type: OOT:LIMB
+  offset: 0x90
+  symbol: object_bji_Limb_000090
+  limb_type: Standard
+
+object_bji_Limb_00009C:
+  type: OOT:LIMB
+  offset: 0x9C
+  symbol: object_bji_Limb_00009C
+  limb_type: Standard
+
+object_bji_Limb_0000A8:
+  type: OOT:LIMB
+  offset: 0xA8
+  symbol: object_bji_Limb_0000A8
+  limb_type: Standard
+
+object_bji_Skel_0000F0:
+  type: OOT:SKELETON
+  offset: 0xF0
+  symbol: object_bji_Skel_0000F0
+  limb_type: Standard
+  skel_type: Flex
+
+object_bji_TLUT_0000FC:
+  type: TEXTURE
+  offset: 0xFC
+  symbol: object_bji_TLUT_0000FC
+  format: RGBA16
+  width: 16
+  height: 16
+
+object_bji_Tex_0002FC:
+  type: TEXTURE
+  offset: 0x2FC
+  symbol: object_bji_Tex_0002FC
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0xFC
+
+object_bji_Tex_00033C:
+  type: TEXTURE
+  offset: 0x33C
+  symbol: object_bji_Tex_00033C
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0xFC
+
+object_bji_Tex_00037C:
+  type: TEXTURE
+  offset: 0x37C
+  symbol: object_bji_Tex_00037C
+  format: CI8
+  width: 16
+  height: 16
+  tlut: 0xFC
+
+object_bji_Tex_00047C:
+  type: TEXTURE
+  offset: 0x47C
+  symbol: object_bji_Tex_00047C
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0xFC
+
+object_bji_Tex_0004BC:
+  type: TEXTURE
+  offset: 0x4BC
+  symbol: object_bji_Tex_0004BC
+  format: CI8
+  width: 8
+  height: 8
+  tlut: 0xFC
+
+object_bji_Tex_0004FC:
+  type: TEXTURE
+  offset: 0x4FC
+  symbol: object_bji_Tex_0004FC
+  format: I8
+  width: 16
+  height: 16
+
+object_bji_Tex_0005FC:
+  type: TEXTURE
+  offset: 0x5FC
+  symbol: object_bji_Tex_0005FC
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0xFC
+
+object_bji_Tex_0009FC:
+  type: TEXTURE
+  offset: 0x9FC
+  symbol: object_bji_Tex_0009FC
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0xFC
+
+object_bji_Tex_000DFC:
+  type: TEXTURE
+  offset: 0xDFC
+  symbol: object_bji_Tex_000DFC
+  format: CI8
+  width: 32
+  height: 32
+  tlut: 0xFC
+
+object_bji_Tex_0011FC:
+  type: TEXTURE
+  offset: 0x11FC
+  symbol: object_bji_Tex_0011FC
+  format: I8
+  width: 8
+  height: 8
+
+object_bji_Tex_003908:
+  type: TEXTURE
+  offset: 0x3908
+  symbol: object_bji_Tex_003908
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_bji_Tex_003988:
+  type: TEXTURE
+  offset: 0x3988
+  symbol: object_bji_Tex_003988
+  format: RGBA16
+  width: 8
+  height: 8
+
+object_bji_Tex_003A08:
+  type: TEXTURE
+  offset: 0x3A08
+  symbol: object_bji_Tex_003A08
+  format: RGBA16
+  width: 8
+  height: 8
+
+
+object_bji_Skel_0000F0Limbs:
+  type: BLOB
+  offset: 0xB4
+  symbol: object_bji_Skel_0000F0Limbs
+  size: 0
+
+object_bjiVtx_001240:
+  type: OOT:ARRAY
+  offset: 0x001240
+  symbol: object_bjiVtx_001240
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bjiVtx_001270:
+  type: OOT:ARRAY
+  offset: 0x001270
+  symbol: object_bjiVtx_001270
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bjiVtx_0012A0:
+  type: OOT:ARRAY
+  offset: 0x0012A0
+  symbol: object_bjiVtx_0012A0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bjiVtx_0012D0:
+  type: OOT:ARRAY
+  offset: 0x0012D0
+  symbol: object_bjiVtx_0012D0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bjiVtx_001300:
+  type: OOT:ARRAY
+  offset: 0x001300
+  symbol: object_bjiVtx_001300
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bjiVtx_001330:
+  type: OOT:ARRAY
+  offset: 0x001330
+  symbol: object_bjiVtx_001330
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bjiVtx_001360:
+  type: OOT:ARRAY
+  offset: 0x001360
+  symbol: object_bjiVtx_001360
+  count: 112
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bjiVtx_001A60:
+  type: OOT:ARRAY
+  offset: 0x001A60
+  symbol: object_bjiVtx_001A60
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bjiVtx_001A90:
+  type: OOT:ARRAY
+  offset: 0x001A90
+  symbol: object_bjiVtx_001A90
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bjiVtx_001BC0:
+  type: OOT:ARRAY
+  offset: 0x001BC0
+  symbol: object_bjiVtx_001BC0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bjiVtx_001D40:
+  type: OOT:ARRAY
+  offset: 0x001D40
+  symbol: object_bjiVtx_001D40
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bjiVtx_001D70:
+  type: OOT:ARRAY
+  offset: 0x001D70
+  symbol: object_bjiVtx_001D70
+  count: 19
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bjiVtx_001EA0:
+  type: OOT:ARRAY
+  offset: 0x001EA0
+  symbol: object_bjiVtx_001EA0
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bjiVtx_002020:
+  type: OOT:ARRAY
+  offset: 0x002020
+  symbol: object_bjiVtx_002020
+  count: 57
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bjiVtx_0023B0:
+  type: OOT:ARRAY
+  offset: 0x0023B0
+  symbol: object_bjiVtx_0023B0
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_bjiVtx_003A88:
+  type: OOT:ARRAY
+  offset: 0x003A88
+  symbol: object_bjiVtx_003A88
+  count: 78
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

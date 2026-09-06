@@ -1,39 +1,35 @@
-#include "randomizer.h"
-#include <nlohmann/json.hpp>
+#include <atomic>
 #include <fstream>
-#include <variables.h>
-#include <macros.h>
-#include <objects/gameplay_keep/gameplay_keep.h>
-#include <functions.h>
-#include <textures/icon_item_static/icon_item_static.h>
-#include <textures/icon_item_24_static/icon_item_24_static.h>
+#include <sstream>
+#include <tuple>
+
+#include <nlohmann/json.hpp>
+#include <ship/window/FileDropMgr.h>
+#include <spdlog/spdlog.h>
+
+#include "randomizer.h"
 #include "3drando/menu.hpp"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/SohGui/SohGui.hpp"
-#include <imgui.h>
-#include <imgui_internal.h>
-#include "../../../src/overlays/actors/ovl_En_GirlA/z_en_girla.h"
 #include "randomizer_check_objects.h"
-#include <sstream>
-#include <tuple>
-#include "draw.h"
 #include "soh/OTRGlobals.h"
-#include <ship/window/FileDropMgr.h>
 #include "static_data.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
-#include "trial.h"
 #include "settings.h"
 #include "soh/util.h"
 #include "randomizerTypes.h"
-#include "soh/Notification/Notification.h"
+#include "randomizerEnumStrings.h"
 #include "soh/ObjectExtension/ObjectExtension.h"
 #include "soh/Enhancements/randomizer/RCToRandInf.h"
-#include "static_data.h"
 #include "dungeon.h"
+#include "logic.h"
 
 extern "C" {
+#include <variables.h>
+#include <macros.h>
+#include <functions.h>
+#include "../../../src/overlays/actors/ovl_En_GirlA/z_en_girla.h"
 #include "src/overlays/actors/ovl_Obj_Bean/z_obj_bean.h"
-
 extern void func_80B8FE00(ObjBean*); // trigger planting
 extern PlayState* gPlayState;
 }
@@ -50,7 +46,7 @@ std::unordered_map<std::string, HintType> SpoilerfileHintTypeNameToEnum;
 std::set<RandomizerCheck> excludedLocations;
 std::set<RandomizerCheck> spoilerExcludedLocations;
 
-bool generated;
+static std::atomic<bool> randoGenerating;
 
 bool Rando_HandleSpoilerDrop(char* filePath) {
     if (SohUtils::IsStringEmpty(filePath)) {
@@ -115,7 +111,7 @@ std::unordered_map<std::string, SceneID> spoilerFileDungeonToScene = {
 
 #ifdef _MSC_VER
 #pragma optimize("", off)
-#else
+#elif defined(__GNUC__) && !defined(__clang__)
 #pragma GCC push_options
 #pragma GCC optimize("O0")
 #endif
@@ -191,7 +187,7 @@ bool Randomizer::SpoilerFileExists(const char* spoilerFileName) {
 }
 #ifdef _MSC_VER
 #pragma optimize("", on)
-#else
+#elif defined(__GNUC__) && !defined(__clang__)
 #pragma GCC pop_options
 #endif
 
@@ -250,6 +246,11 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerCheck(Randomizer
 }
 
 ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGet randoGet) {
+    // progressive open chest has a second copy that unlocks large chests
+    if (randoGet == RG_OPEN_CHEST && GetRandoSettingValue(RSK_SHUFFLE_OPEN_CHEST) == RO_OPEN_CHEST_PROGRESSIVE) {
+        return Flags_GetRandomizerInf(RAND_INF_CAN_OPEN_LARGE_CHEST) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN;
+    }
+
     if (Rando::StaticData::RandoGetToRandInf.find(randoGet) != Rando::StaticData::RandoGetToRandInf.end()) {
         return Flags_GetRandomizerInf((RandomizerInf)Rando::StaticData::RandoGetToRandInf.find(randoGet)->second)
                    ? CANT_OBTAIN_ALREADY_HAVE
@@ -269,7 +270,6 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
 
     switch (randoGet) {
         case RG_NONE:
-        case RG_TRIFORCE:
         case RG_HINT:
         case RG_MAX:
         case RG_SOLD_OUT:
@@ -439,8 +439,6 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
             } else {
                 return Flags_GetRandomizerInf(RAND_INF_OBTAINED_NAYRUS_LOVE) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN;
             }
-        case RG_ROCS_FEATHER:
-            return Flags_GetRandomizerInf(RAND_INF_OBTAINED_ROCS_FEATHER) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN;
 
         // Bottles
         case RG_EMPTY_BOTTLE:
@@ -476,7 +474,10 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
             return Inventory_HasEmptyBottle() ? CAN_OBTAIN : CANT_OBTAIN_NEED_EMPTY_BOTTLE;
 
         // Trade Items
-        // case RG_PROGRESSIVE_GORONSWORD:
+        // Giant's Knife and Biggoron's Sword share a slot, bgsFlag marks the final upgrade.
+        // Giant's Knife itself stays obtainable, Medigoron replaces broken ones.
+        case RG_PROGRESSIVE_GORONSWORD:
+            return !gSaveContext.bgsFlag ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         // case RG_GIANTS_KNIFE:
 
         // Misc Items
@@ -590,57 +591,20 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
         case RG_GANONS_CASTLE_BOSS_KEY:
             return !CHECK_DUNGEON_ITEM(DUNGEON_KEY_BOSS, SCENE_GANONS_TOWER) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_FOREST_TEMPLE_SMALL_KEY:
-            return OTRGlobals::Instance->gRandoContext->GetDungeon(Rando::FOREST_TEMPLE)
-                               ->GetTotalSmallKeys(&gSaveContext) < FOREST_TEMPLE_SMALL_KEY_MAX
-                       ? CAN_OBTAIN
-                       : CANT_OBTAIN_ALREADY_HAVE;
         case RG_FIRE_TEMPLE_SMALL_KEY:
-            return OTRGlobals::Instance->gRandoContext->GetDungeon(Rando::FIRE_TEMPLE)
-                               ->GetTotalSmallKeys(&gSaveContext) < FIRE_TEMPLE_SMALL_KEY_MAX
-                       ? CAN_OBTAIN
-                       : CANT_OBTAIN_ALREADY_HAVE;
         case RG_WATER_TEMPLE_SMALL_KEY:
-            return OTRGlobals::Instance->gRandoContext->GetDungeon(Rando::WATER_TEMPLE)
-                               ->GetTotalSmallKeys(&gSaveContext) < WATER_TEMPLE_SMALL_KEY_MAX
-                       ? CAN_OBTAIN
-                       : CANT_OBTAIN_ALREADY_HAVE;
         case RG_SPIRIT_TEMPLE_SMALL_KEY:
-            return OTRGlobals::Instance->gRandoContext->GetDungeon(Rando::SPIRIT_TEMPLE)
-                               ->GetTotalSmallKeys(&gSaveContext) < SPIRIT_TEMPLE_SMALL_KEY_MAX
-                       ? CAN_OBTAIN
-                       : CANT_OBTAIN_ALREADY_HAVE;
         case RG_SHADOW_TEMPLE_SMALL_KEY:
-            return OTRGlobals::Instance->gRandoContext->GetDungeon(Rando::SHADOW_TEMPLE)
-                               ->GetTotalSmallKeys(&gSaveContext) < SHADOW_TEMPLE_SMALL_KEY_MAX
-                       ? CAN_OBTAIN
-                       : CANT_OBTAIN_ALREADY_HAVE;
         case RG_BOTTOM_OF_THE_WELL_SMALL_KEY:
-            return OTRGlobals::Instance->gRandoContext->GetDungeon(Rando::BOTTOM_OF_THE_WELL)
-                               ->GetTotalSmallKeys(&gSaveContext) < BOTTOM_OF_THE_WELL_SMALL_KEY_MAX
-                       ? CAN_OBTAIN
-                       : CANT_OBTAIN_ALREADY_HAVE;
         case RG_GERUDO_TRAINING_GROUND_SMALL_KEY:
-            return OTRGlobals::Instance->gRandoContext->GetDungeon(Rando::GERUDO_TRAINING_GROUND)
-                               ->GetTotalSmallKeys(&gSaveContext) < GERUDO_TRAINING_GROUND_SMALL_KEY_MAX
-                       ? CAN_OBTAIN
-                       : CANT_OBTAIN_ALREADY_HAVE;
-        case RG_GERUDO_FORTRESS_SMALL_KEY: {
-            std::vector<uint8_t> DoorFlags = THIEVES_HIDEOUT_DOOR_FLAGS;
-            return Rando::FindTotalSmallKeys(&gSaveContext, SCENE_THIEVES_HIDEOUT, &DoorFlags) <
-                           GERUDO_FORTRESS_SMALL_KEY_MAX
+        case RG_GERUDO_FORTRESS_SMALL_KEY:
+        case RG_GANONS_CASTLE_SMALL_KEY:
+        case RG_TREASURE_GAME_SMALL_KEY: {
+            SceneID scene = Rando::Logic::RandoGetToDungeonScene.find(randoGet)->second;
+            return Rando::GetSceneTotalSmallKeys(&gSaveContext, scene) < Rando::GetSceneSmallKeyMax(scene)
                        ? CAN_OBTAIN
                        : CANT_OBTAIN_ALREADY_HAVE;
         }
-        case RG_GANONS_CASTLE_SMALL_KEY:
-            return OTRGlobals::Instance->gRandoContext->GetDungeon(Rando::GANONS_CASTLE)
-                               ->GetTotalSmallKeys(&gSaveContext) < GANONS_CASTLE_SMALL_KEY_MAX
-                       ? CAN_OBTAIN
-                       : CANT_OBTAIN_ALREADY_HAVE;
-        case RG_TREASURE_GAME_SMALL_KEY:
-            // I assume this cannot be easily manipulated?
-            return gSaveContext.inventory.dungeonKeys[SCENE_TREASURE_BOX_SHOP] < TREASURE_GAME_SMALL_KEY_MAX
-                       ? CAN_OBTAIN
-                       : CANT_OBTAIN_ALREADY_HAVE;
 
         // Dungeon Rewards
         case RG_KOKIRI_EMERALD:
@@ -662,6 +626,33 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
         case RG_LIGHT_MEDALLION:
             return !CHECK_QUEST_ITEM(QUEST_MEDALLION_LIGHT) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
 
+        // silver rupees
+        case RG_SHADOW_SILVER_BLADES:
+        case RG_SHADOW_SILVER_PIT:
+        case RG_SHADOW_SILVER_SPIKES:
+        case RG_SPIRIT_SILVER_CHILD:
+        case RG_SPIRIT_SILVER_SUN:
+        case RG_SPIRIT_SILVER_BOULDERS:
+        case RG_BOTW_SILVER:
+        case RG_ICE_CAVERN_SILVER_BLADES:
+        case RG_ICE_CAVERN_SILVER_BLOCK:
+        case RG_GTG_SILVER_SLOPE:
+        case RG_GTG_SILVER_LAVA:
+        case RG_GTG_SILVER_WATER:
+        case RG_GANONS_CASTLE_SILVER_LIGHT:
+        case RG_GANONS_CASTLE_SILVER_FOREST:
+        case RG_GANONS_CASTLE_SILVER_FIRE:
+        case RG_GANONS_CASTLE_SILVER_SPIRIT:
+        case RG_DODONGOS_CAVERN_MQ_SILVER:
+        case RG_SHADOW_MQ_SILVER_INVISIBLE_BLADES:
+        case RG_SPIRIT_MQ_SILVER_LOBBY:
+        case RG_SPIRIT_MQ_SILVER_BIG_WALL:
+        case RG_GANONS_CASTLE_MQ_SILVER_WATER:
+        case RG_GANONS_CASTLE_MQ_SILVER_SHADOW:
+            return *Randomizer::SilverFieldFromSaveContext(&gSaveContext, randoGet) < Randomizer::SilverTotal(randoGet)
+                       ? CAN_OBTAIN
+                       : CANT_OBTAIN_ALREADY_HAVE;
+
         case RG_RECOVERY_HEART:
         case RG_GREEN_RUPEE:
         case RG_GREG_RUPEE:
@@ -676,6 +667,7 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
         case RG_TREASURE_GAME_GREEN_RUPEE:
         case RG_BUY_HEART:
         case RG_TRIFORCE_PIECE:
+        case RG_TRIFORCE:
         default:
             return CAN_OBTAIN;
     }
@@ -691,7 +683,7 @@ Rando::Location* Randomizer::GetCheckObjectFromActor(s16 actorId, s16 sceneNum, 
                 specialRc = RC_MARKET_TREASURE_CHEST_GAME_REWARD;
             }
 
-            // todo: handle the itemetc part of this so drawing works when we implement shuffle
+            // the low bits of a game chest's params are its treasure flag, odd for the key chest
             if (actorId == ACTOR_EN_BOX) {
                 bool isAKey = (actorParams & 0x60) == 0x20;
                 if ((actorParams & 0xF) < 2) {
@@ -848,8 +840,7 @@ ShopItemIdentity Randomizer::IdentifyShopItem(s32 sceneNum, u8 slotIndex) {
         slotIndex - 1);
 
     if (location->GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
-        shopItemIdentity.identity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
-        shopItemIdentity.identity.randomizerCheck = location->GetRandomizerCheck();
+        IdentifyCheck(&shopItemIdentity.identity, location);
         shopItemIdentity.ogItemId = (GetItemID)Rando::StaticData::RetrieveItem(location->GetVanillaItem()).GetItemID();
 
         RandomizerGet randoGet = Rando::Context::GetInstance()
@@ -866,8 +857,46 @@ ShopItemIdentity Randomizer::IdentifyShopItem(s32 sceneNum, u8 slotIndex) {
     return shopItemIdentity;
 }
 
+CheckIdentity Randomizer::IdentifySilver(s32 sceneNum, Vec3f pos) {
+    struct CheckIdentity silverIdentity;
+
+    silverIdentity.randomizerInf = RAND_INF_MAX;
+    silverIdentity.randomizerCheck = RC_UNKNOWN_CHECK;
+
+    s32 actorParams = TWO_ACTOR_PARAMS((s16)pos.x, (s16)pos.z);
+    if (sceneNum == SCENE_SHADOW_TEMPLE && actorParams == TWO_ACTOR_PARAMS(2110, 3372)) {
+        actorParams = TWO_ACTOR_PARAMS((s16)pos.x, (s16)pos.y);
+    }
+
+    Rando::Location* location = GetCheckObjectFromActor(ACTOR_EN_G_SWITCH, sceneNum, actorParams);
+
+    if (location->GetRandomizerCheck() != RC_UNKNOWN_CHECK) {
+        silverIdentity.randomizerInf = rcToRandomizerInf[location->GetRandomizerCheck()];
+        silverIdentity.randomizerCheck = location->GetRandomizerCheck();
+    }
+
+    return silverIdentity;
+}
+
 u8 Randomizer::GetRandoSettingValue(RandomizerSettingKey randoSettingKey) {
     return Rando::Context::GetInstance()->GetOption(randoSettingKey).Get();
+}
+
+u8 Randomizer::GetTriforcePiecesRequired() {
+    u8 required = 0;
+    if (GetRandoSettingValue(RSK_RAINBOW_BRIDGE) == RO_BRIDGE_TRIFORCE_PIECES) {
+        required = std::max(required, GetRandoSettingValue(RSK_RAINBOW_BRIDGE_TRIFORCE_COUNT));
+    }
+    if (GetRandoSettingValue(RSK_GANONS_BOSS_KEY) == RO_GANON_BOSS_KEY_TRIFORCE_PIECES) {
+        required = std::max(required, GetRandoSettingValue(RSK_GBK_TRIFORCE_COUNT));
+    }
+    if (GetRandoSettingValue(RSK_GANONS_SOUL) == RO_GANONS_SOUL_TRIFORCE_PIECES) {
+        required = std::max(required, GetRandoSettingValue(RSK_GANONS_SOUL_TRIFORCE_COUNT));
+    }
+    if (GetRandoSettingValue(RSK_WINCON) == RO_WINCON_TRIFORCE_PIECES) {
+        required = std::max(required, GetRandoSettingValue(RSK_WINCON_TRIFORCE_COUNT));
+    }
+    return required;
 }
 
 GetItemEntry Randomizer::GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogItemId,
@@ -899,8 +928,6 @@ RandomizerCheck Randomizer::GetCheckFromRandomizerInf(RandomizerInf randomizerIn
 std::thread randoThread;
 
 void GenerateRandomizerImgui(std::string seed = "") {
-    CVarSetInteger(CVAR_GENERAL("RandoGenerating"), 1);
-    Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
     auto ctx = Rando::Context::GetInstance();
     // RANDOTODO proper UI for selecting if a spoiler loaded should be used for settings
     Rando::Settings::GetInstance()->SetAllToContext();
@@ -936,46 +963,48 @@ void GenerateRandomizerImgui(std::string seed = "") {
     }
 
     Rando::Context::GetInstance()->SetSeedGenerated(GenerateRandomizer(excludedLocations, enabledTricks, seed));
-    CVarSetInteger(CVAR_GENERAL("RandoGenerating"), 0);
     Ship::Context::GetRawInstance()->GetWindow()->GetGui()->SaveConsoleVariablesNextFrame();
 
-    generated = true;
-
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnGenerationCompletion>();
+
+    randoGenerating = false;
+}
+
+bool IsRandoGenerating() {
+    return randoGenerating;
 }
 
 bool GenerateRandomizer(std::string seed /*= ""*/) {
-    if (generated) {
-        generated = false;
-        randoThread.join();
+    if (randoGenerating) {
+        return false;
     }
-    if (CVarGetInteger(CVAR_GENERAL("RandoGenerating"), 0) == 0) {
-        randoThread = std::thread(&GenerateRandomizerImgui, seed);
-        return true;
-    }
-    return false;
+    WaitForRandoGeneration();
+    randoGenerating = true;
+    randoThread = std::thread(&GenerateRandomizerImgui, seed);
+    return true;
 }
 
 static bool locationsTabOpen = false;
 static bool tricksTabOpen = false;
 
-void JoinRandoGenerationThread() {
-    if (generated) {
-        generated = false;
+void WaitForRandoGeneration() {
+    if (randoThread.joinable()) {
         randoThread.join();
     }
 }
 
 class ExtendedVanillaTableInvalidItemIdException : public std::exception {
   private:
-    s16 itemID;
+    std::string message;
 
   public:
-    ExtendedVanillaTableInvalidItemIdException(s16 itemID) : itemID(itemID) {
+    ExtendedVanillaTableInvalidItemIdException(s16 itemID)
+        : message(std::to_string(itemID) +
+                  " is not a valid ItemID for the extendedVanillaGetItemTable. If you are adding a new "
+                  "item, try adding it to randoGetItemTable instead.") {
     }
-    std::string what() {
-        return itemID + " is not a valid ItemID for the extendedVanillaGetItemTable. If you are adding a new"
-                        "item, try adding it to randoGetItemTable instead.";
+    const char* what() const noexcept override {
+        return message.c_str();
     }
 };
 
@@ -1024,6 +1053,41 @@ static std::unordered_map<RandomizerGet, GameplayStatTimestamp> randomizerGetToS
     { RG_BACK_TOWER_KEY, TIMESTAMP_FOUND_BACK_TOWER_KEY },
     { RG_HYLIA_LAB_KEY, TIMESTAMP_FOUND_HYLIA_LAB_KEY },
     { RG_FISHING_HOLE_KEY, TIMESTAMP_FOUND_FISHING_HOLE_KEY },
+
+    { RG_GREG_RUPEE, TIMESTAMP_FOUND_GREG },
+
+    { RG_CHILD_WALLET, TIMESTAMP_FOUND_CHILD_WALLET },
+    { RG_TYCOON_WALLET, TIMESTAMP_FOUND_TYCOON_WALLET },
+
+    { RG_DEKU_STICK_BAG, TIMESTAMP_FOUND_DEKU_STICK_BAG },
+    { RG_DEKU_NUT_BAG, TIMESTAMP_FOUND_DEKU_NUT_BAG },
+
+    { RG_POWER_BRACELET, TIMESTAMP_FOUND_GRAB },
+    { RG_CLIMB, TIMESTAMP_FOUND_CLIMB },
+    { RG_CRAWL, TIMESTAMP_FOUND_CRAWL },
+    { RG_OPEN_CHEST, TIMESTAMP_FOUND_OPEN_CHESTS },
+
+    { RG_SPEAK_DEKU, TIMESTAMP_FOUND_SPEAK_DEKU },
+    { RG_SPEAK_GERUDO, TIMESTAMP_FOUND_SPEAK_GERUDO },
+    { RG_SPEAK_GORON, TIMESTAMP_FOUND_SPEAK_GORON },
+    { RG_SPEAK_HYLIAN, TIMESTAMP_FOUND_SPEAK_HYLIAN },
+    { RG_SPEAK_KOKIRI, TIMESTAMP_FOUND_SPEAK_KOKIRI },
+    { RG_SPEAK_ZORA, TIMESTAMP_FOUND_SPEAK_ZORA },
+
+    { RG_DEATH_MOUNTAIN_CRATER_BEAN_SOUL, TIMESTAMP_FOUND_DMC_BEAN_SOUL },
+    { RG_DEATH_MOUNTAIN_TRAIL_BEAN_SOUL, TIMESTAMP_FOUND_DMT_BEAN_SOUL },
+    { RG_DESERT_COLOSSUS_BEAN_SOUL, TIMESTAMP_FOUND_COLOSSUS_BEAN_SOUL },
+    { RG_GERUDO_VALLEY_BEAN_SOUL, TIMESTAMP_FOUND_GV_BEAN_SOUL },
+    { RG_GRAVEYARD_BEAN_SOUL, TIMESTAMP_FOUND_GY_BEAN_SOUL },
+    { RG_KOKIRI_FOREST_BEAN_SOUL, TIMESTAMP_FOUND_KF_BEAN_SOUL },
+    { RG_LAKE_HYLIA_BEAN_SOUL, TIMESTAMP_FOUND_LH_BEAN_SOUL },
+    { RG_LOST_WOODS_BRIDGE_BEAN_SOUL, TIMESTAMP_FOUND_LW_BRIDGE_BEAN_SOUL },
+    { RG_LOST_WOODS_BEAN_SOUL, TIMESTAMP_FOUND_LW_MEADOW_BEAN_SOUL },
+    { RG_ZORAS_RIVER_BEAN_SOUL, TIMESTAMP_FOUND_ZR_BEAN_SOUL },
+
+    { RG_SKELETON_KEY, TIMESTAMP_FOUND_SKELETON_KEY },
+
+    { RG_ROCS_FEATHER, TIMESTAMP_FOUND_ROCS_FEATHER },
 };
 
 // Gameplay stat tracking: Update time the item was acquired
@@ -1035,31 +1099,50 @@ void Randomizer_GameplayStats_SetTimestamp(uint16_t item) {
         time = 1;
     }
 
-    if (gSaveContext.ship.stats.itemTimestamp[item] == 0) {
-        if (item == RG_GANONS_CASTLE_BOSS_KEY) {
-            gSaveContext.ship.stats.itemTimestamp[ITEM_KEY_BOSS] = time;
-        } else if (item == RG_MASTER_SWORD) {
-            gSaveContext.ship.stats.itemTimestamp[ITEM_SWORD_MASTER] = time;
-        } else if (randomizerGetToStatsTimeStamp.contains((RandomizerGet)item)) {
-            gSaveContext.ship.stats.itemTimestamp[randomizerGetToStatsTimeStamp[(RandomizerGet)item]] = time;
-        } else if (item >= RG_EMPTY_BOTTLE && item <= RG_BOTTLE_WITH_BIG_POE) {
-            gSaveContext.ship.stats.itemTimestamp[ITEM_BOTTLE] = time;
-        } else if ((item >= RG_BOMBCHU_5 && item <= RG_BOMBCHU_20) || item == RG_PROGRESSIVE_BOMBCHU_BAG) {
-            gSaveContext.ship.stats.itemTimestamp[ITEM_BOMBCHU] = time;
-        } else if (item == RG_MAGIC_SINGLE) {
-            gSaveContext.ship.stats.itemTimestamp[ITEM_SINGLE_MAGIC] = time;
-        } else if (item == RG_DOUBLE_DEFENSE) {
-            gSaveContext.ship.stats.itemTimestamp[ITEM_DOUBLE_DEFENSE] = time;
-        }
+    int16_t timestampItem = -1;
+    if (item == RG_GANONS_CASTLE_BOSS_KEY) {
+        timestampItem = ITEM_KEY_BOSS;
+    } else if (item == RG_MASTER_SWORD) {
+        timestampItem = ITEM_SWORD_MASTER;
+    } else if (item >= RG_EMPTY_BOTTLE && item <= RG_BOTTLE_WITH_BIG_POE) {
+        timestampItem = ITEM_BOTTLE;
+    } else if ((item >= RG_BOMBCHU_5 && item <= RG_BOMBCHU_20) || item == RG_PROGRESSIVE_BOMBCHU_BAG) {
+        timestampItem = ITEM_BOMBCHU;
+    } else if (item == RG_MAGIC_SINGLE) {
+        timestampItem = ITEM_SINGLE_MAGIC;
+    } else if (item == RG_DOUBLE_DEFENSE) {
+        timestampItem = ITEM_DOUBLE_DEFENSE;
+    } else if (item >= RG_KEATON_MASK && item <= RG_MASK_OF_TRUTH) {
+        timestampItem = ITEM_MASK_KEATON + (item - RG_KEATON_MASK);
+    } else if (item == RG_WEIRD_EGG) {
+        timestampItem = ITEM_WEIRD_EGG;
+    } else if (item == RG_ZELDAS_LETTER) {
+        timestampItem = ITEM_LETTER_ZELDA;
+    } else if (randomizerGetToStatsTimeStamp.contains((RandomizerGet)item)) {
+        timestampItem = randomizerGetToStatsTimeStamp[(RandomizerGet)item];
+    }
+
+    if (timestampItem != -1 && gSaveContext.ship.stats.itemTimestamp[timestampItem] == 0) {
+        gSaveContext.ship.stats.itemTimestamp[timestampItem] = time;
     }
 }
 
 extern "C" u8 Return_Item_Entry(GetItemEntry itemEntry, u8 returnItem);
 
+// The child trade slot can be displaced (e.g. chicken consumed waking Talon,
+// letter shown to the guard), leaving an item there the player no longer owns.
+static bool ChildTradeSlotOccupied() {
+    u8 slotItem = INV_CONTENT(ITEM_TRADE_CHILD);
+    if (slotItem < ITEM_WEIRD_EGG || slotItem > ITEM_MASK_TRUTH) {
+        return false;
+    }
+    return Flags_GetRandomizerInf((RandomizerInf)(slotItem - ITEM_WEIRD_EGG + RAND_INF_CHILD_TRADES_HAS_WEIRD_EGG));
+}
+
 extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
     if (giEntry.modIndex != MOD_RANDOMIZER) {
-        LUSLOG_WARN(
-            "Randomizer_Item_Give was called with a GetItemEntry with a mod index different from MOD_RANDOMIZER (%d)",
+        SPDLOG_WARN(
+            "Randomizer_Item_Give was called with a GetItemEntry with a mod index different from MOD_RANDOMIZER ({})",
             giEntry.modIndex);
         assert(false);
         return -1;
@@ -1070,9 +1153,52 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
     // Gameplay stats: Update the time the item was obtained
     Randomizer_GameplayStats_SetTimestamp(item);
 
+    // open chest: not progressive gives both flags at once, progressive gives large only as the second copy
+    if (item == RG_OPEN_CHEST &&
+        (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_OPEN_CHEST) != RO_OPEN_CHEST_PROGRESSIVE ||
+         Flags_GetRandomizerInf(RAND_INF_CAN_OPEN_CHEST))) {
+        Flags_SetRandomizerInf(RAND_INF_CAN_OPEN_LARGE_CHEST);
+    }
+
     // if it's an item that just sets a randomizerInf, set it
     if (Rando::StaticData::RandoGetToRandInf.find(item) != Rando::StaticData::RandoGetToRandInf.end()) {
         Flags_SetRandomizerInf((RandomizerInf)Rando::StaticData::RandoGetToRandInf.find(item)->second);
+        if (item == RG_SKELETON_KEY) {
+            // This isn't technically necessary, because keys will no longer be consumed,
+            // but for the player's sanity we display that they _have_ keys.
+            for (Rando::DungeonInfo* dungeon : Rando::Context::GetInstance()->GetDungeons()->GetDungeonList()) {
+                uint8_t keys = Rando::GetSceneSmallKeyMax(dungeon->GetScene());
+                if (keys > 0) {
+                    gSaveContext.inventory.dungeonKeys[dungeon->GetScene()] = keys;
+                }
+            }
+            gSaveContext.inventory.dungeonKeys[SCENE_THIEVES_HIDEOUT] =
+                Rando::GetSceneSmallKeyMax(SCENE_THIEVES_HIDEOUT);
+        } else if (item >= RG_KEATON_MASK && item <= RG_MASK_OF_TRUTH) {
+            if (!ChildTradeSlotOccupied()) {
+                INV_CONTENT(ITEM_TRADE_CHILD) = (int)ITEM_MASK_KEATON + (item - RG_KEATON_MASK);
+            }
+        } else if (item == RG_WEIRD_EGG) {
+            Flags_SetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_WEIRD_EGG);
+            if (!ChildTradeSlotOccupied()) {
+                INV_CONTENT(ITEM_TRADE_CHILD) = ITEM_WEIRD_EGG;
+            }
+        } else if (item == RG_ZELDAS_LETTER) {
+            Flags_SetRandomizerInf(RAND_INF_CHILD_TRADES_HAS_LETTER_ZELDA);
+            if (!ChildTradeSlotOccupied()) {
+                INV_CONTENT(ITEM_TRADE_CHILD) = ITEM_LETTER_ZELDA;
+            }
+        } else if (item == RG_ROCS_FEATHER) {
+            if (INV_CONTENT(ITEM_NAYRUS_LOVE) == ITEM_NONE) {
+                INV_CONTENT(ITEM_NAYRUS_LOVE) = ITEM_ROCS_FEATHER;
+            }
+        } else if (item == RG_CHILD_WALLET &&
+                   OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FULL_WALLETS)) {
+            Rupees_ChangeBy(99);
+        } else if (item == RG_GREG_RUPEE) {
+            Rupees_ChangeBy(1);
+        }
+
         return Return_Item_Entry(giEntry, RG_NONE);
     }
 
@@ -1120,13 +1246,12 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
     }
 
     // dungeon items
-    if ((item >= RG_FOREST_TEMPLE_SMALL_KEY && item <= RG_GANONS_CASTLE_SMALL_KEY) ||
-        (item >= RG_FOREST_TEMPLE_KEY_RING && item <= RG_GANONS_CASTLE_KEY_RING) ||
+    if ((item >= RG_FOREST_TEMPLE_SMALL_KEY && item <= RG_TREASURE_GAME_SMALL_KEY) ||
+        (item >= RG_FOREST_TEMPLE_KEY_RING && item <= RG_TREASURE_GAME_KEY_RING) ||
         (item >= RG_FOREST_TEMPLE_BOSS_KEY && item <= RG_GANONS_CASTLE_BOSS_KEY) ||
         (item >= RG_DEKU_TREE_MAP && item <= RG_ICE_CAVERN_MAP) ||
         (item >= RG_DEKU_TREE_COMPASS && item <= RG_ICE_CAVERN_COMPASS)) {
         u16 mapIndex = gSaveContext.mapIndex;
-        u8 numOfKeysOnKeyring = 0;
         switch (item) {
             case RG_DEKU_TREE_MAP:
             case RG_DEKU_TREE_COMPASS:
@@ -1146,7 +1271,6 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
             case RG_FOREST_TEMPLE_KEY_RING:
             case RG_FOREST_TEMPLE_BOSS_KEY:
                 mapIndex = SCENE_FOREST_TEMPLE;
-                numOfKeysOnKeyring = FOREST_TEMPLE_SMALL_KEY_MAX;
                 break;
             case RG_FIRE_TEMPLE_MAP:
             case RG_FIRE_TEMPLE_COMPASS:
@@ -1154,7 +1278,6 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
             case RG_FIRE_TEMPLE_KEY_RING:
             case RG_FIRE_TEMPLE_BOSS_KEY:
                 mapIndex = SCENE_FIRE_TEMPLE;
-                numOfKeysOnKeyring = FIRE_TEMPLE_SMALL_KEY_MAX;
                 break;
             case RG_WATER_TEMPLE_MAP:
             case RG_WATER_TEMPLE_COMPASS:
@@ -1162,7 +1285,6 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
             case RG_WATER_TEMPLE_KEY_RING:
             case RG_WATER_TEMPLE_BOSS_KEY:
                 mapIndex = SCENE_WATER_TEMPLE;
-                numOfKeysOnKeyring = WATER_TEMPLE_SMALL_KEY_MAX;
                 break;
             case RG_SPIRIT_TEMPLE_MAP:
             case RG_SPIRIT_TEMPLE_COMPASS:
@@ -1170,7 +1292,6 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
             case RG_SPIRIT_TEMPLE_KEY_RING:
             case RG_SPIRIT_TEMPLE_BOSS_KEY:
                 mapIndex = SCENE_SPIRIT_TEMPLE;
-                numOfKeysOnKeyring = SPIRIT_TEMPLE_SMALL_KEY_MAX;
                 break;
             case RG_SHADOW_TEMPLE_MAP:
             case RG_SHADOW_TEMPLE_COMPASS:
@@ -1178,14 +1299,12 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
             case RG_SHADOW_TEMPLE_KEY_RING:
             case RG_SHADOW_TEMPLE_BOSS_KEY:
                 mapIndex = SCENE_SHADOW_TEMPLE;
-                numOfKeysOnKeyring = SHADOW_TEMPLE_SMALL_KEY_MAX;
                 break;
             case RG_BOTTOM_OF_THE_WELL_MAP:
             case RG_BOTTOM_OF_THE_WELL_COMPASS:
             case RG_BOTTOM_OF_THE_WELL_SMALL_KEY:
             case RG_BOTTOM_OF_THE_WELL_KEY_RING:
                 mapIndex = SCENE_BOTTOM_OF_THE_WELL;
-                numOfKeysOnKeyring = BOTTOM_OF_THE_WELL_SMALL_KEY_MAX;
                 break;
             case RG_ICE_CAVERN_MAP:
             case RG_ICE_CAVERN_COMPASS:
@@ -1197,23 +1316,24 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
             case RG_GERUDO_TRAINING_GROUND_SMALL_KEY:
             case RG_GERUDO_TRAINING_GROUND_KEY_RING:
                 mapIndex = SCENE_GERUDO_TRAINING_GROUND;
-                numOfKeysOnKeyring = GERUDO_TRAINING_GROUND_SMALL_KEY_MAX;
                 break;
             case RG_GERUDO_FORTRESS_SMALL_KEY:
             case RG_GERUDO_FORTRESS_KEY_RING:
                 mapIndex = SCENE_THIEVES_HIDEOUT;
-                numOfKeysOnKeyring = GERUDO_FORTRESS_SMALL_KEY_MAX;
                 break;
             case RG_GANONS_CASTLE_SMALL_KEY:
             case RG_GANONS_CASTLE_KEY_RING:
                 mapIndex = SCENE_INSIDE_GANONS_CASTLE;
-                numOfKeysOnKeyring = GANONS_CASTLE_SMALL_KEY_MAX;
+                break;
+            case RG_TREASURE_GAME_SMALL_KEY:
+            case RG_TREASURE_GAME_KEY_RING:
+                mapIndex = SCENE_TREASURE_BOX_SHOP;
                 break;
             default:
                 break;
         }
 
-        if ((item >= RG_FOREST_TEMPLE_SMALL_KEY) && (item <= RG_GANONS_CASTLE_SMALL_KEY)) {
+        if ((item >= RG_FOREST_TEMPLE_SMALL_KEY) && (item <= RG_TREASURE_GAME_SMALL_KEY)) {
             gSaveContext.ship.stats.dungeonKeys[mapIndex]++;
             if (gSaveContext.inventory.dungeonKeys[mapIndex] < 0) {
                 gSaveContext.inventory.dungeonKeys[mapIndex] = 1;
@@ -1223,9 +1343,10 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
             return Return_Item_Entry(giEntry, RG_NONE);
         }
 
-        if ((item >= RG_FOREST_TEMPLE_KEY_RING) && (item <= RG_GANONS_CASTLE_KEY_RING)) {
-            gSaveContext.ship.stats.dungeonKeys[mapIndex] = numOfKeysOnKeyring;
-            gSaveContext.inventory.dungeonKeys[mapIndex] = numOfKeysOnKeyring;
+        if ((item >= RG_FOREST_TEMPLE_KEY_RING) && (item <= RG_TREASURE_GAME_KEY_RING)) {
+            u8 keysOnRing = Rando::GetSceneSmallKeyMax((SceneID)mapIndex);
+            gSaveContext.ship.stats.dungeonKeys[mapIndex] = keysOnRing;
+            gSaveContext.inventory.dungeonKeys[mapIndex] = keysOnRing;
             return Return_Item_Entry(giEntry, RG_NONE);
         }
 
@@ -1239,31 +1360,6 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
         }
 
         gSaveContext.inventory.dungeonItems[mapIndex] |= bitmask;
-        return Return_Item_Entry(giEntry, RG_NONE);
-    } else if (item == RG_SKELETON_KEY) {
-        Flags_SetRandomizerInf(RAND_INF_HAS_SKELETON_KEY);
-        // This isn't technically necessary, because keys will no longer be consumed,
-        // but for the player's sanity we display that they _have_ keys.
-        gSaveContext.inventory.dungeonKeys[SCENE_FOREST_TEMPLE] = FOREST_TEMPLE_SMALL_KEY_MAX;
-        gSaveContext.inventory.dungeonKeys[SCENE_FIRE_TEMPLE] = FIRE_TEMPLE_SMALL_KEY_MAX;
-        gSaveContext.inventory.dungeonKeys[SCENE_WATER_TEMPLE] = WATER_TEMPLE_SMALL_KEY_MAX;
-        gSaveContext.inventory.dungeonKeys[SCENE_SPIRIT_TEMPLE] = SPIRIT_TEMPLE_SMALL_KEY_MAX;
-        gSaveContext.inventory.dungeonKeys[SCENE_SHADOW_TEMPLE] = SHADOW_TEMPLE_SMALL_KEY_MAX;
-        gSaveContext.inventory.dungeonKeys[SCENE_BOTTOM_OF_THE_WELL] = BOTTOM_OF_THE_WELL_SMALL_KEY_MAX;
-        gSaveContext.inventory.dungeonKeys[SCENE_GERUDO_TRAINING_GROUND] = GERUDO_TRAINING_GROUND_SMALL_KEY_MAX;
-        gSaveContext.inventory.dungeonKeys[SCENE_THIEVES_HIDEOUT] = GERUDO_FORTRESS_SMALL_KEY_MAX;
-        gSaveContext.inventory.dungeonKeys[SCENE_INSIDE_GANONS_CASTLE] = GANONS_CASTLE_SMALL_KEY_MAX;
-
-        return Return_Item_Entry(giEntry, RG_NONE);
-    } else if (item >= RG_GUARD_HOUSE_KEY && item <= RG_FISHING_HOLE_KEY) {
-        Flags_SetRandomizerInf(
-            (RandomizerInf)((int)RAND_INF_GUARD_HOUSE_UNLOCKED + ((item - RG_GUARD_HOUSE_KEY) * 2) + 1));
-        return Return_Item_Entry(giEntry, RG_NONE);
-    } else if (item >= RG_KEATON_MASK && item <= RG_MASK_OF_TRUTH) {
-        Flags_SetRandomizerInf((RandomizerInf)((int)RAND_INF_CHILD_TRADES_HAS_MASK_KEATON + (item - RG_KEATON_MASK)));
-        if (INV_CONTENT(ITEM_TRADE_CHILD) == ITEM_NONE) {
-            INV_CONTENT(ITEM_TRADE_CHILD) = (int)ITEM_MASK_KEATON + (item - RG_KEATON_MASK);
-        }
         return Return_Item_Entry(giEntry, RG_NONE);
     }
 
@@ -1299,33 +1395,14 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
                 Rupees_ChangeBy(999);
             }
             break;
-        case RG_CHILD_WALLET:
-            Flags_SetRandomizerInf(RAND_INF_HAS_WALLET);
-            if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_FULL_WALLETS)) {
-                Rupees_ChangeBy(99);
-            }
-            break;
-        case RG_GREG_RUPEE:
-            Rupees_ChangeBy(1);
-            Flags_SetRandomizerInf(RAND_INF_GREG_FOUND);
-            gSaveContext.ship.stats.itemTimestamp[TIMESTAMP_FOUND_GREG] = static_cast<u32>(GAMEPLAYSTAT_TOTAL_TIME);
+        case RG_TRIFORCE:
+            GameInteractor_SetTriforceHuntCreditsWarpActive(true);
             break;
         case RG_TRIFORCE_PIECE:
             gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected++;
             GameInteractor_SetTriforceHuntPieceGiven(true);
-
-            // Give Ganon's Boss Key and teleport to credits if set to Win when goal is reached.
-            if (gSaveContext.ship.quest.data.randomizer.triforcePiecesCollected ==
-                (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED) + 1)) {
-                Flags_SetRandomizerInf(RAND_INF_GRANT_GANONS_BOSSKEY);
-
-                if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT) ==
-                    RO_TRIFORCE_HUNT_WIN) {
-                    // Save and warp are deferred until item queue drains
-                    GameInteractor_SetTriforceHuntCreditsWarpActive(true);
-                }
-            }
-
+            // Reward/win triggers (Ganon's Boss Key, Ganon's Soul, win condition) are evaluated by
+            // CheckTriggers() on item receive, so Triforce Piece thresholds are handled there.
             break;
         case RG_PROGRESSIVE_BOMBCHU_BAG:
             OTRGlobals::Instance->gRandoContext->HandleGetBombchuBag();
@@ -1345,14 +1422,43 @@ extern "C" u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
             INV_CONTENT(ITEM_NUT) = ITEM_NUT;
             AMMO(ITEM_NUT) = static_cast<int8_t>(CUR_CAPACITY(UPG_NUTS));
             break;
-        case RG_ROCS_FEATHER:
-            Flags_SetRandomizerInf(RAND_INF_OBTAINED_ROCS_FEATHER);
-            if (INV_CONTENT(ITEM_NAYRUS_LOVE) == ITEM_NONE) {
-                INV_CONTENT(ITEM_NAYRUS_LOVE) = ITEM_ROCS_FEATHER;
+        case RG_SHADOW_SILVER_BLADES:
+        case RG_SHADOW_SILVER_PIT:
+        case RG_SHADOW_SILVER_SPIKES:
+        case RG_SPIRIT_SILVER_CHILD:
+        case RG_SPIRIT_SILVER_SUN:
+        case RG_SPIRIT_SILVER_BOULDERS:
+        case RG_BOTW_SILVER:
+        case RG_ICE_CAVERN_SILVER_BLADES:
+        case RG_ICE_CAVERN_SILVER_BLOCK:
+        case RG_GTG_SILVER_SLOPE:
+        case RG_GTG_SILVER_LAVA:
+        case RG_GTG_SILVER_WATER:
+        case RG_GANONS_CASTLE_SILVER_LIGHT:
+        case RG_GANONS_CASTLE_SILVER_FOREST:
+        case RG_GANONS_CASTLE_SILVER_FIRE:
+        case RG_GANONS_CASTLE_SILVER_SPIRIT:
+        case RG_DODONGOS_CAVERN_MQ_SILVER:
+        case RG_SHADOW_MQ_SILVER_INVISIBLE_BLADES:
+        case RG_SPIRIT_MQ_SILVER_LOBBY:
+        case RG_SPIRIT_MQ_SILVER_BIG_WALL:
+        case RG_GANONS_CASTLE_MQ_SILVER_WATER:
+        case RG_GANONS_CASTLE_MQ_SILVER_SHADOW: {
+            s8* field = Randomizer::SilverFieldFromSaveContext(&gSaveContext, item);
+            if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_SILVER) ==
+                RO_SHUFFLE_SILVER_WALLET) {
+                *field = 10;
+                // this spoils MQ in theory, but will not update trackers because it's subtle and there's too many edge
+                // cases where this does not apply
+                Rupees_ChangeBy(Randomizer::SilverTotal(item) * 5);
+            } else {
+                *field += 1;
+                Rupees_ChangeBy(5);
             }
             break;
+        }
         default:
-            LUSLOG_WARN("Randomizer_Item_Give didn't have behaviour specified for getItemId=%d", item);
+            SPDLOG_WARN("Randomizer_Item_Give didn't have behaviour specified for getItemId={}", item);
             assert(false);
             return -1;
     }

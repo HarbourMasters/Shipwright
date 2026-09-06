@@ -1,0 +1,328 @@
+:config:
+  segments:
+    - [ 6, 0x00DDF330 ]
+    - [ 4, 0x00D31090 ]
+    - [ 8, 0x00DDF330 ]
+    - [ 9, 0x00DDF330 ]
+    - [ 10, 0x00DDF330 ]
+    - [ 11, 0x00DDF330 ]
+    - [ 12, 0x00DDF330 ]
+    - [ 13, 0x00DDF330 ]
+  external_files:
+    - ntsc_j_gc/objects/gameplay_keep.yml
+
+gPeehatBodyDL:
+  type: GFX
+  offset: 0x12F0
+  symbol: gPeehatBodyDL
+
+gPeehatBodyLimb:
+  type: OOT:LIMB
+  offset: 0x1B28
+  symbol: gPeehatBodyLimb
+  limb_type: Standard
+
+gPeehatBodyRootLimb:
+  type: OOT:LIMB
+  offset: 0x1B1C
+  symbol: gPeehatBodyRootLimb
+  limb_type: Standard
+
+gPeehatFlyingAnim:
+  type: OOT:ANIMATION
+  offset: 0x5C4
+  symbol: gPeehatFlyingAnim
+
+gPeehatLandingAnim:
+  type: OOT:ANIMATION
+  offset: 0x350
+  symbol: gPeehatLandingAnim
+
+gPeehatLeafTopTex:
+  type: TEXTURE
+  offset: 0x1490
+  symbol: gPeehatLeafTopTex
+  format: RGBA16
+  width: 16
+  height: 32
+
+gPeehatLimb_1B4C:
+  type: OOT:LIMB
+  offset: 0x1B4C
+  symbol: gPeehatLimb_1B4C
+  limb_type: Standard
+
+gPeehatLimb_1B70:
+  type: OOT:LIMB
+  offset: 0x1B70
+  symbol: gPeehatLimb_1B70
+  limb_type: Standard
+
+gPeehatLimb_1B94:
+  type: OOT:LIMB
+  offset: 0x1B94
+  symbol: gPeehatLimb_1B94
+  limb_type: Standard
+
+gPeehatLimb_1BB8:
+  type: OOT:LIMB
+  offset: 0x1BB8
+  symbol: gPeehatLimb_1BB8
+  limb_type: Standard
+
+gPeehatLimb_1BDC:
+  type: OOT:LIMB
+  offset: 0x1BDC
+  symbol: gPeehatLimb_1BDC
+  limb_type: Standard
+
+gPeehatLimb_1C00:
+  type: OOT:LIMB
+  offset: 0x1C00
+  symbol: gPeehatLimb_1C00
+  limb_type: Standard
+
+gPeehatLowerBodyTex:
+  type: TEXTURE
+  offset: 0x1410
+  symbol: gPeehatLowerBodyTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gPeehatRecoilAnim:
+  type: OOT:ANIMATION
+  offset: 0x844
+  symbol: gPeehatRecoilAnim
+
+gPeehatRisingAnim:
+  type: OOT:ANIMATION
+  offset: 0x9C4
+  symbol: gPeehatRisingAnim
+
+gPeehatRootLimb:
+  type: OOT:LIMB
+  offset: 0x1B10
+  symbol: gPeehatRootLimb
+  limb_type: Standard
+
+gPeehatSkel:
+  type: OOT:SKELETON
+  offset: 0x1C80
+  symbol: gPeehatSkel
+  limb_type: Standard
+  skel_type: Normal
+
+gPeehatTopDL:
+  type: GFX
+  offset: 0x1230
+  symbol: gPeehatTopDL
+
+gPeehatTopLimb:
+  type: OOT:LIMB
+  offset: 0x1C18
+  symbol: gPeehatTopLimb
+  limb_type: Standard
+
+gPeehatUpperBodyTex:
+  type: TEXTURE
+  offset: 0x1A90
+  symbol: gPeehatUpperBodyTex
+  format: RGBA16
+  width: 8
+  height: 8
+
+gPeehatWing1DL:
+  type: GFX
+  offset: 0x0ED0
+  symbol: gPeehatWing1DL
+
+gPeehatWing1Limb:
+  type: OOT:LIMB
+  offset: 0x1B58
+  symbol: gPeehatWing1Limb
+  limb_type: Standard
+
+gPeehatWing1RootLimb:
+  type: OOT:LIMB
+  offset: 0x1B40
+  symbol: gPeehatWing1RootLimb
+  limb_type: Standard
+
+gPeehatWing2DL:
+  type: GFX
+  offset: 0x0F60
+  symbol: gPeehatWing2DL
+
+gPeehatWing2Limb:
+  type: OOT:LIMB
+  offset: 0x1B7C
+  symbol: gPeehatWing2Limb
+  limb_type: Standard
+
+gPeehatWing2RootLimb:
+  type: OOT:LIMB
+  offset: 0x1B64
+  symbol: gPeehatWing2RootLimb
+  limb_type: Standard
+
+gPeehatWing3DL:
+  type: GFX
+  offset: 0x0FF0
+  symbol: gPeehatWing3DL
+
+gPeehatWing3Limb:
+  type: OOT:LIMB
+  offset: 0x1BA0
+  symbol: gPeehatWing3Limb
+  limb_type: Standard
+
+gPeehatWing3RootLimb:
+  type: OOT:LIMB
+  offset: 0x1B88
+  symbol: gPeehatWing3RootLimb
+  limb_type: Standard
+
+gPeehatWing4DL:
+  type: GFX
+  offset: 0x1080
+  symbol: gPeehatWing4DL
+
+gPeehatWing4Limb:
+  type: OOT:LIMB
+  offset: 0x1BC4
+  symbol: gPeehatWing4Limb
+  limb_type: Standard
+
+gPeehatWing4RootLimb:
+  type: OOT:LIMB
+  offset: 0x1BAC
+  symbol: gPeehatWing4RootLimb
+  limb_type: Standard
+
+gPeehatWing5DL:
+  type: GFX
+  offset: 0x1110
+  symbol: gPeehatWing5DL
+
+gPeehatWing5Limb:
+  type: OOT:LIMB
+  offset: 0x1BE8
+  symbol: gPeehatWing5Limb
+  limb_type: Standard
+
+gPeehatWing5RootLimb:
+  type: OOT:LIMB
+  offset: 0x1BD0
+  symbol: gPeehatWing5RootLimb
+  limb_type: Standard
+
+gPeehatWing6DL:
+  type: GFX
+  offset: 0x11A0
+  symbol: gPeehatWing6DL
+
+gPeehatWing6Limb:
+  type: OOT:LIMB
+  offset: 0x1C0C
+  symbol: gPeehatWing6Limb
+  limb_type: Standard
+
+gPeehatWing6RootLimb:
+  type: OOT:LIMB
+  offset: 0x1BF4
+  symbol: gPeehatWing6RootLimb
+  limb_type: Standard
+
+gPeehatWingStructureRootLimb:
+  type: OOT:LIMB
+  offset: 0x1B34
+  symbol: gPeehatWingStructureRootLimb
+  limb_type: Standard
+
+gPeehatWingTex:
+  type: TEXTURE
+  offset: 0x1890
+  symbol: gPeehatWingTex
+  format: RGBA16
+  width: 8
+  height: 32
+
+
+object_peehatVtx_0009E0:
+  type: OOT:ARRAY
+  offset: 0x0009E0
+  symbol: object_peehatVtx_0009E0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_peehatVtx_000A10:
+  type: OOT:ARRAY
+  offset: 0x000A10
+  symbol: object_peehatVtx_000A10
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_peehatVtx_000A40:
+  type: OOT:ARRAY
+  offset: 0x000A40
+  symbol: object_peehatVtx_000A40
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_peehatVtx_000A70:
+  type: OOT:ARRAY
+  offset: 0x000A70
+  symbol: object_peehatVtx_000A70
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_peehatVtx_000AA0:
+  type: OOT:ARRAY
+  offset: 0x000AA0
+  symbol: object_peehatVtx_000AA0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_peehatVtx_000AD0:
+  type: OOT:ARRAY
+  offset: 0x000AD0
+  symbol: object_peehatVtx_000AD0
+  count: 3
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_peehatVtx_000B00:
+  type: OOT:ARRAY
+  offset: 0x000B00
+  symbol: object_peehatVtx_000B00
+  count: 27
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_peehatVtx_000CB0:
+  type: OOT:ARRAY
+  offset: 0x000CB0
+  symbol: object_peehatVtx_000CB0
+  count: 34
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+gPeehatSkelLimbs:
+  type: BLOB
+  offset: 0x1C24
+  symbol: gPeehatSkelLimbs
+  size: 0

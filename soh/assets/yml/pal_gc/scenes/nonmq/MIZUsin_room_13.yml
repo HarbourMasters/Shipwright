@@ -1,0 +1,36 @@
+:config:
+  segments:
+    - [ 3, 0x01883900 ]
+    - [ 2, 0x01838140 ]
+  directory: scenes/nonmq/MIZUsin_scene
+  external_files:
+    - pal_gc/scenes/nonmq/MIZUsin_scene.yml
+    - pal_gc/code/sys_matrix.yml
+
+MIZUsin_room_13:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: MIZUsin_room_13
+
+MIZUsin_room_13Tex_0001F8:
+  type: TEXTURE
+  offset: 0x1F8
+  symbol: MIZUsin_room_13Tex_0001F8
+  format: RGBA16
+  width: 32
+  height: 32
+
+
+MIZUsin_room_13Vtx_000080:
+  type: OOT:ARRAY
+  offset: 0x000080
+  symbol: MIZUsin_room_13Vtx_000080
+  count: 11
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+MIZUsin_room_13DL_000130:
+  type: GFX
+  offset: 0x000130
+  symbol: MIZUsin_room_13DL_000130

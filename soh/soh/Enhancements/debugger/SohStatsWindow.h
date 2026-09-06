@@ -1,5 +1,4 @@
-#ifndef SOH_STATS_H
-#define SOH_STATS_H
+#pragma once
 
 #include <ship/window/gui/GuiWindow.h>
 
@@ -13,5 +12,3 @@ class SohStatsWindow final : public Ship::GuiWindow {
     void DrawElement() override;
     void UpdateElement() override{};
 };
-
-#endif // SOH_STATS_H

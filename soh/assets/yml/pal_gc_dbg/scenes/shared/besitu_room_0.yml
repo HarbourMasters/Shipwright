@@ -1,0 +1,160 @@
+:config:
+  segments:
+    - [ 3, 0x03539000 ]
+    - [ 2, 0x03538000 ]
+  directory: scenes/shared/besitu_scene
+  external_files:
+    - pal_gc_dbg/scenes/shared/besitu_scene.yml
+    - pal_gc_dbg/code/sys_matrix.yml
+
+besitu_room_0:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: besitu_room_0
+
+besitu_room_0TLUT_001CB8:
+  type: TEXTURE
+  offset: 0x1CB8
+  symbol: besitu_room_0TLUT_001CB8
+  format: RGBA16
+  width: 4
+  height: 4
+
+besitu_room_0Tex_001CD8:
+  type: TEXTURE
+  offset: 0x1CD8
+  symbol: besitu_room_0Tex_001CD8
+  format: I4
+  width: 128
+  height: 64
+
+besitu_room_0Tex_002CD8:
+  type: TEXTURE
+  offset: 0x2CD8
+  symbol: besitu_room_0Tex_002CD8
+  format: IA4
+  width: 64
+  height: 64
+
+besitu_room_0Tex_0034D8:
+  type: TEXTURE
+  offset: 0x34D8
+  symbol: besitu_room_0Tex_0034D8
+  format: IA8
+  width: 32
+  height: 64
+
+besitu_room_0Tex_003CD8:
+  type: TEXTURE
+  offset: 0x3CD8
+  symbol: besitu_room_0Tex_003CD8
+  format: IA8
+  width: 32
+  height: 64
+
+besitu_room_0Tex_0044D8:
+  type: TEXTURE
+  offset: 0x44D8
+  symbol: besitu_room_0Tex_0044D8
+  format: IA4
+  width: 64
+  height: 64
+
+besitu_room_0Tex_004CD8:
+  type: TEXTURE
+  offset: 0x4CD8
+  symbol: besitu_room_0Tex_004CD8
+  format: CI4
+  width: 64
+  height: 64
+  tlut: 0x1CB8
+
+
+besitu_room_0Vtx_000050:
+  type: OOT:ARRAY
+  offset: 0x000050
+  symbol: besitu_room_0Vtx_000050
+  count: 24
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+besitu_room_0DL_0001D0:
+  type: GFX
+  offset: 0x0001D0
+  symbol: besitu_room_0DL_0001D0
+
+besitu_room_0Vtx_0002A0:
+  type: OOT:ARRAY
+  offset: 0x0002A0
+  symbol: besitu_room_0Vtx_0002A0
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+besitu_room_0DL_000480:
+  type: GFX
+  offset: 0x000480
+  symbol: besitu_room_0DL_000480
+
+besitu_room_0Vtx_0005C0:
+  type: OOT:ARRAY
+  offset: 0x0005C0
+  symbol: besitu_room_0Vtx_0005C0
+  count: 86
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+besitu_room_0DL_000B20:
+  type: GFX
+  offset: 0x000B20
+  symbol: besitu_room_0DL_000B20
+
+besitu_room_0Vtx_000CA0:
+  type: OOT:ARRAY
+  offset: 0x000CA0
+  symbol: besitu_room_0Vtx_000CA0
+  count: 86
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+besitu_room_0DL_001200:
+  type: GFX
+  offset: 0x001200
+  symbol: besitu_room_0DL_001200
+
+besitu_room_0Vtx_001388:
+  type: OOT:ARRAY
+  offset: 0x001388
+  symbol: besitu_room_0Vtx_001388
+  count: 52
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+besitu_room_0DL_0016C8:
+  type: GFX
+  offset: 0x0016C8
+  symbol: besitu_room_0DL_0016C8
+
+besitu_room_0Vtx_001800:
+  type: OOT:ARRAY
+  offset: 0x001800
+  symbol: besitu_room_0Vtx_001800
+  count: 52
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+besitu_room_0DL_001B40:
+  type: GFX
+  offset: 0x001B40
+  symbol: besitu_room_0DL_001B40
+
+besitu_room_0DL_001C80:
+  type: GFX
+  offset: 0x001C80
+  symbol: besitu_room_0DL_001C80

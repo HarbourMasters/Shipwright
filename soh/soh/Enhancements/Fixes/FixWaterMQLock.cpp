@@ -1,9 +1,8 @@
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ResourceManagerHelpers.h"
 #include "soh/ShipInit.hpp"
 
 extern "C" {
-#include "variables.h"
 #include "src/overlays/actors/ovl_En_Door/z_en_door.h"
 extern PlayState* gPlayState;
 }

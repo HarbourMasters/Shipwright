@@ -5,6 +5,7 @@
 #include "objects/object_link_child/object_link_child.h"
 #include "overlays/actors/ovl_Demo_Effect/z_demo_effect.h"
 
+#include <libultraship/bridge/resourcebridge.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/randomizer/draw.h"
@@ -494,7 +495,7 @@ void Player_SetBootData(PlayState* play, Player* this) {
     }
 }
 
-// Custom method used to determine if we're using a custom model for link
+// SoH: Custom method used to determine if we're using a custom model for link
 uint8_t Player_IsCustomLinkModel() {
     return (LINK_IS_ADULT && ResourceGetIsCustomByName(gLinkAdultSkel)) ||
            (LINK_IS_CHILD && ResourceGetIsCustomByName(gLinkChildSkel));
@@ -528,8 +529,8 @@ s32 Player_IsChildWithHylianShield(Player* this) {
     return gSaveContext.linkAge != 0 && (this->currentShield == PLAYER_SHIELD_HYLIAN);
 }
 
-s32 Player_ActionToModelGroup(Player* this, s32 actionParam) {
-    s32 modelGroup = sActionModelGroups[actionParam];
+s32 Player_ActionToModelGroup(Player* this, s32 itemAction) {
+    s32 modelGroup = sActionModelGroups[itemAction];
 
     if ((modelGroup == PLAYER_MODELGROUP_SWORD_AND_SHIELD) && Player_IsChildWithHylianShield(this)) {
         // child, using kokiri sword with hylian shield equipped
@@ -685,16 +686,16 @@ void Player_SetEquipmentData(PlayState* play, Player* this) {
     }
 }
 
-void Player_UpdateBottleHeld(PlayState* play, Player* this, s32 item, s32 actionParam) {
+void Player_UpdateBottleHeld(PlayState* play, Player* this, s32 item, s32 itemAction) {
     Inventory_UpdateBottleItem(play, item, this->heldItemButton);
 
     if (item != ITEM_BOTTLE) {
         this->heldItemId = item;
-        this->heldItemAction = actionParam;
+        this->heldItemAction = itemAction;
     }
 
     if (GameInteractor_Should(VB_PLAYER_UPDATE_BOTTLE_HELD, true, this)) {
-        this->itemAction = actionParam;
+        this->itemAction = itemAction;
     }
 }
 
@@ -709,7 +710,7 @@ void Player_ReleaseLockOn(Player* this) {
  * TODO: Learn more about this and give a name to PLAYER_STATE1_19
  */
 void Player_ClearZTargeting(Player* this) {
-    if ((this->actor.bgCheckFlags & 1) ||
+    if ((this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) ||
         (this->stateFlags1 & (PLAYER_STATE1_CLIMBING_LADDER | PLAYER_STATE1_ON_HORSE | PLAYER_STATE1_IN_WATER)) ||
         (!(this->stateFlags1 & (PLAYER_STATE1_JUMPING | PLAYER_STATE1_FREEFALL)) &&
          ((this->actor.world.pos.y - this->actor.floorHeight) < 100.0f))) {
@@ -745,8 +746,8 @@ void Player_SetAutoLockOnActor(PlayState* play, Actor* actor) {
     this->focusActor = actor;
     this->autoLockOnActor = actor;
     this->stateFlags1 |= PLAYER_STATE1_FRIENDLY_ACTOR_FOCUS;
-    Camera_SetParam(Play_GetCamera(play, 0), 8, actor);
-    Camera_ChangeMode(Play_GetCamera(play, 0), 2);
+    Camera_SetParam(Play_GetCamera(play, CAM_ID_MAIN), 8, actor);
+    Camera_RequestMode(Play_GetCamera(play, CAM_ID_MAIN), 2);
 }
 
 s32 func_8008EF30(PlayState* play) {
@@ -781,7 +782,7 @@ s32 Player_GetStrength(void) {
         return PLAYER_STR_NONE;
     }
 
-    if (CVarGetInteger(CVAR_CHEAT("TimelessEquipment"), 0) || LINK_IS_ADULT) {
+    if (GameInteractor_Should(VB_PLAYER_MEETS_AGE_REQ, LINK_IS_ADULT, LINK_AGE_ADULT)) {
         return strengthUpgrade;
     } else if (strengthUpgrade != 0) {
         return PLAYER_STR_BRACELET;
@@ -816,8 +817,8 @@ s32 Player_HasMirrorShieldSetToDraw(PlayState* play) {
     return (this->rightHandType == PLAYER_MODELTYPE_RH_SHIELD) && (this->currentShield == PLAYER_SHIELD_MIRROR);
 }
 
-s32 Player_ActionToMagicSpell(Player* this, s32 actionParam) {
-    s32 magicSpell = actionParam - PLAYER_IA_MAGIC_SPELL_15;
+s32 Player_ActionToMagicSpell(Player* this, s32 itemAction) {
+    s32 magicSpell = itemAction - PLAYER_IA_MAGIC_SPELL_15;
 
     if ((magicSpell >= 0) && (magicSpell < 6)) {
         return magicSpell;
@@ -830,6 +831,7 @@ s32 Player_HoldsHookshot(Player* this) {
     return (this->heldItemAction == PLAYER_IA_HOOKSHOT) || (this->heldItemAction == PLAYER_IA_LONGSHOT);
 }
 
+// SoH
 s32 Player_HoldsBow(Player* this) {
     switch (this->heldItemAction) {
         case PLAYER_IA_BOW:
@@ -842,6 +844,7 @@ s32 Player_HoldsBow(Player* this) {
     }
 }
 
+// SoH
 s32 Player_HoldsSlingshot(Player* this) {
     return this->heldItemAction == PLAYER_IA_SLINGSHOT;
 }
@@ -850,8 +853,8 @@ s32 func_8008F128(Player* this) {
     return Player_HoldsHookshot(this) && (this->heldActor == NULL);
 }
 
-s32 Player_ActionToMeleeWeapon(s32 actionParam) {
-    s32 sword = actionParam - PLAYER_IA_FISHING_POLE;
+s32 Player_ActionToMeleeWeapon(s32 itemAction) {
+    s32 sword = itemAction - PLAYER_IA_FISHING_POLE;
 
     if ((sword > 0) && (sword < 6)) {
         return sword;
@@ -866,9 +869,9 @@ s32 Player_GetMeleeWeaponHeld(Player* this) {
 
 s32 Player_HoldsTwoHandedWeapon(Player* this) {
     if ((this->heldItemAction >= PLAYER_IA_SWORD_BIGGORON) && (this->heldItemAction <= PLAYER_IA_HAMMER)) {
-        return 1;
+        return true;
     } else {
-        return 0;
+        return false;
     }
 }
 
@@ -876,8 +879,8 @@ s32 Player_HoldsBrokenKnife(Player* this) {
     return (this->heldItemAction == PLAYER_IA_SWORD_BIGGORON) && (gSaveContext.swordHealth <= 0.0f);
 }
 
-s32 Player_ActionToBottle(Player* this, s32 actionParam) {
-    s32 bottle = actionParam - PLAYER_IA_BOTTLE;
+s32 Player_ActionToBottle(Player* this, s32 itemAction) {
+    s32 bottle = itemAction - PLAYER_IA_BOTTLE;
 
     if ((bottle >= 0) && (bottle < 13)) {
         return bottle;
@@ -890,8 +893,8 @@ s32 Player_GetBottleHeld(Player* this) {
     return Player_ActionToBottle(this, this->heldItemAction);
 }
 
-s32 Player_ActionToExplosive(Player* this, s32 actionParam) {
-    s32 explosive = actionParam - PLAYER_IA_BOMB;
+s32 Player_ActionToExplosive(Player* this, s32 itemAction) {
+    s32 explosive = itemAction - PLAYER_IA_BOMB;
 
     if ((explosive >= 0) && (explosive < 2)) {
         return explosive;
@@ -904,11 +907,11 @@ s32 Player_GetExplosiveHeld(Player* this) {
     return Player_ActionToExplosive(this, this->heldItemAction);
 }
 
-s32 func_8008F2BC(Player* this, s32 actionParam) {
+s32 func_8008F2BC(Player* this, s32 itemAction) {
     s32 sword = 0;
 
-    if (actionParam != PLAYER_IA_SWORD_CS) {
-        sword = actionParam - PLAYER_IA_SWORD_MASTER;
+    if (itemAction != PLAYER_IA_SWORD_CS) {
+        sword = itemAction - PLAYER_IA_SWORD_MASTER;
         if ((sword < 0) || (sword >= 3)) {
             goto return_neg;
         }
@@ -929,7 +932,7 @@ s32 Player_GetEnvironmentalHazard(PlayState* play) {
         envHazard = PLAYER_ENV_HAZARD_HOTROOM - 1;
     } else if ((this->underwaterTimer > 80) &&
                ((this->currentBoots == PLAYER_BOOTS_IRON) || (this->underwaterTimer >= 300))) { // Deep underwater
-        envHazard = ((this->currentBoots == PLAYER_BOOTS_IRON) && (this->actor.bgCheckFlags & 1))
+        envHazard = ((this->currentBoots == PLAYER_BOOTS_IRON) && (this->actor.bgCheckFlags & BGCHECKFLAG_GROUND))
                         ? (PLAYER_ENV_HAZARD_UNDERWATER_FLOOR - 1)
                         : (PLAYER_ENV_HAZARD_UNDERWATER_FREE - 1);
     } else if (this->stateFlags1 & PLAYER_STATE1_IN_WATER) { // Swimming
@@ -1091,7 +1094,8 @@ void Player_DrawImpl(PlayState* play, void** skeleton, Vec3s* jointTable, s32 dL
 
     SkelAnime_DrawFlexLod(play, skeleton, jointTable, dListCount, overrideLimbDraw, postLimbDraw, data, lod);
 
-    if (((CVarGetInteger(CVAR_ENHANCEMENT("FirstPersonGauntlets"), 0) && LINK_IS_ADULT) ||
+    if (!GameInteractor_InvisibleLinkActive() &&
+        ((CVarGetInteger(CVAR_ENHANCEMENT("FirstPersonGauntlets"), 0) && LINK_IS_ADULT) ||
          (overrideLimbDraw != Player_OverrideLimbDrawGameplayFirstPerson)) &&
         (overrideLimbDraw != Player_OverrideLimbDrawGameplayCrawling) &&
         (gSaveContext.gameMode != GAMEMODE_END_CREDITS)) {
@@ -1236,7 +1240,7 @@ void func_8008F87C(PlayState* play, Player* this, SkelAnime* skelAnime, Vec3f* p
             skelAnime->jointTable[shinLimbIndex].z = skelAnime->jointTable[shinLimbIndex].z + temp1;
             skelAnime->jointTable[footLimbIndex].z = skelAnime->jointTable[footLimbIndex].z + temp2 - temp1;
 
-            temp3 = func_80041D4C(&play->colCtx, sp88, sp84);
+            temp3 = SurfaceType_GetFloorType(&play->colCtx, sp88, sp84);
 
             if ((temp3 >= 2) && (temp3 < 4) && !SurfaceType_IsWallDamage(&play->colCtx, sp88, sp84)) {
                 footprintPos.y = sp80;
@@ -1655,7 +1659,8 @@ void Player_DrawGetItemImpl(PlayState* play, Player* this, Vec3f* refPos, s32 dr
 
     if (this->getItemEntry.modIndex == MOD_RANDOMIZER && this->getItemEntry.getItemId == RG_ICE_TRAP) {
         Player_DrawGetItemIceTrap(play, this, refPos, drawIdPlusOne, height);
-    } else if (this->getItemEntry.modIndex == MOD_RANDOMIZER && this->getItemEntry.getItemId == RG_TRIFORCE_PIECE) {
+    } else if (this->getItemEntry.modIndex == MOD_RANDOMIZER &&
+               (this->getItemEntry.getItemId == RG_TRIFORCE_PIECE || this->getItemEntry.getItemId == RG_TRIFORCE)) {
         Randomizer_DrawTriforcePieceGI(play, this->getItemEntry);
     } else if (this->getItemEntry.drawFunc != NULL) {
         this->getItemEntry.drawFunc(play, &this->getItemEntry);
@@ -1728,7 +1733,8 @@ void Player_DrawHookshotReticle(PlayState* play, Player* this, f32 hookshotRange
     }
 }
 
-Vec3f D_801260D4 = { 1100.0f, -700.0f, 0.0f };
+// Coordinates of the player focus position, in the head limb's own model space.
+Vec3f sPlayerFocusOffsetFromHead = { 1100.0f, -700.0f, 0.0f };
 
 f32 sMeleeWeaponLengths[] = {
     0.0f, 4000.0f, 3000.0f, 5500.0f, 0.0f, 2500.0f,
@@ -1801,7 +1807,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                 D_80126080.x = this->unk_85C * 5000.0f;
                 func_80090A28(this, sp124);
                 if (this->meleeWeaponState != 0) {
-                    EffectBlure_ChangeType(Effect_GetByIndex(this->meleeWeaponEffectIndex), TRAIL_TYPE_STICK);
+                    EffectBlureShip_ChangeType(Effect_GetByIndex(this->meleeWeaponEffectIndex), TRAIL_TYPE_STICK);
                     func_800906D4(play, this, sp124);
                 } else {
                     Math_Vec3f_Copy(&this->meleeWeaponInfo[0].tip, &sp124[0]);
@@ -1823,8 +1829,8 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                 D_80126080.x = 1500.0f;
             } else {
                 D_80126080.x = sMeleeWeaponLengths[Player_GetMeleeWeaponHeld(this)];
-                EffectBlure_ChangeType(Effect_GetByIndex(this->meleeWeaponEffectIndex),
-                                       sSwordTypes[Player_GetMeleeWeaponHeld(this)]);
+                EffectBlureShip_ChangeType(Effect_GetByIndex(this->meleeWeaponEffectIndex),
+                                           sSwordTypes[Player_GetMeleeWeaponHeld(this)]);
             }
 
             func_80090A28(this, spE4);
@@ -1978,7 +1984,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                 Matrix_Get(&this->shieldMf);
             }
         } else if (limbIndex == PLAYER_LIMB_HEAD) {
-            Matrix_MultVec3f(&D_801260D4, &this->actor.focus.pos);
+            Matrix_MultVec3f(&sPlayerFocusOffsetFromHead, &this->actor.focus.pos);
         } else {
             Vec3f* vec = &sLeftRightFootLimbModelFootPos[(gSaveContext.linkAge)];
 

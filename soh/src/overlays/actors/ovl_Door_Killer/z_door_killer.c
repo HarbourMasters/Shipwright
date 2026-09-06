@@ -11,7 +11,6 @@
 #include "objects/object_haka_door/object_haka_door.h"
 #include "objects/object_door_killer/object_door_killer.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_CULLING_DISABLED
 
@@ -205,8 +204,6 @@ void DoorKiller_Destroy(Actor* thisx, PlayState* play) {
     if ((thisx->params & 0xFF) == DOOR_KILLER_DOOR) {
         Collider_DestroyCylinder(play, &this->colliderCylinder);
         Collider_DestroyJntSph(play, &this->colliderJntSph);
-
-        ResourceMgr_UnregisterSkeleton(&this->skelAnime);
     }
 }
 
@@ -378,7 +375,7 @@ void DoorKiller_FallOver(DoorKiller* this, PlayState* play) {
         if ((fabsf(playerPosRelToDoor.y) < 20.0f) && (fabsf(playerPosRelToDoor.x) < 20.0f) &&
             (playerPosRelToDoor.z < 100.0f) && (playerPosRelToDoor.z > 0.0f)) {
             this->hasHitPlayerOrGround |= 1;
-            func_8002F6D4(play, &this->actor, 6.0f, this->actor.yawTowardsPlayer, 6.0f, 16);
+            Actor_SetPlayerKnockbackLarge(play, &this->actor, 6.0f, this->actor.yawTowardsPlayer, 6.0f, 16);
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_KDOOR_HIT);
             Player_PlaySfx(&player->actor, NA_SE_PL_BODY_HIT);
         }

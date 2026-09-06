@@ -1,11 +1,14 @@
+#include <spdlog/spdlog.h>
+
 #include "soh/OTRGlobals.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "randomizer_grotto.h"
 #include "draw.h"
-#include "soh/cvar_prefixes.h"
 #include "static_data.h"
 #include "soh/Enhancements/item-tables/ItemTableTypes.h"
 #include "soh/ObjectExtension/ObjectExtension.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
+#include "soh/Enhancements/randomizer/randomizerEnumStrings.h"
 
 extern "C" {
 #include "src/overlays/actors/ovl_En_Elf/z_en_elf.h"
@@ -67,7 +70,7 @@ CheckIdentity ShuffleFairies_GetFairyIdentity(int32_t params, ActorID id) {
     Rando::Location* location = OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(id, sceneNum, params);
 
     if (location->GetRandomizerCheck() == RC_UNKNOWN_CHECK) {
-        LUSLOG_WARN("FairyGetIdentity did not receive a valid RC value (%d).", location->GetRandomizerCheck());
+        SPDLOG_WARN("FairyGetIdentity did not receive a valid RC value ({}).", location->GetRandomizerCheck());
         assert(false);
     } else {
         fairyIdentity.randomizerInf = static_cast<RandomizerInf>(location->GetCollectionCheck().flag);
@@ -427,6 +430,7 @@ void Rando::StaticData::RegisterFairyLocations() {
     locationTable[RC_HC_NEAR_BOULDER_PATH_BUTTERFLY_FAIRY] =            Location::ButterflyFairy(RC_HC_NEAR_BOULDER_PATH_BUTTERFLY_FAIRY,           RCQUEST_BOTH,    RCAREA_HYRULE_CASTLE,          SCENE_HYRULE_CASTLE,                TWO_ACTOR_PARAMS(1, 1413),       "Near Boulder Path Butterfly Fairy",                  RHT_BUTTERFLY_FAIRY_HYRULE_CASTLE,             SpoilerCollectionCheck::RandomizerInf(RAND_INF_HC_NEAR_BOULDER_PATH_BUTTERFLY_FAIRY));
     locationTable[RC_HC_NEAR_ARCHWAY_BUTTERFLY_FAIRY] =                 Location::ButterflyFairy(RC_HC_NEAR_ARCHWAY_BUTTERFLY_FAIRY,                RCQUEST_BOTH,    RCAREA_HYRULE_CASTLE,          SCENE_HYRULE_CASTLE,                TWO_ACTOR_PARAMS(1, 1478),       "Near Archway Butterfly Fairy",                       RHT_BUTTERFLY_FAIRY_HYRULE_CASTLE,             SpoilerCollectionCheck::RandomizerInf(RAND_INF_HC_NEAR_ARCHWAY_BUTTERFLY_FAIRY));
     locationTable[RC_LW_MEADOW_BUTTERFLY_FAIRY] =                       Location::ButterflyFairy(RC_LW_MEADOW_BUTTERFLY_FAIRY,                      RCQUEST_BOTH,    RCAREA_LOST_WOODS,             SCENE_LOST_WOODS,                   TWO_ACTOR_PARAMS(1, 28),         "Meadow Butterfly Fairy",                             RHT_BUTTERFLY_FAIRY_LOST_WOODS,                SpoilerCollectionCheck::RandomizerInf(RAND_INF_LW_MEADOW_BUTTERFLY_FAIRY));
+    locationTable[RC_KAK_WATCHTOWER_BUTTERFLY_FAIRY] =                  Location::ButterflyFairy(RC_KAK_WATCHTOWER_BUTTERFLY_FAIRY,                 RCQUEST_BOTH,    RCAREA_KAKARIKO_VILLAGE,       SCENE_KAKARIKO_VILLAGE,             TWO_ACTOR_PARAMS(1, 805),        "Watchtower Butterfly Fairy",                         RHT_BUTTERFLY_FAIRY_KAKARIKO_VILLAGE,          SpoilerCollectionCheck::RandomizerInf(RAND_INF_KAK_WATCHTOWER_BUTTERFLY_FAIRY));
     locationTable[RC_GY_NEAR_HUT_GRAVE_BUTTERFLY_FAIRY] =               Location::ButterflyFairy(RC_GY_NEAR_HUT_GRAVE_BUTTERFLY_FAIRY,              RCQUEST_BOTH,    RCAREA_GRAVEYARD,              SCENE_GRAVEYARD,                    TWO_ACTOR_PARAMS(1, 137),        "Grave Butterfly Fairy",                              RHT_BUTTERFLY_FAIRY_GRAVEYARD,                 SpoilerCollectionCheck::RandomizerInf(RAND_INF_GY_NEAR_HUT_GRAVE_BUTTERFLY_FAIRY));
     locationTable[RC_ZR_NEAR_ROCK_CIRCLE_BUTTERFLY_FAIRY] =             Location::ButterflyFairy(RC_ZR_NEAR_ROCK_CIRCLE_BUTTERFLY_FAIRY,            RCQUEST_BOTH,    RCAREA_ZORAS_RIVER,            SCENE_ZORAS_RIVER,                  TWO_ACTOR_PARAMS(1, 164),        "Near Rock Circle Butterfly Fairy",                   RHT_BUTTERFLY_FAIRY_ZORAS_RIVER,               SpoilerCollectionCheck::RandomizerInf(RAND_INF_ZR_NEAR_ROCK_CIRCLE_BUTTERFLY_FAIRY));
     locationTable[RC_ZR_WATERFALL_BUTTERFLY_FAIRY] =                    Location::ButterflyFairy(RC_ZR_WATERFALL_BUTTERFLY_FAIRY,                   RCQUEST_BOTH,    RCAREA_ZORAS_RIVER,            SCENE_ZORAS_RIVER,                  TWO_ACTOR_PARAMS(1, 1010),       "Waterfall Butterfly Fairy",                          RHT_BUTTERFLY_FAIRY_ZORAS_RIVER,               SpoilerCollectionCheck::RandomizerInf(RAND_INF_ZR_WATERFALL_BUTTERFLY_FAIRY));

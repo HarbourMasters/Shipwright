@@ -2,8 +2,7 @@
 
 #include <cstddef>
 #include <vector>
-#include <stdint.h>
-#include "../randomizerTypes.h"
+#include "soh/Enhancements/randomizer/randomizerEnums.h"
 
 class ItemLocation;
 

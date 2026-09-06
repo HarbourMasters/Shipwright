@@ -12,7 +12,6 @@ extern "C" {
 #include "variables.h"
 #include "functions.h"
 #include "macros.h"
-#include "soh/cvar_prefixes.h"
 #include "overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
 
 extern PlayState* gPlayState;
@@ -59,7 +58,7 @@ std::array<ValueTableElement, VVE_MAX> valueTable = {{
     { "Frame Counter",      "play->state.frames",             "FRAM:",   TYPE_S32,   true,  []() -> void* { return &gPlayState->state.frames; }},
     { "Cutscene Pointer",   "play->csCtx.segment",            "CSP:",    TYPE_PTR,   true,  []() -> void* { return &gPlayState->csCtx.segment; }},
     { "Framerate Divisor",  "R_UPDATE_RATE",                  "FRDV:",   TYPE_S16,   false, []() -> void* { return &R_UPDATE_RATE; }},
-    { "Next HUD mode",      "gSaveContext.nextHudMode",       "HUD:",    TYPE_S16,   false, []() -> void* { return &gSaveContext.unk_13E8; }},
+    { "Next HUD mode",      "gSaveContext.nextHudMode",       "HUD:",    TYPE_S16,   false, []() -> void* { return &gSaveContext.nextHudVisibilityMode; }},
     { "Temp B Value",       "gSaveContext.buttonStatus[0]",   "TEMPB:",  TYPE_U8,    false, []() -> void* { return &gSaveContext.buttonStatus[0]; }},
     { "Blue Warp Timer",    "DoorWarp1->warpTimer",           "WARPT:",  TYPE_U16,   true,  []() -> void* { DoorWarp1 *actor = (DoorWarp1 *)Actor_Find(&gPlayState->actorCtx, ACTOR_DOOR_WARP1 ,ACTORCAT_ITEMACTION); if(actor) { return &actor->warpTimer; } else { return nullptr; }}},
     /* TODO: Find these (from GZ)
@@ -180,10 +179,11 @@ void ValueViewerWindow::DrawElement() {
     UIWidgets::CVarCheckbox("Enable Printing", CVAR_NAME, UIWidgets::CheckboxOptions().Color(THEME_COLOR));
 
     ImGui::BeginGroup();
-    static size_t selectedElement = -1;
-    std::string selectedElementText = (selectedElement == -1) ? "Select a value"
-                                                              : (std::string(valueTable[selectedElement].name) + " (" +
-                                                                 std::string(valueTable[selectedElement].path) + ")");
+    static size_t selectedElement = SIZE_MAX;
+    std::string selectedElementText = (selectedElement == SIZE_MAX)
+                                          ? "Select a value"
+                                          : (std::string(valueTable[selectedElement].name) + " (" +
+                                             std::string(valueTable[selectedElement].path) + ")");
     UIWidgets::PushStyleCombobox(THEME_COLOR);
     if (ImGui::BeginCombo("##valueViewerElement", selectedElementText.c_str())) {
         for (size_t i = 0; i < valueTable.size(); i++) {
@@ -203,11 +203,11 @@ void ValueViewerWindow::DrawElement() {
     UIWidgets::PopStyleCombobox();
     ImGui::SameLine();
     UIWidgets::PushStyleButton(THEME_COLOR);
-    if (selectedElement != -1 && ImGui::Button("+")) {
+    if (selectedElement != SIZE_MAX && ImGui::Button("+")) {
         valueViewerSettings.insert(
             { (ValueViewerEntry)selectedElement,
               { valueTable[selectedElement].prefix, ImVec4(1.0f, 1.0f, 1.0f, 1.0f), false, false, 0, 0 } });
-        selectedElement = -1;
+        selectedElement = SIZE_MAX;
         SaveValueConfig();
     }
     UIWidgets::PopStyleButton();

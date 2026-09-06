@@ -1,0 +1,76 @@
+:config:
+  segments:
+    - [ 6, 0x01568000 ]
+    - [ 4, 0x00F5E000 ]
+    - [ 8, 0x01568000 ]
+    - [ 9, 0x01568000 ]
+    - [ 10, 0x01568000 ]
+    - [ 11, 0x01568000 ]
+    - [ 12, 0x01568000 ]
+    - [ 13, 0x01568000 ]
+  external_files:
+    - pal_gc_dbg/objects/gameplay_keep.yml
+
+gDeathMountainRingDL:
+  type: GFX
+  offset: 0x1470
+  symbol: gDeathMountainRingDL
+
+gDeathMountainRingTex:
+  type: TEXTURE
+  offset: 0x0C30
+  symbol: gDeathMountainRingTex
+  format: IA16
+  width: 32
+  height: 32
+
+gDodongosCavernRock2DL:
+  type: GFX
+  offset: 0x0C00
+  symbol: gDodongosCavernRock2DL
+
+gDodongosCavernRock3DL:
+  type: GFX
+  offset: 0x0C20
+  symbol: gDodongosCavernRock3DL
+
+gDodongosCavernRockDL:
+  type: GFX
+  offset: 0x0B00
+  symbol: gDodongosCavernRockDL
+
+gDodongosCavernRockTex:
+  type: TEXTURE
+  offset: 0x0000
+  symbol: gDodongosCavernRockTex
+  format: I4
+  width: 64
+  height: 64
+
+
+object_spot16_objVtx_000800:
+  type: OOT:ARRAY
+  offset: 0x000800
+  symbol: object_spot16_objVtx_000800
+  count: 47
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_spot16_objVtx_000AF0:
+  type: OOT:ARRAY
+  offset: 0x000AF0
+  symbol: object_spot16_objVtx_000AF0
+  count: 1
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+object_spot16_objVtx_001430:
+  type: OOT:ARRAY
+  offset: 0x001430
+  symbol: object_spot16_objVtx_001430
+  count: 4
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true

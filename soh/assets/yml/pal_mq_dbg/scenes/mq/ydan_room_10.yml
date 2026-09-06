@@ -1,0 +1,90 @@
+:config:
+  segments:
+    - [ 3, 0x0202D000 ]
+    - [ 2, 0x01FC2000 ]
+  directory: scenes/mq/ydan_scene
+  external_files:
+    - pal_mq_dbg/scenes/mq/ydan_scene.yml
+    - pal_mq_dbg/code/sys_matrix.yml
+
+ydan_room_10:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: ydan_room_10
+
+ydan_room_10Tex_001BE0:
+  type: TEXTURE
+  offset: 0x1BE0
+  symbol: ydan_room_10Tex_001BE0
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: ydan_scene
+  external_tlut_offset: 0xB810
+
+ydan_room_10Tex_0023E0:
+  type: TEXTURE
+  offset: 0x23E0
+  symbol: ydan_room_10Tex_0023E0
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: ydan_scene
+  external_tlut_offset: 0xB810
+
+ydan_room_10Tex_002BE0:
+  type: TEXTURE
+  offset: 0x2BE0
+  symbol: ydan_room_10Tex_002BE0
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: ydan_scene
+  external_tlut_offset: 0xB810
+
+ydan_room_10Tex_0033E0:
+  type: TEXTURE
+  offset: 0x33E0
+  symbol: ydan_room_10Tex_0033E0
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: ydan_scene
+  external_tlut_offset: 0xB810
+
+ydan_room_10Tex_003DF8:
+  type: TEXTURE
+  offset: 0x3DF8
+  symbol: ydan_room_10Tex_003DF8
+  format: RGBA16
+  width: 32
+  height: 64
+
+
+ydan_room_10Vtx_0001E0:
+  type: OOT:ARRAY
+  offset: 0x0001E0
+  symbol: ydan_room_10Vtx_0001E0
+  count: 281
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ydan_room_10DL_001370:
+  type: GFX
+  offset: 0x001370
+  symbol: ydan_room_10DL_001370
+
+ydan_room_10Vtx_003BE0:
+  type: OOT:ARRAY
+  offset: 0x003BE0
+  symbol: ydan_room_10Vtx_003BE0
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+ydan_room_10DL_003D20:
+  type: GFX
+  offset: 0x003D20
+  symbol: ydan_room_10DL_003D20

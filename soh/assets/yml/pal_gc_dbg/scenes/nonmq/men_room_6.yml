@@ -1,0 +1,240 @@
+:config:
+  segments:
+    - [ 3, 0x02674000 ]
+    - [ 2, 0x0262A000 ]
+  directory: scenes/nonmq/men_scene
+  external_files:
+    - pal_gc_dbg/scenes/nonmq/men_scene.yml
+    - pal_gc_dbg/code/sys_matrix.yml
+
+men_room_6:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: men_room_6
+
+men_room_6Tex_003F78:
+  type: TEXTURE
+  offset: 0x3F38
+  symbol: men_room_6Tex_003F78
+  format: RGBA16
+  width: 32
+  height: 32
+
+men_room_6Tex_004778:
+  type: TEXTURE
+  offset: 0x4738
+  symbol: men_room_6Tex_004778
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: men_scene
+  external_tlut_offset: 0xF730
+
+men_room_6Tex_004F78:
+  type: TEXTURE
+  offset: 0x4F38
+  symbol: men_room_6Tex_004F78
+  format: CI8
+  width: 32
+  height: 32
+  external_tlut: men_scene
+  external_tlut_offset: 0xF730
+
+men_room_6Tex_005378:
+  type: TEXTURE
+  offset: 0x5338
+  symbol: men_room_6Tex_005378
+  format: RGBA16
+  width: 32
+  height: 32
+
+men_room_6Tex_005B78:
+  type: TEXTURE
+  offset: 0x5B38
+  symbol: men_room_6Tex_005B78
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: men_scene
+  external_tlut_offset: 0xF730
+
+men_room_6Tex_006378:
+  type: TEXTURE
+  offset: 0x6338
+  symbol: men_room_6Tex_006378
+  format: CI8
+  width: 32
+  height: 64
+  external_tlut: men_scene
+  external_tlut_offset: 0xF730
+
+men_room_6Tex_006B78:
+  type: TEXTURE
+  offset: 0x6B38
+  symbol: men_room_6Tex_006B78
+  format: CI8
+  width: 64
+  height: 32
+  external_tlut: men_scene
+  external_tlut_offset: 0xF730
+
+men_room_6Tex_007378:
+  type: TEXTURE
+  offset: 0x7338
+  symbol: men_room_6Tex_007378
+  format: CI8
+  width: 32
+  height: 32
+  external_tlut: men_scene
+  external_tlut_offset: 0xF730
+
+men_room_6Tex_007778:
+  type: TEXTURE
+  offset: 0x7738
+  symbol: men_room_6Tex_007778
+  format: CI8
+  width: 64
+  height: 32
+  external_tlut: men_scene
+  external_tlut_offset: 0xF730
+
+
+men_room_6Vtx_000250:
+  type: OOT:ARRAY
+  offset: 0x000250
+  symbol: men_room_6Vtx_000250
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+men_room_6DL_000390:
+  type: GFX
+  offset: 0x000390
+  symbol: men_room_6DL_000390
+
+men_room_6Vtx_000498:
+  type: OOT:ARRAY
+  offset: 0x000498
+  symbol: men_room_6Vtx_000498
+  count: 121
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+men_room_6DL_000C28:
+  type: GFX
+  offset: 0x000C28
+  symbol: men_room_6DL_000C28
+
+men_room_6Vtx_000EE8:
+  type: OOT:ARRAY
+  offset: 0x000EE8
+  symbol: men_room_6Vtx_000EE8
+  count: 20
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+men_room_6DL_001028:
+  type: GFX
+  offset: 0x001028
+  symbol: men_room_6DL_001028
+
+men_room_6Vtx_0011B0:
+  type: OOT:ARRAY
+  offset: 0x0011B0
+  symbol: men_room_6Vtx_0011B0
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+men_room_6DL_001390:
+  type: GFX
+  offset: 0x001390
+  symbol: men_room_6DL_001390
+
+men_room_6Vtx_001598:
+  type: OOT:ARRAY
+  offset: 0x001598
+  symbol: men_room_6Vtx_001598
+  count: 30
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+men_room_6DL_001778:
+  type: GFX
+  offset: 0x001778
+  symbol: men_room_6DL_001778
+
+men_room_6Vtx_001890:
+  type: OOT:ARRAY
+  offset: 0x001890
+  symbol: men_room_6Vtx_001890
+  count: 198
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+men_room_6DL_0024F0:
+  type: GFX
+  offset: 0x0024F0
+  symbol: men_room_6DL_0024F0
+
+men_room_6Vtx_002908:
+  type: OOT:ARRAY
+  offset: 0x002908
+  symbol: men_room_6Vtx_002908
+  count: 74
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+men_room_6DL_002DA8:
+  type: GFX
+  offset: 0x002DA8
+  symbol: men_room_6DL_002DA8
+
+men_room_6Vtx_003110:
+  type: OOT:ARRAY
+  offset: 0x003110
+  symbol: men_room_6Vtx_003110
+  count: 58
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+men_room_6DL_0034B0:
+  type: GFX
+  offset: 0x0034B0
+  symbol: men_room_6DL_0034B0
+
+men_room_6Vtx_003690:
+  type: OOT:ARRAY
+  offset: 0x003690
+  symbol: men_room_6Vtx_003690
+  count: 76
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+men_room_6DL_003B50:
+  type: GFX
+  offset: 0x003B50
+  symbol: men_room_6DL_003B50
+
+men_room_6Vtx_003D10:
+  type: OOT:ARRAY
+  offset: 0x003D10
+  symbol: men_room_6Vtx_003D10
+  count: 17
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+men_room_6DL_003E20:
+  type: GFX
+  offset: 0x003E20
+  symbol: men_room_6DL_003E20

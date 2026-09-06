@@ -7,7 +7,6 @@
 #include "z_en_md.h"
 #include "objects/object_md/object_md.h"
 #include "overlays/actors/ovl_En_Elf/z_en_elf.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS                                                                                  \
@@ -676,13 +675,11 @@ void EnMd_Init(Actor* thisx, PlayState* play) {
 void EnMd_Destroy(Actor* thisx, PlayState* play) {
     EnMd* this = (EnMd*)thisx;
     Collider_DestroyCylinder(play, &this->collider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnMd_Idle(EnMd* this, PlayState* play) {
     if (this->skelAnime.animation == &gMidoHandsOnHipsIdleAnim) {
-        func_80034F54(play, this->fidgetTableY, this->fidgetTableZ, 17);
+        Actor_UpdateFidgetTables(play, this->fidgetTableY, this->fidgetTableZ, 17);
     } else if ((this->interactInfo.talkState == NPC_TALK_STATE_IDLE) && (this->animSequence != 7)) {
         EnMd_SetAnimSequence(this, 7);
     }
@@ -692,7 +689,7 @@ void EnMd_Idle(EnMd* this, PlayState* play) {
 
 void EnMd_Watch(EnMd* this, PlayState* play) {
     if (this->skelAnime.animation == &gMidoHandsOnHipsIdleAnim) {
-        func_80034F54(play, this->fidgetTableY, this->fidgetTableZ, 17);
+        Actor_UpdateFidgetTables(play, this->fidgetTableY, this->fidgetTableZ, 17);
     }
     EnMd_UpdateAnimSequence(this);
 }
@@ -748,7 +745,7 @@ void EnMd_BlockPath(EnMd* this, PlayState* play) {
     }
 
     if (this->skelAnime.animation == &gMidoHandsOnHipsIdleAnim) {
-        func_80034F54(play, this->fidgetTableY, this->fidgetTableZ, 17);
+        Actor_UpdateFidgetTables(play, this->fidgetTableY, this->fidgetTableZ, 17);
     }
 
     if ((this->interactInfo.talkState == NPC_TALK_STATE_IDLE) && (play->sceneNum == SCENE_LOST_WOODS)) {
@@ -773,10 +770,10 @@ void EnMd_ListenToOcarina(EnMd* this, PlayState* play) {
         this->actionFunc = EnMd_BlockPath;
         play->msgCtx.ocarinaMode = OCARINA_MODE_04;
     } else if (play->msgCtx.ocarinaMode == OCARINA_MODE_03) {
-        Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        Audio_PlaySfxGeneral(NA_SE_SY_CORRECT_CHIME, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         this->actor.textId = 0x1067;
-        func_8002F2CC(&this->actor, play, this->collider.dim.radius + 30.0f);
+        Actor_OfferTalk(&this->actor, play, this->collider.dim.radius + 30.0f);
 
         this->actionFunc = EnMd_BlockPath;
         play->msgCtx.ocarinaMode = OCARINA_MODE_04;
@@ -786,7 +783,7 @@ void EnMd_ListenToOcarina(EnMd* this, PlayState* play) {
 }
 
 void EnMd_Walk(EnMd* this, PlayState* play) {
-    func_80034F54(play, this->fidgetTableY, this->fidgetTableZ, 17);
+    Actor_UpdateFidgetTables(play, this->fidgetTableY, this->fidgetTableZ, 17);
     EnMd_UpdateAnimSequence(this);
 
     if (!(EnMd_FollowPath(this, play)) || (this->waypoint != 0)) {

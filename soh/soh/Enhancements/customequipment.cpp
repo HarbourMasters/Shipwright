@@ -8,6 +8,7 @@
 #include "soh/ResourceManagerHelpers.h"
 
 extern "C" {
+#include "z64.h"
 #include "macros.h"
 #include "functions.h"
 #include "variables.h"
@@ -54,7 +55,7 @@ static Gfx* LoadCustomGfx(const char* path) {
     if (!path)
         return nullptr;
     path = ResolveCustomFPSHand(path);
-    if (!ResourceGetIsCustomByName(path) && !ResourceMgr_FileAltExists(path))
+    if (!ResourceMgr_FileAltExists(path) && !ResourceGetIsCustomByName(path))
         return nullptr;
     return ResourceMgr_LoadGfxByName(path);
 }
@@ -632,7 +633,7 @@ static void RegisterCustomEquipment() {
             gSPDisplayList(play->state.gfxCtx->polyXlu.p++, resolvedBottle);
 
             if (player->itemAction >= PLAYER_IA_BOTTLE &&
-                player->itemAction < PLAYER_IA_BOTTLE + std::size(bottleContentDLs)) {
+                player->itemAction < static_cast<int>(PLAYER_IA_BOTTLE + std::size(bottleContentDLs))) {
                 contentDL = bottleContentDLs[player->itemAction - PLAYER_IA_BOTTLE];
             }
 

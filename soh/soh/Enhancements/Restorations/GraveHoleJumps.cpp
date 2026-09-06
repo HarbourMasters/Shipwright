@@ -1,8 +1,9 @@
-#include <libultraship/classes.h>
+#include <ship/Context.h>
+#include <ship/resource/ResourceManager.h>
+
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/ShipInit.hpp"
-#include "functions.h"
-#include "soh/Enhancements/enhancementTypes.h"
+#include "soh/cvar_prefixes.h"
 #include "soh/resource/type/Scene.h"
 #include "soh/resource/type/scenecommand/SceneCommand.h"
 #include "soh/resource/type/scenecommand/SetCollisionHeader.h"

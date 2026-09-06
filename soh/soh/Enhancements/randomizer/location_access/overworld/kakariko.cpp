@@ -11,7 +11,7 @@ void RegionTable_Init_Kakariko() {
         //Open Gate setting is applied in RR_ROOT
         EVENT_ACCESS(LOGIC_KAKARIKO_GATE_OPEN, logic->IsChild && logic->HasItem(RG_ZELDAS_LETTER)),
         //Needs wallet to be able to get another mask after selling Keaton
-        EVENT_ACCESS(LOGIC_BORROW_SKULL_MASK,  logic->IsChild && logic->Get(LOGIC_CAN_BORROW_MASKS) && logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_SPEAK_HYLIAN)),
+        EVENT_ACCESS(LOGIC_SOLD_KEATON_MASK,   logic->IsChild && logic->Get(LOGIC_KAKARIKO_GATE_OPEN) && logic->HasItem(RG_KEATON_MASK) && logic->HasItem(RG_CHILD_WALLET) && logic->HasItem(RG_SPEAK_HYLIAN)),
     }, {
         //Locations
         LOCATION(RC_SHEIK_IN_KAKARIKO,                     logic->IsAdult && logic->HasItem(RG_FOREST_MEDALLION) && logic->HasItem(RG_FIRE_MEDALLION) && logic->HasItem(RG_WATER_MEDALLION)),
@@ -84,14 +84,14 @@ void RegionTable_Init_Kakariko() {
         ENTRANCE(RR_KAK_WELL,                 logic->IsAdult || logic->Get(LOGIC_DRAIN_WELL) || logic->CanUse(RG_IRON_BOOTS) || (ctx->GetTrickOption(RT_BOTTOM_OF_THE_WELL_NAVI_DIVE) && logic->IsChild && logic->HasItem(RG_BRONZE_SCALE) && logic->CanJumpslash())),
         ENTRANCE(RR_KAK_POTION_SHOP,          (logic->AtDay || logic->IsChild) && logic->HasItem(RG_KAK_POTION_SHOP_KEY)),
         ENTRANCE(RR_KAK_REDEAD_GROTTO,        logic->CanOpenBombGrotto()),
-        ENTRANCE(RR_KAK_IMPAS_LEDGE,          (logic->IsChild && logic->AtDay && logic->HasItem(RG_POWER_BRACELET)) || (logic->IsAdult && ctx->GetTrickOption(RT_VISIBLE_COLLISION))),
+        ENTRANCE(RR_KAK_IMPAS_LEDGE,          (logic->IsChild && ((logic->AtDay && logic->HasItem(RG_POWER_BRACELET)) || (logic->BunnyHovers() && logic->CanJumpslash()))) || (logic->IsAdult && ctx->GetTrickOption(RT_VISIBLE_COLLISION))),
         ENTRANCE(RR_KAK_WATCHTOWER,           logic->HasItem(RG_CLIMB) && (logic->IsAdult || logic->AtDay || logic->CanKillEnemy(RE_GOLD_SKULLTULA, ED_LONGSHOT) || (ctx->GetTrickOption(RT_KAK_TOWER_GS) && logic->CanJumpslashExceptHammer()))),
         ENTRANCE(RR_KAK_ROOFTOP,              logic->CanUse(RG_HOOKSHOT) || (ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) && logic->IsAdult)),
         ENTRANCE(RR_KAK_IMPAS_ROOFTOP,        logic->CanUse(RG_HOOKSHOT) || (ctx->GetTrickOption(RT_KAK_ROOFTOP_GS) && logic->CanUse(RG_HOVER_BOOTS)) || logic->CanHover(true, true)),
         ENTRANCE(RR_THE_GRAVEYARD,            true),
         ENTRANCE(RR_KAK_BEHIND_GATE,          logic->IsAdult || logic->Get(LOGIC_KAKARIKO_GATE_OPEN)),
-        //adult can jump from the fence near the windmill to ledgegrab the fence near granny's shop. is in logic on N64
-        ENTRANCE(RR_KAK_BACKYARD,             logic->IsAdult || (logic->AtDay && logic->HasItem(RG_POWER_BRACELET))),
+        //adult or bunny can jump from the fence near the windmill to ledgegrab the fence near granny's shop. is in logic on N64
+        ENTRANCE(RR_KAK_BACKYARD,             logic->IsAdult || logic->BunnyHood() || (logic->AtDay && logic->HasItem(RG_POWER_BRACELET))),
         ENTRANCE(RR_KAK_BEHIND_POTION_SHOP,   logic->CanUse(RG_HOOKSHOT) || (ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS) && logic->IsAdult)),
     });
 
@@ -113,7 +113,8 @@ void RegionTable_Init_Kakariko() {
     areaTable[RR_KAK_WATCHTOWER] = Region("Kak Watchtower", SCENE_KAKARIKO_VILLAGE, {}, {
         //Locations
         //exists for when age change is in logic.
-        LOCATION(RC_KAK_GS_WATCHTOWER, logic->IsChild && logic->CanUse(RG_DINS_FIRE) && logic->CanGetNightTimeGS()),
+        LOCATION(RC_KAK_GS_WATCHTOWER,              logic->IsChild && logic->CanUse(RG_DINS_FIRE) && logic->CanGetNightTimeGS()),
+        LOCATION(RC_KAK_WATCHTOWER_BUTTERFLY_FAIRY, logic->IsChild && logic->AtDay && logic->CanUse(RG_STICKS)),
     }, {
         //Exits
         ENTRANCE(RR_KAKARIKO_VILLAGE, true),
@@ -148,7 +149,7 @@ void RegionTable_Init_Kakariko() {
         ENTRANCE(RR_KAK_BACKYARD,    true),
         ENTRANCE(RR_KAK_POTION_SHOP, logic->IsAdult && logic->AtDay && logic->HasItem(RG_KAK_POTION_SHOP_KEY)),
         //can ledgegrab fence to rooftop with hover boots, but that's more difficult than the unintuitive jump, so not including in default logic
-        ENTRANCE(RR_KAK_ROOFTOP,     ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && logic->CanUse(RG_HOVER_BOOTS) && logic->CanUse(RG_MEGATON_HAMMER) && logic->IsAdult),
+        ENTRANCE(RR_KAK_ROOFTOP,     ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && logic->CanUse(RG_HOVER_BOOTS) && logic->CanUse(RG_MEGATON_HAMMER)),
     });
 
     areaTable[RR_KAK_CARPENTER_BOSS_HOUSE] = Region("Kak Carpenter Boss House", SCENE_KAKARIKO_CENTER_GUEST_HOUSE, {

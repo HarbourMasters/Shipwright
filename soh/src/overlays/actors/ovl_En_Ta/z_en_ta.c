@@ -8,7 +8,6 @@
 #include "vt.h"
 #include "objects/object_ta/object_ta.h"
 #include "soh/OTRGlobals.h"
-#include "soh/ResourceManagerHelpers.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_FRIENDLY)
@@ -245,8 +244,6 @@ void EnTa_Destroy(Actor* thisx, PlayState* play) {
     if (this->stateFlags & 0x200) {
         func_800F5B58();
     }
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 s32 EnTa_RequestTalk(EnTa* this, PlayState* play, u16 textId) {
@@ -259,7 +256,7 @@ s32 EnTa_RequestTalk(EnTa* this, PlayState* play, u16 textId) {
     if ((ABS((s16)(this->actor.yawTowardsPlayer - this->actor.shape.rot.y)) <= 0x4300) &&
         (this->actor.xzDistToPlayer < 100.0f)) {
         this->stateFlags |= 1;
-        func_8002F2CC(&this->actor, play, 100.0f);
+        Actor_OfferTalk(&this->actor, play, 100.0f);
     }
     return false;
 }
@@ -332,7 +329,7 @@ void EnTa_IdleAsleepInCastle(EnTa* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
     if (Actor_ProcessTalkRequest(&this->actor, play)) {
-        s32 exchangeItemId = func_8002F368(play);
+        s32 exchangeItemId = Actor_GetPlayerExchangeItemId(play);
 
         switch (exchangeItemId) {
             case EXCH_ITEM_CHICKEN:
@@ -349,7 +346,7 @@ void EnTa_IdleAsleepInCastle(EnTa* this, PlayState* play) {
         }
     } else {
         this->actor.textId = 0x702A;
-        func_8002F298(&this->actor, play, 100.0f, 3);
+        Actor_OfferTalkExchangeEquiCylinder(&this->actor, play, 100.0f, 3);
     }
 }
 
@@ -358,14 +355,14 @@ void EnTa_IdleAsleepInLonLonHouse(EnTa* this, PlayState* play) {
         EnTa_SetupAction(this, EnTa_SleepTalkInLonLonHouse, EnTa_AnimSleeping);
     }
     this->actor.textId = 0x204B;
-    func_8002F2CC(&this->actor, play, 100.0f);
+    Actor_OfferTalk(&this->actor, play, 100.0f);
 }
 
 void EnTa_IdleAsleepInKakariko(EnTa* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
     if (Actor_ProcessTalkRequest(&this->actor, play)) {
-        s32 exchangeItemId = func_8002F368(play);
+        s32 exchangeItemId = Actor_GetPlayerExchangeItemId(play);
 
         switch (exchangeItemId) {
             case EXCH_ITEM_POCKET_CUCCO:
@@ -382,7 +379,7 @@ void EnTa_IdleAsleepInKakariko(EnTa* this, PlayState* play) {
         }
     } else {
         this->actor.textId = 0x5015;
-        func_8002F298(&this->actor, play, 100.0f, 6);
+        Actor_OfferTalkExchangeEquiCylinder(&this->actor, play, 100.0f, 6);
     }
 }
 
@@ -464,7 +461,7 @@ void EnTa_RunAwayStart(EnTa* this, PlayState* play) {
 
 void EnTa_TalkAwakeInCastle(EnTa* this, PlayState* play) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_EVENT) {
-        s16 csCamIdx = OnePointCutscene_Init(play, 4175, -99, &this->actor, MAIN_CAM);
+        s16 csCamIdx = OnePointCutscene_Init(play, 4175, -99, &this->actor, CAM_ID_MAIN);
         EnTa_SetupAction(this, EnTa_RunAwayStart, EnTa_AnimRepeatCurrent);
         this->timer = 5;
         Flags_SetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE);
@@ -626,7 +623,7 @@ void EnTa_IdleFoundSuperCucco(EnTa* this, PlayState* play) {
         this->actionFunc = EnTa_TalkFoundSuperCucco;
         this->actor.flags &= ~ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
     } else {
-        func_8002F2CC(&this->actor, play, 1000.0f);
+        Actor_OfferTalk(&this->actor, play, 1000.0f);
     }
     this->stateFlags |= 1;
 }
@@ -732,7 +729,7 @@ void EnTa_RunCuccoGame(EnTa* this, PlayState* play) {
                     }
                     this->actionFunc = EnTa_IdleFoundSuperCucco;
                     this->actor.flags |= ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
-                    func_8002F2CC(&this->actor, play, 1000.0f);
+                    Actor_OfferTalk(&this->actor, play, 1000.0f);
                     return;
                 }
             } else {
@@ -742,7 +739,7 @@ void EnTa_RunCuccoGame(EnTa* this, PlayState* play) {
     }
 
     if (gSaveContext.timerSeconds == 10) {
-        func_800F5918();
+        Audio_SetFastTempoForTimedMinigame();
     }
 
     if (gSaveContext.timerSeconds == 0 && !Play_InCsMode(play)) {
@@ -1064,7 +1061,7 @@ void EnTa_IdleAfterCuccoGameFinished(EnTa* this, PlayState* play) {
         this->actor.flags &= ~ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
     } else {
         this->actor.flags |= ACTOR_FLAG_TALK_OFFER_AUTO_ACCEPTED;
-        func_8002F2CC(&this->actor, play, 1000.0f);
+        Actor_OfferTalk(&this->actor, play, 1000.0f);
     }
     this->stateFlags |= 1;
 }
@@ -1163,7 +1160,7 @@ void EnTa_Update(Actor* thisx, PlayState* play) {
     }
 
     if (this->stateFlags & 1) {
-        func_80038290(play, &this->actor, &this->headRot, &this->torsoRot, this->actor.focus.pos);
+        Actor_TrackPlayer(play, &this->actor, &this->headRot, &this->torsoRot, this->actor.focus.pos);
     } else {
         Math_SmoothStepToS(&this->headRot.x, 0, 6, 6200, 100);
         Math_SmoothStepToS(&this->headRot.y, 0, 6, 6200, 100);

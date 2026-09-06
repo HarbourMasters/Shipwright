@@ -1,0 +1,60 @@
+:config:
+  segments:
+    - [ 2, 0x01830BF0 ]
+
+MIZUsin_scene:
+  type: OOT:SCENE
+  offset: 0x0
+  symbol: MIZUsin_scene
+
+MIZUsin_scenePathList_000384:
+  type: OOT:PATH
+  offset: 0x0384
+  symbol: MIZUsin_scenePathList_000384
+  num_paths: 2
+
+MIZUsin_sceneTex_013C30:
+  type: TEXTURE
+  offset: 0x13C30
+  symbol: MIZUsin_sceneTex_013C30
+  format: RGBA16
+  width: 32
+  height: 32
+
+MIZUsin_sceneTex_014430:
+  type: TEXTURE
+  offset: 0x14430
+  symbol: MIZUsin_sceneTex_014430
+  format: RGBA16
+  width: 32
+  height: 32
+
+MIZUsin_sceneTex_015030:
+  type: TEXTURE
+  offset: 0x15030
+  symbol: MIZUsin_sceneTex_015030
+  format: RGBA16
+  width: 32
+  height: 32
+
+gWaterTempleDayEntranceTex:
+  type: TEXTURE
+  offset: 0x14C30
+  symbol: gWaterTempleDayEntranceTex
+  format: IA16
+  width: 8
+  height: 64
+
+gWaterTempleNightEntranceTex:
+  type: TEXTURE
+  offset: 0x15830
+  symbol: gWaterTempleNightEntranceTex
+  format: IA16
+  width: 8
+  height: 64
+
+
+MIZUsin_sceneCollisionHeader_013C04:
+  type: OOT:COLLISION
+  offset: 0x013C04
+  symbol: MIZUsin_sceneCollisionHeader_013C04

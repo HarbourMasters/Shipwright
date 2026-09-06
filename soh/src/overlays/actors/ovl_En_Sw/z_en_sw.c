@@ -1,7 +1,6 @@
 #include "z_en_sw.h"
 #include "objects/object_st/object_st.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-#include "soh/ResourceManagerHelpers.h"
 
 #define FLAGS (ACTOR_FLAG_ATTENTION_ENABLED | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_CULLING_DISABLED)
 
@@ -125,7 +124,7 @@ CollisionPoly* func_80B0C020(PlayState* play, Vec3f* arg1, Vec3f* arg2, Vec3f* a
         return NULL;
     }
 
-    if (func_80041DB8(&play->colCtx, sp3C, *arg4) & 0x30) {
+    if (SurfaceType_GetWallFlags(&play->colCtx, sp3C, *arg4) & WALL_FLAG_CRAWLSPACE) {
         return NULL;
     }
 
@@ -268,8 +267,8 @@ void EnSw_Init(Actor* thisx, PlayState* play) {
     }
 
     if (((thisx->params & 0xE000) >> 0xD) >= 3) {
-        Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        Audio_PlaySfxGeneral(NA_SE_SY_CORRECT_CHIME, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
     }
 
     switch ((thisx->params & 0xE000) >> 0xD) {
@@ -313,8 +312,6 @@ void EnSw_Destroy(Actor* thisx, PlayState* play) {
     EnSw* this = (EnSw*)thisx;
 
     Collider_DestroyJntSph(play, &this->collider);
-
-    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 s32 func_80B0C9F0(EnSw* this, PlayState* play) {
@@ -339,7 +336,7 @@ s32 func_80B0C9F0(EnSw* this, PlayState* play) {
             Enemy_StartFinishingBlow(play, &this->actor);
             if (((this->actor.params & 0xE000) >> 0xD) != 0) {
                 if (CVarGetInteger(CVAR_ENHANCEMENT("GSCutscene"), 0)) {
-                    OnePointCutscene_Init(play, 2200, 90, &this->actor, MAIN_CAM);
+                    OnePointCutscene_Init(play, 2200, 90, &this->actor, CAM_ID_MAIN);
                 }
                 this->skelAnime.playSpeed = 8.0f;
                 if ((play->state.frames & 1) == 0) {
@@ -621,8 +618,8 @@ void func_80B0D878(EnSw* this, PlayState* play) {
     this->actor.shape.rot = this->actor.world.rot;
 
     if ((this->unk_394 == 0) && (this->unk_392 == 0)) {
-        Audio_PlaySoundGeneral(NA_SE_SY_KINSTA_MARK_APPEAR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        Audio_PlaySfxGeneral(NA_SE_SY_KINSTA_MARK_APPEAR, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         x = (this->unk_364.x * 10.0f);
         y = (this->unk_364.y * 10.0f);
         z = (this->unk_364.z * 10.0f);
@@ -651,7 +648,7 @@ void func_80B0DB00(EnSw* this, PlayState* play) {
     this->actor.shape.rot.z += 0x1000;
     Actor_UpdateBgCheckInfo(play, &this->actor, 20.0f, 20.0f, 0.0f, 5);
 
-    if ((this->actor.bgCheckFlags & 1) && (!(0.0f <= this->actor.velocity.y))) {
+    if ((this->actor.bgCheckFlags & BGCHECKFLAG_GROUND) && (!(0.0f <= this->actor.velocity.y))) {
         if (this->actor.floorHeight <= BGCHECK_Y_MIN || this->actor.floorHeight >= 32000.0f) {
             Actor_Kill(&this->actor);
             return;

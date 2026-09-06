@@ -1,0 +1,203 @@
+:config:
+  segments:
+    - [ 3, 0x01E4F620 ]
+    - [ 2, 0x01E4F150 ]
+  directory: scenes/shared/kakariko3_scene
+  external_files:
+    - pal_gc/scenes/shared/kakariko3_scene.yml
+    - pal_gc/code/sys_matrix.yml
+
+kakariko3_room_0:
+  type: OOT:ROOM
+  offset: 0x0
+  symbol: kakariko3_room_0
+
+
+kakariko3_room_0Vtx_0000D0:
+  type: OOT:ARRAY
+  offset: 0x0000D0
+  symbol: kakariko3_room_0Vtx_0000D0
+  count: 40
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+kakariko3_room_0Vtx_000350:
+  type: OOT:ARRAY
+  offset: 0x000350
+  symbol: kakariko3_room_0Vtx_000350
+  count: 268
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+kakariko3_room_0Vtx_001410:
+  type: OOT:ARRAY
+  offset: 0x001410
+  symbol: kakariko3_room_0Vtx_001410
+  count: 264
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+kakariko3_room_0Vtx_002490:
+  type: OOT:ARRAY
+  offset: 0x002490
+  symbol: kakariko3_room_0Vtx_002490
+  count: 13
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+kakariko3_room_0Vtx_002560:
+  type: OOT:ARRAY
+  offset: 0x002560
+  symbol: kakariko3_room_0Vtx_002560
+  count: 126
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+kakariko3_room_0Vtx_002D40:
+  type: OOT:ARRAY
+  offset: 0x002D40
+  symbol: kakariko3_room_0Vtx_002D40
+  count: 88
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+kakariko3_room_0Vtx_0032C0:
+  type: OOT:ARRAY
+  offset: 0x0032C0
+  symbol: kakariko3_room_0Vtx_0032C0
+  count: 110
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+kakariko3_room_0Vtx_0039A0:
+  type: OOT:ARRAY
+  offset: 0x0039A0
+  symbol: kakariko3_room_0Vtx_0039A0
+  count: 32
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+kakariko3_room_0Vtx_003BA0:
+  type: OOT:ARRAY
+  offset: 0x003BA0
+  symbol: kakariko3_room_0Vtx_003BA0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+kakariko3_room_0Vtx_003C20:
+  type: OOT:ARRAY
+  offset: 0x003C20
+  symbol: kakariko3_room_0Vtx_003C20
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+kakariko3_room_0Vtx_003CA0:
+  type: OOT:ARRAY
+  offset: 0x003CA0
+  symbol: kakariko3_room_0Vtx_003CA0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+kakariko3_room_0Vtx_003D20:
+  type: OOT:ARRAY
+  offset: 0x003D20
+  symbol: kakariko3_room_0Vtx_003D20
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+kakariko3_room_0Vtx_003DA0:
+  type: OOT:ARRAY
+  offset: 0x003DA0
+  symbol: kakariko3_room_0Vtx_003DA0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+kakariko3_room_0Vtx_003E20:
+  type: OOT:ARRAY
+  offset: 0x003E20
+  symbol: kakariko3_room_0Vtx_003E20
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+kakariko3_room_0Vtx_003EA0:
+  type: OOT:ARRAY
+  offset: 0x003EA0
+  symbol: kakariko3_room_0Vtx_003EA0
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+kakariko3_room_0Vtx_003F20:
+  type: OOT:ARRAY
+  offset: 0x003F20
+  symbol: kakariko3_room_0Vtx_003F20
+  count: 8
+  array_type: VTX
+  zero_flag: true
+  null_cross_file: true
+
+kakariko3_room_0DL_003FA0:
+  type: GFX
+  offset: 0x003FA0
+  symbol: kakariko3_room_0DL_003FA0
+
+kakariko3_room_0DL_004078:
+  type: GFX
+  offset: 0x004078
+  symbol: kakariko3_room_0DL_004078
+
+kakariko3_room_0DL_0043E0:
+  type: GFX
+  offset: 0x0043E0
+  symbol: kakariko3_room_0DL_0043E0
+
+kakariko3_room_0DL_004748:
+  type: GFX
+  offset: 0x004748
+  symbol: kakariko3_room_0DL_004748
+
+kakariko3_room_0DL_0047F0:
+  type: GFX
+  offset: 0x0047F0
+  symbol: kakariko3_room_0DL_0047F0
+
+kakariko3_room_0DL_0049C0:
+  type: GFX
+  offset: 0x0049C0
+  symbol: kakariko3_room_0DL_0049C0
+
+kakariko3_room_0DL_004AF0:
+  type: GFX
+  offset: 0x004AF0
+  symbol: kakariko3_room_0DL_004AF0
+
+kakariko3_room_0DL_004C68:
+  type: GFX
+  offset: 0x004C68
+  symbol: kakariko3_room_0DL_004C68
+
+kakariko3_room_0DL_004D20:
+  type: GFX
+  offset: 0x004D20
+  symbol: kakariko3_room_0DL_004D20

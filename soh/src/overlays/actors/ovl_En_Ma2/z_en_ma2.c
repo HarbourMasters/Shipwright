@@ -200,12 +200,12 @@ void EnMa2_UpdateSinging(EnMa2* this, PlayState* play) {
     if (this->skelAnime.animation == &gMalonAdultSingAnim) {
         if (this->interactInfo.talkState == NPC_TALK_STATE_IDLE) {
             if (this->singingDisabled != 0) {
-                func_800F6584(0);
+                Audio_ToggleMalonSinging(0);
                 this->singingDisabled = 0;
             }
         } else {
             if (this->singingDisabled == 0) {
-                func_800F6584(1);
+                Audio_ToggleMalonSinging(1);
                 this->singingDisabled = 1;
             }
         }
@@ -284,8 +284,8 @@ void EnMa2_WaitForEponasSong(EnMa2* this, PlayState* play) {
         this->actionFunc = EnMa2_WaitForOcarina;
         play->msgCtx.ocarinaMode = OCARINA_MODE_04;
     } else if (play->msgCtx.ocarinaMode == OCARINA_MODE_03) {
-        Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
-                               &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
+        Audio_PlaySfxGeneral(NA_SE_SY_CORRECT_CHIME, &gSfxDefaultPos, 4, &gSfxDefaultFreqAndVolScale,
+                             &gSfxDefaultFreqAndVolScale, &gSfxDefaultReverb);
         this->timer = 0x1E;
         Flags_SetInfTable(INFTABLE_8E);
         this->actionFunc = EnMa2_ForceTalkAfterSong;
@@ -384,7 +384,7 @@ void EnMa2_Draw(Actor* thisx, PlayState* play) {
 
     camera = GET_ACTIVE_CAM(play);
     someFloat = Math_Vec3f_DistXZ(&this->actor.world.pos, &camera->eye);
-    func_800F6268(someFloat, NA_BGM_LONLON);
+    Audio_UpdateMalonSinging(someFloat, NA_BGM_LONLON);
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(sMouthTextures[this->mouthIndex]));
