@@ -468,7 +468,7 @@ typedef struct {
     /* 0x00F0 */ s16 dummyResampleState[0x10];
 } NoteSynthesisBuffers; // size = 0x110
 
-struct OggOpusFile;
+struct OpusDecState;
 
 typedef struct {
     /* 0x00 */ u8 restart;
@@ -488,8 +488,7 @@ typedef struct {
     /* 0x1A */ u8 unk_1A;
     /* 0x1C */ u16 unk_1C;
     /* 0x1E */ u16 unk_1E;
-    struct OggOpusFile* opusFile; // Only for streamed opus audio
-    uintptr_t opusSampleAddr;     // sample opusFile was opened for
+    struct OpusDecState* opusFile; // Only for streamed opus audio
 } NoteSynthesisState; // size = 0x20
 
 typedef struct {

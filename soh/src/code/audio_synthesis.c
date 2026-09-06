@@ -876,13 +876,6 @@ Acmd* AudioSynth_ProcessNote(s32 noteIndex, NoteSubEu* noteSubEu, NoteSynthesisS
 
                         // 2S2H [Port] [Custom audio] Handle decoding OPUS data
                         if (audioFontSample->codec == CODEC_OPUS) {
-                            // A note reused for another streamed sample keeps the decoder its predecessor opened,
-                            // so the previous track carries on playing under the new note.
-                            if (synthState->opusFile != NULL && synthState->opusSampleAddr != sampleAddr) {
-                                aOPUSFree(synthState->opusFile);
-                                synthState->opusFile = NULL;
-                            }
-                            synthState->opusSampleAddr = sampleAddr;
                             aOPUSdecImpl(sampleAddr, DMEM_UNCOMPRESSED_NOTE + s5, bytesToRead, &synthState->opusFile,
                                          synthState->samplePosInt, audioFontSample->fileSize);
                         } else {

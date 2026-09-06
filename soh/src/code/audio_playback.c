@@ -1,6 +1,5 @@
 #include "global.h"
 #include "soh/ResourceManagerHelpers.h"
-#include "soh/mixer.h"
 
 extern bool gUseLegacySD;
 
@@ -151,6 +150,7 @@ void Audio_NoteInit(Note* note) {
     note->noteSubEu = gDefaultNoteSub;
 }
 
+extern void aOPUSFree(struct OpusDecState* dec);
 void Audio_NoteDisable(Note* note) {
     if (note->noteSubEu.bitField0.needsInit == true) {
         note->noteSubEu.bitField0.needsInit = false;
@@ -166,7 +166,6 @@ void Audio_NoteDisable(Note* note) {
     if (note->synthesisState.opusFile != NULL) {
         aOPUSFree(note->synthesisState.opusFile);
         note->synthesisState.opusFile = NULL;
-        note->synthesisState.opusSampleAddr = 0;
     }
 }
 
