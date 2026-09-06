@@ -413,7 +413,7 @@ object_zl2Tex_003A08:
   format: CI8
   width: 8
   height: 8
-  tlut: 0x9490
+  tlut: 0x2F50
 
 object_zl2Tex_003A48:
   type: TEXTURE

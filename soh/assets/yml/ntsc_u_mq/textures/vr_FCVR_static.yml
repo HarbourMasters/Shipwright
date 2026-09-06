@@ -1,7 +1,9 @@
 :config:
   segments:
-    - [ 128, 0x01673B60 ]
-
+    - [1, 0x01673B60]
+  directory: textures/
+  external_files:
+    - ntsc_u_mq/textures/vr_FCVR_pal_static.yml
 gMaskShop2BgTex:
   type: TEXTURE
   offset: 0x10000
@@ -11,7 +13,6 @@ gMaskShop2BgTex:
   height: 256
   external_tlut: vr_FCVR_pal_static
   external_tlut_offset: 0x200
-
 gMaskShopBgTex:
   type: TEXTURE
   offset: 0x0
@@ -21,4 +22,3 @@ gMaskShopBgTex:
   height: 256
   external_tlut: vr_FCVR_pal_static
   external_tlut_offset: 0x0
-

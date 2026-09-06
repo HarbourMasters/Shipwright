@@ -8,8 +8,7 @@
     - [ 11, 0x0167D000 ]
     - [ 12, 0x0167D000 ]
     - [ 13, 0x0167D000 ]
-  external_files:
-    - pal_gc_dbg/objects/gameplay_keep.yml
+
 
 GMegamiCol:
   type: OOT:COLLISION
@@ -333,8 +332,8 @@ gMegami5TLUT:
   offset: 0xAC70
   symbol: gMegami5TLUT
   format: RGBA16
-  width: 4
-  height: 4
+  width: 36
+  height: 1
 
 gMegamiCrumbleTLUT:
   type: TEXTURE

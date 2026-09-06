@@ -1,7 +1,9 @@
 :config:
   segments:
-    - [ 128, 0x01D73000 ]
-
+    - [1, 0x01D73000]
+  directory: textures/
+  external_files:
+    - pal_mq_dbg/textures/vr_MLVR_pal_static.yml
 gStable2BgTex:
   type: TEXTURE
   offset: 0x10000
@@ -11,7 +13,6 @@ gStable2BgTex:
   height: 256
   external_tlut: vr_MLVR_pal_static
   external_tlut_offset: 0x200
-
 gStable3BgTex:
   type: TEXTURE
   offset: 0x20000
@@ -21,7 +22,6 @@ gStable3BgTex:
   height: 256
   external_tlut: vr_MLVR_pal_static
   external_tlut_offset: 0x400
-
 gStable4BgTex:
   type: TEXTURE
   offset: 0x30000
@@ -31,7 +31,6 @@ gStable4BgTex:
   height: 256
   external_tlut: vr_MLVR_pal_static
   external_tlut_offset: 0x600
-
 gStableBgTex:
   type: TEXTURE
   offset: 0x0
@@ -41,4 +40,3 @@ gStableBgTex:
   height: 256
   external_tlut: vr_MLVR_pal_static
   external_tlut_offset: 0x000
-

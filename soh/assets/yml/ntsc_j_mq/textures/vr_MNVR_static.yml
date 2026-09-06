@@ -1,7 +1,9 @@
 :config:
   segments:
-    - [ 128, 0x013925E0 ]
-
+    - [1, 0x013925E0]
+  directory: textures/
+  external_files:
+    - ntsc_j_mq/textures/vr_MNVR_pal_static.yml
 gMarketNight2BgTex:
   type: TEXTURE
   offset: 0x10000
@@ -11,7 +13,6 @@ gMarketNight2BgTex:
   height: 256
   external_tlut: vr_MNVR_pal_static
   external_tlut_offset: 0x200
-
 gMarketNight3BgTex:
   type: TEXTURE
   offset: 0x20000
@@ -21,7 +22,6 @@ gMarketNight3BgTex:
   height: 256
   external_tlut: vr_MNVR_pal_static
   external_tlut_offset: 0x400
-
 gMarketNight4BgTex:
   type: TEXTURE
   offset: 0x30000
@@ -31,7 +31,6 @@ gMarketNight4BgTex:
   height: 256
   external_tlut: vr_MNVR_pal_static
   external_tlut_offset: 0x600
-
 gMarketNightBgTex:
   type: TEXTURE
   offset: 0x0
@@ -41,4 +40,3 @@ gMarketNightBgTex:
   height: 256
   external_tlut: vr_MNVR_pal_static
   external_tlut_offset: 0x000
-

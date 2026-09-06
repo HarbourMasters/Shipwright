@@ -225,4 +225,5 @@ gWorldMapImageTex:
   format: CI8
   width: 216
   height: 128
+  tlut: 0x6C00
 

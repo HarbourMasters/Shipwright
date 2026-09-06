@@ -89,6 +89,7 @@ gDampeUnkTex:
   format: CI8
   width: 16
   height: 16
+  tlut: 0x3780
 
 gDampeWalkAnim:
   type: OOT:ANIMATION
