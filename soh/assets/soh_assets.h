@@ -107,6 +107,24 @@ static const ALIGN_ASSET(2) char gTriforcePiece2DL[] = dgTriforcePiece2DL;
 #define dgTriforcePieceCompletedDL "__OTR__objects/object_triforce_completed/gTriforcePieceCompletedDL"
 static const ALIGN_ASSET(2) char gTriforcePieceCompletedDL[] = dgTriforcePieceCompletedDL;
 
+#define dgStatDefenseDL "__OTR__objects/object_stat_upgrade/gStatDefenseDL"
+static const ALIGN_ASSET(2) char gStatDefenseDL[] = dgStatDefenseDL;
+
+#define dgStatSpeedDL "__OTR__objects/object_stat_upgrade/gStatSpeedDL"
+static const ALIGN_ASSET(2) char gStatSpeedDL[] = dgStatSpeedDL;
+
+#define dgStatPowerDL "__OTR__objects/object_stat_upgrade/gStatPowerDL"
+static const ALIGN_ASSET(2) char gStatPowerDL[] = dgStatPowerDL;
+
+#define dgStatClimbSpeedDL "__OTR__objects/object_stat_upgrade/gStatClimbSpeedDL"
+static const ALIGN_ASSET(2) char gStatClimbSpeedDL[] = dgStatClimbSpeedDL;
+
+#define dgStatCrawlSpeedDL "__OTR__objects/object_stat_upgrade/gStatCrawlSpeedDL"
+static const ALIGN_ASSET(2) char gStatCrawlSpeedDL[] = dgStatCrawlSpeedDL;
+
+#define dgStatPushSpeedDL "__OTR__objects/object_stat_upgrade/gStatPushSpeedDL"
+static const ALIGN_ASSET(2) char gStatPushSpeedDL[] = dgStatPushSpeedDL;
+
 #define dgBossSoulSkullDL "__OTR__objects/object_boss_soul/gGIBossSoulSkullDL"
 static const ALIGN_ASSET(2) char gBossSoulSkullDL[] = dgBossSoulSkullDL;
 
@@ -478,6 +496,24 @@ static const ALIGN_ASSET(2) char gRocsFeatherItemNameGERTex[] = dgRocsFeatherIte
 
 #define dgRocsFeatherItemNameFRATex "__OTR__textures/item_name_static/gRocsFeatherItemNameFRATex"
 static const ALIGN_ASSET(2) char gRocsFeatherItemNameFRATex[] = dgRocsFeatherItemNameFRATex;
+
+#define dgStatDefenseTex "__OTR__textures/icon_item_static/gStatDefenseTex"
+static const ALIGN_ASSET(2) char gStatDefenseTex[] = dgStatDefenseTex;
+
+#define dgStatSpeedTex "__OTR__textures/icon_item_static/gStatSpeedTex"
+static const ALIGN_ASSET(2) char gStatSpeedTex[] = dgStatSpeedTex;
+
+#define dgStatPowerTex "__OTR__textures/icon_item_static/gStatPowerTex"
+static const ALIGN_ASSET(2) char gStatPowerTex[] = dgStatPowerTex;
+
+#define dgCrawlSpeedTex "__OTR__textures/icon_item_static/gCrawlSpeedTex"
+static const ALIGN_ASSET(2) char gCrawlSpeedTex[] = dgCrawlSpeedTex;
+
+#define dgClimbSpeedTex "__OTR__textures/icon_item_static/gClimbSpeedTex"
+static const ALIGN_ASSET(2) char gClimbSpeedTex[] = dgClimbSpeedTex;
+
+#define dgPushSpeedTex "__OTR__textures/icon_item_static/gPushSpeedTex"
+static const ALIGN_ASSET(2) char gPushSpeedTex[] = dgPushSpeedTex;
 
 #define dgEmptyTexture "__OTR__textures/virtual/gEmptyTexture"
 static const ALIGN_ASSET(2) char gEmptyTexture[] = dgEmptyTexture;

@@ -1,0 +1,14 @@
+<DisplayList Version="0">
+	<CallDisplayList Path="objects/object_stat_upgrade/mat_gStatPowerDL_Main_Body_Piece_layerOpaque"/>
+	<CallDisplayList Path="objects/object_stat_upgrade/gStatPowerDL_layer_Opaque_tri_0"/>
+	<CallDisplayList Path="objects/object_stat_upgrade/mat_gStatPowerDL_Small_Body_Piece_layerOpaque"/>
+	<CallDisplayList Path="objects/object_stat_upgrade/gStatPowerDL_layer_Opaque_tri_1"/>
+	<CallDisplayList Path="objects/object_stat_upgrade/mat_gStatPowerDL_Pearl_layerOpaque"/>
+	<CallDisplayList Path="objects/object_stat_upgrade/gStatPowerDL_layer_Opaque_tri_2"/>
+	<CallDisplayList Path="objects/object_stat_upgrade/mat_gStatPowerDL_String_layerOpaque"/>
+	<CallDisplayList Path="objects/object_stat_upgrade/gStatPowerDL_layer_Opaque_tri_3"/>
+	<ClearGeometryMode G_LIGHTING="1"/>
+	<SetGeometryMode G_LIGHTING="1"/>
+	<EndDisplayList/>
+</DisplayList>
+

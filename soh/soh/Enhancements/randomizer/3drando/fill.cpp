@@ -1,4 +1,5 @@
 #include "fill.hpp"
+#include "soh/Enhancements/randomizer/randostatupgrade.h"
 
 #include "../dungeon.h"
 #include "../SeedContext.h"
@@ -1226,8 +1227,10 @@ static void RandomizeDungeonItems() {
 static void RandomizeLinksPocket() {
     auto ctx = Rando::Context::GetInstance();
     if (ctx->GetOption(RSK_LINKS_POCKET).Is(RO_LINKS_POCKET_ADVANCEMENT)) {
-        // Get all the advancement items don't include tokens
+        // Get all the advancement items, excluding tokens and stat upgrades
         std::vector<RandomizerGet> advancementItems = FilterAndEraseFromPool(itemPool, [](const auto i) {
+            if (IsStatUpgrade(i))
+                return false;
             return Rando::StaticData::RetrieveItem(i).IsAdvancement() &&
                    Rando::StaticData::RetrieveItem(i).GetItemType() != ITEMTYPE_TOKEN;
         });
@@ -1247,7 +1250,9 @@ void VanillaFill() {
     // Perform minimum needed initialization
     RegionTable_Init();
     ctx->GenerateLocationPool();
-    GenerateItemPool();
+    if (!GenerateItemPool()) {
+        return;
+    }
     GenerateStartingInventory();
     // Place vanilla item in each location
     RandomizeDungeonRewards();
@@ -1284,7 +1289,9 @@ int Fill() {
         RegionTable_Init(); // Reset the world graph to initialize the proper locations
         ctx->ItemReset();   // Reset shops incase of shopsanity random
         ctx->GenerateLocationPool();
-        GenerateItemPool();
+        if (!GenerateItemPool()) {
+            return -1;
+        }
         GenerateStartingInventory();
         FillExcludedLocations();
 

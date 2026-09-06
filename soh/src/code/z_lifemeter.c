@@ -395,6 +395,7 @@ void HealthMeter_Draw(PlayState* play) {
     Vtx* sp154 = interfaceCtx->beatingHeartVtx;
     s32 curHeartFraction = gSaveContext.health % FULL_HEART_HEALTH;
     s16 totalHeartCount = gSaveContext.healthCapacity / FULL_HEART_HEALTH;
+    GameInteractor_Should(VB_HEART_DISPLAY_TOTAL_COUNT, true, &totalHeartCount);
     s16 fullHeartCount = gSaveContext.health / FULL_HEART_HEALTH;
     s32 pad2;
     f32 sp144 = interfaceCtx->unk_22A * 0.1f;

@@ -141,7 +141,7 @@ static void PlaceItemsForType(RandomizerCheckType rctype, bool overworldActive =
     }
 }
 
-void GenerateItemPool() {
+bool GenerateItemPool() {
     // RANDOTODO proper removal of items not in pool or logically relevant instead of dummy checks.
     auto ctx = Rando::Context::GetInstance();
     ctx->possibleIceTrapModels.clear();
@@ -228,10 +228,12 @@ void GenerateItemPool() {
                                             std::max(0, 2 + infiniteProgressive - startBombBag),
                                             std::max(0, 1 + infiniteProgressive - startBombBag));
     int startMagic = ctx->GetOption(RSK_STARTING_MAGIC_METER).Get();
-    AddItemToPool(RG_PROGRESSIVE_MAGIC_METER, std::max(0, 3 + infiniteProgressive - startMagic),
-                                              std::max(0, 2 + infiniteProgressive - startMagic),
-                                              std::max(0, 1 + infiniteProgressive - startMagic),
-                                              std::max(0, 1 + infiniteProgressive - startMagic));
+    if (!ctx->GetOption(RSK_MAGIC_STAT_UPGRADE)) {
+        AddItemToPool(RG_PROGRESSIVE_MAGIC_METER, std::max(0, 3 + infiniteProgressive - startMagic),
+                                                  std::max(0, 2 + infiniteProgressive - startMagic),
+                                                  std::max(0, 1 + infiniteProgressive - startMagic),
+                                                  std::max(0, 1 + infiniteProgressive - startMagic));
+    }
     //clang-format on
 
     int extraWallets = (ctx->GetOption(RSK_SHUFFLE_CHILD_WALLET) ? 1 : 0) + (ctx->GetOption(RSK_INCLUDE_TYCOON_WALLET) ? 1 : 0);
@@ -428,6 +430,62 @@ void GenerateItemPool() {
 
     if (ctx->GetOption(RSK_ROCS_FEATHER)) {
         AddItemToPool(RG_ROCS_FEATHER, 2, 1, 1, 1);
+    }
+    if (ctx->GetOption(RSK_DEFENSE_UPGRADE)) {
+        if (ctx->GetOption(RSK_DEFENSE_UPGRADE_ADJUSTABLE)) {
+            uint8_t t = ctx->GetOption(RSK_DEFENSE_UPGRADE_TOTAL).Get() + 1;
+            AddItemToPool(RG_DEFENSE_UPGRADE, t, t, t, t, false);
+        } else {
+            AddItemToPool(RG_DEFENSE_UPGRADE, 7, 5, 3, 1, false);
+        }
+    }
+    if (ctx->GetOption(RSK_SPEED_UPGRADE)) {
+        if (ctx->GetOption(RSK_SPEED_UPGRADE_ADJUSTABLE)) {
+            uint8_t t = ctx->GetOption(RSK_SPEED_UPGRADE_TOTAL).Get() + 1;
+            AddItemToPool(RG_SPEED_UPGRADE, t, t, t, t, false);
+        } else {
+            AddItemToPool(RG_SPEED_UPGRADE, 7, 5, 3, 1, false);
+        }
+    }
+    if (ctx->GetOption(RSK_POWER_UPGRADE)) {
+        if (ctx->GetOption(RSK_POWER_UPGRADE_ADJUSTABLE)) {
+            uint8_t t = ctx->GetOption(RSK_POWER_UPGRADE_TOTAL).Get() + 1;
+            AddItemToPool(RG_POWER_UPGRADE, t, t, t, t, false);
+        } else {
+            AddItemToPool(RG_POWER_UPGRADE, 7, 5, 3, 1, false);
+        }
+    }
+    if (ctx->GetOption(RSK_MAGIC_STAT_UPGRADE)) {
+        if (ctx->GetOption(RSK_MAGIC_STAT_UPGRADE_ADJUSTABLE)) {
+            uint8_t t = ctx->GetOption(RSK_MAGIC_STAT_UPGRADE_TOTAL).Get() + 1;
+            AddItemToPool(RG_MAGIC_STAT_UPGRADE, t, t, t, t, false);
+        } else {
+            AddItemToPool(RG_MAGIC_STAT_UPGRADE, 10, 8, 6, 4, false);
+        }
+    }
+    if (ctx->GetOption(RSK_CRAWL_SPEED_UPGRADE)) {
+        if (ctx->GetOption(RSK_CRAWL_SPEED_UPGRADE_ADJUSTABLE)) {
+            uint8_t t = ctx->GetOption(RSK_CRAWL_SPEED_UPGRADE_TOTAL).Get() + 1;
+            AddItemToPool(RG_CRAWL_SPEED_UPGRADE, t, t, t, t, false);
+        } else {
+            AddItemToPool(RG_CRAWL_SPEED_UPGRADE, 7, 5, 3, 1, false);
+        }
+    }
+    if (ctx->GetOption(RSK_CLIMB_SPEED_UPGRADE)) {
+        if (ctx->GetOption(RSK_CLIMB_SPEED_UPGRADE_ADJUSTABLE)) {
+            uint8_t t = ctx->GetOption(RSK_CLIMB_SPEED_UPGRADE_TOTAL).Get() + 1;
+            AddItemToPool(RG_CLIMB_SPEED_UPGRADE, t, t, t, t, false);
+        } else {
+            AddItemToPool(RG_CLIMB_SPEED_UPGRADE, 7, 5, 3, 1, false);
+        }
+    }
+    if (ctx->GetOption(RSK_PUSH_SPEED_UPGRADE)) {
+        if (ctx->GetOption(RSK_PUSH_SPEED_UPGRADE_ADJUSTABLE)) {
+            uint8_t t = ctx->GetOption(RSK_PUSH_SPEED_UPGRADE_TOTAL).Get() + 1;
+            AddItemToPool(RG_PUSH_SPEED_UPGRADE, t, t, t, t, false);
+        } else {
+            AddItemToPool(RG_PUSH_SPEED_UPGRADE, 7, 5, 3, 1, false);
+        }
     }
 
     int bronzeScale = ctx->GetOption(RSK_SHUFFLE_SWIM) ? 1 : 0;
@@ -1051,25 +1109,34 @@ void GenerateItemPool() {
 
     int startingHearts = ctx->GetOption(RSK_STARTING_HEARTS).Get() + 1;
     if (startingHearts < maxHearts) {
-        AddFixedItemToPool(RG_TREASURE_GAME_HEART, 1, false);
-        AddFixedItemToPool(RG_PIECE_OF_HEART, 3, false);
-        startingHearts++;
-        if (startingHearts < maxHearts) {
-            switch (ctx->GetOption(RSK_ITEM_POOL).Get()) {
-                case RO_ITEM_POOL_PLENTIFUL:
-                case RO_ITEM_POOL_MINIMAL:
-                    AddFixedItemToPool(RG_HEART_CONTAINER, maxHearts - startingHearts, false);
-                    break;
-                case RO_ITEM_POOL_BALANCED: {
-                    int heartsToPlace = maxHearts - startingHearts;
-                    int halfHearts = heartsToPlace / 2;
-                    AddFixedItemToPool(RG_HEART_CONTAINER, heartsToPlace - halfHearts, false);
-                    AddFixedItemToPool(RG_PIECE_OF_HEART, halfHearts * 4, false);
-                    break;
+        if (ctx->GetOption(RSK_QUARTER_HEART)) {
+            // Treasure game heart + 3 pieces = 1 full heart = 4 quarter hearts
+            AddFixedItemToPool(RG_QUARTER_HEART, 4, false);
+            startingHearts++;
+            if (startingHearts < maxHearts) {
+                AddFixedItemToPool(RG_QUARTER_HEART, (maxHearts - startingHearts) * 4, false);
+            }
+        } else {
+            AddFixedItemToPool(RG_TREASURE_GAME_HEART, 1, false);
+            AddFixedItemToPool(RG_PIECE_OF_HEART, 3, false);
+            startingHearts++;
+            if (startingHearts < maxHearts) {
+                switch (ctx->GetOption(RSK_ITEM_POOL).Get()) {
+                    case RO_ITEM_POOL_PLENTIFUL:
+                    case RO_ITEM_POOL_MINIMAL:
+                        AddFixedItemToPool(RG_HEART_CONTAINER, maxHearts - startingHearts, false);
+                        break;
+                    case RO_ITEM_POOL_BALANCED: {
+                        int heartsToPlace = maxHearts - startingHearts;
+                        int halfHearts = heartsToPlace / 2;
+                        AddFixedItemToPool(RG_HEART_CONTAINER, heartsToPlace - halfHearts, false);
+                        AddFixedItemToPool(RG_PIECE_OF_HEART, halfHearts * 4, false);
+                        break;
+                    }
+                    case RO_ITEM_POOL_SCARCE:
+                        AddFixedItemToPool(RG_PIECE_OF_HEART, (maxHearts - startingHearts) * 4, false);
+                        break;
                 }
-                case RO_ITEM_POOL_SCARCE:
-                    AddFixedItemToPool(RG_PIECE_OF_HEART, (maxHearts - startingHearts) * 4, false);
-                    break;
             }
         }
     }
@@ -1080,7 +1147,10 @@ void GenerateItemPool() {
     std::erase(plentifulPool, RG_NONE);
 
     size_t locCount = ctx->CountEmptyLocations(false);
-    assert(itemPool.size() <= locCount);
+    if (itemPool.size() > locCount) {
+        SPDLOG_ERROR("ERROR: Item pool ({} items) exceeds available locations ({})", itemPool.size(), locCount);
+        return false;
+    }
     int iceTrapstoAdd = 0;
     if (itemPool.size() + plentifulPool.size() < locCount) {
         itemPool.insert(itemPool.end(), plentifulPool.begin(), plentifulPool.end());
@@ -1136,5 +1206,9 @@ void GenerateItemPool() {
         }
     }
 
-    assert(itemPool.size() == locCount);
+    if (itemPool.size() != locCount) {
+        SPDLOG_ERROR("ERROR: Item pool size ({}) does not match location count ({})", itemPool.size(), locCount);
+        return false;
+    }
+    return true;
 }

@@ -108,12 +108,28 @@ inline void to_json(json& j, const ShipRandomizerSaveContextData& shipRandomizer
     j = json{
         { "triforcePiecesCollected", shipRandomizerSaveContextData.triforcePiecesCollected },
         { "bombchuUpgradeLevel", shipRandomizerSaveContextData.bombchuUpgradeLevel },
+        { "quarterHearts", shipRandomizerSaveContextData.quarterHearts },
+        { "defenseUpgrades", shipRandomizerSaveContextData.defenseUpgrades },
+        { "speedUpgrades", shipRandomizerSaveContextData.speedUpgrades },
+        { "powerUpgrades", shipRandomizerSaveContextData.powerUpgrades },
+        { "magicStatUpgrades", shipRandomizerSaveContextData.magicStatUpgrades },
+        { "crawlSpeedUpgrades", shipRandomizerSaveContextData.crawlSpeedUpgrades },
+        { "climbSpeedUpgrades", shipRandomizerSaveContextData.climbSpeedUpgrades },
+        { "pushSpeedUpgrades", shipRandomizerSaveContextData.pushSpeedUpgrades },
     };
 }
 
 inline void from_json(const json& j, ShipRandomizerSaveContextData& shipRandomizerSaveContextData) {
     j.at("triforcePiecesCollected").get_to(shipRandomizerSaveContextData.triforcePiecesCollected);
     j.at("bombchuUpgradeLevel").get_to(shipRandomizerSaveContextData.bombchuUpgradeLevel);
+    j.at("quarterHearts").get_to(shipRandomizerSaveContextData.quarterHearts);
+    j.at("defenseUpgrades").get_to(shipRandomizerSaveContextData.defenseUpgrades);
+    j.at("speedUpgrades").get_to(shipRandomizerSaveContextData.speedUpgrades);
+    j.at("powerUpgrades").get_to(shipRandomizerSaveContextData.powerUpgrades);
+    j.at("magicStatUpgrades").get_to(shipRandomizerSaveContextData.magicStatUpgrades);
+    j.at("crawlSpeedUpgrades").get_to(shipRandomizerSaveContextData.crawlSpeedUpgrades);
+    j.at("climbSpeedUpgrades").get_to(shipRandomizerSaveContextData.climbSpeedUpgrades);
+    j.at("pushSpeedUpgrades").get_to(shipRandomizerSaveContextData.pushSpeedUpgrades);
 }
 
 inline void to_json(json& j, const ShipQuestSpecificSaveContextData& shipQuestSpecificSaveContextData) {

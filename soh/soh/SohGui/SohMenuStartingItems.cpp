@@ -194,7 +194,14 @@ void DrawStartingItemsMenu(WidgetInfo& info) {
         ImGui::SetTooltip("Disabled because Shuffle Swim is on.");
     }
     ImGui::SameLine();
+    bool magicStatOn =
+        CVarGetInteger(Rando::Settings::GetInstance()->GetOption(RSK_MAGIC_STAT_UPGRADE).GetCVarName().c_str(), 0) != 0;
+    ImGui::BeginDisabled(magicStatOn);
     StartingItemTiered(RSK_STARTING_MAGIC_METER, { ITEM_MAGIC_SMALL, ITEM_MAGIC_LARGE });
+    ImGui::EndDisabled();
+    if (magicStatOn && ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled)) {
+        ImGui::SetTooltip("Disabled because the Magic Stat Upgrade controls the magic meter.");
+    }
     ImGui::SameLine();
     bool childsWalletShuffled =
         CVarGetInteger(Rando::Settings::GetInstance()->GetOption(RSK_SHUFFLE_CHILD_WALLET).GetCVarName().c_str(), 0) !=

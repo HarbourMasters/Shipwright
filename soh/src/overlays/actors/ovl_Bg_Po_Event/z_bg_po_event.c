@@ -9,6 +9,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/savestate_serialize.h"
+#include "soh/Enhancements/randomizer/randostatupgrade.h"
 
 #define FLAGS 0
 
@@ -398,9 +399,13 @@ void BgPoEvent_BlockPush(BgPoEvent* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
     this->dyna.actor.speedXZ =
-        this->dyna.actor.speedXZ + (CVarGetInteger(CVAR_ENHANCEMENT("FasterBlockPush"), 0) * 0.3) + 0.5f;
-    this->dyna.actor.speedXZ =
-        CLAMP_MAX(this->dyna.actor.speedXZ, 2.0f + (CVarGetInteger(CVAR_ENHANCEMENT("FasterBlockPush"), 0) * 0.5));
+        this->dyna.actor.speedXZ +
+        ((IsPushStatActive() ? GetPushStatValue() : CVarGetInteger(CVAR_ENHANCEMENT("FasterBlockPush"), 0)) * 0.3) +
+        0.5f;
+    this->dyna.actor.speedXZ = CLAMP_MAX(
+        this->dyna.actor.speedXZ,
+        2.0f +
+            ((IsPushStatActive() ? GetPushStatValue() : CVarGetInteger(CVAR_ENHANCEMENT("FasterBlockPush"), 0)) * 0.5));
     blockStop = Math_StepToF(&blockPushDist, 20.0f, this->dyna.actor.speedXZ);
     displacement = this->direction * blockPushDist;
     this->dyna.actor.world.pos.x = (Math_SinS(this->dyna.unk_158) * displacement) + this->dyna.actor.home.pos.x;
@@ -415,7 +420,10 @@ void BgPoEvent_BlockPush(BgPoEvent* this, PlayState* play) {
         this->dyna.actor.home.pos.z = this->dyna.actor.world.pos.z;
         blockPushDist = 0.0f;
         this->dyna.actor.speedXZ = 0.0f;
-        this->direction = 5 - ((CVarGetInteger(CVAR_ENHANCEMENT("FasterBlockPush"), 0) * 3) / 5);
+        this->direction =
+            5 -
+            (((IsPushStatActive() ? GetPushStatValue() : CVarGetInteger(CVAR_ENHANCEMENT("FasterBlockPush"), 0)) * 3) /
+             5);
         sBlocksAtRest++;
         this->actionFunc = BgPoEvent_BlockIdle;
         if (this->type == 1) {

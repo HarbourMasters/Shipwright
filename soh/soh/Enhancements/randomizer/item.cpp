@@ -450,7 +450,7 @@ bool Item::IsMajorItem() const {
     }
 
     if (randomizerGet == RG_HEART_CONTAINER || randomizerGet == RG_PIECE_OF_HEART ||
-        randomizerGet == RG_TREASURE_GAME_HEART) {
+        randomizerGet == RG_TREASURE_GAME_HEART || randomizerGet == RG_QUARTER_HEART) {
         return false;
     }
 

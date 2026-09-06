@@ -54,7 +54,7 @@ bool HasEquipment(ItemTrackerItem);
 #define IM_COL_PURPLE IM_COL32(180, 90, 200, 255)
 #define IM_COL_LIGHT_YELLOW IM_COL32(255, 255, 130, 255)
 
-static std::array<const char*, 16> itemTrackerWindowIDs = { "Item Tracker",
+static std::array<const char*, 17> itemTrackerWindowIDs = { "Item Tracker",
                                                             "Inventory Items Tracker",
                                                             "Equipment Items Tracker",
                                                             "Misc Items Tracker",
@@ -69,7 +69,8 @@ static std::array<const char*, 16> itemTrackerWindowIDs = { "Item Tracker",
                                                             "Silver Rupee Tracker",
                                                             "Fishing Pole Tracker",
                                                             "Personal Notes",
-                                                            "Total Checks" };
+                                                            "Total Checks",
+                                                            "Stat Upgrade Tracker" };
 void ItemTracker_LoadFromPreset(const nlohmann::json& trackerInfo);
 
 typedef struct ItemTrackerDungeon {

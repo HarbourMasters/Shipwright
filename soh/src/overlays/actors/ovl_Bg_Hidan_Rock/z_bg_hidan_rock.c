@@ -7,6 +7,7 @@
 #include "z_bg_hidan_rock.h"
 #include "objects/object_hidan_objects/object_hidan_objects.h"
 #include "soh/Enhancements/savestate_serialize.h"
+#include "soh/Enhancements/randomizer/randostatupgrade.h"
 
 #define FLAGS 0
 
@@ -144,9 +145,15 @@ void func_8088B268(BgHidanRock* this, PlayState* play) {
             }
 
             this->dyna.actor.speedXZ =
-                this->dyna.actor.speedXZ + (CVarGetInteger(CVAR_ENHANCEMENT("FasterBlockPush"), 0) * 0.3) + 0.5f;
-            this->dyna.actor.speedXZ = CLAMP_MAX(this->dyna.actor.speedXZ,
-                                                 2.0f + (CVarGetInteger(CVAR_ENHANCEMENT("FasterBlockPush"), 0) * 0.5));
+                this->dyna.actor.speedXZ +
+                ((IsPushStatActive() ? GetPushStatValue() : CVarGetInteger(CVAR_ENHANCEMENT("FasterBlockPush"), 0)) *
+                 0.3) +
+                0.5f;
+            this->dyna.actor.speedXZ =
+                CLAMP_MAX(this->dyna.actor.speedXZ,
+                          2.0f + ((IsPushStatActive() ? GetPushStatValue()
+                                                      : CVarGetInteger(CVAR_ENHANCEMENT("FasterBlockPush"), 0)) *
+                                  0.5));
 
             if (D_8088BFC0 > 0.0f) {
                 temp_v1 = Math_StepToF(&D_8088BFC0, 20.0f, this->dyna.actor.speedXZ);
@@ -164,7 +171,10 @@ void func_8088B268(BgHidanRock* this, PlayState* play) {
                 this->dyna.actor.home.pos.z = this->dyna.actor.world.pos.z;
                 D_8088BFC0 = 0.0f;
                 this->dyna.actor.speedXZ = 0.0f;
-                this->timer = 5 - ((CVarGetInteger(CVAR_ENHANCEMENT("FasterBlockPush"), 0) * 3) / 5);
+                this->timer = 5 - (((IsPushStatActive() ? GetPushStatValue()
+                                                        : CVarGetInteger(CVAR_ENHANCEMENT("FasterBlockPush"), 0)) *
+                                    3) /
+                                   5);
             }
 
             Actor_PlaySfx_Flagged(&this->dyna.actor, NA_SE_EV_ROCK_SLIDE - SFX_FLAG);

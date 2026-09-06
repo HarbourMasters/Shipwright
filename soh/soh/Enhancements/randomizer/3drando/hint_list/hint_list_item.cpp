@@ -2172,6 +2172,48 @@ void StaticData::HintTable_Init_Item() {
      hintTextTable[RHT_MYSTERIOUS_ITEM_CAPITAL] = HintText(CustomMessage("Mysterious Item", /*german*/"Mysteriöser Gegenstand", /*french*/"Objet Mystérieux"));
                                                   // /*spanish*/Algo Misterioso
 
+    hintTextTable[RHT_DEFENSE_UPGRADE] = HintText(CustomMessage("a Defense Upgrade", /*german*/"ein Verteidigungsupgrade", /*french*/"une Amélioration de Défense"),
+                                                  {}, {
+                                                  CustomMessage("a tough shell", /*german*/"eine harte Schale", /*french*/"une carapace solide"),
+                                                  CustomMessage("damage resistance", /*german*/"Schadensresistenz", /*french*/"une résistance aux dégâts"),
+                                                  CustomMessage("a shield for your skin", /*german*/"ein Schutzschild für deine Haut", /*french*/"un bouclier naturel")});
+
+    hintTextTable[RHT_SPEED_UPGRADE] = HintText(CustomMessage("a Speed Upgrade", /*german*/"ein Geschwindigkeitsupgrade", /*french*/"une Amélioration de Vitesse"),
+                                                {}, {
+                                                CustomMessage("fleet feet", /*german*/"flinke Füße", /*french*/"des pieds rapides"),
+                                                CustomMessage("a runner's edge", /*german*/"ein Läufervorteil", /*french*/"un avantage du coureur"),
+                                                CustomMessage("a boost of speed", /*german*/"ein Geschwindigkeitsschub", /*french*/"un regain de vitesse")});
+
+    hintTextTable[RHT_POWER_UPGRADE] = HintText(CustomMessage("a Power Upgrade", /*german*/"ein Kraftupgrade", /*french*/"une Amélioration de Force"),
+                                                {}, {
+                                                CustomMessage("a lucky strike", /*german*/"ein Glückstreffer", /*french*/"un coup chanceux"),
+                                                CustomMessage("a chance to crush", /*german*/"eine Chance zum Zerquetschen", /*french*/"une chance d'écraser"),
+                                                CustomMessage("double trouble", /*german*/"doppelte Probleme", /*french*/"un double ennui")});
+
+    hintTextTable[RHT_MAGIC_STAT_UPGRADE] = HintText(CustomMessage("a Magic Meter", /*german*/"ein magisches Maß", /*french*/"une Jauge de Magie"),
+                                                     {}, {
+                                                     CustomMessage("mystical energy", /*german*/"mystische Energie", /*french*/"une énergie mystique"),
+                                                     CustomMessage("a sliver of magic", /*german*/"ein Funken Magie", /*french*/"un fragment de magie"),
+                                                     CustomMessage("arcane potential", /*german*/"arkanes Potenzial", /*french*/"un potentiel arcanique")});
+
+    hintTextTable[RHT_CRAWL_SPEED_UPGRADE] = HintText(CustomMessage("a Crawl Speed Upgrade", /*german*/"ein Kriechgeschwindigkeitsupgrade", /*french*/"une Amélioration de Vitesse de Reptation"),
+                                                       {}, {
+                                                       CustomMessage("a belly boost", /*german*/"ein Bauchschub", /*french*/"un regain du ventre"),
+                                                       CustomMessage("tunnel training", /*german*/"Tunneltraining", /*french*/"un entraînement dans les tunnels"),
+                                                       CustomMessage("a slithering secret", /*german*/"ein schleichendes Geheimnis", /*french*/"un secret rampant")});
+
+    hintTextTable[RHT_CLIMB_SPEED_UPGRADE] = HintText(CustomMessage("a Climb Speed Upgrade", /*german*/"ein Klettergeschwindigkeitsupgrade", /*french*/"une Amélioration de Vitesse d'Escalade"),
+                                                       {}, {
+                                                       CustomMessage("nimble hands", /*german*/"flinke Hände", /*french*/"des mains agiles"),
+                                                       CustomMessage("a vine's blessing", /*german*/"ein Ranken-Segen", /*french*/"la bénédiction d'une liane"),
+                                                       CustomMessage("ladder agility", /*german*/"Leitergewandtheit", /*french*/"une agilité d'échelle")});
+
+    hintTextTable[RHT_PUSH_SPEED_UPGRADE] = HintText(CustomMessage("a Push Speed Upgrade", /*german*/"ein Schubgeschwindigkeitsupgrade", /*french*/"une Amélioration de Vitesse de Poussée"),
+                                                      {}, {
+                                                      CustomMessage("brute strength", /*german*/"rohe Kraft", /*french*/"une force brute"),
+                                                      CustomMessage("a mover's muscle", /*german*/"ein Umzugsmuskel", /*french*/"un muscle de déménageur"),
+                                                      CustomMessage("a push in the right direction", /*german*/"ein Schubs in die richtige Richtung", /*french*/"une poussée dans la bonne direction")});
+
     // clang-format on
 }
 } // namespace Rando

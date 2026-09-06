@@ -1399,6 +1399,174 @@ void Settings::CreateOptions() {
     OPT_BOOL(RSK_BUNNY_HOOD, CVAR_RANDOMIZER_SETTING("BunnyHood"));
     OPT_BOOL(RSK_MASKS_AS_ADULT, CVAR_RANDOMIZER_SETTING("MasksAsAdult"));
     OPT_BOOL(RSK_ROCS_FEATHER, CVAR_RANDOMIZER_SETTING("RocsFeather"));
+    OPT_BOOL(RSK_QUARTER_HEART, CVAR_RANDOMIZER_SETTING("QuarterHeart"));
+    OPT_BOOL(RSK_DEFENSE_UPGRADE, CVAR_RANDOMIZER_SETTING("DefenseUpgrade"));
+    OPT_CALLBACK(RSK_DEFENSE_UPGRADE, {
+        bool on = CVarGetInteger(CVAR_RANDOMIZER_SETTING("DefenseUpgrade"), 0);
+        if (on) {
+            mOptions[RSK_DEFENSE_UPGRADE_ADJUSTABLE].Unhide();
+            if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("DefenseUpgradeAdjustable"), 0)) {
+                mOptions[RSK_DEFENSE_UPGRADE_TOTAL].Unhide();
+                mOptions[RSK_DEFENSE_UPGRADE_REQUIRED].Unhide();
+            }
+        } else {
+            mOptions[RSK_DEFENSE_UPGRADE_ADJUSTABLE].Hide();
+            mOptions[RSK_DEFENSE_UPGRADE_TOTAL].Hide();
+            mOptions[RSK_DEFENSE_UPGRADE_REQUIRED].Hide();
+        }
+    });
+    OPT_BOOL(RSK_SPEED_UPGRADE, CVAR_RANDOMIZER_SETTING("SpeedUpgrade"));
+    OPT_CALLBACK(RSK_SPEED_UPGRADE, {
+        bool on = CVarGetInteger(CVAR_RANDOMIZER_SETTING("SpeedUpgrade"), 0);
+        if (on) {
+            mOptions[RSK_SPEED_UPGRADE_ADJUSTABLE].Unhide();
+            if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("SpeedUpgradeAdjustable"), 0)) {
+                mOptions[RSK_SPEED_UPGRADE_TOTAL].Unhide();
+                mOptions[RSK_SPEED_UPGRADE_REQUIRED].Unhide();
+            }
+        } else {
+            mOptions[RSK_SPEED_UPGRADE_ADJUSTABLE].Hide();
+            mOptions[RSK_SPEED_UPGRADE_TOTAL].Hide();
+            mOptions[RSK_SPEED_UPGRADE_REQUIRED].Hide();
+        }
+    });
+    OPT_BOOL(RSK_POWER_UPGRADE, CVAR_RANDOMIZER_SETTING("PowerUpgrade"));
+    OPT_CALLBACK(RSK_POWER_UPGRADE, {
+        bool on = CVarGetInteger(CVAR_RANDOMIZER_SETTING("PowerUpgrade"), 0);
+        if (on) {
+            mOptions[RSK_POWER_UPGRADE_ADJUSTABLE].Unhide();
+            if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("PowerUpgradeAdjustable"), 0)) {
+                mOptions[RSK_POWER_UPGRADE_TOTAL].Unhide();
+                mOptions[RSK_POWER_UPGRADE_REQUIRED].Unhide();
+            }
+        } else {
+            mOptions[RSK_POWER_UPGRADE_ADJUSTABLE].Hide();
+            mOptions[RSK_POWER_UPGRADE_TOTAL].Hide();
+            mOptions[RSK_POWER_UPGRADE_REQUIRED].Hide();
+        }
+    });
+    OPT_BOOL(RSK_MAGIC_STAT_UPGRADE, CVAR_RANDOMIZER_SETTING("MagicStatUpgrade"));
+    OPT_CALLBACK(RSK_MAGIC_STAT_UPGRADE, {
+        bool on = CVarGetInteger(CVAR_RANDOMIZER_SETTING("MagicStatUpgrade"), 0);
+        if (on) {
+            mOptions[RSK_MAGIC_STAT_UPGRADE_ADJUSTABLE].Unhide();
+            if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("MagicStatUpgradeAdjustable"), 0)) {
+                mOptions[RSK_MAGIC_STAT_UPGRADE_TOTAL].Unhide();
+                mOptions[RSK_MAGIC_STAT_UPGRADE_REQUIRED].Unhide();
+            }
+            CVarSetInteger(CVAR_RANDOMIZER_SETTING("SariaHint"), 0);
+            mOptions[RSK_SARIA_HINT].Disable("Saria's Hint is disabled because the Magic Stat Upgrade replaces the magic meter.");
+            CVarSetInteger(CVAR_RANDOMIZER_SETTING("StartingMagicMeter"), 0);
+            mOptions[RSK_STARTING_MAGIC_METER].Disable("Disabled because the Magic Stat Upgrade controls the magic meter.");
+        } else {
+            mOptions[RSK_MAGIC_STAT_UPGRADE_ADJUSTABLE].Hide();
+            mOptions[RSK_MAGIC_STAT_UPGRADE_TOTAL].Hide();
+            mOptions[RSK_MAGIC_STAT_UPGRADE_REQUIRED].Hide();
+            mOptions[RSK_SARIA_HINT].Enable();
+            mOptions[RSK_STARTING_MAGIC_METER].Enable();
+        }
+    });
+    OPT_BOOL(RSK_DEFENSE_UPGRADE_ADJUSTABLE, CVAR_RANDOMIZER_SETTING("DefenseUpgradeAdjustable"));
+    OPT_CALLBACK(RSK_DEFENSE_UPGRADE_ADJUSTABLE, {
+        bool on = CVarGetInteger(CVAR_RANDOMIZER_SETTING("DefenseUpgradeAdjustable"), 0);
+        if (on) { mOptions[RSK_DEFENSE_UPGRADE_TOTAL].Unhide(); mOptions[RSK_DEFENSE_UPGRADE_REQUIRED].Unhide(); }
+        else    { mOptions[RSK_DEFENSE_UPGRADE_TOTAL].Hide();   mOptions[RSK_DEFENSE_UPGRADE_REQUIRED].Hide();   }
+    });
+    OPT_U8(RSK_DEFENSE_UPGRADE_TOTAL,    {NumOpts(1, 100)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("DefenseUpgradeTotal"),    WIDGET_CVAR_SLIDER_INT, 4,  false, nullptr, IMFLAG_NONE);
+    OPT_U8(RSK_DEFENSE_UPGRADE_REQUIRED, {NumOpts(1, 100)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("DefenseUpgradeRequired"), WIDGET_CVAR_SLIDER_INT, 99, false, nullptr, IMFLAG_NONE);
+    OPT_BOOL(RSK_SPEED_UPGRADE_ADJUSTABLE, CVAR_RANDOMIZER_SETTING("SpeedUpgradeAdjustable"));
+    OPT_CALLBACK(RSK_SPEED_UPGRADE_ADJUSTABLE, {
+        bool on = CVarGetInteger(CVAR_RANDOMIZER_SETTING("SpeedUpgradeAdjustable"), 0);
+        if (on) { mOptions[RSK_SPEED_UPGRADE_TOTAL].Unhide(); mOptions[RSK_SPEED_UPGRADE_REQUIRED].Unhide(); }
+        else    { mOptions[RSK_SPEED_UPGRADE_TOTAL].Hide();   mOptions[RSK_SPEED_UPGRADE_REQUIRED].Hide();   }
+    });
+    OPT_U8(RSK_SPEED_UPGRADE_TOTAL,    {NumOpts(1, 100)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("SpeedUpgradeTotal"),    WIDGET_CVAR_SLIDER_INT, 4,  false, nullptr, IMFLAG_NONE);
+    OPT_U8(RSK_SPEED_UPGRADE_REQUIRED, {NumOpts(1, 100)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("SpeedUpgradeRequired"), WIDGET_CVAR_SLIDER_INT, 99, false, nullptr, IMFLAG_NONE);
+    OPT_BOOL(RSK_POWER_UPGRADE_ADJUSTABLE, CVAR_RANDOMIZER_SETTING("PowerUpgradeAdjustable"));
+    OPT_CALLBACK(RSK_POWER_UPGRADE_ADJUSTABLE, {
+        bool on = CVarGetInteger(CVAR_RANDOMIZER_SETTING("PowerUpgradeAdjustable"), 0);
+        if (on) { mOptions[RSK_POWER_UPGRADE_TOTAL].Unhide(); mOptions[RSK_POWER_UPGRADE_REQUIRED].Unhide(); }
+        else    { mOptions[RSK_POWER_UPGRADE_TOTAL].Hide();   mOptions[RSK_POWER_UPGRADE_REQUIRED].Hide();   }
+    });
+    OPT_U8(RSK_POWER_UPGRADE_TOTAL,    {NumOpts(1, 100)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("PowerUpgradeTotal"),    WIDGET_CVAR_SLIDER_INT, 4,  false, nullptr, IMFLAG_NONE);
+    OPT_U8(RSK_POWER_UPGRADE_REQUIRED, {NumOpts(1, 100)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("PowerUpgradeRequired"), WIDGET_CVAR_SLIDER_INT, 99, false, nullptr, IMFLAG_NONE);
+    OPT_BOOL(RSK_MAGIC_STAT_UPGRADE_ADJUSTABLE, CVAR_RANDOMIZER_SETTING("MagicStatUpgradeAdjustable"));
+    OPT_CALLBACK(RSK_MAGIC_STAT_UPGRADE_ADJUSTABLE, {
+        bool on = CVarGetInteger(CVAR_RANDOMIZER_SETTING("MagicStatUpgradeAdjustable"), 0);
+        if (on) { mOptions[RSK_MAGIC_STAT_UPGRADE_TOTAL].Unhide(); mOptions[RSK_MAGIC_STAT_UPGRADE_REQUIRED].Unhide(); }
+        else    { mOptions[RSK_MAGIC_STAT_UPGRADE_TOTAL].Hide();   mOptions[RSK_MAGIC_STAT_UPGRADE_REQUIRED].Hide();   }
+    });
+    OPT_U8(RSK_MAGIC_STAT_UPGRADE_TOTAL,    {NumOpts(1, 100)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("MagicStatUpgradeTotal"),    WIDGET_CVAR_SLIDER_INT, 7,  false, nullptr, IMFLAG_NONE);
+    OPT_U8(RSK_MAGIC_STAT_UPGRADE_REQUIRED, {NumOpts(1, 100)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("MagicStatUpgradeRequired"), WIDGET_CVAR_SLIDER_INT, 99, false, nullptr, IMFLAG_NONE);
+    OPT_BOOL(RSK_CRAWL_SPEED_UPGRADE, CVAR_RANDOMIZER_SETTING("CrawlSpeedUpgrade"));
+    OPT_CALLBACK(RSK_CRAWL_SPEED_UPGRADE, {
+        bool on = CVarGetInteger(CVAR_RANDOMIZER_SETTING("CrawlSpeedUpgrade"), 0);
+        if (on) {
+            mOptions[RSK_CRAWL_SPEED_UPGRADE_ADJUSTABLE].Unhide();
+            if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("CrawlSpeedUpgradeAdjustable"), 0)) {
+                mOptions[RSK_CRAWL_SPEED_UPGRADE_TOTAL].Unhide();
+                mOptions[RSK_CRAWL_SPEED_UPGRADE_REQUIRED].Unhide();
+            }
+        } else {
+            mOptions[RSK_CRAWL_SPEED_UPGRADE_ADJUSTABLE].Hide();
+            mOptions[RSK_CRAWL_SPEED_UPGRADE_TOTAL].Hide();
+            mOptions[RSK_CRAWL_SPEED_UPGRADE_REQUIRED].Hide();
+        }
+    });
+    OPT_BOOL(RSK_CRAWL_SPEED_UPGRADE_ADJUSTABLE, CVAR_RANDOMIZER_SETTING("CrawlSpeedUpgradeAdjustable"));
+    OPT_CALLBACK(RSK_CRAWL_SPEED_UPGRADE_ADJUSTABLE, {
+        bool on = CVarGetInteger(CVAR_RANDOMIZER_SETTING("CrawlSpeedUpgradeAdjustable"), 0);
+        if (on) { mOptions[RSK_CRAWL_SPEED_UPGRADE_TOTAL].Unhide(); mOptions[RSK_CRAWL_SPEED_UPGRADE_REQUIRED].Unhide(); }
+        else    { mOptions[RSK_CRAWL_SPEED_UPGRADE_TOTAL].Hide();   mOptions[RSK_CRAWL_SPEED_UPGRADE_REQUIRED].Hide();   }
+    });
+    OPT_U8(RSK_CRAWL_SPEED_UPGRADE_TOTAL,    {NumOpts(1, 100)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("CrawlSpeedUpgradeTotal"),    WIDGET_CVAR_SLIDER_INT, 4, false, nullptr, IMFLAG_NONE);
+    OPT_U8(RSK_CRAWL_SPEED_UPGRADE_REQUIRED, {NumOpts(1, 100)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("CrawlSpeedUpgradeRequired"), WIDGET_CVAR_SLIDER_INT, 99, false, nullptr, IMFLAG_NONE);
+    OPT_BOOL(RSK_CLIMB_SPEED_UPGRADE, CVAR_RANDOMIZER_SETTING("ClimbSpeedUpgrade"));
+    OPT_CALLBACK(RSK_CLIMB_SPEED_UPGRADE, {
+        bool on = CVarGetInteger(CVAR_RANDOMIZER_SETTING("ClimbSpeedUpgrade"), 0);
+        if (on) {
+            mOptions[RSK_CLIMB_SPEED_UPGRADE_ADJUSTABLE].Unhide();
+            if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("ClimbSpeedUpgradeAdjustable"), 0)) {
+                mOptions[RSK_CLIMB_SPEED_UPGRADE_TOTAL].Unhide();
+                mOptions[RSK_CLIMB_SPEED_UPGRADE_REQUIRED].Unhide();
+            }
+        } else {
+            mOptions[RSK_CLIMB_SPEED_UPGRADE_ADJUSTABLE].Hide();
+            mOptions[RSK_CLIMB_SPEED_UPGRADE_TOTAL].Hide();
+            mOptions[RSK_CLIMB_SPEED_UPGRADE_REQUIRED].Hide();
+        }
+    });
+    OPT_BOOL(RSK_CLIMB_SPEED_UPGRADE_ADJUSTABLE, CVAR_RANDOMIZER_SETTING("ClimbSpeedUpgradeAdjustable"));
+    OPT_CALLBACK(RSK_CLIMB_SPEED_UPGRADE_ADJUSTABLE, {
+        bool on = CVarGetInteger(CVAR_RANDOMIZER_SETTING("ClimbSpeedUpgradeAdjustable"), 0);
+        if (on) { mOptions[RSK_CLIMB_SPEED_UPGRADE_TOTAL].Unhide(); mOptions[RSK_CLIMB_SPEED_UPGRADE_REQUIRED].Unhide(); }
+        else    { mOptions[RSK_CLIMB_SPEED_UPGRADE_TOTAL].Hide();   mOptions[RSK_CLIMB_SPEED_UPGRADE_REQUIRED].Hide();   }
+    });
+    OPT_U8(RSK_CLIMB_SPEED_UPGRADE_TOTAL,    {NumOpts(1, 100)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ClimbSpeedUpgradeTotal"),    WIDGET_CVAR_SLIDER_INT, 4, false, nullptr, IMFLAG_NONE);
+    OPT_U8(RSK_CLIMB_SPEED_UPGRADE_REQUIRED, {NumOpts(1, 100)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("ClimbSpeedUpgradeRequired"), WIDGET_CVAR_SLIDER_INT, 99, false, nullptr, IMFLAG_NONE);
+    OPT_BOOL(RSK_PUSH_SPEED_UPGRADE, CVAR_RANDOMIZER_SETTING("PushSpeedUpgrade"));
+    OPT_CALLBACK(RSK_PUSH_SPEED_UPGRADE, {
+        bool on = CVarGetInteger(CVAR_RANDOMIZER_SETTING("PushSpeedUpgrade"), 0);
+        if (on) {
+            mOptions[RSK_PUSH_SPEED_UPGRADE_ADJUSTABLE].Unhide();
+            if (CVarGetInteger(CVAR_RANDOMIZER_SETTING("PushSpeedUpgradeAdjustable"), 0)) {
+                mOptions[RSK_PUSH_SPEED_UPGRADE_TOTAL].Unhide();
+                mOptions[RSK_PUSH_SPEED_UPGRADE_REQUIRED].Unhide();
+            }
+        } else {
+            mOptions[RSK_PUSH_SPEED_UPGRADE_ADJUSTABLE].Hide();
+            mOptions[RSK_PUSH_SPEED_UPGRADE_TOTAL].Hide();
+            mOptions[RSK_PUSH_SPEED_UPGRADE_REQUIRED].Hide();
+        }
+    });
+    OPT_BOOL(RSK_PUSH_SPEED_UPGRADE_ADJUSTABLE, CVAR_RANDOMIZER_SETTING("PushSpeedUpgradeAdjustable"));
+    OPT_CALLBACK(RSK_PUSH_SPEED_UPGRADE_ADJUSTABLE, {
+        bool on = CVarGetInteger(CVAR_RANDOMIZER_SETTING("PushSpeedUpgradeAdjustable"), 0);
+        if (on) { mOptions[RSK_PUSH_SPEED_UPGRADE_TOTAL].Unhide(); mOptions[RSK_PUSH_SPEED_UPGRADE_REQUIRED].Unhide(); }
+        else    { mOptions[RSK_PUSH_SPEED_UPGRADE_TOTAL].Hide();   mOptions[RSK_PUSH_SPEED_UPGRADE_REQUIRED].Hide();   }
+    });
+    OPT_U8(RSK_PUSH_SPEED_UPGRADE_TOTAL,    {NumOpts(1, 100)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("PushSpeedUpgradeTotal"),    WIDGET_CVAR_SLIDER_INT, 4, false, nullptr, IMFLAG_NONE);
+    OPT_U8(RSK_PUSH_SPEED_UPGRADE_REQUIRED, {NumOpts(1, 100)}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("PushSpeedUpgradeRequired"), WIDGET_CVAR_SLIDER_INT, 99, false, nullptr, IMFLAG_NONE);
     OPT_U8(RSK_INFINITE_UPGRADES, {"Off", "Progressive", "Condensed Progressive"}, OptionCategory::Setting, CVAR_RANDOMIZER_SETTING("InfiniteUpgrades"));
     OPT_BOOL(RSK_SKELETON_KEY, CVAR_RANDOMIZER_SETTING("SkeletonKey"));
     OPT_BOOL(RSK_SLINGBOW_BREAK_BEEHIVES, CVAR_RANDOMIZER_SETTING("SlingBowBeehives"));
@@ -2159,6 +2327,112 @@ void Settings::CreateOptions() {
                                   &mOptionGroups[RSG_MENU_COLUMN_STATIC_HINTS],
                               },
                               WidgetContainerType::TABLE);
+    mOptionGroups[RSG_MENU_SECTION_STARTING_EQUIPS] = OptionGroup::SubGroup(
+        "Equips",
+        { &mOptions[RSK_LINKS_POCKET], &mOptions[RSK_LINKS_POCKET_REWARD], &mOptions[RSK_STARTING_KOKIRI_SWORD],
+          &mOptions[RSK_STARTING_MASTER_SWORD], &mOptions[RSK_STARTING_DEKU_SHIELD] },
+        WidgetContainerType::SECTION);
+    mOptionGroups[RSG_MENU_SECTION_STARTING_ITEMS] = OptionGroup::SubGroup("Items",
+                                                                           {
+                                                                               &mOptions[RSK_STARTING_OCARINA],
+                                                                               &mOptions[RSK_STARTING_STICKS],
+                                                                               &mOptions[RSK_STARTING_NUTS],
+                                                                               &mOptions[RSK_STARTING_BEANS],
+                                                                               &mOptions[RSK_STARTING_SKULLTULA_TOKEN],
+                                                                               &mOptions[RSK_STARTING_HEARTS],
+                                                                           },
+                                                                           WidgetContainerType::SECTION);
+    mOptionGroups[RSG_MENU_COLUMN_STARTING_EQUIPMENT] =
+        OptionGroup::SubGroup("",
+                              std::initializer_list<OptionGroup*>{
+                                  &mOptionGroups[RSG_MENU_SECTION_STARTING_EQUIPS],
+                                  &mOptionGroups[RSG_MENU_SECTION_STARTING_ITEMS],
+                              },
+                              WidgetContainerType::COLUMN);
+    mOptionGroups[RSG_MENU_SECTION_NORMAL_SONGS] = OptionGroup::SubGroup("Normal Songs",
+                                                                         {
+                                                                             &mOptions[RSK_STARTING_ZELDAS_LULLABY],
+                                                                             &mOptions[RSK_STARTING_EPONAS_SONG],
+                                                                             &mOptions[RSK_STARTING_SARIAS_SONG],
+                                                                             &mOptions[RSK_STARTING_SUNS_SONG],
+                                                                             &mOptions[RSK_STARTING_SONG_OF_TIME],
+                                                                             &mOptions[RSK_STARTING_SONG_OF_STORMS],
+                                                                         },
+                                                                         WidgetContainerType::SECTION);
+    mOptionGroups[RSG_MENU_SECTION_WARP_SONGS] = OptionGroup::SubGroup("Warp Songs",
+                                                                       {
+                                                                           &mOptions[RSK_STARTING_MINUET_OF_FOREST],
+                                                                           &mOptions[RSK_STARTING_BOLERO_OF_FIRE],
+                                                                           &mOptions[RSK_STARTING_SERENADE_OF_WATER],
+                                                                           &mOptions[RSK_STARTING_REQUIEM_OF_SPIRIT],
+                                                                           &mOptions[RSK_STARTING_NOCTURNE_OF_SHADOW],
+                                                                           &mOptions[RSK_STARTING_PRELUDE_OF_LIGHT],
+                                                                       },
+                                                                       WidgetContainerType::SECTION);
+    mOptionGroups[RSG_MENU_COLUMN_STARTING_SONGS] =
+        OptionGroup::SubGroup("",
+                              std::initializer_list<OptionGroup*>{
+                                  &mOptionGroups[RSG_MENU_SECTION_NORMAL_SONGS],
+                                  &mOptionGroups[RSG_MENU_SECTION_WARP_SONGS],
+                              },
+                              WidgetContainerType::COLUMN);
+    mOptionGroups[RSG_MENU_SIDEBAR_STARTING_ITEMS] =
+        OptionGroup::SubGroup("Starting Items",
+                              std::initializer_list<OptionGroup*>{
+                                  &mOptionGroups[RSG_MENU_COLUMN_STARTING_EQUIPMENT],
+                                  &mOptionGroups[RSG_MENU_COLUMN_STARTING_SONGS],
+                              },
+                              WidgetContainerType::TABLE);
+    mOptionGroups[RSG_MENU_SECTION_STAT_UPGRADES] =
+        OptionGroup::SubGroup("Stat Upgrades",
+                              {
+                                  &mOptions[RSK_QUARTER_HEART],
+                                  &mOptions[RSK_DEFENSE_UPGRADE],
+                                  &mOptions[RSK_DEFENSE_UPGRADE_ADJUSTABLE],
+                                  &mOptions[RSK_SPEED_UPGRADE],
+                                  &mOptions[RSK_SPEED_UPGRADE_ADJUSTABLE],
+                                  &mOptions[RSK_POWER_UPGRADE],
+                                  &mOptions[RSK_POWER_UPGRADE_ADJUSTABLE],
+                                  &mOptions[RSK_MAGIC_STAT_UPGRADE],
+                                  &mOptions[RSK_MAGIC_STAT_UPGRADE_ADJUSTABLE],
+                                  &mOptions[RSK_CRAWL_SPEED_UPGRADE],
+                                  &mOptions[RSK_CRAWL_SPEED_UPGRADE_ADJUSTABLE],
+                                  &mOptions[RSK_CLIMB_SPEED_UPGRADE],
+                                  &mOptions[RSK_CLIMB_SPEED_UPGRADE_ADJUSTABLE],
+                                  &mOptions[RSK_PUSH_SPEED_UPGRADE],
+                                  &mOptions[RSK_PUSH_SPEED_UPGRADE_ADJUSTABLE],
+                              },
+                              WidgetContainerType::SECTION);
+    mOptionGroups[RSG_MENU_COLUMN_STAT_UPGRADES] =
+        OptionGroup::SubGroup("", { &mOptionGroups[RSG_MENU_SECTION_STAT_UPGRADES] }, WidgetContainerType::COLUMN);
+    mOptionGroups[RSG_MENU_SECTION_STAT_UPGRADE_SLIDERS] =
+        OptionGroup::SubGroup("Amounts",
+                              {
+                                  &mOptions[RSK_DEFENSE_UPGRADE_TOTAL],
+                                  &mOptions[RSK_DEFENSE_UPGRADE_REQUIRED],
+                                  &mOptions[RSK_SPEED_UPGRADE_TOTAL],
+                                  &mOptions[RSK_SPEED_UPGRADE_REQUIRED],
+                                  &mOptions[RSK_POWER_UPGRADE_TOTAL],
+                                  &mOptions[RSK_POWER_UPGRADE_REQUIRED],
+                                  &mOptions[RSK_MAGIC_STAT_UPGRADE_TOTAL],
+                                  &mOptions[RSK_MAGIC_STAT_UPGRADE_REQUIRED],
+                                  &mOptions[RSK_CRAWL_SPEED_UPGRADE_TOTAL],
+                                  &mOptions[RSK_CRAWL_SPEED_UPGRADE_REQUIRED],
+                                  &mOptions[RSK_CLIMB_SPEED_UPGRADE_TOTAL],
+                                  &mOptions[RSK_CLIMB_SPEED_UPGRADE_REQUIRED],
+                                  &mOptions[RSK_PUSH_SPEED_UPGRADE_TOTAL],
+                                  &mOptions[RSK_PUSH_SPEED_UPGRADE_REQUIRED],
+                              },
+                              WidgetContainerType::SECTION);
+    mOptionGroups[RSG_MENU_COLUMN_STAT_UPGRADE_SLIDERS] = OptionGroup::SubGroup(
+        "", { &mOptionGroups[RSG_MENU_SECTION_STAT_UPGRADE_SLIDERS] }, WidgetContainerType::COLUMN);
+    mOptionGroups[RSG_MENU_SIDEBAR_STAT_UPGRADES] =
+        OptionGroup::SubGroup("Stat Upgrades",
+                              std::initializer_list<OptionGroup*>{
+                                  &mOptionGroups[RSG_MENU_COLUMN_STAT_UPGRADES],
+                                  &mOptionGroups[RSG_MENU_COLUMN_STAT_UPGRADE_SLIDERS],
+                              },
+                              WidgetContainerType::TABLE);
     mOptionGroups[RSG_OPEN] = OptionGroup("Open Settings", {
                                                                &mOptions[RSK_FOREST],
                                                                &mOptions[RSK_DOOR_OF_TIME],
@@ -2292,6 +2566,35 @@ void Settings::CreateOptions() {
                                             &mOptions[RSK_SHUFFLE_BEAN_SOULS],
                                             &mOptions[RSK_ROCS_FEATHER],
                                             &mOptions[RSK_PROGRESSIVE_GORON_SWORD],
+                                            &mOptions[RSK_QUARTER_HEART],
+                                            &mOptions[RSK_DEFENSE_UPGRADE],
+                                            &mOptions[RSK_DEFENSE_UPGRADE_ADJUSTABLE],
+                                            &mOptions[RSK_DEFENSE_UPGRADE_TOTAL],
+                                            &mOptions[RSK_DEFENSE_UPGRADE_REQUIRED],
+                                            &mOptions[RSK_SPEED_UPGRADE],
+                                            &mOptions[RSK_SPEED_UPGRADE_ADJUSTABLE],
+                                            &mOptions[RSK_SPEED_UPGRADE_TOTAL],
+                                            &mOptions[RSK_SPEED_UPGRADE_REQUIRED],
+                                            &mOptions[RSK_POWER_UPGRADE],
+                                            &mOptions[RSK_POWER_UPGRADE_ADJUSTABLE],
+                                            &mOptions[RSK_POWER_UPGRADE_TOTAL],
+                                            &mOptions[RSK_POWER_UPGRADE_REQUIRED],
+                                            &mOptions[RSK_MAGIC_STAT_UPGRADE],
+                                            &mOptions[RSK_MAGIC_STAT_UPGRADE_ADJUSTABLE],
+                                            &mOptions[RSK_MAGIC_STAT_UPGRADE_TOTAL],
+                                            &mOptions[RSK_MAGIC_STAT_UPGRADE_REQUIRED],
+                                            &mOptions[RSK_CRAWL_SPEED_UPGRADE],
+                                            &mOptions[RSK_CRAWL_SPEED_UPGRADE_ADJUSTABLE],
+                                            &mOptions[RSK_CRAWL_SPEED_UPGRADE_TOTAL],
+                                            &mOptions[RSK_CRAWL_SPEED_UPGRADE_REQUIRED],
+                                            &mOptions[RSK_CLIMB_SPEED_UPGRADE],
+                                            &mOptions[RSK_CLIMB_SPEED_UPGRADE_ADJUSTABLE],
+                                            &mOptions[RSK_CLIMB_SPEED_UPGRADE_TOTAL],
+                                            &mOptions[RSK_CLIMB_SPEED_UPGRADE_REQUIRED],
+                                            &mOptions[RSK_PUSH_SPEED_UPGRADE],
+                                            &mOptions[RSK_PUSH_SPEED_UPGRADE_ADJUSTABLE],
+                                            &mOptions[RSK_PUSH_SPEED_UPGRADE_TOTAL],
+                                            &mOptions[RSK_PUSH_SPEED_UPGRADE_REQUIRED],
                                             &mOptions[RSK_SHUFFLE_BOSS_SOULS],
                                             &mOptions[RSK_SHUFFLE_DEKU_STICK_BAG],
                                             &mOptions[RSK_SHUFFLE_DEKU_NUT_BAG],

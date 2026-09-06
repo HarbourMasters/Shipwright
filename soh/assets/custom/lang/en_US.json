@@ -1488,6 +1488,140 @@
                     "The jump can also be used when already in mid-air. Roc's Feather is not considered by logic."
                 ]
             },
+            "quarter_heart": {
+                "name": "Quarter Heart",
+                "description": "Adds Quarter Heart upgrades to the item pool. Each one permanently increases maximum health by a quarter heart. Replaces heart containers and heart pieces."
+            },
+            "defense_upgrade": {
+                "name": "Defense Upgrade",
+                "description": [
+                    "Adds Defense Upgrade items to the item pool.\n",
+                    "Each upgrade incrementally reduces incoming damage, scaling up to 50% reduction at the required cap (default 5 items).\n",
+                    "With Double Defense and a maxed Defense stat, total damage reduction reaches 75%."
+                ]
+            },
+            "speed_upgrade": {
+                "name": "Speed Upgrade",
+                "description": [
+                    "Adds Speed Upgrade items to the item pool.\n",
+                    "Each upgrade incrementally increases Link's ground movement speed, scaling up to 1.4x at the required cap (default 5 items)."
+                ]
+            },
+            "power_upgrade": {
+                "name": "Power Upgrade",
+                "description": [
+                    "Adds Power Upgrade items to the item pool.\n",
+                    "Each upgrade increases the chance of dealing double damage on hit, reaching guaranteed 2x at the cap (default 5 items)."
+                ]
+            },
+            "magic_stat_upgrade": {
+                "name": "Magic Stat Upgrade",
+                "description": [
+                    "Replaces progressive magic with a new item that fills the magic bar in smaller increments.\n",
+                    "Collecting the required cap fills the bar completely (default 8 items).\n",
+                    "Logic considers magic available after 2 magic stat items (half a normal magic bar).\n",
+                    "Infinite magic is not in the pool when enabled."
+                ]
+            },
+            "defense_upgrade_adjustable": {
+                "name": "Adjustable Defense",
+                "description": "Enables custom Total and Percent Required sliders for Defense Upgrades, overriding the default pool counts."
+            },
+            "defense_upgrade_total": {
+                "name": "Defense Total",
+                "description": "How many Defense Upgrade items are placed in the pool."
+            },
+            "defense_upgrade_required": {
+                "name": "Defense % Required",
+                "description": "Percentage of Defense Upgrade items needed to reach max defense bonus."
+            },
+            "speed_upgrade_adjustable": {
+                "name": "Adjustable Speed",
+                "description": "Enables custom Total and Percent Required sliders for Speed Upgrades, overriding the default pool counts."
+            },
+            "speed_upgrade_total": {
+                "name": "Speed Total",
+                "description": "How many Speed Upgrade items are placed in the pool."
+            },
+            "speed_upgrade_required": {
+                "name": "Speed % Required",
+                "description": "Percentage of Speed Upgrade items needed to reach max speed bonus."
+            },
+            "power_upgrade_adjustable": {
+                "name": "Adjustable Power",
+                "description": "Enables custom Total and Percent Required sliders for Power Upgrades, overriding the default pool counts."
+            },
+            "power_upgrade_total": {
+                "name": "Power Total",
+                "description": "How many Power Upgrade items are placed in the pool."
+            },
+            "power_upgrade_required": {
+                "name": "Power % Required",
+                "description": "Percentage of Power Upgrade items needed to reach max power bonus."
+            },
+            "magic_stat_upgrade_adjustable": {
+                "name": "Adjustable Magic",
+                "description": [
+                    "Enables custom Total and Percent Required sliders for Magic Stat Upgrades, overriding the default pool counts.\n",
+                    "Magic logic threshold is always half of a normal magic bar."
+                ]
+            },
+            "magic_stat_upgrade_total": {
+                "name": "Magic Total",
+                "description": "How many Magic Stat Upgrade items are placed in the pool."
+            },
+            "magic_stat_upgrade_required": {
+                "name": "Magic % Required",
+                "description": "Percentage of Magic Stat Upgrade items needed to reach full magic capacity."
+            },
+            "crawl_speed_upgrade": {
+                "name": "Crawl Speed Upgrade",
+                "description": "Adds Crawl Speed Upgrade items to the pool. Collecting them gradually increases Link's crawlspace movement speed up to 5x. Disables the Crawl Speed enhancement slider while active."
+            },
+            "crawl_speed_upgrade_adjustable": {
+                "name": "Adjustable Crawl",
+                "description": "Enables custom Total and Percent Required sliders for Crawl Speed Upgrades, overriding the default pool counts."
+            },
+            "crawl_speed_upgrade_total": {
+                "name": "Crawl Total",
+                "description": "How many Crawl Speed Upgrade items are placed in the pool."
+            },
+            "crawl_speed_upgrade_required": {
+                "name": "Crawl % Required",
+                "description": "Percentage of Crawl Speed Upgrade items needed to reach max crawl speed."
+            },
+            "climb_speed_upgrade": {
+                "name": "Climb Speed Upgrade",
+                "description": "Adds Climb Speed Upgrade items to the pool. Collecting them gradually increases Link's vine and ladder climb speed up to +5. Disables the Climb Speed enhancement slider while active."
+            },
+            "climb_speed_upgrade_adjustable": {
+                "name": "Adjustable Climb",
+                "description": "Enables custom Total and Percent Required sliders for Climb Speed Upgrades, overriding the default pool counts."
+            },
+            "climb_speed_upgrade_total": {
+                "name": "Climb Total",
+                "description": "How many Climb Speed Upgrade items are placed in the pool."
+            },
+            "climb_speed_upgrade_required": {
+                "name": "Climb % Required",
+                "description": "Percentage of Climb Speed Upgrade items needed to reach max climb speed."
+            },
+            "push_speed_upgrade": {
+                "name": "Push Speed Upgrade",
+                "description": "Adds Push Speed Upgrade items to the pool. Collecting them gradually increases Link's block push speed up to +5. Disables the Faster Block Push enhancement slider while active."
+            },
+            "push_speed_upgrade_adjustable": {
+                "name": "Adjustable Push",
+                "description": "Enables custom Total and Percent Required sliders for Push Speed Upgrades, overriding the default pool counts."
+            },
+            "push_speed_upgrade_total": {
+                "name": "Push Total",
+                "description": "How many Push Speed Upgrade items are placed in the pool."
+            },
+            "push_speed_upgrade_required": {
+                "name": "Push % Required",
+                "description": "Percentage of Push Speed Upgrade items needed to reach max push speed."
+            },
             "slingbow_break_beehives": {
                 "name": "Slingshot/Bow Can Break Beehives",
                 "description": "Allows Slingshot and Bow to break beehives when Beehive Shuffle is turned on."

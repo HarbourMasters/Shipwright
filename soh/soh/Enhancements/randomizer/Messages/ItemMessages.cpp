@@ -14,6 +14,7 @@
 #include "soh/Enhancements/randomizer/Traps.h"
 #include "soh/Enhancements/randomizer/item.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
+#include "soh/Enhancements/randomizer/randostatupgrade.h"
 #include "soh/ShipInit.hpp"
 #include <soh/ResourceManagerHelpers.h>
 
@@ -220,6 +221,177 @@ void DrawCustomItemIcon(Gfx** p) {
     *p = gfx;
 }
 
+void BuildQuarterHeartMessage(CustomMessage& msg) {
+    msg = { "You found a %yQuarter Heart Container%w!&You gained quarter of a heart.",
+            "Du erhältst einen %yViertelherz-Behälter%w!&Du gewinnst ein Viertel eines Herzens.",
+            "Vous trouvez un %yContenant de Quart de Cœur%w!&Vous gagnez un quart de cœur." };
+    msg.AutoFormat();
+}
+
+void BuildDefenseUpgradeMessage(CustomMessage& msg) {
+    uint8_t level = gSaveContext.ship.quest.data.randomizer.defenseUpgrades + 1;
+    uint8_t required =
+        StatUpgradeRequired(5, RSK_DEFENSE_UPGRADE_ADJUSTABLE, RSK_DEFENSE_UPGRADE_TOTAL, RSK_DEFENSE_UPGRADE_REQUIRED);
+    if (level < required) {
+        uint8_t remaining = required - level;
+        msg = { "You found a %yDefense Upgrade%w!&%c[[remaining]]%w more to reach max stat.",
+                "Du erhältst ein %yVerteidigungs-Upgrade%w!&Noch %c[[remaining]]%w bis zum Maximum.",
+                "Vous trouvez une %yAmélioration de Défense%w!&Encore %c[[remaining]]%w pour atteindre le maximum." };
+        msg.Replace("[[remaining]]", std::to_string(remaining));
+    } else if (level == required) {
+        msg = { "You found a %yDefense Upgrade%w!&%gMax defense reached!%w",
+                "Du erhältst ein %yVerteidigungs-Upgrade%w!&%gMaximale Verteidigung erreicht!%w",
+                "Vous trouvez une %yAmélioration de Défense%w!&%gDéfense maximale atteinte!%w" };
+    } else {
+        msg = { "You found a %yDefense Upgrade%w!&%rAlready at max defense!%w",
+                "Du erhältst ein %yVerteidigungs-Upgrade%w!&%rBereits bei maximaler Verteidigung!%w",
+                "Vous trouvez une %yAmélioration de Défense%w!&%rDéfense déjà au maximum!%w" };
+    }
+    msg.AutoFormat(ITEM_CUSTOM);
+}
+
+void BuildSpeedUpgradeMessage(CustomMessage& msg) {
+    uint8_t level = gSaveContext.ship.quest.data.randomizer.speedUpgrades + 1;
+    uint8_t required =
+        StatUpgradeRequired(5, RSK_SPEED_UPGRADE_ADJUSTABLE, RSK_SPEED_UPGRADE_TOTAL, RSK_SPEED_UPGRADE_REQUIRED);
+    if (level < required) {
+        uint8_t remaining = required - level;
+        msg = { "You found a %ySpeed Upgrade%w!&%c[[remaining]]%w more to reach max stat.",
+                "Du erhältst ein %yGeschwindigkeits-Upgrade%w!&Noch %c[[remaining]]%w bis zum Maximum.",
+                "Vous trouvez une %yAmélioration de Vitesse%w!&Encore %c[[remaining]]%w pour atteindre le maximum." };
+        msg.Replace("[[remaining]]", std::to_string(remaining));
+    } else if (level == required) {
+        msg = { "You found a %ySpeed Upgrade%w!&%gMax speed reached!%w",
+                "Du erhältst ein %yGeschwindigkeits-Upgrade%w!&%gMaximale Geschwindigkeit erreicht!%w",
+                "Vous trouvez une %yAmélioration de Vitesse%w!&%gVitesse maximale atteinte!%w" };
+    } else {
+        msg = { "You found a %ySpeed Upgrade%w!&%rAlready at max speed!%w",
+                "Du erhältst ein %yGeschwindigkeits-Upgrade%w!&%rBereits bei maximaler Geschwindigkeit!%w",
+                "Vous trouvez une %yAmélioration de Vitesse%w!&%rVitesse déjà au maximum!%w" };
+    }
+    msg.AutoFormat(ITEM_CUSTOM);
+}
+
+void BuildPowerUpgradeMessage(CustomMessage& msg) {
+    uint8_t level = gSaveContext.ship.quest.data.randomizer.powerUpgrades + 1;
+    uint8_t required =
+        StatUpgradeRequired(5, RSK_POWER_UPGRADE_ADJUSTABLE, RSK_POWER_UPGRADE_TOTAL, RSK_POWER_UPGRADE_REQUIRED);
+    if (level < required) {
+        uint8_t remaining = required - level;
+        msg = { "You found a %yPower Upgrade%w!&Raises your double damage chance!&%c[[remaining]]%w more to reach max "
+                "stat.",
+                "Du erhältst ein %yKraft-Upgrade%w!&Sammle mehr für höhere Chance auf doppelten Schaden!&Noch "
+                "%c[[remaining]]%w.",
+                "Vous trouvez une %yAmélioration de Force%w!&Collectez-en plus pour doubler vos dégâts plus "
+                "souvent!&%c[[remaining]]%w restants." };
+        msg.Replace("[[remaining]]", std::to_string(remaining));
+    } else if (level == required) {
+        msg = { "You found a %yPower Upgrade%w!&%gEvery hit now deals double damage!%w",
+                "Du erhältst ein %yKraft-Upgrade%w!&%gJeder Treffer macht jetzt doppelten Schaden!%w",
+                "Vous trouvez une %yAmélioration de Force%w!&%gChaque coup inflige maintenant le double de dégâts!%w" };
+    } else {
+        msg = { "You found a %yPower Upgrade%w!&%rAlready at max power!%w",
+                "Du erhältst ein %yKraft-Upgrade%w!&%rBereits bei maximaler Kraft!%w",
+                "Vous trouvez une %yAmélioration de Force%w!&%rForce déjà au maximum!%w" };
+    }
+    msg.AutoFormat(ITEM_CUSTOM);
+}
+
+void BuildMagicStatUpgradeMessage(CustomMessage& msg) {
+    uint8_t level = gSaveContext.ship.quest.data.randomizer.magicStatUpgrades + 1;
+    uint8_t required = StatUpgradeRequired(8, RSK_MAGIC_STAT_UPGRADE_ADJUSTABLE, RSK_MAGIC_STAT_UPGRADE_TOTAL,
+                                           RSK_MAGIC_STAT_UPGRADE_REQUIRED);
+    if (level < required) {
+        uint8_t remaining = required - level;
+        msg = { "You found a %yMagic Meter%w!&%c[[remaining]]%w more to reach max stat.",
+                "Du erhältst ein %yMagisches Maß%w!&Noch %c[[remaining]]%w bis zum Maximum.",
+                "Vous trouvez une %yJauge de Magie%w!&Encore %c[[remaining]]%w pour atteindre le maximum." };
+        msg.Replace("[[remaining]]", std::to_string(remaining));
+    } else if (level == required) {
+        msg = { "You found a %yMagic Meter%w!&%gMax magic reached!%w",
+                "Du erhältst ein %yMagisches Maß%w!&%gMaximale Magie erreicht!%w",
+                "Vous trouvez une %yJauge de Magie%w!&%gMagie maximale atteinte!%w" };
+    } else {
+        msg = { "You found a %yMagic Meter%w!&%rAlready at max magic!%w",
+                "Du erhältst ein %yMagisches Maß%w!&%rBereits bei maximaler Magie!%w",
+                "Vous trouvez une %yJauge de Magie%w!&%rMagie déjà au maximum!%w" };
+    }
+    msg.AutoFormat(ITEM_CUSTOM);
+}
+
+void BuildCrawlSpeedUpgradeMessage(CustomMessage& msg) {
+    uint8_t level = gSaveContext.ship.quest.data.randomizer.crawlSpeedUpgrades + 1;
+    uint8_t required = StatUpgradeRequired(5, RSK_CRAWL_SPEED_UPGRADE_ADJUSTABLE, RSK_CRAWL_SPEED_UPGRADE_TOTAL,
+                                           RSK_CRAWL_SPEED_UPGRADE_REQUIRED);
+    if (level < required) {
+        uint8_t remaining = required - level;
+        msg = { "You found a %yCrawl Speed Upgrade%w!&%c[[remaining]]%w more to reach max stat.",
+                "Du erhältst ein %yKriech-Upgrade%w!&Noch %c[[remaining]]%w bis zum Maximum.",
+                "Vous trouvez une %yAmélioration de Vitesse de Reptation%w!&Encore %c[[remaining]]%w pour atteindre le "
+                "maximum." };
+        msg.Replace("[[remaining]]", std::to_string(remaining));
+    } else if (level == required) {
+        msg = {
+            "You found a %yCrawl Speed Upgrade%w!&%gMax crawl speed reached!%w",
+            "Du erhältst ein %yKriech-Upgrade%w!&%gMaximale Kriechgeschwindigkeit erreicht!%w",
+            "Vous trouvez une %yAmélioration de Vitesse de Reptation%w!&%gVitesse de reptation maximale atteinte!%w"
+        };
+    } else {
+        msg = {
+            "You found a %yCrawl Speed Upgrade%w!&%rAlready at max crawl speed!%w",
+            "Du erhältst ein %yKriech-Upgrade%w!&%rBereits bei maximaler Kriechgeschwindigkeit!%w",
+            "Vous trouvez une %yAmélioration de Vitesse de Reptation%w!&%rVitesse de reptation déjà au maximum!%w"
+        };
+    }
+    msg.AutoFormat(ITEM_CUSTOM);
+}
+
+void BuildClimbSpeedUpgradeMessage(CustomMessage& msg) {
+    uint8_t level = gSaveContext.ship.quest.data.randomizer.climbSpeedUpgrades + 1;
+    uint8_t required = StatUpgradeRequired(5, RSK_CLIMB_SPEED_UPGRADE_ADJUSTABLE, RSK_CLIMB_SPEED_UPGRADE_TOTAL,
+                                           RSK_CLIMB_SPEED_UPGRADE_REQUIRED);
+    if (level < required) {
+        uint8_t remaining = required - level;
+        msg = { "You found a %yClimb Speed Upgrade%w!&%c[[remaining]]%w more to reach max stat.",
+                "Du erhältst ein %yKletter-Upgrade%w!&Noch %c[[remaining]]%w bis zum Maximum.",
+                "Vous trouvez une %yAmélioration de Vitesse d'Escalade%w!&Encore %c[[remaining]]%w pour atteindre le "
+                "maximum." };
+        msg.Replace("[[remaining]]", std::to_string(remaining));
+    } else if (level == required) {
+        msg = { "You found a %yClimb Speed Upgrade%w!&%gMax climb speed reached!%w",
+                "Du erhältst ein %yKletter-Upgrade%w!&%gMaximale Klettergeschwindigkeit erreicht!%w",
+                "Vous trouvez une %yAmélioration de Vitesse d'Escalade%w!&%gVitesse d'escalade maximale atteinte!%w" };
+    } else {
+        msg = { "You found a %yClimb Speed Upgrade%w!&%rAlready at max climb speed!%w",
+                "Du erhältst ein %yKletter-Upgrade%w!&%rBereits bei maximaler Klettergeschwindigkeit!%w",
+                "Vous trouvez une %yAmélioration de Vitesse d'Escalade%w!&%rVitesse d'escalade déjà au maximum!%w" };
+    }
+    msg.AutoFormat(ITEM_CUSTOM);
+}
+
+void BuildPushSpeedUpgradeMessage(CustomMessage& msg) {
+    uint8_t level = gSaveContext.ship.quest.data.randomizer.pushSpeedUpgrades + 1;
+    uint8_t required = StatUpgradeRequired(5, RSK_PUSH_SPEED_UPGRADE_ADJUSTABLE, RSK_PUSH_SPEED_UPGRADE_TOTAL,
+                                           RSK_PUSH_SPEED_UPGRADE_REQUIRED);
+    if (level < required) {
+        uint8_t remaining = required - level;
+        msg = { "You found a %yPush Speed Upgrade%w!&%c[[remaining]]%w more to reach max stat.",
+                "Du erhältst ein %ySchub-Upgrade%w!&Noch %c[[remaining]]%w bis zum Maximum.",
+                "Vous trouvez une %yAmélioration de Vitesse de Poussée%w!&Encore %c[[remaining]]%w pour atteindre le "
+                "maximum." };
+        msg.Replace("[[remaining]]", std::to_string(remaining));
+    } else if (level == required) {
+        msg = { "You found a %yPush Speed Upgrade%w!&%gMax push speed reached!%w",
+                "Du erhältst ein %ySchub-Upgrade%w!&%gMaximale Schubgeschwindigkeit erreicht!%w",
+                "Vous trouvez une %yAmélioration de Vitesse de Poussée%w!&%gVitesse de poussée maximale atteinte!%w" };
+    } else {
+        msg = { "You found a %yPush Speed Upgrade%w!&%rAlready at max push speed!%w",
+                "Du erhältst ein %ySchub-Upgrade%w!&%rBereits bei maximaler Schubgeschwindigkeit!%w",
+                "Vous trouvez une %yAmélioration de Vitesse de Poussée%w!&%rVitesse de poussée déjà au maximum!%w" };
+    }
+    msg.AutoFormat(ITEM_CUSTOM);
+}
+
 void BuildItemMessage(u16* textId, bool* loadFromMessageTable) {
     Player* player = GET_PLAYER(gPlayState);
     CustomMessage msg;
@@ -230,6 +402,22 @@ void BuildItemMessage(u16* textId, bool* loadFromMessageTable) {
         BuildTriforcePieceMessage(msg);
     } else if (player->getItemEntry.getItemId == RG_TRIFORCE) {
         BuildTriforceMessage(msg);
+    } else if (player->getItemEntry.getItemId == RG_QUARTER_HEART) {
+        BuildQuarterHeartMessage(msg);
+    } else if (player->getItemEntry.getItemId == RG_DEFENSE_UPGRADE) {
+        BuildDefenseUpgradeMessage(msg);
+    } else if (player->getItemEntry.getItemId == RG_SPEED_UPGRADE) {
+        BuildSpeedUpgradeMessage(msg);
+    } else if (player->getItemEntry.getItemId == RG_POWER_UPGRADE) {
+        BuildPowerUpgradeMessage(msg);
+    } else if (player->getItemEntry.getItemId == RG_MAGIC_STAT_UPGRADE) {
+        BuildMagicStatUpgradeMessage(msg);
+    } else if (player->getItemEntry.getItemId == RG_CRAWL_SPEED_UPGRADE) {
+        BuildCrawlSpeedUpgradeMessage(msg);
+    } else if (player->getItemEntry.getItemId == RG_CLIMB_SPEED_UPGRADE) {
+        BuildClimbSpeedUpgradeMessage(msg);
+    } else if (player->getItemEntry.getItemId == RG_PUSH_SPEED_UPGRADE) {
+        BuildPushSpeedUpgradeMessage(msg);
     } else {
         BuildCustomItemMessage(player, msg);
     }

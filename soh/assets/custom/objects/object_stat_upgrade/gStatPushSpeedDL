@@ -1,0 +1,14 @@
+<DisplayList Version="0">
+	<CallDisplayList Path="objects/object_stat_upgrade/mat_gStatPushSpeedDL_speed_plus_layerOpaque"/>
+	<CallDisplayList Path="objects/object_stat_upgrade/gStatPushSpeedDL_tri_0"/>
+	<CallDisplayList Path="objects/object_stat_upgrade/mat_gStatPushSpeedDL_speed_upgrade_layerOpaque"/>
+	<CallDisplayList Path="objects/object_stat_upgrade/gStatPushSpeedDL_tri_1"/>
+	<CallDisplayList Path="objects/object_stat_upgrade/mat_gStatPushSpeedDL_speed_accent_layerOpaque"/>
+	<CallDisplayList Path="objects/object_stat_upgrade/gStatPushSpeedDL_tri_2"/>
+	<CallDisplayList Path="objects/object_stat_upgrade/mat_gStatPushSpeedDL_speed_gem_layerOpaque"/>
+	<CallDisplayList Path="objects/object_stat_upgrade/gStatPushSpeedDL_tri_3"/>
+	<ClearGeometryMode G_LIGHTING="1"/>
+	<SetGeometryMode G_LIGHTING="1"/>
+	<EndDisplayList/>
+</DisplayList>
+

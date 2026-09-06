@@ -28,6 +28,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include "soh/Enhancements/randomizer/randomizer_grotto.h"
+#include "soh/Enhancements/randomizer/randostatupgrade.h"
 #include "soh/frame_interpolation.h"
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/savestate_serialize.h"
@@ -3984,6 +3985,7 @@ s32 Player_CalcSpeedAndYawFromControlStick(PlayState* play, Player* this, f32* o
 
             *outSpeedTarget = (*outSpeedTarget * 0.14f) - (8.0f * floorPitchInfluence * floorPitchInfluence);
             *outSpeedTarget = CLAMP(*outSpeedTarget, 0.0f, speedCap);
+            GameInteractor_Should(VB_PLAYER_SPEED_MULTIPLIER, true, this, outSpeedTarget);
 
             return true;
         }
@@ -8872,6 +8874,7 @@ void Player_Action_80842180(Player* this, PlayState* play) {
         if (!func_8083C484(this, &speedTarget, &yawTarget)) {
             GameInteractor_Should(VB_PLAYER_MODIFY_RUN_SPEED, true, this, &speedTarget);
 
+            GameInteractor_Should(VB_PLAYER_SPEED_MULTIPLIER, true, this, &speedTarget);
             func_8083DF68(this, speedTarget, yawTarget);
             func_8083DDC8(this, play);
 
@@ -8905,6 +8908,7 @@ void Player_Action_8084227C(Player* this, PlayState* play) {
                 return;
             }
 
+            GameInteractor_Should(VB_PLAYER_SPEED_MULTIPLIER, true, this, &sp2C);
             func_8083DF68(this, sp2C, sp2A);
             func_8083DDC8(this, play);
 
@@ -13196,7 +13200,9 @@ void Player_Action_8084BF1C(Player* this, PlayState* play) {
         phi_f2 = -1.0f;
     }
 
-    this->skelAnime.playSpeed = phi_f2 * phi_f0 + phi_f2 * CVarGetInteger(CVAR_ENHANCEMENT("ClimbSpeed"), 0);
+    this->skelAnime.playSpeed =
+        phi_f2 * phi_f0 +
+        phi_f2 * (IsClimbStatActive() ? GetClimbStatValue() : CVarGetInteger(CVAR_ENHANCEMENT("ClimbSpeed"), 0));
 
     if (this->av2.actionVar2 >= 0) {
         if ((this->actor.wallPoly != NULL) && (this->actor.wallBgId != BGCHECK_SCENE)) {
