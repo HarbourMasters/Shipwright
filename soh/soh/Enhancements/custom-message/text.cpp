@@ -129,9 +129,14 @@ static void replaceRandomVowel(std::string& target, uint64_t* randState) {
     }
 
     static constexpr char vowels[] = { 'a', 'e', 'i', 'o', 'u' };
-    char newVowel = ShipUtils::RandomElement(vowels, randState);
+    bool upper = target[pos] >= 'A' && target[pos] <= 'Z';
+    char oldVowel = upper ? target[pos] + ('a' - 'A') : target[pos];
 
-    target[pos] = (target[pos] >= 'A' && target[pos] <= 'Z') ? newVowel - ('a' - 'A') : newVowel;
+    // don't replace vowel with itself
+    uint32_t idx = ShipUtils::Random(0, 4, randState);
+    idx += vowels[idx] >= oldVowel;
+
+    target[pos] = upper ? vowels[idx] - ('a' - 'A') : vowels[idx];
 }
 
 void Text::ReplaceRandomVowel(uint64_t* randState) {
