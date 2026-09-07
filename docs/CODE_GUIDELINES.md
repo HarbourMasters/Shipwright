@@ -57,6 +57,8 @@ Instead of using regular `assert`s which can't prevent issues in releases, use a
 - `assert(false);`.
 - An early return from the function when appropriate.
 
+In randomizer logic, `logic->IsChild`/`logic->IsAdult` must be at the beginning of the conditions.
+
 ## [Attributes](https://en.cppreference.com/cpp/language/attributes)
 
 Do not use the attribute `using` syntax introduzed in C++ 17.
