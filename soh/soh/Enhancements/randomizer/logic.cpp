@@ -1538,7 +1538,7 @@ bool Logic::CanCrouchStab() {
 bool Logic::CanInterruptCrouchStab(bool blockingTextboxAvaliable, bool grabableActorAvaliable) {
     // bombs will be a separate trick as it's harder due to the time limit
     // bombchus will be another trick as it's even harder
-    return blockingTextboxAvaliable || grabableActorAvaliable || (false && CanUse(RG_BOMB_BAG)) ||
+    return blockingTextboxAvaliable || (grabableActorAvaliable && HasItem(RG_POWER_BRACELET)) || (false && CanUse(RG_BOMB_BAG)) ||
            (false && CanUse(RG_BOMBCHU_5));
 }
 
