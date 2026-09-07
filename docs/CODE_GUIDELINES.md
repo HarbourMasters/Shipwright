@@ -28,6 +28,8 @@ Always use braces (`{}`) for `if` statements, `for` statements, `while` statemen
 
 Make things `const`/`constexpr`/`consteval`/`noexcept` when possible.
 
+All `struct`s/`enum`s/`union`s must be declared with a typedef (for example, `typedef struct Example { /* ... */ } Example;`).
+
 Prefer:
 - [Post-increment operators](https://en.cppreference.com/cpp/language/operator_incdec#Postfix_operators) over [pre-increment operators](https://en.cppreference.com/cpp/language/operator_incdec#Prefix_operators).
 - Explicit conversions over implicit conversions.
