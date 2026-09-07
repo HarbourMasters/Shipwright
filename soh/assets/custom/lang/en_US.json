@@ -1943,15 +1943,15 @@
                     "This option enables locations requiring its use."
                 ]
             },
-			"hovering": {
-				"name": "Hovering",
-				"description": [
-					"By shielding damage while midair and doing ISG, you can hover in place.\n",
-              		"It is possible to the backflip (or sideflip) and shield another damage source to get higher.\n",
-              		"\n",
-              		"Requires the \"Infinite Sword Glitch\" trick to be enabled"
-				]
-			},
+            "hovering": {
+                "name": "Hovering",
+                "description": [
+                    "By shielding damage while midair and doing ISG, you can hover in place.\n",
+                    "It is possible to the backflip (or sideflip) and shield another damage source to get higher.\n",
+                    "\n",
+                    "Requires the \"Infinite Sword Glitch\" trick to be enabled"
+                ]
+            },
             "visible_collision": {
                 "name": "Ignore Visible Collision",
                 "description": [
