@@ -1,6 +1,7 @@
 #include "soh/Enhancements/randomizer/location_access.h"
 #include "soh/Enhancements/randomizer/entrance.h"
 #include "soh/Enhancements/randomizer/dungeon.h"
+#include "soh/Enhancements/randomizer/randomizerEnums.h"
 
 using namespace Rando;
 
@@ -98,8 +99,7 @@ void RegionTable_Init_ForestTemple() {
     }, {
         //Exits
         ENTRANCE(RR_FOREST_TEMPLE_LOBBY,                     true),
-        ENTRANCE(RR_FOREST_TEMPLE_NW_COURTYARD_UPPER,        (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT)) && logic->CanUse(RG_HOVER_BOOTS) && 
-                                                             ((ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && (ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives())) || logic->CanMiddairGroundJump())),
+        ENTRANCE(RR_FOREST_TEMPLE_NW_COURTYARD_UPPER,        (logic->HasItem(RG_CLIMB) || logic->CanUse(RG_HOOKSHOT)) && (logic->CanMegajump() || logic->CanMiddairGroundJump())),
         ENTRANCE(RR_FOREST_TEMPLE_NW_COURTYARD_UPPER_ALCOVE, logic->HasItem(RG_CLIMB) || logic->CanUse(RG_LONGSHOT)),
         ENTRANCE(RR_FOREST_TEMPLE_SEWER,                     logic->HasItem(RG_GOLDEN_SCALE) || logic->CanUse(RG_IRON_BOOTS)),
         ENTRANCE(RR_FOREST_TEMPLE_DRAINED_SEWER,             logic->Get(LOGIC_FOREST_DRAINED_WELL)),
@@ -110,7 +110,7 @@ void RegionTable_Init_ForestTemple() {
         //Exits
         ENTRANCE(RR_FOREST_TEMPLE_NW_COURTYARD_LOWER, true),
         ENTRANCE(RR_FOREST_TEMPLE_MAP_ROOM,           true),
-        ENTRANCE(RR_FOREST_TEMPLE_NW_COURTYARD_UPPER, ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && logic->CanUse(RG_HOVER_BOOTS) && logic->CanUse(RG_MEGATON_HAMMER)),
+        ENTRANCE(RR_FOREST_TEMPLE_NW_COURTYARD_UPPER, logic->CanRecoilHover(RECOIL_HAMMER, BRECOIL_NO)),
     });
 
     areaTable[RR_FOREST_TEMPLE_NW_COURTYARD_UPPER] = Region("Forest Temple NW Courtyard Upper", SCENE_FOREST_TEMPLE, {
@@ -642,7 +642,7 @@ void RegionTable_Init_ForestTemple() {
     }, {
         //Exits
         ENTRANCE(RR_FOREST_TEMPLE_MQ_NW_COURTYARD,       true),
-        ENTRANCE(RR_FOREST_TEMPLE_MQ_NW_COURTYARD_LEDGE, logic->CanUse(RG_HOVER_BOOTS) && ((ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives()) || logic->CanMiddairGroundJump())),
+        ENTRANCE(RR_FOREST_TEMPLE_MQ_NW_COURTYARD_LEDGE, logic->CanMegajump() || logic->CanMiddairGroundJump()),
     });
 
     areaTable[RR_FOREST_TEMPLE_MQ_NW_COURTYARD_UPPER_ALCOVE] = Region("Forest Temple MQ NW Courtyard Upper Alcove", SCENE_FOREST_TEMPLE, {
@@ -651,7 +651,7 @@ void RegionTable_Init_ForestTemple() {
     }, {}, {
         //Exits
         ENTRANCE(RR_FOREST_TEMPLE_MQ_NW_COURTYARD,       logic->CanPassEnemy(RE_BIG_SKULLTULA) || logic->TakeDamage()),
-        ENTRANCE(RR_FOREST_TEMPLE_MQ_NW_COURTYARD_LEDGE, ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && logic->CanUse(RG_HOVER_BOOTS) && logic->CanUse(RG_MEGATON_HAMMER)),
+        ENTRANCE(RR_FOREST_TEMPLE_MQ_NW_COURTYARD_LEDGE, logic->CanRecoilHover(RECOIL_HAMMER, BRECOIL_NO)),
         ENTRANCE(RR_FOREST_TEMPLE_MQ_NORTH_PASSAGE,      true),
     });
 

@@ -1016,12 +1016,12 @@ void RegionTable_Init_SpiritTemple() {
     areaTable[RR_SPIRIT_TEMPLE_MQ_FIRE_WALL_STAIRS_LOWER] = Region("Spirit Temple MQ Fire Wall Stairs Lower", SCENE_SPIRIT_TEMPLE, {}, {}, {
         //Exits
         ENTRANCE(RR_SPIRIT_TEMPLE_MQ_STATUE_ROOM_ADULT,      logic->SmallKeys(SCENE_SPIRIT_TEMPLE, 5)),
-        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_FIRE_WALL_STAIRS_UPPER, logic->CanUse(RG_HOOKSHOT) || (ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && logic->CanUse(RG_HOVER_BOOTS) && logic->CanUse(RG_MEGATON_HAMMER))),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_FIRE_WALL_STAIRS_UPPER, logic->CanUse(RG_HOOKSHOT) || logic->CanRecoilHover(RECOIL_HAMMER, BRECOIL_NO)),
     });
 
     areaTable[RR_SPIRIT_TEMPLE_MQ_FIRE_WALL_STAIRS_UPPER] = Region("Spirit Temple MQ Fire Wall Stairs Upper", SCENE_SPIRIT_TEMPLE, {}, {}, {
         //Exits
-        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_FIRE_WALL_STAIRS_LOWER, logic->CanUse(RG_HOOKSHOT) || (ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && logic->CanUse(RG_HOVER_BOOTS) && logic->CanUse(RG_MEGATON_HAMMER))),
+        ENTRANCE(RR_SPIRIT_TEMPLE_MQ_FIRE_WALL_STAIRS_LOWER, logic->CanUse(RG_HOOKSHOT) || logic->CanRecoilHover(RECOIL_HAMMER, BRECOIL_NO)),
         ENTRANCE(RR_SPIRIT_TEMPLE_MQ_BEAMOS_PITS,            true),
     });
 

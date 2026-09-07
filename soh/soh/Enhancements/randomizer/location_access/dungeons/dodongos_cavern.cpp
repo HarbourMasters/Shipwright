@@ -173,7 +173,6 @@ void RegionTable_Init_DodongosCavern() {
         //Exits
         ENTRANCE(RR_DODONGOS_CAVERN_LOBBY,           logic->TakeDamage()),
         ENTRANCE(RR_DODONGOS_CAVERN_ARMOS_ROOM,      true),
-        //RANDOTODO where does this damage boost start?
         ENTRANCE(RR_DODONGOS_CAVERN_BOMB_ROOM_UPPER, ((logic->IsAdult || logic->BunnyHood()) && ctx->GetTrickOption(RT_UNINTUITIVE_JUMPS)) || logic->CanUse(RG_HOVER_BOOTS) || 
                                                          (ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives() && logic->CanJumpslash())),
     });

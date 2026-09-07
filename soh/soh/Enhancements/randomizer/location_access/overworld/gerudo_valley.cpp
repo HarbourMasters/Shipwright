@@ -104,7 +104,7 @@ void RegionTable_Init_GerudoValley() {
         LOCATION(RC_GV_FREESTANDING_POH_CRATE, logic->CanBreakCrates()),
     }, {
         //Exits
-        ENTRANCE(RR_GV_UPPER_STREAM, ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives() && logic->TakeDamage()),
+        ENTRANCE(RR_GV_UPPER_STREAM, ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives() && logic->TakeDamage(DAMAGE_NO_FAIRY)),
         ENTRANCE(RR_GV_LOWER_STREAM, logic->HasItem(RG_BRONZE_SCALE) || logic->CanUse(RG_IRON_BOOTS)),
     });
 

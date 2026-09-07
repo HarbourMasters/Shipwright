@@ -80,7 +80,7 @@ void RegionTable_Init_WaterTemple() {
         ENTRANCE(RR_WATER_TEMPLE_ENTRANCE_LEDGE,      logic->CanUse(RG_LONGSHOT) || logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && logic->BunnyHood())),
         ENTRANCE(RR_WATER_TEMPLE_HIGH_EMBLEM,         logic->Water3FCentralToHighEmblem()),
         ENTRANCE(RR_WATER_TEMPLE_JET_CHEST_ROOM,      logic->CanUse(RG_HOOKSHOT) && logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 16),
-        ENTRANCE(RR_WATER_TEMPLE_RISING_TARGET_LEDGE, ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && logic->CanUse(RG_HOVER_BOOTS) && (logic->CanUse(RG_MEGATON_HAMMER) || (ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives()))),
+        ENTRANCE(RR_WATER_TEMPLE_RISING_TARGET_LEDGE, logic->CanRecoilHover(RECOIL_HAMMER, BRECOIL_YES)),
     });
 
     //assumes checking for WL_HIGH on entry
@@ -738,7 +738,7 @@ void RegionTable_Init_WaterTemple() {
         ENTRANCE(RR_WATER_TEMPLE_MQ_MAIN,                true),
         ENTRANCE(RR_WATER_TEMPLE_MQ_ENTRANCE_LEDGE,      logic->CanUse(RG_LONGSHOT) || logic->CanUse(RG_HOVER_BOOTS) || (logic->IsAdult && logic->BunnyHood())),
         ENTRANCE(RR_WATER_TEMPLE_MQ_2F_CENTRAL_A,        logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 16 && logic->CanUse(RG_HOOKSHOT)),
-        ENTRANCE(RR_WATER_TEMPLE_MQ_RISING_TARGET_LEDGE, ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && logic->CanUse(RG_HOVER_BOOTS) && (logic->CanUse(RG_MEGATON_HAMMER) || (ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && logic->HasExplosives()))),
+        ENTRANCE(RR_WATER_TEMPLE_MQ_RISING_TARGET_LEDGE, logic->CanRecoilHover(RECOIL_HAMMER, BRECOIL_YES)),
         //this swimless jump with irons may be a trick as you have to put irons on quite late.
         ENTRANCE(RR_WATER_TEMPLE_MQ_LIZALFOS_LOOP_A,     logic->CanUse(RG_IRON_BOOTS) && logic->WaterTimer() >= 16),
         ENTRANCE(RR_WATER_TEMPLE_MQ_HIGH_EMBLEM,         logic->CanUse(RG_HOOKSHOT) || (logic->IsAdult && logic->CanUse(RG_HOVER_BOOTS)) || ((logic->IsAdult || logic->BunnyHood()) && ctx->GetTrickOption(RT_WATER_HIGH_EMBLEM_JUMP))),

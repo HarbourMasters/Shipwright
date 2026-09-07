@@ -707,6 +707,16 @@ bool Logic::CanMiddairGroundJump(bool hasBombflower) {
            (CanUse(RG_BOMB_BAG) || (hasBombflower && HasItem(RG_GORONS_BRACELET)));
 }
 
+bool Logic::CanMegajump(bool hasBombflower) {
+    return ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && CanUse(RG_HOVER_BOOTS) &&
+           (HasExplosives() || (hasBombflower && HasItem(RG_GORONS_BRACELET))) && TakeDamage(DAMAGE_NO_FAIRY);
+}
+
+bool Logic::CanMidairDamageBoost(bool hasBombflower) {
+    return ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) && CanJumpslash() && TakeDamage(DAMAGE_NO_FAIRY) &&
+           (CanUse(RG_BOMBCHU_5) || (CanStandingShield() && (CanUse(RG_BOMB_BAG) || (hasBombflower && HasItem(RG_GORONS_BRACELET)))));
+}
+
 bool Logic::CanOpenUnderwaterChest() {
     return ctx->GetTrickOption(RT_OPEN_UNDERWATER_CHEST) && CanUse(RG_IRON_BOOTS) && CanUse(RG_HOOKSHOT) &&
            HasItem(RG_OPEN_CHEST);
@@ -1418,9 +1428,7 @@ bool Logic::Water3FCentralToHighEmblem() {
 }
 
 bool Logic::WaterRisingTargetTo3FCentral() {
-    return CanUse(RG_LONGSHOT) ||
-           (ctx->GetTrickOption(RT_HOVER_BOOST_SIMPLE) && ctx->GetTrickOption(RT_DAMAGE_BOOST_SIMPLE) &&
-            HasExplosives() && CanUse(RG_HOVER_BOOTS));
+    return CanUse(RG_LONGSHOT) || logic->CanRecoilHover(RECOIL_HAMMER, BRECOIL_YES);
 }
 
 /* Water level has 7 events that govern its logic.

@@ -45,6 +45,8 @@ class Logic {
     bool CanGroundJump(bool hasBombflower = false);
     bool CanGroundJumpslash(bool hasBombflower = false);
     bool CanMiddairGroundJump(bool hasBombflower = false);
+    bool CanMegajump(bool hasBombflower = false);
+    bool CanMidairDamageBoost(bool hasBombflower = false);
     bool CanOpenUnderwaterChest();
     bool CanOpenLargeChest();
     bool CanDoGlitch(GlitchType glitch);
