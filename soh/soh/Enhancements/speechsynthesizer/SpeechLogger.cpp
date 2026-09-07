@@ -1,4 +1,4 @@
-#include <libultraship/log/luslog.h>
+#include <spdlog/spdlog.h>
 
 #include "SpeechLogger.h"
 
@@ -6,7 +6,7 @@ SpeechLogger::SpeechLogger() {
 }
 
 void SpeechLogger::Speak(const char* text, const char* language) {
-    lusprintf(__FILE__, __LINE__, 2, "Spoken Text (%s): %s", language, text);
+    SPDLOG_INFO("Spoken Text ({}): {}", language, text);
 }
 
 bool SpeechLogger::DoInit() {

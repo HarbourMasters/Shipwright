@@ -1,6 +1,6 @@
 #include <dlfcn.h>
 
-#include <libultraship/log/luslog.h>
+#include <spdlog/spdlog.h>
 
 #include "ESpeakSpeechSynthesizer.h"
 
@@ -16,7 +16,7 @@ bool ESpeakSpeechSynthesizer::DoInit() {
         this->Terminate = (speak_Terminate)dlsym(espeak, "espeak_Terminate");
         if (this->Initialize == NULL || this->SetVoiceByProperties == NULL || this->Synth == NULL ||
             this->Terminate == NULL) {
-            lusprintf(__FILE__, __LINE__, 2, "Failed to load espeak-ng");
+            SPDLOG_INFO("Failed to load espeak-ng");
             dlclose(espeak);
             return false;
         } else {
@@ -37,7 +37,7 @@ void ESpeakSpeechSynthesizer::DoUninitialize() {
 
 void ESpeakSpeechSynthesizer::Speak(const char* text, const char* language) {
     if (this->espeak == NULL) {
-        lusprintf(__FILE__, __LINE__, 2, "Spoken Text (%s): %s", language, text);
+        SPDLOG_INFO("Spoken Text ({}): {}", language, text);
     } else {
         if (language != this->mLanguage) {
             espeak_VOICE voice = { .languages = language };

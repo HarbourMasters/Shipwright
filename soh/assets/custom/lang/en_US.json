@@ -1869,6 +1869,22 @@
             },
             "starting_mask_of_truth": {
                 "name": "Start with Mask of Truth"
+            },
+            "ice_trap_names": {
+                "name": "Ice Trap Trick Names",
+                "description": [
+                    "Sets how Ice Traps disguise themselves in text.\n",
+                    "\n",
+                    "Identical - There's no tell for an item being an Ice Trap.\n",
+                    "\n",
+                    "Similar - The name will be similar to the item's real name (for example, \"Korok Sword\" instead of \"Kokiri Sword\").\n",
+                    "\n",
+                    "Misspelled (Vowel) - The name is misspelled by changing a random vowel with another random vowel.\n",
+                    "\n",
+                    "Misspelled (Duplicate) - The name is misspelled by duplicating a random letter.\n",
+                    "\n",
+                    "Revealed - Ice Traps will not disguise themselves in text."
+                ]
             }
         },
         "tricks": {

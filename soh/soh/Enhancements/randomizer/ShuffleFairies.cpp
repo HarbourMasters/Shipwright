@@ -1,3 +1,5 @@
+#include <spdlog/spdlog.h>
+
 #include "soh/OTRGlobals.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "randomizer_grotto.h"
@@ -6,6 +8,7 @@
 #include "soh/Enhancements/item-tables/ItemTableTypes.h"
 #include "soh/ObjectExtension/ObjectExtension.h"
 #include "soh/Enhancements/randomizer/randomizer.h"
+#include "soh/Enhancements/randomizer/randomizerEnumStrings.h"
 
 extern "C" {
 #include "src/overlays/actors/ovl_En_Elf/z_en_elf.h"
@@ -67,7 +70,7 @@ CheckIdentity ShuffleFairies_GetFairyIdentity(int32_t params, ActorID id) {
     Rando::Location* location = OTRGlobals::Instance->gRandomizer->GetCheckObjectFromActor(id, sceneNum, params);
 
     if (location->GetRandomizerCheck() == RC_UNKNOWN_CHECK) {
-        LUSLOG_WARN("FairyGetIdentity did not receive a valid RC value (%d).", location->GetRandomizerCheck());
+        SPDLOG_WARN("FairyGetIdentity did not receive a valid RC value ({}).", location->GetRandomizerCheck());
         assert(false);
     } else {
         fairyIdentity.randomizerInf = static_cast<RandomizerInf>(location->GetCollectionCheck().flag);
