@@ -717,7 +717,6 @@ void SohMenu::AddMenuRandomizer() {
     });
     AddWidget(path, "Generate Randomizer", WIDGET_BUTTON)
         .Callback([](WidgetInfo& info) {
-            Rando::Context::GetInstance()->SetSpoilerLoaded(false);
             GenerateRandomizer(CVarGetInteger(CVAR_RANDOMIZER_SETTING("ManualSeedEntry"), 0) ? seedString : "");
         })
         .PreFunc([](WidgetInfo& info) {
