@@ -21,6 +21,7 @@ Do not use:
 - [Alternative operator representations](https://en.cppreference.com/cpp/language/operator_alternative).
 - [Inline assembly](https://en.cppreference.com/cpp/language/asm).
 - [`void` as an argument type](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#nl25-dont-use-void-as-an-argument-type).
+- C++ features that are deprecated in the currently used version of the C++ standard.
 
 Use parenthesis when [operator precedence](https://en.cppreference.com/cpp/language/operator_precedence) is not obvious (this includes between `||` & `&&`).
 
