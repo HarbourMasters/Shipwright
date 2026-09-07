@@ -33,7 +33,7 @@ Prefer:
 - Explicit conversions over implicit conversions.
 - The `at` method over the `[]` operator for types such as [`std::array`](https://en.cppreference.com/cpp/container/array) & [`std::vector`](https://en.cppreference.com/cpp/container/vector).
 - C++ style casts over C style casts.
-- [`SPDLOG` macros](https://github.com/gabime/spdlog/blob/v1.x/include/spdlog/spdlog.h) over [`LUSLOG` macros](../libultraship/include/libultraship/log/luslog.h)
+- [`SPDLOG` macros](https://github.com/gabime/spdlog/blob/v1.x/include/spdlog/spdlog.h) over [`LUSLOG` macros](../libultraship/include/libultraship/log/luslog.h).
 
 [Clang Format](https://clang.llvm.org/docs/ClangFormat.html) (see [FORMATTING.md](./FORMATTING.md) for more details) is used to maintain code formatting, it may be disabled for a region of code with `// clang-format off` & `// clang-format on`.
 This must only be used for things such as tables which are clearer with whitespace alignment.
