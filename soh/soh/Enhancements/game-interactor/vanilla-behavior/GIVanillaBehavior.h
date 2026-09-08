@@ -1778,6 +1778,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // true
+    // ```
+    // #### `args`
+    // - `f32*` speed
+    VB_MODIFY_WATER_TEMPLE_WATER_LEVEL_SPEED,
+
+    // #### `result`
+    // ```c
     // this->interactInfo.talkState == NPC_TALK_STATE_ACTION
     // ```
     // #### `args`
