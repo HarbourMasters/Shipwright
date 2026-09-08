@@ -3,6 +3,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/randomizer/SeedContext.h"
+#include "soh/Enhancements/randomizer/randomizer_entrance.h"
 
 extern "C" {
 #include "src/overlays/actors/ovl_En_Wonder_Talk2/z_en_wonder_talk2.h"
@@ -126,6 +127,20 @@ bool ForcedDialogIsDisabled(ForcedDialogMode type) {
     return (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipForcedDialog"),
                            IS_RANDO ? FORCED_DIALOG_SKIP_ALL : FORCED_DIALOG_SKIP_NONE) &
             type) != 0;
+}
+
+static void SkipJabuFeedingCutscene() {
+    Player_UpdateBottleHeld(gPlayState, GET_PLAYER(gPlayState), ITEM_BOTTLE, PLAYER_IA_BOTTLE);
+    Flags_SetEventChkInf(EVENTCHKINF_OFFERED_FISH_TO_JABU_JABU);
+    Sfx_PlaySfxCentered(NA_SE_SY_CORRECT_CHIME);
+
+    if (IS_RANDO && RAND_GET_OPTION(RSK_SHUFFLE_ENTRANCES)) {
+        gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(ENTR_JABU_JABU_ENTRANCE);
+    } else {
+        gPlayState->nextEntranceIndex = ENTR_JABU_JABU_ENTRANCE;
+    }
+    gPlayState->transitionTrigger = TRANS_TRIGGER_START;
+    gPlayState->transitionType = TRANS_TYPE_FADE_BLACK;
 }
 
 void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_list originalArgs) {
@@ -581,10 +596,15 @@ void TimeSaverOnVanillaBehaviorHandler(GIVanillaBehavior id, bool* should, va_li
             }
             break;
         }
+        case VB_JABU_JABU_EAT_FISH:
+            if (*should && CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), IS_RANDO)) {
+                *should = false;
+                SkipJabuFeedingCutscene();
+            }
+            break;
         case VB_PLAY_BEAN_PLANTING_CS:
         case VB_PLAY_EYEDROP_CREATION_ANIM:
         case VB_PLAY_EYEDROPS_CS:
-        case VB_PLAY_DROP_FISH_FOR_JABU_CS:
         case VB_PLAY_DARUNIAS_JOY_CS:
             if (CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipMiscInteractions"), IS_RANDO)) {
                 *should = false;
@@ -940,8 +960,6 @@ static uint32_t enMa1UpdateHook = 0;
 static uint32_t enMa1KillHook = 0;
 static uint32_t enFuUpdateHook = 0;
 static uint32_t enFuKillHook = 0;
-static uint32_t enJjUpdateHook = 0;
-static uint32_t enJjKillHook = 0;
 static uint32_t bgSpot02UpdateHook = 0;
 static uint32_t bgSpot02KillHook = 0;
 static uint32_t bgSpot03UpdateHook = 0;
@@ -1010,36 +1028,12 @@ void TimeSaverOnActorInitHandler(void* actorRef) {
     }
 
     if (actor->id == ACTOR_EN_JJ) {
-        enJjUpdateHook =
-            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* innerActorRef) mutable {
-                Actor* innerActor = static_cast<Actor*>(innerActorRef);
-
-                if (innerActor->id != ACTOR_EN_JJ || Flags_GetEventChkInf(EVENTCHKINF_OFFERED_FISH_TO_JABU_JABU)) {
-                    return;
-                }
-
-                bool shouldOpen = IS_RANDO ? RAND_GET_OPTION(RSK_JABU_OPEN).Get()
-                                           : CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipJabuJabuFish"), 0);
-                if (!shouldOpen) {
-                    return;
-                }
-
-                EnJj* enJj = static_cast<EnJj*>(innerActorRef);
-                if (enJj->actionFunc == EnJj_WaitForFish) {
-                    EnJj_SetupAction(enJj, EnJj_WaitToOpenMouth);
-                    GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(enJjUpdateHook);
-                    GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(enJjKillHook);
-                    enJjUpdateHook = 0;
-                    enJjKillHook = 0;
-                }
-            });
-        enJjKillHook =
-            GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) mutable {
-                GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnActorUpdate>(enJjUpdateHook);
-                GameInteractor::Instance->UnregisterGameHook<GameInteractor::OnSceneInit>(enJjKillHook);
-                enJjUpdateHook = 0;
-                enJjKillHook = 0;
-            });
+        EnJj* enJj = static_cast<EnJj*>(actorRef);
+        bool shouldOpen = IS_RANDO ? RAND_GET_OPTION(RSK_JABU_OPEN).Get()
+                                   : CVarGetInteger(CVAR_ENHANCEMENT("TimeSavers.SkipJabuJabuFish"), 0);
+        if (shouldOpen && enJj->actionFunc == EnJj_WaitForFish) {
+            EnJj_SetupAction(enJj, EnJj_WaitToOpenMouth);
+        }
     }
 
     if (actor->id == ACTOR_EN_OWL && gPlayState->sceneNum == SCENE_ZORAS_RIVER &&
