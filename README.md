@@ -1,13 +1,9 @@
 ![Ship of Harkinian](docs/shiptitle.darkmode.png#gh-dark-mode-only)
 ![Ship of Harkinian](docs/shiptitle.lightmode.png#gh-light-mode-only)
 
-## Website
+## Website & Discord
 
-Official Website: https://www.shipofharkinian.com/
-
-## Discord
-
-Official Discord: https://discord.com/invite/shipofharkinian
+Official Website: https://www.harbourmasters.org/
 
 If you're having any trouble after reading through this `README`, feel free to ask for help in the Support text channels. Please keep in mind that we do not condone piracy.
 
