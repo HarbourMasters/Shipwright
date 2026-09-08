@@ -72,8 +72,7 @@ static void RegisterSpeedModifiers() {
     COND_VB_SHOULD(VB_PLAYER_LIMIT_DIVE_XZ_SPEED, jumpsClamped, {
         Player* player = va_arg(args, Player*);
         if (player->linearVelocity <= lastRunSpeed) {
-            f32 maxSpeed = R_RUN_SPEED_LIMIT / 100.0f;
-            maxSpeed = maxSpeed * Ship_GetBunnyHoodJumpFactor(player) * GetSpeedModifierJumpFactor();
+f32 maxSpeed = (R_RUN_SPEED_LIMIT / 100.0f) * Ship_GetBunnyHoodJumpFactor(player) * GetSpeedModifierJumpFactor();
             player->linearVelocity = CLAMP(player->linearVelocity, -maxSpeed, maxSpeed);
         }
     });
