@@ -12661,8 +12661,9 @@ s16 func_8084ABD8(PlayState* play, Player* this, s32 arg2, s16 arg3) {
         f32 movementSpeed = LINK_IS_ADULT ? 9.0f : 8.25f;
         GameInteractor_Should(VB_PLAYER_MODIFY_FIRST_PERSON_SPEED, true, this, &movementSpeed);
 
-        f32 relX = (sControlInput->rel.stick_x / 10 * -invertXAxisMulti);
-        f32 relY = (sControlInput->rel.stick_y / 10);
+        f32 relX =
+            (sControlInput->rel.stick_x * (CVarGetInteger(CVAR_ENHANCEMENT("MirroredWorld"), 0) ? 1 : -1)) / 10.0f;
+        f32 relY = sControlInput->rel.stick_y / 10.0f;
 
         // Normalize so that diagonal movement isn't faster
         f32 relMag = sqrtf((relX * relX) + (relY * relY));
