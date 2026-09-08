@@ -11,7 +11,6 @@ extern "C" {
 extern PlayState* gPlayState;
 extern void func_8083DF68(Player* player, f32 arg1, s16 arg2);
 extern void func_8083DDC8(Player* player, PlayState* play);
-
 }
 
 #define CVAR_SPEED_MODIFIER_VALUE_NAME CVAR_CHEAT("SpeedModifier.Value")
@@ -52,8 +51,9 @@ static bool ShouldAmplifyJump(Player* player) {
 static void RegisterSpeedModifiers() {
     bool speedModifierActive = CVarGetFloat(CVAR_SPEED_MODIFIER_VALUE_NAME, 1.0f) != 1.0f;
     bool bunnyHoodActive = Ship_GetBunnyHoodMode() != BUNNY_HOOD_VANILLA;
-    bool jumpsClamped = Ship_GetBunnyHoodMode() == BUNNY_HOOD_FAST || 
-                        (CVarGetFloat(CVAR_SPEED_MODIFIER_VALUE_NAME, 1.0f) != 1.0f && CVarGetInteger(CVAR_SPEED_MODIFIER_JUMP_TOGGLE, 0) == 1);
+    bool jumpsClamped =
+        Ship_GetBunnyHoodMode() == BUNNY_HOOD_FAST || (CVarGetFloat(CVAR_SPEED_MODIFIER_VALUE_NAME, 1.0f) != 1.0f &&
+                                                       CVarGetInteger(CVAR_SPEED_MODIFIER_JUMP_TOGGLE, 0) == 1);
 
     static f32 lastRunSpeed = 0.0f;
 
@@ -90,7 +90,7 @@ static void RegisterSpeedModifiers() {
         func_8083DDC8(player, gPlayState);
 
         lastRunSpeed = player->linearVelocity;
-        
+
         *should = false;
     });
 
@@ -103,5 +103,5 @@ static void RegisterSpeedModifiers() {
     });
 }
 
-static RegisterShipInitFunc initFunc(RegisterSpeedModifiers,
-                                     { "IS_RANDO", CVAR_SPEED_MODIFIER_VALUE_NAME, CVAR_BUNNY_HOOD_NAME, CVAR_SPEED_MODIFIER_JUMP_TOGGLE });
+static RegisterShipInitFunc initFunc(RegisterSpeedModifiers, { "IS_RANDO", CVAR_SPEED_MODIFIER_VALUE_NAME,
+                                                               CVAR_BUNNY_HOOD_NAME, CVAR_SPEED_MODIFIER_JUMP_TOGGLE });
