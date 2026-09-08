@@ -997,43 +997,25 @@ void DrawInventoryTab() {
             uint8_t item = gSaveContext.inventory.items[index];
 
             // Check if this item is equipped and which slot for colored border
-            enum EquippedSlot { None, BButton, CButton, DPad };
+            enum EquippedSlot { None, CButton, DPad };
             EquippedSlot equippedSlot = EquippedSlot::None;
 
-            // Check C button slots (cButtonSlots maps to inventory slot indices)
-            for (int cBtn = 0; cBtn < 4; cBtn++) {
-                if (gSaveContext.equips.cButtonSlots[cBtn] == index) {
-                    equippedSlot = EquippedSlot::CButton;
+            for (size_t btn = 1; btn < ARRAY_COUNT(gSaveContext.equips.buttonItems); btn++) {
+                if (btn >= 4 && !dpadEnabled) {
                     break;
                 }
-            }
-            // Check D-pad slots (buttonItems[4-7] - need to match the item, not slot)
-            if (equippedSlot == EquippedSlot::None && dpadEnabled) {
-                for (int dpadBtn = 4; dpadBtn <= 7; dpadBtn++) {
-                    if (gSaveContext.equips.buttonItems[dpadBtn] == item) {
-                        equippedSlot = EquippedSlot::DPad;
-                        break;
-                    }
+                if (gSaveContext.equips.cButtonSlots[btn - 1] == index) {
+                    equippedSlot = btn < 4 ? EquippedSlot::CButton : EquippedSlot::DPad;
+                    break;
                 }
-            }
-            // For B button (buttonItems[0])
-            if (equippedSlot == EquippedSlot::None && gSaveContext.equips.buttonItems[0] == item) {
-                equippedSlot = EquippedSlot::BButton;
             }
 
             // Determine border color (needed before group for proper rendering)
             ImU32 borderColor = 0;
             bool drawBorder = equippedSlot != EquippedSlot::None;
             if (drawBorder) {
-                if (equippedSlot == EquippedSlot::CButton) {
-                    borderColor = IM_COL32(255, 165, 0, 255); // Orange for C-button
-                } else if (equippedSlot == EquippedSlot::DPad) {
-                    borderColor = IM_COL32(180, 180, 180, 255); // Light grey for D-pad
-                } else {
-                    // B button color (green for N64, red for GC)
-                    bool isGcScheme = CVarGetInteger(CVAR_COSMETIC("DefaultColorScheme"), 0) == 1;
-                    borderColor = isGcScheme ? IM_COL32(255, 0, 0, 255) : IM_COL32(0, 255, 0, 255);
-                }
+                borderColor = equippedSlot == EquippedSlot::CButton ? IM_COL32(255, 165, 0, 255) // Orange for C-button
+                                                                    : IM_COL32(180, 180, 180, 255); // Light grey D-pad
             }
 
             ImGui::BeginGroup();
