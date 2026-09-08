@@ -1,3 +1,4 @@
+#include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/ShipInit.hpp"
 #include "soh/OTRGlobals.h"
@@ -8,9 +9,12 @@ extern "C" {
 #include "macros.h"
 #include "variables.h"
 extern PlayState* gPlayState;
+extern void func_8083DF68(Player* player, f32 arg1, s16 arg2);
+extern void func_8083DDC8(Player* player, PlayState* play);
 }
 
 #define CVAR_SPEED_MODIFIER_VALUE_NAME CVAR_CHEAT("SpeedModifier.Value")
+#define CVAR_SPEED_MODIFIER_JUMP_TOGGLE CVAR_CHEAT("SpeedModifier.DoesntChangeJump")
 
 static f32 GetSpeedModifierFactor(bool inputAvailable) {
     f32 value = CVarGetFloat(CVAR_SPEED_MODIFIER_VALUE_NAME, 1.0f);
@@ -47,6 +51,11 @@ static bool ShouldAmplifyJump(Player* player) {
 static void RegisterSpeedModifiers() {
     bool speedModifierActive = CVarGetFloat(CVAR_SPEED_MODIFIER_VALUE_NAME, 1.0f) != 1.0f;
     bool bunnyHoodActive = Ship_GetBunnyHoodMode() != BUNNY_HOOD_VANILLA;
+    bool jumpsClamped =
+        Ship_GetBunnyHoodMode() == BUNNY_HOOD_FAST || (CVarGetFloat(CVAR_SPEED_MODIFIER_VALUE_NAME, 1.0f) != 1.0f &&
+                                                       CVarGetInteger(CVAR_SPEED_MODIFIER_JUMP_TOGGLE, 0) == 1);
+
+    static f32 lastRunSpeed = 0.0f;
 
     // Airborne (jump) velocity. z_player clamps linearVelocity to the vanilla run speed limit when this returns true;
     // skip that clamp so the amplified running velocity carries into the jump.
@@ -60,10 +69,11 @@ static void RegisterSpeedModifiers() {
     // dive-into-water animation never clamped by vanilla, so re-clamp to vanilla run speed limit here unless jump be
     // amplified. This keeps dive vanilla-distance (e.g. Gerudo Valley canyon) for bunny hood "fast run" & "Don't affect
     // jump distance" option.
-    COND_VB_SHOULD(VB_PLAYER_LIMIT_DIVE_XZ_SPEED, speedModifierActive || bunnyHoodActive, {
+    COND_VB_SHOULD(VB_PLAYER_LIMIT_DIVE_XZ_SPEED, jumpsClamped, {
         Player* player = va_arg(args, Player*);
-        if (!ShouldAmplifyJump(player)) {
-            f32 maxSpeed = R_RUN_SPEED_LIMIT / 100.0f;
+        if (player->linearVelocity <= lastRunSpeed) {
+            f32 maxSpeed =
+                (R_RUN_SPEED_LIMIT / 100.0f) * Ship_GetBunnyHoodJumpFactor(player) * GetSpeedModifierJumpFactor();
             player->linearVelocity = CLAMP(player->linearVelocity, -maxSpeed, maxSpeed);
         }
     });
@@ -72,7 +82,16 @@ static void RegisterSpeedModifiers() {
     COND_VB_SHOULD(VB_PLAYER_MODIFY_RUN_SPEED, speedModifierActive || bunnyHoodActive, {
         Player* player = va_arg(args, Player*);
         f32* speedTarget = va_arg(args, f32*);
+        s16* yawTarget = va_arg(args, s16*);
+
         *speedTarget *= Ship_GetBunnyHoodRunFactor(player) * GetSpeedModifierFactor(true);
+
+        func_8083DF68(player, *speedTarget, *yawTarget);
+        func_8083DDC8(player, gPlayState);
+
+        lastRunSpeed = player->linearVelocity;
+
+        *should = false;
     });
 
     // Swim speed multiplied in place. Called per speed z_player scales; bunny hood does not apply underwater.
@@ -84,5 +103,5 @@ static void RegisterSpeedModifiers() {
     });
 }
 
-static RegisterShipInitFunc initFunc(RegisterSpeedModifiers,
-                                     { "IS_RANDO", CVAR_SPEED_MODIFIER_VALUE_NAME, CVAR_BUNNY_HOOD_NAME });
+static RegisterShipInitFunc initFunc(RegisterSpeedModifiers, { "IS_RANDO", CVAR_SPEED_MODIFIER_VALUE_NAME,
+                                                               CVAR_BUNNY_HOOD_NAME, CVAR_SPEED_MODIFIER_JUMP_TOGGLE });
