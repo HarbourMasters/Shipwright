@@ -440,6 +440,7 @@ void SohMenu::AddMenuEnhancements() {
             CVAR_INT_SHIP_INIT(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Entrances"), true);
             CVAR_INT_SHIP_INIT(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), true);
             CVAR_INT_SHIP_INIT(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.LearnSong"), true);
+            CVAR_INT_SHIP_INIT(CVAR_ENHANCEMENT("WarpSongSkipAnimation"), true);
             CVAR_INT_SHIP_INIT(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.BossIntro"), true);
             CVAR_INT_SHIP_INIT(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.QuickBossDeaths"), true);
             CVAR_INT_SHIP_INIT(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.OnePoint"), true);
@@ -457,6 +458,7 @@ void SohMenu::AddMenuEnhancements() {
             CVAR_INT_SHIP_INIT(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Entrances"), false);
             CVAR_INT_SHIP_INIT(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.Story"), false);
             CVAR_INT_SHIP_INIT(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.LearnSong"), false);
+            CVAR_INT_SHIP_INIT(CVAR_ENHANCEMENT("WarpSongSkipAnimation"), false);
             CVAR_INT_SHIP_INIT(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.BossIntro"), false);
             CVAR_INT_SHIP_INIT(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.QuickBossDeaths"), false);
             CVAR_INT_SHIP_INIT(CVAR_ENHANCEMENT("TimeSavers.SkipCutscene.OnePoint"), false);
