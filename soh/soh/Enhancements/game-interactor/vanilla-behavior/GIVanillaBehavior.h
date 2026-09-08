@@ -1586,6 +1586,14 @@ typedef enum {
 
     // #### `result`
     // ```c
+    // Math_Vec3f_DistXZ(&feedingSpot, &player->actor.world.pos) < 300.0f && play->isPlayerDroppingFish(play)
+    // ```
+    // #### `args`
+    // - `*EnJj`
+    VB_JABU_JABU_EAT_FISH,
+
+    // #### `result`
+    // ```c
     // true
     // ```
     // #### `args`
@@ -2035,14 +2043,6 @@ typedef enum {
     // #### `args`
     // - `*EnOkarinaTag`
     VB_PLAY_DRAIN_WELL_CS,
-
-    // #### `result`
-    // ```c
-    // true
-    // ```
-    // #### `args`
-    // - None
-    VB_PLAY_DROP_FISH_FOR_JABU_CS,
 
     // #### `result`
     // ```c
